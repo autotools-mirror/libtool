@@ -1237,6 +1237,17 @@ Same as @samp{-export-symbols}, except that only symbols matching
 the regular expression @var{regex} are exported.
 By default all symbols are exported.
 
+@item -objectlist @var{input-file}
+Tells libtool to read a text file to determine the object files
+to be linked.  The @var{input-file} is a text file containing a list
+of libtool objects (@samp{.lo} files), one per line.  This option is
+used to build arbitrarily large libraries when the libtool command
+becomes too large for the system to execute.  Creating this file can
+be automated with a command like the following:
+@example
+@kbd{find ./ -name \*.lo -print | sed 's/.\///g' > inputfile.txt}
+@end example
+
 @item -L@var{libdir}
 Search @var{libdir} for required libraries that have already been
 installed.

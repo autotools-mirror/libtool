@@ -1,3 +1,13 @@
+2001-03-05  Robert Boehne  <rboehne@ricardo-us.com>
+
+	* ltmain.in: Add support for the -objectlist option in
+	link mode.  The option behaves identically to the IRIX
+	6.5 linker option of the same name.  Added a description
+	of the -objectlist option to the output of
+	libtool --mode=link --help
+	* doc/libtool.texi (Link mode): Added documentation for
+	the -objectlist option in libtool link mode.
+
 2001-03-03  Markus F.X.J. Oberhumer <markus@oberhumer.com>,
 	    Alexandre Oliva <oliva@lsd.ic.unicamp.br>
 
