@@ -1,5 +1,7 @@
 2005-03-24  Gary V. Vaughan  <gary@gnu.org>
 
+	* libtoolize.m4sh: Propogate --debug flag to sub-libtoolizes.
+
 	* libtoolize.m4sh: Fix a typo, s/pkgvltdldirs/pkgvdatadirs/.
 	When using -I to test an uninstalled libtoolize, we need to add
 	the config subdirectory to the search path so that ltmain.sh can
