@@ -1,5 +1,16 @@
 1999-01-27  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* libltdl/Makefile.am (@TOINST@/libltdl.la): if installation is
+	enabled, create to-be-installed libltdl.la within @TOINST@
+	directory
+	(noinst_LTLIBRARIES): even if installation is enabled, build
+	convenience libltdl.la, otherwise builds of random packages may
+	fail if the user happens to enable installation
+	(distclean-hook): wipe out $(TOINST)
+	* libltdl/configure.in: set TOINST and LIBLIBS as appropriate;
+	don't set NOINSTLIBS any more
+	* mdemo/Makefile.am: use libltdl.la
+
 	* libltdl/ltdl.c (find_file): oops, filenamesize was miscomputed
 
 	* libltdl/ltdl.c (find_file): allocate filename dynamically
