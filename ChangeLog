@@ -1,3 +1,11 @@
+2000-12-22  Akim Demaille  <akim@epita.fr>
+
+	* libtool.m4: s/[ \t]*$//
+
+2000-12-22  Aneesh Kumar K.V  <kvaneesh@hotmail.com>
+
+	* libtool.m4 (OSF/1):  Revert my patch of 2000-12-16.
+
 2000-12-20  Gary V. Vaughan  <gvv@techie.com>
 
 	* libltdl/ltdl.c (lt_dlexit): Was checking for residency of the
@@ -29,11 +37,11 @@
 	* ltcf-c.sh: (dyld/darwin*) Much improved port.
 	* libtool.m4: (dyld/darwin*) Much improved port.
 	* ltmain.in: (dyld/darwin*) Much improved port.
-	
+
 2000-12-16  Sascha Schumann <sascha@schumann.cx>
 
 	* ltmain.in: Accept darwin as an alias for rhapsody.
-	
+
 	* libtool.m4 (AC_DEPLIBS_CHECK_METHOD): Use the HPUX 10.20
 	methods to check for library dependencies on HPUX 11.
 
@@ -54,12 +62,12 @@
 	module from being lt_dlclosed.
 	(lt_dlopen):  If lt_dlopen()ing self, make the module resident.
 	(lt_dlclose):  Return an error if the module is resident.
-	
+
 2000-12-16  Nick Hudson  <skrll@netbsd.org>
 
 	* ltconfig.in (netbsd*, deplibs_check_method): Enable ILD support
 	for NetBSD a.out.
-	
+
 2000-12-15  Akim Demaille  <akim@epita.fr>
 
 	* libtool.m4 (AC_PATH_TOOL_PREFIX): Similarly with
@@ -77,19 +85,19 @@
 
 	* libltdl/ltdl.c (lt_dlexit): Reset the loaders value to zero when
 	the last module has been unloaded.
-	
+
 2000-12-14  Masahiro Nobori  <nobori@ss.titech.ac.jp>
 
 	* README:  Updated.
 	* NEWS: Updated.
 	* libtool.m4:  New port to NEWS-OS Release 6.
 	* ltcf-c.sh: ditto.
-	
+
 2000-12-14  Nick Hudson  <skrll@netbsd.org>
-	
+
 	* ltcf-c.sh (hardcode_libdir_flag_spec):  Remove linker
 	sspecification for netbsd.
-	
+
 2000-12-14  Akim Demaille  <akim@epita.fr>
 
 	* libtool.m4:  Don't depend on Autoconf internals:
@@ -117,12 +125,12 @@
 	* libltdl/ltdl.h (LT_POSIX_NAMESPACE):  Deleted.  The default is
 	now to use this namespace, so the cpp macro is no longer
 	necessary.
-	
+
 2000-11-20  Morten Eriksen  <mortene@sim.no>
-	
+
 	* ltdl.m4 (AC_LIB_LTDL, AC_LTDL_SYMBOL_USCORE): Break a circular
 	dependency between AC_LTDL_SYMBOL_USCORE and AC_LTDL_DLSYM_USCORE.
-	
+
 2000-11-20  Paul Berrevoets  <paul@swi.com>
 
 	* ltmain.in: Some versions of expr respond with "0" if a
@@ -140,7 +148,7 @@
 
 	* ltdl.c: Reformatted.
 	* ltdl.h: ditto.
-	
+
 2000-11-11  Gary V. Vaughan  <gvv@techie.com>
 
 	* ltdl.m4, ltcf-c.sh, libtool.m4: Use $ac_ext and $ac_objext
@@ -183,8 +191,8 @@
 
 2000-10-27  Robert Boehne  <rboehne@ricardo-us.com>
 
-	* docs/libtool.texi: Added pointers to documentation       
-	of Hewlett-Packard, Compaq Tru64 and IBM AIX systems.       
+	* docs/libtool.texi: Added pointers to documentation
+	of Hewlett-Packard, Compaq Tru64 and IBM AIX systems.
 
 2000-10-10  Alexandre Oliva  <aoliva@redhat.com>
 
@@ -231,7 +239,7 @@
 
 	* ltmain.in (version_type): Use "-iface" as the windows
 	versioning scheme, where iface is the number of the oldest
-	interface supported. 
+	interface supported.
 
 2000-09-14  Gary V. Vaughan  <gvv@techie.com>
 
@@ -242,7 +250,7 @@
 	* ltconfig.in (pw32): ditto.
 	* ltmain.in (pw32): ditto.
 	* NEWS: Updated.
-	
+
 2000-09-12  Michael Matz <matz@ifh.de>
 
 	* ltmain.in:  Be careful about filenames with multiple `.'s in
@@ -281,7 +289,7 @@
 
 	* ltmain.in (compile, need_lock): Don't create nor remove lock
 	files in dry runs.
-	
+
 	* libltdl/ltdl.c (load_deplibs): Don't append shlib_ext; use
 	lt_dlopenext() instead.
 
@@ -301,7 +309,7 @@
 	* tests/build-relink.test, tests/build-relink2.test: Adjust.
 
 	* libtool.m4: Fix typo I introduced in yesterday's patch.
-	
+
 	* libltdl/ltdl.c (lt_dlopen): Set dlname from library_names if
 	dlname is empty.
 
@@ -391,13 +399,13 @@
 	through to gcc on IRIX, or at all on other architectures for
 	backwards compatibility (among others).
 	Reported by Bob Friesenhahn <bfriesen@simple.dallas.tx.us>
-	Reported by Albert Chin-A-Young <china@thewrittenword.com> 
+	Reported by Albert Chin-A-Young <china@thewrittenword.com>
 
 2000-08-26  Albert Chin-A-Young  <china@thewrittenword.com>
-	
+
 	* ltcf-cxx.sh (old_archive_cmds):  With IRIX C++ 7.3.1.1m, CC -ar
 	must be used to create archive libraries, not ar.
-	
+
 2000-08-01  Alexandre Oliva  <oliva@lsd.ic.unicamp.br>
 
 	* ltmain.in (shtool): Use echo|grep instead of expr, as in the
@@ -580,7 +588,7 @@
 	command.  Under BSD/OS 4.1 several libraries are now symlinks
 	rather than regular files.  Adding -L tells the file program
 	to follow the symlink.
-			    
+
 2000-05-29  Gary V. Vaughan  <gvv@techie.com>
 
 	* libtool.m4 (i*86-*-freebsd*): Forgot to changequote(,).
@@ -589,10 +597,10 @@
 	* libtool.m4 (i*86-*-freebsd*): Support a.out shared libs.
 	From <suzukis@file.phys.tohoku.ac.jp>
 
-2000-05-29  Fred Fish  <fnf@be.com>       
+2000-05-29  Fred Fish  <fnf@be.com>
 
 	Support AR=mwld AR_FLAGS='-xml -o' for PPC Beos.
-	* ltconfig (old_AR_FLAGS): Add.              
+	* ltconfig (old_AR_FLAGS): Add.
 	(old_archive_cmds): Use AR_FLAGS rather than hardcoding "cru".
 	(archive_cmds): Use AR_FLAGS rather than hardcoding "cru".
 	(AR_FLAGS): Default to "cru" if not set.
@@ -609,15 +617,15 @@
 	* NEWS: updated.
 
 2000-05-29  Bernhard Rosenkraenzer <bero@redhat.de>
- 
+
 	* libtool.m4: adding ia64 as supported linux platform
 
 2000-05-29  Michael Matz  <matz@ifh.de>
 
 	* ltmain.in: fix quoting for $var_value.
-       
+
 	* ltconfig.in: check for dlfcn.h: include return value
-	to make -Wall in CFLAGS work.  
+	to make -Wall in CFLAGS work.
 
 2000-05-27  Ossama Othman  <ossama@debian.org>
 
@@ -1005,7 +1013,7 @@
 	support, and also fixes a problem where both the static and shared
 	libraries were being built even if one of them was explicitly
 	disabled.
-	
+
 	* ltcf-cxx.sh: Make sure $ac_cv_prog_cc_pic_works and
 	$ac_cv_prog_cc_static_works are unset since their C compiler
 	cached values will override their C++ compiler specific values.

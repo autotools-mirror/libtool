@@ -144,7 +144,7 @@ case "$host_os" in
         # FIXME: insert proper C++ library support
         ld_shlibs=no
         ;;
-    esac 
+    esac
     ;;
   dgux*)
     case "$cc_basename" in
@@ -295,7 +295,7 @@ case "$host_os" in
         # FIXME: insert proper C++ library support
         ld_shlibs=no
         ;;
-    esac   
+    esac
     ;;
   netbsd*)
     # NetBSD uses g++ - do we need to do anything?
@@ -397,7 +397,7 @@ case "$host_os" in
       cxx)
         allow_undefined_flag=' -expect_unresolved \*'
         archive_cmds='$CC -shared${allow_undefined_flag} $predep_objects $libobjs $deplibs $postdep_objects $compiler_flags -msym -soname $soname `test -n "$verstring" && echo -set_version $verstring` -update_registry ${objdir}/so_locations -o $lib'
-        
+
         hardcode_libdir_flag_spec='-rpath $libdir'
         hardcode_libdir_separator=:
 
@@ -525,7 +525,7 @@ case "$host_os" in
           hardcode_libdir_flag_spec='${wl}-R $wl$libdir'
         fi
         ;;
-    esac   
+    esac
     ;;
   tandem*)
     case "$cc_basename" in
@@ -538,7 +538,7 @@ case "$host_os" in
         # FIXME: insert proper C++ library support
         ld_shlibs=no
         ;;
-    esac   
+    esac
     ;;
   unixware*)
     # FIXME: insert proper C++ library support
@@ -618,7 +618,7 @@ else
         # Green Hills C++ Compiler
         # ac_cv_prog_cc_static="--no_auto_instantiation -u __main -u __premain -u _abort -r $COOL_DIR/lib/libOrb.a $MVME_DIR/lib/CC/libC.a $MVME_DIR/lib/classix/libcx.s.a"
         ;;
-      esac 
+      esac
       ;;
     dgux*)
       case "$cc_basename" in
@@ -692,7 +692,7 @@ else
           ;;
         *)
           ;;
-      esac   
+      esac
       ;;
     netbsd*)
       ;;
@@ -707,7 +707,7 @@ else
           ;;
         cxx)
           # Digital/Compaq C++
-          ac_cv_prog_cc_wl='-WL,'
+          ac_cv_prog_cc_wl='-Wl,'
           # Make sure the PIC flag is empty.  It appears that all Alpha
           # Linux and Compaq Tru64 Unix objects are PIC.
           ac_cv_prog_cc_pic=
@@ -742,7 +742,7 @@ else
           ;;
         *)
           ;;
-      esac   
+      esac
       ;;
     sunos4*)
       case "$cc_basename" in
@@ -767,7 +767,7 @@ else
           ;;
         *)
           ;;
-      esac   
+      esac
       ;;
     unixware*)
       ;;
