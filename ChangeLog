@@ -1,3 +1,8 @@
+2001-09-22  Albert Chin-A-Young  <china@thewrittenword.com>
+
+	* libtool.m4: When setting archive_cmds for CC, don't
+	test for $GXX but for $GCC on HP-UX. Indentation fixes.
+
 2001-09-21  Gary V. Vaughan  <gary@gnu.org>
 
 	From Tor Lillqvist <tml@iki.fi>:
