@@ -1,5 +1,7 @@
 1999-01-27  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* libltdl/ltdl.c (find_file): oops, filenamesize was miscomputed
+
 	* libltdl/ltdl.c (find_file): allocate filename dynamically
 
 	* libltdl/configure.in (AC_PROG_LIBTOOL): automake does not

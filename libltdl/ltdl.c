@@ -904,10 +904,9 @@ find_file (basename, search_path, pdir, handle)
 		if (lendir + 1 + lenbase >= filenamesize) {
 			if (filename)
 				free(filename);
-			filename = (char*) malloc(lendir + 1 + lenbase);
-			if (filename)
-				filenamesize = filename;
-			else {
+			filenamesize = lendir + 1 + lenbase + 1;
+			filename = (char*) malloc(filenamesize);
+			if (!filename) {
 				last_error = memory_error;
 				return 0;
 			}
