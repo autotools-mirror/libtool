@@ -1,5 +1,6 @@
 /* main.c -- inter-library dependency test program
-   Copyright (C) 1998-1999 Thomas Tanner <tanner@ffii.org>
+   Copyright (C) 1998, 1999, 2000 Free Software Foundation
+   by Thomas Tanner <tanner@ffii.org>
    This file is part of GNU Libtool.
 
 This program is free software; you can redistribute it and/or modify
@@ -32,6 +33,9 @@ main (argc,argv)
   func_l1(0);
   func_l2(0);
   func_l4(0);
+  if (argc == 2 && strcmp (argv[1], "-alt") == 0
+      && var_l1 + var_l2 + var_l4 == 8)
+	return 0;
   if (var_l1 + var_l2 + var_l4 != 20)
   	return 1;
   return 0;
