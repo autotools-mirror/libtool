@@ -1647,12 +1647,17 @@ hard-link otherwise.
 
 @defvar DLLTOOL
 Program to use rather than checking for @code{dlltool}.  Only meaningful 
-for MS-Windows.
+for Cygwin/MS-Windows.
+@end defvar
+
+@defvar OBJDUMP
+Program to use rather than checking for @code{objdump}.  Only meaningful 
+for Cygwin/MS-Windows.
 @end defvar
 
 @defvar AS
 Program to use rather than checking for @code{as}.  Only meaningful for
-MS-Windows.
+Cygwin/MS-Windows.
 @end defvar
 
 @node ltconfig example
