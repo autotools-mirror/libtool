@@ -1,6 +1,10 @@
 2001-08-05  Gary V. Vaughan  <gary@gnu.org>
 
 	From Brad <brad@comstyle.com>:
+	* libtool.m4 (archive_cmds) [darwin, newsos, sysv4]: Replace
+	1.3 era $linkopts references with $linker_flags.
+
+	From Brad <brad@comstyle.com>:
 	* libtool.m4 [openbsd]:  OpenBSD can build modules without a `lib'
 	prefix and version number.
 

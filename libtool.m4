@@ -1541,7 +1541,7 @@ else
     # FIXME: Relying on posixy $() will cause problems for
     #        cross-compilation, but unfortunately the echo tests do not
     #        yet detect zsh echo's removal of \ escapes.
-    archive_cmds='$nonopt $(test .$module = .yes && echo -bundle || echo -dynamiclib) $allow_undefined_flag -o $lib $libobjs $deplibs$linkopts -install_name $rpath/$soname $(test -n "$verstring" -a x$verstring != x0.0 && echo $verstring)'
+    archive_cmds='$nonopt $(test .$module = .yes && echo -bundle || echo -dynamiclib) $allow_undefined_flag -o $lib $libobjs $deplibs$linker_flags -install_name $rpath/$soname $(test -n "$verstring" -a x$verstring != x0.0 && echo $verstring)'
     # We need to add '_' to the symbols in $export_symbols first
     #archive_expsym_cmds="$archive_cmds"' && strip -s $export_symbols'
     hardcode_direct=yes
@@ -1616,7 +1616,7 @@ else
     ;;
 
   newsos6)
-    archive_cmds='$LD -G -h $soname -o $lib $libobjs $deplibs $linkopts'
+    archive_cmds='$LD -G -h $soname -o $lib $libobjs $deplibs $linker_flags'
     hardcode_direct=yes
     hardcode_libdir_flag_spec='${wl}-rpath ${wl}$libdir'
     hardcode_libdir_separator=:
@@ -1719,7 +1719,7 @@ else
 
   sysv4)
     if test "x$host_vendor" = xsno; then
-      archive_cmds='$LD -G -Bsymbolic -h $soname -o $lib $libobjs $deplibs $linkopts'
+      archive_cmds='$LD -G -Bsymbolic -h $soname -o $lib $libobjs $deplibs $linker_flags'
       hardcode_direct=yes # is this really true???
     else
       archive_cmds='$LD -G -h $soname -o $lib $libobjs $deplibs $linker_flags'
