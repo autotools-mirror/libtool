@@ -19,30 +19,35 @@ fi
 # Change to our build directory.
 cd ../mdemo || exit 1
 
-before=../tests/before
-after=../tests/after
-normal=../tests/libtool-normal
-dry=../tests/libtool-dry
-stat=
-
 echo "= Running $make clean in ../mdemo"
 $make clean || exit 1
 
-$make main.o || exit 1
-
 eval `$libtool --config | grep "^objdir="`
 
-mkdir $objdir
-rm -f $before $after $normal $dry
-sed 's/run=/run=:/' < libtool > $dry
-chmod +x $dry
+# create `before' and `after' in a directory deep within objdir,
+# so that their creation and removal does not modify even a timestamp
+# in the output of `ls -l . $objdir'
+for d in $objdir $objdir/temp $objdir/temp/temp; do
+  test -d $d || mkdir $d
+done
+before=$d/before
+after=$d/after
+
+# Create a new libtool script that will enter dry run if the environment
+# variable force_dry_run is set
+rm -f $objdir/libtool.new
+sed 's/^run=$/run=${force_dry_run+:}/' < libtool > $objdir/libtool.new
+chmod +x $objdir/libtool.new
+mv libtool $objdir/libtool
+mv $objdir/libtool.new libtool
+
+# main.o is not compiled with libtool, but it depends on it, so make
+# sure it is up-to-date
+$make main.o || exit 1
 
 echo "= Making object files in ../mdemo"
 ls -l . $objdir > $before
-mv libtool $normal && mv $dry libtool
-$make foo1.lo foo2.lo || stat=$?
-mv libtool $dry && mv $normal libtool
-test -n "$stat" && exit $stat
+force_dry_run=yes $make foo1.lo foo2.lo || exit $?
 ls -l . $objdir > $after
 cmp $before $after > /dev/null || exit 1
 # Now really make them
@@ -50,10 +55,7 @@ $make foo1.lo foo2.lo || exit 1
 
 echo "= Making libraries in ../mdemo"
 ls -l . $objdir > $before
-mv libtool $normal && mv $dry libtool
-$make foo1.la libfoo2.la || stat=$?
-mv libtool $dry && mv $normal libtool
-test -n "$stat" && exit $stat
+force_dry_run=yes $make foo1.la libfoo2.la || exit $?
 ls -l . $objdir > $after
 cmp $before $after > /dev/null || exit 1
 # Now really make them
@@ -61,10 +63,7 @@ $make foo1.la libfoo2.la || exit 1
 
 echo "= Making programs in ../mdemo"
 ls -l . $objdir > $before
-mv libtool $normal && mv $dry libtool
-$make mdemo mdemo.static || stat=$?
-mv libtool $dry && mv $normal libtool
-test -n "$stat" && exit $stat
+force_dry_run=yes $make mdemo mdemo.static || exit $?
 ls -l . $objdir > $after
 cmp $before $after > /dev/null || exit 1
 # Now really make them
@@ -76,10 +75,7 @@ mkdir $prefix/bin
 mkdir $prefix/lib
 ls -l . $objdir > $before
 ls -lR $prefix >> $before
-mv libtool $normal && mv $dry libtool
-$make install || stat=$?
-mv libtool $dry && mv $normal libtool
-test -n "$stat" && exit $stat
+force_dry_run=yes $make install || exit 1
 ls -l . $objdir > $after
 ls -lR $prefix >> $after
 cmp $before $after > /dev/null || exit 1
@@ -92,10 +88,7 @@ ls -lR $prefix >> $before
 # Libtool does not uninstall the programs, save them
 cp $prefix/bin/mdemo mdemo.sav
 cp $prefix/bin/mdemo.static mdemo.static.sav
-mv libtool $normal && mv $dry libtool
-$make uninstall || stat=$?
-mv libtool $dry && mv $normal libtool
-test -n "$stat" && exit $stat
+force_dry_run=yes $make uninstall || exit $?
 # Restore them
 mv mdemo.sav $prefix/bin/mdemo
 mv mdemo.static.sav $prefix/bin/mdemo.static
@@ -105,6 +98,7 @@ cmp $before $after > /dev/null || exit 1
 # Now really run it
 $make uninstall || exit 1
 
-rm -f $before $after $dry
+rm -f $before $after libtool
+mv $objdir/libtool libtool
 
 exit 0
