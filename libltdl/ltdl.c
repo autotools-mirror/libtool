@@ -986,6 +986,10 @@ try_dlopen (lt_dlhandle *phandle, const char *filename)
   assert (base_name && *base_name);
 
   ext = strrchr (base_name, '.');
+  if (!ext)
+    {
+      ext = base_name + LT_STRLEN (base_name);
+    }
 
   /* extract the module name from the file name */
   name = MALLOC (char, ext - base_name + 1);

@@ -1,5 +1,8 @@
 2004-09-30  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* libltdl/ltdl.c (try_dlopen): Fix null pointer dereference in
+	case the name given to lt_dlopen contains no extension.
+
 	* libltdl/lt_dlloader.c (lt_dlloader_remove), libltdl/ltdl.c
 	(tryall_dlopen, lt_dlhandle_next): Show usage of function pointers.
 
