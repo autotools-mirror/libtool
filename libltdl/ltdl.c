@@ -986,8 +986,7 @@ find_module (handle, dir, libdir, dlname, old_name, installed)
 				last_error = memory_error;
 				return 1;
 			}
-			sprintf (filename, "%s%c%s", libdir, LTDL_DIRSEP_CHAR,
-				 dlname);
+			sprintf (filename, "%s/%s", libdir, dlname);
 			error = tryall_dlopen(handle, filename) == 0;
 			lt_dlfree(filename);
 			if (error)
@@ -1034,6 +1033,25 @@ find_module (handle, dir, libdir, dlname, old_name, installed)
 	return 1;
 }
 
+static char*
+canonicalize_path (path)
+	const char *path;
+{
+	char *canonical = NULL;
+	
+	if (path && *path) {
+		char *ptr = strdup (path);
+		canonical = ptr;
+#ifdef LTDL_DIRSEP_CHAR
+		/* Avoid this overhead where '/' is the only separator. */
+		while (ptr = strchr (ptr, LTDL_DIRSEP_CHAR))
+			*ptr++ = '/';
+#endif
+	}
+
+	return canonical;
+}
+
 static lt_ptr_t
 find_file (basename, search_path, pdir, handle)
 	const char *basename;
@@ -1044,18 +1062,24 @@ find_file (basename, search_path, pdir, handle)
 	/* when handle != NULL search a library, otherwise a file */
 	/* return NULL on failure, otherwise the file/handle */
 
+	lt_ptr_t result = 0;
 	char	*filename = 0;
 	int     filenamesize = 0;
-	const char *next = search_path;
 	int	lenbase = strlen(basename);
+	char	*next = 0;
 	
-	if (!next || !*next) {
+	if (!search_path || !*search_path) {
 		last_error = file_not_found_error;
 		return 0;
 	}
+	next = canonicalize_path (search_path);
+	if (!next) {
+		last_error = memory_error;
+		goto cleanup;
+	}
 	while (next) {
 		int lendir;
-		const char *cur = next;
+		char *cur = next;
 
 		next = strchr(cur, LTDL_PATHSEP_CHAR);
 		if (!next)
@@ -1074,17 +1098,17 @@ find_file (basename, search_path, pdir, handle)
 			filename = (char*) lt_dlmalloc(filenamesize);
 			if (!filename) {
 				last_error = memory_error;
-				return 0;
+				goto cleanup;
 			}
 		}
 		strncpy(filename, cur, lendir);
-		if (filename[lendir-1] != LTDL_DIRSEP_CHAR)
-			filename[lendir++] = LTDL_DIRSEP_CHAR;
+		if (filename[lendir-1] != '/')
+			filename[lendir++] = '/';
 		strcpy(filename+lendir, basename);
 		if (handle) {
 			if (tryall_dlopen(handle, filename) == 0) {
-				lt_dlfree(filename);
-				return (lt_ptr_t) handle;
+				result = (lt_ptr_t) handle;
+				goto cleanup;
 			}
 		} else {
 			FILE *file = fopen(filename, LTDL_READTEXT_MODE);
@@ -1099,15 +1123,18 @@ find_file (basename, search_path, pdir, handle)
 					   memory overhead. */
 					*pdir = filename;
 				} else
-					lt_dlfree(filename);
-				return (lt_ptr_t) file;
+					filename = NULL;
+				result = (lt_ptr_t) file;
+				goto cleanup;
 			}
 		}
 	}
+	last_error = file_not_found_error;
+cleanup:
 	if (filename)
 		lt_dlfree(filename);
-	last_error = file_not_found_error;
-	return 0;
+	lt_dlfree(next);
+	return result;
 }
 
 static int
@@ -1161,18 +1188,12 @@ trim (dest, str)
 }
 
 static inline int
-free_vars(dir, name, dlname, oldname, libdir, deplibs)
-	char *dir;
-	char *name;
+free_vars( dlname, oldname, libdir, deplibs)
 	char *dlname;
 	char *oldname;
 	char *libdir;
 	char *deplibs;
 {
-	if (dir)
-		lt_dlfree(dir);
-	if (name)
-		lt_dlfree(name);
 	if (dlname)
 		lt_dlfree(dlname);
 	if (oldname)
@@ -1188,10 +1209,10 @@ lt_dlhandle
 lt_dlopen (filename)
 	const char *filename;
 {
-	lt_dlhandle handle, newhandle;
-	const char *basename, *ext;
+	lt_dlhandle handle = 0, newhandle;
+	const char *ext;
 	const char *saved_error = last_error;
-	char	*dir = 0, *name = 0;
+	char	*basename = 0, *dir = 0, *name = 0;
 	
 	if (!filename) {
 		handle = (lt_dlhandle) lt_dlmalloc(sizeof(lt_dlhandle_t));
@@ -1209,18 +1230,28 @@ lt_dlopen (filename)
 		}
 		goto register_handle;
 	}
-	basename = strrchr(filename, LTDL_DIRSEP_CHAR);
-	if (basename) {
-		basename++;
-		dir = (char*) lt_dlmalloc(basename - filename + 1);
-		if (!dir) {
+	{
+		char *canonical = canonicalize_path (filename);
+		if (!canonical) {
 			last_error = memory_error;
+			if (handle)
+				lt_dlfree(handle);
 			return 0;
 		}
-		strncpy(dir, filename, basename - filename);
-		dir[basename - filename] = '\0';
-	} else
-		basename = filename;
+		basename = strrchr(canonical, '/');
+		if (basename) {
+			basename++;
+			dir = (char*) lt_dlmalloc(basename - canonical + 1);
+			if (!dir) {
+				last_error = memory_error;
+				handle = 0;
+				goto cleanup;
+			}
+			strncpy(dir, canonical, basename - canonical);
+			dir[basename - canonical] = '\0';
+		} else
+			basename = canonical;
+	}
 	/* check whether we open a libtool module (.la extension) */
 	ext = strrchr(basename, '.');
 	if (ext && strcmp(ext, ".la") == 0) {
@@ -1240,9 +1271,8 @@ lt_dlopen (filename)
 		name = (char*) lt_dlmalloc(ext - basename + 1);
 		if (!name) {
 			last_error = memory_error;
-			if (dir)
-				lt_dlfree(dir);
-			return 0;
+			handle = 0;
+			goto cleanup;
 		}
 		/* canonicalize the module name */
 		for (i = 0; i < ext - basename; i++)
@@ -1272,17 +1302,15 @@ lt_dlopen (filename)
 #endif
 		}
 		if (!file) {
-			if (name)
-				lt_dlfree(name);
-			if (dir)
-				lt_dlfree(dir);
-			return 0;
+			handle = 0;
+			goto cleanup;
 		}
 		line = (char*) lt_dlmalloc(LTDL_FILENAME_MAX);
 		if (!line) {
 			fclose(file);
 			last_error = memory_error;
-			return 0;
+			handle = 0;
+			goto cleanup;
 		}
 		/* read the .la file */
 		while (!feof(file)) {
@@ -1335,8 +1363,9 @@ lt_dlopen (filename)
 				lt_dlfree(handle);
 			if (!error)
 				last_error = memory_error;
-			free_vars(name, dir, dlname, old_name, libdir, deplibs);
-			return 0;
+			free_vars(dlname, old_name, libdir, deplibs);
+			/* handle is already set to 0 */
+			goto cleanup;
 		}
 		handle->usage = 0;
 		if (load_deplibs(handle, deplibs) == 0) {
@@ -1351,8 +1380,9 @@ lt_dlopen (filename)
 			error = 1;
 		if (error) {
 			lt_dlfree(handle);
-			free_vars(name, dir, dlname, old_name, libdir, deplibs);
-			return 0;
+			handle = 0;
+			free_vars(dlname, old_name, libdir, deplibs);
+			goto cleanup;
 		}
 		if (handle != newhandle) {
 			unload_deplibs(handle);
@@ -1362,9 +1392,8 @@ lt_dlopen (filename)
 		handle = (lt_dlhandle) lt_dlmalloc(sizeof(lt_dlhandle_t));
 		if (!handle) {
 			last_error = memory_error;
-			if (dir)
-				lt_dlfree(dir);
-			return 0;
+			/* handle is already set to 0 */
+			goto cleanup;
 		}
 		handle->usage = 0;
 		/* non-libtool modules don't have dependencies */
@@ -1385,9 +1414,8 @@ lt_dlopen (filename)
 #endif
 				))) {
 			lt_dlfree(handle);
-			if (dir)
-				lt_dlfree(dir);
-			return 0;
+			handle = 0;
+			goto cleanup;
 		}
 	}
 register_handle:
@@ -1400,11 +1428,14 @@ register_handle:
 		handle->name = name;
 		handle->next = handles;
 		handles = handle;
-	} else if (name)
-		lt_dlfree(name);
+		name = 0;	/* don't free this during `cleanup' */
+	}
+	last_error = saved_error;
+cleanup:
 	if (dir)
 		lt_dlfree(dir);
-	last_error = saved_error;
+	if (name)
+		lt_dlfree(name);
 	return handle;
 }
 

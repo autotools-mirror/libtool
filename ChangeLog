@@ -1,5 +1,15 @@
 2000-01-10  Gary V. Vaughan  <gary@oranda.demon.co.uk>
 
+	* libltdl/ltdl.h (LTDL_DIRSEP_CHAR): Leave undefined when
+	not compiling for a Windows target.
+	* libltdl/ltdl.c (canonicalize_path): New function to
+	ensure internal paths use '/' directory separators.
+	(find_file): use canonicalize_path.  Memory management
+	changed to cope.
+	(lt_dlopen): ditto.
+	(free_vars): Removed `dir' and `name', which are now handled
+	internally.
+
 	* libltdl/ltdl.h (LTDL_DIRSEP_CHAR): Define to '/' or '\\',
 	as suitable for the target host.
 	(LTDL_PATHSEP_CHAR): Similarly with ':' or ';'.

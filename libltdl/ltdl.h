@@ -68,12 +68,13 @@ Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 
 #ifdef WIN32
 #  ifndef __CYGWIN__
+/* LTDL_DIRSEP_CHAR is accepted *in addition* to '/' as a directory
+   separator when it is set. */
 #    define LTDL_DIRSEP_CHAR	'\\'
 #    define LTDL_PATHSEP_CHAR	';'
 #  endif
 #endif
-#ifndef LTDL_DIRSEP_CHAR
-#  define LTDL_DIRSEP_CHAR	'/'
+#ifndef LTDL_PATHSEP_CHAR
 #  define LTDL_PATHSEP_CHAR	':'
 #endif
 
