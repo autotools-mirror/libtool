@@ -1,5 +1,10 @@
 2003-11-06  Charles Wilson  <cwilson@ece.gatech.edu>
 
+	* ltmain.in (find_executable, check_executable) [cygwin*, mingw*]:
+	binary wrapper used with uninstalled executables breaks when
+	invoked via execlp/execvp (that is, via $PATH).  Handle that case.
+	(fnqualify): Subsumed into find_executable.
+
 	* m4/libtool.m4 (AC_LIBTOOL_PROG_LD_SHLIBS) [cygwin*, mingw*]:
 	when extracting symbols from an import lib (occurs if
 	--enable-shared --disable-static), the output of
