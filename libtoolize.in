@@ -53,6 +53,7 @@ copy=
 force=
 ltdl=
 ltdl_tar=
+configure_ac=
 status=0
 
 for arg
@@ -134,8 +135,12 @@ EOF
   esac
 done
 
-if test ! -f configure.in; then
-  echo "$progname: \`configure.in' does not exist" 1>&2
+if test -f configure.ac; then
+  configure_ac=configure.ac
+elif test -f configure.in; then
+  configure_ac=configure.in
+else
+  echo "$progname: \`configure.ac' does not exist" 1>&2
   echo "$help" 1>&2
   exit 1
 fi
@@ -184,12 +189,12 @@ else
 fi
 
 if test -z "$automake"; then
-  if egrep '^A[MC]_PROG_LIBTOOL' configure.in >/dev/null 2>&1; then :
+  if egrep '^A[MC]_PROG_LIBTOOL' $configure_ac >/dev/null 2>&1; then :
   else
-    echo "Remember to add \`AM_PROG_LIBTOOL' to \`configure.in'."
+    echo "Remember to add \`AM_PROG_LIBTOOL' to \`$configure_ac'."
   fi
 
-  if egrep '^AC_PROG_RANLIB' configure.in >/dev/null 2>&1; then
+  if egrep '^AC_PROG_RANLIB' $configure_ac >/dev/null 2>&1; then
     echo "Using \`AC_PROG_RANLIB' is rendered obsolete by \`AM_PROG_LIBTOOL'"
   fi
 
@@ -226,7 +231,7 @@ if test -z "$automake"; then
     echo "You should $updatemsg."
   fi
 
-  if grep '^AC_LIB_LTDL' configure.in >/dev/null 2>&1; then
+  if grep '^AC_LIB_LTDL' $configure_ac >/dev/null 2>&1; then
     if grep 'generated automatically by aclocal' aclocal.m4 >/dev/null 2>&1; then
       updatemsg="update your \`aclocal.m4' by running aclocal"
     else
