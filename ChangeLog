@@ -1,5 +1,9 @@
 1999-05-17  Gary V. Vaughan  <gary@oranda.demon.co.uk>
 
+	* ltconfig.in (beos*, deplibs_check_method): set to pass_all.  BeOS
+	is PIC by default.
+	Reported by "Shawn T . Amundson" <amundson@gimp.org>
+
 	* libltdl/configure.in: Fix test failures on AIX 4.3.2 by checking
 	for dlopen *with* -ldl first.
 	Reported by Greg Wooledge <ic5035%tss1crs.amgreetings.com@rose.amgreetings.com> 
