@@ -1,5 +1,7 @@
 2000-01-14  Gary V. Vaughan  <gary@oranda.demon.co.uk>
 
+	* README:  Some notes about libtool release numbers.
+
 	* mdemo/README: Explain the deliberate incompleteness of the
 	Windows port.
 	* mdemo/configure.in: Use AC_LIBTOOL_WIN32_DLL.
