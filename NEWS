@@ -9,6 +9,8 @@ New in 1.3b: 1999-??-??; CVS version 1.3a, Libtool team:
   directly to the compiler
 * New "-Wl,flag" and "-Xlinker flag" flags to pass flags
   directly to the linker
+* Support for installing stripped libraries using GNU strip (install -s).
+  Automake >= 1.5 will install stripped libraries with "make install-strip".
 * Support for linking DLLs on Win32
 * New `clean' mode to delete uninstalled files.
 * New demos and tests
