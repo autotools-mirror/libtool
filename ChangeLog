@@ -1,3 +1,9 @@
+2003-10-20  Gary V. Vaughan  <gary@gnu.org>
+
+	* bootstrap (reconfdirs): Overridable top dirs for bootstrap, for
+	those times when you don't want to wait for all of the test
+	directories to be rebootstrapped!
+
 2003-10-19  Kevin P. Fleming  <kpfleming@backtobasicsmgmt.com>
 	Charles Wilson <cygwin@cwilson.fastmail.fm>
 

@@ -17,6 +17,7 @@ EOF
 rm -rf `find . \( -name autom4te.cache -o -name libtool \) -print`
 
 fakes="config/ltmain.sh config/libtoolize libltdl/ltmain.sh"
+reconfdirs=${reconfdirs-. tests/*demo tests/*demo[0-9]}
 
 for file in $fakes; do
   cat > $file <<'EOF'
@@ -33,7 +34,7 @@ done
 LIBTOOLIZE=`pwd`/config/libtoolize
 export LIBTOOLIZE
 
-for sub in . tests/*demo tests/*demo[1-9]; do
+for sub in $reconfdirs; do
   autoreconf --force --verbose --install $sub
 done
 
