@@ -1,3 +1,8 @@
+2000-11-17  Gary V. Vaughan  <gvv@techie.com>
+
+	* ltdl.c: Reformatted.
+	* ltdl.h: ditto.
+	
 2000-11-11  Gary V. Vaughan  <gvv@techie.com>
 
 	* ltdl.m4, ltcf-c.sh, libtool.m4: Use $ac_ext and $ac_objext
