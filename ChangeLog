@@ -1,4 +1,7 @@
-2001-02-01  Gary V. Vaughan  <gvv@techie.com>
+2001-02-02  Gary V. Vaughan  <gvv@techie.com>
+
+	* libltdl/ltdl.c (load_deplibs): Make sure the depcount is reset,
+	even when deplibs are not used because of the patch below.
 
 	* ltdl.m4 (AC_LTDL_SYS_DLOPEN_DEPLIBS): If we know that the host
 	architecture automatically loads deplibs, then...

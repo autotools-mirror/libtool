@@ -1565,17 +1565,18 @@ load_deplibs(handle, deplibs)
      lt_dlhandle handle;
      char *deplibs;
 {
-  int	ret = 0;
-
 #if LTDL_DLOPEN_DEPLIBS
-
   char	*p, *save_search_path;
   int   depcount = 0;
   int	i;
   char	**names = 0;
+#endif
+  int	ret = 0;
 
-  ret = 1;
   handle->depcount = 0;
+
+#if LTDL_DLOPEN_DEPLIBS
+  ret = 1;
   if (!deplibs)
     {
       return 0;
