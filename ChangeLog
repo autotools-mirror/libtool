@@ -3,6 +3,9 @@
 	* libtoolize.in: Check configure.ac and prefer configure.ac to
 	configure.in.
 	
+	* libtoolize.in: change recommendation from AM_PROG_LIBTOOL to
+	AC_PROG_LIBTOOL.
+
 2001-03-22  Laurynas Biveinis  <lauras@softhome.net>
 
 	* ltcf-c.sh: Clear ac_cv_prog_cc_pic for DJGPP.  Do not add
