@@ -1,3 +1,7 @@
+1999-05-27  Pavel Roskin  <pavel_roskin@geocities.com>
+
+	* ltconfig.in (GNU Hurd, deplibs_check_method): Use pass_all.
+
 1999-05-27  Alexandre Oliva  <oliva@dcc.unicamp.br>, Olly Betts  <olly@muscat.co.uk>
 
 	* ltmain.in: Expand convenience libraries when creating reloadable 

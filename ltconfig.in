@@ -1823,6 +1823,7 @@ gnu*)
   version_type=linux
   library_names_spec='${libname}${release}.so$versuffix ${libname}.so'
   shlibpath_var=LD_LIBRARY_PATH
+  deplibs_check_method=pass_all
   ;;
 
 hpux9* | hpux10* | hpux11*)
