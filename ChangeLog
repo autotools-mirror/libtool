@@ -1,5 +1,7 @@
 2000-07-24  Nick Hudson <skrll@netbsd.org>
 
+	* ltconfig.in (linkopts): Replace with linker_flags.
+
 	* ltmain.in (ILD): Fix addition of deplibs in relink case.
 
 2000-07-18  H.J. Lu  <hjl@gnu.org>

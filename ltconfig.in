@@ -1333,7 +1333,7 @@ else
     hardcode_libdir_separator=:
     ;;
   rhapsody*)
-    archive_cmds='$CC -bundle -undefined suppress -o $lib $libobjs $deplibs $linkopts'
+    archive_cmds='$CC -bundle -undefined suppress -o $lib $libobjs $deplibs $linker_flags'
     hardcode_libdir_flags_spec='-L$libdir'
     hardcode_direct=yes
     hardcode_shlibpath_var=no
@@ -1367,7 +1367,7 @@ else
     if test "x$host_vendor" = xsequent; then
       # Use $CC to link under sequent, because it throws in some extra .o 
       # files that make .init and .fini sections work.
-      archive_cmds='$CC -G ${wl}-h $soname -o $lib $libobjs $deplibs $linkopts'
+      archive_cmds='$CC -G ${wl}-h $soname -o $lib $libobjs $deplibs $compiler_flags'
     else
       archive_cmds='$LD -assert pure-text -Bstatic -o $lib $libobjs $deplibs $linker_flags'
     fi
