@@ -40,20 +40,18 @@ dnl For the `lineno' script (which puts line numbers into `ltconfig').
 AC_PROG_AWK
 
 AC_ARG_ENABLE(ltdl-install,
-  [--disable-ltdl-install     do not install libltdl])
-if test x"$enable_ltdl_install" != xno; then
-  enable_ltdl_install=yes
-  ac_configure_args="$ac_configure_args --enable-ltdl-install"
+[  --disable-ltdl-install  do not install libltdl])
+if test x"$enable_ltdl_install" = xno; then
+  ac_configure_args="$ac_configure_args --enable-ltdl-install=no"
 fi
-dnl Since this is handled by m4, it cannot be made conditional :-(
 AC_CONFIG_SUBDIRS(libltdl)
 
 dnl all subdirectories that are configured on demand, but that must be
 dnl included in the distribution
-CONF_SUBDIRS="demo mdemo cdemo" # depdemo
+CONF_SUBDIRS="cdemo demo mdemo"
 AC_SUBST(CONF_SUBDIRS)
 
-ACINCLUDE_M4_LIST="${srcdir}/acinclude.m4 "
+ACINCLUDE_M4_LIST="${srcdir}/acinclude.m4 ${srcdir}/libltdl/acinclude.m4 "
 DIST_MAKEFILE_LIST=
 for dir in $CONF_SUBDIRS; do
   ACINCLUDE_M4_LIST="$ACINCLUDE_M4_LIST${srcdir}/$dir/acinclude.m4 "

@@ -833,6 +833,8 @@ find_module (handle, dir, libdir, dlname, old_name, installed)
 	const char *old_name;
 	int installed;
 {
+	int	error;
+	char	*filename;
 	/* try to open the old library first; if it was dlpreopened, 
 	   we want the preopened version of it, even if a dlopenable
 	   module is available */
@@ -842,10 +844,8 @@ find_module (handle, dir, libdir, dlname, old_name, installed)
 	if (dlname) {
 		/* try to open the installed module */
 		if (installed && libdir) {
-			int ret;
-			char *filename = (char*)
+			filename = (char*)
 				lt_dlmalloc(strlen(libdir)+1+strlen(dlname)+1);
-
 			if (!filename) {
 				last_error = memory_error;
 				return 1;
@@ -853,18 +853,16 @@ find_module (handle, dir, libdir, dlname, old_name, installed)
 			strcpy(filename, libdir);
 			strcat(filename, "/");
 			strcat(filename, dlname);
-			ret = tryall_dlopen(handle, filename) == 0;
+			error = tryall_dlopen(handle, filename) == 0;
 			lt_dlfree(filename);
-			if (ret)
+			if (error)
 				return 0;
 		}
 		/* try to open the not-installed module */
 		if (!installed) {
-			int ret;
-			char *filename = (char*)
+			filename = (char*)
 				lt_dlmalloc((dir ? strlen(dir) : 0)
 				       + strlen(objdir)	+ strlen(dlname) + 1);
-			
 			if (!filename) {
 				last_error = memory_error;
 				return 1;
@@ -876,16 +874,14 @@ find_module (handle, dir, libdir, dlname, old_name, installed)
 			strcat(filename, objdir);
 			strcat(filename, dlname);
 
-			ret = tryall_dlopen(handle, filename) == 0;
+			error = tryall_dlopen(handle, filename) == 0;
 			lt_dlfree(filename);
-			if (ret)
+			if (error)
 				return 0;
 		}
-		/* hmm, maybe it was moved to another directory.
-                   Should we really support this? */
+		/* hmm, maybe it was moved to another directory */
 		{
-			int ret;
-			char *filename = (char*)
+			filename = (char*)
 				lt_dlmalloc((dir ? strlen(dir) : 0)
 				       + strlen(dlname) + 1);
 			if (dir)
@@ -893,9 +889,9 @@ find_module (handle, dir, libdir, dlname, old_name, installed)
 			else
 				*filename = 0;
 			strcat(filename, dlname);
-			ret = tryall_dlopen(handle, filename) == 0;
+			error = tryall_dlopen(handle, filename) == 0;
 			lt_dlfree(filename);
-			if (ret)
+			if (error)
 				return 0;
 		}
 	}
@@ -999,23 +995,25 @@ unload_deplibs(handle)
 }
 
 static inline int
-trim (dest, s)
+trim (dest, str)
 	char **dest;
-	const char *s;
+	const char *str;
 {
+	/* remove the leading and trailing "'" from str 
+	   and store the result in dest */
 	char *tmp;
-	char *i = strrchr(s, '\'');
-	int len = strlen(s);
+	char *end = strrchr(str, '\'');
+	int len = strlen(str);
 
 	if (*dest)
 		lt_dlfree(*dest);
-	if (len > 3 && s[0] == '\'') {
-		tmp = (char*) lt_dlmalloc(i - s);
+	if (len > 3 && str[0] == '\'') {
+		tmp = (char*) lt_dlmalloc(end - str);
 		if (!tmp) {
 			last_error = memory_error;
 			return 1;
 		}
-		strncpy(tmp, &s[1], (i - s) - 1);
+		strncpy(tmp, &str[1], (end - str) - 1);
 		tmp[len-3] = '\0';
 		*dest = tmp;
 	} else
@@ -1092,6 +1090,7 @@ lt_dlopen (filename)
 		int	i;
 		char	*dlname = 0, *old_name = 0;
 		char	*libdir = 0, *deplibs = 0;
+		char	*line;
 		int	error = 0;
 		/* if we can't find the installed flag, it is probably an
 		   installed libtool archive, produced with an old version
@@ -1140,11 +1139,15 @@ lt_dlopen (filename)
 				lt_dlfree(dir);
 			return 0;
 		}
+		line = (char*) lt_dlmalloc(LTDL_FILENAME_MAX);
+		if (!line) {
+			fclose(file);
+			last_error = memory_error;
+			return 0;
+		}
 		/* read the .la file */
 		while (!feof(file)) {
-			char	line[LTDL_FILENAME_MAX];
-			
-			if (!fgets(line, sizeof(line), file))
+			if (!fgets(line, LTDL_FILENAME_MAX, file))
 				break;
 			if (line[0] == '\n' || line[0] == '#')
 				continue;
@@ -1185,6 +1188,7 @@ lt_dlopen (filename)
 				break;
 		}
 		fclose(file);
+		lt_dlfree(line);
 		/* allocate the handle */
 		handle = (lt_dlhandle) lt_dlmalloc(sizeof(lt_dlhandle_t));
 		if (!handle || error) {

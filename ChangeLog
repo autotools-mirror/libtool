@@ -1,3 +1,16 @@
+1999-03-10  Thomas Tanner  <tanner@gmx.de>
+
+	* configure.in: fix spacing for --disable-ltdl-install,
+	  always configure libltdl, add libltdl/acinclude.m4 to 
+	  ACINCLUDE_M4_LIST, disable installation of libltdl if necessary
+	* libltdl/Makefile.am: set version info for libltdl.la
+	* libltdl/configure.in: don't check whether 
+	  enable_ltdl_convenience/install was set so that libltdl
+	  can be used as independent package (libltdl.tar.gz) without
+	  the need to use --enable-ltdl*
+	* libltdl/ltdl.c: minor cleanups, allocate the line cache
+	  dynamically (lt_dlopen)
+	
 1999-03-10  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* libltdl/ltdl.c (lt_dlopen): some preprocessors choke if the `#'
