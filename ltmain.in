@@ -2024,11 +2024,11 @@ EOF
 	    fi
 	    if test "$pass" = scan; then
 	      deplibs="$deplib $deplibs"
-	      newlib_search_path="$newlib_search_path "`$echo "X$deplib" | $Xsed -e 's/^-L//'`
 	    else
 	      compile_deplibs="$deplib $compile_deplibs"
 	      finalize_deplibs="$deplib $finalize_deplibs"
 	    fi
+	    newlib_search_path="$newlib_search_path "`$echo "X$deplib" | $Xsed -e 's/^-L//'`
 	    ;;
 	  *)
 	    $echo "$modename: warning: \`-L' is ignored for archives/objects" 1>&2
