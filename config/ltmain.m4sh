@@ -1833,7 +1833,17 @@ func_mode_install ()
 	  # Install the shared library and build the symlinks.
 	  func_show_eval "$install_prog $dir/$srcname $destdir/$realname" \
 	      'exit $?'
-	  if test -n "$stripme" && test -n "$striplib"; then
+	  tstripme="$stripme"
+	  case $host_os in
+	  cygwin* | mingw* | pw32*)
+	    case $realname in
+	    *.dll.a)
+	      tstripme=""
+	      ;;
+	    esac
+	    ;;
+	  esac
+	  if test -n "$tstripme" && test -n "$striplib"; then
 	    func_show_eval "$striplib $destdir/$realname" 'exit $?'
 	  fi
 
