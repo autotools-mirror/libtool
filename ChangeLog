@@ -1,3 +1,14 @@
+1999-04-11 Thomas Tanner  <tanner@gmx.de>
+
+	* libltdl/configure.in: check for shl_load in libdld
+	* libltdl/ltdl.c (shl_close, shl_sym): use (shl_t *) instead of shl_t
+	* ltconfig.in (check for gcc): removed a bogus line,
+	  check for shl_load in libdld
+	* ltmain.in: added a warning to the header of the .la file
+	  to warn users against deleting the file,
+	  link shared against static libraries if
+	  deplibs_check_method == pass_all
+
 1999-04-10  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* libtool.m4 (AC_PROG_LD, AC_PROG_NM): When looking for programs,
