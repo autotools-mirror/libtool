@@ -56,10 +56,24 @@ flag = {
     arg_name  = mode;
     settable;
     descrip   = "ltmain's operational mode";
-    keyword   = clean, compile, execute, finish, install, link, uninstall,
-                echo;
+
+    /*
+     *  BEWARE:  these *must* enumerate to the values #define-d in the
+     *           lt_*.def files!!
+     */
+    keyword   =    /* 0 -> UNDEFINED */
+        clean,     /* 1 */
+        compile,   /* 2 */
+        execute,   /* 3 */
+        finish,    /* 4 */
+        install,   /* 5 */
+        link,      /* 6 */
+        uninstall, /* 7 */
+        echo;      /* 8 */
     doc =
-    "";
+    "This enumerates all of the libtool operational modes.\n"
+    "If this option is not specified, then this program tries to infer\n"
+    "it from the command name or the name of the file being operated on.";
 };
 
 flag = {
