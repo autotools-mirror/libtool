@@ -1,5 +1,7 @@
 1999-04-02  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* demo/Makefile.am (CLEANFILES): clean EXTRA_* from deplibs-check
+
 	* libtool.m4 (LDFLAGS, LIBS): pass them to ltconfig, for the tests 
 	that involve linking
 	* Makefile.am (LDFLAGS, LIBS, libtool, clibtool): ditto
