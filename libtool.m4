@@ -1396,6 +1396,12 @@ sysv4 | sysv4.2uw2* | sysv4.3* | sysv5*)
   case $host_vendor in
     sni)
       shlibpath_overrides_runpath=no
+      need_lib_prefix=no
+      export_dynamic_flag_spec='${wl}-Blargedynsym'
+      runpath_var=LD_RUN_PATH
+      ;;
+    siemens)
+      need_lib_prefix=no
       ;;
     motorola)
       need_lib_prefix=no
@@ -2027,6 +2033,9 @@ sysv4 | sysv4.2uw2* | sysv4.3* | sysv5*)
     lt_cv_file_magic_cmd='/bin/file'
     lt_cv_deplibs_check_method="file_magic ELF [[0-9]][[0-9]]*-bit [[LM]]SB dynamic lib"
     lt_cv_file_magic_test_file=/lib/libc.so
+    ;;
+  siemens)
+    lt_cv_deplibs_check_method=pass_all
     ;;
   esac
   ;;
@@ -4294,11 +4303,7 @@ AC_MSG_CHECKING([for $compiler option to produce PIC])
       ;;
 
     sysv4 | sysv4.2uw2* | sysv4.3* | sysv5*)
-      if test "x$host_vendor" = xsni; then
-	_LT_AC_TAGVAR(lt_prog_compiler_wl, $1)='-LD'
-      else
-	_LT_AC_TAGVAR(lt_prog_compiler_wl, $1)='-Wl,'
-      fi
+      _LT_AC_TAGVAR(lt_prog_compiler_wl, $1)='-Wl,'
       _LT_AC_TAGVAR(lt_prog_compiler_pic, $1)='-KPIC'
       _LT_AC_TAGVAR(lt_prog_compiler_static, $1)='-Bstatic'
       ;;
@@ -5021,13 +5026,23 @@ EOF
       ;;
 
     sysv4)
-      if test "x$host_vendor" = xsni; then
-	_LT_AC_TAGVAR(archive_cmds, $1)='$LD -G -Bsymbolic -h $soname -o $lib $libobjs $deplibs $linker_flags'
-	_LT_AC_TAGVAR(hardcode_direct, $1)=yes # is this really true???
-      else
-	_LT_AC_TAGVAR(archive_cmds, $1)='$LD -G -h $soname -o $lib $libobjs $deplibs $linker_flags'
-	_LT_AC_TAGVAR(hardcode_direct, $1)=no #Motorola manual says yes, but my tests say they lie
-      fi
+      case $host_vendor in
+	sni)
+	  _LT_AC_TAGVAR(archive_cmds, $1)='$LD -G -h $soname -o $lib $libobjs $deplibs $linker_flags'
+	  _LT_AC_TAGVAR(hardcode_direct, $1)=yes # is this really true???
+	;;
+	siemens)
+	  ## LD is ld it makes a PLAMLIB
+	  ## CC just makes a GrossModule.
+	  _LT_AC_TAGVAR(archive_cmds, $1)='$LD -G -o $lib $libobjs $deplibs $linker_flags'
+	  _LT_AC_TAGVAR(reload_cmds, $1)='$CC -r -o $output$reload_objs'
+	  _LT_AC_TAGVAR(hardcode_direct, $1)=no
+        ;;
+	motorola)
+	  _LT_AC_TAGVAR(archive_cmds, $1)='$LD -G -h $soname -o $lib $libobjs $deplibs $linker_flags'
+	  _LT_AC_TAGVAR(hardcode_direct, $1)=no #Motorola manual says yes, but my tests say they lie
+	;;
+      esac
       runpath_var='LD_RUN_PATH'
       _LT_AC_TAGVAR(hardcode_shlibpath_var, $1)=no
       ;;
