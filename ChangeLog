@@ -1,3 +1,8 @@
+2000-12-14  Tod Milam  <tmilam@traclabs.com>
+
+	* libltdl/ltdl.c (lt_dlexit): Reset the loaders value to zero when
+	the last module has been unloaded.
+	
 2000-12-14  Michael Schmitz  <mschmitz@iname.com>
 
 	* libtool.m4: Port to *-sni-sysv4 (Reliant Unix)

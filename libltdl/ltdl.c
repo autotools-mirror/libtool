@@ -1138,6 +1138,7 @@ lt_dlexit ()
 	  lt_dlfree (loader);
 	  loader = next;
 	}
+      loaders = 0;
     }
 
   return errors;
