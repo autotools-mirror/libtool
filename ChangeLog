@@ -1,3 +1,16 @@
+1998-11-24  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* doc/PLATFORMS: updated last-tested release for platforms I've
+	got access to
+
+	* THANKS: added Chris P. Ross
+
+1998-11-24  Chris P. Ross  <cross@eng.us.uu.net>
+
+	* ltconfig.in: added recognition of the dynamic linker on BSD/OS 4.x
+	* README: added BSD/OS 4.x to the list of supported platforms
+	* doc/PLATFORMS: added BSD/OS 4.x support for various host id's
+
 1998-11-24  David Heine  <dlheine@truffle.Stanford.EDU>
 
 	* ltmain.in (pass_all): actively pass the flags

@@ -1506,6 +1506,14 @@ amigaos*)
   finish_eval='for lib in `ls $libdir/*.ixlibrary 2>/dev/null`; do libname=`$echo "X$lib" | $Xsed -e '\''s%^.*/\([^/]*\)\.ixlibrary$%\1%'\''`; test $rm /sys/libs/${libname}_ixlibrary.a; $show "(cd /sys/libs && $LN_S $lib ${libname}_ixlibrary.a)"; (cd /sys/libs && $LN_S $lib ${libname}_ixlibrary.a) || exit 1; done'
   ;;
 
+bsdi4*)
+  version_type=linux
+  library_names_spec='${libname}.so.$major ${libname}.so'
+  soname_spec='${libname}.so'
+  finish_cmds='PATH="$PATH:/sbin" ldconfig $libdir'
+  shlibpath_var=LD_LIBRARY_PATH
+  ;;
+
 cygwin32* | mingw32*)
   version_type=windows
   if test "$with_gcc" = yes; then
