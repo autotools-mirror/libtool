@@ -10,7 +10,7 @@ TOINST=toinst
 AC_SUBST(TOINST)
 
 if test -z "$enable_ltdl_install$enable_ltdl_convenience"; then
-  AC_MSG_WARN([*** Neither AC_LIBLTDL_INSTALLABLE nor AC_LIBLTDL_CONVENIENCE wre used])
+  AC_MSG_WARN([*** Neither AC_LIBLTDL_INSTALLABLE nor AC_LIBLTDL_CONVENIENCE were used])
   AC_MSG_WARN([*** in configure.in; building convenience library for backward])
   AC_MSG_WARN([*** compatibility.  This is deprecated, and will not work in the future])
   enable_ltdl_convenience=yes

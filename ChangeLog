@@ -1,3 +1,8 @@
+1999-03-09  Thomas Tanner  <tanner@gmx.de>
+
+	* libltdl/ltdl.c (lt_dlopen): don't hardcode the length of the
+	  constant strings
+
 1999-03-09  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* Makefile.am (install-data-hook): install libltdl as a directory, 

@@ -1142,23 +1142,35 @@ lt_dlopen (filename)
 		}
 		/* read the .la file */
 		while (!feof(file)) {
+			#define STR_DLNAME	"dlname="
+			#define STR_OLD_LIBRARY	"old_library="
+			#define STR_LIBDIR	"libdir="
+			#define STR_DL_DEPLIBS	"dl_dependency_libs="
 			char	line[LTDL_FILENAME_MAX];
 			
 			if (!fgets(line, sizeof(line), file))
 				break;
 			if (line[0] == '\n' || line[0] == '#')
 				continue;
-			if (strncmp(line, "dlname=", 7) == 0)
-				error = trim(&dlname, &line[7]);
+			if (strncmp(line, STR_DLNAME,
+				sizeof(STR_DLNAME) - 1) == 0)
+				error = trim(&dlname,
+					&line[sizeof(STR_DLNAME) - 1]);
 			else
-			if (strncmp(line, "old_library=", 12) == 0)
-				error = trim(&old_name, &line[12]);
+			if (strncmp(line, STR_OLD_LIBRARY,
+				sizeof(STR_OLD_LIBRARY) - 1) == 0)
+				error = trim(&old_name,
+					&line[sizeof(STR_OLD_LIBRARY) - 1]);
 			else
-			if (strncmp(line, "libdir=", 7) == 0)
-				error = trim(&libdir, &line[7]);
+			if (strncmp(line, STR_LIBDIR,
+				sizeof(STR_LIBDIR) - 1) == 0)
+				error = trim(&libdir,
+					&line[sizeof(STR_LIBDIR) - 1]);
 			else
-			if (strncmp(line, "dl_dependency_libs=", 20) == 0)
-				error = trim(&deplibs, &line[20]);
+			if (strncmp(line, STR_DL_DEPLIBS,
+				sizeof(STR_DL_DEPLIBS) - 1) == 0)
+				error = trim(&deplibs,
+					&line[sizeof(STR_DL_DEPLIBS) - 1]);
 			else
 			if (strcmp(line, "installed=yes\n") == 0)
 				installed = 1;
