@@ -1,5 +1,7 @@
 1999-04-12  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* doc/libtool.texi (Invoking ltconfig): Document --cache-file.
+
 	* doc/libtool.texi (Invoking ltconfig): Document
 	--disable-fast-install, --enable-dlopen, --with-gnu-ld and
 	--disable-lock.
