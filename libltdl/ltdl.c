@@ -457,7 +457,9 @@ opendir (path)
   DIR *entry;
 
   assert(path != (char *) NULL);
-  (void) strncpy(file_specification,path,LT_FILENAME_MAX-1);
+  /* allow space for: path + '\\' '\\' '*' '.' '*' + '\0' */
+  (void) strncpy (file_specification, path, LT_FILENAME_MAX-6);
+  file_specification[LT_FILENAME_MAX-6] = LT_EOS_CHAR;
   (void) strcat(file_specification,"\\");
   entry = LT_DLMALLOC (DIR,sizeof(DIR));
   if (entry != (DIR *) 0)
@@ -498,6 +500,7 @@ static struct dirent *readdir(entry)
   entry->firsttime = FALSE;
   (void) strncpy(entry->file_info.d_name,entry->Win32FindData.cFileName,
     LT_FILENAME_MAX-1);
+  entry->file_info.d_name[LT_FILENAME_MAX - 1] = LT_EOS_CHAR;
   entry->file_info.d_namlen = strlen(entry->file_info.d_name);
   return(&entry->file_info);
 }
