@@ -785,8 +785,8 @@ AC_MSG_RESULT($objdir)
 
 ## FIXME: this should be a separate macro
 ##
-AC_ARG_WITH(pic, [dnl
-  --with-pic              try to use only PIC/non-PIC objects [default=use both]],
+AC_ARG_WITH(pic, 
+[  --with-pic              try to use only PIC/non-PIC objects [default=use both]],
 pic_mode="$withval", pic_mode=default)
 test -z "$pic_mode" && pic_mode=default
 
