@@ -1,3 +1,7 @@
+2002-04-24  Kevin Ryde  <user42@zip.com.au>
+
+	* libtool.m4 (AC_LIBTOOL_SYS_MAX_CMD_LEN): Use $build_os not $host_os.
+
 2002-04-14  Robert Boehne  <rboehne@gnu.org>
 
 	* doc/libtool.texi (C++ libraries): Finally updated to reflect
