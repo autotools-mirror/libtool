@@ -1,3 +1,13 @@
+2003-11-06  Charles Wilson  <cwilson@ece.gatech.edu>
+
+	* m4/libtool.m4 (AC_LIBTOOL_PROG_LD_SHLIBS) [cygwin*, mingw*]:
+	when extracting symbols from an import lib (occurs if
+	--enable-shared --disable-static), the output of
+	$global_symbol_pipe is not the same as 	when extracting from a
+	static library (the default case). Add extra filters to
+	$export_symbols_cmds to process this sort of output in addition to
+	'normal' static-lib output.
+
 2003-11-06  Charles Wilson  <cwilson@ece.gatech.edu>,
 	Gary V. Vaughan  <gary@gnu.org>
 
