@@ -1,3 +1,9 @@
+2004-12-09  Albert Chin-A-Young  <china@thewrittenword.com>
+
+	* ltmain.in: Preserve -model [arg] option, used
+	with the Tru64 UNIX C++ compiler. This option selects the
+	layout of C++ classes, name mangling, and exception handling.
+
 2004-12-01   Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
 	* ltmain.in (func_mode_link): Fix quoting bug in last checkin.

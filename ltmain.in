@@ -1487,6 +1487,16 @@ EOF
 	continue
 	;;
 
+      # Tru64 UNIX uses -model [arg] to determine the layout of C++
+      # classes, name mangling, and exception handling.
+      -model)
+	compile_command="$compile_command $arg"
+	compiler_flags="$compiler_flags $arg"
+	finalize_command="$finalize_command $arg"
+	prev=xcompiler
+	continue
+	;;
+
      -mt|-mthreads|-kthread|-Kthread|-pthread|-pthreads|--thread-safe)
 	deplibs="$deplibs $arg"
 	continue
