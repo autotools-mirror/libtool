@@ -1,3 +1,12 @@
+2001-06-30  Gary V. Vaughan  <gary@gnu.org>
+
+	* ltdl.m4 (AC_LTDL_DLLIB) [sco3.2*]: When searching for a dlopen
+	implementation, and adding `-ldl' has failed, try linking a call
+	to dlopen, #including dlfcn.h, and without -ldl.  On sco3.2 the
+	header files redefines the interface symbols to point at the
+	implementation symbols in libc.
+	Reported by "Golubev I. N." <gin@mo.msk.ru>
+
 2001-06-29  Tim Van Holder  <tim.van.holder@pandora.be>
 
 	General cleanup of autoconf-2.50 upgrade:
