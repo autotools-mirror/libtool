@@ -3483,8 +3483,34 @@ EOF
 	      if test "$status" -ne 0 && test ! -d "$xdir"; then
 		exit $status
 	      fi
+	      # We will extract separately just the conflicting names and we will no
+	      # longer touch any unique names. It is faster to leave these extract
+	      # automatically by $AR in one run.
 	      $show "(cd $xdir && $AR x $xabs)"
 	      $run eval "(cd \$xdir && $AR x \$xabs)" || exit $?
+	      if ($AR t "$xabs" | sort | sort -uc >/dev/null 2>&1); then
+		:
+	      else
+		$echo "$modename: warning: object name conflicts; renaming object files" 1>&2
+		$echo "$modename: warning: to ensure that they will not overwrite" 1>&2
+		$AR t "$xabs" | sort | uniq -cd | while read -r count name
+		do
+		  i=1
+		  while test "$i" -le "$count"
+		  do
+		   # Put our $i before any first dot (extension)
+		   # Never overwrite any file
+		   name_to="$name"
+		   while test "X$name_to" = "X$name" || test -f "$xdir/$name_to"
+		   do
+		     name_to=`$echo "X$name_to" | $Xsed -e "s/\([^.]*\)/\1-$i/"`
+		   done
+		   $show "(cd $xdir && $AR xN $i $xabs '$name' && $mv '$name' '$name_to')"
+		   $run eval "(cd \$xdir && $AR xN $i \$xabs '$name' && $mv '$name' '$name_to')" || exit $?
+		   i=`expr $i + 1`
+		  done
+		done
+	      fi
 
 	      libobjs="$libobjs "`find $xdir -name \*.$objext -print -o -name \*.lo -print | $NL2SP`
 	    done
@@ -3745,8 +3771,34 @@ EOF
 	    if test "$status" -ne 0 && test ! -d "$xdir"; then
 	      exit $status
 	    fi
+	    # We will extract separately just the conflicting names and we will no
+	    # longer touch any unique names. It is faster to leave these extract
+	    # automatically by $AR in one run.
 	    $show "(cd $xdir && $AR x $xabs)"
 	    $run eval "(cd \$xdir && $AR x \$xabs)" || exit $?
+	    if ($AR t "$xabs" | sort | sort -uc >/dev/null 2>&1); then
+	      :
+	    else
+	      $echo "$modename: warning: object name conflicts; renaming object files" 1>&2
+	      $echo "$modename: warning: to ensure that they will not overwrite" 1>&2
+	      $AR t "$xabs" | sort | uniq -cd | while read -r count name
+	      do
+		i=1
+		while test "$i" -le "$count"
+		do
+		 # Put our $i before any first dot (extension)
+		 # Never overwrite any file
+		 name_to="$name"
+		 while test "X$name_to" = "X$name" || test -f "$xdir/$name_to"
+		 do
+		   name_to=`$echo "X$name_to" | $Xsed -e "s/\([^.]*\)/\1-$i/"`
+		 done
+		 $show "(cd $xdir && $AR xN $i $xabs '$name' && $mv '$name' '$name_to')"
+		 $run eval "(cd \$xdir && $AR xN $i \$xabs '$name' && $mv '$name' '$name_to')" || exit $?
+		 i=`expr $i + 1`
+		done
+	      done
+	    fi
 
 	    reload_conv_objs="$reload_objs "`find $xdir -name \*.$objext -print -o -name \*.lo -print | $NL2SP`
 	  done
@@ -4518,8 +4570,34 @@ fi\
 	  if test "$status" -ne 0 && test ! -d "$xdir"; then
 	    exit $status
 	  fi
+	  # We will extract separately just the conflicting names and we will no
+	  # longer touch any unique names. It is faster to leave these extract
+	  # automatically by $AR in one run.
 	  $show "(cd $xdir && $AR x $xabs)"
 	  $run eval "(cd \$xdir && $AR x \$xabs)" || exit $?
+	  if ($AR t "$xabs" | sort | sort -uc >/dev/null 2>&1); then
+	    :
+	  else
+	    $echo "$modename: warning: object name conflicts; renaming object files" 1>&2
+	    $echo "$modename: warning: to ensure that they will not overwrite" 1>&2
+	    $AR t "$xabs" | sort | uniq -cd | while read -r count name
+	    do
+	      i=1
+	      while test "$i" -le "$count"
+	      do
+	       # Put our $i before any first dot (extension)
+	       # Never overwrite any file
+	       name_to="$name"
+	       while test "X$name_to" = "X$name" || test -f "$xdir/$name_to"
+	       do
+		 name_to=`$echo "X$name_to" | $Xsed -e "s/\([^.]*\)/\1-$i/"`
+	       done
+	       $show "(cd $xdir && $AR xN $i $xabs '$name' && $mv '$name' '$name_to')"
+	       $run eval "(cd \$xdir && $AR xN $i \$xabs '$name' && $mv '$name' '$name_to')" || exit $?
+	       i=`expr $i + 1`
+	      done
+	    done
+	  fi
 
 	  oldobjs="$oldobjs "`find $xdir -name \*.${objext} -print -o -name \*.lo -print | $NL2SP`
 	done
@@ -4574,7 +4652,11 @@ fi\
 	  done
 	  RANLIB=$save_RANLIB
 	  oldobjs=$objlist
-	  eval cmds=\"\$concat_cmds~$old_archive_cmds\"
+	  if test "X$oldobjs" = "X" ; then
+	    eval cmds=\"\$concat_cmds\"
+	  else
+	    eval cmds=\"\$concat_cmds~$old_archive_cmds\"
+	  fi
 	fi
       fi
       save_ifs="$IFS"; IFS='~'

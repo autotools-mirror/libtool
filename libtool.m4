@@ -1355,6 +1355,7 @@ irix5* | irix6* | nonstopux*)
   shlibpath_overrides_runpath=no
   sys_lib_search_path_spec="/usr/lib${libsuff} /lib${libsuff} /usr/local/lib${libsuff}"
   sys_lib_dlsearch_path_spec="/usr/lib${libsuff} /lib${libsuff}"
+  hardcode_into_libs=yes
   ;;
 
 # No shared lib support for Linux oldld, aout, or coff.
@@ -5286,6 +5287,7 @@ EOF
 	_LT_AC_TAGVAR(archive_cmds, $1)='$CC -shared $libobjs $deplibs $compiler_flags ${wl}-soname ${wl}$soname `test -n "$verstring" && echo ${wl}-set_version ${wl}$verstring` ${wl}-update_registry ${wl}${output_objdir}/so_locations -o $lib'
       else
 	_LT_AC_TAGVAR(archive_cmds, $1)='$LD -shared $libobjs $deplibs $linker_flags -soname $soname `test -n "$verstring" && echo -set_version $verstring` -update_registry ${output_objdir}/so_locations -o $lib'
+	_LT_AC_TAGVAR(hardcode_libdir_flag_spec_ld, $1)='-rpath $libdir'
       fi
       _LT_AC_TAGVAR(hardcode_libdir_flag_spec, $1)='${wl}-rpath ${wl}$libdir'
       _LT_AC_TAGVAR(hardcode_libdir_separator, $1)=:

@@ -1,3 +1,7 @@
+2003-01-28  Albert Chin-A-Young  <china@thewrittenword.com>
+
+	* libtool.m4: Hardcode library paths into libraries on IRIX.
+
 2003-01-18  Robert Boehne  <rboehne@gnu.org>
 
 	* libtool.m4 (AC_LIBTOOL_PROG_COMPILER_PIC): Don't add -DPIC
