@@ -1091,17 +1091,6 @@ cygwin* | mingw* | pw32*)
   yes,mingw*)
     library_names_spec='${libname}`echo ${release} | [sed -e 's/[.]/-/g']`${versuffix}.dll'
     sys_lib_search_path_spec=`$CC -print-search-dirs | grep "^libraries:" | sed -e "s/^libraries://" -e "s/$PATH_SEPARATOR/ /g"`
-    if test "_$PATH_SEPARATOR" = "_:" ; then
-      sys_lib_search_path_spec=`echo $sys_lib_search_path_spec | sed -e 's/:/ /g'`
-    elif test "_$PATH_SEPARATOR" = "_;" ; then
-      sys_lib_search_path_spec=`echo $sys_lib_search_path_spec | sed -e 's/;/ /g'`
-    else
-      if test "x$sys_lib_search_path_spec" != `echo x$sys_lib_search_path_spec | sed -e 's/;/ /'` ; then
-	AC_MSG_ERROR(PATH_SEPARATOR not set, but $CC -print-search-dirs contains semicolons)
-      elif test "x$sys_lib_search_path_spec" != `echo x$sys_lib_search_path_spec | sed -e 's/:/ /'` ; then
-	AC_MSG_ERROR(PATH_SEPARATOR not set, but $CC -print-search-dirs contains colons)
-      fi
-    fi
     ;;
   yes,pw32*)
     library_names_spec='`echo ${libname} | sed -e 's/^lib/pw/'``echo ${release} | sed -e 's/[.]/-/g'`${versuffix}.dll'
