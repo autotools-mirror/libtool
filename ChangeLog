@@ -1,3 +1,9 @@
+2005-01-29  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* libtool.m4 (AC_LIBTOOL_LANG_CXX_CONFIG, AC_LIBTOOL_PROG_LD_SHLIBS)
+	[linux]: Update for Intel Compiler icc/icpc/ifort: add -i_dynamic and
+	-nofor_main, if necessary.  Simplify logic somewhat.
+
 2005-01-29  Peter O'Gorman  <peter@pogma.com>
 
 	* AUTHORS, THANKS: Copy from cvs HEAD.
