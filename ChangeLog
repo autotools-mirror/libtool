@@ -1,3 +1,8 @@
+1999-03-14  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* ltmain.in (deplibs_check_method=none): discard -L and -R
+	switches when testing whether deplibs contains some library
+
 1999-03-14  Erez Zadok  <ezk@cs.columbia.edu>
 
 	* config.sub: recognize hppa2.0w, yet to be installed at GNU
