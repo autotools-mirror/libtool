@@ -1,5 +1,15 @@
 1999-03-10  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* libtool.m4 (AC_LIBTOOL_SETUP): new macro, that does all the
+	configure-work that AC_PROG_LIBTOOL used to do; add
+	--cache-file=$cache_file to libtool_flags
+	(AC_PROG_LIBTOOL): call AC_LIBTOOL_SETUP, save the cache, run
+	ltconfig and reload the cache
+	* configure.in: run AC_LIBTOOL_SETUP, then set LIBTOOL_FLAGS to
+	libtool_flags
+	* ltconfig.in: support --cache-file switch.  If it is used, load
+	the cache in the beginning and save it just before terminating
+
 	* tests/Makefile.am (TESTS): run demo-nofast before demo-shared
 
 	* configure.in: create ltconfig and ltmain.sh at the end of

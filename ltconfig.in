@@ -194,6 +194,7 @@ with_gnu_ld=no
 need_locks=yes
 objext=o
 libext=a
+cache_file=
 
 old_AR="$AR"
 old_CC="$CC"
@@ -245,6 +246,7 @@ Generate a system-specific libtool script.
     --with-gcc             assume that the GNU C compiler will be used
     --with-gnu-ld          assume that the C compiler uses the GNU linker
     --disable-lock         disable file locking
+    --cache-file=FILE      configure cache file
 
 LTMAIN is the \`ltmain.sh' shell script fragment or \`ltmain.c' program
 that provides basic libtool functionality.
@@ -285,6 +287,8 @@ EOM
   --with-gnu-ld) with_gnu_ld=yes ;;
 
   --disable-lock) need_locks=no ;;
+
+  --cache-file=*) cache_file="$optarg" ;;
 
   -*)
     echo "$progname: unrecognized option \`$option'" 1>&2
@@ -355,6 +359,11 @@ exec 5>>./config.log
 # e.g. LANG=C (notably SCO).
 if test "${LC_ALL+set}" = set; then LC_ALL=C; export LC_ALL; fi
 if test "${LANG+set}"   = set; then LANG=C;   export LANG;   fi
+
+if test -n "$cache_file" && test -r "$cache_file"; then
+  echo "loading cache $cache_file within ltconfig"
+  . $cache_file
+fi
 
 if (echo "testing\c"; echo 1,2,3) | grep c >/dev/null; then
   # Stardent Vistra SVR4 grep lacks -e, says ghazi@caip.rutgers.edu.
@@ -2240,6 +2249,58 @@ EOF
   echo "FIXME: would compile $ltmain"
   ;;
 esac
+
+test -n "$cache_file" || exit 0
+
+# AC_CACHE_SAVE
+trap '' 1 2 15
+cat > confcache <<\EOF
+# This file is a shell script that caches the results of configure
+# tests run on this system so they can be shared between configure
+# scripts and configure runs.  It is not useful on other systems.
+# If it contains results you don't want to keep, you may remove or edit it.
+#
+# By default, configure uses ./config.cache as the cache file,
+# creating it if it does not exist already.  You can give configure
+# the --cache-file=FILE option to use a different cache file; that is
+# what configure does when it calls configure scripts in
+# subdirectories, so they share the cache.
+# Giving --cache-file=/dev/null disables caching, for debugging configure.
+# config.status only pays attention to the cache file if you give it the
+# --recheck option to rerun configure.
+#
+EOF
+# The following way of writing the cache mishandles newlines in values,
+# but we know of no workaround that is simple, portable, and efficient.
+# So, don't put newlines in cache variables' values.
+# Ultrix sh set writes to stderr and can't be redirected directly,
+# and sets the high bit in the cache file unless we assign to the vars.
+(set) 2>&1 |
+  case `(ac_space=' '; set | grep ac_space) 2>&1` in
+  *ac_space=\ *)
+    # `set' does not quote correctly, so add quotes (double-quote substitution
+    # turns \\\\ into \\, and sed turns \\ into \).
+    sed -n \
+      -e "s/'/'\\\\''/g" \
+      -e "s/^\\([a-zA-Z0-9_]*_cv_[a-zA-Z0-9_]*\\)=\\(.*\\)/\\1=\${\\1='\\2'}/p"
+    ;;
+  *)
+    # `set' quotes correctly as required by POSIX, so do not add quotes.
+    sed -n -e 's/^\([a-zA-Z0-9_]*_cv_[a-zA-Z0-9_]*\)=\(.*\)/\1=${\1=\2}/p'
+    ;;
+  esac >> confcache
+if cmp -s $cache_file confcache; then
+  :
+else
+  if test -w $cache_file; then
+    echo "updating cache $cache_file"
+    cat confcache > $cache_file
+  else
+    echo "not updating unwritable cache $cache_file"
+  fi
+fi
+rm -f confcache
+
 exit 0
 
 # Local Variables:
