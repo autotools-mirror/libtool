@@ -1,7 +1,7 @@
 #! /bin/sh
 
 # ltconfig - Create a system-specific libtool.
-# Copyright (C) 1996-1999 Free Software Foundation, Inc.
+# Copyright (C) 1996-2000 Free Software Foundation, Inc.
 # Originally by Gordon Matzigkeit <gord@gnu.ai.mit.edu>, 1996
 #
 # This file is free software; you can redistribute it and/or modify it
@@ -492,15 +492,15 @@ else
   ac_tool_prefix=
 fi
 
+host_cpu=`echo $host | sed 's/^\([^-]*\)-\([^-]*\)-\(.*\)$/\1/'`
+host_vendor=`echo $host | sed 's/^\([^-]*\)-\([^-]*\)-\(.*\)$/\2/'`
+host_os=`echo $host | sed 's/^\([^-]*\)-\([^-]*\)-\(.*\)$/\3/'`
+
 # Transform linux* to *-*-linux-gnu*, to support old configure scripts.
 case "$host_os" in
 linux-gnu*) ;;
 linux*) host=`echo $host | sed 's/^\(.*-.*-linux\)\(.*\)$/\1-gnu\2/'`
 esac
-
-host_cpu=`echo $host | sed 's/^\([^-]*\)-\([^-]*\)-\(.*\)$/\1/'`
-host_vendor=`echo $host | sed 's/^\([^-]*\)-\([^-]*\)-\(.*\)$/\2/'`
-host_os=`echo $host | sed 's/^\([^-]*\)-\([^-]*\)-\(.*\)$/\3/'`
 
 case "$host_os" in
 aix3*)
@@ -1587,6 +1587,7 @@ gnu*)
   library_names_spec='${libname}${release}.so$versuffix ${libname}${release}.so${major} ${libname}.so'
   soname_spec='${libname}${release}.so$major'
   shlibpath_var=LD_LIBRARY_PATH
+  hardcode_into_libs=yes
   ;;
 
 hpux9* | hpux10* | hpux11*)
@@ -1647,7 +1648,7 @@ linux-gnu*)
   # This implies no fast_install, which is unacceptable.
   # Some rework will be needed to allow for fast_install
   # before this can be enabled.
-  # hardcode_into_libs=yes
+  hardcode_into_libs=yes
 
   if test -f /lib/ld.so.1; then
     dynamic_linker='GNU ld.so'
@@ -1718,6 +1719,7 @@ solaris*)
   soname_spec='${libname}${release}.so$major'
   shlibpath_var=LD_LIBRARY_PATH
   shlibpath_overrides_runpath=yes
+  hardcode_into_libs=yes
   # ldd complains unless libraries are executable
   postinstall_cmds='chmod +x $lib'
   ;;
@@ -1990,7 +1992,7 @@ test "$enable_shared" = yes || enable_static=yes
 
 echo "checking whether to build static libraries... $enable_static" 1>&6
 
-if test "$hardcode_action" = relink || test "$hardcode_into_libs" = yes; then
+if test "$hardcode_action" = relink || test "$hardcode_into_libs" = all; then
   # Fast installation is not supported
   enable_fast_install=no
 elif test "$shlibpath_overrides_runpath" = yes ||
@@ -2516,7 +2518,7 @@ case "$ltmain" in
 # Generated automatically by $PROGRAM (GNU $PACKAGE $VERSION$TIMESTAMP)
 # NOTE: Changes made to this file will be lost: look at ltconfig or ltmain.sh.
 #
-# Copyright (C) 1996-1999 Free Software Foundation, Inc.
+# Copyright (C) 1996-2000 Free Software Foundation, Inc.
 # Originally by Gordon Matzigkeit <gord@gnu.ai.mit.edu>, 1996
 #
 # This program is free software; you can redistribute it and/or modify
@@ -2872,7 +2874,7 @@ EOF
       # on Windows for dlls which lack them. Don't remove nor modify the
       # starting and closing comments
 # /* impgen.c starts here */
-# /*   Copyright (C) 1999 Free Software Foundation, Inc.
+# /*   Copyright (C) 1999-2000 Free Software Foundation, Inc.
 # 
 #  This file is part of GNU libtool.
 # 

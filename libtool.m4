@@ -1,5 +1,5 @@
 ## libtool.m4 - Configure libtool for the target system. -*-Shell-script-*-
-## Copyright (C) 1996-1999 Free Software Foundation, Inc.
+## Copyright (C) 1996-2000 Free Software Foundation, Inc.
 ## Originally by Gordon Matzigkeit <gord@gnu.ai.mit.edu>, 1996
 ##
 ## This program is free software; you can redistribute it and/or modify

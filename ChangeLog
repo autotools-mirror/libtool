@@ -1,3 +1,37 @@
+2000-01-12  Thomas Tanner  <tanner@ffii.org>
+
+	* update all copyright notices to 2000
+	
+	* doc/libtool.texi (using libltdl): document new lt_dlinfo struct,
+	  replace NULL with @code{NULL}, document lt_dlsetdata(),
+	  lt_dlgetdata() and lt_dlgetinfo()
+	* libltdl/Makefile.am: increment interface version number
+	* libltdl/configure.in: set version number to 1.1
+	* libltdl/ltdl.c: make some variables public by moving them
+	  to the info struct, add support for application specific data
+	  within module handles, new lt_dlsetdata(), lt_dlgetdata() and
+	  lt_dlgetinfo() functions,
+	  fix memory leaks, minor cleanups
+	* libltdl/ltdl.h: ditto
+	* mdemo/main.c: demonstrate use of lt_dlgetinfo,
+	  improved handling of errors
+	
+	* ltconfig.in: set hardcode_into_libs = yes for GNU/Hurd, Linux
+	  and Solaris, only hardcode *all* run-paths if hardcode_into_libs
+	  is set to 'all', otherwise hardcode only user-specified rpaths
+	  into libraries
+	* ltmain.in: minor cleanups, we don't need to add user-specified
+	  rpaths to compile_rpath, finalize_rpath is sufficient
+
+	* ltconfig.in: transform linux* -> *linux-gnu* _after_ host_os has
+	  been set! (reported by Bruno Haible <haible@ilog.fr>)
+	
+	* configure.in: AC_SUBST reload_flag, deplibs_check_method
+	  and file_magic_cmd
+	
+	* README: use 'libtool --version' instead of 'ltconfig --version'
+	  (suggested by Francios Pinard <pinard@iro.umontreal.ca>
+
 2000-01-10  Gary V. Vaughan  <gary@oranda.demon.co.uk>
 
 	* libltdl/ltdl.h (LTDL_DIRSEP_CHAR): Leave undefined when

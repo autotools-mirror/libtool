@@ -1,5 +1,5 @@
 /* ltdl.h -- generic dlopen functions
-   Copyright (C) 1998-1999 Free Software Foundation, Inc.
+   Copyright (C) 1998-2000 Free Software Foundation, Inc.
    Originally by Thomas Tanner <tanner@ffii.org>
    This file is part of GNU Libtool.
 
@@ -107,6 +107,12 @@ typedef struct {
 	lt_ptr_t address;
 } lt_dlsymlist;
 
+typedef	struct {
+	char	*filename;	/* file name */
+	char	*name;		/* module name */
+	int	ref_count;	/* reference count */
+} lt_dlinfo;
+
 __BEGIN_DECLS
 extern int lt_dlinit LTDL_PARAMS((void));
 extern int lt_dlpreload LTDL_PARAMS((const lt_dlsymlist *preloaded));
@@ -120,6 +126,9 @@ extern const char *lt_dlerror LTDL_PARAMS((void));
 extern int lt_dladdsearchdir LTDL_PARAMS((const char *search_dir));
 extern int lt_dlsetsearchpath LTDL_PARAMS((const char *search_path));
 extern const char *lt_dlgetsearchpath LTDL_PARAMS((void));
+extern int lt_dlsetdata LTDL_PARAMS((lt_dlhandle handle, lt_ptr_t data));
+extern lt_ptr_t lt_dlgetdata LTDL_PARAMS((lt_dlhandle handle));
+extern const lt_dlinfo *lt_dlgetinfo LTDL_PARAMS((lt_dlhandle handle));
 
 LTDL_SCOPE const lt_dlsymlist lt_preloaded_symbols[];
 #define LTDL_SET_PRELOADED_SYMBOLS() lt_dlpreload_default(lt_preloaded_symbols)

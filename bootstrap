@@ -18,7 +18,7 @@ for sub in libltdl demo depdemo mdemo cdemo; do
   cd $sub
   rm -f acinclude.m4
   cat ../libtool.m4 > acinclude.m4
-  case "$sub" in libltdl) cat ../ltdl.m4 >> acinclude.m4 ;; esac
+  test "$sub" = libltdl && cat ../ltdl.m4 >> acinclude.m4
   aclocal
   test "$sub" = libltdl && autoheader
   automake --gnits --add-missing

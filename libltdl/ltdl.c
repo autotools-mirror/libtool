@@ -1,5 +1,5 @@
 /* ltdl.c -- system independent dlopen wrapper
-   Copyright (C) 1998-1999 Free Software Foundation, Inc.
+   Copyright (C) 1998-2000 Free Software Foundation, Inc.
    Originally by Thomas Tanner <tanner@ffii.org>
    This file is part of GNU Libtool.
 
@@ -129,13 +129,12 @@ typedef struct lt_dltype_t {
 typedef	struct lt_dlhandle_t {
 	struct lt_dlhandle_t *next;
 	lt_dltype_t *type;	/* dlopening interface */
-	char	*filename;	/* file name */
-	char	*name;		/* module name */
-	int	usage;		/* usage */
+	lt_dlinfo info;
 	int	depcount;	/* number of dependencies */
 	lt_dlhandle *deplibs;	/* dependencies */
 	lt_ptr_t handle;	/* system handle */
 	lt_ptr_t system;	/* system specific data */
+	lt_ptr_t app_private;	/* application private data */
 } lt_dlhandle_t;
 
 #undef strdup
@@ -923,36 +922,37 @@ tryall_dlopen (handle, filename)
 	/* check whether the module was already opened */
 	cur = handles;
 	while (cur) {
-		if (!cur->filename && !filename)
+		/* try to dlopen the program itself? */
+		if (!cur->info.filename && !filename)
 			break;
-		if (cur->filename && filename && 
-		    strcmp(cur->filename, filename) == 0)
+		if (cur->info.filename && filename && 
+		    strcmp(cur->info.filename, filename) == 0)
 			break;
 		cur = cur->next;
 	}
 	if (cur) {
-		cur->usage++;
+		cur->info.ref_count++;
 		*handle = cur;
 		return 0;
 	}
 	
 	cur = *handle;
 	if (filename) {
-		cur->filename = strdup(filename);
-		if (!cur->filename) {
+		cur->info.filename = strdup(filename);
+		if (!cur->info.filename) {
 			last_error = memory_error;
 			return 1;
 		}
 	} else
-		cur->filename = 0;
+		cur->info.filename = 0;
 	while (type) {
 		if (type->lib_open(cur, filename) == 0)
 			break;
 		type = type->next;
 	}
 	if (!type) {
-		if (cur->filename)
-			lt_dlfree(cur->filename);
+		if (cur->info.filename)
+			lt_dlfree(cur->info.filename);
 		return 1;
 	}
 	cur->type = type;
@@ -987,9 +987,9 @@ find_module (handle, dir, libdir, dlname, old_name, installed)
 				return 1;
 			}
 			sprintf (filename, "%s/%s", libdir, dlname);
-			error = tryall_dlopen(handle, filename) == 0;
+			error = tryall_dlopen(handle, filename) != 0;
 			lt_dlfree(filename);
-			if (error)
+			if (!error)
 				return 0;
 		}
 		/* try to open the not-installed module */
@@ -1008,12 +1008,12 @@ find_module (handle, dir, libdir, dlname, old_name, installed)
 			strcat(filename, objdir);
 			strcat(filename, dlname);
 
-			error = tryall_dlopen(handle, filename) == 0;
+			error = tryall_dlopen(handle, filename) != 0;
 			lt_dlfree(filename);
-			if (error)
+			if (!error)
 				return 0;
 		}
-		/* hmm, maybe it was moved to another directory */
+		/* maybe it was moved to another directory */
 		{
 			filename = (char*)
 				lt_dlmalloc((dir ? strlen(dir) : 0)
@@ -1023,9 +1023,9 @@ find_module (handle, dir, libdir, dlname, old_name, installed)
 			else
 				*filename = 0;
 			strcat(filename, dlname);
-			error = tryall_dlopen(handle, filename) == 0;
+			error = tryall_dlopen(handle, filename) != 0;
 			lt_dlfree(filename);
-			if (error)
+			if (!error)
 				return 0;
 		}
 	}
@@ -1212,7 +1212,7 @@ lt_dlopen (filename)
 	lt_dlhandle handle = 0, newhandle;
 	const char *ext;
 	const char *saved_error = last_error;
-	char	*basename = 0, *dir = 0, *name = 0;
+	char	*canonical = 0, *basename = 0, *dir = 0, *name = 0;
 	
 	if (!filename) {
 		handle = (lt_dlhandle) lt_dlmalloc(sizeof(lt_dlhandle_t));
@@ -1220,7 +1220,7 @@ lt_dlopen (filename)
 			last_error = memory_error;
 			return 0;
 		}
-		handle->usage = 0;
+		handle->info.ref_count = 0;
 		handle->depcount = 0;
 		handle->deplibs = 0;
 		newhandle = handle;
@@ -1230,28 +1230,26 @@ lt_dlopen (filename)
 		}
 		goto register_handle;
 	}
-	{
-		char *canonical = canonicalize_path (filename);
-		if (!canonical) {
-			last_error = memory_error;
-			if (handle)
-				lt_dlfree(handle);
-			return 0;
-		}
-		basename = strrchr(canonical, '/');
-		if (basename) {
-			basename++;
-			dir = (char*) lt_dlmalloc(basename - canonical + 1);
-			if (!dir) {
-				last_error = memory_error;
-				handle = 0;
-				goto cleanup;
-			}
-			strncpy(dir, canonical, basename - canonical);
-			dir[basename - canonical] = '\0';
-		} else
-			basename = canonical;
+	canonical = canonicalize_path (filename);
+	if (!canonical) {
+		last_error = memory_error;
+		if (handle)
+			lt_dlfree(handle);
+		return 0;
 	}
+	basename = strrchr(canonical, '/');
+	if (basename) {
+		basename++;
+		dir = (char*) lt_dlmalloc(basename - canonical + 1);
+		if (!dir) {
+			last_error = memory_error;
+			handle = 0;
+			goto cleanup;
+		}
+		strncpy(dir, canonical, basename - canonical);
+		dir[basename - canonical] = '\0';
+	} else
+		basename = canonical;
 	/* check whether we open a libtool module (.la extension) */
 	ext = strrchr(basename, '.');
 	if (ext && strcmp(ext, ".la") == 0) {
@@ -1367,7 +1365,7 @@ lt_dlopen (filename)
 			/* handle is already set to 0 */
 			goto cleanup;
 		}
-		handle->usage = 0;
+		handle->info.ref_count = 0;
 		if (load_deplibs(handle, deplibs) == 0) {
 			newhandle = handle;
 			/* find_module may replace newhandle */
@@ -1378,15 +1376,14 @@ lt_dlopen (filename)
 			}
 		} else
 			error = 1;
+		free_vars(dlname, old_name, libdir, deplibs);
 		if (error) {
 			lt_dlfree(handle);
 			handle = 0;
-			free_vars(dlname, old_name, libdir, deplibs);
 			goto cleanup;
 		}
-		if (handle != newhandle) {
+		if (handle != newhandle)
 			unload_deplibs(handle);
-		}
 	} else {
 		/* not a libtool module */
 		handle = (lt_dlhandle) lt_dlmalloc(sizeof(lt_dlhandle_t));
@@ -1395,7 +1392,7 @@ lt_dlopen (filename)
 			/* handle is already set to 0 */
 			goto cleanup;
 		}
-		handle->usage = 0;
+		handle->info.ref_count = 0;
 		/* non-libtool modules don't have dependencies */
 		handle->depcount = 0;
 		handle->deplibs = 0;
@@ -1423,9 +1420,10 @@ register_handle:
 		lt_dlfree(handle);
 		handle = newhandle;
 	}
-	if (!handle->usage) {
-		handle->usage = 1;
-		handle->name = name;
+	if (!handle->info.ref_count) {
+		handle->info.ref_count = 1;
+		handle->app_private = 0;
+		handle->info.name = name;
 		handle->next = handles;
 		handles = handle;
 		name = 0;	/* don't free this during `cleanup' */
@@ -1436,6 +1434,8 @@ cleanup:
 		lt_dlfree(dir);
 	if (name)
 		lt_dlfree(name);
+	if (canonical)
+		lt_dlfree(canonical);
 	return handle;
 }
 
@@ -1514,8 +1514,8 @@ lt_dlclose (handle)
 		last_error = invalid_handle_error;
 		return 1;
 	}
-	handle->usage--;
-	if (!handle->usage) {
+	handle->info.ref_count--;
+	if (!handle->info.ref_count) {
 		int	error;
 	
 		if (handle != handles)
@@ -1524,10 +1524,10 @@ lt_dlclose (handle)
 			handles = handle->next;
 		error = handle->type->lib_close(handle);
 		error += unload_deplibs(handle);
-		if (handle->filename)
-			lt_dlfree(handle->filename);
-		if (handle->name)
-			lt_dlfree(handle->name);
+		if (handle->info.filename)
+			lt_dlfree(handle->info.filename);
+		if (handle->info.name)
+			lt_dlfree(handle->info.name);
 		lt_dlfree(handle);
 		return error;
 	}
@@ -1555,8 +1555,8 @@ lt_dlsym (handle, symbol)
 	lensym = strlen(symbol);
 	if (handle->type->sym_prefix)
 		lensym += strlen(handle->type->sym_prefix);
-	if (handle->name)
-		lensym += strlen(handle->name);
+	if (handle->info.name)
+		lensym += strlen(handle->info.name);
 	if (lensym + LTDL_SYMBOL_OVERHEAD < LTDL_SYMBOL_LENGTH)
 		sym = lsym;
 	else
@@ -1565,15 +1565,15 @@ lt_dlsym (handle, symbol)
 		last_error = buffer_overflow_error;
 		return 0;
 	}
-	if (handle->name) {
+	if (handle->info.name) {
 		const char *saved_error = last_error;
 		
 		/* this is a libtool module */
 		if (handle->type->sym_prefix) {
 			strcpy(sym, handle->type->sym_prefix);
-			strcat(sym, handle->name);
+			strcat(sym, handle->info.name);
 		} else
-			strcpy(sym, handle->name);
+			strcpy(sym, handle->info.name);
 		strcat(sym, "_LTX_");
 		strcat(sym, symbol);
 		/* try "modulename_LTX_symbol" */
@@ -1653,4 +1653,39 @@ const char *
 lt_dlgetsearchpath LTDL_PARAMS((void))
 {
 	return user_search_path;
+}
+
+int
+lt_dlsetdata (handle, data)
+	lt_dlhandle handle;
+	lt_ptr_t data;
+{
+	if (!handle) {
+		last_error = invalid_handle_error;
+		return 1;
+	}
+	handle->app_private = data;
+	return 0;
+}
+
+lt_ptr_t
+lt_dlgetdata (handle)
+	lt_dlhandle handle;
+{
+	if (!handle) {
+		last_error = invalid_handle_error;
+		return 0;
+	}
+	return handle->app_private;
+}
+
+const lt_dlinfo *
+lt_dlgetinfo (handle)
+	lt_dlhandle handle;
+{
+	if (!handle) {
+		last_error = invalid_handle_error;
+		return 0;
+	}
+	return &(handle->info);
 }

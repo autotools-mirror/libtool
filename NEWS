@@ -1,6 +1,6 @@
 NEWS - list of user-visible changes between releases of GNU Libtool
 
-New in 1.3d: 1999-??-??; CVS version 1.3c, Libtool team:
+New in 1.3d: 2000-??-??; CVS version 1.3c, Libtool team:
 * libltdl can now be built as a dll with win32.
 * m4 macros needed to configure libltdl split out into libltdl/ltdl.m4.
 * Start of support code for cross-compiling to win32.

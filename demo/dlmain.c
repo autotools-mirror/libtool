@@ -1,5 +1,5 @@
 /* dlmain.c -- hello test program that uses simulated dynamic linking
-   Copyright (C) 1996-1999 Free Software Foundation, Inc.
+   Copyright (C) 1996-2000 Free Software Foundation, Inc.
    This file is part of GNU Libtool.
 
 This program is free software; you can redistribute it and/or modify

@@ -1,7 +1,7 @@
 # ltmain.sh - Provide generalized library-building support services.
 # NOTE: Changing this file will not affect anything until you rerun ltconfig.
 #
-# Copyright (C) 1996-1999 Free Software Foundation, Inc.
+# Copyright (C) 1996-2000 Free Software Foundation, Inc.
 # Originally by Gordon Matzigkeit <gord@gnu.ai.mit.edu>, 1996
 #
 # This program is free software; you can redistribute it and/or modify
@@ -694,8 +694,6 @@ compiler."
   # libtool link mode
   link | relink)
     modename="$modename: link"
-    relink=no
-    test "$mode" = "relink" && relink=yes
     case "$host" in
     *-*-cygwin* | *-*-mingw* | *-*-os2*)
       # It is impossible to link a dll without this setting, and
@@ -1640,7 +1638,7 @@ compiler."
 	fi
       fi
 
-      if test "$relink" = no; then
+      if test "$mode" != relink; then
 	# Remove our outputs.
 	$show "${rm}r $output_objdir/$outputname $output_objdir/$libname.* $output_objdir/${libname}${release}.*"
 	$run ${rm}r $output_objdir/$outputname $output_objdir/$libname.* $output_objdir/${libname}${release}.*
@@ -1784,7 +1782,7 @@ compiler."
 	if test -n "$library_names" &&
 	   { test "$prefer_static_libs" = no || test -z "$old_library"; }; then
 	  # This is a shared library
-	  if test "$hardcode_into_libs" = yes; then
+	  if test "$hardcode_into_libs" = all; then
 	    # Hardcode the library path.
 	    # Skip directories that are in the system default run-time
 	    # search path.
@@ -1857,7 +1855,7 @@ compiler."
 	  add_dir=
 	  add_shlibpath=
 	  add_name=no
-	  if test "$relink" = no; then
+	  if test "$mode" != relink; then
 	    lib_linked=yes
 	    case "$hardcode_action" in
 	    immediate | unsupported)
@@ -1952,7 +1950,9 @@ compiler."
 	  fi
 	fi
 
-	if test -n "$dependency_libs"; then
+	if test -n "$dependency_libs" &&
+	   { test "$hardcode_into_libs" = no || test $build_old_libs = yes ||
+	     test $link_static = yes; }; then
 	  # Extract -R from dependency_libs
 	  temp_deplibs=
 	  for libdir in $dependency_libs; do
@@ -2039,16 +2039,14 @@ compiler."
 	temp_xrpath=
 	for libdir in $xrpath; do
 	  temp_xrpath="$temp_xrpath -R$libdir"
-	  case "$compile_rpath " in
-	  *" $libdir "*) ;;
-	  *) compile_rpath="$compile_rpath $libdir" ;;
-	  esac
 	  case "$finalize_rpath " in
 	  *" $libdir "*) ;;
 	  *) finalize_rpath="$finalize_rpath $libdir" ;;
 	  esac
 	done
-	dependency_libs="$temp_xrpath $dependency_libs"
+	if test "$hardcode_into_libs" = no || test $build_old_libs = yes; then
+	  dependency_libs="$temp_xrpath $dependency_libs"
+	fi
       fi
 
       # Restore the variables
@@ -2278,12 +2276,12 @@ EOF
       
       # Test again, we may have decided not to build it any more
       if test "$build_libtool_libs" = yes; then
-	if test "$hardcode_into_libs" = yes; then
+	if test "$hardcode_into_libs" != no; then
 	  # Hardcode the library paths
 	  hardcode_libdirs=
 	  dep_rpath=
 	  rpath="$finalize_rpath"
-	  test "$relink" = no && rpath="$compile_rpath$rpath"
+	  test "$mode" != relink && rpath="$compile_rpath$rpath"
 	  for libdir in $rpath; do
 	    if test -n "$hardcode_libdir_flag_spec"; then
 	      if test -n "$hardcode_libdir_separator"; then
@@ -2328,7 +2326,7 @@ EOF
 	fi
 
 	shlibpath="$finalize_shlibpath"	
-	test "$relink" = no && shlibpath="$compile_shlibpath$shlibpath"	
+	test "$mode" != relink && shlibpath="$compile_shlibpath$shlibpath"	
 	if test -n "$shlibpath"; then
 	  eval "$shlibpath_var='$shlibpath\$$shlibpath_var'; export $shlibpath_var"
 	fi
@@ -2444,7 +2442,7 @@ EOF
 	fi
 
 	# Make a backup of the uninstalled library when relinking
-	if test "$relink" = yes && test "$hardcode_into_libs" = yes ; then
+	if test "$mode" = relink && test "$hardcode_into_libs" = all; then
 	  $run eval '(cd $output_objdir && $rm ${realname}U && $mv $realname ${realname}U)' || exit $?
 	fi
 
@@ -2463,7 +2461,7 @@ EOF
 	IFS="$save_ifs"
 
 	# Restore the uninstalled library and exit
-	if test "$relink" = yes && test "$hardcode_into_libs" = yes; then
+	if test "$mode" = relink && test "$hardcode_into_libs" = all; then
 	  $run eval '(cd $output_objdir && $rm ${realname}T && $mv $realname ${realname}T && $mv "$realname"U $realname)' || exit $?
 	  exit 0
 	fi
@@ -2762,15 +2760,7 @@ EOF
 	  fi
 	done
       done
-      
-      # Eliminate all dependency_libs that are already contained in deplibs
-      dependency_libs=
-      for deplib in $newdependency_libs; do
-	case "$deplibs " in
-	*" $deplib "*) ;;
-	*) dependency_libs="$dependency_libs $deplib" ;;
-	esac
-      done
+      dependency_libs="$newdependency_libs"
 
       # Make sure lib_search_path contains only unique directories.
       lib_search_path=
@@ -2899,7 +2889,7 @@ EOF
 	name=`$echo "X$laname" | $Xsed -e 's/\.la$//' -e 's/^lib//'`
 
 	hardcode=yes
-	test "$hardcode_into_libs" = yes && test "$alldeplibs" = yes && hardcode=no
+	test "$hardcode_into_libs" = all && test "$alldeplibs" = yes && hardcode=no
 	if test "$hardcode" = yes && test -n "$library_names" &&
 	   { test "$prefer_static_libs" = no || test -z "$old_library"; }; then
 	  # We need to hardcode the library path
@@ -3113,10 +3103,6 @@ EOF
 	# If the user specified any rpath flags, then add them.
 	for libdir in $rpath $xrpath; do
 	  # This is the magic to use -rpath.
-	  case "$compile_rpath " in
-	  *" $libdir "*) ;;
-	  *) compile_rpath="$compile_rpath $libdir" ;;
-	  esac
 	  case "$finalize_rpath " in
 	  *" $libdir "*) ;;
 	  *) finalize_rpath="$finalize_rpath $libdir" ;;
@@ -3475,7 +3461,7 @@ static const void *lt_preloaded_setup() {
 	exit 0
       fi
 
-      if test "$hardcode_action" = relink || test "$hardcode_into_libs" = yes; then
+      if test "$hardcode_action" = relink || test "$hardcode_into_libs" = all; then
 	# Fast installation is not supported
 	link_command="$compile_var$compile_command$compile_rpath"
 	relink_command="$finalize_var$finalize_command$finalize_rpath"
@@ -4082,7 +4068,7 @@ relink_command=\"$relink_command\""
 	test "X$dir" = "X$file/" && dir=
 	dir="$dir$objdir"
 
-	if test "$hardcode_into_libs" = yes; then
+	if test "$hardcode_into_libs" = all; then
 	  if test -z "$relink_command"; then
 	    $echo "$modename: invalid libtool pseudo library \`$file'" 1>&2
 	    exit 1
@@ -4104,7 +4090,7 @@ relink_command=\"$relink_command\""
 	  shift
 
 	  srcname="$realname"
-	  test "$hardcode_into_libs" = yes && srcname="$realname"T
+	  test "$hardcode_into_libs" = all && srcname="$realname"T
 
 	  # Install the shared library and build the symlinks.
 	  $show "$install_prog $dir/$srcname $destdir/$realname"

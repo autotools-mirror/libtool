@@ -24,7 +24,7 @@
 @ifinfo
 This file documents GNU Libtool @value{VERSION}
 
-Copyright (C) 1996-1999 Free Software Foundation, Inc.
+Copyright (C) 1996-2000 Free Software Foundation, Inc.
 
 Permission is granted to make and distribute verbatim copies of this
 manual provided the copyright notice and this permission notice are
@@ -59,7 +59,7 @@ approved by the Foundation.
 
 @page
 @vskip 0pt plus 1filll
-Copyright @copyright{} 1996-1999 Free Software Foundation, Inc.
+Copyright @copyright{} 1996-2000 Free Software Foundation, Inc.
 
 Permission is granted to make and distribute verbatim copies of this
 manual provided the copyright notice and this permission notice are
@@ -2612,7 +2612,7 @@ burger$
 Libtool provides special support for dlopening libtool object and
 libtool library files, so that their symbols can be resolved @emph{even
 on platforms without any @code{dlopen} and @code{dlsym}
-functions.}.
+functions}.
 
 Consider the following alternative ways of loading code into your
 program, in order of increasing ``laziness'':
@@ -2823,6 +2823,16 @@ The following types are defined in @file{ltdl.h}:
 Every dlopened module has a handle associated with it.
 @end deftp
 
+@deftypefn {Type} {struct} lt_dlinfo @{ @w{char *@var{filename};} @w{char *@var{name};} @w{int @var{ref_count};} @}
+@code{lt_dlinfo} is used to store information about a module.
+The @var{filename} attribute is a null-terminated character string of the
+real module file name.  If the module is a libtool module then @var{name}
+is its module name (e.g. @code{"libfoo"} for @code{"dir/libfoo.la"}),
+otherwise it is set to @code{NULL}.
+The @var{ref_count} attribute is a reference counter that describes how often
+the same module is currently loaded.
+@end deftypefn
+
 @deftp {Type} lt_dlsymlist
 @code{lt_dlsymlist} is a symbol list for dlpreopened modules.
 This structure is described in @pxref{Dlpreopening}.
@@ -2858,7 +2868,7 @@ executable using this module was linked with the @code{-export-dynamic}
 flag, then the global symbols in the executable will also be used to
 resolve references in the module.
  
-If @var{filename} is NULL and the program was linked with
+If @var{filename} is @code{NULL} and the program was linked with
 @code{-export-dynamic} or @code{-dlopen self}, @code{lt_dlopen} will
 return a handle for the program itself, which can be used to access its
 symbols.
@@ -2885,7 +2895,7 @@ Each search path must be a colon-separated list of absolute directories,
 for example, @code{"/usr/lib/mypkg:/lib/foo"}.
  
 If the same module is loaded several times, the same handle is returned.
-If @code{lt_dlopen} fails for any reason, it returns NULL.
+If @code{lt_dlopen} fails for any reason, it returns @code{NULL}.
 @end deftypefun
 
 @deftypefun lt_dlhandle lt_dlopenext (const char *@var{filename})
@@ -2916,19 +2926,19 @@ Return 0 on success.
 @deftypefun lt_ptr_t lt_dlsym (lt_dlhandle @var{handle}, const char *@var{name})
 Return the address in the module @var{handle}, where the symbol given 
 by the null terminated string @var{name} is loaded.
-If the symbol cannot be found, NULL is returned.
+If the symbol cannot be found, @code{NULL} is returned.
 @end deftypefun
  
 @deftypefun {const char *} lt_dlerror (void)
 Return a human readable string describing the most 
 recent error that occurred from any of libltdl's functions.
-Return NULL if no errors have occurred since initialization
+Return @code{NULL} if no errors have occurred since initialization
 or since it was last called.
 @end deftypefun
  
 @deftypefun int lt_dlpreload (const lt_dlsymlist *@var{preloaded})
 Register the list of preloaded modules @var{preloaded}.
-If @var{preloaded} is NULL, then all previously registered
+If @var{preloaded} is @code{NULL}, then all previously registered
 symbol lists, except the list set by @code{lt_dlpreload_default},
 are deleted. Return 0 on success.
 @end deftypefun
@@ -2973,6 +2983,22 @@ directories.  Return 0 on success.
 
 @deftypefun {const char *} lt_dlgetsearchpath (void)
 Return the current user-defined library search path.
+@end deftypefun
+
+@deftypefun int lt_dlsetdata (lt_dlhandle @var{handle}, lt_ptr_t @var{data})
+Set the application private data for the module @var{handle} to @var{data}.
+Return 0 on success.
+@end deftypefun
+
+@deftypefun lt_ptr_t lt_dlgetdata (lt_dlhandle @var{handle})
+Return the application private data for the module @var{handle}.
+If the handle @var{handle} is invalid or no data was set, it returns @code{NULL}.
+@end deftypefun
+
+@deftypefun {const lt_dlinfo *} lt_dlgetinfo (lt_dlhandle @var{handle})
+Return a pointer to a struct that contains some information about
+the module @var{handle}.  The contents of the struct must not be modified.
+Return @code{NULL} on failure. 
 @end deftypefun
 
 @deftypevar {lt_ptr_t (*} lt_dlmalloc ) (size_t size)
