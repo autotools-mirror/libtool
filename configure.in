@@ -1,5 +1,5 @@
 dnl Process this file with autoconf to create configure.
-AC_INIT(ltmain.sh.in)
+AC_INIT(ltmain.in)
 AM_INIT_AUTOMAKE(libtool,1.0c)
 
 pkgdatadir='${datadir}/libtool'

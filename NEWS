@@ -4,6 +4,8 @@ New in 1.0c:
 * Bug fixes.
 * New `-all-static' flag to prevent any dynamic linking.  The regular
   `-static' flag just prevents dynamic linking of libtool libraries.
+* The `-rpath' flag can be used to hardcode absolute directories when
+  linking executables using libtool.
 * Suppress duplicate compiler output during `compile' mode.
 * New `execute' mode to support debugging uninstalled libtool
   libraries and executables.

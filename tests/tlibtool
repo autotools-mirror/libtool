@@ -9,9 +9,9 @@ fi
 # Grab all the settings from the generated libtool.
 eval "`egrep '^[A-Za-z_][A-Za-z0-9_]*=' ../libtool`"
 
-# Use @VERSION@ so that we can use ../ltmain.sh.in directly.
+# Use @VERSION@ so that we can use ../ltmain.in directly.
 LTCONFIG_VERSION="@VERSION@"
 
 # Execute the libtool backend.
-. $srcdir/../ltmain.sh.in
+. $srcdir/../ltmain.in
 exit 1

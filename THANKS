@@ -2,15 +2,21 @@ Libtool would not be what it is today without the invaluable help of
 these people:
 
 Everybody who was kind enough to spend time testing libtool, use it in
-their packages, and report bugs to me before libtool 1.0 was released.
+their packages and report bugs.
+
+The following people made especially gracious contributions of their
+time and energy in helping to track down bugs, port to new systems,
+and generally assist in the libtool maintainership process:
 
 Akim Demaille <demaille@inf.enst.fr>
+Alexandre Oliva <oliva@dcc.unicamp.br>
 Bruno Haible <haible@ilog.fr>
 Carl D. Roth <roth@cse.ucsc.edu>
 Charles S. Kerr <cskerr@delenn.jccbi.gov>
 Joel Cannon <cannon@alpha.centenary.edu>
 Joel N. Weber II <devnull@gnu.ai.mit.edu>
 Karl Berry <kb@cs.umb.edu>
+Kenneth Albanowski <kjahds@kjahds.com>
 Mark Kettenis <kettenis@phys.uva.nl>
 Mimi Burbank <mimi@scri.fsu.edu>
 Oliver Guntermann <og@informatik.uni-hannover.de>

@@ -27,6 +27,13 @@ Perhaps a similar note could be added to ABOUT-NLS.
 I'll add a suggestion to the libtool documentation, so that other
 maintainers add this kind of note to their package documentation.
 
+* Bengt Martensson says:
+
+"Some compilers may allow identifiers which are not legal in ANSI C,
+for example dollar signs. Such symbols will not be exported. Only
+symbols which are legal in ANSI C (ASCII letters, digits, and
+underscore; not starting with a digit) are exported."
+
 In the future:
 **************
 
@@ -39,6 +46,10 @@ We especially need this for C++ linking, for which libtool currently
 does not handle static constructors properly, even on operating
 systems that support them.  ``Don't use static constructors'' is no
 longer a satisfactory answer.
+
+People who need it:
+  Jean Daniel Fekete <Jean-Daniel.Fekete@emn.fr>
+  Thomas Hiller <hiller@tu-harburg.d400.de>
 
 * Writing libtool as a shell script means that proper variable quoting
 is a real problem.  Be careful when `eval'ing a string that the

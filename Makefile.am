@@ -10,7 +10,7 @@ CPPLAGS = @CPPFLAGS@
 aclocal_macros = libtool.m4
 
 noinst_SCRIPTS = lineno
-EXTRA_DIST = $(aclocal_macros) libtoolize.in ltconfig.in ltmain.sh.in \
+EXTRA_DIST = $(aclocal_macros) libtoolize.in ltconfig.in ltmain.in \
 	libtool.spec libtool.prj $(noinst_SCRIPTS)
 CLEANFILES = libtool libtoolize
 MAINTAINERCLEANFILES = ltconfig ltmain.sh
@@ -51,8 +51,9 @@ $(srcdir)/ltconfig: ltconfig.in configure.in
 	chmod +x ltconfig
 	test "$(srcdir)" = . || mv ltconfig $(srcdir)/ltconfig
 
-$(srcdir)/ltmain.sh: ltmain.sh.in configure.in
-	CONFIG_FILES=ltmain.sh CONFIG_HEADERS= $(top_builddir)/config.status
+$(srcdir)/ltmain.sh: ltmain.in configure.in
+	CONFIG_FILES=ltmain.sh:ltmain.in CONFIG_HEADERS= \
+	  $(top_builddir)/config.status
 	test "$(srcdir)" = . || mv ltmain.sh $(srcdir)/ltmain.sh
 
 # Distribute the demo subdirectory.

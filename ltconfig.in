@@ -706,8 +706,9 @@ else
   # FreeBSD 3, at last, uses gcc -shared to do shared libraries.
   freebsd3*)
     archive_cmds='$CC -shared -o $lib$libobjs$deplibs'
+    hardcode_libdir_flag_spec='-R$libdir'
     hardcode_direct=yes
-    hardcode_minusL=yes
+    hardcode_minus_L=yes
     hardcode_shlibpath_var=no
     ;;
 

@@ -1,3 +1,26 @@
+Sat Sep 13 11:41:44 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltconfig.in, ltmain.in (hardcode_minusL): Fix typo by renaming
+ 	hardcode_minusL to hardcode_minus_L.  Also add FreeBSD
+ 	hardcode_libdir_flag_spec. From Paul Traina.
+
+	* ltmain.in (link): Honour multiple `-rpath' flags when linking
+	programs.  Suggested by Bengt Martensson.
+	Quote appearances of $echo in the wrapper script.  From Alexandre
+	Oliva.
+
+	* Makefile.am, configure.in, tests/tlibtool: Use ltmain.in instead
+ 	of ltmain.sh.in.
+
+	* ltmain.in: Rename ltmain.sh.in to ltmain.in.  This fixes a
+	portability problem (on MS-DOS, of all places!).  From Robert
+	Hoehne.
+
+Thu Sep 11 21:14:26 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltmain.sh.in (link): Do not transform libtool objects to regular
+	objects if we did not build old libs.  Reported by Tomas Hiller.
+
 Fri Sep  5 13:11:38 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* demo/Makefile.am (hell_debug_LDFLAGS): Change hell.static to
