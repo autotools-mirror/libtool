@@ -1,4 +1,4 @@
-/* foo1.c -- trivial test library
+/* foo.c -- trivial test library
    Copyright (C) 1998-1999 Free Software Foundation, Inc.
    Originally by Thomas Tanner <tanner@gmx.de>
    This file is part of GNU Libtool.
@@ -25,10 +25,8 @@ USA. */
 #include <math.h>
 #endif
 
-/* exported functions */
-
 int
-foo1()
+foo()
 {
   printf ("cos (0.0) = %g\n", (double) cos ((double) 0.0));
   return FOO_RET;
@@ -37,6 +35,6 @@ foo1()
 int
 hello()
 {
-  printf ("** This is foolib 1 **\n");
+  printf ("** This is libfoo **\n");
   return HELLO_RET;
 }
