@@ -20,7 +20,7 @@ $ACLOCAL
 $AUTOMAKE --gnu --add-missing --copy
 $AUTOCONF
 
-for sub in libltdl demo depdemo mdemo cdemo; do
+for sub in libltdl demo depdemo mdemo cdemo tagdemo pdemo; do
   cd $sub
   rm -f acinclude.m4 Makefile
   cat ../libtool.m4 > acinclude.m4

@@ -1,3 +1,16 @@
+2001-05-30  Robert Boehne  <rboehne@ricardo-us.com>
+
+	* bootstrap: Added tagdemo and pdemo tests from
+	multi-language-branch.
+	* configure.in: Added pdemo and tagdemo to CONF_SUBDIRS
+	and merged references to CXX and GCJ from multi-language-branch.
+	*pdemo: Added test directory from multi-language-branch.
+	*tagdemo: Added test directory from multi-language-branch.
+	*tests/Makefile.am: Merged additional tests from
+	multi-language-branch.
+	*tests/pdemo-*.test: ditto.
+	*tests/tagdemo-*.test: ditto.
+
 2001-05-30  Gary V. Vaughan  <gary@gnu.org>
 
 	* libtool.m4: Merged ltconfig.in from multi-language-branch.
