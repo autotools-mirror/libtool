@@ -1,5 +1,8 @@
 2000-09-03  Alexandre Oliva  <aoliva@redhat.com>
 
+	* tests/defs (CC): Extract from the libtool script.
+	* tests/link.test, tests/link-2.test, tests/quote.test: Use it.
+
 	* ltmain.in (variables_saved_for_relink): Attempt to unset them
 	instead of setting them to an empty string.
 

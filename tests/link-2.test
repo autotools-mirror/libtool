@@ -18,7 +18,7 @@ non_pic_object=hell.o
 EOF
 
 # Try a sample link command.
-linkresult=`$libtool -n --mode=link gcc -o something foo.o hell.lo`
+linkresult=`$libtool -n --mode=link $CC -o something foo.o hell.lo`
 
 res=$?
 

@@ -24,6 +24,9 @@ else
   prefix=NONE
 fi
 
+# Extract CC from the libtool configuration
+eval `$libtool --config | grep '^CC='`
+
 # See how redirections should work.
 case "$VERBOSE" in
 NO | no | 0 | "")

@@ -62,14 +62,14 @@ for mode in compile link install; do
   # preargs and postargs need to go through libtool unmodified.
   case "$mode" in
   compile)
-    preargs="gcc -c"
+    preargs="$CC -c"
     preflag=
     flag="-DVAR="
     postargs="foo.c"
     ;;
 
   link)
-    preargs="gcc -o hell -g -O"
+    preargs="$CC -o hell -g -O"
     preflag=-Wl,
     flag="-someflag="
     postargs="foo.o"
