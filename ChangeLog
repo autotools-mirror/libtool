@@ -1,3 +1,9 @@
+1999-11-26  Gary V. Vaughan  <gary@oranda.demon.co.uk>
+
+	* libtool.m4:  better use of $target instead of $host to support
+	cross compilation.
+	Reported by Sam Latinga <slouken@devolution.com>
+
 1999-11-16  Thomas Tanner  <tanner@ffii.org>
 
 	* configure.in: generate ltconfig and ltmain.sh before configuring
