@@ -1490,7 +1490,8 @@ else
 fi
 AC_MSG_RESULT([$_LT_AC_TAGVAR(hardcode_action, $1)])
 
-if test "$_LT_AC_TAGVAR(hardcode_action, $1)" = relink; then
+if test "$_LT_AC_TAGVAR(hardcode_action, $1)" = relink ||
+   test "$_LT_AC_TAGVAR(inherit_rpath, $1)" = yes; then
   # Fast installation is not supported
   enable_fast_install=no
 elif test "$shlibpath_overrides_runpath" = yes ||
@@ -3400,6 +3401,7 @@ m4_if([$1], [CXX], [
   _LT_AC_TAGVAR(hardcode_libdir_separator, $1)=
   _LT_AC_TAGVAR(hardcode_minus_L, $1)=no
   _LT_AC_TAGVAR(hardcode_shlibpath_var, $1)=unsupported
+  _LT_AC_TAGVAR(inherit_rpath, $1)=no
   _LT_AC_TAGVAR(link_all_deplibs, $1)=unknown
   _LT_AC_TAGVAR(module_cmds, $1)=
   _LT_AC_TAGVAR(module_expsym_cmds, $1)=
@@ -3913,6 +3915,7 @@ _LT_EOF
       fi
       _LT_AC_TAGVAR(hardcode_libdir_flag_spec, $1)='${wl}-rpath ${wl}$libdir'
       _LT_AC_TAGVAR(hardcode_libdir_separator, $1)=:
+      _LT_AC_TAGVAR(inherit_rpath, $1)=yes
       _LT_AC_TAGVAR(link_all_deplibs, $1)=yes
       ;;
 
@@ -4238,6 +4241,9 @@ _LT_TAGDECL([], [hardcode_automatic], [0],
     [Set to "yes" if building a shared library automatically hardcodes DIR
     into the library and all subsequent libraries and executables linked
     against it])
+_LT_TAGDECL([], [inherit_rpath], [0],
+    [Set to yes if linker adds runtime paths of dependent libraries
+    to runtime path list])
 _LT_TAGDECL([], [link_all_deplibs], [0],
     [Whether libtool must link a program against all its dependency libraries])
 _LT_TAGDECL([], [fix_srcfile_path], [1],
@@ -4379,6 +4385,7 @@ _LT_AC_TAGVAR(hardcode_libdir_flag_spec_ld, $1)=
 _LT_AC_TAGVAR(hardcode_libdir_separator, $1)=
 _LT_AC_TAGVAR(hardcode_minus_L, $1)=no
 _LT_AC_TAGVAR(hardcode_automatic, $1)=no
+_LT_AC_TAGVAR(inherit_rpath, $1)=no
 _LT_AC_TAGVAR(module_cmds, $1)=
 _LT_AC_TAGVAR(module_expsym_cmds, $1)=
 _LT_AC_TAGVAR(link_all_deplibs, $1)=unknown
@@ -4859,6 +4866,7 @@ case $host_os in
     esac
     _LT_AC_TAGVAR(hardcode_libdir_flag_spec, $1)='${wl}-rpath ${wl}$libdir'
     _LT_AC_TAGVAR(hardcode_libdir_separator, $1)=:
+    _LT_AC_TAGVAR(inherit_rpath, $1)=yes
     ;;
   linux*)
     case $cc_basename in
@@ -5421,6 +5429,7 @@ _LT_AC_TAGVAR(hardcode_libdir_flag_spec_ld, $1)=
 _LT_AC_TAGVAR(hardcode_libdir_separator, $1)=
 _LT_AC_TAGVAR(hardcode_minus_L, $1)=no
 _LT_AC_TAGVAR(hardcode_automatic, $1)=no
+_LT_AC_TAGVAR(inherit_rpath, $1)=no
 _LT_AC_TAGVAR(module_cmds, $1)=
 _LT_AC_TAGVAR(module_expsym_cmds, $1)=
 _LT_AC_TAGVAR(link_all_deplibs, $1)=unknown

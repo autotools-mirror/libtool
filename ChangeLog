@@ -1,6 +1,12 @@
 2004-03-24  Albert Chin-A-Young  <china@thewrittenword.com>
 
-	* libtool.m4: When linking convenience libraries on Solaris
+	* m4/libtool.m4: Add new variable, inherit_rpath, if the
+        RPATHs of the libraries being linked are inherited in
+        the output file. For systems with a linker exhibiting
+        this feature, programs/libraries must be relinked at
+        installation time.
+
+	* m4/libtool.m4: When linking convenience libraries on Solaris
 	with the Sun C++ compiler, pass convenience libraries through
 	to the linker with -Qoption between allextract/defaultextract.
 	The Sun C++ compiler bundles -Qoption arguments so
