@@ -1,3 +1,15 @@
+2002-01-07  Robert Boehne  <rboehne@ricardo-us.com>
+
+	* NEWS: Fixed wrong path for texinfo.tex.
+	* configure.ac: Bumped version to 1.4e.
+
+	GNU libtool 1.4d was released.
+
+	* configure.ac: Bumped version to 1.4d.
+	* NEWS: updated.
+	* config.guess, config.sub, texinfo.tex:  Synchronised from
+	ftp.gnu.org.
+
 2001-12-06  Jens Petersen  <petersen@redhat.com>
 
 	* ltmain.in: Replace all test "-a"s by "&& test"
