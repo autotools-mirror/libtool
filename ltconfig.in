@@ -809,45 +809,48 @@ fi
 
 # Check to see if options -o and -c are simultaneously supported by compiler
 echo $ac_n "checking if $compiler supports -c -o file.$objext... $ac_c" 1>&6
-$rm -r conftest 2>/dev/null
-mkdir conftest
-cd conftest
-$rm conftest*
-echo $lt_simple_compile_test_code > conftest.$ac_ext
-mkdir out
-# According to Tom Tromey, Ian Lance Taylor reported there are C compilers
-# that will create temporary files in the current directory regardless of
-# the output directory.  Thus, making CWD read-only will cause this test
-# to fail, enabling locking or at least warning the user not to do parallel
-# builds.
-chmod -w .
-save_CFLAGS="$CFLAGS"
-CFLAGS="$CFLAGS -o out/conftest2.$objext"
-echo "$progname:@LINENO@: checking if $compiler supports -c -o file.$objext" >&5
-if { (eval echo $progname:@LINENO@: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>out/conftest.err; } && test -s out/conftest2.$objext; then
-
-  # The compiler can only warn and ignore the option if not recognized
-  # So say no if there are warnings
-    if test -s out/conftest.err; then
-      echo "$ac_t"no 1>&6
-      compiler_c_o=no
-    else
-      echo "$ac_t"yes 1>&6
-      compiler_c_o=yes
-    fi
+if test "${lt_cv_compiler_c_o+set}" = set; then
+  echo $ac_n "(cached) $ac_c" 1>&6
 else
-  # Append any errors to the config.log.
-  cat out/conftest.err 1>&5
-  compiler_c_o=no
-  echo "$ac_t"no 1>&6
+  $rm -r conftest 2>/dev/null
+  mkdir conftest
+  cd conftest
+  $rm conftest*
+  echo $lt_simple_compile_test_code > conftest.$ac_ext
+  mkdir out
+  # According to Tom Tromey, Ian Lance Taylor reported there are C compilers
+  # that will create temporary files in the current directory regardless of
+  # the output directory.  Thus, making CWD read-only will cause this test
+  # to fail, enabling locking or at least warning the user not to do parallel
+  # builds.
+  chmod -w .
+  save_CFLAGS="$CFLAGS"
+  CFLAGS="$CFLAGS -o out/conftest2.$objext"
+  echo "$progname:@LINENO@: checking if $compiler supports -c -o file.$objext" >&5
+  if { (eval echo $progname:@LINENO@: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>out/conftest.err; } && test -s out/conftest2.$objext; then
+
+    # The compiler can only warn and ignore the option if not recognized
+    # So say no if there are warnings
+      if test -s out/conftest.err; then
+        lt_cv_compiler_c_o=no
+      else
+        lt_cv_compiler_c_o=yes
+      fi
+  else
+    # Append any errors to the config.log.
+    cat out/conftest.err 1>&5
+    lt_cv_compiler_c_o=no
+  fi
+  CFLAGS="$save_CFLAGS"
+  chmod u+w .
+  $rm conftest* out/*
+  rmdir out
+  cd ..
+  rmdir conftest
+  $rm -r conftest 2>/dev/null
 fi
-CFLAGS="$save_CFLAGS"
-chmod u+w .
-$rm conftest* out/*
-rmdir out
-cd ..
-rmdir conftest
-$rm -r conftest 2>/dev/null
+compiler_c_o=$lt_cv_compiler_c_o
+echo "${ac_t}$compiler_c_o" 1>&6
 
 # Check to see if we can do hard links to lock some files if needed
 hard_links="nottested"

@@ -627,3 +627,6 @@ fi
 
 # GCJ did not exist at the time GCC didn't implicitly link libc in.
 need_lc=no
+
+# All existing releases of GCJ support `-c -o'.
+lt_cv_compiler_c_o=yes
