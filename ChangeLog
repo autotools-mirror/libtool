@@ -1,3 +1,7 @@
+2004-12-20  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
+	* tests/demo-nopic.test [solaris, sunos]: Skip test.
+
 2004-12-18  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
 	* libtool.m4 [linux] (_LT_COMPILER_PIC, _LT_LANG_CXX_CONFIG):
