@@ -1,3 +1,9 @@
+2000-10-30  Robert Boehne  <rboehne@ricardo-us.com>
+
+	* ltcf-c.sh, ltcf-cxx.sh (hardcode_libdir_flag_spec,
+	allow_undefined, archive_cmds):  Fix Compaq Tru 64 rpath and
+	"allow undefined" support.
+
 2000-10-27  Robert Boehne  <rboehne@ricardo-us.com>
 
 	* docs/libtool.texi: Added pointers to documentation       

@@ -412,7 +412,7 @@ else
       allow_undefined_flag=' -expect_unresolved \*'
       archive_cmds='$LD -shared${allow_undefined_flag} $libobjs $deplibs $linker_flags -msym -soname $soname `test -n "$verstring" && echo -set_version $verstring` -update_registry ${objdir}/so_locations -o $lib'
     fi
-    hardcode_libdir_flag_spec='${wl}-rpath ${wl}$libdir'
+    hardcode_libdir_flag_spec='-rpath $libdir'
     hardcode_libdir_separator=:
     ;;
 

@@ -395,10 +395,10 @@ case "$host_os" in
         ld_shlibs=no
         ;;
       cxx)
-        allow_undefined_flag=' ${wl}-expect_unresolved ${wl}\*'
-        archive_cmds='$CC -shared${allow_undefined_flag} $predep_objects $libobjs $deplibs $postdep_objects $compiler_flags ${wl}-msym ${wl}-soname $soname `test -n "$verstring" && echo ${wl}-set_version $verstring` -update_registry ${objdir}/so_locations -o $lib'
+        allow_undefined_flag=' -expect_unresolved \*'
+        archive_cmds='$CC -shared${allow_undefined_flag} $predep_objects $libobjs $deplibs $postdep_objects $compiler_flags -msym -soname $soname `test -n "$verstring" && echo -set_version $verstring` -update_registry ${objdir}/so_locations -o $lib'
         
-        hardcode_libdir_flag_spec='${wl}-rpath ${wl}$libdir'
+        hardcode_libdir_flag_spec='-rpath $libdir'
         hardcode_libdir_separator=:
 
         # Commands to make compiler produce verbose output that lists
