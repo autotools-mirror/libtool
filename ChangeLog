@@ -1,3 +1,15 @@
+1999-02-20  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* libtool.m4 (AC_LIBTOOL_DLOPEN): check for dlopen in libc before
+	trying in dl.  Add the actual dlopening type to lt_cv_dlopen, and
+	add any needed libraries to lt_cv_dlopen_LIBS.  Add test for
+	MS-Windows' LoadLibrary.  Check whether a program can dlopen
+	itself only if we really have dlopen(), not some equivalent
+	function, but leave room for testing with other mechanisms.
+	(AC_PROG_LIBTOOL): assume some form of dlopen, but not
+	dlopen(NULL), is available if AC_LIBTOOL_DLOPEN is not used, for
+	backward compatibility.
+
 1999-02-20  Archie Cobbs  <archie@whistle.com>
 
 	* libltdl/ltdl.c (lt_dlopen): use newhandle instead of handle
