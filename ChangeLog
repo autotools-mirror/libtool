@@ -1,3 +1,8 @@
+2002-05-02  Fritz Elfert  <felfert@to.com>
+
+	* libtool.m4 (AC_LIBTOOL_PROG_LD_SHLIBS): Modify archive_expsym_cmds
+	to catch properly handle dll alias symbols.
+
 2002-04-24  Kevin Ryde  <user42@zip.com.au>
 
 	* libtool.m4 (AC_LIBTOOL_SYS_MAX_CMD_LEN): Use $build_os not $host_os.
