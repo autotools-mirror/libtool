@@ -1,6 +1,7 @@
 NEWS - list of user-visible changes between releases of GNU Libtool
 
 New in 1.3d: 1999-??-??; CVS version 1.3c, Libtool team:
+* libltdl can now be built as a dll with win32.
 * m4 macros needed to configure libltdl split out into libltdl/ltdl.m4.
 * Start of support code for cross-compiling to win32.
 * Improved support for mingw32.
@@ -11,8 +12,9 @@ New in 1.3d: 1999-??-??; CVS version 1.3c, Libtool team:
   environments is inherited from --build flag passed to configure.
 * Various bugfixes
 
-New in 1.3.4: 1999-??-??, CVS version 1.3.3a, Libtool team:
+New in 1.3.4: 1999-12-08, CVS version 1.3.3a, Libtool team:
 * Support for Compaq Tru64 V5.0.
+* Improved support for Digital Unix V4.*.
 * Improved support for NetBSD, FreeBSD and Unixware.
 * Many fine bugfixes.
 

@@ -1,5 +1,15 @@
 1999-12-13  Gary V. Vaughan  <gary@oranda.demon.co.uk>
 
+	* NEWS: updated.
+	* libltdl/Makefile.am: Use -no-undefined for dll compliance.
+	* libltdl/configure.in: Use AC_LIBTOOL_WIN32_DLL for dll
+	compliance.
+	* libltdl/ltdl.c: Define and use LTDL_GLOBAL_DATA to correctly
+	export global data symbols from libtldl.dll.
+	* libltdl/ltdl.h: Define and use LTDL_SCOPE to declare data
+	symbols as dllexport, dllimport or plain ornary extern depending
+	in the context in which it is used.
+
 	* doc/libtool.texi (Distributing libltdl): document use of
 	ltdl.m4.
 	* libltdl/configure.in: Removed header checks, as they are
