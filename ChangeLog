@@ -1,5 +1,8 @@
 2005-02-04  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* config/ltmain.m4sh (func_mode_link): Allow five digits in
+	version-info. 
+
 	* NEWS: s/Linux/GNU &/.
 
 2005-02-03  Reid Spencer  <reid@x10sys.com>,
