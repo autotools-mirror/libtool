@@ -1,3 +1,9 @@
+1999-05-19  Gary V. Vaughan  <gary@oranda.demon.co.uk>
+
+	* NEWS: Added 1.3.1 news items.
+	* doc/PLATFORMS: updated the boxes I have access to, to 1.3.1
+	in preparation for the next release.
+
 1999-05-18  Gary V. Vaughan  <gary@oranda.demon.co.uk>
 
 	* ltconfig.in (cygwin*, whole_archive_flag_spec): dlltool chokes
