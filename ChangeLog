@@ -1,3 +1,7 @@
+1998-11-24  David Heine  <dlheine@truffle.Stanford.EDU>
+
+	* ltmain.in (pass_all): actively pass the flags
+
 1998-11-24  Thomas Tanner  <tanner@gmx.de>
 
 	* depdemo: added inter-library dependencies demo (doesn't work yet!)

@@ -1355,7 +1355,9 @@ compiler."
          major=""
          newdeplibs=
          case "$check_shared_deplibs_method" in
-         pass_all)   ;; # Don't check for shared/static.  Everything works.
+         pass_all)  
+	   newdeplibs=$deplibs 
+		     ;; # Don't check for shared/static.  Everything works.
                         # This might be a little naive.  We might want to check
                         # whether the library exists or not.  But this is on
                         # osf3 & osf4 and I'm not really sure... Just
