@@ -755,22 +755,6 @@ lt_dlexit ()
 }
 
 static int
-trim (dest, s)
-	char *dest;
-	const char *s;
-{
-	char *i = strrchr(s, '\'');
-	int len = strlen(s);
-
-	if (len > 3 && s[0] == '\'') {
-		strncpy(dest, &s[1], (i - s) - 1);
-		dest[len-3] = '\0';
-	} else
-		*dest = '\0';
-	return 0;
-}
-
-static int
 tryall_dlopen (handle, filename)
 	lt_dlhandle *handle;
 	const char *filename;
@@ -792,8 +776,10 @@ tryall_dlopen (handle, filename)
 	
 	cur = *handle;
 	cur->filename = strdup(filename);
-	if (!cur->filename)
+	if (!cur->filename) {
+		last_error = memory_error;
 		return 1;
+	}
 	while (type) {
 		if (type->lib_open(cur, filename) == 0)
 			break;
@@ -940,6 +926,50 @@ unload_deplibs(handle)
 	return 0;
 }
 
+static int
+trim (dest, s)
+	char **dest;
+	const char *s;
+{
+	char *tmp;
+	char *i = strrchr(s, '\'');
+	int len = strlen(s);
+
+	if (*dest)
+		free(*dest);
+	if (len > 3 && s[0] == '\'') {
+		tmp = malloc(i - s);
+		if (!tmp) {
+			last_error = memory_error;
+			return 1;
+		}
+		strncpy(tmp, &s[1], (i - s) - 1);
+		tmp[len-3] = '\0';
+		*dest = tmp;
+	} else
+		*dest = 0;
+	return 0;
+}
+
+static int
+free_vars(dlname, oldname, libdir, deplibs)
+	char *dlname;
+	char *oldname;
+	char *libdir;
+	char *deplibs;
+{
+	if (dlname)
+		free(dlname);
+	if (oldname)
+		free(oldname);
+	if (libdir)
+		free(libdir);
+	if (deplibs)
+		free(deplibs);
+	return 0;
+}
+
+
 lt_dlhandle
 lt_dlopen (filename)
 	const char *filename;
@@ -968,18 +998,17 @@ lt_dlopen (filename)
 	/* check whether we open a libtool module (.la extension) */
 	ext = strrchr(basename, '.');
 	if (ext && strcmp(ext, ".la") == 0) {
-		char	dlname[LTDL_FILENAME_MAX], old_name[LTDL_FILENAME_MAX];
-		char	libdir[LTDL_FILENAME_MAX], deplibs[LTDL_FILENAME_MAX];
+		/* this seems to be a libtool module */
 		char	tmp[LTDL_FILENAME_MAX];
 		FILE	*file;
 		int	i;
-		
+		char	*dlname = 0, *old_name = 0;
+		char	*libdir = 0, *deplibs = 0;
+		int	error = 0;
 		/* if we can't find the installed flag, it is probably an
 		   installed libtool archive, produced with an old version
 		   of libtool */
-		int     installed=1; 
-
-		dlname[0] = old_name[0] = libdir[0] = deplibs[0] = '\0';
+		int     installed = 1; 
 
 		/* extract the module name from the file name */
 		if (strlen(basename) >= sizeof(tmp)) {
@@ -998,7 +1027,7 @@ lt_dlopen (filename)
 			last_error = memory_error;
 			return 0;
 		}
-
+		/* now try to open the .la file */
 		file = fopen(filename, LTDL_READTEXT_MODE);
 		if (!file)
 			last_error = file_not_found_error;
@@ -1022,47 +1051,56 @@ lt_dlopen (filename)
 			free(name);
 			return 0;
 		}
+		/* read the .la file */
 		while (!feof(file)) {
 			if (!fgets(tmp, sizeof(tmp), file))
 				break;
 			if (tmp[0] == '\n' || tmp[0] == '#')
 				continue;
 			if (strncmp(tmp, "dlname=", 7) == 0)
-				trim(dlname, &tmp[7]);
+				error = trim(&dlname, &tmp[7]);
 			else
 			if (strncmp(tmp, "old_library=", 12) == 0)
-				trim(old_name, &tmp[12]);
+				error = trim(&old_name, &tmp[12]);
 			else
 			if (strncmp(tmp, "libdir=", 7) == 0)
-				trim(libdir, &tmp[7]);
+				error = trim(&libdir, &tmp[7]);
 			else
 			if (strncmp(tmp, "dl_dependency_libs=", 20) == 0)
-				trim(deplibs, &tmp[20]);
+				error = trim(&deplibs, &tmp[20]);
 			else
 			if (strcmp(tmp, "installed=yes\n") == 0)
 				installed = 1;
 			else
 			if (strcmp(tmp, "installed=no\n") == 0)
 				installed = 0;
+			if (error)
+				break;
 		}
 		fclose(file);
-		
+		/* allocate the handle */
 		handle = (lt_dlhandle) malloc(sizeof(lt_dlhandle_t));
-		if (!handle) {
-			last_error = memory_error;
+		if (!handle || error) {
+			if (handle)
+				free(handle);
+			if (!error)
+				last_error = memory_error;
+			free_vars(dlname, old_name, libdir, deplibs);
 			free(name);
 			return 0;
 		}
 		handle->usage = 0;
-		if (load_deplibs(handle, deplibs)) {
+		if (load_deplibs(handle, deplibs) == 0) {
+			if (find_module(&handle, dir, libdir, 
+					dlname, old_name, installed)) {
+				unload_deplibs(handle);
+				error = 1;
+			}
+		} else
+			error = 1;
+		if (error) {
 			free(handle);
-			free(name);
-			return 0;
-		}
-		if (find_module(&handle, dir, libdir, 
-				dlname, old_name, installed)) {
-			unload_deplibs(handle);
-			free(handle);
+			free_vars(dlname, old_name, libdir, deplibs);
 			free(name);
 			return 0;
 		}

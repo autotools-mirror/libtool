@@ -1,3 +1,7 @@
+1999-01-25  Thomas Tanner  <tanner@gmx.de>
+
+	* libltdl/ltdl.c: allocate the variables in lt_dlopen() dynamically
+	  
 1999-01-25  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* ltmain.in (file_magic): use egrep instead of expr to support
