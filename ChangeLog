@@ -1,5 +1,9 @@
 2004-11-22  Gary V. Vaughan  <gary@gnu.org>
 
+	* config/ltmain.m4sh (func_mode_install): Now that func_mktempdir
+	has been improved, the default directory template is perfectly
+	fine.
+
 	* doc/libtool.texi (Invoking libtoolize): Improve documentation
 	for use of ACLOCAL_AMFLAGS and AC_CONFIG_MACRO_DIR.
 
