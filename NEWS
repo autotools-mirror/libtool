@@ -3,6 +3,7 @@ NEWS - list of user-visible changes between releases of GNU Libtool
 New in 1.5.11a: 2004-??-??; CVS version 1.5.11a, Libtool team:
 * Support for Portland Group compiler on Linux.
 * libtoolize now also installs `install-sh'.
+* Support (mostly) for DragonFly BSD.
 * Bug Fixes.
 
 New in 1.5.10: 2004-09-19; CVS version 1.5.9a, Libtool team:
