@@ -3818,28 +3818,25 @@ _LT_EOF
       ;;
 
     darwin* | rhapsody*)
-      case $host_os in
+      case "$host_os" in
         rhapsody* | darwin1.[[012]])
-          _LT_TAGVAR(allow_undefined_flag, $1)='${wl}-undefined ${wl}suppress'
-          ;;
-        *) # Darwin 1.3 on
-          case ${MACOSX_DEPLOYMENT_TARGET-10.0} in
-            10.[[012]])
-              _LT_TAGVAR(allow_undefined_flag, $1)='${wl}-flat_namespace ${wl}-undefined ${wl}suppress'
-              ;;
+         _LT_TAGVAR(allow_undefined_flag, $1)='${wl}-undefined ${wl}suppress'
+         ;;
+       *) # Darwin 1.3 on
+         case ${MACOSX_DEPLOYMENT_TARGET-10.0} in
+           10.[[012]])
+             _LT_TAGVAR(allow_undefined_flag, $1)='${wl}-flat_namespace ${wl}-undefined ${wl}suppress'
+             ;;
            10.*)
-              _LT_TAGVAR(allow_undefined_flag, $1)='${wl}-undefined ${wl}dynamic_lookup'
-              ;;
-          esac
-          ;;
+             _LT_TAGVAR(allow_undefined_flag, $1)='${wl}-undefined ${wl}dynamic_lookup'
+             ;;
+         esac
+         ;;
       esac
       _LT_TAGVAR(archive_cmds_need_lc, $1)=no
       _LT_TAGVAR(hardcode_direct, $1)=no
       _LT_TAGVAR(hardcode_automatic, $1)=yes
-      case $host_os in
-        darwin7.*) _LT_TAGVAR(hardcode_shlibpath_var, $1)=no ;;
-	*)         _LT_TAGVAR(hardcode_shlibpath_var, $1)=unsupported ;;
-      esac
+      _LT_TAGVAR(hardcode_shlibpath_var, $1)=unsupported
       _LT_TAGVAR(whole_archive_flag_spec, $1)=''
       _LT_TAGVAR(link_all_deplibs, $1)=yes
     if test "$GCC" = yes ; then

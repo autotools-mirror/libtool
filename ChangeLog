@@ -1,4 +1,10 @@
-2004-09-23  Jim Tison  <jtison@us.ibm.com>
+2004-10-02  Gary V. Vaughan  <gary@gnu.org>
+
+	* m4/libtool.m4 (hardcode_shlibpath_var) [darwin7*]: Revert my
+	hack from 2004-09-30 now that I've removed /lib/hello.la and the
+	tests work properly for me again.
+
+2004-10-02  Jim Tison  <jtison@us.ibm.com>
 
 	Initial support for s390x-ibm-tpf:
 
