@@ -165,11 +165,13 @@ cvs-dist: cvs-news timestamps
 	cd $(srcdir) \
 	  && $(CVS) -q tag `echo "release-$(VERSION)" | sed 's/\./-/g'`
 ## Generate signatures and directives for FSF ftp-upload:
-	ofile="$(PACKAGE)-$(VERSION).tar.gz"; \
-	$(GPG) --detach-sign $$ofile \
-	&& echo "directory: libtool" > $$ofile.directive \
-	&& $(GPG) --clearsign $$ofile.directive \
-	&& rm -f $$ofile.directive
+	for suffix in .gz .bz2; do \
+	  ofile="$(PACKAGE)-$(VERSION).tar.$$suffix"; \
+	  $(GPG) --detach-sign $$ofile \
+	  && echo "directory: libtool" > $$ofile.directive \
+	  && $(GPG) --clearsign $$ofile.directive \
+	  && rm -f $$ofile.directive; \
+	done
 
 .PHONY: new-tarball
 new-tarball:
