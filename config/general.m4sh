@@ -89,7 +89,11 @@ esac
 # Sed substitution that helps us do robust quoting.  It backslashifies
 # metacharacters that are still active within double-quoted strings.
 Xsed="${SED}"' -e 1s/^X//'
-sed_quote_subst='s/\([[\\`\\"$\\\\]]\)/\\\1/g'
+sed_quote_subst='s/\([[`"$\\]]\)/\\\1/g'
+
+# Same as above, but do not quote variable references.
+double_quote_subst='s/\([["`\\]]\)/\\\1/g'
+
 # test EBCDIC or ASCII
 case `$ECHO A|tr A '\301'` in
  A) # EBCDIC based system
@@ -252,10 +256,12 @@ func_mktempdir ()
 # Aesthetically quote ARG to be evaled later.
 func_quote_for_eval ()
 {
-  my_arg="$1"
+  my_arg=`$ECHO "X$1" | $Xsed -e "$sed_quote_subst"`
 
   case $my_arg in
-    # Double-quote args containing other shell metacharacters.
+    # Double-quote args containing shell metacharacters to delay
+    # word splitting, command substitution and and variable
+    # expansion for a subsequent eval.
     # Many Bourne shells cannot handle close brackets correctly
     # in scan sets, so we specify it separately.
     *[[\@<:@\~\#\^\&\*\(\)\{\}\|\;\<\>\?\'\ \	]]*|*@:>@*|"")
@@ -264,4 +270,25 @@ func_quote_for_eval ()
   esac
 
   func_quote_for_eval_result="$my_arg"
+}
+
+
+# func_quote_for_expand arg
+# Aesthetically quote ARG to be evaled later; same as above,
+# but do not quote variable references.
+func_quote_for_expand ()
+{
+  my_arg=`$ECHO "X$1" | $Xsed -e "$double_quote_subst"`
+
+  case $my_arg in
+    # Double-quote args containing shell metacharacters to delay
+    # word splitting and command substitution for a subsequent eval.
+    # Many Bourne shells cannot handle close brackets correctly
+    # in scan sets, so we specify it separately.
+    *[[\@<:@\~\#\^\&\*\(\)\{\}\|\;\<\>\?\'\ \	]]*|*@:>@*|"")
+      my_arg="\"$my_arg\""
+      ;;
+  esac
+
+  func_quote_for_expand_result="$my_arg"
 }
