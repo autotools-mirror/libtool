@@ -177,6 +177,7 @@ can_build_shared=yes
 enable_shared=yes
 # All known linkers require a `.a' archive for static linking.
 enable_static=yes
+enable_fast_install=yes
 enable_dlopen=unknown
 enable_dlopen_self=unknown
 ltmain=
@@ -231,6 +232,7 @@ Generate a system-specific libtool script.
     --debug                enable verbose shell tracing
     --disable-shared       do not build shared libraries
     --disable-static       do not build static libraries
+    --disable-fast-install do not optimize for fast installation
     --enable-dlopen        enable dlopen support
     --enable-dlopen-self   enable support for dlopening programs
     --help                 display this help and exit
@@ -260,6 +262,8 @@ EOM
   --disable-shared) enable_shared=no ;;
 
   --disable-static) enable_static=no ;;
+
+  --disable-fast-install) enable_fast_install=no ;;
 
   --enable-dlopen) enable_dlopen=yes ;;
 
@@ -1529,6 +1533,11 @@ else
 fi
 echo "$ac_t$hardcode_action" 1>&6
 
+if test "$hardcode_action" = relink || test "$shlibpath_overrides_rpath" = yes; then
+  # Fast installation is not supported/necessary
+  fast_install=no
+fi
+
 
 reload_flag=
 reload_cmds='$LD$reload_flag -o $output$reload_objs'
@@ -2010,6 +2019,9 @@ build_libtool_libs=$enable_shared
 
 # Whether or not to build static libraries.
 build_old_libs=$enable_static
+
+# Whether or not to optimize for fast installation.
+fast_install=$enable_fast_install
 
 # The host system.
 host_alias=$host_alias

@@ -26,6 +26,7 @@ AC_DEFUN(AC_PROG_LIBTOOL,
 [AC_PREREQ(2.12.2)dnl
 AC_REQUIRE([AC_ENABLE_SHARED])dnl
 AC_REQUIRE([AC_ENABLE_STATIC])dnl
+AC_REQUIRE([AC_ENABLE_FAST_INSTALL])dnl
 AC_REQUIRE([AC_CANONICAL_HOST])dnl
 AC_REQUIRE([AC_CANONICAL_BUILD])dnl
 AC_REQUIRE([AC_PROG_RANLIB])dnl
@@ -44,6 +45,7 @@ AC_SUBST(LIBTOOL)dnl
 libtool_flags=
 test "$enable_shared" = no && libtool_flags="$libtool_flags --disable-shared"
 test "$enable_static" = no && libtool_flags="$libtool_flags --disable-static"
+test "$enable_fast_install" = no && libtool_flags="$libtool_flags --disable-fast-install"
 test "x$lt_cv_dlopen" != xno && libtool_flags="$libtool_flags --enable-dlopen"
 test "x$lt_cv_dlopen_self" = xyes && libtool_flags="$libtool_flags --enable-dlopen-self"
 test "$silent" = yes && libtool_flags="$libtool_flags --silent"
@@ -187,10 +189,6 @@ enable_shared=AC_ENABLE_SHARED_DEFAULT)dnl
 AC_DEFUN(AC_DISABLE_SHARED,
 [AC_ENABLE_SHARED(no)])
 
-# AC_DISABLE_STATIC - set the default static flag to --disable-static
-AC_DEFUN(AC_DISABLE_STATIC,
-[AC_ENABLE_STATIC(no)])
-
 # AC_ENABLE_STATIC - implement the --enable-static flag
 # Usage: AC_ENABLE_STATIC[(DEFAULT)]
 #   Where DEFAULT is either `yes' or `no'.  If omitted, it defaults to
@@ -219,6 +217,44 @@ no) enable_static=no ;;
 esac],
 enable_static=AC_ENABLE_STATIC_DEFAULT)dnl
 ])
+
+# AC_DISABLE_STATIC - set the default static flag to --disable-static
+AC_DEFUN(AC_DISABLE_STATIC,
+[AC_ENABLE_STATIC(no)])
+
+
+# AC_ENABLE_FAST_INSTALL - implement the --enable-fast-install flag
+# Usage: AC_ENABLE_FAST_INSTALL[(DEFAULT)]
+#   Where DEFAULT is either `yes' or `no'.  If omitted, it defaults to
+#   `yes'.
+AC_DEFUN(AC_ENABLE_FAST_INSTALL,
+[define([AC_ENABLE_FAST_INSTALL_DEFAULT], ifelse($1, no, no, yes))dnl
+AC_ARG_ENABLE(fast-install,
+changequote(<<, >>)dnl
+<<  --enable-fast-install[=PKGS]  optimize for fast installation [default=>>AC_ENABLE_FAST_INSTALL_DEFAULT],
+changequote([, ])dnl
+[p=${PACKAGE-default}
+case "$enableval" in
+yes) enable_fast_install=yes ;;
+no) enable_fast_install=no ;;
+*)
+  enable_fast_install=no
+  # Look at the argument we got.  We use all the common list separators.
+  IFS="${IFS= 	}"; ac_save_ifs="$IFS"; IFS="${IFS}:,"
+  for pkg in $enableval; do
+    if test "X$pkg" = "X$p"; then
+      enable_fast_install=yes
+    fi
+  done
+  IFS="$ac_save_ifs"
+  ;;
+esac],
+enable_fast_install=AC_ENABLE_FAST_INSTALL_DEFAULT)dnl
+])
+
+# AC_ENABLE_FAST_INSTALL - set the default to --disable-fast-install
+AC_DEFUN(AC_DISABLE_FAST_INSTALL,
+[AC_ENABLE_FAST_INSTALL(no)])
 
 
 # AC_PROG_LD - find the path to the GNU or non-GNU linker

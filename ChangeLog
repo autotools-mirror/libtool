@@ -1,3 +1,16 @@
+1999-03-07  Thomas Tanner  <tanner@gmx.de>
+
+	* TODO: scheduled some items for next release/future
+	* demo/configure.in: use AC_LIBTOOL_DLOPEN
+	* libtool.m4: added AC_ENABLE/DISABLE_FAST_INSTALL macro
+	* ltconfig.in: added --disable-fast-install flag
+	* ltmain.in: partially reverted Alexandre's patch and implemented
+	  on-demand linking in such a way that the old developer-friendly
+	  linking style is optional,
+	  don't hardcode library paths that are in the system search path,
+	  fixed a typo in lib_search_path,
+	  implemented -export-symbols-regex for programs
+
 1999-03-06  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* libltdl/ltdl.c (LTDL_LAZY_OR_NOW): renamed from LTDL_NOW; prefer 

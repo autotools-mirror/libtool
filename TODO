@@ -4,22 +4,22 @@ For next alpha release:
 * Fast installation (linking on demand in the build tree)
 must be optional.
 
+* libltdl is broken when configured with --enable-ltdl-install
+
+* update the NEWS file
+
+For next public release:
+************************
+
 * check whether the version of libtool.m4 is compatible
 with ltconfig/ltmain.sh
 
-* libltdl is broken when configured with --enable-ltdl-install
-
 * check whether the "file" command is available
-
-* update the NEWS file
 
 * Tom Lane adds that HP-UX's linker, at least (I've also found this on
 AIX 4), distinguishes between global function and global variable
 references.  This means that we cannot declare every symbol as `extern
 char'.  Find a workaround.
-
-For next public release:
-************************
 
 * Inter-library dependencies should be fully tracked by libtool
 and need to work for ltlibraries too. This requires looking up 
@@ -32,6 +32,20 @@ paths into libraries, as well as binaries: `... -Wl,-soname
 
 * Lists of exported symbols should be stored in the pseudo library
 so that the size of lt_preloaded_symbols can be reduced.
+
+* Documentation:
+
+- libltdl documentation needs to be completed.
+
+- AC_PROG_LIBTOOL, AC_ENABLE/DISABLE_SHARED/STATIC/FAST_INSTALL,
+  AC_LIBTOOL_DLOPEN are not documented.
+
+- Purpose and usage of convenience libraries must be better documented
+
+- some new internal variables are not documented yet.
+
+In the future:
+**************
 
 * Godmar Back writes:
   libltdl uses such stdio functions as fopen, fgets, feof, fclose, and others.
@@ -48,20 +62,6 @@ so that the size of lt_preloaded_symbols can be reduced.
   I believe relying on async-signal-safe functions to the greatest extent
   possible would greatly improve libltdl's ability to be embedded in and 
   used by other systems.
-
-* Documentation:
-
-- libltdl documentation needs to be completed.
-
-- AC_PROG_LIBTOOL, AC_ENABLE/DISABLE_SHARED/STATIC, AC_LIBTOOL_DLOPEN
-  are not documented.
-
-- Purpose and usage of convenience libraries must be better documented
-
-- some new internal variables are not documented yet.
-
-In the future:
-**************
 
 * Fix */demo on win32.
 This may require resolving some of the items below.
