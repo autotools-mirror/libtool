@@ -4826,10 +4826,10 @@ objects.
 @node Multiple dependencies
 @subsection Multiple dependencies
 
-On most modern platforms the order that dependent libraries are listed
+On most modern platforms the order in which dependent libraries are listed
 has no effect on object generation.  In theory, there are platforms
 which require libraries which provide missing symbols to other libraries
-to listed after those libraries whose symbols they provide.
+to be listed after those libraries whose symbols they provide.
 
 Particularly, if a pair of static archives each resolve some of the
 other's symbols, it might be necessary to list one of those archives
