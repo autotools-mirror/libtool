@@ -477,6 +477,8 @@ compiler."
 
       # If we have no pic_flag, then copy the object into place and finish.
       if test -z "$pic_flag"; then
+	$show $rm $obj
+	$run $rm $obj
 	$show "$LN_S $libobj $obj"
 	if $run $LN_S $libobj $obj; then
 	  exit 0
@@ -1723,6 +1725,8 @@ EOF
 	IFS="$save_ifs"
       else
 	# Just create a symlink.
+	$show $rm $libobj
+	$run $rm $libobj
 	$show "$LN_S $obj $libobj"
 	$run $LN_S $obj $libobj || exit $?
       fi
