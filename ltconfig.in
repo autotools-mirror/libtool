@@ -39,6 +39,7 @@ help="Try \`$progname --help' for more information."
 
 # Global variables:
 enable_shared=yes
+# All known linkers require a `.a' archive for static linking.
 enable_static=yes
 ltmain=NONE
 silent=
@@ -136,7 +137,7 @@ if test "$ltmain" = NONE; then
   exit 1
 fi
 
-if test -e "$ltmain"; then :
+if test -f "$ltmain"; then :
 else
   echo "$progname: warning: \`$ltmain' does not exist" 1>&2
 fi
@@ -246,6 +247,50 @@ host_cpu=`echo $host | sed 's/^\(.*\)-\(.*\)-\(.*\)$/\1/'`
 host_vendor=`echo $host | sed 's/^\(.*\)-\(.*\)-\(.*\)$/\2/'`
 host_os=`echo $host | sed 's/^\(.*\)-\(.*\)-\(.*\)$/\3/'`
 
+# Determine commands to create old-style static archives.
+old_archive_cmds='ar cru $oldlib$oldobjs'
+old_postinstall_cmds='chmod 644 $oldlib'
+
+# If RANLIB is not set, then run the test.
+if test -z "$RANLIB"; then
+  result=no
+
+  echo $ac_n "checking for ranlib... $ac_c" 1>&6
+  if test "$result" = no; then
+    IFS="${IFS= 	}"; save_ifs="$IFS"; IFS="${IFS}:"
+    for dir in $PATH; do
+      test -z "$dir" && dir=.
+      if test -f $dir/ranlib; then
+	RANLIB="ranlib"
+	result="ranlib"
+	break
+      fi
+    done
+    IFS="$save_ifs"
+  fi
+
+  echo $ac_t "$result" 1>&6
+fi
+
+if test -n "$RANLIB"; then
+  old_archive_cmds="$old_archive_cmds;\$RANLIB \$oldlib"
+  old_postinstall_cmds='$RANLIB $oldlib'
+fi
+
+# FIXME: this is simplistic, and doesn't allow for cross-compiling.
+echo $ac_n "checking for library strip program... $ac_c" 1>&6
+striplib=
+if strip -x /dev/null 2>&1 | grep '/dev/null' >/dev/null 2>&1; then
+  # strip: /dev/null: Inappropriate file type or format
+  striplib="strip -x"
+fi
+
+if test -n "$striplib"; then
+  echo $ac_t "$striplib" 1>&6
+else
+  echo $ac_t none 1>&6
+fi
+
 # Check to see if we are using GCC.
 if test "$with_gcc" = no; then
   # If CC is not set, then try to find GCC or a usable CC.
@@ -342,17 +387,12 @@ if test "$with_gcc" = yes; then
   profile_flag_pattern='-pg?'
   wl='-Wl,'
   link_static_flag='-static'
-  case "$host" in
-  *-*-aix3* | *-*-aix4*)
-    # Yippee! All AIX code is position-independent.
-    compile_flags='-DPIC'
-    ;;
-  esac
 else
   # PORTME Check for PIC flags for the system compiler.
   case "$host" in
   *-*-aix3* | *-*-aix4*)
-    compile_flags='-DPIC'
+    # FIXME compile_flags, or are all AIX platforms PIC?
+    link_static_flags='-bnso -bI:/lib/syscalls.exp'
     ;;
 
   *-*-hpux10*)
@@ -360,7 +400,7 @@ else
     ;;
 
   *-*-osf3*)
-    # Yippee! Another system with position-independant code by default.
+    # FIXME - compile_flags, link_static_flag?
     compile_flags='-DPIC'
     ;;
 
@@ -372,6 +412,7 @@ else
   *-*-sunos4*)
     compile_flags='-PIC -DPIC'
     link_static_flag='-Bstatic'
+    wl='-Qoption ld '
     ;;
 
   *)
@@ -379,6 +420,13 @@ else
     ;;
   esac
 fi
+
+case "$host" in
+rs6000-*-*)
+  # Yippee! All rs/6000 code is position-independent.
+  compile_flags='-DPIC'
+  ;;
+esac
 
 if test -n "$compile_flags"; then
   echo $ac_t "$compile_flags" 1>&6
@@ -439,13 +487,13 @@ else
   # PORTME fill in a description of your system's linker (not GNU ld)
   case "$host" in
   *-*-aix3*)
-    archive_cmds='$rm $lib.exp;/ucb/nm$libobjs | egrep " D " | sed "s/^.* //" > $lib.exp;$LD -o $lib.o$libobjs -bE:$lib.exp -T512 -H512 -bM:SRE -lc$deplibs;ar cru $lib $lib.o'
+    archive_cmds='$rm $lib.exp;/ucb/nm$libobjs | egrep \" D \" | sed \"s/^.* //\" > $lib.exp;$LD -o $objdir/$soname$libobjs -bE:$lib.exp -T512 -H512 -bM:SRE -lc$deplibs;ar cru $lib $objdir/$soname'
     hardcode_shlibpath_var=yes
     hardcode_minus_L=yes
     ;;
 
   *-*-aix4*)
-    archive_cmds='$rm $lib.exp;/bin/nm -B$libobjs | egrep " D " | sed "s/^.* //" > $lib.exp;$cc -o $lib.o$libobjs ${wl}-bE:$lib.exp ${wl}-bM:SRE ${wl}-bnoentry$deplibs;ar cru $lib $lib.o'
+    archive_cmds='$rm $lib.exp;/bin/nm -B$libobjs | egrep \" D \" | sed \"s/^.* //\" > $lib.exp;$cc -o $objdir/$soname$libobjs ${wl}-bE:$lib.exp ${wl}-bM:SRE ${wl}-bnoentry$deplibs;ar cru $lib $objdir/$soname'
     hardcode_shlibpath_var=yes
     hardcode_minus_L=yes
     ;;
@@ -453,7 +501,6 @@ else
   *-*-freebsd*)
     archive_cmds='$LD -Bshareable -o $lib$libobjs$deplibs'
     hardcode_minus_L=yes
-    link_rpath_flag='-L$libdir'
     ;;
 
   *-*-hpux10*)
@@ -504,7 +551,7 @@ lib_names=
 soname_spec=
 postinstall_cmds=
 finish_cmds=
-shlibpath_var=LD_LIBRARY_PATH
+shlibpath_var=
 version_type=none
 dynamic_linker="$host_os ld.so"
 
@@ -514,31 +561,37 @@ case "$host" in
   # Shared libraries and static libraries currently use the same namespace.
   test "$enable_shared" = no || enable_static=no
 
-  version_type=solaris  # But only for show... AIX has no versioning.
+  version_type=linux
   lib_names='$libname.so.$versuffix $libname.a'
   shlibpath_var=LIBPATH
+
+  # AIX has no versioning support, so we append a major version to the name.
+  soname_spec='$libname.so.$major'
   ;;
 
 *-*-freebsd*)
   version_type=sunos
   lib_names='$libname.so.$versuffix $libname.so'
   finish_cmds='ldconfig -m $libdir'
+  shlibpath_var=LD_LIBRARY_PATH
   ;;
 
 *-*-gnu*)
   version_type=sunos
   lib_names='$libname.so.$versuffix'
+  shlibpath_var=LD_LIBRARY_PATH
   ;;
 
 *-*-hpux10*)
   # Give a soname corresponding to the major version so that dld.sl refuses to
   # link against other versions.
   dynamic_linker="$host_os dld.sl"
-  version_type=hpux
+  version_type=sunos
   shlibpath_var=SHLIB_PATH
   lib_names='$libname.sl.$versuffix $libname.sl.$major $libname.sl'
   soname_spec='$libname.sl.$major'
-  postinstall='chmod 555 $lib'
+  # HP-UX runs *really* slowly unless shared libraries are mode 555.
+  postinstall_cmds='chmod 555 $lib'
   ;;
 
 # No shared lib support for linuxoldld or linuxaout.
@@ -548,32 +601,39 @@ case "$host" in
   ;;
 
 *-*-linux*)
-  version_type=solaris
+  version_type=linux
   lib_names='$libname.so.$versuffix $libname.so.$major $libname.so'
-  finish_cmds='ldconfig $libdir'
+  soname_spec='$libname.so.$major'
+  finish_cmds='ldconfig -n $libdir'
+  shlibpath_var=LD_LIBRARY_PATH
   ;;
 
 *-*-netbsd*)
   version_type=sunos
   lib_names='$libname.so.$versuffix'
   finish_cmds='ldconfig -m $libdir'
+  shlibpath_var=LD_LIBRARY_PATH
   ;;
 
 *-*-osf3*)
   version_type=osf
   soname_spec='$libname.so'
   lib_names='$libname.so.$versuffix $libname.so'
+  shlibpath_var=LD_LIBRARY_PATH
   ;;
 
 *-*-solaris2*)
-  version_type=solaris
-  lib_names='$libname.so.$versuffix'
+  version_type=linux
+  lib_names='$libname.so.$versuffix $libname.so.$major $libname.so'
+  soname_spec='$libname.so.$major'
+  shlibpath_var=LD_LIBRARY_PATH
   ;;
 
 *-*-sunos4*)
   version_type=sunos
   lib_names='$libname.so.$versuffix'
   finish_cmds='ldconfig $libdir'
+  shlibpath_var=LD_LIBRARY_PATH
   ;;
 
 *)
@@ -589,40 +649,22 @@ echo "checking if libtool supports shared libraries... $can_build_shared" 1>&6
 
 echo $ac_n "checking whether to build shared libraries... $ac_c" 1>&6
 test "$can_build_shared" = "no" && enable_shared=no
+
+if test "$enable_shared" = yes; then
+  # On AIX, we do not build both static and shared libraries.
+  case "$host_os" in
+  aix*)
+    test "$enable_static" = yes && enable_static=no
+    if test -n "$RANLIB"; then
+      archive_cmds="$archive_cmds;\$RANLIB \$lib"
+      postinstall_cmds='$RANLIB $lib'
+    fi
+    ;;
+  esac
+fi
+
 echo "$ac_t""$enable_shared" 1>&6
 
-# All known linkers require a `.a' archive for static linking.
-enable_static=yes
-
-# Determine commands to create old-style static archives.
-old_archive_cmds='ar cru $oldlib$oldobjs'
-old_postinstall_cmds=''
-
-# If RANLIB is not set, then run the test.
-if test -z "$RANLIB"; then
-  result=no
-
-  echo $ac_n "checking for ranlib... $ac_c" 1>&6
-  if test "$result" = no; then
-    IFS="${IFS= 	}"; save_ifs="$IFS"; IFS="${IFS}:"
-    for dir in $PATH; do
-      test -z "$dir" && dir=.
-      if test -f $dir/ranlib; then
-	RANLIB="ranlib"
-	result="ranlib"
-	break
-      fi
-    done
-    IFS="$save_ifs"
-  fi
-
-  echo $ac_t "$result" 1>&6
-fi
-
-if test -n "$RANLIB"; then
-  old_archive_cmds="$old_archive_cmds;\$RANLIB \$oldlib"
-  old_postinstall_cmds='$RANLIB $oldlib'
-fi
 
 ofile=libtool
 trap "rm -fr $ofile; exit 1" 1 2 15
@@ -695,6 +737,9 @@ finish_cmds='$finish_cmds'
 
 # The flag that specifies a runtime search path when linking.
 link_rpath_flag='$link_rpath_flag'
+
+# How to strip a library file.
+striplib='$striplib'
 
 # This is the shared library path variable.
 shlibpath_var=$shlibpath_var

@@ -1,3 +1,20 @@
+Mon Dec  2 13:57:28 1996  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* tests: Added new subdirectory.
+
+	* doc/libtool.texi: Doc fixes, and finished up the Configuring
+	chapter.
+
+	* ltmain.sh.in (link): Allow *._o and *.l_o to be valid object
+	file suffixes, for Automake's ansi2knr implementation.
+	New option -version-info replaces -version-file.
+
+	[help]: Give a pointer to mode-specific help when appropriate.
+
+	* ltconfig.in: Changed messages to correspond to AM_PROG_CC_STDC.
+
+	* demo: Also test Automake's ansi2knr support.
+
 Tue Nov 19 14:09:27 1996  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltconfig.in: Bug fixes for AIX 4, and for static platforms.
