@@ -1,3 +1,12 @@
+2000-10-31  Akim Demaille  <akim@epita.fr>
+
+	* libtool.m4: Adjust the copyright notice.
+	Quote all the macro names when defined.
+	Some minor formatting changes.
+	(AM_PROG_LIBTOOL, AM_ENABLE_SHARED, AM_ENABLE_STATIC)
+	(AM_DISABLE_SHARED, AM_DISABLE_STATIC, AM_PROG_LD, AM_PROG_NM):
+	Don't use indir when useless.  Don't add trailing `dnl' either.
+
 2000-10-30  Gary V. Vaughan  <gvv@techie.com>
 
 	* doc/libtool.texi:  Corrected nother attack of CRLF line
