@@ -1,3 +1,9 @@
+2004-07-18  Peter O'Gorman  <peter@pogma.com>
+
+	* libltdl/Makefile.am: Ensure that lt__dirent.h is part of the dist,
+	also make failed looking for configure.ac, look for 
+	$(top_srcdir)/configure.ac instead.
+
 2004-07-15  Gary V. Vaughan  <gary@gnu.org>
 
 	* libltdl/lt__private.h (lt_dlhandle_struct): Renamed to

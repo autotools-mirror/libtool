@@ -38,6 +38,7 @@ libdlloader_la_SOURCES  = lt_error.h lt_error.c \
 			  lt__private.h lt_system.h \
 			  lt__alloc.h lt__alloc.c \
 			  lt__glibc.h \
+			  lt__dirent.h \
 			  slist.h slist.c
 libdlloader_la_LDFLAGS	= $(VERSION_INFO)
 libdlloader_la_LIBADD	= $(LTLIBOBJS)
@@ -67,7 +68,7 @@ libltdlc_la_LIBADD	=  $(libdlloader_la_OBJECTS) $(libdlloader_la_LIBADD)
 ## These are installed as a subdirectory of pkgdatadir so that
 ## libtoolize --ltdl can find them later:
 ltdldatadir		= $(pkgdatadir)/libltdl
-nobase_ltdldata_DATA	= COPYING.LIB Makefile.am README configure.ac \
+nobase_ltdldata_DATA	= COPYING.LIB Makefile.am README $(top_srcdir)/configure.ac \
 			  $(libltdl_la_SOURCES) $(libdlloader_la_SOURCES) \
 			  lt__dirent.c lt__dirent.h argz_.h argz.c
 
