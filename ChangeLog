@@ -1,3 +1,7 @@
+2000-08-01  Alexandre Oliva  <aoliva@redhat.com>
+
+	* ltconfig.in (need_lc): Fix test message.
+
 2000-07-24  Mocha  <netbsd_alpha@yahoo.com>
 
 	* ltconfig.in (NetBSD, deplibs_check_method): Use file_magic.

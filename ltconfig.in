@@ -2032,7 +2032,7 @@ if test "$enable_shared" = yes && test "$with_gcc" = yes; then
     # Test whether the compiler implicitly links with -lc since on some
     # systems, -lgcc has to come before -lc. If gcc already passes -lc
     # to ld, don't add -lc before -lgcc.
-    echo $ac_n "checking whether -lc is implicitly linked in... $ac_c" 1>&6
+    echo $ac_n "checking whether -lc should be explicitly linked in... $ac_c" 1>&6
     if eval "test \"`echo '$''{'ac_cv_archive_cmds_needs_lc'+set}'`\" = set"; then
       echo $ac_n "(cached) $ac_c" 1>&6
       need_lc=$ac_cv_archive_cmds_needs_lc
