@@ -66,6 +66,24 @@ Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 # define lt_ptr_t	char*
 #endif
 
+/* LTDL_STMT_START/END are used to create macros which expand to a
+   a single compound statement in a portable way. */
+#undef LTDL_STMT_START
+#undef LTDL_STMT_END
+#if defined (__GNUC__) && !defined (__STRICT_ANSI__) && !defined (__cplusplus)
+#  define LTDL_STMT_START        (void)(
+#  define LTDL_STMT_END          )
+#else
+#  if (defined (sun) || defined (__sun__))
+#    define LTDL_STMT_START      if (1)
+#    define LTDL_STMT_END        else (void)0
+#  else
+#    define LTDL_STMT_START      do
+#    define LTDL_STMT_END        while (0)
+#  endif
+#endif
+
+
 #ifdef WIN32
 #  ifndef __CYGWIN__
 /* LTDL_DIRSEP_CHAR is accepted *in addition* to '/' as a directory
@@ -130,8 +148,10 @@ extern int lt_dlsetdata LTDL_PARAMS((lt_dlhandle handle, lt_ptr_t data));
 extern lt_ptr_t lt_dlgetdata LTDL_PARAMS((lt_dlhandle handle));
 extern const lt_dlinfo *lt_dlgetinfo LTDL_PARAMS((lt_dlhandle handle));
 
-LTDL_SCOPE const lt_dlsymlist lt_preloaded_symbols[];
-#define LTDL_SET_PRELOADED_SYMBOLS() lt_dlpreload_default(lt_preloaded_symbols)
+#define LTDL_SET_PRELOADED_SYMBOLS() 		LTDL_STMT_START{	\
+	extern const lt_dlsymlist lt_preloaded_symbols[];		\
+	lt_dlpreload_default(lt_preloaded_symbols);			\
+						}LTDL_STMT_END
 
 LTDL_SCOPE lt_ptr_t (*lt_dlmalloc)LTDL_PARAMS((size_t size));
 LTDL_SCOPE void (*lt_dlfree)LTDL_PARAMS((lt_ptr_t ptr));

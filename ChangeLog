@@ -1,5 +1,14 @@
 2000-01-14  Gary V. Vaughan  <gary@oranda.demon.co.uk>
 
+	* libltdl/ltdl.h (LTDL_STMT_START, LTDL_STMT_END):  Macros for
+	wrapping other macros to make a portable compound statement from
+	multiple C statements in the expansion.
+	(LTDL_SET_PRELOADED_SYMBOLS): Use the above macros to add an
+	extern declaration for lt_preloaded_symbols, to remove
+	dependency on undefined symbol from libltdl.dll on cygwin (and
+	other -no-undefined architectures).
+	* libltdl/ltdl.c (lt_preloaded_symbols): No longer defined here.
+
 	* libtool,m4 (AC_LIBTOOL_SETUP):  The result of lt_cv_need_dllmain
 	was set to the opposite of what it should be.
 	* configure.in (AC_LIBTOOL_WIN32_DLL):  Call to this macro is

@@ -104,11 +104,6 @@ static const char invalid_handle_error[] = "invalid handle";
 static const char buffer_overflow_error[] = "internal buffer overflow";
 static const char shutdown_error[] = "library already shutdown";
 
-#ifndef HAVE_PRELOADED_SYMBOLS
-/* If libtool won't define it, we'd better do */
-LTDL_GLOBAL_DATA const lt_dlsymlist lt_preloaded_symbols[1] = { { 0, 0 } };
-#endif
-
 static const char *last_error = 0;
 
 LTDL_GLOBAL_DATA lt_ptr_t (*lt_dlmalloc) LTDL_PARAMS((size_t size)) = (lt_ptr_t(*)LTDL_PARAMS((size_t)))malloc;
