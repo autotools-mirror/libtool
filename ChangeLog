@@ -1,11 +1,15 @@
-2005-03-06  Per Bothner <per@bothner.com>,
-            Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+2005-03-12  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* configure.ac: stamp-vcl is in $top_srcdir, not $top_builddir.
+
+2005-03-12  Per Bothner <per@bothner.com>,
+	    Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	Allow special characters in source file names.  Will break unless
 	`-o target' is also given, which must not contain special characters.
 	En passant, fix source file quoting broken for cygwin/MSVC.
 
-	* ltmain.m4sh (func_mode_compile): Use new variable qsrcfile
+	* config/ltmain.m4sh (func_mode_compile): Use new variable qsrcfile
 	for quoted source file name for compile $command.  Fix missing
 	quotes for _c_o lockfile.
 	* NEWS: Update.
