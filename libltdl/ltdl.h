@@ -40,16 +40,16 @@ Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 # define __END_DECLS /* empty */
 #endif
 
-/* __P is a macro used to wrap function prototypes, so that compilers
+/* PARAMS is a macro used to wrap function prototypes, so that compilers
    that don't understand ANSI C prototypes still work, and ANSI C
    compilers can issue warnings about type mismatches. */
-#undef __P
+#undef PARAMS
 #undef lt_ptr_t
 #if defined (__STDC__) || defined (_AIX) || (defined (__mips) && defined (_SYSTYPE_SVR4)) || defined(WIN32) || defined(__cplusplus)
-# define __P(protos)	protos
+# define PARAMS(protos)	protos
 # define lt_ptr_t	void*
 #else
-# define __P(protos)	()
+# define PARAMS(protos)	()
 # define lt_ptr_t	char*
 #endif
 
@@ -67,24 +67,24 @@ typedef struct {
 } lt_dlsymlist;
 
 __BEGIN_DECLS
-extern int lt_dlinit __P((void));
-extern int lt_dlpreload __P((const lt_dlsymlist *preloaded));
-extern int lt_dlpreload_default __P((const lt_dlsymlist *preloaded));
-extern int lt_dlexit __P((void));
-extern lt_dlhandle lt_dlopen __P((const char *filename));
-extern lt_dlhandle lt_dlopenext __P((const char *filename));
-extern int lt_dlclose __P((lt_dlhandle handle));
-extern lt_ptr_t lt_dlsym __P((lt_dlhandle handle, const char *name));
-extern const char *lt_dlerror __P((void));
-extern int lt_dladdsearchdir __P((const char *search_dir));
-extern int lt_dlsetsearchpath __P((const char *search_path));
-extern const char *lt_dlgetsearchpath __P((void));
+extern int lt_dlinit PARAMS((void));
+extern int lt_dlpreload PARAMS((const lt_dlsymlist *preloaded));
+extern int lt_dlpreload_default PARAMS((const lt_dlsymlist *preloaded));
+extern int lt_dlexit PARAMS((void));
+extern lt_dlhandle lt_dlopen PARAMS((const char *filename));
+extern lt_dlhandle lt_dlopenext PARAMS((const char *filename));
+extern int lt_dlclose PARAMS((lt_dlhandle handle));
+extern lt_ptr_t lt_dlsym PARAMS((lt_dlhandle handle, const char *name));
+extern const char *lt_dlerror PARAMS((void));
+extern int lt_dladdsearchdir PARAMS((const char *search_dir));
+extern int lt_dlsetsearchpath PARAMS((const char *search_path));
+extern const char *lt_dlgetsearchpath PARAMS((void));
 
 extern const lt_dlsymlist lt_preloaded_symbols[];
 #define LTDL_SET_PRELOADED_SYMBOLS() lt_dlpreload_default(lt_preloaded_symbols)
 
-extern lt_ptr_t (*lt_dlmalloc)__P((size_t size));
-extern void (*lt_dlfree)__P((lt_ptr_t ptr));
+extern lt_ptr_t (*lt_dlmalloc)PARAMS((size_t size));
+extern void (*lt_dlfree)PARAMS((lt_ptr_t ptr));
 
 __END_DECLS
 
