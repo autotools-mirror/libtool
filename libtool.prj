@@ -1,11 +1,11 @@
 ;; -*- Lisp -*-
 (Created-By-Prcs-Version 1 2 1)
 (Project-Description "GNU libtool library support script")
-(Project-Version libtool 1.0h 1)
-(Parent-Version libtool 1.0g 5)
-(Version-Log "Cut 1.0g release.")
+(Project-Version libtool 1.0h 2)
+(Parent-Version libtool 1.0h 1)
+(Version-Log "")
 (New-Version-Log "")
-(Checkin-Time "Sat, 29 Nov 1997 14:03:11 -0700")
+(Checkin-Time "Sat, 29 Nov 1997 14:03:42 -0700")
 (Checkin-Login gord)
 (Populate-Ignore ("~$" "Makefile$" "Makefile\\.in$" "aclocal\\.m4$"
 		  "configure$" "config\\.status$" "config\\.cache$"
@@ -33,7 +33,7 @@
   (libtool.spec (libtool/46_libtool.sp 1.5 664))
 
 ;; Top directory.
-  (Makefile.am (libtool/18_Makefile.a 1.32 664))
+  (Makefile.am (libtool/18_Makefile.a 1.33 664))
   (configure.in (libtool/13_configure. 1.4.1.29 664))
   (lineno (libtool/49_lineno 1.1 775))
   (ltmain.in (libtool/2_ltmain.sh. 1.4.1.52 664))
