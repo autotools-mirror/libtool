@@ -936,6 +936,8 @@ func_massage_pkgvltdl_files ()
 
     func_copy_some_files "$pkgvmacro_files" "$pkgvmacrodirs" \
       "$m4dir" func_serial_update
+  else
+    func_verbose "AC_CONFIG_MACRO_DIR not defined, not copying libtool macro files."
   fi
 }
 
