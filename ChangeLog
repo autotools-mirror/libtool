@@ -1,3 +1,7 @@
+2003-08-01  Robert Boehne  <rboehne@gnu.org>
+
+	* libltdl/ltdl.h: Tweak the header to support visual studio.
+
 2003-07-31  Greg Eisenhauer  <eisen@cc.gatech.edu>
 
 	* ltmain.in: Provide absolute paths for dlopen and dlpreopen
