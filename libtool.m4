@@ -529,11 +529,7 @@ cygwin* | mingw*)
   ;;
 
 freebsd* )
-  case "$version_type" in
-  freebsd-elf*)
-    lt_cv_deplibs_check_method=pass_all
-    ;;
-  *)
+  if echo __ELF__ | $CC -E - | grep __ELF__ > /dev/null; then
     case "$host_cpu" in
     i*86 )
       changequote(,)dnl
@@ -543,8 +539,9 @@ freebsd* )
       lt_cv_file_magic_test_file=`echo /usr/lib/libc.so.*`
       ;;
     esac
-    ;;
-  esac
+  else
+    lt_cv_deplibs_check_method=pass_all
+  fi
   ;;
 
 gnu*)

@@ -1,5 +1,8 @@
 2000-07-10  Alexandre Oliva  <aoliva@lsd.ic.unicamp.br>
 
+	* libtool.m4 (lt_cv_deplibs_check_method, freebsd): Do not depend
+	on $version_type; check for ELF support as in other BSDs.
+
 	* libtool.m4 (AC_LIBTOOL_GCJ): Require either AC_PROG_GCJ or
 	AM_PROG_GCJ.
 	(AC_PROG_LIBTOOL): Change internal comments to dnl, so that they
