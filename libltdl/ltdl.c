@@ -1969,7 +1969,7 @@ tryall_dlopen_module (handle, prefix, dirname, dlname)
      shuffled.  Otherwise, attempt to open FILENAME as a module.  */
   if (prefix)
     {
-      tryall_dlopen_module (handle, 0, prefix, filename);
+      error += tryall_dlopen_module (handle, 0, prefix, filename);
     }
   else if (tryall_dlopen (handle, filename) != 0)
     {
