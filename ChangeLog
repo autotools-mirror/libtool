@@ -1,5 +1,10 @@
 1999-04-02  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* depdemo/l1/Makefile.am (AUTOMAKE_OPTIONS): no-dependencies
+	* depdemo/l2/Makefile.am (AUTOMAKE_OPTIONS): ditto
+	* depdemo/l3/Makefile.am (AUTOMAKE_OPTIONS): ditto
+	* depdemo/l4/Makefile.am (AUTOMAKE_OPTIONS): ditto
+
 	* ltconfig.in (archive_cmds, sunos4*): where we used -Bstatic, we
 	should have been using -Bshareable
 

@@ -1,5 +1,7 @@
 ## Process this file with automake to produce Makefile.in
 
+AUTOMAKE_OPTIONS = no-dependencies foreign
+
 INCLUDES = -I$(top_srcdir)
 
 lib_LTLIBRARIES = libl1.la
