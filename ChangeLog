@@ -1,3 +1,7 @@
+2001-04-05  Gary V. Vaughan  <gvv@techie.com>
+
+	* NEWS (1.3d) Removed bogus ltconfig reference.
+
 2001-03-23  Robert Boehne  <rboehne@ricardo-us.com>
 
 	* bootstrap, configure.in: Added references to configure the new
