@@ -1,6 +1,12 @@
 NEWS - list of user-visible changes between releases of GNU Libtool
 
 New in 1.9d: 2004-??-??; CVS version 1.9c, Libtool team:
+* If non-pic objects were not compiled, and libtool is called in link mode,
+  libtool no longer silently creates an empty archive, but rather falls
+  back to pic objects.
+* libtool uses automake's $(mkdir_p), and can support `make -j' on
+  multi-processor hosts if automake discovered a multithreadable mkdir.  If
+  it still doesn't work for you, install GNU mkdir (in GNU coreutils).
 * Return type, and name parameter of lt_dlloader_remove are no longer
   `const'.
 * Name parameter of lt_dlloader_find is no longer 'const'.
@@ -10,9 +16,6 @@ New in 1.9d: 2004-??-??; CVS version 1.9c, Libtool team:
   types have been exchanged.  See libltdl/slist.c for documentation.
 * libltdl is C89 compatible again.  lt_dlsymbol type removed, and lt_dlsymlist
   structure changed to avoid using C99 flexible arrays.
-* libtool uses automake's $(mkdir_p), and can support `make -j' on
-  multi-processor hosts if automake discovered a multithreadable mkdir.  If
-  it still doesn't work for you, install GNU mkdir (in GNU coreutils).
 * Fixed some memory leaks in libltdl.
 
 New in 1.9b: 2004-08-29; CVS version 1.5a, Libtool team:
