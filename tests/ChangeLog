@@ -1,3 +1,9 @@
+1998-11-19  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* mdemo-inst.test (libltdl): install it
+	* mdemo-unst.test (libltdl): uninstall it
+	* Makefile.am (TESTS): list ltdl-unst.test before mdemo-conf.test
+
 1998-11-07  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* sh.test (test X): ensure that the double-quote supposed to be

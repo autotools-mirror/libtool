@@ -5,8 +5,9 @@ AUTOMAKE_OPTIONS = gnits
 TESTS = demo-conf.test demo-make.test demo-exec.test \
 	demo-inst.test demo-unst.test hardcode.test \
 	ltdl-conf.test ltdl-make.test ltdl-inst.test \
+	ltdl-unst.test \
 	mdemo-conf.test mdemo-make.test mdemo-exec.test \
-	mdemo-inst.test mdemo-unst.test ltdl-unst.test \
+	mdemo-inst.test mdemo-unst.test \
 	link.test link-2.test nomode.test \
 	quote.test sh.test suffix.test
 

@@ -17,6 +17,12 @@ else
   exit 1
 fi
 
+if test -f ../libltdl/libltdl.la; then
+  cd ../libltdl || exit 1
+  echo "= Running $make uninstall in ../libltdl"
+  $make uninstall || exit 1
+fi
+
 # Change to our build directory.
 cd ../mdemo || exit 1
 
