@@ -23,7 +23,12 @@
 ## the same distribution terms that you use for the rest of that program.
 
 # serial 47 AC_PROG_LIBTOOL
-# -------------------------
+
+# The next line was added by Bruno Haible 2001-06-28.
+builtin([undefine],[symbols])
+
+# AC_PROG_LIBTOOL
+# ---------------
 AC_DEFUN([AC_PROG_LIBTOOL],
 [AC_REQUIRE([_AC_PROG_LIBTOOL])dnl
 dnl If AC_PROG_CXX has already been expanded, run AC_LIBTOOL_CXX

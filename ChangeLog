@@ -1,5 +1,10 @@
 2001-06-29  Gary V. Vaughan  <gary@gnu.org>
 
+	From Bruno Haible <haible@ilog.fr>
+	* libtool.m4:  undefine the m4 builtin `symbols', so that the
+	string `symbols' can be used in the rest of the code without
+	causing errors with autoconf-2.13.
+	
 	From "Golubev I. N." <gin@mo.msk.ru>
 	* tests/Makefile.am (CPPLAGS): Typo. s/CPPLAGS/CPPFLAGS.
 
