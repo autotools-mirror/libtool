@@ -678,7 +678,12 @@ lt_save_CC="$CC"
 lt_save_CFLAGS="$CFLAGS"
 dnl Make sure LTCC is set to the C compiler, i.e. set LTCC before CC
 dnl is set to the C++ compiler.
-LTCC="$CC" CC="$CXX" CFLAGS="$CXXFLAGS" ${CONFIG_SHELL-/bin/sh} $ac_aux_dir/ltconfig -o libtool --add-tag=CXX $ac_aux_dir/ltcf-cxx.sh || AC_MSG_ERROR([libtool tag configuration failed])
+deplibs_check_method="$deplibs_check_method" \
+file_magic_cmd="$file_magic_cmd" \
+LTCC="$CC" CC="$CXX" CFLAGS="$CXXFLAGS" \
+${CONFIG_SHELL-/bin/sh} $ac_aux_dir/ltconfig -o libtool $libtool_flags \
+--build="$build" --add-tag=CXX $ac_aux_dir/ltcf-cxx.sh \
+|| AC_MSG_ERROR([libtool tag configuration failed])
 CC="$lt_save_CC"
 CFLAGS="$lt_save_CFLAGS"
 ])
