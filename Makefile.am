@@ -7,7 +7,7 @@ SUBDIRS = doc tests
 CFLAGS = @CFLAGS@
 CPPLAGS = @CPPFLAGS@
 
-aclocal_macros = libtool.m4 replfunc.m4
+aclocal_macros = libtool.m4
 
 # Distribute ltconfig and ltmain.sh so that the demo directory works.
 EXTRA_DIST = $(aclocal_macros) libtoolize.in ltconfig ltconfig.in \

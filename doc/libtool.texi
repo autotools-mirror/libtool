@@ -1040,6 +1040,10 @@ files (typically @file{/bin/rm}).
 The remaning @var{mode-args} are either flags for the deletion program
 (beginning with a `-'), or the names of files to delete.
 
+@ignore
+FIXME: add in documentation when we do reinstallation of old versions.
+@end ignore
+
 @node Integrating Libtool
 @chapter Integrating Libtool with Your Own Packages
 
@@ -1383,35 +1387,33 @@ The Autoconf package comes with a few macros that run tests, then set a
 variable corresponding to the name of an object file.  Sometimes it is
 necessary to use corresponding names for libtool objects.
 
-So, included with libtool are convenience macros that do this kind of
-work:
+Here are the names of variables that list libtool objects:
 
-@defmac AM_REPLACE_FUNCS (@var{function}@dots{})
-Same as @code{AC_REPLACE_FUNCS} (@pxref{Generic Functions, Generic
+@table @code
+@item LTALLOCA
+Substituted by @code{AC_FUNC_ALLOCA} (@pxref{Particular Functions, Particular
 Function Checks, The Autoconf Manual, autoconf, The Autoconf
-Manual}), except it also adds @samp{@var{function}.lo} to the value of
-the output variable @code{LTLIBOBJS}.
-@end defmac
+Manual}).  Is either empty, or contains @samp{alloca.lo}.
 
-@defmac AM_FUNC_ALLOCA
-Same as @code{AC_FUNC_ALLOCA} (@pxref{Particular Functions, Particular
+@item LTLIBOBJS
+Substituted by @code{AC_REPLACE_FUNCS} (@pxref{Generic Functions, Generic
 Function Checks, The Autoconf Manual, autoconf, The Autoconf
-Manual}), but also sets the output variable @code{LTALLOCA} to
-@samp{alloca.lo}.
-@end defmac
+Manual}), and a few other functions.
+@end table
 
-@defmac AM_FUNC_MEMCMP
-Same as @code{AC_FUNC_MEMCMP} (@pxref{Particular Functions, Particular
-Function Checks, The Autoconf Manual, autoconf, The Autoconf
-Manual}), except it also adds @samp{memcmp.lo} to the value of the output
-variable @code{LTLIBOBJS}.
-@end defmac
+Unfortunately, the most recent version of Autoconf (2.12, at the time of
+this writing) does not have any way for libtool to provide support for
+these variables.  So, if you depend on them, use the following code
+immediately before the call to @code{AC_OUTPUT} in your
+@file{configure.in}:
 
-@defmac AM_STRUCT_ST_BLOCKS
-Same as @code{AC_STRUCT_ST_BLOCKS} (@pxref{Structures, Structures, The
-Autoconf Manual, autoconf, The Autoconf Manual}), except it also
-adds @samp{fileblocks.lo} to the output variable @code{LTLIBOBJS}.
-@end defmac
+@example
+LTLIBOBJS=`echo "$LIBOBJS" | sed 's/\.o/\.lo/g'`
+AC_SUBST(LTLIBOBJS)
+LTALLOCA=`echo "$ALLOCA" | sed 's/\.o/\.lo/g'`
+AC_SUBST(LTALLOCA)
+AC_OUTPUT(@dots{})
+@end example
 
 @node Versioning
 @chapter Library Interface Versions

@@ -616,20 +616,20 @@ if test -n "$hardcode_libdir_flag_spec"; then
      test "$hardcode_minus_L" != no &&
      test "$hardcode_shlibpath_var" != no; then
 
-    # Can't link without hardcoding.
+    # Linking always hardcodes the temporary library directory.
     hardcode_action=relink
   else
+    # We can link without hardcoding, and we can hardcode nonexisting dirs.
     hardcode_action=immediate
   fi
-elif test "$hardcode_direct" = yes ||
-     test "$hardcode_minus_L" = yes ||
-     test "$hardcode_shlibpath_var" = yes; then
-
-  # We can't hardcode non-existant directories, but we can existing ones.
-  hardcode_action=immediate
-else
+elif test "$hardcode_direct" != yes ||
+     test "$hardcode_minus_L" != yes ||
+     test "$hardcode_shlibpath_var" != yes; then
   # We can't hardcode anything.
   hardcode_action=unsupported
+else
+  # We can only hardcode existing directories.
+  hardcode_action=relink
 fi
 echo $ac_t "$hardcode_action" 1>&6
 test "$hardcode_action" = unsupported && can_build_shared=no

@@ -1,3 +1,26 @@
+Sat Apr  5 11:26:06 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltmain.sh.in (install): Relink if hardcode_action is `relink',
+	rather than using complex conditionals based on the other
+	hardcode variables.
+
+	* ltconfig.in (hardcode_action): Set to `relink', not `immediate',
+ 	if we can only hardcode existing directories.  Rearrange
+ 	conditionals to make the intent clearer, otherwise this can be one
+ 	hellish piece of code for the already-dizzy libtool maintainer.
+
+Wed Apr  2 10:36:31 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* replfunc.m4: Delete from the distribution.  Documentation now
+	describes how to set LTALLOCA and LTLIBOBJS in your own
+	configure.in.
+
+	* ltmain.sh.in (link): Make sure a libtool library only counts as
+	a shared library if its library_names are non-null.
+	Use timestamps for .lo's when PIC is turned off, rather than
+	symlinking to the real object.  This helps invalid mixtures of PIC
+	and non-PIC to fail.
+
 Tue Apr  1 10:01:20 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* Makefile.am (EXTRA_DIST): Distribute libtool.pkg.
