@@ -38,7 +38,7 @@ i*86-*-freebsd2.2.8             gcc      1.2f     ok
 i*86-*-freebsd2.2.6             gcc      1.3.2    ok
   (egcs-1.1 & gcc-2.7.2.1, native ld)
 i*86-*-freebsd2.1.5             gcc      0.5      ok
-i*86-*-gnu                      gcc      1.3.2    ok
+i*86-*-gnu                      gcc      1.3.3    ok
 i*86-*-netbsd1.4                gcc      1.3      ok
   (egcs-1.1.1)
 i*86-*-netbsd1.3.3              gcc      1.3      ok
@@ -47,7 +47,7 @@ i*86-*-netbsd1.3.2              gcc      1.2e     ok
 i*86-*-netbsd1.3I               gcc      1.2e     ok
   (egcs 1.1?)
 i*86-*-netbsd1.2                gcc      0.9g     ok
-i*86-*-linux-gnu                gcc      1.3.2    ok
+i*86-*-linux-gnu                gcc      1.3.3    ok
   (egcs-1.1.2, GNU ld 2.9.1.0.23)
 i*86-*-linux-gnulibc1           gcc      1.2f     ok
 i*86-*-openbsd2.4               gcc      1.2f     ok

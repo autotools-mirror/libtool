@@ -1,6 +1,6 @@
 /* main.c -- mdemo test program
    Copyright (C) 1998-1999 Free Software Foundation, Inc.
-   Originally by Thomas Tanner <tanner@gmx.de>
+   Originally by Thomas Tanner <tanner@ffii.org>
    This file is part of GNU Libtool.
 
 This program is free software; you can redistribute it and/or modify
