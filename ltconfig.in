@@ -1013,25 +1013,33 @@ if test "$with_gnu_ld" = yes; then
       allow_undefined_flag=unsupported
       # Very, very bogus.
       echo '
+#define WIN32_LEAN_AND_MEAN
 #include <windows.h>
+#undef WIN32_LEAN_AND_MEAN
+#include <stdio.h>
 
-struct _reent *_impure_ptr;
-extern struct _reent *__imp_reent_data;
+BOOL APIENTRY DllMain (HINSTANCE hInst, DWORD reason, LPVOID reserved);
+
+#include <cygwin/cygwin_dll.h>
+DECLARE_CYGWIN_DLL( DllMain );
+HINSTANCE __hDllInstance_base;
+
 BOOL APIENTRY
-__dll_entry (HINSTANCE hinst, DWORD reason, LPVOID reserved)
+DllMain (HINSTANCE hInst, DWORD reason, LPVOID reserved)
 {
-  _impure_ptr = __imp_reent_data;
+  __hDllInstance_base = hInst;
+  return TRUE;
 }
 ' > ltdll.c
       archive_cmds='$CC -c '"`pwd`"'/ltdll.c~echo EXPORTS > $lib.exp~
-      if test -z "$export_symbols"; then $NM$libobjs | $global_symbol_pipe | sed '\''s/.* //'\'' > $lib.exp;
+      if test -z "$export_symbols"; then $DLLTOOL --export-all --output-def $lib.exp;
       else cat "$export_symbols" > $lib.exp; fi~
-      $LD -s --base-file $soname-base --dll -e ___dll_entry@12 -o $lib libtool.$objext$libobjs$deplibs~
-      $DLLTOOL --as=$AS --dllname $soname --def $lib.exp --base-file $soname-base --output-exp $soname-exp~
-      $LD -s --base-file $soname-base $soname-exp --dll -e ___dll_entry@12 -o $lib libtool.$objext$libobjs$deplibs~
-      $DLLTOOL --as=$AS --dllname $soname --def $lib.exp --base-file $soname-base --output-exp $soname-exp~
-      $LD $soname-exp --dll -e ___dll_entry@12 -o $lib libtool.$objext$libobjs$deplibs~
-      $rm libtool.$objext $soname-base $soname-exp'
+      $CC -Wl,--base-file,$soname-base -Wl,--dll -nostartfiles -Wl,-e,__cygwin_dll_entry@12 $libobs ltdll.$objext~
+      $DLLTOOL --as=$AS --dllname $soname --exclude-symbol=_cygwin_dll_entry@12 --def $lib.exp --base-file $soname-base --output-exp $soname-exp~
+      $CC -Wl,--base-file,$soname-base $soname-exp -Wl,--dll -nostartfiles -Wl,-e,__cygwin_dll_entry@12 -o $lib $libobjs ltdll.$objext$deplibs~
+      $DLLTOOL --as=$AS --dllname $soname --exclude-symbol=_cygwin_dll_entry@12 --def $lib.exp --base-file $soname-base --output-exp $soname-exp~
+      $CC $soname-exp -Wl,--dll -nostartfiles -Wl,-e,__cygwin_dll_entry@12 -o $lib $libobjs ltdll.$objext$deplibs~
+      $rm ltdll.$objext $soname-base $soname-exp'
       old_archive_from_new_cmds='$DLLTOOL --as=$AS --dllname $soname --def $lib.exp --output-lib $objdir/$libname.a~$rm $lib.exp'
     else
       # When not using gcc, we currently assume that we are using
@@ -1107,25 +1115,33 @@ else
       allow_undefined_flag=unsupported
       # Very, very bogus.
       echo '
+#define WIN32_LEAN_AND_MEAN
 #include <windows.h>
+#undef WIN32_LEAN_AND_MEAN
+#include <stdio.h>
 
-struct _reent *_impure_ptr;
-extern struct _reent *__imp_reent_data;
+BOOL APIENTRY DllMain (HINSTANCE hInst, DWORD reason, LPVOID reserved);
+
+#include <cygwin/cygwin_dll.h>
+DECLARE_CYGWIN_DLL( DllMain );
+HINSTANCE __hDllInstance_base;
+
 BOOL APIENTRY
-__dll_entry (HINSTANCE hinst, DWORD reason, LPVOID reserved)
+DllMain (HINSTANCE hInst, DWORD reason, LPVOID reserved)
 {
-  _impure_ptr = __imp_reent_data;
+  __hDllInstance_base = hInst;
+  return TRUE;
 }
 ' > ltdll.c
-      archive_cmds='$CC -c '"`pwd`"'/ltdll.c~ echo EXPORTS > $lib.exp~
-      if test -z "$export_symbols"; then $NM$libobjs | $global_symbol_pipe | sed '\''s/.* //'\'' > $lib.exp;
-      else cat "$export_symbols" > $lib.exp; fi~
-      $LD -s --base-file $soname-base --dll -e ___dll_entry@12 -o $lib libtool.$objext$libobjs$deplibs~
-      $DLLTOOL --as=$AS --dllname $soname --def $lib.exp --base-file $soname-base --output-exp $soname-exp~
-      $LD -s --base-file $soname-base $soname-exp --dll -e ___dll_entry@12 -o $lib libtool.$objext$libobjs$deplibs~
-      $DLLTOOL --as=$AS --dllname $soname --def $lib.exp --base-file $soname-base --output-exp $soname-exp~
-      $LD $soname-exp --dll -e ___dll_entry@12 -o $lib libtool.$objext$libobjs$deplibs~
-      $rm libtool.$objext $soname-base $soname-exp'
+      archive_cmds='$CC -c '"`pwd`"'/ltdll.c~echo EXPORTS > $lib.exp~
+      if test -z "$export_symbols"; then $DLLTOOL --export-all --output-def $lib.exp;
+      else cat "$export_symbols" >> $lib.exp; fi~
+      $CC -Wl,--base-file,$soname-base -Wl,--dll -nostartfiles -Wl,-e,__cygwin_dll_entry@12 $libobs ltdll.$objext~
+      $DLLTOOL --as=$AS --dllname $soname --exclude-symbol=_cygwin_dll_entry@12 --def $lib.exp --base-file $soname-base --output-exp $soname-exp~
+      $CC -Wl,--base-file,$soname-base $soname-exp -Wl,--dll -nostartfiles -Wl,-e,__cygwin_dll_entry@12 -o $lib $libobjs ltdll.$objext$deplibs~
+      $DLLTOOL --as=$AS --dllname $soname --exclude-symbol=_cygwin_dll_entry@12 --def $lib.exp --base-file $soname-base --output-exp $soname-exp~
+      $CC $soname-exp -Wl,--dll -nostartfiles -Wl,-e,__cygwin_dll_entry@12 -o $lib $libobjs ltdll.$objext$deplibs~
+      $rm ltdll.$objext $soname-base $soname-exp'
       old_archive_from_new_cmds='$DLLTOOL --as=$AS --dllname $soname --def $lib.exp --output-lib $objdir/$libname.a~$rm $lib.exp'
     else
       # When not using gcc, we currently assume that we are using

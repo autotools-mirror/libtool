@@ -1,5 +1,10 @@
 1998-12-01  Gary V. Vaughan  <garyv@oranda.demon.co.uk>
 
+	* ltconfig.in (ltdll.c): update the ltdll.c file for cygwinb20.
+	Based on code from Mumit Khan <khan@xraylith.wisc.edu>.
+	(archive_cmds): correct typo libtool.c->ltdll.c.  Update shell
+	commands for cygwin32.
+
 	* libtool.m4 (AM_SYS_SYMBOL_UNDERSCORE): New macro; find out
 	whether compiled symbols have an extra leading underscore.
 	(AM_SYS_NM_PARSE): New macro (converted to m4 from ltconfig.in);
