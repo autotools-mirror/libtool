@@ -1,5 +1,7 @@
 1999-01-13  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* ltmain.in (old_archives, oldobjs): use find to SYMDEF here too
+
 	* Makefile.am (@DIST_MAKEFILE_LIST@): `$' must be doubled
 
 	* configure.in (AC_CONFIG_DIRS): configure only libltdl, and then,
