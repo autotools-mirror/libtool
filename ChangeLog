@@ -1,3 +1,14 @@
+2200-02-01  Ossama Othman  <ossama@uci.edu>
+
+	* ltcf-cxx.sh: Added some untested HPUX aCC support.
+	* ltmain.in: Inadvertently removed some of the tags patch.
+	* tagdemo/Makefile.am, tagdemo/Makefile.in, tagdemo/README,
+	tagdemo/acinclude.m4, tagdemo/aclocal.m4, tagdemo/configure,
+	tagdemo/configure.in, tagdemo/foo.cpp, tagdemo/foo.h,
+	tagdemo/main.cpp: *sigh* I checked this directory into the HEAD
+	branch instead of the multi-language-branch.
+	Reported by Stephan Kulow <coolo@kde.org>
+
 2000-01-31 Ossama Othman  <ossama@debian.org>
 
 	* configure.in (CONF_SUBDIRS): Added the `tagdemo' directory to

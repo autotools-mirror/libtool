@@ -4616,6 +4616,7 @@ Provide generalized library-building support services.
     --mode=MODE       use operation mode MODE [default=inferred from MODE-ARGS]
     --quiet           same as \`--silent'
     --silent          don't print informational messages
+    --tag=TAG         use configuration variables from tag TAG
     --version         print version information
 
 MODE must be one of the following:
@@ -4788,6 +4789,14 @@ echo
 $echo "Try \`$modename --help' for more information about other modes."
 
 exit 0
+
+### BEGIN LIBTOOL TAG CONFIG: disable-shared
+build_libtool_libs=no
+### END LIBTOOL TAG CONFIG: disable-shared
+
+### BEGIN LIBTOOL TAG CONFIG: disable-static
+build_old_libs=no
+### END LIBTOOL TAG CONFIG: disable-static
 
 # Local Variables:
 # mode:shell-script
