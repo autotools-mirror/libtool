@@ -837,10 +837,7 @@ if test "$with_gnu_ld" = yes; then
   sunos4*)
     archive_cmds='$LD -assert pure-text -Bstatic -o $lib$libobjs'
     hardcode_direct=yes
-    # The GNU linker will only hardcode -L options when -rpath is not
-    # used, but we will be using -rpath because we set
-    # hardcode_libdir_flag_spec below.
-    hardcode_minus_L=no
+    hardcode_minus_L=yes
     hardcode_shlibpath_var=no
     ;;
 

@@ -1,7 +1,12 @@
 1998-11-04  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* ltconfig.in (hardcode_minus_L): Revert Ian's patch for
+	ltconfig.in.  Although -L hardcoding is not used with GNU ld, it
+	does happen, so hardcode_minus_L must be set to yes.
+	
 	* ltconfig.in (compiler_o_lo): check whether we can write directly 
 	to a .lo
+
 	* ltmain.in (compiler_o_lo): if not, write to .o and rename it
 
 1998-11-04  Ian Lance Taylor  <ian@cygnus.com>
