@@ -1,3 +1,9 @@
+2005-01-12  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* libtool.m4 (AC_LIBTOOL_SYS_DYNAMIC_LINKER) [linux]: While "parsing"
+	/etc/ld.so.conf, skip comments.
+	Reported by Jens Elkner <elkner@linofee.org>.
+
 2005-01-08  Gary V. Vaughan  <gary@gnu.org>
 
 	* m4/libtool.m4, m4/ltdl.m4: RMS says, 'I think the [license of
