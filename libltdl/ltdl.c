@@ -897,8 +897,11 @@ find_file (basename, search_path, pdir, handle)
 		}
 		if (!*filename)
 			continue;
-		strcat(filename, "/");
 		lendir = strlen(filename);
+		if (filename[lendir-1] != '/') {
+			strcat(filename, "/");
+			lendir++;
+		}
 		if (lendir+strlen(basename) < LTDL_FILENAME_MAX) {
 			strcat(filename, basename);
 			if (handle) {
@@ -907,7 +910,7 @@ find_file (basename, search_path, pdir, handle)
 			} else {
 				file = fopen(filename, LTDL_READTEXT_MODE);
 				if (file) {
-					filename[lendir+1] = '\0';
+					filename[lendir] = '\0';
 					strcpy(pdir, filename);
 					return (lt_ptr_t) file;
 				}
@@ -1071,7 +1074,7 @@ lt_dlopen (filename)
 			return 0;
 		}
 		handle->usage = 0;
-		if (tryall_dlopen(&handle, filename) && (*dir
+		if (tryall_dlopen(&handle, filename) && (!*dir
 		    || (find_file(basename, user_search_path, 0, &handle)
 		     && find_file(basename, getenv("LTDL_LIBRARY_PATH"),
 				  0, &handle)
@@ -1130,7 +1133,7 @@ lt_dlopenext (filename)
 	}
 #ifdef LTDL_SHLIB_EXT
 	/* try "filename.EXT" */
-	tmp[len-1] = '\0';
+	tmp[len] = '\0';
 	if (len+strlen(shlib_ext) >= sizeof(tmp)) {
 		last_error = buffer_overflow_error;
 		return 0;
@@ -1142,6 +1145,7 @@ lt_dlopenext (filename)
 		return handle;
 	}
 #endif	
+	last_error = file_not_found_error;
 	return 0;
 }
 

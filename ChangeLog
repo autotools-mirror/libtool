@@ -1,5 +1,13 @@
 1999-01-24  Thomas Tanner  <tanner@gmx.de>
 
+	* libltdl/ltdl.c: minor bugfixes, append a "/" the search 
+	  directory only if necessary
+	* ltconfig.in: added support for FreeBSD >= 3.0
+	  (patch from Kurt D. Zeilenga)
+	* THANKS: added Kurt D. Zeilenga
+
+1999-01-24  Thomas Tanner  <tanner@gmx.de>
+
 	* doc/libtool.texi (libltdl): list supported dlopen mechanisms,
 	  added function lt_dlopenext(), removed reference to 
 	  LTDL_PRELOADED_SYMBOLS in LTDL_SET_PRELOADED_SYMBOLS

@@ -1215,6 +1215,11 @@ else
     fi
     ;;
 
+  freebsd1*)
+    ld_shlibs=no
+    can_build_shared=no
+    ;;
+
   # FreeBSD 2.2.[012] allows us to include c++rt0.o to get C++ constructor
   # support.  Future versions do this automatically, but an explicit c++rt0.o
   # does not break anything, and helps significantly (at the cost of a little
@@ -1235,8 +1240,8 @@ else
     hardcode_shlibpath_var=no
     ;;
 
-  # FreeBSD 3, at last, uses gcc -shared to do shared libraries.
-  freebsd3*)
+  # FreeBSD 3 and greater uses gcc -shared to do shared libraries.
+  freebsd*)
     archive_cmds='$CC -shared -o $lib $libobjs $deplibs'
     hardcode_libdir_flag_spec='-R$libdir'
     hardcode_direct=yes
@@ -1664,7 +1669,11 @@ cygwin32* | mingw32*)
   shlibpath_var=PATH
   ;;
 
-freebsd2* | freebsd3*)
+freebsd1*)
+  dynamic_linker=no
+  ;;
+  
+freebsd*)
   objformat=`test -x /usr/bin/objformat && /usr/bin/objformat || echo aout`
   version_type=freebsd-$objformat
   case "$version_type" in
