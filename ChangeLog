@@ -1,5 +1,7 @@
 2000-05-29  Michael Matz  <matz@ifh.de>       
-       
+
+	* ltmain.in: fix quoting for $var_value.
+
 	* ltconfig.in: check for dlfcn.h: include return value
 	to make -Wall in CFLAGS work.  
 

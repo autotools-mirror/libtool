@@ -1271,7 +1271,7 @@ compiler."
 
     if test -n "$shlibpath_var"; then
       # get the directories listed in $shlibpath_var
-      eval shlib_search_path=\`\$echo \"X \${$shlibpath_var}\" \| \$Xsed -e \'s/:/ /g\'\`
+      eval shlib_search_path=\`\$echo \"X\${$shlibpath_var}\" \| \$Xsed -e \'s/:/ /g\'\`
     else
       shlib_search_path=
     fi
@@ -3391,7 +3391,7 @@ static const void *lt_preloaded_setup() {
 	# Preserve any variables that may affect compiler behavior
 	for var in $variables_saved_for_relink; do
 	  eval var_value=\$$var
-	  var_value=`\$echo \"X$var_value\" | $Xsed -e "$sed_quote_subst"`
+	  var_value=`$echo "X$var_value" | $Xsed -e "$sed_quote_subst"`
 	  relink_command="$var=\"$var_value\"; export $var; $relink_command"
 	done
 	relink_command="cd `pwd`; $relink_command"
@@ -3709,7 +3709,7 @@ fi\
       # Preserve any variables that may affect compiler behavior
       for var in $variables_saved_for_relink; do
 	eval var_value=\$$var
-	var_value=`\$echo \"X$var_value\" | $Xsed -e "$sed_quote_subst"`
+	var_value=`$echo "X$var_value" | $Xsed -e "$sed_quote_subst"`
 	relink_command="$var=\"$var_value\"; export $var; $relink_command"
       done
       # Quote the link command for shipping.
