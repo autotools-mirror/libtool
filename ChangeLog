@@ -7,7 +7,7 @@
 	compile correctly.   The same options should _not_ be passed
 	through to gcc on IRIX, or at all on other architectures for
 	backwards compatibility (among others).
-	Reported by Bob Freisenhahn <bfreisen@simple.dallas.tx.us>
+	Reported by Bob Friesenhahn <bfriesen@simple.dallas.tx.us>
 	Reported by Albert Chin-A-Young <china@thewrittenword.com> 
 
 2000-08-26  Albert Chin-A-Young  <china@thewrittenword.com>
