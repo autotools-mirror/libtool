@@ -36,7 +36,7 @@ func_version ()
         s/\((C)\)[[ 0-9,-]]*\( [[1-9]][[0-9]]*\)/\1\2/;
         p;
      }' < "$progpath"
-     exit $EXIT_SUCCESS
+     exit $?
 }
 
 # func_usage
@@ -50,7 +50,7 @@ func_usage ()
     }' < "$progpath"
     $ECHO
     $ECHO "run \`$progname --help | more' for full usage"
-    exit $EXIT_SUCCESS
+    exit $?
 }
 
 # func_help
@@ -69,7 +69,7 @@ func_help ()
 	s/\$autoconf_version/'"`(autoconf --version) 2>/dev/null |$SED 1q`"'/;
 	p;
      }' < "$progpath"
-    exit $EXIT_SUCCESS
+    exit $?
 }
 
 # func_missing_arg argname
