@@ -1,3 +1,8 @@
+2004-08-05  Gary V. Vaughan  <gary@gnu.org>
+
+	* bootstrap: Run the bootstrap rules from a file named Makefile,
+	copied from Makefile.am for fresh checkouts.
+
 2004-08-05  Alexandre Duret-Lutz  <adl@gnu.org>
 
 	* m4/libtool.m4 (_LT_PROG_LTMAIN): Require ltmain.sh using

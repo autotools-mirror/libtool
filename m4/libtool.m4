@@ -1545,8 +1545,8 @@ else
          striplib="$STRIP -x"
          AC_MSG_RESULT([yes])
        else
-  AC_MSG_RESULT([no])
-fi
+         AC_MSG_RESULT([no])
+       fi
        ;;
    *)
   AC_MSG_RESULT([no])
