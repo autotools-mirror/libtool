@@ -1,3 +1,8 @@
+2004-12-03  Gary V. Vaughan  <gary@gnu.org>
+
+	* TODO: Paste Peter's summary of the TODO thread starting at
+	http://lists.gnu.org/archive/html/libtool/2004-11/msg00130.html.
+
 2004-12-02  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
 
 	* config/ltmain.m4sh: Remove code which is no longer needed

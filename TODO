@@ -7,8 +7,6 @@ GNU Libtool
 1.1. libtool
 ------------
 
-* Fix the bug exposed by am-subdir.at tests.
-
 * Rather than looking up the linker's hardcode characteristics in a
   table of shell code, use objdump or equivalent to probe a test program
   at configure time.
@@ -17,6 +15,8 @@ GNU Libtool
 
 * Hook the various language dependencies into the autoconf _AC_LANG
   framework.
+
+* Work out what to do when the dynamic linker loads needed dependencies.
 
 * We could have an option to hardcode paths into libraries, as well as
   binaries: `... -Wl,-soname -Wl,/tmp/libtest.so.0 ...'.  This is not
@@ -50,6 +50,12 @@ GNU Libtool
 
 1.2. libtldl
 ------------
+
+* Get rid of the shared libddloader.
+
+* Change libltdl interface: add separate functions for function
+  pointers.  This will allow porting to systems where function pointers
+  are incompatible with data pointer C-wise.
 
 * Fix the following bugs in libltdl:
  - error reporting of tryall_dlopen():
@@ -86,8 +92,18 @@ GNU Libtool
 * Write a test case for linkage with gnu ld scripts (per 2004-08-25 patch
   from Paolo Bonzini).
 
+* Test everything:
+    - cross compile
+    - dirs with ~
+
 2.3. libtool
 ------------
+
+* Fix cross-compiling.
+
+* Fix threads.
+
+* Support multilibbing.
 
 * If not cross-compiling, have the static flag test run the resulting
   binary to make sure everything works.
@@ -119,18 +135,48 @@ GNU Libtool
   for example.  In the future, we might even have an option to encode
   the sonames of all dependencies of a library into its soname.
 
+* Look again at a binary C libtool, or byte-compiled libtool to improve
+  speed.
+
+* Generate some "platform specific" shell functions with config.status,
+  for example, there is no need to have the C source code for the
+  wrapper script on non-windows platforms, this will make the generated
+  libtool script smaller and easier to follow, maybe a little faster
+  too?
+
 2.4. libtool autoconf macros
 ----------------------------
 
-* The definitions for AC_LTDL_SHLIBEXT, AC_LTDL_SHLIBPATH and
-  AC_LTDL_SYSSEARCHPATH  should not rely on the _LT_AC_LTCONFIG_HACK
+* Sort out the macro mess in libtool.m4.  We've started this already
+  by refactoring chunks into separate files, but I never did completely
+  untangle the mess of macros imported from ltconfig.
+
+* The definitions for LT_SYS_MODULE_EXT, LT_SYS_MODULE_PATH and
+  LT_SYS_DLSEARCH_PATH  should not rely on the _LT_SYS_DYNAMIC_LINKER
   macro.  This involves moving the code which sets the variables
   library_names_spec, shlibpath_var and sys_lib_dlsearch_path_spec from
   into a separate macro, and AC_REQUIRING the newly extracted macro in the
   respective ltdl.m4 macros.
 
-2.5. libltdl
+2.5. libtool automake integration
+---------------------------------
+
+* Unify locks between libtool and compile.
+
+* Fix relinking.
+
+2.6. libltdl
 ------------
+
+* Finish the rewrite of the core libltdl.  The loaders are fine, and
+  the outlying code is now good.  Ralf is starting to pick away at a lot
+  of the remaining nasties already, but the code for finding .la/.so files
+  and reading/loading them could use a lot more improvement.
+
+* I think we could factor out a little path management support module
+  from existing libltdl.  This would be useful for M4 at least -- keeping
+  track of FOO_PATH environment contents, searching for files in paths
+  etc.
 
 * Try to find a work-around for -[all-]static and libltdl on platforms
   that will fail to find dlopening functions in this case.  Maybe
@@ -139,7 +185,10 @@ GNU Libtool
   of the functions that can't be linked statically.  This could hardly
   be made completely transparent, though.
 
-2.6. win32 support
+* Add i18n strings to libltdl, ensuring that package developers can
+  ignore any i18n when they libtoolize.
+
+2.7. win32 support
 ------------------
 
 * Arrange that EXEEXT suffixes are stripped from wrapper script names
@@ -173,6 +222,16 @@ GNU Libtool
   additional per user module data in the lt_dlmodule structure -- perhaps
   in the form of an associative array keyed by user name?
 
+* Figure out how to make pkg-config aware of the information libtool
+  knows about libraries and their dependencies, and send a patch.
+
+* Support dlmopen dladdr1 and dlinfo in libltdl [I totally disagree with
+  this one Ralf, libltdl is a portability library, none of these functions
+  enhance portability in any way -- Peter]
+
+* Generate a libtool.m4 from a bunch of individual files, one per
+  platform, to make the job of a "platform maintainer" easier and make
+  it easier to add new platforms.
 
 -- 
 Copyright (C) 2004 Free Software Foundation, Inc.
