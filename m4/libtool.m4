@@ -97,6 +97,7 @@ dnl Autoconf doesn't catch unexpanded LT_ macros by default:
 m4_pattern_forbid([^_?LT_[A-Z_]+$])dnl
 m4_pattern_allow([^(_LT_EOF|LT_DLGLOBAL|LT_DLLAZY_OR_NOW)$])dnl
 AC_REQUIRE([LTSUGAR_VERSION])dnl
+AC_REQUIRE([LTVERSION_VERSION])dnl
 AC_REQUIRE([AC_CANONICAL_HOST])dnl
 AC_REQUIRE([AC_CANONICAL_BUILD])dnl
 _LT_DECL([], [host_alias], [0], [The host system])dnl

@@ -41,6 +41,8 @@ if test -z "$reconfdirs"; then
   reconfdirs=". `ls -1d tests/*demo tests/*demo[0-9]`"
 fi
 
+make top_srcdir=. -f Makefile.am ./m4/ltversion.m4
+
 for file in $fakes; do
   cat > $file <<'EOF'
 #! /bin/sh

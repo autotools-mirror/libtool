@@ -1,5 +1,19 @@
 2004-02-06  Gary V. Vaughan  <gary@gnu.org>
 
+	* m4/ltversion.in: New file to capture what version number macros
+	are being used.
+	* Makefile.am (m4/ltversion.m4): New rule to create it from
+	m4/ltversion.in.
+	(nodist_pkgmacro_DATA): Add m4/ltversion.m4.
+	(EXTRA_DIST): Add m4/ltversion.in.
+	* m4/libtool.m4 (AC_LIBTOOL_SETUP): AC_REQUIRE LTVERSION_VERSION
+	from ltversion.m4.
+	* bootstrap: Call the Makefile.am to create an initial
+	m4/ltversion.m4.
+	* ltmain.in: Diagnose version mismatches of various flavours.
+	* TODO: Remove mismatch item.
+	* NEWS: Updated.
+
 	* Makefile.am ($(top_builddir)/config.status): Removed.
 	* configure.ac (CONFIG_STATUS_DEPENDENCIES): This substitution is
 	how automake-1.8 now informs all Makefiles when config.status

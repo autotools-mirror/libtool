@@ -1,7 +1,13 @@
 NEWS - list of user-visible changes between releases of GNU Libtool
 
 New in 1.5b: 2004-??-??; CVS version 1.5a, Libtool team:
+* The /^_?LT_[A-Z_]+$/ namespace is now reserved for Libtool's own macros.
+  If you have any shell variables in this namespace they will need to be
+  renamed.  If you have any macros in this namespace please rename them to
+  prevent any possible future clash with libtool supplied macros.
 * New LT_PREREQ macro for specifying minimum libtool requirement.
+* The libtool script will complain if it was built from mismatched ltmain.sh
+  and libtool m4 macro versions.
 * Like automake, libtoolize no longer installs config.guess and config.sub by
   default.  Use new --install option to get the old behaviour.
 * libtool script is now created by config.status.  Instead of interrogating

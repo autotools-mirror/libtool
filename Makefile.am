@@ -36,7 +36,25 @@ dist_pkgdata_DATA = config/config.guess config/config.sub config/ltmain.sh
 # We maintain our own macros to provent problems with ancient definitions.
 # lt~obsolete.m4 doesn't belong here, it's for bootstrapping us only
 pkgmacrodir = $(pkgdatadir)/m4
-pkgmacro_DATA = m4/libtool.m4 m4/ltdl.m4 m4/ltsugar.m4
+dist_pkgmacro_DATA = m4/libtool.m4 m4/ltdl.m4 m4/ltsugar.m4
+nodist_pkgmacro_DATA = m4/ltversion.m4
+EXTRA_DIST += m4/ltversion.in
+
+# We build ltversion.m4 here, instead of from config.status,
+# because config.status is rerun each time one og configure's
+# dependencies change and ltversion.m4 happens to be a configure
+# dependency.  configure and ltversion.m4 vould be rebuilt in
+# a loop otherwise.
+# Use `$(top_srcdir)/m4' for the benefit of non-GNU makes: this is
+# how ltversion.m4 appears in our dependencies.
+$(top_srcdir)/m4/ltversion.m4: $(top_srcdir)/m4/ltversion.in stamp-vcl
+	set `$(MKSTAMP) < $(top_srcdir)/ChangeLog`; \
+	sed -e "s,[@]MACRO_VERSION[@],$(VERSION),g" \
+	    -e "s,[@]MACRO_REVISION[@],$$1,g" \
+	    -e "s,[@]configure_input[@],Generated from ltversion.in; do not edit by hand.,g" \
+	$(top_srcdir)/m4/ltversion.in > $@t
+	chmod a-w $@t
+	mv -f $@t $@
 
 # The standalone libtool script, and the libtool distributor.
 bin_SCRIPTS = libtool libtoolize
