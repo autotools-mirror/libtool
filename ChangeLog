@@ -1,5 +1,7 @@
 1999-01-20  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* demo/dlmain.c (main): add missing const to declaration of name
+
 	* libltdl/ltdl.c (find_module): remove the libdir argument, and
 	try to  open library only as old_name and dir/dlname
 	(lt_dlopen): use `installed' variable in .la file to decide

@@ -73,7 +73,7 @@ main (argc, argv)
   while (s->name)
     {
       if (s->address) {
-        char *name = s->name;
+        const char *name = s->name;
         printf ("found symbol: %s\n", name);
         if (!strcmp ("hello", name))
  	  phello = s->address;
