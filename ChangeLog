@@ -1,4 +1,11 @@
-2000-09-08  Gary V. Vaughan  <gcc@techie.com>
+2000-09-09  Gary V. Vaughan  <gvv@techie.com>
+
+	configure.in (AC_PROG_LIBTOOL):  Using this in libtools own
+	configure.in interacts badly with the AC_PROVIDE calls and
+	results in several tests being inserted into configure too
+	early.  Use AC_LIBTOOL_SETUP instead.
+
+2000-09-08  Gary V. Vaughan  <gvv@techie.com>
 
 	libtool.m4 (_LT_AC_LTCONFIG_HACK): The ltconfig.in code I
 	ported from ltconfig.in was incomplete -- this is a backport
