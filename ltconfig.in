@@ -683,7 +683,9 @@ else
     ;;
 
   cygwin* | mingw* | os2*)
-    # We can build DLLs from non-PIC.
+    # This hack is so that the source file can tell whether it is being
+    # built for inclusion in a dll (and should export symbols for example).
+    pic_flag='-DDLL_EXPORT'
     ;;
 
   osf3* | osf4*)
@@ -1782,6 +1784,8 @@ bsdi4*)
 
 cygwin* | mingw*)
   version_type=windows
+  need_version=no
+  need_lib_prefix=no
   if test "$with_gcc" = yes; then
     library_names_spec='${libname}`echo ${release} | sed -e 's/[.]/-/g'`${versuffix}.dll'
   else
@@ -1790,7 +1794,6 @@ cygwin* | mingw*)
   dynamic_linker='Win32 ld.exe'
   deplibs_check_method='file_magic file format pei*-i386(.*architecture: i386)?'
   file_magic_cmd='${OBJDUMP} -f'
-  need_lib_prefix=no
   # FIXME: first we should search . and the directory the executable is in
   shlibpath_var=PATH
   lt_cv_dlopen="LoadLibrary"

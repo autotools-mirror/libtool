@@ -4,6 +4,9 @@
 	objects for dlls vs. objects for static archives.  Using a cpp
 	macro also allows us to decide whether or not we need to use
 	dllexport/import declarations.
+	
+	* ltconfig.in (cygwin, need_version): Set to no, otherwise module
+	dll's end up with mighty long names!
 
 1999-06-06  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
