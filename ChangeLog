@@ -1,5 +1,9 @@
 2005-04-04  Gary V. Vaughan  <gary@gnu.org>
 
+	* libtoolize.m4sh (func_serial_update): Replace missing
+	destination serial calculation line, presumably lost due to a bad
+	merge.
+
 	* libltdl/loaders/Makefile.am: Removed actually.
 
 2005-04-04  Gary V. Vaughan  <gary@gnu.org>
