@@ -59,11 +59,11 @@ func_help ()
 {
     $SED '/^# Usage:/,/# Report bugs to/ {
         s/^# //; s/^# *$//;
-	s:\$progname:'$progname':;
-	s:\$SHELL:'"$SHELL"':;
-	s:\$LTCC:'"$LTCC"':;
-	s:\$LTCFLAGS:'"$LTCFLAGS"':;
-	s:\$LD:'"$LD"':;
+	s*\$progname*'$progname'*;
+	s*\$SHELL*'"$SHELL"'*;
+	s*\$LTCC*'"$LTCC"'*;
+	s*\$LTCFLAGS*'"$LTCFLAGS"'*;
+	s*\$LD*'"$LD"'*;
 	s/\$with_gnu_ld/'"$with_gnu_ld"'/;
 	s/\$automake_version/'"`automake --version 2>/dev/null |$SED 1q`"'/;
 	s/\$autoconf_version/'"`autoconf --version 2>/dev/null |$SED 1q`"'/;

@@ -1,3 +1,9 @@
+2004-10-10  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* config/getopt.m4sh: Under MinGW, reported paths may include ':'
+	so ':' should not be used as the sed delimiter.  Use '*' instead
+	since it is very unlikely to appear in a path.
+
 2004-10-10  Albert Chin-A-Young  <china@thewrittenword.com>
 
 	* config/ltmain.m4sh: Don't require versions of GNU sed newer than
