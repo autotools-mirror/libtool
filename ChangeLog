@@ -1,5 +1,10 @@
 2004-02-12  Scott James Remnant  <scott@netsplit.com>
 
+	* m4/ltoptions.m4: This got committed by an over-keen Gary,
+	but the support for this isn't ready yet and if aclocal decides
+	to m4_include this (which it will) you'll get a non-functioning
+	libtool.  Removed.
+
 	* ltmain.in: Remove duplicated version checking block.
 
 	* bootstrap, m4/libtool.m4: Argh, Gary went crazy after cvsapply
