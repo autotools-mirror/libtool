@@ -1,4 +1,11 @@
-2001-09-20  Albert Chin-A-Young <china@thewrittenword.com>
+2001-09-21  Gary V. Vaughan  <gary@gnu.org>
+
+	* libtool.m4 (archive_cmds) [darwin1.[0-2]]: Darwin uses zsh-3.1.6
+	for /bin/sh, and that shell does not handle escaped quotes
+	properly yet.
+	Reported by Christopher Pfisterer <cp@chrisp.de>
+
+2001-09-21  Albert Chin-A-Young  <china@thewrittenword.com>
 
 	* libltdl/ltdl.c: Match function return type with prototype
 	(add static initializer to some functions) to prevent warnings
