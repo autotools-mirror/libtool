@@ -313,7 +313,6 @@ EOF
     break
   else
     ac_cv_sys_global_symbol_pipe=
-    ac_cv_global_symbol_to_cdecl=
   fi
 done
 ])
@@ -568,7 +567,7 @@ main ()
     {
       if (dlsym (self,"fnord"))       status = $lt_dlno_uscore;
       else if (dlsym( self,"_fnord")) status = $lt_dlneed_uscore;
-      dlclose (self);
+      /* dlclose (self); */
     }
 
     exit (status);

@@ -1,3 +1,12 @@
+2000-12-14  Gary V. Vaughan  <gvv@techie.com>
+
+	* libtool.m4 (AC_LIBTOOL_SYS_GLOBAL_SYMBOL_PIPE): Don't empty
+	out ac_cv_global_symbol_to_cdecl inside the loop, incase we
+	need to go around again and try with underscore prefix.
+	(_LT_AC_TRY_DLOPEN_SELF): On some hosts (cygwin for instance)
+	self dlclosing unloads the main program and causes a SIGSEGV.  So
+	don't do it for now.
+
 2000-12-05  Gary V. Vaughan  <gvv@techie.com>
 
 	Oh My! Cygwin support has bitrotted while I was looking the other
