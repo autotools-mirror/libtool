@@ -50,7 +50,9 @@ libtool mailing list, <bug-libtool@gnu.org>.
 = Release procedure
 
 * Fetch new versions of the files that are maintained by the FSF.
-  Unfortunately you need an FSF account to do this.
+  The most important ones are available for anonymous CVS in the
+  `common' directory, sibling of the libtool CVS tree:
+  cvs -d :pserver:anoncvs@anoncvs.gnu.org:/gd/gnu/anoncvsroot checkout common
 
 * Update NEWS.
 
