@@ -57,9 +57,10 @@ ltdldatafiles		= Makefile.am dld_link.c dlopen.c dyld.c \
 ## To avoid spurious reconfiguration when the user installs these files
 ## with libtoolize, we have to preserve their timestamps carefully:
 install-data-local:
-	$(mkinstalldirs) $(ltdldatadir)
+	-rm -rf $(DESTDIR)$(ltdldatadir)
+	$(mkinstalldirs) $(DESTDIR)$(ltdldatadir)
 	$(AMTAR) cf - $(ltdldatafiles) \
-	  | ( cd $(ltdldatadir) && $(AMTAR) xf -; )
+	  | ( cd $(DESTDIR)$(ltdldatadir) && $(AMTAR) xf -; )
 
 ../libdlloader.la:
 	cd ..; $(MAKE) $(AM_MAKEFLAGS) libdlloader.la
