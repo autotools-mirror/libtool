@@ -3899,10 +3899,18 @@ EOF
 	  # value of $libobjs for piecewise linking.
 
 	  # Do each of the archive commands.
+	  if test "$module" = yes && test -n "$module_cmds" ; then
+	    if test -n "$export_symbols" && test -n "$module_expsym_cmds"; then
+	      eval cmds=\"$module_expsym_cmds\"
+	    else
+	      eval cmds=\"$module_cmds\"
+	    fi
+	  else
 	  if test -n "$export_symbols" && test -n "$archive_expsym_cmds"; then
 	    eval cmds=\"$archive_expsym_cmds\"
 	  else
 	    eval cmds=\"$archive_cmds\"
+	    fi
 	  fi
 
 	  # Append the command to remove the reloadable object files

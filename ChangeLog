@@ -1,3 +1,7 @@
+2003-11-22  Peter O'Gorman  <peter@pogma.com>
+
+	* ltmain.in: Check for module_cmds if max_cmd_len is exceeded too.
+
 2003-11-22  Gary V. Vaughan  <gary@gnu.org>
 
 	* configure.ac (LASTRELEASE): Calculate it as best as we can from
