@@ -1,3 +1,9 @@
+2003-10-08  Scott James Remnant  <scott@netsplit.com>
+
+	* libltdl/ltdl.c (lt_dlerror): change return value when
+	no error has occured to NULL to match documentation.
+	(Debian Bug #157229)
+
 2003-10-07  Gary V. Vaughan  <gary@gnu.org>
 
 	* ltmain.in: Don't suppress output of PIC mode compile if

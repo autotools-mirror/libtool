@@ -3926,7 +3926,7 @@ lt_dlerror ()
   LT_DLMUTEX_GETERROR (error);
   LT_DLMUTEX_SETERROR (0);
 
-  return error ? error : LT_DLSTRERROR (UNKNOWN);
+  return error ? error : NULL;
 }
 
 static int
