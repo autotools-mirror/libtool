@@ -1,3 +1,10 @@
+1999-04-25  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* ltmain.in (prefer_static_libs): New variable, set to no by
+	default, but set to yes by -static and -all-static.  Used instead
+	of build_libtool_libs to decide whether to use a shared or static
+	version of a library, when both versions are available.
+
 1999-04-25  Boyd Lynn Gerber  <gerberb@zenez.com>
 
 	* ltconfig.in (sco3.2v5*): Use LD_RUN_PATH for hard-coding.

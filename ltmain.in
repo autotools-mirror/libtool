@@ -820,6 +820,7 @@ compiler."
     ltlibs=
     module=no
     objs=
+    prefer_static_libs=no
     preload=no
     prev=
     prevarg=
@@ -850,6 +851,7 @@ compiler."
 	fi
 	build_libtool_libs=no
 	build_old_libs=yes
+	prefer_static_libs=yes
 	break
 	;;
       esac
@@ -1273,7 +1275,8 @@ compiler."
 	  prev=
 	fi
 
-	if test "$build_libtool_libs" = yes && test -n "$library_names"; then
+	if test -n "$library_names" &&
+	   { test "$prefer_static_libs" = no || test -z "$old_library"; }; then
 	  link_against_libtool_libs="$link_against_libtool_libs $arg"
 	  if test -n "$shlibpath_var"; then
 	    # Make sure the rpath contains only unique directories.
