@@ -2274,6 +2274,7 @@ else
 #line @LINENO@ "ltconfig"
 #include <$ac_hdr>
 int fnord = 0;
+int main () { }
 EOF
 ac_try="$ac_compile >/dev/null 2>conftest.out"
 { (eval echo $progname:@LINENO@: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }
