@@ -1,3 +1,10 @@
+2000-09-02  Alexandre Oliva  <aoliva@redhat.com>
+
+	* ltconfig.in [with_gnu_ld] (archive_cmds, archive_expsym_cmds)
+	<solaris*, sysv5*, beos*>: Use compiler_flags instead of linker
+	flags.
+	Reported by Alex Hornby <alex@anvil.co.uk>
+
 2000-09-02  Makoto Ishisone  <ishisone@sra.co.jp>
 
 	* libtool.m4 (lt_cv_deplibs_check_method, freebsd): Fix typo,
