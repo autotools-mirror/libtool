@@ -1,5 +1,7 @@
 1998-12-01  Gary V. Vaughan  <garyv@oranda.demon.co.uk>
 
+	* README: Updated homepage pointer to gnu libtool page.
+
 	* ltconfig.in (ltdll.c): update the ltdll.c file for cygwinb20.
 	Based on code from Mumit Khan <khan@xraylith.wisc.edu>.
 	(archive_cmds): correct typo libtool.c->ltdll.c.  Update shell
