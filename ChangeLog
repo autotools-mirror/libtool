@@ -1,3 +1,11 @@
+2001-07-29  Gary V. Vaughan  <gary@gnu.org>
+
+	From Guido Draheim <Guido.Draheim@tek.com>:	
+	* libtool.m4 (AC_LIBTOOL_SYS_DYNAMIC_LINKER) [mingw]: Support
+	cross compilation to mingw by allowing `:' or ';' as a path
+	separator.
+	* NEWS: Updated.
+
 2001-07-27  NIIBE Yutaka  <gniibe@m17n.org>
 
 	* libtool.m4 (lt_cv_deplibs_check_method): Use pass_all
