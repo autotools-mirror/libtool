@@ -1,3 +1,9 @@
+1999-03-19  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
+
+	* ltmain.in (dependency_libs): There is no reason to infer that
+	the pseudo library is invalid if dependency_libs='' at
+	install-time, or else libltdl/libltdl.la is invalid!!
+
 1999-03-18  Thomas Tanner  <tanner@gmx.de>
 
 	* merged my inter-library dependencies code from the ILD branch:

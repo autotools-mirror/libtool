@@ -3683,7 +3683,6 @@ relink_command=\"$relink_command\""
 	fi
 
 	relink_command=
-	dependency_libs=
 	# If there is no directory component, then add one.
 	case "$file" in
 	*/* | *\\*) . $file ;;
@@ -3691,7 +3690,7 @@ relink_command=\"$relink_command\""
 	esac
 
 	# Check the variables that should have been set.
-	if test -z "$dependency_libs" || test -z "$relink_command"; then
+	if test -z "$relink_command"; then
 	  $echo "$modename: invalid libtool pseudo library \`$file'" 1>&2
 	  exit 1
 	fi
