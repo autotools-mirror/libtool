@@ -6,6 +6,15 @@
 
 1999-02-18  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
 
+	* ltconfig.in (archive{,_sym}_commands): Be careful not to
+	re-export the dll entry points DllMain@12, _cygwin_dll_entry@12 and
+	_cygwin_noncygwin_dll_entry@12 to avoid bugs with the wrong entry
+	function being called with inter-dll dependencies.
+	Reported by DJ Delorie <dj@delorie.com>
+	* THANKS: Added DJ Delorie, since his code inspired the impgen.c
+	program and because he has patiently answered all of the
+	irritating dll and win32 questions I have fired at him.
+	
 	* ltmain.in (version_type):  Oops.  Irix versioning implies that
 	major version numbers are 1 based (not zero based).  Fixed.
 	

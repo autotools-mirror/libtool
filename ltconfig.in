@@ -1088,7 +1088,7 @@ if test "$with_gnu_ld" = yes; then
     hardcode_libdir_flag_spec='-L$libdir'
     allow_undefined_flag=unsupported
     always_export_symbols=yes
-    export_symbols_cmd='$DLLTOOL --export-all --output-def $export_symbols $objdir/$soname-ltdll.$objext $libobjs'
+    export_symbols_cmd='$DLLTOOL --exclude-symbols DllMain@12,_cygwin_dll_entry@12,_cygwin_noncygwin_dll_entry@12 --output-def $export_symbols $objdir/$soname-ltdll.$objext $libobjs'
 
     archive_expsym_cmds='rm -f $objdir/$soname-ltdll.c~
       sed -e "/^# \/\* ltdll.c starts here \*\//,/^# \/\* ltdll.c ends here \*\// { s/^# //; p; }" -e d < $0 > $objdir/$soname-ltdll.c~
@@ -1096,9 +1096,9 @@ if test "$with_gnu_ld" = yes; then
       echo EXPORTS > $objdir/$soname-def~
       cat "$export_symbols" >> $objdir/$soname-def~
       $CC -Wl,--base-file,$objdir/$soname-base -Wl,--dll -nostartfiles -Wl,-e,__cygwin_dll_entry@12 -o $lib $objdir/$soname-ltdll.$objext $libobjs $deplibs $linkopts~
-      $DLLTOOL --as=$AS --dllname $soname --exclude-symbol=_cygwin_dll_entry@12 --def $objdir/$soname-def --base-file $objdir/$soname-base --output-exp $objdir/$soname-exp~
+      $DLLTOOL --as=$AS --dllname $soname --exclude-symbols DllMain@12,_cygwin_dll_entry@12,_cygwin_noncygwin_dll_entry@12 --def $objdir/$soname-def --base-file $objdir/$soname-base --output-exp $objdir/$soname-exp~
       $CC -Wl,--base-file,$objdir/$soname-base $objdir/$soname-exp -Wl,--dll -nostartfiles -Wl,-e,__cygwin_dll_entry@12 -o $lib $objdir/$soname-ltdll.$objext $libobjs $deplibs $linkopts~
-      $DLLTOOL --as=$AS --dllname $soname --exclude-symbol=_cygwin_dll_entry@12 --def $objdir/$soname-def --base-file $objdir/$soname-base --output-exp $objdir/$soname-exp~
+      $DLLTOOL --as=$AS --dllname $soname --exclude-symbols DllMain@12,_cygwin_dll_entry@12,_cygwin_noncygwin_dll_entry@12 --def $objdir/$soname-def --base-file $objdir/$soname-base --output-exp $objdir/$soname-exp~
       $CC $objdir/$soname-exp -Wl,--dll -nostartfiles -Wl,-e,__cygwin_dll_entry@12 -o $lib $objdir/$soname-ltdll.$objext $libobjs $deplibs $linkopts'
 
       old_archive_from_new_cmds='$DLLTOOL --as=$AS --dllname $soname --def $objdir/$soname-def --output-lib $objdir/$libname.a'
