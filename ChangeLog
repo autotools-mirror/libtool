@@ -1,5 +1,21 @@
 2004-04-13  Gary V. Vaughan  <gary@gnu.org>
 
+	* libltdl/lt__pre89.h, libltdl/ltdl.c, libltdl/ltdl.h, libltdl/argz.c,
+	libltdl/argz.h, libltdl/lt__glibc.h, libltdl/lt_dlloader.h,
+	libltdl/lt__dirent.c, libltdl/lt__dirent.h, libltdl/lt__private.h,
+	libltdl/lt__alloc.c, libltdl/lt__alloc.h, libltdl/lt_system.h,
+	libltdl/loader-dld_link.c, libltdl/loader-dlopen.c,
+	libltdl/loader-dyld.c,  libltdl/loader-loadlibrary.c,
+	libltdl/loader-shl_load.c, libltdl/lt_error.h, libltdl/lt_mutex.h:
+	Autoconf either defines to 1 or undefs the discovery macros it
+	puts in config.h, and many (non-GNU) compilers throw a spurious
+	warning when testing an #undef macro with #if.  For consistency,
+	while we are touching all these lines, use defined(MACRO) style
+	throughout.
+	Reported by Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+2004-04-13  Gary V. Vaughan  <gary@gnu.org>
+
 	Factor out the individual loaders, in preparation for preloading
 	them as libtool modules.  Currently loader-preopen.c is linked
 	unconditionally and other appropriate loaders discovered by

@@ -30,39 +30,39 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 #include "lt__private.h"
 #include "lt_dlloader.h"
 
-#if HAVE_DLFCN_H
+#if defined(HAVE_DLFCN_H)
 #  include <dlfcn.h>
 #endif
 
-#if HAVE_SYS_DL_H
+#if defined(HAVE_SYS_DL_H)
 #  include <sys/dl.h>
 #endif
 
 /* We may have to define LT_LAZY_OR_NOW in the command line if we
    find out it does not work in some platform. */
-#ifndef LT_LAZY_OR_NOW
-#  ifdef RTLD_LAZY
+#if !defined(LT_LAZY_OR_NOW)
+#  if defined(RTLD_LAZY)
 #    define LT_LAZY_OR_NOW	RTLD_LAZY
 #  else
-#    ifdef DL_LAZY
+#    if defined(DL_LAZY)
 #      define LT_LAZY_OR_NOW	DL_LAZY
 #    endif
 #  endif /* !RTLD_LAZY */
 #endif
-#ifndef LT_LAZY_OR_NOW
-#  ifdef RTLD_NOW
+#if !defined(LT_LAZY_OR_NOW)
+#  ifd efined(RTLD_NOW)
 #    define LT_LAZY_OR_NOW	RTLD_NOW
 #  else
-#    ifdef DL_NOW
+#    if defined(DL_NOW)
 #      define LT_LAZY_OR_NOW	DL_NOW
 #    endif
 #  endif /* !RTLD_NOW */
 #endif
-#ifndef LT_LAZY_OR_NOW
+#if !defined(LT_LAZY_OR_NOW)
 #  define LT_LAZY_OR_NOW	0
 #endif /* !LT_LAZY_OR_NOW */
 
-#if HAVE_DLERROR
+#if defined(HAVE_DLERROR)
 #  define DLERROR(arg)	dlerror ()
 #else
 #  define DLERROR(arg)	LT__STRERROR (arg)
@@ -113,7 +113,7 @@ sys_dl_sym (lt_user_data loader_data, lt_module module, const char *symbol)
 
 struct lt_user_dlloader lt__sys_dl =
   {
-#  ifdef NEED_USCORE
+#  if defined(NEED_USCORE)
     "_",
 #  else
     0,

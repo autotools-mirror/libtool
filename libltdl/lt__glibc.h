@@ -27,10 +27,10 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 
 */
 
-#ifndef LT__GLIBC_H
+#if !defined(LT__GLIBC_H)
 #define LT__GLIBC_H 1
 
-#ifdef HAVE_CONFIG_H
+#if defined(HAVE_CONFIG_H)
 #  include HAVE_CONFIG_H
 #endif
 
@@ -54,20 +54,20 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 /* ...finally, we revert to the library implementations of any symbols
    that are provided by the host since they may be more optimised (say
    with inline assembler) than the generic versions we provide here.  */
-#if HAVE_ARGZ_APPEND
+#if defined(HAVE_ARGZ_APPEND)
 #  undef argz_append
 #endif
-#if HAVE_ARGZ_CREATE_SEP
+#if defined(HAVE_ARGZ_CREATE_SEP)
 #  undef argz_create_sep
 #endif
-#if HAVE_ARGZ_INSERT
+#if defined(HAVE_ARGZ_INSERT)
 #  undef argz_insert
 #endif
-#if HAVE_ARGZ_NEXT
+#if defined(HAVE_ARGZ_NEXT)
 #  undef argz_next
 #endif
-#if HAVE_ARGZ_STRINGIFY
+#if defined(HAVE_ARGZ_STRINGIFY)
 #  undef argz_stringify
 #endif
 
-#endif /*!LT__GLIBC_H*/
+#endif /*!defined(LT__GLIBC_H)*/

@@ -43,7 +43,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 #define LTDL_ARCHIVE_EXT	".la"
 
 /* max. filename length */
-#ifndef LT_FILENAME_MAX
+#if !defined(LT_FILENAME_MAX)
 #  define LT_FILENAME_MAX	1024
 #endif
 
@@ -110,10 +110,10 @@ struct lt_dlhandle_struct {
 
 static	const char	objdir[]		= LTDL_OBJDIR;
 static	const char	archive_ext[]		= LTDL_ARCHIVE_EXT;
-#ifdef	LTDL_SHLIB_EXT
+#if defined(LTDL_SHLIB_EXT)
 static	const char	shlib_ext[]		= LTDL_SHLIB_EXT;
 #endif
-#ifdef	LTDL_SYSSEARCHPATH
+#if defined(LTDL_SYSSEARCHPATH)
 static	const char	sys_search_path[]	= LTDL_SYSSEARCHPATH;
 #endif
 
@@ -121,22 +121,22 @@ static	const char	sys_search_path[]	= LTDL_SYSSEARCHPATH;
 
 /* --- DLLOADER VIRTUAL FUNCTION TABLES --- */
 
-#if HAVE_LIBDL
+#if defined(HAVE_LIBDL)
 LT_SCOPE struct lt_user_dlloader lt__sys_dl;
 #endif
-#if HAVE_SHL_LOAD
+#if defined(HAVE_SHL_LOAD)
 LT_SCOPE struct lt_user_dlloader lt__sys_shl;
 #endif
 #if defined(__WINDOWS__) || defined(__CYGWIN__)
 LT_SCOPE struct lt_user_dlloader lt__sys_wll;
 #endif
-#ifdef __BEOS__
+#if defined(__BEOS__)
 LT_SCOPE struct lt_user_dlloader lt__sys_bedl;
 #endif
-#if HAVE_DLD
+#if defined(HAVE_DLD)
 LT_SCOPE struct lt_user_dlloader lt__sys_dld;
 #endif
-#if HAVE_DYLD
+#if defined(HAVE_DYLD)
 LT_SCOPE struct lt_user_dlloader lt__sys_dyld;
 LT_SCOPE int lt__sys_dyld_init (void);
 #endif
@@ -232,20 +232,20 @@ lt_dlinit (void)
 
       /* All ltdl supplied loaders are in the /dl[a-z-]+/ namespace.  */
       errors += lt_dlloader_add (LOADER_APPEND, &lt__presym,   "dlpreload");
-#if HAVE_DLD
+#if defined(HAVE_DLD)
       errors += lt_dlloader_add (LOADER_APPEND, &lt__sys_dld,  "dld");
 #endif
-#if HAVE_DYLD
+#if defined(HAVE_DYLD)
       errors += lt_dlloader_add (LOADER_APPEND, &lt__sys_dyld, "dldyld");
       errors += lt__sys_dyld_init();
 #endif
-#ifdef __BEOS__
+#if defined(__BEOS__)
       errors += lt_dlloader_add (LOADER_APPEND, &lt__sys_bedl, "dlopen");
 #endif
-#if HAVE_SHL_LOAD
+#if defined(HAVE_SHL_LOAD)
       errors += lt_dlloader_add (LOADER_APPEND, &lt__sys_shl,  "dlopen");
 #endif
-#if HAVE_LIBDL
+#if defined(HAVE_LIBDL)
       errors += lt_dlloader_add (LOADER_APPEND, &lt__sys_dl,   "dlopen");
 #endif
 #if defined(__WINDOWS__) || defined(__CYGWIN__)
@@ -448,7 +448,7 @@ tryall_dlopen_module (lt_dlhandle *handle, const char *prefix,
   assert (handle);
   assert (dirname);
   assert (dlname);
-#ifdef LT_DIRSEP_CHAR
+#if defined(LT_DIRSEP_CHAR)
   /* Only canonicalized names (i.e. with DIRSEP chars already converted)
      should make it into this function:  */
   assert (strchr (dirname, LT_DIRSEP_CHAR) == 0);
@@ -556,7 +556,7 @@ canonicalize_path (const char *path, char **pcanonical)
 
 	/* Anything other than a directory separator is copied verbatim.  */
 	if ((path[src] != '/')
-#ifdef LT_DIRSEP_CHAR
+#if defined(LT_DIRSEP_CHAR)
 	    && (path[src] != LT_DIRSEP_CHAR)
 #endif
 	    )
@@ -568,7 +568,7 @@ canonicalize_path (const char *path, char **pcanonical)
 	   NULL terminator.  */
 	else if ((path[1+ src] != LT_PATHSEP_CHAR)
 		 && (path[1+ src] != LT_EOS_CHAR)
-#ifdef LT_DIRSEP_CHAR
+#if defined(LT_DIRSEP_CHAR)
 		 && (path[1+ src] != LT_DIRSEP_CHAR)
 #endif
 		 && (path[1+ src] != '/'))
@@ -762,7 +762,7 @@ find_handle (const char *search_path, const char *base_name,
 static int
 load_deplibs (lt_dlhandle handle, char *deplibs)
 {
-#if LTDL_DLOPEN_DEPLIBS
+#if defined(LTDL_DLOPEN_DEPLIBS)
   char	*p, *save_search_path = 0;
   int   depcount = 0;
   int	i;
@@ -772,7 +772,7 @@ load_deplibs (lt_dlhandle handle, char *deplibs)
 
   handle->depcount = 0;
 
-#if LTDL_DLOPEN_DEPLIBS
+#if defined(LTDL_DLOPEN_DEPLIBS)
   if (!deplibs)
     {
       return errors;
@@ -1104,7 +1104,7 @@ try_dlopen (lt_dlhandle *phandle, const char *filename)
 		file = find_file (search_path, base_name, &dir);
 	    }
 
-#ifdef LTDL_SHLIBPATH_VAR
+#if defined(LTDL_SHLIBPATH_VAR)
 	  if (!file)
 	    {
 	      search_path = getenv (LTDL_SHLIBPATH_VAR);
@@ -1112,7 +1112,7 @@ try_dlopen (lt_dlhandle *phandle, const char *filename)
 		file = find_file (search_path, base_name, &dir);
 	    }
 #endif
-#ifdef LTDL_SYSSEARCHPATH
+#if defined(LTDL_SYSSEARCHPATH)
 	  if (!file && sys_search_path)
 	    {
 	      file = find_file (sys_search_path, base_name, &dir);
@@ -1307,11 +1307,11 @@ try_dlopen (lt_dlhandle *phandle, const char *filename)
       if ((dir || (!find_handle (user_search_path, base_name, &newhandle)
 		   && !find_handle (getenv (LTDL_SEARCHPATH_VAR), base_name,
 				    &newhandle)
-#ifdef LTDL_SHLIBPATH_VAR
+#if defined(LTDL_SHLIBPATH_VAR)
 		   && !find_handle (getenv (LTDL_SHLIBPATH_VAR), base_name,
 				    &newhandle)
 #endif
-#ifdef LTDL_SYSSEARCHPATH
+#if defined(LTDL_SYSSEARCHPATH)
 		   && !find_handle (sys_search_path, base_name, &newhandle)
 #endif
 		   )))
@@ -1407,7 +1407,7 @@ lt_dlopenext (const char *filename)
   /* If FILENAME already bears a suitable extension, there is no need
      to try appending additional extensions.  */
   if (ext && ((strcmp (ext, archive_ext) == 0)
-#ifdef LTDL_SHLIB_EXT
+#if defined(LTDL_SHLIB_EXT)
 	      || (strcmp (ext, shlib_ext) == 0)
 #endif
       ))
@@ -1435,7 +1435,7 @@ lt_dlopenext (const char *filename)
       return handle;
     }
 
-#ifdef LTDL_SHLIB_EXT
+#if defined(LTDL_SHLIB_EXT)
   /* Try appending SHLIB_EXT.   */
   if (LT_STRLEN (shlib_ext) > LT_STRLEN (archive_ext))
     {
@@ -1673,14 +1673,14 @@ lt_dlforeachfile (const char *search_path,
 				       foreachfile_callback, func, data);
 	}
 
-#ifdef LTDL_SHLIBPATH_VAR
+#if defined(LTDL_SHLIBPATH_VAR)
       if (!is_done)
 	{
 	  is_done = foreach_dirinpath (getenv(LTDL_SHLIBPATH_VAR), 0,
 				       foreachfile_callback, func, data);
 	}
 #endif
-#ifdef LTDL_SYSSEARCHPATH
+#if defined(LTDL_SYSSEARCHPATH)
       if (!is_done)
 	{
 	  is_done = foreach_dirinpath (getenv(LTDL_SYSSEARCHPATH), 0,

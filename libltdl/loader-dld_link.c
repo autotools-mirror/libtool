@@ -30,8 +30,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 #include "lt__private.h"
 #include "lt_dlloader.h"
 
-#if HAVE_DLD_H
-#include <dld.h>
+#if defined(HAVE_DLD_H)
+#  include <dld.h>
 #endif
 
 static lt_module

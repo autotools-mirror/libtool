@@ -32,7 +32,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 
 #include "lt__dirent.h"
 
-#if __WINDOWS__
+#if defined(__WINDOWS__)
 
 void
 closedir (DIR *entry)
@@ -98,4 +98,4 @@ readdir (DIR *entry)
   return &entry->file_info;
 }
 
-#endif /*__WINDOWS__*/
+#endif /*defined(__WINDOWS__)*/

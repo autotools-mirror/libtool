@@ -30,7 +30,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 #include "lt__private.h"
 #include "lt_dlloader.h"
 
-#if HAVE_MACH_O_DYLD_H
+#if defined(HAVE_MACH_O_DYLD_H)
 #  if !defined(__APPLE_CC__) && !defined(__MWERKS__) && !defined(__private_extern__)
   /* Is this correct? Does it still function properly? */
 #    define __private_extern__ extern
@@ -41,7 +41,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 #include <mach-o/getsect.h>
 
 /* We have to put some stuff here that isn't in older dyld.h files */
-#ifndef ENUM_DYLD_BOOL
+#if !defined(ENUM_DYLD_BOOL)
 # define ENUM_DYLD_BOOL
 # undef FALSE
 # undef TRUE
@@ -50,10 +50,10 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
     TRUE
  };
 #endif
-#ifndef LC_REQ_DYLD
+#if !defined(LC_REQ_DYLD)
 # define LC_REQ_DYLD 0x80000000
 #endif
-#ifndef LC_LOAD_WEAK_DYLIB
+#if !defined(LC_LOAD_WEAK_DYLIB)
 # define LC_LOAD_WEAK_DYLIB (0x18 | LC_REQ_DYLD)
 #endif
 
@@ -71,39 +71,39 @@ static enum DYLD_BOOL (*lt__module_export)	(NSModule module) = 0;
 
 static int dyld_cannot_close				= 0;
 
-#ifndef NSADDIMAGE_OPTION_NONE
+#if !defined(NSADDIMAGE_OPTION_NONE)
 #  define NSADDIMAGE_OPTION_NONE                          0x0
 #endif
-#ifndef NSADDIMAGE_OPTION_RETURN_ON_ERROR
+#if !defined(NSADDIMAGE_OPTION_RETURN_ON_ERROR)
 #  define NSADDIMAGE_OPTION_RETURN_ON_ERROR               0x1
 #endif
-#ifndef NSADDIMAGE_OPTION_WITH_SEARCHING
+#if !defined(NSADDIMAGE_OPTION_WITH_SEARCHING)
 #  define NSADDIMAGE_OPTION_WITH_SEARCHING                0x2
 #endif
-#ifndef NSADDIMAGE_OPTION_RETURN_ONLY_IF_LOADED
+#if !defined(NSADDIMAGE_OPTION_RETURN_ONLY_IF_LOADED)
 #  define NSADDIMAGE_OPTION_RETURN_ONLY_IF_LOADED         0x4
 #endif
-#ifndef NSADDIMAGE_OPTION_MATCH_FILENAME_BY_INSTALLNAME
+#if !defined(NSADDIMAGE_OPTION_MATCH_FILENAME_BY_INSTALLNAME)
 #  define NSADDIMAGE_OPTION_MATCH_FILENAME_BY_INSTALLNAME 0x8
 #endif
 
-#ifndef NSLOOKUPSYMBOLINIMAGE_OPTION_BIND
+#if !defined(NSLOOKUPSYMBOLINIMAGE_OPTION_BIND)
 #  define NSLOOKUPSYMBOLINIMAGE_OPTION_BIND               0x0
 #endif
-#ifndef NSLOOKUPSYMBOLINIMAGE_OPTION_BIND_NOW
+#if !defined(NSLOOKUPSYMBOLINIMAGE_OPTION_BIND_NOW)
 #  define NSLOOKUPSYMBOLINIMAGE_OPTION_BIND_NOW           0x1
 #endif
-#ifndef NSLOOKUPSYMBOLINIMAGE_OPTION_BIND_FULLY
+#if !defined(NSLOOKUPSYMBOLINIMAGE_OPTION_BIND_FULLY)
 #  define NSLOOKUPSYMBOLINIMAGE_OPTION_BIND_FULLY         0x2
 #endif
-#ifndef NSLOOKUPSYMBOLINIMAGE_OPTION_RETURN_ON_ERROR
+#if !defined(NSLOOKUPSYMBOLINIMAGE_OPTION_RETURN_ON_ERROR)
 #  define NSLOOKUPSYMBOLINIMAGE_OPTION_RETURN_ON_ERROR    0x4
 #endif
 
 #define LT__SYMLOOKUP_OPTS	(NSLOOKUPSYMBOLINIMAGE_OPTION_BIND_NOW \
 				| NSLOOKUPSYMBOLINIMAGE_OPTION_RETURN_ON_ERROR)
 
-#ifdef __BIG_ENDIAN__
+#if defined(__BIG_ENDIAN__)
 #  define LT__MAGIC	MH_MAGIC
 #else
 #  define LT__MAGIC	MH_CIGAM
@@ -339,7 +339,6 @@ sys_dyld_close (lt_user_data loader_data, lt_module module)
 	}
       else
 	{
-#if 1
 	  /* Currently, if a module contains c++ static destructors and it
 	     is unloaded, we get a segfault in atexit(), due to compiler and
 	     dynamic loader differences of opinion, this works around that.  */
@@ -349,8 +348,7 @@ sys_dyld_close (lt_user_data loader_data, lt_module module)
 	    {
 	      flags |= NSUNLINKMODULE_OPTION_KEEP_MEMORY_MAPPED;
 	    }
-#endif
-#ifdef __ppc__
+#if defined(__ppc__)
 	  flags |= NSUNLINKMODULE_OPTION_RESET_LAZY_REFERENCES;
 #endif
 	  if (!NSUnLinkModule (module, flags))

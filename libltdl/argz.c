@@ -35,12 +35,12 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 #include <sys/types.h>
 #include <errno.h>
 
-#if HAVE_STRING_H
+#if defined(HAVE_STRING_H)
 #  include <string.h>
-#elif HAVE_STRINGS_H
+#elif defined(HAVE_STRINGS_H)
 #  include <strings.h>
 #endif
-#if HAVE_MEMORY_H
+#if defined(HAVE_MEMORY_H)
 #  include <memory.h>
 #endif
 

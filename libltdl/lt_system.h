@@ -26,7 +26,7 @@ Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 02111-1307  USA
 */
 
-#ifndef LT_SYSTEM_H
+#if !defined(LT_SYSTEM_H)
 #define LT_SYSTEM_H 1
 
 #include <stddef.h>
@@ -34,10 +34,10 @@ Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 #include <sys/types.h>
 
 /* Some systems do not define EXIT_*, even with STDC_HEADERS.  */
-#ifndef EXIT_SUCCESS
+#if !defined(EXIT_SUCCESS)
 # define EXIT_SUCCESS 0
 #endif
-#ifndef EXIT_FAILURE
+#if !defined(EXIT_FAILURE)
 # define EXIT_FAILURE 1
 #endif
 
@@ -51,7 +51,7 @@ Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 /* LTDL_BEGIN_C_DECLS should be used at the beginning of your declarations,
    so that C++ compilers don't mangle their names.  Use LTDL_END_C_DECLS at
    the end of C declarations. */
-#ifdef __cplusplus
+#if defined(__cplusplus)
 # define LT_BEGIN_C_DECLS	extern "C" {
 # define LT_END_C_DECLS		}
 #else
@@ -96,37 +96,21 @@ Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 
 /* DLL building support on win32 hosts;  mostly to workaround their
    ridiculous implementation of data symbol exporting. */
-#ifndef LT_SCOPE
-#  ifdef __WINDOWS__
-#    ifdef DLL_EXPORT		/* defined by libtool (if required) */
+#if !defined(LT_SCOPE)
+#  if defined(__WINDOWS__)
+#    if defined(DLL_EXPORT)		/* defined by libtool (if required) */
 #      define LT_SCOPE	__declspec(dllexport)
 #    endif
-#    ifdef LIBLTDL_DLL_IMPORT	/* define if linking with this dll */
+#    if defined(LIBLTDL_DLL_IMPORT)	/* define if linking with this dll */
 #      define LT_SCOPE	extern __declspec(dllimport)
 #    endif
 #  endif
-#  ifndef LT_SCOPE		/* static linking or !__WINDOWS__ */
+#  if !defined(LT_SCOPE)		/* static linking or !__WINDOWS__ */
 #    define LT_SCOPE	extern
 #  endif
 #endif
 
-/* DLL building support on win32 hosts;  mostly to workaround their
-   ridiculous implementation of data symbol exporting. */
-#ifndef LT_SCOPE
-#  ifdef __WINDOWS__
-#    ifdef DLL_EXPORT		/* defined by libtool (if required) */
-#      define LT_SCOPE	__declspec(dllexport)
-#    endif
-#    ifdef LIBLTDL_DLL_IMPORT	/* define if linking with this dll */
-#      define LT_SCOPE	extern __declspec(dllimport)
-#    endif
-#  endif
-#  ifndef LT_SCOPE		/* static linking or !__WINDOWS__ */
-#    define LT_SCOPE	extern
-#  endif
-#endif
-
-#ifdef __WINDOWS__
+#if defined(__WINDOWS__)
 /* LT_DIRSEP_CHAR is accepted *in addition* to '/' as a directory
    separator when it is set. */
 # define LT_DIRSEP_CHAR		'\\'
@@ -155,4 +139,4 @@ Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 #  define LT_CONC(s,t)	s/**/t
 #endif
 
-#endif /*!LT__SYSTEM_H */
+#endif /*!defined(LT__SYSTEM_H)*/

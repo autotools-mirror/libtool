@@ -27,14 +27,14 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 
 */
 
-#ifndef ARGZ_H
+#if !defined(ARGZ_H)
 #define ARGZ_H 1
 
-#if LTDL
+#if defined(LTDL)
 #  include "lt__glibc.h"
 #endif
 
-#ifdef _cplusplus
+#if defined(_cplusplus)
 extern "C" {
 #endif
 
@@ -47,8 +47,8 @@ error_t	argz_insert	(char **pargz, size_t *pargz_len,
 char *	argz_next	(char *argz, size_t argz_len, const char *entry);
 void	argz_stringify	(char *argz, size_t argz_len, int sep);
 
-#ifdef _cplusplus
+#if defined(_cplusplus)
 }
 #endif
 
-#endif /*!ARGZ_H*/
+#endif /*!defined(ARGZ_H)*/

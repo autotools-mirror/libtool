@@ -27,10 +27,10 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 
 */
 
-#ifndef LT__PREC89_H
+#if !defined(LT__PREC89_H)
 #define LT__PREC89_H 1
 
-#ifdef HAVE_CONFIG_H
+#if defined(HAVE_CONFIG_H)
 #  include HAVE_CONFIG_H
 #endif
 
@@ -38,14 +38,14 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 
 LT_BEGIN_C_DECLS
 
-#if ! HAVE_STRCMP
+#if !defined(HAVE_STRCMP)
 #  undef strcmp
 #  define strcmp lt__strcmp
 int strcmp (const char *str1, const char *str2);
 #endif
 
-#if ! HAVE_STRCHR
-#  if HAVE_INDEX
+#if !defined(HAVE_STRCHR)
+#  if defined(HAVE_INDEX)
 #    define strchr index
 #  else
 #    undef strchr
@@ -54,8 +54,8 @@ const char *strchr (const char *str, int ch);
 #  endif
 #endif
 
-#if ! HAVE_STRRCHR
-#  if HAVE_RINDEX
+#if !defined(HAVE_STRRCHR)
+#  if defined(HAVE_RINDEX)
 #    define strrchr rindex
 #  else
 #    undef strcmp
@@ -64,8 +64,8 @@ const char *strrchr (const char *str, int ch);
 #  endif
 #endif
 
-#if ! HAVE_MEMCPY
-#  if HAVE_BCOPY
+#if !defined(HAVE_MEMCPY)
+#  if defined(HAVE_BCOPY)
 #    define memcpy(dest, src, size)    bcopy((src), (dest), (size))
 #  else
 #    undef memcpy
@@ -74,7 +74,7 @@ void *memcpy (void *dest, const void *src, size_t size);
 #  endif
 #endif
 
-#if ! HAVE_MEMMOVE
+#if !defined(HAVE_MEMMOVE)
 #  undef memmove
 #  define memmove lt__memmove
 void *memmove (void *dest, const void *src, size_t size);
@@ -82,4 +82,4 @@ void *memmove (void *dest, const void *src, size_t size);
 
 LT_END_C_DECLS
 
-#endif /*!LT__PREC89*/
+#endif /*!defined(LT__PREC89)*/

@@ -27,7 +27,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 
 */
 
-#ifndef LT__ALLOC_H
+#if !defined(LT__ALLOC_H)
 #define LT__ALLOC_H 1
 
 #include "lt_system.h"
@@ -53,4 +53,4 @@ char *lt__strdup (const char *string);
 
 LT_END_C_DECLS
 
-#endif /*!LT__ALLOC_H*/
+#endif /*!defined(LT__ALLOC_H)*/

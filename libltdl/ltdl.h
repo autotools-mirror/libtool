@@ -27,7 +27,7 @@ Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 */
 
 /* Only include this header file once. */
-#ifndef LTDL_H
+#if !defined(LTDL_H)
 #define LTDL_H 1
 
 #include <libltdl/lt_system.h>
@@ -139,7 +139,7 @@ LT_SCOPE void	(*lt_dlfree)	(void *ptr);
 /* --- SOURCE COMPATIBILITY WITH ANCIENT LIBLTDL --- */
 
 
-#ifdef LT_NON_POSIX_NAMESPACE
+#if defined(LT_NON_POSIX_NAMESPACE)
 #  define lt_ptr_t		void *
 #  define lt_module_t		lt_module
 #  define lt_module_open_t	lt_module_open
@@ -152,4 +152,4 @@ LT_SCOPE void	(*lt_dlfree)	(void *ptr);
 
 LT_END_C_DECLS
 
-#endif /* !LTDL_H */
+#endif /*!defined(LTDL_H)*/

@@ -27,10 +27,10 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 
 */
 
-#ifndef LT__DIRENT_H
+#if !defined(LT__DIRENT_H)
 #define LT__DIRENT_H 1
 
-#ifdef HAVE_CONFIG_H
+#if defined(HAVE_CONFIG_H)
 #  include HAVE_CONFIG_H
 #endif
 
@@ -46,13 +46,13 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
    `direct' API.  */
 #  define dirent direct
 #  define D_NAMLEN(dirent) ((dirent)->d_namlen)
-#  if HAVE_SYS_NDIR_H
+#  if defined(HAVE_SYS_NDIR_H)
 #    include <sys/ndir.h>
 #  endif
-#  if HAVE_SYS_DIR_H
+#  if defined(HAVE_SYS_DIR_H)
 #    include <sys/dir.h>
 #  endif
-#  if HAVE_NDIR_H
+#  if defined(HAVE_NDIR_H)
 #    include <ndir.h>
 #  endif
 
@@ -92,6 +92,6 @@ void		closedir	(DIR *entry);
 
 LT_END_C_DECLS
 
-#endif /*!__WINDOWS__*/
+#endif /*!defined(__WINDOWS__)*/
 
-#endif /*!LT__DIRENT_H*/
+#endif /*!defined(LT__DIRENT_H)*/

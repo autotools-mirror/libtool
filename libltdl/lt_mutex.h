@@ -27,7 +27,7 @@ Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 */
 
 /* Only include this header file once. */
-#ifndef LT_MUTEX_H
+#if !defined(LT_MUTEX_H)
 #define LT_MUTEX_H 1
 
 #include <libltdl/lt_system.h>
@@ -46,4 +46,4 @@ LT_SCOPE int	lt_dlmutex_register	(lt_dlmutex_lock *lock,
 
 LT_END_C_DECLS
 
-#endif /*!LT_MUTEX_H*/
+#endif /*!defined(LT_MUTEX_H)*/

@@ -27,10 +27,10 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 
 */
 
-#ifndef LT__PRIVATE_H
+#if !defined(LT__PRIVATE_H)
 #define LT__PRIVATE_H 1
 
-#ifdef HAVE_CONFIG_H
+#if defined(HAVE_CONFIG_H)
 #  include HAVE_CONFIG_H
 #endif
 
@@ -39,18 +39,18 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 #include <assert.h>
 #include <errno.h>
 
-#if HAVE_UNISTD_H
+#if defined(HAVE_UNISTD_H)
 #  include <unistd.h>
 #endif
 
-#if HAVE_STRING_H
+#if defined(HAVE_STRING_H)
 #  include <string.h>
 #else
-#  if HAVE_STRINGS_H
+#  if defined(HAVE_STRINGS_H)
 #    include <strings.h>
 #  endif
 #endif
-#if HAVE_MEMORY_H
+#if defined(HAVE_MEMORY_H)
 #  include <memory.h>
 #endif
 
@@ -63,11 +63,11 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 /* ...and all exported interfaces.  */
 #include "ltdl.h"
 
-#if WITH_DMALLOC
+#if defined(WITH_DMALLOC)
 #  include <dmalloc.h>
 #endif
 
-#ifdef DLL_EXPORT
+#if defined(DLL_EXPORT)
 #  define LT_GLOBAL_DATA	__declspec(dllexport)
 #else
 #  define LT_GLOBAL_DATA
@@ -76,7 +76,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 
 LT_BEGIN_C_DECLS
 
-#ifndef errno
+#if !defined(errno)
 extern int errno;
 #endif
 
@@ -135,4 +135,4 @@ LT_SCOPE const char		*lt__last_error;
 
 LT_END_C_DECLS
 
-#endif /*!LT__PRIVATE_H*/
+#endif /*!defined(LT__PRIVATE_H)*/

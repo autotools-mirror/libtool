@@ -27,7 +27,7 @@ Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 */
 
 /* Only include this header file once. */
-#ifndef LT_ERROR_H
+#if !defined(LT_ERROR_H)
 #define LT_ERROR_H 1
 
 #include <libltdl/lt_system.h>
@@ -75,4 +75,4 @@ LT_SCOPE int	lt_dlseterror	(int errorcode);
 
 LT_END_C_DECLS
 
-#endif /*!LT_ERROR_H*/
+#endif /*!defined(LT_ERROR_H)*/

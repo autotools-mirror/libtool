@@ -73,7 +73,7 @@ sys_wll_open (lt_user_data loader_data, const char *filename)
   if (!searchname)
     return 0;
 
-#if __CYGWIN__
+#if defined(__CYGWIN__)
   {
     char wpath[MAX_PATH];
     cygwin_conv_to_full_win32_path(searchname, wpath);
