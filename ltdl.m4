@@ -81,6 +81,9 @@ AC_CACHE_CHECK([whether deplibs are loaded by dlopen],
 	netbsd*)
 	  libltdl_cv_sys_dlopen_deplibs=yes
 	  ;;
+	openbsd*)
+	  libltdl_cv_sys_dlopen_deplibs=yes
+	  ;;
 	solaris*)
 	  libltdl_cv_sys_dlopen_deplibs=yes
 	  ;;
@@ -322,4 +325,3 @@ AC_CHECK_TYPES([error_t],
 
 AC_CHECK_FUNCS([argz_append argz_create_sep argz_insert argz_next argz_stringify])
 ])# AC_LTDL_FUNC_ARGZ
-

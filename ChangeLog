@@ -1,3 +1,8 @@
+2001-09-03  Brad  <brad@comstyle.com>
+
+	* ltdl.m4 [AC_LTDL_SYS_DLOPEN_DEPLIBS]: Teach ltdl about the
+	behavior of OpenBSD's dlopen().
+
 2001-09-03  Gary V. Vaughan  <gary@gnu.org>
 
 	* configure.in: Bumped version to 1.4.1a.
