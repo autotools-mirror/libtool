@@ -3850,7 +3850,6 @@ EOF
 	  save_ifs="$IFS"; IFS='~'
 	  for cmd in $concat_cmds; do
 	    IFS="$save_ifs"
-	    eval cmd=\"$cmd\"
 	    $show "$cmd"
 	    $run eval "$cmd" || exit $?
 	  done
