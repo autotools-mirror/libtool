@@ -1,5 +1,8 @@
 1999-01-05  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* ltmain.in (SP2NL, NL2SP): Don't delete empty lines, as this
+	would lose for files with embedded blanks.
+	
 	* ltconfig.in (cygwin, archive_cmds, archive_sym_cmds): Moved
  	ltdll.c into ltmain.in, to avoid its duplication, and added a sed
  	script to extract it.  Also, create def and base files in $objdir,
