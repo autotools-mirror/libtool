@@ -1,5 +1,12 @@
 2000-05-27  Gary V. Vaughan  <gvv@techie.com>
 
+	GNU libtool 1.3.5 was released.
+
+	* config.guess: updated from autoconf cvs.
+	* config.sub: ditto.
+	* NEWS: inserted todays date.
+	* configure.in: bumped version to 1.3.5.
+
 	* ltmain.in: cygwin-1.1.0 and higher no longer grok backslash path
 	separators.
 	
