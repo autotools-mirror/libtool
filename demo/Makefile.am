@@ -28,9 +28,9 @@ hell_static_SOURCES = main.c
 hell_static_LDADD = libhello.la
 hell_static_LDFLAGS = -static
 
-# Create a version of hell that does its own dlopening.
+# Create a version of hell that does a preloaded dlopen.
 helldl_SOURCES = dlmain.c
-helldl_LDFLAGS = -dlopen libhello.la
+helldl_LDFLAGS = -export-dynamic -dlpreopen libhello.la
 
 TESTS = run.test
 

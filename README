@@ -9,7 +9,6 @@ details.
 Libtool supports building static libraries on all platforms.
 
 Shared library support has been implemented for these platforms:
-  All ELF targets that use both the GNU C compiler (gcc) and GNU ld
   AIX 3.x (*-*-aix3*)
   AIX 4.x (*-*-aix4*)
   Digital/UNIX 3.x, 4.x, a.k.a. OSF/1 (*-*-osf3*, *-*-osf4*)
@@ -22,6 +21,7 @@ Shared library support has been implemented for these platforms:
   SCO OpenServer 5.x (*-*-sco3.2v5*)
   Solaris 2.x (*-*-solaris2*)
   SunOS 4.x, a.k.a. Solaris 1.x  (*-*-sunos4*)
+  All ELF targets that use both the GNU C compiler (gcc) and GNU ld
 
 See the file NEWS for a description of recent changes to libtool.
 

@@ -1,3 +1,29 @@
+Mon Jul 21 09:46:02 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltmain.sh.in (link): Finish full integration for `-dlopen' and
+ 	`-dlpreopen'.
+	Fix two silly typos where I used a compile_command in place of a
+	finalize_command, and vice versa.
+	Change the wrapper script to check a hardcoded path only if the
+	argv[0] method fails.  This is a compromise for the previous two
+	patches, and should solve the majority of problems with wrapper
+	scripts.  From Kenneth Albanowski.
+
+	* demo/Makefile.am (helldl_LDFLAGS): Add `-export-dynamic' and
+	`-dlpreopen' for building helldl.
+
+	* demo/dlmain.c (main): Succeed, even if none of the libhello
+	symbols have been preloaded.
+
+Sun Jul 20 10:17:04 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltconfig.in (global_symbol_pipe): Add `U' to the accepted global
+ 	symbol types.  This means that we will get duplicate symbols, but
+ 	we'll also be sure to get all global symbols used by the program.
+
+	* ltconfig.in (pipe_works), ltmain.sh.in (link): Sort and make
+	symbol output unique.
+
 Sat Jul 19 21:54:33 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltconfig.in (pipe_works): Check to make sure our guessed

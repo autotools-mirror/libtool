@@ -742,21 +742,21 @@ echo $ac_n "checking command to parse $NM output... $ac_c" 1>&6
 
 # This is a sane default that works on at least a few old systems.
 # [It comes from Ultrix.  What could be older than Ultrix?!! ;)]
-global_symbol_pipe="sed '/^.* [BCDEGRST] /!d; s/^.* [BCDEGRST] \(.*\)$/\1 \1/'"
+global_symbol_pipe="sed '/^.* [BCDEGRSTU] /!d; s/^.* [BCDEGRSTU] \(.*\)$/\1 \1/'"
 
 # Take a first stab at what the pipe should be.
 if $NM -V 2>&1 | egrep '(GNU|with BFD)' > /dev/null; then
   # We're using GNU nm.
-  global_symbol_pipe="sed '/^.* [BCDGIST] /!d; s/^.* [BCDGIST] \(.*\)$/\1 \1/'"
+  global_symbol_pipe="sed '/^.* [ABCDGISTU] /!d; s/^.* [ABCDGISTU] \(.*\)$/\1 \1/'"
 else
   # It's the system nm.
   case "$host_os" in
   aix*)
     # Delete symbols that begin with a dot.
-    global_symbol_pipe="sed '/^.* [BCDT] [^.]/!d; s/^.* [BCDT] \(.*\)$/\1 \1/'"
+    global_symbol_pipe="sed '/^.* [BCDTU] [^.]/!d; s/^.* [BCDTU] \(.*\)$/\1 \1/'"
     ;;
   solaris2*)
-    global_symbol_pipe="sed '/^.* [BDT] /!d; s/^.* [BDT] \(.*\)$/\1 \1/'"
+    global_symbol_pipe="sed '/^.* [BDTU] /!d; s/^.* [BDTU] \(.*\)$/\1 \1/'"
     ;;
   esac
 fi
@@ -774,6 +774,9 @@ EOF
 if { (eval echo $progname:751: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>&5; } && test -s conftest.o; then
   # Now try to grab the symbols.
   if { echo "$progname:752: eval \"$NM conftest.o | $global_symbol_pipe > conftest.nm\"" >&5; eval "$NM conftest.o | $global_symbol_pipe > conftest.nm 2>&5"; } && test -s conftest.nm; then
+
+    # Try sorting and uniquifying the output.
+    sort conftest.nm | uniq > conftest.nmT && mv -f conftest.nmT conftest.nm
 
     # Make sure that we snagged all the symbols we need.
     if egrep ' nm_test_var$' conftest.nm >/dev/null; then

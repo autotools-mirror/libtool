@@ -2,6 +2,9 @@
 is to have undocumented utility libraries, where only the shared
 version is installed.
 
+* We could use libtool object convenience libraries that resolve
+symbols to be included in a libtool archive.
+
 * Somehow we need to make sure that static libraries never appear in
 $deplibs.  If a program linked against a library doesn't contain the
 basename of the library (or is the same size), then the library is
@@ -9,12 +12,6 @@ probably static.
 
 * A better check to detect broken collect2 on AIX, once the bug is
 fixed in GCC.
-
-* We could use libtool object convenience libraries that resolve
-symbols to be included in a libtool archive.
-
-* Add a flag to make sure at least a null dld_preloaded_symbols is
-generated.
 
 * Implement full multi-language support.  Currently, this is only for
 C++, but there are beginnings of this in the manual (Other Languages).

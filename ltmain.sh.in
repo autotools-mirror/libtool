@@ -293,6 +293,7 @@ if test -z "$show_help"; then
     finalize_shlibpath=
     deplibs=
     dlfiles=
+    dlprefiles=
     export_dynamic=no
     hardcode_libdirs=
     install_libdir=
@@ -332,17 +333,18 @@ if test -z "$show_help"; then
 	esac
 
 	case "$prev" in
-        dlopen)
-	  if test -z "$dlfiles"; then
-	    # Add the symbol object into the linking commands.
-	    compile_command="$compile_command @SYMFILE@"
-	    finalize_command="$compile_command @SYMFILE@"
-	  fi
-	  dlfiles="$dlfiles $arg"
-          prev=
+        dlfiles|dlprefiles)
+	  case "$arg" in
+	  *.la) ;;  # We handle this case below.
+          *)
+            dlprefiles="$dlprefiles $arg"
+	    test "$prev" = dlfiles && dlfiles="$dlfiles $arg"
+	    prev=
+            ;;
+          esac
           ;;
         *)
-	  eval "$prev=\$arg"
+	  eval "$prev=\"\$arg\""
 	  prev=
 	  continue
           ;;
@@ -356,14 +358,24 @@ if test -z "$show_help"; then
       -allow-undefined) allow_undefined=yes ;;
 
       -dlopen)
-	prev=dlopen
+	prev=dlfiles
+	continue
+	;;
+
+      -dlpreopen)
+	prev=dlprefiles
 	continue
 	;;
 
       -export-dynamic)
-	export_dynamic=yes
-	compile_command="$compile_command "`eval echo "$export_dynamic_flag"`
-	finalize_command="$finalize_command "`eval echo "$export_dynamic_flag"`
+	if test "$export_dynamic" != yes; then
+	  export_dynamic=yes
+	  compile_command="$compile_command "`eval echo "$export_dynamic_flag"`
+	  finalize_command="$finalize_command "`eval echo "$export_dynamic_flag"`
+	  # Add the symbol object into the linking commands.
+	  compile_command="$compile_command @SYMFILE@"
+	  finalize_command="$finalize_command @SYMFILE@"
+        fi
 	continue
 	;;
 
@@ -431,6 +443,7 @@ if test -z "$show_help"; then
       *.la)
 	# A libtool-controlled library.
 
+	dlname=
 	libdir=
 	library_names=
 	old_library=
@@ -471,6 +484,31 @@ if test -z "$show_help"; then
 	  dir="$objdir"
 	else
 	  dir="$dir/$objdir"
+	fi
+
+	# This library was specified with -dlopen.
+	if test "$prev" = dlfiles; then
+	  dlfiles="$dlfiles $arg"
+	  if test -z "$dlname"; then
+	    # If there is no dlname, we need to preload.
+	    prev=dlprefiles
+	  else
+	    # We should not create a dependency on this library.
+	    prev=
+	    continue
+	  fi
+	fi
+
+	# The library was specified with -dlpreopen.
+	if test "$prev" = dlprefiles; then
+	  # Prefer using a static library (so that no silly _DYNAMIC symbols
+	  # are required to link).
+	  if test -n "$old_library"; then
+	    dlprefiles="$dlprefiles $dir/$old_library"
+	  else
+	    dlprefiles="$dlprefiles $dir/$linklib"
+	  fi
+	  prev=
 	fi
 
 	if test "$build_libtool_libs" = yes && test -n "$library_names"; then
@@ -636,11 +674,11 @@ if test -z "$show_help"; then
 	exit 1
       fi
 
-      if test -n "$dlfiles"; then
+      if test -n "$dlfiles$dlprefiles"; then
 	echo "$progname: warning: \`-dlopen' is ignored while creating libtool libraries" 1>&2
 	# Nullify the symbol file.
-	compile_command=`echo "$compile_command" | sed "s%@SYMFILE@%%"`
-	finalize_command=`echo "$finalize_command" | sed "s%@SYMFILE@%%"`
+	compile_command=`echo "$compile_command" | sed "s% @SYMFILE@%%"`
+	finalize_command=`echo "$finalize_command" | sed "s% @SYMFILE@%%"`
       fi
 
       if test -z "$install_libdir"; then
@@ -816,11 +854,11 @@ if test -z "$show_help"; then
 	echo "$progname: warning: \`-l' and \`-L' are ignored while creating objects" 1>&2
       fi
 
-      if test -n "$dlfiles"; then
+      if test -n "$dlfiles$dlprefiles"; then
 	echo "$progname: warning: \`-dlopen' is ignored while creating objects" 1>&2
 	# Nullify the symbol file.
-	compile_command=`echo "$compile_command" | sed "s%@SYMFILE@%%"`
-	finalize_command=`echo "$finalize_command" | sed "s%@SYMFILE@%%"`
+	compile_command=`echo "$compile_command" | sed "s% @SYMFILE@%%"`
+	finalize_command=`echo "$finalize_command" | sed "s% @SYMFILE@%%"`
       fi
 
       if test -n "$install_libdir"; then
@@ -907,69 +945,29 @@ if test -z "$show_help"; then
 	# Transform all the library objects into standard objects.
 	compile_command=`echo "$compile_command " | sed 's/\.lo /.o /g; s/ $//'`
 	finalize_command=`echo "$finalize_command " | sed 's/\.lo /.o /g; s/ $//'`
-	dlfiles=`echo "$dlfiles " | sed 's/\.lo /.o /g; s/ $//'`
       fi
 
-      if test -n "$dlfiles"; then
-	if test -z "$global_symbol_pipe" || test -z "$NM"; then
-	  echo "$progname: not configured to extract global symbols from \`-dlopen' files" 1>&2
-	  exit 1
-	fi
+      if test "$export_dynamic" = yes && test -n "$global_symbol_pipe" && test -n "$NM"; then
+	# Add our own program objects to the preloaded list.
+	dlprefiles=`echo "$objs$libobjs$dlprefiles " | sed 's/\.lo /.o/g; s/ $//'`
 
         # Discover the nlist of each of the dlfiles.
 	dlsyms="$objdir/${output}S.c"
-	nlist="$objdir/${output}.syms"
+	nlist="$objdir/${output}.nm"
 
-	$run rm -f $nlist
-	for arg in $dlfiles; do
-	  pre_dlname=
-	  case "$arg" in
-	  *.a | *.o) pre_dlname="$arg" ;;
-	  *.la)
-	    # We already checked for libtool archive validity above.
-
-	    # Find the directory that the archive lives in.
-	    ltlib=`echo "$arg" | sed 's%^.*/%%'`
-	    dir=`echo "$arg" | sed 's%/[^/]*$%%'`
-	    test "X$dir" = "X$arg" && dir=.
-
-	    # Read the libtool archive.
-	    old_library=
-	    library_names=
-	    . $dir/$ltlib
-
-	    # Prefer the new library to the old one.
-	    if test -n "$library_names"; then
-	      set dummy $library_names
-	      pre_dlname="$2"
-	    else
-	      pre_dlname="$old_library"
-	    fi
-
-	    if test -f "$dir/$objdir/$pre_dlname"; then
-	      pre_dlname="$dir/$objdir/$pre_dlname"
-	    elif test -f "$dir/$pre_dlname"; then
-	      pre_dlname="$dir/$pre_dlname"
-	    else
-	      echo "$progname: cannot find \`$pre_dlname' in \`$dir/$objdir' or \`$dir'" 1>&2
-	      pre_dlname=
-	    fi
-	    ;;
-	  esac
-
-	  if test -z "$pre_dlname"; then
-	    echo "$progname: \`$arg' is not a dlopenable file" 1>&2
-	    exit 1
-	  fi
-
-	  echo "extracting global symbols from \`$pre_dlname'"
-	  $run eval "$NM $pre_dlname | $global_symbol_pipe >> $nlist"
+	$run rm -f "$nlist" "$nlist"T
+	for arg in $dlprefiles; do
+	  echo "extracting global symbols from \`$arg'"
+	  $run eval "$NM $arg | $global_symbol_pipe >> '$nlist'"
 	done
 
 	# Parse the name list into a C file.
 	echo "creating $dlsyms"
 	if test -z "$run"; then
-          cat <<EOF > $dlsyms
+	  # Try sorting and uniquifying the output.
+	  sort "$nlist" | uniq > "$nlist"T && mv -f "$nlist"T "$nlist"
+
+          cat <<EOF > "$dlsyms"
 /* $dlsyms - symbol resolution table for \`$output' dlsym emulation. */
 /* Generated by $PROGRAM - GNU $PACKAGE $VERSION */
 
@@ -977,12 +975,12 @@ if test -z "$show_help"; then
 EOF
 	  if test -f "$nlist"; then
 	    # Prevent the only kind of circular reference mistake we can make.
-	    sed '/ dld_preloaded_symbols$/d; s/^.* \(.*\)$/extern char \1;/' < $nlist >> $dlsyms
+	    sed '/ dld_preloaded_symbols$/d; s/^.* \(.*\)$/extern char \1;/' < "$nlist" >> "$dlsyms"
 	  else
-	    echo "/* NONE */" >> $dlsyms
+	    echo "/* NONE */" >> "$dlsyms"
 	  fi
 
-	  cat <<\EOF >> $dlsyms
+	  cat <<\EOF >> "$dlsyms"
 
 #if defined (__STDC__) && __STDC__
 # define __ptr_t void *
@@ -1000,23 +998,31 @@ dld_preloaded_symbols[] =
 EOF
 
 	  if test -f "$nlist"; then
-	    sed 's/^\(.*\) \(.*\)$/  {"\1", \&\2},/' < $nlist >> $dlsyms
+	    sed 's/^\(.*\) \(.*\)$/  {"\1", \&\2},/' < "$nlist" >> "$dlsyms"
 	  fi
 
-          cat <<\EOF >> $dlsyms
+          cat <<\EOF >> "$dlsyms"
   {0},
 };
 EOF
 	fi
-	$run rm -f "$nlist"
+	$run rm -f "$nlist" "$nlist"T
 
 	# Now compile the dynamic symbol file.
-	$show "(cd $objdir && $CC -c ${output}S.c)"
-	$run eval "(cd $objdir && $CC -c ${output}S.c)" || exit $?
+	$show "(cd $objdir && $CC -c '${output}S.c')"
+	$run eval "(cd $objdir && $CC -c '${output}S.c')" || exit $?
 
 	# Transform the symbol file into the correct name.
 	compile_command=`echo "$compile_command" | sed "s%@SYMFILE@%$objdir/${output}S.o%"`
 	finalize_command=`echo "$finalize_command" | sed "s%@SYMFILE@%$objdir/${output}S.o%"`
+      elif test "$export_dynamic" != yes; then
+        test -n "$dlfiles$dlprefiles" && echo "$progname: warning: \`-dlopen' and \`-dlpreopen' are ignored without \`-export-dynamic'" 1>&2
+      else
+	echo "$progname: not configured to extract global symbols from dlpreopened files" 1>&2
+
+	# Nullify the symbol file.
+	compile_command=`echo "$compile_command" | sed "s% @SYMFILE@%%"`
+	finalize_command=`echo "$finalize_command" | sed "s% @SYMFILE@%%"`
       fi
 
       if test -z "$link_against_libtool_libs" || test "$build_libtool_libs" != yes; then
@@ -1033,8 +1039,8 @@ EOF
 	if test $status -ne 0 && test -n "$link_static"; then
 	  echo "$progname: cannot link \`$output' statically; retrying semi-dynamically" 1>&2
 	  compile_command=`echo "$compile_command " | sed "s% $link_static % %;s/ $//"`
-	  $show "$finalize_command"
-	  $run $finalize_command
+	  $show "$compile_command"
+	  $run $compile_command
 	  status=$?
 	fi
 	exit $status
@@ -1133,8 +1139,12 @@ else
   # Try to get the absolute directory name.
   absdir=\`cd "\$thisdir" && pwd\`
   test -n "\$absdir" && thisdir="\$absdir"
+
   progdir="\$thisdir/$objdir"
-  program="$output"
+  program='$output'
+
+  # If the \$0 dir failed (maybe due to symlink), try a hardcoded dir.
+  test -f "\$progdir/\$program" || progdir='`pwd`/$objdir'
 
   if test -f "\$progdir/\$program"; then
     # Run the actual program with our arguments.
@@ -1172,7 +1182,7 @@ EOF
     exit 1
   else
     # The program doesn't exist.
-    echo "\$0: error: \$progdir/\$program does not exist" 1>&2
+    echo "\$0: error: neither \$thisdir/$objdir/\$program nor \$progdir/\$program exists" 1>&2
     echo "This script is just a wrapper for \$program." 1>&2
     echo "See the $PACKAGE documentation for more information." 1>&2
     exit 1
@@ -1822,7 +1832,8 @@ a program from several object files.
 The following components of LINK-COMMAND are treated specially:
 
   -allow-undefined  allow a libtool library to reference undefined symbols
-  -dlopen FILE      link in FILE and add its symbols to dld_preloaded_symbols
+  -dlopen FILE      \`-dlpreopen' FILE if it cannot be dlopened at runtime
+  -dlpreopen FILE   link in FILE and add its symbols to dld_preloaded_symbols
   -export-dynamic   allow symbols from OUTPUT-FILE to be resolved with dlsym(3)
   -LLIBDIR          search LIBDIR for required installed libraries
   -lNAME            OUTPUT-FILE requires the installed library libNAME

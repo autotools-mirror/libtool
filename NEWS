@@ -3,7 +3,7 @@ NEWS - list of user-visible changes between releases of GNU libtool.
 New in 1.0a:
 * Bug fixes.
 * Full support for dynamically loaded modules, even on static-only
-  platforms, via a new `-dlopen' link flag.
+  platforms, via new `-dlopen' and `-pre-dlopen' link flags.
 * New tests for a BSD-compatible `nm' program, required for dlopened
   modules.
 * FIXME: Deleted `dlname' mode, now that the internal structure of `.la'
