@@ -1,8 +1,12 @@
 NEWS - list of user-visible changes between releases of GNU Libtool
 
-New in 1.5.7a: 2004-??-??; CVS version 1.5.7a, Libtool team:
+New in 1.5.8: 2004-08-07; CVS version 1.5.7a, Libtool team:
 * Support for Intel C++ version 8.0.
 * Improved support for OpenBSD.
+* Support for xlc on Mac OS X.
+* Better support for zsh as /bin/sh.
+* Much faster check for command line length on all BSD systems.
+* Better Mac OS X/darwin support.
 * Bug Fixes.
 
 New in 1.5.6: 2004-04-11; CVS version 1.5.5a, Libtool team:
