@@ -1,5 +1,9 @@
 1999-04-29  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* doc/libtool.texi (Distributing libltdl): Document that -static
+	may cause the same problems on libltdl as -all-static.
+	* TODO: We might want to fix this in the future.
+
 	* doc/libtool.texi: Clear up overfull hbox.
 
 	* libltdl/Makefile.am (ltdl.lo): Add dependencies.

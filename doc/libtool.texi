@@ -3053,9 +3053,9 @@ You should probably also add @samp{AC_LIBTOOL_DLOPEN} to your
 libtool will assume no dlopening mechanism is supported, and revert to
 dlpreopening, which is probably not what you want.
 
-Avoid using the @code{-all-static} switch when linking programs with
-libltdl; this will not work on all plaforms, because the dlopening
-functions may not be available for static linking.
+Avoid using the @code{-static} or @code{-all-static} switches when
+linking programs with libltdl.  This will not work on all plaforms,
+because the dlopening functions may not be available for static linking.
 
 The following example shows you how to embed the convenience libltdl
 in your package. In order to use the installable variant just replace
