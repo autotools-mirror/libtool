@@ -100,7 +100,8 @@ else
 fi
 
 if test "x$hardcode_action" = xrelink ||
-   test "x$hardcode_into_libs" = xyes; then
+   { test "x$hardcode_into_libs" = xyes &&
+     test "x$shlibpath_overrides_runpath" != xyes; }; then
   echo "= Exiting: install-time relinking is required"
   exit 0
 fi
