@@ -55,4 +55,4 @@ ltdldata_DATA		= Makefile.am dld_link.c dlopen.c dyld.c \
 			  load_add_on.c loadlibrary.c shl_load.c
 
 ../libdlloader.la:
-	cd ..; $(MAKE) $(MAKEFLAGS) libdlloader.la
+	cd ..; $(MAKE) $(AM_MAKEFLAGS) libdlloader.la
