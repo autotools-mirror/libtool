@@ -1,6 +1,6 @@
 NEWS - list of user-visible changes between releases of GNU Libtool
 
-New in 1.3b: 1999-07-??; CVS version 1.3a, Libtool team:
+New in 1.3b: 1999-07-02; CVS version 1.3a, Libtool team:
 * Complete inter-library dependencies support. It's now possible
   to link libtool libraries against other libtool libraries.
 * Libtool is able to find already-installed libtool libraries,
