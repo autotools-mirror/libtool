@@ -1,5 +1,10 @@
 1999-01-22  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* mdemo/Makefile.am (../libltdl/libtool): if it does not exist,
+	the sub-make for libltdlc.la will take care of it, but we must at
+	least provide an empty rule for it, otherwise the sub-make will
+	never run
+
 	* demo/configure.in, demo/Makefile.am (DLPREOPEN): reverted; it
 	didn't make any difference.
 

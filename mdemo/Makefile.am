@@ -21,6 +21,9 @@ bin_PROGRAMS = mdemo mdemo.debug
 ../libltdl/libltdlc.la: ../libtool ../libltdl/libtool \
     $(srcdir)/../libltdl/ltdl.c $(srcdir)/../libltdl/ltdl.h
 	(cd ../libltdl; $(MAKE) libltdlc.la)
+# Without the following line, the check may fail if libltdl/libtool is
+# removed after libltdl is configured
+../libltdl/libtool:
 
 # Create a version of mdemo that does dlopen.
 mdemo_SOURCES = main.c
