@@ -1969,7 +1969,8 @@ tryall_dlopen_module (handle, prefix, dirname, dlname)
      shuffled.  Otherwise, attempt to open FILENAME as a module.  */
   if (prefix)
     {
-      error += tryall_dlopen_module (handle, 0, prefix, filename);
+      error += tryall_dlopen_module (handle,
+				     (const char *) 0, prefix, filename);
     }
   else if (tryall_dlopen (handle, filename) != 0)
     {
@@ -2003,7 +2004,8 @@ find_module (handle, dir, libdir, dlname, old_name, installed)
       /* try to open the installed module */
       if (installed && libdir)
 	{
-	  if (tryall_dlopen_module (handle, 0, libdir, dlname) == 0)
+	  if (tryall_dlopen_module (handle,
+				    (const char *) 0, libdir, dlname) == 0)
 	    return 0;
 	}
 
@@ -2016,7 +2018,8 @@ find_module (handle, dir, libdir, dlname, old_name, installed)
 
       /* maybe it was moved to another directory */
       {
-	  if (tryall_dlopen_module (handle, 0, dir, dlname) == 0)
+	  if (tryall_dlopen_module (handle,
+				    (const char *) 0, dir, dlname) == 0)
 	    return 0;
       }
     }

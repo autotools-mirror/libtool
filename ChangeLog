@@ -1,3 +1,10 @@
+2001-09-06  Gary V. Vaughan  <gary@gnu.org>
+
+	From Michael Pruett <mpruett@engr.sgi.com>:
+	* libltdl/ltdl.c (find_module): `0' valued arguments to
+	tryall_dlopen_module() must be explicitly cast to avoid compiler
+	warnings on some environments.
+
 2001-09-03  Gary V. Vaughan  <gary@gnu.org>
 
 	* demo/Makefile.am (helldl):  Automake 1.4 can't find the target
