@@ -56,4 +56,11 @@ if egrep -n -e '\$Xsed' $scripts | egrep -v -n -e '\$echo \\*"X'; then
   status=1
 fi
 
+# Check for quotes within backquotes within quotes "`"bar"`"
+if egrep -n -e '"[^`"]*`[^"`]*"[^"`]*".*`[^`"]*"' $scripts | \
+   egrep -v "### testsuite: skip nested quoting test$"; then
+  echo "nested quotes are dangerous"
+  status=1
+fi
+
 exit $status

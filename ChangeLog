@@ -1,5 +1,11 @@
 1999-11-04  Alexandre Oliva  <oliva@lsd.ic.unicamp.br>
 
+	* tests/sh.test: New test to detect uses of quotes within
+	backticks within quotes.
+	* ltconfig.in, ltmain.in: Fix detected errors.  Mark false
+	positives with a comment that disables the detector.
+	Reported by Akim Demaille <akim@epita.fr>
+
 	* configure.in: Move ltconfig and ltmain.sh generation back...
 	* Makefile.am: here.
 	

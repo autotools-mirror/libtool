@@ -77,8 +77,11 @@ if test "X${echo_test_string+set}" != Xset; then
   done
 fi
 
-if test "X`($echo '\t') 2>/dev/null`" != 'X\t' ||
-   test "X`($echo "$echo_test_string") 2>/dev/null`" != X"$echo_test_string"; then
+if test "X`($echo '\t') 2>/dev/null`" = 'X\t' &&
+   echo_testing_string=`($echo "$echo_test_string") 2>/dev/null` &&
+   test "X$echo_testing_string" = "X$echo_test_string"; then
+  :
+else
   # The Solaris, AIX, and Digital Unix default echo programs unquote
   # backslashes.  This makes it impossible to quote backslashes using
   #   echo "$something" | sed 's/\\/\\\\/g'
@@ -89,7 +92,8 @@ if test "X`($echo '\t') 2>/dev/null`" != 'X\t' ||
   for dir in $PATH /usr/ucb; do
     if (test -f $dir/echo || test -f $dir/echo$ac_exeext) &&
        test "X`($dir/echo '\t') 2>/dev/null`" = 'X\t' &&
-       test "X`($dir/echo "$echo_test_string") 2>/dev/null`" = X"$echo_test_string"; then
+       echo_testing_string=`($dir/echo "$echo_test_string") 2>/dev/null` &&
+       test "X$echo_testing_string" = "X$echo_test_string"; then
       echo="$dir/echo"
       break
     fi
@@ -99,7 +103,8 @@ if test "X`($echo '\t') 2>/dev/null`" != 'X\t' ||
   if test "X$echo" = Xecho; then
     # We didn't find a better echo, so look for alternatives.
     if test "X`(print -r '\t') 2>/dev/null`" = 'X\t' &&
-       test "X`(print -r "$echo_test_string") 2>/dev/null`" = X"$echo_test_string"; then
+       echo_testing_string=`(print -r "$echo_test_string") 2>/dev/null` &&
+       test "X$echo_testing_string" = "X$echo_test_string"; then
       # This shell has a builtin print -r that does the trick.
       echo='print -r'
     elif (test -f /bin/ksh || test -f /bin/ksh$ac_exeext) &&
@@ -114,18 +119,23 @@ if test "X`($echo '\t') 2>/dev/null`" != 'X\t' ||
       # Try using printf.
       echo='printf "%s\n"'
       if test "X`($echo '\t') 2>/dev/null`" = 'X\t' &&
-	 test "X`($echo "$echo_test_string") 2>/dev/null`" = X"$echo_test_string"; then
+	 echo_testing_string=`($echo "$echo_test_string") 2>/dev/null` &&
+	 test "X$echo_testing_string" = "X$echo_test_string"; then
 	# Cool, printf works
 	:
-      elif test "X`("$ORIGINAL_CONFIG_SHELL" "$0" --fallback-echo '\t') 2>/dev/null`" = 'X\t' &&
-	   test "X`("$ORIGINAL_CONFIG_SHELL" "$0" --fallback-echo "$echo_test_string") 2>/dev/null`" = X"$echo_test_string"; then
+      elif echo_testing_string=`("$ORIGINAL_CONFIG_SHELL" "$0" --fallback-echo '\t') 2>/dev/null` &&
+	   test "X$echo_testing_string" = 'X\t' &&
+	   echo_testing_string=`("$ORIGINAL_CONFIG_SHELL" "$0" --fallback-echo "$echo_test_string") 2>/dev/null` &&
+	   test "X$echo_testing_string" = "X$echo_test_string"; then
 	CONFIG_SHELL="$ORIGINAL_CONFIG_SHELL"
 	export CONFIG_SHELL
 	SHELL="$CONFIG_SHELL"
 	export SHELL
 	echo="$CONFIG_SHELL $0 --fallback-echo"
-      elif test "X`("$CONFIG_SHELL" "$0" --fallback-echo '\t') 2>/dev/null`" = 'X\t' &&
-	   test "X`("$CONFIG_SHELL" "$0" --fallback-echo "$echo_test_string") 2>/dev/null`" = X"$echo_test_string"; then
+      elif echo_testing_string=`("$CONFIG_SHELL" "$0" --fallback-echo '\t') 2>/dev/null` &&
+	   test "X$echo_testing_string" = 'X\t' &&
+	   echo_testing_string=`("$CONFIG_SHELL" "$0" --fallback-echo "$echo_test_string") 2>/dev/null` &&
+	   test "X$echo_testing_string" = "X$echo_test_string"; then
 	echo="$CONFIG_SHELL $0 --fallback-echo"
       else
 	# maybe with a smaller string...
@@ -2447,10 +2457,10 @@ case "$ltmain" in
     postinstall_cmds | postuninstall_cmds | \
     finish_cmds | sys_lib_search_path_spec | sys_lib_dlsearch_path_spec)
       # Double-quote double-evaled strings.
-      eval "$var=\\\"\`\$echo \"X\$$var\" | \$Xsed -e \"\$double_quote_subst\" -e \"\$sed_quote_subst\" -e \"\$delay_variable_subst\"\`\\\""
+      eval "$var=\\\"\`\$echo \"X\$$var\" | \$Xsed -e \"\$double_quote_subst\" -e \"\$sed_quote_subst\" -e \"\$delay_variable_subst\"\`\\\"" ### testsuite: skip nested quoting test
       ;;
     *)
-      eval "$var=\\\"\`\$echo \"X\$$var\" | \$Xsed -e \"\$sed_quote_subst\"\`\\\""
+      eval "$var=\\\"\`\$echo \"X\$$var\" | \$Xsed -e \"\$sed_quote_subst\"\`\\\"" ### testsuite: skip nested quoting test
       ;;
     esac
   done

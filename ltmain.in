@@ -2103,7 +2103,7 @@ EOF
 	  ;;
 	file_magic*)
 	  set dummy $deplibs_check_method
-	  file_magic_regex="`expr \"$deplibs_check_method\" : \"$2 \(.*\)\"`"
+	  file_magic_regex=`expr "$deplibs_check_method" : "$2 \(.*\)"`
 	  for a_deplib in $deplibs; do
 	    name="`expr $a_deplib : '-l\(.*\)'`"
 	    # If $name is empty we are operating on a -L argument.
@@ -2513,7 +2513,7 @@ EOF
       fi
 
       # Create the old-style object.
-      reload_objs="$objs$old_deplibs "`$echo "X$libobjs" | $SP2NL | $Xsed -e '/\.'${libext}$'/d' -e '/\.lib$/d' -e "$lo2o" | $NL2SP`" $reload_conv_objs"
+      reload_objs="$objs$old_deplibs "`$echo "X$libobjs" | $SP2NL | $Xsed -e '/\.'${libext}$'/d' -e '/\.lib$/d' -e "$lo2o" | $NL2SP`" $reload_conv_objs" ### testsuite: skip nested quoting test
 
       output="$obj"
       eval cmds=\"$reload_cmds\"
@@ -2674,13 +2674,13 @@ EOF
 	  exit 1
 	fi
 
-	new_lib_search_path="$new_lib_search_path `$echo "X$lib" | $Xsed -e 's%/[^/]*$%%'`"
+	new_lib_search_path="$new_lib_search_path `$echo "X$lib" | $Xsed -e 's%/[^/]*$%%'`" ### testsuite: skip nested quoting test
 	deplibs="$deplibs $lib"
 
 	for deplib in $dependency_libs; do
 	  case "$deplib" in
 	  -L*)
-	    new_lib_search_path="$new_lib_search_path `$echo "X$deplib" | $Xsed -e 's/^-L//'`"
+	    new_lib_search_path="$new_lib_search_path "`$echo "X$deplib" | $Xsed -e 's/^-L//'` ### testsuite: skip nested quoting test
 	    ;;
 	  esac
 	  
@@ -4013,7 +4013,7 @@ relink_command=\"$relink_command\""
 	  esac
 	fi
 
-	dir="`$echo "X$file" | $Xsed -e 's%/[^/]*$%%'`/"
+	dir=`$echo "X$file" | $Xsed -e 's%/[^/]*$%%'`/
 	test "X$dir" = "X$file/" && dir=
 	dir="$dir$objdir"
 
@@ -4163,7 +4163,7 @@ relink_command=\"$relink_command\""
 	      *) . ./$lib ;;
 	      esac
 	    fi
-	    libfile="$libdir/`$echo "X$lib" | $Xsed -e 's%^.*/%%g'`"
+	    libfile="$libdir/"`$echo "X$lib" | $Xsed -e 's%^.*/%%g'` ### testsuite: skip nested quoting test
 	    if test -n "$libdir" && test ! -f "$libfile"; then
 	      $echo "$modename: warning: \`$lib' has not been installed in \`$libdir'" 1>&2
 	      finalize=no
