@@ -52,9 +52,8 @@ using (by typing `ltconfig --version').
 = Release procedure
 
 * Fetch new versions of the files that are maintained by the FSF.
-  The most important ones are available for anonymous CVS in the
-  `common' directory, sibling of the libtool CVS tree:
-  cvs -d :pserver:anoncvs@anoncvs.gnu.org:/gd/gnu/anoncvsroot checkout common
+  config.guess and config.sub are available via ftp from
+  ftp://ftp.gnu.org/gnu/config/
 
 * Update NEWS.
 
