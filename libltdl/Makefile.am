@@ -71,7 +71,6 @@ ltdldatafiles		= COPYING.LIB README \
 			  Makefile.am Makefile.in \
 			  configure.ac configure \
 			  $(libltdl_la_SOURCES) \
-			  $(libltdl_la_SOURCES) \
 			  lt__dirent.c libltdl/lt__dirent.h \
 			  lt__strl.c libltdl/lt__strl.h \
 			  argz_.h argz.c

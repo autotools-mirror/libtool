@@ -60,7 +60,8 @@ installcheck-local:
 
 # We need to remove any file droppings left behind by testsuite
 clean-local: clean-local-legacy
-	$(SHELL) $(srcdir)/$(TESTSUITE) --clean
+	test -f $(srcdir)/$(TESTSUITE) && \
+	  $(SHELL) $(srcdir)/$(TESTSUITE) --clean
 
 DISTCLEANFILES = atconfig
 
