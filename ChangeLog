@@ -1,3 +1,7 @@
+1999-01-20  Rainer Orth  <ro@TechFak.Uni-Bielefeld.DE>
+
+	* ltconfig.in: No known version of Solaris 2 hardcoded -L paths.
+
 1999-01-20  Erez Zadok <ezk@shekel.mcl.cs.columbia.edu>
 
 	* ltmain.in: s/n\'t/ not/

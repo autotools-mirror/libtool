@@ -1320,13 +1320,6 @@ else
 		$LD -G${allow_undefined_flag} -M $export_symbols -h $soname -o $lib $libobjs $deplibs~$rm $lib.exp'
     hardcode_libdir_flag_spec='-R$libdir'
     hardcode_shlibpath_var=no
-
-    # Solaris 2 before 2.5 hardcodes -L paths.
-    case "$host_os" in
-    solaris2.[0-4]*)
-      hardcode_minus_L=yes
-      ;;
-    esac
     ;;
 
   sunos4*)
