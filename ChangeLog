@@ -1,5 +1,10 @@
 2004-10-07  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
+	* libltdl/ltdl.c (lt_dlexit, lt_dlpath_insertdir): Fix memleaks,
+	free user_search_path on lt_dlexit.
+
+2004-10-07  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
 	* tests/sh.test: Remove tests which fail on AS_SHELL_SANITIZE
 	from autoconf >= 2.59.
 

@@ -294,6 +294,8 @@ lt_dlexit (void)
 
 	  loader = next;
 	}
+
+      FREE(user_search_path);
     }
 
  done:
@@ -1849,7 +1851,7 @@ lt_dlpath_insertdir (char **ppath, char *before, const char *dir)
       if (*ppath == 0)
 	++errors;
 
-      return errors;
+      goto cleanup;
     }
 
   assert (ppath && *ppath);
