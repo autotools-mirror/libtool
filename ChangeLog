@@ -1,3 +1,10 @@
+2004-10-24  Noah Misch  <noah@cs.caltech.edu>
+
+	* config/ltmain.m4sh (func_lalib_p, func_ltwrapper_p): New
+	functions that abstract .la sanity checking.
+	(func_mode_execute, func_mode_install, func_mode_link)
+	(func_mode_uninstall): Use them.
+
 2004-10-24  Gary V. Vaughan  <gary@gnu.org>
 
 	* config/ltmain.m4sh (opt_silent): Whether --silent was given.
