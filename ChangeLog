@@ -1,3 +1,18 @@
+2000-05-24  Ossama Othman  <ossama@debian.org>
+
+	* libtool.m4 (AC_LIBTOOL_PICMODE): Merged this macro from the HEAD
+	branch.
+	(AC_LIBTOOL_CXX): Made sure CXX is exported to ltconfig.
+	* ltcf-cxx.sh (ac_ext): Changed test source extension to "cc" to
+	avoid potential ambiguities when using case-insensitive shells.
+	(archive_expsym_cmds): Make sure soname is set otherwise
+	-retain-symbol-file feature won't work.  The change was made for
+	the Linux Compaq C++ and GNU G++ configurations.
+	Reported by Stephan Kulow <coolo@kde.org>.
+	* ltconfig.in, ltmain.in: Merged in changes from the HEAD branch.
+	* tests/Makefile.am (clean-local): Fixed typo where a "distclean"
+	was done in `mdemo' instead of the `tagdemo'.
+
 2000-05-14  Alexandre Oliva  <oliva@lsd.ic.unicamp.br>
 
 	* configure.in (ACINCLUDE_M4_LIST): Removed libltdl/acinclude.m4.

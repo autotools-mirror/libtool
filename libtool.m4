@@ -83,8 +83,8 @@ file_magic*)
   ;;
 esac
 
-case "$target" in
-NONE) lt_target="$host" ;;
+case "x$target" in
+xNONE|x) lt_target="$host" ;;
 *) lt_target="$target" ;;
 esac
 
@@ -285,9 +285,16 @@ esac],
 enable_fast_install=AC_ENABLE_FAST_INSTALL_DEFAULT)dnl
 ])
 
-# AC_ENABLE_FAST_INSTALL - set the default to --disable-fast-install
+# AC_DISABLE_FAST_INSTALL - set the default to --disable-fast-install
 AC_DEFUN(AC_DISABLE_FAST_INSTALL, [AC_BEFORE([$0],[AC_LIBTOOL_SETUP])dnl
 AC_ENABLE_FAST_INSTALL(no)])
+
+# AC_LIBTOOL_PICMODE - implement the --with-pic flag
+# Usage: AC_LIBTOOL_PICMODE[(MODE)]
+#   Where MODE is either `yes' or `no'.  If omitted, it defaults to
+#   `both'.
+AC_DEFUN(AC_LIBTOOL_PICMODE, [AC_BEFORE([$0],[AC_LIBTOOL_SETUP])dnl
+pic_mode=ifelse($#,1,$1,default)])
 
 
 # AC_PATH_TOOL_PREFIX - find a file program which can recognise shared library
@@ -483,7 +490,11 @@ lt_cv_deplibs_check_method='unknown'
 # whether `pass_all' will *always* work, you probably want this one.
 
 case "$host_os" in
-aix4* | beos*)
+aix4*)
+  lt_cv_deplibs_check_method=pass_all
+  ;;
+
+beos*)
   lt_cv_deplibs_check_method=pass_all
   ;;
 
@@ -509,6 +520,13 @@ freebsd*)
 
 gnu*)
   lt_cv_deplibs_check_method=pass_all
+  ;;
+
+hpux10.20*)
+  # TODO:  Does this work for hpux-11 too?
+  lt_cv_deplibs_check_method='file_magic (s[0-9][0-9][0-9]|PA-RISC[0-9].[0-9]) shared library'
+  lt_cv_file_magic_cmd=/usr/bin/file
+  lt_cv_file_magic_test_file=/usr/lib/libc.sl
   ;;
 
 irix5* | irix6*)
@@ -696,7 +714,7 @@ lt_save_CC="$CC"
 lt_save_CFLAGS="$CFLAGS"
 dnl Make sure LTCC is set to the C compiler, i.e. set LTCC before CC
 dnl is set to the C++ compiler.
-AR="$AR" LTCC="$CC" CC="$CXX" CFLAGS="$CXXFLAGS" CPPFLAGS="$CPPFLAGS" \
+AR="$AR" LTCC="$CC" CC="$CXX" CXX="$CXX" CFLAGS="$CXXFLAGS" CPPFLAGS="$CPPFLAGS" \
 MAGIC="$MAGIC" LDFLAGS="$LDFLAGS" LIBS="$LIBS" \
 LN_S="$LN_S" NM="$NM" RANLIB="$RANLIB" STRIP="$STRIP" \
 AS="$AS" DLLTOOL="$DLLTOOL" OBJDUMP="$OBJDUMP" \

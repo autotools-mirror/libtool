@@ -63,5 +63,5 @@ clean-local:
 	-test -f ../demo/Makefile && cd ../demo && $(MAKE) distclean
 	-test -f ../depdemo/Makefile && cd ../depdemo && $(MAKE) distclean
 	-test -f ../mdemo/Makefile && cd ../mdemo && $(MAKE) distclean
-	-test -f ../tagdemo/Makefile && cd ../mdemo && $(MAKE) distclean
+	-test -f ../tagdemo/Makefile && cd ../tagdemo && $(MAKE) distclean
 	rm -rf _inst

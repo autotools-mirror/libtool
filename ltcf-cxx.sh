@@ -33,7 +33,7 @@
 
 
 # Source file extension for C++ test sources.
-ac_ext=C
+ac_ext=cc
 
 # Object file extension for compiled C++ test sources.
 objext=o
@@ -185,7 +185,7 @@ case "$host_os" in
       cxx)
         # Compaq C++
         archive_cmds='$CC -shared $predep_objects $libobjs $deplibs $postdep_objects $linker_flags ${wl}-soname $wl$soname -o $lib'
-        archive_expsym_cmds='$CC -shared $predep_objects $libobjs $deplibs $postdep_objects $linker_flags ${wl}-retain-symbols-file $wl$export_symbols'
+        archive_expsym_cmds='$CC -shared $predep_objects $libobjs $deplibs $postdep_objects $linker_flags ${wl}-soname $wl$soname ${wl}-retain-symbols-file $wl$export_symbols'
 
         runpath_var=LD_RUN_PATH
         hardcode_libdir_flag_spec='-rpath $libdir'
@@ -205,7 +205,7 @@ case "$host_os" in
         # GNU C++ compiler
         if test "$with_gcc" = yes; then
           archive_cmds='$CC -shared -nostdlib $predep_objects $libobjs $deplibs $postdep_objects $compiler_flags ${wl}-soname $wl$soname -o $lib'
-          archive_expsym_cmds='$CC -shared -nostdlib $predep_objects $libobjs $deplibs $postdep_objects $compiler_flags ${wl}-retain-symbols-file $wl$export_symbols -o $lib'
+          archive_expsym_cmds='$CC -shared -nostdlib $predep_objects $libobjs $deplibs $postdep_objects $compiler_flags ${wl}-soname $wl$soname ${wl}-retain-symbols-file $wl$export_symbols -o $lib'
 
           runpath_var=LD_RUN_PATH
           hardcode_libdir_flag_spec='${wl}--rpath ${wl}$libdir'
