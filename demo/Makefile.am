@@ -29,13 +29,13 @@ hell_LDADD = libhello.la
 # Create an easier-to-debug version of hell.
 hell_debug_SOURCES = main.c
 hell_debug_LDADD = libhello.la
-hell_debug_LDFLAGS = @STATIC@
+hell_debug_LDFLAGS = $(STATIC)
 
 if BINARY_HELLDL
 
 # Create a version of hell that does a preloaded dlopen.
 helldl_SOURCES = dlmain.c
-helldl_LDFLAGS = -export-dynamic -dlpreopen libhello.la
+helldl_LDFLAGS = -export-dynamic $(DLPREOPEN) libhello.la
 helldl_DEPENDENCIES = libhello.la
 
 else

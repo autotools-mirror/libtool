@@ -1,10 +1,16 @@
 1999-01-21  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* demo/configure.in: set DLPREOPEN to -dlopen if we don't have
+	shared libraries
+	* demo/Makefile.am (DLPREOPEN): use instead of -dlpreopen
+	(STATIC): use $(STATIC), not @STATIC@
+	* mdemo/Makefile.am (STATIC): ditto
+
 	* tests/demo-shared.test, tests/demo-static.test: new tests
 	* tests/mdemo-shared.test, tests/mdemo-static.test: ditto
 	* tests/Makefile.am: ditto
 	* doc/libtool.texi: document them
-	* demo/Makefile.am, mdemo/Makefile.am (@STATIC@): do not use
+	* demo/Makefile.am, mdemo/Makefile.am (STATIC): do not use
 	-static unconditionally, it can't work with --disable-static
 	* demo/configure.in, mdemo/configure.in: check whether libtool was 
 	configured to build static libraries and, if not, set STATIC to an 

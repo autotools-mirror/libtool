@@ -9,10 +9,13 @@ AM_PROG_LIBTOOL
 
 if ${CONFIG_SHELL} ./libtool --features | grep "enable static" >/dev/null; then
   STATIC=-static
+  DLPREOPEN=-dlpreopen
 else
   STATIC=
+  DLPREOPEN=-dlopen
 fi
 AC_SUBST(STATIC)
+AC_SUBST(DLPREOPEN)
 
 AM_CONDITIONAL(BINARY_HELLDL, [dnl
 grep '^global_symbol_pipe=..*$' ./libtool >/dev/null])

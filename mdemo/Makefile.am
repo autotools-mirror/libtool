@@ -32,6 +32,6 @@ mdemo_DEPENDENCIES = ../libltdl/libltdlc.la foo1.la libfoo2.la
 
 # Create an easier-to-debug version of mdemo.
 mdemo_debug_SOURCES = $(mdemo_SOURCES)
-mdemo_debug_LDFLAGS = @STATIC@ $(mdemo_LDFLAGS)
+mdemo_debug_LDFLAGS = $(STATIC) $(mdemo_LDFLAGS)
 mdemo_debug_LDADD = $(mdemo_LDADD)
 mdemo_debug_DEPENDENCIES = $(mdemo_DEPENDENCIES)
