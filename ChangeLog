@@ -1,3 +1,12 @@
+2001-07-09  Gary V. Vaughan  <gary@gnu.org>
+
+	GNU libtool 1.4b was released.
+
+	* configure.ac: Bumped version to 1.4b.
+	* NEWS: updated.
+	* config.guess, config.sub, texinfo.tex:  Synchronised from
+	ftp.gnu.org.
+
 2001-07-09  Robert Boehne  <rboehne@ricardo-us.com>
 
 	From Michael Elizabeth Chastain <chastain@cygnus.com>:

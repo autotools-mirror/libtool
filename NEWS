@@ -1,10 +1,17 @@
 NEWS - list of user-visible changes between releases of GNU Libtool
 
 New in 1.4b: 2001-??-??; CVS version 1.4a, Libtool team:
+* Now bootstraps with autoconf-2.50 and automake-1.4-p4.
+* Always try to build at least a static lib, even if both static and
+  shared libs were disabled.
 * Full support for C++ compiler.
 * Support for GNU gcj compiler.
-* Improved support for OpenBSD.
-* internal mutex handling no longer has namespace clashes on NCR MP-RAS.
+* libltdl can now load all modules in a given path according to user
+  supplied criteria with `lt_dlforeachfile' call.
+* Improved support for AIX ia64, djgpp, HPUX, hurd, OpenBSD, sco3.2*.
+* Internal mutex handling no longer has namespace clashes on NCR MP-RAS.
+* New pdemo and tagdemo tests.
+* Bug fixes.
 
 New in 1.4.1: 2001-??-??; CVS version 1.4.0a, Libtool team:
 * Don't leave here-doc files behind.

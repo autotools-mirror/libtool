@@ -80,7 +80,7 @@ using (by typing `ltconfig --version').
     libtool-<prev>-<version>.tar.xdp.gz'
 
 * Upload release tarball, diff file and xdelta file 
-  ftp://melange.gnu.org/~ftp/gnu/libtool and send announcement to
+  ftp://fencepost.gnu.org/~ftp/gnu/libtool and send announcement to
   libtool@gnu.org.
 
 * If not an alpha, announcement must also go to info-gnu@gnu.org, and an
