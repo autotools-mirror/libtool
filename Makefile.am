@@ -41,9 +41,7 @@ pkgmacro_DATA = m4/libtool.m4 m4/ltdl.m4 m4/ltsugar.m4
 # The standalone libtool script, and the libtool distributor.
 bin_SCRIPTS = libtool libtoolize
 
-# Make sure config.status is regenerated when the version timestamp changes
 MKSTAMP = $(SHELL) $(top_srcdir)/config/mkstamp
-$(top_builddir)/config_status: stamp-vcl
 stamp-vcl: vcl.tmp $(top_srcdir)/ChangeLog
 vcl.tmp:
 	@dir=.; test -f $$dir/stamp-vcl || dir=$(srcdir); \

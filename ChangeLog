@@ -1,5 +1,11 @@
 2004-02-06  Gary V. Vaughan  <gary@gnu.org>
 
+	* Makefile.am ($(top_builddir)/config.status): Removed.
+	* configure.ac (CONFIG_STATUS_DEPENDENCIES): This substitution is
+	how automake-1.8 now informs all Makefiles when config.status
+	needs to be rebuilt.
+	Reported by Alexandre Duret-Lutz <adl@src.lip6.fr>
+
 	* configure.ac (AC_CONFIG_FILES): Generate libtoolize from here.
 	* Makefile.am (libtool, libtoolize): These rules are redundant.
 	Automake generates better rules for remaking these files.
