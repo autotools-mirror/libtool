@@ -35,9 +35,25 @@ using (by typing `libtool --version').
   and check everything in.
 
 * Some files in the libtool package are not owned by libtool.  These
-  files should never be edited here.  These files are COPYING, INSTALL,
-  config.guess, config.sub, install-sh, mdate-sh, mkinstalldirs,
-  texinfo.tex.
+  files should never be edited here.  These files are:
+	COPYING
+	INSTALL
+	config/
+	    + config.guess
+	    + config.sub
+	    + depcomp
+	    + install-sh
+	    + mdate-sh
+	    + missing
+	    + texinfo.tex
+	doc/
+	    + fdl.texi
+	libltdl/
+	    + COPYING.LESSER
+	    + config.guess
+	    + config.sub
+	    + install-sh
+	    + missing
 
 * Changes other than bug fixes must be mentioned in NEWS
 
@@ -51,37 +67,56 @@ using (by typing `libtool --version').
 ================================================================
 = Release procedure
 
-* Fetch new versions of the files that are maintained by the FSF.
-  config.guess and config.sub are available via ftp from
-  ftp://ftp.gnu.org/gnu/config/, and texinfo.tex is available from
-  ftp://ftp.gnu.org/gnu/GNUinfo/.
+* If you are a libtool maintainer, but have not yet registered your
+  gpg public key and (preferred) email address with the FSF, send an
+  email, preferably GPG-signed, to <ftp-upload@gnu.org> that includes
+  the following:
 
-* Update NEWS.
+    (a) name of package(s) that you are the maintainer for, and your
+        preferred email address.
+
+    (b) an ASCII armored copy of your GnuPG key, as an attachment.
+	("gpg --export -a YOUR_KEY_ID > mykey.asc" should give you
+	this.)
+
+  When you have received acknowledgement of your message, the proper GPG
+  keys will be registered on ftp-upload.gnu.org and only then will you be
+  authorized to upload files to the FSF ftp machines.
+
+* Update NEWS, ChangeLog.
 
 * Update the version number in configure.ac.
-  (The idea is that every other alpha number will be a net release.
-  The repository will always have its own "odd" number so we can easily
-  distinguish net and repo versions.)
+  See http://www.gnu.org/software/libtool/contribute.html for details of
+  the numbering scheme.
 
-* Configure, build, and install.
+* Run ./bootstrap.
 
-* Commit
+* Run `make fetch', which will fetch new versions of the files that are
+  maintained outside of libtool.
 
-* Run `make cvs-dist' which will tag the tree with release-maj-min<alpha>.
+* Run ./configure and then make.
+
+* Run `make cvs-dist' which will build a release tarball (with `make
+  distcheck'), commit the last NEWS, ChangeLog and configure.ac changes,
+  tag the tree with release-$(VERSION), and generate gpg signature files.
 
 * Run `make cvs-diff' which will create a diff file against the previous
-  release tag (set OLDVERSION=min.maj<alpha> in the environment beforehand
-  if necessary).
+  release tag (set OLDVERSION=min.maj[.mic[alpha]] in the environment
+  beforehand if necessary), and generate gpg signature files.
 
-* Download a copy of the previous release tarball and generate an
-  xdelta with:
+* Make sure you have a copy of xdelta installed, and a copy of the previous
+  release tarball in the build directory, then run `make xdelta', which will
+  create an xdelta file between this and the previous release tarballs (set
+  OLDVERSION=min.maj[.mic[alpha]] in the environment beforehand if necessary),
+  and generate gpg signature files.
 
-    xdelta delta libtool-<prev>.tar.gz libtool-<version>.tar.gz > \
-    libtool-<prev>-<version>.tar.xdp.gz'
-
-* Upload release tarball, diff file and xdelta file 
-  scp gnudist.gnu.org/~ftp/gnu/libtool and send announcement to
-  libtool@gnu.org and autotools-announce@gnu.org.
+* Upload release tarball, diff file and xdelta file, plus their associated
+  detached gpg signature files and clear signed directive files to
+  ftp-upload.gnu.org. If the upload is destined for ftp.gnu.org, then the
+  files should be placed in the /incoming/ftp directory.  If the upload is
+  an alpha release destined for alpha.gnu.org, then the files should be
+  placed in the /incoming/alpha directory.incoming/ftp/gnu/libtool.  Then send
+  announcement to libtool@gnu.org and autotools-announce@gnu.org.
 
 * If not an alpha, announcement must also go to info-gnu@gnu.org, and an
   upload request be sent to ftp-upload@gnu.org requesting files be transferred
@@ -115,25 +150,25 @@ Here are the compressed sources:
 Here are the xdeltas and diffs against libtool-@PREV_RELEASE_VERSION_ON_THIS_BRANCH@:
 
   ftp://alpha.gnu.org/gnu/libtool/libtool-@PREV_RELEASE_VERSION_ON_THIS_BRANCH@-@VERSION@.diff.gz
-  ftp://alpha.gnu.org/gnu/libtool/libtool-@PREV_RELEASE_VERSION_ON_THIS_BRANCH@-@VERSION@.tar.xdp.gz
+  ftp://alpha.gnu.org/gnu/libtool/libtool-@PREV_RELEASE_VERSION_ON_THIS_BRANCH@-@VERSION@.xdelta
 
 Here are the gpg detached signatures:
 
-  ftp://alpha.gnu.org/gnu/libtool/libtool-@VERSION@.tar.gz.asc
-  ftp://alpha.gnu.org/gnu/libtool/libtool-@VERSION@.tar.bz2.asc
-  ftp://alpha.gnu.org/gnu/libtool/libtool-@PREV_RELEASE_VERSION_ON_THIS_BRANCH@-@VERSION@.diff.gz.asc
-  ftp://alpha.gnu.org/gnu/libtool/libtool-@PREV_RELEASE_VERSION_ON_THIS_BRANCH@-@VERSION@.tar.xdp.gz.asc
+  ftp://alpha.gnu.org/gnu/libtool/libtool-@VERSION@.tar.gz.sig
+  ftp://alpha.gnu.org/gnu/libtool/libtool-@VERSION@.tar.bz2.sig
+  ftp://alpha.gnu.org/gnu/libtool/libtool-@PREV_RELEASE_VERSION_ON_THIS_BRANCH@-@VERSION@.diff.gz.sig
+  ftp://alpha.gnu.org/gnu/libtool/libtool-@PREV_RELEASE_VERSION_ON_THIS_BRANCH@-@VERSION@.xdelta.sig
 
 Here are the MD5 and SHA1 checksums:
 
   @MD5SUM@ libtool-@VERSION@.tar.gz
   @MD5SUM@ libtool-@VERSION@.tar.bz2
   @MD5SUM@ libtool-@PREV_RELEASE_VERSION_ON_THIS_BRANCH@-@VERSION@.diff.gz
-  @MD5SUM@ libtool-@PREV_RELEASE_VERSION_ON_THIS_BRANCH@-@VERSION@.tar.xdp.gz
+  @MD5SUM@ libtool-@PREV_RELEASE_VERSION_ON_THIS_BRANCH@-@VERSION@.xdelta
   @SHA1SUM@ libtool-@VERSION@.tar.gz
   @SHA1SUM@ libtool-@VERSION@.tar.bz2
   @SHA1SUM@ libtool-@PREV_RELEASE_VERSION_ON_THIS_BRANCH@-@VERSION@.diff.gz
-  @SHA1SUM@ libtool-@PREV_RELEASE_VERSION_ON_THIS_BRANCH@-@VERSION@.tar.xdp.gz
+  @SHA1SUM@ libtool-@PREV_RELEASE_VERSION_ON_THIS_BRANCH@-@VERSION@.xdelta
 
 This release has @SUMMARY_OF_IMPROVEMENTS_SINCE_LAST_RELEASE_ON_THIS_BRANCH@.
 
@@ -195,25 +230,25 @@ Here are the compressed sources:
 Here are the xdeltas and diffs against libtool-@PREV_RELEASE_VERSION_ON_THIS_BRANCH@:
 
   ftp://ftp.gnu.org/gnu/libtool/libtool-@PREV_RELEASE_VERSION_ON_THIS_BRANCH@-@VERSION@.diff.gz
-  ftp://ftp.gnu.org/gnu/libtool/libtool-@PREV_RELEASE_VERSION_ON_THIS_BRANCH@-@VERSION@.tar.xdp.gz
+  ftp://ftp.gnu.org/gnu/libtool/libtool-@PREV_RELEASE_VERSION_ON_THIS_BRANCH@-@VERSION@.xdelta
 
 Here are the gpg detached signatures:
 
-  ftp://ftp.gnu.org/gnu/libtool/libtool-@VERSION@.tar.gz.asc
-  ftp://ftp.gnu.org/gnu/libtool/libtool-@VERSION@.tar.bz2.asc
-  ftp://ftp.gnu.org/gnu/libtool/libtool-@PREV_RELEASE_VERSION_ON_THIS_BRANCH@-@VERSION@.diff.gz.asc
-  ftp://ftp.gnu.org/gnu/libtool/libtool-@PREV_RELEASE_VERSION_ON_THIS_BRANCH@-@VERSION@.tar.xdp.gz.asc
+  ftp://ftp.gnu.org/gnu/libtool/libtool-@VERSION@.tar.gz.sig
+  ftp://ftp.gnu.org/gnu/libtool/libtool-@VERSION@.tar.bz2.sig
+  ftp://ftp.gnu.org/gnu/libtool/libtool-@PREV_RELEASE_VERSION_ON_THIS_BRANCH@-@VERSION@.diff.gz.sig
+  ftp://ftp.gnu.org/gnu/libtool/libtool-@PREV_RELEASE_VERSION_ON_THIS_BRANCH@-@VERSION@.xdelta.sig
 
 Here are the MD5 and SHA1 checksums:
 
   @MD5SUM@ libtool-@VERSION@.tar.gz
   @MD5SUM@ libtool-@VERSION@.tar.bz2
   @MD5SUM@ libtool-@PREV_RELEASE_VERSION_ON_THIS_BRANCH@-@VERSION@.diff.gz
-  @MD5SUM@ libtool-@PREV_RELEASE_VERSION_ON_THIS_BRANCH@-@VERSION@.tar.xdp.gz
+  @MD5SUM@ libtool-@PREV_RELEASE_VERSION_ON_THIS_BRANCH@-@VERSION@.xdelta
   @SHA1SUM@ libtool-@VERSION@.tar.gz
   @SHA1SUM@ libtool-@VERSION@.tar.bz2
   @SHA1SUM@ libtool-@PREV_RELEASE_VERSION_ON_THIS_BRANCH@-@VERSION@.diff.gz
-  @SHA1SUM@ libtool-@PREV_RELEASE_VERSION_ON_THIS_BRANCH@-@VERSION@.tar.xdp.gz
+  @SHA1SUM@ libtool-@PREV_RELEASE_VERSION_ON_THIS_BRANCH@-@VERSION@.xdelta
 
 This release was bootstrapped with @BOOTSTRAP_TOOLS_WITH_VERSIONS@,
 but is useable with @COMPATIBLE_AUTOTOOL_VERSIONS@ in your own
