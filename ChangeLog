@@ -1,5 +1,8 @@
 1998-12-16  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* libltdl/Makefile.am (EXTRA_DIST): removed, nothing needed
+	(libtool): automatically update
+
 	* libltdl/configure.in (stdlib.h, unistd.h, stdio.h): check
 	* libltdl/ltdl.c: include them
 
