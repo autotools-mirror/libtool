@@ -1,5 +1,7 @@
 2001-04-02  Gary V. Vaughan  <gvv@techie.com>
 
+	* configure.in: bumped version to 1.3e.
+
 	GNU libtool 1.3d was released.
 
 	* NEWS: inserted todays date.
