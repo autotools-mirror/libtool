@@ -1,9 +1,11 @@
 NEWS - list of user-visible changes between releases of GNU Libtool
 
-New in 1.4.3: 2001-??-??; CVS version 1.4.2a, ???:
+New in 1.4.3: 2002-10-13; CVS version 1.4.2a, Robert Boehne:
 * The libltdl subdirectory now bootstraps correctly with Automake 1.5.
 * srcdir != builddir builds with Automake 1.5 work correctly.
 * Support for mips-compaq-nonstopux.
+* New command line argument, --preserve-dup-deps prevents removal of
+  duplicate dependent libraries.
 
 New in 1.4.2: 2001-09-11; CVS version 1.4.1a, Gary V. Vaughan:
 * libltdl now builds on solaris again

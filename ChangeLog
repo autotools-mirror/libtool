@@ -1,3 +1,11 @@
+2002-10-22  Robert Boehne  <rboehne@gnu.org>
+
+	GNU libtool 1.4.3 was released.
+
+	* configure.in: Bumped version to 1.4.3.
+	* config.sub, config.guess:  Synchronised from ftp.gnu.org.
+	* NEWS: Updated.
+
 2002-10-22  Albert Chin-A-Young  <china@thewrittenword.com>
 
 	* libltdl/ltdl.c: Init char * to NULL, not 0. And, for
