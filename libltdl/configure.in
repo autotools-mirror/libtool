@@ -11,6 +11,10 @@ AC_CHECK_HEADERS(malloc.h memory.h stdlib.h unistd.h stdio.h ctype.h dlfcn.h dl.
 AC_CHECK_HEADERS(string.h strings.h, break)
 AC_CHECK_FUNCS(strdup strrchr rindex)
 
+AC_ARG_ENABLE(ltdl-install,
+  [--enable-ltdl-install    install libltdl (breaks check before install)])
+AM_CONDITIONAL(INSTALL_LTDL, test x$enable_ltdl_install = xyes)
+
 AC_CACHE_CHECK([whether libtool supports -dlopen/-dlpreopen],
 	libltdl_cv_dlpreopen, [dnl
   if grep '^global_symbol_pipe=..*$' ./libtool >/dev/null; then
