@@ -1,3 +1,8 @@
+1999-07-30  Pavel Roskin  <pavel_roskin@geocities.com>
+
+	* ltmain.in: Ensure that gcc on HPsUX uses -fPIC, or else
+	initialised structures are sometimes emitted in the code section.
+	
 1999-07-30  Mumit Khan  <khan@xraylith.wisc.edu>
 
 	* ltconfig.in:  Read line at a time to avoid tokenisation by
