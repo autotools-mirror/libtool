@@ -1,5 +1,9 @@
 2003-10-07  Gary V. Vaughan  <gary@gnu.org>
 
+	* doc/libtool.texi (Invoking libtool): Updated.
+	* ltmain.in: Add missing clean and finish modes to the shorthand
+	options.
+
 	* ltmain.in: Typo in the --mode shorthand.
 
 2003-10-07  Scott James Remnant  <scott@netsplit.com>

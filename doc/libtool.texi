@@ -24,7 +24,7 @@
 @ifnottex
 This file documents GNU Libtool @value{VERSION}
 
-Copyright (C) 1996-2000 Free Software Foundation, Inc.
+Copyright (C) 1996-2003 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.1
@@ -51,7 +51,7 @@ identical to this one except for the removal of this paragraph
 
 @page
 @vskip 0pt plus 1filll
-Copyright @copyright{} 1996-2000 Free Software Foundation, Inc.
+Copyright @copyright{} 1996-2003 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.1
@@ -1081,11 +1081,10 @@ specified, then detailed help for @var{mode} is
 displayed.
 
 @item --mode=@var{mode}
-Use @var{mode} as the operation mode.  If not specified, an attempt is
-made to inferr the operation mode from the @var{mode-args}.  Not specifying
-the @var{mode} is currently deprecated, as there are too many situations
-where it is not possible to guess.  Future versions of Libtool will require
-that @var{mode} be explicity set.
+Use @var{mode} as the operation mode.  When using libtool from the
+command line, you can give just @var{mode} (or a unique abbreviation
+of it) as the first argument as a shorthand for the full
+@samp{--mode=@var{mode}}.
 
 @var{mode} must be set to one of the following:
 

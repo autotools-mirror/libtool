@@ -160,11 +160,17 @@ win32_libid () {
 
 # Shorthand for --mode=foo
 case $1 in
+clean|clea|cle|cl)
+  shift; set -- --mode=clean ${1+"$@"}
+  ;;
 compile|compil|compi|comp|com|co|c)
   shift; set -- --mode=compile ${1+"$@"}
   ;;
 execute|execut|execu|exec|exe|ex|e)
   shift; set -- --mode=execute ${1+"$@"}
+  ;;
+finish|finis|fini|fin|fi|f)
+  shift; set -- --mode=finish ${1+"$@"}
   ;;
 install|instal|insta|inst|ins|in|i)
   shift; set -- --mode=install ${1+"$@"}
