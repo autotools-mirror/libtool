@@ -37,12 +37,17 @@ dnl AC_LIBTOOL_GCJ immediately, otherwise, hook it in at the end of both.
     [AC_LIBTOOL_GCJ],
     [AC_PROVIDE_IFELSE([A][M_PROG_GCJ],
         [AC_LIBTOOL_GCJ],
+	[AC_PROVIDE_IFELSE([LT_AC_PROG_GCJ],
+	  [AC_LIBTOOL_GCJ],
 	[ifdef([AC_PROG_GCJ],
 	       [define([AC_PROG_GCJ], defn([AC_PROG_GCJ])[AC_LIBTOOL_GCJ
 ])])
 	 ifdef([A][M_PROG_GCJ],
 	       [define([A][M_PROG_GCJ], defn([A][M_PROG_GCJ])[AC_LIBTOOL_GCJ
-])])])])])
+])])
+	 ifdef([LT_AC_PROG_GCJ],
+	       [define([LT_AC_PROG_GCJ], defn([LT_AC_PROG_GCJ])[AC_LIBTOOL_GCJ
+])])])])])])
 
 AC_DEFUN(_AC_PROG_LIBTOOL,
 [AC_REQUIRE([AC_LIBTOOL_SETUP])dnl
@@ -788,9 +793,10 @@ AC_DEFUN(_AC_LIBTOOL_GCJ,
 [AC_REQUIRE([AC_PROG_LIBTOOL])
 AC_PROVIDE_IFELSE([AC_PROG_GCJ],[],
   [AC_PROVIDE_IFELSE([A][M_PROG_GCJ],[],
-    [ifdef([AC_PROG_GCJ],[AC_REQUIRE([AC_PROG_GCJ])],
-       [ifdef([A][M_PROG_GCJ],[AC_REQUIRE([A][M_PROG_GCJ])],
-         [AC_REQUIRE([A][C_PROG_GCJ_OR_A][M_PROG_GCJ])])])])])
+    [AC_PROVIDE_IFELSE([LT_AC_PROG_GCJ],[],
+      [ifdef([AC_PROG_GCJ],[AC_REQUIRE([AC_PROG_GCJ])],
+         [ifdef([A][M_PROG_GCJ],[AC_REQUIRE([A][M_PROG_GCJ])],
+           [AC_REQUIRE([A][C_PROG_GCJ_OR_A][M_PROG_GCJ])])])])])])
 LIBTOOL_DEPS=$LIBTOOL_DEPS" $ac_aux_dir/ltcf-gcj.sh"
 lt_save_CC="$CC"
 lt_save_CFLAGS="$CFLAGS"

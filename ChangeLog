@@ -1,3 +1,8 @@
+2000-09-12  Alexandre Oliva  <aoliva@redhat.com>
+
+	* libtool.m4 (AC_PROG_LIBTOOL, AC_LIBTOOL_GCJ): Auto-detect
+	LT_AC_PROG_GCJ.
+
 2000-09-05  Alexandre Oliva  <aoliva@redhat.com>
 
 	* depdemo/main.c: Support -alt.
