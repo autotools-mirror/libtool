@@ -1,3 +1,11 @@
+2004-11-29  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* m4/ltdl.m4 (LT_LIB_DLLOAD): Define HAVE_LIBDLLOADER if we
+	have a dlloader to preload.
+	* libltdl/ltdl.c (lt_dlinit): Only preload if HAVE_LIBDLLOADER, only
+	declare preloaded_symbols then.  Fixes libltdl on static platforms.
+	* NEWS: Updated.
+
 2004-11-29  Gary V. Vaughan  <gary@gnu.org>
 
 	Add a search path option to libtoolize so that we can run it from

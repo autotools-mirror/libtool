@@ -189,7 +189,9 @@ loader_init (lt_get_vtable *vtable_func, lt_user_data data)
 #define preloaded_symbols	LT_CONC3(lt_, LTDLOPEN, _LTX_preloaded_symbols)
 
 LT_SCOPE const lt_dlvtable *	get_vtable (lt_user_data data);
+#ifdef HAVE_LIBDLLOADER
 LT_SCOPE lt_dlsymlist		preloaded_symbols;
+#endif
 
 /* Initialize libltdl. */
 int
@@ -211,6 +213,7 @@ lt_dlinit (void)
 
       /* Now open all the preloaded module loaders, so the application
 	 can use _them_ to lt_dlopen its own modules.  */
+#ifdef HAVE_LIBDLLOADER
       if (!errors)
 	{
 	  errors += lt_dlpreload (&preloaded_symbols);
@@ -220,6 +223,7 @@ lt_dlinit (void)
 	{
 	  errors += lt_dlpreload_open (LT_STR(LTDLOPEN), loader_init_callback);
 	}
+#endif /* HAVE_LIBDLLOADER */
     }
 
   return errors;
