@@ -513,6 +513,15 @@ freebsd*)
   freebsd-elf*)
     lt_cv_deplibs_check_method=pass_all
     ;;
+  *)
+    case "$host_cpu" in
+    i*86 )
+      lt_cv_deplibs_check_method=='file_magic OpenBSD/i[3-9]86 demand paged shared library'
+      lt_cv_file_magic_cmd=/usr/bin/file
+      lt_cv_file_magic_test_file=`echo /usr/lib/libc.so.*`
+      ;;
+    esac
+    ;;
   esac
   ;;
 

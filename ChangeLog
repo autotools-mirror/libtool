@@ -1,9 +1,15 @@
+2000-05-29  Gary V. Vaughan  <gvv@techie.com>
+
+	* NEWS: Updated.
+	* libtool.m4 (i*86-*-freebsd*): Support a.out shared libs.
+	From <suzukis@file.phys.tohoku.ac.jp>
+
 2000-05-29  Fred Fish  <fnf@be.com>       
 
 	Support AR=mwld AR_FLAGS='-xml -o' for PPC Beos.
 	* ltconfig (old_AR_FLAGS): Add.              
-	(old_archive_cmds): Use AR_FLAGS rather than hardcoding "cru".          
-	(archive_cmds): Use AR_FLAGS rather than hardcoding "cru".              
+	(old_archive_cmds): Use AR_FLAGS rather than hardcoding "cru".
+	(archive_cmds): Use AR_FLAGS rather than hardcoding "cru".
 	(AR_FLAGS): Default to "cru" if not set.                               
 
 2000-05-29  Gary V. Vaughan  <gvv@techie.com>
