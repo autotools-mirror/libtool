@@ -9,6 +9,7 @@ DIST_SUBDIRS = $(BUILD_SUBDIRS) $(CONF_SUBDIRS)
 # We need to export these variables when we run ltconfig.
 CFLAGS = @CFLAGS@
 CPPLAGS = @CPPFLAGS@
+CXXFLAGS = @CXXFLAGS@
 LDFLAGS = @LDFLAGS@
 LIBS= @LIBS@
 
@@ -40,7 +41,22 @@ libtool: $(srcdir)/ltmain.sh $(srcdir)/ltconfig
 	deplibs_check_method="$(deplibs_check_method)" \
 	file_magic_cmd="$(file_magic_cmd)" \
 	$(SHELL) $(srcdir)/ltconfig $(LIBTOOL_FLAGS) --srcdir=$(srcdir) \
+	  --output=$@T $(srcdir)/ltmain.sh
+if HAVE_CXX
+	AR="$(AR)" CC="$(CXX)" CFLAGS="$(CXXFLAGS)" CPPFLAGS="$(CPPFLAGS)" \
+	LTCC="$(CC)" FILE="$(FILE)" LD="$(LD)" LDFLAGS="$(LDFLAGS)" \
+	LIBS="$(LIBS)" LN_S="$(LN_S)" NM="$(NM)" RANLIB="$(RANLIB)" \
+	STRIP="$(STRIP)" AS="$(AS)" DLLTOOL="$(DLLTOOL)" \
+	OBJDUMP="$(OBJDUMP)" \
+	objext="$(OBJEXT)" exeext="$(EXEEXT)" \
+	reload_flag="$(reload_flag)" \
+	deplibs_check_method="$(deplibs_check_method)" \
+	file_magic_cmd="$(file_magic_cmd)" \
+	$(SHELL) $(srcdir)/ltconfig $(LIBTOOL_FLAGS) --srcdir=$(srcdir) \
 	  --output=$@ $(srcdir)/ltmain.sh
+endif
+	-rm -f $@
+	mv $@T $@
 
 # Experimental C version of libtool.
 clibtool: $(srcdir)/ltmain.c $(srcdir)/ltconfig

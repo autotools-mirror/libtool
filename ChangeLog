@@ -1,5 +1,9 @@
 2000-05-14  Alexandre Oliva  <oliva@lsd.ic.unicamp.br>
 
+	* configure.in: Look for C++ compiler.
+	* Makefile.am (libtool): Configure CXX tag.
+	* tests/Makefile.am: Test tagdemo only if CXX found.
+
 	* libtool.m4 (_AC_PROG_LIBTOOL): Renamed from...
 	(AC_PROG_LIBTOOL): Just AC_REQUIRE(_AC_PROG_LIBTOOL), to avoid
 	effects of multiple runs.

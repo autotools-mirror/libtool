@@ -53,6 +53,11 @@ AC_SUBST(AS)
 LIBTOOL_FLAGS="$libtool_flags"
 AC_SUBST(LIBTOOL_FLAGS)
 
+pushdef([AC_MSG_ERROR], [CXX=no])
+AC_PROG_CXX
+popdef([AC_MSG_ERROR])
+AM_CONDITIONAL(HAVE_CXX, [test "x$CXX" != xno])
+
 AC_ARG_ENABLE(ltdl-install,
 [  --disable-ltdl-install  do not install libltdl])
 if test x"${enable_ltdl_install+set}" != xset; then

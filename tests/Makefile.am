@@ -2,6 +2,13 @@
 
 AUTOMAKE_OPTIONS = gnits
 
+if HAVE_CXX
+CXX_TESTS = \
+	tagdemo-static.test tagdemo-make.test tagdemo-exec.test \
+	tagdemo-conf.test tagdemo-make.test tagdemo-exec.test \
+	tagdemo-shared.test tagdemo-make.test tagdemo-exec.test
+endif
+
 TESTS = cdemo-static.test cdemo-make.test cdemo-exec.test \
 	demo-static.test demo-make.test demo-exec.test \
 	demo-inst.test demo-unst.test \
@@ -30,10 +37,7 @@ TESTS = cdemo-static.test cdemo-make.test cdemo-exec.test \
 	mdemo-shared.test mdemo-make.test mdemo-exec.test \
 	mdemo-inst.test mdemo-unst.test \
 	assign.test link.test link-2.test nomode.test \
-	quote.test sh.test suffix.test \
-	tagdemo-static.test tagdemo-make.test tagdemo-exec.test \
-	tagdemo-conf.test tagdemo-make.test tagdemo-exec.test \
-	tagdemo-shared.test tagdemo-make.test tagdemo-exec.test
+	quote.test sh.test suffix.test $(CXX_TESTS)
 
 demo-conf.test: $(top_builddir)/libtool
 
