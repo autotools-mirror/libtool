@@ -1,5 +1,8 @@
 1999-03-14  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* ltmain.in (exclude_expsyms): exclude symbols before sorting,
+	otherwise only the sorted list will have them excluded
+
 	* ltconfig.in (file_magic_cmd, file_magic_test_file, freebsd-elf*, 
 	bsdi4*): use full pathnames when possible
 

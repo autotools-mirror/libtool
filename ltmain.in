@@ -2374,16 +2374,16 @@ extern \"C\" {
 	    # Make sure we have at least an empty file.
 	    test -f "$nlist" || : > "$nlist"
 
+	    if test -n "$exclude_expsyms"; then
+	      egrep -v " ($exclude_expsyms)$" "$nlist" > "$nlist"T
+	      $mv "$nlist"T "$nlist"
+	    fi
+
 	    # Try sorting and uniquifying the output.
 	    if grep -v "^: " < "$nlist" | sort +2 | uniq > "$nlist"S; then
 	      :
 	    else
 	      grep -v "^: " < "$nlist" > "$nlist"S
-	    fi
-
-	    if test -n "$exclude_expsyms"; then
-	      egrep -v " ($exclude_expsyms)$" "$nlist"S > "$nlist"T
-	      $mv "$nlist"T "$nlist"S
 	    fi
 
 	    if test -f "$nlist"S; then
