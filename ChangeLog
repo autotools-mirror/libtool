@@ -1,5 +1,8 @@
 2004-02-23  Gary V. Vaughan  <gvaughan@eris.qinetiq.com>
 
+	* ltmain.in (IFS): Move '\n' to beginning of IFS so that emacs
+	doesn't offer to strip trailing ' \t' on every save.
+
 	* ltmain.in: Add missing --help doc for --preserve-dup-deps.
 
 2004-02-22  Gary V. Vaughan  <gary@gnu.org>
