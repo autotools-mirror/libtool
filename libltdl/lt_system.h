@@ -110,6 +110,21 @@ Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 #  endif
 #endif
 
+/* DLL building support on win32 hosts;  mostly to workaround their
+   ridiculous implementation of data symbol exporting. */
+#ifndef LT_SCOPE
+#  ifdef __WINDOWS__
+#    ifdef DLL_EXPORT		/* defined by libtool (if required) */
+#      define LT_SCOPE	__declspec(dllexport)
+#    endif
+#    ifdef LIBLTDL_DLL_IMPORT	/* define if linking with this dll */
+#      define LT_SCOPE	extern __declspec(dllimport)
+#    endif
+#  endif
+#  ifndef LT_SCOPE		/* static linking or !__WINDOWS__ */
+#    define LT_SCOPE	extern
+#  endif
+#endif
 
 #ifdef __WINDOWS__
 /* LT_DIRSEP_CHAR is accepted *in addition* to '/' as a directory

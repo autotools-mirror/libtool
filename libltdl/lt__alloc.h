@@ -1,4 +1,4 @@
-/* lt__alloc.c -- internal memory management interface
+/* lt__alloc.h -- internal memory management interface
    Copyright (C) 2004 Free Software Foundation, Inc.
    Originally by Gary V. Vaughan  <gary@gnu.org>
 

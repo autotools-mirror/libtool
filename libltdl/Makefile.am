@@ -39,6 +39,7 @@ endif
 CLEANFILES	    = libltdl.la libltdlc.la
 
 libltdl_la_SOURCES  = ltdl.h ltdl.c \
+		      loader-preopen.c \
 		      lt_error.h lt_error.c lt_mutex.h lt_mutex.c \
 		      lt__private.h lt__alloc.h lt__alloc.c \
 		      lt__pre89.h lt__glibc.h argz.h lt__dirent.h \

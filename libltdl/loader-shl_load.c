@@ -1,0 +1,147 @@
+/* loader-shl_load.c --  dynamic linking with shl_load (HP-UX)
+   Copyright (C) 1998, 1999, 2000, 2004 Free Software Foundation, Inc.
+   Originally by Thomas Tanner <tanner@ffii.org>
+
+   NOTE: The canonical source of this file is maintained with the
+   GNU Libtool package.  Report bugs to bug-libtool@gnu.org.
+
+This library is free software; you can redistribute it and/or
+modify it under the terms of the GNU Lesser General Public
+License as published by the Free Software Foundation; either
+version 2 of the License, or (at your option) any later version.
+
+As a special exception to the GNU Lesser General Public License,
+if you distribute this file as part of a program or library that
+is built using GNU libtool, you may include it under the same
+distribution terms that you use for the rest of that program.
+
+This library is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public
+License along with this library; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+02111-1307  USA
+
+*/
+
+#include "lt__private.h"
+#include "lt_dlloader.h"
+
+#ifdef HAVE_DL_H
+#  include <dl.h>
+#endif
+
+/* some flags are missing on some systems, so we provide
+ * harmless defaults.
+ *
+ * Mandatory:
+ * BIND_IMMEDIATE  - Resolve symbol references when the library is loaded.
+ * BIND_DEFERRED   - Delay code symbol resolution until actual reference.
+ *
+ * Optionally:
+ * BIND_FIRST	   - Place the library at the head of the symbol search
+ * 		     order.
+ * BIND_NONFATAL   - The default BIND_IMMEDIATE behavior is to treat all
+ * 		     unsatisfied symbols as fatal.  This flag allows
+ * 		     binding of unsatisfied code symbols to be deferred
+ * 		     until use.
+ *		     [Perl: For certain libraries, like DCE, deferred
+ *		     binding often causes run time problems. Adding
+ *		     BIND_NONFATAL to BIND_IMMEDIATE still allows
+ *		     unresolved references in situations like this.]
+ * BIND_NOSTART	   - Do not call the initializer for the shared library
+ *		     when the library is loaded, nor on a future call to
+ *		     shl_unload().
+ * BIND_VERBOSE	   - Print verbose messages concerning possible
+ *		     unsatisfied symbols.
+ *
+ * hp9000s700/hp9000s800:
+ * BIND_RESTRICTED - Restrict symbols visible by the library to those
+ *		     present at library load time.
+ * DYNAMIC_PATH	   - Allow the loader to dynamically search for the
+ *		     library specified by the path argument.
+ */
+
+#ifndef	DYNAMIC_PATH
+#  define DYNAMIC_PATH		0
+#endif
+#ifndef	BIND_RESTRICTED
+#  define BIND_RESTRICTED	0
+#endif
+
+#define	LT_BIND_FLAGS	(BIND_IMMEDIATE | BIND_NONFATAL | DYNAMIC_PATH)
+
+lt_module
+lt__sys_shl_open (lt_user_data loader_data, const char *filenam)
+{
+  static shl_t self = (shl_t) 0;
+  lt_module module = shl_load (filename, LT_BIND_FLAGS, 0L);
+
+  /* Since searching for a symbol against a NULL module handle will also
+     look in everything else that was already loaded and exported with
+     the -E compiler flag, we always cache a handle saved before any
+     modules are loaded.  */
+  if (!self)
+    {
+      void *address;
+      shl_findsym (&self, "main", TYPE_UNDEFINED, &address);
+    }
+
+  if (!filename)
+    {
+      module = self;
+    }
+  else
+    {
+      module = shl_load (filename, LT_BIND_FLAGS, 0L);
+
+      if (!module)
+	{
+	  LT__MUTEX_SETERROR (CANNOT_OPEN);
+	}
+    }
+
+  return module;
+}
+
+int
+lt__sys_shl_close (lt_user_data loader_data, lt_module module)
+{
+  int errors = 0;
+
+  if (module && (shl_unload ((shl_t) (module)) != 0))
+    {
+      LT__MUTEX_SETERROR (CANNOT_CLOSE);
+      ++errors;
+    }
+
+  return errors;
+}
+
+static void *
+sys_shl_sym (lt_user_data loader_data, lt_module module, const char *symbol)
+{
+  void *address = 0;
+
+  /* sys_shl_open should never return a NULL module handle */
+  if (module == (lt_module) 0)
+  {
+    LT__MUTEX_SETERROR (INVALID_HANDLE);
+  }
+  else if (!shl_findsym((shl_t*) &module, symbol, TYPE_UNDEFINED, &address))
+    {
+      if (!address)
+	{
+	  LT__MUTEX_SETERROR (SYMBOL_NOT_FOUND);
+	}
+    }
+
+  return address;
+}
+
+struct lt_user_dlloader lt__sys_shl = {
+  0, sys_shl_open, sys_shl_close, sys_shl_sym, 0, 0
+};

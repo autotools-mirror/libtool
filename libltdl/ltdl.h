@@ -126,42 +126,6 @@ LT_SCOPE void *		lt_dlcaller_get_data  (lt_dlcaller_id key,
 
 
 
-/* --- USER MODULE LOADER API --- */
-
-
-typedef	struct lt_dlloader	lt_dlloader;
-typedef void *			lt_user_data;
-typedef void *			lt_module;
-
-/* Function pointer types for creating user defined module loaders. */
-typedef lt_module   lt_module_open	(lt_user_data loader_data,
-					 const char *filename);
-typedef int	    lt_module_close	(lt_user_data loader_data,
-					 lt_module handle);
-typedef void *	    lt_find_sym		(lt_user_data loader_data,
-					 lt_module handle, const char *symbol);
-typedef int	    lt_dlloader_exit	(lt_user_data loader_data);
-
-struct lt_user_dlloader {
-  const char	       *sym_prefix;
-  lt_module_open       *module_open;
-  lt_module_close      *module_close;
-  lt_find_sym	       *find_sym;
-  lt_dlloader_exit     *dlloader_exit;
-  lt_user_data		dlloader_data;
-};
-
-LT_SCOPE lt_dlloader    *lt_dlloader_next    (lt_dlloader *place);
-LT_SCOPE lt_dlloader    *lt_dlloader_find    (const char *loader_name);
-LT_SCOPE const char     *lt_dlloader_name    (lt_dlloader *place);
-LT_SCOPE lt_user_data   *lt_dlloader_data    (lt_dlloader *place);
-LT_SCOPE int		lt_dlloader_add     (lt_dlloader *place,
-				const struct lt_user_dlloader *dlloader,
-				const char *loader_name);
-LT_SCOPE int		lt_dlloader_remove  (const char *loader_name);
-
-
-
 /* --- BINARY COMPATIBILITY WITH OLD LIBLTDL --- */
 
 LT_SCOPE void * (*lt_dlmalloc)	(size_t size);

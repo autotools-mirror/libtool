@@ -1,5 +1,36 @@
 2004-04-13  Gary V. Vaughan  <gary@gnu.org>
 
+	Factor out the individual loaders, in preparation for preloading
+	them as libtool modules.  Currently loader-preopen.c is linked
+	unconditionally and other appropriate loaders discovered by
+	AC_LTDL_DLLIB are built and linked in:
+
+	* libltdl/Makefile.am (libltdl_la_SOURCES): Add loader-preopen
+	module.
+	* m4/ltdl.m4 (AC_LTDL_DLLIB): Use AC_LIBOBJ to add appropriate
+	loaders to libltdl.
+	* libltdl/lt_system.h (LT_SCOPE): Moved to here.
+	* libltdl/ltdl.h (lt_dlloader, lt_user_data, lt_module)
+	(lt_module_open, lt_module_close, lt_find_sym, lt_dlloader_exit)
+	(struct lt_user_dlloader, lt_dlloader_next, lt_dlloader_find)
+	(lt_dlloader_name, lt_dlloader_data, lt_dlloader_add)
+	(lt_dlloader_remove): Moved declarations...
+	* libltdl/lt_loader.h: ...to here.
+	* libltdl/ltdl.c: Include lt_loader.h.  Move loader implementation
+	code from here...
+	* libltdl/loader-dld_link.c, libltdl/loader-dlopen.c,
+	libltdl/loader-dyld.c, libltdl/loader-load_add_on.c,
+	libltdl/loader-loadlibrary.c, libltdl/loader-preopen.c,
+	libltdl/loader-shl_load.c: ...to here.
+	* tests/cdemo/Makefile.am, tests/demo/Makefile.am,
+	tests/depdemo/Makefile.am, tests/f77demo/Makefile.am,
+	tests/mdemo/Makefile.am, tests/mdemo2/Makefile.am,
+	tests/pdemo/Makefile.am, tests/tagdemo/Makefile.am (AM_CPPFLAGS):
+	Add -I$(top_srcdir)/../.. so that libltdl include files can be
+	written as #include <libltdl/lt_dlloader.h> and found correctly.
+
+2004-04-13  Gary V. Vaughan  <gary@gnu.org>
+
 	Factor out the mutex handling and error handling into their own
 	modules.  Mutex handling is not currently useful in combination
 	with posix threads, and should be easier to replace if it is in a

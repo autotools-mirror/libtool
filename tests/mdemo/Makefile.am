@@ -1,6 +1,6 @@
 ## Makefile.am -- Process this file with automake to produce Makefile.in
 ##
-## Copyright (C) 2003 Free Software Foundation
+## Copyright (C) 2003, 2004 Free Software Foundation
 ##
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -19,8 +19,7 @@
 
 AUTOMAKE_OPTIONS = no-dependencies foreign
 ACLOCAL_AMFLAGS  = -I ../../m4
-
-INCLUDES = $(INCLTDL)
+AM_CPPFLAGS	 = -I$(top_srcdir)/../.. $(INCLTDL)
 
 lib_LTLIBRARIES = libsub.la foo1.la libfoo2.la libmlib.la
 
