@@ -81,7 +81,7 @@ using (by typing `libtool --version').
 
 * Upload release tarball, diff file and xdelta file 
   scp gnudist.gnu.org/~ftp/gnu/libtool and send announcement to
-  libtool@gnu.org.
+  libtool@gnu.org and autotools-announce@gnu.org.
 
 * If not an alpha, announcement must also go to info-gnu@gnu.org, and an
   upload request be sent to ftp-upload@gnu.org requesting files be transferred
@@ -97,26 +97,45 @@ using (by typing `libtool --version').
 ================================================================
 = Alpha release note template
 
-To: libtool@gnu.org
+To: libtool@gnu.org, autotools-announce@gnu.org
 
 The Libtool Team is pleased to announce alpha release @VERSION@ of GNU
 Libtool.
 
 GNU Libtool hides the complexity of using shared libraries behind a
 consistent, portable interface. GNU Libtool ships with GNU libltdl,
-which hides the comlexity of loading dynamic runtime libraries
+which hides the complexity of loading dynamic runtime libraries
 (modules) behind a consistent, portable interface.
 
+Here are the compressed sources:
+
+  ftp://alpha.gnu.org/gnu/libtool/libtool-@VERSION@.tar.gz
+  ftp://alpha.gnu.org/gnu/libtool/libtool-@VERSION@.tar.bz2
+
+Here are the xdeltas and diffs against libtool-@PREV_RELEASE_VERSION_ON_THIS_BRANCH@:
+
+  ftp://alpha.gnu.org/gnu/libtool/libtool-@PREV_RELEASE_VERSION_ON_THIS_BRANCH@-@VERSION@.diff.gz
+  ftp://alpha.gnu.org/gnu/libtool/libtool-@PREV_RELEASE_VERSION_ON_THIS_BRANCH@-@VERSION@.tar.xdp.gz
+
+Here are the gpg detached signatures:
+
+  ftp://alpha.gnu.org/gnu/libtool/libtool-@VERSION@.tar.gz.asc
+  ftp://alpha.gnu.org/gnu/libtool/libtool-@VERSION@.tar.bz2.asc
+  ftp://alpha.gnu.org/gnu/libtool/libtool-@PREV_RELEASE_VERSION_ON_THIS_BRANCH@-@VERSION@.diff.gz.asc
+  ftp://alpha.gnu.org/gnu/libtool/libtool-@PREV_RELEASE_VERSION_ON_THIS_BRANCH@-@VERSION@.tar.xdp.gz.asc
+
+Here are the MD5 and SHA1 checksums:
+
+  @MD5SUM@ libtool-@VERSION@.tar.gz
+  @MD5SUM@ libtool-@VERSION@.tar.bz2
+  @MD5SUM@ libtool-@PREV_RELEASE_VERSION_ON_THIS_BRANCH@-@VERSION@.diff.gz
+  @MD5SUM@ libtool-@PREV_RELEASE_VERSION_ON_THIS_BRANCH@-@VERSION@.tar.xdp.gz
+  @SHA1SUM@ libtool-@VERSION@.tar.gz
+  @SHA1SUM@ libtool-@VERSION@.tar.bz2
+  @SHA1SUM@ libtool-@PREV_RELEASE_VERSION_ON_THIS_BRANCH@-@VERSION@.diff.gz
+  @SHA1SUM@ libtool-@PREV_RELEASE_VERSION_ON_THIS_BRANCH@-@VERSION@.tar.xdp.gz
+
 This release has @SUMMARY_OF_IMPROVEMENTS_SINCE_LAST_RELEASE_ON_THIS_BRANCH@.
-
-New in @VERSION@: @RELEASE_DATE@
-
-  @EXCERPT_FROM_NEWS_FILE@
-
-libtool-@VERSION@ is available now from
-ftp://alpha.gnu.org/gnu/libtool/libtool-@VERSION@.tar.gz, along with
-diffs and xdeltas against libtool-@PREV_RELEASE_VERSION_ON_THIS_BRANCH@
-that are also available from ftp://alpha.gnu.org/gnu/libtool.
 
 This release was bootstrapped with @BOOTSTRAP_TOOLS_WITH_VERSIONS@,
 but is useable with @COMPATIBLE_AUTOTOOL_VERSIONS@ in your own
@@ -135,13 +154,17 @@ You will then need to have recent (possibly as yet unreleased) versions
 of Automake and Autoconf installed to bootstrap the checked out
 sources yourself.
 
+New in @VERSION@: @RELEASE_DATE@
+
+  @EXCERPT_FROM_NEWS_FILE@
+
 Please report bugs to <bug-libtool@gnu.org>.
 
 ================================================================
 = Full release note template
 
 To: info-gnu@gnu.org
-Cc: libtool@gnu.org, autoconf@gnu.org, automake@gnu.org
+Cc: libtool@gnu.org, autotools-announce@gnu.org
 
 The Libtool Team is pleased to announce the release of GNU Libtool
 @VERSION@.
@@ -157,13 +180,40 @@ New in @VERSION@: @RELEASE_DATE@
 
   @EXCERPT_FROM_NEWS_FILE@
 
-libtool-@VERSION@ is available now from
-ftp://ftp.gnu.org/gnu/libtool/libtool-@VERSION@.tar.gz, along with
+libtool-@VERSION@ is available now from ftp.gnu.org, along with
 diffs and xdeltas against libtool-@PREV_RELEASE_VERSION_ON_THIS_BRANCH@
-that are also available from ftp://ftp.gnu.org/gnu/libtool.  Please
+that are also available from ftp.gnu.org.  Please
 use a mirror to reduce stress on the main gnu machine:
 
   http://www.gnu.org/order/ftp.html
+
+Here are the compressed sources:
+
+  ftp://ftp.gnu.org/gnu/libtool/libtool-@VERSION@.tar.gz
+  ftp://ftp.gnu.org/gnu/libtool/libtool-@VERSION@.tar.bz2
+
+Here are the xdeltas and diffs against libtool-@PREV_RELEASE_VERSION_ON_THIS_BRANCH@:
+
+  ftp://ftp.gnu.org/gnu/libtool/libtool-@PREV_RELEASE_VERSION_ON_THIS_BRANCH@-@VERSION@.diff.gz
+  ftp://ftp.gnu.org/gnu/libtool/libtool-@PREV_RELEASE_VERSION_ON_THIS_BRANCH@-@VERSION@.tar.xdp.gz
+
+Here are the gpg detached signatures:
+
+  ftp://ftp.gnu.org/gnu/libtool/libtool-@VERSION@.tar.gz.asc
+  ftp://ftp.gnu.org/gnu/libtool/libtool-@VERSION@.tar.bz2.asc
+  ftp://ftp.gnu.org/gnu/libtool/libtool-@PREV_RELEASE_VERSION_ON_THIS_BRANCH@-@VERSION@.diff.gz.asc
+  ftp://ftp.gnu.org/gnu/libtool/libtool-@PREV_RELEASE_VERSION_ON_THIS_BRANCH@-@VERSION@.tar.xdp.gz.asc
+
+Here are the MD5 and SHA1 checksums:
+
+  @MD5SUM@ libtool-@VERSION@.tar.gz
+  @MD5SUM@ libtool-@VERSION@.tar.bz2
+  @MD5SUM@ libtool-@PREV_RELEASE_VERSION_ON_THIS_BRANCH@-@VERSION@.diff.gz
+  @MD5SUM@ libtool-@PREV_RELEASE_VERSION_ON_THIS_BRANCH@-@VERSION@.tar.xdp.gz
+  @SHA1SUM@ libtool-@VERSION@.tar.gz
+  @SHA1SUM@ libtool-@VERSION@.tar.bz2
+  @SHA1SUM@ libtool-@PREV_RELEASE_VERSION_ON_THIS_BRANCH@-@VERSION@.diff.gz
+  @SHA1SUM@ libtool-@PREV_RELEASE_VERSION_ON_THIS_BRANCH@-@VERSION@.tar.xdp.gz
 
 This release was bootstrapped with @BOOTSTRAP_TOOLS_WITH_VERSIONS@,
 but is useable with @COMPATIBLE_AUTOTOOL_VERSIONS@ in your own
