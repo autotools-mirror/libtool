@@ -1,3 +1,9 @@
+1999-06-30  Thomas Tanner  <tanner@ffii.org>
+
+	* demo/foo.h: use LT_PARAMS instead of LTDL_PARAMS (this is not libltdl)
+	* tests/build-relink.test: also check for hardcode_into_libs = yes,
+	  if set, we need to relink at install-time
+
 1999-06-29  Thomas Tanner  <tanner@ffii.org>
 
 	* NEWS: mention -no-fast-install, rename dummy to force

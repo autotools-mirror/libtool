@@ -58,6 +58,13 @@ if test "$hardcode_direct" = NONE; then
   exit 1
 fi
 
+hardcode_into_libs=NONE
+eval `egrep -e '^hardcode_into_libs=' ./libtool 2>/dev/null`
+if test "$hardcode_into_libs" = NONE; then
+  echo "hardcode_into_libs not set in ../demo/libtool" 1>&2
+  exit 1
+fi
+
 ./hell # so that it links on-demand if needed
 
 echo "removing libhello.la from ../demo"
@@ -92,7 +99,8 @@ else
   echo "Failed, as expected"
 fi
 
-if test "x$hardcode_action" = xrelink; then
+if test "x$hardcode_action" = xrelink ||
+   test "x$hardcode_into_libs" = xyes; then
   echo "= Exiting: install-time relinking is required"
   exit 0
 fi
