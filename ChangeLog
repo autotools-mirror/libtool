@@ -1,5 +1,8 @@
 2004-08-26  Peter O'Gorman  <peter@pogma.com>
 
+	* config/ltmain.in [darwin]: Use the -dylib_file flag and avoid
+	linking to so many libraries on darwin.
+
 	* m4/libtool.m4 [darwin]: Don't use a libname triplet, a couplet
 	is perfectly fine.
 
