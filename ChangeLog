@@ -1,8 +1,14 @@
+1999-08-02  Olly Betts  <olly@muscat.co.uk>
+
+	* libtool.m4 (AC_PROG_LD): strip carriage returns from the
+	output of gcc -print-prog-name=ld.
+	* ltconfig.in: ditto.
+
 1999-07-30  Pavel Roskin  <pavel_roskin@geocities.com>
 
 	* ltmain.in: Ensure that gcc on HPsUX uses -fPIC, or else
 	initialised structures are sometimes emitted in the code section.
-	
+
 1999-07-30  Mumit Khan  <khan@xraylith.wisc.edu>
 
 	* ltconfig.in:  Read line at a time to avoid tokenisation by
