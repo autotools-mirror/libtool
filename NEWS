@@ -1,6 +1,7 @@
 NEWS - list of user-visible changes between releases of GNU Libtool
 
 New in 1.9h: 2004-??-??; CVS version 1.9g, Libtool team:
+* Support for Portland Group compiler on Linux.
 
 New in 1.9f: 2004-10-23; CVS version 1.9e, Libtool team:
 * Calculate dllsearchpath correctly for wrapper scripts on cygwin.
