@@ -1,3 +1,9 @@
+1999-02-18  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* ltconfig.in (openbsd*, netbsd*, library_names_spec): append
+	alternate name without ${release}, otherwise build fails when
+	-release is used
+
 1999-02-18  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
 
 	* ltmain.in (version_type):  Oops.  Irix versioning implies that
