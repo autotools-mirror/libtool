@@ -1,12 +1,12 @@
 # A brief demonstration of using Automake with Libtool.
-AUTOMAKE_OPTIONS = foreign no-dependencies
+AUTOMAKE_OPTIONS = ansi2knr foreign
 
-EXTRA_DIST = libinfo
+EXTRA_DIST = $(TESTS)
 
 # Build a libtool library, libhell.la for installation in libdir.
 lib_PROGRAMS = libhell.la
 libhell_la_SOURCES = hello.c foo.c
-libhell_la_LDFLAGS = -version-file $(srcdir)/libinfo -rpath $(libdir)
+libhell_la_LDFLAGS = -version-info 3:12:1 -rpath $(libdir)
 
 include_HEADERS = foo.h
 
@@ -14,6 +14,8 @@ include_HEADERS = foo.h
 bin_PROGRAMS = hell
 hell_SOURCES = main.c
 hell_LDADD = libhell.la
+
+TESTS = run.test
 
 # Regenerate the acinclude.m4 from the parent, if it doesn't exist.
 $(top_srcdir)/acinclude.m4:

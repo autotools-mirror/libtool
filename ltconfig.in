@@ -121,9 +121,10 @@ EOM
     if test "$ltmain" = NONE; then
       ltmain="$option"
     elif test "$host" = NONE; then
-      if test -n "`echo $option| sed 's/[-a-z0-9.]//g'`"; then
-        echo "$progname: warning \`$option' is not a valid host type" 1>&2
-      fi
+# FIXME This generates an unnecessary warning for sparc-sun-solaris4.1.3_U1
+#      if test -n "`echo $option| sed 's/[-a-z0-9.]//g'`"; then
+#        echo "$progname: warning \`$option' is not a valid host type" 1>&2
+#      fi
       host="$option"
     else
       echo "$progname: too many arguments" 1>&2
@@ -561,7 +562,7 @@ else
     ;;
 
   *-*-hpux10*)
-    archive_cmds='$LD -b +h $soname +s +b $libdir -o $lib$libobjs$deplibs'
+    archive_cmds='$LD -b +h $soname +s +b $install_libdir -o $lib$libobjs$deplibs'
     link_rpath_flag='${wl}+b ${wl}$libdir'
     hardcode_minus_L=yes
     hardcode_shlibpath_var=yes
@@ -574,7 +575,7 @@ else
     ;;
 
   *-*-osf3*)
-    archive_cmds='$LD -shared -o $lib -rpath $libdir -soname $soname -set_version $verstring$libobjs -lc$deplibs'
+    archive_cmds='$LD -shared -o $lib -rpath $install_libdir -soname $soname -set_version $verstring$libobjs -lc$deplibs'
     link_rpath_flag='${wl}-rpath ${wl}$libdir'
     ;;
 
@@ -584,7 +585,7 @@ else
     ;;
 
   *-*-sunos4*)
-    objs2shlib='$LD -assert pure-text -Bstatic -o $lib$libobjs$deplibs'
+    archive_cmds='$LD -assert pure-text -Bstatic -o $lib$libobjs$deplibs'
     link_rpath_flag='-L$libdir'
     hardcode_minus_L=yes
     ;;
@@ -832,7 +833,7 @@ EOF2
   ;;
 *) cat <<EOF3 >> $ofile
 # Find the path to this script.
-thisdir=\`echo "\$0" | sed -e 's%/[^/]*%%'\`
+thisdir=\`echo "\$0" | sed -e 's%/[^/]*\$%%'\`
 test "X\$0" = "X\$thisdir" && thisdir=.
 
 # Execute the libtool backend.

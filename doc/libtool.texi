@@ -89,7 +89,7 @@ version @value{VERSION}.
 * Introduction::                What the heck is libtool?
 * Libtool Paradigm::            How libtool's view of libraries is different.
 * Using Libtool::               Example of using libtool to build libraries.
-* Invoking @file{libtool}::     Running the @file{libtool} script.
+* Invoking libtool::            Running the @file{libtool} script.
 * Integrating Libtool::         Using libtool in your own packages.
 * Versioning::                  Using library interface versions.
 * Library Tips::                Tips for library interface design.
@@ -129,16 +129,25 @@ Integrating Libtool with Your Own Packages
 * Configuring::                 Configuring libtool for a host system.
 * Distributing::                What files to distribute with your package.
 
+Configuring Libtool
+
+* Invoking ltconfig::           
+* ltconfig Example::            
+* AM_PROG_LIBTOOL::             
+
 Including Libtool with Your Package
 
-* Invoking @file{libtoolize}::  @file{libtoolize} command line options.
+* Invoking libtoolize::         @file{libtoolize} command line options.
 
 Library Interface Versions
 
 * Interfaces::                  What are library interfaces?
 * Libtool Versioning::          Libtool's versioning system.
-* Version Files::               How libtool tracks library versions.
-* Updating @file{libinfo}::     Keeping a library version file up-to-date.
+* Updating Version Info::       Changing version information before releases.
+
+Tips for Interface Design
+
+* C Header Files::              How to write portable include files.
 @end menu
 
 @end ifinfo
@@ -221,7 +230,7 @@ the system must not require these tools, so that it can be used by
 non-GNU packages.
 
 @item
-Portablility to other (non-GNU) architectures and tools is desirable.
+Portability to other (non-GNU) architectures and tools is desirable.
 @end enumerate
 
 @node Issues, Other Implementations, Motivation, Introduction
@@ -252,15 +261,9 @@ host to host.  These need to be guessed and tested at configure time in
 a consistent way.
 
 @item
-Some operating systems do not support shared object version numbers, and
-it is not obvious with which suffix a shared object should be installed.
-This makes it difficult for Makefile rules, since they generally assume
-that filenames are the same from host to host.
-
-@item
-Programmers need to be aware of what assumptions they are allowed to
-make.  Library names will need to be carefully chosen (to avoid name
-clashes), binary compatibility needs to be accounted for,
+It is not always obvious with which suffix a shared object should be
+installed.  This makes it difficult for Makefile rules, since they
+generally assume that filenames are the same from host to host.
 
 @item
 The system needs a simple library version number abstraction, so that
@@ -343,7 +346,7 @@ the paradigm of existing library systems, with examples from each.  It
 is a new way of thinking, so it may take a little time to absorb, but
 when you understand it the world gets simpler.
 
-@node Using Libtool, Invoking @file{libtool}, Libtool Paradigm, Top
+@node Using Libtool, Invoking libtool, Libtool Paradigm, Top
 @comment  node-name,  next,  previous,  up
 @chapter Using Libtool
 
@@ -375,7 +378,7 @@ After we have built that library, we want to create a program by linking
 
 @menu
 * Creating Object Files::       Compiling object files for libraries.
-* Linking Libraries::           
+* Linking Libraries::           Creating libraries from object files.
 * Linking Executables::         Linking object files against libtool libraries.
 * Installing Libraries::        Making libraries available to users.
 * Installing Executables::      Making programs available to users.
@@ -776,7 +779,7 @@ Another common situation where static linking is desirable is in
 creating a standalone binary.  Use libtool to do the linking and add the
 @samp{-static} flag.
 
-@node Invoking @file{libtool}, Integrating Libtool, Using Libtool, Top
+@node Invoking libtool, Integrating Libtool, Using Libtool, Top
 @comment  node-name,  next,  previous,  up
 @chapter Invoking @file{libtool}
 
@@ -838,7 +841,7 @@ Print libtool version information and exit.
 * Uninstall Mode::              Removing executables and libraries.
 @end menu
 
-@node Compile Mode, Link Mode, Invoking @file{libtool}, Invoking @file{libtool}
+@node Compile Mode, Link Mode, Invoking libtool, Invoking libtool
 @comment  node-name,  next,  previous,  up
 @section Compile Mode
 
@@ -854,7 +857,7 @@ suffix `.c' with the library object suffix, `.lo'.
 If shared libraries are being built, any necessary PIC generation flags
 are substituted into the compilation command.
 
-@node Link Mode, Install Mode, Compile Mode, Invoking @file{libtool}
+@node Link Mode, Install Mode, Compile Mode, Invoking libtool
 @comment  node-name,  next,  previous,  up
 @section Link Mode
 
@@ -886,9 +889,11 @@ If @var{output-file} is a program, then do not link it against any
 shared libraries.  If @var{output-file} is a library, then only create a
 static library.
 
-@item -version-file @var{verfile}
-If @var{output-file} is a library, then search for library versioning
-information in @var{verfile}.
+@item -version-info @var{current}[:@var{revision}[:@var{age}]]
+If @var{output-file} is a libtool library, use library version
+information @var{current}, @var{revision}, and @var{age} to build it.
+If not specified, each of these variables defaults to 0
+(@pxref{Versioning}).
 @end table
 
 If the @var{output-file} ends in `.la', then a libtool library is
@@ -902,7 +907,7 @@ created using @file{ar} and possibly @file{ranlib}.
 
 Otherwise, an executable program is created.
 
-@node Install Mode, Finish Mode, Link Mode, Invoking @file{libtool}
+@node Install Mode, Finish Mode, Link Mode, Invoking libtool
 @comment  node-name,  next,  previous,  up
 @section Install Mode
 
@@ -916,7 +921,7 @@ command.
 The command is run, and any necessary unprivileged post-installation
 commands are also completed.
 
-@node Finish Mode, Uninstall Mode, Install Mode, Invoking @file{libtool}
+@node Finish Mode, Uninstall Mode, Install Mode, Invoking libtool
 @comment  node-name,  next,  previous,  up
 @section Finish Mode
 
@@ -927,7 +932,7 @@ Each @var{mode-arg} is interpreted as the name of a library directory.
 Running this command may require superuser privileges, so the
 @samp{--dry-run} option may be useful.
 
-@node Uninstall Mode,  , Finish Mode, Invoking @file{libtool}
+@node Uninstall Mode,  , Finish Mode, Invoking libtool
 @comment  node-name,  next,  previous,  up
 @section Uninstall Mode
 
@@ -939,7 +944,7 @@ files (typically @file{/bin/rm}).
 The remaning @var{mode-args} are either flags for the deletion program
 (beginning with a `-'), or the names of files to delete.
 
-@node Integrating Libtool, Versioning, Invoking @file{libtool}, Top
+@node Integrating Libtool, Versioning, Invoking libtool, Top
 @comment  node-name,  next,  previous,  up
 @chapter Integrating Libtool with Your Own Packages
 
@@ -1006,23 +1011,173 @@ you want to pass to libtool while linking @samp{program}, such as
 @samp{-static}.
 
 Building a libtool library is almost as trivial@dots{} note the use of
-@samp{libhell_la_LDFLAGS} to pass the @samp{-version-file}
+@samp{libhell_la_LDFLAGS} to pass the @samp{-version-info}
 (@pxref{Versioning}) and @samp{-rpath} options to libtool:
 
 @example
 # Build a libtool library, libhell.la for installation in libdir.
 lib_PROGRAMS = libhell.la
 libhell_la_SOURCES = hello.c foo.c
-libhell_la_LDFLAGS = -version-file $(srcdir)/libinfo -rpath $(libdir)
+libhell_la_LDFLAGS = -version-info 3:12:1 -rpath $(libdir)
 @end example
 
 @node Configuring, Distributing, Using Automake, Integrating Libtool
 @comment  node-name,  next,  previous,  up
 @section Configuring Libtool
 
-FIXME
-Description of what it means to configure libtool.  ltconfig synopsis
-description of AM_PROG_LIBTOOL, how to add to aclocal
+Libtool requires intimate knowledge of your compiler suite and operating
+system in order to be able to create shared libraries and link against
+them properly.  When you install the libtool distribution, a
+system-specific libtool script is installed into your binary directory.
+
+However, when you distribute libtool with your own packages
+(@pxref{Distributing}), you do not always know which compiler suite and
+operating system are used to compile your package.
+
+For this reason, libtool must be @dfn{configured} before it can be
+used.  This idea should be familiar to anybody who has used a GNU
+@file{configure} script.  @file{configure} runs a number of tests for
+system features, then generates the @file{Makefiles} (and possibly a
+@file{config.h} header file), after which you can run @file{make} and
+build the package.
+
+Libtool has its own equivalent to the @file{configure} script,
+@file{ltconfig}.
+
+@menu
+* Invoking ltconfig::           @file{ltconfig} command line options.
+* ltconfig Example::            Manually configuring a @file{libtool}.
+* AM_PROG_LIBTOOL::             Configuring @file{libtool} in @file{configure.in}.
+@end menu
+
+@node Invoking ltconfig, ltconfig Example, Configuring, Configuring
+@comment  node-name,  next,  previous,  up
+@subsection Invoking @file{ltconfig}
+
+@file{ltconfig} runs a series of configuration tests, then creates a
+system-specific @file{libtool} in the current directory.  The
+@file{ltconfig} program has the following synopsis:
+
+@example
+ltconfig [@var{option}]@dots{} @var{ltmain} [@var{host}]
+@end example
+
+@noindent
+and accepts the following options:
+
+@table @samp
+@item --disable-shared
+Create a @file{libtool} that only builds static libraries.
+
+@item --help
+Display a help message and exit.
+
+@item --no-verify
+Do not use @file{config.sub} to verify that @var{host} is a valid
+canonical host system name.
+
+@item --quiet
+@item --silent
+Do not print informational messages when running configuration tests.
+
+@item --srcdir=@var{dir}
+Look for @file{config.guess} and @file{config.sub} in @var{dir}.
+
+@item --version
+Print @file{ltconfig} version information and exit.
+
+@item --with-gcc
+Assume that the GNU C compiler will be used when invoking the created
+@file{libtool} to compile and link object files.
+@end table
+
+@var{ltmain} is the @file{ltmain.sh} shell script fragment that provides
+the basic libtool functionality (@pxref{Distributing}).
+
+@var{host} is the canonical host system name, which by default is
+guessed by running @file{config.guess}.
+
+@file{ltconfig} also recognizes the following environment variables:
+
+@table @var
+@item CC
+The C compiler that will be used by the generated @file{libtool}.
+
+@item CFLAGS
+Compiler flags used to generate standard object files.
+
+@item LD
+The system linker to use (if the generated @file{libtool} requires one).
+
+@item RANLIB
+Program to use rather than checking for @file{ranlib}.
+@end table
+
+@node ltconfig Example, AM_PROG_LIBTOOL, Invoking ltconfig, Configuring
+@comment  node-name,  next,  previous,  up
+@subsection Using @file{ltconfig}
+
+Here is a simple example of using @file{ltconfig} to configure libtool
+on my NetBSD/i386 1.2 system:
+
+@example
+burger$ @kbd{./ltconfig ltmain.sh}
+checking host system type... i386-unknown-netbsd1.2
+checking for ranlib... ranlib
+checking for library strip program... strip -x
+checking for gcc... gcc
+checking whether we are using GNU C... yes
+checking for gcc option to produce PIC... -fPIC -DPIC
+checking for gcc option to statically link programs... -static
+checking if ld is GNU ld... no
+checking if ld supports shared libraries... yes
+checking dynamic linker characteristics... netbsd1.2 ld.so
+checking if libtool supports shared libraries... yes
+checking whether to build shared libraries... yes
+creating libtool
+burger$
+@end example
+
+This example shows how to configure @file{libtool} for cross-compiling
+to a i486 GNU/Hurd 0.1 system (assuming compiler tools reside in
+@file{/local/i486-gnu/bin}):
+
+@example
+burger$ export PATH=/local/i486-gnu/bin:$PATH
+burger$ ./ltconfig ltmain.sh i486-gnu0.1
+checking host system type... i486-unknown-gnu0.1
+checking for ranlib... ranlib
+checking for library strip program... strip -x
+checking for gcc... gcc
+checking whether we are using GNU C... yes
+checking for gcc option to produce PIC... -fPIC -DPIC
+checking for gcc option to statically link programs... -static
+checking if ld is GNU ld... yes
+checking if GNU ld supports shared libraries... yes
+checking dynamic linker characteristics... gnu0.1 ld.so
+checking if libtool supports shared libraries... yes
+checking whether to build shared libraries... yes
+creating libtool
+burger$
+@end example
+
+@node AM_PROG_LIBTOOL,  , ltconfig Example, Configuring
+@comment  node-name,  next,  previous,  up
+@subsection The @code{AM_PROG_LIBTOOL} macro
+
+If you are using GNU Autoconf (or Automake), you should add a call to
+@code{AM_PROG_LIBTOOL} to your @file{configure.in} file.  This macro
+offers seamless integration between the @file{configure} script and
+@file{ltconfig}.
+
+@code{AM_PROG_LIBTOOL} also adds support for the @samp{--enable-shared}
+and @samp{--disable-shared} @file{configure} flags.
+
+When you invoke the @file{libtoolize} program (@pxref{Invoking
+libtoolize}), it will tell you where to find a definition of
+@file{AM_PROG_LIBTOOL}.  If you use Automake, the @file{aclocal} program
+will automatically add @file{AM_PROG_LIBTOOL} support to your
+@file{configure} script.
 
 @node Distributing,  , Configuring, Integrating Libtool
 @comment  node-name,  next,  previous,  up
@@ -1052,10 +1207,10 @@ Rather than coping these files into your package manually, you should
 use the @file{libtoolize} program.
 
 @menu
-* Invoking @file{libtoolize}::  @file{libtoolize} command line options.
+* Invoking libtoolize::         @file{libtoolize} command line options.
 @end menu
 
-@node Invoking @file{libtoolize},  , Distributing, Distributing
+@node Invoking libtoolize,  , Distributing, Distributing
 @comment  node-name,  next,  previous,  up
 @subsection Invoking @file{libtoolize}
 
@@ -1127,8 +1282,7 @@ require.
 @menu
 * Interfaces::                  What are library interfaces?
 * Libtool Versioning::          Libtool's versioning system.
-* Version Files::               How libtool tracks library versions.
-* Updating @file{libinfo}::     Keeping a library version file up-to-date.
+* Updating Version Info::       Changing version information before releases.
 @end menu
 
 @node Interfaces, Libtool Versioning, Versioning, Versioning
@@ -1154,7 +1308,7 @@ sockets, pipes, and other inter-process communication protocols
 Note that static functions do not count as interfaces, because they are
 not directly available to the user of the library.
 
-@node Libtool Versioning, Version Files, Interfaces, Versioning
+@node Libtool Versioning, Updating Version Info, Interfaces, Versioning
 @comment  node-name,  next,  previous,  up
 @section Libtool's Versioning System
 
@@ -1211,63 +1365,39 @@ If two libraries have identical @var{current} and @var{age} numbers,
 then the dynamic linker chooses the library with the greater
 @var{revision} number.
 
-@node Version Files, Updating @file{libinfo}, Libtool Versioning, Versioning
+@node Updating Version Info,  , Libtool Versioning, Versioning
 @comment  node-name,  next,  previous,  up
-@section Version Files
+@section Updating the Library Version Information
 
-By default, libtool creates libraries with @var{current}, @var{age}, and
-@var{revision} all set to 0.
+If you want to use libtool's versioning system, then you must specify
+the version information to libtool using the @samp{-version-info} flag
+during link mode (@pxref{Link Mode}).
 
-If you want to use libtool's versioning system, then you must specify a
-file that contains version information for the library you are creating,
-using the @samp{-version-file} flag during link mode (@pxref{Link
-Mode}).
+This flag accepts an argument of the form
+@samp{@var{current}[:@var{revision}[:@var{age}]]}.  So, passing
+@samp{-version-info 3:12:1} sets @var{current} to 3, @var{revision} to
+12, and @var{age} to 1.
 
-By convention, the name of the version file is @file{libinfo}, though it
-can be any file you want.
+If either @var{revision} or @var{age} are omitted, they default to 0.
+Also note that @var{age} must be less than or equal to the @var{current}
+interface number.
 
-Here are the contents of the @file{libinfo} file from the @file{demo}
-subdirectory of the libtool distribution:
-
-@example
-# libinfo - used by libtool for library version information
-#
-# Comments begin with a hash sign.
-#
-# Each non-comment line has the following format:
-#   libNAME CURRENT AGE REVISION
-libhell 3 1 12
-@end example
-
-So, this file tells libtool that @file{libhello} supports interfaces 2
-and 3, and that it should be used instead of libraries with revisions
-less than 12.
-
-@node Updating @file{libinfo},  , Version Files, Versioning
-@comment  node-name,  next,  previous,  up
-@section Updating the @file{libinfo} File
-
-Here are a set of rules to help you update your library version file:
+Here are a set of rules to help you update your library version
+information:
 
 @enumerate 1
 @item
-Start with a version file that contains only:
-
-@example
-libNAME 0 0 0
-@end example
-
-@noindent
-for each libtool library @file{lib@var{name}}.
+Start with version information of @samp{0:0:0} for each libtool library.
 
 @item
-Update the version file only immediately before a public release of your
-software.  More frequent updates are unnecessary, and only guarantee
-that the current interface number gets larger faster.
+Update the version information only immediately before a public release
+of your software.  More frequent updates are unnecessary, and only
+guarantee that the current interface number gets larger faster.
 
 @item
 If the library source code has changed at all since the last update,
-then increment @var{revision}.
+then increment @var{revision} (@samp{@var{c}:@var{r}:@var{a}} becomes
+@samp{@var{c}:@var{r+1}:@var{a}}).
 
 @item
 If any interfaces have been added, removed, or changed since the last
@@ -1284,8 +1414,7 @@ set @var{age} to 0.
 
 @emph{NEVER} try to set library version numbers so that they correspond
 to the release of the package that you are making.  This is an abuse
-that only fosters misunderstanding of the purpose of library versions,
-and you would be better off not using a @file{libinfo} file at all.
+that only fosters misunderstanding of the purpose of library versions.
 
 @node Library Tips, Modifying, Versioning, Top
 @comment  node-name,  next,  previous,  up
@@ -1328,7 +1457,7 @@ inheritance in an object-oriented system.
 If you are careful to document each of your library's global functions
 and variables in header files, and include them in your source files,
 then the compiler will let you know if you make any interface changes by
-accident.
+accident (@pxref{C Header Files}).
 
 @item Use the @code{static} keyword whenever possible
 The fewer global functions your library has, the more flexibility you'll
@@ -1336,6 +1465,101 @@ have in changing them.  Static functions and variables may change forms
 as often as you like@dots{} your users cannot access them, so they
 aren't interface changes.
 @end table
+
+@menu
+* C Header Files::              How to write portable include files.
+@end menu
+
+@node C Header Files,  , Library Tips, Library Tips
+@comment  node-name,  next,  previous,  up
+@section Writing C Header Files
+
+Writing portable C header files can be difficult, since they may be read
+by different types of compilers:
+
+@table @asis
+@item C++ compilers
+C++ compilers require that functions be declared with full prototypes,
+since C++ is more strongly typed than C.  C functions and variables also
+need to be declared with the @code{extern "C"} directive, so that the
+names aren't mangled.
+
+@item ANSI C compilers
+ANSI C compilers are not as strict as C++ compilers, but functions
+should be prototyped to avoid unnecessary warnings when the header file
+is @code{#include}d.
+
+@item non-ANSI C compilers
+Non-ANSI compilers will report errors if functions are prototyped.
+@end table
+
+These complications mean that your library interface headers must use
+some C preprocessor magic in order to be usable by each of the above
+compilers.
+
+@file{foo.h} in the @file{demo} subdirectory of the libtool distribution
+serves as an example for how to write a header file that can be
+safely installed in a system directory.
+
+Here are the relevant portions of that file:
+
+@example
+/* __BEGIN_DECLS should be used at the beginning of your C declarations,
+   so that C++ compilers don't mangle their names. */
+#ifndef __BEGIN_DECLS
+# ifdef __cplusplus
+#  define __BEGIN_DECLS extern "C" @{
+# else
+#  define __BEGIN_DECLS
+# endif
+#endif
+#ifndef __END_DECLS
+# ifdef __cplusplus
+#  define __END_DECLS @};
+# else
+#  define __END_DECLS
+# endif
+#endif
+
+/* __P is a macro used to wrap function prototypes, so that compilers that
+   don't understand ANSI C prototypes still work, and ANSI C compilers can
+   issue warnings about type mismatches. */
+#ifndef __P
+# if defined (__STDC__) || defined (_AIX) \
+        || (defined (__mips) && defined (_SYSTYPE_SVR4)) \
+        || defined(WIN32) || defined(__cplusplus)
+#  define __P(protos) protos
+# else
+#  define __P(protos) ()
+# endif
+#endif
+@end example
+
+These macros are used in @file{foo.h} as follows:
+
+@example
+#ifdef _FOO_H_
+#define _FOO_H_
+
+/* The above macro definitions. */
+@dots{}
+
+__BEGIN_DECLS
+int foo __P((void));
+int hello __P((void));
+__END_DECLS
+
+#endif /* !_FOO_H_ */
+@end example
+
+Note that the @file{#ifdef _FOO_H_} prevents the body of @file{foo.h}
+from being read more than once in a given compilation, which prevents
+multiple definition errors.
+
+Feel free to copy the definitions of @code{__P}, @code{__BEGIN_DECLS},
+and @code{__END_DECLS} into your own headers.  Then, you may use them to
+create header files that are valid for C++, ANSI, and non-ANSI
+compilers.
 
 @node Modifying, Index, Library Tips, Top
 @comment  node-name,  next,  previous,  up

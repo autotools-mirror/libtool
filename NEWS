@@ -1,4 +1,4 @@
-New in 0.6d:
+New in 0.6e:
 * Total rewrite of libtool, along with a new model for library building.
 * Completely rewritten documentation for the new paradigm.
 * Sane handling of broken system linkers, such as the ones on AIX
@@ -7,6 +7,8 @@ New in 0.6d:
 * The libinfo helper script has been incorporated into the main
   libtool program.
 * Automatic mode guessing, based on the command line.
+* Full support for Automake 1.2 (including ansi2knr features).
+* Support to create reloadable objects using link mode.
 * Support for new `-static' linking flag.
 * Support for stripping libraries during installation.
 * Library version information is now passed on the command line, not

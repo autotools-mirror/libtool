@@ -1,3 +1,54 @@
+Wed Jan  8 15:01:06 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltconfig.in: Port to IRIX 5.3, 6.2.
+
+Mon Jan  6 08:54:00 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltconfig.in: HP-UX 9 support is the same as HP-UX 10, so the
+	port is trivial.
+
+	* libtoolize.in: Add --dry-run option, -n for short.
+
+Fri Jan  3 17:26:07 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltmain.sh.in (link): On at least SunOS, /bin/sh doesn't
+	understand "export something=val".  From Bruno Haible.
+
+Thu Jan  2 13:04:17 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltmain.sh.in (compile): Recognize valid source file suffixes for
+	Fortran and C++.
+
+Tue Dec 17 23:17:17 1996  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltmain.sh.in (link): Don't allow *._o and *.l_o to be valid
+ 	object type suffixes, in spite of Automake's current ansi2knr
+ 	implementation.  Not all compilers allow non-`.o' suffixes.
+
+Mon Dec 16 20:16:35 1996  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltmain.sh.in (link): Delete the `libtool' version type.
+
+Thu Dec 12 00:04:27 1996  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltconfig.in: Use the full autoconf syntax when checking for GNU
+	C.  Delete library stripping program, until we have a correct
+	test.
+
+Wed Dec 11 11:41:33 1996  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltconfig.in: On AIX 3, use /usr/ucb/nm, not /ucb/nm.  From
+	ir. M.M. Kettenis.
+
+Mon Dec  9 12:06:31 1996  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	Reported by Charles Kerr:
+	* doc/libtool.texi (Creating Object Files): Doc fix independant ->
+	independent.
+
+	* ltconfig.in (ld_shlibs): SunOS 4 doesn't support shared library
+	dependencies.
+
 Sun Dec  8 14:39:04 1996  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* Release 0.7.
@@ -92,7 +143,7 @@ Mon Nov 18 20:10:42 1996  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 	* ltconfig.in: Don't run the RANLIB test unless RANLIB wasn't
 	set.
 	Be verbose about the environment variables we were configured
-	with. 
+	with.
 
 	* ltmain.sh.in (objdir): change to .libs.
 

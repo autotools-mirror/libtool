@@ -7,6 +7,7 @@ SUBDIRS = doc tests
 EXTRA_DIST = libtool.m4 libtoolize.in ltconfig ltconfig.in \
 	ltmain.sh ltmain.sh.in README-automake
 CLEANFILES = libtool libtoolize
+MAINTAINERCLEANFILES = ltconfig ltmain.sh
 
 # Files in the demo subdirectory that go in the distribution.
 demo_distfiles = Makefile.in Makefile.am README aclocal.m4 \
@@ -18,7 +19,7 @@ demo_distfiles = Makefile.in Makefile.am README aclocal.m4 \
 pkgdata_SCRIPTS = config.guess config.sub ltconfig
 pkgdata_DATA = ltmain.sh
 
-# This macro files should be visible to Automake's aclocal.
+# This macro file should be visible to Automake's aclocal.
 aclocaldir = @aclocaldir@
 aclocal_DATA = libtool.m4
 
@@ -54,4 +55,3 @@ dist-hook:
 	  || ln $$d/$$file $(distdir)/demo/$$file 2> /dev/null \
 	  || cp -p $$d/$$file $(distdir)/demo/$$file; \
 	done
-
