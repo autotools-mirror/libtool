@@ -1,5 +1,7 @@
 2004-10-22  Gary V. Vaughan  <gary@gnu.org>
 
+	* clcommit.m4sh: Add --rcfile option.
+
 	* clcommit.m4sh: Updated again, to support file list limited
 	commits to CVS, and to fix another occurence of the bash bug
 	that was preventing non-tla users from sending a commit mail.
