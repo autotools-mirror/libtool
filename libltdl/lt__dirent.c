@@ -30,6 +30,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 #include <assert.h>
 #include <stddef.h>
 
+#include "lt__private.h"
 #include "lt__dirent.h"
 
 #if defined(__WINDOWS__)

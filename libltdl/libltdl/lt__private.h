@@ -57,6 +57,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 /* Import internal interfaces...  */
 #include "lt__alloc.h"
 #include "lt__dirent.h"
+#include "lt__strl.h"
 #include "lt__glibc.h"
 #include "slist.h"
 
