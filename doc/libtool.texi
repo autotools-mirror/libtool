@@ -2948,6 +2948,12 @@ static and shared libraries, @file{cdemo-static.test} builds only static
 libraries (@samp{--disable-shared}), and @file{cdemo-shared.test} builds
 only shared libraries (@samp{--disable-static}).
 
+@item build-relink.test
+@pindex build-relink.test
+Checks whether variable @var{shlibpath_overrides_runpath} is properly
+set.  If the test fails and @var{VERBOSE} is set, it will indicate what
+the variable should have been set to.
+
 @item hardcode.test
 @pindex hardcode.test
 On all systems with shared libraries, the location of the library can be

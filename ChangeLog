@@ -1,5 +1,10 @@
 1999-03-07  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* tests/build-relink.test: new; check shlibpath_overrides_runpath
+	* tests/Makefile.am (TESTS): add build-relink.test; remove
+	hardcode.test duplicates
+	* doc/libtool.texi: document it
+
 	* ltmain.in (relink_command): do not prepend cd `pwd` to it, the
 	scripts already enters the correct directory, and expanding the
 	pathname would prevent the build tree from moving

@@ -3,17 +3,19 @@
 AUTOMAKE_OPTIONS = gnits
 
 TESTS = demo-static.test demo-make.test demo-exec.test \
-	demo-inst.test demo-unst.test hardcode.test \
+	demo-inst.test demo-unst.test \
 	mdemo-static.test mdemo-make.test mdemo-exec.test \
 	mdemo-inst.test mdemo-unst.test \
 	cdemo-static.test cdemo-make.test cdemo-exec.test \
 	demo-conf.test demo-make.test demo-exec.test \
-	demo-inst.test demo-unst.test hardcode.test \
+	demo-inst.test demo-unst.test \
 	mdemo-conf.test mdemo-make.test mdemo-exec.test \
 	mdemo-inst.test mdemo-unst.test \
 	cdemo-conf.test cdemo-make.test cdemo-exec.test \
 	demo-shared.test demo-make.test demo-exec.test \
-	demo-inst.test demo-unst.test hardcode.test \
+	demo-inst.test \
+	build-relink.test hardcode.test \
+	demo-unst.test \
 	mdemo-shared.test mdemo-make.test mdemo-exec.test \
 	mdemo-inst.test mdemo-unst.test \
 	cdemo-shared.test cdemo-make.test cdemo-exec.test \
