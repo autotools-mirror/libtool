@@ -1,5 +1,7 @@
 1999-03-19  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* doc/libtool.texi: reorder tests to reflect execution order
+
 	* tests/noinst-link.test: new test
 	* tests/Makefile.am (TESTS): added noinst-link.test
 	* doc/libtool.texi: document it
