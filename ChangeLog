@@ -1,3 +1,15 @@
+1999-01-28  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
+
+	* ltmain.in: Reverted this change of Alexandre's from the
+	1999-01-25; "don't try to use .o instead of .lo just because
+	there's no PIC flag.  It loses if --disable-static, and there's
+	not much point if we're referring to the same file anyway...",
+	because not all linkers will accept .lo object names.
+	* ltmain.in: In the case where --disable-static is specified (as
+	noted in Alexandre's log entry), we just link some .o files to
+	prevent the original error.
+	Reported by Andrey Slepuhin <pooh@msu.ru>
+
 1999-01-27  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* libtoolize.in: search for A[MC]_PROG_LIBTOOL, not
