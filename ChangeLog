@@ -1,5 +1,8 @@
 2000-09-03  Alexandre Oliva  <aoliva@redhat.com>
 
+	* libtool.m4: Don't quote CONFIG_SHELL nor ORIGINAL_CONFIG_SHELL.
+	Quote $@ properly so that the shell expands it, not m4.
+
 	* libtool.m4: Don't quote SHELL when `re-exec'ing, so that SHELL
 	can be `/path/to/shell -x'.
 

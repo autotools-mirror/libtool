@@ -286,11 +286,11 @@ else
     elif (test -f /bin/ksh || test -f /bin/ksh$ac_exeext) &&
 	 test "X$CONFIG_SHELL" != X/bin/ksh; then
       # If we have ksh, try running ltconfig again with it.
-      ORIGINAL_CONFIG_SHELL="${CONFIG_SHELL-/bin/sh}"
+      ORIGINAL_CONFIG_SHELL=${CONFIG_SHELL-/bin/sh}
       export ORIGINAL_CONFIG_SHELL
       CONFIG_SHELL=/bin/ksh
       export CONFIG_SHELL
-      exec "$CONFIG_SHELL" "[$]0" --no-reexec ${1+"$@"}
+      exec $CONFIG_SHELL "[$]0" --no-reexec ${1+"[$]@"}
     else
       # Try using printf.
       lt_echo='printf %s\n'
@@ -299,18 +299,18 @@ else
 	 test "X$lt_echo_testing_string" = "X$lt_echo_test_string"; then
 	# Cool, printf works
 	:
-      elif lt_echo_testing_string=`("$ORIGINAL_CONFIG_SHELL" "[$]0" --fallback-echo '\t') 2>/dev/null` &&
+      elif lt_echo_testing_string=`($ORIGINAL_CONFIG_SHELL "[$]0" --fallback-echo '\t') 2>/dev/null` &&
 	   test "X$lt_echo_testing_string" = 'X\t' &&
-	   lt_echo_testing_string=`("$ORIGINAL_CONFIG_SHELL" "[$]0" --fallback-echo "$lt_echo_test_string") 2>/dev/null` &&
+	   lt_echo_testing_string=`($ORIGINAL_CONFIG_SHELL "[$]0" --fallback-echo "$lt_echo_test_string") 2>/dev/null` &&
 	   test "X$lt_echo_testing_string" = "X$lt_echo_test_string"; then
-	CONFIG_SHELL="$ORIGINAL_CONFIG_SHELL"
+	CONFIG_SHELL=$ORIGINAL_CONFIG_SHELL
 	export CONFIG_SHELL
 	SHELL="$CONFIG_SHELL"
 	export SHELL
 	lt_echo="$CONFIG_SHELL [$]0 --fallback-echo"
-      elif lt_echo_testing_string=`("$CONFIG_SHELL" "[$]0" --fallback-echo '\t') 2>/dev/null` &&
+      elif lt_echo_testing_string=`($CONFIG_SHELL "[$]0" --fallback-echo '\t') 2>/dev/null` &&
 	   test "X$lt_echo_testing_string" = 'X\t' &&
-	   lt_echo_testing_string=`("$CONFIG_SHELL" "[$]0" --fallback-echo "$lt_echo_test_string") 2>/dev/null` &&
+	   lt_echo_testing_string=`($CONFIG_SHELL "[$]0" --fallback-echo "$lt_echo_test_string") 2>/dev/null` &&
 	   test "X$lt_echo_testing_string" = "X$lt_echo_test_string"; then
 	lt_echo="$CONFIG_SHELL [$]0 --fallback-echo"
       else
@@ -328,7 +328,7 @@ else
 	if test "$prev" != 'sed 50q "[$]0"'; then
 	  lt_echo_test_string=`eval $prev`
 	  export lt_echo_test_string
-	  exec "${ORIGINAL_CONFIG_SHELL-${CONFIG_SHELL-/bin/sh}}" "[$]0" ${1+"$@"}
+	  exec ${ORIGINAL_CONFIG_SHELL-${CONFIG_SHELL-/bin/sh}} "[$]0" ${1+"[$]@"}
 	else
 	  # Oops.  We lost completely, so just stick with echo.
 	  lt_echo=echo
