@@ -1,3 +1,9 @@
+1999-01-27  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
+
+	* ltconfig.in ($echo):  When using printf to replace echo the shell
+	expands %s\n to %sn.  Changed to use "%s\n" (with quotes).
+	Reported by Sam Vilain <sam.vilain@nz.unisys.com>
+
 1999-01-27  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* libltdl/ltdl.c (find_file): fix endless loop condition
