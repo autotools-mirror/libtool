@@ -1,9 +1,32 @@
 dnl Process this file with autoconf to create configure.
+
 AC_INIT(ltmain.in)
 
-AM_INIT_AUTOMAKE(libtool,1.2e)
+# This is a sanity check so we can see which version is used in bug reports.
+# It is assumed that we only want to see the date extension for cvs libtool
+# versions (i.e. "odd" letters) and not actual alpha releases.
+version=`egrep '^[AM_INIT_AUTOMAKE]' $srcdir/configure.in | \
+	  sed 's/^.*,//;s/).*$//'`
+date=
+changequote(,)
+case $version in
+  *[acegikmoqsuwy]) 
+    date=`sed 's%.*\$''Date: \([0-9 /]*[0-9:]*\) \$.*% (\1)%;t;d' < \
+      $srcdir/ChangeLog`
+    ;;
+esac    
+changequote([,])
+banner="Configuring libtool-$version$date"
+dashes=`echo "$banner" | sed 's/./-/g'`
 
-pkgdatadir='${datadir}/libtool'
+# Display an obvious version banner
+echo $dashes
+echo "$banner"
+echo $dashes
+echo
+
+AM_INIT_AUTOMAKE(libtool, 1.2e)
+
 AC_SUBST(pkgdatadir)
 aclocaldir='${datadir}/aclocal'
 AC_SUBST(aclocaldir)

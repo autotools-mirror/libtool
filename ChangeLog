@@ -1,5 +1,8 @@
 1999-01-22  Gary V. Vaughan  <garyv@oranda.demon.co.uk>
 
+	* configure.in (date): echo the version number during
+	configuration, and show $date for cvs versions.
+
 	* Makefile.am ($(srcdir)/ltconfig): Oops.  cvs co keyword
 	expansion ate the sed expression! Changed sed separator to '%'
 	because there are '/' in the date.  Added missing '\(' to search
