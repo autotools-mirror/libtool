@@ -119,10 +119,13 @@ o2lo="s/\\.${objext}\$/.lo/"
 # Shell function definitions:
 # This seems to be the best place for them
 
+# func_win32_libid arg
+# return the library type of file 'arg'
+#
 # Need a lot of goo to handle *both* DLLs and import libs
 # Has to be a shell function in order to 'eat' the argument
 # that is supplied when $file_magic_command is called.
-win32_libid () {
+func_win32_libid () {
   win32_libid_type="unknown"
   win32_fileres=`file -L $1 2>/dev/null`
   case $win32_fileres in
@@ -156,12 +159,13 @@ win32_libid () {
 }
 
 
-
-infer_tag () {
-    # Infer tagged configuration to use if any are available and
-    # if one wasn't chosen via the "--tag" command line option.
-    # Only attempt this if the compiler in the base compile
-    # command doesn't match the default compiler.
+# func_infer_tag arg
+# Infer tagged configuration to use if any are available and
+# if one wasn't chosen via the "--tag" command line option.
+# Only attempt this if the compiler in the base compile
+# command doesn't match the default compiler.
+# arg is usually of the form 'gcc ...'
+func_infer_tag () {
     if test -n "$available_tags" && test -z "$tagname"; then
       CC_quoted=
       for arg in $CC; do
@@ -580,7 +584,7 @@ if test -z "$show_help"; then
       ;;
     esac
 
-    infer_tag $base_compile
+    func_infer_tag $base_compile
 
     for arg in $later; do
       case $arg in
@@ -928,7 +932,7 @@ EOF
     vinfo=
     vinfo_number=no
 
-    infer_tag $base_compile
+    func_infer_tag $base_compile
 
     # We need to know -static, to get the right output filenames.
     for arg
