@@ -299,7 +299,7 @@ func_exec ()
 # Shared global variables for test scripts
 prefix="./_inst"
 srcdir=`cd $srcdir && pwd`
-scripts="$srcdir/config/ltmain.sh ../libtoolize"
+scripts="$srcdir/../config/ltmain.sh ../libtoolize"
 
 func_msg "Running $progname"
 
