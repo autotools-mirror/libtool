@@ -1,5 +1,11 @@
 2005-01-31  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* m4/libtool.m4 (_LT_CMD_GLOBAL_SYMBOLS): Unicos 9 sed rejects
+	empty parentheses as in 's/x\(\)/\1/'.
+	(_LT_COMPILER_PIC) [unicos*]: wl=-Wl,.
+	* tests/sh.test: Not all sed's like '/.*\n.*/' (Unicos 9 sed
+	loops endlessly).
+
 	* tests/quote.test: Match link quoting against `"$wl"', not `-Wl,'.
 
 	* tests/quote.test: Check for `--no-reexec' in $1 to avoid one reexec.
