@@ -158,7 +158,7 @@ if test -z "$files"; then
   echo "$progname: cannot list files in \`$pkgdatadir'" 1>&2
   exit 1
 fi
-files='config.guess config.sub ltmain.sh'
+files='config.guess config.sub install-sh ltmain.sh'
 
 auxdir=.
 auxdirline=`grep '^AC_CONFIG_AUX_DIR' $configure_ac 2>/dev/null`

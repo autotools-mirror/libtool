@@ -1839,6 +1839,10 @@ Attempt to guess a canonical system name.
 @pindex config.sub
 Canonical system name validation subroutine script.
 
+@item install-sh
+@pindex install-sh
+BSD-compatible @command{install} replacement script.
+
 @item ltmain.sh
 @pindex ltmain.sh
 A generic script implementing basic libtool functionality.

@@ -24,7 +24,7 @@ CLEANFILES = libtool libtoolize ltmain.shT
 # These are required by libtoolize and must be executable when installed.
 # Since _SCRIPTS gets the program transform applied we make them
 # executable by hand
-pkgdata_DATA = config.guess config.sub ltmain.sh
+pkgdata_DATA = config.guess config.sub install-sh ltmain.sh
 
 # This macro file should be visible to Automake's aclocal.
 aclocal_DATA = $(aclocal_macros)
@@ -75,6 +75,7 @@ install-data-hook:
 	cd libltdl && $(MAKE) local-install-files
 	chmod +x $(DESTDIR)$(pkgdatadir)/config.guess
 	chmod +x $(DESTDIR)$(pkgdatadir)/config.sub
+	chmod +x $(DESTDIR)$(pkgdatadir)/install-sh
 
 # Uninstall libltdl
 uninstall-local:
@@ -155,6 +156,8 @@ FETCHFILES = \
 libltdl/config.guess \
 ./config.sub \
 libltdl/config.sub \
+./install-sh \
+libltdl/install-sh \
 doc/texinfo.tex
 
 ## Fetch the latest versions of files we care about.
@@ -165,6 +168,7 @@ fetch:
 ## If a get fails then that is a problem.
 	(cd Fetchdir && \
 	$(WGETSGO)/autoconf/autoconf/INSTALL; \
+	$(WGETSGO)/automake/automake/lib/install-sh; \
 	$(WGETSGO)/config/config/config.guess; \
 	$(WGETSGO)/config/config/config.sub; \
 	$(WGETSGO)/texinfo/texinfo/doc/texinfo.tex )
