@@ -35,7 +35,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 
 #if defined(LTDL)
 #  include "lt__glibc.h"
-#  include "lt__system.h"
+#  include "lt_system.h"
 #else
 #  define LT_SCOPE
 #endif

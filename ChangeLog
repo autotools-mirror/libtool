@@ -1,5 +1,7 @@
 2004-10-03  Gary V. Vaughan  <gary@gnu.org>
 
+	* libltdl/argz_.h: Forgot to spell lt_system.h with just one `_'.
+
 	* libltdl/argz_.h: Forgot to include lt__system.h for LT_SCOPE
 	definition.
 
