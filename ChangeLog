@@ -1,5 +1,7 @@
 1999-01-19  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* libltdl/Makefile.am (Makefile): depend on libtool
+
 	* ltmain.in (lt_preloaded_setup): function added to symbol list
 	source file to work around FreeBSD problem
 

@@ -26,4 +26,5 @@ libltdlc_la_LDFLAGS =
 libltdlc_la_LIBADD = $(libltdl_la_LIBADD)
 
 libtool: $(LIBTOOL_DEPS)
-	./config.status --recheck
+	$(SHELL) ./config.status --recheck
+Makefile: libtool
