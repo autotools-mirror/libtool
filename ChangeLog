@@ -1,3 +1,8 @@
+2003-05-21  Bruno Haible  <bruno@clisp.org>
+
+	* libtool.m4 (AC_LIBTOOL_SYS_DYNAMIC_LINKER): Add support for
+	GNU/FreeBSD.
+
 2003-04-22  Alexandre Oliva  <aoliva@redhat.com>
 
 	* libtool.m4 (lt_cv_deplibs_check_method): Use pass_all on all
