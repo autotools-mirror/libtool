@@ -21,6 +21,8 @@
 
 1999-01-20  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
 
+	* TODO: Added inter-library deps for ltlibs.
+
 	* THANKS: Added Vladimir Kushnir.
 	
 1999-01-20  Vladimir Kushnir  <kushn@mail.kar.net>

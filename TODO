@@ -36,6 +36,9 @@ this in the dso.5 page, this looks more informative :)
 Reminded by Alexandre Oliva.  This requires looking up installed
 libtool libraries for transparent support.
 
+* Inter-library dependencies need to work for ltlibraries too.
+Thomas Tanner has a patch for this.
+
 * Alexandre Oliva suggests that we hardcode paths into libraries, as
 well as binaries:  `... -Wl,-soname -Wl,/tmp/libtest.so.0 ...'.  Tim
 Mooney wants the same thing.
@@ -58,7 +61,7 @@ work under Solaris however.
 In the future:
 **************
 
-* Fix mdemo and depdemo on win32.
+* Fix */demo on win32.
 This may require resolving some of the items below.
 
 * Figure out how to use data items in dlls with win32.
