@@ -1,3 +1,10 @@
+2003-06-03  Peter O'Gorman  <peter@pogma.com>
+
+	* libtool.m4 (darwin): Remove checks for Apple-specific gcc.
+	* libltdl/ltdl.c (HAVE_MACH_O_DYLD_H): #define 
+	__private_extern__ for fsf gcc.
+	* ltmain.in (darwin): Only add new paths to newlib_search_path.
+
 2003-06-03  Max Bowsher  <maxb@ukf.net>
 
 	* libtool.m4 (AC_LIBTOOL_SYS_DYNAMIC_LINKER): Reorder cygwin's
