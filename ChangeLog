@@ -1,3 +1,11 @@
+2000-05-11  Thomas Tanner  <tanner@ffii.org>
+
+	* NEWS: update
+	* doc/libtool.texi (libltdl): rename lt_(find|next|add|remove)_dlloader
+	  to lt_dlloader_*
+	* libltdl/ltdl.c: ditto
+	* libltdl/ltdl.h: ditto, add declaration of lt_dlloader_(find|remove)
+	
 2000-05-06  Pavel Roskin  <pavel_roskin@geocities.com>
 
 	* libltdl/ltdl.c: Typo.

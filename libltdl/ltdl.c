@@ -284,7 +284,6 @@ strrchr(str, ch)
 # endif
 #endif
 
-/*ARGSUSED*/
 static lt_module_t
 sys_dl_open (loader_data, filename)
 	lt_dlloader_data_t loader_data;
@@ -301,7 +300,6 @@ sys_dl_open (loader_data, filename)
 	return module;
 }
 
-/*ARGSUSED*/
 static int
 sys_dl_close (loader_data, module)
 	lt_dlloader_data_t loader_data;
@@ -318,7 +316,6 @@ sys_dl_close (loader_data, module)
 	return 0;
 }
 
-/*ARGSUSED*/
 static lt_ptr_t
 sys_dl_sym (loader_data, module, symbol)
 	lt_dlloader_data_t loader_data;
@@ -388,7 +385,6 @@ static struct lt_user_dlloader sys_dl = {
 
 #define	LTDL_BIND_FLAGS	(BIND_IMMEDIATE | BIND_NONFATAL | DYNAMIC_PATH)
 
-/*ARGSUSED*/
 static lt_module_t
 sys_shl_open (loader_data, filename)
 	lt_dlloader_data_t loader_data;
@@ -401,7 +397,6 @@ sys_shl_open (loader_data, filename)
 	return module;
 }
 
-/*ARGSUSED*/
 static int
 sys_shl_close (loader_data, module)
 	lt_dlloader_data_t loader_data;
@@ -414,7 +409,6 @@ sys_shl_close (loader_data, module)
 	return 0;
 }
 
-/*ARGSUSED*/
 static lt_ptr_t
 sys_shl_sym (loader_data, module, symbol)
 	lt_dlloader_data_t loader_data;
@@ -448,7 +442,6 @@ sys_shl = { 0, sys_shl_open, sys_shl_close, sys_shl_sym, 0, 0 };
 /* Forward declaration; required to implement handle search below. */
 static lt_dlhandle handles;
 
-/*ARGSUSED*/
 static lt_module_t
 sys_wll_open (loader_data, filename)
 	lt_dlloader_data_t loader_data;
@@ -513,7 +506,6 @@ sys_wll_open (loader_data, filename)
 	return module;
 }
 
-/*ARGSUSED*/
 static int
 sys_wll_close (loader_data, module)
 	lt_dlloader_data_t loader_data;
@@ -526,7 +518,6 @@ sys_wll_close (loader_data, module)
 	return 0;
 }
 
-/*ARGSUSED*/
 static lt_ptr_t
 sys_wll_sym (loader_data, module, symbol)
 	lt_dlloader_data_t loader_data;
@@ -551,7 +542,6 @@ sys_wll = { 0, sys_wll_open, sys_wll_close, sys_wll_sym, 0, 0 };
 
 #include <kernel/image.h>
 
-/*ARGSUSED*/
 static lt_module_t
 sys_bedl_open (loader_data, filename)
 	lt_dlloader_data_t loader_data;
@@ -575,7 +565,6 @@ sys_bedl_open (loader_data, filename)
 	return (lt_module_t) image;
 }
 
-/*ARGSUSED*/
 static int
 sys_bedl_close (loader_data, module)
 	lt_dlloader_data_t loader_data;
@@ -588,7 +577,6 @@ sys_bedl_close (loader_data, module)
 	return 0;
 }
 
-/*ARGSUSED*/
 static lt_ptr_t
 sys_bedl_sym (loader_data, module, symbol)
 	lt_dlloader_data_t loader_data;
@@ -619,7 +607,6 @@ sys_bedl = { 0, sys_bedl_open, sys_bedl_close, sys_bedl_sym, 0, 0 };
 #include <dld.h>
 #endif
 
-/*ARGSUSED*/
 static lt_module_t
 sys_dld_open (loader_data, filename)
 	lt_dlloader_data_t loader_data;
@@ -638,7 +625,6 @@ sys_dld_open (loader_data, filename)
 	return module;
 }
 
-/*ARGSUSED*/
 static int
 sys_dld_close (loader_data, module)
 	lt_dlloader_data_t loader_data;
@@ -652,7 +638,6 @@ sys_dld_close (loader_data, module)
 	return 0;
 }
 
-/*ARGSUSED*/
 static lt_ptr_t
 sys_dld_sym (loader_data, module, symbol)
 	lt_dlloader_data_t loader_data;
@@ -681,7 +666,6 @@ typedef struct lt_dlsymlists_t {
 static const lt_dlsymlist *default_preloaded_symbols = 0;
 static lt_dlsymlists_t *preloaded_symbols = 0;
 
-/*ARGSUSED*/
 static int
 presym_init (loader_data)
 	lt_dlloader_data_t loader_data;
@@ -707,7 +691,6 @@ presym_free_symlists LTDL_PARAMS((void))
 	return 0;
 }
 
-/*ARGSUSED*/
 static int
 presym_exit (loader_data)
 	lt_dlloader_data_t loader_data;
@@ -740,7 +723,6 @@ presym_add_symlist (preloaded)
 	return 0;
 }
 
-/*ARGSUSED*/
 static lt_module_t
 presym_open (loader_data, filename)
 	lt_dlloader_data_t loader_data;
@@ -770,7 +752,6 @@ presym_open (loader_data, filename)
 	return 0;
 }
 
-/*ARGSUSED*/
 static int
 presym_close (loader_data, module)
 	lt_dlloader_data_t loader_data;
@@ -781,7 +762,6 @@ presym_close (loader_data, module)
 	return 0;
 }
 
-/*ARGSUSED*/
 static lt_ptr_t
 presym_sym (loader_data, module, symbol)
 	lt_dlloader_data_t loader_data;
@@ -823,21 +803,21 @@ lt_dlinit LTDL_PARAMS((void))
 	user_search_path = 0; /* empty search path */
 	
 #if HAVE_LIBDL && !defined(__CYGWIN__)
-	errors += lt_add_dlloader (lt_next_dlloader(0), &sys_dl, "dlopen");
+	errors += lt_dlloader_add (lt_dlloader_next(0), &sys_dl, "dlopen");
 #endif	
 #if HAVE_SHL_LOAD
-	errors += lt_add_dlloader (lt_next_dlloader(0), &sys_shl, "dlopen");
+	errors += lt_dlloader_add (lt_dlloader_next(0), &sys_shl, "dlopen");
 #endif
 #ifdef _WIN32
-	errors += lt_add_dlloader (lt_next_dlloader(0), &sys_wll, "dlopen");
+	errors += lt_dlloader_add (lt_dlloader_next(0), &sys_wll, "dlopen");
 #endif
 #ifdef __BEOS__
-	errors += lt_add_dlloader (lt_next_dlloader(0), &sys_bedl, "dlopen");
+	errors += lt_dlloader_add (lt_dlloader_next(0), &sys_bedl, "dlopen");
 #endif
 #if HAVE_DLD
-	errors += lt_add_dlloader (lt_next_dlloader(0), &sys_dld, "dld");
+	errors += lt_dlloader_add (lt_dlloader_next(0), &sys_dld, "dld");
 #endif
-	errors += lt_add_dlloader (lt_next_dlloader(0), &presym, "dlpreload");
+	errors += lt_dlloader_add (lt_dlloader_next(0), &presym, "dlpreload");
 	if (presym_init(presym.dlloader_data)) {
 		last_error = LT_DLSTRERROR(INIT_LOADER);
 			return 1;
@@ -1798,9 +1778,8 @@ lt_dlforeach (func, data)
 	return 0;
 }
 
-
 int
-lt_add_dlloader (place, dlloader, loader_name)
+lt_dlloader_add (place, dlloader, loader_name)
 	lt_dlloader_t *place;
 	const struct lt_user_dlloader *dlloader;
 	const char *loader_name;
@@ -1862,10 +1841,10 @@ lt_add_dlloader (place, dlloader, loader_name)
 }
 
 int
-lt_remove_dlloader (loader_name)
+lt_dlloader_remove (loader_name)
 	const char *loader_name;
 {
-	lt_dlloader_t *place = lt_find_dlloader (loader_name);
+	lt_dlloader_t *place = lt_dlloader_find (loader_name);
 	lt_dlhandle handle;
 	int result = 0;
 
@@ -1902,7 +1881,7 @@ lt_remove_dlloader (loader_name)
 }
 
 lt_dlloader_t *
-lt_next_dlloader (place)
+lt_dlloader_next (place)
 	lt_dlloader_t *place;
 {
 	return place ? place->next : loaders;
@@ -1927,7 +1906,7 @@ lt_dlloader_data (place)
 }	
 
 lt_dlloader_t *
-lt_find_dlloader (loader_name)
+lt_dlloader_find (loader_name)
 	const char *loader_name;
 {
 	lt_dlloader_t *place = 0;
@@ -1939,7 +1918,6 @@ lt_find_dlloader (loader_name)
 	return place;
 }
 
-
 static const char **user_error_strings = 0;
 static int errorcode = LTDL_ERROR_MAX;
 

@@ -3233,8 +3233,8 @@ which they can be allocated to an instance of @code{lt_user_dlloader}
 and registered.
 
 Registering the loader requires that you choose a name for it, so that it
-can be recognised by @code{lt_find_dlloader} and removed with
-@code{lt_remove_dlloader}.  The name you choose must be unique, and not
+can be recognised by @code{lt_dlloader_find} and removed with
+@code{lt_dlloader_remove}.  The name you choose must be unique, and not
 already in use by libltdl's builtin loaders:
 
 @table @asis
@@ -3270,7 +3270,7 @@ level types.
 @deftypefn {Type} {struct} lt_user_dlloader @{@w{const char *@var{sym_prefix};} @w{lt_module_open_t *@var{module_open};}@w{lt_module_close_t *@var{module_close};} @w{lt_find_sym_t *@var{find_sym};} @w{lt_dlloader_exit_t *@var{dlloader_exit};} @w{lt_dlloader_data_t @var{dlloader_data};} @}
 If you want to define a new way to open dynamic modules, and have the
 @code{lt_dlopen} @sc{api} use it, you need to instantiate one of these
-structures and pass it to @code{lt_add_dlloader}.  You can pass whatever
+structures and pass it to @code{lt_dlloader_add}.  You can pass whatever
 you like in the @var{dlloader_data} field, and it will be passed back as
 the value of the first parameter to each of the functions specified in
 the function pointer fields.
@@ -3308,7 +3308,7 @@ Implementation of such a function should free any resources associated
 with the loader, including any user specified data in the
 @code{dlloader_data} field of the @code{lt_user_dlloader}.  If non-@code{NULL},
 the function will be called by @code{lt_dlexit}, and
-@code{lt_remove_dlloader}.
+@code{lt_dlloader_remove}.
 @end deftypefn
 
 For example:
@@ -3331,7 +3331,7 @@ register_myloader (void)
   dlloader.dlloader_data = (lt_dlloader_data_t)myloader_function;
 
   /* Add my loader as the default module loader. */
-  if (lt_add_dlloader (lt_next_dlloader (NULL), &dlloader, "myloader") != 0)
+  if (lt_dlloader_add (lt_dlloader_next (NULL), &dlloader, "myloader") != 0)
     return ERROR;
 
   return OK;
@@ -3351,25 +3351,25 @@ during the initialisation phase.
 libltdl provides the following functions for writing your own module
 loaders:
 
-@deftypefun int lt_add_dlloader (@w{lt_dlloader_t *@var{place},} @w{lt_user_dlloader *@var{dlloader},} @w{const char *@var{loader_name}})
+@deftypefun int lt_dlloader_add (@w{lt_dlloader_t *@var{place},} @w{lt_user_dlloader *@var{dlloader},} @w{const char *@var{loader_name}})
 Add a new module loader to the list of all loaders, either as the
 last loader (if @var{place} is @code{NULL}), else immediately before the
 loader passed as @var{place}.  @var{loader_name} will be returned by
 @code{lt_dlloader_name} if it is subsequently passed a newly
 registered loader.  These @var{loader_name}s must be unique, or
-@code{lt_remove_dlloader} and @code{lt_find_dlloader} cannot
+@code{lt_dlloader_remove} and @code{lt_dlloader_find} cannot
 work. Returns 0 for success.
 
 @example
 @{
   /* Make myloader be the last one. */
-  if (lt_add_dlloader (NULL, myloader) != 0)
+  if (lt_dlloader_add (NULL, myloader) != 0)
     perror (lt_dlerror ());
 @}
 @end example
 @end deftypefun
 
-@deftypefun int lt_remove_dlloader (@w{const char *@var{loader_name}})
+@deftypefun int lt_dlloader_remove (@w{const char *@var{loader_name}})
 Remove the loader identified by the unique name, @var{loader_name}.
 Before this can succeed, all modules opened by the named loader must
 have been closed.  Returns 0 for success, otherwise an error message can 
@@ -3378,27 +3378,27 @@ be obtained from @code{lt_dlerror}.
 @example
 @{
   /* Remove myloader. */
-  if (lt_remove_dlloader ("myloader") != 0)
+  if (lt_dlloader_remove ("myloader") != 0)
     perror (lt_dlerror ());
 @}
 @end example
 @end deftypefun
 
-@deftypefun {lt_dlloader_t *}lt_next_dlloader (@w{lt_dlloader_t *@var{place}})
+@deftypefun {lt_dlloader_t *}lt_dlloader_next (@w{lt_dlloader_t *@var{place}})
 Iterate over the module loaders, returning the first loader if @var{place} is
 @code{NULL}, and the next one on subsequent calls. The handle is for use with
-@code{lt_add_dlloader}.
+@code{lt_dlloader_add}.
 
 @example
 @{
   /* Make myloader be the first one. */
-  if (lt_add_dlloader (lt_next_dlloader (NULL), myloader) != 0)
+  if (lt_dlloader_add (lt_dlloader_next (NULL), myloader) != 0)
     return ERROR;
 @}
 @end example
 @end deftypefun
 
-@deftypefun {lt_dlloader_t *}lt_find_dlloader (@w{const char *@var{loader_name}})
+@deftypefun {lt_dlloader_t *}lt_dlloader_find (@w{const char *@var{loader_name}})
 Return the first loader with a matching @var{loader_name} identifier, or else
 @code{NULL}, if the identifier is not found.
 
@@ -3411,7 +3411,7 @@ the host dependent module loading @sc{api} -- @code{shl_load} and
 @{
   /* Add a user loader as the next module loader to be tried if
      the standard dlopen loader were to fail when lt_dlopening. */
-  if (lt_add_dlloader (lt_find_dlloader ("dlopen"), myloader) != 0)
+  if (lt_dlloader_add (lt_dlloader_find ("dlopen"), myloader) != 0)
     return ERROR;
 @}
 @end example
@@ -3419,14 +3419,14 @@ the host dependent module loading @sc{api} -- @code{shl_load} and
 
 @deftypefun {const char *}lt_dlloader_name (@w{lt_dlloader_t *@var{place}})
 Return the identifying name of @var{PLACE}, as obtained from
-@code{lt_next_dlloader} or @code{lt_find_dlloader}.  If this function fails,
+@code{lt_dlloader_next} or @code{lt_dlloader_find}.  If this function fails,
 it will return @code{NULL} and set an error for retrieval with
 @code{lt_dlerror}.
 @end deftypefun
 
 @deftypefun {lt_dlloader_data_t *}lt_dlloader_data (@w{lt_dlloader_t *@var{place}})
 Return the address of the @code{dlloader_data} of @var{PLACE}, as
-obtained from @code{lt_next_dlloader} or @code{lt_find_dlloader}.  If
+obtained from @code{lt_dlloader_next} or @code{lt_dlloader_find}.  If
 this function fails, it will return @code{NULL} and set an error for
 retrieval with @code{lt_dlerror}.
 @end deftypefun

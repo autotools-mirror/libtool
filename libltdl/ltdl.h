@@ -113,7 +113,6 @@ Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 
 #include <stdlib.h>
 
-
 /* Defining error strings alongside their symbolic names in a macro in
    this way allows us to expand the macro in different contexts with
    confidence that the enumeration of symbolic names will map correctly
@@ -148,7 +147,6 @@ enum {
 };
 #undef LTDL_ERROR
 
-
 /* An opaque handle for a successfully lt_dlopened module instance. */
 #ifdef _LTDL_COMPILE_
 typedef	struct lt_dlhandle_t *lt_dlhandle;
@@ -221,7 +219,6 @@ extern const lt_dlinfo *lt_dlgetinfo LTDL_PARAMS((lt_dlhandle handle));
 extern int lt_dlforeach LTDL_PARAMS((
 		int (*func)(lt_dlhandle handle, lt_ptr_t data), lt_ptr_t data));
 
-
 /* User module loader API. */
 struct lt_user_dlloader {
 	const char *sym_prefix;
@@ -232,11 +229,13 @@ struct lt_user_dlloader {
   	lt_dlloader_data_t dlloader_data;
 };
 
-extern lt_dlloader_t *lt_next_dlloader LTDL_PARAMS((lt_dlloader_t *place));
+extern lt_dlloader_t *lt_dlloader_next LTDL_PARAMS((lt_dlloader_t *place));
+extern lt_dlloader_t *lt_dlloader_find LTDL_PARAMS((const char *loader_name));
 extern const char *lt_dlloader_name LTDL_PARAMS((lt_dlloader_t *place));
 extern lt_dlloader_data_t *lt_dlloader_data LTDL_PARAMS((lt_dlloader_t *place));
 extern lt_dlloader_t *lt_find_dlloader LTDL_PARAMS((const char *loader_name));
-extern int lt_add_dlloader LTDL_PARAMS((lt_dlloader_t *place, const struct lt_user_dlloader *dlloader, const char *loader_name));
+extern int lt_dlloader_add LTDL_PARAMS((lt_dlloader_t *place, const struct lt_user_dlloader *dlloader, const char *loader_name));
+extern int lt_dlloader_remove LTDL_PARAMS((const char *loader_name));
 
 /* Integrated lt_dlerror() messages for user loaders. */
 extern int lt_dladderror LTDL_PARAMS((const char *diagnostic));
