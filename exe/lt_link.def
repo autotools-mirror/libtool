@@ -1022,12 +1022,8 @@ is created, otherwise an executable program is created.\n";
 	  fi
 	  case $linkmode in
 	  lib)
-	    if test "$deplibs_check_method" != pass_all; then
-	      echo
-	      echo "*** Warning: This library needs some functionality provided by $deplib."
-	      echo "*** I have the capability to make that library automatically link in when"
-	      echo "*** you link to this library.  But I can only do this if you have a"
-	      echo "*** shared version of the library, which you do not appear to have."
+	    if test "$deplibs_check_method" != pass_all; then[++
+	    share-to-static-warn  libname = '$deplib' ++]
 	    else
 	      echo
 	      echo "*** Warning: Linking the shared library $output against the"
@@ -1487,12 +1483,8 @@ is created, otherwise an executable program is created.\n";
 	    # but the system doesn't support it.
 
 	    # Just print a warning and add the library to dependency_libs so
-	    # that the program can be linked against the static library.
-	    echo
-	    echo "*** Warning: This library needs some functionality provided by $lib."
-	    echo "*** I have the capability to make that library automatically link in when"
-	    echo "*** you link to this library.  But I can only do this if you have a"
-	    echo "*** shared version of the library, which you do not appear to have."
+	    # that the program can be linked against the static library.[++
+	    share-to-static-warn  libname = '$lib' ++]
 	    if test "$module" = yes; then
 	      echo "*** Therefore, libtool will create a static module, that should work "
 	      echo "*** as long as the dlopening application is linked with the -dlopen flag."
@@ -2067,12 +2059,8 @@ EOF
 		if test `expr "$ldd_output" : ".*$deplib_match"` -ne 0 ; then
 		  newdeplibs="$newdeplibs $i"
 		else
-		  droppeddeps=yes
-		  echo
-		  echo "*** Warning: This library needs some functionality provided by $i."
-		  echo "*** I have the capability to make that library automatically link in when"
-		  echo "*** you link to this library.  But I can only do this if you have a"
-		  echo "*** shared version of the library, which you do not appear to have."
+		  droppeddeps=yes[++
+		  share-to-static-warn  libname = '$i' ++]
 		fi
 	      else
 		newdeplibs="$newdeplibs $i"
@@ -2097,12 +2085,8 @@ EOF
 		  if test `expr "$ldd_output" : ".*$deplib_match"` -ne 0 ; then
 		    newdeplibs="$newdeplibs $i"
 		  else
-		    droppeddeps=yes
-		    echo
-		    echo "*** Warning: This library needs some functionality provided by $i."
-		    echo "*** I have the capability to make that library automatically link in when"
-		    echo "*** you link to this library.  But I can only do this if you have a"
-		    echo "*** shared version of the library, which you do not appear to have."
+		    droppeddeps=yes[++
+		    share-to-static-warn  libname = '$i' ++]
 		  fi
 		else
 		  droppeddeps=yes
@@ -2157,12 +2141,8 @@ EOF
 		    done
 	      done
 	      if test -n "$a_deplib" ; then
-		droppeddeps=yes
-		echo
-		echo "*** Warning: This library needs some functionality provided by $a_deplib."
-		echo "*** I have the capability to make that library automatically link in when"
-		echo "*** you link to this library.  But I can only do this if you have a"
-		echo "*** shared version of the library, which you do not appear to have."
+		droppeddeps=yes[++
+		share-to-static-warn  libname = '$a_deplib' ++]
 	      fi
 	    else
 	      # Add a -L argument.
@@ -2191,12 +2171,8 @@ EOF
 		done
 	      done
 	      if test -n "$a_deplib" ; then
-		droppeddeps=yes
-		echo
-		echo "*** Warning: This library needs some functionality provided by $a_deplib."
-		echo "*** I have the capability to make that library automatically link in when"
-		echo "*** you link to this library.  But I can only do this if you have a"
-		echo "*** shared version of the library, which you do not appear to have."
+		droppeddeps=yes[++
+		share-to-static-warn  libname = '$a_deplib' ++]
 	      fi
 	    else
 	      # Add a -L argument.

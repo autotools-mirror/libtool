@@ -2,21 +2,10 @@
 [=( dne " *  " "/*  " )=]
  *
  *  Strings that, when written from 'C', must be the same as
- *  the strings typed in the definition files.
+ *  the strings typed in the definition and template files.
  */[=
 
 IF (== (suffix) "h") =][=
-
-DEFINE test-or-exit
-
-=]if ([=test=]) > /dev/null 2>&1 ; then[=
-  invert "  :\nelse"=]
-  $echo "$modename: [=msg=]" 1>&2
-  $echo "$help" 1>&2
-  exit 1
-fi[=
-
-ENDDEF  =][=
 
   (define guard (string-append "HDRGRD_" (string-upcase!
                 (string->c-name! (out-name)) )))

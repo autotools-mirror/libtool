@@ -19,8 +19,8 @@ STRDEFS = ltstr.def \
 	lt_base.def      lt_clean.def     lt_compile.def   lt_execute.def \
 	lt_finish.def    lt_install.def   lt_link.def
 
-ltmain.in : $(STRDEFS) ltmain.tpl
-	autogen -T ltmain.tpl ltstr.def
+ltmain.in : $(STRDEFS) ltmain.tpl ltmacros.tpl
+	autogen -T ltmain.tpl -l ltmacros.tpl ltstr.def
 
 ltopts.c : ltopts.def
 	autogen ltopts.def
@@ -28,8 +28,8 @@ ltopts.c : ltopts.def
 ltopts.o : ltopts.c
 	$(CC) -c -o ltopts.o -I/usr/local/include ltopts.c
 
-ltstr.c : $(STRDEFS) ltstr.tpl
-	autogen -T ltstr.tpl ltstr.def
+ltstr.c : $(STRDEFS) ltstr.tpl ltmacros.tpl
+	autogen -T ltstr.tpl -l ltmacros.tpl ltstr.def
 
 gen : ltmain.in ltstr.c ltopts.c
 
