@@ -1533,6 +1533,18 @@ Create a @code{libtool} that builds only shared libraries if they are
 available.  If only static libraries can be built, then this flag has
 no effect.
 
+@item --disable-fast-install
+On platforms in which installable executables, that are created by
+default, are not suitable for execution in the build directory, create a
+@code{libtool} that links executables that search for uninstalled
+libraries by default, and relinks them at install time.  It is ignored
+on platforms in which a single executable is enough.
+
+@item --enable-dlopen
+Test whether some dlopening mechanism is supported.  If this flag is not
+given, or no working dlopening mechanism is found, create a
+@code{libtool} that performs dlpreopening of all dlopened modules.
+
 @item --help
 Display a help message and exit.
 
@@ -1560,6 +1572,14 @@ Print @code{ltconfig} version information and exit.
 @item --with-gcc
 Assume that the GNU C compiler will be used when invoking the created
 @code{libtool} to compile and link object files.
+
+@item --with-gnu-ld
+Assume that the C compiler uses the GNU linker.
+
+@item --disable-lock
+Create a @code{libtool} that does not perform locking to ensure proper
+parallel compilation if the C compiler does not support @samp{-c} and
+@samp{-o} together.
 @end table
 
 @var{ltmain} is the @code{ltmain.sh} shell script fragment that provides
