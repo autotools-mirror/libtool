@@ -1465,7 +1465,6 @@ Function Checks, The Autoconf Manual, autoconf, The Autoconf
 Manual}), and a few other functions.
 @end defvar
 
-
 Unfortunately, the most recent version of Autoconf (2.12, at the time of
 this writing) does not have any way for libtool to provide support for
 these variables.  So, if you depend on them, use the following code
@@ -1473,9 +1472,9 @@ immediately before the call to @code{AC_OUTPUT} in your
 @file{configure.in}:
 
 @example
-LTLIBOBJS=`echo "$LIBOBJS" | sed 's/\.o/\.lo/g'`
+LTLIBOBJS=`echo "$LIBOBJS" | sed 's/\.o/.lo/g'`
 AC_SUBST(LTLIBOBJS)
-LTALLOCA=`echo "$ALLOCA" | sed 's/\.o/\.lo/g'`
+LTALLOCA=`echo "$ALLOCA" | sed 's/\.o/.lo/g'`
 AC_SUBST(LTALLOCA)
 AC_OUTPUT(@dots{})
 @end example

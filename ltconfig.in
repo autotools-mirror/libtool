@@ -59,6 +59,7 @@ old_CC="$CC"
 old_CFLAGS="$CFLAGS"
 old_CPPFLAGS="$CPPFLAGS"
 old_LD="$LD"
+old_LN_S="$LN_S"
 old_RANLIB="$RANLIB"
 
 test -z "$AR" && AR=ar
@@ -532,6 +533,23 @@ if test -z "$LD"; then
   fi
 fi
 
+if test -z "$LN_S"; then
+  # Check to see if we can use ln -s, or we need hard links.
+  echo $ac_n "checking whether ln -s works... $ac_c" 1>&6
+  rm -f conftestdata
+  if ln -s X conftestdata 2>/dev/null; then
+    rm -f conftestdata
+    LN_S="ln -s"
+  else
+    LN_S=ln
+  fi
+  if test "$LN_S" = "ln -s"; then
+    echo "$ac_t"yes 1>&6
+  else
+    echo "$ac_t"no 1>&6
+  fi
+fi
+
 # See if we're really using GNU ld.
 with_gnu_ld=no
 # Allow LD to be a program name with arguments.
@@ -908,7 +926,8 @@ cat <<EOF > $ofile
 # This program was configured as follows,
 # on host `(hostname || uname -n) 2>/dev/null | sed 1q`:
 #
-# CC="$old_CC" CFLAGS="$old_CFLAGS" LD="$old_LD" RANLIB="$old_RANLIB" \\
+# CC="$old_CC" CFLAGS="$old_CFLAGS" CPPFLAGS="$old_CPPFLAGS" \\
+# LD="$old_LD" RANLIB="$old_RANLIB" LN_S="$old_LN_S" \\
 #   $0$ltconfig_args
 #
 # Compiler and other test output produced by $progname, useful for
@@ -932,6 +951,9 @@ AR='$AR'
 
 # The linker used to build libraries.
 LD='$LD'
+
+# Whether we need hard or soft links.
+LN_S='$LN_S'
 
 # How to create reloadable object files.
 reload_flag='$reload_flag'

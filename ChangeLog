@@ -1,3 +1,29 @@
+Sun Jun 29 19:51:50 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltmain.sh.in: Change all the `eval "$run ..."' sequences to
+ 	`$run "eval ..."'.
+
+	Change all `$ln_s ...' sequences to use `(cd /dir && $LN_S ...)'.
+	This is the sequence recommended by the Autoconf manual, and
+	should avoid any problems on older machines.  Eliminate all uses
+	of `cp -p'.  Reported by Akim Demaille.
+
+	(install): Use `test $# -gt 0' instead of `test -n "$1"'.
+
+	* ltconfig.in (LN_S): Add test to see if `ln -s' works.
+
+	* libtool.m4: Increment serial number, and require AC_PROG_LN_S.
+
+Thu Jun 26 17:55:26 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltmain.sh.in (link): Add missing `test' statement.  Reported by
+	Akim Demaille.
+
+Tue Jun 24 14:58:41 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* libtool.m4 (LD): Consistently use ac_cv_path_ld instead of
+	am_cv_path_ld.  From Tim Pierce.
+
 Fri Jun 20 08:21:34 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltmain.sh.in: Redo two robustness fixes.  Alexandre had the
