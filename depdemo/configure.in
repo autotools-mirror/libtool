@@ -1,4 +1,4 @@
-dnl Initialize the hell package.
+dnl Initialize the depdemo package.
 AC_INIT(main.c)
 AM_INIT_AUTOMAKE(depdemo,0.1)
 

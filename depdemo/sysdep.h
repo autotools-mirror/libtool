@@ -1,4 +1,4 @@
-/* foo.h -- interface to the libfoo* libraries
+/* sysdep.h -- system dependent declarations
    Copyright (C) 1998 Thomas Tanner <tanner@gmx.de>
    This file is part of GNU Libtool.
 

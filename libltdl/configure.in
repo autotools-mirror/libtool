@@ -1,14 +1,23 @@
 dnl Process this file with autoconf to create configure.
-dnl Initialize the ltdl package.
+dnl Initialize the libltdl package.
 AC_INIT(ltdl.c)
-AM_INIT_AUTOMAKE(libltdl,1.0)
+AM_INIT_AUTOMAKE(libltdl,0.1)
 
-AC_ARG_ENABLE(ltdl-install,
-  [  --enable-ltdl-install   install libltdl (breaks check before install)])
-AM_CONDITIONAL(INSTALL_LTDL, test x$enable_ltdl_install = xyes)
-if test x$enable_ltdl_install = xyes; then
+AC_ARG_ENABLE(install,
+  [  --enable-install        build installable version])
+AM_CONDITIONAL(INSTALL_LTDL, test x$enable_install = xyes)
+
+AC_ARG_ENABLE(dlpreopen,
+  [  --enable-dlpreopen      build installable version with dlpreopen support])
+
+dnl Always use dld_preloaded_symbols?
+always_dlpreopen=yes
+
+if test x$enable_install = xyes; then
   LIBLIBS=libltdl.la
+  test x$enable_dlpreopen = xyes && LIBLIBS="$LIBLIBS libltdls.la"
   NOINSTLIBS=
+  always_dlpreopen=no
 else
   LIBLIBS=
   NOINSTLIBS=libltdl.la
@@ -22,7 +31,7 @@ AM_PROG_LIBTOOL
 AC_HEADER_STDC
 AC_CHECK_HEADERS(malloc.h memory.h stdlib.h unistd.h stdio.h ctype.h dlfcn.h dl.h)
 AC_CHECK_HEADERS(string.h strings.h, break)
-AC_CHECK_FUNCS(strdup strrchr rindex)
+AC_CHECK_FUNCS(strdup strchr strrchr index rindex)
 
 AC_CACHE_CHECK([whether libtool supports -dlopen/-dlpreopen],
 	libltdl_cv_dlpreopen, [dnl
@@ -49,7 +58,11 @@ AC_SUBST(LIBADD_DL)
 
 if test "$supported" = no; then
   AC_MSG_WARN(Can't find dlopen support: Please make sure that your programs use -dlopen/-dlpreopen.)
-  AC_DEFINE(DEBUG)
+  always_dlpreopen=yes
+fi
+
+if test "$always_dlpreopen" = yes; then
+  AC_DEFINE(USE_DLPREOPEN)
 fi
 
 AM_SYS_SYMBOL_UNDERSCORE
@@ -62,7 +75,7 @@ if test x"$USE_SYMBOL_UNDERSCORE" = xyes; then
 #include <dlfcn.h>
 #include <stdio.h>
 fnord() { int i=42;}
-main() { void *self, *ptr1, *ptr2; self=dlopen(NULL,RTLD_LAZY);
+main() { void *self, *ptr1, *ptr2; self=dlopen(0,RTLD_LAZY);
     if(self) { ptr1=dlsym(self,"fnord"); ptr2=dlsym(self,"_fnord");
     if(ptr1 && !ptr2) exit(0); } exit(1); } 
 ],	libltdl_cv_need_uscore=no, libltdl_cv_need_uscore=yes,

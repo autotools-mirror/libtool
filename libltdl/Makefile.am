@@ -1,27 +1,29 @@
 # A brief demonstration of using Automake with Libtool. -*-Makefile-*-
 #
-# NOTE: Don't forget that in the libtool distribution, files in this
-# directory are distributed by the demo_distfiles variable in the top
-# level Makefile.
 AUTOMAKE_OPTIONS = no-dependencies foreign
 
-LTDL_VERSION = -version-info 0:1:1
+LTDL_VERSION = -version-info 0:1:0
+
+ltdls.lo: ltdl.c
+	$(LTCOMPILE) -DUSE_DLPREOPEN -o $@ -c $<
+
+lib_LTLIBRARIES = @LIBLIBS@
+noinst_LTLIBRARIES = @NOINSTLIBS@
+EXTRA_LTLIBRARIES = libltdl.la libltdls.la
 
 if INSTALL_LTDL
-LTDL_FLAGS = $(LTDL_VERSION) -rpath $(libdir) 
+LTDL_FLAGS = $(LTDL_VERSION) -rpath $(libdir)
 include_HEADERS = ltdl.h
 else
 LTDL_FLAGS =
 noinst_HEADERS = ltdl.h
 endif
 
-EXTRA_LTLIBRARIES = libltdl.la
-
-lib_LTLIBRARIES = @LIBLIBS@
-noinst_LTLIBRARIES = @NOINSTLIBS@
-
-libltdl_la_SOURCES = ltdl.c
+libltdl_la_SOURCES = ltdl.c ltdl.h
 libltdl_la_LDFLAGS = $(LTDL_FLAGS) $(LIBADD_DL)
+libltdls_la_LIBADD = ltdls.lo
+libltdls_la_SOURCES = ltdl.h
+libltdls_la_LDFLAGS = $(LTDL_FLAGS) $(LIBADD_DL) 
 
 # rebuild the libtool script if needed
 ltdl.lo: libtool

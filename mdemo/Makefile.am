@@ -18,7 +18,7 @@ noinst_HEADERS = foo.h
 
 bin_PROGRAMS = mdemo mdemo.debug
 
-# Create a version of hell that does dlopen.
+# Create a version of mdemo that does dlopen.
 mdemo_SOURCES = main.c
 mdemo_LDADD = ../libltdl/libltdl.la \
 	-lm # We won't need this when libltdl takes care of dependencies

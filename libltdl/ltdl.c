@@ -62,7 +62,7 @@ typedef struct lt_dltype_t {
 	lt_ptr_t (*find_sym) __P((lt_dlhandle handle, const char *symbol));
 } lt_dltype_t, *lt_dltype;
 
-#define LT_DLTYPE_TOP NULL
+#define LT_DLTYPE_TOP 0
 
 typedef	struct lt_dlhandle_t {
 	struct lt_dlhandle_t *next;
@@ -115,7 +115,7 @@ strchr(str, ch)
 	for (p = str; *p != (char)ch && p != '\0'; p++)
 		/*NOWORK*/;
 
-	return (*p == (char)ch) ? p : NULL;
+	return (*p == (char)ch) ? p : 0;
 }
 
 # endif
@@ -145,7 +145,7 @@ strrchr(str, ch)
 	while (*p != (char)ch && p >= str) 
 		p--;
 
-	return (*p == (char)ch) ? p : NULL;
+	return (*p == (char)ch) ? p : 0;
 }
 
 # endif
@@ -224,6 +224,42 @@ dl = { LT_DLTYPE_TOP, dl_init, dl_exit,
 #include <dl.h>
 #endif
 
+/* the following lines are (c) Tim Janik */
+
+/* some flags are missing on some systems, so we provide
+ * harmless defaults.
+ *
+ * Mandatory:
+ * BIND_IMMEDIATE  - Resolve symbol references when the library is loaded.
+ * BIND_DEFERRED   - Delay code symbol resolution until actual reference.
+ *
+ * Optionally:
+ * BIND_FIRST	   - Place the library at the head of the symbol search order.
+ * BIND_NONFATAL   - The default BIND_IMMEDIATE behavior is to treat all unsatisfied
+ *		     symbols as fatal.	This flag allows binding of unsatisfied code
+ *		     symbols to be deferred until use.
+ *		     [Perl: For certain libraries, like DCE, deferred binding often
+ *		     causes run time problems.	Adding BIND_NONFATAL to BIND_IMMEDIATE
+ *		     still allows unresolved references in situations like this.]
+ * BIND_NOSTART	   - Do not call the initializer for the shared library when the
+ *		     library is loaded, nor on a future call to shl_unload().
+ * BIND_VERBOSE	   - Print verbose messages concerning possible unsatisfied symbols.
+ *
+ * hp9000s700/hp9000s800:
+ * BIND_RESTRICTED - Restrict symbols visible by the library to those present at
+ *		     library load time.
+ * DYNAMIC_PATH	   - Allow the loader to dynamically search for the library specified
+ *		     by the path argument.
+ */
+#ifndef	DYNAMIC_PATH
+#define	DYNAMIC_PATH	0
+#endif	/* DYNAMIC_PATH */
+#ifndef	BIND_RESTRICTED
+#define	BIND_RESTRICTED	0
+#endif	/* BIND_RESTRICTED */
+
+#define	OPT_BIND_FLAGS	(BIND_IMMEDIATE | BIND_NONFATAL | BIND_VERBOSE | DYNAMIC_PATH)
+
 static int
 shl_init ()       
 {
@@ -241,9 +277,8 @@ shl_open (handle, filename)
 	lt_dlhandle handle;
 	const char *filename;
 {
-	/* Probably too much BIND_* flags */
-	handle->handle = shl_load (filename, BIND_IMMEDIATE || BIND_FIRST ||
-		BIND_TOGETHER || BIND_VERBOSE || DYNAMIC_PATH, 0L);
+	handle->handle = shl_load (filename, OPT_BIND_FLAGS, 0L);
+	/* the hp-docs say we should better abort() if errno==ENOSYM ;( */
 	return !(handle->handle);
 }
 
@@ -260,15 +295,12 @@ shl_sym (handle, symbol)
 	lt_dlhandle handle;
 	const char *symbol;
 {
-	int status, i;
-	struct shl_symbol *sym;
+	lt_ptr_t *sym;
 
-	status = shl_getsymbols((shl_t) (handle->handle), TYPE_PROCEDURE,
-			EXPORT_SYMBOLS, malloc, &sym);
-	for (i = 0; i < status; i++)
-		if (strcmp(symbol, sym[i].name) == 0)
-			return sym[i].value;
-	return 0;
+	if (shl_findsym ((shl_t) (handle->handle), symbol, 
+			TYPE_UNDEFINED, &sym) || !(handle->handle) || !sym)
+		return 0;
+	return sym;
 }
 
 static
@@ -389,6 +421,7 @@ wll = { LT_DLTYPE_TOP, wll_init, wll_exit,
 #endif
 
 #if HAVE_DLPREOPEN
+#if USE_DLPREOPEN
 
 /* emulate dynamic linking using dld_preloaded_symbols */
 
@@ -463,6 +496,7 @@ dldpre = { LT_DLTYPE_TOP, dldpre_init, dldpre_exit,
 #undef LT_DLTYPE_TOP
 #define LT_DLTYPE_TOP &dldpre
 
+#endif
 #endif
 
 static lt_dlhandle handles;

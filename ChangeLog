@@ -1,3 +1,18 @@
+1998-12-25  Thomas Tanner  <tanner@gmx.de>
+
+	* depdemo/configure.in: removed last relics of demo
+	* depdemo/sysdep.h: ditto
+	* mdemo/Makefile.am: ditto
+	* libltdl/Makefile.am: fixed the version number, build libltdls if
+	  -enable-install and -enable-dlpreopen are enabled
+	* libltdl/configure.in: libltdl is version 0.1, not 1.0,
+	  renamed -enable-ltdl-install to -enable-install,
+	  conditionals for libltdls, check for strchr and index,
+	  replaced NULL with 0
+	* libltdl/ltdl.c: replaced NULL with 0, dlpreopen only if
+	  USE_DLPREOPEN was defined, integrated shl_load code from GModule
+	  (still untested)
+
 1998-12-24  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
 
 	* libltdl/configure.in: fixup spacing in --enable-ltdl-install
