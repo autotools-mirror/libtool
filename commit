@@ -117,16 +117,16 @@ while $repeat; do
 	shift
 	;;
     -m*|-F*|-z*)
-	arg=`echo "$1" | sed '1s/^\(..\).*$/\1/;q'`
-	opt=`echo "$1" | sed '1s/^-m//'`
+	opt=`echo "$1" | sed '1s/^\(..\).*$/\1/;q'`
+	arg=`echo "$1" | sed '1s/^-[a-zA-Z0-9]//'`
 	shift
-	set -- "$arg" "$opt" ${1+"$@"}
+	set -- "$opt" "$arg" ${1+"$@"}
 	;;
     --message=*|--msg=*|--file=*|--compress=*)
 	opt=`echo "$1" | sed '1s/^\(--[^=]*\)=.*/\1/;q'`
     	arg=`echo "$1" | sed '1s/^--[^=]*=//'`
 	shift
-	set -- "$arg" "$opt" ${1+"$@"}
+	set -- "$opt" "$arg" ${1+"$@"}
 	;;
     -v|--version)
 	sed '/^# '$name' version /,/^# Heavily modified by/ { s/^# //; p; }; d' < $0
@@ -160,6 +160,7 @@ if cvs $cvsopt stat $statopt ${1+"$@"} 2>/dev/null | grep Status \
 	"Locally Modified") echo "M $file" >&2;;
 	"Locally Added") echo "A $file" >&2;;
 	"Locally Removed") echo "R $file" >&2;;
+	*Status:*Unknown) echo "? $rest"; echo "? $rest" >&2;;
 	*) echo "C $file"; echo "C $file" >&2;;
 	esac
      done | grep . >/dev/null; then
