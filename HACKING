@@ -48,14 +48,14 @@ and is not part of a release distribution.
 * Changes other than bug fixes must be mentioned in NEWS
 
 
-2. Test Suite
+3. Test Suite
 =============
 
 * Use "make check" liberally, on as many platforms as you can.  Use as
   many compilers and linkers you can.
 
 
-3. Naming
+4. Naming
 =========
 
 * We've adopted the convention that exported Autoconf macros should be
@@ -71,7 +71,102 @@ and is not part of a release distribution.
   with the `_lt_' macro namespace).
 
 
-4. Editing `.am' Files
+5. Editing 'ChangeLog'
+======================
+
+* When in doubt, check that emacs can syntax-color properly in
+  change-log-mode.  And preferably use emacs 'C-x 4 a'
+  (add-change-log-entry-other-window) to open ChangeLog with an
+  appropriate new template.
+
+* If this change is by a different author, or on a different date to the
+  last entry start a new entry at the top of the file with the format
+  (note two spaces between each field):
+
+yyyy-mm-dd  Name of Author  <email@address>
+
+* 'Name of Author' is the name of the person who made the change being
+  documented, or if that person didn't supply a ChangeLog, the author
+  of the ChangeLog entry.  If more than one person collaborated on the
+  change, additional authors can be listed on subsequent lines, thus:
+
+yyyy-mm-dd  Name of Main Author  <email@address>,
+            Name of Contributor  <another@email.address>
+
+* Preferably the next part should be a description of the overall
+  purpose of the change, separated from the header by a blank line,
+  indented by 1 tab, and filled at column 72.  The last character of the
+  description should be a colon, :.
+
+* If the author of the change is different from the author of the
+  ChangeLog, then the change outhor should be credited, separated from
+  the previous field by a blank line and indented by 1 tab (note, only
+  1 space between fields here):
+
+	From Author of Actual Change <email@address>:
+
+* Changes to each file come next.  Each new file starts on a new line,
+  indented by 1 tab and starting with an asterisk and a space.  Multiple
+  files can be listed here relative to $top_srcdir, and comma separated.
+  Names of functions (or sections as appropriate) to which the change
+  applies should be named inside parentheses and comma separated.  If
+  this goes beyond column 72, then parens should be closed and re-opened
+  on the next line:
+
+	* file, another/file, test/testcases/foo.test (func_foo)
+	(func_bar, func_baz): Description of changes.
+
+* If the change does not apply to particular functions (or sections),
+  the section list can be omitted:
+
+	* file, another/file, test/testcases/foo.test: General changes.
+
+* If the changes are particular to certain architectures, they should be
+  listed after the functions in square brackets:
+
+	* file, another/file (func_foo) [linux, solaris]: Description of
+	changes.
+
+* Subsequent changes in other files that are related to the same overall
+  enhancement or bugfix should be listed concurrently, without blank
+  lines.  Always start a fresh line for a new file:
+
+	* file, another/file (func_foo) [linux, solaris]: Description of
+	changes.
+	* doc/foo.texi (Invoking Foo): Document.
+	* NEWS: Updated.
+
+* If the change is in response to a problem reported by someone other
+  than the author, then credit them at the end of the description with:
+
+	Reported by Reporter Name <email@address>.
+
+* See the GNU Coding Standards document for more details on ChangeLog
+  formatting.
+
+
+2005-01-08  Gary V. Vaughan  <gary@gnu.org>,
+            Peter O'Gorman  <peter@pogma.com>
+
+	This is the overall description of the purpose of this change
+	and any useful background for a model ChangeLog entry:
+
+	From Ralf Wildenhues <Ralf.Wildenhues@gmx.de>:
+	* HACKING: Updated copyright.  This isn't attached to a
+	particular section of the file, so it comes first.
+	(Editing 'ChangeLog'): New section.  This applies to the same
+	file, but since it applies to a particular section it starts on
+	a new line.
+	(Introduction, Maintenance Notes, Test Suite, Naming)
+	(Editing '.am' Files): If I had changed all these sections in
+	the same way, I can list them like this, being careful to close
+	and reopen the parentheses when starting a new line.  The colon
+	only comes after the last section before this description.
+	* NEWS: Updated.
+	Reported by Bob Friesenhahn <bfriesen@simple.dallas.tx.us>.
+
+
+6. Editing `.am' Files
 ======================
 
 * Always use $(...) and not ${...}
@@ -89,7 +184,7 @@ and is not part of a release distribution.
   of the loop itself should print each "important" command it runs.
 
 
-5. Editing `.m4sh' Files
+7. Editing `.m4sh' Files
 ========================
 
 * Use shell functions, but be careful not to assume local scope for
@@ -110,7 +205,7 @@ and is not part of a release distribution.
   functions should begin indented by 4 spaces.
 
 
-6. Abstraction layers in libltdl
+8. Abstraction layers in libltdl
 ================================
 
 * The libltdl API uses a layered approach to differentiate internal and
@@ -194,7 +289,7 @@ and is not part of a release distribution.
 	lt__private.h
 
 
-7. Release Procedure
+9. Release Procedure
 ====================
 
 * If you are a libtool maintainer, but have not yet registered your
@@ -281,8 +376,8 @@ and is not part of a release distribution.
 
 
 
-7. Alpha release note template
-==============================
+10. Alpha release note template
+===============================
 
 To: libtool@gnu.org, autotools-announce@gnu.org
 Subject: GNU Libtool @VERSION@ released (alpha release).
@@ -354,8 +449,8 @@ output of any failed test groups, and the output from `./libtool --help.'
 
 
 
-8. Full release note template
-=============================
+11. Full release note template
+==============================
 
 To: info-gnu@gnu.org
 Cc: libtool@gnu.org, autotools-announce@gnu.org
@@ -436,7 +531,7 @@ output of any failed test groups, and the output from `./libtool --help.'
 
 
 -- 
-Copyright (C) 2004 Free Software Foundation, Inc.
+Copyright (C) 2004, 2005 Free Software Foundation, Inc.
 
 The canonical source of this file is maintained with the
 GNU Libtool package.  Report bugs to bug-libtool@gnu.org.
