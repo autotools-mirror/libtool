@@ -1157,7 +1157,7 @@ compiler."
       else
 
 	# Parse the version information argument.
-	IFS="${IFS= 	}"; save_ifs="$IFS"; IFS=':'
+	IFS="${IFS= 	}"; save_ifs="$IFS"; IFS='~'
 	set dummy $vinfo 0 0 0
 	IFS="$save_ifs"
 
@@ -1532,7 +1532,7 @@ EOF
 
 	# Do each of the archive commands.
 	eval cmds=\"$archive_cmds\"
-	IFS="${IFS= 	}"; save_ifs="$IFS"; IFS=';'
+	IFS="${IFS= 	}"; save_ifs="$IFS"; IFS='~'
 	for cmd in $cmds; do
 	  IFS="$save_ifs"
 	  $show "$cmd"
@@ -1605,7 +1605,7 @@ EOF
 
       output="$obj"
       eval cmds=\"$reload_cmds\"
-      IFS="${IFS= 	}"; save_ifs="$IFS"; IFS=';'
+      IFS="${IFS= 	}"; save_ifs="$IFS"; IFS='~'
       for cmd in $cmds; do
         IFS="$save_ifs"
         $show "$cmd"
@@ -1629,7 +1629,7 @@ EOF
         reload_objs="$libobjs"
         output="$libobj"
         eval cmds=\"$reload_cmds\"
-        IFS="${IFS= 	}"; save_ifs="$IFS"; IFS=';'
+        IFS="${IFS= 	}"; save_ifs="$IFS"; IFS='~'
         for cmd in $cmds; do
           IFS="$save_ifs"
           $show "$cmd"
@@ -2113,7 +2113,7 @@ fi\
       else
 	eval cmds=\"$old_archive_cmds\"
       fi
-      IFS="${IFS= 	}"; save_ifs="$IFS"; IFS=';'
+      IFS="${IFS= 	}"; save_ifs="$IFS"; IFS='~'
       for cmd in $cmds; do
         IFS="$save_ifs"
         $show "$cmd"
@@ -2395,7 +2395,7 @@ libdir='$install_libdir'\
           # Do each command in the postinstall commands.
           lib="$destdir/$realname"
           eval cmds=\"$postinstall_cmds\"
-          IFS="${IFS= 	}"; save_ifs="$IFS"; IFS=';'
+          IFS="${IFS= 	}"; save_ifs="$IFS"; IFS='~'
           for cmd in $cmds; do
             IFS="$save_ifs"
             $show "$cmd"
@@ -2537,7 +2537,7 @@ libdir='$install_libdir'\
 
       # Do each command in the postinstall commands.
       eval cmds=\"$old_postinstall_cmds\"
-      IFS="${IFS= 	}"; save_ifs="$IFS"; IFS=';'
+      IFS="${IFS= 	}"; save_ifs="$IFS"; IFS='~'
       for cmd in $cmds; do
         IFS="$save_ifs"
         $show "$cmd"
@@ -2576,7 +2576,7 @@ libdir='$install_libdir'\
 	if test -n "$finish_cmds"; then
 	  # Do each command in the finish commands.
 	  eval cmds=\"$finish_cmds\"
-          IFS="${IFS= 	}"; save_ifs="$IFS"; IFS=';'
+          IFS="${IFS= 	}"; save_ifs="$IFS"; IFS='~'
           for cmd in $cmds; do
             IFS="$save_ifs"
             $show "$cmd"
@@ -2819,7 +2819,7 @@ libdir='$install_libdir'\
 	  if test -n "$library_names"; then
 	    # Do each command in the postuninstall commands.
 	    eval cmds=\"$postuninstall_cmds\"
-	    IFS="${IFS= 	}"; save_ifs="$IFS"; IFS=';'
+	    IFS="${IFS= 	}"; save_ifs="$IFS"; IFS='~'
 	    for cmd in $cmds; do
 	      IFS="$save_ifs"
 	      $show "$cmd"
@@ -2831,7 +2831,7 @@ libdir='$install_libdir'\
           if test -n "$old_library"; then
 	    # Do each command in the old_postuninstall commands.
 	    eval cmds=\"$old_postuninstall_cmds\"
-	    IFS="${IFS= 	}"; save_ifs="$IFS"; IFS=';'
+	    IFS="${IFS= 	}"; save_ifs="$IFS"; IFS='~'
 	    for cmd in $cmds; do
 	      IFS="$save_ifs"
 	      $show "$cmd"

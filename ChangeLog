@@ -1,3 +1,16 @@
+1998-11-11  Gary V, Vaughan <gvaughan@oranda.demon.co.uk>
+
+        * ltconfig.in: make use of '~' field separator in reload_cmds,
+ 	old_archive_from_new_cmds, old_archive_cmds, archive_cmds,
+ 	old_postinstall_cmds, postinstall_cmds, old_postuninstall_cmds,
+ 	postuninstall_cmds and finish_cmds, so that the semi-colons inside
+ 	if/then/else/fi and for/do/done etc. do not break the eval loop in
+ 	ltmain.in (below).
+        * ltmain.in: changed all of the eval loops to use an IFS of `~',
+ 	to allow differentiation between the end-of-statement-;
+	(now `~' is used) and end-of-substatement-; (still `;').  This
+ 	fixes AIX and win32 at least.
+
 1998-11-11  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* ltconfig.in (sunos*, sympat, symxfrm): remove underscore
