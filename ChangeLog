@@ -1,3 +1,9 @@
+1999-09-22  Gary V. Vaughan  <gary@oranda.demon.co.uk>
+
+	* ltconfig.in (whole-archive-flag-spec): test whether the
+	version of GNU ld being used understands --whole-archive
+	before using it.
+
 1999-09-19  Thomas Tanner  <tanner@ffii.org>
 
 	* ltmain.in: don't ignore convenience libraries for objects/archives
