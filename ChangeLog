@@ -1,3 +1,10 @@
+1999-01-22  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* ltmain.in (Xsed): add 1 to Xsed definition that goes into
+	temporary wrapper scripts
+	* libtool.m4: we don't have Xsed here, expand it manually
+	Reported by Pavel Roskin <pavel_roskin@geocities.com>
+
 1999-01-22  Edouard G. Parmelan  <Edouard.Parmelan@France.NCR.COM>
 
 	* ltmain.in (finalize_hardcode_libdirs, finalize_rpath): in
