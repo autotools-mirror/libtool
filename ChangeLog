@@ -1,5 +1,8 @@
 2001-04-23  Gary V. Vaughan  <gvv@techie.com>
 
+	From Simon Spero <ses@ibiblio.org>
+	* libtool.m4 (lt_cv_deplibs_check_method) [darwin]: Set it!
+
 	* TODO: Make a note to undo this later.
 	From Christoph Pfisterer <cp@chrisp.de>
 	* libtool.m4: Use $() execution substitution quotation to work

@@ -3140,6 +3140,7 @@ cygwin* | mingw* | pw32*)
   ;;
 
 darwin* | rhapsody*)
+  lt_cv_deplibs_check_method='file_magic Mach-O dynamically linked shared library'
   lt_cv_file_magic_cmd='/usr/bin/file -L'
   case "$host_os" in
   rhapsody* | darwin1.[012])
