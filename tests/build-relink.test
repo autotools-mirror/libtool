@@ -105,8 +105,8 @@ if test "x$hardcode_action" = xrelink; then
 fi
 
 if test "$shlibpath_overrides_runpath" != yes; then
-  rm -f $objdir/lt-hell || exit 1
-  cp $objdir/hell $objdir/lt-hell || exit 1
+  rm -f $objdir/lt-hell$EXEEXT || exit 1
+  cp $objdir/hell$EXEEXT $objdir/lt-hell$EXEEXT || exit 1
   echo "running ../demo/hell with installed libhello.la"
   if ./hell; then
     echo "Worked, as expected"
@@ -114,7 +114,7 @@ if test "$shlibpath_overrides_runpath" != yes; then
     echo "shlibpath_overrides_runpath should be set to yes"
     status=1
   fi
-  rm -f $objdir/lt-hell
+  rm -f $objdir/lt-hell$EXEEXT
 fi
 
 exit $status

@@ -1635,7 +1635,30 @@ EOF
     *) linkmode=prog ;; # Anything else should be a program.
     esac
 
-    specialdeplibs=
+    case $host in
+    *cygwin*)
+      # This is a hack, but we run into problems on cygwin.
+      # libgcc.a depends on libcygwin, but gcc puts -lgcc onto
+      # the link line twice: once before the "normal" libs
+      # (-lcygwin -luser32 -lkernel32 -ladvapi32 -lshell32) and
+      # once AFTER those.  However, the "eliminate dup deps"
+      # proceedure keeps only the LAST duplicate -- thus
+      # messing up the order, since after dup elimination
+      # -lgcc comes AFTER -lcygwin.  In normal C operation,
+      # you don't notice the problem, because -lgcc isn't
+      # really used.  However, now that C++ libraries are
+      # libtool-able, you DO see the problem.  So, it must
+      # be fixed.  We could always force "--preserve-dup-deps"
+      # but that could lead to other problems.  So, on cygwin,
+      # always preserve dups of -lgcc...but only -lgcc. That
+      # way, the dependency order won't get corrupted.
+      specialdeplibs="-lgcc"
+      ;;
+    *)
+      specialdeplibs=
+      ;;
+    esac
+
     libs=
     # Find all interdependent deplibs by searching for libraries
     # that are linked more than once (e.g. -la -lb -la)
@@ -4052,7 +4075,9 @@ static const void *lt_preloaded_setup() {
 	esac
 	# test for cygwin because mv fails w/o .exe extensions
 	case $host in
-	  *cygwin*) exeext=.exe ;;
+	  *cygwin*)
+	    exeext=.exe
+	    outputname=`echo $outputname|${SED} 's,.exe$,,'` ;;
 	  *) exeext= ;;
 	esac
 	$rm $output
@@ -4786,6 +4811,19 @@ relink_command=\"$relink_command\""
 	  destfile="$destdir/$destfile"
 	fi
 
+	# If the file is missing, and there is a .exe on the end, strip it
+	# because it is most likely a libtool script we actually want to
+	# install
+	stripped_ext=""
+	case $file in
+	  *.exe)
+	    if test ! -f "$file"; then
+	      file=`echo $file|${SED} 's,.exe$,,'`
+	      stripped_ext=".exe"
+	    fi
+	    ;;
+	esac
+
 	# Do a test to see if this is really a libtool program.
 	case $host in
 	*cygwin*|*mingw*)
@@ -4847,7 +4885,7 @@ relink_command=\"$relink_command\""
 		$echo "$modename: error: cannot create temporary directory \`$tmpdir'" 1>&2
 		continue
 	      fi
-	      file=`$echo "X$file" | $Xsed -e 's%^.*/%%'`
+	      file=`$echo "X$file$stripped_ext" | $Xsed -e 's%^.*/%%'`
 	      outputname="$tmpdir/$file"
 	      # Replace the output file specification.
 	      relink_command=`$echo "X$relink_command" | $Xsed -e 's%@OUTPUT@%'"$outputname"'%g'`
@@ -4865,7 +4903,7 @@ relink_command=\"$relink_command\""
 	    fi
 	  else
 	    # Install the binary that we compiled earlier.
-	    file=`$echo "X$file" | $Xsed -e "s%\([^/]*\)$%$objdir/\1%"`
+	    file=`$echo "X$file$stripped_ext" | $Xsed -e "s%\([^/]*\)$%$objdir/\1%"`
 	  fi
 	fi
 

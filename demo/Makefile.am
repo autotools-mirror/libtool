@@ -18,7 +18,7 @@ else
 BUILD_helldl = 
 endif
 
-bin_PROGRAMS = hell hell.static $(BUILD_helldl)
+bin_PROGRAMS = hell hell_static $(BUILD_helldl)
 
 # Build hell from main.c and libhello.la
 hell_SOURCES = main.c
@@ -137,4 +137,4 @@ hell0_LDADD = libhell1.la libhell2.la $(LIBM)
 
 CLEANFILES += $(EXTRA_LIBRARIES) $(EXTRA_LTLIBRARIES) $(EXTRA_PROGRAMS)
 
-deplibs-check: hell0
+deplibs-check: hell0$(EXEEXT)

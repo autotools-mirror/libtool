@@ -911,8 +911,8 @@ lt_estrdup (str)
 /* --- DLOPEN() INTERFACE LOADER --- */
 
 
-/* The Cygwin dlopen implementation prints a spurious error message to
-   stderr if its call to LoadLibrary() fails for any reason.  We can
+/* Older Cygwin dlopen implementations print a spurious error message to
+   stderr if the call to LoadLibrary() fails for any reason.  We can
    mitigate this by not using the Cygwin implementation, and falling
    back to our own LoadLibrary() wrapper. */
 #if HAVE_LIBDL && !defined(__CYGWIN__)

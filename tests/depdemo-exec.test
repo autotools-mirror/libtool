@@ -20,9 +20,9 @@ fi
 echo "Executing uninstalled programs in ../depdemo"
 
 status=0
-if ../depdemo/depdemo.static; then :
+if ../depdemo/depdemo_static; then :
 else
-  echo "$0: cannot execute ../depdemo/depdemo.static" 1>&2
+  echo "$0: cannot execute ../depdemo/depdemo_static" 1>&2
   status=1
 fi
 

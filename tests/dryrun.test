@@ -66,12 +66,12 @@ $make foo1.la libfoo2.la || exit 1
 
 echo "= Making programs in ../mdemo (dry run)"
 ls -l . $objdir > $before
-force_dry_run=yes $make mdemo$EXEEXT mdemo.static 1>&2 || exit $?
+force_dry_run=yes $make mdemo$EXEEXT mdemo_static$EXEEXT 1>&2 || exit $?
 ls -l . $objdir > $after
 cmp $before $after > /dev/null || exit 1
 # Now really make them
 echo "= Making programs in ../mdemo"
-$make mdemo$EXEEXT mdemo.static || exit 1
+$make mdemo$EXEEXT mdemo_static$EXEEXT || exit 1
 
 echo "= Running $make install in ../mdemo (dry run)"
 # Libtool does not create these directories
@@ -89,7 +89,7 @@ $make install || exit 1
 
 echo "= Running $make uninstall in ../mdemo (dry run)"
 # Libtool does not uninstall the programs, remove them first
-rm -f $prefix/bin/mdemo$EXEEXT $prefix/bin/mdemo.static
+rm -f $prefix/bin/mdemo$EXEEXT $prefix/bin/mdemo_static$EXEEXT
 ls -l . $objdir > $before
 ls -lR $prefix >> $before
 force_dry_run=yes $make uninstall 1>&2 || exit $?

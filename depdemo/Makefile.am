@@ -6,7 +6,7 @@ SUBDIRS = l1 l2 l3 l4
 
 EXTRA_DIST = sysdep.h
 
-bin_PROGRAMS = depdemo depdemo.static
+bin_PROGRAMS = depdemo depdemo_static
 
 depdemo_SOURCES = main.c
 depdemo_LDADD = $(top_builddir)/l1/libl1.la $(top_builddir)/l2/libl2.la \
