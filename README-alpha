@@ -48,7 +48,7 @@ using (by typing `libtool --version').
 	doc/
 	    + fdl.texi
 	libltdl/
-	    + COPYING.LESSER
+	    + COPYING.LIB
 	    + config.guess
 	    + config.sub
 	    + install-sh
