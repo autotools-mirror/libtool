@@ -1,3 +1,18 @@
+1999-07-20  Gary V. Vaughan  <gary@oranda.demon.co.uk>
+
+	* configure.in (AC_PROG_RANLIB):  No longer required as we now use
+	AC_CHECK_TOOL in AC_LIBTOOL_SETUP.
+	* libtool.m4 (AC_PROG_LIBTOOL):  Pass the $build variable to
+	ltconfig.
+	(AC_PROG_RANLIB): replaced with AC_CHECK_TOOL.
+	* ltconfig.in (build): new variable to hold the build triplet
+	which is now checked for unless --no-verify is specified.
+	(--build): new argument to set the build triplet.
+	(ranlib): Prefer ${host_alias}-ranlib[.exe] if $build is different
+	to $host.
+	* doc/libtool.texi (Invoking ltconfig): Document --build option.
+	* NEWS: Note --build option.
+	
 1999-07-19  Erez Zadok  <ezk@cs.columbia.edu>
 	
 	* doc/PLATFORMS: Updated mostly *bsd platforms.

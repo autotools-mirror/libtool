@@ -29,9 +29,8 @@ AC_SUBST(pkgdatadir) dnl automake does not need this, but libtoolize does
 aclocaldir='${datadir}/aclocal'
 AC_SUBST(aclocaldir)
 
-dnl Use the specified CC, RANLIB, and LD while running ltconfig.
+dnl Use the specified CC and LD while running ltconfig.
 AC_PROG_CC
-AC_PROG_RANLIB
 AM_PROG_LD
 AM_PROG_NM
 AC_PROG_LN_S

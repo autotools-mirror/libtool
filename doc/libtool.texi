@@ -1558,6 +1558,14 @@ ltconfig [@var{option}]@dots{} @var{ltmain} [@var{host}]
 and accepts the following options:
 
 @table @samp
+@item --build=@var{build}
+Set the build system to be different to the host system.  This creates a
+libtool which prefers build tools which are prefixed by the host alias over
+the standard tools.  For example, specifying @code{--build=i486-pc-linux-gnu}
+on a host described by i486-pc-cygwin would create a libtool which used
+@code{i486-pc-cygwin-ranlib} in preference to @code{ranlib} if present.  This
+is useful for cross build environments.
+
 @item --debug
 Dump a trace of shell script execution to standard output.  This
 produces a lot of output, so you may wish to pipe it to @code{less} (or

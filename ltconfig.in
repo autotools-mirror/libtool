@@ -194,7 +194,8 @@ srcdir=
 ac_config_guess=
 ac_config_sub=
 host=
-nonopt=
+build=NONE
+nonopt=NONE
 ofile="$default_ofile"
 verify_host=yes
 with_gcc=no
@@ -243,6 +244,7 @@ Usage: $progname [OPTION]... [HOST [LTMAIN]]
 
 Generate a system-specific libtool script.
 
+    --build                configure for building on BUILD [BUILD=HOST]
     --debug                enable verbose shell tracing
     --disable-shared       do not build shared libraries
     --disable-static       do not build static libraries
@@ -270,6 +272,9 @@ HOST is the canonical host system name [default=guessed].
 EOM
   exit 0
   ;;
+
+  --build) prev=build ;;
+  --build=*) build="$optarg" ;;
 
   --debug)
     echo "$progname: enabling shell trace mode"
@@ -445,12 +450,38 @@ if test "$verify_host" = yes; then
   # Make sure the host verified.
   test -z "$host" && exit 1
 
+  # Check for the build system type
+  echo $ac_n "checking build system type... $ac_c" 1>&6
+
+  build_alias=$build
+  case "$build_alias" in
+  NONE)
+    case $nonopt in
+    NONE) build_alias=$host_alias ;;
+    *) build_alias=$nonopt ;;
+    esac ;;
+  esac
+
+  build=`SHELL $ac_config_sub $build_alias`
+  build_cpu=`echo $build | sed 's/^\([^-]*\)-\([^-]*\)-\(.*\)$/\1/'`
+  build_vendor=`echo $build | sed 's/^\([^-]*\)-\([^-]*\)-\(.*\)$/\2/'`
+  build_os=`echo $build | sed 's/^\([^-]*\)-\([^-]*\)-\(.*\)$/\3/'`
+  echo "$ac_t""$build" 1>&6
+
 elif test -z "$host"; then
   echo "$progname: you must specify a host type if you use \`--no-verify'" 1>&2
   echo "$help" 1>&2
   exit 1
 else
   host_alias=$host
+  build_alias=$host_alias
+  build=$host
+fi
+
+if test x"$host" != x"$build"; then
+  ac_tool_prefix=${host_alias}-
+else
+  ac_tool_prefix=
 fi
 
 # Transform linux* to *-*-linux-gnu*, to support old configure scripts.
@@ -519,35 +550,38 @@ LN_S="$ac_cv_prog_LN_S"
 echo "$ac_t""$result" 1>&6
 
 # Search for a ranlib program
-echo $ac_n "checking for ranlib... $ac_c" 1>&6
-echo "$progname:@LINENO@: checking for ranlib" 1>&5
-if test "X${ac_cv_prog_RANLIB+set}" = Xset; then
-  echo $ac_n "(cached) $ac_c" 1>&6
-  result="$ac_cv_prog_RANLIB"
-else
-  if test -n "$RANLIB"; then
-    result="$RANLIB"		# Let the user override the test.
-    ac_cv_prog_RANLIB="$result"
+for ac_prog in "${ac_host_prefix}ranlib" ranlib :
+do
+  echo $ac_n "checking for $ac_prog... $ac_c" 1>&6
+  echo "$progname:@LINENO@: checking for $ac_prog" 1>&5
+  if test "X${ac_cv_prog_RANLIB+set}" = Xset; then
+    echo $ac_n "(cached) $ac_c" 1>&6
   else
-    result=no
-    IFS="${IFS= 	}"; save_ifs="$IFS"; IFS="${IFS}${PATH_SEPARATOR}"
-    for dir in $PATH; do
-      test -z "$dir" && dir=.
-      if test -f $dir/ranlib || test -f $dir/ranlib$ac_exeext; then
-	result="ranlib"
-	ac_cv_prog_RANLIB="$result"
-	break
-      fi
-    done
-    IFS="$save_ifs"
+    if test -n "$RANLIB"; then
+      ac_cv_prog_RANLIB="$RANLIB"	# Let the user override the test.
+    else
+      IFS="${IFS= 	}"; save_ifs="$IFS"; IFS="${IFS}${PATH_SEPARATOR}"
+      for dir in $PATH; do
+        test -z "$dir" && dir=.
+        if test -f $dir/$ac_prog || test -f $dir/$ac_prog$ac_exeext; then
+	  ac_cv_prog_RANLIB="$ac_prog"
+	  break
+        fi
+      done
+      IFS="$save_ifs"
+    fi
   fi
-fi
-if test -n "$ac_cv_prog_RANLIB"; then
-  RANLIB="$ac_cv_prog_RANLIB"
-  old_archive_cmds="$old_archive_cmds~\$RANLIB \$oldlib"
-  old_postinstall_cmds="\$RANLIB \$oldlib~$old_postinstall_cmds"
-fi
-echo "$ac_t$result" 1>&6
+  if test -n "$ac_cv_prog_RANLIB"; then
+    RANLIB="$ac_cv_prog_RANLIB"
+    old_archive_cmds="$old_archive_cmds~\$RANLIB \$oldlib"
+    old_postinstall_cmds="\$RANLIB \$oldlib~$old_postinstall_cmds"
+    echo "$ac_t$RANLIB" 1>&6
+  else
+    echo "$ac_t""no" 1>&6
+  fi
+
+  test -n "$RANLIB" && break
+done
 
 if test -z "$NM"; then
   echo $ac_n "checking for BSD-compatible nm... $ac_c" 1>&6

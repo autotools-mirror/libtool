@@ -2,6 +2,8 @@ NEWS - list of user-visible changes between releases of GNU Libtool
 
 New in 1.3d: 1999-??-??; CVS version 1.3c, Libtool team:
 * New --with-pic flag to control the generation of PIC/non-PIC code.
+* New --build flag to ltconfig to help with build cross compilation
+  environments is inherited from --build flag passed to configure.
 * Various bugfixes
 
 New in 1.3b: 1999-07-02; CVS version 1.3a, Libtool team:
