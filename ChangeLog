@@ -1,5 +1,10 @@
 1999-03-16  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* ltmain.in (deplibs, beos*): don't append -lc
+	Reported by Xavier Pianet <xavier@xingo.com>
+
+1999-03-16  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
 	* tests/build-relink.test (hardcode_action): when set to relink,
 	skip the test with lt-hell
 
