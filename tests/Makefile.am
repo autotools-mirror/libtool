@@ -10,5 +10,8 @@ EXTRA_DIST = defs tlibtool $(TESTS)
 
 # We need to remove any files that the above tests created.
 distclean-local:
-	test -f ../demo/Makefile && cd ../demo && $(MAKE) distclean
+	-test -f ../demo/Makefile && cd ../demo && $(MAKE) distclean
 	rm -rf =inst
+
+clean-local:
+	-test -f ../demo/Makefile && cd ../demo && $(MAKE) clean

@@ -1,11 +1,9 @@
 AC_INIT(ltmain.sh.in)
-AM_INIT_AUTOMAKE(libtool, 0.8)
+AM_INIT_AUTOMAKE(libtool, 0.9)
 
 pkgdatadir='${datadir}/libtool'
 AC_SUBST(pkgdatadir)
 aclocaldir='${datadir}/aclocal'
 AC_SUBST(aclocaldir)
-localedir='${datadir}/locale'
-AC_SUBST(localedir)
 
 AC_OUTPUT([Makefile doc/Makefile tests/Makefile])

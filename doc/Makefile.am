@@ -6,16 +6,4 @@
 ##
 ## Written by Gordon Matzigkeit <gord@gnu.ai.mit.edu>
 AUTOMAKE_OPTIONS = gnits
-
-CLEANFILES = aclibtool.T
-MAINTAINERCLEANFILES = aclibtool.texi
-
 info_TEXINFOS = libtool.texi
-libtool_TEXINFOS = aclibtool.texi
-
-## Quoted version of $(top_srcdir)/libtool.m4.
-$(srcdir)/aclibtool.texi: $(top_srcdir)/libtool.m4
-	rm -f aclibtool.T
-	sed -e 's/{/@{/g' -e 's/}/@}/g' $(top_srcdir)/libtool.m4 \
-	   > aclibtool.T
-	mv aclibtool.T $(srcdir)/aclibtool.texi

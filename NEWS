@@ -1,4 +1,4 @@
-New in 0.7c:
+New in 0.8:
 * Bug fixes, and more documentation.
 * Basic support for other language compilers (C++, Fortran, and
   preprocessed assembler).

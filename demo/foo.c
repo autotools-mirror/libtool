@@ -19,9 +19,6 @@ Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.  */
 /* Written by Gordon Matzigkeit <gord@gnu.ai.mit.edu> */
 #include "foo.h"
 
-static char *package = PACKAGE;
-static char *version = VERSION;
-
 int
 foo (void)
 {

@@ -1,6 +1,6 @@
 This is GNU libtool, a generic library support script.  Libtool hides
-the complexity of generating special library types (such as shared
-libraries) behind a consistent interface.
+the complexity of using shared libraries behind a consistent
+interface.
 
 To use libtool, add the new generic library building commands to your
 Makefile, Makefile.in, or Makefile.am.  See the documentation for
@@ -9,18 +9,18 @@ details.
 Libtool supports building static libraries on all platforms.
 
 Shared library support has been implemented for these platforms:
-  AIX 4.x (*-*-aix4*)
-  FreeBSD 2.x (*-*-freebsd*)
-  NetBSD 1.x (*-*-netbsd*)
-  Solaris 2.x (*-*-solaris2*)
-  Linux ELF targets (*-*-linux*, except *-*-linuxaout* and *-*-linuxoldld*)
-  All ELF targets that use both the GNU C compiler (gcc) and GNU ld
-
-Shared library support is implemented, but untested on:
   AIX 3.x (*-*-aix3*)
+  AIX 4.x (*-*-aix4*)
   Digital/UNIX 3.x, a.k.a. OSF/1 (*-*-osf3*)
-  HP-UX 10.x (*-*-hpux10*)
+  FreeBSD 2.x (*-*-freebsd*)
+  HP-UX 9.x, 10.x (*-*-hpux9*, *-*-hpux10*)
+  IRIX 5.x, 6.x (*-*-irix5*, *-*-irix6*)
+  Linux ELF targets (*-*-linux*, except *-*-linuxaout* and *-*-linuxoldld*)
+  NetBSD 1.x (*-*-netbsd*)
+  SCO OpenServer 5.x (*-*-sco3.2v5*) [FIXME: in progress]
   Solaris 1.x, a.k.a. SunOS 4.x (*-*-sunos4*)
+  Solaris 2.x (*-*-solaris2*)
+  All ELF targets that use both the GNU C compiler (gcc) and GNU ld
 
 See the file NEWS for a description of recent changes to libtool.
 

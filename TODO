@@ -1,8 +1,3 @@
-For 1.0:
-
-* Finish documenting shared library systems.  Ugh.  I'll need more
-primary documentation in order to do this well.
-
 For 1.1:
 
 * Write libtool not to be dependent on the compiler used to configure
@@ -29,10 +24,4 @@ partially driven by the needs of packaging tools, such as RPM and
 dpkg.
 
 * Add support for windoze DLL's.  Check out Lesstif and Tcl
-configuration again.
-
-* What should be done about the difference between -fpic and -fPIC?
-Probably nothing.
-
-* GCC docs imply that all rs6000 code is PIC.  See if it is really
-true of any other processors: at least powerpc, powerpcle.
+configuration again.  The Cygnus win32 project may also be of value.

@@ -125,6 +125,12 @@ if test -z "$automake"; then
     echo "Using \`AC_PROG_RANLIB' is rendered obsolete by \`AM_PROG_LIBTOOL'"
   fi
 
+  if grep 'generated automatically by aclocal' aclocal.m4 >/dev/null 2>&1; then
+    updatemsg="You should update your \`aclocal.m4' by running aclocal."
+  else
+    updatemsg="You should add the contents of \`$libtool_m4' to \`aclocal.m4'."
+  fi
+
   if egrep '^AC_DEFUN\(AM_PROG_LIBTOOL' aclocal.m4 >/dev/null 2>&1; then
     # Check the version number on libtool.m4 and the one used in aclocal.m4.
     instserial=`grep '^# serial ' $libtool_m4 | grep 'AM_PROG_LIBTOOL' | sed -e 's/^# serial \([0-9][0-9]*\).*$/\1/; q'`
@@ -138,13 +144,13 @@ if test -z "$automake"; then
       test -z "$localserial" && localserial=0
 
       if test "$localserial" -lt "$instserial"; then
-	echo "You should update \`aclocal.m4' with the contents of \`$libtool_m4'"
+        echo "$updatemsg"
       elif test "$localserial" -gt "$instserial"; then
 	echo "$progname: \`$libtool_m4' has serial number $instserial, less than $localserial found in \`aclocal.m4'" 1>&2
       fi
     fi
   else
-    echo "Add the contents of \`$libtool_m4' to \`aclocal.m4'."
+    echo "$updatemsg"
   fi
 fi
 

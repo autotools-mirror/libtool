@@ -1,3 +1,11 @@
+Thu Jan 16 21:43:18 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* tlibtool: Rewrote to grab all the settings from the generated
+	libtool script.
+
+	* hardcode.test: Make allowances if shlibpath_var cannot be used
+	to find libraries at link time, such as on AIX.
+
 Tue Jan 14 09:17:27 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* demo-conf.test, demo-inst.test, demo-make.test, demo-unst.test,

@@ -1,3 +1,68 @@
+Mon Mar 24 01:26:48 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltmain.sh.in: Linking with -static should link against the old
+	library, not linklib.
+
+	* README-automake: Updated to point to Automake 1.1m.
+
+Sat Mar 15 14:15:43 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* demo/main.c: Use it.
+
+	* demo/foo.h: Declare it.
+
+	* demo/foo.c: Added definition of `nothing' so that we have an
+	global variable definition, as well as functions.
+
+Wed Mar 12 19:00:44 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltconfig.in: Make sure either enable_shared or enable_static is
+	configured.  Reported by Tom Tromey.
+
+	* ltmain.sh.in: Bomb out if no library types are configured.
+
+Sat Feb 22 12:47:59 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltconfig.in, ltmain.sh.in (hardcode_libdir_flag_spec): Renamed
+ 	from `hardcode_libdir_flag'.
+	(library_names_spec): Renamed from `lib_names'.
+
+	* ltconfig.in, ltmain.sh.in (hardcode_action): Change value from
+ 	`rpath' to `immediate'.
+
+	* replfunc.m4: Add AM_FUNC_ALLOCA, AM_FUNC_MEMCMP, and
+ 	AM_STRUCT_ST_BLOCKS.
+
+Tue Feb 18 09:36:24 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltconfig.in: Transform *-*-linux* to *-*-linux-gnu* to support
+	old-style config.guess scripts.
+
+Mon Feb 17 23:30:32 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltmain.sh.in: Create objdir *before* linking a program into it.
+
+Wed Feb 12 01:20:45 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltconfig.in: Any ld --version that returns GNU is probably a GNU
+	ld.  From Marcus Daniels.
+
+	* libtool.m4: Added AM_REPLACE_FUNCS.
+
+Tue Feb 11 01:28:19 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltconfig.in: Trivial port to *-*-osf4.  From Bruno Haible.
+
+Mon Feb 10 09:54:07 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltconfig.in: AIX 3 and 4 ld only hardcodes LIBPATH if -L is not
+ 	specified.  This behaviour is the same with both xlc and gcc.
+
+Fri Feb  7 08:37:54 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* doc/platforms.texi: Yaay!  We found a workaround for HP-UX
+	/bin/sh buffer overflows.  From Eric Backus.
+
 Mon Feb  3 11:15:01 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* Release 0.9.

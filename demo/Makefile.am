@@ -1,5 +1,5 @@
 # A brief demonstration of using Automake with Libtool.
-AUTOMAKE_OPTIONS = ansi2knr foreign
+AUTOMAKE_OPTIONS = foreign
 
 EXTRA_DIST = $(TESTS) acinclude.m4
 
@@ -37,13 +37,9 @@ $(srcdir)/acinclude.m4:
 hardcode: $(hardcode_tests)
 hc-direct: $(hell_OBJECTS) $(hell_DEPENDENCIES)
 	@shlib=./.libs/libhello.a; \
-	  libs=`ls ./.libs/libhello.*`; \
-	  for lib in $$libs; do \
-	    case "$$lib" in \
-	    *.a) ;; \
-	    *) shlib="$$lib"; \
-	       break ;; \
-	    esac; \
+	  eval "`egrep '^library_names' libhello.la`"; \
+	  for lib in $$library_names; do \
+	    shlib="./.libs/$$lib"; \
 	  done; \
 	  echo "$(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) $$shlib $(LIBS)"; \
 	  eval "$(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) $$shlib $(LIBS)"
@@ -53,5 +49,5 @@ hc-minusL: $(hell_OBJECTS) $(hell_DEPENDENCIES)
 
 hc-libpath: $(hell_OBJECTS) $(hell_DEPENDENCIES)
 	@eval `egrep -e '^shlibpath_var=' ./libtool`; \
-	  echo "$$shlibpath_var=./.libs $(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) -lhello $(LIBS)"; \
-	  eval "$$shlibpath_var=./.libs $(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) -lhello $(LIBS)"
+	  echo "$$shlibpath_var=./.libs $(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) -lhello $(LIBS) || echo unsupported > $@"; \
+	  eval "$$shlibpath_var=./.libs $(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) -lhello $(LIBS) || echo unsupported > $@"

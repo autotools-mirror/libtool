@@ -61,11 +61,18 @@ for file in hc-*; do
     ;;
   esac
 
-  if grep '.libs' $file > /dev/null; then
+  if fgrep '.libs' $file > /dev/null; then
     if test $expected = yes; then
       echo ".libs was hardcoded in \`$file', as libtool expected"
     else
       echo ".libs was hardcoded in \`$file', which fooled libtool" 1>&2
+      status=1
+    fi
+  elif egrep 'unsupported' $file > /dev/null; then
+    if test $expected = yes; then
+      echo "\`$file' was not linked properly, as libtool expected"
+    else
+      echo "\`$file' was not linked properly, which fooled libtool" 1>&2
       status=1
     fi
   else
