@@ -24,7 +24,7 @@ EXTRA_DIST		=
 AUTOMAKE_OPTIONS	= foreign
 
 DEFS			= -DHAVE_CONFIG_H="<$(CONFIG_H)>" -DLTDL
-AM_CPPFLAGS		= -I$(top_builddir)/.. -I$(top_srcdir)/.. \
+AM_CPPFLAGS		= -I$(top_builddir) -I$(top_srcdir) \
 			  -I.. -I$(srcdir)/..
 AM_LDFLAGS		= -no-undefined -module -avoid-version -export-dynamic
 

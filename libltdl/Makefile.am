@@ -27,7 +27,7 @@ AUTOMAKE_OPTIONS	= foreign
 ACLOCAL_AMFLAGS		= -I m4
 
 DEFS			= -DHAVE_CONFIG_H="<$(CONFIG_H)>" -DLTDL
-AM_CPPFLAGS		= -I$(top_builddir)/.. -I$(top_srcdir)/..
+AM_CPPFLAGS		= -I$(top_builddir) -I$(top_srcdir)
 AM_LDFLAGS		= -no-undefined
 VERSION_INFO		= -version-info 6:0:0
 
