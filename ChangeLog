@@ -1,5 +1,10 @@
 1999-03-09  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* Makefile.am (install-data-hook): install libltdl as a directory, 
+	not as a tar-file, so that we do not modify the build tree at make 
+	install time
+	* libtoolize.in (ltdl, ltdl_tar): update
+
 	* configure.in, Makefile.am, NEWS: install libltdl by default
 
 	* libtool.m4 (AC_LIBLTDL_INSTALLABLE, AC_LIBLTDL_CONVENIENCE):

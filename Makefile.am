@@ -15,7 +15,7 @@ aclocal_macros = libtool.m4
 
 EXTRA_DIST = $(aclocal_macros) libtoolize.in ltconfig.in ltmain.in \
 	libtool.spec
-CLEANFILES = libtool libtoolize ltconfig.T ltmain.shT libltdl.tar.gz
+CLEANFILES = libtool libtoolize ltconfig.T ltmain.shT
 
 # These are required by libtoolize.
 pkgdata_SCRIPTS = config.guess config.sub ltconfig
@@ -93,18 +93,9 @@ configure-subdirs distdir: $(DIST_MAKEFILE_LIST)
 	abs_srcdir=`cd $(top_srcdir) && pwd`; \
 	(cd $$dir && $$abs_srcdir/$$dir/configure) || exit 1
 
-# Create and install libltdl.tar.gz
-install-data-hook: libltdl/Makefile
-	@echo 'cd libltdl && $(MAKE) distdir distdir=libltdl && tar -cf libltdl.tar libltdl && gzip $(GZIP_ENV) libltdl.tar'
-	@if (cd libltdl && $(MAKE) distdir distdir=libltdl && \
-	 tar -cf libltdl.tar libltdl && \
-	 gzip $(GZIP_ENV) libltdl.tar); then \
-	  echo "$(INSTALL_DATA) libltdl/libltdl.tar.gz $(pkgdatadir)/libltdl.tar.gz"; \
-	  $(INSTALL_DATA) libltdl/libltdl.tar.gz $(pkgdatadir)/libltdl.tar.gz; \
-	else \
-	  echo "Warning: without gzip, libtool cannot install libltdl.tar.gz"; \
-	fi; \
-	rm -rf libltdl/libltdl libltdl/libltdl.tar libltdl/libltdl.tar.gz
+# Create and install libltdl
+install-data-hook:
+	cd libltdl && $(MAKE) distdir distdir=$(DESTDIR)$(pkgdatadir)/libltdl
 
 ################################################################
 ##

@@ -44,6 +44,7 @@ help="Try \`$progname --help' for more information."
 rm="rm -f"
 ln_s="ln -s"
 cp="cp -f"
+mkdir="mkdir"
 
 # Global variables.
 automake=
@@ -102,6 +103,7 @@ EOF
       rm="echo $rm"
       test -n "$ln_s" && ln_s="echo $ln_s"
       cp="echo $cp"
+      mkdir="echo mkdir"
     fi
     ;;
 
@@ -111,11 +113,9 @@ EOF
 
   --ltdl)
     ltdl=yes
-    ltdl_tar=
     ;;
 
   --ltdl-tar)
-    ltdl=
     ltdl_tar=yes
     ;;
 
@@ -146,7 +146,6 @@ if test -z "$files"; then
   exit 1
 fi
 files='config.guess config.sub ltconfig ltmain.sh'
-test "x$ltdl_tar" = xyes && files="$files libltdl.tar.gz"
 
 auxdir=.
 auxdirline=`egrep '^AC_CONFIG_AUX_DIR' configure.in 2>/dev/null`
@@ -228,12 +227,43 @@ if test -z "$automake"; then
 fi
 
 
-# Change to the auxillary directory.
+if test "x$ltdl" = xyes; then
+  test -d libltdl || $mkdir libltdl
+  ltdlfiles=`cd $pkgdatadir && ls libltdl/*`
+else
+  ltdlfiles=
+fi
+
+for file in $ltdlfiles; do
+  if test -f "$file" && test -z "$force"; then
+    test -z "$automake" && echo "$progname: \`$file' exists: use \`--force' to overwrite" 1>&2
+    continue
+  fi
+
+  $rm $file
+  if test -n "$ln_s" && $ln_s $pkgdatadir/$file $file; then :
+  elif $cp $pkgdatadir/$file $file; then :
+  else
+    echo "$progname: cannot copy \`$pkgdatadir/$file' to \`$file'" 1>&2
+    status=1
+  fi
+done
+
+if test "x$ltdl_tar" = x"yes"; then
+  if test "x$dry_run" = x"yes"; then
+    echo "(cd $pkgdatadir > /dev/null && tar -cf - libltdl | gzip --best) > libltdl.tar.gz"
+  elif test -f libltdl.tar.gz && test -z "$force"; then
+    test -z "$automake" && echo "$progname: \`libltdl.tar.gz' exists: use \`--force' to overwrite" 1>&2
+  else
+    (cd $pkgdatadir > /dev/null && tar -cf - libltdl | gzip --best) > libltdl.tar.gz
+  fi
+fi
+
+# Change to the auxiliary directory.
 if test "$auxdir" != .; then
   test -z "$automake" && echo "Putting files in AC_CONFIG_AUX_DIR, \`$auxdir'."
   cd $auxdir || exit 1
 fi
-
 
 for file in $files; do
   if test -f "$file" && test -z "$force"; then
@@ -249,14 +279,6 @@ for file in $files; do
     status=1
   fi
 done
-
-if test "x$ltdl" = xyes; then
-  if tar xzf $pkgdatadir/libltdl.tar.gz; then :
-  else
-    echo "$progname: cannot unpack libltdl.tar.gz" 1>&2
-    status=1
-  fi
-fi
 
 exit $status
 
