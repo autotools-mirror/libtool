@@ -4056,8 +4056,9 @@ else
 
     # relink executable if necessary
     if test -n \"\$relink_command\"; then
-      if (eval \$relink_command); then :
+      if relink_command_output=\`eval \$relink_command 2>&1\`; then :
       else
+        $echo \"\$relink_command_output\" >&2
 	$rm \"\$progdir/\$file\"
 	exit 1
       fi

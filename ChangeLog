@@ -1,3 +1,8 @@
+2001-05-03  Andreas Jaeger  <aj@suse.de>, Andreas Schwab  <schwab@suse.de>
+
+	* ltmain.in (relink_command): Arrange for wrapper script to save
+	output to a variable and display it only if relinking fails.
+
 2001-04-27  Alexandre Oliva  <aoliva@redhat.com>
 
 	* ltcf-cxx.sh: Add -nostdlib to HP-UX GCC archive_cmds.
