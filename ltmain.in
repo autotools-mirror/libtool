@@ -1510,7 +1510,7 @@ EOF
 	;;
 
      -mt|-mthreads|-kthread|-Kthread|-pthread|-pthreads|--thread-safe)
-	deplibs="$deplibs $arg"
+	compiler_flags="$compiler_flags $arg"
 	continue
 	;;
 
@@ -1998,7 +1998,7 @@ EOF
 	    compile_deplibs="$deplib $compile_deplibs"
 	    finalize_deplibs="$deplib $finalize_deplibs"
 	  else
-	    deplibs="$deplib $deplibs"
+	    compiler_flags="$compiler_flags $deplib"
 	  fi
 	  continue
 	  ;;
