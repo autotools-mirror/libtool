@@ -361,7 +361,7 @@ func_scan_files ()
 	/LT_INIT/	     { s,^.*$,seen_libtool=:,; p; };
 	/AC_LIB_LTDL/        { s,^.*$,seen_ltdl=:,; p; };
 	d;'
-    eval `cat aclocal.m4 "$configure_ac" | $SED "$my_sed_traces" 2>/dev/null`
+    eval `cat aclocal.m4 "$configure_ac" 2>/dev/null | $SED "$my_sed_traces"`
 
 
     # ---------------- #

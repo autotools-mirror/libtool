@@ -1,3 +1,9 @@
+2004-04-14  Gary V. Vaughan  <gary@gnu.org>
+
+	* libtoolize.in (configure_ac): Don't complain about the lack of
+	aclocal.m4.
+	Reported by Alexandre Duret-Lutz <adl@src.lip6.fr>
+
 2004-04-13  Gary V. Vaughan  <gary@gnu.org>
 
 	* m4/ltdl.m4 (AC_LIB_LTDL): Remove AC_REPLACE_FUNCS for memmove
