@@ -34,5 +34,6 @@ EXTRA_DIST = defs $(TESTS)
 # We need to remove any files that the above tests created.
 clean-local:
 	-test -f ../demo/Makefile && cd ../demo && $(MAKE) distclean
+	-test -f ../cdemo/Makefile && cd ../cdemo && $(MAKE) distclean
 	-test -f ../mdemo/Makefile && cd ../mdemo && $(MAKE) distclean
 	rm -rf _inst

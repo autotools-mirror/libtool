@@ -1,3 +1,24 @@
+1999-01-24  Thomas Tanner  <tanner@gmx.de>
+
+	* doc/libtool.texi (libltdl): list supported dlopen mechanisms,
+	  added function lt_dlopenext(), removed reference to 
+	  LTDL_PRELOADED_SYMBOLS in LTDL_SET_PRELOADED_SYMBOLS
+	* libltdl/ltdl.c: partially reverted Alexandre's dynamic string
+	  allocation change (it was not necessary and the code was unreadable),
+	  cleanups, removed usr_search_path_size, renamed usr_search_path
+	  to user_search_path, in find_module() also check for moved
+	  modules, merged find_file() and find_library(),
+	  added lt_dlopenext(), in lt_dladdsearchdir() no longer reset
+	  the search path if 'search_dir' == NULL and don't use realloc()
+	  (might not be available on all platforms),
+	  removed __P((void)) in the declaration of lt_dlgetsearchpath()
+	* libltdl/ltdl.h: added lt_dlopenext()
+	* ltconfig.in: AIX archive commands were broken,
+	  fixed a MAJOR bug in global_symbol_pipe which caused
+	  "demo-shared.test;demo-make.test" to fail (libtool must not extract
+	  undefined symbols of libraries, i.e. symcode must not contain 'U')
+	* tests/Makefile.am (clean-local): "make distclean" in cdemo, too
+
 1999-01-22  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* Makefile.am (ltconfig, ltmain.sh): add ChangeLog Revision to

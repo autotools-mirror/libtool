@@ -2536,6 +2536,22 @@ distributed with applications that need dlopening functionality.
 On some platforms, whose dynamic linkers are too limited for a simple 
 implementation of @file{libltdl} services, it requires GNU DLD.
 
+@noindent
+Libltdl supports currently the following dynamic linking mechanims:
+
+@itemize @bullet
+@item
+dlopen (Solaris, Linux and various BSD flavors)
+@item
+shl_load (HP-UX)
+@item
+LoadLibrary (Win16 and Win32)
+@item
+GNU DLD (emulates dynamic linking for static libraries)
+@item
+libtool's dlpreopen (see @pxref{Dlpreopening})
+@end itemize
+
 @menu
 * Libltdl's interface::         How to use libltdl in your programs.
 * Modules for libltdl::         Creating modules that can be @code{dlopen}ed.
@@ -2561,21 +2577,19 @@ Note that libltdl is not threadsafe, i.e. a multithreaded application
 has to use a mutex for libltdl.
 
 @noindent
-The following types are defined by libltdl:
+The following types are defined in @file{ltdl.h}:
 
 @table @code
 @item lt_ptr_t
 @code{lt_ptr_t} is a generic pointer.
 
 @item lt_dlhandle
-@code{lt_dlhandle} is a module "handle" used by @code{lt_dlopen},
-@code{lt_dlclose} and @code{lt_dlsym}. Every dlopened module has
-a handle associated with it.
+@code{lt_dlhandle} is a module "handle". 
+Every dlopened module has a handle associated with it.
 
 @item lt_dlsymlist
 @code{lt_dlsymlist} is a symbol list for dlpreopened modules.
-This structure is described in @pxref{Dlpreopening} and is 
-used by @code{lt_dlpreload} and @code{lt_dlpreload_default}.
+This structure is described in @pxref{Dlpreopening}.
 @end table
 
 @noindent
@@ -2596,7 +2610,7 @@ Return 0 on success, otherwise the number of errors.
 @end deftypefun
 
 @deftypefun lt_dlhandle lt_dlopen (const char *@var{filename})
-Open the module whose name is derived from @var{filename} and return a
+Open the module with the file name @var{filename} and return a
 handle for it.  @code{lt_dlopen} is able to open libtool dynamic
 modules, preloaded static modules and native dynamic libraries.  
 
@@ -2630,21 +2644,24 @@ e.g. "/usr/lib/mypkg:/lib/foo".
  
 If the same module is loaded several times, the same handle is returned.
 If @code{lt_dlopen} fails for any reason, it returns NULL.
+@end deftypefun
 
-@code{lt_dlopen} will preferentially open libtool modules.  Therefore,
-if the @var{filename} does not end with the libtool archive extension,
-@samp{".la"}, @code{lt_dlopen} will automatically search for a libtool
-module by appending @samp{".la"} to the @var{filename}.  If this fails,
-it assumes the @var{filename} refers to a native dynamic library, so
-tries to locate a library with the given name.  If even this fails,
-@code{lt_dlopen} will try to append to @var{filename} the extension used
-for native dynamic libraries in the host platform, e.g., @samp{".so"},
-@samp{".sl"}, etc.
+@deftypefun lt_dlhandle lt_dlopenext (const char *@var{filename})
+The same as @code{lt_dlopen}, except that it tries to append
+different file name extensions to the file name.
+If the file with the file name @var{filename} cannot be found
+libltdl tries to append the following extensions:
 
-This lookup strategy was designed to allow programs that have knowledge
-about native dynamic libraries naming conventions to be able to dlopen
-such libraries directly, and to allow programs that don't have this
-knowledge to let libltdl take care of this for them.
+@enumerate 1
+@item the libtool archive extension @samp{.la}
+@item the extension used for native dynamic libraries on the host platform, 
+e.g., @samp{.so}, @samp{.sl}, etc.
+@end enumerate
+
+This lookup strategy was designed to allow programs that don't 
+have knowledge about native dynamic libraries naming conventions 
+to be able to @code{dlopen} such libraries as well as libtool modules
+transparently.
 @end deftypefun
 
 @deftypefun int lt_dlclose (lt_dlhandle @var{handle})
@@ -2687,8 +2704,8 @@ Return 0 on success.
 
 @defmac LTDL_SET_PRELOADED_SYMBOLS()
 Set the default list of preloaded symbols.
-Should be used together with @code{LTDL_PRELOADED_SYMBOLS}
-in your program to initialize libltdl's list of preloaded modules.
+Should be used in your program to initialize libltdl's 
+list of preloaded modules.
 
 @example
 #include <ltdl.h>
