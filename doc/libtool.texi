@@ -2425,6 +2425,10 @@ within @code{ltmain.sh}:
 The name of the system library archiver.
 @end defvar
 
+@defvar CC
+The name of the C compiler used to configure libtool.
+@end defvar
+
 @defvar LD
 The name of the linker that libtool should use internally for reloadable
 linking and possibly shared libraries.
@@ -2434,6 +2438,17 @@ linking and possibly shared libraries.
 This is set to the version number of the @code{ltconfig} script, to
 prevent mismatches between the configuration information in
 @code{libtool}, and how that information is used in @code{ltmain.sh}.
+@end defvar
+
+@defvar NM
+The name of a BSD-compatible @code{nm} program, which produces listings
+of global symbols in one the following formats:
+
+@example
+@var{address} C @var{global-variable-name}
+@var{address} D @var{global-variable-name}
+@var{address} T @var{global-function-name}
+@end example
 @end defvar
 
 @defvar RANLIB
@@ -2471,6 +2486,20 @@ symbols that are defined in the program.
 @defvar finish_cmds
 Commands to tell the dynamic linker how to find shared libraries in a
 specific directory.
+@end defvar
+
+@defvar global_symbol_cmd
+A pipeline that takes the output of @var{NM}, and produces a listing of
+raw symbols followed by their C names.  For example:
+
+@example
+$ @kbd{$NM | $global_symbol_cmd}
+@var{symbol1} @var{C-symbol1}
+@var{symbol2} @var{C-symbol2}
+@var{symbol3} @var{C-symbol3}
+@dots{}
+$
+@end example
 @end defvar
 
 @defvar hardcode_action

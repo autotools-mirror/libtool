@@ -13,7 +13,7 @@ libhello_la_LDFLAGS = -version-info 3:12:1
 
 include_HEADERS = foo.h
 
-bin_PROGRAMS = hell hell.static
+bin_PROGRAMS = hell hell.static helldl
 
 # Build hell from main.c and libhello.la
 hell_SOURCES = main.c
@@ -23,6 +23,10 @@ hell_LDADD = libhello.la
 hell_static_SOURCES = main.c
 hell_static_LDADD = libhello.la
 hell_static_LDFLAGS = -static
+
+# Create a version of hell that does its own dlopening.
+helldl_SOURCES = dlmain.c
+helldl_LDFLAGS = -dlopen libhello.la
 
 TESTS = run.test
 

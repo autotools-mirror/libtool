@@ -15,7 +15,7 @@ i386-unknown-freebsd2.1.5    gcc       0.5       ok
 i386-unknown-gnu0.0          gcc       0.5       ok
 i386-unknown-netbsd1.2       gcc       0.9g      ok
 i586-pc-linux-gnu1.3.20      gcc       1.0       ok
-i586-pc-linux-gnu2.0.16      gcc       1.0       ok
+i586-pc-linux-gnu2.0.16      gcc       1.0a      ok
 mips-sgi-irix5.3             cc        0.8       ok
 mips-sgi-irix5.3             gcc       0.8       ok
 mips-sgi-irix6.2             cc -32    0.9       ok

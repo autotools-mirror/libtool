@@ -21,13 +21,19 @@ echo "Executing uninstalled programs in ../demo"
 
 if ../demo/hell.static | grep 'Welcome to GNU Hell'; then :
 else
-  echo "$0: cannot execute ./hell.static" 1>&2
+  echo "$0: cannot execute ../demo/hell.static" 1>&2
   exit 1
 fi
 
 if ../demo/hell | grep 'Welcome to GNU Hell'; then :
 else
-  echo "$0: cannot execute ./hell" 1>&2
+  echo "$0: cannot execute ../demo/hell" 1>&2
+  exit 1
+fi
+
+if ../demo/helldl | grep 'Welcome to GNU Hell'; then :
+else
+  echo "$0: cannot execute ../demo/helldl" 1>&2
   exit 1
 fi
 

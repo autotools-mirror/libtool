@@ -24,9 +24,10 @@
 # serial 9 AM_PROG_LIBTOOL
 AC_DEFUN(AM_PROG_LIBTOOL,
 [AC_REQUIRE([AC_CANONICAL_HOST])
-AC_REQUIRE([AC_PROG_CC])
 AC_REQUIRE([AC_PROG_RANLIB])
+AC_REQUIRE([AC_PROG_CC])
 AC_REQUIRE([AM_PROG_LD])
+AC_REQUIRE([AM_PROG_NM])
 AC_REQUIRE([AC_PROG_LN_S])
 
 # Always use our own libtool.
@@ -69,7 +70,7 @@ esac]
 
 # Actually configure libtool.  ac_aux_dir is where install-sh is found.
 CC="$CC" CFLAGS="$CFLAGS" CPPFLAGS="$CPPFLAGS" \
-LD="$LD" RANLIB="$RANLIB" LN_S="$LN_S" \
+LD="$LD" NM="$NM" RANLIB="$RANLIB" LN_S="$LN_S" \
 ${CONFIG_SHELL-/bin/sh} $ac_aux_dir/ltconfig \
 $libtool_flags --no-verify $ac_aux_dir/ltmain.sh $host \
 || AC_MSG_ERROR([libtool configure failed])
@@ -128,4 +129,37 @@ if $LD -v 2>&1 </dev/null | egrep '(GNU ld|with BFD)' > /dev/null; then
 else
   ac_cv_prog_gnu_ld=no
 fi])
+])
+
+# AM_PROG_NM - find the path to a BSD-compatible name lister
+AC_DEFUN(AM_PROG_NM,
+[AC_MSG_CHECKING([for BSD-compatible nm])
+AC_CACHE_VAL(ac_cv_path_NM,
+[case "$NM" in
+/*)
+  ac_cv_path_NM="$NM" # Let the user override the test with a path.
+  ;;
+*)
+  IFS="${IFS= 	}"; ac_save_ifs="$IFS"; IFS="${IFS}:"
+  for ac_dir in /usr/ucb:$PATH:/bin; do
+    test -z "$ac_dir" && dir=.
+    if test -f $ac_dir/nm; then
+      # Check to see if the nm accepts a BSD-compat flag.
+      if ($ac_dir/nm -B /dev/null 2>&1; exit 0) | grep /dev/null >/dev/null; then
+        ac_cv_path_NM="$ac_dir/nm -B"
+      elif ($ac_dir/nm -p /dev/null 2>&1; exit 0) | grep /dev/null >/dev/null; then
+        ac_cv_path_NM="$ac_dir/nm -p"
+      else
+        ac_cv_path_NM="$ac_dir/nm"
+      fi
+      break
+    fi
+  done
+  IFS="$ac_save_ifs"
+  test -z "$ac_cv_path_NM" && ac_cv_path_NM=nm
+  ;;
+esac])
+NM="$ac_cv_path_NM"
+AC_MSG_RESULT([$NM])
+AC_SUBST(NM)
 ])

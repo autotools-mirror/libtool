@@ -1,3 +1,8 @@
+Sat Jul 12 15:38:25 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* demo-exec.test, demo-inst.test: Check the new helldl program,
+	too.
+
 Fri Jul 11 19:31:43 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* nomode.test: New test to make sure there is correct behaviour

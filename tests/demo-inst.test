@@ -42,4 +42,17 @@ else
   fi
   status=1
 fi
+
+if $prefix/bin/helldl | grep 'Welcome to GNU Hell'; then :
+else
+  echo "$0: cannot execute $prefix/bin/helldl" 1>&2
+
+  # Simple check to see if they are superuser.
+  if test -w /; then :
+  else
+    echo "You may need to run $0 as the superuser."
+  fi
+  status=1
+fi
+
 exit $status

@@ -1,3 +1,25 @@
+Sat Jul 12 10:07:28 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* demo/Makefile.am: Add helldl, made from dlmain.c, to demostrate
+	`-dlopen' usage.
+
+	* demo/dlmain.c: New file to demonstrate preloaded modules.
+
+	* ltmain.sh.in (link): Add `-dlopen' flag to preload dynamic
+ 	modules, even on static platforms.  Use `$NM' and
+	`$global_symbol_cmd' to extract symbols from required files.
+	(dlname): Delete dlname mode entirely.  It is rendered obsolete
+	because the `.la' file format is now a public interface.
+
+	* ltconfig.in (NM): New variable for BSD-compatible nm program.
+	(global_symbol_cmd): Pipeline to extract global symbols from the
+	nm output.
+
+	* ltmain.sh.in: The .la file header should depend on `ltmain.sh',
+ 	not `$PROGRAM'.
+	(link): Make sure $export_dynamic_flag is eval'ed before it is
+ 	used.
+
 Fri Jul 11 19:33:02 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* libtool.spec: New Red Hat Package Manager specification file in

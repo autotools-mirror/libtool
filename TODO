@@ -17,6 +17,22 @@ symbols to be included in a libtool archive.
 different major versions of the same .la to coexist.  This also
 involves writing a better uninstall mode, so that nothing breaks.
 
+Semantics:
+
+# Just link a library normally.
+./libtool gcc -o testld testld.o libhello.la -lm
+
+# Again, link normally.
+./libtool gcc -o testld -export-dynamic testld.o libhello.la -lm
+
+# This time, preload the symbols from the specified library (or
+# object), as well as normal linking.
+./libtool gcc -o testld -export-dynamic testld.o -dlopen libhello.la -lm
+dlfiles="$dlfiles libhello.la"
+
+This defines an array called `dld_preloaded_symbols', that can be used
+to lookup symbols already present in the running executable.
+
 * Implement full multi-language support.  Currently, this is only for
 C++, but there are beginnings of this in the manual (Other Languages).
 This includes writing libtool not to be so dependent on the compiler
