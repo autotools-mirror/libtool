@@ -1,3 +1,7 @@
+2002-05-02  Dave Vasilevsky  <thevas@mac.com>
+
+	* ltmain.in: Remove convenience libraries from deplibs for Darwin.
+
 2002-05-02  Fritz Elfert  <felfert@to.com>
 
 	* libtool.m4 (AC_LIBTOOL_PROG_LD_SHLIBS): Modify archive_expsym_cmds
