@@ -1,5 +1,5 @@
-For next public release:
-************************
+In the near future:
+********************
 
 * check whether the version of libtool.m4 is compatible
 with ltconfig/ltmain.sh
@@ -9,9 +9,11 @@ need to work for ltlibraries too. This requires looking up installed
 libtool libraries for transparent support.  Support for this feature
 is under development, and is expected to be available in libtool 1.4.
 
-* Alexandre Oliva suggests that we should have an option to hardcode
-paths into libraries, as well as binaries: `... -Wl,-soname
--Wl,/tmp/libtest.so.0 ...'.  Tim Mooney wants the same thing.
+* We could have an option to hardcode paths into libraries, as well as
+binaries: `... -Wl,-soname -Wl,/tmp/libtest.so.0 ...'.  This is not
+possible on all platforms, and is in part obviated by the ability of
+linking libtool libraries specified with -lname, but it might still
+be desirable.
 
 * Lists of exported symbols should be stored in the pseudo library
 so that the size of lt_preloaded_symbols can be reduced.
@@ -87,6 +89,9 @@ static libraries and programs.
 needs to be done so that DLD uses a public interface to libtool
 archives.  This would be a good thing to put before the maintainance
 notes.
+
+* Filenames containing shell meta-characters are not properly handled
+by libtool.  Compiling a file named "a;b.c", for example, fails.
 
 Things to think about:
 **********************

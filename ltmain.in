@@ -2061,7 +2061,7 @@ EOF
 	    IFS="${IFS= 	}"; save_ifs="$IFS"; IFS='~'
 	    for cmd in $cmds; do
 	      IFS="$save_ifs"
-	      eval $show \""$cmd"\"
+	      $show "$cmd"
 	      $run eval "$cmd" || exit $?
 	    done
 	    IFS="$save_ifs"
@@ -2087,7 +2087,7 @@ EOF
 	IFS="${IFS= 	}"; save_ifs="$IFS"; IFS='~'
 	for cmd in $cmds; do
 	  IFS="$save_ifs"
-	  eval $show \""$cmd"\"
+	  $show "$cmd"
 	  $run eval "$cmd" || exit $?
 	done
 	IFS="$save_ifs"
@@ -2164,7 +2164,7 @@ EOF
       IFS="${IFS= 	}"; save_ifs="$IFS"; IFS='~'
       for cmd in $cmds; do
 	IFS="$save_ifs"
-	eval $show \""$cmd"\"
+	$show "$cmd"
 	$run eval "$cmd" || exit $?
       done
       IFS="$save_ifs"
@@ -2188,7 +2188,7 @@ EOF
 	IFS="${IFS= 	}"; save_ifs="$IFS"; IFS='~'
 	for cmd in $cmds; do
 	  IFS="$save_ifs"
-	  eval $show \""$cmd"\"
+	  $show "$cmd"
 	  $run eval "$cmd" || exit $?
 	done
 	IFS="$save_ifs"
@@ -2861,7 +2861,7 @@ fi\
       IFS="${IFS= 	}"; save_ifs="$IFS"; IFS='~'
       for cmd in $cmds; do
 	IFS="$save_ifs"
-	eval $show \""$cmd"\"
+	$show "$cmd"
 	$run eval "$cmd" || exit $?
       done
       IFS="$save_ifs"
@@ -3163,7 +3163,7 @@ libdir='$install_libdir'\
 	  IFS="${IFS= 	}"; save_ifs="$IFS"; IFS='~'
 	  for cmd in $cmds; do
 	    IFS="$save_ifs"
-	    eval $show \""$cmd"\"
+	    $show "$cmd"
 	    $run eval "$cmd" || exit $?
 	  done
 	  IFS="$save_ifs"
@@ -3320,7 +3320,7 @@ libdir='$install_libdir'\
       IFS="${IFS= 	}"; save_ifs="$IFS"; IFS='~'
       for cmd in $cmds; do
 	IFS="$save_ifs"
-	eval $show \""$cmd"\"
+	$show "$cmd"
 	$run eval "$cmd" || exit $?
       done
       IFS="$save_ifs"
@@ -3359,7 +3359,7 @@ libdir='$install_libdir'\
 	  IFS="${IFS= 	}"; save_ifs="$IFS"; IFS='~'
 	  for cmd in $cmds; do
 	    IFS="$save_ifs"
-	    eval $show \""$cmd"\"
+	    $show "$cmd"
 	    $run eval "$cmd" || admincmds="$admincmds
        $cmd"
 	  done
@@ -3602,7 +3602,7 @@ libdir='$install_libdir'\
 	    IFS="${IFS= 	}"; save_ifs="$IFS"; IFS='~'
 	    for cmd in $cmds; do
 	      IFS="$save_ifs"
-	      eval $show \""$cmd"\"
+	      $show "$cmd"
 	      $run eval "$cmd"
 	    done
 	    IFS="$save_ifs"
@@ -3614,7 +3614,7 @@ libdir='$install_libdir'\
 	    IFS="${IFS= 	}"; save_ifs="$IFS"; IFS='~'
 	    for cmd in $cmds; do
 	      IFS="$save_ifs"
-	      eval $show \""$cmd"\"
+	      $show "$cmd"
 	      $run eval "$cmd"
 	    done
 	    IFS="$save_ifs"

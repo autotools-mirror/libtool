@@ -1,3 +1,12 @@
+1999-03-30  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* ltmain.in, ltconfig.in: reverted most of the quoting changes
+	from 1999-03-25; Gary's delay_variable_subst patch from 1999-02-19 
+	obviates it.  Keep only quoting of $PATH, for uniformity with
+	other systems that already did it
+	* TODO: comments on hardcoding paths into libraries; problem
+	with shell meta-characters in filenames
+
 1999-03-29  Gary V. Vaughan  <gary@gnu.org>
 
 	* libltdl/ltdl.c (lt_dladdsearchdir): Forgot to mallocate the
