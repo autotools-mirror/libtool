@@ -1,3 +1,8 @@
+1999-05-21  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* doc/PLATFORMS: Updated to 1.3.1 for all platforms I've got.
+	Added sparc-unknown-linux-gnu.
+
 1999-05-21  Gary V. Vaughan  <gary@oranda.demon.co.uk>
 
 	* demo/foo.h: s/PARAMS/LTDL_PARAMS/g
