@@ -466,5 +466,161 @@ ron.romero@wcom.com
 Object Developer
 WorldCom, Inc.
 
+From libtool-request@gnu.org Wed Jun  9 13:20 EST 1999
+Received: from grande.dcc.unicamp.br (grande.dcc.unicamp.br [143.106.7.8])
+	by amazonas.dcc.unicamp.br (8.8.5/8.8.5) with ESMTP id NAA03816
+	for <oliva@amazonas.dcc.unicamp.br>; Wed, 9 Jun 1999 13:20:28 -0300 (EST)
+Received: from mescaline.gnu.org (mescaline.gnu.org [158.121.106.21])
+	by grande.dcc.unicamp.br (8.9.1/8.9.1) with ESMTP id NAA01398
+	for <oliva@dcc.unicamp.br>; Wed, 9 Jun 1999 13:19:57 -0300 (EST)
+Received: (from slist@localhost)
+	by mescaline.gnu.org (8.9.1a/8.9.1) id MAA06914
+	for oliva@dcc.unicamp.br; Wed, 9 Jun 1999 12:23:06 -0400
+Received: from pen.sentuny.com.au (pen.sentuny.com.au [203.12.98.6])
+	by mescaline.gnu.org (8.9.1a/8.9.1) with SMTP id MAA05773
+	for <libtool@gnu.org>; Wed, 9 Jun 1999 12:16:37 -0400
+Received: (qmail 6298 invoked by uid 1000); 9 Jun 1999 16:16:33 -0000
+Received: from localhost (sendmail-bs@127.0.0.1)
+  by localhost with SMTP; 9 Jun 1999 16:16:32 -0000
+Resent-Date: Wed, 9 Jun 1999 12:23:06 -0400
+Date: Thu, 10 Jun 1999 02:16:32 +1000 (EST)
+From: "Ron O'Hara" <rono@sentuny.com.au>
+To: libtool@gnu.org
+Subject: AIX, C++, shared multi-thread libraries and libtool
+X-Gnus-Mail-Source: file:/n/mail.spool/oliva
+Message-ID: <Pine.LNX.3.96.990610004224.22907O-100000@pen.sentuny.com.au>
+MIME-Version: 1.0
+Resent-Message-ID: <"MVHQY2.0.OQ1.hDfNt"@mescaline.gnu.org>
+Resent-From: libtool@gnu.org
+X-Mailing-List: <libtool@gnu.org> archive/latest/1500
+X-Loop: libtool@gnu.org
+Precedence: list
+Resent-Sender: libtool-request@gnu.org
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+X-Content-Length: 857
+Xref: saci.lsd.dcc.unicamp.br libtool-cxx:9
+Lines: 28
+X-Gnus-Article-Number: 9   Fri Jun 25 20:06:59 1999
+
+
+ AIX, C++, shared multi-thread libraries and libtool
+
+Ughh ... what a combination
+
+Anyway... it appears that for AIX4.2.1.0 creating shared libraries is very
+tricky. You must use the 'makeC++SharedLib_r' script that IBM supplies.
+Not the xlC_r compiler as libtool does.
+
+In addition, I kept getting unresolved symbols when linking against my own
+libraries. I needed to set 'always_export_symbols=yes' even though the
+-bexpall flag is supposed to fix that..
+
+To do that I had to edit 'ltconfig.in' (about line 1262 for libtool-1.3.2)
+and set it always on - regardless of the host_os version.
+
+I can now get it all to link, but this is sure an ugly monster !! and the
+executable files are definitely HUGE 
+
+
+
+
+------------------------------------------------------------------
+email:  rono@sentuny.com.au
+BH: (GMT)    +353 21 281469
+Mobile: +61 419 873 801
+
+From marcusd@cathcart.sysc.pdx.edu Fri Jun 18 17:46 EST 1999
+Received: from grande.dcc.unicamp.br (grande.dcc.unicamp.br [143.106.7.8])
+	by amazonas.dcc.unicamp.br (8.8.5/8.8.5) with ESMTP id RAA19966
+	for <oliva@amazonas.dcc.unicamp.br>; Fri, 18 Jun 1999 17:46:53 -0300 (EST)
+Received: from cathcart.sysc.pdx.edu (cathcart.sysc.pdx.edu [131.252.30.67])
+	by grande.dcc.unicamp.br (8.9.1/8.9.1) with ESMTP id RAA20228
+	for <oliva@dcc.unicamp.br>; Fri, 18 Jun 1999 17:46:47 -0300 (EST)
+Received: (from marcusd@localhost)
+	by cathcart.sysc.pdx.edu (8.9.3/8.9.3/Debian/GNU) id NAA30172;
+	Fri, 18 Jun 1999 13:50:02 -0700
+To: Alexandre Oliva <oliva@dcc.unicamp.br>
+Cc: libtool@gnu.org
+Subject: Re: constructors in HPUX/SOM shared libraries
+References: <199905161700.LAA01572@pojoaque.santafe.edu> <ord7zsc7h1.fsf@lua.lbi.dcc.unicamp.br>
+From: marcusd@cathcart.sysc.pdx.edu (Marcus G. Daniels)
+Date: 18 Jun 1999 13:50:01 -0700
+In-Reply-To: Alexandre Oliva's message of "23 May 1999 09:10:18 -0300"
+X-Gnus-Mail-Source: file:/n/mail.spool/oliva
+Message-ID: <rfik8t1mdxi.fsf@cathcart.sysc.pdx.edu>
+User-Agent: Gnus/5.070084 (Pterodactyl Gnus v0.84) Emacs/20.3.10
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Content-Length: 1653
+Xref: saci.lsd.dcc.unicamp.br libtool-cxx:10
+Lines: 68
+X-Gnus-Article-Number: 10   Fri Jun 25 20:06:59 1999
+
+>>>>> "AO" == Alexandre Oliva <oliva@dcc.unicamp.br> writes:
+
+AO> IMO, the way to go is to try to use gcc -shared to create shared
+AO> libraries, because then gcc's collect2 will (is supposed to?) take
+AO> care of the magic for constructors to run.
+
+Unfortunately, it doesn't.  Of course, with glibc or Solaris, a GNU
+as/ld equipped GCC will do the job:
+
+marcusd@cathcart[~] $ cat constructor.c 
+void tryme (void) __attribute__ ((constructor));
+
+void
+tryme (void)
+{
+  printf ("constructor\n");
+}
+
+marcusd@cathcart[~] $ cat test-constructor.c 
+#include <dlfcn.h>
+
+main ()
+{
+  void *handle = dlopen ("./libconstructor.so", RTLD_GLOBAL | RTLD_LAZY);
+  printf ("%p\n", handle);
+  printf ("main\n");
+} 
+
+marcusd@cathcart[~] $ gcc -fPIC -c constructor.c 
+marcusd@cathcart[~] $ gcc -shared constructor.o -o libconstructor.so
+marcusd@cathcart[~] $ gcc test-constructor.c  -ldl
+marcusd@cathcart[~] $ ./a.out
+constructor
+0x80496a8
+main
+
+However, the equivalent on HPsUX fails:
+
+mgd@pajarito[~] $ cat test-constructor.c
+#include <dl.h>
+#define SHL_FLAGS  (BIND_IMMEDIATE | BIND_NONFATAL | DYNAMIC_PATH)
+main ()
+{
+  shl_t handle;
+
+  handle = shl_load ("./libconstructor.sl",  SHL_FLAGS, 0L);
+  printf ("%x\n", handle);
+
+  printf ("main\n");
+} 
+
+mgd@pajarito[~] $ gcc -c -fPIC constructor.c
+mgd@pajarito[~] $ gcc -fPIC -shared constructor.o -o libconstructor.sl
+mgd@pajarito[~] $ gcc test-constructor.c  -ldld
+mgd@pajarito[~] $ ./a.out
+7b031748
+main 
+
+However, there is a flag to the HP linker that provides the needed
+feature:
+
+mgd@pajarito[~] $ gcc -Wl,+I,tryme -fPIC -shared constructor.o -o libconstructor.sl
+mgd@pajarito[~] $ ./a.out
+constructor
+7b031748
+main
 
 
