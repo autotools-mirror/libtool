@@ -4657,7 +4657,9 @@ relink_command=\"$relink_command\""
       fi
 
       # Don't error if the file doesn't exist and rm -f was used.
-      if test -L "$file" >/dev/null 2>&1 || test -f "$file"; then
+      if (test -L "$file") >/dev/null 2>&1 \
+        || (test -h "$file") >/dev/null 2>&1 \
+	|| test -f "$file"; then
         :
       elif test -d "$file"; then
         exit_status=1

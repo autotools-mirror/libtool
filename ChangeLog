@@ -1,5 +1,13 @@
 2001-04-23  Gary V. Vaughan  <gvv@techie.com>
 
+	* doc/PLATFORMS:  With this patch, my Solaris boxes now pass the
+	test suite,  Yay!
+	From Albert Chin-A-Young <china@thewrittenword.com>
+	* ltmain.in:  `test -L' is not portable, and infact breaks uninstall
+	mode on Solaris.  Fallback to `test -h' and finally `test -f',
+	but be careful not to let the failure status cause libtool to
+	stop.
+
 	From Simon Spero <ses@ibiblio.org>
 	* ltdl.m4 (AC_LTDL_DLSYM_USCORE):  Add $LIBADD_DL while
 	checking for dlsym _.
