@@ -1,3 +1,22 @@
+1999-01-27  Thomas Tanner  <tanner@gmx.de>
+
+	* cdemo/configure.in: renamed AM_PROG_LIBTOOL to AC_PROG_LIBTOOL
+	* demo/configure.in: likewise
+	* depdemo/configure.in: likewise
+	* libltdl/configure.in: likewise
+	* mdemo/configure.in: likewise
+	* libltdl/ltdl.c: in find_module() check whether libdir is defined,
+	  tryall_dlopen(): move deallocation of an already opened handle
+	  to lt_dlopen(), allocate the directory in lt_dlopen() dynamically,
+	  minor cleanups, fixed memory leak (name)
+	* libtool.m4: renamed all AM_ macros to AC_ and added aliases for
+	  compatibilty, updated AC_SYS_NM_PARSE (no undefined symbols,
+	  don't count the symbols)
+	* ltconfig.in: added thread_safe_flag_spec (not used yet),
+	  added generic variable for linker options "linkopts" in
+	  all archive_cmds
+	* ltmain.in: added -thread-safe flag (unused)
+	  
 1999-01-26  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* ltconfig.in (LTCONFIG_VERSION): damn!, adding TIMESTAMP doesn't

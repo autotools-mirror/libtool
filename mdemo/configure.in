@@ -5,7 +5,7 @@ AM_INIT_AUTOMAKE(mdemo,0.1)
 AC_PROG_CC
 AC_C_CONST
 AC_EXEEXT
-AM_PROG_LIBTOOL
+AC_PROG_LIBTOOL
 
 if ${CONFIG_SHELL} ./libtool --features | grep "enable static" >/dev/null; then
   STATIC=-static

@@ -21,7 +21,7 @@ AC_SUBST(NOINSTLIBS)
 AC_PROG_CC
 AC_C_CONST
 AC_C_INLINE
-AM_PROG_LIBTOOL
+AC_PROG_LIBTOOL
 AC_SUBST(LIBTOOL_DEPS)
 
 AC_CACHE_CHECK([which extension is used for shared libraries],
@@ -112,7 +112,7 @@ if test "$test_dlerror" = yes; then
  LIBS="$LIBS_SAVE"
 fi
 
-AM_SYS_SYMBOL_UNDERSCORE
+AC_SYS_SYMBOL_UNDERSCORE
 if test x"$USE_SYMBOL_UNDERSCORE" = xyes; then
   if test x"$ac_cv_func_dlopen" = xyes ||
      test x"$ac_cv_lib_dl_dlopen" = xyes ; then
