@@ -65,7 +65,7 @@ $(srcdir)/acinclude.m4:
 # Test programs to see what gets hardcoded.
 .PHONY: hardcode
 hardcode: $(hardcode_tests)
-hc-direct: $(hell_OBJECTS) $(hell_DEPENDENCIES)
+hc-direct: $(hell_OBJECTS) $(hell_DEPENDENCIES) $(libdir)/libhello.la
 	@rm -f hc-direct
 	@echo "You may ignore any linking errors from the following command:"
 	@shlib=./$(objdir)/libhello.a; \
@@ -73,41 +73,41 @@ hc-direct: $(hell_OBJECTS) $(hell_DEPENDENCIES)
 	  for lib in $$library_names; do \
 	    shlib="./$(objdir)/$$lib"; \
 	  done; \
-	  echo "$(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) $$shlib -lm || echo unsupported > $@"; \
-	  eval "$(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) $$shlib -lm || echo unsupported > $@"
+	  eval `egrep -e '^(hardcode_.*|wl)=' libtool`; \
+	  libdir=$(libdir); \
+	  flag=`eval echo \"$$hardcode_libdir_flag_spec\"`; \
+	  echo "$(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) $$shlib -lm $$flag || echo unsupported > $@"; \
+	  eval "$(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) $$shlib -lm $$flag || echo unsupported > $@"
 
-# We need to create an alias for $(objdir) so that this test works regardless
-# of $hardcode_minus_L
-hc-libflag: $(hell_OBJECTS) $(hell_DEPENDENCIES)
-	rm -rf hc-libflag _hclibs
-	mkdir _hclibs
-	objdir=$(objdir); cd _hclibs && for lib in ../$$objdir/libhello*; do \
-	  $(LN_S) $$lib `echo "$$lib" | sed 's%^.*/%%'` || exit 1; \
-	done
-	@eval `egrep -e '^(hardcode_.*|wl)=' ../libtool`; \
+hc-libflag: $(hell_OBJECTS) $(hell_DEPENDENCIES) $(libdir)/libhello.la
+	@eval `egrep -e '^(hardcode_.*|wl)=' libtool`; \
 	  libdir=`pwd`/$(objdir); \
 	  flag=`eval echo \"$$hardcode_libdir_flag_spec\"`; \
 	  if test -z "$$flag"; then \
 	    echo "echo unsupported > $@"; \
 	    echo unsupported > $@ || status="$$?"; \
 	  else \
-	    echo "$(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) $$flag -L./_hclibs -lhello -lm"; \
-	    $(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) $$flag -L./_hclibs -lhello -lm || status="$$?"; \
+	    echo "$(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) $$flag -L$(libdir) -lhello -lm"; \
+	    $(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) $$flag -L$(libdir) -lhello -lm || status="$$?"; \
 	  fi; \
-	  echo "rm -rf _hclibs"; \
-	  rm -rf _hclibs; \
 	  exit $$status
 
-hc-libpath: $(hell_OBJECTS) $(hell_DEPENDENCIES)
+hc-libpath: $(hell_OBJECTS) $(hell_DEPENDENCIES) $(libdir)/libhello.la
 	@rm -f hc-libpath
 	@echo "You may ignore any linking errors from the following command:"
-	@eval `egrep -e '^shlibpath_var=' ../libtool`; \
-	  echo "$$shlibpath_var=./$(objdir) $(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) -lhello -lm || echo unsupported > $@"; \
-	  eval "$$shlibpath_var=./$(objdir) $(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) -lhello -lm || echo unsupported > $@"
+	@eval `egrep -e '^(shlibpath_var|hardcode_.*|wl)=' libtool`; \
+	  libdir=$(libdir); \
+	  flag=`eval echo \"$$hardcode_libdir_flag_spec\"`; \
+	  echo "$$shlibpath_var=./$(objdir) $(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) -lhello -lm $$flag || echo unsupported > $@"; \
+	  eval "$$shlibpath_var=./$(objdir) $(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) -lhello -lm $$flag || echo unsupported > $@"
 
 hc-minusL: $(hell_OBJECTS) $(hell_DEPENDENCIES)
 	@rm -f hc-minusL
-	$(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) -L./$(objdir) -lhello -lm
+	@eval `egrep -e '^(hardcode_.*|wl)=' libtool`; \
+	  libdir=$(libdir); \
+	  flag=`eval echo \"$$hardcode_libdir_flag_spec\"`; \
+	  echo "$(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) -L./$(objdir) -lhello -lm $$flag || echo unsupported > $@"; \
+	  eval "$(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) -L./$(objdir) -lhello -lm $$flag || echo unsupported > $@"
 
 $(OBJECTS): libtool
 libtool: $(LIBTOOL_DEPS)
