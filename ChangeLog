@@ -1,3 +1,8 @@
+1999-09-19  Thomas Tanner  <tanner@ffii.org>
+
+	* ltmain.in: don't ignore convenience libraries for objects/archives
+	  (temporary hack)
+
 1999-09-14  Alexandre Oliva  <oliva@lsd.ic.unicamp.br>
 
 	* ltconfig.in (CDPATH): Set to `:' instead of empty.
