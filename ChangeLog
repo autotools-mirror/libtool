@@ -1,5 +1,16 @@
 2005-04-04  Gary V. Vaughan  <gary@gnu.org>
 
+	Under certain circumstances, not all of the macro files were
+	copied into the destination directory.  This changeset fixes
+	that bug:
+
+	* libtoolize.m4sh (func_serial_update):  Renamed local variable
+	`my_update_p' to `my_serial_update_p', and initialise it correctly
+	even when the destination file is not yet there.
+	Reported by Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+2005-04-04  Gary V. Vaughan  <gary@gnu.org>
+
 	* tests/libtoolize.at: New tests for basic libtoolize functionality
 	and reporting.
 	* tests/testsuite.at: Call them.
