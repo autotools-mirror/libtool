@@ -1,3 +1,8 @@
+2000-12-16  Nick Hudson  <skrll@netbsd.org>
+
+	* libtool.m4 (netbsd*, deplibs_check_method): Enable ILD support
+	for NetBSD a.out.
+	
 2000-12-15  Akim Demaille  <akim@epita.fr>
 
 	* libtool.m4 (AC_LIBTOOL_SYS_GLOBAL_SYMBOL_PIPE): Rename
