@@ -1,3 +1,8 @@
+1998-11-07  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* sh.test (test X): ensure that the double-quote supposed to be
+	reported is really reported
+
 1998-04-14  Gordon Matzigkeit  <gord@profitpress.com>
 
 	* quote.test (echo): Update the echo test from ../ltconfig.in.

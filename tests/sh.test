@@ -34,7 +34,7 @@ fi
 
 # Check for using test X... instead of test "X...
 if egrep -n -e 'test[ 	]+X' $scripts; then
-  echo "use \`test "X..."' instead of \`test X'"
+  echo "use \`test \"X...\"' instead of \`test X'"
   status=1
 fi
 
