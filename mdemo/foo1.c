@@ -20,7 +20,10 @@ USA. */
 
 #include "foo.h"
 #include <stdio.h>
+
+#ifdef HAVE_MATH_H
 #include <math.h>
+#endif
 
 #define nothing libfoo1_LTX_nothing
 #define foo1	libfoo1_LTX_foo1

@@ -1,3 +1,14 @@
+1999-01-09  Thomas Tanner  <tanner@gmx.de>
+
+	* NEWS: support for BSD/OS 4.x was not documented
+	* demo/Makefile.am: link against libm only if available
+	* mdemo/Makefile.am: likewise, use -avoid-versioning flag
+	  instead of -avoid-version (typo)
+	* demo/configure.in: check for libm, string.h and math.h
+	* mdemo/configure.in: likewise
+	* depdemo/configure.in: check for libm and math.h
+	* libltdl/ltdl.c: check for buffer overflows
+	
 1999-01-07  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
 
 	* ltmain.sh (cygwin, allow_undefined): Unfortunately, there are

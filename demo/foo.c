@@ -23,7 +23,10 @@ USA. */
 #undef _LIBFOO_COMPILATION
 
 #include <stdio.h>
+
+#ifdef HAVE_MATH_H
 #include <math.h>
+#endif
 
 /* Give a global variable definition. */
 int nothing = FOO_RET;

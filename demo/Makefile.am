@@ -10,7 +10,7 @@ CLEANFILES = $(hardcode_tests)
 # Build a libtool library, libhello.la for installation in libdir.
 lib_LTLIBRARIES = libhello.la
 libhello_la_SOURCES = hello.c foo.c
-libhello_la_LDFLAGS = -version-info 3:12:1 -lm
+libhello_la_LDFLAGS = -version-info 3:12:1 $(LIBADD_M)
 
 include_HEADERS = foo.h
 

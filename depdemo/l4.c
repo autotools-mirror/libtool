@@ -21,7 +21,10 @@ USA. */
 
 #include "l3.h"
 #include <stdio.h>
+
+#ifdef HAVE_MATH_H
 #include <math.h>
+#endif
 
 int	var_l4;
 

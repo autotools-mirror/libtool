@@ -9,10 +9,10 @@ EXTRA_DIST = acinclude.m4
 lib_LTLIBRARIES = libfoo1.la libfoo2.la
 
 libfoo1_la_SOURCES = foo1.c
-libfoo1_la_LDFLAGS = -lm -module -avoid-version
+libfoo1_la_LDFLAGS = $(LIBADD_M) -module -avoid-versioning
 
 libfoo2_la_SOURCES = foo2.c
-libfoo2_la_LDFLAGS = -lm -module
+libfoo2_la_LDFLAGS = $(LIBADD_M) -module
 
 noinst_HEADERS = foo.h
 
@@ -21,7 +21,7 @@ bin_PROGRAMS = mdemo mdemo.debug
 # Create a version of mdemo that does dlopen.
 mdemo_SOURCES = main.c
 mdemo_LDADD = ../libltdl/libltdl.la \
-	-lm # We won't need this when libltdl takes care of dependencies
+	$(LIBADD_M) # We won't need this when libltdl takes care of dependencies
 mdemo_LDFLAGS = -export-dynamic -dlopen libfoo1.la -dlopen libfoo2.la
 mdemo_DEPENDENCIES = ../libltdl/libltdl.la libfoo1.la libfoo2.la
 

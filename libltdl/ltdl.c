@@ -628,7 +628,7 @@ tryall_dlopen (handle, filename)
 }
 
 #undef	MAX_FILENAME
-#define MAX_FILENAME 1024
+#define MAX_FILENAME 2048
 
 static int
 find_module (handle, dir, libdir, dlname, old_name)
@@ -638,26 +638,32 @@ find_module (handle, dir, libdir, dlname, old_name)
 	const char *dlname;
 	const char *old_name;
 {
-	char	fullname[MAX_FILENAME]; /* FIXME: unchecked buffer */
+	char	fullname[MAX_FILENAME];
 	
 	/* search a module */
 	if (*dlname) {
 		/* try to open the installed module */
-		strcpy(fullname, libdir);
-		strcat(fullname, "/");
-		strcat(fullname, dlname);
-		if (tryall_dlopen(handle, fullname) == 0)
-			return 0;
+		if (strlen(libdir)+strlen(dlname)+1 < MAX_FILENAME) {
+			strcpy(fullname, libdir);
+			strcat(fullname, "/");
+			strcat(fullname, dlname);
+			if (tryall_dlopen(handle, fullname) == 0)
+				return 0;
+		}
 		/* try to open the not-installed module */
-		strcpy(fullname, dir);
-		strcat(fullname, ".libs/");
-		strcat(fullname, dlname);
-		if (tryall_dlopen(handle, fullname) == 0)
-			return 0;
-		strcpy(fullname, dir);
-		strcat(fullname, dlname);
-		if (tryall_dlopen(handle, fullname) == 0)
-			return 0;
+		if (strlen(dir)+strlen(dlname)+6 < MAX_FILENAME) {
+			strcpy(fullname, dir);
+			strcat(fullname, ".libs/");
+			strcat(fullname, dlname);
+			if (tryall_dlopen(handle, fullname) == 0)
+				return 0;
+		}
+		if (strlen(dir)+strlen(dlname) < MAX_FILENAME) {
+			strcpy(fullname, dir);
+			strcat(fullname, dlname);
+			if (tryall_dlopen(handle, fullname) == 0)
+				return 0;
+		}
 	}
 	if (*old_name && tryall_dlopen(handle, old_name) == 0)
 		return 0;
@@ -678,25 +684,23 @@ lt_dlopen (filename)
 {
 	lt_dlhandle handle;
 	FILE	*file;
-	char	dir[MAX_FILENAME]; /* FIXME: unchecked buffer */
-	char	tmp[MAX_FILENAME]; /* FIXME: unchecked buffer */
+	char	dir[MAX_FILENAME];
+	char	tmp[MAX_FILENAME];
 	const char *basename, *ext, *search_path;
 	
-	handle = (lt_dlhandle) malloc(sizeof(lt_dlhandle_t));
-	if (!handle)
-		return 0;
 	basename = strrchr(filename, '/');
 	if (basename)
 		basename++;
 	else
 		basename = filename;
+	if (basename - filename >= MAX_FILENAME)
+		return 0;
 	strncpy(dir, filename, basename - filename);
 	dir[basename - filename] = '\0';
 	search_path = getenv("LTDL_LIBRARY_PATH"); /* get the search path */
 	/* check whether we open a libtool module (.la extension) */
 	ext = strrchr(basename, '.');
 	if (ext && strcmp(ext, ".la") == 0) {
-		/* FIXME: unchecked buffers */
 		char	dlname[MAX_FILENAME], old_name[MAX_FILENAME];
 		char	libdir[MAX_FILENAME], preload[MAX_FILENAME];
 		int	i;
@@ -708,29 +712,35 @@ lt_dlopen (filename)
 			/* try other directories */
 			const char *p, *next;
 			
+			/* search_path is a colon-separated
+			   list of search directories */
 			p = search_path;
 			while (!file && p) {
 				next = strchr(p, ':');
 				if (next) {
+					if (next - p + 1 >= MAX_FILENAME)
+						return 0;
 					strncpy(dir, p, next - p);
 					dir[next - p] = '\0';
 					p = next+1;
 				} else {
+					if (strlen(p)+1 >= MAX_FILENAME)
+						return 0;
 					strcpy(dir, p);
 					p = 0;
 				}
 				if (!*dir)
 					continue;
 				strcat(dir, "/");
-				strcpy(tmp, dir);
-				strcat(tmp, basename);
-				file = fopen(tmp, READTEXT_MODE);
+				if (strlen(dir)+strlen(basename) < MAX_FILENAME) {
+					strcpy(tmp, dir);
+					strcat(tmp, basename);
+					file = fopen(tmp, READTEXT_MODE);
+				}
 			}
 		}
-		if (!file) {
-			free(handle);
+		if (!file)
 			return 0;
-		}
 		while (!feof(file)) {
 			if (!fgets(tmp, MAX_FILENAME, file))
 				break;
@@ -747,13 +757,18 @@ lt_dlopen (filename)
 				trim(preload, &tmp[13]);
 		}
 		fclose(file);
-		/* TODO: preload required libraries */
+		/* FIXME: preload required libraries */
 		
+		handle = (lt_dlhandle) malloc(sizeof(lt_dlhandle_t));
+		if (!handle)
+			return 0;
 		if (find_module(&handle, dir, libdir, dlname, old_name)) {
 			free(handle);
 			return 0;
 		}
 		/* extract the module name from the file name */
+		if (basename >= MAX_FILENAME)
+			return 0;
 		strcpy(tmp, basename);
 		tmp[ext - basename] = '\0';
 		/* canonicalize the modul name */		
@@ -763,6 +778,10 @@ lt_dlopen (filename)
 		handle->name = strdup(tmp);
 	} else {
 		/* not a libtool module */
+		handle = (lt_dlhandle) malloc(sizeof(lt_dlhandle_t));
+		if (!handle)
+			return 0;
+			
 		if (tryall_dlopen(*handle, filename)) {
 			int	error = 1;
 			
@@ -770,23 +789,31 @@ lt_dlopen (filename)
 				/* try other directories */
 				const char *p, *next;
 			
-				p = search_path;
+				/* search_path is a colon-separated
+				   list of search directories */
+				p = search_path; 
 				while (error && p) {
 					next = strchr(p, ':');
 					if (next) {
+						if (next - p + 1 >= MAX_FILENAME)
+							return 0;
 						strncpy(dir, p, next - p);
 						dir[next - p] = '\0';
 						p = next+1;
 					} else {
+						if (strlen(p)+1 >= MAX_FILENAME)
+							return 0;
 						strcpy(dir, p);
 						p = 0;
 					}
 					if (!*dir)
 						continue;
 					strcat(dir, "/");
-					strcpy(tmp, dir);
-					strcat(tmp, basename);
-					error = tryall_dlopen(*handle, tmp);
+					if (strlen(dir)+strlen(basename) < MAX_FILENAME) {
+						strcpy(tmp, dir);
+						strcat(tmp, basename);
+						error = tryall_dlopen(*handle, tmp);
+					}
 				}
 			}
 			if (error) {
@@ -834,33 +861,42 @@ lt_dlclose (handle)
 	return 0;
 }
 
+#define MAX_SYMBOL_LENGTH	128
+
 lt_ptr_t
 lt_dlsym (handle, symbol)
 	lt_dlhandle handle;
 	const char *symbol;
 {
-	char	sym[128]; /* FIXME: unchecked buffer */
+	char	sym[MAX_SYMBOL_LENGTH];
 	lt_ptr_t address;
 
-	if (handle->name) { /* this is a libtool module */
 #ifdef NEED_USCORE
+	if (handle->name && strlen(handle->name) < MAX_SYMBOL_LENGTH-6) {
+		/* this is a libtool module */
 		/* prefix symbol with leading underscore */
 		strcpy(sym, "_");
 		strcat(sym, handle->name);
 #else
+	if (handle->name && strlen(handle->name) < MAX_SYMBOL_LENGTH-5) {
+		/* this is a libtool module */
 		strcpy(sym, handle->name);
 #endif
 		strcat(sym, "_LTX_");
-		strcat(sym, symbol);
-		/* try "modulename_LTX_symbol" */
-		address = handle->type->find_sym(handle, sym);
-		if (address)
-			return address;
+		if (strlen(sym)+strlen(symbol) < MAX_SYMBOL_LENGTH) {
+			strcat(sym, symbol);
+			/* try "modulename_LTX_symbol" */
+			address = handle->type->find_sym(handle, sym);
+			if (address)
+				return address;
+		}
 	}
 	/* otherwise try "symbol" */
 #ifdef NEED_USCORE
 	/* prefix symbol with leading underscore */
 	strcpy(sym, "_");
+	if (strlen(symbol) >= MAX_SYMBOL_LENGTH)
+		return 0;
 	strcat(sym, symbol);
 	return handle->type->find_sym(handle, sym);
 #else
