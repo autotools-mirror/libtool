@@ -1,5 +1,8 @@
 1999-04-02  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* ltmain.in (-L*): do not abort just because a directory specified 
+	with -L does not exist; just warn and discard it
+
 	* ltconfig.in (archive_cmds, sunos4*): where we used -Bstatic, we
 	should have been using -Bshareable
 
