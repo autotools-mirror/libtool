@@ -1,10 +1,18 @@
 2003-11-07  Gary V. Vaughan  <gary@gnu.org>
 
+	* m4/libtool.m4 (AC_LIBTOOL_TAGS, AC_ENABLE_SHARED,
+	AC_DISABLE_SHARED, AC_ENABLE_STATIC, AC_DISABLE_STATIC,
+	AC_ENABLE_FAST_INSTALL, AC_DISABLE_FAST_INSTALL, AM_PROG_LIBTOOL,
+	AM_ENABLE_SHARED, AM_ENABLE_STATIC, AM_DISABLE_SHARED,
+	AM_DISABLE_STATIC): These macros must be AC_DEFUNed after all,
+	otherwise aclocal can't find them when it tries to construct
+	`aclocal.m4'.
+
 	* Makefile.am (install-data-local): Wipe out old installation
 	pkgdatadir before installing new files.
 	* NEWS: Updated.
 
-	* m4/libtoolize.in (func_scan_files): If libtoolize is run before
+	* libtoolize.in (func_scan_files): If libtoolize is run before
 	automake has created install-sh and configure.ac does not mention
 	AC_CONFIG_AUX_DIR, fall back to the current directory for auxdir.
 

@@ -1665,7 +1665,7 @@ test "$dynamic_linker" = no && can_build_shared=no
 # AC_LIBTOOL_TAGS
 # ---------------
 # tags to enable
-m4_define([AC_LIBTOOL_TAGS],
+AC_DEFUN([AC_LIBTOOL_TAGS],
 [m4_define([_LT_TAGS],[$1])
 ]) # AC_LIBTOOL_TAGS
 
@@ -1760,7 +1760,7 @@ AC_DEFUN([AC_LIBTOOL_WIN32_DLL],
 # ---------------------------
 # implement the --enable-shared flag
 # DEFAULT is either `yes' or `no'.  If omitted, it defaults to `yes'.
-m4_define([AC_ENABLE_SHARED],
+AC_DEFUN([AC_ENABLE_SHARED],
 [m4_define([AC_ENABLE_SHARED_DEFAULT], [m4_if($1, no, no, yes)])dnl
 AC_ARG_ENABLE([shared],
     [AC_HELP_STRING([--enable-shared@<:@=PKGS@:>@],
@@ -1789,7 +1789,7 @@ AC_ARG_ENABLE([shared],
 # AC_DISABLE_SHARED
 # -----------------
 #- set the default shared flag to --disable-shared
-m4_define([AC_DISABLE_SHARED],
+AC_DEFUN([AC_DISABLE_SHARED],
 [AC_BEFORE([$0],[AC_LIBTOOL_SETUP])dnl
 AC_ENABLE_SHARED(no)
 ])# AC_DISABLE_SHARED
@@ -1799,7 +1799,7 @@ AC_ENABLE_SHARED(no)
 # ---------------------------
 # implement the --enable-static flag
 # DEFAULT is either `yes' or `no'.  If omitted, it defaults to `yes'.
-m4_define([AC_ENABLE_STATIC],
+AC_DEFUN([AC_ENABLE_STATIC],
 [m4_define([AC_ENABLE_STATIC_DEFAULT], [m4_if($1, no, no, yes)])dnl
 AC_ARG_ENABLE([static],
     [AC_HELP_STRING([--enable-static@<:@=PKGS@:>@],
@@ -1828,7 +1828,7 @@ AC_ARG_ENABLE([static],
 # AC_DISABLE_STATIC
 # -----------------
 # set the default static flag to --disable-static
-m4_define([AC_DISABLE_STATIC],
+AC_DEFUN([AC_DISABLE_STATIC],
 [AC_BEFORE([$0],[AC_LIBTOOL_SETUP])dnl
 AC_ENABLE_STATIC(no)
 ])# AC_DISABLE_STATIC
@@ -1838,7 +1838,7 @@ AC_ENABLE_STATIC(no)
 # ---------------------------------
 # implement the --enable-fast-install flag
 # DEFAULT is either `yes' or `no'.  If omitted, it defaults to `yes'.
-m4_define([AC_ENABLE_FAST_INSTALL],
+AC_DEFUN([AC_ENABLE_FAST_INSTALL],
 [m4_define([AC_ENABLE_FAST_INSTALL_DEFAULT], [m4_if($1, no, no, yes)])dnl
 AC_ARG_ENABLE([fast-install],
     [AC_HELP_STRING([--enable-fast-install@<:@=PKGS@:>@],
@@ -1867,7 +1867,7 @@ AC_ARG_ENABLE([fast-install],
 # AC_DISABLE_FAST_INSTALL
 # -----------------------
 # set the default to --disable-fast-install
-m4_define([AC_DISABLE_FAST_INSTALL],
+AC_DEFUN([AC_DISABLE_FAST_INSTALL],
 [AC_BEFORE([$0],[AC_LIBTOOL_SETUP])dnl
 AC_ENABLE_FAST_INSTALL(no)
 ])# AC_DISABLE_FAST_INSTALL
@@ -5898,11 +5898,11 @@ m4_define([_LT_AC_TAGVAR], [m4_if([$2], [], [$1], [$1_$2])])
 
 
 # old names
-m4_define([AM_PROG_LIBTOOL],   [AC_PROG_LIBTOOL])
-m4_define([AM_ENABLE_SHARED],  [AC_ENABLE_SHARED($@)])
-m4_define([AM_ENABLE_STATIC],  [AC_ENABLE_STATIC($@)])
-m4_define([AM_DISABLE_SHARED], [AC_DISABLE_SHARED($@)])
-m4_define([AM_DISABLE_STATIC], [AC_DISABLE_STATIC($@)])
+AC_DEFUN([AM_PROG_LIBTOOL],   [AC_PROG_LIBTOOL])
+AC_DEFUN([AM_ENABLE_SHARED],  [AC_ENABLE_SHARED($@)])
+AC_DEFUN([AM_ENABLE_STATIC],  [AC_ENABLE_STATIC($@)])
+AC_DEFUN([AM_DISABLE_SHARED], [AC_DISABLE_SHARED($@)])
+AC_DEFUN([AM_DISABLE_STATIC], [AC_DISABLE_STATIC($@)])
 AC_DEFUN([AM_PROG_LD],        [AC_PROG_LD])
 AC_DEFUN([AM_PROG_NM],        [AC_PROG_NM])
 
