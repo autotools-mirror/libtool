@@ -1,3 +1,13 @@
+1999-01-14  Gary V. Vaughan  <garyv@oranda.demon.co.uk>
+
+	* ltconfig.in (PATH_SEPARATOR): new variable to hold valid $PATH
+	separator characters for the build host, to support DJGPP
+	environment.
+	* ltconfig.in: Use PATH_SEPARATOR instead of hardcoded `:'.
+	Reported by Mark Elbrecht <snowball3@usa.net>
+
+	* cdemo/README: typo: mdemo->cdemo
+
 1999-01-14  Thomas Tanner  <tanner@gmx.de>
 
 	* autogen: fake the libtool scripts to help fixing
