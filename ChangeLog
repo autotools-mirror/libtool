@@ -1,5 +1,12 @@
 1999-02-12  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
 
+	* ltmain.in: Applied Thomas Tanner's latest ild.diff.  I seem to
+	be spending all my time merging these diffs rather than adding to
+	the code =(O|
+	* depdemo/configure.in: Thomas' latest ILD patch again.
+	* tests/Makefile.am: And here.
+	* tests/depdemo-*.test: And here.	
+	
 	* libltdl/ltdl.h (_LTDLL_EXTERN): libltdl is no longer linked as a
 	shared library, so the _declspec's were preventing the linker from
 	resolving symbols on win32.  They have been removed now.

@@ -1,0 +1,80 @@
+#! /bin/sh
+# depdemo.test - try building in the ../depdemo subdirectory
+
+# Test script header.
+need_prefix=yes
+if test -z "$srcdir"; then
+  srcdir=.
+  test "${VERBOSE+set}" != "set" && VERBOSE=yes
+fi
+. $srcdir/defs || exit 1
+
+# Maybe we have a VPATH build, in which case, create a new subdir.
+test -d ../depdemo || mkdir ../depdemo
+
+# Change to our build directory.
+cd ../depdemo || exit 1
+
+# Possibly clean up the distribution.
+if test -f config.cache; then
+  echo "= Running make distclean in ../depdemo"
+  make distclean || rm -f config.cache
+fi
+
+# Configure the demonstration.
+echo "= Configuring in ../depdemo (prefix=$prefix)"
+$srcdir/../depdemo/configure --srcdir=$srcdir/../depdemo --prefix=$prefix || exit 1
+
+# Do the actual build.
+echo "= Running make in ../depdemo"
+make || exit 1
+
+# Try running the program.
+echo "= Executing uninstalled programs"
+if ./depdemo.static; then :
+else
+  echo "$0: cannot execute ./depdemo.static" 1>&2
+  exit 1
+fi
+
+if ./depdemo; then :
+else
+  echo "$0: cannot execute ./depdemo" 1>&2
+  exit 1
+fi
+
+echo "= Running make install in ../depdemo"
+make install || exit 1
+
+echo "= Executing installed programs"
+if $prefix/bin/depdemo.static; then :
+else
+  echo "$0: cannot execute $prefix/bin/depdemo.static" 1>&2
+  exit 1
+fi
+
+if $prefix/bin/depdemo; then :
+else
+  echo "$0: cannot execute $prefix/bin/depdemo" 1>&2
+  exit 1
+fi
+
+echo "= Running make uninstall in ../depdemo"
+make uninstall || exit 1
+
+# See that there were no files leftover in $prefix.
+leftovers=`find $prefix ! -type d -print`
+if test -n "$leftovers"; then
+  echo "= Leftover after make uninstall:"
+  ls -l $leftovers
+  exit 1
+fi
+
+# Delete the directory tree we created.
+rm -rf $prefix
+
+
+# Clean up the distribution.
+make distclean
+
+exit 0

@@ -7,16 +7,22 @@ TESTS = demo-static.test demo-make.test demo-exec.test \
 	mdemo-static.test mdemo-make.test mdemo-exec.test \
 	mdemo-inst.test mdemo-unst.test \
 	cdemo-static.test cdemo-make.test cdemo-exec.test \
+	depdemo-static.test depdemo-make.test depdemo-exec.test \
+	depdemo-inst.test depdemo-unst.test \
 	demo-conf.test demo-make.test demo-exec.test \
 	demo-inst.test demo-unst.test hardcode.test \
 	mdemo-conf.test mdemo-make.test mdemo-exec.test \
 	mdemo-inst.test mdemo-unst.test \
 	cdemo-conf.test cdemo-make.test cdemo-exec.test \
+	depdemo-conf.test depdemo-make.test depdemo-exec.test \
+	depdemo-inst.test depdemo-unst.test \
 	demo-shared.test demo-make.test demo-exec.test \
 	demo-inst.test demo-unst.test hardcode.test \
 	mdemo-shared.test mdemo-make.test mdemo-exec.test \
 	mdemo-inst.test mdemo-unst.test \
 	cdemo-shared.test cdemo-make.test cdemo-exec.test \
+	depdemo-shared.test depdemo-make.test depdemo-exec.test \
+	depdemo-inst.test depdemo-unst.test \
 	link.test link-2.test nomode.test \
 	quote.test sh.test suffix.test
 
