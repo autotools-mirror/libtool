@@ -1,3 +1,8 @@
+2000-05-27  Chad Cunningham  <ccunning@math.ohio-state.edu>
+	
+	* ltconfig.in (rhapsody*): New Port.
+	* ltmain.in (rhapsody*): ditto.
+
 2000-05-27  Gary V. Vaughan  <gvv@techie.com>
 
 	* ltmain.in: cygwin-1.1.0 and higher no longer grok backslash path

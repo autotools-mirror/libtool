@@ -1795,6 +1795,10 @@ compiler."
 	*-*-cygwin* | *-*-mingw* | *-*-os2* | *-*-beos*)
 	  # these systems don't actually have a c library (as such)!
 	  ;;
+        *-*-rhapsody*)
+	  # rhapsody is a little odd...
+	  deplibs="$deplibs -framework System"
+	  ;;
 	*)
 	  # Add libc to deplibs on all other systems.
 	  deplibs="$deplibs -lc"

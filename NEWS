@@ -1,6 +1,7 @@
 NEWS - list of user-visible changes between releases of GNU Libtool
 
 New in 1.3.5: 2000-05-27, CVS version 1.3.4a, Libtool team:
+* Support for mac OS X (rhapsody).
 * Support for *-sequent-sysv4.
 * Support for Cygwin-1.1.0.
 * Support recent dlltool formats.
