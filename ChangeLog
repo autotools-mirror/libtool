@@ -1,3 +1,9 @@
+2004-10-03  Gary V. Vaughan  <gary@gnu.org>
+
+	* tests/quote.test: echo is called ECHO now.  Make sure we extract
+	the value of ECHO from the libtool script.
+	Reported by Bob Friesenhahn <bfriesen@simple.dallas.tx.us>
+
 2004-10-02  Gary V. Vaughan  <gary@gnu.org>
 
 	* m4/libtool.m4 (hardcode_shlibpath_var) [darwin7*]: Revert my

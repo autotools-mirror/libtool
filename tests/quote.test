@@ -26,10 +26,10 @@
 # Do the torture test.
 status=$EXIT_SUCCESS
 
-func_get_config "echo" "../libtool --config"
+func_get_config "ECHO" "../libtool --config"
 
 for mode in compile link install; do
-  $echo "== $mode mode"
+  $ECHO "== $mode mode"
 
   # Unfortunately, without an array data type, it is nearly impossible
   # to protect libtool from metacharacters in filenames.  So, we just
@@ -60,7 +60,7 @@ for mode in compile link install; do
   esac
 
   # Trivial.
-  $echo "= trying: no quoting"
+  $ECHO "= trying: no quoting"
   result=`$LIBTOOL -n --mode=$mode $preargs ${preflag}"${flag}test" $postargs` || status=$EXIT_FAILURE
   # We used to have the contents of $match in the case statement,
   # without an intermediate variable, but it would fail on at least
@@ -68,25 +68,25 @@ for mode in compile link install; do
   match="$preargs ${preflag}${flag}test "
   case "$result" in
   *"$match"*)
-    $echo "= passed: $result"
+    $ECHO "= passed: $result"
     ;;
   *)
-    $echo "= failed: $result"
+    $ECHO "= failed: $result"
     status=$EXIT_FAILURE
     ;;
   esac
 
   # Metacharacters that should be backslashified.
   for mchar in \\ \" \` \$; do
-    $echo "= trying: \\$mchar quoting"
+    $ECHO "= trying: \\$mchar quoting"
     result=`$LIBTOOL -n --mode=$mode $preargs ${preflag}"${flag}${mchar}test${mchar}" $postargs` || status=$EXIT_FAILURE
     match="$preargs ${preflag}${flag}\\${mchar}test\\${mchar} "
     case "$result" in
     *"$match"*)
-      $echo "= passed: $result"
+      $ECHO "= passed: $result"
       ;;
     *)
-      $echo "= failed: $result"
+      $ECHO "= failed: $result"
       status=$EXIT_FAILURE
       ;;
     esac
@@ -96,15 +96,15 @@ for mode in compile link install; do
   for mchar in "[" "]" "~" "#" "^" "&" "*" "(" ")" "{" "}" "|" ";" "<" ">" "?" \
       "'" " " "	"; do
 
-    $echo "= trying: \"$mchar\" quoting"
+    $ECHO "= trying: \"$mchar\" quoting"
     result=`$LIBTOOL -n --mode=$mode $preargs ${preflag}"${flag}${mchar}test${mchar}" $postargs` || status=$EXIT_FAILURE
     match="$preargs ${preflag}\"${flag}${mchar}test${mchar}\" "
     case "$result" in
     *"$match"*)
-      $echo "= passed: $result"
+      $ECHO "= passed: $result"
       ;;
     *)
-      $echo "= failed: $result"
+      $ECHO "= failed: $result"
       status=$EXIT_FAILURE
       ;;
     esac
