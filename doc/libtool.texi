@@ -60,8 +60,8 @@ This is the first edition of the GNU Libtool documentation,@*
 and is consistent with GNU Libtool @value{VERSION}.@*
 @sp 2
 Published by the Free Software Foundation @*
-675 Massachusetts Avenue, @*
-Cambridge, MA 02139 USA @*
+59 Temple Place, Suite 330, @*
+Boston, MA 02111-1307 USA @*
 
 Permission is granted to make and distribute verbatim copies of this
 manual provided the copyright notice and this permission notice are

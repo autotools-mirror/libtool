@@ -1,3 +1,10 @@
+Wed Jul  2 19:13:00 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltmain.sh.in (link): In the executable wrapper, strip trailing
+ 	colons from the shlibpath_var because some ld.so's, notably
+ 	OpenBSD 2.0's (!), don't parse colon-terminated values correctly.
+  	From Tim Pierce.
+
 Tue Jul  1 13:03:49 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltmain.sh.in, ltconfig.in: Eliminate uses of the NONE magic

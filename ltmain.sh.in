@@ -1018,6 +1018,10 @@ EOF
 
     # Add our own library path to $shlibpath_var
     $shlibpath_var="$temp_rpath\$$shlibpath_var"
+
+    # Some systems cannot cope with colon-terminated $shlibpath_var
+    $shlibpath_var=\`echo \$$shlibpath_var | sed -e 's/:*\$//'\`
+
     export $shlibpath_var
 EOF
 	fi
