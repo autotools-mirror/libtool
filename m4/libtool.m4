@@ -3117,6 +3117,7 @@ m4_if([$1], [CXX], [
 	    _LT_TAGVAR(lt_prog_compiler_wl, $1)='-Wl,'
 	    _LT_TAGVAR(lt_prog_compiler_pic, $1)='-fpic'
 	    _LT_TAGVAR(lt_prog_compiler_static, $1)='-static'
+	    _LT_AC_TAGVAR(whole_archive_flag_spec, $1)=''
 	    ;;
 	  cxx)
 	    # Compaq C++
@@ -3574,6 +3575,27 @@ m4_if([$1], [CXX], [
   if test "$with_gnu_ld" = yes; then
     # If archive_cmds runs LD, not CC, wlarc should be empty
     wlarc='${wl}'
+    
+    # Set some defaults for GNU ld with shared library support. These
+    # are reset later if shared libraries are not supported. Putting them
+    # here allows them to be overridden if necessary.
+    runpath_var=LD_RUN_PATH
+    _LT_TAGVAR(hardcode_libdir_flag_spec, $1)='${wl}--rpath ${wl}$libdir'
+    _LT_TAGVAR(export_dynamic_flag_spec, $1)='${wl}--export-dynamic'
+    # ancient GNU ld didn't support --whole-archive et. al.
+    if $LD --help 2>&1 | $GREP 'no-whole-archive' > /dev/null; then
+      _LT_TAGVAR(whole_archive_flag_spec, $1)="$wlarc"'--whole-archive$convenience '"$wlarc"'--no-whole-archive'
+    else
+      _LT_TAGVAR(whole_archive_flag_spec, $1)=
+    fi
+    supports_anon_versioning=no
+    case `$LD -v 2>&1` in
+      *\ [[01]].* | *\ 2.[[0-9]].* | *\ 2.10.*) ;; # catch versions < 2.11
+      *\ 2.11.93.0.2\ *) supports_anon_versioning=yes ;; # RH7.3 ...
+      *\ 2.11.92.0.12\ *) supports_anon_versioning=yes ;; # Mandrake 8.2 ...
+      *\ 2.11.*) ;; # other 2.11 versions
+      *) supports_anon_versioning=yes ;;
+    esac
 
     # See if GNU ld supports shared libraries.
     case $host_os in
@@ -3656,8 +3678,12 @@ _LT_EOF
 	 && test "$tmp_diet" = no
       then
 	tmp_addflag=
-	case $CC,$host_cpu in
+	case $cc_basename,$host_cpu in
+          pgcc*)			# Portland Group C compiler
+          _LT_TAGVAR(whole_archive_flag_spec, $1)=
+	  ;;
 	pgf77* | pgf90* )		# Portland Group f77 and f90 compilers
+	  _LT_TAGVAR(whole_archive_flag_spec, $1)=
 	  tmp_addflag=' -fpic' ;;
 	ecc*,ia64* | icc*,ia64*)	# Intel C compiler on ia64
 	  tmp_addflag=' -i_dynamic' ;;
@@ -3668,13 +3694,7 @@ _LT_EOF
 	esac
 
 	_LT_TAGVAR(archive_cmds, $1)='$CC -shared'"$tmp_addflag"' $libobjs $deplibs $compiler_flags ${wl}-soname $wl$soname -o $lib'
-        case `$LD -v 2>&1` in
-          *\ [[01]].* | *\ 2.[[0-9]].* | *\ 2.10.*) ;; # catch versions < 2.11
-          *\ 2.11.93.0.2\ *) supports_anon_versioning=yes ;; # RH7.3 ...
-          *\ 2.11.92.0.12\ *) supports_anon_versioning=yes ;; # Mandrake 8.2 ...
-          *\ 2.11.*) ;; # other 2.11 versions
-          *) supports_anon_versioning=yes ;;
-        esac
+
         if test "x$supports_anon_versioning" = xyes; then
           _LT_TAGVAR(archive_expsym_cmds, $1)='$ECHO "{ global:" > $output_objdir/$libname.ver~cat $export_symbols | sed -e "s/\(.*\)/\1;/" >> $output_objdir/$libname.ver~$ECHO "local: *; };" >> $output_objdir/$libname.ver~$CC -shared'"$tmp_addflag"' $libobjs $deplibs $compiler_flags ${wl}-soname $wl$soname ${wl}-version-script ${wl}$output_objdir/$libname.ver -o $lib'
         else
@@ -3733,16 +3753,11 @@ _LT_EOF
       ;;
     esac
 
-    if test "$_LT_TAGVAR(ld_shlibs, $1)" = yes; then
-      runpath_var=LD_RUN_PATH
-      _LT_TAGVAR(hardcode_libdir_flag_spec, $1)='${wl}--rpath ${wl}$libdir'
-      _LT_TAGVAR(export_dynamic_flag_spec, $1)='${wl}--export-dynamic'
-      # ancient GNU ld didn't support --whole-archive et. al.
-      if $LD --help 2>&1 | $GREP 'no-whole-archive' > /dev/null; then
- 	_LT_TAGVAR(whole_archive_flag_spec, $1)="$wlarc"'--whole-archive$convenience '"$wlarc"'--no-whole-archive'
-      else
-  	_LT_TAGVAR(whole_archive_flag_spec, $1)=
-      fi
+    if test "$_LT_TAGVAR(ld_shlibs, $1)" = no; then
+      runpath_var=
+      _LT_TAGVAR(hardcode_libdir_flag_spec, $1)=
+      _LT_TAGVAR(export_dynamic_flag_spec, $1)=
+      _LT_TAGVAR(whole_archive_flag_spec, $1)=
     fi
   else
     # PORTME fill in a description of your system's linker (not GNU ld)
@@ -5185,6 +5200,7 @@ if test "$_lt_caught_CXX_error" != yes; then
 
 	    _LT_TAGVAR(hardcode_libdir_flag_spec, $1)='${wl}--rpath ${wl}$libdir'
 	    _LT_TAGVAR(export_dynamic_flag_spec, $1)='${wl}--export-dynamic'
+	    _LT_AC_TAGVAR(whole_archive_flag_spec, $1)=''
             ;;
 	  cxx)
 	    # Compaq C++
