@@ -93,3 +93,110 @@ symbol in the shared library, and Windows DLLs do not.
 
 Ian
 
+When libtool links DLLs, it strips some command line switches. It's probably
+the case that this is ok for most situations. However, this potentially breaks
+Mingw32 support in the Cygwin environment.
+
+In order to get Mingw32 support in Cygwin, the compiler must be invoked with
+the -mno-cygwin switch. If libtool strips this switch out during the link
+process, the resulting binary will get linked with the wrong import libraries.
+
+The following is a small example. I've edited the output a bit for
+readability. When I send this email, long lines will get broken up, so it
+still might be a bit difficult to read.
+
+-------------------------
+
+$ libtool --version
+ltmain.sh (GNU libtool) 1.3.3 (1.385.2.181 1999/07/02 15:49:11)
+
+
+$ cat xx.c
+
+extern __declspec(dllexport) int func(void);
+
+int func()
+{
+}
+
+
+$ libtool --mode=compile gcc -mno-cygwin -c xx.c
+mkdir .libs
+gcc -mno-cygwin -c  -DPIC xx.c -o .libs/xx.lo
+mv -f .libs/xx.lo xx.o
+ln -s xx.o xx.lo
+
+$ libtool --mode=link gcc -mno-cygwin -o libxx.la xx.lo \
+	-version-info 0:0:0 -no-undefined -rpath /usr/local/lib
+
+rm -fr .libs/libxx.la .libs/libxx.* .libs/libxx.*
+
+generating symbol list for `libxx.la'
+
+test -f .libs/libxx-0-0-0.dll-ltdll.c || sed -e "/^# \/\* ltdll\.c starts here
+\*\//,/^# \/\* ltdll.c ends here \*\// { s/^# //; p; }" -e d <
+/usr/local/bin/libtool > .libs/libxx-0-0-0.dll-ltdll.c
+
+ test -f .libs/libxx-0-0-0.dll-ltdll.o || (cd .libs && gcc -c
+libxx-0-0-0.dll-ltdll.c)
+
+ dlltool --export-all --exclude-symbols
+DllMain@12,_cygwin_dll_entry@12,_cygwin_noncygwin_dll_entry@12 --output-def
+.libs/libxx-0-0-0.dll-def .libs/libxx-0-0-0.dll-ltdll.o  xx.o
+
+ sed -e "1,/EXPORTS/d" -e "s/ @ [0-9]* ; *//" < .libs/libxx-0-0-0.dll-def >
+.libs/libxx.exp
+
+echo EXPORTS > .libs/libxx-0-0-0.dll-def
+
+ _lt_hint=1; for symbol in `cat .libs/libxx.exp`; do echo " $symbol @
+$_lt_hint; " >> .libs/libxx-0-0-0.dll-def; _lt_hint=`expr 1 + $_lt_hint`; done
+
+ test -f .libs/libxx-0-0-0.dll-ltdll.c || sed -e "/^# \/\* ltdll\.c starts
+here\*\//,/^# \/\* ltdll.c ends here \*\// { s/^# //; p; }" -e d <
+/usr/local/bin/libtool > .libs/libxx-0-0-0.dll-ltdll.c
+
+ test -f .libs/libxx-0-0-0.dll-ltdll.o || (cd .libs && gcc -c
+libxx-0-0-0.dll-ltdll.c)
+
+
+gcc -Wl,--base-file,.libs/libxx-0-0-0.dll-base -Wl,--dll -nostartfiles -Wl,-e,
+__cygwin_dll_entry@12 -o .libs/libxx-0-0-0.dll .libs/libxx-0-0-0.dll-ltdll.o
+xx.o
+
+ dlltool --as=as --dllname libxx-0-0-0.dll --exclude-symbols
+DllMain@12,_cygwin_dll_entry@12,_cygwin_noncygwin_dll_entry@12 --def
+.libs/libxx-0-0-0.dll-def --base-file .libs/libxx-0-0-0.dll-base --output-exp
+.libs/libxx-0-0-0.dll-exp
+
+ gcc -Wl,--base-file,.libs/libxx-0-0-0.dll-base
+.libs/libxx-0-0-0.dll-exp -Wl,--dll -nostartfiles -Wl,-e,__cygwin_dll_entry@12
+ -o .libs/libxx-0-0-0.dll .libs/libxx-0-0-0.dll-ltdll.o  xx.o
+
+ dlltool --as=as --dllname libxx-0-0-0.dll --exclude-symbols
+DllMain@12,_cygwin_dll_entry@12,_cygwin_noncygwin_dll_entry@12 --def
+.libs/libxx-0-0-0.dll-def --base-file .libs/libxx-0-0-0.dll-base --output-exp
+.libs/libxx-0-0-0.dll-exp
+
+ gcc
+.libs/libxx-0-0-0.dll-exp -Wl,--dll -nostartfiles -Wl,-e,__cygwin_dll_entry@12
+ -o .libs/libxx-0-0-0.dll .libs/libxx-0-0-0.dll-ltdll.o  xx.o
+
+(cd .libs && rm -f libxx.a && ln -s libxx-0-0-0.dll libxx.a)
+
+dlltool --as=as --dllname libxx-0-0-0.dll --def
+.libs/libxx-0-0-0.dll-def --output-lib .libs/libxx.a
+
+creating libxx.la
+
+(cd .libs && rm -f libxx.la && ln -s ../libxx.la libxx.la)
+
+---------------
+
+Notice how the 'gcc' lines do not contain the -mno-cygwin switch. This switch
+should not get stripped.
+
+Jon Leichter
+jon@symas.com
+
+

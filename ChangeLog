@@ -1,3 +1,7 @@
+1999-10-28  Olly Betts  <olly@muscat.co.uk>
+
+	* libtool.m4:  Third time lucky, with Tor's patch.
+
 1999-10-19  Tor Lillqvist  <tml@iki.fi>
 
 	* libtool.m4:  these was a missing `*' in the -mno-cygwin
