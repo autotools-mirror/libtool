@@ -1,5 +1,9 @@
 2004-03-30  Gary V. Vaughan  <gary@gnu.org>
 
+	* libtoolize.in (func_scan_files): sed BRE have no alternation, so
+	break LT_INIT matcher out.
+	(func_serial): Don't escape literal parens for grep BRE.
+
 	* m4/libtool.m4 (LT_INIT): aclocal can't see AC_DEFUN_ONCE, so use
 	AC_DEFUN and m4_define.
 	* libtoolize.in (func_serial): No longer accept AC_DEFUN_ONCE...

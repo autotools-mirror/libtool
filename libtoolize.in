@@ -357,9 +357,8 @@ func_scan_files ()
     	/AC_CONFIG_MACRO_DIR/   {
 	    s,^.*AC_CONFIG_MACRO_DIR([[ 	]*\([^])]*\).*$,m4dir=\1,; p;
         };
-	/\(LT_INIT\|A[CM]_PROG_LIBTOOL\)/ {
-	    s,^.*$,seen_libtool=:,; p;
-	};
+	/A[CM]_PROG_LIBTOOL/ { s,^.*$,seen_libtool=:,; p; };
+	/LT_INIT/	     { s,^.*$,seen_libtool=:,; p; };
 	/AC_LIB_LTDL/        { s,^.*$,seen_ltdl=:,; p; };
 	d;'
     eval `cat aclocal.m4 "$configure_ac" | $SED "$my_sed_traces" 2>/dev/null`
@@ -460,7 +459,9 @@ func_serial ()
     # in the file that AC_DEFUNs MACRO_REGEX.
     my_serial=
     for my_file in `func_included_files "$my_filename"`; do
-      if func_grep '^AC_DEFUN\(\['"$my_macro_regex" "$my_file"; then
+      if test -z "$my_macro_regex" ||
+         func_grep '^AC_DEFUN(\['"$my_macro_regex" "$my_file"
+      then
         my_serial=`$SED -e "$my_sed_serial" "$my_file"`
 	break
       fi
