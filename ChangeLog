@@ -1,3 +1,8 @@
+2003-02-08  Jan Kratochvil  <project-libtool@jankratochvil.net>
+
+	* ltmain.in: Handle duplicate object file names when performing
+	piecewise archive linking by renaming object files when needed.
+
 2003-02-05  Robert Boehne  <rboehne@gnu.org>
 
 	* libtool.m4 (AC_CHECK_LIBM): Search for a real symbol in
