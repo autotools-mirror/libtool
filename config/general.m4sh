@@ -62,14 +62,26 @@ progpath="$0"
 
 # The name of this program:
 # In the unlikely event $progname began with a '-', it would play havoc with
-# func_echo (imagine progname=-n), so we substitute for _ in that case.
-progname=`$ECHO "X$progpath" | $Xsed -e "$basename" -e 's,^-,_,'`
+# func_echo (imagine progname=-n), so we prepend ./ in that case:
+progname=`$ECHO "X$progpath" | $Xsed -e "$basename" -e 's,^-,./-,'`
 
 # Make sure we have an absolute path for reexecution:
 case $progpath in
   [[\\/]]*|[[A-Za-z]]:\\*) ;;
-  *) progdir=`$ECHO "X$progpath" | $Xsed -e "$dirname"`
+  *[[\\/]]*)
+     progdir=`$ECHO "X$progpath" | $Xsed -e "$dirname"`
      progdir=`cd "$progdir" && pwd`
+     progpath="$progdir/$progname"
+     ;;
+  *)
+     save_IFS="$IFS"
+     IFS=:
+     for progdir in $PATH; do
+       IFS="$save_IFS"
+       test -x "$progdir/$progname" && break
+     done
+     IFS="$save_IFS"
+     test -n "$progdir" || progdir=`pwd`
      progpath="$progdir/$progname"
      ;;
 esac

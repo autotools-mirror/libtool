@@ -1,5 +1,17 @@
 2004-10-08  Gary V. Vaughan  <gary@gnu.org>
 
+	Fix some issues that mangled the reexecution path to a script,
+	and thus prevented it from finding itself:
+
+	* config/general.m4sh (progname): Don't actually change the name
+	of the script if it begins with a `-', just prepend `./'.
+	(progpath): Add a new clause that first searches the execution
+	PATH, and then finally assumes this script is in the current
+	working directory if $progname has no directory separators (e.g
+	when invoked as `$SHELL progname').
+
+2004-10-08  Gary V. Vaughan  <gary@gnu.org>
+
 	* config/general.m4sh (func_verbose): Work around a bash bug in
 	shell functions.
 
