@@ -1,3 +1,11 @@
+2004-10-08  Charles Wilson  <cygwin@cwilson.fastmail.fm>
+
+	* tests/pdemo-inst.test: pdemo-inst should depend on pdemo-make.
+	* config/ltmain.m4sh: Windows and Cygwin reserve the .lnk
+	extension to represent shortcuts.  Use the extension ".lnkscript"
+	rather than ".lnk" for the piecewise linking ld script in order to
+	avoid the conflict.
+
 2004-10-08  Gary V. Vaughan  <gary@gnu.org>
 
 	Fix some issues that mangled the reexecution path to a script,
