@@ -1,3 +1,9 @@
+2001-08-07  Gary V. Vaughan  <gary@gnu.org>
+
+	ltmain.in [irix*]: $with_gcc is either "yes" or "" (empty string)
+	with current autoconf, so we need to be robust to that when testing
+	it,
+
 2001-08-06  Gary V. Vaughan  <gary@gnu.org>
 
 	From Brad <brad@comstyle.com>:
