@@ -3538,9 +3538,8 @@ func_mode_link ()
 	    if test -n "$shlibpath_var"; then
 	      # Make sure the rpath contains only unique directories.
 	      case "$temp_rpath " in
-	      *" $dir "*) ;;
-	      *" $absdir "*) ;;
-	      *) temp_rpath="$temp_rpath $absdir" ;;
+	      *"$absdir:"*) ;;
+	      *) temp_rpath="$temp_rpath:$absdir" ;;
 	      esac
 	    fi
 
@@ -5506,34 +5505,6 @@ EOF
 	fi
 
 	exit $status
-      fi
-
-      if test -n "$shlibpath_var"; then
-	# We should set the shlibpath_var
-	rpath=
-	for dir in $temp_rpath; do
-	  case $dir in
-	  [[\\/]]* | [[A-Za-z]]:[[\\/]]*)
-	    # Absolute path.
-	    rpath="$rpath$dir:"
-	    ;;
-	  *)
-	    # Relative path: add a thisdir entry.
-		case "$output" in
-		*[[\\/]]*)
-		  # the output file is not in the current dir
-		  # so we need an absolute path.
-		  absdir=`cd "$dir" && pwd`
-		  rpath="$rpath$absdir:"
-		  ;;
-		*)
-		  rpath="$rpath\$thisdir/$dir:"
-	      ;;
-	    esac
-	    ;;
-	  esac
-	done
-	temp_rpath="$rpath"
       fi
 
       if test -n "$compile_shlibpath$finalize_shlibpath"; then
