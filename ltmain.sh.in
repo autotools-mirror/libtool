@@ -1,6 +1,6 @@
 # ltmain.sh - Provide generalized library-building support services.
 # @configure_input@
-# Copyright (C) 1996 Free Software Foundation, Inc.
+# Copyright (C) 1996, 1997 Free Software Foundation, Inc.
 # Gordon Matzigkeit <gord@gnu.ai.mit.edu>, 1996
 #
 # This program is free software; you can redistribute it and/or modify
@@ -174,7 +174,21 @@ if test -z "$show_help"; then
     done
 
     # Get the name of the library object.
-    libobj=`echo "$srcfile" | sed -e 's%^.*/%%; s/\.[Sc]$/.lo/'`
+    libobj=`echo "$srcfile" | sed -e 's%^.*/%%`
+
+    # Recognize several different file suffixes.
+    xform='[cCFSf]'
+    case $libobj in
+    *.c++) xform='c\+\+' ;;
+    *.cc) xform=cc ;;
+    *.cpp) xform=cpp ;;
+    *.cxx) xform=cxx ;;
+    *.f90) xform=f90 ;;
+    *.for) xform='for' ;;
+    esac
+
+    libobj=`echo "$libobj" | sed -e "s/\.$xform$/.lo/"`
+
     case $libobj in
     *.lo) obj=`echo "$libobj" | sed -e 's/\.lo$/.o/'` ;;
     *)
@@ -285,7 +299,6 @@ if test -z "$show_help"; then
 
       case "$arg" in
       -L*)
-	deplibs="$deplibs $arg"
 	dir=`echo "$arg" | sed 's%^-L\(.*\)$%\1%'`
 	case "$dir" in
 	/*)
@@ -295,6 +308,7 @@ if test -z "$show_help"; then
 	  exit 1
 	  ;;
 	esac
+	deplibs="$deplibs $arg"
 	;;
 
       -l*) deplibs="$deplibs $arg" ;;
@@ -319,14 +333,12 @@ if test -z "$show_help"; then
 
       -*) cc="$cc $arg" ;; # Some other compiler flag.
 
-      # Automake's ansi2knr support code uses the "._o" and ".l_o" object
-      # suffixes.
-      *.o | *._o | *.a)
+      *.o | *.a)
 	# A standard object.
 	objs="$objs $arg"
 	;;
 
-      *.lo | *.l_o)
+      *.lo)
 	# A library object.
 	libobjs="$libobjs $arg"
 	;;
@@ -521,11 +533,6 @@ if test -z "$show_help"; then
       case "$version_type" in
       none) ;;
 
-      libtool)
-	version_vars="$version_vars versuffix"
-	versuffix="$current.$age.$revision"
-	;;
-
       linux)
 	version_vars="$version_vars major versuffix"
 	major=`expr $current - $age`
@@ -534,6 +541,7 @@ if test -z "$show_help"; then
 
       osf)
 	version_vars="$version_vars versuffix verstring"
+	major=`expr $current - $age`
 	versuffix="$current.$age.$revision"
 	verstring="$versuffix"
 
@@ -561,9 +569,6 @@ if test -z "$show_help"; then
 	exit 1
 	;;
       esac
-
-      # Maybe add a suffix.
-      test -n "$suffix" && libname=$libname"_$suffix"
 
       # Create the output directory, or remove our outputs if we need to.
       if test -d $objdir; then
@@ -595,7 +600,7 @@ if test -z "$show_help"; then
 	done
 
 	# Use standard objects if they are PIC.
-	test -z "$pic_flag" && libobjs=`echo "$libobjs " | sed 's/\.lo /.o /g; s/\.l_o /._o /g; s/ $//g'`
+	test -z "$pic_flag" && libobjs=`echo "$libobjs " | sed 's/\.lo /.o /g; s/ $//g'`
 
 	# Do each of the archive commands.
 	cmds=`eval echo \"$archive_cmds\"`
@@ -652,7 +657,7 @@ if test -z "$show_help"; then
       $run $rm $obj $libobj
 
       # Create the old-style object.
-      reload_objs="$objs"`echo "$libobjs " | sed 's/\.lo /.o /g; s/\.l_o /._o /g; s/ $//g'`
+      reload_objs="$objs"`echo "$libobjs " | sed 's/\.lo /.o /g; s/ $//g'`
 
       output="$obj"
       cmds=`eval echo \"$reload_cmds\"`
@@ -699,8 +704,7 @@ if test -z "$show_help"; then
 
       if test -n "$libobjs"; then
 	# Transform all the library objects into standard objects.
-	compile_command=`echo "$compile_command " | sed 's/\.lo /.o /g; s/\.l_o /._o /g; s/ $//g'`
-	
+	compile_command=`echo "$compile_command " | sed 's/\.lo /.o /g; s/ $//g'`
       fi
 
       if test -z "$link_against_libtool_libs" || test "$build_libtool_libs" != yes; then
@@ -751,7 +755,8 @@ if test -z "$show_help"; then
       elif test "$hardcode_shlibpath_var" != yes; then
 	# We just need to export the shlibpath for the link command.
 	$show "$shlibpath_var=$linkrpath $compile_command"
-	eval "export $shlibpath_var=$linkrpath"
+	eval "$shlibpath_var=$linkrpath"
+	eval "export $shlibpath_var"
 
       else
 	# AGH! Flame the AIX and HP-UX people for me, will ya?
@@ -842,8 +847,8 @@ EOF
 
     # See if we need to build an old-fashioned archive.
     if test "$build_old_libs" = "yes"; then
-      # Transform .lo files to .o (and don't forget ansi2knr .l_o to ._o).
-      oldobjs="$objs"`echo "$libobjs " | sed 's/\.lo /.o /g; s/\.l_o /._o /g; s/ $//g'`
+      # Transform .lo files to .o
+      oldobjs="$objs"`echo "$libobjs " | sed 's/\.lo /.o /g; s/ $//g'`
       case "$output" in
       *.la)
 	# Now set the variables for building old libraries.
@@ -1130,7 +1135,7 @@ EOF
 	    libfile="$libdir/`echo "$lib" | sed 's%^.*/%%g'`"
 	    if test -z "$libdir"; then
 	      echo "$progname: warning: \`$lib' contains no -rpath information"
-	    elif test -f "$libfile"; then :	      
+	    elif test -f "$libfile"; then :
 	    else
 	      echo "$progname: warning: \`$lib' has not been installed in \`$libdir'" 1>&2
 	      finalize=no
@@ -1166,7 +1171,7 @@ EOF
 	;;
       esac
     done
-      
+
 # FIXME Install any profiled libraries, too.
 #    newfiles=
 #    for file in $staticlibs; do
@@ -1299,7 +1304,7 @@ EOF
       $show "$rm $file"
       $run $rm $file
     done
-    exit 0    
+    exit 0
     ;;
 
   NONE)
@@ -1409,8 +1414,7 @@ treated as uninstalled libtool libraries, other files are standard or library
 object files.
 
 If the OUTPUT-FILE ends in \`.la', then a libtool library is created, only
-library objects (\`.lo' or \`.l_o' files) may be specified, and the \`-rpath'
-option is required.
+library objects (\`.lo' files) may be specified, and \`-rpath' is required.
 
 If OUTPUT-FILE ends in \`.a', then a standard library is created using \`ar'
 and \`ranlib'.

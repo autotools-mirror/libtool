@@ -1,6 +1,7 @@
 #! /bin/sh
 
 # ltconfig - Create a system-specific libtool.
+# When updating this script, search for LINENUM and fix line number refs.
 # @configure_input@
 # Copyright (C) 1996, Free Software Foundation, Inc.
 # Gordon Matzigkeit <gord@gnu.ai.mit.edu>, 1996
@@ -242,7 +243,7 @@ elif test "$host" = NONE; then
   echo "$progname: you must specify a host type if you use \`--no-verify'" 1>&2
   echo "$help" 1>&2
   exit 1
-else   
+else
   host_alias=$host
 fi
 
@@ -279,69 +280,6 @@ if test -n "$RANLIB"; then
   old_archive_cmds="$old_archive_cmds;\$RANLIB \$oldlib"
   old_postinstall_cmds="$old_postinstall_cmds;\$RANLIB \$oldlib"
 fi
-
-# FIXME: this is simplistic, and doesn't allow for cross-compiling.
-echo $ac_n "checking for library strip program... $ac_c" 1>&6
-striplib=
-if strip -x /dev/null 2>&1 | grep '/dev/null' >/dev/null 2>&1; then
-  # strip: /dev/null: Inappropriate file type or format
-  striplib="strip -x"
-fi
-
-if test -n "$striplib"; then
-  echo $ac_t "$striplib" 1>&6
-else
-  echo $ac_t none 1>&6
-fi
-
-
-# Check if old-style libraries may be stripped.
-old_striplib=
-if test -n "$striplib"; then
-  echo $ac_n "checking if $striplib works for static archives... $ac_c" 1>&6
-  old_striplib="$striplib"
-  trap 'rm -rf conftest*; exit 1' 1 2 15
-  cat > conftest.c <<EOF
-#line 305 "$progname"
-int external_func() { return 1; }
-static int hidden_func() { return 2; }
-EOF
-  if { (eval echo $progname:308: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>&5; }; then
-    oldlib=conftest.a
-    oldobjs=' conftest.o'
-
-    # Do each of the archive commands.
-    cmds=`eval echo \"$old_archive_cmds\"`
-    IFS="${IFS= 	}"; save_ifs="$IFS"; IFS=';'
-    for cmd in $cmds; do
-      IFS="$save_ifs"
-      if { (echo $progname:317: \"$cmd\") 1>&5; ($cmd) 2>&5; }; then :
-      else
-	old_striplib=
-	break
-      fi
-    done
-    IFS="$save_ifs"
-
-    if test -n "$old_striplib"; then
-      if { (echo $progname:326: \"$old_striplib conftest.a\") 1>&5; ($old_striplib conftest.a) 2>&5; }; then :
-      else
-	old_striplib=
-      fi
-    fi
-  else
-    old_striplib=
-  fi
-  rm -rf conftest*
-  trap '' 1 2 15
-
-  if test -n "$old_striplib"; then
-    echo "$ac_t""yes" 1>&6
-  else
-    echo "$ac_t""no" 1>&6
-  fi
-fi
-
 
 # Check to see if we are using GCC.
 if test "$with_gcc" = no; then
@@ -421,7 +359,8 @@ if test "$with_gcc" = no; then
   yes;
 #endif
 EOF
-  if eval "$CC -E conftest.c" | egrep yes >/dev/null 2>&1; then :
+  # LINENUM
+  if { ac_try='${CC-cc} -E conftest.c'; { (eval echo $progname:364: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }; } | egrep yes >/dev/null 2>&1; then
     with_gcc=yes
   fi
   $rm conftest.c
@@ -448,16 +387,27 @@ else
   case "$host" in
   *-*-aix3* | *-*-aix4*)
     # FIXME All rs/6000 code is PIC, but is there any non-rs/6000 AIX platform?
+    pic_flag=
     link_static_flag='-bnso -bI:/lib/syscalls.exp'
     ;;
 
-  *-*-hpux10*)
-    # FIXME link_static_flag?
+  *-*-hpux9* | *-*-hpux10*)
+    # FIXME is there a better link_static_flag that works with the bundled CC?
+    wl='-Wl,'
+    link_static_flag='${wl}-a ${wl}archive'
     pic_flag='+Z'
     ;;
 
+  *-*-irix5* | *-*-irix6*)
+    wl='-Wl,'
+    link_static_flag='-non_shared'
+    # PIC (with -KPIC) is the default.
+    pic_flag=
+    ;;
+
   *-*-osf3*)
-    # FIXME - pic_flag, link_static_flag?
+    # FIXME - pic_flag is probably required for hppa*-osf* and i860-osf*
+    link_static_flag='-non_shared'
     ;;
 
   *-*-solaris2*)
@@ -478,11 +428,13 @@ else
 fi
 
 case "$host" in
-rs6000-*-*)
-  # Yippee! All rs/6000 code is position-independent.
+rs6000-*-* | powerpc-*-* | powerpcle-*-*)
+  # Yippee! All RS/6000 and PowerPC code is position-independent.
   pic_flag=
   ;;
 esac
+
+# FIXME actually try compiling an object file with the pic flag?
 
 if test -n "$pic_flag"; then
   echo $ac_t "$pic_flag" 1>&6
@@ -545,7 +497,7 @@ else
   # PORTME fill in a description of your system's linker (not GNU ld)
   case "$host" in
   *-*-aix3*)
-    archive_cmds='$rm $lib.exp;/ucb/nm$libobjs | egrep \" D \" | sed \"s/^.* //\" > $lib.exp;$LD -o $objdir/$soname$libobjs -bE:$lib.exp -T512 -H512 -bM:SRE -lc$deplibs;ar cru $lib $objdir/$soname'
+    archive_cmds='$rm $lib.exp;/usr/ucb/nm$libobjs | egrep \" D \" | sed \"s/^.* //\" > $lib.exp;$LD -o $objdir/$soname$libobjs -bE:$lib.exp -T512 -H512 -bM:SRE -lc$deplibs;ar cru $lib $objdir/$soname'
     hardcode_shlibpath_var=yes
     hardcode_minus_L=yes
     ;;
@@ -561,11 +513,16 @@ else
     hardcode_minus_L=yes
     ;;
 
-  *-*-hpux10*)
+  *-*-hpux9* | *-*-hpux10*)
     archive_cmds='$LD -b +h $soname +s +b $install_libdir -o $lib$libobjs$deplibs'
     link_rpath_flag='${wl}+b ${wl}$libdir'
     hardcode_minus_L=yes
     hardcode_shlibpath_var=yes
+    ;;
+
+  *-*-irix5* | *-*-irix6*)
+    archive_cmds='$LD -shared -o $lib -soname $install_libdir/$soname -set_version $verstring$libobjs -lc$deplibs'
+    link_rpath_flag='${wl}-rpath ${wl}$libdir'
     ;;
 
   *-*-netbsd*)
@@ -575,7 +532,7 @@ else
     ;;
 
   *-*-osf3*)
-    archive_cmds='$LD -shared -o $lib -rpath $install_libdir -soname $soname -set_version $verstring$libobjs -lc$deplibs'
+    archive_cmds='$LD -shared -o $lib -soname $install_libdir/$soname -set_version $verstring$libobjs -lc$deplibs'
     link_rpath_flag='${wl}-rpath ${wl}$libdir'
     ;;
 
@@ -585,7 +542,7 @@ else
     ;;
 
   *-*-sunos4*)
-    archive_cmds='$LD -assert pure-text -Bstatic -o $lib$libobjs$deplibs'
+    archive_cmds='$LD -assert pure-text -Bstatic -o $lib$libobjs'
     link_rpath_flag='-L$libdir'
     hardcode_minus_L=yes
     ;;
@@ -648,7 +605,7 @@ case "$host" in
   shlibpath_var=LD_LIBRARY_PATH
   ;;
 
-*-*-hpux10*)
+*-*-hpux9* | *-*-hpux10*)
   # Give a soname corresponding to the major version so that dld.sl refuses to
   # link against other versions.
   dynamic_linker="$host_os dld.sl"
@@ -658,6 +615,13 @@ case "$host" in
   soname_spec='$libname.sl.$major'
   # HP-UX runs *really* slowly unless shared libraries are mode 555.
   postinstall_cmds='chmod 555 $lib'
+  ;;
+
+*-*-irix5*)
+  version_type=osf
+  soname_spec='$libname.so.$major'
+  lib_names='$libname.so.$versuffix $libname.so.$major $libname.so'
+  shlibpath_var=LD_LIBRARY_PATH
   ;;
 
 # No shared lib support for linuxoldld or linuxaout.
@@ -683,8 +647,8 @@ case "$host" in
 
 *-*-osf3*)
   version_type=osf
-  soname_spec='$libname.so'
-  lib_names='$libname.so.$versuffix $libname.so'
+  soname_spec='$libname.so.$major'
+  lib_names='$libname.so.$versuffix $libname.so.$major $libname.so'
   shlibpath_var=LD_LIBRARY_PATH
   ;;
 
@@ -709,6 +673,29 @@ case "$host" in
 esac
 echo "$ac_t""$dynamic_linker"
 
+
+# FIXME need to add library stripping features
+# strip -x works for most platforms, though not for static libraries on NetBSD
+# HP-UX requires "-r" for library stripping
+striplib=
+old_striplib=
+
+#echo $ac_n "checking for static library strip program... $ac_c" 1>&6
+#if test -n "$old_striplib"; then
+#  echo $ac_t "$old_striplib" 1>&6
+#else
+#  echo $ac_t none 1>&6
+#fi
+
+#if test "$can_build_shared" = yes; then
+#  echo $ac_n "checking for shared library strip program... $ac_c" 1>&6
+#
+#  if test -n "$striplib"; then
+#    echo $ac_t "$striplib" 1>&6
+#  else
+#    echo $ac_t none 1>&6
+#  fi
+#fi
 
 # Report the consequences.
 echo "checking if libtool supports shared libraries... $can_build_shared" 1>&6

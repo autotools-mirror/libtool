@@ -1,3 +1,29 @@
+Thu Jan 16 17:57:38 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltmain.sh.in (link): If linking with $link_static_flag fails,
+ 	then retry without it, but still use the .a versions of
+ 	uninstalled libtool archives.
+
+Wed Jan 15 08:59:22 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltmain.sh.in (link): Eval $link_static_flag.  Reported by Bruno
+	Haible.
+
+	* PLATFORMS: Add to distribution.  Suggested by Bruno Haible.
+
+Mon Jan 13 12:59:29 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltconfig.in: Add support for SCO OpenServer 5.x.
+
+	(can_build_shared): Initialize at the top of the file, so that
+ 	shared libraries aren't built on platforms that don't support
+ 	them.
+
+Sat Jan 11 13:29:08 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltmain.sh.in, ltconfig.in, libtoolize.in, doc/libtool.texi:
+ 	Update the copyright completion years.
+
 Wed Jan  8 15:01:06 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltconfig.in: Port to IRIX 5.3, 6.2.

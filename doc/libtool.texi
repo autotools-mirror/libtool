@@ -1000,15 +1000,21 @@ First, to link a program against a libtool library, just use the
 @samp{program_LDADD} variable:
 
 @example
+bin_PROGRAMS = hell hell.static
+
 # Build hell from main.c and libhell.la
-bin_PROGRAMS = hell
 hell_SOURCES = main.c
 hell_LDADD = libhell.la
+
+# Create a statically-linked version of hell.
+hell_static_SOURCES = main.c
+hell_static_LDADD = libhell.la
+hell_static_LDFLAGS = -static
 @end example
 
 You may use the @samp{program_LDFLAGS} variable to stuff in any flags
-you want to pass to libtool while linking @samp{program}, such as
-@samp{-static}.
+you want to pass to libtool while linking @samp{program} (such as
+@samp{-static} to create a statically-linked executable).
 
 Building a libtool library is almost as trivial@dots{} note the use of
 @samp{libhell_la_LDFLAGS} to pass the @samp{-version-info}
@@ -1105,6 +1111,9 @@ The C compiler that will be used by the generated @file{libtool}.
 
 @item CFLAGS
 Compiler flags used to generate standard object files.
+
+@item CPPFLAGS
+C preprocessor flags.
 
 @item LD
 The system linker to use (if the generated @file{libtool} requires one).
