@@ -34,7 +34,7 @@ WARNING: them with `libtool.m4' as shipped with this distribution.
 WARNING: After that, retry this bootstrap.
 EOF
 
-rm -rf `find . \( -name autom4te.cache -o -name libtool \) -print`
+rm -rf `find . -path './{arch}' -prune -o \( -name autom4te.cache -o -name libtool \) -print`
 
 fakes="config/ltmain.sh config/libtoolize"
 if test -z "$reconfdirs"; then
