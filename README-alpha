@@ -13,3 +13,61 @@ use it, you need a recent version of both Autoconf and Automake.
 Please do not send any bug reports or questions about this snapshot to
 public forums (such as GNU newsgroups), send them directly to the
 libtool mailing list, <bug-libtool@gnu.org>.
+
+================================================================
+= Administrivia
+
+* If you incorporate a change from somebody on the net:
+  First, if it is a large change, you must make sure they have signed the
+  appropriate paperwork.
+  Second, be sure to add their name and email address to THANKS
+
+* If a change fixes a test, mention the test in the ChangeLog entry.
+
+* If somebody reports a new bug, mention his name in the ChangeLog entry
+  and in the test case you write.  Put him into THANKS.
+
+* The correct response to most actual bugs is to write a new test case
+  which demonstrates the bug.  Then fix the bug, re-run the test suite,
+  and check everything in.
+
+* Some files in the automake package are not owned by libtool.  These
+  files should never be edited here.  These files are COPYING, INSTALL,
+  config.guess config.sub, install-sh, mdate-sh, mkinstalldirs, texinfo.tex
+
+* Changes other than bug fixes must be mentioned in NEWS
+
+================================================================
+= Test suite
+
+* Use "make check" and "make maintainer-check" liberally
+
+* Make sure each test file is executable
+
+
+================================================================
+= Release procedure
+
+* Fetch new versions of the files that are maintained by the FSF.
+  Commit.  Unfortunately you need an FSF account to do this.
+
+* Update NEWS.  For an alpha release, update README-alpha.
+
+* Update the version number in configure.in.
+  (The idea is that every other alpha number will be a net release.
+  The repository will always have its own "odd" number so we can easily
+  distinguish net and repo versions.)
+
+* Configure, build, and install.
+
+* Run aclocal, automake, and autoconf.
+
+* Commit
+
+* Run `make cvs-dist'
+
+* Put new release on ftp site and send announcement.
+  (If not an alpha, announcement must also go to FSF.)
+
+* Update version number in configure.in to next alpha number.
+  Re-run autoconf and commit.

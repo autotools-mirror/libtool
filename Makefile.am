@@ -153,3 +153,28 @@ $(srcdir)/libltdl/configure: libltdl/configure.in libltdl/aclocal.m4
 
 $(srcdir)/libltdl/aclocal.m4: libltdl/configure.in libltdl/acinclude.m4
 	cd $(srcdir)/libltdl && $(ACLOCAL)
+
+################################################################
+##
+## Everything past here is useful to the maintainer, but probably not
+## to anybody else (snarfed from automake/Makefile.am).
+##
+
+# Tag before making distribution.  Also, don't make a distribution if
+# checks fail.  Also, make sure the NEWS file is up-to-date.
+cvs-dist: distcheck
+	@if sed 1q $(srcdir)/NEWS | grep -e "$(VERSION)" > /dev/null; then :; else \
+	  echo "NEWS not updated; not releasing" 1>&2; \
+	  exit 1;				\
+	fi
+	cd $(srcdir) && cvs -q tag `echo "Release-$(VERSION)" | sed 's/\./-/g'`
+	$(MAKE) dist
+
+cvs-diff:
+	thisver=`echo "Release-$(VERSION)" | sed 's/\./-/g'`; \
+	if test -z "$$OLDVERSION"; then \
+	  prevno=`echo "$(VERSION)" - 0.01 | bc | sed 's/^\./0./'`; \
+	else prevno="$$OLDVERSION"; fi; \
+	prevver=Release-`echo $$prevno | sed 's/\./-/g'`; \
+	cvs -f rdiff -c -r $$prevver -r $$thisver $(PACKAGE) \
+	    > $(PACKAGE)-$$prevno-$(VERSION).diff

@@ -1,3 +1,12 @@
+1998-12-08  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
+
+	* README-alpha: adapted the release procedure from
+	  automake/HACKING.
+	* Makefile.am: adapted the cvs-dist and cvs-diff rules from
+	  automake/Makefile.am.  I guess this is probably safe to use
+	  already, but I didn't test it as it tags the CVS tree.  If
+	  it needs tweaking, we'll find out come 1.2d.
+
 1998-12-08  Thomas Tanner  <tanner@gmx.de>
 
 	* ltconfig.in: fixed some typos in archive_sym_cmds
