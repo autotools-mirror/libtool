@@ -1,6 +1,6 @@
 NEWS - list of user-visible changes between releases of GNU Libtool
 
-New in 1.3.1: 1999-05-??, Libtool team:
+New in 1.3.1: 1999-05-??, CVS version 1.3.0a, Libtool team:
 * New port to NEC UX/4800.
 * cygwin-b20.1 passes all tests.
 * Slightly improved BeOS support.
@@ -8,7 +8,7 @@ New in 1.3.1: 1999-05-??, Libtool team:
 * Pass unknown -L arguments through to the linker (for -LANG:* support).
 * Close a security hole with mode 777 directory during libltdl installation.
 * Fixed the infamous ``ifelse'' bug in libtool.m4
-
+
 New in 1.3: 1999-04-29, Libtool team:
 * This is just a summary of the changes since 1.2.
   See the news of intermediate alpha releases below for details.
