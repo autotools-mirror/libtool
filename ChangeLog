@@ -1,5 +1,7 @@
 2004-12-09  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* config/ltmain.m4sh: Set marker for insertion of shell functions.
+
 	* config/general.m4sh (func_quote_for_eval): Only fork if the
 	substitution matches.
 
