@@ -1,5 +1,16 @@
 1999-01-13  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* libltdl/configure.in (libltdl_cv_shlibext, LTDL_SHLIB_EXT):
+	system-dependent extension of shared libraries
+	(libltdl_cv_shlibpath_var, LTDL_SHLIBPATH_VAR): system-dependent
+	run-time shared library search path
+	* libltdl/ltdl.c (dldpre_init, dldpre_exit): unrelate init/exit
+	from add/remove symlists, so one may add dld_preloaded_symbols
+	from main(), when only a library will call dldpre_init
+	(lt_dlopen): use LTDL_SHLIBPATH_VAR, if defined, as secondary
+	search path.  Also, if a requested .la file cannot be found, try
+	with the LTDL_SHLIB_EXTension instead.
+
 	* ltmain.in (old_archives, oldobjs): use find to SYMDEF here too
 
 	* Makefile.am (@DIST_MAKEFILE_LIST@): `$' must be doubled
