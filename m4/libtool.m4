@@ -2793,21 +2793,16 @@ _LT_EOF
 
 /* The mapping between symbol names and symbols.  */
 const struct {
-  const char *originator;
-  const struct {
-    const char *name;
-    void       *address;
-  } symbols[[]];
+  const char *name;
+  void       *address;
 }
-lt__PROGRAM__LTX_preloaded_symbols =
+lt__PROGRAM__LTX_preloaded_symbols[[]] =
 {
-  "@PROGRAM@",
-  {
+  { "@PROGRAM@", (void *) 0 },
 _LT_EOF
 	  $SED "s/^$symcode$symcode* \(.*\) \(.*\)$/  {\"\2\", (void *) \&\2},/" < "$nlist" | $GREP -v main >> conftest.$ac_ext
 	  cat <<\_LT_EOF >> conftest.$ac_ext
   {0, (void *) 0}
-  }
 };
 
 /* This works around a problem in FreeBSD linker */

@@ -962,23 +962,18 @@ extern \"C\" {
 
 /* The mapping between symbol names and symbols.  */
 const struct {
-  const char *originator;
-  const struct {
-    const char *name;
-    void *address;
-  } symbols[];
+   const char *name;
+   void *address;
 }
-lt_${my_prefix}_LTX_preloaded_symbols =
+lt_${my_prefix}_LTX_preloaded_symbols[] =
 {\
-  \"$my_originator\",
-  {
+  { \"$my_originator\", (void *) 0 },
 "
 
 	  eval "$global_symbol_to_c_name_address" < "$nlist" >> "$output_objdir/$my_dlsyms"
 
 	  $echo >> "$output_objdir/$my_dlsyms" "\
   {0, (void *) 0}
-  }
 };
 
 /* This works around a problem in FreeBSD linker */

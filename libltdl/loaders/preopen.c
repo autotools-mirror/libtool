@@ -158,8 +158,8 @@ vm_open (lt_user_data loader_data, const char *filename)
 
   for (lists = preloaded_symlists; lists; lists = lists->next)
     {
-      const lt_dlsymbol *symbol;
-      for (symbol= lists->symlist->symbols; symbol->name; ++symbol)
+      const lt_dlsymlist *symbol;
+      for (symbol= lists->symlist; symbol->name; ++symbol)
 	{
 	  if (!symbol->address && streq (symbol->name, filename))
 	    {
@@ -192,10 +192,9 @@ vm_close (lt_user_data loader_data, lt_module module)
 static void *
 vm_sym (lt_user_data loader_data, lt_module module, const char *name)
 {
-  lt_dlsymlist	       *symlist = (lt_dlsymlist*) module;
-  const lt_dlsymbol    *symbol  = symlist->symbols;
+  lt_dlsymlist	       *symbol = (lt_dlsymlist*) module;
 
-  ++symbol;			/* Skip header. */
+  symbol +=2;			/* Skip header (originator then libname). */
 
   while (symbol->name)
     {
@@ -320,15 +319,16 @@ lt_dlpreload_open (const char *originator, lt_dlpreload_callback_func *func)
   for (list = preloaded_symlists; list; list = list->next)
     {
       /* ...that was preloaded by the requesting ORIGINATOR... */
-      if (streq (list->symlist->originator, originator))
+      if (streq (list->symlist->name, originator))
 	{
-	  const lt_dlsymbol *symbol;
+	  const lt_dlsymlist *symbol;
 	  unsigned int idx = 0;
 
 	  ++found;
 
-	  /* ...load the symbols per source compilation unit:  */
-	  while ((symbol = &list->symlist->symbols[idx++])->name != 0)
+	  /* ...load the symbols per source compilation unit:
+	     (we preincrement the index to skip over the originator entry)  */
+	  while ((symbol = &list->symlist[++idx])->name != 0)
 	    {
 	      if ((symbol->address == 0)
 		  && (strneq (symbol->name, "@PROGRAM@")))

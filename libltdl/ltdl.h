@@ -84,11 +84,6 @@ LT_SCOPE int	    lt_dlisresident	(lt_dlhandle handle);
 typedef struct {
   const char *name;
   void       *address;
-} lt_dlsymbol;
-
-typedef struct {
-  const char    *originator;
-  const lt_dlsymbol symbols[];
 } lt_dlsymlist;
 
 typedef int lt_dlpreload_callback_func (lt_dlhandle handle);
@@ -100,8 +95,8 @@ LT_SCOPE int	lt_dlpreload_open    (const char *originator,
 
 #define lt_preloaded_symbols	lt__PROGRAM__LTX_preloaded_symbols
 #define LTDL_SET_PRELOADED_SYMBOLS() 			LT_STMT_START{	\
-	extern const lt_dlsymlist lt_preloaded_symbols;			\
-	lt_dlpreload_default(&lt_preloaded_symbols);			\
+	extern const lt_dlsymlist lt_preloaded_symbols[];		\
+	lt_dlpreload_default(lt_preloaded_symbols);			\
 							}LT_STMT_END
 
 

@@ -1,5 +1,25 @@
 2004-09-01  Gary V. Vaughan  <gary@gnu.org>
 
+	Don't use C99 flexible array types as we want to be C89
+	compatible.  Instead, revert to the old way of doing things with
+	an array of symbol name vs. address, and adding the originator as
+	the first symbol but with a NULL address:
+
+	* config/ltmain.in (func_extract_dlsyms): Store originator as a
+	NULL address symbol.
+	* libltdl/ltdl.h (lt_dlsymbol): Removed.
+	(lt_dlsymlist): Remove originator field.
+	(LTDL_SET_PRELOADED_SYMBOLS): Adjust.
+	* libltdl/loaders/preopen.c (vm_open, lt_dlpreload_open): Adjust
+	for new types.
+	(vm_sym): Skip the new originator symbol when scanning symbol
+	names.
+	* m4/libtool.m4 (_LT_CMD_GLOBAL_SYMBOLS): Adjust preloaded symbols
+	test file to match.
+	* NEWS: Updated.
+
+2004-09-01  Gary V. Vaughan  <gary@gnu.org>
+
 	Libtool currently assumes that certain characteristics, such as
 	enable_shared, apply to the host architecture rather than per-
 	language.  Running the tests over a broken compiler can corrupt
