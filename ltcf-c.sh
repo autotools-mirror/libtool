@@ -671,10 +671,12 @@ if test "$enable_shared" = yes && test "$with_gcc" = yes; then
 	verstring=
 	output_objdir=.
 	libname=conftest
+	save_allow_undefined_flag=$allow_undefined_flag
 	allow_undefined_flag=
 	if { (eval echo ltcf-c.sh:need_lc: \"$archive_cmds\") 1>&5; (eval $archive_cmds) 2>&1 | grep " -lc " 1>&5 ; }; then
 	  need_lc=no
 	fi
+	allow_undefined_flag=$save_allow_undefined_flag
       else
 	cat conftest.err 1>&5
       fi
