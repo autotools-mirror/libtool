@@ -1,8 +1,8 @@
 #! /bin/sh
 
-# commit (GNU cvs-utils) version 0.10
-# Originally by Gary V. Vaughan <gary@gnu.org>
-# Pretty much rewritten by Alexandre Oliva <aoliva@redhat.com>
+# clcommit (GNU cvs-utils) version 0.11
+# Written by Gary V. Vaughan <gary@gnu.org>
+# and Alexandre Oliva <aoliva@redhat.com>
 
 # Copyright (C) 1999, 2000, 2004 Free Software Foundation, Inc.
 # This is free software; see the source for copying conditions.  There is NO
@@ -24,7 +24,7 @@
 # Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
 # MA 02111-1307, USA.
 
-# Usage: commit [-v] [-h] [-f] [-l] [-n] [-q] [-z N] [-C ChangeLog_file]
+# Usage: $progname [-v] [-h] [-f] [-l] [-n] [-q] [-z N] [-C ChangeLog_file]
 #          [-m msg|-F msg_file|-1] [-s addr [--from addr]] [--] [file|dir ...]
 
 # -C file --changelog=file   extract commit message from specified ChangeLog
@@ -66,297 +66,355 @@
 
 # Report bugs to <gary@gnu.org>
 
-name=commit
-: ${CVS=cvs}
-: ${SHELL=/bin/sh}
-: ${MAILNOTIFY=./mailnotify}
-cvsopt=
-updateopt=
-commitopt=
-dry_run=false
-commit=:
-update=:
-log_file="${TMPDIR-/tmp}/commitlog.$$"
-signature_file=
-first=false
-sendmail_to='Libtool Commit <libtool-commit@gnu.org>'
+: ${CVS="cvs"}
+: ${SHELL="/bin/sh"}
+: ${MAILNOTIFY="$SHELL ./mailnotify"}
+: ${MV="mv -f"}
+: ${RM="rm -f"}
+: ${SED="sed"}
+
+dirname="$SED s,/[^/]*$,,"
+basename="$SED s,^.*/,,g"
+
+# Work around backward compatibility issue on IRIX 6.5. On IRIX 6.4+, sh
+# is ksh but when the shell is invoked as "sh" and the current value of
+# the _XPG environment variable is not equal to 1 (one), the special
+# positional parameter $0, within a function call, is the name of the
+# function.
+progpath="$0"
+
+# The name of this program:
+progname=`echo "$progpath" | $basename`
+PROGRAM=clcommit
+
+# Global variables:
+EXIT_SUCCESS=0
+EXIT_FAILURE=1
+
+cvs_flags=
+update_flags=
+commit_flags=
+opt_commit=:
+opt_update=:
+opt_first=false
+
+sendmail_to="Libtool Commit <libtool-commit@gnu.org>"
 sendmail_from=
+exit_cmd=:
 
-my_sed_help='/^# Usage:/,/# Report bugs to/ {
-                s/^# //; s/^# *$//;
-		s/\$progname/'$progname'/;
-		p;
-	     }; d'
-my_sed_version='/^# '$name' (GNU /,/# warranty; / {
-	        s/^# //; s/^# *$//;
-	        s/\((C)\)[ 0-9,-]*\( [1-9][0-9]*\)/\1\2/;
-	        p;
-	     }; d'
+# Locations for important files
+signature_file=
+log_file="${TMPDIR-/tmp}/commitlog.$$"
 
-rm -f "${log_file}*"
-trap 'rm -f "${log_file}*"; exit 1' 1 2 15
+$RM "${log_file}*"
+trap '$RM "${log_file}*"; exit $EXIT_FAILURE' 1 2 15
 
 set -e
 
-# this just eases exit handling
-main_repeat=":"
-while $main_repeat; do
 
-repeat="test $# -gt 0"
-while $repeat; do
-    case "$1" in
-    --fast)
-        shift
-	set fnord --force --first ${1+"$@"}
-	shift
-	;;
-    -f|--force)
-	update=false
-	PAGER=cat
-	shift
-	;;
-    --from)
-	if test $# = 1; then
-	    echo "$name: missing argument for $1" >&2
-	    break
-	fi
-	shift
-	sendmail_from="$1"
-	shift
-	;;
-    -l|--local)
-	updateopt="$updateopt -l"
-	commitopt="$commitopt -l"
-	shift
-	;;
-    -m|--message|--msg)
-	if test $# = 1; then
-	    echo "$name: missing argument for $1" >&2
-	    break
-	fi
-	if $first || test -f "$log_file"; then
-	    echo "$name: you can have at most one of -m, -F and -1" >&2
-	    break
-	fi
-	shift
-	echo "$1" > "$log_file"
-	shift
-	;;
-    -F|--file)
-	if $first || test -f "$log_file"; then
-	    echo "$name: you can have at most one of -m, -F and -1" >&2
-	    break
-	fi
-	if test $# = 1; then
-	    echo "$name: missing argument for $1" >&2
-	    break
-	fi
-	shift
-	if cat < "$1" > "$log_file"; then :; else
-	    break
-	fi
-	shift
-	;;
-    -1|--first)
-        if test -f "$log_File"; then
-	    echo "$name: you can have at most one of -m, -F and -1" >&2
-	    break
-	fi
-	first=:
-	shift
-	;;
-    -C|--[cC]hange[lL]og)
-        if test $# = 1; then
-	    echo "$name: missing argument for $1" >&2
-	    break
-	fi
-	shift
-	if test ! -f "$1"; then
-	    echo "$name: ChangeLog file \`$1' does not exist" >&2
-	    break
-	fi
-	ChangeLog="$1"
-	shift
-	;;
-    -n|--dry-run)
-	commit=false
-	update=true
-	shift
-	;;
-    -q|--quiet)
-	cvsopt="$cvsopt -q"
-	shift
-	;;
-    -s|--sendmail)
-	if test $# = 1; then
-	    echo "$name: missing argument for $1" >&2
-	    break
-	fi
-	shift
-        sendmail_to="$1"
-	shift
-	;;
-    --signature)
-	if test $# = 1; then
-	    echo "$name: missing argument for $1" >&2
-	    break
-	fi
-	shift
-	signature_file="$HOME/.signature"
-	case $1 in
-	  -*) ;;
-	  *)  signature_file="$1"; shift ;;
-	esac
-	if test -f "$signature_file"; then :
-	else
-	    echo "$name: \`$signature_file': file not found"
-	    break
-	fi
-	;;
-    -z|--compress)
-	if test $# = 1; then
-	    echo "$name: missing argument for $1" >&2
-	    break
-	fi
-	case "$2" in
-	[0-9]) :;;
-	*)  echo "$name: invalid argument for $1" >&2
-	    break
-	    ;;
-	esac
-	cvsopt="$cvsopt -z$2"
-	shift
-	shift
-	;;
+# func_echo arg...
+# Echo program name prefixed message.
+func_echo ()
+{
+    echo $progname: ${1+"$@"}
+}
 
-    -m*|-F*|-C*|-s*|-z*)
-	opt=`echo "$1" | sed '1s/^\(..\).*$/\1/;q'`
-	arg=`echo "$1" | sed '1s/^-[a-zA-Z0-9]//'`
-	shift
-	set -- "$opt" "$arg" ${1+"$@"}
-	;;
-    --message=*|--msg=*|--from=*|--file=*|--[Cc]hange[Ll]og=*|--compress=*|--sendmail=*|--signature=*)
-	opt=`echo "$1" | sed '1s/^\(--[^=]*\)=.*/\1/;q'`
-    	arg=`echo "$1" | sed '1s/^--[^=]*=//'`
-	shift
-	set -- "$opt" "$arg" ${1+"$@"}
-	;;
+# func_error arg...
+# Echo program name prefixed message to standard error.
+func_error ()
+{
+    echo $progname: ${1+"$@"} 1>&2
+}
 
-    -v|--version)
-	sed "$my_sed_version" < $0
-	exit 0
-	;;
-    -\?|-h)
-	sed '/^# usage:/,/# -h/ { s/^# //; p; }; d' < $0 &&
-	echo
-	echo "run \`$name --help | more' for full usage"
-	exit 0
-	;;
-    --help)
-	sed "$my_sed_help" < $0
-	exit 0
-	;;
-    --)
-	shift
-	repeat=false
-	;;
-    -*)
-	echo "$name: invalid flag $1" >&2
-	break
-	;;
-    *)
-	repeat=false
-	;;
+# func_fatal_error arg...
+# Echo program name prefixed message to standard error, and exit.
+func_fatal_error ()
+{
+    func_error ${1+"$@"}
+    exit $EXIT_FAILURE
+}
+
+# func_verbose arg...
+# Echo program name prefixed message in verbose mode only.
+func_verbose ()
+{
+    $opt_verbose && func_error ${1+"$@"}
+}
+
+# func_fatal_help arg...
+# Echo program name prefixed message to standard error, followed by
+# a help hint, and exit.
+func_fatal_help ()
+{
+    func_error ${1+"$@"}
+    func_fatal_error "Try \`$progname --help' for more information."
+}
+
+# func_missing_arg argname
+# Echo program name prefixed message to standard error and set global
+# exit_cmd.
+func_missing_arg ()
+{
+   func_error "missing argument for $1"
+   exit_cmd=exit
+}
+
+# func_usage
+# Echo short help message to standard output and exit.
+func_usage ()
+{
+    $SED '/^# Usage:/,/# -h/ {
+        s/^# //; s/^# *$//;
+	s/\$progname/'$progname'/;
+	p;
+    }; d' < "$progpath"
+    echo
+    echo "run \`$progname --help | more' for full usage"
+    exit $EXIT_SUCCESS
+}
+
+# func_help
+# Echo long help message to standard output and exit.
+func_help ()
+{
+    $SED '/^# Usage:/,/# Report bugs to/ {
+        s/^# //; s/^# *$//;
+	s/\$progname/'$progname'/;
+	p;
+     }; d' < "$progpath"
+    exit $EXIT_SUCCESS
+}
+
+# func_version
+# Echo version message to standard output and exit.
+func_version ()
+{
+    $SED '/^# '$PROGRAM' (GNU /,/# warranty; / {
+        s/^# //; s/^# *$//;
+        s/\((C)\)[ 0-9,-]*\( [1-9][0-9]*\)/\1\2/;
+        p;
+     }; d' < "$progpath"
+     exit $EXIT_SUCCESS
+}
+
+# Parse options once, thoroughly.  This comes as soon as possible in
+# the script to make things like `libtoolize --version' happen quickly.
+{
+  # sed scripts:
+  my_sed_single_opt='1s/^\(..\).*$/\1/;q'
+  my_sed_single_rest='1s/^..\(.*\)$/\1/;q'
+  my_sed_long_opt='1s/^\(--[^=]*\)=.*/\1/;q'
+  my_sed_long_arg='1s/^--[^=]*=//'
+
+  # this just eases exit handling
+  while test $# -gt 0; do
+    opt="$1"
+    shift
+    case $opt in
+
+      --fast)		set -- --force --first ${1+"$@"}	;;
+
+      -f|--force)	opt_update=false; PAGER=cat		;;
+
+      --from)		test $# = 0 && func_missing_arg $opt && break
+			sendmail_from="$1"
+			shift
+			;;
+
+      -l|--local)	update_flags="$update_flags -l"
+			commit_flags="$commit_flags -l"
+			;;
+
+      -m|--message|--msg)
+			test $# = 0 && func_missing_arg $opt && break
+			if $opt_first || test -f "$log_file"; then
+			  func_error "you can have at most one of -m, -F and -1"
+			  break
+			fi
+			echo "$1" > "$log_file"
+			shift
+			;;
+
+      -F|--file)	test $# = 0 && func_missing_arg $opt && break
+			if $opt_first || test -f "$log_file"; then
+			  func_error "you can have at most one of -m, -F and -1"
+			  break
+			fi
+			if cat < "$1" > "$log_file"; then :; else
+			  break
+			fi
+			shift
+			;;
+
+      -1|--first)       if test -f "$log_File"; then
+	    		  func_error "you can have at most one of -m, -F and -1"
+			  break
+			fi
+			opt_first=:
+			;;
+
+      -C|--[cC]hange[lL]og)
+			test $# = 0 && func_missing_arg $opt && break
+			if test -f "$1"; then :; else
+			  func_error "ChangeLog file \`$1' does not exist"
+			  break
+			fi
+			ChangeLog="$1"
+			shift
+			;;
+
+      -n|--dry-run)	opt_commit=false; opt_update=:		;;
+
+      -q|--quiet)	cvs_flags="$cvs_flags -q"		;;
+
+      -s|--sendmail)	test $# = 0 && func_missing_arg $opt && break
+      			sendmail_to="$1"
+			shift
+			;;
+
+    --signature)	test $# = 0 && func_missing_arg $opt && break
+    			signature_file="$HOME/.signature"
+			case $1 in
+			  -*) ;;
+			  *)  signature_file="$1"; shift ;;
+			esac
+			if test -f "$signature_file"; then :; else
+			  func_error "\`$signature_file': file not found"
+			  break
+			fi
+			;;
+
+      -z|--compress)
+			test $# = 0 && func_missing_arg $opt && break
+			case "$1" in
+			  [0-9]) :;;
+			  *)  func_error "invalid argument for $opt"
+			      break
+			      ;;
+			esac
+			cvs_flags="$cvs_flags -z$1"
+			shift
+			;;
+
+      # Separate optargs to long options:
+      --message=*|--msg=*|--from=*|--file=*|--[Cc]hange[Ll]og=*|--compress=*|--sendmail=*|--signature=*)
+			arg=`echo "$opt" | $SED "$my_sed_long_arg"`
+			opt=`echo "$opt" | $SED "$my_sed_long_opt"`
+			set -- "$opt" "$arg" ${1+"$@"}
+			;;
+
+      # Separate optargs to short options:
+      -m*|-F*|-C*|-s*|-z*)
+			arg=`echo "$opt" |$SED "$my_sed_single_rest"`
+			opt=`echo "$opt" |$SED "$my_sed_single_opt"`
+			set -- "$opt" "$arg" ${1+"$@"}
+			;;
+
+      # Separate non-argument short options:
+      -f*|-1*|-n*|-q*)
+			rest=`echo "$opt" |$SED "$my_sed_single_rest"`
+			opt=`echo "$opt" |$SED "$my_sed_single_opt"`
+			set -- "$opt" "-$rest" ${1+"$@"}
+			;;
+
+      -\?|-h)		func_usage					;;
+      --help)		func_help					;;
+      --version)	func_version					;;
+      --)		break						;;
+      -*)		func_fatal_help "unrecognized option \`$opt'"	;;
+      *)		set -- "$opt" ${1+"$@"};	break		;;
     esac
-done
+  done
 
-if test -z "$sendmail_to"; then
+  if test -z "$sendmail_to"; then
+
     # can't have a from address without a destination address
     test -n "$sendmail_from" &&
-        echo "$name: can't use --from without --sendmail." >&2 && exit 1
+      func_error "can't use --from without --sendmail." && exit_cmd=exit
+
     # can't use a signature file without a destination address
     test -n "$signature_file" &&
-        echo "$name: can't use --signature without --sendmail," >&2 && exit 1
-fi
+      func_error "can't use --signature without --sendmail." && exit_cmd=exit
+  fi
 
-# might have used break 2 within the previous loop, but so what
-$repeat && break
+  # Bail if the options were screwed
+  $exit_cmd $EXIT_FAILURE
+}
 
-$update && \
-if echo "$name: checking for conflicts..." >&2
-   ($CVS $cvsopt -q -n update $updateopt ${1+"$@"} \
-    | while read line; do
-	echo "$line"
-	echo "$line" >&3
-      done | grep '^C') 3>&1 >/dev/null; then
-  echo "$name: some conflicts were found, aborting..." >&2
-  break
-fi
 
-if test ! -f "$log_file"; then
+$opt_update && {
+   func_error "$progname: checking for conflicts..."
+   if ( $CVS $cvs_flags -q -n update $update_flags ${1+"$@"} |
+          while read line; do
+	    echo "$line"
+	    echo "$line" >&3
+          done | grep '^C'
+      ) 3>&1 >/dev/null; then
+    func_fatal_error "some conflicts were found, aborting..."
+  fi
+}
+
+if test -f "$log_file"; then :; else
   if test -z "$ChangeLog"; then
     for f in ${1+"$@"}; do
       case "$f" in
-      ChangeLog* | */ChangeLog*)
-        if test -z "$ChangeLog"; then
+        ChangeLog* | */ChangeLog*)
+          if test -z "$ChangeLog"; then
 	    ChangeLog="$f"
-	else
-	    echo "$name: multiple ChangeLog files: $ChangeLog and $f" >&2
-	    break
-	fi
+	  else
+	    func_fatal_error "multiple ChangeLog files: $ChangeLog and $f"
+	  fi
 	;;
       esac
     done
   fi
 
-  echo "$name: checking commit message..." >&2
-  if $first; then
+  func_error "$progname: checking commit message..."
+  if $opt_first; then
     skipping=:
     sed 's,^,+,' < ${ChangeLog-ChangeLog} |
-    while read line; do
-      case "$line" in
-      "+") if $skipping; then skipping=false; else break; fi;;
-      "+ "*)
-	echo "$name: *** Warning: lines should start with tabs, not spaces; ignoring line:" >&2
-	echo "$line" | sed 's/^.//' >&2;;
-      "+	"*)
-        $skipping || echo "$line" ;;
-      esac
-    done |
-    sed 's,^\+	,,' > "$log_file" || break
+      while read line; do
+        case "$line" in
+          "+") if $skipping; then skipping=false; else break; fi;;
+          "+ "*)
+	    func_error "*** Warning: lines should start with tabs, not spaces; ignoring line:"
+	    echo "$line" | sed 's/^.//' >&2;;
+          "+	"*)
+            $skipping || echo "$line" ;;
+        esac
+      done |
+        sed 's,^\+	,,' > "$log_file" || exit $EXIT_FAILURE
   else
-    $CVS $cvsopt diff -u ${ChangeLog-ChangeLog} |
-    while read line; do
-      case $line in
-      "--- "*) :;;
-      "-"*)
-	echo "$name: *** Warning: the following line in ChangeLog diff is suspicious:" >&2
-	echo "$line" | sed 's/^.//' >&2;;
-      "+ "*)
-	echo "$name: *** Warning: lines should start with tabs, not spaces; ignoring line:" >&2
-	echo "$line" | sed 's/^.//' >&2;;
-      "+") echo;;
-      "+	"*) echo "$line";;
-      esac
-    done |
-    sed -e 's,\+	,,' -e '/./p' -e '/./d' -e '1d' -e '$d' > "$log_file" \
-    || break
+    $CVS $cvs_flags diff -u ${ChangeLog-ChangeLog} |
+      while read line; do
+        case $line in
+          "--- "*) :;;
+          "-"*)
+	    func_error "*** Warning: the following line in ChangeLog diff is suspicious:"
+	    echo "$line" | sed 's/^.//' >&2;;
+          "+ "*)
+	    func_error "*** Warning: lines should start with tabs, not spaces; ignoring line:"
+	    echo "$line" | sed 's/^.//' >&2;;
+          "+") echo ;;
+          "+	"*) echo "$line";;
+        esac
+      done |
+        sed -e 's,\+	,,' -e '/./p' -e '/./d' -e '1d' -e '$d' > "$log_file" \
+    || exit $EXIT_FAILURE
   fi
-# The sed script above removes "+TAB" from the beginning of a line, then
-# deletes the first and/or the last line, when they happen to be empty
+  # The sed script above removes "+TAB" from the beginning of a line, then
+  # deletes the first and/or the last line, when they happen to be empty
 fi
 
-if grep '[^ 	]' < "$log_file" > /dev/null; then :; else
-  echo "$name: empty commit message, aborting" >&2
-  break
-fi
+grep '[^ 	]' < "$log_file" > /dev/null ||
+  func_fatal_error "empty commit message, aborting"
 
 if grep '^$' < "$log_file" > /dev/null; then
-  echo "$name: *** Warning: blank lines should not appear within commit messages." >&2
-  echo "$name: *** They should be used to separate distinct commits." >&2
+  func_error "*** Warning: blank lines should not appear within commit messages."
+  func_error "*** They should be used to separate distinct commits."
 fi
 
-${PAGER-more} "$log_file" || break
+${PAGER-more} "$log_file" || exit $EXIT_FAILURE
 
 sleep 1 # give the user some time for a ^C
 
@@ -365,24 +423,21 @@ filelist=`cvs -nq up 2>/dev/null | grep '^[MAD] ' | sed 's/^. //'`
 # Do not check for empty $log_file again, even though the user might have
 # zeroed it out.  If s/he did, it was probably intentional.
 
-if $commit; then
-  $CVS $cvsopt commit $commitopt -F $log_file ${1+"$@"} || break
+if $opt_commit; then
+  $CVS $cvs_flags commit $commit_flags -F $log_file ${1+"$@"} || exit $EXIT_FAILURE
 fi
-
-main_repeat=false
-done
 
 # Send a copy of the log_file if sendmail_to was set:
 if test -n "$sendmail_to"; then
   notify_file="${log_file}.2"
-  echo "$name: Mailing commit notification to $sendmail_to" >&2
+  func_error "Mailing commit notification to $sendmail_to"
   test $# -gt 0 && filelist="$@"
 
   {
     test -f CVS/Root &&
         echo "CVSROOT:	`sed -e 's,.*:,,g' CVS/Root`"
-    test -f ./mkstamp &&
-        echo "TIMESTAMP: 	`$SHELL ./mkstamp < ./ChangeLog`"
+    test -f ./config/mkstamp &&
+        echo "TIMESTAMP:	`./config/mkstamp < ./ChangeLog`"
     test -f CVS/Repository &&
         echo "Module name:	`cat CVS/Repository`"
     test -f CVS/Tag &&
@@ -393,17 +448,20 @@ if test -n "$sendmail_to"; then
     echo "Log Message:"
     sed -e 's,^,	,' "$log_file"
     test -f "$signature_file" && cat "$signature_file"
-  } >> "$notify_file"
+  } > "$notify_file"
 
   if test -n "$sendmail_from"; then
-    $SHELL $MAILNOTIFY -F "$sendmail_from" -s "`echo $filelist`" -f "$notify_file" -m "text/plain" "$sendmail_to"
+    $MAILNOTIFY -F "$sendmail_from" -s "`echo $filelist`" -f "$notify_file" -m "text/plain" "$sendmail_to"
   else
-    $SHELL $MAILNOTIFY -s "`echo $filelist`" -f "$notify_file" -m "text/plain" "$sendmail_to"
+    $MAILNOTIFY -s "`echo $filelist`" -f "$notify_file" -m "text/plain" "$sendmail_to"
   fi
 fi
 
-rm -f "${log_file}*"
+$RM "${log_file}*"
 
-# if main_repeat was not set to `false', we failed
-$main_repeat && exit 1
-exit 0
+exit $EXIT_SUCCESS
+
+# Local Variables:
+# mode:shell-script
+# sh-indentation:2
+# End:
