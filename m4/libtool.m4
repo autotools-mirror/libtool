@@ -557,7 +557,6 @@ _LT_EOF
 # C support is built-in for now
 m4_define([_LT_LANG_C_enabled], [])
 m4_define([_LT_TAGS], [])
-m4_define([_LT_LANG_DEFAULT], [AUTO])
 
 # LT_LANG(LANG)
 # -------------
@@ -586,38 +585,32 @@ m4_define([_LT_LANG],
 # _LT_LANG_DEFAULT_CONFIG
 # -----------------------
 m4_define([_LT_LANG_DEFAULT_CONFIG],
-[m4_case(m4_defn([_LT_LANG_DEFAULT]),
-  [NONE], [m4_define([_LT_TAGS], [])],
-  [ALL],  [m4_foreach(LT_Lang, [CXX, GCJ, F77, RC], [LT_LANG(LT_Lang)])],
-  [AUTO], [
-    AC_PROVIDE_IFELSE([AC_PROG_CXX],
-      [LT_LANG(CXX)],
-      [m4_define([AC_PROG_CXX], defn([AC_PROG_CXX])[LT_LANG(CXX)])])
+[AC_PROVIDE_IFELSE([AC_PROG_CXX],
+  [LT_LANG(CXX)],
+  [m4_define([AC_PROG_CXX], defn([AC_PROG_CXX])[LT_LANG(CXX)])])
 
-    AC_PROVIDE_IFELSE([AC_PROG_F77],
-      [LT_LANG(F77)],
-      [m4_define([AC_PROG_F77], defn([AC_PROG_F77])[LT_LANG(F77)])])
+AC_PROVIDE_IFELSE([AC_PROG_F77],
+  [LT_LANG(F77)],
+  [m4_define([AC_PROG_F77], defn([AC_PROG_F77])[LT_LANG(F77)])])
 
-    dnl The call to [A][M_PROG_GCJ] is quoted like that to stop aclocal
-    dnl pulling things in needlessly.
-    AC_PROVIDE_IFELSE([AC_PROG_GCJ],
+dnl The call to [A][M_PROG_GCJ] is quoted like that to stop aclocal
+dnl pulling things in needlessly.
+AC_PROVIDE_IFELSE([AC_PROG_GCJ],
+  [LT_LANG(GCJ)],
+  [AC_PROVIDE_IFELSE([A][M_PROG_GCJ],
+    [LT_LANG(GCJ)],
+    [AC_PROVIDE_IFELSE([LT_PROG_GCJ],
       [LT_LANG(GCJ)],
-      [AC_PROVIDE_IFELSE([A][M_PROG_GCJ],
-	[LT_LANG(GCJ)],
-	[AC_PROVIDE_IFELSE([LT_PROG_GCJ],
-	  [LT_LANG(GCJ)],
-	  [m4_ifdef([AC_PROG_GCJ],
-	    [m4_define([AC_PROG_GCJ], defn([AC_PROG_GCJ])[LT_LANG(GCJ)])])
-	   m4_ifdef([A][M_PROG_GCJ],
-	    [m4_define([A][M_PROG_GCJ], defn([A][M_PROG_GCJ])[LT_LANG(GCJ)])])
-	   m4_ifdef([LT_PROG_GCJ],
-	    [m4_define([LT_PROG_GCJ], defn([LT_PROG_GCJ])[LT_LANG(GCJ)])])])])])
+      [m4_ifdef([AC_PROG_GCJ],
+	[m4_define([AC_PROG_GCJ], defn([AC_PROG_GCJ])[LT_LANG(GCJ)])])
+       m4_ifdef([A][M_PROG_GCJ],
+	[m4_define([A][M_PROG_GCJ], defn([A][M_PROG_GCJ])[LT_LANG(GCJ)])])
+       m4_ifdef([LT_PROG_GCJ],
+	[m4_define([LT_PROG_GCJ], defn([LT_PROG_GCJ])[LT_LANG(GCJ)])])])])])
 
-    AC_PROVIDE_IFELSE([LT_PROG_RC],
-      [LT_LANG(RC)],
-      [m4_define([LT_PROG_RC], defn([LT_PROG_RC])[LT_LANG(RC)])])
-  ],
-  [])dnl
+AC_PROVIDE_IFELSE([LT_PROG_RC],
+  [LT_LANG(RC)],
+  [m4_define([LT_PROG_RC], defn([LT_PROG_RC])[LT_LANG(RC)])])
 ])# _LT_LANG_DEFAULT_CONFIG
 
 # Obsolete macros

@@ -1831,23 +1831,6 @@ Change the default behaviour of @command{libtool} to try to use only
 non-PIC objects.  The user may still override this default by
 specifying @samp{--without-pic} to @command{configure}.
 
-@item no-lang
-Change the default list of additional languages @command{libtool} supports
-to none, only the built-in C language support will be enabled.  Additional
-languages such as C++ will only be enabled if appropriate @code{LT_LANG}
-macros are added to your @file{configure.ac}.
-
-@item all-lang
-Change the default list of additional languages @command{libtool} supports
-to all that the host system supports.
-
-@item auto-lang
-Change the default list of additional languages @command{libtool} supports
-to be determined automatically by detecting macros such as
-@code{AC_PROG_CXX} in your @file{configure.ac}.  Additional languages can
-be added by adding appropriate @code{LT_LANG} macros to your
-@file{configure.ac}.
-
 @end itemize
 
 @end defmac
@@ -1855,13 +1838,28 @@ be added by adding appropriate @code{LT_LANG} macros to your
 @defmac LT_LANG (@var{LANGUAGE})
 Enable @command{libtool} support for the language given if it
 has not yet already been enabled.  Languages accepted are "C++",
-"Fortran 77", "Java" and "Windows Resource"@footnote{These may also be
-referred to by their generated tag names, "CXX", "F77", "GCJ" and "RC".}.
+"Fortran 77", "Java" and "Windows Resource".
 
-By default, the set of languages @command{libtool} will support is
-determined automatically by detected macros such as @code{AC_PROG_CXX}
-in your @file{configure.ac}.  This behaviour may be changed by passing
-either the "no-lang" or "all-lang" options to @code{LT_INIT}.
+If Autoconf language support macros such as @code{AC_PROG_CXX} are
+used in your @file{configure.ac}, Libtool language support will automatically
+be enabled.
+
+Conversely using @code{LT_LANG} to enable language support for Libtool
+will automatically enable Autoconf language support as well.
+
+Both of the following examples are therefore valid ways of adding C++
+languge support to Libtool.
+
+@example
+LT_INIT
+LT_LANG(C++)
+@end example
+
+@example
+LT_INIT
+AC_PROG_CXX
+@end example
+
 @end defmac
 
 The tests in @code{LT_INIT} also recognize the following

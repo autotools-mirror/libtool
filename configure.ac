@@ -155,11 +155,10 @@ AC_PROG_LD
 AC_PROG_NM
 AC_PROG_LN_S
 
-# Other languages get automatically inferred by the all-lang option passed
-# to LT_INIT below, however the Autoconf tests for C++ and Fortran 77
-# sometimes call AC_MSG_ERROR and we don't want that to be an error while
-# creating the libtool script, as these macros are AC_REQUIREd we can simply
-# call them here and catch the errors.
+# The Autoconf tests for C++ and Fortran 77 sometimes call AC_MSG_ERROR
+# and we don't want that to be an error whilst creating the libtool script.
+# As these are AC_REQUIREd inside libtool.m4 we can simply call them here
+# and catch the errors now.
 pushdef([AC_MSG_ERROR], [caught_CXX_error=yes])
 AC_PROG_CXX
 AC_PROG_CXXCPP
@@ -175,8 +174,14 @@ popdef([AC_MSG_ERROR])
 ## ----------------------- ##
 AC_CONFIG_FILES([config/ltmain.sh:./ltmain.in])
 AC_CONFIG_FILES([libtoolize], [chmod a+x libtoolize])
-LT_INIT([dlopen win32-dll all-lang])
+LT_INIT([dlopen win32-dll])
 AC_LIB_LTDL
+
+# Enable all the language support we can
+LT_LANG(C++)
+LT_LANG(Fortran 77)
+LT_LANG(Java)
+LT_LANG(Windows Resource)
 
 
 ## --------------------------- ##

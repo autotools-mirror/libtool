@@ -1,3 +1,14 @@
+2004-04-15  Scott James Remnant  <scott@netsplit.com>
+
+	* m4/libtool.m4 (_LT_LANG_DEFAULT_CONFIG): Remove code to handle 'none'
+	and 'all' options, this now always assumes automatic mode as that
+	works so well.
+	(_LT_LANG_DEFAULT): Remove definition
+	* m4/ltoptions.m4: Remove 'no-lang', 'auto-lang' and 'all-lang' options.
+	* configure.ac: Invoke LT_LANG for each desired supported language.
+	* doc/libtool.texi: Remove documentation for the LT_INIT options,
+	rewrite LT_LANG documentation.
+	
 2004-04-14  Alexandre Duret-Lutz  <adl@gnu.org>
 
 	* bootstrap: Delete acinclude.m4.
