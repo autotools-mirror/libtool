@@ -1,3 +1,9 @@
+1999-01-06  Thomas Tanner  <tanner@gmx.de>
+
+	* ChangeLog: merged with tests/ChangeLog
+	* libltdl/ltdl.c: assigned copyright to the FSF
+	* libltdl/ltdl.h, mdemo/foo*,main.c: likewise
+	
 1999-01-06  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
 	
 	* ltmain.in (dllsearchpath): add absolute directory paths to
@@ -664,6 +670,10 @@
 
 	* ltmain.in (output_objdir): compute it from $output, not $arg
 
+	* tests/mdemo-inst.test (libltdl): install it
+	* tests/mdemo-unst.test (libltdl): uninstall it
+	* tests/Makefile.am (TESTS): list ltdl-unst.test before mdemo-conf.test
+
 1998-11-18  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* NEWS: -module and libtldl
@@ -760,6 +770,9 @@
 	* ltmain.in: add --fallback-echo
 	(qecho) ensure that, if --falback-echo is being used, qecho is
 	defined with the full pathname of the libtool script
+
+	* tests/sh.test (test X): ensure that the double-quote supposed to be
+	reported is really reported
 
 1998-11-07  Thomas Tanner  <tanner@gmx.de>
 
@@ -1091,6 +1104,8 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 	* ltconfig.in (echo): Rewrite the test for a working echo so that
 	we win on Solaris by avoiding printf(1), if possible.
 
+	* tests/quote.test (echo): Update the echo test from ../ltconfig.in.
+
 1998-04-13  Ian Lance Taylor  <ian@cygnus.com>
 
 	* libtool.m4 (AM_PROG_NM): Don't override NM in the environment.
@@ -1193,6 +1208,11 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 	speed by a factor of 5.  So, I've eliminated here docs from the
 	all-important ltmain.in.  From Tom Lane.
 
+	* tests/tlibtool: Eliminate from distribution.
+
+	* tests/defs (libtool): Don't use tlibtool anymore, since we can now use
+	the generated libtool directly.
+
 1998-03-07  Gordon Matzigkeit  <gord@profitpress.com>
 
 	* ltconfig.in: Copy the contents of ltmain.sh into the generated
@@ -1243,6 +1263,16 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 	scripts are rebuilt and installed in srcdir only when necessary.
 	Reported by Stephan Kulow.
 
+	* tests/sh.test (scripts): Remove the lineno script, since it is no
+	longer distributed.
+
+	* tests/assign.test, if.test, test-e.test: Even though 15 tests looks
+ 	impressive, these are now redundant.  Remove them from the
+ 	distribution.
+
+	* tests/sh.test: Do what assign.test, if.test, and test-e.test used to
+ 	do.
+
 1998-02-16  Gordon Matzigkeit  <gord@profitpress.com>
 
 	* libtool.m4, ltmain.in, ltconfig.in: Correctly identify absolute
@@ -1255,6 +1285,9 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 	determine if they were libtool-generated.  This prevents egrep(1)
 	from taking forever to look at a 10MB binary on Solaris.  From
 	Stephan Kulow.
+
+	* tests/defs: Correctly identify absolute directory names on MS-DOS.
+  	Suggested by Bob Friesenhahn.
 
 1998-02-11  Gordon Matzigkeit  <gord@profitpress.com>
 
@@ -1277,6 +1310,9 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 	configure script.  This works a lot better than the old
 	`enable_shared' and `enable_static' variables did.  Reported by
 	Bob Friesenhahn.
+
+	* tests/suffix.test (extensions): Added GNAT (GNU Ada Translator)
+	suffices, `.ada', `.ads', `.adb'.  From Samuel Tardieu.
 
 1998-02-07  Samuel Tardieu  <sam@inf.enst.fr>
 
@@ -1327,6 +1363,11 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 	the library using the `-release' flag.  Suggested by H.J. Lu and
 	Ian Lance Taylor.
 
+1998-01-23  Gordon Matzigkeit  <gord@profitpress.com>
+
+	* tests/Makefile.am (TESTS_ENVIRONMENT): Export some important
+	environment variables.  Reported by Ian Haggard.
+
 1998-01-19  Gordon Matzigkeit  <gord@profitpress.com>
 
 	* ltconfig.in (old_postuninstall_cmds): Reorder so that chmod
@@ -1341,6 +1382,9 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 
 	* ltmain.in (compile): Recognize `.asm' extension, for use with
 	the nasm assembler.  From Markus F.X.J. Oberhumer.
+
+	* tests/suffix.test (extensions): Recognize `.asm'.  From Markus
+	F.X.J. Oberhumer.
 
 1998-01-12  Gordon Matzigkeit  <gord@profitpress.com>
 
@@ -1405,6 +1449,9 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 
 	* ltconfig.in (link_static_flag): Don't quote ${wl} on HP-UX
 	because link_static_flag is never evaled.  From Eric Backus.
+
+	* tests/suffix.test (extensions): Recognize `.s'.  From Markus
+	F.X.J. Oberhumer.
 
 1997-12-01  Gordon Matzigkeit  <gord@gnu.org>
 
@@ -1516,6 +1563,8 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 
 	* ltconfig.in, ltmain.in (sed_quote_subst): Oops.  We forgot to
 	quote backticks.  Reported by Joop van de Wege.
+
+	* tests/quote.test: Add backticks to the backslashify test.
 
 1997-11-09  Gordon Matzigkeit  <gord@gnu.org>
 
@@ -1661,6 +1710,9 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 	* demo/Makefile.am (hc-libflag): Add rules to make this binary for
 	hardcode.test.
 
+	* tests/hardcode.test (hardcode_libdir_flag_spec): Check the hardcoding
+	properties of the flag_spec, too.
+
 1997-09-24  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltconfig.in (LD): As with libtool.m4, don't override LD.
@@ -1675,6 +1727,9 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 	* libtool.m4, ltconfig.in (NM): Arguments to the for loop must be
 	whitespace separated.  This fixes a bug under FreeBSD's /bin/sh.
 	From George Scott.
+
+	* tests/defs, tests/Makefile.am (clean-local): Change =inst to 
+	_inst to fix portability on MS-DOS.  From Robert Hoehne.
 
 1997-09-20  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
@@ -1691,6 +1746,9 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 	* demo/Makefile.am, ltmain.in, tests/hardcode.test (objdir):
 	Changed objdir variable .libs to _libs.  This is another MS-DOS
 	portability fix.  Suggested by Robert Hoehne.
+
+	* tests/hardcode.test (objdir): New variable to simplify change from
+	.libs to _libs (MS-DOS portability fix).
 
 1997-09-13  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
@@ -1731,6 +1789,17 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 	(global_symbol_pipe): Delete symbols that are not valid C
 	identifiers.  Reported by Johan Danielsson and Bengt Martensson.
 
+	* tests/demo-exec.test, tests/demo-inst.test: Change references from
+	hell.static to hell.debug.
+
+	* tests/quote.test (echo): Add the same Digital Unix echo test fixes as
+	the ones to ltmain.sh.in from Todd Kover.
+
+	* tests/if.test, tests/test-e.test (scripts): Add ../lineno to 
+	the scripts we check.
+	* tests/if.test: Check for accidental use of test X$something rather
+	than test "X$something".
+
 1997-09-04  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltmain.sh.in (echo): Quote all the uses of `echo' in all eval
@@ -1743,6 +1812,9 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 	* ltmain.sh.in (echo): Change test to one that uses printf.
 	This works on AIX, which has the same problems that Solaris does,
 	but no working echo program.
+
+	* tests/quote.test (echo): Change test to version that uses printf.
+	Be less strict about return results.
 
 1997-08-27  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
@@ -1766,11 +1838,16 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 	* ltmain.sh.in (link): Quote finalize_command before putting it in
 	the wrapper script.
 
+	* tests/quote.test (echo): Add the test for a non-backslash-mangling
+	echo.
+
 1997-08-26  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltmain.sh.in (sed_quote_subst): Change the quoting procedure
 	again.  I think that the new one is robust for *all* characters,
 	including whitespace and metacharacters.
+
+	* tests/quote.test: New torture test for libtool metacharacter quoting.
 
 1997-08-25  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
@@ -1817,6 +1894,8 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 	(compile): Suppress error output from the second compilation (if
 	any) so that we don't get those frustrating duplicate error
 	messages.
+
+	* tests/suffix.test (extensions): Added Objective C extension, `.m'.
 
 1997-08-12  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
@@ -1898,6 +1977,9 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 	* ltconfig.in (no_builtin_flag): New flag to turn off builtin
 	functions when compiling an object file.
 	(pipe_works): Use it.
+
+	* tests/demo-exec.test (status): Use status variables so that we try to
+	execute all the programs.
 
 1997-07-23  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
@@ -1987,6 +2069,9 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 	(link): Make sure $export_dynamic_flag is eval'ed before it is
 	used.
 
+	* tests/demo-exec.test, tests/demo-inst.test: Check the new 
+	helldl program,	too.
+
 1997-07-11  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* libtool.spec: New Red Hat Package Manager specification file in
@@ -1995,6 +2080,9 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 	* ltmain.sh.in: Eliminate two accidental uses of the NONE magic
 	value.  These were breaking libtool's behaviour when no mode is
 	specified.
+
+	* tests/nomode.test: New test to make sure there is correct behaviour
+ 	when we don't specify a mode.
 
 1997-07-08  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
@@ -2043,6 +2131,10 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 	Linux.  This helps superusers who haven't set their PATH
 	correctly.  Suggested by Kenneth Albanowski.
 
+	* tests/if.test: New test to make sure that we haven't forgotten to
+	follow an `if' statement with a `test' command.  This should avoid
+	the majority of hard-to-track bugs.
+
 1997-06-29  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltmain.sh.in: Change all the `eval "$run ..."' sequences to
@@ -2082,6 +2174,17 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 	* ltmain.sh.in (install): Add a missing `test' command.  Reported
 	by Joel Weber.
 	Miscellaneous fixes to improve robustness.  From Alexandre Oliva.
+
+	* tests/demo-conf.test (CONFIG_SITE): Set to /dev/null, so that the
+	config.site file doesn't mess up our prefix.  Reported by Joel
+	Weber.
+
+	* tests/demo-inst.test: Always run both hell.static and hell.
+
+	* tests/demo-conf.test: Always remove the local config.cache, but run
+	`make distclean' only if the Makefile exists.  Otherwise, the demo
+	directory is not cleaned up if a user uses their own config.cache.
+	Reported by Joel Weber.
 
 1997-06-14  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
@@ -2197,6 +2300,13 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 	* ltconfig.in: Temporary measures to check for a broken collect2
 	program.  Right now, we just see if we're using GCC on AIX 3.
 
+	* tests/hardcode.test: AIX also has arbitrary limits on the line length
+	of input to fgrep(1), so we need to translate NUL characters to
+	newlines in order to properly detect embedded `.libs'.  From Bruno
+	Haible.
+	Also redirect stderr to /dev/null, so that AIX users don't get
+	worried by `fgrep: Maximum line length of 2048 exceeded.'.
+
 1997-04-13  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltmain.sh.in (mode): Use `egrep -e' when inferring the operation
@@ -2282,6 +2392,9 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 
 	* ltconfig.in (verify_host): Remove redundant `Transform *-*-linux*
 	to *-*-linux-gnu*'.  From Bruno Haible.
+
+	* tests/hardcode.test: AIX 3 doesn't have strings(1) so we need to do a
+	funny tr and pipe the output to fgrep.  From Bruno Haible.
 
 1997-03-31  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
@@ -2424,6 +2537,12 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 	hardcode_libdir_flag.
 	(hardcode_action): New variable to simplify ltmain.sh.
 
+	* tests/Makefile.am (TESTS): Do the full make sequence with
+	--disable-shared, then without.
+
+	* tests/demo-sttc.test: Configure the demo directory with
+	--disable-shared.
+
 1997-01-29  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltmain.sh.in: Change to take advantage of linkers that don't
@@ -2438,11 +2557,18 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 	* demo/foo.c (foo): Change to use the `cos' function, so that we
 	need to link against another library.
 
+	* tests/hardcode.test: Rewrite to use fgrep on output from ``strings
+ 	-a'' if using fgrep directly on the binary files fails.  From Mark
+ 	Kettenis.
+
 1997-01-28  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltmain.sh.in (link): Export the PATH variable in order to find
 	the program, rather than giving a full path.  This helps give the
 	program a less confusing value for argv[0].
+
+	* tests/hardcode.test: Make sure that ../demo/libhello.la really is a
+	shared library before running hardcoding tests.
 
 1997-01-26  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
@@ -2471,6 +2597,16 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 	OSF/1, fix definitions of hardcode_* variables.
 	(archive_cmds): Fix not to use +h on HP-UX 9.x.  Reported by Bruno
 	Haible.
+
+	* tests/demo-conf.test: Use the CONFIG_SHELL environment variable when
+ 	running configure in the demo directory.  From Bruno Haible.
+
+	* tests/Makefile.am (clean-local): Make distclean in the demo directory,
+	so that ``make clean; env CC=cc make check'' works as one would
+	expect.
+
+	* tests/demo-make.test: Fix typo (use $make instead of make).  Reported
+ 	by Akim Demaille.
 
 1997-01-17  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
@@ -2510,12 +2646,31 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 	then retry without it, but still use the .a versions of
 	uninstalled libtool archives.
 
+	* tests/tlibtool: Rewrote to grab all the settings from the generated
+	libtool script.
+
+	* tests/hardcode.test: Make allowances if shlibpath_var cannot be used
+	to find libraries at link time, such as on AIX.
+
 1997-01-15  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltmain.sh.in (link): Eval $link_static_flag.  Reported by Bruno
 	Haible.
 
 	* PLATFORMS: Add to distribution.  Suggested by Bruno Haible.
+
+1997-01-14  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* tests/demo-conf.test, tests/demo-inst.test, tests/demo-unst.test, 
+	tests/hardcode.test:
+ 	Use $make instead of make.
+
+	* tests/defs (make): Add definition of $make that uses the $MAKE
+	environment variable, if set.  Suggested by Bruno Haible.
+
+	* tests/demo-unst.test (leftovers): Change the find command to ignore
+	files beginning with a dot, as egrep -v doesn't seem to do the
+	trick.  Reported by Bruno Haible.
 
 1997-01-13  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
@@ -2525,6 +2680,9 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 	(can_build_shared): Initialize at the top of the file, so that
 	shared libraries aren't built on platforms that don't support
 	them.
+
+	* tests/hardcode.test: Added a test to make sure that libtool's idea of
+	hardcoding system linkers is correct.
 
 1997-01-11  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
@@ -2547,10 +2705,23 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 	* ltmain.sh.in (link): On at least SunOS, /bin/sh doesn't
 	understand "export something=val".  From Bruno Haible.
 
+	* tests/Makefile.am (distclean-local): Remove all files that the tests
+	may have created.  Reported by Bruno Haible.
+
+	* For all tests, discover srcdir when running from the command
+	line.
+
+	* tests/demo-unst.test: Don't fail if make uninstall doesn't delete
+ 	files beginning with a dot, since spurious .nfsXXX files may be
+ 	present when running NFS.  Reported by Bruno Haible.
+
 1997-01-02  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltmain.sh.in (compile): Recognize valid source file suffixes for
 	Fortran and C++.
+
+	* tests/suffix.test: New test to guarantee that libtool compile
+ 	recognizes valid source file suffices.
 
 1996-12-17  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
@@ -2601,6 +2772,13 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 	* ltmain.sh.in: Don't force people to use libNAME.la: SOMETHING.la
 	is good enough (for consistency with *.a handling).
 
+	* tests/demo.test: Break up into demo-conf.test, demo-make.test,
+	demo-exec.test, demo-inst.test, and demo-unst.test, so that passes
+	and failures are reported more quickly.
+
+	* tests/link-2.test: Test to make sure that .lo files don't get built
+	directly into programs.
+
 1996-12-07  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltmain.sh.in (link): Accept files ending in .a as standard
@@ -2611,6 +2789,11 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 
 	* ltconfig.in (thisdir): How embarrassing!  An error in the regexp
 	for finding the directory component of the script path.
+
+	* tests/tlibtool: A typically-configured libtool script, that uses
+	../ltmain.sh.in for its backend.
+
+	* tests/link.test: Make sure that it is legal to link against .a files.
 
 1996-12-05  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
@@ -2639,6 +2822,14 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 
 	* ltconfig.in (old_striplib): Do a configuration test to determine
 	if old-style libraries actually can be stripped or not.
+
+1996-12-02  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* tests/demo.test: Try compiling the ../demo subdirectory, with no
+	special options.
+
+	* test-e.test: Check that we haven't used `test -e' anywhere in
+	our portable shell scripts.
 
 1996-12-02  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
