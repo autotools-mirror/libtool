@@ -1,3 +1,11 @@
+2004-01-03  Stefan Nordhausen  <nordhaus@informatik.hu-berlin.de>
+	Scott James Remnant  <scott@netsplit.com>
+
+	* m4/ltmain.in: Don't use the mkdir -p option when creating a
+	temporary output directory so a symlink attack can't be used to
+	arbitrarily chmod other directories on the system if libtool
+	gets run as root.
+
 2004-01-02  Peter O'Gorman  <peter@pogma.com>
 
 	* m4/libtool.m4: Ensure that ${ZSH_VERSION+set} is properly escaped.
