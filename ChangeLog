@@ -1,3 +1,11 @@
+2004-10-26  Gary Vaughan <gary@gnu.org>
+
+	* config/ltmain.in (func_mode_link): When linking an installed
+	libtool library on the command line using -lfoo we need to find
+	the library in the search paths and add it's dependency_libs to
+	the link in the conv pass so that any libtool libs listed are
+	correctly expanded in the link pass.
+
 2004-09-19  Peter O'Gorman  <peter@pogma.com>
 
 	* configure.ac: Bump version to 1.5.11a.
