@@ -1,5 +1,7 @@
 2001-04-25  Gary V. Vaughan  <gvv@techie.com>
 
+	* configure.in: bumped version to 1.4a.
+
 	GNU libtool 1.4 was released.
 
 	* configure.in: Bumped version to 1.4.
