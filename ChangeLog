@@ -1,3 +1,14 @@
+2000-05-27  Ossama Othman  <ossama@debian.org>
+
+	* ltmain.in: Make sure $arg is set when linking `.lo' files into a
+	program.  Moved tag decision code after check for recognized
+	source file extension (fixes "suffix" test failure).  Merged
+	Rhapsody support from main trunk.
+	(output_obj) Added missing '$' before "echo" command (fixes "sh"
+	test failure).
+	* tests/suffix.test: Corrected typo in error message, and improved
+	the message.
+
 2000-05-27  Gary V. Vaughan  <gvv@techie.com>
 
 	* README-alpha: note new location of config.(guess|sub).

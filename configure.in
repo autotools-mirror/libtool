@@ -59,7 +59,7 @@ popdef([AC_MSG_ERROR])
 AM_CONDITIONAL(HAVE_CXX, [test "x$CXX" != xno])
 
 pushdef([AC_MSG_ERROR], [GCJ=no])
-AM_PROG_GCJ
+#AM_PROG_GCJ
 popdef([AC_MSG_ERROR])
 AM_CONDITIONAL(HAVE_GCJ, [test "x$GCJ" != xno])
 

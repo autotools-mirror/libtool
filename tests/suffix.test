@@ -29,7 +29,7 @@ done
 for name in $bad_names; do
   if ($libtool -n --mode=compile compiler -c $name 2>&1; exit 0) | grep 'cannot'; then :
   else
-    echo "recognized foo.$ext as a valid source file"
+    echo "incorrectly recognized $name as a valid source file"
     status=1
   fi
 done

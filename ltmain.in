@@ -433,36 +433,6 @@ if test -z "$show_help"; then
       fi
     done
 
-    # Infer tagged configuration to use if any are available and
-    # if one wasn't chosen via the "--tag" command line option.
-    # Only attempt this if the compiler in the base compile
-    # command doesn't match the default compiler.
-    if test -n "$available_tags" && test -z "$tagname" && echo $base_compile | grep -v "^[ ]*[^ ]*$CC" > /dev/null; then
-      for z in $available_tags; do
-        if grep "^### BEGIN LIBTOOL TAG CONFIG: $z$" < "$0" > /dev/null; then
-	  # Evaluate the configuration.
-	  eval "`sed -n -e '/^### BEGIN LIBTOOL TAG CONFIG: '$z'$/,/^### END LIBTOOL TAG CONFIG: '$z'$/p' < $0`"
-          if echo $base_compile | grep "^[ ]*[^ ]*$CC" > /dev/null; then
-            # The compiler in the base compile command matches
-            # the one in the tagged configuration.
-            # Assume this is the tagged configuration we want.
-            tagname=$z
-            break
-          fi
-        fi
-      done
-      # If $tagname still isn't set, then no tagged configuration
-      # was found and let the user know that the "--tag" command
-      # line option must be used.
-      if test -z "$tagname"; then
-        echo "$modename: unable to infer tagged configuration"
-        echo "$modename: specify a tag with \`--tag'" 1>&2
-	exit 1
-#     else
-#       echo "$modename: using $tagname tagged configuration"
-      fi
-    fi
-
     case "$user_target" in
     set)
       ;;
@@ -504,7 +474,37 @@ if test -z "$show_help"; then
       ;;
     esac
 
-    objname=`echo "X$obj" | $Xsed -e 's%^.*/%%'`
+    # Infer tagged configuration to use if any are available and
+    # if one wasn't chosen via the "--tag" command line option.
+    # Only attempt this if the compiler in the base compile
+    # command doesn't match the default compiler.
+    if test -n "$available_tags" && test -z "$tagname" && echo $base_compile | grep -v "^[ ]*[^ ]*$CC" > /dev/null; then
+      for z in $available_tags; do
+        if grep "^### BEGIN LIBTOOL TAG CONFIG: $z$" < "$0" > /dev/null; then
+	  # Evaluate the configuration.
+	  eval "`sed -n -e '/^### BEGIN LIBTOOL TAG CONFIG: '$z'$/,/^### END LIBTOOL TAG CONFIG: '$z'$/p' < $0`"
+          if echo $base_compile | grep "^[ ]*[^ ]*$CC" > /dev/null; then
+            # The compiler in the base compile command matches
+            # the one in the tagged configuration.
+            # Assume this is the tagged configuration we want.
+            tagname=$z
+            break
+          fi
+        fi
+      done
+      # If $tagname still isn't set, then no tagged configuration
+      # was found and let the user know that the "--tag" command
+      # line option must be used.
+      if test -z "$tagname"; then
+        echo "$modename: unable to infer tagged configuration"
+        echo "$modename: specify a tag with \`--tag'" 1>&2
+	exit 1
+#      else
+#        echo "$modename: using $tagname tagged configuration"
+      fi
+    fi
+
+    objname=`$echo "X$obj" | $Xsed -e 's%^.*/%%'`
     xdir=`$echo "X$obj" | $Xsed -e 's%/[^/]*$%%'`
     if test "X$xdir" = "X$obj"; then
       xdir=
@@ -1101,6 +1101,10 @@ EOF
 	  $echo "$modename: warning: assuming \`-no-fast-install' instead" 1>&2
 	  fast_install=no
 	  ;;
+	*-*-rhapsody*)
+	  # rhapsody is a little odd...
+	  deplibs="$deplibs -framework System"
+	  ;;
 	*)
 	  no_install=yes
 	  ;;
@@ -1285,6 +1289,7 @@ EOF
 
             # A PIC object.
 	    libobjs="$libobjs $pic_object"
+	    arg="$pic_object"
           fi
 
           # Non-PIC object.
@@ -1294,6 +1299,9 @@ EOF
 
             # A standard non-PIC object
             non_pic_objects="$non_pic_objects $non_pic_object"
+            if test -z "$pic_object" || test "$pic_object" = none ; then
+              arg="$non_pic_object"
+            fi
           fi
         else
           # Only an error if not doing a dry-run.
