@@ -1,5 +1,10 @@
 2001-03-07  Gary V. Vaughan  <gvv@techie.com>
 
+	From Tor Lillqvist <tml@iki.fi>
+	* libtool.m4 (export_symbols): On Windows, if the export_symbols
+	file (which has been passed to libtool with the -export-symbols
+	command line switch) already is a .def file, use it as is. 
+
 	* libtool.m4 (library_names_spec): Using m4 quotes correctly this
 	time around!
 	
