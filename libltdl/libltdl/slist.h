@@ -41,6 +41,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 #define SLIST_H 1
 
 #if defined(LTDL)
+#  include <libltdl/lt__glibc.h>
 #  include <libltdl/lt_system.h>
 #else
 #  define LT_SCOPE
