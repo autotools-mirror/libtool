@@ -1,3 +1,12 @@
+2002-05-21  Jon Meredith  <jonm@alchemetrics.co.uk>
+
+	* ltmain.in: Fix a problem on SCO OpenServer5 that caused a
+	failure in three depdemo-make tests. For some reason the linker
+	tries to find the dependent libraries using the library search
+	path before it has read the libraries specified with absolute
+	paths in the full commandline. This patch add -L's for each of
+	the dependent library directories so that they can be resolved.
+
 2002-05-09  Nick Hudson  <skrll@netbsd.org>
 
 	* libtool.m4: Update support for NetBSD

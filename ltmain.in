@@ -2174,6 +2174,9 @@ EOF
 	    case $hardcode_action in
 	    immediate | unsupported)
 	      if test "$hardcode_direct" = no; then
+		case $host in
+		  *-*-sco3.2v5* ) add_dir="-L$dir" ;;
+		esac
 		add="$dir/$linklib"
 	      elif test "$hardcode_minus_L" = no; then
 		case $host in
