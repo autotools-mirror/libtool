@@ -1,3 +1,12 @@
+2002-04-03  Robert Boehne  <rboehne@gnu.org>
+
+	* exe/compile-txt.tpl: Handle the case when no tag is explicitly set,
+	and $base_compile has a space in front of $CC, and revert the setting
+	of tagname checked in on 2002-3-14.
+	* exe/link-txt.tpl: Ditto.
+	* exe/ltmain.tpl: Ditto.
+	* ltmain.in: Ditto.
+
 2002-03-14  Robert Boehne  <rboehne@gnu.org>
 
 	ltmain.in: Touch-up to make testsuite pass, and default tagname

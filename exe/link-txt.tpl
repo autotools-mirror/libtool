@@ -751,24 +751,19 @@
     # command doesn't match the default compiler.
     if test -n "$available_tags" && test -z "$tagname"; then
       case $base_compile in
-      "$CC "*) ;;
+      "$CC "* | " $CC "* | "`$echo $CC` "* | " `$echo $CC` "*) ;;
       # Blanks in the command may have been stripped by the calling shell,
       # but not from the CC environment variable when ltconfig was run.
-      "`$echo $CC` "*) ;;
       *)
 	for z in $available_tags; do
 	  if grep "^# ### BEGIN LIBTOOL TAG CONFIG: $z$" < "$0" > /dev/null; then
 	    # Evaluate the configuration.
 	    eval "`${SED} -n -e '/^# ### BEGIN LIBTOOL TAG CONFIG: '$z'$/,/^# ### END LIBTOOL TAG CONFIG: '$z'$/p' < $0`"
 	    case $base_compile in
-	    "$CC "*)
+	    "$CC "* | " $CC "* | "`$echo $CC` "* | " `$echo $CC` "*)
 	      # The compiler in $compile_command matches
 	      # the one in the tagged configuration.
 	      # Assume this is the tagged configuration we want.
-	      tagname=$z
-	      break
-	      ;;
-	    "`$echo $CC` "*)
 	      tagname=$z
 	      break
 	      ;;

@@ -83,9 +83,6 @@ show="$echo"
 show_help=
 execute_dlfiles=
 
-# set the tag name so that it defaults to CC
-tagname="CC"
-
 # Parse our command line options once, thoroughly.
 while test "$#" -gt 0
 do
