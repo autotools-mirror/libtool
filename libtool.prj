@@ -1,11 +1,11 @@
 ;; -*- Lisp -*-
 (Created-By-Prcs-Version 1 2 1)
 (Project-Description "GNU libtool library support script")
-(Project-Version libtool 1.0g 6)
+(Project-Version libtool 1.0h 1)
 (Parent-Version libtool 1.0g 5)
-(Version-Log "")
+(Version-Log "Cut 1.0g release.")
 (New-Version-Log "")
-(Checkin-Time "Sat, 29 Nov 1997 13:50:36 -0700")
+(Checkin-Time "Sat, 29 Nov 1997 14:03:11 -0700")
 (Checkin-Login gord)
 (Populate-Ignore ("~$" "Makefile$" "Makefile\\.in$" "aclocal\\.m4$"
 		  "configure$" "config\\.status$" "config\\.cache$"
@@ -24,7 +24,7 @@
 ;; Administrivia.
   (AUTHORS (libtool/21_AUTHORS 1.1 664))
   (ChangeLog (libtool/20_ChangeLog 1.4.1.65 664))
-  (NEWS (libtool/19_NEWS 1.4.1.44 664))
+  (NEWS (libtool/19_NEWS 1.4.1.45 664))
   (PACKAGES (libtool/42_PACKAGES 1.8 664))
   (README (libtool/17_README 1.18 664))
   (README-alpha (libtool/16_README-alp 1.10 664))
@@ -36,12 +36,12 @@
   (Makefile.am (libtool/18_Makefile.a 1.32 664))
   (configure.in (libtool/13_configure. 1.4.1.29 664))
   (lineno (libtool/49_lineno 1.1 775))
-  (ltmain.in (libtool/2_ltmain.sh. 1.4.1.51 664))
+  (ltmain.in (libtool/2_ltmain.sh. 1.4.1.52 664))
   (ltconfig.in (libtool/3_ltconfig.i 1.4.1.52 775))
   (libtoolize.in (libtool/4_libtoolize 1.6 664))
 
 ;; aclocal additions.
-  (libtool.m4 (libtool/12_libtool.m4 1.19 664))
+  (libtool.m4 (libtool/12_libtool.m4 1.20 664))
 
 ;; Documentation subdirectory.
   (doc/libtool.texi (libtool/0_libtool.te 1.3.1.30 664))
