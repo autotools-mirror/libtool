@@ -1,3 +1,8 @@
+1999-04-28  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* libtool.m4 (libtool_flags): Fix calls to AC_BEFORE.
+	Reported by Gary V. Vaughan
+
 1999-04-28  Gary V. Vaughan  <gary@oranda.demon.co.uk>
 
 	* libtool.m4 (ltconfig_enable_win32_dll): pass --enable-win32-dll to
