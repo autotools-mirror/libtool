@@ -70,13 +70,56 @@ AC_DEFUN([AC_LTDL_SYS_DLOPEN_DEPLIBS],
 [AC_REQUIRE([AC_CANONICAL_HOST])
 AC_CACHE_CHECK([whether deplibs are loaded by dlopen],
 	libltdl_cv_sys_dlopen_deplibs, [dnl
-	# PORTME does your system automatically load deplibs for dlopen()?
+	# PORTME does your system automatically load deplibs for dlopen?
+	# or its logical equivalent (e.g. shl_load for HP-UX < 11)
+	# For now, we just catch OSes we know something about -- in the
+	# future, we'll try test this programmatically.
 	libltdl_cv_sys_dlopen_deplibs=unknown
 	case "$host_os" in
+	aix3*|aix4.1.*|aix4.2.*)
+	  # Unknown whether this is true for these versions of AIX, but
+	  # we want this `case' here to explicitly catch those versions.
+	  libltdl_cv_sys_dlopen_deplibs=unknown
+	  ;;
+	aix[45]*)
+	  libltdl_cv_sys_dlopen_deplibs=yes
+	  ;;
+	irix[12345]*|irix6.[01]*)
+	  # Catch all versions of IRIX before 6.2, and indicate that we don't
+	  # know how it worked for any of those versions.
+	  libltdl_cv_sys_dlopen_deplibs=unknown
+	  ;;
+	irix*)
+	  # The case above catches anything before 6.2, and it's known that
+	  # at 6.2 and later dlopen does load deplibs.
+	  libltdl_cv_sys_dlopen_deplibs=yes
+	  ;;
 	linux*)
 	  libltdl_cv_sys_dlopen_deplibs=yes
 	  ;;
 	netbsd*)
+	  libltdl_cv_sys_dlopen_deplibs=yes
+	  ;;
+	osf[1234]*)
+	  # dlopen did load deplibs (at least at 4.x), but until the 5.x series,
+	  # it did *not* use an RPATH in a shared library to find objects the
+	  # library depends on, so we explictly say `no'.
+	  libltdl_cv_sys_dlopen_deplibs=no
+	  ;;
+	osf5.0|osf5.0a|osf5.1)
+	  # dlopen *does* load deplibs and with the right loader patch applied
+	  # it even uses RPATH in a shared library to search for shared objects
+	  # that the library depends on, but there's no easy way to know if that
+	  # patch is installed.  Since this is the case, all we can really
+	  # say is unknown -- it depends on the patch being installed.  If
+	  # it is, this changes to `yes'.  Without it, it would be `no'.
+	  libltdl_cv_sys_dlopen_deplibs=unknown
+	  ;;
+	osf*)
+	  # the two cases above should catch all versions of osf <= 5.1.  Read
+	  # the comments above for what we know about them.
+	  # At > 5.1, deplibs are loaded *and* any RPATH in a shared library
+	  # is used to find them so we can finally say `yes'.
 	  libltdl_cv_sys_dlopen_deplibs=yes
 	  ;;
 	solaris*)

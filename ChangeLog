@@ -1,3 +1,8 @@
+2001-07-16  Robert Boehne  <rboehne@ricardo-us.com>, Tim Mooney  <mooney@dogbert.cc.ndsu.NoDak.edu>
+
+	* ltdl.m4 (AC_LTDL_SYS_DLOPEN_DEPLIBS): add cases and comments for
+	more platforms, including AIX, Digital/Tru64 UNIX and IRIX.
+ 
 2001-07-16  Gary V. Vaughan  <gary@gnu.org>
 
 	* libtool.m4 (AC_LIBTOOL_PROG_LD_SHLIBS): Fix ia64 AIX
