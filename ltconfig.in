@@ -410,7 +410,7 @@ exec 5>>./config.log
 if test "X${LC_ALL+set}" = Xset; then LC_ALL=C; export LC_ALL; fi
 if test "X${LANG+set}"   = Xset; then LANG=C;   export LANG;   fi
 
-if test -n "$cache_file" && test -r "$cache_file"; then
+if test -n "$cache_file" && test -r "$cache_file" && test -f "$cache_file"; then
   echo "loading cache $cache_file within ltconfig"
   . $cache_file
 fi
