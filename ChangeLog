@@ -1,3 +1,8 @@
+1999-01-14  Thomas Tanner  <tanner@gmx.de>
+
+	* autogen: fake the libtool scripts to help fixing
+	  the bootstrapping problem
+		
 1999-01-13  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* mdemo/Makefile.am (../libltdl/libtool): mkdir and configure
