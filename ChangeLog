@@ -1,3 +1,16 @@
+2004-05-14  Mike Gorchak  <lestat@i.com.ua>
+
+	* ltmain.in: Add new qnx version type support.
+	* m4/libtool.m4 (AC_LIBTOOL_SYS_DYNAMIC_LINKER): Use it.  Set
+	ldqnx.so linker type.
+	(AC_DEPLIBS_CHECK_METHOD): QNX6 uses GNU C++, with deplib
+	checking, so use pass_all.
+	(AC_LIBTOOL_PROG_COMPILER_PIC): Use -shared for QNX.
+	(_LT_LANG_CXX_CONFIG): QNX can make shared libraries.
+	* m4/ltdl.m4 (AC_LTDL_SYS_DLOPEN_DEPLIBS): QNX opens deplibs on
+	dlopen.
+	* NEWS: Updated.
+
 2004-05-05  Peter O'Gorman  <peter@pogma.com>
 
 	* m4/libtool.m4 (AC_LIBTOOL_PROG_LD_HARDCODE_LIBPATH): Insert space

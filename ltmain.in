@@ -3100,7 +3100,7 @@ EOF
 
 	freebsd-elf)
 	  major=".$current"
-	  versuffix=".$current";
+	  versuffix=".$current"
 	  ;;
 
 	irix | nonstopux)
@@ -3145,6 +3145,11 @@ EOF
 
 	  # Make executables depend on our current version.
 	  verstring="$verstring:${current}.0"
+	  ;;
+
+	qnx)
+	  major=".$current"
+	  versuffix=".$current"
 	  ;;
 
 	sunos)
@@ -4033,7 +4038,7 @@ EOF
 	    fi
 	  fi
 
-	  exit $EXIT_SUCCESS 
+	  exit $EXIT_SUCCESS
 	fi
 
 	# Create links to the real library.

@@ -54,6 +54,7 @@ New in 1.5b: 2004-??-??; CVS version 1.5a, Libtool team:
 * Initial support for amigaos-ppc.
 * Support for Intel C++ version 8.0.
 * New support for IBM's xlc and xlc++ on Mac OS X.
+* Finished support for QNX RTOS.
 * Bug fixes.
 
 New in 1.5.2: 2004-01-25; CVS version 1.5.0a, Libtool team:

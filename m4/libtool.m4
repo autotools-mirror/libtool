@@ -1967,14 +1967,16 @@ newsos6)
   shlibpath_overrides_runpath=yes
   ;;
 
-nto-qnx*)
-  version_type=linux
+*nto* | *qnx*)
+  version_type=qnx
   need_lib_prefix=no
   need_version=no
   library_names_spec='${libname}${release}${shared_ext}$versuffix ${libname}${release}${shared_ext}$major $libname${shared_ext}'
   soname_spec='${libname}${release}${shared_ext}$major'
   shlibpath_var=LD_LIBRARY_PATH
-  shlibpath_overrides_runpath=yes
+  shlibpath_overrides_runpath=no
+  hardcode_into_libs=yes
+  dynamic_linker='ldqnx.so'
   ;;
 
 openbsd*)
@@ -2475,8 +2477,8 @@ newos6*)
   lt_cv_file_magic_test_file=/usr/lib/libnls.so
   ;;
 
-nto-qnx*)
-  lt_cv_deplibs_check_method=unknown
+*nto* | *qnx*)
+  lt_cv_deplibs_check_method=pass_all
   ;;
 
 openbsd*)
@@ -2952,6 +2954,11 @@ m4_if([$1], [CXX], [
 	;;
       esac
       ;;
+    *qnx* | *nto*)
+      # QNX uses GNU C++, but need to define -shared option too, otherwise
+      # it will coredump.
+      _LT_AC_TAGVAR(lt_prog_compiler_pic, $1)='-fPIC -shared'
+      ;;
     *)
       _LT_AC_TAGVAR(lt_prog_compiler_pic, $1)='-fPIC'
       ;;
@@ -3076,6 +3083,11 @@ m4_if([$1], [CXX], [
 	;;
       netbsd*)
 	;;
+      *qnx* | *nto*)
+        # QNX uses GNU C++, but need to define -shared option too, otherwise
+        # it will coredump.
+        _LT_AC_TAGVAR(lt_prog_compiler_pic, $1)='-fPIC -shared'
+        ;;
       osf3* | osf4* | osf5*)
 	case $cc_basename in
 	  KCC)
@@ -3198,19 +3210,6 @@ m4_if([$1], [CXX], [
       _LT_AC_TAGVAR(lt_prog_compiler_pic, $1)='-fno-common'
       ;;
 
-    msdosdjgpp*)
-      # Just because we use GCC doesn't mean we suddenly get shared libraries
-      # on systems that don't support them.
-      _LT_AC_TAGVAR(lt_prog_compiler_can_build_shared, $1)=no
-      enable_shared=no
-      ;;
-
-    sysv4*MP*)
-      if test -d /usr/nec; then
-	_LT_AC_TAGVAR(lt_prog_compiler_pic, $1)=-Kconform_pic
-      fi
-      ;;
-
     hpux*)
       # PIC is the default for IA64 HP-UX and 64-bit HP-UX, but
       # not for PA HP-UX.
@@ -3222,6 +3221,25 @@ m4_if([$1], [CXX], [
 	_LT_AC_TAGVAR(lt_prog_compiler_pic, $1)='-fPIC'
 	;;
       esac
+      ;;
+
+    msdosdjgpp*)
+      # Just because we use GCC doesn't mean we suddenly get shared libraries
+      # on systems that don't support them.
+      _LT_AC_TAGVAR(lt_prog_compiler_can_build_shared, $1)=no
+      enable_shared=no
+      ;;
+
+    *nto* | *qnx*)
+      # QNX uses GNU C++, but need to define -shared option too, otherwise
+      # it will coredump.
+      _LT_AC_TAGVAR(lt_prog_compiler_pic, $1)='-fPIC -shared'
+      ;;
+
+    sysv4*MP*)
+      if test -d /usr/nec; then
+	_LT_AC_TAGVAR(lt_prog_compiler_pic, $1)=-Kconform_pic
+      fi
       ;;
 
     *)
@@ -3279,11 +3297,6 @@ m4_if([$1], [CXX], [
       _LT_AC_TAGVAR(lt_prog_compiler_static, $1)='-non_shared'
       ;;
 
-    newsos6)
-      _LT_AC_TAGVAR(lt_prog_compiler_pic, $1)='-KPIC'
-      _LT_AC_TAGVAR(lt_prog_compiler_static, $1)='-Bstatic'
-      ;;
-
     linux*)
       case $CC in
       icc* | ecc*)
@@ -3297,6 +3310,17 @@ m4_if([$1], [CXX], [
         _LT_AC_TAGVAR(lt_prog_compiler_static, $1)='-non_shared'
         ;;
       esac
+      ;;
+
+    newsos6)
+      _LT_AC_TAGVAR(lt_prog_compiler_pic, $1)='-KPIC'
+      _LT_AC_TAGVAR(lt_prog_compiler_static, $1)='-Bstatic'
+      ;;
+
+    *nto* | *qnx*)
+      # QNX uses GNU C++, but need to define -shared option too, otherwise
+      # it will coredump.
+      _LT_AC_TAGVAR(lt_prog_compiler_pic, $1)='-fPIC -shared'
       ;;
 
     osf3* | osf4* | osf5*)
@@ -4000,6 +4024,9 @@ _LT_EOF
       _LT_AC_TAGVAR(hardcode_libdir_flag_spec, $1)='${wl}-rpath ${wl}$libdir'
       _LT_AC_TAGVAR(hardcode_libdir_separator, $1)=:
       _LT_AC_TAGVAR(hardcode_shlibpath_var, $1)=no
+      ;;
+
+    *nto* | *qnx*)
       ;;
 
     openbsd*)
@@ -5056,6 +5083,9 @@ if test -n "$compiler"; then
       fi
       # Workaround some broken pre-1.5 toolchains
       output_verbose_link_cmd='$CC -shared $CFLAGS -v conftest.$objext 2>&1 | $GREP conftest.$objext | $SED -e "s:-lgcc -lc -lgcc::"'
+      ;;
+    *nto* | *qnx*)
+      _LT_AC_TAGVAR(ld_shlibs, $1)=yes
       ;;
     osf3*)
       case $cc_basename in
