@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# mailnotify (GNU cvs-utils) version 0.1
+# mailnotify (GNU cvs-utils) version 0.2
 # Written by Gary V. Vaughan <gary@gnu.org>
 
 # Copyright (C) 2004 Free Software Foundation, Inc.
@@ -33,8 +33,8 @@
 # -o FILE   --output-file=FILE  output to FILE instead of sending
 # -s TEXT   --subject=TEXT      set subject header
 # -v        --verbose           run in verbose mode
-# 	    --version		print version information
-# -h,-?     --help		print short or long help message
+#           --version           print version information
+# -h,-?     --help              print short or long help message
 
 # Assemble a (possibly multi-part) mime message and hand it to the local
 # sendmail for onward delivery.  MUAs tend to mangle patch attachments in
@@ -61,8 +61,18 @@
 : ${RM="rm -f"}
 : ${SED="sed"}
 
+dirname="$SED s,/[^/]*$,,"
+basename="$SED s,^.*/,,g"
+
+# Work around backward compatibility issue on IRIX 6.5. On IRIX 6.4+, sh
+# is ksh but when the shell is invoked as "sh" and the current value of
+# the _XPG environment variable is not equal to 1 (one), the special
+# positional parameter $0, within a function call, is the name of the
+# function.
+progpath="$0"
+
 # The name of this program:
-progname=`echo "$0" | $SED 's%^.*/%%'`
+progname=`echo "$progpath" | $basename`
 PROGRAM=mailnotify
 
 # Global variables:
@@ -74,8 +84,6 @@ outputfile=""
 
 exit_cmd=:
 
-sed_dirname='s,/[^/]*$,,'
-sed_basename='s,^.*/,,'
 sed_mail_address='s,^.*<\(.*\)>.*$,\1,'
 
 # func_echo arg...
@@ -125,6 +133,43 @@ func_missing_arg ()
     exit_cmd=exit
 }
 
+# Echo short help message to standard output and exit.
+func_usage ()
+{
+    $SED '/^# Usage:/,/# -h/ {
+        s/^# //; s/^# *$//;
+	s/\$progname/'$progname'/;
+	p;
+    }; d' < "$progpath"
+    echo
+    echo "run \`$progname --help | more' for full usage"
+    exit $EXIT_SUCCESS
+}
+
+# func_help
+# Echo long help message to standard output and exit.
+func_help ()
+{
+    $SED '/^# Usage:/,/# Report bugs to/ {
+        s/^# //; s/^# *$//;
+	s/\$progname/'$progname'/;
+	p;
+     }; d' < "$progpath"
+    exit $EXIT_SUCCESS
+}
+
+# func_version
+# Echo version message to standard output and exit.
+func_version ()
+{
+    $SED '/^# '$PROGRAM' (GNU /,/# warranty; / {
+        s/^# //; s/^# *$//;
+        s/\((C)\)[ 0-9,-]*\( [1-9][0-9]*\)/\1\2/;
+        p;
+     }; d' < "$progpath"
+     exit $EXIT_SUCCESS
+}
+
 # Parse options once, thoroughly.  This comes as soon as possible in
 # the script to make things like `mailnotify --version' happen quickly.
 {
@@ -133,16 +178,6 @@ func_missing_arg ()
   my_sed_single_rest='1s/^..\(.*\)$/\1/;q'
   my_sed_long_opt='1s/^\(--[^=]*\)=.*/\1/;q'
   my_sed_long_arg='1s/^--[^=]*=//'
-  my_sed_help='/^# Usage:/,/# Report bugs to/ {
-                s/^# //; s/^# *$//;
-		s/\$progname/'$progname'/;
-		p;
-	     }; d'
-  my_sed_version='/^# '$PROGRAM' (GNU /,/# warranty; / {
-	        s/^# //; s/^# *$//;
-	        s/\((C)\)[ 0-9,-]*\( [1-9][0-9]*\)/\1\2/;
-	        p;
-	     }; d'
 
   while test $# -gt 0; do
     opt="$1"
@@ -200,29 +235,33 @@ func_missing_arg ()
 
       -v|--verbose)	opt_verbose=:			;;
 
+      # Separate optargs to long options:
       --carbon-copy=*|--from=*|--filename=*|--mime-type=*|--output-file=*|--subject=*)
 			arg=`echo "$opt" | $SED "$my_sed_long_arg"`
 			opt=`echo "$opt" | $SED "$my_sed_long_opt"`
 			set -- "$opt" "$arg" ${1+"$@"}
 			;;
 
+      # Separate optargs to short options:
       -C*|-F*|-f*|-m*|-o*|-s*)
 			arg=`echo "$opt" |$SED "$my_sed_single_rest"`
 			opt=`echo "$opt" |$SED "$my_sed_single_opt"`
 			set -- "$opt" "$arg" ${1+"$@"}
 			;;
 
+      # Separate non-argument short options:
       -n*|-v*)
 			rest=`echo "$opt" |$SED "$my_sed_single_rest"`
 			opt=`echo "$opt" |$SED "$my_sed_single_opt"`
 			set -- "$opt" "-$rest" ${1+"$@"}
 			;;
 
-      --version)	$SED "$my_sed_version" < $0;  exit $EXIT_SUCCESS ;;
-      --help)		$SED "$my_sed_help" < $0;     exit $EXIT_SUCCESS ;;
-      --)		break						 ;;
-      -*)		func_fatal_help "unrecognized option \`$opt'"	 ;;
-      *)		set -- "$opt" ${1+"$@"};      break		 ;;
+      -\?|-h)		func_usage					;;
+      --help)		func_help					;;
+      --version)	func_version					;;
+      --)		break						;;
+      -*)		func_fatal_help "unrecognized option \`$opt'"	;;
+      *)		set -- "$opt" ${1+"$@"};      break		;;
     esac
   done
 
@@ -256,7 +295,7 @@ func_headers ()
     my_sed_version_no='/^# '$PROGRAM' (GNU / { s/^# .*version //; p; }; d'
 
     {
-	echo "User-Agent: $PROGRAM/`$SED \"$my_sed_version_no\" < $0`"
+	echo "User-Agent: $PROGRAM/`$SED \"$my_sed_version_no\" < $progpath`"
 	echo "MIME-Version: 1.0"
 	test -n "$from" && echo "From: $from"
 	echo "To: $my_destination"
@@ -387,3 +426,8 @@ func_sendmail ()
 }
 
 exit $EXIT_SUCCESS
+
+# Local Variables:
+# mode:shell-script
+# sh-indentation:2
+# End:

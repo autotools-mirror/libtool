@@ -1,3 +1,9 @@
+2004-02-12  Gary V. Vaughan  <gary@gnu.org>
+
+	* libtoolize.in: Use $progpath as for ltmain.in to work around the
+	IRIX bug described below.
+	* commit, config/mailnotify: Ditto. Resynch with cvs-utils HEAD.
+
 2004-02-12  Albert Chin-A-Young  <china@thewrittenword.com>,
 	    Gary V. Vaughan  <gary@gnu.org>
 

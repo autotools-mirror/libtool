@@ -52,25 +52,39 @@
 : ${LN_S="@LN_S@"}
 : ${MKDIR="mkdir"}
 : ${RM="rm -f"}
+: ${SED="@SED@"}
+
+dirname="$SED s,/[^/]*$,,"
+basename="$SED s,^.*/,,g"
+
+# Work around backward compatibility issue on IRIX 6.5. On IRIX 6.4+, sh
+# is ksh but when the shell is invoked as "sh" and the current value of
+# the _XPG environment variable is not equal to 1 (one), the special
+# positional parameter $0, within a function call, is the name of the
+# function.
+progpath="$0"
 
 # The name of this program:
-progname=`echo "$0" | sed 's%^.*/%%'`
+progname=`echo "$progpath" | $basename`
 PROGRAM=libtoolize
 
-# Global variables.
-dry_run_opt=false
-force_opt=false
-install_opt=false
-link_opt=:
-ltdl_opt=false
-ltdl_tar_opt=false
-quiet_opt=false
-verbose_opt=false
+# Global variables:
+EXIT_SUCCESS=0
+EXIT_FAILURE=1
+
+opt_dry_run=false
+opt_force=false
+opt_install=false
+opt_link=:
+opt_ltdl=false
+opt_ltdl_tar=false
+opt_quiet=false
+opt_verbose=false
 
 seen_libtool=false
 seen_ltdl=false
 
-exit_status=0
+exit_status=$EXIT_SUCCESS
 
 # Locations for important files:
 prefix=@prefix@
@@ -81,7 +95,6 @@ auxdir=
 m4dir=
 configure_ac=configure.in
 
-sed_dirname='s,/[^/]*$,,'
 
 # func_echo arg...
 # Echo program name prefixed message.
@@ -94,7 +107,7 @@ func_echo ()
 # Echo program name prefixed message in verbose mode only.
 func_verbose ()
 {
-    $verbose_opt && func_echo ${1+"$@"}
+    $opt_verbose && func_echo ${1+"$@"}
 }
 
 # func_error arg...
@@ -109,7 +122,7 @@ func_error ()
 func_fatal_error ()
 {
     func_error ${1+"$@"}
-    exit 1
+    exit $EXIT_FAILURE
 }
 
 # func_fatal_help arg...
@@ -121,6 +134,53 @@ func_fatal_help ()
     func_fatal_error "Try \`$progname --help' for more information."
 }
 
+# func_missing_arg argname
+# Echo program name prefixed message to standard error and set global
+# exit_cmd.
+func_missing_arg ()
+{
+    func_error "missing argument for $1"
+    exit_cmd=exit
+}
+
+# func_usage
+# Echo short help message to standard output and exit.
+func_usage ()
+{
+    $SED '/^# Usage:/,/# -h/ {
+        s/^# //; s/^# *$//;
+	s/\$progname/'$progname'/;
+	p;
+    }; d' < "$progpath"
+    echo
+    echo "run \`$progname --help | more' for full usage"
+    exit $EXIT_SUCCESS
+}
+
+# func_help
+# Echo long help message to standard output and exit.
+func_help ()
+{
+    $SED '/^# Usage:/,/# Report bugs to/ {
+        s/^# //; s/^# *$//;
+	s/\$progname/'$progname'/;
+	p;
+     }; d' < "$progpath"
+    exit $EXIT_SUCCESS
+}
+
+# func_version
+# Echo version message to standard output and exit.
+func_version ()
+{
+    $SED '/^# '$PROGRAM' (GNU /,/# warranty; / {
+        s/^# //; s/^# *$//;
+        s/\((C)\)[ 0-9,-]*\( [1-9][0-9]*\)/\1\2/;
+        p;
+     }; d' < "$progpath"
+     exit $EXIT_SUCCESS
+}
+
 
 # Parse options once, thoroughly.  This comes as soon as possible in
 # the script to make things like `libtoolize --version' happen quickly.
@@ -128,30 +188,21 @@ func_fatal_help ()
   # sed scripts:
   my_sed_single_opt='1s/^\(..\).*$/\1/;q'
   my_sed_single_rest='1s/^..\(.*\)$/\1/;q'
-  my_sed_help='/^# Usage:/,/# Report bugs to/ {
-                s/^# //; s/^# *$//;
-		s/\$progname/'$progname'/;
-		p;
-	     }; d'
-  my_sed_version='/^# '$PROGRAM' (GNU /,/# warranty; / {
-	        s/^# //; s/^# *$//;
-	        s/\((C)\)[ 0-9,-]*\( [1-9][0-9]*\)/\1\2/;
-	        p;
-	     }; d'
-
+  my_sed_long_opt='1s/^\(--[^=]*\)=.*/\1/;q'
+  my_sed_long_arg='1s/^--[^=]*=//'
 
   while test "$#" -gt 0; do
-    case $1 in
-      --copy | -c)	shift; link_opt=false	;;
+    opt="$1"
+    shift
+    case $opt in
+      --copy|-c)	opt_link=false		;;
 
-      --debug)		shift
-			func_echo "enabling shell trace mode"
+      --debug)		func_echo "enabling shell trace mode"
 			set -x
 			;;
 
-      --dry-run | -n)	shift
-			if $dry_run_opt; then :; else
-			  dry_run_opt=:
+      --dry-run|-n)	if $opt_dry_run; then :; else
+			  opt_dry_run=:
 			  RM="echo $RM"
 			  test -n "$LN_S" && LN_S="echo $LN_S"
 			  CP="echo $CP"
@@ -159,25 +210,25 @@ func_fatal_help ()
 			fi
 			;;
 
-      --force | -f)	shift; force_opt=:	;;
-      --install | -i)	shift; install_opt=:	;;
-      --ltdl)		shift; ltdl_opt=:	;;
-      --ltdl-tar)	shift; ltdl_tar_opt=:	;;
-      --quiet | --automake | -q) # --automake is for 1.5 compatibility
-			shift; quiet_opt=:	;;
-      --verbose | -v)	shift; verbose_opt=:	;;
+      --force|-f)	opt_force=:		;;
+      --install|-i)	opt_install=:		;;
+      --ltdl)		opt_ltdl=:		;;
+      --ltdl-tar)	opt_ltdl_tar=:		;;
+      --quiet|--automake|-q) # --automake is for 1.5 compatibility
+			opt_quiet=:		;;
+      --verbose|-v)	opt_verbose=:		;;
 
       -c*|-i*|-f*|-n*|-q*|-v*)
-			opt=`echo "$1" |sed "$my_sed_single_opt"`
-			rest=`echo "$1" |sed "$my_sed_single_rest"`
-			shift
+			rest=`echo "$opt" |$SED "$my_sed_single_rest"`
+			opt=`echo "$opt" |$SED "$my_sed_single_opt"`
 			set -- "$opt" "-$rest" ${1+"$@"}
 			;;
 
-      --version)	sed "$my_sed_version" < $0;	exit 0	;;
-      --help)		sed "$my_sed_help" < $0;	exit 0	;;
-      --)		shift; break				;;
-      -*)		func_fatal_help "unrecognized option \`$1'"	;;
+      -\?|-h)		func_usage					;;
+      --help)		func_help					;;
+      --version)	func_version					;;
+      --)		break						;;
+      -*)		func_fatal_help "unrecognized option \`$opt'"	;;
       *)		func_fatal_help "too many arguments"		;;
     esac
   done
@@ -193,7 +244,7 @@ func_mkdir_p ()
     while test ! -d "$my_dir"; do
       my_dirs="$my_dir $my_dirs"
       case $my_dir in */*) ;; *) break ;; esac
-      my_dir=`echo "$my_dir" | sed "$sed_dirname"`
+      my_dir=`echo "$my_dir" | $dirname`
     done
    test ! -n "$my_dirs" || $MKDIR $my_dirs
 }
@@ -207,18 +258,18 @@ func_copy ()
     my_destfile="$2"
     my_return_status=1
 
-    func_mkdir_p `echo "$my_destfile" | sed "$sed_dirname"`
+    func_mkdir_p `echo "$my_destfile" | "$dirname`
 
     $RM "$my_destfile"
-    if $link_opt && $LN_S "$my_srcfile" "$my_destfile"; then
-      $quiet_opt || func_echo "copying file \`$my_destfile'"
+    if $opt_link && $LN_S "$my_srcfile" "$my_destfile"; then
+      $opt_quiet || func_echo "copying file \`$my_destfile'"
       my_return_status=0
     elif $CP "$my_srcfile" "$my_destfile"; then
-      $quiet_opt || func_echo "copying file \`$my_destfile'"
+      $opt_quiet || func_echo "copying file \`$my_destfile'"
       my_return_status=0
     else
       func_error "can not copy \`$my_srcfile' to \`$my_destfile'"
-      exit_status=1
+      exit_status=$EXIT_FAILURE
     fi
 
     return $my_return_status
@@ -228,7 +279,7 @@ func_copy ()
 # For each file in SRCDIR, then try to copy the file to DESTDIR by calling
 # COPY_CB with the src and dest files.  If GLOB_EXCLUDE is given, exclude
 # any matching filenames from the copy.  If COPY_CB is passed, then the
-# check for overwriting without force_opt is the callbacks responsibility:
+# check for overwriting without opt_force is the callbacks responsibility:
 # This allows using callbacks like func_serial_update, which perform their
 # own checks to decide whether to overwrite the dest file.
 func_copy_all_files ()
@@ -247,8 +298,8 @@ func_copy_all_files ()
 
       if test -f "$my_srcdir/$my_filename"; then
         if test "X$my_copy_cb" = Xfunc_copy; then
-	  $force_opt || if test -f "$my_destdir/$my_filename"; then
-  	    $quiet_opt \
+	  $opt_force || if test -f "$my_destdir/$my_filename"; then
+  	    $opt_quiet \
 	      || func_error "\`$my_destdir/$my_filename' exists: use \`--force' to overwrite"
 	    continue
 	  fi
@@ -291,7 +342,7 @@ func_scan_files ()
     my_sed_scan_configure_ac='s,#.*$,,; s,^dnl .*$,,; s, dnl .*$,,;
 	/AC_INIT/ { s,^.*$,my_uses_autoconf=:,; p; };
 	d'
-    eval `sed "$my_sed_scan_configure_ac" "$configure_ac"`
+    eval `$SED "$my_sed_scan_configure_ac" "$configure_ac"`
 
     $my_uses_autoconf || {
         func_verbose "$configure_ac: not using Autoconf"
@@ -312,7 +363,7 @@ func_scan_files ()
 	/A[CM]_PROG_LIBTOOL/ { s,^.*$,seen_libtool=:,; p; };
 	/AC_LIB_LTDL/        { s,^.*$,seen_ltdl=:,; p; };
 	d;'
-    eval `cat aclocal.m4 "$configure_ac" | sed "$my_sed_traces" 2>/dev/null`
+    eval `cat aclocal.m4 "$configure_ac" | $SED "$my_sed_traces" 2>/dev/null`
 
 
     # ---------------- #
@@ -357,7 +408,7 @@ func_scan_files ()
 	s,^[^=]*=[ 	]*\(.*\), \1,; q; }; d'
     if test ! -n "$m4dir" && test -f Makefile.am; then
       my_m4dir_is_next=false
-      for arg in `sed "$my_sed_aclocal_flags" Makefile.am`; do
+      for arg in `$SED "$my_sed_aclocal_flags" Makefile.am`; do
         if $my_m4dir_is_next; then
           m4dir="$arg"
           break
@@ -390,7 +441,7 @@ func_included_files ()
 
     # Only recurse when we don't care if all the variables we use get
     # trashed, since they are in global scope.
-    for my_filename in `sed "$my_sed_include" "$my_searchfile"`; do
+    for my_filename in `$SED "$my_sed_include" "$my_searchfile"`; do
       func_included_files $my_filename
     done
 }
@@ -411,7 +462,7 @@ func_serial ()
     my_serial=
     for my_file in `func_included_files "$my_filename"`; do
       if func_grep '^AC_DEFUN(\['"$my_macro_regex" "$my_file"; then
-        my_serial=`sed -e "$my_sed_serial" "$my_file"`
+        my_serial=`$SED -e "$my_sed_serial" "$my_file"`
 	break
       fi
     done
@@ -452,16 +503,16 @@ func_serial_update ()
 
       if test "$my_src_serial" -lt "$my_dest_serial"; then
         func_error "\`$my_srcfile' is serial $my_srcserial, less than $my_destserial in \`$my_destfile'"
-	$force_opt \
+	$opt_force \
           || func_fatal_error "Use \`--force' to replace newer libtool files with this version."
       fi
     fi
 
-    if $my_update_p || $force_opt; then
+    if $my_update_p || $opt_force; then
       func_copy "$my_srcfile" "$my_destfile"
       my_return_status=$?
     else
-      $quiet_opt \
+      $opt_quiet \
         || func_echo "\`$my_destfile' is already up to date."
     fi
 
@@ -482,7 +533,7 @@ func_check_macros ()
 {
     # Don't trace for this, we're just checking the user didn't invoke it
     # directly from configure.ac.
-    sed 's,dnl .*$,,; s,# .*$,,' "$configure_ac" | grep AC_PROG_RANLIB \
+    $SED 's,dnl .*$,,; s,# .*$,,' "$configure_ac" | grep AC_PROG_RANLIB \
       && func_echo "\`AC_PROG_RANLIB' is rendered obsolete by \`AC_PROG_LIBTOOL'"
 
     $seen_libtool \
@@ -511,10 +562,10 @@ func_ltmain_update ()
 
     # FIXME:  check versions, and only downgrade with --force
     cmp -s  "$my_srcfile" "$my_destfile"
-    if test "$?" -ne 0 || $force_opt; then
+    if test "$?" -ne 0 || $opt_force; then
       func_copy "$my_srcfile" "$my_destfile"
     else
-      $quiet_opt \
+      $opt_quiet \
         || func_echo "\`$my_destfile' is already up to date."
     fi
 }
@@ -536,10 +587,10 @@ func_config_update ()
 
     # FIXME:  check versions, and only downgrade with --force
     cmp -s  "$my_srcfile" "$my_destfile"
-    if test "$?" -ne 0 || $force_opt; then
+    if test "$?" -ne 0 || $opt_force; then
       func_copy "$my_srcfile" "$my_destfile"
     else
-      $quiet_opt \
+      $opt_quiet \
         || func_echo "\`$my_destfile' is already up to date."
     fi
 }
@@ -557,17 +608,17 @@ func_config_update ()
   re_pkgmacro_files='libtool\.m4|ltdl\.m4'
 
   func_scan_files
-  $quiet_opt || func_check_macros
+  $opt_quiet || func_check_macros
 
   # Copy all the files from installed libltdl to this project, if the
   # user specified `--with-ltdl'.
-  $ltdl_opt && eval func_copy_all_files "$pkgdatadir/libltdl" libltdl
+  $opt_ltdl && eval func_copy_all_files "$pkgdatadir/libltdl" libltdl
 
   # Copy all the files from installed libltdl to a tarball in this project,
   # if the user specified `--with-ltdl-tar'.
-  $ltdl_tar_opt && {
+  $opt_ltdl_tar && {
       if test -f libltdl.tar.gz; then
-        if $force_opt; then
+        if $opt_force; then
           test -d libltdl && ${RM}r libltdl
           func_copy_all_files "$pkgdatadir/libltdl" libltdl
           tar -chof - libltdl | gzip --best > libltdl.tar.gz
@@ -580,10 +631,10 @@ func_config_update ()
 
   # Copy all the installed utility files to the auxiliary directory if
   # `--install' was passed, or else copy just ltmain.sh.
-  $quiet_opt || if test "$auxdir" != .; then
+  $opt_quiet || if test "$auxdir" != .; then
     func_echo "putting files in AC_CONFIG_AUX_DIR, \`$auxdir'."
   fi
-  if $install_opt || $force_opt; then
+  if $opt_install || $opt_force; then
     func_copy_all_files "$pkgdatadir" "$auxdir" "$re_pkgaux_files"
     func_config_update "$pkgdatadir/config.guess" "$auxdir/config.guess"
     test -f "$pkgdatadir/config.sub" \
@@ -592,7 +643,7 @@ func_config_update ()
   func_ltmain_update "$pkgdatadir/ltmain.sh" "$auxdir/ltmain.sh"
 
   # Copy libtool's m4 macros to the macro directory, if they are newer.
-  $quiet_opt || if test "$m4dir" != .; then
+  $opt_quiet || if test "$m4dir" != .; then
     func_echo "putting macros in AC_CONFIG_MACRO_DIR, \`$m4dir'."
   fi
 
