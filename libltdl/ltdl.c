@@ -52,7 +52,11 @@ Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 /* max. filename length */
 #ifndef LTDL_FILENAME_MAX
-#define LTDL_FILENAME_MAX 1024
+# ifdef FILENAME_MAX
+#  define LTDL_FILENAME_MAX FILENAME_MAX
+# else
+#  define LTDL_FILENAME_MAX 1024
+# endif
 #endif
 
 #ifndef LTDL_SEARCHPATH_MAX
@@ -540,7 +544,7 @@ presym_init ()
 	return 0;
 }
 
-static void
+static int /* not all compilers support void */
 presym_free_symlists ()
 {
 	lt_dlsymlists_t	*lists = preloaded_symbols;
@@ -552,6 +556,7 @@ presym_free_symlists ()
 		free(tmp);
 	}
 	preloaded_symbols = 0;
+	return 0;
 }
 
 static int
@@ -751,7 +756,7 @@ lt_dlexit ()
 	return errors;
 }
 
-static void
+static int /* not all compilers support void */
 trim (dest, s)
 	char *dest;
 	const char *s;
@@ -764,6 +769,7 @@ trim (dest, s)
 		dest[len-3] = '\0';
 	} else
 		*dest = '\0';
+	return 0;
 }
 
 static int
@@ -867,7 +873,7 @@ find_library (handle, basename, search_path)
 	while (cur) {
 		next = strchr(cur, ':');
 		if (next) {
-			if (next - cur + 1 >= FILENAME_MAX) {
+			if (next - cur + 1 >= LTDL_FILENAME_MAX) {
 				last_error = buffer_overflow_error;
 				return 1;
 			}
@@ -875,7 +881,7 @@ find_library (handle, basename, search_path)
 			filename[next - cur] = '\0';
 			cur = next+1;
 		} else {
-			if (strlen(cur)+1 >= FILENAME_MAX) {
+			if (strlen(cur)+1 >= LTDL_FILENAME_MAX) {
 				last_error = buffer_overflow_error;
 				return 1;
 			}
@@ -977,7 +983,7 @@ lt_dlopen (filename)
 		basename++;
 	else
 		basename = filename;
-	if (basename - filename >= FILENAME_MAX) {
+	if (basename - filename >= LTDL_FILENAME_MAX) {
 		last_error = buffer_overflow_error;
 		return 0;
 	}
@@ -1236,7 +1242,7 @@ lt_dlsetsearchpath (search_path)
 }
 
 const char *
-lt_dlgetsearchpath (void)
+lt_dlgetsearchpath __P((void))
 {
 	return usr_search_path;
 }

@@ -1,5 +1,13 @@
 1999-01-20  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* demo/configure.in (AC_C_CONST): added, for portability
+	* mdemo/configure.in (AC_C_CONST): ditto
+	* libltdl/configure.in (AC_C_CONST, AC_C_INLINE): ditto
+	* libltdl/ltdl.c (LTDL_FILENAME_MAX): use FILENAME_MAX if defined
+	(FILENAME_MAX): replace all explicit uses with LTDL_FILENAME_MAX
+	(presym_free_symlists, trim): don't return void, for portability
+	(lt_dlgetsearchpath): replace (void) with __P((void))
+
 	* ltmain.in (compile): when compiling both PIC and non-PIC, write
  	the PIC object to .libs/.lo and only rename it to .lo after
  	compiling the .o, to avoid fooling make dependencies
