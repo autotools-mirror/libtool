@@ -16,12 +16,12 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 # 02111-1307  USA
 
-AC_PREREQ(2.50)
+AC_PREREQ(2.54)
 
 ## ------------------------ ##
 ## Autoconf initialisation. ##
 ## ------------------------ ##
-AC_INIT([cdemo], [0.1], [bug-libtool@gnu.org])
+AC_INIT([cdemo], [1.0], [bug-libtool@gnu.org])
 AC_CONFIG_SRCDIR([main.c])
 AC_CONFIG_AUX_DIR([../../config])
 

@@ -18,7 +18,7 @@
 
 
 ## FIXME: Is this really new enough? ##
-AC_PREREQ(2.50)
+AC_PREREQ(2.54)
 
 
 
@@ -73,7 +73,7 @@ aclocaldir='${datadir}/aclocal'
 AC_SUBST([aclocaldir])
 
 AC_ARG_ENABLE(ltdl-install,
-    [AC_HELP_STRING([--disable-ltdl-install], [do not install libltdl])])
+    [AS_HELP_STRING([--disable-ltdl-install], [do not install libltdl])])
 if test x"${enable_ltdl_install+set}" != xset; then
   enable_ltdl_install=yes
   ac_configure_args="$ac_configure_args --enable-ltdl-install"
@@ -100,10 +100,8 @@ AC_SUBST([DIST_MAKEFILE_LIST])
 # Use the specified CC and LD
 AC_PROG_CC
 AC_EXEEXT
-AM_PROG_LD
-AC_SUBST(LD)
-AM_PROG_NM
-AC_SUBST(NM)
+AC_PROG_LD
+AC_PROG_NM
 AC_PROG_LN_S
 
 pushdef([AC_MSG_ERROR], [CXX=no])

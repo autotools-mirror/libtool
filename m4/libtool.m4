@@ -2066,6 +2066,7 @@ else
 fi
 test -z "$LD" && AC_MSG_ERROR([no acceptable ld found in \$PATH])
 AC_PROG_LD_GNU
+AC_SUBST([LD])
 ])# AC_PROG_LD
 
 
@@ -2336,6 +2337,7 @@ else
   test -z "$lt_cv_path_NM" && lt_cv_path_NM=nm
 fi])
 NM="$lt_cv_path_NM"
+AC_SUBST([NM])
 ])# AC_PROG_NM
 
 
@@ -5921,13 +5923,13 @@ m4_define([_LT_AC_TAGVAR], [m4_if([$2], [], [$1], [$1_$2])])
 
 
 # old names
-AC_DEFUN([AM_PROG_LIBTOOL],   [AC_PROG_LIBTOOL])
-AC_DEFUN([AM_ENABLE_SHARED],  [AC_ENABLE_SHARED($@)])
-AC_DEFUN([AM_ENABLE_STATIC],  [AC_ENABLE_STATIC($@)])
-AC_DEFUN([AM_DISABLE_SHARED], [AC_DISABLE_SHARED($@)])
-AC_DEFUN([AM_DISABLE_STATIC], [AC_DISABLE_STATIC($@)])
-AC_DEFUN([AM_PROG_LD],        [AC_PROG_LD])
-AC_DEFUN([AM_PROG_NM],        [AC_PROG_NM])
+AU_DEFUN([AM_PROG_LIBTOOL],   [AC_PROG_LIBTOOL])
+AU_DEFUN([AM_ENABLE_SHARED],  [AC_ENABLE_SHARED($@)])
+AU_DEFUN([AM_ENABLE_STATIC],  [AC_ENABLE_STATIC($@)])
+AU_DEFUN([AM_DISABLE_SHARED], [AC_DISABLE_SHARED($@)])
+AU_DEFUN([AM_DISABLE_STATIC], [AC_DISABLE_STATIC($@)])
+AU_DEFUN([AM_PROG_LD],        [AC_PROG_LD])
+AU_DEFUN([AM_PROG_NM],        [AC_PROG_NM])
 
 # This is just to silence aclocal about the macro not being used
 m4_if([AC_DISABLE_FAST_INSTALL])
@@ -6001,6 +6003,7 @@ for lt_ac_sed in $lt_ac_sed_list /usr/xpg4/bin/sed; do
   done
 done
 SED=$lt_cv_path_SED
+AC_SUBST([SED])
 ])
 AC_MSG_RESULT([$SED])
 ])

@@ -1,3 +1,23 @@
+2003-11-14  Gary V. Vaughan  <gary@gnu.org>
+
+	Run our configure.ac files through Autoconf 2.59's autoupdate, and
+	then tweak the results by hand:
+
+	* m4/libtool.m4 (AC_PROG_LD): In common with all the other
+	AC_PROG_ macros, AC_SUBST the discovered LD.
+	(AC_PROG_NM): Similarly for NM.
+	(LT_AC_PROG_SED): Similarly for SED.
+	* configure.ac: No need to SUBST NM and LD manually any more.
+	(AC_PREREQ): Conservatively downgrade from 2.59 to 2.54.
+	* tests/cdemo/configure.ac, tests/demo/configure.ac,
+	tests/depdemo/configure.ac, tests/f77demo/configure.ac,
+	tests/mdemo/configure.ac, tests/mdemo2/configure.ac,
+	tests/pdemo/configure.ac, tests/tagdemo/configure.ac: Ditto.
+	* m4/libtool.m4 (AM_PROG_LIBTOOL, AM_ENABLE_SHARED,
+	AM_ENABLE_STATIC, AM_DISABLE_SHARED, AM_DISABLE_STATIC,
+	AM_PROG_LD, AM_PROG_NM): AU_DEFUN these macros so autoupdate can
+	use the newer definitions.
+
 2003-11-12  Gary V. Vaughan  <gary@gnu.org>
 
 	The rules for uploading releases to gnu.org have been updated, and
