@@ -1,5 +1,9 @@
 2005-01-12  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* config/ltmain.m4sh: New option `--verbose'/`-v' to enable
+	override of `--silent'.  Verbose is the default behavior.
+	* doc/libtool.texi (Invoking libtool): Document it.
+
 	* m4/libtool.m4 (_LT_SYS_DYNAMIC_LINKER) [linux]: While "parsing"
 	/etc/ld.so.conf, skip comments.
 	Reported by Jens Elkner <elkner@linofee.org>.

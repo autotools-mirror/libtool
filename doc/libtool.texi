@@ -1176,6 +1176,10 @@ that libtool knows it can safely.
 @itemx --silent
 Do not print out any progress or informational messages.
 
+@item -v
+@itemx --verbose
+Print out progress and informational messages (enabled by default).
+
 @item --version
 Print libtool version information and exit.
 @end table
