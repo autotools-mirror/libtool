@@ -1,3 +1,9 @@
+2001-04-24  Ossama Othman  <ossama@debian.org>
+
+	* ltcf-cxx.sh (output_verbose_link_cmds): Renamed this variable to
+	"output_verbose_link_cmd" to better conform to libtool naming
+	conventions.
+
 2001-04-24  Gary V. Vaughan  <gvv@techie.com>
 
 	From Tim Mooney <mooney@dogbert.cc.ndsu.NoDak.edu>
