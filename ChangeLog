@@ -1,3 +1,11 @@
+2004-01-12  Gary V. Vaughan  <gary@gnu.org>
+
+        * m4/libtool.m4 (_LT_COPYING): Factor out copyright message so it
+	only needs to be updated in one place.
+	(AC_LIBTOOL_CONFIG): Refactor to be more readable.  Only add
+	tags if a compiler was found; ie if you have no gcj compiler,
+	don't tack the GCJ tag onto the generated libtool script.
+
 2004-01-13  Peter O'Gorman  <peter@pogma.com>
 
 	* m4/libtool.m4: Quote shrext as it is evaled in ltmain.
@@ -11,7 +19,7 @@
 	* doc/libtool.texi: document the new option.
 	* NEWS: announce the new option.
 
-2004-01-08  Gary V. Vaughan  <gary@gnu.org>
+2004-01-11  Gary V. Vaughan  <gary@gnu.org>
 
 	* libtoolize.in (func_copy_all_files): s/xfunc_copy/Xfunc_copy.
 	Now the test can actually succeed sometimes.
