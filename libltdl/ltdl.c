@@ -76,6 +76,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 
 #include "ltdl.h"
 
+#define LT_DLSTRLEN(s)	(((s) && (s)[0]) ? strlen (s) : 0)
+
 
 
 
@@ -831,7 +833,7 @@ sys_wll_open (loader_data, filename)
     {
       /* Append a `.' to stop Windows from adding an
 	 implicit `.dll' extension. */
-      searchname = LT_DLMALLOC (char, 2+ strlen (filename));
+      searchname = LT_DLMALLOC (char, 2+ LT_DLSTRLEN (filename));
       if (!searchname)
 	{
 	  MUTEX_SETERROR (LT_DLSTRERROR (NO_MEMORY));
@@ -1282,6 +1284,7 @@ static struct lt_user_dlloader presym = {
 /* The type of a function used at each iteration of  foreach_dirinpath().  */
 typedef int	foreach_callback_func LT_PARAMS((char *filename, lt_ptr data1,
 						 lt_ptr data2));
+
 static	int	foreach_dirinpath     LT_PARAMS((const char *search_path,
 						 const char *base_name,
 						 foreach_callback_func *func,
@@ -1618,7 +1621,7 @@ find_module (handle, dir, libdir, dlname, old_name, installed)
       /* try to open the not-installed module */
       if (!installed)
 	{
-	  len = (dir ? strlen (dir) : 0) + strlen (objdir) + strlen (dlname);
+	  len = LT_DLSTRLEN (dir) + strlen (objdir) + strlen (dlname);
 	  filename = LT_DLMALLOC (char, 1+ len);
 
 	  if (!filename)
@@ -1648,7 +1651,7 @@ find_module (handle, dir, libdir, dlname, old_name, installed)
 
       /* maybe it was moved to another directory */
       {
-	len	 = (dir ? strlen (dir) : 0) + strlen (dlname);
+	len	 = LT_DLSTRLEN (dir) + strlen (dlname);
 	filename = LT_DLMALLOC (char, 1+ len);
 
 	if (dir)
@@ -1711,7 +1714,7 @@ foreach_dirinpath (search_path, base_name, func, data1, data2)
 {
   int	result		= 0;
   int	filenamesize	= 0;
-  int	lenbase		= base_name ? strlen (base_name) : 0;
+  int	lenbase		= LT_DLSTRLEN (base_name);
   char *filename, *canonical, *next;
 
   MUTEX_LOCK ();
@@ -2063,7 +2066,7 @@ trim (dest, str)
   /* remove the leading and trailing "'" from str
      and store the result in dest */
   const char *end   = strrchr (str, '\'');
-  int	len	    = strlen  (str);
+  int	len	    = LT_DLSTRLEN (str);
   char *tmp;
 
   LT_DLFREE (*dest);
@@ -2552,7 +2555,7 @@ foreachfile_callback (dirname, data1, data2)
 
   char *filename	= 0;
   int	filenamesize	= 0;
-  int	lendir		= strlen (dirname);
+  int	lendir		= LT_DLSTRLEN (dirname);
   DIR  *dirp		= opendir (dirname);
   struct dirent *direntp;
 
@@ -2739,16 +2742,8 @@ lt_dlsym (handle, symbol)
       return 0;
     }
 
-  lensym = strlen(symbol);
-  if (handle->loader->sym_prefix)
-    {
-      lensym += strlen(handle->loader->sym_prefix);
-    }
-
-  if (handle->info.name)
-    {
-      lensym += strlen(handle->info.name);
-    }
+  lensym = strlen (symbol) + LT_DLSTRLEN (handle->loader->sym_prefix)
+					+ LT_DLSTRLEN (handle->info.name);
 
   if (lensym + LT_SYMBOL_OVERHEAD < LT_SYMBOL_LENGTH)
     {

@@ -1,5 +1,9 @@
 2001-06-26  Gary V. Vaughan  <gary@gnu.org>
 	
+	* libltdl/ltdl.c (LT_DLSTRLEN): Call strlen only if the argument
+	is non-NULL and non-zero in length.  Changed all calls to strlen
+	appropriately.
+
 	* libltdl/ltdl.c: Prototype all static functions.
 
 	* ltdl.m4: Bump serial number to 3.
