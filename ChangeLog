@@ -1,5 +1,8 @@
 1999-04-02  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* ltconfig.in (archive_cmds, sunos4*): where we used -Bstatic, we
+	should have been using -Bshareable
+
 	* demo/Makefile.am (CLEANFILES): clean EXTRA_* from deplibs-check
 
 	* libtool.m4 (LDFLAGS, LIBS): pass them to ltconfig, for the tests 

@@ -1073,7 +1073,7 @@ EOF
     ;;
 
   sunos4*)
-    archive_cmds='$LD -assert pure-text -Bstatic -o $lib $libobjs $deplibs $linkopts'
+    archive_cmds='$LD -assert pure-text -Bshareable -o $lib $libobjs $deplibs $linkopts'
     wlarc=
     hardcode_direct=yes
     hardcode_shlibpath_var=no
@@ -1323,12 +1323,11 @@ else
     ;;
 
   sunos4*)
-    # Why do we need -Bstatic?  To avoid inter-library dependencies, maybe...
     if test "$with_gcc" = yes; then
       # Use -fPIC here because libgcc is multilibbed
-      archive_cmds='$CC -shared ${wl}-Bstatic -fPIC -o $lib $libobjs $deplibs $linkopts'
+      archive_cmds='$CC -shared -fPIC -o $lib $libobjs $deplibs $linkopts'
     else
-      archive_cmds='$LD -assert pure-text -Bstatic -o $lib $libobjs $deplibs $linkopts'
+      archive_cmds='$LD -assert pure-text -Bshareable -o $lib $libobjs $deplibs $linkopts'
     fi
     hardcode_libdir_flag_spec='-L$libdir'
     hardcode_direct=yes
