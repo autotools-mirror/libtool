@@ -1,3 +1,13 @@
+2005-03-18  Albert Chin-A-Young  <china@thewrittenword.com>
+
+	* libtool.m4 (AC_LIBTOOL_LANG_CXX_CONFIG) [ solaris2.6+ ]:
+	When linking convenience libraries on Solaris with the Sun C++
+	compiler, pass convenience libraries through to the linker with
+	-Qoption between allextract/defaultextract.  The Sun C++ compiler
+	bundles -Qoption arguments so convenience libraries are linked with
+	defaultextract otherwise.
+	Backport of branch-2-0 patch dated 2004-03-14.
+
 2005-03-16  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* ltmain.in: unconditionally set IFS, and set it
