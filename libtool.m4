@@ -171,8 +171,15 @@ old_postinstall_cmds='chmod 644 $oldlib'
 old_postuninstall_cmds=
 
 if test -n "$RANLIB"; then
+  case $host_os in
+  openbsd*)
+    old_postinstall_cmds="\$RANLIB -t \$oldlib~$old_postinstall_cmds"
+    ;;
+  *)
+    old_postinstall_cmds="\$RANLIB \$oldlib~$old_postinstall_cmds"
+    ;;
+  esac
   old_archive_cmds="$old_archive_cmds~\$RANLIB \$oldlib"
-  old_postinstall_cmds="\$RANLIB \$oldlib~$old_postinstall_cmds"
 fi
 
 # Only perform the check for file, if the check method requires it
@@ -1287,8 +1294,15 @@ openbsd*)
   library_names_spec='${libname}${release}.so$versuffix ${libname}.so$versuffix'
   finish_cmds='PATH="\$PATH:/sbin" ldconfig -m $libdir'
   shlibpath_var=LD_LIBRARY_PATH
-  if test "`echo __ELF__ | $CC -E - | grep __ELF__`" = "" || test"$host_os-$host_cpu" = "openbsd2.8-powerpc"; then
-    shlibpath_overrides_runpath=no
+  if test -z "`echo __ELF__ | $CC -E - | grep __ELF__`" || test "$host_os-$host_cpu" = "openbsd2.8-powerpc"; then
+    case $host_os in
+      openbsd2.[[89]] | openbsd2.[[89]].*)
+	shlibpath_overrides_runpath=no
+	;;
+      *)
+	shlibpath_overrides_runpath=yes
+	;;
+      esac
   else
     shlibpath_overrides_runpath=yes
   fi
@@ -1937,7 +1951,7 @@ nto-qnx)
 openbsd*)
   lt_cv_file_magic_cmd=/usr/bin/file
   lt_cv_file_magic_test_file=`echo /usr/lib/libc.so.*`
-  if test "`echo __ELF__ | $CC -E - | grep __ELF__`" = "" -o "$host_os-$host_cpu" = "openbsd2.8-powerpc"; then
+  if test -z "`echo __ELF__ | $CC -E - | grep __ELF__`" || test "$host_os-$host_cpu" = "openbsd2.8-powerpc"; then
     [lt_cv_deplibs_check_method='file_magic ELF [0-9][0-9]*-bit [LM]SB shared object']
   else
     lt_cv_deplibs_check_method='file_magic OpenBSD.* shared library'
@@ -4785,19 +4799,22 @@ EOF
       _LT_AC_TAGVAR(hardcode_direct, $1)=yes
       _LT_AC_TAGVAR(hardcode_shlibpath_var, $1)=no
 
-      case "$host_os" in
-        openbsd[[01]].* | openbsd2.[[0-7]] | openbsd2.[[0-7]].*)
-          _LT_AC_TAGVAR(archive_cmds, $1)='$LD -Bshareable -o $lib $libobjs $deplibs $linker_flags'
-          _LT_AC_TAGVAR(hardcode_libdir_flag_spec, $1)='-R$libdir'
-        ;;
-        *)
-          _LT_AC_TAGVAR(archive_cmds, $1)='$CC -shared $pic_flag -o $lib $libobjs $deplibs $linker_flags'
-          _LT_AC_TAGVAR(hardcode_libdir_flag_spec, $1)='${wl}-rpath,$libdir'
-          if test "`echo __ELF__ | $CC -E - | grep __ELF__`" = "" || test "$host_os-$host_cpu" = "openbsd2.8-powerpc"; then
-           _LT_AC_TAGVAR(export_dynamic_flag_spec, $1)='${wl}-E'
-          fi
-        ;;
-      esac
+      if test -z "`echo __ELF__ | $CC -E - | grep __ELF__`" || test "$host_os-$host_cpu" = "openbsd2.8-powerpc"; then
+        _LT_AC_TAGVAR(archive_cmds, $1)='$CC -shared $pic_flag -o $lib $libobjs $deplibs $linker_flags'
+        _LT_AC_TAGVAR(hardcode_libdir_flag_spec, $1)='${wl}-rpath,$libdir'
+        _LT_AC_TAGVAR(export_dynamic_flag_spec, $1)='${wl}-E'
+      else
+       case $host_os in
+         openbsd[[01]].* | openbsd2.[[0-7]] | openbsd2.[[0-7]].*)
+           _LT_AC_TAGVAR(archive_cmds, $1)='$LD -Bshareable -o $lib $libobjs $deplibs $linker_flags'
+           _LT_AC_TAGVAR(hardcode_libdir_flag_spec, $1)='-R$libdir'
+           ;;
+         *)
+           _LT_AC_TAGVAR(archive_cmds, $1)='$CC -shared $pic_flag -o $lib $libobjs $deplibs $linker_flags'
+           _LT_AC_TAGVAR(hardcode_libdir_flag_spec, $1)='${wl}-rpath,$libdir'
+           ;;
+       esac
+      fi
       ;;
 
     os2*)
