@@ -28,7 +28,6 @@ struct dld_symlist
 };
 
 extern struct dld_symlist dld_preloaded_symbols[];
-extern int dld_preloaded_symbol_count;
 
 int
 main (argc, argv)
@@ -42,24 +41,21 @@ main (argc, argv)
 
   printf ("Welcome to *modular* GNU Hell!\n");
 
-  if (dld_preloaded_symbol_count < 0)
-    printf ("Sorry, the symbol list is not sorted and unique.\n");
-  else
-    printf ("Yippee!  The symbol list is both sorted and unique.\n");
-
   /* Look up the symbols we require for this demonstration. */
   s = dld_preloaded_symbols;
   while (s->name)
     {
-      /* FIXME: we are simplistic about leading underscores. */
-      printf ("found symbol: %s\n", s->name);
-      if (!strcmp ("hello", s->name))
-	phello = s->address;
-      else if (!strcmp ("foo", s->name))
-	pfoo = s->address;
-      else if (!strcmp ("nothing", s->name))
-	pnothing = s->address;
-
+      if (s->address) {
+        /* FIXME: we are simplistic about leading underscores. */
+        printf ("found symbol: %s\n", s->name);
+        if (!strcmp ("hello", s->name))
+ 	  phello = s->address;
+        else if (!strcmp ("foo", s->name))
+  	  pfoo = s->address;
+        else if (!strcmp ("nothing", s->name))
+  	  pnothing = s->address;
+      } else 
+        printf ("found file: %s\n", s->name);
       s ++;
     }
 

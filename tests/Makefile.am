@@ -3,8 +3,11 @@
 AUTOMAKE_OPTIONS = gnits
 
 makesequence = demo-make.test demo-exec.test \
-	demo-inst.test demo-unst.test hardcode.test
-TESTS =	demo-conf.test $(makesequence) link.test link-2.test nomode.test \
+	demo-inst.test demo-unst.test hardcode.test \
+	mdemo-make.test mdemo-exec.test \
+	mdemo-inst.test mdemo-unst.test
+TESTS =	demo-conf.test mdemo-conf.test $(makesequence) \
+	link.test link-2.test nomode.test \
 	quote.test sh.test suffix.test
 
 # Be sure to reexport important environment variables.
@@ -16,4 +19,5 @@ EXTRA_DIST = defs $(TESTS)
 # We need to remove any files that the above tests created.
 clean-local:
 	-test -f ../demo/Makefile && cd ../demo && $(MAKE) distclean
+	-test -f ../mdemo/Makefile && cd ../mdemo && $(MAKE) distclean
 	rm -rf _inst

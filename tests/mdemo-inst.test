@@ -1,0 +1,46 @@
+#! /bin/sh
+# mdemo-inst.test - try installing from the ../mdemo subdirectory
+
+# Test script header.
+need_prefix=yes
+if test -z "$srcdir"; then
+  srcdir=`echo "$0" | sed 's%/[^/]*$%%'`
+  test "$srcdir" = "$0" && srcdir=.
+  test "${VERBOSE+set}" != "set" && VERBOSE=yes
+fi
+. $srcdir/defs || exit 1
+
+# Check that things are built.
+if test -f ../mdemo/hell; then :
+else
+  echo "You must run mdemo-make.test before $0" 1>&2
+  exit 1
+fi
+
+# Change to our build directory.
+cd ../mdemo || exit 1
+
+echo "= Running $make install in ../mdemo"
+$make install || exit 1
+
+echo "= Executing installed programs"
+status=0
+if $prefix/bin/hell.debug | grep 'Welcome to GNU Hell'; then :
+else
+  echo "$0: cannot execute $prefix/bin/hell.debug" 1>&2
+  status=1
+fi
+
+if $prefix/bin/hell | grep 'Welcome to GNU Hell'; then :
+else
+  echo "$0: cannot execute $prefix/bin/hell" 1>&2
+
+  # Simple check to see if they are superuser.
+  if test -w /; then :
+  else
+    echo "You may need to run $0 as the superuser."
+  fi
+  status=1
+fi
+
+exit $status

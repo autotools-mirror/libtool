@@ -1109,6 +1109,11 @@ Link @var{file} into the output program, and add its symbols to
 Allow symbols from @var{output-file} to be resolved with @code{dlsym}
 (@pxref{Dlopened modules}).
 
+@item -export-symbols @var{symfile}
+Same as @samp{-export-dynamic}, except that it only exports symbols
+that are listed in @var{symfile}. The symbol file should end in @samp{.sym}
+and must contain the name of one symbol per line.
+
 @item -L@var{libdir}
 Search @var{libdir} for required libraries that have already been
 installed.
@@ -2227,10 +2232,10 @@ On some operating systems, a program symbol must be specially declared
 in order to be dynamically resolved with the @code{dlsym} (or
 equivalent) function.
 
-Libtool provides the @samp{-export-dynamic} link flag (@pxref{Link
-mode}), which does this declaration.  You need to use this flag if you
-are linking an application program that dlopens other modules or a
-libtool library that will also be dlopened.
+Libtool provides the @samp{-export-dynamic} and @samp{-export-symbols} link 
+flags (@pxref{Link mode}), which does this declaration.  
+You need to use this flag if you are linking an application program that 
+dlopens other modules or a libtool library that will also be dlopened.
 
 For example, if we wanted to build a shared library, @file{libhello},
 that would later be dlopened by an application, we would add
@@ -2289,9 +2294,9 @@ module, or the module is not found, then the application can recover
 without crashing.
 @end enumerate
 
-Libtool emulates @samp{-export-dynamic} on static platforms by linking
-objects into the program at compile time, and creating data structures
-that represent the program's symbol table.
+Libtool emulates @samp{-export-dynamic} and @samp{-export-symbols} 
+on static platforms by linking objects into the program at compile time, 
+and creating data structures that represent the program's symbol table.
 
 In order to use this feature, you must declare the objects you want your
 application to dlopen by using the @samp{-dlopen} or @samp{-dlpreopen}
@@ -2305,15 +2310,10 @@ generic pointer to the appropriate object, such as @code{&fprintf}.
 
 @deftypevar {dld_symbol *} dld_preloaded_symbols
 An array of @var{dld_symbol} structures, representing all the preloaded
-symbols linked into the program.  The last element has a @var{name} of
-@code{0}.
-@end deftypevar
-
-@deftypevar int dld_preloaded_symbol_count
-The number of elements in @var{dld_preloaded_symbols}, if it is sorted
-in ascending order by @var{name}.  Otherwise, @code{-1}, to indicate
-that the application needs to sort and count @var{dld_preloaded_symbols}
-itself, or search it linearly.
+symbols linked into the program. For each @samp{-dlpreloaded} file 
+there is an element with the @var{name} of the file and a @var{address} 
+of @code{0}, followed by all symbols exported from this file.
+The last element has a @var{name} and @var{address} of @code{0}.
 @end deftypevar
 
 Some compilers may allow identifiers which are not valid in ANSI C, such
@@ -2327,8 +2327,9 @@ in @var{dld_preloaded_symbols}.
 @cindex names of dynamic modules
 @cindex dynamic modules, names
 
-After a library has been linked with @samp{-export-dynamic}, it can be
-dlopened.  Unfortunately, because of the variation in library names,
+After a library has been linked with @samp{-export-dynamic} or 
+@samp{-export-symbols}, it can be dlopened.  
+Unfortunately, because of the variation in library names,
 your package needs to determine the correct file to dlopen.
 
 The most straightforward and flexible implementation is to determine the

@@ -1,0 +1,23 @@
+dnl Initialize the hell package.
+AC_INIT(main.c)
+AM_INIT_AUTOMAKE(module,1.0)
+
+AC_PROG_CC
+AC_EXEEXT
+AM_PROG_LIBTOOL
+
+AC_CHECK_HEADERS(string.h dlfcn.h dl.h)
+AC_CHECK_FUNCS(strdup)
+
+LIBADD_DL=
+AC_CHECK_FUNCS(dlopen,,
+[AC_CHECK_LIB(dl, dlopen, LIBADD_DL="-ldl",
+ [AC_CHECK_LIB(dld, shl_load, LIBADD_DL="-ldld",
+   [AC_CHECK_FUNCS(dlopen, LIBADD_DL="")]
+  )]
+ )]
+)
+AC_SUBST(LIBADD_DL)
+
+dnl Output the makefile
+AC_OUTPUT(Makefile)

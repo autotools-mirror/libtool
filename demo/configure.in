@@ -3,6 +3,7 @@ AC_INIT(hello.c)
 AM_INIT_AUTOMAKE(hell,1.0)
 
 AC_PROG_CC
+AC_EXEEXT
 AM_PROG_LIBTOOL
 
 dnl Output the makefile

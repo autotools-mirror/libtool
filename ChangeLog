@@ -1,5 +1,66 @@
 1998-11-04  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* ltconfig.in, ltmain.in: updated and fixed the patches below
+
+1998-11-04  Thomas Tanner  <tanner@gmx.de>
+
+	* mdemo/*: added new demo to demonstrate building of dlopenend 
+	modules
+	* tests/Makefile.am, tests/mdemo*: added some tests for mdemo
+
+1998-11-04  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
+
+	* demo/configure.in: added AC_EXEEXT macro so that the tests can
+ 	work on cywin32/mingw32 hosts.  This requires the current CVS
+ 	autoconf
+
+1998-11-04  Thomas Tanner  <tanner@gmx.de>
+
+	* ltmain.in: New flag -export-symbols; new dlpreopen system
+	* demo/dlmain.c: removed dld_preloaded_symbol_count
+
+1998-11-04  Ian Lance Taylor  <ian@cygnus.com>
+
+	* ltmain.in: On installation, don't get confused if the same name
+	appears more than once in the list of library names.
+
+1998-11-04  Ian Lance Taylor  <ian@cygnus.com>
+
+	* ltconfig.in: Add objext and libext variables.  Check for object
+	suffix.  Check for mingw32* as well as cygwin32*.  Use objext when
+	testing compiler.  Add support for Visual C++ on cygwin32 when not
+	using gcc.  Add objext, libext, and fix_srcfile_path to generated
+	libtool script.
+	* ltmain.in: Use .${objext} rather than .o.  Use fix_srcfile_path
+	if it is set.  Check for .obj as well as for .o, and for .lib as
+	well as for .a.  Use .${libext} rather than .a when creating old
+	libraries.
+	* libtoolize.in: Change initial /bin/sh to @SHELL@.
+	* libtool.m4 (AM_PROG_LIBTOOL): Add AC_REQUIRE for
+	AC_CANONICAL_BUILD, so that autoconf doesn't get mixed up by the
+	AC_REQUIRE in AC_CHECK_TOOL.
+
+1998-11-04  Ian Lance Taylor  <ian@cygnus.com>
+
+	* ltconfig.in: Look in the right directory for libtool.c in
+	archive_cmds for cygwin32.
+
+1998-11-04  Ian Lance Taylor  <ian@cygnus.com>
+
+	* ltconfig.in: Fix cygwin32 support to avoid using a double
+	extension, to delete the def file, to set version_type to windows,
+	and to include versuffix in the DLL name.
+	* ltmain.in: Add support for a version_type of windows.
+
+1998-11-04  Ian Lance Taylor  <ian@cygnus.com>
+
+	* ltconfig.in: Add cygwin32 support.
+	* libtool.m4 (AM_PROG_LIBTOOL): Call AM_SYS_LIBTOOL_CYGWIN32 on a
+	cygwin32 host.  Pass DLLTOOL and AS to ltconfig.
+	(AM_SYS_LIBTOOL_CYGWIN32): New macro.
+
+1998-11-04  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
 	* libtool.m4 (sco): fix typo
 
 1998-11-04  Ian Lance Taylor  <ian@cygnus.com>

@@ -89,6 +89,8 @@ run=
 show="$echo"
 show_help=
 execute_dlfiles=
+lo2o="s/\\.lo\$/.${objext}/"
+los2o="s/\\.lo /.${objext} /g"
 
 # Parse our command line options once, thoroughly.
 while test $# -gt 0
@@ -347,7 +349,7 @@ if test -z "$show_help"; then
     libobj=`$echo "X$libobj" | $Xsed -e "s/\.$xform$/.lo/"`
 
     case "$libobj" in
-    *.lo) obj=`$echo "X$libobj" | $Xsed -e 's/\.lo$/.o/'` ;;
+    *.lo) obj=`$echo "X$libobj" | $Xsed -e "$lo2o"` ;;
     *)
       $echo "$modename: cannot determine name of library object from \`$libobj'" 1>&2
       exit 1
@@ -373,7 +375,7 @@ if test -z "$show_help"; then
     # Calculate the filename of the output object if compiler does
     # not support -o with -c
     if test "$compiler_c_o" = no; then
-      output_obj=`$echo "X$srcfile" | $Xsed -e 's%^.*/%%' -e 's%\..*$%%'`.o
+      output_obj=`$echo "X$srcfile" | $Xsed -e 's%^.*/%%' -e 's%\..*$%%'`.${objext}
       lockfile="$output_obj.lock"
       removelist="$removelist $output_obj $lockfile"
       trap "$run $rm $removelist; exit 1" 1 2 15
@@ -408,6 +410,10 @@ compiler."
       echo $srcfile > "$lockfile"
     fi
  
+    if test -n "$fix_srcfile_path"; then
+      eval srcfile=\"$fix_srcfile_path\"
+    fi
+
     # Only build a PIC object if we are building libtool libraries.
     if test "$build_libtool_libs" = yes; then
       # Without this assignment, base_compile gets emptied.
@@ -557,6 +563,7 @@ compiler."
     dlfiles=
     dlprefiles=
     export_dynamic=no
+    export_symbols=
     generated=
     hardcode_libdirs=
     libobjs=
@@ -614,6 +621,23 @@ compiler."
             ;;
           esac
           ;;
+	exportsyms)
+	  export_symbols="$arg"
+          if test ! -f "$arg"; then
+            $echo "$modename: symbol file \`$arg' does not exist"
+            exit 1
+          fi
+	  if test -n "$export_dynamic_flag_spec"; then
+	    eval arg=\"$export_dynamic_flag_spec\"
+	  else
+	    arg=
+	  fi
+
+          # Add the symbol object into the linking commands.
+	  compile_command="$compile_command @SYMFILE@"
+	  finalize_command="$finalize_command @SYMFILE@"
+	  prev=
+	  ;;
 	release)
 	  release="-$arg"
 	  prev=
@@ -672,6 +696,19 @@ compiler."
 	  compile_command="$compile_command @SYMFILE@"
 	  finalize_command="$finalize_command @SYMFILE@"
         fi
+        ;;
+
+      -export-symbols)
+        if test "$export_dynamic" != no; then
+          $echo "$modename: cannot have both -export-dynamic and -export-symbols"
+          exit 1
+        fi
+        if test -n "$export_symbols"; then
+          $echo "$modename: cannot have more than one -exported-symbols"
+          exit 1
+        fi
+	prev=exportsyms
+	continue
         ;;
 
       -L*)
@@ -733,7 +770,7 @@ compiler."
 	esac
         ;;
 
-      *.o | *.a)
+      *.o | *.obj | *.a | *.lib)
         # A standard object.
         objs="$objs $arg"
         ;;
@@ -753,7 +790,7 @@ compiler."
 
 	if test "$prev" = dlprefiles; then
 	  # Preload the old-style object.
-	  dlprefiles="$dlprefiles "`$echo "X$arg" | $Xsed -e 's/\.lo$/.o/'`
+	  dlprefiles="$dlprefiles "`$echo "X$arg" | $Xsed -e "$lo2o"`
 	  prev=
 	fi
 	libobjs="$libobjs $arg"
@@ -1013,7 +1050,7 @@ compiler."
       exit 1
       ;;
 
-    *.a)
+    *.a | *.lib)
       if test -n "$link_against_libtool_libs"; then
         $echo "$modename: error: cannot link libtool libraries into archives" 1>&2
         exit 1
@@ -1189,6 +1226,13 @@ compiler."
 	  versuffix=".$current.$revision"
 	  ;;
 
+	windows)
+	  # Like Linux, but with '-' rather than '.', since we only
+	  # want one extension on Windows 95.
+	  major=`expr $current - $age`
+	  versuffix="-$major-$age-$revision"
+	  ;;
+
 	*)
 	  $echo "$modename: unknown library version type \`$version_type'" 1>&2
 	  echo "Fatal configuration error.  See the $PACKAGE docs for more information." 1>&2
@@ -1240,10 +1284,10 @@ compiler."
 
       # Now set the variables for building old libraries.
       if test "$build_old_libs" = yes && test "$build_libtool_libs" != convenience ; then
-        oldlibs="$oldlibs $output_objdir/$libname.a"
+	oldlibs="$oldlibs $output_objdir/$libname.$libext"
 
 	# Transform .lo files to .o files.
-	oldobjs="$objs"`$echo "X$libobjs " | $Xsed -e 's/[^   ]*\.a //g' -e 's/\.lo /.o /g' -e 's/ $//g'`
+	oldobjs="$objs"`$echo "X$libobjs " | $Xsed -e 's/[^   ]*\.'${libext}' //g' -e "$los2o" -e 's/ $//g'`
       fi
 
       if test "$build_libtool_libs" = yes; then
@@ -1266,7 +1310,7 @@ compiler."
 	done
 
 	# Use standard objects if they are PIC.
-	test -z "$pic_flag" && libobjs=`$echo "X$libobjs " | $Xsed -e 's/\.lo /.o /g' -e 's/ $//g'`
+	test -z "$pic_flag" && libobjs=`$echo "X$libobjs " | $Xsed -e "$los2o" -e 's/ $//g'`
 
 	if test -n "$whole_archive_flag_spec"; then
 	  if test -n "$convenience"; then
@@ -1312,15 +1356,15 @@ compiler."
 	  fi
 	done
 
-	# If -export-dynamic was specified, set the dlname.
-	if test "$export_dynamic" = yes; then
+	# If -export-dynamic/symbols was specified, set the dlname.
+	if test "$export_dynamic" = yes || test -n "$export_symbols"; then
 	  # On all known operating systems, these are identical.
 	  dlname="$soname"
 	fi
       fi
       ;;
 
-    *.lo | *.o)
+    *.lo | *.o | *.obj)
       if test -n "$link_against_libtool_libs"; then
         $echo "$modename: error: cannot link libtool libraries into objects" 1>&2
         exit 1
@@ -1353,7 +1397,7 @@ compiler."
           exit 1
         fi
         libobj="$output"
-        obj=`$echo "X$output" | $Xsed -e 's/\.lo$/.o/'`
+        obj=`$echo "X$output" | $Xsed -e "$lo2o"`
         ;;
       *)
         libobj=
@@ -1365,7 +1409,7 @@ compiler."
       $run $rm $obj $libobj
 
       # Create the old-style object.
-      reload_objs="$objs"`$echo "X$libobjs " | $Xsed -e 's/[^       ]*\.a //g' -e 's/\.lo /.o /g' -e 's/ $//g'`
+      reload_objs="$objs"`$echo "X$libobjs " | $Xsed -e 's/[^       ]*\.'${libext}' //g' -e 's/[^       ]*\.lib //g' -e "$los2o" -e 's/ $//g'`
 
       output="$obj"
       eval cmds=\"$reload_cmds\"
@@ -1471,61 +1515,45 @@ compiler."
 
       if test -n "$libobjs" && test "$build_old_libs" = yes; then
         # Transform all the library objects into standard objects.
-        compile_command=`$echo "X$compile_command " | $Xsed -e 's/\.lo /.o /g' -e 's/ $//'`
-        finalize_command=`$echo "X$finalize_command " | $Xsed -e 's/\.lo /.o /g' -e 's/ $//'`
+        compile_command=`$echo "X$compile_command " | $Xsed -e "$los2o" -e 's/ $//'`
+        finalize_command=`$echo "X$finalize_command " | $Xsed -e "$los2o" -e 's/ $//'`
       fi
 
-      if test "$export_dynamic" = yes && test -n "$NM" && test -n "$global_symbol_pipe"; then
+      if { test "$export_dynamic" = yes || test "$export_dynamic" = yes; } &&
+         test -n "$NM" && test -n "$global_symbol_pipe"; then
         dlsyms="${outputname}S.c"
       else
         dlsyms=
       fi
 
       if test -n "$dlsyms"; then
-        # Add our own program objects to the preloaded list.
-        dlprefiles=`$echo "X$objs$dlprefiles " | $Xsed -e 's/\.lo /.o /g' -e 's/ $//'`
+        case "$dlsyms" in
+        "") ;;
+        *.c)
+          if test -z "$export_symbols"; then
+            # Add our own program objects to the preloaded list.
+            dlprefiles=`$echo "X$objs$dlprefiles " | $Xsed -e "$los2o" -e 's/ $//'`
+          fi
 
-	# Discover the nlist of each of the dlfiles.
-        nlist="${output_objdir}/${output}.nm"
+          # Discover the nlist of each of the dlfiles.
+          nlist="$objdir/${output}.nm"
 
-	if test -d $output_objdir; then
-	  $show "$rm $nlist ${nlist}T"
-	  $run $rm "$nlist" "${nlist}T"
-	else
-	  $show "$mkdir $output_objdir"
-	  $run $mkdir $output_objdir
-	  status=$?
-	  if test $status -ne 0 && test ! -d $output_objdir; then
-	    exit $status
-	  fi
-	fi
-
-        for arg in $dlprefiles; do
-	  $show "extracting global C symbols from \`$arg'"
-	  $run eval "$NM $arg | $global_symbol_pipe >> '$nlist'"
-        done
-
-        # Parse the name list into a source file.
-        $show "creating $output_objdir/$dlsyms"
-        if test -z "$run"; then
-	  # Make sure we at least have an empty file.
-	  test -f "$nlist" || : > "$nlist"
-
-	  # Try sorting and uniquifying the output.
-	  if sort "$nlist" | uniq > "$nlist"T; then
-	    mv -f "$nlist"T "$nlist"
-	    wcout=`wc "$nlist" 2>/dev/null`
-	    count=`echo "X$wcout" | $Xsed -e 's/^[ 	]*\([0-9][0-9]*\).*$/\1/'`
-	    (test "$count" -ge 0) 2>/dev/null || count=-1
+	  if test -d $objdir; then
+	    $show "$rm $nlist ${nlist}T"
+	    $run $rm "$nlist" "${nlist}T"
 	  else
-	    $rm "$nlist"T
-	    count=-1
+	    $show "$mkdir $objdir"
+	    $run $mkdir $objdir
+	    status=$?
+	    if test $status -ne 0 && test ! -d $objdir; then
+	      exit $status
+	    fi
 	  fi
 
-	  case "$dlsyms" in
-	  "") ;;
-	  *.c)
-	    $echo > "$output_objdir/$dlsyms" "\
+          # Parse the name list into a source file.
+          $show "creating $objdir/$dlsyms"
+          
+          $echo > "$objdir/$dlsyms" "\
 /* $dlsyms - symbol resolution table for \`$outputname' dlsym emulation. */
 /* Generated by $PROGRAM - GNU $PACKAGE $VERSION */
 
@@ -1534,21 +1562,39 @@ extern \"C\" {
 #endif
 
 /* Prevent the only kind of declaration conflicts we can make. */
-#define dld_preloaded_symbol_count some_other_symbol
 #define dld_preloaded_symbols some_other_symbol
 
 /* External symbol declarations for the compiler. */\
 "
 
+          if test -n "$export_symbols"; then
+	    sed -e 's/^\(.*\)/\1 \1/' < "$export_symbols" > "$nlist"
+          fi
+
+          for arg in $dlprefiles; do
+	    $show "extracting global C symbols from \`$arg'"
+	    $run eval "$NM $arg | $global_symbol_pipe >> '$nlist'"
+          done
+
+          if test -z "$run"; then
+	    # Make sure we at least have an empty file.
+	    test -f "$nlist" || : > "$nlist"
+
+	    # Try sorting and uniquifying the output.
+	    if sort "$nlist" | uniq > "$nlist"T; then
+	      mv -f "$nlist"T "$nlist"
+	    else
+	      $rm "$nlist"T
+	    fi
+          
 	    if test -f "$nlist"; then
 	      sed -e 's/^.* \(.*\)$/extern char \1;/' < "$nlist" >> "$output_objdir/$dlsyms"
-	    else
+  	    else
 	      echo '/* NONE */' >> "$output_objdir/$dlsyms"
-	    fi
-
+  	    fi
+  
 	    $echo >> "$output_objdir/$dlsyms" "\
 
-#undef dld_preloaded_symbol_count
 #undef dld_preloaded_symbols
 
 #if defined (__STDC__) && __STDC__
@@ -1556,9 +1602,6 @@ extern \"C\" {
 #else
 # define __ptr_t char *
 #endif
-
-/* The number of symbols in dld_preloaded_symbols, -1 if unsorted. */
-int dld_preloaded_symbol_count = $count;
 
 /* The mapping between symbol names and symbols. */
 struct {
@@ -1568,6 +1611,25 @@ struct {
 dld_preloaded_symbols[] =
 {\
 "
+
+            if test -n "$export_symbols"; then
+              echo >> "$objdir/$dlsyms" "\
+  {\"${output}\", (__ptr_t) 0},"
+	      sed 's/^\(.*\)/  {"\1", (__ptr_t) \&\1},/' < "$export_symbols" >> "$objdir/$dlsyms"
+            fi
+
+            for arg in $dlprefiles; do
+              echo >> "$objdir/$dlsyms" "\
+  {\"$arg\", (__ptr_t) 0},"
+	      eval "$NM $arg | $global_symbol_pipe > '$nlist'"
+
+	      if test -f "$nlist"; then
+	        sed 's/^\(.*\) \(.*\)$/  {"\1", (__ptr_t) \&\2},/' < "$nlist" >> "$objdir/$dlsyms"
+	      else
+		echo '/* NONE */' >> "$output_objdir/$dlsyms"
+	      fi
+              
+            done
 
 	    if test -f "$nlist"; then
 	      sed 's/^\(.*\) \(.*\)$/  {"\1", (__ptr_t) \&\2},/' < "$nlist" >> "$output_objdir/$dlsyms"
@@ -1581,23 +1643,22 @@ dld_preloaded_symbols[] =
 }
 #endif\
 "
-	    ;;
+          fi
 
-	  *)
-	    $echo "$modename: unknown suffix for \`$dlsyms'" 1>&2
-	    exit 1
-	    ;;
-	  esac
-        fi
+          # Now compile the dynamic symbol file.
+          $show "(cd $objdir && $CC -c$no_builtin_flag \"$dlsyms\")"
+          $run eval '(cd $objdir && $CC -c$no_builtin_flag "$dlsyms")' || exit $?
 
-        # Now compile the dynamic symbol file.
-        $show "(cd $output_objdir && $CC -c$no_builtin_flag \"$dlsyms\")"
-        $run eval '(cd $output_objdir && $CC -c$no_builtin_flag "$dlsyms")' || exit $?
-
-        # Transform the symbol file into the correct name.
-        compile_command=`$echo "X$compile_command" | $Xsed -e "s%@SYMFILE@%$output_objdir/${output}S.o%"`
-        finalize_command=`$echo "X$finalize_command" | $Xsed -e "s%@SYMFILE@%$output_objdir/${output}S.o%"`
-      elif test "$export_dynamic" != yes; then
+          # Transform the symbol file into the correct name.
+          compile_command=`$echo "X$compile_command" | $Xsed -e "s%@SYMFILE@%$objdir/${output}S.${objext}%"`
+          finalize_command=`$echo "X$finalize_command" | $Xsed -e "s%@SYMFILE@%$objdir/${output}S.${objext}%"`
+	  ;;
+        *)
+          $echo "$modename: unknown suffix for \`$dlsyms'" 1>&2
+          exit 1
+          ;;
+        esac
+      elif test "$export_dynamic" != yes && test -z "$export_symbols"; then
         test -n "$dlfiles$dlprefiles" && $echo "$modename: warning: \`-dlopen' and \`-dlpreopen' are ignored without \`-export-dynamic'" 1>&2
       else
         # We keep going just in case the user didn't refer to
@@ -1821,6 +1882,7 @@ fi\
 	addlibs="$convenience"
 	build_libtool_libs=no
       else
+	oldobjs="$objs"`$echo "X$libobjs " | $Xsed -e 's/[^   ]*\.'${libext}' //g' -e 's/[^   ]*\.lib //g' -e "$los2o" -e 's/ $//g'`
 	addlibs="$old_convenience"
       fi
 
@@ -1869,7 +1931,7 @@ fi\
     case "$output" in
     *.la)
       old_library=
-      test "$build_old_libs" = yes && old_library="$libname.a"
+      test "$build_old_libs" = yes && old_library="$libname.$libext"
       $show "creating $output"
 
       # Only create the output if not a dry run.
@@ -2060,7 +2122,7 @@ libdir='$install_libdir'\
 
       # Do each installation.
       case "$file" in
-      *.a)
+      *.a | *.lib)
         # Do the static libraries later.
         staticlibs="$staticlibs $file"
         ;;
@@ -2165,9 +2227,9 @@ libdir='$install_libdir'\
         # Deduce the name of the destination old-style object file.
         case "$destfile" in
         *.lo)
-          staticdest=`$echo "X$destfile" | $Xsed -e 's/\.lo$/.o/'`
+          staticdest=`$echo "X$destfile" | $Xsed -e "$lo2o"`
           ;;
-        *.o)
+        *.o | *.obj)
           staticdest="$destfile"
           destfile=
           ;;
@@ -2187,7 +2249,7 @@ libdir='$install_libdir'\
         # Install the old object if enabled.
         if test "$build_old_libs" = yes; then
           # Deduce the name of the old-style object file.
-          staticobj=`$echo "X$file" | $Xsed -e 's/\.lo$/.o/'`
+          staticobj=`$echo "X$file" | $Xsed -e "$lo2o"`
 
           $show "$install_prog $staticobj $staticdest"
           $run eval "$install_prog \$staticobj \$staticdest" || exit $?
@@ -2584,7 +2646,7 @@ libdir='$install_libdir'\
 
       *.lo)
         if test "$build_old_libs" = yes; then
-          oldobj=`$echo "X$name" | $Xsed -e 's/\.lo$/.o/'`
+          oldobj=`$echo "X$name" | $Xsed -e "$lo2o"`
           rmfiles="$rmfiles $dir/$oldobj"
         fi
 	$show "$rm $rmfiles"
@@ -2742,11 +2804,11 @@ object files.
 If the OUTPUT-FILE ends in \`.la', then a libtool library is created, only
 library objects (\`.lo' files) may be specified, and \`-rpath' is required.
 
-If OUTPUT-FILE ends in \`.a', then a standard library is created using \`ar'
-and \`ranlib'.
+If OUTPUT-FILE ends in \`.a' or \`.lib', then a standard library is created
+using \`ar' and \`ranlib', or on Windows using \`lib'.
 
-If OUTPUT-FILE ends in \`.lo' or \`.o', then a reloadable object file is
-created, otherwise an executable program is created."
+If OUTPUT-FILE ends in \`.lo' or \`.${objext}', then a reloadable object file
+is created, otherwise an executable program is created."
   ;;
 
 uninstall)

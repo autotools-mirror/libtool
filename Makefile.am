@@ -20,6 +20,14 @@ demo_distfiles = demo/Makefile.in demo/Makefile.am demo/README \
 	demo/configure demo/configure.in demo/foo.c demo/foo.h \
 	demo/dlmain.c demo/hello.c demo/main.c demo/run.test
 
+# Files in the mdemo subdirectory that go in the distribution.
+mdemo_distfiles = mdemo/Makefile.in mdemo/Makefile.am mdemo/README \
+	mdemo/acinclude.m4 mdemo/aclocal.m4 \
+	mdemo/configure mdemo/configure.in \
+	mdemo/foo.h mdemo/foo1.c mdemo/foo2.c \
+	mdemo/libfoo1.sym mdemo/libfoo2.sym \
+	mdemo/main.c mdemo/ltdl.h  mdemo/ltdl.c mdemo/ltdls.c
+
 # These are required by libtoolize.
 pkgdata_SCRIPTS = config.guess config.sub ltconfig
 pkgdata_DATA = ltmain.sh
@@ -59,8 +67,8 @@ $(srcdir)/ltmain.sh: ltmain.in $(top_srcdir)/configure.in
 	sed -e 's/@''PACKAGE@/@PACKAGE@/' -e 's/@''VERSION@/@VERSION@/' $(srcdir)/ltmain.in > ltmain.shT
 	mv -f ltmain.shT $@
 
-# Distribute the demo subdirectory.
-dist-hook: $(demo_distfiles)
+# Distribute the demo and mdemo subdirectory.
+dist-hook: $(demo_distfiles) $(mdemo_distfiles)
 	mkdir $(distdir)/demo
 	-chmod 755 $(distdir)/demo
 	here=`pwd`; distdir=`cd $(distdir) && pwd` \
@@ -72,9 +80,20 @@ dist-hook: $(demo_distfiles)
 	  || ln $$d/$$file $(distdir)/$$file 2> /dev/null \
 	  || cp -p $$d/$$file $(distdir)/$$file; \
 	done
+	mkdir $(distdir)/mdemo
+	-chmod 755 $(distdir)/mdemo
+	here=`pwd`; distdir=`cd $(distdir) && pwd` \
+	  && cd $(srcdir)/mdemo \
+	  && $(AUTOMAKE) --include-deps --build-dir=$$here/mdemo --srcdir-name=$(srcdir)/mdemo --output-dir=$$distdir/mdemo
+	@for file in $(mdemo_distfiles); do \
+	  d=$(srcdir); \
+	  test -f $(distdir)/$$file \
+	  || ln $$d/$$file $(distdir)/$$file 2> /dev/null \
+	  || cp -p $$d/$$file $(distdir)/$$file; \
+	done
 
 # All our rules should depend on these demo files.
-all: demo/Makefile.in demo/configure
+all: demo/Makefile.in demo/configure mdemo/Makefile.in mdemo/configure
 
 # We use our own libtool.m4.
 $(srcdir)/acinclude.m4: libtool.m4
@@ -83,6 +102,9 @@ $(srcdir)/acinclude.m4: libtool.m4
 $(srcdir)/demo/acinclude.m4: libtool.m4
 	rm -f $(srcdir)/demo/acinclude.m4
 	cd $(srcdir)/demo && $(LN_S) ../libtool.m4 acinclude.m4
+$(srcdir)/mdemo/acinclude.m4: libtool.m4
+	rm -f $(srcdir)/mdemo/acinclude.m4
+	cd $(srcdir)/mdemo && $(LN_S) ../libtool.m4 acinclude.m4
 
 # Rules for rebuilding some of the demo source files.
 $(srcdir)/demo/Makefile.in: demo/Makefile.am demo/configure.in demo/aclocal.m4
@@ -93,6 +115,15 @@ $(srcdir)/demo/configure: demo/configure.in demo/aclocal.m4
 
 $(srcdir)/demo/aclocal.m4: demo/configure.in demo/acinclude.m4
 	cd $(srcdir)/demo && $(ACLOCAL)
+
+$(srcdir)/mdemo/Makefile.in: mdemo/Makefile.am mdemo/configure.in mdemo/aclocal.m4
+	cd $(srcdir)/mdemo && $(AUTOMAKE)
+
+$(srcdir)/mdemo/configure: mdemo/configure.in mdemo/aclocal.m4
+	cd $(srcdir)/mdemo && $(AUTOCONF)
+
+$(srcdir)/mdemo/aclocal.m4: mdemo/configure.in mdemo/acinclude.m4
+	cd $(srcdir)/mdemo && $(ACLOCAL)
 
 ######################################################################
 # These commands really help my life as a maintainer who uses PRCS.
