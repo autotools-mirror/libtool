@@ -144,6 +144,7 @@ ifdef([AC_PROVIDE_AC_LIBTOOL_WIN32_DLL],
 esac
 
 _LT_AC_LTCONFIG_HACK
+
 ])
 
 # AC_LIBTOOL_SYS_GLOBAL_SYMBOL_PIPE
@@ -513,7 +514,7 @@ delay_variable_subst='s/\\\\\\\\\\\$/\\\\\\$/g'
 rm="rm -f"
 
 # Global variables:
-default_ofile=ltconfig
+default_ofile=libtool
 can_build_shared=yes
 
 # All known linkers require a `.a' archive for static linking (except M$VC,
@@ -2067,47 +2068,61 @@ need_lc=${ac_cv_archive_cmds_need_lc-yes}
 
 ## FIXME: this should be a separate macro
 ##
-# Now quote all the things that may contain metacharacters while being
-# careful not to overquote the AC_SUBSTed values, take copies of the
-# variables and quote the copies for generation of the libtool script.
+# The second clause should only fire when bootstrapping the
+# libtool distribution, otherwise you forgot to ship ltmain.sh
+# with your package, and you will get complaints that there are
+# no rules to generate ltmain.sh.
+if test -f "$ltmain"; then
+  :
+else
+  # If there is no Makefile yet, we rely on a make rule to execute
+  # `config.status --recheck' to rerun these tests and create the
+  # libtool script then.
+  test -f Makefile && make "$ltmain"
+fi
 
-for var in echo old_CC old_CFLAGS \
-  AR AR_FLAGS CC LD LN_S NM SHELL \
-  reload_flag reload_cmds wl \
-  pic_flag link_static_flag no_builtin_flag export_dynamic_flag_spec \
-  thread_safe_flag_spec whole_archive_flag_spec libname_spec \
-  library_names_spec soname_spec \
-  RANLIB old_archive_cmds old_archive_from_new_cmds old_postinstall_cmds \
-  old_postuninstall_cmds archive_cmds archive_expsym_cmds postinstall_cmds \
-  postuninstall_cmds extract_expsyms_cmds old_archive_from_expsyms_cmds \
-  old_striplib striplib file_magic_cmd export_symbols_cmds \
-  deplibs_check_method allow_undefined_flag no_undefined_flag \
-  finish_cmds finish_eval global_symbol_pipe global_symbol_to_cdecl \
-  hardcode_libdir_flag_spec hardcode_libdir_separator  \
-  sys_lib_search_path_spec sys_lib_dlsearch_path_spec \
-  compiler_c_o compiler_o_lo need_locks exclude_expsyms include_expsyms; do
+if test -f "$ltmain"; then
+  trap "$rm \"${ofile}T\"; exit 1" 1 2 15
+  $rm -f "${ofile}T"
 
-  case "$var" in
-  reload_cmds | old_archive_cmds | old_archive_from_new_cmds | \
-  old_postinstall_cmds | old_postuninstall_cmds | \
-  export_symbols_cmds | archive_cmds | archive_expsym_cmds | \
-  extract_expsyms_cmds | old_archive_from_expsyms_cmds | \
-  postinstall_cmds | postuninstall_cmds | \
-  finish_cmds | sys_lib_search_path_spec | sys_lib_dlsearch_path_spec)
-    # Double-quote double-evaled strings.
-    eval "lt_$var=\\\"\`\$echo \"X\$$var\" | \$Xsed -e \"\$double_quote_subst\" -e \"\$sed_quote_subst\" -e \"\$delay_variable_subst\"\`\\\"" ### testsuite: skip nested quoting test
-    ;;
-  *)
-    eval "lt_$var=\\\"\`\$echo \"X\$$var\" | \$Xsed -e \"\$sed_quote_subst\"\`\\\"" ### testsuite: skip nested quoting test
-    ;;
-  esac
-done
+  echo creating $ofile
 
-trap "$rm \"$ofile\"; exit 1" 1 2 15
-$rm -f "$ofile"
+  # Now quote all the things that may contain metacharacters while being
+  # careful not to overquote the AC_SUBSTed values.  We take copies of the
+  # variables and quote the copies for generation of the libtool script.
+  for var in echo old_CC old_CFLAGS \
+    AR AR_FLAGS CC LD LN_S NM SHELL \
+    reload_flag reload_cmds wl \
+    pic_flag link_static_flag no_builtin_flag export_dynamic_flag_spec \
+    thread_safe_flag_spec whole_archive_flag_spec libname_spec \
+    library_names_spec soname_spec \
+    RANLIB old_archive_cmds old_archive_from_new_cmds old_postinstall_cmds \
+    old_postuninstall_cmds archive_cmds archive_expsym_cmds postinstall_cmds \
+    postuninstall_cmds extract_expsyms_cmds old_archive_from_expsyms_cmds \
+    old_striplib striplib file_magic_cmd export_symbols_cmds \
+    deplibs_check_method allow_undefined_flag no_undefined_flag \
+    finish_cmds finish_eval global_symbol_pipe global_symbol_to_cdecl \
+    hardcode_libdir_flag_spec hardcode_libdir_separator  \
+    sys_lib_search_path_spec sys_lib_dlsearch_path_spec \
+    compiler_c_o compiler_o_lo need_locks exclude_expsyms include_expsyms; do
 
-echo creating $ofile
-cat <<__EOF__ > "$ofile"
+    case "$var" in
+    reload_cmds | old_archive_cmds | old_archive_from_new_cmds | \
+    old_postinstall_cmds | old_postuninstall_cmds | \
+    export_symbols_cmds | archive_cmds | archive_expsym_cmds | \
+    extract_expsyms_cmds | old_archive_from_expsyms_cmds | \
+    postinstall_cmds | postuninstall_cmds | \
+    finish_cmds | sys_lib_search_path_spec | sys_lib_dlsearch_path_spec)
+      # Double-quote double-evaled strings.
+      eval "lt_$var=\\\"\`\$echo \"X\$$var\" | \$Xsed -e \"\$double_quote_subst\" -e \"\$sed_quote_subst\" -e \"\$delay_variable_subst\"\`\\\""
+      ;;
+    *)
+      eval "lt_$var=\\\"\`\$echo \"X\$$var\" | \$Xsed -e \"\$sed_quote_subst\"\`\\\""
+      ;;
+    esac
+  done
+
+  cat <<__EOF__ > "${ofile}T"
 #! $SHELL
 
 # `$echo "$ofile" | sed 's%^.*/%%'` - Provide generalized library-building support services.
@@ -2393,9 +2408,9 @@ include_expsyms=$lt_include_expsyms
 
 __EOF__
 
-case "$host_os" in
-aix3*)
-  cat <<\EOF >> "$ofile"
+  case "$host_os" in
+  aix3*)
+    cat <<\EOF >> "${ofile}T"
 
 # AIX sometimes has problems with the GCC collect2 program.  For some
 # reason, if we set the COLLECT_NAMES environment variable, the problems
@@ -2405,14 +2420,14 @@ if test "X${COLLECT_NAMES+set}" != Xset; then
   export COLLECT_NAMES
 fi
 EOF
-  ;;
-esac
+    ;;
+  esac
 
-case "$host_os" in
-cygwin* | mingw* | pw32* | os2*)
-  cat <<'EOF' >> "$ofile"
-    # This is a source program that is used to create dlls on Windows
-    # Don't remove nor modify the starting and closing comments
+  case "$host_os" in
+  cygwin* | mingw* | pw32* | os2*)
+    cat <<'EOF' >> "${ofile}T"
+      # This is a source program that is used to create dlls on Windows
+      # Don't remove nor modify the starting and closing comments
 # /* ltdll.c starts here */
 # #define WIN32_LEAN_AND_MEAN
 # #include <windows.h>
@@ -2446,9 +2461,9 @@ cygwin* | mingw* | pw32* | os2*)
 #   return TRUE;
 # }
 # /* ltdll.c ends here */
-      # This is a source program that is used to create import libraries
-      # on Windows for dlls which lack them. Don't remove nor modify the
-      # starting and closing comments
+        # This is a source program that is used to create import libraries
+        # on Windows for dlls which lack them. Don't remove nor modify the
+        # starting and closing comments
 # /* impgen.c starts here */
 # /*   Copyright (C) 1999-2000 Free Software Foundation, Inc.
 #
@@ -2585,48 +2600,19 @@ cygwin* | mingw* | pw32* | os2*)
 # /* impgen.c ends here */
   
 EOF
-  ;;
-esac
-
-# This is necessary.
-CONFIG_OTHER=libtool
-export CONFIG_OTHER
-
-AC_OUTPUT_COMMANDS([
-  case " $CONFIG_OTHER " in
-  *" $libtool "*)
-    if test -f Makefile; then
-
-      # The second clause should only fire when bootstrapping the
-      # libtool distribution, otherwise you forgot to ship ltmain.sh
-      # with your package, and you will get complaints that there are
-      # no rules to generate ltmain.sh.
-      test -f "$ltmain" || make "$ltmain"
-
-      trap "$rm \"$libtool\"; exit 1" 1 2 15
-      rm -f "$libtool"
-      echo "creating $libtool"
-
-      # Copy the configuration from ltconfig
-      sed '$q' "$ofile" > "$libtool" || (rm -f "$libtool"; exit 1)
-
-      # Append the ltmain.sh script.
-      sed '$q' "$ltmain" >> libtool || (rm -f "$libtool"; exit 1)
-
-      # We use sed instead of cat because bash on DJGPP gets confused if
-      # if finds mixed CR/LF and LF-only lines.  Since sed operates in
-      # text mode, it properly converts lines to CR/LF.  This bash problem
-      # is reportedly fixed, but why not run on old versions too?
-
-      chmod +x "$libtool"
-    fi
     ;;
   esac
-], [
-ofile="$ofile"
-libtool=libtool
-ltmain="$ltmain"
-])
+
+  # We use sed instead of cat because bash on DJGPP gets confused if
+  # if finds mixed CR/LF and LF-only lines.  Since sed operates in
+  # text mode, it properly converts lines to CR/LF.  This bash problem
+  # is reportedly fixed, but why not run on old versions too?
+  sed '$q' "$ltmain" >> "${ofile}T" || (rm -f "${ofile}T"; exit 1)
+
+  mv -f "${ofile}T" "$ofile" || \
+    (rm -f "$ofile" && cp "${ofile}T" "$ofile" && rm -f "${ofile}T")
+  chmod +x "$ofile"
+fi
 ##
 ## END FIXME
 

@@ -1,3 +1,15 @@
+2000-09-29  Gary V. Vaughan  <gvv@techie.com>
+
+	* doc/PLATFORMS: Updated.
+	* demo/configure.in:  Revert to the `libtool --features' test.
+	* Makefile.am (libtool):  This needs to rerun configure now that
+	libtool is generated entirely by AC_PROG_LIBTOOL again.
+	(ltconfig): Removed.
+	(ltmain.sh):  Is now regenerated when ltmain.in changes.
+	* libtool.m4 (_LT_AC_LTCONFIG_HACK): Now does all of the work for
+	generating libtool immediately in configure.in, rather than
+	deferring part of the creation until config.status runs.
+	
 2000-09-17  Gary V. Vaughan  <gvv@techie.com>
 	
 	* bootstrap:  Backed out yesterdays patch which is no longer

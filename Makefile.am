@@ -28,19 +28,15 @@ aclocal_DATA = $(aclocal_macros)
 # The standalone libtool script, and the libtool distributor.
 bin_SCRIPTS = libtool libtoolize
 
-libtool: ltconfig ltmain.sh $(top_builddir)/configure
-	CONFIG_OTHER=$@ CONFIG_FILES= CONFIG_HEADERS= \
-	  $(SHELL) $(top_builddir)/config.status
+libtool: $(srcdir)/ltmain.sh $(top_builddir)/configure.in
+	$(SHELL) $(top_builddir)/config.status --recheck
 	chmod +x $@
 
 libtoolize: $(srcdir)/libtoolize.in $(top_builddir)/config.status
 	CONFIG_FILES=$@ CONFIG_HEADERS= $(SHELL) $(top_builddir)/config.status
 	chmod +x $@
 
-ltconfig: $(top_srcdir)/configure.in
-	$(top_builddir)/config.status --recheck
-
-$(srcdir)/ltmain.sh: $(TSDEPS)
+$(srcdir)/ltmain.sh: $(srcdir)/ltmain.in $(TSDEPS)
 	-rm -f ltmain.shT
 	date=`$(SHELL) $(srcdir)/mkstamp < $(srcdir)/ChangeLog` && \
 	sed -e 's/@''PACKAGE@/@PACKAGE@/' -e 's/@''VERSION@/@VERSION@/' \
