@@ -2178,7 +2178,7 @@ EOF
       eval sys_lib_search_path=\"$sys_lib_search_path_spec\"
       rpath=
       hardcode_libdirs=
-      for libdir in $compile_rpath; do
+      for libdir in $compile_rpath $finalize_rpath; do
 	# Skip directories that are in the system search path
 	case " $sys_lib_search_path " in
 	*" $libdir "*) continue ;;
@@ -2502,8 +2502,8 @@ static const void *lt_preloaded_setup() {
 	temp_rpath="$rpath"
       fi
 
-      if test -n "$compile_shlibpath"; then
-	compile_command="$shlibpath_var=\"$compile_shlibpath\$$shlibpath_var\" $compile_command"
+      if test -n "$compile_shlibpath$finalize_shlibpath"; then
+	compile_command="$shlibpath_var=\"$compile_shlibpath$finalize_shlibpath\$$shlibpath_var\" $compile_command"
       fi
       if test -n "$finalize_shlibpath"; then
 	finalize_command="$shlibpath_var=\"$finalize_shlibpath\$$shlibpath_var\" $finalize_command"

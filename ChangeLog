@@ -1,5 +1,8 @@
 1999-03-07  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* ltmain.in (compile_command): append finalize search path to
+	compile search path
+
 	* tests/build-relink.test: new; check shlibpath_overrides_runpath
 	* tests/Makefile.am (TESTS): add build-relink.test; remove
 	hardcode.test duplicates
