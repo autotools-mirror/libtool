@@ -1,3 +1,11 @@
+1998-12-29  Thomas Tanner  <tanner@gmx.de>
+
+	* ltconfig.in: do not rely on a leading space when concatenating
+	  variables as suggested by Erez Zadok
+	* ltmain.in: likewise
+	* doc/PLATFORMS: updated and reformatted 
+	  (thanks to Erez Zadok for the testing)
+	
 1998-12-27  Thomas Tanner  <tanner@gmx.de>
 
 	* THANKS: added Erez Zadok <ezk@shekel.mcl.cs.columbia.edu>

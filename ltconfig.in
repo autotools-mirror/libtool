@@ -996,13 +996,13 @@ if test "$with_gnu_ld" = yes; then
   # See if GNU ld supports shared libraries.
   case "$host_os" in
   amigaos*)
-    archive_cmds='$rm $objdir/a2ixlibrary.data~$echo "#define NAME $libname" > $objdir/a2ixlibrary.data~$echo "#define LIBRARY_ID 1" >> $objdir/a2ixlibrary.data~$echo "#define VERSION $major" >> $objdir/a2ixlibrary.data~$echo "#define REVISION $revision" >> $objdir/a2ixlibrary.data~$AR cru $lib$libobjs~$RANLIB $lib~(cd $objdir && a2ixlibrary -32)'
+    archive_cmds='$rm $objdir/a2ixlibrary.data~$echo "#define NAME $libname" > $objdir/a2ixlibrary.data~$echo "#define LIBRARY_ID 1" >> $objdir/a2ixlibrary.data~$echo "#define VERSION $major" >> $objdir/a2ixlibrary.data~$echo "#define REVISION $revision" >> $objdir/a2ixlibrary.data~$AR cru $lib $libobjs~$RANLIB $lib~(cd $objdir && a2ixlibrary -32)'
     hardcode_libdir_flag_spec='-L$libdir'
     hardcode_minus_L=yes
     ;;
 
   sunos4*)
-    archive_cmds='$LD -assert pure-text -Bstatic -o $lib$libobjs$deplibs'
+    archive_cmds='$LD -assert pure-text -Bstatic -o $lib $libobjs $deplibs'
     hardcode_direct=yes
     hardcode_minus_L=yes
     hardcode_shlibpath_var=no
@@ -1036,19 +1036,19 @@ DllMain (HINSTANCE hInst, DWORD reason, LPVOID reserved)
 ' > ltdll.c
       archive_cmds='$CC -c '"`pwd`"'/ltdll.c~echo EXPORTS > $soname-def~
       $DLLTOOL --export-all --output-def $soname-def $libobjs ltdll.$objext~
-      $CC -Wl,--base-file,$soname-base -Wl,--dll -nostartfiles -Wl,-e,__cygwin_dll_entry@12 -o $lib $libobjs ltdll.$objext$compile_dependencylibs~
+      $CC -Wl,--base-file,$soname-base -Wl,--dll -nostartfiles -Wl,-e,__cygwin_dll_entry@12 -o $lib $libobjs ltdll.$objext $compile_dependencylibs~
       $DLLTOOL --as=$AS --dllname $soname --exclude-symbol=_cygwin_dll_entry@12 --def $soname-def --base-file $soname-base --output-exp $soname-exp~
-      $CC -Wl,--base-file,$soname-base $soname-exp -Wl,--dll -nostartfiles -Wl,-e,__cygwin_dll_entry@12 -o $lib $libobjs ltdll.$objext$compile_dependencylibs~
+      $CC -Wl,--base-file,$soname-base $soname-exp -Wl,--dll -nostartfiles -Wl,-e,__cygwin_dll_entry@12 -o $lib $libobjs ltdll.$objext $compile_dependencylibs~
       $DLLTOOL --as=$AS --dllname $soname --exclude-symbol=_cygwin_dll_entry@12 --def $soname-def --base-file $soname-base --output-exp $soname-exp~
-      $CC $soname-exp -Wl,--dll -nostartfiles -Wl,-e,__cygwin_dll_entry@12 -o $lib $libobjs ltdll.$objext$compile_dependencylibs~
+      $CC $soname-exp -Wl,--dll -nostartfiles -Wl,-e,__cygwin_dll_entry@12 -o $lib $libobjs ltdll.$objext $compile_dependencylibs~
       $rm ltdll.$objext $soname-base $soname-exp'
       archive_sym_cmds='$CC -c '"`pwd`"'/ltdll.c~echo EXPORTS > $soname-def~
       cat "$export_symbols" >> $soname-def~
-      $CC -Wl,--base-file,$soname-base -Wl,--dll -nostartfiles -Wl,-e,__cygwin_dll_entry@12 -o $lib $libobjs ltdll.$objext$compile_dependencylibs~
+      $CC -Wl,--base-file,$soname-base -Wl,--dll -nostartfiles -Wl,-e,__cygwin_dll_entry@12 -o $lib $libobjs ltdll.$objext $compile_dependencylibs~
       $DLLTOOL --as=$AS --dllname $soname --exclude-symbol=_cygwin_dll_entry@12 --def $soname-def --base-file $soname-base --output-exp $soname-exp~
-      $CC -Wl,--base-file,$soname-base $soname-exp -Wl,--dll -nostartfiles -Wl,-e,__cygwin_dll_entry@12 -o $lib $libobjs ltdll.$objext$compile_dependencylibs~
+      $CC -Wl,--base-file,$soname-base $soname-exp -Wl,--dll -nostartfiles -Wl,-e,__cygwin_dll_entry@12 -o $lib $libobjs ltdll.$objext $compile_dependencylibs~
       $DLLTOOL --as=$AS --dllname $soname --exclude-symbol=_cygwin_dll_entry@12 --def $soname-def --base-file $soname-base --output-exp $soname-exp~
-      $CC $soname-exp -Wl,--dll -nostartfiles -Wl,-e,__cygwin_dll_entry@12 -o $lib $libobjs ltdll.$objext$compile_dependencylibs~
+      $CC $soname-exp -Wl,--dll -nostartfiles -Wl,-e,__cygwin_dll_entry@12 -o $lib $libobjs ltdll.$objext $compile_dependencylibs~
       $rm ltdll.$objext $soname-base $soname-exp'
       old_archive_from_new_cmds='$DLLTOOL --as=$AS --dllname $soname --def $soname-def --output-lib $objdir/$libname.a~$rm $soname-def'
    else
@@ -1062,7 +1062,7 @@ DllMain (HINSTANCE hInst, DWORD reason, LPVOID reserved)
       # Tell ltmain to make .lib files, not .a files.
       libext=lib
       # FIXME: Setting linknames here is a bad hack.
-      archive_cmds='$CC -o $lib$libobjs`echo "$deplibs" | sed -e '\''s/ -lc$//'\''` -link -dll~linknames='
+      archive_cmds='$CC -o $lib $libobjs `echo "$deplibs" | sed -e '\''s/ -lc$//'\''` -link -dll~linknames='
       # The linker will automatically build a .lib file if we build a DLL.
       old_archive_from_new_cmds='true'
       # FIXME: Should let the user specify the lib program.
@@ -1073,8 +1073,8 @@ DllMain (HINSTANCE hInst, DWORD reason, LPVOID reserved)
 
   *)
     if $LD --help 2>&1 | egrep ': supported targets:.* elf' > /dev/null; then
-      archive_cmds='$CC -shared ${wl}-soname $wl$soname -o $lib$libobjs$deplibs'
-      archive_sym_cmds='$CC -shared ${wl}-soname $wl$soname ${wl}-retain-symbols-file $wl$export_symbols -o $lib$libobjs$deplibs'
+      archive_cmds='$CC -shared ${wl}-soname $wl$soname -o $lib $libobjs $deplibs'
+      archive_sym_cmds='$CC -shared ${wl}-soname $wl$soname ${wl}-retain-symbols-file $wl$export_symbols -o $lib $libobjs $deplibs'
     else
       ld_shlibs=no
     fi
@@ -1092,9 +1092,9 @@ else
   case "$host_os" in
   aix3*)
     allow_undefined_flag=unsupported
-    archive_cmds='$NM$libobjs | $global_symbol_pipe | sed '\''s/.* //'\' | sort | uniq' > $lib.exp~
-	$LD -o $objdir/$soname$libobjs$deplibs -bE:$lib.exp -T512 -H512 -bM:SRE~$AR cru $lib $objdir/$soname'
-    archive_sym_cmds='$LD -o $objdir/$soname$libobjs$deplibs -bE:$export_symbols -T512 -H512 -bM:SRE~$AR cru $lib $objdir/$soname'
+    archive_cmds='$NM $libobjs | $global_symbol_pipe | sed '\''s/.* //'\' | sort | uniq' > $lib.exp~
+	$LD -o $objdir/$soname $libobjs $deplibs -bE:$lib.exp -T512 -H512 -bM:SRE~$AR cru $lib $objdir/$soname'
+    archive_sym_cmds='$LD -o $objdir/$soname $libobjs $deplibs -bE:$export_symbols -T512 -H512 -bM:SRE~$AR cru $lib $objdir/$soname'
     # Note: this linker hardcodes the directories in LIBPATH if there
     # are no directories specified by -L.
     hardcode_minus_L=yes
@@ -1107,15 +1107,15 @@ else
 
   aix4*)
     allow_undefined_flag=unsupported
-    archive_cmds='$NM$libobjs | $global_symbol_pipe | sed '\''s/.* //'\' | sort | uniq' > $lib.exp        else cat $export_symbols > $lib.exp~
-	$CC -o $objdir/$soname$libobjs$deplibs ${wl}-bE:$lib.exp ${wl}-bM:SRE ${wl}-bnoentry~$AR cru $lib $objdir/$soname'
-    archive_sym_cmds='$CC -o $objdir/$soname$libobjs$deplibs ${wl}-bE:$export_symbols ${wl}-bM:SRE ${wl}-bnoentry~$AR cru $lib $objdir/$soname'
+    archive_cmds='$NM $libobjs | $global_symbol_pipe | sed '\''s/.* //'\' | sort | uniq' > $lib.exp        else cat $export_symbols > $lib.exp~
+	$CC -o $objdir/$soname $libobjs $deplibs ${wl}-bE:$lib.exp ${wl}-bM:SRE ${wl}-bnoentry~$AR cru $lib $objdir/$soname'
+    archive_sym_cmds='$CC -o $objdir/$soname $libobjs $deplibs ${wl}-bE:$export_symbols ${wl}-bM:SRE ${wl}-bnoentry~$AR cru $lib $objdir/$soname'
     hardcode_direct=yes
     hardcode_minus_L=yes
     ;;
 
   amigaos*)
-    archive_cmds='$rm $objdir/a2ixlibrary.data~$echo "#define NAME $libname" > $objdir/a2ixlibrary.data~$echo "#define LIBRARY_ID 1" >> $objdir/a2ixlibrary.data~$echo "#define VERSION $major" >> $objdir/a2ixlibrary.data~$echo "#define REVISION $revision" >> $objdir/a2ixlibrary.data~$AR cru $lib$libobjs~$RANLIB $lib~(cd $objdir && a2ixlibrary -32)'
+    archive_cmds='$rm $objdir/a2ixlibrary.data~$echo "#define NAME $libname" > $objdir/a2ixlibrary.data~$echo "#define LIBRARY_ID 1" >> $objdir/a2ixlibrary.data~$echo "#define VERSION $major" >> $objdir/a2ixlibrary.data~$echo "#define REVISION $revision" >> $objdir/a2ixlibrary.data~$AR cru $lib $libobjs~$RANLIB $lib~(cd $objdir && a2ixlibrary -32)'
     hardcode_libdir_flag_spec='-L$libdir'
     hardcode_minus_L=yes
     ;;
@@ -1148,19 +1148,19 @@ DllMain (HINSTANCE hInst, DWORD reason, LPVOID reserved)
 ' > ltdll.c
       archive_cmds='$CC -c '"`pwd`"'/ltdll.c~echo EXPORTS > $soname-def~
       $DLLTOOL --export-all --output-def $soname-def $libobjs ltdll.$objext~
-      $CC -Wl,--base-file,$soname-base -Wl,--dll -nostartfiles -Wl,-e,__cygwin_dll_entry@12 -o $lib $libobjs ltdll.$objext$compile_dependencylibs~
+      $CC -Wl,--base-file,$soname-base -Wl,--dll -nostartfiles -Wl,-e,__cygwin_dll_entry@12 -o $lib $libobjs ltdll.$objext $compile_dependencylibs~
       $DLLTOOL --as=$AS --dllname $soname --exclude-symbol=_cygwin_dll_entry@12 --def $soname-def --base-file $soname-base --output-exp $soname-exp~
-      $CC -Wl,--base-file,$soname-base $soname-exp -Wl,--dll -nostartfiles -Wl,-e,__cygwin_dll_entry@12 -o $lib $libobjs ltdll.$objext$compile_dependencylibs~
+      $CC -Wl,--base-file,$soname-base $soname-exp -Wl,--dll -nostartfiles -Wl,-e,__cygwin_dll_entry@12 -o $lib $libobjs ltdll.$objext $compile_dependencylibs~
       $DLLTOOL --as=$AS --dllname $soname --exclude-symbol=_cygwin_dll_entry@12 --def $soname-def --base-file $soname-base --output-exp $soname-exp~
-      $CC $soname-exp -Wl,--dll -nostartfiles -Wl,-e,__cygwin_dll_entry@12 -o $lib $libobjs ltdll.$objext$compile_dependencylibs~
+      $CC $soname-exp -Wl,--dll -nostartfiles -Wl,-e,__cygwin_dll_entry@12 -o $lib $libobjs ltdll.$objext $compile_dependencylibs~
       $rm ltdll.$objext $soname-base $soname-exp $soname-def'
       archive_sym_cmds='$CC -c '"`pwd`"'/ltdll.c~echo EXPORTS > $soname-def~
       cat "$export_symbols" >> $soname-def~
-      $CC -Wl,--base-file,$soname-base -Wl,--dll -nostartfiles -Wl,-e,__cygwin_dll_entry@12 -o $lib $libobjs ltdll.$objext$compile_dependencylibs~
+      $CC -Wl,--base-file,$soname-base -Wl,--dll -nostartfiles -Wl,-e,__cygwin_dll_entry@12 -o $lib $libobjs ltdll.$objext $compile_dependencylibs~
       $DLLTOOL --as=$AS --dllname $soname --exclude-symbol=_cygwin_dll_entry@12 --def $soname-def --base-file $soname-base --output-exp $soname-exp~
-      $CC -Wl,--base-file,$soname-base $soname-exp -Wl,--dll -nostartfiles -Wl,-e,__cygwin_dll_entry@12 -o $lib $libobjs ltdll.$objext$compile_dependencylibs~
+      $CC -Wl,--base-file,$soname-base $soname-exp -Wl,--dll -nostartfiles -Wl,-e,__cygwin_dll_entry@12 -o $lib $libobjs ltdll.$objext $compile_dependencylibs~
       $DLLTOOL --as=$AS --dllname $soname --exclude-symbol=_cygwin_dll_entry@12 --def $soname-def --base-file $soname-base --output-exp $soname-exp~
-      $CC $soname-exp -Wl,--dll -nostartfiles -Wl,-e,__cygwin_dll_entry@12 -o $lib $libobjs ltdll.$objext$compile_dependencylibs~
+      $CC $soname-exp -Wl,--dll -nostartfiles -Wl,-e,__cygwin_dll_entry@12 -o $lib $libobjs ltdll.$objext $compile_dependencylibs~
       $rm ltdll.$objext $soname-base $soname-exp $soname-def'
       old_archive_from_new_cmds='$DLLTOOL --as=$AS --dllname $soname --def $soname-def --output-lib $objdir/$libname.a~$rm $soname-def'
     else
@@ -1173,7 +1173,7 @@ DllMain (HINSTANCE hInst, DWORD reason, LPVOID reserved)
       # Tell ltmain to make .lib files, not .a files.
       libext=lib
       # FIXME: Setting linknames here is a bad hack.
-      archive_cmds='$CC -o $lib$libobjs`echo "$deplibs" | sed -e '\''s/ -lc$//'\''` -link -dll~linknames='
+      archive_cmds='$CC -o $lib $libobjs `echo "$deplibs" | sed -e '\''s/ -lc$//'\''` -link -dll~linknames='
       # The linker will automatically build a .lib file if we build a DLL.
       old_archive_from_new_cmds='true'
       # FIXME: Should let the user specify the lib program.
@@ -1187,7 +1187,7 @@ DllMain (HINSTANCE hInst, DWORD reason, LPVOID reserved)
   # does not break anything, and helps significantly (at the cost of a little
   # extra space).
   freebsd2.2*)
-    archive_cmds='$LD -Bshareable -o $lib$libobjs$deplibs /usr/lib/c++rt0.o'
+    archive_cmds='$LD -Bshareable -o $lib $libobjs $deplibs /usr/lib/c++rt0.o'
     hardcode_libdir_flag_spec='-R$libdir'
     hardcode_direct=yes
     hardcode_minus_L=yes
@@ -1196,7 +1196,7 @@ DllMain (HINSTANCE hInst, DWORD reason, LPVOID reserved)
 
   # Unfortunately, older versions of FreeBSD 2 do not have this feature.
   freebsd2*)
-    archive_cmds='$LD -Bshareable -o $lib$libobjs$deplibs'
+    archive_cmds='$LD -Bshareable -o $lib $libobjs $deplibs'
     hardcode_direct=yes
     hardcode_minus_L=yes
     hardcode_shlibpath_var=no
@@ -1204,7 +1204,7 @@ DllMain (HINSTANCE hInst, DWORD reason, LPVOID reserved)
 
   # FreeBSD 3, at last, uses gcc -shared to do shared libraries.
   freebsd3*)
-    archive_cmds='$CC -shared -o $lib$libobjs$deplibs'
+    archive_cmds='$CC -shared -o $lib $libobjs $deplibs'
     hardcode_libdir_flag_spec='-R$libdir'
     hardcode_direct=yes
     hardcode_minus_L=no
@@ -1212,7 +1212,7 @@ DllMain (HINSTANCE hInst, DWORD reason, LPVOID reserved)
     ;;
 
   hpux9*)
-    archive_cmds='$rm $objdir/$soname~$LD -b +s +b $install_libdir -o $objdir/$soname$libobjs$deplibs~test $objdir/$soname = $lib || mv $objdir/$soname $lib'
+    archive_cmds='$rm $objdir/$soname~$LD -b +s +b $install_libdir -o $objdir/$soname $libobjs $deplibs~test $objdir/$soname = $lib || mv $objdir/$soname $lib'
     hardcode_libdir_flag_spec='${wl}+b ${wl}$libdir'
     hardcode_direct=yes
     hardcode_minus_L=yes
@@ -1220,7 +1220,7 @@ DllMain (HINSTANCE hInst, DWORD reason, LPVOID reserved)
     ;;
 
   hpux10* | hpux11*)
-    archive_cmds='$LD -b +h $soname +s +b $install_libdir -o $lib$libobjs$deplibs'
+    archive_cmds='$LD -b +h $soname +s +b $install_libdir -o $lib $libobjs $deplibs'
     hardcode_libdir_flag_spec='${wl}+b ${wl}$libdir'
     hardcode_direct=yes
     hardcode_minus_L=yes
@@ -1229,23 +1229,23 @@ DllMain (HINSTANCE hInst, DWORD reason, LPVOID reserved)
 
   irix5* | irix6*)
     if test "$with_gcc" = yes; then
-      archive_cmds='$CC -shared -o $lib ${wl}-soname ${wl}$soname ${wl}-set_version ${wl}$verstring$libobjs$deplibs'
+      archive_cmds='$CC -shared -o $lib ${wl}-soname ${wl}$soname ${wl}-set_version ${wl}$verstring $libobjs $deplibs'
     else
-      archive_cmds='$LD -shared -o $lib -soname $soname -set_version $verstring$libobjs$deplibs'
+      archive_cmds='$LD -shared -o $lib -soname $soname -set_version $verstring $libobjs $deplibs'
     fi
     hardcode_libdir_flag_spec='${wl}-rpath ${wl}$libdir'
     ;;
 
   netbsd*)
     # Tested with NetBSD 1.2 ld
-    archive_cmds='$LD -Bshareable -o $lib$libobjs$deplibs'
+    archive_cmds='$LD -Bshareable -o $lib $libobjs $deplibs'
     hardcode_libdir_flag_spec='-R$libdir'
     hardcode_direct=yes
     hardcode_shlibpath_var=no
     ;;
 
   openbsd*)
-    archive_cmds='$LD -Bshareable -o $lib$libobjs$deplibs'
+    archive_cmds='$LD -Bshareable -o $lib $libobjs $deplibs'
     hardcode_libdir_flag_spec='-R$libdir'
     hardcode_direct=yes
     hardcode_shlibpath_var=no
@@ -1255,24 +1255,24 @@ DllMain (HINSTANCE hInst, DWORD reason, LPVOID reserved)
     hardcode_libdir_flag_spec='-L$libdir'
     hardcode_minus_L=yes
     allow_undefined_flag=unsupported
-    archive_cmds='$echo "LIBRARY $libname INITINSTANCE" > $objdir/$libname.def~$echo "DESCRIPTION \"$libname\"" >> $objdir/$libname.def~$echo DATA >> $objdir/$libname.def~$echo " SINGLE NONSHARED" >> $objdir/$libname.def~$echo EXPORTS >> $objdir/$libname.def~emxexp$libobjs >> $objdir/$libname.def~$CC -Zdll -Zcrtdll -o $lib$libobjs$deplibs $objdir/$libname.def'
+    archive_cmds='$echo "LIBRARY $libname INITINSTANCE" > $objdir/$libname.def~$echo "DESCRIPTION \"$libname\"" >> $objdir/$libname.def~$echo DATA >> $objdir/$libname.def~$echo " SINGLE NONSHARED" >> $objdir/$libname.def~$echo EXPORTS >> $objdir/$libname.def~emxexp $libobjs >> $objdir/$libname.def~$CC -Zdll -Zcrtdll -o $lib $libobjs $deplibs $objdir/$libname.def'
     old_archive_from_new_cmds='emximp -o $objdir/$libname.a $objdir/$libname.def'
     ;;
 
   osf3* | osf4*)
     if test "$with_gcc" = yes; then
       allow_undefined_flag=' ${wl}-expect_unresolved ${wl}\*'
-      archive_cmds='$CC -shared${allow_undefined_flag} -o $lib ${wl}-soname ${wl}$soname ${wl}-set_version ${wl}$verstring$libobjs$deplibs'
+      archive_cmds='$CC -shared${allow_undefined_flag} -o $lib ${wl}-soname ${wl}$soname ${wl}-set_version ${wl}$verstring $libobjs $deplibs'
     else
       allow_undefined_flag=' -expect_unresolved \*'
-      archive_cmds='$LD -shared${allow_undefined_flag} -o $lib -soname $soname -set_version $verstring$libobjs$deplibs'
+      archive_cmds='$LD -shared${allow_undefined_flag} -o $lib -soname $soname -set_version $verstring $libobjs $deplibs'
     fi
     hardcode_libdir_flag_spec='${wl}-rpath ${wl}$libdir'
     hardcode_libdir_separator=:
     ;;
 
   sco3.2v5*)
-    archive_cmds='$LD -G -o $lib$libobjs$deplibs'
+    archive_cmds='$LD -G -o $lib $libobjs $deplibs'
     hardcode_direct=yes
     ;;
 
@@ -1280,9 +1280,9 @@ DllMain (HINSTANCE hInst, DWORD reason, LPVOID reserved)
     no_undefined_flag=' -z text'
     # $CC -shared without GNU ld will not create a library from C++
     # object files and a static libstdc++, better avoid it by now
-    archive_cmds='$LD -G${allow_undefined_flag} -h $soname -o $lib$libobjs$deplibs'
+    archive_cmds='$LD -G${allow_undefined_flag} -h $soname -o $lib $libobjs $deplibs'
     archive_sym_cmds='$echo "{ global:" > $lib.exp~sed $export_symbols -e "s/.*/\1;/" >> $lib.exp~$echo "local: * }" >> $lib.exp~
-		$LD -G${allow_undefined_flag} -M $export_symbols -h $soname -o $lib$libobjs$deplibs~$rm $lib.exp'
+		$LD -G${allow_undefined_flag} -M $export_symbols -h $soname -o $lib $libobjs $deplibs~$rm $lib.exp'
     hardcode_libdir_flag_spec='-R$libdir'
     hardcode_shlibpath_var=no
 
@@ -1297,9 +1297,9 @@ DllMain (HINSTANCE hInst, DWORD reason, LPVOID reserved)
   sunos4*)
     # Why do we need -Bstatic?  To avoid inter-library dependencies, maybe...
     if test "$with_gcc" = yes; then
-      archive_cmds='$CC -shared ${wl}-Bstatic -o $lib$libobjs$deplibs'
+      archive_cmds='$CC -shared ${wl}-Bstatic -o $lib $libobjs $deplibs'
     else
-      archive_cmds='$LD -assert pure-text -Bstatic -o $lib$libobjs$deplibs'
+      archive_cmds='$LD -assert pure-text -Bstatic -o $lib $libobjs $deplibs'
     fi
     hardcode_libdir_flag_spec='-L$libdir'
     hardcode_direct=yes
@@ -1308,7 +1308,7 @@ DllMain (HINSTANCE hInst, DWORD reason, LPVOID reserved)
     ;;
 
   uts4*)
-    archive_cmds='$LD -G -h $soname -o $lib$libobjs$deplibs'
+    archive_cmds='$LD -G -h $soname -o $lib $libobjs $deplibs'
     hardcode_libdir_flag_spec='-L$libdir'
     hardcode_direct=no
     hardcode_minus_L=no
@@ -1316,7 +1316,7 @@ DllMain (HINSTANCE hInst, DWORD reason, LPVOID reserved)
     ;;
 
   dgux*)
-    archive_cmds='$LD -G -h $soname -o $lib$libobjs$deplibs'
+    archive_cmds='$LD -G -h $soname -o $lib $libobjs $deplibs'
     hardcode_libdir_flag_spec='-L$libdir'
     hardcode_direct=no
     hardcode_minus_L=no
