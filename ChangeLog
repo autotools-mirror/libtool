@@ -1,5 +1,8 @@
 2004-11-22  Gary V. Vaughan  <gary@gnu.org>
- 
+
+	* doc/libtool.texi (Invoking libtoolize): Improve documentation
+	for use of ACLOCAL_AMFLAGS and AC_CONFIG_MACRO_DIR.
+
 	* configure.ac, Makefile.am, libltdl/Makefile.am,
 	libltdl/loaders/Makefile.am, libtoolize.m4sh, doc/libtool.texi:
 	Revert libtool--release--2.0--patch-68, my 2004-11-14 patch for
