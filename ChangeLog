@@ -1,3 +1,8 @@
+2001-10-04  Albert Chin-A-Young <china@thewrittenword.com>
+
+	* libltdl/ltdl.c: Match function return type with prototype
+	(add static initializer to file_not_found).
+
 2001-09-30  Gary V. Vaughan  <gary@gnu.org>
 
 	* libtool.m4 (AC_LIBLTDL_CONVENIENCE): s/INCLTDL/LTDLINCL/ for

@@ -2924,7 +2924,7 @@ lt_dlopen (filename)
 
 /* If the last error messge store was `FILE_NOT_FOUND', then return
    non-zero.  */
-int
+static int
 file_not_found ()
 {
   const char *error = 0;
