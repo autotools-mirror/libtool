@@ -1016,7 +1016,7 @@ aix4* | aix5*)
     # depend on `.', always an invalid library.  This was fixed in
     # development snapshots of GCC prior to 3.0.
     case $host_os in
-      [ aix4 | aix4.[01] | aix4.[01].*)]
+      aix4 | aix4.[[01]] | aix4.[[01]].*)
       if { echo '#if __GNUC__ > 2 || (__GNUC__ == 2 && __GNUC_MINOR__ >= 97)'
            echo ' yes '
            echo '#endif'; } | ${CC} -E - | grep yes > /dev/null; then
@@ -1297,8 +1297,8 @@ openbsd*)
   shlibpath_var=LD_LIBRARY_PATH
   file_magic_cmd=/usr/bin/file
   file_magic_test_file=`echo /usr/lib/libc.so.*`
-  if [ "`echo __ELF__ | $CC -E - | grep __ELF__`" = "" -o "$host_os-$host_cpu" = "openbsd2.8-powerpc" ]; then
-    deplibs_check_method='file_magic ELF [0-9][0-9]*-bit [LM]SB shared object'
+  if test "`echo __ELF__ | $CC -E - | grep __ELF__`" = "" || test"$host_os-$host_cpu" = "openbsd2.8-powerpc"; then
+    [deplibs_check_method='file_magic ELF [0-9][0-9]*-bit [LM]SB shared object']
   else
     deplibs_check_method='file_magic OpenBSD.* shared library'
   fi
@@ -1859,7 +1859,7 @@ darwin* | rhapsody*)
   lt_cv_deplibs_check_method='file_magic Mach-O dynamically linked shared library'
   lt_cv_file_magic_cmd='/usr/bin/file -L'
   case "$host_os" in
-  rhapsody* | darwin1.[012])
+  rhapsody* | darwin1.[[012]])
     lt_cv_file_magic_test_file=`/System/Library/Frameworks/System.framework/System`
     ;;
   *) # Darwin 1.3 on
@@ -4755,14 +4755,14 @@ EOF
       _LT_AC_TAGVAR(hardcode_shlibpath_var, $1)=no
     
       case "$host_os" in
-        openbsd[01].* | openbsd2.[0-7] | openbsd2.[0-7].*)
+        openbsd[[01]].* | openbsd2.[[0-7]] | openbsd2.[[0-7]].*)
           _LT_AC_TAGVAR(archive_cmds, $1)='$LD -Bshareable -o $lib $libobjs $deplibs $linker_flags'
           _LT_AC_TAGVAR(hardcode_libdir_flag_spec, $1)='-R$libdir'
         ;;
         *)
           _LT_AC_TAGVAR(archive_cmds, $1)='$CC -shared $pic_flag -o $lib $libobjs $deplibs $linker_flags'
           _LT_AC_TAGVAR(hardcode_libdir_flag_spec, $1)='${wl}-rpath,$libdir'
-          if [ "`echo __ELF__ | $CC -E - | grep __ELF__`" = "" -o "$host_os-$host_cpu" = "openbsd2.8-powerpc" ]; then
+          if test "`echo __ELF__ | $CC -E - | grep __ELF__`" = "" || test "$host_os-$host_cpu" = "openbsd2.8-powerpc"; then
            _LT_AC_TAGVAR(export_dynamic_flag_spec, $1)='${wl}-E'
           fi
         ;;

@@ -1,3 +1,9 @@
+2001-08-04  Gary V. Vaughan  <gary@gnu.org>
+
+	From Edouard G. Parmelan <egp@free.fr>
+	* libtool.m4 [darwin, openbsd]: Fix quoting problems with
+	unquoted [] expressions.
+
 2001-08-03  Gary V. Vaughan  <gary@gnu.org>
 
 	* bootstrap:  s/ltdldemo // -- This demo soesn't work properly,
