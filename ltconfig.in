@@ -1173,7 +1173,6 @@ else
     ;;
 
   aix4*)
-    allow_undefined_flag=
     hardcode_libdir_flag_spec='${wl}-b ${wl}nolibpath ${wl}-b ${wl}libpath:$libdir:/usr/lib:/lib'
     hardcode_libdir_separator=':'
     if test "$with_gcc" = yes; then
@@ -1193,12 +1192,18 @@ else
 	hardcode_libdir_flag_spec='-L$libdir'
 	hardcode_libdir_separator=
       fi
-      archive_cmds='$CC -shared ${wl}-bnoentry -o $objdir/$soname $libobjs $deplibs $linkopts'
+      shared_flag='-shared'
     else
-      always_export_symbols=yes
-      archive_expsym_cmds='$CC -o $objdir/$soname $libobjs $deplibs $linkopts ${wl}-bE:$export_symbols ${wl}-bM:SRE ${wl}-bnoentry'
+      shared_flag='${wl}-bM:SRE'
       hardcode_direct=yes
     fi
+    allow_undefined_flag=' ${wl}-berok'
+    archive_cmds="\$CC $shared_flag"' -o $objdir/$soname $libobjs $deplibs $linkopts ${wl}-bexpall ${wl}-bnoentry${allow_undefined_flag}'
+    archive_expsym_cmds="\$CC $shared_flag"' -o $objdir/$soname $libobjs $deplibs $linkopts ${wl}-bE:$export_symbols ${wl}-bnoentry${allow_undefined_flag}'
+    case "$host_os" in 4.[01]|4.[01].*)
+      # According to Greg Wooledge, -bexpall is only supported from AIX 4.2 on
+      always_export_symbols=yes ;;
+    esac
    ;;
 
   amigaos*)
