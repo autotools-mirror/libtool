@@ -82,7 +82,7 @@ $(ACINCLUDE_M4_LIST): $(srcdir)/libtool.m4
 # Tag before making distribution.  Also, don't make a distribution if
 # checks fail.  Also, make sure the NEWS file is up-to-date.
 cvs-dist: distcheck
-	@if sed 1,2d;3q $(srcdir)/NEWS | grep -e "$(VERSION)" > /dev/null; then :; else \
+	@if sed '1,2d;3q' $(srcdir)/NEWS | grep -e "$(VERSION)" > /dev/null; then :; else \
 	  echo "NEWS not updated; not releasing" 1>&2; \
 	  exit 1;				\
 	fi
