@@ -2121,7 +2121,7 @@ need_lib_prefix=$need_lib_prefix
 need_version=$need_version
 
 # Whether dlopen is supported.
-dlopen=$enable_dlopen
+dlopen_support=$enable_dlopen
 
 # Whether dlopen of programs is supported.
 dlopen_self=$enable_dlopen_self

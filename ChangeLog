@@ -1,3 +1,26 @@
+2000-02-05  Ossama Othman  <ossama@debian.org>
+
+	* bootstrap: Merged updates from HEAD branch.
+	(sub): Added tagdemo to list of subdirectories to be
+	bootstrapped.
+	* ltcf-cxx.sh (AR): Removed redefinition of $AR to C++ compiler on
+	Solaris for the Sun C++ and Green Hills C++ compilers.  `ar' must
+	be used to extract object files from the archives, despite the
+	fact that the archive must be created by the compiler.
+	Reported by Stephan Kulow <coolo@kde.org>
+	(predeps, postdeps): Remove any space between "-{L,R}" and the
+	path.  Some compilers, such as HP aCC add space between them.
+	* ltconfig.in (dlopen, dlopen_support): Merged updates from HEAD
+	branch.
+	* ltmain.in: Merged updates from HEAD branch.
+	(libext): Do not reset $libext to `al' when creating convenience
+	libraries.  Some compilers have problems with such a non-standard
+	extension.
+	Reported by Stephan Kulow <coolo@kde.org>
+	* doc/libtool.texi: Merged updates from HEAD branch.
+	* libltdl/Makefile.am, libltdl/configure.in, libltdl/ltdl.c,
+	libltdl/ltdl.h: Merged updates from HEAD branch.
+
 2000-02-03  Ossama Othman  <ossama@debian.org>
 
 	* ltconfig.in (available_tags): The name of each newly added
