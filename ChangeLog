@@ -1,5 +1,9 @@
 2001-04-08  Gary V. Vaughan  <gvv@techie.com>
 
+	* libtool.m4 (hardcode_libdir_flag_spec, osf4/osf5): Use ${wl}
+	to pass -rpath when compiling with gcc.
+	Reported by Tim Mooney <mooney@dogbert.cc.ndsu.NoDak.edu>
+
 	* libltdl/ltdl.c (sys_shl_open): Cache a handle for the `self'
 	module, since HPUX adds module symbols into the `self' pool if
 	it is opened later.  Return the cached pointer if the caller
