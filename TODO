@@ -30,6 +30,11 @@ In the future:
   possible would greatly improve libltdl's ability to be embedded in and 
   used by other systems.
 
+* Support -dlopen/dlpreopen for libraries.
+  This requires adding two new variables (dlopen/dlpreopen) to
+  the pseudo-library and later dlopening them when a program is linked
+  against such a library.
+
 * Fix */demo on win32.
 This may simply require resolving the item below.
 

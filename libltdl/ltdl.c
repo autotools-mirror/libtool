@@ -76,7 +76,9 @@ Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 #define LTDL_SYMBOL_OVERHEAD	5
 
 static const char objdir[] = LTDL_OBJDIR;
+#ifdef	LTDL_SHLIB_EXT
 static const char shlib_ext[] = LTDL_SHLIB_EXT;
+#endif
 
 static const char unknown_error[] = "unknown error";
 static const char dlopen_not_supported_error[] = "dlopen support not available";
@@ -1205,12 +1207,6 @@ lt_dlopen (filename)
 				file = (FILE*) find_file(basename,
 						 getenv("LTDL_LIBRARY_PATH"),
 						 &dir, 0);
-#ifdef __BEOS__
-			if (!file)
-				file = (FILE*) find_file(basename,
-						 getenv("ADDON_PATH"),
-						 &dir, 0);
-#endif
 #ifdef LTDL_SHLIBPATH_VAR
 			if (!file)
 				file = (FILE*) find_file(basename,
