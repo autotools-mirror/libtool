@@ -1,3 +1,10 @@
+2004-02-22  Gary V. Vaughan  <gary@gnu.org>
+
+	* Makefile.am (web-manual): Generate the web manual carefully
+	so that links will still work when it is uploaded to gnu.org.
+	* README-alpha: Note that this rule should be used at release
+	time.
+
 2004-02-18  Gary V. Vaughan  <gary@gnu.org>
 
 	* commit (SHELL): Set it explicitly, incase some madman is using
@@ -6,7 +13,7 @@
 2004-02-15  Peter O'Gorman  <peter@pogma.com>
 
 	* libtool.m4, ltmain.in: Rename shrext to shrext_cmds.
-	
+
 2004-02-13  Gary V. Vaughan  <gary@gnu.org>
 
 	* commit (MKSTAMP): Look for mkstamp in the right place.

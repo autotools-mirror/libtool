@@ -25,7 +25,7 @@ CLEANFILES = libtool libtoolize ltmain.shT
 # Since _SCRIPTS gets the program transform applied we make them
 # executable by hand
 pkgdata_DATA = config.guess config.sub ltmain.sh
- 
+
 # This macro file should be visible to Automake's aclocal.
 aclocal_DATA = $(aclocal_macros)
 
@@ -88,8 +88,10 @@ install-data-hook:
 ##  not to anybody else (inspiration from automake/Makefile.am).    ##
 ## ---------------------------------------------------------------- ##
 
+TEXI2HTML = texi2html
+
 .PHONY: cvs-release
-cvs-release: version-check prev-tarball cvs-news fetch cvs-commit cvs-dist deltas
+cvs-release: version-check prev-tarball cvs-news fetch cvs-commit cvs-dist deltas web-manual
 	@tarname="$(PACKAGE)-$(VERSION).tar.gz"; \
 	diffname="$(PACKAGE)-$(LASTRELEASE)-$(VERSION).diff.gz"; \
 	xdeltaname="$(PACKAGE)-$(LASTRELEASE)-$(VERSION).xdelta"; \
@@ -97,8 +99,9 @@ cvs-release: version-check prev-tarball cvs-news fetch cvs-commit cvs-dist delta
 	echo " *** $$tarname.directive.asc, $$diffname,"; \
 	echo " *** $$diffname.sig, $$diffname.directive.asc,"; \
 	echo " *** $$xdeltaname, $$xdeltaname.sig and";\
-	echo " *** $$xdeltaname.directive.asc to either";\
-	echo " *** /incoming/alpha or /incoming/ftp on ftp-upload.gnu.org.";
+	echo " *** $$xdeltaname.directive.asc to either"
+	echo " *** /incoming/alpha or /incoming/ftp on ftp-upload.gnu.org."
+	echo " *** You might need to upload manual.html to webcvs/libtool."
 
 .PHONY: version-check
 version-check:
@@ -232,7 +235,6 @@ delta-diff: prev-tarball new-tarball
 ## Unpack the tarballs somewhere to diff them
 	rm -rf delta-diff
 	mkdir delta-diff
-	
 	ofile="../$(PACKAGE)-$(LASTRELEASE)-$(VERSION).diff.gz"; \
 	cd delta-diff \
 	&& tar xzf "../$(PACKAGE)-$(LASTRELEASE).tar.gz" \
@@ -244,9 +246,8 @@ delta-diff: prev-tarball new-tarball
 	&& echo "directory: libtool" > $$ofile.directive \
 	&& $(GPG) --clearsign $$ofile.directive \
 	&& rm -f $$ofile.directive
-
 	rm -rf delta-diff
-	
+
 XDELTA = xdelta
 XDELTA_OPTIONS = --pristine -9
 
@@ -265,3 +266,9 @@ delta-xdelta: prev-tarball new-tarball got-xdelta
 	&& $(GPG) --clearsign $$ofile.directive \
 	&& rm -f $$ofile.directive
 
+.PHONY: web-manual
+web-manual:
+	@$(LN_S) $(top_srcdir)/doc/libtool.texi doc/manual.texi
+	$(TEXI2HTML) -I doc -monolithic -number -verbose doc/manual.texi
+	@mv doc/manual.html manual.html
+	@rm -f doc/manual.texi

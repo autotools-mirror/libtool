@@ -117,7 +117,7 @@ using (by typing `libtool --version').
 
 * Send announcement to libtool@gnu.org and autotools-announce@gnu.org,
   if not an alpha send to info-gnu@gnu.org as well.
-  
+
 * Update version number in configure.ac to next alpha number.
   See http://www.gnu.org/software/libtool/contribute.html for details of
   the numbering scheme.
@@ -131,7 +131,7 @@ using (by typing `libtool --version').
   release announcement.
 
 * If not an alpha, replace manual.html with the new one
-  (generate with cd doc && texi2html libtool.texi)
+  (generate with `make -f Makefile.maint web-manual').
 
 ================================================================
 = Alpha release note template
@@ -179,7 +179,7 @@ projects.
 
 Alternatively, you can fetch the unbootstrapped sourcecode from
 anonymous cvs by using the following commands:
- 
+
   $ export CVS_RSH=ssh
   $ cvs -z3 -d :ext:anoncvs@savannah.gnu.org:/cvsroot/libtool \
   co -r @CVS_RELEASE_TAG@ libtool
