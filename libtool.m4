@@ -62,8 +62,6 @@ AC_REQUIRE([AC_PROG_RANLIB])dnl
 AC_REQUIRE([AC_PROG_CC])dnl
 AC_REQUIRE([AC_PROG_LD])dnl
 AC_REQUIRE([AC_PROG_NM])dnl
-AC_REQUIRE([AC_SYS_NM_PARSE])dnl
-AC_REQUIRE([AC_SYS_SYMBOL_UNDERSCORE])dnl
 AC_REQUIRE([AC_PROG_LN_S])dnl
 dnl
 
@@ -72,10 +70,10 @@ libtool_flags="--cache-file=$cache_file"
 test "$enable_shared" = no && libtool_flags="$libtool_flags --disable-shared"
 test "$enable_static" = no && libtool_flags="$libtool_flags --disable-static"
 test "$enable_fast_install" = no && libtool_flags="$libtool_flags --disable-fast-install"
-test "$lt_dlopen" = yes && libtool_flags="$libtool_flags --enable-dlopen"
-test "$silent" = yes && libtool_flags="$libtool_flags --silent"
 test "$ac_cv_prog_gcc" = yes && libtool_flags="$libtool_flags --with-gcc"
 test "$ac_cv_prog_gnu_ld" = yes && libtool_flags="$libtool_flags --with-gnu-ld"
+test x"$lt_dlopen" = xyes && libtool_flags="$libtool_flags --enable-dlopen"
+test x"$silent" = xyes && libtool_flags="$libtool_flags --silent"
 
 # Some flags need to be propagated to the compiler or linker for good
 # libtool support.
@@ -112,7 +110,8 @@ case "$host" in
   ;;
 
 *-*-cygwin*)
-  AC_SYS_LIBTOOL_CYGWIN
+  AC_CHECK_TOOL(DLLTOOL, dlltool, false)
+  AC_CHECK_TOOL(AS, as, false)
   ;;
 
 esac
@@ -129,7 +128,7 @@ if test x"$need_locks" = xno; then
 fi
 ])
 
-# AC_LIBTOOL_DLOPEN - check for dlopen support
+# AC_LIBTOOL_DLOPEN - enable checks for dlopen support
 AC_DEFUN(AC_LIBTOOL_DLOPEN, [lt_dlopen=yes])
 
 # AC_ENABLE_SHARED - implement the --enable-shared flag
@@ -350,221 +349,6 @@ AC_MSG_RESULT([$NM])
 AC_SUBST(NM)
 ])
 
-# AC_SYS_NM_PARSE - Check for command to grab the raw symbol name followed
-# by C symbol name from nm.
-AC_DEFUN(AC_SYS_NM_PARSE,
-[AC_REQUIRE([AC_CANONICAL_HOST])dnl
-AC_REQUIRE([AC_PROG_NM])dnl
-# Check for command to grab the raw symbol name followed by C symbol from nm.
-AC_MSG_CHECKING([command to parse $NM output])
-AC_CACHE_VAL(ac_cv_sys_global_symbol_pipe,
-[# These are sane defaults that work on at least a few old systems.
-# {They come from Ultrix.  What could be older than Ultrix?!! ;)}
-
-changequote(,)dnl
-# Character class describing NM global symbol codes.
-ac_symcode='[BCDEGRST]'
-
-# Regexp to match symbols that can be accessed directly from C.
-ac_sympat='\([_A-Za-z][_A-Za-z0-9]*\)'
-
-# Transform the above into a raw symbol and a C symbol.
-ac_symxfrm='\1 \2\3 \3'
-
-# Transform an extracted symbol line into a proper C declaration
-ac_global_symbol_to_cdecl="sed -n -e 's/^. .* \(.*\)$/extern char \1;/p'"
-
-# Define system-specific variables.
-case "$host_os" in
-aix*)
-  ac_symcode='[BCDT]'
-  ;;
-cygwin* | mingw*)
-  ac_symcode='[ABCDGISTW]'
-  ;;
-hpux*)
-  ac_global_symbol_to_cdecl="sed -n -e 's/^T .* \(.*\)$/extern char \1();/p' -e 's/^. .* \(.*\)$/extern char \1;/p'"
-  ;;
-irix*)
-  ac_symcode='[BCDEGRST]'
-  ;;
-solaris*)
-  ac_symcode='[BDT]'
-  ;;
-esac
-
-# If we're using GNU nm, then use its standard symbol codes.
-if $NM -V 2>&1 | egrep '(GNU|with BFD)' > /dev/null; then
-  ac_symcode='[ABCDGISTW]'
-fi
-changequote([,])dnl
-
-# Try without a prefix undercore, then with it.
-for ac_symprfx in "" "_"; do
-
-  ac_cv_sys_global_symbol_pipe="sed -n -e 's/^.*[ 	]\($ac_symcode\)[ 	][ 	]*\($ac_symprfx\)$ac_sympat$/$ac_symxfrm/p'"
-
-  # Check to see that the pipe works correctly.
-  ac_pipe_works=no
-  rm -f conftest.$ac_ext
-  cat > conftest.$ac_ext <<EOF
-#ifdef __cplusplus
-extern "C" {
-#endif
-char nm_test_var;
-void nm_test_func(){}
-#ifdef __cplusplus
-}
-#endif
-int main(){nm_test_var='a';nm_test_func;return 0;}
-EOF
-
-  if AC_TRY_EVAL(ac_compile); then
-    # Now try to grab the symbols.
-    ac_nlist=conftest.nm
-  
-    if AC_TRY_EVAL(NM conftest.$ac_objext \| $ac_cv_sys_global_symbol_pipe \> $ac_nlist) && test -s "$ac_nlist"; then
-
-      # Try sorting and uniquifying the output.
-      if sort "$ac_nlist" | uniq > "$ac_nlist"T; then
-	mv -f "$ac_nlist"T "$ac_nlist"
-      else
-	rm -f "$ac_nlist"T
-      fi
-
-      # Make sure that we snagged all the symbols we need.
-      if egrep ' nm_test_var$' "$ac_nlist" >/dev/null; then
-	if egrep ' nm_test_func$' "$ac_nlist" >/dev/null; then
-	  cat <<EOF > conftest.c
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-EOF
-	  # Now generate the symbol file.
-	  eval "$ac_global_symbol_to_cdecl"' < "$ac_nlist" >> conftest.c'
-
-	  cat <<EOF >> conftest.c
-#if defined (__STDC__) && __STDC__
-# define lt_ptr_t void *
-#else
-# define lt_ptr_t char *
-# define const
-#endif
-
-/* The mapping between symbol names and symbols. */
-const struct {
-  const char *name;
-  lt_ptr_t address;
-}
-changequote(,)dnl
-lt_preloaded_symbols[] =
-changequote([,])dnl
-{
-EOF
-	sed 's/^. \(.*\) \(.*\)$/  {"\2", (lt_ptr_t) \&\2},/' < "$ac_nlist" >> conftest.c
-	cat <<\EOF >> conftest.c
-  {0, (lt_ptr_t) 0}
-};
-
-#ifdef __cplusplus
-}
-#endif
-EOF
-	  # Now try linking the two files.
-	  mv conftest.$ac_objext conftestm.$ac_objext
-	  ac_save_LIBS="$LIBS"
-	  ac_save_CFLAGS="$CFLAGS"
-	  LIBS="conftestm.$ac_objext"
-	  CFLAGS="$CFLAGS$no_builtin_flag"
-	  if AC_TRY_EVAL(ac_link) && test -s conftest; then
-	    ac_pipe_works=yes
-	  else
-	    echo "configure: failed program was:" >&AC_FD_CC
-	    cat conftest.c >&AC_FD_CC
-	  fi
-	  LIBS="$ac_save_LIBS"
-	  CFLAGS="$ac_save_CFLAGS"
-	else
-	  echo "cannot find nm_test_func in $ac_nlist" >&AC_FD_CC
-	fi
-      else
-	echo "cannot find nm_test_var in $ac_nlist" >&AC_FD_CC
-      fi
-    else
-      echo "cannot run $ac_cv_sys_global_symbol_pipe" >&AC_FD_CC
-    fi
-  else
-    echo "$progname: failed program was:" >&AC_FD_CC
-    cat conftest.c >&AC_FD_CC
-  fi
-  rm -rf conftest*
-
-  # Do not use the global_symbol_pipe unless it works.
-  if test "$ac_pipe_works" = yes; then
-    if test x"$ac_symprfx" = x"_"; then
-      ac_cv_sys_symbol_underscore=yes
-    else
-      ac_cv_sys_symbol_underscore=no
-    fi
-    break
-  else
-    ac_cv_sys_global_symbol_pipe=
-  fi
-done
-])
-
-ac_result=yes
-if test -z "$ac_cv_sys_global_symbol_pipe"; then
-   ac_result=no
-fi
-AC_MSG_RESULT($ac_result)
-])
-
-# AC_SYS_LIBTOOL_CYGWIN - find tools needed on cygwin
-AC_DEFUN(AC_SYS_LIBTOOL_CYGWIN,
-[AC_CHECK_TOOL(DLLTOOL, dlltool, false)
-AC_CHECK_TOOL(AS, as, false)
-])
-
-# AC_SYS_SYMBOL_UNDERSCORE - does the compiler prefix global symbols
-#                            with an underscore?
-AC_DEFUN(AC_SYS_SYMBOL_UNDERSCORE,
-[AC_REQUIRE([AC_PROG_NM])dnl
-AC_REQUIRE([AC_SYS_NM_PARSE])dnl
-AC_MSG_CHECKING([for _ prefix in compiled symbols])
-AC_CACHE_VAL(ac_cv_sys_symbol_underscore,
-[ac_cv_sys_symbol_underscore=no
-cat > conftest.$ac_ext <<EOF
-void nm_test_func(){}
-int main(){nm_test_func;return 0;}
-EOF
-if AC_TRY_EVAL(ac_compile); then
-  # Now try to grab the symbols.
-  ac_nlist=conftest.nm
-  if AC_TRY_EVAL(NM conftest.$ac_objext \| $ac_cv_sys_global_symbol_pipe \> $ac_nlist) && test -s "$ac_nlist"; then
-    # See whether the symbols have a leading underscore.
-    if egrep '^. _nm_test_func' "$ac_nlist" >/dev/null; then
-      ac_cv_sys_symbol_underscore=yes
-    else
-      if egrep '^. nm_test_func ' "$ac_nlist" >/dev/null; then
-	:
-      else
-	echo "configure: cannot find nm_test_func in $ac_nlist" >&AC_FD_CC
-      fi
-    fi
-  else
-    echo "configure: cannot run $ac_cv_sys_global_symbol_pipe" >&AC_FD_CC
-  fi
-else
-  echo "configure: failed program was:" >&AC_FD_CC
-  cat conftest.c >&AC_FD_CC
-fi
-rm -rf conftest*
-])
-AC_MSG_RESULT($ac_cv_sys_symbol_underscore)
-])
-
 # AC_CHECK_LIBM - check for math library
 AC_DEFUN(AC_CHECK_LIBM,
 [AC_REQUIRE([AC_CANONICAL_HOST])dnl
@@ -635,6 +419,3 @@ AC_DEFUN(AM_DISABLE_SHARED, [indir([AC_DISABLE_SHARED], $@)])dnl
 AC_DEFUN(AM_DISABLE_STATIC, [indir([AC_DISABLE_STATIC], $@)])dnl
 AC_DEFUN(AM_PROG_LD, [indir([AC_PROG_LD])])dnl
 AC_DEFUN(AM_PROG_NM, [indir([AC_PROG_NM])])dnl
-AC_DEFUN(AM_SYS_NM_PARSE, [indir([AC_SYS_NM_PARSE])])dnl
-AC_DEFUN(AM_SYS_SYMBOL_UNDERSCORE, [indir([AC_SYS_SYMBOL_UNDERSCORE])])dnl
-AC_DEFUN(AM_SYS_LIBTOOL_CYGWIN, [indir([AC_SYS_LIBTOOL_CYGWIN])])dnl

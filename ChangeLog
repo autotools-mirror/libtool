@@ -1,3 +1,18 @@
+1999-04-01 Thomas Tanner  <tanner@gmx.de>
+
+	* demo/Makefile.am: moved testsuite specific declarations to the end,
+	  the deplibs check is now optional
+	* libltdl/configure.in: read libtool --config only once,
+	  merged AC_SYS_SYMBOL_UNDERSCORE+AC_SYS_NM_PARSE from libtool.m4
+	* libtool.m4: AC_SYS_SYMBOL_UNDERSCORE+AC_SYS_NM_PARSE were not
+	  used, lt_dlopen and silent may be empty, AC_SYS_LIBTOOL_CYGWIN
+	  no longer necessary
+	* ltconfig.in: NM is already checked in libtool.m4,
+	* ltmain.in: always link all static dependency_libs
+	* tests/Makefile.am: added deplibs.test
+	* tests/demo-exec.test, demo-inst.test: removed hell0
+	* tests/deplibs.test: new test to test the deplibs_check_method
+
 1999-03-31 Thomas Tanner  <tanner@gmx.de>
 
 	* ltmain.in: always link a library before its dependency libs

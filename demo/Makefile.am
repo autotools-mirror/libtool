@@ -4,9 +4,6 @@ AUTOMAKE_OPTIONS = no-dependencies foreign
 
 EXTRA_DIST = $(TESTS) acinclude.m4
 
-hardcode_tests = hc-direct hc-libflag hc-libpath hc-minusL
-CLEANFILES = $(hardcode_tests)
-
 # Build a libtool library, libhello.la for installation in libdir.
 lib_LTLIBRARIES = libhello.la
 libhello_la_SOURCES = hello.c foo.c
@@ -50,18 +47,16 @@ helldl:
 	chmod +x $@
 endif
 
-# This is one of the essential tests for deplibs_check_method=pass_all.
-# If this one passes with pass_all, it is likely that pass_all works
-noinst_LIBRARIES = libhell0.a
-libhell0_a_SOURCES = hello.c foo.c
-lib_LTLIBRARIES += libhell1.la libhell2.la
-libhell1_la_SOURCES = hell1.c
-libhell2_la_SOURCES = hell2.c
-libhell1_la_LIBADD = -L. -lhell0 # libtool rejects libhell0.la
-libhell2_la_LIBADD = -L. -lhell0 # we have to use -L/-l.  Why?
-bin_PROGRAMS += hell0
-hell0_SOURCES = main.c
-hell0_LDADD = libhell1.la libhell2.la $(LIBM)
+$(OBJECTS): libtool
+libtool: $(LIBTOOL_DEPS)
+	$(SHELL) ./config.status --recheck
+
+#----------------------------------------------------------------------
+# The following declarations are only used in the testsuite:
+#----------------------------------------------------------------------
+
+hardcode_tests = hc-direct hc-libflag hc-libpath hc-minusL
+CLEANFILES = $(hardcode_tests)
 
 # Unfortunately, in order to test libtool thoroughly, we need access
 # to its private directory.
@@ -123,6 +118,21 @@ hc-minusL: $(hell_OBJECTS) $(hell_DEPENDENCIES)
 	  echo "$(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) -L./$(objdir) -lhello $(LIBS) $(LIBM) $$flag || echo unsupported > $@"; \
 	  eval "$(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) -L./$(objdir) -lhello $(LIBS) $(LIBM) $$flag || echo unsupported > $@"
 
-$(OBJECTS): libtool
-libtool: $(LIBTOOL_DEPS)
-	$(SHELL) ./config.status --recheck
+# This is one of the essential tests for deplibs_check_method=pass_all.
+# If this one passes with pass_all, it is likely that pass_all works
+noinst_LIBRARIES = libhell0.a
+libhell0_a_SOURCES = hello.c foo.c
+EXTRA_LTLIBRARIES += libhell1.la libhell2.la
+libhell1_la_SOURCES = hell1.c
+libhell1_la_LIBADD = -L. -lhell0
+libhell1_la_LDFLAGS = -rpath $(libdir)
+libhell1_la_DEPENDENCIES = libhell0.a
+libhell2_la_SOURCES = hell2.c
+libhell2_la_LIBADD = -L. -lhell0
+libhell2_la_LDFLAGS = -rpath $(libdir)
+libhell2_la_DEPENDENCIES = libhell0.a
+EXTRA_PROGRAMS += hell0
+hell0_SOURCES = main.c
+hell0_LDADD = libhell1.la libhell2.la $(LIBM)
+
+deplibs-check: hell0

@@ -11,7 +11,7 @@ TESTS = cdemo-static.test cdemo-make.test cdemo-exec.test \
 	mdemo-inst.test mdemo-unst.test \
 	cdemo-conf.test cdemo-make.test cdemo-exec.test \
 	demo-conf.test demo-make.test demo-exec.test \
-	demo-inst.test demo-unst.test \
+	demo-inst.test demo-unst.test deplibs.test \
 	depdemo-conf.test depdemo-make.test depdemo-exec.test \
 	depdemo-inst.test depdemo-unst.test \
 	mdemo-conf.test mdemo-make.test mdemo-exec.test \

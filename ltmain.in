@@ -2527,7 +2527,7 @@ EOF
 	      absdeplibs="$absdeplibs $deplib"
 	      ;;
 	    esac
-	  elif test "$hardcode_into_libs" = no; then
+	  else
 	    # Need to hardcode shared library paths
 	    # or/and link against static libraries
 	    case "$newdependency_libs " in
