@@ -1,3 +1,21 @@
+2004-11-23  Peter O'Gorman  <peter@pogma.com>
+
+	Do not require that libtoolize --ltdl=/some/path end in libltdl. Move
+	most libltdl headers to libtldl/libltdl to allow 
+	#include <libltdl/ltdl.h> to always work.
+
+	* libltdl/Makefile.am, libltdl/loaders/Makefile.am: Look for includes
+	in the new location.
+	* libltdl/libltdl/lt__alloc.h, libltdl/libltdl/lt__dirent.h, 
+	libltdl/libltdl/lt__glibc.h, libltdl/libltdl/lt__private.h,
+	libltdl/libltdl/lt_dlloader.h, libltdl/libltdl/lt_error.h,
+	libltdl/libltdl/lt_system.h, libltdl/libltdl/ltdl.h,
+	libltdl/libltdl/slist.h: Added files, moved from libtdl/.
+	* libltdl/lt__alloc.h, libltdl/lt__dirent.h, libltdl/lt__glibc.h,
+	libltdl/lt__private.h, libltdl/lt_dlloader.h, libltdl/lt_error.h,
+	libltdl/lt_system.h, libltdl/ltdl.h, libltdl/slist.h: Removed, moved
+	to libltdl/libltdl.
+
 2004-11-23  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
 	* doc/libtool.texi (LT_INIT): s/libtool 1.6/libtool 2.0/.

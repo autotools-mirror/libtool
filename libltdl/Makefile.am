@@ -27,26 +27,27 @@ AUTOMAKE_OPTIONS	= foreign
 ACLOCAL_AMFLAGS		= -I m4
 
 DEFS			= -DHAVE_CONFIG_H="<$(CONFIG_H)>" -DLTDL
-AM_CPPFLAGS		= -I$(top_builddir) -I$(top_srcdir)
+AM_CPPFLAGS		= -I$(builddir) -I$(srcdir) -I$(srcdir)/libltdl
 AM_LDFLAGS		= -no-undefined
 VERSION_INFO		= -version-info 6:0:0
 
 pkgincludedir		= $(includedir)/libltdl
 
 lib_LTLIBRARIES		= libdlloader.la
-libdlloader_la_SOURCES  = lt_error.h lt_error.c \
-			  lt__private.h lt_system.h \
-			  lt__alloc.h lt__alloc.c \
-			  lt__glibc.h \
-			  lt__dirent.h \
-			  slist.h slist.c
+libdlloader_la_SOURCES  = libltdl/lt_error.h lt_error.c \
+			  libltdl/lt__private.h libltdl/lt_system.h \
+			  libltdl/lt__alloc.h lt__alloc.c \
+			  libltdl/lt__glibc.h \
+			  libltdl/lt__dirent.h \
+			  libltdl/slist.h slist.c
 libdlloader_la_LDFLAGS	= $(VERSION_INFO)
 libdlloader_la_LIBADD	= $(LTLIBOBJS)
 
 ## Libltdl brings it all together:
 if INSTALL_LTDL
-include_HEADERS		= ltdl.h
-pkginclude_HEADERS	= lt_system.h lt_error.h lt_dlloader.h
+include_HEADERS		= libltdl/ltdl.h
+pkginclude_HEADERS	= libltdl/lt_system.h libltdl/lt_error.h \
+			  libltdl/lt_dlloader.h
 lib_LTLIBRARIES		+= libltdl.la
 endif
 
@@ -54,8 +55,8 @@ if CONVENIENCE_LTDL
 noinst_LTLIBRARIES	= libltdlc.la
 endif
 
-libltdl_la_SOURCES	= ltdl.h ltdl.c \
-			  lt_dlloader.h lt_dlloader.c loaders/preopen.c
+libltdl_la_SOURCES	= libltdl/ltdl.h ltdl.c \
+			  libltdl/lt_dlloader.h lt_dlloader.c loaders/preopen.c
 libltdl_la_CPPFLAGS	= -DLTDLOPEN=libltdl $(AM_CPPFLAGS)
 libltdl_la_LDFLAGS	=  $(VERSION_INFO) $(LT_DLPREOPEN)
 libltdl_la_LIBADD	= libdlloader.la
@@ -70,7 +71,8 @@ libltdlc_la_LIBADD	= $(libdlloader_la_LIBADD)
 ltdldatadir		= $(pkgdatadir)/libltdl
 nobase_ltdldata_DATA	= COPYING.LIB Makefile.am README configure.ac \
 			  $(libltdl_la_SOURCES) $(libdlloader_la_SOURCES) \
-			  lt__dirent.c lt__dirent.h argz_.h argz.c
+			  lt__dirent.c libltdl/lt__dirent.h \
+			  argz_.h argz.c
 
 ## Make sure these will be cleaned even when they're not built by default:
 CLEANFILES		= libltdl.la libltdlc.la libdlloader.la
