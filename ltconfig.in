@@ -655,22 +655,13 @@ if test "$compiler_c_o" = no && test "$need_locks" != no; then
   ln conftest.a conftest.b 2>/dev/null && hard_links=no
   echo "$ac_t$hard_links" 1>&6
   $rm conftest*
+  if test "$hard_links" = no; then
+    echo "*** WARNING: \`$CC' does not support \`-c -o', so \`make -j' may be unsafe"
+    need_locks=warn
+  fi
 else
   need_locks=no
 fi
-
-# Abort if we need locks and they don't work and the user didn't disable them
-
-if test "$hard_links" = no; then
-  echo "*** Warning, your platform support neither -c and -o with your compiler"
-  echo "*** and doesn't provide working hard links to do file locking."
-  echo "*** You can use ltconfig --disable-lock or configure --disable-libtool-lock"
-  echo "*** but you should never try to do parallel compilation (make -j n)"
-  echo "*** unless the package maintainer told you that you could."
-  echo "***             You should report this bug to <bug-libtool@gnu.org>"
-  exit 1
-fi
-
 
 # Check for any special shared library compilation flags.
 if test -n "$special_shlib_compile_flags"; then

@@ -362,27 +362,50 @@ if test -z "$show_help"; then
 
     # Delete any leftover library objects.
     if test "$build_old_libs" = yes; then
-      $run $rm $obj $libobj
-      trap "$run $rm $obj $libobj; exit 1" 1 2 15
+      removelist="$obj $libobj $lockfile"
     else
-      $run $rm $libobj
-      trap "$run $rm $libobj; exit 1" 1 2 15
+      removelist="$libobj $lockfile"
     fi
+
+    $run $rm $removelist
+    trap "$run $rm $removelist; exit 1" 1 2 15
 
     # Calculate the filename of the output object if compiler does
     # not support -o with -c
     if test "$compiler_c_o" = no; then
       output_obj=`$echo "X$srcfile" | $Xsed -e 's%^.*/%%' -e 's%\..*$%%'`.o
+      lockfile="$output_obj.lock"
+      removelist="$removelist $output_obj $lockfile"
+      trap "$run $rm $removelist; exit 1" 1 2 15
+    else
+      need_locks=no
+      lockfile=
     fi
 
     # Lock this critical section if it is needed
     # We use this script file to make the link, it avoids creating a new file
     if test "$need_locks" = yes; then
-      until ln "$0" "$output_obj.lock" 2>/dev/null; do
-        $show "Waiting for lock on $output_obj to be removed"
+      until ln "$0" "$lockfile" 2>/dev/null; do
+        $show "Waiting for $lockfile to be removed"
         sleep 2
       done
-      trap "rm $output_obj.lock; exit 1" 1 2 15
+    elif test "$need_locks" = warn; then
+      if test -f "$lockfile"; then
+	echo "\
+*** ERROR, $lockfile exists and contains:
+`cat $lockfile 2>/dev/null`
+
+This indicates that another process is trying to use the same
+temporary object file, and libtool could not work around it because
+your compiler does not support \`-c' and \`-o' together.  If you
+repeat this compilation, it may succeed, by chance, but you had better
+avoid parallel builds (make -j) in this platform, or get a better
+compiler."
+
+	$run $rm $removelist
+	exit 1
+      fi
+      echo $srcfile > "$lockfile"
     fi
  
     # Only build a PIC object if we are building libtool libraries.
@@ -400,21 +423,51 @@ if test -z "$show_help"; then
       $show "$command"
       if $run eval "$command"; then :
       else
-        test -n "$output_obj" && $run $rm $output_obj
+        test -n "$output_obj" && $run $rm $removelist
         exit 1
       fi
 
+      if test "$need_locks" = warn &&
+	 test x"`cat $lockfile 2>/dev/null`" != x"$srcfile"; then
+	echo "\
+*** ERROR, $lockfile contains:
+`cat $lockfile 2>/dev/null`
+
+but it should contain:
+$srcfile
+
+This indicates that another process is trying to use the same
+temporary object file, and libtool could not work around it because
+your compiler does not support \`-c' and \`-o' together.  If you
+repeat this compilation, it may succeed, by chance, but you had better
+avoid parallel builds (make -j) in this platform, or get a better
+compiler."
+
+	$run $rm $removelist
+	exit 1
+      fi
+
       # Just move the object if needed, then go on to compile the next one
-      if test "$compiler_c_o" = no; then 
+      if test "$compiler_c_o" = no && test x"$output_obj" != x"$libobj"; then 
         $show "$mv $output_obj $libobj"
-        $run $mv $output_obj $libobj || exit $?
+        if $run $mv $output_obj $libobj; then :
+	else
+	  error=$?
+	  $run $rm $removelist
+	  exit $error
+	fi
       fi
 
       # If we have no pic_flag, then copy the object into place and finish.
       if test -z "$pic_flag"; then
         $show "$LN_S $libobj $obj"
-        $run $LN_S $libobj $obj
-        exit $?
+        if $run $LN_S $libobj $obj; then
+	  exit 0
+	else
+          error=$?
+	  $run $rm $removelist
+	  exit $error
+	fi
       fi
 
       # Allow error messages only from the first compilation.
@@ -434,20 +487,45 @@ if test -z "$show_help"; then
       $show "$command"
       if $run eval "$command"; then :
       else
-        $run $rm $output_obj $libobj
+        $run $rm $removelist
         exit 1
       fi
 
+      if test "$need_locks" = warn &&
+	 test x"`cat $lockfile 2>/dev/null`" != x"$srcfile"; then
+	echo "\
+*** ERROR, $lockfile contains:
+`cat $lockfile 2>/dev/null`
+
+but it should contain:
+$srcfile
+
+This indicates that another process is trying to use the same
+temporary object file, and libtool could not work around it because
+your compiler does not support \`-c' and \`-o' together.  If you
+repeat this compilation, it may succeed, by chance, but you had better
+avoid parallel builds (make -j) in this platform, or get a better
+compiler."
+
+	$run $rm $removelist
+	exit 1
+      fi
+
       # Just move the object if needed
-      if test "$compiler_c_o" = no; then 
+      if test "$compiler_c_o" = no && test x"$output_obj" != x"$obj"; then 
         $show "$mv $output_obj $obj"
-        $run $mv $output_obj $obj || exit $?
+        if $run $mv $output_obj $obj; then :
+	else
+	  error=$?
+	  $run $rm $removelist
+	  exit $error
+	fi
       fi
     fi
 
     # Unlock the critical section if it was locked
-    if test "$need_locks" = yes; then
-      rm "$output_obj.lock"
+    if test "$need_locks" != no; then
+      rm -f "$lockfile"
     fi
 
     # Create an invalid libtool object if no PIC, so that we do not
