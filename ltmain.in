@@ -2019,8 +2019,14 @@ EOF
 	  if test "$always_export_symbols" = yes || test -n "$export_symbols_regex"; then
 	    export_symbols="$objdir/$libname.exp"
 	    $rm $export_symbols
-	    eval cmd=\"$export_symbols_cmd\"
-	    eval "$cmd"
+	    eval cmds=\"$export_symbols_cmds\"
+	    IFS="${IFS= 	}"; save_ifs="$IFS"; IFS='~'
+	    for cmd in $cmds; do
+	      IFS="$save_ifs"
+	      $show "$cmd"
+	      $run eval "$cmd" || exit $?
+	    done
+	    IFS="$save_ifs"
 	    if test -n "$export_symbols_regex"; then
 	      egrep -e "$export_symbols_regex" "$export_symbols" > "$export_symbols"T
 	      $mv "$export_symbols"T "$export_symbols"

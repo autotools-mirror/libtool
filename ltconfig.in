@@ -153,6 +153,10 @@ sed_quote_subst='s/\([\\"\\`$\\\\]\)/\\\1/g'
 # Same as above, but do not quote variable references.
 double_quote_subst='s/\([\\"\\`\\\\]\)/\\\1/g'
 
+# Sed substitution to delay expansion of an escaped shell variable in a
+# double_quote_subst'ed string.
+delay_variable_subst='s/\\\\\\\\\\\$/\\\\\\$/g'
+
 # The name of this program.
 progname=`$echo "X$0" | $Xsed -e 's%^.*/%%'`
 
@@ -1022,7 +1026,7 @@ hardcode_minus_L=no
 hardcode_shlibpath_var=unsupported
 runpath_var=
 always_export_symbols=no
-export_symbols_cmd='$NM $libobjs | $global_symbol_pipe | sed '\''s/.* //'\'' | sort | uniq > $export_symbols'
+export_symbols_cmds='$NM $libobjs | $global_symbol_pipe | sed '\''s/.* //'\'' | sort | uniq > $export_symbols'
 # include_expsyms should be a list of space-separated symbols to be *always*
 # included in the symbol list
 include_expsyms=
@@ -1088,13 +1092,22 @@ if test "$with_gnu_ld" = yes; then
     hardcode_libdir_flag_spec='-L$libdir'
     allow_undefined_flag=unsupported
     always_export_symbols=yes
-    export_symbols_cmd='$DLLTOOL --export-all --exclude-symbols DllMain@12,_cygwin_dll_entry@12,_cygwin_noncygwin_dll_entry@12 --output-def $export_symbols $objdir/$soname-ltdll.$objext $libobjs'
 
-    archive_expsym_cmds='rm -f $objdir/$soname-ltdll.c~
+    # Extract the symbol export list from an `--export-all' def file,
+    # then regenerate the def file from the symbol export list, so that
+    # the compiled dll only exports the symbol export list.
+    export_symbols_cmds='rm -f $objdir/$soname-ltdll.c~
       sed -e "/^# \/\* ltdll.c starts here \*\//,/^# \/\* ltdll.c ends here \*\// { s/^# //; p; }" -e d < $0 > $objdir/$soname-ltdll.c~
       (cd $objdir && $CC -c $soname-ltdll.c)~
-      echo EXPORTS > $objdir/$soname-def~
-      cat "$export_symbols" >> $objdir/$soname-def~
+      $DLLTOOL --export-all --exclude-symbols DllMain@12,_cygwin_dll_entry@12,_cygwin_noncygwin_dll_entry@12 --output-def $objdir/$soname-def  $objdir/$soname-ltdll.$objext $libobjs~
+      sed -e "1,/EXPORTS/d" -e "s/ @ [0-9]* ; *//" < $objdir/$soname-def > $export_symbols'
+
+    archive_expsym_cmds='echo EXPORTS > $objdir/$soname-def~
+      _lt_hint=1;
+      for symbol in `cat $export_symbols`; do
+        echo "	\$symbol @ \$_lt_hint ; " >> $objdir/$soname-def;
+	_lt_hint=`expr 1 + \$_lt_hint`;
+      done~
       $CC -Wl,--base-file,$objdir/$soname-base -Wl,--dll -nostartfiles -Wl,-e,__cygwin_dll_entry@12 -o $lib $objdir/$soname-ltdll.$objext $libobjs $deplibs $linkopts~
       $DLLTOOL --as=$AS --dllname $soname --exclude-symbols DllMain@12,_cygwin_dll_entry@12,_cygwin_noncygwin_dll_entry@12 --def $objdir/$soname-def --base-file $objdir/$soname-base --output-exp $objdir/$soname-exp~
       $CC -Wl,--base-file,$objdir/$soname-base $objdir/$soname-exp -Wl,--dll -nostartfiles -Wl,-e,__cygwin_dll_entry@12 -o $lib $objdir/$soname-ltdll.$objext $libobjs $deplibs $linkopts~
@@ -1906,7 +1919,7 @@ case "$ltmain" in
     library_names_spec soname_spec \
     RANLIB old_archive_cmds old_archive_from_new_cmds old_postinstall_cmds \
     old_postuninstall_cmds archive_cmds archive_expsym_cmds postinstall_cmds postuninstall_cmds \
-    file_magic_cmd export_symbols_cmd deplibs_check_method allow_undefined_flag no_undefined_flag \
+    file_magic_cmd export_symbols_cmds deplibs_check_method allow_undefined_flag no_undefined_flag \
     finish_cmds finish_eval global_symbol_pipe hardcode_libdir_flag_spec \
     hardcode_libdir_separator sys_lib_search_path_spec \
     compiler_c_o compiler_o_lo need_locks exclude_expsyms include_expsyms; do
@@ -1914,11 +1927,11 @@ case "$ltmain" in
     case "$var" in
     reload_cmds | old_archive_cmds | old_archive_from_new_cmds | \
     old_postinstall_cmds | old_postuninstall_cmds | \
-    archive_cmds | archive_expsym_cmds | \
+    export_symbols_cmds | archive_cmds | archive_expsym_cmds | \
     postinstall_cmds | postuninstall_cmds | \
     finish_cmds | sys_lib_search_path_spec)
       # Double-quote double-evaled strings.
-      eval "$var=\\\"\`\$echo \"X\$$var\" | \$Xsed -e \"\$double_quote_subst\" -e \"\$sed_quote_subst\"\`\\\""
+      eval "$var=\\\"\`\$echo \"X\$$var\" | \$Xsed -e \"\$double_quote_subst\" -e \"\$sed_quote_subst\" -e \"\$delay_variable_subst\"\`\\\""
       ;;
     *)
       eval "$var=\\\"\`\$echo \"X\$$var\" | \$Xsed -e \"\$sed_quote_subst\"\`\\\""
@@ -2189,7 +2202,7 @@ fix_srcfile_path="$fix_srcfile_path"
 always_export_symbols=$always_export_symbols
 
 # The command to extract exported symbols
-export_symbols_cmd=$export_symbols_cmd
+export_symbols_cmds=$export_symbols_cmds
 
 # Symbols that should not be listed in the preloaded symbols
 exclude_expsyms=$exclude_expsyms

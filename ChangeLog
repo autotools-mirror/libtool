@@ -1,3 +1,23 @@
+1999-02-19  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
+
+	* ltconfig.in (export_symbols_cmds): renamed from
+	export_symbols_cmd.
+	(cygwin, mingw): Be sure to compile the ltdll.c object before
+	extracting the exported symbol list.  Extract only the names
+	of the exported symbols from the def file [otherwise we might
+	run into trouble with -export-symbols-regex].
+	(archive_expsym_cmds): Regenerate the def file from the symbol
+	export list.
+	(delay_variable_subst): New sed expression to allow us to delay
+	evaluation of $foo in a double_quote_subst evaluated variable by
+	using \$.
+	* ltmain.in (export_symbols_cmds): evaluate each ~ delimitted cmd
+	separately.
+	* doc/libtool.texi (libtool script contents): new paragraph to
+	explain the difference between _cmd and _cmds suffixes for
+	variable names.
+	(export_symbols_cmds): renamed from export_symbols_cmd.
+	
 1999-02-18  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* ltconfig.in (ld_shlibs): move -soname and similar flags to the

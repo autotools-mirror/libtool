@@ -3335,6 +3335,13 @@ simply set shell variables, then sourced the libtool backend,
 inlines the contents of @code{ltmain.sh} into the generated
 @code{libtool}, which improves performance on many systems.
 
+The convention used for naming variables which hold shell commands for
+delayed evaluation, is to use the suffix @code{_cmd} where a single
+line of valid shell script is needed, and the suffix @code{_cmds} where
+multiple lines of shell script @strong{may} be delayed for later
+evaluation.  By convention, @code{_cmds} variables delimit the
+evaluation units with the @code{~} character where necessary.
+
 Here is a listing of each of the configuration variables, and how they
 are used within @code{ltmain.sh}:
 
@@ -3382,7 +3389,7 @@ aren't defined in that library.
 
 @defvar always_export_symbols
 Whether libtool should automatically generate a list of exported symbols
-using @var{export_symbols_cmd} before linking an archive.
+using @var{export_symbols_cmds} before linking an archive.
 Set to @samp{yes} or @samp{no}.  Default is @samp{no}
 @end defvar
 
@@ -3445,8 +3452,8 @@ Compiler link flag that allows a dlopened shared library to reference
 symbols that are defined in the program.
 @end defvar
 
-@defvar export_symbols_cmd
-Command to extract exported symbols from @var{libobjs} to the
+@defvar export_symbols_cmds
+Commands to extract exported symbols from @var{libobjs} to the
 file @var{export_symbols}.
 @end defvar
 
