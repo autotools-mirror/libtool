@@ -30,6 +30,7 @@ AC_CONFIG_SRCDIR([longer_file_name_hello.c])
 ## Automake Initialisation. ##
 ## ------------------------ ##
 AM_INIT_AUTOMAKE(hell,1.0)
+AM_PROG_CC_C_O
 
 
 ## ------------------ ##

@@ -1,3 +1,8 @@
+2008-09-09  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
+	* demo/configure.ac pdemo/configure.ac: Add missing AM_PROG_CC_C_O
+	to testsuite.
+
 2004-08-12  Maciej W. Rozycki  <macro@linux-mips.org>
 
 	* demo/Makefile.am: Stop automake warning by defining
