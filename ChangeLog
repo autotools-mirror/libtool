@@ -1,3 +1,12 @@
+2004-03-31  Gary V. Vaughan  <gary@gnu.org>
+
+	* m4/libtool.m4 (_LT_LANG_C_CONFIG): If $compiler is not set, then
+	don't call the macros that test it.
+	(_LT_LANG_CXX_CONFIG): Ditto.
+	(_LT_LANG_F77_CONFIG): Ditto.
+	(_LT_LANG_GCJ_CONFIG): Ditto.
+	(_LT_LANG_RC_CONFIG): Ditto.
+
 2004-03-30  Gary V. Vaughan  <gary@gnu.org>
 
 	* libtoolize.in (func_scan_files): sed BRE have no alternation, so
