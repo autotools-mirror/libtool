@@ -1,3 +1,9 @@
+2001-08-05  Gary V. Vuaghan  <gary@gnu.org>
+
+	From Guido Draheim <Guido.Draheim@tek.com>:
+	* ltmain.in: Display better and different error messages when
+	library linkage fails in various ways.
+
 2001-08-05  Albert Chin-A-Young <china@thewrittenword.com>
 
 	* libtool.m4 (_LT_AC_SYS_LIBPATH_AIX): Add newline after
