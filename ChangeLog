@@ -1,5 +1,10 @@
 1999-02-22  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* libltdl/configure.in: check for dld.h
+	* libltdl/ltdl.c: include dld.h
+	(dld_open) it's spelled memory_error, not no_memory_error
+	Reported by Stefan Burstroem <f94sbu@efd.lth.se>
+	
 	* ltmain.in: fix typos in my last change (s/ocmpile/compile/)
 
 1999-02-21  Thomas Tanner  <tanner@gmx.de>
