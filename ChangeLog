@@ -1,5 +1,21 @@
 1998-11-02  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* ltmain.in (libobj): default value must not contain directory
+ 	components
+
+1998-11-02  Eric Estievenart <eric@via.ecp.fr>
+
+	* ltconfig.in (compiler): detect if the compiler supports
+	-c and -o flags, create a variable compiler_c_o. Also issue
+	a big warning if it is not supported
+
+	* ltmain.in (compile): enable the -o option as input for libtool.
+	The objects are not moved if the compiler supports -o with -c.
+	Sources and objects can contain relative directories.
+	(link): enable the linking of executables into relative directories
+
+1998-11-02  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
 	* AUTHORS: added myself as a co-maintainer
 	* THANKS: and removed my name from here
 

@@ -611,6 +611,33 @@ else
   echo "$ac_t"none 1>&6
 fi
 
+# Check to see if options -o and -c are simultaneously supported by compiler
+echo $ac_n "checking if $compiler supports -c and -o options... $ac_c" 1>&6
+$rm conftest*
+echo "int some_variable = 0;" > conftest.c
+save_CFLAGS="$CFLAGS"
+CFLAGS="$CFLAGS -c -o conftest.o"
+echo "$progname:@LINENO@: checking if $compiler supports -c and -o options" >&5
+if { (eval echo $progname:@LINENO@: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>conftest.err; } && test -s conftest.o; then
+
+  # The compiler can only warn and ignore the option if not recognized
+  # So say no if there are warnings
+    if test -s conftest.err; then
+      echo "$ac_t"no 1>&6
+      compiler_c_o=no
+    else
+      echo "$ac_t"yes 1>&6
+      compiler_c_o=yes
+    fi
+else
+  # Append any errors to the config.log.
+  cat conftest.err 1>&5
+  compiler_c_o=no
+  echo "$ac_t"no 1>&6
+fi
+CFLAGS="$save_CFLAGS"
+$rm conftest*
+
 # Check for any special shared library compilation flags.
 if test -n "$special_shlib_compile_flags"; then
   echo "$progname: warning: \`$CC' requires \`$special_shlib_compile_flags' to build shared libraries" 1>&2
@@ -1335,7 +1362,7 @@ case "$ltmain" in
     old_postuninstall_cmds archive_cmds postinstall_cmds postuninstall_cmds \
     allow_undefined_flag no_undefined_flag \
     finish_cmds finish_eval global_symbol_pipe \
-    hardcode_libdir_flag_spec hardcode_libdir_separator; do
+    hardcode_libdir_flag_spec hardcode_libdir_separator compiler_c_o; do
 
     case "$var" in
     reload_cmds | old_archive_cmds | old_archive_from_new_cmds | \
@@ -1353,6 +1380,13 @@ case "$ltmain" in
   trap "$rm \"$ofile\"; exit 1" 1 2 15
   echo "creating $ofile"
   $rm "$ofile"
+  if test "$compiler_c_o" = no; then
+    $echo "**** Warning ! Your compiler doesn't support -c and -o options"
+    $echo "**** If you use a single makefile, with relative directories and"
+    $echo "**** use the -o option of libtool gcc, we strongly discourage"
+    $echo "**** to make parallel builds (make -j n) if there are source"
+    $echo "**** files with the same name in different subdirectories"
+  fi
   cat <<EOF > "$ofile"
 #! $SHELL
 
@@ -1469,6 +1503,9 @@ wl=$wl
 
 # Additional compiler flags for building library objects.
 pic_flag=$pic_flag
+
+# Does compiler simultaneously support -c and -o options
+compiler_c_o=$compiler_c_o
 
 # Compiler flag to prevent dynamic linking.
 link_static_flag=$link_static_flag
