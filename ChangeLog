@@ -1,3 +1,14 @@
+2004-10-08  Gary V. Vaughan  <gary@gnu.org>
+
+	Update to the latest commit and mailnotify scripts from
+	gary@gnu.org--2004/cvs-utils--tla--1.0:
+
+	* commit, config/mailnotify: Removed.  Now built from...
+	* clcommit.m4sh, config/mailnotify.m4sh: ...these new sources.
+	* Makefile.maint (commit, config/mailnotify): How to build them.
+	* bootstrap: If we have a checked out tree (i.e. clcommit.m4sh
+	is present), then build them.
+
 2004-10-08  Charles Wilson  <cygwin@cwilson.fastmail.fm>
 
 	* tests/pdemo-inst.test: pdemo-inst should depend on pdemo-make.

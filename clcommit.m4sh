@@ -1,0 +1,477 @@
+m4_define([_m4_divert(SCRIPT)], 100)
+m4_divert_push([SCRIPT])#!/bin/sh
+# @configure_input@
+
+# clcommit (GNU @PACKAGE@) version 0.12
+# Written by Gary V. Vaughan <gary@gnu.org>
+# and Alexandre Oliva <aoliva@redhat.com>
+
+# Copyright (C) 1999, 2000, 2004 Free Software Foundation, Inc.
+# This is free software; see the source for copying conditions.  There is NO
+# warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, a copy can be downloaded from
+# http://www.gnu.org/copyleft/gpl.html, or by writing to the Free
+# Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
+# MA 02111-1307, USA.
+
+# Usage: $progname [OPTION]... [--] [file|dir ...]
+
+# -C file --changelog=file   extract commit message from specified ChangeLog
+# -zN     --compress=N       set compression level (0-9, 0=none, 9=max)
+#         --debug            enable verbose shell tracing
+# -n      --dry-run          don't commit anything
+#         --fast             same as --force --first
+# -F file --file=file        read commit message from file
+# -1      --first            extract first entry from ChangeLog, no cvs diff
+# -f      --force            don't check (unless *followed* by -n), and just
+#                            display commit message instead of running $PAGER
+#         --from=addr        override default from address in commit email
+# -l      --local            don't descend into subdirectories
+# -m msg  --message=msg      set commit message
+#         --msg=msg          same as -m
+# -q      --quiet            run cvs in quiet mode
+# -s addr --sendmail=addr    send a commit email of the differences to ADDR
+#         --signature[=file] add FILE to the end of the email (~/.signature)
+# -S TEXT --summary=TEXT     specify a TEXT summary for the commit (tla only)
+# -t      --tla              use tla as the scm (instead of cvs)
+# -v      --verbose          run in verbose mode
+#         --version          print version information
+# -h,-?   --help             print short or long help message
+
+# This script eases checking in changes to CVS-maintained projects
+# with ChangeLog files.  It will check that there have been no
+# conflicting commits in the CVS repository and print which files it
+# is going to commit to stderr.  A list of files to compare and to
+# check in can be given in the command line.  If it is not given, all
+# files in the current directory (and below, unless `-l' is given) are
+# considered for check in.
+
+# The commit message will be extracted from the differences between a
+# file named ChangeLog* in the commit list, or named after -C, and the
+# one in the repository (unless a message was specified with `-m' or
+# `-F').  An empty message is not accepted (but a blank line is).  If
+# the message is acceptable, it will be presented for verification
+# (and possible edition) using the $PAGER environment variable (or
+# `more', if it is not set, or `cat', if the `-f' switch is given).
+# If $PAGER exits successfully, the modified files (at that moment)
+# are checked in, unless `-n' was specified, in which case nothing is
+# checked in.
+
+# Report bugs to <gary@gnu.org>
+
+: ${CVS="cvs"}
+: ${TLA="tla"}
+: ${MAILNOTIFY="mailnotify"}
+: ${MKSTAMP="mkstamp"}
+
+test -f "config/$MAILNOTIFY" && MAILNOTIFY="config/MAILNOTIFY"
+test -f "config/$MKSTAMP" && MKSTAMP="config/$MKSTAMP"
+
+PROGRAM=clcommit
+
+AS_SHELL_SANITIZE
+$as_unset CDPATH
+
+m4_include([getopt.m4sh])
+
+# Global variables:
+cvs_flags=
+update_flags=
+commit_flags=
+opt_commit=:
+opt_update=:
+opt_verbose=false
+opt_first=false
+opt_tla=false
+
+mailnotify_flags=
+sendmail_to=
+exit_cmd=:
+
+# Locations for important files
+signature_file=
+log_file="${TMPDIR-/tmp}/$progname-$$"
+
+$RM "${TMPDIR-/tmp}/$progname"*
+trap '$RM "${log_file}"*; exit $EXIT_FAILURE' 1 2 15
+
+set -e
+
+# Parse options once, thoroughly.  This comes as soon as possible in
+# the script to make things like `clcommit --version' happen quickly.
+{
+  # sed scripts:
+  my_sed_single_opt='1s/^\(..\).*$/\1/;q'
+  my_sed_single_rest='1s/^..\(.*\)$/\1/;q'
+  my_sed_long_opt='1s/^\(--[[^=]]*\)=.*/\1/;q'
+  my_sed_long_arg='1s/^--[[^=]]*=//'
+
+  # this just eases exit handling
+  while test $# -gt 0; do
+    opt="$1"
+    shift
+    case $opt in
+
+      --debug)		func_echo "enabling shell trace mode"
+	    		mailnotify_flags="$mailnotify_flags --debug"
+			set -x
+			;;
+
+      --fast)		set -- --force --first ${1+"$@"}	;;
+
+      -f|--force)	opt_update=false; PAGER=cat		;;
+
+      --from)		test $# = 0 && func_missing_arg $opt && break
+			mailnotify_flags="$mailnotify_flags --from '"$1"'"
+			shift
+			;;
+
+      -l|--local)	update_flags="$update_flags -l"
+			commit_flags="$commit_flags -l"
+			;;
+
+      -m|--message|--msg)
+			test $# = 0 && func_missing_arg $opt && break
+			if $opt_first || test -f "$log_file"; then
+			  func_error "you can have at most one of -m, -F and -1"
+			  break
+			fi
+			echo "$1" > "$log_file"
+			shift
+			;;
+
+      -F|--file)	test $# = 0 && func_missing_arg $opt && break
+			if $opt_first || test -f "$log_file"; then
+			  func_error "you can have at most one of -m, -F and -1"
+			  break
+			fi
+			if cat < "$1" > "$log_file"; then :; else
+			  break
+			fi
+			shift
+			;;
+
+      -1|--first)       if test -f "$log_File"; then
+	    		  func_error "you can have at most one of -m, -F and -1"
+			  break
+			fi
+			opt_first=:
+			;;
+
+      -C|--[[cC]]hange[[lL]]og)
+			test $# = 0 && func_missing_arg $opt && break
+			if test -f "$1"; then :; else
+			  func_error "ChangeLog file \`$1' does not exist"
+			  break
+			fi
+			ChangeLog="$1"
+			shift
+			;;
+
+      -n|--dry-run)	opt_commit=false; opt_update=:		;;
+
+      -q|--quiet)	cvs_flags="$cvs_flags -q"		;;
+
+      -s|--sendmail)	test $# = 0 && func_missing_arg $opt && break
+      			sendmail_to="$1"
+			shift
+			;;
+
+      --signature)	test $# = 0 && func_missing_arg $opt && break
+    			signature_file="$HOME/.signature"
+			case $1 in
+			  -*) ;;
+			  *)  signature_file="$1"; shift ;;
+			esac
+			if test -f "$signature_file"; then :; else
+			  func_error "\`$signature_file': file not found"
+			  break
+			fi
+			;;
+
+      -S|--summary)	test $# = 0 && func_missing_arg $opt && break
+			summary="$1"
+			shift
+			;;
+
+      -t|--tla)		opt_tla=:				;;
+
+      -v|--verbose)	opt_verbose=:				;;
+
+      -z|--compress)
+			test $# = 0 && func_missing_arg $opt && break
+			case "$1" in
+			  [[0-9]]) :;;
+			  *)  func_error "invalid argument for $opt"
+			      break
+			      ;;
+			esac
+			cvs_flags="$cvs_flags -z$1"
+			shift
+			;;
+
+      # Separate optargs to long options:
+      --message=*|--msg=*|--from=*|--file=*|--[[Cc]]hange[[Ll]]og=*|--compress=*|--summary=*|--sendmail=*|--signature=*)
+			arg=`echo "$opt" | $SED "$my_sed_long_arg"`
+			opt=`echo "$opt" | $SED "$my_sed_long_opt"`
+			set -- "$opt" "$arg" ${1+"$@"}
+			;;
+
+      # Separate optargs to short options:
+      -m*|-F*|-C*|-S*|-s*|-z*)
+			arg=`echo "$opt" |$SED "$my_sed_single_rest"`
+			opt=`echo "$opt" |$SED "$my_sed_single_opt"`
+			set -- "$opt" "$arg" ${1+"$@"}
+			;;
+
+      # Separate non-argument short options:
+      -f*|-1*|-n*|-q*)
+			rest=`echo "$opt" |$SED "$my_sed_single_rest"`
+			opt=`echo "$opt" |$SED "$my_sed_single_opt"`
+			set -- "$opt" "-$rest" ${1+"$@"}
+			;;
+
+      -\?|-h)		func_usage					;;
+      --help)		func_help					;;
+      --version)	func_version					;;
+      --)		break						;;
+      -*)		func_fatal_help "unrecognized option \`$opt'"	;;
+      *)		set -- "$opt" ${1+"$@"};	break		;;
+    esac
+  done
+
+  if test -z "$sendmail_to"; then
+
+    # can't have a from address without a destination address
+    test -n "$sendmail_from" &&
+      func_error "can't use --from without --sendmail." && exit_cmd=exit
+
+    # can't use a signature file without a destination address
+    test -n "$signature_file" &&
+      func_error "can't use --signature without --sendmail." && exit_cmd=exit
+  fi
+
+  # Bail if the options were screwed
+  $exit_cmd $EXIT_FAILURE
+}
+
+# func_check_conflicts
+func_check_conflicts ()
+{
+    func_verbose "$progname: checking for conflicts..."
+    if $opt_tla; then
+      if ( $TLA changes |
+	    while read line; do
+	      echo "$line"
+	      echo "$line" >&3
+	    done | grep '^C'
+	  ) 3>&1 >/dev/null; then
+        func_fatal_error "some conflicts were found with arch archive, aborting..."
+      fi
+    fi
+
+    if test -f CVS/Entries; then
+      if ( $CVS $cvs_flags -q -n update $update_flags ${1+"$@"} |
+            while read line; do
+	      echo "$line"
+	      echo "$line" >&3
+            done | grep '^C'
+          ) 3>&1 >/dev/null; then
+        func_fatal_error "some conflicts were found with CVS repository, aborting..."
+      fi
+    fi
+}
+
+
+# func_check_commit_msg
+func_check_commit_msg ()
+{
+    if test -z "$ChangeLog"; then
+      for f in ${1+"$@"}; do
+        case "$f" in
+          ChangeLog* | */ChangeLog*)
+            if test -z "$ChangeLog"; then
+	      ChangeLog="$f"
+	    else
+	      func_fatal_error "multiple ChangeLog files: $ChangeLog and $f"
+	    fi
+	  ;;
+        esac
+      done
+    fi
+
+    func_verbose "$progname: checking commit message..."
+    if $opt_first; then
+      skipping=:
+      $SED 's,^,+,' < ${ChangeLog-ChangeLog} |
+        while read line; do
+          case "$line" in
+            "+") if $skipping; then skipping=false; else break; fi;;
+            "+ "*)
+	      func_error "*** Warning: lines should start with tabs, not spaces; ignoring line:"
+	      echo "$line" | $SED 's/^.//' >&2;;
+            "+	"*)
+              $skipping || echo "$line" ;;
+          esac
+        done |
+          $SED 's,^\+	,,' > "$log_file" || exit $EXIT_FAILURE
+    else
+      if $opt_tla; then
+        cmd="$TLA file-diffs"
+      else
+        cmd="$CVS $cvs_flags diff -u"
+      fi
+      $cmd ${ChangeLog-ChangeLog} |
+        while read line; do
+          case $line in
+            "--- "*) :;;
+            "-"*)
+	      func_error "*** Warning: the following line in ChangeLog diff is suspicious:"
+	      echo "$line" | $SED 's/^.//' >&2;;
+            "+ "*)
+	      func_error "*** Warning: lines should start with tabs, not spaces; ignoring line:"
+	      echo "$line" | $SED 's/^.//' >&2;;
+            "+") echo ;;
+            "+	"*) echo "$line";;
+          esac
+        done |
+          $SED -e 's,\+	,,' -e '/./p' -e '/./d' -e '1d' -e '$d' > "$log_file" \
+      || exit $EXIT_FAILURE
+    fi
+    # The sed script above removes "+TAB" from the beginning of a line, then
+    # deletes the first and/or the last line, when they happen to be empty
+}
+
+
+# func_commit
+func_commit ()
+{
+    if $opt_tla; then
+      tla_log=`$TLA make-log`
+      test -n "$summary" || summary=`$SED -e '1{s/^Summary: *//;q;}'`
+      echo "Summary: $summary" > "$tla_log$$T" &&
+        $SED 1d "$tla_log" >> "$tla_log$$T" &&
+        cat < "$log_file" >> "$tla_log$$T" &&
+        mv "$tla_log$$T" "$tla_log"
+      ${PAGER-more} "$tla_log" || exit $EXIT_FAILURE
+
+      sleep 1 # give the user some time for a ^C
+
+      # Propagate any user edits back to the cvs log message
+      $SED -e '/^[[A-Z]][[-a-zA-Z]]*:/d' -e '1d' < $tla_log > $log_file
+
+    else
+      ${PAGER-more} "$log_file" || exit $EXIT_FAILURE
+
+      sleep 1 # give the user some time for a ^C
+
+      subject=`cvs -nq up 2>/dev/null | grep '^[[MAD]] ' | $SED 's/^. //'`
+      test $# -gt 0 && subject="$@"
+    fi
+
+    if test -f CVS/Entries; then
+      func_verbose "$CVS $cvs_flags commit $commit_flags -F $log_file ${1+$@}"
+      $CVS $cvs_flags commit $commit_flags -F $log_file ${1+"$@"} || exit $EXIT_FAILURE
+    fi
+
+    # Need to do the tla commit *after* cvs commit to make sure the
+    # ChangeLog timestamps stay in synch.
+    $opt_tla && $TLA commit
+}
+
+
+# func_mailnotify
+func_mailnotify ()
+{
+    notify_file="${log_file}.2"
+    func_verbose "Mailing commit notification to $sendmail_to"
+
+    {
+      echo Subject: $subject
+      test -f '{arch}/=tagging-method' &&
+          echo "Tree version:	`$TLA tree-version`"
+      test -f CVS/Root &&
+          echo "CVSROOT:	`$SED -e 's,.*:,,g' CVS/Root`"
+      test -f $MKSTAMP &&
+          echo "TIMESTAMP:	`$SHELL $MKSTAMP < ./ChangeLog`"
+      test -f CVS/Repository &&
+          echo "Module name:	`cat CVS/Repository`"
+      test -f CVS/Tag &&
+          echo "Branch:		`$SED -e 's,^T,,;1q' CVS/Tag`"
+      test -f CVS/Root &&
+          echo "Changes by:	`$SED -e 's,^:[[a-z]]*:,,;s,:.*$,,g' CVS/Root`"
+      echo ""
+      echo "Log Message:"
+      $SED -e 's,^,	,' "$log_file"
+      test -f "$signature_file" && cat "$signature_file"
+    } > "$notify_file"
+
+    ${PAGER-more} "$notify_file" || break
+
+    # Break out the subject line again
+    my_mail_subject=`$SED -e '1{s/^Subject: *//;q;}' "$notify_file"`
+    my_mail_body=`$SED -e '2,$p;d' "$notify_file"`
+    echo "$my_mail_body" > "$notify_file"
+
+    func_verbose "mailing commit notification to \"$sendmail_to\""
+    eval func_verbose_eval $MAILNOTIFY $mailnotify_flags -s "'$my_mail_subject'" \
+        -m "text/plain" -f "$notify_file" -- "'$sendmail_to'"
+}
+
+
+
+## ----- ##
+## main. ##
+## ----- ##
+
+{
+  $opt_update && func_check_conflicts
+
+  test -f "$log_file" || func_check_commit_msg
+
+  grep '[[^ 	]]' < "$log_file" > /dev/null ||
+    func_fatal_error "empty commit message, aborting"
+
+  if grep '^$' < "$log_file" > /dev/null; then
+    func_error "*** Warning: blank lines should not appear within commit messages."
+    func_error "*** They should be used to separate distinct commits."
+  fi
+
+  # Do not check for empty $log_file again, even though the user might have
+  # zeroed it out.  If s/he did, it was probably intentional.
+  if $opt_commit; then
+    func_commit
+  fi
+
+  # Need to set the subject line *after* tla commit, or the
+  # patch revision changes underneath us!
+  subject="$summary"
+  $opt_tla && \
+    subject="$subject [["`$TLA tree-version|$SED $basename`--`$TLA revisions|$SED -e '$p;d'`"]]"
+
+  # Send a copy of the log_file if sendmail_to was set:
+  if test -n "$sendmail_to"; then
+    func_mailnotify
+  fi
+
+  $RM "${log_file}"*
+}
+
+exit $EXIT_SUCCESS
+
+# Local Variables:
+# mode:shell-script
+# sh-indentation:2
+# End:
