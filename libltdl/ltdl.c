@@ -1150,8 +1150,6 @@ lt_dlopen (filename)
 		}
 		if (handle != newhandle) {
 			unload_deplibs(handle);
-			free(handle);
-			handle = newhandle;
 		}
 	} else {
 		/* not a libtool module */
@@ -1169,12 +1167,14 @@ lt_dlopen (filename)
 		newhandle = handle;
 		if (tryall_dlopen(&handle, filename)
 		    && (!dir
-			|| (find_file(basename, user_search_path, 0, &handle)
-			    && find_file(basename, getenv("LTDL_LIBRARY_PATH"),
-					 0, &handle)
+			|| (!find_file(basename, user_search_path, 0, &handle)
+			    && !find_file(basename,
+					  getenv("LTDL_LIBRARY_PATH"),
+					  0, &handle)
 #ifdef LTDL_SHLIBPATH_VAR
-			    && find_file(basename, getenv(LTDL_SHLIBPATH_VAR),
-					 0, &handle)
+			    && !find_file(basename,
+					  getenv(LTDL_SHLIBPATH_VAR),
+					  0, &handle)
 #endif
 				))) {
 			free(handle);
@@ -1182,10 +1182,10 @@ lt_dlopen (filename)
 				free(dir);
 			return 0;
 		}
-		if (handle != newhandle) {
-			free(handle);
-			handle = newhandle;
-		}
+	}
+	if (newhandle != handle) {
+		free(handle);
+		handle = newhandle;
 	}
 	if (!handle->usage) {
 		handle->usage = 1;

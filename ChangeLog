@@ -1,5 +1,8 @@
 1999-01-27  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* libltdl/ltdl.c (lt_dlopen, non-.la): find_file now returns 0 on
+	failure
+
 	* Makefile.am (ltconfig, ltmain.sh): some broken makes don't like
 	macros in targets; replace $(srcdir) with @srcdir@
 	* configure.in (ACINCLUDE_M4_LIST): same problem; expand $srcdir
