@@ -1,3 +1,9 @@
+1999-04-03 Thomas Tanner  <tanner@gmx.de>
+
+	* NEWS: updated
+	* libtool.m4: check for main in libm instead of cos
+	* ltmain.in: cosmetic fixes
+
 1999-04-02  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* ltmain.in (convenience): fixed race condition when more than one 

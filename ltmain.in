@@ -1294,24 +1294,24 @@ compiler."
 	  # Skip directories that are in the system default run-time
 	  # search path, unless they have been requested with -R.
 	  case " $sys_lib_dlsearch_path " in
- 	  *" $absdir "*) ;;
+	  *" $absdir "*) ;;
 	  *)
 	    case "$compile_rpath " in
 	    *" $absdir "*) ;;
 	    *) compile_rpath="$compile_rpath $absdir" 
 	    esac
 	    ;;
- 	  esac
+	  esac
 
 	  case " $sys_lib_dlsearch_path " in
- 	  *" $libdir "*) ;;
+	  *" $libdir "*) ;;
 	  *)
 	    case "$finalize_rpath " in
 	    *" $libdir "*) ;;
 	    *) finalize_rpath="$finalize_rpath $libdir"
 	    esac
 	    ;;
- 	  esac
+	  esac
 
 	  lib_linked=yes
 	  case "$hardcode_action" in
