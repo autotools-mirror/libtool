@@ -103,7 +103,7 @@ AC_DEFUN(AC_LTDL_SYSSEARCHPATH,
 AC_CACHE_CHECK([for the default library search path],
   libltdl_cv_sys_search_path, [libltdl_cv_sys_search_path="$sys_lib_dlsearch_path_spec"])
 if test -n "$libltdl_cv_sys_search_path"; then
-  case "$lt_target" in
+  case "$host" in
   *-*-mingw*) pathsep=";" ;;
   *) pathsep=":" ;;
   esac
