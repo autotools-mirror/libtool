@@ -43,11 +43,16 @@ if test -z "$DJGPP"; then
     CONFIG_SITE=/nonexistent
 fi
 
-# See how redirections should work.
+# How verbose should we be?  Default is no test output.
+# Setting VERBOSE=yes enables test output.
+# Setting VERBOSE=debug also puts the shell in debug mode.
 test "${VERBOSE+set}" != "set" && VERBOSE=no
 case "$VERBOSE" in
 NO | no | 0 | "")
   exec > /dev/null 2>&1
+  ;;
+DEBUG | debug )
+  set -x
   ;;
 esac
 

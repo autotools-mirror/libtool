@@ -1,3 +1,10 @@
+2004-10-03  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* config/ltmain.in: Change $XSED to $Xsed to fix hang noticed
+	under MinGW.
+	* tests/defs.in: Support VERBOSE=debug to enable shell tracing
+	while running tests.
+
 2004-10-03  Gary V. Vaughan  <gary@gnu.org>
 
 	* libltdl/lt__alloc.h (lt__alloc_die): Declare with LT_SCOPE as
