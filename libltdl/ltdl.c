@@ -1384,11 +1384,14 @@ lt_dlexit ()
       for (level = 1; handles; ++level)
 	{
 	  lt_dlhandle cur = handles;
+	  int saw_nonresident = 0;
 
 	  while (cur)
 	    {
 	      lt_dlhandle tmp = cur;
 	      cur = cur->next;
+	      if (!LT_DLIS_RESIDENT (tmp))
+		saw_nonresident = 1;
 	      if (!LT_DLIS_RESIDENT (tmp) && tmp->info.ref_count <= level)
 		{
 		  if (lt_dlclose (tmp))
@@ -1397,6 +1400,9 @@ lt_dlexit ()
 		    }
 		}
 	    }
+	  /* done if only resident modules are left */
+	  if (!saw_nonresident)
+	    break;
 	}
 
       /* close all loaders */
