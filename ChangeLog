@@ -1,3 +1,7 @@
+1999-02-22  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* ltmain.in: fix typos in my last change (s/ocmpile/compile/)
+
 1999-02-21  Thomas Tanner  <tanner@gmx.de>
 
 	* libltdl/ltdl.c (lt_dlopen): use newhandle instead of handle

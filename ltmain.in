@@ -1282,7 +1282,7 @@ compiler."
 	      *" -L$dir "*) ;;
 	      *) compile_command="$compile_command -L$dir";;
 	      esac
-	      compile_command="$ocmpile_command -l$name"
+	      compile_command="$compile_command -l$name"
 	      deplibs="$deplibs -L$dir -l$name"
 	    elif test "$hardcode_shlibpath_var" = no; then
 	      case ":$compile_shlibpath:" in
@@ -1318,7 +1318,7 @@ compiler."
 	      *" -L$dir "*) ;;
 	      *) compile_command="$compile_command -L$dir";;
 	      esac
-	      compile_command="$ocmpile_command -l$name"
+	      compile_command="$compile_command -l$name"
 	      deplibs="$deplibs -L$dir -l$name"
 	    elif test "$hardcode_shlibpath_var" = yes; then
 	      case ":$compile_shlibpath:" in
@@ -1384,7 +1384,7 @@ compiler."
 	    *" -L$dir "*) ;;
 	    *) compile_command="$compile_command -L$dir";;
 	    esac
-	    compile_command="$ocmpile_command -l$name"
+	    compile_command="$compile_command -l$name"
 	    case "$finalize_command " in
 	    *" -L$dir "*) ;;
 	    *) finalize_command="$finalize_command -L$dir";;
