@@ -42,7 +42,7 @@ mdemo_DEPENDENCIES = @LIBLTDL@ libsub.la foo1.la libfoo2.la
 
 # Create a statically linked version of mdemo.
 mdemo_static_SOURCES = $(mdemo_SOURCES)
-mdemo_static_LDFLAGS = $(mdemo_LDFLAGS) -static
+mdemo_static_LDFLAGS = $(STATIC) $(mdemo_LDFLAGS)
 mdemo_static_LDADD = $(mdemo_LDADD)
 mdemo_static_DEPENDENCIES = $(mdemo_DEPENDENCIES)
 
