@@ -939,7 +939,7 @@ compiler."
 	# A library object.
 	if test "$prev" = dlfiles; then
 	  dlfiles="$dlfiles $arg"
-	  if test "$build_libtool_libs" = yes; then
+	  if test "$build_libtool_libs" = yes && test "$dlopen" = yes; then
 	    prev=
 	    continue
 	  else
@@ -1031,8 +1031,8 @@ compiler."
 	# This library was specified with -dlopen.
 	if test "$prev" = dlfiles; then
 	  dlfiles="$dlfiles $arg"
-	  if test -z "$dlname" || test "$build_libtool_libs" = no; then
-	    # If there is no dlname or we're linking statically,
+	  if test -z "$dlname" || test "$dlopen" = no || test "$build_libtool_libs" = no; then
+	    # If there is no dlname, no dlopen support or we're linking statically,
 	    # we need to preload.
 	    prev=dlprefiles
 	  else
@@ -2088,10 +2088,13 @@ EOF
 	finalize_command=`$echo "X$finalize_command" | $SP2NL | $Xsed -e "$lo2o" | $NL2SP`
       fi
 
-      if test "$export_dynamic" = yes || test -n "$dlfiles$dlprefiles" && test -n "$NM" && test -n "$global_symbol_pipe"; then
-	dlsyms="${outputname}S.c"
-      else
-	dlsyms=
+      dlsyms=
+      if test -n "$dlfiles$dlprefiles"; then
+        if test -n "$NM" && test -n "$global_symbol_pipe"; then
+	  dlsyms="${outputname}S.c"
+	else
+	  $echo "$modename: not configured to extract global symbols from dlpreopened files" 1>&2
+	fi
       fi
 
       if test -n "$dlsyms"; then
@@ -2130,7 +2133,7 @@ extern \"C\" {
 /* External symbol declarations for the compiler. */\
 "
 
-	  if test "$export_dynamic" = yes; then
+	  if test "$export_dynamic" = yes && test "$dlopen_self" = no; then
 	    if test -n "$export_symbols"; then
 	      $run eval 'sed -e "s/^\(.*\)/\1 \1/" < "$export_symbols" > "$nlist"'
 	    else
@@ -2189,11 +2192,10 @@ lt_preloaded_symbols[] =
 {\
 "
 
-	    # First entry is always the program itself
-	    echo >> "$output_objdir/$dlsyms" "\
-  {\"${output}\", (lt_ptr_t) 0},"
-
-	    if test "$export_dynamic" = yes; then
+	    if test "$export_dynamic" = yes && test "$dlopen_self" = no; then
+	      # First entry is the program itself
+	      echo >> "$output_objdir/$dlsyms" "\
+  {\"@PROGRAM@\", (lt_ptr_t) 0},"
 	      if test -n "$export_symbols"; then
 		sed 's/^\(.*\)/  {"\1", (lt_ptr_t) \&\1},/' < "$export_symbols" >> "$output_objdir/$dlsyms"
 	      else
@@ -2261,9 +2263,6 @@ static const void *lt_preloaded_setup() {
 	# We keep going just in case the user didn't refer to
 	# lt_preloaded_symbols.  The linker will fail if global_symbol_pipe
 	# really was required.
-	if test -n "$dlfiles$dlprefiles"; then
-	  $echo "$modename: not configured to extract global symbols from dlpreopened files" 1>&2
-	fi
 
 	# Nullify the symbol file.
 	compile_command=`$echo "X$compile_command" | $Xsed -e "s% @SYMFILE@%%"`

@@ -2,17 +2,15 @@
 #
 AUTOMAKE_OPTIONS = no-dependencies foreign
 
-INCLUDES = -I$(srcdir)/../libltdl
-
 EXTRA_DIST = acinclude.m4
 
-noinst_LTLIBRARIES = libfoo1.la
+noinst_LTLIBRARIES = libfoo.la
 
-libfoo1_la_SOURCES = foo1.c
+libfoo_la_SOURCES = foo.c
 
 noinst_HEADERS = foo.h
 
 bin_PROGRAMS = cdemo
 
 cdemo_SOURCES = main.c
-cdemo_LDADD = libfoo1.la $(MATHLIB)
+cdemo_LDADD = libfoo.la

@@ -36,8 +36,8 @@ main (argc,argv)
   if (value == HELLO_RET)
     printf("hello is ok!\n");
 
-  if (foo1 () == FOO_RET)
-    printf("foo1 is ok!\n");
+  if (foo () == FOO_RET)
+    printf("foo is ok!\n");
 
   return 0;
 }

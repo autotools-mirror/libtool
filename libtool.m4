@@ -44,6 +44,8 @@ AC_SUBST(LIBTOOL)dnl
 libtool_flags=
 test "$enable_shared" = no && libtool_flags="$libtool_flags --disable-shared"
 test "$enable_static" = no && libtool_flags="$libtool_flags --disable-static"
+test "x$lt_cv_dlopen" = xyes && libtool_flags="$libtool_flags --enable-dlopen"
+test "x$lt_cv_dlopen_self" = xyes && libtool_flags="$libtool_flags --enable-dlopen-self"
 test "$silent" = yes && libtool_flags="$libtool_flags --silent"
 test "$ac_cv_prog_gcc" = yes && libtool_flags="$libtool_flags --with-gcc"
 test "$ac_cv_prog_gnu_ld" = yes && libtool_flags="$libtool_flags --with-gnu-ld"
@@ -114,6 +116,34 @@ LIBTOOL_DEPS="$ac_aux_dir/ltconfig $ac_aux_dir/ltmain.sh"
 # Redirect the config.log output again, so that the ltconfig log is not
 # clobbered by the next message.
 exec 5>>./config.log
+])
+
+# AC_LIBTOOL_DLOPEN - check for dlopen support
+AC_DEFUN(AC_LIBTOOL_DLOPEN,
+[AC_CACHE_VAL(lt_cv_dlopen,
+[lt_cv_dlopen=no
+AC_CHECK_LIB(dl, dlopen, lt_cv_dlopen=yes,
+  [AC_CHECK_FUNCS(dlopen, lt_cv_dlopen=yes,
+    [AC_CHECK_LIB(dld, dld_link, lt_cv_dlopen=yes,
+      [AC_CHECK_FUNCS(shl_load, lt_cv_dlopen=yes)]
+    )]
+  )]
+)])
+
+if test "$lt_cv_dlopen" = yes; then
+  AC_REQUIRE([AC_PROG_CC])dnl
+  AC_CACHE_VAL(lt_cv_dlopen_self,
+  [AC_CACHE_CHECK([whether a program can dlopen itself], lt_cv_dlopen_self,
+    [AC_TRY_RUN([
+#include <dlfcn.h>
+#include <stdio.h>
+fnord() { int i=42;}
+main() { void *self, *ptr1, *ptr2; self=dlopen(0,RTLD_LAZY);
+    if(self) { ptr1=dlsym(self,"fnord"); ptr2=dlsym(self,"_fnord");
+    if(ptr1 || ptr2) exit(0); } exit(1); } 
+], lt_cv_dlopen_self=no, lt_cv_dlopen_self=yes, lt_cv_dlopen_self=no)])
+  ])
+fi
 ])
 
 # AC_ENABLE_SHARED - implement the --enable-shared flag

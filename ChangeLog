@@ -1,3 +1,22 @@
+1999-02-15  Thomas Tanner  <tanner@gmx.de>
+
+	* cdemo/Makefile.am: renamed *foo1 to *foo, removed $(MATH_LIB)
+	* cdemo/foo1.c: renamed to foo.c
+	* libltdl/ltdl.c: eliminated lt_dltype, in presym_open():
+	  search for @PROGRAM@ if filename == 0, in lt_dlopen():
+	  fixed bug for filename == 0
+	* libltdl/ltdl.h: use __P macro for lt_dlmalloc/free
+	* libtool.m4: new macro AC_LIBTOOL_DLOPEN: checks for dlopen
+	  and dlopen(NULL) support
+	* ltconfig.in: added new variables dlopen and dlopen_self,
+	  --enable-dlopen[-self] flags for AC_LIBTOOL_DLOPEN
+	* ltmain.in: use dlopen[_self], dlpreopen files if there's no
+	  dlopen support, build lt_preloaded_symbols only if
+	  -dl[pre]open was used, include program symbols if -export-dynamic
+	  was specified and there's no dlopen(NULL) support
+	* mdemo/configure.in: use AC_LIBTOOL_DLOPEN
+	* mdemo/main.c: demonstrate lt_dlopen(0)
+	  	  
 1999-02-15  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
 
 	* demo/dlmain.c (_WIN32): The lt_symlist structure is now const,

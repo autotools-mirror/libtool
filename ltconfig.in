@@ -173,6 +173,8 @@ can_build_shared=yes
 enable_shared=yes
 # All known linkers require a `.a' archive for static linking.
 enable_static=yes
+enable_dlopen=no
+enable_dlopen_self=no
 ltmain=
 silent=
 srcdir=
@@ -225,6 +227,8 @@ Generate a system-specific libtool script.
     --debug                enable verbose shell tracing
     --disable-shared       do not build shared libraries
     --disable-static       do not build static libraries
+    --enable-dlopen        enable dlopen support
+    --enable-dlopen-self   enable support for dlopening programs
     --help                 display this help and exit
     --no-verify            do not verify that HOST is a valid host type
 -o, --output=FILE          specify the output file [default=$default_ofile]
@@ -252,6 +256,10 @@ EOM
   --disable-shared) enable_shared=no ;;
 
   --disable-static) enable_static=no ;;
+
+  --enable-dlopen) enable_dlopen=yes ;;
+
+  --enable-dlopen-self) enable_dlopen_self=yes ;;
 
   --quiet | --silent) silent=yes ;;
 
@@ -2061,6 +2069,12 @@ need_lib_prefix=$need_lib_prefix
 
 # Do we need a version for libraries?
 need_version=$need_version
+
+# Whether dlopen is supported.
+dlopen=$enable_dlopen
+
+# Whether dlopen of programs is supported.
+dlopen_self=$enable_dlopen_self
 
 # Compiler flag to prevent dynamic linking.
 link_static_flag=$link_static_flag
