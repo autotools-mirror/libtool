@@ -2184,7 +2184,7 @@ EOF
 	  case " $xrpath " in
 	  *" $libdir "*) ;;
 	  *) continue ;;
-	  esac
+	  esac ;;
 	*) ;;
 	esac
 	
@@ -2232,6 +2232,7 @@ EOF
 	  case " $xrpath " in
 	  *" $libdir "*) ;;
 	  *) continue ;;
+	  esac ;;
 	*) ;;
 	esac
 	
