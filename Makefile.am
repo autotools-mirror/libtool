@@ -41,19 +41,9 @@ pkgmacro_DATA = m4/libtool.m4 m4/ltdl.m4 m4/ltsugar.m4
 # The standalone libtool script, and the libtool distributor.
 bin_SCRIPTS = libtool libtoolize
 
-config_status = $(top_builddir)/config.status
-
-libtool: config/ltmain.sh $(top_builddir)/config.status
-	CONFIG_FILES= CONFIG_HEADERS= CONFIG_COMMANDS=$@ $(SHELL) $(config_status)
-	chmod +x $@
-
-libtoolize: $(srcdir)/libtoolize.in $(top_builddir)/config.status
-	CONFIG_FILES=$@ CONFIG_HEADERS= CONFIG_COMMANDS= $(SHELL) $(config_status)
-	chmod +x $@
-
 # Make sure config.status is regenerated when the version timestamp changes
 MKSTAMP = $(SHELL) $(top_srcdir)/config/mkstamp
-$(config_status): stamp-vcl
+$(top_builddir)/config_status: stamp-vcl
 stamp-vcl: vcl.tmp $(top_srcdir)/ChangeLog
 vcl.tmp:
 	@dir=.; test -f $$dir/stamp-vcl || dir=$(srcdir); \
@@ -234,7 +224,7 @@ delta-diff: prev-tarball new-tarball
 ## Unpack the tarballs somewhere to diff them
 	rm -rf delta-diff
 	mkdir delta-diff
-	
+
 	ofile="../$(PACKAGE)-$(LASTRELEASE)-$(VERSION).diff.gz"; \
 	cd delta-diff \
 	&& tar xzf "../$(PACKAGE)-$(LASTRELEASE).tar.gz" \
@@ -248,7 +238,7 @@ delta-diff: prev-tarball new-tarball
 	&& rm -f $$ofile.directive
 
 	rm -rf delta-diff
-	
+
 XDELTA = xdelta
 XDELTA_OPTIONS = --pristine -9
 
@@ -266,4 +256,3 @@ delta-xdelta: prev-tarball new-tarball got-xdelta
 	&& echo "directory: libtool" > $$ofile.directive \
 	&& $(GPG) --clearsign $$ofile.directive \
 	&& rm -f $$ofile.directive
-

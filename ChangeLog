@@ -1,5 +1,9 @@
 2004-02-06  Gary V. Vaughan  <gary@gnu.org>
 
+	* configure.ac (AC_CONFIG_FILES): Generate libtoolize from here.
+	* Makefile.am (libtool, libtoolize): These rules are redundant.
+	Automake generates better rules for remaking these files.
+
 	* m4/libtool.m4 (AC_LIBTOOL_SETUP): Catch unexpanded macros with
 	beginning with LT_ and _LT_.
 	* configure.ac (LT_MAJOR, LT_MINOR, LT_MICRO, LT_ALPHA): Renamed
