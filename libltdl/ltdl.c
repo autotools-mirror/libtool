@@ -1,4 +1,4 @@
-/* ltdl.c -- system independent dlopen wrapper
+g/* ltdl.c -- system independent dlopen wrapper
    Copyright (C) 1998-2000 Free Software Foundation, Inc.
    Originally by Thomas Tanner <tanner@ffii.org>
    This file is part of GNU Libtool.
@@ -457,7 +457,16 @@ sys_wll_open (loader_data, filename)
 	lt_dlhandle cur;
 	lt_module_t module;
 	char *searchname = 0;
-	char *ext = strrchr(filename, '.');
+        char *ext;
+        char self_name_buf[MAX_PATH];
+
+	if (!filename) {
+		/* Get the name of main module */
+		*self_name_buf = 0;
+		GetModuleFileName(NULL, self_name_buf, sizeof(self_name_buf));
+		filename = ext = self_name_buf;
+	}
+	else ext = strrchr(filename, '.');
 
 	if (ext) {
 		/* FILENAME already has an extension. */

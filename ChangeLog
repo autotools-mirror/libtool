@@ -1,3 +1,7 @@
+2000-05-05  Paul Sokolovsky  <Paul.Sokolovsky@technologist.com>
+
+	* ltdl.c: support lt_dlopen(0) for win32
+
 2000-05-03  Thomas Tanner  <tanner@ffii.org>
 
 	* doc/libtool.texi (libltdl): fix typos,
