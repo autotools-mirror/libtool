@@ -1,3 +1,9 @@
+2003-03-31  Albert Chin  <libtool@thewrittenword.com>
+
+	* ltmain.sh: Don't pass -R flags found in a .la's dependency_libs
+	variable directly down to the linker.
+	Reported by Tim Mooney <mooney@dogbert.cc.ndsu.nodak.edu>.
+
 2003-03-28  Richard Dawe  <rich@phekda.freeserve.co.uk>
 
 	* Makefile.am: Define CONF_SUBDIRS.

@@ -2634,6 +2634,7 @@ EOF
 	    # practice:
 	    case $deplib in
 	    -L*) new_libs="$deplib $new_libs" ;;
+	    -R*) ;;
 	    *)
 	      # And here is the reason: when a library appears more
 	      # than once as an explicit dependence of a library, or
