@@ -669,12 +669,18 @@ AC_DEFUN(AC_LIBLTDL_INSTALLABLE, [AC_BEFORE([$0],[AC_LIBTOOL_SETUP])dnl
   fi
 ])
 
-# AC_LIBTOOL_CPP - enable checks for C++ support
-AC_DEFUN(AC_LIBTOOL_CPP,
+# AC_LIBTOOL_CXX - enable support for C++ libraries
+AC_DEFUN(AC_LIBTOOL_CXX,
 [AC_REQUIRE([AC_PROG_CXX])
 AC_REQUIRE([AC_PROG_CXXCPP])
 AC_REQUIRE([AC_PROG_LIBTOOL])
-CC=$CXX CFLAGS=$CXXFLAGS LTCC=$CC $ac_aux_dir/ltconfig -o libtool --add-tag=CXX $ac_aux_dir/ltcf-cxx.sh
+lt_save_CC="$CC"
+lt_save_CFLAGS="$CFLAGS"
+dnl Make sure LTCC is set to the C compiler, i.e. set LTCC before CC
+dnl is set to the C++ compiler.
+LTCC="$CC" CC="$CXX" CFLAGS="$CXXFLAGS" ${CONFIG_SHELL-/bin/sh} $ac_aux_dir/ltconfig -o libtool --add-tag=CXX $ac_aux_dir/ltcf-cxx.sh || AC_MSG_ERROR([libtool tag configuration failed])
+CC="$lt_save_CC"
+CFLAGS="$lt_save_CFLAGS"
 ])
 
 dnl old names
