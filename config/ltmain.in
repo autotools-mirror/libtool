@@ -627,6 +627,7 @@ Otherwise, only FILE itself is deleted using RM."
 			  finish)	;;
 			  install)	;;
 			  link)		;;
+			  relink)	;;
 			  uninstall)	;;
 
 			  # Catch anything else as an error
