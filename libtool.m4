@@ -1540,6 +1540,8 @@ netbsd*)
     dynamic_linker='NetBSD ld.elf_so'
   fi
   shlibpath_var=LD_LIBRARY_PATH
+  shlibpath_overrides_runpath=yes
+  hardcode_into_libs=yes
   ;;
 
 openbsd*)

@@ -1,3 +1,7 @@
+2000-09-15  Nick Hudson  <nick@nthcliff.demon.co.uk>
+
+	* libtool.m4 (netbsd): Improved support.
+
 2000-09-15  Gary V. Vaughan  <gvv@techie.com>
 
 	* ltmain.in (version_type): Use "-iface" as the windows
