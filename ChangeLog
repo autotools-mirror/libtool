@@ -1,3 +1,10 @@
+2003-10-16  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* libtool.m4 (AC_DEPLIBS_CHECK_METHOD): For MinGW, reverted DLL
+	check method back to a working objdump-based test.  This is not as
+	concrete a test as using the 'file' command, but it does not
+	require that the 'file' command be available.
+
 2003-09-29  Scott James Remnant  <scott@netsplit.com>
 
 	* libtool.m4 (AC_DEPLIBS_CHECK_METHOD): Use pass_all for linux*
