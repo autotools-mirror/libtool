@@ -5,13 +5,16 @@ New in 1.3b: 1999-??-??; CVS version 1.3a, Libtool team:
   to link libtool libraries against other libtool libraries.
 * Libtool is able to find already-installed libtool libraries,
   even if they were moved out of their installation directory.
+* New "-Wc,flag" and "-Xcompiler flag" flags to pass flags
+  directly to the compiler
+* New "-Wl,flag" and "-Xlinker flag" flags to pass flags
+  directly to the linker
 * Support for linking DLLs on Win32
-* New port to NEC UX/4800.
 * New `clean' mode to delete uninstalled files.
 * New demos and tests
 * Various bugfixes
 
-New in 1.3.1: 1999-05-??, CVS version 1.3.0a, Libtool team:
+New in 1.3.1: 1999-05-21, CVS version 1.3.0a, Libtool team:
 * Documentation improvements; recommend automake users to insert libtool.m4
   in acinclude.m4
 * AC_LIBLTDL_CONVENIENCE and AC_LIBLTDL_INSTALLABLE now set INCLTDL.

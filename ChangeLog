@@ -1,3 +1,24 @@
+1999-05-22 Thomas Tanner  <tanner@ffii.org>
+
+	* NEWS: updated
+	* TODO: -Wc, -Wl, implemented
+	* AUTHORS: changed my email address
+	* doc/libtool.texi: fix "wierd" typo :)
+	* ltmain.in: linking against convenience libraries was broken,
+	  implemented the "-Wc," "-Wl," "-Xcompiler" "-Xlinker" flag for
+	  compiler and linker-specific flags,
+	  add -lc before we do the deplibs check
+	* ltconfig.in: linkopts -> compiler_flags for $CC and linker_flags
+	  for $LD, link_all_deplibs=yes on IRIX
+
+1999-05-22  Gary V. Vaughan  <gary@oranda.demon.co.uk>
+
+	* NEWS: insert todays date alongside 1.3.1 release.
+	* Makefile.in: use gnu not gnits rules
+	* config.guess: synch with gnu common & apply Takabatake-san's
+	MIPS *000 patch.
+	* config.sub: synch with gnu common.
+
 1999-05-22  Doug Evans  <devans@casey.cygnus.com>
 
 	* libltdl/configure.in (dlerror): Fix typo in dlopen found in -ldl

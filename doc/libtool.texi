@@ -1854,7 +1854,7 @@ Nevertheless, it is advisable to include a copy of @file{libtool.m4} in
 @file{configure} are rebuilt for any reason, the appropriate libtool
 macros will be used.  The alternative is to hope the user will have a
 compatible version of @file{libtool.m4} installed and accessible for
-@code{aclocal}.  This may lead to wierd errors when versions don't
+@code{aclocal}.  This may lead to weird errors when versions don't
 match.
 
 @node Distributing

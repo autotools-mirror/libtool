@@ -77,15 +77,6 @@ People who need it:
   Jean Daniel Fekete <Jean-Daniel.Fekete@emn.fr>
   Thomas Hiller <hiller@tu-harburg.d400.de>
 
-* We need some mechanism to allow users to pass flags to the linker
-and/or to the compiler, when creating libtool archives.  We could
-recognize linker flags such as `-Wl,flag' and `-Xlinker flag' in
-libtool's command line, and passing them down to the linker, if "$wl"
-is `-Wl,', or stripping the `-Wl,' part if we're calling `ld'
-directly.  We could also introduce `-Wc,flag' and `-Xcompiler flag' to
-allow unrecognized flags to be passed to the compiler, after stripping
-by libtool.
-
 * Another form of convenience library, suggested by Alexandre Oliva,
 is to have undocumented utility libraries, where only the shared
 version is installed.
