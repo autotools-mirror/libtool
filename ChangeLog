@@ -1,3 +1,8 @@
+2002-09-09  Albert Chin-A-Young  <china@thewrittenword.com>
+
+	* libtool.m4: Custom $symcode for Tru64 UNIX to catch 'Q',
+	read-only constants.
+
 2002-09-09  Rainer Orth  <ro@TechFak.Uni-Bielefeld.de>
 
 	* libtool.m4 (osf[345]): Append $major to soname_spec.
