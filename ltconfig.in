@@ -1098,15 +1098,13 @@ linux-gnu*)
   # before this can be enabled.
   hardcode_into_libs=yes
 
-  if test -f /lib/ld.so.1; then
-    dynamic_linker='GNU ld.so'
-  else
-    # Only the GNU ld.so supports shared libraries on MkLinux.
-    case "$host_cpu" in
-    powerpc*) dynamic_linker=no ;;
-    *) dynamic_linker='Linux ld.so' ;;
-    esac
-  fi
+  # We used to test for /lib/ld.so.1 and disable shared libraries on
+  # powerpc, because MkLinux only supported shared libraries with the
+  # GNU dynamic linker.  Since this was broken with cross compilers,
+  # most powerpc-linux boxes support dynamic linking these days and
+  # people can always --disable-shared, the test was removed, and we
+  # assume the GNU/Linux dynamic linker is in use.
+  dynamic_linker='GNU/Linux ld.so'
   ;;
 
 netbsd*)

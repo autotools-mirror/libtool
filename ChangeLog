@@ -1,3 +1,8 @@
+2000-07-10  Alexandre Oliva  <aoliva@lsd.ic.unicamp.br>
+
+	* ltconfig.in (dynamic_linker, linux, powerpc): Do not disable
+	shared libraries just because of MkLinux.
+
 2000-07-10  Albert Chin-A-Young  <china@thewrittenword.com>
 
 	* ltcf-cxx.sh (archive_cmds, irix): Added -Wl to -update_registry
