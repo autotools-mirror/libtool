@@ -1,8 +1,5 @@
 # A brief demonstration of using Automake with Libtool. -*-Makefile-*-
 #
-# NOTE: Don't forget that in the libtool distribution, files in this
-# directory are distributed by the demo_distfiles variable in the top
-# level Makefile.
 AUTOMAKE_OPTIONS = no-dependencies foreign
 
 EXTRA_DIST = $(TESTS) acinclude.m4

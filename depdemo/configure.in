@@ -1,6 +1,6 @@
 dnl Initialize the hell package.
 AC_INIT(main.c)
-AM_INIT_AUTOMAKE(depdemo,1.0)
+AM_INIT_AUTOMAKE(depdemo,0.1)
 
 AC_PROG_CC
 AC_EXEEXT

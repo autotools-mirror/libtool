@@ -2,7 +2,7 @@
 ## Gordon Matzigkeit <gord@gnu.ai.mit.edu>, 1996
 AUTOMAKE_OPTIONS = gnits
 SUBDIRS = doc tests libltdl
-DIST_SUBDIRS = $(SUBDIRS) demo mdemo
+DIST_SUBDIRS = $(SUBDIRS) demo depdemo mdemo
 
 # We need to export these variables when we run ltconfig.
 CFLAGS = @CFLAGS@
@@ -10,7 +10,8 @@ CPPLAGS = @CPPFLAGS@
 
 aclocal_macros = libtool.m4
 
-EXTRA_DIST = $(aclocal_macros) libtoolize.in ltconfig.in ltmain.in libtool.spec
+EXTRA_DIST = $(aclocal_macros) libtoolize.in ltconfig.in ltmain.in \
+	libtool.spec README-alpha # remove this for a non-alpha release
 CLEANFILES = libtool libtoolize
 MAINTAINERCLEANFILES = ltconfig ltmain.sh
 
@@ -62,6 +63,7 @@ ACINCLUDE_M4_LIST = \
 	$(srcdir)/acinclude.m4 \
 	$(srcdir)/libltdl/acinclude.m4 \
 	$(srcdir)/demo/acinclude.m4 \
+	$(srcdir)/depdemo/acinclude.m4 \
 	$(srcdir)/mdemo/acinclude.m4
 
 # All our rules should depend on these demo files.
@@ -81,18 +83,18 @@ $(ACINCLUDE_M4_LIST): $(srcdir)/libtool.m4
 # Tag before making distribution.  Also, don't make a distribution if
 # checks fail.  Also, make sure the NEWS file is up-to-date.
 cvs-dist: distcheck
-	@if sed 1q $(srcdir)/NEWS | grep -e "$(VERSION)" > /dev/null; then :; else \
+	@if sed 1,2d;3q $(srcdir)/NEWS | grep -e "$(VERSION)" > /dev/null; then :; else \
 	  echo "NEWS not updated; not releasing" 1>&2; \
 	  exit 1;				\
 	fi
-	cd $(srcdir) && cvs -q tag `echo "Release-$(VERSION)" | sed 's/\./-/g'`
+	cd $(srcdir) && cvs -q tag `echo "release-$(VERSION)" | sed 's/\./-/g'`
 	$(MAKE) dist
 
 cvs-diff:
-	thisver=`echo "Release-$(VERSION)" | sed 's/\./-/g'`; \
+	thisver=`echo "release-$(VERSION)" | sed 's/\./-/g'`; \
 	if test -z "$$OLDVERSION"; then \
 	  prevno=`echo "$(VERSION)" - 0.01 | bc | sed 's/^\./0./'`; \
 	else prevno="$$OLDVERSION"; fi; \
-	prevver=Release-`echo $$prevno | sed 's/\./-/g'`; \
+	prevver=release-`echo $$prevno | sed 's/\./-/g'`; \
 	cvs -f rdiff -c -r $$prevver -r $$thisver $(PACKAGE) \
 	    > $(PACKAGE)-$$prevno-$(VERSION).diff

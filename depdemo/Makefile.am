@@ -1,11 +1,6 @@
-# A brief demonstration of using Automake with Libtool. -*-Makefile-*-
+# A brief demonstration of inter-library dependencies
 #
-# NOTE: Don't forget that in the libtool distribution, files in this
-# directory are distributed by the demo_distfiles variable in the top
-# level Makefile.
-AUTOMAKE_OPTIONS = foreign
-
-EXTRA_DIST = acinclude.m4
+AUTOMAKE_OPTIONS = no-dependencies foreign
 
 lib_LTLIBRARIES = libl1.la libl2.la libl3.la libl4.la
 libl1_la_SOURCES = l1.c l1.h sysdep.h
