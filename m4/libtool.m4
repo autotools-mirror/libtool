@@ -2693,12 +2693,6 @@ sympat='\([[_A-Za-z]][[_A-Za-z0-9]]*\)'
 # Transform the above into a raw symbol and a C symbol.
 symxfrm='\1 \2\3 \3'
 
-# Transform an extracted symbol line into a proper C declaration
-lt_cv_sys_global_symbol_to_cdecl="sed -n -e 's/^. .* \(.*\)$/extern int \1;/p'"
-
-# Transform an extracted symbol line into symbol name and symbol address
-lt_cv_sys_global_symbol_to_c_name_address="sed -n -e 's/^: \([[^ ]]*\) $/  {\\\"\1\\\", (void *) 0},/p' -e 's/^$symcode \([[^ ]]*\) \([[^ ]]*\)$/  {\"\2\", (void *) \&\2},/p'"
-
 # Define system-specific variables.
 case $host_os in
 aix*)
@@ -2707,22 +2701,13 @@ aix*)
 cygwin* | mingw* | pw32*)
   symcode='[[ABCDGISTW]]'
   ;;
-hpux*) # Its linker distinguishes data from code symbols
+hpux*)
   if test "$host_cpu" = ia64; then
     symcode='[[ABCDEGRST]]'
   fi
-  lt_cv_sys_global_symbol_to_cdecl="sed -n -e 's/^T .* \(.*\)$/extern int \1();/p' -e 's/^$symcode* .* \(.*\)$/extern char \1;/p'"
-  lt_cv_sys_global_symbol_to_c_name_address="sed -n -e 's/^: \([[^ ]]*\) $/  {\\\"\1\\\", (void *) 0},/p' -e 's/^$symcode* \([[^ ]]*\) \([[^ ]]*\)$/  {\"\2\", (void *) \&\2},/p'"
   ;;
 irix* | nonstopux*)
   symcode='[[BCDEGRST]]'
-  ;;
-linux*)
-  if test "$host_cpu" = ia64; then
-    symcode='[[ABCDGIRSTW]]'
-    lt_cv_sys_global_symbol_to_cdecl="sed -n -e 's/^T .* \(.*\)$/extern int \1();/p' -e 's/^$symcode* .* \(.*\)$/extern char \1;/p'"
-    lt_cv_sys_global_symbol_to_c_name_address="sed -n -e 's/^: \([[^ ]]*\) $/  {\\\"\1\\\", (void *) 0},/p' -e 's/^$symcode* \([[^ ]]*\) \([[^ ]]*\)$/  {\"\2\", (void *) \&\2},/p'"
-  fi
   ;;
 osf*)
   symcode='[[BCDEGQRST]]'
@@ -2734,6 +2719,14 @@ sysv4)
   symcode='[[DFNSTU]]'
   ;;
 esac
+
+# Transform an extracted symbol line into a proper C declaration.
+# Some systems (esp. on ia64) link data and code symols differently,
+# so use this general approach.
+lt_cv_sys_global_symbol_to_cdecl="sed -n -e 's/^T .* \(.*\)$/extern int \1();/p' -e 's/^$symcode* .* \(.*\)$/extern char \1;/p'"
+
+# Transform an extracted symbol line into symbol name and symbol address
+lt_cv_sys_global_symbol_to_c_name_address="sed -n -e 's/^: \([[^ ]]*\) $/  {\\\"\1\\\", (void *) 0},/p' -e 's/^$symcode* \([[^ ]]*\) \([[^ ]]*\)$/  {\"\2\", (void *) \&\2},/p'"
 
 # Handle CRLF in mingw tool chain
 opt_cr=
