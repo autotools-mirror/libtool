@@ -1,5 +1,7 @@
 2004-11-17  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
+	* doc/libtool.texi (Linking static libraries): Typo.
+
 	* m4/libtool.m4 (_LT_LINKER_SHLIBS, _LT_LANG_CXX_CONFIG)
 	[aix4/aix5 !ia64]: Set whole_archive_flag_spec to '$convenience'
 	so convenience libs are really added to the link cmdline.
