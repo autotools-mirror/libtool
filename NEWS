@@ -5,7 +5,7 @@ New in 1.4d: 2001-??-??; CVS version 1.4c, Libtool team:
 * Support cross compilation to mingw.
 * Improved support for linking with gcc on aix4* and aix5*.
 * Improved support for GCC 3.0.
-* Initial support for QNX RTOS.
+* Initial support for QNX RTOS, UnixWare 7 and OpenUNIX 8.
 * Bug fixes.
 
 New in 1.4b: 2001-07-09; CVS version 1.4a, Libtool team:

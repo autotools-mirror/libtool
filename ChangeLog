@@ -1,3 +1,11 @@
+2001-07-30  Gary V. Vaughan  <gary@gnu.org>
+
+	* libtool.m4 [UnixWare7, OpenUNIX8]: Initial support for
+	UnixWare7 and OpenUNIX8.  Accept these identifiers from the
+	latest config.guess/config.sub as pseudonyms for sysv5uw[78].
+	* NEWS: Updated.
+	Reported by Boyd Lynn Gerber <gerberb@zenez.com>
+
 2001-07-29  Gary V. Vaughan  <gary@gnu.org>
 
 	* tests/sh.test: Add a new test to enforce X as the fill

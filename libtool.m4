@@ -1927,10 +1927,6 @@ solaris*)
   lt_cv_file_magic_test_file=/lib/libc.so
   ;;
 
-[sysv5uw[78]* | sysv4*uw2*)]
-  lt_cv_deplibs_check_method=pass_all
-  ;;
-
 sysv4 | sysv4.2uw2* | sysv4.3* | sysv5*)
   case $host_vendor in
   motorola)
@@ -1950,6 +1946,10 @@ sysv4 | sysv4.2uw2* | sysv4.3* | sysv5*)
     lt_cv_file_magic_test_file=/lib/libc.so
     ;;
   esac
+  ;;
+
+sysv5OpenUNIX8* | sysv5UnixWare7* | sysv5uw[[78]]* | unixware7* | sysv4*uw2*)
+  lt_cv_deplibs_check_method=pass_all
   ;;
 esac
 ])
@@ -2873,6 +2873,9 @@ case $host_os in
         ;;
     esac
     ;;
+  sysv5OpenUNIX8* | sysv5UnixWare7* | sysv5uw[[78]]* | unixware7*)
+    _LT_AC_TAGVAR(archive_cmds_need_lc, $2)=no
+    ;;
   tandem*)
     case $cc_basename in
       NCC)
@@ -2885,10 +2888,6 @@ case $host_os in
         _LT_AC_TAGVAR(ld_shlibs, $1)=no
         ;;
     esac
-    ;;
-  unixware*)
-    # FIXME: insert proper C++ library support
-    _LT_AC_TAGVAR(ld_shlibs, $1)=no
     ;;
   vxworks*)
     # FIXME: insert proper C++ library support
@@ -4780,7 +4779,7 @@ EOF
       runpath_var=LD_RUN_PATH
       ;;
   
-    sysv5uw7* | unixware7*)
+   sysv5OpenUNIX8* | sysv5UnixWare7* |  sysv5uw[[78]]* | unixware7*)
       _LT_AC_TAGVAR(no_undefined_flag, $1)='${wl}-z ${wl}text'
       if test "$GCC" = yes; then
         _LT_AC_TAGVAR(archive_cmds, $1)='$CC -shared ${wl}-h ${wl}$soname -o $lib $libobjs $deplibs $compiler_flags'
