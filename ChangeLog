@@ -1,5 +1,11 @@
 2004-02-15  Scott James Remnant  <scott@netsplit.com>
 
+	* Makefile.am (m4/ltversion.m4): Generate serial number by
+	removing initial '1.' from the revision, replace @MACRO_SERIAL@
+	with this new variable.
+	* m4/ltversion.in: Use @MACRO_SERIAL@ for the serial number
+	as some shells don't like a '.' when using test.
+
 	* m4/ltversion.in: Add a serial number to this file otherwise
 	libtoolize will refuse to copy it into $pkgdatadir, where it
 	is needed by m4/libtool.m4.

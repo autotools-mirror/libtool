@@ -48,8 +48,10 @@ pkgmacro_DATA = m4/libtool.m4 m4/ltdl.m4 m4/ltsugar.m4 m4/ltversion.m4
 EXTRA_DIST += m4/ltversion.in
 $(top_srcdir)/m4/ltversion.m4: $(top_srcdir)/m4/ltversion.in stamp-vcl
 	set `$(MKSTAMP) < $(top_srcdir)/ChangeLog`; \
+	serial=`echo $$1 | sed 's,^1[.],,g'`; \
 	sed -e "s,[@]MACRO_VERSION[@],$(VERSION),g" \
 	    -e "s,[@]MACRO_REVISION[@],$$1,g" \
+	    -e "s,[@]MACRO_SERIAL[@],$$serial,g" \
 	    -e "s,[@]configure_input[@],Generated from ltversion.in; do not edit by hand.,g" \
 	$(top_srcdir)/m4/ltversion.in > $@t
 	chmod a-w $@t
