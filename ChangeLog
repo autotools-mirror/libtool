@@ -1,3 +1,17 @@
+1999-01-12  Thomas Tanner  <tanner@gmx.de>
+
+	* ltmain.in: before using LN_S remove the symlink
+	* libltdl/ltdl.c: support multiple symbol lists, moved library-
+	  and file searching to separate functions, renamed "preload_libs"
+	  to "dl_dependency_libs", set the LT_SYMBOL_OVERHEAD to the correct
+	  value (7), fix to support lt_dlsym() for not-libtool modules again,
+	  check for invalid handles, when using strdup() check whether
+	  it fails
+	* libltdl/ltdl.h: declare the lt_dlsymlist type for lt_dlpreopen()
+	* mdemo/README: rewritten
+	* mdemo/configure.in: check only for math.h (string.h is no longer
+	  necessary)
+
 1999-01-12  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
 
 	* configure.in (ltdl-install): Fixed up the indentation so that

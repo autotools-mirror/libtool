@@ -1,9 +1,10 @@
 This is mdemo, an example package that uses GNU libtool with an
-Automake-generated environment to build two simple libraries and programs.
+Automake-generated environment to build two simple modules and 
+a program.
 
 It demonstrates how to build both dynamic and static libraries
-that can be dlopened. You'll need a wrapper (libltdl)
-for your dlopen functions. We prefix all exported symbols with "libname_LTX_".
-When dlopening these static libraries, we cut the prefix off to
-get the real name.
-
+that can be dlopened. mdemo uses libtool's portable dlopen
+wrapper called "libltdl". 
+All exported symbols are prefixed with "libname_LTX_" to avoid
+symbols conflicts, especially when linking statically.
+libltdl will automatically cut the prefix off to get the real name.
