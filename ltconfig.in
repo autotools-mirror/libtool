@@ -370,6 +370,8 @@ if test "$with_gcc" != yes || test -z "$CC"; then
   # Now see if the compiler is really GCC.
   with_gcc=no
   echo $ac_n "checking whether we are using GNU C... $ac_c" 1>&6
+  # LINENO
+  echo "$progname:374: checking whether we are using GNU C" >&5
 
   $rm conftest.c
   cat > conftest.c <<EOF
@@ -378,7 +380,7 @@ if test "$with_gcc" != yes || test -z "$CC"; then
 #endif
 EOF
   # LINENO
-  if { ac_try='${CC-cc} -E conftest.c'; { (eval echo $progname:380: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }; } | egrep yes >/dev/null 2>&1; then
+  if { ac_try='${CC-cc} -E conftest.c'; { (eval echo $progname:383: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }; } | egrep yes >/dev/null 2>&1; then
     with_gcc=yes
   fi
   $rm conftest.c
@@ -424,7 +426,6 @@ else
     # FIXME is there a better link_static_flag that works with the bundled CC?
     wl='-Wl,'
     link_static_flag='${wl}-a ${wl}archive'
-    pic_flag='+Z'
     ;;
 
   irix5* | irix6*)
@@ -473,8 +474,35 @@ alpha | rs6000 | powerpc | powerpcle)
 esac
 
 if test -n "$pic_flag"; then
-  echo $ac_t "$pic_flag" 1>&6
-  pic_flag=" $pic_flag"
+  # Check to make sure the pic_flag actually works.
+  $rm conftest*
+  echo > conftest.c
+  save_CFLAGS="$CFLAGS"
+  CFLAGS="$CFLAGS $pic_flag -DPIC"
+  # LINENO
+  echo "$progname:483:checking whether $compiler PIC flag $pic_flag works" >&5
+  if { (eval echo $progname:484: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>conftest.err; } && test -s conftest.o; then
+    # Append any errors to the config.log.
+    cat conftest.err 1>&5
+
+    # On HP-UX, the stripped-down bundled CC doesn't accept +Z, but also
+    # reports no error.  So, we need to grep stderr for (Bundled).
+    if grep '(Bundled)' conftest.err >/dev/null; then
+      echo $ac_t none 1>&6
+      pic_flag=
+    else
+      echo $ac_t "$pic_flag" 1>&6
+      pic_flag=" $pic_flag"
+    fi
+  else
+    # Append any errors to the config.log.
+    cat conftest.err 1>&5
+    can_build_shared=no
+    pic_flag=
+    echo $ac_t none 1>&6
+  fi
+  CFLAGS="$save_CFLAGS"
+  $rm conftest*
 else
   echo $ac_t none 1>&6
 fi
@@ -495,7 +523,8 @@ echo 'main(){return(0);}' > conftest.c
 save_LDFLAGS="$LDFLAGS"
 LDFLAGS="$LDFLAGS $link_static_flag"
 # LINENO
-if { (eval echo $progname:488: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest; then
+echo "$progname:526:checking if $compiler static flag $link_static_flag works" >&5
+if { (eval echo $progname:527: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest; then
   echo $ac_t "$link_static_flag" 1>&6
 else
   echo $ac_t none 1>&6
@@ -779,10 +808,11 @@ main(){nm_test_var='a';nm_test_func();return(0);}
 EOF
 
 # LINENO
-if { (eval echo $progname:771: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>&5; } && test -s conftest.o; then
+echo "$progname:811:checking if global_symbol_pipe works" >&5
+if { (eval echo $progname:812: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>&5; } && test -s conftest.o; then
   # Now try to grab the symbols. LINENO
   nlist=conftest.nm
-  if { echo "$progname:773: eval \"$NM conftest.o | $global_symbol_pipe > $nlist\"" >&5; eval "$NM conftest.o | $global_symbol_pipe > $nlist 2>&5"; } && test -s "$nlist"; then
+  if { echo "$progname:815: eval \"$NM conftest.o | $global_symbol_pipe > $nlist\"" >&5; eval "$NM conftest.o | $global_symbol_pipe > $nlist 2>&5"; } && test -s "$nlist"; then
 
     # Try sorting and uniquifying the output.
     if sort "$nlist" | uniq > "$nlist"T; then
@@ -831,7 +861,7 @@ EOF
         LIBS='conftestm.o'
 	CFLAGS="$CFLAGS$no_builtin_flag"
         # LINENO
-        if { (eval echo $progname:810: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest; then
+        if { (eval echo $progname:864: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest; then
           pipe_works=yes
         else
           echo "$progname: failed program was:" >&5

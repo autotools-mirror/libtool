@@ -1,3 +1,11 @@
+Tue Aug 12 09:36:59 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltconfig.in: Added messages to config.log to describe what sort
+ 	of test we are running.
+	(pic_flag): Added a sanity check for pic_flag.  This should fix
+ 	bugs reported using the cc bundled with HP-UX 10.  Suggested by
+ 	Bruno Haible and Akim Demaille.
+
 Fri Aug  1 10:06:55 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltmain.sh.in (link): Add -dlopen and -dlpreopen support for
