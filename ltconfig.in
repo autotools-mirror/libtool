@@ -538,6 +538,11 @@ old_archive_cmds='$AR $AR_FLAGS $oldlib$oldobjs$old_deplibs'
 old_postinstall_cmds='chmod 644 $oldlib'
 old_postuninstall_cmds=
 
+if test -n "$RANLIB"; then
+  old_archive_cmds="$old_archive_cmds~\$RANLIB \$oldlib"
+  old_postinstall_cmds="\$RANLIB \$oldlib~$old_postinstall_cmds"
+fi
+
 # Set sane defaults for various variables
 test -z "$AR" && AR=ar
 test -z "$AR_FLAGS" && AR_FLAGS=cru
