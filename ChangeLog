@@ -1,5 +1,14 @@
 1999-01-27  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* libltdl/ltdl.c: make all global strings char[], not char*; check 
+	that all calls to malloc() are properly cast
+	(strdup, strchr, strrchr, trim, free_vars): declare as inline
+	(find_module): allocate filename dynamically; support null dir
+	(free_vars): free dir and name only if non-null
+	(lt_dlopen): keep dir as NULL if not given; fix expression that
+	calculated the size of name; only free and name if non-null
+	(lt_dlopenext): allocate tmp dynamically
+
 	* configure.in (pkgdatadir): expand ${PACKAGE} at configure-time,
 	just like automake does
 
