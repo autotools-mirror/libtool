@@ -1,5 +1,8 @@
 2001-07-09  Gary V. Vaughan  <gary@gnu.org>
 
+	* README-alpha:  s/configure.in/configure.ac.
+	* configure.ac: Bumped version to 1.4c.
+
 	GNU libtool 1.4b was released.
 
 	* configure.ac: Bumped version to 1.4b.
