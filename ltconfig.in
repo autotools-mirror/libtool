@@ -1166,7 +1166,13 @@ if test -z "$LD"; then
     # Check if gcc -print-prog-name=ld gives a path.
     echo $ac_n "checking for ld used by GCC... $ac_c" 1>&6
     echo "$progname:@LINENO@: checking for ld used by GCC" >&5
-    ac_prog=`($CC -print-prog-name=ld) 2>&5 | sed 's,$,,'`
+    case $host in
+    *-*-mingw*)
+      # gcc leaves a trailing carriage return which upsets mingw
+      ac_prog=`($CC -print-prog-name=ld) 2>&5 | tr -d '\015'` ;;
+    *)
+      ac_prog=`($CC -print-prog-name=ld) 2>&5` ;;
+    esac
     case "$ac_prog" in
     # Accept absolute paths.
     [\\/]* | [A-Za-z]:[\\/]*)

@@ -1,3 +1,9 @@
+1999-08-03  Gary V. Vaughan  <gary@oranda.demon.co.uk>
+
+	* libtool.m4 (mingw*, AC_PROG_LD): use tr for carriage return
+	stripping.
+	* ltconfig.in: ditto.
+	From Olly Betts <olly@muscat.co.uk>
 
 1999-08-02  Olly Betts  <olly@muscat.co.uk>
 
