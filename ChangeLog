@@ -1,3 +1,7 @@
+2004-08-11  Daniel Reed  <djr@redhat.com>
+
+	* tests/demo-nopic.test: Do not run on x86_64 or s390*
+
 2004-08-07  Peter O'Gorman  <peter@pogma.com>
 
 	* configure.ac: Bumped version to 1.5.9a.
