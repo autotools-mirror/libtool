@@ -1,3 +1,8 @@
+1998-11-11  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* ltconfig.in (sunos*, sympat, symxfrm): remove underscore
+	prepended by the compiler
+
 1998-11-10  Toshio Kuratomi  <badger@prtr-13.ucsc.edu>
 
 	* ltconfig.in: re-enable deplibs

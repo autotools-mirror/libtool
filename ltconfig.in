@@ -1251,7 +1251,7 @@ case "$host_os" in
 aix*)
   symcode='[BCDTU]'
   ;;
-cygwin32* | mingw32*)
+sunos* | cygwin32* | mingw32*)
   sympat='_\([_A-Za-z][_A-Za-z0-9]*\)'
   symxfrm='_\1 \1'
   ;;
