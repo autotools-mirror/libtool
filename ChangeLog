@@ -1,3 +1,8 @@
+2004-12-21  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* libltdl/lt__dirent.c: Include lt__private.h.
+	* libltdl/libltdl/lt__private.h: Include lt__strl.h.
+
 2004-12-20  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
 	* libtoolize.m4sh: Install `install-sh' as well, needed for configure ..
