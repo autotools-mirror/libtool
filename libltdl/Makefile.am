@@ -28,7 +28,7 @@ AUTOMAKE_OPTIONS	= foreign
 ACLOCAL_AMFLAGS		= -I m4
 
 DEFS			= -DHAVE_CONFIG_H="<$(CONFIG_H)>" -DLTDL
-AM_CPPFLAGS		= -I$(builddir) -I$(srcdir) -I$(srcdir)/libltdl
+AM_CPPFLAGS		= -I. -I$(srcdir) -I$(srcdir)/libltdl
 AM_LDFLAGS		= -no-undefined
 VERSION_INFO		= -version-info 6:0:0
 
