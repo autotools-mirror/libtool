@@ -1,3 +1,7 @@
+1999-07-09  Olly Betts  <olly@muscat.co.uk>
+
+	* doc/libtool.texi (C++ Libraries):  fixed a typo.
+
 1999-07-06  Gary V. Vaughan  <gary@oranda.demon.co.uk>
 
 	* README-alpha:  improved the release instructions to mention

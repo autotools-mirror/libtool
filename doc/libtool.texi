@@ -3180,7 +3180,7 @@ and what special considerations you need to make if you do not use C.
 @cindex C++, pitfalls
 
 Creating libraries of C++ code should be a fairly straightforward
-process, because its object files differ from C ones in only two ways:
+process, because its object files differ from C ones in only three ways:
 
 @enumerate 1
 @item
