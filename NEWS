@@ -7,8 +7,6 @@ New in 1.3d: 2001-04-02; CVS version 1.3c, Libtool team:
 * New -no-install flag to avoid the use of executable wrapper scripts.
 * New --with-pic, -prefer-pic and -prefer-non-pic flags to control
   the generation of PIC/non-PIC code.
-* New --build flag to ltconfig to help with build cross compilation
-  environments is inherited from --build flag passed to configure.
 * Support for hardcoding run-time paths (-R) into libraries.
 * Support -dlopen and -dlpreopen for libraries.
 * Libtool now allows you to link shared libraries against static code.

@@ -1,3 +1,7 @@
+2001-04-05  Gary V. Vaughan  <gvv@techie.com>
+
+	* NEWS (1.3d) Removed bogus ltconfig reference.
+
 2001-04-03  Gary V. Vaughan  <gvv@techie.com>
 
 	* libtool.m4 (_LT_AC_LTCONFIG_HACK):  Remove the spurious
