@@ -1,20 +1,18 @@
 NEWS - list of user-visible changes between releases of GNU Libtool
 
 New in 1.3d: 2000-??-??; CVS version 1.3c, Libtool team:
-* New "-no-install" flag to avoid the use of executable wrapper scripts.
+* New -no-install flag to avoid the use of executable wrapper scripts.
 * New --with-pic flag to control the generation of PIC/non-PIC code.
 * New --build flag to ltconfig to help with build cross compilation
   environments is inherited from --build flag passed to configure.
 * Support for hardcoding run-time paths (-R) into libraries.
 * Support -dlopen and -dlpreopen for libraries.
 * Libtool now allows you to link shared libraries against static code.
-* New functions lt_dlgetinfo, lt_dlforeach in libltdl can be used to
-  access module specific data in handles.
-* New functions lt_next_dlloader, lt_dlloader_name, lt_find_dlloader,
-  lt_add_dlloader in libltdl can be used for adding new types of module
-  loader to libltdl..
-* New functions lt_dladderror, lt_dlseterror in libltdl can be used to
-  integrate user module loaders with lt_dlerror.
+* New functions in libltdl:
+  lt_dlgetinfo, lt_dlforeach provide access to module specific data in handles.
+  lt_next_dlloader, lt_dlloader_name, lt_find_dlloader and
+  lt_add_dlloader can be used for adding new types of module loaders.
+  lt_dladderror, lt_dlseterror integrate user module loaders with lt_dlerror.
 * "-Xcompiler" and "-Wc," does now work in compile mode, too.
 * Start of support code for cross-compiling to win32.
 * libltdl can now be built as a dll with win32.

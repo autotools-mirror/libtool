@@ -4,21 +4,21 @@
    This file is part of GNU Libtool.
 
 This library is free software; you can redistribute it and/or
-modify it under the terms of the GNU Library General Public
+modify it under the terms of the GNU Lesser General Public
 License as published by the Free Software Foundation; either
 version 2 of the License, or (at your option) any later version.
 
-As a special exception to the GNU Library General Public License,
-if you distribute this file as part of a program that uses GNU libtool
-to create libraries and programs, you may include it under the same
+As a special exception to the GNU Lesser General Public License,
+if you distribute this file as part of a program or library that
+is built using GNU libtool, you may include it under the same
 distribution terms that you use for the rest of that program.
 
 This library is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-Library General Public License for more details.
+Lesser General Public License for more details.
 
-You should have received a copy of the GNU Library General Public
+You should have received a copy of the GNU Lesser General Public
 License along with this library; if not, write to the Free
 Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 02111-1307  USA

@@ -2776,9 +2776,9 @@ libltdl is licensed under the terms of the GNU Library General Public License,
 with the following exception:
 
 @quotation
-As a special exception to the GNU Library General Public License,
-if you distribute this file as part of a program that uses GNU libtool
-to create libraries and programs, you may include it under the same
+As a special exception to the GNU Lesser General Public License,
+if you distribute this file as part of a program or library that
+is built using GNU libtool, you may include it under the same
 distribution terms that you use for the rest of that program.
 @end quotation
 

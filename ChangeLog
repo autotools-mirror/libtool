@@ -1,3 +1,21 @@
+2000-03-27  Thomas Tanner  <tanner@ffii.org>
+
+	* NEWS: reformatting
+	
+	* ltmain.in (ILD): add extra convenience library scanning pass
+	
+	* ltmain.in (ILD): accept -R flags for libraries, too
+	
+	* ltmain.in (ILD): correclty merge the dlpreopened libraries
+	  with deplibs
+	  
+	* ltmain.in (install mode): remove directories from filenames
+	  before relinking (reported by Elrond <Elrond@Wunder-Nett.org>)
+
+	* doc/libtool.texi (libltdl): rename Library -> Lesser,
+	  clarify exception clause
+	* libltdl/ltdl.c, libltdl.h (License): ditto
+
 2000-03-21  Alexandre Oliva  <oliva@lsd.ic.unicamp.br>
 
 	* ltconfig.in (variables_saved_for_relink): Set to `PATH

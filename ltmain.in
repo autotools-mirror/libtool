@@ -1303,7 +1303,7 @@ compiler."
     need_relink=no # whether we're linking any uninstalled libtool libraries
     case $linkmode in
     lib)
-	passes="link"
+	passes="conv link"
 	for file in $dlfiles $dlprefiles; do
 	  case "$file" in
 	  *.la) ;;
@@ -1321,9 +1321,9 @@ compiler."
 	newdlfiles=
 	newdlprefiles=
 	link_against_libtool_libs=
-	passes="scan dlopen dlpreopen link"
+	passes="conv scan dlopen dlpreopen link"
 	;;
-    *)	passes="link"
+    *)	passes="conv"
 	;;
     esac
     for pass in $passes; do
@@ -1348,6 +1348,7 @@ compiler."
 	    $echo "$modename: warning: \`-l' is ignored for archives/objects" 1>&2
 	    continue
 	  fi
+	  test $pass = conv && continue
 	  name=`$echo "X$deplib" | $Xsed -e 's/^-l//'`
 	  for searchdir in $lib_search_path; do
 	    # Search the libtool library
@@ -1371,11 +1372,13 @@ compiler."
 	-L*)
 	  case $linkmode in
 	  lib)
+	    test $pass = conv && continue
 	    deplibs="$deplib $deplibs"
 	    newdependency_libs="$deplib $newdependency_libs"
 	    new_lib_search_path="$new_lib_search_path "`$echo "X$deplib" | $Xsed -e 's/^-L//'`
 	    ;;
 	  prog)
+	    test $pass = conv && continue
 	    if test $pass = scan; then
 	      deplibs="$deplib $deplibs"
 	      new_lib_search_path="$new_lib_search_path "`$echo "X$deplib" | $Xsed -e 's/^-L//'`
@@ -1391,7 +1394,7 @@ compiler."
 	  continue
 	  ;;
 	-R*)
-	  if test "$linkmode,$pass" = "prog,link"; then
+	  if test $pass = link; then
 	    dir=`$echo "X$deplib" | $Xsed -e 's/^-R//'`
 	    # Make sure the xrpath contains only unique directories.
 	    case "$xrpath " in
@@ -1403,6 +1406,7 @@ compiler."
 	  ;;
 	*.la) lib="$deplib" ;;
 	*.$libext)
+	  test $pass = conv && continue
 	  case $linkmode in
 	  lib)
 	    if test "$deplibs_check_method" != pass_all; then
@@ -1431,7 +1435,7 @@ compiler."
 	  esac
 	  ;;
 	*.lo | *.$objext)
-	  if test $linkmode = prog; then
+	  if test $pass != conv && test $linkmode = prog; then
 	    if test $pass = dlpreopen || test "$dlopen_support" != yes || test "$build_libtool_libs" = no; then
 	      # If there is no dlopen support or we're linking statically,
 	      # we need to preload.
@@ -1481,24 +1485,28 @@ compiler."
 	*) . ./$lib ;;
 	esac
 
-	if test $linkmode = lib || test "$linkmode,$pass" = "prog,scan"; then
+	if test "$linkmode,$pass" = "lib,link" ||
+	   test "$linkmode,$pass" = "prog,scan" ||
+	   { test $linkmode != prog && test $linkmode != lib; }; then
 	  test -n "$dlopen" && dlfiles="$dlfiles $dlopen"
 	  test -n "$dlpreopen" && dlprefiles="$dlprefiles $dlpreopen"
 	fi
 
-	if test $linkmode != lib && test $linkmode != prog; then
+	if test $pass = conv; then
 	  # only check for convenience libraries
-	  if test -z "$old_library"; then
-	    $echo "$modename: cannot find name of link library for \`$lib'" 1>&2
-	    exit 1
-	  fi
-	  if test -n "$libdir"; then
+	  if test -z "$libdir"; then
+	    if test -z "$old_library"; then
+	      $echo "$modename: cannot find name of link library for \`$lib'" 1>&2
+	      exit 1
+	    fi
+	    # It is a libtool convenience library, so add in its objects.
+	    convenience="$convenience $ladir/$objdir/$old_library"
+	    old_convenience="$old_convenience $ladir/$objdir/$old_library"
+	    deplibs="$deplibs $dependency_libs"
+	  elif test $linkmode != prog && test $linkmode != lib; then
 	    $echo "$modename: \`$lib' is not a convenience library" 1>&2
 	    exit 1
 	  fi
-	  # It is a libtool convenience library, so add in its objects.
-	  convenience="$convenience $ladir/$objdir/$old_library"
-	  old_convenience="$old_convenience $ladir/$objdir/$old_library"
 	  continue
 	fi
 
@@ -1601,8 +1609,6 @@ compiler."
 
 	if test -z "$libdir"; then
 	  # It is a libtool convenience library, so add in its objects.
-	  convenience="$convenience $dir/$old_library"
-	  old_convenience="$old_convenience $dir/$old_library"
 	  if test $linkmode = lib; then
 	    deplibs="$dir/$old_library $deplibs"
 	    tmp_libs=
@@ -1949,8 +1955,11 @@ compiler."
       dependency_libs="$newdependency_libs"
       if test $pass = dlpreopen; then
 	# Link the dlpreopened libraries before other libraries
-	deplibs="$deplibs $save_deplibs"
-      elif test $pass != dlopen; then
+	for deplib in $save_deplibs; do
+	  deplibs="$deplib $deplibs"
+	done
+      fi
+      if test $pass != dlopen; then
 	# Make sure lib_search_path contains only unique directories.
 	lib_search_path=
 	for dir in $new_lib_search_path; do
@@ -3327,7 +3336,7 @@ static const void *lt_preloaded_setup() {
 
       # Quote the relink command for shipping.
       if test -n "$relink_command"; then
-        # Preserve any variables that may affect compiler behavior
+	# Preserve any variables that may affect compiler behavior
 	for var in $variables_saved_for_relink; do
 	  eval var_value=\$$var
 	  var_value=`\$echo \"X$var_value\" | $Xsed -e "$sed_quote_subst"`
@@ -4108,6 +4117,7 @@ relink_command=\"$relink_command\""
 		$echo "$modename: error: cannot create temporary directory \`$tmpdir'" 1>&2
 		continue
 	      fi
+	      file=`$echo "X$file" | $Xsed -e 's%^.*/%%'`
 	      outputname="$tmpdir/$file"
 	      # Replace the output file specification.
 	      relink_command=`$echo "X$relink_command" | $Xsed -e 's%@OUTPUT@%'"$outputname"'%g'`
