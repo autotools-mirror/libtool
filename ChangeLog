@@ -1,3 +1,9 @@
+1999-10-06  Gary V. Vaughan  <gary@oranda.demon.co.uk>
+
+	* NEWS: updtaed.
+        * ltconfig.in: Accept osf5.
+        Reported by Sascha Schumann <sascha@schumann.cx>
+
 1999-10-04  Gary V. Vaughan  <gary@oranda.demon.co.uk>
 
 	* ltmain.in (-no-install):  This doesn't work on win32 since

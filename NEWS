@@ -1,6 +1,7 @@
 NEWS - list of user-visible changes between releases of GNU Libtool
 
 New in 1.3d: 1999-??-??; CVS version 1.3c, Libtool team:
+* Support for Compaq Tru64 V5.0.
 * Start of support code for cross-compiling to win32.
 * Improved support for mingw32, NetBSD, FreeBSD and Unixware.
 * New "-no-install" flag to avoid the use of executable wrapper scripts.
