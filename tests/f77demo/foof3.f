@@ -5,8 +5,10 @@ C as published by the Free Software Foundation; either version 2
 C of the License, or (at your option) any later version.
 C 
 
-      subroutine fsub(arg,res)
-      write(*,*) 'fsub called'
-      call fsubf(arg,res)
+      subroutine fsub3(arg,res)
+      implicit none
+      integer*4 arg,res
+      write(*,*) 'fsub3 called'
+      res=arg*4
       return
       end

@@ -21,12 +21,19 @@ AUTOMAKE_OPTIONS = no-dependencies foreign
 ACLOCAL_AMFLAGS  = -I ../../m4
 AM_CPPFLAGS	 = -I$(top_srcdir)/../..
 
-noinst_LTLIBRARIES = libfoo.la libmix.la
+lib_LTLIBRARIES = libfoo.la libmix.la libfoo2.la libfoo3.la
 
 libfoo_la_SOURCES = foof.f
 libfoo_la_LDFLAGS = -no-undefined
+libfoo_la_LIBADD = libfoo2.la
 
-libmix_la_SOURCES = foof.f fooc.c
+libfoo2_la_SOURCES = foof2.f
+libfoo2_la_LDFLAGS = -no-undefined
+
+libfoo3_la_SOURCES = foof3.f
+libfoo3_la_LDFLAGS = -no-undefined
+
+libmix_la_SOURCES = foof.f foof2.f fooc.c
 libmix_la_LDFLAGS = -no-undefined
 
 noinst_HEADERS = foo.h
@@ -34,10 +41,10 @@ noinst_HEADERS = foo.h
 bin_PROGRAMS = fprogram cprogram
 
 fprogram_SOURCES = fprogram.f
-fprogram_LDADD = libfoo.la
+fprogram_LDADD = libfoo.la libfoo3.la
 
 cprogram_SOURCES = cprogram.c
-cprogram_LDADD = libmix.la
+cprogram_LDADD = libmix.la $(FLIBS)
 
 $(OBJECTS): libtool
 libtool: $(LIBTOOL_DEPS)

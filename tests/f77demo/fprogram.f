@@ -21,7 +21,14 @@ C
          write(*,*) 'fsub is ok!'
       endif
 
+      call fsub3(arg,res)
+
+      write(*,*) 'fsub3 returned, saying that 4 *',arg,' =',res
+
+      if (res.eq.8) then
+         write(*,*) 'fsub3 is ok!'
+      endif
+
       stop
       end
 
-         

@@ -1,3 +1,21 @@
+2004-09-12  Peter O'Gorman  <peter@pogma.com>
+
+	Our fortran tests were not very good. All the libraries created
+	were convenience libs, so we did not test the creation of shared
+	libraries on any platform. Also none of the libs used any actual
+	fortran library calls, adding a call to write(*,*) in each lib
+	causes the tests to fail on darwin (and presumably other platforms).
+	These new tests would likely cause many more fortran test failures,
+	so if there is an error during make it is reported as SKIP.
+
+	* tests/f77demo-make.test: Don't fail hard, skip on failure.
+	* tests/f77demo/foof2.f: New file.
+	* tests/f77demo/foof3.f: New file.
+	* tests/f77demo/fprogram.f: Call routine in new lib.
+	* tests/f77demo/foof.f: Call routine in another new lib.
+	* tests/f77demo/Makefile.am: Make a couple of new libraries, add
+	$(FLIBS) to cprogram LDADD.
+
 2004-09-11  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* m4/libtool.m4 (_LT_CMD_GLOBAL_SYMBOLS): The linker distinguishes
