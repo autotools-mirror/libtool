@@ -3831,6 +3831,14 @@ EOF
 	;;
       esac
 
+      case $host in
+      *darwin*)
+        # Don't allow lazy linking, it breaks C++ global constructors
+        compile_command="$compile_command ${wl}-bind_at_load"
+        finalize_command="$finalize_command ${wl}-bind_at_load"
+        ;;
+      esac
+
       compile_command="$compile_command $compile_deplibs"
       finalize_command="$finalize_command $finalize_deplibs"
 

@@ -1,3 +1,8 @@
+2002-12-31  Benjamin Reed  <ranger@befunk.com>
+
+	* ltmain.in [darwin]: disable lazy linking, needed
+	to resolve C++ global constructor issues
+
 2002-12-30  Ralph Schleicher  <rs@nunatak.allgaeu.org>
 
 	Rework by Robert Boehne <rboehne@gnu.org>
