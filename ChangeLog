@@ -1,5 +1,8 @@
 2004-01-16  Gary V. Vaughan  <gary@gnu.org>
 
+	* configure.ac (AM_INIT_AUTOMAKE): Require 1.8 for bootstrap, or
+	else aclocal.m4 is huge, and m4 directory is not distributed.
+
 	* configure.ac (AC_CONFIG_HEADERS): Create config.h in
 	$top_srcdir.
 	* m4/ltdl.m4 (AC_LIB_LTDL): Run AC_CONFIG_HEADERS for the user if

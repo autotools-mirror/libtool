@@ -1,5 +1,5 @@
 ## Process this file with autoconf to create configure. -*- autoconf -*-
-# Copyright (C) 2001 Free Software Foundation, Inc.
+# Copyright (C) 2001, 2004 Free Software Foundation, Inc.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -110,7 +110,7 @@ AC_SUBST([TIMESTAMP])
 
 dnl These are bootstrap requirements, once built, libtool may work with
 dnl much older releases of autoconf and automake.  See release notes.
-AM_INIT_AUTOMAKE([1.7 gnits])
+AM_INIT_AUTOMAKE([1.8 gnits]) ## We use auto-m4_including
 
 
 ## ------------------------------- ##
