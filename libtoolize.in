@@ -297,7 +297,7 @@ func_scan_files ()
     # ---------------------------------------------------- #
 
     my_sed_traces='s,#.*$,,; s,^dnl .*$,,; s, dnl .*$,,;
-    	/AC_CONFIG_AUX_DIR/  {
+    	/AC_CONFIG_AUX_DIR[^_]/  {
 	    s,^.*AC_CONFIG_AUX_DIR([[ 	]*\([^])]*\).*$,auxdir=\1,; p;
         };
     	/AC_CONFIG_MACRO_DIR/   {

@@ -1,3 +1,8 @@
+2003-10-19  Charles Wilson  <cygwin@cwilson.fastmail.fm>
+
+	* libtoolize.in: protect sed expression against
+	AC_CONFIG_AUX_DIR_DEFAULT.
+
 2003-10-16  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
 
 	* m4/libtool.m4 (AC_DEPLIBS_CHECK_METHOD): For MinGW, reverted DLL
