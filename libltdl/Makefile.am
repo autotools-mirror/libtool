@@ -76,9 +76,8 @@ ltdldatafiles		= COPYING.LIB Makefile.am README configure.ac \
 ## To avoid spurious reconfiguration when the user installs these files
 ## with libtoolize, we have to preserve their timestamps carefully:
 install-data-local:
-	-rm -rf $(DESTDIR)$(ltdldatadir)
 	$(mkinstalldirs) $(DESTDIR)$(ltdldatadir)
-	$(AMTAR) cf - $(ltdldatafiles) \
+	( cd $(srcdir) && $(AMTAR) cf - $(ltdldatafiles); ) \
 	  | ( cd $(DESTDIR)$(ltdldatadir) && $(AMTAR) xf -; )
 
 ## Make sure these will be cleaned even when they're not built by default:
