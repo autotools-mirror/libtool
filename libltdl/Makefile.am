@@ -38,7 +38,7 @@ endif
 CLEANFILES = libltdl.la libltdlc.la
 
 libltdl_la_SOURCES = ltdl.c ltdl.h
-libltdl_la_LDFLAGS = -no-undefined -version-info 4:0:1
+libltdl_la_LDFLAGS = -no-undefined -version-info 5:0:2
 libltdl_la_LIBADD = $(LIBADD_DL)
 
 libltdlc_la_SOURCES = ltdl.c ltdl.h

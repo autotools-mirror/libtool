@@ -1,5 +1,11 @@
 2004-03-21  Scott James Remnant  <scott@netsplit.com>
 
+	* libltdl/Makefile.am (libltdl_la_LDFLAGS): Increment CURRENT
+	and AGE of libltdl, warranted by the addition of lt_dlhandle_find()
+	since 1.5.2.
+
+2004-03-21  Scott James Remnant  <scott@netsplit.com>
+
 	Further sweeping changes to the user interface to libtool from
 	`configure.ac' to allow users to better control the list of
 	supported languages.  Three LT_INIT options 'no-lang', 'all-lang'
