@@ -1,3 +1,8 @@
+2003-12-31  Alexandre Duret-Lutz  <adl@gnu.org>
+
+	* ltmain.sh: Quote $exec_cmd before it is eval'ed, so that
+	libtool --mode=execute echo '4 * 5' does not expand the `*'.
+
 2003-11-28  Peter O'Gorman  <peter@pogma.com>
 
 	* m4/libtool.m4: Move things around so that "setopt NO_GLOB_SUBST"

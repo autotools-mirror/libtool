@@ -6357,7 +6357,7 @@ relink_command=\"$relink_command\""
 fi # test -z "$show_help"
 
 if test -n "$exec_cmd"; then
-  eval exec $exec_cmd
+  eval exec "$exec_cmd"
   exit 1
 fi
 
