@@ -1,3 +1,10 @@
+2001-06-25  Gary V. Vaughan  <gary@gnu.org>
+
+	* libtool.m4 (IFS): When IFS is changed to split a string for
+	examination in a loop, restore it inside the loop as well as
+	outside incase IFS is needed by commands in that loop.
+	Reported by Pavel Roskin <proski@gnu.org>
+	
 2001-06-25  Albert Chin-A-Young  <china@thewrittenword.com>
 
 	* libtool.m4: Prefer shl_load to dlopen on HP-UX because dlopen

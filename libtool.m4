@@ -298,8 +298,9 @@ else
   #
   # So, first we look for a working echo in the user's PATH.
 
-  IFS="${IFS= 	}"; save_ifs="$IFS"; IFS="${IFS}${PATH_SEPARATOR}"
+  IFS="${IFS= 	}"; lt_save_ifs="$IFS"; IFS="${IFS}${PATH_SEPARATOR}"
   for dir in $PATH /usr/ucb; do
+    IFS="$lt_save_ifs"
     if (test -f $dir/echo || test -f $dir/echo$ac_exeext) &&
        test "X`($dir/echo '\t') 2>/dev/null`" = 'X\t' &&
        echo_testing_string=`($dir/echo "$echo_test_string") 2>/dev/null` &&
@@ -308,7 +309,7 @@ else
       break
     fi
   done
-  IFS="$save_ifs"
+  IFS="$lt_save_ifs"
 
   if test "X$echo" = Xecho; then
     # We didn't find a better echo, so look for alternatives.
@@ -1342,6 +1343,7 @@ if test -f "$ltmain" && test -n "$tagnames"; then
 
   IFS="${IFS= 	}"; lt_save_ifs="$IFS"; IFS="${IFS}${PATH_SEPARATOR-:},"
   for tagname in $tagnames; do
+    IFS="$lt_save_ifs"
     # Check whether tagname contains only valid characters
     [case `$echo "X$tagname" | $Xsed -e 's/[-_ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890,/]//g'` in]
     "") ;;
@@ -1376,6 +1378,7 @@ if test -f "$ltmain" && test -n "$tagnames"; then
       available_tags="$available_tags $tagname"
     fi
   done
+  IFS="$lt_save_ifs"
 
   # Now substitute the updated list of available tags.
   if eval "sed -e 's/^available_tags=.*\$/available_tags=\"$available_tags\"/' \"$ofile\" > \"${ofile}T\""; then
@@ -1439,6 +1442,7 @@ no) enable_shared=no ;;
   # Look at the argument we got.  We use all the common list separators.
   IFS="${IFS= 	}"; lt_save_ifs="$IFS"; IFS="${IFS}${PATH_SEPARATOR-:},"
   for pkg in $enableval; do
+    IFS="$lt_save_ifs"
     if test "X$pkg" = "X$p"; then
       enable_shared=yes
     fi
@@ -1479,6 +1483,7 @@ no) enable_static=no ;;
   # Look at the argument we got.  We use all the common list separators.
   IFS="${IFS= 	}"; lt_save_ifs="$IFS"; IFS="${IFS}${PATH_SEPARATOR-:},"
   for pkg in $enableval; do
+    IFS="$lt_save_ifs"
     if test "X$pkg" = "X$p"; then
       enable_static=yes
     fi
@@ -1519,6 +1524,7 @@ no) enable_fast_install=no ;;
   # Look at the argument we got.  We use all the common list separators.
   IFS="${IFS= 	}"; lt_save_ifs="$IFS"; IFS="${IFS}${PATH_SEPARATOR-:},"
   for pkg in $enableval; do
+    IFS="$lt_save_ifs"
     if test "X$pkg" = "X$p"; then
       enable_fast_install=yes
     fi
@@ -1568,6 +1574,7 @@ dnl POSIX.2 word splitting is done only on the output of word expansions,
 dnl not every word.  This closes a longstanding sh security hole.
   ac_dummy="ifelse([$2], , $PATH, [$2])"
   for ac_dir in $ac_dummy; do
+    IFS="$lt_save_ifs"
     test -z "$ac_dir" && ac_dir=.
     if test -f $ac_dir/$1; then
       lt_cv_path_MAGIC_CMD="$ac_dir/$1"
@@ -1679,6 +1686,7 @@ AC_CACHE_VAL(lt_cv_path_LD,
 [if test -z "$LD"; then
   IFS="${IFS= 	}"; lt_save_ifs="$IFS"; IFS="${IFS}${PATH_SEPARATOR-:}"
   for ac_dir in $PATH; do
+    IFS="$lt_save_ifs"
     test -z "$ac_dir" && ac_dir=.
     if test -f "$ac_dir/$ac_prog" || test -f "$ac_dir/$ac_prog$ac_exeext"; then
       lt_cv_path_LD="$ac_dir/$ac_prog"
@@ -1925,6 +1933,7 @@ if test -n "$NM"; then
 else
   IFS="${IFS= 	}"; lt_save_ifs="$IFS"; IFS="${IFS}${PATH_SEPARATOR-:}"
   for ac_dir in $PATH /usr/ccs/bin /usr/ucb /bin; do
+    IFS="$lt_save_ifs"
     test -z "$ac_dir" && ac_dir=.
     tmp_nm=$ac_dir/${ac_tool_prefix}nm
     if test -f $tmp_nm || test -f $tmp_nm$ac_exeext ; then
