@@ -1,3 +1,12 @@
+2003-11-06  Gary V. Vaughan  <gary@gnu.org>
+
+	* libltdl/ltdl.h (__WINDOWS__): Define this if _WIN32 or WIN32 are
+	defined, unless __CYGWIN__ or __CYGWIN32__ are defined.
+	(LT_SCOPE): Now set without reference to __CYGWIN__ definition,
+	since __WINDOWS__ now implies !__CYGWIN__ after canonicalisation.
+	(LT_PARAMS, lt_ptr): Use canonicalised __WINDOWS__ to determine
+	which values to set these macros to.
+
 2003-11-05  Gary V. Vaughan  <gary@gnu.org>
 
 	* README-alpha: Mention autotools-announce@gnu.org, and update release
@@ -15,7 +24,7 @@
 
 2003-10-30  Peter O'Gorman  <peter@pogma.com>
 
-	* m4/libtool.m4 (Darwin): Fix stupidities for darwin tags support. 
+	* m4/libtool.m4 (Darwin): Fix stupidities for darwin tags support.
 	Makes it work again if AC_LIBTOOL_TAGS is specified in configure.ac.
 	Bug reported by Joe Orton and Christian Schaffner.
 

@@ -51,10 +51,61 @@ Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 LT_BEGIN_C_DECLS
 
 
+/* Canonicalise Windows and Cygwin recognition macros.
+   To match the values set by recent Cygwin compilers, make sure that if
+   __CYGWIN__ is defined (after canonicalisation), __WINDOWS__ is NOT!  */
+#if defined(__CYGWIN32__) && !defined(__CYGWIN__)
+# define __CYGWIN__ __CYGWIN32__
+#endif
+#if defined(__CYGWIN__)
+# if defined(__WINDOWS__)
+#   undef __WINDOWS__
+# endif
+#elif defined(_WIN32)
+# define __WINDOWS__ _WIN32
+#elif defined(WIN32)
+# define __WINDOWS__ WIN32
+#endif
+#if defined(__CYGWIN__) && defined(__WINDOWS__)
+# undef __WINDOWS__
+#endif
+
+
+#ifdef __WINDOWS__
+/* LT_DIRSEP_CHAR is accepted *in addition* to '/' as a directory
+   separator when it is set. */
+# define LT_DIRSEP_CHAR		'\\'
+# define LT_PATHSEP_CHAR	';'
+#else
+# define LT_PATHSEP_CHAR	':'
+#endif
+
+/* DLL building support on win32 hosts;  mostly to workaround their
+   ridiculous implementation of data symbol exporting. */
+#ifndef LT_SCOPE
+#  ifdef __WINDOWS__
+#    ifdef DLL_EXPORT		/* defined by libtool (if required) */
+#      define LT_SCOPE	__declspec(dllexport)
+#    endif
+#    ifdef LIBLTDL_DLL_IMPORT	/* define if linking with this dll */
+#      define LT_SCOPE	extern __declspec(dllimport)
+#    endif
+#  endif
+#  ifndef LT_SCOPE		/* static linking or !__WINDOWS__ */
+#    define LT_SCOPE	extern
+#  endif
+#endif
+
+
+#if defined(_MSC_VER) /* Visual Studio */
+#  define R_OK 4
+#endif
+
+
 /* LT_PARAMS is a macro used to wrap function prototypes, so that compilers
    that don't understand ANSI C prototypes still work, and ANSI C
    compilers can issue warnings about type mismatches.  */
-#if defined (__STDC__) || defined (_AIX) || (defined (__mips) && defined (_SYSTYPE_SVR4)) || defined(WIN32) || defined(__cplusplus)
+#if defined (__STDC__) || defined (_AIX) || (defined (__mips) && defined (_SYSTYPE_SVR4)) || defined(__WINDOWS__) || defined(__cplusplus)
 # define LT_PARAMS(protos)	protos
 # define lt_ptr		void*
 #else
@@ -87,63 +138,6 @@ LT_BEGIN_C_DECLS
 
 /* LT_STRLEN can be used safely on NULL pointers.  */
 #define LT_STRLEN(s)	(((s) && (s)[0]) ? strlen (s) : 0)
-
-
-
-/* --- WINDOWS SUPPORT --- */
-
-
-/* Canonicalise Windows and Cygwin recognition macros.  */
-#ifdef __CYGWIN32__
-#  ifndef __CYGWIN__
-#    define __CYGWIN__ __CYGWIN32__
-#  endif
-#endif
-#if defined(_WIN32) || defined(WIN32)
-#  ifndef __WINDOWS__
-#    ifdef _WIN32
-#      define __WINDOWS__ _WIN32
-#    else
-#      ifdef WIN32
-#        define __WINDOWS__ WIN32
-#      endif
-#    endif
-#  endif
-#endif
-
-
-#ifdef __WINDOWS__
-#  ifndef __CYGWIN__
-/* LT_DIRSEP_CHAR is accepted *in addition* to '/' as a directory
-   separator when it is set. */
-#    define LT_DIRSEP_CHAR	'\\'
-#    define LT_PATHSEP_CHAR	';'
-#  endif
-#endif
-#ifndef LT_PATHSEP_CHAR
-#  define LT_PATHSEP_CHAR	':'
-#endif
-
-/* DLL building support on win32 hosts;  mostly to workaround their
-   ridiculous implementation of data symbol exporting. */
-#ifndef LT_SCOPE
-#  ifdef __WINDOWS__
-#    ifdef DLL_EXPORT		/* defined by libtool (if required) */
-#      define LT_SCOPE	__declspec(dllexport)
-#    endif
-#    ifdef LIBLTDL_DLL_IMPORT	/* define if linking with this dll */
-#      define LT_SCOPE	extern __declspec(dllimport)
-#    endif
-#  endif
-#  ifndef LT_SCOPE		/* static linking or !__WINDOWS__ */
-#    define LT_SCOPE	extern
-#  endif
-#endif
-
-
-#if defined(_MSC_VER) /* Visual Studio */
-#  define R_OK 4
-#endif
 
 
 
