@@ -1,3 +1,11 @@
+2001-10-28  Gary V. Vaughan  <gary@gnu.org>
+
+	From Tom Bates  <Tom.Bates@compaq.com>:
+	* libtool.m4 [mips-compaq-nonstopux]: New port.
+	* ltmain.in [mips-compaq-nonstopux]: Support
+	$version_type == nonstopux.
+	* NEWS: Updated.
+
 2001-10-28  Albert Chin-A-Young <china@thewrittenword.com>
 
 	* libltdl/ltdl.c (foreach_dirinpath): change some types to size_t
