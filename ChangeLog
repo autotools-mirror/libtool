@@ -1,5 +1,9 @@
 1999-06-08  Gary V. Vaughan  <gary@oranda.demon.co.uk>
 
+	* ltconfig.in (RANLIB): Accept, in order of decreasing preference:
+	the cached value; an environment setting; the first file called
+	``ranlib'' in the user's path.
+
 	* ltmain.in (exeext): Use $exeext when working out the names of
 	programs (but not the wrapper script itself due to a stupidity in
 	win32 which hardwires the .exe extension to the binary loader!).
