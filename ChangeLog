@@ -1,3 +1,13 @@
+1999-03-14  Thomas Tanner  <tanner@gmx.de>
+
+	* TODO: libltdl is now documented
+	* doc/libltdl.texi (linking with installed libtool libraries):
+	  fixed typo
+	* doc/libltdl.texi (libltdl): added documentation for building
+	  libtool modules and examples how to embed libltdl
+	* ltmain.in: don't ignore user-specified run-paths (fixed it
+	  at the right place)
+
 1999-03-14  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* ltmain.in (deplibs_check_method=none): discard -L and -R

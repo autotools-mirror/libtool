@@ -20,8 +20,6 @@ so that the size of lt_preloaded_symbols can be reduced.
 
 * Documentation:
 
-- libltdl documentation needs to be completed.
-
 - AC_PROG_LIBTOOL, AC_ENABLE/DISABLE_SHARED/STATIC/FAST_INSTALL,
   AC_LIBTOOL_DLOPEN, AC_LIBLTDL_CONVENIENCE/INSTALLABLE are not documented
 

@@ -710,7 +710,7 @@ Thing (TM) for you:
 @example
 burger$ @kbd{libtool gcc -g -O -o test test.o /usr/local/lib/libhello.la}
 gcc -g -O -o @value{objdir}/test test.o -Wl,--rpath
--Wl,/usr/local/lib /usr/local/lib/libhello.la -lm
+-Wl,/usr/local/lib /usr/local/lib/libhello.a -lm
 creating test
 burger$
 @end example
@@ -2768,11 +2768,68 @@ any libltdl function other than @code{lt_dlpreopen_default} or the macro
 @node Modules for libltdl
 @section Creating modules that can be @code{dlopen}ed
 
-You just have to link the module with libtool's @samp{-module} switch,
-and link any program that is intended to dlopen the module with
-@samp{-dlopen modname.la}.  If the module depends on any other
-libraries, make sure you specify them either when you link the module or
-when you link programs that dlopen it.
+Libtool modules are like normal libtool libraries with a few exceptions:
+
+You have to link the module with libtool's @samp{-module} switch,
+and you should link any program that is intended to dlopen the module with
+@samp{-dlopen modulename.la} so that libtool can dlpreopen the module
+on platforms which don't support dlopening.  If the module depends on any
+other libraries, make sure you specify them either when you link the module
+or when you link programs that dlopen it.
+If you want to disable @pxref{Versioning} for a specific module
+you should link it with the @samp{-avoid-version} switch.
+Note that libtool modules don't need to have a "lib" prefix.
+However, automake 1.4 or higher is required to build such modules.
+
+Usually a set of modules provide the same interface, i.e, exports the same
+symbols, so that a program can dlopen them without having to know more 
+about their internals.
+In order to avoid symbol conflicts all exported symbols must be prefixed
+with "modulename_LTX_" (@samp{modulename} is the name of the module).
+Internal symbols must be named in such a way that they won't conflict
+with other modules, for example, by prefixing them with "_modulename_".
+Although some platforms support having the same symbols defined more than
+once it is generally not portable and it makes it impossible to dlpreopen 
+such modules.  libltdl will automatically cut the prefix off to get 
+the real name of the symbol.  Additionally, it supports modules which
+don't use a prefix so that you can also dlopen non-libtool modules.
+
+@file{foo1.c} gives an example of a portable libtool module.
+Exported symbols are prefixed with "foo1_LTX_", internal symbols 
+with "_foo1_". Aliases are defined at the beginning so that the code 
+is more readable. 
+
+@example
+/* aliases for the exported symbols */
+#define foo	foo1_LTX_foo
+#define bar	foo1_LTX_bar
+
+/* a global variable definition */
+int bar = 1;
+
+/* a private function */
+int _foo1_helper() @{
+  return bar;
+@}
+
+/* an exported function */
+int foo() @{
+  return _foo_helper();
+@}
+@end example
+
+@noindent
+The @file{Makefile.am} contains the necessary rules to build the 
+module @file{foo1.la}:
+
+@example
+...
+lib_LTLIBRARIES = foo1.la
+
+foo1_la_SOURCES = foo1.c
+foo1_la_LDFLAGS = -module
+...
+@end example
 
 @node Distributing libltdl
 @section How to distribute libltdl with your package
@@ -2786,12 +2843,17 @@ convenience library or an installable libtool library.
 One advantage of the convenience library is that it is not installed, so
 the fact that you use libltdl will not be apparent to the user, and it
 will not overwrite a pre-installed version of libltdl a user might have.
+On the other hand, if you want to upgrade libltdl for any reason 
+(e.g. a bugfix) you'll have to recompile your package instead of just 
+replacing an installed version of libltdl.
 However, if your programs or libraries are linked with other libraries
 that use such a pre-installed version of libltdl, you may get linker
 errors or run-time crashes.  Another problem is that you cannot link the
 convenience library into more than one libtool library, then link a
 single program with these libraries, because you may get duplicate
-symbols.  In order to enable this flavor of libltdl, you should add the
+symbols. In general you can safely use the convenience library in programs
+which don't depend on other libraries that might use libltdl too.
+In order to enable this flavor of libltdl, you should add the
 line @samp{AC_LIBLTDL_CONVENIENCE} to your @file{configure.in},
 @emph{after} @samp{AM_PROG_LIBTOOL}.
 
@@ -2804,6 +2866,13 @@ however, that no version checking is performed.  The user may override
 the test and determine that the libltdl embedded must be installed,
 regardless of the existence of another version, using the configure
 switch @samp{--enable-ltdl-install}.
+
+In order to embed libltdl into your package, just add @samp{--ltdl} to
+the @code{libtoolize} command line. It will copy the libltdl sources
+to a subdirectory @samp{libltdl} in your package.
+Both macros accept an optional argument to specify the location
+of the @samp{libltdl} directory. By the default both macros assume that it
+is @samp{$@{top_builddir@}/libltdl}.
 
 Whatever macro you use, it is up to you to ensure that your
 @file{configure.in} will configure libltdl, using
@@ -2831,8 +2900,38 @@ Avoid using the @code{-all-static} switch when linking programs with
 libltdl; this will not work on all plaforms, because the dlopening
 functions may not be available for static linking.
 
-In order to embed libltdl into your package, just add @samp{--ltdl} to
-the @code{libtoolize} command line.
+The following example shows you how to embed the convenience libltdl
+in your package. In order to use the installable variant just replace
+AC_LIBLTDL_CONVENIENCE with AC_LIBLTDL_INSTALLABLE. We assume that
+libltdl was embedded using @samp{libtoolize --ltdl}.
+
+configure.in:
+@example
+...
+dnl Check for dlopen support
+AC_LIBTOOL_DLOPEN
+dnl Configure libtool
+AM_PROG_LIBTOOL
+dnl Enable building of the convenience library and set LIBLTDL accordingly
+AC_LIBLTDL_CONVENIENCE
+dnl Substitute LIBLTDL in the Makefiles
+AC_SUBST(LIBLTDL)
+dnl Configure libltdl
+AC_CONFIG_SUBDIRS(libltdl)
+...
+@end example
+
+Makefile.am:
+@example
+...
+SUBDIRS = libltdl
+
+myprog_LDFLAGS = -export-dynamic
+# The quotes around -dlopen below fool automake into accepting it
+myprog_LDADD = $(LIBLTDL) "-dlopen" self "-dlopen" libfoo.la
+myprog_DEPENDENCIES = $(LIBLTDL) libfoo.la
+...
+@end example
 
 @node Other languages
 @chapter Using libtool with other languages
