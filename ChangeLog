@@ -1,3 +1,7 @@
+2004-04-08  Fredrik Estreen  <estreen@algonet.se>
+
+	* m4/ltdl.m4: Rename shrext to shrext_cmds here too.
+	
 2004-04-06  Gary V. Vaughan  <gary@gnu.org>
 
 	There was no clean separation of abstraction layers in libltdl.
