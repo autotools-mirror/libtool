@@ -1,5 +1,8 @@
 1999-04-25  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* ltconfig.in (irix*, soname_spec, library_names_spec): Missing
+	dots before $versuffix and $major.
+
 	* ltconfig.in (solaris*, whole_archive_flag_spec): Use -z
 	allextract/defaultextract from Solaris 2.6 on.
 	Reported by Brian Ford <ford@vss.fsi.com>

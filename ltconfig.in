@@ -1768,8 +1768,8 @@ irix5* | irix6*)
   version_type=irix
   need_lib_prefix=no
   need_version=no
-  soname_spec='${libname}${release}.so$major'
-  library_names_spec='${libname}${release}.so$versuffix ${libname}${release}.so$major ${libname}${release}.so $libname.so'
+  soname_spec='${libname}${release}.so.$major'
+  library_names_spec='${libname}${release}.so.$versuffix ${libname}${release}.so.$major ${libname}${release}.so $libname.so'
   case "$host_os" in
   irix5*)
     libsuff= shlibsuff=
