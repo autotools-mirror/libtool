@@ -19,32 +19,22 @@
 2001-04-24  Thomas Tanner  <tanner@ffii.org>
 
 	* TODO: describe problems with libltdl
-
 	* ltmain.in (ILD): tidy up, add comments, remove dead code,
 	  merge duplicate code
-  
 	* ltmain.in (ILD): don't touch newdependency_libs after scan or
 	  dlopen pass
-          
 	* ltmain.in (ILD): don't dlpreopen dependency_libs of a dlopened
 	  module (remove absolutely wrong quick hack)
-  
 	* ltmain.in (ILD): remove wrong comments about duplicate removal
-
 	* ltmain.in (ILD): build a static-only module if it has
 	  static libraries in its dependencies (so that libltdl can
 	  safely load dependency_libs)
-
 	* ltmain.in (argument parsing): prefix comparsions of -l args with X,
 	  replace -lc with `-framework System' _after_ the ILD passes
-  
 	* ltmain.in (argument parsing): support dl[pre]open
 	  for both .o and .lo files
-
 	* ltmain.in (deplibs_check): use portable test syntax
-
 	* ltmain.in (help): document -prefer-[non-]pic flags 
-
 	* ltmain.in: improve readablity by adding some comments,
 	  rename uninst_* to notinst_* (more adequate name)
 
