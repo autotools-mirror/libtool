@@ -1,3 +1,9 @@
+2005-03-15  Gary V. Vaughan  <gary@gnu.org>
+
+	* bootstrap: Need to generate tests/package.m4 from Makefile.am
+	before generating tests/testsuite from tests/Makefile.am, or
+	else bootstrap of a fresh checkout fails.
+
 2005-03-14  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* m4/libtool.m4 (_LT_COPYING): Update Copyright year.

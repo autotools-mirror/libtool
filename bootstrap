@@ -1,7 +1,7 @@
 #! /bin/sh
 # bootstrap -- Helps bootstrapping libtool, when checked out from CVS.
 #
-# Copyright (C) 2003, 2004 Free Software Foundation
+# Copyright (C) 2003, 2004, 2005 Free Software Foundation, Inc,
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -70,12 +70,15 @@ done
 rm -f ./config/ltmain.sh ./m4/ltversion.m4
 
 make ./config/ltmain.sh ./m4/ltversion.m4 ./libtoolize.in ./tests/defs.in \
-    top_srcdir=. PACKAGE="$2" VERSION="$3" M4SH="autom4te --language=m4sh"
+    srcdir=. top_srcdir=. PACKAGE="$2" VERSION="$3" \
+    M4SH="autom4te --language=m4sh"
 
 {
+  make update-package-m4 srcdir=. top_srcdir=. \
+    PACKAGE="$2" VERSION="$3" PACKAGE_BUGREPORT="bug-$2@gnu.org"
   cd tests
   make ./testsuite AUTOTEST="autom4te --language=autotest" \
-    top_srcdir=.. PACKAGE="$2" VERSION="$3" PACKAGE_BUGREPORT="bug-$2@gnu.org"
+    srcdir=. top_srcdir=.. top_builddir=..  PACKAGE="$2" VERSION="$3"
   cd ..
 }
 
