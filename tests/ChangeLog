@@ -1,3 +1,8 @@
+Mon Feb 16 13:10:17 1998  Gordon Matzigkeit  <gord@profitpress.com>
+
+	* defs: Correctly identify absolute directory names on MS-DOS.
+  	Suggested by Bob Friesenhahn.
+
 Sat Feb  7 10:52:55 1998  Gordon Matzigkeit  <gord@profitpress.com>
 
 	* suffix.test (extensions): Added GNAT (GNU Ada Translator)

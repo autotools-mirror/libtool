@@ -1,3 +1,16 @@
+Mon Feb 16 12:44:26 1998  Gordon Matzigkeit  <gord@profitpress.com>
+
+	* libtool.m4, ltmain.in, ltconfig.in: Correctly identify absolute
+ 	directory names on MS-DOS.  Suggested by Bob Friesenhahn.
+
+	* ltconfig.in, ltmain.in, libtool.m4: Change a bunch of `sed N!d'
+ 	commands to `sed Nq', for efficiency.
+
+	* ltmain.in: Only egrep the first few lines of files in order to
+ 	determine if they were libtool-generated.  This prevents egrep(1)
+ 	from taking forever to look at a 10MB binary on Solaris.  From
+ 	Stephan Kulow.
+
 Wed Feb 11 22:20:33 1998  Gordon Matzigkeit  <gord@profitpress.com>
 
 	* ltconfig.in (no_undefined_flag): Add a flag to declare under

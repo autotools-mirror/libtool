@@ -617,7 +617,7 @@ if test -z "$LD"; then
     ac_prog=`($CC -print-prog-name=ld) 2>&5`
     case "$ac_prog" in
     # Accept absolute paths.
-    /*)
+    /* | [A-Za-z]:\\*)
       test -z "$LD" && LD="$ac_prog"
       ;;
     "")
@@ -882,18 +882,18 @@ echo "$ac_t$ld_shlibs" 1>&6
 if test -z "$NM"; then
   echo $ac_n "checking for BSD-compatible nm... $ac_c" 1>&6
   case "$NM" in
-  /*) ;; # Let the user override the test with a path.
+  /* | [A-Za-z]:\\*) ;; # Let the user override the test with a path.
   *)
     IFS="${IFS= 	}"; ac_save_ifs="$IFS"; IFS="${IFS}:"
     for ac_dir in /usr/ucb /usr/ccs/bin $PATH /bin; do
       test -z "$ac_dir" && dir=.
       if test -f $ac_dir/nm; then
         # Check to see if the nm accepts a BSD-compat flag.
-        # Adding the `sed 1!d' prevents false positives on HP-UX, which says:
+        # Adding the `sed 1q' prevents false positives on HP-UX, which says:
         #   nm: unknown option "B" ignored
-        if ($ac_dir/nm -B /dev/null 2>&1 | sed '1!d'; exit 0) | egrep /dev/null >/dev/null; then
+        if ($ac_dir/nm -B /dev/null 2>&1 | sed '1q'; exit 0) | egrep /dev/null >/dev/null; then
           NM="$ac_dir/nm -B"
-        elif ($ac_dir/nm -p /dev/null 2>&1 | sed '1!d'; exit 0) | egrep /dev/null >/dev/null; then
+        elif ($ac_dir/nm -p /dev/null 2>&1 | sed '1q'; exit 0) | egrep /dev/null >/dev/null; then
           NM="$ac_dir/nm -p"
 	else
           NM="$ac_dir/nm"
@@ -1464,7 +1464,7 @@ esac
 
 # Detect if we are using a relative or absolute path to ltmain.sh.
 case "$ltmain" in
-/*) cat <<EOF >> $ofile
+/* | [A-Za-z]:\\*) cat <<EOF >> $ofile
 # Execute the libtool backend.
 . $ltmain
 EOF
