@@ -23,8 +23,7 @@ BUILD_SUBDIRS = . libltdl doc tests
 SUBDIRS = $(BUILD_SUBDIRS)
 DIST_SUBDIRS = $(BUILD_SUBDIRS)
 
-EXTRA_DIST = bootstrap libtoolize.in ltmain.in \
-	config/mailnotify config/mkstamp stamp-vcl \
+EXTRA_DIST = bootstrap libtoolize.in ltmain.in config/mkstamp stamp-vcl \
 	ChangeLog.1996 ChangeLog.1997 ChangeLog.1998 ChangeLog.1999 \
 	ChangeLog.2000 ChangeLog.2001 ChangeLog.2002 ChangeLog.2003
 CLEANFILES = libtool libtoolize ltmain.shT
