@@ -1,3 +1,7 @@
+2004-07-18  Greg Eisenhauer  <eisen@cc.gatech.edu>
+
+	* libltdl/loaders/Makefile.am: Use AM_MAKEFLAGS not MAKEFLAGS.
+
 2004-07-18  Peter O'Gorman  <peter@pogma.com>
 
 	* libltdl/Makefile.am: Ensure that lt__dirent.h is part of the dist,
