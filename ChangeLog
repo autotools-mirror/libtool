@@ -1,5 +1,7 @@
 2005-03-16  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* Makefile.am: tests/defs.in depends on config/general.m4sh.
+
 	* config/general.m4sh: unconditionally set IFS, and set it
 	to the one true right sequence: space, tab, newline.
 	* m4/libtool.m4: remove IFS setting and as_* namespace infringement.
