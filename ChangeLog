@@ -1,3 +1,9 @@
+2004-10-16  Gary V. Vaughan  <gary@gnu.org>
+
+	* config/ltmain.m4sh (func_mode_finish): solaris-2.6 also has
+	crle(1).
+	Reported by Albert Chin-A-Young <china@thewrittenword.com>
+
 2004-10-15  Gary V. Vaughan  <gary@gnu.org>
 
 	Update to the latest mailnotify script from
@@ -30,7 +36,7 @@
 
 2004-10-13  Charles Wilson  <spam.protected>
 
-	* config/ltmain.m4sh: add foo/bin for every foo/lib 
+	* config/ltmain.m4sh: add foo/bin for every foo/lib
 	in dllsearchpath when creating wrapper script.  Fixes
 	depdemo-relink test failure.
 
