@@ -41,19 +41,66 @@ dnl AC_CONFIG_FILES([tests/atlocal])
 ## Display a configure time version banner. ##
 ## ---------------------------------------- ##
 
+# Calculating the previous version is somewhat involved, so do it once
+# here, and SUBST the result for the maintainer release rules.  The
+# versioning scheme we use is described here:
+#	http://www.gnu.org/software/libtool/contribute.html
+
+# First we break the version number up into its constituent parts.
+LT_MAJOR=`echo "AC_PACKAGE_VERSION" | sed ['s,\..*$,,g']`
+LT_MINOR=`echo "AC_PACKAGE_VERSION" | sed ['s,^[0-9]*\.\([0-9]*\).*$,\1,']`
+LT_MICRO=`echo "AC_PACKAGE_VERSION" | sed ['s,^[0-9]*\.[0-9]*\(\.[0-9]*\).*$,\1,']`
+LT_ALPHA=`echo "AC_PACKAGE_VERSION" | sed ['s,^[0-9.]*,,']`
+
+test "$LT_MINOR" = "AC_PACKAGE_VERSION" && LT_MINOR=0
+test "$LT_MICRO" = "AC_PACKAGE_VERSION" && LT_MICRO=""
+
+# Then we try to work out what the release before this one would have been
+# numbered.  The only time we come unstuck is when this is the first release
+# from a stable branch (LT_MICRO=LT_ALPHA=""), so OLDVERSION is the last
+# release from the old stable branch, and we don't know what version that
+# was, so leave it unset so that the Makefile can complain.
+case $LT_ALPHA in
+  [[ab]])
+    case $LT_MICRO in
+      [.[01]])
+	LASTRELEASE="$LT_MAJOR.$LT_MINOR" ;;
+      *)
+	LASTRELEASE="$LT_MAJOR.$LT_MINOR$LT_MICRO" ;;
+    esac
+    ;;
+  [[cegikmoqsuwy]])
+    LASTRELEASE=`echo "AC_PACKAGE_VERSION" | tr 'c-y' 'b-w'` ;;
+  [[dfhjlnprtvxz]])
+    LASTRELEASE=`echo "AC_PACKAGE_VERSION" | tr 'd-z' 'b-x'` ;;
+  *) # No LT_ALPHA component
+    case $LT_MICRO in
+      .0)
+	LASTRELEASE="" ;;
+      .1)
+        LASTRELEASE="$LT_MAJOR.$LT_MINOR" ;;
+      .*)
+	lt_micro_value=`echo $LT_MICRO | sed 's,^\.,,'`
+	LASTRELEASE="$LT_MAJOR.$LT_MINOR.`expr $lt_micro_value - 1`" ;;
+      *)
+	LASTRELEASE="" ;;
+    esac
+    ;;
+esac
+AC_SUBST([LASTRELEASE])
+
 # This is a sanity check so we can see which version is used in bug reports.
 # It is assumed that we only want to see the date extension for cvs libtool
 # versions (i.e. "odd" letters) and not actual alpha releases.
 TIMESTAMP=
-case AC_PACKAGE_VERSION in
-  [*[acegikmoqsuwy])]
+case $LT_ALPHA in
+  [[acegikmoqsuwy]])
     TIMESTAMP=`${CONFIG_SHELL} ${ac_aux_dir}/mkstamp < ${srcdir}/ChangeLog`
     AS_BOX([Configuring AC_PACKAGE_TARNAME AC_PACKAGE_VERSION$TIMESTAMP])
     echo
     ;;
 esac
 AC_SUBST([TIMESTAMP])
-
 
 
 ## ------------------------ ##

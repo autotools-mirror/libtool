@@ -1,3 +1,22 @@
+2003-11-22  Gary V. Vaughan  <gary@gnu.org>
+
+	* configure.ac (LASTRELEASE): Calculate it as best as we can from
+	AC_PACKAGE_VERSION.
+	* Makefile.am (distdir): Remove dependency on timestamps so that
+	it is possible to roll a dist without contacting the cvs server.
+	Use `make cvs-release' for that.
+	(cvs-news): Extracted from cvs-dist.
+	(cvs-dist): Depend on cvs-news.
+	(CHECK_LASTRELEASE): Check LASTRELEASE has been set.
+	(prev-tarball): New rule.  Use LASTRELEASE to make sure the
+	previous release tarball is present.
+	(cvs-diff): Use CHECK_LASTRELEASE.
+	(xdelta): Ditto.
+	(cvs-release): Depend on prev-tarball, timestamps, cvs-news and
+	fetch. Provided you set LASTRELEASE appropriately, making a full
+	cvs release is just a matter of `make cvs-release', and submitting
+	the files to ftp-upload.
+
 2003-11-19  Gary V. Vaughan  <gary@gnu.org>
 
 	* m4/libtool.m4 (_LT_PROG_LTMAIN): Ensure config.status has a
