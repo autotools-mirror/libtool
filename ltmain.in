@@ -259,7 +259,7 @@ func_extract_an_archive () {
       $show "cp $f_ex_an_ar_oldlib $f_ex_an_ar_dir/$f_ex_an_ar_lib"
       $run eval "cp \$f_ex_an_ar_oldlib \$f_ex_an_ar_dir/\$f_ex_an_ar_lib"
       $AR t "$f_ex_an_ar_oldlib" | sort | uniq -c \
-	| $EGREP -v '^[ 	]*1[ 	]' | while read -r count name
+	| $EGREP -v '^[ 	]*1[ 	]' | while read count name
       do
 	i=1
 	while test "$i" -le "$count"
