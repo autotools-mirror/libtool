@@ -1,0 +1,26 @@
+Mon Nov 18 20:10:42 1996  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltconfig.in: Don't run the RANLIB test unless RANLIB wasn't
+	set.
+	Be verbose about the environment variables we were configured
+	with. 
+
+	* ltmain.sh.in (objdir): change to .libs.
+
+Sat Nov 16 12:02:03 1996  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltmain.sh.in (install): Just plunge ahead with the
+	installation... don't try to enforce dependencies.
+
+Fri Nov 15 17:57:36 1996  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltmain.sh.in: Fix up $libdir to be $dest in install mode.
+
+Sun Nov 10 13:08:04 1996  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltmain.sh: Finished rewrite of compile, link, and install
+	modes.
+
+	* New ChangeLog file for libtool-0.7, since I've totally rewritten
+	libtool.
+
