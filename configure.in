@@ -24,6 +24,7 @@ changequote([,])
     ;;
 esac    
 
+AC_SUBST(pkgdatadir)
 aclocaldir='${datadir}/aclocal'
 AC_SUBST(aclocaldir)
 
