@@ -1,3 +1,15 @@
+2000-08-27  Gary V. Vaughan  <gvv@techie.com>
+
+	* ltconfig.in (with_gcc):  Make the value of this option
+	available to the generated libtool script.
+	* ltmain.in (compile_command, finalize_command):  The native C
+	and C++ compilers on IRIX require the -LANG:std in order to to
+	compile correctly.   The same options should _not_ be passed
+	through to gcc on IRIX, or at all on other architectures for
+	backwards compatibility (among others).
+	Reported by Bob Freisenhahn <bfreisen@simple.dallas.tx.us>
+	Reported by Albert Chin-A-Young <china@thewrittenword.com> 
+
 2000-08-26  Albert Chin-A-Young  <china@thewrittenword.com>
 	
 	* ltcf-cxx.sh (old_archive_cmds):  With IRIX C++ 7.3.1.1m, CC -ar
