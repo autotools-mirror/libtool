@@ -1,5 +1,8 @@
 1999-03-09  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
 
+	* ltmain.in: fixed a bug that causes archive link to fail when
+	allow_undefined=yes (currently the default).
+	
 	* doc/libtool.texi: added missing "@end defvar" statements.
 
 	* NEWS: merged from trunk and updated.

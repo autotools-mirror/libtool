@@ -2529,13 +2529,14 @@ EOF
 	  continue
 	fi
 
-	if test "X$build_old_libs" != Xno && test -n "$old_archive_from_expsyms_cmds"; then
-	  # Get the link name of the library
-	  eval library_name=\"$library_names_spec\"
+	if test "$build_libtool_libs" = yes &&
+	   test -n "$library_names" &&
+	   test -n "$old_archive_from_expsyms_cmds"; then
+
+	  # figure out the soname
 	  set dummy $library_names
 	  realname="$2"
 	  shift; shift
-
 	  if test -n "$soname_spec"; then
 	    eval soname=\"$soname_spec\"
 	  else
