@@ -1,3 +1,7 @@
+2001-04-08  Nick Hudson  <skrll@netbsd.org>
+
+	* ltmain.in: Improve check for valid -version-info parameter.
+
 2001-04-08  Gary V. Vaughan  <gvv@techie.com>
 
 	From Nick Hudson  <skrll@netbsd.org>
