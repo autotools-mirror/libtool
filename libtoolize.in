@@ -574,7 +574,7 @@ func_config_update ()
     func_copy_all_files "$pkgdatadir" "$auxdir" 'config.guess|config.sub|ltmain.sh'
     func_config_update "$pkgdatadir/config.guess" "$auxdir/config.guess"
     test -f "$pkgdatadir/config.sub" \
-      && func_config_update "$pkgdatadir/config.guess" "$auxdir/config.sub"
+      && func_config_update "$pkgdatadir/config.sub" "$auxdir/config.sub"
   fi
   func_ltmain_update "$pkgdatadir/ltmain.sh" "$auxdir/ltmain.sh"
 

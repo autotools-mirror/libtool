@@ -1,5 +1,8 @@
 2003-10-15  Gary V. Vaughan  <gary@gnu.org>
 
+	* libtoolize.in: Typo when copying config.sub.
+	From Patrick Welche <prlw1@newn.cam.ac.uk>
+
 	* demo/Makefile.am (libhell0_a_SOURCES): Do not name sources
 	already built with libtool...
 	(libhell0_a_LIBADD): ...instead name the objects directly.  This
