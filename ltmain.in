@@ -620,6 +620,10 @@ compiler."
 	# Now arrange that obj and lo_libobj become the same file
 	$show "(cd $xdir && $LN_S $baseobj $libobj)"
 	if $run eval '(cd $xdir && $LN_S $baseobj $libobj)'; then
+	  # Unlock the critical section if it was locked
+	  if test "$need_locks" != no; then
+	    $run $rm "$lockfile"
+	  fi
 	  exit 0
 	else
 	  error=$?
