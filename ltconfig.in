@@ -624,7 +624,7 @@ else
     special_shlib_compile_flags='-belf'
     ;;
 
-  solaris2*)
+  solaris*)
     pic_flag='-KPIC'
     link_static_flag='-Bstatic'
     wl='-Wl,'
@@ -1179,8 +1179,13 @@ __dll_entry (HINSTANCE hinst, DWORD reason, LPVOID reserved)
     ;;
 
   osf3* | osf4*)
-    allow_undefined_flag=' -expect_unresolved \*'
-    archive_cmds='$LD -shared${allow_undefined_flag} -o $lib -soname $soname -set_version $verstring$libobjs$deplibs'
+    if test "$with_gcc" = yes; then
+      allow_undefined_flag=' ${wl}-expect_unresolved ${wl}\*'
+      archive_cmds='$CC -shared${allow_undefined_flag} -o $lib ${wl}-soname ${wl}$soname ${wl}-set_version ${wl}$verstring$libobjs$deplibs'
+    else
+      allow_undefined_flag=' -expect_unresolved \*'
+      archive_cmds='$LD -shared${allow_undefined_flag} -o $lib -soname $soname -set_version $verstring$libobjs$deplibs'
+    fi
     hardcode_libdir_flag_spec='${wl}-rpath ${wl}$libdir'
     hardcode_libdir_separator=:
     ;;
@@ -1190,9 +1195,13 @@ __dll_entry (HINSTANCE hinst, DWORD reason, LPVOID reserved)
     hardcode_direct=yes
     ;;
 
-  solaris2*)
+  solaris*)
     no_undefined_flag=' -z text'
-    archive_cmds='$LD -G${allow_undefined_flag} -h $soname -o $lib$libobjs$deplibs'
+    if test "$with_gcc" = yes; then
+      archive_cmds='$CC -shared ${wl}-h $wl$soname -o $lib$libobjs$deplibs'
+    else
+      archive_cmds='$LD -G${allow_undefined_flag} -h $soname -o $lib$libobjs$deplibs'
+    fi
     hardcode_libdir_flag_spec='-R$libdir'
     hardcode_shlibpath_var=no
 
@@ -1205,7 +1214,12 @@ __dll_entry (HINSTANCE hinst, DWORD reason, LPVOID reserved)
     ;;
 
   sunos4*)
-    archive_cmds='$LD -assert pure-text -Bstatic -o $lib$libobjs$deplibs'
+    # Why do we need -Bstatic?  To avoid inter-library dependencies, maybe...
+    if test "$with_gcc" = yes; then
+      archive_cmds='$CC -shared ${wl}-Bstatic -o $lib$libobjs$deplibs'
+    else
+      archive_cmds='$LD -assert pure-text -Bstatic -o $lib$libobjs$deplibs'
+    fi
     hardcode_libdir_flag_spec='-L$libdir'
     hardcode_direct=yes
     hardcode_minus_L=yes
@@ -1293,7 +1307,7 @@ irix*)
   # Cannot use undefined symbols on IRIX because inlined functions mess us up.
   symcode='[BCDEGRST]'
   ;;
-solaris2*)
+solaris*)
   symcode='[BDTU]'
   ;;
 esac
@@ -1598,7 +1612,7 @@ sco3.2v5*)
   shlibpath_var=LD_LIBRARY_PATH
   ;;
 
-solaris2*)
+solaris*)
   version_type=linux
   library_names_spec='${libname}${release}.so$versuffix ${libname}${release}.so$major $libname.so'
   soname_spec='${libname}${release}.so$major'

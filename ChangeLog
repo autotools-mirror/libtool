@@ -1,3 +1,11 @@
+1998-11-21  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* ltconfig.in (archive_cmds, osf3, osf4, solaris, sunos4): create
+	libraries with gcc -shared if using gcc without GNU ld.
+
+	* ltconfig.in: replaced occurrences of solaris2 with solaris, to
+	prepare for Solaris 7
+
 1998-11-19  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* mdemo/Makefile.am (hell_debug_LDFLAGS): -dlpreopen -> -dlopen
