@@ -4539,7 +4539,7 @@ EOF
       # If the export-symbols file already is a .def file (1st line
       # is EXPORTS), use it as is.
       # If DATA tags from a recent dlltool are present, honour them!
-      _LT_AC_TAGVAR(archive_expsym_cmds, $1)='if test "x`head -1 $export_symbols`" = xEXPORTS; then
+      _LT_AC_TAGVAR(archive_expsym_cmds, $1)='if test "x`sed 1q $export_symbols`" = xEXPORTS; then
 	  cp $export_symbols $output_objdir/$soname-def;
 	else
 	  echo EXPORTS > $output_objdir/$soname-def;
