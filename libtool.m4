@@ -517,7 +517,7 @@ lt_cv_deplibs_check_method='unknown'
 # whether `pass_all' will *always* work, you probably want this one.
 
 case "$host_os" in
-aix4*)
+aix*)
   lt_cv_deplibs_check_method=pass_all
   ;;
 

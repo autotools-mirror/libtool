@@ -1,4 +1,10 @@
 2001-02-12  Robert Boehne  <rboehne@ricardo-us.com>
+
+        * libtool.m4: Changed aix4* to aix* to set
+        deplibs_check_method to pass_all for all aix.
+        This should have been part of the patch below.
+
+2001-02-12  Robert Boehne  <rboehne@ricardo-us.com>
 	
 	* ltcf-cxx.sh: Added support for g++ under
 	AIX 4 and 5 on Power* and IA64.
