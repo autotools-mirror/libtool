@@ -2048,7 +2048,7 @@ if test "$enable_shared" = yes && test "$ac_cv_prog_gcc" = yes; then
       libname=conftest
       save_allow_undefined_flag=$allow_undefined_flag
       allow_undefined_flag=
-      if AC_TRY_EVAL(archive_cmds 2\>\&1 \| grep \" -lc \" >/dev/null 2>&1)
+      if AC_TRY_EVAL(archive_cmds 2\>\&1 \| grep \" -lc \" \>/dev/null 2\>&1)
       then
 	ac_cv_archive_cmds_need_lc=no
       else
