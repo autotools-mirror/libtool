@@ -544,7 +544,7 @@ _LT_EOF
     VERSION='$VERSION'
     TIMESTAMP='$TIMESTAMP'
     rm='$rm'
-    ofile='$ofile'], [$1='[$]$1'])
+    ofile='$ofile'], [])
 ])dnl /_LT_CONFIG_SAVE_COMMANDS
 ])# _LT_CONFIG
 
@@ -569,8 +569,8 @@ AC_DEFUN([LT_LANG],
     [m4_fatal([$0: unsupported language: "$1"])])])dnl
 ])# LT_LANG
 
-# _LT_LANG(LANGNAME, TAG)
-# ------------------------
+# _LT_LANG(LANGNAME)
+# ------------------
 m4_define([_LT_LANG],
 [m4_ifdef([_LT_LANG_]$1[_enabled], [],
   [m4_append([_LT_TAGS], [$1 ])dnl

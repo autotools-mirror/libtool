@@ -1,3 +1,9 @@
+2004-03-22  Scott James Remnant  <scott@netsplit.com>
+
+	* m4/libtool.m4 (_LT_CONFIG): Remove unneeded else condition
+	code, now the support determination is done in m4.
+	(_LT_LANG): Correct comment, unexpected leak from keybuk-lt-tag.patch.
+
 2004-03-21  Scott James Remnant  <scott@netsplit.com>
 
 	* libltdl/Makefile.am (libltdl_la_LDFLAGS): Increment CURRENT
