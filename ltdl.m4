@@ -428,6 +428,8 @@ if test x"$ac_cv_sys_symbol_underscore" = xyes; then
      test x"$ac_cv_lib_dl_dlopen" = xyes ; then
 	AC_CACHE_CHECK([whether we have to add an underscore for dlsym],
 		libltdl_cv_need_uscore, [dnl
+                save_LIBS="$LIBS"
+                LIBS="$LIBS $LIBADD_DL"
 		AC_TRY_RUN([
 #if HAVE_DLFCN_H
 #include <dlfcn.h>
@@ -473,8 +475,9 @@ int main() {
     if(self) { ptr1=dlsym(self,"fnord"); ptr2=dlsym(self,"_fnord");
 	       if(ptr1 && !ptr2) { dlclose(self); exit(0); } } exit(1); }
 ],	libltdl_cv_need_uscore=no, libltdl_cv_need_uscore=yes,
-	libltdl_cv_need_uscore=cross
-)])
+	libltdl_cv_need_uscore=cross)
+	LIBS="$save_LIBS"
+])
   fi
 fi
 
