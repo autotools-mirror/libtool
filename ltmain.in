@@ -1,7 +1,8 @@
 # ltmain.sh - Provide generalized library-building support services.
 # NOTE: Changing this file will not affect anything until you rerun ltconfig.
 #
-# Copyright (C) 1996-2000 Free Software Foundation, Inc.
+# Copyright (C) 1996, 1997, 1998, 1999, 2000, 2001
+# Free Software Foundation, Inc.
 # Originally by Gordon Matzigkeit <gord@gnu.ai.mit.edu>, 1996
 #
 # This program is free software; you can redistribute it and/or modify
@@ -2611,6 +2612,21 @@ EOF
 	    echo "*** The inter-library dependencies that have been dropped here will be"
 	    echo "*** automatically added whenever a program is linked with this library"
 	    echo "*** or is declared to -dlopen it."
+
+	    if test $allow_undefined = no; then
+	      echo
+	      echo "*** Since this library must not contain undefined symbols,"
+	      echo "*** because either the platform does not support them or"
+	      echo "*** it was explicitly requested with -no-undefined,"
+	      echo "*** libtool will only create a static version of it."
+	      if test "$build_old_libs" = no; then
+		oldlibs="$output_objdir/$libname.$libext"
+		build_libtool_libs=module
+		build_old_libs=yes
+	      else
+		build_libtool_libs=no
+	      fi
+	    fi
 	  fi
 	fi
 	# Done checking deplibs!
