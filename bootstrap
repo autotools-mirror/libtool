@@ -1,7 +1,7 @@
 #! /bin/sh
 # bootstrap -- Helps bootstrapping libtool, when checked out from CVS.
 #
-# Copyright (C) 2003 Free Software Foundation
+# Copyright (C) 2003, 2004 Free Software Foundation
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -35,6 +35,9 @@ WARNING: After that, retry this bootstrap.
 EOF
 
 rm -rf `find . -path './{arch}' -prune -o \( -name autom4te.cache -o -name libtool \) -print`
+
+# Delete stale acinclude.m4 from previous libtool versions.
+rm -f acinclude.m4
 
 fakes="config/ltmain.sh config/libtoolize"
 if test -z "$reconfdirs"; then

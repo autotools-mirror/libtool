@@ -1,3 +1,7 @@
+2004-04-14  Alexandre Duret-Lutz  <adl@gnu.org>
+
+	* bootstrap: Delete acinclude.m4.
+
 2004-04-14  Gary V. Vaughan  <gary@gnu.org>
 
 	* libtoolize.in (configure_ac): Don't complain about the lack of
