@@ -1,0 +1,232 @@
+
+AutoGen Definitions options;
+
+prog_name   = libtool;
+prog_title  = "Object Code Library Management Tool";
+argument    = "<command> [ <cmd-arg> ... ]";
+version     = "@VERSION@";
+timestamp   = "@TIMESTAMP@";
+package     = "@PACKAGE@";
+eaddr       = "libtool@gnu.org";
+long_opts;
+usage       = modalUsage;
+
+copyright = {
+    date  = "1996-2001";
+    owner = "Free Software Foundation";
+    type  = gpl;
+};
+
+
+explain =
+"one of the modal options must be selected, or `mode' must be set to
+one of the following values:
+
+\tclean      remove files from the build directory
+\tcompile    compile a source file into a libtool object
+\texecute    automatically set library path, then run a program
+\tfinish     complete the installation of libtool libraries
+\tinstall    install libraries or executables
+\tlink       create a library or an executable
+\trelink     (synonym for `link')
+\tuninstall  remove libraries from an installed directory";
+
+
+include =
+
+'#include <stdio.h>
+#include <stdlib.h>
+
+tCC*  pzHost        = (char*)NULL;';
+
+/*
+ *  Export the above variable, plus all the strings found in by config
+ */
+export  = "extern tCC* pzHost;\n"
+          "extern tCC* pz_ltconfig;\n"
+          "extern tCC* pz_shell;\n"
+          "extern tCC* pz_vers;\n"
+          "extern tCC* pz_package;\n"
+          "extern tCC* pz_timestamp;\n";
+
+
+flag = {
+    name      = "mode";
+    arg_type  = keyword;
+    arg_name  = mode;
+    settable;
+    descrip   = "ltmain's operational mode";
+    keyword   = clean, compile, execute, finish, install, link, uninstall,
+                echo;
+    doc =
+    "";
+};
+
+flag = {
+    name      = "finish";
+    flag_code = '    SET_OPT_MODE("finish");';
+    descrip   = "set mode to `finish'";
+    doc       = "This option is equivalent to ``--mode=finish''";
+};
+
+flag = {
+    name      = "fallback_echo";
+    flag_code = '    SET_OPT_MODE("echo");';
+    descrip   = "set mode to echo";
+    doc       = "for when native `echo' is broken";
+};
+
+flag = {
+    name        = doc_general;
+    documentation;
+    descrip     = 'options for all operational modes:';
+};
+
+flag = {
+    name      = "tag";
+    arg_type  = string;
+    descrip   = "use tagged config values";
+    doc =
+    "";
+};
+
+flag = {
+    name      = "dry_run";
+    descrip   = "display commands only";
+    value     = n;
+    doc =
+    "";
+};
+
+flag = {
+    name        = "quiet";
+    equivalence = quiet;
+    value       = q;
+    descrip     = "suppress informative output";
+    doc =
+    "";
+};
+
+flag = {
+    name        = "silent";
+    equivalence = quiet;
+    descrip     = "alias for `quiet'";
+    doc =
+    "";
+};
+
+flag = {
+    name        = "debug";
+    value       = D;
+    descrip     = "enable shell trace mode";
+    doc =
+    "";
+};
+
+flag = {
+    name      = "config";
+    descrip   = "Display the configuration";
+    flag_code = <<- _EOF_
+	    fputs( pz_ltconfig, stdout );
+	    exit( EXIT_SUCCESS );
+	_EOF_;
+    doc =
+    "";
+};
+
+flag = {
+    name      = "features";
+    descrip   = "display the configured lib types";
+    flag_code = <<- _EOF_
+	    char* pz;
+	    printf( "host: %s\n", pzHost );
+	    if (ENABLED_OPT( DYNAMIC ))
+	         pz = "en";
+	    else pz = "dis";
+	    printf( "%sable shared libraries\n", pz );
+
+	    if (ENABLED_OPT( STATIC ))
+	         pz = "en";
+	    else pz = "dis";
+	    printf( "%sable archive (static) libraries\n", pz );
+	    exit( EXIT_SUCCESS );
+	_EOF_;
+        
+    doc =
+    "";
+};
+
+/*
+ * * * * * * * * * * * * * * * * * * * * * * * * * *
+ */
+flag = {
+    name        = doc_link;
+    documentation;
+    descrip     = 'compile and link mode options:';
+};
+
+flag = {
+    name      = "static";
+    value     = s;
+    descrip   = "build code for static load addresses";
+    disable   = disable;
+    settable;
+    doc =
+    "";
+};
+
+flag = {
+    name      = "dynamic";
+    value     = d;
+    descrip   = "build PIC code (for dynamic linking)";
+    disable   = disable;
+    settable;
+    doc =
+    "";
+};
+
+/*
+ * * * * * * * * * * * * * * * * * * * * * * * * * *
+ */
+flag = {
+    name        = doc_compile;
+    documentation;
+    descrip     = 'compile-only mode options:';
+};
+
+flag = {
+    name      = "output_file";
+    descrip   = "object file name";
+    value     = o;
+    arg_type  = string;
+    doc =
+    "";
+};
+
+/*
+ * * * * * * * * * * * * * * * * * * * * * * * * * *
+ */
+flag = {
+    name        = doc_execute;
+    documentation;
+    descrip     = 'execution mode options:';
+};
+
+flag = {
+    name      = "dlopen";
+    arg_type  = string;
+    max       = NOLIMIT;
+    stack_arg;
+    descrip   = "use shared object lib";
+    doc =
+    "";
+};
+
+/*
+ * * * * * * * * * * * * * * * * * * * * * * * * * *
+ */
+flag = {
+    name        = doc_automatic;
+    documentation;
+    descrip     = 'automatically supported common options:';
+};
