@@ -49,6 +49,7 @@
 
 : ${CP="cp -f"}
 : ${LN_S="@LN_S@"}
+: ${EGREP="@EGREP@"}
 : ${MKDIR="mkdir"}
 : ${RM="rm -f"}
 : ${SED="@SED@"}
@@ -314,7 +315,7 @@ func_copy_all_files ()
 # Check whether EXPRESSION matches any line of FILENAME, without output.
 func_grep ()
 {
-    grep "$1" "$2" >/dev/null 2>&1
+    $EGREP "$1" "$2" >/dev/null 2>&1
 }
 
 # func_scan_files
@@ -355,9 +356,11 @@ func_scan_files ()
 	    s,^.*AC_CONFIG_AUX_DIR([[ 	]*\([^])]*\).*$,auxdir=\1,; p;
         };
     	/AC_CONFIG_MACRO_DIR/   {
-	     s,^.*AC_CONFIG_MACRO_DIR([[ 	]*\([^])]*\).*$,m4dir=\1,; p;
+	    s,^.*AC_CONFIG_MACRO_DIR([[ 	]*\([^])]*\).*$,m4dir=\1,; p;
         };
-	/A[CM]_PROG_LIBTOOL/ { s,^.*$,seen_libtool=:,; p; };
+	/\(LT_INIT\|A[CM]_PROG_LIBTOOL\)/ {
+	    s,^.*$,seen_libtool=:,; p;
+	};
 	/AC_LIB_LTDL/        { s,^.*$,seen_ltdl=:,; p; };
 	d;'
     eval `cat aclocal.m4 "$configure_ac" | $SED "$my_sed_traces" 2>/dev/null`
@@ -458,7 +461,7 @@ func_serial ()
     # in the file that AC_DEFUNs MACRO_REGEX.
     my_serial=
     for my_file in `func_included_files "$my_filename"`; do
-      if func_grep '^AC_DEFUN(\['"$my_macro_regex" "$my_file"; then
+      if func_grep '^AC_DEFUN(_ONCE)?\(\['"$my_macro_regex" "$my_file"; then
         my_serial=`$SED -e "$my_sed_serial" "$my_file"`
 	break
       fi
@@ -470,22 +473,31 @@ func_serial ()
     echo $my_serial
 }
 
-# func_serial_update srcfile destfile [macro_regex]
+# func_serial_update srcfile destfile [macro_regex] [old_macro_regex]
 # Copy SRCFILE to DESTFILE provided SRCFILE has a newer serial number, or
 # DESTFILE does not yet exist, or the user specified `--force'.  If given,
-# MACRO_REGEX must match any text after "# serial N" in the both files.
+# MACRO_REGEX or OLD_MACRO_REGEX must match any text after "# serial N" in
+# both files.
 func_serial_update ()
 {
     my_srcfile="$1"
     my_destfile="$2"
     my_macro_regex="$3"
+    my_old_macro_regex="$4"
 
     my_return_status=1
     my_update_p=:
 
     if test -f "$my_destfile"; then
       my_src_serial=`func_serial "$my_srcfile" "$my_macro_regex"`
+      # Strictly, this libtoolize ought not to have to deal with ancient
+      # serial formats, but we accept them here to be complete:
+      test "$my_src_serial" -eq 0 &&
+        my_src_serial=`func_serial "$my_srcfile" "$my_old_macro_regex"`
+
       my_dest_serial=`func_serial "$my_destfile" "$my_macro_regex"`
+      test "$my_dest_serial" -eq 0 &&
+        my_dest_serial=`func_serial "$my_destfile" "$my_old_macro_regex"`
 
       test "$my_src_serial" -eq 0 && {
         func_error "warning: no serial number on \`$my_srcfile', not copying."
@@ -531,10 +543,10 @@ func_check_macros ()
     # Don't trace for this, we're just checking the user didn't invoke it
     # directly from configure.ac.
     $SED 's,dnl .*$,,; s,# .*$,,' "$configure_ac" | grep AC_PROG_RANLIB \
-      && func_echo "\`AC_PROG_RANLIB' is rendered obsolete by \`AC_PROG_LIBTOOL'"
+      && func_echo "\`AC_PROG_RANLIB' is rendered obsolete by \`LT_INIT'"
 
     $seen_libtool \
-      || func_echo "Remember to add \`AC_PROG_LIBTOOL' to \`$configure_ac'."
+      || func_echo "Remember to add \`LT_INIT' to \`$configure_ac'."
 
     # FIXME: Ensure ltmain.sh, libtool.m4 and ltdl.m4 are from the same release
 }
@@ -634,7 +646,7 @@ func_config_update ()
 
   func_copy_all_files "$pkgmacrodir" "$m4dir" \
       "$re_pkgmacro_files" func_serial_update
-  func_serial_update  "$libtool_m4" "$m4dir/libtool.m4" 'A[CM]_PROG_LIBTOOL'
+  func_serial_update  "$libtool_m4" "$m4dir/libtool.m4" LT_INIT 'A[CM]_PROG_LIBTOOL'
 
   if $seen_ltdl; then
     func_serial_update "$ltdl_m4" "$m4dir/ltdl.m4" 'AC_LIB_LTDL'

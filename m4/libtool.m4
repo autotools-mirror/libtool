@@ -27,7 +27,7 @@ m4_define([_LT_COPYING], [dnl
 # the same distribution terms that you use for the rest of that program.
 ])
 
-# serial 49 AC_PROG_LIBTOOL
+# serial 49 LT_INIT
 
 
 # LT_PREREQ(VERSION)
