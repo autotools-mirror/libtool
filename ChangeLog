@@ -1,3 +1,11 @@
+2004-01-02  Bob Friesenhahn <bfriesen@simple.dallas.tx.us>
+	Joe Orton <joe@manyfish.co.uk>
+
+	* m4/libtool.m4 (AC_LIBTOOL_CONFIG): Add extra blackslash
+	in front of all the inner double-quotes as this is removed
+	on Solaris, IRIX and AIX leading to broken definitions
+	in config.status.
+
 2004-01-02  Scott James Remnant  <scott@netsplit.com>
 
 	Updated all copyright notices to include 2004.

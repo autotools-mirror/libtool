@@ -4425,10 +4425,10 @@ _LT_EOF
     old_postinstall_cmds | old_postuninstall_cmds | \
     sys_lib_search_path_spec | sys_lib_dlsearch_path_spec)
       # Double-quote double-evaled strings.
-      eval "lt_\$var=\\\\\"\\\`\\\$echo \"X\\\$\$var\" | \\\$Xsed -e \"\\\$double_quote_subst\" -e \"\\\$sed_quote_subst\" -e \"\\\$delay_variable_subst\"\\\`\\\\\""
+      eval "lt_\$var=\\\\\\"\\\`\\\$echo \\"X\\\$\$var\\" | \\\$Xsed -e \\"\\\$double_quote_subst\\" -e \\"\\\$sed_quote_subst\\" -e \\"\\\$delay_variable_subst\\"\\\`\\\\\\""
       ;;
     *)
-      eval "lt_\$var=\\\\\"\\\`\\\$echo \"X\\\$\$var\" | \\\$Xsed -e \"\\\$sed_quote_subst\"\\\`\\\\\""
+      eval "lt_\$var=\\\\\\"\\\`\\\$echo \\"X\\\$\$var\\" | \\\$Xsed -e \\"\\\$sed_quote_subst\\"\\\`\\\\\\""
       ;;
     esac
   done
