@@ -115,8 +115,8 @@ maintainer-check-versions:
 	  fi
 
 maintainer-release: maintainer-check-versions distcheck
-	cd $(top_srcdir) && $(PRCS) checkin $(PACKAGE)
-	cd $(top_srcdir) && $(PRCS) rekey $(PACKAGE) configure.in libtool.spec
+	cd $(top_srcdir) && $(PRCS) checkin -f $(PACKAGE)
+	cd $(top_srcdir) && $(PRCS) rekey -f $(PACKAGE) configure.in libtool.spec
 	echo "============================="; \
 	  echo "Congratulations!  $(PACKAGE)-$(VERSION) is now complete."; \
 	  echo; \

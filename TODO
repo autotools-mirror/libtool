@@ -1,8 +1,6 @@
 For next public release:
 ************************
 
-* Integrate the AmigaOS patches found in lt-amiga.diff.
-
 * Document `execute' mode, and the experimental nature of -dlopen and
 -dlpreopen.
 

@@ -27,28 +27,25 @@
 # A lot of this script is taken from autoconf-2.10.
 
 echo=echo
-if test "X`$echo '\t'`" = 'X\t'; then :
+if test "X`($echo '\t') 2>/dev/null`" = 'X\t'; then :
 else
   # The Solaris and AIX default echo program unquotes backslashes.
   # This makes it impossible to quote backslashes using
   #   echo "$something" | sed 's/\\/\\\\/g'
   # So, we emulate echo with printf '%s\n'
   echo='printf %s\n'
-  if test "X`$echo '\t'`" = 'X\t'; then :
+  if test "X`($echo '\t') 2>/dev/null`" = 'X\t'; then :
   else
     # Oops.  We have no working printf.  Try to find a not-so-buggy echo.
     echo=echo
     IFS="${IFS= 	}"; save_ifs="$IFS"; IFS="${IFS}:"
-    save_PATH="$PATH"
-    PATH="$PATH":/usr/ucb
-    for dir in $PATH; do
+    for dir in $PATH /usr/ucb; do
       if test -f $dir/echo && test "X`$dir/echo '\t'`" = 'X\t'; then
         echo="$dir/echo"
         break
       fi
     done
     IFS="$save_ifs"
-    PATH="$save_PATH"
   fi
 fi
 
@@ -305,7 +302,7 @@ host_vendor=`echo $host | sed 's/^\([^-]*\)-\([^-]*\)-\(.*\)$/\2/'`
 host_os=`echo $host | sed 's/^\([^-]*\)-\([^-]*\)-\(.*\)$/\3/'`
 
 case "$host_os" in
-aix*)
+aix3*)
   # AIX sometimes has problems with the GCC collect2 program.  For some
   # reason, if we set the COLLECT_NAMES environment variable, the problems
   # vanish in a puff of smoke.
@@ -457,6 +454,12 @@ if test "$with_gcc" = yes; then
     ;;
   os2*)
     # We can build DLLs from non-PIC.
+    ;;
+  amigaos*)
+    # FIXME: we need at least 68020 code to build shared libraries, but
+    # adding the `-m68020' flag to GCC prevents building anything better,
+    # like `-m68040'.
+    pic_flag='-m68020 -resident32 -malways-restore-a4'
     ;;
   *)
     pic_flag='-fPIC'
@@ -688,7 +691,7 @@ hardcode_shlibpath_var=unsupported
 runpath_var=
 
 case "$host_os" in
-sunos4*)
+amigaos* | sunos4*)
   # On these operating systems, we should treat GNU ld like the system ld.
   gnu_ld_acts_native=yes
   ;;
@@ -734,6 +737,12 @@ else
     allow_undefined_flag=unsupported
     archive_cmds='$NM$libobjs | $global_symbol_pipe | sed '\''s/.* //'\'' > $lib.exp;$CC -o $objdir/$soname$libobjs ${wl}-bE:$lib.exp ${wl}-bM:SRE ${wl}-bnoentry;$AR cru $lib $objdir/$soname'
     hardcode_direct=yes
+    hardcode_minus_L=yes
+    ;;
+
+  amigaos*)
+    archive_cmds='$rm $objdir/a2ixlibrary.data;$echo "#define NAME $libname" > $objdir/a2ixlibrary.data;$echo "#define LIBRARY_ID 1" >> $objdir/a2ixlibrary.data;$echo "#define VERSION $major" >> $objdir/a2ixlibrary.data;$echo "#define REVISION $revision" >> $objdir/a2ixlibrary.data;$AR cru $lib$libobjs;$RANLIB $lib;(cd $objdir && a2ixlibrary -32)'
+    hardcode_libdir_flag_spec='-L$libdir'
     hardcode_minus_L=yes
     ;;
 
@@ -1074,6 +1083,7 @@ soname_spec=
 postinstall_cmds=
 postuninstall_cmds=
 finish_cmds=
+finish_eval=
 shlibpath_var=
 version_type=none
 dynamic_linker="$host_os ld.so"
@@ -1087,6 +1097,12 @@ aix3* | aix4*)
 
   # AIX has no versioning support, so we append a major version to the name.
   soname_spec='$libname.so.$major'
+  ;;
+
+amigaos*)
+  library_names_spec='$libname.ixlibrary $libname.a'
+  # Create ${libname}_ixlibrary.a entries in /sys/libs.
+  finish_eval='for lib in `ls $libdir/*.ixlibrary 2>/dev/null`; do libname=`$echo "$lib" | sed '\''s%^.*/\([^/]*\)\.ixlibrary$%\1%'\''`; test $rm /sys/libs/${libname}_ixlibrary.a; $show "(cd /sys/libs && $LN_S $lib ${libname}_ixlibrary.a)"; (cd /sys/libs && $LN_S $lib ${libname}_ixlibrary.a) || exit 1; done'
   ;;
 
 freebsd2* | freebsd3*)
@@ -1153,7 +1169,6 @@ netbsd* | openbsd*)
   ;;
 
 os2*)
-  version_type=none
   libname_spec='$name'
   library_names_spec='$libname.dll $libname.a'
   dynamic_linker='OS/2 ld.exe'
@@ -1246,13 +1261,13 @@ rmdir .libs 2>/dev/null
 echo "$ac_t$objdir" 1>&6
 
 # Now quote all the things that may contain metacharacters.
-for var in old_CC old_CFLAGS old_CPPFLAGS old_LD old_NM old_RANLIB \
+for var in echo old_CC old_CFLAGS old_CPPFLAGS old_LD old_NM old_RANLIB \
   old_LN_S AR CC LD LN_S NM reload_flag reload_cmds wl pic_flag \
   link_static_flag no_builtin_flag export_dynamic_flag_spec \
   profile_flag_pattern libname_spec library_names_spec soname_spec RANLIB \
   old_archive_cmds old_archive_from_new_cmds old_postinstall_cmds \
   old_postuninstall_cmds archive_cmds postinstall_cmds postuninstall_cmds \
-  allow_undefined_flag finish_cmds global_symbol_pipe \
+  allow_undefined_flag finish_cmds finish_eval global_symbol_pipe \
   striplib old_striplib \
   hardcode_libdir_flag_spec hardcode_libdir_separator; do
 
@@ -1288,6 +1303,9 @@ cat <<EOF > $ofile
 #
 # Compiler and other test output produced by $progname, useful for
 # debugging $progname, is in ./config.log if it exists.
+
+# An echo program that doesn't interpret backslashes.
+echo="$echo"
 
 # The version of $progname that generated this script.
 LTCONFIG_VERSION="$VERSION"
@@ -1377,6 +1395,9 @@ allow_undefined_flag="$allow_undefined_flag"
 
 # Commands used to finish a libtool library installation in a directory.
 finish_cmds="$finish_cmds"
+
+# Same as above, but a single script fragment to be evaled but not shown.
+finish_eval="$finish_eval"
 
 # Take the output of nm and produce a listing of raw symbols and C names.
 global_symbol_pipe="$global_symbol_pipe"

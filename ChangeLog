@@ -1,3 +1,20 @@
+Sat Nov 29 11:19:18 1997  Gordon Matzigkeit  <gord@gnu.org>
+
+	* ltconfig.in (COLLECT_NAMES): Enable this workaround for a broken
+ 	collect2 only on AIX 3.  This avoids problems on other AIX
+ 	versions.  Reported by Stefan Westerfeld.
+
+	* ltmain.in, ltconfig.in (finish_eval): Variable like finish_cmds,
+	except it is a single command which is evaled, and not shown.
+
+	* ltconfig.in: Port to AmigaOS.  From Joop van de Wege.
+
+	* ltmain.in (echo): Delete preamble to check for a working echo,
+ 	since we just use the one included in the generated libtool.
+
+	* ltconfig.in (echo): Include this definition in the generated
+	libtool script.
+
 Fri Nov 28 09:28:02 1997  Gordon Matzigkeit  <gord@gnu.org>
 
 	* ltconfig.in, libtool.m4 (NM): Add /usr/ccs/bin to the PATH
@@ -52,7 +69,7 @@ Sun Nov 23 09:29:58 1997  Gordon Matzigkeit  <gord@gnu.org>
  	default.  Make `-no-undefined' in order for people to declare that
  	a library is entirely self-contained.  This prevents maintainers
  	from accidentally creating shared libraries that won't work on
- 	AIX.  Reported by Stefan Westerfield and Danny Backx.
+ 	AIX.  Reported by Stefan Westerfeld and Danny Backx.
 
 	* ltconfig.in (echo): Use an echo variable, just as in ltmain.in,
 	because we need it for quoting substitutions.  For most of the

@@ -1,7 +1,9 @@
 NEWS - list of user-visible changes between releases of GNU Libtool
 
-New in 1.0x - 1997-XX-XX, Gordon Matzigkeit:
+New in 1.0g - 1997-11-29, Gordon Matzigkeit:
 * Bug fixes.
+* `-allow-undefined' is now the default.  You can use `-no-undefined'
+  to declare that a shared library is completely self-contained.
 * Support for *-*-amigaos*.
 
 New in 1.0f - 1997-11-08, Gordon Matzigkeit:
@@ -10,8 +12,6 @@ New in 1.0f - 1997-11-08, Gordon Matzigkeit:
   `-static' flag now just prevents dynamic linking of libtool libraries.
 * The `-rpath' flag can be used to hardcode absolute directories when
   linking executables using libtool.
-* `-allow-undefined' is now the default.  You can use `-no-undefined'
-  to declare that a shared library is completely self-contained.
 * Suppress duplicate compiler output during `compile' mode.
 * New `execute' mode to support debugging uninstalled libtool
   libraries and executables.

@@ -196,7 +196,7 @@ AC_CACHE_VAL(ac_cv_path_NM,
       # Check to see if the nm accepts a BSD-compat flag.
       # Adding the `sed 1!d' prevents false positives on HP-UX, which says:
       #   nm: unknown option "B" ignored
-      if ($ac_dir/nm -B /dev/null 2>&1 | sed '1!d'; exit 0) | egrep /dev/null >dev/null; then
+      if ($ac_dir/nm -B /dev/null 2>&1 | sed '1!d'; exit 0) | egrep /dev/null >/dev/null; then
         ac_cv_path_NM="$ac_dir/nm -B"
       elif ($ac_dir/nm -p /dev/null 2>&1 | sed '1!d'; exit 0) | egrep /dev/null >/dev/null; then
         ac_cv_path_NM="$ac_dir/nm -p"

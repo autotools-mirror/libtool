@@ -990,8 +990,8 @@ if test -z "$show_help"; then
 
         # Create links to the real library.
         for linkname in $linknames; do
-          $show "(cd $objdir && $LN_S $realname $link)"
-          $run eval '(cd $objdir && $LN_S $realname $link)' || exit $?
+          $show "(cd $objdir && $LN_S $realname $linkname)"
+          $run eval '(cd $objdir && $LN_S $realname $linkname)' || exit $?
         done
 
         # If -export-dynamic was specified, set the dlname.
