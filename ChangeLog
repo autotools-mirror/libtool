@@ -1,3 +1,7 @@
+1999-11-20  Michael Forster  <email@michael-forster.de>
+
+	* ltconfig.in (linux-gnu*): Set hardcode_into_libs=yes.
+
 1999-11-29  Gary V. Vaughan  <gary@oranda.demon.co.uk>
 
 	* ltconfig.in:  Be friendlier to C++ compilers when testing
