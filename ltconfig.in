@@ -988,7 +988,7 @@ __dll_entry (HINSTANCE hinst, DWORD reason, LPVOID reserved)
 }
 ' > ltdll.c
       archive_cmds='$CC -c '"`pwd`"'/ltdll.c~ echo EXPORTS > $lib.exp~
-      if test -z "$export_symbols"; then $NM$libobjs | $global_symbol_pipe | sed '\''s/.* //'\'' > $lib.exp;\
+      if test -z "$export_symbols"; then $NM$libobjs | $global_symbol_pipe | sed '\''s/.* //'\'' > $lib.exp;
       else cat "$export_symbols" > $lib.exp; fi~\
       $LD -s --base-file $soname-base --dll -e ___dll_entry@12 -o $lib libtool.$objext$libobjs$deplibs~\
       $DLLTOOL --as=$AS --dllname $soname --def $lib.exp --base-file $soname-base --output-exp $soname-exp~\
@@ -1037,7 +1037,7 @@ else
   case "$host_os" in
   aix3*)
     allow_undefined_flag=unsupported
-    archive_cmds='if test -z "$export_symbols"; then $NM$libobjs | $global_symbol_pipe | sed '\''s/.* //'\' | sort | uniq' > $lib.exp;\
+    archive_cmds='if test -z "$export_symbols"; then $NM$libobjs | $global_symbol_pipe | sed '\''s/.* //'\' | sort | uniq' > $lib.exp;
         else cat "$export_symbols" > $lib.exp; fi~$LD -o $objdir/$soname$libobjs$deplibs -bE:$lib.exp -T512 -H512 -bM:SRE~$AR cru $lib $objdir/$soname'
     # Note: this linker hardcodes the directories in LIBPATH if there
     # are no directories specified by -L.
@@ -1051,7 +1051,7 @@ else
 
   aix4*)
     allow_undefined_flag=unsupported
-    archive_cmds='if test -z "$export_symbols"; then $NM$libobjs | $global_symbol_pipe | sed '\''s/.* //'\' | sort | uniq' > $lib.exp;\
+    archive_cmds='if test -z "$export_symbols"; then $NM$libobjs | $global_symbol_pipe | sed '\''s/.* //'\' | sort | uniq' > $lib.exp;
         else cat "$export_symbols" > $lib.exp; fi~ $CC -o $objdir/$soname$libobjs$deplibs ${wl}-bE:$lib.exp ${wl}-bM:SRE ${wl}-bnoentry~$AR cru $lib $objdir/$soname'
     hardcode_direct=yes
     hardcode_minus_L=yes
@@ -1082,7 +1082,7 @@ __dll_entry (HINSTANCE hinst, DWORD reason, LPVOID reserved)
 }
 ' > ltdll.c
       archive_cmds='$CC -c '"`pwd`"'/ltdll.c~ echo EXPORTS > $lib.exp~
-      if test -z "$export_symbols"; then $NM$libobjs | $global_symbol_pipe | sed '\''s/.* //'\'' > $lib.exp;\
+      if test -z "$export_symbols"; then $NM$libobjs | $global_symbol_pipe | sed '\''s/.* //'\'' > $lib.exp;
       else cat "$export_symbols" > $lib.exp; fi~\
       $LD -s --base-file $soname-base --dll -e ___dll_entry@12 -o $lib libtool.$objext$libobjs$deplibs~\
       $DLLTOOL --as=$AS --dllname $soname --def $lib.exp --base-file $soname-base --output-exp $soname-exp~\
