@@ -336,6 +336,9 @@ func_scan_files ()
       done
     fi
 
+    # Just use the current directory if all else fails.
+    test -n "$auxdir" || auxdir=.
+
 
     # ------------------------------ #
     # Find local m4 macro directory. #

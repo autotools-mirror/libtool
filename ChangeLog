@@ -1,3 +1,9 @@
+2003-11-07  Gary V. Vaughan  <gary@gnu.org>
+
+	* m4/libtoolize.in (func_scan_files): If libtoolize is run before
+	automake has created install-sh and configure.ac does not mention
+	AC_CONFIG_AUX_DIR, fall back to the current directory for auxdir.
+
 2003-11-07  Robert Millan  <zeratul2@wanadoo.es>
 
 	* m4/libtool.m4 (AC_DEPLIBS_CHECK_METHOD) [GNU/KNetBSD]: Detect
