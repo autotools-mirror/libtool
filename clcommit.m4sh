@@ -2,7 +2,7 @@ m4_define([_m4_divert(SCRIPT)], 100)
 m4_divert_push([SCRIPT])#!/bin/sh
 # @configure_input@
 
-# clcommit (GNU @PACKAGE@) version 0.12
+# clcommit (GNU @PACKAGE@) version 0.14
 # Written by Gary V. Vaughan <gary@gnu.org>
 # and Alexandre Oliva <aoliva@redhat.com>
 
@@ -76,7 +76,7 @@ m4_divert_push([SCRIPT])#!/bin/sh
 : ${MAILNOTIFY="mailnotify"}
 : ${MKSTAMP="mkstamp"}
 
-test -f "config/$MAILNOTIFY" && MAILNOTIFY="config/MAILNOTIFY"
+test -f "config/$MAILNOTIFY" && MAILNOTIFY="config/$MAILNOTIFY"
 test -f "config/$MKSTAMP" && MKSTAMP="config/$MKSTAMP"
 
 PROGRAM=clcommit
@@ -100,7 +100,7 @@ mailnotify_flags=
 sendmail_to=
 exit_cmd=:
 
-# Locations for important files
+# Locations for important files:
 signature_file=
 log_file="${TMPDIR-/tmp}/$progname-$$"
 
@@ -134,7 +134,8 @@ set -e
       -f|--force)	opt_update=false; PAGER=cat		;;
 
       --from)		test $# = 0 && func_missing_arg $opt && break
-			mailnotify_flags="$mailnotify_flags --from '"$1"'"
+      			func_quote_for_eval "$1"
+			mailnotify_flags="$mailnotify_flags --from=$func_quote_for_eval_result"
 			shift
 			;;
 
@@ -185,7 +186,8 @@ set -e
       -q|--quiet)	cvs_flags="$cvs_flags -q"		;;
 
       -s|--sendmail)	test $# = 0 && func_missing_arg $opt && break
-      			sendmail_to="$1"
+      			func_quote_for_eval "$1"
+      			sendmail_to="$func_quote_for_eval_result"
 			shift
 			;;
 
@@ -426,8 +428,10 @@ func_mailnotify ()
     echo "$my_mail_body" > "$notify_file"
 
     func_verbose "mailing commit notification to \"$sendmail_to\""
-    eval func_verbose_eval $MAILNOTIFY $mailnotify_flags -s "'$my_mail_subject'" \
-        -m "text/plain" -f "$notify_file" -- "'$sendmail_to'"
+    func_quote_for_eval "$my_mail_subject"
+    func_show_eval "$MAILNOTIFY $mailnotify_flags \
+        -s $func_quote_for_eval_result -m 'text/plain' -f '$notify_file' \
+	-- $sendmail_to"
 }
 
 
