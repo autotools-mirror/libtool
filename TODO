@@ -157,13 +157,6 @@ properly with AC_CONFIG_AUX_DIR using projects.
 Things to think about:
 **********************
 
-* Talk with RMS about his so-called `automatic package generation
-tool.'  This is probably what Thomas has been murmuring about for the
-Hurd.  We'll need to integrate package-supplied programs such as
-libtool into that scheme, since it manages some of the preinstall and
-postinstall commands, but isn't installed itself.  Probably, things
-like libtool should be distributed as part of such a binary package.
-
 * Maybe implement full support for other orthogonal library types
 (libhello_g, libhello_p, 64 vs 32-bit ABI's, etc).  Make these types
 configurable.
