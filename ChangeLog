@@ -1,3 +1,12 @@
+2003-01-28  Charles Wilson  <cwilson@ece.gatech.edu>
+
+	* ltmain.in: add code for a binary wrapper
+	to use with uninstalled executables on cygwin/mingw.
+	Make sure that --mode=clean gets shell wrapper and
+	binary wrapper.  When sourcing the shell wrapper, 
+	invoke using a terminal `.' on cygwin/mingw to 
+	avoid the automatic append-.exe behavior.
+
 2003-01-28  Albert Chin-A-Young  <china@thewrittenword.com>
 
 	* libtool.m4: Hardcode library paths into libraries on IRIX.
