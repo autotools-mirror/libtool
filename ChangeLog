@@ -1,3 +1,8 @@
+2000-10-02  Gary V. Vaughan  <gvv@techie.com>
+
+	From Bruce Korb <bkorb@cruzio.com>
+	* ltmain.in (execute_dlfiles): Reduce obfuscation.
+
 2000-09-30  Alexandre Oliva  <aoliva@redhat.com>
 
 	* ltconfig.in [netbsd*] (deplibs_check_method, file_magic_cmd,
