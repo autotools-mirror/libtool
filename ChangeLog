@@ -1,3 +1,10 @@
+2000-02-22  Ossama Othman  <ossama@debian.org>
+
+	* libtool.m4 (AC_PROG_LIBTOOL): Added missing "$lt_target" command
+	line argument in call to `ltconfig'.  This fixes a problem that
+	was occuring when a host type was specified by the user.  Also
+	added missing "$reload_flag" environment.
+
 2000-02-17  Ossama Othman  <ossama@debian.org>
 
 	* libtoolize.in (files): Add C++ support if configure.in uses
