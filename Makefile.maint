@@ -25,9 +25,10 @@ Makefile:
 	@echo " *** maintainer rules."
 	@exit 1
 
+TEXI2HTML = texi2html
 
 .PHONY: cvs-release
-cvs-release: version-check prev-tarball cvs-news fetch cvs-commit cvs-dist deltas
+cvs-release: version-check prev-tarball cvs-news fetch cvs-commit cvs-dist deltas web-manual
 	@tarname="$(PACKAGE)-$(VERSION).tar.gz"; \
 	diffname="$(PACKAGE)-$(LASTRELEASE)-$(VERSION).diff.gz"; \
 	xdeltaname="$(PACKAGE)-$(LASTRELEASE)-$(VERSION).xdelta"; \
@@ -35,8 +36,9 @@ cvs-release: version-check prev-tarball cvs-news fetch cvs-commit cvs-dist delta
 	echo " *** $$tarname.directive.asc, $$diffname,"; \
 	echo " *** $$diffname.sig, $$diffname.directive.asc,"; \
 	echo " *** $$xdeltaname, $$xdeltaname.sig and";\
-	echo " *** $$xdeltaname.directive.asc to either";\
-	echo " *** /incoming/alpha or /incoming/ftp on ftp-upload.gnu.org.";
+	echo " *** $$xdeltaname.directive.asc to either"
+	echo " *** /incoming/alpha or /incoming/ftp on ftp-upload.gnu.org."
+	echo " *** You might need to upload manual.html to webcvs/libtool."
 
 .PHONY: version-check
 version-check:
@@ -200,3 +202,10 @@ delta-xdelta: prev-tarball new-tarball got-xdelta
 	&& echo "directory: libtool" > $$ofile.directive \
 	&& $(GPG) --clearsign $$ofile.directive \
 	&& rm -f $$ofile.directive
+
+.PHONY: web-manual
+web-manual:
+	@$(LN_S) $(top_srcdir)/doc/libtool.texi doc/manual.texi
+	$(TEXI2HTML) -I doc -monolithic -number -verbose doc/manual.texi
+	@mv doc/manual.html manual.html
+	@rm -f doc/manual.texi

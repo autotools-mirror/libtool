@@ -1,3 +1,10 @@
+2004-02-22  Gary V. Vaughan  <gary@gnu.org>
+
+	* Makefile.maint (web-manual): Generate the web manual carefully
+	so that links will still work when it is uploaded to gnu.org.
+	* README-alpha: Note that this rule should be used at release
+	time.
+
 2004-02-20  Gary V. Vaughan  <gary@gnu.org>
 
 	Sweeping changes to the user interface to libtool from
