@@ -104,7 +104,7 @@ dnl
 _LT_CONFIG_LIBTOOL_INIT([
 # See if we are running on zsh, and set the options which allow our
 # commands through without removal of \ escapes INIT.                             
-if test -n "${ZSH_VERSION+set}" ; then
+if test -n "\${ZSH_VERSION+set}" ; then
    setopt NO_GLOB_SUBST
 fi
 ])
