@@ -5,7 +5,7 @@ AUTOMAKE_OPTIONS = no-dependencies foreign
 SUBDIRS = l1 l2 l3 l4
 
 EXTRA_DIST = sysdep.h
-  
+
 bin_PROGRAMS = depdemo depdemo.static
 
 depdemo_SOURCES = main.c
