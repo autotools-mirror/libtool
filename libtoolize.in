@@ -1,5 +1,5 @@
 #! /bin/sh
-# libtoolize (GNU @PACKAGE@) @VERSION@@TIMESTAMP@
+# libtoolize (GNU @PACKAGE@@TIMESTAMP@) @VERSION@
 # Written by Gary V. Vaughan <gary@gnu.org>
 
 # Copyright (C) 2003 Free Software Foundation, Inc.

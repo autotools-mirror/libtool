@@ -96,7 +96,7 @@ TIMESTAMP=
 case $LT_ALPHA in
   [[acegikmoqsuwy]])
     TIMESTAMP=`${CONFIG_SHELL} ${ac_aux_dir}/mkstamp < ${srcdir}/ChangeLog`
-    AS_BOX([Configuring AC_PACKAGE_TARNAME AC_PACKAGE_VERSION$TIMESTAMP])
+    AS_BOX([Configuring AC_PACKAGE_TARNAME (Build:$TIMESTAMP) AC_PACKAGE_VERSION])
     echo
     ;;
 esac

@@ -1,3 +1,13 @@
+2003-11-26  Gary V. Vaughan  <gary@gnu.org>
+
+	* config/mkstamp: Change output format to ` $rev $date'.
+	* configure.ac: Make the banner more like suggestions in
+	http://www.gnu.org/prep/standards_toc.html Section 4.6.
+	* libtoolize.in: Make --version output conform to the GNU
+	standard.
+	* ltmain.in: Ditto. And tweak the generated file headers to
+	match.
+
 2003-11-25  Gary V. Vaughan  <gary@gnu.org>
 
 	* Makefile.am (config.status): Removed.  Rebuilding config.status
