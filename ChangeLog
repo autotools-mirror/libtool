@@ -1,5 +1,12 @@
 2003-11-07  Gary V. Vaughan  <gary@gnu.org>
 
+	* tests/cdemo/configure.ac, tests/demo/configure.ac,
+	tests/depdemo/configure.ac, tests/f77demo/configure.ac,
+	tests/mdemo/configure.ac, tests/mdemo2/configure.ac,
+	tests/pdemo/configure.ac, tests/tagdemo/configure.ac:
+	s/AM_PROG_LIBTOOL/AC_PROG_LIBTOOL/. Marching boldly into the 21th
+	century :-$
+
 	* m4/libtool.m4 (AC_LIBTOOL_TAGS, AC_ENABLE_SHARED,
 	AC_DISABLE_SHARED, AC_ENABLE_STATIC, AC_DISABLE_STATIC,
 	AC_ENABLE_FAST_INSTALL, AC_DISABLE_FAST_INSTALL, AM_PROG_LIBTOOL,

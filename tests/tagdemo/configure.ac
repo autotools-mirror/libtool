@@ -1,5 +1,5 @@
 ## Process this file with autoconf to create configure. -*- autoconf -*-
-# Copyright 2001  Free Software Foundation, Inc.
+# Copyright (C) 2001, 2003 Free Software Foundation, Inc.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -64,7 +64,7 @@ AC_LANG_POP
 
 # Set the test language to C++.
 AC_LANG([C++])
-AM_PROG_LIBTOOL
+AC_PROG_LIBTOOL
 
 
 ## ---------------------------- ##
