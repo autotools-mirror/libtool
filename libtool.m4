@@ -1549,7 +1549,7 @@ else
     hardcode_libdir_flag_spec='-rpath $libdir'
     hardcode_libdir_separator=:
     ;;
-  rhapsody*)
+  rhapsody*|darwin*)
     archive_cmds='$CC -bundle -undefined suppress -o $lib $libobjs $deplibs $linker_flags'
     hardcode_libdir_flags_spec='-L$libdir'
     hardcode_direct=yes
@@ -1963,7 +1963,7 @@ osf3* | osf4* | osf5*)
   sys_lib_dlsearch_path_spec="$sys_lib_search_path_spec"
   ;;
 
-rhapsody*)
+rhapsody*|darwin*)
   version_type=sunos
   library_names_spec='${libname}.so'
   soname_spec='${libname}.so'
