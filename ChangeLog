@@ -1,5 +1,17 @@
 1999-03-11  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* ltconfig.in: (global_symbol_pipe) extract symbol tag from the
+	output of NM too
+	(global_symbol_to_cdecl): new variable; convert the output of
+	global_symbol_pipe to valid C declarations; on HP/UX, convert
+	text symbols to function declarations
+	* libtool.m4: similar modifications
+	* doc/libtool.texi: document new variable
+	* ltmain.in: use global_symbol_to_cdecl to generate lt_dlpreopened 
+	symbols; avoid extracting symbol lists from dlpreopened files
+	twice; do not filter symbols from dlpreopened libraries
+	* TODO: fixed HP/UX dlpreopening problem
+
 	* ltmain.in (-static, -all-static): set dlopen_self to
 	$dlopen_self_static regardless of link_static_flag or pic_flag
 

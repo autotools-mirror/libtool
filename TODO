@@ -6,11 +6,6 @@ with ltconfig/ltmain.sh
 
 * check whether the "file" command is available
 
-* Tom Lane adds that HP-UX's linker, at least (I've also found this on
-AIX 4), distinguishes between global function and global variable
-references.  This means that we cannot declare every symbol as `extern
-char'.  Find a workaround.
-
 * Inter-library dependencies should be fully tracked by libtool
 and need to work for ltlibraries too. This requires looking up 
 installed libtool libraries for transparent support.

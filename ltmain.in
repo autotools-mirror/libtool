@@ -2291,8 +2291,8 @@ EOF
 	  nlist="$objdir/${output}.nm"
 
 	  if test -d $objdir; then
-	    $show "$rm $nlist ${nlist}T"
-	    $run $rm "$nlist" "${nlist}T"
+	    $show "$rm $nlist ${nlist}S ${nlist}T"
+	    $run $rm "$nlist" "${nlist}S" "${nlist}T"
 	  else
 	    $show "$mkdir $objdir"
 	    $run $mkdir $objdir
@@ -2322,6 +2322,8 @@ extern \"C\" {
 	  if test "$dlself" = yes; then
 	    $show "generating symbol list for \`$output'"
 
+	    echo ': @PROGRAM@ ' > "$nlist"
+
 	    # Add our own program objects to the symbol list.
 	    progfiles=`$echo "X$objs" | $SP2NL | $Xsed -e "$lo2o" | $NL2SP`
 	    for arg in $progfiles; do
@@ -2330,14 +2332,12 @@ extern \"C\" {
 	    done
 
 	    if test -n "$exclude_expsyms"; then
-	      $run eval 'egrep -v "^($exclude_expsyms)" "$nlist" > "$nlist"T'
+	      $run eval 'egrep -v " ($exclude_expsyms)$" "$nlist" > "$nlist"T'
 	      $run eval '$mv "$nlist"T "$nlist"'
 	    fi
 	    
 	    if test -n "$export_symbols_regex"; then
-	      $show "egrep -e \"$export_symbols_regex\" \"$nlist\" > \"$nlist\"T"
 	      $run eval 'egrep -e "$export_symbols_regex" "$nlist" > "$nlist"T'
-	      $show "$mv \"$nlist\"T \"$nlist\""
 	      $run eval '$mv "$nlist"T "$nlist"'
 	    fi
 
@@ -2345,13 +2345,19 @@ extern \"C\" {
 	    if test -z "$export_symbols"; then
 	      export_symbols="$objdir/$output.exp"
 	      $run $rm $export_symbols
+	      $run eval "sed -n -e '/^: @PROGRAM@$/d' -e 's/^.* \(.*\)$/\1/p' "'< "$nlist" > "$export_symbols"'
+	    else
+	      $run $rm $export_symbols
+	      $run eval "sed -e 's/\([][.*^$]\)/\\\1/g' -e 's/^/ /' -e 's/$/$/'"' < "$export_symbols" > "$objdir/$output.exp"'
+	      $run eval 'grep -f "$objdir/$output.exp" < "$nlist" > "$nlist"T'
+	      $run eval 'mv "$nlist"T "$nlist"'
 	    fi
-
-	    sed -e 's/^.* \(.*\)$/\1/' < "$nlist" > "$export_symbols"
 	  fi
 
 	  for arg in $dlprefiles; do
 	    $show "extracting global C symbols from \`$arg'"
+	    name=`echo "$arg" | sed -e 's%^.*/%%'`
+	    $run eval 'echo ": $name " >> "$nlist"'
 	    $run eval "$NM $arg | $global_symbol_pipe >> '$nlist'"
 	  done
 
@@ -2359,25 +2365,20 @@ extern \"C\" {
 	    # Make sure we have at least an empty file.
 	    test -f "$nlist" || : > "$nlist"
 
-	    if test -n "$exclude_expsyms"; then
-	      $run eval 'egrep -v "^($exclude_expsyms)" "$nlist" > "$nlist"T'
-	      $run eval '$mv "$nlist"T "$nlist"'
-	    fi
-	    
 	    # Try sorting and uniquifying the output.
-	    if sort "$nlist" | uniq > "$nlist"T; then
-	      $mv "$nlist"T "$nlist"
+	    if grep -v "^: " < "$nlist" | sort +2 | uniq > "$nlist"S; then
+	      :
 	    else
-	      $rm "$nlist"T
+	      grep -v "^: " < "$nlist" > "$nlist"S
 	    fi
 
 	    if test -n "$exclude_expsyms"; then
-	      egrep -v "^($exclude_expsyms) " "$nlist" > "$nlist"T
-	      $mv "$nlist"T "$nlist"
+	      egrep -v " ($exclude_expsyms)$" "$nlist"S > "$nlist"T
+	      $mv "$nlist"T "$nlist"S
 	    fi
 
-	    if test -f "$nlist"; then
-	      sed -e 's/^.* \(.*\)$/extern char \1;/' < "$nlist" >> "$output_objdir/$dlsyms"
+	    if test -f "$nlist"S; then
+	      eval "$global_symbol_to_cdecl"' < "$nlist"S >> "$output_objdir/$dlsyms"'
 	    else
 	      echo '/* NONE */' >> "$output_objdir/$dlsyms"
 	    fi
@@ -2402,30 +2403,9 @@ lt_preloaded_symbols[] =
 {\
 "
 
-	    if test "$dlself" = yes; then
-	      # First entry is the program itself
-	      echo >> "$output_objdir/$dlsyms" "\
-  {\"@PROGRAM@\", (lt_ptr_t) 0},"
-	      sed 's/^\(.*\)/  {"\1", (lt_ptr_t) \&\1},/' < "$export_symbols" >> "$output_objdir/$dlsyms"
-	    fi
-
-	    for arg in $dlprefiles; do
-	      name=`echo "$arg" | sed -e 's%^.*/%%'`
-	      echo >> "$output_objdir/$dlsyms" "\
-  {\"$name\", (lt_ptr_t) 0},"
-	      eval "$NM $arg | $global_symbol_pipe > '$nlist'"
-
-	      if test -f "$nlist"; then
-		if test -n "$exclude_expsyms"; then
-		  egrep -v "^($exclude_expsyms) " "$nlist" > "$nlist"T
-		  $mv "$nlist"T "$nlist"
-		fi
-
-		sed 's/^\(.*\) \(.*\)$/  {"\1", (lt_ptr_t) \&\2},/' < "$nlist" >> "$output_objdir/$dlsyms"
-	      else
-		echo '/* NONE */' >> "$output_objdir/$dlsyms"
-	      fi
-	    done
+	    sed -n -e 's/^: \([^ ]*\) $/  {\"\1\", (lt_ptr_t) 0},/p' \
+		-e 's/^. \([^ ]*\) \([^ ]*\)$/  {"\2", (lt_ptr_t) \&\2},/p' \
+		  < "$nlist" >> "$output_objdir/$dlsyms"
 
 	    $echo >> "$output_objdir/$dlsyms" "\
   {0, (lt_ptr_t) 0}

@@ -3501,13 +3501,24 @@ A pipeline that takes the output of @var{NM}, and produces a listing of
 raw symbols followed by their C names.  For example:
 
 @example
-$ @kbd{$NM | $global_symbol_pipe}
-@var{symbol1} @var{C-symbol1}
-@var{symbol2} @var{C-symbol2}
-@var{symbol3} @var{C-symbol3}
+$ @kbd{eval "$NM progname | $global_symbol_pipe"}
+D @var{symbol1} @var{C-symbol1}
+T @var{symbol2} @var{C-symbol2}
+C @var{symbol3} @var{C-symbol3}
 @dots{}
 $
 @end example
+
+The first column contains the symbol type (used to tell data from code
+on some platforms), but its meaning is system dependent.
+@end defvar
+
+@defvar global_symbol_to_cdecl
+A pipeline that translates the output of @var{global_symbol_pipe} into
+proper C declarations.  On platforms whose linkers differentiate code
+from data, such as HP/UX, data symbols will be declared as such, and
+code symbols will be declared as functions.  On platforms that don't
+care, everything is assumed to be data.
 @end defvar
 
 @defvar hardcode_action

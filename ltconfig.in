@@ -1012,7 +1012,7 @@ export_symbols_cmds='$NM $libobjs | $global_symbol_pipe | sed '\''s/.* //'\'' | 
 # included in the symbol list
 include_expsyms=
 # exclude_expsyms can be an egrep regular expression of symbols to exclude
-# it will be wrapped by `^(' and `) ', so one must not match beginning or
+# it will be wrapped by ` (' and `)$', so one must not match beginning or
 # end of line.  Example: `a|bc|.*d.*' will exclude the symbols `a' and `bc',
 # as well as any symbol that contains `d'.
 exclude_expsyms=
@@ -1385,7 +1385,10 @@ symcode='[BCDEGRST]'
 sympat='\([_A-Za-z][_A-Za-z0-9]*\)'
 
 # Transform the above into a raw symbol and a C symbol.
-symxfrm='\1 \1'
+symxfrm='\1 \2\3 \3'
+
+# Transform an extracted symbol line into a proper C declaration
+global_symbol_to_cdecl="sed -n -e 's/^. .* \(.*\)$/extern char \1;/p'"
 
 # Define system-specific variables.
 case "$host_os" in
@@ -1394,6 +1397,9 @@ aix*)
   ;;
 cygwin* | mingw*)
   symcode='[ABCDGISTW]'
+  ;;
+hpux*) # Its linker distinguishes data from code symbols
+  global_symbol_to_cdecl="sed -n -e 's/^T .* \(.*\)$/extern char \1();/p' -e 's/^. .* \(.*\)$/extern char \1;/p'"
   ;;
 irix*)
   symcode='[BCDEGRST]'
@@ -1412,7 +1418,7 @@ fi
 for ac_symprfx in "" "_"; do
 
   # Write the raw and C identifiers.
-  global_symbol_pipe="sed -n -e 's/^.*[ 	]$symcode[ 	][ 	]*$ac_symprfx$sympat$/$symxfrm/p'"
+  global_symbol_pipe="sed -n -e 's/^.*[ 	]\($symcode\)[ 	][ 	]*\($ac_symprfx\)$sympat$/$symxfrm/p'"
 
   # Check to see that the pipe works correctly.
   pipe_works=no
@@ -1452,7 +1458,7 @@ extern "C" {
 
 EOF
 	  # Now generate the symbol file.
-	  sed 's/^.* \(.*\)$/extern char \1;/' < "$nlist" >> conftest.c
+	  eval "$global_symbol_to_cdecl"' < "$nlist" >> conftest.c'
 
 	  cat <<EOF >> conftest.c
 #if defined (__STDC__) && __STDC__
@@ -1470,7 +1476,7 @@ const struct {
 lt_preloaded_symbols[] =
 {
 EOF
-	  sed 's/^\(.*\) \(.*\)$/  {"\1", (lt_ptr_t) \&\2},/' < "$nlist" >> conftest.c
+	  sed 's/^. \(.*\) \(.*\)$/  {"\2", (lt_ptr_t) \&\2},/' < "$nlist" >> conftest.c
 	  cat <<\EOF >> conftest.c
   {0, (lt_ptr_t) 0}
 };
@@ -1512,6 +1518,7 @@ EOF
     break
   else
     global_symbol_pipe=
+    global_symbol_to_cdecl=
   fi
 done
 echo "$ac_t$pipe_works" 1>&6
@@ -2355,8 +2362,9 @@ case "$ltmain" in
     RANLIB old_archive_cmds old_archive_from_new_cmds old_postinstall_cmds \
     old_postuninstall_cmds archive_cmds archive_expsym_cmds postinstall_cmds postuninstall_cmds \
     file_magic_cmd export_symbols_cmds deplibs_check_method allow_undefined_flag no_undefined_flag \
-    finish_cmds finish_eval global_symbol_pipe hardcode_libdir_flag_spec \
-    hardcode_libdir_separator sys_lib_search_path_spec \
+    finish_cmds finish_eval global_symbol_pipe global_symbol_to_cdecl \
+    hardcode_libdir_flag_spec hardcode_libdir_separator  \
+    sys_lib_search_path_spec \
     compiler_c_o compiler_o_lo need_locks exclude_expsyms include_expsyms; do
 
     case "$var" in
@@ -2604,6 +2612,9 @@ finish_eval=$finish_eval
 
 # Take the output of nm and produce a listing of raw symbols and C names.
 global_symbol_pipe=$global_symbol_pipe
+
+# Transform the output of nm in a proper C declaration
+global_symbol_to_cdecl=$global_symbol_to_cdecl
 
 # This is the shared library runtime path variable.
 runpath_var=$runpath_var
