@@ -729,7 +729,7 @@ compiler."
       arg="$1"
       shift
       case "$arg" in
-      *[\[\~\#\^\&\*\(\)\{\}\|\;\<\>\?\'\ \	]*|*]*)
+      *[\[\~\#\^\&\*\(\)\{\}\|\;\<\>\?\'\ \	]*|*]*|"")
 	qarg=\"`$echo "X$arg" | $Xsed -e "$sed_quote_subst"`\" ### testsuite: skip nested quoting test
 	;;
       *) qarg=$arg ;;
@@ -828,26 +828,18 @@ compiler."
 	  continue
 	  ;;
 	xcompiler)
-	  arg=`$echo "X$arg" | $Xsed -e "$sed_quote_subst"`
-	  case "$arg" in
-	  *[\[\~\#\^\&\*\(\)\{\}\|\;\<\>\?\'\ \	]*|*]*)
-	    arg="\"$arg\""
-	    ;;
-	  esac
-	  compiler_flags="$compiler_flags $arg"
+	  compiler_flags="$compiler_flags $qarg"
 	  prev=
+	  compile_command="$compile_command $qarg"
+	  finalize_command="$finalize_command $qarg"
 	  continue
 	  ;;
 	xlinker)
-	  arg=`$echo "X$arg" | $Xsed -e "$sed_quote_subst"`
-	  case "$arg" in
-	  *[\[\~\#\^\&\*\(\)\{\}\|\;\<\>\?\'\ \	]*|*]*)
-	    arg="\"$arg\""
-	    ;;
-	  esac
-	  linker_flags="$linker_flags $arg"
-	  compiler_flags="$compiler_flags $wl$arg"
+	  linker_flags="$linker_flags $qarg"
+	  compiler_flags="$compiler_flags $wl$qarg"
 	  prev=
+	  compile_command="$compile_command $wl$qarg"
+	  finalize_command="$finalize_command $wl$qarg"
 	  continue
 	  ;;
 	*)
@@ -1045,36 +1037,40 @@ compiler."
 	;;
 	
       -Wc,*)
-	arg=`$echo "X$arg" | $Xsed -e "$sed_quote_subst" -e 's/^-Wc,//'`
+	args=`$echo "X$arg" | $Xsed -e "$sed_quote_subst" -e 's/^-Wc,//'`
+	arg=
 	IFS="${IFS= 	}"; save_ifs="$IFS"; IFS=','
-	for flag in $arg; do
+	for flag in $args; do
 	  IFS="$save_ifs"
 	  case "$flag" in
-	    *[\[\~\#\^\&\*\(\)\{\}\|\;\<\>\?\'\ \	]*|*]*)
+	    *[\[\~\#\^\&\*\(\)\{\}\|\;\<\>\?\'\ \	]*|*]*|"")
 	    flag="\"$flag\""
 	    ;;
 	  esac
+	  arg="$arg $wl$flag"
 	  compiler_flags="$compiler_flags $flag"
 	done
 	IFS="$save_ifs"
-	continue
+	arg=`$echo "X$arg" | $Xsed -e "s/^ //"`
 	;;
 
       -Wl,*)
-	arg=`$echo "X$arg" | $Xsed -e "$sed_quote_subst" -e 's/^-Wl,//'`
+	args=`$echo "X$arg" | $Xsed -e "$sed_quote_subst" -e 's/^-Wl,//'`
+	arg=
 	IFS="${IFS= 	}"; save_ifs="$IFS"; IFS=','
-	for flag in $arg; do
+	for flag in $args; do
 	  IFS="$save_ifs"
 	  case "$flag" in
-	    *[\[\~\#\^\&\*\(\)\{\}\|\;\<\>\?\'\ \	]*|*]*)
+	    *[\[\~\#\^\&\*\(\)\{\}\|\;\<\>\?\'\ \	]*|*]*|"")
 	    flag="\"$flag\""
 	    ;;
 	  esac
+	  arg="$arg $wl$flag"
 	  compiler_flags="$compiler_flags $wl$flag"
 	  linker_flags="$linker_flags $flag"
 	done
 	IFS="$save_ifs"
-	continue
+	arg=`$echo "X$arg" | $Xsed -e "s/^ //"`
 	;;
 
       -Xcompiler)
@@ -1093,7 +1089,7 @@ compiler."
 	# to be aesthetically quoted because they are evaled later.
 	arg=`$echo "X$arg" | $Xsed -e "$sed_quote_subst"`
 	case "$arg" in
-	*[\[\~\#\^\&\*\(\)\{\}\|\;\<\>\?\'\ \	]*|*]*)
+	*[\[\~\#\^\&\*\(\)\{\}\|\;\<\>\?\'\ \	]*|*]*|"")
 	  arg="\"$arg\""
 	  ;;
 	esac
@@ -1216,7 +1212,7 @@ compiler."
 	# to be aesthetically quoted because they are evaled later.
 	arg=`$echo "X$arg" | $Xsed -e "$sed_quote_subst"`
 	case "$arg" in
-	*[\[\~\#\^\&\*\(\)\{\}\|\;\<\>\?\'\ \	]*|*]*)
+	*[\[\~\#\^\&\*\(\)\{\}\|\;\<\>\?\'\ \	]*|*]*|"")
 	  arg="\"$arg\""
 	  ;;
 	esac

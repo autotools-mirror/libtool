@@ -1,5 +1,10 @@
 1999-12-18  Alexandre Oliva  <oliva@lsd.ic.unicamp.br>
 
+	* ltmain.in (-Xcompiler, -Xlinker): Add to compile_command and
+	finalize_command.
+	(-Wc, -Wl): Likewise.
+	* tests/quote.test: Adjust quoting style of -Wl.
+	
 	* ltmain.in: Oops, `echo' -> `$echo'.
 
 	* ltmain.in (-Wl, -Wc): Make commas argument separators, just like
