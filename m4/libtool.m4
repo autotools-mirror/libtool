@@ -4215,17 +4215,20 @@ _LT_EOF
     solaris*)
       _LT_TAGVAR(no_undefined_flag, $1)=' -z defs'
       if test "$GCC" = yes; then
+	wlarc='${wl}'
 	_LT_TAGVAR(archive_cmds, $1)='$CC -shared ${wl}-z ${wl}text ${wl}-h ${wl}$soname -o $lib $libobjs $deplibs $compiler_flags'
 	_LT_TAGVAR(archive_expsym_cmds, $1)='$ECHO "{ global:" > $lib.exp~cat $export_symbols | $SED -e "s/\(.*\)/\1;/" >> $lib.exp~$ECHO "local: *; };" >> $lib.exp~
 	  $CC -shared ${wl}-z ${wl}text ${wl}-M ${wl}$lib.exp ${wl}-h ${wl}$soname -o $lib $libobjs $deplibs $compiler_flags~$RM $lib.exp'
       else
 	case `$CC -V 2>&1` in
 	*"Compilers 5.0"*)
+	  wlarc=''
 	  _LT_TAGVAR(archive_cmds, $1)='$LD -G${allow_undefined_flag} -h $soname -o $lib $libobjs $deplibs $linker_flags'
 	  _LT_TAGVAR(archive_expsym_cmds, $1)='$ECHO "{ global:" > $lib.exp~cat $export_symbols | $SED -e "s/\(.*\)/\1;/" >> $lib.exp~$ECHO "local: *; };" >> $lib.exp~
 	  $LD -G${allow_undefined_flag} -M $lib.exp -h $soname -o $lib $libobjs $deplibs $linker_flags~$RM $lib.exp'
 	  ;;
 	*)
+	  wlarc='${wl}'
 	  _LT_TAGVAR(archive_cmds, $1)='$CC -G${allow_undefined_flag} -h $soname -o $lib $libobjs $deplibs $compiler_flags'
 	  _LT_TAGVAR(archive_expsym_cmds, $1)='$ECHO "{ global:" > $lib.exp~cat $export_symbols | $SED -e "s/\(.*\)/\1;/" >> $lib.exp~$ECHO "local: *; };" >> $lib.exp~
 	  $CC -G${allow_undefined_flag} -M $lib.exp -h $soname -o $lib $libobjs $deplibs $compiler_flags~$RM $lib.exp'
@@ -4237,7 +4240,7 @@ _LT_EOF
       case $host_os in
       solaris2.[[0-5]] | solaris2.[[0-5]].*) ;;
       *) # Supported since Solaris 2.6 (maybe 2.5.1?)
-	_LT_TAGVAR(whole_archive_flag_spec, $1)='${wl}-z ${wl}allextract$convenience ${wl}-z ${wl}defaultextract' ;;
+	_LT_TAGVAR(whole_archive_flag_spec, $1)="${wlarc}-z ${wlarc}allextract\$convenience ${wlarc}-z ${wlarc}defaultextract" ;;
       esac
       _LT_TAGVAR(link_all_deplibs, $1)=yes
       ;;
