@@ -1,3 +1,12 @@
+2004-07-18  Peter O'Gorman  <peter@pogma.com>
+
+	* ltmain.in [darwin](func_extract_archives): Because fat archives
+	on darwin can not be extracted using ar, we need to use lipo to
+	extract the thin archives and then use lipo again to generate the
+	individual fat objects. This should allow people to run configure
+	with CC set to "cc -arch ppc -arch ppc64" or "cc -arch ppc -arch
+	i386" or whatever to match the toolchain they have available.
+
 2004-07-18  Greg Eisenhauer  <eisen@cc.gatech.edu>
 
 	* libltdl/loaders/Makefile.am: Use AM_MAKEFLAGS not MAKEFLAGS.
