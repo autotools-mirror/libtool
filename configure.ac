@@ -150,6 +150,12 @@ AC_SUBST([DIST_MAKEFILE_LIST])
 ## compiler checks. ##
 ## ---------------- ##
 
+# Need to be sure that we have a working C compiler, otherwise even with
+# a good C compiler: if the following C++ tests fail, the whole libtool
+# build fails!
+AC_PROG_CC
+AC_PROG_CPP
+
 # The Autoconf tests for C++ and Fortran 77 sometimes call AC_MSG_ERROR
 # and we don't want that to be an error whilst creating the libtool script.
 # As these are AC_REQUIREd inside libtool.m4 we can simply call them here

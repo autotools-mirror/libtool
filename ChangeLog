@@ -1,5 +1,9 @@
 2004-08-30  Gary V. Vaughan  <gary@gnu.org>
 
+	* configure.ac:  Because of the way the autoconf C++ testing
+	works, we need to call the C test first to work in an environment
+	that has no C++ compiler.
+
 	* libltdl/lt_dlloader.c (lt_dlloader_remove): Since the return
 	value of this function is often passed to free, don't declare it
 	`const'. Responsibility for this memory is given back to the
