@@ -151,7 +151,7 @@ main (argc, argv)
   int i;
   int ret = 0;
 
-  printf ("Welcome GNU libtool mdemo!\n");
+  printf ("Welcome to GNU libtool mdemo!\n");
 
   if (argc < 2) {
     fprintf (stderr, "usage: %s module [module...]\n", argv[0]);

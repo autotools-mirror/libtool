@@ -24,6 +24,14 @@ for sub in demo depdemo libltdl mdemo cdemo; do
   autoconf
   cd ..
 done
+
+# fix libltdl's Makefile.in
+cd libltdl
+sed -e 's/chmod 777/chmod 755/g' -e '/ln \$\$d\/\$\$file/d' \
+ Makefile.in > Makefile.tmp
+mv Makefile.tmp Makefile.in
+cd ..
+
 rm -f ltconfig ltmain.sh libtoolize
 
 exit 0

@@ -29,7 +29,7 @@ main (argc,argv)
 {
   int value;
 
-  printf ("Welcome GNU libtool cdemo!\n");
+  printf ("Welcome to GNU libtool cdemo!\n");
 
   value = hello();
   printf ("hello returned: %i\n", value);
