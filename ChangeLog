@@ -1,3 +1,8 @@
+2003-04-21  Richard Dawe  <rich@phekda.freeserve.co.uk>
+
+	* doc/libtool.texi: Use @ifnottex instead of @ifinfo,
+	to allow production of HTML documentation using makeinfo.
+
 2003-04-14  Robert Boehne  <rboehne@gnu.org>
 
 	* NEWS: Updated.

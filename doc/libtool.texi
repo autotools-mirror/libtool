@@ -21,7 +21,7 @@
 * libtoolize: (libtool)Invoking libtoolize.     Adding libtool support.
 @end direntry
 
-@ifinfo
+@ifnottex
 This file documents GNU Libtool @value{VERSION}
 
 Copyright (C) 1996-2000 Free Software Foundation, Inc.
@@ -39,7 +39,7 @@ results, provided the printed document carries copying permission notice
 identical to this one except for the removal of this paragraph
 
 @end ignore
-@end ifinfo
+@end ifnottex
 
 @titlepage
 @title GNU Libtool
@@ -68,7 +68,7 @@ the section entitled "GNU Free Documentation License".
 @syncodeindex tp cp
 @synindex pg cp
 
-@ifinfo
+@ifnottex
 @node Top, Introduction, (dir), (dir)
 @comment  node-name,  next,  previous,  up
 @top Shared library support for GNU
@@ -208,7 +208,7 @@ Platform quirks
 @end detailmenu
 @end menu
 
-@end ifinfo
+@end ifnottex
 
 @node Introduction
 @chapter Introduction
