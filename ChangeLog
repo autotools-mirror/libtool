@@ -1,5 +1,8 @@
 1999-01-20  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* libltdl/ltdl.c (lt_dlopen): properly detect error condition when
+	full pathname of non-libtool library is provided
+	
 	* libltdl/configure.in (libltdl_cv_preloaded_symbols,
 	HAVE_PRELOADED_SYMBOLS): test whether we support -dl*open
 	* libltdl/ltdl.c (!HAVE_PRELOADED_SYMBOLS, lt_preloaded_symbols):

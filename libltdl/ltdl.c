@@ -1072,13 +1072,14 @@ lt_dlopen (filename)
 			last_error = memory_error;
 			return 0;
 		}
-		if (tryall_dlopen(&handle, filename) && !*dir
-		    && find_library(&handle, basename, usr_search_path)
-		    && find_library(&handle, basename, search_path)
+		if (tryall_dlopen(&handle, filename)
+		    && (*dir
+			|| (find_library(&handle, basename, usr_search_path)
+			    && find_library(&handle, basename, search_path)
 #ifdef LTDL_SHLIBPATH_VAR
-		    && find_library(&handle, basename, sys_search_path)
+			    && find_library(&handle, basename, sys_search_path)
 #endif
-			) {
+				))) {
 			free(handle);
 			return 0;
 		}
