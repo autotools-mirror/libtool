@@ -50,7 +50,7 @@ dld_link_la_LIBADD	= ../libdlloader.la -ldld
 
 ## These are installed as a subdirectory of pkgdatadir so that
 ## libtoolize --ltdl can find them later:
-ltdldatadir		= $(pkgdatadir)/libltdl/loaders
+ltdldatadir		= $(pkgvdatadir)/libltdl/loaders
 ltdldata_DATA		= Makefile.am dld_link.c dlopen.c dyld.c \
 			  load_add_on.c loadlibrary.c shl_load.c
 

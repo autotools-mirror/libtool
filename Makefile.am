@@ -38,11 +38,12 @@ edit = sed \
 	-e 's,@PACKAGE_VERSION\@,$(VERSION),g' \
 	-e 's,@SED\@,$(SED),g' \
 	-e 's,@VERSION\@,$(VERSION),g' \
-	-e 's,@prefix\@,$(prefix),g' \
-	-e 's,@datadir\@,$(datadir),g' \
-	-e 's,@pkgdatadir\@,$(pkgdatadir),g' \
 	-e 's,@aclocaldir\@,$(aclocaldir),g' \
+	-e 's,@datadir\@,$(datadir),g' \
 	-e 's,@host_triplet\@,$(host_triplet),g' \
+	-e 's,@pkgvdatadir\@,$(pkgvdatadir),g' \
+	-e 's,@pkgvmacrodir\@,$(pkgvmacrodir),g' \
+	-e 's,@prefix\@,$(prefix),g' \
 	-e "s,@configure_input\@,Generated from $$input; do not edit by hand,g"
 
 timestamp = set -- `$(MKSTAMP) < $(top_srcdir)/ChangeLog`; \
@@ -66,13 +67,13 @@ CLEANFILES = libtool libtoolize \
 # These are required by libtoolize and must be executable when installed.
 # Since _SCRIPTS gets the program transform applied we make them
 # executable by hand
-dist_pkgdata_DATA = config/config.guess config/config.sub config/ltmain.sh
+dist_pkgvdata_DATA = config/config.guess config/config.sub config/ltmain.sh
 
 # Everything that gets picked up by aclocal is automatically distributed,
 # this is the list of macro files we install on the user's system.
-# NOTE: Ensure that PKGMACRO_FILES in libtoolize.in is updated if you
+# NOTE: Ensure that PKGVMACRO_FILES in libtoolize.in is updated if you
 #       change the contents of aclocal_DATA:
-aclocal_DATA = m4/argz.m4 m4/libtool.m4 m4/ltdl.m4 \
+pkgvmacro_DATA = m4/argz.m4 m4/libtool.m4 m4/ltdl.m4 \
 	m4/ltoptions.m4 m4/ltsugar.m4 m4/ltversion.m4
 
 ## We know that $(top_srcdir)/ChangeLog has been edited if stamp-vcl
@@ -251,12 +252,37 @@ clean-local: legacy-clean-local
 
 
 install-data-local:
-## Don't install over the top of an old pkgdatadir
+## Don't install over the top of an old pkgvdatadir
+	-rm -rf $(DESTDIR)$(pkgvdatadir)
+## Remove old pkgdatadir
 	-rm -rf $(DESTDIR)$(pkgdatadir)
+## Remove old macro definitions
+	-rm -rf $(DESTDIR)$(aclocaldir)/ltdl.m4
+	-rm -rf $(DESTDIR)$(aclocaldir)/libtool.m4
 
 install-data-hook:
-	chmod +x $(DESTDIR)$(pkgdatadir)/config.guess
-	chmod +x $(DESTDIR)$(pkgdatadir)/config.sub
+	chmod +x $(DESTDIR)$(pkgvdatadir)/config.guess
+	chmod +x $(DESTDIR)$(pkgvdatadir)/config.sub
+
+## Make versioned links.  We only run the transform on the root name;
+## then we make a versioned link with the transformed base name.  This
+## seemed like the most reasonable approach.
+install-exec-hook:
+	@$(POST_INSTALL)
+	@for p in $(bin_SCRIPTS); do \
+	  f="`echo $$p|sed '$(transform)'`"; \
+	  fv="$$f-$(APIVERSION)"; \
+	  rm -f $(DESTDIR)$(bindir)/$$fv; \
+	  echo " $(LN) $(DESTDIR)$(bindir)/$$f $(DESTDIR)$(bindir)/$$fv"; \
+	  $(LN) $(DESTDIR)$(bindir)/$$f $(DESTDIR)$(bindir)/$$fv; \
+	done
+
+uninstall-hook:
+	@for p in $(bin_SCRIPTS); do \
+	  f="`echo $$p|sed '$(transform)'`"; \
+	  fv="$$f-$(APIVERSION)"; \
+	  rm -f $(DESTDIR)$(bindir)/$$fv; \
+	done
 
 ## Ship README.alpha only in alpha release, but renamed to README
 dist-hook:

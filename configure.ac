@@ -124,11 +124,19 @@ AC_SUBST([CONFIG_STATUS_DEPENDENCIES], ['$(top_builddir)/stamp-vcl'])
 ## ------------------------------- ##
 ## Libtool specific configuration. ##
 ## ------------------------------- ##
-pkgdatadir='${datadir}'"/${PACKAGE}"
-AC_SUBST([pkgdatadir]) # automake does not need this, but libtoolize does
 
-aclocaldir='${datadir}/aclocal'
-AC_SUBST([aclocaldir])
+# The API version is the base version.  We must guarantee
+# compatibility for all releases with the same API version.
+# Our current rule is that:
+# * All releases, including the prereleases, in an X.Y series
+#   are compatible.  So 2.0.1c is compatible with 2.0.
+# * Prereleases on the trunk are all incompatible -- 2.1b and 2.1c
+#   aren't the same.
+APIVERSION=`echo "$VERSION" | sed -e 's/^\([[0-9]]*\.[[0-9]]*[[a-z]]*\).*$/\1/'`
+AC_SUBST([APIVERSION])
+AC_SUBST([aclocaldir],   ["\${prefix}/aclocal"])
+AC_SUBST([pkgvdatadir],  ["\${datadir}/$PACKAGE-$APIVERSION"])
+AC_SUBST([pkgvmacrodir], ["\${datadir}/$PACKAGE-$APIVERSION/m4"])
 
 AC_ARG_ENABLE(ltdl-install,
     [AS_HELP_STRING([--disable-ltdl-install], [do not install libltdl])])
@@ -148,6 +156,22 @@ for dir in $CONF_SUBDIRS; do
 done
 AC_SUBST([DIST_MAKEFILE_LIST])
 
+
+# Test for ln.  We need use it to install the versioned binaries.
+AC_MSG_CHECKING([whether ln works])
+AC_CACHE_VAL([am_cv_prog_ln], [
+rm -f conftest conftest.file
+: >conftest.file
+if ln conftest.file conftest 2>/dev/null; then
+  am_cv_prog_ln=ln
+else
+  am_cv_prog_ln='cp -p'
+fi
+rm -f conftest conftest.file])
+AC_SUBST([LN], [$am_cv_prog_ln])
+result=no
+test "x$am_cv_prog_ln" = xln && result=yes
+AC_MSG_RESULT([$result])
 
 
 ## ---------------- ##
