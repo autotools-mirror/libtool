@@ -1,3 +1,9 @@
+2000-09-12  Michael Matz <matz@ifh.de>
+
+	* ltmain.in:  Be careful about filenames with multiple `.'s in
+	them when calculating file extensions.
+	Reported by Joel Reed <jreed@support.ddiworld.com>
+
 2000-09-04  Alexandre Oliva  <aoliva@redhat.com>
 
 	* tests/*.test (CONFIG_SITE): Ultrix's /bin/sh fails on
