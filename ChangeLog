@@ -1,3 +1,15 @@
+2001-01-31  Gary V. Vaughan  <gvv@techie.com>
+
+	* libltdl/ltdl.c (load_deplibs): If loading a deplib fails,
+	don't sweat -- it may be a lib that is already statically linked
+	into the loading application.
+	
+	* libltdl/ltdl.c: Clean up the shadowing of the global handles
+	variable.
+	(LT_DLRESIDENT_FLAGS): Add extra parens to satisfy -Wall.
+	(load_deplibs):  Cast isspace() argument to an int to satisfy
+	-Wall.
+
 2001-01-29  Alexandre Oliva  <aoliva@redhat.com>
 
 	* libltdl/Makefile.am (CLEANFILES): Clean conditionally-built

@@ -142,7 +142,7 @@ struct lt_dlhandle_struct {
 
 /* Various boolean flags can be stored in the flags field of an
    lt_dlhandle_struct... */
-#define LT_DLGET_FLAG(handle, flag) ((handle)->flags&(flag) == (flag))
+#define LT_DLGET_FLAG(handle, flag) (((handle)->flags & (flag)) == (flag))
 #define LT_DLSET_FLAG(handle, flag) ((handle)->flags |= (flag))
 
 #define LT_DLRESIDENT_FLAG	    (0x01 << 0)
@@ -1569,7 +1569,6 @@ load_deplibs(handle, deplibs)
   int	i;
   int	ret = 1, depcount = 0;
   char	**names = 0;
-  lt_dlhandle *handles = 0;
 
   handle->depcount = 0;
   if (!deplibs)
@@ -1588,10 +1587,10 @@ load_deplibs(handle, deplibs)
   p = deplibs;
   while (*p)
     {
-      if (!isspace (*p))
+      if (!isspace ((int) *p))
 	{
 	  char *end = p+1;
-	  while (*end && !isspace(*end))
+	  while (*end && !isspace((int) *end))
 	    {
 	      ++end;
 	    }
@@ -1631,24 +1630,19 @@ load_deplibs(handle, deplibs)
       goto cleanup;
     }
 
-  handles = (lt_dlhandle*) LT_DLMALLOC (lt_dlhandle *, depcount);
-  if (!handles)
-    {
-      goto cleanup;
-    }
   /* now only extract the actual deplibs */
   depcount = 0;
   p = deplibs;
   while (*p)
     {
-      if (isspace (*p))
+      if (isspace ((int) *p))
 	{
 	  ++p;
 	}
       else
 	{
 	  char *end = p+1;
-	  while (*end && !isspace (*end))
+	  while (*end && !isspace ((int) *end))
 	    {
 	      ++end;
 	    }
@@ -1685,29 +1679,33 @@ load_deplibs(handle, deplibs)
 	}
     }
 
-  /* load the deplibs (in reverse order) */
-  for (i = 0; i < depcount; ++i)
+  /* load the deplibs (in reverse order)
+     At this stage, don't worry if the deplibs do not load correctly,
+     they may already be statically linked into the loading application
+     for instance.  There will be a more enlightening error message
+     later on if the loaded module cannot resolve all of its symbols.  */
+  if (depcount)
     {
-      lt_dlhandle handle = lt_dlopenext(names[depcount-1-i]);
-      if (!handle)
-	{
-	  int j;
-	  for (j = 0; j < i; ++j)
+      int	j = 0;
+
+      handle->deplibs = (lt_dlhandle*) LT_DLMALLOC (lt_dlhandle *, depcount);
+      if (!handle->deplibs)
 	    {
-	      lt_dlclose(handles[j]);
+	  goto cleanup;
 	    }
 
-	  last_error = LT_DLSTRERROR (DEPLIB_NOT_FOUND);
-	  goto cleanup_names;
+      for (i = 0; i < depcount; ++i)
+	{
+	  handle->deplibs[j] = lt_dlopenext(names[depcount-1-i]);
+	  if (handle->deplibs[j])
+	    {
+	      ++j;
 	}
-
-      handles[i] = handle;
     }
 
-  handle->depcount  = depcount;
-  handle->deplibs   = handles;
-  handles	    = 0;
+      handle->depcount	= j;	/* Number of successfully loaded deplibs */
   ret		    = 0;
+    }
 
  cleanup_names:
   for (i = 0; i < depcount; ++i)
@@ -1717,7 +1715,6 @@ load_deplibs(handle, deplibs)
 
  cleanup:
   LT_DLFREE (names);
-  LT_DLFREE (handles);
 
   /* restore the old search path */
   LT_DLFREE (user_search_path);
