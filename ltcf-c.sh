@@ -167,6 +167,18 @@ EOF
       $CC $output_objdir/$soname-exp '$lt_cv_cc_dll_switch' -Wl,-e,'$dll_entry' -o $lib '$ltdll_obj'$libobjs $deplibs $compiler_flags'
     ;;
 
+  darwin*|rhapsody*)
+    allow_undefined_flag='-undefined warning'
+    archive_cmds='$CC $(if [ "$module" = "yes" ]; then echo -bundle; else
+      echo -dynamiclib; fi) -o $lib $libobjs $deplibs $linkopts'
+    archive_expsym_cmds="$archive_cmds"' && strip -s $export_symbols'
+    ## What we need is to hardcode the path to the library, not the search path
+    #hardcode_direct=yes
+    #hardcode_libdir_flag_spec='-install_name $libdir/$lib'
+    hardcode_shlibpath_var=no
+    whole_archive_flag_spec='-all_load'
+    ;;
+
   netbsd*)
     if echo __ELF__ | $CC -E - | grep __ELF__ >/dev/null; then
       archive_cmds='$LD -Bshareable $libobjs $deplibs $linker_flags -o $lib'

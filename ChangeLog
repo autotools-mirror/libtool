@@ -1,3 +1,10 @@
+2000-12-16   Wilfredo Sanchez  <wsanchez@apple.com>
+
+	* ltconfig.in: (dyld/darwin*) Much improved port.
+	* ltcf-c.sh: (dyld/darwin*) Much improved port.
+	* libtool.m4: (dyld/darwin*) Much improved port.
+	* ltmain.in: (dyld/darwin*) Much improved port.
+	
 2000-12-16  Sascha Schumann <sascha@schumann.cx>
 
 	* ltmain.in: Accept darwin as an alias for rhapsody.
