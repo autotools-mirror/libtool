@@ -6182,7 +6182,7 @@ fi\
 	  build_libtool_libs=no
 	else
 	  oldobjs="$old_deplibs $non_pic_objects"
-	  if test "$preload" = yes && test -f "$dlsymsobj"; then
+	  if test "$preload" = yes && test -f "$symfileobj"; then
 	    oldobjs="$oldobjs $symfileobj"
 	  fi
 	fi
