@@ -310,3 +310,98 @@ diff -p -r1.11 -r1.12
 + AC_CHECK_TOOL(AS, as, false)
   ])
 
+From ian@cygnus.com Tue Nov  3 23:23 EDT 1998
+Received: from grande.dcc.unicamp.br (grande.dcc.unicamp.br [143.106.7.8])
+	by amazonas.dcc.unicamp.br (8.8.5/8.8.5) with ESMTP id XAA22373
+	for <oliva@amazonas.dcc.unicamp.br>; Tue, 3 Nov 1998 23:23:22 -0200 (EDT)
+Received: from tweedledumb.cygnus.com (tweedledumb.cygnus.com [192.80.44.1])
+	by grande.dcc.unicamp.br (8.8.5/8.8.5) with ESMTP id XAA20164
+	for <oliva@dcc.unicamp.br>; Tue, 3 Nov 1998 23:23:18 -0200 (EDT)
+Received: from subrogation.cygnus.com (subrogation.cygnus.com [192.80.44.76])
+	by tweedledumb.cygnus.com (8.8.5/8.8.5) with ESMTP id UAA13699;
+	Tue, 3 Nov 1998 20:25:28 -0500 (EST)
+Received: (ian@localhost) by subrogation.cygnus.com (950413.SGI.8.6.12/8.6.4) id UAA01678; Tue, 3 Nov 1998 20:25:28 -0500
+Date: Tue, 3 Nov 1998 20:25:28 -0500
+Message-Id: <199811040125.UAA01678@subrogation.cygnus.com>
+From: Ian Lance Taylor <ian@cygnus.com>
+To: gvaughan@oranda.demon.co.uk
+CC: tanner@gmx.de, oliva@dcc.unicamp.br, gord@trick.fig.org,
+        bug-libtool@gnu.org
+In-reply-to: <363F3F85.2B31574@oranda.demon.co.uk>
+	(gvaughan@oranda.demon.co.uk)
+Subject: Re: Inter-library dependencies in libtool
+Content-Type: text
+X-Content-Length: 3237
+Xref: araguaia.dcc.unicamp.br libtool-cygwin32:2
+Lines: 69
+X-Gnus-Article-Number: 2   Wed Nov  4 01:39:12 1998
+
+   Date: Tue, 03 Nov 1998 17:38:13 +0000
+   From: "Gary V. Vaughan" <gvaughan@oranda.demon.co.uk>
+
+   It would seem that the dll code has bitrotted =(O|  Pity.  Ian, do you
+   have time/want to fix this, or do you want to pass the torch on?
+
+I no longer have access to a Windows machine, nor do I have all that
+much interest in the problem, so I'd say that somebody else had better
+pick up the torch.
+
+Incidentally, I believe that DJ Delorie is working on adding DLL
+support directly to ld, which will mean that dlltool is no longer
+required, and should make it possible to greatly simplify the win32
+hacks in dlltool, perhaps even simply using the standard GNU ld code.
+
+   Shouldn't libtool notice that it is running on cygwin32 and pass the
+   -no-undefined option by itself?  It seems to go against the raison
+   d'etre for libtool to force the Makefile developer to figure this out...
+
+This kind of goes to the heart of libtool.  libtool wants to present a
+particular interface for using shared libraries.  In order to do this,
+it assumes that the system supports certain capabilities.  One of
+those is that the system can support undefined symbols in shared
+libraries.
+
+That means that on systems which do not permit shared libraries to
+have undefined symbols--AIX and Windows--libtool doesn't really work.
+
+The --no-undefined option is a hack which tells libtool that the
+shared library has special characteristics which permit libtool to
+create a shared library on AIX or Windows, or any other supported
+platform.
+
+I think the general idea is that you should use the --no-undefined
+option whenever possible.  If you do, you will be able to create
+shared libraries on AIX and Windows.  If you do not or can not, you
+will not be able to create them.
+
+libtool should not add a --no-undefined option itself.  If it used
+that option inappropriately, then building the shared library would
+fail.  Instead, libtool users should always use --no-undefined if they
+can.
+
+Of course, there are problems.  For example, in the GNU binutils, I
+can arrange matters such that --no-undefined will work on Windows, but
+to do so I have to link various libraries together and I have to link
+against special Windows system libraries.  So I do that, which means
+that I have to change the options I pass to libtool based on the
+system.
+
+In other words, the interface which libtool presents is deficient.  It
+does not successfully hide the system on which it is running, and it
+forces the code which calls libtool to make adjustments.
+
+I doubt there is any wholly acceptable solution here.  The only
+workable one I can see would be to effectively enhance Windows and AIX
+shared libraries such that they support creating shared libraries with
+undefined symbols.  On Windows, this could be done by doing the link
+once, checking for undefined symbols, creating little stub routines
+for those symbols which track down the symbols in some other open DLL,
+compiling those stubs, and linking them into the DLL.  Perhaps
+something similar is possible on AIX.
+
+Of course even that will not make Windows DLLs identical to ELF shared
+libraries.  ELF shared libraries permit the main program to override a
+symbol in the shared library, and Windows DLLs do not.
+
+Ian
+
