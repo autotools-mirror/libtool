@@ -1,0 +1,15 @@
+#undef	LTDL_SHLIB_EXT
+
+#undef	LTDL_SHLIBPATH_VAR
+
+#undef	LTDL_OBJDIR
+
+#undef	HAVE_PRELOADED_SYMBOLS
+
+#undef	HAVE_LIBDL
+
+#undef	HAVE_DLD
+
+#undef	HAVE_SHL_LOAD
+
+#undef	NEED_USCORE
