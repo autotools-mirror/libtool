@@ -1,4 +1,5 @@
-dnl Initialize the hell package.
+dnl Process this file with autoconf to create configure.
+
 AC_INIT(hello.c)
 AM_INIT_AUTOMAKE(hell,1.0)
 

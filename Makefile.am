@@ -1,5 +1,4 @@
-## Process Makefile.am with automake to create Makefile.in. -*-Makefile-*-
-## Gordon Matzigkeit <gord@gnu.ai.mit.edu>, 1996
+## Process this file with automake to produce Makefile.in
 
 AUTOMAKE_OPTIONS = 1.3e gnits readme-alpha
 

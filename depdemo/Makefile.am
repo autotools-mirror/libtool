@@ -1,5 +1,5 @@
-# A brief demonstration of inter-library dependencies
-#
+## Process this file with automake to produce Makefile.in
+
 AUTOMAKE_OPTIONS = no-dependencies foreign
 
 SUBDIRS = l1 l2 l3 l4

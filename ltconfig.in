@@ -1628,6 +1628,9 @@ beos*)
   library_names_spec='${libname}.so'
   dynamic_linker="$host_os ld.so"
   shlibpath_var=LIBRARY_PATH
+  lt_cv_dlopen="load_add_on"
+  lt_cv_dlopen_libs=
+  lt_cv_dlopen_self=yes
   ;;
 
 bsdi4*)
@@ -1659,6 +1662,8 @@ cygwin* | mingw*)
   need_lib_prefix=no
   # FIXME: first we should search . and the directory the executable is in
   shlibpath_var=PATH
+  lt_cv_dlopen="LoadLibrary"
+  lt_cv_dlopen_libs=
   ;;
 
 freebsd1*)
@@ -2138,54 +2143,6 @@ if eval "test \"`echo '$ac_cv_func_'shl_load`\" = yes"; then
   lt_cv_dlopen="shl_load"
 else
   echo "$ac_t""no" 1>&6
-echo $ac_n "checking for LoadLibrary""... $ac_c" 1>&6
-echo "$progname:@LINENO@: checking for LoadLibrary" >&5
-if eval "test \"`echo '$''{'ac_cv_func_LoadLibrary'+set}'`\" = set"; then
-  echo $ac_n "(cached) $ac_c" 1>&6
-else
-  cat > conftest.$ac_ext <<EOF
-#line @LINENO@ "ltconfig"
-/* System header to define __stub macros and hopefully few prototypes,
-    which can conflict with char LoadLibrary(); below.  */
-#include <assert.h>
-/* Override any gcc2 internal prototype to avoid an error.  */
-/* We use char because int might match the return type of a gcc2
-    builtin and then its argument prototype would still apply.  */
-char LoadLibrary();
-
-int main() {
-
-/* The GNU C library defines this for functions which it implements
-    to always fail with ENOSYS.  Some functions are actually named
-    something starting with __ and the normal name is an alias.  */
-#if defined (__stub_LoadLibrary) || defined (__stub___LoadLibrary)
-choke me
-#else
-LoadLibrary();
-#endif
-
-; return 0; }
-EOF
-if { (eval echo $progname:@LINENO@: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
-  rm -rf conftest*
-  eval "ac_cv_func_LoadLibrary=yes"
-else
-  echo "$progname: failed program was:" >&5
-  cat conftest.$ac_ext >&5
-  rm -rf conftest*
-  eval "ac_cv_func_LoadLibrary=no"
-fi
-rm -f conftest*
-fi
-
-if eval "test \"`echo '$ac_cv_func_'LoadLibrary`\" = yes"; then
-  echo "$ac_t""yes" 1>&6
-  lt_cv_dlopen="LoadLibrary"
-else
-  echo "$ac_t""no" 1>&6
-fi
-
-      
 fi
 
     

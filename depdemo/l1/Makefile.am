@@ -1,5 +1,4 @@
-# A brief demonstration of inter-library dependencies
-#
+## Process this file with automake to produce Makefile.in
 
 INCLUDES = -I$(top_srcdir)
 

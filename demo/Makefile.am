@@ -1,5 +1,5 @@
-# A brief demonstration of using Automake with Libtool. -*-Makefile-*-
-#
+## Process this file with automake to produce Makefile.in
+
 AUTOMAKE_OPTIONS = no-dependencies foreign
 
 EXTRA_DIST = $(TESTS) acinclude.m4
@@ -76,8 +76,8 @@ hc-direct: $(hell_OBJECTS) $(hell_DEPENDENCIES) $(libdir)/libhello.la
 	  eval `egrep -e '^(hardcode_.*|wl)=' libtool`; \
 	  libdir=$(libdir); \
 	  flag=`eval echo \"$$hardcode_libdir_flag_spec\"`; \
-	  echo "$(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) $$shlib -lm $$flag || echo unsupported > $@"; \
-	  eval "$(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) $$shlib -lm $$flag || echo unsupported > $@"
+	  echo "$(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) $$shlib $(LIBS) $$flag || echo unsupported > $@"; \
+	  eval "$(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) $$shlib $(LIBS) $$flag || echo unsupported > $@"
 
 hc-libflag: $(hell_OBJECTS) $(hell_DEPENDENCIES) $(libdir)/libhello.la
 	@eval `egrep -e '^(hardcode_.*|wl)=' libtool`; \
@@ -87,8 +87,8 @@ hc-libflag: $(hell_OBJECTS) $(hell_DEPENDENCIES) $(libdir)/libhello.la
 	    echo "echo unsupported > $@"; \
 	    echo unsupported > $@ || status="$$?"; \
 	  else \
-	    echo "$(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) $$flag -L$(libdir) -lhello -lm"; \
-	    $(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) $$flag -L$(libdir) -lhello -lm || status="$$?"; \
+	    echo "$(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) $$flag -L$(libdir) -lhello $(LIBS)"; \
+	    $(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) $$flag -L$(libdir) -lhello $(LIBS) || status="$$?"; \
 	  fi; \
 	  exit $$status
 
@@ -98,16 +98,16 @@ hc-libpath: $(hell_OBJECTS) $(hell_DEPENDENCIES) $(libdir)/libhello.la
 	@eval `egrep -e '^(shlibpath_var|hardcode_.*|wl)=' libtool`; \
 	  libdir=$(libdir); \
 	  flag=`eval echo \"$$hardcode_libdir_flag_spec\"`; \
-	  echo "$$shlibpath_var=./$(objdir) $(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) -lhello -lm $$flag || echo unsupported > $@"; \
-	  eval "$$shlibpath_var=./$(objdir) $(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) -lhello -lm $$flag || echo unsupported > $@"
+	  echo "$$shlibpath_var=./$(objdir) $(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) -lhello $(LIBS) $$flag || echo unsupported > $@"; \
+	  eval "$$shlibpath_var=./$(objdir) $(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) -lhello $(LIBS) $$flag || echo unsupported > $@"
 
 hc-minusL: $(hell_OBJECTS) $(hell_DEPENDENCIES)
 	@rm -f hc-minusL
 	@eval `egrep -e '^(hardcode_.*|wl)=' libtool`; \
 	  libdir=$(libdir); \
 	  flag=`eval echo \"$$hardcode_libdir_flag_spec\"`; \
-	  echo "$(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) -L./$(objdir) -lhello -lm $$flag || echo unsupported > $@"; \
-	  eval "$(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) -L./$(objdir) -lhello -lm $$flag || echo unsupported > $@"
+	  echo "$(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) -L./$(objdir) -lhello $(LIBS) $$flag || echo unsupported > $@"; \
+	  eval "$(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) -L./$(objdir) -lhello $(LIBS) $$flag || echo unsupported > $@"
 
 $(OBJECTS): libtool
 libtool: $(LIBTOOL_DEPS)

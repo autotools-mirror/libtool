@@ -568,9 +568,20 @@ AC_SUBST(USE_SYMBOL_UNDERSCORE)dnl
 ])
 
 # AC_CHECK_LIBM - check for math library
-AC_DEFUN(AC_CHECK_LIBM, [
-AC_CHECK_LIB(mw, _mwvalidcheckl)
-AC_CHECK_LIB(m, cos)
+AC_DEFUN(AC_CHECK_LIBM,
+[AC_REQUIRE([AC_CANONICAL_HOST])dnl
+case "$host" in
+*-*-beos* | *-*-cygwin*)
+  # These system don't have libm
+  ;;
+*-ncr-sysv4.3*)
+  AC_CHECK_LIB(mw, _mwvalidcheckl)
+  AC_CHECK_LIB(m, cos)
+  ;;
+*)
+  AC_CHECK_LIB(m, cos)
+  ;;
+esac
 ])
 
 # AC_LIBLTDL_CONVENIENCE[(dir)] - sets LIBLTDL to the link flags for

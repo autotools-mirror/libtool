@@ -9,7 +9,8 @@ New in 1.3a: CVS version, Libtool team:
 * Various bugfixes
 
 New in 1.2g: CVS version, Libtool team:
-* Nothing so far
+* dlopen support for BeOS
+* Improved support for BeOS and Cygwin
 
 New in 1.2e: CVS version; 1.2f: 1999-03-15, Libtool team:
 * libtool will correctly link uninstalled libraries into programs

@@ -1,3 +1,24 @@
+1999-03-19 Thomas Tanner  <tanner@gmx.de>
+
+	* use the same header in all configure.in's and Makefile.am's
+	* NEWS: improved support for BeOS and Cygwin
+	* TODO: ILD branch was merged, all internal variables and macros
+	  are now documented
+	* demo/Makefile.am: use $(LIBS) instead of -lm
+	* doc/libtool.texi: documented new variable hardcode_into_libs
+	  and thread_safe_flag_spec, renamed all AM_ENABLE/DISABLE_* macros
+	  to AC_*, documented AC_DISABLE_FAST_INSTALL and AC_LIBTOOL_DLOPEN
+	* libltdl/ltdl.c: added two new error messages (cannot_open_error,
+	  cannot_close_error), use them where approriate,
+	  BeOS support (thanks to Xavier Pianet), on BeOS search modules
+	  additionally in ADDON_PATH
+	* libtool.m4: rewrote AC_CHECK_LIBM: BeOS and Cygwin don't have
+	  libm and *-ncr-sysv4.3* requires libmw
+	* ltconfig.in: don't check for LoadLibrary, hardcode dlopen
+	  configuration for BeOS and Cygwin
+	* ltmain.in: fix sourcing of .la files on Solaris 
+	  (patch by Raja R Harinath)
+
 1999-03-19  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* ltconfig.in (sunos4*, with_gnu_ld, hardcode_minus_L): remove,	we

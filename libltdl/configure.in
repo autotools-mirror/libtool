@@ -1,5 +1,5 @@
 dnl Process this file with autoconf to create configure.
-dnl Initialize the libltdl package.
+
 AC_INIT(ltdl.c)
 
 if test -z "$enable_ltdl_install$enable_ltdl_convenience"; then

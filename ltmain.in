@@ -1621,7 +1621,10 @@ compiler."
 	installed=yes
 
 	# Read the .la file
-	. $lib
+	case "$lib" in
+	*/* | *\\*) . $lib ;;
+	*) . ./$lib ;;
+	esac
 
 	# Get the name of the library we link against.
 	linklib=
@@ -2431,7 +2434,10 @@ EOF
 	installed=yes
 
 	# Read the .la file
-	. $lib
+	case "$lib" in
+	*/* | *\\*) . $lib ;;
+	*) . ./$lib ;;
+	esac
 
 	# Get the name of the library we link against.
 	linklib=
@@ -2556,7 +2562,10 @@ EOF
 	installed=yes
 
 	# Read the .la file
-	. $lib
+	case "$lib" in
+	*/* | *\\*) . $lib ;;
+	*) . ./$lib ;;
+	esac
 
 	# Get the name of the library we link against.
 	linklib=
@@ -3703,7 +3712,10 @@ relink_command=\"$relink_command\""
 	    # Check to see that each library is installed.
 	    libdir=
 	    if test -f "$lib"; then
-	      . $lib
+	      case "$lib" in
+	      */* | *\\*) . $lib ;;
+	      *) . ./$lib
+	      esac
 	    fi
 	    libfile="$libdir/`$echo "X$lib" | $Xsed -e 's%^.*/%%g'`"
 	    if test -n "$libdir" && test ! -f "$libfile"; then

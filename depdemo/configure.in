@@ -1,4 +1,5 @@
-dnl Initialize the depdemo package.
+dnl Process this file with autoconf to create configure.
+
 AC_INIT(main.c)
 AM_INIT_AUTOMAKE(depdemo,0.1)
 
