@@ -27,6 +27,12 @@ if test -z "$srcdir"; then
 fi
 . $srcdir/defs || exit 1
 
+case "$host" in
+hppa*)
+	func_skip "HPPA doesn't like non-PIC shared libs"
+	;;
+esac
+
 func_rmprefixdir
 func_cd "demo"
 func_make_distclean

@@ -1,3 +1,8 @@
+2003-10-31  Scott James Remnant  <scott@netsplit.com>
+
+	* tests/demo-nopic.test: Skip test on hppa, which don't like
+	non-PIC shared libraries.
+
 2003-11-06  Charles Wilson  <cwilson@ece.gatech.edu>
 
 	* tests/depdemo/configure.ac, tests/mdemo/configure.ac,
