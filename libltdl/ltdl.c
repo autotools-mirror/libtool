@@ -1,7 +1,9 @@
 /* ltdl.c -- system independent dlopen wrapper
-   Copyright (C) 1998, 1999, 2000 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2000, 2004 Free Software Foundation, Inc.
    Originally by Thomas Tanner <tanner@ffii.org>
-   This file is part of GNU Libtool.
+
+   NOTE: The canonical source of this file is maintained with the
+   GNU Libtool package.  Report bugs to bug-libtool@gnu.org.
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU Lesser General Public
@@ -37,16 +39,6 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 #  include <stdio.h>
 #endif
 
-/* Include the header defining malloc.  On K&R C compilers,
-   that's <malloc.h>, on ANSI C and ISO C compilers, that's <stdlib.h>.  */
-#if HAVE_STDLIB_H
-#  include <stdlib.h>
-#else
-#  if HAVE_MALLOC_H
-#    include <malloc.h>
-#  endif
-#endif
-
 #if HAVE_STRING_H
 #  include <string.h>
 #else
@@ -78,6 +70,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 #endif
 
 #include "ltdl.h"
+#include "lt__alloc.h"
 
 #if defined(HAVE_CLOSEDIR) && defined(HAVE_OPENDIR) && defined(HAVE_READDIR) && defined(HAVE_DIRENT_H)
 /* We have a fully operational dirent subsystem.  */
@@ -120,14 +113,6 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 #  define LT_GLOBAL_DATA
 #endif
 
-/* fopen() mode flags for reading a text file */
-#undef	LT_READTEXT_MODE
-#if defined(__WINDOWS__) || defined(__CYGWIN__)
-#  define LT_READTEXT_MODE "rt"
-#else
-#  define LT_READTEXT_MODE "r"
-#endif
-
 
 
 /* --- MANIFEST CONSTANTS --- */
@@ -157,81 +142,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 
 
 
-/* --- MEMORY HANDLING --- */
-
-
-/* These are the functions used internally.  In addition to making
-   use of the associated function pointers above, they also perform
-   error handling.  */
-static char   *lt_estrdup	LT_PARAMS((const char *str));
-static lt_ptr lt_emalloc	LT_PARAMS((size_t size));
-static lt_ptr lt_erealloc	LT_PARAMS((lt_ptr addr, size_t size));
-
-/* static lt_ptr rpl_realloc	LT_PARAMS((lt_ptr ptr, size_t size)); */
-#define rpl_realloc realloc
-
-/* These are the pointers that can be changed by the caller:  */
-LT_GLOBAL_DATA lt_ptr (*lt_dlmalloc)	LT_PARAMS((size_t size))
- 			= (lt_ptr (*) LT_PARAMS((size_t))) malloc;
-LT_GLOBAL_DATA lt_ptr (*lt_dlrealloc)	LT_PARAMS((lt_ptr ptr, size_t size))
- 			= (lt_ptr (*) LT_PARAMS((lt_ptr, size_t))) rpl_realloc;
-LT_GLOBAL_DATA void   (*lt_dlfree)	LT_PARAMS((lt_ptr ptr))
- 			= (void (*) LT_PARAMS((lt_ptr))) free;
-
-/* The following macros reduce the amount of typing needed to cast
-   assigned memory.  */
-#if WITH_DMALLOC
-
-#define LT_DLMALLOC(tp, n)	((tp *) xmalloc ((n) * sizeof(tp)))
-#define LT_DLREALLOC(tp, p, n)	((tp *) xrealloc ((p), (n) * sizeof(tp)))
-#define LT_DLFREE(p)						\
-	LT_STMT_START { if (p) (p) = (xfree (p), (lt_ptr) 0); } LT_STMT_END
-
-#define LT_EMALLOC(tp, n)	((tp *) xmalloc ((n) * sizeof(tp)))
-#define LT_EREALLOC(tp, p, n)	((tp *) xrealloc ((p), (n) * sizeof(tp)))
-
-#else
-
-#define LT_DLMALLOC(tp, n)	((tp *) lt_dlmalloc ((n) * sizeof(tp)))
-#define LT_DLREALLOC(tp, p, n)	((tp *) lt_dlrealloc ((p), (n) * sizeof(tp)))
-#define LT_DLFREE(p)						\
-	LT_STMT_START { if (p) (p) = (lt_dlfree (p), (lt_ptr) 0); } LT_STMT_END
-
-#define LT_EMALLOC(tp, n)	((tp *) lt_emalloc ((n) * sizeof(tp)))
-#define LT_EREALLOC(tp, p, n)	((tp *) lt_erealloc ((p), (n) * sizeof(tp)))
-
-#endif
-
-#define LT_DLMEM_REASSIGN(p, q)			LT_STMT_START {	\
-	if ((p) != (q)) { if (p) lt_dlfree (p); (p) = (q); (q) = 0; }	\
-						} LT_STMT_END
-
-
 /* --- REPLACEMENT FUNCTIONS --- */
-
-
-#undef strdup
-#define strdup rpl_strdup
-
-static char *strdup LT_PARAMS((const char *str));
-
-static char *
-strdup(str)
-     const char *str;
-{
-  char *tmp = 0;
-
-  if (str)
-    {
-      tmp = LT_DLMALLOC (char, 1+ strlen (str));
-      if (tmp)
-	{
-	  strcpy(tmp, str);
-	}
-    }
-
-  return tmp;
-}
 
 
 #if ! HAVE_STRCMP
@@ -411,7 +322,7 @@ closedir (entry)
 {
   assert (entry != (DIR *) NULL);
   FindClose (entry->hSearch);
-  lt_dlfree ((lt_ptr) entry);
+  free ((lt_ptr) entry);
 }
 
 
@@ -427,24 +338,23 @@ opendir (path)
   assert (path != (char *) NULL);
   (void) strncpy (file_specification, path, LT_FILENAME_MAX-1);
   (void) strcat (file_specification, "\\");
-  entry = LT_DLMALLOC (DIR, sizeof(DIR));
+  entry = (DIR *) malloc (sizeof(DIR));
   if (entry != (DIR *) 0)
     {
       entry->firsttime = TRUE;
       entry->hSearch = FindFirstFile (file_specification,
 				      &entry->Win32FindData);
-    }
 
-  if (entry->hSearch == INVALID_HANDLE_VALUE)
-    {
-      (void) strcat (file_specification, "\\*.*");
-      entry->hSearch = FindFirstFile (file_specification,
-				      &entry->Win32FindData);
       if (entry->hSearch == INVALID_HANDLE_VALUE)
-        {
-          LT_DLFREE (entry);
-          return (DIR *) 0;
-        }
+	{
+	  (void) strcat (file_specification, "\\*.*");
+	  entry->hSearch = FindFirstFile (file_specification,
+					  &entry->Win32FindData);
+	  if (entry->hSearch == INVALID_HANDLE_VALUE)
+	    {
+	      entry = (free (entry), (DIR *) 0);
+	    }
+	}
     }
 
   return entry;
@@ -479,61 +389,6 @@ readdir (entry)
 #endif /* !LT_USE_WINDOWS_DIRENT_EMULATION */
 
 
-/* According to Alexandre Oliva <oliva@lsd.ic.unicamp.br>,
-    ``realloc is not entirely portable''
-   In any case we want to use the allocator supplied by the user without
-   burdening them with an lt_dlrealloc function pointer to maintain.
-   Instead implement our own version (with known boundary conditions)
-   using lt_dlmalloc and lt_dlfree. */
-
-/* #undef realloc
-   #define realloc rpl_realloc
-*/
-#if 0
-  /* You can't (re)define realloc unless you also (re)define malloc.
-     Right now, this code uses the size of the *destination* to decide
-     how much to copy.  That's not right, but you can't know the size
-     of the source unless you know enough about, or wrote malloc.  So
-     this code is disabled... */
-
-static lt_ptr
-realloc (ptr, size)
-     lt_ptr ptr;
-     size_t size;
-{
-  if (size == 0)
-    {
-      /* For zero or less bytes, free the original memory */
-      if (ptr != 0)
-	{
-	  lt_dlfree (ptr);
-	}
-
-      return (lt_ptr) 0;
-    }
-  else if (ptr == 0)
-    {
-      /* Allow reallocation of a NULL pointer.  */
-      return lt_dlmalloc (size);
-    }
-  else
-    {
-      /* Allocate a new block, copy and free the old block.  */
-      lt_ptr mem = lt_dlmalloc (size);
-
-      if (mem)
-	{
-	  memcpy (mem, ptr, size);
-	  lt_dlfree (ptr);
-	}
-
-      /* Note that the contents of PTR are not damaged if there is
-	 insufficient memory to realloc.  */
-      return mem;
-    }
-}
-#endif
-
 
 #if ! HAVE_ARGZ_APPEND
 #  define argz_append rpl_argz_append
@@ -561,7 +416,7 @@ argz_append (pargz, pargz_len, buf, buf_len)
 
   /* Ensure there is enough room to append BUF_LEN.  */
   argz_len = *pargz_len + buf_len;
-  argz = LT_DLREALLOC (char, *pargz, argz_len);
+  argz = (char *) realloc (*pargz, argz_len);
   if (!argz)
     return ENOMEM;
 
@@ -599,13 +454,13 @@ argz_create_sep (str, delim, pargz, pargz_len)
 
   /* Make a copy of STR, but replacing each occurence of
      DELIM with '\0'.  */
-  argz_len = 1+ LT_STRLEN (str);
+  argz_len = 1+ strlen (str);
   if (argz_len)
     {
       const char *p;
       char *q;
 
-      argz = LT_DLMALLOC (char, argz_len);
+      argz = (char *) malloc (argz_len);
       if (!argz)
 	return ENOMEM;
 
@@ -629,7 +484,7 @@ argz_create_sep (str, delim, pargz, pargz_len)
 
   /* If ARGZ_LEN has shrunk to nothing, release ARGZ's memory.  */
   if (!argz_len)
-    LT_DLFREE (argz);
+    argz = (free (argz), (char *) 0);
 
   /* Assign new values.  */
   *pargz = argz;
@@ -669,10 +524,10 @@ argz_insert (pargz, pargz_len, before, entry)
     --before;
 
   {
-    size_t entry_len	= 1+ LT_STRLEN (entry);
+    size_t entry_len	= 1+ strlen (entry);
     size_t argz_len	= *pargz_len + entry_len;
     size_t offset	= before - *pargz;
-    char   *argz	= LT_DLREALLOC (char, *pargz, argz_len);
+    char   *argz	= (char *) realloc (*pargz, argz_len);
 
     if (!argz)
       return ENOMEM;
@@ -845,7 +700,6 @@ static	const char	sys_search_path[]	= LTDL_SYSSEARCHPATH;
 #endif
 
 
-
 
 /* --- MUTEX LOCKING --- */
 
@@ -941,7 +795,7 @@ lt_dladderror (diagnostic)
   LT_DLMUTEX_LOCK ();
 
   errindex = errorcount - LT_ERROR_MAX;
-  temp = LT_EREALLOC (const char *, user_error_strings, 1 + errindex);
+  temp = REALLOC (const char *, user_error_strings, 1 + errindex);
   if (temp)
     {
       user_error_strings		= temp;
@@ -983,38 +837,6 @@ lt_dlseterror (errindex)
 
   return errors;
 }
-
-static lt_ptr
-lt_emalloc (size)
-     size_t size;
-{
-  lt_ptr mem = lt_dlmalloc (size);
-  if (size && !mem)
-    LT_DLMUTEX_SETERROR (LT_DLSTRERROR (NO_MEMORY));
-  return mem;
-}
-
-static lt_ptr
-lt_erealloc (addr, size)
-     lt_ptr addr;
-     size_t size;
-{
-  lt_ptr mem = lt_dlrealloc (addr, size);
-  if (size && !mem)
-    LT_DLMUTEX_SETERROR (LT_DLSTRERROR (NO_MEMORY));
-  return mem;
-}
-
-static char *
-lt_estrdup (str)
-     const char *str;
-{
-  char *copy = strdup (str);
-  if (LT_STRLEN (str) && !copy)
-    LT_DLMUTEX_SETERROR (LT_DLSTRERROR (NO_MEMORY));
-  return copy;
-}
-
 
 
 
@@ -1296,13 +1118,13 @@ sys_wll_open (loader_data, filename)
   if (ext)
     {
       /* FILENAME already has an extension. */
-      searchname = lt_estrdup (filename);
+      searchname = lt__strdup (filename);
     }
   else
     {
       /* Append a `.' to stop Windows from adding an
 	 implicit `.dll' extension. */
-      searchname = LT_EMALLOC (char, 2+ LT_STRLEN (filename));
+      searchname = MALLOC (char, 2+ LT_STRLEN (filename));
       if (searchname)
 	sprintf (searchname, "%s.", filename);
     }
@@ -1318,7 +1140,7 @@ sys_wll_open (loader_data, filename)
 #else
   module = LoadLibrary (searchname);
 #endif
-  LT_DLFREE (searchname);
+  FREE (searchname);
 
   /* libltdl expects this function to fail if it is unable
      to physically load the library.  Sadly, LoadLibrary
@@ -1493,13 +1315,12 @@ sys_dld_open (loader_data, filename)
      lt_user_data loader_data;
      const char *filename;
 {
-  lt_module module = strdup (filename);
+  lt_module module = lt__strdup (filename);
 
   if (dld_link (filename) != 0)
     {
       LT_DLMUTEX_SETERROR (LT_DLSTRERROR (CANNOT_OPEN));
-      LT_DLFREE (module);
-      module = 0;
+      FREE (module);
     }
 
   return module;
@@ -1519,7 +1340,7 @@ sys_dld_close (loader_data, module)
     }
   else
     {
-      LT_DLFREE (module);
+      FREE (module);
     }
 
   return errors;
@@ -1939,7 +1760,7 @@ presym_free_symlists ()
       lt_dlsymlists_t	*tmp = lists;
 
       lists = lists->next;
-      LT_DLFREE (tmp);
+      FREE (tmp);
     }
   preloaded_symbols = 0;
 
@@ -1976,7 +1797,7 @@ presym_add_symlist (preloaded)
       lists = lists->next;
     }
 
-  tmp = LT_EMALLOC (lt_dlsymlists_t, 1);
+  tmp = MALLOC (lt_dlsymlists_t, 1);
   if (tmp)
     {
       memset (tmp, 0, sizeof(lt_dlsymlists_t));
@@ -2123,8 +1944,6 @@ static	int	find_module	      LT_PARAMS((lt_dlhandle *handle,
 						 const char *dlname,
 						 const char *old_name,
 						 int installed));
-static	int	free_vars	      LT_PARAMS((char *dlname, char *oldname,
-						 char *libdir, char *deplibs));
 static	int	load_deplibs	      LT_PARAMS((lt_dlhandle handle,
 						 char *deplibs));
 static	int	trim		      LT_PARAMS((char **dest,
@@ -2158,6 +1977,15 @@ static	lt_dlloader    *loaders		= 0;
 static	lt_dlhandle	handles 	= 0;
 static	int		initialized 	= 0;
 
+/* Our memory failure callback sets the error message to be passed back
+   up to the client, so we must be careful to return from mallocation
+   callers if allocation fails (as this callback returns!!).  */
+void
+lt__alloc_die_callback (void)
+{
+  LT_DLMUTEX_SETERROR (LT_DLSTRERROR (NO_MEMORY));
+}
+
 /* Initialize libltdl. */
 int
 lt_dlinit ()
@@ -2169,6 +1997,8 @@ lt_dlinit ()
   /* Initialize only at first call. */
   if (++initialized == 1)
     {
+      lt__alloc_die = lt__alloc_die_callback;
+
       handles = 0;
       user_search_path = 0; /* empty search path */
 
@@ -2312,7 +2142,7 @@ lt_dlexit ()
 	      ++errors;
 	    }
 
-	  LT_DLMEM_REASSIGN (loader, next);
+	  MEMREASSIGN (loader, next);
 	}
       loaders = 0;
     }
@@ -2378,7 +2208,7 @@ tryall_dlopen (handle, filename)
 	  goto done;
 	} */
 
-      cur->info.filename = lt_estrdup (filename);
+      cur->info.filename = lt__strdup (filename);
       if (!cur->info.filename)
 	{
 	  ++errors;
@@ -2405,7 +2235,7 @@ tryall_dlopen (handle, filename)
 
   if (!loader)
     {
-      LT_DLFREE (cur->info.filename);
+      FREE (cur->info.filename);
       ++errors;
       goto done;
     }
@@ -2447,7 +2277,7 @@ tryall_dlopen_module (handle, prefix, dirname, dlname)
 
   /* Allocate memory, and combine DIRNAME and MODULENAME into it.
      The PREFIX (if any) is handled below.  */
-  filename  = LT_EMALLOC (char, dirname_len + 1 + filename_len + 1);
+  filename  = MALLOC (char, dirname_len + 1 + filename_len + 1);
   if (!filename)
     return 1;
 
@@ -2466,7 +2296,7 @@ tryall_dlopen_module (handle, prefix, dirname, dlname)
       ++error;
     }
 
-  LT_DLFREE (filename);
+  FREE (filename);
   return error;
 }
 
@@ -2527,7 +2357,7 @@ canonicalize_path (path, pcanonical)
   assert (path && *path);
   assert (pcanonical);
 
-  canonical = LT_EMALLOC (char, 1+ LT_STRLEN (path));
+  canonical = MALLOC (char, 1+ LT_STRLEN (path));
   if (!canonical)
     return 1;
 
@@ -2652,9 +2482,9 @@ foreach_dirinpath (search_path, base_name, func, data1, data2)
 
 	if (lendir +1 +lenbase >= filenamesize)
 	{
-	  LT_DLFREE (filename);
+	  FREE (filename);
 	  filenamesize	= lendir +1 +lenbase +1; /* "/d" + '/' + "f" + '\0' */
-	  filename	= LT_EMALLOC (char, filenamesize);
+	  filename	= MALLOC (char, filenamesize);
 	  if (!filename)
 	    goto cleanup;
 	}
@@ -2677,9 +2507,9 @@ foreach_dirinpath (search_path, base_name, func, data1, data2)
   }
 
  cleanup:
-  LT_DLFREE (argz);
-  LT_DLFREE (canonical);
-  LT_DLFREE (filename);
+  FREE (argz);
+  FREE (canonical);
+  FREE (filename);
 
   LT_DLMUTEX_UNLOCK ();
 
@@ -2710,8 +2540,8 @@ find_file_callback (filename, data1, data2)
       if (dirend > filename)
 	*dirend   = LT_EOS_CHAR;
 
-      LT_DLFREE (*pdir);
-      *pdir   = lt_estrdup (filename);
+      FREE (*pdir);
+      *pdir   = lt__strdup (filename);
       is_done = (*pdir == 0) ? -1 : 1;
     }
 
@@ -2795,7 +2625,7 @@ load_deplibs (handle, deplibs)
   LT_DLMUTEX_LOCK ();
   if (user_search_path)
     {
-      save_search_path = lt_estrdup (user_search_path);
+      save_search_path = lt__strdup (user_search_path);
       if (!save_search_path)
 	goto cleanup;
     }
@@ -2836,8 +2666,7 @@ load_deplibs (handle, deplibs)
     }
 
   /* restore the old search path */
-  LT_DLFREE (user_search_path);
-  user_search_path = save_search_path;
+  MEMREASSIGN (user_search_path, save_search_path);
 
   LT_DLMUTEX_UNLOCK ();
 
@@ -2847,7 +2676,7 @@ load_deplibs (handle, deplibs)
       goto cleanup;
     }
 
-  names = LT_EMALLOC (char *, depcount * sizeof (char*));
+  names = MALLOC (char *, depcount);
   if (!names)
     goto cleanup;
 
@@ -2876,12 +2705,12 @@ load_deplibs (handle, deplibs)
 	      if (strncmp(p, "-l", 2) == 0)
 		{
 		  size_t name_len = 3+ /* "lib" */ LT_STRLEN (p + 2);
-		  name = LT_EMALLOC (char, 1+ name_len);
+		  name = MALLOC (char, 1+ name_len);
 		  if (name)
 		    sprintf (name, "lib%s", p+2);
 		}
 	      else
-		name = lt_estrdup(p);
+		name = strdup(p);
 
 	      if (!name)
 		goto cleanup_names;
@@ -2902,7 +2731,7 @@ load_deplibs (handle, deplibs)
     {
       int	j = 0;
 
-      handle->deplibs = (lt_dlhandle*) LT_EMALLOC (lt_dlhandle *, depcount);
+      handle->deplibs = (lt_dlhandle*) MALLOC (lt_dlhandle *, depcount);
       if (!handle->deplibs)
 	goto cleanup;
 
@@ -2922,11 +2751,11 @@ load_deplibs (handle, deplibs)
  cleanup_names:
   for (i = 0; i < depcount; ++i)
     {
-      LT_DLFREE (names[i]);
+      FREE (names[i]);
     }
 
  cleanup:
-  LT_DLFREE (names);
+  FREE (names);
 #endif
 
   return errors;
@@ -2964,11 +2793,11 @@ trim (dest, str)
   size_t len	    = LT_STRLEN (str);
   char *tmp;
 
-  LT_DLFREE (*dest);
+  FREE (*dest);
 
   if (len > 3 && str[0] == '\'')
     {
-      tmp = LT_EMALLOC (char, end - str);
+      tmp = MALLOC (char, end - str);
       if (!tmp)
 	return 1;
 
@@ -2980,21 +2809,6 @@ trim (dest, str)
     {
       *dest = 0;
     }
-
-  return 0;
-}
-
-static int
-free_vars (dlname, oldname, libdir, deplibs)
-     char *dlname;
-     char *oldname;
-     char *libdir;
-     char *deplibs;
-{
-  LT_DLFREE (dlname);
-  LT_DLFREE (oldname);
-  LT_DLFREE (libdir);
-  LT_DLFREE (deplibs);
 
   return 0;
 }
@@ -3021,7 +2835,7 @@ try_dlopen (phandle, filename)
   /* dlopen self? */
   if (!filename)
     {
-      *phandle = (lt_dlhandle) LT_EMALLOC (struct lt_dlhandle_struct, 1);
+      *phandle = (lt_dlhandle) MALLOC (struct lt_dlhandle_struct, 1);
       if (*phandle == 0)
 	return 1;
 
@@ -3033,7 +2847,7 @@ try_dlopen (phandle, filename)
 
       if (tryall_dlopen (&newhandle, 0) != 0)
 	{
-	  LT_DLFREE (*phandle);
+	  FREE (*phandle);
 	  return 1;
 	}
 
@@ -3057,7 +2871,7 @@ try_dlopen (phandle, filename)
     {
       size_t dirlen = (1+ base_name) - canonical;
 
-      dir = LT_EMALLOC (char, 1+ dirlen);
+      dir = MALLOC (char, 1+ dirlen);
       if (!dir)
 	{
 	  ++errors;
@@ -3070,7 +2884,7 @@ try_dlopen (phandle, filename)
       ++base_name;
     }
   else
-    LT_DLMEM_REASSIGN (base_name, canonical);
+    MEMREASSIGN (base_name, canonical);
 
   assert (base_name && *base_name);
 
@@ -3093,7 +2907,7 @@ try_dlopen (phandle, filename)
       int	installed = 1;
 
       /* extract the module name from the file name */
-      name = LT_EMALLOC (char, ext - base_name + 1);
+      name = MALLOC (char, ext - base_name + 1);
       if (!name)
 	{
 	  ++errors;
@@ -3168,7 +2982,7 @@ try_dlopen (phandle, filename)
 	}
 
       line_len = LT_FILENAME_MAX;
-      line = LT_EMALLOC (char, line_len);
+      line = MALLOC (char, line_len);
       if (!line)
 	{
 	  fclose (file);
@@ -3188,7 +3002,13 @@ try_dlopen (phandle, filename)
 	     that is longer than the initial buffer size.  */
 	  while ((line[LT_STRLEN(line) -1] != '\n') && (!feof (file)))
 	    {
-	      line = LT_DLREALLOC (char, line, line_len *2);
+	      line = REALLOC (char, line, line_len *2);
+	      if (!line)
+		{
+		  fclose (file);
+		  ++errors;
+		  goto cleanup;
+		}
 	      if (!fgets (&line[line_len -1], (int) line_len +1, file))
 		{
 		  break;
@@ -3249,13 +3069,13 @@ try_dlopen (phandle, filename)
 		  && dlname
 		  && (last_libname = strrchr (dlname, ' ')) != 0)
 		{
-		  last_libname = lt_estrdup (last_libname + 1);
+		  last_libname = strdup (last_libname + 1);
 		  if (!last_libname)
 		    {
 		      ++errors;
 		      goto cleanup;
 		    }
-		  LT_DLMEM_REASSIGN (dlname, last_libname);
+		  MEMREASSIGN (dlname, last_libname);
 		}
 	    }
 
@@ -3264,17 +3084,20 @@ try_dlopen (phandle, filename)
 	}
 
       fclose (file);
-      LT_DLFREE (line);
+      FREE (line);
 
       /* allocate the handle */
-      *phandle = (lt_dlhandle) LT_EMALLOC (struct lt_dlhandle_struct, 1);
+      *phandle = (lt_dlhandle) malloc (sizeof (struct lt_dlhandle_struct));
       if (*phandle == 0)
 	++errors;
 
       if (errors)
 	{
-	  free_vars (dlname, old_name, libdir, deplibs);
-	  LT_DLFREE (*phandle);
+	  FREE (dlname);
+	  FREE (old_name);
+	  FREE (libdir);
+	  FREE (deplibs);
+	  FREE (*phandle);
 	  goto cleanup;
 	}
 
@@ -3296,10 +3119,14 @@ try_dlopen (phandle, filename)
 	  ++errors;
 	}
 
-      free_vars (dlname, old_name, libdir, deplibs);
+      FREE (dlname);
+      FREE (old_name);
+      FREE (libdir);
+      FREE (deplibs);
+
       if (errors)
 	{
-	  LT_DLFREE (*phandle);
+	  FREE (*phandle);
 	  goto cleanup;
 	}
 
@@ -3311,7 +3138,7 @@ try_dlopen (phandle, filename)
   else
     {
       /* not a libtool module */
-      *phandle = (lt_dlhandle) LT_EMALLOC (struct lt_dlhandle_struct, 1);
+      *phandle = (lt_dlhandle) MALLOC (struct lt_dlhandle_struct, 1);
       if (*phandle == 0)
 	{
 	  ++errors;
@@ -3345,19 +3172,19 @@ try_dlopen (phandle, filename)
 
       if (!newhandle)
 	{
-	  LT_DLFREE (*phandle);
+	  FREE (*phandle);
 	  ++errors;
 	  goto cleanup;
 	}
     }
 
  register_handle:
-  LT_DLMEM_REASSIGN (*phandle, newhandle);
+  MEMREASSIGN (*phandle, newhandle);
 
   if ((*phandle)->info.ref_count == 0)
     {
       (*phandle)->info.ref_count	= 1;
-      LT_DLMEM_REASSIGN ((*phandle)->info.name, name);
+      MEMREASSIGN ((*phandle)->info.name, name);
 
       LT_DLMUTEX_LOCK ();
       (*phandle)->next		= handles;
@@ -3368,9 +3195,9 @@ try_dlopen (phandle, filename)
   LT_DLMUTEX_SETERROR (saved_error);
 
  cleanup:
-  LT_DLFREE (dir);
-  LT_DLFREE (name);
-  LT_DLFREE (canonical);
+  FREE (dir);
+  FREE (name);
+  FREE (canonical);
 
   return errors;
 }
@@ -3439,7 +3266,7 @@ lt_dlopenext (filename)
     }
 
   /* First try appending ARCHIVE_EXT.  */
-  tmp = LT_EMALLOC (char, len + LT_STRLEN (archive_ext) + 1);
+  tmp = MALLOC (char, len + LT_STRLEN (archive_ext) + 1);
   if (!tmp)
     return 0;
 
@@ -3454,7 +3281,7 @@ lt_dlopenext (filename)
      in the module search path.  */
   if (handle || ((errors > 0) && !file_not_found ()))
     {
-      LT_DLFREE (tmp);
+      FREE (tmp);
       return handle;
     }
 
@@ -3462,8 +3289,8 @@ lt_dlopenext (filename)
   /* Try appending SHLIB_EXT.   */
   if (LT_STRLEN (shlib_ext) > LT_STRLEN (archive_ext))
     {
-      LT_DLFREE (tmp);
-      tmp = LT_EMALLOC (char, len + LT_STRLEN (shlib_ext) + 1);
+      FREE (tmp);
+      tmp = MALLOC (char, len + LT_STRLEN (shlib_ext) + 1);
       if (!tmp)
 	return 0;
 
@@ -3481,7 +3308,7 @@ lt_dlopenext (filename)
      with the current error message.  */
   if (handle || ((errors > 0) && !file_not_found ()))
     {
-      LT_DLFREE (tmp);
+      FREE (tmp);
       return handle;
     }
 #endif
@@ -3489,7 +3316,7 @@ lt_dlopenext (filename)
   /* Still here?  Then we really did fail to locate any of the file
      names we tried.  */
   LT_DLMUTEX_SETERROR (LT_DLSTRERROR (FILE_NOT_FOUND));
-  LT_DLFREE (tmp);
+  FREE (tmp);
   return 0;
 }
 
@@ -3590,7 +3417,7 @@ lt_argz_insertdir (pargz, pargz_len, dirnam, dp)
   /* Prepend the directory name.  */
   end_offset	= end - dp->d_name;
   buf_len	= dir_len + 1+ end_offset;
-  buf		= LT_EMALLOC (char, 1+ buf_len);
+  buf		= MALLOC (char, 1+ buf_len);
   if (!buf)
     return ++errors;
 
@@ -3605,7 +3432,7 @@ lt_argz_insertdir (pargz, pargz_len, dirnam, dp)
   if (lt_argz_insertinorder (pargz, pargz_len, buf) != 0)
     ++errors;
 
-  LT_DLFREE (buf);
+  FREE (buf);
 
   return errors;
 }
@@ -3674,7 +3501,7 @@ foreachfile_callback (dirname, data1, data2)
   }
 
  cleanup:
-  LT_DLFREE (argz);
+  FREE (argz);
 
   return is_done;
 }
@@ -3778,11 +3605,11 @@ lt_dlclose (handle)
       errors += unload_deplibs(handle);
 
       /* It is up to the callers to free the data itself.  */
-      LT_DLFREE (handle->caller_data);
+      FREE (handle->caller_data);
 
-      LT_DLFREE (handle->info.filename);
-      LT_DLFREE (handle->info.name);
-      LT_DLFREE (handle);
+      FREE (handle->info.filename);
+      FREE (handle->info.name);
+      FREE (handle);
 
       goto done;
     }
@@ -3831,7 +3658,7 @@ lt_dlsym (handle, symbol)
     }
   else
     {
-      sym = LT_EMALLOC (char, lensym + LT_SYMBOL_OVERHEAD + 1);
+      sym = MALLOC (char, lensym + LT_SYMBOL_OVERHEAD + 1);
       if (!sym)
 	{
 	  LT_DLMUTEX_SETERROR (LT_DLSTRERROR (BUFFER_OVERFLOW));
@@ -3866,7 +3693,7 @@ lt_dlsym (handle, symbol)
 	{
 	  if (sym != lsym)
 	    {
-	      LT_DLFREE (sym);
+	      FREE (sym);
 	    }
 	  return address;
 	}
@@ -3887,7 +3714,7 @@ lt_dlsym (handle, symbol)
   address = handle->loader->find_sym (data, handle->module, sym);
   if (sym != lsym)
     {
-      LT_DLFREE (sym);
+      FREE (sym);
     }
 
   return address;
@@ -3932,7 +3759,7 @@ lt_dlpath_insertdir (ppath, before, dir)
       assert (!before);		/* BEFORE cannot be set without PPATH.  */
       assert (dir);		/* Without DIR, don't call this function!  */
 
-      *ppath = lt_estrdup (dir);
+      *ppath = strdup (dir);
       if (*ppath == 0)
 	++errors;
 
@@ -3967,11 +3794,11 @@ lt_dlpath_insertdir (ppath, before, dir)
     }
 
   argz_stringify (argz, argz_len, LT_PATHSEP_CHAR);
-  LT_DLMEM_REASSIGN (*ppath,  argz);
+  MEMREASSIGN(*ppath, argz);
 
  cleanup:
-  LT_DLFREE (canonical);
-  LT_DLFREE (argz);
+  FREE (argz);
+  FREE (canonical);
 
   return errors;
 }
@@ -4034,7 +3861,7 @@ lt_dlsetsearchpath (search_path)
   int   errors	    = 0;
 
   LT_DLMUTEX_LOCK ();
-  LT_DLFREE (user_search_path);
+  FREE (user_search_path);
   LT_DLMUTEX_UNLOCK ();
 
   if (!search_path || !LT_STRLEN (search_path))
@@ -4211,7 +4038,7 @@ lt_dlcaller_set_data (key, handle, data)
   if (i == n_elements)
     {
       lt_caller_data *temp
-	= LT_DLREALLOC (lt_caller_data, handle->caller_data, 2+ n_elements);
+	= REALLOC (lt_caller_data, handle->caller_data, 2+ n_elements);
 
       if (!temp)
 	{
@@ -4287,7 +4114,7 @@ lt_dlloader_add (place, dlloader, loader_name)
     }
 
   /* Create a new dlloader node with copies of the user callbacks.  */
-  node = LT_EMALLOC (lt_dlloader, 1);
+  node = MALLOC (lt_dlloader, 1);
   if (!node)
     return 1;
 
@@ -4402,7 +4229,7 @@ lt_dlloader_remove (loader_name)
       errors = place->dlloader_exit (place->dlloader_data);
     }
 
-  LT_DLFREE (place);
+  FREE (place);
 
  done:
   LT_DLMUTEX_UNLOCK ();
@@ -4481,3 +4308,12 @@ lt_dlloader_find (loader_name)
 
   return place;
 }
+
+
+
+
+/* These pointers are part of the published interface to libltdl,
+   although they are no longer used.  */
+LT_GLOBAL_DATA lt_ptr (*lt_dlmalloc)	LT_PARAMS((size_t size)) = 0;
+LT_GLOBAL_DATA lt_ptr (*lt_dlrealloc)	LT_PARAMS((lt_ptr ptr, size_t size)) = 0;
+LT_GLOBAL_DATA void   (*lt_dlfree)	LT_PARAMS((lt_ptr ptr)) = 0;

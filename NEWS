@@ -1,7 +1,6 @@
 NEWS - list of user-visible changes between releases of GNU Libtool
 
 New in 1.5b: 2004-??-??; CVS version 1.5a, Libtool team:
-* New support for IBM's xlc and xlc++ on Mac OS X.
 * The /^_?LT_[A-Z_]+$/ namespace is now reserved for Libtool's own macros.
   If you have any shell variables in this namespace they will need to be
   renamed.  If you have any macros in this namespace please rename them to
@@ -41,10 +40,13 @@ New in 1.5b: 2004-??-??; CVS version 1.5a, Libtool team:
 * libltdl no longer loads shared libraries with global symbol resolution,
   this caused problems when the symbols were intended to be overriden further
   up the stack; it is also not recommended practice.
+* libltdl no longer uses lt_dlmalloc, lt_dlrealloc and lt_dlfree.  The symbols
+  are still exported for backwards compatibility.
 * make install now deletes preexisting $prefix/share/libtool before installing
   latest files.
 * Extracting symbols from an import library on cygwin and win32 now works.
 * Initial support for amigaos-ppc.
+* New support for IBM's xlc and xlc++ on Mac OS X.
 * Bug fixes.
 
 New in 1.5.2: 2004-01-25; CVS version 1.5.0a, Libtool team:

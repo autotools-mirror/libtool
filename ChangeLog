@@ -1,10 +1,50 @@
+2004-04-06  Gary V. Vaughan  <gary@gnu.org>
+
+	There was no clean separation of abstraction layers in libltdl.
+	The first step in fixing this is to factor out the memory
+	management abstraction, making a start on removing promiscuity
+	from the underlying portability layer:
+
+	* doc/libtool.texi (Libltdl interface): Remove lt_dlmalloc,
+	lt_dlrealloc and lt_dlfree references.  The memory management
+	layer used by libltdl is now private.
+	* libltdl/lt_system.h: New installed header for system portability
+	abstraction.
+	* libltdl/ltdl.h: Use it.
+	* libltdl/lt__alloc.c, libltdl/lt__alloc.h: New module above
+	system portability layer to abstract ltdl's memory management.
+	* libltdl/ltdl.c: Use lt__alloc.h.
+	(closedir): Use free.
+	(opendir): Use malloc/free.
+	(lt__xalloc_die_callback): Report memory failures through
+	lt_dlerror.
+	(lt_dlinit): Use it to initialise memory management.
+	(LT_DLMALLOC, LT_DLREALLOC, LT_DLFREE, LT_EMALLOC, LT_EREALLOC)
+	(rpl_strdup, rpl_realloc, lt_estrdup, lt_emalloc, lt_erealloc):
+	Removed in favour of...
+	(lt__strdup, lt__memdup, MALLOC, REALLOC, FREE): ...these calls
+	from libltdl/lt__alloc.h.  Changed all callers.
+	(rpl_argz_append, rpl_argz_create_sep, rpl_argz_insert): As part
+	of the portability layer, these functions no longer use libltdl
+	memory management API.
+	(free_vars): Factored out.
+	(LT_DLMEM_REASSIGN): While redoing memory handling, renamed...
+	* libltdl/lt__alloc.h (MEMREASSIGN): ...to this.
+	* libltdl/Makefile.am (AUTOMAKE_OPTIONS): Let automake track
+	dependencies automatically.
+	(pkgincludedir): Override from parent package's setting.
+	(pkginclude_HEADERS): Install lt_system.h.
+	(libltdl_la_SOURCES): Add new files.
+	* NEWS: Updated.
+	Reported by Dalibor Topic <robilad@kaffe.org>
+
 2004-04-01  Peter O'Gorman  <peter@pogma.com>
 
 	* ltmain.in: Remove an extra eval concat_cmds that some idiot added.
 	Fixes double eval on AIX, reported by Albert Chin and Uwe Moeller.
 
 	* NEWS: Add a news item about xlc support that I forgot yesterday.
-	
+
 2004-03-31  Peter O'Gorman  <peter@pogma.com>
 
 	* m4/libtool.m4, ltmain.in (darwin): Support IBM's xlc and xlc++.

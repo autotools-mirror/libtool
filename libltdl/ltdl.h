@@ -1,7 +1,9 @@
 /* ltdl.h -- generic dlopen functions
    Copyright (C) 1998-2000 Free Software Foundation, Inc.
    Originally by Thomas Tanner <tanner@ffii.org>
-   This file is part of GNU Libtool.
+
+   NOTE: The canonical source of this file is maintained with the
+   GNU Libtool package.  Report bugs to bug-libtool@gnu.org.
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU Lesser General Public
@@ -28,57 +30,10 @@ Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 #ifndef LTDL_H
 #define LTDL_H 1
 
-#include <sys/types.h>		/* for size_t declaration */
-
-
-/* --- MACROS FOR PORTABILITY --- */
-
-
-/* Saves on those hard to debug '\0' typos....  */
-#define LT_EOS_CHAR	'\0'
-
-/* LTDL_BEGIN_C_DECLS should be used at the beginning of your declarations,
-   so that C++ compilers don't mangle their names.  Use LTDL_END_C_DECLS at
-   the end of C declarations. */
-#ifdef __cplusplus
-# define LT_BEGIN_C_DECLS	extern "C" {
-# define LT_END_C_DECLS		}
-#else
-# define LT_BEGIN_C_DECLS	/* empty */
-# define LT_END_C_DECLS		/* empty */
-#endif
+#include <libltdl/lt_system.h>
 
 LT_BEGIN_C_DECLS
 
-
-/* Canonicalise Windows and Cygwin recognition macros.
-   To match the values set by recent Cygwin compilers, make sure that if
-   __CYGWIN__ is defined (after canonicalisation), __WINDOWS__ is NOT!  */
-#if defined(__CYGWIN32__) && !defined(__CYGWIN__)
-# define __CYGWIN__ __CYGWIN32__
-#endif
-#if defined(__CYGWIN__)
-# if defined(__WINDOWS__)
-#   undef __WINDOWS__
-# endif
-#elif defined(_WIN32)
-# define __WINDOWS__ _WIN32
-#elif defined(WIN32)
-# define __WINDOWS__ WIN32
-#endif
-#if defined(__CYGWIN__) && defined(__WINDOWS__)
-# undef __WINDOWS__
-#endif
-
-
-#ifdef __WINDOWS__
-/* LT_DIRSEP_CHAR is accepted *in addition* to '/' as a directory
-   separator when it is set. */
-# define LT_DIRSEP_CHAR		'\\'
-# define LT_PATHSEP_CHAR	';'
-#else
-# define LT_PATHSEP_CHAR	':'
-#endif
 
 /* DLL building support on win32 hosts;  mostly to workaround their
    ridiculous implementation of data symbol exporting. */
@@ -97,11 +52,6 @@ LT_BEGIN_C_DECLS
 #endif
 
 
-#if defined(_MSC_VER) /* Visual Studio */
-#  define R_OK 4
-#endif
-
-
 /* LT_PARAMS is a macro used to wrap function prototypes, so that compilers
    that don't understand ANSI C prototypes still work, and ANSI C
    compilers can issue warnings about type mismatches.  */
@@ -113,28 +63,6 @@ LT_BEGIN_C_DECLS
 # define lt_ptr		char*
 #endif
 
-/* LT_STMT_START/END are used to create macros which expand to a
-   a single compound statement in a portable way.  */
-#if defined (__GNUC__) && !defined (__STRICT_ANSI__) && !defined (__cplusplus)
-#  define LT_STMT_START        (void)(
-#  define LT_STMT_END          )
-#else
-#  if (defined (sun) || defined (__sun__))
-#    define LT_STMT_START      if (1)
-#    define LT_STMT_END        else (void)0
-#  else
-#    define LT_STMT_START      do
-#    define LT_STMT_END        while (0)
-#  endif
-#endif
-
-/* LT_CONC creates a new concatenated symbol for the compiler
-   in a portable way.  */
-#if defined(__STDC__) || defined(__cplusplus) || defined(_MSC_VER)
-#  define LT_CONC(s,t)	s##t
-#else
-#  define LT_CONC(s,t)	s/**/t
-#endif
 
 /* LT_STRLEN can be used safely on NULL pointers.  */
 #define LT_STRLEN(s)	(((s) && (s)[0]) ? strlen (s) : 0)
@@ -188,21 +116,6 @@ LT_SCOPE	int	lt_dlmutex_register	LT_PARAMS((lt_dlmutex_lock *lock,
 					    lt_dlmutex_unlock *unlock,
 					    lt_dlmutex_seterror *seterror,
 					    lt_dlmutex_geterror *geterror));
-
-
-
-
-/* --- MEMORY HANDLING --- */
-
-
-/* By default, the realloc function pointer is set to our internal
-   realloc implementation which iself uses lt_dlmalloc and lt_dlfree.
-   libltdl relies on a featureful realloc, but if you are sure yours
-   has the right semantics then you can assign it directly.  Generally,
-   it is safe to assign just a malloc() and a free() function.  */
-LT_SCOPE  lt_ptr   (*lt_dlmalloc)	LT_PARAMS((size_t size));
-LT_SCOPE  lt_ptr   (*lt_dlrealloc)	LT_PARAMS((lt_ptr ptr, size_t size));
-LT_SCOPE  void	   (*lt_dlfree)		LT_PARAMS((lt_ptr ptr));
 
 
 
@@ -341,9 +254,16 @@ LT_SCOPE	int	lt_dladderror	LT_PARAMS((const char *diagnostic));
 LT_SCOPE	int	lt_dlseterror	LT_PARAMS((int errorcode));
 
 
+
+/* --- BINARY COMPATIBILITY WITH OLD LIBLTDL --- */
+
+LT_SCOPE  lt_ptr   (*lt_dlmalloc)	LT_PARAMS((size_t size));
+LT_SCOPE  lt_ptr   (*lt_dlrealloc)	LT_PARAMS((lt_ptr ptr, size_t size));
+LT_SCOPE  void	   (*lt_dlfree)		LT_PARAMS((lt_ptr ptr));
+
 
 
-/* --- SOURCE COMPATIBILITY WITH OLD LIBLTDL --- */
+/* --- SOURCE COMPATIBILITY WITH ANCIENT LIBLTDL --- */
 
 
 #ifdef LT_NON_POSIX_NAMESPACE

@@ -17,16 +17,17 @@
 ## the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 ## Boston, MA 02111-1307, USA.
 
-AUTOMAKE_OPTIONS = no-dependencies foreign
+AUTOMAKE_OPTIONS = foreign
 ACLOCAL_AMFLAGS  = -I ../m4
 AM_CPPFLAGS = -I$(top_builddir) -I$(top_srcdir)
 DEFS = -DHAVE_CONFIG_H="<$(CONFIG_H)>"
 
+pkgincludedir = $(includedir)/libltdl
+
 if INSTALL_LTDL
 include_HEADERS = ltdl.h
+pkginclude_HEADERS = lt_system.h
 lib_LTLIBRARIES = libltdl.la
-else
-noinst_HEADERS = ltdl.h
 endif
 
 if CONVENIENCE_LTDL
@@ -37,16 +38,12 @@ endif
 ## default.
 CLEANFILES = libltdl.la libltdlc.la
 
-libltdl_la_SOURCES = ltdl.c ltdl.h
+libltdl_la_SOURCES = lt__alloc.c lt__alloc.h lt_system.h ltdl.c ltdl.h
 libltdl_la_LDFLAGS = -no-undefined -version-info 5:0:2
 libltdl_la_LIBADD = $(LIBADD_DL)
 
-libltdlc_la_SOURCES = ltdl.c ltdl.h
+libltdlc_la_SOURCES = $(libltdl_la_SOURCES)
 libltdlc_la_LIBADD = $(LIBADD_DL)
-
-## Because we do not have automatic dependency tracking:
-ltdl.lo: ltdl.h $(top_builddir)/$(CONFIG_H)
-
 
 ## These are installed as a subdirectory of pkgdatadir so that
 ## libtoolize --ltdl can find them later:
