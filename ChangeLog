@@ -1,3 +1,7 @@
+1999-05-25  Frank Ch. Eigler <fche@cygnus.com>
+
+	* ltmain.in: file_magic check would not avoid cyclic links.
+
 1999-05-25  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* depdemo/main.c, depdemo/l1/l1.c, depdemo/l2/l2.c: K&R-ize.
