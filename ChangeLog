@@ -1,3 +1,11 @@
+2004-09-01  Gary V. Vaughan  <gary@gnu.org>
+
+	* libltdl/lt_dlloader.c (lt_dlloader_add): Handle malloc failure
+	from slist_new.
+	* libltdl/ltdl.c (loader_init): Trust lt_dlloader_add(), don't
+	overwrite its error type, and simplify.
+	Reported by Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
 2004-09-01  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* libltdl/slist.c (slist_new): Handle malloc failure gracefully.

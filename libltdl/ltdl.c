@@ -167,20 +167,10 @@ loader_init (lt_get_vtable *vtable_func, lt_user_data data)
       vtable = (*vtable_func) (data);
     }
 
-  if (!vtable)
-    {
-      LT__SETERROR (INVALID_LOADER);
-      ++errors;
-    }
+  /* lt_dlloader_add will LT__SETERROR if it fails.  */
+  errors += lt_dlloader_add (vtable);
 
-  if (!errors)
-    {
-      if (lt_dlloader_add (vtable))
-	{
-	  LT__SETERROR (DLOPEN_NOT_SUPPORTED);
-	  ++errors;
-	}
-    }
+  assert (errors || vtable);
 
   if ((!errors) && vtable->dlloader_init)
     {

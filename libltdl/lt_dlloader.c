@@ -59,29 +59,37 @@ loader_cmp (const SList *node, const void *userdata)
 int
 lt_dlloader_add (const lt_dlvtable *vtable)
 {
-  if ((vtable == 0)	/* diagnose null parameters */
+  SList *list;
+
+  if ((vtable == 0)	/* diagnose invalid vtable fields */
       || (vtable->module_open == 0)
       || (vtable->module_close == 0)
-      || (vtable->find_sym == 0))
+      || (vtable->find_sym == 0)
+      || ((vtable->priority != LT_DLLOADER_PREPEND) &&
+	  (vtable->priority != LT_DLLOADER_APPEND)))
     {
       LT__SETERROR (INVALID_LOADER);
       return RETURN_FAILURE;
     }
 
-  switch (vtable->priority)
+  list = slist_new (vtable);
+  if (!list)
     {
-    case LT_DLLOADER_PREPEND:
-      loaders = slist_cons (slist_new (vtable), loaders);
-      break;
+      (*lt__alloc_die) ();
 
-    case LT_DLLOADER_APPEND:
-      loaders = slist_concat (loaders, slist_new (vtable));
-      break;
-
-    default:
-      LT__SETERROR (INVALID_LOADER);
+      /* Let the caller know something went wrong if lt__alloc_die
+	 doesn't abort.  */
       return RETURN_FAILURE;
-      /*NOTREACHED*/
+    }
+
+  if (vtable->priority == LT_DLLOADER_PREPEND)
+    {
+      loaders = slist_cons (list, loaders);
+    }
+  else
+    {
+      assert (vtable->priority == LT_DLLOADER_APPEND);
+      loaders = slist_concat (loaders, list);
     }
 
   return RETURN_SUCCESS;
