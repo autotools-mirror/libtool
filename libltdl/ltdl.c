@@ -76,7 +76,9 @@ Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 #define LTDL_SYMBOL_OVERHEAD	5
 
 static const char objdir[] = LTDL_OBJDIR;
+#ifdef	LTDL_SHLIB_EXT
 static const char shlib_ext[] = LTDL_SHLIB_EXT;
+#endif
 
 static const char unknown_error[] = "unknown error";
 static const char dlopen_not_supported_error[] = "dlopen support not available";

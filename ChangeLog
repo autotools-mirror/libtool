@@ -1,3 +1,10 @@
+1999-03-23 Thomas Tanner  <tanner@gmx.de>
+
+	* libltdl/ltdl.c: shlib_ext was declared even if LTDL_SHLIB_EXT
+	  didn't exist
+	* ltmain.in: don't allow relative run-paths, fixed a typo in a warning,
+	  ignore -dlopen self for libraries and objects
+
 1999-03-21  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* tests/build-relink.test: if we relink and have hardcode_direct, 
