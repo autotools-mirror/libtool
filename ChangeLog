@@ -1,3 +1,11 @@
+2004-10-21  Noah Misch  <noah@cs.caltech.edu>,
+	    Gary V. Vaughan  <gary@gnu.org>
+
+	* config/general.m4sh (sed_double_backslash): Improve this sed
+	expression to correct left anchored \$ input to
+	double_quote_subst, as well as backslash escaped $ preceded by
+	any odd-numbered amount of \ characters.
+
 2004-10-20  Gary V. Vaughan  <gary@gnu.org>
 
 	* config/general.m4sh (sed_double_backslash): New sed expression
