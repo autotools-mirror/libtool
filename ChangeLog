@@ -1,3 +1,12 @@
+2004-11-01  Charles Wilson  <spam.protected>,
+	    Peter Ekberg <spam.protected>
+
+	* config/ltmain.m4sh (func_mode_install): On Windows based hosts,
+	ensure that import libraries don't get stripped.
+	* m4/libtool.m4 (_LT_SYS_DYNAMIC_LINKER): On Windows based hosts,
+	use postinstall_cmds to strip DLL (not import lib!) when symbol
+	stripped installation was requested.
+
 2004-10-30  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
 	* libltdl/ltdl.c (loader_init_callback): Back out broken cast.

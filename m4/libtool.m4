@@ -1719,7 +1719,10 @@ cygwin* | mingw* | pw32*)
       dlpath=`$SHELL 2>&1 -c '\''. $dir/'\''\${base_file}'\''i;$ECHO \$dlname'\''`~
       dldir=$destdir/`dirname \$dlpath`~
       test -d \$dldir || mkdir -p \$dldir~
-      $install_prog $dir/$dlname \$dldir/$dlname'
+      $install_prog $dir/$dlname \$dldir/$dlname~
+      if test -n '\''$stripme'\'' && test -n '\''$striplib'\''; then
+        $run eval '\''$striplib \$dldir/$dlname'\'' || exit \$?;
+      fi'
     postuninstall_cmds='dldll=`$SHELL 2>&1 -c '\''. $file; $ECHO \$dlname'\''`~
       dlpath=$dir/\$dldll~
        $RM \$dlpath'
