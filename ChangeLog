@@ -1,3 +1,7 @@
+2005-01-25  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* config/ltmain.m4sh: Fix endless loop in cmdline parsing.
+
 2005-01-25  Albert Chin-A-Young  <china@thewrittenword.com>
 
 	* config/ltmain.m4sh (func_mode_link) [irix]: Preserve processor

@@ -402,8 +402,8 @@ Otherwise, only FILE itself is deleted using RM."
   # sed scripts:
   my_sed_single_opt='1s/^\(..\).*$/\1/;q'
   my_sed_single_rest='1s/^..\(.*\)$/\1/;q'
-  my_sed_long_opt='1s/^\(--[[^=]]*\)=.*/\1/;q'
-  my_sed_long_arg='1s/^--[[^=]]*=//'
+  my_sed_long_opt='1s/^\(-[[^=]]*\)=.*/\1/;q'
+  my_sed_long_arg='1s/^-[[^=]]*=//'
 
   # Shorthand for --mode=foo, only valid as the first argument
   case $1 in
