@@ -1703,11 +1703,11 @@ compiler."
 
       # Create the output directory, or remove our outputs if we need to.
       if test -d $output_objdir; then
-	$show "${rm}r $output_objdir/$outputname $output_objdir/$objdir/$outputname $output_objdir/$libname.* $output_objdir/${libname}${release}.*"
-	$run ${rm}r $output_objdir/$outputname $output_objdir/$objdir/$outputname $output_objdir/$libname.* $output_objdir/${libname}${release}.*
+	$show "${rm}r $output_objdir/$outputname $output_objdir/lt-$outputname $output_objdir/$libname.* $output_objdir/${libname}${release}.*"
+	$run ${rm}r $output_objdir/$outputname $output_objdir/lt-$outputname $output_objdir/$libname.* $output_objdir/${libname}${release}.*
 
-	if test -z "$run" && test -f "$output_objdir/$objdir/$outputname"; then
-	  $echo "$modename: warning: $output_objdir/$objdir/$outputname could not be removed" 1>&2
+	if test -z "$run" && test -f "$output_objdir/lt-$outputname"; then
+	  $echo "$modename: warning: $output_objdir/lt-$outputname could not be removed" 1>&2
 	fi
       else
 	$show "$mkdir $output_objdir"

@@ -1,3 +1,7 @@
+1999-03-09  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* ltmain.in: $output_objdir/$objdir/ -> $output_objdir/lt-
+
 1999-03-09  Thomas Tanner  <tanner@gmx.de>
 
 	* libltdl/ltdl.c (lt_dlopen): don't hardcode the length of the
