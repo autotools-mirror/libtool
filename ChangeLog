@@ -1,3 +1,9 @@
+2004-10-01  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* libltdl/ltdl.c (load_deplibs, try_dlopen): Cast argument
+	to isspace/isalnum to the correct range.  Also, cast to int to
+	avoid compiler warnings.
+
 2004-09-30  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* libltdl/ltdl.c (try_dlopen): Fix null pointer dereference in

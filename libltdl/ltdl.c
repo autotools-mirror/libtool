@@ -737,10 +737,10 @@ load_deplibs (lt_dlhandle handle, char *deplibs)
   p = deplibs;
   while (*p)
     {
-      if (!isspace ((int) *p))
+      if (!isspace ((int)(unsigned char) *p))
 	{
 	  char *end = p+1;
-	  while (*end && !isspace((int) *end))
+	  while (*end && !isspace((int)(unsigned char) *end))
 	    {
 	      ++end;
 	    }
@@ -786,14 +786,14 @@ load_deplibs (lt_dlhandle handle, char *deplibs)
   p = deplibs;
   while (*p)
     {
-      if (isspace ((int) *p))
+      if (isspace ((int)(unsigned char) *p))
 	{
 	  ++p;
 	}
       else
 	{
 	  char *end = p+1;
-	  while (*end && !isspace ((int) *end))
+	  while (*end && !isspace ((int)(unsigned char) *end))
 	    {
 	      ++end;
 	    }
@@ -1004,7 +1004,7 @@ try_dlopen (lt_dlhandle *phandle, const char *filename)
     int i;
     for (i = 0; i < ext - base_name; ++i)
       {
-	if (isalnum ((int)(base_name[i])))
+	if (isalnum ((int)(unsigned char)(base_name[i])))
 	  {
 	    name[i] = base_name[i];
 	  }
