@@ -1797,6 +1797,14 @@ sysv4)
   ;;
 esac
 
+# Handle CRLF in mingw too chain
+opt_cr=
+case "$host_os" in
+mingw*)
+  opt_cr=`echo 'x?' | tr x '\015'` # option cr in regexp
+  ;;
+esac
+
 # If we're using GNU nm, then use its standard symbol codes.
 if $NM -V 2>&1 | egrep '(GNU|with BFD)' > /dev/null; then
   symcode='[ABCDGISTW]'
@@ -1806,7 +1814,7 @@ fi
 for ac_symprfx in "" "_"; do
 
   # Write the raw and C identifiers.
-  global_symbol_pipe="sed -n -e 's/^.*[ 	]\($symcode\)[ 	][ 	]*\($ac_symprfx\)$sympat$/$symxfrm/p'"
+global_symbol_pipe="sed -n -e 's/^.*[ 	]\($symcode\)[ 	][ 	]*\($ac_symprfx\)$sympat$opt_cr$/$symxfrm/p'"
 
   # Check to see that the pipe works correctly.
   pipe_works=no

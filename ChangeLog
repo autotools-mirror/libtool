@@ -1,5 +1,8 @@
 1999-10-28  Olly Betts  <olly@muscat.co.uk>
 
+	* ltconfig.in (opt_cr):  Handle crlf sequences output by the
+	mingw toolchain.
+
 	* libtool.m4:  Third time lucky, with Tor's patch.
 
 1999-10-19  Tor Lillqvist  <tml@iki.fi>
