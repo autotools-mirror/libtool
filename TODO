@@ -56,6 +56,10 @@ GNU Libtool
 
 * Improve support for C++ with templates.
 
+* Audit use of $ECHO in libtool.m4.
+
+* Fix deplibs_check_method=pass_all (which is wrong!) on linux.
+
 1.2. libtldl
 ------------
 
@@ -92,6 +96,11 @@ GNU Libtool
   `.la' files so that people can depend on their format.  This would be
   a good thing to put before the maintainance notes.
 
+* Document the installed `libtool' and its limitations clearly (maybe implement
+  --disable-script-install as well).  Or, even better, remove its limitations.
+
+* Platform notes redo.
+
 2.2. test suite
 ---------------
 
@@ -109,6 +118,8 @@ GNU Libtool
     - cross compile
     - dirs with ~
     - multiple input files
+    - look at the wrapper-in-wrapper problem: `libtool' vs.
+        distcc, ccache, mpicc.
 
 2.3. libtool
 ------------
@@ -158,6 +169,8 @@ GNU Libtool
   wrapper script on non-windows platforms, this will make the generated
   libtool script smaller and easier to follow, maybe a little faster
   too?
+
+* Look at position-independent executables.
 
 2.4. libtool autoconf macros
 ----------------------------
