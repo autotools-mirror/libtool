@@ -100,7 +100,7 @@ AC_OUTPUT_COMMANDS([
 
   *ltmain.sh*)
     infile=$top_srcdir/ltmain.in
-    outfile=$top_srcdir/ltmain,sh
+    outfile=$top_srcdir/ltmain.sh
     tmpfile=${outfile}T
 
     ( cd $top_srcdir

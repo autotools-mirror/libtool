@@ -36,9 +36,9 @@ local-install-files: $(DISTFILES)
 	@for file in $(DISTFILES); do \
 	  d=$(srcdir); \
 	  if test -d $$d/$$file; then \
-	    cp -pr $$d/$$file $(DESTDIR)$(datadir)/libtool/libltdl/$$file; \
+	    cp -r $$d/$$file $(DESTDIR)$(datadir)/libtool/libltdl/$$file; \
 	  else \
 	    test -f $(DESTDIR)$(datadir)/libtool/libltdl/$$file \
-	    || cp -p $$d/$$file $(DESTDIR)$(datadir)/libtool/libltdl/$$file || :; \
+	    || cp $$d/$$file $(DESTDIR)$(datadir)/libtool/libltdl/$$file || :; \
 	  fi; \
 	done

@@ -1253,8 +1253,14 @@ must not be used at the same time in your package.
 
 @item -no-fast-install
 Disable fast-install mode for the executable @var{output-file}
-(@pxref{Invoking ltconfig}).  Useful if the program is only used in the
-build tree, e.g., for generating other files.
+(@pxref{Invoking ltconfig}).  Useful if the program won't be necessarly
+installed.
+
+@item -no-install
+Link an executable @var{output-file} (@pxref{Invoking ltconfig}) that
+can't be installed and therefore doesn't need an wrapper script.
+Useful if the program is only used in the build tree, e.g.,
+for testing or generating other files.
 
 @item -no-undefined
 Declare that @var{output-file} does not depend on any other libraries.

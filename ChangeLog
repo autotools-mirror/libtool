@@ -1,3 +1,24 @@
+1999-10-03  Thomas Tanner  <tanner@ffii.org>
+
+	* NEWS: new -no-install flag
+	* configure.in: fix typo
+	* doc/libtool.texi(Link mode): document -no-install flag,
+	  correct -no-fast-install docs
+	* libtool.m4: check for "file" command
+	* ltconfig.in: don't hardcode /usr/bin/file, remove second
+	  definition of sysv5, replace linkopts -> linker_flags
+	* ltmain.in: add new -no-install flag, print help for -no-install
+	  and -no-fast-install flags
+
+1999-10-03  Olly Betts <olly@muscat.co.uk>
+
+	* ltmain.in: always create output_objdir
+
+1999-10-03  Pavel Roskin  <pavel_roskin@geocities.com>
+
+	* libltdl/Makefile.am: don't preserve file attributes when
+	  installing the libltdl sources
+
 1999-10-01  Gary V. Vaughan  <gary@oranda.demon.co.uk>
 
 	* configure.in (AC_OUTPUT_COMMANDS): generate ltmain.sh
