@@ -1,5 +1,7 @@
 2004-02-11  Gary V. Vaughan  <gary@gnu.org>
 
+	* commit: Fix cut-n-paste error.
+
 	* commit: Completely change CVS/Root->name sed script to actually
 	work when :ext: is not shown.
 
