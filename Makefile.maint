@@ -31,6 +31,31 @@ Makefile:
 
 TEXI2HTML = texi2html
 
+$(top_srcdir)/commit: config/mailnotify clcommit.m4sh
+	$(timestamp); \
+	cd $(top_srcdir); \
+	rm -f commit commit.in commit.tmp; \
+	$(M4SH) -B ./config clcommit.m4sh > commit.in; \
+	input="clcommit.m4sh"; \
+	$(edit) -e "s,@TIMESTAMP\@,$$TIMESTAMP,g" commit.in > commit.tmp; \
+	chmod a+x commit.tmp; \
+	chmod a-w commit.tmp; \
+	mv -f commit.tmp commit; \
+	rm -f commit.in
+
+$(top_srcdir)/config/mailnotify: config/mailnotify.m4sh
+	$(timestamp); \
+	cd $(top_srcdir)/config; \
+	rm -f mailnotify mailnotify.in mailnotify.tmp; \
+	$(M4SH) -B . mailnotify.m4sh > mailnotify.in; \
+	input="mailnotify.m4sh"; \
+	$(edit) -e "s,@TIMESTAMP\@,$$TIMESTAMP,g" \
+		mailnotify.in > mailnotify.tmp; \
+	chmod a+x mailnotify.tmp; \
+	chmod a-w mailnotify.tmp; \
+	mv -f mailnotify.tmp mailnotify; \
+	rm -f mailnotify.in
+
 .PHONY: cvs-release
 cvs-release: version-check prev-tarball cvs-news fetch cvs-commit cvs-dist deltas web-manual
 	@tarname="$(PACKAGE)-$(VERSION).tar.gz"; \

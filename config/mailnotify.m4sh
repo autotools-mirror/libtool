@@ -1,6 +1,8 @@
-#!/bin/sh
-#
-# mailnotify (GNU cvs-utils) version 0.2
+m4_define([_m4_divert(SCRIPT)], 100)
+m4_divert_push([SCRIPT])#!/bin/sh
+# @configure_input@
+
+# mailnotify (GNU @PACKAGE@) version 0.4
 # Written by Gary V. Vaughan <gary@gnu.org>
 
 # Copyright (C) 2004 Free Software Foundation, Inc.
@@ -25,6 +27,7 @@
 
 # Usage: $progname [OPTION]... [--] to-address...
 #
+#           --debug             enable verbose shell tracing
 # -C ADDR   --carbon-copy=ADDR  send a carbon-copy to ADDR
 # -F ADDR   --from=ADDR         override default from address with ADDR
 # -f FILE   --filename=FILE     content of this part
@@ -57,118 +60,19 @@
 
 : ${TMPDIR=/tmp}
 : ${HOST=`hostname`}
-: ${MV="mv -f"}
-: ${RM="rm -f"}
-: ${SED="sed"}
 
-dirname="s,/[^/]*$,,"
-basename="s,^.*/,,g"
-
-# Work around backward compatibility issue on IRIX 6.5. On IRIX 6.4+, sh
-# is ksh but when the shell is invoked as "sh" and the current value of
-# the _XPG environment variable is not equal to 1 (one), the special
-# positional parameter $0, within a function call, is the name of the
-# function.
-progpath="$0"
-
-# The name of this program:
-progname=`echo "$progpath" | $SED "$basename"`
 PROGRAM=mailnotify
 
-# Global variables:
-EXIT_SUCCESS=0
-EXIT_FAILURE=1
+AS_SHELL_SANITIZE
+$as_unset CDPATH
 
+m4_include([getopt.m4sh])
+
+# Global variables:
 multipart=1
 outputfile=""
 
-exit_cmd=:
-
 sed_mail_address='s,^.*<\(.*\)>.*$,\1,'
-
-# func_echo arg...
-# Echo program name prefixed message.
-func_echo ()
-{
-    echo $progname: ${1+"$@"}
-}
-
-# func_error arg...
-# Echo program name prefixed message to standard error.
-func_error ()
-{
-    echo $progname: ${1+"$@"} 1>&2
-}
-
-# func_fatal_error arg...
-# Echo program name prefixed message to standard error, and exit.
-func_fatal_error ()
-{
-    func_error ${1+"$@"}
-    exit $EXIT_FAILURE
-}
-
-# func_verbose arg...
-# Echo program name prefixed message in verbose mode only.
-func_verbose ()
-{
-    $opt_verbose && func_error ${1+"$@"}
-}
-
-# func_fatal_help arg...
-# Echo program name prefixed message to standard error, followed by
-# a help hint, and exit.
-func_fatal_help ()
-{
-    func_error ${1+"$@"}
-    func_fatal_error "Try \`$progname --help' for more information."
-}
-
-# func_missing_arg argname
-# Echo program name prefixed message to standard error and set global
-# exit_cmd.
-func_missing_arg ()
-{
-    func_error "missing argument for $1"
-    exit_cmd=exit
-}
-
-# Echo short help message to standard output and exit.
-func_usage ()
-{
-    $SED '/^# Usage:/,/# -h/ {
-        s/^# //; s/^# *$//;
-	s/\$progname/'$progname'/;
-	p;
-    }; d' < "$progpath"
-    echo
-    echo "run \`$progname --help | more' for full usage"
-    exit $EXIT_SUCCESS
-}
-
-# func_help
-# Echo long help message to standard output and exit.
-func_help ()
-{
-    $SED '/^# Usage:/,/# Report bugs to/ {
-        s/^# //; s/^# *$//;
-	s/\$progname/'$progname'/;
-	p;
-     }; d' < "$progpath"
-    exit $EXIT_SUCCESS
-}
-
-# func_version
-# Echo version message to standard output and exit.
-func_version ()
-{
-    $SED '/^# '$PROGRAM' (GNU /,/# warranty; / {
-        s/^# //; s/^# *$//;
-        s/\((C)\)[ 0-9,-]*\( [1-9][0-9]*\)/\1\2/;
-        p;
-     }; d' < "$progpath"
-     exit $EXIT_SUCCESS
-}
 
 # Parse options once, thoroughly.  This comes as soon as possible in
 # the script to make things like `mailnotify --version' happen quickly.
@@ -176,13 +80,17 @@ func_version ()
   # sed scripts:
   my_sed_single_opt='1s/^\(..\).*$/\1/;q'
   my_sed_single_rest='1s/^..\(.*\)$/\1/;q'
-  my_sed_long_opt='1s/^\(--[^=]*\)=.*/\1/;q'
-  my_sed_long_arg='1s/^--[^=]*=//'
+  my_sed_long_opt='1s/^\(--[[^=]]*\)=.*/\1/;q'
+  my_sed_long_arg='1s/^--[[^=]]*=//'
 
   while test $# -gt 0; do
     opt="$1"
     shift
     case $opt in
+      --debug)		func_echo "enabling shell trace mode"
+			set -x
+			;;
+
       -C|--carbon-copy) test $# -eq 0 && func_missing_arg "$opt" && break
 			cc="$1"
 			shift
@@ -312,7 +220,7 @@ func_single_content ()
     my_outfile="$1"
 
     cat >> "$my_outfile" <<EOF
-Content-Type: $ctype1
+Content-Type: $ctype1;
 Content-Transfer-Encoding: 7bit
 
 `cat $datafile1`
@@ -325,9 +233,9 @@ EOF
 func_multipart_content ()
 {
     my_outfile="$1"
-    boundary="Boundary-${HOST}-$$-`date | tr ' :' -`"
+    boundary="boundary-${HOST}-$$-`date | tr ' :' -`"
     cat <<EOF >> "$my_outfile"
-Content-Type: Multipart/Mixed;
+Content-Type: multipart/mixed;
 	boundary="$boundary"
 
 This is a multimedia message in MIME format.  If you are reading
@@ -338,13 +246,20 @@ EOF
     while test $i -lt $multipart
     do
       i=`expr 1 + $i`
+      eval file=\"\$datafile$i\"
+      name=`echo "$file" | $SED $basename`
       {
 	echo ""
 	echo "--$boundary"
-	eval echo \"Content-Type: \$ctype$i\"
+	if test $i -gt 1; then
+	    eval echo \"Content-Type: \$ctype$i\;\"
+	    echo "        name=\"$name\""
+	else
+	    eval echo \"Content-Type: \$ctype$i\"
+	fi
 	echo "Content-Transfer-Encoding: 7bit"
 	echo ""
-	eval cat \"\$datafile$i\"
+	cat "$file"
       } >> "$my_outfile"
     done
     {
@@ -372,7 +287,7 @@ func_sendmail ()
 
     SENDMAIL=sendmail
     for try_sendmail in sendmail /usr/lib/sendmail /usr/sbin/sendmail; do
-	if which $try_sendmail >/dev/null; then
+	if which $try_sendmail >/dev/null 2>&1; then
 	    SENDMAIL=$try_sendmail
 	    break
 	fi
@@ -388,7 +303,7 @@ func_sendmail ()
     fi
     if test $? -eq 0; then
         func_verbose "...succeeded."
-        rm $my_infile
+        $RM $my_infile
     else
         func_fatal_error "Mail delivery failed, draft mail is in $my_infile"
     fi
