@@ -1218,9 +1218,6 @@ EOF
 	    deplibs="$deplibs -framework System"
 	    continue
 	    ;;
-          *-*-netbsd*)
-            # Don't link with libc until the a.out ld.so is fixed.
-            ;;
 	  esac
 	elif test "$arg" = "-lm"; then
 	  case $host in
@@ -2791,6 +2788,9 @@ EOF
 	    # Rhapsody C library is in the System framework
 	    deplibs="$deplibs -framework System"
 	    ;;
+          *-*-netbsd*)
+            # Don't link with libc until the a.out ld.so is fixed.
+            ;;
 	  *)
  	    # Add libc to deplibs on all other systems if necessary.
  	    if test $build_libtool_need_lc = "yes"; then
