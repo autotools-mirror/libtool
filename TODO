@@ -53,17 +53,7 @@ work under Solaris however.
 
 * Documentation:
 
-- libltdl needs to be documented
-
-- Some variables are still not documented in 
-  "libtool script contents", namely:
-  compiler_c_o, compiler_o_lo, need_locks, 
-  old_postuninstall_cmds, postuninstall_cmds, 
-  old_archive_from_new_cmds, sys_lib_search_path,
-  fix_srcfile_path, objdir, objext, libext
-  
-- Some tests are only poorly documented:
-  assign.test, quote.test, sh.test
+- libltdl documentation needs to be completed.
 
 In the future:
 **************

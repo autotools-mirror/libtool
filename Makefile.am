@@ -15,7 +15,7 @@ aclocal_macros = libtool.m4
 
 EXTRA_DIST = $(aclocal_macros) libtoolize.in ltconfig.in ltmain.in \
 	libtool.spec
-CLEANFILES = libtool libtoolize ltconfig.T ltmain.shT
+CLEANFILES = libtool libtoolize ltconfig.T ltmain.shT libltdl.tar.gz
 
 # These are required by libtoolize.
 pkgdata_SCRIPTS = config.guess config.sub ltconfig
@@ -31,7 +31,7 @@ bin_SCRIPTS = libtool libtoolize
 libltdl.tar.gz: libltdl/Makefile
 	(cd libltdl && $(MAKE) dist)
 	rm -f libltdl.tar.gz
-	ln -s libltdl/libltdl-0.1.tar.gz libltdl.tar.gz
+	ln -s libltdl/libltdl-1.0.tar.gz libltdl.tar.gz
 
 libtool: $(srcdir)/ltmain.sh $(srcdir)/ltconfig
 	CC="$(CC)" CFLAGS="$(CFLAGS)" CPPFLAGS="$(CPPFLAGS)" \

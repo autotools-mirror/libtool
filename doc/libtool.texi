@@ -100,6 +100,7 @@ libtool.
 * Library tips::                Tips for library interface design.
 * Inter-library dependencies::  Libraries that depend on other libraries.
 * Dlopened modules::            @code{dlopen}ing libtool-created libraries.
+* Using libltdl::               Libtool's portable @code{dlopen} wrapper library.
 * Other languages::             Using libtool without a C compiler.
 * Troubleshooting::             When libtool doesn't work as advertised.
 * Maintaining::                 Information used by the libtool maintainer.
@@ -169,6 +170,12 @@ Dlopened modules
 * Dlpreopening::                Dlopening that works on static platforms.
 * Finding the dlname::          Choosing the right file to @code{dlopen}.
 * Dlopen issues::               Unresolved problems that need your attention.
+
+Using libltdl
+
+* Libltdl's interface::         How to use libltdl in your programs.
+* Modules for libltdl::         Creating modules that can be @code{dlopen}ed.
+* Distributing libltdl::        How to distribute libltdl with your package.
 
 Using libtool with other languages
 
@@ -1135,7 +1142,7 @@ If @var{output-file} is a program, then do not link it against any
 shared libraries at all.  If @var{output-file} is a library, then only
 create a static library.
 
-@item -avoid-versioning
+@item -avoid-version
 Tries to avoid versioning (@pxref{Versioning}) for libraries and modules,
 i.e. no version information is stored and no symbolic links are created.
 If the platform requires versioning, this option has no effect.
@@ -1173,10 +1180,10 @@ executable.
 Creates a library that can be dlopenend (@pxref{Dlopened modules}). 
 This option doesn't work for programs and must not be used 
 together with @samp{-export-symbols}.
-It implies the option @samp{-export-dynamic}.
+It enables the option @samp{-export-dynamic} automatically.
 Module names don't need to be prefixed with 'lib'.
 In order to prevent name clashes, however, 'libname' and 'name' 
-must not be used at the same time.
+must not be used at the same time in your package.
 
 @item -no-undefined
 Declare that @var{output-file} does not depend on any other libraries.
@@ -1705,6 +1712,12 @@ overwrite existing files.
 
 @item --help
 Display a help message and exit.
+
+@item --ltdl
+Install libltdl in a subdirectory of your package.
+
+@item --ltdl-tar
+Add the file libltdl.tar.gz to your package.
 
 @item --version
 Print @code{libtoolize} version information and exit.
@@ -2278,16 +2291,11 @@ interpreted language.  In fact, dlopen calls are frequently used in
 language interpreters to provide an efficient way to extend the
 language.
 
-As of version @value{VERSION}, libtool provides experimental support for
-dlopened modules, which does not radically simplify the development of
-dlopening applications.  However, this support is designed to be a
-portable foundation for generic, higher-level dlopen functions.
+As of version @value{VERSION}, libtool provides support for
+dlopened modules.
 
-This chapter discusses the preliminary support that libtool offers, and
-how you as a dlopen application developer might use libtool to generate
-dlopen-accessible modules.  It is important to remember that these are
-experimental features, and not to rely on them for easy answers to the
-problems associated with dlopened modules.
+This chapter discusses how you as a dlopen application developer might 
+use libtool to generate dlopen-accessible modules.
 
 @menu
 * Building modules::            Creating dlopenable objects and libraries.
@@ -2303,25 +2311,25 @@ On some operating systems, a program symbol must be specially declared
 in order to be dynamically resolved with the @code{dlsym} (or
 equivalent) function.
 
-Libtool provides the @samp{-export-dynamic} link 
-flags (@pxref{Link mode}), which does this declaration.  
-You need to use this flag if you are linking an application program that 
+Libtool provides the @samp{-export-dynamic} and @samp{-module} 
+link flags (@pxref{Link mode}), which do this declaration.  
+You need to use these flags if you are linking an application program that 
 dlopens other modules or a libtool library that will also be dlopened.
 
 For example, if we wanted to build a shared library, @file{libhello},
 that would later be dlopened by an application, we would add
-@samp{-export-dynamic} to the other link flags:
+@samp{-module} to the other link flags:
 
 @example
-burger$ @kbd{libtool gcc -export-dynamic -o libhello.la foo.lo \
+burger$ @kbd{libtool gcc -module -o libhello.la foo.lo \
                 hello.lo -rpath /usr/local/lib -lm}
 burger$
 @end example
 
-Another situation where you would use @samp{-export-dynamic} is if
-symbols from your @emph{executable} are needed to satisfy unresolved
-references in a library you want to dlopen.  In this case, you should
-use @samp{-export-dynamic} while linking the executable that calls
+If symbols from your @emph{executable} are needed to satisfy unresolved
+references in a library you want to dlopen you will have to use the flag
+@samp{-export-dynamic}.  
+You should use @samp{-export-dynamic} while linking the executable that calls
 dlopen:
 
 @example
@@ -2365,7 +2373,7 @@ module, or the module is not found, then the application can recover
 without crashing.
 @end enumerate
 
-Libtool emulates @samp{-export-dynamic} 
+Libtool emulates @samp{-export-dynamic} and @samp{-dlopen} 
 on static platforms by linking objects into the program at compile time, 
 and creating data structures that represent the program's symbol table.
 
@@ -2373,15 +2381,13 @@ In order to use this feature, you must declare the objects you want your
 application to dlopen by using the @samp{-dlopen} or @samp{-dlpreopen}
 flags when you link your program (@pxref{Link mode}).
 
-@deftypefn {Structure} {typedef struct}
-lt_symbol @{ @w{const char *@var{name};} @w{lt_ptr_t @var{address};} @}
-
-The @var{name} attribute is a zero-terminated character string of the
+@deftypefn {Structure} {struct} lt_dlsymlist @{ @w{const char *@var{name};} @w{lt_ptr_t @var{address};} @}
+The @var{name} attribute is a null-terminated character string of the
 symbol name, such as @code{"fprintf"}.  The @var{address} attribute is a
 generic pointer to the appropriate object, such as @code{&fprintf}.
 @end deftypefn
 
-@deftypevar {const lt_symbol *} lt_preloaded_symbols
+@deftypevar {const lt_dlsymlist *} lt_preloaded_symbols
 An array of @var{lt_symbol} structures, representing all the preloaded
 symbols linked into the program. For each @samp{-dlpreloaded} file 
 there is an element with the @var{name} of the file and a @var{address} 
@@ -2439,7 +2445,8 @@ The following problems are not solved by using libtool's dlopen support:
 @item
 Dlopen functions are generally only available on shared library
 platforms.  If you want your package to be portable to static platforms,
-you have to develop your own alternatives to dlopening dynamic code.
+you have to use either libltdl (@pxref{Using libltdl}) or develop your 
+own alternatives to dlopening dynamic code.
 Most reasonable solutions involve writing wrapper functions for the
 @code{dlopen} family, which do package-specific tricks when dlopening
 is unsupported or not available on a given platform.
@@ -2456,12 +2463,221 @@ to discover the correct module filename to supply to @code{dlopen}.
 
 Libtool provides a small library, called @file{libltdl}, that aims at
 hiding the various difficulties of dlopening libraries from programmers.
+
+@node Using libltdl
+@chapter Using libltdl
+@findex libltdl
+@findex dlopen
+@findex dlsym
+@findex dlclose
+@findex dlerror
+@findex shl_load
+@cindex dynamic linking, applications
+@cindex dlopening modules
+@cindex modules, dynamic
+@cindex application-level dynamic linking
+
+Libtool provides a small library, called @file{libltdl}, that aims at
+hiding the various difficulties of dlopening libraries from programmers.
 It consists of a header-file and a small C source file that can be
-distributed with applications that need dlopening functionality.  Note,
-however, that its experimental interface is not document and is subject
-to change; use it at your own risk.  On some platforms, whose dynamic
-linkers are too limited for a simple implementation of @file{libltdl}
-services, it will require GNU DLD.
+distributed with applications that need dlopening functionality.
+On some platforms, whose dynamic linkers are too limited for a simple 
+implementation of @file{libltdl} services, it requires GNU DLD.
+
+@menu
+* Libltdl's interface::         How to use libltdl in your programs.
+* Modules for libltdl::         Creating modules that can be @code{dlopen}ed.
+* Distributing libltdl::        How to distribute libltdl with your package.
+@end menu
+
+@node Libltdl's interface
+@section How to use libltdl in your programs
+
+@noindent
+Libltdl's API is similar to the dlopen interface of Solaris and Linux,
+which is very simple but powerful.
+
+@noindent
+To use libltdl in your program you have include the header file @file{ltdl.h}:
+
+@example
+#include <ltdl.h>
+@end example
+
+@noindent
+Note that libltdl is not threadsafe, i.e. a multithreaded application
+has to use a mutex for libltdl.
+
+@noindent
+The following types are defined by libltdl:
+
+@table @code
+@item lt_ptr_t
+@code{lt_ptr_t} is a generic pointer.
+
+@item lt_dlhandle
+@code{lt_dlhandle} is a module "handle" used by @code{lt_dlopen},
+@code{lt_dlclose} and @code{lt_dlsym}. Every dlopened module has
+a handle associated with it.
+
+@item lt_dlsymlist
+@code{lt_dlsymlist} is a symbol list for dlpreopened modules.
+This structure is described in @pxref{Dlpreopening} and is 
+used by @code{lt_dlpreload} and @code{lt_dlpreload_default}.
+@end table
+
+@noindent
+Libltdl provides the following functions:
+
+@deftypefun int lt_dlinit (void)
+Initialize libltdl.
+This function must be called before using libltdl
+and may be called several times.
+Return 0 on success, otherwise the number of errors.
+@end deftypefun
+
+@deftypefun int lt_dlexit (void)
+Shut down libltdl and close all modules.
+This function will only then shut down libltdl when it was called as 
+many times as @code{lt_dlinit} has been successfully called.
+Return 0 on success, otherwise the number of errors.
+@end deftypefun
+
+@deftypefun lt_dlhandle lt_dlopen (const char *@var{filename})
+Open the module with the file name @var{filename} and 
+return a handle for it.
+The module can be either a libtool module
+(the file name has a ".la" extension and the module was linked
+using the @code{-module} flag) or a native dynamic library.
+ 
+Unresolved symbols in the module are resolved using its dependency
+libraries and previously dlopened modules.
+If the executable using this module was linked with the @code{-export-dynamic}
+flag, then the global symbols in the executable will also be used to
+resolve references in the module.
+Libltdl tries to resolve the symbols immediately and returns NULL
+if that fails.
+ 
+If libltdl cannot find the library and the file name @var{filename} does not
+have a directory component it will additionally search in the following 
+search paths for the module (in the order as follows):
+ 
+@enumerate 1
+@item user-defined search path:
+This search path can be set by the program using the
+functions @code{lt_dlsetsearchpath} and @code{lt_dladdsearchdir}.
+ 
+@item libltdl's search path:
+This search path is the value of the environment variable
+@var{LTDL_LIBRARY_PATH}.
+ 
+@item system library search path:
+The system dependent library search path 
+(e.g. on Linux it is @var{LD_LIBRARY_PATH}).
+@end enumerate
+
+Each search path must be a colon-separated list of absolute directories,
+e.g. "/usr/lib/mypkg:/lib/foo".
+ 
+If the same module is loaded several times, the same handle is returned.
+If @code{lt_dlopen} fails for any reason, it returns NULL.
+@end deftypefun
+
+@deftypefun int lt_dlclose (lt_dlhandle @var{handle})
+Decrement the reference count on the module @var{handle}.
+If it drops to zero and no other module depends on this module,
+then the module is unloaded.
+Return 0 on success.
+@end deftypefun
+ 
+@deftypefun lt_ptr_t lt_dlsym (lt_dlhandle @var{handle}, const char *@var{name})
+Return the address in the module @var{handle}, where the symbol given 
+by the null terminated string @var{name} is loaded.
+If the symbol cannot be found, NULL is returned.
+@end deftypefun
+ 
+@deftypefun const char *lt_dlerror (void)
+Return a human readable string describing the most 
+recent error that occurred from any of libltdl's functions.
+Return NULL if no errors have occurred since initialization
+or since it was last called.
+@end deftypefun
+ 
+@deftypefun int lt_dlpreload (const lt_dlsymlist *@var{preloaded})
+Register the list of preloaded modules @var{preloaded}.
+If @var{preloaded} is NULL, then all previously registered
+symbol lists, except the list set by @code{lt_dlpreload_default},
+are deleted. Return 0 on success.
+@end deftypefun
+
+@deftypefun int lt_dlpreload_default (const lt_dlsymlist *@var{preloaded})
+Set the default list of preloaded modules to @var{preloaded}, 
+which won't be deleted by @code{lt_dlpreload}.
+Note that this function does *not* require libltdl to be initialized
+using @code{lt_dlinit} and can be used in the program to register
+the default preloaded modules.
+Usually the main function in the program will set libtool's default
+symbol list:
+
+@example
+extern const lt_dlsymlist lt_preloaded_symbols[];
+
+...
+
+lt_dlpreload_default(lt_preloaded_symbols);
+@end example
+
+Libltdl defines the macros @code{LTDL_PRELOADED_SYMBOLS} and 
+@code{LTDL_SET_PRELOADED_SYMBOLS}, which hide these libtool dependent
+declaration for you.
+
+Return 0 on success.
+@end deftypefun
+
+@deftypefun int lt_dladdsearchdir (const char *@var{search_dir})
+Add the search directory @var{search_dir} to the user-defined library 
+search path. Return 0 on success.
+@end deftypefun
+
+@deftypefun int lt_dlsetsearchpath (const char *@var{search_path})
+Replace the current user-defined library search path with
+@var{search_path}. Return 0 on success.
+@end deftypefun
+
+@deftypefun const char *lt_dlgetsearchpath (void)
+Return the current user-defined library search path.
+@end deftypefun
+
+@defmac LTDL_PRELOADED_SYMBOLS
+Import libtool's preloaded symbols.
+See @code{LTDL_SET_PRELOADED_SYMBOLS}.
+@end defmac
+
+@defmac LTDL_SET_PRELOADED_SYMBOLS()
+Set the default list of preloaded symbols.
+Should be used together with @code{LTDL_PRELOADED_SYMBOLS}
+in your program to initialize libltdl's list of preloaded modules.
+
+@example
+LTDL_PRELOADED_SYMBOLS;
+
+int main() @{
+...
+LTDL_SET_PRELOADED_SYMBOLS();
+...
+@}
+@end example
+@end defmac
+
+@node Modules for libltdl
+@section Creating modules that can be @code{dlopen}ed
+
+empty
+
+@node Distributing libltdl
+@section How to distribute libltdl with your package
+
+empty
 
 @node Other languages
 @chapter Using libtool with other languages
@@ -3111,6 +3327,17 @@ Whether libtool should build static libraries on this system.  Set to
 @samp{yes} or @samp{no}.
 @end defvar
 
+@defvar compiler_c_o
+Whether the compiler supports the @code{-c} and @code{-o} options 
+simultaneously. Set to @samp{yes} or @samp{no}.
+@end defvar
+
+@defvar compiler_o_lo
+Whether the compiler supports compiling directly to a ".lo" file, 
+i.e whether object files do not have to have the suffix ".o".
+Set to @samp{yes} or @samp{no}.
+@end defvar
+
 @defvar echo
 An @code{echo} program which does not interpret backslashes as an
 escape character.
@@ -3128,6 +3355,10 @@ specific directory.
 
 @defvar finish_eval
 Same as @var{finish_cmds}, except the commands are not displayed.
+@end defvar
+
+@defvar fix_srcfile_path
+Expression to fix the shell variable $srcfile for the compiler.
 @end defvar
 
 @defvar global_symbol_pipe
@@ -3187,6 +3418,10 @@ For information purposes, set to the specified and canonical names of
 the system that libtool was configured for.
 @end defvar
 
+@defvar libext
+The standard old archive suffix (normally "a").
+@end defvar
+
 @defvar libname_spec
 The format of a library name prefix.  On all Unix systems, static
 libraries are called @samp{lib@var{name}.a}, but on some systems (such
@@ -3212,10 +3447,16 @@ about it.
 @end defvar
 
 @defvar need_version
-Whether versioning is required for libraries.
+Whether versioning is required for libraries, i.e. whether the
+dynamic linker requires a version suffix for all libraries.
 Set to @samp{yes} or @samp{no}.  By default, it is @samp{unknown}, which 
 means the same as @samp{yes}, but documents that we are not really sure
 about it.
+@end defvar
+
+@defvar need_locks
+Whether files must be locked to prevent conflicts when compiling 
+simultaneously. Set to @samp{yes} or @samp{no}.
 @end defvar
 
 @defvar no_builtin_flag
@@ -3229,6 +3470,14 @@ there will be no unresolved symbols in the resulting shared library.
 Empty, if no such flag is required.
 @end defvar
 
+@defvar objdir
+The name of the directory that contains temporary libtool files.
+@end defvar
+
+@defvar objext
+The standard object file suffix (normally "o").
+@end defvar
+
 @defvar pic_flag
 Any additional compiler flags for building library object files.
 @end defvar
@@ -3236,6 +3485,11 @@ Any additional compiler flags for building library object files.
 @defvar postinstall_cmds
 @defvarx old_postinstall_cmds
 Commands run after installing a shared or static library, respectively.
+@end defvar
+
+@defvar postuninstall_cmds
+@defvarx old_postuninstall_cmds
+Commands run after uninstalling a shared or static library, respectively.
 @end defvar
 
 @defvar reload_cmds
@@ -3256,6 +3510,10 @@ shared libraries.
 @defvar soname_spec
 The name coded into shared libraries, if different from the real name of
 the file.
+@end defvar
+
+@defvar sys_lib_search_path_spec
+Expression to get the system library search path.
 @end defvar
 
 @defvar version_type

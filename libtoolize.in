@@ -140,8 +140,8 @@ if test ! -f configure.in; then
 fi
 
 
-if (cd $pkgdatadir && ls); then :
-else
+files=`cd $pkgdatadir && ls`
+if test -z "$files"; then
   echo "$progname: cannot list files in \`$pkgdatadir'" 1>&2
   exit 1
 fi
@@ -212,7 +212,7 @@ if test -z "$automake"; then
       test -z "$localserial" && localserial=0
 
       if test "$localserial" -lt "$instserial"; then
-        echo "You should $updatemsg."
+	echo "You should $updatemsg."
       elif test "$localserial" -gt "$instserial"; then
 	echo "$progname: \`$libtool_m4' is serial $instserial, less than $localserial in \`aclocal.m4'" 1>&2
 	if test -z "$force"; then
@@ -249,6 +249,14 @@ for file in $files; do
     status=1
   fi
 done
+
+if test "x$ltdl" = xyes; then
+  if tar xzf $pkgdatadir/libltdl.tar.gz; then :
+  else
+    echo "$progname: cannot unpack libltdl.tar.gz" 1>&2
+    status=1
+  fi
+fi
 
 exit $status
 

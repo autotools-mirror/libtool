@@ -22,6 +22,9 @@ USA. */
 #include "ltdl.h"
 #include <stdio.h>
 
+/* the dlpreopened modules */
+LTDL_PRELOADED_SYMBOLS;
+
 int
 test_dl (char *filename)
 {
@@ -88,11 +91,8 @@ main (int argc, char **argv)
     fprintf (stderr, "usage: %s module [module...]\n", argv[0]);
   }
 
+  LTDL_SET_PRELOADED_SYMBOLS();
   if (lt_dlinit() != 0) {
-    fprintf (stderr, "error during initialization: %s\n", lt_dlerror());
-    return 1;
-  }
-  if (lt_dlpreopen(lt_preloaded_symbols) != 0) {
     fprintf (stderr, "error during initialization: %s\n", lt_dlerror());
     return 1;
   }

@@ -1,3 +1,52 @@
+1999-01-17  Thomas Tanner  <tanner@gmx.de>
+
+	* Makefile.am: added libltdl.tar.gz to CLEANFILES
+	* ChangeLog: some reformatting
+	* TODO: documentation updates
+	* doc/libtool.texi: added preliminary libltdl documentation,
+	  updated dlopen and -module documentation,
+	  renamed -avoid-versioning to -avoid-version
+	  documented the libtool script variables compiler_c_o, 
+	  compiler_o_lo, need_locks, old_postuninstall_cmds, 
+	  postuninstall_cmds, sys_lib_search_path_spec,
+	  fix_srcfile_path, objdir, objext, libext,
+	  documented the two new flags (--ltdl[-tar]) of libtoolize
+	* libltdl/Makefile.am: incremented the version, removed
+	  libtool dependency so that it can be build independently
+	* libltdl/configure.in: removed LTDL_SHLIB_EXT hack, 
+	  set version to 1.0, use AM_MAINTAINER_MODE, 
+	  DLPREOPEN is always supported, check for libtool's objdir variable
+	  (LTDL_OBJDIR)
+	* libltdl/ltdl.c: some cleanups (moved constants to the beginning
+	  of the file and prefixed all of them with LTDL_, minor optimizations 
+	  in find_file() and find_module()), renamed lt_dlpreopen* to
+	  lt_dlpreload* for consistency, removed LTDL_SHLIB_EXT hack,
+	  we don't need unistd.h, DLPREOPEN is _always_ supported,
+	  reverted Alexandre's lt_dlpreopen_default_ change, 
+	  try to open the not-installed module before the installed one,
+	  replaced lt_dlsearchpath() with lt_dladdsearchdir(),
+	  lt_dlsetsearchpath() and lt_dlgetsearchpath()
+	* libltdl/ltdl.h: renamed lt_dlpreopen* to lt_dlpreload* 
+	  for consistency, removed the declaration of lt_preloaded_symbols
+	  (should be imported by programs),
+	  reverted Alexandre's lt_dlpreopen_default_ change and added
+	  two new macros LTDL_PRELOADED_SYMBOLS and 
+	  LTDL_SET_PRELOADED_SYMBOLS(),
+	  added lt_dladdsearchdir(), lt_dlsetsearchpath() and 
+	  lt_dlgetsearchpath()
+	* libtool.m4: some reformatting
+	* libtoolize.in: implemented --ltdl, bugfix when checking for
+	  the libtool package directory
+	* ltconfig.in: removed $thread_safe_flags from Andrey Slepuhin's
+	  AIX patch, renamed sys_lib_search_path to sys_lib_search_path_spec,
+	  some reformatting, fixed typo in deplibs_check_method (unkwnon)
+	* ltmain.in: documented -o for compile mode, some reformatting,
+	  renamed -avoid-versioning to -avoid-version
+	  renamed sys_lib_search_path to sys_lib_search_path_spec
+	* mdemo/Makefile.am: use -avoid-version
+	* mdemo/main.c: use LTDL_PRELOADED_SYMBOLS and 
+	  LTDL_SET_PRELOADED_SYMBOLS()
+
 1999-01-17  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* ltconfig.in (wlarc): set to either '${wl}' or an empty string,
@@ -64,7 +113,7 @@
 1999-01-14  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* Makefile.am: Moved ltconfig and ltmain.sh back into srcdir, and
- 	add them to the distribution.  Added work-around if `mv -f' fails.
+	add them to the distribution.  Added work-around if `mv -f' fails.
 	fix @AINCLUDE_M4_LIST@ and @DIST_MAKEFILE_LIST@ for relative and
 	absolute specifications of srcdir
 
@@ -110,7 +159,7 @@
 	  install only the necessary libtool scripts, not just all 
 	  files in pkgdatadir
 	* mdemo/Makefile.am: removed the rule for libltdl configuration
-	  		
+			
 1999-01-13  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* mdemo/Makefile.am (../libltdl/libtool): mkdir and configure
@@ -165,7 +214,7 @@
 	libtool.m4, in last Alexandre Oliva's change to it
 	(sysv4*, ncr): pass all library dependencies
 	* ltmain.in (dependency_libs, -R): use `deplib' instead of `arg' to
- 	iterate, otherwise we'd overwrite `arg'
+	iterate, otherwise we'd overwrite `arg'
 	(convenience, old_libs): if --disable-shared, convenience
 	libraries are just old archives, as .lo's are of no use
 	* tests/cdemo-static.test: print --disable-shared here
@@ -188,7 +237,7 @@
 	* Makefile.am (@DIST_MAKEFILE_LIST@): `$' must be doubled
 
 	* configure.in (AC_CONFIG_DIRS): configure only libltdl, and then,
- 	only if --enable-ltdl-install
+	only if --enable-ltdl-install
 	(CONF_SUBDIRS): list directories that are configured on demand,
 	but that must be included in the distribution
 	(ACINCLUDE_M4_LIST, DIST_MAKEFILE_LIST): generated from CONF_SUBDIRS
@@ -278,7 +327,7 @@
 	documented that -rpath is not required for convenience libraries
 
 	* ltconfig.in (symxfrm): don't print $pipe_works twice, once for
- 	each $ac_symprfx
+	each $ac_symprfx
 	Reported by Godmar Back <gback@cs.utah.edu>
 
 	* ltmain.in (convenience, libobjs): get only .o and .lo files from 
@@ -287,10 +336,10 @@
 	file, and therefore should not be fed to the linker
 
 	* libtool.m4 (AM_SYS_NM_PARSE): while we are at it, we may well
- 	cache the value of ac_cv_sys_symbol_underscore
+	cache the value of ac_cv_sys_symbol_underscore
 
 	* libtool.m4 (AM_SYS_NM_PARSE): need for underscore prefix is now
- 	auto-detected, by trying first without, then with it.  
+	auto-detected, by trying first without, then with it.  
 	
 	* ltconfig.in: ditto
 
@@ -321,7 +370,7 @@
 	most systems
 	(LT_SYMBOL_LENGTH): renamed from MAX_SYMBOL_LENGTH
 	(LT_SYMBOL_OVERHEAD): new macro, that accounts for the size of
- 	the _LTX_ separator and the initial underscore
+	the _LTX_ separator and the initial underscore
 	(lt_dlsym): sym now points to a stack buffer (lsym) if possible,
 	or is dynamically allocated.  If allocation fails, a
 	buffer_overflow_error is returned.
@@ -397,8 +446,8 @@
 1999-01-05  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* ltmain.in (libobjs_save, oldobjs): when building an
- 	old-fashioned archive, use a copy of libobjs saved before
- 	convenience libraries are appended
+	old-fashioned archive, use a copy of libobjs saved before
+	convenience libraries are appended
 
 	* libltdl/ltdl.h (_LTDLL_EXPORT, _LTDLL_IMPORT): use cygwin or
 	unix library import/export primitives; this may be convenient for
@@ -406,8 +455,8 @@
 	(_LTDLL_EXTERN): select _LTDLL_EXPORT or _LTDLL_IMPORT depending
 	on _LTDL_COMPILE_
 	* libltdl/ltdl.h, libltdl/ltdl.c (lt_dlpreopen): new function,
- 	that replaces the current preloaded_symbols list with its
- 	argument, and returns the old value, initially NULL
+	that replaces the current preloaded_symbols list with its
+	argument, and returns the old value, initially NULL
 	(dldpre_init): don't refer to dld_preloaded_symbols any more
 	(dldpre_open, dldpre_sym): search preloaded_symbols
 	(lt_dlpreopen_default): call lt_dlpreopen with
@@ -438,11 +487,11 @@
 	would lose for files with embedded blanks.
 	
 	* ltconfig.in (cygwin, archive_cmds, archive_sym_cmds): Moved
- 	ltdll.c into ltmain.in, to avoid its duplication, and added a sed
- 	script to extract it.  Also, create def and base files in $objdir,
- 	and don't remove them after the compilation.
+	ltdll.c into ltmain.in, to avoid its duplication, and added a sed
+	script to extract it.  Also, create def and base files in $objdir,
+	and don't remove them after the compilation.
 	(cygwin, library_names_spec): Create static part of the dll with
- 	suffix -dll.a, to avoid conflicts with actual static libraries.
+	suffix -dll.a, to avoid conflicts with actual static libraries.
 	* ltmain.in: Added ltdll.c, as commented out text
 
 1999-01-01  Thomas Tanner  <tanner@gmx.de>
@@ -1641,11 +1690,11 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 	longer distributed.
 
 	* tests/assign.test, if.test, test-e.test: Even though 15 tests looks
- 	impressive, these are now redundant.  Remove them from the
- 	distribution.
+	impressive, these are now redundant.  Remove them from the
+	distribution.
 
 	* tests/sh.test: Do what assign.test, if.test, and test-e.test used to
- 	do.
+	do.
 
 1998-02-16  Gordon Matzigkeit  <gord@profitpress.com>
 
@@ -1661,7 +1710,7 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 	Stephan Kulow.
 
 	* tests/defs: Correctly identify absolute directory names on MS-DOS.
-  	Suggested by Bob Friesenhahn.
+	Suggested by Bob Friesenhahn.
 
 1998-02-11  Gordon Matzigkeit  <gord@profitpress.com>
 
@@ -2456,7 +2505,7 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 	specified.
 
 	* tests/nomode.test: New test to make sure there is correct behaviour
- 	when we don't specify a mode.
+	when we don't specify a mode.
 
 1997-07-08  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
@@ -2932,8 +2981,8 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 	need to link against another library.
 
 	* tests/hardcode.test: Rewrite to use fgrep on output from ``strings
- 	-a'' if using fgrep directly on the binary files fails.  From Mark
- 	Kettenis.
+	-a'' if using fgrep directly on the binary files fails.  From Mark
+	Kettenis.
 
 1997-01-28  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
@@ -2973,14 +3022,14 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 	Haible.
 
 	* tests/demo-conf.test: Use the CONFIG_SHELL environment variable when
- 	running configure in the demo directory.  From Bruno Haible.
+	running configure in the demo directory.  From Bruno Haible.
 
 	* tests/Makefile.am (clean-local): Make distclean in the demo directory,
 	so that ``make clean; env CC=cc make check'' works as one would
 	expect.
 
 	* tests/demo-make.test: Fix typo (use $make instead of make).  Reported
- 	by Akim Demaille.
+	by Akim Demaille.
 
 1997-01-17  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
@@ -3037,7 +3086,7 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 
 	* tests/demo-conf.test, tests/demo-inst.test, tests/demo-unst.test, 
 	tests/hardcode.test:
- 	Use $make instead of make.
+	Use $make instead of make.
 
 	* tests/defs (make): Add definition of $make that uses the $MAKE
 	environment variable, if set.  Suggested by Bruno Haible.
@@ -3086,8 +3135,8 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 	line.
 
 	* tests/demo-unst.test: Don't fail if make uninstall doesn't delete
- 	files beginning with a dot, since spurious .nfsXXX files may be
- 	present when running NFS.  Reported by Bruno Haible.
+	files beginning with a dot, since spurious .nfsXXX files may be
+	present when running NFS.  Reported by Bruno Haible.
 
 1997-01-02  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
@@ -3095,7 +3144,7 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 	Fortran and C++.
 
 	* tests/suffix.test: New test to guarantee that libtool compile
- 	recognizes valid source file suffices.
+	recognizes valid source file suffices.
 
 1996-12-17  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
