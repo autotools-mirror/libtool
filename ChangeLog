@@ -1,3 +1,9 @@
+2004-09-01  Gary V. Vaughan  <gary@gnu.org>
+
+	* m4/libtool.m4 (_LT_PROG_LTMAIN): Simplified in light of
+	ltmain.sh no longer being in the build tree.
+	Reported by Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
 2004-09-01  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* libltdl/loaders/preopen.c: Initialise memory in get_vtable.

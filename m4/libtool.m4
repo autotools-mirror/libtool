@@ -200,10 +200,6 @@ _LT_CONFIG_COMMANDS
 
 # _LT_PROG_LTMAIN
 # ---------------
-# In libtool itself `ltmain.sh' is in the build tree, but everything else
-# ships it in the source tree, for completeness, if we find a copy in the
-# build tree use that before falling back to auxdir.
-#
 # Note that this code is called both from `configure', and `config.status'
 # now that we use AC_CONFIG_COMMANDS to generate libtool.  Notably,
 # `config.status' has no value for ac_aux_dir unless we are using Automake,
@@ -211,11 +207,7 @@ _LT_CONFIG_COMMANDS
 m4_defun([_LT_PROG_LTMAIN],
 [m4_ifdef([AC_REQUIRE_AUX_FILE], [AC_REQUIRE_AUX_FILE([ltmain.sh])])dnl
 _LT_CONFIG_LIBTOOL_INIT([ac_aux_dir='$ac_aux_dir'])
-case $ac_aux_dir in
-  $srcdir)   ltmain=./ltmain.sh ;;
-  $srcdir/*) ltmain=`expr "$ac_aux_dir" : "$srcdir/\(.*\)"`/ltmain.sh ;;
-esac
-test -f "$ltmain" || ltmain="$ac_aux_dir/ltmain.sh"
+ltmain="$ac_aux_dir/ltmain.sh"
 ])# _LT_PROG_LTMAIN
 
 
