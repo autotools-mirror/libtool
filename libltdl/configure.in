@@ -27,8 +27,8 @@ AC_SUBST(LIBTOOL_DEPS)
 AC_ARG_ENABLE(ltdl-install,
 [  --enable-ltdl-install   install libltdl])
 
-AM_CONDITIONAL(INSTALL_LTDL, test x"$enable_ltdl_install" != xno)
-AM_CONDITIONAL(CONVENIENCE_LTDL, test x"$enable_ltdl_convenience" != xno)
+AM_CONDITIONAL(INSTALL_LTDL, test x"${enable_ltdl_install-no}" != xno)
+AM_CONDITIONAL(CONVENIENCE_LTDL, test x"${enable_ltdl_convenience-no}" != xno)
 
 AC_CACHE_CHECK([which extension is used for shared libraries],
   libltdl_cv_shlibext, [dnl

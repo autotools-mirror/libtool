@@ -1,5 +1,11 @@
 1999-03-10  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* libtool.m4 (AC_LIBLTDL_INSTALLABLE, AC_LIBLTDL_CONVENIENCE): 
+	avoid introducing multiple --enable options when re-running
+	config.status
+	* libltdl/configure.in: if enable_ltdl_* is not set, assume no
+	* configure.in: if enable_ltdl_install is not set, enable it
+
 	* libltdl/configure.in: only assume implicit installation if
 	libltdl was libtoolized.  If not, print a warning message
 	suggesting the use of --enable-ltdl-install or of one of the

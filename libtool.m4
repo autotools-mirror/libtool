@@ -620,8 +620,12 @@ AC_CHECK_LIB(m, cos)
 # flat, and, if you're not using automake, define top_builddir as
 # appropriate in the Makefiles.
 AC_DEFUN(AC_LIBLTDL_CONVENIENCE, [
+  case "$enable_ltdl_convenience" in
+  no) AC_MSG_ERROR([this package needs a convenience libltdl]) ;;
+  "") enable_ltdl_convenience=yes
+      ac_configure_args="$ac_configure_args --enable-ltdl-convenience" ;;
+  esac
   LIBLTDL=ifelse($#,1,$1,['${top_builddir}/libltdl'])/libltdlc.la
-  ac_configure_args="$ac_configure_args --enable-ltdl-convenience"
 ])
 
 # AC_LIBLTDL_INSTALLABLE[(dir)] - sets LIBLTDL to the link flags for
@@ -635,10 +639,13 @@ AC_DEFUN(AC_LIBLTDL_CONVENIENCE, [
 # In the future, this macro may have to be called after AC_PROG_LIBTOOL.
 AC_DEFUN(AC_LIBLTDL_INSTALLABLE, [
   AC_CHECK_LIB(ltdl, main, LIBLTDL="-lltdl", [
-    enable_ltdl_install=yes
-    ac_configure_args="$ac_configure_args --enable-ltdl-install"
+    case "$enable_ltdl_install" in
+    no) AC_MSG_WARN([libltdl not installed, but installation disabled]) ;;
+    "") enable_ltdl_install=yes
+        ac_configure_args="$ac_configure_args --enable-ltdl-install" ;;
+    esac
   ])
-  if test x"$enable_ltdl_install" = x"yes"; then
+  if test x"$enable_ltdl_install" != x"no"; then
     LIBLTDL=ifelse($#,1,$1,['${top_builddir}/libltdl'])/libltdl.la
   fi
 ])
