@@ -75,9 +75,7 @@ AC_CACHE_CHECK([which extension is used for shared libraries],
   for spec in $library_names_spec; do
     last="$spec"
   done
-changequote(, )
-  echo "$last" | sed 's/\[.*\]//;s/^[^.]*//;s/\$.*$//;s/\.$//' > conftest
-changequote([, ])
+  echo "$last" | [sed 's/\[.*\]//;s/^[^.]*//;s/\$.*$//;s/\.$//'] > conftest
 )
 libltdl_cv_shlibext=`cat conftest`
 rm -f conftest
@@ -196,12 +194,11 @@ AC_CACHE_VAL(ac_cv_sys_global_symbol_pipe,
 [# These are sane defaults that work on at least a few old systems.
 # {They come from Ultrix.  What could be older than Ultrix?!! ;)}
 
-changequote(,)dnl
 # Character class describing NM global symbol codes.
-ac_symcode='[BCDEGRST]'
+[ac_symcode='[BCDEGRST]']
 
 # Regexp to match symbols that can be accessed directly from C.
-ac_sympat='\([_A-Za-z][_A-Za-z0-9]*\)'
+[ac_sympat='\([_A-Za-z][_A-Za-z0-9]*\)']
 
 # Transform the above into a raw symbol and a C symbol.
 ac_symxfrm='\1 \2\3 \3'
@@ -212,32 +209,31 @@ ac_global_symbol_to_cdecl="sed -n -e 's/^. .* \(.*\)$/extern char \1;/p'"
 # Define system-specific variables.
 case "$host_os" in
 aix*)
-  ac_symcode='[BCDT]'
+  [ac_symcode='[BCDT]']
   ;;
 cygwin* | mingw*)
-  ac_symcode='[ABCDGISTW]'
+  [ac_symcode='[ABCDGISTW]']
   ;;
 hpux*)
   ac_global_symbol_to_cdecl="sed -n -e 's/^T .* \(.*\)$/extern char \1();/p' -e 's/^. .* \(.*\)$/extern char \1;/p'"
   ;;
 irix*)
-  ac_symcode='[BCDEGRST]'
+  [ac_symcode='[BCDEGRST]']
   ;;
 solaris*)
-  ac_symcode='[BDT]'
+  [ac_symcode='[BDT]']
   ;;
 esac
 
 # If we're using GNU nm, then use its standard symbol codes.
 if $NM -V 2>&1 | egrep '(GNU|with BFD)' > /dev/null; then
-  ac_symcode='[ABCDGISTW]'
+  [ac_symcode='[ABCDGISTW]']
 fi
-changequote([,])dnl
 
 # Try without a prefix undercore, then with it.
 for ac_symprfx in "" "_"; do
 
-  ac_cv_sys_global_symbol_pipe="sed -n -e 's/^.*[ 	]\($ac_symcode\)[ 	][ 	]*\($ac_symprfx\)$ac_sympat$/$ac_symxfrm/p'"
+  [ac_cv_sys_global_symbol_pipe="sed -n -e 's/^.*[ 	]\($ac_symcode\)[ 	][ 	]*\($ac_symprfx\)$ac_sympat$/$ac_symxfrm/p'"]
 
   # Check to see that the pipe works correctly.
   ac_pipe_works=no
@@ -292,9 +288,7 @@ const struct {
   const char *name;
   lt_ptr_t address;
 }
-changequote(,)dnl
-lt_preloaded_symbols[] =
-changequote([,])dnl
+[lt_preloaded_symbols[] =]
 {
 EOF
 	sed 's/^. \(.*\) \(.*\)$/  {"\2", (lt_ptr_t) \&\2},/' < "$ac_nlist" >> conftest.c
