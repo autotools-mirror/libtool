@@ -2015,16 +2015,6 @@ fi
 
 # Check whether we must set pic_mode to default
 test -z "$pic_flag" && pic_mode=default
-# On Cygwin there's no "real" PIC flag so we must build both object types
-case "$host_os" in
-cygwin* | mingw* | os2*)
-  pic_mode=default
-  ;;
-esac
-if test $pic_mode = no && test "$deplibs_check_method" != pass_all; then
-  # non-PIC code in shared libraries is not supported
-  pic_mode=default
-fi
 
 if test "x$enable_dlopen" != xyes; then
   enable_dlopen=unknown

@@ -316,6 +316,16 @@ if test -z "$show_help"; then
 	continue
 	;;
 
+      -prefer-pic)
+	pic_mode=yes
+	continue
+	;;
+
+      -prefer-non-pic)
+	pic_mode=no
+	continue
+	;;
+
       -Xcompiler)
 	prev=xcompiler
 	continue
@@ -447,6 +457,17 @@ if test -z "$show_help"; then
 
     $run $rm $removelist
     trap "$run $rm $removelist; exit 1" 1 2 15
+
+    # On Cygwin there's no "real" PIC flag so we must build both object types
+    case "$host_os" in
+    cygwin* | mingw* | os2*)
+      pic_mode=default
+      ;;
+    esac
+    if test $pic_mode = no && test "$deplibs_check_method" != pass_all; then
+      # non-PIC code in shared libraries is not supported
+      pic_mode=default
+    fi
 
     # Calculate the filename of the output object if compiler does
     # not support -o with -c

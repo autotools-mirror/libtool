@@ -282,9 +282,16 @@ esac],
 enable_fast_install=AC_ENABLE_FAST_INSTALL_DEFAULT)dnl
 ])
 
-# AC_ENABLE_FAST_INSTALL - set the default to --disable-fast-install
+# AC_DISABLE_FAST_INSTALL - set the default to --disable-fast-install
 AC_DEFUN(AC_DISABLE_FAST_INSTALL, [AC_BEFORE([$0],[AC_LIBTOOL_SETUP])dnl
 AC_ENABLE_FAST_INSTALL(no)])
+
+# AC_LIBTOOL_PICMODE - implement the --with-pic flag
+# Usage: AC_LIBTOOL_PICMODE[(MODE)]
+#   Where MODE is either `yes' or `no'.  If omitted, it defaults to
+#   `both'.
+AC_DEFUN(AC_LIBTOOL_PICMODE, [AC_BEFORE([$0],[AC_LIBTOOL_SETUP])dnl
+pic_mode=ifelse($#,1,$1,default)])
 
 
 # AC_PATH_TOOL_PREFIX - find a file program which can recognise shared library
