@@ -1,3 +1,8 @@
+2001-04-11  Ossama Othman  <ossama@uci.edu>
+
+	* config.guess: Updated to latest version.
+	* config.sub: Likewise.
+
 2001-04-11  Loren J. Rittle  <ljrittle@acm.org>
 
 	* ltcf-cxx.sh: Support creation of C++ shared libraries on
