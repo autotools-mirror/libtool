@@ -1472,7 +1472,13 @@ else
     ;;
 
   sysv4)
-    archive_cmds='$LD -G -h $soname -o $lib $libobjs $deplibs $linkopts'
+    if test "x$host_vendor" = xsequent; then
+      # Use $CC to link under sequent, because it throws in some extra .o 
+      # files that make .init and .fini sections work.
+      archive_cmds='$CC -G ${wl}-h $soname -o $lib $libobjs $deplibs $linkopts'
+    else
+      archive_cmds='$LD -G -h $soname -o $lib $libobjs $deplibs $linkopts'
+    fi
     runpath_var='LD_RUN_PATH'
     hardcode_shlibpath_var=no
     hardcode_direct=no #Motorola manual says yes, but my tests say they lie 
@@ -2081,6 +2087,10 @@ sysv4 | sysv4.2uw2* | sysv4.3* | sysv5*)
   soname_spec='${libname}${release}.so$major'
   shlibpath_var=LD_LIBRARY_PATH
   case "$host_vendor" in
+    sequent)
+      file_magic_cmd='/bin/file'
+      deplibs_check_method='file_magic ELF [0-9][0-9]*-bit [LM]SB (shared object|dynamic lib )'
+      ;;
     ncr)
       deplibs_check_method='pass_all'
       ;;

@@ -1,3 +1,7 @@
+2000-05-27  Chris Lattner  <sabre@skylab.org>
+
+	* ltconfig.in (*-sequent-sysv4): New Port.
+
 2000-05-14  Alexandre Oliva  <oliva@lsd.ic.unicamp.br>
 
 	* libtool.m4 (AC_LIBLTDL_CONVENIENCE, AC_LIBLTDL_INSTALLABLE):
