@@ -1,3 +1,7 @@
+2002-06-01  Gary V. Vaughan  <gary@gnu.org>
+
+	* tests/pdemo-exec.test: Typo.  s/hell-static/hell_static/
+
 2002-05-31  Charles Wilson  <cwilson@ece.gatech.edu>
 
 	* NEWS: Updated.

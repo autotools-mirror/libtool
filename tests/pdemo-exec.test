@@ -20,7 +20,7 @@ fi
 echo "Executing uninstalled programs in ../pdemo"
 
 status=0
-if ../pdemo/hell-static| grep 'Welcome to GNU Hell'; then :
+if ../pdemo/hell_static| grep 'Welcome to GNU Hell'; then :
 else
   echo "$0: cannot execute ../pdemo/hell_static" 1>&2
   status=1
