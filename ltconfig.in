@@ -664,7 +664,7 @@ else
     wl='-Qoption ld '
     ;;
 
-  sysv4.2uw2* | sysv5* | sysv4.3*)
+  sysv4.2uw2* | sysv4.3* | sysv5*)
     pic_flag='-KPIC'
     link_static_flag='-Bstatic'
     wl='-Wl,'
@@ -1801,7 +1801,7 @@ sunos4*)
   need_version=yes
   ;;
 
-sysv4.2uw2* | sysv4.3*)
+sysv4.2uw2* | sysv4.3* | sysv5*)
   version_type=linux
   library_names_spec='${libname}${release}.so$versuffix ${libname}${release}.so$major $libname.so'
   soname_spec='${libname}${release}.so$major'

@@ -1,5 +1,13 @@
 1999-01-20  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* THANKS: added Manfred Weichel
+
+1999-01-20  Manfred Weichel  <Manfred.Weichel@pdb.siemens.de>
+
+	* ltconfig.in (sysv5*): same as sysv4.3*
+
+1999-01-20  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
 	* libltdl/ltdl.c (lt_dlopen): properly detect error condition when
 	full pathname of non-libtool library is provided
 	
