@@ -1282,6 +1282,13 @@ If @var{output-file} is a library, it will eventually be installed in
 @var{libdir}.  If @var{output-file} is a program, add @var{libdir} to
 the run-time path of the program.
 
+@item -shrext @var{suffix}
+If @var{output-file} is a libtool library, replace the system's standard
+file name extension for shared libraries with @var{suffix} (most systems
+use @file{so} here).  This option is helpful in certain cases where an
+application requires that shared libraries (typically modules) have an
+extension other than the default one.
+
 @item -R @var{libdir}
 If @var{output-file} is a program, add @var{libdir} to its run-time
 path.  If @var{output-file} is a library, add -R@var{libdir} to its

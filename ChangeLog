@@ -1,3 +1,13 @@
+2002-12-30  Ralph Schleicher  <rs@nunatak.allgaeu.org>
+
+	Rework by Robert Boehne <rboehne@gnu.org>
+	* ltmain.in: New link option -shrext.
+	* libtool.m4 (AC_LIBTOOL_CONFIG): New libtool variable shrext.
+	(AC_LIBTOOL_SYS_DYNAMIC_LINKER): Replace all hard coded shared
+	library file name extensions in library_names_spec and
+	soname_spec with $shrext.
+	* doc/libtool.texi (Link mode): Document it.
+
 2002-12-27  Charles Wilson  <cwilson@ece.gatech.edu>
 
 	* libtool.m4 (AC_LIBTOOL_LANG_CXX_CONFIG): modify

@@ -1306,6 +1306,11 @@ EOF
         continue
         ;;
 
+      -shrext)
+	prev=shrext
+	continue
+	;;
+
       -no-fast-install)
 	fast_install=no
 	continue
