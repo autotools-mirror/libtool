@@ -1,5 +1,8 @@
 2000-09-09  Gary V. Vaughan  <gvv@techie.com>
 
+	libtool.m4 (_LT_AC_LTCONFIG_HACK): Forgot to escape the
+	redirections inside AC_TRY_EVAL in the need_lc tests. Doh!
+
 	libtool.m4 (_LT_AC_LTCONFIG_HACK): Forgot to redirect the
 	output of grep to /dev/null in the need_lc tests.
 
