@@ -671,7 +671,7 @@ burger$ @kbd{gcc -g -O -o hell.old main.o libhello.a -lm}
 burger$
 @end example
 
-Libtool's way is almost the same@footnote{However, you should never use
+Libtool's way is almost the same@footnote{However, you should avoid using
 @samp{-L} or @samp{-l} flags to link against an uninstalled libtool
 library.  Just specify the relative path to the @samp{.la} file, such as
 @file{../intl/libintl.la}.  This is a design decision to eliminate any
@@ -1102,7 +1102,10 @@ Install libraries or executables.
 Create a library or an executable.
 
 @item uninstall
-Delete libraries or executables.
+Delete installed libraries or executables.
+
+@item clean
+Delete uninstalled libraries or executables.
 @end table
 
 @item --version
@@ -1209,7 +1212,7 @@ Link @var{file} into the output program, and add its symbols to
 @var{lt_preloaded_symbols} (@pxref{Dlpreopening}).  If @var{file} is
 @code{self}, the symbols of the program itself will be added to
 @var{lt_preloaded_symbols}.
-If @var{file} is @code{dummy} libtool will make sure that
+If @var{file} is @code{force} libtool will make sure that
 @var{lt_preloaded_symbols} is always @emph{defined}, regardless of whether
 it's empty or not.
 
@@ -1243,6 +1246,11 @@ This option doesn't work for programs.
 Module names don't need to be prefixed with 'lib'.
 In order to prevent name clashes, however, 'libname' and 'name' 
 must not be used at the same time in your package.
+
+@item -no-fast-install
+Disable fast-install mode for the executable @var{output-file}
+(@pxref{Invoking ltconfig}).  Useful if the program is only used in the
+build tree, e.g., for generating other files.
 
 @item -no-undefined
 Declare that @var{output-file} does not depend on any other libraries.
@@ -1360,7 +1368,7 @@ Running this command may require superuser privileges, so the
 @cindex uninstall mode
 @cindex mode, uninstall
 
-@dfn{Uninstall} mode deletes installed libraries (and other files).
+@dfn{Uninstall} mode deletes installed libraries, executables and objects.
 
 The first @var{mode-arg} is the name of the program to use to delete
 files (typically @file{/bin/rm}).
@@ -1373,7 +1381,8 @@ The remaining @var{mode-args} are either flags for the deletion program
 @cindex clean mode
 @cindex mode, clean
 
-@dfn{Clean} mode deletes uninstalled libraries (and other files).
+@dfn{Clean} mode deletes uninstalled libraries, executables, objects
+and libtool's temporary files associated with them.
 
 The first @var{mode-arg} is the name of the program to use to delete
 files (typically @file{/bin/rm}).
@@ -3047,11 +3056,11 @@ symbols. In general you can safely use the convenience library in programs
 which don't depend on other libraries that might use libltdl too.
 In order to enable this flavor of libltdl, you should add the
 line @samp{AC_LIBLTDL_CONVENIENCE} to your @file{configure.in},
-@emph{after} @samp{AM_PROG_LIBTOOL}.
+@emph{before} @samp{AM_PROG_LIBTOOL}.
 
 In order to select the installable version of libltdl, you should add a
 call of the macro @samp{AC_LIBLTDL_INSTALLABLE} to your
-@file{configure.in} @emph{after} @samp{AM_PROG_LIBTOOL}.  This macro
+@file{configure.in} @emph{before} @samp{AM_PROG_LIBTOOL}.  This macro
 will check whether libltdl is already installed and, if not, request the
 libltdl embedded in your package to be built and installed.  Note,
 however, that no version checking is performed.  The user may override
@@ -3079,7 +3088,7 @@ with programs that include @file{ltdl.h}.  It is up to you to use
 default, such as @var{LIBS} and @var{CPPFLAGS}.
 
 If you're using the convenience libltdl, @var{LIBLTDL} will be the
-pathname for the convenience version of libltdland @var{INCLTDL} will be
+pathname for the convenience version of libltdl and @var{INCLTDL} will be
 @samp{-I} followed by the directory that contains libltdl, both starting
 with @samp{$@{top_builddir@}/}.
 
@@ -3116,17 +3125,16 @@ assume that libltdl was embedded using @samp{libtoolize --ltdl}.
 configure.in:
 @example
 ...
+dnl Enable building of the convenience library
+dnl and set LIBLTDL accordingly
+AC_LIBLTDL_CONVENIENCE
+dnl Substitute INCLTDL and LIBLTDL in the Makefiles
+AC_SUBST(INCLTDL)
+AC_SUBST(LIBLTDL)
 dnl Check for dlopen support
 AC_LIBTOOL_DLOPEN
 dnl Configure libtool
 AM_PROG_LIBTOOL
-dnl Enable building of the convenience library
-dnl and set LIBLTDL accordingly
-AC_LIBLTDL_CONVENIENCE
-dnl Substitute LIBLTDL in the Makefiles
-AC_SUBST(LIBLTDL)
-dnl Add INCLTDL to the include path
-CPPFLAGS="$CPPFLAGS $INCLTDL"
 dnl Configure libltdl
 AC_CONFIG_SUBDIRS(libltdl)
 ...
@@ -3136,6 +3144,8 @@ Makefile.am:
 @example
 ...
 SUBDIRS = libltdl
+
+INCLUDES = $(INCLTDL)
 
 myprog_LDFLAGS = -export-dynamic
 # The quotes around -dlopen below fool automake into accepting it
@@ -4008,6 +4018,12 @@ line (such as @samp{@var{dir}/lib@var{name}.a}) when
 @var{hardcode_libdir_flag_spec} is specified.
 @end defvar
 
+@defvar hardcode_into_libs
+Whether the platform supports hardcoding of run-paths into libraries.
+If enabled, linking of programs will be much simpler but libraries will
+need to be relinked during installation.   Set to @samp{yes} or @samp{no}.
+@end defvar
+
 @defvar hardcode_libdir_flag_spec
 Flag to hardcode a @var{libdir} variable into a binary, so that the
 dynamic linker searches @var{libdir} for shared libraries at runtime.
@@ -4155,6 +4171,13 @@ shared libraries.
 @defvar soname_spec
 The name coded into shared libraries, if different from the real name of
 the file.
+@end defvar
+
+@defvar striplib
+@defvarx old_striplib
+Command to strip a shared (@code{striplib}) or static (@code{old_striplib})
+library, respectively.  If these variables are empty, the strip flag
+in the install mode will be ignored for libraries (@pxref{Install mode}).
 @end defvar
 
 @defvar sys_lib_dlsearch_path_spec

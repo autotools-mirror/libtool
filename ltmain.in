@@ -611,8 +611,10 @@ compiler."
     ;;
 
   # libtool link mode
-  link)
+  link | relink)
     modename="$modename: link"
+    relink=no
+    test "$mode" = "relink" && relink=yes
     case "$host" in
     *-*-cygwin* | *-*-mingw* | *-*-os2*)
       # It is impossible to link a dll without this setting, and
@@ -800,6 +802,7 @@ compiler."
       allow_undefined=yes
       ;;
     esac
+    libtool_args="$nonopt"
     compile_command="$nonopt"
     finalize_command="$nonopt"
 
@@ -872,6 +875,7 @@ compiler."
     while test $# -gt 0; do
       arg="$1"
       shift
+      libtool_args="$libtool_args $arg"
 
       # If the previous option needs an argument, assign it.
       if test -n "$prev"; then
@@ -892,7 +896,7 @@ compiler."
 	  fi
 	  case "$arg" in
 	  *.la | *.lo) ;;  # We handle these cases below.
-	  dummy)
+	  force)
 	    if test "$dlself" = no; then
 	      dlself=needless
 	      export_dynamic=yes
@@ -1099,6 +1103,11 @@ compiler."
 
       -module)
 	module=yes
+	continue
+	;;
+
+      -no-fast-install)
+	fast_install=no
 	continue
 	;;
 
@@ -1621,16 +1630,18 @@ compiler."
 	fi
       fi
 
-      # Create the output directory, or remove our outputs if we need to.
-      if test -d $output_objdir; then
-	$show "${rm}r $output_objdir/$outputname $output_objdir/$libname.* $output_objdir/${libname}${release}.*"
-	$run ${rm}r $output_objdir/$outputname $output_objdir/$libname.* $output_objdir/${libname}${release}.*
-      else
-	$show "$mkdir $output_objdir"
-	$run $mkdir $output_objdir
-	status=$?
-	if test $status -ne 0 && test ! -d $output_objdir; then
-	  exit $status
+      if test "$relink" = no; then
+	# Create the output directory, or remove our outputs if we need to.
+	if test -d $output_objdir; then
+	  $show "${rm}r $output_objdir/$outputname $output_objdir/$libname.* $output_objdir/${libname}${release}.*"
+	  $run ${rm}r $output_objdir/$outputname $output_objdir/$libname.* $output_objdir/${libname}${release}.*
+	else
+	  $show "$mkdir $output_objdir"
+	  $run $mkdir $output_objdir
+	  status=$?
+	  if test $status -ne 0 && test ! -d $output_objdir; then
+	    exit $status
+	  fi
 	fi
       fi
 
@@ -1692,7 +1703,6 @@ compiler."
 	  fi
 	  ;;
 	esac
-	dlname=
 	libdir=
 	library_names=
 	old_library=
@@ -1773,6 +1783,30 @@ compiler."
 	if test -n "$library_names" &&
 	   { test "$prefer_static_libs" = no || test -z "$old_library"; }; then
 	  # This is a shared library
+	  if test "$hardcode_into_libs" = yes; then
+	    # Hardcode the library path.
+	    # Skip directories that are in the system default run-time
+	    # search path.
+	    case " $sys_lib_dlsearch_path " in
+	    *" $absdir "*) ;;
+	    *)
+	      case "$compile_rpath " in
+	      *" $absdir "*) ;;
+	      *) compile_rpath="$compile_rpath $absdir" 
+	      esac
+	      ;;
+	    esac
+	    case " $sys_lib_dlsearch_path " in
+	    *" $libdir "*) ;;
+	    *)
+	      case "$finalize_rpath " in
+	      *" $libdir "*) ;;
+	      *) finalize_rpath="$finalize_rpath $libdir"
+	      esac
+	      ;;
+	    esac
+	  fi
+	    
 	  if test -n "$old_archive_from_expsyms_cmds"; then
 	    # figure out the soname
 	    set dummy $library_names
@@ -1822,49 +1856,73 @@ compiler."
 	  add_dir=
 	  add_shlibpath=
 	  add_name=no
-	  lib_linked=yes
-	  case "$hardcode_action" in
-	  immediate | unsupported)
-	    if test "$hardcode_direct" = no; then
-	      deplibs="$deplibs $dir/$linklib"
-	    elif test "$hardcode_minus_L" = no; then
-	      case "$host" in
-	      *-*-sunos*) add_shlibpath="$dir" ;;
-	      esac
-	      add_dir="-L$dir"
-	      add_name=yes
-	    elif test "$hardcode_shlibpath_var" = no; then
-	      add_shlibpath="$dir"
-	      add_name=yes
-	    else
-	      lib_linked=no
+	  if test "$relink" = no; then
+	    lib_linked=yes
+	    case "$hardcode_action" in
+	    immediate | unsupported)
+	      if test "$hardcode_direct" = no; then
+		deplibs="$deplibs $dir/$linklib"
+	      elif test "$hardcode_minus_L" = no; then
+		case "$host" in
+		*-*-sunos*) add_shlibpath="$dir" ;;
+		esac
+		add_dir="-L$dir"
+		add_name=yes
+	      elif test "$hardcode_shlibpath_var" = no; then
+		add_shlibpath="$dir"
+		add_name=yes
+	      else
+		lib_linked=no
+	      fi
+	      ;;
+	    relink)
+	      if test "$hardcode_direct" = yes; then
+		deplibs="$deplibs $dir/$linklib"
+	      elif test "$hardcode_minus_L" = yes; then
+		add_dir="-L$dir"
+		add_name=yes
+	      elif test "$hardcode_shlibpath_var" = yes; then
+		add_shlibpath="$dir"
+		add_name=yes
+	      else
+		lib_linked=no
+	      fi
+	      ;;
+	    *) lib_linked=no ;;
+	    esac
+
+	    if test "$lib_linked" != yes; then
+	      $echo "$modename: configuration error: unsupported hardcode properties"
+	      exit 1
 	    fi
-	    ;;
-	  relink)
+	    if test -n "$add_shlibpath"; then
+	      case ":$compile_shlibpath:" in
+	      *":$add_shlibpath:"*) ;;
+	      *) compile_shlibpath="$compile_shlibpath$add_shlibpath:" ;;
+	      esac
+	    fi
+	  else
+	    # Install command for both is simple: just hardcode it.
 	    if test "$hardcode_direct" = yes; then
-	      deplibs="$deplibs $dir/$linklib"
+	      deplibs="$deplibs $libdir/$linklib"
 	    elif test "$hardcode_minus_L" = yes; then
-	      add_dir="-L$dir"
+	      add_dir="-L$libdir"
 	      add_name=yes
 	    elif test "$hardcode_shlibpath_var" = yes; then
-	      add_shlibpath="$dir"
 	      add_name=yes
 	    else
-	      lib_linked=no
+	      # We cannot seem to hardcode it, guess we'll fake it.
+	      add_dir="-L$libdir"
+	      add_name=yes
 	    fi
-	    ;;
-	  *) lib_linked=no ;;
-	  esac
-
-	  if test "$lib_linked" != yes; then
-	    $echo "$modename: configuration error: unsupported hardcode properties"
-	    exit 1
 	  fi
-	  if test -n "$add_shlibpath"; then
-	    case ":$compile_shlibpath:" in
-	    *":$add_shlibpath:"*) ;;
-	    *) compile_shlibpath="$compile_shlibpath$add_shlibpath:" ;;
-	    esac
+	  if test "$hardcode_direct" != yes && \
+	     test "$hardcode_minus_L" != yes && \
+	     test "$hardcode_shlibpath_var" = yes; then
+	      case ":$finalize_shlibpath:" in
+	      *":$libdir:"*) ;;
+	      *) finalize_shlibpath="$finalize_shlibpath$libdir:" ;;
+	      esac
 	  fi
 	  if test -n "$add_dir"; then
 	    case "$deplibs " in
@@ -2227,10 +2285,61 @@ EOF
       
       # Test again, we may have decided not to build it any more
       if test "$build_libtool_libs" = yes; then
-	if test -n "$compile_shlibpath"; then
-	  eval "$shlibpath_var='$compile_shlibpath\$$shlibpath_var'; export $shlibpath_var"
+	if test "$hardcode_into_libs" = yes; then
+	  # Hardcode the library paths
+	  hardcode_libdirs=
+	  dep_rpath=
+	  rpath="$finalize_rpath"
+	  test "$relink" = no && rpath="$compile_rpath$rpath"
+	  for libdir in $rpath; do
+	    if test -n "$hardcode_libdir_flag_spec"; then
+	      if test -n "$hardcode_libdir_separator"; then
+		if test -z "$hardcode_libdirs"; then
+		  hardcode_libdirs="$libdir"
+		else
+		  # Just accumulate the unique libdirs.
+		  case "$hardcode_libdir_separator$hardcode_libdirs$hardcode_libdir_separator" in
+		  *"$hardcode_libdir_separator$libdir$hardcode_libdir_separator"*)
+		    ;;
+		  *)
+		    hardcode_libdirs="$hardcode_libdirs$hardcode_libdir_separator$libdir"
+		    ;;
+		  esac
+		fi
+	      else
+		eval flag=\"$hardcode_libdir_flag_spec\"
+		dep_rpath="$dep_rpath $flag"
+	      fi
+	    elif test -n "$runpath_var"; then
+	      case "$perm_rpath " in
+	      *" $libdir "*) ;;
+	      *) perm_rpath="$perm_rpath $libdir" ;;
+	      esac
+	    fi
+	  done
+	  # Substitute the hardcoded libdirs into the rpath.
+	  if test -n "$hardcode_libdir_separator" &&
+	     test -n "$hardcode_libdirs"; then
+	    libdir="$hardcode_libdirs"
+	    eval dep_rpath=\"$hardcode_libdir_flag_spec\"
+	  fi
+	  if test -n "$runpath_var" && test -n "$perm_rpath"; then
+	    # We should set the runpath_var.
+	    rpath=
+	    for dir in $perm_rpath; do
+	      rpath="$rpath$dir:"
+	    done
+	    eval "$runpath_var='$rpath\$$runpath_var'; export $runpath_var"
+	  fi
+	  test -n "$dep_rpath" && deplibs="$dep_rpath $deplibs"
 	fi
 
+	shlibpath="$finalize_shlibpath"	
+	test "$relink" = no && shlibpath="$compile_shlibpath$shlibpath"	
+	if test -n "$shlibpath"; then
+	  eval "$shlibpath_var='$shlibpath\$$shlibpath_var'; export $shlibpath_var"
+  	fi
+  
 	# Get the real and link names of the library.
 	eval library_names=\"$library_names_spec\"
 	set dummy $library_names
@@ -2334,6 +2443,11 @@ EOF
 	  linker_flags="$linker_flags $flag"
 	fi
 
+	# Make a backup of the uninstalled library when relinking
+	if test "$relink" = yes && test "$hardcode_into_libs" = yes ; then
+	  $run eval '(cd $output_objdir && $rm ${realname}U && $mv $realname ${realname}U)' || exit $?
+	fi
+
 	# Do each of the archive commands.
 	if test -n "$export_symbols" && test -n "$archive_expsym_cmds"; then
 	  eval cmds=\"$archive_expsym_cmds\"
@@ -2347,6 +2461,12 @@ EOF
 	  $run eval "$cmd" || exit $?
 	done
 	IFS="$save_ifs"
+
+	# Restore the uninstalled library and exit
+	if test "$relink" = yes && test "$hardcode_into_libs" = yes; then
+	  $run eval '(cd $output_objdir && $rm ${realname}T && $mv $realname ${realname}T && $mv "$realname"U $realname)' || exit $?
+	  exit 0
+	fi
 
 	# Create links to the real library.
 	for linkname in $linknames; do
@@ -2597,7 +2717,6 @@ EOF
 	  fi
 	  ;;
 	esac
-	dlname=
 	libdir=
 	library_names=
 	old_library=
@@ -2724,7 +2843,6 @@ EOF
 	  fi
 	  ;;
 	esac
-	dlname=
 	libdir=
 	library_names=
 	old_library=
@@ -2789,8 +2907,10 @@ EOF
 	  absdir="$abs_ladir/$objdir"
 	fi
 	name=`$echo "X$laname" | $Xsed -e 's/\.la$//' -e 's/^lib//'`
-	
-	if test -n "$library_names" &&
+
+	hardcode=yes
+	test "$hardcode_into_libs" = yes && test "$alldeplibs" = yes && hardcode=no
+	if test "$hardcode" = yes && test -n "$library_names" &&
 	   { test "$prefer_static_libs" = no || test -z "$old_library"; }; then
 	  # We need to hardcode the library path
 	  if test -n "$shlibpath_var"; then
@@ -3347,7 +3467,7 @@ static const void *lt_preloaded_setup() {
 	fi
       fi
 
-      if test "$hardcode_action" = relink; then
+      if test "$hardcode_action" = relink || test "$hardcode_into_libs" = yes; then
 	# Fast installation is not supported
 	link_command="$compile_var$compile_command$compile_rpath"
 	relink_command="$finalize_var$finalize_command$finalize_rpath"
@@ -3679,6 +3799,10 @@ fi\
       test "$build_old_libs" = yes && old_library="$libname.$libext"
       $show "creating $output"
 
+      # Quote the link command for shipping.
+      relink_command="cd `pwd`; $SHELL $0 --mode=relink $libtool_args"
+      relink_command=`$echo "X$relink_command" | $Xsed -e "$sed_quote_subst"`
+      
       # Only create the output if not a dry run.
       if test -z "$run"; then
 	for installed in no yes; do
@@ -3734,8 +3858,11 @@ revision=$revision
 installed=$installed
 
 # Directory that this library needs to be installed in:
-libdir='$install_libdir'\
-"
+libdir='$install_libdir'"
+	  if test "$installed" = no; then
+	    $echo >> $output "\
+relink_command=\"$relink_command\""
+	  fi
 	done
       fi
 
@@ -3788,7 +3915,6 @@ libdir='$install_libdir'\
     install_type=
     isdir=no
     stripme=
-    gnustrip=no
     for arg
     do
       if test -n "$dest"; then
@@ -3805,7 +3931,6 @@ libdir='$install_libdir'\
       -o) prev="-o" ;;
       -s)
 	stripme=" -s"
-	strip -V | grep "GNU strip" >/dev/null && gnustrip=yes
 	continue
 	;;
       -*) ;;
@@ -3917,6 +4042,7 @@ libdir='$install_libdir'\
 
 	library_names=
 	old_library=
+	relink_command=
 	# If there is no directory component, then add one.
 	case "$file" in
 	*/* | *\\*) . $file ;;
@@ -3941,6 +4067,20 @@ libdir='$install_libdir'\
 	test "X$dir" = "X$file/" && dir=
 	dir="$dir$objdir"
 
+	if test "$hardcode_into_libs" = yes; then
+	  if test -z "$relink_command"; then
+	    $echo "$modename: invalid libtool pseudo library \`$file'" 1>&2
+	    exit 1
+	  fi
+	  $echo "$modename: warning: relinking \`$file'" 1>&2
+	  $show "$relink_command"
+	  if $run eval "$relink_command"; then :
+	  else
+	    $echo "$modename: error: relink \`$file' with the above command before installing it" 1>&2
+	    continue
+	  fi
+	fi
+	
 	# See the names of the shared library.
 	set dummy $library_names
 	if test -n "$2"; then
@@ -3948,31 +4088,26 @@ libdir='$install_libdir'\
 	  shift
 	  shift
 
+	  srcname="$realname"
+	  test "$hardcode_into_libs" = yes && srcname="$realname"T
+
 	  # Install the shared library and build the symlinks.
-	  $show "$install_prog $dir/$realname $destdir/$realname"
-	  $run eval "$install_prog $dir/$realname $destdir/$realname" || exit $?
-	  test "X$dlname" = "X$realname" && dlname=
-	  if test $gnustrip = yes; then
-	    $show "strip --strip-unneeded $destdir/$realname"
-	    $run eval "strip --strip-unneeded $destdir/$realname" || exit $?
+	  $show "$install_prog $dir/$srcname $destdir/$realname"
+	  $run eval "$install_prog $dir/$srcname $destdir/$realname" || exit $?
+	  if test -n "$stripme" && test -n "$striplib"; then
+	    $show "$striplib $destdir/$realname"
+	    $run eval "$striplib $destdir/$realname" || exit $?
 	  fi
 
 	  if test $# -gt 0; then
 	    # Delete the old symlinks, and create new ones.
 	    for linkname
 	    do
-	      test "X$dlname" = "X$linkname" && dlname=
 	      if test "$linkname" != "$realname"; then
 		$show "(cd $destdir && $rm $linkname && $LN_S $realname $linkname)"
 		$run eval "(cd $destdir && $rm $linkname && $LN_S $realname $linkname)"
 	      fi
 	    done
-	  fi
-
-	  if test -n "$dlname"; then
-	    # Install the dynamically-loadable library.
-	    $show "$install_prog $dir/$dlname $destdir/$dlname"
-	    $run eval "$install_prog $dir/$dlname $destdir/$dlname" || exit $?
 	  fi
 
 	  # Do each command in the postinstall commands.
@@ -4085,6 +4220,13 @@ libdir='$install_libdir'\
 	    fi
 	  done
 
+	  relink_command=
+	  # If there is no directory component, then add one.
+	  case "$file" in
+	  */* | *\\*) . $file ;;
+	  *) . ./$file ;;
+	  esac
+
 	  outputname=
 	  if test "$fast_install" = no && test -n "$relink_command"; then
 	    if test "$finalize" = yes && test -z "$run"; then
@@ -4133,9 +4275,9 @@ libdir='$install_libdir'\
       $show "$install_prog $file $oldlib"
       $run eval "$install_prog \$file \$oldlib" || exit $?
 
-      if test $gnustrip = yes; then
-	$show "strip --strip-debug $oldlib"
-	$run eval "strip --strip-debug $oldlib" || exit $?
+      if test -n "$stripme" && test -n "$striplib"; then
+	$show "$old_striplib $oldlib"
+	$run eval "$old_striplib $oldlib" || exit $?
       fi
       
       # Do each command in the postinstall commands.
@@ -4282,9 +4424,7 @@ libdir='$install_libdir'\
 	  # Delete the libtool libraries and symlinks.
 	  for n in $library_names; do
 	    rmfiles="$rmfiles $objdir/$n"
-	    test "X$n" = "X$dlname" && dlname=
 	  done
-	  test -n "$dlname" && rmfiles="$rmfiles $objdir/$dlname"
 	  test -n "$old_library" && rmfiles="$rmfiles $objdir/$old_library"
 	  rmfiles="$rmfiles $objdir/$name $objdir/${name}i"
 	fi
@@ -4490,9 +4630,7 @@ libdir='$install_libdir'\
 	  # Delete the libtool libraries and symlinks.
 	  for n in $library_names; do
 	    rmfiles="$rmfiles $dir/$n"
-	    test "X$n" = "X$dlname" && dlname=
 	  done
-	  test -n "$dlname" && rmfiles="$rmfiles $dir/$dlname"
 	  test -n "$old_library" && rmfiles="$rmfiles $dir/$old_library"
 
 	  $show "$rm $rmfiles"

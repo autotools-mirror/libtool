@@ -574,6 +574,33 @@ if test -z "$NM"; then
   echo "$ac_t$NM" 1>&6
 fi
 
+# Search for a strip program
+echo $ac_n "checking for strip... $ac_c" 1>&6
+echo "$progname:@LINENO@: checking for strip" 1>&5
+if test "X${ac_cv_prog_STRIP+set}" = Xset; then
+  echo $ac_n "(cached) $ac_c" 1>&6
+  result="$ac_cv_prog_STRIP"
+else
+  if test -n "$STRIP"; then
+    result="$STRIP"		# Let the user override the test.
+    ac_cv_prog_STRIP="$result"
+  else
+    result=no
+    IFS="${IFS= 	}"; save_ifs="$IFS"; IFS="${IFS}${PATH_SEPARATOR}"
+    for dir in $PATH; do
+      test -z "$dir" && dir=.
+      if test -f $dir/strip || test -f $dir/strip$ac_exeext; then
+	result="strip"
+	ac_cv_prog_STRIP="$result"
+	break
+      fi
+    done
+    IFS="$save_ifs"
+  fi
+fi
+test -n "$ac_cv_prog_STRIP" && STRIP="$ac_cv_prog_STRIP"
+echo "$ac_t$result" 1>&6
+
 # Check to see if we are using GCC.
 if test "$with_gcc" != yes || test -z "$CC"; then
   # If CC is not set, then try to find GCC or a usable CC.
@@ -1182,9 +1209,12 @@ archive_cmds=
 archive_expsym_cmds=
 old_archive_from_new_cmds=
 old_archive_from_expsyms_cmds=
+striplib=
+old_striplib=
 export_dynamic_flag_spec=
 whole_archive_flag_spec=
 thread_safe_flag_spec=
+hardcode_into_libs=no
 hardcode_libdir_flag_spec=
 hardcode_libdir_separator=
 hardcode_direct=no
@@ -1638,6 +1668,14 @@ else
 fi
 echo "$ac_t$hardcode_action" 1>&6
 
+echo $ac_n "checking whether stripping libraries is possible... $ac_c" 1>&6
+if test -n "$STRIP" && $STRIP -V | grep "GNU strip" >/dev/null; then
+  test -z "$old_striplib" && old_striplib="$STRIP --strip-debug"
+  test -z "$striplib" && striplib="$STRIP --strip-unneeded"
+  echo "${ac_t}yes" 1>&6
+else
+  echo "${ac_t}no" 1>&6
+fi
 
 reload_flag=
 reload_cmds='$LD$reload_flag -o $output$reload_objs'
@@ -1775,6 +1813,7 @@ freebsd*)
     ;;
   *) # from 3.2 on
     shlibpath_overrides_runpath=no
+    hardcode_into_libs=yes
     ;;
   esac
   ;;
@@ -2233,7 +2272,7 @@ test "$enable_shared" = yes || enable_static=yes
 
 echo "checking whether to build static libraries... $enable_static" 1>&6
 
-if test "$hardcode_action" = relink; then
+if test "$hardcode_action" = relink || test "$hardcode_into_libs" = yes; then
   # Fast installation is not supported
   enable_fast_install=no
 elif test "$shlibpath_overrides_runpath" = yes ||
@@ -2692,7 +2731,8 @@ case "$ltmain" in
     RANLIB old_archive_cmds old_archive_from_new_cmds old_postinstall_cmds \
     old_postuninstall_cmds archive_cmds archive_expsym_cmds postinstall_cmds \
     postuninstall_cmds extract_expsyms_cmds old_archive_from_expsyms_cmds \
-    file_magic_cmd export_symbols_cmds deplibs_check_method allow_undefined_flag no_undefined_flag \
+    old_striplib striplib file_magic_cmd export_symbols_cmds \
+    deplibs_check_method allow_undefined_flag no_undefined_flag \
     finish_cmds finish_eval global_symbol_pipe global_symbol_to_cdecl \
     hardcode_libdir_flag_spec hardcode_libdir_separator  \
     sys_lib_search_path_spec sys_lib_dlsearch_path_spec \
@@ -2934,6 +2974,10 @@ archive_expsym_cmds=$archive_expsym_cmds
 postinstall_cmds=$postinstall_cmds
 postuninstall_cmds=$postuninstall_cmds
 
+# Commands to strip libraries.
+old_striplib=$old_striplib
+striplib=$striplib
+
 # Method to check whether dependent libraries are shared objects.
 deplibs_check_method=$deplibs_check_method
 
@@ -2969,6 +3013,9 @@ shlibpath_overrides_runpath=$shlibpath_overrides_runpath
 
 # How to hardcode a shared library path into an executable.
 hardcode_action=$hardcode_action
+
+# Whether we should hardcode library paths into libraries.
+hardcode_into_libs=$hardcode_into_libs
 
 # Flag to hardcode \$libdir into a binary during linking.
 # This must work even if \$libdir does not exist.
