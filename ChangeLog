@@ -1,5 +1,8 @@
 1999-03-11  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* ltmain.in (-static, -all-static): set dlopen_self to
+	$dlopen_self_static regardless of link_static_flag or pic_flag
+
 	* ltmain.in: FreeBSD bug that needs symbol table compiled with
 	-fPIC is fixed in release 3.1; use it only for 2.* and 3.0
 
