@@ -1258,19 +1258,16 @@ else
     hardcode_shlibpath_var=no
     ;;
 
-  hpux9*)
-    archive_cmds='$rm $objdir/$soname~$LD -b +b $install_libdir -o $objdir/$soname $libobjs $deplibs $linkopts~test $objdir/$soname = $lib || mv $objdir/$soname $lib'
-    hardcode_libdir_flag_spec='${wl}+s ${wl}+b ${wl}$libdir'
+  hpux9* | hpux10* | hpux11*)
+    case "$host_os" in
+    hpux9*) archive_cmds='$rm $objdir/$soname~$LD -b +b $install_libdir -o $objdir/$soname $libobjs $deplibs $linkopts~test $objdir/$soname = $lib || mv $objdir/$soname $lib' ;;
+    *) archive_cmds='$LD -b +h $soname +b $install_libdir -o $lib $libobjs $deplibs $linkopts' ;;
+    esac
+    hardcode_libdir_flag_spec='${wl}+b ${wl}$libdir'
     hardcode_libdir_separator=:
     hardcode_direct=yes
-    export_dynamic_flag_spec='${wl}-E'
-    ;;
-
-  hpux10* | hpux11*)
-    archive_cmds='$LD -b +h $soname +b $install_libdir -o $lib $libobjs $deplibs $linkopts'
-    hardcode_libdir_flag_spec='${wl}+s ${wl}+b ${wl}$libdir'
-    hardcode_libdir_separator=:
-    hardcode_direct=yes
+    hardcode_minus_L=yes # Not in the search PATH, but as the default
+			 # location of the library.
     export_dynamic_flag_spec='${wl}-E'
     ;;
 
@@ -1747,7 +1744,7 @@ hpux9* | hpux10* | hpux11*)
   need_lib_prefix=no
   need_version=no
   shlibpath_var=SHLIB_PATH
-  shlibpath_overrides_runpath=yes # +s before +b in hardcode_libdir_flag_spec
+  shlibpath_overrides_runpath=no # +s is required to enable SHLIB_PATH
   library_names_spec='${libname}${release}.sl$versuffix ${libname}${release}.sl$major $libname.sl'
   soname_spec='${libname}${release}.sl$major'
   # HP-UX runs *really* slowly unless shared libraries are mode 555.
