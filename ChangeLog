@@ -1,5 +1,7 @@
 2001-09-03  Brad  <brad@comstyle.com>
 
+	* libtool.m4 [openbsd*]: More improvements to the OpenBSD port.
+
 	* libtool.m4 (deplibs_check_method) [aix*]: Removed redundant
 	setting of this variable.
 
