@@ -1,3 +1,23 @@
+2000-01-22  Ossama Othman  <ossama@debian.org>
+
+	* libtool.m4 (AC_LIBTOOL_CXX): Added LDFLAGS to list of variables to
+	pass to ltconfig when creating C++ compiler tag.
+
+	* ltcf-cxx.sh: Added support for the DEC/Compaq C++ compiler on
+	Linux and osf[3,4,5].
+
+	(whole_archive_flag_spec): Corrected commands that check if GNU
+	linker supports "--whole-archive" flag.  GNU C++'s
+	"-print-prog-name" flag is used to determine what the linker is
+	instead of using the 'LD' variable.
+
+	(ac_cv_prog_cc_wl): Corrected value for Sun C++.  Previously it
+	was set to '-Wl,' when it should have been '-Qoption ld '.
+
+	* ltconfig.in (ac_cv_prog_cc_pic_works,
+	ac_cv_prog_cc_static_works): Make sure variable is not an empty
+	string, even if it is set.
+
 1999-12-06  Ossama Othman  <ossama@debian.org>
 
 	* ltcf-c.sh: split off the osf3 section, so that the osf4 and osf5
