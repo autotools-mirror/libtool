@@ -1,3 +1,15 @@
+1999-01-10  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* libltdl/ltdl.c (FILENAME_MAX): use it instead of MAX_FILENAME,
+	and don't redefine it if already defined; default to 1024, as on
+	most systems
+	(LT_SYMBOL_LENGTH): renamed from MAX_SYMBOL_LENGTH
+	(LT_SYMBOL_OVERHEAD): new macro, that accounts for the size of
+ 	the _LTX_ separator and the initial underscore
+	(lt_dlsym): sym now points to a stack buffer (lsym) if possible,
+	or is dynamically allocated.  If allocation fails, a
+	buffer_overflow_error is returned.
+
 1999-01-10  Thomas Tanner  <tanner@gmx.de>
 
 	* ltmain.in: define dld_preloaded_symbols if at least one of
