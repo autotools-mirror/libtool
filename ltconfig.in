@@ -996,8 +996,8 @@ echo $ac_n "checking whether the linker ($LD) supports shared libraries... $ac_c
 
 allow_undefined_flag=
 no_undefined_flag=
-need_lib_prefix=yes
-need_version=yes
+need_lib_prefix=unknown
+need_version=unknown
 archive_cmds=
 archive_sym_cmds=
 old_archive_from_new_cmds=
@@ -1590,10 +1590,11 @@ version_type=none
 dynamic_linker="$host_os ld.so"
 sys_lib_search_path="/lib /usr/lib /usr/local/lib"
 file_magic_command=
-deplibs_check_method='none'
+deplibs_check_method='unkwnon'
 # Need to set the preceding variable on all platforms that support
 # interlibrary dependencies.
 # 'none' -- dependencies not supported.
+# `unknown' -- same as none, but documents that we really don't known.
 # 'pass_all' -- all dependencies passed with no checks.
 # 'test_compile' -- check by making test program.
 # 'file_regex' -- check by looking for filenames that look like the shared
@@ -1664,9 +1665,10 @@ cygwin32* | mingw32*)
 freebsd2* | freebsd3*)
   objformat=`test -x /usr/bin/objformat && /usr/bin/objformat || echo aout`
   version_type=freebsd-$objformat
-  library_names_spec='${libname}${release}.so$versuffix $libname.so'
+  library_names_spec='${libname}${release}.so$versuffix $libname.so$versuffix'
   finish_cmds='PATH="$PATH:/sbin" OBJFORMAT="$objformat" ldconfig -m $libdir'
   shlibpath_var=LD_LIBRARY_PATH
+  need_version=yes
   ;;
 
 gnu*)
@@ -1793,6 +1795,7 @@ sunos4*)
   library_names_spec='${libname}${release}.so$versuffix ${libname}.so$versuffix'
   finish_cmds='PATH="\$PATH:/usr/etc" ldconfig $libdir'
   shlibpath_var=LD_LIBRARY_PATH
+  need_version=yes
   ;;
 
 sysv4.2uw2* | sysv4.3*)

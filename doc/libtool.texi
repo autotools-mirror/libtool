@@ -2875,11 +2875,16 @@ it the way the current code does.
 
 @item none
 @vindex none
-is the default for all systems unless overridden in @file{ltconfig.in}
-(Currently, linux-elf is the only system that overrides.)  It causes
-deplibs to be reassigned deplibs="".  That way @samp{archive_cmds} can
-contain deplibs on all platforms, but not have deplibs used unless
-needed.
+It causes deplibs to be reassigned deplibs="".  That way
+@samp{archive_cmds} can contain deplibs on all platforms, but not have
+deplibs used unless needed.
+
+@item unkwnon
+@vindex unknown
+is the default for all systems unless overridden in @file{ltconfig.in}.
+It is the same as @samp{none}, but it documents that we really don't
+know what the correct value should be, and we welcome patches that
+improve it.
 @end table
 
 Then in @file{ltmain.in} we have the real workhorse: a litle
@@ -3201,12 +3206,16 @@ linking.
 
 @defvar need_lib_prefix
 Whether libtool should automatically prefix module names with 'lib'.
-Set to @samp{yes} or @samp{no}.
+Set to @samp{yes} or @samp{no}.  By default, it is @samp{unknown}, which 
+means the same as @samp{yes}, but documents that we are not really sure
+about it.
 @end defvar
 
 @defvar need_version
 Whether versioning is required for libraries.
-Set to @samp{yes} or @samp{no}.
+Set to @samp{yes} or @samp{no}.  By default, it is @samp{unknown}, which 
+means the same as @samp{yes}, but documents that we are not really sure
+about it.
 @end defvar
 
 @defvar no_builtin_flag

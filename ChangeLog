@@ -1,5 +1,18 @@
 1999-01-17  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* ltconfig.in (need_lib_prefix, need_version,
+ 	deplibs_check_method): default to unknown, so that we're
+ 	remembered that this needs porting; unknown is interpreted as yes,
+ 	yes and none, respectively
+	(freebsd2*, freebsd3*, sunos4*, need_version): set to yes
+	(freebsd2*, freebsd3*, library_names_spec): libraries without a
+	version number are not used by `ld'; add $versuffix;
+	Reported by Ben Jackson <ben@ben.com>
+	* ltmain.in (deplibs_check_method): alias unknown to none
+	(need_version): if vinfo was not provided and release info was,
+	zero out versuffix only if we don't need_version.
+	* doc/libtool.texi: document what `unknown' means
+
 	* libltdl/ltdl.h (lt_dlpreopen_default): reverted to a macro
 	without arguments, that calls lt_dlpreopen_default_ with
 	lt_dlpreloaded_symbols
