@@ -8,3 +8,10 @@ wrapper called "libltdl".
 All exported symbols are prefixed with "libname_LTX_" to avoid
 symbols conflicts, especially when linking statically.
 libltdl will automatically cut the prefix off to get the real name.
+
+Note that on Windows, for the purposes of illustrating ltdl, the
+libraries *are* built as dll's, but do not have the __declspec
+machinery to make them suitable for loading at link time.  This is
+only for clarity inside this example, look at the example in ../demo
+to see how the __declspec macros should be set up.
+

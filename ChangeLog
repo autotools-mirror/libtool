@@ -1,5 +1,10 @@
 2000-01-14  Gary V. Vaughan  <gary@oranda.demon.co.uk>
 
+	* mdemo/README: Explain the deliberate incompleteness of the
+	Windows port.
+	* mdemo/configure.in: Use AC_LIBTOOL_WIN32_DLL.
+	* mdemo/Makefile.am (LDFLAGS):  Add -no-undefined.
+
 	* libltdl/ltdl.h (LTDL_STMT_START, LTDL_STMT_END):  Macros for
 	wrapping other macros to make a portable compound statement from
 	multiple C statements in the expansion.
