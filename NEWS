@@ -4,6 +4,13 @@ New in 1.4b: 2001-??-??; CVS version 1.4a, Libtool team:
 * Full support for C++ compiler.
 * Support for GNU gcj compiler.
 
+New in 1.4.1: 2001-??-??; CVS version 1.4.0a, Libtool team:
+* Don't leave here-doc files behind.
+
+New in 1.4: 2001-04-25; CVS version 1.3e, Libtool team:
+* Support for aix5*.
+* Bugfixes.
+
 New in 1.3d: 2001-04-02; CVS version 1.3c, Libtool team:
 * ltconfig is no more.  Generation of libtool happens directly from
   the configure file.
