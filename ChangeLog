@@ -1,5 +1,8 @@
 2004-09-30  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* libltdl/lt_dlloader.c (lt_dlloader_remove), libltdl/ltdl.c
+	(tryall_dlopen, lt_dlhandle_next): Show usage of function pointers.
+
 	* doc/libtool.texi (LT_INIT, Using libltdl)
 	(Module loaders for libltdl, Multiple dependencies)
 	(libtool script contents): Fix several typos (trivial change).

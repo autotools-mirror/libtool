@@ -145,7 +145,7 @@ lt_dlloader_remove (char *name)
   /* Call the loader finalisation function.  */
   if (vtable && vtable->dlloader_exit)
     {
-      if (vtable->dlloader_exit (vtable->dlloader_data) != 0)
+      if ((*vtable->dlloader_exit) (vtable->dlloader_data) != 0)
 	{
 	  /* If there is an exit function, and it returns non-zero
 	     then it must set an error, and we will not remove it

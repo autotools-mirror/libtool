@@ -361,7 +361,8 @@ tryall_dlopen (lt_dlhandle *phandle, const char *filename)
     while ((loader = lt_dlloader_next (loader)))
       {
 	vtable = lt_dlloader_get (loader);
-	handle->module = vtable->module_open (vtable->dlloader_data, filename);
+	handle->module = (*vtable->module_open) (vtable->dlloader_data,
+						 filename);
 
 	if (handle->module != 0)
 	  {
@@ -2110,7 +2111,7 @@ lt_dlhandle_next (lt_dlhandle place)
 
   /* advance until the interface check (if we have one) succeeds */
   while (handle && iterator && iterator->iface
-	 && (iterator->iface (handle, iterator->id_string) != 0))
+	 && ((*iterator->iface) (handle, iterator->id_string) != 0))
     {
       handle = handle->next;
     }
