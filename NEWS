@@ -11,7 +11,7 @@ New in 1.3: 1999-04-??; CVS version 1.2g, Libtool team:
 * Libltdl can be used as stand-alone package
 * dlopen support for BeOS
 * Partial support for Motorola System V 4
-* Improved support for AIX, BeOS, Cygwin, DJGPP and HP/UX
+* Improved support for AIX, BeOS, Cygwin, DJGPP, DU, IRIX and HP/UX
 * Documentation updates
 * New tests
 * Bugfixes
