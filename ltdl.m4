@@ -45,7 +45,8 @@ AC_REQUIRE([AC_LTDL_DLSYM_USCORE])
 AC_REQUIRE([AC_LTDL_SYS_DLOPEN_DEPLIBS])
 AC_REQUIRE([AC_LTDL_FUNC_ARGZ])
 
-AC_CHECK_HEADERS([ctype.h errno.h malloc.h memory.h stdlib.h stdio.h unistd.h])
+AC_CHECK_HEADERS([assert.h ctype.h errno.h malloc.h memory.h stdlib.h \
+		  stdio.h unistd.h])
 AC_CHECK_HEADERS([dl.h sys/dl.h dld.h])
 AC_CHECK_HEADERS([string.h strings.h], [break])
 
