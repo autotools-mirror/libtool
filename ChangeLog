@@ -1,5 +1,9 @@
 2001-08-05  Gary V. Vaughan  <gary@gnu.org>
 
+	From Brad <brad@comstyle.com>:
+	* libtool.m4 (archive_cmds) [darwin, newsos, sysv4]: Replace
+	1.3 era $linkopts references with $linker_flags.
+
 	* libltdl/ltdl.c:  Fixed several careless mistakes in the 
 	foreach_dirinpath support functions.
 	(foreach_dirinpath): Walk path elements with the argz API.
