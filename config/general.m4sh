@@ -95,6 +95,9 @@ sed_quote_subst='s/\([[`"$\\]]\)/\\\1/g'
 # Same as above, but do not quote variable references.
 double_quote_subst='s/\([["`\\]]\)/\\\1/g'
 
+# Protect character class for func_quote_* by variable expansion.
+quote_scanset='[[@<:@~#^*{};<>?'"'"' 	]]'
+
 # Re-`\' parameter expansions in output of double_quote_subst that were
 # `\'-ed in input to the same.  If an odd number of `\' preceded a '$'
 # in input to double_quote_subst, that '$' was protected from expansion.
@@ -282,9 +285,11 @@ func_quote_for_eval ()
       # Double-quote args containing shell metacharacters to delay
       # word splitting, command substitution and and variable
       # expansion for a subsequent eval.
-      # Many Bourne shells cannot handle close brackets correctly
-      # in scan sets, so we specify it separately.
-      *[[\@<:@\~\#\^\&\*\(\)\{\}\|\;\<\>\?\'\ \	]]*|*@:>@*|"")
+      # in scan sets, and some SunOS ksh mistreat backslash-escaping
+      # in scan sets (worked around with variable expansion),
+      # and furthermore cannot handle '|' '&' '(' ')' in scan sets
+      # at all, so we specify them separately.
+      *$quote_scanset* | *@:>@* | *\|* | *\&* | *\(* | *\)* | "")
         func_quote_for_eval_result="\"$func_quote_for_eval_unquoted_result\""
         ;;
       *)
@@ -305,8 +310,11 @@ func_quote_for_expand ()
       # Double-quote args containing shell metacharacters to delay
       # word splitting and command substitution for a subsequent eval.
       # Many Bourne shells cannot handle close brackets correctly
-      # in scan sets, so we specify it separately.
-      *[[\@<:@\~\#\^\&\*\(\)\{\}\|\;\<\>\?\'\ \	]]*|*@:>@*|"")
+      # in scan sets, and some SunOS ksh mistreat backslash-escaping
+      # in scan sets (worked around with variable expansion),
+      # and furthermore cannot handle '|' '&' '(' ')' in scan sets
+      # at all, so we specify them separately.
+      *$quote_scanset* | *@:>@* | *\|* | *\&* | *\(* | *\)* | "")
         my_arg="\"$my_arg\""
         ;;
     esac
