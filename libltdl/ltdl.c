@@ -1048,8 +1048,8 @@ lt_dlopen (filename)
 		}
 		handle->usage = 0;
 		newhandle = handle;
-		if (tryall_dlopen(&handle, 0) != 0) {
-			lt_dlfree(newhandle);
+		if (tryall_dlopen(&newhandle, 0) != 0) {
+			lt_dlfree(handle);
 			return 0;
 		}
 		goto register_handle;

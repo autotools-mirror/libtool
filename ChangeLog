@@ -1,3 +1,13 @@
+1999-02-21  Thomas Tanner  <tanner@gmx.de>
+
+	* libltdl/ltdl.c (lt_dlopen): use newhandle instead of handle
+	  when dlopening the executable
+	* libtool.m4 (AC_LIBTOOL_DLOPEN): removed the redundant "yes: "
+	  prefix for lt_cv_dlopen, renamed lt_cv_dlopen_LIBS 
+	  to lt_cv_dlopen_libs (more consistent)
+	* ltmain.in: implemented -dl[pre]open self, necessary for 
+	  lt_dlopen(NULL), generation of exported symbols was broken
+
 1999-02-20  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* ltmain.in: avoid duplication of -L switches, it sometimes breaks
