@@ -17,7 +17,7 @@ autoconf
 
 for sub in libltdl demo depdemo mdemo cdemo; do
   cd $sub
-  rm -f acinclude.m4
+  rm -f acinclude.m4 Makefile
   cat ../libtool.m4 > acinclude.m4
   test "$sub" = libltdl && cat ../ltdl.m4 >> acinclude.m4
   aclocal
@@ -27,6 +27,6 @@ for sub in libltdl demo depdemo mdemo cdemo; do
   cd ..
 done
 
-rm -f ltmain.sh ltconfig libtoolize
+rm -f ltmain.sh ltconfig libtoolize Makefile
 
 exit 0
