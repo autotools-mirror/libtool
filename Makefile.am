@@ -66,13 +66,21 @@ aclocal_DATA = m4/argz.m4 m4/libtool.m4 m4/ltdl.m4 \
 ## read-only $(top_srcdir), then when the two stamp-vcls differ, distcheck
 ## will try to update the one in the read-only source tree it makes.
 MKSTAMP = $(SHELL) $(top_srcdir)/config/mkstamp
-$(top_srcdir)/stamp-vcl: vcl-tmp ChangeLog
+$(top_srcdir)/stamp-vcl: vcl-tmp clean-ltmain-sh ChangeLog
 vcl-tmp:
 	@set -- `$(MKSTAMP) < $(top_srcdir)/ChangeLog`; \
 	echo "$$1" > vcl.tmp; \
 	cmp -s vcl.tmp $(top_srcdir)/stamp-vcl \
 	  || (echo "Updating stamp-vcl"; cp vcl.tmp $(top_srcdir)/stamp-vcl)
 	-@rm -f vcl.tmp
+
+## We used to build ltmain.sh in the build tree, but now it is created
+## in the source tree by bootstrap.  This rule removes stale copies from
+## previous builds left behind in the build tree, that would override the
+## source tree version in current builds.
+clean-ltmain-sh:
+	-test $(top_srcdir) == $(top_builddir) || \
+	  rm -f $(top_builddir)/config/ltmain.sh
 
 # We build ltversion.m4 here, instead of from config.status,
 # because config.status is rerun each time one of configure's
