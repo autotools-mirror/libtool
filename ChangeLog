@@ -1,5 +1,8 @@
 1998-11-02  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* AUTHORS: added myself as a co-maintainer
+	* THANKS: and removed my name from here
+
 	* autogen: new script; run it to bootstrap libtool after checking
 	it out from CVS
 
