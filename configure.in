@@ -1,4 +1,4 @@
-dnl Process this file with autoconf to create configure.
+## Process this file with autoconf to create configure.
 
 AC_INIT(ltmain.in)
 
@@ -9,9 +9,7 @@ AM_INIT_AUTOMAKE(libtool, 1.3c)
 # versions (i.e. "odd" letters) and not actual alpha releases.
 TIMESTAMP=
 case "$VERSION" in
-changequote(,)
-  *[acegikmoqsuwy]) 
-changequote([,])
+  [*[acegikmoqsuwy])]
     TIMESTAMP=`${CONFIG_SHELL} ${srcdir}/mkstamp < ${srcdir}/ChangeLog`
     banner="Configuring $PACKAGE $VERSION$TIMESTAMP"
     dashes=`echo "$banner" | sed 's/./-/g'`
@@ -27,11 +25,11 @@ esac
 AC_SUBST(TIMESTAMP)
 
 pkgdatadir='${datadir}'"/${PACKAGE}"
-AC_SUBST(pkgdatadir) dnl automake does not need this, but libtoolize does
+AC_SUBST(pkgdatadir) # automake does not need this, but libtoolize does
 aclocaldir='${datadir}/aclocal'
 AC_SUBST(aclocaldir)
 
-dnl Use the specified CC and LD
+# Use the specified CC and LD
 AC_PROG_CC
 AM_PROG_LD
 AC_SUBST(LD)
@@ -39,10 +37,10 @@ AM_PROG_NM
 AC_SUBST(NM)
 AC_PROG_LN_S
 
-dnl Check for win32 dll support
+# Declare win32 dll support
 AC_LIBTOOL_WIN32_DLL
 
-dnl Check for dlopen support
+# Check for dlopen support
 AC_LIBTOOL_DLOPEN
 AC_PROG_LIBTOOL
 
@@ -54,8 +52,8 @@ if test x"${enable_ltdl_install+set}" != xset; then
 fi
 AC_CONFIG_SUBDIRS(libltdl)
 
-dnl all subdirectories that are configured on demand, but that must be
-dnl included in the distribution
+# all subdirectories that are configured on demand, but that must be
+# included in the distribution
 CONF_SUBDIRS="cdemo demo depdemo mdemo"
 AC_SUBST(CONF_SUBDIRS)
 
@@ -69,8 +67,3 @@ AC_SUBST(ACINCLUDE_M4_LIST)
 AC_SUBST(DIST_MAKEFILE_LIST)
 
 AC_OUTPUT([Makefile doc/Makefile tests/Makefile ltmain.sh:ltmain.in])
-
-# Local Variables:
-# mode:shell-script
-# sh-indentation:2
-# End:
