@@ -1,12 +1,12 @@
 ;; -*- Lisp -*-
 (Created-By-Prcs-Version 1 2 1)
 (Project-Description "GNU libtool library support script")
-(Project-Version libtool 1 22)
+(Project-Version libtool 1.0d 1)
 (Parent-Version libtool 1 21)
 
-(Version-Log "A few misc bug fixes and Windows NT portability fixes.")
+(Version-Log "Getting ready for 1.0d.")
 (New-Version-Log "")
-(Checkin-Time "Tue, 14 Oct 1997 12:33:24 -0600")
+(Checkin-Time "Sun, 19 Oct 1997 12:53:23 -0600")
 (Checkin-Login gord)
 (Populate-Ignore ("~$" "Makefile$" "Makefile\\.in$" "aclocal\\.m4$"
 		  "configure$" "config\\.status$" "config\\.cache$"
@@ -24,11 +24,11 @@
 (Files
 ;; Administrivia.
   (AUTHORS (libtool/21_AUTHORS 1.1 664))
-  (ChangeLog (libtool/20_ChangeLog 1.4.1.54 664))
-  (NEWS (libtool/19_NEWS 1.4.1.35 664))
-  (PACKAGES (libtool/42_PACKAGES 1.6 664))
+  (ChangeLog (libtool/20_ChangeLog 1.4.1.55 664))
+  (NEWS (libtool/19_NEWS 1.4.1.36 664))
+  (PACKAGES (libtool/42_PACKAGES 1.7 664))
   (README (libtool/17_README 1.16 664))
-  (README-alpha (libtool/16_README-alp 1.8 664))
+  (README-alpha (libtool/16_README-alp 1.9 664))
   (TODO (libtool/14_TODO 1.3.1.29 664))
   (THANKS (libtool/15_THANKS 1.10 664))
   (libtool.spec (libtool/46_libtool.sp 1.4 664))
@@ -37,8 +37,8 @@
   (Makefile.am (libtool/18_Makefile.a 1.28 664))
   (configure.in (libtool/13_configure. 1.4.1.24 664))
   (lineno (libtool/49_lineno 1.1 775))
-  (ltmain.in (libtool/2_ltmain.sh. 1.4.1.42 664))
-  (ltconfig.in (libtool/3_ltconfig.i 1.4.1.42 775))
+  (ltmain.in (libtool/2_ltmain.sh. 1.4.1.43 664))
+  (ltconfig.in (libtool/3_ltconfig.i 1.4.1.43 775))
   (libtoolize.in (libtool/4_libtoolize 1.6 664))
 
 ;; aclocal additions.
@@ -51,7 +51,7 @@
 
 ;; Demonstration subdirectory.
   (demo/README (libtool/28_README 1.2 664))
-  (demo/Makefile.am (libtool/11_Makefile.a 1.19 664))
+  (demo/Makefile.am (libtool/11_Makefile.a 1.20 664))
   (demo/configure.in (libtool/10_configure. 1.4 664))
   (demo/run.test (libtool/27_run.test 1.1 775))
   (demo/dlmain.c (libtool/48_dlmain.c 1.5 664))
@@ -73,7 +73,7 @@
   (tests/demo-inst.test (libtool/34_demo-inst. 1.9 775))
   (tests/demo-exec.test (libtool/35_demo-exec. 1.8 775))
   (tests/demo-conf.test (libtool/36_demo-conf. 1.6 775))
-  (tests/hardcode.test (libtool/39_hardcode.t 1.8 775))
+  (tests/hardcode.test (libtool/39_hardcode.t 1.9 775))
   (tests/if.test (libtool/45_if.test 1.2 775))
   (tests/link.test (libtool/30_link.test 1.3 775))
   (tests/link-2.test (libtool/31_link-2.tes 1.3 775))
