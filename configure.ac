@@ -58,7 +58,7 @@ test "$LT_MICRO" = "AC_PACKAGE_VERSION" && LT_MICRO=""
 
 # Then we try to work out what the release before this one would have been
 # numbered.  The only time we come unstuck is when this is the first release
-# from a stable branch (LT_MICRO=LT_ALPHA=""), so OLDVERSION is the last
+# from a stable branch (LT_MICRO=LT_ALPHA=""), so LASTRELEASE is the last
 # release from the old stable branch, and we don't know what version that
 # was, so leave it unset so that the Makefile can complain.
 case $LT_ALPHA in
@@ -110,7 +110,7 @@ AC_SUBST([TIMESTAMP])
 
 dnl These are bootstrap requirements, once built, libtool may work with
 dnl much older releases of autoconf and automake.  See release notes.
-AM_INIT_AUTOMAKE([1.8 gnits]) ## We use auto-m4_including
+AM_INIT_AUTOMAKE([1.8 gnits dist-bzip2]) ## We use auto-m4_including
 
 
 ## ------------------------------- ##

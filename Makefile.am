@@ -87,12 +87,9 @@ install-data-local:
 ##  not to anybody else (inspiration from automake/Makefile.am).    ##
 ## ---------------------------------------------------------------- ##
 
-CHECK_LASTRELEASE = if test -z "$(LASTRELEASE)"; \
-		      then echo "LASTRELEASE is not set"; exit 1; fi
-
 .PHONY: cvs-release
-cvs-release: version-check prev-tarball cvs-news fetch cvs-dist cvs-diff xdelta
-	@$(CHECK_LASTRELEASE); tarname="$(PACKAGE)-$(VERSION).tar.gz"; \
+cvs-release: version-check prev-tarball cvs-news fetch cvs-commit cvs-dist deltas
+	@tarname="$(PACKAGE)-$(VERSION).tar.gz"; \
 	diffname="$(PACKAGE)-$(LASTRELEASE)-$(VERSION).diff.gz"; \
 	xdeltaname="$(PACKAGE)-$(LASTRELEASE)-$(VERSION).xdelta"; \
 	echo " *** Upload $$tarname, $$tarname.sig,";\
@@ -115,9 +112,11 @@ version-check:
 .PHONY: prev-tarball
 prev-tarball:
 ## Make sure we have the previous release tarball in the tree.
-	@$(CHECK_LASTRELEASE); ofile="$(PACKAGE)-$(LASTRELEASE).tar.gz"; \
+	@if test -z "$(LASTRELEASE)"; \
+		then echo "LASTRELEASE is not set"; exit 1; fi
+	@ofile="$(PACKAGE)-$(LASTRELEASE).tar.gz"; \
 	if test -f $$ofile; then :; \
-	else echo "Cannot make xdelta without $$ofile"; exit 1; fi
+	else echo "Cannot make deltas without $$ofile"; exit 1; fi
 
 # TSDEPS will be defined to TSDEPS_DIST at `make dist' time
 TSDEPS =
@@ -133,7 +132,7 @@ update-timestamps:
 
 
 .PHONY: cvs-news
-cvs-news: timestamps
+cvs-news:
 ## Make sure the NEWS file is up-to-date:
 	@if sed '1,2d;3q' $(srcdir)/NEWS | grep -e "$(VERSION)" >/dev/null; \
 	then :; \
@@ -151,9 +150,7 @@ WGETSGO = $(WGET) http://savannah.gnu.org/cgi-bin/viewcvs/~checkout~
 FETCHFILES = \
 ./INSTALL \
 config/config.guess \
-libltdl/config.guess \
 config/config.sub \
-libltdl/config.sub \
 config/texinfo.tex
 
 ## Fetch the latest versions of files we care about.
@@ -186,46 +183,33 @@ fetch:
 
 GPG = gpg # set it to `:' to avoid gpg operations
 
+.PHONY: cvs-commit
+cvs-commit: cvs-news
+	cd $(srcdir) && $(SHELL) ./commit
+
 .PHONY: cvs-dist
-cvs-dist: cvs-news
+cvs-dist: cvs-news timestamps
 ## Build the distribution:
 	$(MAKE) distcheck
-## Finally, if everything was successful, commit the last changes and tag
-## the release in the repository:
+## Finally, if everything was successful, tag the release
 	cd $(srcdir) \
-	  && $(SHELL) ./commit \
-	  && $(CVS) -q tag -c `echo "Release-$(VERSION)" | sed 's/\./-/g'`
-## We do want the timestamped version numbers from the CVS keywords in
-## ChangeLog to be correct, so we must rebuild the release tarball after
-## a successfull commit, and then generate the signatures needed for
-## FSF ftp-upload:
+	  && $(CVS) -q tag -c `echo "release-$(VERSION)" | sed 's/\./-/g'`
+## Generate signatures and directives for FSF ftp-upload:
 	ofile="$(PACKAGE)-$(VERSION).tar.gz"; \
-	$(MAKE) dist \
-	  && $(GPG) --detach-sign $$ofile \
-	  && echo "directory: libtool" > $$ofile.directive \
-	  && $(GPG) --clearsign $$ofile.directive \
-	  && rm -f $$ofile.directive
+	$(GPG) --detach-sign $$ofile \
+	&& echo "directory: libtool" > $$ofile.directive \
+	&& $(GPG) --clearsign $$ofile.directive \
+	&& rm -f $$ofile.directive
 
-.PHONY: cvs-diff
-cvs-diff:
-## Figure out which cvs tags we are diffing, and if the diff works we
-## compress it and then generate the signatures needed for FSF ftp-upload:
-	thisver=`echo "release-$(VERSION)" | sed 's/\./-/g'`; \
-	$(CHECK_LASTRELEASE); \
-	prevver=release-`echo $(LASTRELEASE) | sed 's/\./-/g'`; \
-	ofile="$(PACKAGE)-$(LASTRELEASE)-$(VERSION).diff.gz"; \
-	$(CVS) -f rdiff -c -r $$prevver -r $$thisver $(PACKAGE) \
-	    | GZIP=$(GZIP_ENV) gzip -c > $$ofile \
-	  && $(GPG) --detach-sign $$ofile \
-	  && echo "directory: libtool" > $$ofile.directive \
-	  && $(GPG) --clearsign $$ofile.directive \
-	  && rm -f $$ofile.directive
+.PHONY: new-tarball
+new-tarball:
+## Make sure we have the new release tarball in the tree.
+	@ofile="$(PACKAGE)-$(VERSION).tar.gz"; \
+	if test -f $$ofile; then :; \
+	else echo "Cannot make deltas without $$ofile"; exit 1; fi
 
-XDELTA = xdelta
-XDELTA_OPTIONS = --pristine -9
-
-.PHONY: xdelta
-xdelta: prev-tarball
+.PHONY: got-xdelta
+got-xdelta:
 ## Make sure xdelta exists;
 	@if ($(XDELTA) --version 2>&1 | grep version)>/dev/null 2>/dev/null; \
 	then :;\
@@ -233,10 +217,41 @@ xdelta: prev-tarball
 	  echo "Get xdelta from http://sourceforge.net/projects/xdelta."; \
 	  exit 1; \
 	fi
+
+.PHONY: deltas
+deltas: delta-diff delta-xdelta
+
+DIFF = diff
+DIFF_OPTIONS = -ruNp
+
+.PHONY: delta-diff
+delta-diff: prev-tarball new-tarball
+## Unpack the tarballs somewhere to diff them
+	rm -rf delta-diff
+	mkdir delta-diff
+	
+	ofile="../$(PACKAGE)-$(LASTRELEASE)-$(VERSION).diff.gz"; \
+	cd delta-diff \
+	&& tar xzf "../$(PACKAGE)-$(LASTRELEASE).tar.gz" \
+	&& tar xzf "../$(PACKAGE)-$(VERSION).tar.gz" \
+	&& $(DIFF) $(DIFF_OPTIONS) \
+		$(PACKAGE)-$(LASTRELEASE) $(PACKAGE)-$(VERSION) \
+		| GZIP=$(GZIP_ENV) gzip -c > $$ofile \
+	&& $(GPG) --detach-sign $$ofile \
+	&& echo "directory: libtool" > $$ofile.directive \
+	&& $(GPG) --clearsign $$ofile.directive \
+	&& rm -f $$ofile.directive
+
+	rm -rf delta-diff
+	
+XDELTA = xdelta
+XDELTA_OPTIONS = --pristine -9
+
+.PHONY: delta-xdelta
+delta-xdelta: prev-tarball new-tarball got-xdelta
 ## Generate the delta file (xdelta has wierd exit statuses, so we need to
 ## add some shell code to keep make happy), and then generate the signatures
 ## for FSF ftp-upload:
-	$(CHECK_LASTRELEASE); \
 	ofile="$(PACKAGE)-$(LASTRELEASE)-$(VERSION).xdelta"; \
 	( test -z `$(XDELTA) delta $(XDELTA_OPTIONS) \
 	    $(PACKAGE)-$(LASTRELEASE).tar.gz $(PACKAGE)-$(VERSION).tar.gz \
@@ -246,3 +261,4 @@ xdelta: prev-tarball
 	&& echo "directory: libtool" > $$ofile.directive \
 	&& $(GPG) --clearsign $$ofile.directive \
 	&& rm -f $$ofile.directive
+
