@@ -836,7 +836,7 @@ echo "$progname:@LINENO@: checking for object suffix" 1>&5
 if test "X${ac_cv_objext+set}" = Xset; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
-  ac_cv_objext="none"
+  ac_cv_objext="no"
   $rm conftest*
   echo 'int i = 1;' > conftest.c
   if { (eval echo $progname:@LINENO@: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>conftest.err; }; then
@@ -845,7 +845,7 @@ else
 
     for ac_file in conftest.*; do
       case $ac_file in
-      *.c) ;;
+      *.c | *.err) ;;
       *) ac_cv_objext=`echo $ac_file | sed -e s/conftest.//` ;;
       esac
     done
@@ -856,7 +856,9 @@ else
   fi
   $rm conftest*
 fi
-if test "X$ac_cv_objext" != Xnone; then
+if test "X$ac_cv_objext" = Xno; then
+  objext=""
+else
   objext="$ac_cv_objext"
 fi
 echo "$ac_t$ac_cv_objext" 1>&6
@@ -866,7 +868,7 @@ echo "$progname:@LINENO@: checking for executable suffix" 1>&5
 if test "X${ac_cv_exeext+set}" = Xset; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
-  ac_cv_exeext="none"
+  ac_cv_exeext="no"
   $rm conftest*
   echo 'main () { return 0; }' > conftest.c
   if { (eval echo $progname:@LINENO@: \"$ac_link\") 1>&5; (eval $ac_link) 2>conftest.err; }; then
@@ -875,7 +877,7 @@ else
 
     for ac_file in conftest.*; do
       case $ac_file in
-      *.c | *.$objext ) ;;
+      *.c | *.err | *.$objext ) ;;
       *) ac_cv_exeext=.`echo $ac_file | sed -e s/conftest.//` ;;
       esac
     done
@@ -886,7 +888,9 @@ else
   fi
   $rm conftest*
 fi
-if test "X$ac_cv_exeext" != Xnone; then
+if test "X$ac_cv_exeext" = Xno; then
+  exeext=""
+else
   exeext="$ac_cv_exeext"
 fi
 echo "$ac_t$ac_cv_exeext" 1>&6
