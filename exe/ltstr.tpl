@@ -55,9 +55,14 @@ ELSE  not h suffix
 =]
 #include "[=(. hdr-name)=]"
 [=
-(define tpl-name "") =][=
+(define tpl-name  "")
+(define cmd-list  "")
+(define proc-list "")
+(define Cmd-Name  "") =][=
 
-FOR string
+FOR string           =][=
+
+  (set! Cmd-Name (string-capitalize! (get "str_name")))
 
 =]
 /*
@@ -68,7 +73,7 @@ FOR string
    IF (exist? "explain")
 
 =]
-tSCC zExplain[=(string-capitalize! (get "str_name"))=][ [=
+tSCC zExplain[=(. Cmd-Name)=][ [=
   (+ 1 (len "explain")) =] ] =
 [=(kr-string (get "explain"))=];[=
    ENDIF   =][=
@@ -79,13 +84,20 @@ tSCC zExplain[=(string-capitalize! (get "str_name"))=][ [=
       IF (exist? "explain")     =]
 
 [=    ENDIF                     =]
-tSCC z[= (string-capitalize! (get "str_name")) =]Cmd[] =[=
+tSCC z[= (. Cmd-Name) =]Cmd[] =[=
    (out-push-new ".lt.sh")      =][=
    INCLUDE (. tpl-name)         =][=
    (out-pop)
-   (kr-string (shell "cat .lt.sh ; rm -f .lt.sh")) =];
+   (set! cmd-list (string-append cmd-list "z" Cmd-Name "Cmd\n"))
+   (kr-string (shell "cat .lt.sh ; rm -f .lt.sh"))
+   =];
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */[=
+   ELIF (exist? "use_cmd")      =][=
+      (set! cmd-list (string-append cmd-list "z"
+            (string-capitalize! (get "use_cmd")) "Cmd\n"))  =][=
+   ELSE  =][=
+      (set! cmd-list (string-append cmd-list "(tCC*)NULL\n" )) =][=
    ENDIF =][=
 
 ENDFOR =][=
@@ -112,17 +124,8 @@ ENDIF =];
 
 [=IF (== (suffix) "h")=]extern [=
   ENDIF=]tCC* apz_mode_cmd[     MODE_CT ][=
-IF (== (suffix) "c") =] = {[=
-
-  FOR string , =]
-    [=
-    IF   (exist? "use_cmd")
-          =]z[=(string-capitalize! (get "use_cmd"))=]Cmd[=
-    ELIF (exist? "text")
-          =]z[=(string-capitalize! (get "str_name"))=]Cmd[=
-    ELSE  =](tCC*)NULL[=
-    ENDIF =][=
-  ENDFOR  =]
+IF (== (suffix) "c") =] = {
+[=(shellf "columns -I4 -S, <<_EOF_\n%s_EOF_" cmd-list) =]
 }[=
 ENDIF =];
 
@@ -131,11 +134,7 @@ ENDIF =];
 IF (== (suffix) "c") =] = {[=
 
   FOR string , =]
-    [=
-    IF (or (exist? "use_cmd") (exist? "text"))
-          =][=?% call-proc "%s" emitScript=][=
-    ELSE  =](emitScriptProc*)NULL[=
-    ENDIF =][=
+    [=?% call-proc "%s" emitScript=][=
   ENDFOR  =]
 };[=
 

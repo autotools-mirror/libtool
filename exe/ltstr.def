@@ -1,15 +1,11 @@
 
 AutoGen Definitions ltmain.tpl;
 
-#define BASE_STRING 0
-
-string[0] = {
+string = {
   str-name = base;
 };
 
-#define CLEAN_STRING 1
-
-string[CLEAN_STRING] = {
+string = {
   str-name = clean;
   explain = "
 <command> is the name of the program to use to delete files associated with
@@ -21,9 +17,7 @@ or program, all the files associated with it are deleted. Otherwise, only
 the file itself is deleted using <command>.\n";
 };
 
-#define COMPILE_STRING 2
-
-string[COMPILE_STRING] = {
+string = {
   str-name = compile;
   call-proc = emitCompile;
 
@@ -41,9 +35,7 @@ source file name in the <cmd-arg> list and then substituting the C source
 code suffix `.c' with the library object suffix, `.lo'.\n";
 };
 
-#define EXECUTE_STRING 3
-
-string[EXECUTE_STRING] = {
+string = {
   str-name  = execute;
   call-proc = emitExecute;
 
@@ -59,9 +51,7 @@ required library directories are added to the library path.\n
 Then, <command> is executed, with  `<cmd-arg>...' as arguments.\n";
 };
 
-#define FINISH_STRING 4
-
-string[FINISH_STRING] = {
+string = {
   str-name = finish;
   explain = "
 Complete the installation of libtool libraries.\n
@@ -71,9 +61,7 @@ The commands that this mode executes may require superuser privileges.  Use
 the `--dry-run' option if you just want to see what would be executed.\n";
 };
 
-#define INSTALL_STRING 5
-
-string[INSTALL_STRING] = {
+string = {
   str-name = install;
   explain = "
 Install executables or libraries.\n
@@ -83,9 +71,7 @@ It should be either the `install' or `cp' program.\n
 (only BSD-compatible install options are recognized).\n";
 };
 
-#define LINK_STRING 6
-
-string[LINK_STRING] = {
+string = {
   str-name = link;
   explain  = "
 Link object files or libraries together to form another library,
@@ -129,17 +115,13 @@ If OUTPUT-FILE ends in `.lo' or `.${objext}', then a reloadable object file
 is created, otherwise an executable program is created.\n";
 };
 
-#define UNINSTALL_STRING 7
-
-string[UNINSTALL_STRING] = {
+string = {
   str-name = uninstall;
   use_explain = clean;
   use_cmd = clean;
 };
 
-#define ECHO_STRING 8
-
-string[ECHO_STRING] = {
+string = {
   str-name = echo;
   explain = "
 This is a reimplementation of the echo command.

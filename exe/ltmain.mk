@@ -15,7 +15,7 @@ ltmain : $(OBJ)
 	$(CC) -o ltmain $(OBJ) -lopts
 
 clean :
-	rm -f lt*.o ltmain $(GENED) *~
+	rm -rf .libs lt*.o ltmain libtool $(GENED) *~
 
 ltmain.in : $(TXTTPL) ltstr.def
 	autogen -T ltmain.tpl -l ltmacros.tpl ltstr.def
@@ -36,3 +36,6 @@ ltopts.o : ltopts.c
 	$(CC) -c -o ltopts.o -I/usr/local/include ltopts.c
 
 gen : ltmain.in ltstr.c ltopts.c
+
+libtool : ltmain
+	./ltmain --mode=link $(CC) -o $@ $(OBJ) -lopts

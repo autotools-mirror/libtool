@@ -58,18 +58,16 @@ flag = {
     descrip   = "ltmain's operational mode";
 
     /*
-     *  BEWARE:  these *must* enumerate to the values #define-d in the
-     *           lt_*.def files!!
+     *  Extract the keyword list from the defined list of modes.
+     *  This comes from that definition file.  This ensures that
+     *  the ordering is the same, too.  It omits 'base'.
      */
-    keyword   =    /* 0 -> UNDEFINED */
-        clean,     /* 1 */
-        compile,   /* 2 */
-        execute,   /* 3 */
-        finish,    /* 4 */
-        install,   /* 5 */
-        link,      /* 6 */
-        uninstall, /* 7 */
-        echo;      /* 8 */
+#shell
+    echo keyword =
+	egrep -i '^[ 	]*str-name' ltstr.def | \
+    sed '/base/d;s/.*=//;s/;.*/,/;$s/,/;/'
+#endshell
+
     doc =
     "This enumerates all of the libtool operational modes.\n"
     "If this option is not specified, then this program tries to infer\n"
