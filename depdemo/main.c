@@ -24,7 +24,9 @@ USA. */
 #include <string.h>
 
 int
-main (int argc, char **argv)
+main (argc,argv)
+    int argc;
+    char **argv;
 {
   printf("dependencies:\n");
   func_l1(0);

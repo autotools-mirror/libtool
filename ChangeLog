@@ -1,5 +1,8 @@
 1999-05-25  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* depdemo/main.c, depdemo/l1/l1.c, depdemo/l2/l2.c: K&R-ize.
+	* depdemo/l3/l3.c, depdemo/l4/l4.c: Likewise.
+
 	* ltmain.in: Remove object files before writing to them, to avoid
 	circular links.
 	Reported by Ron O'Hara <rono@sentuny.com.au>

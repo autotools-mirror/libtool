@@ -25,7 +25,8 @@ USA. */
 int	var_l2;
 
 int
-func_l2(int indent)
+func_l2(indent)
+    int indent;
 {
   int i;
   
