@@ -322,10 +322,10 @@ AC_DEFUN([_LT_AC_LTCONFIG_HACK], [dnl
 # Sed substitution that helps us do robust quoting.  It backslashifies
 # metacharacters that are still active within double-quoted strings.
 Xsed='sed -e s/^X//'
-sed_quote_subst='[s/\([\\"\\`$\\\\]\)/\\\1/g]'
+[sed_quote_subst='s/\([\\"\\`$\\\\]\)/\\\1/g']
 
 # Same as above, but do not quote variable references.
-double_quote_subst='[s/\([\\"\\`\\\\]\)/\\\1/g]'
+[double_quote_subst='s/\([\\"\\`\\\\]\)/\\\1/g']
 
 # Sed substitution to delay expansion of an escaped shell variable in a
 # double_quote_subst'ed string.
@@ -369,10 +369,6 @@ if test x"$host" != x"$build"; then
 else
   ac_tool_prefix=
 fi
-
-host_cpu=`echo $host | sed '[s/^\([^-]*\)-\([^-]*\)-\(.*\)$/\1/]'`
-host_vendor=`echo $host | sed '[s/^\([^-]*\)-\([^-]*\)-\(.*\)$/\2/]'`
-host_os=`echo $host | sed '[s/^\([^-]*\)-\([^-]*\)-\(.*\)$/\3/]'`
 
 # Transform linux* to *-*-linux-gnu*, to support old configure scripts.
 case "$host_os" in
@@ -601,9 +597,7 @@ fi
 # Check for any special shared library compilation flags.
 if test -n "$ac_cv_prog_cc_shlib"; then
   AC_MSG_WARN([\`$CC' requires \`$ac_cv_prog_cc_shlib' to build shared libraries])
-changequote(,)dnl
-  if echo "$old_CC $old_CFLAGS " | egrep -e "[ 	]$ac_cv_prog_cc_shlib[ 	]" >/dev/null; then :
-changequote([,])dnl
+  if echo "$old_CC $old_CFLAGS " | [egrep -e "[ 	]$ac_cv_prog_cc_shlib[ 	]"] >/dev/null; then :
   else
    AC_MSG_WARN([add \`$ac_cv_prog_cc_shlib' to the CC or CFLAGS env variable and reconfigure])
     ac_cv_prog_cc_can_build_shared=no
@@ -861,7 +855,7 @@ EOF
     always_export_symbols=yes
 
     extract_expsyms_cmds='test -f $output_objdir/impgen.c || \
-      sed -e "/^# \/\* impgen\.c starts here \*\//,/^# \/\* impgen.c ends here \*\// { s/^# //; p; }" -e d < $0 > $output_objdir/impgen.c~
+      sed -e "/^# \/\* impgen\.c starts here \*\//,/^# \/\* impgen.c ends here \*\// { s/^# //; p; }" -e d < [$]0 > $output_objdir/impgen.c~
       test -f $output_objdir/impgen.exe || (cd $output_objdir && \
       if test "x$HOST_CC" != "x" ; then $HOST_CC -o impgen impgen.c ; \
       else $CC -o impgen impgen.c ; fi)~
@@ -890,7 +884,7 @@ EOF
     # can override, but on older systems we have to supply one (in ltdll.c)
     if test "x$lt_cv_need_dllmain" = "xyes"; then
       ltdll_obj='$output_objdir/$soname-ltdll.'"$objext "
-      ltdll_cmds='test -f $output_objdir/$soname-ltdll.c || sed -e "/^# \/\* ltdll\.c starts here \*\//,/^# \/\* ltdll.c ends here \*\// { s/^# //; p; }" -e d < $0 > $output_objdir/$soname-ltdll.c~
+      ltdll_cmds='test -f $output_objdir/$soname-ltdll.c || sed -e "/^# \/\* ltdll\.c starts here \*\//,/^# \/\* ltdll.c ends here \*\// { s/^# //; p; }" -e d < [$]0 > $output_objdir/$soname-ltdll.c~
 	test -f $output_objdir/$soname-ltdll.$objext || (cd $output_objdir && $CC -c $soname-ltdll.c)~'
     else
       ltdll_obj=
@@ -903,9 +897,7 @@ EOF
     # Be careful not to strip the DATA tag left be newer dlltools.
     export_symbols_cmds="$ltdll_cmds"'
       $DLLTOOL --export-all --exclude-symbols '$dll_exclude_symbols' --output-def $output_objdir/$soname-def '$ltdll_obj'$libobjs $convenience~
-changequote(,)
-      sed -e "1,/EXPORTS/d" -e "s/ @ [0-9]*//" -e "s/ *;.*$//" < $output_objdir/$soname-def > $export_symbols'
-changequote([,])
+      [sed -e "1,/EXPORTS/d" -e "s/ @ [0-9]*//" -e "s/ *;.*$//"] < $output_objdir/$soname-def > $export_symbols'
 
     # If DATA tags from a recent dlltool are present, honour them!
     archive_expsym_cmds='echo EXPORTS > $output_objdir/$soname-def~
@@ -1381,9 +1373,7 @@ aix4*)
 amigaos*)
   library_names_spec='$libname.ixlibrary $libname.a'
   # Create ${libname}_ixlibrary.a entries in /sys/libs.
-changequote(,)dnl
-  finish_eval='for lib in `ls $libdir/*.ixlibrary 2>/dev/null`; do libname=`$echo "X$lib" | $Xsed -e '\''s%^.*/\([^/]*\)\.ixlibrary$%\1%'\''`; test $rm /sys/libs/${libname}_ixlibrary.a; $show "(cd /sys/libs && $LN_S $lib ${libname}_ixlibrary.a)"; (cd /sys/libs && $LN_S $lib ${libname}_ixlibrary.a) || exit 1; done'
-changequote([,])dnl
+  finish_eval='for lib in `ls $libdir/*.ixlibrary 2>/dev/null`; do libname=`$echo "X$lib" | [$Xsed -e '\''s%^.*/\([^/]*\)\.ixlibrary$%\1%'\'']`; test $rm /sys/libs/${libname}_ixlibrary.a; $show "(cd /sys/libs && $LN_S $lib ${libname}_ixlibrary.a)"; (cd /sys/libs && $LN_S $lib ${libname}_ixlibrary.a) || exit 1; done'
   ;;
 
 beos*)
@@ -1414,13 +1404,11 @@ cygwin* | mingw*)
   version_type=windows
   need_version=no
   need_lib_prefix=no
-changequote(,)dnl
   if test "$ac_cv_prog_gcc" = yes; then
-    library_names_spec='${libname}`echo ${release} | sed -e 's/[.]/-/g'`${versuffix}.dll'
+    library_names_spec='${libname}`echo ${release} | [sed -e 's/[.]/-/g']`${versuffix}.dll'
   else
-    library_names_spec='${libname}`echo ${release} | sed -e 's/[.]/-/g'`${versuffix}.dll $libname.lib'
+    library_names_spec='${libname}`echo ${release} | [sed -e 's/[.]/-/g']`${versuffix}.dll $libname.lib'
   fi
-changequote([,])dnl
   dynamic_linker='Win32 ld.exe'
   # FIXME: first we should search . and the directory the executable is in
   shlibpath_var=PATH
@@ -1544,7 +1532,7 @@ netbsd*)
     finish_cmds='PATH="\$PATH:/sbin" ldconfig -m $libdir'
     dynamic_linker='NetBSD (a.out) ld.so'
   else
-    deplibs_check_method='file_magic [ELF [0-9][0-9]*-bit [LM]SB shared object]'
+    [deplibs_check_method='file_magic ELF [0-9][0-9]*-bit [LM]SB shared object']
     file_magic_cmd=/usr/bin/file
     file_magic_test_file=`echo /usr/lib/libc.so*`
     library_names_spec='${libname}${release}.so$versuffix ${libname}${release}.so$major ${libname}${release}.so ${libname}.so'
@@ -1631,7 +1619,7 @@ sysv4 | sysv4.2uw2* | sysv4.3* | sysv5*)
   case "$host_vendor" in
     sequent)
       file_magic_cmd='/bin/file'
-      deplibs_check_method='file_magic [ELF [0-9][0-9]*-bit [LM]SB (shared object|dynamic lib )]'
+      [deplibs_check_method='file_magic ELF [0-9][0-9]*-bit [LM]SB (shared object|dynamic lib )']
       ;;
     motorola)
       need_lib_prefix=no
@@ -1689,7 +1677,7 @@ AC_CACHE_VAL([ac_cv_sys_global_symbol_pipe], [dnl
 symcode='[[BCDEGRST]]'
 
 # Regexp to match symbols that can be accessed directly from C.
-sympat='[\([_A-Za-z][_A-Za-z0-9]*\)]'
+[sympat='\([_A-Za-z][_A-Za-z0-9]*\)']
 
 # Transform the above into a raw symbol and a C symbol.
 symxfrm='\1 \2\3 \3'
@@ -1700,22 +1688,22 @@ global_symbol_to_cdecl="sed -n -e 's/^. .* \(.*\)$/extern char \1;/p'"
 # Define system-specific variables.
 case "$host_os" in
 aix*)
-  symcode='[[BCDT]]'
+  [symcode='[BCDT]']
   ;;
 cygwin* | mingw*)
-  symcode='[[ABCDGISTW]]'
+  [symcode='[ABCDGISTW]']
   ;;
 hpux*) # Its linker distinguishes data from code symbols
   global_symbol_to_cdecl="sed -n -e 's/^T .* \(.*\)$/extern char \1();/p' -e 's/^. .* \(.*\)$/extern char \1;/p'"
   ;;
 irix*)
-  symcode='[[BCDEGRST]]'
+  [symcode='[BCDEGRST]']
   ;;
 solaris* | sysv5*)
-  symcode='[[BDT]]'
+  [symcode='[BDT]']
   ;;
 sysv4)
-  symcode='[[DFNSTU]]'
+  [symcode='[DFNSTU]']
   ;;
 esac
 
@@ -1729,14 +1717,14 @@ esac
 
 # If we're using GNU nm, then use its standard symbol codes.
 if $NM -V 2>&1 | egrep '(GNU|with BFD)' > /dev/null; then
-  symcode='[[ABCDGISTW]]'
+  [symcode='[ABCDGISTW]']
 fi
 
 # Try without a prefix undercore, then with it.
 for ac_symprfx in "" "_"; do
 
   # Write the raw and C identifiers.
-ac_cv_sys_global_symbol_pipe="sed -n -e ['s/^.*[ 	]\($symcode\)[ 	][ 	]*\($ac_symprfx\)$sympat$opt_cr$/$symxfrm/p']"
+[ac_cv_sys_global_symbol_pipe="sed -n -e 's/^.*[ 	]\($symcode\)[ 	][ 	]*\($ac_symprfx\)$sympat$opt_cr$/$symxfrm/p'"]
 
   # Check to see that the pipe works correctly.
   pipe_works=no
@@ -1789,7 +1777,7 @@ const struct {
   const char *name;
   lt_ptr_t address;
 }
-lt_preloaded_symbols[[]] =
+[lt_preloaded_symbols[] =]
 {
 EOF
 	  sed 's/^. \(.*\) \(.*\)$/  {"\2", (lt_ptr_t) \&\2},/' < "$nlist" >> conftest.c
@@ -2485,10 +2473,10 @@ cygwin* | mingw* | os2*)
 #       int fd;
 #       int offset;
 #  {
-#    unsigned char b[2];
+#    [unsigned char b[2];]
 #    lseek (fd, offset, SEEK_SET);
 #    read (fd, b, 2);
-#    return b[0] + (b[1]<<8);
+#    [return b[0] + (b[1]<<8);]
 #  }
 #
 #  static unsigned int
@@ -2496,10 +2484,10 @@ cygwin* | mingw* | os2*)
 #      int fd;
 #      int offset;
 #  {
-#    unsigned char b[4];
+#    [unsigned char b[4];]
 #    lseek (fd, offset, SEEK_SET);
 #    read (fd, b, 4);
-#    return b[0] + (b[1]<<8) + (b[2]<<16) + (b[3]<<24);
+#    [return b[0] + (b[1]<<8) + (b[2]<<16) + (b[3]<<24);]
 #  }
 #
 #  static unsigned int
@@ -2507,13 +2495,13 @@ cygwin* | mingw* | os2*)
 #       void *ptr;
 #  {
 #    unsigned char *b = ptr;
-#    return b[0] + (b[1]<<8) + (b[2]<<16) + (b[3]<<24);
+#    [return b[0] + (b[1]<<8) + (b[2]<<16) + (b[3]<<24);]
 #  }
 #
 #  int
 #  main (argc, argv)
 #      int argc;
-#      char *argv[];
+#      [char *argv[];]
 #  {
 #      int dll;
 #      unsigned long pe_header_offset, opthdr_ofs, num_entries, i;
@@ -2522,7 +2510,7 @@ cygwin* | mingw* | os2*)
 #      unsigned char *expdata, *erva;
 #      char *filename, *dll_name;
 #
-#      filename = argv[1];
+#      [filename = argv[1];]
 #
 #      dll = open(filename, O_RDONLY|O_BINARY);
 #      if (!dll)
@@ -2530,8 +2518,8 @@ cygwin* | mingw* | os2*)
 #
 #      dll_name = filename;
 #
-#      for (i=0; filename[i]; i++)
-#  	if (filename[i] == '/' || filename[i] == '\\'  || filename[i] == ':')
+#      [for (i=0; filename[i]; i++)]
+#  	[if (filename[i] == '/' || filename[i] == '\\'  || filename[i] == ':')]
 #  	    dll_name = filename + i +1;
 #
 #      pe_header_offset = pe_get32 (dll, 0x3c);
@@ -2550,7 +2538,7 @@ cygwin* | mingw* | os2*)
 #      expptr = 0;
 #      for (i = 0; i < nsections; i++)
 #      {
-#  	char sname[8];
+#  	[char sname[8];]
 #  	unsigned long secptr1 = secptr + 40 * i;
 #  	unsigned long vaddr = pe_get32 (dll, secptr1 + 12);
 #  	unsigned long vsize = pe_get32 (dll, secptr1 + 16);
@@ -2832,10 +2820,8 @@ if test "$ac_cv_prog_gcc" = yes; then
   esac
   case "$ac_prog" in
     # Accept absolute paths.
-changequote(,)dnl
-    [\\/]* | [A-Za-z]:[\\/]*)
-      re_direlt='/[^/][^/]*/\.\./'
-changequote([,])dnl
+    [[\\/]* | [A-Za-z]:[\\/]*)]
+      [re_direlt='/[^/][^/]*/\.\./']
       # Canonicalize the path of ld
       ac_prog=`echo $ac_prog| sed 's%\\\\%/%g'`
       while echo $ac_prog | grep "$re_direlt" > /dev/null 2>&1; do
@@ -2922,7 +2908,7 @@ lt_cv_deplibs_check_method='unknown'
 # `unknown' -- same as none, but documents that we really don't know.
 # 'pass_all' -- all dependencies passed with no checks.
 # 'test_compile' -- check by making test program.
-# 'file_magic [regex]' -- check by looking for files in library path
+# ['file_magic [regex]'] -- check by looking for files in library path
 # which responds to the $file_magic_cmd with a given egrep regex.
 # If you have `file' or equivalent on your system and you're not sure
 # whether `pass_all' will *always* work, you probably want this one.
@@ -2937,9 +2923,7 @@ beos*)
   ;;
 
 bsdi4*)
-  changequote(,)dnl
-  lt_cv_deplibs_check_method='file_magic ELF [0-9][0-9]*-bit [ML]SB (shared object|dynamic lib)'
-  changequote([, ])dnl
+  [lt_cv_deplibs_check_method='file_magic ELF [0-9][0-9]*-bit [ML]SB (shared object|dynamic lib)']
   lt_cv_file_magic_cmd='/usr/bin/file -L'
   lt_cv_file_magic_test_file=/shlib/libc.so
   ;;
@@ -2955,9 +2939,7 @@ freebsd*)
     i*86 )
       # Not sure whether the presence of OpenBSD here was a mistake.
       # Let's accept both of them until this is cleared up.
-      changequote(,)dnl
-      lt_cv_deplibs_check_method='file_magic (FreeBSD|OpenBSD)/i[3-9]86 (compact )?demand paged shared library'
-      changequote([, ])dnl
+      [lt_cv_deplibs_check_method='file_magic (FreeBSD|OpenBSD)/i[3-9]86 (compact )?demand paged shared library']
       lt_cv_file_magic_cmd=/usr/bin/file
       lt_cv_file_magic_test_file=`echo /usr/lib/libc.so.*`
       ;;
@@ -2973,7 +2955,7 @@ gnu*)
 
 hpux10.20*)
   # TODO:  Does this work for hpux-11 too?
-  lt_cv_deplibs_check_method='file_magic (s[0-9][0-9][0-9]|PA-RISC[0-9].[0-9]) shared library'
+  [lt_cv_deplibs_check_method='file_magic (s[0-9][0-9][0-9]|PA-RISC[0-9].[0-9]) shared library']
   lt_cv_file_magic_cmd=/usr/bin/file
   lt_cv_file_magic_test_file=/usr/lib/libc.sl
   ;;
@@ -2992,9 +2974,7 @@ irix5* | irix6*)
     *) libmagic=never-match;;
     esac
     # this will be overridden with pass_all, but let us keep it just in case
-    changequote(,)dnl
-    lt_cv_deplibs_check_method="file_magic ELF ${libmagic} MSB mips-[1234] dynamic lib MIPS - version 1"
-    changequote([, ])dnl
+    [lt_cv_deplibs_check_method="file_magic ELF ${libmagic} MSB mips-[1234] dynamic lib MIPS - version 1"]
     ;;
   esac
   lt_cv_file_magic_test_file=`echo /lib${libsuff}/libc.so*`
@@ -3008,9 +2988,7 @@ linux-gnu*)
     lt_cv_deplibs_check_method=pass_all ;;
   *)
     # glibc up to 2.1.1 does not perform some relocations on ARM
-    changequote(,)dnl
-    lt_cv_deplibs_check_method='file_magic ELF [0-9][0-9]*-bit [LM]SB (shared object|dynamic lib )' ;;
-    changequote([, ])dnl
+    [lt_cv_deplibs_check_method='file_magic ELF [0-9][0-9]*-bit [LM]SB (shared object|dynamic lib )' ;;]
   esac
   lt_cv_file_magic_test_file=`echo /lib/libc.so* /lib/libc-*.so`
   ;;
@@ -3018,9 +2996,7 @@ linux-gnu*)
 netbsd*)
   if echo __ELF__ | $CC -E - | grep __ELF__ > /dev/null; then :
   else
-    changequote(,)dnl
-    lt_cv_deplibs_check_method='file_magic ELF [0-9][0-9]*-bit [LM]SB shared object'
-    changequote([, ])dnl
+    [lt_cv_deplibs_check_method='file_magic ELF [0-9][0-9]*-bit [LM]SB shared object']
     lt_cv_file_magic_cmd='/usr/bin/file -L'
     lt_cv_file_magic_test_file=`echo /usr/lib/libc.so*`
   fi
@@ -3048,9 +3024,7 @@ sysv4 | sysv4.2uw2* | sysv4.3* | sysv5*)
     lt_cv_deplibs_check_method=pass_all
     ;;
   motorola)
-    changequote(,)dnl
-    lt_cv_deplibs_check_method='file_magic ELF [0-9][0-9]*-bit [ML]SB (shared object|dynamic lib) M[0-9][0-9]* Version [0-9]'
-    changequote([, ])dnl
+    [lt_cv_deplibs_check_method='file_magic ELF [0-9][0-9]*-bit [ML]SB (shared object|dynamic lib) M[0-9][0-9]* Version [0-9]']
     lt_cv_file_magic_test_file=`echo /usr/lib/libc.so*`
     ;;
   esac

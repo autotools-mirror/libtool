@@ -1,5 +1,9 @@
 2000-09-14  Gary V. Vaughan  <gvv@techie.com>
 
+	* libtool.m4 (changequote): An audit of changequote and m4
+	quote usage -- all changequotes (except a few with non-nesting
+	square brackets) have been removed.
+	
 	* Makefile.am (EXTRA_DIST):  The bootstrap script should be
 	distributed with libtool.
 	
