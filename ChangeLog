@@ -1,5 +1,10 @@
 2000-05-14  Alexandre Oliva  <oliva@lsd.ic.unicamp.br>
 
+	* libtool.m4 (AC_LIBLTDL_CONVENIENCE, AC_LIBLTDL_INSTALLABLE):
+	Pick LIBLTLD from top_builddir and INCLTDL from top_srcdir.
+	* mdemo/configure.in: Remove comments on
+	AC_LIBLTLD_CONVENIENCE.
+
 	* configure.in: Look for C++ compiler.
 	* Makefile.am (libtool): Configure CXX tag.
 	* tests/Makefile.am: Test tagdemo only if CXX found.
