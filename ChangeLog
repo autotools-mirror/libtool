@@ -1,5 +1,8 @@
 2001-04-05  Gary V. Vaughan  <gvv@techie.com>
 
+	From Edward Lee <tailbert@yahoo.com>
+	* libtool.m4: Typos.
+
 	* tests/Makefile.am (TESTS): Delete references to depdemo-dups.test.
 	* tests/depdemo-dups.test:  Removed, as part of the patch
 	reversion below.

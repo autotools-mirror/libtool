@@ -1,4 +1,4 @@
-## libtool.m4 - Configure libtool for the host system. -*-Shell-script-*-
+# libtool.m4 - Configure libtool for the host system. -*-Shell-script-*-
 ## Copyright 1996, 1997, 1998, 1999, 2000, 2001
 ## Free Software Foundation, Inc.
 ## Originally by Gordon Matzigkeit <gord@gnu.ai.mit.edu>, 1996
@@ -1243,7 +1243,7 @@ EOF
       test -f $output_objdir/impgen.exe || (cd $output_objdir && \
       if test "x$HOST_CC" != "x" ; then $HOST_CC -o impgen impgen.c ; \
       else $CC -o impgen impgen.c ; fi)~
-      $output_objdir/impgen $dir/$soroot1 > $output_objdir/$soname-def'
+      $output_objdir/impgen $dir/$soroot > $output_objdir/$soname-def'
 
     old_archive_from_expsyms_cmds='$DLLTOOL --as=$AS --dllname $soname --def $output_objdir/$soname-def --output-lib $output_objdir/$newlib'
 
