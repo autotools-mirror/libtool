@@ -155,6 +155,69 @@ win32_libid () {
   $echo $win32_libid_type
 }
 
+
+
+infer_tag () {
+    # Infer tagged configuration to use if any are available and
+    # if one wasn't chosen via the "--tag" command line option.
+    # Only attempt this if the compiler in the base compile
+    # command doesn't match the default compiler.
+    if test -n "$available_tags" && test -z "$tagname"; then
+      CC_quoted=
+      for arg in $CC; do
+	case $arg in
+	  *[\[\~\#\^\&\*\(\)\{\}\|\;\<\>\?\'\ \	]*|*]*|"")
+	  arg="\"$arg\""
+	  ;;
+	esac
+	CC_quoted="$CC_quoted $arg"
+      done
+      case $@ in
+      # Blanks in the command may have been stripped by the calling shell,
+      # but not from the CC environment variable when configure was run.
+      " $CC "* | "$CC "* | " `$echo $CC` "* | "`$echo $CC` "* | " $CC_quoted"* | "$CC_quoted "* | " `$echo $CC_quoted` "* | "`$echo $CC_quoted` "*) ;;
+      # Blanks at the start of $base_compile will cause this to fail
+      # if we don't check for them as well.
+      *)
+	for z in $available_tags; do
+	  if grep "^# ### BEGIN LIBTOOL TAG CONFIG: $z$" < "$0" > /dev/null; then
+	    # Evaluate the configuration.
+	    eval "`${SED} -n -e '/^# ### BEGIN LIBTOOL TAG CONFIG: '$z'$/,/^# ### END LIBTOOL TAG CONFIG: '$z'$/p' < $0`"
+	    CC_quoted=
+	    for arg in $CC; do
+	    # Double-quote args containing other shell metacharacters.
+	    case $arg in
+	      *[\[\~\#\^\&\*\(\)\{\}\|\;\<\>\?\'\ \	]*|*]*|"")
+	      arg="\"$arg\""
+	      ;;
+	    esac
+	    CC_quoted="$CC_quoted $arg"
+	  done
+	    case "$@ " in
+	      " $CC "* | "$CC "* | " `$echo $CC` "* | "`$echo $CC` "* | " $CC_quoted"* | "$CC_quoted "* | " `$echo $CC_quoted` "* | "`$echo $CC_quoted` "*)
+	      # The compiler in the base compile command matches
+	      # the one in the tagged configuration.
+	      # Assume this is the tagged configuration we want.
+	      tagname=$z
+	      break
+	      ;;
+	    esac
+	  fi
+	done
+	# If $tagname still isn't set, then no tagged configuration
+	# was found and let the user know that the "--tag" command
+	# line option must be used.
+	if test -z "$tagname"; then
+	  $echo "$modename: unable to infer tagged configuration"
+	  $echo "$modename: specify a tag with \`--tag'" 1>&2
+	  exit 1
+#        else
+#          $echo "$modename: using $tagname tagged configuration"
+	fi
+	;;
+      esac
+    fi
+}
 # End of Shell function definitions
 #####################################
 
@@ -426,7 +489,7 @@ if test -z "$show_help"; then
 	  args=`$echo "X$arg" | $Xsed -e "s/^-Wc,//"`
 	  lastarg=
 	  save_ifs="$IFS"; IFS=','
-	  for arg in $args; do
+ 	  for arg in $args; do
 	    IFS="$save_ifs"
 
 	    # Double-quote args containing other shell metacharacters.
@@ -517,46 +580,7 @@ if test -z "$show_help"; then
       ;;
     esac
 
-    # Infer tagged configuration to use if any are available and
-    # if one wasn't chosen via the "--tag" command line option.
-    # Only attempt this if the compiler in the base compile
-    # command doesn't match the default compiler.
-    if test -n "$available_tags" && test -z "$tagname"; then
-      case $base_compile in
-      # Blanks in the command may have been stripped by the calling shell,
-      # but not from the CC environment variable when configure was run.
-      " $CC "* | "$CC "* | " `$echo $CC` "* | "`$echo $CC` "*) ;;
-      # Blanks at the start of $base_compile will cause this to fail
-      # if we don't check for them as well.
-      *)
-	for z in $available_tags; do
-	  if grep "^# ### BEGIN LIBTOOL TAG CONFIG: $z$" < "$0" > /dev/null; then
-	    # Evaluate the configuration.
-	    eval "`${SED} -n -e '/^# ### BEGIN LIBTOOL TAG CONFIG: '$z'$/,/^# ### END LIBTOOL TAG CONFIG: '$z'$/p' < $0`"
-	    case "$base_compile " in
-	    "$CC "* | " $CC "* | "`$echo $CC` "* | " `$echo $CC` "*)
-	      # The compiler in the base compile command matches
-	      # the one in the tagged configuration.
-	      # Assume this is the tagged configuration we want.
-	      tagname=$z
-	      break
-	      ;;
-	    esac
-	  fi
-	done
-	# If $tagname still isn't set, then no tagged configuration
-	# was found and let the user know that the "--tag" command
-	# line option must be used.
-	if test -z "$tagname"; then
-	  $echo "$modename: unable to infer tagged configuration"
-	  $echo "$modename: specify a tag with \`--tag'" 1>&2
-	  exit 1
-#        else
-#          $echo "$modename: using $tagname tagged configuration"
-	fi
-	;;
-      esac
-    fi
+    infer_tag $base_compile
 
     for arg in $later; do
       case $arg in
@@ -904,46 +928,7 @@ EOF
     vinfo=
     vinfo_number=no
 
-    # Infer tagged configuration to use if any are available and
-    # if one wasn't chosen via the "--tag" command line option.
-    # Only attempt this if the compiler in the base link
-    # command doesn't match the default compiler.
-    if test -n "$available_tags" && test -z "$tagname"; then
-      case $base_compile in
-      # Blanks in the command may have been stripped by the calling shell,
-      # but not from the CC environment variable when configure was run.
-      "$CC "* | " $CC "* | "`$echo $CC` "* | " `$echo $CC` "*) ;;
-      # Blanks at the start of $base_compile will cause this to fail
-      # if we don't check for them as well.
-      *)
-	for z in $available_tags; do
-	  if grep "^# ### BEGIN LIBTOOL TAG CONFIG: $z$" < "$0" > /dev/null; then
-	    # Evaluate the configuration.
-	    eval "`${SED} -n -e '/^# ### BEGIN LIBTOOL TAG CONFIG: '$z'$/,/^# ### END LIBTOOL TAG CONFIG: '$z'$/p' < $0`"
-	    case $base_compile in
-	    "$CC "* | " $CC "* | "`$echo $CC` "* | " `$echo $CC` "*)
-	      # The compiler in $compile_command matches
-	      # the one in the tagged configuration.
-	      # Assume this is the tagged configuration we want.
-	      tagname=$z
-	      break
-	      ;;
-	    esac
-	  fi
-	done
-	# If $tagname still isn't set, then no tagged configuration
-	# was found and let the user know that the "--tag" command
-	# line option must be used.
-	if test -z "$tagname"; then
-	  $echo "$modename: unable to infer tagged configuration"
-	  $echo "$modename: specify a tag with \`--tag'" 1>&2
-	  exit 1
-#       else
-#         $echo "$modename: using $tagname tagged configuration"
-	fi
-	;;
-      esac
-    fi
+    infer_tag $base_compile
 
     # We need to know -static, to get the right output filenames.
     for arg

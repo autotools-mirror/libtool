@@ -1,3 +1,9 @@
+2004-02-04  Peter O'Gorman  <peter@pogma.com>
+	
+	* ltmain.in (infer_tag): Move tag inferrence to a shell function.
+	Also test $base_compile against $CC with escaped arguments. Bug
+	reported by Geoff Keating <geoffk@apple.com>.
+
 2004-02-03  Scott James Remnant  <scott@netsplit.com>
 
 	* Makefile.am (install-data-hook): Manually make config.guess
