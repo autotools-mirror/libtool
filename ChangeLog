@@ -1,3 +1,9 @@
+2004-11-08  Peter Ekberg  <spam.protected>
+
+	* config/ltmain.m4sh (func_mode_link): forward thread
+	related flags to dependent applications and libraries
+	by adding them to `inherited_linker_flags'.
+
 2004-11-07  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
 	* m4/ltoptions.m4: Change all references of LT_LIBTOOL_INIT

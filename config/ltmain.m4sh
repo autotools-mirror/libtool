@@ -3091,6 +3091,12 @@ func_mode_link ()
 	    finalize_deplibs="$deplib $finalize_deplibs"
 	  else
 	    deplibs="$deplib $deplibs"
+	    if test "$linkmode" = lib ; then
+		case "$inherited_linker_flags " in
+		    *" $deplib "*) ;;
+		    * ) inherited_linker_flags="$inherited_linker_flags $deplib" ;;
+		esac
+	    fi
 	  fi
 	  continue
 	  ;;
