@@ -1,11 +1,6 @@
 dnl Process this file with autoconf to create configure.
 AC_INIT(ltmain.in)
 
-dnl This little magic works with my `maintainer-release' rule in the toplevel
-dnl `Makefile.am.'  It uses PRCS, which is like CVS, except better... get
-dnl `prcs.README' from your nearest GNU mirror.
-
-dnl $Format: "AM_INIT_AUTOMAKE($Project$,$ProjectMajorVersion$)"$
 AM_INIT_AUTOMAKE(libtool,1.2c)
 
 pkgdatadir='${datadir}/libtool'

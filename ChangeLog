@@ -1,5 +1,7 @@
 1998-12-07  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* configure.in: we no longer use PRCS
+
 	* doc/libtool.texi (author): listed all the AUTHORS
 	(Dlopen issues): added reference to libltdl, still undocumented
 	(C++ libraries): it's not *that* simple, after all :-(
