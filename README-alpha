@@ -5,15 +5,17 @@ CVS version of this package, do:
   [Hit return when prompted for the password]
   cvs -d :pserver:anoncvs@anoncvs.gnu.org:/gd/gnu/anoncvsroot checkout libtool
   cd libtool
-  ./autogen
+  ./bootstrap
 
-The `autogen' script sets up the source directory for you to hack. To
+The `bootstrap' script sets up the source directory for you to hack. To
 use it, you need a recent (maybe yet to be released) version of both
 Autoconf and Automake.
 
-Please do not send any bug reports or questions about this snapshot to
-public forums (such as GNU newsgroups), send them directly to the
-libtool mailing list, <bug-libtool@gnu.org>.
+If you have any suggestions or bug reports, or you wish to port
+libtool to a new platform, please send electronic mail to the libtool
+mailing list <libtool@gnu.org> or bug reports to <bug-libtool@gnu.org>.
+Don't forget to mention the version of libtool that you are currently
+using (by typing `ltconfig --version').
 
 ================================================================
 = Administrivia

@@ -1,6 +1,6 @@
 NEWS - list of user-visible changes between releases of GNU Libtool
 
-New in 1.3a: CVS version, Libtool team:
+New in 1.3b: 1999-??-??; CVS version 1.3a, Libtool team:
 * Complete inter-library dependencies support. It's now possible
   to link libtool libraries against other libtool libraries.
 * Already-installed libtool libraries will be found.
@@ -8,11 +8,13 @@ New in 1.3a: CVS version, Libtool team:
 * New demos and tests
 * Various bugfixes
 
-New in 1.2g: CVS version, Libtool team:
+New in 1.3: 1999-03-??; CVS version 1.2g, Libtool team:
 * dlopen support for BeOS
 * Improved support for BeOS and Cygwin
+* Documentation updates
+* Bugfixes
 
-New in 1.2e: CVS version; 1.2f: 1999-03-15, Libtool team:
+New in 1.2f: 1999-03-15; CVS version 1.2e, Libtool team:
 * libtool will correctly link uninstalled libraries into programs
   and prefer uninstalled libraries to installed ones
 * Library paths that are in the system default run-time search path
@@ -54,7 +56,7 @@ New in 1.2e: CVS version; 1.2f: 1999-03-15, Libtool team:
 * New demos and tests
 * Various bugfixes
 
-New in 1.2c: CVS version; 1.2d: 1998-12-16, Libtool team:
+New in 1.2d: 1998-12-16; CVS version 1.2c, Libtool team:
 * libtool will correctly link already-installed libraries into programs.
 * New -module flag, to create loadable modules.
 * New libltdl, a small library for portable dlopening of modules.

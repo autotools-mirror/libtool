@@ -2,7 +2,7 @@
 # NOTE: Changing this file will not affect anything until you rerun ltconfig.
 #
 # Copyright (C) 1996-1999 Free Software Foundation, Inc.
-# Gordon Matzigkeit <gord@gnu.ai.mit.edu>, 1996
+# Originally by Gordon Matzigkeit <gord@gnu.ai.mit.edu>, 1996
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -3979,8 +3979,16 @@ relink_command=\"$relink_command\""
 
 	  outputname=
 	  if test "$fast_install" = no && test -n "$relink_command"; then
-	    if test "$finalize" = yes; then
-	      outputname="/tmp/$$-$file"
+	    if test "$finalize" = yes && test -z "$run"; then
+	      tmpdir="/tmp"
+	      test -n "$TMPDIR" && tmpdir="$TMPDIR"
+	      tmpdir="$tmpdir/libtool-$$"
+	      if $mkdir -p "$tmpdir" && chmod 700 "$tmpdir"; then :
+	      else
+		$echo "$modename: error: cannot create temporary directory \`$tmpdir'" 1>&2
+		continue
+	      fi
+	      outputname="$tmpdir/$file"
 	      # Replace the output file specification.
 	      relink_command=`$echo "X$relink_command" | $Xsed -e 's%@OUTPUT@%'"$outputname"'%g'`
 
@@ -3988,6 +3996,7 @@ relink_command=\"$relink_command\""
 	      if $run eval "$relink_command"; then :
 	      else
 		$echo "$modename: error: relink \`$file' with the above command before installing it" 1>&2
+		${rm}r "$tmpdir"
 		continue
 	      fi
 	      file="$outputname"
@@ -4002,7 +4011,7 @@ relink_command=\"$relink_command\""
 
 	$show "$install_prog$stripme $file $destfile"
 	$run eval "$install_prog\$stripme \$file \$destfile" || exit $?
-	test -n "$outputname" && $rm $outputname
+	test -n "$outputname" && ${rm}r "$tmpdir"
 	;;
       esac
     done
@@ -4470,6 +4479,8 @@ The following components of LINK-COMMAND are treated specially:
   -export-dynamic   allow symbols from OUTPUT-FILE to be resolved with dlsym(3)
   -export-symbols SYMFILE
 		    try to export only the symbols listed in SYMFILE
+  -export-symbols-regex REGEX
+		    try to export only the symbols matching REGEX
   -LLIBDIR          search LIBDIR for required installed libraries
   -lNAME            OUTPUT-FILE requires the installed library libNAME
   -module           build a library that can dlopened
