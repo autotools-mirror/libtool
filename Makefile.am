@@ -7,6 +7,11 @@
 ## the Free Software Foundation; either version 2 of the License, or
 ## (at your option) any later version.
 ##
+## As a special exception to the GNU Lesser General Public License,
+## if you distribute this file as part of a program or library that
+## is built using GNU libtool, you may include it under the same
+## distribution terms that you use for the rest of that program.
+##
 ## This program is distributed in the hope that it will be useful,
 ## but WITHOUT ANY WARRANTY; without even the implied warranty of
 ## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -126,7 +131,7 @@ $(top_srcdir)/config/ltmain.sh: $(sh_files) config/ltmain.m4sh configure.ac \
 	cd $(top_srcdir); \
 	rm -f config/ltmain.in config/ltmain.tmp config/ltmain.sh; \
 	$(M4SH) -B ./config config/ltmain.m4sh > config/ltmain.in; \
-	input="ltmain.in"; \
+	input="ltmain.m4sh"; \
 	$(edit) -e "s,@TIMESTAMP\@,$$TIMESTAMP,g" \
 		-e "s,@package_revision\@,$$1,g" \
 		config/ltmain.in > config/ltmain.tmp; \
