@@ -84,6 +84,9 @@ if test "${LANG+set}" = set; then
   save_LANG="$LANG"; LANG=C; export LANG
 fi
 
+# Make sure IFS has a sensible default
+: ${IFS=" 	"}
+
 if test "$build_libtool_libs" != yes && test "$build_old_libs" != yes; then
   echo "$modename: not configured to build any kind of library" 1>&2
   echo "Fatal configuration error.  See the $PACKAGE docs for more information." 1>&2
@@ -377,7 +380,7 @@ if test -z "$show_help"; then
       -Wc,*)
 	args=`$echo "X$arg" | $Xsed -e "s/^-Wc,//"`
 	lastarg=
-	IFS="${IFS= 	}"; save_ifs="$IFS"; IFS=','
+	save_ifs="$IFS"; IFS=','
 	for arg in $args; do
 	  IFS="$save_ifs"
 
@@ -1333,7 +1336,7 @@ EOF
       -Wc,*)
 	args=`$echo "X$arg" | $Xsed -e "$sed_quote_subst" -e 's/^-Wc,//'`
 	arg=
-	IFS="${IFS= 	}"; save_ifs="$IFS"; IFS=','
+	save_ifs="$IFS"; IFS=','
 	for flag in $args; do
 	  IFS="$save_ifs"
 	  case $flag in
@@ -1351,7 +1354,7 @@ EOF
       -Wl,*)
 	args=`$echo "X$arg" | $Xsed -e "$sed_quote_subst" -e 's/^-Wl,//'`
 	arg=
-	IFS="${IFS= 	}"; save_ifs="$IFS"; IFS=','
+	save_ifs="$IFS"; IFS=','
 	for flag in $args; do
 	  IFS="$save_ifs"
 	  case $flag in
@@ -2131,7 +2134,7 @@ EOF
 	    if test -f "$output_objdir/$soname-def"; then :
 	    else
 	      $show "extracting exported symbol list from \`$soname'"
-	      IFS="${IFS= 	}"; save_ifs="$IFS"; IFS='~'
+	      save_ifs="$IFS"; IFS='~'
 	      eval cmds=\"$extract_expsyms_cmds\"
 	      for cmd in $cmds; do
 		IFS="$save_ifs"
@@ -2144,7 +2147,7 @@ EOF
 	    # Create $newlib
 	    if test -f "$output_objdir/$newlib"; then :; else
 	      $show "generating import library for \`$soname'"
-	      IFS="${IFS= 	}"; save_ifs="$IFS"; IFS='~'
+	      save_ifs="$IFS"; IFS='~'
 	      eval cmds=\"$old_archive_from_expsyms_cmds\"
 	      for cmd in $cmds; do
 		IFS="$save_ifs"
@@ -2569,7 +2572,7 @@ EOF
       else
 
 	# Parse the version information argument.
-	IFS="${IFS= 	}"; save_ifs="$IFS"; IFS=':'
+	save_ifs="$IFS"; IFS=':'
 	set dummy $vinfo 0 0 0
 	IFS="$save_ifs"
 
@@ -3210,7 +3213,7 @@ EOF
 	    export_symbols="$output_objdir/$libname.exp"
 	    $run $rm $export_symbols
 	    eval cmds=\"$export_symbols_cmds\"
-	    IFS="${IFS= 	}"; save_ifs="$IFS"; IFS='~'
+	    save_ifs="$IFS"; IFS='~'
 	    for cmd in $cmds; do
 	      IFS="$save_ifs"
 	      $show "$cmd"
@@ -3361,7 +3364,7 @@ EOF
 	  $echo "creating a temporary reloadable object file: $output"
 
 	  # Loop through the commands generated above and execute them.
-	  IFS="${IFS= 	}"; save_ifs="$IFS"; IFS='~'
+	  save_ifs="$IFS"; IFS='~'
 	  for cmd in $concat_cmds; do
 	    IFS="$save_ifs"
 	    $show "$cmd"
@@ -3390,7 +3393,7 @@ EOF
 	  # to the just-reset $cmds.
 	  eval cmds=\"\$cmds~$rm $delfiles\"
 	fi
-	IFS="${IFS= 	}"; save_ifs="$IFS"; IFS='~'
+	save_ifs="$IFS"; IFS='~'
 	for cmd in $cmds; do
 	  IFS="$save_ifs"
 	  $show "$cmd"
@@ -3518,7 +3521,7 @@ EOF
 
       output="$obj"
       eval cmds=\"$reload_cmds\"
-      IFS="${IFS= 	}"; save_ifs="$IFS"; IFS='~'
+      save_ifs="$IFS"; IFS='~'
       for cmd in $cmds; do
 	IFS="$save_ifs"
 	$show "$cmd"
@@ -3554,7 +3557,7 @@ EOF
 	reload_objs="$libobjs $reload_conv_objs"
 	output="$libobj"
 	eval cmds=\"$reload_cmds\"
-	IFS="${IFS= 	}"; save_ifs="$IFS"; IFS='~'
+	save_ifs="$IFS"; IFS='~'
 	for cmd in $cmds; do
 	  IFS="$save_ifs"
 	  $show "$cmd"
@@ -4319,7 +4322,7 @@ fi\
 	  eval cmds=\"\$concat_cmds~$old_archive_cmds\"
 	fi
       fi
-      IFS="${IFS= 	}"; save_ifs="$IFS"; IFS='~'
+      save_ifs="$IFS"; IFS='~'
       for cmd in $cmds; do
 	IFS="$save_ifs"
 	$show "$cmd"
@@ -4694,7 +4697,7 @@ relink_command=\"$relink_command\""
 	  # Do each command in the postinstall commands.
 	  lib="$destdir/$realname"
 	  eval cmds=\"$postinstall_cmds\"
-	  IFS="${IFS= 	}"; save_ifs="$IFS"; IFS='~'
+	  save_ifs="$IFS"; IFS='~'
 	  for cmd in $cmds; do
 	    IFS="$save_ifs"
 	    $show "$cmd"
@@ -4881,7 +4884,7 @@ relink_command=\"$relink_command\""
 
       # Do each command in the postinstall commands.
       eval cmds=\"$old_postinstall_cmds\"
-      IFS="${IFS= 	}"; save_ifs="$IFS"; IFS='~'
+      save_ifs="$IFS"; IFS='~'
       for cmd in $cmds; do
 	IFS="$save_ifs"
 	$show "$cmd"
@@ -4919,7 +4922,7 @@ relink_command=\"$relink_command\""
 	if test -n "$finish_cmds"; then
 	  # Do each command in the finish commands.
 	  eval cmds=\"$finish_cmds\"
-	  IFS="${IFS= 	}"; save_ifs="$IFS"; IFS='~'
+	  save_ifs="$IFS"; IFS='~'
 	  for cmd in $cmds; do
 	    IFS="$save_ifs"
 	    $show "$cmd"
@@ -5195,7 +5198,7 @@ relink_command=\"$relink_command\""
 	    if test -n "$library_names"; then
 	      # Do each command in the postuninstall commands.
 	      eval cmds=\"$postuninstall_cmds\"
-	      IFS="${IFS= 	}"; save_ifs="$IFS"; IFS='~'
+	      save_ifs="$IFS"; IFS='~'
 	      for cmd in $cmds; do
 		IFS="$save_ifs"
 		$show "$cmd"
@@ -5210,7 +5213,7 @@ relink_command=\"$relink_command\""
 	    if test -n "$old_library"; then
 	      # Do each command in the old_postuninstall commands.
 	      eval cmds=\"$old_postuninstall_cmds\"
-	      IFS="${IFS= 	}"; save_ifs="$IFS"; IFS='~'
+	      save_ifs="$IFS"; IFS='~'
 	      for cmd in $cmds; do
 		IFS="$save_ifs"
 		$show "$cmd"

@@ -318,7 +318,7 @@ else
   #
   # So, first we look for a working echo in the user's PATH.
 
-  IFS="${IFS= 	}"; lt_save_ifs="$IFS"; IFS="${IFS}$ac_path_separator"
+  lt_save_ifs="$IFS"; IFS=$PATH_SEPARATOR
   for dir in $PATH /usr/ucb; do
     IFS="$lt_save_ifs"
     if (test -f $dir/echo || test -f $dir/echo$ac_exeext) &&
@@ -1087,7 +1087,7 @@ cygwin* | mingw* | pw32*)
     ;;
   yes,mingw*)
     library_names_spec='${libname}`echo ${release} | sed -e 's/[[.]]/-/g'`${versuffix}.dll'
-    sys_lib_search_path_spec=`$CC -print-search-dirs | grep "^libraries:" | sed -e "s/^libraries://" -e "s/$ac_path_separator/ /g"`
+    sys_lib_search_path_spec=`$CC -print-search-dirs | grep "^libraries:" | sed -e "s/^libraries://" -e "s/$PATH_SEPARATOR/ /g"`
     ;;
   yes,pw32*)
     library_names_spec='`echo ${libname} | sed -e 's/^lib/pw/'``echo ${release} | sed -e 's/[.]/-/g'`${versuffix}.dll'
@@ -1429,7 +1429,7 @@ if test -f "$ltmain" && test -n "$tagnames"; then
   # Note that this assumes the entire list is on one line.
   available_tags=`grep "^available_tags=" "${ofile}" | sed -e 's/available_tags=\(.*$\)/\1/' -e 's/\"//g'`
 
-  IFS="${IFS= 	}"; lt_save_ifs="$IFS"; IFS="${IFS}$ac_path_separator,"
+  lt_save_ifs="$IFS"; IFS="${IFS}$PATH_SEPARATOR,"
   for tagname in $tagnames; do
     IFS="$lt_save_ifs"
     # Check whether tagname contains only valid characters
@@ -1512,7 +1512,7 @@ AC_ARG_ENABLE([shared],
     *)
       enable_shared=no
       # Look at the argument we got.  We use all the common list separators.
-      IFS="${IFS= 	}"; lt_save_ifs="$IFS"; IFS="${IFS}$ac_path_separator,"
+      lt_save_ifs="$IFS"; IFS="${IFS}$PATH_SEPARATOR,"
       for pkg in $enableval; do
         IFS="$lt_save_ifs"
         if test "X$pkg" = "X$p"; then
@@ -1551,7 +1551,7 @@ AC_ARG_ENABLE([static],
     *)
      enable_static=no
       # Look at the argument we got.  We use all the common list separators.
-      IFS="${IFS= 	}"; lt_save_ifs="$IFS"; IFS="${IFS}$ac_path_separator,"
+      lt_save_ifs="$IFS"; IFS="${IFS}$PATH_SEPARATOR,"
       for pkg in $enableval; do
         IFS="$lt_save_ifs"
         if test "X$pkg" = "X$p"; then
@@ -1590,7 +1590,7 @@ AC_ARG_ENABLE([fast-install],
     *)
       enable_fast_install=no
       # Look at the argument we got.  We use all the common list separators.
-      IFS="${IFS= 	}"; lt_save_ifs="$IFS"; IFS="${IFS}$ac_path_separator,"
+      lt_save_ifs="$IFS"; IFS="${IFS}$PATH_SEPARATOR,"
       for pkg in $enableval; do
         IFS="$lt_save_ifs"
         if test "X$pkg" = "X$p"; then
@@ -1635,7 +1635,7 @@ AC_CACHE_VAL(lt_cv_path_MAGIC_CMD,
   ;;
 *)
   lt_save_MAGIC_CMD="$MAGIC_CMD"
-  IFS="${IFS=   }"; lt_save_ifs="$IFS"; IFS="$ac_path_separator"
+  lt_save_ifs="$IFS"; IFS=$PATH_SEPARATOR
 dnl $ac_dummy forces splitting on constant user-supplied paths.
 dnl POSIX.2 word splitting is done only on the output of word expansions,
 dnl not every word.  This closes a longstanding sh security hole.
@@ -1689,10 +1689,10 @@ fi
 # -------------
 # find a file program which can recognise a shared library
 AC_DEFUN([AC_PATH_MAGIC],
-[AC_PATH_TOOL_PREFIX(${ac_tool_prefix}file, /usr/bin$ac_path_separator$PATH)
+[AC_PATH_TOOL_PREFIX(${ac_tool_prefix}file, /usr/bin$PATH_SEPARATOR$PATH)
 if test -z "$lt_cv_path_MAGIC_CMD"; then
   if test -n "$ac_tool_prefix"; then
-    AC_PATH_TOOL_PREFIX(file, /usr/bin$ac_path_separator$PATH)
+    AC_PATH_TOOL_PREFIX(file, /usr/bin$PATH_SEPARATOR$PATH)
   else
     MAGIC_CMD=:
   fi
@@ -1750,7 +1750,7 @@ else
 fi
 AC_CACHE_VAL(lt_cv_path_LD,
 [if test -z "$LD"; then
-  IFS="${IFS= 	}"; lt_save_ifs="$IFS"; IFS="${IFS}$ac_path_separator"
+  lt_save_ifs="$IFS"; IFS=$PATH_SEPARATOR
   for ac_dir in $PATH; do
     IFS="$lt_save_ifs"
     test -z "$ac_dir" && ac_dir=.
@@ -2015,7 +2015,7 @@ AC_DEFUN([AC_PROG_NM],
   # Let the user override the test.
   lt_cv_path_NM="$NM"
 else
-  IFS="${IFS= 	}"; lt_save_ifs="$IFS"; IFS="${IFS}$ac_path_separator"
+  lt_save_ifs="$IFS"; IFS=$PATH_SEPARATOR
   for ac_dir in $PATH /usr/ccs/bin /usr/ucb /bin; do
     IFS="$lt_save_ifs"
     test -z "$ac_dir" && ac_dir=.

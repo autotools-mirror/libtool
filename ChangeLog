@@ -1,3 +1,14 @@
+2001-09-10  Gary V. Vaughan  <gary@gnu.org>
+
+	* libtool.m4: CVS Autoconf guarantees a decent default IFS, so
+	there is no need for us to preset it anymore.
+	Be careful not to set IFS="${IFS}$PATH_SEPARATOR" for PATH
+	splitting, otherwise spaces in directory names will be lost.
+	Use $PATH_SEPARATOR... don't rely on $ac_path_separator, which was
+	an autoconf internal until just now, when it disappeared!
+	* ltmain.in: Default IFS once, at the start.
+	Reported by Akim Demaille <akim@epita.fr>
+
 2001-09-10   Brad  <brad@comstyle.com>
 
 	* libtool.m4 (AC_DEPLIBS_CHECK_METHOD): Missed an instance of
