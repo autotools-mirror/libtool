@@ -1,5 +1,9 @@
 2000-09-07  Gary V. Vaughan  <gvv@techie.com>
 
+	* libtool.m4 (_LT_AC_LTCONFIG_HACK): with_gcc is only useful in
+	ltmain.sh as it has not yet been set in libtool.m4.  Use
+	$ac_cv_prog_gcc instead.
+
 	* doc/PLATFORMS: Updated.
 
 	* configure.in (AC_PROG_AWK): Removed -- no longer required by
