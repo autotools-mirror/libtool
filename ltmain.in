@@ -132,6 +132,7 @@ show_help=
 execute_dlfiles=
 lo2o="s/\\.lo\$/.${objext}/"
 o2lo="s/\\.${objext}\$/.lo/"
+quote_scanset='[[~#^*{};<>?'"'"' 	]'
 
 #####################################
 # Shell function definitions:
@@ -188,7 +189,7 @@ func_infer_tag () {
       CC_quoted=
       for arg in $CC; do
 	case $arg in
-	  *[\[\~\#\^\&\*\(\)\{\}\|\;\<\>\?\'\ \	]*|*]*|"")
+	  *$quote_scanset* | *]* | *\|* | *\&* | *\(* | *\)* | "")
 	  arg="\"$arg\""
 	  ;;
 	esac
@@ -209,7 +210,7 @@ func_infer_tag () {
 	    for arg in $CC; do
 	    # Double-quote args containing other shell metacharacters.
 	    case $arg in
-	      *[\[\~\#\^\&\*\(\)\{\}\|\;\<\>\?\'\ \	]*|*]*|"")
+	      *$quote_scanset* | *]* | *\|* | *\&* | *\(* | *\)* | "")
 	      arg="\"$arg\""
 	      ;;
 	    esac
@@ -645,7 +646,7 @@ if test -z "$show_help"; then
 	    # Many Bourne shells cannot handle close brackets correctly
 	    # in scan sets, so we specify it separately.
 	    case $arg in
-	      *[\[\~\#\^\&\*\(\)\{\}\|\;\<\>\?\'\ \	]*|*]*|"")
+	      *$quote_scanset* | *]* | *\|* | *\&* | *\(* | *\)* | "")
 	      arg="\"$arg\""
 	      ;;
 	    esac
@@ -676,8 +677,11 @@ if test -z "$show_help"; then
       case $lastarg in
       # Double-quote args containing other shell metacharacters.
       # Many Bourne shells cannot handle close brackets correctly
-      # in scan sets, so we specify it separately.
-      *[\[\~\#\^\&\*\(\)\{\}\|\;\<\>\?\'\ \	]*|*]*|"")
+      # in scan sets, and some SunOS ksh mistreat backslash-escaping
+      # in scan sets (worked around with variable expansion),
+      # and furthermore cannot handle '|' '&' '(' ')' in scan sets 
+      # at all, so we specify them separately.
+      *$quote_scanset* | *]* | *\|* | *\&* | *\(* | *\)* | "")
 	lastarg="\"$lastarg\""
 	;;
       esac
@@ -1112,7 +1116,7 @@ EOF
       arg="$1"
       shift
       case $arg in
-      *[\[\~\#\^\&\*\(\)\{\}\|\;\<\>\?\'\ \	]*|*]*|"")
+      *$quote_scanset* | *]* | *\|* | *\&* | *\(* | *\)* | "")
 	qarg=\"`$echo "X$arg" | $Xsed -e "$sed_quote_subst"`\" ### testsuite: skip nested quoting test
 	;;
       *) qarg=$arg ;;
@@ -1526,7 +1530,7 @@ EOF
 	# to be aesthetically quoted because they are evaled later.
 	arg=`$echo "X$arg" | $Xsed -e "$sed_quote_subst"`
 	case $arg in
-	*[\[\~\#\^\&\*\(\)\{\}\|\;\<\>\?\'\ \	]*|*]*|"")
+	*$quote_scanset* | *]* | *\|* | *\&* | *\(* | *\)* | "")
 	  arg="\"$arg\""
 	  ;;
 	esac
@@ -1642,7 +1646,7 @@ EOF
 	for flag in $args; do
 	  IFS="$save_ifs"
 	  case $flag in
-	    *[\[\~\#\^\&\*\(\)\{\}\|\;\<\>\?\'\ \	]*|*]*|"")
+	    *$quote_scanset* | *]* | *\|* | *\&* | *\(* | *\)* | "")
 	    flag="\"$flag\""
 	    ;;
 	  esac
@@ -1660,7 +1664,7 @@ EOF
 	for flag in $args; do
 	  IFS="$save_ifs"
 	  case $flag in
-	    *[\[\~\#\^\&\*\(\)\{\}\|\;\<\>\?\'\ \	]*|*]*|"")
+	    *$quote_scanset* | *]* | *\|* | *\&* | *\(* | *\)* | "")
 	    flag="\"$flag\""
 	    ;;
 	  esac
@@ -1693,7 +1697,7 @@ EOF
 	# to be aesthetically quoted because they are evaled later.
 	arg=`$echo "X$arg" | $Xsed -e "$sed_quote_subst"`
 	case $arg in
-	*[\[\~\#\^\&\*\(\)\{\}\|\;\<\>\?\'\ \	]*|*]*|"")
+	*$quote_scanset* | *]* | *\|* | *\&* | *\(* | *\)* | "")
 	  arg="\"$arg\""
 	  ;;
 	esac
@@ -1827,7 +1831,7 @@ EOF
 	# to be aesthetically quoted because they are evaled later.
 	arg=`$echo "X$arg" | $Xsed -e "$sed_quote_subst"`
 	case $arg in
-	*[\[\~\#\^\&\*\(\)\{\}\|\;\<\>\?\'\ \	]*|*]*|"")
+	*$quote_scanset* | *]* | *\|* | *\&* | *\(* | *\)* | "")
 	  arg="\"$arg\""
 	  ;;
 	esac
@@ -5285,7 +5289,7 @@ relink_command=\"$relink_command\""
       # Aesthetically quote it.
       arg=`$echo "X$nonopt" | $Xsed -e "$sed_quote_subst"`
       case $arg in
-      *[\[\~\#\^\&\*\(\)\{\}\|\;\<\>\?\'\ \	]*|*]*)
+      *$quote_scanset* | *]* | *\|* | *\&* | *\(* | *\)* | "")
 	arg="\"$arg\""
 	;;
       esac
@@ -5301,7 +5305,7 @@ relink_command=\"$relink_command\""
     # Aesthetically quote it.
     arg=`$echo "X$arg" | $Xsed -e "$sed_quote_subst"`
     case $arg in
-    *[\[\~\#\^\&\*\(\)\{\}\|\;\<\>\?\'\ \	]*|*]*)
+    *$quote_scanset* | *]* | *\|* | *\&* | *\(* | *\)* | "")
       arg="\"$arg\""
       ;;
     esac
@@ -5349,7 +5353,7 @@ relink_command=\"$relink_command\""
       # Aesthetically quote the argument.
       arg=`$echo "X$arg" | $Xsed -e "$sed_quote_subst"`
       case $arg in
-      *[\[\~\#\^\&\*\(\)\{\}\|\;\<\>\?\'\ \	]*|*]*)
+      *$quote_scanset* | *]* | *\|* | *\&* | *\(* | *\)* | "")
 	arg="\"$arg\""
 	;;
       esac

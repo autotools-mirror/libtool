@@ -1,3 +1,9 @@
+2004-12-28  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
+	* ltmain.in: New variable quote_scanset to work around SunOS ksh
+	`case' backslash-escaping bug: protect character class by variable
+	expansion.  Reported by Alexander Kurz <alexander.kurz@qsc.de>.
+
 2004-12-20  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 	
 	* libtoolize.in: Install `install-sh' as well, needed for configure ..
