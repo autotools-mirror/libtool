@@ -1,6 +1,6 @@
 2001-05-20  Alexandre Oliva  <aoliva@redhat.com>
 
-	* libtool.m4 (allow_undefined_flag) [aix4* | aix 5*]: Fix quote
+	* libtool.m4 (allow_undefined_flag) [aix4* | aix5*]: Fix quote
 	error.
 
 	* ltmain.in (exec_cmd): New variable.  Don't exec programs within
