@@ -93,6 +93,13 @@ and also a .a out of .o objects.  The .al would only be used to
 create shared libraries, whereas the .a would be used for creating
 static libraries and programs.
 
+* Try to find a work-around for -[all-]static and libltdl on platforms
+that will fail to find dlopening functions in this case, such as AIX
+4.3.2.0.  Maybe creating an alternate libltdl that provides only for
+dlpreopening, or creating an additional static library to provide
+dummy implementations of the functions that can't be linked
+statically.  This could hardly be made completely transparent, though.
+
 * Need to finalize the documentation, and give a specification of
 `.la' files so that people can depend on their format.  This also
 needs to be done so that DLD uses a public interface to libtool
