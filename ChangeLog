@@ -1,3 +1,11 @@
+2001-03-22  Laurynas Biveinis  <lauras@softhome.net>
+
+	* ltcf-c.sh: Clear ac_cv_prog_cc_pic for DJGPP.  Do not add
+	'-DPIC' to ac_cv_prog_cc_pic for DJGPP.
+	* ltcf-cxx.sh: Likewise.
+	* ltcf-gcj.sh: Likewise.
+	* ltconfig.in: Fix typo.
+
 2001-03-20  Alexandre Oliva  <oliva@lsd.ic.unicamp.br>
 
 	* ltmain.in (piecewise linking): Make sure we link at least one
@@ -132,14 +140,14 @@
 2001-02-15  Robert Boehne  <rboehne@ricardo-us.com>
 	
 	* ltconfig.in: Under AIX 4&5 check to see if we're using
-        GNU nm, if so, remove -C from the options to $NM.  The -C
-        is required to demangle with AIX nm, but -C means don't
-        demangle to GNU nm.
+	GNU nm, if so, remove -C from the options to $NM.  The -C
+	is required to demangle with AIX nm, but -C means don't
+	demangle to GNU nm.
 
 2001-02-15  Robert Boehne  <rboehne@ricardo-us.com>
 	
 	* ltcf-cxx.sh: Only check for broken collect2 under
-        AIX 4.[012], the check only works on these OS versions.
+	AIX 4.[012], the check only works on these OS versions.
 	
 	* ltcf-c.sh: Ditto.
 	
@@ -147,16 +155,16 @@
 
 2001-02-12  Robert Boehne  <rboehne@ricardo-us.com>
 
-        * libtool.m4: Removed the AC_REQUIRE of
-        AC_PROG_LIBTOOL from AC_LIBTOOL_CXX.
-        This caused a circular dependency using
-        CVS autoconf on the tagdemo directory.
+	* libtool.m4: Removed the AC_REQUIRE of
+	AC_PROG_LIBTOOL from AC_LIBTOOL_CXX.
+	This caused a circular dependency using
+	CVS autoconf on the tagdemo directory.
 
 2001-02-12  Robert Boehne  <rboehne@ricardo-us.com>
 
-        * libtool.m4: Changed aix4* to aix* to set
-        deplibs_check_method to pass_all for all aix.
-        This should have been part of the patch below.
+	* libtool.m4: Changed aix4* to aix* to set
+	deplibs_check_method to pass_all for all aix.
+	This should have been part of the patch below.
 
 2001-02-12  Robert Boehne  <rboehne@ricardo-us.com>
 	
@@ -173,7 +181,7 @@
 	
 2001-01-31  Robert Boehne  <rboehne@ricardo-us.com>
 
-        * ltcf-cxx.sh: Eliminated setting LD to $CC
+	* ltcf-cxx.sh: Eliminated setting LD to $CC
 
 2001-02-05  Gary V. Vaughan  <gvv@techie.com>
 
@@ -462,7 +470,7 @@
 2000-10-30  Aneesh Kumar K.V <kvaneesh@hotmail.com>
 
 	* ltcf-c.sh (archive_expsym_cmds):  Support for -export-symbol
-        option on Tru64.
+	option on Tru64.
 
 2000-10-30  Robert Boehne  <rboehne@ricardo-us.com>
 
