@@ -1,3 +1,13 @@
+1999-04-06 Thomas Tanner  <tanner@gmx.de>
+
+	* NEWS: improved DJGPP support
+	* doc/libtool.texi: removed hardcode_into_libs documentation
+	* libtool.m4: some DJGPP fixes
+	* ltconfig.in: ditto, reverted one of my previous patches: we need
+	  to check for NM, removed the hardcode_into_libs support since
+	  no platform seems to support it
+	* ltmain.in: some DJGPP fixes, removed the hardcode_into_libs support
+
 1999-04-05  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* ltconfig.in (netbsd*, GNU ld): Support a.out shared libraries

@@ -894,9 +894,9 @@ $rm conftest*
 if test -z "$LN_S"; then
   # Check to see if we can use ln -s, or we need hard links.
   echo $ac_n "checking whether ln -s works... $ac_c" 1>&6
-  $rm conftestdata
-  if ln -s X conftestdata 2>/dev/null; then
-    $rm conftestdata
+  $rm conftest.dat
+  if ln -s X conftest.dat 2>/dev/null; then
+    $rm conftest.dat
     LN_S="ln -s"
   else
     LN_S=ln
@@ -918,7 +918,7 @@ if test -z "$LD"; then
     ac_prog=`($CC -print-prog-name=ld) 2>&5`
     case "$ac_prog" in
     # Accept absolute paths.
-    /* | [A-Za-z]:[\\/]*)
+    [\\/]* | [A-Za-z]:[\\/]*)
       re_direlt='/[^/][^/]*/\.\./'
       # Canonicalize the path of ld
       ac_prog=`echo $ac_prog| sed 's%\\\\%/%g'`
@@ -1001,7 +1001,6 @@ old_archive_from_expsyms_cmds=
 export_dynamic_flag_spec=
 whole_archive_flag_spec=
 thread_safe_flag_spec=
-hardcode_into_libs=no
 hardcode_libdir_flag_spec=
 hardcode_libdir_separator=
 hardcode_direct=no
@@ -1368,6 +1367,37 @@ fi
 echo "$ac_t$ld_shlibs" 1>&6
 test "$ld_shlibs" = no && can_build_shared=no
 
+if test -z "$NM"; then
+  echo $ac_n "checking for BSD-compatible nm... $ac_c" 1>&6
+  case "$NM" in
+  [\\/]* | [A-Za-z]:[\\/]*) ;; # Let the user override the test with a path.
+  *)
+    IFS="${IFS= 	}"; ac_save_ifs="$IFS"; IFS="${IFS}${PATH_SEPARATOR}"
+    for ac_dir in $PATH /usr/ucb /usr/ccs/bin /bin; do
+      test -z "$ac_dir" && ac_dir=.
+      if test -f $ac_dir/nm; then
+	# Check to see if the nm accepts a BSD-compat flag.
+	# Adding the `sed 1q' prevents false positives on HP-UX, which says:
+	#   nm: unknown option "B" ignored
+	if ($ac_dir/nm -B /dev/null 2>&1 | sed '1q'; exit 0) | egrep /dev/null >/dev/null; then
+	  NM="$ac_dir/nm -B"
+	  break
+	elif ($ac_dir/nm -p /dev/null 2>&1 | sed '1q'; exit 0) | egrep /dev/null >/dev/null; then
+	  NM="$ac_dir/nm -p"
+	  break
+	else
+	  NM=${NM="$ac_dir/nm"} # keep the first match, but
+	  continue # so that we can try to find one that supports BSD flags
+	fi
+      fi
+    done
+    IFS="$ac_save_ifs"
+    test -z "$NM" && NM=nm
+    ;;
+  esac
+  echo "$ac_t$NM" 1>&6
+fi
+
 # Check for command to grab the raw symbol name followed by C symbol from nm.
 echo $ac_n "checking command to parse $NM output... $ac_c" 1>&6
 
@@ -1482,10 +1512,10 @@ EOF
 #endif
 EOF
 	  # Now try linking the two files.
-	  mv conftest.$objext conftestm.$objext
+	  mv conftest.$objext conftstm.$objext
 	  save_LIBS="$LIBS"
 	  save_CFLAGS="$CFLAGS"
-	  LIBS="conftestm.$objext"
+	  LIBS="conftstm.$objext"
 	  CFLAGS="$CFLAGS$no_builtin_flag"
 	  if { (eval echo $progname:@LINENO@: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest; then
 	    pipe_works=yes
@@ -1507,7 +1537,7 @@ EOF
     echo "$progname: failed program was:" >&5
     cat conftest.c >&5
   fi
-  $rm conftest*
+  $rm conftest* conftst*
 
   # Do not use the global_symbol_pipe unless it works.
   if test "$pipe_works" = yes; then
@@ -1944,7 +1974,7 @@ test "$enable_shared" = yes || enable_static=yes
 
 echo "checking whether to build static libraries... $enable_static" 1>&6
 
-if test "$hardcode_action" = relink || test "$hardcode_into_libs" = yes; then
+if test "$hardcode_action" = relink; then
   # Fast installation is not supported
   enable_fast_install=no
 elif test "$shlibpath_overrides_runpath" = yes ||
@@ -2645,9 +2675,6 @@ shlibpath_overrides_runpath=$shlibpath_overrides_runpath
 
 # How to hardcode a shared library path into an executable.
 hardcode_action=$hardcode_action
-
-# Whether we should hardcode library paths into libraries.
-hardcode_into_libs=$hardcode_into_libs
 
 # Flag to hardcode \$libdir into a binary during linking.
 # This must work even if \$libdir does not exist.

@@ -231,10 +231,10 @@ EOF
 #endif
 EOF
 	  # Now try linking the two files.
-	  mv conftest.$ac_objext conftestm.$ac_objext
+	  mv conftest.$ac_objext conftstm.$ac_objext
 	  ac_save_LIBS="$LIBS"
 	  ac_save_CFLAGS="$CFLAGS"
-	  LIBS="conftestm.$ac_objext"
+	  LIBS="conftstm.$ac_objext"
 	  CFLAGS="$CFLAGS$no_builtin_flag"
 	  if AC_TRY_EVAL(ac_link) && test -s conftest; then
 	    ac_pipe_works=yes
@@ -257,7 +257,7 @@ EOF
     echo "$progname: failed program was:" >&AC_FD_CC
     cat conftest.c >&AC_FD_CC
   fi
-  rm -rf conftest*
+  rm -rf conftest* conftst*
 
   # Do not use the global_symbol_pipe unless it works.
   if test "$ac_pipe_works" = yes; then

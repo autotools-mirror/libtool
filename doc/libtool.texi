@@ -3852,12 +3852,6 @@ line (such as @samp{@var{dir}/lib@var{name}.a}) when
 @var{hardcode_libdir_flag_spec} is specified.
 @end defvar
 
-@defvar hardcode_into_libs
-Whether the platform supports hardcoding of run-paths into libraries.
-If enabled, linking of programs will be much simpler but libraries will
-need to be relinked during installation.
-@end defvar
-
 @defvar hardcode_libdir_flag_spec
 Flag to hardcode a @var{libdir} variable into a binary, so that the
 dynamic linker searches @var{libdir} for shared libraries at runtime.
