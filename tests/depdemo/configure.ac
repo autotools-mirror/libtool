@@ -43,6 +43,7 @@ AC_EXEEXT
 ## Libtool initialisation. ##
 ## ----------------------- ##
 AC_LIBTOOL_WIN32_DLL
+AC_LIBTOOL_TAGS([])
 AC_PROG_LIBTOOL
 AC_SUBST([LIBTOOL_DEPS])
 

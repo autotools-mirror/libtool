@@ -1,3 +1,12 @@
+2003-11-14  Gary V. Vaughan  <gary@gnu.org>
+
+	* tests/cdemo/configure.ac, tests/demo/configure.ac,
+	tests/depdemo/configure.ac, tests/f77demo/configure.ac,
+	tests/mdemo/configure.ac, tests/mdemo2/configure.ac,
+	tests/pdemo/configure.ac, tests/tagdemo/configure.ac: Declare just
+	the tags we need using AC_LIBTOOL_TAGS, reducing the size of the
+	configure script by 50% in most cases.
+
 2003-11-14  Marius Vollmer  <mvo@zagadka.de>
 
 	* doc/libtool.texi (Libltdl interface): libltdl does in fact load

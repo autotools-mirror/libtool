@@ -64,6 +64,7 @@ AC_LANG_POP
 
 # Set the test language to C++.
 AC_LANG([C++])
+AC_LIBTOOL_TAGS([CXX])
 AC_PROG_LIBTOOL
 
 

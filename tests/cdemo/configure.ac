@@ -41,6 +41,7 @@ AC_PROG_CC
 ## ----------------------- ##
 ## Libtool initialisation. ##
 ## ----------------------- ##
+AC_LIBTOOL_TAGS([])
 AC_PROG_LIBTOOL
 AC_SUBST([LIBTOOL_DEPS])
 

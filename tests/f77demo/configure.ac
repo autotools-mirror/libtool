@@ -61,6 +61,7 @@ AC_LANG_POP
 ## ----------------------- ##
 ## Libtool initialisation. ##
 ## ----------------------- ##
+AC_LIBTOOL_TAGS([F77])
 AC_PROG_LIBTOOL
 AC_SUBST([LIBTOOL_DEPS])
 
