@@ -2577,7 +2577,7 @@ static const void *lt_preloaded_setup() {
       fi
 
       # Delete the old output file.
-      $run $rm $output
+      $run $rm $output $output_objdir/$outputname $output_objdir/lt-$outputname
 
       $show "$link_command"
       $run eval "$link_command" || exit $?

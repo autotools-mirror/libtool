@@ -1,5 +1,8 @@
 1999-03-11  Thomas Tanner  <tanner@gmx.de>
 
+	* ltmain.in: delete the old output files (incl. the relinked binary)
+	  before linking.
+
 	* ltconfig.in: replaced `configure' with $progname and all
 	  line numbers with @LINENO@
 	
