@@ -983,22 +983,31 @@ fi
 LDFLAGS="$save_LDFLAGS"
 $rm conftest*
 
-if test -z "$LN_S"; then
-  # Check to see if we can use ln -s, or we need hard links.
-  echo $ac_n "checking whether ln -s works... $ac_c" 1>&6
-  $rm conftest.dat
-  if ln -s X conftest.dat 2>/dev/null; then
-    $rm conftest.dat
-    LN_S="ln -s"
-  else
-    LN_S=ln
+# Check to see if we can use ln -s, or we need hard links.
+echo $ac_n "checking whether ln -s works... $ac_c" 1>&6
+echo "$progname:@LINENO@: checking for ln -s" 1>&5
+result=yes
+if test "${ac_cv_prog_LN_S+set}" = "set"; then
+  echo $ac_n "(cached) $ac_c" 1>&6
+  if test "X$ac_cv_prog_LN_S" != "Xln -s"; then
+    result=no
   fi
-  if test "$LN_S" = "ln -s"; then
-    echo "$ac_t"yes 1>&6
+else
+  if test -n "$LN_S"; then
+    ac_cv_prog_LN_S="$LN_S"
   else
-    echo "$ac_t"no 1>&6
+    $rm conftest.dat
+    if ln -s X conftest.dat 2>/dev/null; then
+      $rm conftest.dat
+      ac_cv_prog_LN_S="ln -s"
+    else
+      ac_cv_prog_LN_S=ln
+      result=no
+    fi
   fi
 fi
+LN_S="$ac_cv_prog_LN_S"
+echo "$ac_t""$result" 1>&6
 
 # Make sure LD is an absolute path.
 if test -z "$LD"; then
