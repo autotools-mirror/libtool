@@ -1,3 +1,7 @@
+1998-12-01  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* config.guess, config.sub: imported from autoconf pre-2.13
+
 1998-11-27  Gary V. Vaughan  <garyv@oranda.demon.co.uk>
 
 	* libtool (AM_PROG_LD): Oops... we need to know the host_os for
