@@ -2,6 +2,10 @@
 
 	* libtool.m4 (_LT_AC_LTCONFIG_HACK): Deleted a vital `;;'
 	terminator from a case statement by mistake.
+	
+	* Makefile.am (ltmain.sh):  Make this depend on TSDEPS again
+	so that the Changelog timestamp is used for ltmain.sh at `make
+	dist' time.
 
 2000-09-06  Gary V. Vaughan  <gvv@techie.com>
 

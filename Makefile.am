@@ -32,6 +32,11 @@ libtoolize: $(srcdir)/libtoolize.in $(top_builddir)/config.status
 	CONFIG_FILES=libtoolize CONFIG_HEADERS= $(top_builddir)/config.status
 	chmod +x libtoolize
 
+libtool: $(srcdir)/ltmain.sh $(top_builddir)/configure
+	$(top_builddir)/configure --no-recursion
+
+@srcdir@/ltmain.sh: $(TSDEPS)
+
 # TSDEPS will be defined to TSDEPS_DIST at `make dist' time
 TSDEPS =
 TSDEPS_DIST = ChangeLog libtool.m4
