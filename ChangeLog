@@ -1,4 +1,8 @@
-2001-09-18  Albert Chin  <china@thewrittenword.com>
+2001-09-21  Albert Chin  <china@thewrittenword.com>
+
+	* libtool.m4: Don't include main() when testing for command to
+	parse $NM output because some C++ compilers don't allow you to
+	take the address of main (e.g. HP-UX aCC).
 
 	* libtool.m4: Some uses of $GXX were unquoted, but GXX is either
 	NULL or yes.  Use "$GXX".
