@@ -1571,6 +1571,7 @@ dynamic_linker="$host_os ld.so"
 sys_lib_dlsearch_path_spec="/lib /usr/lib"
 sys_lib_search_path_spec="/lib /usr/lib /usr/local/lib"
 file_magic_cmd=
+file_magic_test_file=
 deplibs_check_method='unknown'
 # Need to set the preceding variable on all platforms that support
 # interlibrary dependencies.
@@ -1624,8 +1625,10 @@ bsdi4*)
   finish_cmds='PATH="$PATH:/sbin" ldconfig $libdir'
   shlibpath_var=LD_LIBRARY_PATH
   deplibs_check_method='file_magic ELF 32-bit LSB shared object'
+  file_magic_cmd=file # /usr/bin/file ?
+  # file_magic_test_file=/lib/libc.so ?
   sys_lib_search_path="/shlib /usr/lib /usr/local/lib"
-  sys_lib_dlsearch_path="/shlib /usr/lib" # /usr/local/lib?
+  sys_lib_dlsearch_path="/shlib /usr/lib" # /usr/local/lib ?
   ;;
 
 cygwin* | mingw*)
@@ -1653,7 +1656,8 @@ freebsd*)
   case "$version_type" in
     freebsd-elf*)
       deplibs_check_method='file_magic ELF [0-9][0-9]*-bit [LM]SB shared object'
-      file_magic_cmd=file
+      file_magic_cmd=/usr/bin/file
+      # file_magic_test_file=`echo /usr/lib/libc.so*` ?
       library_names_spec='${libname}${release}.so$versuffix ${libname}${release}.so $libname.so'
       need_version=no
       need_lib_prefix=no
@@ -1694,7 +1698,8 @@ irix5*)
   library_names_spec='${libname}${release}.so$versuffix ${libname}${release}.so $libname.so'
   shlibpath_var=LD_LIBRARY_PATH
   deplibs_check_method="file_magic ELF 32-bit MSB dynamic lib MIPS - version 1" # or should it be pass_all?
-  file_magic_cmd=file
+  file_magic_cmd=/usr/bin/file
+  file_magic_test_file=`echo /lib/libc.so*`
   shlibpath_overrides_runpath=no
   ;;
 
@@ -1719,7 +1724,8 @@ irix6*)
   sys_lib_search_path_spec="/lib${libsuff} /usr/lib${libsuff} /usr/local/lib${libsuff}"
   sys_lib_dlsearch_path_spec="/lib${libsuff} /usr/lib${libsuff} /usr/local/lib${libsuff}"
   deplibs_check_method="file_magic ELF ${libmagic} MSB mips-[1234] dynamic lib MIPS - version 1" # or should it be pass_all?
-  file_magic_cmd=file
+  file_magic_cmd=/usr/bin/file
+  file_magic_test_file=`echo /lib${libsuff}/libc.so*`
   ;;
 
 # No shared lib support for Linux oldld, aout, or coff.
@@ -1738,7 +1744,8 @@ linux-gnu*)
   shlibpath_var=LD_LIBRARY_PATH
   shlibpath_overrides_runpath=no
   deplibs_check_method='file_magic ELF [0-9][0-9]*-bit [LM]SB (shared object|dynamic lib )'
-  file_magic_cmd=file
+  file_magic_cmd=/usr/bin/file
+  file_magic_test_file=`echo /lib/libc.so* /lib/libc-*.so`
 
   if test -f /lib/ld.so.1; then
     dynamic_linker='GNU ld.so'
@@ -1810,7 +1817,8 @@ solaris*)
   # ldd complains unless libraries are executable
   postinstall_cmds='chmod +x $lib'
   deplibs_check_method="file_magic ELF [0-9][0-9]-bit [LM]SB dynamic lib"
-  file_magic_cmd="file"
+  file_magic_cmd=/usr/bin/file
+  file_magic_test_file=/lib/libc.so
   ;;
 
 sunos4*)
@@ -1862,6 +1870,30 @@ test "$dynamic_linker" = no && can_build_shared=no
 
 # Report the final consequences.
 echo "checking if libtool supports shared libraries... $can_build_shared" 1>&6
+
+if test -n "$file_magic_test_file" && test -n "$file_magic_cmd"; then
+  case "$deplibs_check_method" in
+  "file_magic "*)
+    file_magic_regex="`expr \"$deplibs_check_method\" : \"file_magic \(.*\)\"`"
+    if eval $file_magic_cmd \$file_magic_test_file 2> /dev/null |
+       egrep "$file_magic_regex" > /dev/null; then
+      :
+    else
+      cat <<EOF
+
+*** Warning: the command libtool uses to detect shared libraries,
+*** $file_magic_cmd, produces output that libtool cannot recognize.
+*** The result is that libtool may fail to recognize shared libraries
+*** as such.  This will affect the creation of libtool libraries that
+*** depend on shared libraries, but programs linked with such libtool
+*** libraries will work regardless of this problem.  Nevertheless, you
+*** may want to report the problem to your system manager and/or to
+*** bug-libtool@gnu.org
+
+EOF
+    fi ;;
+  esac
+fi
 
 echo $ac_n "checking whether to build shared libraries... $ac_c" 1>&6
 test "$can_build_shared" = "no" && enable_shared=no

@@ -1,5 +1,10 @@
 1999-03-13  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* ltconfig.in (file_magic_test_file): new variable; if set, it
+	will be used as an argument for $file_magic_cmd to test whether
+	the regex in deplibs_check_method matches its output
+	(file_magic_cmd): use full pathnames whenever possible
+
 	* ltconfig.in (sys_lib_dlsearch_path_spec): new variable, that
 	lists the system *run-time* search path.  Listed directories are
 	not implicitly hard-coded into executables.
