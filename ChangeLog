@@ -1,3 +1,7 @@
+1999-04-29  Ossama Othman  <othman@cs.wustl.edu>
+
+	* ltconfig.in (dlopen): Declare it as extern "C" in C++.
+
 1999-04-29  Gary V. Vaughan  <gary@oranda.demon.co.uk>
 
 	* libtool.m4 (cygwin*|mingw*, DLLTOOL, OBJDUMP, AS): Only expand the
