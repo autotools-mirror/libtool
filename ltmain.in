@@ -856,7 +856,7 @@ EOF
       ;;
     esac
     libtool_args="$nonopt"
-    base_compile="$nonopt"
+    base_compile="$nonopt $@"
     compile_command="$nonopt"
     finalize_command="$nonopt"
 
@@ -906,7 +906,7 @@ EOF
     # Only attempt this if the compiler in the base link
     # command doesn't match the default compiler.
     if test -n "$available_tags" && test -z "$tagname"; then
-      case "$base_compile " in
+      case $base_compile in
       # Blanks in the command may have been stripped by the calling shell,
       # but not from the CC environment variable when configure was run.
       "$CC "* | " $CC "* | "`$echo $CC` "* | " `$echo $CC` "*) ;;
@@ -917,7 +917,7 @@ EOF
 	  if grep "^# ### BEGIN LIBTOOL TAG CONFIG: $z$" < "$0" > /dev/null; then
 	    # Evaluate the configuration.
 	    eval "`${SED} -n -e '/^# ### BEGIN LIBTOOL TAG CONFIG: '$z'$/,/^# ### END LIBTOOL TAG CONFIG: '$z'$/p' < $0`"
-	    case "$base_compile " in
+	    case $base_compile in
 	    "$CC "* | " $CC "* | "`$echo $CC` "* | " `$echo $CC` "*)
 	      # The compiler in $compile_command matches
 	      # the one in the tagged configuration.
@@ -985,7 +985,6 @@ EOF
     # Go through the arguments, transforming them on the way.
     while test "$#" -gt 0; do
       arg="$1"
-      base_compile="$base_compile $arg"
       shift
       case $arg in
       *[\[\~\#\^\&\*\(\)\{\}\|\;\<\>\?\'\ \	]*|*]*|"")
