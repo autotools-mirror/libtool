@@ -1,38 +1,166 @@
 #! /bin/sh
 
-# Copyright ????
+# commit version 0.9
 
-progname=`echo $0 | sed 's,.*/,,g'`
+# Copyright (C) ???
+# Copyright (C) 1999, Free Software Foundation
+
+# This script is Free Software, and it can be copied, distributed and
+# modified as defined in the GNU General Public License.  A copy of
+# its license can be downloaded from http://www.gnu.org/copyleft/gpl.html
+
+# Heavily modified by Alexandre Oliva <oliva@dcc.unicamp.br>
+
+# This scripts eases checking in changes to CVS-maintained projects
+# with ChangeLog files.  It will check that there have been no
+# conflicting commits in the CVS repository and print which files it
+# is going to commit to stderr.  A list of files to compare and to
+# check in can be given in the command line.  If it is not given, all
+# files in the current directory (and below, unless `-l' is given) are
+# considered for check in.
+
+# The commit message will be extracted from the differences between
+# the local ChangeLog and the one in the repository (unless a message
+# was specified with `-m' or `-F').  An empty message is not accepted
+# (but a blank line is).  If the message is acceptable, it will be
+# presented for verification (and possible edition) using the $PAGER
+# environment variable (or `more', if it is not set, or `cat', if the
+# `-f' switch is given).  If $PAGER exits successfully, the modified
+# files (at that moment) are checked in, unless `-n' was specified, in
+# which case nothing is checked in.
+
+# usage: commit [-v] [-h] [-f] [-l] [-n] [-zN] [-m msg|-F msg_file] \
+#               [file|dir ...]
+
+# -f      --force       don't wait for confirmation (set PAGER=cat)
+# -l      --local       don't descend into subdirectories
+# -m msg  --message=msg set commit message
+# -F file --file=file   read commit message from file
+# -n      --dry-run     don't commit anything
+# -zN     --compress=N  set compression level (0-9, 0=none, 9=max)
+# -v      --version     print version information
+# -h,-?   --help        print short or long help message
+
+name=commit
+cvsopt=
+statopt=
+commitopt=
+dry_run=
 log_file="${TMPDIR-/tmp}/commitlog.$$"
 
 rm -f $log_file
-
 trap "rm -f \"$log_file\"; exit 1" 1 2 15
 
-if test x"$1" = x"-l"; then
-  cvsopt=-l
-  shift
-else
-  cvsopt=
-fi
-
-if test $# -gt 1 && test x"$1" = x"-m"; then
-  echo "$2" > "$log_file"
-  shift; shift
-elif test $# -gt 1 && test x"$1" = x"-F"; then
-  cat < "$2" > "$log_file" || exit 1
-  shift; shift
-fi
+repeat="test $# -gt 0"
+while $repeat; do
+    case "$1" in
+    -f|--force)
+	PAGER=cat
+	shift
+	;;
+    -l|--local)
+	statopt="$statopt -l"
+	commitopt="$commitopt -l"
+	shift
+	;;
+    -m|--message|--msg)
+	if test $# = 1; then
+	    echo "$name: missing argument for $1"
+	    rm -f "$log_file"
+	    exit 1
+	fi
+	if test -f "$log_file"; then
+	    echo "$name: you can have at most one of -m and -F"
+	    rm -f "$log_file"
+	    exit 1
+	fi
+	shift
+	echo "$1" > "$log_file"
+	shift
+	;;
+    -F|--file)
+	if test -f "$log_file"; then
+	    echo "$name: you can have at most one of -m and -F"
+	    rm -f "$log_file"
+	    exit 1
+	fi
+	if test $# = 1; then
+	    echo "$name: missing argument for $1"
+	    rm -f "$log_file"
+	    exit 1
+	fi
+	shift
+	if cat < "$1" > "$log_file"; then :; else
+	    rm -f "$log_file"
+	    exit 1
+	fi
+	shift
+	;;
+    -n|--dry-run)
+	dry_run=:
+	shift
+	;;
+    -z|-compress)
+	if test $# = 1; then
+	    echo "$name: missing argument for $1"
+	    rm -f "$log_file"
+	    exit 1
+	fi
+	case "$2" in
+	[0-9]) :;;
+	*)  echo "$name: invalid argument for $1"
+	    rm -f "$log_file"
+	    exit 1;;
+	esac
+	cvsopt="$cvsopt -z$2"
+	shift
+	shift
+	;;
+    -m*|-F*|-z*)
+	arg=`echo "$1" | sed '1s/^\(..\).*$/\1/;q'`
+	opt=`echo "$1" | sed '1s/^-m//'`
+	shift
+	set -- "$arg" "$opt" ${1+"$@"}
+	;;
+    --message=*|--msg=*|--file=*|--compress=*)
+	opt=`echo "$1" | sed '1s/^\(--[^=]*\)=.*/\1/;q'`
+    	arg=`echo "$1" | sed '1s/^--[^=]*=//'`
+	shift
+	set -- "$arg" "$opt" ${1+"$@"}
+	;;
+    -v|--version)
+	sed '/^# '$name' version /,/^# Heavily modified by/ { s/^# //; p; }; d' < $0
+	exit 0
+	;;
+    -\?|-h)
+	sed '/^# usage:/,/# -h/ { s/^# //; p; }; d' < $0 &&
+	echo
+	echo "run \`$name --help | more' for full usage"
+	exit 0
+	;;
+    --help)
+	sed '/^# '$name' version /,/^[^#]/ { /^[^#]/ d; s/^# //; p; }; d' < $0
+	exit 0
+	;;
+    --)
+	shift
+	repeat=false
+	;;
+    *)
+	repeat=false
+	;;
+    esac
+done
 
 echo "Checking whether repository is up to date..." >&2
-if cvs $cvsopt stat ${1+"$@"} 2>/dev/null | grep Status \
-   | while read line; do
-	case "$line" in
-	*"Up-to-date") :;;
-	*"Locally Modified") echo "$line" >&2;;
-	*) echo "$line";;
+if cvs $cvsopt stat $statopt ${1+"$@"} 2>/dev/null | grep Status \
+   | while read File file Status rest; do
+	case "$rest" in
+	"Up-to-date") :;;
+	"Locally Modified") echo "M $file" >&2;;
+	*) echo "C $file"; echo "C $file" >&2;;
 	esac
-     done | grep .; then
+     done | grep . >/dev/null; then
   exit 1
 fi
 
@@ -48,7 +176,7 @@ fi
 
 ${PAGER-more} "$log_file" || exit 1
 
-cvs $cvsopt commit -F $log_file ${1+"$@"} || exit 1
+$dry_run cvs $cvsopt commit $commitopt -F $log_file ${1+"$@"} || exit 1
 
 rm -f $log_file
 
