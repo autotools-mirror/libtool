@@ -616,13 +616,13 @@ else
 fi
 
 # Check to see if options -o and -c are simultaneously supported by compiler
-echo $ac_n "checking if $compiler supports -c and -o options... $ac_c" 1>&6
+echo $ac_n "checking if $compiler supports -c -o file.o... $ac_c" 1>&6
 $rm conftest*
 echo "int some_variable = 0;" > conftest.c
 save_CFLAGS="$CFLAGS"
-CFLAGS="$CFLAGS -c -o conftest.o"
-echo "$progname:@LINENO@: checking if $compiler supports -c and -o options" >&5
-if { (eval echo $progname:@LINENO@: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>conftest.err; } && test -s conftest.o; then
+CFLAGS="$CFLAGS -c -o conftest2.o"
+echo "$progname:@LINENO@: checking if $compiler supports -c -o file.o" >&5
+if { (eval echo $progname:@LINENO@: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>conftest.err; } && test -s conftest2.o; then
 
   # The compiler can only warn and ignore the option if not recognized
   # So say no if there are warnings
@@ -641,6 +641,37 @@ else
 fi
 CFLAGS="$save_CFLAGS"
 $rm conftest*
+
+if test x"$compiler_c_o" = x"yes"; then
+  # Check to see if we can write to a .lo
+  echo $ac_n "checking if $compiler supports -c -o file.lo... $ac_c" 1>&6
+  $rm conftest*
+  echo "int some_variable = 0;" > conftest.c
+  save_CFLAGS="$CFLAGS"
+  CFLAGS="$CFLAGS -c -o conftest.lo"
+  echo "$progname:@LINENO@: checking if $compiler supports -c -o file.lo" >&5
+if { (eval echo $progname:@LINENO@: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>conftest.err; } && test -s conftest.lo; then
+
+    # The compiler can only warn and ignore the option if not recognized
+    # So say no if there are warnings
+      if test -s conftest.err; then
+	echo "$ac_t"no 1>&6
+	compiler_o_lo=no
+      else
+        echo "$ac_t"yes 1>&6
+        compiler_o_lo=yes
+      fi
+  else
+    # Append any errors to the config.log.
+    cat conftest.err 1>&5
+    compiler_o_lo=no
+    echo "$ac_t"no 1>&6
+  fi
+  CFLAGS="$save_CFLAGS"
+  $rm conftest*
+else
+  compiler_o_lo=no
+fi
 
 # Check to see if we can do hard links to lock some files if needed
 hard_links="nottested"
@@ -1405,7 +1436,8 @@ case "$ltmain" in
     old_postuninstall_cmds archive_cmds postinstall_cmds postuninstall_cmds \
     allow_undefined_flag no_undefined_flag \
     finish_cmds finish_eval global_symbol_pipe \
-    hardcode_libdir_flag_spec hardcode_libdir_separator compiler_c_o need_locks; do
+    hardcode_libdir_flag_spec hardcode_libdir_separator \
+    compiler_c_o compiler_o_lo need_locks; do
 
     case "$var" in
     reload_cmds | old_archive_cmds | old_archive_from_new_cmds | \
@@ -1542,6 +1574,9 @@ pic_flag=$pic_flag
 
 # Does compiler simultaneously support -c and -o options
 compiler_c_o=$compiler_c_o
+
+# Can we write directly to a .lo ?
+compiler_o_lo=$compiler_o_lo
 
 # Must we lock files when doing compilation ?
 need_locks=$need_locks

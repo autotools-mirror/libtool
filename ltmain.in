@@ -415,9 +415,12 @@ compiler."
 
       # All platforms use -DPIC, to notify preprocessed assembler code.
       command="$base_compile$pic_flag -DPIC $srcfile"
-      if test "$compiler_c_o" = yes; then
+      if test "$compiler_o_lo" = yes; then
         command="$command -o $libobj"
         output_obj="$libobj"
+      elif test "$compiler_c_o" = yes; then
+        command="$command -o $obj"
+        output_obj="$obj"
       fi
 
       $show "$command"
@@ -448,7 +451,7 @@ compiler."
       fi
 
       # Just move the object if needed, then go on to compile the next one
-      if test "$compiler_c_o" = no && test x"$output_obj" != x"$libobj"; then 
+      if test "$compiler_o_lo" = no && test x"$output_obj" != x"$libobj"; then 
         $show "$mv $output_obj $libobj"
         if $run $mv $output_obj $libobj; then :
 	else
