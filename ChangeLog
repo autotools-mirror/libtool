@@ -1,5 +1,7 @@
 1999-03-15  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* configure.in, libtool.spec, NEWS: bump to 1.2g
+
 	* configure.in, libtool.spec: bump to 1.2f
 	* doc/PLATFORMS: ditto
 	* NEWS: libtool 1.2f released
