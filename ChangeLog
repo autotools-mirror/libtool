@@ -1,5 +1,7 @@
 2005-01-29  Peter O'Gorman  <peter@pogma.com>
 
+	* AUTHORS, THANKS: Copy from cvs HEAD.
+
 	* ltmain.in, libtool.m4, libtoolize.in, libltdl/ltdl.c: Update
 	copyright.
 
