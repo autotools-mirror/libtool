@@ -1,3 +1,7 @@
+1999-03-09  Gary V. Vaughan <gvaughan@oranda.demon.co.uk>
+
+	* NEWS: updated.
+
 1999-03-08  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* ltmain.in: extract symbols from program objects to nlist first,
