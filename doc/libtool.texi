@@ -670,7 +670,7 @@ burger$ @kbd{gcc -g -O -o hell.old main.o libhello.a -lm}
 burger$
 @end example
 
-Libtool's way is almost the same@footnote{However, you should never use
+Libtool's way is almost the same@footnote{However, you should avoid using
 @samp{-L} or @samp{-l} flags to link against an uninstalled libtool
 library.  Just specify the relative path to the @samp{.la} file, such as
 @file{../intl/libintl.la}.  This is a design decision to eliminate any
@@ -1024,6 +1024,10 @@ libraries.  But be careful not to link a single convenience library,
 directly or indirectly, into a single program or library, otherwise you
 may get errors about symbol redefinitions.
 
+When GNU automake is used, you should use @code{noinst_LTLIBRARIES}
+instead of @code{lib_LTLIBRARIES} for convenience libraries, so that
+the @samp{-rpath} option is not passed when they are linked.
+
 As a rule of thumb, link a libtool convenience library into at most one
 libtool library, and never into a program, and link libtool static
 convenience libraries only into programs, and only if you need to carry
@@ -1133,7 +1137,7 @@ that only an object file is created.
 
 Libtool determines the name of the output file by removing the directory
 component from the source file name, then substituting the source code
-suffix (e.g. @samp{.c} for C soure code) with the library object suffix,
+suffix (e.g. @samp{.c} for C source code) with the library object suffix,
 @samp{.lo}.
 
 If shared libraries are being built, any necessary PIC generation flags
@@ -1233,7 +1237,7 @@ This option is required even when @var{output-file} is not an
 executable.
 
 @item -module
-Creates a library that can be dlopenend (@pxref{Dlopened modules}). 
+Creates a library that can be dlopened (@pxref{Dlopened modules}). 
 This option doesn't work for programs.
 Module names don't need to be prefixed with 'lib'.
 In order to prevent name clashes, however, 'libname' and 'name' 
@@ -2223,7 +2227,7 @@ library interface versions, because the library interface rarely changes
 at the same time that the release number does, and the library suffix is
 never the same across all platforms.
 
-So, in order to accomodate both views, you can use the @samp{-release}
+So, in order to accommodate both views, you can use the @samp{-release}
 flag in order to set release information for libraries which you do not
 want to use @samp{-version-info}.  For the @file{libbfd} example, the
 next release which uses libtool should be built with @samp{-release
@@ -3086,7 +3090,7 @@ libtool will assume no dlopening mechanism is supported, and revert to
 dlpreopening, which is probably not what you want.
 
 Avoid using the @code{-static} or @code{-all-static} switches when
-linking programs with libltdl.  This will not work on all plaforms,
+linking programs with libltdl.  This will not work on all platforms,
 because the dlopening functions may not be available for static linking.
 
 The following example shows you how to embed the convenience libltdl in
@@ -3152,7 +3156,7 @@ and what special considerations you need to make if you do not use C.
 @cindex C++, pitfalls
 
 Creating libraries of C++ code should be a fairly straightforward
-process, because its object files differ from C ones in only two ways:
+process, because its object files differ from C ones in only three ways:
 
 @enumerate 1
 @item
@@ -3378,7 +3382,7 @@ This program checks libtool's metacharacter quoting.
 
 @item sh.test
 @pindex sh.test
-Checks whether a `test' command was forgotton in libtool.
+Checks whether a `test' command was forgotten in libtool.
 
 @item suffix.test
 @pindex suffix.test
@@ -3579,7 +3583,7 @@ It causes deplibs to be reassigned deplibs="".  That way
 @samp{archive_cmds} can contain deplibs on all platforms, but not have
 deplibs used unless needed.
 
-@item unkwnon
+@item unknown
 @vindex unknown
 is the default for all systems unless overridden in @file{ltconfig.in}.
 It is the same as @samp{none}, but it documents that we really don't
@@ -3587,7 +3591,7 @@ know what the correct value should be, and we welcome patches that
 improve it.
 @end table
 
-Then in @file{ltmain.in} we have the real workhorse: a litle
+Then in @file{ltmain.in} we have the real workhorse: a little
 initialization and postprocessing (to setup/release variables for use
 with eval echo libname_spec etc.) and a case statement that decides
 which method is being used.  This is the real code... I wish I could
@@ -4001,7 +4005,7 @@ Set to @samp{yes} or @samp{no}.  By default, it is @samp{unknown}, which
 means the same as @samp{yes}, but documents that we are not really sure
 about it.
 @samp{yes} means that it is possible both to @code{dlopen} and to
-link against a library wihthout 'lib' prefix,
+link against a library without 'lib' prefix,
 i.e. it requires @var{hardcode_direct} to be @samp{yes}.
 @end defvar
 

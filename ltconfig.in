@@ -53,7 +53,7 @@ fi
 
 # Find the correct PATH separator.  Usually this is `:', but
 # DJGPP uses `;' like DOS.
-if test "X${PATH_SEPARATOR+set}" != "Xset"; then
+if test "X${PATH_SEPARATOR+set}" != Xset; then
   UNAME=${UNAME-`uname 2>/dev/null`}
   case X$UNAME in
     *-DOS) PATH_SEPARATOR=';' ;;
@@ -63,9 +63,9 @@ fi
 
 # The HP-UX ksh and POSIX shell print the target directory to stdout
 # if CDPATH is set.
-if test "${CDPATH+set}" = set; then CDPATH=; export CDPATH; fi
+if test "X${CDPATH+set}" = Xset; then CDPATH=:; export CDPATH; fi
 
-if test "X${echo_test_string+set}" != "Xset"; then
+if test "X${echo_test_string+set}" != Xset; then
   # find a string as large as possible, as long as the shell can cope with it
   for cmd in 'sed 50q "$0"' 'sed 20q "$0"' 'sed 10q "$0"' 'sed 2q "$0"' 'echo test'; do
     # expected sizes: less than 2Kb, 1Kb, 512 bytes, 16 bytes, ...
@@ -369,8 +369,8 @@ exec 5>>./config.log
 # Only set LANG and LC_ALL to C if already set.
 # These must not be set unconditionally because not all systems understand
 # e.g. LANG=C (notably SCO).
-if test "${LC_ALL+set}" = set; then LC_ALL=C; export LC_ALL; fi
-if test "${LANG+set}"   = set; then LANG=C;   export LANG;   fi
+if test "X${LC_ALL+set}" = Xset; then LC_ALL=C; export LC_ALL; fi
+if test "X${LANG+set}"   = Xset; then LANG=C;   export LANG;   fi
 
 if test -n "$cache_file" && test -r "$cache_file"; then
   echo "loading cache $cache_file within ltconfig"
@@ -462,7 +462,7 @@ aix3*)
   # AIX sometimes has problems with the GCC collect2 program.  For some
   # reason, if we set the COLLECT_NAMES environment variable, the problems
   # vanish in a puff of smoke.
-  if test "${COLLECT_NAMES+set}" != set; then
+  if test "X${COLLECT_NAMES+set}" != Xset; then
     COLLECT_NAMES=
     export COLLECT_NAMES
   fi
@@ -1187,7 +1187,7 @@ EOF
     ;;
 
   netbsd*)
-    if $LD --help 2>&1 | egrep ': supported targets:.* elf' > /dev/null; then
+    if echo __ELF__ | $CC -E - | grep __ELF__ >/dev/null; then
       archive_cmds='$CC -shared $libobjs $deplibs $linkopts ${wl}-soname $wl$soname -o $lib'
       archive_expsym_cmds='$CC -shared $libobjs $deplibs $linkopts ${wl}-soname $wl$soname ${wl}-retain-symbols-file $wl$export_symbols -o $lib'
     else
@@ -1196,7 +1196,7 @@ EOF
     fi
     ;;
 
-  solaris*)
+  solaris* | sysv5*)
     if $LD -v 2>&1 | egrep 'BFD 2\.8' > /dev/null; then
       ld_shlibs=no
       cat <<EOF 1>&2
@@ -1245,7 +1245,7 @@ EOF
       ;;
     *)
       # ancient GNU ld didn't support --whole-archive et. al.
-      if $LD --help 2>71 | egrep 'no-whole-archive' > /dev/null; then
+      if $LD --help 2>&1 | egrep 'no-whole-archive' > /dev/null; then
         whole_archive_flag_spec="$wlarc"'--whole-archive$convenience '"$wlarc"'--no-whole-archive'
       else
         whole_archive_flag_spec=
@@ -1466,6 +1466,18 @@ else
     export_dynamic_flag_spec='-Bexport'
     ;;
 
+  sysv5*)
+    no_undefined_flag=' -z text'
+    # $CC -shared without GNU ld will not create a library from C++
+    # object files and a static libstdc++, better avoid it by now
+    archive_cmds='$LD -G${allow_undefined_flag} -h $soname -o $lib $libobjs $deplibs $linkopts'
+    archive_expsym_cmds='$echo "{ global:" > $lib.exp~cat $export_symbols | sed -e "s/\(.*\)/\1;/" >> $lib.exp~$echo "local: *; };" >> $lib.exp~
+		$LD -G${allow_undefined_flag} -M $lib.exp -h $soname -o $lib $libobjs $deplibs $linkopts~$rm $lib.exp'
+    hardcode_libdir_flag_spec=
+    hardcode_shlibpath_var=no
+    runpath_var='LD_RUN_PATH'
+    ;;
+
   uts4*)
     archive_cmds='$LD -G -h $soname -o $lib $libobjs $deplibs $linkopts'
     hardcode_libdir_flag_spec='-L$libdir'
@@ -1479,14 +1491,28 @@ else
     ;;
 
   sysv4*MP*)
-    if test -d /usr/nec ;then
-    # archive_cmds='$LD -G -z text -h $soname -o $lib$libobjs$deplibs'
-    archive_cmds='$LD -G -h $soname -o $lib$libobjs$deplibs'
-    hardcode_shlibpath_var=no
-    runpath_var=LD_RUN_PATH
-    hardcode_runpath_var=yes
-    ld_shlibs=yes
+    if test -d /usr/nec; then
+      archive_cmds='$LD -G -h $soname -o $lib $libobjs $deplibs $linkopts'
+      hardcode_shlibpath_var=no
+      runpath_var=LD_RUN_PATH
+      hardcode_runpath_var=yes
+      ld_shlibs=yes
     fi
+    ;;
+
+  sysv4.2uw2*)
+    archive_cmds='$LD -G -o $lib $libobjs $deplibs $linkopts'
+    hardcode_direct=yes
+    hardcode_minus_L=no
+    hardcode_shlibpath_var=no
+    hardcode_runpath_var=yes
+    runpath_var=LD_RUN_PATH
+    ;;
+
+  unixware7*)
+    archive_cmds='$LD -G -h $soname -o $lib $libobjs $deplibs $linkopts'
+    runpath_var='LD_RUN_PATH'
+    hardcode_shlibpath_var=no
     ;;
 
   *)
@@ -1792,8 +1818,9 @@ beos*)
 
 bsdi4*)
   version_type=linux
-  library_names_spec='${libname}.so$major ${libname}.so'
-  soname_spec='${libname}.so'
+  need_version=no
+  library_names_spec='${libname}${release}.so$versuffix ${libname}${release}.so$major $libname.so'
+  soname_spec='${libname}${release}.so$major'
   finish_cmds='PATH="\$PATH:/sbin" ldconfig $libdir'
   shlibpath_var=LD_LIBRARY_PATH
   deplibs_check_method='file_magic ELF [0-9][0-9]*-bit [ML]SB (shared object|dynamic lib)'
@@ -1801,6 +1828,7 @@ bsdi4*)
   file_magic_test_file=/shlib/libc.so
   sys_lib_search_path_spec="/shlib /usr/lib /usr/X11/lib /usr/contrib/lib /lib /usr/local/lib"
   sys_lib_dlsearch_path_spec="/shlib /usr/lib /usr/local/lib"
+  export_dynamic_flag_spec=-rdynamic
   # the default ld.so.conf also contains /usr/contrib/lib and
   # /usr/X11R6/lib (/usr/X11 is a link to /usr/X11R6), but let us allow
   # libtool to hard-code these into programs
@@ -1846,10 +1874,9 @@ freebsd*)
       need_version=yes
       ;;
   esac
-  finish_cmds='PATH="\$PATH:/sbin" OBJFORMAT="'"$objformat"'" ldconfig -m $libdir'
   shlibpath_var=LD_LIBRARY_PATH
   case "$host_os" in
-  freebsd2* | freebsd3.[01]*)
+  freebsd2* | freebsd3.[01]* | freebsdelf3.[01]*)
     shlibpath_overrides_runpath=yes
     ;;
   *) # from 3.2 on
@@ -2654,7 +2681,7 @@ case "$ltmain" in
 # NOTE: Changes made to this file will be lost: look at ltconfig or ltmain.sh.
 #
 # Copyright (C) 1996-1999 Free Software Foundation, Inc.
-# Gordon Matzigkeit <gord@gnu.ai.mit.edu>, 1996
+# Originally by Gordon Matzigkeit <gord@gnu.ai.mit.edu>, 1996
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -2680,7 +2707,7 @@ Xsed="sed -e s/^X//"
 
 # The HP-UX ksh and POSIX shell print the target directory to stdout
 # if CDPATH is set.
-if test "\${CDPATH+set}" = set; then CDPATH=; export CDPATH; fi
+if test "X\${CDPATH+set}" = Xset; then CDPATH=:; export CDPATH; fi
 
 ### BEGIN LIBTOOL CONFIG
 EOF
@@ -2943,7 +2970,7 @@ case "$ltmain" in
 # AIX sometimes has problems with the GCC collect2 program.  For some
 # reason, if we set the COLLECT_NAMES environment variable, the problems
 # vanish in a puff of smoke.
-if test "${COLLECT_NAMES+set}" != set; then
+if test "X${COLLECT_NAMES+set}" != Xset; then
   COLLECT_NAMES=
   export COLLECT_NAMES
 fi
@@ -2953,6 +2980,10 @@ EOF
 
   # Append the ltmain.sh script.
   sed '$q' "$ltmain" >> "$ofile" || (rm -f "$ofile"; exit 1)
+  # We use sed instead of cat because bash on DJGPP gets confused if
+  # if finds mixed CR/LF and LF-only lines.  Since sed operates in
+  # text mode, it properly converts lines to CR/LF.  This bash problem
+  # is reportedly fixed, but why not run on old versions too?
 
   chmod +x "$ofile"
   ;;

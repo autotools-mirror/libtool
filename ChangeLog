@@ -1,3 +1,122 @@
+1999-11-02  Thomas Tanner  <tanner@ffii.org>
+
+	* NEWS: updated
+	* ltmain.in: preserve $CC (reported by Tom Tromey)
+	* ltconfig.in: remove second occurence of sysv5
+	* libltdl/Makefile.am: increment version number, fix typo
+	* libltdl/ltdl.c (lt_dlsym): don't report an error if the
+	  libltdl-style symbol name wasn't found
+
+1999-11-02  Wolfgang Rapp <ulris@bn-ulm.de>
+
+	* ltconfig.in: add support for Unixware (sysv4.2uw2*)
+
+1999-10-28  Stephane Conversy  <Stephane.Conversy@lri.fr>
+
+	* ltmain.in (-DPIC):  changed the order of pic flags a little to
+	prevent upsetting the sgi c++ compiler.
+
+1999-10-03  Pavel Roskin  <pavel_roskin@geocities.com>
+
+	* libltdl/Makefile.am: don't preserve file attributes when
+	  installing the libltdl sources
+
+1999-09-29  Gary V. Vaughan  <gary@oranda.demon.co.uk>
+
+	* ltconfig.in (whole-archive-flag-spec):  I had been
+	wondering why my file system was filling up with empty
+	files named `71'... seems I forgot to hold in the
+	shift key when redirecting stderr, 2>&1.  Doh!
+
+1999-09-29  Vadim  <vadim@olly.ru>
+
+	* ltconfig.in (sysv):  More UW7 support.
+
+1999-09-27  Manfred Weichel  <weichel@global.nacamar.de>
+
+	* ltconfig.in (sysv5): Added support required for shared
+	library linking on SCO UW7.
+
+1999-09-14  Alexandre Oliva  <oliva@lsd.ic.unicamp.br>
+
+	* ltconfig.in (CDPATH): Set to `:' instead of empty.
+	* ltmain.in (CDPATH): Likewise.
+	Reported by Greg McGary <gkm@eng.ascend.com>
+
+1999-08-24  Thomas Tanner  <tanner@ffii.org>
+
+	* ltconfig.in: use CC -E when checking for ELF support
+	  on NetBSD (reported by Todd Vierling <tv@pobox.com>)
+
+1999-08-24  Boyd Gerber  <gerberb@zenez.com>
+
+	* ltconfig.in: add support for UnixWare 7.X.X
+
+1999-08-24  Pavel Roskin  <pavel_roskin@geocities.com>
+
+	* doc/libtool.texi: document use of noinst_LTLIBRARIES for
+	  convenience libraries
+	
+	* ltconfig.in: check for freebsdelf3, not just freebsd3
+
+	* ltmain.in: enable workaround for freebsdelf3.0
+
+1999-08-24  Bert Driehuis  <bert_driehuis@nl.compuware.com>
+
+	* ltconfig.in: export_dynamic_flag_spec is -rdynamic on BSD/OS
+
+1999-08-07  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* libltdl/COPYING.LIB: Update to version 2.1.
+	* libltdl/ltdl.h, libltdl/ltdl.c: Update FSF address.
+
+1999-08-02  Olly Betts  <olly@muscat.co.uk>
+
+	* doc/libtool.texi (Compile mode): typo correction.
+	(Link mode): and another.
+	(Release numbers):  and another.
+	(Distributing libltdl): and another.
+	(Test descriptions): and another.
+	(libtool script contents): and one more.
+
+1999-07-30  Pavel Roskin  <pavel_roskin@geocities.com>
+
+	* ltmain.in: Ensure that gcc on HPsUX uses -fPIC, or else
+	initialised structures are sometimes emitted in the code section.
+
+1999-07-29  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* ltmain.in: Fix creation of relative links to object files in
+	sub-dirs.
+
+1999-07-24  Bert Driehuis <bert_driehuis@compuware.com>
+
+	* ltconfig.in:  Updated bsdi4 soname specs to be more like
+	linux as discussed on the bsdi mailing list.
+
+1999-07-19  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* doc/libtool.texi (Porting inter-library dependencies): Typos
+	Reported by Petter Reinholdtsen <pere@hungry.com>
+
+1999-07-17  Thomas Tanner  <tanner@ffii.org>
+
+	* libltdl/README: document the supported dlopen interfaces
+
+1999-07-09  Olly Betts  <olly@muscat.co.uk>
+
+	* doc/libtool.texi (C++ Libraries):  fixed a typo.
+
+1999-07-06  Gary V. Vaughan  <gary@oranda.demon.co.uk>
+
+	* README-alpha:  improved the release instructions to mention
+	actual list addresses for announcements, and urls for upload
+	locations.
+
+1999-07-03  Pavel Roskin <pavel_roskin@geocities.com>
+
+	* ltconfig.in: finish_cmds for FreeBSD removed
+
 1999-10-16  Alexandre Oliva  <oliva@lsd.ic.unicamp.br>
 
 	* libltdl/ltdl.c (lt_dlopen): Do not search paths when the

@@ -12,11 +12,14 @@ fi
 . $srcdir/defs || exit 1
 
 # Check that things are built.
-if test -f $prefix/lib/libhello.la && cd ../demo; then :
+if test -f $prefix/lib/libhello.la; then :
 else
   echo "You must run demo-inst.test before $0" 1>&2
   exit 77
 fi
+
+# Change to our build directory.
+cd ../demo || exit 77
 
 echo "removing libhello.la and hell from ../demo"
 rm -f libhello.la hell
