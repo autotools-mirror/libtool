@@ -1164,9 +1164,8 @@ EOF
     # Extract the symbol export list from an `--export-all' def file,
     # then regenerate the def file from the symbol export list, so that
     # the compiled dll only exports the symbol export list.
-    export_symbols_cmds='rm -f $objdir/$soname-ltdll.c~
-      sed -e "/^# \/\* ltdll\.c starts here \*\//,/^# \/\* ltdll.c ends here \*\// { s/^# //; p; }" -e d < $0 > $objdir/$soname-ltdll.c~
-      (cd $objdir && $CC -c $soname-ltdll.c)~
+    export_symbols_cmds='test -f $objdir/$soname-ltdll.c || sed -e "/^# \/\* ltdll\.c starts here \*\//,/^# \/\* ltdll.c ends here \*\// { s/^# //; p; }" -e d < $0 > $objdir/$soname-ltdll.c~
+      test -f $objdir/$soname-ltdll.$objext || (cd $objdir && $CC -c $soname-ltdll.c)~
       $DLLTOOL --export-all --exclude-symbols DllMain@12,_cygwin_dll_entry@12,_cygwin_noncygwin_dll_entry@12 --output-def $objdir/$soname-def  $objdir/$soname-ltdll.$objext $libobjs $convenience~
       sed -e "1,/EXPORTS/d" -e "s/ @ [0-9]* ; *//" < $objdir/$soname-def > $export_symbols'
 
@@ -1176,6 +1175,8 @@ EOF
 	echo "	\$symbol @ \$_lt_hint ; " >> $objdir/$soname-def;
 	_lt_hint=`expr 1 + \$_lt_hint`;
       done~
+      test -f $objdir/$soname-ltdll.c || sed -e "/^# \/\* ltdll\.c starts here \*\//,/^# \/\* ltdll.c ends here \*\// { s/^# //; p; }" -e d < $0 > $objdir/$soname-ltdll.c~
+      test -f $objdir/$soname-ltdll.$objext || (cd $objdir && $CC -c $soname-ltdll.c)~
       $CC -Wl,--base-file,$objdir/$soname-base -Wl,--dll -nostartfiles -Wl,-e,__cygwin_dll_entry@12 -o $lib $objdir/$soname-ltdll.$objext $libobjs $deplibs $linkopts~
       $DLLTOOL --as=$AS --dllname $soname --exclude-symbols DllMain@12,_cygwin_dll_entry@12,_cygwin_noncygwin_dll_entry@12 --def $objdir/$soname-def --base-file $objdir/$soname-base --output-exp $objdir/$soname-exp~
       $CC -Wl,--base-file,$objdir/$soname-base $objdir/$soname-exp -Wl,--dll -nostartfiles -Wl,-e,__cygwin_dll_entry@12 -o $lib $objdir/$soname-ltdll.$objext $libobjs $deplibs $linkopts~

@@ -1,3 +1,13 @@
+1999-06-23  Gary V. Vaughan  <gary@oranda.demon.co.uk>
+
+	* ltconfig.in (cygwin, export_symbols_cmds): If there is already
+	an extracted and compiled ltdll.c, then don't delete, reextract
+	and recompile.
+	(cygwin, archive_expsym_cmds): Make sure the ltdll source has been
+	extracted and compiled before referencing the object, since there
+	are paths through the code which run archive_expsym_cmds without
+	running export_symbols_cmds.
+
 1999-06-18  Gary V. Vaughan  <gary@oranda.demon.co.uk>
 
 	* ltmain.in (outputname): When generating the executable wrapper
