@@ -59,17 +59,7 @@ popdef([AC_MSG_ERROR])
 AM_CONDITIONAL(HAVE_CXX, [test "x$CXX" != xno])
 
 pushdef([AC_MSG_ERROR], [GCJ=no])
-ifdef([AC_PROG_GCJ],[AC_PROG_GCJ],
-  [ifdef([AM_PROG_GCJ],[],[
-    # Stolen from automake
-    AC_DEFUN([AM_PROG_GCJ],[
-      AC_CHECK_PROGS(GCJ, gcj, gcj)
-      if test "x${GCJFLAGS+set}" = xset; then
-        GCJFLAGS="-g -O2"
-      fi
-      AC_SUBST(GCJFLAGS)
-    ])])
-  AM_PROG_GCJ])
+ifdef([AC_PROG_GCJ],[AC_PROG_GCJ],[AM_PROG_GCJ])
 popdef([AC_MSG_ERROR])
 AM_CONDITIONAL(HAVE_GCJ, [test "x$GCJ" != xno])
 

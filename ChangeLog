@@ -1,5 +1,8 @@
 2000-07-26  Alexandre Oliva  <oliva@lsd.ic.unicamp.br>
 
+	* configure.in (AM_PROG_GCJ): Moved definition...
+	* libtool.m4: ... here.
+
 	* ltmain.in (tagname): Use `case' instead of `grep' to infer it.
 	Match even when there are changes in white-space.
 	(link): Accumulate base_compile so that -L flags that are part of
