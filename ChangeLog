@@ -1,5 +1,7 @@
 1999-04-29  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* NEWS: Improved support for DU and IRIX too.
+
 	* config.sub, config.guess: Updated from GNU common.
 
 	* mdemo/configure.in: Move AC_LIBLTDL_CONVENIENCE before
