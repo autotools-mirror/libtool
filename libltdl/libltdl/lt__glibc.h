@@ -53,4 +53,20 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 
 #include <argz.h>
 
+# define slist_concat	lt__slist_concat
+# define slist_cons	lt__slist_cons
+# define slist_delete	lt__slist_delete
+# define slist_remove	lt__slist_remove
+# define slist_reverse	lt__slist_reverse
+# define slist_sort	lt__slist_sort
+# define slist_tail	lt__slist_tail
+# define slist_nth	lt__slist_nth
+# define slist_find	lt__slist_find
+# define slist_length	lt__slist_length
+# define slist_foreach	lt__slist_foreach
+# define slist_box	lt__slist_box
+# define slist_unbox	lt__slist_unbox
+
+#include <slist.h>
+
 #endif /*!defined(LT__GLIBC_H)*/
