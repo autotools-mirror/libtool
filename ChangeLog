@@ -1,3 +1,8 @@
+2004-10-22  Gary V. Vaughan  <gary@gnu.org>
+
+	* config/general.m4sh (sed_double_backslash): Undo an
+	over-optimisation.
+
 2004-10-21  Gary V. Vaughan  <gary@gnu.org>
 
 	* AUTHORS: Reformatted to better reflect the current state of
