@@ -1,5 +1,10 @@
 2004-01-23  Scott James Remnant  <scott@netsplit.com>
 
+	* m4/libtool.m4  (AC_LIBTOOL_SYS_DYNAMIC_LINKER) [linux]: Include
+	directories found in /etc/ld.so.conf in sys_lib_dlsearch_path_spec.
+
+2004-01-23  Scott James Remnant  <scott@netsplit.com>
+
 	* ltmain.in: Add -pthread and similar to $deplibs ($compile_deplibs
 	and $finalize_deplibs for programs) when found on the command line
 	or in a .la file's dependency_libs (but don't place them there) so
