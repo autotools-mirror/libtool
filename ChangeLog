@@ -1,3 +1,8 @@
+2004-12-10  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* config/ltmain.m4sh (func_extract_archive): Send stderr of $NM
+	to /dev/null.  Reported by Martin Waitz <tali@admingilde.org>.
+
 2004-12-09  Albert Chin-A-Young  <china@thewrittenword.com>
 
 	* config/ltmain.m4sh: Preserve -model [arg] option, used

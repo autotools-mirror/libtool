@@ -818,7 +818,7 @@ extern \"C\" {
 	  name="$func_basename_result"
 	  $opt_dry_run || {
 	    eval '$ECHO ": $name " >> "$nlist"'
-	    eval "$NM $dlprefile | $global_symbol_pipe >> '$nlist'"
+	    eval "$NM $dlprefile 2>/dev/null | $global_symbol_pipe >> '$nlist'"
 	  }
 	done
 
