@@ -12,6 +12,9 @@ New in 1.3b: 1999-??-??; CVS version 1.3a, Libtool team:
 * Various bugfixes
 
 New in 1.3.1: 1999-05-??, CVS version 1.3.0a, Libtool team:
+* Documentation improvements; recommend automake users to insert libtool.m4
+  in acinclude.m4
+* AC_LIBLTDL_CONVENIENCE and AC_LIBLTDL_INSTALLABLE now set INCLTDL.
 * New port to NEC UX/4800.
 * cygwin-b20.1 passes all tests.
 * Slightly improved BeOS support.

@@ -1,3 +1,15 @@
+1999-05-20  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* NEWS: Updated docs.
+	* TODO: Recommend libtool.m4 to be inserted in acinclude.m4. AIX
+	4.3.2.0 no longer fails on static dlopening.  GNU DLD no longer
+	has to support .la files, since libltdl already does.  Convenience 
+	libraries and reloadable objects should be tested in the
+	testsuite.  We could support some amount of control on the soname
+	of libraries.
+	* doc/libtool.texi: Notes about convenience libraries and
+	automake.  Documented INCLTDL.
+
 1999-05-20 Thomas Tanner  <tanner@gmx.de>
 
 	* cdemo/main.c: "Welcome _to_ ..."
