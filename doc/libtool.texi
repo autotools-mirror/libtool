@@ -1853,9 +1853,12 @@ libraries are found.  This restriction is only necessary to preserve
 compatibility with static library systems and simple dynamic library
 systems.
 
-If your library depends on symbols that are defined in executables that
-are linked against it, you need to use the @samp{-allow-undefined} link
-flag (@pxref{Link mode}).
+If your library depends on symbols that are defined in executables or
+static libraries, then you cannot express the dependency with a
+@samp{-l@var{name}} flag,@footnote{For static libraries, you
+@emph{could} use a @samp{-l} flag, but it would cause conflicts
+on systems which have non-PIC objects.} so you need to use the
+@samp{-allow-undefined} link flag (@pxref{Link mode}).
 
 @node Dlopened modules
 @chapter Dlopened modules

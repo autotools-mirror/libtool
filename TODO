@@ -2,6 +2,11 @@
 is to have undocumented utility libraries, where only the shared
 version is installed.
 
+* Somehow we need to make sure that static libraries never appear in
+$deplibs.  If a program linked against a library doesn't contain the
+basename of the library (or is the same size), then the library is
+probably static.
+
 * A better check to detect broken collect2 on AIX, once the bug is
 fixed in GCC.
 

@@ -810,7 +810,7 @@ linux-gnu*)
   version_type=linux
   library_names_spec='$libname.so.$versuffix $libname.so.$major $libname.so'
   soname_spec='$libname.so.$major'
-  finish_cmds='ldconfig -n $libdir'
+  finish_cmds='PATH="\$PATH:/sbin" ldconfig -n $libdir'
   shlibpath_var=LD_LIBRARY_PATH
 
   if test -f /lib/ld.so.1; then

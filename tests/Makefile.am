@@ -5,7 +5,7 @@ AUTOMAKE_OPTIONS = gnits
 makesequence = demo-make.test demo-exec.test \
 	demo-inst.test demo-unst.test hardcode.test
 TESTS =	assign.test demo-conf.test $(makesequence) \
-	link.test link-2.test suffix.test test-e.test
+	if.test link.test link-2.test suffix.test test-e.test
 
 EXTRA_DIST = defs tlibtool $(TESTS)
 

@@ -1,3 +1,8 @@
+Mon Jun 30 22:32:05 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltconfig.in: Add /sbin into the path before running ldconfig on
+	Linux.  Suggested by Kenneth Albanowski.
+
 Sun Jun 29 19:51:50 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltmain.sh.in: Change all the `eval "$run ..."' sequences to

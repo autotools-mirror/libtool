@@ -33,8 +33,8 @@ bin_SCRIPTS = libtool libtoolize
 
 libtool: ltconfig
 	@echo 'WARNING: Warnings from ltconfig can be ignored. :-)'
-	CC="${CC}" CFLAGS="${CFLAGS}" CPPFLAGS="${CPPFLAGS}" \
-	LD="${LD}" RANLIB="${RANLIB}" \
+	CC="$(CC)" CFLAGS="$(CFLAGS)" CPPFLAGS="$(CPPFLAGS)" \
+	LD="$(LD)" LN_S="$(LN_S)" RANLIB="$(RANLIB)" \
 	$(srcdir)/ltconfig --srcdir=$(srcdir) $(pkgdatadir)/ltmain.sh
 
 libtoolize: libtoolize.in $(top_builddir)/config.status

@@ -1,3 +1,9 @@
+Mon Jun 30 06:49:13 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* if.test: New test to make sure that we haven't forgotten to
+	follow an `if' statement with a `test' command.  This should avoid
+	the majority of hard-to-track bugs.
+
 Thu Jun 19 14:31:49 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* demo-conf.test (CONFIG_SITE): Set to /dev/null, so that the
