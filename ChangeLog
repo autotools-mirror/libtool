@@ -1,3 +1,8 @@
+2005-03-11  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>  (tiny change)
+
+	* tests/Makefile (clean-local): Ignore testsuite cleanup
+	failures.
+
 2005-03-11  Per Bothner  <per@bothner.com>  (tiny change)
 
 	* tests/Makefile (clean-local): Only run the testsuite cleanup

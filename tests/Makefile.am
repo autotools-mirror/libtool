@@ -1,6 +1,6 @@
 ## Makefile.am -- Process this file with automake to produce Makefile.in
 ##
-## Copyright (C) 2003, 2004 Free Software Foundation
+## Copyright (C) 2003, 2004, 2005 Free Software Foundation
 ##
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -60,7 +60,7 @@ installcheck-local:
 
 # We need to remove any file droppings left behind by testsuite
 clean-local: clean-local-legacy
-	test -f $(srcdir)/$(TESTSUITE) && \
+	-test -f $(srcdir)/$(TESTSUITE) && \
 	  $(SHELL) $(srcdir)/$(TESTSUITE) --clean
 
 DISTCLEANFILES = atconfig
