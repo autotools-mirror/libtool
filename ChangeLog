@@ -1,3 +1,8 @@
+2001-04-20  Alexandre Oliva  <aoliva@redhat.com>
+
+	* ltcf-cxx.sh [HP-UX GNU ld]: Don't use flags specific to the
+	HP-UX linker.
+
 2001-04-18  Alexandre Oliva  <aoliva@redhat.com>
 
 	* TODO: Add -L- flag.
