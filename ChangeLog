@@ -1,3 +1,17 @@
+2004-06-21  Gary V. Vaughan  <gary@gnu.org>
+
+	* m4/ltdl.m4 (AC_WITH_LTDL): Remove redundant AC_REQUIRE calls.
+	Either set variables to allow a client to link with the installed
+	libltdl, or else compile a local libltdl as a convenience library.
+	* libtoolize.in (opt_ltdl): Removed in favour of...
+	(ltdldir): ...this, which is defaulted to "libltdl" or can be set
+	by the user with an argument to --ltdl.
+	(Main): Use it!
+	* doc/libtool.texi (Distributing libltdl): Improved documentation
+	on libltdl.
+	(Invoking libtoolize): Document new optional --ltdl target
+	directory argument.
+
 2004-06-17  Gary V. Vaughan  <gary@gnu.org>
 
 	* m4/libtool.m4 (AC_LIBTOOL_PROG_LD_SHLIBS) [darwin*]: Fix a typo

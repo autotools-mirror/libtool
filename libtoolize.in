@@ -37,7 +37,7 @@
 # -f, --force           replace existing files
 #     --help            display this message and exit
 # -i, --install         copy missing auxiliary files
-#     --ltdl            install libltdl in a subdirectory
+#     --ltdl[=DIR]      install libltdl in a subdirectory [default: libltdl]
 # -q, --quiet           work silently
 # -v, --verbose         verbosely report processing
 #     --version         print version information and exit
@@ -75,7 +75,6 @@ opt_dry_run=false
 opt_force=false
 opt_install=false
 opt_link=:
-opt_ltdl=false
 opt_quiet=false
 opt_verbose=false
 
@@ -91,6 +90,7 @@ pkgdatadir=@pkgdatadir@
 aclocaldir=@aclocaldir@
 auxdir=
 m4dir=
+ltdldir=
 configure_ac=configure.in
 
 
@@ -208,13 +208,30 @@ func_version ()
 			fi
 			;;
 
-      --force|-f)	opt_force=:		;;
-      --install|-i)	opt_install=:		;;
-      --ltdl)		opt_ltdl=:		;;
-      --quiet|--automake|-q) # --automake is for 1.5 compatibility
-			opt_quiet=:		;;
-      --verbose|-v)	opt_verbose=:		;;
+      --force|-f)	opt_force=:			;;
+      --install|-i)	opt_install=:			;;
 
+      --ltdl)		ltdldir=libltdl
+      			if test $# -gt 0; then
+			  case $1 in
+			    -*)				;;
+			    *)  ltdldir="$1"; shift	;;
+			  esac
+			fi
+			;;
+
+      --quiet|--automake|-q) # --automake is for 1.5 compatibility
+			opt_quiet=:			;;
+      --verbose|-v)	opt_verbose=:			;;
+
+      # Separate optargs to long options:
+      --ltdl=*)
+      			arg=`echo "$opt" | $SED "$my_sed_long_arg"`
+			opt=`echo "$opt" | $SED "$my_sed_long_opt"`
+			set -- "$opt" "$arg" ${1+"$@"}
+			;;
+
+      # Separate non-argument short options:
       -c*|-i*|-f*|-n*|-q*|-v*)
 			rest=`echo "$opt" |$SED "$my_sed_single_rest"`
 			opt=`echo "$opt" |$SED "$my_sed_single_opt"`
@@ -649,8 +666,10 @@ func_config_update ()
   $opt_quiet || func_check_macros
 
   # Copy all the files from installed libltdl to this project, if the
-  # user specified `--with-ltdl'.
-  $opt_ltdl && eval func_copy_all_files "$pkgdatadir/libltdl" libltdl
+  # user specified `--ltdl'.
+  if test -n "$ltdldir"; then
+    eval func_copy_all_files "$pkgdatadir/libltdl" "$ltdldir"
+  fi
 
   # Copy all the installed utility files to the auxiliary directory if
   # `--install' was passed, or else copy just ltmain.sh.

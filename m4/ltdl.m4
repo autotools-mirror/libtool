@@ -22,21 +22,15 @@
 
 # serial 6 AC_LIB_LTDL
 
-# AC_WITH_LTDL
-# ------------
+# AC_WITH_LTDL([DIRECTORY])
+# -------------------------
 # Clients of libltdl can use this macro to allow the installer to
 # choose between a shipped copy of the ltdl sources or a preinstalled
 # version of the library.
 AC_DEFUN([AC_WITH_LTDL],
-[AC_REQUIRE([AC_LIB_LTDL])
-AC_SUBST([LIBLTDL])
-AC_SUBST([INCLTDL])
-
-# Unless the user asks us to check, assume no installed ltdl exists.
-use_installed_libltdl=no
-
-AC_ARG_WITH([included_ltdl],
-    [  --with-included-ltdl    use the GNU ltdl sources included here])
+[AC_ARG_WITH([included_ltdl],
+    [AC_HELP_STRING([--with-included-ltdl],
+                    [use the GNU ltdl sources included here])])
 
 if test "x$with_included_ltdl" != xyes; then
   # We are not being forced to use the included libltdl sources, so
@@ -69,8 +63,77 @@ fi
 AC_MSG_CHECKING([whether to use included libltdl])
 AC_MSG_RESULT([$with_included_ltdl])
 
-AC_CONFIG_SUBDIRS([libltdl])
+AC_CONFIG_SUBDIRS([m4_if($#, 1, [$1], [libltdl])])
 ])# AC_WITH_LTDL
+
+
+# AC_LIBLTDL_CONVENIENCE([DIRECTORY])
+# -----------------------------------
+# sets LIBLTDL to the link flags for the libltdl convenience library and
+# LTDLINCL to the include flags for the libltdl header and adds
+# --enable-ltdl-convenience to the configure arguments.  Note that LIBLTDL
+# and LTDLINCL are not AC_SUBSTed, nor is AC_CONFIG_SUBDIRS called.  If
+# DIRECTORY is not provided, it is assumed to be `libltdl'.  LIBLTDL will
+# be prefixed with '${top_builddir}/' and LTDLINCL will be prefixed with
+# '${top_srcdir}/' (note the single quotes!).  If your package is not
+# flat and you're not using automake, define top_builddir and
+# top_srcdir appropriately in the Makefiles.
+AC_DEFUN([AC_LIBLTDL_CONVENIENCE],
+[case $enable_ltdl_convenience in
+  no) AC_MSG_ERROR([this package needs a convenience libltdl]) ;;
+  "") enable_ltdl_convenience=yes
+      ac_configure_args="$ac_configure_args --enable-ltdl-convenience" ;;
+  esac
+LIBLTDL='${top_builddir}/'m4_if($#, 1,[$1], ['libltdl'])/libltdlc.la
+LTDLINCL='-I${top_srcdir}/'m4_if($#, 1, [$1], ['libltdl'])
+
+AC_SUBST([LIBLTDL])
+AC_SUBST([LTDLINCL])
+
+# For backwards non-gettext consistent compatibility...
+INCLTDL="$LTDLINCL"
+AC_SUBST([INCLTDL])
+])# AC_LIBLTDL_CONVENIENCE
+
+
+# AC_LIBLTDL_INSTALLABLE([DIRECTORY])
+# -----------------------------------
+# sets LIBLTDL to the link flags for the libltdl installable library and
+# LTDLINCL to the include flags for the libltdl header and adds
+# --enable-ltdl-install to the configure arguments.  Note that LIBLTDL
+# and LTDLINCL are not AC_SUBSTed, nor is AC_CONFIG_SUBDIRS called.  If
+# DIRECTORY is not provided and an installed libltdl is not found, it is
+# assumed to be `libltdl'.  LIBLTDL will be prefixed with '${top_builddir}/'
+# and LTDLINCL will be prefixed with '${top_srcdir}/' (note the single
+# quotes!).  If your package is not flat and you're not using automake,
+# define top_builddir and top_srcdir appropriately in the Makefiles.
+# In the future, this macro may have to be called after LT_INIT.
+AC_DEFUN([AC_LIBLTDL_INSTALLABLE],
+[AC_CHECK_LIB(ltdl, lt_dlinit,
+  [test x"$enable_ltdl_install" != xyes && enable_ltdl_install=no],
+  [if test x"$enable_ltdl_install" = xno; then
+     AC_MSG_WARN([libltdl not installed, but installation disabled])
+   else
+     enable_ltdl_install=yes
+   fi
+  ])
+if test x"$enable_ltdl_install" = x"yes"; then
+  ac_configure_args="$ac_configure_args --enable-ltdl-install"
+  LIBLTDL='${top_builddir}/'m4_if($#, 1, [$1], ['libltdl'])/libltdl.la
+  LTDLINCL='-I${top_srcdir}/'m4_if($#, 1, [$1], ['libltdl'])
+else
+  ac_configure_args="$ac_configure_args --enable-ltdl-install=no"
+  LIBLTDL="-lltdl"
+  LTDLINCL=
+fi
+
+AC_SUBST([LIBLTDL])
+AC_SUBST([LTDLINCL])
+
+# For backwards non-gettext consistent compatibility...
+INCLTDL="$LTDLINCL"
+AC_SUBST([INCLTDL])
+])# AC_LIBLTDL_INSTALLABLE
 
 
 # AC_LIB_LTDL
@@ -78,8 +141,7 @@ AC_CONFIG_SUBDIRS([libltdl])
 # Perform all the checks necessary for compilation of the ltdl objects
 #  -- including compiler checks and header checks.
 AC_DEFUN([AC_LIB_LTDL],
-[AC_PREREQ(2.50)
-AC_REQUIRE([AC_PROG_CC])
+[AC_REQUIRE([AC_PROG_CC])
 AC_REQUIRE([AC_C_CONST])
 AC_REQUIRE([AC_HEADER_STDC])
 AC_REQUIRE([AC_HEADER_DIRENT])
