@@ -1,3 +1,9 @@
+1999-05-06  Gary V. Vaughan  <gary@oranda.demon.co.uk>
+
+	* Makefile.am (install-data-hook):  make sure the install directory
+	is not left world writable.
+	Reported by Andreas Schwab  <schwab@issan.cs.uni-dortmund.de>
+
 1999-04-30  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* libtool.m4: Use ifelse instead of if.
