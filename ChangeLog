@@ -1,3 +1,24 @@
+2003-04-22  Alexandre Oliva  <aoliva@redhat.com>
+
+	* libtool.m4 (lt_cv_deplibs_check_method): Use pass_all on all
+	mips*-linux* variants.
+
+2003-04-22  Samuel Meder  <meder@mcs.anl.gov>
+
+	* libtool.m4 Switch on $CC and add paterns to cases.
+
+2003-04-22  Peter O'Gorman  <peter@pogma.com>
+
+	* libtool.m4: Move the AC_LIBTOOL_SYS_DYNAMIC_LINKER check
+	to be before AC_LIBTOOL_PROG_LD_HARDCODE_LIBPATH, becuase the
+	value of shlibpath_overrides_runpath is used in the HARDCODE
+	test and is set in the DYNAMIC_LINKER test.
+	* ltmain.in(darwin): We never need to relink on darwin.
+
+2003-04-22  Samuel Meder  <meder@mcs.anl.gov>
+
+	* libtool.m4 Switch on $CC and add paterns to cases.
+
 2003-04-21  Richard Dawe  <rich@phekda.freeserve.co.uk>
 
 	* doc/libtool.texi: Use @ifnottex instead of @ifinfo,
