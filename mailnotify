@@ -370,13 +370,21 @@ func_sendmail ()
     from_name=`echo "$my_from" | sed 's, *<.*> *$,,;s,",,g'`
     from_addr=`echo "$my_from" | sed "$sed_mail_address"`
 
+    SENDMAIL=sendmail
+    for try_sendmail in sendmail /usr/lib/sendmail /usr/sbin/sendmail; do
+	if which $try_sendmail >/dev/null; then
+	    SENDMAIL=$try_sendmail
+	    break
+	fi
+    done
+
     func_verbose "Delivering mail, please wait..."
     if test -n "$from_name"; then
-        sendmail -F "$from_name" -f "$from_addr" $my_destination < "$my_infile"
+        $SENDMAIL -F "$from_name" -f "$from_addr" $my_destination < "$my_infile"
     elif test -n "$from_addr"; then
-        sendmail -f "$from_addr" $my_destination < "$my_infile"
+        $SENDMAIL -f "$from_addr" $my_destination < "$my_infile"
     else
-        sendmail $my_destination < "$my_infile"
+        $SENDMAIL $my_destination < "$my_infile"
     fi
     if test $? -eq 0; then
         func_verbose "...succeeded."
