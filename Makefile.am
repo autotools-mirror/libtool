@@ -11,7 +11,7 @@ aclocal_macros = libtool.m4
 
 # Distribute ltconfig and ltmain.sh so that the demo directory works.
 EXTRA_DIST = $(aclocal_macros) libtoolize.in ltconfig ltconfig.in \
-	ltmain.sh ltmain.sh.in README-automake libtool.pkg
+	ltmain.sh ltmain.sh.in README-automake libtool.prj
 CLEANFILES = libtool libtoolize
 MAINTAINERCLEANFILES = ltconfig ltmain.sh
 

@@ -1,3 +1,13 @@
+Sat Apr 12 13:09:24 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltconfig.in (linker): Some GNU ld's don't accept `--version',
+ 	but do accept `-v'.  From Stephan Kulow.
+
+Mon Apr  7 09:39:02 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltconfig.in (hardcode_action): Fix silly logic error.  From
+	Bruno Haible.
+
 Sat Apr  5 11:26:06 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltmain.sh.in (install): Relink if hardcode_action is `relink',
@@ -23,7 +33,7 @@ Wed Apr  2 10:36:31 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 Tue Apr  1 10:01:20 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
-	* Makefile.am (EXTRA_DIST): Distribute libtool.pkg.
+	* Makefile.am (EXTRA_DIST): Distribute libtool.prj.
 
 	* Shameless plug: Changed source code management system from CVS
 	to PRCS.

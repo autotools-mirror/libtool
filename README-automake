@@ -3,8 +3,8 @@ libtool, that may not work with your own copy of Automake.  Only
 releases of Automake after automake-1.1m work with libtool as
 documented in the manual.
 
-You can find the latest Automake prerelease (warning: it may have
-bugs) at:
+You can find the latest Automake prerelease (warning: it is not
+guaranteed to be completely stable) at:
 
 <URL:ftp://ftp.cygnus.com/pub/tromey/>
 

@@ -1897,7 +1897,8 @@ Finally, send a bug report to @value{BUGADDR} with any appropriate
 @emph{facts}, such as test suite output (@pxref{When Tests Fail}), all
 the details needed to reproduce the bug, and a brief description of why
 you think the behaviour is a bug.  Be sure to include the word
-``libtool'' in the subject line.
+``libtool'' in the subject line, as well as the version number you are
+using (which can be found by typing @kbd{ltconfig --version}).
 
 @node Maintaining
 @chapter Maintainance Notes for Libtool

@@ -483,7 +483,7 @@ with_gnu_ld=no
 set dummy $LD
 linker="$2"
 echo $ac_n "checking if $LD is GNU ld... $ac_c" 1>&6
-if $LD --version 2>&1 | egrep '(GNU ld|with BFD)' > /dev/null; then
+if $LD -v 2>&1 | egrep '(GNU ld|with BFD)' > /dev/null; then
   with_gnu_ld=yes
   linker="GNU ld"
 fi
@@ -622,8 +622,8 @@ if test -n "$hardcode_libdir_flag_spec"; then
     # We can link without hardcoding, and we can hardcode nonexisting dirs.
     hardcode_action=immediate
   fi
-elif test "$hardcode_direct" != yes ||
-     test "$hardcode_minus_L" != yes ||
+elif test "$hardcode_direct" != yes &&
+     test "$hardcode_minus_L" != yes &&
      test "$hardcode_shlibpath_var" != yes; then
   # We can't hardcode anything.
   hardcode_action=unsupported

@@ -33,4 +33,5 @@ for a list of platforms that libtool shared library support was tested on.
 
 If you have any suggestions or bug reports, or you wish to port libtool
 to a new platform, please send electronic mail to Gord Matzigkeit
-<gord@gnu.ai.mit.edu>.
+<gord@gnu.ai.mit.edu>.  Don't forget to mention the version of libtool
+that you are currently using (by typing `ltconfig --version').
