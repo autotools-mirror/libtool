@@ -1230,6 +1230,7 @@ else
       archive_cmds='$LD -shared -o $lib -soname $soname -set_version $verstring $libobjs $deplibs $linkopts'
     fi
     hardcode_libdir_flag_spec='${wl}-rpath ${wl}$libdir'
+    hardcode_libdir_separator=:
     ;;
 
   netbsd*)

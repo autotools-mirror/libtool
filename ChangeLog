@@ -1,5 +1,10 @@
 1999-02-08  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* ltconfig.in (irix5*, hardcode_libdir_separator): set it to a
+	colon, because on IRIX 5 only the last -rpath switch prevails, and 
+	it can be a list of colon-separated directories.  This change will 
+	affect irix6 too, but that's not a problem.
+
 	* ltconfig.in (irix5*, library_names_spec): add soname_spec,
 	otherwise we can't dlopen
 
