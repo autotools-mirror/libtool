@@ -1270,12 +1270,12 @@ compiler."
 
 	freebsd-aout)
 	  major=".$current"
-	  versuffix="$current.$revision";
+	  versuffix=".$current.$revision";
 	  ;;
 
 	freebsd-elf)
 	  major=".$current"
-	  versuffix="$current";
+	  versuffix=".$current";
 	  ;;
 
 	windows)
