@@ -1,5 +1,10 @@
 2004-07-29  Gary V. Vaughan  <gary@gnu.org>
 
+	* tests/tagtrace.test: Skip this test when running a VPATH build
+	against a read-only source tree (as in distcheck for example),
+	since autoconf wants to write temporary files in $top_srcdir
+	otherwise.
+
 	* Makefile.am ($(top_srcdir)/config/ltmain.sh): Automake assumes,
 	quite rightly for every project except libtool, that there will be
 	an ltmain.sh in the source tree.

@@ -27,7 +27,14 @@ if test -z "$srcdir"; then
 fi
 . $srcdir/defs || exit 1
 
+: ${fnord=$srcdir/../fnord$$}
+
 "$AUTOCONF" --version > /dev/null 2>&1 || func_skip "This test requires GNU Autoconf"
+if touch $fnord; then
+  rm $fnord
+else
+  func_skip "This test requires write access to the source tree"
+fi
 
 # Abort as soon as something fails.
 set -e
