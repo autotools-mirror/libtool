@@ -1422,7 +1422,7 @@ if test -f "$ltmain" && test -n "$tagnames"; then
 
     if grep "^# ### BEGIN LIBTOOL TAG CONFIG: $tagname$" < "${ofile}" > /dev/null
     then
-      AC_MSG_ERROR([tag name $tagname already exists])
+      AC_MSG_ERROR([tag name \"$tagname\" already exists])
     fi
 
     # Update the list of available tags.
@@ -3049,7 +3049,7 @@ if AC_TRY_EVAL(ac_compile); then
   # Clean up.
   rm -f a.out
 else
-  echo "ltcf-cxx.sh: error: problem compiling test program"
+  echo "libtool.m4: error: problem compiling C++ test program"
 fi
 
 $rm -f confest.$objext

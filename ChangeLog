@@ -1,3 +1,14 @@
+2001-08-19  Ossama Othman  <ossama@uci.edu>
+
+	* libtool.m4 (AC_LIBTOOL_LANG_CXX_CONFIG): Corrected and improved
+	  error message that is displayed when there was a problem
+	  compiling the C++ test program.  It still mentioned the now
+	  non-existent `ltcf-cxx.sh' file.
+
+	* doc/libtool.texi (LTDL_SET_PRELOADED_SYMBOLS): Removed
+	  parentheses at end of starting "defmac" line, as pointed out by
+	  makeinfo.
+
 2001-08-18  Brad  <brad@comstyle.com>
 
 	* ltmain.in: Do not remove -lm from deplibs for OpenBSD.

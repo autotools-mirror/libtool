@@ -2811,7 +2811,7 @@ macro @code{LTDL_SET_PRELOADED_SYMBOLS}.
 Return 0 on success.
 @end deftypefun
 
-@defmac LTDL_SET_PRELOADED_SYMBOLS()
+@defmac LTDL_SET_PRELOADED_SYMBOLS
 Set the default list of preloaded symbols.
 Should be used in your program to initialize libltdl's
 list of preloaded modules.
