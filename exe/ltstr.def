@@ -1,0 +1,19 @@
+
+AutoGen Definitions ltmain.tpl;
+
+#include lt_base.def
+#include lt_clean.def
+#include lt_compile.def
+#include lt_execute.def
+#include lt_finish.def
+#include lt_install.def
+#include lt_link.def
+
+#define ECHO_STRING 8
+
+string[ECHO_STRING] = {
+  str-name = echo;
+  explain = "
+This is a reimplementation of the echo command.
+Some systems have broken versions.\n";
+};
