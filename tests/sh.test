@@ -44,11 +44,6 @@ if $EGREP -n -e 'if[ 	]+\[' $scripts; then
   status=$EXIT_FAILURE
 fi
 
-if $EGREP -n -e 'test[ 	]+(![ 	])?(-.[ 	]+)?"?[.,_x]' $scripts; then
-  echo "use \`test \"X...\"' instead of \`test \"x...\"'"
-  status=$EXIT_FAILURE
-fi
-
 # Check for using test X... instead of test "X...
 if $EGREP -n -e 'test[ 	]+(![ 	])?(-.[ 	]+)?X' $scripts; then
   echo "use \`test \"X...\"' instead of \`test X'"
@@ -64,12 +59,6 @@ fi
 # Never use test -e.
 if $EGREP -n -e 'test[ 	]+(![ 	])?-e' $scripts; then
   echo "use \`test -f' instead of \`test -e'"
-  status=$EXIT_FAILURE
-fi
-
-# Check for problems with variable assignments.
-if $EGREP -n -e '[^	 ]=[^	 ].*(break|continue)' $scripts; then
-  echo "assignments on the same line as a \`break' or \`continue' may have no effect"
   status=$EXIT_FAILURE
 fi
 

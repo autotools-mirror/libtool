@@ -1,3 +1,8 @@
+2004-10-07  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
+	* tests/sh.test: Remove tests which fail on AS_SHELL_SANITIZE
+	from autoconf >= 2.59.
+
 2004-10-07  Gary V. Vaughan  <gary@gnu.org>
 
 	* tests/defs.m4sh (scripts): Actually scan the generated ltmain.sh
