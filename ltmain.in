@@ -2332,9 +2332,10 @@ EOF
 	    else
 	      $show "extracting exported symbol list from \`$soname'"
 	      save_ifs="$IFS"; IFS='~'
-	      eval cmds=\"$extract_expsyms_cmds\"
+	      cmds=$extract_expsyms_cmds
 	      for cmd in $cmds; do
 		IFS="$save_ifs"
+		eval cmd=\"$cmd\"
 		$show "$cmd"
 		$run eval "$cmd" || exit $?
 	      done
@@ -2345,9 +2346,10 @@ EOF
 	    if test -f "$output_objdir/$newlib"; then :; else
 	      $show "generating import library for \`$soname'"
 	      save_ifs="$IFS"; IFS='~'
-	      eval cmds=\"$old_archive_from_expsyms_cmds\"
+	      cmds=$old_archive_from_expsyms_cmds
 	      for cmd in $cmds; do
 		IFS="$save_ifs"
+		eval cmd=\"$cmd\"
 		$show "$cmd"
 		$run eval "$cmd" || exit $?
 	      done
@@ -3608,10 +3610,11 @@ EOF
 	    $show "generating symbol list for \`$libname.la'"
 	    export_symbols="$output_objdir/$libname.exp"
 	    $run $rm $export_symbols
-	    eval cmds=\"$export_symbols_cmds\"
+	    cmds=$export_symbols_cmds
 	    save_ifs="$IFS"; IFS='~'
 	    for cmd in $cmds; do
 	      IFS="$save_ifs"
+	      eval cmd=\"$cmd\"
 	      if len=`expr "X$cmd" : ".*"` &&
 	       test "$len" -le "$max_cmd_len" || test "$max_cmd_len" -le -1; then
 	        $show "$cmd"
@@ -3728,19 +3731,23 @@ EOF
 	# Do each of the archive commands.
 	if test "$module" = yes && test -n "$module_cmds" ; then
 	  if test -n "$export_symbols" && test -n "$module_expsym_cmds"; then
-	    eval cmds=\"$module_expsym_cmds\"
+	    eval test_cmds=\"$module_expsym_cmds\"
+	    cmds=$module_expsym_cmds
 	  else
-	    eval cmds=\"$module_cmds\"
+	    eval test_cmds=\"$module_cmds\"
+	    cmds=$module_cmds
 	  fi
 	else
 	if test -n "$export_symbols" && test -n "$archive_expsym_cmds"; then
-	  eval cmds=\"$archive_expsym_cmds\"
+	  eval test_cmds=\"$archive_expsym_cmds\"
+	  cmds=$archive_expsym_cmds
 	else
-	  eval cmds=\"$archive_cmds\"
+	  eval test_cmds=\"$archive_cmds\"
+	  cmds=$archive_cmds
 	  fi
 	fi
 
-	if test "X$skipped_export" != "X:" && len=`expr "X$cmds" : ".*"` &&
+	if test "X$skipped_export" != "X:" && len=`expr "X$test_cmds" : ".*"` &&
 	   test "$len" -le "$max_cmd_len" || test "$max_cmd_len" -le -1; then
 	  :
 	else
@@ -3825,6 +3832,7 @@ EOF
 	  save_ifs="$IFS"; IFS='~'
 	  for cmd in $concat_cmds; do
 	    IFS="$save_ifs"
+	    eval cmd=\"$cmd\"
 	    $show "$cmd"
 	    $run eval "$cmd" || exit $?
 	  done
@@ -3843,25 +3851,26 @@ EOF
 	  # Do each of the archive commands.
 	  if test "$module" = yes && test -n "$module_cmds" ; then
 	    if test -n "$export_symbols" && test -n "$module_expsym_cmds"; then
-	      eval cmds=\"$module_expsym_cmds\"
+	      cmds=$module_expsym_cmds
 	    else
-	      eval cmds=\"$module_cmds\"
+	      cmds=$module_cmds
 	    fi
 	  else
 	  if test -n "$export_symbols" && test -n "$archive_expsym_cmds"; then
-	    eval cmds=\"$archive_expsym_cmds\"
+	    cmds=$archive_expsym_cmds
 	  else
-	    eval cmds=\"$archive_cmds\"
+	    cmds=$archive_cmds
 	    fi
 	  fi
 
 	  # Append the command to remove the reloadable object files
 	  # to the just-reset $cmds.
-	  eval cmds=\"\$cmds~$rm $delfiles\"
+	  eval cmds=\"\$cmds~\$rm $delfiles\"
 	fi
 	save_ifs="$IFS"; IFS='~'
 	for cmd in $cmds; do
 	  IFS="$save_ifs"
+	  eval cmd=\"$cmd\"
 	  $show "$cmd"
 	  $run eval "$cmd" || exit $?
 	done
@@ -4012,10 +4021,11 @@ EOF
       reload_objs="$objs$old_deplibs "`$echo "X$libobjs" | $SP2NL | $Xsed -e '/\.'${libext}$'/d' -e '/\.lib$/d' -e "$lo2o" | $NL2SP`" $reload_conv_objs" ### testsuite: skip nested quoting test
 
       output="$obj"
-      eval cmds=\"$reload_cmds\"
+      cmds=$reload_cmds
       save_ifs="$IFS"; IFS='~'
       for cmd in $cmds; do
 	IFS="$save_ifs"
+	eval cmd=\"$cmd\"
 	$show "$cmd"
 	$run eval "$cmd" || exit $?
       done
@@ -4048,10 +4058,11 @@ EOF
 	# Only do commands if we really have different PIC objects.
 	reload_objs="$libobjs $reload_conv_objs"
 	output="$libobj"
-	eval cmds=\"$reload_cmds\"
+	cmds=$reload_cmds
 	save_ifs="$IFS"; IFS='~'
 	for cmd in $cmds; do
 	  IFS="$save_ifs"
+	  eval cmd=\"$cmd\"
 	  $show "$cmd"
 	  $run eval "$cmd" || exit $?
 	done
@@ -5023,13 +5034,13 @@ fi\
 
       # Do each command in the archive commands.
       if test -n "$old_archive_from_new_cmds" && test "$build_libtool_libs" = yes; then
-	eval cmds=\"$old_archive_from_new_cmds\"
+       cmds=$old_archive_from_new_cmds
       else
 	eval cmds=\"$old_archive_cmds\"
 
 	if len=`expr "X$cmds" : ".*"` &&
 	     test "$len" -le "$max_cmd_len" || test "$max_cmd_len" -le -1; then
-	  :
+	  cmds=$old_archive_cmds
 	else
 	  # the command line is too long to link in one step, link in parts
 	  $echo "using piecewise archive linking..."
@@ -5081,12 +5092,13 @@ fi\
 	  if test "X$oldobjs" = "X" ; then
 	    eval cmds=\"\$concat_cmds\"
 	  else
-	    eval cmds=\"\$concat_cmds~$old_archive_cmds\"
+	    eval cmds=\"\$concat_cmds~\$old_archive_cmds\"
 	  fi
 	fi
       fi
       save_ifs="$IFS"; IFS='~'
       for cmd in $cmds; do
+        eval cmd=\"$cmd\"
 	IFS="$save_ifs"
 	$show "$cmd"
 	$run eval "$cmd" || exit $?
@@ -5504,10 +5516,11 @@ relink_command=\"$relink_command\""
 
 	  # Do each command in the postinstall commands.
 	  lib="$destdir/$realname"
-	  eval cmds=\"$postinstall_cmds\"
+	  cmds=$postinstall_cmds
 	  save_ifs="$IFS"; IFS='~'
 	  for cmd in $cmds; do
 	    IFS="$save_ifs"
+	    eval cmd=\"$cmd\"
 	    $show "$cmd"
 	    $run eval "$cmd" || exit $?
 	  done
@@ -5726,10 +5739,11 @@ relink_command=\"$relink_command\""
       fi
 
       # Do each command in the postinstall commands.
-      eval cmds=\"$old_postinstall_cmds\"
+      cmds=$old_postinstall_cmds
       save_ifs="$IFS"; IFS='~'
       for cmd in $cmds; do
 	IFS="$save_ifs"
+	eval cmd=\"$cmd\"
 	$show "$cmd"
 	$run eval "$cmd" || exit $?
       done
@@ -5764,10 +5778,11 @@ relink_command=\"$relink_command\""
       for libdir in $libdirs; do
 	if test -n "$finish_cmds"; then
 	  # Do each command in the finish commands.
-	  eval cmds=\"$finish_cmds\"
+	  cmds=$finish_cmds
 	  save_ifs="$IFS"; IFS='~'
 	  for cmd in $cmds; do
 	    IFS="$save_ifs"
+	    eval cmd=\"$cmd\"
 	    $show "$cmd"
 	    $run eval "$cmd" || admincmds="$admincmds
        $cmd"
@@ -6041,10 +6056,11 @@ relink_command=\"$relink_command\""
 	  if test "$mode" = uninstall; then
 	    if test -n "$library_names"; then
 	      # Do each command in the postuninstall commands.
-	      eval cmds=\"$postuninstall_cmds\"
+	      cmds=$postuninstall_cmds
 	      save_ifs="$IFS"; IFS='~'
 	      for cmd in $cmds; do
 		IFS="$save_ifs"
+		eval cmd=\"$cmd\"
 		$show "$cmd"
 		$run eval "$cmd"
 		if test "$?" -ne 0 && test "$rmforce" != yes; then
@@ -6056,10 +6072,11 @@ relink_command=\"$relink_command\""
 
 	    if test -n "$old_library"; then
 	      # Do each command in the old_postuninstall commands.
-	      eval cmds=\"$old_postuninstall_cmds\"
+	      cmds=$old_postuninstall_cmds
 	      save_ifs="$IFS"; IFS='~'
 	      for cmd in $cmds; do
 		IFS="$save_ifs"
+		eval cmd=\"$cmd\"
 		$show "$cmd"
 		$run eval "$cmd"
 		if test "$?" -ne 0 && test "$rmforce" != yes; then
