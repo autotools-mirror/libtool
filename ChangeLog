@@ -1,3 +1,10 @@
+2004-03-17  Scott James Remnant  <scott@netsplit.com>
+
+	* m4/libtool.m4: Removed AC_BEFORE references to AC_LIBTOOL_SETUP
+	which is no more.
+	* m4/lt~obsolete.m4: As AC_LIBTOOL_SETUP is no longer referenced,
+	it can be removed from this file.  Remove _AC_PROG_LIBTOOL also.
+
 2004-03-14  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* m4/libtool.m4: Remove newlines from lt_ld_extra, so
