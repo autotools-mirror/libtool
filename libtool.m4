@@ -120,7 +120,7 @@ test "$enable_shared" = no && libtool_flags="$libtool_flags --disable-shared"
 test "$enable_static" = no && libtool_flags="$libtool_flags --disable-static"
 test "$enable_fast_install" = no && libtool_flags="$libtool_flags --disable-fast-install"
 test "$GCC" = yes && libtool_flags="$libtool_flags --with-gcc"
-test "$ac_cv_prog_gnu_ld" = yes && libtool_flags="$libtool_flags --with-gnu-ld"
+test "$lt_cv_prog_gnu_ld" = yes && libtool_flags="$libtool_flags --with-gnu-ld"
 ifdef([AC_PROVIDE_AC_LIBTOOL_DLOPEN],
 [libtool_flags="$libtool_flags --enable-dlopen"])
 ifdef([AC_PROVIDE_AC_LIBTOOL_WIN32_DLL],
@@ -445,17 +445,17 @@ elif test "$with_gnu_ld" = yes; then
 else
   AC_MSG_CHECKING([for non-GNU ld])
 fi
-AC_CACHE_VAL(ac_cv_path_LD,
+AC_CACHE_VAL(lt_cv_path_LD,
 [if test -z "$LD"; then
   IFS="${IFS= 	}"; ac_save_ifs="$IFS"; IFS="${IFS}${PATH_SEPARATOR-:}"
   for ac_dir in $PATH; do
     test -z "$ac_dir" && ac_dir=.
     if test -f "$ac_dir/$ac_prog" || test -f "$ac_dir/$ac_prog$ac_exeext"; then
-      ac_cv_path_LD="$ac_dir/$ac_prog"
+      lt_cv_path_LD="$ac_dir/$ac_prog"
       # Check to see if the program is GNU ld.  I'd rather use --version,
       # but apparently some GNU ld's only accept -v.
       # Break only if it was the GNU/non-GNU ld that we prefer.
-      if "$ac_cv_path_LD" -v 2>&1 < /dev/null | egrep '(GNU|with BFD)' > /dev/null; then
+      if "$lt_cv_path_LD" -v 2>&1 < /dev/null | egrep '(GNU|with BFD)' > /dev/null; then
 	test "$with_gnu_ld" != no && break
       else
 	test "$with_gnu_ld" != yes && break
@@ -464,9 +464,9 @@ AC_CACHE_VAL(ac_cv_path_LD,
   done
   IFS="$ac_save_ifs"
 else
-  ac_cv_path_LD="$LD" # Let the user override the test with a path.
+  lt_cv_path_LD="$LD" # Let the user override the test with a path.
 fi])
-LD="$ac_cv_path_LD"
+LD="$lt_cv_path_LD"
 if test -n "$LD"; then
   AC_MSG_RESULT($LD)
 else
@@ -477,14 +477,14 @@ AC_PROG_LD_GNU
 ])
 
 AC_DEFUN([AC_PROG_LD_GNU],
-[AC_CACHE_CHECK([if the linker ($LD) is GNU ld], ac_cv_prog_gnu_ld,
+[AC_CACHE_CHECK([if the linker ($LD) is GNU ld], lt_cv_prog_gnu_ld,
 [# I'd rather use --version here, but apparently some GNU ld's only accept -v.
 if $LD -v 2>&1 </dev/null | egrep '(GNU|with BFD)' 1>&5; then
-  ac_cv_prog_gnu_ld=yes
+  lt_cv_prog_gnu_ld=yes
 else
-  ac_cv_prog_gnu_ld=no
+  lt_cv_prog_gnu_ld=no
 fi])
-with_gnu_ld=$ac_cv_prog_gnu_ld
+with_gnu_ld=$lt_cv_prog_gnu_ld
 ])
 
 # AC_PROG_LD_RELOAD_FLAG - find reload flag for linker
@@ -653,10 +653,10 @@ deplibs_check_method=$lt_cv_deplibs_check_method
 # AC_PROG_NM - find the path to a BSD-compatible name lister
 AC_DEFUN([AC_PROG_NM],
 [AC_MSG_CHECKING([for BSD-compatible nm])
-AC_CACHE_VAL(ac_cv_path_NM,
+AC_CACHE_VAL(lt_cv_path_NM,
 [if test -n "$NM"; then
   # Let the user override the test.
-  ac_cv_path_NM="$NM"
+  lt_cv_path_NM="$NM"
 else
   IFS="${IFS= 	}"; ac_save_ifs="$IFS"; IFS="${IFS}${PATH_SEPARATOR-:}"
   for ac_dir in $PATH /usr/ccs/bin /usr/ucb /bin; do
@@ -668,21 +668,21 @@ else
       #   nm: unknown option "B" ignored
       # Tru64's nm complains that /dev/null is an invalid object file
       if ($tmp_nm -B /dev/null 2>&1 | sed '1q'; exit 0) | egrep '(/dev/null|Invalid file or object type)' >/dev/null; then
-	ac_cv_path_NM="$tmp_nm -B"
+	lt_cv_path_NM="$tmp_nm -B"
 	break
       elif ($tmp_nm -p /dev/null 2>&1 | sed '1q'; exit 0) | egrep /dev/null >/dev/null; then
-	ac_cv_path_NM="$tmp_nm -p"
+	lt_cv_path_NM="$tmp_nm -p"
 	break
       else
-	ac_cv_path_NM=${ac_cv_path_NM="$tmp_nm"} # keep the first match, but
+	lt_cv_path_NM=${lt_cv_path_NM="$tmp_nm"} # keep the first match, but
 	continue # so that we can try to find one that supports BSD flags
       fi
     fi
   done
   IFS="$ac_save_ifs"
-  test -z "$ac_cv_path_NM" && ac_cv_path_NM=nm
+  test -z "$lt_cv_path_NM" && lt_cv_path_NM=nm
 fi])
-NM="$ac_cv_path_NM"
+NM="$lt_cv_path_NM"
 AC_MSG_RESULT([$NM])
 ])
 
