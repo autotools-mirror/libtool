@@ -1,3 +1,9 @@
+2000-12-14  Masahiro Nobori  <nobori@ss.titech.ac.jp>
+
+	* README:  Updated.
+	* NEWS: Updated.
+	* libtool.m4:  New port to NEWS-OS Release 6.
+	
 2000-12-14  Nick Hudson  <nick@nthcliff.demon.co.uk>
 	
 	* libtool.m4 (hardcode_libdir_flag_spec):  Remove linker

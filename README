@@ -28,6 +28,7 @@ Shared library support has been implemented for these platforms:
   HP-UX 9.x, 10.x, 11.x (*-*-hpux9*, *-*-hpux10*, *-*-hpux11*) [see note]
   IRIX 5.x, 6.x (*-*-irix5*, *-*-irix6*)
   NCR MP-RAS 3.x (*-ncr-sysv4.3*) [see note]
+  NEWS-OS Release 6 (*-*-newsos6)
   Motorola System V 4 (mk88-motorola-sysv4) [see note]
   NetBSD 1.x (*-*-netbsd*)
   OpenBSD 2.x (*-*-openbsd*)

@@ -865,6 +865,11 @@ AC_CACHE_VAL(ac_cv_prog_cc_pic,
       ac_cv_prog_cc_pic='-DDLL_EXPORT'
       ;;
 
+    newsos6)
+      ac_cv_prog_cc_pic='-KPIC'
+      ac_cv_prog_cc_static='-Bstatic'
+      ;;
+
     osf3* | osf4* | osf5*)
       # All OSF/1 code is PIC.
       ac_cv_prog_cc_wl='-Wl,'
@@ -1491,6 +1496,14 @@ else
     hardcode_shlibpath_var=no
     ;;
 
+  newsos6)
+    archive_cmds='$LD -G -h $soname -o $lib $libobjs $deplibs $linkopts'
+    hardcode_direct=yes
+    hardcode_libdir_flag_spec='${wl}-rpath ${wl}$libdir'
+    hardcode_libdir_separator=:
+    hardcode_shlibpath_var=no
+    ;;
+
   openbsd*)
     archive_cmds='$LD -Bshareable -o $lib $libobjs $deplibs $linker_flags'
     hardcode_libdir_flag_spec='-R$libdir'
@@ -1900,6 +1913,16 @@ netbsd*)
   shlibpath_var=LD_LIBRARY_PATH
   shlibpath_overrides_runpath=yes
   hardcode_into_libs=yes
+  ;;
+
+newsos6)
+  version_type=linux
+  library_names_spec='${libname}${release}.so$versuffix ${libname}${release}.so$major $libname.so'
+  shlibpath_var=LD_LIBRARY_PATH
+  shlibpath_overrides_runpath=yes
+  file_magic_cmd=/usr/bin/file
+  [deplibs_check_method='file_magic ELF [0-9][0-9]*-bit [ML]SB (executable|dynamic lib)']
+  file_magic_test_file=/usr/lib/libnls.so
   ;;
 
 openbsd*)
