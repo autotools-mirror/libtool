@@ -392,7 +392,7 @@ static int
 shl_close (handle)
 	lt_dlhandle handle;
 {
-	if (shl_unload((shl_t*) (handle->handle)) != 0) {
+	if (shl_unload((shl_t) (handle->handle)) != 0) {
 		last_error = cannot_close_error;
 		return 1;
 	}
@@ -406,7 +406,7 @@ shl_sym (handle, symbol)
 {
 	lt_ptr_t address;
 
-	if (handle->handle && shl_findsym((shl_t*) (handle->handle),
+	if (handle->handle && shl_findsym((shl_t*) &(handle->handle),
 	    symbol, TYPE_UNDEFINED, &address) == 0)
 		if (address)
 			return address;
