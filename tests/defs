@@ -40,7 +40,7 @@ eval `$libtool --config | grep '^CC='`
 
 # Disable usage of config.site for autoconf, unless DJGPP is present.
 # The DJGPP port of autoconf requires config.site, to work correctly.
-if test -z $DJGPP; then
+if test -z "$DJGPP"; then
     CONFIG_SITE=/nonexistent
 fi
 
