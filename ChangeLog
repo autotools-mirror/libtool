@@ -1,3 +1,10 @@
+1999-06-05  Mark Kettenis  <kettenis@gnu.org>
+
+	* ltconfig.in: Update support for the Hurd.  Make sure that the
+	soname includes the major version number and create the	right
+	links.  Allow shared objects without the `lib' prefix and without
+	version information.
+
 1999-06-02 Nick Rasmussen <nick@jive.org>
 
 	* ltmain.in (link): use "$nonopt" as the compiler for
