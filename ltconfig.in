@@ -265,6 +265,7 @@ extract_expsyms_cmds=
 
 ## Tools:
 old_AR="$AR"
+old_AR_FLAGS="$AR_FLAGS"
 old_CC="$CC"
 old_CFLAGS="$CFLAGS"
 old_CPPFLAGS="$CPPFLAGS"
@@ -613,7 +614,7 @@ aix3*)
 esac
 
 # Determine commands to create old-style static archives.
-old_archive_cmds='$AR cru $oldlib$oldobjs$old_deplibs'
+old_archive_cmds='$AR $AR_FLAGS $oldlib$oldobjs$old_deplibs'
 old_postinstall_cmds='chmod 644 $oldlib'
 old_postuninstall_cmds=
 
@@ -628,6 +629,7 @@ fi
 
 # Set sane defaults for various variables
 test -z "$AR" && AR=ar
+test -z "$AR_FLAGS" && AR_FLAGS=cru
 test -z "$AS" && AS=as
 test -z "$CC" && CC=cc
 test -z "$DLLTOOL" && DLLTOOL=dlltool
@@ -1908,13 +1910,13 @@ LTCONFIG_VERSION="$VERSION"
 case "$ltmain" in
 *.sh)
   # Now quote all the things that may contain metacharacters.
-  for var in ltecho old_AR old_CC old_LTCC old_CFLAGS old_CPPFLAGS \
+  for var in ltecho old_AR old_AR_FLAGS old_CC old_LTCC old_CFLAGS old_CPPFLAGS \
     old_MAGIC old_LD old_LDFLAGS old_LIBS \
     old_LN_S old_NM old_RANLIB old_STRIP \
     old_AS old_DLLTOOL old_OBJDUMP \
     old_OBJEXT old_EXEEXT old_reload_flag \
     old_deplibs_check_method old_file_magic_cmd \
-    AR CC LTCC LD LN_S NM LTSHELL LTCONFIG_VERSION \
+    AR AR_FLAGS CC LTCC LD LN_S NM LTSHELL LTCONFIG_VERSION \
     reload_flag reload_cmds wl \
     pic_flag link_static_flag no_builtin_flag export_dynamic_flag_spec \
     thread_safe_flag_spec whole_archive_flag_spec libname_spec \
@@ -2006,7 +2008,7 @@ EOF
 
 *)
   # Double-quote the variables that need it (for aesthetics).
-  for var in old_AR old_CC old_LTCC old_CFLAGS old_CPPFLAGS \
+  for var in old_AR old_AR_FLAGS old_CC old_LTCC old_CFLAGS old_CPPFLAGS \
     old_MAGIC old_LD old_LDFLAGS old_LIBS \
     old_LN_S old_NM old_RANLIB old_STRIP \
     old_AS old_DLLTOOL old_OBJDUMP \
@@ -2037,7 +2039,7 @@ esac
 cat <<EOF >> "$cfgfile"
 # Libtool was configured as follows, on host `(hostname || uname -n) 2>/dev/null | sed 1q`:
 #
-# AR=$old_AR LTCC=$old_LTCC CC=$old_CC \\
+# AR=$old_AR AR_FLAGS=$old_AR_FLAGS LTCC=$old_LTCC CC=$old_CC \\
 # CFLAGS=$old_CFLAGS CPPFLAGS=$old_CPPFLAGS \\
 # MAGIC=$old_MAGIC LD=$old_LD LDFLAGS=$old_LDFLAGS LIBS=$old_LIBS \\
 # LN_S=$old_LN_S NM=$old_NM RANLIB=$old_RANLIB STRIP=$old_STRIP \\
@@ -2074,6 +2076,7 @@ echo=$ltecho
 
 # The archiver.
 AR=$AR
+AR_FLAGS=$AR_FLAGS
 
 # A C compiler.
 LTCC=$LTCC
