@@ -1,6 +1,14 @@
+2004-01-15  Scott James Remnant  <scott@netsplit.com>
+
+	* m4/lt~obsolete.m4: Add a file containing aclocal-fooling
+	macro definitions which stop the contents of an installed
+	libtool.m4 ending up in our aclocal.m4 when we bootstrap.
+	* Makefile.am (pkgmacro_DATA): Note that we don't need to add
+	lt~obsolete.m4 to this list.
+
 2004-01-12  Gary V. Vaughan  <gary@gnu.org>
 
-        * m4/libtool.m4 (_LT_COPYING): Factor out copyright message so it
+	* m4/libtool.m4 (_LT_COPYING): Factor out copyright message so it
 	only needs to be updated in one place.
 	(AC_LIBTOOL_CONFIG): Refactor to be more readable.  Only add
 	tags if a compiler was found; ie if you have no gcj compiler,
