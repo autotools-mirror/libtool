@@ -70,3 +70,6 @@ m4_include([inherited_flags.at])
 m4_include([stresstest.at])
 # C++ templates tests
 m4_include([template.at])
+# libtoolize tests
+m4_include([libtoolize.at])
+

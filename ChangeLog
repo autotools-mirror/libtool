@@ -1,5 +1,10 @@
 2005-04-04  Gary V. Vaughan  <gary@gnu.org>
 
+	* tests/libtoolize.at: New tests for basic libtoolize functionality
+	and reporting.
+	* tests/testsuite.at: Call them.
+	* tests/Makefile.am: Distribute them.
+
 	* libtoolize.m4sh (pkgvdatadir): Renamed from this...
 	(_lt_pkgvdatadir): ...to this.
 	* tests/testsuite.at (LT_AT_LIBTOOLIZE): The `-I' option is no
