@@ -273,7 +273,7 @@
 	* mdemo/configure.in: use AC_LIBLTDL_CONVENIENCE
 	* mdemo/Makefile.am: refer to @LIBLTDL@
 
-1999-03-09  Gary V. Vaughan <gvaughan@oranda.demon.co.uk>
+1999-03-09  Gary V. Vaughan <gvv@techie.com>
 
 	* NEWS: updated.
 
@@ -396,7 +396,7 @@
 	only on FreeBSD and when not static linking; it's been causing
 	trouble on platforms such as OpenBSD.
 
-1999-02-26  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
+1999-02-26  Gary V. Vaughan  <gvv@techie.com>
 
 	* libtool.m4 (cygwin): s/\\(mingw\\|cygwin\\)32/\\1/g.  Must've
 	missed this file when I changed to cygnus' new sanction name.
@@ -514,7 +514,7 @@
 	* libltdl/ltdl.c (lt_dlopen): use newhandle instead of handle
 	where appropriate, when dlopening a non-libtool library
 
-1999-02-19  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
+1999-02-19  Gary V. Vaughan  <gvv@techie.com>
 
 	* ltconfig.in (export_symbols_cmds): renamed from
 	export_symbols_cmd.
@@ -545,7 +545,7 @@
 	alternate name without ${release}, otherwise build fails when
 	-release is used
 
-1999-02-18  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
+1999-02-18  Gary V. Vaughan  <gvv@techie.com>
 
 	* ltconfig.in (archive{,_sym}_commands): Be careful not to
 	re-export the dll entry points DllMain@12, _cygwin_dll_entry@12 and
@@ -610,7 +610,7 @@
 	* mdemo/configure.in: use AC_LIBTOOL_DLOPEN
 	* mdemo/main.c: demonstrate lt_dlopen(0)
 	  	  
-1999-02-15  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
+1999-02-15  Gary V. Vaughan  <gvv@techie.com>
 
 	* demo/dlmain.c (_WIN32): The lt_symlist structure is now const,
 	so my original horrible temporary win32 hack no longer worked.
@@ -648,7 +648,7 @@
 	* ltmain.in: allow -export-symbols for modules, use thread_safe flag,
 	  add include_expsyms to the exported symbols
 
-1999-02-12  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
+1999-02-12  Gary V. Vaughan  <gvv@techie.com>
 
 	* libltdl/ltdl.h (_LTDLL_EXTERN): libltdl is no longer linked as a
 	shared library, so the _declspec's were preventing the linker from
@@ -740,7 +740,7 @@
 	* libltdl/ltdl.c (lt_dlopenext): tmp would be trashed if shlib_ext
  	was longer than 3 characters
 
-1999-02-02  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
+1999-02-02  Gary V. Vaughan  <gvv@techie.com>
 
 	* ltconfig.in: new config.guess returns *-*-cygwin now instead of
 	*-*-cygwin32.  sed -e 's%\(cygwin\|mingw\)32%\1%g' ltconfig.in
@@ -752,7 +752,7 @@
 	yes' implies gnu ld, otherwise MSVC++ (which I haven't tested
 	since I inheritted the code from Ian Lance Taylor btw!) is implied.
 	
-1999-01-28  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
+1999-01-28  Gary V. Vaughan  <gvv@techie.com>
 
 	* ltmain.in: Reverted this change of Alexandre's from the
 	1999-01-25; "don't try to use .o instead of .lo just because
@@ -770,7 +770,7 @@
 	AM_PROG_LIBTOOL
 	Reported by Jeff Garzik <jgarzik@pobox.com>
 
-1999-01-27  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
+1999-01-27  Gary V. Vaughan  <gvv@techie.com>
 
 	* THANKS: Now that we have a policy, applied it to the existing
 	list.  This in no way demeans the work of those people removed
@@ -876,7 +876,7 @@
 	message, and added a warning about inter-library dependencies even 
 	for non-module builds
 
-1999-01-26  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
+1999-01-26  Gary V. Vaughan  <gvv@techie.com>
 
 	* Makefile.am (install-data-hook): Don't show the if expression
 	that tests for gzip with a conditional error message; just do it
@@ -981,7 +981,7 @@
 	anything about the format of the date, just that it does not
 	contain `$'
 
-1999-01-22  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
+1999-01-22  Gary V. Vaughan  <gvv@techie.com>
 
 	* configure.in (date): echo the version number during
 	configuration, and show $date for cvs versions.
@@ -1004,7 +1004,7 @@
 	* ltconfig.in, ltmain.in (TIMESTAMP): append timestamp to most
 	references to VERSION
 
-1999-01-22  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
+1999-01-22  Gary V. Vaughan  <gvv@techie.com>
 
 	* ltmain.in (ild): Revert the change which allowed libtool to
 	link libraries with dependencies on .la libs.
@@ -1037,7 +1037,7 @@
 	* demo/configure.in, demo/Makefile.am (DLPREOPEN): reverted; it
 	didn't make any difference.
 
-1999-01-21  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
+1999-01-21  Gary V. Vaughan  <gvv@techie.com>
 
 	* THANKS: Added Chris Laas <golem@MIT.EDU>
 	
@@ -1167,7 +1167,7 @@
 
 	* mdemo/main.c (LTDL_PREOPENED_SYMBOLS): remove
 
-1999-01-20  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
+1999-01-20  Gary V. Vaughan  <gvv@techie.com>
 
 	* TODO: Added inter-library deps for ltlibs.
 
@@ -1224,7 +1224,7 @@
 	flags to LDADD
 	* doc/libtool.texi (Using Automake): how to add -dlopen to LDADD
 
-1999-01-19  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
+1999-01-19  Gary V. Vaughan  <gvv@techie.com>
 
 	From Andrey Slepuhin <pooh@msu.ru>
 	* ltmain.in (hardcode_action) Oops, misapplied the patch!
@@ -1334,7 +1334,7 @@
 	(find_module) tryall_dlopen old_name first, so that we don't
  	override statically linked symbols with dlopened ones
 
-1999-01-15  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
+1999-01-15  Gary V. Vaughan  <gvv@techie.com>
 
 	From Andrey Slepuhin <pooh@msu.ru>
 	* libtoolize.in (cd $pkgdatadir): Make sure we return the the
@@ -1381,7 +1381,7 @@
 	* mdemo/Makefile.am: use -export-dynamic until libtool 
 	  and libltdl are able to handle module dependencies
 	  
-1999-01-14  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
+1999-01-14  Gary V. Vaughan  <gvv@techie.com>
 
 	* THANKS: added Mark Elbrecht.
 	* ltconfig.in (PATH_SEPARATOR): new variable to hold valid $PATH
@@ -1508,7 +1508,7 @@
 	(@DIST_MAKEFILE_LIST@): create subdir if needed, then run
 	configure.
 	On-demand configuration of subdirs at distribution time was
-	suggested by Gary V. Vaughan <gvaughan@oranda.demon.co.uk>
+	suggested by Gary V. Vaughan <gvv@techie.com>
 
 	* libtool.m4, ltconfig.in (NM): search for NM in PATH before
 	/usr/ccs/bin, /usr/ucb and /bin.  However, if the found one isn't
@@ -1565,7 +1565,7 @@
 	* mdemo/configure.in: check only for math.h (string.h is no longer
 	  necessary)
 
-1999-01-12  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
+1999-01-12  Gary V. Vaughan  <gvv@techie.com>
 
 	* configure.in (ltdl-install): Fixed up the indentation so that
 	`configure --help' is pretty again.
@@ -1659,12 +1659,12 @@
 	  non-libtool modules, dlopen with the flags GLOBAL and NOW
 	* mdemo/main.c: report the error using lt_dlerror()
 	
-1999-01-08  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
+1999-01-08  Gary V. Vaughan  <gvv@techie.com>
 
 	* doc/libtool.texi (old_archive_from_new_commands): Documented
 	this ltcofig variable.
 
-1999-01-07  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
+1999-01-07  Gary V. Vaughan  <gvv@techie.com>
 
 	* ltmain.sh (cygwin, allow_undefined): Unfortunately, there are
 	problems with this variable when trying to make a dll which has
@@ -1680,7 +1680,7 @@
 	* libltdl/ltdl.c: assigned copyright to the FSF
 	* libltdl/ltdl.h, mdemo/foo*,main.c: likewise
 	
-1999-01-06  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
+1999-01-06  Gary V. Vaughan  <gvv@techie.com>
 	
 	* ltmain.in (dllsearchpath): add absolute directory paths to
 	dllsearchpath so that the wrapper scripts can be called from any
@@ -1812,7 +1812,7 @@
 	  USE_DLPREOPEN was defined, integrated shl_load code from GModule
 	  (still untested)
 
-1998-12-24  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
+1998-12-24  Gary V. Vaughan  <gvv@techie.com>
 
 	* libltdl/configure.in: fixup spacing in --enable-ltdl-install
 	help string so that it lines up nicely for configure --help.
@@ -1853,7 +1853,7 @@
 	* mdemo/Makefile.am (mdemo_debug_LDADD, mdemo_debug_DEPENDENCIES): 
 	use libltdl.la
 
-1998-12-23  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
+1998-12-23  Gary V. Vaughan  <gvv@techie.com>
 
 	* doc/PLATFORMS: added my cygwin32 box (i686-pc-cygwin32).
 
@@ -1912,7 +1912,7 @@
 	* libltdl/configure.in: warn if dlopen is not supported
 	* mdemo/Makefile.am (mdemo.debug): use libltdls
 
-1998-12-22  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
+1998-12-22  Gary V. Vaughan  <gvv@techie.com>
 
 	* ltconfig.in: revert Thomas Tanners change to create all
 	libraries without the `lib' prefix on win32, otherwise `gcc foo.c
@@ -1934,7 +1934,7 @@
 	* depdemo/.cvsignore: renamed hell* to depdemo*, added *.lo,*.la
 	* mdemo/.cvsignore: ditto
 	
-1998-12-21  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
+1998-12-21  Gary V. Vaughan  <gvv@techie.com>
 
 	* libtool.m4 (AM_SYS_NM_PARSE): apparently  __ptr_t is predefined
 	on some systems - use lt_ptr_t instead.
@@ -2006,7 +2006,7 @@
 	  demo), updated the documentation, import sin and cos in main
 	  program rather than linking libfoo1 statically
 
-1998-12-17  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
+1998-12-17  Gary V. Vaughan  <gvv@techie.com>
 
 	* libtool.m4 (AM_PROG_LIBTOOL): Added AC_PREREQ(2.12) to prevent
 	people using libtool with old autoconfs that don't provide the
@@ -2122,7 +2122,7 @@
 	(*demo/Makefile.in): don't update autoconf/automake files any
 	more; make check is needed
 
-1998-12-14  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
+1998-12-14  Gary V. Vaughan  <gvv@techie.com>
 
 	* ltconfig.in (archive_cmds): tweaked for cygwin b18->b20.1
 	compatibility and fixed a bug with generating the export
@@ -2152,7 +2152,7 @@
 	* libltdl/Makefile.am (noinst_HEADERS): don't install ltdl.h yet
 	(noinst_LTLIBRARIES): ditto for libltdl.la
 
-1998-12-08  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
+1998-12-08  Gary V. Vaughan  <gvv@techie.com>
 
 	* README-alpha: adapted the release procedure from
 	  automake/HACKING.
@@ -2198,7 +2198,7 @@
 	* ltmain.in: use sys_lib_search_path, removed extradeplibs
 	(they're not portable)
 	
-1998-12-02  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
+1998-12-02  Gary V. Vaughan  <gvv@techie.com>
 
 	* libltdl/configure.in: look for string.h or else strings.h, and
 	also check for ANSI strrchr() function.  Fix `undescore before
@@ -2223,7 +2223,7 @@
 	* mdemo/modules/Makefile.am: replaced -export-symbols with 
 	-export-dynamic since it doesn't work for modules
 	
-1998-12-01  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
+1998-12-01  Gary V. Vaughan  <gvv@techie.com>
 
 	* README: Updated homepage pointer to gnu libtool page.
 
@@ -2246,7 +2246,7 @@
 
 	* config.guess, config.sub: imported from autoconf pre-2.13
 
-1998-11-27  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
+1998-11-27  Gary V. Vaughan  <gvv@techie.com>
 
 	* libtool (AM_PROG_LD): Oops... we need to know the host_os for
 	the changes below.  I'm not sure whether mingw32 and os2 support
@@ -2401,7 +2401,7 @@
 	* PORTING: new file, with general instructions and inter-library
 	dependencies tips
 
-1998-11-11  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
+1998-11-11  Gary V. Vaughan  <gvv@techie.com>
 
 	* ltconfig.in: make use of '~' field separator in reload_cmds,
 	old_archive_from_new_cmds, old_archive_cmds, archive_cmds,
@@ -2477,7 +2477,7 @@
 	modules
 	* tests/Makefile.am, tests/mdemo*: added some tests for mdemo
 
-1998-11-04  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
+1998-11-04  Gary V. Vaughan  <gvv@techie.com>
 
 	* demo/configure.in: added AC_EXEEXT macro so that the tests can
 	work on cywin32/mingw32 hosts.  This requires the current CVS
