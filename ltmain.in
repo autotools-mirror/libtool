@@ -2544,7 +2544,7 @@ static const void *lt_preloaded_setup() {
       fi
 
       if test "$shlibpath_overrides_runpath" != yes; then
-	compile_for_build_command=`echo "X$compile_command" | $Xsed -e "s%@BUILD_LIBDIRS_FLAGS@%$build_libdirs_flags%" -e "s%@BUILD_RPATH@%$build_rpath%" -e "s%@HARDCODE_BUILD_LIBDIRS@%$build_libdirs%" -e 's%@THISDIR@%\$thisdir%g' -e 's%@OUTPUT@%\$progdir/\$program%g'`
+	compile_for_build_command=`echo "X$compile_command" | $Xsed -e "s%@BUILD_LIBDIRS_FLAGS@%$build_libdirs_flags%" -e "s%@BUILD_RPATH@%$build_rpath%" -e "s%@HARDCODE_BUILD_LIBDIRS@%$build_libdirs%" -e 's%@THISDIR@%\$thisdir%g' -e 's%@OUTPUT@%\$progdir/\$file%g'`
       fi
 
       # Replace the output file specification.
@@ -2661,16 +2661,26 @@ else
   progdir=\"\$thisdir/$objdir/$objdir\"
 
   if test ! -f \"\$progdir/\$program\" || \\
-     { newestfile=\`ls -1dt \"\$progdir/\$program\" \"\$progdir/../\$program\" 2>/dev/null | sed 1q\`; \\
-       test \"X\$newestfile\" != \"X\$progdir/\$program\"; }; then
-    if test ! -d \"\$progdir\"; then
-      $mkdir \"\$progdir\"
-    else
-      $rm \"\$progdir/\$program\"
-    fi
+     { file=\`ls -1dt \"\$progdir/\$program\" \"\$progdir/../\$program\" 2>/dev/null | sed 1q\`; \\
+       test \"X\$file\" != \"X\$progdir/\$program\"; }; then
+
+    file=\"\$\$-\$program\"
+
+    $rm \"\$progdir/\$file\""
+
+	  echo >> $output "\
 
     # link executable that uses uninstalled libraries
-    (cd \$thisdir && $compile_for_build_command) || exit 1
+    if (cd \"\$thisdir\" && $compile_for_build_command); then :
+    else
+      $rm \"\$progdir/\$file\"
+      exit 1
+    fi
+
+    $mv \"\$progdir/\$file\" \"\$progdir/\$program\" 2>/dev/null ||
+    { $rm \"\$progdir/\$program\";
+      $mv \"\$progdir/\$file\" \"\$progdir/\$program\"; }
+    $rm \"\$progdir/\$file\"
   fi"
 	fi
 

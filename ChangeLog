@@ -1,5 +1,17 @@
 1999-02-22  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* ltmain.in: create on-demand executable as $progdir/$$-$program,
+	and rename it to $progdir/$program only when it's finished, to
+	avoid race conditions.  We can still get the program linked
+	multiple times, if multiple instances are started simultaneously
+	and the program does not exist, but they are very unlikely to
+	interfere with each other.  There's still a possibility that one
+	process removes the $program another has just created, and doesn't 
+	replace it before the other tries to run it, in a system whose
+	`mv' is not atomic, so it will $rm then $mv, but so what? :-)
+	Locking files have been avoided to prevent dead-locks in case they 
+	are left over after a reboot or crash.
+
 	* TODO: removed ILD, soon to be merged, and added convenience
 	libraries docs
 
