@@ -1,3 +1,32 @@
+2004-10-04  Gary V. Vaughan  <gary@gnu.org>
+
+	* m4/libtool.m4 (_LT_PROG_ECHO_BACKSLASH): Don't confuse $ECHO
+	with $lt_ECHO, or we always get a libtool with ECHO=echo, rather
+	than testing for a mechanism that quotes \ properly.
+	* NEWS: Updated.
+
+	* config/ltmain.m4sh: Need to include getopt.m4sh earlier so that
+	progpath is set before it is called to --no-reexec.
+	* NEWS: Updated.
+
+2004-10-04  Gary V. Vaughan  <gary@gnu.org>
+
+	Without this change, the distributed libtool tarball has a
+	dependency on autom4te.  There was some inconsistency in the
+	filenames: now we have foo.m4sh -> m4sh -> foo.in -> configure
+	-> foo[.sh].  Bootstrap runs the m4sh steps and the resulting .in
+	files are distributed:
+
+	* tests/Makefile.am (EXTRA_DIST): Distribute defs.m4sh.
+	* Makefile.am (EXTRA_DIST): Distribute libtoolize.m4sh.
+	(libtoolize.in, libtoolize): Split into bootstrap and runtime
+	stages.
+	($(top_srcdir)/tests/defs.in, $(top_srcdir)/tests/defs): Ditto.
+	($(top_srcdir)/config/ltmain.sh): Swap ltmain.m4sh and ltmain.in
+	names.
+	* bootstrap: Make libtoolize.in and tests/defs.in.
+	* NEWS: Updated.
+
 2004-10-03  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
 
 	* README, README.alpha: Update notes regarding available VERBOSE
@@ -11,6 +40,14 @@
 	while running tests.
 
 2004-10-03  Gary V. Vaughan  <gary@gnu.org>
+
+	* NEWS: Updated.
+	* configure.ac: Bumped version to 1.9e.
+
+	GNU libtool 1.9d was released.
+
+	* configure.ac: Bumped version to 1.9d.
+	* NEWS: Updated.
 
 	* libltdl/lt__alloc.h (lt__alloc_die): Declare with LT_SCOPE as
 	per Ralf's original patch.

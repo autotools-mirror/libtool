@@ -691,7 +691,7 @@ X*--fallback-echo)
   ;;
 esac
 
-ECHO=${ECHO-echo}
+ECHO=${lt_ECHO-echo}
 if test "X[$]1" = X--no-reexec; then
   # Discard the --no-reexec flag, and continue.
   shift
@@ -719,7 +719,7 @@ fi
 # if CDPATH is set.
 (unset CDPATH) >/dev/null 2>&1 && unset CDPATH
 
-if test -z "$ECHO"; then
+if test -z "$lt_ECHO"; then
   if test "X${echo_test_string+set}" != Xset; then
     # find a string as large as possible, as long as the shell can cope with it
     for cmd in 'sed 50q "[$]0"' 'sed 20q "[$]0"' 'sed 10q "[$]0"' 'sed 2q "[$]0"' 'echo test'; do

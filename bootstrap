@@ -58,7 +58,7 @@ set -- `sed '/AC_INIT/{s/[][,()]/ /g; p;};d' configure.ac`
 # configure, and ltversion.m4 to generate configure in the first place:
 rm -f ./config/ltmain.sh ./m4/ltversion.m4
 test -f Makefile || { makefile=Makefile; cp Makefile.am $makefile; }
-make ./config/ltmain.sh ./m4/ltversion.m4 \
+make ./config/ltmain.sh ./m4/ltversion.m4 ./libtoolize.in ./tests/defs.in \
     top_srcdir=. PACKAGE="$2" VERSION="$3" M4SH="autom4te -l m4sh"
 test -z "$makefile" || rm -f "$makefile"
 

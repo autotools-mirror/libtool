@@ -78,6 +78,8 @@ package_revision=@package_revision@
 AS_SHELL_SANITIZE
 $as_unset CDPATH
 
+m4_include([getopt.m4sh])
+
 # Check that we have a working $ECHO.
 if test "X$1" = X--no-reexec; then
   # Discard the --no-reexec flag, and continue.
@@ -101,8 +103,6 @@ $*
 EOF
   exit $EXIT_SUCCESS
 fi
-
-m4_include([getopt.m4sh])
 
 default_mode=
 magic="%%%MAGIC variable%%%"
