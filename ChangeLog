@@ -1,5 +1,9 @@
 1998-11-24  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* ltconfig.in (echo): avoid shell error messages when we're
+	testing for large command line support
+	Reported by Axel Thimm <Axel.Thimm@physik.fu-berlin.de>
+
 	* doc/PLATFORMS: updated last-tested release for platforms I've
 	got access to
 

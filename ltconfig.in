@@ -50,17 +50,20 @@ fi
 # if CDPATH is set.
 if test "${CDPATH+set}" = set; then CDPATH=; export CDPATH; fi
 
-if echo_test_string=${echo_test_string-`sed 50q "$0"`}; then :
-else
-  # some shells may not be able to cope with such a large variable
-  # I just hope they do not crash
-  echo_test_string=${echo_test_string-`sed 15q "$0"`} ||
-  echo_test_string=${echo_test_string-`sed 2q "$0"`} ||
-  echo_test_string=${echo_test_string-"test"}
-  echo ok, just ignore the messages above >&2
+if test "X${echo_test_string+set}" != "Xset"; then
+  # find a string as large as possible, as long as the shell can cope with it
+  for cmd in 'sed 50q "$0"' 'sed 20q "$0"' 'sed 10q "$0"' 'sed 2q "$0"' 'echo test'; do
+    # expected sizes: less than 2Kb, 1Kb, 512 bytes, 16 bytes, ...
+    if (echo_test_string="`eval $cmd`") 2>/dev/null &&
+       echo_test_string="`eval $cmd`" &&
+       (test "X$echo_test_string" = "X$echo_test_string") 2>/dev/null; then
+      break
+    fi
+  done
 fi
+
 if test "X`($echo '\t') 2>/dev/null`" != 'X\t' ||
-   test "X`($echo "$echo_test_string")`" != X"$echo_test_string"; then
+   test "X`($echo "$echo_test_string") 2>/dev/null`" != X"$echo_test_string"; then
   # The Solaris, AIX, and Digital Unix default echo programs unquote
   # backslashes.  This makes it impossible to quote backslashes using
   #   echo "$something" | sed 's/\\/\\\\/g'
@@ -108,19 +111,25 @@ if test "X`($echo '\t') 2>/dev/null`" != 'X\t' ||
       elif test "X`("$CONFIG_SHELL" "$0" --fallback-echo '\t') 2>/dev/null`" = 'X\t' &&
 	   test "X`("$CONFIG_SHELL" "$0" --fallback-echo "$echo_test_string") 2>/dev/null`" = X"$echo_test_string"; then
         echo="$CONFIG_SHELL $0 --fallback-echo"
-      elif test "X$echo_test_string" != "Xtest" &&
-	   test "X$echo_test_string" != "X"; then
-        # maybe if we try with a smaller string...
-	if test "X$echo_test_string" != "X`sed 15q "$0"`"; then
-	  echo_test_string="`sed 15q "$0"`" # less than 1Kb
-	else
-	  echo_test_string="test" # really small
-	fi
-	export echo_test_string
-	exec "${ORIGINAL_CONFIG_SHELL}" "$0" ${1+"$@"}
       else
-        # Oops.  We lost completely, so just stick with echo.
-        echo=echo
+        # maybe with a smaller string...
+	prev=:
+
+	for cmd in 'echo test' 'sed 2q "$0"' 'sed 10q "$0"' 'sed 20q "$0"' 'sed 50q "$0"'; do
+	  if (test "X$echo_test_string" = "X`eval $cmd`") 2>/dev/null; then
+	    break
+	  fi
+	  prev="$cmd"
+	done
+
+	if test "$prev" != 'sed 50q "$0"'; then
+	  echo_test_string=`eval $prev`
+	  export echo_test_string
+	  exec "${ORIGINAL_CONFIG_SHELL}" "$0" ${1+"$@"}
+	else
+	  # Oops.  We lost completely, so just stick with echo.
+	  echo=echo
+	fi
       fi
     fi
   fi
@@ -763,7 +772,7 @@ if test "$compiler_c_o" = no && test "$need_locks" != no; then
   echo "$ac_t$hard_links" 1>&6
   $rm conftest*
   if test "$hard_links" = no; then
-    echo "*** WARNING: \`$CC' does not support \`-c -o', so \`make -j' may be unsafe"
+    echo "*** WARNING: \`$CC' does not support \`-c -o', so \`make -j' may be unsafe" >&2
     need_locks=warn
   fi
 else
