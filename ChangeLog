@@ -1,3 +1,8 @@
+1998-12-04  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* ltconfig.in (solaris): do not use $CC for linking if GNU ld is
+	not available
+
 1998-12-04  Manfred Weichel  <Manfred.Weichel@pdb.siemens.de>
 
 	* ltconfig.in: Port to SCO UnixWare 7.x.

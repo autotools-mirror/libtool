@@ -1278,13 +1278,11 @@ DllMain (HINSTANCE hInst, DWORD reason, LPVOID reserved)
 
   solaris*)
     no_undefined_flag=' -z text'
-    if test "$with_gcc" = yes; then
-      archive_cmds='$CC -shared ${wl}-h $wl$soname -o $lib$libobjs$deplibs'
-    else
-      archive_cmds='$LD -G${allow_undefined_flag} -h $soname -o $lib$libobjs$deplibs'
-      archive_sym_cmds='$echo "{ global:" > $lib.exp~sed $export_symbols -e "s/.*/\1;/" >> $lib.exp~$echo "local: * }" > $lib.exp~
+    # $CC -shared without GNU ld will not create a library from C++
+    # object files and a static libstdc++, better avoid it by now
+    archive_cmds='$LD -G${allow_undefined_flag} -h $soname -o $lib$libobjs$deplibs'
+    archive_sym_cmds='$echo "{ global:" > $lib.exp~sed $export_symbols -e "s/.*/\1;/" >> $lib.exp~$echo "local: * }" > $lib.exp~
 		$LD -G${allow_undefined_flag} -M $export_symbols -h $soname -o $lib$libobjs$deplibs~$rm $lib.exp'
-    fi
     hardcode_libdir_flag_spec='-R$libdir'
     hardcode_shlibpath_var=no
 
