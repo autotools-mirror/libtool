@@ -1,3 +1,19 @@
+1999-03-20 Thomas Tanner  <tanner@gmx.de>
+
+	* doc/libtool.texi (link mode): documentation for -module updated
+	* ltconfig.in: fast-install mode doesn't work for
+	  hardcode_into_libs=yes
+	* ltmain.in: bugfix: "-dlopen self [-all]-static" wouldn't use
+	  dlopen_self_static, automatically enable -export-dynamic when
+	  using "-dlopen self",	always make run-paths absolute,
+	  ignore -lc only on platforms that don't have such a library,
+	  cleanups in the ILD code, find even installed libtool libraries
+	  that were moved, before generating the DLL-import library we need
+	  to set libname, improved hardcoding of shlibpath for libraries,
+	  don't generate an installable pseudo-library for convenience
+	  libraries, bugfix: export_symbols would be removed immediately
+	  before it is used
+
 1999-03-19 Thomas Tanner  <tanner@gmx.de>
 
 	* use the same header in all configure.in's and Makefile.am's

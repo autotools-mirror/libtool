@@ -1189,9 +1189,7 @@ executable.
 
 @item -module
 Creates a library that can be dlopenend (@pxref{Dlopened modules}). 
-This option doesn't work for programs and must not be used 
-together with @samp{-export-symbols}.
-It enables the option @samp{-export-dynamic} automatically.
+This option doesn't work for programs.
 Module names don't need to be prefixed with 'lib'.
 In order to prevent name clashes, however, 'libname' and 'name' 
 must not be used at the same time in your package.
