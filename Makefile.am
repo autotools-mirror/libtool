@@ -15,12 +15,13 @@ LIBS= @LIBS@
 aclocal_macros = libtool.m4
 
 EXTRA_DIST = $(aclocal_macros) libtoolize.in ltconfig.in ltmain.in \
-	mkstamp ChangeLog.0
+        ltcf-c.sh ltcf-cxx.sh \
+	mkstamp ChangeLog.0 ChangeLog.1
 CLEANFILES = libtool libtoolize ltconfig.T ltmain.shT
 
 # These are required by libtoolize.
 pkgdata_SCRIPTS = config.guess config.sub ltconfig
-pkgdata_DATA = ltmain.sh
+pkgdata_DATA = ltmain.sh ltcf-c.sh ltcf-cxx.sh
 
 # This macro file should be visible to Automake's aclocal.
 aclocal_DATA = $(aclocal_macros)
