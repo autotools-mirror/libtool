@@ -3518,7 +3518,7 @@ func_mode_link ()
 	      case "$temp_rpath " in
 	      *" $dir "*) ;;
 	      *" $absdir "*) ;;
-	      *) temp_rpath="$temp_rpath $dir" ;;
+	      *) temp_rpath="$temp_rpath $absdir" ;;
 	      esac
 	    fi
 
