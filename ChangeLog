@@ -1,3 +1,8 @@
+2003-07-30  Tony Wyatt <wyattaw@optushome.com.au>
+
+	* libtool.m4: Remove parentheses around finish_eval part which
+	broke on amigaos pdksh.
+
 2003-07-30  Albert Chin-A-Young  <china@thewrittenword.com>
 
 	* libtool.m4 (AC_LIBTOOL_PROG_CC_C_O): Correctly remove IRIX C++
