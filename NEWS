@@ -37,6 +37,7 @@ New in 1.5b: 2004-??-??; CVS version 1.5a, Libtool team:
 * Speed up max_cmd_len check.
 * New function in libltdl: lt_dlhandle_find provides access to module handles
   by module name.
+* libltdl no longer loads shared libraries with global symbol resolution.
 * make install now deletes preexisting $prefix/share/libtool before installing
   latest files.
 * Extracting symbols from an import library on cygwin and win32 now works.
