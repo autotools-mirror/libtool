@@ -19,11 +19,14 @@ fi
 if test $# -gt 1 && test x"$1" = x"-m"; then
   echo "$2" > "$log_file"
   shift; shift
+elif test $# -gt 1 && test x"$1" = x"-F"; then
+  cat < "$2" > "$log_file" || exit 1
+  shift; shift
 fi
 
 echo "Checking whether repository is up to date..." >&2
 commit=`cvs $cvsopt stat ${1+"$@"} 2>/dev/null | grep Status \
-        | egrep -v '(Up-to-date|Cvsoptly )'`
+        | egrep -v '(Up-to-date|Locally )'`
 
 if test -n "$commit"; then
   echo "$commit"
