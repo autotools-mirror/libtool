@@ -1,3 +1,8 @@
+2004-02-18  Gary V. Vaughan  <gary@gnu.org>
+
+	* commit (SHELL): Set it explicitly, incase some madman is using
+	tcsh as their login shell :-b
+
 2004-02-15  Scott James Remnant  <scott@netsplit.com>
 
 	* Makefile.am (m4/ltversion.m4): Generate serial number by
@@ -13,7 +18,7 @@
 2004-02-15  Peter O'Gorman  <peter@pogma.com>
 
 	* m4/libtool.m4, ltmain.in: Rename shrext to shrext_cmds.
-	
+
 2004-02-13  Scott James Remnant  <scott@netsplit.com>
 
 	* ltmain.in, libtoolize.in, commit, config/mailnotify: Correctly
@@ -45,7 +50,7 @@
 	that we only need keep in CVS.
 	* README-alpha: Add -fMakefile.maint to the instructions where
 	needed.
-	
+
 2004-02-12  Albert Chin-A-Young  <china@thewrittenword.com>
 	Scott James Remnant  <scott@netsplit.com>
 
@@ -56,7 +61,7 @@
 	command separator.
 	* m4/libtool.m4: Also remove unnecessary trailing slash where
 	we break a line on a command separator.
-	    
+
 2004-02-12  Scott James Remnant  <scott@netsplit.com>
 
 	* m4/ltoptions.m4: This got committed by an over-keen Gary,
