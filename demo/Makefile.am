@@ -24,11 +24,11 @@ bin_PROGRAMS = hell hell.debug $(BUILD_helldl)
 
 # Build hell from main.c and libhello.la
 hell_SOURCES = main.c
-hell_LDADD = libhello.la
+hell_LDADD = -lhello
 
 # Create an easier-to-debug version of hell.
 hell_debug_SOURCES = main.c
-hell_debug_LDADD = libhello.la
+hell_debug_LDADD = -lhello
 hell_debug_LDFLAGS = $(STATIC)
 
 if BINARY_HELLDL

@@ -1,5 +1,10 @@
 1999-01-22  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
 
+	* ltmain.in: Merged Thomas' ild-patch.  Untested.
+	* configure.in: ditto.
+	* demo/Makefile.am: ditto.
+	* depdemo/Makefile.am: ditto.
+
 	* ltmain.in (ild): Redo the Reverted change which allowed libtool
 	to link libraries with dependencies on .la libs.
 	* NEWS: ReInsert reference to win32.
