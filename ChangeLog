@@ -1,5 +1,37 @@
 2004-09-23  Gary V. Vaughan  <gary@gnu.org>
 
+	* tests/cdemo-conf.test, tests/cdemo-exec.test,
+	tests/cdemo-make.test, tests/cdemo-shared.test,
+	tests/cdemo-static.test, tests/demo-conf.test,
+	tests/demo-deplibs.test, tests/demo-exec.test,
+	tests/demo-hardcode.test, tests/demo-inst.test,
+	tests/demo-make.test, tests/demo-nofast.test,
+	tests/demo-noinst-link.test, tests/demo-nopic.test,
+	tests/demo-pic.test, tests/demo-relink.test,
+	tests/demo-shared.test, tests/demo-static.test,
+	tests/demo-unst.test, tests/depdemo-conf.test,
+	tests/depdemo-exec.test, tests/depdemo-inst.test,
+	tests/depdemo-make.test, tests/depdemo-nofast.test,
+	tests/depdemo-relink.test, tests/depdemo-shared.test,
+	tests/depdemo-static.test, tests/depdemo-unst.test,
+	tests/f77demo-conf.test, tests/f77demo-exec.test,
+	tests/f77demo-make.test, tests/f77demo-shared.test,
+	tests/f77demo-static.test, tests/link-2.test, tests/link.test,
+	tests/mdemo-conf.test, tests/mdemo-dryrun.test,
+	tests/mdemo-exec.test, tests/mdemo-inst.test,
+	tests/mdemo-make.test, tests/mdemo-shared.test,
+	tests/mdemo-static.test, tests/mdemo-unst.test,
+	tests/mdemo2-conf.test, tests/mdemo2-exec.test,
+	tests/mdemo2-make.test, tests/nomode.test, tests/pdemo-conf.test,
+	tests/pdemo-exec.test, tests/pdemo-inst.test,
+	tests/pdemo-make.test, tests/quote.test, tests/sh.test,
+	tests/suffix.test, tests/tagdemo-conf.test,
+	tests/tagdemo-exec.test, tests/tagdemo-make.test,
+	tests/tagdemo-shared.test, tests/tagdemo-static.test,
+	tests/tagtrace.test: POSIX `.' searches only in user's $PATH, so
+	we must use `. ./defs' to source the common code.
+	Reported by Alexandre Duret-Lutz <adl@src.lip6.fr>
+
 	* m4/libtool.m4 (_LT_CMD_GLOBAL_SYMBOLS): Gah.  Merge error
 	corrected.
 

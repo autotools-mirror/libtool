@@ -21,7 +21,7 @@
 # Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
 # MA 02111-1307, USA.
 
-. defs || exit 1
+. ./defs || exit 1
 
 status=$EXIT_SUCCESS
 if $LIBTOOL --help 2>&1 | grep '^Usage:' >/dev/null; then :
