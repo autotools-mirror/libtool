@@ -1,3 +1,7 @@
+1999-04-03  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* NEWS: improved support for AIX and HP/UX
+
 1999-04-03 Thomas Tanner  <tanner@gmx.de>
 
 	* NEWS: updated

@@ -8,7 +8,7 @@ New in 1.3: 1999-04-??; CVS version 1.2g, Libtool team:
 * Libltdl has a new license: LGPL with a special exception
 * Libltdl can be used as stand-alone package
 * dlopen support for BeOS
-* Improved support for BeOS and Cygwin
+* Improved support for AIX, BeOS, Cygwin and HP/UX
 * Documentation updates
 * New tests
 * Bugfixes
