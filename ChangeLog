@@ -1,3 +1,16 @@
+2001-04-19  Dan McNichol <mcnichol@austin.ibm.com>
+
+	* libtool.m4: Build standard shared libraries on AIX POWER
+	more like AIX does, with a shared object archived into lib<xxx>.a.
+	On AIX -bexpall flag does strange things... Don't use it.
+	Fix quotes around -berok flag.  Add support for AIX 5.
+	Add support for run time linking on AIX POWER. (should work
+	on AIX 4.2 and up).  Turn this feature on by adding -brtl flag
+	to LD_FLAGS.  Add support for AIX on IA64. Note: AIX on IA64
+	uses a SYSV type linker.  Add a comment telling what to do if the
+	TOC starts getting too large on AIX.
+	* NEWS: mention aix5 support.
+		
 2001-04-18  Alexandre Oliva  <aoliva@redhat.com>
 
 	* TODO: Add -L- flag.
