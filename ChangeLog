@@ -1,3 +1,8 @@
+2000-11-20  Paul Berrevoets  <paul@swi.com>
+
+	* ltmain.in: Some versions of expr respond with "0" if a
+	regexp fails to match.
+
 2000-11-19  Gary V. Vaughan  <gvv@techie.com>
 
 	* ltdl.c: Relegate non-POSIX-compliant symbols (e.g. those
