@@ -1,3 +1,9 @@
+1999-01-26  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
+
+	* configure.in:  It seems Alexandre accidentally removed the
+	AC_SUBST(pkgdatadir) line recently which breaks libtoolize.
+	Reverted that small change.
+
 1999-01-25  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* libltdl/ltdl.c (find_module): test old_name and dlname for NULL, 
