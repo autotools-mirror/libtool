@@ -2,7 +2,7 @@ m4_define([_m4_divert(SCRIPT)], 100)
 m4_divert_push([SCRIPT])#!/bin/sh
 # @configure_input@
 
-# mailnotify (GNU @PACKAGE@) version 0.5
+# mailnotify (GNU @PACKAGE@) version 0.6
 # Written by Gary V. Vaughan <gary@gnu.org>
 
 # Copyright (C) 2004 Free Software Foundation, Inc.
@@ -295,7 +295,7 @@ func_sendmail ()
 
     save_IFS="$IFS"
     IFS=':'
-    for try_sendmail_dir in /usr/lib:/usr/sbin:$PATH; do
+    for try_sendmail_dir in $PATH; do
         IFS="$save_IFS"
 	PATH="$save_PATH"
 	if test -x "$try_sendmail_dir/$SENDMAIL"; then

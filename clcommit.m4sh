@@ -2,7 +2,7 @@ m4_define([_m4_divert(SCRIPT)], 100)
 m4_divert_push([SCRIPT])#!/bin/sh
 # @configure_input@
 
-# clcommit (GNU @PACKAGE@) version 0.13
+# clcommit (GNU @PACKAGE@) version 0.14
 # Written by Gary V. Vaughan <gary@gnu.org>
 # and Alexandre Oliva <aoliva@redhat.com>
 
@@ -76,6 +76,7 @@ m4_divert_push([SCRIPT])#!/bin/sh
 : ${MAILNOTIFY="mailnotify"}
 : ${MKSTAMP="mkstamp"}
 
+test -f "config/$MAILNOTIFY" && MAILNOTIFY="config/$MAILNOTIFY"
 test -f "config/$MKSTAMP" && MKSTAMP="config/$MKSTAMP"
 
 PROGRAM=clcommit
