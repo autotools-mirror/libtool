@@ -1,3 +1,20 @@
+2002-11-03  Ossama Othman  <ossama@doc.ece.uci.edu>
+
+	* ltmain.in: add support for installing into temporary
+	staging area (e.g. 'make install DESTDIR=...')
+
+2002-11-03  Charles Wilson  <cwilson@ece.gatech.edu>
+
+	* libtool.m4 (AC_LIBTOOL_LANG_CXX_CONFIG): restore setting
+	allow_undefined_flag=unsupported for cygwin and mingw.
+	(AC_LIBTOOL_PROG_LD_SHLIBS): ditto, for both "normal" gcc/ld
+	and for the (unmaintained?) MSVC case.
+
+2002-11-03  Charles Wilson  <cwilson@ece.gatech.edu>
+
+	* doc/libtool.texi (Install mode): document new
+	-inst-prefix option.
+
 2002-11-02  Robert Boehne  <rboehne@gnu.org>
 
 	* ltmain.in: Print a warning if the mode is not specified.

@@ -775,8 +775,13 @@ else
     lt_cv_dlopen_self=yes
     ;;
 
-  cygwin* | mingw* | pw32*)
+  mingw* | pw32*)
     lt_cv_dlopen="LoadLibrary"
+    lt_cv_dlopen_libs=
+   ;;
+
+  cygwin*)
+    lt_cv_dlopen="dlopen"
     lt_cv_dlopen_libs=
    ;;
 
@@ -2645,6 +2650,7 @@ case $host_os in
     # _LT_AC_TAGVAR(hardcode_libdir_flag_spec, $1) is actually meaningless,
     # as there is no search path for DLLs.
     _LT_AC_TAGVAR(hardcode_libdir_flag_spec, $1)='-L$libdir'
+    _LT_AC_TAGVAR(allow_undefined_flag, $1)=unsupported
     _LT_AC_TAGVAR(always_export_symbols, $1)=no
 
     if $LD --help 2>&1 | egrep 'auto-import' > /dev/null; then
@@ -2657,6 +2663,7 @@ case $host_os in
 
   mingw* | pw32* )
     _LT_AC_TAGVAR(hardcode_libdir_flag_spec, $1)='-L$libdir'
+    _LT_AC_TAGVAR(allow_undefined_flag, $1)=unsupported
     _LT_AC_TAGVAR(always_export_symbols, $1)=no
 
     if $LD --help 2>&1 | egrep 'auto-import' > /dev/null; then
@@ -4649,6 +4656,7 @@ EOF
       # _LT_AC_TAGVAR(hardcode_libdir_flag_spec, $1) is actually meaningless,
       # as there is no search path for DLLs.
       _LT_AC_TAGVAR(hardcode_libdir_flag_spec, $1)='-L$libdir'
+      _LT_AC_TAGVAR(allow_undefined_flag, $1)=unsupported
       _LT_AC_TAGVAR(always_export_symbols, $1)=no
 
       if $LD --help 2>&1 | egrep 'auto-import' > /dev/null; then
@@ -4711,20 +4719,12 @@ EOF
       runpath_var=LD_RUN_PATH
       _LT_AC_TAGVAR(hardcode_libdir_flag_spec, $1)='${wl}--rpath ${wl}$libdir'
       _LT_AC_TAGVAR(export_dynamic_flag_spec, $1)='${wl}--export-dynamic'
-      case $host_os in
-      cygwin* | mingw* | pw32*)
-	# dlltool doesn't understand --whole-archive et. al.
-	_LT_AC_TAGVAR(whole_archive_flag_spec, $1)=
-	;;
-      *)
-	# ancient GNU ld didn't support --whole-archive et. al.
-	if $LD --help 2>&1 | egrep 'no-whole-archive' > /dev/null; then
-  	_LT_AC_TAGVAR(whole_archive_flag_spec, $1)="$wlarc"'--whole-archive$convenience '"$wlarc"'--no-whole-archive'
-	else
+      # ancient GNU ld didn't support --whole-archive et. al.
+      if $LD --help 2>&1 | egrep 'no-whole-archive' > /dev/null; then
+ 	_LT_AC_TAGVAR(whole_archive_flag_spec, $1)="$wlarc"'--whole-archive$convenience '"$wlarc"'--no-whole-archive'
+      else
   	_LT_AC_TAGVAR(whole_archive_flag_spec, $1)=
-	fi
-	;;
-      esac
+      fi
     fi
   else
     # PORTME fill in a description of your system's linker (not GNU ld)
@@ -4877,6 +4877,7 @@ EOF
       # hardcode_libdir_flag_spec is actually meaningless, as there is
       # no search path for DLLs.
       _LT_AC_TAGVAR(hardcode_libdir_flag_spec, $1)=' '
+      _LT_AC_TAGVAR(allow_undefined_flag, $1)=unsupported
       # Tell ltmain to make .lib files, not .a files.
       libext=lib
       # FIXME: Setting linknames here is a bad hack.

@@ -1354,12 +1354,53 @@ any of their required library directories are added to the library path.
 @cindex install mode
 @cindex mode, install
 
-In @dfn{install} mode, libtool interprets @var{mode-args} as an
-installation command beginning with @code{cp}, or a BSD-compatible
-@code{install} program.
+In @dfn{install} mode, libtool interprets most of the elements of
+@var{mode-args} as an installation command beginning with 
+@code{cp}, or a BSD-compatible @code{install} program.
 
-The rest of the @var{mode-args} are interpreted as arguments to that
-command.
+The following components of @var{mode-args} are treated specially:
+
+@table @samp
+@item -inst-prefix @var{inst-prefix-dir}
+When installing into a temporary staging area, rather than the
+final @var{prefix}, this argument is used to reflect the 
+temporary path, in much the same way @code{automake} uses
+@var{DESTDIR}.  For instance, if @var{prefix} is @code{/usr/local},
+but @var{inst-prefix-dir} is @code{/tmp}, then the object will be
+installed under @code{/tmp/usr/local/}.  If the installed object 
+is a libtool library, then the internal fields of that library
+will reflect only @var{prefix}, not @var{inst-prefix-dir}:
+
+@example
+# Directory that this library needs to be installed in:
+libdir='/usr/local/lib'
+@end example
+
+not
+
+@example
+# Directory that this library needs to be installed in:
+libdir='/tmp/usr/local/lib'
+@end example
+
+@code{inst-prefix} is also used to insure that if the installed 
+object must be relinked upon installation, that it is relinked 
+against the libraries in @var{inst-prefix-dir}/@var{prefix}, 
+not @var{prefix}.
+
+In truth, this option is not really intended for use when calling
+libtool directly; it is automatically used when @code{libtool --mode=install}
+calls @code{libtool --mode=relink}.  Libtool does this by 
+analyzing the destination path given in the original 
+@code{libtool --mode=install} command and comparing it to the 
+expected installation path established during @code{libtool --mode=link}.
+
+Thus, end-users need change nothing, and @code{automake}-style
+@code{make install DESTDIR=/tmp} will Just Work(tm).
+@end table
+
+The rest of the @var{mode-args} are interpreted as arguments to the
+@code{cp} or @code{install} command.
 
 The command is run, and any necessary unprivileged post-installation
 commands are also completed.
