@@ -12,6 +12,7 @@ dnl Since the package is flat, we need not use the line above,
 dnl and not having macros in LIBLTDL allows us to build LIBLTDL
 dnl on demand even with broken makes
 AC_LIBLTDL_CONVENIENCE(../libltdl)
+AC_SUBST(INCLTDL)
 AC_SUBST(LIBLTDL)
 
 AC_LIBTOOL_WIN32_DLL

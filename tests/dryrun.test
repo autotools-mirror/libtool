@@ -43,7 +43,7 @@ mv $objdir/libtool.new libtool
 
 # main.o is not compiled with libtool, but it depends on it, so make
 # sure it is up-to-date
-$make main.o || exit 1
+$make main.$OBJEXT || exit 1
 
 echo "= Making object files in ../mdemo (dry run)"
 ls -l . $objdir > $before
@@ -65,12 +65,12 @@ $make foo1.la libfoo2.la || exit 1
 
 echo "= Making programs in ../mdemo (dry run)"
 ls -l . $objdir > $before
-force_dry_run=yes $make mdemo mdemo.static 1>&2 || exit $?
+force_dry_run=yes $make mdemo$EXEEXT mdemo.static 1>&2 || exit $?
 ls -l . $objdir > $after
 cmp $before $after > /dev/null || exit 1
 # Now really make them
 echo "= Making programs in ../mdemo"
-$make mdemo mdemo.static || exit 1
+$make mdemo$EXEEXT mdemo.static || exit 1
 
 echo "= Running $make install in ../mdemo (dry run)"
 # Libtool does not create these directories
@@ -88,7 +88,7 @@ $make install || exit 1
 
 echo "= Running $make uninstall in ../mdemo (dry run)"
 # Libtool does not uninstall the programs, remove them first
-rm -f $prefix/bin/mdemo $prefix/bin/mdemo.static
+rm -f $prefix/bin/mdemo$EXEEXT $prefix/bin/mdemo.static
 ls -l . $objdir > $before
 ls -lR $prefix >> $before
 force_dry_run=yes $make uninstall 1>&2 || exit $?

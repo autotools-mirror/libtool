@@ -3001,6 +3001,15 @@ the module @var{handle}.  The contents of the struct must not be modified.
 Return @code{NULL} on failure. 
 @end deftypefun
 
+@deftypefun int lt_dlforeach (int (*@var{func})(lt_dlhandle @var{handle}, lt_ptr_t @var{data}), lt_ptr_t @var{data})
+For each loaded module call the function @var{func}.  The argument
+@var{handle} is the handle of one of the loaded modules, @var{data} is
+the @var{data} argument passed to @code{lt_dlforeach}.
+As soon as @var{func} returns a non-zero value for one of the handles,
+@code{lt_dlforeach} will stop calling @var{func} and immediately return 1.
+Otherwise 0 is returned.
+@end deftypefun
+
 @deftypevar {lt_ptr_t (*} lt_dlmalloc ) (size_t size)
 @deftypevarx {void (*} lt_dlfree ) (lt_ptr_t ptr)
 These variables are set to @code{malloc} and @code{free}, by default,

@@ -1,5 +1,5 @@
 /* l2.h -- interface to a trivial library
-   Copyright (C) 1998-2000 Thomas Tanner <tanner@ffii.org>
+   Copyright (C) 1998-1999 Thomas Tanner <tanner@ffii.org>
    This file is part of GNU Libtool.
 
 This program is free software; you can redistribute it and/or modify

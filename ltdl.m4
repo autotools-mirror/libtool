@@ -33,7 +33,7 @@ dnl of the ltdl objects -- including compiler checks (above) and header
 dnl checks (below).
 AC_REQUIRE([AC_HEADER_STDC])dnl
 
-AC_CHECK_HEADERS(malloc.h memory.h stdlib.h stdio.h unistd.h ctype.h dlfcn.h dl.h dld.h)
+AC_CHECK_HEADERS(malloc.h memory.h stdlib.h stdio.h ctype.h dlfcn.h dl.h dld.h)
 AC_CHECK_HEADERS(string.h strings.h, break)
 AC_CHECK_FUNCS(strchr index, break)
 AC_CHECK_FUNCS(strrchr rindex, break)
@@ -41,6 +41,7 @@ AC_CHECK_FUNCS(strrchr rindex, break)
 AC_REQUIRE([AC_LTDL_ENABLE_INSTALL])dnl
 AC_REQUIRE([AC_LTDL_SHLIBEXT])dnl
 AC_REQUIRE([AC_LTDL_SHLIBPATH])dnl
+AC_REQUIRE([AC_LTDL_SYSSEARCHPATH])dnl
 AC_REQUIRE([AC_LTDL_OBJDIR])dnl
 AC_REQUIRE([AC_LTDL_DLPREOPEN])dnl
 AC_REQUIRE([AC_LTDL_DLLIB])dnl
@@ -93,6 +94,28 @@ AC_CACHE_CHECK([which variable specifies run-time library path],
 if test -n "$libltdl_cv_shlibpath_var"; then
   AC_DEFINE_UNQUOTED(LTDL_SHLIBPATH_VAR, "$libltdl_cv_shlibpath_var",
     [Define to the name of the environment variable that determines the dynamic library search path. ])
+fi
+])
+
+AC_DEFUN(AC_LTDL_SYSSEARCHPATH,
+[AC_REQUIRE([AC_LTDL_SNARF_CONFIG])dnl
+AC_CACHE_CHECK([for the default library search path],
+  libltdl_cv_sys_search_path, [libltdl_cv_sys_search_path="$sys_lib_dlsearch_path_spec"])
+if test -n "$libltdl_cv_sys_search_path"; then
+  case "$lt_target" in
+  *-*-mingw*) pathsep=";" ;;
+  *) pathsep=":" ;;
+  esac
+  sys_search_path=
+  for dir in $libltdl_cv_sys_search_path; do
+    if test -z "$sys_search_path"; then
+      sys_search_path="$dir"
+    else
+      sys_search_path="$sys_search_path$pathsep$dir"
+    fi
+  done
+  AC_DEFINE_UNQUOTED(LTDL_SYSSEARCHPATH, "$sys_search_path",
+    [Define to the system default library search path. ])
 fi
 ])
 

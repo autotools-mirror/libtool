@@ -238,12 +238,12 @@ if test -z "$automake"; then
       instserial=`grep '^# serial ' $ltdl_m4 | grep 'AC_LIB_LTDL' | sed -e 's/^# serial \([0-9][0-9]*\).*$/\1/; q'`
 
       if test -z "$instserial"; then
-        echo "$progname: warning: no serial number on \`$ltdl_m4'" 1>&2
+	echo "$progname: warning: no serial number on \`$ltdl_m4'" 1>&2
       else
-        # If the local macro has no serial number, we assume it's ancient.
-        localserial=`grep '^# serial ' aclocal.m4 | grep 'AC_LIB_LTDL' | sed -e 's/^# serial \([0-9][0-9]*\).*$/\1/; q'`
+	# If the local macro has no serial number, we assume it's ancient.
+	localserial=`grep '^# serial ' aclocal.m4 | grep 'AC_LIB_LTDL' | sed -e 's/^# serial \([0-9][0-9]*\).*$/\1/; q'`
 
-        test -z "$localserial" && localserial=0
+	test -z "$localserial" && localserial=0
 
 	if test "$localserial" -lt "$instserial"; then
 	  echo "You should $updatemsg."

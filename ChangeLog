@@ -1,3 +1,51 @@
+2000-01-19  Thomas Tanner  <tanner@ffii.org>
+
+	* ltmain.in: rewrite of the ILD code, merge linking code for
+	  programs, libraries and objects, allow linking of shared libraries
+	  against static libraries/objects on platforms that support it
+	  but print a warning, fix some typos
+	  
+	* partially revert my previous change and
+	  update only copyright notices of files that were actually modified
+	  
+	* NEWS: update
+	  
+	* libltdl/Makefile.am: version number was wrong
+	
+	* libltdl/ltdl.c (tryall_dlopen): revert Gary's change
+	  since it breaks dlpreopening
+	* ltdl.m4: ditto
+	
+	* libltdl/ltdl.c (sys_search_path): search in the system default
+	  library search path, too
+	* ltdl.m4 (AC_LTDL_SYSSEARCHPATH): extract the path
+
+	* libltdl/ltdl.c (find_module): remove bogus file_not_found_error 
+	
+	* libltdl/ltdl.c (load_deplibs): implement loading of dependency
+	  libraries
+	* libltdl/ltdl.c (unload_deplibs): implement unloading of dependency
+	  libraries
+	* libltdl/ltdl.c (lt_dlexit): correctly close all modules and
+	  their dependencies
+	
+	* libltdl/ltdl.c (lt_dlforeach): new function
+	* libltdl/ltdl.h: ditto
+	* doc/libtool.texi (using libltdl): document it
+	
+	* libtool.m4: reformatting, only add -I$topsrc_dir/libltdl to
+	  INCLTDL
+	  
+	* libtoolize.in: reformatting
+	* ltconfig.in: reformatting
+	* ltmain.in: reformatting
+
+	* mdemo/configure.in: AC_SUBST INCLTDL
+	* mdemo/Makefile.am: use INCLTDL
+	
+	* tests/Makefile.am: reexport OBJEXT and EXEEXT
+	* tests/dryrun.test: use them for building main.obj and mdemo.exe
+	
 2000-01-17  Gary V. Vaughan  <gary@oranda.demon.co.uk>
 
 	* libltdl/ltdl.c (tryall_dlopen): Abort with

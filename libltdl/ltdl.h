@@ -147,6 +147,8 @@ extern const char *lt_dlgetsearchpath LTDL_PARAMS((void));
 extern int lt_dlsetdata LTDL_PARAMS((lt_dlhandle handle, lt_ptr_t data));
 extern lt_ptr_t lt_dlgetdata LTDL_PARAMS((lt_dlhandle handle));
 extern const lt_dlinfo *lt_dlgetinfo LTDL_PARAMS((lt_dlhandle handle));
+extern int lt_dlforeach LTDL_PARAMS((
+		int (*func)(lt_dlhandle handle, lt_ptr_t data), lt_ptr_t data));
 
 #define LTDL_SET_PRELOADED_SYMBOLS() 		LTDL_STMT_START{	\
 	extern const lt_dlsymlist lt_preloaded_symbols[];		\

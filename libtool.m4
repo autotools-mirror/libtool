@@ -307,15 +307,15 @@ dnl not every word.  This closes a longstanding sh security hole.
     if test -f $ac_dir/$1; then
       lt_cv_path_FILE="$ac_dir/$1"
       if test -n "$file_magic_test_file"; then
-        case "$deplibs_check_method" in
-        "file_magic "*)
-          file_magic_regex="`expr \"$deplibs_check_method\" : \"file_magic \(.*\)\"`"
+	case "$deplibs_check_method" in
+	"file_magic "*)
+	  file_magic_regex="`expr \"$deplibs_check_method\" : \"file_magic \(.*\)\"`"
 	  FILE="$lt_cv_path_FILE"
-          if eval $file_magic_cmd \$file_magic_test_file 2> /dev/null |
-            egrep "$file_magic_regex" > /dev/null; then
-            :
-          else
-            cat <<EOF 1>&2
+	  if eval $file_magic_cmd \$file_magic_test_file 2> /dev/null |
+	    egrep "$file_magic_regex" > /dev/null; then
+	    :
+	  else
+	    cat <<EOF 1>&2
 
 *** Warning: the command libtool uses to detect shared libraries,
 *** $file_magic_cmd, produces output that libtool cannot recognize.
@@ -327,8 +327,8 @@ dnl not every word.  This closes a longstanding sh security hole.
 *** bug-libtool@gnu.org
 
 EOF
-          fi ;;
-        esac
+	  fi ;;
+	esac
       fi
       break
     fi
@@ -637,8 +637,7 @@ AC_DEFUN(AC_LIBLTDL_CONVENIENCE, [AC_BEFORE([$0],[AC_LIBTOOL_SETUP])dnl
       ac_configure_args="$ac_configure_args --enable-ltdl-convenience" ;;
   esac
   LIBLTDL=ifelse($#,1,$1,['${top_builddir}/libltdl'])/libltdlc.la
-  INCLTDL=ifelse($#,1,-I$1,
-  ['-I${top_builddir}/libltdl -I${top_srcdir}/libltdl'])
+  INCLTDL=ifelse($#,1,-I$1,['-I${top_srcdir}/libltdl'])
 ])
 
 # AC_LIBLTDL_INSTALLABLE[(dir)] - sets LIBLTDL to the link flags for
@@ -662,8 +661,7 @@ AC_DEFUN(AC_LIBLTDL_INSTALLABLE, [AC_BEFORE([$0],[AC_LIBTOOL_SETUP])dnl
   if test x"$enable_ltdl_install" = x"yes"; then
     ac_configure_args="$ac_configure_args --enable-ltdl-install"
     LIBLTDL=ifelse($#,1,$1,['${top_builddir}/libltdl'])/libltdl.la
-    INCLTDL=ifelse($#,1,-I$1,
-    ['-I${top_builddir}/libltdl -I${top_srcdir}/libltdl'])
+    INCLTDL=ifelse($#,1,-I$1,['-I${top_srcdir}/libltdl'])
   else
     ac_configure_args="$ac_configure_args --enable-ltdl-install=no"
     LIBLTDL="-lltdl"

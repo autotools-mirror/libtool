@@ -2,7 +2,7 @@
 
 AUTOMAKE_OPTIONS = no-dependencies foreign
 
-INCLUDES = -I$(srcdir)/../libltdl
+INCLUDES = $(INCLTDL)
 
 EXTRA_DIST = acinclude.m4
 

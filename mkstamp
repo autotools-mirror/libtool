@@ -1,7 +1,7 @@
 #! /bin/sh
 
 # mkstamp - extract data from Revision and Date RCS tags in a file
-# Copyright (C) 1999-2000 Free Software Foundation, Inc.
+# Copyright (C) 1999 Free Software Foundation, Inc.
 # Alexandre Oliva <oliva@dcc.unicamp.br>
 #
 # This file is free software; you can redistribute it and/or modify it

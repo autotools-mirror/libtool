@@ -54,10 +54,6 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 #include <stdlib.h>
 #endif
 
-#if HAVE_UNISTD_H
-#include <unistd.h>
-#endif
-
 #if HAVE_STDIO_H
 #include <stdio.h>
 #endif
@@ -95,10 +91,14 @@ static const char objdir[] = LTDL_OBJDIR;
 #ifdef	LTDL_SHLIB_EXT
 static const char shlib_ext[] = LTDL_SHLIB_EXT;
 #endif
+#ifdef	LTDL_SYSSEARCHPATH
+static const char sys_search_path[] = LTDL_SYSSEARCHPATH;
+#endif
 
 static const char unknown_error[] = "unknown error";
 static const char dlopen_not_supported_error[] = "dlopen support not available";
 static const char file_not_found_error[] = "file not found";
+static const char deplib_not_found_error[] = "dependency library not found";
 static const char no_symbols_error[] = "no symbols defined";
 static const char cannot_open_error[] = "can't open the module";
 static const char cannot_close_error[] = "can't close the module";
@@ -883,7 +883,7 @@ lt_dlexit LTDL_PARAMS((void))
 {
 	/* shut down libltdl */
 	lt_dltype_t *type = types;
-	int	errors;
+	int	errors, level;
 	
 	if (!initialized) {
 		last_error = shutdown_error;
@@ -895,10 +895,15 @@ lt_dlexit LTDL_PARAMS((void))
 	}
 	/* close all modules */
 	errors = 0;
-	while (handles) {
-		/* FIXME: what if a module depends on another one? */
-		if (lt_dlclose(handles))
-			errors++;
+	for (level = 1; handles; level++) {
+		lt_dlhandle cur = handles;
+		while (cur) {
+			lt_dlhandle tmp = cur;
+			cur = cur->next;
+			if (tmp->info.ref_count <= level)
+				if (lt_dlclose(tmp))
+					errors++;
+		}
 	}
 	initialized = 0;
 	while (type) {
@@ -944,10 +949,6 @@ tryall_dlopen (handle, filename)
 		}
 	} else
 		cur->info.filename = 0;
-	if (access (filename, F_OK) < 0) {
-		last_error = file_not_found_error;
-		return 1;
-	}
 	while (type) {
 		if (type->lib_open(cur, filename) == 0)
 			break;
@@ -1032,7 +1033,6 @@ find_module (handle, dir, libdir, dlname, old_name, installed)
 				return 0;
 		}
 	}
-	last_error = file_not_found_error;
 	return 1;
 }
 
@@ -1145,24 +1145,123 @@ cleanup:
 static int
 load_deplibs(handle, deplibs)
 	lt_dlhandle handle;
-	const char *deplibs;
+	char *deplibs;
 {
-	/* FIXME: load deplibs */
+	char	*p, *save_search_path;
+	int	i;
+	int	ret = 1, depcount = 0;
+	char	**names = 0;
+	lt_dlhandle *handles = 0;
+
 	handle->depcount = 0;
-	handle->deplibs = 0;
-	/* Just to silence gcc -Wall */
-	deplibs = 0;
-	return 0;
+	if (!deplibs)
+		return 0;
+	save_search_path = strdup(user_search_path);
+	if (user_search_path && !save_search_path) {				
+		last_error = memory_error;
+		return 1;
+	}
+	p = deplibs;
+	/* extract search paths and count deplibs */
+	while (*p) {
+		if (!isspace(*p)) {
+			char *end = p+1;
+			while (*end && !isspace(*end)) end++;
+			if (strncmp(p, "-L", 2) == 0 ||
+			    strncmp(p, "-R", 2) == 0) {
+				char save = *end;
+				*end = 0; /* set a temporary string terminator */
+				if (lt_dladdsearchdir(p+2))
+					goto cleanup;
+				*end = save;
+			} else
+				depcount++;
+			p = end;
+		} else
+			p++;
+	}
+	if (!depcount) {
+		ret = 0;
+		goto cleanup;
+	}
+	names = lt_dlmalloc(depcount * sizeof(char*));
+	if (!names)
+		goto cleanup;
+	handles = lt_dlmalloc(depcount * sizeof(lt_dlhandle*));
+	if (!handles)
+		goto cleanup;
+	depcount = 0;
+	/* now only extract the actual deplibs */
+	p = deplibs;
+	while (*p) {
+		if (!isspace(*p)) {
+			char *end = p+1;
+			while (*end && !isspace(*end)) end++;
+			if (strncmp(p, "-L", 2) != 0 &&
+			    strncmp(p, "-R", 2) != 0) {
+				char *name;
+				char save = *end;
+				*end = 0; /* set a temporary string terminator */
+				if (strncmp(p, "-l", 2) == 0) {
+					name = lt_dlmalloc(3+ /* "lib" */
+					 strlen(p+2)+strlen(shlib_ext)+1);
+					if (name)
+						sprintf(name, "lib%s%s", p+2, shlib_ext);
+				} else
+					name = strdup(p);
+				if (name)
+					names[depcount++] = name;
+				else
+					goto cleanup_names;
+				*end = save;
+			}
+			p = end;
+		} else
+			p++;
+	}
+	/* load the deplibs (in reverse order) */
+	for (i = 0; i < depcount; i++) {
+		lt_dlhandle handle = lt_dlopen(names[depcount-1-i]);
+		if (!handle) {
+			int j;
+			for (j = 0; j < i; j++)
+				lt_dlclose(handles[j]);
+			last_error = deplib_not_found_error;
+			goto cleanup_names;
+		}
+		handles[i] = handle;	
+	}
+	handle->depcount = depcount;
+	handle->deplibs = handles;
+	handles = 0;
+	ret = 0;
+cleanup_names:
+	for (i = 0; i < depcount; i++)
+		lt_dlfree(names[i]);
+cleanup:
+	if (names)
+		lt_dlfree(names);
+	if (handles)
+		lt_dlfree(handles);
+	/* restore the old search path */
+	if (user_search_path)
+		lt_dlfree(user_search_path);
+	user_search_path = save_search_path;
+	return ret;
 }
 
 static int
 unload_deplibs(handle)
 	lt_dlhandle handle;
 {
-	/* FIXME: unload deplibs */
-	/* Just to silence gcc -Wall */
-	handle = 0;
-	return 0;
+	int i;
+	int errors = 0;
+	
+	if (!handle->depcount)
+		return 0;
+	for (i = 0; i < handle->depcount; i++)
+		errors += lt_dlclose(handle->deplibs[i]);		
+	return errors;
 }
 
 static inline int
@@ -1303,6 +1402,12 @@ lt_dlopen (filename)
 						 getenv(LTDL_SHLIBPATH_VAR),
 						 &dir, 0);
 #endif
+#ifdef LTDL_SYSSEARCHPATH
+			if (!file)
+				file = (FILE*) find_file(basename,
+						 sys_search_path,
+						 &dir, 0);
+#endif
 		}
 		if (!file) {
 			handle = 0;
@@ -1412,6 +1517,10 @@ lt_dlopen (filename)
 #ifdef LTDL_SHLIBPATH_VAR
 			    && !find_file(basename,
 					  getenv(LTDL_SHLIBPATH_VAR),
+					  0, &newhandle)
+#endif
+#ifdef LTDL_SYSSEARCHPATH
+			    && !find_file(basename, sys_search_path,
 					  0, &newhandle)
 #endif
 				))) {
@@ -1694,3 +1803,19 @@ lt_dlgetinfo (handle)
 	}
 	return &(handle->info);
 }
+
+int
+lt_dlforeach (func, data)
+	int (*func) LTDL_PARAMS((lt_dlhandle handle, lt_ptr_t data));
+	lt_ptr_t data;
+{
+	lt_dlhandle cur = handles;
+	while (cur) {
+		lt_dlhandle tmp = cur;
+		cur = cur->next;
+		if (func(tmp, data))
+			return 1;
+	}
+	return 0;
+}
+

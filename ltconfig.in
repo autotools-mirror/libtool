@@ -1042,7 +1042,7 @@ EOF
     if test "x$lt_cv_need_dllmain" = "xyes"; then
       ltdll_obj='$objdir/$soname-ltdll.'"$objext "
       ltdll_cmds='test -f $objdir/$soname-ltdll.c || sed -e "/^# \/\* ltdll\.c starts here \*\//,/^# \/\* ltdll.c ends here \*\// { s/^# //; p; }" -e d < $0 > $objdir/$soname-ltdll.c~
-        test -f $objdir/$soname-ltdll.$objext || (cd $objdir && $CC -c $soname-ltdll.c)~'
+	test -f $objdir/$soname-ltdll.$objext || (cd $objdir && $CC -c $soname-ltdll.c)~'
     else
       ltdll_obj=
       ltdll_cmds=
@@ -1061,10 +1061,10 @@ EOF
       _lt_hint=1;
       cat $export_symbols | while read symbol; do
 	set dummy \$symbol;
-        case \$# in
-          2) echo "	\$2 @ \$_lt_hint ; " >> $objdir/$soname-def;;
-          *) echo "     \$2 @ \$_lt_hint \$3 ; " >> $objdir/$soname-def;;
-        esac;
+	case \$# in
+	  2) echo "	\$2 @ \$_lt_hint ; " >> $objdir/$soname-def;;
+	  *) echo "     \$2 @ \$_lt_hint \$3 ; " >> $objdir/$soname-def;;
+	esac;
 	_lt_hint=`expr 1 + \$_lt_hint`;
       done~
       '"$ltdll_cmds"'
@@ -1134,9 +1134,9 @@ EOF
     *)
       # ancient GNU ld didn't support --whole-archive et. al.
       if $LD --help 2>&1 | egrep 'no-whole-archive' > /dev/null; then
-        whole_archive_flag_spec="$wlarc"'--whole-archive$convenience '"$wlarc"'--no-whole-archive'
+	whole_archive_flag_spec="$wlarc"'--whole-archive$convenience '"$wlarc"'--no-whole-archive'
       else
-        whole_archive_flag_spec=
+	whole_archive_flag_spec=
       fi
       ;;
     esac
