@@ -28,6 +28,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <errno.h>
+#include <assert.h>
 #include <sys/wait.h>
 #include <signal.h>
 
@@ -456,7 +457,16 @@ main( argc, argv )
     signal( SIGBUS,  handleSignal );
     signal( SIGSEGV, handleSignal );
 
-    emitScript( argc, argv );
+    assert( OPT_VALUE_MODE < MODE_CT );
+    {
+        emitScriptProc* pEP = ap_emitProc[ OPT_VALUE_MODE ];
+        if (pEP == NULL) {
+            fprintf( stderr, "We're in the wrong mode:  %d\n",
+                     OPT_VALUE_MODE );
+            USAGE( EXIT_FAILURE );
+        }
+        (*pEP)( argc, argv );
+    }
 
     return scriptStatus;
 }
