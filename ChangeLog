@@ -1,5 +1,10 @@
 2004-04-03  Peter O'Gorman  <peter@pogma.com>
 
+	* configure.ac: Bumped version to 1.5.5a.
+	* NEWS: updated.
+
+	Released 1.5.4
+	
 	* configure.ac: Bumped version to 1.5.4.
 	* NEWS: updated.
 	* config.guess, config.sub, texinfo.tex:  Synchronized from
