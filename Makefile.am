@@ -111,4 +111,5 @@ cvs-diff:
 	else prevno="$$OLDVERSION"; fi; \
 	prevver=release-`echo $$prevno | sed 's/\./-/g'`; \
 	$(CVS) -f rdiff -c -r $$prevver -r $$thisver $(PACKAGE) \
-	    > $(PACKAGE)-$$prevno-$(VERSION).diff
+	    | GZIP=$(GZIP_ENV) gzip -c \
+	    > $(PACKAGE)-$$prevno-$(VERSION).diff.gz

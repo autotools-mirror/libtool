@@ -1,3 +1,8 @@
+2002-10-25  Gary V. Vaughan  <gary@gnu.org>
+
+	* Makefile.am (cvs-diff): Compress the generated diff file, ready
+	for upload to ftp.gnu.org.
+
 2002-10-25  Howard Chu  <hyc@highlandsun.com>
 
 	* ltmain.in [aix]: Be sure to deal with xlc_r, cc_r and other
