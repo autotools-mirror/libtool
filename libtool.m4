@@ -1656,6 +1656,7 @@ else
     hardcode_shlibpath_var=no
     runpath_var=LD_RUN_PATH
     hardcode_runpath_var=yes
+    export_dynamic_flag_spec='${wl}-Bexport'
     ;;
 
   solaris*)
