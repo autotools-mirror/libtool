@@ -6068,7 +6068,10 @@ func_basename ()
 # dot (in which case that matches only a dot).
 func_stripname ()
 {
-  func_stripname_result=${3#"${1}"}
+  # pdksh 5.2.14 does not do ${X%$Y} correctly if both X and Y are
+  # positional parameters, so assign one to ordinary parameter first.
+  func_stripname_result=${3}
+  func_stripname_result=${func_stripname_result#"${1}"}
   func_stripname_result=${func_stripname_result%"${2}"}
 }
 _LT_EOF
