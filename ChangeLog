@@ -1,3 +1,10 @@
+2001-10-24  H.J. Lu <hjl@gnu.org>
+
+	* ltmain.sh: Allow link against an archive when building a
+	shared library.
+	* libtool.m4 (lt_cv_deplibs_check_method): Always use
+	file_magic for Linux ELF.
+
 2001-10-12 Guido Draheim  <guidod-2001q3@gmx.de>
 
 	* ltdl.m4: Changed "underscode to underscore".
