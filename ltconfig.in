@@ -1110,7 +1110,7 @@ EOF
     ;;
 
   beos*)
-    if $LD --help 2>&1 | egrep ': supported targets:.* elf' > /dev/null; then
+    if $LD --help 2>&1 | sed -n '/: supported targets:/,/:/p' | grep 'elf' > /dev/null; then
       allow_undefined_flag=unsupported
       # Joseph Beckenbach <jrb3@best.com> says some releases of gcc
       # support --undefined.  This deserves some investigation.  FIXME
@@ -1152,7 +1152,7 @@ EOF
     ;;
 
   netbsd*)
-    if $LD --help 2>&1 | egrep ': supported targets:.* elf' > /dev/null; then
+    if $LD --help 2>&1 | sed -n '/: supported targets:/,/:/p' | grep 'elf' > /dev/null; then
       archive_cmds='$CC -shared $libobjs $deplibs $linkopts ${wl}-soname $wl$soname -o $lib'
       archive_expsym_cmds='$CC -shared $libobjs $deplibs $linkopts ${wl}-soname $wl$soname ${wl}-retain-symbols-file $wl$export_symbols -o $lib'
     else
@@ -1174,7 +1174,7 @@ EOF
 *** used, and then restart.
 
 EOF
-    elif $LD --help 2>&1 | egrep ': supported targets:.* elf' > /dev/null; then
+    elif $LD --help 2>&1 | sed -n '/: supported targets:/,/:/p' | grep 'elf' > /dev/null; then
       archive_cmds='$CC -shared $libobjs $deplibs $linkopts ${wl}-soname $wl$soname -o $lib'
       archive_expsym_cmds='$CC -shared $libobjs $deplibs $linkopts ${wl}-soname $wl$soname ${wl}-retain-symbols-file $wl$export_symbols -o $lib'
     else
@@ -1190,7 +1190,7 @@ EOF
     ;;
 
   *)
-    if $LD --help 2>&1 | egrep ': supported targets:.* elf' > /dev/null; then
+    if $LD --help 2>&1 | sed -n '/: supported targets:/,/:/p' | grep 'elf' > /dev/null; then
       archive_cmds='$CC -shared $libobjs $deplibs $linkopts ${wl}-soname $wl$soname -o $lib'
       archive_expsym_cmds='$CC -shared $libobjs $deplibs $linkopts ${wl}-soname $wl$soname ${wl}-retain-symbols-file $wl$export_symbols -o $lib'
     else
