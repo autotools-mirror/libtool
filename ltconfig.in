@@ -1668,6 +1668,15 @@ cygwin32* | mingw32*)
 freebsd2* | freebsd3*)
   objformat=`test -x /usr/bin/objformat && /usr/bin/objformat || echo aout`
   version_type=freebsd-$objformat
+  case "$version_type" in
+    freebsd-elf*)
+      deplibs_check_method='file_magic ELF [0-9][0-9]*-bit [LM]SB shared object'
+      file_magic_command=file
+      ;;
+    freebsd-*)
+      deplibs_check_method=unknown
+      ;;
+  esac
   library_names_spec='${libname}${release}.so$versuffix $libname.so$versuffix'
   finish_cmds='PATH="$PATH:/sbin" OBJFORMAT="$objformat" ldconfig -m $libdir'
   shlibpath_var=LD_LIBRARY_PATH

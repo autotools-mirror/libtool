@@ -1,3 +1,12 @@
+1999-01-20  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
+
+	* THANKS: Added Vladimir Kushnir.
+	
+1999-01-20  Vladimir Kushnir  <kushn@mail.kar.net>
+	
+	* ltconfig.in (freebsd3*): Define `deplibs_check_method' and
+	`file_magic_command' for freebsd-elf.
+
 1999-01-20  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* TODO: should we also build a `static' copy of a convenience
