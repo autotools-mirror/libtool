@@ -1,3 +1,9 @@
+2005-02-07  Peter O'Gorman  <peter@pogma.com>
+
+	* config/ltmain.m4sh: Add -pthread like flags when linking
+	executables too.
+	Reported by Andreas Schwab <schwab@suse.de>
+
 2005-02-04  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* config/ltmain.m4sh (func_mode_link): Allow five digits in

@@ -2657,6 +2657,8 @@ func_mode_link ()
 
       -mt|-mthreads|-kthread|-Kthread|-pthread|-pthreads|--thread-safe)
 	compiler_flags="$compiler_flags $arg"
+	compile_command="$compile_command $arg"
+	finalize_command="$finalize_command $arg"
 	continue
 	;;
 
