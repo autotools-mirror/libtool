@@ -75,10 +75,6 @@ does not handle static constructors properly, even on operating
 systems that support them.  ``Don't use static constructors'' is no
 longer a satisfactory answer.
 
-People who need it:
-  Jean Daniel Fekete <Jean-Daniel.Fekete@emn.fr>
-  Thomas Hiller <hiller@tu-harburg.d400.de>
-
 * Another form of convenience library is to have undocumented utility
 libraries, where only the shared version is installed.
 
