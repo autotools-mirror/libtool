@@ -51,6 +51,7 @@ AC_REQUIRE([AC_LTDL_DLPREOPEN])dnl
 AC_REQUIRE([AC_LTDL_DLLIB])dnl
 AC_REQUIRE([AC_LTDL_SYMBOL_USCORE])dnl
 AC_REQUIRE([AC_LTDL_DLSYM_USCORE])dnl
+AC_REQUIRE([AC_LTDL_SYS_DLOPEN_DEPLIBS])dnl
 ])# AC_LIB_LTDL
 
 # AC_LTDL_ENABLE_INSTALL
@@ -62,6 +63,29 @@ AC_DEFUN(AC_LTDL_ENABLE_INSTALL,
 AM_CONDITIONAL(INSTALL_LTDL, test x"${enable_ltdl_install-no}" != xno)
 AM_CONDITIONAL(CONVENIENCE_LTDL, test x"${enable_ltdl_convenience-no}" != xno)
 ])])# AC_LTDL_ENABLE_INSTALL
+
+# AC_LTDL_SYS_DLOPEN_DEPLIBS
+# --------------------------
+AC_DEFUN(AC_LTDL_SYS_DLOPEN_DEPLIBS,
+[AC_REQUIRE([AC_CANONICAL_HOST])
+AC_CACHE_CHECK([whether deplibs are loaded by dlopen],
+	libltdl_cv_sys_dlopen_deplibs, [dnl
+	# PORTME does your system automatically load deplibs for dlopen()?
+	libltdl_cv_sys_dlopen_deplibs=unknown
+	case "$host_os" in
+	linux*)
+	  libltdl_cv_sys_dlopen_deplibs=yes
+	  ;;
+	solaris*)
+	  libltdl_cv_sys_dlopen_deplibs=yes
+	  ;;
+	esac
+])
+if test "$libltdl_cv_sys_dlopen_deplibs" != yes; then
+ AC_DEFINE(LTDL_DLOPEN_DEPLIBS, 1,
+    [Define if the OS needs help to load dependent libraries for dlopen(). ])
+fi
+])# AC_LTDL_SYS_DLOPEN_DEPLIBS
 
 # AC_LTDL_SHLIBEXT
 # ----------------

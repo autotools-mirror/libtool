@@ -1,3 +1,9 @@
+2001-02-01  Gary V. Vaughan  <gvv@techie.com>
+
+	* ltdl.m4 (AC_LTDL_SYS_DLOPEN_DEPLIBS): If we know that the host
+	architecture automatically loads deplibs, then...
+	* libltdl/ltdl.c (load_deplibs): ...don't manually load each one.
+
 2001-01-31  Gary V. Vaughan  <gvv@techie.com>
 
 	* TODO:  Updated.
@@ -5,7 +11,7 @@
 	* libltdl/ltdl.c (load_deplibs): If loading a deplib fails,
 	don't sweat -- it may be a lib that is already statically linked
 	into the loading application.
-	
+
 	* libltdl/ltdl.c: Clean up the shadowing of the global handles
 	variable.
 	(LT_DLRESIDENT_FLAGS): Add extra parens to satisfy -Wall.
