@@ -21,6 +21,7 @@ Shared library support has been implemented for these platforms:
   SCO OpenServer 5.x (*-*-sco3.2v5*)
   Solaris 2.x (*-*-solaris2*)
   SunOS 4.x, a.k.a. Solaris 1.x  (*-*-sunos4*)
+  UTS 4.x (*-*-uts4*)
   All ELF targets that use both the GNU C compiler (gcc) and GNU ld
 
 See the file NEWS for a description of recent changes to libtool.

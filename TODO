@@ -4,6 +4,16 @@ For next public release:
 * Document `execute' mode, and the experimental nature of -dlopen and
 -dlpreopen.
 
+Franc,ois Pinard about debugging:
+
+``Another thing I'm curious to experiment is how will `gdb' perform
+with shared libraries.  There are a few notes in the manual about
+generating a "more easy to debug" version of the program.  I tried the
+recipe, but it broke somewhere in Automake generated dependency code,
+so I got to remove it for now.  However, the manual does not explain
+what the debugging difficulty is, and so, I wonder what problems I
+will meet.''
+
 * Some packages, such as GIMP, choose to put a note about
 `--disable-shared' in their README:
 
@@ -25,7 +35,9 @@ GNU configure options, there are the following SANE specific options:
 Perhaps a similar note could be added to ABOUT-NLS.
 
 I'll add a suggestion to the libtool documentation, so that other
-maintainers add this kind of note to their package documentation.
+maintainers add this kind of note to their package documentation.  The
+biggest motivation, mentioned by Franc,ois Pinard, is to turn off
+double-compilation.
 
 * Bengt Martensson says:
 

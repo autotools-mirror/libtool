@@ -7,7 +7,7 @@ AUTOMAKE_OPTIONS = foreign
 
 EXTRA_DIST = $(TESTS) acinclude.m4
 
-hardcode_tests = hc-direct hc-libpath hc-minusL
+hardcode_tests = hc-direct hc-libflag hc-libpath hc-minusL
 CLEANFILES = $(hardcode_tests)
 
 # Build a libtool library, libhello.la for installation in libdir.
@@ -73,9 +73,27 @@ hc-direct: $(hell_OBJECTS) $(hell_DEPENDENCIES)
 	  echo "$(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) $$shlib $(LIBS) || echo unsupported > $@"; \
 	  eval "$(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) $$shlib $(LIBS) || echo unsupported > $@"
 
-hc-minusL: $(hell_OBJECTS) $(hell_DEPENDENCIES)
-	@rm -f hc-minusL
-	$(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) -L./$(objdir) -lhello $(LIBS)
+# We need to create an alias for $(objdir) so that this test works regardless
+# of $hardcode_minus_L
+hc-libflag: $(hell_OBJECTS) $(hell_DEPENDENCIES)
+	rm -rf hc-libflag _hclibs
+	mkdir _hclibs
+	cd _hclibs && for lib in ../$(objdir)/libhello*; do \
+	  $(LN_S) $$lib `echo "$$lib" | sed 's%^.*/%%'` || exit 1; \
+	done
+	@eval `egrep -e '^(hardcode_.*|wl)=' ./libtool`; \
+	  libdir=`pwd`/$(objdir); \
+	  flag=`eval echo \"$$hardcode_libdir_flag_spec\"`; \
+	  if test -z "$$flag"; then \
+	    echo "echo unsupported > $@"; \
+	    echo unsupported > $@ || status="$$?"; \
+	  else \
+	    echo "$(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) $$flag -L./_hclibs -lhello $(LIBS)"; \
+	    $(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) $$flag -L./_hclibs -lhello $(LIBS) || status="$$?"; \
+	  fi; \
+	  echo "rm -rf _hclibs"; \
+	  rm -rf _hclibs; \
+	  exit $$status
 
 hc-libpath: $(hell_OBJECTS) $(hell_DEPENDENCIES)
 	@rm -f hc-libpath
@@ -83,3 +101,7 @@ hc-libpath: $(hell_OBJECTS) $(hell_DEPENDENCIES)
 	@eval `egrep -e '^shlibpath_var=' ./libtool`; \
 	  echo "$$shlibpath_var=./$(objdir) $(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) -lhello $(LIBS) || echo unsupported > $@"; \
 	  eval "$$shlibpath_var=./$(objdir) $(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) -lhello $(LIBS) || echo unsupported > $@"
+
+hc-minusL: $(hell_OBJECTS) $(hell_DEPENDENCIES)
+	@rm -f hc-minusL
+	$(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) -L./$(objdir) -lhello $(LIBS)

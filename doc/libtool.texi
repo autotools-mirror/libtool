@@ -1571,14 +1571,14 @@ So, libtool library versions are described by three integers:
 @item current
 The most recent interface number that this library implements.
 
+@item revision
+The implementation number of the @var{current} interface.
+
 @item age
 The difference between the oldest and newest interfaces that this
 library implements.  In other words, the library implements all the
 interface numbers in the range from number @code{@var{current} -
 @var{age}} to @code{@var{current}}.
-
-@item revision
-The implementation number of the @var{current} interface.
 @end table
 
 If two libraries have identical @var{current} and @var{age} numbers,

@@ -15,7 +15,7 @@ export srcdir
 libtool="$srcdir/tlibtool"
 make="${MAKE-make}"
 
-prefix="./=inst"
+prefix="./_inst"
 if test "$need_prefix" = yes; then
   # An absolute path to a test installation directory.
   test -d $prefix || mkdir $prefix

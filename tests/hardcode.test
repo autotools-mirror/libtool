@@ -43,6 +43,7 @@ status=0
 hardcode_direct=NONE
 hardcode_minus_L=NONE
 hardcode_shlibpath_var=NONE
+hardcode_libdir_flag_spec=NONE
 
 # Suck in all the hardcode_* variable settings.
 eval `egrep -e '^hardcode_' ./libtool 2>/dev/null`
@@ -62,6 +63,11 @@ if test "$hardcode_shlibpath_var" = NONE; then
   status=1
 fi
 
+if test "$hardcode_libdir_flag_spec" = NONE; then
+  echo "hardcode_libdir_flag_spec not set in ../demo/libtool" 1>&2
+  status=1
+fi
+
 test $status -eq 0 || exit $status
 
 echo "= Searching for hardcoded library directories in each program"
@@ -70,6 +76,15 @@ for file in hc-*; do
   hc-direct) expected="$hardcode_direct" ;;
   hc-libpath) expected="$hardcode_shlibpath_var" ;;
   hc-minusL) expected="$hardcode_minus_L" ;;
+
+  hc-libflag)
+    if test -n "$hardcode_libdir_flag_spec"; then
+      expected=yes
+    else
+      expected=unsupported
+    fi
+    ;;
+
   *)
     continue
     ;;
@@ -87,7 +102,7 @@ for file in hc-*; do
     # AIX fgrep also has a limited line length, that's why we finally
     # turn the NUL characters into newlines.
     hardcoded=yes
-  elif egrep 'unsupported' $file > /dev/null; then
+  elif (sed -e '1!d' $file | egrep 'unsupported') >/dev/null 2>&1; then
     hardcoded=unsupported
   fi
 

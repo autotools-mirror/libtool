@@ -2,6 +2,7 @@ NEWS - list of user-visible changes between releases of GNU libtool.
 
 New in 1.0c:
 * Bug fixes.
+* Portability fixes for Windows NT.
 * Change the libtool temporary directory from `.libs' to `_libs' in
   order to cope with MS-DOS filenames.  See README-alpha.
 * New `-all-static' flag to prevent any dynamic linking.  The regular
@@ -25,6 +26,7 @@ New in 1.0c:
 * Allow configure.in to change the defaults for AM_PROG_LIBTOOL's
   `--enable-shared' and `--enable-static' flags by setting
   the `enable_shared' or `enable_static' shell variables to `no'.
+* Support for UTS 4.x.
 
 New in 1.0:
 * Bug fixes.

@@ -1,4 +1,61 @@
+Tue Oct 14 10:19:18 1997  Gordon Matzigkeit  <gord@gnu.org>
+
+	* ltmain.in (link): Added a bit more inter-language support to the
+ 	symbol file generation process.
+
+Thu Oct  9 12:56:13 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltmain.in (link): Change the wrapper script to follow symlinks
+	in order to find thisdir.  This should put the final nail in the
+	coffin for problems with wrapper scripts.  From Ian Lance Taylor.
+
+Tue Oct  7 10:49:29 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltmain.in: Change a few `$echo' commands into `$show' to make
+	--silent mode behave as advertised.
+
+	* ltconfig.in (allow_undefined_flag): On OSF/1 4.x, use
+ 	`-expect_unresolved \*'.  From Christian Mondrup.
+
+	* ltmain.in (install): Change install mode to allow a specified
+	/bin/sh argument at the beginning of the install_prog.  Also,
+	specify the shell to run when invoking libtool recursively for
+	finish mode.  From Chris Provenzano.
+
+	* libtool.m4 (LIBTOOL): Change definition to include $(SHELL).
+	From Chris Provenzano.
+
+	* ltconfig.in: Port to UTS 4.x.  From Alistair Crooks.
+
+	* demo/Makefile.am (hc-libflag): Add rules to make this binary for
+	hardcode.test.
+
+Wed Sep 24 19:54:53 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltconfig.in (LD): As with libtool.m4, don't override LD.
+	Do a whole bunch of ac_t quoting.
+
+Wed Sep 24 11:11:01 1997  Ian Lance Taylor  <ian@cygnus.com>
+
+	* libtool.m4 (AM_PROG_LD): Don't override LD in the environment.
+
+Sun Sep 21 13:13:06 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* libtool.m4, ltconfig.in (NM): Arguments to the for loop must be
+	whitespace separated.  This fixes a bug under FreeBSD's /bin/sh.
+	From George Scott.
+
+Sat Sep 20 13:59:47 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltmain.in (deplibs): When building shared libraries, always add
+	-lc to deplibs.  Reported by Andreas Jellinghaus.
+
 Mon Sep 15 07:08:35 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltconfig.in, ltmain.in (COLLECT_NAMES): If the COLLECT_NAMES
+	environment variable has not been set, set it to empty.  This
+	apparently fixes the AIX bug with GCC's collect2.  Reported by
+	Mark Kettenis.
 
 	* demo/Makefile.am, ltmain.in, tests/hardcode.test (objdir):
  	Changed objdir variable .libs to _libs.  This is another MS-DOS
