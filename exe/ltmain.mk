@@ -1,5 +1,5 @@
 
-SRC = ltmain.c ltopts.c ltstr.c ltcompile.c ltversion.c
+SRC = ltmain.c ltopts.c ltstr.c ltcompile.c ltexe.c ltversion.c
 OBJ = $(SRC:.c=.o)
 GENED = ltmain.in ltstr.[ch] ltopts.[ch]
 CC    = cc -I/usr/local/include -g
