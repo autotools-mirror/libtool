@@ -1,4 +1,10 @@
-2005-02-21  Gary V. Vaughan  <gary@gnu.org>
+2005-02-22  Gary V. Vaughan  <gary@gnu.org>
+
+	* libtoolize.m4sh (func_copy_cb): self.leg->shoot_off() :-/
+	Let's not redirect stdout to null when sending tar output to a
+	pipe.
+
+2005-02-22  Gary V. Vaughan  <gary@gnu.org>
 
 	Using `libtoolize --copy --ltdl' was not preserving timestamps, so
 	parts of the autoconf bootstrap would be rerun spuriously after
