@@ -1852,7 +1852,7 @@ compiler."
 	fi
 
 	# Link against this library
-	newdependency_libs="$newdependency_libs $dependency_libs $abs_ladir/$laname"
+	newdependency_libs="$newdependency_libs $abs_ladir/$laname $dependency_libs"
       done
 
       # Make sure lib_search_path contains only unique directories.
@@ -2120,7 +2120,7 @@ EOF
 	    ;;
 	  *)
 	    # Add libc to deplibs on all other systems.
-	    deplibs="-lc $deplibs"
+	    deplibs="$deplibs -lc"
 	    ;;
 	  esac
 	fi
@@ -2488,7 +2488,25 @@ EOF
 	  exit 1
 	fi
 
+	ladir=`$echo "X$lib" | $Xsed -e 's%/[^/]*$%%'`
+	test "X$ladir" = "X$lib" && ladir="."
+	# We need an absolute path.
+	case "$ladir" in
+	/* | [A-Za-z]:[/\\]*) ;;
+	*)
+	  abs_ladir=`cd "$ladir" && pwd`
+	  if test -z "$abs_ladir"; then
+	    $echo "$modename: cannot determine absolute directory name of \`$ladir'" 1>&2
+	    exit 1
+	  fi
+	  ladir="$abs_ladir"
+	  ;;
+	esac
+	laname=`$echo "X$lib" | $Xsed -e 's%^.*/%%'`
 	new_lib_search_path="$new_lib_search_path `$echo "X$lib" | $Xsed -e 's%/[^/]*$%%'`"
+
+	deplibs="$deplibs $lib"
+	absdeplibs="$absdeplibs $ladir/$laname"
 
 	for deplib in $dependency_libs; do
 	  case "$deplib" in
@@ -2518,25 +2536,6 @@ EOF
 	    esac
 	  fi
 	done
-
-	ladir=`$echo "X$lib" | $Xsed -e 's%/[^/]*$%%'`
-	test "X$ladir" = "X$lib" && ladir="."
-	# We need an absolute path.
-	case "$ladir" in
-	/* | [A-Za-z]:[/\\]*) ;;
-	*)
-	  abs_ladir=`cd "$ladir" && pwd`
-	  if test -z "$abs_ladir"; then
-	    $echo "$modename: cannot determine absolute directory name of \`$ladir'" 1>&2
-	    exit 1
-	  fi
-	  ladir="$abs_ladir"
-	  ;;
-	esac
-	laname=`$echo "X$lib" | $Xsed -e 's%^.*/%%'`
-
-	deplibs="$deplibs $lib"
-	absdeplibs="$absdeplibs $ladir/$laname"
       done
       
       # Eliminate all dependency_libs that are already contained in deplibs

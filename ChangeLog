@@ -1,3 +1,8 @@
+1999-03-31 Thomas Tanner  <tanner@gmx.de>
+
+	* ltmain.in: always link a library before its dependency libs
+	* mdemo/Makefile.am: test -export-symbols-regex
+	
 1999-03-30 Thomas Tanner  <tanner@gmx.de>
 
 	* doc/libtool.texi: fixed a typo
