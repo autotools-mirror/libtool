@@ -1,3 +1,10 @@
+2001-07-23  Mark Kettenis  <kettenis@gnu.org>
+
+	* libtool.m4 (AC_LIBTOOL_SYS_MAX_CMD_LEN) [gnu*]: Remove spurious
+	"break" and bogus comment
+	(_LT_AC_LANG_CXX_CONFIG): Add support for the Hurd.
+	* ltdl.m4 (AC_LTDL_SYS_DLOPEN_DEPLIBS): Add support for the Hurd.
+
 2001-07-16  Robert Boehne  <rboehne@ricardo-us.com>, Tim Mooney  <mooney@dogbert.cc.ndsu.NoDak.edu>
 
 	* ltdl.m4 (AC_LTDL_SYS_DLOPEN_DEPLIBS): add cases and comments for

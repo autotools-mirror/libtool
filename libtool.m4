@@ -559,8 +559,7 @@ AC_CACHE_VAL([lt_cv_sys_max_cmd_len], [dnl
     # Under GNU Hurd, this test is not required because there is
     # no limit to the length of command line arguments.
     # Libtool will interpret -1 as no limit whatsoever
-    lt_cv_sys_max_cmd_len=-1;    # 12K is about right
-    break
+    lt_cv_sys_max_cmd_len=-1;
     ;;
     
   *)
@@ -2468,6 +2467,8 @@ case $host_os in
     # FreeBSD 3 and later use GNU C++ and GNU ld with standard ELF
     # conventions
     _LT_AC_TAGVAR(ld_shlibs, $1)=yes
+    ;;
+  gnu*)
     ;;
   hpux*)
     if test $with_gnu_ld = no; then
