@@ -1,5 +1,8 @@
 2000-05-26  Alexandre Oliva  <oliva@lsd.ic.unicamp.br>
 
+	* ltconfig.in: Make the output script executable after updating
+	available_tags.
+
 	* ltmain.in (compile): When output object is in subdir, create
 	the pic_object in subdir/objdir, not objdir/subdir.
 

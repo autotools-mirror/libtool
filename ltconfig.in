@@ -2541,6 +2541,7 @@ if test -n "$tagname"; then
   # Now substitute the updated of available tags.
   if eval "sed -e 's/^available_tags=.*\$/available_tags=\"$available_tags\"/' ${ofile} > ${ofile}.new"; then
     mv ${ofile}.new ${ofile}
+    chmod +x "$ofile"
   else
     rm -f ${ofile}.new
     echo "$progname: unable to update list of available tagged configurations."
