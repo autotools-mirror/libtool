@@ -1,3 +1,9 @@
+2001-10-27  Gary V. Vaughan  <gary@gnu.org>
+
+	* ltdl.m4 (AC_WITH_LTDL): New macro to add `--with-included-ltdl'
+	option to configure, but to find an appropriate ltdl library and
+	append the right options to link it.
+
 2001-10-04  Albert Chin-A-Young  <china@thewrittenword.com>
 
 	* libltdl/ltdl.c: Match function return type with prototype
