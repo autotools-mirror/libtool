@@ -1,3 +1,11 @@
+2003-04-09  Peter O'Gorman  <peter@pogma.com>
+
+	* libtool.m4: Move the AC_LIBTOOL_SYS_DYNAMIC_LINKER check
+	to be before AC_LIBTOOL_PROG_LD_HARDCODE_LIBPATH, becuase the
+	value of shlibpath_overrides_runpath is used in the HARDCODE
+	test and is set in the DYNAMIC_LINKER test.
+	* ltmain.in(darwin): We never need to relink on darwin.
+
 2003-04-09  Samuel Meder  <meder@mcs.anl.gov>
 
 	* libtool.m4 Switch on `basename $CC` not $CC

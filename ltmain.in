@@ -5051,7 +5051,9 @@ fi\
       # Quote the link command for shipping.
       relink_command="(cd `pwd`; $SHELL $0 --mode=relink $libtool_args @inst_prefix_dir@)"
       relink_command=`$echo "X$relink_command" | $Xsed -e "$sed_quote_subst"`
-
+      if test "$hardcode_automatic" = yes ; then
+        relink_command=
+      fi  
       # Only create the output if not a dry run.
       if test -z "$run"; then
 	for installed in no yes; do
