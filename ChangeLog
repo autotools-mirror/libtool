@@ -1,3 +1,9 @@
+2003-10-29  Peter O'Gorman  <peter@pogma.com>
+
+	* m4/libtool.m4 (Darwin): Fix stupidities for darwin tags support. 
+	Makes it work again if AC_LIBTOOL_TAGS is specified in configure.ac.
+	Bug reported by Joe Orton and Christian Schaffner.
+
 2003-10-21  Gary V. Vaughan  <gary@gnu.org>
 
 	Start to eliminate the double run of configure in a fresh CVS
