@@ -570,7 +570,7 @@ if test -z "$show_help"; then
     # Lock this critical section if it is needed
     # We use this script file to make the link, it avoids creating a new file
     if test "$need_locks" = yes; then
-      until ln "$0" "$lockfile" 2>/dev/null; do
+      until $run ln "$0" "$lockfile" 2>/dev/null; do
 	$show "Waiting for $lockfile to be removed"
 	sleep 2
       done
@@ -768,7 +768,7 @@ EOF
 
     # Unlock the critical section if it was locked
     if test "$need_locks" != no; then
-      $rm "$lockfile"
+      $run $rm "$lockfile"
     fi
 
     exit 0
