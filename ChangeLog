@@ -1,4 +1,12 @@
-2001-09-22  Albert Chin-A-Young  <china@thewrittenword.com>
+2001-09-30  Gary V. Vaughan  <gary@gnu.org>
+
+	* libtool.m4 (AC_LIBLTDL_CONVENIENCE): s/INCLTDL/LTDLINCL/ for
+	consistency with gettext's INTLINCL.  Keep the old symbol too for
+	backwards compatibility.
+	(AC_LIBLTDL_INSTALLABLE): Ditto.
+	* doc/libtool.texi (Distributing libltdl):  Adjust documentation.
+
+22001-09-22  Albert Chin-A-Young  <china@thewrittenword.com>
 
 	* ltdl.m4 (AC_LTDL_DLLIB): Even though HP-UX 10.20 and 11.00
 	support shl_load *and* dlopen, dlopen works correctly only
