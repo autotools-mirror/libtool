@@ -49,7 +49,7 @@ AC_REQUIRE([AC_LTDL_SYMBOL_USCORE])dnl
 ])
 
 AC_DEFUN(AC_LTDL_ENABLE_INSTALL,
-[AC_ARG_ENABLE(ltdl-install, 
+[AC_ARG_ENABLE(ltdl-install,
 [  --enable-ltdl-install   install libltdl])
 
 AM_CONDITIONAL(INSTALL_LTDL, test x"${enable_ltdl_install-no}" != xno)
@@ -253,7 +253,7 @@ EOF
   if AC_TRY_EVAL(ac_compile); then
     # Now try to grab the symbols.
     ac_nlist=conftest.nm
-  
+
     if AC_TRY_EVAL(NM conftest.$ac_objext \| $ac_cv_sys_global_symbol_pipe \> $ac_nlist) && test -s "$ac_nlist"; then
 
       # Try sorting and uniquifying the output.
@@ -438,7 +438,7 @@ if test x"$ac_cv_sys_symbol_underscore" = xyes; then
 fnord() { int i=42;}
 main() { void *self, *ptr1, *ptr2; self=dlopen(0,LTDL_GLOBAL|LTDL_LAZY_OR_NOW);
     if(self) { ptr1=dlsym(self,"fnord"); ptr2=dlsym(self,"_fnord");
-	       if(ptr1 && !ptr2) { dlclose(self); exit(0); } } exit(1); } 
+	       if(ptr1 && !ptr2) { dlclose(self); exit(0); } } exit(1); }
 ],	libltdl_cv_need_uscore=no, libltdl_cv_need_uscore=yes,
 	libltdl_cv_need_uscore=cross
 )])

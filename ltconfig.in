@@ -678,7 +678,7 @@ else
 fi
 if test -z "$ac_cv_prog_cc_pic"; then
   echo "$ac_t"none 1>&6
-else  
+else
   echo "$ac_t""$ac_cv_prog_cc_pic" 1>&6
 
   # Check to make sure the pic_flag actually works.
@@ -695,7 +695,7 @@ else
     if { (eval echo $progname:@LINENO@: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>conftest.err; } && test -s conftest.$objext; then
       # Append any warnings to the config.log.
       cat conftest.err 1>&5
-    
+
       case "$host_os" in
       hpux9* | hpux10* | hpux11*)
 	# On HP-UX, both CC and GCC only warn that PIC is supported... then
@@ -900,7 +900,7 @@ if test "$with_gcc" = yes; then
   else
     no_builtin_flag=' -fno-builtin'
   fi
-  
+
 fi
 
 # See if the linker supports building shared libraries.
@@ -980,7 +980,7 @@ EOF
     ;;
 
   amigaos*)
-    archive_cmds='$rm $objdir/a2ixlibrary.data~$echo "#define NAME $libname" > $objdir/a2ixlibrary.data~$echo "#define LIBRARY_ID 1" >> $objdir/a2ixlibrary.data~$echo "#define VERSION $major" >> $objdir/a2ixlibrary.data~$echo "#define REVISION $revision" >> $objdir/a2ixlibrary.data~$AR cru $lib $libobjs~$RANLIB $lib~(cd $objdir && a2ixlibrary -32)'
+    archive_cmds='$rm $output_objdir/a2ixlibrary.data~$echo "#define NAME $libname" > $output_objdir/a2ixlibrary.data~$echo "#define LIBRARY_ID 1" >> $output_objdir/a2ixlibrary.data~$echo "#define VERSION $major" >> $output_objdir/a2ixlibrary.data~$echo "#define REVISION $revision" >> $output_objdir/a2ixlibrary.data~$AR cru $lib $libobjs~$RANLIB $lib~(cd $output_objdir && a2ixlibrary -32)'
     hardcode_libdir_flag_spec='-L$libdir'
     hardcode_minus_L=yes
 
@@ -1011,14 +1011,14 @@ EOF
     allow_undefined_flag=unsupported
     always_export_symbols=yes
 
-    extract_expsyms_cmds='test -f $objdir/impgen.c || \
-      sed -e "/^# \/\* impgen\.c starts here \*\//,/^# \/\* impgen.c ends here \*\// { s/^# //; p; }" -e d < $0 > $objdir/impgen.c~
-      test -f $objdir/impgen.exe || (cd $objdir && \
+    extract_expsyms_cmds='test -f $output_objdir/impgen.c || \
+      sed -e "/^# \/\* impgen\.c starts here \*\//,/^# \/\* impgen.c ends here \*\// { s/^# //; p; }" -e d < $0 > $output_objdir/impgen.c~
+      test -f $output_objdir/impgen.exe || (cd $output_objdir && \
       if test "x$HOST_CC" != "x" ; then $HOST_CC -o impgen impgen.c ; \
       else $CC -o impgen impgen.c ; fi)~
-      $objdir/impgen $dir/$soname > $objdir/$soname-def'
+      $output_objdir/impgen $dir/$soname > $output_objdir/$soname-def'
 
-    old_archive_from_expsyms_cmds='$DLLTOOL --as=$AS --dllname $soname --def $objdir/$soname-def --output-lib $objdir/$newlib'
+    old_archive_from_expsyms_cmds='$DLLTOOL --as=$AS --dllname $soname --def $output_objdir/$soname-def --output-lib $output_objdir/$newlib'
 
     # cygwin and mingw dlls have different entry points and sets of symbols
     # to exclude.
@@ -1040,9 +1040,9 @@ EOF
     # recent cygwin and mingw systems supply a stub DllMain which the user
     # can override, but on older systems we have to supply one (in ltdll.c)
     if test "x$lt_cv_need_dllmain" = "xyes"; then
-      ltdll_obj='$objdir/$soname-ltdll.'"$objext "
-      ltdll_cmds='test -f $objdir/$soname-ltdll.c || sed -e "/^# \/\* ltdll\.c starts here \*\//,/^# \/\* ltdll.c ends here \*\// { s/^# //; p; }" -e d < $0 > $objdir/$soname-ltdll.c~
-	test -f $objdir/$soname-ltdll.$objext || (cd $objdir && $CC -c $soname-ltdll.c)~'
+      ltdll_obj='$output_objdir/$soname-ltdll.'"$objext "
+      ltdll_cmds='test -f $output_objdir/$soname-ltdll.c || sed -e "/^# \/\* ltdll\.c starts here \*\//,/^# \/\* ltdll.c ends here \*\// { s/^# //; p; }" -e d < $0 > $output_objdir/$soname-ltdll.c~
+	test -f $output_objdir/$soname-ltdll.$objext || (cd $output_objdir && $CC -c $soname-ltdll.c)~'
     else
       ltdll_obj=
       ltdll_cmds=
@@ -1053,26 +1053,26 @@ EOF
     # the compiled dll only exports the symbol export list.
     # Be careful not to strip the DATA tag left be newer dlltools.
     export_symbols_cmds="$ltdll_cmds"'
-      $DLLTOOL --export-all --exclude-symbols '$dll_exclude_symbols' --output-def $objdir/$soname-def '$ltdll_obj'$libobjs $convenience~
-      sed -e "1,/EXPORTS/d" -e "s/ @ [0-9]*//" -e "s/ *;.*$//" < $objdir/$soname-def > $export_symbols'
-  
+      $DLLTOOL --export-all --exclude-symbols '$dll_exclude_symbols' --output-def $output_objdir/$soname-def '$ltdll_obj'$libobjs $convenience~
+      sed -e "1,/EXPORTS/d" -e "s/ @ [0-9]*//" -e "s/ *;.*$//" < $output_objdir/$soname-def > $export_symbols'
+
     # If DATA tags from a recent dlltool are present, honour them!
-    archive_expsym_cmds='echo EXPORTS > $objdir/$soname-def~
+    archive_expsym_cmds='echo EXPORTS > $output_objdir/$soname-def~
       _lt_hint=1;
       cat $export_symbols | while read symbol; do
 	set dummy \$symbol;
 	case \$# in
-	  2) echo "	\$2 @ \$_lt_hint ; " >> $objdir/$soname-def;;
-	  *) echo "     \$2 @ \$_lt_hint \$3 ; " >> $objdir/$soname-def;;
+	  2) echo "	\$2 @ \$_lt_hint ; " >> $output_objdir/$soname-def;;
+	  *) echo "     \$2 @ \$_lt_hint \$3 ; " >> $output_objdir/$soname-def;;
 	esac;
 	_lt_hint=`expr 1 + \$_lt_hint`;
       done~
       '"$ltdll_cmds"'
-      $CC -Wl,--base-file,$objdir/$soname-base '$lt_cv_cc_dll_switch' -Wl,-e,'$dll_entry' -o $lib '$ltdll_obj'$libobjs $deplibs $compiler_flags~ 
-      $DLLTOOL --as=$AS --dllname $soname --exclude-symbols '$dll_exclude_symbols' --def $objdir/$soname-def --base-file $objdir/$soname-base --output-exp $objdir/$soname-exp~
-      $CC -Wl,--base-file,$objdir/$soname-base $objdir/$soname-exp '$lt_cv_cc_dll_switch' -Wl,-e,'$dll_entry' -o $lib '$ltdll_obj'$libobjs $deplibs $compiler_flags~
-      $DLLTOOL --as=$AS --dllname $soname --exclude-symbols '$dll_exclude_symbols' --def $objdir/$soname-def --base-file $objdir/$soname-base --output-exp $objdir/$soname-exp~
-      $CC $objdir/$soname-exp '$lt_cv_cc_dll_switch' -Wl,-e,'$dll_entry' -o $lib '$ltdll_obj'$libobjs $deplibs $compiler_flags' 
+      $CC -Wl,--base-file,$output_objdir/$soname-base '$lt_cv_cc_dll_switch' -Wl,-e,'$dll_entry' -o $lib '$ltdll_obj'$libobjs $deplibs $compiler_flags~
+      $DLLTOOL --as=$AS --dllname $soname --exclude-symbols '$dll_exclude_symbols' --def $output_objdir/$soname-def --base-file $output_objdir/$soname-base --output-exp $output_objdir/$soname-exp~
+      $CC -Wl,--base-file,$output_objdir/$soname-base $output_objdir/$soname-exp '$lt_cv_cc_dll_switch' -Wl,-e,'$dll_entry' -o $lib '$ltdll_obj'$libobjs $deplibs $compiler_flags~
+      $DLLTOOL --as=$AS --dllname $soname --exclude-symbols '$dll_exclude_symbols' --def $output_objdir/$soname-def --base-file $output_objdir/$soname-base --output-exp $output_objdir/$soname-exp~
+      $CC $output_objdir/$soname-exp '$lt_cv_cc_dll_switch' -Wl,-e,'$dll_entry' -o $lib '$ltdll_obj'$libobjs $deplibs $compiler_flags'
     ;;
 
   netbsd*)
@@ -1103,7 +1103,7 @@ EOF
     else
       ld_shlibs=no
     fi
-    ;;      
+    ;;
 
   sunos4*)
     archive_cmds='$LD -assert pure-text -Bshareable -o $lib $libobjs $deplibs $linker_flags'
@@ -1147,7 +1147,7 @@ else
   aix3*)
     allow_undefined_flag=unsupported
     always_export_symbols=yes
-    archive_expsym_cmds='$LD -o $objdir/$soname $libobjs $deplibs $linker_flags -bE:$export_symbols -T512 -H512 -bM:SRE~$AR cru $lib $objdir/$soname'
+    archive_expsym_cmds='$LD -o $output_objdir/$soname $libobjs $deplibs $linker_flags -bE:$export_symbols -T512 -H512 -bM:SRE~$AR cru $lib $output_objdir/$soname'
     # Note: this linker hardcodes the directories in LIBPATH if there
     # are no directories specified by -L.
     hardcode_minus_L=yes
@@ -1184,8 +1184,8 @@ else
       hardcode_direct=yes
     fi
     allow_undefined_flag=' ${wl}-berok'
-    archive_cmds="\$CC $shared_flag"' -o $objdir/$soname $libobjs $deplibs $compiler_flags ${wl}-bexpall ${wl}-bnoentry${allow_undefined_flag}'
-    archive_expsym_cmds="\$CC $shared_flag"' -o $objdir/$soname $libobjs $deplibs $compiler_flags ${wl}-bE:$export_symbols ${wl}-bnoentry${allow_undefined_flag}'
+    archive_cmds="\$CC $shared_flag"' -o $output_objdir/$soname $libobjs $deplibs $compiler_flags ${wl}-bexpall ${wl}-bnoentry${allow_undefined_flag}'
+    archive_expsym_cmds="\$CC $shared_flag"' -o $output_objdir/$soname $libobjs $deplibs $compiler_flags ${wl}-bE:$export_symbols ${wl}-bnoentry${allow_undefined_flag}'
     case "$host_os" in aix4.[01]|aix4.[01].*)
       # According to Greg Wooledge, -bexpall is only supported from AIX 4.2 on
       always_export_symbols=yes ;;
@@ -1193,7 +1193,7 @@ else
    ;;
 
   amigaos*)
-    archive_cmds='$rm $objdir/a2ixlibrary.data~$echo "#define NAME $libname" > $objdir/a2ixlibrary.data~$echo "#define LIBRARY_ID 1" >> $objdir/a2ixlibrary.data~$echo "#define VERSION $major" >> $objdir/a2ixlibrary.data~$echo "#define REVISION $revision" >> $objdir/a2ixlibrary.data~$AR cru $lib $libobjs~$RANLIB $lib~(cd $objdir && a2ixlibrary -32)'
+    archive_cmds='$rm $output_objdir/a2ixlibrary.data~$echo "#define NAME $libname" > $output_objdir/a2ixlibrary.data~$echo "#define LIBRARY_ID 1" >> $output_objdir/a2ixlibrary.data~$echo "#define VERSION $major" >> $output_objdir/a2ixlibrary.data~$echo "#define REVISION $revision" >> $output_objdir/a2ixlibrary.data~$AR cru $lib $libobjs~$RANLIB $lib~(cd $output_objdir && a2ixlibrary -32)'
     hardcode_libdir_flag_spec='-L$libdir'
     hardcode_minus_L=yes
     # see comment about different semantics on the GNU ld section
@@ -1251,7 +1251,7 @@ else
 
   hpux9* | hpux10* | hpux11*)
     case "$host_os" in
-    hpux9*) archive_cmds='$rm $objdir/$soname~$LD -b +b $install_libdir -o $objdir/$soname $libobjs $deplibs $linker_flags~test $objdir/$soname = $lib || mv $objdir/$soname $lib' ;;
+    hpux9*) archive_cmds='$rm $output_objdir/$soname~$LD -b +b $install_libdir -o $output_objdir/$soname $libobjs $deplibs $linker_flags~test $output_objdir/$soname = $lib || mv $output_objdir/$soname $lib' ;;
     *) archive_cmds='$LD -b +h $soname +b $install_libdir -o $lib $libobjs $deplibs $linker_flags' ;;
     esac
     hardcode_libdir_flag_spec='${wl}+b ${wl}$libdir'
@@ -1295,8 +1295,8 @@ else
     hardcode_libdir_flag_spec='-L$libdir'
     hardcode_minus_L=yes
     allow_undefined_flag=unsupported
-    archive_cmds='$echo "LIBRARY $libname INITINSTANCE" > $objdir/$libname.def~$echo "DESCRIPTION \"$libname\"" >> $objdir/$libname.def~$echo DATA >> $objdir/$libname.def~$echo " SINGLE NONSHARED" >> $objdir/$libname.def~$echo EXPORTS >> $objdir/$libname.def~emxexp $libobjs >> $objdir/$libname.def~$CC -Zdll -Zcrtdll -o $lib $libobjs $deplibs $compiler_flags $objdir/$libname.def'
-    old_archive_from_new_cmds='emximp -o $objdir/$libname.a $objdir/$libname.def'
+    archive_cmds='$echo "LIBRARY $libname INITINSTANCE" > $output_objdir/$libname.def~$echo "DESCRIPTION \"$libname\"" >> $output_objdir/$libname.def~$echo DATA >> $output_objdir/$libname.def~$echo " SINGLE NONSHARED" >> $output_objdir/$libname.def~$echo EXPORTS >> $output_objdir/$libname.def~emxexp $libobjs >> $output_objdir/$libname.def~$CC -Zdll -Zcrtdll -o $lib $libobjs $deplibs $compiler_flags $output_objdir/$libname.def'
+    old_archive_from_new_cmds='emximp -o $output_objdir/$libname.a $output_objdir/$libname.def'
     ;;
 
   osf3*)
@@ -1359,8 +1359,8 @@ else
     archive_cmds='$LD -G -h $soname -o $lib $libobjs $deplibs $linker_flags'
     runpath_var='LD_RUN_PATH'
     hardcode_shlibpath_var=no
-    hardcode_direct=no #Motorola manual says yes, but my tests say they lie 
-    ;;  
+    hardcode_direct=no #Motorola manual says yes, but my tests say they lie
+    ;;
 
   sysv4.3*)
     archive_cmds='$LD -G -h $soname -o $lib $libobjs $deplibs $linker_flags'
@@ -1549,7 +1549,7 @@ cygwin* | mingw*)
 freebsd1*)
   dynamic_linker=no
   ;;
-  
+
 freebsd*)
   objformat=`test -x /usr/bin/objformat && /usr/bin/objformat || echo aout`
   version_type=freebsd-$objformat
@@ -2239,10 +2239,10 @@ fi
 
 fi
 
-    
+
 fi
 
-  
+
 fi
 
 
@@ -2348,7 +2348,7 @@ else
 fnord() { int i=42;}
 main() { void *self, *ptr1, *ptr2; self=dlopen(0,LTDL_GLOBAL|LTDL_LAZY_OR_NOW);
     if(self) { ptr1=dlsym(self,"fnord"); ptr2=dlsym(self,"_fnord");
-	       if(ptr1 || ptr2) { dlclose(self); exit(0); } } exit(1); } 
+	       if(ptr1 || ptr2) { dlclose(self); exit(0); } } exit(1); }
 
 EOF
 if { (eval echo $progname:@LINENO@: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest && (./conftest; exit) 2>/dev/null
@@ -2421,7 +2421,7 @@ else
 fnord() { int i=42;}
 main() { void *self, *ptr1, *ptr2; self=dlopen(0,LTDL_GLOBAL|LTDL_LAZY_OR_NOW);
     if(self) { ptr1=dlsym(self,"fnord"); ptr2=dlsym(self,"_fnord");
-    if(ptr1 || ptr2) { dlclose(self); exit(0); } } exit(1); } 
+    if(ptr1 || ptr2) { dlclose(self); exit(0); } } exit(1); }
 
 EOF
 if { (eval echo $progname:@LINENO@: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest && (./conftest; exit) 2>/dev/null
@@ -2875,29 +2875,29 @@ EOF
       # starting and closing comments
 # /* impgen.c starts here */
 # /*   Copyright (C) 1999-2000 Free Software Foundation, Inc.
-# 
+#
 #  This file is part of GNU libtool.
-# 
+#
 #  This program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
 #  the Free Software Foundation; either version 2 of the License, or
 #  (at your option) any later version.
-# 
+#
 #  This program is distributed in the hope that it will be useful,
 #  but WITHOUT ANY WARRANTY; without even the implied warranty of
 #  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #  GNU General Public License for more details.
-# 
+#
 #  You should have received a copy of the GNU General Public License
 #  along with this program; if not, write to the Free Software
 #  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 #  */
-# 
+#
 #  #include <stdio.h>		/* for printf() */
 #  #include <unistd.h>		/* for open(), lseek(), read() */
 #  #include <fcntl.h>		/* for O_RDONLY, O_BINARY */
 #  #include <string.h>		/* for strdup() */
-# 
+#
 #  /* O_BINARY isn't required (or even defined sometimes) under Unix */
 #  #ifndef O_BINARY
 #  #define O_BINARY 0
@@ -2913,7 +2913,7 @@ EOF
 #    read (fd, b, 2);
 #    return b[0] + (b[1]<<8);
 #  }
-# 
+#
 #  static unsigned int
 #  pe_get32 (fd, offset)
 #      int fd;
@@ -2924,7 +2924,7 @@ EOF
 #    read (fd, b, 4);
 #    return b[0] + (b[1]<<8) + (b[2]<<16) + (b[3]<<24);
 #  }
-# 
+#
 #  static unsigned int
 #  pe_as32 (ptr)
 #       void *ptr;
@@ -2932,7 +2932,7 @@ EOF
 #    unsigned char *b = ptr;
 #    return b[0] + (b[1]<<8) + (b[2]<<16) + (b[3]<<24);
 #  }
-# 
+#
 #  int
 #  main (argc, argv)
 #      int argc;
@@ -2944,32 +2944,32 @@ EOF
 #      unsigned long name_rvas, nexp;
 #      unsigned char *expdata, *erva;
 #      char *filename, *dll_name;
-# 
+#
 #      filename = argv[1];
-# 
+#
 #      dll = open(filename, O_RDONLY|O_BINARY);
 #      if (!dll)
 #  	return 1;
-# 
+#
 #      dll_name = filename;
-#    
+#
 #      for (i=0; filename[i]; i++)
 #  	if (filename[i] == '/' || filename[i] == '\\'  || filename[i] == ':')
 #  	    dll_name = filename + i +1;
-# 
+#
 #      pe_header_offset = pe_get32 (dll, 0x3c);
 #      opthdr_ofs = pe_header_offset + 4 + 20;
 #      num_entries = pe_get32 (dll, opthdr_ofs + 92);
-# 
+#
 #      if (num_entries < 1) /* no exports */
 #  	return 1;
-# 
+#
 #      export_rva = pe_get32 (dll, opthdr_ofs + 96);
 #      export_size = pe_get32 (dll, opthdr_ofs + 100);
 #      nsections = pe_get16 (dll, pe_header_offset + 4 +2);
 #      secptr = (pe_header_offset + 4 + 20 +
 #  	      pe_get16 (dll, pe_header_offset + 4 + 16));
-# 
+#
 #      expptr = 0;
 #      for (i = 0; i < nsections; i++)
 #      {
@@ -2988,22 +2988,22 @@ EOF
 #  	    break;
 #  	}
 #      }
-# 
+#
 #      expdata = (unsigned char*)malloc(export_size);
 #      lseek (dll, expptr, SEEK_SET);
 #      read (dll, expdata, export_size);
 #      erva = expdata - export_rva;
-# 
+#
 #      nexp = pe_as32 (expdata+24);
 #      name_rvas = pe_as32 (expdata+32);
-# 
+#
 #      printf ("EXPORTS\n");
 #      for (i = 0; i<nexp; i++)
 #      {
 #  	unsigned long name_rva = pe_as32 (erva+name_rvas+i*4);
 #  	printf ("\t%s @ %ld ;\n", erva+name_rva, 1+ i);
 #      }
-# 
+#
 #      return 0;
 #  }
 # /* impgen.c ends here */

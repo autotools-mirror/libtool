@@ -460,7 +460,7 @@ test -n "$reload_flag" && reload_flag=" $reload_flag"
 # AC_DEPLIBS_CHECK_METHOD - how to check for library dependencies
 #  -- PORTME fill in with the dynamic library characteristics
 AC_DEFUN(AC_DEPLIBS_CHECK_METHOD,
-[AC_CACHE_CHECK([how to recognise dependant libraries], 
+[AC_CACHE_CHECK([how to recognise dependant libraries],
 lt_cv_deplibs_check_method,
 [lt_cv_file_magic_cmd='$FILE'
 lt_cv_file_magic_test_file=
@@ -480,11 +480,11 @@ case "$host_os" in
 aix4* | beos*)
   lt_cv_deplibs_check_method=pass_all
   ;;
-  
+
 bsdi4*)
   lt_cv_deplibs_check_method='file_magic ELF [0-9][0-9]*-bit [ML]SB (shared object|dynamic lib)'
   lt_cv_file_magic_test_file=/shlib/libc.so
-  ;;  
+  ;;
 
 cygwin* | mingw*)
   lt_cv_deplibs_check_method='file_magic file format pei*-i386(.*architecture: i386)?'
@@ -498,11 +498,11 @@ freebsd*)
     ;;
   esac
   ;;
-  
+
 gnu*)
   lt_cv_deplibs_check_method=pass_all
   ;;
-  
+
 irix5* | irix6*)
   case "$host_os" in
   irix5*)
@@ -546,7 +546,7 @@ osf3* | osf4* | osf5*)
 sco3.2v5*)
   lt_cv_deplibs_check_method=pass_all
   ;;
-  
+
 solaris*)
   lt_cv_deplibs_check_method=pass_all
   lt_cv_file_magic_test_file=/lib/libc.so
