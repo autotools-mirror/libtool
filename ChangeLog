@@ -1,5 +1,8 @@
 2004-12-28  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* doc/libtool.texi (all over): Use @option and @command.
+	Some more minor formatting updates, typos.
+
 	* m4/libtool.m4 (_LT_PROG_ECHO_BACKSLASH): Fix variable
 	quoting; allows lt_ECHO to match --fallback-echo again.
 
