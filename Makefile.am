@@ -51,7 +51,7 @@ libtoolize: $(srcdir)/libtoolize.in $(top_builddir)/config.status
 	chmod +x $@
 
 # Make sure configure is regenerated when the version timestamp changes
-config.status: ChangeLog
+configure: ChangeLog
 
 .PHONY: configure-subdirs
 configure-subdirs distdir: $(DIST_MAKEFILE_LIST)

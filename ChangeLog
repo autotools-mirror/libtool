@@ -1,5 +1,11 @@
 2003-11-25  Gary V. Vaughan  <gary@gnu.org>
 
+	* Makefile.am (config.status): Removed.  Rebuilding config.status
+	isn't enough, because the TIMESTAMP in configure is still out
+	of date.
+	(configure): We actually need a new configure to force the
+	correct timestamp into ltmain.sh.
+
 	* Makefile.am (config/ltmain.sh): Removed.  Rebuilding ltmain.sh
 	isn't enough, because the TIMESTAMP in config.status is still out
 	of date.
