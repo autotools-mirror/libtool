@@ -1,3 +1,8 @@
+1999-06-09  Pavel Roskin  <pavel_roskin@geocities.com>
+
+	* ltconfig.in (exeext): Use quotes in the test, to prevent a 
+	failure in sh.test.
+
 1999-06-09  Gary V. Vaughan  <gary@oranda.demon.co.uk>
 
 	* ltconfig.in: Reordered tests to be more like configure.in's

@@ -1072,7 +1072,7 @@ else
     $rm conftest*
   fi
   # Belt *and* braces to stop my trousers falling down:
-  if test X$ac_cv_prog_cc_pic_works = Xno; then
+  if test "X$ac_cv_prog_cc_pic_works" = Xno; then
     ac_cv_prog_cc_pic=
     ac_cv_prog_cc_can_build_shared=no
   fi
@@ -1108,7 +1108,7 @@ else
   $rm conftest*
 fi
 # Belt *and* braces to stop my trousers falling down:
-if test X$ac_cv_prog_cc_static_works = Xno; then
+if test "X$ac_cv_prog_cc_static_works" = Xno; then
   ac_cv_prog_cc_static=
 fi
 echo "$ac_t""$ac_cv_prog_cc_static_works" 1>&6
