@@ -67,7 +67,6 @@ ltdl_tar_opt=false
 quiet_opt=false
 verbose_opt=false
 
-seen_gettext=false
 seen_libtool=false
 seen_ltdl=false
 
