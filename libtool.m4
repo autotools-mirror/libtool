@@ -1807,8 +1807,8 @@ cygwin* | mingw* | pw32*)
 
 darwin*|rhapsody*)
   need_lib_prefix=no
-  need_lib_prefix=no
-  library_names_spec='${libname}.`if [ "$module" = "yes"; then echo so; else echo dylib; fi`'
+  need_version=no
+  library_names_spec='${libname}.`if [ "$module" = "yes"]; then echo so; else echo dylib; fi`'
   shlibpath_overrides_runpath=yes
   shlibpath_var=DYLD_LIBRARY_PATH
   postinstall_cmds='chmod +x $lib'

@@ -1,3 +1,8 @@
+2000-12-16  Gary V. Vaughan  <gvv@techie.com>
+
+	* libtool.m4 (darwin*): Fixed a pair of stupid typos I made in the
+	last patch.
+
 2000-12-16   Wilfredo Sanchez  <wsanchez@apple.com>
 
 	* libtool.m4: (dyld/darwin*) Much improved port.
