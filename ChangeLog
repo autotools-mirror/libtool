@@ -1,5 +1,11 @@
 2000-05-14  Alexandre Oliva  <oliva@lsd.ic.unicamp.br>
 
+	* libtool.m4 (_AC_PROG_LIBTOOL): Renamed from...
+	(AC_PROG_LIBTOOL): Just AC_REQUIRE(_AC_PROG_LIBTOOL), to avoid
+	effects of multiple runs.
+	(_AC_PROG_LIBTOOL): Use AC_BEFORE to warn if called before
+	AC_LIBTOOL_CXX.
+
 	* tagdemo/Makefile.am (lib_LTLIBRARIES): Moved libbaz.la from
 	noinst_LTLIBRARIES.
 
