@@ -143,7 +143,7 @@ if test -z "$show_help"; then
   if test "$mode" = NONE; then
     case "$nonopt" in
     *cc)
-      if echo " $@ " | egrep "[ 	]-c[ 	]" > /dev/null 2>&1; then
+      if echo " $@ " | egrep -e "[ 	]-c[ 	]" > /dev/null 2>&1; then
         mode=compile
       else
         mode=link
