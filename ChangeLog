@@ -1,3 +1,9 @@
+2003-07-14  Andreas Schwab  <schwab@bogus.example.com>
+
+	* libtool.m4 (_LT_AC_LOCK): Also match powerpc64-*linux* in
+	addition to ppc64-*linux*.  From Markus Meissner
+	<meissner@bogus.example.com>.
+
 2003-07-14  Dalibor Topic  <robilad@yahoo.com>
 
 	* libtool.m4 (AC_LIBTOOL_SYS_MAX_CMD_LEN): For AmigaOS with pdksh,
