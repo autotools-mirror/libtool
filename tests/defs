@@ -12,6 +12,7 @@ progname=`echo "$0" | sed 's%^.*/%%'`
 
 libtool="../libtool"
 make="${MAKE-make}"
+SHELL="${CONFIG_SHELL-/bin/sh}"
 
 prefix="./_inst"
 if test "$need_prefix" = yes; then
@@ -22,6 +23,9 @@ else
   test -d $prefix && rm -rf $prefix
   prefix=NONE
 fi
+
+# Extract CC from the libtool configuration
+eval `$libtool --config | grep '^CC='`
 
 # See how redirections should work.
 case "$VERBOSE" in
