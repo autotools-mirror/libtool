@@ -1,5 +1,10 @@
 2000-01-28  Gary V. Vaughan  <gary@oranda.demon.co.uk>
 
+	* libltdl/ltdl.c (lt_dlseterror): Catch errorcodes below 0 as
+	invalid.
+	* libltdl/ltdl.h (LTDL_ERROR): Added missing '_' in K&R
+	definition.
+
 	* libltdl/ltdl.h (ltdl_error_table): Added missing error code, and
 	fixed typo in another code.
 	* doc/libtool.texi (Libltdl interface): Added missing @end

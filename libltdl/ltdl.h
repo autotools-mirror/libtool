@@ -134,7 +134,7 @@ Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 #ifdef __STDC__ 
 #  define LTDL_ERROR(name, diagnostic)	LTDL_ERROR_##name,
 #else
-#  define LTDL_ERROR(name, diagnostic)	LTDL_ERROR/**/name,
+#  define LTDL_ERROR(name, diagnostic)	LTDL_ERROR_/**/name,
 #endif
 enum {
 	ltdl_error_table

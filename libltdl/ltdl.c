@@ -1902,7 +1902,7 @@ int
 lt_dlseterror (index)
 	int index;
 {
-	if (index >= errorcode) {
+	if (index >= errorcode || index < 0) {
 		last_error = LT_DLSTRERROR(INVALID_ERRORCODE);
 		return 1;
 	}
