@@ -89,15 +89,20 @@ fi
 test_dlerror=no
 LIBADD_DL=
 AC_CHECK_FUNCS(dlopen, [AC_DEFINE(HAVE_LIBDL, 1,
-			  [Define if you have the libdl library or equivalent. ]) test_dlerror=yes],
+			  [Define if you have the libdl library or equivalent. ]) dnl
+			   test_dlerror=yes],
   [AC_CHECK_LIB(dl, dlopen, [AC_DEFINE(HAVE_LIBDL, 1,
-			       [Define if you have the libdl library. ]) dnl
+			     [Define if you have the libdl library. ]) dnl
 			     LIBADD_DL="-ldl" test_dlerror=yes],
     [AC_CHECK_LIB(dld, dld_link, [AC_DEFINE(HAVE_DLD, 1,
-				    [Define if you have the GNU dld library. ]) dnl
+				  [Define if you have the GNU dld library. ]) dnl
 				  LIBADD_DL="-ldld"],
       [AC_CHECK_FUNCS(shl_load, [AC_DEFINE(HAVE_SHL_LOAD, 1,
-				   [Define if you have the shl_load function. ])])]
+				 [Define if you have the shl_load function. ])],
+	[AC_CHECK_LIB(dld, shl_load, [AC_DEFINE(HAVE_SHL_LOAD, 1,
+				   [Define if you have the shl_load function. ]) dnl
+				   LIBADD_DL="-ldld"])]
+	)]
     )]
   )]
 )
