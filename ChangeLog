@@ -1,3 +1,8 @@
+2000-11-20  Morten Eriksen  <mortene@sim.no>
+	
+	* ltdl.m4 (AC_LIB_LTDL, AC_LTDL_SYMBOL_USCORE): Break a circular
+	dependency between AC_LTDL_SYMBOL_USCORE and AC_LTDL_DLSYM_USCORE.
+	
 2000-11-20  Paul Berrevoets  <paul@swi.com>
 
 	* ltmain.in: Some versions of expr respond with "0" if a
