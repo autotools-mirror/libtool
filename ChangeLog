@@ -1,5 +1,6 @@
 1999-01-27  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
 
+	* THANKS: added Sam Vilain.
 	* ltconfig.in ($echo):  When using printf to replace echo the shell
 	expands %s\n to %sn.  Changed to use "%s\n" (with quotes).
 	Reported by Sam Vilain <sam.vilain@nz.unisys.com>
