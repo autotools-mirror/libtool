@@ -1,3 +1,8 @@
+2003-08-29  Alexandre Duret-Lutz  <adl@gnu.org>
+
+	* libtool.m4 (_LT_AC_LANG_C_CONFIG): Fix unquoted call to
+	_LT_AC_LANG_C_CONFIG.
+
 2003-08-05  Jim Pick <jim@kaffe.org>,
 	Ito Kazumitsu <kaz@maczuka.gcd.org>,
 	Gary V. Vaughan  <gary@gnu.org>
