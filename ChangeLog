@@ -1,3 +1,9 @@
+1999-07-01  Thomas Tanner  <tanner@ffii.org>
+
+	* NEWS: updated
+	* doc/PLATFORMS: updated
+	* changed my email address
+
 1999-06-30  Thomas Tanner  <tanner@ffii.org>
 
 	* demo/foo.h: use LT_PARAMS instead of LTDL_PARAMS (this is not libltdl)

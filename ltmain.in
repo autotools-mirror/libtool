@@ -2338,7 +2338,7 @@ EOF
 	test "$relink" = no && shlibpath="$compile_shlibpath$shlibpath"	
 	if test -n "$shlibpath"; then
 	  eval "$shlibpath_var='$shlibpath\$$shlibpath_var'; export $shlibpath_var"
-  	fi
+	fi
   
 	# Get the real and link names of the library.
 	eval library_names=\"$library_names_spec\"

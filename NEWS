@@ -1,6 +1,6 @@
 NEWS - list of user-visible changes between releases of GNU Libtool
 
-New in 1.3b: 1999-??-??; CVS version 1.3a, Libtool team:
+New in 1.3b: 1999-07-??; CVS version 1.3a, Libtool team:
 * Complete inter-library dependencies support. It's now possible
   to link libtool libraries against other libtool libraries.
 * Libtool is able to find already-installed libtool libraries,
@@ -12,12 +12,14 @@ New in 1.3b: 1999-??-??; CVS version 1.3a, Libtool team:
 * New "-no-fast-install" flag to selectively disable fast-install mode.
 * Support for installing stripped libraries using GNU strip (install -s).
   Automake >= 1.5 will install stripped libraries with "make install-strip".
+* Allow linking shared libraries against static ones
+  on FreeBSD, GNU/Linux, GNU Hurd and Solaris
 * Support for linking DLLs on Win32
 * New `clean' mode to delete uninstalled files.
 * New demos and tests
 * Various bugfixes
 
-New in 1.3.3: 1999-06-2?, CVS version 1.3.2a, Libtool team:
+New in 1.3.3: 1999-07-0?, CVS version 1.3.2a, Libtool team:
 * New `-dlpreopen force' flag to ensure that
   lt_preloaded_symbols is always defined.
 * Work around self-dlclose bug in FreeBSD 3.1.
