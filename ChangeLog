@@ -1,3 +1,9 @@
+2000-05-14  Alexandre Oliva  <oliva@lsd.ic.unicamp.br>
+
+	* libtool.m4 (_AC_PROG_LIBTOOL): Renamed from...
+	(AC_PROG_LIBTOOL): Just AC_REQUIRE(_AC_PROG_LIBTOOL), to avoid
+	effects of multiple runs.
+
 2000-05-11  Thomas Tanner  <tanner@ffii.org>
 
 	* NEWS: update
