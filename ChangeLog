@@ -1,5 +1,12 @@
 1999-03-06  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* libltdl/ltdl.c (LTDL_LAZY_OR_NOW): renamed from LTDL_NOW; prefer 
+	LAZY loading because it's much faster and NOW is apparently
+	partially broken on FreeBSD
+	Reported by Archie Cobbs <archie@whistle.com>
+
+1999-03-06  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
 	* ltconfig.in (archive_expsym_cmds, solaris, without_gnu_ld):
 	$lib.exp already starts with $objdir/
 	Reported by Godmar Back <gback@cs.utah.edu>
