@@ -1,3 +1,26 @@
+2005-02-27  Gary V. Vaughan  <gary@gnu.org>
+
+	In branch-2-0 (and in time, others) ltversion.m4 has a dot
+	delimited serial number that didn't used to be processed
+	correctly by libtoolize.  This changeset fixes that, and
+	leverages those changes to check versions of ltmain.sh and
+	config.sub, config.guess before overwriting when --force is
+	not given:
+
+	* libtoolize.m4sh: Don't overwrite pkgaux files with --force
+	unless --install is given too.
+	(func_serial): Fix underquoting in regexp.
+	(func_serial_max): New function to compare serial numbers.
+	(func_serial_update_check): New function factored out of
+	func_serial_update().
+	(func_serial_update): Bail if SRCFILE is missing.
+	Don't display both 'already up to date' and 'use --force to
+	update' messages for the same file.
+	Use func_serial_max to cope with `.' delimited serial numbers.
+	(func_ltmain_update): Use func_serial_update_check and
+	func_serial_max to do version checking with $package_revision.
+	(func_config_update): Ditto with $timestamp.
+
 2005-02-26  Gary V. Vaughan  <gary@gnu.org>
 
 	* libltdl/Makefile.am (install-data-local):  cd to $(srcdir) before
