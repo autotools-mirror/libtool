@@ -1,7 +1,7 @@
 #! /bin/sh
 # bootstrap -- Helps bootstrapping libtool, when checked out from CVS.
 #
-# Copyright (C) 2003, 2004 Free Software Foundation
+# Copyright (C) 2003, 2004, 2005 Free Software Foundation
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -45,7 +45,7 @@ rm -rf `find . -path './{arch}' -prune -o \( -name autom4te.cache -o -name libto
 rm -f acinclude.m4 config/ltmain.sh libltdl/config.h
 
 if test -z "$reconfdirs"; then
-  reconfdirs=". `ls -1d tests/*demo tests/*demo[0-9]`"
+  reconfdirs=". libltdl `ls -1d tests/*demo tests/*demo[0-9]`"
 fi
 
 # Extract the package name and version number from configure.ac:
@@ -61,6 +61,14 @@ rm -f ./config/ltmain.sh ./m4/ltversion.m4
 test -f Makefile || { makefile=Makefile; cp Makefile.am $makefile; }
 make ./config/ltmain.sh ./m4/ltversion.m4 ./libtoolize.in ./tests/defs.in \
     top_srcdir=. PACKAGE="$2" VERSION="$3" M4SH="autom4te -l m4sh"
+
+# Create libltdl auxdirs:
+auxdirs="m4 config"
+for dir in $auxdirs; do
+  rm -rf ./libltdl/$dir
+  mkdir ./libltdl/$dir
+done
+cp ./config/ltmain.sh libltdl/config/
 
 test -f clcommit.m4sh && make -f Makefile.maint commit \
     top_srcdir=. PACKAGE="$2" VERSION="$3" M4SH="autom4te -l m4sh" \
@@ -86,8 +94,8 @@ for sub in $reconfdirs; do
   autoreconf --force --verbose --install $sub
 done
 
-# Remove our dummy libtoolize
-rm -f ./config/libtoolize
+# Remove our dummy libtoolize and copied dummy ltmain.sh
+rm -f ./config/libtoolize ./libltdl/config/ltmain.sh
 
 # These files can cause an infinite configure loop if left behind.
 rm -f Makefile libltdl/Makefile libtool vcl.tmp

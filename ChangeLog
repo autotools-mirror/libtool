@@ -1,3 +1,9 @@
+2005-03-15  Gary V. Vaughan  <gary@gnu.org>
+
+	* libtoolize.m4sh (func_massage_pkgvmacro_DATA): New function
+	to calculate the macro filenames to be copied by libtoolize.
+	* Makefile.am (edit): Substitute pkgvmacro_DATA.
+
 2005-03-14  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* m4/libtool.m4 (_LT_COPYING): Update Copyright year.

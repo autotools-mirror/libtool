@@ -1,6 +1,6 @@
 ## Makefile.am -- Process this file with automake to produce Makefile.in
 ##
-## Copyright (C) 2003, 2004 Free Software Foundation
+## Copyright (C) 2003, 2004, 2005 Free Software Foundation, Inc.
 ##
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -32,6 +32,7 @@ edit = sed \
 	-e 's,@datadir\@,$(datadir),g' \
 	-e 's,@pkgdatadir\@,$(pkgdatadir),g' \
 	-e 's,@aclocaldir\@,$(aclocaldir),g' \
+	-e 's,@aclocal_DATA\@,$(aclocal_DATA),g' \
 	-e 's,@host_triplet\@,$(host_triplet),g' \
 	-e "s,@configure_input\@,Generated from $$input; do not edit by hand,g"
 
@@ -61,8 +62,6 @@ dist_pkgdata_DATA = config/config.guess config/config.sub config/ltmain.sh \
 
 # Everything that gets picked up by aclocal is automatically distributed,
 # this is the list of macro files we install on the user's system.
-# NOTE: Ensure that PKGMACRO_FILES in libtoolize.in is updated if you
-#       change the contents of aclocal_DATA:
 aclocal_DATA = m4/argz.m4 m4/libtool.m4 m4/ltdl.m4 \
 	m4/ltoptions.m4 m4/ltsugar.m4 m4/ltversion.m4
 

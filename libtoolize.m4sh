@@ -745,6 +745,31 @@ func_check_macros ()
     # FIXME: Ensure ltmain.sh, libtool.m4 and ltdl.m4 are from the same release
 }
 
+# func_massage_aclocal_DATA [glob_exclude]
+# @aclocal_DATA\@ is substituted as per its value in Makefile.am; this
+# function massages it into a suitable format for func_copy_some_files.
+func_massage_aclocal_DATA ()
+{
+    pkgmacro_files=     # GLOBAL VAR
+
+    my_glob_exclude="$1"
+
+    # Massage a value for pkgmacro_files from the value used in Makefile.am.
+    for my_filename in @aclocal_DATA@; do
+      my_filename=`$ECHO "X$my_filename" | $Xsed -e "$basename"`
+
+       # ignore excluded filenames
+      if test -n "$my_glob_exclude"; then
+        eval 'case $my_filename in '$my_glob_exclude') continue ;; esac'
+      fi
+
+      pkgmacro_files="$pkgmacro_files:$my_filename"
+    done
+
+    # strip spurious leading `:'
+    pkgmacro_files=`$ECHO "X$pkgmacro_files" | $Xsed -e 's,^:*,,'`
+}
+
 
 ## ----------- ##
 ##    Main.    ##
@@ -753,10 +778,8 @@ func_check_macros ()
 {
   rerun_aclocal=false
 
-  # NOTE: PKGMACRO_FILES must be kept in synch with aclocal_DATA in the
-  #       libtool top_srcdir/Makefile.am (libtool.m4 and ltdl.m4 are handled
-  #       specially below though, so don't add them here):
-  pkgmacro_files='argz.m4:ltoptions.m4:ltsugar.m4:ltversion.m4'
+  # libtool.m4 and ltdl.m4 are handled specially below
+  func_massage_aclocal_DATA 'libtool.m4|ltdl.m4'
 
   glob_exclude_pkgaux_files='config.guess|config.sub|install-sh|ltmain.sh'
 
