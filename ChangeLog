@@ -1,5 +1,11 @@
 2004-09-01  Gary V. Vaughan  <gary@gnu.org>
 
+	* libltdl/ltdl.c (lt_dlexit, tryall_dlopen): Fix gcc parentheses
+	warning.
+	(foreach_dirinpath, try_dlopen, lt_dlpath_insertdir): Fix gcc
+	signed vs unsigned warning.
+	Reported by Bob Friesenhahn <bfriesen@simple.dallas.tx.us>
+
 	* m4/libtool.m4 (_LT_PROG_LTMAIN): Simplified in light of
 	ltmain.sh no longer being in the build tree.
 	Reported by Ralf Wildenhues <Ralf.Wildenhues@gmx.de>

@@ -288,7 +288,7 @@ lt_dlexit (void)
 	}
 
       /* close all loaders */
-      while (loader = lt_dlloader_next (loader))
+      while ((loader = lt_dlloader_next (loader)))
 	{
 	  lt_dlvtable *vtable = (lt_dlvtable *) lt_dlloader_get (loader);
 
@@ -365,7 +365,7 @@ tryall_dlopen (lt_dlhandle *phandle, const char *filename)
     const lt_dlvtable *vtable = 0;
     lt_dlloader *loader = 0;
 
-    while (loader = lt_dlloader_next (loader))
+    while ((loader = lt_dlloader_next (loader)))
       {
 	vtable = lt_dlloader_get (loader);
 	handle->module = vtable->module_open (vtable->dlloader_data, filename);
@@ -580,7 +580,7 @@ foreach_dirinpath (const char *search_path, const char *base_name,
 		   foreach_callback_func *func, void *data1, void *data2)
 {
   int	 result		= 0;
-  int	 filenamesize	= 0;
+  size_t filenamesize	= 0;
   size_t lenbase	= LT_STRLEN (base_name);
   size_t argz_len	= 0;
   char *argz		= 0;
@@ -605,10 +605,10 @@ foreach_dirinpath (const char *search_path, const char *base_name,
       {
 	size_t lendir = LT_STRLEN (dir_name);
 
-	if (lendir +1 +lenbase >= filenamesize)
+	if (1+ lendir + lenbase >= filenamesize)
 	{
 	  FREE (filename);
-	  filenamesize	= lendir +1 +lenbase +1; /* "/d" + '/' + "f" + '\0' */
+	  filenamesize	= 1+ lendir + 1+ lenbase; /* "/d" + '/' + "f" + '\0' */
 	  filename	= MALLOC (char, filenamesize);
 	  if (!filename)
 	    goto cleanup;
@@ -993,30 +993,30 @@ try_dlopen (lt_dlhandle *phandle, const char *filename)
 
   ext = strrchr (base_name, '.');
 
-      /* extract the module name from the file name */
-      name = MALLOC (char, ext - base_name + 1);
-      if (!name)
-	{
-	  ++errors;
-	  goto cleanup;
-	}
+  /* extract the module name from the file name */
+  name = MALLOC (char, ext - base_name + 1);
+  if (!name)
+    {
+      ++errors;
+      goto cleanup;
+    }
 
-      /* canonicalize the module name */
+  /* canonicalize the module name */
+  {
+    int i;
+    for (i = 0; i < ext - base_name; ++i)
       {
-        size_t i;
-        for (i = 0; i < ext - base_name; ++i)
+	if (isalnum ((int)(base_name[i])))
 	  {
-	    if (isalnum ((int)(base_name[i])))
-	      {
-	        name[i] = base_name[i];
-	      }
-	    else
-	      {
-	        name[i] = '_';
-	      }
+	    name[i] = base_name[i];
 	  }
-        name[ext - base_name] = LT_EOS_CHAR;
+	else
+	  {
+	    name[i] = '_';
+	  }
       }
+    name[ext - base_name] = LT_EOS_CHAR;
+  }
 
   /* Check whether we are opening a libtool module (.la extension).  */
   if (ext && streq (ext, archive_ext))
@@ -1857,7 +1857,7 @@ lt_dlpath_insertdir (char **ppath, char *before, const char *dir)
   if (before)
     {
       assert (*ppath <= before);
-      assert (before - *ppath <= strlen (*ppath));
+      assert ((int) (before - *ppath) <= (int) strlen (*ppath));
 
       before = before - *ppath + argz;
     }
