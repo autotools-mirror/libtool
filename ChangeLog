@@ -1,5 +1,17 @@
 2004-09-06  Albert Chin-A-Young  <china@thewrittenword.com>
 
+	Hopefully, passing unrecognised compiler arguments through
+	unmolested will prove to be a good plan for the 2.0 release.  If
+	it goes awry, we can get back to where we were by reverting this
+	patch and the 2004-09-05 Albert Chin-A-Young patch, aka
+	gary@gnu.org--2004/libtool--devo--1.0--patch-169,172:
+
+	* config/ltmain.in (func_mode_link): Because we now pass through
+	compiler arguments we doesn't recognize, the code to pass
+	through GCC's -m* arguments is not needed.
+
+2004-09-06  Albert Chin-A-Young  <china@thewrittenword.com>
+
 	* Makefile.am (clean-ltmain-sh): Using '==' to test for equality
 	in a shell script is not portable. Use '=' instead.
 
