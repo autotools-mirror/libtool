@@ -7,11 +7,10 @@
 rm -f acinclude.m4
 ln -s libtool.m4 acinclude.m4
 # fake the libtool scripts
-touch ltconfig
 touch ltmain.sh
 touch libtoolize
 aclocal
-automake --gnu --add-missing
+automake --gnu --add-missing --copy
 autoconf
 
 for sub in libltdl demo depdemo mdemo cdemo; do
@@ -26,6 +25,6 @@ for sub in libltdl demo depdemo mdemo cdemo; do
   cd ..
 done
 
-rm -f ltconfig ltmain.sh libtoolize
+rm -f ltmain.sh libtoolize
 
 exit 0

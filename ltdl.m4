@@ -61,7 +61,7 @@ AM_CONDITIONAL(CONVENIENCE_LTDL, test x"${enable_ltdl_convenience-no}" != xno)
 AC_DEFUN(AC_LTDL_SNARF_CONFIG,
 [# Read the libtool configuration
 rm -f conftest
-./libtool --config > conftest
+${SHELL-/bin/sh} ./libtool --config > conftest
 . ./conftest
 rm -f conftest
 ])

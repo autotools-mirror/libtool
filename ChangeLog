@@ -1,3 +1,21 @@
+2000-09-07  Gary V. Vaughan  <gvv@techie.com>
+
+	libtool.m4 now contains a version of the code that used to run
+	from ltconfig, so that ltmain.sh and then libtool are
+	generated at configure time.
+
+	* Makefile.am:  Don't generate ltmain.sh or ltconfig anymore.
+	* bootstrap: ltconfig is no more!
+	* configure.in: Call AC_PROG_LIBTOOL directly.
+	(AC_OUTPUT): Generate tmain.sh.
+	* libtool.m4: Don't build an argument list for ltconfig.
+	(_LT_AC_LTCONFIG_HACK):  Refactoring of the former contents of
+	ltconfig.in to take advantage of the m4 macros from autoconf.
+	* ltmain.in: Don't do a version check against ltconfig.
+	* tests/assign.test: Remove reference to ltconfig.
+	* tests/hardcode.test: ditto.
+	* tests/sh.test: ditto.
+
 2000-09-05  Alexandre Oliva  <aoliva@redhat.com>
 
 	* depdemo/main.c: Support -alt.

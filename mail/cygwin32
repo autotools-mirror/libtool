@@ -200,3 +200,59 @@ Jon Leichter
 jon@symas.com
 
 
+"Gary V. Vaughan" wrote:
+> 
+> On Wed, Aug 30, 2000 at 10:51:36AM -0400, Charles Wilson wrote:
+> > No, it can't.  Currently, libtool itself doesn't support *building*
+> > dlls.
+> 
+> Ouch.  Yes it does.  I added support around Christmas 1998, and have
+> been maintaining it ever since.
+
+Thanks for the correction.
+
+> 
+> Yes it does.  And provided your libraries don't trip over the stupid
+> dll limitation of "to export a non-function symbol you must edit your
+> sources", it works easily.  Even if you do export data symbols,
+> libtool woll build and link against a dll for you (even generating an
+> import lib along the way).
+> 
+> Unfortunately libtool was developed for Unix and assumes a featureful
+> shared library architecture, which doesn't map very easily onto win32
+> dll's.
+> 
+> I will be able to simplify the dll build process a little when DJ's
+> patches to binutils arrive in a cygwin release (did this happen in
+> 1.1? I have been so busy with m4 that I only upgraded from b20.1 a few
+> weeks ago).
+
+They landed in binutils-20000625, and were finetuned/tweaked to a fairly
+stable point by binutils-20000722 (the current version in /latest).
+
+Also, there were a few additions that changed ld's default search order
+for libraries:
+  -Bstatic -lfoo  : 
+    looks for libfoo.a
+  -Bdynamic -lfoo : 
+    looks for libfoo.dll.a (default name for an import lib)
+         then foo.dll.a    (alt. name for an import lib)
+         then libfoo.dll   (link directly to a dll)
+         then foo.dll      (ditto, alt. name)
+     finally, libfoo.a     (fall back to static lib)
+
+The spec file for gcc (as of 2.95.2-2) changed so that:
+   gcc -static   calls 'ld -Bstatic'
+   gcc           calls 'ld -Bdynamic'
+
+Finally, 'gcc -shared' will build a dll, but you need to pass linker
+options like '-Wl,--out-implib=libfoo.dll.a' explicitly. 
+
+FWIW, all of the (non-libtool) libraries I've dll-ized do not use
+dlltool at all, and rely only on gcc (and ld, indirectly).
+
+--Chuck
+
+--
+Want to unsubscribe from this list?
+Send a message to cygwin-unsubscribe@sourceware.cygnus.com

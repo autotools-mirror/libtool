@@ -12,7 +12,7 @@ fi
 
 # Check all the "portable" shell scripts.
 status=0
-scripts="$srcdir/../ltconfig $srcdir/../ltmain.sh"
+scripts="$srcdir/../ltmain.sh"
 
 # Check for bad binary operators.
 if egrep -n -e "if[ 	]+[\"']?\\$.*(=|-[lg][te]|-eq|-ne)" $scripts; then
