@@ -1,3 +1,9 @@
+2004-06-30  Maciej W. Rozycki  <macro@linux-mips.org>
+
+	* demo/Makefile.am: Stop automake warning by defining
+	libhell0_a_CFLAGS.
+	* pdemo/Makefile.am: Ditto.
+
 2004-08-12  Peter O'Gorman  <peter@pogma.com>
 
 	* configure.ac, libtool.m4: Ensure that a c++ compiler exists before
