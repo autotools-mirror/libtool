@@ -86,7 +86,7 @@ DUALCASE=1; export DUALCASE # for MKS sh
 (unset CDPATH) >/dev/null 2>&1 && unset CDPATH
 
 
-: ${MKDIR_P="@mkdir_p@"}
+: ${MKDIR="mkdir"}
 : ${RM="rm -f"}
 : ${MV="mv -f"}
 
@@ -157,7 +157,7 @@ magic="%%%MAGIC variable%%%"
 Xsed="${SED}"' -e 1s/^X//'
 sed_quote_subst='s/\([\\`\\"$\\\\]\)/\\\1/g'
 # test EBCDIC or ASCII
-case `echo A|tr A '\301'` in
+case `$echo A|tr A '\301'` in
  A) # EBCDIC based system
   SP2NL="tr '\100' '\n'"
   NL2SP="tr '\r\n' '\100\100'"
@@ -715,27 +715,47 @@ Otherwise, only FILE itself is deleted using RM."
 
 
 # func_mkdir_p directory-path
-# Use automake's best guess at a multithreadable mkdir command to create
-# DIRECTORY-PATH in a way that shouldn't interfere with `make -j'.
-func_mkdir_p () {
+# Make sure the entire path to DIRECTORY-PATH is available.
+func_mkdir_p ()
+{
     my_directory_path="$1"
-    my_status=
+    my_dir_list=
 
-    test -f "$my_directory_path" && {
-      $show "${RM}r $my_directory_path"
-      $run ${RM}r "$my_directory_path"
-    }
+    if test -n "$my_directory_path"; then
 
-    $show "$MKDIR_P $my_directory_path"
-    test -n "$my_directory_path" && {
-      $run $MKDIR_P "$my_directory_path"
-      my_status=$?
+      # Protect directory names starting with `-'
+      case $my_directory_path in
+        -*) my_directory_path="./$my_directory_path" ;;
+      esac
 
-      # Bail out if $MKDIR_P failed to create a directory.
-      test "$my_status" -ne $EXIT_SUCCESS && \
-        test ! -d "$my_directory_path" && \
-        exit $my_status
-    }
+      # While some portion of DIR does not yet exist...
+      while test ! -d "$my_directory_path"; do
+        # ...make a list in topmost first order.  Use a colon delimited
+	# list incase some portion of path contains whitespace.
+        my_dir_list="$my_directory_path:$my_dir_list"
+
+        # If the last portion added has no slash in it, the list is done
+        case $my_directory_path in */*) ;; *) break ;; esac
+
+        # ...otherwise throw away the child directory and loop
+        my_directory_path=`$echo "$my_directory_path" | $SED "$dirname"`
+      done
+      my_dir_list=`$echo $my_dir_list | $SED 's,:*$,,'`
+
+      save_mkdir_p_IFS="$IFS"; IFS=':'
+      for my_dir in $my_dir_list; do
+	IFS="$save_mkdir_p_IFS"
+        # mkdir can fail with a `File exist' error if two processes
+        # try to create one of the directories concurrently.  Don't
+        # stop in that case!
+        $MKDIR "$my_dir" 2>/dev/null || :
+      done
+      IFS="$save_mkdir_p_IFS"
+    fi
+
+    # Bail out if we (or some other process) failed to create a directory.
+    test -d "$my_directory_path" || \
+      func_fatal_error "Failed to create \`$1'"
 }
 
 

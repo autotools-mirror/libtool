@@ -1,3 +1,22 @@
+2004-09-16  Gary V. Vaughan  <gary@gnu.org>
+
+	My most recent `2004-09-02 Gary V. Vaughan' patch for mkdir_p
+	below is horrendously broken since it makes the installed libtool
+	try to run the mkinstalldirs or install-sh helper scripts.  This
+	patch fixes the `make -j' mkdir race condition internally:
+
+	* libtoolize.in (func_mkdir_p): New slice and dice algorithm
+	to build the directory tree one dir at a time, ignoring errors
+	until the end incase they are transient due to a concurrent
+	identical mkdir.
+	* tests/defs (func_mkdir_p): Ditto.
+	* config/ltmain.in (func_mkdir_p): Ditto, except that ltmain.in
+	uses $echo rather than $ECHO, and uses $show and $run to interact
+	correctly with the command line.
+	* configure.ac (AM_INIT_AUTOMAKE): 1.8 is sufficient again.
+	* Makefile.am (edit): Don't substitute automake's $(mkdir_p).
+	* NEWS: Updated.
+
 2004-09-15  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
 
 	* libltdl/loaders/loadlibrary.c: Compilation fixes (originally

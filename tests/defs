@@ -45,7 +45,7 @@ DUALCASE=1; export DUALCASE # for MKS sh
 : ${GREP="grep"}
 : ${LIBTOOL="../libtool"}
 : ${MAKE="make"}
-: ${MKDIR="mkdir"}		# FIXME: Use @mkdir_p@ substitution for make -j
+: ${MKDIR="mkdir"}
 : ${SED="sed"}
 : ${SHELL="${CONFIG_SHELL-/bin/sh}"}
 
@@ -184,19 +184,48 @@ func_grep ()
     $GREP "$1" "$2" >/dev/null 2>&1
 }
 
-# func_mkdir_p dir
-# Make sure the entire path to DIR is available.
+# func_mkdir_p directory-path
+# Make sure the entire path to DIRECTORY-PATH is available.
 func_mkdir_p ()
 {
-    my_dir=$1
-    my_dirs=
+    my_directory_path="$1"
+    my_dir_list=
 
-    while test ! -d "$my_dir"; do
-      my_dirs="$my_dir $my_dirs"
-      case $my_dir in */*) ;; *) break ;; esac
-      my_dir=`$ECHO "$my_dir" | $SED "$dirname"`
-    done
-   test ! -n "$my_dirs" || $MKDIR $my_dirs
+    if test -n "$my_directory_path"; then
+
+      # Protect directory names starting with `-'
+      case $my_directory_path in
+        -*) my_directory_path="./$my_directory_path" ;;
+      esac
+
+      # While some portion of DIR does not yet exist...
+      while test ! -d "$my_directory_path"; do
+        # ...make a list in topmost first order.  Use a colon delimited
+	# list incase some portion of path contains whitespace.
+        my_dir_list="$my_directory_path:$my_dir_list"
+
+        # If the last portion added has no slash in it, the list is done
+        case $my_directory_path in */*) ;; *) break ;; esac
+
+        # ...otherwise throw away the child directory and loop
+        my_directory_path=`$ECHO "$my_directory_path" | $SED "$dirname"`
+      done
+      my_dir_list=`$ECHO $my_dir_list | $SED 's,:*$,,'`
+
+      save_mkdir_p_IFS="$IFS"; IFS=':'
+      for my_dir in $my_dir_list; do
+	IFS="$save_mkdir_p_IFS"
+        # mkdir can fail with a `File exist' error if two processes
+        # try to create one of the directories concurrently.  Don't
+        # stop in that case!
+        $MKDIR "$my_dir" 2>/dev/null || :
+      done
+      IFS="$save_mkdir_p_IFS"
+    fi
+
+    # Bail out if we (or some other process) failed to create a directory.
+    test -d "$my_directory_path" || \
+      func_fatal_error "Failed to create \`$1'"
 }
 
 # func_mkprefixdir

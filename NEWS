@@ -6,9 +6,8 @@ New in 1.9d: 2004-??-??; CVS version 1.9c, Libtool team:
   back to pic objects.
 * When compiling C glue code with $LTCC, libtool now saves the setting of
   $compiler_flags from the C tag, and passes those flags to $LTCC.
-* libtool uses automake's $(mkdir_p), and can support `make -j' on
-  multi-processor hosts if automake discovered a multithreadable mkdir.  If
-  it still doesn't work for you, install GNU mkdir (in GNU coreutils).
+* libtool no longer dies when concurrently creating directories with
+  `make -j' on multi-processor hosts.
 * Return type, and name parameter of lt_dlloader_remove are no longer
   `const'.
 * Name parameter of lt_dlloader_find is no longer 'const'.

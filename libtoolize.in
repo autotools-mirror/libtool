@@ -75,8 +75,9 @@ DUALCASE=1; export DUALCASE # for MKS sh
 (unset CDPATH) >/dev/null 2>&1 && unset CDPATH
 
 : ${CP="cp -f"}
+: ${ECHO="echo"}
 : ${LN_S="@LN_S@"}
-: ${MKDIR_P="@mkdir_p@"}
+: ${MKDIR="mkdir"}
 : ${RM="rm -f"}
 : ${SED="@SED@"}
 
@@ -91,13 +92,13 @@ basename="s,^.*/,,g"
 progpath="$0"
 
 # The name of this program:
-progname=`echo "$progpath" | $SED "$basename"`
+progname=`$ECHO "$progpath" | $SED "$basename"`
 PROGRAM=libtoolize
 
 # Make sure we have an absolute path for reexecution:
 case $progpath in
   [\\/]*|[A-Za-z]:\\*) ;;
-  *) progdir=`echo "$progpath" | $SED "$dirname"`
+  *) progdir=`$ECHO "$progpath" | $SED "$dirname"`
      progdir=`cd "$progdir" && pwd`
      progpath="$progdir/$progname"
      ;;
@@ -137,7 +138,7 @@ configure_ac=configure.in
 # Echo program name prefixed message.
 func_echo ()
 {
-    echo $progname: ${1+"$@"}
+    $ECHO $progname: ${1+"$@"}
 }
 
 # func_verbose arg...
@@ -151,7 +152,7 @@ func_verbose ()
 # Echo program name prefixed message to standard error.
 func_error ()
 {
-    echo $progname: ${1+"$@"} 1>&2
+    $ECHO $progname: ${1+"$@"} 1>&2
 }
 
 # func_fatal_error arg...
@@ -189,8 +190,8 @@ func_usage ()
 	s/\$progname/'$progname'/;
 	p;
     }; d' < "$progpath"
-    echo
-    echo "run \`$progname --help | more' for full usage"
+    $ECHO
+    $ECHO "run \`$progname --help | more' for full usage"
     exit $EXIT_SUCCESS
 }
 
@@ -248,10 +249,10 @@ func_version ()
 
       --dry-run|-n)	if $opt_dry_run; then :; else
 			  opt_dry_run=:
-			  RM="echo $RM"
-			  test -n "$LN_S" && LN_S="echo $LN_S"
-			  CP="echo $CP"
-			  MKDIR_P="echo $MKDIR_P"
+			  RM="$ECHO $RM"
+			  test -n "$LN_S" && LN_S="$ECHO $LN_S"
+			  CP="$ECHO $CP"
+			  MKDIR="$ECHO $MKDIR"
 			fi
       			libtoolize_flags="${libtoolize_flags} --dry-run"
 			;;
@@ -284,15 +285,15 @@ func_version ()
 
       # Separate optargs to long options:
       --ltdl=*)
-      			arg=`echo "$opt" | $SED "$my_sed_long_arg"`
-			opt=`echo "$opt" | $SED "$my_sed_long_opt"`
+      			arg=`$ECHO "$opt" | $SED "$my_sed_long_arg"`
+			opt=`$ECHO "$opt" | $SED "$my_sed_long_opt"`
 			set -- "$opt" "$arg" ${1+"$@"}
 			;;
 
       # Separate non-argument short options:
       -c*|-i*|-f*|-n*|-q*|-v*)
-			rest=`echo "$opt" |$SED "$my_sed_single_rest"`
-			opt=`echo "$opt" |$SED "$my_sed_single_opt"`
+			rest=`$ECHO "$opt" |$SED "$my_sed_single_rest"`
+			opt=`$ECHO "$opt" |$SED "$my_sed_single_opt"`
 			set -- "$opt" "-$rest" ${1+"$@"}
 			;;
 
@@ -308,25 +309,47 @@ func_version ()
 
 
 # func_mkdir_p directory-path
-# Use automake's best guess at a multithreadable mkdir command to create
-# DIRECTORY-PATH in a way that shouldn't interfere with `make -j'.
-func_mkdir_p () {
+# Make sure the entire path to DIRECTORY-PATH is available.
+func_mkdir_p ()
+{
     my_directory_path="$1"
-    my_status=
+    my_dir_list=
 
     if test -n "$my_directory_path"; then
-      test -f "$my_directory_path" && {
-        ${RM}r "$my_directory_path"
-      }
 
-      $MKDIR_P "$my_directory_path"
-      my_status=$?
+      # Protect directory names starting with `-'
+      case $my_directory_path in
+        -*) my_directory_path="./$my_directory_path" ;;
+      esac
 
-      # Bail out if $MKDIR_P failed to create a directory.
-      test "$my_status" -ne $EXIT_SUCCESS && \
-        test ! -d "$my_directory_path" && \
-        exit $my_status
+      # While some portion of DIR does not yet exist...
+      while test ! -d "$my_directory_path"; do
+        # ...make a list in topmost first order.  Use a colon delimited
+	# list incase some portion of path contains whitespace.
+        my_dir_list="$my_directory_path:$my_dir_list"
+
+        # If the last portion added has no slash in it, the list is done
+        case $my_directory_path in */*) ;; *) break ;; esac
+
+        # ...otherwise throw away the child directory and loop
+        my_directory_path=`$ECHO "$my_directory_path" | $SED "$dirname"`
+      done
+      my_dir_list=`$ECHO $my_dir_list | $SED 's,:*$,,'`
+
+      save_mkdir_p_IFS="$IFS"; IFS=':'
+      for my_dir in $my_dir_list; do
+	IFS="$save_mkdir_p_IFS"
+        # mkdir can fail with a `File exist' error if two processes
+        # try to create one of the directories concurrently.  Don't
+        # stop in that case!
+        $MKDIR "$my_dir" 2>/dev/null || :
+      done
+      IFS="$save_mkdir_p_IFS"
     fi
+
+    # Bail out if we (or some other process) failed to create a directory.
+    test -d "$my_directory_path" || \
+      func_fatal_error "Failed to create \`$1'"
 }
 
 
@@ -339,7 +362,7 @@ func_copy ()
     my_destfile="$2"
     my_return_status=1
 
-    func_mkdir_p `echo "$my_destfile" | $SED "$dirname"`
+    func_mkdir_p `$ECHO "$my_destfile" | $SED "$dirname"`
 
     $RM "$my_destfile"
     if $opt_link && $LN_S "$my_srcfile" "$my_destfile"; then
@@ -385,8 +408,8 @@ func_copy_all_files ()
     while test -n "$my_srcdirs"; do
 
       IFS="$my_save_IFS"
-      my_srcdir=`echo "$my_srcdirs" | sed 's,:.*,,g'`
-      my_srcdirs=`echo "$my_srcdirs" | sed 's,:*[^:][^:]*:*,,'`
+      my_srcdir=`$ECHO "$my_srcdirs" | sed 's,:.*,,g'`
+      my_srcdirs=`$ECHO "$my_srcdirs" | sed 's,:*[^:][^:]*:*,,'`
 
       for my_filename in `cd "$my_srcdir" && ls`; do
 
@@ -397,7 +420,7 @@ func_copy_all_files ()
 
 	# Add to the appropriate list
 	if test -f "$my_srcdir/$my_filename"; then
-	  my_srcfile=`echo "$my_srcdir/$my_filename" |sed "s,^$my_basedir/*,,"`
+	  my_srcfile=`$ECHO "$my_srcdir/$my_filename" |sed "s,^$my_basedir/*,,"`
 	  my_srcfiles="$my_srcfiles${my_srcfiles:+:}$my_srcfile"
 	elif $my_opt_recurse && test -d "$my_srcdir/$my_filename"; then
 	  my_srcdirs="$my_srcdirs${my_srcdirs:+:}$my_srcdir/$my_filename"
@@ -571,7 +594,7 @@ func_included_files ()
         /^m4_include(\[.*\])$/ { s,^m4_include(\[\(.*\)\])$,\1,; p; };
         d'
 
-    test -f "$my_searchfile" && echo "$my_searchfile"
+    test -f "$my_searchfile" && $ECHO "$my_searchfile"
 
     # Only recurse when we don't care if all the variables we use get
     # trashed, since they are in global scope.
@@ -606,7 +629,7 @@ func_serial ()
     # If the file has no serial number, we assume it's ancient.
     test -n "$my_serial" || my_serial=0
 
-    echo $my_serial
+    $ECHO $my_serial
 }
 
 # func_serial_update srcfile destfile [macro_regex] [old_macro_regex]

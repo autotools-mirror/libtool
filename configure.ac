@@ -112,7 +112,7 @@ AC_SUBST([package_revision])
 
 dnl These are bootstrap requirements, once built, libtool may work with
 dnl much older releases of autoconf and automake.  See release notes.
-AM_INIT_AUTOMAKE([1.9 gnits dist-bzip2]) ## We use parallel $(mkdir_p)
+AM_INIT_AUTOMAKE([1.8 gnits dist-bzip2]) ## We use auto-m4_including
 
 dnl Make sure config.status is regenerated when the version timestamp changes
 AC_SUBST([CONFIG_STATUS_DEPENDENCIES], ['$(top_builddir)/stamp-vcl'])
