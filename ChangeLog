@@ -1,3 +1,8 @@
+2001-04-11  Michael Matz  <matzmich@cs.tu-berlin.de>
+
+	* ltmain.in: recognize "CC" as default --tag argument to resolve
+	also ambiguities with that language.
+
 2001-04-11  Alexandre Oliva  <aoliva@redhat.com>
 
 	* ltmain.in: Mark duplicate libraries appearing in predeps and

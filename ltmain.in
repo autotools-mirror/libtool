@@ -136,13 +136,21 @@ do
         ;;
       esac
 
-      if grep "^### BEGIN LIBTOOL TAG CONFIG: $tagname$" < "$0" > /dev/null; then
-        taglist="$taglist $tagname"
-	# Evaluate the configuration.
-	eval "`sed -n -e '/^### BEGIN LIBTOOL TAG CONFIG: '$tagname'$/,/^### END LIBTOOL TAG CONFIG: '$tagname'$/p' < $0`"
-      else
-	echo "$progname: ignoring unknown tag $tagname" 1>&2
-      fi
+      case $tagname in
+      CC)
+	# Don't test for the "default" C tag, as we know, it's there, but
+	# not specially marked.
+	;;
+      *)
+        if grep "^### BEGIN LIBTOOL TAG CONFIG: $tagname$" < "$0" > /dev/null; then
+          taglist="$taglist $tagname"
+	  # Evaluate the configuration.
+	  eval "`sed -n -e '/^### BEGIN LIBTOOL TAG CONFIG: '$tagname'$/,/^### END LIBTOOL TAG CONFIG: '$tagname'$/p' < $0`"
+        else
+	  echo "$progname: ignoring unknown tag $tagname" 1>&2
+        fi
+        ;;
+      esac
       ;;
     *)
       eval "$prev=\$arg"
