@@ -11,9 +11,21 @@ fi
 . $srcdir/defs || exit 1
 
 # Check that things are built.
-if test -f $prefix/lib/libhello.la && cd ../demo; then :
+if test -f $prefix/lib/libhello.la && cd ../demo && test -f libhello.la; then :
 else
   echo "You must run demo-inst.test before $0" 1>&2
+  exit 77
+fi
+
+# Check to make sure we have a dynamic library.
+library_names=NONE
+eval `egrep -e '^library_names=' ./libhello.la 2>/dev/null`
+
+if test "$library_names" = NONE; then
+  echo "library_names not set in ../demo/libhello.la" 1>&2
+  exit 1
+elif test -z "$library_names"; then
+  echo "= Exiting: ../demo/libhello.la is not a shared library"
   exit 77
 fi
 
@@ -32,16 +44,18 @@ if test "$shlibpath_overrides_runpath" = NONE; then
   exit 1
 fi
 
-# Check to make sure we have a dynamic library.
-library_names=NONE
-eval `egrep -e '^library_names=' ./libhello.la 2>/dev/null`
-
-if test "$library_names" = NONE; then
-  echo "library_names not set in ../demo/libhello.la" 1>&2
+hardcode_action=NONE
+eval `egrep -e '^hardcode_action=' ./libtool 2>/dev/null`
+if test "$hardcode_action" = NONE; then
+  echo "hardcode_action not set in ../demo/libtool" 1>&2
   exit 1
-elif test -z "$library_names"; then
-  echo "= Exiting: ../demo/libhello.la is not a shared library"
-  exit 0
+fi
+
+hardcode_direct=NONE
+eval `egrep -e '^hardcode_direct=' ./libtool 2>/dev/null`
+if test "$hardcode_direct" = NONE; then
+  echo "hardcode_direct not set in ../demo/libtool" 1>&2
+  exit 1
 fi
 
 ./hell # so that it links on-demand if needed
@@ -52,6 +66,9 @@ rm -f libhello.la $objdir/libhello.*
 echo "running ../demo/hell"
 if ./hell; then
   :
+elif test "x,$hardcode_action,$hardcode_direct" = x,relink,yes; then
+  echo "Ok, uninstalled programs fail after uninstalled libraries are removed"
+  echo "This works in other configurations, but not in this particular one"
 else
   echo "= Exiting: ../demo/hell does not run, maybe libhello was not installed"
   exit 1
@@ -75,7 +92,7 @@ else
   echo "Failed, as expected"
 fi
 
-if egrep -e '^hardcode_action=relink$' ./libtool > /dev/null 2>&1; then
+if test "x$hardcode_action" = xrelink; then
   echo "= Exiting: install-time relinking is required"
   exit 0
 fi

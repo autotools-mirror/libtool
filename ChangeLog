@@ -1,5 +1,8 @@
 1999-03-21  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* tests/build-relink.test: if we relink and have hardcode_direct, 
+	removing an uninstalled library breaks an uninstalled program
+
 	* doc/libtool.texi: documented convenience libraries
 	* TODO: removed entry about it
 
