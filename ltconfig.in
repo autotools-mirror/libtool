@@ -233,7 +233,7 @@ old_DLLTOOL="$DLLTOOL"
 old_OBJDUMP="$OBJDUMP"
 old_OBJEXT="$OBJEXT"
 old_EXEEXT="$EXEEXT"
-old_reload_Flag="$reload_flag"
+old_reload_flag="$reload_flag"
 old_deplibs_check_method="$deplibs_check_method"
 old_file_magic_cmd="$file_magic_cmd"
 
