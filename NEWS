@@ -8,6 +8,7 @@ New in 1.5b: 2003-??-??; CVS version 1.5a, Libtool team:
   calls itself for relinking etc.
 * -no-suppress in compile mode shows compiler output for both PIC and non-PIC
   object compilation.
+* `-pthread' and similar options are honoured when linking shared libraries.
 * Shared objects (.lo) are no longer created when `-static' is passed in
   compile mode.
 * New compile mode option `-shared' prevents creation of static objects (.o).
