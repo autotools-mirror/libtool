@@ -1,3 +1,9 @@
+2004-12-09  Albert Chin-A-Young  <china@thewrittenword.com>
+
+	* config/ltmain.m4sh: Preserve -model [arg] option, used
+	with the Tru64 UNIX C++ compiler. This option selects the
+	layout of C++ classes, name mangling, and exception handling.
+
 2004-12-09  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* config/ltmain.m4sh (func_mode_finish) [solaris]: Fix [] escaping bug.
