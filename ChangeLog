@@ -1,5 +1,11 @@
 1999-03-07  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* ltconfig.in (enable_fast_install): force it to no only if we
+	need relink; in the other cases, set it to needless
+	* ltmain.in (fast_install): if needless, set relink_command empty
+	* doc/libtool.texi (fast_install, shlibpath_overrides_runpath):
+	document the new behavior
+
 	* ltconfig.in (enable_fast_install): test whether it can be forced 
 	off after shlibpath_overrides_runpath and enable_shared are set
 

@@ -3457,6 +3457,23 @@ Commands to extract exported symbols from @var{libobjs} to the
 file @var{export_symbols}.
 @end defvar
 
+@defvar fast_install
+Determines whether libtool will privilege the installer or the
+developer.  The assumption is that installers will seldom run programs
+in the build tree, and the developer will seldom install.  This is only
+meaningful on platforms in which @var{shlibpath_overrides_runpath} is
+not @samp{yes}, so @var{fast_install} will be set to @samp{needless} in
+this case.  If @var{fast_install} set to @samp{yes}, libtool will create
+programs that search for installed libraries, and, if a program is run
+in the build tree, a new copy will be linked on-demand to use the
+yet-to-be-installed libraries.  If set to @samp{no}, libtool will create
+programs that use the yet-to-be-installed libraries, and will link
+a new copy of the program at install time.  The default value is
+@samp{yes} or @samp{needless}, depending on platform and configuration
+flags, and it can be turned from @samp{yes} to @samp{no} with the
+configure flag @samp{--disable-fast-install}.
+@end defvar
+
 @defvar finish_cmds
 Commands to tell the dynamic linker how to find shared libraries in a
 specific directory.
@@ -3622,11 +3639,10 @@ hardcode in the resulting executable.
 Indicates whether it is possible to override the hard-coded library
 search path of a program with an environment variable.  If this is set
 to no, libtool may have to create two copies of a program in the build
-tree, one to be installed and one to be run in the build tree only.  The 
-latter will be created on-demand, only if the program is actually run in
-the build tree.  If this is set to yes, libtool will set
-@code{shlibpath_var} in the wrapper script before starting the program.
-The default value is unknown, which is equivalent to no.
+tree, one to be installed and one to be run in the build tree only.
+When each of these copies is created depends on the value of
+@code{fast_install}.  The default value is @samp{unknown}, which is
+equivalent to @samp{no}.
 @end defvar
 
 @defvar shlibpath_var
