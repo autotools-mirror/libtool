@@ -1834,9 +1834,6 @@ EOF
 	  linknames="$linknames $link"
 	done
 
-	# Use standard objects if they are PIC.
-	test -z "$pic_flag" && libobjs=`$echo "X$libobjs" | $SP2NL | $Xsed -e "$lo2o" | $NL2SP`
-
 	if test -n "$whole_archive_flag_spec"; then
 	  if test -n "$convenience"; then
 	    eval libobjs=\"\$libobjs $whole_archive_flag_spec\"

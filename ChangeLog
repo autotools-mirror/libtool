@@ -1,5 +1,9 @@
 1999-01-25  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* ltmain.in: don't try to use .o instead of .lo just because
+	there's no PIC flag.  It loses if --disable-static, and there's
+	not much point if we're referring to the same file anyway...
+
 	* ltmain.in (pass_all=none, droppeddeps): set only if deplibs was
 	non-empty
 
