@@ -1,5 +1,8 @@
 2005-01-29  Peter O'Gorman  <peter@pogma.com>
 
+	* ltmain.in, libtool.m4, libtoolize.in, libltdl/ltdl.c: Update
+	copyright.
+
 	* ltmain.in [darwin]: Allow -framework foo through when given on
 	the command line.
 
