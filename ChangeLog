@@ -1,5 +1,8 @@
 2001-04-22  Peter Eisentraut  <peter_e@gmx.net>
 
+	* bootstrap: Allow overriding the location aclocal, automake,
+	autoconf, autoheader from the environment.
+
 	* demo/Makefile.am: Automake 1.4e does not allow `+=' assignments
 	if the variable was not set with `=' earlier.  `+=' was not useful
 	here anyway.

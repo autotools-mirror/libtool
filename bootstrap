@@ -2,7 +2,11 @@
 
 # helps bootstrapping libtool, when checked out from CVS
 # requires GNU autoconf and GNU automake
-# this is not meant to go into the distributions
+
+: ${ACLOCAL=aclocal}
+: ${AUTOMAKE=automake}
+: ${AUTOCONF=autoconf}
+: ${AUTOHEADER=autoheader}
 
 rm -f acinclude.m4
 ln -s libtool.m4 acinclude.m4
@@ -10,9 +14,9 @@ ln -s libtool.m4 acinclude.m4
 touch ltconfig
 touch ltmain.sh
 touch libtoolize
-aclocal
-automake --gnu --add-missing
-autoconf
+${ACLOCAL}
+${AUTOMAKE} --gnu --add-missing
+${AUTOCONF}
 
 for sub in libltdl demo depdemo mdemo cdemo tagdemo pdemo; do
   cd $sub
@@ -20,9 +24,9 @@ for sub in libltdl demo depdemo mdemo cdemo tagdemo pdemo; do
   cat ../libtool.m4 > acinclude.m4
   test "$sub" = libltdl && cat ../ltdl.m4 >> acinclude.m4
   aclocal
-  test "$sub" = libltdl && autoheader
-  automake --gnits --add-missing
-  autoconf
+  test "$sub" = libltdl && ${AUTOHEADER}
+  ${AUTOMAKE} --gnits --add-missing
+  ${AUTOCONF}
   cd ..
 done
 
