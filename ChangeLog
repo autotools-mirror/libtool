@@ -1,3 +1,9 @@
+2001-03-07  Gary V. Vaughan  <gvv@techie.com>
+
+	* libtool.m4 (library_names_spec): Use an appropriate filename
+	prefix for dlls -- lib for mingw; cyg for cygwin; pw for pw32.
+	From Tor Lillqvist <tml@iki.fi>
+
 2001-03-06  Alexandre Oliva  <aoliva@redhat.com>
 
 	* libtool.m4 (can_build_shared) [AIX 4.[01], GCC]: GCC up to
@@ -6,7 +12,7 @@
 	* ltmain.in: When dropping dependencies of a -no-undefined
 	library, give up on building a shared library.
 
-20001-03-05  Akim Demaille  <akim@epita.fr>
+2001-03-05  Akim Demaille  <akim@epita.fr>
 
 	* ltmain.sh: Don't quote the argument of case/esac and
 	assignments.
