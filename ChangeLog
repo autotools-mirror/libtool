@@ -1,3 +1,8 @@
+2001-07-31  Guido Draheim  <guidod-2001q3@gmx.de>
+
+	* libtool.m4 (mingw*) sys_lib_search_path_spec:
+	Sets the proper path separator for cross-compiling.
+
 2001-07-30  Steve Ellcey  <sje@cup.hp.com>
 
 	* libtool.m4 (ia64-*-hpux*) Add support for ia64*-*-hpux* platform.
