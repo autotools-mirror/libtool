@@ -3648,7 +3648,7 @@ It causes deplibs to be reassigned deplibs="".  That way
 @samp{archive_cmds} can contain deplibs on all platforms, but not have
 deplibs used unless needed.
 
-@item unkwnon
+@item unknown
 @vindex unknown
 is the default for all systems unless overridden in @file{ltconfig.in}.
 It is the same as @samp{none}, but it documents that we really don't
@@ -3656,7 +3656,7 @@ know what the correct value should be, and we welcome patches that
 improve it.
 @end table
 
-Then in @file{ltmain.in} we have the real workhorse: a litle
+Then in @file{ltmain.in} we have the real workhorse: a little
 initialization and postprocessing (to setup/release variables for use
 with eval echo libname_spec etc.) and a case statement that decides
 which method is being used.  This is the real code... I wish I could

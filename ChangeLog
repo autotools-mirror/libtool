@@ -1,3 +1,8 @@
+1999-07-19  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* doc/libtool.texi (Porting inter-library dependencies): Typos
+	Reported by Petter Reinholdtsen <pere@hungry.com>
+
 1999-07-17  Thomas Tanner  <tanner@ffii.org>
 
 	* NEWS, TODO: updated (pic flags)
