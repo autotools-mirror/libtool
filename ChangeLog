@@ -1,5 +1,7 @@
 1999-03-14  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* config.guess, config.sub: updated from GNU common
+
 	* doc/libtool.texi: notes on thread-safety problems of
 	libltdl/dlopen on GNU/Linux and FreeBSD
 
