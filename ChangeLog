@@ -1,3 +1,8 @@
+2004-04-01  Peter O'Gorman  <peter@pogma.com>
+
+	* ltmain.in: Remove an extra eval concat_cmds that some idiot added.
+	Fixes double eval on AIX, reported by Albert Chin and Uwe Moeller.
+	
 2004-03-31  Peter O'Gorman  <peter@pogma.com>
 
 	* m4/libtool.m4, ltmain.in (darwin): Support IBM's xlc and xlc++.
