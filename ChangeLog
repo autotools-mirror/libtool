@@ -1,5 +1,11 @@
 2003-11-26  Gary V. Vaughan  <gary@gnu.org>
 
+	* Makefile.am (stamp-vcl): New rules to force libtool and
+	libtoolize scripts to update when the TIMESTAMP changes in
+	ChangeLog, but the file modification time doesn't (e.g in cvs
+	commit).  Otherwise we'll carry on releasing tarballs with the
+	wrong version numbers in the tools!
+
 	* config/mkstamp: Change output format to ` $rev $date'.
 	* configure.ac: Make the banner more like suggestions in
 	http://www.gnu.org/prep/standards_toc.html Section 4.6.

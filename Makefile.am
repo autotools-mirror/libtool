@@ -42,7 +42,7 @@ bin_SCRIPTS = libtool libtoolize
 
 config_status = $(top_builddir)/config.status
 
-libtool: config/ltmain.sh $(top_builddir)/configure
+libtool: config/ltmain.sh $(top_builddir)/config.status
 	CONFIG_FILES= CONFIG_HEADERS= CONFIG_COMMANDS=$@ $(SHELL) $(config_status)
 	chmod +x $@
 
@@ -51,7 +51,14 @@ libtoolize: $(srcdir)/libtoolize.in $(top_builddir)/config.status
 	chmod +x $@
 
 # Make sure configure is regenerated when the version timestamp changes
-configure: ChangeLog
+$(top_builddir)/config.status: stamp-vcl $(top_srcdir)/ChangeLog
+stamp-vcl: vcl.tmp
+vcl.tmp:
+	@set `$(SHELL) config/mkstamp < $(top_srcdir)/ChangeLog`; \
+	echo "$$1" > vcl.tmp
+	@cmp -s vcl.tmp stamp-vcl \
+	  || (echo "Updating stamp-vcl"; cp vcl.tmp stamp-vcl)
+	-@rm -f vcl.tmp
 
 .PHONY: configure-subdirs
 configure-subdirs distdir: $(DIST_MAKEFILE_LIST)
