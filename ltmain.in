@@ -62,7 +62,6 @@ help="Try \`$progname --help' for more information."
 magic="%%%MAGIC variable%%%"
 mkdir="mkdir"
 mv="mv -f"
-objdir=_libs
 rm="rm -f"
 
 # Sed substitution that helps us do robust quoting.  It backslashifies
@@ -489,7 +488,11 @@ if test -z "$show_help"; then
       -export-dynamic)
         if test "$export_dynamic" != yes; then
           export_dynamic=yes
-	  arg=`eval \\$echo "$export_dynamic_flag_spec"`
+	  if test -n "$export_dynamic_flag_spec"; then
+	    arg=`eval \\$echo "$export_dynamic_flag_spec"`
+	  else
+	    arg=
+	  fi
 
           # Add the symbol object into the linking commands.
 	  compile_command="$compile_command @SYMFILE@"
@@ -752,10 +755,16 @@ if test -z "$show_help"; then
 	continue
         ;;
 
+      # Some other compiler argument.
       *)
-        $echo "$progname: unknown file suffix for \`$arg'" 1>&2
-        $echo "$help" 1>&2
-        exit 1
+	# Unknown arguments in both finalize_command and compile_command need
+	# to be aesthetically quoted because they are evaled later.
+	arg=`$echo "$arg" | sed "$sed_quote_subst"`
+	case "$arg" in
+	*[\[\~\#\^\&\*\(\)\{\}\|\;\<\>\?\'\ \	]*|*]*)
+	  arg="\"$arg\""
+	  ;;
+	esac
         ;;
       esac
 
@@ -1188,7 +1197,7 @@ extern "C" {
 /* External symbol declarations for the compiler. */
 EOF
 	    if test -f "$nlist"; then
-	      sed -e 's/^.*%\(.*\)$/extern char \1;/' < "$nlist" >> "$objdir/$dlsyms"
+	      sed -e 's/^.* \(.*\)$/extern char \1;/' < "$nlist" >> "$objdir/$dlsyms"
 	    else
 	      $echo '/* NONE */' >> "$objdir/$dlsyms"
 EOF
@@ -1218,7 +1227,7 @@ dld_preloaded_symbols[] =
 EOF
 
 	    if test -f "$nlist"; then
-	      sed 's/^\(.*\)%\(.*\)$/  {"\1", \&\2},/' < "$nlist" >> "$objdir/$dlsyms"
+	      sed 's/^\(.*\) \(.*\)$/  {"\1", \&\2},/' < "$nlist" >> "$objdir/$dlsyms"
 	    fi
 
 	    cat <<\EOF >> "$objdir/$dlsyms"

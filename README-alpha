@@ -11,8 +11,10 @@ Automake
 Between beta release 1.0b and 1.0c, libtool changed its private
 directory name from `.libs' to `_libs' in order to be compatible with
 MS-DOS filenames.  This change allows libtool to run under the DJGPP
-build environment.  Unfortunately, it also introduces a minor bug into
-Automake's `clean' rules for releases < 1.2a.
+build environment.  In 1.0d, I've changed *again*... most platforms
+use `.libs', and only MS-DOS uses `_libs', which helps libtool to
+remain unobtrusive under Unix.  Unfortunately, I've reintroduced a
+minor bug into Automake's `clean' rules.
 
 This should not affect anybody else's programs unless you depend on
 libtool internals.  If you do, and it isn't just for deleting
@@ -25,14 +27,20 @@ i.e.
 clean-libtool:
 	rm -rf .libs
 
-to:
+or:
 
 clean-libtool:
 	rm -rf _libs
 
+to:
+
+clean-libtool:
+	rm -rf .libs _libs
+
 and reinstall Automake.  If you've already installed Automake, you can
 make the same change in /usr/local/share/automake/libtool.am, to avoid
 having to reinstall.
+
 
 
 global_symbol_pipe
@@ -73,6 +81,7 @@ column contains the name needed to access the symbols from a C
 program.
 
 So, on most OSes, this will be a command like:
+
 $ nm assert-perr.o | \
   sed -e '/^.* [BCDEGRSTU] \([_A-Za-z][_A-Za-z0-9]*\)$/!d'
       -e 's/^.* [BCDEGRSTU] \([_A-Za-z][_A-Za-z0-9]*\)$/\1 \1/'

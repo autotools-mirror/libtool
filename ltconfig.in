@@ -841,7 +841,7 @@ symcode='[BCDEGRSTU]'
 sympat='\([_A-Za-z][_A-Za-z0-9]*\)'
 
 # Transform the above into a raw symbol and a C symbol.
-symxfrm='\1%\1'
+symxfrm='\1 \1'
 
 # Define system-specific variables.
 case "$host_os" in
@@ -881,7 +881,7 @@ if { (eval echo $progname:@LINENO@: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>
       mv -f "$nlist"T "$nlist"
       wcout=`wc "$nlist" 2>/dev/null`
       count=`echo "$wcout" | sed 's/^[ 	]*\([0-9][0-9]*\).*$/\1/'`
-      test "$wcout" = "$count" && count=-1
+      (test "$count" -ge 0) 2>/dev/null || count=-1
     else
       rm -f "$nlist"T
       count=-1
@@ -890,8 +890,14 @@ if { (eval echo $progname:@LINENO@: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>
     # Make sure that we snagged all the symbols we need.
     if egrep ' nm_test_var$' "$nlist" >/dev/null; then
       if egrep ' nm_test_func$' "$nlist" >/dev/null; then
+	cat <<EOF > conftest.c
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+EOF
         # Now generate the symbol file.
-        sed 's/^.* \(.*\)$/extern char \1;/' < "$nlist" > conftest.c
+        sed 's/^.* \(.*\)$/extern char \1;/' < "$nlist" >> conftest.c
 
 	cat <<EOF >> conftest.c
 #if defined (__STDC__) && __STDC__
@@ -915,6 +921,10 @@ EOF
         cat <<\EOF >> conftest.c
   {0},
 };
+
+#ifdef __cplusplus
+}
+#endif
 EOF
         # Now try linking the two files.
         mv conftest.o conftestm.o
@@ -929,12 +939,14 @@ EOF
           cat conftest.c >&5
         fi
         LIBS="$save_LIBS"
+      else
+        echo "cannot find nm_test_func in $nlist" >&5
       fi
     else
-      echo "cannot find nm_test_func in $nlist" >&5
+      echo "cannot find nm_test_var in $nlist" >&5
     fi
   else
-    echo "cannot find nm_test_var in $nlist" >&5
+    echo "cannot run $global_symbol_pipe" >&5
   fi
 else
   echo "$progname: failed program was:" >&5
@@ -1156,6 +1168,18 @@ test "$enable_shared" = yes || enable_static=yes
 
 echo "checking whether to build static libraries... $enable_static" 1>&6
 
+echo $ac_n "checking for objdir... $ac_c" 1>&6
+rm -f .libs
+mkdir .libs 2>/dev/null
+if test -d .libs; then
+  objdir=.libs
+else
+  # MS-DOS does not allow filenames that begin with a dot.
+  objdir=_libs
+fi
+rmdir .libs 2>/dev/null
+echo "$ac_t$objdir" 1>&6
+
 # Now quote all the things that may contain metacharacters.
 for var in old_CC old_CFLAGS old_CPPFLAGS old_LD old_NM old_RANLIB \
   old_LN_S AR CC LD LN_S NM reload_flag reload_cmds wl pic_flag \
@@ -1219,6 +1243,9 @@ LN_S="$LN_S"
 
 # A BSD-compatible nm program.
 NM="$NM"
+
+# The name of the directory that contains temporary libtool files.
+objdir="$objdir"
 
 # How to create reloadable object files.
 reload_flag="$reload_flag"

@@ -1,7 +1,22 @@
+Sun Oct 19 12:48:14 1997  Gordon Matzigkeit  <gord@gnu.org>
+
+	* ltmain.in (link): Only `eval' export_dynamic_flag_spec if it is
+	not empty.  Reported by Stephan Kulow.
+
+Sat Oct 18 00:44:14 1997  Gordon Matzigkeit  <gord@gnu.org>
+
+	* ltconfig.in (objdir): Use the .libs directory on all systems for
+ 	which that name is valid, and _libs on the others (like MS-DOS).
+  	Suggested by Juergen Erhard.
+
 Tue Oct 14 10:19:18 1997  Gordon Matzigkeit  <gord@gnu.org>
 
 	* ltmain.in (link): Added a bit more inter-language support to the
  	symbol file generation process.
+	Instead of complaining about unrecognized argument suffices, pass
+	them to the linker.  This prevents libtool from barfing on
+	mandatory arguments to linker flags.  Reported by Michael
+	Tiemann.
 
 Thu Oct  9 12:56:13 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
@@ -489,7 +504,7 @@ Tue Jun 10 12:26:00 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 	* ltmain.sh.in (link): Disable building static libraries.
 	People should use their favourite AR and RANLIB commands.
 	Disable building old-style objects if `--disable-static' is
-	given.  Suggested by Tom Lees and Stephen Kulow.
+	given.  Suggested by Tom Lees and Stephan Kulow.
 
 Sun Jun  8 12:10:14 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 

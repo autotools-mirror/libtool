@@ -34,7 +34,7 @@ helldl_LDFLAGS = -export-dynamic -dlpreopen libhello.la
 
 # Unfortunately, in order to test libtool thoroughly, we need access
 # to its private directory.
-objdir = _libs
+objdir = `sed -n -e 's/^objdir="\(.*\)"$$/\1/p' ./libtool`
 
 TESTS = run.test
 
@@ -78,7 +78,7 @@ hc-direct: $(hell_OBJECTS) $(hell_DEPENDENCIES)
 hc-libflag: $(hell_OBJECTS) $(hell_DEPENDENCIES)
 	rm -rf hc-libflag _hclibs
 	mkdir _hclibs
-	cd _hclibs && for lib in ../$(objdir)/libhello*; do \
+	objdir=$(objdir); cd _hclibs && for lib in ../$$objdir/libhello*; do \
 	  $(LN_S) $$lib `echo "$$lib" | sed 's%^.*/%%'` || exit 1; \
 	done
 	@eval `egrep -e '^(hardcode_.*|wl)=' ./libtool`; \
