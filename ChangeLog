@@ -2,6 +2,8 @@
 
 	* THANKS: Update.
 
+	* THANKS: Update.
+
 2005-02-03  Peter O'Gorman  <peter@pogma.com>
 
 	* config/ltmain.m4sh [darwin]: Don't add installed libs to 
