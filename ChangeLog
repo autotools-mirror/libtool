@@ -1,5 +1,7 @@
 1999-01-13  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* Makefile.am (@DIST_MAKEFILE_LIST@): `$' must be doubled
+
 	* configure.in (AC_CONFIG_DIRS): configure only libltdl, and then,
  	only if --enable-ltdl-install
 	(CONF_SUBDIRS): list directories that are configured on demand,
@@ -20,7 +22,7 @@
 	configure.
 	On-demand configuration of subdirs at distribution time was
 	suggested by Gary V. Vaughan <gvaughan@oranda.demon.co.uk>
-	
+
 	* libtool.m4, ltconfig.in (NM): search for NM in PATH before
 	/usr/ccs/bin, /usr/ucb and /bin.  However, if the found one isn't
 	BSD-compat keep searching.  If no BSD-compat is found, use the

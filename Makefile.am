@@ -72,7 +72,7 @@ all-local check-local: $(ACINCLUDE_M4_LIST) libtool
 .PHONY: configure-subdirs
 configure-subdirs distdir: $(DIST_MAKEFILE_LIST)
 @DIST_MAKEFILE_LIST@:
-	dir=`echo $@ | sed 's,^[^/]*$,.,;s,/[^/]*$,,'`; \
+	dir=`echo $@ | sed 's,^[^/]*$$,.,;s,/[^/]*$$,,'`; \
 	test -d $$dir || mkdir $$dir || exit 1; \
 	(cd $$dir && $(srcdir)/$$dir/configure) || exit 1
 
