@@ -636,6 +636,12 @@ compiler."
 # #undef WIN32_LEAN_AND_MEAN
 # #include <stdio.h>
 #
+# #ifndef __CYGWIN__
+# #  ifdef __CYGWIN32__
+# #    define __CYGWIN__ __CYGWIN32__
+# #  endif
+# #endif
+#
 # #ifdef __cplusplus
 # extern "C" {
 # #endif
@@ -644,8 +650,10 @@ compiler."
 # }
 # #endif
 #
+# #ifdef __CYGWIN__
 # #include <cygwin/cygwin_dll.h>
 # DECLARE_CYGWIN_DLL( DllMain );
+# #endif
 # HINSTANCE __hDllInstance_base;
 #
 # BOOL APIENTRY
