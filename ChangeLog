@@ -1,5 +1,12 @@
 2005-02-01  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* m4/libtool.m4 (_LT_SYS_DYNAMIC_LINKER)
+	[ pw32, freebsd3.[01], freebsdelf3.[01] ]
+	(_LT_LINKER_SHLIBS) [ linux with GNU ld < 2.11, aix4.[012]* ]
+	(_LT_LANG_CXX_CONFIG) [ aix4.[012]*, freebsd[12], solaris2.[0-5] ]
+	(_LT_LANG_GCJ_CONFIG): Fix [] quoting.  Should fix various spurious
+	failures.
+
 	* tests/Makefile.am: Add `atconfig' to DISTCLEANFILES.
 
 	* clcommit.m4sh: Test whether the shell understands `read -r'.  Use as
