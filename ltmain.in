@@ -1360,6 +1360,11 @@ EOF
 	  prev=
 	  continue
 	  ;;
+        darwin_framework)
+	  compiler_flags="$compiler_flags $arg"
+	  prev=
+	  continue
+	  ;;
 	*)
 	  eval "$prev=\"\$arg\""
 	  prev=
@@ -1417,6 +1422,12 @@ EOF
 	fi
 	continue
 	;;
+
+      -framework)
+        prev=darwin_framework
+        compiler_flags="$compiler_flags $arg"
+        continue
+        ;;
 
       -inst-prefix-dir)
 	prev=inst_prefix
