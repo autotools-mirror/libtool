@@ -1,3 +1,29 @@
+Sat Dec  4 18:26:02 1999  Ossama Othman  <othman@cs.wustl.edu>
+
+	With this latest set of updates I was able to build a C++ shared
+	library using a C++ configuration tag for g++ on Linux!  Some may
+	think that this isn't much of an accomplishment but static
+	constructors appear to work now, whereas prior to the addition of
+	the multi-language support patches they didn't.
+
+	* libtool.m4:
+
+	Made invocation of ltconfig in AC_LIBTOOL_CXX macro more like the
+	one in AC_PROG_LIBTOOL.  This adds some ILD related flags to the
+	invocation, in addition to providing the $libtool_flags to
+	ltconfig that was previously in AC_PROG_LIBTOOL (via
+	AC_LIBTOOL_SETUP).  This fixes an ILD related bug with the C++
+	support, and also fixes a problem where both the static and shared
+	libraries were being built even if one of them was explicitly
+	disabled.
+	
+	* ltcf-cxx.sh:
+
+	Make sure $ac_cv_prog_cc_pic_works and $ac_cv_prog_cc_static_works
+	are unset since their C compiler cached values will override their
+	C++ compiler specific values.  Note that it was not enough to
+	reset their values.  They had to be unset.
+
 Sat Dec  4 14:31:24 1999  Ossama Othman  <ossama@debian.org>
 
 	* doc/libtool.texi:
