@@ -225,8 +225,8 @@ AC_DEFUN([_LT_AC_LIBTOOL_SYS_PATH_SEPARATOR],
 if test "X${PATH_SEPARATOR+set}" != Xset; then
   UNAME=${UNAME-`uname 2>/dev/null`}
   case X$UNAME in
-    *-DOS) lt_cv_sys_path_separator=';' ;;
-    *)     lt_cv_sys_path_separator=':' ;;
+    *-DOS) PATH_SEPARATOR=';' ;;
+    *)     PATH_SEPARATOR=':' ;;
   esac
 fi
 ])# _LT_AC_LIBTOOL_SYS_PATH_SEPARATOR
@@ -545,24 +545,36 @@ AC_CACHE_VAL([lt_cv_sys_max_cmd_len], [dnl
   i=0
   testring="ABCD"
 
-  # If test is not a shell built-in, we'll probably end up computing a
-  # maximum length that is only half of the actual maximum length, but
-  # we can't tell.
-  while test "X"`$CONFIG_SHELL [$]0 --fallback-echo "X$testring" 2>/dev/null` \
-             = "XX$testring" &&
-          new_result=`expr "X$testring" : ".*" 2>&1` &&
-          lt_cv_sys_max_cmd_len=$new_result &&
-          test $i != 18 # 1 MB should be enough
-  do
-    i=`expr $i + 1`
-    testring=$testring$testring
-  done
-  testring=
-  # add a significant safety factor because C++ compilers can tack on massive
-  # amounts of additional arguments before passing them to the linker.  1/4
-  # should be good.
-  len=`expr $lt_cv_sys_max_cmd_len \/ 4`
-  lt_cv_sys_max_cmd_len=`expr $lt_cv_sys_max_cmd_len - $len`
+  case $host_os in
+  msdosdjgpp*) 
+    # On DJGPP, this test can blow up pretty badly due to problems in libc
+    # (any single argument exceeding 2000 bytes causes a buffer overrun
+    # during glob expansion).  Even if it were fixed, the result of this
+    # check would be larger than it should be.
+    lt_cv_sys_max_cmd_len=12288;    # 12K is about right
+    ;;
+    
+  *)
+    # If test is not a shell built-in, we'll probably end up computing a
+    # maximum length that is only half of the actual maximum length, but
+    # we can't tell.
+    while test "X"`$CONFIG_SHELL [$]0 --fallback-echo "X$testring" 2>/dev/null` \
+               = "XX$testring" &&
+            new_result=`expr "X$testring" : ".*" 2>&1` &&
+            lt_cv_sys_max_cmd_len=$new_result &&
+            test $i != 18 # 1 MB should be enough
+    do
+      i=`expr $i + 1`
+      testring=$testring$testring
+    done
+    testring=
+    # add a significant safety factor because C++ compilers can tack on massive
+    # amounts of additional arguments before passing them to the linker.  1/4
+    # should be good.
+    len=`expr $lt_cv_sys_max_cmd_len \/ 4`
+    lt_cv_sys_max_cmd_len=`expr $lt_cv_sys_max_cmd_len - $len`
+    ;;
+  esac
 ])
 if test -n $lt_cv_sys_max_cmd_len ; then
   AC_MSG_RESULT($lt_cv_sys_max_cmd_len)
@@ -1309,7 +1321,8 @@ test "$dynamic_linker" = no && can_build_shared=no
 # _LT_AC_TAGCONFIG
 # ----------------
 AC_DEFUN([_LT_AC_TAGCONFIG],
-[AC_ARG_WITH(tags, 
+[AC_REQUIRE([_LT_AC_LIBTOOL_SYS_PATH_SEPARATOR])dnl
+AC_ARG_WITH(tags, 
   [  --with-tags=TAGS        include additional configurations [CXX,GCJ]],
   [tagnames="$withval"],
   [tagnames="CXX,GCJ"])
@@ -1332,7 +1345,7 @@ if test -f "$ltmain" && test -n "$tagnames"; then
   # Note that this assumes the entire list is on one line.
   available_tags=`grep "^available_tags=" "${ofile}" | sed -e 's/available_tags=\(.*$\)/\1/' -e 's/\"//g'`
 
-  IFS="${IFS= 	}"; lt_save_ifs="$IFS"; IFS="${IFS}:,"
+  IFS="${IFS= 	}"; lt_save_ifs="$IFS"; IFS="${IFS}${PATH_SEPARATOR-:},"
   for tagname in $tagnames; do
     # Check whether tagname contains only valid characters
     [case `$echo "X$tagname" | $Xsed -e 's/[-_ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890,/]//g'` in]
@@ -1416,7 +1429,8 @@ AC_DEFUN([AC_LIBTOOL_WIN32_DLL],
 # implement the --enable-shared flag
 # DEFAULT is either `yes' or `no'.  If omitted, it defaults to `yes'.
 AC_DEFUN([AC_ENABLE_SHARED],
-[define([AC_ENABLE_SHARED_DEFAULT], ifelse($1, no, no, yes))dnl
+[AC_REQUIRE([_LT_AC_LIBTOOL_SYS_PATH_SEPARATOR])dnl
+define([AC_ENABLE_SHARED_DEFAULT], ifelse($1, no, no, yes))dnl
 AC_ARG_ENABLE(shared,
 changequote(<<, >>)dnl
 <<  --enable-shared[=PKGS]  build shared libraries [default=>>AC_ENABLE_SHARED_DEFAULT],
@@ -1428,7 +1442,7 @@ no) enable_shared=no ;;
 *)
   enable_shared=no
   # Look at the argument we got.  We use all the common list separators.
-  IFS="${IFS= 	}"; lt_save_ifs="$IFS"; IFS="${IFS}:,"
+  IFS="${IFS= 	}"; lt_save_ifs="$IFS"; IFS="${IFS}${PATH_SEPARATOR-:},"
   for pkg in $enableval; do
     if test "X$pkg" = "X$p"; then
       enable_shared=yes
@@ -1455,7 +1469,8 @@ AC_ENABLE_SHARED(no)
 # implement the --enable-static flag
 # DEFAULT is either `yes' or `no'.  If omitted, it defaults to `yes'.
 AC_DEFUN([AC_ENABLE_STATIC],
-[define([AC_ENABLE_STATIC_DEFAULT], ifelse($1, no, no, yes))dnl
+[AC_REQUIRE([_LT_AC_LIBTOOL_SYS_PATH_SEPARATOR])dnl
+define([AC_ENABLE_STATIC_DEFAULT], ifelse($1, no, no, yes))dnl
 AC_ARG_ENABLE(static,
 changequote(<<, >>)dnl
 <<  --enable-static[=PKGS]  build static libraries [default=>>AC_ENABLE_STATIC_DEFAULT],
@@ -1467,7 +1482,7 @@ no) enable_static=no ;;
 *)
   enable_static=no
   # Look at the argument we got.  We use all the common list separators.
-  IFS="${IFS= 	}"; lt_save_ifs="$IFS"; IFS="${IFS}:,"
+  IFS="${IFS= 	}"; lt_save_ifs="$IFS"; IFS="${IFS}${PATH_SEPARATOR-:},"
   for pkg in $enableval; do
     if test "X$pkg" = "X$p"; then
       enable_static=yes
@@ -1494,7 +1509,8 @@ AC_ENABLE_STATIC(no)
 # implement the --enable-fast-install flag
 # DEFAULT is either `yes' or `no'.  If omitted, it defaults to `yes'.
 AC_DEFUN([AC_ENABLE_FAST_INSTALL],
-[define([AC_ENABLE_FAST_INSTALL_DEFAULT], ifelse($1, no, no, yes))dnl
+[AC_REQUIRE([_LT_AC_LIBTOOL_SYS_PATH_SEPARATOR])dnl
+define([AC_ENABLE_FAST_INSTALL_DEFAULT], ifelse($1, no, no, yes))dnl
 AC_ARG_ENABLE(fast-install,
 changequote(<<, >>)dnl
 <<  --enable-fast-install[=PKGS]  optimize for fast installation [default=>>AC_ENABLE_FAST_INSTALL_DEFAULT],
@@ -1506,7 +1522,7 @@ no) enable_fast_install=no ;;
 *)
   enable_fast_install=no
   # Look at the argument we got.  We use all the common list separators.
-  IFS="${IFS= 	}"; lt_save_ifs="$IFS"; IFS="${IFS}:,"
+  IFS="${IFS= 	}"; lt_save_ifs="$IFS"; IFS="${IFS}${PATH_SEPARATOR-:},"
   for pkg in $enableval; do
     if test "X$pkg" = "X$p"; then
       enable_fast_install=yes
@@ -1542,18 +1558,16 @@ pic_mode=ifelse($#,1,$1,default)
 # -------------------
 # find a file program which can recognise shared library
 AC_DEFUN([AC_PATH_TOOL_PREFIX],
-[AC_MSG_CHECKING([for $1])
+[AC_REQUIRE([_LT_AC_LIBTOOL_SYS_PATH_SEPARATOR])dnl
+AC_MSG_CHECKING([for $1])
 AC_CACHE_VAL(lt_cv_path_MAGIC_CMD,
 [case $MAGIC_CMD in
-  /*)
+[\\/*] |  ?:[\\/]*)
   lt_cv_path_MAGIC_CMD="$MAGIC_CMD" # Let the user override the test with a path.
   ;;
-  ?:/*)
-  lt_cv_path_MAGIC_CMD="$MAGIC_CMD" # Let the user override the test with a dos path.
-  ;;
-  *)
+*)
   lt_save_MAGIC_CMD="$MAGIC_CMD"
-  IFS="${IFS=   }"; lt_save_ifs="$IFS"; IFS=":"
+  IFS="${IFS=   }"; lt_save_ifs="$IFS"; IFS="${PATH_SEPARATOR-:}"
 dnl $ac_dummy forces splitting on constant user-supplied paths.
 dnl POSIX.2 word splitting is done only on the output of word expansions,
 dnl not every word.  This closes a longstanding sh security hole.
@@ -1606,11 +1620,12 @@ fi
 # -------------
 # find a file program which can recognise a shared library
 AC_DEFUN([AC_PATH_MAGIC],
-[AC_REQUIRE([AC_CHECK_TOOL_PREFIX])dnl
-AC_PATH_TOOL_PREFIX(${ac_tool_prefix}file, /usr/bin:$PATH)
+[AC_REQUIRE([_LT_AC_LIBTOOL_SYS_PATH_SEPARATOR])dnl
+AC_REQUIRE([AC_CHECK_TOOL_PREFIX])dnl
+AC_PATH_TOOL_PREFIX(${ac_tool_prefix}file, /usr/bin${PATH_SEPARATOR-:}$PATH)
 if test -z "$lt_cv_path_MAGIC_CMD"; then
   if test -n "$ac_tool_prefix"; then
-    AC_PATH_TOOL_PREFIX(file, /usr/bin:$PATH)
+    AC_PATH_TOOL_PREFIX(file, /usr/bin${PATH_SEPARATOR-:}$PATH)
   else
     MAGIC_CMD=:
   fi
@@ -1628,6 +1643,7 @@ AC_DEFUN([AC_PROG_LD],
 AC_REQUIRE([AC_PROG_CC])dnl
 AC_REQUIRE([AC_CANONICAL_HOST])dnl
 AC_REQUIRE([AC_CANONICAL_BUILD])dnl
+AC_REQUIRE([_LT_AC_LIBTOOL_SYS_PATH_SEPARATOR])dnl
 ac_prog=ld
 if test "$GCC" = yes; then
   # Check if gcc -print-prog-name=ld gives a path.
@@ -1641,7 +1657,7 @@ if test "$GCC" = yes; then
   esac
   case $ac_prog in
     # Accept absolute paths.
-    [[\\/]* | [A-Za-z]:[\\/]*)]
+    [[\\/]]* | ?:[[\\/]]*)
       [re_direlt='/[^/][^/]*/\.\./']
       # Canonicalize the path of ld
       ac_prog=`echo $ac_prog| sed 's%\\\\%/%g'`
@@ -1907,7 +1923,8 @@ test -z "$deplibs_check_method" && deplibs_check_method=unknown
 # find the path to a BSD-compatible name lister
 AC_DEFUN([AC_PROG_NM],
 [AC_CACHE_CHECK([for BSD-compatible nm], lt_cv_path_NM,
-[if test -n "$NM"; then
+[AC_REQUIRE([_LT_AC_LIBTOOL_SYS_PATH_SEPARATOR])dnl
+if test -n "$NM"; then
   # Let the user override the test.
   lt_cv_path_NM="$NM"
 else
@@ -3585,7 +3602,7 @@ EOF
 	  lt_save_CFLAGS="$CFLAGS"
 	  LIBS="conftstm.$ac_objext"
 	  CFLAGS="$CFLAGS$_LT_AC_TAGVAR(lt_prog_compiler_no_builtin_flag, $1)"
-	  if AC_TRY_EVAL(ac_link) && test -s conftest; then
+	  if AC_TRY_EVAL(ac_link) && test -s conftest${ac_exeext}; then
 	    pipe_works=yes
 	  fi
 	  LIBS="$lt_save_LIBS"
@@ -3670,9 +3687,11 @@ if test "$GCC" = yes; then
     _LT_AC_TAGVAR(lt_prog_compiler_pic, $1)='-fno-common'
     ;;
 
-  *djgpp*)
-    # DJGPP does not support shared libraries at all
-    _LT_AC_TAGVAR(lt_prog_compiler_pic, $1)=
+  msdosdjgpp*)
+    # Just because we use GCC doesn't mean we suddenly get shared libraries
+    # on systems that don't support them.
+    _LT_AC_TAGVAR(lt_prog_compiler_can_build_shared, $1)=no
+    enable_shared=no
     ;;
 
   sysv4*MP*)

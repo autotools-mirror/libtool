@@ -1,5 +1,26 @@
 2001-06-24  Gary V. Vaughan  <gary@gnu.org>
 
+	* libtool.m4 (_LT_AC_LIBTOOL_SYS_PATH_SEPARATOR):  Set
+	PATH_SEPARATOR appropriately if it is not set already,
+	(_LT_AC_TAGCONFIG): Use it.
+	(AC_ENABLE_SHARED): Ditto.
+	(AC_ENABLE_STATIC): Ditto.
+	(AC_ENABLE_FAST_INSTALL): Ditto.
+	(AC_PATH_TOOL_PREFIX): Ditto.
+	(AC_PATH_MAGIC): Ditto.
+	(AC_PATH_PROG_NM): Ditto.
+	
+	From Tim Van Holder  <tim.van.holder@pandora.be>:
+	* libtool.m4: Use the canonical absolute path test
+	([\\/]* | ?:[\\/]) and $PATH_SEPARATOR wherever
+	appropriate.
+	(AC_LIBTOOL_PROG_CC_PIC): Properly recognize DJGPP as a
+	platform that doesn't support shared libraries.
+	(AC_LIBTOOL_SYS_MAX_CMD_LEN): Avoid this test on DJGPP; use a
+	fixed value (12K) instead.
+	(AC_LIBTOOL_SYS_GLOBAL_SYMBOL_PIPE): Don't forget $ac_exeext
+	when testing for link success.
+
 	* configure.in (AM_INIT_AUTOMAKE): Bumped version to 1.4a.
 
 	Complete the new configure time tags creation facility based on
