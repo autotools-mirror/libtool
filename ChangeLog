@@ -1,11 +1,19 @@
-2003-10-05  Peter O'Gorman <peter@pogma.com>, 
+2003-10-07  Gary V. Vaughan  <gary@gnu.org>
+
+	* libtoolize.in: Completely rewritten.
+	* Makefile.am (AUTOMAKE_OPTIONS): Reduced to 1.7.  The 1.8
+	requirement just made the distribution much smaller due to
+	m4_includes.  1.7 will bootstrap libtool just fine.
+	* NEWS: Updated.
+
+2003-10-05  Peter O'Gorman <peter@pogma.com>,
 	Gary V. Vaughan  <gary@gnu.org>
 
 	* ltmain.in: Remove inferrence of mode, add shorthand for mode
 	choice.
 
 	* ltmain.in: Specifying -allow-undefined is now an error.
-	
+
 2003-09-29  Scott James Remnant  <scott@netsplit.com>
 
 	* m4/libtool.m4 (AC_DEPLIBS_CHECK_METHOD): Use pass_all for linux*
