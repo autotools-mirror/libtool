@@ -13,7 +13,7 @@
 
 2002-05-06  Loren James Rittle  <rittle@latour.rsch.comm.mot.com>
 
-	* ltmain.sh: Detect and handle object name conflicts while
+	* ltmain.in: Detect and handle object name conflicts while
 	piecewise linking a static library.
 
 2002-05-02  Dave Vasilevsky  <thevas@mac.com>
