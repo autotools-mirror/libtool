@@ -105,6 +105,7 @@ show="$echo"
 show_help=
 execute_dlfiles=
 lo2o="s/\\.lo\$/.${objext}/"
+o2lo="s/\\.${objext}\$/.lo/"
 
 # Parse our command line options once, thoroughly.
 while test $# -gt 0
@@ -3447,7 +3448,7 @@ fi\
 	  $show "(cd $xdir && $AR x $xabs)"
 	  $run eval "(cd \$xdir && $AR x \$xabs)" || exit $?
 
-	  oldobjs="$oldobjs "`find $xdir -name \*.o -print -o -name \*.lo -print | $NL2SP`
+	  oldobjs="$oldobjs "`find $xdir -name \*.${objext} -print -o -name \*.lo -print | $NL2SP`
 	done
       fi
 
@@ -3458,15 +3459,13 @@ fi\
         # Ensure that we have .o objects in place incase we decided
         # not to build a shared library, and have fallen back to building
         # static libs even though --disable-static was passed!
-        if test "X$pic_flag" = X; then
-          for obj in $libobjs; do
-            oldobj=`$echo "X$obj" | $Xsed -e "$lo2o"`
-            if test ! -f $oldobj; then
-              $show "${LN_S} $obj $oldobj"
-              $run ${LN_S} $obj $oldobj || exit $?
-            fi
-          done
-	fi
+	for oldobj in $oldobjs; do
+	  if test ! -f $oldobj; then
+	    obj=`$echo "X$oldobj" | $Xsed -e "$o2lo"`
+	    $show "${LN_S} $obj $oldobj"
+	    $run ${LN_S} $obj $oldobj || exit $?
+	  fi
+	done
 
 	eval cmds=\"$old_archive_cmds\"
       fi
