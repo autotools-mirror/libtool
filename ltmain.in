@@ -2793,7 +2793,7 @@ EOF
 	  ;;
 
 	irix | nonstopux)
-	  major=`expr $current - $age`
+	  major=`expr $current - $age +1`
 
 	  case $version_type in
 	    nonstopux) verstring_prefix=nonstopux ;;
