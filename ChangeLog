@@ -1,5 +1,10 @@
 1998-11-27  Gary V. Vaughan  <garyv@oranda.demon.co.uk>
 
+	* libtool.m4 (AM_PROG_LD): Cannonicalize the absolute path for the
+	ld program;  The order is funny to provide canonicalization to
+	paths with '\\' separators as well as '/'.
+	* ltconfig.in: ditto.
+
 	* AUTHORS: Added myself as a co-maintainer.
 
 	* ltconfig.in (archive_cmds): The `;\' in a compound statement is

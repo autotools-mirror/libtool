@@ -189,12 +189,50 @@ if test "$ac_cv_prog_gcc" = yes; then
   AC_MSG_CHECKING([for ld used by GCC])
   ac_prog=`($CC -print-prog-name=ld) 2>&5`
   case "$ac_prog" in
-  # Accept absolute paths.
+    # Accept absolute paths.
 changequote(,)dnl
-  /* | [A-Za-z]:\\*)
+    /* | [A-Za-z]:/*)
+      # Canonicalize the path of ld
+      re_direlt='/[^/]*/\.\./'
+      sub_uncdrive='s%^\([A-Za-z]\):/%//\1/%'
 changequote([,])dnl
-    test -z "$LD" && LD="$ac_prog"
-    ;;
+      while echo $ac_prog | grep "$re_direlt" > /dev/null 2>&1; do
+        ac_prog=`echo $ac_prog| sed "s%$re_direlt%/%g"`
+      done
+      case "$host_os" in
+      cygwin*)
+        # Convert to a UNC path for cygwin
+        test -z "$LD" && LD=`echo X$ac_prog | $Xsed -e "$sub_uncdrive"`
+	;;
+      *)
+        test -z "$LD" && LD="$ac_prog"
+	;;
+      esac
+      ;;
+    ##
+    ## FIXME:  The code fails later on if we try to use an $LD with
+    ##         '\\' path separators.
+    ##
+changequote(,)dnl
+    [A-Za-z]:[\\]*)
+      # Canonicalize the path of ld
+      re_direlt='\\[^\\]*\\\.\.\(\\\)'
+      sub_uncdrive='s%^\([A-Za-z]\):\\%//\1/%'
+changequote([,])dnl
+      sub_uncdir='s%\\%/%g'
+      while echo $ac_prog | grep "$re_direlt" > /dev/null 2>&1; do
+        ac_prog=`echo $ac_prog| sed "s%$re_direlt%\1%g"`
+      done
+      case "$host_os" in
+      cygwin*)
+        # Convert to a UNC path for cygwin
+        test -z "$LD" && LD=`echo X$ac_prog | sed -e 's%^X%%' -e "$sub_uncdrive" -e "$sub_uncdir"`
+	;;
+      *)
+        test -z "$LD" && LD="$ac_prog"
+	;;
+      esac
+      ;;
   "")
     # If it fails, then pretend we aren't using GCC.
     ac_prog=ld
