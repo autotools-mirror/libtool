@@ -1,3 +1,8 @@
+1999-02-20  Archie Cobbs  <archie@whistle.com>
+
+	* libltdl/ltdl.c (lt_dlopen): use newhandle instead of handle
+	where appropriate, when dlopening a non-libtool library
+
 1999-02-19  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
 
 	* ltconfig.in (export_symbols_cmds): renamed from
