@@ -393,7 +393,226 @@ Received: from mescaline.gnu.org (gateway [10.0.0.1])
 	by bambam.m-tech.ab.ca (8.8.7/8.8.7) with ESMTP id MAA30151
 	for <gord@m-tech.ab.ca>; Tue, 13 Oct 1998 12:14:55 -0600
 Received: from proxy.grad.kiev.ua (grad-UTC-28k8.ukrtel.net [195.5.25.54])
-	by m                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                > $objdir/a2ixlibrary.data;$echo "#define REVISION $revision" >> $objdir/a2ixlibrary.data;$AR cru $lib$libobjs;$RANLIB $lib;(cd $objdir && a2ixlibrary -32)'
+	by mescaline.gnu.org (8.9.1a/8.9.1) with ESMTP id NAA14314
+	for <bug-libtool@gnu.org>; Tue, 13 Oct 1998 13:56:26 -0400
+Received: from Shevchenko.Kiev.UA (cam [10.0.0.50])
+	by proxy.grad.kiev.ua (8.8.8/8.8.7) with ESMTP id UAA04080
+	for <bug-libtool@gnu.org>; Tue, 13 Oct 1998 20:54:29 +0300 (EEST)
+	(envelope-from Ruslan@Shevchenko.Kiev.UA)
+Sender: rssh@proxy.grad.kiev.ua
+Message-ID: <3623937C.7E903DF8@Shevchenko.Kiev.UA>
+Date: Tue, 13 Oct 1998 20:53:00 +0300
+From: Ruslan Shevchenko <Ruslan@shevchenko.kiev.ua>
+Reply-To: rssh@grad.kiev.ua
+X-Mailer: Mozilla 4.05 [en] (X11; I; FreeBSD 2.2.5-STABLE i386)
+MIME-Version: 1.0
+To: bug-libtool@gnu.org
+Subject: overriding ARFLAGS.
+Content-Type: multipart/mixed; boundary="------------E06156B73BE5D4D4AD2BF900"
+Xref: trick.fig.org libtool:1683
+Lines: 221
+X-Gnus-Article-Number: 7   Mon Nov  2 17:16:26 1998
+
+This is a multi-part message in MIME format.
+--------------E06156B73BE5D4D4AD2BF900
+Content-Type: text/plain; charset=koi8-r
+Content-Transfer-Encoding: 7bit
+
+As I noted few days ago, the process of building a library (static or
+shared)
+with C++ can include addition steps, such as template instaniation.
+
+In libtool AR can be overrided from configure ${AR}, but ${ARFLAGS}
+(cru)
+is hardcoded into ltconfig.sh
+
+setting ${ARFLAGS} as variable (or cru if "$ARFLAGS" is empty ) actually
+enable
+building of templated C++ variables (static only yet) by overriding AR
+and ARFLAGS
+from configure.
+
+So, I attached to this messages  diff, which change cru to ${ARFLAGS} in 
+ltconfig.in (and therefore in ltconfig)
+
+Also, I think somewhere in documentation must exists the  next note
+about 
+Sun Solaris Workshop:
+/--------
+  When you want build libraries with implicit templates instaniated in, 
+  You must puss to ltconfig next envirowmnent variables:
+  AR=CC
+  ARFLAGS=$CXXFLAGS -xar -o
+----------/ 
+
+
+
+
+
+  
+
+
+-- 
+    @=                                   
+     //RSSH                             
+mailto:Ruslan@Shevchenko.Kiev.UA
+
+CORBA in Ukraine & ex-USSR: http://www.corbadev.kiev.ua
+--------------E06156B73BE5D4D4AD2BF900
+Content-Type: text/plain; charset=koi8-r; name="libtool.diff"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline; filename="libtool.diff"
+
+Only in libtool-1.2-patched: Makefile
+Only in libtool-1.2-patched: config.cache
+Only in libtool-1.2-patched: config.log
+Only in libtool-1.2-patched: config.status
+Common subdirectories: libtool-1.2/demo and libtool-1.2-patched/demo
+Common subdirectories: libtool-1.2/doc and libtool-1.2-patched/doc
+Only in libtool-1.2-patched: libtool
+Only in libtool-1.2-patched: libtoolize
+diff -c libtool-1.2/ltconfig libtool-1.2-patched/ltconfig
+*** libtool-1.2/ltconfig	Fri Mar 20 10:00:29 1998
+--- libtool-1.2-patched/ltconfig	Tue Oct 13 20:01:31 1998
+***************
+*** 89,95 ****
+--- 89,101 ----
+  with_gcc=no
+  with_gnu_ld=no
+  
++ if test "x$ARFLAGS" = x
++ then
++  ARFLAGS=cru
++ fi
++ 
+  old_AR="$AR"
++ old_ARFLAGS="$ARFLAGS"
+  old_CC="$CC"
+  old_CFLAGS="$CFLAGS"
+  old_CPPFLAGS="$CPPFLAGS"
+***************
+*** 320,326 ****
+  esac
+  
+  # Determine commands to create old-style static archives.
+! old_archive_cmds='$AR cru $oldlib$oldobjs'
+  old_postinstall_cmds='chmod 644 $oldlib'
+  old_postuninstall_cmds=
+  
+--- 326,332 ----
+  esac
+  
+  # Determine commands to create old-style static archives.
+! old_archive_cmds='$AR $ARFLAGS $oldlib$oldobjs'
+  old_postinstall_cmds='chmod 644 $oldlib'
+  old_postuninstall_cmds=
+  
+***************
+*** 732,738 ****
+    case "$host_os" in
+    aix3*)
+      allow_undefined_flag=unsupported
+!     archive_cmds='$NM$libobjs | $global_symbol_pipe | sed '\''s/.* //'\'' > $lib.exp;$LD -o $objdir/$soname$libobjs -bE:$lib.exp -T512 -H512 -bM:SRE;$AR cru $lib $objdir/$soname'
+      # Note: this linker hardcodes the directories in LIBPATH if there
+      # are no directories specified by -L.
+      hardcode_minus_L=yes
+--- 738,744 ----
+    case "$host_os" in
+    aix3*)
+      allow_undefined_flag=unsupported
+!     archive_cmds='$NM$libobjs | $global_symbol_pipe | sed '\''s/.* //'\'' > $lib.exp;$LD -o $objdir/$soname$libobjs -bE:$lib.exp -T512 -H512 -bM:SRE;$AR $ARFLAGS $lib $objdir/$soname'
+      # Note: this linker hardcodes the directories in LIBPATH if there
+      # are no directories specified by -L.
+      hardcode_minus_L=yes
+***************
+*** 745,757 ****
+  
+    aix4*)
+      allow_undefined_flag=unsupported
+!     archive_cmds='$NM$libobjs | $global_symbol_pipe | sed '\''s/.* //'\'' > $lib.exp;$CC -o $objdir/$soname$libobjs ${wl}-bE:$lib.exp ${wl}-bM:SRE ${wl}-bnoentry;$AR cru $lib $objdir/$soname'
+      hardcode_direct=yes
+      hardcode_minus_L=yes
+      ;;
+  
+    amigaos*)
+!     archive_cmds='$rm $objdir/a2ixlibrary.data;$echo "#define NAME $libname" > $objdir/a2ixlibrary.data;$echo "#define LIBRARY_ID 1" >> $objdir/a2ixlibrary.data;$echo "#define VERSION $major" >> $objdir/a2ixlibrary.data;$echo "#define REVISION $revision" >> $objdir/a2ixlibrary.data;$AR cru $lib$libobjs;$RANLIB $lib;(cd $objdir && a2ixlibrary -32)'
+      hardcode_libdir_flag_spec='-L$libdir'
+      hardcode_minus_L=yes
+      ;;
+--- 751,763 ----
+  
+    aix4*)
+      allow_undefined_flag=unsupported
+!     archive_cmds='$NM$libobjs | $global_symbol_pipe | sed '\''s/.* //'\'' > $lib.exp;$CC -o $objdir/$soname$libobjs ${wl}-bE:$lib.exp ${wl}-bM:SRE ${wl}-bnoentry;$AR $ARFLAGS $lib $objdir/$soname'
+      hardcode_direct=yes
+      hardcode_minus_L=yes
+      ;;
+  
+    amigaos*)
+!     archive_cmds='$rm $objdir/a2ixlibrary.data;$echo "#define NAME $libname" > $objdir/a2ixlibrary.data;$echo "#define LIBRARY_ID 1" >> $objdir/a2ixlibrary.data;$echo "#define VERSION $major" >> $objdir/a2ixlibrary.data;$echo "#define REVISION $revision" >> $objdir/a2ixlibrary.data;$AR $ARFLAGS $lib$libobjs;$RANLIB $lib;(cd $objdir && a2ixlibrary -32)'
+      hardcode_libdir_flag_spec='-L$libdir'
+      hardcode_minus_L=yes
+      ;;
+diff -c libtool-1.2/ltconfig.in libtool-1.2-patched/ltconfig.in
+*** libtool-1.2/ltconfig.in	Wed Mar 11 18:10:51 1998
+--- libtool-1.2-patched/ltconfig.in	Tue Oct 13 20:44:56 1998
+***************
+*** 320,331 ****
+  esac
+  
+  # Determine commands to create old-style static archives.
+! old_archive_cmds='$AR cru $oldlib$oldobjs'
+  old_postinstall_cmds='chmod 644 $oldlib'
+  old_postuninstall_cmds=
+  
+  # Set a sane default for `AR'.
+  test -z "$AR" && AR=ar
+  
+  # If RANLIB is not set, then run the test.
+  if test "${RANLIB+set}" != "set"; then
+--- 320,332 ----
+  esac
+  
+  # Determine commands to create old-style static archives.
+! old_archive_cmds='$AR $ARFLAGS $oldlib$oldobjs'
+  old_postinstall_cmds='chmod 644 $oldlib'
+  old_postuninstall_cmds=
+  
+  # Set a sane default for `AR'.
+  test -z "$AR" && AR=ar
++ test -z "$ARFLAGS" && ARFLAGS=cru
+  
+  # If RANLIB is not set, then run the test.
+  if test "${RANLIB+set}" != "set"; then
+***************
+*** 732,738 ****
+    case "$host_os" in
+    aix3*)
+      allow_undefined_flag=unsupported
+!     archive_cmds='$NM$libobjs | $global_symbol_pipe | sed '\''s/.* //'\'' > $lib.exp;$LD -o $objdir/$soname$libobjs -bE:$lib.exp -T512 -H512 -bM:SRE;$AR cru $lib $objdir/$soname'
+      # Note: this linker hardcodes the directories in LIBPATH if there
+      # are no directories specified by -L.
+      hardcode_minus_L=yes
+--- 733,739 ----
+    case "$host_os" in
+    aix3*)
+      allow_undefined_flag=unsupported
+!     archive_cmds='$NM$libobjs | $global_symbol_pipe | sed '\''s/.* //'\'' > $lib.exp;$LD -o $objdir/$soname$libobjs -bE:$lib.exp -T512 -H512 -bM:SRE;$AR $ARFLAGS $lib $objdir/$soname'
+      # Note: this linker hardcodes the directories in LIBPATH if there
+      # are no directories specified by -L.
+      hardcode_minus_L=yes
+***************
+*** 745,757 ****
+  
+    aix4*)
+      allow_undefined_flag=unsupported
+!     archive_cmds='$NM$libobjs | $global_symbol_pipe | sed '\''s/.* //'\'' > $lib.exp;$CC -o $objdir/$soname$libobjs ${wl}-bE:$lib.exp ${wl}-bM:SRE ${wl}-bnoentry;$AR cru $lib $objdir/$soname'
+      hardcode_direct=yes
+      hardcode_minus_L=yes
+      ;;
+  
+    amigaos*)
+!     archive_cmds='$rm $objdir/a2ixlibrary.data;$echo "#define NAME $libname" > $objdir/a2ixlibrary.data;$echo "#define LIBRARY_ID 1" >> $objdir/a2ixlibrary.data;$echo "#define VERSION $major" >> $objdir/a2ixlibrary.data;$echo "#define REVISION $revision" >> $objdir/a2ixlibrary.data;$AR cru $lib$libobjs;$RANLIB $lib;(cd $objdir && a2ixlibrary -32)'
       hardcode_libdir_flag_spec='-L$libdir'
       hardcode_minus_L=yes
       ;;
