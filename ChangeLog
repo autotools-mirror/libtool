@@ -1,3 +1,11 @@
+1999-04-07  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* dryrun.test: It would still fail at random times, because `cp'
+	and `mv' are not guaranteed to preserve the timestamps of the
+	installed files.  Instead of preserving them, just remove them
+	before the dry uninstall test.  Redirect dry-run output to stderr, 
+	so that it can be easily separated from the regular output.
+
 1999-04-07 Thomas Tanner  <tanner@gmx.de>
 
 	* libtool.m4: another DJGPP fix
