@@ -74,7 +74,7 @@ AC_CONFIG_SUBDIRS([libltdl])
 
 # all subdirectories that are configured on demand, but that must be
 # included in the distribution
-CONF_SUBDIRS="cdemo pdemo demo depdemo mdemo tagdemo f77demo"
+CONF_SUBDIRS="cdemo pdemo demo depdemo mdemo mdemo2 tagdemo f77demo"
 AC_SUBST([CONF_SUBDIRS])
 
 ACINCLUDE_M4_LIST="${srcdir}/acinclude.m4"

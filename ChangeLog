@@ -1,3 +1,15 @@
+2003-07-31  Greg Eisenhauer  <eisen@cc.gatech.edu>
+
+	* ltmain.in: Provide absolute paths for dlopen and dlpreopen
+	files in generating uninstalled libtool libraries.
+	* mdemo2/main.c, mdemo2/Makefile.am, mdemo2/README,
+	mdemo2/configure.ac, mdemo2/.cvsignore, mdemo/mlib.c,
+	tests/mdemo2-conf.test, tests/mdemo2-exec.test,
+	tests/mdemo2-make.test: New files for testing above feature.
+	* configure.ac, bootstrap, tests/Makefile.am: Accomodate new
+	test directory.
+	* mdemo/Makefile.am: Build libmlib.la for mdemo2 tests.
+
 2003-07-30  Tony Wyatt <wyattaw@optushome.com.au>
 
 	* libtool.m4: Remove parentheses around finish_eval part which

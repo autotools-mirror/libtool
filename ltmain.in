@@ -5111,6 +5111,25 @@ fi\
 	      newdlprefiles="$newdlprefiles $libdir/$name"
 	    done
 	    dlprefiles="$newdlprefiles"
+	  else
+	    newdlfiles=
+	    for lib in $dlfiles; do
+	      case $lib in 
+		[\\/]* | [A-Za-z]:[\\/]*) abs="$lib" ;;
+		*) abs=`pwd`"/$lib" ;;
+	      esac
+	      newdlfiles="$newdlfiles $abs"
+	    done
+	    dlfiles="$newdlfiles"
+	    newdlprefiles=
+	    for lib in $dlprefiles; do
+	      case $lib in 
+		[\\/]* | [A-Za-z]:[\\/]*) abs="$lib" ;;
+		*) abs=`pwd`"/$lib" ;;
+	      esac
+	      newdlprefiles="$newdlprefiles $abs"
+	    done
+	    dlprefiles="$newdlprefiles"
 	  fi
 	  $rm $output
 	  # place dlname in correct position for cygwin

@@ -15,7 +15,7 @@ touch ltmain.sh
 touch libtoolize
 (cd libltdl && touch ltmain.sh)
 
-for sub in . libltdl cdemo demo depdemo mdemo pdemo tagdemo f77demo; do
+for sub in . libltdl cdemo demo depdemo mdemo mdemo2 pdemo tagdemo f77demo; do
   case $sub in
   .) 
     top_srcdir=.
