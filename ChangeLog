@@ -1,5 +1,9 @@
 1999-03-08  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* ltmain.in (hardcode_libdir_separator, compile_rpath,
+	finalize_rpath): only substitute hardcode_libdir_flag_spec if
+	hardcode_libdirs is non-empty
+
 	* libtool.m4 (AC_LIBTOOL_DLOPEN): do not depend on the existence
 	of dlfcn.h nor on the definition of RTLD_LAZY
 

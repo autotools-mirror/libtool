@@ -2212,7 +2212,8 @@ EOF
 	fi
       done
       # Substitute the hardcoded libdirs into the rpath.
-      if test -n "$hardcode_libdir_separator"; then
+      if test -n "$hardcode_libdir_separator" &&
+	 test -n "$hardcode_libdirs"; then
 	libdir="$hardcode_libdirs"
 	eval rpath=\" $hardcode_libdir_flag_spec\"
       fi
@@ -2254,7 +2255,8 @@ EOF
 	fi
       done
       # Substitute the hardcoded libdirs into the rpath.
-      if test -n "$hardcode_libdir_separator"; then
+      if test -n "$hardcode_libdir_separator" &&
+	 test -n "$hardcode_libdirs"; then
 	libdir="$hardcode_libdirs"
 	eval rpath=\" $hardcode_libdir_flag_spec\"
       fi
