@@ -191,7 +191,7 @@ func_mkdir_p ()
     my_directory_path="$1"
     my_dir_list=
 
-    if test -n "$my_directory_path"; then
+    if test -n "$my_directory_path" && test "$opt_dry_run" != ":"; then
 
       # Protect directory names starting with `-'
       case $my_directory_path in
@@ -221,11 +221,11 @@ func_mkdir_p ()
         $MKDIR "$my_dir" 2>/dev/null || :
       done
       IFS="$save_mkdir_p_IFS"
-    fi
 
-    # Bail out if we (or some other process) failed to create a directory.
-    test -d "$my_directory_path" || \
-      func_fatal_error "Failed to create \`$1'"
+      # Bail out if we (or some other process) failed to create a directory.
+      test -d "$my_directory_path" || \
+        func_fatal_error "Failed to create \`$1'"
+    fi
 }
 
 # func_mkprefixdir

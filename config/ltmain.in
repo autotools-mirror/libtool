@@ -193,8 +193,9 @@ execute_dlfiles=
 lo2o="s/\\.lo\$/.${objext}/"
 o2lo="s/\\.${objext}\$/.lo/"
 
-opt_help=false
+opt_dry_run=${run-false}  ## inherit $run when mdemo-dryrun.test sets it above
 opt_duplicate_deps=false
+opt_help=false
 
 # If this variable is set in any of the actions, the command in it
 # will be execed at the end.  This prevents here-documents from being
@@ -618,11 +619,15 @@ Otherwise, only FILE itself is deleted using RM."
 	    		set -x
 			;;
 
-      --dlopen)		test "$#" -eq 0 && func_missing_arg "$opt" && break
+      -dlopen)		test "$#" -eq 0 && func_missing_arg "$opt" && break
 			execute_dlfiles="$execute_dlfiles $1"
+			shift
 			;;
 
-      --dry-run | -n)	run=:						;;
+      --dry-run | -n)	opt_dry_run=:
+      			run=:
+			;;
+
       --features)       func_features					;;
       --finish)		mode="finish"					;;
 
@@ -663,7 +668,7 @@ Otherwise, only FILE itself is deleted using RM."
 			;;
 
       # Separate optargs to long options:
-      --dlopen=*|--mode=*|--tag=*)
+      -dlopen=*|--mode=*|--tag=*)
 			arg=`echo "$opt" | $SED "$my_sed_long_arg"`
 			opt=`echo "$opt" | $SED "$my_sed_long_opt"`
 			set -- "$opt" "$arg" ${1+"$@"}
@@ -721,7 +726,7 @@ func_mkdir_p ()
     my_directory_path="$1"
     my_dir_list=
 
-    if test -n "$my_directory_path"; then
+    if test -n "$my_directory_path" && test "$opt_dry_run" != ":"; then
 
       # Protect directory names starting with `-'
       case $my_directory_path in
@@ -751,11 +756,45 @@ func_mkdir_p ()
         $MKDIR "$my_dir" 2>/dev/null || :
       done
       IFS="$save_mkdir_p_IFS"
+
+      # Bail out if we (or some other process) failed to create a directory.
+      test -d "$my_directory_path" || \
+        func_fatal_error "Failed to create \`$1'"
+    fi
+}
+
+
+# func_mktempdir
+# Make a temporary directory that won't clash with other running
+# libtool processes, and avoids race conditions if possible
+func_mktempdir ()
+{
+    my_template="${TMPDIR-/tmp}/libtool"
+
+    if test "$opt_dry_run" = ":"; then
+      # Return a directory name, but don't create it in dry-run mode
+      my_tmpdir="${my_template}-$$"
+    else
+
+      # If mktemp works, use that first and foremost
+      my_tmpdir=`mktemp -d "${my_template}-XXXXXXXX" 2>/dev/null`
+
+      if test ! -d "$my_tmpdir"; then
+        # Failing that, at least try and use $RANDOM to avoid a race
+        my_tmpdir="${my_template}-${RANDOM-0}$$"
+
+        save_mktempdir_umask=`umask`
+        umask 0077
+        $MKDIR "$my_tmpdir"
+        umask $save_mktempdir_umask
+      fi
+
+      # If we're not in dry-run mode, bomb out on failure
+      test -d "$my_tmpdir" || \
+        func_fatal_error "cannot create temporary directory \`$my_tmpdir'"
     fi
 
-    # Bail out if we (or some other process) failed to create a directory.
-    test -d "$my_directory_path" || \
-      func_fatal_error "Failed to create \`$1'"
+    echo "$my_tmpdir"
 }
 
 
@@ -1113,8 +1152,6 @@ func_extract_archives () {
     my_xabs=""
     my_xdir=""
 
-    func_mkdir_p "$my_gentop"
-
     for my_xlib in $my_oldlibs; do
       # Extract the objects.
       case $my_xlib in
@@ -1152,7 +1189,7 @@ func_extract_archives () {
 	      $RM "${darwin_base_archive}"
 	      cd "$darwin_curdir"
 	    done # $darwin_arches
-      ## Okay now we have a bunch of thin objects, gotta fatten them up :)
+            ## Okay now we've a bunch of thin objects, gotta fatten them up :)
 	    darwin_filelist=`find unfat-$$ -type f | xargs basename | sort -u | $NL2SP`
 	    darwin_file=
 	    darwin_files=
@@ -2187,18 +2224,7 @@ func_mode_install ()
 	  outputname=
 	  if test "$fast_install" = no && test -n "$relink_command"; then
 	    if test "$finalize" = yes && test -z "$run"; then
-	      tmpdir="/tmp"
-	      test -n "$TMPDIR" && tmpdir="$TMPDIR"
-	      tmpdir="$tmpdir/libtool-$$"
-	      save_umask=`umask`
-	      umask 0077
-	      if $MKDIR_P "$tmpdir"; then
-	      	umask $save_umask
-	      else
-	      	umask $save_umask
-		func_error "error: cannot create temporary directory \`$tmpdir'"
-		continue
-	      fi
+	      func_mktempdir "${TMPDIR-/tmp}/libtool-XXXXXXXX"
 	      file=`$echo "X$file$stripped_ext" | $Xsed -e 's%^.*/%%'`
 	      outputname="$tmpdir/$file"
 	      # Replace the output file specification.
@@ -6215,7 +6241,7 @@ else
     file=\"\$\$-\$program\"
 
     if test ! -d \"\$progdir\"; then
-      $MKDIR_P \"\$progdir\"
+      $MKDIR \"\$progdir\"
     else
       $RM \"\$progdir/\$file\"
     fi"

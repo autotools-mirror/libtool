@@ -1,3 +1,29 @@
+2004-09-17  Gary V. Vaughan  <gary@gnu.org>
+
+	Missed a couple of MKDIR_P references in ltmain.in in my last
+	patch; fix them carefully.  Introduce an opt_dry_run to ltmain.in
+	so that the implementations of func_mkdir_p can converge, and a
+	func_mktempdir to do a better job of temporary directory creation:
+
+	* libtoolize.in (func_mkdir_p): Don't fail if the directory wasn't
+	created in dry run mode.
+	* tests/defs (func_mkdir_p): Ditto.  We don't actually have a dry
+	run mode for the tests, but the function is written carefully to
+	be kept in synch and work correctly here too.
+	* config/ltmain.in (func_mkdir_p): Ditto.  This copy of the
+	function now only differs in its use of $echo over $ECHO.
+	(func_extract_archive): Removed first redundant mkdir call.
+	(func_mktempdir): New function that tries to avoid races when
+	making temporary directories.
+	(opt_dry_run): Set this if --dry-run is given at the CLI, or if
+	tests/mdemo-dryrun.test has forced the value of $run.
+	(func_mode_install): Call $MKDIR directly and error out if the
+	directory cannot be created.
+	(func_mode_link): Rather than copying func_mkdir_p into the
+	wrapper script as a replacement for $MKDIR_P, we know that the
+	script won't be called my `make -j', so write the current value of
+	$MKDIR.
+
 2004-09-17  Peter O'Gorman  <peter@pogma.com>
 
 	* m4/libtool.m4: remove an extra "]"
