@@ -1,3 +1,11 @@
+2005-05-21  Gary V. Vaughan  <gary@gnu.org>,
+	    Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* m4/libtool.m4 (_LT_SETUP, _LT_LANG_CXX_CONFIG, * _LT_LANG_F77_CONFIG):
+	For matching compiler names: Pick only first word, allow leading white
+	space..
+	* tests/sh.test: ..and test for missing `*' at end of patterns.
+
 2005-03-21  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* TODO: Update.
