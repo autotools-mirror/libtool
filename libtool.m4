@@ -223,7 +223,7 @@ elif test "X`($lt_echo '\t') 2>/dev/null`" = 'X\t'; then
   :
 else
   # Restart under the correct shell.
-  exec "$SHELL" "[$]0" --no-reexec ${1+"[$]@"}
+  exec $SHELL "[$]0" --no-reexec ${1+"[$]@"}
 fi
 
 if test "X[$]1" = X--fallback-echo; then

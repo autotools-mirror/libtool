@@ -1,5 +1,8 @@
 2000-09-03  Alexandre Oliva  <aoliva@redhat.com>
 
+	* libtool.m4: Don't quote SHELL when `re-exec'ing, so that SHELL
+	can be `/path/to/shell -x'.
+
 	* tests/quote.test: Move the match test out of case statements, to
 	work around bug in /bin/sh of several OSs.
 
