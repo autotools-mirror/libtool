@@ -1,3 +1,8 @@
+2003-02-04  Albert Chin-A-Young  <china@thewrittenword.com>
+
+	* libtool.m4: Change setting of archive_cmds_need_lc
+	so that it doesn't overwrite the previous setting.
+
 2003-01-28  Albert Chin-A-Young  <china@thewrittenword.com>
 
 	* libtool.m4: Allow compiler variable, CC, CXX, etc. to

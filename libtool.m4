@@ -3459,7 +3459,6 @@ $rm -f confest.$objext
 
 case " $_LT_AC_TAGVAR(postdeps, $1) " in
 *" -lc "*) _LT_AC_TAGVAR(archive_cmds_need_lc, $1)=no ;;
-*) _LT_AC_TAGVAR(archive_cmds_need_lc, $1)=yes ;;
 esac
 ])# AC_LIBTOOL_POSTDEP_PREDEP
 
@@ -4806,7 +4805,6 @@ ifelse([$1],[CXX],[
   _LT_AC_TAGVAR(allow_undefined_flag, $1)=
   _LT_AC_TAGVAR(enable_shared_with_static_runtimes, $1)=no
   _LT_AC_TAGVAR(archive_cmds, $1)=
-  _LT_AC_TAGVAR(archive_cmds_need_lc, $1)=
   _LT_AC_TAGVAR(archive_expsym_cmds, $1)=
   _LT_AC_TAGVAR(old_archive_From_new_cmds, $1)=
   _LT_AC_TAGVAR(old_archive_from_expsyms_cmds, $1)=
@@ -5502,48 +5500,54 @@ fi
 #
 # Do we need to explicitly link libc?
 #
-_LT_AC_TAGVAR(archive_cmds_need_lc, $1)=yes
-if test "$enable_shared" = yes && test "$GCC" = yes; then
-  case $_LT_AC_TAGVAR(archive_cmds, $1) in
-  *'~'*)
-    # FIXME: we may have to deal with multi-command sequences.
-    ;;
-  '$CC '*)
-    # Test whether the compiler implicitly links with -lc since on some
-    # systems, -lgcc has to come before -lc. If gcc already passes -lc
-    # to ld, don't add -lc before -lgcc.
-    AC_MSG_CHECKING([whether -lc should be explicitly linked in])
-    $rm conftest*
-    printf "$lt_simple_compile_test_code" > conftest.$ac_ext
+case "x$_LT_AC_TAGVAR(archive_cmds_need_lc, $1)" in
+x|xyes)
+  # Assume -lc should be added
+  _LT_AC_TAGVAR(archive_cmds_need_lc, $1)=yes
 
-    if AC_TRY_EVAL(ac_compile) 2>conftest.err; then
-      soname=conftest
-      lib=conftest
-      libobjs=conftest.$ac_objext
-      deplibs=
-      wl=$_LT_AC_TAGVAR(lt_prog_compiler_wl, $1)
-      compiler_flags=-v
-      linker_flags=-v
-      verstring=
-      output_objdir=.
-      libname=conftest
-      lt_save_allow_undefined_flag=$_LT_AC_TAGVAR(allow_undefined_flag, $1)
-      _LT_AC_TAGVAR(allow_undefined_flag, $1)=
-      if AC_TRY_EVAL(_LT_AC_TAGVAR(archive_cmds, $1) 2\>\&1 \| grep \" -lc \" \>/dev/null 2\>\&1)
-      then
-	_LT_AC_TAGVAR(archive_cmds_need_lc, $1)=no
+  if test "$enable_shared" = yes && test "$GCC" = yes; then
+    case $_LT_AC_TAGVAR(archive_cmds, $1) in
+    *'~'*)
+      # FIXME: we may have to deal with multi-command sequences.
+      ;;
+    '$CC '*)
+      # Test whether the compiler implicitly links with -lc since on some
+      # systems, -lgcc has to come before -lc. If gcc already passes -lc
+      # to ld, don't add -lc before -lgcc.
+      AC_MSG_CHECKING([whether -lc should be explicitly linked in])
+      $rm conftest*
+      printf "$lt_simple_compile_test_code" > conftest.$ac_ext
+  
+      if AC_TRY_EVAL(ac_compile) 2>conftest.err; then
+        soname=conftest
+        lib=conftest
+        libobjs=conftest.$ac_objext
+        deplibs=
+        wl=$_LT_AC_TAGVAR(lt_prog_compiler_wl, $1)
+        compiler_flags=-v
+        linker_flags=-v
+        verstring=
+        output_objdir=.
+        libname=conftest
+        lt_save_allow_undefined_flag=$_LT_AC_TAGVAR(allow_undefined_flag, $1)
+        _LT_AC_TAGVAR(allow_undefined_flag, $1)=
+        if AC_TRY_EVAL(_LT_AC_TAGVAR(archive_cmds, $1) 2\>\&1 \| grep \" -lc \" \>/dev/null 2\>\&1)
+        then
+	  _LT_AC_TAGVAR(archive_cmds_need_lc, $1)=no
+        else
+	  _LT_AC_TAGVAR(archive_cmds_need_lc, $1)=yes
+        fi
+        _LT_AC_TAGVAR(allow_undefined_flag, $1)=$lt_save_allow_undefined_flag
       else
-	_LT_AC_TAGVAR(archive_cmds_need_lc, $1)=yes
+        cat conftest.err 1>&5
       fi
-      _LT_AC_TAGVAR(allow_undefined_flag, $1)=$lt_save_allow_undefined_flag
-    else
-      cat conftest.err 1>&5
-    fi
-    $rm conftest*
-    AC_MSG_RESULT([$_LT_AC_TAGVAR(archive_cmds_need_lc, $1)])
-    ;;
-  esac
-fi
+      $rm conftest*
+      AC_MSG_RESULT([$_LT_AC_TAGVAR(archive_cmds_need_lc, $1)])
+      ;;
+    esac
+  fi
+  ;;
+esac
 ])# AC_LIBTOOL_PROG_LD_SHLIBS
 
 
