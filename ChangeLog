@@ -1,10 +1,19 @@
 1999-06-08  Gary V. Vaughan  <gary@oranda.demon.co.uk>
 
+	* ltmain.in (exeext): Use $exeext when working out the names of
+	programs (but not the wrapper script itself due to a stupidity in
+	win32 which hardwires the .exe extension to the binary loader!).
+	* ltconfig.in (exeext): Now that the wrapper script tries to move
+	executables, we need to know whether they have an extension (ala
+	AC_EXEEXT).  Since we can't rely on AC_EXEEXT having been called
+	in configure.in, we must be able to check for ourselves, though we
+	can look for a cached result incase AC_EXEEXT was called.
+
 	* ltconfig.in (cygwin, pic_flag):  Force separate compilation of
 	objects for dlls vs. objects for static archives.  Using a cpp
 	macro also allows us to decide whether or not we need to use
 	dllexport/import declarations.
-	
+
 	* ltconfig.in (cygwin, need_version): Set to no, otherwise module
 	dll's end up with mighty long names!
 
