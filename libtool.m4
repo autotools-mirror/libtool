@@ -568,7 +568,7 @@ AC_CACHE_VAL([lt_cv_sys_max_cmd_len], [dnl
                = "XX$testring" &&
             new_result=`expr "X$testring" : ".*" 2>&1` &&
             lt_cv_sys_max_cmd_len=$new_result &&
-            test $i != 18 # 1 MB should be enough
+            test $i != 17 # 1/2 MB should be enough
     do
       i=`expr $i + 1`
       testring=$testring$testring
