@@ -1,3 +1,9 @@
+1999-03-06  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* ltmain.in (freebsd): compile symbol table file with pic_flag
+	only on FreeBSD and when not static linking; it's been causing
+	trouble on platforms such as OpenBSD.
+
 1999-02-26  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
 
 	* libtool.m4 (cygwin): s/\\(mingw\\|cygwin\\)32/\\1/g.  Must've
