@@ -1,5 +1,20 @@
 2003-11-06  Gary V. Vaughan  <gary@gnu.org>
 
+	* m4/libtool.m4: s/ifelse(/m4_if(/g
+	(_LT_AC_SYS_LIBPATH_AIX, _LT_AC_SHELL_INIT,
+	_LT_AC_PROG_ECHO_BACKSLASH, AC_LIBTOOL_LINKER_OPTION,
+	AC_LIBTOOL_TAGS, _LT_AC_TAG_CHECK, _LT_AC_TAG_CONFIG,
+	AC_ENABLE_SHARED, AC_DISABLE_SHARED, AC_ENABLE_STATIC,
+	AC_DISABLE_STATIC, AC_ENABLE_FAST_INSTALL,
+	AC_DISABLE_FAST_INSTALL, _LT_AC_LANG_C_CONFIG,
+	_LT_AC_LANG_GCJ_CONFIG, _LT_AC_LANG_RC_CONFIG, AC_LIBTOOL_CONFIG,
+	_LT_AC_TAGVAR, AM_PROG_LIBTOOL, AM_ENABLE_SHARED,
+	AM_ENABLE_STATIC, AM_DISABLE_SHARED, AM_DISABLE_STATIC): Use
+	m4_define instead of AC_DEFUN for internal macros that do not
+	AC_PROVIDE or AC_REQUIRE, and documented user macros that cannot
+	be AC_REQUIREd because they need arguments, or because that would
+	violate the documented API.
+
 	* m4/libtool.m4 (AC_LIBTOOL_SETUP): Add a new
 	delay_single_quote_subst sed script to quote single quotes in
 	variables that are copied to `config.status'.

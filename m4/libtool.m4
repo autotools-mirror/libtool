@@ -66,9 +66,6 @@ define([AC_PROG_LIBTOOL], [])
 # ----------------
 AC_DEFUN([AC_LIBTOOL_SETUP],
 [AC_PREREQ(2.56)dnl We use the new compiler based header checking in 2.56
-AC_REQUIRE([AC_ENABLE_SHARED])dnl
-AC_REQUIRE([AC_ENABLE_STATIC])dnl
-AC_REQUIRE([AC_ENABLE_FAST_INSTALL])dnl
 AC_REQUIRE([AC_CANONICAL_HOST])dnl
 AC_REQUIRE([AC_CANONICAL_BUILD])dnl
 AC_REQUIRE([AC_PROG_CC])dnl
@@ -83,6 +80,9 @@ AC_REQUIRE([AC_OBJEXT])dnl
 AC_REQUIRE([AC_EXEEXT])dnl
 dnl
 
+AC_ENABLE_SHARED
+AC_ENABLE_STATIC
+AC_ENABLE_FAST_INSTALL
 AC_LIBTOOL_SYS_MAX_CMD_LEN
 AC_LIBTOOL_SYS_GLOBAL_SYMBOL_PIPE
 AC_LIBTOOL_OBJDIR
@@ -280,7 +280,7 @@ compiler=$CC
 # the location of the communication and MPI libs are included too.
 # If we don't find anything, use the default library path according
 # to the aix ld manual.
-AC_DEFUN([_LT_AC_SYS_LIBPATH_AIX],
+m4_define([_LT_AC_SYS_LIBPATH_AIX],
 [AC_LINK_IFELSE(AC_LANG_PROGRAM,[
 aix_libpath=`dump -H conftest$ac_exeext 2>/dev/null | $SED -n -e '/Import File Strings/,/^$/ { /^0/ { s/^0  *\(.*\)$/\1/; p; }
 }'`
@@ -293,7 +293,7 @@ if test -z "$aix_libpath"; then aix_libpath="/usr/lib:/lib"; fi
 
 # _LT_AC_SHELL_INIT(ARG)
 # ----------------------
-AC_DEFUN([_LT_AC_SHELL_INIT],
+m4_define([_LT_AC_SHELL_INIT],
 [ifdef([AC_DIVERSION_NOTICE],
 	     [AC_DIVERT_PUSH(AC_DIVERSION_NOTICE)],
 	 [AC_DIVERT_PUSH(NOTICE)])
@@ -306,7 +306,7 @@ AC_DIVERT_POP
 # --------------------------
 # Add some code to the start of the generated configure script which
 # will find an echo command which doesn't interpret backslashes.
-AC_DEFUN([_LT_AC_PROG_ECHO_BACKSLASH],
+m4_define([_LT_AC_PROG_ECHO_BACKSLASH],
 [_LT_AC_SHELL_INIT([
 # Check that we are running under the correct shell.
 SHELL=${CONFIG_SHELL-/bin/sh}
@@ -594,7 +594,7 @@ AC_DEFUN([AC_LIBTOOL_COMPILER_OPTION],
 [AC_REQUIRE([LT_AC_PROG_SED])
 AC_CACHE_CHECK([$1], [$2],
   [$2=no
-  ifelse([$4], , [ac_outfile=conftest.$ac_objext], [ac_outfile=$4])
+  m4_if([$4], , [ac_outfile=conftest.$ac_objext], [ac_outfile=$4])
    printf "$lt_simple_compile_test_code" > conftest.$ac_ext
    lt_compiler_flag="$3"
    # Insert the option either (1) after the last *FLAGS variable, or
@@ -622,9 +622,9 @@ AC_CACHE_CHECK([$1], [$2],
 ])
 
 if test x"[$]$2" = xyes; then
-    ifelse([$5], , :, [$5])
+    m4_if([$5], , :, [$5])
 else
-    ifelse([$6], , :, [$6])
+    m4_if([$6], , :, [$6])
 fi
 ])# AC_LIBTOOL_COMPILER_OPTION
 
@@ -633,7 +633,7 @@ fi
 #                          [ACTION-SUCCESS], [ACTION-FAILURE])
 # ------------------------------------------------------------
 # Check whether the given compiler option works
-AC_DEFUN([AC_LIBTOOL_LINKER_OPTION],
+m4_define([AC_LIBTOOL_LINKER_OPTION],
 [AC_CACHE_CHECK([$1], [$2],
   [$2=no
    save_LDFLAGS="$LDFLAGS"
@@ -654,9 +654,9 @@ AC_DEFUN([AC_LIBTOOL_LINKER_OPTION],
 ])
 
 if test x"[$]$2" = xyes; then
-    ifelse([$4], , :, [$4])
+    m4_if([$4], , :, [$4])
 else
-    ifelse([$5], , :, [$5])
+    m4_if([$5], , :, [$5])
 fi
 ])# AC_LIBTOOL_LINKER_OPTION
 
@@ -1665,13 +1665,13 @@ test "$dynamic_linker" = no && can_build_shared=no
 # AC_LIBTOOL_TAGS
 # ---------------
 # tags to enable
-AC_DEFUN([AC_LIBTOOL_TAGS],
+m4_define([AC_LIBTOOL_TAGS],
 [m4_define([_LT_TAGS],[$1])
 ]) # AC_LIBTOOL_TAGS
 
 # _LT_AC_TAG_CHECK
 # ----------------
-AC_DEFUN([_LT_AC_TAG_CHECK],
+m4_define([_LT_AC_TAG_CHECK],
 [m4_ifdef([_LT_TAG_]$1,
   [m4_errprintn(m4_location[: error: duplicate tag: ]"$1")
   m4_exit(1)],
@@ -1680,7 +1680,7 @@ AC_DEFUN([_LT_AC_TAG_CHECK],
 
 # _LT_AC_TAG_CONFIG
 # -----------------
-AC_DEFUN([_LT_AC_TAG_CONFIG],
+m4_define([_LT_AC_TAG_CONFIG],
 [AC_PROVIDE_IFELSE([AC_LIBTOOL_TAGS], [], [
   AC_LIBTOOL_TAGS([CXX F77 GCJ RC])])dnl
   available_tags=""
@@ -1760,8 +1760,8 @@ AC_DEFUN([AC_LIBTOOL_WIN32_DLL],
 # ---------------------------
 # implement the --enable-shared flag
 # DEFAULT is either `yes' or `no'.  If omitted, it defaults to `yes'.
-AC_DEFUN([AC_ENABLE_SHARED],
-[define([AC_ENABLE_SHARED_DEFAULT], ifelse($1, no, no, yes))dnl
+m4_define([AC_ENABLE_SHARED],
+[m4_define([AC_ENABLE_SHARED_DEFAULT], [m4_if($1, no, no, yes)])dnl
 AC_ARG_ENABLE([shared],
     [AC_HELP_STRING([--enable-shared@<:@=PKGS@:>@],
 	[build shared libraries @<:@default=]AC_ENABLE_SHARED_DEFAULT[@:>@])],
@@ -1789,7 +1789,7 @@ AC_ARG_ENABLE([shared],
 # AC_DISABLE_SHARED
 # -----------------
 #- set the default shared flag to --disable-shared
-AC_DEFUN([AC_DISABLE_SHARED],
+m4_define([AC_DISABLE_SHARED],
 [AC_BEFORE([$0],[AC_LIBTOOL_SETUP])dnl
 AC_ENABLE_SHARED(no)
 ])# AC_DISABLE_SHARED
@@ -1799,8 +1799,8 @@ AC_ENABLE_SHARED(no)
 # ---------------------------
 # implement the --enable-static flag
 # DEFAULT is either `yes' or `no'.  If omitted, it defaults to `yes'.
-AC_DEFUN([AC_ENABLE_STATIC],
-[define([AC_ENABLE_STATIC_DEFAULT], ifelse($1, no, no, yes))dnl
+m4_define([AC_ENABLE_STATIC],
+[m4_define([AC_ENABLE_STATIC_DEFAULT], [m4_if($1, no, no, yes)])dnl
 AC_ARG_ENABLE([static],
     [AC_HELP_STRING([--enable-static@<:@=PKGS@:>@],
 	[build static libraries @<:@default=]AC_ENABLE_STATIC_DEFAULT[@:>@])],
@@ -1828,7 +1828,7 @@ AC_ARG_ENABLE([static],
 # AC_DISABLE_STATIC
 # -----------------
 # set the default static flag to --disable-static
-AC_DEFUN([AC_DISABLE_STATIC],
+m4_define([AC_DISABLE_STATIC],
 [AC_BEFORE([$0],[AC_LIBTOOL_SETUP])dnl
 AC_ENABLE_STATIC(no)
 ])# AC_DISABLE_STATIC
@@ -1838,8 +1838,8 @@ AC_ENABLE_STATIC(no)
 # ---------------------------------
 # implement the --enable-fast-install flag
 # DEFAULT is either `yes' or `no'.  If omitted, it defaults to `yes'.
-AC_DEFUN([AC_ENABLE_FAST_INSTALL],
-[define([AC_ENABLE_FAST_INSTALL_DEFAULT], ifelse($1, no, no, yes))dnl
+m4_define([AC_ENABLE_FAST_INSTALL],
+[m4_define([AC_ENABLE_FAST_INSTALL_DEFAULT], [m4_if($1, no, no, yes)])dnl
 AC_ARG_ENABLE([fast-install],
     [AC_HELP_STRING([--enable-fast-install@<:@=PKGS@:>@],
     [optimize for fast installation @<:@default=]AC_ENABLE_FAST_INSTALL_DEFAULT[@:>@])],
@@ -1867,7 +1867,7 @@ AC_ARG_ENABLE([fast-install],
 # AC_DISABLE_FAST_INSTALL
 # -----------------------
 # set the default to --disable-fast-install
-AC_DEFUN([AC_DISABLE_FAST_INSTALL],
+m4_define([AC_DISABLE_FAST_INSTALL],
 [AC_BEFORE([$0],[AC_LIBTOOL_SETUP])dnl
 AC_ENABLE_FAST_INSTALL(no)
 ])# AC_DISABLE_FAST_INSTALL
@@ -1879,7 +1879,7 @@ AC_ENABLE_FAST_INSTALL(no)
 # MODE is either `yes' or `no'.  If omitted, it defaults to `both'.
 AC_DEFUN([AC_LIBTOOL_PICMODE],
 [AC_BEFORE([$0],[AC_LIBTOOL_SETUP])dnl
-pic_mode=ifelse($#,1,$1,default)
+pic_mode=m4_if($#, 1, $1, default)
 ])# AC_LIBTOOL_PICMODE
 
 
@@ -1900,7 +1900,7 @@ AC_CACHE_VAL(lt_cv_path_MAGIC_CMD,
 dnl $ac_dummy forces splitting on constant user-supplied paths.
 dnl POSIX.2 word splitting is done only on the output of word expansions,
 dnl not every word.  This closes a longstanding sh security hole.
-  ac_dummy="ifelse([$2], , $PATH, [$2])"
+  ac_dummy="m4_if([$2], , $PATH, [$2])"
   for ac_dir in $ac_dummy; do
     IFS="$lt_save_ifs"
     test -z "$ac_dir" && ac_dir=.
@@ -2355,8 +2355,8 @@ AC_DEFUN([AC_LIBLTDL_CONVENIENCE],
   "") enable_ltdl_convenience=yes
       ac_configure_args="$ac_configure_args --enable-ltdl-convenience" ;;
   esac
-  LIBLTDL='${top_builddir}/'ifelse($#,1,[$1],['libltdl'])/libltdlc.la
-  LTDLINCL='-I${top_srcdir}/'ifelse($#,1,[$1],['libltdl'])
+  LIBLTDL='${top_builddir}/'m4_if($#, 1,[$1], ['libltdl'])/libltdlc.la
+  LTDLINCL='-I${top_srcdir}/'m4_if($#, 1, [$1], ['libltdl'])
   # For backwards non-gettext consistent compatibility...
   INCLTDL="$LTDLINCL"
 ])# AC_LIBLTDL_CONVENIENCE
@@ -2386,8 +2386,8 @@ AC_DEFUN([AC_LIBLTDL_INSTALLABLE],
   ])
   if test x"$enable_ltdl_install" = x"yes"; then
     ac_configure_args="$ac_configure_args --enable-ltdl-install"
-    LIBLTDL='${top_builddir}/'ifelse($#,1,[$1],['libltdl'])/libltdl.la
-    LTDLINCL='-I${top_srcdir}/'ifelse($#,1,[$1],['libltdl'])
+    LIBLTDL='${top_builddir}/'m4_if($#, 1, [$1], ['libltdl'])/libltdl.la
+    LTDLINCL='-I${top_srcdir}/'m4_if($#, 1, [$1], ['libltdl'])
   else
     ac_configure_args="$ac_configure_args --enable-ltdl-install=no"
     LIBLTDL="-lltdl"
@@ -2467,7 +2467,7 @@ _LT_AC_SHELL_INIT([tagnames=${tagnames+${tagnames},}RC])
 # suitably defined.  Those variables are subsequently used by
 # AC_LIBTOOL_CONFIG to write the compiler configuration to `libtool'.
 AC_DEFUN([AC_LIBTOOL_LANG_C_CONFIG], [_LT_AC_LANG_C_CONFIG])
-AC_DEFUN([_LT_AC_LANG_C_CONFIG],
+m4_define([_LT_AC_LANG_C_CONFIG],
 [lt_save_CC="$CC"
 AC_LANG_PUSH(C)
 
@@ -3478,11 +3478,11 @@ dnl because it contains code intended for an executable,
 dnl not a library.  It's possible we should let each
 dnl tag define a new lt_????_link_test_code variable,
 dnl but it's only used here...
-ifelse([$1],[],[cat > conftest.$ac_ext <<_LT_EOF
+m4_if([$1], [], [cat > conftest.$ac_ext <<_LT_EOF
 int a;
 void foo (void) { a = 0; }
 _LT_EOF
-],[$1],[CXX],[cat > conftest.$ac_ext <<_LT_EOF
+], [$1], [CXX], [cat > conftest.$ac_ext <<_LT_EOF
 class Foo
 {
 public:
@@ -3491,7 +3491,7 @@ private:
   int a;
 };
 _LT_EOF
-],[$1],[F77],[cat > conftest.$ac_ext <<_LT_EOF
+], [$1], [F77], [cat > conftest.$ac_ext <<_LT_EOF
       subroutine foo
       implicit none
       integer*4 a
@@ -3499,7 +3499,7 @@ _LT_EOF
       return
       end
 _LT_EOF
-],[$1],[GCJ],[cat > conftest.$ac_ext <<_LT_EOF
+], [$1], [GCJ], [cat > conftest.$ac_ext <<_LT_EOF
 public class foo {
   private int a;
   public void bar (void) {
@@ -3708,7 +3708,7 @@ CC="$lt_save_CC"
 # suitably defined.  Those variables are subsequently used by
 # AC_LIBTOOL_CONFIG to write the compiler configuration to `libtool'.
 AC_DEFUN([AC_LIBTOOL_LANG_GCJ_CONFIG], [_LT_AC_LANG_GCJ_CONFIG(GCJ)])
-AC_DEFUN([_LT_AC_LANG_GCJ_CONFIG],
+m4_define([_LT_AC_LANG_GCJ_CONFIG],
 [AC_LANG_SAVE
 
 # Source file extension for Java test sources.
@@ -3763,7 +3763,7 @@ CC="$lt_save_CC"
 # suitably defined.  Those variables are subsequently used by
 # AC_LIBTOOL_CONFIG to write the compiler configuration to `libtool'.
 AC_DEFUN([AC_LIBTOOL_LANG_RC_CONFIG], [_LT_AC_LANG_RC_CONFIG(RC)])
-AC_DEFUN([_LT_AC_LANG_RC_CONFIG],
+m4_define([_LT_AC_LANG_RC_CONFIG],
 [AC_LANG_SAVE
 
 # Source file extension for RC test sources.
@@ -3811,7 +3811,7 @@ m4_define([_LT_CONFIG_STATUS_DECLARE],
 # with a default configuration from the untagged config vars.  Otherwise
 # add code to config.status for appending the configuration named by
 # TAGNAME from the matching tagged config vars.
-AC_DEFUN([AC_LIBTOOL_CONFIG],
+m4_define([AC_LIBTOOL_CONFIG],
 [AC_CONFIG_COMMANDS([libtool]$1, [
   # See if we are running on zsh, and set the options which allow our
   # commands through without removal of \ escapes.
@@ -3819,7 +3819,7 @@ AC_DEFUN([AC_LIBTOOL_CONFIG],
     setopt NO_GLOB_SUBST
   fi
 
-  ifelse([$1], [],
+  m4_if([$1], [],
       [cfgfile="${ofile}T"
       trap "$rm \"$cfgfile\"; exit 1" 1 2 15
       $rm -f "$cfgfile"
@@ -3829,7 +3829,7 @@ AC_DEFUN([AC_LIBTOOL_CONFIG],
   ])
 
   cat <<_LT_EOF >> "$cfgfile"
-ifelse([$1], [],
+m4_if([$1], [],
 [#! $SHELL
 
 # `$echo "$cfgfile" | sed 's%^.*/%%'` - Provide generalized library-building support services.
@@ -4169,13 +4169,13 @@ exclude_expsyms=$lt_[]_LT_AC_TAGVAR(exclude_expsyms, $1)
 # Symbols that must always be exported.
 include_expsyms=$lt_[]_LT_AC_TAGVAR(include_expsyms, $1)
 
-ifelse([$1],[],
+m4_if([$1],[],
 [# ### END LIBTOOL CONFIG],
 [# ### END LIBTOOL TAG CONFIG: $1])
 
 _LT_EOF
 
-ifelse([$1],[], [
+m4_if([$1],[], [
   case $host_os in
   aix3*)
     cat <<\_LT_EOF >> "$cfgfile"
@@ -4325,7 +4325,7 @@ _LT_EOF
   # Now quote all the things that may contain metacharacters while being
   # careful not to overquote the AC_SUBSTed values.  We take copies of the
   # variables and quote the copies for generation of the libtool script.
-  for var in ifelse([$1], [],
+  for var in m4_if([$1], [],
     [SED SHELL echo AR AR_FLAGS LTCC EGREP RANLIB LN_S NM STRIP \
     libname_spec library_names_spec soname_spec extract_expsyms_cmds \
     old_striplib striplib file_magic_cmd finish_cmds finish_eval \
@@ -4614,7 +4614,7 @@ _LT_AC_TAGVAR(lt_prog_compiler_pic, $1)=
 _LT_AC_TAGVAR(lt_prog_compiler_static, $1)=
 
 AC_MSG_CHECKING([for $compiler option to produce PIC])
- ifelse([$1],[CXX],[
+ m4_if([$1], [CXX], [
   # C++ specific cases for pic, static, wl, etc.
   if test "$GXX" = yes; then
     _LT_AC_TAGVAR(lt_prog_compiler_wl, $1)='-Wl,'
@@ -5051,7 +5051,7 @@ AC_MSG_RESULT([$_LT_AC_TAGVAR(lt_prog_compiler_pic, $1)])
 if test -n "$_LT_AC_TAGVAR(lt_prog_compiler_pic, $1)"; then
   AC_LIBTOOL_COMPILER_OPTION([if $compiler PIC flag $_LT_AC_TAGVAR(lt_prog_compiler_pic, $1) works],
     _LT_AC_TAGVAR(lt_prog_compiler_pic_works, $1),
-    [$_LT_AC_TAGVAR(lt_prog_compiler_pic, $1)@&t@ifelse([$1],[],[ -DPIC],[ifelse([$1],[CXX],[ -DPIC],[])])], [],
+    [$_LT_AC_TAGVAR(lt_prog_compiler_pic, $1)@&t@m4_if([$1],[],[ -DPIC],[m4_if([$1],[CXX],[ -DPIC],[])])], [],
     [case $_LT_AC_TAGVAR(lt_prog_compiler_pic, $1) in
      "" | " "*) ;;
      *) _LT_AC_TAGVAR(lt_prog_compiler_pic, $1)=" $_LT_AC_TAGVAR(lt_prog_compiler_pic, $1)" ;;
@@ -5065,7 +5065,7 @@ case "$host_os" in
     _LT_AC_TAGVAR(lt_prog_compiler_pic, $1)=
     ;;
   *)
-    _LT_AC_TAGVAR(lt_prog_compiler_pic, $1)="$_LT_AC_TAGVAR(lt_prog_compiler_pic, $1)@&t@ifelse([$1],[],[ -DPIC],[ifelse([$1],[CXX],[ -DPIC],[])])"
+    _LT_AC_TAGVAR(lt_prog_compiler_pic, $1)="$_LT_AC_TAGVAR(lt_prog_compiler_pic, $1)@&t@m4_if([$1],[],[ -DPIC],[m4_if([$1],[CXX],[ -DPIC],[])])"
     ;;
 esac
 ])
@@ -5076,7 +5076,7 @@ esac
 # See if the linker supports building shared libraries.
 AC_DEFUN([AC_LIBTOOL_PROG_LD_SHLIBS],
 [AC_MSG_CHECKING([whether the $compiler linker ($LD) supports shared libraries])
-ifelse([$1],[CXX],[
+m4_if([$1], [CXX], [
   _LT_AC_TAGVAR(export_symbols_cmds, $1)='$NM $libobjs $convenience | $global_symbol_pipe | $SED '\''s/.* //'\'' | sort | uniq > $export_symbols'
   case $host_os in
   aix4* | aix5*)
@@ -5098,7 +5098,7 @@ ifelse([$1],[CXX],[
     _LT_AC_TAGVAR(export_symbols_cmds, $1)='$NM $libobjs $convenience | $global_symbol_pipe | $SED '\''s/.* //'\'' | sort | uniq > $export_symbols'
   ;;
   esac
-],[
+], [
   runpath_var=
   _LT_AC_TAGVAR(allow_undefined_flag, $1)=
   _LT_AC_TAGVAR(enable_shared_with_static_runtimes, $1)=no
@@ -5934,20 +5934,20 @@ AC_DEFUN([_LT_AC_FILE_LTDLL_C], [
 
 # _LT_AC_TAGVAR(VARNAME, [TAGNAME])
 # ---------------------------------
-AC_DEFUN([_LT_AC_TAGVAR], [ifelse([$2], [], [$1], [$1_$2])])
+m4_define([_LT_AC_TAGVAR], [m4_if([$2], [], [$1], [$1_$2])])
 
 
 # old names
-AC_DEFUN([AM_PROG_LIBTOOL],   [AC_PROG_LIBTOOL])
-AC_DEFUN([AM_ENABLE_SHARED],  [AC_ENABLE_SHARED($@)])
-AC_DEFUN([AM_ENABLE_STATIC],  [AC_ENABLE_STATIC($@)])
-AC_DEFUN([AM_DISABLE_SHARED], [AC_DISABLE_SHARED($@)])
-AC_DEFUN([AM_DISABLE_STATIC], [AC_DISABLE_STATIC($@)])
+m4_define([AM_PROG_LIBTOOL],   [AC_PROG_LIBTOOL])
+m4_define([AM_ENABLE_SHARED],  [AC_ENABLE_SHARED($@)])
+m4_define([AM_ENABLE_STATIC],  [AC_ENABLE_STATIC($@)])
+m4_define([AM_DISABLE_SHARED], [AC_DISABLE_SHARED($@)])
+m4_define([AM_DISABLE_STATIC], [AC_DISABLE_STATIC($@)])
 AC_DEFUN([AM_PROG_LD],        [AC_PROG_LD])
 AC_DEFUN([AM_PROG_NM],        [AC_PROG_NM])
 
 # This is just to silence aclocal about the macro not being used
-ifelse([AC_DISABLE_FAST_INSTALL])
+m4_if([AC_DISABLE_FAST_INSTALL])
 
 AC_DEFUN([LT_AC_PROG_GCJ],
 [AC_CHECK_TOOL(GCJ, gcj, no)
