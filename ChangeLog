@@ -1,3 +1,8 @@
+2000-10-31  Morten Eriksen  <mortene@sim.no>
+
+	* ltcf-c.sh, ltcf-gcj.sh: Quote argument to avoid error
+	output from cygpath when $srcdir is empty.
+
 2000-10-31  Akim Demaille  <akim@epita.fr>
 
 	* libtool.m4: Adjust the copyright notice.
