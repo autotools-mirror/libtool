@@ -42,19 +42,20 @@ libtoolize: libtoolize.in $(top_builddir)/config.status
 	CONFIG_FILES=libtoolize CONFIG_HEADERS= $(top_builddir)/config.status
 	chmod +x libtoolize
 
-# These depend on configure.in (rather then config.status) so that version
-# numbers are correctly updated.
-# This way, they aren't regenerated after people configure the package.
-$(srcdir)/ltconfig: ltconfig.in configure.in
+$(srcdir)/ltconfig: ltconfig.in $(top_builddir)/config.status
 	CONFIG_FILES=ltconfig CONFIG_HEADERS= $(top_builddir)/config.status
 	AWK=@AWK@ $(top_srcdir)/lineno --delete ltconfig
 	chmod +x ltconfig
-	test "$(srcdir)" = . || mv ltconfig $(srcdir)/ltconfig
+	test "$(srcdir)" = . || \
+	  (cmp -s ltconfig $(srcdir)/ltconfig && rm -f ltconfig) || \
+	  mv -f ltconfig $(srcdir)/ltconfig
 
-$(srcdir)/ltmain.sh: ltmain.in configure.in
+$(srcdir)/ltmain.sh: ltmain.in $(top_builddir)/config.status
 	CONFIG_FILES=ltmain.sh:ltmain.in CONFIG_HEADERS= \
 	  $(top_builddir)/config.status
-	test "$(srcdir)" = . || mv ltmain.sh $(srcdir)/ltmain.sh
+	test "$(srcdir)" = . || \
+	  (cmp -s ltmain.sh $(srcdir)/ltmain.sh && rm -f ltmain.sh) || \
+	  mv -f ltmain.sh $(srcdir)/ltmain.sh
 
 # Distribute the demo subdirectory.
 dist-hook: $(demo_distfiles)
@@ -117,7 +118,7 @@ maintainer-check-versions:
 maintainer-release: maintainer-check-versions distcheck
 	cd $(top_srcdir) && $(PRCS) checkin -f $(PACKAGE)
 	cd $(top_srcdir) && $(PRCS) rekey -f $(PACKAGE) configure.in libtool.spec
-	echo "============================="; \
+	@echo "============================="; \
 	  echo "Congratulations!  $(PACKAGE)-$(VERSION) is now complete."; \
 	  echo; \
 	  echo "Distribute \`$(PACKAGE)-$(VERSION).tar.gz' to the masses, and don't forget"; \

@@ -1,5 +1,9 @@
 Mon Dec  1 00:50:37 1997  Gordon Matzigkeit  <gord@gnu.org>
 
+	* Makefile.am ($(srcdir)/ltconfig, $(srcdir)/ltmain.sh): Rewrite
+	these rules so that they are parallelizable.  Reported by Jim
+	Meyering.
+
 	* ltconfig.in (ltecho): We need special handling to quote the
 	`echo' variable itself.  From Alexandre Oliva.
 
