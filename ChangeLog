@@ -1,3 +1,7 @@
+2003-07-24  Robert Millan  <robertmh@gnu.org>
+
+	* libtool.m4: More fixes for the new GNU/FreeBSD triplet.
+
 2003-07-14  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
 
 	* config.guess, config.sub: Synchronized from ftp.gnu.org since
