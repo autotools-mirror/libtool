@@ -1,3 +1,9 @@
+1999-07-06  Gary V. Vaughan  <gary@oranda.demon.co.uk>
+
+	* README-alpha:  improved the release instructions to mention
+	actual list addresses for announcements, and urls for upload
+	locations.
+
 1999-07-03  Thomas Tanner  <tanner@ffii.org>
 
 	* doc/PLATFORMS: 1.3b passes all tests on cygwin

@@ -67,10 +67,25 @@ using (by typing `ltconfig --version').
 
 * Commit
 
-* Run `make cvs-dist'
+* Run `make cvs-dist' which will tag the tree with release-maj-min<alpha>.
 
-* Put new release on ftp site and send announcement.
-  (If not an alpha, announcement must also go to FSF.)
+* Run `make cvs-diff' which will create a diff file against the previous
+  release tag (set OLDVERSION=min.maj<alpha> in the environment beforehand
+  if necessary).
+
+* Get a copy of the previous release tarball (by reverse applying the diff,
+  or downloading from gnu.org), and generate an xdelta with: 
+
+    xdelta delta libtool-<prev>.tar.gz libtool-<version>.tar.gz > \
+    libtool-<prev>-<version>.tar.xdp.gz'
+
+* Upload release tarball, diff file and xdelta file 
+  ftp://melange/~ftp/gnu/libtool and send announcement to libtool@gnu.org.
+
+* If not an alpha, announcement must also go to info-gnu@gnu.org, and an
+  upload request be sent to ftp-upload@gnu.org requesting files be transferred
+  from ftp://alpha.gnu,org/gnu/libtool to ftp://ftp.gnu.org/gnu/libtool.
 
 * Update version number in configure.in to next alpha number.
-  Commit.
+
+* Commit.
