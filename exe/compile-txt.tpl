@@ -41,7 +41,8 @@ easier to understand.
     do
       case "$arg_mode" in
       arg  )
-	lastarg="$arg"  # do not "continue".  Instead, add this to base_compile
+	# do not "continue".  Instead, add this to base_compile
+	lastarg="$arg"
 	arg_mode=normal
 	;;
 
