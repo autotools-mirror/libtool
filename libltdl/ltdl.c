@@ -3538,7 +3538,7 @@ lt_dlforeach (func, data)
 lt_dlcaller_id
 lt_dlcaller_register ()
 {
-  static int last_caller_id = -1;
+  static lt_dlcaller_id last_caller_id = 0;
   int result;
 
   LT_DLMUTEX_LOCK ();
