@@ -1,5 +1,8 @@
 1999-01-20  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* demo/dlmain.c (main): cast s->address to the appropriate pointer
+ 	types, otherwise StunOS4's cc refuses to compile it
+
 	* ltconfig.in (sunos4*, without_gnu_ld, with_gcc, archive_cmds):
  	add -fPIC, because libgcc is multilibbed, and we want the PIC
  	version of it for shared libraries, otherwise ld complains

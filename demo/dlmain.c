@@ -76,11 +76,11 @@ main (argc, argv)
         const char *name = s->name;
         printf ("found symbol: %s\n", name);
         if (!strcmp ("hello", name))
- 	  phello = s->address;
+ 	  phello = (int(*)())s->address;
         else if (!strcmp ("foo", name))
-  	  pfoo = s->address;
+  	  pfoo = (int(*)())s->address;
         else if (!strcmp ("nothing", name))
-  	  pnothing = s->address;
+  	  pnothing = (int*)s->address;
       } else 
         printf ("found file: %s\n", s->name);
       s ++;
