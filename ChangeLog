@@ -1,3 +1,7 @@
+2001-02-25  Peter Eisentraut  <peter_e@gmx.net>
+
+	* ltmain.in (clean): Automatically remove $objdir (usually '.libs').
+
 2001-03-08  Gary V. Vaughan  <gvv@techie.com>
 
 	* ltconfig.in (library_names_spec): Undo latin-1 spaces I pasted
