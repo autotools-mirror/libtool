@@ -1,7 +1,11 @@
 1999-01-11  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* libtool.m4 (AM_SYS_NM_PARSE): while we are at it, we may well
+ 	cache the value of ac_cv_sys_symbol_underscore
+
 	* libtool.m4 (AM_SYS_NM_PARSE): need for underscore prefix is now
- 	auto-detected, by trying first without, then with it
+ 	auto-detected, by trying first without, then with it.  
+	
 	* ltconfig.in: ditto
 
 1999-01-10  Alexandre Oliva  <oliva@dcc.unicamp.br>
