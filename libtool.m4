@@ -516,7 +516,9 @@ freebsd*)
   *)
     case "$host_cpu" in
     i*86 )
+      changequote(,)dnl
       lt_cv_deplibs_check_method=='file_magic OpenBSD/i[3-9]86 demand paged shared library'
+      changequote([, ])dnl
       lt_cv_file_magic_cmd=/usr/bin/file
       lt_cv_file_magic_test_file=`echo /usr/lib/libc.so.*`
       ;;
