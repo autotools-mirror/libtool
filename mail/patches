@@ -1,0 +1,104 @@
+Date: Thu, 29 Jul 1999 14:56:40 +0200 (CEST)
+From: Peter Breitenlohner <peb@mppmu.mpg.de>
+Reply-To: Peter Breitenlohner <peb@mppmu.mpg.de>
+To: bug-libtool@gnu.org
+Subject: a suggestion for libtool (1.3.2)
+Message-ID: <Pine.LNX.3.95.990729134449.8802F-200000@pcl163a.mppmu.mpg.de>
+MIME-Version: 1.0
+Content-Type: MULTIPART/MIXED; BOUNDARY="1803957763-1087116776-933253000=:8802"
+Resent-Message-ID: <"2rP1j3.0.z77.p-4et"@mescaline.gnu.org>
+Resent-From: bug-libtool@gnu.org
+X-Mailing-List: <bug-libtool@gnu.org> archive/latest/952
+X-Loop: bug-libtool@gnu.org
+Precedence: list
+Resent-Sender: bug-libtool-request@gnu.org
+Resent-Bcc:
+X-UIDL: e9e213a8e1d8afc0286b4a4305ab5a36
+Status: RO
+X-Status: A
+Content-Length: 4085
+Lines: 83
+
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
+  Send mail to mime@docserver.cac.washington.edu for more info.
+
+--1803957763-1087116776-933253000=:8802
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+
+With our setup I found it necessary to apply the following patch to ltmain.sh
+(1.3.2) although it should, of course, be applied to ltmain.in instead.
+
+Let me explain the functionality of this modification and its necessity
+arising from our situation.
+
+1.
+Gcc (or rather the ld invoked by gcc) searches for libraries in more
+directories than those specified with "-L" or the standard ones /lib,
+/usr/lib, and /usr/local/lib. Most notably there is /usr/<target>/lib or
+/usr/local/<target>/lib, depending on where gcc was installed.
+
+According to the general libtool philosophy, when
+	gcc foo.o bar.o -ltest -o foo
+succeeds in locating libtest.so (or libtest.a) in /usr/<target>/lib, then
+	libtool --mode=link gcc bar.lo -ltest -rpath <whatever> -o bar.la
+should equally succeed in locating /usr/<target>/lib/libtest.so.
+
+Note that with different incarnations of gcc for different <target>s one
+certainly wouldn't want to add "-L/usr/<target>/lib" to the command line.
+The proposed modification uses "gcc -print-file-name=libtest.so" to locate
+the dependency libraries.
+
+2.
+My actual situation is as follows:
+We have a lot of users on our Linux systems (neither RedHat, nor SuSe, nor
+Debian, nor ...) and some groups `absolutely need libc5' whereas others
+`absolutely need glibc'. In order to allow for coexistence of libc (5.4.38
+or so) and glibc (first 2.0.6, now 2.1.1) for quite some time as well as for a
+really smooth transition, gcc behaves as either "gcc -b i486-pc-linux-gnulibc1"
+or "gcc -b i486-pc-linux-gnu", depending on the value of an environment
+variable. Actually /usr/bin/gcc is a symbolic link to a small shell script
+that invokes either /usr/i486-pc-linux-gnulibc1/bin/gcc or
+/usr/i486-pc-linux-gnu/bin/gcc and similarly for the binutils;
+consequently, there are libc5 and glibc vesions of shared libraries, e.g.
+/usr/i486-pc-linux-gnulibc1/lib/libncurses.so and
+/usr/i486-pc-linux-gnu/lib/libncurses.so etc.
+
+All that worked really nice, until I recently tried to compile
+w3c-libwww-5.2.8 that uses libtool. First I had to replace their libtool-1.2e
+(which couldn't resolve shared library dependencies at all) by version 1.3.2
+in order to locate libdl.so etc. (in /lib), but still had problems to locate
+libz.so (in /usr/<target>/lib) until I manufactured the patch.
+
+regards
+Peter Breitenlohner <peb@mppmu.mpg.de>
+
+
+--1803957763-1087116776-933253000=:8802
+Content-Type: TEXT/PLAIN; charset=US-ASCII; name="libtool-1.3.2-diff"
+Content-Transfer-Encoding: BASE64
+Content-ID: <Pine.LNX.3.95.990729145640.8802G@pcl163a.mppmu.mpg.de>
+Content-Description: 
+
+diff -ur libtool-1.3.2.orig/ltmain.sh libtool-1.3.2/ltmain.sh
+--- libtool-1.3.2.orig/ltmain.sh	Wed May 26 02:31:24 1999
++++ libtool-1.3.2/ltmain.sh	Tue Jul 27 09:43:49 1999
+@@ -1902,7 +1902,15 @@
+ 	    # If $name is empty we are operating on a -L argument.
+ 	    if test "$name" != "" ; then
+ 	      libname=`eval \\$echo \"$libname_spec\"`
+-	      for i in $lib_search_path; do
++	      # First try to locate the library through gcc
++	      gcc_path=
++	      if test "$CC" = "gcc" ; then
++		eval library_names=\"$library_names_spec\"
++		set dummy $library_names
++		eval potlib="\$$#"
++		gcc_path="`gcc -print-file-name=$potlib | sed 's%/*'$potlib'$%%'`"
++	      fi
++	      for i in $gcc_path $lib_search_path; do
+ 		    potential_libs=`ls $i/$libname[.-]* 2>/dev/null`
+ 		    for potent_lib in $potential_libs; do
+ 		      # Follow soft links.
+
+--1803957763-1087116776-933253000=:8802--
