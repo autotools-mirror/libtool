@@ -1,3 +1,8 @@
+2002-06-11  Daniel Kobras  <kobras@linux.de>
+
+	* libltdl/ltdl.c (try_dlopen): Don't return bogus handle to user
+	  if tryall_dlopen() fails.
+	
 2002-05-06  Paul Eggert  <eggert@twinsun.com>
 
 	* libtool.m4 (_LT_AC_LTCONFIG_HACK): head -1 -> sed 1q to
