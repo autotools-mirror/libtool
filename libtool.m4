@@ -392,6 +392,8 @@ else
 	:
       elif echo_testing_string=`($ORIGINAL_CONFIG_SHELL "[$]0" --fallback-echo '\t') 2>/dev/null` &&
 	   test "X$echo_testing_string" = 'X\t' &&
+	   eval echo_test_var=`($ORIGINAL_CONFIG_SHELL "[$]0" --fallback-echo '\\\t') 2>/dev/null` &&
+	   test "X$echo_test_var" = "X\t" &&
 	   echo_testing_string=`($ORIGINAL_CONFIG_SHELL "[$]0" --fallback-echo "$echo_test_string") 2>/dev/null` &&
 	   test "X$echo_testing_string" = "X$echo_test_string"; then
 	CONFIG_SHELL=$ORIGINAL_CONFIG_SHELL
@@ -401,6 +403,8 @@ else
 	echo="$CONFIG_SHELL [$]0 --fallback-echo"
       elif echo_testing_string=`($CONFIG_SHELL "[$]0" --fallback-echo '\t') 2>/dev/null` &&
 	   test "X$echo_testing_string" = 'X\t' &&
+	   eval echo_test_var=`($CONFIG_SHELL "[$]0" --fallback-echo '\\\t') 2>/dev/null` &&
+	   test "X$echo_test_var" = "X\t" &&   
 	   echo_testing_string=`($CONFIG_SHELL "[$]0" --fallback-echo "$echo_test_string") 2>/dev/null` &&
 	   test "X$echo_testing_string" = "X$echo_test_string"; then
 	echo="$CONFIG_SHELL [$]0 --fallback-echo"

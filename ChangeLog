@@ -1,3 +1,8 @@
+2003-04-01  Peter O'Gorman  <peter@pogma.com>
+
+	* libtool.m4: Fix the echo test which I broke earlier.
+	* ltmain.in: Make DESTDIR work on darwin, don't use otool.
+
 2003-03-31  Keith Packard  <keithp@keithp.com>
 
 	* ltmain.in: New flag -version-number to be used for maintaining
