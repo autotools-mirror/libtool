@@ -1,3 +1,8 @@
+2004-10-05  Peter O'Gorman  <peter@pogma.com>
+
+	* config/ltmain.m4sh [darwin]: Make the -dylib_file flag work on
+	older darwins too. Reported by Christoph Egger.
+
 2004-10-05  Gary V. Vaughan  <gary@gnu.org>
 
 	* configure.ac: Bumped version to 2.1a.
