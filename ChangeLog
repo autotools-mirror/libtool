@@ -1,3 +1,8 @@
+2001-04-24 Albert Chin-A-Young <china@thewrittenword.com>
+
+	* ltconfig.in: Handle case where /bin/nm -p outputs multiple
+	symbol types (like under HP-UX 11.00).
+
 2001-04-24  Ossama Othman  <ossama@debian.org>
 
 	* ltcf-cxx.sh (output_verbose_link_cmds): Renamed this variable to
