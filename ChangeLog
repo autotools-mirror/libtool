@@ -1,3 +1,23 @@
+1999-03-27 Thomas Tanner  <tanner@gmx.de>
+
+	* NEWS: updated
+	* README: updated (BeOS support, no longer shared libraries
+	  support for AmigaOS), cleanups, we have now two mailing lists
+	* REAMDE-alpha: autogen -> bootstrap, we have now two mailing lists
+	* THANKS: added Xavier Pianet
+	* doc/PLATFORMS: BeOS works
+	* doc/libtool.texi: we have now to two mailing lists,
+	  updated -dlopen self documentation, documented libltdl's license,
+	  put each author in a separate line, cleanups and minor corrections
+	* libltdl/COPYING.LIB: new file
+	* libltdl/ltdl.[ch]: added special exception to the LGPL license
+	* libtool.spec: removed, it was outdated
+	* Makefile.am: removed libtool.spec
+	* ltmain.in: use TMPDIR when possible, create a subdirectory
+	  in the temporary directory, added -export-symbols-regex to the help,
+	  don't regenerate the .lai file if it was removed - it should not
+	  happen
+
 1999-03-25  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* demo/Makefile.am: create a static library, link two libtool

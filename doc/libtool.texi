@@ -7,7 +7,8 @@
 @c %**end of header
 
 @include version.texi
-@set BUGADDR the libtool mailing list @email{bug-libtool@@gnu.org}
+@set BUGADDR the libtool bug reporting address @email{bug-libtool@@gnu.org}
+@set MAILLIST the libtool mailing list @email{libtool@@gnu.org}
 @set objdir .libs
 
 @dircategory GNU programming tools
@@ -51,7 +52,10 @@ approved by the Foundation.
 @titlepage
 @title GNU Libtool
 @subtitle For version @value{VERSION}, @value{UPDATED}
-@author Gordon Matzigkeit, Alexandre Oliva, Thomas Tanner, Gary V. Vaughan
+@author Gordon Matzigkeit
+@author Alexandre Oliva
+@author Thomas Tanner
+@author Gary V. Vaughan
 
 @page
 @vskip 0pt plus 1filll
@@ -1172,12 +1176,11 @@ If the platform requires versioning, this option has no effect.
 
 @item -dlopen @var{file}
 Same as @samp{-dlpreopen @var{file}}, if native dlopening is not
-supported on the host platform (@pxref{Dlopened modules}) or, if
-@var{file} is @code{self} and @var{dlopen_self} is set to @samp{no}.
-Otherwise, no effect.  If the program is linked with @samp{-static} or
-@samp{-all-static}, the variable tested is @var{dlopen_self_static}, not
-@var{dlopen_self}, as long as the @samp{-dlopen self} switch appears
-@emph{after} the static-linking switch.
+supported on the host platform (@pxref{Dlopened modules}) or if
+the program is linked with @samp{-static} or @samp{-all-static}.
+Otherwise, no effect.  If @var{file} is @code{self} libtool will make
+sure that the program can @code{dlopen} itself, either by enabling
+@code{-export-dynamic} or by falling back to @samp{-dlpreopen self}.
 
 @item -dlpreopen @var{file}
 Link @var{file} into the output program, and add its symbols to
@@ -1696,8 +1699,8 @@ on @file{libtool}.
 
 @defmac AC_LIBTOOL_DLOPEN
 Enable checking for dlopen support. This macro should be used if
-the package makes use of the -dlopen and -dlpreopen flags, otherwise
-libtool will assume that the system does not support dlopening.
+the package makes use of the @samp{-dlopen} and @samp{-dlpreopen} flags,
+otherwise libtool will assume that the system does not support dlopening.
 The macro must be called *before* @code{AM_PROG_LIBTOOL}.
 @end defmac
 
@@ -2589,22 +2592,33 @@ implementation of @file{libltdl} services, it requires GNU DLD, or it
 will only emulate dynamic linking with libtool's dlpreopening mechanism.
 
 @noindent
-Libltdl supports currently the following dynamic linking mechanims:
+libltdl supports currently the following dynamic linking mechanims:
 
 @itemize @bullet
 @item
-dlopen (Solaris, Linux and various BSD flavors)
+@code{dlopen} (Solaris, Linux and various BSD flavors)
 @item
-shl_load (HP-UX)
+@code{shl_load} (HP-UX)
 @item
-LoadLibrary (Win16 and Win32)
+@code{LoadLibrary} (Win16 and Win32)
 @item
-load_add_on (BeOS)
+@code{load_add_on} (BeOS)
 @item
 GNU DLD (emulates dynamic linking for static libraries)
 @item
 libtool's dlpreopen (see @pxref{Dlpreopening})
 @end itemize
+
+@noindent
+libltdl is licensed under the terms of the GNU Library General Public License,
+with the following exception:
+
+@quotation
+As a special exception to the GNU Library General Public License,
+if you distribute this file as part of a program that uses GNU libtool
+to create libraries and programs, you may include it under the same
+distribution terms that you use for the rest of that program.
+@end quotation
 
 @menu
 * Libltdl interface::           How to use libltdl in your programs.
@@ -2620,7 +2634,7 @@ The libltdl API is similar to the dlopen interface of Solaris and Linux,
 which is very simple but powerful.
 
 @noindent
-To use libltdl in your program you have include the header file @file{ltdl.h}:
+To use libltdl in your program you have to include the header file @file{ltdl.h}:
 
 @example
 #include <ltdl.h>
@@ -2652,8 +2666,9 @@ Every dlopened module has a handle associated with it.
 This structure is described in @pxref{Dlpreopening}.
 @end table
 
+@page
 @noindent
-Libltdl provides the following functions:
+libltdl provides the following functions:
 
 @deftypefun int lt_dlinit (void)
 Initialize libltdl.
@@ -2682,7 +2697,7 @@ flag, then the global symbols in the executable will also be used to
 resolve references in the module.
  
 If @var{filename} is NULL and the program was linked with
-@code{-export-dynamic} and @code{-dlopen self}, @code{lt_dlopen} will
+@code{-export-dynamic} or @code{-dlopen self}, @code{lt_dlopen} will
 return a handle for the program itself, which can be used to access its
 symbols.
 
@@ -2790,7 +2805,8 @@ search path. Return 0 on success.
 
 @deftypefun int lt_dlsetsearchpath (const char *@var{search_path})
 Replace the current user-defined library search path with
-@var{search_path}. Return 0 on success.
+@var{search_path}, which must be a colon-separated list of absolute
+directories.  Return 0 on success.
 @end deftypefun
 
 @deftypefun const char *lt_dlgetsearchpath (void)
@@ -2823,7 +2839,7 @@ Note that libtool modules don't need to have a "lib" prefix.
 However, automake 1.4 or higher is required to build such modules.
 
 Usually a set of modules provide the same interface, i.e, exports the same
-symbols, so that a program can dlopen them without having to know more 
+symbols, so that a program can dlopen them without having to know more
 about their internals.
 In order to avoid symbol conflicts all exported symbols must be prefixed
 with "modulename_LTX_" (@samp{modulename} is the name of the module).
@@ -3301,7 +3317,7 @@ porting libtool to new systems, or writing your own libtool.
 @section Porting libtool to new systems
 
 Before you embark on porting libtool to an unsupported system, it is
-worthwhile to send e-mail to @value{BUGADDR}, to make sure that you are
+worthwhile to send e-mail to @value{MAILLIST}, to make sure that you are
 not duplicating existing work.
 
 If you find that any porting documentation is missing, please complain! 
@@ -3379,10 +3395,9 @@ Kuratomi @email{badger@@prtr-13.ucsc.edu}.  Here's a shortened version
 of the message that contained his patch:
 
 The basic architecture is this: in @file{ltconfig.in}, the person who
-writes libtool makes sure @samp{$deplibs}, or @samp{$compile_dependencylibs}
-are included in @samp{$archive_cmds} somewhere and also sets the
-@samp{$deplibs_check_method}, and maybe @samp{$file_magic_cmd} when
-@samp{deplibs_check_method} is file_magic.
+writes libtool makes sure @samp{$deplibs} is included in @samp{$archive_cmds}
+somewhere and also sets the @samp{$deplibs_check_method}, and maybe
+@samp{$file_magic_cmd} when @samp{deplibs_check_method} is file_magic.
 
 @samp{deplibs_check_method} can be one of five things:
 @table @samp
@@ -3458,7 +3473,7 @@ when run @code{configure} with @kbd{CC='cc -Hnocopyr'}.
 @node Platform quirks
 @section Platform quirks
 
-This section is dedicated to the sanity of the libtool maintainer.  It
+This section is dedicated to the sanity of the libtool maintainers.  It
 describes the programs that libtool uses, how they vary from system to
 system, and how to test for them.
 
