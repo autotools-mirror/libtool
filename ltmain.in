@@ -557,7 +557,7 @@ compiler."
 	command="$base_compile $srcfile"
       else
 	# All platforms use -DPIC, to notify preprocessed assembler code.
-	command="$base_compile $pic_flag -DPIC $srcfile"
+	command="$base_compile $srcfile $pic_flag -DPIC"
       fi
       if test "$compiler_c_o" = yes; then
 	command="$command -o $obj"
@@ -1322,7 +1322,7 @@ compiler."
       done
     fi
 
-    case $linkmode in
+    case "$linkmode" in
     oldlib)
       if test -n "$deplibs"; then
 	$echo "$modename: warning: \`-l' and \`-L' are ignored for archives" 1>&2
@@ -2287,7 +2287,7 @@ EOF
 	done
 
 	# Ensure that we have .o objects for linkers which dislike .lo
-	# (e.g. aix) incase we are running --disable-static
+	# (e.g. aix) in case we are running --disable-static
 	for obj in $libobjs; do
 	  xdir=`$echo "X$obj" | $Xsed -e 's%/[^/]*$%%'`
 	  if test "X$xdir" = "X$obj"; then

@@ -202,9 +202,7 @@ with_gcc=no
 with_gnu_ld=no
 need_locks=yes
 ac_ext=c
-objext=o
 libext=a
-exeext=
 cache_file=
 
 old_AR="$AR"
@@ -507,32 +505,23 @@ aix3*)
 esac
 
 # Determine commands to create old-style static archives.
-old_archive_cmds='$AR cru $oldlib$oldobjs'
+old_archive_cmds='$AR cru $oldlib$oldobjs$old_deplibs'
 old_postinstall_cmds='chmod 644 $oldlib'
 old_postuninstall_cmds=
 
-# Set sane defaults for various commands
-#   -- these are usually overridden from the command line by make
+# Set sane defaults for various variables
 test -z "$AR" && AR=ar
-test -z "$AS" && AS=@AS@
-test -z "$DLLTOOL" && DLLTOOL=@DLLTOOL@
-test -z "$LN_S" && LN_S=@LN_S@
-test -z "$NM" && NM=@NM@
-test -z "$OBJDUMP" && OBJDUMP=@OBJDUMP@
-test -z "$RANLIB" && RANLIB=@RANLIB@
-
-# Commands probed in libtool.m4
-#   -- let the user override the result from configure
-test -z "$CC" && CC=@CC@
-test -z "$FILE" && FILE=@FILE@
-test -z "$LD" && LD=@LD@
-test -z "$STRIP" && STRIP=@STRIP@
-
-# Other config vars probed in libtool.m4
-test -z "$with_gcc" && with_gcc=@with_gcc@
-test -z "$with_gnu_ld" && with_gnu_ld=@with_gnu_ld@
-objext=@OBJEXT@
-exeext=@EXEEXT@
+test -z "$AS" && AS=as
+test -z "$CC" && CC=cc
+test -z "$DLLTOOL" && DLLTOOL=dlltool
+test -z "$FILE" && FILE=file
+test -z "$LD" && LD=ld
+test -z "$LN_S" && LN_S="ln -s"
+test -z "$NM" && NM=nm
+test -z "$OBJDUMP" && OBJDUMP=objdump
+test -z "$RANLIB" && RANLIB=:
+test -z "$STRIP" && STRIP=:
+test -z "$objext" && objext=o
 
 echo $ac_n "checking for objdir... $ac_c" 1>&6
 rm -f .libs 2>/dev/null
@@ -1209,7 +1198,7 @@ else
     # The linker will automatically build a .lib file if we build a DLL.
     old_archive_from_new_cmds='true'
     # FIXME: Should let the user specify the lib program.
-    old_archive_cmds='lib /OUT:$oldlib$oldobjs'
+    old_archive_cmds='lib /OUT:$oldlib$oldobjs$old_deplibs'
     fix_srcfile_path='`cygpath -w $srcfile`'
     ;;
 
@@ -1376,17 +1365,25 @@ else
     ;;
 
   sysv4*MP*)
-    if test -d /usr/nec ;then
-    # archive_cmds='$LD -G -z text -h $soname -o $lib$libobjs$deplibs'
-    archive_cmds='$LD -G -h $soname -o $lib$libobjs$deplibs'
-    hardcode_shlibpath_var=no
-    runpath_var=LD_RUN_PATH
-    hardcode_runpath_var=yes
-    ld_shlibs=yes
+    if test -d /usr/nec; then
+      archive_cmds='$LD -G -h $soname -o $lib $libobjs $deplibs $linker_flags'
+      hardcode_shlibpath_var=no
+      runpath_var=LD_RUN_PATH
+      hardcode_runpath_var=yes
+      ld_shlibs=yes
     fi
     ;;
 
-  unixware7* | sysv5*)
+  sysv4.2uw2*)
+    archive_cmds='$LD -G -o $lib $libobjs $deplibs $linker_flags'
+    hardcode_direct=yes
+    hardcode_minus_L=no
+    hardcode_shlibpath_var=no
+    hardcode_runpath_var=yes
+    runpath_var=LD_RUN_PATH
+    ;;
+
+  unixware7*)
     archive_cmds='$LD -G -h $soname -o $lib $libobjs $deplibs $linker_flags'
     runpath_var='LD_RUN_PATH'
     hardcode_shlibpath_var=no
@@ -1435,11 +1432,8 @@ else
   echo "${ac_t}no" 1>&6
 fi
 
-reload_flag=@reload_flag@
 reload_cmds='$LD$reload_flag -o $output$reload_objs'
-
-file_magic_cmd="@file_magic_cmd@"
-deplibs_check_method="@deplibs_check_method@"
+test -z "$deplibs_check_method" && deplibs_check_method=unknown
 
 # PORTME Fill in your ld.so characteristics
 library_names_spec=

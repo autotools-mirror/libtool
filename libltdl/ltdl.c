@@ -1530,6 +1530,8 @@ lt_dlsym (handle, symbol)
 		return 0;
 	}
 	if (handle->name) {
+		const char *saved_error = last_error;
+		
 		/* this is a libtool module */
 		if (handle->type->sym_prefix) {
 			strcpy(sym, handle->type->sym_prefix);
@@ -1545,6 +1547,7 @@ lt_dlsym (handle, symbol)
 				lt_dlfree(sym);
 			return address;
 		}
+		last_error = saved_error;
 	}
 	/* otherwise try "symbol" */
 	if (handle->type->sym_prefix) {

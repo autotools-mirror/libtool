@@ -1258,7 +1258,7 @@ installed.
 
 @item -no-install
 Link an executable @var{output-file} (@pxref{Invoking ltconfig}) that
-can't be installed and therefore doesn't need an wrapper script.
+can't be installed and therefore doesn't need a wrapper script.
 Useful if the program is only used in the build tree, e.g.,
 for testing or generating other files.
 

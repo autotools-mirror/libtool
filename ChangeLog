@@ -1,3 +1,28 @@
+1999-11-02  Thomas Tanner  <tanner@ffii.org>
+
+	* NEWS: updated
+	* THANKS: added Olly Betts and Pavel Roskin
+	* doc/libtool.texi: fix typo
+
+	* fix major bugs which rendered libtool virtually
+	  unusable (i.e. not portable):
+	* ltconfig.in: don't hardcode system dependent variables in ltconfig!!
+	  but set sane defaults
+	* Makefile.am: pass variables from AC_LIBTOOL_SETUP to ltconfig
+	* libtool.m4: ditto, fix typo in AC_PROG_LD_RELOAD_FLAG
+
+	* ltconfig.in: use old_deplibs for archives, too
+	  remove second occurence of sysv5
+	* ltmain.in: fix typo, fix the second occurence of -DPIC, too
+	
+	* libltdl/Makefile.am: increment version number, fix typo
+	* libltdl/ltdl.c (lt_dlsym): don't report an error if the
+	  libltdl-style symbol name wasn't found
+
+1999-11-02  Wolfgang Rapp <ulris@bn-ulm.de>
+
+	* ltconfig.in: add support for Unixware (sysv4.2uw2*)
+
 1999-10-29  Gary V. Vaughan  <gary@oranda.demon.co.uk>
 
 	* ltmain.in:  Damnit!  Cygwin cvs committed all the
