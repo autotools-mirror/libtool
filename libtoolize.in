@@ -143,7 +143,7 @@ func_fatal_help ()
 	     }; d'
 
 
-  while test $# -gt 0; do
+  while test "$#" -gt 0; do
     case $1 in
       --copy | -c)	shift; link_opt=false	;;
 
@@ -201,7 +201,7 @@ func_mkdir_p ()
 }
 
 # func_copy srcfile destfile
-# If --copy was specified, or soft-linking SRCFILE to DESTFILE fails,
+# If option `--copy' was specified, or soft-linking SRCFILE to DESTFILE fails,
 # then try to copy SRCFILE to DESTFILE.
 func_copy ()
 {
@@ -227,8 +227,8 @@ func_copy ()
 }
 
 # func_copy_all_files srcdir destdir [glob_exclude]
-# For each file in SRCDIR, if --copy was specified, or soft-linking the
-# file to DESTDIR fails, then try to copy the file to DESTDIR.  If
+# For each file in SRCDIR, if option `--copy' was specified, or soft-linking
+# the file to DESTDIR fails, then try to copy the file to DESTDIR.  If
 # GLOB_EXCLUDE is given, exclude any matching filenames from the copy.
 func_copy_all_files ()
 {
@@ -244,7 +244,7 @@ func_copy_all_files ()
       fi
 
       if test -f "$my_srcdir/$my_filename"; then
-	$force_opt || if test -e "$my_destdir/$my_filename"; then
+	$force_opt || if test -f "$my_destdir/$my_filename"; then
           $quiet_opt \
 	    || func_error "\`$my_destdir/$my_filename' exists: use \`--force' to overwrite"
 	  continue
@@ -325,11 +325,11 @@ func_scan_files ()
       # Try to discover auxdir the same way it is discovered by configure.
       # Note that we default to the current directory.
       for dir in . .. ../..; do
-        if test -f $dir/install-sh; then
+        if test -f "$dir/install-sh"; then
           auxdir=$dir
           break
-        elif test -f $dir/install.sh; then
-          auxdir=$dir
+        elif test -f "$dir/install.sh"; then
+          auxdir="$dir"
           break
         fi
       done
@@ -376,7 +376,7 @@ func_included_files ()
         /^m4_include(\[.*\])$/ { s,^m4_include(\[\(.*\)\])$,\1,; p; };
         d'
 
-    test -f $my_searchfile && echo $my_searchfile
+    test -f "$my_searchfile" && echo "$my_searchfile"
 
     # Only recurse when we don't care if all the variables we use get
     # trashed, since they are in global scope.
@@ -428,18 +428,18 @@ func_serial_update ()
       my_src_serial=`func_serial "$my_macro_regex" "$my_srcfile"`
       my_dest_serial=`func_serial "$my_macro_regex" "$my_destfile"`
 
-      test $my_src_serial = 0 && {
+      test "$my_src_serial" -eq 0 && {
         func_error "warning: no serial number on \`$my_srcfile', not copying."
 	return
       }
 
       # Only perform the file update if the destination has an older serial.
-      test $my_src_serial -gt $my_dest_serial || my_update_p=false
+      test "$my_src_serial" -gt "$my_dest_serial" || my_update_p=false
 
-      test $my_src_serial -gt $my_dest_serial \
+      test "$my_src_serial" -gt "$my_dest_serial" \
         && func_verbose "\`$my_srcfile' is serial $my_srcserial, greater than $my_destserial in \`$my_destfile'"
 
-      if test $my_src_serial -lt $my_dest_serial; then
+      if test "$my_src_serial" -lt "$my_dest_serial"; then
         func_error "\`$my_srcfile' is serial $my_srcserial, less than $my_destserial in \`$my_destfile'"
 	$force_opt \
           || func_fatal_error "Use \`--force' to replace newer libtool files with this version."
@@ -458,7 +458,7 @@ func_serial_update ()
     # it has `m4_include([DESTFILE])', so the copy effectively already
     # updated `aclocal.m4'.
     $use_aclocal || if test -f aclocal.m4; then
-      test $my_src_serial -gt `func_serial "$my_macro_regex" aclocal.m4` \
+      test "$my_src_serial" -gt `func_serial "$my_macro_regex" aclocal.m4` \
 	  && func_echo "You should add the contents of \'$my_destfile' to \`aclocal.m4'."
     fi
 
@@ -500,7 +500,7 @@ func_ltmain_update ()
 
     # FIXME:  check versions, and only downgrade with --force
     cmp -s  "$my_srcfile" "$my_destfile"
-    if test $? != 0 || $force_opt; then
+    if test "$?" -ne 0 || $force_opt; then
       func_copy "$my_srcfile" "$my_destfile"
     else
       $quiet_opt \
@@ -525,7 +525,7 @@ func_config_update ()
 
     # FIXME:  check versions, and only downgrade with --force
     cmp -s  "$my_srcfile" "$my_destfile"
-    if test $? != 0 || $force_opt; then
+    if test "$?" -ne 0 || $force_opt; then
       func_copy "$my_srcfile" "$my_destfile"
     else
       $quiet_opt \

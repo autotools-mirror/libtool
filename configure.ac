@@ -29,6 +29,9 @@ AC_INIT([libtool], [1.5a], [bug-libtool@gnu.org])
 AC_CONFIG_SRCDIR([ltmain.in])
 AC_CONFIG_AUX_DIR([config])
 
+AC_CONFIG_TESTDIR([tests])
+AC_CONFIG_FILES([tests/atlocal])
+
 
 ## ---------------------------------------- ##
 ## Display a configure time version banner. ##
@@ -74,7 +77,7 @@ AC_CONFIG_SUBDIRS([libltdl])
 
 # all subdirectories that are configured on demand, but that must be
 # included in the distribution
-CONF_SUBDIRS="cdemo pdemo demo depdemo mdemo mdemo2 tagdemo f77demo"
+CONF_SUBDIRS="tests/cdemo tests/demo tests/depdemo tests/f77demo tests/mdemo tests/mdemo2 tests/pdemo tests/tagdemo"
 AC_SUBST([CONF_SUBDIRS])
 
 DIST_MAKEFILE_LIST=
