@@ -6588,6 +6588,7 @@ The following components of LINK-COMMAND are treated specially:
   -rpath LIBDIR     the created library will eventually be installed in LIBDIR
   -R[ ]LIBDIR       add LIBDIR to the runtime path of programs and libraries
   -shared           only do dynamic linking of libtool libraries
+  -shrext SUFFIX    override the standard shared library file extension
   -static           do not do any dynamic linking of libtool libraries
   -version-info CURRENT[:REVISION[:AGE]]
 		    specify library version info [each variable defaults to 0]

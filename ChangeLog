@@ -1,5 +1,8 @@
 2004-02-23  Gary V. Vaughan  <gvaughan@eris.qinetiq.com>
 
+	* ltmain.in <link mode>: Add missing --help doc for -shrext
+	option.
+
 	* ltmain.in (IFS): Move '\n' to beginning of IFS so that emacs
 	doesn't offer to strip trailing ' \t' on every save.
 
