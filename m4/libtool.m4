@@ -4989,17 +4989,15 @@ if test -n "$compiler"; then
   	with_gnu_ld=yes
 	# version 8.0 and above of icpc choke on multiply defined symbols
 	# if we add $predep_objects and $postdep_objects, however 7.1 and
-	# earlier do not add the objects themselves.  Only 8.0 (and newer?)
-	# support the --version argument, so we use that to distinguish them:
-	lt_icpc_version=`icpc --version 2>/dev/null`
-	case $lt_icpc_version in
-	[[0-9.]]*)  # Version 8.0 or newer
-  	  _LT_AC_TAGVAR(archive_cmds, $1)='$CC -shared $libobjs $deplibs $compiler_flags ${wl}-soname $wl$soname -o $lib'
-  	_LT_AC_TAGVAR(archive_expsym_cmds, $1)='$CC -shared $libobjs $deplibs $compiler_flags ${wl}-soname $wl$soname ${wl}-retain-symbols-file $wl$export_symbols -o $lib'
-	  ;;
-	*) # No output from 7.1 and older
+	# earlier do not add the objects themselves.
+	case `$CC -V 2>&1` in
+	*"Version 7."*)
   	  _LT_AC_TAGVAR(archive_cmds, $1)='$CC -shared $predep_objects $libobjs $deplibs $postdep_objects $compiler_flags ${wl}-soname $wl$soname -o $lib'
   	  _LT_AC_TAGVAR(archive_expsym_cmds, $1)='$CC -shared $predep_objects $libobjs $deplibs $postdep_objects $compiler_flags ${wl}-soname $wl$soname ${wl}-retain-symbols-file $wl$export_symbols -o $lib'
+	  ;;
+	*)  # Version 8.0 or newer
+  	  _LT_AC_TAGVAR(archive_cmds, $1)='$CC -shared $libobjs $deplibs $compiler_flags ${wl}-soname $wl$soname -o $lib'
+  	_LT_AC_TAGVAR(archive_expsym_cmds, $1)='$CC -shared $libobjs $deplibs $compiler_flags ${wl}-soname $wl$soname ${wl}-retain-symbols-file $wl$export_symbols -o $lib'
 	  ;;
 	esac
   	_LT_AC_TAGVAR(archive_cmds_need_lc, $1)=no
