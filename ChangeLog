@@ -1,5 +1,8 @@
 1999-06-20  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* ltconfig.in: Use sed '$q' instead of sed "" for copying ltmain,
+	just in case some sed does not support an empty command.
+	
 	* ltconfig.in (link_static_flag, ac_cv_prog_cc_static): Use the
 	latter in the test.
 

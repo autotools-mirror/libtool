@@ -3020,7 +3020,11 @@ EOF
   esac
 
   # Append the ltmain.sh script.
-  sed -e "" "$ltmain" >> "$ofile" || (rm -f "$ofile"; exit 1)
+  sed '$q' "$ltmain" >> "$ofile" || (rm -f "$ofile"; exit 1)
+  # We use sed instead of cat because bash on DJGPP gets confused if
+  # if finds mixed CR/LF and LF-only lines.  Since sed operates in
+  # text mode, it properly converts lines to CR/LF.  This bash problem
+  # is reportedly fixed, but why not run on old versions too?
 
   chmod +x "$ofile"
   ;;
