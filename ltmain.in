@@ -3307,27 +3307,25 @@ extern \"C\" {
 #undef lt_preloaded_symbols
 
 #if defined (__STDC__) && __STDC__
-# define lt_ptr_t void *
+# define lt_ptr void *
 #else
-# define lt_ptr_t char *
+# define lt_ptr char *
 # define const
 #endif
 
 /* The mapping between symbol names and symbols. */
 const struct {
   const char *name;
-  lt_ptr_t address;
+  lt_ptr address;
 }
 lt_preloaded_symbols[] =
 {\
 "
 
-	    sed -n -e 's/^: \([^ ]*\) $/  {\"\1\", (lt_ptr_t) 0},/p' \
-		-e 's/^. \([^ ]*\) \([^ ]*\)$/  {"\2", (lt_ptr_t) \&\2},/p' \
-		  < "$nlist" >> "$output_objdir/$dlsyms"
+	    eval "$global_symbol_to_c_name_address" < "$nlist" >> "$output_objdir/$dlsyms"
 
 	    $echo >> "$output_objdir/$dlsyms" "\
-  {0, (lt_ptr_t) 0}
+  {0, (lt_ptr) 0}
 };
 
 /* This works around a problem in FreeBSD linker */

@@ -182,6 +182,9 @@ symxfrm='\1 \2\3 \3'
 # Transform an extracted symbol line into a proper C declaration
 lt_cv_global_symbol_to_cdecl="sed -n -e 's/^. .* \(.*\)$/extern char \1;/p'"
 
+# Transform an extracted symbol line into symbol name and symbol address
+lt_cv_global_symbol_to_c_name_address="sed -n -e 's/^: \([[^ ]]*\) $/  {\\\"\1\\\", (lt_ptr) 0},/p' -e 's/^$symcode \([[^ ]]*\) \([[^ ]]*\)$/  {\"\2\", (lt_ptr) \&\2},/p'"
+
 # Define system-specific variables.
 case $host_os in
 aix*)
@@ -192,6 +195,7 @@ cygwin* | mingw* | pw32*)
   ;;
 hpux*) # Its linker distinguishes data from code symbols
   lt_cv_global_symbol_to_cdecl="sed -n -e 's/^T .* \(.*\)$/extern char \1();/p' -e 's/^$symcode* .* \(.*\)$/extern char \1;/p'"
+  lt_cv_global_symbol_to_c_name_address="sed -n -e 's/^: \([[^ ]]*\) $/  {\\\"\1\\\", (lt_ptr) 0},/p' -e 's/^$symcode* \([[^ ]]*\) \([[^ ]]*\)$/  {\"\2\", (lt_ptr) \&\2},/p'"
   ;;
 irix*)
   [symcode='[BCDEGRST]']
@@ -263,23 +267,23 @@ EOF
 
 	  cat <<EOF >> conftest.$ac_ext
 #if defined (__STDC__) && __STDC__
-# define lt_ptr_t void *
+# define lt_ptr void *
 #else
-# define lt_ptr_t char *
+# define lt_ptr char *
 # define const
 #endif
 
 /* The mapping between symbol names and symbols. */
 const struct {
   const char *name;
-  lt_ptr_t address;
+  lt_ptr address;
 }
 [lt_preloaded_symbols[] =]
 {
 EOF
-	  sed "s/^$symcode$symcode* \(.*\) \(.*\)$/  {\"\2\", (lt_ptr_t) \&\2},/" < "$nlist" >> conftest.$ac_ext
+	  sed "s/^$symcode$symcode* \(.*\) \(.*\)$/  {\"\2\", (lt_ptr) \&\2},/" < "$nlist" >> conftest.$ac_ext
 	  cat <<\EOF >> conftest.$ac_ext
-  {0, (lt_ptr_t) 0}
+  {0, (lt_ptr) 0}
 };
 
 #ifdef __cplusplus
@@ -323,10 +327,13 @@ done
 global_symbol_pipe="$lt_cv_sys_global_symbol_pipe"
 if test -z "$lt_cv_sys_global_symbol_pipe"; then
   global_symbol_to_cdecl=
+  global_symbol_to_c_name_address=
 else
   global_symbol_to_cdecl="$lt_cv_global_symbol_to_cdecl"
+  global_symbol_to_c_name_address="$lt_cv_global_symbol_to_c_name_address"
 fi
-if test -z "$global_symbol_pipe$global_symbol_to_cdecl"; then
+if test -z "$global_symbol_pipe$global_symbol_to_cdec$global_symbol_to_c_name_address";
+then
   AC_MSG_RESULT(failed)
 else
   AC_MSG_RESULT(ok)
@@ -2322,6 +2329,7 @@ if test -f "$ltmain"; then
     old_striplib striplib file_magic_cmd export_symbols_cmds \
     deplibs_check_method allow_undefined_flag no_undefined_flag \
     finish_cmds finish_eval global_symbol_pipe global_symbol_to_cdecl \
+    global_symbol_to_c_name_address \
     hardcode_libdir_flag_spec hardcode_libdir_separator  \
     sys_lib_search_path_spec sys_lib_dlsearch_path_spec \
     compiler_c_o compiler_o_lo need_locks exclude_expsyms include_expsyms; do
@@ -2558,6 +2566,9 @@ global_symbol_pipe=$lt_global_symbol_pipe
 
 # Transform the output of nm in a proper C declaration
 global_symbol_to_cdecl=$lt_global_symbol_to_cdecl
+
+# Transform the output of nm in a C name address pair
+global_symbol_to_c_name_address=$lt_global_symbol_to_c_name_address
 
 # This is the shared library runtime path variable.
 runpath_var=$runpath_var
