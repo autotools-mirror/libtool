@@ -2080,7 +2080,7 @@ AC_SUBST(LTLIBOBJS)
 @end example
 
 @noindent
-This is no longer required (since Autoconf 2.50), and doesn't take
+This is no longer required (since Autoconf 2.54), and doesn't take
 Automake's deansification support into account either, so doesn't work
 correctly even with ancient Autoconfs!
 

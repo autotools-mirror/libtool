@@ -1,3 +1,9 @@
+2004-03-14  Gary V. Vaughan  <gary@gnu.org>
+
+	* doc/libtool.texi (Autoconf and LTLIBOBJS): The correct version
+	of Autoconf is 2.54.
+	From Alexandre Duret-Lutz  <adl@src.lip6.fr>
+
 2004-03-13  Gary V. Vaughan  <gary@gnu.org>
 
 	* doc/libtool.texi (Using Automake): Cite correct Automake version
