@@ -1,3 +1,21 @@
+2002-05-30  Gary V. Vaughan  <gary@gnu.org>
+
+	Finally fix the annoying bug which always adds all tags to the
+	libtool script built by your project configure.  Now we set the
+	default tags depending on whether AC_PROG_CXX et. al. are actually
+	called from configure.ac.
+
+	* libtool.m4 (_LT_AC_TAGCONFIG): Don't default the tagnames when
+	no --with-tags argument is given.
+	(_LT_AC_SHELL_INIT): Factored out from the AC_DIVERT_PUSH code
+	in...
+	(_LT_AC_PROG_ECHO_BACKSLASH): ...which now calls the macro
+	instead.
+	(AC_LIBTOOL_CXX): Use _LT_AC_SHELL_INIT to add CXX to the
+	initialisation sequence for tagnames.
+	(AC_LIBTOOL_GCJ): Similarly for GCJ tag.
+	(AC_LIBTOOL_RC): Likewise for RC tag.
+
 2002-05-21  Jon Meredith  <jonm@alchemetrics.co.uk>
 
 	* ltmain.in: Fix a problem on SCO OpenServer5 that caused a

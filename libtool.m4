@@ -24,6 +24,17 @@
 
 # serial 47 AC_PROG_LIBTOOL
 
+
+# AC_PROVIDE_IFELSE(MACRO-NAME, IF-PROVIDED, IF-NOT-PROVIDED)
+# -----------------------------------------------------------
+# If this macro is not defined by Autoconf, define it here.
+m4_ifdef([AC_PROVIDE_IFELSE],
+         [],
+         [m4_define([AC_PROVIDE_IFELSE],
+	         [m4_ifdef([AC_PROVIDE_$1],
+		           [$2], [$3])])])
+
+
 # AC_PROG_LIBTOOL
 # ---------------
 AC_DEFUN([AC_PROG_LIBTOOL],
@@ -248,15 +259,23 @@ if test -z "$aix_libpath"; then aix_libpath="/usr/lib:/lib"; fi
 ])# _LT_AC_SYS_LIBPATH_AIX
 
 
+# _LT_AC_SHELL_INIT(ARG)
+# ----------------------
+AC_DEFUN([_LT_AC_SHELL_INIT],
+[ifdef([AC_DIVERSION_NOTICE],
+	     [AC_DIVERT_PUSH(AC_DIVERSION_NOTICE)],
+	 [AC_DIVERT_PUSH(NOTICE)])
+$1
+AC_DIVERT_POP
+])# _LT_AC_SHELL_INIT
+
+
 # _LT_AC_PROG_ECHO_BACKSLASH
 # --------------------------
 # Add some code to the start of the generated configure script which
 # will find an echo command which doesn't interpret backslashes.
 AC_DEFUN([_LT_AC_PROG_ECHO_BACKSLASH],
-[ifdef([AC_DIVERSION_NOTICE],
-	     [AC_DIVERT_PUSH(AC_DIVERSION_NOTICE)],
-	 [AC_DIVERT_PUSH(NOTICE)])
-
+[_LT_AC_SHELL_INIT([
 # Check that we are running under the correct shell.
 SHELL=${CONFIG_SHELL-/bin/sh}
 
@@ -404,8 +423,7 @@ if test "X$ECHO" = "X$CONFIG_SHELL [$]0 --fallback-echo"; then
 fi
 
 AC_SUBST(ECHO)
-AC_DIVERT_POP
-])# _LT_AC_PROG_ECHO_BACKSLASH
+])])# _LT_AC_PROG_ECHO_BACKSLASH
 
 
 # _LT_AC_LOCK
@@ -1441,13 +1459,9 @@ test "$dynamic_linker" = no && can_build_shared=no
 # ----------------
 AC_DEFUN([_LT_AC_TAGCONFIG],
 [AC_ARG_WITH([tags],
-    [AC_HELP_STRING([--with-tags=TAGS],
-	[include additional configurations @<:@CXX,GCJ@:>@])],
-    [tagnames="$withval"],
-    [tagnames="CXX,GCJ"
-    case $host_os in
-      mingw*|cygwin*) tagnames="$tagnames,RC" ;;
-    esac])
+    [AC_HELP_STRING([--with-tags@<:@=TAGS@:>@],
+        [include additional configurations @<:@automatic@:>@])],
+    [tagnames="$withval"])
 
 if test -f "$ltmain" && test -n "$tagnames"; then
   if test ! -f "${ofile}"; then
@@ -2171,14 +2185,6 @@ AC_DEFUN([AC_LIBLTDL_INSTALLABLE],
 ])# AC_LIBLTDL_INSTALLABLE
 
 
-# If this macro is not defined by Autoconf, define it here.
-ifdef([AC_PROVIDE_IFELSE],
-      [],
-      [define([AC_PROVIDE_IFELSE],
-	      [ifdef([AC_PROVIDE_$1],
-		     [$2], [$3])])])
-
-
 # AC_LIBTOOL_CXX
 # --------------
 # enable support for C++ libraries
@@ -2192,6 +2198,7 @@ AC_DEFUN([AC_LIBTOOL_CXX],
 AC_DEFUN([_LT_AC_LANG_CXX],
 [AC_REQUIRE([AC_PROG_CXX])
 AC_REQUIRE([AC_PROG_CXXCPP])
+_LT_AC_SHELL_INIT([tagnames=`echo "$tagnames,CXX" | sed 's/^,//'`])
 ])# _LT_AC_LANG_CXX
 
 
@@ -2212,6 +2219,7 @@ AC_DEFUN([_LT_AC_LANG_GCJ],
       [ifdef([AC_PROG_GCJ],[AC_REQUIRE([AC_PROG_GCJ])],
 	 [ifdef([A][M_PROG_GCJ],[AC_REQUIRE([A][M_PROG_GCJ])],
 	   [AC_REQUIRE([A][C_PROG_GCJ_OR_A][M_PROG_GCJ])])])])])])
+_LT_AC_SHELL_INIT([tagnames=`echo "$tagnames,GCJ" | sed 's/^,//'`])
 ])# _LT_AC_LANG_GCJ
 
 
@@ -2220,6 +2228,7 @@ AC_DEFUN([_LT_AC_LANG_GCJ],
 # enable support for Windows resource files
 AC_DEFUN([AC_LIBTOOL_RC],
 [AC_REQUIRE([AC_PROG_RC])
+_LT_AC_SHELL_INIT([tagnames=`echo "$tagnames,RC" | sed 's/^,//'`])
 ])# AC_LIBTOOL_RC
 
 
