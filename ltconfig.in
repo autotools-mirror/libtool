@@ -240,7 +240,6 @@ Generate a system-specific libtool script.
     --disable-static       do not build static libraries
     --disable-fast-install do not optimize for fast installation
     --enable-dlopen        enable dlopen support
-    --enable-dlopen-self   enable support for dlopening programs
     --help                 display this help and exit
     --no-verify            do not verify that HOST is a valid host type
 -o, --output=FILE          specify the output file [default=$default_ofile]
