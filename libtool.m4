@@ -1226,6 +1226,16 @@ newsos6)
   shlibpath_overrides_runpath=yes
   ;;
 
+nto-qnx)
+  version_type=linux
+  need_lib_prefix=no
+  need_version=no
+  library_names_spec='${libname}${release}.so$versuffix ${libname}${release}.so$major $libname.so'
+  soname_spec='${libname}${release}.so$major'
+  shlibpath_var=LD_LIBRARY_PATH
+  shlibpath_overrides_runpath=yes
+  ;;
+
 openbsd*)
   version_type=sunos
   library_names_spec='${libname}${release}.so$versuffix ${libname}.so$versuffix'
@@ -1877,6 +1887,10 @@ newos6*)
   lt_cv_file_magic_test_file=/usr/lib/libnls.so
   ;;
 
+nto-qnx)
+  lt_cv_deplibs_check_method=unknown
+  ;;
+     
 osf3* | osf4* | osf5*)
   # this will be overridden with pass_all, but let us keep it just in case
   lt_cv_deplibs_check_method='file_magic COFF format alpha shared library'

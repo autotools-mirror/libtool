@@ -1,5 +1,11 @@
 2001-07-12  Gary V. Vaughan  <gary@gnu.org>
 
+	From dda@sleepycat.com (Don Anderson):
+	* libtool.m4 (AC_LIBTOOL_SYS_DYNAMIC_LINKER) [qnx]: New
+	supported architecture.
+	(AC_DEPLIBS_CHECK_METHOD) [qnx]:  Ditto.
+	* NEWS: Updated.
+
 	From Stefan Ondrejicka <ondrej@idata.sk>:
 	* libtool.m4 (AC_LIBTOOL_SYS_DYNAMIC_LINKER) [cygwin*]: Make
 	sure that /lib/w32api is searched for system libraries to
