@@ -152,7 +152,7 @@ func_config ()
       $SED -n "/$re_begincf TAG CONFIG: $tagname\$/,/$re_endcf TAG CONFIG: $tagname\$/p" < "$progpath"
     done
 
-    exit $EXIT_SUCCESS
+    exit $?
 }
 
 # func_features
@@ -171,7 +171,7 @@ func_features ()
       $ECHO "disable static libraries"
     fi
 
-    exit $EXIT_SUCCESS
+    exit $?
 }
 
 # func_enable_tag tagname
@@ -392,7 +392,7 @@ Otherwise, only FILE itself is deleted using RM."
     $ECHO
     $ECHO "Try \`$progname --help' for more information about other modes."
 
-    exit $EXIT_SUCCESS
+    exit $?
 }
 
 # TEST SUITE MARKER ## NON-FUNCTION

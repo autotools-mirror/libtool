@@ -1,5 +1,9 @@
 2005-02-02  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* config/getopt.m4sh (func_version, func_usage, func_help,
+	* config/ltmain.m4sh (func_mode_help, func_config, func_features):
+	Exit with nonzero status on write failures.
+
 	* tests/sh.test: Check for preferred function definition layout.
 
 2005-02-01  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
