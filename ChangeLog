@@ -1,5 +1,9 @@
 1999-01-20  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* ltmain.in (compile): when compiling both PIC and non-PIC, write
+ 	the PIC object to .libs/.lo and only rename it to .lo after
+ 	compiling the .o, to avoid fooling make dependencies
+
 	* mdemo/main.c (LTDL_PREOPENED_SYMBOLS): remove
 
 1999-01-20  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
