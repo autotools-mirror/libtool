@@ -1,3 +1,7 @@
+2004-09-03  Gary V. Vaughan  <gary@gnu.org>
+
+	* AUTHORS: Fix typo in my address.
+
 2004-09-02  Gary V. Vaughan  <gary@gnu.org>,
 
 	Builds of packages that use libtool and make -j produce "directory
