@@ -1,5 +1,8 @@
 2002-10-25  Gary V. Vaughan  <gary@gnu.org>
 
+	* README-alpha: Add some release not templates for inspiration and
+	consistency at release time.
+
 	* Makefile.am (cvs-diff): Compress the generated diff file, ready
 	for upload to ftp.gnu.org.
 

@@ -90,3 +90,96 @@ using (by typing `ltconfig --version').
 * Update version number in configure.ac to next alpha number.
 
 * Commit.
+
+* Update the front libtool webpage to indicate the latest release
+  number, and the news page to reflect the latest release note.
+
+================================================================
+= Alpha release note template
+
+To: libtool@gnu.org
+
+The Libtool Team is pleased to announce alpha release @VERSION@ of GNU
+Libtool.
+
+GNU Libtool hides the complexity of using shared libraries behind a
+consistent, portable interface. GNU Libtool ships with GNU libltdl,
+which hides the comlexity of loading dynamic runtime libraries
+(modules) behind a consistent, portable interface.
+
+This release has @SUMMARY_OF_IMPROVEMENTS_SINCE_LAST_RELEASE_ON_THIS_BRANCH@.
+
+New in @VERSION@: @RELEASE_DATE@
+
+  @EXCERPT_FROM_NEWS_FILE@
+
+libtool-@VERSION@ is available now from
+ftp://alpha.gnu.org/gnu/libtool/libtool-@VERSION@.tar.gz, along with
+diffs and xdeltas against libtool-@PREV_RELEASE_VERSION_ON_THIS_BRANCH@
+that are also available from ftp://alpha.gnu.org/gnu/libtool.
+
+This release was bootstrapped with @BOOTSTRAP_TOOLS_WITH_VERSIONS@,
+but is useable with @COMPATIBLE_AUTOTOOL_VERSIONS@ in your own
+projects.
+
+Alternatively, you can fetch the unbootstrapped sourcecode from
+anonymous cvs by using the following commands (just hit return when
+you are prompted for the password):
+
+  $ cvs -z3 -d :pserver:anoncvs@subversions.gnu.org:/cvsroot/libtool login
+  Password:
+  $ cvs -z3 -d :pserver:anoncvs@subversions.gnu.org:/cvsroot/libtool \
+  co -r @CVS_RELEASE_TAG@ libtool
+
+You will then need to have recent (possibly as yet unreleased) versions
+of Automake and Autoconf installed to bootstrap the checked out
+sources yourself.
+
+Please report bugs to <bug-libtool@gnu.org>.
+
+================================================================
+= Full release note template
+
+To: info-gnu@gnu.org
+Cc: libtool@gnu.org, autoconf@gnu.org, automake@gnu.org
+
+The Libtool Team is pleased to announce the release of GNU Libtool
+@VERSION@.
+
+GNU Libtool hides the complexity of using shared libraries behind a
+consistent, portable interface. GNU Libtool ships with GNU libltdl,
+which hides the comlexity of loading dynamic runtime libraries
+(modules) behind a consistent, portable interface.
+
+This release has @SUMMARY_OF_IMPROVEMENTS_SINCE_LAST_RELEASE_ON_THIS_BRANCH@.
+
+New in @VERSION@: @RELEASE_DATE@
+
+  @EXCERPT_FROM_NEWS_FILE@
+
+libtool-@VERSION@ is available now from
+ftp://ftp.gnu.org/gnu/libtool/libtool-@VERSION@.tar.gz, along with
+diffs and xdeltas against libtool-@PREV_RELEASE_VERSION_ON_THIS_BRANCH@
+that are also available from ftp://ftp.gnu.org/gnu/libtool.  Please
+use a mirror to reduce stress on the main gnu machine:
+
+  http://www.gnu.org/order/ftp.html
+
+This release was bootstrapped with @BOOTSTRAP_TOOLS_WITH_VERSIONS@,
+but is useable with @COMPATIBLE_AUTOTOOL_VERSIONS@ in your own
+projects.
+
+Alternatively, you can fetch the unbootstrapped sourcecode from
+anonymous cvs by using the following commands (just hit return when
+you are prompted for the password):
+
+  $ cvs -z3 -d :pserver:anoncvs@subversions.gnu.org:/cvsroot/libtool login
+  Password:
+  $ cvs -z3 -d :pserver:anoncvs@subversions.gnu.org:/cvsroot/libtool \
+  co -r @CVS_RELEASE_TAG@ libtool
+
+You will then need to have the latest release versions of Automake
+(@AUTOMAKE_VERSION@) and Autoconf (@AUTOCONF_VERSION@) installed to
+bootstrap the checked out sources yourself.
+
+Please report bugs to <bug-libtool@gnu.org>.
