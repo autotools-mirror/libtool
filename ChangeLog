@@ -1,3 +1,7 @@
+1999-06-30  Thomas Tanner  <tanner@ffii.org>
+
+	* demo/foo.h: use LT_PARAMS instead of LTDL_PARAMS (this is not libltdl)
+
 1999-06-29  Thomas Tanner  <tanner@ffii.org>
 
 	* NEWS: rename dummy to force

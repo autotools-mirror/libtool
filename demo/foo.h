@@ -50,10 +50,10 @@ USA. */
    compilers can issue warnings about type mismatches. */
 #undef LTDL_PARAMS
 #if defined (__STDC__) || defined (_AIX) || (defined (__mips) && defined (_SYSTYPE_SVR4)) || defined(__CYGWIN32__) || defined(__cplusplus)
-# define LTDL_PARAMS(protos) protos
+# define LT_PARAMS(protos) protos
 # define lt_ptr_t     void*
 #else
-# define LTDL_PARAMS(protos) ()
+# define LT_PARAMS(protos) ()
 # define lt_ptr_t     char*
 #endif
 
@@ -82,8 +82,8 @@ USA. */
 
 /* Declarations.  Note the wonderful use of the above macros. */
 __BEGIN_DECLS
-int foo LTDL_PARAMS((void));
-int hello LTDL_PARAMS((void));
+int foo LT_PARAMS((void));
+int hello LT_PARAMS((void));
 EXTERN int nothing;
 __END_DECLS
 
