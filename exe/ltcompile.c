@@ -220,6 +220,7 @@ parseCompileOpts( pArgc, pArgv )
 
     tCC**   newArgv = xmalloc( sizeof( char* ) * argc );
     int     newCt   = 0;
+    int     alocCt  = argc;
 
     tCC*    pzCmd   = NULL;
     int     i;
@@ -254,22 +255,42 @@ parseCompileOpts( pArgc, pArgv )
                 fprintf( stderr, zNoXcompile, libtoolOptions.pzProgPath );
                 exit( EXIT_FAILURE );
             }
-            pzCmd = newArgv[ newCt++ ] = argv[i];
+            if (++newCt >= alocCt) {
+                alocCt = (alocCt + 8) & ~0x07;
+                newArgv = realloc( newArgv, alocCt * sizeof( char* ));
+            }
+            pzCmd = newArgv[ newCt-1 ] = argv[i];
 
         } else if (strncmp( argv[i], "-Wc,", 4 ) == 0) {
-            if (pzSource != NULL)
-                newArgv[ newCt++ ] = pzSource;
-            pzSource = argv[i] + 4;
-            while (isspace( *pzSource ))  pzSource++;
-            newArgv[ newCt++ ] = pzSource;
-            pzSource = NULL;
+            char* pz = argv[i] + 4;
+            for (;;) {
+                while (isspace( *pz ))  pz++;
+                if (*pz == NUL)
+                    break;
+
+                if (++newCt >= alocCt) {
+                    alocCt = (alocCt + 8) & ~0x07;
+                    newArgv = realloc( newArgv, alocCt * sizeof( char* ));
+                }
+                newArgv[ newCt-1 ] = pz;
+                pz = strchr( pz, ',' );
+                if (pz == NULL)
+                    break;
+                *(pz++) = NUL;
+            }
 
         } else if (pzCmd == NULL) {
             pzCmd = newArgv[ newCt++ ] = argv[i];
 
+        } else if (pzSource == NULL) {
+            pzSource = argv[i];
+
         } else {
-            if (pzSource != NULL)
-                newArgv[ newCt++ ] = pzSource;
+            if (++newCt >= alocCt) {
+                alocCt = (alocCt + 8) & ~0x07;
+                newArgv = realloc( newArgv, alocCt * sizeof( char* ));
+            }
+            pzCmd = newArgv[ newCt-1 ] = pzSource;
             pzSource = argv[i];
         }
     }
@@ -280,7 +301,10 @@ parseCompileOpts( pArgc, pArgv )
         exit( EXIT_FAILURE );
     }
 
-    newArgv[ newCt ] = NULL;
+    if (++newCt >= alocCt)
+        newArgv = realloc( newArgv, ++alocCt * sizeof( char* ));
+
+    newArgv[ newCt-1 ] = NULL;
     *pArgc = newCt;
     *pArgv = (char**)newArgv;
 }
