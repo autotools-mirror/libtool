@@ -1,3 +1,60 @@
+Sat Dec  4 14:31:24 1999  Ossama Othman  <ossama@debian.org>
+
+	* doc/libtool.texi:
+
+	Moved "LTCC" in "--add-tag" example before "CC" because users may
+	inadvertently do something like the following:
+
+		CC=$CXX LTCC=$CC ./ltconfig --add-tag=...
+
+	Doing the above would set LTCC to the C++ compiler ($CXX), which
+	is incorrect since LTCC should be the C compiler.  Also added
+	documentation explaining this potential problem.
+
+	* Makefile.am:
+
+	Added ltcf-c.sh, ltcf-cxx.sh and ChangeLog.1 to list of files to
+	include in the distribution.
+
+	Added ltcf-sh.sh and ltcf-cxx.sh to the list of data files.
+
+	* libtool.m4:
+
+	Change name of macro that enables C++ support in libtool from
+	"AC_LIBTOOL_CPP" to "AC_LIBTOOL_CXX."  "CPP" is typically
+	associated with preprocessors, whereas CXX is associated with C++
+	compilers.
+
+	Moved LTCC before CC in call to ltconfig to make sure LTCC is not
+	set to the compiler pointed to by CC after CC has been reset to
+	another compiler.
+
+	Call ltconfig with ${CONFIG_SHELL-/bin/sh} just like we do in
+	AC_PROG_LIBTOOL.
+
+	Save value of $CC and $CFLAGS before resetting them for use with
+	configuration tags.
+
+	* libtoolize.in:
+
+	Added ltcf-c.sh to list of files related to "libtoolization."
+	Until we decide if other compiler/language libtool configuation
+	scripts should also be included in the file list, leave out
+	ltcf-cxx.sh for now.
+
+	* ltcf-cxx.sh:
+
+	Disable shared library support for currently unconfigured
+	platforms.
+
+	Updated IRIX, Linux and Solaris link characteristics.  They now
+	match more with their C compiler counterparts.
+
+	* ltconfig.in:
+
+	Corrected tag name variable in "END LIBTOOL TAG CONFIG: $tagname"
+	text.
+
 Fri Dec  3 19:21:39 1999  Ossama Othman  <ossama@debian.org>
 
 	* Makefile.am:
