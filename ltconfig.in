@@ -1914,10 +1914,10 @@ freebsd*)
   esac
   shlibpath_var=LD_LIBRARY_PATH
   case "$host_os" in
-  freebsd2* | freebsd3.[01]* | freebsdelf3.[01]*)
+  freebsd2*)
     shlibpath_overrides_runpath=yes
     ;;
-  *) # from 3.2 on
+  *)
     shlibpath_overrides_runpath=no
     ;;
   esac
