@@ -1,5 +1,9 @@
 1999-01-27  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* Makefile.am (ltconfig, ltmain.sh): some broken makes don't like
+	macros in targets; replace $(srcdir) with @srcdir@
+	* configure.in (ACINCLUDE_M4_LIST): same problem; expand $srcdir
+
 	* libltdl/Makefile.am (@TOINST@/libltdl.la): if installation is
 	enabled, create to-be-installed libltdl.la within @TOINST@
 	directory
