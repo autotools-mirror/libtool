@@ -1140,13 +1140,27 @@ If the @samp{-static} option is given, then a @samp{.o} file is built,
 even if libtool was configured with @samp{--disable-static}.
 
 Note that the @samp{-o} option is now fully supported.  It is emulated
-for the platforms that don't support it (by locking and moving the
+on the platforms that don't support it (by locking and moving the
 objects), so it is really easy to use libtool, just with minor
 modifications to your Makefiles. Typing for example
 @example
 libtool gcc -c foo/x.c -o foo/x.lo
 @end example
 will do what you expect.
+
+Note, however, that, if the compiler does not support @samp{-c} and
+@samp{-o}, it is impossible to compile @file{foo/x.c} without
+overwriting an existing @file{./x.o}.  Therefore, if you do have a
+source file @file{./x.c}, make sure you introduce dependencies in your
+@file{Makefile} to make sure @file{./x.o} (or @file{./x.lo}) is
+re-created after any sub-directory's @file{x.lo}:
+@example
+x.o x.lo: foo/x.lo bar/x.lo
+@end example
+This will also ensure that make won't try to use a temporarily corrupted
+@file{x.o} to create a program or library.  It may cause needless
+recompilation on platforms that support @samp{-c} and @samp{-o}
+together, but it's the only way to make it safe for those that don't.
 
 @node Link mode
 @section Link mode
