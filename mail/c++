@@ -23,8 +23,9 @@ Subject: libtool and c++
 To: bug-libtool@gnu.ai.mit.edu
 MIME-Version: 1.0
 Content-Type: TEXT/plain; charset=us-ascii
-Lines: 21
 Xref: trick.profitpress.com mail.libtool:497
+Lines: 21
+X-Gnus-Article-Number: 1   Mon Nov  2 17:16:26 1998
 
 Content-MD5: PkFtlfmXLmdAHDrBATl72w==
 X-Mailer: dtmail 1.2.0 CDE Version 1.2 SunOS 5.6 sun4u sparc
@@ -72,8 +73,9 @@ Subject: libtool and c++ (follow-up)
 To: bug-libtool@gnu.ai.mit.edu
 MIME-Version: 1.0
 Content-Type: TEXT/plain; charset=us-ascii
-Lines: 50
 Xref: trick.profitpress.com mail.libtool:498
+Lines: 50
+X-Gnus-Article-Number: 2   Mon Nov  2 17:16:26 1998
 
 Content-MD5: pYKoLEegluk256lZh3GEEg==
 X-Mailer: dtmail 1.2.0 CDE Version 1.2 SunOS 5.6 sun4u sparc
@@ -143,8 +145,9 @@ To: bug-libtool@gnu.ai.mit.edu
 Message-ID: <Roam2.0.6.874089819.24146.hiller@mail.iuk.tu-harburg.de>
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; CHARSET=US-ASCII
-Lines: 16
 Xref: trick.profitpress.com mail.libtool:502
+Lines: 16
+X-Gnus-Article-Number: 3   Mon Nov  2 17:16:26 1998
 
 Hi,
 
@@ -188,8 +191,9 @@ Date: 07 Oct 1997 11:52:59 -0600
 In-Reply-To: Akim Demaille's message of 26 Sep 1997 14:28:51 +0200
 Message-Id: <86201xcves.fsf@trick.profitpress.com>
 X-Mailer: Gnus v5.4.42/Emacs 19.34
-Lines: 41
 Xref: trick.profitpress.com mail.libtool:570
+Lines: 41
+X-Gnus-Article-Number: 4   Mon Nov  2 17:16:26 1998
 
 Hi!
 
@@ -252,8 +256,9 @@ To: gord@m-tech.ab.ca (Gordon Matzigkeit)
 Date: Tue, 14 Oct 1997 20:55:19 +0200 (MET DST)
 In-Reply-To: <86wwjg1av8.fsf@trick.profitpress.com> from "Gordon Matzigkeit" at Oct 14, 97 12:02:35 pm
 Content-Type: text
-Lines: 88
 Xref: trick.profitpress.com mail.libtool:589
+Lines: 89
+X-Gnus-Article-Number: 5   Mon Nov  2 17:16:26 1998
 
 >
 > Hi!
@@ -369,8 +374,9 @@ Subject: libtool bug/problem
 MIME-Version: 1.0
 TO: bug-libtool@gnu.org
 Content-Type: multipart/mixed; boundary="MimeMultipartBoundary"
-Lines: 33
 Xref: trick.fig.org libtool:1548
+Lines: 171
+X-Gnus-Article-Number: 6   Mon Nov  2 17:16:26 1998
 
 --MimeMultipartBoundary
 Content-Type: text/plain; charset=US-ASCII; name="PUBLIC:"
@@ -570,8 +576,9 @@ MIME-Version: 1.0
 To: bug-libtool@gnu.org
 Subject: overriding ARFLAGS.
 Content-Type: multipart/mixed; boundary="------------E06156B73BE5D4D4AD2BF900"
-Lines: 221
 Xref: trick.fig.org libtool:1683
+Lines: 221
+X-Gnus-Article-Number: 7   Mon Nov  2 17:16:26 1998
 
 This is a multi-part message in MIME format.
 --------------E06156B73BE5D4D4AD2BF900

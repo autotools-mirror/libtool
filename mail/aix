@@ -21,8 +21,9 @@ Subject: libtool Doesn't Export C++ Methods on AIX
 Message-ID: <Pine.A41.3.96.980806150532.36284A-100000@pinebilly.wcom.com>
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
-Lines: 26
 Xref: trick.fig.org libtool:1552
+Lines: 26
+X-Gnus-Article-Number: 1   Mon Nov  2 17:12:52 1998
 
 I'm trying to use libtool with C++ programs, and found that libtool
 wouldn't put any C++ methods into the shared library.  When I looked
@@ -68,8 +69,9 @@ Message-Id: <199807012044.QAA25589@subrogation.cygnus.com>
 From: Ian Lance Taylor <ian@cygnus.com>
 To: bug-libtool@gnu.org
 Subject: libtool on AIX with GNU ld
-Lines: 31
 Xref: trick.fig.org mail.libtool:1513
+Lines: 31
+X-Gnus-Article-Number: 2   Mon Nov  2 17:12:52 1998
 
 libtool messes up on AIX when using GNU ld.  It doesn't set
 archive_cmds to anything useful.

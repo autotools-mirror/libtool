@@ -155,8 +155,9 @@ Subject: libtool patch (fwd)
 Message-ID: <Pine.LNX.3.95.980929113311.24925A-100000@moshpit.cygnus.com>
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
-Lines: 58
 Xref: trick.fig.org libtool:1637
+Lines: 58
+X-Gnus-Article-Number: 1   Mon Nov  2 17:20:30 1998
 
 I didn't realise libtool was under active maintainership, so here is a
 patch from Michael Tiemann.

@@ -16,8 +16,9 @@ Message-Id: <199804172028.QAA08423@subrogation.cygnus.com>
 From: Ian Lance Taylor <ian@cygnus.com>
 To: bug-libtool@gnu.org
 Subject: cygwin32 support in libtool
-Lines: 290
 Xref: trick.profitpress.com mail.libtool:1336
+Lines: 290
+X-Gnus-Article-Number: 1   Mon Nov  2 17:17:26 1998
 
 Here are the libtool patches I've worked up for cygwin32 support.
 These should be relative to the 1.2 release.

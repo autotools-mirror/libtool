@@ -23,8 +23,9 @@ Content-Type: multipart/signed; protocol="application/pgp-signature";
 	micalg=pgp-md5; boundary="Ew/8QCHSq3SnV5pl"
 X-Mailer: Mutt 0.88
 In-Reply-To: <86k9a9du5z.fsf@trick.profitpress.com>; from Gordon Matzigkeit on Thu, Mar 05, 1998 at 08:38:48AM -0700
-Lines: 366
 Xref: trick.profitpress.com mail.libtool:1135
+Lines: 366
+X-Gnus-Article-Number: 1   Mon Nov  2 17:17:55 1998
 
 
 --Ew/8QCHSq3SnV5pl
@@ -412,8 +413,9 @@ CC: bug-libtool@gnu.org
 In-reply-to: <86k98oh6fy.fsf@trick.profitpress.com> (message from Gordon
 	Matzigkeit on 17 Apr 1998 08:24:33 -0600)
 Subject: Re: libtool on cygwin32
-Lines: 30
 Xref: trick.profitpress.com mail.libtool:1335
+Lines: 30
+X-Gnus-Article-Number: 2   Mon Nov  2 17:17:55 1998
 
    From: Gordon Matzigkeit <gord@profitpress.com>
    Date: 17 Apr 1998 08:24:33 -0600
@@ -465,8 +467,9 @@ CC: robbe@orcus.priv.at, bug-libtool@gnu.org
 In-reply-to: <86bttpvbqd.fsf@trick.profitpress.com> (message from Gordon
 	Matzigkeit on 25 Apr 1998 15:21:30 -0600)
 Subject: Re: libtool 1.2: Why no inter-lib dependencies on ELF?
-Lines: 27
 Xref: trick.profitpress.com mail.libtool:1388
+Lines: 27
+X-Gnus-Article-Number: 3   Mon Nov  2 17:17:55 1998
 
    From: Gordon Matzigkeit <gord@m-tech.ab.ca>
    Date: 25 Apr 1998 15:21:30 -0600
@@ -517,8 +520,9 @@ Subject: Late-binding looses space efficiency ...
 Message-ID: <Pine.SO4.4.02.9809092322490.808-100000@scooby.simple.dallas.tx.us>
 MIME-Version: 1.0
 Content-Type: TEXT/PLAIN; charset=US-ASCII
-Lines: 27
 Xref: trick.fig.org libtool:1605
+Lines: 27
+X-Gnus-Article-Number: 4   Mon Nov  2 17:17:55 1998
 
 On most systems, libtool does not supply the dependency libraries (-llib) when
 it creates the shared library in spite of these being supplied on the libtool
@@ -567,8 +571,9 @@ Date: Thu, 17 Sep 1998 17:26:27 -0400 (EDT)
 From: Doug DeJulio <ddj@hks.net>
 To: gord@profitpress.com
 Subject: Re: Libtool Inter-library Dependencies
-Lines: 32
 Xref: trick.fig.org libtool:1611
+Lines: 32
+X-Gnus-Article-Number: 5   Mon Nov  2 17:17:55 1998
 
 I read your discussion of why libtool can't handle inter-library
 dependencies and how people might be able to help fix this.  I found

@@ -19,8 +19,9 @@ In-Reply-To: <86hg27twsh.fsf@trick.profitpress.com> (message from Gordon
 Subject: Re: libtool manual comments
 Reply-To: rms@gnu.org
 References: <199805240500.XAA01237@wijiji.santafe.edu> <86hg27twsh.fsf@trick.profitpress.com>
-Lines: 23
 Xref: trick.profitpress.com mail.libtool:1476
+Lines: 23
+X-Gnus-Article-Number: 1   Mon Nov  2 17:18:09 1998
 
       Regarless, it needs to have a light touch on the option
     namespace, since it forwards any unrecognized options to the

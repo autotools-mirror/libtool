@@ -20,8 +20,9 @@ To: gord@gnu.org
 Subject: freebsd libtool bugs
 Date: Mon, 05 Oct 1998 03:00:49 -0700
 From: Ben Jackson <ben@ben.com>
-Lines: 11
 Xref: trick.fig.org libtool:1642
+Lines: 11
+X-Gnus-Article-Number: 1   Mon Nov  2 17:19:20 1998
 
 I'm building developtment versions of GTK+ and GIMP which come with
 ltconfig and ltmain.sh version 1.2b.  GTK+ 1.1 is actually trying to
@@ -55,8 +56,9 @@ X-Authentication-Warning: genius.cirx.org: clkao set sender to clkao@CirX.ORG us
 From: Chia-liang Kao <clkao@CirX.ORG>
 To: bug-libtool@gnu.org
 Subject: FreeBSD 3 support
-Lines: 51
 Xref: trick.fig.org libtool:1628
+Lines: 51
+X-Gnus-Article-Number: 2   Mon Nov  2 17:19:20 1998
 
 
 Greetings, 
