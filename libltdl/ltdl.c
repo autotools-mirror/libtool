@@ -1063,7 +1063,7 @@ try_dlopen (lt_dlhandle *phandle, const char *filename)
 		file = find_file (search_path, base_name, &dir);
 	    }
 #endif
-#if defined(LT_SYS_DLSEARCH_PATH)
+#if defined(LT_DLSEARCH_PATH)
 	  if (!file && sys_dlsearch_path)
 	    {
 	      file = find_file (sys_dlsearch_path, base_name, &dir);
@@ -1260,7 +1260,7 @@ try_dlopen (lt_dlhandle *phandle, const char *filename)
 		   && !find_handle (getenv (LT_MODULE_PATH_VAR), base_name,
 				    &newhandle)
 #endif
-#if defined(LT_SYS_DLSEARCH_PATH)
+#if defined(LT_DLSEARCH_PATH)
 		   && !find_handle (sys_dlsearch_path, base_name, &newhandle)
 #endif
 		   )))
@@ -1627,7 +1627,7 @@ lt_dlforeachfile (const char *search_path,
 				       foreachfile_callback, func, data);
 	}
 #endif
-#if defined(LT_SYS_DLSEARCH_PATH)
+#if defined(LT_DLSEARCH_PATH)
       if (!is_done && sys_dlsearch_path)
 	{
 	  is_done = foreach_dirinpath (sys_dlsearch_path, 0,

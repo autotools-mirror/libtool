@@ -1,5 +1,8 @@
 2004-09-01  Gary V. Vaughan  <gary@gnu.org>
 
+	* libltdl/ltdl.c (try_dlopen, lt_dlforeachfile): Use correct cpp
+	macro name, LT_DLSEARCH_PATH.
+
 	* libltdl/ltdl.c (lt_dlexit, tryall_dlopen): Fix gcc parentheses
 	warning.
 	(foreach_dirinpath, try_dlopen, lt_dlpath_insertdir): Fix gcc
