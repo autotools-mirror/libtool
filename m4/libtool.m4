@@ -3899,7 +3899,25 @@ _LT_EOF
       _LT_AC_TAGVAR(export_dynamic_flag_spec, $1)='${wl}-E'
       ;;
 
-    hpux10* | hpux11*)
+    hpux10*)
+     if test "$GCC" = yes -a "$with_gnu_ld" = no; then
+       _LT_AC_TAGVAR(archive_cmds, $1)='$CC -shared -fPIC ${wl}+h ${wl}$soname ${wl}+b ${wl}$install_libdir -o $lib $libobjs $deplibs $compiler_flags'
+     else
+       _LT_AC_TAGVAR(archive_cmds, $1)='$LD -b +h $soname +b $install_libdir -o $lib $libobjs $deplibs $linker_flags'
+     fi
+     if test "$with_gnu_ld" = no; then
+       _LT_AC_TAGVAR(hardcode_libdir_flag_spec, $1)='${wl}+b ${wl}$libdir'
+       _LT_AC_TAGVAR(hardcode_libdir_flag_spec_ld, $1)='+b $libdir'
+       _LT_AC_TAGVAR(hardcode_libdir_separator, $1)=:
+       _LT_AC_TAGVAR(hardcode_direct, $1)=yes
+       _LT_AC_TAGVAR(export_dynamic_flag_spec, $1)='${wl}-E'
+       # hardcode_minus_L: Not really in the search PATH,
+       # but as the default location of the library.
+       _LT_AC_TAGVAR(hardcode_minus_L, $1)=yes
+     fi
+     ;;
+
+     hpux11*)
       if test "$GCC" = yes -a "$with_gnu_ld" = no; then
 	case "$host_cpu" in
 	hppa*64*|ia64*)
@@ -3912,10 +3930,10 @@ _LT_EOF
       else
 	case "$host_cpu" in
 	hppa*64*|ia64*)
-	  _LT_AC_TAGVAR(archive_cmds, $1)='$LD -b +h $soname -o $lib $libobjs $deplibs $linker_flags'
+	  _LT_AC_TAGVAR(archive_cmds, $1)='$CC -b ${wl}+h ${wl}$soname -o $lib $libobjs $deplibs $compiler_flags'
 	  ;;
 	*)
-	  _LT_AC_TAGVAR(archive_cmds, $1)='$LD -b +h $soname +b $install_libdir -o $lib $libobjs $deplibs $linker_flags'
+	  _LT_AC_TAGVAR(archive_cmds, $1)='$CC -b ${wl}+h ${wl}$soname ${wl}+b ${wl}$install_libdir -o $lib $libobjs $deplibs $compiler_flags'
 	  ;;
 	esac
       fi
@@ -3923,7 +3941,6 @@ _LT_EOF
 	case "$host_cpu" in
 	hppa*64*)
 	  _LT_AC_TAGVAR(hardcode_libdir_flag_spec, $1)='${wl}+b ${wl}$libdir'
-	  _LT_AC_TAGVAR(hardcode_libdir_flag_spec_ld, $1)='+b $libdir'
 	  _LT_AC_TAGVAR(hardcode_libdir_separator, $1)=:
 	  _LT_AC_TAGVAR(hardcode_direct, $1)=no
 	  _LT_AC_TAGVAR(hardcode_shlibpath_var, $1)=no
@@ -4838,7 +4855,6 @@ if test -n "$compiler"; then
         case "$host_cpu" in
         hppa*64*)
   	_LT_AC_TAGVAR(hardcode_libdir_flag_spec, $1)='${wl}+b ${wl}$libdir'
-  	_LT_AC_TAGVAR(hardcode_libdir_flag_spec_ld, $1)='+b $libdir'
   	_LT_AC_TAGVAR(hardcode_libdir_separator, $1)=:
           ;;
         ia64*)
