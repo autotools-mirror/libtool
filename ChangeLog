@@ -1,3 +1,8 @@
+2001-06-12  Robert Boehne  <rboehne@ricardo-us.com>
+
+	* docs/libtool.texi: Updated the libltdl interface documentation
+	to bring it up to date.
+
 2001-06-06  Gary V. Vaughan  <gary@gnu.org>
 
 	* demo/Makefile.am (objdir): Use `libtool --config' for

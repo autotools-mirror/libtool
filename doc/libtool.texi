@@ -1683,7 +1683,7 @@ the linker used by @var{CC}.
 @end defvar
 
 @defvar LDFLAGS
-The flags to be used by @code{ltconfig} when it links a program.  If
+The flags to be used by @code{libtool} when it links a program.  If
 this is not set, @code{AC_PROG_LIBTOOL} will not use any such flags.  It
 affects only the way @code{AC_PROG_LIBTOOL} runs tests, not the produced
 @code{libtool}.
@@ -2785,7 +2785,7 @@ by the null-terminated string @var{name} is loaded.
 If the symbol cannot be found, @code{NULL} is returned.
 @end deftypefun
 
-@deftypefun {const char *}lt_dlerror (void)
+@deftypefun {const char *} lt_dlerror (void)
 Return a human readable string describing the most
 recent error that occurred from any of libltdl's functions.
 Return @code{NULL} if no errors have occurred since initialization
@@ -3153,11 +3153,11 @@ level types.
 @code{lt_dlloader} is a handle for module loader types.
 @end deftp
 
-@deftp {Type} lt_dlloader_data
-@code{lt_dlloader_data} is used for specifying loader instance data.
+@deftp {Type} lt_user_data
+@code{lt_user_data} is used for specifying loader instance data.
 @end deftp
 
-@deftypefn {Type} {struct} lt_user_dlloader @{@w{const char *@var{sym_prefix};} @w{lt_module_open *@var{module_open};}@w{lt_module_close *@var{module_close};} @w{lt_find_sym *@var{find_sym};} @w{lt_dlloader_exit *@var{dlloader_exit};} @w{lt_dlloader_data @var{dlloader_data};} @}
+@deftypefn {Type} {struct} lt_user_dlloader @{@w{const char *@var{sym_prefix};} @w{lt_module_open *@var{module_open};} @w{lt_module_close *@var{module_close};} @w{lt_find_sym *@var{find_sym};} @w{lt_dlloader_exit *@var{dlloader_exit};} @}
 If you want to define a new way to open dynamic modules, and have the
 @code{lt_dlopen} @sc{api} use it, you need to instantiate one of these
 structures and pass it to @code{lt_dlloader_add}.  You can pass whatever
@@ -3166,7 +3166,7 @@ the value of the first parameter to each of the functions specified in
 the function pointer fields.
 @end deftypefn
 
-@deftypefn {Type} lt_module lt_module_open (@w{lt_user_data @var{loader_data},} @w{const char *@var{filename}})
+@deftypefn {Type} lt_module lt_module_open (@w{const char *@var{filename}})
 The type of the loader function for an @code{lt_dlloader} module
 loader.  The value set in the dlloader_data field of the @code{struct
 lt_user_dlloader} structure will be passed into this function in the
@@ -3177,7 +3177,7 @@ suitable for passing in to the associated @code{lt_module_close} and
 return @code{NULL}, and set the error message with @code{lt_dlseterror}.
 @end deftypefn
 
-@deftypefn {Type} int lt_module_close (@w{lt_dlloader_data @var{loader_data},} @w{lt_module @var{module}})
+@deftypefn {Type} int lt_module_close (@w{lt_user_data @var{loader_data},} @w{lt_module @var{module}})
 The type of the unloader function for a user defined module loader.
 Implementatation of such a function should attempt to release
 any resources tied up by the @var{module} module, and then unload it
@@ -3185,7 +3185,7 @@ from memory.  If the function fails for some reason, set the error
 message with @code{lt_dlseterror} and return non-zero.
 @end deftypefn
 
-@deftypefn {Type} lt_ptr lt_find_sym (@w{lt_user_data @var{loader_data},} @w{lt_module @var{module},} @w{const char *@var{symbol}})
+@deftypefn {Type} lt_ptr lt_find_sym (@w{lt_module @var{module},} @w{const char *@var{symbol}})
 The type of the symbol lookup function for a user defined module loader.
 Implementation of such a function should return the address of the named
 @var{symbol} in the module @var{module}, or else set the error message
