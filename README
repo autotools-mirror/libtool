@@ -18,6 +18,7 @@ Shared library support has been implemented for these platforms:
   Linux ELF (*-*-linux*, except aout, coff, and oldld)
   NetBSD 1.x (*-*-netbsd*)
   OpenBSD 2.x (*-*-openbsd*)
+  OS/2 using EMX (*-*-os2*)
   SCO OpenServer 5.x (*-*-sco3.2v5*)
   Solaris 2.x (*-*-solaris2*)
   SunOS 4.x, a.k.a. Solaris 1.x  (*-*-sunos4*)

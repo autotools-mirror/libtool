@@ -66,7 +66,7 @@ rm="rm -f"
 
 # Sed substitution that helps us do robust quoting.  It backslashifies
 # metacharacters that are still active within double-quoted strings.
-sed_quote_subst='s/\([\\"$]\)/\\\1/g'
+sed_quote_subst='s/\([\\"$\\\\]\)/\\\1/g'
 
 # NLS nuisances.
 # Only set LANG and LC_ALL to C if already set.
@@ -1473,7 +1473,11 @@ EOF
       fi
 
       # Do each command in the archive commands.
-      cmds=`eval \\$echo \"$old_archive_cmds\"`
+      if test -n "$old_archive_from_new_cmds" && test "$build_libtool_libs" = yes; then
+	cmds=`eval \\$echo \"$old_archive_from_new_cmds\"`
+      else
+	cmds=`eval \\$echo \"$old_archive_cmds\"`
+      fi
       IFS="${IFS= 	}"; save_ifs="$IFS"; IFS=';'
       for cmd in $cmds; do
         IFS="$save_ifs"

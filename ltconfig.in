@@ -41,7 +41,10 @@ help="Try \`$progname --help' for more information."
 
 # Sed substitution that helps us do robust quoting.  It backslashifies
 # metacharacters that are still active within double-quoted strings.
-sed_quote_subst='s/\([\\"$]\)/\\\1/g'
+sed_quote_subst='s/\([\\"$\\\\]\)/\\\1/g'
+
+# Same as above, but don't quote variable references.
+double_quote_subst='s/\([\\"\\\\]\)/\\\1/g'
 
 # AIX sometimes has problems with the GCC collect2 program.  For some
 # reason, if we set the COLLECT_NAMES environment variable, the problems
@@ -262,6 +265,9 @@ if test "$verify_host" = yes; then
   host=`$ac_config_sub $host_alias`
   echo "$ac_t$host" 1>&6
 
+  # Make sure the host verified.
+  test -z "$host" && exit 1
+
 elif test -z "$host"; then
   echo "$progname: you must specify a host type if you use \`--no-verify'" 1>&2
   echo "$help" 1>&2
@@ -427,7 +433,7 @@ else
   # PORTME Check for PIC flags for the system compiler.
   case "$host_os" in
   aix3* | aix4*)
-    # FIXME All rs/6000 code is PIC, but is there any non-rs/6000 AIX platform?
+    # All AIX code is PIC.
     link_static_flag='-bnso -bI:/lib/syscalls.exp'
     ;;
 
@@ -444,8 +450,12 @@ else
     pic_flag=
     ;;
 
+  os2*)
+    # We can build DLLs from non-PIC.
+    ;;
+
   osf3* | osf4*)
-    # FIXME - pic_flag is probably required for hppa*-osf* and i860-osf*
+    # All OSF/1 code is PIC.
     wl='-Wl,'
     link_static_flag='-non_shared'
     ;;
@@ -478,14 +488,6 @@ else
     ;;
   esac
 fi
-
-case "$host_cpu" in
-alpha | rs6000 | powerpc | powerpcle)
-  # Yippee! All RS/6000 and PowerPC code is position-independent.
-  # Apparently, so is DEC alpha!
-  pic_flag=
-  ;;
-esac
 
 if test -n "$pic_flag"; then
   echo "$ac_t$pic_flag" 1>&6
@@ -576,7 +578,9 @@ if test -z "$LD"; then
     ac_prog=`($CC -print-prog-name=ld) 2>&5`
     case "$ac_prog" in
     # Accept absolute paths.
-    /*) ;;
+    /*)
+      test -z "$LD" && LD="$ac_prog"
+      ;;
     "")
       # If it fails, then pretend we aren't using GCC.
       ac_prog=ld
@@ -594,22 +598,24 @@ if test -z "$LD"; then
     echo "$progname:@LINENO@: checking for non-GNU ld" >&5
   fi
 
-  IFS="${IFS= 	}"; ac_save_ifs="$IFS"; IFS="${IFS}:"
-  for ac_dir in $PATH; do
-    test -z "$ac_dir" && ac_dir=.
-    if test -f "$ac_dir/$ac_prog"; then
-      LD="$ac_dir/$ac_prog"
-      # Check to see if the program is GNU ld.  I'd rather use --version,
-      # but apparently some GNU ld's only accept -v.
-      # Break only if it was the GNU/non-GNU ld that we prefer.
-      if "$LD" -v 2>&1 < /dev/null | egrep '(GNU|with BFD)' > /dev/null; then
-        test "$with_gnu_ld" != no && break
-      else
-        test "$with_gnu_ld" != yes && break
+  if test -z "$LD"; then
+    IFS="${IFS= 	}"; ac_save_ifs="$IFS"; IFS="${IFS}:"
+    for ac_dir in $PATH; do
+      test -z "$ac_dir" && ac_dir=.
+      if test -f "$ac_dir/$ac_prog"; then
+	LD="$ac_dir/$ac_prog"
+	# Check to see if the program is GNU ld.  I'd rather use --version,
+	# but apparently some GNU ld's only accept -v.
+	# Break only if it was the GNU/non-GNU ld that we prefer.
+	if "$LD" -v 2>&1 < /dev/null | egrep '(GNU|with BFD)' > /dev/null; then
+	  test "$with_gnu_ld" != no && break
+	else
+	  test "$with_gnu_ld" != yes && break
+	fi
       fi
-    fi
-  done
-  IFS="$ac_save_ifs"
+    done
+    IFS="$ac_save_ifs"
+  fi
 
   if test -n "$LD"; then
     echo "$ac_t$LD" 1>&6
@@ -638,6 +644,7 @@ echo $ac_n "checking whether the linker ($LD) supports shared libraries... $ac_c
 
 allow_undefined_flag=
 archive_cmds=
+old_archive_from_new_cmds=
 export_dynamic_flag_spec=
 hardcode_libdir_flag_spec=
 hardcode_libdir_separator=
@@ -750,6 +757,14 @@ else
     hardcode_libdir_flag_spec='-R$libdir'
     hardcode_direct=yes
     hardcode_shlibpath_var=no
+    ;;
+
+  os2*)
+    # FIXME: unsure of OS/2 hardcoding properties
+    hardcode_direct=yes
+    allow_undefined_flag=unsupported
+    archive_cmds='echo "LIBRARY $libname INITINSTANCE" > $objdir/$libname.def;echo "DESCRIPTION \"$libname\"" >> $objdir/$libname.def;echo DATA >> $objdir/$libname.def;echo " SINGLE NONSHARED" >> $objdir/$libname.def;echo EXPORTS >> $objdir/$libname.def;emxexp$libobjs >> $objdir/$libname.def;$CC -Zdll -Zcrtdll -o $lib$libobjs $objdir/$libname.def$deplibs'
+    old_archive_from_new_cmds='emximp -o $libname.a $objdir/$libname.def'
     ;;
 
   osf3*)
@@ -1079,6 +1094,12 @@ netbsd* | openbsd*)
   shlibpath_var=LD_LIBRARY_PATH
   ;;
 
+os2*)
+  version_type=none
+  library_names_spec='$libname.dll'
+  dynamic_linker='OS/2 ld.exe'
+  ;;
+
 osf3* | osf4*)
   version_type=osf
   soname_spec='$libname.so'
@@ -1150,7 +1171,8 @@ echo "checking if libtool supports shared libraries... $can_build_shared" 1>&6
 echo $ac_n "checking whether to build shared libraries... $ac_c" 1>&6
 test "$can_build_shared" = "no" && enable_shared=no
 
-# On AIX, shared libraries and static libraries use the same namespace.
+# On AIX, shared libraries and static libraries use the same namespace, and
+# are all built from PIC.
 case "$host_os" in
 aix*)
   test "$enable_shared" = yes && enable_static=no
@@ -1185,12 +1207,23 @@ for var in old_CC old_CFLAGS old_CPPFLAGS old_LD old_NM old_RANLIB \
   old_LN_S AR CC LD LN_S NM reload_flag reload_cmds wl pic_flag \
   link_static_flag no_builtin_flag export_dynamic_flag_spec \
   profile_flag_pattern library_names_spec soname_spec RANLIB \
-  old_archive_cmds old_postinstall_cmds archive_cmds postinstall_cmds \
+  old_archive_cmds old_archive_from_new_cmds old_postinstall_cmds \
+  archive_cmds postinstall_cmds \
   allow_undefined_flag finish_cmds global_symbol_pipe \
   striplib old_striplib \
   hardcode_libdir_flag_spec hardcode_libdir_separator; do
 
-  eval "$var=\`echo \"\$$var\" | sed \"\$sed_quote_subst\"\`"
+  case "$var" in
+  reload_cmds | old_archive_cmds | old_archive_from_new_cmds | \
+  old_postinstall_cmds | archive_cmds | postinstall_cmds | finish_cmds | \
+  global_symbol_pipe)
+    # Double-quote double-evaled strings.
+    eval "$var=\`echo \"\$$var\" | sed -e \"\$double_quote_subst\" -e \"\$sed_quote_subst\"\`"
+    ;;
+  *)
+    eval "$var=\`echo \"\$$var\" | sed \"\$sed_quote_subst\"\`"
+    ;;
+  esac
 done
 
 ofile=libtool
@@ -1283,6 +1316,9 @@ soname_spec="$soname_spec"
 RANLIB="$RANLIB"
 old_archive_cmds="$old_archive_cmds"
 old_postinstall_cmds="$old_postinstall_cmds"
+
+# Create an old-style archive from a shared archive.
+old_archive_from_new_cmds="$old_archive_from_new_cmds"
 
 # Commands used to build and install a shared archive.
 archive_cmds="$archive_cmds"

@@ -26,7 +26,7 @@ New in 1.0d:
 * Allow configure.in to change the defaults for AM_PROG_LIBTOOL's
   `--enable-shared' and `--enable-static' flags by setting
   the `enable_shared' or `enable_static' shell variables to `no'.
-* Support for UTS 4.x.
+* Support for *-*-uts4* and *-*-os2*.
 
 New in 1.0:
 * Bug fixes.

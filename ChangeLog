@@ -1,5 +1,19 @@
 Sun Oct 19 12:48:14 1997  Gordon Matzigkeit  <gord@gnu.org>
 
+	* ltconfig.in (LD): Same as below.
+
+	* libtool.m4 (LD): Set LD if we discover an absolute path to GNU
+	ld.  This avoids unnecessary tests.  Reported by Ulrich Drepper.
+
+	* ltconfig.in: Port to OS/2 using EMX.  From Jeff Freedman.
+	(double_quote_subst): sed substitution to protect metacharacters
+	in variables that are evaled twice.
+
+	* ltmain.in (link): Use old_archive_from_new_cmds.
+
+	* ltconfig.in (old_archive_from_new_cmds): New variable to
+	support DLL libraries.
+
 	* ltmain.in (link): Only `eval' export_dynamic_flag_spec if it is
 	not empty.  Reported by Stephan Kulow.
 
