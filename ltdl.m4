@@ -266,9 +266,12 @@ if test x"$ac_cv_sys_symbol_underscore" = xyes; then
 	AC_CACHE_CHECK([whether we have to add an underscore for dlsym],
 		libltdl_cv_need_uscore, [dnl
 		libltdl_cv_need_uscore=unknown
+                save_LIBS="$LIBS"
+                LIBS="$LIBS $LIBADD_DL"
 		_LT_AC_TRY_DLOPEN_SELF(
 		  libltdl_cv_need_uscore=no, libltdl_cv_need_uscore=yes,
 		  [],			     libltdl_cv_need_uscore=cross)
+		LIBS="$save_LIBS"
 	])
   fi
 fi
