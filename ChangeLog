@@ -1,3 +1,12 @@
+2005-01-08  Gary V. Vaughan  <gary@gnu.org>
+
+	* m4/libtool.m4, m4/ltdl.m4: RMS says, 'I think the [license of
+	autoconf macro files] should be:
+	# This file is free software; the Free Software Foundation
+	# gives unlimited permission to copy and/or distribute it,
+	# with or without modifications, as long as this notice is
+	# preserved.'.
+
 2004-12-28  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
 	* libtool.m4 (AC_LIBTOOL_PROG_LD_SHLIBS) [ cygwin, mingw, pw32 ]:
@@ -12,7 +21,7 @@
 	expansion.  Reported by Alexander Kurz <alexander.kurz@qsc.de>.
 
 2004-12-20  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
-	
+
 	* libtoolize.in: Install `install-sh' as well, needed for configure ..
 	* Makefile.am: .. install, update it.
 	* NEWS, doc/libtool.texi (Distributing): .. document it.
@@ -55,7 +64,7 @@
 
 2004-12-10  Peter O'Gorman  <peter@pogma.com>
 
-	* ltmain.in (func_extract_archives,func_extract_an_archive): On 
+	* ltmain.in (func_extract_archives,func_extract_an_archive): On
 	darwin, uniq can not take teh flags -cd together, thanks to Ralf
 	for the fix, also ar does not accept N, so we use the fact that
 	ar x libfoo.a foo.o will always extract the first foo.o in the
