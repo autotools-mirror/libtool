@@ -1,0 +1,47 @@
+#! /bin/sh
+# cdemo-undef - test generating shared libraries with undefined symbols
+
+# Copyright (C) 2003, 2004 Free Software Foundation, Inc.
+# This is free software; see the source for copying conditions.  There is NO
+# warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, a copy can be downloaded from
+# http://www.gnu.org/copyleft/gpl.html, or by writing to the Free
+# Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
+# MA 02111-1307, USA.
+
+. ./defs || exit 1
+
+func_mkprefixdir
+func_cd "cdemo"
+func_make_distclean
+func_configure "--disable-static"
+
+grep '^allow_undefined=.?unsupported.?$' ./libtool >/dev/null 2>&1 \
+    && func_skip "$host doesn't support undefined symbols in shared libs"
+
+if test -f ./libtool; then
+  $SED 's,allow_undefined=no,allow_undefined=yes,g' ./libtool > ltnew
+else
+  exit 1
+fi
+
+if test -f ./ltnew; then
+  rm -f libtool
+  mv ltnew libtool
+else
+  exit 1
+fi
+
+exit 0
