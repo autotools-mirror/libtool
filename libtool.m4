@@ -116,12 +116,13 @@ case "$host" in
   fi
   ;;
 
-*-*-cygwin*)
+ifdef([AC_PROVIDE_AC_LIBTOOL_WIN32_DLL],
+[*-*-cygwin* | *-*-mingw*)
   AC_CHECK_TOOL(DLLTOOL, dlltool, false)
   AC_CHECK_TOOL(AS, as, false)
   AC_CHECK_TOOL(OBJDUMP, objdump, false)
   ;;
-
+])
 esac
 ])
 

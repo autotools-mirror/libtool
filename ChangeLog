@@ -1,3 +1,9 @@
+1999-04-29  Gary V. Vaughan  <gary@oranda.demon.co.uk>
+
+	* libtool.m4 (cygwin*|mingw*, DLLTOOL, OBJDUMP, AS): Only expand the
+	code that makes these configure time checks on hosts that need the
+	tools *and* if the AC_LIBTOOL_WIN32_DLL macro is used. 
+
 1999-04-29  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* ltmain.in (nlist, SYMFILE): Use outputname instead of output for
