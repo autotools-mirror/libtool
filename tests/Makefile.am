@@ -31,7 +31,7 @@ COMMON_TESTS = \
 	mdemo-inst.test mdemo-unst.test mdemo-dryrun.test \
 	mdemo2-conf.test mdemo2-make.test mdemo2-exec.test \
 	pdemo-conf.test pdemo-make.test pdemo-exec.test \
-	pdemo-inst.test pdemo-unst.test \
+	pdemo-inst.test \
 	demo-nofast.test demo-make.test demo-exec.test \
 	demo-inst.test demo-unst.test \
 	depdemo-nofast.test depdemo-make.test depdemo-exec.test \

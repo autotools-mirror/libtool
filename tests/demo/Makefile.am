@@ -138,7 +138,8 @@ hc-minusL: $(hell_OBJECTS) $(hell_DEPENDENCIES)
 # This is one of the essential tests for deplibs_check_method=pass_all.
 # If this one passes with pass_all, it is likely that pass_all works
 EXTRA_LIBRARIES = libhell0.a
-libhell0_a_SOURCES = hello.c foo.c
+libhell0_a_SOURCES =
+libhell0_a_LIBADD = hello.$(OBJEXT) foo.$(OBJEXT)
 EXTRA_LTLIBRARIES = libhell1.la libhell2.la
 libhell1_la_SOURCES = hell1.c
 libhell1_la_LIBADD = -L. -lhell0

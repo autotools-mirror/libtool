@@ -132,7 +132,7 @@ hc-minusL: $(hell_OBJECTS) $(hell_DEPENDENCIES)
 # If this one passes with pass_all, it is likely that pass_all works
 EXTRA_LIBRARIES = libhell0.a
 libhell0_a_SOURCES =
-libhell0_a_LIBADD = longer_file_name_hello.o longer_file_name_foo.o
+libhell0_a_LIBADD = longer_file_name_hello.$(OBJEXT) longer_file_name_foo.$(OBJEXT)
 EXTRA_LTLIBRARIES = libhell1.la libhell2.la
 libhell1_la_SOURCES = longer_file_name_hell1.c
 libhell1_la_LIBADD = -L. -lhell0

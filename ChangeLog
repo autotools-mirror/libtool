@@ -1,5 +1,12 @@
 2003-10-15  Gary V. Vaughan  <gary@gnu.org>
 
+	* demo/Makefile.am (libhell0_a_SOURCES): Do not name sources
+	already built with libtool...
+	(libhell0_a_LIBADD): ...instead name the objects directly.  This
+	prevents a long standing warning from automake 1.7+.
+	* pdemo/Makefile.am (libhell0_a_SOURCES, libhell0_a_LIBADD):
+	Ditto.
+
 	* bootstrap: Make the fake files valid shell scripts with a
 	comment incase they get left around.
 	(LIBTOOLIZE): Use a dummy script to prevent the installed
