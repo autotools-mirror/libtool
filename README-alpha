@@ -1,69 +1,15 @@
-This is an alpha testing release of GNU Libtool.
+This is an alpha testing release of GNU Libtool.  To get the latest
+CVS version of this package, do:
 
-Please do not send any bug reports or questions about it to public
-forums (such as GNU newsgroups), send them directly to the libtool
-mailing list <bug-libtool@gnu.org>.
+  cvs -d :pserver:anoncvs@anoncvs.gnu.org:/gd/gnu/anoncvsroot login
+  [Hit return when prompted for the password]
+  cvs -d :pserver:anoncvs@anoncvs.gnu.org:/gd/gnu/anoncvsroot checkout libtool
+  cd libtool
+  ./autogen
 
+The `autogen' script sets up the source directory for you to hack. To
+use it, you need a recent version of both Autoconf and Automake.
 
-global_symbol_pipe
-******************
-
-CALL FOR HELP: In order to implement dlopening even on archictectures
-that don't have shared libraries, I am collecting `NM' and
-`global_symbol_pipe' values for every known operating system.
-
-If ltconfig on your system says that it found the command to parse NM
-output, then you don't need to look any further:
-
-checking command to parse /usr/bin/nm output... yes
-
-Otherwise, I would very much appreciate hearing about the combination
-of `NM' and `global_symbol_pipe' that ltconfig needs to use in order
-to pass this test.
-
-`NM' is set by ltconfig to be an nm program that gives BSD-compatible
-symbol output, such as:
-
-$ nm assert-perr.o
-         U _IO_stderr_
-00000000 T __assert_perror_fail
-         U __assert_program_name
-         U abort
-         U fflush
-         U fprintf
-         U strerror
-
-If your OS's nm cannot produce output like this, that's still okay,
-but, for simplicity, I prefer using this kind of output.
-
-Then, global_symbol_pipe is a command that takes all exported symbols,
-including undefined ones, and produces a two-column list of them.  The
-contents of the first column are the raw symbol name, and the second
-column contains the name needed to access the symbols from a C
-program.
-
-So, on most OSes, this will be a command like:
-
-$ nm assert-perr.o | \
-  sed -e '/^.* [BCDEGRSTU] \([_A-Za-z][_A-Za-z0-9]*\)$/!d'
-      -e 's/^.* [BCDEGRSTU] \([_A-Za-z][_A-Za-z0-9]*\)$/\1 \1/'
-_IO_stderr_ _IO_stderr_
-__assert_perror_fail __assert_perror_fail
-__assert_program_name __assert_program_name
-abort abort
-fflush fflush
-fprintf fprintf
-strerror strerror
-
-On some OSes, the C symbols will need to strip a leading underscore:
-
-$ nm assert-perr.o | \
-  sed -e '/^.* [BCDEGRSTU] _\([_A-Za-z][_A-Za-z0-9]*\)$/!d'
-      -e 's/^.* [BCDEGRSTU] _\([_A-Za-z][_A-Za-z0-9]*\)$/_\1 \1/'
-__IO_stderr_ _IO_stderr_
-___assert_perror_fail __assert_perror_fail
-___assert_program_name __assert_program_name
-_abort abort
-_fflush fflush
-_fprintf fprintf
-_strerror strerror
+Please do not send any bug reports or questions about this snapshot to
+public forums (such as GNU newsgroups), send them directly to the
+libtool mailing list, <bug-libtool@gnu.org>.
