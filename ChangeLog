@@ -1,5 +1,9 @@
 2004-08-29  Gary V. Vaughan  <gary@gnu.org>
 
+	* TODO: Reformat.  Removed some items that have been implemented.
+
+2004-08-29  Gary V. Vaughan  <gary@gnu.org>
+
 	Add a new `-weak' flag to tell libtool when not to propogate
 	dependency libraries from dlpreopened modules to libraries:
 
