@@ -1580,6 +1580,11 @@ Assume that the C compiler uses the GNU linker.
 Create a @code{libtool} that does not perform locking to ensure proper
 parallel compilation if the C compiler does not support @samp{-c} and
 @samp{-o} together.
+
+@item --cache-file=@var{file}
+Use this @var{file} as a cache for results of a few tests.  This is
+usually @file{config.cache} used by @code{configure}.  By default, no
+cache file is used.
 @end table
 
 @var{ltmain} is the @code{ltmain.sh} shell script fragment that provides
