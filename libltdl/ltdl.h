@@ -128,7 +128,8 @@ Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 	LTDL_ERROR(NO_MEMORY, "not enough memory")			\
 	LTDL_ERROR(INVALID_HANDLE, "invalid module handle")		\
 	LTDL_ERROR(BUFFER_OVERFLOW, "internal buffer overflow")		\
-	LTDL_ERROR(SHUTDOWN, "library already sutdown")
+	LTDL_ERROR(INVALID_ERRORCODE, "invalid errorcode")		\
+	LTDL_ERROR(SHUTDOWN, "library already shutdown")
 
 #ifdef __STDC__ 
 #  define LTDL_ERROR(name, diagnostic)	LTDL_ERROR_##name,

@@ -3039,6 +3039,7 @@ you can add more of your own with @code{lt_dladderror}.  This function returns
 if (lt_dlseterror (LTDL_ERROR_NO_MEMORY) != 0)
   perror (lt_dlerror ());
 @end example
+@end deftypefun
 
 @deftypefun int lt_dlpreload (const lt_dlsymlist *@var{preloaded})
 Register the list of preloaded modules @var{preloaded}.

@@ -1,3 +1,10 @@
+2000-01-28  Gary V. Vaughan  <gary@oranda.demon.co.uk>
+
+	* libltdl/ltdl.h (ltdl_error_table): Added missing error code, and
+	fixed typo in another code.
+	* doc/libtool.texi (Libltdl interface): Added missing @end
+	clause.
+
 2000-01-27  Thomas Tanner  <tanner@ffii.org>
 
 	* ltconfig.in: Oops, replace the remaining $objdir's
