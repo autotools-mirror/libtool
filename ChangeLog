@@ -1,3 +1,7 @@
+1999-01-09  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* libltdl/ltdl.c (lt_dlopen): missing strlen in bound test
+
 1999-01-09  Thomas Tanner  <tanner@gmx.de>
 
 	* NEWS: support for BSD/OS 4.x was not documented

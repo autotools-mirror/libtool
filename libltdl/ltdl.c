@@ -767,11 +767,11 @@ lt_dlopen (filename)
 			return 0;
 		}
 		/* extract the module name from the file name */
-		if (basename >= MAX_FILENAME)
+		if (strlen(basename) >= MAX_FILENAME)
 			return 0;
 		strcpy(tmp, basename);
 		tmp[ext - basename] = '\0';
-		/* canonicalize the modul name */		
+		/* canonicalize the module name */
 		for (i = 0; i < ext - basename; i++)
 			if (!isalnum(tmp[i]))
 				tmp[i] = '_';
