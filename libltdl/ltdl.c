@@ -3504,7 +3504,7 @@ lt_dlhandle
 lt_dlhandle_next (place)
      lt_dlhandle place;
 {
-  return place ? place->next : (lt_dlhandle) 0;
+  return place ? place->next : handles;
 }
 
 int

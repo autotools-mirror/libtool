@@ -1,5 +1,8 @@
 2001-08-15  Gary V. Vaughan  <gary@gnu.org>
 
+	* libltdl/ltdl.c (lt_dlhandle_next): Now we can loop through all
+	loaded module handles as originally intended.
+	
 	* libltdl/ltdl.c (lt_dlseterror): Oops.  This never worked
 	either, due to a pair of typos.  Now fixed.
 
