@@ -48,7 +48,7 @@ i686-pc-linux-gnu		egcs	1.2e	ok	egcs 1.1.1
 i686-pc-linux-gnulibc1		gcc	1.2e	ok
 i686-pc-cygwin32		egcs	1.2e	ok
 m68k-next-nextstep3		gcc	1.2e	ok	static
-m68k-sun-sunos4.1.1		gcc	1.2e	ok	!shared
+m68k-sun-sunos4.1.1		gcc	1.2e	NS
 m88k-dg-dguxR4.12TMU01**	gcc	1.2	ok
 mips-sgi-irix5.2		gcc	1.2c	ok
 mips-sgi-irix5.3		gcc	1.2e	ok
@@ -63,12 +63,13 @@ mips-sgi-irix6.5		gcc	1.2e	ok
 mipsel-unknown-openbsd2.1	gcc	1.0	ok
 powerpc-ibm-aix4.1.4.0		xlc	1.0i	ok
 powerpc-ibm-aix4.1.4.0		gcc	1.0	ok
-powerpc-ibm-aix4.1.5.0		gcc	1.2e	ok	!shared
-powerpc-ibm-aix4.2.1.0		gcc	1.2e	ok	!shared
+powerpc-ibm-aix4.1.5.0		gcc	1.2e	NS	egcs-2.90.13, gas, ld
+powerpc-ibm-aix4.2.1.0		egcs	1.2e	ok	egcs-1.1.1, as, ld
+powerpc-ibm-aix4.3.1.0		egcs	1.2e	ok	egcs-1.1.1, as, ld
 rs6000-ibm-aix3.2.5		xlc	1.0i	ok
 rs6000-ibm-aix3.2.5		gcc	1.0i	ok*
-rs6000-ibm-aix4.1.4.0		gcc	1.2e	ok	!shared
-rs6000-ibm-aix4.1.5.0		gcc	1.2e	ok	!shared
+rs6000-ibm-aix4.1.4.0		gcc	1.2e	ok	gcc-2.7.2, as, ld
+rs6000-ibm-aix4.1.5.0		gcc	1.2e	ok	gcc-2.7.2, as, ld
 sparc-sun-linux-gnu2.1.23	gcc	0.9h	ok
 sparc-sun-solaris2.3		gcc	1.2e	ok
 sparc-sun-solaris2.4		gcc	1.0a	ok
@@ -92,11 +93,10 @@ Notes:
 
 - "ok" means "all tests passed".
 
+- "NS" means "Not Shared", but OK for static libraries
+
 - "static" means that the system doesn't support shared libs,
   but libtool can build static libraries.
-
-- "!shared" means that the system does support shared libraries, but
-  current libtool could not build them.
 
 * Some versions of GCC's collect2 linker program cannot link trivial
   static binaries on AIX 3.  For these configurations, libtool's
