@@ -40,10 +40,15 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 #if !defined(SLIST_H)
 #define SLIST_H 1
 
-#include <libltdl/lt_system.h>
+#if defined(LTDL)
+#  include <libltdl/lt_system.h>
+#else
+#  define LT_SCOPE
+#endif
 
-
-LT_BEGIN_C_DECLS
+#if defined(_cplusplus)
+extern "C" {
+#endif
 
 typedef struct slist {
   struct slist *next;		/* chain forward pointer*/
@@ -76,6 +81,12 @@ LT_SCOPE void *	slist_foreach   (SList *slist, SListCallback *foreach,
 LT_SCOPE SList *slist_box	(const void *userdata);
 LT_SCOPE void *	slist_unbox	(SList *item);
 
-LT_END_C_DECLS
+#if defined(_cplusplus)
+}
+#endif
+
+#if !defined(LTDL)
+#  undef LT_SCOPE
+#endif
 
 #endif /*!defined(SLIST_H)*/

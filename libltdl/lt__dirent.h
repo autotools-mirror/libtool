@@ -86,9 +86,9 @@ typedef struct
 } DIR;
 
 
-DIR *		opendir		(const char *path);
-struct dirent *	readdir		(DIR *entry);
-void		closedir	(DIR *entry);
+LT_SCOPE DIR *		opendir		(const char *path);
+LT_SCOPE struct dirent *readdir		(DIR *entry);
+LT_SCOPE void		closedir	(DIR *entry);
 
 LT_END_C_DECLS
 

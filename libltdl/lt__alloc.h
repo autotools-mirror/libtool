@@ -45,12 +45,12 @@ LT_BEGIN_C_DECLS
 /* If set, this function is called when memory allocation has failed.  */
 extern void (*lt__alloc_die) (void);
 
-void *lt__malloc (size_t n);
-void *lt__zalloc (size_t n);
-void *lt__realloc (void *mem, size_t n);
-void *lt__memdup (void const *mem, size_t n);
+LT_SCOPE void *lt__malloc (size_t n);
+LT_SCOPE void *lt__zalloc (size_t n);
+LT_SCOPE void *lt__realloc (void *mem, size_t n);
+LT_SCOPE void *lt__memdup (void const *mem, size_t n);
 
-char *lt__strdup (const char *string);
+LT_SCOPE char *lt__strdup (const char *string);
 
 LT_END_C_DECLS
 
