@@ -380,7 +380,7 @@ if test -n "$sendmail_to"; then
 
   {
     test -f CVS/Root &&
-        echo "CVSROOT:		`sed -e 's,.*:,,g' CVS/Root`"
+        echo "CVSROOT:	`sed -e 's,.*:,,g' CVS/Root`"
     test -f ./mkstamp &&
         echo "TIMESTAMP: 	`$SHELL ./mkstamp < ./ChangeLog`"
     test -f CVS/Repository &&
