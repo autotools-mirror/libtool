@@ -3216,9 +3216,11 @@ EOF
 	    *.$objext)
 	       ;;
 	    $output_objdir/$outputname | $output_objdir/$libname.* | $output_objdir/${libname}${release}.*)
-	       if echo $p | $EGREP -e "$precious_files_regex" >/dev/null 2>&1
-	       then
-		 continue
+	       if test "X$precious_files_regex" != "X"; then
+	         if echo $p | $EGREP -e "$precious_files_regex" >/dev/null 2>&1
+	         then
+		   continue
+		 fi
 	       fi
 	       removelist="$removelist $p"
 	       ;;
