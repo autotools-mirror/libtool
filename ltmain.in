@@ -1223,8 +1223,8 @@ EOF
 	    test "X$arg" = "X-lc" && continue
 	    ;;
 	  *-*-openbsd*)
-	    # OpenBSD uses either libc or libc_r.
-	    continue
+	    # Do not include libc due to us having libc/libc_r.
+	    test "X$arg" = "X-lc" && continue
 	    ;;
 	  *-*-rhapsody* | *-*-darwin1.[012])
 	    # Rhapsody C and math libraries are in the System framework
@@ -2819,7 +2819,8 @@ EOF
 	    # Don't link with libc until the a.out ld.so is fixed.
 	    ;;
           *-*-openbsd*)
-	    # OpenBSD uses either libc or libc_r.
+	    # Do not include libc due to us having libc/libc_r.
+	    test "X$arg" = "X-lc" && continue
             ;;
  	  *)
 	    # Add libc to deplibs on all other systems if necessary.

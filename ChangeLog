@@ -1,3 +1,7 @@
+2001-08-18  Brad  <brad@comstyle.com>
+
+	* ltmain.in: Do not remove -lm from deplibs for OpenBSD.
+
 2001-08-16  Gary V. Vaughan  <gary@gnu.org>
 
 	* libltdl/ltdl.c (argz_create_sep): Don't forget to include the
