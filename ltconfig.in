@@ -1202,7 +1202,6 @@ else
 
   freebsd1*)
     ld_shlibs=no
-    can_build_shared=no
     ;;
 
   # FreeBSD 2.2.[012] allows us to include c++rt0.o to get C++ constructor
@@ -1345,11 +1344,11 @@ else
 
   *)
     ld_shlibs=no
-    can_build_shared=no
     ;;
   esac
 fi
 echo "$ac_t$ld_shlibs" 1>&6
+test "$ld_shlibs" = no && can_build_shared=no
 
 # Check for command to grab the raw symbol name followed by C symbol from nm.
 echo $ac_n "checking command to parse $NM output... $ac_c" 1>&6
