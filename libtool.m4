@@ -1132,7 +1132,7 @@ cygwin* | mingw* | pw32*)
   need_lib_prefix=no
 
   case $GCC,$host_os in
-  yes,cygwin* | yes,mingw*)
+  yes,cygwin* | yes,mingw* | yes,pw32*)
     library_names_spec='$libname.dll.a'
     # DLL is installed to $(libdir)/../bin by postinstall_cmds
     postinstall_cmds='base_file=`basename \${file}`~
@@ -1167,12 +1167,13 @@ cygwin* | mingw* | pw32*)
         sys_lib_search_path_spec=`echo "$sys_lib_search_path_spec" | sed  -e "s/$PATH_SEPARATOR/ /g"`
       fi
       ;;
+    pw32*)
+      # pw32 DLLs use 'pw' prefix rather than 'lib'
+      library_names_spec='`echo ${libname} | sed -e 's/^lib/pw/'``echo ${release} | sed -e 's/[.]/-/g'`${versuffix}.dll'
+      ;;
     esac
     ;;
 
-  yes,pw32*)
-    library_names_spec='`echo ${libname} | sed -e 's/^lib/pw/'``echo ${release} | sed -e 's/[.]/-/g'`${versuffix}.dll'
-    ;;
   *)
     library_names_spec='${libname}`echo ${release} | sed -e 's/[[.]]/-/g'`${versuffix}.dll $libname.lib'
     ;;
@@ -2637,7 +2638,7 @@ case $host_os in
     esac
     ;;
 
-  cygwin*)
+  cygwin* )
     # _LT_AC_TAGVAR(hardcode_libdir_flag_spec, $1) is actually meaningless,
     # as there is no search path for DLLs.
     _LT_AC_TAGVAR(hardcode_libdir_flag_spec, $1)='-L$libdir'
@@ -2651,7 +2652,7 @@ case $host_os in
     fi
 	;;
 
-  mingw* )
+  mingw* | pw32* )
     _LT_AC_TAGVAR(hardcode_libdir_flag_spec, $1)='-L$libdir'
     _LT_AC_TAGVAR(always_export_symbols, $1)=no
 
@@ -2661,12 +2662,6 @@ case $host_os in
     else
       _LT_AC_TAGVAR(ld_shlibs, $1)=no
     fi
-	;;
-
-
-  pw32* )
-     # FIXME: insert proper C++ library support
-    _LT_AC_TAGVAR(ld_shlibs, $1)=no
 	;;
 
   dgux*)
@@ -4152,7 +4147,7 @@ AC_MSG_CHECKING([for $compiler option to produce PIC])
     beos* | cygwin* | irix5* | irix6* | nonstopux* | osf3* | osf4* | osf5*)
       # PIC is the default for these OSes.
       ;;
-    mingw* | os2*)
+    mingw* | os2* | pw32*)
       # This hack is so that the source file can tell whether it is being
       # built for inclusion in a dll (and should export symbols for example).
       _LT_AC_TAGVAR(lt_prog_compiler_pic, $1)='-DDLL_EXPORT'
@@ -4659,7 +4654,7 @@ EOF
       fi
       ;;
 
-    cygwin* | mingw*)
+    cygwin* | mingw* | pw32*)
       # _LT_AC_TAGVAR(hardcode_libdir_flag_spec, $1) is actually meaningless,
       # as there is no search path for DLLs.
       _LT_AC_TAGVAR(hardcode_libdir_flag_spec, $1)='-L$libdir'
@@ -4671,79 +4666,6 @@ EOF
       else
 	ld_shlibs=no
       fi
-      ;;
-
-    # This pw32 section is mostly antique stuff preserved from Cygwin/MinGW.
-    pw32*)
-      # _LT_AC_TAGVAR(hardcode_libdir_flag_spec, $1) is actually meaningless, as there is
-      # no search path for DLLs.
-      _LT_AC_TAGVAR(hardcode_libdir_flag_spec, $1)='-L$libdir'
-      _LT_AC_TAGVAR(allow_undefined_flag, $1)=unsupported
-      _LT_AC_TAGVAR(always_export_symbols, $1)=yes
-
-      extract_expsyms_cmds='test -f $output_objdir/impgen.c || \
-	sed -e "/^# \/\* impgen\.c starts here \*\//,/^# \/\* impgen.c ends here \*\// { s/^# //;s/^# *$//; p; }" -e d < $''0 > $output_objdir/impgen.c~
-	test -f $output_objdir/impgen.exe || (cd $output_objdir && \
-	if test "x$HOST_CC" != "x" ; then $HOST_CC -o impgen impgen.c ; \
-	else $CC -o impgen impgen.c ; fi)~
-	$output_objdir/impgen $dir/$soroot > $output_objdir/$soname-def'
-
-      _LT_AC_TAGVAR(old_archive_from_expsyms_cmds, $1)='$DLLTOOL --as=$AS --dllname $soname --def $output_objdir/$soname-def --output-lib $output_objdir/$newlib'
-
-      # FIXME: what about values for MSVC?
-      dll_entry=__cygwin_dll_entry@12
-      case $host_os in
-      mingw*)
-	# mingw values
-	dll_entry=_DllMainCRTStartup@12
-	;;
-      esac
-
-      dll_exclude_symbols=DllMain@12,_cygwin_dll_entry@12,_cygwin_noncygwin_dll_entry@12,DllMainCRTStartup@12,DllEntryPoint@12
-
-      # recent cygwin and mingw systems supply a stub DllMain which the user
-      # can override, but on older systems we have to supply one (in ltdll.c)
-      if test "x$lt_cv_need_dllmain" = "xyes"; then
-	ltdll_obj='$output_objdir/$soname-ltdll.'"$ac_objext "
-	ltdll_cmds='test -f $output_objdir/$soname-ltdll.c || sed -e "/^# \/\* ltdll\.c starts here \*\//,/^# \/\* ltdll.c ends here \*\// { s/^# //; p; }" -e d < $''0 > $output_objdir/$soname-ltdll.c~
-  	test -f $output_objdir/$soname-ltdll.$ac_objext || (cd $output_objdir && $CC -c $soname-ltdll.c)~'
-      else
-	ltdll_obj=
-	ltdll_cmds=
-      fi
-
-      # Extract the symbol export list from an `--export-all' def file,
-      # then regenerate the def file from the symbol export list, so that
-      # the compiled dll only exports the symbol export list.
-      # Be careful not to strip the DATA tag left by newer dlltools.
-      _LT_AC_TAGVAR(export_symbols_cmds, $1)="$ltdll_cmds"'
-	$DLLTOOL --export-all --exclude-symbols '$dll_exclude_symbols' --output-def $output_objdir/$soname-def '$ltdll_obj'$libobjs $convenience~
-	sed -e "1,/EXPORTS/d" -e "s/ @ [[0-9]]*//" -e "s/ *;.*$//" < $output_objdir/$soname-def > $export_symbols'
-
-      # If the export-symbols file already is a .def file (1st line
-      # is EXPORTS), use it as is.
-      # If DATA tags from a recent dlltool are present, honour them!
-      _LT_AC_TAGVAR(archive_expsym_cmds, $1)='if test "x`sed 1q $export_symbols`" = xEXPORTS; then
-	  cp $export_symbols $output_objdir/$soname-def;
-	else
-	  echo EXPORTS > $output_objdir/$soname-def;
-	  _lt_hint=1;
-	  cat $export_symbols | while read symbol; do
-	   set dummy \$symbol;
-	   case \[$]# in
-	     2) echo "   \[$]2 @ \$_lt_hint ; " >> $output_objdir/$soname-def;;
-	     4) echo "   \[$]2 \[$]3 \[$]4 ; " >> $output_objdir/$soname-def; _lt_hint=`expr \$_lt_hint - 1`;;
-	     *) echo "   \[$]2 @ \$_lt_hint \[$]3 ; " >> $output_objdir/$soname-def;;
-	   esac;
-	   _lt_hint=`expr 1 + \$_lt_hint`;
-	  done;
-	fi~
-	'"$ltdll_cmds"'
-	$CC -Wl,--base-file,$output_objdir/$soname-base '$lt_cv_cc_dll_switch' -Wl,-e,'$dll_entry' -o $output_objdir/$soname '$ltdll_obj'$libobjs $deplibs $compiler_flags~
-	$DLLTOOL --as=$AS --dllname $soname --exclude-symbols '$dll_exclude_symbols' --def $output_objdir/$soname-def --base-file $output_objdir/$soname-base --output-exp $output_objdir/$soname-exp~
-	$CC -Wl,--base-file,$output_objdir/$soname-base $output_objdir/$soname-exp '$lt_cv_cc_dll_switch' -Wl,-e,'$dll_entry' -o $output_objdir/$soname '$ltdll_obj'$libobjs $deplibs $compiler_flags~
-	$DLLTOOL --as=$AS --dllname $soname --exclude-symbols '$dll_exclude_symbols' --def $output_objdir/$soname-def --base-file $output_objdir/$soname-base --output-exp $output_objdir/$soname-exp --output-lib $output_objdir/$libname.dll.a~
-	$CC $output_objdir/$soname-exp '$lt_cv_cc_dll_switch' -Wl,-e,'$dll_entry' -o $output_objdir/$soname '$ltdll_obj'$libobjs $deplibs $compiler_flags'
       ;;
 
     netbsd*)
