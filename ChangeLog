@@ -1,5 +1,9 @@
 2000-09-04  Alexandre Oliva  <aoliva@redhat.com>
 
+	* ltmain.in (link -static): Don't add $link_static_flag; only
+	-all-static should do that.
+	* mdemo/configure.in: Revert part of the previous delta.
+
 	* mdemo/configure.in: Don't use -static on AIX4.1.
 	* mdemo/Makefile.am: Likewise.
 
