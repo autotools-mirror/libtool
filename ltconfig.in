@@ -1005,7 +1005,23 @@ aix4* | aix5*)
       export_symbols_cmds='$NM -BCpg $libobjs $convenience | awk '\''{ if (((\$2 == "T") || (\$2 == "D") || (\$2 == "B")) && (substr(\$3,1,1) != ".")) { print \$3 } }'\'' | sort -u > $export_symbols'
     fi
     shlibpath_var=LIBPATH
-    deplibs_check_method='pass_all'
+    deplibs_check_method=pass_all
+    case $host_os in
+    aix4 | aix4.[01] | aix4.[01].*)
+      if { echo '#if __GNUC__ > 2 || (__GNUC__ == 2 && __GNUC_MINOR__ >= 97)'
+	   echo ' yes '
+	   echo '#endif'; } | ${CC} -E - | grep yes > /dev/null; then
+	:
+      else
+	# With GCC up to 2.95.x, collect2 would create an import file
+	# for dependence libraries.  The import file would start with
+	# the line `#! .'.  This would cause the generated library to
+	# depend on `.', always an invalid library.  This was fixed in
+	# development snapshots of GCC prior to 3.0.
+        can_build_shared=no
+      fi
+      ;;
+    esac
   fi
   ;;
 
