@@ -1,10 +1,13 @@
 1998-11-11  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* ltmain.in (IFS): revert Gary's patch when parsing version
+ 	information; we still use `:' here :-)
+
 	* NEWS: updated
 	* PORTING: new file, with general instructions and inter-library
 	dependencies tips
 
-1998-11-11  Gary V, Vaughan <gvaughan@oranda.demon.co.uk>
+1998-11-11  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
 
 	* ltconfig.in: make use of '~' field separator in reload_cmds,
 	old_archive_from_new_cmds, old_archive_cmds, archive_cmds,
