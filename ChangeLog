@@ -1,3 +1,7 @@
+2001-05-16  Alan Modra  <amodra@one.net.au>
+
+	* libtool.m4 (lt_cv_deplibs_check_method): pass_all for hppa*-linux.
+
 2001-05-03  Andreas Jaeger  <aj@suse.de>, Andreas Schwab  <schwab@suse.de>
 
 	* ltmain.in (relink_command): Arrange for wrapper script to save
