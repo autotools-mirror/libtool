@@ -973,6 +973,14 @@ else
     hardcode_shlibpath_var=no
     ;;
 
+  dgux*)
+    archive_cmds='$LD -G -h $soname -o $lib$libobjs'
+    hardcode_libdir_flag_spec='-L$libdir'
+    hardcode_direct=no
+    hardcode_minus_L=no
+    hardcode_shlibpath_var=no
+    ;;
+
   *)
     ld_shlibs=no
     can_build_shared=no
@@ -1320,6 +1328,13 @@ sysv4.2uw2*)
   ;;
 
 uts4*)
+  version_type=linux
+  library_names_spec='${libname}${release}.so.$versuffix ${libname}${release}.so.$major $libname.so'
+  soname_spec='${libname}${release}.so.$major'
+  shlibpath_var=LD_LIBRARY_PATH
+  ;;
+
+dgux*)
   version_type=linux
   library_names_spec='${libname}${release}.so$versuffix ${libname}${release}.so$major $libname.so'
   soname_spec='${libname}${release}.so$major'
