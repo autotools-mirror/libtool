@@ -1,3 +1,8 @@
+1999-03-11  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* libltdl/ltdl.c (strdup): cannot return str when it's NULL
+	because of const correctness
+
 1999-03-10  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* libltdl/ltdl.c (strdup): always use our own, because the

@@ -136,7 +136,7 @@ strdup(str)
 	char *tmp;
 
 	if (!str)
-		return str;
+		return 0;
 	tmp = (char*) lt_dlmalloc(strlen(str)+1);
 	if (tmp)
 		strcpy(tmp, str);
