@@ -1,3 +1,9 @@
+1999-11-29  Gary V. Vaughan  <gary@oranda.demon.co.uk>
+
+	* ltconfig.in:  Be friendlier to C++ compilers when testing
+	for dlopen support.
+	Reported by Stephan Kulow <coolo@itm.mu-luebeck.de>
+
 1999-11-26  Gary V. Vaughan  <gary@oranda.demon.co.uk>
 
 	* libtool.m4:  better use of $target instead of $host to support
