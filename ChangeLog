@@ -1,3 +1,8 @@
+2001-04-07  Peter Eisentraut  <peter_e@gmx.net>
+
+	* ltmain.in (clean,uninstall): Do not error if the file doesn't
+	exist and 'rm -f' was used.  Exit with status 1 on error.
+
 2001-04-06  Nick Hudson  <skrll@netbsd.org>
 
 	* ltmain.in: Implement a new deplibs_check_method called
