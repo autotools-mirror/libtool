@@ -1,5 +1,9 @@
 1999-03-30  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* ltconfig.in (aix4*, hardcode_libdir_flag_spec): unless we're
+	using gcc with old collect2, use -b libpath to hardcode the
+	library search path
+
 	* ltmain.in, ltconfig.in: reverted most of the quoting changes
 	from 1999-03-25; Gary's delay_variable_subst patch from 1999-02-19 
 	obviates it.  Keep only quoting of $PATH, for uniformity with
