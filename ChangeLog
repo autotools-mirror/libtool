@@ -1,3 +1,7 @@
+2001-11-27  Kevin Ryde  <user42@zip.com.au>
+	* libtool.m4 (AC_LIBTOOL_SYS_MAX_CMD_LEN): Send "test"
+	warnings to /dev/null, helps FreeBSD and maybe others.
+
 2001-11-15  Albert Chin-A-Young  <china@thewrittenword.com>
 
 	* libtool.m4: quote LTCC because autoconf AC_PROG_CC_STDC
