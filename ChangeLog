@@ -1,3 +1,8 @@
+2005-02-01  Peter O'Gorman  <peter@pogma.com>
+
+	* libtoolize.in, libltdl/ltdl.c: Nothing significant changed in 2005,
+	backing out copyright update. Thanks Gary.
+
 2005-02-01  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* config/ltmain.m4sh (func_win32_libid, func_infer_tag)
