@@ -18,6 +18,8 @@
 	lt_dlpreloaded_symbols
 	* libltdl/ltdl.c (lt_dlpreopen_default_): renamed from
 	lt_dlpreopen_default
+	(find_module) tryall_dlopen old_name first, so that we don't
+ 	override statically linked symbols with dlopened ones
 
 1999-01-15  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
 
