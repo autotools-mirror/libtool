@@ -999,6 +999,8 @@ allow_undefined_flag=
 no_undefined_flag=
 need_lib_prefix=unknown
 need_version=unknown
+# when you set need_version to no, make sure it does not cause -set_version
+# flags to be left without arguments
 archive_cmds=
 archive_sym_cmds=
 old_archive_from_new_cmds=
@@ -1225,9 +1227,9 @@ else
 
   irix5* | irix6*)
     if test "$with_gcc" = yes; then
-      archive_cmds='$CC -shared -o $lib ${wl}-soname ${wl}$soname ${wl}-set_version ${wl}$verstring $libobjs $deplibs $linkopts'
+      archive_cmds='$CC -shared -o $lib ${wl}-soname ${wl}$soname `test -n "$verstring" && echo ${wl}-set_version ${wl}$verstring` $libobjs $deplibs $linkopts'
     else
-      archive_cmds='$LD -shared -o $lib -soname $soname -set_version $verstring $libobjs $deplibs $linkopts'
+      archive_cmds='$LD -shared -o $lib -soname $soname `test -n "$verstring" && echo -set_version $verstring` $libobjs $deplibs $linkopts'
     fi
     hardcode_libdir_flag_spec='${wl}-rpath ${wl}$libdir'
     hardcode_libdir_separator=:
@@ -1262,10 +1264,10 @@ else
   osf3* | osf4*)
     if test "$with_gcc" = yes; then
       allow_undefined_flag=' ${wl}-expect_unresolved ${wl}\*'
-      archive_cmds='$CC -shared${allow_undefined_flag} -o $lib ${wl}-soname ${wl}$soname ${wl}-set_version ${wl}$verstring $libobjs $deplibs $linkopts'
+      archive_cmds='$CC -shared${allow_undefined_flag} -o $lib ${wl}-soname ${wl}$soname `test -n "$verstring" && echo ${wl}-set_version ${wl}$verstring` $libobjs $deplibs $linkopts'
     else
       allow_undefined_flag=' -expect_unresolved \*'
-      archive_cmds='$LD -shared${allow_undefined_flag} -o $lib -soname $soname -set_version $verstring $libobjs $deplibs $linkopts'
+      archive_cmds='$LD -shared${allow_undefined_flag} -o $lib -soname $soname `test -n "$verstring" && echo -set_version $verstring` $libobjs $deplibs $linkopts'
     fi
     hardcode_libdir_flag_spec='${wl}-rpath ${wl}$libdir'
     hardcode_libdir_separator=:
@@ -1682,8 +1684,15 @@ irix6*)
   need_version=no
   soname_spec='${libname}${release}.so'
   library_names_spec='${libname}${release}.so$versuffix ${libname}${release}.so $libname.so'
-  shlibpath_var=LD_LIBRARYN32_PATH
-  deplibs_check_method="file_magic ELF (32-bit|N32|64-bit) MSB mips-[1234] dynamic lib MIPS - version 1" # or should it be pass_all?
+  case "$LD" in # libtool.m4 will add one of these switches to LD
+  *-32|*"-32 ") libsuff= shlibsuff= libmagic=32-bit;;
+  *-n32|*"-n32 ") libsuff=32 shlibsuff=N32 libmagic=N32;;
+  *-64|*"-64 ") libsuff=64 shlibsuff=64 libmagic=64-bit;;
+  *) libsuff= shlibsuff= libmagic=never-match;;
+  esac
+  shlibpath_var=LD_LIBRARY${shlibsuff}_PATH
+  sys_lib_search_path_spec="/lib${libsuff} /usr/lib${libsuff} /usr/local/lib${libsuff}"
+  deplibs_check_method="file_magic ELF ${libmagic} MSB mips-[1234] dynamic lib MIPS - version 1" # or should it be pass_all?
   file_magic_command=file
   ;;
 
@@ -1801,7 +1810,7 @@ sysv4.2uw2* | sysv4.3* | sysv5*)
 
 uts4*)
   version_type=linux
-  library_names_spec='${libname}${release}.so.$versuffix ${libname}${release}.so$major $libname.so'
+  library_names_spec='${libname}${release}.so$versuffix ${libname}${release}.so$major $libname.so'
   soname_spec='${libname}${release}.so$major'
   shlibpath_var=LD_LIBRARY_PATH
   ;;

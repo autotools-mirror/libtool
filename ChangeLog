@@ -1,3 +1,12 @@
+1999-02-10  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* ltconfig.in (irix5*, irix6*, osf3*, osf4*): do not use
+	-set_version in archive_cmds if verstring is empty
+	(irix6*, shlibpath_var, sys_lib_search_path-spec,
+	deplibs_check_method): set appropriate values depending on
+	selected ABI, -32, -n32 or -64, as set in LD by libtool.m4
+	(uts4*): remove dot between .so and versuffix
+
 1999-02-08  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* ltconfig.in (irix5*, irix6*, deplibs_check_method): use
