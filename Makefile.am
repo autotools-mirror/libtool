@@ -41,15 +41,15 @@ libtoolize: libtoolize.in $(top_builddir)/config.status
 	CONFIG_FILES=libtoolize CONFIG_HEADERS= $(top_builddir)/config.status
 	chmod +x libtoolize
 
-# These depend on NEWS (rather then config.status) so that version numbers
-# are correctly updated.
+# These depend on configure.in (rather then config.status) so that version
+# numbers are correctly updated.
 # This way, they aren't regenerated after people configure the package.
-$(srcdir)/ltconfig: ltconfig.in NEWS
+$(srcdir)/ltconfig: ltconfig.in configure.in
 	CONFIG_FILES=ltconfig CONFIG_HEADERS= $(top_builddir)/config.status
 	chmod +x ltconfig
 	test "$(srcdir)" = . || mv ltconfig $(srcdir)/ltconfig
 
-$(srcdir)/ltmain.sh: ltmain.sh.in NEWS
+$(srcdir)/ltmain.sh: ltmain.sh.in configure.in
 	CONFIG_FILES=ltmain.sh CONFIG_HEADERS= $(top_builddir)/config.status
 	test "$(srcdir)" = . || mv ltmain.sh $(srcdir)/ltmain.sh
 

@@ -1,5 +1,11 @@
 Thu Jun 19 14:31:49 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
+	* demo-conf.test (CONFIG_SITE): Set to /dev/null, so that the
+	config.site file doesn't mess up our prefix.  Reported by Joel
+	Weber.
+
+	* demo-inst.test: Always run both hell.static and hell.
+
 	* demo-conf.test: Always remove the local config.cache, but run
 	`make distclean' only if the Makefile exists.  Otherwise, the demo
 	directory is not cleaned up if a user uses their own config.cache.

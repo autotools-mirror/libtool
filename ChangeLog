@@ -2,6 +2,7 @@ Thu Jun 19 14:24:06 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltmain.sh.in (install): Add a missing `test' command.  Reported
 	by Joel Weber.
+	Miscellaneous fixes to improve robustness.  From Alexandre Oliva.
 
 Sat Jun 14 21:01:03 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 

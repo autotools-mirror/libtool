@@ -4,6 +4,10 @@ fixed in GCC.
 * We could use libtool object convenience libraries that resolve
 symbols to be included in a libtool archive.
 
+* Another form of convenience library, suggested by Alexandre Oliva,
+is to have undocumented utility libraries, where only the shared
+version is installed.
+
 * Finish up the dlname mode, and get it integrated with DLD.  We need
 a way for different major versions of the same .la to coexist.  This
 also involves writing a better uninstall mode, so that nothing
