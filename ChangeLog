@@ -1,3 +1,9 @@
+2001-10-31  Raja R Harinath  <harinath@cs.umn.edu>
+
+	* configure.ac (pkgdatadir): Move the invocation of AC_INIT_AUTOMAKE
+	before the use of $PACKAGE in $pkgdatadir.
+	Reported by Bob Friesenhahn <bfreisen@simple.dallas.tx.us>
+
 2001-10-28  Gary V. Vaughan  <gary@gnu.org>
 
 	From Tom Bates  <Tom.Bates@compaq.com>:

@@ -49,6 +49,13 @@ AC_SUBST([TIMESTAMP])
 
 
 
+## ------------------------ ##
+## Automake Initialisation. ##
+## ------------------------ ##
+AM_INIT_AUTOMAKE(AC_PACKAGE_TARNAME, AC_PACKAGE_VERSION)
+
+
+
 ## ------------------------------- ##
 ## Libtool specific configuration. ##
 ## ------------------------------- ##
@@ -79,13 +86,6 @@ for dir in $CONF_SUBDIRS; do
 done
 AC_SUBST([ACINCLUDE_M4_LIST])
 AC_SUBST([DIST_MAKEFILE_LIST])
-
-
-
-## ------------------------ ##
-## Automake Initialisation. ##
-## ------------------------ ##
-AM_INIT_AUTOMAKE(AC_PACKAGE_TARNAME, AC_PACKAGE_VERSION)
 
 
 
