@@ -1,3 +1,19 @@
+2002-07-31  Eric Lindahl  <erik@theophys.kth.se>
+
+	* libtool.m4 (AC_PROG_LIBTOOL): Added support for the new F77
+	Fortran support tag.
+	(AC_LIBTOOL_PROG_CC_C_O, _LT_AC_TAGCONFIG): Support F77 tag.
+	(AC_LIBTOOL_F77, _LT_AC_LANG_F77, AC_LIBTOOL_LANG_F77_CONFIG):
+	New macros for F77 tag Fortran support.
+	* configure.ac: Add support for creating the new F77 tag.
+	* bootstrap: Add f77demo directory to the list to be processed.
+	* Makefile.am: Add support for FFLAGS and FLIBS.
+	* tests/Makefile.am: Add new Fortran tests.
+	* tests/f77demo-*.test: New files.
+	* f77demo/configure.ac, f77demo/cprogram.c, f77demo/fooc.c 
+	* f77demo/foof.f, f77demo/foo.h, f77demo/fprogram.f 
+	* f77demo/Makefile.am, f77demo/README: New files.
+
 2002-07-16  Gary V. Vaughan  <gary@gnu.org>
 
 	* libltdl/ltdl.c (tryall_dlopen): We need to catch missing file

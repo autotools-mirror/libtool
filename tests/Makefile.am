@@ -7,6 +7,11 @@ CXX_TESTS = \
 	tagdemo-conf.test tagdemo-make.test tagdemo-exec.test \
 	tagdemo-shared.test tagdemo-make.test tagdemo-exec.test
 
+F77_TESTS = \
+	f77demo-static.test f77demo-make.test f77demo-exec.test \
+	f77demo-conf.test f77demo-make.test f77demo-exec.test \
+	f77demo-shared.test f77demo-make.test f77demo-exec.test 
+
 COMMON_TESTS = \
 	cdemo-static.test cdemo-make.test cdemo-exec.test \
 	demo-static.test demo-make.test demo-exec.test \
@@ -41,9 +46,17 @@ COMMON_TESTS = \
 	pdemo-make.test pdemo-exec.test pdemo-inst.test
 
 if HAVE_CXX
+if HAVE_F77
+TESTS = $(COMMON_TESTS) $(CXX_TESTS) $(F77_TESTS)
+else
 TESTS = $(COMMON_TESTS) $(CXX_TESTS)
+endif
+else
+if HAVE_F77
+TESTS = $(COMMON_TESTS) $(F77_TESTS)
 else
 TESTS = $(COMMON_TESTS)
+endif
 endif
 
 demo-conf.test: $(top_builddir)/libtool
@@ -56,14 +69,17 @@ CFLAGS = @CFLAGS@
 CPPFLAGS = @CPPFLAGS@
 LDFLAGS = @LDFLAGS@
 LIBS = @LIBS@
+if HAVE_F77
+  FFLAGS = @FFLAGS@
+endif
 
 # Be sure to reexport important environment variables.
 TESTS_ENVIRONMENT = MAKE="$(MAKE)" CC="$(CC)" CFLAGS="$(CFLAGS)" \
 	CPPFLAGS="$(CPPFLAGS)" LD="$(LD)" LDFLAGS="$(LDFLAGS)" \
 	LIBS="$(LIBS)" LN_S="$(LN_S)" NM="$(NM)" RANLIB="$(RANLIB)" \
-	OBJEXT="$(OBJEXT)" EXEEXT="$(EXEEXT)"
+	OBJEXT="$(OBJEXT)" EXEEXT="$(EXEEXT)" FFLAGS="$(FFLAGS)" 
 
-EXTRA_DIST = defs $(COMMON_TESTS) $(CXX_TESTS)
+EXTRA_DIST = defs $(COMMON_TESTS) $(CXX_TESTS) $(F77_TESTS)
 
 # We need to remove any files that the above tests created.
 clean-local:
@@ -73,4 +89,5 @@ clean-local:
 	-test -f ../depdemo/Makefile && cd ../depdemo && $(MAKE) distclean
 	-test -f ../mdemo/Makefile && cd ../mdemo && $(MAKE) distclean
 	-test -f ../tagdemo/Makefile && cd ../tagdemo && $(MAKE) distclean
+	-test -f ../f77demo/Makefile && cd ../f77demo && $(MAKE) distclean
 	rm -rf _inst

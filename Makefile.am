@@ -11,6 +11,8 @@ CFLAGS = @CFLAGS@
 CPPLAGS = @CPPFLAGS@
 LDFLAGS = @LDFLAGS@
 LIBS= @LIBS@
+FFLAGS = @FFLAGS@
+FLIBS = @FLIBS@
 
 aclocal_macros = libtool.m4 ltdl.m4
 

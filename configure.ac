@@ -75,7 +75,7 @@ AC_CONFIG_SUBDIRS([libltdl])
 
 # all subdirectories that are configured on demand, but that must be
 # included in the distribution
-CONF_SUBDIRS="cdemo pdemo demo depdemo mdemo tagdemo"
+CONF_SUBDIRS="cdemo pdemo demo depdemo mdemo tagdemo f77demo"
 AC_SUBST([CONF_SUBDIRS])
 
 ACINCLUDE_M4_LIST="${srcdir}/acinclude.m4"
@@ -106,6 +106,11 @@ pushdef([AC_MSG_ERROR], [CXX=no])
 AC_PROG_CXX
 popdef([AC_MSG_ERROR])
 AM_CONDITIONAL(HAVE_CXX, [test "x$CXX" != xno])
+
+pushdef([AC_MSG_ERROR], [F77=no])
+AC_PROG_F77
+popdef([AC_MSG_ERROR])
+AM_CONDITIONAL(HAVE_F77, [test "x$F77" != xno])
 
 LT_AC_PROG_GCJ
 AM_CONDITIONAL(HAVE_GCJ, [test "x$GCJ" != xno])

@@ -14,7 +14,7 @@ find . \( -name autom4te.cache -o -name libtool \) -exec rm -r {} \;
 touch ltmain.sh
 touch libtoolize
 
-for sub in . libltdl cdemo demo depdemo mdemo pdemo tagdemo; do
+for sub in . libltdl cdemo demo depdemo mdemo pdemo tagdemo f77demo; do
   case $sub in
   .) 
     top_srcdir=.

@@ -45,6 +45,11 @@ dnl immediately, otherwise, hook it in at the end of AC_PROG_CXX.
     [AC_LIBTOOL_CXX],
     [define([AC_PROG_CXX], defn([AC_PROG_CXX])[AC_LIBTOOL_CXX
   ])])
+dnl And a similar setup for Fortran 77 support
+  AC_PROVIDE_IFELSE([AC_PROG_F77],
+    [AC_LIBTOOL_F77],
+    [define([AC_PROG_F77], defn([AC_PROG_F77])[AC_LIBTOOL_F77
+])])
 
 dnl Quote A][M_PROG_GCJ so that aclocal doesn't bring it in needlessly.
 dnl If either AC_PROG_GCJ or A][M_PROG_GCJ have already been expanded, run
@@ -70,6 +75,7 @@ dnl AC_LIBTOOL_GCJ immediately, otherwise, hook it in at the end of both.
 AC_DEFUN([_AC_PROG_LIBTOOL],
 [AC_REQUIRE([AC_LIBTOOL_SETUP])dnl
 AC_BEFORE([$0],[AC_LIBTOOL_CXX])dnl
+AC_BEFORE([$0],[AC_LIBTOOL_F77])dnl
 AC_BEFORE([$0],[AC_LIBTOOL_GCJ])dnl
 
 # This can be used to rebuild libtool when needed
@@ -531,7 +537,7 @@ AC_DEFUN([AC_LIBTOOL_COMPILER_OPTION],
   ifelse([$4], , [ac_outfile=conftest.$ac_objext], [ac_outfile=$4])
    save_CFLAGS="$CFLAGS"
    CFLAGS="$CFLAGS $3"
-   echo "$lt_simple_compile_test_code" > conftest.$ac_ext
+   printf "$lt_simple_compile_test_code" > conftest.$ac_ext
    if (eval $ac_compile 2>conftest.err) && test -s $ac_outfile; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings
@@ -563,7 +569,7 @@ AC_DEFUN([AC_LIBTOOL_LINKER_OPTION],
   [$2=no
    save_LDFLAGS="$LDFLAGS"
    LDFLAGS="$LDFLAGS $3"
-   echo "$lt_simple_link_test_code" > conftest.$ac_ext
+   printf "$lt_simple_link_test_code" > conftest.$ac_ext
    if (eval $ac_link 2>conftest.err) && test -s conftest$ac_exeext; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings
@@ -850,6 +856,8 @@ AC_CACHE_CHECK([if $compiler supports -c -o file.$ac_objext],
 		   CFLAGS="$CFLAGS -o out/conftest2.$ac_objext"],
 	  [$1],[CXX],[save_CXXFLAGS="$CXXFLAGS"
 		   CXXFLAGS="$CXXFLAGS -o out/conftest2.$ac_objext"],
+	  [$1],[F77],[save_FFLAGS="$FFLAGS"
+		   FFLAGS="$FFLAGS -o out/conftest2.$ac_objext"],
 	  [$1],[GCJ],[save_GCJFLAGS="$CFLAGS"
 		   CFLAGS="$GCJFLAGS -o out/conftest2.$ac_objext"])
    echo "$lt_simple_compile_test_code" > conftest.$ac_ext
@@ -874,6 +882,7 @@ AC_CACHE_CHECK([if $compiler supports -c -o file.$ac_objext],
    fi
    ifelse([$1],[],[CFLAGS="$save_CFLAGS"],
 	  [$1],[CXX],[CXXFLAGS="$save_CXXFLAGS"],
+	  [$1],[F77],[FFLAGS="$save_FFLAGS"],
 	  [$1],[GCJ],[CFLAGS="$save_CFLAGS"])
    chmod u+w .
    $rm conftest* out/*
@@ -1504,6 +1513,10 @@ if test -f "$ltmain" && test -n "$tagnames"; then
       CXX)
 	AC_LIBTOOL_LANG_CXX_CONFIG
 	;;
+
+      F77) 
+        AC_LIBTOOL_LANG_F77_CONFIG
+        ;;
 
       GCJ)
 	AC_LIBTOOL_LANG_GCJ_CONFIG
@@ -2202,6 +2215,22 @@ _LT_AC_SHELL_INIT([tagnames=`echo "$tagnames,CXX" | sed 's/^,//'`])
 ])# _LT_AC_LANG_CXX
 
 
+# AC_LIBTOOL_F77
+# --------------
+# enable support for Fortran 77 libraries
+AC_DEFUN([AC_LIBTOOL_F77],
+[AC_REQUIRE([_LT_AC_LANG_F77])
+])# AC_LIBTOOL_F77
+
+
+# _LT_AC_LANG_F77
+# ---------------
+AC_DEFUN([_LT_AC_LANG_F77],
+[AC_REQUIRE([AC_PROG_F77])
+_LT_AC_SHELL_INIT([tagnames=`echo "$tagnames,F77" | sed 's/^,//'`])
+])# _LT_AC_LANG_F77
+
+
 # AC_LIBTOOL_GCJ
 # --------------
 # enable support for GCJ libraries
@@ -2250,10 +2279,10 @@ objext=o
 _LT_AC_TAGVAR(objext, $1)=$objext
 
 # Code to be used in simple compile tests
-lt_simple_compile_test_code="int some_variable = 0;"
+lt_simple_compile_test_code="int some_variable = 0;\n"
 
 # Code to be used in simple link tests
-lt_simple_link_test_code='main(){return(0);}'
+lt_simple_link_test_code='main(){return(0);}\n'
 
 _LT_AC_SYS_COMPILER
 
@@ -2380,10 +2409,10 @@ objext=o
 _LT_AC_TAGVAR(objext, $1)=$objext
 
 # Code to be used in simple compile tests
-lt_simple_compile_test_code="int some_variable = 0;"
+lt_simple_compile_test_code="int some_variable = 0;\n"
 
 # Code to be used in simple link tests
-lt_simple_link_test_code='int main(int char *[]) { return(0); }'
+lt_simple_link_test_code='int main(int char *[]) { return(0); }\n'
 
 # ltmain only uses $CC for tagged configurations so make sure $CC is set.
 _LT_AC_SYS_COMPILER
@@ -3198,6 +3227,101 @@ CC="$lt_save_CC"
 ])# AC_LIBTOOL_LANG_CXX_CONFIG
 
 
+# AC_LIBTOOL_LANG_F77_CONFIG
+# ------------------------
+# Ensure that the configuration vars for the C compiler are
+# suitably defined.  Those variables are subsequently used by
+# AC_LIBTOOL_CONFIG to write the compiler configuration to `libtool'.
+AC_DEFUN([AC_LIBTOOL_LANG_F77_CONFIG], [_LT_AC_LANG_F77_CONFIG(F77)])
+AC_DEFUN([_LT_AC_LANG_F77_CONFIG],
+[AC_REQUIRE([AC_PROG_F77])
+AC_LANG_PUSH(Fortran 77)
+
+_LT_AC_TAGVAR(archive_cmds_need_lc, $1)=no
+_LT_AC_TAGVAR(allow_undefined_flag, $1)=
+_LT_AC_TAGVAR(always_export_symbols, $1)=no
+_LT_AC_TAGVAR(archive_expsym_cmds, $1)=
+_LT_AC_TAGVAR(export_dynamic_flag_spec, $1)=
+_LT_AC_TAGVAR(hardcode_direct, $1)=no
+_LT_AC_TAGVAR(hardcode_libdir_flag_spec, $1)=
+_LT_AC_TAGVAR(hardcode_libdir_separator, $1)=
+_LT_AC_TAGVAR(hardcode_minus_L, $1)=no
+_LT_AC_TAGVAR(link_all_deplibs, $1)=unknown
+_LT_AC_TAGVAR(old_archive_cmds, $1)=$old_archive_cmds
+_LT_AC_TAGVAR(no_undefined_flag, $1)=
+_LT_AC_TAGVAR(whole_archive_flag_spec, $1)=
+
+# Source file extension for f77 test sources.
+ac_ext=f
+
+# Object file extension for compiled f77 test sources.
+objext=o
+_LT_AC_TAGVAR(objext, $1)=$objext
+
+# Code to be used in simple compile tests
+lt_simple_compile_test_code="      subroutine t\n      return\n      end\n"    
+
+# Code to be used in simple link tests
+lt_simple_link_test_code="      program t\n      end\n"
+
+# ltmain only uses $CC for tagged configurations so make sure $CC is set.
+_LT_AC_SYS_COMPILER
+
+# Allow CC to be a program name with arguments.
+lt_save_CC="$CC"
+CC=${F77-"f77"}
+set dummy $CC
+compiler="[$]2"
+_LT_AC_TAGVAR(compiler, $1)=$CC
+cc_basename=`$echo X"$compiler" | $Xsed -e 's%^.*/%%'`
+
+AC_MSG_CHECKING([if libtool supports shared libraries])
+AC_MSG_RESULT([$can_build_shared])
+
+AC_MSG_CHECKING([whether to build shared libraries])
+test "$can_build_shared" = "no" && enable_shared=no
+
+# On AIX, shared libraries and static libraries use the same namespace, and
+# are all built from PIC.
+case "$host_os" in
+aix3*)
+  test "$enable_shared" = yes && enable_static=no
+  if test -n "$RANLIB"; then
+    archive_cmds="$archive_cmds~\$RANLIB \$lib"
+    postinstall_cmds='$RANLIB $lib'
+  fi
+  ;;
+aix4*)
+  test "$enable_shared" = yes && enable_static=no
+  ;;
+esac
+AC_MSG_RESULT([$enable_shared])
+
+AC_MSG_CHECKING([whether to build static libraries])
+# Make sure either enable_shared or enable_static is yes.
+test "$enable_shared" = yes || enable_static=yes
+AC_MSG_RESULT([$enable_static])
+
+test "$_LT_AC_TAGVAR(ld_shlibs, $1)" = no && can_build_shared=no
+
+_LT_AC_TAGVAR(GCC, $1)="$G77"
+_LT_AC_TAGVAR(LD, $1)="$LD"
+
+AC_LIBTOOL_PROG_COMPILER_PIC($1)
+AC_LIBTOOL_PROG_CC_C_O($1)
+AC_LIBTOOL_SYS_HARD_LINK_LOCKS($1)
+AC_LIBTOOL_PROG_LD_SHLIBS($1)
+AC_LIBTOOL_PROG_LD_HARDCODE_LIBPATH($1)
+AC_LIBTOOL_SYS_LIB_STRIP
+AC_LIBTOOL_SYS_DYNAMIC_LINKER($1)
+
+AC_LIBTOOL_CONFIG($1)
+
+AC_LANG_POP
+CC="$lt_save_CC"
+])# AC_LIBTOOL_LANG_F77_CONFIG
+
+
 # AC_LIBTOOL_LANG_GCJ_CONFIG
 # --------------------------
 # Ensure that the configuration vars for the C compiler are
@@ -3271,7 +3395,7 @@ objext=o
 _LT_AC_TAGVAR(objext, $1)=$objext
 
 # Code to be used in simple compile tests
-lt_simple_compile_test_code='sample MENU { MENUITEM "&Soup", 100, CHECKED }'
+lt_simple_compile_test_code='sample MENU { MENUITEM "&Soup", 100, CHECKED }\n'
 
 # Code to be used in simple link tests
 lt_simple_link_test_code="$lt_simple_compile_test_code"
