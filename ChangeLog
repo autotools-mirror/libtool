@@ -1,3 +1,12 @@
+2002-10-11 Albert Chin-A-Young  <china@thewrittenword.com>
+
+	* libtool.m4 (aix): When LDFLAGS="-Wl,-brtl,[other options]",
+	the "-brtl" special-case code for AIX never gets triggered
+	because were are being too specific about how we search for
+	"-brtl".  Use case statement to avoid this. Remove extraneous
+	semicolon.
+	* ltmain.in: Recognize the IBM xlc compiler family.
+
 2002-10-11  Christoph Egger  <Christoph_Egger@gmx.de>
 
 	* libtool.m4 (darwin): Add -install_name to the link line only
