@@ -14,7 +14,7 @@ CPPLAGS = @CPPFLAGS@
 aclocal_macros = libtool.m4
 
 EXTRA_DIST = $(aclocal_macros) libtoolize.in ltconfig.in ltmain.in \
-	libtool.spec ChangeLog.0
+	libtool.spec mkstamp ChangeLog.0
 CLEANFILES = libtool libtoolize ltconfig.T ltmain.shT
 
 # These are required by libtoolize.
