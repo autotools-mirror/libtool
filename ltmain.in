@@ -160,7 +160,7 @@ win32_libid () {
 
 # Shorthand for --mode=foo
 case $1 in
-compile|compil|compi|comp|com|co|o)
+compile|compil|compi|comp|com|co|c)
   shift; set -- --mode=compile ${1+"$@"}
   ;;
 execute|execut|execu|exec|exe|ex|e)
