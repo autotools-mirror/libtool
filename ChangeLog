@@ -1,5 +1,14 @@
 1999-01-27  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
 
+	* THANKS: Now that we have a policy, applied it to the existing
+	list.  This in no way demeans the work of those people removed
+	from the THANKS file, who are still credited in the ChangeLogs and
+	without who's work, libtool would not work so well on many
+	platforms, but serves to highlight the outstanding and continued
+	contribution the remaining people have made.  And I quote, "We
+	reserve THANKS for people who have made major contributions, and
+	leave the credit to the others for the ChangeLog only."
+	
 	* THANKS: added Sam Vilain.
 	* ltconfig.in ($echo):  When using printf to replace echo the shell
 	expands %s\n to %sn.  Changed to use "%s\n" (with quotes).
