@@ -1,3 +1,8 @@
+2001-11-15  Gary Vaughan  <gary@gnu.org>
+
+	From Joseph S. Myers  <jsm28@cam.ac.uk>:
+	* ltmain.in: Typo.
+
 2001-11-15   Mo DeJong  <supermo@bayarea.net>
 
 	* ltmain.in: Place parens around a generated relink_command
