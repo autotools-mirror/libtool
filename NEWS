@@ -1,6 +1,6 @@
 NEWS - list of user-visible changes between releases of GNU Libtool
 
-New in 1.4b: 2001-??-??; CVS version 1.4a, Libtool team:
+New in 1.4b: 2001-07-09; CVS version 1.4a, Libtool team:
 * Now bootstraps with autoconf-2.50 and automake-1.4-p4.
 * Always try to build at least a static lib, even if both static and
   shared libs were disabled.

@@ -126,6 +126,9 @@ Xsed='sed -e s/^X//'
 # double_quote_subst'ed string.
 delay_variable_subst='s/\\\\\\\\\\\$/\\\\\\$/g'
 
+# Sed substitution to avoid accidental globbing in evaled expressions
+no_glob_subst='s/\*/\\\*/g'
+
 # Constants:
 rm="rm -f"
 
@@ -2862,7 +2865,12 @@ if AC_TRY_EVAL(ac_compile); then
   # the conftest object file.
   pre_test_object_deps_done=no
 
-  for p in `eval $output_verbose_link_cmd`; do
+  # The `*' in the case matches for architectures that use `case' in
+  # $output_verbose_cmd can trigger glob expansion during the loop
+  # eval without this substitution.
+  output_verbose_link_cmd="`$echo \"X$output_verbose_link_cmd\" | $Xsed -e \"$no_glob_subst\"`"
+
+  for p in `eval "$output_verbose_link_cmd"`; do
 
     case $p in
 
