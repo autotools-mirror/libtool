@@ -46,10 +46,10 @@ emitExecute( argc, argv )
     tSCC zQuiet[]    = "run=\nshow=%s\n";
     tSCC zDynFmt[]   = "build_libtool_libs=%s\n";
     tSCC zStatic[]   = "build_old_libs=%s\n";
+    tSCC zDupDeps[]  = "duplicate_deps=%s\n";
     tSCC zModeName[] = "modename='%s: %s'\n";
     tSCC zMode[]     = "mode='%s'\n";
     tSCC zCmdName[]  = "nonopt='%s'\nset --";
-    tSCC zDlOpt[]    = "execute_dlfiles='";
 
     /*
      *  When we emit our script, we want the interpreter to invoke *US*
@@ -60,16 +60,7 @@ emitExecute( argc, argv )
 then  :\n\
 else  echo='%s --echo --' ; fi\n";
 
-    FILE* fp;
-
-	if (argc <= 0) {
-		fprintf( stderr,
-				 "libtool error:  in %s mode, you must specify a command\n",
-				 apz_mode_cmd[ OPT_VALUE_MODE ]);
-		USAGE( EXIT_FAILURE );
-	}
-
-	fp = HAVE_OPT( DRY_RUN ) ? stdout : popen( pz_shell, "w" );
+    FILE* fp = HAVE_OPT( DRY_RUN ) ? stdout : popen( pz_shell, "w" );
     if (fp == (FILE*)NULL) {
         tSCC zErr[] = "%s error:  fs error %d (%s) on popen( \"%s\",\"w\")\n";
         fprintf( stderr, zErr, libtoolOptions.pzProgPath, errno,
@@ -104,6 +95,10 @@ else  echo='%s --echo --' ; fi\n";
         fprintf( fp, zDynFmt, ENABLED_OPT( DYNAMIC ) ? "yes" : "no" );
     if (HAVE_OPT( STATIC ))
         fprintf( fp, zStatic, ENABLED_OPT( STATIC )  ? "yes" : "no" );
+    if (HAVE_OPT( PRESERVE_DUP_DEPS ))
+		fprintf( fp, zDupDeps, "yes" );
+	else
+		fprintf( fp, zDupDeps, "no" );
 
     if (HAVE_OPT( DEBUG )) {
         fprintf( stderr, "%s: enabling shell trace mode\n",
@@ -113,18 +108,9 @@ else  echo='%s --echo --' ; fi\n";
     CKSERV;
 
     if (HAVE_OPT( DLOPEN )) {
-        int    ct = STACKCT_OPT(  DLOPEN );
-        char** al = STACKLST_OPT( DLOPEN );
-        fputs( zDlOpt, fp );
-        for (;;) {
-            emitShellQuoted( *(al++), fp );
-            if (--ct <= 0)
-                break;
-            fputc( ' ', fp ); /* between each value only */
-        }
-        fputs( "'\n", fp );
+        emitDlopenOption( fp );
+        CKSERV;
     }
-    CKSERV;
 
     /*
      *  Insert our modal stuff and one shell option processing dinkleberry
@@ -147,7 +133,7 @@ else  echo='%s --echo --' ; fi\n";
 
     while (--argc > 0) {
         fputc( ' ', fp );
-        emitShellArg( *(++argv), fp );
+        emitShellArg( *(++argv), fp, NUL ); /* either single or double quotes */
         CKSERV;
     }
 
@@ -157,5 +143,6 @@ else  echo='%s --echo --' ; fi\n";
  * Local Variables:
  * c-file-style: "stroustrup"
  * indent-tabs-mode: nil
+ * tab-width: 4
  * End:
  * end of ltcompile.c */
