@@ -140,7 +140,7 @@ LT_BEGIN_C_DECLS
 /* --- DYNAMIC MODULE LOADING API --- */
 
 
-typedef	struct lt_dlhandle *lt_dlhandle;	/* A loaded module.  */
+typedef	struct lt_dlhandle_struct *lt_dlhandle;	/* A loaded module.  */
 
 /* Initialisation and finalisation functions for libltdl. */
 extern	int	    lt_dlinit		LT_PARAMS((void));
