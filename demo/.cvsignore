@@ -15,5 +15,5 @@ libtool
 *.lo
 *.la
 hell
-hell.debug
+hell.static
 helldl

@@ -11,4 +11,4 @@ libtool
 *.lo
 *.la
 mdemo
-mdemo.debug
+mdemo.static
