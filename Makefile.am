@@ -33,12 +33,10 @@ CLEANFILES = libtool libtoolize ltmain.shT
 # executable by hand
 dist_pkgdata_DATA = config/config.guess config/config.sub config/ltmain.sh
 
-# We maintain our own macros to provent problems with ancient definitions.
-# lt~obsolete.m4 doesn't belong here, it's for bootstrapping us only
+# Everything that gets picked up by aclocal is automatically distributed,
+# this is the list of macro files we install on the user's system.
 pkgmacrodir = $(pkgdatadir)/m4
-dist_pkgmacro_DATA = m4/libtool.m4 m4/ltdl.m4 m4/ltsugar.m4
-nodist_pkgmacro_DATA = m4/ltversion.m4
-EXTRA_DIST += m4/ltversion.in
+pkgmacro_DATA = m4/libtool.m4 m4/ltdl.m4 m4/ltsugar.m4 m4/ltversion.m4
 
 # We build ltversion.m4 here, instead of from config.status,
 # because config.status is rerun each time one og configure's
@@ -47,6 +45,7 @@ EXTRA_DIST += m4/ltversion.in
 # a loop otherwise.
 # Use `$(top_srcdir)/m4' for the benefit of non-GNU makes: this is
 # how ltversion.m4 appears in our dependencies.
+EXTRA_DIST += m4/ltversion.in
 $(top_srcdir)/m4/ltversion.m4: $(top_srcdir)/m4/ltversion.in stamp-vcl
 	set `$(MKSTAMP) < $(top_srcdir)/ChangeLog`; \
 	sed -e "s,[@]MACRO_VERSION[@],$(VERSION),g" \
