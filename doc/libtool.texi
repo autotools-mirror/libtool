@@ -2291,7 +2291,7 @@ in order to guarantee that all the required libraries are found.  This
 restriction is only necessary to preserve compatibility with static
 library systems and simple dynamic library systems.
 
-Some platforms, such as AIX and Windows 95, do not even allow you this
+Some platforms, such as AIX, do not even allow you this
 flexibility.  In order to build a shared library, it must be entirely
 self-contained (that is, have references only to symbols that are found
 in the @samp{.lo} files or the specified @samp{-l} libraries), and you
@@ -2886,7 +2886,7 @@ uninstalled correctly.
 The @file{mdemo} subdirectory contains a demonstration of a package that
 uses libtool and the system independent dlopen wrapper @file{libltdl} to
 load modules.  The library @file{libltdl} provides an experimental
-dlopen wrapper for various platforms (Linux, Solaris, HP/UX, Win32 etc.) 
+dlopen wrapper for various platforms (Linux, Solaris, HP/UX etc.) 
 including support for dlpreopened modules (@pxref{Dlpreopening}).
 
 The tests @file{mdemo-make.test}, @file{mdemo-exec.test},
@@ -3127,9 +3127,7 @@ looks in the library link path for libraries that have the right
 libname.  Then it runs @samp{$file_magic_command} on the library and checks
 for a match against [regex] using expr.  I currently have linux-elf looking
 for the string: "ELF [0-9][0-9]*-bit [LM]SB shared object" on the output of
-@samp{file}, and some of the win32 ports looking for the string: "file format
-pei*-i386.*architecture: i386" on the output of @samp{objdump -f}.
-This is option that works best I think.
+@samp{file}.  This is option that works best I think.
 
 @item file_regex
 @vindex file_regex
