@@ -1,3 +1,12 @@
+2002-10-14  Albert Chin-A-Young  <china@thewrittenword.com>
+
+	* libtool.m4: If ld is being used on IRIX to embed the
+	runtmie path, use -rpath, not -Wl,-rpath. Embed the runtime
+	path into libraries for AIX (supported on AIX 4.3.2+).
+	Embed the runtime path into Tru64 libraries, even though it
+	doesn't make much sense unless using Tru64 UNIX 5.1 with a
+	specific patch and >5.1.
+
 2002-10-11 Albert Chin-A-Young  <china@thewrittenword.com>
 
 	* libtool.m4 (aix): When LDFLAGS="-Wl,-brtl,[other options]",
