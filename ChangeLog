@@ -1,5 +1,9 @@
 1999-12-16  Alexandre Oliva  <oliva@lsd.ic.unicamp.br>
 
+	* libltdl/configure.in (with_auxdir): Do not use it as the
+	argument of AC_CONFIG_AUX_DIR, automake requires a literal here.
+	Use AC_CONFIG_AUX_DIRS/DIR_DEFAULT instead.
+
 	* libltdl/Makefile.am (ACLOCAL): Define with `-I .', as in
 	bootstrap.
 
