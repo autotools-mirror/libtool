@@ -37,7 +37,7 @@ main (int argc, char **argv)
   int (*phello)() = 0;
   int *pnothing = 0;
 
-  printf ("Welcome to dynamic GNU Hell!\n");
+  printf ("Welcome to GNU Hell **dynamically**!\n");
 
   s = dld_preloaded_symbols;
   while (s->name)
@@ -67,15 +67,21 @@ main (int argc, char **argv)
 	return 1;
     }
   else
-    fprintf (stderr, "did not find the `foo' function\n");
+    {
+      fprintf (stderr, "did not find the `foo' function\n");
+      return 2;
+    }
 
   if (phello)
     {
       if ((*phello) () != HELLO_RET)
-	return 2;
+	return 3;
     }
   else
-    fprintf (stderr, "did not find the `hello' function\n");
+    {
+      fprintf (stderr, "did not find the `hello' function\n");
+      return 4;
+    }
 
   return 0;
 }

@@ -1,4 +1,8 @@
 # A brief demonstration of using Automake with Libtool. -*-Makefile-*-
+#
+# NOTE: Don't forget that in the libtool distribution, files in this
+# directory are distributed by the demo_distfiles variable in the top
+# level Makefile.
 AUTOMAKE_OPTIONS = foreign
 
 EXTRA_DIST = $(TESTS) acinclude.m4
@@ -36,10 +40,26 @@ $(srcdir)/acinclude.m4:
 	rm -f $(srcdir)/acinclude.m4
 	ln -s ../libtool.m4 $(srcdir)/acinclude.m4
 
+# Don't build helldl on unsupported platforms.
+helldl: $(helldl_OBJECTS) $(helldl_DEPENDENCIES)
+	@rm -f helldl helldlT
+	@eval "`egrep '^global_symbol_pipe=' libtool`"; \
+	if test -z "$$global_symbol_pipe"; then \
+	  echo 'creating helldl (-dlopen is unsupported)'; \
+	  echo "#! /bin/sh" > helldlT; \
+	  echo "echo '-dlopen is unsupported'" >> helldlT; \
+	  chmod +x helldlT; \
+	  mv -f helldlT helldl; \
+	else \
+	  echo '$(LINK) $(helldl_LDFLAGS) $(helldl_OBJECTS) $(helldl_LDADD) $(LIBS)'; \
+	  $(LINK) $(helldl_LDFLAGS) $(helldl_OBJECTS) $(helldl_LDADD) $(LIBS); \
+	fi
+
 # Test programs to see what gets hardcoded.
 .PHONY: hardcode
 hardcode: $(hardcode_tests)
 hc-direct: $(hell_OBJECTS) $(hell_DEPENDENCIES)
+	@rm -f hc-direct
 	@shlib=./.libs/libhello.a; \
 	  eval "`egrep '^library_names' libhello.la`"; \
 	  for lib in $$library_names; do \
@@ -49,9 +69,11 @@ hc-direct: $(hell_OBJECTS) $(hell_DEPENDENCIES)
 	  eval "$(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) $$shlib $(LIBS)"
 
 hc-minusL: $(hell_OBJECTS) $(hell_DEPENDENCIES)
+	@rm -f hc-minusL
 	$(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) -L./.libs -lhello $(LIBS)
 
 hc-libpath: $(hell_OBJECTS) $(hell_DEPENDENCIES)
+	@rm -f hc-libpath
 	@echo "You may ignore any linking errors from the following command:"
 	@eval `egrep -e '^shlibpath_var=' ./libtool`; \
 	  echo "$$shlibpath_var=./.libs $(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) -lhello $(LIBS) || echo unsupported > $@"; \

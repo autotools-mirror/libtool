@@ -18,7 +18,7 @@ MAINTAINERCLEANFILES = ltconfig ltmain.sh
 demo_distfiles = demo/Makefile.in demo/Makefile.am demo/README \
 	demo/acinclude.m4 demo/aclocal.m4 \
 	demo/configure demo/configure.in demo/foo.c demo/foo.h \
-	demo/hello.c demo/main.c demo/run.test
+	demo/dlmain.c demo/hello.c demo/main.c demo/run.test
 
 # These are required by libtoolize.
 pkgdata_SCRIPTS = config.guess config.sub ltconfig

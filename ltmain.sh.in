@@ -284,11 +284,11 @@ if test -z "$show_help"; then
   link)
     progname="$progname: link"
     # Go through the arguments, transforming them on the way.
-    cc="$nonopt"
-    args="$cc"
+    CC="$nonopt"
+    args="$CC"
     allow_undefined=no
-    compile_command="$cc"
-    finalize_command="$cc"
+    compile_command="$CC"
+    finalize_command="$CC"
     compile_shlibpath=
     finalize_shlibpath=
     deplibs=
@@ -406,7 +406,7 @@ if test -z "$show_help"; then
 	continue
 	;;
 
-      -*) cc="$cc $arg" ;; # Some other compiler flag.
+      -*) CC="$CC $arg" ;; # Some other compiler flag.
 
       *.o)
 	# A standard object.
@@ -1000,7 +1000,7 @@ dld_preloaded_symbols[] =
 EOF
 
 	  if test -f "$nlist"; then
-	    sed 's/^\(.*\) \(.*\)$/  {"\1", \&\1},/' < $nlist >> $dlsyms
+	    sed 's/^\(.*\) \(.*\)$/  {"\1", \&\2},/' < $nlist >> $dlsyms
 	  fi
 
           cat <<\EOF >> $dlsyms
@@ -1133,7 +1133,6 @@ else
   # Try to get the absolute directory name.
   absdir=\`cd "\$thisdir" && pwd\`
   test -n "\$absdir" && thisdir="\$absdir"
-
   progdir="\$thisdir/$objdir"
   program="$output"
 

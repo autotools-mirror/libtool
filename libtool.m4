@@ -100,7 +100,7 @@ AC_CACHE_VAL(ac_cv_path_LD,
       # Check to see if the program is GNU ld.  I'd rather use --version,
       # but apparently some GNU ld's only accept -v.
       # Break only if it was the GNU/non-GNU ld that we prefer.
-      if "$ac_cv_path_LD" -v 2>&1 < /dev/null | egrep '(GNU ld|with BFD)' > /dev/null; then
+      if "$ac_cv_path_LD" -v 2>&1 < /dev/null | egrep '(GNU|with BFD)' > /dev/null; then
 	test "$with_gnu_ld" = yes && break
       else
         test "$with_gnu_ld" != yes && break
@@ -124,7 +124,7 @@ AM_PROG_LD_GNU
 AC_DEFUN(AM_PROG_LD_GNU,
 [AC_CACHE_CHECK([whether we are using GNU ld], ac_cv_prog_gnu_ld,
 [# I'd rather use --version here, but apparently some GNU ld's only accept -v.
-if $LD -v 2>&1 </dev/null | egrep '(GNU ld|with BFD)' > /dev/null; then
+if $LD -v 2>&1 </dev/null | egrep '(GNU|with BFD)' > /dev/null; then
   ac_cv_prog_gnu_ld=yes
 else
   ac_cv_prog_gnu_ld=no

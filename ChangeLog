@@ -1,3 +1,29 @@
+Sat Jul 19 21:54:33 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltconfig.in (pipe_works): Check to make sure our guessed
+	global_symbol_pipe actually works.
+
+	* ltmain.sh.in (link): Revert change from Kenneth Albanowski.  The
+ 	wrapper scripts are more reliable when they just use the argv[0]
+ 	value.  Generally, when the argv[0] method doesn't work, the user
+ 	is trying to do something weird with an uninstalled binary, and
+ 	should try a different approach.
+
+	* ltconfig.in, ltmain.sh.in (CC): Always use `$CC' instead of
+ 	`$cc'.  This fixes a FreeBSD bug.  Reported by Chuck Robey, and
+ 	others.
+
+Mon Jul 14 22:26:15 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltmain.sh.in (link): In wrapper scripts, hardcode the current
+ 	directory to prevent phony argv[0] values from screwing up our
+	program.  From Kenneth Albanowski.
+
+Sun Jul 13 19:14:32 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* Makefile.am (demo_distfiles): Add demo/dlmain.c to the
+	distribution.
+
 Sat Jul 12 10:07:28 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* demo/Makefile.am: Add helldl, made from dlmain.c, to demostrate

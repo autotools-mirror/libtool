@@ -1,7 +1,7 @@
 #! /bin/sh
 
 # ltconfig - Create a system-specific libtool.
-# When updating this script, search for LINENUM and fix line number refs.
+# When updating this script, search for LINENO and fix line number refs.
 # @configure_input@
 # Copyright (C) 1996, 1997, Free Software Foundation, Inc.
 # Gordon Matzigkeit <gord@gnu.ai.mit.edu>, 1996
@@ -35,6 +35,7 @@ PROGRAM=ltconfig
 PACKAGE=@PACKAGE@
 VERSION=@VERSION@
 ac_compile='${CC-cc} -c $CFLAGS $CPPFLAGS conftest.c 1>&5'
+ac_link='${CC-cc} -o conftest $CFLAGS $CPPFLAGS $LDFLAGS conftest.c $LIBS 1>&5'
 rm="rm -f"
 
 help="Try \`$progname --help' for more information."
@@ -211,6 +212,7 @@ if test -z "$srcdir"; then
   test "$srcdir" = "$ltmain" && srcdir=.
 fi
 
+trap "$rm conftest*; exit 1" 1 2 15
 if test "$verify_host" = yes; then
   # Check for config.guess and config.sub.
   ac_aux_dir=
@@ -368,14 +370,13 @@ if test "$with_gcc" != yes || test -z "$CC"; then
   with_gcc=no
   echo $ac_n "checking whether we are using GNU C... $ac_c" 1>&6
 
-  trap "$rm conftest.c; exit 1" 1 2 15
   $rm conftest.c
   cat > conftest.c <<EOF
 #ifdef __GNUC__
   yes;
 #endif
 EOF
-  # LINENUM
+  # LINENO
   if { ac_try='${CC-cc} -E conftest.c'; { (eval echo $progname:378: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }; } | egrep yes >/dev/null 2>&1; then
     with_gcc=yes
   fi
@@ -533,7 +534,7 @@ if test "$with_gnu_ld" != yes || test -z "$LD"; then
 	# Check to see if the program is GNU ld.  I'd rather use --version,
 	# but apparently some GNU ld's only accept -v.
 	# Break only if it was the GNU/non-GNU ld that we prefer.
-	if "$LD" -v 2>&1 < /dev/null | egrep '(GNU ld|with BFD)' > /dev/null; then
+	if "$LD" -v 2>&1 < /dev/null | egrep '(GNU|with BFD)' > /dev/null; then
 	  test "$with_gnu_ld" = yes && break
 	else
 	  test "$with_gnu_ld" != yes && break
@@ -599,7 +600,7 @@ if test "$with_gnu_ld" = yes; then
   esac
 
   if test "$ld_shlibs" = yes; then
-    archive_cmds='$cc -shared ${wl}-soname $wl$soname -o $lib$libobjs$deplibs'
+    archive_cmds='$CC -shared ${wl}-soname $wl$soname -o $lib$libobjs$deplibs'
     hardcode_libdir_flag_spec='${wl}-rpath $wl$libdir'
     export_dynamic_flag='${wl}-export-dynamic'
   fi
@@ -616,7 +617,7 @@ else
 
   aix4*)
     allow_undefined_flag=unsupported
-    archive_cmds='$NM$libobjs | $global_symbol_pipe | sed \"s/.* //\" > $lib.exp;$cc -o $objdir/$soname$libobjs ${wl}-bE:$lib.exp ${wl}-bM:SRE ${wl}-bnoentry$deplibs;$AR cru $lib $objdir/$soname'
+    archive_cmds='$NM$libobjs | $global_symbol_pipe | sed \"s/.* //\" > $lib.exp;$CC -o $objdir/$soname$libobjs ${wl}-bE:$lib.exp ${wl}-bM:SRE ${wl}-bnoentry$deplibs;$AR cru $lib $objdir/$soname'
     hardcode_direct=yes
     hardcode_minus_L=yes
     ;;
@@ -738,27 +739,94 @@ fi
 
 # Check for command to grab the raw symbol name followed by C symbol from nm.
 echo $ac_n "checking command to parse $NM output... $ac_c" 1>&6
-global_symbol_pipe=
-# WARNING: these filters need to be compatible with GNU nm, so they should
-# accept at least [BDT].
-case "$host_os" in
-aix*)
-  global_symbol_pipe="sed '/^.* [BCDT] [^.]/!d; s/^.* [BCDT] \(.*\)$/\1 \1/'"
-  ;;
 
-# These platforms may need to strip leading underscores from C symbols.
-linux-gnuoldld*) ;;
+# This is a sane default that works on at least a few old systems.
+# [It comes from Ultrix.  What could be older than Ultrix?!! ;)]
+global_symbol_pipe="sed '/^.* [BCDEGRST] /!d; s/^.* [BCDEGRST] \(.*\)$/\1 \1/'"
 
-linux*)
-  global_symbol_pipe="sed '/^.* [BCDT] /!d; s/^.* [BCDT] \(.*\)$/\1 \1/'"
-  ;;
-esac
-
-if test -z "$global_symbol_pipe"; then
-  echo "$ac_t"no
+# Take a first stab at what the pipe should be.
+if $NM -V 2>&1 | egrep '(GNU|with BFD)' > /dev/null; then
+  # We're using GNU nm.
+  global_symbol_pipe="sed '/^.* [BCDGIST] /!d; s/^.* [BCDGIST] \(.*\)$/\1 \1/'"
 else
-  echo "$ac_t"yes
+  # It's the system nm.
+  case "$host_os" in
+  aix*)
+    # Delete symbols that begin with a dot.
+    global_symbol_pipe="sed '/^.* [BCDT] [^.]/!d; s/^.* [BCDT] \(.*\)$/\1 \1/'"
+    ;;
+  solaris2*)
+    global_symbol_pipe="sed '/^.* [BDT] /!d; s/^.* [BDT] \(.*\)$/\1 \1/'"
+    ;;
+  esac
 fi
+
+# Check to see that the pipe works correctly.
+pipe_works=no
+rm -f conftest*
+cat > conftest.c <<EOF
+char nm_test_var;
+void nm_test_func(){}
+main(){nm_test_var='a';nm_test_func();return(0);}
+EOF
+
+# LINENO
+if { (eval echo $progname:751: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>&5; } && test -s conftest.o; then
+  # Now try to grab the symbols.
+  if { echo "$progname:752: eval \"$NM conftest.o | $global_symbol_pipe > conftest.nm\"" >&5; eval "$NM conftest.o | $global_symbol_pipe > conftest.nm 2>&5"; } && test -s conftest.nm; then
+
+    # Make sure that we snagged all the symbols we need.
+    if egrep ' nm_test_var$' conftest.nm >/dev/null; then
+      if egrep ' nm_test_func$' conftest.nm >/dev/null; then
+        # Now generate the symbol file.
+        sed 's/^.* \(.*\)$/extern char \1;/' < conftest.nm > conftest.c
+	cat <<\EOF >> conftest.c
+#if defined (__STDC__) && __STDC__
+# define __ptr_t void *
+#else
+# define __ptr_t char *
+#endif
+
+/* The mapping between symbol names and symbols. */
+struct {
+  char *name;
+  __ptr_t address;
+}
+dld_preloaded_symbols[] =
+{
+EOF
+        sed 's/^\(.*\) \(.*\)$/  {"\1", \&\2},/' < conftest.nm >> conftest.c
+        cat <<\EOF >> conftest.c
+  {0},
+};
+EOF
+        # Now try linking the two files.
+        mv conftest.o conftestm.o
+	save_LIBS="$LIBS"
+        LIBS='conftestm.o'
+        if { (eval echo configure:807: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest; then
+          pipe_works=yes
+        else
+          echo "$progname: failed program was:" >&5
+          cat conftest.c >&5
+        fi
+        LIBS="$save_LIBS"
+      fi
+    else
+      echo "cannot find nm_test_func in conftest.nm" >&5
+    fi
+  else
+    echo "cannot find nm_test_var in conftest.nm" >&5
+  fi
+else
+  echo "$progname: failed program was:" >&5
+  cat conftest.c >&5
+fi
+rm -f conftest*
+
+# Don't use the global_symbol_pipe unless it works.
+echo "$ac_t$pipe_works" 1>&6
+test "$pipe_works" = yes || global_symbol_pipe=
 
 # Check hardcoding attributes.
 echo $ac_n "checking how to hardcode library paths into programs... $ac_c" 1>&6
