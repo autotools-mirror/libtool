@@ -1,3 +1,18 @@
+Fri Nov  7 11:31:22 1997  Gordon Matzigkeit  <gord@gnu.org>
+
+	* libtool.m4 (LD): Add a more sophisticated test to determine the
+ 	ABI flag on IRIX 6.  Suggested by Lars Hecking and Ian Lance
+ 	Taylor.
+
+	* ltconfig.in, ltmain.in (COLLECT_NAMES): Only export this
+	variable if we are running under AIX.  Otherwise, we tickle a g++
+	bug under IRIX.  From Paul Kendall.
+
+	* Change bug reporting address to <bug-libtool@gnu.org>.
+
+	* ltconfig.in (allow_undefined_flag): OSF/1 3.x also requires a
+ 	wildcard argument to `-expect_unresolved'.  From Stephan Kulow.
+
 Thu Nov  6 08:11:25 1997  Gordon Matzigkeit  <gord@gnu.org>
 
 	* ltmain.in (link): Use libname_spec.
@@ -285,11 +300,11 @@ Fri Aug  1 10:06:55 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 	libtool objects.  This means that dlopened modules no longer need
 	to be shared libraries.
 
-	* ltconfig.in (pic_flag): GCC on Irix 6 always builds PIC.
+	* ltconfig.in (pic_flag): GCC on IRIX 6 always builds PIC.
 	Reported by Ian Lance Taylor.
 
 	* libtool.m4 (LD): Always add `-n32' to the linker if we are using
-	GCC on Irix 6.  Reported by Ian Lance Taylor.
+	GCC on IRIX 6.  Reported by Ian Lance Taylor.
 
 Wed Jul 30 13:11:09 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 

@@ -46,14 +46,6 @@ sed_quote_subst='s/\([\\"$\\\\]\)/\\\1/g'
 # Same as above, but don't quote variable references.
 double_quote_subst='s/\([\\"\\\\]\)/\\\1/g'
 
-# AIX sometimes has problems with the GCC collect2 program.  For some
-# reason, if we set the COLLECT_NAMES environment variable, the problems
-# vanish in a puff of smoke.
-if test "${COLLECT_NAMES+set}" != set; then
-  COLLECT_NAMES=
-  export COLLECT_NAMES
-fi
-
 # Global variables:
 can_build_shared=yes
 enable_shared=yes
@@ -285,6 +277,18 @@ esac
 host_cpu=`echo $host | sed 's/^\([^-]*\)-\([^-]*\)-\(.*\)$/\1/'`
 host_vendor=`echo $host | sed 's/^\([^-]*\)-\([^-]*\)-\(.*\)$/\2/'`
 host_os=`echo $host | sed 's/^\([^-]*\)-\([^-]*\)-\(.*\)$/\3/'`
+
+case "$host_os" in
+aix*)
+  # AIX sometimes has problems with the GCC collect2 program.  For some
+  # reason, if we set the COLLECT_NAMES environment variable, the problems
+  # vanish in a puff of smoke.
+  if test "${COLLECT_NAMES+set}" != set; then
+    COLLECT_NAMES=
+    export COLLECT_NAMES
+  fi
+  ;;
+esac
 
 # Determine commands to create old-style static archives.
 old_archive_cmds='$AR cru $oldlib$oldobjs'
@@ -776,14 +780,7 @@ else
     old_archive_from_new_cmds='emximp -o $objdir/$libname.a $objdir/$libname.def'
     ;;
 
-  osf3*)
-    allow_undefined_flag=' -expect_unresolved'
-    archive_cmds='$LD -shared${allow_undefined_flag} -o $lib -soname $soname -set_version $verstring$libobjs$deplibs'
-    hardcode_libdir_flag_spec='${wl}-rpath ${wl}$libdir'
-    hardcode_libdir_separator=:
-    ;;
-
-  osf4*)
+  osf3* | osf4*)
     allow_undefined_flag=' -expect_unresolved \*'
     archive_cmds='$LD -shared${allow_undefined_flag} -o $lib -soname $soname -set_version $verstring$libobjs$deplibs'
     hardcode_libdir_flag_spec='${wl}-rpath ${wl}$libdir'
@@ -1374,21 +1371,36 @@ hardcode_shlibpath_var=$hardcode_shlibpath_var
 
 EOF
 
+case "$host_os" in
+aix*)
+  cat <<\EOF
+# AIX sometimes has problems with the GCC collect2 program.  For some
+# reason, if we set the COLLECT_NAMES environment variable, the problems
+# vanish in a puff of smoke.
+if test "${COLLECT_NAMES+set}" != set; then
+  COLLECT_NAMES=
+  export COLLECT_NAMES
+fi
+
+EOF
+  ;;
+esac
+
 # Detect if we are using a relative or absolute path to ltmain.sh.
 case "$ltmain" in
-/*) cat <<EOF2 >> $ofile
+/*) cat <<EOF >> $ofile
 # Execute the libtool backend.
 . $ltmain
-EOF2
+EOF
   ;;
-*) cat <<EOF3 >> $ofile
+*) cat <<EOF >> $ofile
 # Find the path to this script.
 thisdir=\`echo "\$0" | sed -e 's%/[^/]*\$%%'\`
 test "X\$0" = "X\$thisdir" && thisdir=.
 
 # Execute the libtool backend.
 . \$thisdir/$ltmain
-EOF3
+EOF
   ;;
 esac
 

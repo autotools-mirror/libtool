@@ -81,19 +81,10 @@ if test "$LTCONFIG_VERSION" != "$VERSION"; then
   exit 1
 fi
 
-#
 if test "$build_libtool_libs" != yes && test "$build_old_libs" != yes; then
   $echo "$progname: not configured to build any kind of library" 1>&2
   $echo "Fatal configuration error.  See the $PACKAGE docs for more information." 1>&2
   exit 1
-fi
-
-# AIX sometimes has problems with the GCC collect2 program.  For some
-# reason, if we set the COLLECT_NAMES environment variable, the problems
-# vanish in a puff of smoke.
-if test "${COLLECT_NAMES+set}" != set; then
-  COLLECT_NAMES=
-  export COLLECT_NAMES
 fi
 
 # Global variables.
@@ -1171,19 +1162,17 @@ if test -z "$show_help"; then
         finalize_command=`$echo "$finalize_command " | sed -e 's/\.lo /.o /g' -e 's/ $//'`
       fi
 
-      if test "$export_dynamic" = yes && test -n "$global_symbol_pipe"; then
+      if test "$export_dynamic" = yes && test -n "$NM" && test -n "$global_symbol_pipe"; then
+        dlsyms="${output}S.c"
+      else
+        dlsyms=
+      fi
+
+      if test -n "$dlsyms"; then
         # Add our own program objects to the preloaded list.
         dlprefiles=`$echo "$objs$dlprefiles " | sed -e 's/\.lo /.o /g' -e 's/ $//'`
 
-        # Discover the nlist of each of the dlfiles.
-	if test -n "$NM" && test -n "$global_symbol_pipe"; then
-	  dlsyms="${output}S.c"
-	else
-	  NM=
-	  global_symbol_pipe=
-	  dlsyms=
-	fi
-
+	# Discover the nlist of each of the dlfiles.
         nlist="$objdir/${output}.nm"
 
 	if test -d $objdir; then
@@ -1200,10 +1189,8 @@ if test -z "$show_help"; then
 	fi
 
         for arg in $dlprefiles; do
-	  if test -n "$NM"; then
-	    $show "extracting global C symbols from \`$arg'"
-	    $run eval "$NM $arg | $global_symbol_pipe >> '$nlist'"
-	  fi
+	  $show "extracting global C symbols from \`$arg'"
+	  $run eval "$NM $arg | $global_symbol_pipe >> '$nlist'"
         done
 
         # Parse the name list into a source file.

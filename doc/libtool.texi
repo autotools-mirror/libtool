@@ -7,8 +7,8 @@
 @c %**end of header
 
 @include version.texi
-@set BUGADDR the libtool mailing list @code{<bug-libtool@@gnu.ai.mit.edu>}
-@set objdir _libs
+@set BUGADDR the libtool mailing list @code{<bug-libtool@@gnu.org>}
+@set objdir .libs
 
 @dircategory GNU programming tools
 @direntry
@@ -613,7 +613,7 @@ Now that's significantly cooler@dots{} libtool just ran an obscure
 library.
 
 @c FIXME: TeX cannot handle @value{objdir} in an index entry
-@cindex @file{_libs} subdirectory
+@cindex @file{.libs} subdirectory
 @c @cindex @file{@value{objdir}} subdirectory
 Note how libtool creates extra files in the @file{@value{objdir}}
 subdirectory, rather than the current directory.  This feature is to
