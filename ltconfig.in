@@ -1373,7 +1373,7 @@ EOF
 
 case "$host_os" in
 aix*)
-  cat <<\EOF
+  cat <<\EOF >> $ofile
 # AIX sometimes has problems with the GCC collect2 program.  For some
 # reason, if we set the COLLECT_NAMES environment variable, the problems
 # vanish in a puff of smoke.

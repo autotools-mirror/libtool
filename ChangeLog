@@ -1,3 +1,8 @@
+Sat Nov  8 08:11:26 1997  Gordon Matzigkeit  <gord@gnu.org>
+
+	* ltconfig.in: Don't forget to redirect the COLLECT_NAMES libtool
+	script fragment to the generated libtool, rather than to stdout.
+
 Fri Nov  7 11:31:22 1997  Gordon Matzigkeit  <gord@gnu.org>
 
 	* libtool.m4 (LD): Add a more sophisticated test to determine the

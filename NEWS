@@ -6,7 +6,7 @@ New in 1.0f:
 * Maybe use `_libs' as a temporary libtool directory instead of `.libs'
   in order to cope with MS-DOS filenames.
 * New `-all-static' flag to prevent any dynamic linking.  The regular
-  `-static' flag just prevents dynamic linking of libtool libraries.
+  `-static' flag now just prevents dynamic linking of libtool libraries.
 * The `-rpath' flag can be used to hardcode absolute directories when
   linking executables using libtool.
 * Suppress duplicate compiler output during `compile' mode.
