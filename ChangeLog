@@ -1,5 +1,10 @@
 2001-04-05  Gary V. Vaughan  <gvv@techie.com>
 
+	* libltdl/ltdl.c (lt_dlopen):  When reading the .la file,
+	reallocate the line buffer size if the line overflows the
+	original buffer.
+	Reported by Nick Hudson <skrll@netbsd.org>
+
 	* NEWS (1.3d) Removed bogus ltconfig reference.
 
 2001-03-23  Robert Boehne  <rboehne@ricardo-us.com>
