@@ -1,3 +1,10 @@
+1998-12-07  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* doc/libtool.texi (author): listed all the AUTHORS
+	(Dlopen issues): added reference to libltdl, still undocumented
+	(C++ libraries): it's not *that* simple, after all :-(
+	(Inter-library dependencies): they're back!
+
 1998-12-04  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* libtool.m4 (ac_cv_sys_symbol_underscore): `test a == b' doesn't

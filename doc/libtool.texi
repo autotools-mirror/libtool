@@ -51,7 +51,7 @@ approved by the Foundation.
 @titlepage
 @title GNU Libtool
 @subtitle For version @value{VERSION}, @value{UPDATED}
-@author Gordon Matzigkeit
+@author Gordon Matzigkeit, Alexandre Oliva, Thomas Tanner, Gary V. Vaughan
 
 @page
 @vskip 0pt plus 1filll
@@ -2193,11 +2193,11 @@ burger$ @kbd{libtool gcc -g -O -o libhello.la foo.lo hello.lo \
 burger$
 @end example
 
-In order to link a program against @file{libhello}, you need to specify
-the same @samp{-l} options, in order to guarantee that all the required
-libraries are found.  This restriction is only necessary to preserve
-compatibility with static library systems and simple dynamic library
-systems.
+When you link a program against @file{libhello}, you don't need to
+specify the same @samp{-l} options again: libtool will do that for you,
+in order to guarantee that all the required libraries are found.  This
+restriction is only necessary to preserve compatibility with static
+library systems and simple dynamic library systems.
 
 Some platforms, such as AIX and Windows 95, do not even allow you this
 flexibility.  In order to build a shared library, it must be entirely
@@ -2205,6 +2205,15 @@ self-contained (that is, have references only to symbols that are found
 in the @samp{.lo} files or the specified @samp{-l} libraries), and you
 need to specify the @var{-no-undefined} flag.  By default, libtool
 builds only static libraries on these kinds of platforms.
+
+The simple-minded inter-library dependency tracking code of libtool
+releases prior to 1.2 was disabled because it was not clear when it was
+possible to link one library with another, and complex failures would
+occur.  A more complex implementation of this concept was re-introduced
+before release 1.3, but it has not been ported to all platforms that
+libtool supports.  The default, conservative behavior is to avoid
+linking one library with another, introducing their inter-dependencies
+only when a program is linked with them.
 
 @node Dlopened modules
 @chapter Dlopened modules
@@ -2416,11 +2425,14 @@ The application developer must write a custom search function in order
 to discover the correct module filename to supply to @code{dlopen}.
 @end itemize
 
-Each of these limitations will be addressed in GNU DLD
-4.@footnote{Unfortunately, the DLD maintainer is also the libtool
-maintainer, so time spent on one of these projects takes time away from
-the other.  When libtool is reasonably stable, DLD 4 development will
-proceed.}
+Libtool provides a small library, called @file{libltdl}, that aims at
+hiding the various difficulties of dlopening libraries from programmers.
+It consists of a header-file and a small C source file that can be
+distributed with applications that need dlopening functionality.  Note,
+however, that its experimental interface is not document and is subject
+to change; use it at your own risk.  On some platforms, whose dynamic
+linkers are too limited for a simple implementation of @file{libltdl}
+services, it will require GNU DLD.
 
 @node Other languages
 @chapter Using libtool with other languages
@@ -2447,8 +2459,8 @@ and what special considerations you need to make if you do not use C.
 @cindex pitfalls using C++
 @cindex C++, pitfalls
 
-Creating libraries of C++ code is a fairly straightforward process, and
-differs from C code in only two ways:
+Creating libraries of C++ code should be a fairly straightforward
+process, because its object files differ from C ones in only two ways:
 
 @enumerate 1
 @item
@@ -2458,19 +2470,33 @@ C++ in order to protect users from conflicting implementations of
 features such as constructors, exception handling, and RTTI.
 
 @item
-On some systems, notably SunOS 4, the dynamic linker does not call
-non-constant initializers.  This can lead to hard-to-pinpoint bugs in
-your library.  GCC 2.7 and later versions work around this problem, but
-previous versions and other compilers do not.
+On some systems, the C++ compiler must take special actions for the
+dynamic linker to run dynamic (i.e., run-time) initializers.  This means
+that we should not call @file{ld} directly to link such libraries, and
+we should use the C++ compiler instead.
+
+@item
+C++ compilers will link some Standard C++ library in by default, but
+libtool does not know which are these libraries, so it cannot even run
+the inter-library dependence analyzer to check how to link it in.
+Therefore, running @file{ld} to link a C++ program or library is deemed
+to fail.  However, running the C++ compiler directly may lead to
+problems related with inter-library dependencies.
 @end enumerate
 
-This second issue is complex.  Basically, you should avoid any global or
-static variable initializations that would cause an ``initializer
-element is not constant'' error if you compiled them with a standard C
-compiler.
+The conclusion is that libtool is not ready for general use for C++
+libraries.  You should avoid any global or static variable
+initializations that would cause an ``initializer element is not
+constant'' error if you compiled them with a standard C compiler.
 
 There are other ways of working around this problem, but they are beyond
 the scope of this manual.
+
+Furthermore, you'd better find out, at configure time, what are the C++
+Standard libraries that the C++ compiler will link in by default, and
+explicitly list them in the link command line.  Hopefully, in the
+future, libtool will be able to do this job by itself.
+
 
 @node Troubleshooting
 @chapter Troubleshooting
