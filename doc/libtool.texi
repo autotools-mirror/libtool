@@ -501,10 +501,10 @@ simply invoke libtool with the standard compilation command as
 arguments (@pxref{Compile mode}):
 
 @example
-a23$ @kbd{libtool gcc -g -O -c foo.c}
+a23$ @kbd{libtool --mode=compile gcc -g -O -c foo.c}
 gcc -g -O -c foo.c
 echo timestamp > foo.lo
-a23$ @kbd{libtool gcc -g -O -c hello.c}
+a23$ @kbd{libtool --mode=compile gcc -g -O -c hello.c}
 gcc -g -O -c hello.c
 echo timestamp > hello.lo
 a23$
@@ -521,11 +521,11 @@ generation flags into the compilation command, so that the library
 object and the standard object differ:
 
 @example
-burger$ @kbd{libtool gcc -g -O -c foo.c}
+burger$ @kbd{libtool --mode=compile gcc -g -O -c foo.c}
 gcc -g -O -c -fPIC -DPIC foo.c
 mv -f foo.o foo.lo
 gcc -g -O -c foo.c >/dev/null 2>&1
-burger$ @kbd{libtool gcc -g -O -c hello.c}
+burger$ @kbd{libtool --mode=compile gcc -g -O -c hello.c}
 gcc -g -O -c -fPIC -DPIC hello.c
 mv -f hello.o hello.lo
 gcc -g -O -c hello.c >/dev/null 2>&1
@@ -570,7 +570,7 @@ the same ones you would use to produce an executable named
 @file{libhello.la} with your compiler (@pxref{Link mode}):
 
 @example
-a23$ @kbd{libtool gcc -g -O -o libhello.la foo.o hello.o}
+a23$ @kbd{libtool --mode=link gcc -g -O -o libhello.la foo.o hello.o}
 libtool: cannot build libtool library `libhello.la' from non-libtool \
                 objects
 a23$
@@ -593,7 +593,7 @@ specify an @code{rpath}, then libtool builds a libtool convenience
 archive, not a shared library (@pxref{Static libraries}).}:
 
 @example
-a23$ @kbd{libtool gcc -g -O -o libhello.la foo.lo hello.lo \
+a23$ @kbd{libtool --mode=link gcc -g -O -o libhello.la foo.lo hello.lo \
                 -rpath /usr/local/lib -lm}
 mkdir @value{objdir}
 ar cru @value{objdir}/libhello.a foo.o hello.o
@@ -605,7 +605,7 @@ a23$
 Now, let's try the same trick on the shared library platform:
 
 @example
-burger$ @kbd{libtool gcc -g -O -o libhello.la foo.lo hello.lo \
+burger$ @kbd{libtool --mode=link gcc -g -O -o libhello.la foo.lo hello.lo \
                 -rpath /usr/local/lib -lm}
 mkdir @value{objdir}
 ld -Bshareable -o @value{objdir}/libhello.so.0.0 foo.lo hello.lo -lm
@@ -668,7 +668,7 @@ ambiguity when linking against uninstalled shared libraries.}
 (@pxref{Link mode}):
 
 @example
-a23$ @kbd{libtool gcc -g -O -o hell main.o libhello.la -lm}
+a23$ @kbd{libtool --mode=link gcc -g -O -o hell main.o libhello.la -lm}
 gcc -g -O -o hell main.o ./@value{objdir}/libhello.a -lm
 a23$
 @end example
@@ -680,7 +680,7 @@ that @samp{a23} has no shared libraries.
 On @samp{burger} the situation is different:
 
 @example
-burger$ @kbd{libtool gcc -g -O -o hell main.o libhello.la -lm}
+burger$ @kbd{libtool --mode=link gcc -g -O -o hell main.o libhello.la -lm}
 gcc -g -O -o @value{objdir}/hell main.o -L./@value{objdir} -R/usr/local/lib -lhello -lm
 creating hell
 burger$
@@ -702,7 +702,7 @@ to link the already-installed libtool library, it will do The Right
 Thing (TM) for you:
 
 @example
-burger$ @kbd{libtool gcc -g -O -o test test.o /usr/local/lib/libhello.la}
+burger$ @kbd{libtool --mode=link gcc -g -O -o test test.o /usr/local/lib/libhello.la}
 gcc -g -O -o @value{objdir}/test test.o -Wl,--rpath
 -Wl,/usr/local/lib /usr/local/lib/libhello.a -lm
 creating test
@@ -823,7 +823,7 @@ forget all about the @file{@value{objdir}} directory, and just run it on
 the executable wrapper (@pxref{Execute mode}):
 
 @example
-burger$ @kbd{libtool gdb hell}
+burger$ @kbd{libtool --mode=execute gdb hell}
 GDB is free software and you are welcome to distribute copies of it
  under certain conditions; type "show copying" to see the conditions.
 There is no warranty for GDB; type "show warranty" for details.
@@ -869,7 +869,7 @@ Libtool installation is quite simple, as well.  Just use the
 (@pxref{Install mode}):
 
 @example
-a23# @kbd{libtool cp libhello.la /usr/local/lib/libhello.la}
+a23# @kbd{libtool --mode=install cp libhello.la /usr/local/lib/libhello.la}
 cp libhello.la /usr/local/lib/libhello.la
 cp @value{objdir}/libhello.a /usr/local/lib/libhello.a
 ranlib /usr/local/lib/libhello.a
@@ -884,7 +884,7 @@ help libtool with uninstallation (@pxref{Uninstall mode}) and linking
 Here is the shared library example:
 
 @example
-burger# @kbd{libtool install -c libhello.la /usr/local/lib/libhello.la}
+burger# @kbd{libtool --mode=install install -c libhello.la /usr/local/lib/libhello.la}
 install -c @value{objdir}/libhello.so.0.0 /usr/local/lib/libhello.so.0.0
 install -c libhello.la /usr/local/lib/libhello.la
 install -c @value{objdir}/libhello.a /usr/local/lib/libhello.a
@@ -907,11 +907,11 @@ make sure that where the library is installed actually agrees with the
 @cindex postinstallation
 @cindex installation, finishing
 @cindex libraries, finishing installation
-Then, running @samp{libtool -n --finish @var{libdir}} can give you
+Then, running @samp{libtool -n --mode=finish @var{libdir}} can give you
 further hints on what to do (@pxref{Finish mode}):
 
 @example
-burger# @kbd{libtool -n --finish /usr/local/lib}
+burger# @kbd{libtool -n --mode=finish /usr/local/lib}
 PATH="$PATH:/sbin" ldconfig -m /usr/local/lib
 -----------------------------------------------------------------
 Libraries have been installed in:
@@ -987,7 +987,7 @@ you could just ignore libtool entirely, and use the old @code{ar} and
 (but you probably don't want to) using libtool:
 
 @example
-burger$ @kbd{libtool ./install-sh -c libhello.a /local/lib/libhello.a}
+burger$ @kbd{libtool --mode=install ./install-sh -c libhello.a /local/lib/libhello.a}
 ./install-sh -c libhello.a /local/lib/libhello.a
 ranlib /local/lib/libhello.a
 burger$
@@ -2403,7 +2403,7 @@ library.  To make an example of our
 @file{libhello} that depends on @file{libm}:
 
 @example
-burger$ @kbd{libtool gcc -g -O -o libhello.la foo.lo hello.lo \
+burger$ @kbd{libtool --mode=link gcc -g -O -o libhello.la foo.lo hello.lo \
                 -rpath /usr/local/lib -lm}
 burger$
 @end example
@@ -2500,7 +2500,7 @@ that would later be dlopened by an application, we would add
 @samp{-module} to the other link flags:
 
 @example
-burger$ @kbd{libtool gcc -module -o libhello.la foo.lo \
+burger$ @kbd{libtool --mode=link gcc -module -o libhello.la foo.lo \
                 hello.lo -rpath /usr/local/lib -lm}
 burger$
 @end example
@@ -2512,7 +2512,7 @@ You should use @samp{-export-dynamic} while linking the executable that calls
 dlopen:
 
 @example
-burger$ @kbd{libtool gcc -export-dynamic -o hell-dlopener main.o}
+burger$ @kbd{libtool --mode=link gcc -export-dynamic -o hell-dlopener main.o}
 burger$
 @end example
 

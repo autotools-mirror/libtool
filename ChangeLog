@@ -1,3 +1,7 @@
+2002-11-08  Robert Boehne  <rboehne@gnu.org>
+
+	* doc/libtool.texi: Add --mode=* to every example using libtool.
+
 2002-11-03  Ossama Othman  <ossama@doc.ece.uci.edu>
 
 	* ltmain.in: add support for installing into temporary
