@@ -16,6 +16,8 @@ i386-pc-netbsd1.2            gcc       0.9g      ok
 i586-pc-linux-gnulibc1       gcc       1.2a      ok
 i586-pc-linux-gnulibc2       gcc       1.2a      ok
 i586-pc-gnu0.3               gcc       1.2b      ok
+i586-dg-dguxR4.20MU01        gcc       1.2       ok
+m88k-dg-dguxR4.12TMU01**     gcc       1.2       ok
 mips-sgi-irix5.2             gcc       1.0i      ok
 mips-sgi-irix5.3             cc        0.8       ok
 mips-sgi-irix5.3             gcc       0.8       ok
@@ -42,3 +44,6 @@ sparc-sun-solaris2.6         gcc       1.0i      ok
 * Some versions of GCC's collect2 linker program cannot link trivial
 static binaries on AIX 3.  For these configurations, libtool's
 `-all-static' flag has no effect.
+** Note that R4.12TMU01 is the C2 release of DG/UX which corresponds to
+R4.11MU04 in the base release.  These should be equivalent as far as
+libtool is concerned, but only R4.12TMU01 has actually been tested.

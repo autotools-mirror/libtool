@@ -13,6 +13,7 @@ Shared library support has been implemented for these platforms:
   AIX 4.x (*-*-aix4*)
   AmigaOS (*-*-amigaos*)
   Digital/UNIX 3.x, 4.x, a.k.a. OSF/1 (*-*-osf3*, *-*-osf4*)
+  DG/UX R4.11, R4.12, R4.20 (*-*-dguxR411*, *-*-dguxR412*, *-*-dguxR420*)
   FreeBSD 2.x, 3.x (*-*-freebsd2*, *-*-freebsd3*)
   GNU/Linux ELF (*-*-linux-gnu*, except aout, coff, and oldld)
   HP-UX 9.x, 10.x, 11.x (*-*-hpux9*, *-*-hpux10*, *-*-hpux11*) [see note]
@@ -31,6 +32,9 @@ NOTE: Some HP-UX sed programs are horribly broken, and cannot handle
 libtool's requirements, so users may report unusual problems.  There
 is no workaround except to install a working sed (such as GNU sed) on
 these systems.
+
+NOTE: Any earlier DG/UX system with ELF executables, such as R3.10 or
+R4.10, is also likely to work, but hasn't been explicitly tested.
 
 Libtool's home page is:
 
