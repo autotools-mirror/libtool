@@ -512,7 +512,7 @@ cygwin* | mingw*)
   lt_cv_file_magic_cmd='${OBJDUMP} -f'
   ;;
 
-freebsd*)
+freebsd* )
   case "$version_type" in
   freebsd-elf*)
     lt_cv_deplibs_check_method=pass_all
@@ -577,6 +577,17 @@ linux-gnu*)
     changequote([, ])dnl
   esac
   lt_cv_file_magic_test_file=`echo /lib/libc.so* /lib/libc-*.so`
+  ;;
+
+netbsd*)
+  if echo __ELF__ | $CC -E - | grep __ELF__ > /dev/null; then :
+  else
+    changequote(,)dnl
+    lt_cv_deplibs_check_method='file_magic ELF [0-9][0-9]*-bit [LM]SB shared object'
+    changequote([, ])dnl
+    lt_cv_file_magic_cmd='/usr/bin/file -L'
+    lt_cv_file_magic_test_file=`echo /usr/lib/libc.so*`
+  fi
   ;;
 
 osf3* | osf4* | osf5*)
