@@ -1307,6 +1307,14 @@ information @var{current}, @var{revision}, and @var{age} to build it
 (@pxref{Versioning}).  Do @strong{not} use this flag to specify package
 release information, rather see the @samp{-release} flag.
 
+@item -version-number @var{major}[:@var{minor}[:@var{revision}]]
+If @var{output-file} is a libtool library, compute interface version
+information so that the resulting library uses the specified major, minor and
+revision numbers.  This is designed to permit libtool to be used with
+existing projects where identical version numbers are already used across
+operating systems.  New projects should use the @samp{-version-info} flag
+instead.
+
 @item -Wl,@var{flag}
 @itemx -Xlinker @var{flag}
 Pass a linker specific flag directly to the linker.

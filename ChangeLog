@@ -1,3 +1,9 @@
+2003-03-31  Keith Packard  <keithp@keithp.com>
+
+	* ltmain.in: New flag -version-number to be used for maintaining
+	compatability with a previously non-Libtool versioning scheme.
+	* doc/libtool.texi: Document it.
+
 2003-03-31  Naofumi Yasufuku  <naofumi@yasufuku.net>
 
 	* ltmain.in (win32_libid): Fixed sed expression error in
