@@ -50,11 +50,6 @@ dnl Setup Libtool
 dnl Check for libtool and turn on Automake processing for Libtool
 AM_PROG_LIBTOOL
 
-dnl Enable C++ support in libtool
-dnl This causes a C++ configuration tag to be appended to the libtool
-dnl script generated during the above AM_PROG_LIBTOOL macro execution.
-AC_LIBTOOL_CXX
-
 AC_CHECK_HEADERS(math.h)
 
 AC_CHECK_LIBM

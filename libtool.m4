@@ -26,6 +26,7 @@ AC_DEFUN(AC_PROG_LIBTOOL,[AC_REQUIRE([_AC_PROG_LIBTOOL])])
 AC_DEFUN(_AC_PROG_LIBTOOL,
 [AC_REQUIRE([AC_LIBTOOL_SETUP])dnl
 AC_BEFORE([$0],[AC_LIBTOOL_CXX])dnl
+AC_BEFORE([$0],[AC_LIBTOOL_GCJ])dnl
 
 # Save cache, so that ltconfig can load it
 AC_CACHE_SAVE
@@ -45,7 +46,7 @@ $libtool_flags --no-verify --build="$build" $ac_aux_dir/ltmain.sh $lt_target \
 AC_CACHE_LOAD
 
 # This can be used to rebuild libtool when needed
-LIBTOOL_DEPS="$ac_aux_dir/ltconfig $ac_aux_dir/ltmain.sh"
+LIBTOOL_DEPS="$ac_aux_dir/ltconfig $ac_aux_dir/ltmain.sh $ac_aux_dir/ltcf-c.sh"
 
 # Always use our own libtool.
 LIBTOOL='$(SHELL) $(top_builddir)/libtool'
@@ -705,11 +706,20 @@ AC_DEFUN(AC_LIBLTDL_INSTALLABLE, [AC_BEFORE([$0],[AC_LIBTOOL_SETUP])dnl
   fi
 ])
 
+# If this macro is not defined by Autoconf, define it here.
+ifdef([AC_PROVIDE_IFELSE],
+      [],
+      [define([AC_PROVIDE_IFELSE],
+              [ifdef([AC_PROVIDE_$1],
+                     [$2], [$3])])])
+
 # AC_LIBTOOL_CXX - enable support for C++ libraries
-AC_DEFUN(AC_LIBTOOL_CXX,
-[AC_REQUIRE([AC_PROG_CXX])
+AC_DEFUN(AC_LIBTOOL_CXX,[AC_REQUIRE([_AC_LIBTOOL_CXX])])
+AC_DEFUN(_AC_LIBTOOL_CXX,
+[AC_REQUIRE([AC_PROG_LIBTOOL])
+AC_REQUIRE([AC_PROG_CXX])
 AC_REQUIRE([AC_PROG_CXXCPP])
-AC_REQUIRE([AC_PROG_LIBTOOL])
+LIBTOOL_DEPS=$LIBTOOL_DEPS" $ac_aux_dir/ltcf-cxx.sh"
 lt_save_CC="$CC"
 lt_save_CFLAGS="$CFLAGS"
 dnl Make sure LTCC is set to the C compiler, i.e. set LTCC before CC
@@ -726,7 +736,83 @@ ${CONFIG_SHELL-/bin/sh} $ac_aux_dir/ltconfig -o libtool $libtool_flags \
 || AC_MSG_ERROR([libtool tag configuration failed])
 CC="$lt_save_CC"
 CFLAGS="$lt_save_CFLAGS"
+
+# Redirect the config.log output again, so that the ltconfig log is not
+# clobbered by the next message.
+exec 5>>./config.log
 ])
+
+# AC_LIBTOOL_GCJ - enable support for GCJ libraries
+AC_DEFUN(AC_LIBTOOL_GCJ,[AC_REQUIRE([_AC_LIBTOOL_GCJ])])
+AC_DEFUN(_AC_LIBTOOL_GCJ,
+[AC_REQUIRE([AC_PROG_LIBTOOL])
+AC_REQUIRE([AC_PROG_GCJ])
+LIBTOOL_DEPS=$LIBTOOL_DEPS" $ac_aux_dir/ltcf-gcj.sh"
+lt_save_CC="$CC"
+lt_save_CFLAGS="$CFLAGS"
+dnl Make sure LTCC is set to the C compiler, i.e. set LTCC before CC
+dnl is set to the C++ compiler.
+AR="$AR" LTCC="$CC" CC="$GCJ" CFLAGS="$GCJFLAGS" CPPFLAGS="" \
+MAGIC="$MAGIC" LDFLAGS="$LDFLAGS" LIBS="$LIBS" \
+LN_S="$LN_S" NM="$NM" RANLIB="$RANLIB" STRIP="$STRIP" \
+AS="$AS" DLLTOOL="$DLLTOOL" OBJDUMP="$OBJDUMP" \
+objext="$OBJEXT" exeext="$EXEEXT" reload_flag="$reload_flag" \
+deplibs_check_method="$deplibs_check_method" \
+file_magic_cmd="$file_magic_cmd" \
+${CONFIG_SHELL-/bin/sh} $ac_aux_dir/ltconfig -o libtool $libtool_flags \
+--build="$build" --add-tag=GCJ $ac_aux_dir/ltcf-gcj.sh $lt_target \
+|| AC_MSG_ERROR([libtool tag configuration failed])
+CC="$lt_save_CC"
+CFLAGS="$lt_save_CFLAGS"
+
+# Redirect the config.log output again, so that the ltconfig log is not
+# clobbered by the next message.
+exec 5>>./config.log
+])
+
+# If both AC_PROG_CXX and AC_PROG_LIBTOOL have already been expanded,
+# run AC_LIBTOOL_CXX immediately, otherwise, only expand it after the
+# latter of them.
+AC_PROVIDE_IFELSE([AC_PROG_CXX],
+    [AC_PROVIDE_IFELSE([AC_PROG_LIBTOOL],
+	[AC_LIBTOOL_CXX],
+	[define([AC_PROG_LIBTOOL],
+		defn([AC_PROG_LIBTOOL])[AC_LIBTOOL_CXX
+])])],
+    [define([AC_PROG_CXX],
+	    defn([AC_PROG_CXX])[AC_PROVIDE_IFELSE([AC_PROG_LIBTOOL],
+	[AC_LIBTOOL_CXX],
+	[define([AC_PROG_LIBTOOL],
+		defn([AC_PROG_LIBTOOL])[AC_LIBTOOL_CXX
+])])])])
+
+# If both A[CM]_PROG_CXX and AC_PROG_LIBTOOL have already been
+# expanded, run AC_LIBTOOL_GCJ immediately, otherwise, only expand it
+# after the latter of them.
+AC_PROVIDE_IFELSE([AC_PROG_GCJ],
+    [AC_PROVIDE_IFELSE([AC_PROG_LIBTOOL],
+	[AC_LIBTOOL_GCJ],
+	[define([AC_PROG_LIBTOOL],
+		defn([AC_PROG_LIBTOOL])[AC_LIBTOOL_GCJ
+])])],
+    [define([AC_PROG_GCJ],
+	    defn([AC_PROG_GCJ])[AC_PROVIDE_IFELSE([AC_PROG_LIBTOOL],
+	[AC_LIBTOOL_GCJ],
+	[define([AC_PROG_LIBTOOL],
+		defn([AC_PROG_LIBTOOL])[AC_LIBTOOL_GCJ
+])])])])
+AC_PROVIDE_IFELSE([AM_PROG_GCJ],
+    [AC_PROVIDE_IFELSE([AC_PROG_LIBTOOL],
+	[AC_LIBTOOL_GCJ],
+	[define([AC_PROG_LIBTOOL],
+		defn([AC_PROG_LIBTOOL])[AC_LIBTOOL_GCJ
+])])],
+    [define([AM_PROG_GCJ],
+	    defn([AM_PROG_GCJ])[AC_PROVIDE_IFELSE([AC_PROG_LIBTOOL],
+	[AC_LIBTOOL_GCJ],
+	[define([AC_PROG_LIBTOOL],
+		defn([AC_PROG_LIBTOOL])[AC_LIBTOOL_GCJ
+])])])])
 
 dnl old names
 AC_DEFUN(AM_PROG_LIBTOOL, [indir([AC_PROG_LIBTOOL])])dnl

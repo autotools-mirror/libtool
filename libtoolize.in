@@ -148,11 +148,15 @@ if test -z "$files"; then
 fi
 files='config.guess config.sub ltconfig ltmain.sh ltcf-c.sh'
 
-#Add C++ support if configure.in uses AC_LIBTOOL_CXX.
-if egrep '^[ ]*AC_LIBTOOL_CXX' configure.in > /dev/null 2>&1; then
+#Add C++ support if configure.in uses AC_LIBTOOL_CXX or AC_PROG_CXX.
+if egrep '^[ ]*AC_(PROG|LIBTOOL)_CXX' configure.in > /dev/null 2>&1; then
   files="$files ltcf-cxx.sh"
 fi
 
+#Add GCJ support if configure.in uses AC_LIBTOOL_GCJ or A[CM]_PROG_GCJ.
+if egrep '^[ ]*A([CM]_PROG|C_LIBTOOL)_GCJ' configure.in > /dev/null 2>&1; then
+  files="$files ltcf-gcj.sh"
+fi
 
 auxdir=.
 auxdirline=`egrep '^AC_CONFIG_AUX_DIR' configure.in 2>/dev/null`

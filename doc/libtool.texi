@@ -1862,11 +1862,24 @@ on @file{libtool}.
 @end defmac
 
 @defmac AC_LIBTOOL_CXX
-Enable C++ shared library support. This macro should be used if libtool
+Enable C++ shared library support.  This macro should be used if libtool
 will be used to generate C++ shared libraries.  It causes a C++-specific
 configuration to be appended to the @file{libtool} script.  The C++
 support can coexist with other configurations, including the default C
-shared library configuration.
+shared library configuration.  It is not necessary to invoke this macro
+explicitly, as long as @code{AC_PROG_CXX} is called within the configure
+script.
+@end defmac
+
+@defmac AC_LIBTOOL_GCJ
+Enable GCJ shared library support.  This macro should be used if libtool
+will be used to generate GCJ shared libraries.  It causes a GCJ-specific
+configuration to be appended to the @file{libtool} script.  The GCJ
+support can coexist with other configurations, including the default C
+shared library configuration.  It is not necessary to invoke this macro
+explicitly, as long as @code{AM_PROG_GCJ} (or @code{AC_PROG_GCJ},
+whenever it is implemented in autoconf) is called within the configure
+script.
 @end defmac
 
 @defmac AC_LIBTOOL_DLOPEN

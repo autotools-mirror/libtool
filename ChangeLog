@@ -1,5 +1,19 @@
 2000-05-26  Alexandre Oliva  <oliva@lsd.ic.unicamp.br>
 
+	* libtool.m4 (_AC_PROG_LIBTOOL): Run before AC_LIBTOOL_GCJ.
+	Add ltcf-c.sh to LIBTOOL_DEPS.  Run AC_LIBTOOL_CXX and
+	AC_LIBTOOL_GCJ on demand.
+	(AC_PROVIDE_IFELSE): Define for non-CVS autoconf compatibility.
+	(AC_LIBTOOL_CXX): Accept multiple executions.  Add ltcf-cxx.sh
+	to LIBTOOL_DEPS.  Reset config.log output.
+	(AC_LIBTOOL_GCJ): New macro.
+	* libtoolize.in: Copy ltcf-cxx.sh if AC_PROG_CXX is found.
+	Copy ltcf-gcj.sh when appropriate.
+	* doc/libtool.texi (AC_LIBTOOL_CXX): Doesn't have to be
+	explicitly called.
+	(AC_LIBTOOL_GCJ): Document.
+	* tagdemo/configure.in (AC_LIBTOOL_CXX): Don't call.
+
 	* ltmain.in (xform): Recognize *.class and *.java.
 	(pic_flag): Do not add -DPIC.
 	* ltcf-c.sh (ac_cv_prog_cc_pic): Add -DPIC.
