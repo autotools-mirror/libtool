@@ -1,3 +1,7 @@
+1998-11-07  William M. Perry  <wmperry@aventail.com>
+
+	* ltconfig.in (aix3, aix4): uniquify symbol names in archive_cmds
+
 1998-11-07  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* ltconfig.in: add --falback-echo, to be used if everything else
