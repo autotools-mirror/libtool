@@ -1,5 +1,10 @@
 1999-01-22  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* libltdl/ltdl.c (lt_dlopen): if we're reusing a previously opened
+	handle, don't reset its name nor add it to the list, and free the
+	name we have allocated
+	Reported by Edouard G. Parmelan <Edouard.Parmelan@France.NCR.COM>
+
 	* Makefile.am (ltconfig, ltmain.sh, TIMESTAMP): let's not assume
 	anything about the format of the date, just that it does not
 	contain `$'
