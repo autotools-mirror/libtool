@@ -190,7 +190,8 @@ func_copy ()
 
     if test -d "$2"; then
 
-      func_copy_cb "$my_f1" `$ECHO "X$1" | $Xsed -e "$dirname"` "$2"
+      func_copy_cb "$my_f1" \
+	`$ECHO "X$1" | $Xsed -e "$dirname"` "$2"
 
     else
 
