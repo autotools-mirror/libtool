@@ -1714,11 +1714,11 @@ cygwin* | mingw* | pw32*)
     library_names_spec='$libname.dll.a'
     # DLL is installed to $(libdir)/../bin by postinstall_cmds
     postinstall_cmds='base_file=`basename \${file}`~
-      dlpath=`$SHELL 2>&1 -c '\''. $dir/'\''\${base_file}'\''i;echo \$dlname'\''`~
+      dlpath=`$SHELL 2>&1 -c '\'\\\'\''. $dir/'\'\\\'\''\${base_file}'\'\\\'\''i;echo \$dlname'\'\\\'\''`~
       dldir=$destdir/`dirname \$dlpath`~
       test -d \$dldir || mkdir -p \$dldir~
       $install_prog $dir/$dlname \$dldir/$dlname'
-    postuninstall_cmds='dldll=`$SHELL 2>&1 -c '\''. $file; echo \$dlname'\''`~
+    postuninstall_cmds='dldll=`$SHELL 2>&1 -c '\'\\\'\''. $file; echo \$dlname'\'\\\'\''`~
       dlpath=$dir/\$dldll~
        $rm \$dlpath'
     shlibpath_overrides_runpath=yes
