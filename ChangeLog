@@ -1,3 +1,9 @@
+1999-02-20  Vladimir Kushnir <kushn@mail.kar.net>
+
+	* ltconfig.in (freebsd-elf*, need_version, need_lib_prefix): no
+	(freebsd-elf*, library_names_spec): add $libname.so instead of
+	$libname.so$versuffix; add $libname$release.so
+
 1999-02-20  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* doc/libtool.texi: remove ticks from menu items; it breaks TeX
