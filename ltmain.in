@@ -181,9 +181,9 @@ func_win32_libid () {
     win32_libid_type="x86 archive import"
     ;;
   *ar\ archive*) # could be an import, or static
-    if eval $OBJDUMP -f $1 | $SED -e '10q' 2>/dev/null | \
-      $EGREP 'file format pe-i386(.*architecture: i386)?' >/dev/null ; then
-      win32_nmres=`eval $NM -f posix -A $1 | \
+    if eval $OBJDUMP -f $1 | $SED -e '10q' 2>/dev/null |
+       $EGREP 'file format pe-i386(.*architecture: i386)?' >/dev/null ; then
+      win32_nmres=`eval $NM -f posix -A $1 |
 	sed -n -e '1,100{/ I /{x;/import/!{s/^/import/;h;p;};x;};}'`
       if test "X$win32_nmres" = "Ximport" ; then
         win32_libid_type="x86 archive import"
@@ -233,7 +233,7 @@ func_infer_tag () {
       # if we don't check for them as well.
       *)
 	for z in $available_tags; do
-	  if grep "^# ### BEGIN LIBTOOL TAG CONFIG: $z$" < "$progpath" > /dev/null; then
+	  if $GREP "^# ### BEGIN LIBTOOL TAG CONFIG: $z$" < "$progpath" > /dev/null; then
 	    # Evaluate the configuration.
 	    eval "`${SED} -n -e '/^# ### BEGIN LIBTOOL TAG CONFIG: '$z'$/,/^# ### END LIBTOOL TAG CONFIG: '$z'$/p' < $progpath`"
 	    CC_quoted=
@@ -1134,9 +1134,9 @@ EOF
 		*) . ./$arg ;;
 		esac
 
-		if test -z "$pic_object" || \
+		if test -z "$pic_object" ||
 		   test -z "$non_pic_object" ||
-		   test "$pic_object" = none && \
+		   test "$pic_object" = none &&
 		   test "$non_pic_object" = none; then
 		  $echo "$modename: cannot find name of object for \`$arg'" 1>&2
 		  exit $EXIT_FAILURE
@@ -1638,9 +1638,9 @@ EOF
 	  *) . ./$arg ;;
 	  esac
 
-	  if test -z "$pic_object" || \
+	  if test -z "$pic_object" ||
 	     test -z "$non_pic_object" ||
-	     test "$pic_object" = none && \
+	     test "$pic_object" = none &&
 	     test "$non_pic_object" = none; then
 	    $echo "$modename: cannot find name of object for \`$arg'" 1>&2
 	    exit $EXIT_FAILURE
@@ -1817,7 +1817,7 @@ EOF
 
     case $host in
     *cygwin* | *mingw* | *pw32*)
-      # don't eliminate duplcations in $postdeps and $predeps
+      # don't eliminate duplications in $postdeps and $predeps
       duplicate_compiler_generated_deps=yes
       ;;
     *)
@@ -2189,7 +2189,9 @@ EOF
 	    $echo "$modename: cannot -dlopen a convenience library: \`$lib'" 1>&2
 	    exit $EXIT_FAILURE
 	  fi
-	  if test -z "$dlname" || test "$dlopen_support" != yes || test "$build_libtool_libs" = no; then
+	  if test -z "$dlname" ||
+	     test "$dlopen_support" != yes ||
+	     test "$build_libtool_libs" = no; then
 	    # If there is no dlname, no dlopen support or we're linking
 	    # statically, we need to preload.  We also need to preload any
 	    # dependent libraries so libltdl's deplib preloader doesn't
@@ -2360,8 +2362,9 @@ EOF
 	  fi
 	  # This is a shared library
 
-      # Warn about portability, can't link against -module's on some systems (darwin)
-      if test "$shouldnotlink" = yes && test "$pass" = link ; then
+	  # Warn about portability, can't link against -module's on some
+	  # systems (darwin)
+	  if test "$shouldnotlink" = yes && test "$pass" = link ; then
 	    $echo
 	    if test "$linkmode" = prog; then
 	      $echo "*** Warning: Linking the executable $output against the loadable module"
@@ -2369,7 +2372,7 @@ EOF
 	      $echo "*** Warning: Linking the shared library $output against the loadable module"
 	    fi
 	    $echo "*** $linklib is not portable!"
-      fi
+	  fi
 	  if test "$linkmode" = lib &&
 	     test "$hardcode_into_libs" = yes; then
 	    # Hardcode the library path.
@@ -2467,9 +2470,10 @@ EOF
 		case $host in
 		  *-*-sco3.2v5* ) add_dir="-L$dir" ;;
 		  *-*-darwin* )
-		    # if the lib is a module then we can not link against it, someone
-		    # is ignoring the new warnings I added
-		    if /usr/bin/file -L $add 2> /dev/null | $GREP "bundle" >/dev/null ; then
+		    # if the lib is a module then we can not link against
+		    # it, someone is ignoring the new warnings I added
+		    if /usr/bin/file -L $add 2> /dev/null |
+		       $GREP "bundle" >/dev/null ; then
 		      $echo "** Warning, lib $linklib is a module, not a shared library"
 		      if test -z "$old_library" ; then
 		        $echo
@@ -2534,8 +2538,8 @@ EOF
 	    else
 	      test -n "$add_dir" && deplibs="$add_dir $deplibs"
 	      test -n "$add" && deplibs="$add $deplibs"
-	      if test "$hardcode_direct" != yes && \
-		 test "$hardcode_minus_L" != yes && \
+	      if test "$hardcode_direct" != yes &&
+		 test "$hardcode_minus_L" != yes &&
 		 test "$hardcode_shlibpath_var" = yes; then
 		case :$finalize_shlibpath: in
 		*":$libdir:"*) ;;
@@ -2562,7 +2566,8 @@ EOF
 	      esac
 	      add="-l$name"
 	    elif test "$hardcode_automatic" = yes; then
-	      if test -n "$inst_prefix_dir" && test -f "$inst_prefix_dir$libdir/$linklib" ; then
+	      if test -n "$inst_prefix_dir" &&
+		 test -f "$inst_prefix_dir$libdir/$linklib" ; then
 	        add="$inst_prefix_dir$libdir/$linklib"
 	      else
 	        add="$libdir/$linklib"
@@ -2642,7 +2647,8 @@ EOF
 
 	if test "$linkmode" = lib; then
 	  if test -n "$dependency_libs" &&
-	     { test "$hardcode_into_libs" != yes || test "$build_old_libs" = yes ||
+	     { test "$hardcode_into_libs" != yes ||
+	       test "$build_old_libs" = yes ||
 	       test "$link_static" = yes; }; then
 	    # Extract -R from dependency_libs
 	    temp_deplibs=
@@ -2709,7 +2715,8 @@ EOF
 		depdepl=
 		case $host in
 		*-*-darwin*)
-		  # we do not want to link against static libs, but need to link against shared
+		  # we do not want to link against static libs,
+		  # but need to link against shared
 		  eval deplibrary_names=`${SED} -n -e 's/^library_names=\(.*\)$/\1/p' $deplib`
 		  if test -n "$deplibrary_names" ; then
 		    for tmp in $deplibrary_names ; do
@@ -2717,7 +2724,7 @@ EOF
 		    done
 		    if test -f "$path/$depdepl" ; then
 		      depdepl="$path/$depdepl"
-		   fi
+		    fi
 		    # do not add paths which are already there
 		    case " $newlib_search_path " in
 		    *" $path "*) ;;
@@ -2727,24 +2734,24 @@ EOF
 		  path=""
 		  ;;
 		*)
-		path="-L$path"
-		;;
+		  path="-L$path"
+		  ;;
 		esac
-
 		;;
-		  -l*)
+
+	      -l*)
 		case $host in
 		*-*-darwin*)
-		 # Again, we only want to link against shared libraries
-		 eval tmp_libs=`$echo "X$deplib" | $Xsed -e "s,^\-l,,"`
-		 for tmp in $newlib_search_path ; do
-		     if test -f "$tmp/lib$tmp_libs.dylib" ; then
-		       eval depdepl="$tmp/lib$tmp_libs.dylib"
-		       break
-		     fi
-		 done
-	         path=""
-		 ;;
+		  # Again, we only want to link against shared libraries
+		  eval tmp_libs=`$echo "X$deplib" | $Xsed -e "s,^\-l,,"`
+		  for tmp in $newlib_search_path ; do
+		    if test -f "$tmp/lib$tmp_libs.dylib" ; then
+		      eval depdepl="$tmp/lib$tmp_libs.dylib"
+		      break
+		    fi
+		  done
+		  path=""
+		  ;;
 		*) continue ;;
 		esac
 		;;
@@ -2852,7 +2859,8 @@ EOF
 	  eval $var=\"$tmp_libs\"
 	done # for var
       fi
-      # Last step: remove runtime libs from dependency_libs (they stay in deplibs)
+      # Last step: remove runtime libs from dependency_libs
+      # (they stay in deplibs)
       tmp_libs=
       for i in $dependency_libs ; do
 	case " $predeps $postdeps $compiler_lib_search_path " in
@@ -3435,8 +3443,8 @@ EOF
 		  potential_libs=`ls $i/$libname[.-]* 2>/dev/null`
 		  for potent_lib in $potential_libs; do
 		      # Follow soft links.
-		      if ls -lLd "$potent_lib" 2>/dev/null \
-			 | $GREP " -> " >/dev/null; then
+		      if ls -lLd "$potent_lib" 2>/dev/null |
+			 $GREP " -> " >/dev/null; then
 			continue
 		      fi
 		      # The statement above tries to avoid entering an
@@ -3452,9 +3460,9 @@ EOF
 			*) potlib=`$echo "X$potlib" | $Xsed -e 's,[^/]*$,,'`"$potliblink";;
 			esac
 		      done
-		      if eval $file_magic_cmd \"\$potlib\" 2>/dev/null \
-			 | ${SED} 10q \
-			 | $EGREP "$file_magic_regex" > /dev/null; then
+		      if eval $file_magic_cmd \"\$potlib\" 2>/dev/null |
+			 ${SED} 10q |
+			 $EGREP "$file_magic_regex" > /dev/null; then
 			newdeplibs="$newdeplibs $a_deplib"
 			a_deplib=""
 			break 2
@@ -3504,9 +3512,9 @@ EOF
 		  potential_libs=`ls $i/$libname[.-]* 2>/dev/null`
 		  for potent_lib in $potential_libs; do
 		    potlib="$potent_lib" # see symlink-check above in file_magic test
-		    if eval $echo \"$potent_lib\" 2>/dev/null \
-		        | ${SED} 10q \
-		        | $EGREP "$match_pattern_regex" > /dev/null; then
+		    if eval $echo \"$potent_lib\" 2>/dev/null |
+		       ${SED} 10q |
+		       $EGREP "$match_pattern_regex" > /dev/null; then
 		      newdeplibs="$newdeplibs $a_deplib"
 		      a_deplib=""
 		      break 2
@@ -3537,16 +3545,16 @@ EOF
 	  ;;
 	none | unknown | *)
 	  newdeplibs=""
-	  tmp_deplibs=`$echo "X $deplibs" | $Xsed -e 's/ -lc$//' \
-	    -e 's/ -[LR][^ ]*//g'`
+	  tmp_deplibs=`$echo "X $deplibs" |
+	    $Xsed -e 's/ -lc$//' -e 's/ -[LR][^ ]*//g'`
 	  if test "X$allow_libtool_libs_with_static_runtimes" = "Xyes" ; then
 	    for i in $predeps $postdeps ; do
 	      # can't use Xsed below, because $i might contain '/'
 	      tmp_deplibs=`$echo "X $tmp_deplibs" | ${SED} -e "1s,^X,," -e "s,$i,,"`
 	    done
 	  fi
-	  if $echo "X $tmp_deplibs" | $Xsed -e 's/[ 	]//g' \
-	    | $GREP . >/dev/null; then
+	  if $echo "X $tmp_deplibs" | $Xsed -e 's/[ 	]//g' |
+	     $GREP . >/dev/null; then
 	    $echo
 	    if test "X$deplibs_check_method" = "Xnone"; then
 	      $echo "*** Warning: inter-library dependencies are not supported in this platform."
@@ -5091,7 +5099,7 @@ else
   program=lt-'$outputname'$exeext
   progdir=\"\$thisdir/$objdir\"
 
-  if test ! -f \"\$progdir/\$program\" || \\
+  if test ! -f \"\$progdir/\$program\" ||
      { file=\`ls -1dt \"\$progdir/\$program\" \"\$progdir/../\$program\" 2>/dev/null | ${SED} 1q\`; \\
        test \"X\$file\" != \"X\$progdir/\$program\"; }; then
 
@@ -5371,8 +5379,9 @@ fi\
       relink_command="(cd `pwd`; $SHELL $progpath $preserve_args --mode=relink $libtool_args @inst_prefix_dir@)"
       relink_command=`$echo "X$relink_command" | $Xsed -e "$sed_quote_subst"`
       if test "$hardcode_automatic" = yes ; then
-        relink_command=
+	relink_command=
       fi
+
       # Only create the output if not a dry run.
       if test -z "$run"; then
 	for installed in no yes; do
@@ -6269,9 +6278,9 @@ relink_command=\"$relink_command\""
       fi
 
       # Don't error if the file doesn't exist and rm -f was used.
-      if (test -L "$file") >/dev/null 2>&1 \
-	|| (test -h "$file") >/dev/null 2>&1 \
-	|| test -f "$file"; then
+      if (test -L "$file") >/dev/null 2>&1 ||
+	 (test -h "$file") >/dev/null 2>&1 ||
+	 test -f "$file"; then
 	:
       elif test -d "$file"; then
 	exit_status=1
@@ -6340,14 +6349,14 @@ relink_command=\"$relink_command\""
 	  . $dir/$name
 
 	  # Add PIC object to the list of files to remove.
-	  if test -n "$pic_object" \
-	     && test "$pic_object" != none; then
+	  if test -n "$pic_object" &&
+	     test "$pic_object" != none; then
 	    rmfiles="$rmfiles $dir/$pic_object"
 	  fi
 
 	  # Add non-PIC object to the list of files to remove.
-	  if test -n "$non_pic_object" \
-	     && test "$non_pic_object" != none; then
+	  if test -n "$non_pic_object" &&
+	     test "$non_pic_object" != none; then
 	    rmfiles="$rmfiles $dir/$non_pic_object"
 	  fi
 	fi

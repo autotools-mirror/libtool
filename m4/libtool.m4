@@ -537,7 +537,7 @@ _LT_EOF
   # is reportedly fixed, but why not run on old versions too?
   sed '$q' "$ltmain" >> "$cfgfile" || (rm -f "$cfgfile"; exit 1)
 
-  mv -f "$cfgfile" "$ofile" || \
+  mv -f "$cfgfile" "$ofile" ||
     (rm -f "$ofile" && cp "$cfgfile" "$ofile" && rm -f "$cfgfile")
   chmod +x "$ofile"
 ],
@@ -1408,8 +1408,8 @@ _LT_DECL([], [objdir], [0],
 AC_DEFUN([AC_LIBTOOL_PROG_LD_HARDCODE_LIBPATH],
 [AC_MSG_CHECKING([how to hardcode library paths into programs])
 _LT_AC_TAGVAR(hardcode_action, $1)=
-if test -n "$_LT_AC_TAGVAR(hardcode_libdir_flag_spec, $1)" || \
-   test -n "$_LT_AC_TAGVAR(runpath_var $1)" || \
+if test -n "$_LT_AC_TAGVAR(hardcode_libdir_flag_spec, $1)" ||
+   test -n "$_LT_AC_TAGVAR(runpath_var $1)" ||
    test "X$_LT_AC_TAGVAR(hardcode_automatic, $1)"="Xyes" ; then
 
   # We can hardcode non-existant directories.
@@ -3840,7 +3840,7 @@ _LT_EOF
 	# We only want to do this on AIX 4.2 and lower, the check
 	# below for broken collect2 doesn't work under 4.3+
 	  collect2name=`${CC} -print-prog-name=collect2`
-	  if test -f "$collect2name" && \
+	  if test -f "$collect2name" &&
   	   strings "$collect2name" | $GREP resolve_lib_name >/dev/null
 	  then
   	  # We have reworked collect2
@@ -4701,7 +4701,7 @@ if test "$GXX" = yes; then
     wlarc='${wl}'
 
     # ancient GNU ld didn't support --whole-archive et. al.
-    if eval "`$CC -print-prog-name=ld` --help 2>&1" | \
+    if eval "`$CC -print-prog-name=ld` --help 2>&1" |
 	$GREP 'no-whole-archive' > /dev/null; then
       _LT_AC_TAGVAR(whole_archive_flag_spec, $1)="$wlarc"'--whole-archive$convenience '"$wlarc"'--no-whole-archive'
     else
@@ -4782,7 +4782,7 @@ case $host_os in
       # We only want to do this on AIX 4.2 and lower, the check
       # below for broken collect2 doesn't work under 4.3+
 	collect2name=`${CC} -print-prog-name=collect2`
-	if test -f "$collect2name" && \
+	if test -f "$collect2name" &&
 	   strings "$collect2name" | $GREP resolve_lib_name >/dev/null
 	then
 	  # We have reworked collect2
@@ -5562,8 +5562,8 @@ if AC_TRY_EVAL(ac_compile); then
     -L* | -R* | -l*)
        # Some compilers place space between "-{L,R}" and the path.
        # Remove the space.
-       if test $p = "-L" \
-	  || test $p = "-R"; then
+       if test $p = "-L" ||
+          test $p = "-R"; then
 	 prev=$p
 	 continue
        else

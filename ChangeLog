@@ -1,3 +1,14 @@
+2004-02-12  Albert Chin-A-Young  <china@thewrittenword.com>
+	Scott James Remnant  <scott@netsplit.com>
+
+	* ltmain.in: Fix typo: duplcations -> duplications,
+	Fix indentation of a handful of badly indented blocks,
+	Fix last remaining use of 'grep' to $GREP,
+	Remove unnecessary trailing slash where we break a line on a
+	command separator.
+	* m4/libtool.m4: Also remove unnecessary trailing slash where
+	we break a line on a command separator.
+	    
 2004-02-12  Scott James Remnant  <scott@netsplit.com>
 
 	* m4/ltoptions.m4: This got committed by an over-keen Gary,
