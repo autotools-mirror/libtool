@@ -1,3 +1,8 @@
+2003-01-18  Robert Boehne  <rboehne@gnu.org>
+
+	* libtool.m4 (AC_LIBTOOL_PROG_COMPILER_PIC): Don't add -DPIC
+	for languages other than C and C++.
+
 2003-01-13  Albert Chin-A-Young  <china@thewrittenword.com>
 
 	* libtool.m4, ltmain.in: Add support for hppa*64* based on

@@ -4758,7 +4758,7 @@ AC_MSG_RESULT([$_LT_AC_TAGVAR(lt_prog_compiler_pic, $1)])
 if test -n "$_LT_AC_TAGVAR(lt_prog_compiler_pic, $1)"; then
   AC_LIBTOOL_COMPILER_OPTION([if $compiler PIC flag $_LT_AC_TAGVAR(lt_prog_compiler_pic, $1) works],
     _LT_AC_TAGVAR(lt_prog_compiler_pic_works, $1),
-    [$_LT_AC_TAGVAR(lt_prog_compiler_pic, $1)ifelse([$1],[GCJ],[],[ -DPIC])], [],
+    [$_LT_AC_TAGVAR(lt_prog_compiler_pic, $1)ifelse([$1],[],[ -DPIC],[ifelse([$1],[CXX],[ -DPIC],[])])], [],
     [case $_LT_AC_TAGVAR(lt_prog_compiler_pic, $1) in
      "" | " "*) ;;
      *) _LT_AC_TAGVAR(lt_prog_compiler_pic, $1)=" $_LT_AC_TAGVAR(lt_prog_compiler_pic, $1)" ;;
@@ -4772,7 +4772,7 @@ case "$host_os" in
     _LT_AC_TAGVAR(lt_prog_compiler_pic, $1)=
     ;;
   *)
-    _LT_AC_TAGVAR(lt_prog_compiler_pic, $1)="$_LT_AC_TAGVAR(lt_prog_compiler_pic, $1)ifelse([$1],[GCJ],[],[ -DPIC])"
+    _LT_AC_TAGVAR(lt_prog_compiler_pic, $1)="$_LT_AC_TAGVAR(lt_prog_compiler_pic, $1)ifelse([$1],[],[ -DPIC],[ifelse([$1],[CXX],[ -DPIC],[])])"
     ;;
 esac
 ])
