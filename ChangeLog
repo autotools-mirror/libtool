@@ -1,3 +1,26 @@
+2004-10-20  Noah Misch  <noah@cs.caltech.edu>,
+	    Gary V. Vaughan  <gary@gnu.org>
+
+	* m4/libtool.m4 (sed_quote_subst): Remove superfluous backslashes
+	from the match character set.
+	(double_quote_subst): Ditto.
+	* lib/general.m4sh (sed_quote_subst): Ditto.
+	(double_quote_subst): New variable, copied from
+	m4/libtool.m4. Much the same as sed_quote_subst, but variable
+	references are not quoted.
+	(func_quote_for_eval): Given any $foo; $bar and
+	$foo must be identical after the following commands:
+	    func_quote_for_eval "$foo"
+	    eval "bar=$func_quote_for_eval_result"
+	(func_quote_for_expand): In a similar vein to to func_quote_for_eval,
+	except that variable expansions are not protected when quoting the
+	command for subsequent display.
+	* config/ltmain.m4sh: Factor away use of $sed_quote_subst now that
+	it has been subsumed into func_quote_for_eval.
+	(func_mode_link): Instead of `2004-10-14 Peter O'Gorman' below,
+	use func_quote_for_expand so that ${wl} is expanded properly in
+	the $show expression.
+
 2004-10-16  Gary V. Vaughan  <gary@gnu.org>
 
 	* config/ltmain.m4sh (func_mode_finish): solaris-2.6 also has
