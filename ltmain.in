@@ -982,17 +982,22 @@ compiler."
 	  exit 1
 	  ;;
 	esac
-	deplibs="$deplibs $arg"
-	lib_search_path="$lib_search_path `expr $arg : '-L\(.*\)'`"
+	case " $deplibs " in
+	*" $arg "*) ;;
+	*) deplibs="$deplibs $arg";;
+	esac
+	case " $lib_search_path " in
+	*" $dir "*) ;;
+	*) lib_search_path="$lib_search_path $dir";;
+	esac
 	case "$host" in
 	*-*-cygwin* | *-*-mingw* | *-*-os2*)
-	  dllsearchdir="`expr $arg : '-L\(.*\)'`"
-	  dllsearchdir=`cd "$dllsearchdir" && pwd || echo "$dllsearchdir"`
-	  if test -n "$dllsearchpath"; then
-	    dllsearchpath="$dllsearchpath:$dllsearchdir"
-	  else
-	    dllsearchpath="$dllsearchdir"
-	  fi
+	  dllsearchdir=`cd "$dir" && pwd || echo "$dir"`
+	  case ":$dllsearchpath:" in
+	  ::) dllsearchpath="$dllsearchdir";;
+	  *":$dllsearchdir:"*) ;;
+	  *) dllsearchpath="$dllsearchpath:$dllsearchdir";;
+	  esac
 	  ;;
 	esac
 	;;
@@ -1151,7 +1156,15 @@ compiler."
 	  temp_deplibs=
 	  for deplib in $dependency_libs; do
 	    case "$deplib" in
-	    -R*) xrpath="$xrpath "`echo "X$deplib" | $Xsed -e 's/^-R//'`;;
+	    -R*) temp_xrpath=`echo "X$deplib" | $Xsed -e 's/^-R//'`
+	         case " $rpath $xrpath " in
+		 *" $temp_xrpath "*) ;;
+		 *) xrpath="$xrpath $temp_xrpath";;
+		 esac;;
+	    -L*) case "$compile_command $temp_deplibs " in
+		 *" $deplib "*) ;;
+		 *) temp_deplibs="$temp_deplibs $deplib";;
+		 esac;;
 	    *) temp_deplibs="$temp_deplibs $deplib";;
 	    esac
 	  done
@@ -1263,10 +1276,17 @@ compiler."
 		compile_shlibpath="$compile_shlibpath$dir:"
 		;;
 	      esac
-	      compile_command="$compile_command -L$dir -l$name"
+	      case "$compile_command " in
+	      *" -L$dir "*) ;;
+	      *) compile_command="$compile_command -L$dir";;
+	      esac
+	      compile_command="$ocmpile_command -l$name"
 	      deplibs="$deplibs -L$dir -l$name"
 	    elif test "$hardcode_shlibpath_var" = no; then
-	      compile_shlibpath="$compile_shlibpath$dir:"
+	      case ":$compile_shlibpath:" in
+	      *":$dir:"*) ;;
+	      *) compile_shlibpath="$compile_shlibpath$dir:";;
+	      esac
 	      compile_command="$compile_command -l$name"
 	      deplibs="$deplibs -l$name"
 	    else
@@ -1292,10 +1312,17 @@ compiler."
 	      compile_command="$compile_command $dir/$linklib"
 	      deplibs="$deplibs $dir/$linklib"
 	    elif test "$hardcode_minus_L" = yes; then
-	      compile_command="$compile_command -L$dir -l$name"
+	      case "$compile_command " in
+	      *" -L$dir "*) ;;
+	      *) compile_command="$compile_command -L$dir";;
+	      esac
+	      compile_command="$ocmpile_command -l$name"
 	      deplibs="$deplibs -L$dir -l$name"
 	    elif test "$hardcode_shlibpath_var" = yes; then
-	      compile_shlibpath="$compile_shlibpath$dir:"
+	      case ":$compile_shlibpath:" in
+	      *":$dir:"*) ;;
+	      *) compile_shlibpath="$compile_shlibpath$dir:";;
+	      esac
 	      compile_command="$compile_command -l$name"
 	      deplibs="$deplibs -l$name"
 	    else
@@ -1317,13 +1344,24 @@ compiler."
 	  if test "$hardcode_direct" = yes; then
 	    finalize_command="$finalize_command $libdir/$linklib"
 	  elif test "$hardcode_minus_L" = yes; then
-	    finalize_command="$finalize_command -L$libdir -l$name"
+	    case "$finalize_command " in
+	    *" -L$libdir "*) ;;
+	    *) finalize_command="$finalize_command -L$libdir";;
+	    esac
+	    finalize_command="$finalize_command -l$name"
 	  elif test "$hardcode_shlibpath_var" = yes; then
-	    finalize_shlibpath="$finalize_shlibpath$libdir:"
+	    case ":$finalize_shlibpath:" in
+	    *":$libdir:"*) ;;
+	    *) finalize_shlibpath="$finalize_shlibpath$libdir:";;
+	    esac
 	    finalize_command="$finalize_command -l$name"
 	  else
 	    # We cannot seem to hardcode it, guess we'll fake it.
-	    finalize_command="$finalize_command -L$libdir -l$name"
+	    case "$finalize_command " in
+	    *" -L$dir "*) ;;
+	    *) finalize_command="$finalize_command -L$libdir";;
+	    esac
+	    finalize_command="$finalize_command -l$name"
 	  fi
 	else
 	  # Transform directly to old archives if we don't build new libraries.
@@ -1340,8 +1378,16 @@ compiler."
 	    compile_command="$compile_command $dir/$linklib"
 	    finalize_command="$finalize_command $dir/$linklib"
 	  else
-	    compile_command="$compile_command -L$dir -l$name"
-	    finalize_command="$finalize_command -L$dir -l$name"
+	    case "$compile_command " in
+	    *" -L$dir "*) ;;
+	    *) compile_command="$compile_command -L$dir";;
+	    esac
+	    compile_command="$ocmpile_command -l$name"
+	    case "$finalize_command " in
+	    *" -L$dir "*) ;;
+	    *) finalize_command="$finalize_command -L$dir";;
+	    esac
+	    finalize_command="$finalize_command -l$name"
 	  fi
 	fi
 

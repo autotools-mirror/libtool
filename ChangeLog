@@ -1,5 +1,8 @@
 1999-02-20  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* ltmain.in: avoid duplication of -L switches, it sometimes breaks
+	IRIX 5.2's linker
+
 	* ltconfig.in (freebsd*, finish_cmds): expand objformat here
 	Reported by Vladimir Kushnir <kushn@mail.kar.net>
 
