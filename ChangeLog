@@ -1,3 +1,8 @@
+2000-12-15  Utz-Uwe Haus  <haus@mail.math.uni-magdeburg.de>
+
+	* libltdl/ltdl.c (lt_dlopen): Changed "dl_dependency_libs" keyword
+	to "dependency_libs".
+
 2000-12-14  Tod Milam  <tmilam@traclabs.com>
 
 	* libltdl/ltdl.c (lt_dlexit): Reset the loaders value to zero when
