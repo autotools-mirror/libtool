@@ -42,12 +42,13 @@ func_require "demo-inst" "$prefix/lib/libhello.la"  "demo/libhello.la"
 
 func_mkprefixdir
 func_cd "demo"
-func_save_files
 
 # Check to make sure we have a dynamic library.
 func_get_config "library_names" "cat libhello.la"
 test -z "$library_names" \
-  && func_fatal_error "Exiting: demo/libhello.la is not a shared library"
+  && func_skip "Exiting: demo/libhello.la is not a shared library"
+
+func_save_files
 
 func_get_config 'shlibpath_overrides_runpath
 hardcode_action

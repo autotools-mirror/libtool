@@ -1,5 +1,9 @@
 2004-11-28  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* tests/demo-relink.test, tests/depdemo-relink.test: SKIP, don't
+	FAIL if no shared libs available in demo/.  Do not try to access
+	nonexistent files.
+
 	* libltdl/loaders/loadlibrary.c: Remove unneeded
 	file-static variable.
 

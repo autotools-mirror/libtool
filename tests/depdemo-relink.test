@@ -45,12 +45,13 @@ func_require "depdemo-inst" "$prefix/lib/libl3.la"  "depdemo/l3/libl3.la"
 
 func_mkprefixdir
 func_cd "depdemo"
-func_save_files
 
 # Check to make sure we have a dynamic library.
 func_get_config "library_names" "cat l3/libl3.la"
 test -z "$library_names" \
-  && func_fatal_error "Exiting: depdemo/l3/libl3.la is not a shared library"
+  && func_skip "Exiting: depdemo/l3/libl3.la is not a shared library"
+
+func_save_files
 
 func_get_config 'shlibpath_overrides_runpath
 hardcode_action
