@@ -1,3 +1,8 @@
+2002-04-14  Jean-Frederic Clere  <jfrederic.clere@fujitsu-siemens.com>
+
+	* libtool.m4: Update support for Fujistu-Siemens Computers (FSC).
+	* ltmain.in: Add support for EBCDIC based systems.
+
 2002-03-16  Gary V. Vaughan  <gary@gnu.org>
 
 	* TODO: Removed obsolete comments about RMS' package system.
