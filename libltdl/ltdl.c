@@ -1142,31 +1142,35 @@ lt_dlopen (filename)
 		}
 		/* read the .la file */
 		while (!feof(file)) {
-			#define STR_DLNAME	"dlname="
-			#define STR_OLD_LIBRARY	"old_library="
-			#define STR_LIBDIR	"libdir="
-			#define STR_DL_DEPLIBS	"dl_dependency_libs="
 			char	line[LTDL_FILENAME_MAX];
 			
 			if (!fgets(line, sizeof(line), file))
 				break;
 			if (line[0] == '\n' || line[0] == '#')
 				continue;
+#			undef  STR_DLNAME
+#			define STR_DLNAME	"dlname="
 			if (strncmp(line, STR_DLNAME,
 				sizeof(STR_DLNAME) - 1) == 0)
 				error = trim(&dlname,
 					&line[sizeof(STR_DLNAME) - 1]);
 			else
+#			undef  STR_OLD_LIBRARY
+#			define STR_OLD_LIBRARY	"old_library="
 			if (strncmp(line, STR_OLD_LIBRARY,
 				sizeof(STR_OLD_LIBRARY) - 1) == 0)
 				error = trim(&old_name,
 					&line[sizeof(STR_OLD_LIBRARY) - 1]);
 			else
+#			undef  STR_LIBDIR
+#			define STR_LIBDIR	"libdir="
 			if (strncmp(line, STR_LIBDIR,
 				sizeof(STR_LIBDIR) - 1) == 0)
 				error = trim(&libdir,
 					&line[sizeof(STR_LIBDIR) - 1]);
 			else
+#			undef  STR_DL_DEPLIBS
+#			define STR_DL_DEPLIBS	"dl_dependency_libs="
 			if (strncmp(line, STR_DL_DEPLIBS,
 				sizeof(STR_DL_DEPLIBS) - 1) == 0)
 				error = trim(&deplibs,

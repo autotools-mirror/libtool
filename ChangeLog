@@ -1,3 +1,9 @@
+1999-03-10  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* libltdl/ltdl.c (lt_dlopen): some preprocessors choke if the `#'
+	of `#define' is not in column 1; let's go back to fortran! :-)
+	Add #undefs too, to avoid potential warnings or errors.
+
 1999-03-09  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* libtool.m4 (AC_LIBLTDL_INSTALLABLE, AC_LIBLTDL_CONVENIENCE):
