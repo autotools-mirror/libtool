@@ -3618,19 +3618,19 @@ func_mode_link ()
 	    # It is a libtool convenience library, so add in its objects.
 	    convenience="$convenience $ladir/$objdir/$old_library"
 	    old_convenience="$old_convenience $ladir/$objdir/$old_library"
-	    tmp_libs=
-	    for deplib in $dependency_libs; do
-	      deplibs="$deplib $deplibs"
-	      if $opt_duplicate_deps ; then
-		case "$tmp_libs " in
-		*" $deplib "*) specialdeplibs="$specialdeplibs $deplib" ;;
-		esac
-	      fi
-	      tmp_libs="$tmp_libs $deplib"
-	    done
 	  elif test "$linkmode" != prog && test "$linkmode" != lib; then
 	    func_fatal_error "\`$lib' is not a convenience library"
 	  fi
+	  tmp_libs=
+	  for deplib in $dependency_libs; do
+	    deplibs="$deplib $deplibs"
+	    if $opt_duplicate_deps ; then
+	      case "$tmp_libs " in
+	      *" $deplib "*) specialdeplibs="$specialdeplibs $deplib" ;;
+	      esac
+	    fi
+	    tmp_libs="$tmp_libs $deplib"
+	  done
 	  continue
 	fi # $pass = conv
 

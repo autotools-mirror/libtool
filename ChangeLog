@@ -1,3 +1,10 @@
+2004-09-22  Gary V. Vaughan  <gary@gnu.org>
+
+	* config/ltmain.in (func_mode_link): Propagate a convenience
+	library's dependency libs correctly when it is being linked into a
+	libtool library.  Deplibs are now propagated whether libdir is set
+	or not.
+
 2004-09-22  Andreas Schwab  <schwab@suse.de>
 
 	The dlpreopen pass over libraries reverses the elements in the
