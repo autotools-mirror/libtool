@@ -1,3 +1,10 @@
+2002-02-01  Robert Boehne  <rboehne@ricardo-us.com>
+
+	* libtool.m4 (LT_AC_PROG_SED): New macro tests sed for truncation of
+	output.  AC_REQUIRE the new macro.
+	* ltmain.in: Use $SED rather than plan old sed, as set by the new
+	macro LT_AC_PROG_SED.
+
 2002-01-14  Ossama Othman  <ossama@uci.edu>
 
 	From Roger Leigh <rl117@york.ac.uk>:
