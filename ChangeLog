@@ -1,3 +1,8 @@
+1999-10-04  Gary V. Vaughan  <gary@oranda.demon.co.uk>
+
+	* ltmain.in (-no-fast-install):  Wrapper script used to add the
+	exeext on again when naming the wrapped executable.
+
 1999-10-03  Gary V. Vaughan  <gary@oranda.demon.co.uk>
 
 	* ltconfig.in:  Set $FILE to @FILE@ for substitution with
