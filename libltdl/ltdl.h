@@ -163,6 +163,28 @@ extern	int	    lt_dlclose		LT_PARAMS((lt_dlhandle handle));
 extern	int	    lt_dlmakeresident	LT_PARAMS((lt_dlhandle handle));
 extern	int	    lt_dlisresident	LT_PARAMS((lt_dlhandle handle));
 
+
+
+
+/* --- MUTEX LOCKING --- */
+
+
+typedef void	lt_dlmutex_lock		LT_PARAMS((void));
+typedef void	lt_dlmutex_unlock	LT_PARAMS((void));
+typedef void	lt_dlmutex_seterror	LT_PARAMS((const char *error));
+typedef const char *lt_dlmutex_geterror	LT_PARAMS((void));
+
+extern	int	lt_dlmutex_register	LT_PARAMS((lt_dlmutex_lock *lock,
+					    lt_dlmutex_unlock *unlock,
+					    lt_dlmutex_seterror *seterror,
+					    lt_dlmutex_geterror *geterror));
+
+
+
+
+/* --- MEMORY HANDLING --- */
+
+
 /* Pointers to memory management functions to be used by libltdl. */
 LT_SCOPE  lt_ptr   (*lt_dlmalloc)	LT_PARAMS((size_t size));
 LT_SCOPE  void	   (*lt_dlfree)		LT_PARAMS((lt_ptr ptr));
@@ -284,7 +306,8 @@ extern	int		lt_dlloader_remove  LT_PARAMS((
     LT_ERROR(BUFFER_OVERFLOW,	    "internal buffer overflow")		\
     LT_ERROR(INVALID_ERRORCODE,     "invalid errorcode")		\
     LT_ERROR(SHUTDOWN,		    "library already shutdown")		\
-    LT_ERROR(CLOSE_RESIDENT_MODULE, "can't close resident module")
+    LT_ERROR(CLOSE_RESIDENT_MODULE, "can't close resident module")	\
+    LT_ERROR(INVALID_MUTEX_ARGS,    "invalid mutex handler registration")
 
 /* Enumerate the symbolic error names. */
 enum {
@@ -298,6 +321,12 @@ enum {
 /* These functions are only useful from inside custom module loaders. */
 extern	int	lt_dladderror	LT_PARAMS((const char *diagnostic));
 extern	int	lt_dlseterror	LT_PARAMS((int errorcode));
+
+
+
+
+/* --- SOURCE COMPATIBILITY WITH OLD LIBLTDL --- */
+
 
 #ifdef LT_NON_POSIX_NAMESPACE
 #  define lt_ptr_t		lt_ptr

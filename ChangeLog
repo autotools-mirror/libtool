@@ -1,3 +1,9 @@
+2001-03-05  Akim Demaille  <akim@epita.fr>
+
+	* ltmain.sh: Don't quote the argument of case/esac and
+	assignments.
+	* libtool.m4: Likewise.
+
 2001-03-05  Robert Boehne  <rboehne@ricardo-us.com>
 
 	* ltmain.in: Add support for the -objectlist option in
