@@ -1,5 +1,12 @@
 2000-02-23  Gary V. Vaughan  <gary@oranda.demon.co.uk>
 
+	* ltconfig.in (old_MAGIC, old_STRIP, old_reload_flag,
+	old_deplibs_check_method, old_file_magic_cmd):  New variabes.
+	Treat these as old_CC etc.
+	(STRIP, MAGIC): Create and set these variables in the generated
+	libtool script.
+	Reported by Pavel Roskin <pavel_rosin@geocities.com>
+
 	* configure.in: Due to a bug in autoconf-2.13 implementation of
 	AC_SUBST, `AC_SUBST(FILE)' can never work.  Use MAGIC as the
 	holder of the command to run in file_magic_cmd instead.

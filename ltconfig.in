@@ -220,14 +220,21 @@ old_CC="$CC"
 old_CFLAGS="$CFLAGS"
 old_CPPFLAGS="$CPPFLAGS"
 old_LDFLAGS="$LDFLAGS"
+old_LIBS="$LIBS"
+old_MAGIC="$MAGIC"
 old_LD="$LD"
 old_LN_S="$LN_S"
-old_LIBS="$LIBS"
 old_NM="$NM"
 old_RANLIB="$RANLIB"
+old_STRIP="$STRIP"
+old_AS="$AS"
 old_DLLTOOL="$DLLTOOL"
 old_OBJDUMP="$OBJDUMP"
-old_AS="$AS"
+old_OBJEXT="$OBJEXT"
+old_EXEEXT="$EXEEXT"
+old_reload_Flag="$reload_flag"
+old_deplibs_check_method="$deplibs_check_method"
+old_file_magic_cmd="$file_magic_cmd"
 
 # Parse the command line options.
 args=
@@ -2468,9 +2475,12 @@ LTCONFIG_VERSION="$VERSION"
 case "$ltmain" in
 *.sh)
   # Now quote all the things that may contain metacharacters.
-  for var in ltecho old_CC old_CFLAGS old_CPPFLAGS \
-    old_LD old_LDFLAGS old_LIBS \
-    old_NM old_RANLIB old_LN_S old_DLLTOOL old_OBJDUMP old_AS \
+  for var in ltecho old_AR old_CC old_CFLAGS old_CPPFLAGS \
+    old_MAGIC old_LD old_LDFLAGS old_LIBS \
+    old_LN_S old_NM old_RANLIB old_STRIP \
+    old_AS old_DLLTOOL old_OBJDUMP \
+    old_OBJEXT old_EXEEXT old_reload_flag \
+    old_deplibs_check_method old_file_magic_cmd \
     AR CC LD LN_S NM LTSHELL LTCONFIG_VERSION \
     reload_flag reload_cmds wl \
     pic_flag link_static_flag no_builtin_flag export_dynamic_flag_spec \
@@ -2554,9 +2564,12 @@ EOF
 
 *)
   # Double-quote the variables that need it (for aesthetics).
-  for var in old_CC old_CFLAGS old_CPPFLAGS \
-    old_LD old_LDFLAGS old_LIBS \
-    old_NM old_RANLIB old_LN_S old_DLLTOOL old_OBJDUMP old_AS; do
+  for var in old_AR old_CC old_CFLAGS old_CPPFLAGS \
+    old_MAGIC old_LD old_LDFLAGS old_LIBS \
+    old_LN_S old_NM old_RANLIB old_STRIP \
+    old_AS old_DLLTOOL old_OBJDUMP \
+    old_OBJEXT old_EXEEXT old_reload_flag \
+    old_deplibs_check_method old_file_magic_cmd; do
     eval "$var=\\\"\$var\\\""
   done
 
@@ -2575,15 +2588,16 @@ esac
 cat <<EOF >> "$cfgfile"
 # Libtool was configured as follows, on host `(hostname || uname -n) 2>/dev/null | sed 1q`:
 #
-# CC=$old_CC CFLAGS=$old_CFLAGS CPPFLAGS=$old_CPPFLAGS \\
-# LD=$old_LD LDFLAGS=$old_LDFLAGS LIBS=$old_LIBS \\
-# NM=$old_NM RANLIB=$old_RANLIB LN_S=$old_LN_S \\
-# DLLTOOL=$old_DLLTOOL OBJDUMP=$old_OBJDUMP AS=$old_AS \\
+# AR=$old_AR CC=$old_CC CFLAGS=$old_CFLAGS CPPFLAGS=$old_CPPFLAGS \\
+# MAGIC=$old_MAGIC LD=$old_LD LDFLAGS=$old_LDFLAGS LIBS=$old_LIBS \\
+# LN_S=$old_LN_S NM=$old_NM RANLIB=$old_RANLIB STRIP=$old_STRIP \\
+# AS=$old_AS DLLTOOL=$old_DLLTOOL OBJDUMP=$old_OBJDUMP \\
+# objext=$old_OBJEXT exeext=$old_EXEEXT reload_flag=$old_reload_flag \\
+# deplibs_check_method=$old_deplibs_check_method file_magic_cmd=$old_file_magic_cmd \\
 #   $0$ltconfig_args
 #
 # Compiler and other test output produced by $progname, useful for
 # debugging $progname, is in ./config.log if it exists.
-
 # The version of $progname that generated this script.
 LTCONFIG_VERSION=$LTCONFIG_VERSION
 
@@ -2620,6 +2634,12 @@ LN_S=$LN_S
 
 # A BSD-compatible nm program.
 NM=$NM
+
+# A symbol stripping program
+STRIP=$STRIP
+
+# Used to examine libraries when file_magic_cmd begins "file"
+MAGIC=$MAGIC
 
 # Used on cygwin: DLL creation program.
 DLLTOOL="$DLLTOOL"
