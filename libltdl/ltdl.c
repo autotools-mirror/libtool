@@ -153,7 +153,7 @@ lt__alloc_die_callback (void)
 static int
 loader_init_callback (lt_dlhandle handle)
 {
-  return loader_init ((lt_get_vtable *) lt_dlsym (handle, "get_vtable"), 0);
+  return loader_init (lt_dlsym (handle, "get_vtable"), 0);
 }
 
 static int
