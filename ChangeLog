@@ -1,5 +1,8 @@
 2001-02-02  Gary V. Vaughan  <gvv@techie.com>
 
+	* libltdl/ltdl.c (load_deplibs): Make sure the depcount is reset,
+	even when deplibs are not used because of the patch below.
+
 	* ltdl.m4 (AC_LTDL_SYS_DLOPEN_DEPLIBS): If we know that the host
 	architecture automatically loads deplibs, then...
 	* libltdl/ltdl.c (load_deplibs): ...don't manually load each one.
@@ -18,7 +21,7 @@
 	* libltdl/ltdl.c (load_deplibs): If loading a deplib fails,
 	don't sweat -- it may be a lib that is already statically linked
 	into the loading application.
-	
+
 	* libltdl/ltdl.c: Clean up the shadowing of the global handles
 	variable.
 	(LT_DLRESIDENT_FLAGS): Add extra parens to satisfy -Wall.
