@@ -1,3 +1,8 @@
+1999-04-12  John David Anglin  <dave.anglin@nrc.ca>
+
+	* libltdl/ltdl.c (shl_close): shl_t was correct here...
+	(shl_sym): ... but we have to pass the handle by reference here.
+
 1999-04-12  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* doc/libtool.texi (Invoking ltconfig): Document environment
