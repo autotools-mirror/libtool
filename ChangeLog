@@ -1,3 +1,12 @@
+2000-01-10  Gary V. Vaughan  <gary@oranda.demon.co.uk>
+
+	* libltdl/ltdl.h (LTDL_DIRSEP_CHAR): Define to '/' or '\\',
+	as suitable for the target host.
+	(LTDL_PATHSEP_CHAR): Similarly with ':' or ';'.
+	* libltdl/ltdl.c: Use LTDL_DIRSEP_CHAR and LTDL_PATHSEP_CHAR
+	instead of hardcoding throughout.
+	Reported by Jon Leichter <jon@symas.com>
+
 1999-12-18  Alexandre Oliva  <oliva@lsd.ic.unicamp.br>
 
 	* ltmain.in: Oops, `largarg' -> `lastarg'.

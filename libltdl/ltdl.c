@@ -986,9 +986,8 @@ find_module (handle, dir, libdir, dlname, old_name, installed)
 				last_error = memory_error;
 				return 1;
 			}
-			strcpy(filename, libdir);
-			strcat(filename, "/");
-			strcat(filename, dlname);
+			sprintf (filename, "%s%c%s", libdir, LTDL_DIRSEP_CHAR,
+				 dlname);
 			error = tryall_dlopen(handle, filename) == 0;
 			lt_dlfree(filename);
 			if (error)
@@ -1058,11 +1057,11 @@ find_file (basename, search_path, pdir, handle)
 		int lendir;
 		const char *cur = next;
 
-		next = strchr(cur, ':');
+		next = strchr(cur, LTDL_PATHSEP_CHAR);
 		if (!next)
 			next = cur + strlen(cur);
 		lendir = next - cur;
-		if (*next == ':')
+		if (*next == LTDL_PATHSEP_CHAR)
 			++next;
 		else
 			next = 0;
@@ -1079,8 +1078,8 @@ find_file (basename, search_path, pdir, handle)
 			}
 		}
 		strncpy(filename, cur, lendir);
-		if (filename[lendir-1] != '/')
-			filename[lendir++] = '/';
+		if (filename[lendir-1] != LTDL_DIRSEP_CHAR)
+			filename[lendir++] = LTDL_DIRSEP_CHAR;
 		strcpy(filename+lendir, basename);
 		if (handle) {
 			if (tryall_dlopen(handle, filename) == 0) {
@@ -1210,7 +1209,7 @@ lt_dlopen (filename)
 		}
 		goto register_handle;
 	}
-	basename = strrchr(filename, '/');
+	basename = strrchr(filename, LTDL_DIRSEP_CHAR);
 	if (basename) {
 		basename++;
 		dir = (char*) lt_dlmalloc(basename - filename + 1);
@@ -1596,9 +1595,8 @@ lt_dladdsearchdir (search_dir)
 			last_error = memory_error;
 			return 1;
 		}
-		strcpy(new_search_path, user_search_path);
-		strcat(new_search_path, ":");
-		strcat(new_search_path, search_dir);
+		sprintf (new_search_path, "%s%c%s", user_search_path,
+			 LTDL_PATHSEP_CHAR, search_dir);
 		lt_dlfree(user_search_path);
 		user_search_path = new_search_path;
 	}

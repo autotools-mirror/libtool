@@ -28,6 +28,18 @@ Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 #ifndef _LTDL_H_
 #define _LTDL_H_ 1
 
+/* Canonicalise Windows and Cygwin recognition macros.  */
+#ifdef __CYGWIN32__
+#  ifndef __CYGWIN__
+#    define __CYGWIN__ __CYGWIN32__
+#  endif
+#endif
+#ifdef _WIN32
+#  ifndef WIN32
+#    define WIN32 _WIN32
+#  endif
+#endif
+
 /* __BEGIN_DECLS should be used at the beginning of your declarations,
    so that C++ compilers don't mangle their names.  Use __END_DECLS at
    the end of C declarations. */
@@ -52,6 +64,17 @@ Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 #else
 # define LTDL_PARAMS(protos)	()
 # define lt_ptr_t	char*
+#endif
+
+#ifdef WIN32
+#  ifndef __CYGWIN__
+#    define LTDL_DIRSEP_CHAR	'\\'
+#    define LTDL_PATHSEP_CHAR	';'
+#  endif
+#endif
+#ifndef LTDL_DIRSEP_CHAR
+#  define LTDL_DIRSEP_CHAR	'/'
+#  define LTDL_PATHSEP_CHAR	':'
 #endif
 
 /* DLL building support on win32 hosts;  mostly to workaround their
