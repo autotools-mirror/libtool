@@ -1278,7 +1278,7 @@ uts4*)
   dynamic_linker=no
   ;;
 esac
-echo "$ac_t$dynamic_linker"
+echo "$ac_t$dynamic_linker" 1>&6
 test "$dynamic_linker" = no && can_build_shared=no
 
 # Report the final consequences.

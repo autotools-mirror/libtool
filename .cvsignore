@@ -1,0 +1,11 @@
+.*.prcs_aux
+Makefile
+Makefile.in
+aclocal.m4
+clibtool.cfg
+configure
+config.*
+libtool
+ltmain.sh
+ltconfig
+libtoolize

@@ -1,3 +1,8 @@
+1998-10-27  Gordon Matzigkeit  <gord@trick.fig.org>
+
+	* ltconfig.in (dynamic_linker): Echo the result to fd 6, so that
+	--silent works correctly.  From William M. Perry.
+
 1998-09-24  Gordon Matzigkeit  <gord@trick.fig.org>
 
 	* ltmain.in (link): Fix problems when building only static
