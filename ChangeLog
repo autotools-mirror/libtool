@@ -1,3 +1,10 @@
+2001-07-16  Gary V. Vaughan  <gary@gnu.org>
+
+	* libtool.m4 (AC_LIBTOOL_PROG_LD_SHLIBS): Fix ia64 AIX
+	run-time-linking when not using gcc.
+	(AC_LIBTOOL_LANG_CXX_CONFIG):  Ditto.
+	Reported by Dan McNichol <mcnichol@austin.ibm.com>
+
 2001-07-12  Gary V. Vaughan  <gary@gnu.org>
 
 	From dda@sleepycat.com (Don Anderson):

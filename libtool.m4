@@ -2390,7 +2390,9 @@ case $host_os in
     else
       # not using gcc
       if test "$host_cpu" = ia64; then
-        shared_flag='${wl}-G'
+	# VisualAge C++, Version 5.5 for AIX 5L for IA-64, Beta 3 Release
+	# chokes on -Wl,-G. The following line is correct:
+        shared_flag='-G'
       else
 	if test "$aix_use_runtimelinking" = yes; then
           shared_flag='${wl}-G'
@@ -4226,7 +4228,9 @@ else
     else
       # not using gcc
       if test "$host_cpu" = ia64; then
-        shared_flag='${wl}-G'
+	# VisualAge C++, Version 5.5 for AIX 5L for IA-64, Beta 3 Release
+	# chokes on -Wl,-G. The following line is correct:
+        shared_flag='-G'
       else
 	if test "$aix_use_runtimelinking" = yes; then
           shared_flag='${wl}-G'
