@@ -26,6 +26,15 @@
 # Do the torture test.
 status=$EXIT_SUCCESS
 
+case $2 in
+  --no-reexec)
+    ;;
+  *)
+    func_get_config "SHELL" "../libtool --config"
+    exec $SHELL "$0" --no-reexec ${1+"$@"}
+    ;;
+esac
+
 func_get_config "ECHO" "../libtool --config"
 
 for mode in compile link install; do
