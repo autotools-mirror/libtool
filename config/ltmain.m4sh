@@ -2226,8 +2226,8 @@ func_mode_link ()
     while test "$#" -gt 0; do
       arg="$1"
       shift
-      qarg=`$ECHO "X$arg" | $Xsed -e "$sed_quote_subst"`
       func_quote_for_eval "$arg"
+      qarg="$func_quote_for_eval_unquoted_result"
       libtool_args="$libtool_args $func_quote_for_eval_result"
 
       # If the previous option needs an argument, assign it.

@@ -52,7 +52,7 @@ exit_status=$EXIT_SUCCESS
  	"}
 
 dirname="s,/[[^/]]*$,,"
-basename="s,^.*/,,g"
+basename="s,^.*/,,"
 
 # Work around backward compatibility issue on IRIX 6.5. On IRIX 6.4+, sh
 # is ksh but when the shell is invoked as "sh" and the current value of
@@ -265,22 +265,26 @@ func_mktempdir ()
 
 # func_quote_for_eval arg
 # Aesthetically quote ARG to be evaled later.
+# This function returns two values: FUNC_QUOTE_FOR_EVAL_RESULT
+# is double-quoted, suitable for a subsequent eval, whereas
+# FUNC_QUOTE_FOR_EVAL_UNQUOTED_RESULT has merely all characters
+# which are still active within double quotes backslashified.
 func_quote_for_eval ()
 {
-    my_arg=`$ECHO "X$1" | $Xsed -e "$sed_quote_subst"`
+    func_quote_for_eval_unquoted_result=`$ECHO "X$1" | $Xsed -e "$sed_quote_subst"`
 
-    case $my_arg in
+    case $func_quote_for_eval_unquoted_result in
       # Double-quote args containing shell metacharacters to delay
       # word splitting, command substitution and and variable
       # expansion for a subsequent eval.
       # Many Bourne shells cannot handle close brackets correctly
       # in scan sets, so we specify it separately.
       *[[\@<:@\~\#\^\&\*\(\)\{\}\|\;\<\>\?\'\ \	]]*|*@:>@*|"")
-        my_arg="\"$my_arg\""
+        func_quote_for_eval_result="\"$func_quote_for_eval_unquoted_result\""
         ;;
+      *)
+        func_quote_for_eval_result="$func_quote_for_eval_unquoted_result"
     esac
-
-    func_quote_for_eval_result="$my_arg"
 }
 
 

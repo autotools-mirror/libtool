@@ -1,3 +1,12 @@
+2004-11-30  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* config/general.m4sh: basename sed-subst is anchored and thus
+	does not need the `g' flag.
+	(func_quote_for_eval): Return both the possibly double-quoted
+	backslashified as well as only the backslashified argument.
+	* config/ltmain.m4sh (func_mode_link): Use both return values,
+	to save another sed_quote_subst application per cmdline arg.
+
 2004-11-29  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* config/ltmain.m4sh (func_lalib_p): Update function
