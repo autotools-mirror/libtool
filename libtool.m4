@@ -1027,7 +1027,6 @@ aix4* | aix5*)
       soname_spec='${libname}${release}.so$major'
     fi
     shlibpath_var=LIBPATH
-    deplibs_check_method=pass_all
   fi
   ;;
 
@@ -2820,6 +2819,7 @@ case $host_os in
     _LT_AC_TAGVAR(ld_shlibs, $1)=no
     ;;
   sco*)
+    _LT_AC_TAGVAR(archive_cmds_need_lc, $1)=no
     case $cc_basename in
       CC)
         # FIXME: insert proper C++ library support
@@ -2927,7 +2927,7 @@ case $host_os in
     esac
     ;;
   sysv5OpenUNIX8* | sysv5UnixWare7* | sysv5uw[[78]]* | unixware7*)
-    _LT_AC_TAGVAR(archive_cmds_need_lc, $2)=no
+    _LT_AC_TAGVAR(archive_cmds_need_lc, $1)=no
     ;;
   tandem*)
     case $cc_basename in

@@ -1,3 +1,9 @@
+2001-08-06  Gary V. Vaughan  <gary@gnu.org>
+
+	From Brad <brad@comstyle.com>:
+	libtool.m4 (deplibs_check_method) [aix*]: Removed redundant setting
+	of this variable.
+
 2001-08-05  Gary V. Vaughan  <gary@gnu.org>
 
 	* libltdl/ltdl.c (load_deplibs): Insert missing 1st argument to
