@@ -23,10 +23,7 @@ EXTRA_LTLIBRARIES =
 	$(LINK) -o $@ $(libltdl_la_OBJECTS) \
 		-rpath $(libdir) $(LTDL_VERSION) $(libltdl_la_LIBADD)
 
-## automake 1.4 claims to support distclean-hook, but it does not :-(
-.PHONY: distclean-hook
-distclean-am: distclean-hook
-distclean-hook:
+distclean-local:
 	test -z $(TOINST) || rm -rf $(TOINST)
 
 libtool: $(LIBTOOL_DEPS)

@@ -1,5 +1,8 @@
 1999-01-27  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* libltdl/Makefile.am (distclean-local): renamed from
+	distclean-hook, that didn't work
+
 	* libltdl/ltdl.c (lt_dlopen, non-.la): find_file now returns 0 on
 	failure
 
