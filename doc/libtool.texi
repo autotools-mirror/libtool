@@ -1065,7 +1065,7 @@ directly or indirectly, into a single program or library, otherwise you
 may get errors about symbol redefinitions.
 
 The key is remembering that a convenience library contains @sc{pic}
-objects, and can linked where a list of @sc{pic} objects makes sense;
+objects, and can be linked where a list of @sc{pic} objects makes sense;
 i.e. into a shared library.  A static convenience library contains
 non-@sc{pic} objects, so can be linked into an old static library, or
 a program.
