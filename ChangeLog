@@ -1,3 +1,11 @@
+2004-01-23  Scott James Remnant  <scott@netsplit.com>
+
+	* ltmain.in: In compile mode, delay parsing of -shared, -static,
+	-prefer-pic and -prefer-non-pic until after tagged configuration
+	has been read.  In link mode, read tagged configuration before
+	parsing any arguments.  These arguments will now work when using
+	a non-C compiler.
+
 2004-01-23  Stefan Nordhausen  <nordhaus@informatik.hu-berlin.de>
 	Scott James Remnant  <scott@netsplit.com>
 
