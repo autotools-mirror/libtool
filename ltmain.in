@@ -2529,6 +2529,52 @@ EOF
 	  continue
 	fi
 
+	if test "X$build_old_libs" != Xno && test -n "$old_archive_from_expsyms_cmds"; then
+	  # Get the link name of the library
+	  eval library_name=\"$library_names_spec\"
+	  set dummy $library_names
+	  realname="$2"
+	  shift; shift
+
+	  if test -n "$soname_spec"; then
+	    eval soname=\"$soname_spec\"
+	  else
+	    soname="$realname"
+	  fi
+
+	  # Make a new name for the extract_expsyms_cmds to use
+	  newlib="libimp-`echo $soname | sed 's/^lib//;s/\.dll$//'`.a"
+	  
+	  # If the library has no export list, then create one now
+	  if test -f "$objdir/$soname-def"; then :; else
+	    $show "extracting exported symbol list from \`$soname'"
+	    IFS="${IFS= 	}"; save_ifs="$IFS"; IFS='~'
+	    eval cmds=\"$extract_expsyms_cmds\"
+	    for cmd in $cmds; do
+	      IFS="$save_ifs"
+	      $show "$cmd"
+	      $run eval "$cmd" || exit $?
+	    done
+	    IFS="$save_ifs"
+          fi
+
+	  # Create $newlib
+	  if test -f "$objdir/$newlib"; then :; else
+	    $show "generating import library for \`$soname'"
+	    IFS="${IFS= 	}"; save_ifs="$IFS"; IFS='~'
+	    eval cmds=\"$old_archive_from_expsyms_cmds\"
+	    for cmd in $cmds; do
+	      IFS="$save_ifs"
+	      $show "$cmd"
+	      $run eval "$cmd" || exit $?
+	    done
+	    IFS="$save_ifs"
+          fi
+	  # make sure the library variables are pointing to the new library
+          dir=$objdir
+	  linklib=$newlib
+	fi
+	
 	if test "$build_libtool_libs" = yes && test -n "$library_names"; then
 	  link_against_libtool_libs="$link_against_libtool_libs $lib"
 

@@ -1010,6 +1010,8 @@ include_expsyms=
 # end of line.  Example: `a|bc|.*d.*' will exclude the symbols `a' and `bc',
 # as well as any symbol that contains `d'.
 exclude_expsyms=
+extract_expsyms_cmds=
+old_archive_from_expsyms_cmds=
 
 case "$host_os" in
 aix3* | aix4*)
@@ -1068,11 +1070,18 @@ if test "$with_gnu_ld" = yes; then
     allow_undefined_flag=unsupported
     always_export_symbols=yes
 
+    extract_expsyms_cmds='test -f $objdir/impgen.c || \
+      sed -e "/^# \/\* impgen\.c starts here \*\//,/^# \/\* impgen.c ends here \*\// { s/^# //; p; }" -e d < $0 > $objdir/impgen.c~
+      test -f $objdir/impgen.exe || (cd $objdir && $CC -o impgen impgen.c)~
+      $objdir/impgen $dir/$soname > $objdir/$soname-def'
+
+    old_archive_from_expsyms_cmds='$DLLTOOL --as=$AS --dllname $soname --def $objdir/$soname-def --output-lib $objdir/$newlib'
+
     # Extract the symbol export list from an `--export-all' def file,
     # then regenerate the def file from the symbol export list, so that
     # the compiled dll only exports the symbol export list.
     export_symbols_cmds='rm -f $objdir/$soname-ltdll.c~
-      sed -e "/^# \/\* ltdll.c starts here \*\//,/^# \/\* ltdll.c ends here \*\// { s/^# //; p; }" -e d < $0 > $objdir/$soname-ltdll.c~
+      sed -e "/^# \/\* ltdll\.c starts here \*\//,/^# \/\* ltdll.c ends here \*\// { s/^# //; p; }" -e d < $0 > $objdir/$soname-ltdll.c~
       (cd $objdir && $CC -c $soname-ltdll.c)~
       $DLLTOOL --export-all --exclude-symbols DllMain@12,_cygwin_dll_entry@12,_cygwin_noncygwin_dll_entry@12 --output-def $objdir/$soname-def  $objdir/$soname-ltdll.$objext $libobjs~
       sed -e "1,/EXPORTS/d" -e "s/ @ [0-9]* ; *//" < $objdir/$soname-def > $export_symbols'
@@ -1088,11 +1097,6 @@ if test "$with_gnu_ld" = yes; then
       $CC -Wl,--base-file,$objdir/$soname-base $objdir/$soname-exp -Wl,--dll -nostartfiles -Wl,-e,__cygwin_dll_entry@12 -o $lib $objdir/$soname-ltdll.$objext $libobjs $deplibs $linkopts~
       $DLLTOOL --as=$AS --dllname $soname --exclude-symbols DllMain@12,_cygwin_dll_entry@12,_cygwin_noncygwin_dll_entry@12 --def $objdir/$soname-def --base-file $objdir/$soname-base --output-exp $objdir/$soname-exp~
       $CC $objdir/$soname-exp -Wl,--dll -nostartfiles -Wl,-e,__cygwin_dll_entry@12 -o $lib $objdir/$soname-ltdll.$objext $libobjs $deplibs $linkopts'
-
-      # We reserve the .a namespace for static libs.
-      # shortly, the impgen.c code will be used to generate import libs on
-      # the fly!!
-      # old_archive_from_new_cmds='$DLLTOOL --as=$AS --dllname $soname --def $objdir/$soname-def --output-lib $objdir/$libname.a'
     ;;
 
   *)
@@ -1914,7 +1918,8 @@ case "$ltmain" in
     thread_safe_flag_spec whole_archive_flag_spec libname_spec \
     library_names_spec soname_spec \
     RANLIB old_archive_cmds old_archive_from_new_cmds old_postinstall_cmds \
-    old_postuninstall_cmds archive_cmds archive_expsym_cmds postinstall_cmds postuninstall_cmds \
+    old_postuninstall_cmds archive_cmds archive_expsym_cmds postinstall_cmds \
+    postuninstall_cmds extract_expsyms_cmds old_archive_from_expsyms_cmds \
     file_magic_cmd export_symbols_cmds deplibs_check_method allow_undefined_flag no_undefined_flag \
     finish_cmds finish_eval global_symbol_pipe hardcode_libdir_flag_spec \
     hardcode_libdir_separator sys_lib_search_path_spec \
@@ -1924,6 +1929,7 @@ case "$ltmain" in
     reload_cmds | old_archive_cmds | old_archive_from_new_cmds | \
     old_postinstall_cmds | old_postuninstall_cmds | \
     export_symbols_cmds | archive_cmds | archive_expsym_cmds | \
+    extract_expsyms_cmds | old_archive_from_expsyms_cmds | \
     postinstall_cmds | postuninstall_cmds | \
     finish_cmds | sys_lib_search_path_spec)
       # Double-quote double-evaled strings.
@@ -2078,7 +2084,7 @@ libext="$libext"
 # Additional compiler flags for building library objects.
 pic_flag=$pic_flag
 
-# Does compiler simultaneously support -c and -o options
+# Does compiler simultaneously support -c and -o options?
 compiler_c_o=$compiler_c_o
 
 # Can we write directly to a .lo ?
@@ -2136,6 +2142,9 @@ old_postuninstall_cmds=$old_postuninstall_cmds
 # Create an old-style archive from a shared archive.
 old_archive_from_new_cmds=$old_archive_from_new_cmds
 
+# Create a temporary old-style archive to link instead of a shared archive.
+old_archive_from_expsyms_cmds=$old_archive_from_expsyms_cmds
+
 # Commands used to build and install a shared archive.
 archive_cmds=$archive_cmds
 archive_expsym_cmds=$archive_expsym_cmds
@@ -2145,7 +2154,7 @@ postuninstall_cmds=$postuninstall_cmds
 # Method to check whether dependent libraries are shared objects.
 deplibs_check_method=$deplibs_check_method
 
-# Command to use when deplibs_check_method == file_magic
+# Command to use when deplibs_check_method == file_magic.
 file_magic_cmd=$file_magic_cmd
 
 # Flag that allows shared libraries with undefined symbols to be built.
@@ -2197,25 +2206,29 @@ hardcode_minus_L=$hardcode_minus_L
 # the resulting binary.
 hardcode_shlibpath_var=$hardcode_shlibpath_var
 
-# Whether we must relink
+# Whether we must relink.
 must_relink=$must_relink
 
-# System search path for libraries
+# System search path for libraries.
 sys_lib_search_path_spec=$sys_lib_search_path_spec
 
 # Fix the shell variable \$srcfile for the compiler.
 fix_srcfile_path="$fix_srcfile_path"
 
-# Set to yes if exported symbols are required
+# Set to yes if exported symbols are required.
 always_export_symbols=$always_export_symbols
 
-# The command to extract exported symbols
+# The commands to list exported symbols.
 export_symbols_cmds=$export_symbols_cmds
 
-# Symbols that should not be listed in the preloaded symbols
+# The commands to extract the exported symbol list from a shared archive.
+
+extract_expsyms_cmds=$extract_expsyms_cmds
+
+# Symbols that should not be listed in the preloaded symbols.
 exclude_expsyms=$exclude_expsyms
 
-# Symbols that must always be exported
+# Symbols that must always be exported.
 include_expsyms=$include_expsyms
 
 EOF

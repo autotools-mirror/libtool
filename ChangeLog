@@ -17,6 +17,14 @@
 	only on FreeBSD and when not static linking; it's been causing
 	trouble on platforms such as OpenBSD.
 
+1999-03-05  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
+	* ltconfig.in (extract_expsyms_cmds): New variable.  Commands to
+	extract the exported symbol list from a dll.
+	(old_archive_from_expsyms_cmds): New variable.  Commands to build
+	an old archive from the extracted expsyms list.
+	* ltmain.in: run the cmds in extract_expsyms_cmds and
+	old_archive_from_expsyms_cmds as necessary.
+
 1999-02-26  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
 
 	* ltconfig.in (cygwin, old_archive_from_new_cmds): no longer
