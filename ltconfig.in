@@ -1577,6 +1577,7 @@ postuninstall_cmds=
 finish_cmds=
 finish_eval=
 shlibpath_var=
+shlibpath_overrides_runpath=unknown
 version_type=none
 dynamic_linker="$host_os ld.so"
 sys_lib_search_path_spec="/lib /usr/lib /usr/local/lib"
@@ -1735,6 +1736,7 @@ linux-gnu*)
   soname_spec='${libname}${release}.so$major'
   finish_cmds='PATH="$PATH:/sbin" ldconfig -n $libdir'
   shlibpath_var=LD_LIBRARY_PATH
+  shlibpath_overrides_runpath=no
   deplibs_check_method='file_magic ELF [0-9][0-9]*-bit [LM]SB (shared object|dynamic lib )'
   file_magic_cmd=file
 
@@ -1804,6 +1806,7 @@ solaris*)
   library_names_spec='${libname}${release}.so$versuffix ${libname}${release}.so$major $libname.so'
   soname_spec='${libname}${release}.so$major'
   shlibpath_var=LD_LIBRARY_PATH
+  shlibpath_overrides_runpath=yes
   # ldd complains unless libraries are executable
   postinstall_cmds='chmod +x $lib'
   deplibs_check_method="file_magic ELF [0-9][0-9]-bit [LM]SB dynamic lib"
@@ -1815,6 +1818,7 @@ sunos4*)
   library_names_spec='${libname}${release}.so$versuffix ${libname}.so$versuffix'
   finish_cmds='PATH="\$PATH:/usr/etc" ldconfig $libdir'
   shlibpath_var=LD_LIBRARY_PATH
+  shlibpath_overrides_runpath=yes
   if test "$with_gnu_ld" = yes; then
     need_lib_prefix=no
   fi
@@ -2169,6 +2173,9 @@ runpath_var=$runpath_var
 
 # This is the shared library path variable.
 shlibpath_var=$shlibpath_var
+
+# Is shlibpath searched before the hard-coded library search path?
+shlibpath_overrides_runpath=$shlibpath_overrides_runpath
 
 # How to hardcode a shared library path into an executable.
 hardcode_action=$hardcode_action

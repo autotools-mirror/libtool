@@ -1,5 +1,15 @@
 1999-02-20  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* ltconfig.in (shlibpath_overrides_runpath): new variable;
+	determines whether LD_LIBRARY_PATH or equivalent can be used to
+	override a hard-coded library search path; default to unknown
+	(linux-gnu*): set it to no
+	(solaris*, sunos4*): set it to yes
+	* ltmain.in (build_libdirs_flags, build_libdirs, build_rpath): if
+	shlibpath_overrides_runpath is not yes, arrange that wrapper
+	scripts create, on demand, programs that use uninstalled libraries
+	* doc/libtool.texi: document it
+	
 	* libtool.m4 (AC_LIBTOOL_DLOPEN): check for dlopen in libc before
 	trying in dl.  Add the actual dlopening type to lt_cv_dlopen, and
 	add any needed libraries to lt_cv_dlopen_LIBS.  Add test for

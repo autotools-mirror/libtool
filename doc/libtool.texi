@@ -3618,6 +3618,17 @@ The environment variable that tells the linker which directories to
 hardcode in the resulting executable.
 @end defvar
 
+@defvar shlibpath_overrides_runpath
+Indicates whether it is possible to override the hard-coded library
+search path of a program with an environment variable.  If this is set
+to no, libtool may have to create two copies of a program in the build
+tree, one to be installed and one to be run in the build tree only.  The 
+latter will be created on-demand, only if the program is actually run in
+the build tree.  If this is set to yes, libtool will set
+@code{shlibpath_var} in the wrapper script before starting the program.
+The default value is unknown, which is equivalent to no.
+@end defvar
+
 @defvar shlibpath_var
 The environment variable that tells the dynamic linker where to find
 shared libraries.

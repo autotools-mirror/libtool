@@ -780,7 +780,7 @@ compiler."
       allow_undefined=yes
       ;;
     esac
-    compile_command="$CC"
+    compile_command="$CC@BUILD_LIBDIRS_FLAGS@"
     finalize_command="$CC"
 
     compile_shlibpath=
@@ -807,7 +807,6 @@ compiler."
     export_symbols_regex=
     generated=
     hardcode_libdirs=
-    finalize_hardcode_libdirs=
     libobjs=
     link_against_libtool_libs=
     ltlibs=
@@ -821,7 +820,6 @@ compiler."
     xrpath=
     perm_rpath=
     temp_rpath=
-    finalize_rpath=
     thread_safe=no
     vinfo=
 
@@ -1211,21 +1209,6 @@ compiler."
 
 	  # This is the magic to use -rpath.
 	  if test -n "$hardcode_libdir_flag_spec"; then
-	    saved_libdir="$libdir"
-	    libdir="$dir"
-
-	    # We need an absolute path.
-	    case "$libdir" in
-	    /* | [A-Za-z]:[/\\]*) ;;
-	    *)
-	      absdir=`cd "$libdir" && pwd`
-	      if test -z "$absdir"; then
-		$echo "$modename: cannot determine absolute directory name of \`$libdir'" 1>&2
-	      else
-		libdir="$absdir"
-	      fi
-	      ;;
-	    esac
 	    if test -n "$hardcode_libdir_separator"; then
 	      if test -z "$hardcode_libdirs"; then
 		# Put the magic libdir with the hardcode flag.
@@ -1248,53 +1231,12 @@ compiler."
 	      eval flag=\"$hardcode_libdir_flag_spec\"
 
 	      compile_command="$compile_command $flag"
-	    fi
-
-	    libdir="$saved_libdir"
-	    if test -n "$hardcode_libdir_separator"; then
-	      if test -z "$finalize_hardcode_libdirs"; then
-		# Put the magic libdir with the hardcode flag.
-		finalize_hardcode_libdirs="$libdir"
-		libdir="@HARDCODE_LIBDIRS@"
-	      else
-		# Just accumulate the unique libdirs.
-		case "$hardcode_libdir_separator$finalize_hardcode_libdirs$hardcode_libdir_separator" in
-		*"$hardcode_libdir_separator$libdir$hardcode_libdir_separator"*)
-		  ;;
-		*)
-		  finalize_hardcode_libdirs="$finalize_hardcode_libdirs$hardcode_libdir_separator$libdir"
-		  ;;
-		esac
-		libdir=
-	      fi
-	    fi
-
-	    if test -n "$libdir"; then
-	      eval flag=\"$hardcode_libdir_flag_spec\"
-
 	      finalize_command="$finalize_command $flag"
 	    fi
-	    # libdir is also use after "$hardcode_action" case
-	    libdir="$saved_libdir"
 	  elif test -n "$runpath_var"; then
-	    # Do the same for the permanent run path.
-	    case "$dir" in
-	    /* | [A-Za-z]:[/\\]*) absdir="$dir";;
-	    *)
-	      absdir=`cd "$dir" && pwd`
-	      if test -z "$absdir"; then
-		$echo "$modename: cannot determine absolute directory name of \`$dir'" 1>&2
-		absdir="$dir"
-	      fi
-	      ;;
-	    esac
 	    case "$perm_rpath " in
 	    *" $absdir "*) ;;
 	    *) perm_rpath="$perm_rpath $absdir" ;;
-	    esac
-	    case "$finalize_perm_rpath " in
-	    *" $libdir "*) ;;
-	    *) finalize_perm_rpath="$finalize_perm_rpath $libdir" ;;
 	    esac
 	  fi
 
@@ -1727,8 +1669,13 @@ compiler."
 
       # Create the output directory, or remove our outputs if we need to.
       if test -d $output_objdir; then
-	$show "${rm}r $output_objdir/$outputname $output_objdir/$libname.* $output_objdir/${libname}${release}.*"
-	$run ${rm}r $output_objdir/$outputname $output_objdir/$libname.* $output_objdir/${libname}${release}.*
+	$show "${rm}r $output_objdir/$outputname $output_objdir/$objdir/$outputname $output_objdir/$libname.* $output_objdir/${libname}${release}.*"
+	$run ${rm}r $output_objdir/$outputname $output_objdir/$objdir/$outputname $output_objdir/$libname.* $output_objdir/${libname}${release}.*
+
+	if test -z "$run" && test -f "$output_objdir/$objdir/$outputname"; then
+	  $echo "$modename: warning: $output_objdir/$objdir/$outputname could not be removed" 1>&2
+	  exit 1
+	fi
       else
 	$show "$mkdir $output_objdir"
 	$run $mkdir $output_objdir
@@ -2176,7 +2123,6 @@ EOF
 	# If the user specified any rpath flags, then add them.
 	for libdir in $rpath $xrpath; do
 	  if test -n "$hardcode_libdir_flag_spec"; then
-	    saved_libdir="$libdir"
 	    if test -n "$hardcode_libdir_separator"; then
 	      if test -z "$hardcode_libdirs"; then
 		# Put the magic libdir with the hardcode flag.
@@ -2199,40 +2145,13 @@ EOF
 	      eval flag=\"$hardcode_libdir_flag_spec\"
 
 	      compile_command="$compile_command $flag"
+              finalize_command="$finalize_command $flag"
 	    fi
 
-	    libdir="$saved_libdir"
-	    if test -n "$hardcode_libdir_separator"; then
-	      if test -z "$finalize_hardcode_libdirs"; then
-		# Put the magic libdir with the hardcode flag.
-		finalize_hardcode_libdirs="$libdir"
-		libdir="@HARDCODE_LIBDIRS@"
-	      else
-		# Just accumulate the unique libdirs.
-		case "$hardcode_libdir_separator$finalize_hardcode_libdirs$hardcode_libdir_separator" in
-		*"$hardcode_libdir_separator$libdir$hardcode_libdir_separator"*)
-		  ;;
-		*)
-		  finalize_hardcode_libdirs="$finalize_hardcode_libdirs$hardcode_libdir_separator$libdir"
-		  ;;
-		esac
-		libdir=
-	      fi
-	    fi
-
-	    if test -n "$libdir"; then
-	      eval flag=\"$hardcode_libdir_flag_spec\"
-
-	      finalize_command="$finalize_command $flag"
-	    fi
 	  elif test -n "$runpath_var"; then
 	    case "$perm_rpath " in
 	    *" $libdir "*) ;;
 	    *) perm_rpath="$perm_rpath $libdir" ;;
-	    esac
-	    case "$finalize_perm_rpath " in
-	    *" $libdir "*) ;;
-	    *) finalize_perm_rpath="$finalize_perm_rpath $libdir" ;;
 	    esac
 	  fi
 	done
@@ -2240,8 +2159,8 @@ EOF
 
       # Substitute the hardcoded libdirs into the compile commands.
       if test -n "$hardcode_libdir_separator"; then
-	compile_command=`$echo "X$compile_command" | $Xsed -e "s%@HARDCODE_LIBDIRS@%$hardcode_libdirs%g"`
-	finalize_command=`$echo "X$finalize_command" | $Xsed -e "s%@HARDCODE_LIBDIRS@%$finalize_hardcode_libdirs%g"`
+	compile_command=`$echo "X$compile_command" | $Xsed -e "s%@HARDCODE_LIBDIRS@%@HARDCODE_BUILD_LIBDIRS@$hardcode_libdirs%g"`
+	finalize_command=`$echo "X$finalize_command" | $Xsed -e "s%@HARDCODE_LIBDIRS@%$hardcode_libdirs%g"`
       fi
 
       output_objdir=`$echo "X$output" | $Xsed -e 's%/[^/]*$%%'`
@@ -2446,18 +2365,13 @@ static const void *lt_preloaded_setup() {
 
       if test -z "$link_against_libtool_libs" || test "$build_libtool_libs" != yes; then
 	# Replace the output file specification.
-	compile_command=`$echo "X$compile_command" | $Xsed -e 's%@OUTPUT@%'"$output"'%g'`
-	finalize_command=`$echo "X$finalize_command" | $Xsed -e 's%@OUTPUT@%'"$output"'%g'`
+	compile_command=`$echo "X$compile_command" | $Xsed -e 's%@OUTPUT@%'"$output"'%g' -e 's%@BUILD_LIBDIRS_FLAGS@%%' -e 's%@HARDCODE_BUILD_LIBDIRS@%%'`
 
 	# We have no uninstalled library dependencies, so finalize right now.
 	$show "$compile_command"
 	$run eval "$compile_command"
 	exit $?
       fi
-
-      # Replace the output file specification.
-      compile_command=`$echo "X$compile_command" | $Xsed -e 's%@OUTPUT@%'"$output_objdir/$outputname"'%g'`
-      finalize_command=`$echo "X$finalize_command" | $Xsed -e 's%@OUTPUT@%'"$output_objdir/$outputname"'T%g'`
 
       # Create the binary in the object directory, then wrap it.
       if test ! -d $output_objdir; then
@@ -2467,6 +2381,63 @@ static const void *lt_preloaded_setup() {
 	if test $status -ne 0 && test ! -d $objdir; then
 	  exit $status
 	fi
+      fi
+
+      if test "$shlibpath_overrides_runpath" != yes; then
+	build_libdirs_flags=
+	build_libdirs=
+	build_rpath=
+
+	for libdir in $temp_rpath; do
+	  case "$libdir" in
+	  /* | [A-Za-z]:[/\\]*)
+	    # Absolute path, ok.
+	    ;;
+	  *)
+	    # Relative path: add a thisdir entry.
+	    libdir="@THISDIR@/$libdir"
+	    ;;
+	  esac
+
+	  if test -n "$hardcode_libdir_flag_spec"; then
+	    if test -n "$hardcode_libdir_separator"; then
+	      if test -z "$build_libdirs"; then
+		# Put the magic libdir with the hardcode flag.
+		case "$hardcode_libdir_separator$hardcode_libdirs$hardcode_libdir_separator" in
+		*"$hardcode_libdir_separator$libdir$hardcode_libdir_separator"*)
+		  ;;
+		*)
+		  build_libdirs="$libdir$hardcode_libdir_separator"
+		  ;;
+		esac
+	      else
+		# Just accumulate the unique libdirs.
+		case "$hardcode_libdir_separator$build_libdirs$hardcode_libdirs$hardcode_libdir_separator" in
+		*"$hardcode_libdir_separator$libdir$hardcode_libdir_separator"*)
+		  ;;
+		*)
+		  build_libdirs="$build_libdirs$libdir$hardcode_libdir_separator"
+		  ;;
+		esac
+	      fi
+	    else
+	      eval flag=\"$hardcode_libdir_flag_spec\"
+
+	      build_libdirs_flags="$build_libdirs_flags $flag"
+	    fi
+
+	  elif test -n "$runpath_var"; then
+	    case ":$build_rpath" in
+	    *":$libdir:"*) ;;
+	    *)
+	      case " $perm_rpath " in
+	      *" $libdir "*) ;;
+	      *) build_rpath="$build_rpath$libdir:" ;;
+	      esac
+	      ;;
+	    esac
+	  fi
+	done
       fi
 
       if test -n "$shlibpath_var"; then
@@ -2504,15 +2475,7 @@ static const void *lt_preloaded_setup() {
 	  for dir in $perm_rpath; do
 	    rpath="$rpath$dir:"
 	  done
-	  compile_command="$runpath_var=\"$rpath\$$runpath_var\" $compile_command"
-	fi
-	if test -n "$finalize_perm_rpath"; then
-	  # We should set the runpath_var.
-	  rpath=
-	  for dir in $finalize_perm_rpath; do
-	    rpath="$rpath$dir:"
-	  done
-	  finalize_command="$runpath_var=\"$rpath\$$runpath_var\" $finalize_command"
+	  compile_command="$runpath_var=\"@BUILD_RPATH@$rpath\$$runpath_var\" $compile_command"
 	fi
       fi
 
@@ -2521,6 +2484,14 @@ static const void *lt_preloaded_setup() {
 	$echo "$modename: warning: this platform does not like uninstalled shared libraries" 1>&2
 	$echo "$modename: \`$output' will be relinked during installation" 1>&2
       fi
+
+      if test "$shlibpath_overrides_runpath" != yes; then
+	compile_for_build_command=`echo "X$compile_command" | $Xsed -e "s%@BUILD_LIBDIRS_FLAGS@%$build_libdirs_flags%" -e "s%@BUILD_RPATH@%$build_rpath%" -e "s%@HARDCODE_BUILD_LIBDIRS@%$build_libdirs%" -e 's%@THISDIR@%\$thisdir%g' -e 's%@OUTPUT@%\$progdir/\$program%g'`
+      fi
+
+      # Replace the output file specification.
+      compile_command=`$echo "X$compile_command" | $Xsed -e 's%@OUTPUT@%'"$output_objdir/$outputname"'%g' -e 's%@BUILD_LIBDIRS_FLAGS@%%' -e 's%@BUILD_RPATH@%%' -e 's%@HARDCODE_BUILD_LIBDIRS@%%'`
+      finalize_command=`$echo "X$finalize_command" | $Xsed -e 's%@OUTPUT@%'"$output_objdir/$outputname"'T%g'`
 
       $show "$compile_command"
       $run eval "$compile_command" || exit $?
@@ -2623,13 +2594,30 @@ else
   absdir=\`cd \"\$thisdir\" && pwd\`
   test -n \"\$absdir\" && thisdir=\"\$absdir\"
 
-  progdir=\"\$thisdir/$objdir\"
-  program='$outputname'
+  program='$outputname'"
+
+	if test "$shlibpath_overrides_runpath" = yes; then
+	  echo >> $output "  progdir=\"\$thisdir/$objdir\""
+	else
+	  echo >> $output "\
+  progdir=\"\$thisdir/$objdir/$objdir\"
+
+  if test ! -f \"\$progdir/\$program\"; then
+    if test ! -d \"\$progdir\"; then
+      mkdir \"\$progdir\"
+    fi
+
+    # link executable that searches the build-dir
+    (cd \$thisdir && $compile_for_build_command)
+  fi"
+	fi
+
+	echo >> $output "\
 
   if test -f \"\$progdir/\$program\"; then"
 
 	# Export our shlibpath_var if we have one.
-	if test -n "$shlibpath_var" && test -n "$temp_rpath"; then
+	if test "$shlibpath_overrides_runpath" = yes && test -n "$shlibpath_var" && test -n "$temp_rpath"; then
 	  $echo >> $output "\
     # Add our own library path to $shlibpath_var
     $shlibpath_var=\"$temp_rpath\$$shlibpath_var\"
