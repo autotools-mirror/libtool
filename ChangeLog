@@ -1,3 +1,8 @@
+2001-06-25  Daniel Harvey <daniel@amristar.com.au>
+	
+	* libtool.m4 (ltdll_cmds): [$]0 doesn't appear to translate through
+	the script correctly, change to $''0
+	
 2001-06-25  Maciej W. Rozycki  <macro@ds2.pg.gda.pl>
 
 	* libtool.m4 (AC_DEPLIBS_CHECK_METHOD): Use pass_all for
