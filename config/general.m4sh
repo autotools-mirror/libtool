@@ -36,6 +36,7 @@ m4_if([# general.m4sh -- general shell script boiler plate -*- Autoconf -*-
 : ${MV="mv -f"}
 : ${RM="rm -f"}
 : ${SED="@SED@"}
+: ${SHELL="${CONFIG_SHELL-/bin/sh}"}
 : ${Xsed="$SED -e s/^X//"}
 
 # Global variables:

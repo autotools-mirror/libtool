@@ -32,7 +32,6 @@ m4_include([general.m4sh])
 
 : ${AUTOCONF="autoconf"}
 : ${LIBTOOL="../libtool"}
-: ${SHELL="${CONFIG_SHELL-/bin/sh}"}
 
 # Sed that helps us avoid accidentally triggering echo(1) options like -n.
 Xsed="$SED -e s/^X//"
