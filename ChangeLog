@@ -1,3 +1,8 @@
+1999-07-29  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* ltmain.in: Fix creation of relative links to object files in
+	sub-dirs.
+
 1999-07-29  Olly Betts  <olly@muscat.co.uk>
 
 	* ltconfig.in(cygwin mingw32, archive_expsym_cmds): Only compile
