@@ -1,5 +1,12 @@
 2004-08-05  Gary V. Vaughan  <gary@gnu.org>
 
+	* Makefile.am ($(top_srcdir)/config/ltmain.sh): Depends on
+	Makefile.
+	(timestamp): Factor out timestamp setting and edit it based on the
+	version number, so that it is empty for release versions.
+	($(top_srcdir)/config/ltmain.sh): Use it.
+	(libtoolize): Ditto.
+
 	* Makefile.am (libtool): Depends on ltmain.sh.
 	(libtoolize): Set and substitute TIMESTAMP.
 
@@ -33,7 +40,7 @@
 
 2004-08-01  Maciej W. Rozycki  <macro@linux-mips.org>
 
-	* m4/libtool.m4 (LT_AC_PROG_SED): Set SED when running from cache as 
+	* m4/libtool.m4 (LT_AC_PROG_SED): Set SED when running from cache as
 	well.
 
 2004-07-31  Gary V. Vaughan  <gary@gnu.org>

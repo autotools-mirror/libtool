@@ -19,7 +19,7 @@
 
 ACLOCAL_AMFLAGS  = -I m4
 
-edit = 	sed \
+edit = sed \
 	-e 's,@PACKAGE\@,$(PACKAGE),g' \
 	-e 's,@VERSION\@,$(VERSION),g' \
 	-e 's,@MACRO_VERSION\@,$(VERSION),g' \
@@ -30,6 +30,12 @@ edit = 	sed \
 	-e 's,@pkgdatadir\@,$(pkgdatadir),g' \
 	-e 's,@aclocaldir\@,$(aclocaldir),g' \
 	-e "s,@configure_input\@,Generated from $$input; do not edit by hand,g"
+
+timestamp = set -- `$(MKSTAMP) < $(top_srcdir)/ChangeLog`; \
+	case $(VERSION) in \
+	  *[acegikmoqsuwy]) TIMESTAMP=" $$1 $$2 $$3" ;; \
+	  *) TIMESTAMP="" ;; \
+	esac
 
 BUILD_SUBDIRS = . libltdl doc tests
 SUBDIRS = $(BUILD_SUBDIRS)
@@ -89,12 +95,12 @@ $(top_srcdir)/m4/ltversion.m4: m4/ltversion.in configure.ac stamp-vcl
 
 ## And for similar reasons, ltmain.sh can't be built from config.status.
 EXTRA_DIST += config/ltmain.sh
-$(top_srcdir)/config/ltmain.sh: config/ltmain.in configure.ac stamp-vcl
-	set -- `$(MKSTAMP) < $(top_srcdir)/ChangeLog`; \
+$(top_srcdir)/config/ltmain.sh: config/ltmain.in configure.ac stamp-vcl Makefile
+	$(timestamp); \
 	cd $(top_srcdir); \
 	rm -f config/ltmain.tmp; \
 	input="ltmain.in"; \
-	$(edit) -e "s,@TIMESTAMP\@,$$1 $$2 $$3,g" \
+	$(edit) -e "s,@TIMESTAMP\@,$$TIMESTAMP,g" \
 		-e "s,@package_revision\@,$$1,g" \
 		config/ltmain.in > config/ltmain.tmp; \
 	chmod a-w config/ltmain.tmp; \
@@ -105,9 +111,9 @@ bin_SCRIPTS = libtoolize libtool
 
 libtoolize: libtoolize.in Makefile
 	rm -f libtoolize.tmp libtoolize
-	set -- `$(MKSTAMP) < $(top_srcdir)/ChangeLog`; \
+	$(timestamp); \
 	input="libtoolize.in"; \
-	$(edit) -e "s,@TIMESTAMP\@,$$1 $$2 $$3,g" \
+	$(edit) -e "s,@TIMESTAMP\@,$$TIMESTAMP,g" \
 		$(srcdir)/libtoolize.in > libtoolize.tmp
 	chmod a+x libtoolize.tmp
 	chmod a-w libtoolize.tmp
@@ -115,7 +121,7 @@ libtoolize: libtoolize.in Makefile
 
 # Automake doesn't want us to generate distributed files from config.status,
 # but the alternative (see libtool-1.4.3) was even uglier!
-libtool: $(top_builddir)/config.status $(top_srcdir)/config/ltmain.sh
+libtool: $(top_builddir)/config.status config/ltmain.sh
 	cd $(top_builddir) && $(SHELL) ./config.status $@
 
 .PHONY: configure-subdirs
