@@ -20,7 +20,7 @@ bin_PROGRAMS = hell hell.debug
 
 # Create a version of hell that does dlopen.
 hell_SOURCES = main.c ltdl.c
-hell_LDFLAGS = $(LIBADD_DL)
+hell_LDFLAGS = $(LIBADD_DL) -lm
 hell_DEPENDENCIES = libfoo1.la libfoo2.la
 
 # Create an easier-to-debug version of hell.

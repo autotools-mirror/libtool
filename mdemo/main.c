@@ -22,7 +22,7 @@ USA. */
 #include <stdio.h>
 #include <string.h>
 
-void testlib(char *lib, char *alt)
+int testlib(char *lib)
 {
   lt_dlhandle handle;	
   int (*pfoo1)() = 0;
@@ -31,11 +31,9 @@ void testlib(char *lib, char *alt)
   int *pnothing = 0;
 
   handle = lt_dlopen(lib);
-  if (!handle)
-	  handle = lt_dlopen(alt);
   if (!handle) {
     fprintf (stderr, "can't open library %s!\n", lib);
-    return;
+    return 1;
   }
   phello = lt_dlsym(handle, "hello");  
   pfoo1 = lt_dlsym(handle, "foo1");  
@@ -74,19 +72,22 @@ void testlib(char *lib, char *alt)
     fprintf (stderr, "did not find the `foo' function\n");
 
   lt_dlclose(handle);
+  return 0;
 }
 
 int
-main (argc, argv)
-     int argc;
-     char **argv;
+main (int argc, char **argv)
 {
+  int i;
 
   printf ("Welcome to *modular* GNU Hell!\n");
 
-  testlib(".libs/libfoo1.so", ".libs/libfoo1.a");
-
-  testlib(".libs/libfoo2.so", ".libs/libfoo2.a");
+  if (argc < 2) {
+    fprintf (stderr, "usage: %s libname [libname...]\n", argv[0]);
+  }
   
+  for (i = 1; i < argc; i++)
+    if (testlib(argv[i]))
+       return 1;
   return 0;
 }

@@ -1,3 +1,9 @@
+1998-11-07  Thomas Tanner  <tanner@gmx.de>
+
+	* mdemo/main.c: removed hardcoded library names; link against -lm
+	* tests/mdemo-exec, tests/mdemo-inst: pass the library names 
+	to the program
+
 1998-11-07  Marc J. Fraioli  <fraioli@dg-rtp.dg.com>
 
 	* README: Added DG/UX
