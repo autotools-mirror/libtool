@@ -122,7 +122,19 @@ struct lt_dlhandle_struct {
   lt_dlhandle	       *deplibs;	/* dependencies */
   lt_module		module;		/* system module handle */
   lt_ptr		system;		/* system specific data */
+  int			flags;		/* various boolean stats */
 };
+
+/* Various boolean flags can be stored in the flags field of an
+   lt_dlhandle_struct... */
+#define LT_DLGET_FLAG(handle, flag) ((handle)->flags&(flag) == (flag))
+#define LT_DLSET_FLAG(handle, flag) ((handle)->flags |= (flag))
+
+#define LT_DLRESIDENT_FLAG	    (0x01 << 0)
+/* ...add more flags here... */
+
+#define LT_DLIS_RESIDENT(handle)    LT_DLGET_FLAG(handle, LT_DLRESIDENT_FLAG)
+
 
 static	const char	objdir[]		= LTDL_OBJDIR;
 #ifdef	LTDL_SHLIB_EXT
@@ -1089,15 +1101,21 @@ lt_dlexit ()
     {
       int	level;
 
+      while (handles && LT_DLIS_RESIDENT (handles))
+	{
+	  handles = handles->next;
+	}
+
       /* close all modules */
       for (level = 1; handles; ++level)
 	{
 	  lt_dlhandle cur = handles;
+
 	  while (cur)
 	    {
 	      lt_dlhandle tmp = cur;
 	      cur = cur->next;
-	      if (tmp->info.ref_count <= level)
+	      if (!LT_DLIS_RESIDENT (cur) && tmp->info.ref_count <= level)
 		{
 		  if (lt_dlclose (tmp))
 		    {
@@ -1631,7 +1649,12 @@ unload_deplibs(handle)
   if (handle->depcount)
     {
       for (i = 0; i < handle->depcount; ++i)
-	errors += lt_dlclose (handle->deplibs[i]);
+	{
+	  if (!LT_DLIS_RESIDENT (handle->deplibs[i]))
+	    {
+	      errors += lt_dlclose (handle->deplibs[i]);
+	    }
+	}
     }
 
   return errors;
@@ -1712,6 +1735,9 @@ lt_dlopen (filename)
       handle->depcount		= 0;
       handle->deplibs		= 0;
       newhandle			= handle;
+
+      /* lt_dlclose()ing yourself is very bad!  Disallow it.  */
+      LT_DLSET_FLAG (handle, LT_DLRESIDENT_FLAG);
 
       if (tryall_dlopen (&newhandle, 0) != 0)
 	{
@@ -2013,7 +2039,7 @@ lt_dlopen (filename)
       handle = newhandle;
     }
 
-  if (!handle->info.ref_count)
+  if (handle->info.ref_count == 0)
     {
       handle->info.ref_count	= 1;
       handle->info.name		= name;
@@ -2132,7 +2158,11 @@ lt_dlclose (handle)
 
   handle->info.ref_count--;
 
-  if (!handle->info.ref_count)
+  /* Note that even with resident modules, we must track the ref_count
+     correctly incase the user decides to reset the residency flag
+     later (even though the API makes no provision for that at the
+     moment).  */
+  if (handle->info.ref_count <= 0 && !LT_DLIS_RESIDENT (handle))
     {
       int	error;
       lt_user_data data = handle->loader->dlloader_data;
@@ -2164,6 +2194,12 @@ lt_dlclose (handle)
       return error;
     }
 
+  if (LT_DLIS_RESIDENT (handle))
+    {
+      last_error = LT_DLSTRERROR (CLOSE_RESIDENT_MODULE);
+      return 1;
+    }
+      
   return 0;
 }
 
@@ -2344,6 +2380,34 @@ const char *
 lt_dlgetsearchpath ()
 {
   return user_search_path;
+}
+
+int
+lt_dlmakeresident (handle)
+     lt_dlhandle handle;
+{
+  if (!handle)
+    {
+      last_error = LT_DLSTRERROR (INVALID_HANDLE);
+      return -1;
+    }
+
+  LT_DLSET_FLAG (handle, LT_DLRESIDENT_FLAG);
+
+  return 0;
+}
+
+int
+lt_dlisresident	(handle)
+     lt_dlhandle handle;
+{
+  if (!handle)
+    {
+      last_error = LT_DLSTRERROR (INVALID_HANDLE);
+      return -1;
+    }
+
+  return LT_DLIS_RESIDENT (handle);
 }
 
 const lt_dlinfo *

@@ -159,6 +159,10 @@ extern	lt_ptr	    lt_dlsym		LT_PARAMS((lt_dlhandle handle,
 extern	const char *lt_dlerror		LT_PARAMS((void));
 extern	int	    lt_dlclose		LT_PARAMS((lt_dlhandle handle));
 
+/* Module residency management. */
+extern	int	    lt_dlmakeresident	LT_PARAMS((lt_dlhandle handle));
+extern	int	    lt_dlisresident	LT_PARAMS((lt_dlhandle handle));
+
 /* Pointers to memory management functions to be used by libltdl. */
 LT_SCOPE  lt_ptr   (*lt_dlmalloc)	LT_PARAMS((size_t size));
 LT_SCOPE  void	   (*lt_dlfree)		LT_PARAMS((lt_ptr ptr));
@@ -269,7 +273,8 @@ extern	int		lt_dlloader_remove  LT_PARAMS((
     LT_ERROR(INVALID_HANDLE,	    "invalid module handle")		\
     LT_ERROR(BUFFER_OVERFLOW,	    "internal buffer overflow")		\
     LT_ERROR(INVALID_ERRORCODE,     "invalid errorcode")		\
-    LT_ERROR(SHUTDOWN,		    "library already shutdown")
+    LT_ERROR(SHUTDOWN,		    "library already shutdown")		\
+    LT_ERROR(CLOSE_RESIDENT_MODULE, "can't close resident module")
 
 /* Enumerate the symbolic error names. */
 enum {

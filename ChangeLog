@@ -1,3 +1,14 @@
+2000-12-16  Gary V. Vaughan  <gvv@techie.com>
+
+	* doc/libtool.texi (Libltdl interface):  Add documentation.
+	* libltdl/ltdl.h (lt_dlmakeresident, lt_dlisresident):  Add
+	prototypes.
+	(LT_DLERROR_CLOSE_RESIDENT_MODULE): New error status.
+	* libltdl/ltdl.c (lt_dlmakeresident, lt_dlisresident):  Allow
+	making and testing of resident module status, which prevents a
+	module from being lt_dlclosed.
+	(lt_dlopen):  If lt_dlopen()ing self, make the module resident.
+	(lt_dlclose):  Return an error if the module is resident.
 2000-12-16  Nick Hudson  <skrll@netbsd.org>
 
 	* ltconfig.in (netbsd*, deplibs_check_method): Enable ILD support
