@@ -313,154 +313,123 @@ if test -z "$show_help"; then
   # libtool compile mode
   compile)
     modename="$modename: compile"
+    modename="$modename: compile"
     # Get the compilation command and the source file.
     base_compile=
-    prev=
-    lastarg=
-    srcfile="$nonopt"
+    srcfile="$nonopt"  #  always keep a non-empty value in "srcfile"
     suppress_output=
+    arg_mode=normal
+    libobj=
 
-    user_target=no
     for arg
     do
-      case $prev in
-      "") ;;
-      xcompiler)
-	# Aesthetically quote the previous argument.
-	prev=
-	lastarg=`$echo "X$arg" | $Xsed -e "$sed_quote_subst"`
-
-	case $arg in
-	# Double-quote args containing other shell metacharacters.
-	# Many Bourne shells cannot handle close brackets correctly
-	# in scan sets, so we specify it separately.
-	*[\[\~\#\^\&\*\(\)\{\}\|\;\<\>\?\'\ \	]*|*]*|"")
-	  arg="\"$arg\""
-	  ;;
-	esac
-
-	# Add the previous argument to base_compile.
-	if test -z "$base_compile"; then
-	  base_compile="$lastarg"
-	else
-	  base_compile="$base_compile $lastarg"
-	fi
-	continue
-	;;
-      esac
-
-      # Accept any command-line options.
-      case $arg in
-      -o)
-	if test "$user_target" != "no"; then
-	  $echo "$modename: you cannot specify \`-o' more than once" 1>&2
-	  exit 1
-	fi
-	user_target=next
+      case "$arg_mode" in
+      arg  )
+	lastarg="$arg"  # do not "continue".  Instead, add this to base_compile
+	arg_mode=normal
 	;;
 
-      -static)
-	build_old_libs=yes
-	continue
-	;;
-
-      -prefer-pic)
-	pic_mode=yes
-	continue
-	;;
-
-      -prefer-non-pic)
-	pic_mode=no
-	continue
-	;;
-
-      -Xcompiler)
-	prev=xcompiler
-	continue
-	;;
-
-      -Wc,*)
-	args=`$echo "X$arg" | $Xsed -e "s/^-Wc,//"`
-	lastarg=
-	save_ifs="$IFS"; IFS=','
-	for arg in $args; do
-	  IFS="$save_ifs"
-
-	  # Double-quote args containing other shell metacharacters.
-	  # Many Bourne shells cannot handle close brackets correctly
-	  # in scan sets, so we specify it separately.
-	  case $arg in
-	    *[\[\~\#\^\&\*\(\)\{\}\|\;\<\>\?\'\ \	]*|*]*|"")
-	    arg="\"$arg\""
-	    ;;
-	  esac
-	  lastarg="$lastarg $arg"
-	done
-	IFS="$save_ifs"
-	lastarg=`$echo "X$lastarg" | $Xsed -e "s/^ //"`
-
-	# Add the arguments to base_compile.
-	if test -z "$base_compile"; then
-	  base_compile="$lastarg"
-	else
-	  base_compile="$base_compile $lastarg"
-	fi
-	continue
-	;;
-      esac
-
-      case $user_target in
-      next)
-	# The next one is the -o target name
-	user_target=yes
-	continue
-	;;
-      yes)
-	# We got the output file
-	user_target=set
+      target )
 	libobj="$arg"
+	arg_mode=normal
 	continue
 	;;
-      esac
 
-      # Accept the current argument as the source file.
-      lastarg="$srcfile"
-      srcfile="$arg"
+      normal )
+	# Accept any command-line options.
+	case $arg in
+	-o)
+	  if test -n "$libobj" ; then
+	    $echo "$modename: you cannot specify \`-o' more than once" 1>&2
+	    exit 1
+	  fi
+	  arg_mode=target
+	  continue
+	  ;;
+
+	-static)
+	  build_old_libs=yes
+	  continue
+	  ;;
+
+	-prefer-pic)
+	  pic_mode=yes
+	  continue
+	  ;;
+
+	-prefer-non-pic)
+	  pic_mode=no
+	  continue
+	  ;;
+
+	-Xcompiler)
+	  arg_mode=arg  #  the next one goes into the "base_compile" arg list
+	  continue      #  The current "srcfile" will either be retained or
+	  ;;            #  replaced later.  I would guess that would be a bug.
+
+	-Wc,*)
+	  args=`$echo "X$arg" | $Xsed -e "s/^-Wc,//"`
+	  lastarg=
+	  save_ifs="$IFS"; IFS=','
+	  for arg in $args; do
+	    IFS="$save_ifs"
+
+	    # Double-quote args containing other shell metacharacters.
+	    # Many Bourne shells cannot handle close brackets correctly
+	    # in scan sets, so we specify it separately.
+	    case $arg in
+	      *[\[\~\#\^\&\*\(\)\{\}\|\;\<\>\?\'\ \	]*|*]*|"")
+	      arg="\"$arg\""
+	      ;;
+	    esac
+	    lastarg="$lastarg $arg"
+	  done
+	  IFS="$save_ifs"
+	  lastarg=`$echo "X$lastarg" | $Xsed -e "s/^ //"`
+
+	  # Add the arguments to base_compile.
+	  base_compile="$base_compile $lastarg"
+	  continue
+	  ;;
+
+	* )
+	  # Accept the current argument as the source file.
+	  # The previous "srcfile" becomes the current argument.
+	  #
+	  lastarg="$srcfile"
+	  srcfile="$arg"
+	  ;;
+	esac  #  case $arg
+	;;
+      esac    #  case $arg_mode
 
       # Aesthetically quote the previous argument.
-
-      # Backslashify any backslashes, double quotes, and dollar signs.
-      # These are the only characters that are still specially
-      # interpreted inside of double-quoted scrings.
       lastarg=`$echo "X$lastarg" | $Xsed -e "$sed_quote_subst"`
 
+      case $lastarg in
       # Double-quote args containing other shell metacharacters.
       # Many Bourne shells cannot handle close brackets correctly
       # in scan sets, so we specify it separately.
-      case $lastarg in
       *[\[\~\#\^\&\*\(\)\{\}\|\;\<\>\?\'\ \	]*|*]*|"")
 	lastarg="\"$lastarg\""
 	;;
       esac
 
-      # Add the previous argument to base_compile.
-      if test -z "$base_compile"; then
-	base_compile="$lastarg"
-      else
-	base_compile="$base_compile $lastarg"
-      fi
-    done
+      base_compile="$base_compile $lastarg"
+    done # for arg
 
-    case $user_target in
-    set)
+    case $arg_mode in
+    arg)
+      $echo "$modename: you must specify an argument for -Xcompile"
+      exit 1
       ;;
-    no)
-      # Get the name of the library object.
-      libobj=`$echo "X$srcfile" | $Xsed -e 's%^.*/%%'`
-      ;;
-    *)
+    target)
       $echo "$modename: you must specify a target with \`-o'" 1>&2
       exit 1
+      ;;
+    *)
+      # Get the name of the library object.
+      [ -z "$libobj" ] && libobj=`$echo "X$srcfile" | $Xsed -e 's%^.*/%%'`
       ;;
     esac
 
