@@ -28,6 +28,7 @@ struct dld_symlist
 };
 
 extern struct dld_symlist dld_preloaded_symbols[];
+extern int dld_preloaded_symbol_count;
 
 int
 main (argc, argv)
@@ -40,6 +41,11 @@ main (argc, argv)
   int *pnothing = 0;
 
   printf ("Welcome to *modular* GNU Hell!\n");
+
+  if (dld_preloaded_symbol_count < 0)
+    printf ("Sorry, the symbol list is not sorted and unique.\n");
+  else
+    printf ("Yippee!  The symbol list is both sorted and unique.\n");
 
   /* Look up the symbols we require for this demonstration. */
   s = dld_preloaded_symbols;

@@ -23,8 +23,8 @@ mips-sgi-irix6.2             cc -n32   0.9       ok
 mipsel-unknown-openbsd2.1    gcc       1.0       ok
 powerpc-ibm-aix4.1.4.0       xlc       1.0       ok
 powerpc-ibm-aix4.1.4.0       gcc       1.0       ok
-rs6000-ibm-aix3.2.5          xlc       0.9h      ok
-rs6000-ibm-aix3.2.5          gcc       0.9h      ok*
+rs6000-ibm-aix3.2.5          xlc       1.0a      ok
+rs6000-ibm-aix3.2.5          gcc       1.0a      ok*
 sparc-sun-linux2.1.23        gcc       0.9h      ok
 sparc-sun-sunos4.1.4         cc        1.0       ok
 sparc-sun-sunos4.1.4         gcc       1.0       ok
@@ -34,5 +34,6 @@ sparc-sun-solaris2.5         cc        1.0a      ok
 sparc-sun-solaris2.5         gcc       1.0a      ok
 --------------------------------------------------------
 
-* Libtool will not build shared libraries because of a bug in
-GCC 2.7.2.2's collect2 linker program.
+* Some versions of GCC's collect2 linker program cannot link trivial
+static binaries on AIX 3.  For these configurations, libtool's `-static'
+flag has no effect.

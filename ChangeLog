@@ -1,8 +1,28 @@
+Tue Jul 29 11:52:10 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltmain.sh.in: Add NLS environment variable handling copied from
+	ltconfig.in.  Reported by Akim Demaille.
+
+	* demo/dlmain.c (main): Use dld_preloaded_symbol_count to display
+	a message about the sortedness of the symbol table.
+
+	* ltconfig.in (nlist): Use an nlist convenience variable, so that
+ 	code can be shared directly with ltmain.sh.in.
+
+	* ltconfig.in, ltmain.sh.in (dld_preloaded_symbol_count): Count up
+ 	the number of symbols in the dld_preloaded_symbols.  Set to `-1'
+ 	if the list wasn't both sorted and counted.  This allows
+ 	applications to do a quick binary search, if they are so inclined.
+
 Fri Jul 25 10:13:49 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltmain.sh.in (link): Remove code for `-version-file', since it
-	has been long-deprecated.
-	Disable static linking if hardcode_direct is unsupported.
+ 	has been long-deprecated.
+
+	Disable static linking if hardcode_direct is unsupported and there
+ 	is no working link_static_flag.  This provides correct behaviour
+ 	for all cases on AIX 3, regardless of whether collect2 is broken
+ 	or not.  Reported by Mark Kettenis.
 
 	* ltconfig.in: Fix typo in test polarity.  From Mark Kettenis.
 

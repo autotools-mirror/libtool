@@ -38,6 +38,13 @@ mv="mv -f"
 objdir=.libs
 rm="rm -f"
 
+# NLS nuisances.
+# Only set LANG and LC_ALL to C if already set.
+# These must not be set unconditionally because not all systems understand
+# e.g. LANG=C (notably SCO).
+if test "${LC_ALL+set}" = set; then LC_ALL=C; export LC_ALL; fi
+if test "${LANG+set}"   = set; then LANG=C;   export LANG;   fi
+
 if test "$LTCONFIG_VERSION" != "$VERSION"; then
   echo "$progname: ltconfig version \`$LTCONFIG_VERSION' does not match $PROGRAM version \`$VERSION'" 1>&2
   echo "Fatal configuration error.  See the $PACKAGE docs for more information." 1>&2
@@ -972,8 +979,16 @@ if test -z "$show_help"; then
         # Parse the name list into a C file.
         echo "creating $dlsyms"
         if test -z "$run"; then
-          # Try sorting and uniquifying the output.
-          sort "$nlist" | uniq > "$nlist"T && mv -f "$nlist"T "$nlist"
+	  # Try sorting and uniquifying the output.
+	  if sort "$nlist" | uniq > "$nlist"T; then
+	    mv -f "$nlist"T "$nlist"
+	    wcout=`wc "$nlist" 2>/dev/null`
+	    count=`echo "$wcout" | sed 's/^[ 	]*\([0-9][0-9]*\).*$/\1/'`
+	    test "$wcout" = "$count" && count=-1
+	  else
+	    rm -f "$nlist"T
+	    count=-1
+	  fi
 
           cat <<EOF > "$dlsyms"
 /* $dlsyms - symbol resolution table for \`$output' dlsym emulation. */
@@ -982,19 +997,22 @@ if test -z "$show_help"; then
 /* External symbol declarations for the compiler. */
 EOF
           if test -f "$nlist"; then
-            # Prevent the only kind of circular reference mistake we can make.
-            sed -e '/ dld_preloaded_symbols$/d' -e 's/^.* \(.*\)$/extern char \1;/' < "$nlist" >> "$dlsyms"
+            # Prevent the only kind of circular reference mistakes we can make.
+            sed -e '/ dld_preloaded_symbol\(s\|_count\)$/d' -e 's/^.* \(.*\)$/extern char \1;/' < "$nlist" >> "$dlsyms"
           else
             echo "/* NONE */" >> "$dlsyms"
           fi
 
-          cat <<\EOF >> "$dlsyms"
+          cat <<EOF >> "$dlsyms"
 
 #if defined (__STDC__) && __STDC__
 # define __ptr_t void *
 #else
 # define __ptr_t char *
 #endif
+
+/* The number of symbols in dld_preloaded_symbols, -1 if unsorted. */
+int dld_preloaded_symbol_count = $count;
 
 /* The mapping between symbol names and symbols. */
 struct {

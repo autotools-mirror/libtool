@@ -164,7 +164,8 @@ Tips for interface design
 
 Dlopened modules
 
-* Exporting dynamic symbols::   Preparing files to be dlopened.
+* Building modules::            Creating dlopenable objects and libraries.
+* Dlpreopening::
 * Finding the dlname::          Choosing the right file to @code{dlopen(3)}.
 * Dlopen issues::               Unresolved problems that need your attention.
 
@@ -1879,18 +1880,10 @@ interpreted language.  In fact, dlopen calls are frequently used in
 language interpreters to provide an efficient way to extend the
 language.
 
-On most operating systems, dlopened modules must be compiled as PIC.
-This restriction simplifies the implementation of the @code{dlopen(3)}
-family of functions by avoiding symbol relocation.  ``True'' dlopen
-implementations, such as the unportable GNU DLD 3 implementation
-(@pxref{Top,, Introduction, dld, The DLD Manual}), don't have this
-restriction, as they can perform relocation at runtime.
-
-As of version @value{VERSION}, libtool provides only minimal support for
-dlopened modules, and this support is guaranteed to change and be
-redesigned in the near future.  Because there is not a very high
-proportion of applications that use dlopening, adding this support to
-libtool was not deemed a priority for the 1.0 release.
+As of version @value{VERSION}, libtool provides experimental support for
+dlopened modules, which does not radically simplify the development of
+dlopening applications.  However, this support is designed to be a
+portable foundation for generic, higher-level dlopen functions.
 
 This chapter discusses the preliminary support that libtool offers, and
 how you as a dlopen application developer might use libtool to generate
@@ -1899,21 +1892,23 @@ experimental features, and not to rely on them for easy answers to the
 problems associated with dlopened modules.
 
 @menu
-* Exporting dynamic symbols::   Preparing files to be dlopened.
+* Building modules::            Creating dlopenable objects and libraries.
+* Dlpreopening::
 * Finding the dlname::          Choosing the right file to @code{dlopen(3)}.
 * Dlopen issues::               Unresolved problems that need your attention.
 @end menu
 
-@node Exporting dynamic symbols
-@section Exporting dynamic symbols
+@node Building modules
+@section Building modules to dlopen
 
-In order for a symbol to be dynamically resolved (typically using the
-@code{dlsym(3)} function), it must be specially declared in the object
-module where it is defined.
+On some operating systems, a program symbol must be specially declared
+in order to be dynamically resolved with the @code{dlsym(3)} (or
+equivalent) function.
 
 Libtool provides the @samp{-export-dynamic} link flag (@pxref{Link
 mode}), which does this declaration.  You need to use this flag if you
-are linking a shared library that will be dlopened.
+are linking an application program that dlopens other modules or a
+libtool library that will also be dlopened.
 
 For example, if we wanted to build a shared library, @file{libhello},
 that would later be dlopened by an application, we would add
@@ -1935,6 +1930,42 @@ dlopen:
 burger$ @kbd{libtool gcc -export-dynamic -o hell-dlopener main.o}
 burger$
 @end example
+
+@node Dlpreopening
+@section Dlpreopening
+
+Libtool provides special support for dlopening libtool object and
+libtool library files, so that their symbols can be resolved @emph{even
+on platforms without any @code{dlopen(3)} and @code{dlsym(3)}
+functions.}.
+
+Consider the following alternative ways of loading code into your
+program, in order of increasing ``laziness'':
+
+@enumerate 1
+@item
+Linking against object files that become part of the program executable,
+whether or not they are referenced.  If an object file cannot be found,
+then the linker refuses to create the executable.
+
+@item
+Declaring a static library to the linker, so that it is searched at link
+time in order to satisfy any undefined references in the above object
+files.  If the static library cannot be found, then the linker refuses
+to link the executable.
+
+@item
+Declaring a shared library to the runtime linker, so that it is searched
+at runtime in order to satisfy any undefined references in the above
+files.  If the shared library cannot be found, then the dynamic linker
+aborts the program before it runs.
+
+@item
+Dlopening a module, so that the application can resolve its own,
+dynamically-computed references.  If there is an error opening the
+module, then the application can
+@end enumerate
+
 
 @node Finding the dlname
 @section Finding the correct name to dlopen

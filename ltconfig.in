@@ -65,8 +65,6 @@ old_LN_S="$LN_S"
 old_NM="$NM"
 old_RANLIB="$RANLIB"
 
-test -z "$AR" && AR=ar
-
 # Parse the command line options.
 args=
 prev=
@@ -274,6 +272,9 @@ host_os=`echo $host | sed 's/^\([^-]*\)-\([^-]*\)-\(.*\)$/\3/'`
 # Determine commands to create old-style static archives.
 old_archive_cmds='$AR cru $oldlib$oldobjs'
 old_postinstall_cmds='chmod 644 $oldlib'
+
+# Set a sane default for `AR'.
+test -z "$AR" && AR=ar
 
 # If RANLIB is not set, then run the test.
 if test "${RANLIB+set}" != "set"; then
@@ -771,22 +772,35 @@ EOF
 # LINENO
 if { (eval echo $progname:771: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>&5; } && test -s conftest.o; then
   # Now try to grab the symbols. LINENO
-  if { echo "$progname:773: eval \"$NM conftest.o | $global_symbol_pipe > conftest.nm\"" >&5; eval "$NM conftest.o | $global_symbol_pipe > conftest.nm 2>&5"; } && test -s conftest.nm; then
+  nlist=conftest.nm
+  if { echo "$progname:773: eval \"$NM conftest.o | $global_symbol_pipe > $nlist\"" >&5; eval "$NM conftest.o | $global_symbol_pipe > $nlist 2>&5"; } && test -s "$nlist"; then
 
     # Try sorting and uniquifying the output.
-    sort conftest.nm | uniq > conftest.nmT && mv -f conftest.nmT conftest.nm
+    if sort "$nlist" | uniq > "$nlist"T; then
+      mv -f "$nlist"T "$nlist"
+      wcout=`wc "$nlist" 2>/dev/null`
+      count=`echo "$wcout" | sed 's/^[ 	]*\([0-9][0-9]*\).*$/\1/'`
+      test "$wcout" = "$count" && count=-1
+    else
+      rm -f "$nlist"T
+      count=-1
+    fi
 
     # Make sure that we snagged all the symbols we need.
-    if egrep ' nm_test_var$' conftest.nm >/dev/null; then
-      if egrep ' nm_test_func$' conftest.nm >/dev/null; then
+    if egrep ' nm_test_var$' "$nlist" >/dev/null; then
+      if egrep ' nm_test_func$' "$nlist" >/dev/null; then
         # Now generate the symbol file.
-        sed 's/^.* \(.*\)$/extern char \1;/' < conftest.nm > conftest.c
-	cat <<\EOF >> conftest.c
+        sed 's/^.* \(.*\)$/extern char \1;/' < "$nlist" > conftest.c
+
+	cat <<EOF >> conftest.c
 #if defined (__STDC__) && __STDC__
 # define __ptr_t void *
 #else
 # define __ptr_t char *
 #endif
+
+/* The number of symbols in dld_preloaded_symbols, -1 if unsorted. */
+int dld_preloaded_symbol_count = $count;
 
 /* The mapping between symbol names and symbols. */
 struct {
@@ -796,7 +810,7 @@ struct {
 dld_preloaded_symbols[] =
 {
 EOF
-        sed 's/^\(.*\) \(.*\)$/  {"\1", \&\2},/' < conftest.nm >> conftest.c
+        sed 's/^\(.*\) \(.*\)$/  {"\1", \&\2},/' < "$nlist" >> conftest.c
         cat <<\EOF >> conftest.c
   {0},
 };
@@ -817,10 +831,10 @@ EOF
         LIBS="$save_LIBS"
       fi
     else
-      echo "cannot find nm_test_func in conftest.nm" >&5
+      echo "cannot find nm_test_func in $nlist" >&5
     fi
   else
-    echo "cannot find nm_test_var in conftest.nm" >&5
+    echo "cannot find nm_test_var in $nlist" >&5
   fi
 else
   echo "$progname: failed program was:" >&5

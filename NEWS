@@ -1,13 +1,16 @@
 NEWS - list of user-visible changes between releases of GNU libtool.
 
-New in 1.0a:
+New in 1.0b:
 * Bug fixes.
-* Full support for dynamically loaded modules, even on static-only
-  platforms, via new `-dlopen' and `-pre-dlopen' link flags.
-* New tests for a BSD-compatible `nm' program, required for dlopened
-  modules.
+* Full support for broken collect2 on AIX 3.  Now, shared libraries
+  can be built with all working versions of GCC.
 * Deleted `dlname' mode.  Dlopen applications should only use the
   runtime search method described in (libtool)Finding the dlname.
+* Experimental support for dynamically loaded modules, even on
+  static-only platforms, via new `-dlopen' and `-pre-dlopen' link
+  flags.
+* New tests for a BSD-compatible `nm' program, required for dlopened
+  modules.
 
 New in 1.0:
 * Bug fixes.
