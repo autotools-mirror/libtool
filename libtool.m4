@@ -2021,6 +2021,52 @@ fi
 
 ## FIXME: this should be a separate macro
 ##
+if test "$enable_shared" = yes && test "$ac_cv_prog_gcc" = yes; then
+  case "$archive_cmds" in
+  *'~'*)
+    # FIXME: we may have to deal with multi-command sequences.
+    ;;
+  '$CC '*)
+    # Test whether the compiler implicitly links with -lc since on some
+    # systems, -lgcc has to come before -lc. If gcc already passes -lc
+    # to ld, don't add -lc before -lgcc.
+    AC_MSG_CHECKING([whether -lc should be explicitly linked in])
+    AC_CACHE_VAL([ac_cv_archive_cmds_need_lc],
+    [$rm conftest*
+    echo 'static int dummy;' > conftest.c
+
+    if AC_TRY_EVAL(ac_compile); then
+      soname=conftest
+      lib=conftest
+      libobjs=conftest.$ac_objext
+      deplibs=
+      wl=$ac_cv_prog_cc_wl
+      compiler_flags=-v
+      linker_flags=-v
+      verstring=
+      output_objdir=.
+      libname=conftest
+      save_allow_undefined_flag=$allow_undefined_flag
+      allow_undefined_flag=
+      if AC_TRY_EVAL(archive_cmds 2\>\&1 \| grep \" -lc \"); then
+	ac_cv_archive_cmds_need_lc=no
+      else
+	ac_cv_archive_cmds_need_lc=yes
+      fi
+      allow_undefined_flag=$save_allow_undefined_flag
+    else
+      cat conftest.err 1>&5
+    fi])
+    AC_MSG_RESULT([$ac_cv_archive_cmds_need_lc])
+    ;;
+  esac
+fi
+need_lc=${ac_cv_archive_cmds_need_lc-yes}
+##
+## END FIXME
+
+## FIXME: this should be a separate macro
+##
 # Now quote all the things that may contain metacharacters while being
 # careful not to overquote the AC_SUBSTed values, take copies of the
 # variables and quote the copies for generation of the libtool script.

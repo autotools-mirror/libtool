@@ -1,3 +1,9 @@
+2000-09-08  Gary V. Vaughan  <gcc@techie.com>
+
+	libtool.m4 (_LT_AC_LTCONFIG_HACK): The ltconfig.in code I
+	ported from ltconfig.in was incomplete -- this is a backport
+	of the missing code taken from the multi-language branch.
+	
 2000-09-07  Pavel Roskin  <proskin@gnu.org>
 
 	* libtool.m4 (_LT_AC_LTCONFIG_HACK):  Fixed incorrect use of
