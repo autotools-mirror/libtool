@@ -11,7 +11,7 @@
 
 2003-03-31  Albert Chin  <libtool@thewrittenword.com>
 
-	* ltmain.sh: Don't pass -R flags found in a .la's dependency_libs
+	* ltmain.in: Don't pass -R flags found in a .la's dependency_libs
 	variable directly down to the linker.
 	Reported by Tim Mooney <mooney@dogbert.cc.ndsu.nodak.edu>.
 
