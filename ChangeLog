@@ -1,5 +1,7 @@
 2001-09-06  Gary V. Vaughan  <gary@gnu.org>
 
+	* libtool.m4 (AC_LIBTOOL_PROG_LD_SHLIBS) [solaris*]: Typo. s/GXX/GCC/.
+
 	* libtool.m4 (archive_cmds, archive_expsym_cmds) [solaris*]: Changing
 	no_undefined_flag from `-z text' to `-z defs' (see entry below at
 	2001-04-11  Alexandre Oliva  <aoliva@redhat.com>) has a problem.

@@ -4864,7 +4864,7 @@ EOF
 
     solaris*)
       _LT_AC_TAGVAR(no_undefined_flag, $1)=' -z defs'
-      if test "$GXX" = yes; then
+      if test "$GCC" = yes; then
         _LT_AC_TAGVAR(archive_cmds, $1)='$CC -shared ${wl}-h ${wl}$soname -o $lib $libobjs $deplibs $compiler_flags `test "x$allow_undefined_flag" = "x$no_undefined_flag" && $CC --print-libgcc-file-name`'
         _LT_AC_TAGVAR(archive_expsym_cmds, $1)='$echo "{ global:" > $lib.exp~cat $export_symbols | sed -e "s/\(.*\)/\1;/" >> $lib.exp~$echo "local: *; };" >> $lib.exp~
           $CC -shared ${wl}-M ${wl}$lib.exp ${wl}-h ${wl}$soname -o $lib $libobjs $deplibs $compiler_flags `test "x$allow_undefined_flag" = "x$no_undefined_flag" && $CC --print-libgcc-file-name`~$rm $lib.exp'
