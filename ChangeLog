@@ -1,5 +1,8 @@
 2005-02-03 Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* ltmain.in (link mode): With piecewise (partial) linking, fix
+	intermediate output name for subdir-objects.
+
 	* ltmain.in (link mode): Backport yet another cygwin subdir fix
 	(wrappersource).
 
