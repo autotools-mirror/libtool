@@ -1,21 +1,27 @@
-2004-11-19  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+2004-11-19  Gary V. Vaughan  <gary@gnu.org>
+
+	* config/m4general.m4sh, config/mailnotify.m4sh,
+	clcommit.m4sh: Updated from cvs-utils--tla--1.0 to allow
+	parallel commits, and use safer tmpfiles.
+
+2004-11-19  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* doc/libtool.texi (Libltdl interface): Typos.
 
 	* doc/libtool.texi (Libltdl interface): Document public macros
 	LT_PATHSEP_CHAR, LT_DIRSEP_CHAR, use in path descriptions.
 
-2004-11-18  Daniel Reed <djr@redhat.com>
+2004-11-18  Daniel Reed  <djr@redhat.com>
 
 	* m4/libtool.m4 (_LT_SYS_DYNAMIC_LINKER) [linux]: Interpret
 	`include' statements in toplevel ld.so.conf file.
 
-2004-11-18  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+2004-11-18  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* m4/libtool.m4 (_LT_LINKER_SHLIBS) [cygwin/mingw/pw32]:
 	tag-protect setting of ld_shlibs.
 
-2004-11-17  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+2004-11-17  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* doc/libtool.texi (Libltdl interface): The path separator
 	is system-dependent.
@@ -26,7 +32,7 @@
 	[aix4/aix5 !ia64]: Set whole_archive_flag_spec to '$convenience'
 	so convenience libs are really added to the link cmdline.
 
-2004-11-17  Mats Rynge <rynge@isi.edu>
+2004-11-17  Mats Rynge  <rynge@isi.edu>
 
 	* libtool.m4 [linux]: Use only the CC basename in case statment
 	when checking for icc/ecc. Allows for setting CC to the full path

@@ -103,10 +103,10 @@ exit_cmd=:
 
 # Locations for important files:
 signature_file=
-log_file="${TMPDIR-/tmp}/$progname-$$"
+log_dir="`func_mktempdir`"
+log_file="$log_dir/log"
 
-$RM "${TMPDIR-/tmp}/$progname"*
-trap '$RM "${log_file}"*; exit $EXIT_FAILURE' 1 2 15
+trap '$RM -r "$log_dir"; exit $EXIT_FAILURE' 1 2 15
 
 set -e
 
@@ -417,7 +417,7 @@ func_commit ()
 # func_mailnotify
 func_mailnotify ()
 {
-    notify_file="${log_file}.2"
+    notify_file="${log_dir}/notify"
     func_verbose "Mailing commit notification to $sendmail_to"
 
     {
@@ -493,7 +493,7 @@ func_mailnotify ()
     func_mailnotify
   fi
 
-  $RM "${log_file}"*
+  $RM -r "$log_dir"
 }
 
 exit $EXIT_SUCCESS
