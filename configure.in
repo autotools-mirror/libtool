@@ -9,7 +9,7 @@ aclocaldir='${datadir}/aclocal'
 AC_SUBST(aclocaldir)
 
 AC_ARG_ENABLE(ltdl-install,
-  [--enable-ltdl-install     install libltdl])
+  [  --enable-ltdl-install   install libltdl])
 AM_CONDITIONAL(INSTALL_LTDL, test x$enable_ltdl_install = xyes)
 if test x$enable_ltdl_install = xyes; then
   BUILD_LTDL=libltdl

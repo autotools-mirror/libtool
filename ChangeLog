@@ -1,3 +1,8 @@
+1999-01-12  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
+
+	* configure.in (ltdl-install): Fixed up the indentation so that
+	`configure --help' is pretty again.
+
 1999-01-11  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* ltmain.in, NEWS, doc/libtool.texi: Added support for -R flag
