@@ -1,7 +1,17 @@
+1999-02-04  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* libltdl/ltdl.c (find_module): initialize filename if dir is NULL 
+	Reported by Godmar Back <gback@cs.utah.edu>
+
+1999-02-04  Godmar Back  <gback@cs.utah.edu>
+
+	* libltdl/ltdl.c (lt_dlopenext): missing space for terminator when
+	allocating memory for shlib_ext
+
 1999-02-03  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
-	* ltdl.c (lt_dlopenext): tmp would be trashed if shlib_ext was
-	longer than 3 characters
+	* libltdl/ltdl.c (lt_dlopenext): tmp would be trashed if shlib_ext
+ 	was longer than 3 characters
 
 1999-02-02  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
 
