@@ -2918,7 +2918,7 @@ EOF
 	"") ;;
 	*.c)
 	  # Discover the nlist of each of the dlfiles.
-	  nlist="$output_objdir/${output}.nm"
+	  nlist="$output_objdir/${outputname}.nm"
 
 	  $show "$rm $nlist ${nlist}S ${nlist}T"
 	  $run $rm "$nlist" "${nlist}S" "${nlist}T"
@@ -3067,8 +3067,8 @@ static const void *lt_preloaded_setup() {
 	  $run $rm "$output_objdir/$dlsyms" "$nlist" "${nlist}S" "${nlist}T"
 
 	  # Transform the symbol file into the correct name.
-	  compile_command=`$echo "X$compile_command" | $Xsed -e "s%@SYMFILE@%$output_objdir/${output}S.${objext}%"`
-	  finalize_command=`$echo "X$finalize_command" | $Xsed -e "s%@SYMFILE@%$output_objdir/${output}S.${objext}%"`
+	  compile_command=`$echo "X$compile_command" | $Xsed -e "s%@SYMFILE@%$output_objdir/${outputname}S.${objext}%"`
+	  finalize_command=`$echo "X$finalize_command" | $Xsed -e "s%@SYMFILE@%$output_objdir/${outputname}S.${objext}%"`
 	  ;;
 	*)
 	  $echo "$modename: unknown suffix for \`$dlsyms'" 1>&2
