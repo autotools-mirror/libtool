@@ -1,3 +1,9 @@
+2000-11-12  Gary V. Vaughan  <gvv@techie.com>
+
+	* doc/fdl.texi: New file.  The license for distributing the
+	libtool manual.
+	* doc/libtool.texi: Reference the new license.
+
 2000-10-31  Morten Eriksen  <mortene@sim.no>
 
 	* ltcf-c.sh, ltcf-gcj.sh: Quote argument to avoid error
