@@ -8,17 +8,17 @@ EXTRA_DIST = acinclude.m4
 lib_LTLIBRARIES = libhello.la
 libhello_la_SOURCES = longer_file_name_hello.c longer_file_name_foo.c longer_file_name_foo2.c
 libhello_la_LIBADD = $(LIBM)
-libhello_la_LDFLAGS = -version-info 3:12:1
+libhello_la_LDFLAGS = -no-undefined -version-info 3:12:1
 
 include_HEADERS = foo.h
 
 if BINARY_HELLDL
 BUILD_helldl = helldl
 else
-BUILD_helldl = 
+BUILD_helldl =
 endif
 
-bin_PROGRAMS = hell hell.static $(BUILD_helldl)
+bin_PROGRAMS = hell hell_static $(BUILD_helldl)
 
 # Build hell from longer_file_name_main.c and libhello.la
 hell_SOURCES = longer_file_name_main.c
@@ -125,16 +125,20 @@ libhell0_a_SOURCES = longer_file_name_hello.c longer_file_name_foo.c
 EXTRA_LTLIBRARIES = libhell1.la libhell2.la
 libhell1_la_SOURCES = longer_file_name_hell1.c
 libhell1_la_LIBADD = -L. -lhell0
-libhell1_la_LDFLAGS = -rpath $(libdir)
+libhell1_la_LDFLAGS = -no-undefined -rpath $(libdir)
 libhell1_la_DEPENDENCIES = libhell0.a
 libhell2_la_SOURCES = longer_file_name_hell2.c
 libhell2_la_LIBADD = -L. -lhell0
-libhell2_la_LDFLAGS = -rpath $(libdir)
+libhell2_la_LDFLAGS = -no-undefined -rpath $(libdir)
 libhell2_la_DEPENDENCIES = libhell0.a
 EXTRA_PROGRAMS = hell0
 hell0_SOURCES = longer_file_name_main.c
 hell0_LDADD = libhell1.la libhell2.la $(LIBM)
 
-CLEANFILES += $(EXTRA_LIBRARIES) $(EXTRA_LTLIBRARIES) $(EXTRA_PROGRAMS)
+# 'hell0' in EXTRA_PROGRAMS gets translated to 'hell0.exe'; but we
+# must explicitly list the wrapper script 'hell0'.  (bin_PROGRAMS
+# are handled seamlessly by automake rules; the extra step is only
+# necessary for EXTRA_PROGRAMS)
+CLEANFILES += $(EXTRA_LIBRARIES) $(EXTRA_LTLIBRARIES) $(EXTRA_PROGRAMS) hell0
 
 deplibs-check: hell0

@@ -8,6 +8,7 @@ noinst_LTLIBRARIES = libfoo.la
 
 libfoo_la_SOURCES = foo.c
 libfoo_la_LIBADD = $(LIBM)
+libfoo_la_LDFLAGS = -no-undefined
 
 noinst_HEADERS = foo.h
 

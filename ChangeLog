@@ -1,3 +1,31 @@
+2002-05-31  Charles Wilson  <cwilson@ece.gatech.edu>
+
+	* NEWS: Updated.
+	* libtool.m4: use $NM to create the symbol list on cygwin, not
+	$ltdll_cmds as on mingw.  For all tags, (and host=cygwin) set
+	allow_undefined_flag="" so that the --auto-import magic
+	works properly.  For all tags (and host=cygiwn) set
+	always_export_symbols=no -- it is unnecessary thanks to
+	binutils' auto-export magic.
+	* libltdl/ltdl.c: Don't force cygwin to use the LoadLibrary
+	wrapper; use cygwin's builtin implementatino of dl*.
+	* cdemo/Makefile.am: the downside of unsetting
+	'allow_undefined_flag' -- we must include -no-undefined
+	in the _la_LDFLAGS variable.
+	* depdemo/l1/Makefile.am: ditto.
+	* depdemo/l2/Makefile.am: ditto.
+	* depdemo/l3/Makefile.am: ditto.
+	* depdemo/l4/Makefile.am: ditto.
+	* mdemo/Makefile.am: ditto.
+	* tagdemo/Makefile.am: ditto.
+	* demo/Makefile.am: ditto.  But also, we must make special
+	provision to clean up the hell0 wrapper script.
+	* pdemo/Makefile.am: ditto -no-undefined.  ditto hell0.
+	And use 'hell_static' instead of 'hell.static'.
+	* tests/pdemo-inst.test: use 'hell_static' instead
+	of 'hell.static'.
+	* tests/pdemo-exec.test: ditto.
+
 2002-05-30  Charles Wilson  <cwilson@ece.gatech.edu>
 
 	* tests/build-relink2.test: look for installed libl3.la

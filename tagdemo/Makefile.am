@@ -10,10 +10,12 @@ noinst_LTLIBRARIES = libfoo.la
 lib_LTLIBRARIES = libbaz.la
 
 libfoo_la_SOURCES = foo.cpp
+libfoo_la_LDFLAGS = -no-undefined
 libfoo_la_LIBADD = $(LIBM)
 
 # Test some of the ILD support when using tagged configurations.
 libbaz_la_SOURCES = baz.cpp
+libbaz_la_LDFLAGS = -no-undefined
 libbaz_la_LIBADD = libfoo.la
 
 noinst_HEADERS = foo.h baz.h

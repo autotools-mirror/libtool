@@ -10,7 +10,7 @@ lib_LTLIBRARIES = libsub.la foo1.la libfoo2.la
 
 foo1_la_SOURCES = foo1.c
 foo1_la_LIBADD = $(LIBM) libsub.la
-foo1_la_LDFLAGS = -module -avoid-version
+foo1_la_LDFLAGS = -no-undefined -module -avoid-version
 
 libfoo2_la_SOURCES = foo2.c
 libfoo2_la_LIBADD = $(LIBM) libsub.la

@@ -911,11 +911,7 @@ lt_estrdup (str)
 /* --- DLOPEN() INTERFACE LOADER --- */
 
 
-/* Older Cygwin dlopen implementations print a spurious error message to
-   stderr if the call to LoadLibrary() fails for any reason.  We can
-   mitigate this by not using the Cygwin implementation, and falling
-   back to our own LoadLibrary() wrapper. */
-#if HAVE_LIBDL && !defined(__CYGWIN__)
+#if HAVE_LIBDL
 
 /* dynamic linking with dlopen/dlsym */
 
@@ -1734,7 +1730,7 @@ lt_dlinit ()
       handles = 0;
       user_search_path = 0; /* empty search path */
 
-#if HAVE_LIBDL && !defined(__CYGWIN__)
+#if HAVE_LIBDL
       errors += lt_dlloader_add (lt_dlloader_next (0), &sys_dl, "dlopen");
 #endif
 #if HAVE_SHL_LOAD
