@@ -1081,6 +1081,16 @@ Same as @samp{--mode=finish}.
 Display a help message and exit.  If @samp{--mode=@var{mode}} is
 specified, then detailed help for @var{mode} is
 displayed.
+ 
+@item --tag=@var{tag}
+Select configuration tag @var{tag}.  Additional configuration tags can
+be created with @code{ltconfig --add-tag}.  Multiple @samp{--tag} flags
+can be specified.  In general, one tag will completely replace the
+configuration of the other, but the two pre-defined configuration tags,
+@samp{disable-shared} and @samp{disable-static}, if used @emph{after}
+any other, cause libtool not to create shared or static libraries,
+respectively, regardless of the corresponding flags used for
+@code{ltconfig}.
 
 @item --mode=@var{mode}
 Use @var{mode} as the operation mode.  By default, the operation mode is
@@ -1625,6 +1635,10 @@ Look for @code{config.guess} and @code{config.sub} in @var{dir}.
 @item --version
 Print @code{ltconfig} version information and exit.
 
+@item --add-tag=@var{tag}
+Instead of overwriting @code{libtool}, append a new configuration
+section to it, with the given @var{tag}.
+
 @item --with-gcc
 Assume that the GNU C compiler will be used when invoking the created
 @code{libtool} to compile and link object files.
@@ -1652,8 +1666,14 @@ guessed by running @code{config.guess}.
 @code{ltconfig} also recognizes the following environment variables:
 
 @defvar CC
-The C compiler that will be used by the generated @code{libtool}.  If
+The compiler that will be used by the generated @code{libtool}.  If
 this is not set, @code{ltconfig} will look for @code{gcc} or @code{cc}.
+@end defvar
+
+@defvar LTCC
+A C compiler, in case @var{CC} is not one.  If this is not set,
+@code{ltconfig} will use @var{CC} or extract @var{LTCC} from an existing
+@code{libtool}, if running in @samp{--add-tag} mode.
 @end defvar
 
 @defvar CFLAGS
@@ -3187,8 +3207,62 @@ This chapter describes how libtool interacts with other languages,
 and what special considerations you need to make if you do not use C.
 
 @menu
+* Configuration tags::
 * C++ libraries::
 @end menu
+
+@node Configuration tags
+@section Configuration tags
+@cindex Configuration tags
+@cindex tags
+
+A single libtool script may support multiple configurations.  By
+default, it will only support C compilation, but additional
+configuration tags can be created, using @samp{ltconfig --add-tag}, so
+that libtool can support other compilers.  Such configuration tags can
+be used to select native compilers instead of cross ones, or compilers
+of other languages.
+
+For example, in order to create a tag for a C++ compiler @samp{CC}, you
+could run:
+
+@example
+$ @kbd{CC=c++ CFLAGS=-g CPPFLAGS=-Dfoo LTCC=gcc \}
+> @kbd{./ltconfig -o libtool --add-tag=CXX ltcf-cxx.sh}
+@end example
+
+@samp{ltcf-cxx.sh} is a shell script that configures C++ specific
+variables that get placed within the appended configuration tag.
+Another shell script called @samp{ltcf-c.sh} that contains C compiler
+configurations also exists but it should not be used by the user.  It is
+used internally by the ltconfig script.
+
+Note that you should set @var{LTCC} to a valid C compiler, because
+libtool may need to compile additional C sources internally.  Note also
+that, although @samp{CC} is not a C compiler, you should use variables
+such as @var{CC}, @var{CFLAGS} and @var{CPPFLAGS} to tell libtool which
+flags to use when compiling test programs.
+
+You can use existing compiler/language specific scripts, such as
+@samp{ltcf-cxx.sh}, as a reference for other compilers/languages you
+would like libtool to support.
+
+After this command, whenever you want to compile or link a library using
+@samp{c++}, you should run:
+
+@example
+$ @kbd{./libtool --tag=CXX --mode=compile c++ -c test.cc}
+@end example
+
+If you do not use the proper tag name, it is possible that libtool ends
+up using incorrect commands.
+
+Conceptually, tags are cumulative, i.e., they could only set a couple of
+configuration variables, leaving others untouched.  In practice, any tag
+created with ltconfig will override all libtool configuration variables.
+Only the two pre-defined tags, @samp{disable-shared} and
+@samp{disable-static}, override a single variable, and can be used
+cumulatively, after other tags.
 
 @node C++ libraries
 @section Writing libraries for C++

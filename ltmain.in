@@ -124,6 +124,25 @@ do
     execute_dlfiles)
       eval "$prev=\"\$$prev \$arg\""
       ;;
+    tag)
+      tagname="$arg"
+
+      # Check whether tagname contains only valid characters
+      case "$tagname" in
+      *[!-_A-Za-z0-9,/]*)
+	echo "$progname: invalid tag name: $tagname" 1>&2
+	exit 1
+        ;;
+      esac
+
+      if grep "^### BEGIN LIBTOOL TAG CONFIG: $tagname$" < "$0" > /dev/null; then
+        taglist="$taglist $tagname"
+	# Evaluate the configuration.
+	eval "`sed -n -e '/^### BEGIN LIBTOOL TAG CONFIG: '$tagname'$/,/^### END LIBTOOL TAG CONFIG: '$tagname'$/p' < \"$0\"`"
+      else
+	echo "$progname: ignoring unknown tag $tagname" 1>&2
+      fi
+      ;;
     *)
       eval "$prev=\$arg"
       ;;
@@ -146,7 +165,11 @@ do
     ;;
 
   --config)
-    sed -e '1,/^### BEGIN LIBTOOL CONFIG/d' -e '/^### END LIBTOOL CONFIG/,$d' $0
+    sed -n -e '/^### BEGIN LIBTOOL CONFIG/,/^### END LIBTOOL CONFIG/p' < "$0"
+    # Now print the configurations for the tags.
+    for tagname in $taglist; do
+      sed -n -e "/^### BEGIN LIBTOOL TAG CONFIG: $tagname$/,/^### END LIBTOOL TAG CONFIG: $tagname$/p" < "$0"
+    done
     exit 0
     ;;
 
@@ -181,6 +204,13 @@ do
 
   --quiet | --silent)
     show=:
+    ;;
+
+  --tag) prevopt="--tag" prev=tag ;;
+  --tag=*)
+    set tag "$optarg" ${1+"$@"}
+    shift
+    prev=tag
     ;;
 
   -dlopen)
@@ -664,6 +694,8 @@ compiler."
     finalize_shlibpath=
     convenience=
     old_convenience=
+    test -n "$predeps"  || predeps=
+    test -n "$postdeps" || postdeps=
     deplibs=
     old_deplibs=
     compiler_flags=
@@ -1591,7 +1623,7 @@ compiler."
       newdependency_libs= # all dependency libraries
       uninst_path=        # paths that contain uninstalled libtool libraries
       new_lib_search_path=
-      for deplib in $save_deplibs; do
+      for deplib in $predeps $postdeps $save_deplibs; do
 	lib=
 	case "$deplib" in
 	-L*)
@@ -1622,6 +1654,14 @@ compiler."
 	    continue
 	  fi
 	  ;;
+        -R*)
+          # Ignore run paths found by ltconfig (for now)
+          continue
+          ;;
+        *.$objext)
+          # Ignore object files found by ltconfig
+          continue
+          ;;
 	*)
 	  lib="$deplib"
 	  if test -f "$lib"; then :
@@ -2036,7 +2076,7 @@ compiler."
 	  int main() { return 0; }
 EOF
 	  $rm conftest
-	  $CC -o conftest conftest.c $deplibs
+	  $LTCC -o conftest conftest.c $deplibs
 	  if test $? -eq 0 ; then
 	    ldd_output=`ldd conftest`
 	    for i in $deplibs; do
@@ -3306,8 +3346,8 @@ static const void *lt_preloaded_setup() {
 	  esac
 
 	  # Now compile the dynamic symbol file.
-	  $show "(cd $output_objdir && $CC -c$no_builtin_flag$pic_flag_for_symtable \"$dlsyms\")"
-	  $run eval '(cd $output_objdir && $CC -c$no_builtin_flag$pic_flag_for_symtable "$dlsyms")' || exit $?
+	  $show "(cd $output_objdir && $LTCC -c$no_builtin_flag$pic_flag_for_symtable \"$dlsyms\")"
+	  $run eval '(cd $output_objdir && $LTCC -c$no_builtin_flag$pic_flag_for_symtable "$dlsyms")' || exit $?
 
 	  # Clean up the generated files.
 	  $show "$rm $output_objdir/$dlsyms $nlist ${nlist}S ${nlist}T"
@@ -4664,6 +4704,7 @@ Provide generalized library-building support services.
     --mode=MODE       use operation mode MODE [default=inferred from MODE-ARGS]
     --quiet           same as \`--silent'
     --silent          don't print informational messages
+    --tag=TAG         use configuration variables from tag TAG
     --version         print version information
 
 MODE must be one of the following:
@@ -4836,6 +4877,14 @@ echo
 $echo "Try \`$modename --help' for more information about other modes."
 
 exit 0
+
+### BEGIN LIBTOOL TAG CONFIG: disable-shared
+build_libtool_libs=no
+### END LIBTOOL TAG CONFIG: disable-shared
+
+### BEGIN LIBTOOL TAG CONFIG: disable-static
+build_old_libs=no
+### END LIBTOOL TAG CONFIG: disable-static
 
 # Local Variables:
 # mode:shell-script

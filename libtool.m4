@@ -30,7 +30,7 @@ AC_CACHE_SAVE
 
 # Actually configure libtool.  ac_aux_dir is where install-sh is found.
 AR="$AR" CC="$CC" CFLAGS="$CFLAGS" CPPFLAGS="$CPPFLAGS" \
-FILE="$FILE" LD="$LD" LDFLAGS="$LDFLAGS" LIBS="$LIBS" \
+FILE="$FILE" LTCC="$CC" LD="$LD" LDFLAGS="$LDFLAGS" LIBS="$LIBS" \
 LN_S="$LN_S" NM="$NM" RANLIB="$RANLIB" STRIP="$STRIP" \
 AS="$AS" DLLTOOL="$DLLTOOL" OBJDUMP="$OBJDUMP" \
 objext="$OBJEXT" exeext="$EXEEXT" reload_flag="$reload_flag" \
@@ -667,6 +667,14 @@ AC_DEFUN(AC_LIBLTDL_INSTALLABLE, [AC_BEFORE([$0],[AC_LIBTOOL_SETUP])dnl
     LIBLTDL="-lltdl"
     INCLTDL=
   fi
+])
+
+# AC_LIBTOOL_CPP - enable checks for C++ support
+AC_DEFUN(AC_LIBTOOL_CPP,
+[AC_REQUIRE([AC_PROG_CXX])
+AC_REQUIRE([AC_PROG_CXXCPP])
+AC_REQUIRE([AC_PROG_LIBTOOL])
+CC=$CXX CFLAGS=$CXXFLAGS LTCC=$CC $ac_aux_dir/ltconfig -o libtool --add-tag=CXX $ac_aux_dir/ltcf-cxx.sh
 ])
 
 dnl old names
