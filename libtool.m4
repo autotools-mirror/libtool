@@ -3234,6 +3234,10 @@ solaris*)
   lt_cv_file_magic_test_file=/lib/libc.so
   ;;
 
+[sysv5uw[78]* | sysv4*uw2*)]
+  lt_cv_deplibs_check_method=pass_all
+  ;;
+
 sysv4 | sysv4.2uw2* | sysv4.3* | sysv5*)
   case $host_vendor in
   motorola)
