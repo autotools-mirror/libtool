@@ -1,3 +1,9 @@
+2002-09-09  Rainer Orth  <ro@TechFak.Uni-Bielefeld.de>
+
+	* libtool.m4 (osf[345]): Append $major to soname_spec.
+	Reflect this in library_names_spec.
+	* ltmain.in (osf): Prefix $major with '.' for use as extension.
+
 2002-06-26  Bob Friesenhahn  <bfreisen@simple.dallas.tx.us>
 
 	* libtool.m4 (sys_lib_search_path_spec):  Remove extraneous '='
