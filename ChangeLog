@@ -1,3 +1,8 @@
+2001-09-02  Gary V. Vaughan  <gary@gnu.org>
+
+	* demo/Makefile.am (helldl$(EXEEXT)): Automake-1.5 made me change
+	this from just `helldl'.
+
 2001-07-31  Robert Boehne  <rboehne@ricardo-us.com>
 
 	* libtool.m4 (AC_LIBTOOL_PROG_LD_SHLIBS) Fixed a problem
@@ -31,7 +36,7 @@
 
 	* libltdl/ltdl.c (lt_dlhandle_next): Now we can loop through all
 	loaded module handles as originally intended.
-	
+
 	* libltdl/ltdl.c (lt_dlseterror): Oops.  This never worked
 	either, due to a pair of typos.  Now fixed.
 
@@ -64,7 +69,7 @@
 
 	* libltdl/ltdl.c (rpl_argz_stringify): New fallback implementation.
 	* ltdl.m4 (AC_LTDL_FUNC_ARGZ):  Test for argz_stringify in libc.
-	* libltdl/ltdl.c (lt_argz_insertinorder): Renamed from 
+	* libltdl/ltdl.c (lt_argz_insertinorder): Renamed from
 	lt_argz_insert to make room for...
 	(lt_argz_insert): Wraps argz_insert with libltdl error handling.
 	(lt_dlpath_insertdir): Insert new path elements into an
@@ -75,7 +80,7 @@
 	* libltdl/ltdl.h (lt_dlinsertsearchdir): Prototype for export.
 	* doc/libtool.texi (Libltdl interface): Document it.
 	* NEWS: Updated,
-	
+
 2001-08-07  Gary V. Vaughan  <gary@gnu.org>
 
 	From Albert Chin <china@thewrittenword.com>:
@@ -144,7 +149,7 @@
 	* libtool.m4 (archive_cmds) [darwin, newsos, sysv4]: Replace
 	1.3 era $linkopts references with $linker_flags.
 
-	* libltdl/ltdl.c:  Fixed several careless mistakes in the 
+	* libltdl/ltdl.c:  Fixed several careless mistakes in the
 	foreach_dirinpath support functions.
 	(foreach_dirinpath): Walk path elements with the argz API.
 
@@ -267,7 +272,7 @@
 
 2001-07-29  Gary V. Vaughan  <gary@gnu.org>
 
-	From Guido Draheim <Guido.Draheim@tek.com>:	
+	From Guido Draheim <Guido.Draheim@tek.com>:
 	* libtool.m4 (AC_LIBTOOL_SYS_DYNAMIC_LINKER) [mingw]: Support
 	cross compilation to mingw by allowing `:' or ';' as a path
 	separator.
@@ -345,7 +350,7 @@
 
 	* ltdl.m4 (AC_LTDL_SYS_DLOPEN_DEPLIBS): add cases and comments for
 	more platforms, including AIX, Digital/Tru64 UNIX and IRIX.
- 
+
 2001-07-16  Gary V. Vaughan  <gary@gnu.org>
 
 	* libtool.m4 (AC_LIBTOOL_PROG_LD_SHLIBS): Fix ia64 AIX
@@ -504,7 +509,7 @@
 	* libtool.m4:  undefine the m4 builtin `symbols', so that the
 	string `symbols' can be used in the rest of the code without
 	causing errors with autoconf-2.13.
-	
+
 	From "Golubev I. N." <gin@mo.msk.ru>
 	* tests/Makefile.am (CPPLAGS): Typo. s/CPPLAGS/CPPFLAGS.
 
@@ -530,7 +535,7 @@
 	C declaration of symbol name and address.
 	* ltmain.in: Use it to generate the fooS.c symbol name
 	Reported by Albert Chin-A-Young  <china@thewrittenword.com>
-	
+
 2001-06-28  Tim Van Holder  <tim.van.holder@pandora.be>, Gary V. Vaughan  <gary@gnu.org>
 
 	* bootstrap: Use cp instead of ln -s, for systems without
@@ -565,7 +570,7 @@
 
 	* pdemo/Makefile.am:  Use '=' instead of '+=' to shut up
 	automake.
-	
+
 2001-06-27  Gary V. Vaughan  <gary@gnu.org>
 
 	From brad@openbsd.org:
@@ -576,7 +581,7 @@
 	* ltmain.in: Ditto,
 
 2001-06-26  Gary V. Vaughan  <gary@gnu.org>
-	
+
 	* NEWS: Updated.
 	* libltdl/ltdl,c (LT_DLMUTEX_LOCK): Renamed from MUTEX_LOCK to
 	avoid potential namespace clash.
@@ -608,26 +613,26 @@
 	(foreachfile_callback): ...using this callback.
 	* doc/libtool.texi (Libltdl interface): Document new
 	lt_dlforeachfile api call.
-	
+
 2001-06-25  Gary V. Vaughan  <gary@gnu.org>
 
 	* THANKS:  Added Albert Chin-A-Young.
-	
+
 	* libtool.m4 (IFS): When IFS is changed to split a string for
 	examination in a loop, restore it inside the loop as well as
 	outside incase IFS is needed by commands in that loop.
 	Reported by Pavel Roskin <proski@gnu.org>
-	
+
 2001-06-25  Albert Chin-A-Young  <china@thewrittenword.com>
 
 	* libtool.m4: Prefer shl_load to dlopen on HP-UX because dlopen
 	won't work properly without a patch.
-	
+
 2001-06-25  Daniel Harvey <daniel@amristar.com.au>
-	
+
 	* libtool.m4 (ltdll_cmds): [$]0 doesn't appear to translate through
 	the script correctly, change to $''0
-	
+
 2001-06-25  Maciej W. Rozycki  <macro@ds2.pg.gda.pl>
 
 	* libtool.m4 (AC_DEPLIBS_CHECK_METHOD): Use pass_all for
@@ -722,7 +727,7 @@
 
 	* libtool.m4: Reformatting for consistency, and some refactoring
 	in preparation for ltcf-*.sh merge.
-	
+
 2001-05-27  Gary V. Vaughan  <gary@gnu.org>
 
 	* ltmain.in: Merged from multi-language-branch.

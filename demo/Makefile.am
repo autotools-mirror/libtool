@@ -40,7 +40,7 @@ else
 
 bin_SCRIPTS = helldl
 # create a script that says that -dlopen is not supported
-helldl:
+helldl$(EXEEXT):
 	rm -f $@
 	echo '#! /bin/sh' > $@
 	echo '-dlopen is unsupported' >> $@
