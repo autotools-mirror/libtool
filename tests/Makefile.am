@@ -59,9 +59,9 @@ LDFLAGS = @LDFLAGS@
 LIBS = @LIBS@
 
 # Be sure to reexport important environment variables.
-TESTS_ENVIRONMENT = CC="$(CC)" CFLAGS="$(CFLAGS)" CPPFLAGS="$(CPPFLAGS)" \
-	LD="$(LD)" LDFLAGS="$(LDFLAGS)" LIBS="$(LIBS)" \
-	LN_S="$(LN_S)" NM="$(NM)" RANLIB="$(RANLIB)"
+TESTS_ENVIRONMENT = MAKE="$(MAKE)" CC="$(CC)" CFLAGS="$(CFLAGS)" \
+	CPPFLAGS="$(CPPFLAGS)" LD="$(LD)" LDFLAGS="$(LDFLAGS)" \
+	LIBS="$(LIBS)" LN_S="$(LN_S)" NM="$(NM)" RANLIB="$(RANLIB)"
 
 EXTRA_DIST = defs $(COMMON_TESTS) $(CXX_TESTS)
 

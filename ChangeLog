@@ -1,3 +1,10 @@
+2001-04-24  Gary V. Vaughan  <gvv@techie.com>
+
+	From Tim Mooney <mooney@dogbert.cc.ndsu.NoDak.edu>
+	* tests/Makefile.am (TESTS_ENVIRONMENT): Make sure the *.test
+	scripts get the same make that was used in the top level
+	directory.
+
 2001-04-23  Peter Eisentraut  <peter_e@gmx.net>
 
 	* libltdl/ltdl.c (lt_dlexit): Quit loop if only resident modules
