@@ -1,10 +1,16 @@
+2000-12-14  Michael Schmitz  <mschmitz@iname.com>
+
+	* libtool.m4: Port to *-sni-sysv4 (Reliant Unix)
+	* README: added Reliant Unix to hte list of supported platforms
+	* doc/PLATFORMS: added note on tests on Reliant Unix
+	
 2000-12-14  Masahiro Nobori  <nobori@ss.titech.ac.jp>
 
 	* README:  Updated.
 	* NEWS: Updated.
 	* libtool.m4:  New port to NEWS-OS Release 6.
 	
-2000-12-14  Nick Hudson  <nick@nthcliff.demon.co.uk>
+2000-12-14  Nick Hudson  <skrll@netbsd.org>
 	
 	* libtool.m4 (hardcode_libdir_flag_spec):  Remove linker
 	specification for netbsd.

@@ -33,6 +33,7 @@ Shared library support has been implemented for these platforms:
   NetBSD 1.x (*-*-netbsd*)
   OpenBSD 2.x (*-*-openbsd*)
   OS/2 using EMX (*-*-os2*)
+  Reliant Unix (*-sni-sysv4) [see note]
   SCO OpenServer 5.x (*-*-sco3.2v5*)
   SCO UnixWare 7.x (*-*-sysv5*)
   Solaris 2.x (*-*-solaris2*)
@@ -55,6 +56,10 @@ You can only use gcc. This bug will hopefully be fixed in autoconf 2.14.
 
 NOTE: Any earlier DG/UX system with ELF executables, such as R3.10 or
 R4.10, is also likely to work, but hasn't been explicitly tested.
+
+NOTE: Libtool has only been tested with the Siemens C-compiler and
+an old version of gcc provided by Marco Walther you can find on
+ftp://ftp.mch.sni.de/sni/mr/pd/gnu/gcc/gcc.2.7.2.3 on Reliant Unix.  
 
 Libtool's home page is:
 

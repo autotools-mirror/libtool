@@ -897,7 +897,11 @@ AC_CACHE_VAL(ac_cv_prog_cc_pic,
     sysv4 | sysv4.2uw2* | sysv4.3* | sysv5*)
       ac_cv_prog_cc_pic='-KPIC'
       ac_cv_prog_cc_static='-Bstatic'
-      ac_cv_prog_cc_wl='-Wl,'
+      if test "x$host_vendor" = xsni; then
+        ac_cv_prog_cc_wl='-LD'
+      else
+        ac_cv_prog_cc_wl='-Wl,'
+      fi
       ;;
 
     uts4*)
@@ -1591,10 +1595,15 @@ else
     ;;
 
   sysv4)
-    archive_cmds='$LD -G -h $soname -o $lib $libobjs $deplibs $linker_flags'
+    if test "x$host_vendor" = xsno; then
+      archive_cmds='$LD -G -Bsymbolic -h $soname -o $lib $libobjs $deplibs $linkopts'
+      hardcode_direct=yes # is this really true???
+    else
+      archive_cmds='$LD -G -h $soname -o $lib $libobjs $deplibs $linker_flags'
+      hardcode_direct=no #Motorola manual says yes, but my tests say they lie
+    fi
     runpath_var='LD_RUN_PATH'
     hardcode_shlibpath_var=no
-    hardcode_direct=no #Motorola manual says yes, but my tests say they lie
     ;;
 
   sysv4.3*)
@@ -2000,6 +2009,12 @@ sysv4 | sysv4.2uw2* | sysv4.3* | sysv5*)
   soname_spec='${libname}${release}.so$major'
   shlibpath_var=LD_LIBRARY_PATH
   case "$host_vendor" in
+    sni)
+      file_magic_cmd='/bin/file'
+      [deplibs_check_method="file_magic ELF [0-9][0-9]*-bit [LM]SB dynamic lib"]
+      file_magic_test_file=/lib/libc.so
+      shlibpath_overrides_runpath=no
+      ;;      
     sequent)
       file_magic_cmd='/bin/file'
       [deplibs_check_method='file_magic ELF [0-9][0-9]*-bit [LM]SB (shared object|dynamic lib )']
