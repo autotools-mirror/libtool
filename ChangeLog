@@ -1,5 +1,8 @@
 2000-01-28  Gary V. Vaughan  <gary@oranda.demon.co.uk>
 
+	* libtool.m4 (AC_DEPLIBS_CHECK_METHOD):  Use changequote to
+	protect `[' and `]' in deplibs_check_method.
+
 	* libltdl/ltdl.h (lt_dlrealloc): Added declaration.
 	* libltdl/ltdl.c (lt_dlrealloc): Added default definition.
 	
