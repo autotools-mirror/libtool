@@ -1,5 +1,12 @@
 1999-01-06  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
 
+	* ltconfig.in (cygwin, library_names_spec): revert Alexandre's
+	change from yesterday to use `-dll.a' suffix.  That change caused
+	$libname-dll.a to be a symlink to $soname, which isn't even an
+	`ar' archive.  Before the import library suffix can be changed, we
+	need to figure out how to handle building objects differently for
+	linking with an import library versus an equivalent static library.
+
 	* TODO: Added details of a Linux wrapper script bug.
 	Reported by Jeff Garzik <jgarzik@pobox.com>.
 
