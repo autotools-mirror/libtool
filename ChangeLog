@@ -1,5 +1,7 @@
 1998-11-04  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* THANKS: Added Thomas Tanner and Gary V. Vaughan
+
 	* ltconfig.in, ltmain.in: updated and fixed the patches below
 
 1998-11-04  Thomas Tanner  <tanner@gmx.de>
