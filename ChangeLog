@@ -1,3 +1,11 @@
+2001-10-28  Albert Chin-A-Young <china@thewrittenword.com>
+
+	* libltdl/ltdl.c (foreach_dirinpath): change some types to size_t
+	from int because strlen() returns size_t. argz_len changed to
+	size_t because argzize_path() takes 3rd argument as size_t, not
+	int.
+	Based on lint run from Bob Friesenhahn <bfriesen@simple.dallas.tx.us>
+
 2001-10-27  Gary V. Vaughan  <gary@gnu.org>
 
 	* ltdl.m4 (AC_WITH_LTDL): New macro to add `--with-included-ltdl'

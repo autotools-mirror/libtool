@@ -387,7 +387,7 @@ realloc (ptr, size)
      lt_ptr ptr;
      size_t size;
 {
-  if (size <= 0)
+  if (size == 0)
     {
       /* For zero or less bytes, free the original memory */
       if (ptr != 0)
@@ -2164,8 +2164,8 @@ foreach_dirinpath (search_path, base_name, func, data1, data2)
 {
   int	 result		= 0;
   int	 filenamesize	= 0;
-  int	 lenbase	= LT_STRLEN (base_name);
-  int	argz_len	= 0;
+  size_t lenbase	= LT_STRLEN (base_name);
+  size_t argz_len	= 0;
   char *argz		= 0;
   char *filename	= 0;
   char *canonical	= 0;
@@ -2188,7 +2188,7 @@ foreach_dirinpath (search_path, base_name, func, data1, data2)
     char *dir_name = 0;
     while ((dir_name = argz_next (argz, argz_len, dir_name)))
       {
-	int lendir = LT_STRLEN (dir_name);
+	size_t lendir = LT_STRLEN (dir_name);
 
 	if (lendir +1 +lenbase >= filenamesize)
 	{
@@ -2499,7 +2499,7 @@ trim (dest, str)
   /* remove the leading and trailing "'" from str
      and store the result in dest */
   const char *end   = strrchr (str, '\'');
-  int	len	    = LT_STRLEN (str);
+  size_t len	    = LT_STRLEN (str);
   char *tmp;
 
   LT_DLFREE (*dest);
@@ -2624,7 +2624,6 @@ try_dlopen (phandle, filename)
       char *	deplibs	 = 0;
       char *    line	 = 0;
       size_t	line_len;
-      int	i;
 
       /* if we can't find the installed flag, it is probably an
 	 installed libtool archive, produced with an old version
@@ -2640,23 +2639,26 @@ try_dlopen (phandle, filename)
 	}
 
       /* canonicalize the module name */
-      for (i = 0; i < ext - base_name; ++i)
-	{
-	  if (isalnum ((int)(base_name[i])))
-	    {
-	      name[i] = base_name[i];
-	    }
-	  else
-	    {
-	      name[i] = '_';
-	    }
-	}
-      name[ext - base_name] = LT_EOS_CHAR;
+      {
+        size_t i;
+        for (i = 0; i < ext - base_name; ++i)
+	  {
+	    if (isalnum ((int)(base_name[i])))
+	      {
+	        name[i] = base_name[i];
+	      }
+	    else
+	      {
+	        name[i] = '_';
+	      }
+	  }
+        name[ext - base_name] = LT_EOS_CHAR;
+      }
 
-    /* Now try to open the .la file.  If there is no directory name
-       component, try to find it first in user_search_path and then other
-       prescribed paths.  Otherwise (or in any case if the module was not
-       yet found) try opening just the module name as passed.  */
+      /* Now try to open the .la file.  If there is no directory name
+         component, try to find it first in user_search_path and then other
+         prescribed paths.  Otherwise (or in any case if the module was not
+         yet found) try opening just the module name as passed.  */
       if (!dir)
 	{
 	  const char *search_path;
@@ -2715,7 +2717,7 @@ try_dlopen (phandle, filename)
       /* read the .la file */
       while (!feof (file))
 	{
-	  if (!fgets (line, line_len, file))
+	  if (!fgets (line, (int) line_len, file))
 	    {
 	      break;
 	    }
@@ -2725,7 +2727,7 @@ try_dlopen (phandle, filename)
 	  while (line[LT_STRLEN(line) -1] != '\n')
 	    {
 	      line = LT_DLREALLOC (char, line, line_len *2);
-	      if (!fgets (&line[line_len -1], line_len +1, file))
+	      if (!fgets (&line[line_len -1], (int) line_len +1, file))
 		{
 		  break;
 		}
@@ -2947,7 +2949,7 @@ lt_dlopenext (filename)
   lt_dlhandle	handle		= 0;
   char *	tmp		= 0;
   char *	ext		= 0;
-  int		len;
+  size_t	len;
   int		errors		= 0;
 
   if (!filename)
@@ -3337,7 +3339,7 @@ lt_dlsym (handle, symbol)
      lt_dlhandle handle;
      const char *symbol;
 {
-  int	lensym;
+  size_t lensym;
   char	lsym[LT_SYMBOL_LENGTH];
   char	*sym;
   lt_ptr address;
