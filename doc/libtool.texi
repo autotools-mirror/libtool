@@ -1081,10 +1081,13 @@ specified, then detailed help for @var{mode} is
 displayed.
 
 @item --mode=@var{mode}
-Use @var{mode} as the operation mode.  By default, the operation mode is
-inferred from the @var{mode-args}.
+Use @var{mode} as the operation mode.  If not specified, an attempt is
+made to inferr the operation mode from the @var{mode-args}.  Not specifying
+the @var{mode} is currently deprecated, as there are too many situations
+where it is not possible to guess.  Future versions of Libtool will require
+that @var{mode} be explicity set.
 
-If @var{mode} is specified, it must be one of the following:
+@var{mode} must be set to one of the following:
 
 @table @samp
 @item compile

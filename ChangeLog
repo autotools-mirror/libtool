@@ -1,3 +1,9 @@
+2002-11-02  Robert Boehne  <rboehne@gnu.org>
+
+	* ltmain.in: Print a warning if the mode is not specified.
+	* doc/libtool.texi: Document the change that the mode must be
+	specified.
+
 2002-10-30  Charles Wilson  <cwilson@ece.gatech.edu>
 
 	* libtool.m4 (AC_LIBTOOL_PROG_CC_C_O): use printf, not
