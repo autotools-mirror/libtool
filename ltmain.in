@@ -885,6 +885,11 @@ compiler."
             if test "$hardcode_direct" = no; then
               compile_command="$compile_command $dir/$linklib"
             elif test "$hardcode_minus_L" = no; then
+	      case "$host" in
+	      *-*-sunos*)
+                compile_shlibpath="$compile_shlibpath$dir:"
+		;;
+	      esac
               compile_command="$compile_command -L$dir -l$name"
             elif test "$hardcode_shlibpath_var" = no; then
               compile_shlibpath="$compile_shlibpath$dir:"
@@ -1193,8 +1198,8 @@ compiler."
 	  major=
 	  versuffix=
 	  verstring="0.0"
-	  case "$version_type" in
-	  sunos)
+	  case "$host" in
+	  *-*-sunos*)
 	    versuffix=".0.0"
 	    ;;
 	  esac

@@ -1,3 +1,10 @@
+1998-11-04  Ian Lance Taylor  <ian@cygnus.com>
+
+	* ltconfig.in: For sunos4 using GNU ld, set hardcode_minus_L to
+	no.
+	* ltmain.in: Add some hacks to make SunOS --enable-shared work
+	when using GNU ld.
+
 1998-11-04  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* THANKS: Added Marc J. Fraioli
