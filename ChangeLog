@@ -1,5 +1,7 @@
 2005-01-12  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* libltdl/ltdl.c: Whitespace cleanup.
+
 	* config/ltmain.m4sh: New option `--verbose'/`-v' to enable
 	override of `--silent'.  Verbose is the default behavior.
 	* doc/libtool.texi (Invoking libtool): Document it.

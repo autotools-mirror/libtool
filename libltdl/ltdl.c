@@ -101,7 +101,7 @@ static	int	foreachfile_callback  (char *filename, void *data1,
 
 
 static	int     canonicalize_path     (const char *path, char **pcanonical);
-static	int	argzize_path 	      (const char *path,
+static	int	argzize_path	      (const char *path,
 				       char **pargz, size_t *pargz_len);
 static	FILE   *find_file	      (const char *search_path,
 				       const char *base_name, char **pdir);
@@ -136,7 +136,7 @@ static	int	loader_init	      (lt_get_vtable *vtable_func,
 
 static	char	       *user_search_path= 0;
 static	lt_dlhandle	handles 	= 0;
-static	int		initialized 	= 0;
+static	int		initialized	= 0;
 
 /* Our memory failure callback sets the error message to be passed back
    up to the client, so we must be careful to return from mallocation
@@ -185,7 +185,7 @@ loader_init (lt_get_vtable *vtable_func, lt_user_data data)
 }
 
 /* Bootstrap the loader loading with the preopening loader.  */
-#define get_vtable  		preopen_LTX_get_vtable
+#define get_vtable		preopen_LTX_get_vtable
 #define preloaded_symbols	LT_CONC3(lt_, LTDLOPEN, _LTX_preloaded_symbols)
 
 LT_SCOPE const lt_dlvtable *	get_vtable (lt_user_data data);
