@@ -2997,6 +2997,9 @@ trim (dest, str)
 
   LT_DLFREE (*dest);
 
+  if (!end)
+    return 1;
+
   if (len > 3 && str[0] == '\'')
     {
       tmp = LT_EMALLOC (char, end - str);

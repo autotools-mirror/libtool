@@ -1,3 +1,8 @@
+2004-12-16  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
+	* libltdl/ltdl.c (trim): Return error rather than do bogus
+	null pointer arithmetic when parsing a malformed .la file.
+
 2004-12-13  Albert Chin-A-Young  <china@thewrittenword.com>
 
 	* libtool.m4 (AC_LIBTOOL_LANG_CXX_CONFIG,
