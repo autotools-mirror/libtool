@@ -1615,7 +1615,7 @@ libtool distribution's @file{demo} subdirectory.
 First, to link a program against a libtool library, just use the
 @samp{program_LDADD}@footnote{@c
 @c
-With recent @sc{gnu} Automake (1.8 or newer), the flags @samp{-dlopen}
+With recent @sc{gnu} Automake (1.5 or newer), the flags @samp{-dlopen}
 or @samp{-dlpreopen} (@pxref{Link mode}) can be employed with the
 @var{program_LDADD} variable.  Unfortunately, older releases didn't
 accept these flags, so if you are stuck with an ancient Automake, we
@@ -2080,12 +2080,11 @@ AC_SUBST(LTLIBOBJS)
 @end example
 
 @noindent
-This is not only no longer required (since Autoconf 2.50), but will
-in fact trigger error messages from Autoconf 2.53 and newer.  Further,
-this code doesn't take Automake's deansification support into account,
-so wouldn't work correctly in that case even with ancient Autoconfs!
+This is no longer required (since Autoconf 2.50), and doesn't take
+Automake's deansification support into account either, so doesn't work
+correctly even with ancient Autoconfs!
 
-Provided you are using a recent (2.50 or better) incarnation of
+Provided you are using a recent (2.54 or better) incarnation of
 Autoconf, the call to @code{AC_OUTPUT} takes care of setting
 @code{LTLIBOBJS} up correctly, so you can simply delete such snippets
 from your @file{configure.ac} if you had them.
@@ -3805,7 +3804,7 @@ Makefile.am:
 ...
 SUBDIRS = libltdl
 
-INCLUDES = $(LTDLINCL)
+AM_CPPFLAGS = $(LTDLINCL)
 
 myprog_LDFLAGS = -export-dynamic
 # The quotes around -dlopen below fool Automake <= 1.4 into accepting it
