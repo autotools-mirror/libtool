@@ -1,3 +1,10 @@
+2001-02-20  Gary Vaughan  <gvv@techie.com>
+
+	* libltdl/ltdl.c (lt_dlcaller_register): dont set an unsigned
+	type to a negative number.
+	Reported by Guenter Millahn <Guenter.Millahn@Informatik.TU-Cottbus.DE>
+
+
 2001-02-15  Robert Boehne  <rboehne@ricardo-us.com>
 	
 	* ltconfig.in: Under AIX 4&5 check to see if we're using
