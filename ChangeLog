@@ -1,3 +1,9 @@
+1999-02-12  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* libltdl/configure.in: add a DESCRIPTION argument to AC_DEFINEs
+	where appropriate, so as to get rid of acconfig.h
+	* libltdl/acconfig.h: removed
+
 1999-02-13  Thomas Tanner  <tanner@gmx.de>
 
 	* *demo/Makefile.am: use $(MATHLIB)
