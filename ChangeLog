@@ -1,3 +1,12 @@
+2005-1-9  Peter O'Gorman  <peter@pogma.com>
+
+	* config/ltmain.m4sh (func_extract_archives,func_extract_an_archive): 
+	On darwin, uniq can not take the flags -cd together, thanks to Ralf
+	for the fix, also ar does not accept N, so we use the fact that
+	ar x libfoo.a foo.o will always extract the first foo.o in the
+	archive and we then delete foo.o from the archive, which will also
+	delete only the first foo.o, then rinse and repeat.
+
 2004-12-30  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* config/getopt.m4sh (func_version, func_usage, func_help):
