@@ -1,3 +1,14 @@
+2003-06-03  Albert Chin-A-Young  <china@thewrittenword.com>
+
+	* tests/defs, tests/demo-conf.test, tests/demo-nofast.test,
+	tests/demo-nopic.test, tests/demo-pic.test,
+	tests/demo-shared.test, tests/demo-static.test,
+	tests/depdemo-conf.test, tests/depdemo-nofast.test,
+	tests/depdemo-shared.test, tests/depdemo-static.test:
+	Pass build system type to tests to support environment
+	where default system type not equal to build system type
+	(eg. 64-bit HP-UX).
+
 2003-06-03  Peter O'Gorman  <peter@pogma.com>
 
 	* libtool.m4 (darwin): Remove checks for Apple-specific gcc.
