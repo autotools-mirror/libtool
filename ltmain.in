@@ -381,7 +381,7 @@ if test -z "$show_help"; then
       # in scan sets, so we specify it separately.
       case "$lastarg" in
       *[\[\~\#\^\&\*\(\)\{\}\|\;\<\>\?\'\ \	]*|*]*|"")
-        lastarg="\"$largarg\""
+        lastarg="\"$lastarg\""
 	;;
       esac
 
