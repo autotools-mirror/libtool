@@ -7,6 +7,13 @@ AC_C_CONST
 AC_EXEEXT
 AM_PROG_LIBTOOL
 
+if ${CONFIG_SHELL} ./libtool --features | grep "enable static" >/dev/null; then
+  STATIC=-static
+else
+  STATIC=
+fi
+AC_SUBST(STATIC)
+
 AM_CONDITIONAL(BINARY_HELLDL, [dnl
 grep '^global_symbol_pipe=..*$' ./libtool >/dev/null])
 

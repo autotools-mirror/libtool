@@ -1,3 +1,15 @@
+1999-01-21  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* tests/demo-shared.test, tests/demo-static.test: new tests
+	* tests/mdemo-shared.test, tests/mdemo-static.test: ditto
+	* tests/Makefile.am: ditto
+	* doc/libtool.texi: document them
+	* demo/Makefile.am, mdemo/Makefile.am (@STATIC@): do not use
+	-static unconditionally, it can't work with --disable-static
+	* demo/configure.in, mdemo/configure.in: check whether libtool was 
+	configured to build static libraries and, if not, set STATIC to an 
+	empty string
+
 1999-01-20  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* ltmain.in (module, droppeddeps): if libtool could not satisfy

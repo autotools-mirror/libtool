@@ -7,6 +7,13 @@ AC_C_CONST
 AC_EXEEXT
 AM_PROG_LIBTOOL
 
+if ${CONFIG_SHELL} ./libtool --features | grep "enable static" >/dev/null; then
+  STATIC=-static
+else
+  STATIC=
+fi
+AC_SUBST(STATIC)
+
 AC_CHECK_HEADERS(math.h)
 
 AC_CHECK_LIB(m, cos, LIBADD_M="-lm", LIBADD_M=)

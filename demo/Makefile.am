@@ -29,7 +29,7 @@ hell_LDADD = libhello.la
 # Create an easier-to-debug version of hell.
 hell_debug_SOURCES = main.c
 hell_debug_LDADD = libhello.la
-hell_debug_LDFLAGS = -static
+hell_debug_LDFLAGS = @STATIC@
 
 if BINARY_HELLDL
 

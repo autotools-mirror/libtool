@@ -2830,28 +2830,43 @@ line as an assignment in the libtool script.
 @itemx demo-inst.test
 @itemx demo-make.test
 @itemx demo-unst.test
+@itemx demo-static.test
+@itemx demo-shared.test
 @pindex demo-conf.test
 @pindex demo-exec.test
 @pindex demo-inst.test
 @pindex demo-make.test
 @pindex demo-unst.test
+@pindex demo-static.test
+@pindex demo-shared.test
 These programs check to see that the @file{demo} subdirectory of the
 libtool distribution can be configured, built, installed, and
 uninstalled correctly.
 
 The @file{demo} subdirectory contains a demonstration of a trivial
-package that uses libtool.
+package that uses libtool.  The tests @file{cdemo-make.test},
+@file{cdemo-exec.test}, @file{cdemo-inst.test} and
+@file{cdemo-unst.test} are executed three times, under three different
+libtool configurations: @file{cdemo-conf.test} configures
+@file{cdemo/libtool} to build both static and shared libraries,
+@file{cdemo-static.test} builds only static libraries
+(@samp{--disable-shared}), and @file{cdemo-shared.test} builds only
+shared libraries (@samp{--disable-static}).
 
 @item mdemo-conf.test
 @itemx mdemo-exec.test
 @itemx mdemo-inst.test
 @itemx mdemo-make.test
 @itemx mdemo-unst.test
+@itemx mdemo-static.test
+@itemx mdemo-shared.test
 @pindex mdemo-conf.test
 @pindex mdemo-exec.test
 @pindex mdemo-inst.test
 @pindex mdemo-make.test
 @pindex mdemo-unst.test
+@pindex mdemo-static.test
+@pindex mdemo-shared.test
 These programs check to see that the @file{mdemo} subdirectory of the
 libtool distribution can be configured, built, installed, and
 uninstalled correctly.
@@ -2862,12 +2877,13 @@ load modules.  The library @file{libltdl} provides an experimental
 dlopen wrapper for various platforms (Linux, Solaris, HP/UX, Win32 etc.) 
 including support for dlpreopened modules (@pxref{Dlpreopening}).
 
-NOTE: The tests @file{mdemo-exec.test} and @file{mdemo-inst.test} are
-known to fail on platforms that do not fully support inter-library
-dependencies.  We'd appreciate your help in porting the recently
-introduced inter-library dependencies code to various platforms, even
-some very common platforms haven't been updated yet (@pxref{Porting
-inter-library dependencies}).
+The tests @file{mdemo-make.test}, @file{mdemo-exec.test},
+@file{mdemo-inst.test} and @file{mdemo-unst.test} are executed
+three times, under three different libtool configurations:
+@file{mdemo-conf.test} configures @file{mdemo/libtool} to build both
+static and shared libraries, @file{mdemo-static.test} builds only static
+libraries (@samp{--disable-shared}), and @file{mdemo-shared.test} builds
+only shared libraries (@samp{--disable-static}).
 
 @item cdemo-conf.test
 @itemx cdemo-exec.test
@@ -2878,6 +2894,7 @@ inter-library dependencies}).
 @pindex cdemo-exec.test
 @pindex cdemo-make.test
 @pindex cdemo-static.test
+@pindex cdemo-shared.test
 These programs check to see that the @file{cdemo} subdirectory of the
 libtool distribution can be configured and built correctly.
 
