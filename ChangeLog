@@ -1,5 +1,9 @@
 1999-01-11  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* ltconfig.in (symxfrm): don't print $pipe_works twice, once for
+ 	each $ac_symprfx
+	Reported by Godmar Back <gback@cs.utah.edu>
+
 	* ltmain.in (convenience, libobjs): get only .o and .lo files from 
 	the files extract from the convenience library.  Some systems,
 	such as FreeBSD2, will add a SYMDEF file, that is not an object
