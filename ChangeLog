@@ -1,3 +1,25 @@
+Sun Dec  5 16:34:04 1999  Ossama Othman  <othman@cs.wustl.edu>
+
+	* libtool.m4:
+
+	Make sure AC_LIBTOOL_SETUP is called before any macros that set
+	the autoconf test language (e.g. AC_LANG_CPLUSPLUS).  Autoconf's
+	AC_EXEEXT macro only works for C compilers.  AC_EXEEXT gets
+	confused and thinks that an extension such as the C++ source file
+	extenstion ".C" is an executable file extension, which screws up
+	the libtool configuration.
+
+	Pass the same autoconf variables used in the main ltconfig run to
+	the ltconfig configuration tag run (with the exception of a few).
+	This probably isn't necessary but I think it is a good idea to do
+	so.
+
+	* ltconfig.in:
+
+	The tagged configuration was being cached and overwriting the C
+	compiler cached configuration.  For now, the tagged configuration
+	will not be cached.
+
 Sat Dec  4 18:59:57 1999  Ossama Othman  <othman@cs.wustl.edu>
 
 	* ltconfig.in:
