@@ -87,7 +87,7 @@ if test "X`($echo '\t') 2>/dev/null`" != 'X\t' ||
 
   IFS="${IFS= 	}"; save_ifs="$IFS"; IFS="${IFS}${PATH_SEPARATOR}"
   for dir in $PATH /usr/ucb; do
-    if test -f $dir/echo &&
+    if (test -f $dir/echo || test -f $dir/echo$ac_exeext) &&
        test "X`($dir/echo '\t') 2>/dev/null`" = 'X\t' &&
        test "X`($dir/echo "$echo_test_string") 2>/dev/null`" = X"$echo_test_string"; then
       echo="$dir/echo"
@@ -102,7 +102,8 @@ if test "X`($echo '\t') 2>/dev/null`" != 'X\t' ||
        test "X`(print -r "$echo_test_string") 2>/dev/null`" = X"$echo_test_string"; then
       # This shell has a builtin print -r that does the trick.
       echo='print -r'
-    elif test -f /bin/ksh && test "X$CONFIG_SHELL" != X/bin/ksh; then
+    elif (test -f /bin/ksh || test -f /bin/ksh$ac_exeext) &&
+         test "X$CONFIG_SHELL" != X/bin/ksh; then
       # If we have ksh, try running ltconfig again with it.
       ORIGINAL_CONFIG_SHELL="${CONFIG_SHELL-/bin/sh}"
       export ORIGINAL_CONFIG_SHELL
@@ -475,7 +476,7 @@ if test "${RANLIB+set}" != "set"; then
   IFS="${IFS= 	}"; save_ifs="$IFS"; IFS="${IFS}${PATH_SEPARATOR}"
   for dir in $PATH; do
     test -z "$dir" && dir=.
-    if test -f $dir/ranlib; then
+    if test -f $dir/ranlib || test -f $dir/ranlib$ac_exeext; then
       RANLIB="ranlib"
       result="ranlib"
       break
@@ -504,7 +505,7 @@ if test "$with_gcc" != yes || test -z "$CC"; then
     for dir in $PATH; do
       IFS="$save_ifs"
       test -z "$dir" && dir=.
-      if test -f $dir/gcc; then
+      if test -f $dir/gcc || test -f $dir/gcc$ac_exeext; then
 	CC="gcc"
 	break
       fi
@@ -525,7 +526,7 @@ if test "$with_gcc" != yes || test -z "$CC"; then
     cc_rejected=no
     for dir in $PATH; do
       test -z "$dir" && dir=.
-      if test -f $dir/cc; then
+      if test -f $dir/cc || test -f $dir/cc$ac_exeext; then
 	if test "$dir/cc" = "/usr/ucb/cc"; then
 	  cc_rejected=yes
 	  continue
@@ -952,7 +953,7 @@ if test -z "$LD"; then
     IFS="${IFS= 	}"; ac_save_ifs="$IFS"; IFS="${IFS}${PATH_SEPARATOR}"
     for ac_dir in $PATH; do
       test -z "$ac_dir" && ac_dir=.
-      if test -f "$ac_dir/$ac_prog"; then
+      if test -f "$ac_dir/$ac_prog" || test -f "$ac_dir/$ac_prog$ac_exeext"; then
 	LD="$ac_dir/$ac_prog"
 	# Check to see if the program is GNU ld.  I'd rather use --version,
 	# but apparently some GNU ld's only accept -v.
@@ -1386,7 +1387,7 @@ if test -z "$NM"; then
     IFS="${IFS= 	}"; ac_save_ifs="$IFS"; IFS="${IFS}${PATH_SEPARATOR}"
     for ac_dir in $PATH /usr/ucb /usr/ccs/bin /bin; do
       test -z "$ac_dir" && ac_dir=.
-      if test -f $ac_dir/nm; then
+      if test -f $ac_dir/nm || test -f $ac_dir/nm$ac_exeext; then
 	# Check to see if the nm accepts a BSD-compat flag.
 	# Adding the `sed 1q' prevents false positives on HP-UX, which says:
 	#   nm: unknown option "B" ignored
