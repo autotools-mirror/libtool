@@ -1,3 +1,8 @@
+2003-03-21  Wesley W. Terpstra <terpstra@ito.tu-darmstadt.de>
+
+	* ltmain.in: Don't accumulate directory information in clean mode.
+	Include properly pathed wrapper script.
+
 2003-03-21  Peter O'Gorman  <peter@pogma.com>
 
 	* README: Remove "Important" information about patching automake.
