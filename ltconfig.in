@@ -1143,7 +1143,7 @@ else
         # We have old collect2
         hardcode_direct=unsupported
       fi
-      archive_cmds='$CC -shared -o ${wl}-bnoentry $objdir/$soname $libobjs $deplibs'
+      archive_cmds='$CC -shared ${wl}-bnoentry -o $objdir/$soname $libobjs $deplibs'
     else
       archive_cmds='$NM $libobjs | $global_symbol_pipe | sed '\''s/.* //'\' | sort | uniq' > $lib.exp        else cat $export_symbols > $lib.exp~
       $CC -o $objdir/$soname $libobjs $deplibs ${wl}-bE:$lib.exp ${wl}-bM:SRE ${wl}-bnoentry'
