@@ -1,5 +1,9 @@
 1999-01-20  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* ltconfig.in (sunos4*, without_gnu_ld, with_gcc, archive_cmds):
+ 	add -fPIC, because libgcc is multilibbed, and we want the PIC
+ 	version of it for shared libraries, otherwise ld complains
+
 	* demo/dlmain.c (main): add missing const to declaration of name
 
 	* libltdl/ltdl.c (find_module): remove the libdir argument, and

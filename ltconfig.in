@@ -1325,7 +1325,8 @@ else
   sunos4*)
     # Why do we need -Bstatic?  To avoid inter-library dependencies, maybe...
     if test "$with_gcc" = yes; then
-      archive_cmds='$CC -shared ${wl}-Bstatic -o $lib $libobjs $deplibs'
+      # Use -fPIC here because libgcc is multilibbed
+      archive_cmds='$CC -shared ${wl}-Bstatic -fPIC -o $lib $libobjs $deplibs'
     else
       archive_cmds='$LD -assert pure-text -Bstatic -o $lib $libobjs $deplibs'
     fi
