@@ -531,7 +531,7 @@ static int
 sys_wll_close (handle)
 	lt_dlhandle handle;
 {
-	if (FreeLibrary(handle->handle) != 0) {
+	if (FreeLibrary(handle->handle) == 0) {
 		last_error = cannot_close_error;
 		return 1;
 	}

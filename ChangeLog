@@ -1,3 +1,10 @@
+1999-06-15  Gary V. Vaughan  <gary@oranda.demon.co.uk>
+
+	* libltdl/ltdl.c (sys_wll_close): Strangely enough, Microsoft have
+	decided that LoadLibrary returns `0' for success, yet FreeLibrary
+	returns `0' for failure!  The FreeLibrary call used to interpret
+	`0' as success for both functions.
+
 1999-06-14  Thomas Tanner  <tanner@ffii.org>
 
 	* ltmain.in: minor reformatting
