@@ -1,3 +1,11 @@
+2001-06-24  Andreas Schwab  <schwab@suse.de>
+
+	* libtool.m4 (AC_LIBTOOL_SETUP): Remove failed try to
+	transform linux to linux-gnu in $host.
+	(AC_LIBTOOL_SYS_DYNAMIC_LINKER): Match $host_os against
+	linux*, not linux-gnu*.
+	(AC_DEPLIBS_CHECK_METHOD): Likewise.
+
 2001-06-24  Gary V. Vaughan  <gary@gnu.org>
 
 	* libtool.m4 (_LT_AC_LIBTOOL_SYS_PATH_SEPARATOR):  Set
@@ -9,7 +17,7 @@
 	(AC_PATH_TOOL_PREFIX): Ditto.
 	(AC_PATH_MAGIC): Ditto.
 	(AC_PATH_PROG_NM): Ditto.
-	
+
 	From Tim Van Holder  <tim.van.holder@pandora.be>:
 	* libtool.m4: Use the canonical absolute path test
 	([\\/]* | ?:[\\/]) and $PATH_SEPARATOR wherever

@@ -98,12 +98,6 @@ AC_LIBTOOL_OBJDIR
 AC_REQUIRE([_LT_AC_SYS_COMPILER])dnl
 _LT_AC_PROG_ECHO_BACKSLASH
 
-# Transform linux* to *-*-linux-gnu*, to support old configure scripts.
-case $host_os in
-linux-gnu*) ;;
-linux*) host=`echo $host | sed 's/^\(.*-.*-linux\)\(.*\)$/\1-gnu\2/'`
-esac
-
 case $host_os in
 aix3*)
   # AIX sometimes has problems with the GCC collect2 program.  For some
@@ -1161,12 +1155,12 @@ irix5* | irix6*)
   ;;
 
 # No shared lib support for Linux oldld, aout, or coff.
-linux-gnuoldld* | linux-gnuaout* | linux-gnucoff*)
+linux*oldld* | linux*aout* | linux*coff*)
   dynamic_linker=no
   ;;
 
 # This must be Linux ELF.
-linux-gnu*)
+linux*)
   version_type=linux
   need_lib_prefix=no
   need_version=no
@@ -1845,7 +1839,7 @@ irix5* | irix6*)
   ;;
 
 # This must be Linux ELF.
-linux-gnu*)
+linux*)
   case $host_cpu in
   alpha* | i*86 | powerpc* | sparc* | ia64* )
     lt_cv_deplibs_check_method=pass_all ;;
