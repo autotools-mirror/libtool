@@ -1,3 +1,8 @@
+2003-06-03 Benjamin Reed  <ranger@befunk.com>
+
+	* ltmain.in: search libraries in the order of preference, rather
+	than picking .la's even if they're in a less preferred directory.
+ 
 2003-06-03  Robert Millan <rmh@debian.org>
 
 	* ltdl.m4: Add support for GNU/FreeBSD.
