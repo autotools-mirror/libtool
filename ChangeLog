@@ -1,3 +1,8 @@
+2002-04-02  Robert Boehne  <rboehne@gnu.org>
+
+	* ltmain.in: Finish the tag matching logic started yesterday and
+	refactor it a bit.
+
 2002-04-01  Robert Boehne  <rboehne@gnu.org>
 
 	* ltmain.in: Handle the case when no tag is explicitly set, and
