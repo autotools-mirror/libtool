@@ -640,7 +640,7 @@ m4_defun([_LT_TAG_COMPILER],
 _LT_DECL([LTCC], [CC], [1], [A C compiler])dnl
 _LT_DECL([LTCFLAGS], [CFLAGS], [1], [LTCC compiler flags])dnl
 _LT_TAGDECL([CC], [compiler], [1], [A language specific compiler])dnl
-_LT_TAGDECL([with_gcc], [GCC], [0], [Is the compiler the GNU C compiler?])dnl
+_LT_TAGDECL([with_gcc], [GCC], [0], [Is the compiler the GNU compiler?])dnl
 
 # If no C compiler was specified, use CC.
 LTCC=${LTCC-"$CC"}

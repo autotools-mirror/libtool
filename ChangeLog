@@ -1,5 +1,8 @@
 2004-11-22  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
+	* m4/libtool.m4 (_LT_TAG_COMPILER): Document that with_gcc is
+	tag-dependent.
+
 	* config/ltmain.m4sh (func_mode_link), tests/objectlist.test:
 	Make sure the argument to `-objectlist' may contain spaces.
 
