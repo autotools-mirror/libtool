@@ -1,52 +1,79 @@
 NEWS - list of user-visible changes between releases of GNU Libtool
 
-New in 1.2e: CVS version:
+New in 1.2e: CVS version; 1.2f: 1999-?-?, Libtool team:
+* libtool will correctly link uninstalled libraries into programs
+  and prefer uninstalled libraries to installed ones
+* Library paths that are in the system search path are no longer hardcoded.
+* New fast installation mode, which links the final executable
+  in order to avoid relinking during installation.
+  Programs in the build-tree are relinked when executed.
+* New AC_DISABLE_FAST_INSTALL macro to disable the fast-install mode
+* New -export-symbols-regex flag, to export symbols selectively by
+  a regular expression
+* Major improvements in libltdl: API documentation, installable version,
+  support for module search paths, support for lt_dlopen(0),
+  can be embedded into packages as a tar file (libltdl.tar.gz),
+  dynamic buffer allocation and buffer overflow checks,
+  new macro LTDL_SET_PRELOADED_SYMBOLS() which must be used in the
+  main program, dynamic memory allocation functions are user-defineable
+* If libtool could not satisfy all dependencies of a module
+  it will only build a static version of it
+* New "-dlopen self" flag for dlopening the executable itself
+* dld_preloaded_symbols was renamed to lt_preloaded_symbols
+* New AC_LIBTOOL_DLOPEN macro to check for dlopen support,
+  required if you use -dlopen or -dlpreopen
+* New -thread-safe flag, to build thread-safe libraries
+* New demos and tests
+* Improved shared library checking
 * Support -R for specifying run-time path of programs and library dependencies
 * Support for BeOS
-* Improved support for aix3, aix4, SysV 4.3, BSD/OS 4.x and NetBSD
+* Improved support for FreeBSD, AIX, IRIX, OSF, SysV 4.3, HP/UX, 
+  BSD/OS 4.x and NetBSD
 * New -avoid-version option to avoid versioning for libraries
+* libtool module names no longer need to have a "lib" prefix
+  (requires automake 1.4).
 * Various bugfixes
-
+
 New in 1.2c: CVS version; 1.2d: 1998-12-16, Libtool team:
 * libtool will correctly link already-installed libraries into programs.
 * New -module flag, to create loadable modules.
 * New libltdl, a small library for portable dlopening of modules.
-It is still undocumented, but you can already find some examples in:
+  It is still undocumented, but you can already find some examples in:
 * New mdemo directory, with tests of -module and dlopening examples.
-Be aware that libltdl is only known to work on a few platforms such as
-GNU/Linux and Solaris2.  Some mdemo tests are known to FAIL on several 
-other platforms; please ignore these failures by now (or work to fix
-them :-).
+  Be aware that libltdl is only known to work on a few platforms such as
+  GNU/Linux and Solaris2.  Some mdemo tests are known to FAIL on several 
+  other platforms; please ignore these failures by now (or work to fix
+  them :-).
 * Inter-library dependencies patch finally integrated, but there's
-still much porting to do.  See PORTING for details (some plans for the 
-future in mail/deplibs in the CVS tree).
+  still much porting to do.  See PORTING for details (some plans for the 
+  future in mail/deplibs in the CVS tree).
 * New option -export-symbols to control symbol exporting when possible.
 * Fixed -export-dynamic problem with C++ programs in egcs 1.1.
 * New dlpreopen structure.
 * libtool now supports `-c -o' and subdirectories in sources and
-target object names even in platforms whose compilers do not support
-this.  In this case, file locking occurs to avoid problems with
-parallel builds.
+  target object names even in platforms whose compilers do not support
+  this.  In this case, file locking occurs to avoid problems with
+  parallel builds.
 * New `echo' variant that should fix most problems with long command
-lines and broken printf programs.
+  lines and broken printf programs.
 * Support for DG/UX, UnixWare 7.x and FreeBSD 3.0, and improved
-support for Microsoft Windows
+  support for Microsoft Windows
 * Various bugfixes
 * We now have anonymous CVS access to GNU libtool.  CVSROOT is
-:pserver:anoncvs@anoncvs.gnu.org:/gd/gnu/anoncvsroot.  The password
-is empty.  The directory is libtool.  Check our home-page at
-http://www.gnu.org/software/libtool/libtool.html for details.
+  :pserver:anoncvs@anoncvs.gnu.org:/gd/gnu/anoncvsroot.  The password
+  is empty.  The directory is libtool.  Check our home-page at
+  http://www.gnu.org/software/libtool/libtool.html for details.
 * Alexandre Oliva, Thomas Tanner and Gary V. Vaughan have taken over
-the maintenance of libtool.
+  the maintenance of libtool.
 * Arguments to ltconfig have been changed to allow creation of a
-libtool C program, totally unusable as of this release.
-
+  libtool C program, totally unusable as of this release.
+
 New in 1.2b - 1998-07-01, Gordon Matzigkeit:
 * Libtool needs a new maintainer, since Gordon Matzigkeit has quit.
-If you think you can do the job, send mail to bug-libtool@gnu.org.
+  If you think you can do the job, send mail to bug-libtool@gnu.org.
 * Bug fixes.
 * Support for libtool convenience archives.
-
+
 New in 1.2a - 1998-04-19, Gordon Matzigkeit:
 * Bug fixes.
 * ltconfig accepts an `--output' option to specify the name of the

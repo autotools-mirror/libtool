@@ -1,5 +1,8 @@
 1999-03-07  Thomas Tanner  <tanner@gmx.de>
 
+	* TODO: updated
+	* NEWS: updated
+
 	* TODO: scheduled some items for next release/future
 	* demo/configure.in: use AC_LIBTOOL_DLOPEN
 	* libtool.m4: added AC_ENABLE/DISABLE_FAST_INSTALL macro

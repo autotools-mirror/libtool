@@ -1,12 +1,7 @@
 For next alpha release:
 ***********************
 
-* Fast installation (linking on demand in the build tree)
-must be optional.
-
 * libltdl is broken when configured with --enable-ltdl-install
-
-* update the NEWS file
 
 For next public release:
 ************************
