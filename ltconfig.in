@@ -1416,7 +1416,7 @@ EOF
     fi
     ;;
 
-  solaris*)
+  solaris* | sysv5*)
     if $LD -v 2>&1 | egrep 'BFD 2\.8' > /dev/null; then
       ld_shlibs=no
       cat <<EOF 1>&2
@@ -1665,6 +1665,17 @@ else
       whole_archive_flag_spec='-z allextract$convenience -z defaultextract' ;;
     esac
     link_all_deplibs=yes
+    ;;
+
+  sysv5*)
+    no_undefined_flag=' -z text'
+    # $CC -shared without GNU ld will not create a library from C++
+    # object files and a static libstdc++, better avoid it by now
+    archive_cmds='$LD -G${allow_undefined_flag} -h $soname -o $lib $libobjs $deplibs $linkopts'
+    archive_expsym_cmds='$echo "{ global:" > $lib.exp~cat $export_symbols | sed -e "s/\(.*\)/\1;/" >> $lib.exp~$echo "local: *; };" >> $lib.exp~
+		$LD -G${allow_undefined_flag} -M $lib.exp -h $soname -o $lib $libobjs $deplibs $linkopts~$rm $lib.exp'
+    hardcode_libdir_flag_spec=
+    hardcode_shlibpath_var=no
     ;;
 
   sunos4*)
@@ -2175,7 +2186,7 @@ hpux*) # Its linker distinguishes data from code symbols
 irix*)
   symcode='[BCDEGRST]'
   ;;
-solaris*)
+solaris* | sysv5*)
   symcode='[BDT]'
   ;;
 sysv4)
