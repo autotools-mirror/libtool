@@ -1,5 +1,16 @@
 2004-11-29  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* config/ltmain.m4sh (func_lalib_p): Update function
+	description. (func_lalib_unsafe_p): New function with same
+	functionality but written without forks; this function is safe
+	to use for cases where the argument either does not exist or
+	is required to be a lalib for correct operation.
+	* NEWS: Mention the fact that stdin is not to be used.
+	* (func_mode_execute, func_mode_install, func_mode_link):
+	Use func_lalib_unsafe_p where appropriate.
+	* (func_mode_execute): For the program wrapper, use
+	func_ltwrapper_p instead of func_lalib_p.
+
 	* m4/libtool.m4 (_LT_LINKER_SHLIBS): Treat linux-dietlibc with
 	the `diet' compiler wrapper (as opposed to the `diet-dyn'
 	wrapper) as a static-only platform.
