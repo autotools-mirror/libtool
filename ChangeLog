@@ -1,5 +1,7 @@
 1999-04-06 Thomas Tanner  <tanner@gmx.de>
 
+	* ltmain.in: added a missing line of the ILD patch
+
 	* NEWS: improved DJGPP support
 	* doc/libtool.texi: removed hardcode_into_libs documentation
 	* libtool.m4: some DJGPP fixes

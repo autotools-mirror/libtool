@@ -1806,6 +1806,7 @@ compiler."
 	  dependency_libs="$temp_deplibs"
 	fi
 
+	new_lib_search_path="$new_lib_search_path $absdir"
 	# Link against this library
 	newdependency_libs="$newdependency_libs $abs_ladir/$laname $dependency_libs"
       done
