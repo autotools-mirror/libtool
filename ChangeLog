@@ -1,3 +1,10 @@
+2004-09-15  Gary V. Vaughan  <gary@gnu.org>
+
+	* config/ltmain.in (func_quote_for_eval): Set a return value to
+	avoid forking at every call.  Changed all callers.
+	(func_mode_link): Simplified, and removed the final non-portable
+	nested escaped double quotes in back quotes usage in the process.
+
 2004-09-14  Gary V. Vaughan  <gary@gnu.org>
 
 	* config/ltmain.in (func_quote_for_eval): Factor out the ugly

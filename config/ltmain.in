@@ -754,7 +754,7 @@ func_quote_for_eval ()
       ;;
   esac
 
-  echo "$my_arg"
+  func_quote_for_eval_result="$my_arg"
 }
 
 
@@ -844,7 +844,8 @@ func_infer_tag () {
     if test -n "$available_tags" && test -z "$tagname"; then
       CC_quoted=
       for arg in $CC; do
-	CC_quoted="$CC_quoted "`func_quote_for_eval "$arg"`
+        func_quote_for_eval "$arg"
+	CC_quoted="$CC_quoted $func_quote_for_eval_result"
       done
       case $@ in
       # Blanks in the command may have been stripped by the calling shell,
@@ -860,7 +861,8 @@ func_infer_tag () {
 	    CC_quoted=
 	    for arg in $CC; do
 	      # Double-quote args containing other shell metacharacters.
-	      CC_quoted="$CC_quoted "`func_quote_for_eval "$arg"`
+	      func_quote_for_eval "$arg"
+	      CC_quoted="$CC_quoted $func_quote_for_eval_result"
 	    done
 	    case "$@ " in
 	      " $CC "* | "$CC "* | " `$echo $CC` "* | "`$echo $CC` "* | " $CC_quoted"* | "$CC_quoted "* | " `$echo $CC_quoted` "* | "`$echo $CC_quoted` "*)
@@ -1242,7 +1244,8 @@ func_mode_compile ()
 	  save_ifs="$IFS"; IFS=','
 	  for arg in $args; do
 	    IFS="$save_ifs"
-	    lastarg="$lastarg "`func_quote_for_eval "$arg"`
+	    func_quote_for_eval "$arg"
+	    lastarg="$lastarg $func_quote_for_eval_result"
 	  done
 	  IFS="$save_ifs"
 	  lastarg=`$echo "X$lastarg" | $Xsed -e "s/^ //"`
@@ -1265,7 +1268,8 @@ func_mode_compile ()
 
       # Aesthetically quote the previous argument.
       lastarg=`$echo "X$lastarg" | $Xsed -e "$sed_quote_subst"`
-      base_compile="$base_compile "`func_quote_for_eval "$lastarg"`
+      func_quote_for_eval "$lastarg"
+      base_compile="$base_compile $func_quote_for_eval_result"
     done # for arg
 
     case $arg_mode in
@@ -1802,7 +1806,8 @@ func_mode_install ()
        $echo "X$nonopt" | $Xsed | $GREP shtool > /dev/null; then
       # Aesthetically quote it.
       arg=`$echo "X$nonopt" | $Xsed -e "$sed_quote_subst"`
-      install_prog=`func_quote_for_eval "$arg "`
+      func_quote_for_eval "$arg"
+      install_prog="$func_quote_for_eval_result "
       arg="$1"
       shift
     else
@@ -1813,7 +1818,8 @@ func_mode_install ()
     # The real first argument should be the name of the installation program.
     # Aesthetically quote it.
     arg=`$echo "X$arg" | $Xsed -e "$sed_quote_subst"`
-    install_prog="$install_prog"`func_quote_for_eval "$arg"`
+    func_quote_for_eval "$arg"
+    install_prog="$install_prog$func_quote_for_eval_result"
 
     # We need to accept at least all the BSD install flags.
     dest=
@@ -1856,7 +1862,8 @@ func_mode_install ()
 
       # Aesthetically quote the argument.
       arg=`$echo "X$arg" | $Xsed -e "$sed_quote_subst"`
-      install_prog="$install_prog "`func_quote_for_eval "$arg"`
+      func_quote_for_eval "$arg"
+      install_prog="$install_prog $func_quote_for_eval_result"
     done
 
     test -z "$install_prog" && \
@@ -2368,9 +2375,10 @@ func_mode_link ()
 
     # Go through the arguments, transforming them on the way.
     while test "$#" -gt 0; do
-      arg=`$echo "X$1" | $Xsed -e "$sed_quote_subst"`
-      libtool_args="$libtool_args "`func_quote_for_eval "$arg"`
+      arg="$1"
       shift
+      qarg=`$echo "X$arg" | $Xsed -e "$sed_quote_subst"`
+      libtool_args="$libtool_args $qarg"
 
       # If the previous option needs an argument, assign it.
       if test -n "$prev"; then
@@ -2886,9 +2894,9 @@ func_mode_link ()
 	save_ifs="$IFS"; IFS=','
 	for flag in $args; do
 	  IFS="$save_ifs"
-	  flag=`func_quote_for_eval "$flag"`
-	  arg="$arg $wl$flag"
-	  compiler_flags="$compiler_flags $flag"
+          func_quote_for_eval "$flag"
+	  arg="$arg $wl$func_quote_for_eval_result"
+	  compiler_flags="$compiler_flags $func_quote_for_eval_result"
 	done
 	IFS="$save_ifs"
 	arg=`$echo "X$arg" | $Xsed -e "s/^ //"`
@@ -2900,10 +2908,10 @@ func_mode_link ()
 	save_ifs="$IFS"; IFS=','
 	for flag in $args; do
 	  IFS="$save_ifs"
-	  flag=`func_quote_for_eval "$flag"`
-	  arg="$arg $wl$flag"
-	  compiler_flags="$compiler_flags $wl$flag"
-	  linker_flags="$linker_flags $flag"
+          func_quote_for_eval "$flag"
+	  arg="$arg $wl$func_quote_for_eval_result"
+	  compiler_flags="$compiler_flags $wl$func_quote_for_eval_result"
+	  linker_flags="$linker_flags $func_quote_for_eval_result"
 	done
 	IFS="$save_ifs"
 	arg=`$echo "X$arg" | $Xsed -e "s/^ //"`
@@ -2931,7 +2939,8 @@ func_mode_link ()
       # -m* pass through architecture-specific compiler args for GCC
       -64|-mips[0-9]|-xarch=*|-xtarget=*|+DA*|+DD*|-q*|-m*)
         arg=`$echo "X$arg" | $Xsed -e "$sed_quote_subst"`
-  	arg=`func_quote_for_eval "$arg"`
+        func_quote_for_eval "$arg"
+	arg="$func_quote_for_eval_result"
         compile_command="$compile_command $arg"
         finalize_command="$finalize_command $arg"
         compiler_flags="$compiler_flags $arg"
@@ -2941,7 +2950,8 @@ func_mode_link ()
       # Some other compiler flag.
       -* | +*)
         arg=`$echo "X$arg" | $Xsed -e "$sed_quote_subst"`
-        arg=`func_quote_for_eval "$arg"`
+        func_quote_for_eval "$arg"
+	arg="$func_quote_for_eval_result"
 	;;
 
       *.$objext)
@@ -3074,7 +3084,8 @@ func_mode_link ()
 	# Unknown arguments in both finalize_command and compile_command need
 	# to be aesthetically quoted because they are evaled later.
 	arg=`$echo "X$arg" | $Xsed -e "$sed_quote_subst"`
-	arg=`func_quote_for_eval "$arg"`
+	func_quote_for_eval "$arg"
+	arg="$func_quote_for_eval_result"
 	;;
       esac # arg
 
