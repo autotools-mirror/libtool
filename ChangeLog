@@ -1,3 +1,7 @@
+2004-02-13  Gary V. Vaughan  <gary@gnu.org>
+
+	* commit (MKSTAMP): Look for mkstamp in the right place.
+
 2004-02-12  Scott James Remnant  <scott@netsplit.com>
 
 	* Makefile.maint, Makefile: Move rules intended for Libtool

@@ -68,7 +68,8 @@
 
 : ${CVS="cvs"}
 : ${SHELL="/bin/sh"}
-: ${MAILNOTIFY="$SHELL ./config/mailnotify"}
+: ${MAILNOTIFY="./config/mailnotify"}
+: ${MKSTAMP="./config/mkstamp"}
 : ${MV="mv -f"}
 : ${RM="rm -f"}
 : ${SED="sed"}
@@ -436,8 +437,8 @@ if test -n "$sendmail_to"; then
   {
     test -f CVS/Root &&
         echo "CVSROOT:	`sed -e 's,.*:,,g' CVS/Root`"
-    test -f ./config/mkstamp &&
-        echo "TIMESTAMP:	`./config/mkstamp < ./ChangeLog`"
+    test -f $MKSTAMP &&
+        echo "TIMESTAMP:	`$SHELL $MKSTAMP < ./ChangeLog`"
     test -f CVS/Repository &&
         echo "Module name:	`cat CVS/Repository`"
     test -f CVS/Tag &&
@@ -451,9 +452,9 @@ if test -n "$sendmail_to"; then
   } > "$notify_file"
 
   if test -n "$sendmail_from"; then
-    $MAILNOTIFY -F "$sendmail_from" -s "`echo $filelist`" -f "$notify_file" -m "text/plain" "$sendmail_to"
+    $SHELL $MAILNOTIFY -F "$sendmail_from" -s "`echo $filelist`" -f "$notify_file" -m "text/plain" "$sendmail_to"
   else
-    $MAILNOTIFY -s "`echo $filelist`" -f "$notify_file" -m "text/plain" "$sendmail_to"
+    $SHELL $MAILNOTIFY -s "`echo $filelist`" -f "$notify_file" -m "text/plain" "$sendmail_to"
   fi
 fi
 
