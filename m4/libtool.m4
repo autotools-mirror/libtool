@@ -4405,7 +4405,7 @@ aix3*)
   fi
   ;;
 
-aix4*)
+aix4* | aix5*)
   if test "$host_cpu" != ia64 && test "$aix_use_runtimelinking" = no ; then
     test "$enable_shared" = yes && enable_static=no
   fi
@@ -5534,7 +5534,7 @@ aix3*)
     postinstall_cmds='$RANLIB $lib'
   fi
   ;;
-aix4*)
+aix4* | aix5*)
   test "$enable_shared" = yes && enable_static=no
   ;;
 esac
