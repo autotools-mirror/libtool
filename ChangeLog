@@ -1,5 +1,9 @@
 2004-11-17  Mats Rynge <rynge@isi.edu>
 
+	* libtool.m4 [linux]: Use only the CC basename in case statment
+	when checking for icc/ecc. Allows for setting CC to the full path
+	to the compiler.
+
 	* libtool.m4 [solaris]: Added missing 'with linker' flags to
 	-z allextract ... -z defaultextract flags
 
