@@ -1,15 +1,20 @@
+2004-07-25  Gary V. Vaughan  <gary@gnu.org>
+
+	* ltmain.in: Make sure that dependency libraries of -dlpreopened
+	libraries are propogated properly.
+
 2004-07-23  Joe Orton  <joe@manyfish.co.uk>
 
-	* libtool.m4: Treat bsdi5* like bsdi4*. 
+	* libtool.m4: Treat bsdi5* like bsdi4*.
 
 2004-07-22  Peter O'Gorman  <peter@pogma.com>
 
 	* ltmain.in [darwin](func_extract_archives): $SED not sed.
-	
+
 	* ltmain.in [darwin](func_extract_archives): Clean up last commit
 	a little, some suggestions are from Albert Chin, those that are
 	broken are mine.
-	
+
 	* libltdl/Makefile.am, libltdl/loaders/Makefile.am: Look for
 	included files in the right places.
 
@@ -29,7 +34,7 @@
 2004-07-18  Peter O'Gorman  <peter@pogma.com>
 
 	* libltdl/Makefile.am: Ensure that lt__dirent.h is part of the dist,
-	also make failed looking for configure.ac, look for 
+	also make failed looking for configure.ac, look for
 	$(top_srcdir)/configure.ac instead.
 
 2004-07-15  Gary V. Vaughan  <gary@gnu.org>

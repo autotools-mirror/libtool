@@ -2232,6 +2232,20 @@ EOF
 	esac
       fi
       if test "$linkmode,$pass" = "lib,dlpreopen"; then
+        # Collect and forward deplibs of preopened libtool libs
+	for lib in $dlprefiles; do
+	  # Ignore non-libtool-libs
+	  case $lib in
+	  */*.la | *\\*.la)
+	    . $lib
+	    deplibs="$deplibs $dependency_libs"
+	    ;;
+	  *.la)
+	    . ./$lib
+	    deplibs="$deplibs $dependency_libs"
+	    ;;
+	  esac
+	done
 	libs="$dlprefiles"
       fi
       if test "$pass" = dlopen; then
