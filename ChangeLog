@@ -1,4 +1,20 @@
-1999-01-22  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
+1999-01-22  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* Makefile.am (ltconfig, ltmain.sh): add ChangeLog Revision to
+	TIMESTAMP
+	* configure.in: get values of PACKAGE and VERSION set by
+	AM_INIT_AUTOMAKE, and extract only TIMESTAMP from the ChangeLog
+
+	* libltdl/ltdl.c (lt_dlopen): if we're reusing a previously opened
+	handle, don't reset its name nor add it to the list, and free the
+	name we have allocated
+	Reported by Edouard G. Parmelan <Edouard.Parmelan@France.NCR.COM>
+
+	* Makefile.am (ltconfig, ltmain.sh, TIMESTAMP): let's not assume
+	anything about the format of the date, just that it does not
+	contain `$'
+
+1999-01-22  Gary V. Vaughan  <garyv@oranda.demon.co.uk>
 
 	* ltmain.in: Merged Thomas' ild-patch.  Untested.
 	* configure.in: ditto.
@@ -10,8 +26,6 @@
 	* NEWS: ReInsert reference to win32.
 	* doc/PLATFORMS: ReInsert i686-pc-cygwin32, for the same reason.
 	* doc/libtool.texi: ReInsert win32 refs, for the same reason.
-
-1999-01-22  Gary V. Vaughan  <garyv@oranda.demon.co.uk>
 
 	* configure.in (date): echo the version number during
 	configuration, and show $date for cvs versions.
@@ -3598,4 +3612,4 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 
 	* For historical reasons: this is when I started writing libtool.
 
-	$Date$
+	$Revision$ $Date$

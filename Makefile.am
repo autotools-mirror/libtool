@@ -61,7 +61,7 @@ update-timestamps:
 # Line numbering transliterated from a section in autoconf (Autoconf 2.12).
 $(srcdir)/ltconfig: $(srcdir)/ltconfig.in $(top_srcdir)/configure.in $(TSDEPS)
 	rm -f ltconfig.T
-	date=`sed 's%.*\$$''Date: \([0-9 /]*[0-9:]*\) \$$.*% (\1)%;t;d' \
+	date=`sed 's%.*\$$''Revision: \([^$$]*\) \$$ \$$''Date: \([^$$]*\) \$$.*% (\1 \2)%;t end;d;: end' \
 		< $(srcdir)/ChangeLog` && \
 	$(AWK) '/@LINENO@/ { printf "%d:", NR } { print }' $(srcdir)/ltconfig.in | \
 	  sed -e 's/@''PACKAGE@/@PACKAGE@/' -e 's/@''VERSION@/@VERSION@/' \
@@ -74,7 +74,7 @@ $(srcdir)/ltconfig: $(srcdir)/ltconfig.in $(top_srcdir)/configure.in $(TSDEPS)
 
 $(srcdir)/ltmain.sh: $(srcdir)/ltmain.in $(top_srcdir)/configure.in $(TSDEPS)
 	rm -f ltmain.shT
-	date=`sed 's%.*\$$''Date: \([0-9 /]*[0-9:]*\) \$$.*% (\1)%;t;d' \
+	date=`sed 's%.*\$$''Revision: \([^$$]*\) \$$ \$$''Date: \([^$$]*\) \$$.*% (\1 \2)%;t end;d;: end' \
 		< $(srcdir)/ChangeLog` && \
 	sed -e 's/@''PACKAGE@/@PACKAGE@/' -e 's/@''VERSION@/@VERSION@/' \
 	    -e "s%@""TIMESTAMP@%$$date%" $(srcdir)/ltmain.in > ltmain.shT
