@@ -1,3 +1,8 @@
+1998-11-02  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* libtool.m4 (CFLAGS): check whether -belf is needed on SCO, as
+	suggested by Robert Lipe <robertl@dgii.com>
+
 1998-10-31  Gordon Matzigkeit  <gord@trick.fig.org>
 
 	* demo/Makefile.am (hc-libpath): Use parameters from the libtool
