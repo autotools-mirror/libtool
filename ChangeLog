@@ -1,4 +1,8 @@
 2004-12-20  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+	
+	* libtool.m4 [solaris] (AC_LIBTOOL_PROG_LD_SHLIBS): Use ${wl} for
+	whole_archive_flag_spec.  Missing backport reported by Ralf Menzel
+	<menzel@ls6.cs.uni-dortmund.de>.
 
 	* tests/demo-nopic.test [solaris, sunos]: Skip test.
 
