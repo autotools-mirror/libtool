@@ -2523,7 +2523,7 @@ lt_dlforeach (func, data)
 lt_dlcaller_id
 lt_dlcaller_register ()
 {
-  static unsigned last_caller_id = -1;
+  static int last_caller_id = -1;
 
   return ++last_caller_id;
 }

@@ -1,3 +1,9 @@
+2001-02-20  Gary Vaughan  <gvv@techie.com>
+
+	* libltdl/ltdl.c (lt_dlcaller_register): dont set an unsigned
+	type to a negative number.
+	Reported by Guenter Millahn <Guenter.Millahn@Informatik.TU-Cottbus.DE>
+
 2001-02-05  Gary V. Vaughan  <gvv@techie.com>
 
 	From Nick Hudson <skrll@netbsd.org>
