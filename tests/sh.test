@@ -32,7 +32,7 @@ status=$EXIT_SUCCESS
 scripts="$srcdir/../config/ltmain.sh $srcdir/../libtoolize"
 
 # Check for bad binary operators.
-if $EGREP -n -e "if[ 	]+[\"']?\\$.*(=|-[lg][te]|-eq|-ne)" $scripts; then
+if $EGREP -n -e 'if[ 	]+["'\'']?\\$[^ 	]+[ 	]+(=|-[lg][te]|-eq|-ne)' $scripts; then
   echo "use \`if test \$something =' instead of \`if \$something ='"
   status=$EXIT_FAILURE
 fi

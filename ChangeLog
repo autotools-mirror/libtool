@@ -1,3 +1,16 @@
+2004-01-22  Gary V. Vaughan  <gary@gnu.org>
+
+	* m4/libtool.m4 (LT_AC_PROG_EGREP): Wrapper for AC_PROG_GREP.
+	AIX has a brain-dead grep that only handles lines < 2048
+	characters.  Default GREP incase we are not using a future
+	autoconf that sets it for us :-)  Changed all callers to use $GREP
+	instead of grep, and to AC_REQUIRE LT_AC_PROG_EGREP.
+	Declare GREP as a libtool config var.
+	* ltmain.in: Use it.
+	* tests/sh.test (scripts): Accept `if $GREP "^foo=bar"' by
+	tightening the regexp.
+	Reported by Albert Chin-A-Young  <china@thewrittenword.com>
+
 2004-01-21  Nick Hudson  <skrll@netbsd.org>
 
 	* m4/libtool.m4 (AC_LIBTOOL_SYS_DYNAMIC_LINKER) [netbsd*]: Remove
