@@ -185,17 +185,21 @@ if test ! -f "$log_file"; then
   cvs $cvsopt diff -u ChangeLog \
   | while read line; do
       case "$line" in
+      "--- ChangeLog"*) :;;
       "-"*)
 	echo "$name: the following line in ChangeLog diff is suspicious:" >&2
-	echo "$line" >&2;;
+	echo "$line" | sed 's/^.//' >&2;;
       "+ "*)
 	echo "$name: lines should start with tabs, not spaces; ignoring line:" >&2
-	echo "$line" >&2;;
+	echo "$line" | sed 's/^.//' >&2;;
       "+") echo;;
       "+	"*) echo "$line";;
       esac
     done \
-  | sed -e 's,\+	,,' -e '1/^$/d' -e '$/^$/d' > "$log_file" || break
+  | sed -e 's,\+	,,' -e '/./p' -e '/./d' -e '1d' -e '$d' > "$log_file" \
+  || break
+# The sed script above removes "+TAB" from the beginning of a line, then
+# deletes the first and/or the last line, when they happen to be empty
 fi
 
 if grep '[^ 	]' < "$log_file" > /dev/null; then :; else
@@ -204,8 +208,8 @@ if grep '[^ 	]' < "$log_file" > /dev/null; then :; else
 fi
 
 if grep '^$' < "$log_file" > /dev/null; then
-  echo "$name: commit message contains blank lines" >&2
-  echo "$name: these should probably be committed separately" >&2
+  echo "$name: blank lines should not appear within a commit messages" >&2
+  echo "$name: they should be used to separate distinct commits" >&2
 fi
 
 ${PAGER-more} "$log_file" || break
