@@ -1,5 +1,7 @@
 2001-06-25  Gary V. Vaughan  <gary@gnu.org>
 
+	* THANKS:  Aded Albert Chin-A-Young.
+	
 	* libtool.m4 (IFS): When IFS is changed to split a string for
 	examination in a loop, restore it inside the loop as well as
 	outside incase IFS is needed by commands in that loop.
