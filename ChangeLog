@@ -1,5 +1,8 @@
 2004-11-09  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
+	* doc/libtool.texi (libtool script contents):
+	echo is now ECHO; mention argument restriction.
+
 	* doc/libtool.texi (Multiple dependencies): Minor rewording.
 
 	* doc/libtool.texi (User defined module data, References):

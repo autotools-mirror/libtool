@@ -4889,6 +4889,12 @@ The name of the system library archiver.
 The name of the C compiler used to configure libtool.
 @end defvar
 
+@defvar ECHO
+An @code{echo} program which does not interpret backslashes as an
+escape character.  It may be given only one argument, so due quoting
+is necessary.
+@end defvar
+
 @defvar LD
 The name of the linker that libtool should use internally for reloadable
 linking and possibly shared libraries.
@@ -4983,11 +4989,6 @@ Set to @samp{yes} or @samp{no}.
 Whether it is possible to @code{dlopen} the executable itself, when it
 is linked statically (@samp{-all-static}).  Set to @samp{yes} or
 @samp{no}.
-@end defvar
-
-@defvar echo
-An @code{echo} program which does not interpret backslashes as an
-escape character.
 @end defvar
 
 @defvar exclude_expsyms
