@@ -1,3 +1,12 @@
+2003-11-06  Charles Wilson  <cwilson@ece.gatech.edu>,
+	Gary V. Vaughan  <gary@gnu.org>
+
+	* libltdl/ltdl.c (LT_USE_POSIX_DIRENT): Factored out.
+	(LT_USE_WINDOWS_DIRENT_EMULATION): Move to after include "ltdl.h",
+	as they are affected by __WINDOWS__ definition.
+	(LT_READTEXT_MODE): Use textmode to read .la files.
+	(lt_dlinit): Use LoadLibrary loader as a fallback on cygwin.
+
 2003-11-06  Gary V. Vaughan  <gary@gnu.org>
 
 	* libltdl/ltdl.h (__WINDOWS__): Define this if _WIN32 or WIN32 are
