@@ -1,3 +1,10 @@
+2004-10-13  Gary V. Vaughan  <gary@gnu.org>
+
+	* tests/cdemo-undef.test: New test for hosts that allow shared
+	libraries with undefined symbols, but have no C++ compiler
+	installed.
+	* tests/Makefile.am (COMMON_TESTS): Add it.
+
 2004-10-13  Peter O'Gorman  <peter@pogma.com>
 
 	* config/ltmain.m4sh: Make sure that we $show what we will $run,
