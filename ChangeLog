@@ -1,5 +1,7 @@
 1998-12-16  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* NEWS, configure.in, libtool.spec: Bumped to 1.2d for release
+
 	* Makefile.am (cvs-dist): our release tags are in lower case
 	(cvs-diff): ditto
 	(EXTRA_DIST): added README-alpha
