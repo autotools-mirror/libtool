@@ -1,3 +1,21 @@
+2001-03-23  Robert Boehne  <rboehne@ricardo-us.com>
+
+	* bootstrap, configure.in: Added references to configure the new
+	piecewise linking tests.
+	* tests/pdemo-conf.test, tests/pdemo-exec.test,
+	tests/pdemo-inst.test, tests/pdemo-make.test: New files.
+	These tests are similar to the 'demo' tests, but use
+	piecewise linking with the maximum length of command line
+	arguments set to 24 characters.
+	* pdemo/Makefile.am, pdemo/configure, pdemo/configure.in,
+	pdemo/foo.h, pdemo/longer_file_name_dlmain.c,
+	pdemo/longer_file_name_foo.c, pdemo/longer_file_name_foo2.c,
+	pdemo/longer_file_name_hell1.c, pdemo/longer_file_name_hell2.c,
+	pdemo/longer_file_name_hello.c, pdemo/longer_file_name_main.c:
+	New files used to test piecewise linking.
+	* tests/Makefile.am (TESTS): Use the new tests above.
+
+
 2001-04-01  Christoph Pfisterer  <cp@chrisp.de>
 
 	* libtool.m4, ltconfig.in, ltcf-c.sh, ltcf-cxx.sh: Fixed

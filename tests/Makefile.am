@@ -37,7 +37,9 @@ COMMON_TESTS = \
 	mdemo-shared.test mdemo-make.test mdemo-exec.test \
 	mdemo-inst.test mdemo-unst.test \
 	assign.test link.test link-2.test nomode.test \
-	quote.test sh.test suffix.test
+	quote.test sh.test suffix.test pdemo-conf.test \
+	pdemo-make.test pdemo-exec.test pdemo-inst.test
+
 
 if HAVE_CXX
 TESTS = $(COMMON_TESTS) $(CXX_TESTS)
@@ -65,9 +67,11 @@ EXTRA_DIST = defs $(COMMON_TESTS) $(CXX_TESTS)
 
 # We need to remove any files that the above tests created.
 clean-local:
+	-test -f ../pdemo/Makefile && cd ../pdemo && $(MAKE) distclean
 	-test -f ../cdemo/Makefile && cd ../cdemo && $(MAKE) distclean
 	-test -f ../demo/Makefile && cd ../demo && $(MAKE) distclean
 	-test -f ../depdemo/Makefile && cd ../depdemo && $(MAKE) distclean
 	-test -f ../mdemo/Makefile && cd ../mdemo && $(MAKE) distclean
 	-test -f ../tagdemo/Makefile && cd ../tagdemo && $(MAKE) distclean
 	rm -rf _inst
+
