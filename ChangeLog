@@ -1,5 +1,11 @@
 1999-04-07  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* ltconfig.in (--fallback-echo): Do not put an inline document and
+	an exec in the same if construct; otherwise the inline document
+	may not be removed.
+	* ltmain.in (--fallback-echo): Likewise.
+	Reported by John David Anglin <dave.anglin@nrc.ca>
+
 	* dryrun.test: It would still fail at random times, because `cp'
 	and `mv' are not guaranteed to preserve the timestamps of the
 	installed files.  Instead of preserving them, just remove them
