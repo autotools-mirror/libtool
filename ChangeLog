@@ -10,7 +10,7 @@
 	shared library.
 	* ltcf-gcj.sh: Assume -lc is implicitly linked in.
 	* ltconfig.in: Set build_libtool_need_lc to indicate it.
-	* ltmain.in: Add -lc when building shared libary only if
+	* ltmain.in: Add -lc when building shared library only if
 	necessary.
 
 2000-07-10  Mo DeJong  <mdejong@redhat.com>
