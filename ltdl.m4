@@ -137,6 +137,11 @@ AC_CACHE_CHECK([whether deplibs are loaded by dlopen],
   aix[[45]]*)
     libltdl_cv_sys_dlopen_deplibs=yes
     ;;
+  darwin*)
+    # Assuming the user has installed a libdl from somewhere, this is true
+    # If you are looking for one http://www.opendarwin.org/projects/dlcompat
+    libltdl_cv_sys_dlopen_deplibs=yes
+    ;;   
   gnu*)
     libltdl_cv_sys_dlopen_deplibs=yes
     ;;
@@ -210,6 +215,12 @@ AC_CACHE_CHECK([which extension is used for shared libraries],
   libltdl_cv_shlibext=`cat conftest`
   rm -f conftest
   ])
+  # The above does not work on darwin, due to the test's in the library_names_spec
+  # The test description should probably say "which extension is used for loadable
+  # modules"
+  case "$host_os" in
+    darwin*) libltdl_cv_shlibext=".so" ;;
+  esac  
 if test -n "$libltdl_cv_shlibext"; then
   AC_DEFINE_UNQUOTED(LTDL_SHLIB_EXT, "$libltdl_cv_shlibext",
     [Define to the extension used for shared libraries, say, ".so".])

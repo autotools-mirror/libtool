@@ -1,3 +1,10 @@
+2003-02-23  Peter O'Gorman  <peter@pogma.com>
+
+	* libtool.m4 (darwin): Revamp darwin platform support.
+	* ltdl.m4 (darwin): Support dlcompat if found.
+	* ltmain.in: Make sure ranlib is run if needed when piecewise
+	linking.
+
 2003-02-23  Alexandre Duret-Lutz  <adl@gnu.org>
 
 	* ltmain.in (--help): Show mailing-address for bug reports.
