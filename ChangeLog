@@ -1,3 +1,10 @@
+1999-02-08  Thomas Tanner  <tanner@gmx.de>
+
+	* ltconfig.in: according to Marcus Sundberg <mackan@stacken.kth.se>
+	  HP/UX, IRIX, OpenBSD, Digital Unix and SunOS support
+	  need_version=no and need_lib_prefix=no,
+	  fixed a bug in Solaris' archive_sym_cmds
+
 1999-02-04  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* libtool.m4 (ac_cv_sys_global_symbol_pipe): accept TAB in
