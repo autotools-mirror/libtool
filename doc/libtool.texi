@@ -2478,7 +2478,7 @@ Whether libtool should build static libraries on this system.  Set to
 @samp{yes} or @samp{no}.
 @end defvar
 
-@defvar export_dynamic_flag
+@defvar export_dynamic_flag_spec
 Compiler link flag that allows a dlopened shared library to reference
 symbols that are defined in the program.
 @end defvar
@@ -2560,6 +2560,11 @@ the file name that the linker finds when given @samp{-l@var{name}}.
 @defvar link_static_flag
 Linker flag (passed through the C compiler) used to prevent dynamic
 linking.
+@end defvar
+
+@defvar no_builtin_flag
+Compiler flag to disable builtin functions that conflict with declaring
+external global symbols as @code{char}.
 @end defvar
 
 @defvar pic_flag

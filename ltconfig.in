@@ -377,7 +377,7 @@ if test "$with_gcc" != yes || test -z "$CC"; then
 #endif
 EOF
   # LINENO
-  if { ac_try='${CC-cc} -E conftest.c'; { (eval echo $progname:378: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }; } | egrep yes >/dev/null 2>&1; then
+  if { ac_try='${CC-cc} -E conftest.c'; { (eval echo $progname:380: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }; } | egrep yes >/dev/null 2>&1; then
     with_gcc=yes
   fi
   $rm conftest.c
@@ -394,12 +394,14 @@ profile_flag_pattern=
 special_shlib_compile_flags=
 wl=
 link_static_flag=
+no_builtin_flag=
 
 if test "$with_gcc" = yes; then
   pic_flag='-fPIC'
   profile_flag_pattern='-pg?'
   wl='-Wl,'
   link_static_flag='-static'
+  no_builtin_flag=' -fno-builtin'
 else
   # PORTME Check for PIC flags for the system compiler.
   case "$host_os" in
@@ -477,36 +479,27 @@ if test -n "$special_shlib_compile_flags"; then
   fi
 fi
 
-# See if we are using a broken GCC collect2 program.
-if test "$with_gcc" = yes; then
-  echo $ac_n "checking for broken GCC collect2... $ac_c" 1>&6
-
-  # FIXME: Run a test here, instead of relying on the canonical system name.
-  case "$host_os" in
-  aix3*)
-    can_build_shared=no
-    echo $ac_t yes 1>&6
-    echo "$progname: to build shared libraries, set the CC env variable to \`xlc' and reconfigure" 1>&2
-    ;;
-  *)
-    echo $ac_t no 1>&6
-    ;;
-  esac
-fi
-
 echo $ac_n "checking for $compiler option to statically link programs... $ac_c" 1>&6
-if test -n "$link_static_flag"; then
+$rm conftest*
+echo 'main(){return(0);}' > conftest.c
+save_LDFLAGS="$LDFLAGS"
+LDFLAGS="$LDFLAGS $link_static_flag"
+# LINENO
+if { (eval echo $progname:488: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest; then
   echo $ac_t "$link_static_flag" 1>&6
 else
   echo $ac_t none 1>&6
+  link_static_flag=
 fi
+LDFLAGS="$save_LDFLAGS"
+$rm conftest*
 
 if test -z "$LN_S"; then
   # Check to see if we can use ln -s, or we need hard links.
   echo $ac_n "checking whether ln -s works... $ac_c" 1>&6
-  rm -f conftestdata
+  $rm conftestdata
   if ln -s X conftestdata 2>/dev/null; then
-    rm -f conftestdata
+    $rm conftestdata
     LN_S="ln -s"
   else
     LN_S=ln
@@ -568,7 +561,7 @@ echo $ac_n "checking whether the linker ($LD) supports shared libraries... $ac_c
 
 allow_undefined_flag=
 archive_cmds=
-export_dynamic_flag=
+export_dynamic_flag_spec=
 hardcode_libdir_flag_spec=
 hardcode_libdir_separator=
 hardcode_direct=no
@@ -602,7 +595,7 @@ if test "$with_gnu_ld" = yes; then
   if test "$ld_shlibs" = yes; then
     archive_cmds='$CC -shared ${wl}-soname $wl$soname -o $lib$libobjs$deplibs'
     hardcode_libdir_flag_spec='${wl}-rpath $wl$libdir'
-    export_dynamic_flag='${wl}-export-dynamic'
+    export_dynamic_flag_spec='${wl}-export-dynamic'
   fi
 else
   # PORTME fill in a description of your system's linker (not GNU ld)
@@ -613,6 +606,10 @@ else
     # Note: this linker hardcodes the directories in LIBPATH if there
     # are no directories specified by -L.
     hardcode_minus_L=yes
+    # Direct hardcoding is not supported with a broken collect2.
+    if test "$with_gcc" = yes && test -n "$link_static_flag"; then
+      hardcode_direct=unsupported
+    fi
     ;;
 
   aix4*)
@@ -763,7 +760,7 @@ fi
 
 # Check to see that the pipe works correctly.
 pipe_works=no
-rm -f conftest*
+$rm conftest*
 cat > conftest.c <<EOF
 char nm_test_var;
 void nm_test_func(){}
@@ -771,9 +768,9 @@ main(){nm_test_var='a';nm_test_func();return(0);}
 EOF
 
 # LINENO
-if { (eval echo $progname:751: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>&5; } && test -s conftest.o; then
-  # Now try to grab the symbols.
-  if { echo "$progname:752: eval \"$NM conftest.o | $global_symbol_pipe > conftest.nm\"" >&5; eval "$NM conftest.o | $global_symbol_pipe > conftest.nm 2>&5"; } && test -s conftest.nm; then
+if { (eval echo $progname:771: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>&5; } && test -s conftest.o; then
+  # Now try to grab the symbols. LINENO
+  if { echo "$progname:773: eval \"$NM conftest.o | $global_symbol_pipe > conftest.nm\"" >&5; eval "$NM conftest.o | $global_symbol_pipe > conftest.nm 2>&5"; } && test -s conftest.nm; then
 
     # Try sorting and uniquifying the output.
     sort conftest.nm | uniq > conftest.nmT && mv -f conftest.nmT conftest.nm
@@ -806,8 +803,11 @@ EOF
         # Now try linking the two files.
         mv conftest.o conftestm.o
 	save_LIBS="$LIBS"
+	save_CFLAGS="$CFLAGS"
         LIBS='conftestm.o'
-        if { (eval echo configure:807: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest; then
+	CFLAGS="$CFLAGS$no_builtin_flag"
+        # LINENO
+        if { (eval echo $progname:810: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest; then
           pipe_works=yes
         else
           echo "$progname: failed program was:" >&5
@@ -825,7 +825,7 @@ else
   echo "$progname: failed program was:" >&5
   cat conftest.c >&5
 fi
-rm -f conftest*
+$rm conftest*
 
 # Don't use the global_symbol_pipe unless it works.
 echo "$ac_t$pipe_works" 1>&6
@@ -1037,7 +1037,7 @@ echo "checking whether to build static libraries... $enable_static" 1>&6
 ofile=libtool
 trap "$rm $ofile; exit 1" 1 2 15
 echo creating $ofile
-rm -fr $ofile
+$rm $ofile
 cat <<EOF > $ofile
 #! /bin/sh
 
@@ -1095,8 +1095,11 @@ pic_flag='$pic_flag'
 # Compiler flag to prevent dynamic linking.
 link_static_flag='$link_static_flag'
 
+# Compiler flag to turn off builtin functions.
+no_builtin_flag='$no_builtin_flag'
+
 # Compiler flag to allow reflexive dlopens.
-export_dynamic_flag='$export_dynamic_flag'
+export_dynamic_flag_spec='$export_dynamic_flag_spec'
 
 # Pattern to match compiler flags for creating libNAME_p libraries:
 profile_flag_pattern='$profile_flag_pattern'

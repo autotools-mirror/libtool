@@ -1,3 +1,21 @@
+Thu Jul 24 10:42:30 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltmain.sh.in, ltconfig.in (export_dynamic_flag_spec): Renamed
+ 	from export_dynamic_flag because we eval it in ltmain.sh.
+
+	* ltmain.sh.in (link_static): Don't eval link_static_flag.
+
+	* demo/dlmain.c (main): Change function prototype to be KNR
+ 	compatible.  From Kaveh R. Ghazi.
+
+	* ltmain.sh.in (link): Use no_builtin_flag.  This works around
+	conflicting definitions of builtin functions with at least GCC.
+	Reported by Kazuhiro Sasayama.
+
+	* ltconfig.in (no_builtin_flag): New flag to turn off builtin
+	functions when compiling an object file.
+	(pipe_works): Use it.
+
 Wed Jul 23 08:18:19 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltconfig.in (pic_flag): According to the libg++ 2.7.2 configure

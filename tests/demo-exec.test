@@ -19,22 +19,23 @@ fi
 # Check to see if the programs really run.
 echo "Executing uninstalled programs in ../demo"
 
+status=0
 if ../demo/hell.static | grep 'Welcome to GNU Hell'; then :
 else
   echo "$0: cannot execute ../demo/hell.static" 1>&2
-  exit 1
+  status=1
 fi
 
 if ../demo/hell | grep 'Welcome to GNU Hell'; then :
 else
   echo "$0: cannot execute ../demo/hell" 1>&2
-  exit 1
+  status=1
 fi
 
 if ../demo/helldl | egrep -e '(Welcome to .*GNU Hell|unsupported)'; then :
 else
   echo "$0: cannot execute ../demo/helldl" 1>&2
-  exit 1
+  status=1
 fi
 
-exit 0
+exit $status

@@ -370,8 +370,8 @@ if test -z "$show_help"; then
       -export-dynamic)
 	if test "$export_dynamic" != yes; then
 	  export_dynamic=yes
-	  compile_command="$compile_command "`eval echo "$export_dynamic_flag"`
-	  finalize_command="$finalize_command "`eval echo "$export_dynamic_flag"`
+	  compile_command="$compile_command "`eval echo "$export_dynamic_flag_spec"`
+	  finalize_command="$finalize_command "`eval echo "$export_dynamic_flag_spec"`
 	  # Add the symbol object into the linking commands.
 	  compile_command="$compile_command @SYMFILE@"
 	  finalize_command="$finalize_command @SYMFILE@"
@@ -833,7 +833,7 @@ if test -z "$show_help"; then
 	# Create links to the real library.
 	for link in $linknames; do
 	  $show "(cd $objdir && $LN_S $realname $link)"
-	  $run eval "(cd $objdir && $LN_S $realname $link)" || exit $?
+	  $run eval '(cd $objdir && $LN_S $realname $link)' || exit $?
 	done
 
 	# If -export-dynamic was specified, set the dlname.
@@ -1009,8 +1009,8 @@ EOF
 	$run rm -f "$nlist" "$nlist"T
 
 	# Now compile the dynamic symbol file.
-	$show "(cd $objdir && $CC -c '${output}S.c')"
-	$run eval "(cd $objdir && $CC -c '${output}S.c')" || exit $?
+	$show "(cd $objdir && $CC -c$no_builtin_flag \"${output}S.c\")"
+	$run eval '(cd $objdir && $CC -c$no_builtin_flag "${output}S.c")' || exit $?
 
 	# Transform the symbol file into the correct name.
 	compile_command=`echo "$compile_command" | sed "s%@SYMFILE@%$objdir/${output}S.o%"`

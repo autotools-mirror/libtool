@@ -30,7 +30,9 @@ struct dld_symlist
 extern struct dld_symlist dld_preloaded_symbols[];
 
 int
-main (int argc, char **argv)
+main (argc, argv)
+     int argc;
+     char **argv;
 {
   struct dld_symlist *s;
   int (*pfoo)() = 0;
