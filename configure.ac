@@ -110,6 +110,9 @@ AM_CONDITIONAL(HAVE_CXX, [test "x$CXX" != xno])
 pushdef([AC_MSG_ERROR], [F77=no])
 AC_PROG_F77
 popdef([AC_MSG_ERROR])
+if test -z "$F77"; then
+  F77="no"
+fi
 AM_CONDITIONAL(HAVE_F77, [test "x$F77" != xno])
 
 LT_AC_PROG_GCJ

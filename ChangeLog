@@ -1,3 +1,10 @@
+2003-03-19  Robert Boehne  <rboehne@gnu.org>
+
+	* libtool.m4 (_LT_AC_TAGCONFIG): Add test around the macro that
+	adds tags to the libtool script so that they won't run when not
+	needed.
+	* configure.ac: Set F77 to no when no Fortran compiler is found.
+
 2003-03-16  Charles Wilson  <cwilson@ece.gatech.edu>
 
 	* ltmain.in (win32_libid): use $SED, not head.
