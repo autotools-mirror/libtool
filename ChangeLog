@@ -1,3 +1,8 @@
+1998-11-03  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* ltmain.in: correctly create libraries and programs with
+ 	directory components in their names
+
 1998-11-03  Eric Estievenart <eric@via.ecp.fr>
 
 	* ltmain.in (output_obj): typo

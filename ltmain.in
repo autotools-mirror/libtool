@@ -945,7 +945,7 @@ if test -z "$show_help"; then
 
     *.la)
       # Make sure we only generate libraries of the form `libNAME.la'.
-      case "$output" in
+      case "$outputname" in
       lib*) ;;
       *)
 	$echo "$modename: libtool library \`$output' must begin with \`lib'" 1>&2
@@ -954,8 +954,15 @@ if test -z "$show_help"; then
 	;;
       esac
 
-      name=`$echo "X$output" | $Xsed -e 's/\.la$//' -e 's/^lib//'`
+      name=`$echo "X$outputname" | $Xsed -e 's/\.la$//' -e 's/^lib//'`
       eval libname=\"$libname_spec\"
+
+      output_objdir=`$echo "X$output" | $Xsed -e 's%/[^/]*$%%'`
+      if test "X$output_objdir" = "X$output"; then
+        output_objdir="$objdir"
+      else
+        output_objdir="$output_objdir/$objdir"
+      fi
 
       # All the library-specific variables (install_libdir is set above).
       library_names=
@@ -986,7 +993,7 @@ if test -z "$show_help"; then
       oldlibs=
       if test -z "$rpath"; then
 	# Building a libtool convenience library.
-	oldlibs="$objdir/$libname.al $oldlibs"
+	oldlibs="$output_objdir/$libname.al $oldlibs"
 	build_libtool_libs=convenience
 
 	if test -n "$vinfo"; then
@@ -1118,21 +1125,21 @@ if test -z "$show_help"; then
       fi
 
       # Create the output directory, or remove our outputs if we need to.
-      if test -d $objdir; then
-        $show "${rm}r $objdir/$outputname $objdir/$libname.* $objdir/${libname}${release}.*"
-	$run ${rm}r $objdir/$outputname $objdir/$libname.* $objdir/${libname}${release}.*
+      if test -d $output_objdir; then
+        $show "${rm}r $output_objdir/$outputname $output_objdir/$libname.* $output_objdir/${libname}${release}.*"
+	$run ${rm}r $output_objdir/$outputname $output_objdir/$libname.* $output_objdir/${libname}${release}.*
       else
-        $show "$mkdir $objdir"
-        $run $mkdir $objdir
+        $show "$mkdir $output_objdir"
+        $run $mkdir $output_objdir
         status=$?
-        if test $status -ne 0 && test ! -d $objdir; then
+        if test $status -ne 0 && test ! -d $output_objdir; then
           exit $status
         fi
       fi
 
       # Now set the variables for building old libraries.
       if test "$build_old_libs" = yes && test "$build_libtool_libs" != convenience ; then
-        oldlibs="$oldlibs $objdir/$libname.a"
+        oldlibs="$oldlibs $libname.a"
 
 	# Transform .lo files to .o files.
 	oldobjs="$objs"`$echo "X$libobjs " | $Xsed -e 's/[^   ]*\.a //g' -e 's/\.lo /.o /g' -e 's/ $//g'`
@@ -1151,7 +1158,7 @@ if test -z "$show_help"; then
 	  soname="$realname"
 	fi
 
-	lib="$objdir/$realname"
+	lib="$output_objdir/$realname"
 	for link
 	do
 	  linknames="$linknames $link"
@@ -1199,8 +1206,8 @@ if test -z "$show_help"; then
 	# Create links to the real library.
 	for linkname in $linknames; do
 	  if test "$realname" != "$linkname"; then
-	    $show "(cd $objdir && $LN_S $realname $linkname)"
-	    $run eval '(cd $objdir && $LN_S $realname $linkname)' || exit $?
+	    $show "(cd $output_objdir && $LN_S $realname $linkname)"
+	    $run eval '(cd $output_objdir && $LN_S $realname $linkname)' || exit $?
 	  fi
 	done
 
@@ -1301,6 +1308,7 @@ if test -z "$show_help"; then
       exit 0
       ;;
 
+    # Anything else should be a program.
     *)
       if test -n "$vinfo"; then
         $echo "$modename: warning: \`-version-info' is ignored for programs" 1>&2
@@ -1353,6 +1361,13 @@ if test -z "$show_help"; then
 	finalize_command=`$echo "X$finalize_command" | $Xsed -e "s%@HARDCODE_LIBDIRS@%$hardcode_libdirs%g"`
       fi
 
+      output_objdir=`$echo "X$arg" | $Xsed -e 's%/[^/]*$%%'`
+      if test "X$output_objdir" = "X$arg"; then
+        output_objdir="$objdir"
+      else
+        output_objdir="$output_objdir/$objdir"
+      fi
+
       if test -n "$libobjs" && test "$build_old_libs" = yes; then
         # Transform all the library objects into standard objects.
         compile_command=`$echo "X$compile_command " | $Xsed -e 's/\.lo /.o /g' -e 's/ $//'`
@@ -1360,7 +1375,7 @@ if test -z "$show_help"; then
       fi
 
       if test "$export_dynamic" = yes && test -n "$NM" && test -n "$global_symbol_pipe"; then
-        dlsyms="${output}S.c"
+        dlsyms="${outputname}S.c"
       else
         dlsyms=
       fi
@@ -1370,16 +1385,16 @@ if test -z "$show_help"; then
         dlprefiles=`$echo "X$objs$dlprefiles " | $Xsed -e 's/\.lo /.o /g' -e 's/ $//'`
 
 	# Discover the nlist of each of the dlfiles.
-        nlist="$objdir/${output}.nm"
+        nlist="${output_objdir}/${output}.nm"
 
-	if test -d $objdir; then
+	if test -d $output_objdir; then
 	  $show "$rm $nlist ${nlist}T"
 	  $run $rm "$nlist" "${nlist}T"
 	else
-	  $show "$mkdir $objdir"
-	  $run $mkdir $objdir
+	  $show "$mkdir $output_objdir"
+	  $run $mkdir $output_objdir
 	  status=$?
-	  if test $status -ne 0 && test ! -d $objdir; then
+	  if test $status -ne 0 && test ! -d $output_objdir; then
 	    exit $status
 	  fi
 	fi
@@ -1390,7 +1405,7 @@ if test -z "$show_help"; then
         done
 
         # Parse the name list into a source file.
-        $show "creating $objdir/$dlsyms"
+        $show "creating $output_objdir/$dlsyms"
         if test -z "$run"; then
 	  # Make sure we at least have an empty file.
 	  test -f "$nlist" || : > "$nlist"
@@ -1409,8 +1424,8 @@ if test -z "$show_help"; then
 	  case "$dlsyms" in
 	  "") ;;
 	  *.c)
-	    $echo > "$objdir/$dlsyms" "\
-/* $dlsyms - symbol resolution table for \`$output' dlsym emulation. */
+	    $echo > "$output_objdir/$dlsyms" "\
+/* $dlsyms - symbol resolution table for \`$outputname' dlsym emulation. */
 /* Generated by $PROGRAM - GNU $PACKAGE $VERSION */
 
 #ifdef __cplusplus
@@ -1425,12 +1440,12 @@ extern \"C\" {
 "
 
 	    if test -f "$nlist"; then
-	      sed -e 's/^.* \(.*\)$/extern char \1;/' < "$nlist" >> "$objdir/$dlsyms"
+	      sed -e 's/^.* \(.*\)$/extern char \1;/' < "$nlist" >> "$output_objdir/$dlsyms"
 	    else
-	      echo '/* NONE */' >> "$objdir/$dlsyms"
+	      echo '/* NONE */' >> "$output_objdir/$dlsyms"
 	    fi
 
-	    $echo >> "$objdir/$dlsyms" "\
+	    $echo >> "$output_objdir/$dlsyms" "\
 
 #undef dld_preloaded_symbol_count
 #undef dld_preloaded_symbols
@@ -1454,10 +1469,10 @@ dld_preloaded_symbols[] =
 "
 
 	    if test -f "$nlist"; then
-	      sed 's/^\(.*\) \(.*\)$/  {"\1", (__ptr_t) \&\2},/' < "$nlist" >> "$objdir/$dlsyms"
+	      sed 's/^\(.*\) \(.*\)$/  {"\1", (__ptr_t) \&\2},/' < "$nlist" >> "$output_objdir/$dlsyms"
 	    fi
 
-	    $echo >> "$objdir/$dlsyms" "\
+	    $echo >> "$output_objdir/$dlsyms" "\
   {0, (__ptr_t) 0}
 };
 
@@ -1475,12 +1490,12 @@ dld_preloaded_symbols[] =
         fi
 
         # Now compile the dynamic symbol file.
-        $show "(cd $objdir && $CC -c$no_builtin_flag \"$dlsyms\")"
-        $run eval '(cd $objdir && $CC -c$no_builtin_flag "$dlsyms")' || exit $?
+        $show "(cd $output_objdir && $CC -c$no_builtin_flag \"$dlsyms\")"
+        $run eval '(cd $output_objdir && $CC -c$no_builtin_flag "$dlsyms")' || exit $?
 
         # Transform the symbol file into the correct name.
-        compile_command=`$echo "X$compile_command" | $Xsed -e "s%@SYMFILE@%$objdir/${output}S.o%"`
-        finalize_command=`$echo "X$finalize_command" | $Xsed -e "s%@SYMFILE@%$objdir/${output}S.o%"`
+        compile_command=`$echo "X$compile_command" | $Xsed -e "s%@SYMFILE@%$output_objdir/${output}S.o%"`
+        finalize_command=`$echo "X$finalize_command" | $Xsed -e "s%@SYMFILE@%$output_objdir/${output}S.o%"`
       elif test "$export_dynamic" != yes; then
         test -n "$dlfiles$dlprefiles" && $echo "$modename: warning: \`-dlopen' and \`-dlpreopen' are ignored without \`-export-dynamic'" 1>&2
       else
@@ -1506,13 +1521,13 @@ dld_preloaded_symbols[] =
       fi
 
       # Replace the output file specification.
-      compile_command=`$echo "X$compile_command" | $Xsed -e 's%@OUTPUT@%'"$objdir/$outputname"'%g'`
-      finalize_command=`$echo "X$finalize_command" | $Xsed -e 's%@OUTPUT@%'"$objdir/$outputname"'T%g'`
+      compile_command=`$echo "X$compile_command" | $Xsed -e 's%@OUTPUT@%'"$output_objdir/$outputname"'%g'`
+      finalize_command=`$echo "X$finalize_command" | $Xsed -e 's%@OUTPUT@%'"$output_objdir/$outputname"'T%g'`
 
       # Create the binary in the object directory, then wrap it.
-      if test ! -d $objdir; then
-        $show "$mkdir $objdir"
-	$run $mkdir $objdir
+      if test ! -d $output_objdir; then
+        $show "$mkdir $output_objdir"
+	$run $mkdir $output_objdir
 	status=$?
 	if test $status -ne 0 && test ! -d $objdir; then
 	  exit $status
@@ -1605,7 +1620,7 @@ if test \"\${CDPATH+set}\" = set; then CDPATH=; export CDPATH; fi
 if test \"\$libtool_install_magic\" = \"$magic\"; then
   # install mode needs the following variables:
   link_against_libtool_libs='$link_against_libtool_libs'
-  finalize_command=\"$finalize_command\"
+  finalize_command=\"cd `pwd | sed -e $sed_quote_subst`; $finalize_command\"
 else
   # When we are sourced in execute mode, \$file and \$echo are already set.
   if test \"\$libtool_execute_magic\" != \"$magic\"; then
@@ -1786,8 +1801,8 @@ libdir='$install_libdir'\
 
       # Do a symbolic link so that the libtool archive can be found in
       # LD_LIBRARY_PATH before the program is installed.
-      $show "(cd $objdir && $LN_S ../$output $output)"
-      $run eval "(cd $objdir && $LN_S ../$output $output)" || exit $?
+      $show "(cd $output_objdir && $LN_S ../$outputname $outputname)"
+      $run eval "(cd $output_objdir && $LN_S ../$outputname $outputname)" || exit $?
       ;;
     esac
     exit 0
