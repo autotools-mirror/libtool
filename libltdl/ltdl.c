@@ -67,55 +67,6 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 #  include <errno.h>
 #endif
 
-
-#ifndef __WINDOWS__
-#  ifdef __WIN32__
-#    define __WINDOWS__
-#  endif
-#endif
-
-
-#undef LT_USE_POSIX_DIRENT
-#ifdef HAVE_CLOSEDIR
-#  ifdef HAVE_OPENDIR
-#    ifdef HAVE_READDIR
-#      ifdef HAVE_DIRENT_H
-#        define LT_USE_POSIX_DIRENT
-#      endif /* HAVE_DIRENT_H */
-#    endif /* HAVE_READDIR */
-#  endif /* HAVE_OPENDIR */
-#endif /* HAVE_CLOSEDIR */
-
-
-#undef LT_USE_WINDOWS_DIRENT_EMULATION
-#ifndef LT_USE_POSIX_DIRENT
-#  ifdef __WINDOWS__
-#    define LT_USE_WINDOWS_DIRENT_EMULATION
-#  endif /* __WINDOWS__ */
-#endif /* LT_USE_POSIX_DIRENT */
-
-
-#ifdef LT_USE_POSIX_DIRENT
-#  include <dirent.h>
-#  define LT_D_NAMLEN(dirent) (strlen((dirent)->d_name))
-#else
-#  ifdef LT_USE_WINDOWS_DIRENT_EMULATION
-#    define LT_D_NAMLEN(dirent) (strlen((dirent)->d_name))
-#  else
-#    define dirent direct
-#    define LT_D_NAMLEN(dirent) ((dirent)->d_namlen)
-#    if HAVE_SYS_NDIR_H
-#      include <sys/ndir.h>
-#    endif
-#    if HAVE_SYS_DIR_H
-#      include <sys/dir.h>
-#    endif
-#    if HAVE_NDIR_H
-#      include <ndir.h>
-#    endif
-#  endif
-#endif
-
 #if HAVE_ARGZ_H
 #  include <argz.h>
 #endif
@@ -127,6 +78,31 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 #endif
 
 #include "ltdl.h"
+
+#if defined(HAVE_CLOSEDIR) && defined(HAVE_OPENDIR) && defined(HAVE_READDIR) && defined(HAVE_DIRENT_H)
+/* We have a fully operational dirent subsystem.  */
+# include <dirent.h>
+# define LT_D_NAMLEN(dirent) (strlen((dirent)->d_name))
+
+#elif !defined(__WINDOWS__)
+/* We are not on windows, so we can get the same functionality from the
+   `direct' API.  */
+# define dirent direct
+# define LT_D_NAMLEN(dirent) ((dirent)->d_namlen)
+# if HAVE_SYS_NDIR_H
+#   include <sys/ndir.h>
+# endif
+# if HAVE_SYS_DIR_H
+#   include <sys/dir.h>
+# endif
+# if HAVE_NDIR_H
+#   include <ndir.h>
+# endif
+
+#else  /* __WINDOWS__ */
+/* Use some wrapper code to emulate dirent on windows..  */
+# define LT_USE_WINDOWS_DIRENT_EMULATION
+#endif
 
 #if WITH_DMALLOC
 #  include <dmalloc.h>
@@ -146,34 +122,12 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 
 /* fopen() mode flags for reading a text file */
 #undef	LT_READTEXT_MODE
-#ifdef __WINDOWS__
+#if defined(__WINDOWS__) || defined(__CYGWIN__)
 #  define LT_READTEXT_MODE "rt"
 #else
 #  define LT_READTEXT_MODE "r"
 #endif
 
-#ifdef LT_USE_WINDOWS_DIRENT_EMULATION
-
-#include <windows.h>
-
-#define dirent lt_dirent
-#define DIR lt_DIR
-
-struct dirent
-{
-  char d_name[2048];
-  int  d_namlen;
-};
-
-typedef struct _DIR
-{
-  HANDLE hSearch;
-  WIN32_FIND_DATA Win32FindData;
-  BOOL firsttime;
-  struct dirent file_info;
-} DIR;
-
-#endif /* LT_USE_WINDOWS_DIRENT_EMULATION */
 
 
 /* --- MANIFEST CONSTANTS --- */
@@ -427,17 +381,37 @@ memmove (dest, src, size)
 
 #endif /* !HAVE_MEMMOVE */
 
-#ifdef LT_USE_WINDOWS_DIRENT_EMULATION
+# if LT_USE_WINDOWS_DIRENT_EMULATION
+
+# include <windows.h>
+
+# define LT_D_NAMLEN(dirent) (strlen((dirent)->d_name))
+# define dirent lt_dirent
+# define DIR lt_DIR
+
+struct dirent
+{
+  char d_name[2048];
+  int  d_namlen;
+};
+
+typedef struct _DIR
+{
+  HANDLE hSearch;
+  WIN32_FIND_DATA Win32FindData;
+  BOOL firsttime;
+  struct dirent file_info;
+} DIR;
 
 static void closedir LT_PARAMS((DIR *entry));
 
 static void
-closedir(entry)
-  DIR *entry;
+closedir (entry)
+    DIR *entry;
 {
-  assert(entry != (DIR *) NULL);
-  FindClose(entry->hSearch);
-  lt_dlfree((lt_ptr)entry);
+  assert (entry != (DIR *) NULL);
+  FindClose (entry->hSearch);
+  lt_dlfree ((lt_ptr) entry);
 }
 
 
@@ -445,58 +419,65 @@ static DIR * opendir LT_PARAMS((const char *path));
 
 static DIR*
 opendir (path)
-  const char *path;
+    const char *path;
 {
   char file_specification[LT_FILENAME_MAX];
   DIR *entry;
 
-  assert(path != (char *) NULL);
-  (void) strncpy(file_specification,path,LT_FILENAME_MAX-1);
-  (void) strcat(file_specification,"\\");
-  entry = LT_DLMALLOC (DIR,sizeof(DIR));
+  assert (path != (char *) NULL);
+  (void) strncpy (file_specification, path, LT_FILENAME_MAX-1);
+  (void) strcat (file_specification, "\\");
+  entry = LT_DLMALLOC (DIR, sizeof(DIR));
   if (entry != (DIR *) 0)
     {
       entry->firsttime = TRUE;
-      entry->hSearch = FindFirstFile(file_specification,&entry->Win32FindData);
+      entry->hSearch = FindFirstFile (file_specification,
+				      &entry->Win32FindData);
     }
+
   if (entry->hSearch == INVALID_HANDLE_VALUE)
     {
-      (void) strcat(file_specification,"\\*.*");
-      entry->hSearch = FindFirstFile(file_specification,&entry->Win32FindData);
+      (void) strcat (file_specification, "\\*.*");
+      entry->hSearch = FindFirstFile (file_specification,
+				      &entry->Win32FindData);
       if (entry->hSearch == INVALID_HANDLE_VALUE)
         {
           LT_DLFREE (entry);
           return (DIR *) 0;
         }
     }
-  return(entry);
+
+  return entry;
 }
 
 
 static struct dirent *readdir LT_PARAMS((DIR *entry));
 
-static struct dirent *readdir(entry)
-  DIR *entry;
+static struct dirent *
+readdir (entry)
+    DIR *entry;
 {
-  int
-    status;
+  int status;
 
   if (entry == (DIR *) 0)
-    return((struct dirent *) 0);
+    return (struct dirent *) 0;
+
   if (!entry->firsttime)
     {
-      status = FindNextFile(entry->hSearch,&entry->Win32FindData);
+      status = FindNextFile (entry->hSearch, &entry->Win32FindData);
       if (status == 0)
-        return((struct dirent *) 0);
+        return (struct dirent *) 0;
     }
-  entry->firsttime = FALSE;
-  (void) strncpy(entry->file_info.d_name,entry->Win32FindData.cFileName,
-    LT_FILENAME_MAX-1);
-  entry->file_info.d_namlen = strlen(entry->file_info.d_name);
-  return(&entry->file_info);
-}
 
-#endif /* LT_USE_WINDOWS_DIRENT_EMULATION */
+  entry->firsttime = FALSE;
+  (void) strncpy (entry->file_info.d_name, entry->Win32FindData.cFileName,
+		  LT_FILENAME_MAX - 1);
+  entry->file_info.d_namlen = strlen (entry->file_info.d_name);
+
+  return &entry->file_info;
+}
+#endif /* !LT_USE_WINDOWS_DIRENT_EMULATION */
+
 
 /* According to Alexandre Oliva <oliva@lsd.ic.unicamp.br>,
     ``realloc is not entirely portable''
@@ -1290,7 +1271,7 @@ static struct lt_user_dlloader sys_shl = {
 
 /* --- LOADLIBRARY() INTERFACE LOADER --- */
 
-#ifdef __WINDOWS__
+#if defined(__WINDOWS__) || defined(__CYGWIN__)
 
 /* dynamic linking for Win32 */
 
@@ -2202,14 +2183,14 @@ lt_dlinit ()
       handles = 0;
       user_search_path = 0; /* empty search path */
 
+#if defined(__WINDOWS__) || defined(__CYGWIN__)
+      errors += lt_dlloader_add (lt_dlloader_next (0), &sys_wll, "dlopen");
+#endif
 #if HAVE_LIBDL
       errors += lt_dlloader_add (lt_dlloader_next (0), &sys_dl, "dlopen");
 #endif
 #if HAVE_SHL_LOAD
       errors += lt_dlloader_add (lt_dlloader_next (0), &sys_shl, "dlopen");
-#endif
-#ifdef __WINDOWS__
-      errors += lt_dlloader_add (lt_dlloader_next (0), &sys_wll, "dlopen");
 #endif
 #ifdef __BEOS__
       errors += lt_dlloader_add (lt_dlloader_next (0), &sys_bedl, "dlopen");
