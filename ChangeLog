@@ -1,3 +1,8 @@
+2005-01-31  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* m4/libtool.m4 (_LT_COMPILER_C_O): _LT_TAGDECL(lt_compiler_c_o),
+	not _LT_DECL, since this is tag-dependent.
+
 2005-01-29  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* m4/libtool.m4 (_LT_LINKER_SHLIBS, _LT_LANG_CXX_CONFIG) [linux]:
