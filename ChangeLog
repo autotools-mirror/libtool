@@ -1,3 +1,8 @@
+1999-05-17  Gary V. Vaughan  <gary@oranda.demon.co.uk>
+
+	* demo/foo.h: Don't set any declspecs until we have full dlli
+	support.
+
 1999-05-16  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* ltconfig.in (solaris2.6, whole_archive_flag_spec): Do not use

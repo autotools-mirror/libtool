@@ -58,10 +58,18 @@ USA. */
 #endif
 
 #ifdef __CYGWIN32__
-#  ifdef _LIBFOO_COMPILATION_
-#    define EXTERN __declspec(dllexport)
+#  ifdef LIBFOO_DLL
+     /* need some (as yet non-existant) automake magic to tell
+      * the object whether the libfoo it will be linked with is
+      * a dll or not, ie whether LIBFOO_DLL is defined or not.
+      */
+#    ifdef _LIBFOO_COMPILATION_
+#      define EXTERN __declspec(dllexport)
+#    else
+#      define EXTERN extern __declspec(dllimport)
+#    endif
 #  else
-#    define EXTERN extern __declspec(dllimport)
+#    define EXTERN extern
 #  endif
 #else
 #  define EXTERN extern
