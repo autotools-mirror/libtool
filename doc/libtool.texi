@@ -312,7 +312,7 @@ not yet been installed.  @code{LD_LIBRARY_PATH} must be set properly (if
 it is supported), or programs fail to run.
 
 @item
-The system must operate consistently even on hosts which don't support
+The system must operate consistently even on hosts that don't support
 shared libraries.
 
 @item
@@ -364,7 +364,7 @@ exactly what the implementation does, and they were generally not
 documented.
 
 The main difficulty is that different vendors have different views of
-what libraries are, and none of the packages which were examined seemed
+what libraries are, and none of the packages that were examined seemed
 to be confident enough to settle on a single paradigm that just
 @emph{works}.
 
@@ -497,7 +497,7 @@ position-dependent code.
 @cindex object files, library
 Since this is a library implementation detail, libtool hides the
 complexity of PIC compiler flags by using separate library object files
-(which end in @samp{.lo} instead of @samp{.o}).  On systems without shared
+(that end in @samp{.lo} instead of @samp{.o}).  On systems without shared
 libraries (or without special PIC compiler flags), these library object
 files are identical to ``standard'' object files.
 
@@ -1641,14 +1641,14 @@ machine, if any.
 @defmac LT_LIB_DLLOAD
 This is the macro used by @samp{libltdl} to determine which dlloaders
 to use on this machine, if any.  Several shell variables are set (and
-@samp{AC_SUBST}ed) depending which dlload interfaces are available on
+@samp{AC_SUBST}ed) depending on the dlload interfaces are available on
 this machine.  @samp{LT_DLLOADERS} contains a list of libtool
 libraries that can be used, and if necessary also sets
 @samp{LIBADD_DLOPEN} if additional system libraries are required by
 the @samp{dlopen} loader, and @samp{LIBADD_SHL_LOAD} if additional
 system libraries are required by the @samp{shl_load} loader,
 respectively.  Finally some symbols are set in @file{config.h}
-depending on which loaders are found to work: @samp{HAVE_LIBDL},
+depending on the loaders that are found to work: @samp{HAVE_LIBDL},
 @samp{HAVE_SHL_LOAD}, @samp{HAVE_DYLD}, @samp{HAVE_DLD}.
 @end defmac
 
@@ -1810,8 +1810,8 @@ them properly.  When you install the libtool distribution, a
 system-specific libtool script is installed into your binary directory.
 
 However, when you distribute libtool with your own packages
-(@pxref{Distributing}), you do not always know which compiler suite and
-operating system are used to compile your package.
+(@pxref{Distributing}), you do not always know the compiler suite and
+operating system that are used to compile your package.
 
 For this reason, libtool must be @dfn{configured} before it can be
 used.  This idea should be familiar to anybody who has used a @sc{gnu}
@@ -1893,7 +1893,7 @@ behaves similarly, but it uses @option{--enable-static} and
 @option{--enable-fast-install=@var{pkgs}} flag, which uses
 @option{--enable-fast-install} and @option{--disable-fast-install}.
 
-The package name @samp{default} matches any packages which have not set
+The package name @samp{default} matches any packages that have not set
 their name in the @code{PACKAGE} environment variable.
 
 This macro also sets the shell variable @var{LIBTOOL_DEPS}, that you can
@@ -2618,9 +2618,9 @@ at the same time that the release number does, and the library suffix is
 never the same across all platforms.
 
 So, in order to accommodate both views, you can use the @option{-release}
-flag in order to set release information for libraries which you do not
+flag in order to set release information for libraries for which you do not
 want to use @option{-version-info}.  For the @file{libbfd} example, the
-next release which uses libtool should be built with @samp{-release
+next release that uses libtool should be built with @samp{-release
 2.9.0}, which will produce the following files on @sc{gnu}/Linux:
 
 @example
@@ -2653,7 +2653,7 @@ If you design a good interface, it won't have to change often, you won't
 have to keep updating documentation, and users won't have to keep
 relearning how to use the library.
 
-Here is a brief list of tips for library interface design, which may
+Here is a brief list of tips for library interface design that may
 help you in your exploits:
 
 @table @asis
@@ -2673,7 +2673,7 @@ users don't need to rewrite their existing code.
 @cindex opaque data types
 The fewer data type definitions a library user has access to, the
 better.  If possible, design your functions to accept a generic pointer
-(which you can cast to an internal data type), and provide access
+(that you can cast to an internal data type), and provide access
 functions rather than allowing the library user to directly manipulate
 the data.
 That way, you have the freedom to change the data structures without
@@ -2907,7 +2907,7 @@ resolved automatically at run time by the dynamic linker.  In this
 process, dynamic linking is transparent to the application.
 
 @item
-The application calling functions such as @code{dlopen}, which load
+The application calling functions such as @code{dlopen} that load
 arbitrary, user-specified modules at runtime.  This type of dynamic
 linking is explicitly controlled by the application.
 @end enumerate
@@ -3040,7 +3040,7 @@ The last element of all has a @var{name} and @var{address} of
 @code{0}.
 @end deftypevar
 
-Some compilers may allow identifiers which are not valid in ANSI C, such
+Some compilers may allow identifiers that are not valid in ANSI C, such
 as dollar signs.  Libtool only recognizes valid ANSI C symbols (an
 initial ASCII letter or underscore, followed by zero or more ASCII
 letters, digits, and underscores), so non-ANSI symbols will not appear
@@ -3439,8 +3439,8 @@ Open the module with the file name @var{filename} and return a
 handle for it.  @code{lt_dlopen} is able to open libtool dynamic
 modules, preloaded static modules, the program itself and
 native dynamic modules@footnote{Some platforms, notably Mac OS X,
-differentiate between a runtime library which cannot be opened by
-@code{lt_dlopen} and a dynamic module which can.  For maximum
+differentiate between a runtime library that cannot be opened by
+@code{lt_dlopen} and a dynamic module that can.  For maximum
 portability you should try to ensure that you only pass
 @code{lt_dlopen} objects that have been compiled with libtool's
 @option{-module} flag.}.
@@ -3563,8 +3563,8 @@ the start of the vector.
 
 @deftypefun int lt_dlmakeresident (lt_dlhandle @var{handle})
 Mark a module so that it cannot be @samp{lt_dlclose}d.  This can be
-useful if a module implements some core functionality in your project,
-which would cause your code to crash if removed.  Return 0 on success.
+useful if a module implements some core functionality in your project
+that would cause your code to crash if removed.  Return 0 on success.
 
 If you use @samp{lt_dlopen (NULL)} to get a @var{handle} for the running
 binary, that handle will always be marked as resident, and consequently
@@ -3587,7 +3587,7 @@ exceptions:
 You have to link the module with libtool's @option{-module} switch,
 and you should link any program that is intended to dlopen the module with
 @option{-dlopen @var{modulename.la}} where possible, so that libtool can
-dlpreopen the module on platforms which don't support dlopening.  If
+dlpreopen the module on platforms that do not support dlopening.  If
 the module depends on any other libraries, make sure you specify them
 either when you link the module or when you link programs that dlopen it.
 If you want to disable @pxref{Versioning} for a specific module
@@ -3606,7 +3606,7 @@ same symbols defined more than once it is generally not portable and
 it makes it impossible to dlpreopen such modules.
 
 libltdl will automatically cut the prefix off to get the real name of
-the symbol.  Additionally, it supports modules which don't use a
+the symbol.  Additionally, it supports modules that do not use a
 prefix so that you can also dlopen non-libtool modules.
 
 @file{foo1.c} gives an example of a portable libtool module.
@@ -3868,11 +3868,11 @@ sufficient for the purposes of a project.  You can write your own
 loader, and register it with libltdl so that @code{lt_dlopen} will be
 able to use it.
 
-Writing a loader involves writing at least three functions which can be
+Writing a loader involves writing at least three functions that can be
 called by @code{lt_dlopen}, @code{lt_dlsym} and @code{lt_dlclose}.
 Optionally, you can provide a finalisation function to perform any
 cleanup operations when @code{lt_dlexit} executes, and a symbol prefix
-string which will be prepended to any symbols passed to @code{lt_dlsym}.
+string that will be prepended to any symbols passed to @code{lt_dlsym}.
 These functions must match the function pointer types below, after
 which they can be allocated to an instance of @code{lt_user_dlloader}
 and registered.
@@ -4041,7 +4041,7 @@ if (lt_dlloader_add (lt_dlloader_next (NULL), myloader) != 0)
 Return the first loader with a matching @var{loader_name} identifier, or else
 @code{NULL}, if the identifier is not found.
 
-The identifiers which may be used by libltdl itself, if the host
+The identifiers that may be used by libltdl itself, if the host
 architecture supports them are @dfn{dlopen}@footnote{This is used for
 the host dependent module loading @sc{api} -- @code{shl_load} and
 @code{LoadLibrary} for example}, @dfn{dld} and @dfn{dlpreload}.
@@ -4126,7 +4126,7 @@ release of libltdl.
 @samp{LT_WITH_LTDL} macro to your package's @file{configure.ac} to
 perform the configure time checks required to build the library
 correctly.  This method has problems if you then try to link the
-package binaries with an installed libltdl, or a library which depends
+package binaries with an installed libltdl, or a library that depends
 on libltdl: you will have problems with duplicate symbol definitions.
 
 @defmac LT_WITH_LTDL (@var{DIRECTORY})
@@ -4185,7 +4185,7 @@ run-time crashes.  Another problem is that you cannot link the
 convenience library into more than one libtool library, then link a
 single program with these libraries, because you may get duplicate
 symbols.  In general you can safely use the convenience library in
-programs which don't depend on other libraries that might use libltdl
+programs that don't depend on other libraries that might use libltdl
 too.  In order to enable this flavor of libltdl, add a call to
 @samp{LTDL_CONVENIENCE} to your @file{configure.ac},
 @emph{before} @samp{LT_INIT}, or use @samp{LT_WITH_LTDL}.
@@ -4221,7 +4221,7 @@ other than the C library.  In this case, it will needlessly build and
 install libltdl.
 @c
 }, @var{LIBLTDL} will be set to @option{-lltdl} and @var{LTDLINCL} will
-be empty (which is just a blind assumption that @file{ltdl.h} is
+be empty (this is just a blind assumption that @file{ltdl.h} is
 somewhere in the include path if libltdl is in the library path).  If
 an installable version of libltdl must be built, its pathname,
 starting with @samp{$@{top_builddir@}/}, will be stored in
@@ -4551,7 +4551,7 @@ libtool, or in the test program itself.
 
 To investigate a particular test, you may run it directly, as you would
 a normal program.  When the test is invoked in this way, it produces
-output which may be useful in determining what the problem is.
+output that may be useful in determining what the problem is.
 
 Another way to have the test programs produce output is to set the
 @var{VERBOSE} environment variable to @samp{yes} before running them.
@@ -4738,7 +4738,7 @@ improve it.
 Then in @file{ltmain.in} we have the real workhorse: a little
 initialization and postprocessing (to setup/release variables for use
 with eval echo libname_spec etc.) and a case statement that decides
-which method is being used.  This is the real code... I wish I could
+the method that is being used.  This is the real code... I wish I could
 condense it a little more, but I don't think I can without function
 calls.  I've mostly optimized it (moved things out of loops, etc) but
 there is probably some fat left.  I thought I should stop while I was
@@ -4793,7 +4793,7 @@ The following is a list of valuable documentation references:
 
 @itemize @bullet
 @item
-SGI's IRIX Manual Pages, which can be found at
+SGI's IRIX Manual Pages can be found at
 @url{http://techpubs.sgi.com/cgi-bin/@/infosrch.cgi?cmd=browse&db=man}.
 
 @item
@@ -4885,7 +4885,7 @@ objects.
 
 On most modern platforms the order in which dependent libraries are listed
 has no effect on object generation.  In theory, there are platforms
-which require libraries which provide missing symbols to other libraries
+that require libraries that provide missing symbols to other libraries
 to be listed after those libraries whose symbols they provide.
 
 Particularly, if a pair of static archives each resolve some of the
@@ -4928,7 +4928,7 @@ performance benefits of inlined @code{ltmain.sh}, @emph{and} improves
 the build time a little while considerably easing the amount of raw
 shell code that used to need maintaining.
 
-The convention used for naming variables which hold shell commands for
+The convention used for naming variables that hold shell commands for
 delayed evaluation, is to use the suffix @code{_cmd} where a single
 line of valid shell script is needed, and the suffix @code{_cmds} where
 multiple lines of shell script @strong{may} be delayed for later
@@ -4947,7 +4947,7 @@ The name of the C compiler used to configure libtool.
 @end defvar
 
 @defvar ECHO
-An @command{echo} program which does not interpret backslashes as an
+An @command{echo} program that does not interpret backslashes as an
 escape character.  It may be given only one argument, so due quoting
 is necessary.
 @end defvar
@@ -4958,7 +4958,7 @@ linking and possibly shared libraries.
 @end defvar
 
 @defvar NM
-The name of a BSD-compatible @command{nm} program, which produces listings
+The name of a BSD-compatible @command{nm} program that produces listings
 of global symbols in one the following formats:
 
 @example
@@ -5073,7 +5073,7 @@ the use of @samp{old_archive_from_expsyms_cmds}.
 Determines whether libtool will privilege the installer or the
 developer.  The assumption is that installers will seldom run programs
 in the build tree, and the developer will seldom install.  This is only
-meaningful on platforms in which @var{shlibpath_overrides_runpath} is
+meaningful on platforms where @var{shlibpath_overrides_runpath} is
 not @samp{yes}, so @var{fast_install} will be set to @samp{needless} in
 this case.  If @var{fast_install} set to @samp{yes}, libtool will create
 programs that search for installed libraries, and, if a program is run

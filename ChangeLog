@@ -1,3 +1,8 @@
+2005-03-12  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* doc/libtool.texi: Replace wicked whiches by thats or other
+	better-sounding constructs.
+
 2005-03-11  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>  (tiny change)
 
 	* tests/Makefile (clean-local): Ignore testsuite cleanup
