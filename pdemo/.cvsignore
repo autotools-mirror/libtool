@@ -4,6 +4,7 @@ Makefile
 Makefile.in
 acinclude.m4
 aclocal.m4
+autom4te.cache
 configure
 config.*
 conftest*
@@ -15,5 +16,5 @@ libtool
 *.lo
 *.la
 hell
-hell.static
+hell_static
 helldl

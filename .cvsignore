@@ -1,12 +1,14 @@
 .*.prcs_aux
+COPYING
+INSTALL
 Makefile
 Makefile.in
 acinclude.m4
 aclocal.m4
+autom4te.cache
 clibtool.cfg
 configure
 config.*
 libtool
-ltmain.sh
-ltconfig
 libtoolize
+patches

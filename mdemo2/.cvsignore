@@ -4,11 +4,12 @@ Makefile
 Makefile.in
 acinclude.m4
 aclocal.m4
+autom4te.cache
 configure
 config.*
 conftest*
 libtool
 *.lo
 *.la
-mdemo
-mdemo.static
+mdemo2
+mdemo2_static

@@ -1,7 +1,5 @@
 Makefile
 Makefile.in
-mdate-sh
-texinfo.tex
 stamp-vti
 version.texi
 *.log

@@ -4,10 +4,16 @@ Makefile
 Makefile.in
 acinclude.m4
 aclocal.m4
+autom4te.cache
 configure
 config.*
+config-h.in
 conftest*
+install-sh
 libtool
+ltmain.sh
+missing
+mkinstalldirs
 *.lo
 *.la
 stamp-h*
