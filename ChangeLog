@@ -1,3 +1,18 @@
+1999-02-18  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
+
+	* ltconfig.in (archive{,_sym}_commands): Be careful not to
+	re-export the dll entry points DllMain@12, _cygwin_dll_entry@12 and
+	_cygwin_noncygwin_dll_entry@12 to avoid bugs with the wrong entry
+	function being called with inter-dll dependencies.
+	Reported by DJ Delorie <dj@delorie.com>
+	* ltconfig.in (old_archive_from_new_cmds): We no longer want to
+	produce the import library when we link the dll.
+	(library_names_spec): We no longer list the import library because
+	it had the same name as a static library.
+	* ltmain.in (impgen.c): Added a new embedded C file that can be
+	used under win32 to extract a def file (symbol export list) from a
+	dll that has none.
+	
 1999-02-15  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
 
 	* demo/dlmain.c (_WIN32): The lt_symlist structure is now const,
