@@ -4713,6 +4713,12 @@ the system that libtool was configured for.
 List of symbols that must always be exported when using @var{export_symbols}.
 @end defvar
 
+@defvar inherit_rpath
+Whether the linker adds runtime paths of dependency libraries to the
+runtime path list, requiring libtool to relink the output when installing.
+Set to @samp{yes} or @samp{no}.  Default is @samp{no}.
+@end defvar
+
 @defvar libext
 The standard old archive suffix (normally "a").
 @end defvar

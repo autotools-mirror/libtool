@@ -1,5 +1,10 @@
 2004-03-24  Scott James Remnant  <scott@netsplit.com>
 
+	* NEWS: Explain more fully why we no longer load libraries
+	with global symbol resolution.
+	* doc/libtool.texi (libtool script contents): Add missing
+	documentation for 'inherit_rpath' variable.
+
 	* configure.ac: Catch errors during calls to AC_PROG_CXX,
 	AC_PROG_CXXCPP and AC_PROG_F77 before LT_INIT.  Only set the
 	HAVE_CXX and HAVE_F77 conditions to true if an error didn't
