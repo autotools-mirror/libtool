@@ -1,4 +1,5 @@
 .*.prcs_aux
+.clcommitrc
 COPYING
 INSTALL
 Makefile
@@ -11,6 +12,8 @@ configure
 config.*
 libtool
 libtoolize
+libtoolize.in
 patches
 stamp-vcl
 config-h.in
+commit

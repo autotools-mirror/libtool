@@ -1,6 +1,7 @@
 COPYING
 INSTALL
 install-sh
+ltmain.in
 ltmain.sh
 mdate-sh
 missing
@@ -8,3 +9,6 @@ mkinstalldirs
 texinfo.tex
 depcomp
 compile
+config.guess
+config.sub
+mailnotify
