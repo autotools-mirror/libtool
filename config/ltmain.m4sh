@@ -1967,7 +1967,7 @@ func_mode_install ()
 	  esac
 
 	  # Check the variables that should have been set.
-	  test -z "$notinst_deplibs" && \
+	  test -z "$generated_by_libtool_version" && \
 	    func_fatal_error "invalid libtool wrapper script \`$wrapper'"
 
 	  finalize=yes
@@ -6003,7 +6003,8 @@ relink_command=\"$relink_command\"
 
 # This environment variable determines our operation mode.
 if test \"\$libtool_install_magic\" = \"$magic\"; then
-  # install mode needs the following variable:
+  # install mode needs the following variables:
+  generated_by_libtool_version='$macro_version'
   notinst_deplibs='$notinst_deplibs'
 else
   # When we are sourced in execute mode, \$file and \$ECHO are already set.

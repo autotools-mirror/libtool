@@ -1,5 +1,32 @@
+2004-11-01  Peter Ekberg  <spam.protected>
+
+	Sometimes, a wrapper script is generated for an executable that,
+	itself, does not link against an uninstalled library.  It appears
+	that this can happen if you are building a project where:
+
+	  (1) there is a library
+	  (2) there is an executable that does not, itself, link against
+	      that library
+
+	In this case, notinst_deplibs is empty, and when the wrapper
+	script is loaded by libtool during ./libtool mode=install, there
+	is a check for "is notinst_deplibs empty".  In this case, it is,
+	so libtool reports an error.
+
+	I don't think it is wrong to have a wrapper script for an exe that
+	*technically* doesn't need it.  But instead of checking for
+	notinst_deplib nonempty as a proxy for "did wrapper script get
+	sourced into my environment properly" a different var should be
+	used.
+
+	* config/ltmain.m4sh (func_mode_install): set new variable
+	`generated_by_libtool_version' in wrapper script when using
+	libtool_install_magic.  When verifying that wrapper script was
+	properly sourced, check that `generated_by_libtool_version' is
+	non-empty, instead of using notinst_deplibs.
+
 2004-11-01  Charles Wilson  <spam.protected>,
-	    Peter Ekberg <spam.protected>
+	    Peter Ekberg  <spam.protected>
 
 	* config/ltmain.m4sh (func_mode_install): On Windows based hosts,
 	ensure that import libraries don't get stripped.
