@@ -70,8 +70,8 @@ rm="rm -f"
 Xsed="${SED}"' -e 1s/^X//'
 sed_quote_subst='s/\([\\`\\"$\\\\]\)/\\\1/g'
 # test EBCDIC or ASCII
-case `echo A|od -x` in
- *[Cc]1*) # EBCDIC based system
+case `echo A|tr A '\301'` in
+ A) # EBCDIC based system
   SP2NL="tr '\100' '\n'"
   NL2SP="tr '\r\n' '\100\100'"
   ;;

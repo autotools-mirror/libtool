@@ -1,3 +1,9 @@
+2003-06-01  Robert Boehne  <rboehne@gnu.org>
+
+	* libtool.m4 (AC_LIBTOOL_SYS_DYNAMIC_LINKER): Match all qnx-nto
+	as recent config.guess returns a slightly different string.
+	* ltmain.in: Replace use of "od" with tr.
+
 2003-05-30  Gary V. Vaughan  <gary@gnu.org>
 
 	* libltdl/ltdl.c (argz_insert): Corrected an off by one error when
