@@ -1,5 +1,12 @@
 2004-01-23  Scott James Remnant  <scott@netsplit.com>
 
+	* ltmain.in: Add -pthread and similar to $deplibs ($compile_deplibs
+	and $finalize_deplibs for programs) when found on the command line
+	or in a .la file's dependency_libs (but don't place them there) so
+	they are honoured when linking both programs and libraries.
+
+2004-01-23  Scott James Remnant  <scott@netsplit.com>
+
 	* ltmain.in: In compile mode, delay parsing of -shared, -static,
 	-prefer-pic and -prefer-non-pic until after tagged configuration
 	has been read.  In link mode, read tagged configuration before
