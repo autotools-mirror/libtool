@@ -1,6 +1,6 @@
 #! /bin/sh
 # objectlist.test - make sure that a nonexisting objectlist file is
-# properly mentioned
+# properly mentioned and that the argument may contain spaces.
 
 # Copyright (C) 2003, 2004 Free Software Foundation, Inc.
 # This is free software; see the source for copying conditions.  There is NO
@@ -28,10 +28,19 @@
 linkresult=`$LIBTOOL -n --mode=link $CC -objectlist nonexistant 2>&1`
 test $? -eq 0 && exit $EXIT_FAILURE
 
-echo ".$linkresult."
 echo "$linkresult" | ${EGREP} "nonexistant" >/dev/null 2>&1 && {
   func_msg "$progname: error message contains -objectlist argument as expected"
-  exit $EXIT_SUCCESS
-}
+}  || exit $EXIT_FAILURE
 
-exit $EXIT_FAILURE
+
+objlist="object list with spaces"
+: > "$objlist"
+linkresult=`$LIBTOOL -n --mode=link $CC -o a.out -objectlist "$objlist" 2>&1`
+rm -f "$objlist"
+
+echo "$linkresult" | ${EGREP} "spaces" >/dev/null 2>&1 && {
+  func_msg "$progname: -objectlist with spaces in filename not recognized."
+  exit $EXIT_FAILURE
+} 
+
+exit $EXIT_SUCCESS

@@ -1,3 +1,8 @@
+2004-11-22  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
+	* config/ltmain.m4sh (func_mode_link), tests/objectlist.test:
+	Make sure the argument to `-objectlist' may contain spaces.
+
 2004-11-19  Gary V. Vaughan  <gary@gnu.org>
 
 	* config/m4general.m4sh, config/mailnotify.m4sh,
