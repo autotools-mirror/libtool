@@ -1,5 +1,5 @@
 /* ltdl.c -- system independent dlopen wrapper
-   Copyright (C) 1998-1999 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2000 Free Software Foundation, Inc.
    Originally by Thomas Tanner <tanner@ffii.org>
    This file is part of GNU Libtool.
 
@@ -1318,6 +1318,22 @@ lt_dlopen (filename)
 			else
 			if (strcmp(line, "installed=no\n") == 0)
 				installed = 0;
+			else
+#			undef  STR_LIBRARY_NAMES
+#			define STR_LIBRARY_NAMES "library_names="
+			if (! dlname &&
+			    strncmp(line, STR_LIBRARY_NAMES,
+				sizeof(STR_LIBRARY_NAMES) - 1) == 0) {
+			  char *last_libname;
+			  error = trim(&dlname,
+				       &line[sizeof(STR_LIBRARY_NAMES) - 1]);
+			  if (! error && dlname &&
+			      (last_libname = strrchr(dlname, ' ')) != NULL) {
+			    last_libname = strdup(last_libname + 1);
+			    free(dlname);
+			    dlname = last_libname;
+			  }
+			}
 			if (error)
 				break;
 		}
