@@ -1,5 +1,9 @@
 1999-05-21  Gary V. Vaughan  <gary@oranda.demon.co.uk>
 
+	* demo/foo.h: s/PARAMS/LTDL_PARAMS/g
+	* libltdl/ltdl.h: ditto.
+	* libltdl/ltdl.c: ditto.
+
 	* demo/foo.h: s/__P/PARAMS/g
 	* libltdl/ltdl.h: ditto.
 	* libltdl/ltdl.c: ditto.
