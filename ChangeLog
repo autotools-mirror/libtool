@@ -1,5 +1,8 @@
 2004-10-01  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* libltdl/slist.c (slist_foreach): result was declared as
+	inner variable, shadowing the actually returned value.
+
 	* libltdl/ltdl.c (load_deplibs, try_dlopen): Cast argument
 	to isspace/isalnum to the correct range.  Also, cast to int to
 	avoid compiler warnings.

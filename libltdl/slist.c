@@ -241,7 +241,7 @@ slist_foreach (SList *slist, SListCallback *foreach, void *userdata)
   while (slist)
     {
       SList *next = slist->next;
-      void *result = (*foreach) (slist, userdata);
+      result = (*foreach) (slist, userdata);
 
       if (result)
 	break;
