@@ -24,33 +24,36 @@
 
 # AC_LIB_LTDL
 # -----------
-AC_DEFUN(AC_LIB_LTDL,
-[AC_PREREQ(2.13)dnl
-AC_REQUIRE([AC_PROG_CC])dnl
-AC_REQUIRE([AC_C_CONST])dnl
-
 # Perform all the checks necessary for compilation of the ltdl objects
-#  -- including compiler checks (above) and header checks (below).
-AC_REQUIRE([AC_HEADER_STDC])dnl
-AC_REQUIRE([_LT_AC_CHECK_DLFCN])dnl
+#  -- including compiler checks and header checks.
+AC_DEFUN(AC_LIB_LTDL,
+[AC_PREREQ(2.13)
+AC_REQUIRE([AC_PROG_CC])
+AC_REQUIRE([AC_C_CONST])
+AC_REQUIRE([AC_HEADER_STDC])
+AC_REQUIRE([AC_HEADER_DIRENT])
+AC_REQUIRE([_LT_AC_CHECK_DLFCN])
+AC_REQUIRE([AC_LTDL_ENABLE_INSTALL])
+AC_REQUIRE([AC_LTDL_SHLIBEXT])
+AC_REQUIRE([AC_LTDL_SHLIBPATH])
+AC_REQUIRE([AC_LTDL_SYSSEARCHPATH])
+AC_REQUIRE([AC_LTDL_OBJDIR])
+AC_REQUIRE([AC_LTDL_DLPREOPEN])
+AC_REQUIRE([AC_LTDL_DLLIB])
+AC_REQUIRE([AC_LTDL_SYMBOL_USCORE])
+AC_REQUIRE([AC_LTDL_DLSYM_USCORE])
+AC_REQUIRE([AC_LTDL_SYS_DLOPEN_DEPLIBS])
+AC_REQUIRE([AC_LTDL_FUNC_ARGZ])
 
-AC_CHECK_HEADERS(malloc.h memory.h stdlib.h stdio.h ctype.h dl.h sys/dl.h dld.h)
-AC_CHECK_HEADERS(string.h strings.h, break)
-AC_CHECK_FUNCS(strchr index, break)
-AC_CHECK_FUNCS(strrchr rindex, break)
-AC_CHECK_FUNCS(memcpy bcopy, break)
-AC_CHECK_FUNCS(strcmp)
+AC_CHECK_HEADERS([errno.h malloc.h memory.h stdlib.h stdio.h ctype.h unistd.h])
+AC_CHECK_HEADERS([dl.h sys/dl.h dld.h])
+AC_CHECK_HEADERS([string.h strings.h], break)
 
-AC_REQUIRE([AC_LTDL_ENABLE_INSTALL])dnl
-AC_REQUIRE([AC_LTDL_SHLIBEXT])dnl
-AC_REQUIRE([AC_LTDL_SHLIBPATH])dnl
-AC_REQUIRE([AC_LTDL_SYSSEARCHPATH])dnl
-AC_REQUIRE([AC_LTDL_OBJDIR])dnl
-AC_REQUIRE([AC_LTDL_DLPREOPEN])dnl
-AC_REQUIRE([AC_LTDL_DLLIB])dnl
-AC_REQUIRE([AC_LTDL_SYMBOL_USCORE])dnl
-AC_REQUIRE([AC_LTDL_DLSYM_USCORE])dnl
-AC_REQUIRE([AC_LTDL_SYS_DLOPEN_DEPLIBS])dnl
+AC_CHECK_FUNCS([strchr index], break)
+AC_CHECK_FUNCS([strrchr rindex], break)
+AC_CHECK_FUNCS([memcpy bcopy], break)
+AC_CHECK_FUNCS([memmove strcmp])
+
 ])# AC_LIB_LTDL
 
 # AC_LTDL_ENABLE_INSTALL
@@ -280,3 +283,21 @@ if test x"$libltdl_cv_need_uscore" = xyes; then
     [Define if dlsym() requires a leading underscode in symbol names. ])
 fi
 ])# AC_LTDL_DLSYM_USCORE
+
+
+# AC_LTDL_FUNC_ARGZ
+# -----------------
+AC_DEFUN([AC_LTDL_FUNC_ARGZ],
+[AC_CHECK_HEADERS([argz.h])
+
+AC_CHECK_TYPES([error_t],
+  [],
+  [AC_DEFINE([error_t], [int],
+    [Define to a type to use for `error_t' if it is not otherwise available.])],
+  [#if HAVE_ARGZ_H
+#  include <argz.h>
+#endif])
+
+AC_CHECK_FUNCS([argz_append argz_create_sep argz_insert argz_next argz_stringify])
+])# AC_LTDL_FUNC_ARGZ
+
