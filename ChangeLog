@@ -1,3 +1,10 @@
+2004-07-30  Peter O'Gorman  <peter@pogma.com>
+
+	* libtool.m4 [darwin]: $GREP is not defined here, use $EGREP.
+	* ltmain.in (func_extract_archives): Backport func_extract_archives
+	from cvs HEAD to reduce code size and enable the darwin fat archive
+	extraction.
+
 2004-07-28  Peter O'Gorman  <peter@pogma.com>
 
 	* libtool.m4, ltmain.in [darwin]: Backport xlc support from cvs HEAD.

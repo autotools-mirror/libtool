@@ -2892,7 +2892,7 @@ case $host_os in
     if test "$GXX" = yes ; then
       lt_int_apple_cc_single_mod=no
       output_verbose_link_cmd='echo'
-      if $CC -dumpspecs 2>&1 | $GREP 'single_module' >/dev/null ; then
+      if $CC -dumpspecs 2>&1 | $EGREP 'single_module' >/dev/null ; then
        lt_int_apple_cc_single_mod=yes
       fi
       if test "X$lt_int_apple_cc_single_mod" = Xyes ; then
