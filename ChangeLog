@@ -1,5 +1,15 @@
 1999-04-25  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* ltconfig.in (aix4*, allow_undefined_flag): Set to -berok.
+	(aix4*, shared_flag): Set to -shared or ${wl}-bM:SRE.
+	(aix4*, archive_cmds): Use -bexpall.
+	(aix4*, archive_cmds, archive_expsym_cmds): Use shared_flag and
+	allow_undefined_flag.
+	(aix4*, always_export_symbols): Set to yes up to AIX 4.1.*,
+	because -bexpall is supported from 4.2 on.
+	Reported by Greg Wooledge
+	<ic5035%tss1crs.amgreetings.com@rose.amgreetings.com>
+
 	* ltconfig.in (hpux*, hardcode_minus_L): Set to yes.
 	(hpux*, hardcode_libdir_flag_spec): Do not use +s by default.
 	(hpux*, shlibpath_overrides_runpath): Set to no.
