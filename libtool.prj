@@ -1,0 +1,44 @@
+;; -*- Lisp -*-
+(Created-By-Prcs-Version 1 2 1)
+(Project-Description "GNU libtool library support script")
+(Project-Version libtool 0.6a 1)
+(Parent-Version libtool 0.6a 0)
+
+(Version-Log "libtool-0.6a")
+(New-Version-Log "")
+(Checkin-Time "Tue, 01 Apr 1997 11:25:22 -0700")
+(Checkin-Login gord)
+(Populate-Ignore ("~$"
+		  "CVS" ".cvsignore$"))
+(Project-Keywords)
+(Files
+;; This is a comment.  Fill in files here.
+;; For example:  (prcs/checkout.cc ())
+
+;; Files added by populate at Tue, 01 Apr 1997 11:24:29 -0700:
+
+  (doc/libtool.texi (libtool/0_libtool.te 1.1 664))
+  (doc/Makefile.am (libtool/1_Makefile.a 1.1 664))
+  (ltmain.sh.in (libtool/2_ltmain.sh. 1.1 664))
+  (ltconfig.in (libtool/3_ltconfig.i 1.1 775))
+  (libtoolize.in (libtool/4_libtoolize 1.1 664))
+  (demo/main.c (libtool/5_main.c 1.1 664))
+  (demo/libinfo (libtool/6_libinfo 1.1 664))
+  (demo/hello.c (libtool/7_hello.c 1.1 664))
+  (demo/foo.h (libtool/8_foo.h 1.1 664))
+  (demo/foo.c (libtool/9_foo.c 1.1 664))
+  (demo/configure.in (libtool/10_configure. 1.1 664))
+  (demo/Makefile.am (libtool/11_Makefile.a 1.1 664))
+  (libtool.m4 (libtool/12_libtool.m4 1.1 664))
+  (configure.in (libtool/13_configure. 1.1 664))
+  (TODO (libtool/14_TODO 1.1 664))
+  (THANKS (libtool/15_THANKS 1.1 664))
+  (README-alpha (libtool/16_README-alp 1.1 664))
+  (README (libtool/17_README 1.1 664))
+  (Makefile.am (libtool/18_Makefile.a 1.1 664))
+  (NEWS (libtool/19_NEWS 1.1 664))
+  (ChangeLog (libtool/20_ChangeLog 1.1 664))
+  (AUTHORS (libtool/21_AUTHORS 1.1 664))
+)
+(Merge-Parents)
+(New-Merge-Parents)
