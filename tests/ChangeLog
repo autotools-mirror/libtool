@@ -1,3 +1,10 @@
+Thu Jun 19 14:31:49 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* demo-conf.test: Always remove the local config.cache, but run
+	`make distclean' only if the Makefile exists.  Otherwise, the demo
+	directory is not cleaned up if a user uses their own config.cache.
+	Reported by Joel Weber.
+
 Wed Apr 16 19:21:00 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* hardcode.test: AIX also has arbitrary limits on the line length

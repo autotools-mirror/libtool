@@ -17,10 +17,11 @@ test -d ../demo || mkdir ../demo
 cd ../demo || exit 1
 
 # Possibly clean up the distribution.
-if test -f config.cache; then
+if test -f Makefile; then
   echo "= Running $make distclean in ../demo"
-  $make distclean || rm -f config.cache
+  $make distclean
 fi
+rm -f config.cache
 
 # Configure the demonstration.
 echo "= Configuring in ../demo (prefix=$prefix)"
