@@ -1,3 +1,15 @@
+Sun Jun  8 12:10:14 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltconfig.in (host_cpu, host_vendor, host_os): Patch up
+ 	definitions, to allow for the fact that the host_os may contain
+ 	hyphens (as in linux-gnu).  From Scott Goehring.
+
+	* ltmain.sh.in (link): Move the `dlname' setting closer to the top
+	of the file.  Suggested by David Mosberger-Tang.
+	Symlink the libtool archive into the `.libs' directory so that it
+	can be found by programs that want to find a library's dlname by
+	searching LD_LIBRARY_PATH.  Reported by David Mosberger-Tang.
+
 Fri Jun  6 15:52:28 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* Tell people to report bugs to the new libtool mailing list,
@@ -33,7 +45,7 @@ Fri Apr 25 13:23:33 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 	they need more careful attention to make portable.
 
 	* libtool.m4, ltconfig.in: Added a `--disable-static' flag to turn
-	of static library creation.  From Tom Lees (who finally convinced
+	off static library creation.  From Tom Lees (who finally convinced
 	me that it was the Right Thing to do).
 
 Tue Apr 22 12:41:34 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>

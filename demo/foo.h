@@ -21,9 +21,9 @@ Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.  */
 #ifndef _FOO_H_
 #define _FOO_H_ 1
 
-/* __BEGIN_DECLS should be used at the beginning of your C declarations,
-   so that C++ compilers don't mangle their names.  __END_DECLS is used
-   at the end of C declarations. */
+/* __BEGIN_DECLS should be used at the beginning of your declarations,
+   so that C++ compilers don't mangle their names.  Use __END_DECLS at
+   the end of C declarations. */
 #undef __BEGIN_DECLS
 #undef __END_DECLS
 #ifdef __cplusplus

@@ -1,12 +1,13 @@
 \input texinfo   @c -*-texinfo-*-
 @c %**start of header
 @setfilename libtool.info
-@settitle libtool
-@setchapternewpage off
+@settitle Libtool
+@c For double-sided printing, uncomment:
+@c @setchapternewpage odd
 @c %**end of header
 
 @include version.texi
-@set BUGADDR the libtool mailing list <bug-libtool@@gnu.ai.mit.edu>
+@set BUGADDR the libtool mailing list @code{<bug-libtool@@gnu.ai.mit.edu>}
 
 @dircategory GNU programming tools
 @direntry
@@ -19,7 +20,7 @@
 @end direntry
 
 @ifinfo
-This file documents GNU libtool @value{VERSION}
+This file documents GNU Libtool @value{VERSION}
 
 Copyright (C) 1996, 1997 Free Software Foundation, Inc.
 
@@ -87,7 +88,7 @@ approved by the Free Software Foundation.
 @comment  node-name,  next,  previous,  up
 @top Shared library support for GNU
 
-This file documents GNU libtool, a script that allows package developers
+This file documents GNU Libtool, a script that allows package developers
 to provide generic shared library support.  This edition documents
 version @value{VERSION}.
 
@@ -95,11 +96,11 @@ version @value{VERSION}.
 * Introduction::                What the heck is libtool?
 * Libtool paradigm::            How libtool's view of libraries is different.
 * Using libtool::               Example of using libtool to build libraries.
-* Invoking libtool::            Running the @file{libtool} script.
+* Invoking libtool::            Running the @code{libtool} script.
 * Integrating libtool::         Using libtool in your own packages.
 * Versioning::                  Using library interface versions.
 * Library tips::                Tips for library interface design.
-* Inter-library dependencies::
+* Inter-library dependencies::  Libraries that depend on other libraries.
 * Dlopened modules::            @code{dlopen}ing libtool-created libraries.
 * Other languages::             Using libtool without a C compiler.
 * Troubleshooting::             When libtool doesn't work as advertised.
@@ -125,31 +126,31 @@ Using libtool
 * Installing executables::      Making programs available to users.
 * Static libraries::            When shared libraries are not wanted.
 
-Invoking @file{libtool}
+Invoking @code{libtool}
 
 * Compile mode::                Creating library object files.
 * Link mode::                   Generating executables and libraries.
-* Dlname mode::                 Obtaining a filename to @code{dlopen(3)}.
+* Dlname mode::                 Obtaining a file name to @code{dlopen(3)}.
 * Install mode::                Making libraries and executables public.
 * Finish mode::                 Completing a library installation.
 * Uninstall mode::              Removing executables and libraries.
 
 Integrating libtool with your own packages
 
-* Makefile rules::              Writing Makefile rules for libtool.
+* Makefile rules::              Writing @file{Makefile} rules for libtool.
 * Using Automake::              Automatically supporting libtool.
 * Configuring::                 Configuring libtool for a host system.
 * Distributing::                What files to distribute with your package.
 
 Configuring libtool
 
-* Invoking ltconfig::           @file{ltconfig} command line options.
-* ltconfig example::            Manually configuring a @file{libtool}.
-* AM_PROG_LIBTOOL::             Configuring @file{libtool} in @file{configure.in}.
+* Invoking ltconfig::           @code{ltconfig} command line options.
+* ltconfig example::            Manually configuring a @code{libtool}.
+* AM_PROG_LIBTOOL::             Configuring @code{libtool} in @file{configure.in}.
 
 Including libtool with your package
 
-* Invoking libtoolize::         @file{libtoolize} command line options.
+* Invoking libtoolize::         @code{libtoolize} command line options.
 * Autoconf .o macros::          Autoconf macros that set object file names.
 
 Library interface versions
@@ -206,20 +207,20 @@ Platform quirks
 
 In the past, if a source code package developer wanted to take advantage
 of the power of shared libraries, he needed to write custom support code
-for each platform his package ran on.  He also had to design a
-configuration interface so that the user could choose what sort of
+for each platform on which his package ran.  He also had to design a
+configuration interface so that the package installer could choose what sort of
 libraries were built.
 
-GNU libtool simplifies the developer's job by encapsulating both the
+GNU Libtool simplifies the developer's job by encapsulating both the
 platform-specific dependencies, and the user interface, in a single
-script.  GNU libtool is designed so that the complete functionality of
+script.  GNU Libtool is designed so that the complete functionality of
 each host type is available via a generic interface, but nasty quirks
 are hidden from the programmer.
 
-GNU libtool's consistent interface is reassuring@dots{} users don't need
+GNU Libtool's consistent interface is reassuring@dots{} users don't need
 to read obscure documentation in order to have their favorite source
 package build shared libraries.  They just run your package
-@file{configure} script (or equivalent), and libtool does all the dirty
+@code{configure} script (or equivalent), and libtool does all the dirty
 work.
 
 There are several examples throughout this document.  All assume the
@@ -252,7 +253,8 @@ primary motivation for such a change is to encourage modularity and
 reuse of code (both conceptually and physically) in GNU programs.
 
 Such a demand means that the way libraries are built in GNU packages
-needs to be general, to allow for any library type the user might want.
+needs to be general, to allow for any library type the package installer
+might want.
 The problem is compounded by the absence of a standard procedure for
 creating shared libraries on different platforms.
 
@@ -289,12 +291,13 @@ system, specifically libtool:
 
 @enumerate
 @item
-The user should be able to control what sort of libraries are built.
+The package installer should be able to control what sort of libraries
+are built.
 
 @item
 It can be tricky to run dynamically linked programs whose libraries have
 not yet been installed.  @var{LD_LIBRARY_PATH} must be set properly (if
-it is supported), or the program fails.
+it is supported), or programs fail to run.
 
 @item
 The system must operate consistently even on hosts which don't support
@@ -302,13 +305,13 @@ shared libraries.
 
 @item
 The commands required to build shared libraries may differ wildly from
-host to host.  These need to be guessed and tested at configure time in
+host to host.  These need to be determined at configure time in
 a consistent way.
 
 @item
-It is not always obvious with which suffix a shared object should be
-installed.  This makes it difficult for Makefile rules, since they
-generally assume that filenames are the same from host to host.
+It is not always obvious with which suffix a shared library should be
+installed.  This makes it difficult for @file{Makefile} rules, since they
+generally assume that file names are the same from host to host.
 
 @item
 The system needs a simple library version number abstraction, so that
@@ -317,15 +320,16 @@ informed how to design the interfaces to the library to maximize binary
 compatibility.
 
 @item
-The install Makefile target should warn the user to set
-@var{LD_LIBRARY_PATH} (or equivalent) or run @kbd{ldconfig}, if
+The install @file{Makefile} target should warn the package installer to set
+@var{LD_LIBRARY_PATH} (or equivalent) or run @code{ldconfig(8)}, if
 required.
 @end enumerate
 
 @node Other implementations
 @section Other implementations
 
-I have investigated several different implementations of building shared
+I have investigated several different implementations of systems that
+build shared
 libraries as part of a freeware package.  At first, I made notes on the
 features of each of these packages for comparison purposes.
 
@@ -361,7 +365,7 @@ systems.
 
 For this reason, I have designed libtool as an independent shell script.
 It isolates the problems and inconsistencies in library building that
-plague Makefile writers by wrapping the compiler suite on different
+plague @file{Makefile} writers by wrapping the compiler suite on different
 platforms with a consistent, powerful interface.
 
 I hope that libtool will be useful to and used by the GNU community, and
@@ -372,23 +376,23 @@ implemented by designers of library systems.
 @chapter The libtool paradigm
 
 At first, libtool was designed to support an arbitrary number of library
-object types.  After porting libtool to more platforms, the author
-discovered a new (at least for him) paradigm of what libraries and
-programs are.
+object types.  After porting libtool to more platforms, I discovered a
+new paradigm for describing the relationship between libraries and
+programs.
 
 @cindex Definition of libraries
 @cindex Libraries, definition of
-In summary: ``libraries are programs with multiple entry points, and
+In summary, ``libraries are programs with multiple entry points, and
 more formally defined interfaces.''
 
 Version 0.7 of libtool was a complete redesign and rewrite of libtool to
 reflect this new paradigm.  So far, it has proved to be successful:
-libtool is simpler and more functional than before.
+libtool is simpler and more useful than before.
 
 The best way to introduce the libtool paradigm is to contrast it with
 the paradigm of existing library systems, with examples from each.  It
 is a new way of thinking, so it may take a little time to absorb, but
-when you understand it the world gets simpler.
+when you understand it, the world becomes simpler.
 
 @node Using libtool
 @chapter Using libtool
@@ -401,24 +405,24 @@ this chapter introduce the main features of libtool by comparing the
 standard library building procedure to libtool's operation on two
 different platforms:
 
-@table @asis
-@item `a23'
+@table @samp
+@item a23
 An Ultrix 4.2 platform with only static libraries.
 
-@item `burger'
+@item burger
 A NetBSD/i386 1.2 platform with shared libraries.
 @end table
 
 You can follow these examples on your own platform, using the
-pre-configured (@pxref{Configuring}) libtool script that was installed
-with the libtool distribution.
+pre-configured libtool script that was installed with libtool
+(@pxref{Configuring}).
 
 Source files for the following examples are taken from the @file{demo}
 subdirectory of the libtool distribution.  Assume that we are building a
 library, @file{libhello}, out of the files @file{foo.c} and
 @file{hello.c}.
 
-Note that the @file{foo.c} source file uses the cos(3) math library
+Note that the @file{foo.c} source file uses the @code{cos(3)} math library
 function, which is usually found in the standalone math library, and not
 the C library.  So, we need to add @kbd{-lm} to the end of
 the link line whenever we link @file{foo.o} or @file{foo.lo} into an
@@ -475,17 +479,17 @@ to the compiler to tell it to generate PIC rather than the standard
 position-dependant code.
 
 @cindex Library object file
-@cindex .lo files
+@cindex @samp{.lo} files
 @cindex Object files, library
 Since this is a library implementation detail, libtool hides the
 complexity of PIC compiler flags by using separate library object files
-(which end in `.lo' instead of `.o').  On systems without shared
+(which end in @samp{.lo} instead of @samp{.o}).  On systems without shared
 libraries (or without special PIC compiler flags), these library object
 files are identical to ``standard'' object files.
 
 To create library object files for @file{foo.c} and @file{hello.c},
-simply invoke libtool with the standard compilation command as an
-argument:
+simply invoke libtool with the standard compilation command as
+arguments:
 
 @example
 a23$ @kbd{libtool gcc -g -O -c foo.c}
@@ -498,8 +502,8 @@ a23$
 @end example
 
 Note that libtool creates two object files for each invocation.  The
-`.lo' file is a library object, and the `.o' file is a standard object
-file.  On `a23', these files are identical, because only static
+@samp{.lo} file is a library object, and the @samp{.o} file is a standard object
+file.  On @samp{a23}, these files are identical, because only static
 libraries are supported.
 
 On shared library systems, libtool automatically inserts the PIC
@@ -522,7 +526,7 @@ burger$
 @section Linking libraries
 
 @pindex ar
-Without libtool, the programmer would invoke the @file{ar} command to
+Without libtool, the programmer would invoke the @code{ar} command to
 create a static library:
 
 @example
@@ -532,7 +536,7 @@ burger$
 
 @pindex ranlib
 But of course, that would be too simple, so many systems require that
-you run the @file{ranlib} command on the resulting library (to give it
+you run the @code{ranlib} command on the resulting library (to give it
 better karma, or something):
 
 @example
@@ -543,12 +547,12 @@ burger$
 It seems more natural to use the C compiler for this task, given
 libtool's ``libraries are programs'' approach.  So, on platforms without
 shared libraries, libtool simply acts as a wrapper for the system
-@file{ar} (and possibly @file{ranlib}) commands.
+@code{ar} (and possibly @code{ranlib}) commands.
 
 @cindex Libtool libraries
-@cindex `.la' files
+@cindex @samp{.la} files
 Again, the libtool library name differs from the standard name (it has a
-`.la' suffix instead of a `.a' suffix).  The arguments to libtool are
+@samp{.la} suffix instead of a @samp{.a} suffix).  The arguments to libtool are
 the same ones you would use to produce an executable named
 @file{libhello.la} with your compiler:
 
@@ -566,7 +570,7 @@ importance.
 
 So, let's try again, this time with the library object
 files:@footnote{Remember that we need to add @kbd{-lm} to the link
-command line because @file{foo.c} uses the cos(3) math library
+command line because @file{foo.c} uses the @code{cos(3)} math library
 function.  @xref{Using libtool}.}
 
 @example
@@ -604,7 +608,7 @@ burger$
 @end example
 
 Now that's significantly cooler@dots{} libtool just ran an obscure
-@file{ld} command to create a shared library, as well as the static
+@code{ld} command to create a shared library, as well as the static
 library.
 
 @cindex @file{.libs} subdirectory
@@ -649,8 +653,8 @@ burger$
 
 Libtool's way is almost the same@footnote{However, you should never use
 @samp{-L} or @samp{-l} flags to link against an uninstalled libtool
-library.  Just specify the relative path to the `.la' file, such as
-@file{../intl/libintl.la}.  This is a design decision to help eliminate
+library.  Just specify the relative path to the @samp{.la} file, such as
+@file{../intl/libintl.la}.  This is a design decision to eliminate
 any ambiguity when linking against uninstalled shared libraries.}:
 
 @example
@@ -661,9 +665,9 @@ a23$
 
 That looks too simple to be true.  All libtool did was transform
 @file{libhello.la} to @file{./.libs/libhello.a}, but remember that
-`a23' has no shared libraries.
+@samp{a23} has no shared libraries.
 
-On `burger' the situation is different:
+On @samp{burger} the situation is different:
 
 @example
 burger$ @kbd{libtool gcc -g -O -o hell main.o libhello.la -lm}
@@ -674,7 +678,7 @@ burger$
 
 @cindex Wrapper scripts for programs
 @cindex Program wrapper scripts
-Notice that the executable, @file{hell} was actually created in the
+Notice that the executable, @code{hell}, was actually created in the
 @file{.libs} subdirectory.  Then, a wrapper script was created in the
 current directory.
 
@@ -736,12 +740,12 @@ accidentally strip the libraries, though, or they will be unusable.}
 @pindex su
 @example
 burger$ @kbd{su}
-Password: ********
+Password: @kbd{********}
 burger# @kbd{cp libhello.a /usr/local/lib/libhello.a}
 burger#
 @end example
 
-Oops, don't forget the @file{ranlib} command:
+Oops, don't forget the @code{ranlib} command:
 
 @example
 burger# @kbd{ranlib /usr/local/lib/libhello.a}
@@ -750,7 +754,7 @@ burger#
 
 @pindex install
 Libtool installation is quite simple, as well.  Just use the
-@file{install} or @file{cp} command that you normally would:
+@code{install} or @code{cp} command that you normally would:
 
 @example
 a23# @kbd{libtool cp libhello.la /usr/local/lib/libhello.la}
@@ -777,8 +781,8 @@ burger#
 
 @cindex Stripping libraries
 @cindex Libraries, stripping
-It is safe to specify the @samp{-s} (strip symbols) flag to the install
-program (if you use a BSD-compatible install) when installing libraries.
+It is safe to specify the @samp{-s} (strip symbols) flag if you use a
+BSD-compatible install program when installing libraries.
 Libtool will either ignore the @samp{-s} flag, or will run a program
 that will strip only debugging and compiler symbols from the library.
 
@@ -841,7 +845,8 @@ shared.  The most frequent case is when you have a ``convenience
 library'' that is a collection of related object files without a really
 nice interface.
 
-Why return to @file{ar} and @file{ranlib} silliness when you've had a
+@c FIXME: we should update this section
+Why return to @code{ar} and @code{ranlib} silliness when you've had a
 taste of libtool?  libtool works consistently with standard object
 files, static libraries, and programs created without libtool's help.
 
@@ -850,11 +855,11 @@ So, to create a static library:
 @enumerate 1
 @item
 Compile the object files with or without libtool.  It doesn't matter
-whether these objects are PIC (end with the `.lo' suffix) or not.
+whether these objects are PIC (end with the @samp{.lo} suffix) or not.
 
 @item
 Link the files in the same way you would a libtool library, but use a
-`.a' suffix (instead of `.la'):
+@samp{.a} suffix (instead of @samp{.la}):
 
 @example
 burger$ @kbd{libtool gcc -o libhello.a main.o foo.lo hello.lo -lm}
@@ -882,13 +887,13 @@ creating a standalone binary.  Use libtool to do the linking and add the
 @samp{-static} flag.
 
 @node Invoking libtool
-@chapter Invoking @file{libtool}
+@chapter Invoking @code{libtool}
 @pindex libtool
 @cindex libtool command options
 @cindex Options, libtool command
 @cindex Command options, libtool
 
-The @file{libtool} program has the following synopsis:
+The @code{libtool} program has the following synopsis:
 
 @example
 libtool [@var{option}]@dots{} [@var{mode-arg}]...
@@ -913,11 +918,11 @@ Same as @samp{--mode=finish}.
 
 @item --help
 Display a help message and exit.  If @samp{--mode=@var{mode}} is
-specified, then detailed help for operation mode @var{mode} is
+specified, then detailed help for @var{mode} is
 displayed.
 
 @item --mode=@var{mode}
-Use operation mode @var{mode}.  By default, the operation mode is
+Use @var{mode} as the operation mode.  By default, the operation mode is
 inferred from the contents of @var{mode-args}.
 
 If @var{mode} is specified, it must be one of the following:
@@ -925,6 +930,9 @@ If @var{mode} is specified, it must be one of the following:
 @table @samp
 @item compile
 Compile a source file into a libtool object.
+
+@item dlname
+Find the correct name that programs should @code{dlopen(3)}.
 
 @item finish
 Complete the installation of libtool libraries on the system.
@@ -946,7 +954,7 @@ Print libtool version information and exit.
 @menu
 * Compile mode::                Creating library object files.
 * Link mode::                   Generating executables and libraries.
-* Dlname mode::                 Obtaining a filename to @code{dlopen(3)}.
+* Dlname mode::                 Obtaining a file name to @code{dlopen(3)}.
 * Install mode::                Making libraries and executables public.
 * Finish mode::                 Completing a library installation.
 * Uninstall mode::              Removing executables and libraries.
@@ -964,7 +972,7 @@ so that only an object file is created.
 
 Libtool determines the name of the output file by removing the directory
 component from the source file name, then substituting the C source code
-suffix `.c' with the library object suffix, `.lo'.
+suffix @samp{.c} with the library object suffix, @samp{.lo}.
 
 If shared libraries are being built, any necessary PIC generation flags
 are substituted into the compilation command.
@@ -1022,16 +1030,16 @@ If not specified, each of these variables defaults to 0
 (@pxref{Versioning}).
 @end table
 
-If the @var{output-file} ends in `.la', then a libtool library is
-created, which must be built only from library objects (`.lo' files).
+If the @var{output-file} ends in @samp{.la}, then a libtool library is
+created, which must be built only from library objects (@samp{.lo} files).
 The @samp{-rpath} option is required.  In the current implementation,
 libtool libraries may not depend on other uninstalled libtool libraries
 (@pxref{Inter-library dependencies}).
 
-If the @var{output-file} ends in `.a', then a standard library is
-created using @file{ar} and possibly @file{ranlib}.
+If the @var{output-file} ends in @samp{.a}, then a standard library is
+created using @code{ar} and possibly @code{ranlib}.
 
-If @var{output-file} ends in `.o' or `.lo', then a reloadable object
+If @var{output-file} ends in @samp{.o} or @samp{.lo}, then a reloadable object
 file is created from the input files (generally using @samp{ld -r}).
 This method is called @dfn{incremental linking}.
 
@@ -1059,8 +1067,8 @@ If one of the @var{mode-args} was not linked with
 @cindex Mode, install
 
 In @samp{install} mode, libtool interprets @var{mode-args} as an
-installation command beginning with @file{cp}, or a BSD-compatible
-@file{install} program.
+installation command beginning with @code{cp}, or a BSD-compatible
+@code{install} program.
 
 The rest of the @var{mode-args} are interpreted as arguments to that
 command.
@@ -1100,21 +1108,20 @@ This chapter describes how to integrate libtool with your packages so
 that your users can install hassle-free shared libraries.
 
 @menu
-* Makefile rules::              Writing Makefile rules for libtool.
+* Makefile rules::              Writing @file{Makefile} rules for libtool.
 * Using Automake::              Automatically supporting libtool.
 * Configuring::                 Configuring libtool for a host system.
 * Distributing::                What files to distribute with your package.
 @end menu
 
 @node Makefile rules
-@section Writing Makefile rules for libtool
+@section Writing @file{Makefile} rules for libtool
 @cindex Makefile
 @cindex Makefile.am
 @cindex Makefile.in
 
-Libtool is fully integrated with Automake (@pxref{Top, , The Automake
-Manual, automake, The Automake Manual}), starting with Automake
-version 1.2.
+Libtool is fully integrated with Automake (@pxref{Top,,, automake, The
+Automake Manual}), starting with Automake version 1.2.
 
 If you want to use libtool in a regular @file{Makefile} (or
 @file{Makefile.in}), you are on your own.  If you're not using Automake
@@ -1127,12 +1134,12 @@ Download Automake (version 1.2 or later) from your nearest GNU mirror,
 install it, and start using it.
 
 @item
-Learn how to write Makefile rules by hand.  They're sometimes complex,
+Learn how to write @file{Makefile} rules by hand.  They're sometimes complex,
 but if you're clever enough to write rules for compiling your old
 libraries, then you should be able to figure out new rules for libtool
 libraries (hint: examine the @file{Makefile.in} in the @file{demo}
 subdirectory of the libtool distribution@dots{} note especially that it
-was generated automatically from the @file{Makefile.am} by Automake).
+was automatically generated from the @file{Makefile.am} by Automake).
 @end enumerate
 
 @node Using Automake
@@ -1197,30 +1204,30 @@ operating system are used to compile your package.
 
 For this reason, libtool must be @dfn{configured} before it can be
 used.  This idea should be familiar to anybody who has used a GNU
-@file{configure} script.  @file{configure} runs a number of tests for
+@code{configure} script.  @code{configure} runs a number of tests for
 system features, then generates the @file{Makefiles} (and possibly a
-@file{config.h} header file), after which you can run @file{make} and
+@file{config.h} header file), after which you can run @code{make} and
 build the package.
 
-Libtool has its own equivalent to the @file{configure} script,
-@file{ltconfig}.
+Libtool has its own equivalent to the @code{configure} script,
+@code{ltconfig}.
 
 @menu
-* Invoking ltconfig::           @file{ltconfig} command line options.
-* ltconfig example::            Manually configuring a @file{libtool}.
-* AM_PROG_LIBTOOL::             Configuring @file{libtool} in @file{configure.in}.
+* Invoking ltconfig::           @code{ltconfig} command line options.
+* ltconfig example::            Manually configuring a @code{libtool}.
+* AM_PROG_LIBTOOL::             Configuring @code{libtool} in @file{configure.in}.
 @end menu
 
 @node Invoking ltconfig
-@subsection Invoking @file{ltconfig}
+@subsection Invoking @code{ltconfig}
 @pindex ltconfig
 @cindex ltconfig command options
 @cindex Options, ltconfig command
 @cindex Command options, ltconfig
 
-@file{ltconfig} runs a series of configuration tests, then creates a
-system-specific @file{libtool} in the current directory.  The
-@file{ltconfig} program has the following synopsis:
+@code{ltconfig} runs a series of configuration tests, then creates a
+system-specific @code{libtool} in the current directory.  The
+@code{ltconfig} program has the following synopsis:
 
 @example
 ltconfig [@var{option}]@dots{} @var{ltmain} [@var{host}]
@@ -1231,10 +1238,10 @@ and accepts the following options:
 
 @table @samp
 @item --disable-shared
-Create a @file{libtool} that only builds static libraries.
+Create a @code{libtool} that only builds static libraries.
 
 @item --disable-static
-Create a @file{libtool} that builds only shared libraries if they are
+Create a @code{libtool} that builds only shared libraries if they are
 available.  If only static libraries can be built, then this flag has
 no effect.
 
@@ -1242,34 +1249,34 @@ no effect.
 Display a help message and exit.
 
 @item --no-verify
-Do not use @file{config.sub} to verify that @var{host} is a valid
+Do not use @code{config.sub} to verify that @var{host} is a valid
 canonical host system name.
 
 @item --quiet
-@item --silent
+@itemx --silent
 Do not print informational messages when running configuration tests.
 
 @item --srcdir=@var{dir}
-Look for @file{config.guess} and @file{config.sub} in @var{dir}.
+Look for @code{config.guess} and @code{config.sub} in @var{dir}.
 
 @item --version
-Print @file{ltconfig} version information and exit.
+Print @code{ltconfig} version information and exit.
 
 @item --with-gcc
 Assume that the GNU C compiler will be used when invoking the created
-@file{libtool} to compile and link object files.
+@code{libtool} to compile and link object files.
 @end table
 
-@var{ltmain} is the @file{ltmain.sh} shell script fragment that provides
+@var{ltmain} is the @code{ltmain.sh} shell script fragment that provides
 the basic libtool functionality (@pxref{Distributing}).
 
 @var{host} is the canonical host system name, which by default is
-guessed by running @file{config.guess}.
+guessed by running @code{config.guess}.
 
-@file{ltconfig} also recognizes the following environment variables:
+@code{ltconfig} also recognizes the following environment variables:
 
 @defvar CC
-The C compiler that will be used by the generated @file{libtool}.
+The C compiler that will be used by the generated @code{libtool}.
 @end defvar
 
 @defvar CFLAGS
@@ -1281,17 +1288,17 @@ C preprocessor flags.
 @end defvar
 
 @defvar LD
-The system linker to use (if the generated @file{libtool} requires one).
+The system linker to use (if the generated @code{libtool} requires one).
 @end defvar
 
 @defvar RANLIB
-Program to use rather than checking for @file{ranlib}.
+Program to use rather than checking for @code{ranlib}.
 @end defvar
 
 @node ltconfig example
-@subsection Using @file{ltconfig}
+@subsection Using @code{ltconfig}
 
-Here is a simple example of using @file{ltconfig} to configure libtool
+Here is a simple example of using @code{ltconfig} to configure libtool
 on my NetBSD/i386 1.2 system:
 
 @example
@@ -1311,7 +1318,7 @@ creating libtool
 burger$
 @end example
 
-This example shows how to configure @file{libtool} for cross-compiling
+This example shows how to configure @code{libtool} for cross-compiling
 to a i486 GNU/Hurd 0.1 system (assuming compiler tools reside in
 @file{/local/i486-gnu/bin}):
 
@@ -1338,24 +1345,25 @@ burger$
 
 If you are using GNU Autoconf (or Automake), you should add a call to
 @code{AM_PROG_LIBTOOL} to your @file{configure.in} file.  This macro
-offers seamless integration between the @file{configure} script and
-@file{ltconfig}:
+offers seamless integration between the @code{configure} script and
+@code{ltconfig}:
 
 @defmac AM_PROG_LIBTOOL
 Add support for the @samp{--enable-shared} and @samp{--disable-shared}
-@file{configure} flags.  Invoke @file{ltconfig} with the correct
+@code{configure} flags.  Invoke @code{ltconfig} with the correct
 arguments to configure the package.@footnote{@code{AM_PROG_LIBTOOL}
-requires that you define the Makefile variable @code{top_builddir} in
+requires that you define the @file{Makefile} variable @code{top_builddir} in
 your @file{Makefile.in}.  Automake does this automatically, but Autoconf
 users should set it to the relative path to the top of your build
 directory (@file{../..}, for example).}
 @end defmac
 
-When you invoke the @file{libtoolize} program (@pxref{Invoking
+@pindex aclocal
+When you invoke the @code{libtoolize} program (@pxref{Invoking
 libtoolize}), it will tell you where to find a definition of
-@code{AM_PROG_LIBTOOL}.  If you use Automake, the @file{aclocal} program
+@code{AM_PROG_LIBTOOL}.  If you use Automake, the @code{aclocal} program
 will automatically add @code{AM_PROG_LIBTOOL} support to your
-@file{configure} script.
+@code{configure} script.
 
 @node Distributing
 @section Including libtool with your package
@@ -1383,26 +1391,26 @@ A generic script implementing basic libtool functionality.
 Note that the libtool script itself should @emph{not} be included with
 your package.  @xref{Configuring}.
 
-You should use the @file{libtoolize} program, rather than manually
+You should use the @code{libtoolize} program, rather than manually
 copying these files into your package.
 
 @menu
-* Invoking libtoolize::         @file{libtoolize} command line options.
+* Invoking libtoolize::         @code{libtoolize} command line options.
 * Autoconf .o macros::          Autoconf macros that set object file names.
 @end menu
 
 @node Invoking libtoolize
-@subsection Invoking @file{libtoolize}
+@subsection Invoking @code{libtoolize}
 @pindex libtoolize
 @cindex libtoolize command options
 @cindex Command options, libtoolize
 @cindex Options, libtoolize command
 
-The @file{libtoolize} program provides a standard way to add libtool
+The @code{libtoolize} program provides a standard way to add libtool
 support to your package.  In the future, it may implement better usage
 checking, or other features to make libtool even easier to use.
 
-The @file{libtoolize} program has the following synopsis:
+The @code{libtoolize} program has the following synopsis:
 
 @example
 libtoolize [@var{option}]@dots{}
@@ -1431,23 +1439,23 @@ out.
 
 @item --force
 @itemx -f
-Replace existing libtool files.  By default, @file{libtoolize} won't
+Replace existing libtool files.  By default, @code{libtoolize} won't
 overwrite existing files.
 
 @item --help
 Display a help message and exit.
 
 @item --version
-Print @file{libtoolize} version information and exit.
+Print @code{libtoolize} version information and exit.
 @end table
 
 @findex AC_CONFIG_AUX_DIR
-If @file{libtoolize} detects an explicit call to
+If @code{libtoolize} detects an explicit call to
 @code{AC_CONFIG_AUX_DIR} (@pxref{Input, , The Autoconf Manual,
 autoconf, The Autoconf Manual}) in your @file{configure.in}, it
 will put the files in the specified directory.
 
-@file{libtoolize} displays hints for adding libtool support to your
+@code{libtoolize} displays hints for adding libtool support to your
 package, as well.
 
 @node Autoconf .o macros
@@ -1497,7 +1505,7 @@ AC_OUTPUT(@dots{})
 The most difficult issue introduced by shared libraries is that of
 creating and resolving runtime dependencies.  Dependencies on programs
 and libraries are often described in terms of a single name, such as
-@file{sed}.  So, I may say ``libtool depends on sed,'' and that is good
+@code{sed}.  So, I may say ``libtool depends on sed,'' and that is good
 enough for most purposes.
 
 However, when an interface changes regularly, we need to be more
@@ -1528,10 +1536,10 @@ Interfaces for libraries may be any of the following (and more):
 
 @itemize @bullet
 @item
-global variables (names and types)
+global variables: both names and types
 
 @item
-global functions (arguments types and number, return types, and function names)
+global functions: argument types and number, return types, and function names
 
 @item
 standard input, standard output, standard error, and file formats
@@ -1555,7 +1563,7 @@ systems.
 
 Think of a library as exporting several sets of interfaces, arbitrarily
 represented by integers.  When a program is linked against a library, it
-may use any subset of all those interfaces.
+may use any subset of those interfaces.
 
 Libtool's description of the interfaces that a program uses is very
 simple: it encodes the least and the greatest interface numbers in the
@@ -1603,7 +1611,7 @@ then the dynamic linker chooses the library with the greater
 @var{revision} number.
 
 @node Updating version info
-@section Updating the library version information
+@section Updating library version information
 
 If you want to use libtool's versioning system, then you must specify
 the version information to libtool using the @samp{-version-info} flag
@@ -1614,7 +1622,7 @@ This flag accepts an argument of the form
 @samp{-version-info 3:12:1} sets @var{current} to 3, @var{revision} to
 12, and @var{age} to 1.
 
-If either @var{revision} or @var{age} are omitted, they default to 0.
+If either @var{age} or @var{revision} are omitted, they default to 0.
 Also note that @var{age} must be less than or equal to the @var{current}
 interface number.
 
@@ -1648,9 +1656,9 @@ If any interfaces have been removed since the last public release, then
 set @var{age} to 0.
 @end enumerate
 
-@emph{NEVER} try to set library version numbers so that they correspond
-to the release of the package that you are making.  This is an abuse
-that only fosters misunderstanding of the purpose of library versions.
+@strong{@emph{Never}} try to set library version numbers so that they
+correspond to the release number of your package.  This is an abuse that
+only fosters misunderstanding of the purpose of library versions.
 
 @node Library tips
 @chapter Tips for interface design
@@ -1677,15 +1685,16 @@ delete entry points very often.
 Some people love redesigning and changing entry points just for the heck
 of it (note: @emph{renaming} a function is considered changing an entry
 point).  Don't be one of those people.  If you must redesign an
-interface, then leave compatibility functions behind so that users don't
-need to rewrite their existing code.
+interface, then try to leave compatibility functions behind so that
+users don't need to rewrite their existing code.
 
 @item Use opaque data types
 @cindex Opaque data types
 The fewer data type definitions a library user has access to, the
 better.  If possible, design your functions to accept a generic pointer
 (which you can cast to an internal data type), and provide access
-functions rather than allowing the user to directly manipulate the data.
+functions rather than allowing the library user to directly manipulate
+the data.
 That way, you have the freedom to change the data structures without
 changing the interface.
 
@@ -1695,9 +1704,9 @@ inheritance in an object-oriented system.
 @item Use header files
 @cindex Header files
 If you are careful to document each of your library's global functions
-and variables in header files, and include them in your source files,
-then the compiler will let you know if you make any interface changes by
-accident (@pxref{C header files}).
+and variables in header files, and include them in your library source
+files, then the compiler will let you know if you make any interface
+changes by accident (@pxref{C header files}).
 
 @item Use the @code{static} keyword (or equivalent) whenever possible
 @cindex Global functions
@@ -1748,9 +1757,9 @@ safely installed in a system directory.
 Here are the relevant portions of that file:
 
 @example
-/* __BEGIN_DECLS should be used at the beginning of your C declarations,
-   so that C++ compilers don't mangle their names.  __END_DECLS is used
-   at the end of C declarations. */
+/* __BEGIN_DECLS should be used at the beginning of your declarations,
+   so that C++ compilers don't mangle their names.  Use __END_DECLS at
+   the end of C declarations. */
 #undef __BEGIN_DECLS
 #undef __END_DECLS
 #ifdef __cplusplus
@@ -1852,6 +1861,7 @@ libraries that have not yet been installed.}  To make an example of our
 @example
 burger$ @kbd{libtool gcc -g -O -o libhello.la foo.lo hello.lo \
                 -rpath /usr/local/lib -lm}
+burger$
 @end example
 
 In order to link a program against @file{libhello}, you need to specify
@@ -1905,8 +1915,8 @@ On most operating systems, dlopened modules must be compiled as PIC.
 This restriction simplifies the implementation of the @code{dlopen(3)}
 family of functions by avoiding symbol relocation.  ``True'' dlopen
 implementations, such as the unportable GNU DLD 3 implementation
-(@pxref{Top, , The DLD Manual, dld, The DLD Manual}), don't have this
-restriction, as they can perform relocation at runtime.
+(@pxref{Top,,, dld, The DLD Manual}), don't have this restriction, as
+they can perform relocation at runtime.
 
 As of version @value{VERSION}, libtool provides only minimal support for
 dlopened modules, and this support is guaranteed to change and be
@@ -1944,6 +1954,7 @@ that would later be dlopened by an application, we would add
 @example
 burger$ @kbd{libtool gcc -export-dynamic -o libhello.la foo.lo \
                 hello.lo -rpath /usr/local/lib -lm}
+burger$
 @end example
 
 Another situation where you would use @samp{-export-dynamic} is if
@@ -1954,6 +1965,7 @@ dlopen:
 
 @example
 burger$ @kbd{libtool gcc -export-dynamic -o hell-dlopener main.o}
+burger$
 @end example
 
 @node Finding the dlname
@@ -1974,16 +1986,18 @@ For example, on NetBSD 1.2:
 @example
 burger$ @kbd{libtool --mode=dlname libhello.la}
 libhello.so.3.12
+burger$
 @end example
 
 The trick is in finding a way to hardcode this name into your program at
 compilation time, so that it opens the correct library.
 
-Another option is to determine the name at runtime, by finding the
-installed @samp{.la} file, and searching it for the following lines:
+An alternative implementation that avoids hardcoding is to determine the
+name at runtime, by finding the installed @samp{.la} file, and searching
+it for the following lines:
 
 @example
-# The name that we can dlopen(3).
+# The name that we can @code{dlopen(3)}.
 dlname='@var{dlname}'
 @end example
 
@@ -1992,6 +2006,14 @@ Otherwise, it gives the dlname of the library.  So, if the library was
 installed as @file{/usr/local/lib/libhello.la}, and the @var{dlname} was
 @file{libhello.so.3}, then @file{/usr/local/lib/libhello.so.3} should be
 dlopened.
+
+If your program uses this approach, then it should search the
+directories listed in the @var{LD_LIBRARY_PATH}@footnote{@var{LIBPATH}
+on AIX, and @var{SHLIB_PATH} on HP-UX.} environment variable, as well as
+the directory where libraries will eventually be installed.  Searching
+this variable (or equivalent) will guarantee that your program can find
+its dlopened modules, even before installation, provided you have linked
+them using libtool.
 
 @node Dlopen issues
 @section Unresolved dlopen issues
@@ -2046,6 +2068,7 @@ and what special considerations you need to make if you do not use C.
 
 @node C++ libraries
 @section Writing libraries for C++
+@c FIXME: in the TOC, the ++ is too large (seems to be math mode)
 @cindex Trouble with C++
 @cindex Pitfalls using C++
 @cindex C++, pitfalls
@@ -2067,10 +2090,10 @@ your library.  GCC 2.7 and later versions work around this problem, but
 previous versions and other compilers do not.
 @end enumerate
 
-This second issue is very complex.  Basically, avoid any global or
-static variable initializations that would cause an ``initializer
-element is not constant'' error if you compiled them with a standard C
-compiler.
+This second issue is very complex.  Basically, you should avoid any
+global or static variable initializations that would cause an
+``initializer element is not constant'' error if you compiled them with
+a standard C compiler.
 
 There are other ways of working around this problem, but they are beyond
 the scope of this manual.
@@ -2082,10 +2105,10 @@ the scope of this manual.
 @cindex Solving problems
 @cindex Problems, blaming somebody else for
 
-Libtool is under constant development, changing to keep up-to-date with
-new operating systems.  If libtool doesn't work the way you think it
-should on your platform, you should read this chapter to help determine
-what the problem is, and how to resolve it.
+Libtool is under constant development, changing to remain up-to-date
+with modern operating systems.  If libtool doesn't work the way you
+think it should on your platform, you should read this chapter to help
+determine what the problem is, and how to resolve it.
 
 @menu
 * Libtool test suite::          Libtool's self-tests.
@@ -2103,8 +2126,7 @@ deficiencies in other operating systems.
 
 As described in the @file{INSTALL} file, you may run @kbd{make check}
 after you have built libtool (possibly before you install it) in order
-to make sure that it has the functionality demanded by the test
-programs.
+to make sure that it meets basic functional requirements.
 
 @menu
 * Test descriptions::           The contents of the test suite.
@@ -2117,7 +2139,7 @@ programs.
 Here is a list of the current programs in the test suite, and what they
 test for:
 
-@table @file
+@table @code
 @item demo-conf.test
 @itemx demo-exec.test
 @itemx demo-inst.test
@@ -2174,10 +2196,10 @@ only be done in a portable way by using @code{test -f}.
 
 Each of the above tests are designed to produce no output when they are
 run via @kbd{make check}.  The exit status of each program tells the
-Makefile whether or not the test succeeded.
+@file{Makefile} whether or not the test succeeded.
 
 If a test fails, it means that there is either a programming error in
-libtool, or in the test itself.
+libtool, or in the test program itself.
 
 To investigate a particular test, you may run it directly, as you would
 a normal program.  When the test is invoked in this way, it produces
@@ -2196,12 +2218,9 @@ has each of them display debugging information.
 
 If you think you have discovered a bug in libtool, you should think
 twice: the libtool maintainer is notorious for passing the buck (or
-maybe that should be ``passing the bug'').
-
-Libtool was invented to fix known deficiencies in shared library
-implementations, so, in a way, most of the bugs in libtool are actually
-bugs in other operating systems.
-
+maybe that should be ``passing the bug'').  Libtool was invented to fix
+known deficiencies in shared library implementations, so, in a way, most
+of the bugs in libtool are actually bugs in other operating systems.
 However, the libtool maintainer would definitely be happy to add support
 for somebody else's buggy operating system.  [I wish there was a good
 way to do winking smiley-faces in texinfo.]
@@ -2213,8 +2232,8 @@ test suite}).
 First, check the documentation and help screens to make sure that the
 behaviour you think is a problem is not already mentioned as a feature.
 
-Then, you should read the Emacs guide to reporting bugs (@pxref{Bugs, , The
-Emacs Manual, emacs, The Emacs Manual}).  Some of the details
+Then, you should read the Emacs guide to reporting bugs (@pxref{Bugs, ,
+Reporting Bugs, emacs, The Emacs Manual}).  Some of the details
 listed there are specific to Emacs, but the priciple behind them is a
 general one.
 
@@ -2246,20 +2265,20 @@ To port libtool to a new system, you'll generally need the following
 information:
 
 @table @asis
-@item man pages for ld(1) and cc(1)
+@item man pages for @code{ld(1)} and @code{cc(1)}
 These generally describe what flags are used to generate PIC, to create
 shared libraries, and to link against only static libraries.  You may
 need to follow some cross references to find the information that is
 required.
 
-@item man pages for ld.so(8), rtld(8), or equivalent
+@item man pages for @code{ld.so(8)}, @code{rtld(8)}, or equivalent
 These are a valuable resource for understanding how shared libraries are
 loaded on the system.
 
-@item man page for ldconfig(8), or equivalent
+@item man page for @code{ldconfig(8)}, or equivalent
 This page usually describes how to install shared libraries.
 
-@item output of @kbd{ls -l /lib /usr/lib}
+@item output from @kbd{ls -l /lib /usr/lib}
 This shows the naming convention for shared libraries on the system,
 including which names should be symbolic links.
 
@@ -2303,20 +2322,18 @@ improve libtool, or write your own.
 
 The only compiler characteristics that affect libtool are the flags
 needed (if any) to generate PIC objects.  In general, if a C compiler
-supports certain PIC flags, then other compilers written by the same
-author support the same flags.
-
-Until there are some noteworthy exceptions to this rule, this section
-will document only C compilers.
+supports certain PIC flags, then any derivative compilers support the
+same flags.  Until there are some noteworthy exceptions to this rule,
+this section will document only C compilers.
 
 The following C compilers have standard command line options, regardless
 of the platform:
 
-@table @file
+@table @code
 @item gcc
 
 This is the GNU C compiler, which is also the system compiler for many
-free operating systems (FreeBSD, GNU/Hurd, GNU/Linux, Lites, NetBSD, and
+free operating systems (FreeBSD, GNU/Hurd, Linux/GNU, Lites, NetBSD, and
 OpenBSD, to name a few).
 
 The @samp{-fpic} or @samp{-fPIC} flags can be used to generate
@@ -2333,7 +2350,7 @@ they are bundled with:
 
 @table @code
 @item aix3*
-@item aix4*
+@itemx aix4*
 AIX compilers have no PIC flags, since AIX has been ported only to
 PowerPC and RS/6000 chips. @footnote{All code compiled for the PowerPC
 and RS/6000 chips (@code{powerpc-*-*}, @code{powerpcle-*-*}, and
@@ -2369,26 +2386,26 @@ objects.
 
 On all known systems, building a static library can be accomplished by
 running @kbd{ar cru lib@var{name}.a @var{obj1}.o @var{obj2}.o @dots{}},
-where the `.a' file is the output library, and each `.o' file is an
+where the @samp{.a} file is the output library, and each @samp{.o} file is an
 object file.
 
-On all known systems, if there is a program named @file{ranlib}, then it
+On all known systems, if there is a program named @code{ranlib}, then it
 must be used to ``bless'' the created library before linking against it,
 with the @kbd{ranlib lib@var{name}.a} command.
 
 @node Strip
-@subsection The @file{strip} program
+@subsection The @code{strip} program
 
 Stripping a library is essentially the same problem as stripping an
 object file.  Only local and debugging symbols must be removed, or else
 linking against a stripped library will fail.
 
-With GNU @file{strip}, the @samp{--discard-all} (or equivalent
+With GNU @code{strip}, the @samp{--discard-all} (or equivalent
 @samp{-x}) flag will do the appropriate stripping, for both shared and
 static libraries.
 
 Here is a list of some other operating systems, and what their bundled
-@file{strip} programs will do:
+@code{strip} programs will do:
 
 @c FIXME complete this section
 
@@ -2398,22 +2415,22 @@ The @samp{-x} flag works for shared libraries, but fails with
 ``Inappropriate file type or format'' when used on static libraries.
 
 @item hpux10*
-HP-UX @file{strip} requires the @samp{-r} and @samp{-x} flags in order
+HP-UX @code{strip} requires the @samp{-r} and @samp{-x} flags in order
 to strip libraries.
 @end table
 
 @node libtool script contents
-@section @file{libtool} script contents
+@section @code{libtool} script contents
 @cindex Implementation of libtool
 @cindex libtool implementation
 
-The @file{libtool} script is generated by @file{ltconfig}
+The @code{libtool} script is generated by @code{ltconfig}
 (@pxref{Configuring}).  Ever since libtool version 0.7, this script
 simply sets shell variables, then sources the libtool backend,
-@file{ltmain.sh}.
+@code{ltmain.sh}.
 
 Here is a listing of each of these variables, and how they are used
-within @file{ltmain.sh}:
+within @code{ltmain.sh}:
 
 @defvar AR
 The name of the system library archiver.
@@ -2425,9 +2442,9 @@ linking and possibly shared libraries.
 @end defvar
 
 @defvar LTCONFIG_VERSION
-This is set to the version number of the @file{ltconfig} script, to
+This is set to the version number of the @code{ltconfig} script, to
 prevent mismatches between the configuration information in
-@file{libtool}, and how that information is used in @file{ltmain.sh}.
+@code{libtool}, and how that information is used in @code{ltmain.sh}.
 @end defvar
 
 @defvar RANLIB
@@ -2498,14 +2515,14 @@ executable.
 
 @defvar hardcode_runpath_var
 Set to @samp{yes} or @samp{no}, depending on whether the linker
-hardcodes directories specified by setting @samp{$runpath_var} into the
-resulting executable.
+hardcodes directories by writing the contents of @samp{$runpath_var}
+into the resulting executable.
 @end defvar
 
 @defvar hardcode_shlibpath_var
 Set to @samp{yes} or @samp{no}, depending on whether the linker
-hardcodes directories specified by setting @samp{$shlibpath_var} into
-the resulting executable.  Set to @samp{unsupported} if directories
+hardcodes directories by writing the contents of @samp{$shlibpath_var}
+into the resulting executable.  Set to @samp{unsupported} if directories
 specified by @samp{$shlibpath_var} are searched at run time, but not at
 link time.
 @end defvar
@@ -2517,9 +2534,9 @@ the system that libtool was configured for.
 @end defvar
 
 @defvar library_names_spec
-A list of shared library names.  The first name is the name of the file,
-the rest are symbolic links to the file.  The last name in the list is
-the one that the linker finds when given @samp{-l@var{name}}.
+A list of shared library names.  The first is the name of the file,
+the rest are symbolic links to the file.  The name in the list is
+the file name that the linker finds when given @samp{-l@var{name}}.
 @end defvar
 
 @defvar link_static_flag
@@ -2533,7 +2550,7 @@ Any additional compiler flags for building library object files.
 
 @defvar postinstall_cmds
 @defvarx old_postinstall_cmds
-Commands run after installing a shared or static librar, respectively.
+Commands run after installing a shared or static library, respectively.
 @end defvar
 
 @defvar reload_cmds
@@ -2575,13 +2592,14 @@ linker.  Used as: @samp{$@{wl@}@var{some-flag}}.
 @end defvar
 
 Variables ending in @samp{_cmds} contain a semicolon-separated list of
-commands that are @code{eval}'ed one after another.  If any of the
+commands that are @code{eval}ed one after another.  If any of the
 commands return a nonzero exit status, libtool generally exits with an
 error message.
 
-Variables ending in @samp{_spec} are @code{eval}'ed before being used by
+Variables ending in @samp{_spec} are @code{eval}ed before being used by
 libtool.
 
+@page
 @node Index
 @unnumbered Index
 

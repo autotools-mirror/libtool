@@ -1,6 +1,6 @@
 NEWS - list of user-visible changes between releases of GNU libtool.
 
-New in 0.9f:
+New in 0.9g:
 * Bug fixes.
 * Automake support for Libtool now uses the LTLIBRARIES primary.  See
   the Automake documentation for more information.

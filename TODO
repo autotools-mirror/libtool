@@ -1,3 +1,7 @@
+* For 1.0: disable building old-style objects if --disable-static is
+given.  Update all documentation accordingly.  Suggested by Tom Lees
+and Stephen Kulow.
+
 * A better check to detect broken collect2 on AIX, once the bug is
 fixed in GCC.
 
