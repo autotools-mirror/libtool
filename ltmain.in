@@ -3894,6 +3894,7 @@ EOF
 	    save_libobjs=$libobjs
 	  fi
 	  save_output=$output
+	  output_la=`echo "$output" | $SED $basename`
 
 	  # Clear the reloadable object creation command queue and
 	  # initialize k to one.
@@ -3903,7 +3904,7 @@ EOF
 	  delfiles=
 	  last_robj=
 	  k=1
-	  output=$output_objdir/$save_output-${k}.$objext
+	  output=$output_objdir/$output_la-${k}.$objext
 	  # Loop over the list of objects to be linked.
 	  for obj in $save_libobjs
 	  do
@@ -3923,9 +3924,9 @@ EOF
 		# the last one created.
 		eval concat_cmds=\"\$concat_cmds~$reload_cmds $objlist $last_robj\"
 	      fi
-	      last_robj=$output_objdir/$save_output-${k}.$objext
+	      last_robj=$output_objdir/$output_la-${k}.$objext
 	      k=`expr $k + 1`
-	      output=$output_objdir/$save_output-${k}.$objext
+	      output=$output_objdir/$output_la-${k}.$objext
 	      objlist=$obj
 	      len=1
 	    fi
@@ -3951,7 +3952,7 @@ EOF
 	  while test "$i" -lt "$k"
 	  do
 	    i=`expr $i + 1`
-	    delfiles="$delfiles $output_objdir/$save_output-${i}.$objext"
+	    delfiles="$delfiles $output_objdir/$output_la-${i}.$objext"
 	  done
 
 	  $echo "creating a temporary reloadable object file: $output"

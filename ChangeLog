@@ -1,5 +1,8 @@
 2004-03-24  Albert Chin-A-Young  <china@thewrittenword.com>
 
+	* ltmain.in: Piecewise linking doesn't work when the output
+	file is an absolute path, use the basename only instead.
+
 	* ltmain.in: When a library is installed, dependent on a
 	convenience library, and it involves relinking, the object
 	files extracted from the convenience library are not removed
