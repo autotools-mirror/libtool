@@ -47,11 +47,7 @@ AC_LIBTOOL_DLOPEN
 AM_PROG_LIBTOOL
 AC_SUBST(LIBTOOL_DEPS)
 
-if ${CONFIG_SHELL} ./libtool --features | grep "enable static" >/dev/null; then
-  STATIC=-static
-else
-  STATIC=
-fi
+STATIC="\`${CONFIG_SHELL} ./libtool --features | ${SED} -n -e '/enable static/s/^.*\$\$/-static/p'\`"
 AC_SUBST([STATIC])
 
 

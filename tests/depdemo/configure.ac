@@ -49,11 +49,7 @@ AC_SUBST([LIBTOOL_DEPS])
 ## ------------------------------- ##
 ## depdemo specific configuration. ##
 ## ------------------------------- ##
-if ${CONFIG_SHELL} ./libtool --features | grep "enable static" >/dev/null; then
-  STATIC=-static
-else
-  STATIC=
-fi
+STATIC="\`${CONFIG_SHELL} ./libtool --features | ${SED} -n -e '/enable static/s/^.*\$\$/-static/p'\`"
 AC_SUBST([STATIC])
 
 ## ---------------------------- ##

@@ -1,5 +1,10 @@
 2003-11-06  Charles Wilson  <cwilson@ece.gatech.edu>
 
+	* tests/depdemo/configure.ac, tests/mdemo/configure.ac,
+	tests/mdemo2/configure.ac: process 'libtool --features'
+	from Makefile, not configure -- because libtool doesn't
+	exist at configure time.
+
 	* ltmain.in (find_executable, check_executable) [cygwin*, mingw*]:
 	binary wrapper used with uninstalled executables breaks when
 	invoked via execlp/execvp (that is, via $PATH).  Handle that case.
