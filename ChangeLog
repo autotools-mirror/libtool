@@ -1,3 +1,7 @@
+1999-12-03  Alexandre Oliva  <oliva@lsd.ic.unicamp.br>
+
+	* libtool.m4: Do not AC_SUBST anything other than LIBTOOL.
+
 1999-11-20  Michael Forster  <email@michael-forster.de>
 
 	* ltconfig.in (linux-gnu*): Set hardcode_into_libs=yes.

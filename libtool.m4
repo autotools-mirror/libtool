@@ -62,7 +62,6 @@ AC_REQUIRE([AC_ENABLE_FAST_INSTALL])dnl
 AC_REQUIRE([AC_CANONICAL_HOST])dnl
 AC_REQUIRE([AC_CANONICAL_BUILD])dnl
 AC_REQUIRE([AC_PROG_CC])dnl
-with_gcc="$GCC"; AC_SUBST([with_gcc])
 AC_REQUIRE([AC_PROG_LD])dnl
 AC_REQUIRE([AC_PROG_LD_RELOAD_FLAG])dnl
 AC_REQUIRE([AC_PROG_NM])dnl
@@ -339,7 +338,6 @@ if test -n "$FILE"; then
 else
   AC_MSG_RESULT(no)
 fi
-AC_SUBST($1)dnl
 ])
 
 
@@ -354,7 +352,6 @@ if test -z "$lt_cv_path_FILE"; then
     FILE=:
   fi
 fi
-AC_SUBST(FILE)dnl
 ])
 
 
@@ -432,7 +429,6 @@ else
   AC_MSG_RESULT(no)
 fi
 test -z "$LD" && AC_MSG_ERROR([no acceptable ld found in \$PATH])
-AC_SUBST(LD)
 AC_PROG_LD_GNU
 ])
 
@@ -445,7 +441,6 @@ else
   ac_cv_prog_gnu_ld=no
 fi])
 with_gnu_ld=$ac_cv_prog_gnu_ld
-AC_SUBST(with_gnu_ld)
 ])
 
 # AC_PROG_LD_RELOAD_FLAG - find reload flag for linker
@@ -455,7 +450,6 @@ AC_DEFUN(AC_PROG_LD_RELOAD_FLAG,
 [lt_cv_ld_reload_flag='-r'])
 reload_flag=$lt_cv_ld_reload_flag
 test -n "$reload_flag" && reload_flag=" $reload_flag"
-AC_SUBST(reload_flag)
 ])
 
 # AC_DEPLIBS_CHECK_METHOD - how to check for library dependencies
@@ -568,8 +562,6 @@ esac
 ])
 file_magic_cmd=$lt_cv_file_magic_cmd
 deplibs_check_method=$lt_cv_deplibs_check_method
-AC_SUBST(file_magic_cmd)
-AC_SUBST(deplibs_check_method)
 ])
 
 
@@ -605,7 +597,6 @@ else
 fi])
 NM="$ac_cv_path_NM"
 AC_MSG_RESULT([$NM])
-AC_SUBST(NM)
 ])
 
 # AC_CHECK_LIBM - check for math library
