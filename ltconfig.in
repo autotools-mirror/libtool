@@ -1626,7 +1626,10 @@ linux-gnu*)
   finish_cmds='PATH="\$PATH:/sbin" ldconfig -n $libdir'
   shlibpath_var=LD_LIBRARY_PATH
   shlibpath_overrides_runpath=no
-  hardcode_into_libs=yes
+  # This implies no fast_install, which is unacceptable.
+  # Some rework will be needed to allow for fast_install
+  # before this can be enabled.
+  # hardcode_into_libs=yes
 
   if test -f /lib/ld.so.1; then
     dynamic_linker='GNU ld.so'

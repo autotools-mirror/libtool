@@ -1,5 +1,8 @@
 1999-12-03  Alexandre Oliva  <oliva@lsd.ic.unicamp.br>
 
+	* ltconfig.in (linux-gnu*): Disable hardcode_into_libs until it
+	works together with fast_install.
+
 	* libtool.m4: Use host when --target is not specified.
 
 	* configure.in: AC_SUBST variables that are used by ltconfig to
