@@ -1152,8 +1152,8 @@ linker flags with @samp{-Wl,@var{flag}} and @samp{-Xlinker @var{flag}}.
 You can also pass compile specific flags using @samp{-Wc,@var{flag}}
 and @samp{-Xcompiler @var{flag}}.
 
-If the @samp{-static} option is given, then a @samp{.o} file is built,
-even if libtool was configured with @samp{--disable-static}.
+If the @samp{-static} option is given, then only a @samp{.o} file is
+built, even if libtool was configured with @samp{--disable-static}.
 
 Note that the @samp{-o} option is now fully supported.  It is emulated
 on the platforms that don't support it (by locking and moving the
