@@ -16,3 +16,4 @@ version.texi
 *.pg
 *.cps
 *.info*
+*.ps
