@@ -1,3 +1,8 @@
+1999-07-24  Bert Driehuis <bert_driehuis@compuware.com>
+
+	* ltconfig.in:  Updated bsdi4 soname specs to be more like
+	linux as discussed on the bsdi mailing list.
+
 1999-07-20  Gary V. Vaughan  <gary@oranda.demon.co.uk>
 
 	* configure.in (AC_PROG_RANLIB):  No longer required as we now use
