@@ -1580,6 +1580,10 @@ static struct lt_user_dlloader sys_dld = {
 
 
 #if HAVE_MACH_O_DYLD_H
+#if !defined(__APPLE_CC__) && !defined(__MWERKS__) && !defined(__private_extern__)
+/* Is this correct? Does it still function properly? */
+#define __private_extern__ extern
+#endif
 # include <mach-o/dyld.h>
 #endif
 #include <mach-o/getsect.h>

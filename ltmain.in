@@ -2568,7 +2568,11 @@ EOF
 		    if test -f "$path/$depdepl" ; then
 		      depdepl="$path/$depdepl"
 		   fi
-		    newlib_search_path="$newlib_search_path $path"
+		    # do not add paths which are already there
+		    case " $newlib_search_path " in
+		    *" $path "*) ;;
+		    *) newlib_search_path="$newlib_search_path $path";;
+		    esac
 		    path=""
 		  fi
 		  ;;
