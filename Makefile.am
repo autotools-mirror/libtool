@@ -5,7 +5,7 @@ SUBDIRS = doc tests
 
 # Distribute ltconfig and ltmain.sh so that the demo directory works.
 EXTRA_DIST = libtool.m4 libtoolize.in ltconfig ltconfig.in \
-	ltmain.sh ltmain.sh.in
+	ltmain.sh ltmain.sh.in README-automake
 CLEANFILES = libtool libtoolize
 
 # Files in the demo subdirectory that go in the distribution.

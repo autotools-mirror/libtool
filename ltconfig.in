@@ -432,13 +432,13 @@ set dummy $CC
 compiler="$2"
 
 echo $ac_n "checking for $compiler option to produce PIC... $ac_c" 1>&6
-compile_flags=
+pic_flag=
 profile_flag_pattern=
 wl=
 link_static_flag=
 
 if test "$with_gcc" = yes; then
-  compile_flags='-fPIC -DPIC'
+  pic_flag='-fPIC'
   profile_flag_pattern='-pg?'
   wl='-Wl,'
   link_static_flag='-static'
@@ -446,33 +446,28 @@ else
   # PORTME Check for PIC flags for the system compiler.
   case "$host" in
   *-*-aix3* | *-*-aix4*)
-    # FIXME compile_flags, or are all AIX platforms PIC?
-    link_static_flags='-bnso -bI:/lib/syscalls.exp'
+    # FIXME All rs/6000 code is PIC, but is there any non-rs/6000 AIX platform?
+    link_static_flag='-bnso -bI:/lib/syscalls.exp'
     ;;
 
   *-*-hpux10*)
-    compile_flags='+Z -DPIC'
+    # FIXME link_static_flag?
+    pic_flag='+Z'
     ;;
 
   *-*-osf3*)
-    # FIXME - compile_flags, link_static_flag?
-    compile_flags='-DPIC'
+    # FIXME - pic_flag, link_static_flag?
     ;;
 
   *-*-solaris2*)
-    compile_flags='-KPIC -DPIC'
+    pic_flag='-KPIC'
     link_static_flag='-Bstatic'
     ;;
 
   *-*-sunos4*)
-    compile_flags='-PIC -DPIC'
+    pic_flag='-PIC'
     link_static_flag='-Bstatic'
     wl='-Qoption ld '
-    ;;
-
-  *-*-ultrix4*)
-    wl='-Wl'
-    can_build_shared=no
     ;;
 
   *)
@@ -484,13 +479,13 @@ fi
 case "$host" in
 rs6000-*-*)
   # Yippee! All rs/6000 code is position-independent.
-  compile_flags='-DPIC'
+  pic_flag=
   ;;
 esac
 
-if test -n "$compile_flags"; then
-  echo $ac_t "$compile_flags" 1>&6
-  compile_flags=" $compile_flags"
+if test -n "$pic_flag"; then
+  echo $ac_t "$pic_flag" 1>&6
+  pic_flag=" $pic_flag"
 else
   echo $ac_t none 1>&6
 fi
@@ -606,6 +601,14 @@ if test "$hardcode_shlibpath_var" = yes && test "$hardcode_minus_L" = yes; then
   echo "$progname: warning: $LD needlessly hardcodes library paths into binaries" 1>&2
   echo "$PACKAGE will compensate by relinking binaries at install time." 1>&2
 fi
+
+reload_flag=
+reload_cmds='$LD$reload_flag -o $output$reload_objs'
+echo $ac_n "checking for $linker option to reload object files... $ac_c" 1>&6
+# PORTME Some linker may need a different reload flag.
+reload_flag='-r'
+echo $ac_t "$reload_flag"
+test -n "$reload_flag" && reload_flag=" $reload_flag"
 
 # PORTME Fill in your ld.so characteristics
 can_build_shared=yes
@@ -750,6 +753,12 @@ cat <<EOF > $ofile
 # The version of $progname that generated this script.
 LTCONFIG_VERSION="$VERSION"
 
+# Whether or not to build libtool libraries.
+build_libtool_libs=$enable_shared
+
+# Whether or not to build old-style libraries.
+build_old_libs=$enable_static
+
 # The host system.
 host_alias="$host_alias"
 host="$host"
@@ -757,17 +766,15 @@ host="$host"
 # The linker used to build libraries.
 LD='$LD'
 
+# How to create reloadable object files.
+reload_flag='$reload_flag'
+reload_cmds='$reload_cmds'
+
 # How to pass a linker flag through the compiler.
 wl='$wl'
 
-# Whether or not to build libtool libraries.
-build_libtool_libs=$enable_shared
-
-# Whether or not to build old-style libraries.
-build_old_libs=$enable_static
-
 # Additional compiler flags for building library objects.
-compile_flags='$compile_flags'
+pic_flag='$pic_flag'
 
 # Compiler flag to prevent dynamic linking.
 link_static_flag='$link_static_flag'

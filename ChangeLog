@@ -1,4 +1,40 @@
+Sun Dec  8 14:39:04 1996  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* Release 0.7.
+
+	* Makefile.am (EXTRA_DIST): Add README-automake to the
+	distribution.
+
+	* ltmain.sh.in (link): When linking libtool libraries, use
+	standard objects if they are PIC.  This prevents spurious warnings
+	about invalid suffixes on AIX.
+
+	* demo/Makefile.am: Rename libhell to libhello, so that we're not
+	quite as offensive.
+
+	* ltconfig.in: Remove unnecessary host validity checking.
+
+	* ltmain.sh.in: Don't force people to use libNAME.la: SOMETHING.la
+	is good enough (for consistency with *.a handling).
+
+Sat Dec  7 12:31:15 1996  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltmain.sh.in (link): Accept files ending in .a as standard
+	object files.  Reported by Ulrich Drepper.
+	Remove support for creating profiled libraries (for now).
+	Transform all library objects into standard objects when linking a
+	program.
+
+	* ltconfig.in (thisdir): How embarrassing!  An error in the regexp
+	for finding the directory component of the script path.
+
 Thu Dec  5 14:19:21 1996  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltmain.sh.in (compile): Support `.S' (preprocessed assembler)
+ 	files.  Reported by Anthony Green.
+
+	* libtoolize.in: Give clearer instrutions for how to update
+	aclocal.m4.
 
 	* ltconfig.in, ltmain.sh.in (link): Add support for creating
  	reloadable objects.
@@ -77,3 +113,6 @@ Sun Nov 10 13:08:04 1996  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 	* New ChangeLog file for libtool-0.7, since I've totally rewritten
 	libtool.
 
+Fri Mar 15 14:21:15 1996  Gord Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* For historical reasons: this is when I started writing libtool.

@@ -33,8 +33,10 @@ VERSION=@VERSION@
 default_mode=NONE
 help="Try \`$progname --help' for more information."
 ln_s="ln -s"
+cp_p="cp -p"
 magic="%%%MAGIC variable%%%"
 mkdir="mkdir"
+mv="mv -f"
 objdir=.libs
 rm="rm -f"
 
@@ -174,7 +176,7 @@ if test -z "$show_help"; then
     # Get the name of the library object.
     libobj=`echo "$srcfile" | sed -e 's%^.*/%%' -e 's/\.c$/.lo/'`
     case $libobj in
-    *.lo) ;;
+    *.lo) obj=`echo "$libobj" | sed -e 's/\.lo$/.o/'` ;;
     *)
       echo "$progname: cannot determine name of library object from \`$srcfile'"
       exit 1
@@ -187,19 +189,48 @@ if test -z "$show_help"; then
       exit 1
     fi
 
-    # Delete any old library object.
-    $run $rm $libobj
+    # Delete any old library objects.
+    $run $rm $obj $libobj
+    trap "$run $rm $obj $libobj; exit 1" 1 2 15
 
-    # Only use the compile flags if we are building libtool libraries.
+    # Only build a PIC object if we are building libtool libraries.
     if test "$build_libtool_libs" = yes; then
-      base_compile="$base_compile$compile_flags"
+      # All platforms use -DPIC, to notify preprocessed assembler code.
+      $show "$base_compile$pic_flag -DPIC $srcfile"
+      if eval "$run $base_compile$pic_flag -DPIC $srcfile"; then :
+      else
+	$run $rm $obj
+	exit 1
+      fi
+
+      # If we have no pic_flag, then copy the object into place and finish.
+      if test -z "$pic_flag"; then
+	$show "$ln_s $obj $libobj"
+	$run $ln_s $obj $libobj || $run $cp_p $obj $libobj
+	exit $?
+      fi
+
+      # Just move the object, then go on to compile the next one
+      $show "$mv $obj $libobj"
+      $run $mv $obj $libobj || exit 1
     fi
 
-    $show "$base_compile $srcfile -o $libobj"
-    eval "$run $base_compile $srcfile -o $libobj"
+    # Compile the position-dependent object.
+    $show "$base_compile $srcfile"
+    if eval "$run $base_compile $srcfile"; then :
+    else
+      $run $rm $obj $libobj
+      exit 1
+    fi
 
-    # Exit with the status of the compile command.
-    exit $?
+    # Symlink or copy the object file into library object, if no PIC.
+    if test "$build_libtool_libs" != yes; then
+      $show "$ln_s $obj $libobj"
+      $run $ln_s $obj $libobj || $run $cp_p $obj $libobj
+      exit $?
+    fi
+
+    exit 0
     ;;
 
   # libtool link mode
@@ -330,7 +361,7 @@ if test -z "$show_help"; then
 	    fi
 
 	    libdir=
-	    . $file
+	    . $dir/$file
 
 	    if test -z "$libdir"; then
 	      echo "$progname: \`$arg' contains no -rpath information" 1>&2
@@ -395,8 +426,8 @@ if test -z "$show_help"; then
       exit 1
     fi
 
-    oldobjs=
     oldlib=
+    oldobjs=
     case "$output" in
     "")
       echo "$progname: you must specify an output file" 1>&2
@@ -596,6 +627,79 @@ if test -z "$show_help"; then
       exit 1
       ;;
 
+    *.lo | *.o)
+      if test -n "$link_against_libtool_libs"; then
+	echo "$progname: error: cannot link libtool libraries into reloadable objects" 1>&2
+	exit 1
+      fi
+
+      if test -n "$deplibs"; then
+	echo "$progname: warning: \`-l' and \`-L' are ignored while creating objects" 1>&2
+      fi
+
+      if test -n "$install_libdir"; then
+        echo "$progname: warning: \`-rpath' is ignored while creating objects" 1>&2
+      fi
+
+      if test -n "$vinfo"; then
+	echo "$progname: warning: \`-version-info' is ignored while creating objects" 1>&2
+      fi
+
+      case "$output" in
+      *.lo)
+	if test -n "$objs"; then
+	  echo "$progname: cannot build library object \`$output' from non-libtool objects" 1>&2
+	  exit 1
+	fi
+	libobj="$output"
+	obj=`echo "$output" | sed 's/\.lo$/.o/'`
+	;;
+      *)
+        libobj=
+	obj="$output"
+	;;
+      esac
+
+      # Delete the old objects.
+      $run $rm $obj $libobj
+
+      # Create the old-style object.
+      reload_objs="$objs"`echo "$libobjs " | sed 's/\.lo /.o /g; s/\.l_o /._o /g; s/ $//g'`
+
+      output="$obj"
+      cmds=`eval echo \"$reload_cmds\"`
+      IFS="${IFS= 	}"; save_ifs="$IFS"; IFS=';'
+      for cmd in $cmds; do
+        IFS="$save_ifs"
+        $show "$cmd"
+	eval "$run $cmd" || exit $?
+      done
+      IFS="$save_ifs"
+
+      # Exit if we aren't doing a library object file.
+      test -z "$libobj" && exit 0
+
+      if test "$build_libtool_libs" = yes && test -n "$pic_flag"; then
+	# Only do commands if we really have different PIC objects.
+	reload_objs="$libobjs"
+	output="$libobj"
+        cmds=`eval echo \"$reload_cmds\"`
+        IFS="${IFS= 	}"; save_ifs="$IFS"; IFS=';'
+        for cmd in $cmds; do
+          IFS="$save_ifs"
+          $show "$cmd"
+          eval "$run $cmd" || exit $?
+        done
+        IFS="$save_ifs"
+      else
+        # Just create a symlink.
+        $show "$ln_s $obj $libobj"
+        $run $ln_s $obj $libobj || $run $cp_p $obj $libobj || exit 1
+      fi
+
+      exit 0
+      ;;
+
     *)
       if test -n "$install_libdir"; then
         echo "$progname: warning: \`-rpath' is ignored while linking programs" 1>&2
@@ -603,6 +707,11 @@ if test -z "$show_help"; then
 
       if test -n "$vinfo"; then
 	echo "$progname: warning: \`-version-info' is ignored while linking programs" 1>&2
+      fi
+
+      if test -n "$libobjs"; then
+	# FIXME - transform all the library objects into standard objects.
+	echo "$progname: warning: library object files should not be used to build programs" 1>&2
       fi
 
       if test -z "$link_against_libtool_libs" || test "$build_libtool_libs" != yes; then
@@ -744,22 +853,22 @@ EOF
 
     # See if we need to build an old-fashioned archive.
     if test "$build_old_libs" = "yes"; then
+      # Transform .lo files to .o (and don't forget ansi2knr .l_o to ._o).
+      oldobjs="$objs"`echo "$libobjs " | sed 's/\.lo /.o /g; s/\.l_o /._o /g; s/ $//g'`
       case "$output" in
       *.la)
 	# Now set the variables for building old libraries.
 	oldlib="$objdir/$libname.a"
-	oldobjs="$libobjs"
 	;;
       *)
 	oldlib="$output"
-	oldobjs="$objs$libobjs"
 	$show "$rm $oldlib"
 	$run $rm $oldlib
 	;;
       esac
-      cmds=`eval echo \"$old_archive_cmds\"`
 
       # Do each command in the archive commands.
+      cmds=`eval echo \"$old_archive_cmds\"`
       IFS="${IFS= 	}"; save_ifs="$IFS"; IFS=';'
       for cmd in $cmds; do
         IFS="$save_ifs"
@@ -913,7 +1022,11 @@ EOF
 
 	library_names=
 	old_library=
-	. $file
+	# If there is no directory component, then add one.
+	case "$file" in
+	*/*) . $file ;;
+	*) . ./$file ;;
+	esac
 
 	# Add the libdir to current_libdirs if it is the destination.
 	if test "$destdir" = "$libdir"; then
@@ -1002,7 +1115,7 @@ EOF
 	  link_against_libtool_libs=
 	  finalize_command=
 
-	  # If there is no pathname component, then add one.
+	  # If there is no directory component, then add one.
 	  case "$file" in
 	  */*) . $file ;;
 	  *) . ./$file ;;
@@ -1019,7 +1132,11 @@ EOF
 	    # Check to see that each library is installed.
 	    libdir=
 	    if test -f "$lib"; then
-	      . $lib
+	      # If there is no directory component, then add one.
+	      case "$lib" in
+	      */*) . $lib ;;
+	      *) . ./$lib ;;
+	      esac
 	    fi
 	    libfile="$libdir/`echo "$lib" | sed 's%^.*/%%g'`"
 	    if test -z "$libdir"; then
@@ -1085,7 +1202,7 @@ EOF
 	  $show "$old_striplib $oldlib"
 	  $run $old_striplib $oldlib || exit $?
 	else
-	  echo "$progname: warning: no library stripping program" 1>&2
+	  echo "$progname: warning: no static library stripping program" 1>&2
 	fi
       fi
 
@@ -1106,7 +1223,7 @@ EOF
 
     if test -n "$current_libdirs"; then
       # Maybe just do a dry run.
-      test -n "$run" && current_libdirs="-n $current_libdirs"
+      test -n "$run" && current_libdirs=" -n$current_libdirs"
       exec $0 --finish$current_libdirs
       exit 1
     fi
@@ -1307,7 +1424,10 @@ library objects (\`.lo' or \`.l_o' files) may be specified, and the \`-rpath'
 option is required.
 
 If OUTPUT-FILE ends in \`.a', then a standard library is created using \`ar'
-and \`ranlib'.  Otherwise, an executable program is created.
+and \`ranlib'.
+
+If OUTPUT-FILE ends in \`.lo' or \`.o', then a reloadable object file is
+created, otherwise an executable program is created.
 EOF
   ;;
 

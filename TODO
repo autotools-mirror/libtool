@@ -1,17 +1,11 @@
-* Find link_static_flag for every C compiler, currently at least
-native cc's for AIX, HP-UX, OSF/1.
-
-* Configure test for a library-stripping program (strip -x on NetBSD)
+* Find link_static_flag for every C compiler, (don't forget native
+cc's for HP-UX and OSF/1).
 
 * Implement fuller support for profiled libraries (libNAME_p), and
 resolve naming difficulties for debuggable libraries (libNAME_g on
 Linux at least), old system 5 shared libraries (libNAME_s), etc.
 
-* We should use the C compiler rather than the linker to create shared
-libraries, if at all possible.  This just involves looking up the $wl
-values for system compilers.
-
 * What should be done about the difference between -fpic and -fPIC?
 
-* GCC docs imply that all rs6000 code is PIC.  If that is true, then
-implement it.
+* GCC docs imply that all rs6000 code is PIC.  See if it is true of
+any other processors (like maybe powerpc).

@@ -1,5 +1,5 @@
 # A brief demonstration of using Automake with Libtool.
-AUTOMAKE_OPTIONS = foreign
+AUTOMAKE_OPTIONS = foreign no-dependencies
 
 EXTRA_DIST = libinfo
 
