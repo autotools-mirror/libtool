@@ -2612,7 +2612,8 @@ Return 0 on success, otherwise the number of errors.
 @deftypefun lt_dlhandle lt_dlopen (const char *@var{filename})
 Open the module with the file name @var{filename} and return a
 handle for it.  @code{lt_dlopen} is able to open libtool dynamic
-modules, preloaded static modules and native dynamic libraries.  
+modules, preloaded static modules, the program itself and 
+native dynamic libraries.  
 
 Unresolved symbols in the module are resolved using its dependency
 libraries and previously dlopened modules.  If the executable using this
@@ -2621,6 +2622,10 @@ symbols in the executable will also be used to resolve references in the
 module.  Libltdl tries to resolve the symbols immediately and returns
 @code{NULL} if that fails.
  
+If @var{filename} is NULL @code{lt_dlopen} will return a handle
+for the program itself, which can be used to access its symbols 
+if it was linked with @code{-export-dynamic}.
+
 If libltdl cannot find the library and the file name @var{filename} does
 not have a directory component it will additionally search in the
 following search paths for the module (in the order as follows):

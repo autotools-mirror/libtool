@@ -1,5 +1,5 @@
 #! /bin/sh
-# mdemo-conf.test - try configuring the ../libltdl and ../mdemo subdirectories
+# mdemo-conf.test - try configuring the ../mdemo subdirectory
 
 # Test script header.
 need_prefix=yes

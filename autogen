@@ -19,6 +19,7 @@ for sub in demo depdemo libltdl mdemo cdemo; do
   rm -f acinclude.m4
   cp ../libtool.m4 acinclude.m4
   aclocal
+  autoheader
   automake --gnits --add-missing
   autoconf
   cd ..

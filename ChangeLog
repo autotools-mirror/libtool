@@ -1,3 +1,23 @@
+1999-02-11  Thomas Tanner  <tanner@gmx.de>
+
+	* autogen: libltdl needs autoheader
+	* demo/Makefile.am: renamed hell.debug to hell.static
+	  (we're demonstrating static linking, not debugging)
+	* tests/demo*: ditto
+	* doc/libtool.texi (libltdl): documented new lt_dlopen(NULL)
+	  feature
+	* libltdl/acconfig.h: required for config.h
+	* libltdl/configure.in: use config.h
+	* libltdl/ltdl.c: use config.h, support lt_dlopen(NULL)
+	  (returns a handle for the program itself)
+	* ltconfig.in: minor reformatting
+	* ltmain.in: in lt_preloaded_symbols always define
+	  the program's symbols first, for -export-dynamic list all
+	  program symbols together, -export-symbols was broken for
+	  programs, minor reformatting
+	* mdemo/Makefile.am: renamed mdemo.debug to mdemo.static
+	* tests/mdemo*: ditto, mdemo.test was completely broken
+	
 1999-02-10  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* ltconfig.in (irix5*, irix6*, osf3*, osf4*): do not use

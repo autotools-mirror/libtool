@@ -20,6 +20,10 @@ Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 #define _LTDL_COMPILE_
 
+#if HAVE_CONFIG_H
+#include <config.h>
+#endif
+
 #if HAVE_STRING_H
 #include <string.h>
 #endif
@@ -608,13 +612,18 @@ presym_open (handle, filename)
 {
 	lt_dlsymlists_t *lists = preloaded_symbols;
 
-	if (!filename) {
-		last_error = file_not_found_error;
-		return 1;
-	}
 	if (!lists) {
 		last_error = no_symbols_error;
 		return 1;
+	}
+	if (!filename) {
+		if (!default_preloaded_symbols) {
+			last_error = file_not_found_error;
+			return 1;
+		} else {
+			handle->handle = (lt_ptr_t) default_preloaded_symbols;
+			return 0;
+		}
 	}
 	while (lists) {
 		const lt_dlsymlist *syms = lists->syms;
@@ -765,8 +774,14 @@ tryall_dlopen (handle, filename)
 	
 	/* check whether the module was already opened */
 	cur = handles;
-	while (cur && strcmp(cur->filename, filename))
+	while (cur) {
+		if (!cur->filename && !filename)
+			break;
+		if (cur->filename && filename && 
+		    strcmp(cur->filename, filename))
+			break;
 		cur = cur->next;
+	}
 	if (cur) {
 		cur->usage++;
 		*handle = cur;
@@ -774,18 +789,22 @@ tryall_dlopen (handle, filename)
 	}
 	
 	cur = *handle;
-	cur->filename = strdup(filename);
-	if (!cur->filename) {
-		last_error = memory_error;
-		return 1;
-	}
+	if (filename) {
+		cur->filename = strdup(filename);
+		if (!cur->filename) {
+			last_error = memory_error;
+			return 1;
+		}
+	} else
+		cur->filename = 0;
 	while (type) {
 		if (type->lib_open(cur, filename) == 0)
 			break;
 		type = type->next;
 	}
 	if (!type) {
-		free(cur->filename);
+		if (cur->filename)
+			free(cur->filename);
 		return 1;
 	}
 	cur->type = type;
@@ -1026,8 +1045,20 @@ lt_dlopen (filename)
 	char	*dir = 0, *name = 0;
 	
 	if (!filename) {
-		last_error = file_not_found_error;
-		return 0;
+		handle = (lt_dlhandle) malloc(sizeof(lt_dlhandle_t));
+		if (!handle) {
+			last_error = memory_error;
+			return 0;
+		}
+		handle->usage = 0;
+		newhandle = handle;
+		if (tryall_dlopen(handle, 0) != 0) {
+			free(newhandle);
+			return 0;
+		}
+		if (newhandle != handle)
+			free(newhandle);
+		return handle;
 	}
 	basename = strrchr(filename, '/');
 	if (basename) {

@@ -20,16 +20,16 @@ else
 BUILD_helldl = 
 endif
 
-bin_PROGRAMS = hell hell.debug $(BUILD_helldl)
+bin_PROGRAMS = hell hell.static $(BUILD_helldl)
 
 # Build hell from main.c and libhello.la
 hell_SOURCES = main.c
 hell_LDADD = libhello.la
 
-# Create an easier-to-debug version of hell.
-hell_debug_SOURCES = main.c
-hell_debug_LDADD = libhello.la
-hell_debug_LDFLAGS = $(STATIC)
+# Create a statically linked version of hell.
+hell_static_SOURCES = main.c
+hell_static_LDADD = libhello.la
+hell_static_LDFLAGS = $(STATIC)
 
 if BINARY_HELLDL
 

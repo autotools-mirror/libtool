@@ -20,9 +20,9 @@ fi
 echo "Executing uninstalled programs in ../mdemo"
 
 status=0
-if ../mdemo/mdemo.debug ../mdemo/foo1.la ../mdemo/libfoo2.la; then :
+if ../mdemo/mdemo.static ../mdemo/foo1.la ../mdemo/libfoo2.la; then :
 else
-  echo "$0: cannot execute ../mdemo/mdemo.debug" 1>&2
+  echo "$0: cannot execute ../mdemo/mdemo.static" 1>&2
   status=1
 fi
 

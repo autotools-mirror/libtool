@@ -1128,13 +1128,13 @@ else
     allow_undefined_flag=
     if test "$with_gcc" = yes; then
       if strings `${CC} -print-prog-name=collect2` | \
-         grep resolve_lib_name >/dev/null
+	 grep resolve_lib_name >/dev/null
       then
-        # We have reworked collect2
-        hardcode_direct=yes
+	# We have reworked collect2
+	hardcode_direct=yes
       else
-        # We have old collect2
-        hardcode_direct=unsupported
+	# We have old collect2
+	hardcode_direct=unsupported
       fi
       archive_cmds='$CC -shared ${wl}-bnoentry -o $objdir/$soname $libobjs $deplibs $linkopts'
     else

@@ -25,9 +25,9 @@ $make install || exit 1
 
 echo "= Executing installed programs"
 status=0
-if $prefix/bin/hell.debug | grep 'Welcome to GNU Hell'; then :
+if $prefix/bin/hell.static | grep 'Welcome to GNU Hell'; then :
 else
-  echo "$0: cannot execute $prefix/bin/hell.debug" 1>&2
+  echo "$0: cannot execute $prefix/bin/hell.static" 1>&2
   status=1
 fi
 

@@ -2,6 +2,7 @@ dnl Process this file with autoconf to create configure.
 dnl Initialize the libltdl package.
 AC_INIT(ltdl.c)
 AM_INIT_AUTOMAKE(libltdl,1.0,-)
+AM_CONFIG_HEADER(config.h)
 
 AM_MAINTAINER_MODE
 

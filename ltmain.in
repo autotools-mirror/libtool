@@ -431,14 +431,14 @@ compiler."
       # All platforms use -DPIC, to notify preprocessed assembler code.
       command="$base_compile $pic_flag -DPIC $srcfile"
       if test "$build_old_libs" = yes; then
-        lo_libobj="$libobj"
+	lo_libobj="$libobj"
 	dir=`$echo "X$libobj" | $Xsed -e 's%/[^/]*$%%'`
 	if test "X$dir" = "X$libobj"; then
 	  dir="$objdir"
 	else
 	  dir="$dir/$objdir"
 	fi
-        libobj="$dir/"`$echo "X$libobj" | $Xsed -e 's%^.*/%%'`
+	libobj="$dir/"`$echo "X$libobj" | $Xsed -e 's%^.*/%%'`
 
 	if test -d "$dir"; then
 	  $show "$rm $libobj"
@@ -501,7 +501,7 @@ compiler."
       # If we have no pic_flag, then copy the object into place and finish.
       if test -z "$pic_flag" && test "$build_old_libs" = yes; then
 	# Rename the .lo from within objdir to obj
-        if test -f $obj; then
+	if test -f $obj; then
 	  $show $rm $obj
 	  $run $rm $obj
 	fi
@@ -580,8 +580,8 @@ compiler."
       # Create an invalid libtool object if no PIC, so that we do not
       # accidentally link it into a program.
       if test "$build_libtool_libs" != yes; then
-        $show "echo timestamp > $libobj"
-        $run eval "echo timestamp > \$libobj" || exit $?
+	$show "echo timestamp > $libobj"
+	$run eval "echo timestamp > \$libobj" || exit $?
       else
 	# Move the .lo from within objdir
 	$show "$mv $libobj $lo_libobj"
@@ -748,6 +748,7 @@ compiler."
 	    exit 1
 	  fi
 	  prev=
+	  continue
 	  ;;
 	release)
 	  release="-$arg"
@@ -1390,8 +1391,8 @@ compiler."
 
       # How the heck are we supposed to write a wrapper for a shared library?
       if test -n "$link_against_libtool_libs"; then
-      	 $echo "$modename: error: cannot link shared libraries into libtool libraries" 1>&2
-      	 exit 1
+	 $echo "$modename: error: cannot link shared libraries into libtool libraries" 1>&2
+	 exit 1
       fi
 
       if test -n "$dlfiles$dlprefiles"; then
@@ -1716,7 +1717,7 @@ EOF
 		      # but so what?
 		      potlib="$potent_lib"
 		      while test -h "$potlib" 2>/dev/null; do
-		        potliblink=`ls -ld $potlib | sed 's/.* -> //'`
+			potliblink=`ls -ld $potlib | sed 's/.* -> //'`
 			case "$potliblink" in
 			/*) potlib="$potliblink";;
 			*) potlib=`$echo "X$potlib" \
@@ -1822,13 +1823,13 @@ EOF
 
 	# Ensure that we have .o objects for linkers which dislike .lo
 	# (e.g. aix) incase we are running --disable-static
-        for obj in $libobjs; do
-          oldobj=`echo $obj | $Xsed -e "$lo2o"`
-          test -f $oldobj || ${LN_S} $obj $oldobj
-        done
+	for obj in $libobjs; do
+	  oldobj=`echo $obj | $Xsed -e "$lo2o"`
+	  test -f $oldobj || ${LN_S} $obj $oldobj
+	done
 
 	# Use standard objects if they are pic
-        test -z "$pic_flag" && libobjs=`$echo "X$libobjs" | $SP2NL | $Xsed -e "$lo2o" | $NL2SP`
+	test -z "$pic_flag" && libobjs=`$echo "X$libobjs" | $SP2NL | $Xsed -e "$lo2o" | $NL2SP`
 
 	if test -n "$whole_archive_flag_spec"; then
 	  if test -n "$convenience"; then
@@ -2086,11 +2087,6 @@ EOF
 	case "$dlsyms" in
 	"") ;;
 	*.c)
-	  if test "$export_dynamic" = yes && test -z "$export_symbols"; then
-	    # Add our own program objects to the preloaded list.
-	    dlprefiles=`$echo "X$objs $dlprefiles" | $SP2NL | $Xsed -e "$lo2o" | $NL2SP`
-	  fi
-
 	  # Discover the nlist of each of the dlfiles.
 	  nlist="$objdir/${output}.nm"
 
@@ -2123,8 +2119,17 @@ extern \"C\" {
 /* External symbol declarations for the compiler. */\
 "
 
-	  if test "$export_dynamic" = yes && test -n "$export_symbols"; then
-	    sed -e 's/^\(.*\)/\1 \1/' < "$export_symbols" > "$nlist"
+	  if test "$export_dynamic" = yes; then
+	    if test -n "$export_symbols"; then
+	      $run eval 'sed -e "s/^\(.*\)/\1 \1/" < "$export_symbols" > "$nlist"'
+	    else
+	      # Add our own program objects to the preloaded list.
+	      progfiles=`$echo "X$objs" | $SP2NL | $Xsed -e "$lo2o" | $NL2SP`
+	      for arg in $progfiles; do
+		$show "extracting global C symbols from \`$arg'"
+		$run eval "$NM $arg | $global_symbol_pipe >> '$nlist'"
+	      done
+	    fi
 	  fi
 
 	  for arg in $dlprefiles; do
@@ -2169,10 +2174,24 @@ lt_preloaded_symbols[] =
 {\
 "
 
-	    if test "$export_dynamic" = yes && test -n "$export_symbols"; then
-	      echo >> "$output_objdir/$dlsyms" "\
+	    # First entry is always the program itself
+	    echo >> "$output_objdir/$dlsyms" "\
   {\"${output}\", (lt_ptr_t) 0},"
-	      sed 's/^\(.*\)/  {"\1", (lt_ptr_t) \&\1},/' < "$export_symbols" >> "$output_objdir/$dlsyms"
+
+	    if test "$export_dynamic" = yes; then
+	      if test -n "$export_symbols"; then
+		sed 's/^\(.*\)/  {"\1", (lt_ptr_t) \&\1},/' < "$export_symbols" >> "$output_objdir/$dlsyms"
+	      else
+		$rm "$nlist"
+		for arg in $progfiles; do
+		  eval "$NM $arg | $global_symbol_pipe >> '$nlist'"
+		done
+		if test -f "$nlist"; then
+		  sed 's/^\(.*\) \(.*\)$/  {"\1", (lt_ptr_t) \&\2},/' < "$nlist" >> "$output_objdir/$dlsyms"
+		else
+		  echo '/* NONE */' >> "$output_objdir/$dlsyms"
+		fi
+	      fi
 	    fi
 
 	    for arg in $dlprefiles; do
@@ -2284,7 +2303,7 @@ static const void *lt_preloaded_setup() {
       fi
 
       if test -n "$runpath_var"; then
-        if test -n "$perm_rpath"; then
+	if test -n "$perm_rpath"; then
 	  # We should set the runpath_var.
 	  rpath=
 	  for dir in $perm_rpath; do
@@ -2292,7 +2311,7 @@ static const void *lt_preloaded_setup() {
 	  done
 	  compile_command="$runpath_var=\"$rpath\$$runpath_var\" $compile_command"
 	fi
-        if test -n "$finalize_perm_rpath"; then
+	if test -n "$finalize_perm_rpath"; then
 	  # We should set the runpath_var.
 	  rpath=
 	  for dir in $finalize_perm_rpath; do
