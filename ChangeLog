@@ -1,5 +1,9 @@
 2004-07-29  Gary V. Vaughan  <gary@gnu.org>
 
+	* config/config.guess, config/config.sub: Don't check these in,
+	they cause spurious conflicts on cvs commit and update, and are
+	added by bootstrap in any case.
+
 	* configure.ac (AC_INIT): Revert an accidental commit from my
 	testing of package_revision.
 
