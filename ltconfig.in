@@ -1,7 +1,7 @@
 #! /bin/sh
 
 # ltconfig - Create a system-specific libtool.
-# Copyright (C) 1996-1999 Free Software Foundation, Inc.
+# Copyright (C) 1996-2000 Free Software Foundation, Inc.
 # Originally by Gordon Matzigkeit <gord@gnu.ai.mit.edu>, 1996
 #
 # This file is free software; you can redistribute it and/or modify it
@@ -1201,11 +1201,11 @@ EOF
 
   netbsd*)
     if echo __ELF__ | $CC -E - | grep __ELF__ >/dev/null; then
+      archive_cmds='$LD -Bshareable $libobjs $deplibs $linkopts -o $lib'
+      wlarc=
+    else
       archive_cmds='$CC -shared $libobjs $deplibs $linkopts ${wl}-soname $wl$soname -o $lib'
       archive_expsym_cmds='$CC -shared $libobjs $deplibs $linkopts ${wl}-soname $wl$soname ${wl}-retain-symbols-file $wl$export_symbols -o $lib'
-    else
-      archive_cmds='$LD -Bshareable $libobjs $deplibs $linkopts -o $lib'
-      # can we support soname and/or expsyms with a.out? -oliva
     fi
     ;;
 
@@ -1249,8 +1249,8 @@ EOF
 
   if test "$ld_shlibs" = yes; then
     runpath_var=LD_RUN_PATH
-    hardcode_libdir_flag_spec='${wl}--rpath ${wl}$libdir'
-    export_dynamic_flag_spec='${wl}--export-dynamic'
+    hardcode_libdir_flag_spec="$wlarc"'--rpath '"$wlarc"'$libdir'
+    export_dynamic_flag_spec="$wlarc"'--export-dynamic'
     case $host_os in
     cygwin* | mingw*)
       # dlltool doesn't understand --whole-archive et. al.

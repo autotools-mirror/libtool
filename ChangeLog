@@ -1,3 +1,11 @@
+2000-07-10  Alexandre Oliva  <aoliva@lsd.ic.unicamp.br>
+
+	* ltconfig.in (netbsd*): archive_cmds and archive_expsym_cmds
+	were reversed with respect to definition of __ELF__.
+	From Keisuke Inoue <keisuke@csl.sony.co.jp>
+	* ltconfig.in (wlarc, netbsd, aout): Set to empty.
+	(hardcode_dynamic_flag_spec, export_dynamic_flag_spec): Use it.
+
 2000-07-10  Corinna Vinschen  <vinschen@cygnus.com>
 
 	* ltconfig.in: Check for host_os beeing one of `cygwin', `mingw'
