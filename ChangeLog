@@ -1,3 +1,14 @@
+1999-01-14  Thomas Tanner  <tanner@gmx.de>
+
+	* libltdl/ltdl.c: added variable symbol prefix, added user-defined
+	  library search path (can be set using lt_dlsearchpath()),
+	  added default_preloaded_symbols which are independent of
+	  lt_dlinit/exit
+	* libltdl/ltdl.h: added lt_dlsearchpath() and
+	  lt_dlpreopen_default()
+	* mdemo/Makefile.am: use -export-dynamic until libtool 
+	  and libltdl are able to handle module dependencies
+	  
 1999-01-14  Gary V. Vaughan  <garyv@oranda.demon.co.uk>
 
 	* ltconfig.in (PATH_SEPARATOR): new variable to hold valid $PATH
@@ -16,18 +27,18 @@
 	  the libtool scripts, 
 	  build the libtool scripts in builddir, not srcdir
 	  (unfortunately this breaks building when srcdir!=objdir, 
-	   but it was just plain wrong - need's to be fixed),
+	   but it was just plain wrong - needs to be fixed),
 	  build and install libltdl.tar.gz,
 	  copy acinclude.m4 instead of linking them, so that we 
 	  can 'make dist' in libltdl,
-	  fix configuring of subdirectories
-	* configure.in: remove --enable-ltdl-install - libltdl is supposed
+	  fixed configuring of subdirectories
+	* configure.in: removed --enable-ltdl-install - libltdl is supposed
 	  to be installed by packages, not by libtool itself
 	* libtoolize.in: new flags --ltdl and --ltdl-tar to install libltdl
 	  in packages (--ltdl doesn't work yet),
 	  install only the necessary libtool scripts, not just all 
 	  files in pkgdatadir
-	* mdemo/Makefile.am: remove rule for libltdl configuration
+	* mdemo/Makefile.am: removed the rule for libltdl configuration
 	  		
 1999-01-13  Alexandre Oliva  <oliva@dcc.unicamp.br>
 

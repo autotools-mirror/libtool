@@ -25,11 +25,15 @@ bin_PROGRAMS = mdemo mdemo.debug
 # Create a version of mdemo that does dlopen.
 mdemo_SOURCES = main.c
 mdemo_LDADD = ../libltdl/libltdlc.la
-mdemo_LDFLAGS = -dlopen foo1.la -dlopen libfoo2.la
+mdemo_LDFLAGS = -dlopen foo1.la -dlopen libfoo2.la \
+	-export-dynamic # FIXME: remove this when libtool and libltdl \
+			# handle dependencies of modules
 mdemo_DEPENDENCIES = ../libltdl/libltdlc.la foo1.la libfoo2.la
 
 # Create an easier-to-debug version of mdemo.
 mdemo_debug_SOURCES = main.c
 mdemo_debug_LDADD = ../libltdl/libltdlc.la
-mdemo_debug_LDFLAGS = -static -dlopen foo1.la -dlopen libfoo2.la
+mdemo_debug_LDFLAGS = -static -dlopen foo1.la -dlopen libfoo2.la \
+	-export-dynamic # FIXME: remove this when libtool and libltdl \
+			# handle dependencies of modules
 mdemo_debug_DEPENDENCIES = ../libltdl/libltdlc.la foo1.la libfoo2.la
