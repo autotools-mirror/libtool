@@ -1,3 +1,8 @@
+2004-11-18  Daniel Reed <djr@redhat.com>
+
+	* m4/libtool.m4 (_LT_SYS_DYNAMIC_LINKER) [linux]: Interpret
+	`include' statements in toplevel ld.so.conf file.
+
 2004-11-17  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
 	* tests/demo-nopic.test: Correctly skip hppa, x86_64, and s390*.
