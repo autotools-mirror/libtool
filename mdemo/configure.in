@@ -1,10 +1,10 @@
 dnl Initialize the hell package.
 AC_INIT(main.c)
-AM_INIT_AUTOMAKE(module,1.0)
+AM_INIT_AUTOMAKE(module,0.1)
 
 AC_PROG_CC
 AC_EXEEXT
 AM_PROG_LIBTOOL
 
 dnl Output the makefile
-AC_OUTPUT(Makefile modules/Makefile)
+AC_OUTPUT(Makefile)

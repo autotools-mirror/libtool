@@ -1,5 +1,43 @@
 1998-12-16  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* ltmain.in (-force-static, force_static): removed
+	* libltdl/Makefile.am (CFLAGS): ditto
+	* libltdl/configure.in: check for memory.h, rindex() and
+	dlpreopening.  Fixed NEED_USCORE caching policy.
+	* libltdl/ltdl.h (lt_dlsym): make the name argument const
+	* libltdl/ltdl.c (types): new variable: head of list of available
+	dlopening mechanisms
+	(lt_dltype_t): interface of a dlopening mechanism, with pointers
+	to functions for init, exit, open, close and sym
+	(lt_dlhandle_t): added pointer to interface type
+	(strdup): don't name it strdup; it can be troublesome
+	(strrchr): ditto; use rindex if available
+	(LIBTOOL_STATIC): check HAVE_DLPREOPEN instead, and move to the
+	end of the file, so that it becomes the header of the list
+	(all): renamed all interface-implementation functions, to avoid
+	name clashes, and created lt_dltype_t nodes for all of them
+	(lt_dlinit): initialize all available interfaces; remove those
+	that fail from the list.  Return failure only if no interfaces
+	could be initialized.
+	(lt_dlexit): return number of failures
+	(tryall_dlopen): try to open the library with all available
+	interfaces
+	(lt_dlopen): use tryall_dlopen; increased size of fixed buffers.
+	We should probably make these bound-checked or dynamically
+	allocated for the final release!  Fix bug when filename did not
+	contain slashes; should we check for `\\' too?  Try old_library if 
+	everything else fails.
+	(lt_dlclose): use the interface type for closing
+	(lt_dlsym): make `symbol' const, use interface type for looking up 
+	* mdemo/Makefile.am: moved mdemo/modules/* back into mdemo
+	(SUBDIRS): removed
+	(libfoo2_la_LDFLAGS): added -static; nice test.  However, since it 
+	causes -lm to linked into hell*, it causes tests that should fail
+	to pass
+	(noinst_HEADERS): no need to install foo.h
+	* mdemo/configure.in: remove modules/Makefile
+	tests/mdemo-exec.test: updated accordingly
+
 	* NEWS: Added Thomas Tanner and Gary V. Vaughan to the list of new 
 	maintainers.  Detailed expected failures of libtldl+mdemo.  Listed 
 	recent ports.  Added full URL for the home page.  Note that

@@ -58,7 +58,7 @@ int		lt_dlinit __P((void));
 int		lt_dlexit __P((void));
 lt_dlhandle	lt_dlopen __P((const char *filename));
 int		lt_dlclose __P((lt_dlhandle handle));
-__ptr_t		lt_dlsym __P((lt_dlhandle handle, char *name));
+__ptr_t		lt_dlsym __P((lt_dlhandle handle, const char *name));
 __END_DECLS
 
 #endif /* !_LTDL_H_ */

@@ -20,13 +20,13 @@ fi
 echo "Executing uninstalled programs in ../mdemo"
 
 status=0
-if ../mdemo/hell.debug ../mdemo/modules/libfoo1.la ../mdemo/modules/libfoo2.la; then :
+if ../mdemo/hell.debug ../mdemo/libfoo1.la ../mdemo/libfoo2.la; then :
 else
   echo "$0: cannot execute ../mdemo/hell.debug" 1>&2
   status=1
 fi
 
-if ../mdemo/hell ../mdemo/modules/libfoo1.la ../mdemo/modules/libfoo2.la; then :
+if ../mdemo/hell ../mdemo/libfoo1.la ../mdemo/libfoo2.la; then :
 else
   echo "$0: cannot execute ../mdemo/hell" 1>&2
   status=1

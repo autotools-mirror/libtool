@@ -5,11 +5,19 @@
 # level Makefile.
 AUTOMAKE_OPTIONS = no-dependencies foreign
 
-SUBDIRS = modules
-
-INCLUDES = -I$(srcdir)/../libltdl -I$(srcdir)/modules
+INCLUDES = -I$(srcdir)/../libltdl
 
 EXTRA_DIST = acinclude.m4
+
+lib_LTLIBRARIES = libfoo1.la libfoo2.la
+
+libfoo1_la_SOURCES = foo1.c
+libfoo1_la_LDFLAGS = -lm -module
+
+libfoo2_la_SOURCES = foo2.c
+libfoo2_la_LDFLAGS = -lm -module -static
+
+noinst_HEADERS = foo.h
 
 bin_PROGRAMS = hell hell.debug
 
@@ -17,11 +25,12 @@ bin_PROGRAMS = hell hell.debug
 hell_SOURCES = main.c
 hell_LDADD = ../libltdl/libltdl.la \
 	-lm # We won't need this when libltdl takes care of dependencies
-hell_LDFLAGS = -export-dynamic -dlopen modules/libfoo1.la -dlopen modules/libfoo2.la
-hell_DEPENDENCIES = modules/libfoo1.la modules/libfoo2.la
+hell_LDFLAGS = -export-dynamic -dlopen libfoo1.la -dlopen libfoo2.la
+hell_DEPENDENCIES = ../libltdl/libltdl.la libfoo1.la libfoo2.la
 
 # Create an easier-to-debug version of hell.
 hell_debug_SOURCES = main.c
 hell_debug_LDADD = ../libltdl/libltdl.la
 hell_debug_LDFLAGS = -static -export-dynamic \
-	-dlopen modules/libfoo1.la -dlopen modules/libfoo2.la
+	-dlopen libfoo1.la -dlopen libfoo2.la
+hell_DEPENDENCIES = ../libltdl/libltdl.la libfoo1.la libfoo2.la

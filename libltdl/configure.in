@@ -6,9 +6,21 @@ AC_PROG_CC
 AM_PROG_LIBTOOL
 
 AC_HEADER_STDC
-AC_CHECK_HEADERS(malloc.h stdlib.h unistd.h stdio.h dlfcn.h dl.h)
+AC_CHECK_HEADERS(malloc.h memory.h stdlib.h unistd.h stdio.h dlfcn.h dl.h)
 AC_CHECK_HEADERS(string.h strings.h, break)
-AC_CHECK_FUNCS(strdup strrchr)
+AC_CHECK_FUNCS(strdup strrchr rindex)
+
+AC_CACHE_CHECK([whether libtool supports -dlopen/-dlpreopen],
+	libltdl_cv_dlpreopen, [dnl
+  if grep '^global_symbol_pipe=..*$' ./libtool >/dev/null; then
+    libltdl_cv_dlpreopen=yes
+  else
+    libltdl_cv_dlpreopen=no
+  fi
+])
+if test x"$libltdl_cv_dlpreopen" = x"yes"; then
+  AC_DEFINE(HAVE_DLPREOPEN)
+fi
 
 LIBADD_DL=
 AC_CHECK_FUNCS(dlopen, AC_DEFINE(HAVE_LIBDL),
@@ -31,21 +43,26 @@ AC_CACHE_CHECK([for underscore before symbols], libltdl_cv_uscore, [
   rm -f conftest*
 ])
 
-if test $libltdl_cv_uscore = yes; then
-  if test $ac_cv_func_dlopen = yes || test $ac_cv_lib_dl_dlopen = yes ; then
+if test x"$libltdl_cv_uscore" = xyes; then
+  if test x"$ac_cv_func_dlopen" = xyes ||
+     test x"$ac_cv_lib_dl_dlopen" = xyes ; then
 	AC_CACHE_CHECK([whether we have to add an underscore for dlsym],
-		libltdl_cv_need_uscore,AC_TRY_RUN([
+		libltdl_cv_need_uscore, [dnl
+		AC_TRY_RUN([
 #include <dlfcn.h>
 #include <stdio.h>
 fnord() { int i=42;}
 main() { void *self, *ptr1, *ptr2; self=dlopen(NULL,RTLD_LAZY);
     if(self) { ptr1=dlsym(self,"fnord"); ptr2=dlsym(self,"_fnord");
     if(ptr1 && !ptr2) exit(0); } exit(1); } 
-], libltdl_cv_need_uscore=no, 
-  [libltdl_cv_need_uscore=yes
-   AC_DEFINE(NEED_USCORE)],
-	libltdl_cv_need_uscore=no))
+],	libltdl_cv_need_uscore=no, libltdl_cv_need_uscore=yes,
+	libltdl_cv_need_uscore=no
+)])
   fi
+fi
+
+if test x"$libltdl_cv_need_uscore" = xyes; then
+   AC_DEFINE(NEED_USCORE)
 fi
 
 dnl Output the makefile
