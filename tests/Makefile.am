@@ -1,7 +1,5 @@
 ## Process this file with automake to produce Makefile.in
 
-AUTOMAKE_OPTIONS = gnits
-
 CXX_TESTS = \
 	tagdemo-static.test tagdemo-make.test tagdemo-exec.test \
 	tagdemo-conf.test tagdemo-make.test tagdemo-exec.test \

@@ -1,3 +1,12 @@
+2003-11-25  Gary V. Vaughan  <gary@gnu.org>
+
+	* bootstrap: Explain automake and autoconf version dependencies
+	truthfully, and the difference between bootstrap and user
+	dependencies.
+	* configure.ac (AM_INIT_AUTOMAKE): List AUTOMAKE_OPTIONS here.
+	* Makefile.am, doc/Makefile.am, tests/Makefile.am
+	(AUTOMAKE_OPTIONS): Removed from here.
+
 2003-11-24  Gary V. Vaughan  <gary@gnu.org>
 
 	* tests/defs (func_configure): cdemo, demo and mdemo are shows

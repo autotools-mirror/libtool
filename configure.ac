@@ -18,7 +18,7 @@
 
 
 AC_PREREQ(2.58) ## We use AS_HELP_STRING
-
+## Oldest automake required for bootstrap is below in AM_INIT_AUTOMAKE.
 
 
 ## ------------------------ ##
@@ -106,7 +106,10 @@ AC_SUBST([TIMESTAMP])
 ## ------------------------ ##
 ## Automake Initialisation. ##
 ## ------------------------ ##
-AM_INIT_AUTOMAKE
+
+dnl These are bootstrap requirements, once built, libtool may work with
+dnl much older releases of autoconf and automake.  See release notes.
+AM_INIT_AUTOMAKE([1.7 gnits])
 
 
 ## ------------------------------- ##
