@@ -466,6 +466,7 @@ compiler."
 	command="$command -o $output_obj"
       fi
 
+      $run $rm "$output_obj"
       $show "$command"
       if $run eval "$command"; then :
       else
@@ -545,6 +546,7 @@ compiler."
 
       # Suppress compiler output if we already did a PIC compilation.
       command="$command$suppress_output"
+      $run $rm "$output_obj"
       $show "$command"
       if $run eval "$command"; then :
       else

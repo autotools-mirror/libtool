@@ -1,3 +1,9 @@
+1999-05-25  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* ltmain.in: Remove object files before writing to them, to avoid
+	circular links.
+	Reported by Ron O'Hara <rono@sentuny.com.au>
+
 1999-05-24 Thomas Tanner  <tanner@ffii.org>
 
 	* doc/libtool.texi: fix "wierd" typo :)
