@@ -1,5 +1,9 @@
 2004-10-03  Gary V. Vaughan  <gary@gnu.org>
 
+	* libltdl/lt__alloc.h (lt__alloc_die): Declare with LT_SCOPE as
+	per Ralf's original patch.
+	Reported by Bob Friesenhahn <bfriesen@simple.dallas.tx.us>
+
 	* libltdl/Makefile.am (libltdlc_la_LIBADD): Don't use
 	libdlloader_la_OBJECTS, an undocumented Automake internal
 	variable...

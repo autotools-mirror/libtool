@@ -43,7 +43,7 @@ LT_BEGIN_C_DECLS
 							} LT_STMT_END
 
 /* If set, this function is called when memory allocation has failed.  */
-extern void (*lt__alloc_die) (void);
+LT_SCOPE void (*lt__alloc_die) (void);
 
 LT_SCOPE void *lt__malloc (size_t n);
 LT_SCOPE void *lt__zalloc (size_t n);
