@@ -1,3 +1,9 @@
+2004-09-13  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* ltdl.c (memcpy, memmove): Fix pre-ANSI replacement functions
+	to not use pointer-to-void arithmetic.
+	(memmove): Fix infinite loop.
+
 2004-09-12  Brad <brad@comstyle.com>
 
 	* libtool.m4: Fixes for the OpenBSD support
@@ -58,7 +64,7 @@
 
 2004-08-01  Maciej W. Rozycki  <macro@linux-mips.org>
 
-	* libtool.m4 (LT_AC_PROG_SED): Set SED when running from cache as 
+	* libtool.m4 (LT_AC_PROG_SED): Set SED when running from cache as
 	well.
 
 2004-07-30  Peter O'Gorman  <peter@pogma.com>
@@ -78,7 +84,7 @@
 
 2004-07-22  Joe Orton  <joe@manyfish.co.uk>
 
-	* libtool.m4: Treat bsdi5* like bsdi4*. 
+	* libtool.m4: Treat bsdi5* like bsdi4*.
 
 2004-07-08  Peter O'Gorman  <peter@pogma.com>
 
