@@ -1,8 +1,16 @@
+2000-05-29  Fred Fish  <fnf@be.com>       
+
+	Support AR=mwld AR_FLAGS='-xml -o' for PPC Beos.
+	* ltconfig (old_AR_FLAGS): Add.              
+	(old_archive_cmds): Use AR_FLAGS rather than hardcoding "cru".          
+	(archive_cmds): Use AR_FLAGS rather than hardcoding "cru".              
+	(AR_FLAGS): Default to "cru" if not set.                               
+
 2000-05-29  Gary V. Vaughan  <gvv@techie.com>
 
 	* ltconfig.in (echo): The following code actually prints the
 	double quotes -- so I removed them:
-	    echo='printf "%s\n"' $echo '\t'
+	    echo='printf "%s\n"' /bin/ksh -c '$echo \\t'
 	From Tuukka Toivonen <tutoivon@mail.student.oulu.fi>
 
 	* NEWS: Updated.

@@ -216,6 +216,7 @@ libext=a
 cache_file=
 
 old_AR="$AR"
+old_AR_FLAGS="$AR_FLAGS"
 old_CC="$CC"
 old_CFLAGS="$CFLAGS"
 old_CPPFLAGS="$CPPFLAGS"
@@ -522,12 +523,13 @@ aix3*)
 esac
 
 # Determine commands to create old-style static archives.
-old_archive_cmds='$AR cru $oldlib$oldobjs$old_deplibs'
+old_archive_cmds='$AR $AR_FLAGS $oldlib$oldobjs$old_deplibs'
 old_postinstall_cmds='chmod 644 $oldlib'
 old_postuninstall_cmds=
 
 # Set sane defaults for various variables
 test -z "$AR" && AR=ar
+test -z "$AR_FLAGS" && AR_FLAGS=cru
 test -z "$AS" && AS=as
 test -z "$CC" && CC=cc
 test -z "$DLLTOOL" && DLLTOOL=dlltool
@@ -987,7 +989,7 @@ EOF
     ;;
 
   amigaos*)
-    archive_cmds='$rm $output_objdir/a2ixlibrary.data~$echo "#define NAME $libname" > $output_objdir/a2ixlibrary.data~$echo "#define LIBRARY_ID 1" >> $output_objdir/a2ixlibrary.data~$echo "#define VERSION $major" >> $output_objdir/a2ixlibrary.data~$echo "#define REVISION $revision" >> $output_objdir/a2ixlibrary.data~$AR cru $lib $libobjs~$RANLIB $lib~(cd $output_objdir && a2ixlibrary -32)'
+    archive_cmds='$rm $output_objdir/a2ixlibrary.data~$echo "#define NAME $libname" > $output_objdir/a2ixlibrary.data~$echo "#define LIBRARY_ID 1" >> $output_objdir/a2ixlibrary.data~$echo "#define VERSION $major" >> $output_objdir/a2ixlibrary.data~$echo "#define REVISION $revision" >> $output_objdir/a2ixlibrary.data~$AR $AR_FLAGS $lib $libobjs~$RANLIB $lib~(cd $output_objdir && a2ixlibrary -32)'
     hardcode_libdir_flag_spec='-L$libdir'
     hardcode_minus_L=yes
 
@@ -1154,7 +1156,7 @@ else
   aix3*)
     allow_undefined_flag=unsupported
     always_export_symbols=yes
-    archive_expsym_cmds='$LD -o $output_objdir/$soname $libobjs $deplibs $linker_flags -bE:$export_symbols -T512 -H512 -bM:SRE~$AR cru $lib $output_objdir/$soname'
+    archive_expsym_cmds='$LD -o $output_objdir/$soname $libobjs $deplibs $linker_flags -bE:$export_symbols -T512 -H512 -bM:SRE~$AR $AR_FLAGS $lib $output_objdir/$soname'
     # Note: this linker hardcodes the directories in LIBPATH if there
     # are no directories specified by -L.
     hardcode_minus_L=yes
@@ -1200,7 +1202,7 @@ else
    ;;
 
   amigaos*)
-    archive_cmds='$rm $output_objdir/a2ixlibrary.data~$echo "#define NAME $libname" > $output_objdir/a2ixlibrary.data~$echo "#define LIBRARY_ID 1" >> $output_objdir/a2ixlibrary.data~$echo "#define VERSION $major" >> $output_objdir/a2ixlibrary.data~$echo "#define REVISION $revision" >> $output_objdir/a2ixlibrary.data~$AR cru $lib $libobjs~$RANLIB $lib~(cd $output_objdir && a2ixlibrary -32)'
+    archive_cmds='$rm $output_objdir/a2ixlibrary.data~$echo "#define NAME $libname" > $output_objdir/a2ixlibrary.data~$echo "#define LIBRARY_ID 1" >> $output_objdir/a2ixlibrary.data~$echo "#define VERSION $major" >> $output_objdir/a2ixlibrary.data~$echo "#define REVISION $revision" >> $output_objdir/a2ixlibrary.data~$AR $AR_FLAGS $lib $libobjs~$RANLIB $lib~(cd $output_objdir && a2ixlibrary -32)'
     hardcode_libdir_flag_spec='-L$libdir'
     hardcode_minus_L=yes
     # see comment about different semantics on the GNU ld section
@@ -2495,13 +2497,13 @@ LTCONFIG_VERSION="$VERSION"
 case "$ltmain" in
 *.sh)
   # Now quote all the things that may contain metacharacters.
-  for var in ltecho old_AR old_CC old_CFLAGS old_CPPFLAGS \
+  for var in ltecho old_AR old_ARFLAGS old_CC old_CFLAGS old_CPPFLAGS \
     old_MAGIC old_LD old_LDFLAGS old_LIBS \
     old_LN_S old_NM old_RANLIB old_STRIP \
     old_AS old_DLLTOOL old_OBJDUMP \
     old_OBJEXT old_EXEEXT old_reload_flag \
     old_deplibs_check_method old_file_magic_cmd \
-    AR CC LD LN_S NM LTSHELL LTCONFIG_VERSION \
+    AR AR_FLAGS CC LD LN_S NM LTSHELL LTCONFIG_VERSION \
     reload_flag reload_cmds wl \
     pic_flag link_static_flag no_builtin_flag export_dynamic_flag_spec \
     thread_safe_flag_spec whole_archive_flag_spec libname_spec \
@@ -2584,7 +2586,7 @@ EOF
 
 *)
   # Double-quote the variables that need it (for aesthetics).
-  for var in old_AR old_CC old_CFLAGS old_CPPFLAGS \
+  for var in old_AR old_AR_FLAGS old_CC old_CFLAGS old_CPPFLAGS \
     old_MAGIC old_LD old_LDFLAGS old_LIBS \
     old_LN_S old_NM old_RANLIB old_STRIP \
     old_AS old_DLLTOOL old_OBJDUMP \
@@ -2608,10 +2610,10 @@ esac
 cat <<EOF >> "$cfgfile"
 # Libtool was configured as follows, on host `(hostname || uname -n) 2>/dev/null | sed 1q`:
 #
-# AR=$old_AR CC=$old_CC CFLAGS=$old_CFLAGS CPPFLAGS=$old_CPPFLAGS \\
-# MAGIC=$old_MAGIC LD=$old_LD LDFLAGS=$old_LDFLAGS LIBS=$old_LIBS \\
-# LN_S=$old_LN_S NM=$old_NM RANLIB=$old_RANLIB STRIP=$old_STRIP \\
-# AS=$old_AS DLLTOOL=$old_DLLTOOL OBJDUMP=$old_OBJDUMP \\
+# AR=$old_AR AR_FLAGS=$old_AR_FLAGS CC=$old_CC CFLAGS=$old_CFLAGS \\
+# CPPFLAGS=$old_CPPFLAGS MAGIC=$old_MAGIC LD=$old_LD LDFLAGS=$old_LDFLAGS \\
+# LIBS=$old_LIBS LN_S=$old_LN_S NM=$old_NM RANLIB=$old_RANLIB \\
+# STRIP=$old_STRIP AS=$old_AS DLLTOOL=$old_DLLTOOL OBJDUMP=$old_OBJDUMP \\
 # objext=$old_OBJEXT exeext=$old_EXEEXT reload_flag=$old_reload_flag \\
 # deplibs_check_method=$old_deplibs_check_method file_magic_cmd=$old_file_magic_cmd \\
 #   $0$ltconfig_args
@@ -2642,6 +2644,7 @@ echo=$ltecho
 
 # The archiver.
 AR=$AR
+AR_FLAGS=$AR_FLAGS
 
 # The default C compiler.
 CC=$CC
