@@ -1,3 +1,10 @@
+2004-09-30  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* doc/libtool.texi (LT_INIT, Using libltdl)
+	(Module loaders for libltdl, Multiple dependencies)
+	(libtool script contents): Fix several typos (trivial change).
+        Also, libltdl consists of more than two small files.
+
 2004-09-30  Gary V. Vaughan  <gary@gnu.org>
 
 	* m4/libtool.m4 (hardcode_shlibpath_var) [darwin7]: My Panther
@@ -5,7 +12,7 @@
 	used to, so this is more likely a function of the binutils and/or
 	gcc I am using at the moment.  The hardcode value setting code for
 	the configure script sucks at the moment though...
-	* (TODO): ...and needs to do a test compile instead of a table
+	* TODO: ...and needs to do a test compile instead of a table
 	lookup before 2.0 final.
 
 	* m4/libtool.m4 (echo): Use ECHO throughout for consistency with

@@ -1979,7 +1979,7 @@ Conversely using @code{LT_LANG} to enable language support for Libtool
 will automatically enable Autoconf language support as well.
 
 Both of the following examples are therefore valid ways of adding C++
-languge support to Libtool.
+language support to Libtool.
 
 @example
 LT_INIT
@@ -2083,7 +2083,7 @@ which happens after all the code in @file{configure.ac} has
 completed.  The implication of this is that the libtool script does
 not exist during execution of code from @file{configure.ac}, and so
 obviously it cannot be called for @samp{--config} details anymore.  If
-you are upgrading projects that used this ideom to libtool 1.6 or
+you are upgrading projects that used this idiom to libtool 1.6 or
 newer, you should replace those calls with direct references to the
 equivalent Autoconf shell variables that are set by the configure time
 tests before being passed to @file{config.status} for inclusion in the
@@ -2099,7 +2099,7 @@ in @file{configure.ac}.
 
 Because of these changes, and the runtime version compatibility checks
 Libtool now executes, we now advise @strong{against} including a copy of
-@file{libtool.m4} (and bretheren) in @file{acinclude.m4}.  Instead,
+@file{libtool.m4} (and brethren) in @file{acinclude.m4}.  Instead,
 you should set your project macro directory with
 @code{AC_CONFIG_MACRO_DIR}.  When you @command{libtoolize} your
 project, a copy of the relevant macro definitions will be placed in
@@ -3261,7 +3261,7 @@ to discover the correct module filename to supply to @code{dlopen}.
 
 Libtool provides a small library, called @file{libltdl}, that aims at
 hiding the various difficulties of dlopening libraries from programmers.
-It consists of a header-file and a small C source file that can be
+It consists of a few headers and small C source files that can be
 distributed with applications that need dlopening functionality.  On
 some platforms, whose dynamic linkers are too limited for a simple
 implementation of @file{libltdl} services, it requires @sc{gnu} DLD, or it
@@ -3877,7 +3877,7 @@ return @code{NULL}, and set the error message with @code{lt_dlseterror}.
 
 @deftypefn {Type} int lt_module_close (@w{lt_user_data @var{loader_data},} @w{lt_module @var{module}})
 The type of the unloader function for a user defined module loader.
-Implementatation of such a function should attempt to release
+Implementation of such a function should attempt to release
 any resources tied up by the @var{module} module, and then unload it
 from memory.  If the function fails for some reason, set the error
 message with @code{lt_dlseterror} and return non-zero.
@@ -4038,7 +4038,7 @@ if (myerror < 0)
 
 @deftypefun int lt_dlseterror (@w{int @var{errorcode}})
 When writing your own module loaders, you should use this function to
-raise errors so that they are propogated through the @code{lt_dlerror}
+raise errors so that they are propagated through the @code{lt_dlerror}
 interface. All of the standard errors used by libltdl are declared in
 @file{ltdl.h}, or you can add more of your own with
 @code{lt_dladderror}.  This function returns 0 on success.
@@ -4842,7 +4842,7 @@ to listed after those libraries whose symbols they provide.
 Particularly, if a pair of static archives each resolve some of the
 other's symbols, it might be necessary to list one of those archives
 both before and after the other one.  Libtool does not currently cope
-with this situation well, since dupicate libraries are removed from
+with this situation well, since duplicate libraries are removed from
 the link line by default.  Libtool provides the command line option
 @samp{--preserve-dup-deps} to preserve all duplicate dependencies
 in cases where it is necessary.
@@ -4874,7 +4874,7 @@ simply set shell variables, then sourced the libtool backend,
 inlined the contents of @code{ltmain.sh} into the generated
 @code{libtool}, which improved performance on many systems.  The tests
 that @file{ltconfig} used to perform are now kept in @file{libtool.m4}
-where thay can be written using Autoconf.  This has the runtime
+where they can be written using Autoconf.  This has the runtime
 performance benefits of inlined @code{ltmain.sh}, @emph{and} improves
 the build time a little while considerably easing the amount of raw
 shell code that used to need maintaining.
