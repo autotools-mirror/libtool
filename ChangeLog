@@ -1,3 +1,8 @@
+2004-10-10  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* tests/pdemo-inst.test: Correction for mis-application of
+	Charles Wilson's earlier patch.
+
 2004-10-09  Gary V. Vaughan  <gary@gnu.org>
 
 	* m4/libtool.m4 (_LT_LANG_F77_CONFIG): Make sure the save and
