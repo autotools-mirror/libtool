@@ -1,5 +1,11 @@
 2000-09-07  Gary V. Vaughan  <gvv@techie.com>
 
+	* libtoolize.in (files): Don't try to install ltconfig -- it
+	doesn't exist!!
+	* bootstrap: Fake an ltconfig incase the installed automake
+	calls an installed libtoolize (as part of its --add-missing
+	process) which thinks ltconfig should be there.
+
 	* libtool.m4 (_LT_AC_LTCONFIG_HACK): Deleted a vital `;;'
 	terminator from a case statement by mistake.
 	
