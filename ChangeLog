@@ -1,5 +1,7 @@
 1999-01-13  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* THANKS: added Sebastian Wilhelmi
+
 	* ltconfig.in (solaris): define `need_version' to no
 
 1999-01-13  Sebastian Wilhelmi  <wilhelmi@ira.uka.de>
