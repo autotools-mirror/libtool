@@ -4774,9 +4774,14 @@ _LT_EOF
 	_LT_TAGVAR(old_postinstall_cmds, $1)='chmod 644 $oldlib'
 	_LT_TAGVAR(compile_tag, $1)=-TC
 	_LT_TAGVAR(dashl_xform, $1)='s/\(.*\)/\1.lib/'
-	_LT_TAGVAR(postlink_cmds, $1)='if test -e "@OUTPUT@.exe.manifest"; then
-	    mt -manifest "@OUTPUT@.exe.manifest" -outputresource:"@OUTPUT@.exe";
-	    $RM "@OUTPUT@.exe.manifest";
+	_LT_TAGVAR(postlink_cmds, $1)='lt_outputfile="@OUTPUT@"~
+	  case "$lt_outputfile" in
+	    *.[[eE][xX][eE]]) ;;
+	    *) lt_outputfile="$lt_outputfile.exe" ;;
+	  esac~
+	  if test -e "$lt_outputfile.manifest"; then
+	    mt -manifest "$lt_outputfile.manifest" -outputresource:"$lt_outputfile" || exit 1;
+	    $RM "$lt_outputfile.manifest";
 	  fi'
 	;;
       *)
@@ -5781,9 +5786,14 @@ if test "$_lt_caught_CXX_error" != yes; then
 	  _LT_TAGVAR(old_postinstall_cmds, $1)='chmod 644 $oldlib'
 	  _LT_TAGVAR(compile_tag, $1)=-TP
 	  _LT_TAGVAR(dashl_xform, $1)='s/\(.*\)/\1.lib/'
-	  _LT_TAGVAR(postlink_cmds, $1)='if test -e "@OUTPUT@.exe.manifest"; then
-	      mt -manifest "@OUTPUT@.exe.manifest" -outputresource:"@OUTPUT@.exe";
-	      $RM "@OUTPUT@.exe.manifest";
+	  _LT_TAGVAR(postlink_cmds, $1)='lt_outputfile="@OUTPUT@"~
+	    case "$lt_outputfile" in
+	      *.[[eE][xX][eE]]) ;;
+	      *) lt_outputfile="$lt_outputfile.exe" ;;
+	    esac~
+	    if test -e "$lt_outputfile.manifest"; then
+	      mt -manifest "$lt_outputfile.manifest" -outputresource:"$lt_outputfile" || exit 1;
+	      $RM "$lt_outputfile.manifest";
 	    fi'
 	  ;;
 	*)
