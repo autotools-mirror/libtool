@@ -1,3 +1,9 @@
+1998-11-16  Stephan Kulow  <coolo@kde.org>
+
+	* ltconfig.in: extent no_builtin_flag to contain -fno-rtti and
+	-fno-exceptions in case we compile with a gcc, that supports
+	this options (egcs and gcc >= 2.8)
+
 1998-11-16  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* ltmain.in (C_compiler): copy $CC before it is overwritten with

@@ -570,7 +570,6 @@ no_builtin_flag=
 if test "$with_gcc" = yes; then
   wl='-Wl,'
   link_static_flag='-static'
-  no_builtin_flag=' -fno-builtin'
 
   case "$host_os" in
   aix3* | aix4* | irix5* | irix6* | osf3* | osf4*)
@@ -770,6 +769,42 @@ if test "$compiler_c_o" = no && test "$need_locks" != no; then
   fi
 else
   need_locks=no
+fi
+
+if test "$with_gcc" = yes; then
+  # Check to see if options -fno-rtti -fno-exceptions are supported by compiler
+  echo $ac_n "checking if $compiler supports -fno-rtti -fno-exceptions ... $ac_c" 1>&6
+  $rm conftest*
+  echo "int some_variable = 0;" > conftest.c
+  save_CFLAGS="$CFLAGS"
+  CFLAGS="$CFLAGS -fno-rtti -fno-exceptions -c conftest.c"
+  echo "$progname:@LINENO@: checking if $compiler supports -fno-rtti -fno-exceptions" >&5
+  if { (eval echo $progname:@LINENO@: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>conftest.err; } && test -s conftest.o; then
+
+    # The compiler can only warn and ignore the option if not recognized
+    # So say no if there are warnings
+      if test -s conftest.err; then
+        echo "$ac_t"no 1>&6
+        compiler_rtti_exceptions=no
+      else
+        echo "$ac_t"yes 1>&6
+        compiler_rtti_exceptions=yes
+      fi
+  else
+    # Append any errors to the config.log.
+    cat conftest.err 1>&5
+    compiler_rtti_exceptions=no
+    echo "$ac_t"no 1>&6
+  fi
+  CFLAGS="$save_CFLAGS"
+  $rm conftest*
+
+  if test "$compiler_rtti_exceptions" = "yes"; then
+    no_builtin_flag=' -fno-builtin -fno-rtti -fno-exceptions'
+  else
+    no_builtin_flag=' -fno-builtin'
+  fi
+  
 fi
 
 # Check for any special shared library compilation flags.
