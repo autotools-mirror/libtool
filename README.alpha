@@ -69,9 +69,12 @@ report mailing list, <bug-libtool@gnu.org> with a subject line that
 includes the string `[TEST FAILURE]'.  From a bourne compatible shell,
 you can generate verbose test output like this:
 
-  VERBOSE=1 make check \
+  VERBOSE=yes make check \
   TESTS='cdemo-static.test cdemo-make.test cdemo-exec.test' \
   | tee cdemo-static-group.log
+
+In order to enable debug shell tracing, use VERBOSE=debug
+instead of VERBOSE=yes.
 
 -- 
 Copyright (C) 2004 Free Software Foundation, Inc.
