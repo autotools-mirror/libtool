@@ -1,3 +1,11 @@
+1999-01-17  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* libltdl/ltdl.h (lt_dlpreopen_default): reverted to a macro
+	without arguments, that calls lt_dlpreopen_default_ with
+	lt_dlpreloaded_symbols
+	* libltdl/ltdl.c (lt_dlpreopen_default_): renamed from
+	lt_dlpreopen_default
+
 1999-01-15  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
 
 	From Andrey Slepuhin <pooh@msu.ru>
