@@ -1123,6 +1123,19 @@ lt_dlopen (filename)
 		if (!handle)
 			goto clean_up_name;
 	} else {
+		/* try to append libtool library extension */
+		char *newfilename = malloc(strlen(filename)+4);
+		if (!newfilename) {
+			last_error = memory_error;
+			goto clean_up_dir;
+		}
+		strcpy(newfilename, filename);
+		strcat(newfilename, ".la");
+		handle = lt_dlopen(newfilename);
+		free(newfilename);
+		if (handle)
+			goto restore_error;
+
 		/* not a libtool module */
 		handle = (lt_dlhandle) malloc(sizeof(lt_dlhandle_t));
 		if (!handle) {
@@ -1139,15 +1152,41 @@ lt_dlopen (filename)
 					    getenv(LTDL_SHLIBPATH_VAR))
 #endif
 				))) {
-			free(handle);
-			handle = 0;
-			goto clean_up_dir;
+#ifdef LTDL_SHLIB_EXT
+			newfilename = malloc(strlen(filename) +
+					     strlen(LTDL_SHLIB_EXT) + 1);
+			if (!newfilename) {
+				last_error = memory_error;
+				goto clean_up_hand;
+			}
+			strcpy(newfilename, filename);
+			strcat(newfilename, LTDL_SHLIB_EXT);
+			basename = newfilename + (basename - filename);
+			if (tryall_dlopen(&handle, newfilename)
+			    && (dir
+				|| (find_library(&handle, basename, usr_search_path)
+				    && find_library(&handle, basename,
+						    getenv("LTDL_LIBRARY_PATH"))
+#ifdef LTDL_SHLIBPATH_VAR
+				    && find_library(&handle, basename,
+						    getenv(LTDL_SHLIBPATH_VAR))
+#endif
+					))) {
+#endif
+			clean_up_hand:
+				free(handle);
+				handle = 0;
+				goto clean_up_dir;
+#ifdef LTDL_SHLIB_EXT
+			}
+#endif
 		}
 		handle->name = 0;
 	}
 	handle->usage = 1;
 	handle->next = handles;
 	handles = handle;
+ restore_error:
 	last_error = saved_error;
  clean_up_dir:
 	if (dir)

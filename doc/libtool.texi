@@ -2596,23 +2596,20 @@ Return 0 on success, otherwise the number of errors.
 @end deftypefun
 
 @deftypefun lt_dlhandle lt_dlopen (const char *@var{filename})
-Open the module with the file name @var{filename} and 
-return a handle for it.
-The module can be either a libtool module
-(the file name has a ".la" extension and the module was linked
-using the @code{-module} flag) or a native dynamic library.
- 
+Open the module whose name is derived from @var{filename} and return a
+handle for it.  @code{lt_dlopen} is able to open libtool dynamic
+modules, preloaded static modules and native dynamic libraries.  
+
 Unresolved symbols in the module are resolved using its dependency
-libraries and previously dlopened modules.
-If the executable using this module was linked with the @code{-export-dynamic}
-flag, then the global symbols in the executable will also be used to
-resolve references in the module.
-Libltdl tries to resolve the symbols immediately and returns NULL
-if that fails.
+libraries and previously dlopened modules.  If the executable using this
+module was linked with the @code{-export-dynamic} flag, then the global
+symbols in the executable will also be used to resolve references in the
+module.  Libltdl tries to resolve the symbols immediately and returns
+@code{NULL} if that fails.
  
-If libltdl cannot find the library and the file name @var{filename} does not
-have a directory component it will additionally search in the following 
-search paths for the module (in the order as follows):
+If libltdl cannot find the library and the file name @var{filename} does
+not have a directory component it will additionally search in the
+following search paths for the module (in the order as follows):
  
 @enumerate 1
 @item user-defined search path:
@@ -2633,6 +2630,21 @@ e.g. "/usr/lib/mypkg:/lib/foo".
  
 If the same module is loaded several times, the same handle is returned.
 If @code{lt_dlopen} fails for any reason, it returns NULL.
+
+@code{lt_dlopen} will preferentially open libtool modules.  Therefore,
+if the @var{filename} does not end with the libtool archive extension,
+@samp{".la"}, @code{lt_dlopen} will automatically search for a libtool
+module by appending @samp{".la"} to the @var{filename}.  If this fails,
+it assumes the @var{filename} refers to a native dynamic library, so
+tries to locate a library with the given name.  If even this fails,
+@code{lt_dlopen} will try to append to @var{filename} the extension used
+for native dynamic libraries in the host platform, e.g., @samp{".so"},
+@samp{".sl"}, etc.
+
+This lookup strategy was designed to allow programs that have knowledge
+about native dynamic libraries naming conventions to be able to dlopen
+such libraries directly, and to allow programs that don't have this
+knowledge to let libltdl take care of this for them.
 @end deftypefun
 
 @deftypefun int lt_dlclose (lt_dlhandle @var{handle})

@@ -1,5 +1,13 @@
 1999-01-21  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* libltdl/configure.in: reintroduce code to detect native library
+	extension
+	* libltdl/ltdl.c (lt_dlopen): if a .la file name is given, that's
+	all.  Otherwise, lt_dlopen now tries to append .la first.  If this 
+	fails, it tries the given filename, and, at last, tries to append
+	the native library extension to the given filename.
+	* doc/libtool.texi (lt_dlopen): explain new lookup strategy
+
 	* libltdl/ltdl.c: major rewrite to avoid almost all fixed-size
 	buffers; only `tmp' in lt_dlopen remained.  But the code got ugly
 	:-(

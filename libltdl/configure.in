@@ -24,6 +24,28 @@ AC_C_INLINE
 AM_PROG_LIBTOOL
 AC_SUBST(LIBTOOL_DEPS)
 
+AC_CACHE_CHECK([which extension is used for shared libraries],
+  libltdl_cv_shlibext, [dnl
+(
+  rm -f conftest
+  ./libtool --config > conftest
+  . ./conftest
+  last=
+  for spec in $library_names_spec; do
+    last="$spec"
+  done
+  rm -f conftest
+changequote(, )
+  echo "$last" | sed 's/^[^.]*//;s/\$.*$//;s/\.$//' > conftest
+changequote([, ])
+)
+libltdl_cv_shlibext=`cat conftest`
+rm -f conftest
+])
+if test -n "$libltdl_cv_shlibext"; then
+  AC_DEFINE_UNQUOTED(LTDL_SHLIB_EXT, "$libltdl_cv_shlibext")
+fi
+
 AC_CACHE_CHECK([which variable specifies run-time library path],
   libltdl_cv_shlibpath_var, [dnl
 (
