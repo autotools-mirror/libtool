@@ -44,15 +44,16 @@ can_build_shared=yes
 enable_shared=yes
 # All known linkers require a `.a' archive for static linking.
 enable_static=yes
-ltmain=NONE
+ltmain=
 silent=
 srcdir=
 ac_config_guess=
 ac_config_sub=
-host=NONE
-nonopt=NONE
+host=
+nonopt=
 verify_host=yes
 with_gcc=no
+with_gnu_ld=no
 
 old_AR="$AR"
 old_CC="$CC"
@@ -96,6 +97,7 @@ Generate a system-specific libtool script.
     --srcdir=DIR           find \`config.guess' in DIR
     --version              output version information and exit
     --with-gcc             assume that the GNU C compiler will be used
+    --with-gnu-ld          assume that the C compiler uses the GNU linker
 
 LTMAIN is the \`ltmain.sh' shell script fragment that provides basic libtool
 functionality.
@@ -119,6 +121,7 @@ EOM
   --version) echo "$PROGRAM (GNU $PACKAGE) $VERSION"; exit 0 ;;
 
   --with-gcc) with_gcc=yes ;;
+  --with-gnu-ld) with_gnu_ld=yes ;;
 
   -*)
     echo "$progname: unrecognized option \`$option'" 1>&2
@@ -127,9 +130,9 @@ EOM
     ;;
 
   *)
-    if test "$ltmain" = NONE; then
+    if test -z "$ltmain"; then
       ltmain="$option"
-    elif test "$host" = NONE; then
+    elif test -z "$host"; then
 # FIXME This generates an unnecessary warning for sparc-sun-solaris4.1.3_U1
 #      if test -n "`echo $option| sed 's/[-a-z0-9.]//g'`"; then
 #        echo "$progname: warning \`$option' is not a valid host type" 1>&2
@@ -143,7 +146,7 @@ EOM
   esac
 done
 
-if test "$ltmain" = NONE; then
+if test -z "$ltmain"; then
   echo "$progname: you must specify a LTMAIN file" 1>&2
   echo "$help" 1>&2
   exit 1
@@ -236,7 +239,7 @@ if test "$verify_host" = yes; then
 
   host_alias=$host
   case "$host_alias" in
-  NONE)
+  "")
     if host_alias=`$ac_config_guess`; then :
     else
       echo "$progname: cannot guess host type; you must specify one" 1>&2
@@ -247,7 +250,7 @@ if test "$verify_host" = yes; then
   host=`$ac_config_sub $host_alias`
   echo "$ac_t""$host" 1>&6
 
-elif test "$host" = NONE; then
+elif test -z "$host"; then
   echo "$progname: you must specify a host type if you use \`--no-verify'" 1>&2
   echo "$help" 1>&2
   exit 1
@@ -274,18 +277,16 @@ if test "${RANLIB+set}" != "set"; then
   result=no
 
   echo $ac_n "checking for ranlib... $ac_c" 1>&6
-  if test "$result" = no; then
-    IFS="${IFS= 	}"; save_ifs="$IFS"; IFS="${IFS}:"
-    for dir in $PATH; do
-      test -z "$dir" && dir=.
-      if test -f $dir/ranlib; then
-	RANLIB="ranlib"
-	result="ranlib"
-	break
-      fi
-    done
-    IFS="$save_ifs"
-  fi
+  IFS="${IFS= 	}"; save_ifs="$IFS"; IFS="${IFS}:"
+  for dir in $PATH; do
+    test -z "$dir" && dir=.
+    if test -f $dir/ranlib; then
+      RANLIB="ranlib"
+      result="ranlib"
+      break
+    fi
+  done
+  IFS="$save_ifs"
 
   echo $ac_t "$result" 1>&6
 fi
@@ -296,7 +297,7 @@ if test -n "$RANLIB"; then
 fi
 
 # Check to see if we are using GCC.
-if test "$with_gcc" = no; then
+if test "$with_gcc" != yes || test -z "$CC"; then
   # If CC is not set, then try to find GCC or a usable CC.
   if test -z "$CC"; then
     echo $ac_n "checking for gcc... $ac_c" 1>&6
@@ -498,41 +499,6 @@ else
   echo $ac_t none 1>&6
 fi
 
-if test -z "$LD"; then
-  # Find the linker that we think the C compiler uses.
-  echo $ac_n "checking for ld used by $compiler... $ac_c" 1>&6
-
-  IFS="${IFS= 	}"; ac_save_ifs="$IFS"; IFS="${IFS}:"
-  for ac_dir in $PATH; do
-    test -z "$ac_dir" && ac_dir=.
-    if test -f "$ac_dir/ld"; then
-      # Check to see if the program is GNU ld.  I'd rather use --version,
-      # but apparently some GNU ld's only accept -v.
-      if "$ac_dir/ld" -v 2>&1 < /dev/null | egrep '(GNU ld|with BFD)' > /dev/null; then
-        # If it was GNU ld, only accept it if we're using GCC.
-        LD="$ac_dir/ld"
-	test "$with_gcc" = yes && break
-      else
-        # If it was not GNU ld, and we are not using GCC, then accept it.
-        LD="$ac_dir/ld"
-        break
-      fi
-    fi
-  done
-  IFS="$ac_save_ifs"
-
-  if test -n "$CC"; then
-    echo "$ac_t""$LD" 1>&6
-  else
-    echo "$ac_t""no" 1>&6
-  fi
-
-  if test -z "$LD"; then
-    echo "$progname: error: no acceptable ld found in \$PATH" 1>&2
-    exit 1
-  fi
-fi
-
 if test -z "$LN_S"; then
   # Check to see if we can use ln -s, or we need hard links.
   echo $ac_n "checking whether ln -s works... $ac_c" 1>&6
@@ -550,21 +516,53 @@ if test -z "$LN_S"; then
   fi
 fi
 
-# See if we're really using GNU ld.
-with_gnu_ld=no
-# Allow LD to be a program name with arguments.
-set dummy $LD
-linker="$2"
-echo $ac_n "checking if $LD is GNU ld... $ac_c" 1>&6
-# I'd rather use --version here, but apparently some GNU ld's only accept -v.
-if $LD -v 2>&1 </dev/null | egrep '(GNU ld|with BFD)' > /dev/null; then
-  with_gnu_ld=yes
-  linker="GNU ld"
+if test "$with_gnu_ld" != yes || test -z "$LD"; then
+  if test -z "$LD"; then
+    if test "$with_gnu_ld" = yes; then
+      echo $ac_n "checking for GNU ld... $ac_c" 1>&6
+    else
+      echo $ac_n "checking for non-GNU ld... $ac_c" 1>&6
+    fi
+
+    IFS="${IFS= 	}"; ac_save_ifs="$IFS"; IFS="${IFS}:"
+    for ac_dir in $PATH; do
+      test -z "$ac_dir" && ac_dir=.
+      if test -f "$ac_dir/ld"; then
+	LD="$ac_dir/ld"
+	# Check to see if the program is GNU ld.  I'd rather use --version,
+	# but apparently some GNU ld's only accept -v.
+	# Break only if it was the GNU/non-GNU ld that we prefer.
+	if "$LD" -v 2>&1 < /dev/null | egrep '(GNU ld|with BFD)' > /dev/null; then
+	  test "$with_gnu_ld" = yes && break
+	else
+	  test "$with_gnu_ld" != yes && break
+	fi
+      fi
+    done
+    IFS="$ac_save_ifs"
+
+    if test -n "$LD"; then
+      echo "$ac_t""$LD" 1>&6
+    else
+      echo "$ac_t""no" 1>&6
+    fi
+
+    if test -z "$LD"; then
+      echo "$progname: error: no acceptable ld found in \$PATH" 1>&2
+      exit 1
+    fi
+  fi
+
+  echo $ac_n "checking whether we are using GNU ld... $ac_c" 1>&6
+  # I'd rather use --version here, but apparently some GNU ld's only accept -v.
+  if $LD -v 2>&1 </dev/null | egrep '(GNU ld|with BFD)' > /dev/null; then
+    with_gnu_ld=yes
+  fi
+  echo $ac_t "$with_gnu_ld" 1>&6
 fi
-echo $ac_t "$with_gnu_ld" 1>&6
 
 # See if the linker supports building shared libraries.
-echo $ac_n "checking if $linker supports shared libraries... $ac_c" 1>&6
+echo $ac_n "checking whether the linker ($LD) supports shared libraries... $ac_c" 1>&6
 
 allow_undefined_flag=
 archive_cmds=
@@ -742,7 +740,7 @@ test "$hardcode_action" = unsupported && can_build_shared=no
 
 reload_flag=
 reload_cmds='$LD$reload_flag -o $output$reload_objs'
-echo $ac_n "checking for $linker option to reload object files... $ac_c" 1>&6
+echo $ac_n "checking for $LD option to reload object files... $ac_c" 1>&6
 # PORTME Some linker may need a different reload flag.
 reload_flag='-r'
 echo $ac_t "$reload_flag"

@@ -1,3 +1,22 @@
+Tue Jul  1 13:03:49 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltmain.sh.in, ltconfig.in: Eliminate uses of the NONE magic
+	variable value.  Use an empty variable instead.
+
+	* ltconfig.in (with_gcc, with_gnu_ld): Do the tests for the C
+	compiler and linker if the variables are unset, or if they are not
+	GNU C and ld.
+	(RANLIB): Eliminate redundant `if' statement.
+
+	* configure.in: Use AM_PROG_LD.
+
+	* libtool.m4 (AM_PROG_LD_GNU): New macro to determine if LD is GNU
+	ld.
+	(AM_PROG_LD): Rename AM_PATH_PROG_LD to AM_PROG_LD.  Parameterize
+	so that the user can specify `--with-gnu-ld' or `--without-gnu-ld'
+	to indicate his preference.
+	(AM_PROG_LIBTOOL): Use it.
+
 Mon Jun 30 22:32:05 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltconfig.in: Add /sbin into the path before running ldconfig on

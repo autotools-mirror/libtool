@@ -30,7 +30,7 @@ PROGRAM=ltmain.sh
 PACKAGE=@PACKAGE@
 VERSION=@VERSION@
 
-default_mode=NONE
+default_mode=
 help="Try \`$progname --help' for more information."
 magic="%%%MAGIC variable%%%"
 mkdir="mkdir"
@@ -138,7 +138,7 @@ fi
 if test -z "$show_help"; then
 
   # Infer the operation mode.
-  if test "$mode" = NONE; then
+  if test -z "$mode"; then
     case "$nonopt" in
     *cc)
       mode=link
@@ -163,7 +163,7 @@ if test -z "$show_help"; then
       ;;
     *)
       # Just use the default operation mode.
-      if test "$mode" = NONE; then
+      if test -z "$mode"; then
 	if test -n "$nonopt"; then
 	  echo "$progname: warning: cannot infer operation mode from \`$nonopt'" 1>&2
 	else
@@ -1422,9 +1422,7 @@ EOF
 	  done
 
 	  if test "$hardcode_action" = relink; then
-	    if test "$finalize" = no; then
-	      echo "$progname: warning: cannot relink \`$file' on behalf of your buggy system linker" 1>&2
-	    else
+	    if test "$finalize" = yes; then
 	      echo "$progname: warning: relinking \`$file' on behalf of your buggy system linker" 1>&2
 	      $show "$finalize_command"
 	      if $run $finalize_command; then :
@@ -1433,6 +1431,8 @@ EOF
 		continue
 	      fi
 	      file="$objdir/$file"T
+	    else
+	      echo "$progname: warning: cannot relink \`$file' on behalf of your buggy system linker" 1>&2
 	    fi
 	  else
 	    # Install the binary that we compiled earlier.
