@@ -1,5 +1,11 @@
 2000-05-26  Alexandre Oliva  <oliva@lsd.ic.unicamp.br>
 
+	* ltmain.in (xform): Recognize *.class and *.java.
+	(pic_flag): Do not add -DPIC.
+	* ltcf-c.sh (ac_cv_prog_cc_pic): Add -DPIC.
+	* ltcf-cxx.sh (ac_cv_prog_cc_pic): Add -DPIC.
+	* ltcf-gcj.sh: New file, mostly copied from ltcf-cxx.sh.
+
 	* ltmain.in: Output libobj file in a temporary file, then
 	rename it.
 

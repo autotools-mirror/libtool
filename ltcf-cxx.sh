@@ -4,10 +4,10 @@
 
 # ltcf-cxx.sh - Create a C++ compiler specific configuration
 #
-# Copyright (C) 1996-1999 Free Software Foundation, Inc.
+# Copyright (C) 1996-1999,2000 Free Software Foundation, Inc.
 # Originally by Gordon Matzigkeit <gord@gnu.ai.mit.edu>, 1996
 #
-# Orignal C++ support by:
+# Original C++ support by:
 #    Alexandre Oliva <oliva@lsd.ic.unicamp.br>
 #    Ossama Othman <ossama@debian.org>
 #    Thomas Thanner <tanner@gmx.de>
@@ -708,6 +708,7 @@ else
       ;;
   esac
 fi
+ac_cv_prog_cc_pic="$ac_cv_prog_cc_pic -DPIC"
 
 
 # Figure out "hidden" C++ library dependencies from verbose

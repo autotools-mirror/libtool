@@ -2,10 +2,13 @@
 
 # $Id$
 
-# ltcf-c.sh - Create a C compiler specific configuration
+# ltcf-gcj.sh - Create a GCJ compiler specific configuration
 #
-# Copyright (C) 1996-2000 Free Software Foundation, Inc.
+# Copyright (C) 1996-1999,2000 Free Software Foundation, Inc.
 # Originally by Gordon Matzigkeit <gord@gnu.ai.mit.edu>, 1996
+#
+# Original GCJ support by:
+#    Alexandre Oliva <oliva@lsd.ic.unicamp.br>
 #
 # This file is free software; you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by
@@ -27,17 +30,17 @@
 # the same distribution terms that you use for the rest of that program.
 
 
-# Source file extension for C test sources.
-ac_ext=c
+# Source file extension for Java test sources.
+ac_ext=java
 
-# Object file extension for compiled C test sources.
+# Object file extension for compiled Java test sources.
 objext=o
 
 # Code to be used in simple compile tests
-lt_simple_compile_test_code="int some_variable = 0;"
+lt_simple_compile_test_code="class foo {}"
 
 # Code to be used in simple link tests
-lt_simple_link_test_code='main(){return(0);}'
+lt_simple_link_test_code='public class conftest { public static void main(String[] argv) {} (0); }'
 
 ## Linker Characteristics
 case "$host_os" in
@@ -162,11 +165,11 @@ EOF
 	_lt_hint=`expr 1 + \$_lt_hint`;
       done~
       '"$ltdll_cmds"'
-      $CC -Wl,--base-file,$output_objdir/$soname-base '$lt_cv_cc_dll_switch' -Wl,-e,'$dll_entry' -o $lib '$ltdll_obj'$libobjs $deplibs $compiler_flags~
+      $CC -Wl,--base-file,$output_objdir/$soname-base '$lt_cv_gcj_dll_switch' -Wl,-e,'$dll_entry' -o $lib '$ltdll_obj'$libobjs $deplibs $compiler_flags~
       $DLLTOOL --as=$AS --dllname $soname --exclude-symbols '$dll_exclude_symbols' --def $output_objdir/$soname-def --base-file $output_objdir/$soname-base --output-exp $output_objdir/$soname-exp~
-      $CC -Wl,--base-file,$output_objdir/$soname-base $output_objdir/$soname-exp '$lt_cv_cc_dll_switch' -Wl,-e,'$dll_entry' -o $lib '$ltdll_obj'$libobjs $deplibs $compiler_flags~
+      $CC -Wl,--base-file,$output_objdir/$soname-base $output_objdir/$soname-exp '$lt_cv_gcj_dll_switch' -Wl,-e,'$dll_entry' -o $lib '$ltdll_obj'$libobjs $deplibs $compiler_flags~
       $DLLTOOL --as=$AS --dllname $soname --exclude-symbols '$dll_exclude_symbols' --def $output_objdir/$soname-def --base-file $output_objdir/$soname-base --output-exp $output_objdir/$soname-exp~
-      $CC $output_objdir/$soname-exp '$lt_cv_cc_dll_switch' -Wl,-e,'$dll_entry' -o $lib '$ltdll_obj'$libobjs $deplibs $compiler_flags'
+      $CC $output_objdir/$soname-exp '$lt_cv_gcj_dll_switch' -Wl,-e,'$dll_entry' -o $lib '$ltdll_obj'$libobjs $deplibs $compiler_flags'
     ;;
 
   netbsd*)
@@ -518,9 +521,9 @@ else
 fi
 
 ## Compiler Characteristics: PIC flags, static flags, etc
-if test "X${ac_cv_prog_cc_pic+set}" = Xset; then
-  echo $ac_n "(cached) $ac_c" 1>&6
-else
+
+# We don't use cached values here since only the C compiler
+# characteristics should be cached.
   ac_cv_prog_cc_pic=
   ac_cv_prog_cc_shlib=
   ac_cv_prog_cc_wl=
@@ -528,7 +531,6 @@ else
   ac_cv_prog_cc_no_builtin=
   ac_cv_prog_cc_can_build_shared=$can_build_shared
 
-  if test "$with_gcc" = yes; then
     ac_cv_prog_cc_wl='-Wl,'
     ac_cv_prog_cc_static='-static'
 
@@ -565,81 +567,3 @@ else
       ac_cv_prog_cc_pic='-fPIC'
       ;;
     esac
-  else
-    # PORTME Check for PIC flags for the system compiler.
-    case "$host_os" in
-    aix3* | aix4*)
-     # All AIX code is PIC.
-      ac_cv_prog_cc_static='-bnso -bI:/lib/syscalls.exp'
-      ;;
-
-    hpux9* | hpux10* | hpux11*)
-      # Is there a better ac_cv_prog_cc_static that works with the bundled CC?
-      ac_cv_prog_cc_wl='-Wl,'
-      ac_cv_prog_cc_static="${ac_cv_prog_cc_wl}-a ${ac_cv_prog_cc_wl}archive"
-      ac_cv_prog_cc_pic='+Z'
-      ;;
-
-    irix5* | irix6*)
-      ac_cv_prog_cc_wl='-Wl,'
-      ac_cv_prog_cc_static='-non_shared'
-      # PIC (with -KPIC) is the default.
-      ;;
-
-    cygwin* | mingw* | os2*)
-      # This hack is so that the source file can tell whether it is being
-      # built for inclusion in a dll (and should export symbols for example).
-      ac_cv_prog_cc_pic='-DDLL_EXPORT'
-      ;;
-
-    osf3* | osf4* | osf5*)
-      # All OSF/1 code is PIC.
-      ac_cv_prog_cc_wl='-Wl,'
-      ac_cv_prog_cc_static='-non_shared'
-      ;;
-
-    sco3.2v5*)
-      ac_cv_prog_cc_pic='-Kpic'
-      ac_cv_prog_cc_static='-dn'
-      ac_cv_prog_cc_shlib='-belf'
-      ;;
-
-    solaris*)
-      ac_cv_prog_cc_pic='-KPIC'
-      ac_cv_prog_cc_static='-Bstatic'
-      ac_cv_prog_cc_wl='-Wl,'
-      ;;
-
-    sunos4*)
-      ac_cv_prog_cc_pic='-PIC'
-      ac_cv_prog_cc_static='-Bstatic'
-      ac_cv_prog_cc_wl='-Qoption ld '
-      ;;
-
-    sysv4 | sysv4.2uw2* | sysv4.3* | sysv5*)
-      ac_cv_prog_cc_pic='-KPIC'
-      ac_cv_prog_cc_static='-Bstatic'
-      ac_cv_prog_cc_wl='-Wl,'
-      ;;
-
-    uts4*)
-      ac_cv_prog_cc_pic='-pic'
-      ac_cv_prog_cc_static='-Bstatic'
-      ;;
-
-    sysv4*MP*)
-      if test -d /usr/nec ;then
-	ac_cv_prog_cc_pic='-Kconform_pic'
-	ac_cv_prog_cc_static='-Bstatic'
-      fi
-      ;;
-
-    *)
-      ac_cv_prog_cc_can_build_shared=no
-      ;;
-    esac
-  fi
-  ac_cv_prog_cc_pic="$ac_cv_prog_cc_pic -DPIC"
-fi
-
-
