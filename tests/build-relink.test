@@ -78,6 +78,11 @@ else
   echo "Failed, as expected"
 fi
 
+if egrep -e '^hardcode_action=relink$' ./libtool > /dev/null 2>&1; then
+  echo "= Exiting: install-time relinking is required"
+  exit 0
+fi
+
 if test "$shlibpath_overrides_runpath" != yes; then
   rm -f $objdir/lt-hell || exit 1
   cp $objdir/hell $objdir/lt-hell || exit 1
