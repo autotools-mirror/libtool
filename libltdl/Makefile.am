@@ -10,21 +10,18 @@ else
 noinst_HEADERS = ltdl.h
 endif
 
-noinst_LTLIBRARIES = libltdl.la
-
-libltdl_la_SOURCES = ltdl.c
-libltdl_la_LIBADD = $(LIBADD_DL)
+EXTRA_LTLIBRARIES = libltdl.la
 
 lib_LTLIBRARIES = @LIBLIBS@
-EXTRA_LTLIBRARIES =
+noinst_LTLIBRARIES = libltdlc.la
 
-@TOINST@/libltdl.la: $(libltdl_la_OBJECTS) $(libltdl_la_DEPENDENCIES)
-	@test -d $(TOINST) || mkdir $(TOINST)
-	$(LINK) -o $@ $(libltdl_la_OBJECTS) \
-		-rpath $(libdir) $(LTDL_VERSION) $(libltdl_la_LIBADD)
+libltdl_la_SOURCES = ltdl.c
+libltdl_la_LDFLAGS = $(LTDL_VERSION) -rpath $(libdir) 
+libltdl_la_LIBADD = $(LIBADD_DL)
 
-distclean-local:
-	test -z $(TOINST) || rm -rf $(TOINST)
+libltdlc_la_SOURCES = $(libltdl_la_SOURCES)
+libltdlc_la_LDFLAGS =
+libltdlc_la_LIBADD = $(libltdl_la_LIBADD)
 
 libtool: $(LIBTOOL_DEPS)
 	$(SHELL) ./config.status --recheck

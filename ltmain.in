@@ -2676,7 +2676,7 @@ else
 
 	if test "$fast_install" = yes; then
 	  echo >> $output "\
-  program='$outputname'T
+  program=lt-'$outputname'
   progdir=\"\$thisdir/$objdir\"
   
   if test ! -f \"\$progdir/\$program\" || \\

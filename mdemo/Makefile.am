@@ -18,9 +18,9 @@ noinst_HEADERS = foo.h
 
 bin_PROGRAMS = mdemo mdemo.static
 
-../libltdl/libltdl.la: ../libtool ../libltdl/libtool \
+../libltdl/libltdlc.la: ../libtool ../libltdl/libtool \
     $(srcdir)/../libltdl/ltdl.c $(srcdir)/../libltdl/ltdl.h
-	(cd ../libltdl; $(MAKE) libltdl.la)
+	(cd ../libltdl; $(MAKE) libltdlc.la)
 # Without the following line, the check may fail if libltdl/libtool is
 # removed after libltdl is configured
 ../libltdl/libtool:
@@ -30,9 +30,9 @@ mdemo_SOURCES = main.c
 mdemo_LDFLAGS = -export-dynamic ## FIXME: remove this when libtool and libltdl
 ## handle dependencies of modules
 ## The quotes around -dlopen below fool automake into accepting it
-mdemo_LDADD = ../libltdl/libltdl.la "-dlopen" self \
+mdemo_LDADD = ../libltdl/libltdlc.la "-dlopen" self \
 		"-dlopen" foo1.la "-dlopen" libfoo2.la
-mdemo_DEPENDENCIES = ../libltdl/libltdl.la foo1.la libfoo2.la
+mdemo_DEPENDENCIES = ../libltdl/libltdlc.la foo1.la libfoo2.la
 
 # Create a statically linked version of mdemo.
 mdemo_static_SOURCES = $(mdemo_SOURCES)

@@ -1,3 +1,18 @@
+1999-03-08  Thomas Tanner  <tanner@gmx.de>
+
+	* TODO: updated (libltdl build problem fixed)
+	* doc/libtool.texi (libltdl interface): removed the line which
+	  promised that lt_dlopen will return NULL if it can't resolve all
+	  symbols
+	* libltdl/Makefile.am, libltdl/configure.in: fixed build problem:
+	  renamed the convenience library to libltdlc.la and the 
+	  installed version to libltdl.la
+	* ltmain.in (wrapper script): replaced the "T" suffix of the program
+	  file name with a "lt-" prefix
+	* mdemo/Makefile.am: use libltdlc.la
+	* tests/Makefile.am, tests/demo-nofast.test: added demo to
+	  test --enable-fast-install=no
+		
 1999-03-07  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* tests/Makefile.am (TESTS): run hardcode before build-relink

@@ -1,8 +1,3 @@
-For next alpha release:
-***********************
-
-* libltdl is broken when configured with --enable-ltdl-install
-
 For next public release:
 ************************
 
