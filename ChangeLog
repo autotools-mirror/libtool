@@ -1,3 +1,10 @@
+2004-04-03  Peter O'Gorman  <peter@pogma.com>
+
+	* configure.ac: Bumped version to 1.5.4.
+	* NEWS: updated.
+	* config.guess, config.sub, texinfo.tex:  Synchronized from
+	ftp.gnu.org.
+	
 2004-04-01  Peter O'Gorman  <peter@pogma.com>
 
 	* ltmain.in: Remove an extra eval concat_cmds that some idiot added.
