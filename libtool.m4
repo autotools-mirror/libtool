@@ -2535,10 +2535,12 @@ case $host_os in
       # need to do runtime linking.
       case $host_os in aix4.[[23]]|aix4.[[23]].*|aix5*)
 	for ld_flag in $LDFLAGS; do
-	  if (test $ld_flag = "-brtl" || test $ld_flag = "-Wl,-brtl"); then
+	  case $ld_flag in
+	  *-brtl*)
 	    aix_use_runtimelinking=yes
 	    break
-	  fi
+	    ;;
+	  esac
 	done
       esac
 
@@ -5515,7 +5517,7 @@ for lt_ac_sed in $lt_ac_sed_list /usr/xpg4/bin/sed; do
   # Check for GNU sed and select it if it is found.
   if "$lt_ac_sed" --version 2>&1 < /dev/null | grep 'GNU' > /dev/null; then
     lt_cv_path_SED=$lt_ac_sed
-    break;
+    break
   fi
   while true; do
     cat conftest.in conftest.in >conftest.tmp
