@@ -1,3 +1,9 @@
+2004-11-09  Gary V. Vaughan  <gary@gnu.org>,
+	    Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
+	* doc/libtool.texi (libtool script contents): Fix description
+	of need_lib_prefix.
+
 2004-11-07  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
 	* m4/ltoptions.m4: Change all references of LT_LIBTOOL_INIT

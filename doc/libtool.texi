@@ -5162,13 +5162,11 @@ linking.
 @end defvar
 
 @defvar need_lib_prefix
-Whether libtool should automatically prefix module names with 'lib'.
+Whether we can @code{dlopen} modules without a @samp{lib} prefix.
 Set to @samp{yes} or @samp{no}.  By default, it is @samp{unknown}, which
 means the same as @samp{yes}, but documents that we are not really sure
-about it.
-@samp{yes} means that it is possible both to @code{dlopen} and to
-link against a library without 'lib' prefix,
-i.e. it requires @var{hardcode_direct} to be @samp{yes}.
+about it.  @samp{no} means that it is possible to @code{dlopen} a
+module without the @samp{lib} prefix.
 @end defvar
 
 @defvar need_version
