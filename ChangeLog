@@ -1,3 +1,8 @@
+2000-09-02  Makoto Ishisone  <ishisone@sra.co.jp>
+
+	* libtool.m4 (lt_cv_deplibs_check_method, freebsd): Fix typo,
+	add support for compact format library.
+
 2000-09-02  Alexandre Oliva  <aoliva@redhat.com>
 
 	* ltdl.m4: Oops, I had forgotten to commit this part of Syd Polk's
