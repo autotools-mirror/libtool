@@ -1,3 +1,9 @@
+2004-03-30  Gary V. Vaughan  <gary@gnu.org>
+
+	* libltdl/Makefile.am (AM_CPPFLAGS): Also check $top_builddir for
+	config.h.
+	(ltdl.o): config.h is in $top_builddir.
+
 2004-03-24  Scott James Remnant  <scott@netsplit.com>
 
 	* NEWS: Explain more fully why we no longer load libraries
@@ -35,7 +41,7 @@
 	The Sun C++ compiler bundles -Qoption arguments so
 	convenience libraries are linked with defaultextract
 	otherwise.
-	* tagdemo/Makefile.am, tagdemo/main.cpp, tagdemo/conv.h,   
+	* tagdemo/Makefile.am, tagdemo/main.cpp, tagdemo/conv.h,
 	tagdemo/conv.cpp: Augment tagdemo test to link a convenience
 	library with a libtool library.
 
