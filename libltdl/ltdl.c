@@ -1881,7 +1881,7 @@ lt_dlopen (filename)
 	  }
 
 #undef  STR_DL_DEPLIBS
-#define STR_DL_DEPLIBS	"dl_dependency_libs="
+#define STR_DL_DEPLIBS	"dependency_libs="
 	else if (strncmp (line, STR_DL_DEPLIBS,
 			  sizeof (STR_DL_DEPLIBS) - 1) == 0)
 	  {
