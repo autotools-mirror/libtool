@@ -1,5 +1,9 @@
 1999-04-07  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* doc/PLATFORMS: Updated to 1.3 for all platforms I've got.  I'll
+	make sure 1.3 won't be released unless it passes all tests on
+	those platforms.
+
 	* doc/libtool.texi (Compile mode): Document potential problem and
 	work-around for `-c -o dir/foo.lo'.
 
