@@ -1,5 +1,10 @@
 2001-07-05  Gary V. Vaughan  <gary@gnu.org>
 
+	* libtool.m4 (_LT_AC_LTCONFIG_HACK):  Revert to 1.3.x
+	sematics, and always build static libs when the host machine
+	cannot build shared libs.  Even if static libs were explicitly
+	disabled.
+
 	* libtool.m4 (AC_LIBTOOL_SYS_GLOBAL_SYMBOL_PIPE) [HPUX]: Define
 	lt_cv_sys_global_symbol_to_c_name_address to be a sed expression
 	for mangling the output of the symbol pipe into a brace delimited
