@@ -1,14 +1,19 @@
+2004-06-16  Brad  <brad@comstyle.com>
+
+	* libtool.m4: More improvements to OpenBSD support.
+	* NEWS: Updated.
+
 2004-05-05  Peter O'Gorman  <peter@pogma.com>
 
 	* libtool.m4 (AC_LIBTOOL_PROG_LD_HARDCODE_LIBPATH): Insert space
 	around = for a test and a comma between runpath_var and $1. Bug
 	reported by Max Bowsher.
-	
+
 2004-04-29  Peter O'Gorman  <peter@pogma.com>
 
 	* ltmain.in: Fix problem with .libs/.libs/libfoo.so appearing on
 	the link line, reported and fix confirmed by Dan S. Camper.
-	
+
 2004-04-20  Gary V. Vaughan  <gary@gnu.org>
 
 	* m4/libtool.m4 (_LT_LANG_CXX_CONFIG): Detect Intel C++ compiler
