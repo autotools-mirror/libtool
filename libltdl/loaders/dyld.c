@@ -36,7 +36,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
    be fetched from the preloaded symbol list by lt_dlsym():  */
 #define get_vtable	dyld_LTX_get_vtable
 
-extern lt_user_dlloader *get_vtable (lt_user_data loader_data);
+extern lt_dlloader *get_vtable (lt_user_data loader_data);
 
 
 /* Boilerplate code to set up the vtable for hooking this loader into
@@ -51,10 +51,10 @@ static void *	 vm_sym   (lt_user_data loader_data, lt_module module,
 /* Return the vtable for this loader, only the name and sym_prefix
    attributes (plus the virtual function implementations, obviously)
    change between loaders.  */
-lt_user_dlloader *
+lt_dlloader *
 get_vtable (lt_user_data loader_data)
 {
-  static lt_user_dlloader *vtable = 0;
+  static lt_dlloader *vtable = 0;
 
   if (!vtable)
     {

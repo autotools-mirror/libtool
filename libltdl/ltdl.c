@@ -57,23 +57,6 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 #define LT_SYMBOL_OVERHEAD	5
 
 
-
-
-/* --- OPAQUE STRUCTURES DECLARED IN LTDL.H --- */
-
-
-/* This structure is used for the list of registered loaders. */
-struct lt_dlloader {
-  struct lt_dlloader   *next;
-  const char	       *loader_name;	/* identifying name for each loader */
-  const char	       *sym_prefix;	/* prefix for symbols */
-  lt_module_open       *module_open;
-  lt_module_close      *module_close;
-  lt_find_sym	       *find_sym;
-  lt_dlloader_exit     *dlloader_exit;
-  lt_user_data		dlloader_data;
-};
-
 /* Various boolean flags can be stored in the flags field of an
    lt_dlhandle_struct... */
 #define LT_DLGET_FLAG(handle, flag) (((handle)->flags & (flag)) == (flag))
@@ -177,7 +160,7 @@ loader_init_callback (lt_dlhandle handle)
 static int
 loader_init (lt_get_vtable *vtable_func, lt_user_data data)
 {
-  lt_user_dlloader *vtable = 0;
+  lt_dlloader *vtable = 0;
   int errors = 0;
 
   if (vtable_func)
@@ -216,7 +199,7 @@ loader_init (lt_get_vtable *vtable_func, lt_user_data data)
 #define get_vtable  		preopen_LTX_get_vtable
 #define preloaded_symbols	LT_CONC3(lt_, LTDLOPEN, _LTX_preloaded_symbols)
 
-extern lt_user_dlloader *	get_vtable (lt_user_data data);
+extern lt_dlloader *	get_vtable (lt_user_data data);
 extern lt_dlsymlist		preloaded_symbols;
 
 /* Initialize libltdl. */
@@ -2138,11 +2121,10 @@ lt_dlcaller_get_data  (lt_dlcaller_id key, lt_dlhandle handle)
 
 
 int
-lt_dlloader_add (const struct lt_user_dlloader *dlloader,
-		 lt_user_data data)
+lt_dlloader_add (lt_dlloader *dlloader, lt_user_data data)
 {
   int errors = 0;
-  lt_dlloader *node = 0, *ptr = 0;
+  lt_dlloader *ptr = 0;
 
   if ((dlloader == 0)	/* diagnose null parameters */
       || (dlloader->module_open == 0)
@@ -2153,35 +2135,19 @@ lt_dlloader_add (const struct lt_user_dlloader *dlloader,
       return 1;
     }
 
-  /* Create a new dlloader node with copies of the user callbacks.  */
-  node = lt__malloc (sizeof *node);
-  if (!node)
-    return 1;
-
-  /* There is no need to record the dlloader->dlloader_init function,
-     since we won't need it again.  */
-  node->next		= 0;
-  node->loader_name	= dlloader->name;
-  node->sym_prefix	= dlloader->sym_prefix;
-  node->module_open	= dlloader->module_open;
-  node->module_close	= dlloader->module_close;
-  node->find_sym	= dlloader->find_sym;
-  node->dlloader_exit	= dlloader->dlloader_exit;
-  node->dlloader_data	= dlloader->dlloader_data;
-
   switch (dlloader->priority)
     {
     case LT_DLLOADER_PREPEND:
       /* Tack NODE on the front of the LOADERS list.  */
-      node->next = loaders;
-      loaders	 = node;
+      dlloader->next = loaders;
+      loaders = dlloader;
       break;
 
     case LT_DLLOADER_APPEND:
       /* Add NODE to the end of the LOADERS list.  */
       for (ptr = loaders; ptr->next; ptr = ptr->next)
 	/*NOWORK*/;
-      ptr->next = node;
+      ptr->next = dlloader;
       break;
 
     default:
@@ -2194,9 +2160,9 @@ lt_dlloader_add (const struct lt_user_dlloader *dlloader,
 }
 
 int
-lt_dlloader_remove (const char *loader_name)
+lt_dlloader_remove (const char *name)
 {
-  lt_dlloader *place = lt_dlloader_find (loader_name);
+  lt_dlloader *place = lt_dlloader_find (name);
   lt_dlhandle handle;
   int errors = 0;
 
@@ -2227,7 +2193,7 @@ lt_dlloader_remove (const char *loader_name)
       lt_dlloader *prev;
       for (prev = loaders; prev->next; prev = prev->next)
 	{
-	  if (streq (prev->next->loader_name, loader_name))
+	  if (streq (prev->next->name, name))
 	    {
 	      break;
 	    }
@@ -2260,7 +2226,7 @@ lt_dlloader_name (lt_dlloader *place)
 
   if (place)
     {
-      name = place ? place->loader_name : 0;
+      name = place ? place->name : 0;
     }
   else
     {
@@ -2288,13 +2254,13 @@ lt_dlloader_data (lt_dlloader *place)
 }
 
 lt_dlloader *
-lt_dlloader_find (const char *loader_name)
+lt_dlloader_find (const char *name)
 {
   lt_dlloader *place = 0;
 
   for (place = loaders; place; place = place->next)
     {
-      if (streq (place->loader_name, loader_name))
+      if (streq (place->name, name))
 	{
 	  break;
 	}

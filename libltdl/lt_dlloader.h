@@ -35,15 +35,14 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 
 LT_BEGIN_C_DECLS
 
-typedef struct lt_user_dlloader lt_user_dlloader;
 typedef	struct lt_dlloader	lt_dlloader;
 typedef void *			lt_user_data;
 typedef void *			lt_module;
 
 /* Type of a function to get a loader's vtable:  */
-typedef lt_user_dlloader *lt_get_vtable (lt_user_data loader_data);
+typedef lt_dlloader *lt_get_vtable	(lt_user_data loader_data);
 
-/* Function pointer types for creating user defined module loaders:  */
+/* Function pointer types for module loader vtable entries:  */
 typedef int	    lt_dlloader_init	(lt_user_data loader_data);
 typedef int	    lt_dlloader_exit	(lt_user_data loader_data);
 typedef lt_module   lt_module_open	(lt_user_data loader_data,
@@ -58,7 +57,10 @@ typedef enum {
   LT_DLLOADER_PREPEND = 0, LT_DLLOADER_APPEND
 } lt_dlloader_priority;
 
-struct lt_user_dlloader {
+/* This structure defines a module loader, as populated by the get_vtable
+   entry point of each loader.  */
+struct lt_dlloader {
+  lt_dlloader *		next;
   const char *		name;
   const char *		sym_prefix;
   lt_module_open *	module_open;
@@ -70,14 +72,19 @@ struct lt_user_dlloader {
   lt_dlloader_priority	priority;
 };
 
-LT_SCOPE lt_dlloader    *lt_dlloader_next    (lt_dlloader *place);
-LT_SCOPE lt_dlloader    *lt_dlloader_find    (const char *loader_name);
-LT_SCOPE const char     *lt_dlloader_name    (lt_dlloader *place);
-LT_SCOPE lt_user_data   *lt_dlloader_data    (lt_dlloader *place);
-LT_SCOPE int		lt_dlloader_add
-				(const struct lt_user_dlloader *dlloader,
-				 lt_user_data data);
-LT_SCOPE int		lt_dlloader_remove  (const char *loader_name);
+LT_SCOPE lt_dlloader *	lt_dlloader_next   (lt_dlloader *place);
+LT_SCOPE lt_dlloader *	lt_dlloader_find   (const char *name);
+LT_SCOPE const char *	lt_dlloader_name   (lt_dlloader *place);
+LT_SCOPE lt_user_data *	lt_dlloader_data   (lt_dlloader *place);
+LT_SCOPE int		lt_dlloader_add	   (lt_dlloader *dlloader,
+					    lt_user_data data);
+LT_SCOPE int		lt_dlloader_remove  (const char *name);
+
+
+
+/* --- Backwards source compatibility ---  */
+
+#define lt_user_dlloader lt_dlloader
 
 
 LT_END_C_DECLS

@@ -1,5 +1,15 @@
 2004-07-15  Gary V. Vaughan  <gary@gnu.org>
 
+	Collapse two almost identical structures into one:
+
+	* libltdl/lt_dlloader.h (lt_dlloader): Add next field.
+	* libltdl/ltdl.c (lt_user_dlloader): Remove entirely.  Change all
+	callers to use lt_dlloader instead.  Add a compatibility macro.
+	(lt_dlloader_add): Remove copy and allocate stage, just hook
+	directly into the loaders list.
+
+2004-07-15  Gary V. Vaughan  <gary@gnu.org>
+
 	A cleaner way to access the private fields of an lt_dlhandle
 	than my move of the module field into lt_dlinfo:
 
