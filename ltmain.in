@@ -269,7 +269,7 @@ if test -z "$show_help"; then
   # Infer the operation mode.
   if test -z "$mode"; then
     case $nonopt in
-    *cc | *++ | gcc* | *-gcc*)
+    *cc | *++ | gcc* | *-gcc* | g++*)
       mode=link
       for arg
       do

@@ -1,3 +1,7 @@
+2002-10-24  Ossama Othman  <ossama@doc.ece.uci.edu>
+
+	* ltmain.in: Support compiler names matching g++*
+
 2002-10-23  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
 
         * Removed old Windows cruft.
