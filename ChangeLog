@@ -1,5 +1,7 @@
 2005-02-03  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* tests/quote.test: Backport fix for spurious failures on Cygwin.
+
 	* THANKS: Update.
 
 2005-02-03  Peter O'Gorman  <peter@pogma.com>
