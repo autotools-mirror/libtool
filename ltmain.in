@@ -728,7 +728,13 @@ compiler."
     while test $# -gt 0; do
       arg="$1"
       shift
-      libtool_args="$libtool_args $arg"
+      case "$arg" in
+      *[\[\~\#\^\&\*\(\)\{\}\|\;\<\>\?\'\ \	]*|*]*)
+	qarg=\"`echo "X$arg" | $Xsed -e "$sed_quote_subst"`\"
+	;;
+      *) qarg=$arg ;;
+      esac
+      libtool_args="$libtool_args $qarg"
 
       # If the previous option needs an argument, assign it.
       if test -n "$prev"; then
