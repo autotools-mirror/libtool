@@ -4,6 +4,7 @@ New in 1.4d: 2001-??-??; CVS version 1.4c, Libtool team:
 * Support /lib/w32api in recent cygwin releases.
 * Support cross compilation to mingw.
 * Improved support for linking with gcc on aix4* and aix5*.
+* Improved support for GCC 3.0.
 * Initial support for QNX RTOS.
 * Bug fixes.
 
