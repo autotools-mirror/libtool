@@ -1,3 +1,11 @@
+2000-01-25  Ossama Othman  <ossama@uci.edu>
+
+	* libtool.m4, ltconfig.in, ltmain.in:  Merged updates found in
+	HEAD branch.
+
+	* ltcf-c.sh: Merged updates related to PIC flags and link
+	characteristics from HEAD branch ltconfig.in.
+
 2000-01-22  Ossama Othman  <ossama@debian.org>
 
 	* libtool.m4 (AC_LIBTOOL_CXX): Added LDFLAGS to list of variables to
