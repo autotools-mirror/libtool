@@ -2,6 +2,9 @@ NEWS - list of user-visible changes between releases of GNU libtool.
 
 New in 0.9h:
 * Bug fixes.
+* Better configuration test to find the system linker.  The old test
+  was failing because people frequently install GNU ld, but don't
+  necessarily configure GCC to use it.
 * Automake support for Libtool now uses the LTLIBRARIES primary.  See
   the Automake documentation for more information.
 * Added new `--disable-static' flag to disable building static

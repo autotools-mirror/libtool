@@ -1,3 +1,10 @@
+Sat Jun 14 21:01:03 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltmain.sh.in (link): Create invalid libtool objects when partial
+	linking if we don't have PIC.  From Jeff Dairiki.
+	(install): Fix bug if libtool object is installed to a file name
+	without directory components.  From Jeff Dairiki.
+
 Fri Jun 13 14:18:23 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* Makefile.am (demo/configure): Fix up rules to run autoconf.

@@ -826,7 +826,15 @@ if test -z "$show_help"; then
       # Exit if we aren't doing a library object file.
       test -z "$libobj" && exit 0
 
-      if test "$build_libtool_libs" = yes && test -n "$pic_flag"; then
+      if test "$build_libtool_libs" != yes; then
+        # Create an invalid libtool object if no PIC, so that we don't
+        # accidentally link it into a program.
+	$show "echo timestamp > $libobj"
+	eval "$run echo timestamp > $libobj" || exit $?
+	exit 0
+      fi
+
+      if test -n "$pic_flag"; then
 	# Only do commands if we really have different PIC objects.
 	reload_objs="$libobjs"
 	output="$libobj"
@@ -1175,6 +1183,7 @@ EOF
       destname=
     else
       destdir=`echo "$dest" | sed 's%/[^/]*$%%'`
+      test "$destdir" = "$dest" && destdir=.
       destname=`echo "$dest" | sed 's%^.*/%%'`
 
       # Not a directory, so check to see that there is only one file specified.
