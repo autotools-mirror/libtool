@@ -1,3 +1,8 @@
+2000-10-30  Gary V. Vaughan  <gvv@techie.com>
+
+	* doc/libtool.texi:  Corrected nother attack of CRLF line
+	endings.
+
 2000-10-30  Ossama Othman  <ossama@debian.org>
 
 	* libtool.m4 (archive_expsym_cmds): Fix typo where line was broken
