@@ -279,7 +279,7 @@ AC_DEFUN([AC_LTDL_DLPREOPEN],
 [AC_REQUIRE([AC_LIBTOOL_SYS_GLOBAL_SYMBOL_PIPE])
 AC_CACHE_CHECK([whether libtool supports -dlopen/-dlpreopen],
   [libltdl_cv_preloaded_symbols],
-  [if test -n "$global_symbol_pipe"; then
+  [if test -n "$lt_cv_sys_global_symbol_pipe"; then
     libltdl_cv_preloaded_symbols=yes
   else
     libltdl_cv_preloaded_symbols=no
@@ -309,18 +309,18 @@ AC_CHECK_FUNC([shl_load],
     [AC_CHECK_LIB([dl], [dlopen],
 	  [AC_DEFINE([HAVE_LIBDL], [1],
 		     [Define if you have the libdl library or equivalent.])
-	  LIBADD_DL="-ldl"],
+	        LIBADD_DL="-ldl" libltdl_cv_lib_dl_dlopen="yes"],
       [AC_TRY_LINK([#if HAVE_DLFCN_H
 #  include <dlfcn.h>
 #endif
       ],
 	[dlopen(0, 0);],
 	    [AC_DEFINE([HAVE_LIBDL], [1],
-		       [Define if you have the libdl library or equivalent.])],
+		             [Define if you have the libdl library or equivalent.]) libltdl_cv_func_dlopen="yes"],
 	[AC_CHECK_LIB([svld], [dlopen],
 	      [AC_DEFINE([HAVE_LIBDL], [1],
 			 [Define if you have the libdl library or equivalent.])
-	      LIBADD_DL="-lsvld"],
+	            LIBADD_DL="-lsvld" libltdl_cv_func_dlopen="yes"],
 	  [AC_CHECK_LIB([dld], [dld_link],
 	        [AC_DEFINE([HAVE_DLD], [1],
 			   [Define if you have the GNU dld library.])
@@ -332,7 +332,7 @@ AC_CHECK_FUNC([shl_load],
   ])
 ])
 
-if test x"$ac_cv_func_dlopen" = xyes || test x"$ac_cv_lib_dl_dlopen" = xyes
+if test x"$libltdl_cv_func_dlopen" = xyes || test x"$libltdl_cv_lib_dl_dlopen" = xyes
 then
   lt_save_LIBS="$LIBS"
   LIBS="$LIBS $LIBADD_DL"
@@ -358,7 +358,7 @@ EOF
   if AC_TRY_EVAL(ac_compile); then
     # Now try to grab the symbols.
     ac_nlist=conftest.nm
-    if AC_TRY_EVAL(NM conftest.$ac_objext \| $global_symbol_pipe \> $ac_nlist) && test -s "$ac_nlist"; then
+    if AC_TRY_EVAL(NM conftest.$ac_objext \| $lt_cv_sys_global_symbol_pipe \> $ac_nlist) && test -s "$ac_nlist"; then
       # See whether the symbols have a leading underscore.
       if egrep '^. _nm_test_func' "$ac_nlist" >/dev/null; then
         ac_cv_sys_symbol_underscore=yes
@@ -370,7 +370,7 @@ EOF
         fi
       fi
     else
-      echo "configure: cannot run $global_symbol_pipe" >&AC_FD_CC
+      echo "configure: cannot run $lt_cv_sys_global_symbol_pipe" >&AC_FD_CC
     fi
   else
     echo "configure: failed program was:" >&AC_FD_CC
@@ -386,8 +386,8 @@ EOF
 AC_DEFUN([AC_LTDL_DLSYM_USCORE],
 [AC_REQUIRE([AC_LTDL_SYMBOL_USCORE])
 if test x"$ac_cv_sys_symbol_underscore" = xyes; then
-  if test x"$ac_cv_func_dlopen" = xyes ||
-     test x"$ac_cv_lib_dl_dlopen" = xyes ; then
+  if test x"$libltdl_cv_func_dlopen" = xyes ||
+     test x"$libltdl_cv_lib_dl_dlopen" = xyes ; then
 	AC_CACHE_CHECK([whether we have to add an underscore for dlsym],
 	  [libltdl_cv_need_uscore],
 	  [libltdl_cv_need_uscore=unknown
