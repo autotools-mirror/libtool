@@ -1,3 +1,7 @@
+2001-10-12 Guido Draheim  <guidod-2001q3@gmx.de>
+
+	* ltdl.m4: Changed "underscode to underscore".
+
 2001-10-06 Gary V. Vaughan  <gary@gnu.org>
 
 	* configure.ac: General modernisation and cleanup.
