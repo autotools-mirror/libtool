@@ -1,3 +1,8 @@
+2004-11-19  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
+	* doc/libtool.texi (Libltdl interface): Document public macros
+	LT_PATHSEP_CHAR, LT_DIRSEP_CHAR, use in path descriptions.
+
 2004-11-18  Daniel Reed <djr@redhat.com>
 
 	* m4/libtool.m4 (_LT_SYS_DYNAMIC_LINKER) [linux]: Interpret

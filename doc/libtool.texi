@@ -3354,6 +3354,21 @@ is left as an exercise for the reader; contributions are certainly
 welcome.
 
 @noindent
+The following macros are defined by including @file{ltdl.h}:
+
+@defmac {Macro} LT_PATHSEP_CHAR
+@code{LT_PATHSEP_CHAR} is the system-dependent path separator,
+that is, @code{;} on Windows and @code{:} everywhere else.
+@end defmac
+
+@defmac {Macro} LT_DIRSEP_CHAR
+If @code{LT_DIRSEP_CHAR} is defined, it can be used as directory
+separator in addition to @code{/}.  On Windows, this contains
+@code{\}.
+@end defmac
+
+
+@noindent
 The following types are defined in @file{ltdl.h}:
 
 @deftp {Type} lt_ptr
@@ -3429,10 +3444,9 @@ The system dependent library search path
 (e.g. on Linux it is @var{LD_LIBRARY_PATH}).
 @end enumerate
 
-Each search path must be a colon-separated list of absolute directories,
-for example, @code{"/usr/lib/mypkg:/lib/foo"}.  On Windows, the path
-separator is a semi-colon.  The directory names may not contain the
-path separator.
+Each search path must be a list of absolute directories separated by
+@code{LT_PATHSEP_CHAR}, for example, @code{"/usr/lib/mypkg:/lib/foo"}.
+The directory names may not contain the path separator.
 
 If the same module is loaded several times, the same handle is returned.
 If @code{lt_dlopen} fails for any reason, it returns @code{NULL}.
@@ -3489,8 +3503,8 @@ appending as if @code{lt_dladdsearchdir} had been called.  Return 0 on success.
 
 @deftypefun int lt_dlsetsearchpath (const char *@var{search_path})
 Replace the current user-defined library search path with
-@var{search_path}, which must be a colon-separated (semi-colon on Windows) list
-of absolute directories.  Return 0 on success.
+@var{search_path}, which must be a list of absolute directories separated
+by @code{LT_PATHSEP_CHAR}.  Return 0 on success.
 @end deftypefun
 
 @deftypefun {const char *}lt_dlgetsearchpath (void)
@@ -3501,8 +3515,8 @@ Return the current user-defined library search path.
 In some applications you may not want to load individual modules with
 known names, but rather find all of the modules in a set of
 directories and load them all during initialisation.  With this function
-you can have libltdl scan the colon delimited directory list (semi-colon on
-Windows) in @var{search_path} for candidates, and pass them, along with
+you can have libltdl scan the @code{LT_PATHSEP_CHAR}-delimited directory list
+in @var{search_path} for candidates, and pass them, along with
 @var{data} to your own callback function, @var{func}.  If @var{seach_path} is
 @samp{NULL}, then search all of the standard locations that
 @code{lt_dlopen} would examine.  This function will continue to make
