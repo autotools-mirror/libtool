@@ -1,5 +1,8 @@
 2000-09-05  Alexandre Oliva  <aoliva@redhat.com>
 
+	* depdemo/main.c: Support -alt.
+	* tests/build-relink2.test: Try it.
+
 	* ltconfig.in: Removed all references to what used to be
 	hardcode_into_libs=all.  2000-09-03's patch was wrong.
 	* ltmain.in: Likewise.

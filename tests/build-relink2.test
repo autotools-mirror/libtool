@@ -71,7 +71,12 @@ echo "removing libl3.la from ../depdemo/l3"
 rm -rf l3/libl3.la l3/$objdir
 
 echo "running ../depdemo/depdemo"
-if ./depdemo; then
+if ./depdemo ||
+   # On AIX 4.1, when the installed copy of libl3 is loaded, it brings
+   # with it the installed copies of libl1 and libl2, with disjoint
+   # counters var_l1 and var_l2.  This is arguably acceptable behavior,
+   # but it's definitely not enough of a reason for the test to fail.
+   ./depdemo -alt; then
   :
 elif test "x,$hardcode_action,$hardcode_direct" = x,relink,yes; then
   echo "Ok, uninstalled programs fail after uninstalled libraries are removed"
