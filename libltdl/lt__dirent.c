@@ -46,24 +46,26 @@ closedir (DIR *entry)
 DIR *
 opendir (const char *path)
 {
-  char file_specification[LT_FILENAME_MAX];
+  char file_spec[LT_FILENAME_MAX];
   DIR *entry;
 
   assert (path != (char *) 0);
-  (void) strncpy (file_specification, path, LT_FILENAME_MAX-1);
-  (void) strcat (file_specification, "\\");
+  if (lt_strlcpy (file_spec, path, sizeof file_spec) >= sizeof file_spec
+      || lt_strlcat (file_spec, "\\", sizeof file_spec) >= sizeof file_spec)
+    return (DIR *) 0;
   entry = (DIR *) malloc (sizeof(DIR));
   if (entry != (DIR *) 0)
     {
       entry->firsttime = TRUE;
-      entry->hSearch = FindFirstFile (file_specification,
-				      &entry->Win32FindData);
+      entry->hSearch = FindFirstFile (file_spec, &entry->Win32FindData);
 
       if (entry->hSearch == INVALID_HANDLE_VALUE)
 	{
-	  (void) strcat (file_specification, "\\*.*");
-	  entry->hSearch = FindFirstFile (file_specification,
-					  &entry->Win32FindData);
+	  if (lt_strlcat (file_spec, "\\*.*", sizeof file_spec) < sizeof file_spec)
+	    {
+	      entry->hSearch = FindFirstFile (file_spec, &entry->Win32FindData);
+	    }
+
 	  if (entry->hSearch == INVALID_HANDLE_VALUE)
 	    {
 	      entry = (free (entry), (DIR *) 0);
@@ -91,8 +93,9 @@ readdir (DIR *entry)
     }
 
   entry->firsttime = FALSE;
-  (void) strncpy (entry->file_info.d_name, entry->Win32FindData.cFileName,
-		  LT_FILENAME_MAX - 1);
+  if (lt_strlcpy (entry->file_info.d_name, entry->Win32FindData.cFileName,
+	sizeof entry->file_info.d_name) >= sizeof entry->file_info.d_name)
+    return (struct dirent *) 0;
   entry->file_info.d_namlen = strlen (entry->file_info.d_name);
 
   return &entry->file_info;
