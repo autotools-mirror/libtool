@@ -2641,9 +2641,6 @@ static and shared libraries, @file{cdemo-static.test} builds only static
 libraries (@samp{--disable-shared}), and @file{cdemo-shared.test} builds
 only shared libraries (@samp{--disable-static}).
 
-NOTE: The tests after @file{cdemo-static.test} are known to fail on all
-platforms.  A fix is underway.
-
 @item hardcode.test
 @pindex hardcode.test
 On all systems with shared libraries, the location of the library can be

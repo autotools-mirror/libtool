@@ -1,5 +1,8 @@
 1999-01-13  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* doc/libtool.texi (Test descriptions): cdemo-static works, thanks 
+	to Edouard Parmelan!
+
 	* THANKS: added Sebastian Wilhelmi
 
 	* ltconfig.in (solaris): define `need_version' to no
