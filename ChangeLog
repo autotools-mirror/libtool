@@ -1,3 +1,14 @@
+2000-09-12  Gary V. Vaughan <gvv@techie.com>
+
+	libtool.m4 (AC_PROG_LIBTOOL):  Removed, as it was triggering a
+	bug in Autoconf-2.13 AC_REQUIRE implementation which inserted
+	some of the expanded tests too early in the generaated configure.
+	(_AC_PROG_LIBTOOL): renamed to AC_PROG_LIBTOOL, and defines
+	itself to an empty expansion to prevent multiple expansions.
+	configure.in (AC_LIBTOOL_SETUP): Replaced by a call to
+	AC_PROG_LIBTOOL now that the AC_REQUIRE bug has been worked
+	around.
+
 2000-09-09  Gary V. Vaughan  <gvv@techie.com>
 
 	libtool.m4 (_LT_AC_LTCONFIG_HACK): Forgot to escape the

@@ -44,8 +44,7 @@ AC_LIBTOOL_WIN32_DLL
 
 dnl Check for dlopen support
 AC_LIBTOOL_DLOPEN
-
-AC_LIBTOOL_SETUP
+AC_PROG_LIBTOOL
 
 AC_ARG_ENABLE(ltdl-install,
 [  --disable-ltdl-install  do not install libltdl])

@@ -22,8 +22,7 @@
 ## the same distribution terms that you use for the rest of that program.
 
 # serial 45 AC_PROG_LIBTOOL
-AC_DEFUN(AC_PROG_LIBTOOL,[AC_REQUIRE([_AC_PROG_LIBTOOL])])
-AC_DEFUN(_AC_PROG_LIBTOOL,
+AC_DEFUN(AC_PROG_LIBTOOL,
 [AC_REQUIRE([AC_LIBTOOL_SETUP])dnl
 
 # This can be used to rebuild libtool when needed
@@ -32,6 +31,9 @@ LIBTOOL_DEPS="$ac_aux_dir/ltmain.sh"
 # Always use our own libtool.
 LIBTOOL='$(SHELL) $(top_builddir)/libtool'
 AC_SUBST(LIBTOOL)dnl
+
+# Prevent multiple expansion
+define([AC_PROG_LIBTOOL], [])
 ])
 
 AC_DEFUN(AC_LIBTOOL_SETUP,
