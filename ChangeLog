@@ -1,3 +1,11 @@
+2000-09-28  Gary V. Vaughan  <gvv@techie.com>
+
+	* libtool.m4 (MAGIC_CMD): Don't use MAGIC, since BSD versions of
+	the file command use this environment variable to hold the
+	location of the magic database.
+	* ltconfig.in (MAGIC_CMD): ditto.
+	Reported by Marc Espie <Marc.Espie@liafa.jussieu.fr>
+
 2000-09-20  Ossama Othman  <ossama@debian.org>
 
 	* ltconfig.in (lt_cv_dlopen_self, lt_cv_dlopen_self_static): Use

@@ -273,7 +273,7 @@ old_CFLAGS="$CFLAGS"
 old_CPPFLAGS="$CPPFLAGS"
 old_LDFLAGS="$LDFLAGS"
 old_LIBS="$LIBS"
-old_MAGIC="$MAGIC"
+old_MAGIC_CMD="$MAGIC_CMD"
 old_LD="$LD"
 old_LN_S="$LN_S"
 old_LTCC="$LTCC"
@@ -640,7 +640,7 @@ test -z "$AR_FLAGS" && AR_FLAGS=cru
 test -z "$AS" && AS=as
 test -z "$CC" && CC=cc
 test -z "$DLLTOOL" && DLLTOOL=dlltool
-test -z "$MAGIC" && MAGIC=file
+test -z "$MAGIC_CMD" && MAGIC_CMD=file
 test -z "$LD" && LD=ld
 test -z "$LN_S" && LN_S="ln -s"
 test -z "$NM" && NM=nm
@@ -1960,7 +1960,7 @@ case "$ltmain" in
 *.sh)
   # Now quote all the things that may contain metacharacters.
   for var in ltecho old_AR old_AR_FLAGS old_CC old_LTCC old_CFLAGS old_CPPFLAGS \
-    old_MAGIC old_LD old_LDFLAGS old_LIBS \
+    old_MAGIC_CMD old_LD old_LDFLAGS old_LIBS \
     old_LN_S old_NM old_RANLIB old_STRIP \
     old_AS old_DLLTOOL old_OBJDUMP \
     old_OBJEXT old_EXEEXT old_reload_flag \
@@ -2058,7 +2058,7 @@ EOF
 *)
   # Double-quote the variables that need it (for aesthetics).
   for var in old_AR old_AR_FLAGS old_CC old_LTCC old_CFLAGS old_CPPFLAGS \
-    old_MAGIC old_LD old_LDFLAGS old_LIBS \
+    old_MAGIC_CMD old_LD old_LDFLAGS old_LIBS \
     old_LN_S old_NM old_RANLIB old_STRIP \
     old_AS old_DLLTOOL old_OBJDUMP \
     old_OBJEXT old_EXEEXT old_reload_flag \
@@ -2090,7 +2090,7 @@ cat <<EOF >> "$cfgfile"
 #
 # AR=$old_AR AR_FLAGS=$old_AR_FLAGS LTCC=$old_LTCC CC=$old_CC \\
 # CFLAGS=$old_CFLAGS CPPFLAGS=$old_CPPFLAGS \\
-# MAGIC=$old_MAGIC LD=$old_LD LDFLAGS=$old_LDFLAGS LIBS=$old_LIBS \\
+# MAGIC_CMD=$old_MAGIC_CMD LD=$old_LD LDFLAGS=$old_LDFLAGS LIBS=$old_LIBS \\
 # LN_S=$old_LN_S NM=$old_NM RANLIB=$old_RANLIB STRIP=$old_STRIP \\
 # AS=$old_AS DLLTOOL=$old_DLLTOOL OBJDUMP=$old_OBJDUMP \\
 # objext=$old_OBJEXT exeext=$old_EXEEXT reload_flag=$old_reload_flag \\
@@ -2152,7 +2152,7 @@ NM=$NM
 STRIP=$STRIP
 
 # Used to examine libraries when file_magic_cmd begins "file"
-MAGIC=$MAGIC
+MAGIC_CMD=$MAGIC_CMD
 
 # Used on cygwin: DLL creation program.
 DLLTOOL="$DLLTOOL"
