@@ -1,3 +1,10 @@
+2001-04-20  Nick Hudson  <skrll@netbsd.org>
+
+	* libtool.m4: Improve NetBSD support.
+	* ltcf-c.sh: ditto.
+	* ltcf-gcj.sh: ditto.
+	* ltmain.in: ditto.
+	
 2001-04-20  Alexandre Oliva  <aoliva@redhat.com>
 
 	* ltcf-cxx.sh [HP-UX GNU ld]: Don't use flags specific to the

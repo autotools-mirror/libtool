@@ -1218,6 +1218,9 @@ EOF
 	    deplibs="$deplibs -framework System"
 	    continue
 	    ;;
+          *-*-netbsd*)
+            # Don't link with libc until the a.out ld.so is fixed.
+            ;;
 	  esac
 	elif test "$arg" = "-lm"; then
 	  case $host in

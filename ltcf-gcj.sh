@@ -181,8 +181,8 @@ EOF
       archive_cmds='$LD -Bshareable $libobjs $deplibs $linker_flags -o $lib'
       wlarc=
     else
-      archive_cmds='$CC -shared $libobjs $deplibs $compiler_flags ${wl}-soname $wl$soname -o $lib'
-      archive_expsym_cmds='$CC -shared $libobjs $deplibs $compiler_flags ${wl}-soname $wl$soname ${wl}-retain-symbols-file $wl$export_symbols -o $lib'
+      archive_cmds='$CC -shared -nodefaultlibs $libobjs $deplibs $compiler_flags ${wl}-soname $wl$soname -o $lib'
+      archive_expsym_cmds='$CC -shared -nodefaultlibs $libobjs $deplibs $compiler_flags ${wl}-soname $wl$soname ${wl}-retain-symbols-file $wl$export_symbols -o $lib'
     fi
     ;;
 
@@ -431,7 +431,7 @@ else
     if echo __ELF__ | $CC -E - | grep __ELF__ >/dev/null; then
       archive_cmds='$LD -Bshareable -o $lib $libobjs $deplibs $linker_flags'  # a.out
     else
-      archive_cmds='$LD -shared -o $lib $libobjs $deplibs $linker_flags'      # ELF
+      archive_cmds='$LD -shared -nodefaultlibs -o $lib $libobjs $deplibs $linker_flags'      # ELF
     fi
     hardcode_libdir_flag_spec='${wl}-R$libdir'
     hardcode_direct=yes

@@ -1217,6 +1217,8 @@ linux-gnu*)
   ;;
 
 netbsd*)
+  need_lib_prefix=no
+  need_version=no
   version_type=sunos
   if echo __ELF__ | $CC -E - | grep __ELF__ >/dev/null; then
     library_names_spec='${libname}${release}.so$versuffix ${libname}.so$versuffix'
