@@ -7,4 +7,4 @@ AC_EXEEXT
 AM_PROG_LIBTOOL
 
 dnl Output the makefile
-AC_OUTPUT(Makefile)
+AC_OUTPUT(Makefile modules/Makefile)

@@ -3,7 +3,7 @@
 # NOTE: Don't forget that in the libtool distribution, files in this
 # directory are distributed by the demo_distfiles variable in the top
 # level Makefile.
-AUTOMAKE_OPTIONS = foreign
+AUTOMAKE_OPTIONS = no-dependencies foreign
 
 CFLAGS = -module
 

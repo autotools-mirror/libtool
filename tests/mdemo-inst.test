@@ -35,13 +35,13 @@ $make install || exit 1
 
 echo "= Executing installed programs"
 
-old_library1=`sed -n -e "s/^old_library='\(.*\)'/\1/p" ../mdemo/libfoo1.la`
-old_library2=`sed -n -e "s/^old_library='\(.*\)'/\1/p" ../mdemo/libfoo2.la`
-dlname1=`sed -n -e "s/^dlname='\(.*\)'/\1/p" ../mdemo/libfoo1.la`
-dlname2=`sed -n -e "s/^dlname='\(.*\)'/\1/p" ../mdemo/libfoo2.la`
+old_library1=`sed -n -e "s/^old_library='\(.*\)'/\1/p" ../mdemo/modules/libfoo1.la`
+old_library2=`sed -n -e "s/^old_library='\(.*\)'/\1/p" ../mdemo/modules/libfoo2.la`
+dlname1=`sed -n -e "s/^dlname='\(.*\)'/\1/p" ../mdemo/modules/libfoo1.la`
+dlname2=`sed -n -e "s/^dlname='\(.*\)'/\1/p" ../mdemo/modules/libfoo2.la`
 
 status=0
-if $prefix/bin/hell.debug .libs/$old_library1 .libs/$old_library2; then :
+if $prefix/bin/hell.debug modules/.libs/$old_library1 modules/.libs/$old_library2; then :
 else
   echo "$0: cannot execute $prefix/bin/hell.debug" 1>&2
   status=1

@@ -1,5 +1,15 @@
 1998-11-19  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* mdemo/Makefile.am (hell_debug_LDFLAGS): -dlpreopen -> -dlopen
+	(hell_LDFLAGS): added -export-dynamic and -dlopen
+	(SUBDIRS, INCLUDES): added modules directory
+	(foo1.c, foo2.c, foo.h, libfoo1.sym, libfoo2.sym): moved to modules
+	* Makefile.am: ditto
+	* tests/mdemo-exec.test, tests/mdemo-inst.test: libraries moved
+	* mdemo/modules/Makefile.am: new file
+
+	* */Makefile.am (AUTOMAKE_OPTIONS): added no-dependencies
+
 	* ltmain.in: missing `test' between `&&' and `"$module"'
 
 	* ltconfig.in (echo_test_string): the whole ltconfig script was

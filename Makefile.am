@@ -24,9 +24,9 @@ demo_distfiles = demo/Makefile.in demo/Makefile.am demo/README \
 mdemo_distfiles = mdemo/Makefile.in mdemo/Makefile.am mdemo/README \
 	mdemo/acinclude.m4 mdemo/aclocal.m4 \
 	mdemo/configure mdemo/configure.in \
-	mdemo/foo.h mdemo/foo1.c mdemo/foo2.c \
-	mdemo/libfoo1.sym mdemo/libfoo2.sym \
-	mdemo/main.c mdemo/ltdl.h  mdemo/ltdl.c mdemo/ltdls.c
+	mdemo/main.c mdemo/modules/Makefile.in mdemo/modules/Makefile.am \
+	mdemo/modules/foo.h mdemo/modules/foo1.c mdemo/modules/foo2.c \
+	mdemo/modules/libfoo1.sym mdemo/modules/libfoo2.sym
 
 # Files in the libltdl subdirectory that go in the distribution.
 libltdl_distfiles = libltdl/Makefile.in libltdl/Makefile.am libltdl/README \

@@ -19,19 +19,19 @@ fi
 # Check to see if the programs really run.
 echo "Executing uninstalled programs in ../mdemo"
 
-old_library1=`sed -n -e "s/^old_library='\(.*\)'/\1/p" ../mdemo/libfoo1.la`
-old_library2=`sed -n -e "s/^old_library='\(.*\)'/\1/p" ../mdemo/libfoo2.la`
-dlname1=`sed -n -e "s/^dlname='\(.*\)'/\1/p" ../mdemo/libfoo1.la`
-dlname2=`sed -n -e "s/^dlname='\(.*\)'/\1/p" ../mdemo/libfoo2.la`
+old_library1=`sed -n -e "s/^old_library='\(.*\)'/\1/p" ../mdemo/modules/libfoo1.la`
+old_library2=`sed -n -e "s/^old_library='\(.*\)'/\1/p" ../mdemo/modules/libfoo2.la`
+dlname1=`sed -n -e "s/^dlname='\(.*\)'/\1/p" ../mdemo/modules/libfoo1.la`
+dlname2=`sed -n -e "s/^dlname='\(.*\)'/\1/p" ../mdemo/modules/libfoo2.la`
 
 status=0
-if ../mdemo/hell.debug .libs/$old_library1 .libs/$old_library2; then :
+if ../mdemo/hell.debug modules/.libs/$old_library1 modules/.libs/$old_library2; then :
 else
   echo "$0: cannot execute ../mdemo/hell.debug" 1>&2
   status=1
 fi
 
-if ../mdemo/hell ../mdemo/.libs/$dlname1 ../mdemo/.libs/$dlname2; then :
+if ../mdemo/hell ../mdemo/modules/.libs/$dlname1 ../mdemo/modules/.libs/$dlname2; then :
 else
   echo "$0: cannot execute ../mdemo/hell" 1>&2
   status=1
