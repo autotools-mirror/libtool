@@ -2,103 +2,103 @@
 canonical host name          compiler  libtool results
   (tools versions)                     release
 -------------------------------------------------------
-alpha-dec-osf4.0*               gcc    1.2f-pre   ok
+alpha-dec-osf4.0*               gcc      1.2f     ok
   (egcs 1.1.1)
-alpha-dec-osf4.0*               cc     1.2f-pre   ok
+alpha-dec-osf4.0*               cc       1.2f     ok
 alpha-dec-osf3.2                gcc      0.8      ok
 alpha-dec-osf3.2                cc       0.8      ok
-alpha-dec-osf2.1                gcc    1.2f-pre   NS
-alpha*-unknown-linux-gnu        gcc    1.2f-pre   ok
+alpha-dec-osf2.1                gcc      1.2f     NS
+alpha*-unknown-linux-gnu        gcc      1.2f     ok
   (egcs 1.1.1, GNU ld 2.9.1.0.15)
-hppa2.0w-hp-hpux11.00           cc     1.2f-pre   ok
-hppa1.1-hp-hpux10.20            gcc    1.2f-pre   ok
-hppa1.1-hp-hpux10.10            gcc    1.2f-pre   ok
+hppa2.0w-hp-hpux11.00           cc       1.2f     ok
+hppa1.1-hp-hpux10.20            gcc      1.2f     ok
+hppa1.1-hp-hpux10.10            gcc      1.2f     ok
 hppa1.1-hp-hpux10.10            cc       0.9h     ok
-hppa1.1-hp-hpux9.07             gcc    1.2f-pre   ok
+hppa1.1-hp-hpux9.07             gcc      1.2f     ok
 hppa1.1-hp-hpux9.07             cc       1.0f     ok
-hppa1.1-hp-hpux9.05             gcc    1.2f-pre   ok
-hppa1.1-hp-hpux9.01             gcc    1.2f-pre   ok
-i*86-*-bsdi4.0                  gcc    1.2f-pre   ok
+hppa1.1-hp-hpux9.05             gcc      1.2f     ok
+hppa1.1-hp-hpux9.01             gcc      1.2f     ok
+i*86-*-bsdi4.0                  gcc      1.2f     ok
 i*86-*-bsdi3.1                  gcc      1.2e     NS
 i*86-*-bsdi3.0                  gcc      1.2e     NS
 i*86-*-bsdi2.1                  gcc      1.2e     NS
 i*86-*-dguxR4.20MU01            gcc      1.2      ok
-i*86-*-freebsdelf4.0            gcc    1.2f-pre   ok
-i*86-*-freebsdelf3.1            gcc    1.2f-pre   ok
+i*86-*-freebsdelf4.0            gcc      1.2f     ok
+i*86-*-freebsdelf3.1            gcc      1.2f     ok
 i*86-*-freebsd3.0               gcc      1.2e     ok
-i*86-*-freebsd2.2.8             gcc    1.2f-pre   ok
-i*86-*-freebsd2.2.6             gcc    1.2f-pre   ok
+i*86-*-freebsd2.2.8             gcc      1.2f     ok
+i*86-*-freebsd2.2.6             gcc      1.2f     ok
 i*86-*-freebsd2.1.5             gcc      0.5      ok
 i*86-*-gnu0.3                   gcc      1.2b     ok
-i*86-*-netbsd1.3.3              gcc    1.2f-pre   ok
+i*86-*-netbsd1.3.3              gcc      1.2f     ok
   (gcc-2.7.2.2)
 i*86-*-netbsd1.3.2              gcc      1.2e     ok
 i*86-*-netbsd1.3I               egcs     1.2e     ok
 i*86-*-netbsd1.2                gcc      0.9g     ok
-i*86-*-linux-gnu                gcc    1.2f-pre   ok
+i*86-*-linux-gnu                gcc      1.2f     ok
   (egcs 1.1.1, GNU ld 2.9.1)
-i*86-*-linux-gnulibc1           gcc    1.2f-pre   ok
-i*86-*-openbsd2.4               gcc    1.2f-pre   ok
-i*86-*-solaris2.7               gcc    1.2f-pre   ok
-i*86-*-solaris2.6               gcc    1.2f-pre   ok
-i*86-*-solaris2.5.1             gcc    1.2f-pre   ok
-i*86-ncr-sysv4.3.03             gcc    1.2f-pre   ok
+i*86-*-linux-gnulibc1           gcc      1.2f     ok
+i*86-*-openbsd2.4               gcc      1.2f     ok
+i*86-*-solaris2.7               gcc      1.2f     ok
+i*86-*-solaris2.6               gcc      1.2f     ok
+i*86-*-solaris2.5.1             gcc      1.2f     ok
+i*86-ncr-sysv4.3.03             gcc      1.2f     ok
 i*86-ncr-sysv4.3.03             cc       1.2e     ok
   (cc -Hnocopyr)
-m68k-next-nextstep3             gcc    1.2f-pre   NS
-m68k-sun-sunos4.1.1             gcc    1.2f-pre   NS
+m68k-next-nextstep3             gcc      1.2f     NS
+m68k-sun-sunos4.1.1             gcc      1.2f     NS
   (gcc-2.5.7)
 m88k-dg-dguxR4.12TMU01          gcc      1.2      ok
 mips-sgi-irix6.5                gcc      1.2e     ok
-mips-sgi-irix6.4                gcc    1.2f-pre   ok
-mips-sgi-irix6.3                gcc    1.2f-pre   ok
+mips-sgi-irix6.4                gcc      1.2f     ok
+mips-sgi-irix6.3                gcc      1.2f     ok
   (egcs 1.1.1)
-mips-sgi-irix6.3                cc     1.2f-pre   ok
-mips-sgi-irix6.2                gcc    1.2f-pre   ok
+mips-sgi-irix6.3                cc       1.2f     ok
+mips-sgi-irix6.2                gcc      1.2f     ok
 mips-sgi-irix6.2                cc       0.9      ok
-mips-sgi-irix5.3                gcc    1.2f-pre   ok
+mips-sgi-irix5.3                gcc      1.2f     ok
   (egcs-1.1.1)
-mips-sgi-irix5.3                gcc    1.2f-pre   NS
+mips-sgi-irix5.3                gcc      1.2f     NS
   (gcc-2.6.3)
 mips-sgi-irix5.3                cc       0.8      ok
-mips-sgi-irix5.2                gcc    1.2f-pre   ok
+mips-sgi-irix5.2                gcc      1.2f     ok
   (egcs 1.1.1)
-mips-sgi-irix5.2                cc     1.2f-pre   ok
+mips-sgi-irix5.2                cc       1.2f     ok
 mipsel-unknown-openbsd2.1       gcc      1.0      ok
 powerpc-ibm-aix4.3.1.0          egcs     1.2e     ok
   (egcs-1.1.1)
-powerpc-ibm-aix4.2.1.0          egcs   1.2f-pre   ok
+powerpc-ibm-aix4.2.1.0          egcs     1.2f     ok
   (egcs-1.1.1)
-powerpc-ibm-aix4.1.5.0          gcc    1.2f-pre   ok
+powerpc-ibm-aix4.1.5.0          gcc      1.2f     ok
   (egcs-1.1.1)
-powerpc-ibm-aix4.1.5.0          gcc    1.2f-pre   NS
+powerpc-ibm-aix4.1.5.0          gcc      1.2f     NS
   (gcc-2.8.1)
 powerpc-ibm-aix4.1.4.0          gcc      1.0      ok
 powerpc-ibm-aix4.1.4.0          xlc      1.0i     ok
-rs6000-ibm-aix4.1.5.0           gcc    1.2f-pre   ok
+rs6000-ibm-aix4.1.5.0           gcc      1.2f     ok
   (gcc-2.7.2)
-rs6000-ibm-aix4.1.4.0           gcc    1.2f-pre   ok
+rs6000-ibm-aix4.1.4.0           gcc      1.2f     ok
   (gcc-2.7.2)
 rs6000-ibm-aix3.2.5             gcc      1.0i     ok
 rs6000-ibm-aix3.2.5             xlc      1.0i     ok
-sparc-sun-solaris2.7            gcc    1.2f-pre   ok
-sparc-sun-solaris2.6            gcc    1.2f-pre   ok
-sparc-sun-solaris2.5.1          gcc    1.2f-pre   ok
-sparc-sun-solaris2.5            gcc    1.2f-pre   ok
-sparc-sun-solaris2.5            cc     1.2f-pre   ok
+sparc-sun-solaris2.7            gcc      1.2f     ok
+sparc-sun-solaris2.6            gcc      1.2f     ok
+sparc-sun-solaris2.5.1          gcc      1.2f     ok
+sparc-sun-solaris2.5            gcc      1.2f     ok
+sparc-sun-solaris2.5            cc       1.2f     ok
 sparc-sun-solaris2.4            gcc      1.0a     ok
 sparc-sun-solaris2.4            cc       1.0a     ok
-sparc-sun-solaris2.3            gcc    1.2f-pre   ok
-sparc-sun-sunos4.1.4            gcc    1.2f-pre   ok
+sparc-sun-solaris2.3            gcc      1.2f     ok
+sparc-sun-sunos4.1.4            gcc      1.2f     ok
 sparc-sun-sunos4.1.4            cc       1.0f     ok
-sparc-sun-sunos4.1.3_U1         gcc    1.2f-pre   ok
-sparc-sun-sunos4.1.3C           gcc    1.2f-pre   ok
-sparc-sun-sunos4.1.3            gcc    1.2f-pre   ok
+sparc-sun-sunos4.1.3_U1         gcc      1.2f     ok
+sparc-sun-sunos4.1.3C           gcc      1.2f     ok
+sparc-sun-sunos4.1.3            gcc      1.2f     ok
   (egcs 1.1.1, GNU ld 2.9.1 and built-in ld)
-sparc-sun-sunos4.1.3            cc     1.2f-pre   ok
+sparc-sun-sunos4.1.3            cc       1.2f     ok
 sparc-unknown-bsdi4.0           gcc      1.2c     ok
-sparc-unknown-linux-gnulibc1    gcc    1.2f-pre   ok
-sparc64-unknown-linux-gnu       gcc    1.2f-pre   ok
+sparc-unknown-linux-gnulibc1    gcc      1.2f     ok
+sparc64-unknown-linux-gnu       gcc      1.2f     ok
 
 Notes:
 - "ok" means "all tests passed".

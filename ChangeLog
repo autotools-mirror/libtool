@@ -1,5 +1,9 @@
 1999-03-15  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* configure.in, libtool.spec: bump to 1.2f
+	* doc/PLATFORMS: ditto
+	* NEWS: libtool 1.2f released
+
 	* ltmain.in: silence ``unbug'' :-) detected by sh.test
 
 1999-03-14  Alexandre Oliva  <oliva@dcc.unicamp.br>

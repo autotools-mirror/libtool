@@ -2,7 +2,7 @@ dnl Process this file with autoconf to create configure.
 
 AC_INIT(ltmain.in)
 
-AM_INIT_AUTOMAKE(libtool, 1.2e)
+AM_INIT_AUTOMAKE(libtool, 1.2f)
 
 # This is a sanity check so we can see which version is used in bug reports.
 # It is assumed that we only want to see the date extension for cvs libtool
