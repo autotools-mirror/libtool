@@ -1,5 +1,7 @@
 1999-04-29  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* NEWS: Summarize news since 1.2.
+
 	* ltmain.in: Save exit status of link_command before removing
 	symbol table object file.
 
