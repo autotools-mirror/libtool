@@ -1,5 +1,8 @@
 2004-08-26  Peter O'Gorman  <peter@pogma.com>
 
+	* m4/libtool.m4 [darwin]: Don't use a libname triplet, a couplet
+	is perfectly fine.
+
 	* m4/ltdl.m4: Don't use the dyld loader on darwin 8 or later.
 
 2004-08-25  Paolo Bonzini  <bonzini@gnu.org>
