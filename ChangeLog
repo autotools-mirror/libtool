@@ -1,5 +1,8 @@
 2003-02-19  Alexandre Oliva  <aoliva@redhat.com>
 
+	* libtool.m4: Replace $linker_flags with $compiler_flags wherever
+	it is used as argument to $CC.
+
 	* libtool.m4: Use linux version_type on IRIX with GNU ld.
 	Prefix -soname, -set_version and their arguments with ${wl}.  Add
 	-melf* linker scripts to LD, and use them to determine libsuff,
