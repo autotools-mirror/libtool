@@ -154,7 +154,7 @@ fi
 files='config.guess config.sub ltmain.sh'
 
 auxdir=.
-auxdirline=`egrep '^AC_CONFIG_AUX_DIR' configure.in 2>/dev/null`
+auxdirline=`egrep '^AC_CONFIG_AUX_DIR' $configure_ac 2>/dev/null`
 if test -n "$auxdirline"; then
   # Handle explicit AC_CONFIG_AUX_DIR settings.
   auxdir=`echo "$auxdirline" | sed 's/^AC_CONFIG_AUX_DIR(\([^)]*\)).*$/\1/'`

@@ -420,10 +420,9 @@ case $host in
   SAVE_CFLAGS="$CFLAGS"
   CFLAGS="$CFLAGS -belf"
   AC_CACHE_CHECK([whether the C compiler needs -belf], lt_cv_cc_needs_belf,
-    [AC_LANG_SAVE
-     AC_LANG_C
+    [AC_LANG_PUSH(C)
      AC_TRY_LINK([],[],[lt_cv_cc_needs_belf=yes],[lt_cv_cc_needs_belf=no])
-     AC_LANG_RESTORE])
+     AC_LANG_POP])
   if test x"$lt_cv_cc_needs_belf" != x"yes"; then
     # this is probably gcc 2.8.0, egcs 1.0 or newer; no need for -belf
     CFLAGS="$SAVE_CFLAGS"
@@ -482,7 +481,7 @@ AC_DEFUN(AC_LIBTOOL_COMPILER_OPTION,
      # So say no if there are warnings
      if test -s conftest.err; then
        # Append any errors to the config.log.
-       cat conftest.err 1>&AC_FD_CC
+       cat conftest.err 1>&AS_MESSAGE_LOG_FD()
      else
        $2=yes
      fi
@@ -514,7 +513,7 @@ AC_DEFUN(AC_LIBTOOL_LINKER_OPTION,
      # So say no if there are warnings
      if test -s conftest.err; then
        # Append any errors to the config.log.
-       cat conftest.err 1>&AC_FD_CC
+       cat conftest.err 1>&AS_MESSAGE_LOG_FD()
      else
        $2=yes
      fi
@@ -798,7 +797,7 @@ AC_CACHE_CHECK([if $compiler supports -c -o file.$ac_objext],
      # So say no if there are warnings
      if test -s out/conftest.err; then
        # Append any errors to the config.log.
-       cat out/conftest.err 1>&AC_FD_CC
+       cat out/conftest.err 1>&AS_MESSAGE_LOG_FD()
      else
        _LT_AC_TAGVAR(lt_cv_prog_compiler_c_o, $1)=yes
      fi
@@ -833,7 +832,7 @@ if test "$_LT_AC_TAGVAR(lt_cv_prog_compiler_c_o, $1)" = no && test "$need_locks"
   ln conftest.a conftest.b 2>/dev/null && hard_links=no
   AC_MSG_RESULT([$hard_links])
   if test "$hard_links" = no; then
-    AC_MSG_WARN([\`$CC' does not support \`-c -o', so \`make -j' may be unsafe])
+    AC_MSG_WARN([`$CC' does not support `-c -o', so `make -j' may be unsafe])
     need_locks=warn
   fi
 else
@@ -1329,15 +1328,15 @@ AC_ARG_WITH(tags,
 
 if test -f "$ltmain" && test -n "$tagnames"; then
   if test ! -f "${ofile}"; then
-    AC_MSG_WARN([output file \`$ofile' does not exist])
+    AC_MSG_WARN([output file `$ofile' does not exist])
   fi
 
   if test -z "$LTCC"; then
     eval "`$SHELL ${ofile} --config | grep '^LTCC='`"
     if test -z "$LTCC"; then
-      AC_MSG_WARN([output file \`$ofile' does not look like a libtool script])
+      AC_MSG_WARN([output file `$ofile' does not look like a libtool script])
     else
-      AC_MSG_WARN([using \`LTCC=$LTCC', extracted from \`$ofile'])
+      AC_MSG_WARN([using `LTCC=$LTCC', extracted from `$ofile'])
     fi
   fi
 
@@ -1627,7 +1626,6 @@ fi
 # find a file program which can recognise a shared library
 AC_DEFUN([AC_PATH_MAGIC],
 [AC_REQUIRE([_LT_AC_LIBTOOL_SYS_PATH_SEPARATOR])dnl
-AC_REQUIRE([AC_CHECK_TOOL_PREFIX])dnl
 AC_PATH_TOOL_PREFIX(${ac_tool_prefix}file, /usr/bin${PATH_SEPARATOR-:}$PATH)
 if test -z "$lt_cv_path_MAGIC_CMD"; then
   if test -n "$ac_tool_prefix"; then
@@ -2094,8 +2092,7 @@ AC_DEFUN([_LT_AC_LANG_GCJ],
 AC_DEFUN([AC_LIBTOOL_LANG_C_CONFIG], [_LT_AC_LANG_C_CONFIG])
 AC_DEFUN([_LT_AC_LANG_C_CONFIG],
 [lt_save_CC="$CC"
-AC_LANG_SAVE
-AC_LANG_C
+AC_LANG_PUSH(C)
 
 # Source file extension for C test sources.
 ac_ext=c
@@ -2124,10 +2121,10 @@ if test "$GCC" = no; then
   esac
 fi
 if test -n "$_LT_AC_TAGVAR(lt_prog_cc_shlib, $1)"; then
-  AC_MSG_WARN([\`$CC' requires \`$_LT_AC_TAGVAR(lt_prog_cc_shlib, $1)' to build shared libraries])
+  AC_MSG_WARN([`$CC' requires `$_LT_AC_TAGVAR(lt_prog_cc_shlib, $1)' to build shared libraries])
   if echo "$old_CC $old_CFLAGS " | [egrep -e "[ 	]$]_LT_AC_TAGVAR(lt_prog_cc_shlib, $1)[[ 	]"] >/dev/null; then :
   else
-    AC_MSG_WARN([add \`$_LT_AC_TAGVAR(lt_prog_cc_shlib, $1)' to the CC or CFLAGS env variable and reconfigure])
+    AC_MSG_WARN([add `$_LT_AC_TAGVAR(lt_prog_cc_shlib, $1)' to the CC or CFLAGS env variable and reconfigure])
     _LT_AC_TAGVAR(lt_cv_prog_cc_can_build_shared, $1)=no
   fi
 fi
@@ -2163,7 +2160,7 @@ AC_MSG_RESULT([$can_build_shared])
 
 AC_LIBTOOL_CONFIG($1)
 
-AC_LANG_RESTORE
+AC_LANG_POP
 CC="$lt_save_CC"
 ])# AC_LIBTOOL_LANG_C_CONFIG
 
@@ -2175,8 +2172,7 @@ CC="$lt_save_CC"
 # AC_LIBTOOL_CONFIG to write the compiler configuration to `libtool'.
 AC_DEFUN([AC_LIBTOOL_LANG_CXX_CONFIG], [_LT_AC_LANG_CXX_CONFIG(CXX)])
 AC_DEFUN([_LT_AC_LANG_CXX_CONFIG],
-[AC_LANG_SAVE
-AC_LANG_CPLUSPLUS
+[AC_LANG_PUSH(C++)
 AC_REQUIRE([AC_PROG_CXX])
 AC_REQUIRE([AC_PROG_CXXCPP])
 
@@ -2945,7 +2941,7 @@ AC_MSG_RESULT([$can_build_shared])
 
 AC_LIBTOOL_CONFIG($1)
 
-AC_LANG_RESTORE
+AC_LANG_POP
 CC="$lt_save_CC"
 ])# AC_LIBTOOL_LANG_CXX_CONFIG
 
@@ -3089,7 +3085,7 @@ ifelse([$1], [],
   [cfgfile="${ofile}T"
   trap "$rm \"$cfgfile\"; exit 1" 1 2 15
   $rm -f "$cfgfile"
-  echo creating $ofile],
+  AC_MSG_NOTICE([creating $ofile])],
   [cfgfile="$ofile"])
 
   cat <<__EOF__ >> "$cfgfile"
@@ -3618,16 +3614,16 @@ EOF
 	  LIBS="$lt_save_LIBS"
 	  CFLAGS="$lt_save_CFLAGS"
 	else
-	  echo "cannot find nm_test_func in $nlist" >&AC_FD_CC
+	  echo "cannot find nm_test_func in $nlist" >&AS_MESSAGE_LOG_FD()
 	fi
       else
-	echo "cannot find nm_test_var in $nlist" >&AC_FD_CC
+	echo "cannot find nm_test_var in $nlist" >&AS_MESSAGE_LOG_FD()
       fi
     else
-      echo "cannot run $lt_cv_sys_global_symbol_pipe" >&AC_FD_CC
+      echo "cannot run $lt_cv_sys_global_symbol_pipe" >&AS_MESSAGE_LOG_FD()
     fi
   else
-    echo "$progname: failed program was:" >&AC_FD_CC
+    echo "$progname: failed program was:" >&AS_MESSAGE_LOG_FD()
     cat conftest.$ac_ext >&5
   fi
   rm -f conftest* conftst*

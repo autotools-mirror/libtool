@@ -1,5 +1,6 @@
 dnl Process this file with autoconf to create configure.
 
+AC_PREREQ(2.50)
 AC_INIT(ltdl.c)
 
 dnl We shouldn't be using these internal macros of autoconf,

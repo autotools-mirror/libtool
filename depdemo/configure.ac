@@ -1,18 +1,12 @@
 dnl Process this file with autoconf to create configure.
 
-AC_INIT(main.c)
-AM_INIT_AUTOMAKE(mdemo,0.1)
+AC_PREREQ(2.50)
+AC_INIT
+AC_CONFIG_SRCDIR([main.c])
+AM_INIT_AUTOMAKE(depdemo,0.1)
 
 AC_PROG_CC
-AC_C_CONST
 AC_EXEEXT
-
-AC_LIBLTDL_CONVENIENCE(../libltdl)
-AC_SUBST(INCLTDL)
-AC_SUBST(LIBLTDL)
-
-AC_LIBTOOL_WIN32_DLL
-AC_LIBTOOL_DLOPEN
 AM_PROG_LIBTOOL
 AC_SUBST(LIBTOOL_DEPS)
 
@@ -29,4 +23,10 @@ AC_CHECK_LIBM
 AC_SUBST(LIBM)
 
 dnl Output the makefile
-AC_OUTPUT(Makefile)
+AC_CONFIG_FILES([Makefile
+l1/Makefile
+l2/Makefile
+l3/Makefile
+l4/Makefile
+])
+AC_OUTPUT

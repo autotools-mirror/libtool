@@ -1,6 +1,8 @@
 ## Process this file with autoconf to create configure.
 
-AC_INIT(ltmain.in)
+AC_PREREQ(2.50)
+AC_INIT
+AC_CONFIG_SRCDIR([ltmain.in])
 
 AM_INIT_AUTOMAKE(libtool, 1.4a)
 
@@ -32,12 +34,6 @@ AC_SUBST(aclocaldir)
 # Use the specified CC and LD
 AC_PROG_CC
 
-# Autoconf-2.13 AC_REQUIRE resolution confuses the ordering for the 
-# preprocessor test if left to figure this out for itself -- by forcing that
-# checks here, AC_REQUIRE doesn't need to add it.  When we upgrade to
-# Autoconf-2.50, this can be removed.
-AC_PROG_CPP
-
 AM_PROG_LD
 AC_SUBST(LD)
 AM_PROG_NM
@@ -54,13 +50,6 @@ AM_CONDITIONAL(HAVE_GCJ, [test "x$GCJ" != xno])
 
 # Declare win32 dll support
 AC_LIBTOOL_WIN32_DLL
-
-# Autoconf-2.13 AC_REQUIRE resolution confuses the ordering for the cygwin
-# and mingw tests if left to figure this out for itself -- by forcing those
-# checks here, AC_REQUIRE doesn't need to add them.  When we upgrade to
-# Autoconf-2.50, this can be removed.
-AC_EXEEXT
-AC_OBJEXT
 
 # Check for dlopen support
 AC_LIBTOOL_DLOPEN
@@ -88,4 +77,5 @@ done
 AC_SUBST(ACINCLUDE_M4_LIST)
 AC_SUBST(DIST_MAKEFILE_LIST)
 
-AC_OUTPUT([Makefile doc/Makefile tests/Makefile])
+AC_CONFIG_FILES([Makefile doc/Makefile tests/Makefile])
+AC_OUTPUT

@@ -1,6 +1,8 @@
 dnl Process this file with autoconf to create configure.
 
-AC_INIT(longer_file_name_hello.c)
+AC_PREREQ(2.50)
+AC_INIT
+AC_CONFIG_SRCDIR([hello.c])
 AM_INIT_AUTOMAKE(hell,1.0)
 
 AC_PROG_CC
@@ -10,7 +12,7 @@ AC_LIBTOOL_DLOPEN
 AM_PROG_LIBTOOL
 AC_SUBST(LIBTOOL_DEPS)
 
-if ${CONFIG_SHELL} ./libtool --features | grep "enable static" >/dev/null; then
+if ./libtool --features | grep '^enable static libraries$' > /dev/null 2>&1; then
   STATIC=-static
 else
   STATIC=
@@ -26,4 +28,5 @@ AC_CHECK_LIBM
 AC_SUBST(LIBM)
 
 dnl Output the makefile
-AC_OUTPUT(Makefile)
+AC_CONFIG_FILES([Makefile])
+AC_OUTPUT

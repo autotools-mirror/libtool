@@ -1,3 +1,26 @@
+2001-06-28  Gary V. Vaughan  <gary@gnu.org>, Paolo Bonzini  <bonzini@gnu.org>
+
+	Libtool now builds with the help of Autoconf-2.50!
+	* configure.ac (AC_PREREQ):  Require Autoconf-2.50 or newer.
+	(AC_PROG_CPP, AC_EXEEXT, AC_OBJEXT):  Removed.  Autoconf-2.50
+	doesn't have the AC_REQUIRE bug that required these to be called
+	explicitly from here.  Autoconf-2.50 uses this file instead of...
+	* configure.in: ...this, which is now deleted.
+	* cdemo/configure.ac, cdemo/configure.in: Ditto.
+	* demo/configure.ac, demo/configure.in: Ditto.
+	* depdemo/configure.ac, depdemo/configure.in: Ditto.
+	* libltdl/configure.ac, libltdl/configure.in: Ditto.
+	* mdemo/configure.ac, mdemo/configure.in: Ditto.
+	* pdemo/configure.ac, pdemo/configure.in: Ditto.
+	* libltdl/acconfig.h:  Deleted.
+	* Makefile.am (libtool): libtool now depends on configure.ac.
+	* libtool.m4 (_LT_AC_LOCK):  Use 2.50's AC_LANG_PUSH/AC_LANG_POP
+	instead of 2.13's AC_LANG_SAVE/AC_LANG_RESTORE.
+	(AC_LIBTOOL_LANG_C_CONFIG): Ditto.
+	(AC_LIBTOOL_LANG_CXX_CONFIG): Ditto.
+	* libtoolize.in:  Use $configure_ac, instead of hardcoding
+	configure.in.
+
 2001-06-28  Tim Van Holder  <tim.van.holder@pandora.be>
 
 	* pdemo/Makefile.am:  Use '=' isntead of '+=' to shut up

@@ -1,6 +1,8 @@
 dnl Process this file with autoconf to create configure.
 
-AC_INIT(main.c)
+AC_PREREQ(2.50)
+AC_INIT
+AC_CONFIG_SRCDIR([main.c])
 AM_INIT_AUTOMAKE(cdemo,0.1)
 
 AC_PROG_CC
@@ -14,4 +16,5 @@ AC_CHECK_LIBM
 AC_SUBST(LIBM)
 
 dnl Output the makefile
-AC_OUTPUT(Makefile)
+AC_CONFIG_FILES([Makefile])
+AC_OUTPUT

@@ -28,7 +28,7 @@ aclocal_DATA = $(aclocal_macros)
 # The standalone libtool script, and the libtool distributor.
 bin_SCRIPTS = libtool libtoolize
 
-libtool: $(srcdir)/ltmain.sh $(top_builddir)/configure.in
+libtool: $(srcdir)/ltmain.sh $(top_builddir)/configure.ac
 	$(SHELL) $(top_builddir)/config.status --recheck
 	chmod +x $@
 
