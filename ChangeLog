@@ -3,6 +3,8 @@
 	* ltmain.in: Check for module_cmds if max_cmd_len is exceeded too.
 
 	* ltmain.in: Move eval to after command separation to allow ~ in paths.
+
+	* tests/demo-hardcode.test: Call ./libtool not libtool.
 	
 2003-11-22  Gary V. Vaughan  <gary@gnu.org>
 
