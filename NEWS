@@ -1,7 +1,18 @@
 NEWS - list of user-visible changes between releases of GNU Libtool
 
-New in 1.5.1: 2003-??-??; CVS version 1.5.0a, Libtool team:
+New in 1.5.1: 2004-01-??; CVS version 1.5.0a, Libtool team:
 * lt_dlrealloc is an official part of the libltdl API.
+* --tag, --silent and --debug options are preserved and reused when libtool
+  calls itself for relinking etc.
+* `-pthread' and similar options are honoured when linking shared libraries.
+* -no-suppress in compile mode shows compiler output for both PIC and non-PIC
+  object compilation.
+* New link mode option `-precious-files-regex' to prevent accidental removal
+  of files you want to keep, such as test coverage data, from the temporary
+  output directory.
+* Directories specified in /etc/ld.so.conf are no longer hardcoded on Linux.
+* Recognises the 'R' symbol type on Solaris so read-only symbols can be
+  exported.
 * Bug fixes.
 
 New in 1.5: 2003-04-14; CVS version 1.4e, Libtool team:
