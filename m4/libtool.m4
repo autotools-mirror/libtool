@@ -5878,6 +5878,8 @@ lt_save_CC="$CC"
 CC=${GCJ-"gcj"}
 compiler=$CC
 _LT_TAGVAR(compiler, $1)=$CC
+cc_basename=`$ECHO "X$compiler" \
+    | $Xsed -e 's%.*/%%;s%^[ 	]*\([^ 	]*\).*$%\1%'`
 
 # GCJ did not exist at the time GCC didn't implicitly link libc in.
 _LT_TAGVAR(archive_cmds_need_lc, $1)=no
@@ -5934,6 +5936,8 @@ lt_save_CC="$CC"
 CC=${RC-"windres"}
 compiler=$CC
 _LT_TAGVAR(compiler, $1)=$CC
+cc_basename=`$ECHO "X$compiler" \
+    | $Xsed -e 's%.*/%%;s%^[ 	]*\([^ 	]*\).*$%\1%'`
 _LT_TAGVAR(lt_cv_prog_compiler_c_o, $1)=yes
 
 if test -n "$compiler"; then
