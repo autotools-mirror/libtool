@@ -1,3 +1,10 @@
+2001-09-22  Gary V. Vaughan  <gary@gnu.org>
+
+	* libtool.m4 (_LT_AC_FILE_LTDLL_C): Be carefule that the start
+	marker searched for by sed must start in column 0.
+	(_LT_AC_FILE_IMPGEN_C): Ditto.
+	Reported by Tor Lillqvist <tml@iki.fi>
+
 2001-09-22  Tor Lillqvist  <tml@iki.fi>
 
 	* libtool.m4 [mingw* cygwin*]: Small improvement for mingw-hosted

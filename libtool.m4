@@ -5094,8 +5094,9 @@ fi
 
 # _LT_AC_FILE_LTDLL_C
 # -------------------
-AC_DEFUN([_LT_AC_FILE_LTDLL_C],
-[# /* ltdll.c starts here */
+# Be careful that the start marker always follows a newline.
+AC_DEFUN([_LT_AC_FILE_LTDLL_C], [
+# /* ltdll.c starts here */
 # #define WIN32_LEAN_AND_MEAN
 # #include <windows.h>
 # #undef WIN32_LEAN_AND_MEAN
@@ -5133,8 +5134,9 @@ AC_DEFUN([_LT_AC_FILE_LTDLL_C],
 
 # _LT_AC_FILE_IMPGEN_C
 # --------------------
-AC_DEFUN([_LT_AC_FILE_IMPGEN_C],
-[# /* impgen.c starts here */
+# Be careful that the start marker always follows a newline.
+AC_DEFUN([_LT_AC_FILE_IMPGEN_C], [
+# /* impgen.c starts here */
 # /*   Copyright (C) 1999, 2000, 2001 Free Software Foundation, Inc.
 #
 #  This file is part of GNU libtool.
