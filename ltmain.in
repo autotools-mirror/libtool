@@ -1963,9 +1963,10 @@ EOF
         
 	# Prepare the list of exported symbols
 	if test -z "$run" && test -z "$export_symbols"; then
+	  $show "extracting global symbols from \`$libname'"
 	  if test "$always_export_symbols" = yes || test -n "$export_symbols_regex"; then
 	    export_symbols="$objdir/$libname.exp"
-	    $rm $export_symbols
+	    $run $rm $export_symbols
 	    eval cmds=\"$export_symbols_cmds\"
 	    IFS="${IFS= 	}"; save_ifs="$IFS"; IFS='~'
 	    for cmd in $cmds; do
@@ -1975,13 +1976,15 @@ EOF
 	    done
 	    IFS="$save_ifs"
 	    if test -n "$export_symbols_regex"; then
-	      egrep -e "$export_symbols_regex" "$export_symbols" > "$export_symbols"T
-	      $mv "$export_symbols"T "$export_symbols"
+	      $show "egrep -e \"$export_symbols_regex\" \"$export_symbols\" > \"$export_symbols\"T"
+	      $run eval 'egrep -e "$export_symbols_regex" "$export_symbols" > "$export_symbols"T'
+	      $show "$mv \"$export_symbols\"T \"$export_symbols\""
+	      $run eval '$mv "$export_symbols"T "$export_symbols"'
 	    fi
 	  fi
-	fi
-	if test -n "$include_expsyms"; then
-	  $run $echo "X$include_expsyms" | $SP2NL >> "$export_symbols"
+	  if test -n "$include_expsyms"; then
+	    $run eval '$echo "X$include_expsyms" | $SP2NL >> "$export_symbols"'
+	  fi
 	fi
 
 	# Do each of the archive commands.
