@@ -1,3 +1,13 @@
+2001-07-25  Ossama Othman  <ossama@debian.org>
+
+	From Thomas Poindessous <poinde_t@epita.fr>
+	* ltmain.in (pic_mode):  Added missing quotes around shell
+	variable in "if test" conditional.
+
+	From Peter Moulder <pmoulder@longford.csse.monash.edu.au>
+	* ltmain.in (xform): Add support for pre-processed
+	(e.g. `*.{i,ii}' sources).
+
 2001-07-25  Gary V. Vaughan  <gary@gnu.org>
 
 	From Steve Ellcey <sje@cup.hp.com>:
@@ -321,7 +331,7 @@
 	
 2001-06-25  Gary V. Vaughan  <gary@gnu.org>
 
-	* THANKS:  Aded Albert Chin-A-Young.
+	* THANKS:  Added Albert Chin-A-Young.
 	
 	* libtool.m4 (IFS): When IFS is changed to split a string for
 	examination in a loop, restore it inside the loop as well as
