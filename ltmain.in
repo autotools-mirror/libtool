@@ -2287,13 +2287,13 @@ compiler."
 	  ;;
 
 	irix | nonstopux)
+	  major=`expr $current - $age + 1`
+
 	  case $version_type in
 	    nonstopux) verstring_prefix=nonstopux ;;
 	    *)         verstring_prefix=sgi ;;
 	  esac
 	  verstring="$verstring_prefix$major.$revision"
-
-	  major=`expr $current - $age + 1`
 
 	  # Add in all the interfaces that we are compatible with.
 	  loop=$revision
