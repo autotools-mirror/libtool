@@ -1108,7 +1108,7 @@ EOF
     ;;
 
   sunos4*)
-    archive_cmds='$LD -assert pure-text -Bstatic -o $lib $libobjs $deplibs $linkopts'
+    archive_cmds='$LD -assert pure-text -Bshareable -o $lib $libobjs $deplibs $linkopts'
     wlarc=
     hardcode_direct=yes
     hardcode_shlibpath_var=no
