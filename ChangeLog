@@ -1,3 +1,8 @@
+2003-01-12  Robert Boehne  <rboehne@gnu.org>
+
+	* libtool.m4 (AC_LIBTOOL_SYS_DYNAMIC_LINKER): Revert an
+	accidental rearranging of dylib and so for darwin.
+
 2003-01-10  Robert Boehne  <rboehne@gnu.org>
 
 	* libtool.m4 (AC_LIBTOOL_SYS_DYNAMIC_LINKER): Modify the
