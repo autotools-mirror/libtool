@@ -1,3 +1,8 @@
+1999-03-12  Thomas Tanner  <tanner@gmx.de>
+
+	* libltdl/ltdl.c: removed FILENAME_MAX since LTDL_FILENAME_MAX
+	  is sufficient and doesn't break HP/UX
+
 1999-03-11  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* ltconfig.in: (global_symbol_pipe) extract symbol tag from the

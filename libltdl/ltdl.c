@@ -56,11 +56,7 @@ Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 /* max. filename length */
 #ifndef LTDL_FILENAME_MAX
-# ifdef FILENAME_MAX
-#  define LTDL_FILENAME_MAX FILENAME_MAX
-# else
-#  define LTDL_FILENAME_MAX 1024
-# endif
+#define LTDL_FILENAME_MAX 1024
 #endif
 
 #undef	LTDL_READTEXT_MODE
