@@ -1,5 +1,8 @@
 2000-09-09  Gary V. Vaughan  <gvv@techie.com>
 
+	libtool.m4 (_LT_AC_LTCONFIG_HACK): Forgot to redirect the
+	output of grep to /dev/null in the need_lc tests.
+
 	configure.in (AC_PROG_LIBTOOL):  Using this in libtools own
 	configure.in interacts badly with the AC_PROVIDE calls and
 	results in several tests being inserted into configure too
