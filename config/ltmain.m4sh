@@ -5661,6 +5661,7 @@ EOF
 #include <malloc.h>
 #include <stdarg.h>
 #include <assert.h>
+#include <string.h>
 #include <sys/stat.h>
 
 #if defined(PATH_MAX)
@@ -5705,6 +5706,8 @@ EOF
   if (stale) { free ((void *) stale); stale = 0; } \
 } while (0)
 
+/* -DDEBUG is fairly common in CFLAGS.  */
+#undef DEBUG
 #if defined DEBUGWRAPPER
 # define DEBUG(format, ...) fprintf(stderr, format, __VA_ARGS__)
 #else
@@ -5762,6 +5765,7 @@ EOF
 EOF
 
 	    cat >> $cwrappersource <<"EOF"
+  return 0;
 }
 
 void *
@@ -5831,7 +5835,6 @@ find_executable (const char* wrapper)
   int has_slash = 0;
   const char* p;
   const char* p_next;
-  struct stat st;
   /* static buffer for getcwd */
   char tmp[[LT_PATHMAX + 1]];
   int tmp_len;

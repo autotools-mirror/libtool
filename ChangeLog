@@ -1,5 +1,10 @@
 2004-11-01  Peter Ekberg  <spam.protected>
 
+	* config/ltmain.m4sh (cwrappersource): clean up warnings and
+	#include errors.
+
+2004-11-01  Peter Ekberg  <spam.protected>
+
 	Sometimes, a wrapper script is generated for an executable that,
 	itself, does not link against an uninstalled library.  It appears
 	that this can happen if you are building a project where:
