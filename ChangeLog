@@ -1,3 +1,9 @@
+2005-02-01  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* config/ltmain.m4sh (func_win32_libid, func_infer_tag)
+	(func_extract_an_archive, func_extract_archives):
+	adjust to preferred function header layout.
+
 2005-01-31  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* libtool.m4 (AC_LIBTOOL_SYS_GLOBAL_SYMBOL_PIPE): Unicos 9 sed rejects
