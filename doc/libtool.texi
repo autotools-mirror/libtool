@@ -3136,12 +3136,6 @@ both), @file{cdemo-static.test} builds only static libraries
 (@samp{--disable-shared}), and @file{cdemo-shared.test} builds only
 shared libraries (@samp{--disable-static}).
 
-@item build-relink.test
-@pindex build-relink.test
-Checks whether variable @var{shlibpath_overrides_runpath} is properly
-set.  If the test fails and @var{VERBOSE} is set, it will indicate what
-the variable should have been set to.
-
 @item hardcode.test
 @pindex hardcode.test
 On all systems with shared libraries, the location of the library can be
@@ -3149,6 +3143,12 @@ encoded in executables that are linked against it @pxref{Linking
 executables}.  This test checks the conditions under which your system
 linker hardcodes the library location, and guarantees that they
 correspond to libtool's own notion of how your linker behaves.
+
+@item build-relink.test
+@pindex build-relink.test
+Checks whether variable @var{shlibpath_overrides_runpath} is properly
+set.  If the test fails and @var{VERBOSE} is set, it will indicate what
+the variable should have been set to.
 
 @item noinst-link.test
 @pindex noinst-link.test
