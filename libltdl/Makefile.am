@@ -22,7 +22,7 @@ MOSTLYCLEANFILES =
 EXTRA_DIST =
 
 AUTOMAKE_OPTIONS = foreign
-ACLOCAL_AMFLAGS  = -I ../m4
+ACLOCAL_AMFLAGS  = -I m4
 AM_CPPFLAGS = -I$(top_builddir) -I$(top_srcdir)
 DEFS = -DHAVE_CONFIG_H="<$(CONFIG_H)>" -DLTDL
 
@@ -42,12 +42,11 @@ endif
 ## default.
 CLEANFILES	    = libltdl.la libltdlc.la
 
-libltdl_la_SOURCES  = ltdl.h ltdl.c \
-		      loader-preopen.c \
-		      lt_error.h lt_error.c \
-		      lt__private.h lt__alloc.h lt__alloc.c \
-		      lt__glibc.h lt__dirent.h \
-		      lt_system.h
+libltdl_la_SOURCES  = loader-preopen.c \
+		      lt__alloc.c lt__alloc.h lt__dirent.h lt__glibc.h \
+		      lt__private.h lt_dlloader.h \
+		      lt_error.c lt_error.h lt_system.h \
+		      ltdl.c ltdl.h
 libltdl_la_LDFLAGS  = -no-undefined -version-info 5:0:2
 libltdl_la_LIBADD   = $(LIBADD_DL) $(LTLIBOBJS)
 
@@ -57,8 +56,11 @@ libltdlc_la_LIBADD  = $(LIBADD_DL) $(LTLIBOBJS)
 ## These are installed as a subdirectory of pkgdatadir so that
 ## libtoolize --ltdl can find them later:
 ltdldatadir = $(pkgdatadir)/libltdl
-ltdldata_DATA = COPYING.LIB Makefile.am README $(libltdl_la_SOURCES) \
-		argz_.h argz.c
+ltdldata_DATA = COPYING.LIB Makefile.am README configure.ac \
+		argz_.h argz.c $(libltdl_la_SOURCES) \
+		loader-dld_link.c loader-dlopen.c loader-dyld.c \
+		loader-load_add_on.c loader-loadlibrary.c loader-shl_load.c \
+		lt__dirent.c
 
 
 ## --------------------------- ##

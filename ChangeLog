@@ -5,6 +5,20 @@
 
 2004-06-16  Gary V. Vaughan  <gary@gnu.org>
 
+	libltdl uses LIBOBJS, which leak out into a parent project if both
+	share the same configure.ac.  Libtool itself doesn't compile any
+	code, so it is okay to do it during bootstrap, but other projects
+	need to treat libltdl as a configurable subproject to keep their
+	respective LIBOBJS separate:
+
+	* libltdl/configure.ac: New file, based on configure.ac.
+	* libltdl/Makefile.am (AC_LOCAL_AMFLAGS): Use our own m4
+	directory.
+	(ltdldata_DATA): List *all* the files that libtoolize --ltdl will
+	install.
+
+2004-06-16  Gary V. Vaughan  <gary@gnu.org>
+
 	Automake 1.9 won't have the AC_PROG_EGREP bug (aclocal used to
 	pull an old installed libtool.m4 as well as the bootstrap
 	m4/libtool.m4 if an AC_DEFUN was removed), and we have
