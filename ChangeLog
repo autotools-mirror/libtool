@@ -1,5 +1,14 @@
 2001-06-30  Gary V. Vaughan  <gary@gnu.org>
 
+	Merge test improvements from multi-language-branch:
+	* tests/defs: Find and set the value of CC probed by libtool.m4
+	* tests/link-2.test: Use a .lo wrapper script, and the value of
+	CC set by defs instead of hardcoding gcc.
+	* tests/link.test: Use the value of CC set by defs instead of
+	hardcoding gcc.
+	* tests/quote.test: Ditto.
+	* tests/suffix.test: Ditto.
+
 	* libtool.m4 (AC_LIBTOOL_PROG_COMPILER_PIC) [aix*]: Always set
 	lt_prog_compiler_wl to `-Wl'.
 	Reported by Albert Chin-A-Young  <china@thewrittenword.com>

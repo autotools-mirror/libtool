@@ -11,7 +11,7 @@ fi
 . $srcdir/defs || exit 1
 
 # Try a sample link command.
-linkresult=`$libtool -n --mode=link gcc -o gettext ../lib/libnlsut.a`
+linkresult=`$libtool -n --mode=link $CC -o gettext ../lib/libnlsut.a`
 test $? -eq 0 || exit 1
 
 echo "$linkresult"
