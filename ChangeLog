@@ -1,3 +1,8 @@
+2000-10-27  Robert Boehne  <rboehne@ricardo-us.com>
+
+	* docs/libtool.texi: Added pointers to documentation       
+	of Hewlett-Packard, Compaq Tru64 and IBM AIX systems.       
+
 2000-10-02  Gary V. Vaughan  <gvv@techie.com>
 
 	From Bruce Korb <bkorb@cruzio.com>

@@ -256,3 +256,705 @@ dlltool at all, and rely only on gcc (and ld, indirectly).
 --
 Want to unsubscribe from this list?
 Send a message to cygwin-unsubscribe@sourceware.cygnus.com
+From gary  Tue Oct  3 18:51:55 2000
+Return-Path: <cygwin-return-16563-gvaughan=oranda.demon.co.uk@sources.redhat.com>
+Received: from pop3.mail.demon.net
+	by localhost with POP3 (fetchmail-5.3.4)
+	for gary@localhost (single-drop); Tue, 03 Oct 2000 18:51:55 +0100 (BST)
+Received: from punt-2.mail.demon.net by mailstore
+          for gvaughan@oranda.demon.co.uk id 970581289:20:22249:24;
+          Tue, 03 Oct 2000 13:54:49 GMT
+Received: from sourceware.cygnus.com ([205.180.83.71]) by punt-2.mail.demon.net
+           id aa2022220; 3 Oct 2000 13:54 GMT
+Received: (qmail 29977 invoked by alias); 3 Oct 2000 13:52:38 -0000
+Mailing-List: contact cygwin-help@sourceware.cygnus.com; run by ezmlm
+Precedence: bulk
+List-Unsubscribe: <mailto:cygwin-unsubscribe-gvaughan=oranda.demon.co.uk@sources.redhat.com>
+List-Subscribe: <mailto:cygwin-subscribe@sources.redhat.com>
+List-Archive: <http://sources.redhat.com/ml/cygwin/>
+List-Post: <mailto:cygwin@sources.redhat.com>
+List-Help: <mailto:cygwin-help@sources.redhat.com>, <http://sources.redhat.com/ml/#faqs>
+Sender: cygwin-owner@sources.redhat.com
+Delivered-To: mailing list cygwin@sources.redhat.com
+Received: (qmail 29933 invoked from network); 3 Oct 2000 13:52:34 -0000
+Received: from mumnunah.cs.mu.oz.au (203.19.244.130)
+  by sourceware.cygnus.com with SMTP; 3 Oct 2000 13:52:34 -0000
+Received: from murlibobo.cs.mu.OZ.AU (murlibobo.cs.mu.OZ.AU [128.250.29.17]) by mumnunah.cs.mu.OZ.AU with ESMTP
+        id AAA23121; Wed, 4 Oct 2000 00:52:14 +1100 (EST)
+Received: (from fjh@localhost) by murlibobo.cs.mu.OZ.AU (8.8.5/8.7.3) id AAA11289; Wed, 4 Oct 2000 00:52:13 +1100 (EST)
+Date: Wed, 4 Oct 2000 00:52:13 +1100
+From: Fergus Henderson <fjh@cs.mu.oz.au>
+To: "Gary V. Vaughan" <gvv@techie.com>, cygwin@sources.redhat.com,
+        cgf@cygnus.com
+Subject: Re: linking against shared libraries
+Message-ID: <20001004005212.A9274@murlibobo.cs.mu.OZ.AU>
+References: <012a01c02033$936effc0$f7c723cb@lifelesswks> <20000917010735.G606@demon.co.uk> <20000916234420.A23827@cygnus.com> <20000917122440.I606@demon.co.uk> <20000917122837.A24997@cygnus.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+X-Mailer: Mutt 0.95.1i
+In-Reply-To: <20000917122837.A24997@cygnus.com>; from Chris Faylor on Sun, Sep 17, 2000 at 12:28:37PM -0400
+Status: RO
+Content-Length: 2625
+Lines: 51
+
+On 17-Sep-2000, Chris Faylor <cgf@cygnus.com> wrote:
+> On Sun, Sep 17, 2000 at 12:24:40PM +0100, Gary V. Vaughan wrote:
+> >If you are interested, I will add an entry to my TODO list to see if I
+> >can take some of the nicities from the libtldl LoadLibrary wrapper
+> >code and apply them to the Cygwin LoadLibrary wrapper?  (Automatic `_'
+> >prefixing for example).
+> 
+> Is this a characteristic of normal linux/UNIX dlsym?
+
+AFAIK, Unix systems that support dlopen() don't prefix C symbol
+names with `_' when compiling them to assembler in the first place,
+so the issue is moot.  At least this is the case on Solaris (2.7),
+Linux (>= libc6), and OSF1 (3.2 ), which are the systems that
+I have easily available right now.  dlopen() originated on Solaris,
+according to the Linux man page.
+
+On systems such as Cygwin which do prefix C names with `_' when
+compiling to assembler, whether dlopen() should prefix the name with an
+underscore depends on whether the name that the user is trying to look
+up is an assembly name or a C name.  If it's a C name, then it's right
+for dlopen() to prefix the name with an underscore, to match what the
+C compiler does, but if it's an assembly name, then doing that would
+be wrong.  Unfortunately the interface to dlopen() provides the
+dlopen() implementation with no clues as to which one the user meant.
+The documentation for dlopen() says that the argument is the "symbol
+name", which is ambiguous, but could be read as implying that it is
+supposed to be the assembly name.  However, in practice most uses of
+dlopen() tend to be passing C names rather than assembler names.
+
+Probably most uses of dlopen() are for C names, and so inserting
+the prefix would work well in most cases.  However, inserting the
+prefix would also make it impossible to look up assember names that
+don't start with underscore using dlopen().
+
+It's a bit like the issue of text-versus-binary:
+the original unix-only interface didn't need to distinguish
+between the different cases (text/binary or C/asm/whatever),
+but in the Windows environment, you do need to make such
+distinctions.  So some programs will need source modifications.
+The best you can do is to choose the default carefully,
+and make it easy to override the default for programs for which
+the default is not appropriate.
+
+-- 
+Fergus Henderson <fjh@cs.mu.oz.au>  |  "I have always known that the pursuit
+WWW: <http://www.cs.mu.oz.au/~fjh>  |  of excellence is a lethal habit"
+PGP: finger fjh@128.250.37.3        |     -- the last words of T. S. Garp.
+
+--
+Want to unsubscribe from this list?
+Send a message to cygwin-unsubscribe@sourceware.cygnus.com
+
+On Sun, Sep 03, 2000 at 01:34:23AM -0400, Charles Wilson wrote:
+> "Gary V. Vaughan" wrote:
+> 
+> > > Now, suppose that the png folks release a newer version, say png-2.1.x
+> > > that exposes some additional features, but is backwards compatible with
+> > > png-2.0.x.  Great.  You build it, but create:
+> > >
+> > >   libpng31.dll.a (embeds the name libpng31.dll.a)
+> > >   libpng.dll.a -> libpng31.dll.a
+> > >   libpng3.dll (replaces the old version (*))
+> > 
+> > I don't think we need anything more than
+> > 
+> >     a replacement libpng3.dll
+> 
+> Not so.  Remember, libpng-2.1.x can include additional functions that
+> were not included by libpng-2.0.x, as long as it includes all of the
+> 'old' functions/vars without modification.  So, you need to update the
+> import lib as well as the dll, so that new packages that use the
+> additional functions will work.
+
+Oops.  I hadn't thought of that.  Good point.
+
+> > Otherwise we are still in violent agreement.
+> 
+> I agree.
+
+=)O|
+
+> > > > Maybe Cygwin should put all of it's libtool built libraries (or any
+> > > > others that are correctly versioned w.r.t the runtime loader) into a
+> > > > single directory that is near the front of the default path.  /usr/lib
+> > > > seems like a good place.
+> > >
+> > > That's part of my 'easy' solution above.  It may fix the cygwin problem,
+> > > but the requirement is not nice to native apps or other unix-on-win
+> > > emulations that the user may have.
+> > >
+> > > Relying on 'get dll's from same dir as .exe' works -- but only if EVERY
+> > > cygwin exe and EVERY cygwin dll are piled into the same dir.
+> > 
+> > Can't we assume that the native dll's we rely on are outside cygwin's
+> > control and can be relied upon to be managed by the operating system
+> > (I'm thinking of stuff in the SYSTEM directory), and that non-cygwin
+> > libraries (such as Pauls pw dlls) will not be installed into the
+> > cygwin binary search path?  In which case I think it is okay to
+> > install all cygwin dlls and import libs to /usr/lib, making sure that
+> > cygwin.bat (or any other cygwin startup methods) put /usr/lib first in
+> > $PATH.  
+> 
+> this works for the 'sandbox user' -- Michael Ring's 'user 1' in this
+> message:
+>    http://sources.redhat.com/ml/cygwin/2000-08/msg01241.html
+> 
+> It doesn't work for Michael's 'user 2' -- the guy who normally runs in
+> cmd.exe/command.com, but relies on cygwin commands every once in a
+> while.  He doesn't use bash, but likes the cygwin-perl or grep every
+> once and a while.  User 2 will have the cygwin directories somewhere in
+> her path -- but not necessarily first.
+
+We could tell these people to put C:/cygwin/usr/bin at the front of
+their PATH...
+
+> > Does cygwin ld use -rpath yet?  
+> 
+> I don't think so.  -rpath is something that ld.so uses; Windows doesn't
+> have ld.so. Windows *always* loads dll's according to the following
+> search order:
+>    current directory
+>    app's load directory
+>    global executable search path
+> 
+> The only two exceptions I know of are:
+> 
+>   1) In Win2K, if there is a file called 'app.exe.local' in the same
+> directory as app.exe, then all dll's will be loaded from the app's load
+> directory -- even if explicitly dlopened() with an absolute path that
+> points elsewhere.  the .local. may also override the 'current directory'
+> part of the search order listed above, but I'm not sure.
+
+Holy cr@p! What happened to simplicity?  If Bill has decided that he
+can't understand how to write a decent shared library system, and
+want's to relegate dll's to LoadLibrary() objects, why doesn't he just
+say so?  Wouldn't it be easier to statically link a Win2k program that
+twiddle about with all this .local mess?
+
+>   2) You can put something called 'AppPath' in the registry, which will
+> influence the directories that are searched. I don't know where in the
+> list above that the directories listed in the 'AppPath' key are
+> inserted.
+
+This sounds promising.  I'll see if I can find any details on it.
+
+> > I am prepared to work on having libtool do the right thing as far
+> > as possible. 
+> 
+> What was the right thing, again?  :-)
+
+Based on our conversation so far:
+
+  * When building a libtool (.la) library, create libfoo.la,
+    libfoo<iface>.dll, libfoo.dll.a and libfoo.a, where:
+      - <iface> is the earliest fully supported interface number
+      - libfoo.dll.a is the import library for libfoo<iface>.dll
+      
+  * When installing a libtool (.la) library:
+      - libfoo.la goes to $prefix/lib
+      - libfoo<iface>.dll goes to $prefix/bin
+      - libfoo.dll.a goes to $prefix/lib
+      - libfoo.a goes to $prefix/lib
+      
+  * When linking against libfoo.la
+      - use libfoo.dll.a unless -static or -all-static 
+      - otherwise use libfoo.a
+
+  * When linking against -lfoo
+      - if libfoo.la is found, behave as above
+      - else let ld (or gcc) do its thing
+
+Which is especially cool, because I don't think I need to worry about
+dealing with direct linkage to dlls (I can just punt and let gcc/ld do
+the hard work) which removes a whole pile of spaghetti where I had to
+cope with compiling the impgen code correctly in cross compilation
+environments!
+
+> > By default libtool always searches for a dll to link against and
+> > generates the implib on the fly if a suitable one is found.
+
+This won't be necessary under the new scheme =)O|
+
+> There are occaisions where you want to link to an import lib in
+> preference to a dll -- for instance, libcygwin.a is an import lib, but
+> contains initializer code and actual function implementations for some
+> functions that are not included in the dll itself.  If you attempt to
+> link directly to cygwin1.dll, the link fails because those things are
+> missing from the virtual on-the-fly implib.
+
+I didn't know about that.  Thanks.
+
+> But where do you put the dll?  It has to go into the executable PATH so
+> that the windows loader can find it.  Do you copy it into /usr/lib, so
+> that the default ld search path will find it?  Do you add /usr/bin to
+> the linktime library search path (-L/usr/bin)?  Perhaps a symlink in
+> /usr/lib, pointing to /usr/bin/libfoo.dll is all you need. 
+> 
+> However!!! Ld uses the following library name search order when hunting
+> for -lfoo:
+> 
+>   libfoo.dll.a
+>   foo.dll.a
+>   libfoo.a  <<<< NOTE!!
+>   libfoo.dll
+>   foo.dll
+
+Or that.  Thanks again!  Libtool already provides --disable-static if
+the user wants to build and install only the dll parts of the library.
+
+For this to work (that is, in order for me to be able to punt to gcc/ld
+in the majority of cases) I must generate dll names that will be
+found, so the cygfoo.dll idea is out (Sorry Paul!).
+
+Although this doesn't help ``User 2'' very much, he is no worse off
+than before if I change libtool's behaviour in this way.  Here's a
+thought:  For each dll using application linked, I could have libtool
+install a .bat script to C:/cygwin/launch (or similar) which would set
+the PATH environment correctly for that application.  As long as
+``User 2'' has the launch directory higher in his PATH than the actual
+binary directory, this would guarantee correct dll selection.
+
+This would give ``User 1'' many of the advantages shared libraries
+offer on Unix, without sinking into DLL Hell.  Assuming that everyone
+buys into it.  The only reason shared libraries work properly on Unix
+is that everyone has to agree to conform to the runtime loader's
+versioning scheme -- so don't give some excuse about ``if we don't
+want to change the core cygwin dll's to conform this won't work''.  On
+my linux box, I can move my libc around or drop several incompatible
+versions of libc into my filesystem, and my applications will stop
+loading the intended libraries too.  No surprises there!
+
+Cheers,
+	Gary.
+-- 
+  ___              _   ___   __              _         mailto: gvv@techie.com
+ / __|__ _ _ ___ _| | / / | / /_ _ _  _ __ _| |_  __ _ ___       gary@gnu.org 
+| (_ / _` | '_|// / |/ /| |/ / _` | || / _` | ' \/ _` | _ \
+ \___\__,_|_|\_, /|___(_)___/\__,_|\_,_\__, |_||_\__,_|//_/
+home page:  /___/                      /___/                  gpg public key:
+http://www.oranda.demon.co.uk           http://www.oranda.demon.co.uk/key.asc
+
+--
+Want to unsubscribe from this list?
+Send a message to cygwin-unsubscribe@sourceware.cygnus.com
+On Sun, Sep 03, 2000 at 04:39:51PM -0300, Alexandre Oliva wrote:
+> On Sep  3, 2000, "Gary V. Vaughan" <gvv@techie.com> wrote:
+> 
+> >   * When installing a libtool (.la) library:
+> >       - libfoo.la goes to $prefix/lib
+> >       - libfoo<iface>.dll goes to $prefix/bin
+> >       - libfoo.dll.a goes to $prefix/lib
+> >       - libfoo.a goes to $prefix/lib
+>       
+> Nope.  libfoo.la goes wherever -rpath specified when the library was
+> created; it should be the same directory that is specified at install
+> time.  This is often $(libdir), but it doesn't have to be.
+> 
+> I don't know how to arrange for an additional directory (bindir) to
+> be specifiable without introducing an additional command-line option.
+> Remember, libtool doesn't know about prefix, libdir or bindir, it just
+> knows about what it's given in the command line.
+
+Hmm.  I hadn't thought of that.  Still, at least the principle of the
+thing is right now, I think...
+
+Cheers,
+	Gary.
+-- 
+  ___              _   ___   __              _         mailto: gvv@techie.com
+ / __|__ _ _ ___ _| | / / | / /_ _ _  _ __ _| |_  __ _ ___       gary@gnu.org 
+| (_ / _` | '_|// / |/ /| |/ / _` | || / _` | ' \/ _` | _ \
+ \___\__,_|_|\_, /|___(_)___/\__,_|\_,_\__, |_||_\__,_|//_/
+home page:  /___/                      /___/                  gpg public key:
+http://www.oranda.demon.co.uk           http://www.oranda.demon.co.uk/key.asc
+
+There's an easier way -- one command!  'gcc -shared' will create a dll
+for you.  Just do:
+
+$(BASE)=foo
+
+  gcc -shared -o cyg$(BASE).dll -Wl,--out-implib=lib$(BASE).dll.a \
+    -Wl,--export-all -Wl,--enable-auto-image-base \
+    -Wl,--output-def=cyg$(BASE).def $(OBJS)
+
+Grab any of the packages in the 'contrib' directory and look an the
+makefiles (you might need to do a minimal 'configure' first, to
+customize the Makefile for cygwin before using it as a model)
+
+--Chuck
+
+Jrgen Schuck wrote:
+> 
+> I'm not sure about the kind of object that 'gcc -shared'
+> produces. But I think it won't be what you might expect.
+> In Windows shared sobjects are DLL's. You probably will
+> have to convert your Makefiles to cproduce DLL's instead
+> of UNIX-style .so files.
+> 
+> I did the same task when porting a TCL-extension from
+> UNIX to Cygwin. The Makefile (SVR4) changes from
+> 
+> libTclDM20.so:
+>         ld -G -o $@ $(OBJS)
+> 
+> to
+> 
+> LOAD      = TclDM20
+> DEF       = $(LOAD).def
+> BAS       = $(LOAD).base
+> EXP       = $(LOAD).exp
+> $(DLL): $(OBJS)
+>         echo EXPORTS >$(DEF)
+>         nm $+ | grep '^........ [T] _' | sed 's/[^_]*_//' >>$(DEF)
+>         $(LD) --base-file $(BAS) -dll -o $@ $+ -e _dll_entry@12 \
+>                                 -L`dirname \`gcc -print-file-name=libgcc.a\`` \
+>                                 $(LIBS) -lgcc -lcygwin -lkernel32 -lgcc
+>         dlltool --as=as -dllname $@ --def $(DEF) \
+>                                         --base-file $(BAS) --output-exp $(EXP)
+>         $(LD) --base-file $(BAS) $(EXP) -dll -o $@ $+ -e _dll_entry@12 \
+>                                 -L`dirname \`gcc -print-file-name=libgcc.a\`` \
+>                                 $(LIBS) -lgcc -lcygwin -lkernel32 -lgcc
+>         dlltool --as=as -dllname $@ --def $(DEF) \
+>                                         --base-file $(BAS) --output-exp $(EXP)
+>         $(LD) $(EXP) -dll -o $@ $+ -e _dll_entry@12 \
+>                                 -L`dirname \`gcc -print-file-name=libgcc.a\`` \
+>                                 $(LIBS) -lgcc -lcygwin -lkernel32 -lgcc
+> 
+> For further information see
+> http://sources.redhat.com/cygwin/docs.html,
+> section "Writing DLLs". Reading these docs you
+> will find two further modules: dll_init.c and
+> dll_fixup.c. I didn't put them into my DLL because
+> the resulting DLL crashes the TCL-interpreter.
+> 
+> Furthermore I found it very helpful to take a
+> look into the Makefiles of the DLL-generating
+> packages of the Cygwin-distribution: tcl, wish
+> and tix.
+> 
+> Jrgen Schuck
+> PCM-Kundenbetreuung
+> Business Unit Information
+> _________________________________________________
+> MATERNA GmbH Information & Communications
+> Vosskuhle 37 * 44141 Dortmund
+> Tel.: 0231 - 5599 - 191 *  Fax: -272
+> Handy: 0172 - 23 70 148  * http://www.materna.de
+> 
+> --
+> Want to unsubscribe from this list?
+> Send a message to cygwin-unsubscribe@sourceware.cygnus.com
+
+--
+Want to unsubscribe from this list?
+Send a message to cygwin-unsubscribe@sourceware.cygnus.com
+From gary  Tue Oct 10 18:50:22 2000
+Return-Path: <cygwin-return-16847-gvaughan=oranda.demon.co.uk@sources.redhat.com>
+Received: from pop3.mail.demon.net
+	by localhost with POP3 (fetchmail-5.3.4)
+	for gary@localhost (single-drop); Tue, 10 Oct 2000 18:50:22 +0100 (BST)
+Received: from punt-2.mail.demon.net by mailstore
+          for gvaughan@oranda.demon.co.uk id 971135226:20:06380:2;
+          Mon, 09 Oct 2000 23:47:06 GMT
+Received: from sourceware.cygnus.com ([205.180.83.71]) by punt-2.mail.demon.net
+           id aa2005552; 9 Oct 2000 23:46 GMT
+Received: (qmail 16236 invoked by alias); 9 Oct 2000 23:46:45 -0000
+Mailing-List: contact cygwin-help@sourceware.cygnus.com; run by ezmlm
+Precedence: bulk
+List-Unsubscribe: <mailto:cygwin-unsubscribe-gvaughan=oranda.demon.co.uk@sources.redhat.com>
+List-Subscribe: <mailto:cygwin-subscribe@sources.redhat.com>
+List-Archive: <http://sources.redhat.com/ml/cygwin/>
+List-Post: <mailto:cygwin@sources.redhat.com>
+List-Help: <mailto:cygwin-help@sources.redhat.com>, <http://sources.redhat.com/ml/#faqs>
+Sender: cygwin-owner@sources.redhat.com
+Delivered-To: mailing list cygwin@sources.redhat.com
+Received: (qmail 16211 invoked from network); 9 Oct 2000 23:46:43 -0000
+Received: from mail.ee.gatech.edu (130.207.230.10)
+  by sourceware.cygnus.com with SMTP; 9 Oct 2000 23:46:43 -0000
+Received: from ece.gatech.edu (s02-pm03.gatech.campuscwix.net [168.14.1.69])
+	by mail.ee.gatech.edu (8.11.0/8.11.0) with ESMTP id e99NkTO15440;
+	Mon, 9 Oct 2000 19:46:30 -0400 (EDT)
+Message-ID: <39E259A7.CBAD325F@ece.gatech.edu>
+Date: Mon, 09 Oct 2000 19:49:59 -0400
+From: Charles Wilson <cwilson@ece.gatech.edu>
+X-Mailer: Mozilla 4.75 [en] (Windows NT 5.0; U)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: cygwin@sourceware.cygnus.com
+Subject: Re: AW: Linking Dynamic Libraries
+References: <004501c031f0$10478ad0$0d33028b@zapperlot.materna.de> <39E1CC08.F475851F@ece.gatech.edu> <39E2468B.BFDD3AB7@ihug.co.nz>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Status: RO
+Content-Length: 5252
+Lines: 189
+
+You still need to worry about things like __declspec(dllexport) and
+__declspec(dllimport).  Here's a patch for your files.  
+
+(Yes, you are correct; the option is '--export-all-symbols' not
+'--export-all')
+
+As far as documentation, there's the mailing list, and 'ld --help' and
+Mumit's (really out-of-date) dll-helpers packaqe at
+http://www.xraylith.wisc.edu/~khan/software/gnu-win32/dllhelpers.html. 
+Would you like to update that package for the current capabilities of
+ld/gcc ?  Mumit's tutorial is heavily 'dlltool' based, rather than 'gcc
+-shared' or 'ld' based.
+
+NOTE 1: I had to remove "-Wl,--export-all-symbols" from the options;
+with export-all I got a stack dump even with my other changes. I'm not
+sure why.
+
+NOTE 2: I used the extension '.dll.a' for the import library; cygwin's
+linker will search for 'libfoo.dll.a' in preference to 'libfoo.a';
+libfoo.a is assumed to be a static library (although the linker will use
+libfoo.a if .dll.a is not found)
+
+--Chuck
+
+
+diff -u demo-orig/Makefile demo/Makefile
+--- demo-orig/Makefile  Mon Oct  9 19:34:15 2000
++++ demo/Makefile       Mon Oct  9 19:45:10 2000
+@@ -3,7 +3,7 @@
+ EXENAME = demo
+ EXEOBJ = demo.o
+ CPLUS = g++ -W -Wall -Werror
+-LINKDLL = g++ -shared -Wl,--export-all -Wl,--enable-auto-image-base
++LINKDLL = g++ -shared -Wl,--enable-auto-image-base
+ LINKEXE = g++ -L.
+ 
+ .DELETE_ON_ERROR:
+@@ -13,13 +13,16 @@
+ all: $(DLLNAME).dll $(EXENAME)
+ 
+ clean:
+-       rm -f $(DLLOBJ) $(DLLNAME).dll lib$(DLLNAME).a $(EXEOBJ)
+$(EXENAME).exe
++       rm -f $(DLLOBJ) $(DLLNAME).dll lib$(DLLNAME).dll.a $(EXEOBJ)
+$(EXENAME).exe
+ 
+ %.o: %.cpp
+        $(CPLUS) -c $< -o $@
+ 
++$(DLLOBJ): $(DLLOBJ:.o=.cpp)
++       $(CPLUS) -DBUILD_DLL -c $< -o $@
++
+ $(DLLNAME).dll: $(DLLOBJ)
+-       $(LINKDLL) $(DLLOBJ) -o $(DLLNAME).dll
+-Wl,--out-implib=lib$(DLLNAME).a
++       $(LINKDLL) $(DLLOBJ) -o $(DLLNAME).dll
+-Wl,--out-implib=lib$(DLLNAME).dll.a
+ 
+ $(EXENAME): $(EXEOBJ) $(DLLNAME).dll
+        $(LINKEXE) $(EXEOBJ) -l$(DLLNAME) -o $(EXENAME)
+diff -u demo-orig/foo.hpp demo/foo.hpp
+--- demo-orig/foo.hpp   Mon Oct  9 19:35:58 2000
++++ demo/foo.hpp        Mon Oct  9 19:35:50 2000
+@@ -3,7 +3,12 @@
+ 
+ #include <string>
+ 
+-extern std::string global_mangle(const std::string& source);
+-
++#ifdef BUILD_DLL
++#define FOO_EXPORT __declspec(dllexport)
++#else
++#define FOO_EXPORT __declspec(dllimport)
+ #endif
+ 
++extern FOO_EXPORT std::string global_mangle(const std::string& source);
++
++#endif
+
+Ross Smith wrote:
+> 
+> "Charles S. Wilson" wrote:
+> >
+> > There's an easier way -- one command!  'gcc -shared' will create a dll
+> > for you.  Just do:
+> >
+> > $(BASE)=foo
+> >
+> >   gcc -shared -o cyg$(BASE).dll -Wl,--out-implib=lib$(BASE).dll.a \
+> >     -Wl,--export-all -Wl,--enable-auto-image-base \
+> >     -Wl,--output-def=cyg$(BASE).def $(OBJS)
+> 
+> I can't get this to work. Whenever I link with the import lib produced
+> this way, the resulting program crashes with a STATUS_ACCESS_VIOLATION.
+> (See attached code.) I don't even need to call any of the DLL functions
+> to trigger it -- just linking with -lfoo makes it unworkable. What am I
+> doing wrong?
+> 
+> And where is all this stuff documented anyway? The ld docs mention
+> --export-all-symbols (not --export-all), but not any of the others.
+> 
+> -------------------- cut here --------------------
+> 
+> // demo.cpp
+> 
+> #include "foo.hpp"
+> #include <iostream>
+> #include <string>
+> 
+> int main() {
+>   std::string thing("thing");
+>   std::cout << thing << std::endl;
+> //  std::cout << global_mangle(thing) << std::endl;
+>   return 0;
+> }
+> 
+> -------------------- cut here --------------------
+> 
+> // foo.hpp
+> 
+> #ifndef FOO_HEADER
+> #define FOO_HEADER
+> 
+> #include <string>
+> 
+> extern std::string global_mangle(const std::string& source);
+> 
+> #endif
+> 
+> -------------------- cut here --------------------
+> 
+> // foo.cpp
+> 
+> #include "foo.hpp"
+> 
+> std::string global_mangle(const std::string& source) {
+>   return source + "_global";
+> }
+> 
+> -------------------- cut here --------------------
+> 
+> // Makefile
+> 
+> DLLNAME = foo
+> DLLOBJ = foo.o
+> EXENAME = demo
+> EXEOBJ = demo.o
+> CPLUS = g++ -W -Wall -Werror
+> LINKDLL = g++ -shared -Wl,--export-all -Wl,--enable-auto-image-base
+> LINKEXE = g++ -L.
+> 
+> .DELETE_ON_ERROR:
+> 
+> .PHONY: all clean
+> 
+> all: $(DLLNAME).dll $(EXENAME)
+> 
+> clean:
+>     rm -f $(DLLOBJ) $(DLLNAME).dll lib$(DLLNAME).a $(EXEOBJ)
+> $(EXENAME).exe
+> 
+> %.o: %.cpp
+>     $(CPLUS) -c $< -o $@
+> 
+> $(DLLNAME).dll: $(DLLOBJ)
+>     $(LINKDLL) $(DLLOBJ) -o $(DLLNAME).dll
+> -Wl,--out-implib=lib$(DLLNAME).a
+> 
+> $(EXENAME): $(EXEOBJ) $(DLLNAME).dll
+>     $(LINKEXE) $(EXEOBJ) -l$(DLLNAME) -o $(EXENAME)
+> 
+> demo.o: demo.cpp foo.hpp
+> foo.o: foo.cpp foo.hpp
+> 
+> -------------------- cut here --------------------
+> 
+> --
+> Ross Smith <ross.s@ihug.co.nz> The Internet Group, Auckland, New Zealand
+> ========================================================================
+> "C++ is to programming as sex is to reproduction. Better ways might
+> technically exist but they're not nearly as much fun." -- Nikolai Irgens
+> 
+> --
+> Want to unsubscribe from this list?
+> Send a message to cygwin-unsubscribe@sourceware.cygnus.com
+
+--
+Want to unsubscribe from this list?
+Send a message to cygwin-unsubscribe@sourceware.cygnus.com
+
+From gary  Wed Oct 11 18:38:50 2000
+Return-Path: <cygwin-return-16974-gvaughan=oranda.demon.co.uk@sources.redhat.com>
+Received: from pop3.mail.demon.net
+	by localhost with POP3 (fetchmail-5.3.4)
+	for gary@localhost (single-drop); Wed, 11 Oct 2000 18:38:50 +0100 (BST)
+Received: from punt-1.mail.demon.net by mailstore
+          for gvaughan@oranda.demon.co.uk id 971256552:10:18423:4;
+          Wed, 11 Oct 2000 09:29:12 GMT
+Received: from sourceware.cygnus.com ([205.180.83.71]) by punt-1.mail.demon.net
+           id aa1018296; 11 Oct 2000 9:29 GMT
+Received: (qmail 10937 invoked by alias); 11 Oct 2000 09:28:33 -0000
+Mailing-List: contact cygwin-help@sourceware.cygnus.com; run by ezmlm
+Precedence: bulk
+List-Unsubscribe: <mailto:cygwin-unsubscribe-gvaughan=oranda.demon.co.uk@sources.redhat.com>
+List-Subscribe: <mailto:cygwin-subscribe@sources.redhat.com>
+List-Archive: <http://sources.redhat.com/ml/cygwin/>
+List-Post: <mailto:cygwin@sources.redhat.com>
+List-Help: <mailto:cygwin-help@sources.redhat.com>, <http://sources.redhat.com/ml/#faqs>
+Sender: cygwin-owner@sources.redhat.com
+Delivered-To: mailing list cygwin@sources.redhat.com
+Received: (qmail 10909 invoked from network); 11 Oct 2000 09:28:30 -0000
+Received: from web6405.mail.yahoo.com (128.11.22.153)
+  by sourceware.cygnus.com with SMTP; 11 Oct 2000 09:28:30 -0000
+Message-ID: <20001011092829.19377.qmail@web6405.mail.yahoo.com>
+Received: from [203.97.2.247] by web6405.mail.yahoo.com; Wed, 11 Oct 2000 22:28:29 NZDT
+Date: Wed, 11 Oct 2000 22:28:29 +1300 (NZDT)
+From: =?iso-8859-1?q?Danny=20Smith?= <danny_r_smith_2001@yahoo.co.nz>
+Subject: Re: AW: Linking Dynamic Libraries
+To: cygwin@sources.redhat.com
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: 8bit
+Status: RO
+Content-Length: 1133
+Lines: 38
+
+Ross Smith wrote:
+> 
+> Charles Wilson wrote:
+> >
+> > You still need to worry about things like __declspec(dllexport) and
+> > __declspec(dllimport).
+> 
+> What's the point of --export-all-symbols then? I was under the
+> impression that it was intended to duplicate the Unix convention,
+where
+> all external symbols are automatically exported from a .so.
+(Actually,
+> the help refers to "global" symbols, not "external", but I assumed
+that
+> just meant that whoever wrote the help didn't know C++.)
+
+
+If you really want to --export-all in C++, this is a workaround.
+Create a def with dlltool:
+ dlltool --export-all --output-def foo_.def --dllname foo.dll *.o
+
+Then look at the def file.  Do you still really want to export-all?
+
+To use that def file with ld -shared you need to get rid of the
+comments (demangled names) 
+cut does the job:
+  cut -d ';' -f 1 foo_.def >foo.def
+
+Cheers
+
+
+_____________________________________________________________________________
+http://clubs.yahoo.com.au - Yahoo! Clubs
+- Join a club or build your own!
+
+--
+Want to unsubscribe from this list?
+Send a message to cygwin-unsubscribe@sourceware.cygnus.com
+
