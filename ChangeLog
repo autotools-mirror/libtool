@@ -1,3 +1,10 @@
+2005-01-10  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* tests/sh.test: After `set dummy [...]', check for `shift'
+	within the same and following line.
+	* config/ltmain.m4sh (func_enable_tag, func_mode_install)
+	(func_mode_link): Sprinkle `shift's all over to conform to this.
+
 2005-01-09  Gary V. Vaughan  <gary@gnu.org>
 
 	* HACKING (Editing 'ChangeLog'): Follow the GCS with respect to
