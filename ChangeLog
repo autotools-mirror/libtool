@@ -1,5 +1,9 @@
 1998-12-16  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* ltmain.in (-DSTATIC): changed to -DLIBTOOL_STATIC, and defined
+	only for -force-static; it should be removed soon, before people
+	start to use it
+
 	* configure.in (AC_CONFIG_SUBDIRS): added libltdl
 	* Makefile.am (SUBDIRS): build libltdl by default
 	(DIST_SUBDIRS): simplify distribution of demo and mdemo

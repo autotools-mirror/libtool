@@ -499,7 +499,10 @@ compiler."
 
     # Only build a position-dependent object if we build old libraries.
     if test "$build_old_libs" = yes; then
-      command="$base_compile -DSTATIC $srcfile"
+      command="$base_compile $srcfile"
+      if test "$force_static" = yes; then
+        command="$command -DLIBTOOL_STATIC"
+      fi
       if test "$compiler_c_o" = yes; then
         command="$command -o $obj"
         output_obj="$obj"
