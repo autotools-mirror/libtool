@@ -1718,7 +1718,8 @@ foreach_dirinpath (search_path, base_name, func, data1, data2)
   int	filenamesize	= 0;
   int	lenbase		= LT_DLSTRLEN (base_name);
   char *filename	= 0;
-  char *canonical, *next;
+  char *canonical	= 0;
+  char *next;
 
   LT_DLMUTEX_LOCK ();
 
