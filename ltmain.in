@@ -1630,8 +1630,9 @@ compiler."
 	*)
 	  abs_ladir=`cd "$ladir" && pwd`
 	  if test -z "$abs_ladir"; then
-	    $echo "$modename: cannot determine absolute directory name of \`$ladir'" 1>&2
-	    exit 1
+            $echo "$modename: warning: cannot determine absolute directory name of \`$dir'" 1>&2
+            $echo "$modename: passing it literally to the linker, although it might fail" 1>&2
+            absdir="$dir"
 	  fi
 	  ;;
 	esac
@@ -2548,8 +2549,9 @@ EOF
 	*)
 	  abs_ladir=`cd "$ladir" && pwd`
 	  if test -z "$abs_ladir"; then
-	    $echo "$modename: cannot determine absolute directory name of \`$ladir'" 1>&2
-	    exit 1
+            $echo "$modename: warning: cannot determine absolute directory name of \`$dir'" 1>&2
+            $echo "$modename: passing it literally to the linker, although it might fail" 1>&2
+            absdir="$dir"
 	  fi
 	  ;;
 	esac
