@@ -1451,7 +1451,7 @@ else
     archive_cmds=''
     hardcode_libdir_separator=':'
     if test "$GCC" = yes; then
-      case $host_os in aix4.[012]|aix4.[012].*)
+      case $host_os in aix4.[[012]]|aix4.[[012]].*)
         collect2name=`${CC} -print-prog-name=collect2`
         if test -f "$collect2name" && \
           strings "$collect2name" | grep resolve_lib_name >/dev/null
@@ -1627,14 +1627,14 @@ else
     hardcode_direct=yes
     hardcode_shlibpath_var=no
     case "$host_os" in
-      openbsd[01].* | openbsd2.[0-7] | openbsd2.[0-7].*)
+      openbsd[[01]].* | openbsd2.[[0-7]] | openbsd2.[[0-7]].*)
         archive_cmds='$LD -Bshareable -o $lib $libobjs $deplibs $linker_flags'
         hardcode_libdir_flag_spec='-R$libdir'
       ;;
       *)
         archive_cmds='$CC -shared $pic_flag -o $lib $libobjs $deplibs $linker_flags'
         hardcode_libdir_flag_spec='${wl}-rpath,$libdir'
-        if [ "`echo __ELF__ | $CC -E - | grep __ELF__`" = "" -o "$host_os-$host_cpu" = "openbsd2.8-powerpc" ]; then
+        if test "`echo __ELF__ | $CC -E - | grep __ELF__`" = "" || test "$host_os-$host_cpu" = "openbsd2.8-powerpc"; then
          export_dynamic_flag_spec='${wl}-E'
         fi
       ;;
@@ -2129,8 +2129,8 @@ openbsd*)
   version_type=sunos
   file_magic_cmd=/usr/bin/file
   file_magic_test_file=`echo /usr/lib/libc.so.*`
-  if [ "`echo __ELF__ | $CC -E - | grep __ELF__`" = "" -o "$host_os-$host_cpu" = "openbsd2.8-powerpc" ]; then
-    deplibs_check_method='file_magic ELF [0-9][0-9]*-bit [LM]SB shared object'
+  if test "`echo __ELF__ | $CC -E - | grep __ELF__`" = "" || test "$host_os-$host_cpu" = "openbsd2.8-powerpc"; then
+    [deplibs_check_method='file_magic ELF [0-9][0-9]*-bit [LM]SB shared object']
   else
     deplibs_check_method='file_magic OpenBSD.* shared library'
   fi
@@ -3234,7 +3234,7 @@ darwin* | rhapsody*)
   lt_cv_deplibs_check_method='file_magic Mach-O dynamically linked shared library'
   lt_cv_file_magic_cmd='/usr/bin/file -L'
   case "$host_os" in
-  rhapsody* | darwin1.[012])
+  rhapsody* | darwin1.[[012]])
     lt_cv_file_magic_test_file=`echo /System/Library/Frameworks/System.framework/Versions/*/System | head -1`
     ;;
   *) # Darwin 1.3 on
