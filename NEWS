@@ -3,6 +3,7 @@ NEWS - list of user-visible changes between releases of GNU Libtool
 New in 1.9h: 2004-??-??; CVS version 1.9g, Libtool team:
 * Support for Portland Group compiler on GNU/Linux.
 * Fix libltdl on static platforms.
+* Fix spurious reconfiguration of newly installed libltdl sources.
 * Support for linux-dietlibc (`diet' as well as `diet-dyn', separately).
 * `libtoolize --install' now also installs `install-sh'.
 * Support (mostly) for DragonFly BSD.

@@ -1,5 +1,12 @@
 2005-02-23  Gary V. Vaughan  <gary@gnu.org>
 
+	* libltdl/Makefile.am (install-data-local): Don't forget about
+	$(DESTDIR).
+	* libltdl/loaders/Makefile.am (install-data-local): Ditto.
+	* NEWS: Updated.
+
+2005-02-23  Gary V. Vaughan  <gary@gnu.org>
+
 	Preserving the installed timestamps for libltdl sources from
 	`libtoolize --ltdl --copy' is pointless if they are not preserved
 	from the libtool source tree at install time:
