@@ -1139,7 +1139,7 @@ if test -z "$show_help"; then
 
       # Now set the variables for building old libraries.
       if test "$build_old_libs" = yes && test "$build_libtool_libs" != convenience ; then
-        oldlibs="$oldlibs $libname.a"
+        oldlibs="$oldlibs $output_objdir/$libname.a"
 
 	# Transform .lo files to .o files.
 	oldobjs="$objs"`$echo "X$libobjs " | $Xsed -e 's/[^   ]*\.a //g' -e 's/\.lo /.o /g' -e 's/ $//g'`
