@@ -1,3 +1,7 @@
+2004-08-02  Geoffrey Keating  <geoffk@apple.com>
+
+	* libtool.m4 [darwin]: Don't use -all_load.
+
 2004-08-01  Maciej W. Rozycki  <macro@linux-mips.org>
 
 	* libtool.m4 (LT_AC_PROG_SED): Set SED when running from cache as 
