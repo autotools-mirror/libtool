@@ -1,3 +1,8 @@
+2001-07-09  Gary V. Vaughan  <gary@gnu.org>
+
+	* README-alpha:  Upgrade distribution instructions to include
+	canonical location of texinfo.tex.
+
 2001-07-09  Timothy Wall  <twall@oculustech.com>
 
 	* libtool.m4 (AC_LIBTOOL_PROG_LD_SHLIBS): Don't disable shlibs

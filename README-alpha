@@ -53,7 +53,8 @@ using (by typing `ltconfig --version').
 
 * Fetch new versions of the files that are maintained by the FSF.
   config.guess and config.sub are available via ftp from
-  ftp://ftp.gnu.org/gnu/config/
+  ftp://ftp.gnu.org/gnu/config/, and texinfo.tex is available from
+  ftp://ftp.gnu.org/GNUinfo/.
 
 * Update NEWS.
 
