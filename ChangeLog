@@ -1,3 +1,9 @@
+2004-01-25  Scott James Remnant  <scott@netsplit.com>
+	Gary V. Vaughan  <gary@gnu.org>
+
+	* Makefile.am: Update the maintainer rules against HEAD, I
+	cannot seem to find Gary's original ChangeLog entry for these.
+
 2004-01-25  Peter O'Gorman  <peter@pogma.com>
 
 	* ltmain.in: Check for module_cmds if max_cmd_len is exceeded too.
