@@ -1,5 +1,8 @@
 2000-09-04  Alexandre Oliva  <aoliva@redhat.com>
 
+	* ltmain.in (compile, need_lock): Don't create nor remove lock
+	files in dry runs.
+	
 	* libltdl/ltdl.c (load_deplibs): Don't append shlib_ext; use
 	lt_dlopenext() instead.
 
