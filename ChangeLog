@@ -1,3 +1,18 @@
+1999-04-25  Frank Ch. Eigler  <fche@cygnus.com>
+
+	* libtool.m4 (cygwin*): Look for target objdump tool.
+	* ltconfig.in (cygwin*, file_magic_cmd): Use autoconf-located target
+	objdump tool.  Track OBJDUMP like DLLTOOL and AS.
+
+	* ltconfig.in (cygwin*, deplibs_check_method): Accept
+	"architecture: i386" as optional suffix, for it is printed on a
+	separate line sometimes.
+
+	* ltmain.in (cygwin*, ltdll.c): Wrap DllMain declaration in extern "C".
+
+	* ltmain.in (deplibs_check_method=file_magic): Redirect stderr to
+	/dev/null, to suppress error messages from target objdump.
+
 1999-04-25  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* ltconfig.in (irix*, soname_spec, library_names_spec): Missing
