@@ -1,3 +1,8 @@
+2001-07-23  Andreas Schwab  <schwab@suse.de>
+
+	* libtool.m4 (AC_DEPLIBS_CHECK_METHOD): Use pass_all for
+	s390*-*-linux* and m68*-*-linux*.
+
 2001-07-19  Robert Boehne  <rboehne@ricardo-us.com>
 
 	* libtool.m4 (AC_LIBTOOL_PROG_LD_SHLIBS): Fix tag support

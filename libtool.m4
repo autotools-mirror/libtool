@@ -1867,7 +1867,7 @@ irix5* | irix6*)
 # This must be Linux ELF.
 linux*)
   case $host_cpu in
-  alpha* | hppa* | i*86 | mips | mipsel | powerpc* | sparc* | ia64* )
+  alpha* | hppa* | i*86 | ia64* | m68* | mips | mipsel | powerpc* | sparc* | s390* )
     lt_cv_deplibs_check_method=pass_all ;;
   *)
     # glibc up to 2.1.1 does not perform some relocations on ARM
