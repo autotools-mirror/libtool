@@ -31,7 +31,7 @@ Makefile:
 
 TEXI2HTML = texi2html
 
-$(top_srcdir)/commit: config/mailnotify clcommit.m4sh
+$(top_srcdir)/commit: $(top_srcdir)/config/mailnotify clcommit.m4sh
 	$(timestamp); \
 	cd $(top_srcdir); \
 	rm -f commit commit.in commit.tmp; \

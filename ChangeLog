@@ -1,3 +1,9 @@
+2004-10-28  Patrick Welche <prlw1@newn.cam.ac.uk>,
+	    Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
+	* Makefile.am, Makefile.maint: Use path for dependencies built
+	in the source tree, to cater for BSD make.
+
 2004-10-24  Noah Misch  <noah@cs.caltech.edu>
 
 	* config/ltmain.m4sh (func_lalib_p, func_ltwrapper_p): New
