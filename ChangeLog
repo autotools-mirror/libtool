@@ -1,3 +1,9 @@
+2004-01-23  Owen Taylor  <otaylor@redhat.com>
+	                                                                        
+	* m4/libtool.m4 (AC_LIBTOOL_SYS_GLOBAL_SYMBOL_PIPE): Recognise the
+	'R' symbol type so read-only symbols can be exported when combining
+	GCC and Solaris LD.
+
 2004-01-23  Scott James Remnant  <scott@netsplit.com>
 	                                                                        
 	* ltmain.in: When relinking, place the -L parameter containing
