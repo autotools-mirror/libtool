@@ -554,6 +554,14 @@ _LT_EOF
 ])# _LT_CONFIG
 
 
+# LT_SUPPORTED_TAG(TAG)
+# ---------------------
+# Trace this macro to discover what tags are supported by the libtool
+# --tag option, using:
+#    autoconf --trace 'LT_SUPPORTED_TAG:$1'
+AC_DEFUN([LT_SUPPORTED_TAG], [])
+
+
 # C support is built-in for now
 m4_define([_LT_LANG_C_enabled], [])
 m4_define([_LT_TAGS], [])
@@ -577,7 +585,8 @@ AC_DEFUN([LT_LANG],
 # ------------------
 m4_define([_LT_LANG],
 [m4_ifdef([_LT_LANG_]$1[_enabled], [],
-  [m4_append([_LT_TAGS], [$1 ])dnl
+  [LT_SUPPORTED_TAG([$1])dnl
+  m4_append([_LT_TAGS], [$1 ])dnl
   m4_define([_LT_LANG_]$1[_enabled], [])dnl
   _LT_LANG_$1_CONFIG($1)])dnl
 ])# _LT_LANG

@@ -1,3 +1,14 @@
+2004-05-16  Alexandre Duret-Lutz  <adl@gnu.org>
+
+	* doc/libtool.texi (Invoking libtool): Mention --tag=TAG.
+	(Tags, Trace interface): New nodes.
+	* m4/libtool.m4 (LT_SUPPORTED_TAG): New macro.
+	(_LT_LANG): Call it.
+	* tests/tagtrace.test: New file.
+	* tests/Makefile.am
+	(TESTS): Add tagtrace.test.
+	* tests/defs: Define AUTOCONF.
+
 2004-05-14  Mike Gorchak  <lestat@i.com.ua>
 
 	* ltmain.in: Add new qnx version type support.

@@ -12,7 +12,7 @@ F77_TESTS = \
 
 COMMON_TESTS = \
 	assign.test link.test link-2.test nomode.test \
-	quote.test sh.test suffix.test \
+	quote.test sh.test suffix.test tagtrace.test \
 	cdemo-static.test cdemo-make.test cdemo-exec.test \
 	demo-static.test demo-make.test demo-exec.test \
 	demo-inst.test demo-unst.test \

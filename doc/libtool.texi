@@ -92,6 +92,7 @@ version @value{VERSION}.
 * Inter-library dependencies::  Libraries that depend on other libraries.
 * Dlopened modules::            @code{dlopen}ing libtool-created libraries.
 * Using libltdl::               Libtool's portable @code{dlopen} wrapper library.
+* Trace interface::             Libtool's trace interface.
 * Troubleshooting::             When libtool doesn't work as advertised.
 * Maintaining::                 Information used by the libtool maintainer.
 * GNU Free Documentation License:: License for this manual.
@@ -141,7 +142,12 @@ Configuring libtool
 Including libtool in your package
 
 * Invoking libtoolize::         @code{libtoolize} command line options.
-* Autoconf and LTLIBOBJS::      Autoconf automates LTLIBOBJ generation.
+* Autoconf and LTLIBOBJS::      Autoconf automates LTLIBOBJS generation.
+
+Using libtool with other languages
+
+* C++ libraries::
+* Tags::                        Using Tags.
 
 Library interface versions
 
@@ -165,14 +171,10 @@ Using libltdl
 
 * Libltdl interface::           How to use libltdl in your programs.
 * Modules for libltdl::         Creating modules that can be @code{dlopen}ed.
-* Thread Saftey in libltdl::	Registering callbacks for multi-thread safety.
+* Thread Safety in libltdl::    Registering callbacks for multi-thread safety.
 * User defined module data::    Associating data with loaded modules.
 * Module loaders for libltdl::  Creating user defined module loaders.
 * Distributing libltdl::        How to distribute libltdl with your package.
-
-Using libtool with other languages
-
-* C++ libraries::
 
 Troubleshooting
 
@@ -202,7 +204,7 @@ Platform quirks
 * References::                  Finding more information.
 * Compilers::                   Creating object files from source files.
 * Reloadable objects::          Binding object files together.
-* Multiple dependencies::	Removing duplicate dependent libraries.
+* Multiple dependencies::       Removing duplicate dependent libraries.
 * Archivers::                   Programs that create static archives.
 
 @end detailmenu
@@ -1147,6 +1149,9 @@ Delete installed libraries or executables.
 @item clean
 Delete uninstalled libraries or executables.
 @end table
+
+@item --tag=@var{tag}
+Use configuration variables from tag @var{tag} (@pxref{Tags}).
 
 @item --preserve-dup-deps
 Do not remove duplicate dependencies in libraries.  When building packages
@@ -2167,6 +2172,7 @@ and what special considerations you need to make if you do not use C.
 
 @menu
 * C++ libraries::
+* Tags::
 @end menu
 
 @node C++ libraries
@@ -2206,6 +2212,44 @@ some instances the @code{main()} function of a program must also be
 compiled with the C++ compiler for static C++ objects to be properly
 initialized.
 
+@node Tags
+@section Tags
+@cindex tag names
+@cindex language names
+@cindex inferring tags
+
+Libtool supports multiple languages through the use of tags.  Technically
+a tag corresponds to a set of configuration variables associated with a
+language.  These variables tell @command{libtool} how it should create
+objects and libraries for each language.
+
+Tags are defined at @command{configure}-time for each language activated
+in the package (see @code{LT_LANG} in @ref{LT_INIT}).  Here is the
+correspondence between language names and tags names.
+
+@multitable {Windows Resource} {Tag name}
+@item Language name    @tab Tag name
+@item C                @tab
+@item C++              @tab CXX
+@item Java             @tab GCJ
+@item Fortran 77       @tab F77
+@item Windows Resource @tab RC
+@end multitable
+
+@command{libtool} tries to automatically infer which tag to use from
+the compiler command being used to compile or link.  If it can't infer
+a tag, then it defaults to the configuration for the @code{C} language.
+
+The tag can also be specified using @command{libtool}'s
+@code{--tag=@var{tag}} option (@pxref{Invoking libtool}).  It is a good
+idea to do so in @file{Makefile} rules, because that will allow users to
+substitute the compiler without relying on @command{libtool} inference
+heuristics.  Note that there is no tag for @code{C} because that is
+the default configuration.
+
+Finally, the set of tags available in a particular project can be
+retrieved by tracing for the @code{LT_SUPPORTED_TAG} macro (@pxref{Trace
+interface}).
 
 @node Versioning
 @chapter Library interface versions
@@ -2928,7 +2972,7 @@ distribution terms that you use for the rest of that program.
 @menu
 * Libltdl interface::           How to use libltdl in your programs.
 * Modules for libltdl::         Creating modules that can be @code{dlopen}ed.
-* Thread Saftey in libltdl::	Registering callbacks for multi-thread safety.
+* Thread Safety in libltdl::    Registering callbacks for multi-thread safety.
 * User defined module data::    Associating data with loaded modules.
 * Module loaders for libltdl::  Creating user defined module loaders.
 * Distributing libltdl::        How to distribute libltdl with your package.
@@ -2960,7 +3004,7 @@ your application in order to use this version of libltdl.
 
 @noindent
 Note that libltdl is not well tested in a multithreaded environment,
-though the intention is that it should work (@pxref{Thread Saftey
+though the intention is that it should work (@pxref{Thread Safety
 in libltdl, , Using libtldl in a multi threaded environment}).  It was
 reported that @sc{gnu}/Linux's glibc 2.0's @code{dlopen} with
 @samp{RTLD_LAZY} (which libltdl uses by default) is not thread-safe,
@@ -3251,7 +3295,7 @@ foo1_la_LDFLAGS = -module
 @end example
 
 
-@node Thread Saftey in libltdl
+@node Thread Safety in libltdl
 @section Using libtldl in a multi threaded environment
 
 Libltdl provides a wrapper around whatever dynamic run-time object
@@ -3785,6 +3829,31 @@ myprog_DEPENDENCIES = $(LIBLTDL) foo1.la
 @end example
 
 
+@node Trace interface
+@chapter Libtool's trace interface
+@cindex trace interface
+@cindex autoconf traces
+
+This section describes macros whose sole purpose is to be traced using
+Autoconf's @code{--trace} option (@pxref{autoconf Invocation, , The
+Autoconf Manual, autoconf, The Autoconf Manual}) to query the Libtool
+configuration of a project.  These macros are called by Libtool
+internals and should never be called by user code; they should only be
+traced.
+
+@defmac LT_SUPPORTED_TAG (@var{tag})
+This macro is called once for each language enabled in the package.  Its
+only argument, @var{tag}, is the tag-name corresponding to the language
+(@pxref{Tags}).
+
+You can therefore retrieve the list of all tags enabled in a project
+using the following command:
+@example
+autoconf --trace 'LT_SUPPORTED_TAG:$1'
+@end example
+@end defmac
+
+
 @node Troubleshooting
 @chapter Troubleshooting
 @cindex troubleshooting
@@ -4270,7 +4339,7 @@ write your own.
 * References::                  Finding more information.
 * Compilers::                   Creating object files from source files.
 * Reloadable objects::          Binding object files together.
-* Multiple dependencies::	Removing duplicate dependent libraries.
+* Multiple dependencies::       Removing duplicate dependent libraries.
 * Archivers::                   Programs that create static archives.
 @end menu
 

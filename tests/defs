@@ -19,6 +19,7 @@ prefix="./_inst"
 make="${MAKE-make}"
 SHELL="${CONFIG_SHELL-/bin/sh}"
 MKDIR="${MKDIR-mkdir}"
+AUTOCONF="${AUTOCONF-autoconf}"
 
 if echo a | (grep -E '(a|b)') >/dev/null 2>&1; then
   EGREP='grep -E'
