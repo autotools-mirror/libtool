@@ -1,10 +1,17 @@
-2001-10-28  Albert Chin-A-Young <china@thewrittenword.com>
+2001-10-28  Gary V. Vaughan  <gary@gnu.org>
 
-	* ltdl.c: change some types to size_t from int because
-	strlen() returns size_t. argz_len changed to size_t in
-	foreach_dirinpath() because argzize_path() takes 3rd
-	argument as size_t, not int. Based on lint run from
-	Bob Friesenhahn <bfriesen@simple.dallas.tx.us>.
+	From Tom Bates  <Tom.Bates@compaq.com>:
+	* libtool.m4 [mips-compaq-nonstopux]: New port.
+	* ltmain.in [mips-compaq-nonstopux]: Support
+	$version_type == nonstopux.
+
+2001-10-28  Albert Chin-A-Young  <china@thewrittenword.com>
+
+	* libltdl/ltdl.c (foreach_dirinpath): change some types to size_t
+	from int because strlen() returns size_t. argz_len changed to
+	size_t because argzize_path() takes 3rd argument as size_t, not
+	int.
+	Based on lint run from Bob Friesenhahn <bfriesen@simple.dallas.tx.us>
 
 2001-10-27  Gary V. Vaughan  <gary@gnu.org>
 
@@ -16,22 +23,22 @@
 	option to configure, but to find an appropriate ltdl library and
 	append the right options to link it.
 
-2001-10-24 Kevin Ryde  <user42@zip.com.au>
+2001-10-24  Kevin Ryde  <user42@zip.com.au>
 
 	* libtool.m4 (AC_LIBTOOL_PROG_LD_SHLIBS): Remove a stray ' quote.
 
-2001-10-24 H.J. Lu  <hjl@gnu.org>
+2001-10-24  H.J. Lu  <hjl@gnu.org>
 
 	* ltmain.sh: Allow link against an archive when building a
 	shared library.
 	* libtool.m4 (lt_cv_deplibs_check_method): Always use
 	file_magic for Linux ELF.
 
-2001-10-12 Guido Draheim  <guidod-2001q3@gmx.de>
+2001-10-12  Guido Draheim  <guidod-2001q3@gmx.de>
 
 	* ltdl.m4: Changed "underscode to underscore".
 
-2001-10-06 Gary V. Vaughan  <gary@gnu.org>
+2001-10-06  Gary V. Vaughan  <gary@gnu.org>
 
 	* configure.ac: General modernisation and cleanup.
 	* cdemo/configure.ac: Ditto.
