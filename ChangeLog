@@ -1,5 +1,10 @@
 2005-03-24  Gary V. Vaughan  <gary@gnu.org>
 
+	* libtoolize.m4sh (func_copy_some_files): IFS needs to be set to
+	path delimiter for all inner loop iterations.
+	Once a matching file has been copied, no need to keep searching
+	the path for another -- move on to the next file!
+
 	* libtoolize.m4sh: For verbose mode, explain why macro files are
 	not installed without an AC_CONFIG_MACRO_DIR declaration.
 

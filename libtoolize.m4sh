@@ -363,6 +363,7 @@ func_copy_some_files ()
     my_save_IFS="$IFS"
     IFS=:
     for my_filename in $my_srcfile_spec; do
+      IFS=:
       for my_srcdir in $my_srcdirs; do
         IFS="$my_save_IFS"
         if test -f "$my_srcdir/$my_filename"; then
@@ -379,6 +380,7 @@ func_copy_some_files ()
         fi
 
         $my_copy_cb "$my_filename" "$my_srcdir" "$my_destdir"
+	break
       done
       IFS="$my_save_IFS"
     done
