@@ -1,7 +1,14 @@
+1999-03-17  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
+
+	* doc/PLATFORMS: Thanks to Alexandres changes below, both my
+	hp boxes pass the entire test suite.
+
 1999-03-17  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* ltconfig.in (hpux*, hardcode_minus_L): should be no, we have +b
 	(hpux*, hardcode_libdir_separator): set to colon
+
+1999-03-17  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* doc/PLATFORMS: egcs is gcc; updates from Erez Zadok
 
