@@ -1,3 +1,7 @@
+2004-10-05  Gary V. Vaughan  <gary@gnu.org>
+
+	* configure.ac: Bumped version to 2.1a.
+
 2004-10-04  Gary V. Vaughan  <gary@gnu.org>
 
 	* m4/libtool.m4 (_LT_PROG_ECHO_BACKSLASH): Don't confuse $ECHO
