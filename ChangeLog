@@ -1,3 +1,14 @@
+Fri Sep  5 13:11:38 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltconfig.in (with_gnu_ld): Add a test to make sure that we are
+	actually using GNU ld.  This fixes an inconsistency when running
+	ltconfig without using libtool.m4.  Reported by Ulrich Drepper.
+
+Thu Sep  4 21:53:08 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltmain.sh.in (echo): Quote all the uses of `echo' in all eval
+	statements.
+
 Thu Aug 28 20:58:56 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltmain.sh.in (echo): Change test to one that uses printf.
