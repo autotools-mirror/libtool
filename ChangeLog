@@ -1,3 +1,12 @@
+2001-02-15  Robert Boehne  <rboehne@ricardo-us.com>
+	
+	* ltcf-cxx.sh: Only check for broken collect2 under
+        AIX 4.[012], the check only works on these OS versions.
+	
+	* ltcf-c.sh: Ditto.
+	
+	* ltcf-gcj.sh: Ditto.
+
 2001-02-12  Robert Boehne  <rboehne@ricardo-us.com>
 
         * libtool.m4: Removed the AC_REQUIRE of

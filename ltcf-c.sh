@@ -273,24 +273,29 @@ else
     # CXXFLAGS/CFLAGS for g++/gcc.  In the cases where that is not
     # enough to fix the problem, add -Wl,-bbigtoc to LDFLAGS.
     if test "$with_gcc" = yes; then
-      collect2name=`${CC} -print-prog-name=collect2`
-      if test -f "$collect2name" && \
-	 strings "$collect2name" | grep resolve_lib_name >/dev/null
-      then
-	# We have reworked collect2
-	hardcode_direct=yes
-      else
-	# We have old collect2
-	hardcode_direct=unsupported
-	# It fails to find uninstalled libraries when the uninstalled
-	# path is not listed in the libpath.  Setting hardcode_minus_L
-	# to unsupported forces relinking
-	hardcode_minus_L=yes
-	hardcode_libdir_flag_spec='-L$libdir'
-	hardcode_libdir_separator=
-      fi
+      case "$host_os" in aix4.[012]|aix4.[012].*)
+      # We only want to do this on AIX 4.2 and lower, the check
+      # below for broken collect2 doesn't work under 4.3+
+        collect2name=`${CC} -print-prog-name=collect2`
+        if test -f "$collect2name" && \
+	   strings "$collect2name" | grep resolve_lib_name >/dev/null
+        then
+	  # We have reworked collect2
+	  hardcode_direct=yes
+        else
+	  # We have old collect2
+	  hardcode_direct=unsupported
+	  # It fails to find uninstalled libraries when the uninstalled
+	  # path is not listed in the libpath.  Setting hardcode_minus_L
+	  # to unsupported forces relinking
+	  hardcode_minus_L=yes
+	  hardcode_libdir_flag_spec='-L$libdir'
+	  hardcode_libdir_separator=
+        fi
+      esac
       shared_flag='-shared'
     else
+      # not using gcc
       if test "$host_cpu" = ia64; then
         shared_flag='${wl}-G'
       else
