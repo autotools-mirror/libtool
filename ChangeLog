@@ -1,3 +1,8 @@
+2000-12-14  Tod Milam  <tmilam@traclabs.com>
+
+	* libltdl/ltdl.c (lt_dlexit): Reset the loaders value to zero when
+	the last module has been unloaded.
+	
 2000-12-14  Masahiro Nobori  <nobori@ss.titech.ac.jp>
 
 	* README:  Updated.
@@ -5,7 +10,7 @@
 	* libtool.m4:  New port to NEWS-OS Release 6.
 	* ltcf-c.sh: ditto.
 	
-2000-12-14  Nick Hudson  <nick@nthcliff.demon.co.uk>
+2000-12-14  Nick Hudson  <skrll@netbsd.org>
 	
 	* ltcf-c.sh (hardcode_libdir_flag_spec):  Remove linker
 	sspecification for netbsd.
