@@ -1,5 +1,9 @@
 2004-02-13  Scott James Remnant  <scott@netsplit.com>
 
+	* tests/cdemo/configure.ac: Drop AC_PREREQ back to 2.54, this
+	was debris from Gary's cvsapply going mad and wasn't backed
+	out.
+
 	* Makefile.am (pkgmacro_DATA): We have to distribute
 	m4/ltversion.m4 because it can be needed before the Makefile
 	that generates it exists.

@@ -16,7 +16,7 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 # 02111-1307  USA
 
-AC_PREREQ(2.59a)
+AC_PREREQ(2.54)
 
 ## ------------------------ ##
 ## Autoconf initialisation. ##
