@@ -3443,14 +3443,14 @@ Whatever macro you use, it is up to you to ensure that your
 sub-makes within libltdl's directory, using automake's @var{SUBDIRS},
 for example.  Both macros define the shell variables @var{LIBLTDL}, to
 the link flag that you should use to link with libltdl, and
-@var{INCLTDL}, to the preprocessor flag that you should use to compile
+@var{LTDLINCL}, to the preprocessor flag that you should use to compile
 with programs that include @file{ltdl.h}.  It is up to you to use
 @samp{AC_SUBST} to ensure that this variable will be available in
 @file{Makefile}s, or add them to variables that are @samp{AC_SUBST}ed by
 default, such as @var{LIBS} and @var{CPPFLAGS}.
 
 If you're using the convenience libltdl, @var{LIBLTDL} will be the
-pathname for the convenience version of libltdl and @var{INCLTDL} will be
+pathname for the convenience version of libltdl and @var{LTDLINCL} will be
 @samp{-I} followed by the directory that contains libltdl, both starting
 with @samp{$@{top_builddir@}/} or @samp{$@{top_srcdir@}/}, respectively.
 
@@ -3459,15 +3459,15 @@ found@footnote{Even if libltdl is installed,
 @samp{AC_LIBLTDL_INSTALLABLE} may fail to detect it, if libltdl depends
 on symbols provided by libraries other than the C library.  In this
 case, it will needlessly build and install libltdl.}, @var{LIBLTDL} will
-be set to @samp{-lltdl} and @var{INCLTDL} will be empty (which is just a
+be set to @samp{-lltdl} and @var{LTDLINCL} will be empty (which is just a
 blind assumption that @file{ltdl.h} is somewhere in the include path if
 libltdl is in the library path).  If an installable version of libltdl
 must be built, its pathname, starting with @samp{$@{top_builddir@}/},
-will be stored in @var{LIBLTDL}, and @var{INCLTDL} will be set just like
+will be stored in @var{LIBLTDL}, and @var{LTDLINCL} will be set just like
 in the case of convenience library.
 
 So, when you want to link a program with libltdl, be it a convenience,
-installed or installable library, just compile with @samp{$(INCLTDL)}
+installed or installable library, just compile with @samp{$(LTDLINCL)}
 and link it with @samp{$(LIBLTDL)}, using libtool.
 
 You should probably also add @samp{AC_LIBTOOL_DLOPEN} to your
@@ -3490,8 +3490,8 @@ configure.in:
 dnl Enable building of the convenience library
 dnl and set LIBLTDL accordingly
 AC_LIBLTDL_CONVENIENCE
-dnl Substitute INCLTDL and LIBLTDL in the Makefiles
-AC_SUBST(INCLTDL)
+dnl Substitute LTDLINCL and LIBLTDL in the Makefiles
+AC_SUBST(LTDLINCL)
 AC_SUBST(LIBLTDL)
 dnl Check for dlopen support
 AC_LIBTOOL_DLOPEN
@@ -3507,7 +3507,7 @@ Makefile.am:
 ...
 SUBDIRS = libltdl
 
-INCLUDES = $(INCLTDL)
+INCLUDES = $(LTDLINCL)
 
 myprog_LDFLAGS = -export-dynamic
 # The quotes around -dlopen below fool automake <= 1.4 into accepting it
