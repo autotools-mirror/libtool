@@ -2927,7 +2927,7 @@ Return 0 on success.
  
 @deftypefun lt_ptr_t lt_dlsym (lt_dlhandle @var{handle}, const char *@var{name})
 Return the address in the module @var{handle}, where the symbol given 
-by the null terminated string @var{name} is loaded.
+by the null-terminated string @var{name} is loaded.
 If the symbol cannot be found, @code{NULL} is returned.
 @end deftypefun
  
@@ -3060,7 +3060,7 @@ int _foo1_helper() @{
 
 /* an exported function */
 int foo() @{
-  return _foo_helper();
+  return _foo1_helper();
 @}
 @end example
 
@@ -3087,7 +3087,7 @@ In this case, you must decide whether to manually add the @code{ltdl}
 objects to your package, or else which flavor of libltdl you want to use:
 a convenience library or an installable libtool library.
 
-The most simplistic way to add @code{ltdl} to your package is to copy
+The most simplistic way to add @code{libltdl} to your package is to copy
 the source files, @file{ltdl.c} and @file{ltdl.h}, to a source directory
 withing your package and to build and link them along with the rest of
 your sources.  To help you do this, the m4 macros for autoconf are
@@ -3134,7 +3134,7 @@ the @code{libtoolize} command line. It will copy the libltdl sources
 to a subdirectory @samp{libltdl} in your package.
 Both macros accept an optional argument to specify the location
 of the @samp{libltdl} directory. By the default both macros assume that it
-is @samp{$@{top_builddir@}/libltdl}.
+is @samp{$@{top_srcdir@}/libltdl}.
 
 Whatever macro you use, it is up to you to ensure that your
 @file{configure.in} will configure libltdl, using
@@ -3151,7 +3151,7 @@ default, such as @var{LIBS} and @var{CPPFLAGS}.
 If you're using the convenience libltdl, @var{LIBLTDL} will be the
 pathname for the convenience version of libltdl and @var{INCLTDL} will be
 @samp{-I} followed by the directory that contains libltdl, both starting
-with @samp{$@{top_builddir@}/}.
+with @samp{$@{top_builddir@}/} or @samp{$@{top_srcdir@}/}, respectively.
 
 If you request an installed version of libltdl and one is
 found@footnote{Even if libltdl is installed,
@@ -3209,12 +3209,11 @@ SUBDIRS = libltdl
 INCLUDES = $(INCLTDL)
 
 myprog_LDFLAGS = -export-dynamic
-# The quotes around -dlopen below fool automake into accepting it
-myprog_LDADD = $(LIBLTDL) "-dlopen" self "-dlopen" libfoo.la
-myprog_DEPENDENCIES = $(LIBLTDL) libfoo.la
+# The quotes around -dlopen below fool automake <= 1.4 into accepting it
+myprog_LDADD = $(LIBLTDL) "-dlopen" self "-dlopen" foo1.la
+myprog_DEPENDENCIES = $(LIBLTDL) foo1.la
 ...
 @end example
-
 
 @node Module loaders for libltdl
 @section How to create and register new module loaders
@@ -3242,7 +3241,7 @@ already in use by libltdl's builtin loaders:
 @item "dlopen"
 The system dynamic library loader, if one exists.
 @item "dld"
-The @sc{gnu} dld loader, if @file{libdld} wasinstalled when libltdl was
+The @sc{gnu} dld loader, if @file{libdld} was installed when libltdl was
 built.
 @item "dlpreload"
 The loader for @code{lt_dlopen}ing of preloaded static modules.
@@ -3285,7 +3284,7 @@ lt_user_dlloader} structure will be passed into this function in the
 attempt to load the named module, and return an @code{lt_module_t}
 suitable for passing in to the associated @code{lt_module_close_t} and
 @code{lt_sym_find_t} function pointers.  If the function fails it should
-return NULL, and set the error message with @code{lt_dlseterror}.
+return @code{NULL}, and set the error message with @code{lt_dlseterror}.
 @end deftypefn
 
 @deftypefn {Type} int lt_module_close_t (@w{lt_dlloader_data_t @var{loader_data},} @w{lt_module_t @var{module}})
@@ -3300,14 +3299,14 @@ message with @code{lt_dlseterror} and return non-zero.
 The type of the symbol lookup function for a user defined module loader.
 Implementation of such a function should return the address of the named
 @var{symbol} in the module @var{module}, or else set the error message
-with @code{lt_dlseterror} and return NULL if lookup fails.
+with @code{lt_dlseterror} and return @code{NULL} if lookup fails.
 @end deftypefn
 
 @deftypefn {Type} int lt_dlloader_exit_t (@w{lt_dlloader_data_t @var{loader_data}})
 The type of the finalisation function for a user defined module loader.
 Implementation of such a function should free any resources associated
 with the loader, including any user specified data in the
-@code{dlloader_data} field of the @code{lt_user_dlloader}.  If non-NULL,
+@code{dlloader_data} field of the @code{lt_user_dlloader}.  If non-@code{NULL},
 the function will be called by @code{lt_dlexit}, and
 @code{lt_remove_dlloader}.
 @end deftypefn
@@ -3385,7 +3384,7 @@ be obtained from @code{lt_dlerror}.
 @end example
 @end deftypefun
 
-@deftypefun lt_dlloader_t *lt_next_dlloader (@w{lt_dlloader_t *@var{place}})
+@deftypefun {lt_dlloader_t *}lt_next_dlloader (@w{lt_dlloader_t *@var{place}})
 Iterate over the module loaders, returning the first loader if @var{place} is
 @code{NULL}, and the next one on subsequent calls. The handle is for use with
 @code{lt_add_dlloader}.
@@ -3399,11 +3398,11 @@ Iterate over the module loaders, returning the first loader if @var{place} is
 @end example
 @end deftypefun
 
-@deftypefun lt_dlloader_t *lt_find_dlloader (@w{const char *@var{loader_name}})
+@deftypefun {lt_dlloader_t *}lt_find_dlloader (@w{const char *@var{loader_name}})
 Return the first loader with a matching @var{loader_name} identifier, or else
 @code{NULL}, if the identifier is not found.
 
-The identifiers which may be used by ltdl itself, if the host
+The identifiers which may be used by libltdl itself, if the host
 architecture supports them are @dfn{dlopen}@footnote{This is used for
 the host dependent module loading @sc{api} -- @code{shl_load} and
 @code{LoadLibrary} for example}, @dfn{dld} and @dfn{dlpreload}.
@@ -3418,14 +3417,14 @@ the host dependent module loading @sc{api} -- @code{shl_load} and
 @end example
 @end deftypefun
 
-@deftypefun const char *lt_dlloader_name (@w{lt_dlloader_t *@var{place}})
+@deftypefun {const char *}lt_dlloader_name (@w{lt_dlloader_t *@var{place}})
 Return the identifying name of @var{PLACE}, as obtained from
 @code{lt_next_dlloader} or @code{lt_find_dlloader}.  If this function fails,
 it will return @code{NULL} and set an error for retrieval with
 @code{lt_dlerror}.
 @end deftypefun
 
-@deftypefun lt_dlloader_data_t *lt_dlloader_data (@w{lt_dlloader_t *@var{place}})
+@deftypefun {lt_dlloader_data_t *}lt_dlloader_data (@w{lt_dlloader_t *@var{place}})
 Return the address of the @code{dlloader_data} of @var{PLACE}, as
 obtained from @code{lt_next_dlloader} or @code{lt_find_dlloader}.  If
 this function fails, it will return @code{NULL} and set an error for

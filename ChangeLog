@@ -1,3 +1,25 @@
+2000-05-03  Thomas Tanner  <tanner@ffii.org>
+
+	* doc/libtool.texi (libltdl): fix typos,
+	  INCLTDL starts with top_srcdir, replace NULL with @code{NULL}
+	
+	* ltmain.in (ILD): search in newlib_search_path, too
+	
+	* ltmain.in (ILD): fix bugs in conv pass, expand convenience
+	  libs to deplibs and link them later on
+	
+	* ltmain.in (ILD): don't allow convenience libs to be
+	   -dlopen/preopen'ed
+	
+	* ltmain.in (ILD): it's not required to link all deplibs
+	  in fast-install mode
+	
+	* ltmain.in (ILD): if hardcode_into_libs=all, only relink
+	  a library if it is linked against uninstalled libtool libraries,
+	  rename link_against_libtool_libs to uninst_deplibs
+	
+	* ltmain.in (ILD): tidy up, add some comments
+	
 2000-05-03  John Wehle  (john@feith.com)
 
 	* libtool.m4 (hpux10.20*): use file_magic for

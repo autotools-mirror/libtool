@@ -1273,7 +1273,6 @@ compiler."
     fi
     eval sys_lib_search_path=\"$sys_lib_search_path_spec\"
     eval sys_lib_dlsearch_path=\"$sys_lib_dlsearch_path_spec\"
-    lib_search_path="$lib_search_path $sys_lib_search_path $shlib_search_path"
 
     output_objdir=`$echo "X$output" | $Xsed -e 's%/[^/]*$%%'`
     if test "X$output_objdir" = "X$output"; then
@@ -1291,26 +1290,23 @@ compiler."
       fi
     fi
 
+    # Determine the type of output
     case "$output" in
     "")
       $echo "$modename: you must specify an output file" 1>&2
       $echo "$help" 1>&2
       exit 1
       ;;
-    *.$libext)
-      linkmode=oldlib ;;
-    *.lo | *.$objext)
-      linkmode=obj ;;
-    *.la)
-      linkmode=lib ;;
-    *) # Anything else should be a program.
-      linkmode=prog ;;
+    *.$libext) linkmode=oldlib ;;
+    *.lo | *.$objext) linkmode=obj ;;
+    *.la) linkmode=lib ;;
+    *) linkmode=prog ;; # Anything else should be a program.
     esac
 
     specialdeplibs=
     libs=
-    # Find all interdependent deplibs that
-    # are linked more than once (e.g. -la -lb -la)
+    # Find all interdependent deplibs by searching for libraries
+    # that are linked more than once (e.g. -la -lb -la)
     for deplib in $deplibs; do
       case "$libs " in
       *" $deplib "*) specialdeplibs="$specialdeplibs $deplib" ;;
@@ -1319,9 +1315,10 @@ compiler."
     done
     deplibs=
     newdependency_libs=
-    uninst_path= # paths that contain uninstalled libtool libraries
-    new_lib_search_path=
+    newlib_search_path=
     need_relink=no # whether we're linking any uninstalled libtool libraries
+    uninst_deplibs= # uninstalled libtool libraries
+    uninst_path= # paths that contain uninstalled libtool libraries
     case $linkmode in
     lib)
 	passes="conv link"
@@ -1329,7 +1326,7 @@ compiler."
 	  case "$file" in
 	  *.la) ;;
 	  *)
-	    $echo "$modename: libraries can \`-dlopen' only libtool libraries" 1>&2
+	    $echo "$modename: libraries can \`-dlopen' only libtool libraries: $file" 1>&2
 	    exit 1
 	    ;;
 	  esac
@@ -1341,13 +1338,17 @@ compiler."
 	alldeplibs=no
 	newdlfiles=
 	newdlprefiles=
-	link_against_libtool_libs=
 	passes="conv scan dlopen dlpreopen link"
 	;;
     *)	passes="conv"
 	;;
     esac
     for pass in $passes; do
+      if test "$linkmode,$pass" = "lib,link" ||
+	 test "$linkmode,$pass" = "prog,scan"; then
+	libs="$deplibs"
+	deplibs=
+      fi
       if test $linkmode = prog; then
 	case $pass in
 	dlopen) libs="$dlfiles" ;;
@@ -1369,9 +1370,12 @@ compiler."
 	    $echo "$modename: warning: \`-l' is ignored for archives/objects" 1>&2
 	    continue
 	  fi
-	  test $pass = conv && continue
+	  if test $pass = conv; then
+	    deplibs="$deplib $deplibs"
+	    continue
+	  fi
 	  name=`$echo "X$deplib" | $Xsed -e 's/^-l//'`
-	  for searchdir in $lib_search_path; do
+	  for searchdir in $newlib_search_path $lib_search_path $sys_lib_search_path $shlib_search_path; do
 	    # Search the libtool library
 	    lib="$searchdir/lib${name}.la"
 	    if test -f "$lib"; then
@@ -1393,16 +1397,19 @@ compiler."
 	-L*)
 	  case $linkmode in
 	  lib)
-	    test $pass = conv && continue
 	    deplibs="$deplib $deplibs"
+	    test $pass = conv && continue
 	    newdependency_libs="$deplib $newdependency_libs"
-	    new_lib_search_path="$new_lib_search_path "`$echo "X$deplib" | $Xsed -e 's/^-L//'`
+	    newlib_search_path="$newlib_search_path "`$echo "X$deplib" | $Xsed -e 's/^-L//'`
 	    ;;
 	  prog)
-	    test $pass = conv && continue
+	    if test $pass = conv; then
+	      deplibs="$deplib $deplibs"
+	      continue
+	    fi
 	    if test $pass = scan; then
 	      deplibs="$deplib $deplibs"
-	      new_lib_search_path="$new_lib_search_path "`$echo "X$deplib" | $Xsed -e 's/^-L//'`
+	      newlib_search_path="$newlib_search_path "`$echo "X$deplib" | $Xsed -e 's/^-L//'`
 	    else
 	      compile_deplibs="$deplib $compile_deplibs"
 	      finalize_deplibs="$deplib $finalize_deplibs"
@@ -1423,11 +1430,15 @@ compiler."
 	    *) xrpath="$xrpath $dir" ;;
 	    esac
 	  fi
+	  deplibs="$deplib $deplibs"
 	  continue
 	  ;;
 	*.la) lib="$deplib" ;;
 	*.$libext)
-	  test $pass = conv && continue
+	  if test $pass = conv; then
+	    deplibs="$deplib $deplibs"
+	    continue
+	  fi
 	  case $linkmode in
 	  lib)
 	    if test "$deplibs_check_method" != pass_all; then
@@ -1456,7 +1467,9 @@ compiler."
 	  esac
 	  ;;
 	*.lo | *.$objext)
-	  if test $pass != conv && test $linkmode = prog; then
+	  if test $pass = conv; then
+	    deplibs="$deplib $deplibs"
+	  elif test $linkmode = prog; then
 	    if test $pass = dlpreopen || test "$dlopen_support" != yes || test "$build_libtool_libs" = no; then
 	      # If there is no dlopen support or we're linking statically,
 	      # we need to preload.
@@ -1515,6 +1528,7 @@ compiler."
 
 	if test $pass = conv; then
 	  # only check for convenience libraries
+	  deplibs="$lib $deplibs"
 	  if test -z "$libdir"; then
 	    if test -z "$old_library"; then
 	      $echo "$modename: cannot find name of link library for \`$lib'" 1>&2
@@ -1523,7 +1537,14 @@ compiler."
 	    # It is a libtool convenience library, so add in its objects.
 	    convenience="$convenience $ladir/$objdir/$old_library"
 	    old_convenience="$old_convenience $ladir/$objdir/$old_library"
-	    deplibs="$deplibs $dependency_libs"
+	    tmp_libs=
+	    for deplib in $dependency_libs; do
+	      deplibs="$deplib $deplibs"
+	      case "$tmp_libs " in
+	      *" $deplib "*) specialdeplibs="$specialdeplibs $deplib" ;;
+	      esac
+	      tmp_libs="$tmp_libs $deplib"
+	    done
 	  elif test $linkmode != prog && test $linkmode != lib; then
 	    $echo "$modename: \`$lib' is not a convenience library" 1>&2
 	    exit 1
@@ -1543,6 +1564,10 @@ compiler."
 
 	# This library was specified with -dlopen.
 	if test $pass = dlopen; then
+	  if test -z "$libdir"; then
+	    $echo "$modename: cannot -dlopen a convenience library: \`$lib'" 1>&2
+	    exit 1
+	  fi
 	  if test -z "$dlname" || test "$dlopen_support" != yes || test "$build_libtool_libs" = no; then
 	    # If there is no dlname, no dlopen support or we're linking statically,
 	    # we need to preload.
@@ -1588,6 +1613,10 @@ compiler."
 
 	# This library was specified with -dlpreopen.
 	if test $pass = dlpreopen; then
+	  if test -z "$libdir"; then
+	    $echo "$modename: cannot -dlpreopen a convenience library: \`$lib'" 1>&2
+	    exit 1
+	  fi
 	  # Prefer using a static library (so that no silly _DYNAMIC symbols
 	  # are required to link).
 	  if test -n "$old_library"; then
@@ -1597,20 +1626,33 @@ compiler."
 	  fi
 	fi
 
+	if test -z "$libdir"; then
+	  # link the convenience library
+	  if test $linkmode = lib; then
+	    deplibs="$dir/$old_library $deplibs"
+	  elif test "$linkmode,$pass" = "prog,link"; then
+	    compile_deplibs="$dir/$old_library $compile_deplibs"
+	    finalize_deplibs="$dir/$old_library $finalize_deplibs"
+	  else
+	    deplibs="$lib $deplibs" # used for prog,scan pass
+	  fi
+	  continue
+	fi
+
 	if test $linkmode = prog && test $pass != link; then
-	  new_lib_search_path="$new_lib_search_path $ladir"
+	  newlib_search_path="$newlib_search_path $ladir"
 	  deplibs="$lib $deplibs"
 
 	  linkalldeplibs=no
-	  if test "$link_all_deplibs" != no || test "$fast_install" != no || \
-	     test "$build_libtool_libs" = no || test -z "$library_names"; then
+	  if test "$link_all_deplibs" != no || test -z "$library_names" ||
+	     test "$build_libtool_libs" = no; then
 	    linkalldeplibs=yes
 	  fi
 
 	  tmp_libs=
 	  for deplib in $dependency_libs; do
 	    case "$deplib" in
-	    -L*) new_lib_search_path="$new_lib_search_path "`$echo "X$deplib" | $Xsed -e 's/^-L//'`;; ### testsuite: skip nested quoting test
+	    -L*) newlib_search_path="$newlib_search_path "`$echo "X$deplib" | $Xsed -e 's/^-L//'`;; ### testsuite: skip nested quoting test
 	    esac
 	    # Need to link against all dependency_libs?
 	    if test $linkalldeplibs = yes; then
@@ -1625,25 +1667,6 @@ compiler."
 	    esac
 	    tmp_libs="$tmp_libs $deplib"
 	  done
-	  continue
-	fi
-
-	if test -z "$libdir"; then
-	  # It is a libtool convenience library, so add in its objects.
-	  if test $linkmode = lib; then
-	    deplibs="$dir/$old_library $deplibs"
-	    tmp_libs=
-	    for deplib in $dependency_libs; do
-	      newdependency_libs="$deplib $newdependency_libs"
-	      case "$tmp_libs " in
-	      *" $deplib "*) specialdeplibs="$specialdeplibs $deplib" ;;
-	      esac
-	      tmp_libs="$tmp_libs $deplib"
-	    done
-	  elif test "$linkmode,$pass" = "prog,link"; then
-	    compile_deplibs="$dir/$old_library $compile_deplibs"
-	    finalize_deplibs="$dir/$old_library $finalize_deplibs"
-	  fi
 	  continue
 	fi
 
@@ -1689,16 +1712,18 @@ compiler."
 	     { test "$deplibs_check_method" = pass_all ||
 	       { test "$build_libtool_libs" = yes &&
 		 test -n "$library_names"; }; }; then
-	    # Do we only need to link against static libraries?
+	    # We only need to search for static libraries
 	    continue
 	  fi
 	fi
 
-	link_static=no # Whether this library is linked statically
+	link_static=no # Whether the deplib will be linked statically
 	if test -n "$library_names" &&
 	   { test "$prefer_static_libs" = no || test -z "$old_library"; }; then
-	  link_against_libtool_libs="$link_against_libtool_libs $lib"
-	  test "X$installed" = xno && need_relink=yes
+	  if test "$installed" = no; then
+	    uninst_deplibs="$uninst_deplibs $lib"
+	    need_relink=yes
+	  fi
 	  # This is a shared library
 	  if test $linkmode = lib && test "$hardcode_into_libs" = all; then
 	    # Hardcode the library path.
@@ -1917,7 +1942,7 @@ compiler."
 	    dependency_libs="$temp_deplibs"
 	  fi
 
-	  new_lib_search_path="$new_lib_search_path $absdir"
+	  newlib_search_path="$newlib_search_path $absdir"
 	  # Link against this library
 	  test "$link_static" = no && newdependency_libs="$abs_ladir/$laname $newdependency_libs"
 	  # ... and its dependency_libs
@@ -1981,15 +2006,17 @@ compiler."
 	done
       fi
       if test $pass != dlopen; then
-	# Make sure lib_search_path contains only unique directories.
-	lib_search_path=
-	for dir in $new_lib_search_path; do
-	  case "$lib_search_path " in
-	  *" $dir "*) ;;
-	  *) lib_search_path="$lib_search_path $dir" ;;
-	  esac
-	done
-	lib_search_path="$lib_search_path $sys_lib_search_path"
+	if test $pass != conv; then
+	  # Make sure lib_search_path contains only unique directories.
+	  lib_search_path=
+	  for dir in $newlib_search_path; do
+	    case "$lib_search_path " in
+	    *" $dir "*) ;;
+	    *) lib_search_path="$lib_search_path $dir" ;;
+	    esac
+	  done
+	  newlib_search_path=
+	fi
 
 	if test "$linkmode,$pass" != "prog,link"; then
 	  vars="deplibs"
@@ -2465,7 +2492,7 @@ EOF
 	    # If $name is empty we are operating on a -L argument.
 	    if test "$name" != "" ; then
 	      libname=`eval \\$echo \"$libname_spec\"`
-	      for i in $lib_search_path; do
+	      for i in $lib_search_path $sys_lib_search_path $shlib_search_path; do
 		    potential_libs=`ls $i/$libname[.-]* 2>/dev/null`
 		    for potent_lib in $potential_libs; do
 		      # Follow soft links.
@@ -3243,7 +3270,7 @@ static const void *lt_preloaded_setup() {
 	finalize_command=`$echo "X$finalize_command" | $Xsed -e "s% @SYMFILE@%%"`
       fi
 
-      if test -z "$link_against_libtool_libs" || test "$build_libtool_libs" != yes; then
+      if test $need_relink = no || test "$build_libtool_libs" != yes; then
 	# Replace the output file specification.
 	compile_command=`$echo "X$compile_command" | $Xsed -e 's%@OUTPUT@%'"$output"'%g'`
 	link_command="$compile_command$compile_rpath"
@@ -3414,7 +3441,7 @@ relink_command=\"$relink_command\"
 # This environment variable determines our operation mode.
 if test \"\$libtool_install_magic\" = \"$magic\"; then
   # install mode needs the following variable:
-  link_against_libtool_libs='$link_against_libtool_libs'
+  uninst_deplibs='$uninst_deplibs'
 else
   # When we are sourced in execute mode, \$file and \$echo are already set.
   if test \"\$libtool_execute_magic\" != \"$magic\"; then
@@ -3759,7 +3786,8 @@ dlpreopen='$dlprefiles'
 
 # Directory that this library needs to be installed in:
 libdir='$install_libdir'"
-	  if test "$installed" = no; then
+	  if test $hardcode_into_libs = all &&
+	     test "$installed" = no && test $need_relink = yes; then
 	    $echo >> $output "\
 relink_command=\"$relink_command\""
 	  fi
@@ -3967,11 +3995,7 @@ relink_command=\"$relink_command\""
 	test "X$dir" = "X$file/" && dir=
 	dir="$dir$objdir"
 
-	if test "$hardcode_into_libs" = all; then
-	  if test -z "$relink_command"; then
-	    $echo "$modename: invalid libtool pseudo library \`$file'" 1>&2
-	    exit 1
-	  fi
+	if test "$hardcode_into_libs" = all && test -n "$relink_command"; then
 	  $echo "$modename: warning: relinking \`$file'" 1>&2
 	  $show "$relink_command"
 	  if $run eval "$relink_command"; then :
@@ -3989,7 +4013,7 @@ relink_command=\"$relink_command\""
 	  shift
 
 	  srcname="$realname"
-	  test "$hardcode_into_libs" = all && srcname="$realname"T
+	  test "$hardcode_into_libs" = all && test -n "$relink_command" && srcname="$realname"T
 
 	  # Install the shared library and build the symlinks.
 	  $show "$install_prog $dir/$srcname $destdir/$realname"
@@ -4087,7 +4111,7 @@ relink_command=\"$relink_command\""
 
 	# Do a test to see if this is really a libtool program.
 	if (sed -e '4q' $file | egrep "^# Generated by .*$PACKAGE") >/dev/null 2>&1; then
-	  link_against_libtool_libs=
+	  uninst_deplibs=
 	  relink_command=
 
 	  # If there is no directory component, then add one.
@@ -4097,13 +4121,13 @@ relink_command=\"$relink_command\""
 	  esac
 
 	  # Check the variables that should have been set.
-	  if test -z "$link_against_libtool_libs"; then
+	  if test -z "$uninst_deplibs"; then
 	    $echo "$modename: invalid libtool wrapper script \`$file'" 1>&2
 	    exit 1
 	  fi
 
 	  finalize=yes
-	  for lib in $link_against_libtool_libs; do
+	  for lib in $uninst_deplibs; do
 	    # Check to see that each library is installed.
 	    libdir=
 	    if test -f "$lib"; then
