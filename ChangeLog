@@ -1,3 +1,8 @@
+2003-02-25  Bob McElrath  <bob+libtool@mcelrath.org>
+
+	* libtool.m4 (AC_LIBTOOL_PROG_COMPILER_PIC): Add support for
+	the Compaq C compiler for Alpha Linux.
+
 2003-02-25  Benjamin Reed  <ranger@befunk.com>
 
 	* libtool.m4 (darwin): Disable hardcoding library paths to
