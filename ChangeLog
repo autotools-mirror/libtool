@@ -1,6 +1,8 @@
 2000-02-21  Gary V. Vaughan  <gary@oranda.demon.co.uk>
 
 	* libltdl/ltdl.c (lt_dlinit): removed unused variable, `loader'.
+	
+	* libltdl/ltdl.c (lt_remove_dlloader): typo, s/=/==/g.
 
 2000-02-03  Gary V. Vaughan  <gary@oranda.demon.co.uk>
 

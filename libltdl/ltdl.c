@@ -803,7 +803,6 @@ int
 lt_dlinit LTDL_PARAMS((void))
 {
 	/* initialize libltdl */
-	lt_dlloader_t **loader = &loaders;
 	int errors = 0;
 
 	if (initialized) {	/* Initialize only at first call. */
@@ -1878,7 +1877,7 @@ lt_remove_dlloader (loader_name)
 
 	/* Fail if there are any open modules which use this loader. */
 	for  (handle = handles; handle; handle = handle->next)
-		if (handle->loader = place) {
+		if (handle->loader == place) {
 			last_error = LT_DLSTRERROR(REMOVE_LOADER);
 			return 1;
 		}
