@@ -11,6 +11,8 @@ New in 1.0b:
   flags.
 * New tests for a BSD-compatible `nm' program, required for dlopened
   modules.
+* Allow configure.in to change the defaults for AM_PROG_LIBTOOL's
+  `--enable-{shared,static}' by setting `enable_{shared,static}=no'.
 
 New in 1.0:
 * Bug fixes.

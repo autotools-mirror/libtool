@@ -1,7 +1,28 @@
+Fri Aug  1 10:06:55 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltmain.sh.in (link): Add -dlopen and -dlpreopen support for
+	libtool objects.  This means that dlopened modules no longer need
+	to be shared libraries.
+
+	* ltconfig.in (pic_flag): GCC on Irix 6 always builds PIC.
+	Reported by Ian Lance Taylor.
+
+	* libtool.m4 (LD): Always add `-n32' to the linker if we are using
+	GCC on Irix 6.  Reported by Ian Lance Taylor.
+
+Wed Jul 30 13:11:09 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* libtool.m4 (AM_PROG_LIBTOOL): Explicitly check enable_shared and
+ 	enable_static rather than just enableval.  This allows
+ 	configure.in scripts to set their own defaults.  Suggested by
+ 	Tommy Reilly.
+
 Tue Jul 29 11:52:10 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltmain.sh.in: Add NLS environment variable handling copied from
 	ltconfig.in.  Reported by Akim Demaille.
+	(link): If allow_undefined_flag is not supported, then turn on old
+	libraries.  Reported by Akim Demaille.
 
 	* demo/dlmain.c (main): Use dld_preloaded_symbol_count to display
 	a message about the sortedness of the symbol table.

@@ -1,3 +1,28 @@
+* Kenneth Albanowski suggests an `execute' mode, where the paths from
+libtool libraries are extracted and put into shlibpath_var, then a
+command is executed with the wrapped binary as argument.
+
+ KA> And 'libtool --mode=execute java test Java/libJavaPisock.la
+ KA> libsock/libpisock.la' turns into:
+
+ KA> LD_LIBRARY_PATH="libsock/.libs:Java/.libs" java test
+
+I think this is a good idea, but the nonobvious behaviour with libtool
+library arguments should be enabled by a flag, such as -dlopen LIB.
+Maybe -dlpreopen LIB should put these libraries in LD_PRELOAD.
+
+Use *db | *dbx as triggers for this mode.
+
+* Implement full multi-language support.  Currently, this is only for
+C++, but there are beginnings of this in the manual (Other Languages).
+This includes writing libtool not to be so dependent on the compiler
+used to configure it.
+
+We especially need this for C++ linking, for which libtool currently
+does not handle static constructors properly, even on operating
+systems that support them.  ``Don't use static constructors'' is no
+longer a satisfactory answer.
+
 * Another form of convenience library, suggested by Alexandre Oliva,
 is to have undocumented utility libraries, where only the shared
 version is installed.
@@ -12,11 +37,6 @@ probably static.
 
 * A better check to detect broken collect2 on AIX, once the bug is
 fixed in GCC.
-
-* Implement full multi-language support.  Currently, this is only for
-C++, but there are beginnings of this in the manual (Other Languages).
-This includes writing libtool not to be so dependent on the compiler
-used to configure it.
 
 * Need to finalize the documentation, and give a specification of
 `.la' files so that people can depend on their format.  This also

@@ -398,11 +398,20 @@ link_static_flag=
 no_builtin_flag=
 
 if test "$with_gcc" = yes; then
-  pic_flag='-fPIC'
   profile_flag_pattern='-pg?'
   wl='-Wl,'
   link_static_flag='-static'
   no_builtin_flag=' -fno-builtin'
+
+  case "$host_os" in
+  irix5* | irix6*)
+    # PIC is the default for these OSes.
+    pic_flag=
+    ;;
+  *)
+    pic_flag='-fPIC'
+    ;;
+  esac
 else
   # PORTME Check for PIC flags for the system compiler.
   case "$host_os" in

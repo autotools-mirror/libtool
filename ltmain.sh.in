@@ -348,7 +348,7 @@ if test -z "$show_help"; then
         case "$prev" in
         dlfiles|dlprefiles)
           case "$arg" in
-          *.la) ;;  # We handle this case below.
+          *.la | *.lo) ;;  # We handle these cases below.
           *)
             dlprefiles="$dlprefiles $arg"
             test "$prev" = dlfiles && dlfiles="$dlfiles $arg"
@@ -444,7 +444,23 @@ if test -z "$show_help"; then
 
       *.lo)
         # A library object.
-        libobjs="$libobjs $arg"
+	if test "$prev" = dlfiles; then
+	  dlfiles="$dlfiles $arg"
+	  if test "$build_libtool_libs" = yes; then
+	    prev=
+	    continue
+	  else
+	    # If libtool objects are unsupported, then we need to preload.
+	    prev=dlprefiles
+	  fi
+	fi
+
+	if test "$prev" = dlprefiles; then
+	  # Preload the old-style object.
+	  dlprefiles="$dlprefiles "`echo "$arg" | sed 's/\.lo$/\.o/'`
+	  prev=
+	fi
+	libobjs="$libobjs $arg"
         ;;
 
       *.la)
@@ -806,6 +822,7 @@ if test -z "$show_help"; then
         if test "$allow_undefined_flag" = unsupported; then
           echo "$progname: warning: undefined symbols not allowed in $host shared libraries" 1>&2
           build_libtool_libs=no
+	  build_old_libs=yes
         fi
       else
         # Clear the flag.
@@ -964,7 +981,7 @@ if test -z "$show_help"; then
 
       if test "$export_dynamic" = yes && test -n "$global_symbol_pipe" && test -n "$NM"; then
         # Add our own program objects to the preloaded list.
-        dlprefiles=`echo "$objs$libobjs$dlprefiles " | sed -e 's/\.lo /.o/g' -e 's/ $//'`
+        dlprefiles=`echo "$objs$dlprefiles " | sed -e 's/\.lo /.o /g' -e 's/ $//'`
 
         # Discover the nlist of each of the dlfiles.
         dlsyms="$objdir/${output}S.c"
