@@ -4994,7 +4994,7 @@ EOF
 	  k=1
 
 	  if test "X$skipped_export" != "X:" && test "$with_gnu_ld" = yes; then
-	    output=${output_objdir}/${output_la}.lnk
+	    output=${output_objdir}/${output_la}.lnkscript
 	    func_echo "creating GNU ld script: $output"
 	    $ECHO 'INPUT (' > $output
 	    for obj in $save_libobjs

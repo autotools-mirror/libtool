@@ -23,10 +23,10 @@
 
 . ./defs || exit 1
 
-func_require "demo-make" "demo/hell$EXEEXT"
+func_require "pdemo-make" "demo/hell$EXEEXT"
 
 func_mkprefixdir
-func_cd "demo"
+func_cd "pdemo"
 func_make "install"
 func_exec_init "installed"
 func_exec "$prefix/bin/hell_static" 'Welcome to GNU Hell'
