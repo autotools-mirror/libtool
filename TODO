@@ -98,6 +98,13 @@ version is installed.
 symbols to be included in a libtool archive.  This would require some
 sort of -whole-archive option, as well.
 
+* Currently, convenience libraries (.al) are built from .lo objects,
+except when --disable-shared.  When we can build both shared and
+static libraries, we should probably create a .al out of .lo objects
+and also a .a out of .o objects.  The .al would only be used to
+create shared libraries, whereas the .a would be used for creating
+static libraries and programs.
+
 * Need to finalize the documentation, and give a specification of
 `.la' files so that people can depend on their format.  This also
 needs to be done so that DLD uses a public interface to libtool

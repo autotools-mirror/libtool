@@ -1,5 +1,8 @@
 1999-01-20  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* TODO: should we also build a `static' copy of a convenience
+ 	library out of .o files?
+
 	* ltconfig.in (bsdi4*, netbsd*, uts4*, library_names_spec,
 	soname_spec): removed duplicate dot before $major
 	Reported by Steven M. Schultz <sms@wlv.iipo.gtegsc.com> (bsdi4*)
