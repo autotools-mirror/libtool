@@ -1,3 +1,7 @@
+2004-01-13  Peter O'Gorman  <peter@pogma.com>
+
+	* m4/libtool.m4: Quote shrext as it is evaled in ltmain.
+	
 2004-01-11  Scott James Remnant  <scott@netsplit.com>
 
 	* ltmain.in: new -precious-files-regex link mode option

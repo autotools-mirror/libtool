@@ -4326,7 +4326,7 @@ AC_MSG_RESULT([$_LT_AC_TAGVAR(ld_shlibs, $1)])
 test "$_LT_AC_TAGVAR(ld_shlibs, $1)" = no && can_build_shared=no
 
 _LT_DECL([], [libext], [0], [Old archive suffix (normally "a")])dnl
-_LT_DECL([], [shrext], [0], [Shared library suffix (normally ".so")])dnl
+_LT_DECL([], [shrext], [1], [Shared library suffix (normally ".so")])dnl
 _LT_DECL([], [extract_expsyms_cmds], [2],
     [The commands to extract the exported symbol list from a shared archive])
 
