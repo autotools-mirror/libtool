@@ -1,3 +1,21 @@
+1999-02-13  Thomas Tanner  <tanner@gmx.de>
+
+	* *demo/Makefile.am: use $(MATHLIB)
+	* *demo/configure.in: use AC_CHECK_LIBM
+	* doc/libtool.texi: renamed file_magic_command to file_magic_cmd,
+	  renamed archive_sym_cmds to archive_expsym_cmds
+	* ltconfig.in: ditto
+	* ltmain.in: ditto
+	* libltdl/ltdl.c: use lt_dlmalloc/free
+	* libltdl/ltdl.h: define lt_dlmalloc/free
+	* libtool.m4: added AC_CHECK_LIBM macro
+	* ltconfig.in: renamed archive_sym_cmds to archive_expsym_cmds,
+	  added always_export_symbols, export_symbols_cmd, exclude_expsyms,
+	  include_expsyms, removed archive_cmds for cygwin/mingw and AIX,
+	  on Solaris store the exported symbols list in objdir
+	* ltmain.in: allow -export-symbols for modules, use thread_safe flag,
+	  add include_expsyms to the exported symbols
+
 1999-02-12  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
 
 	* libltdl/ltdl.h (_LTDLL_EXTERN): libltdl is no longer linked as a

@@ -1293,11 +1293,6 @@ compiler."
       exit 1
     fi
 
-    if test -n "$export_symbols" && test "$module" = yes; then
-      $echo "$modename: \`-export-symbols' is not supported for modules"
-      exit 1
-    fi
-    
     oldlibs=
     # calculate the name of the file, without its directory
     outputname=`$echo "X$output" | $Xsed -e 's%^.*/%%'`
@@ -1724,7 +1719,7 @@ EOF
 				   | $Xsed -e 's,[^/]*$,,'`"$potliblink";;
 			esac
 		      done
-		      if eval $file_magic_command \"\$potlib\" \
+		      if eval $file_magic_cmd \"\$potlib\" \
 			 | sed '11,$d' \
 			 | egrep "$file_magic_regex" > /dev/null; then
 			newdeplibs="$newdeplibs $a_deplib"
@@ -1857,9 +1852,25 @@ EOF
 	  done
 	fi
 
+	if test "$thread_safe" = yes && test -n "$thread_safe_flag_spec"; then
+	  eval flag=\"$thread_safe_flag_spec\"
+
+	  linkopts="$linkopts $flag"
+	fi
+        
+	# Prepare the list of exported symbols
+	if test "$always_export_symbols" = yes && test -z "$export_symbols"; then
+	  export_symbols="$objdir/$libname.exp"
+	  $run $rm $export_symbols
+	  $run eval "$export_symbols_cmd"
+	fi
+	if test -n "$include_expsyms"; then
+	  $run $echo "X$include_expsyms" | $SP2NL >> $export_symbols
+	fi
+
 	# Do each of the archive commands.
-	if test -n "$export_symbols" && test -n "$archive_sym_cmds"; then
-	  eval cmds=\"$archive_sym_cmds\"
+	if test -n "$export_symbols" && test -n "$archive_expsym_cmds"; then
+	  eval cmds=\"$archive_expsym_cmds\"
 	else
 	  eval cmds=\"$archive_cmds\"
 	fi
@@ -2137,6 +2148,10 @@ extern \"C\" {
 	    $run eval "$NM $arg | $global_symbol_pipe >> '$nlist'"
 	  done
 
+	  if test -n "$exclude_expsyms"; then
+	    : # TODO: remove symbols from $nlist
+	  fi
+
 	  if test -z "$run"; then
 	    # Make sure we have at least an empty file.
 	    test -f "$nlist" || : > "$nlist"
@@ -2186,6 +2201,9 @@ lt_preloaded_symbols[] =
 		for arg in $progfiles; do
 		  eval "$NM $arg | $global_symbol_pipe >> '$nlist'"
 		done
+		if test -n "$exclude_expsyms"; then
+		  : # TODO: remove symbols from $nlist
+		fi
 		if test -f "$nlist"; then
 		  sed 's/^\(.*\) \(.*\)$/  {"\1", (lt_ptr_t) \&\2},/' < "$nlist" >> "$output_objdir/$dlsyms"
 		else
@@ -2200,6 +2218,9 @@ lt_preloaded_symbols[] =
   {\"$name\", (lt_ptr_t) 0},"
 	      eval "$NM $arg | $global_symbol_pipe > '$nlist'"
 
+	      if test -n "$exclude_expsyms"; then
+	        : # TODO: remove symbols from $nlist
+	      fi
 	      if test -f "$nlist"; then
 		sed 's/^\(.*\) \(.*\)$/  {"\1", (lt_ptr_t) \&\2},/' < "$nlist" >> "$output_objdir/$dlsyms"
 	      else

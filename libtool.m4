@@ -546,6 +546,14 @@ USE_SYMBOL_UNDERSCORE=${ac_cv_sys_symbol_underscore=no}
 AC_SUBST(USE_SYMBOL_UNDERSCORE)dnl
 ])
 
+# AC_CHECK_LIBM - check for math library
+AC_DEFUN(AC_CHECK_LIBM,
+[
+AC_CHECK_LIB(mw, _mwvalidcheckl, MATHLIB="-lmw", MATHLIB=)
+AC_CHECK_LIB(m, cos, MATHLIB="-lm $MATHLIB", )
+AC_SUBST(MATHLIB)dnl
+])
+
 dnl old names
 AC_DEFUN(AM_PROG_LIBTOOL, [indir([AC_PROG_LIBTOOL])])dnl
 AC_DEFUN(AM_ENABLE_SHARED, [indir([AC_ENABLE_SHARED], $@)])dnl

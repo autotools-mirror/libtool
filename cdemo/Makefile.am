@@ -15,4 +15,4 @@ noinst_HEADERS = foo.h
 bin_PROGRAMS = cdemo
 
 cdemo_SOURCES = main.c
-cdemo_LDADD = libfoo1.la $(LIBADD_M)
+cdemo_LDADD = libfoo1.la $(MATHLIB)

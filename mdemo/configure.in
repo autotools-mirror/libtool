@@ -16,8 +16,7 @@ AC_SUBST(STATIC)
 
 AC_CHECK_HEADERS(math.h)
 
-AC_CHECK_LIB(m, cos, LIBADD_M="-lm", LIBADD_M=)
-AC_SUBST(LIBADD_M)
+AC_CHECK_LIBM
 
 dnl Output the makefile
 AC_OUTPUT(Makefile)

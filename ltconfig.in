@@ -1002,7 +1002,7 @@ need_version=unknown
 # when you set need_version to no, make sure it does not cause -set_version
 # flags to be left without arguments
 archive_cmds=
-archive_sym_cmds=
+archive_expsym_cmds=
 old_archive_from_new_cmds=
 export_dynamic_flag_spec=
 whole_archive_flag_spec=
@@ -1013,6 +1013,10 @@ hardcode_direct=no
 hardcode_minus_L=no
 hardcode_shlibpath_var=unsupported
 runpath_var=
+always_export_symbols=no
+export_symbols_cmd="$NM $libobjs | $global_symbol_pipe | sed '\''s/.* //'\' | sort | uniq > $export_symbols"
+include_expsyms=
+exclude_expsyms=
 
 case "$host_os" in
 aix3* | aix4*)
@@ -1064,19 +1068,10 @@ if test "$with_gnu_ld" = yes; then
     # no search path for DLLs.
     hardcode_libdir_flag_spec='-L$libdir'
     allow_undefined_flag=unsupported
+    always_export_symbols=yes
+    export_symbols_cmd='$DLLTOOL --export-all --output-def $export_symbols $objdir/$soname-ltdll.$objext $libobjs'
 
-    archive_cmds='rm -f $objdir/$soname-ltdll.c~
-      sed -e "/^# \/\* ltdll.c starts here \*\//,/^# \/\* ltdll.c ends here \*\// { s/^# //; p; }" -e d < $0 > $objdir/$soname-ltdll.c~
-      (cd $objdir && $CC -c $soname-ltdll.c)~
-      echo EXPORTS > $objdir/$soname-def~
-      $DLLTOOL --export-all --output-def $objdir/$soname-def $objdir/$soname-ltdll.$objext $libobjs~
-      $CC -Wl,--base-file,$objdir/$soname-base -Wl,--dll -nostartfiles -Wl,-e,__cygwin_dll_entry@12 -o $lib $objdir/$soname-ltdll.$objext $libobjs $deplibs $linkopts~
-      $DLLTOOL --as=$AS --dllname $soname --exclude-symbol=_cygwin_dll_entry@12 --def $objdir/$soname-def --base-file $objdir/$soname-base --output-exp $objdir/$soname-exp~
-      $CC -Wl,--base-file,$objdir/$soname-base $objdir/$soname-exp -Wl,--dll -nostartfiles -Wl,-e,__cygwin_dll_entry@12 -o $lib $objdir/$soname-ltdll.$objext $libobjs $deplibs $linkopts~
-      $DLLTOOL --as=$AS --dllname $soname --exclude-symbol=_cygwin_dll_entry@12 --def $objdir/$soname-def --base-file $objdir/$soname-base --output-exp $objdir/$soname-exp~
-      $CC $objdir/$soname-exp -Wl,--dll -nostartfiles -Wl,-e,__cygwin_dll_entry@12 -o $lib $objdir/$soname-ltdll.$objext $libobjs $deplibs $linkopts'
-
-    archive_sym_cmds='rm -f $objdir/$soname-ltdll.c~
+    archive_expsym_cmds='rm -f $objdir/$soname-ltdll.c~
       sed -e "/^# \/\* ltdll.c starts here \*\//,/^# \/\* ltdll.c ends here \*\// { s/^# //; p; }" -e d < $0 > $objdir/$soname-ltdll.c~
       (cd $objdir && $CC -c $soname-ltdll.c)~
       echo EXPORTS > $objdir/$soname-def~
@@ -1093,7 +1088,7 @@ if test "$with_gnu_ld" = yes; then
   *)
     if $LD --help 2>&1 | egrep ': supported targets:.* elf' > /dev/null; then
       archive_cmds='$CC -shared ${wl}-soname $wl$soname -o $lib $libobjs $deplibs $linkopts'
-      archive_sym_cmds='$CC -shared ${wl}-soname $wl$soname ${wl}-retain-symbols-file $wl$export_symbols -o $lib $libobjs $deplibs $linkopts'
+      archive_expsym_cmds='$CC -shared ${wl}-soname $wl$soname ${wl}-retain-symbols-file $wl$export_symbols -o $lib $libobjs $deplibs $linkopts'
     else
       ld_shlibs=no
     fi
@@ -1111,9 +1106,8 @@ else
   case "$host_os" in
   aix3*)
     allow_undefined_flag=unsupported
-    archive_cmds='$NM $libobjs | $global_symbol_pipe | sed '\''s/.* //'\' | sort | uniq' > $lib.exp~
-	$LD -o $objdir/$soname $libobjs $deplibs $linkopts -bE:$lib.exp -T512 -H512 -bM:SRE~$AR cru $lib $objdir/$soname'
-    archive_sym_cmds='$LD -o $objdir/$soname $libobjs $deplibs $linkopts -bE:$export_symbols -T512 -H512 -bM:SRE~$AR cru $lib $objdir/$soname'
+    always_export_symbols=yes
+    archive_expsym_cmds='$LD -o $objdir/$soname $libobjs $deplibs $linkopts -bE:$export_symbols -T512 -H512 -bM:SRE~$AR cru $lib $objdir/$soname'
     # Note: this linker hardcodes the directories in LIBPATH if there
     # are no directories specified by -L.
     hardcode_minus_L=yes
@@ -1138,9 +1132,8 @@ else
       fi
       archive_cmds='$CC -shared ${wl}-bnoentry -o $objdir/$soname $libobjs $deplibs $linkopts'
     else
-      archive_cmds='$NM $libobjs | $global_symbol_pipe | sed '\''s/.* //'\' | sort | uniq' > $lib.exp~
-      $CC -o $objdir/$soname $libobjs $deplibs $linkopts ${wl}-bE:$lib.exp ${wl}-bM:SRE ${wl}-bnoentry'
-      archive_sym_cmds='$CC -o $objdir/$soname $libobjs $deplibs $linkopts ${wl}-bE:$export_symbols ${wl}-bM:SRE ${wl}-bnoentry'
+      always_export_symbols=yes
+      archive_expsym_cmds='$CC -o $objdir/$soname $libobjs $deplibs $linkopts ${wl}-bE:$export_symbols ${wl}-bM:SRE ${wl}-bnoentry'
       hardcode_direct=yes
     fi
     hardcode_minus_L=yes
@@ -1283,8 +1276,8 @@ else
     # $CC -shared without GNU ld will not create a library from C++
     # object files and a static libstdc++, better avoid it by now
     archive_cmds='$LD -G${allow_undefined_flag} -h $soname -o $lib $libobjs $deplibs $linkopts'
-    archive_sym_cmds='$echo "{ global:" > $lib.exp~cat $export_symbols | sed -e "s/\(.*\)/\1;/" >> $lib.exp~$echo "local: *; };" >> $lib.exp~
-		$LD -G${allow_undefined_flag} -M $lib.exp -h $soname -o $lib $libobjs $deplibs $linkopts~$rm $lib.exp'
+    archive_expsym_cmds='$echo "{ global:" > $objdir/$lib.exp~cat $export_symbols | sed -e "s/\(.*\)/\1;/" >> $objdir/$lib.exp~$echo "local: *; };" >> $objdir/$lib.exp~
+		$LD -G${allow_undefined_flag} -M $objdir/$lib.exp -h $soname -o $lib $libobjs $deplibs $linkopts~$rm $objdir/$lib.exp'
     hardcode_libdir_flag_spec='-R$libdir'
     hardcode_shlibpath_var=no
     ;;
@@ -1555,7 +1548,7 @@ shlibpath_var=
 version_type=none
 dynamic_linker="$host_os ld.so"
 sys_lib_search_path_spec="/lib /usr/lib /usr/local/lib"
-file_magic_command=
+file_magic_cmd=
 deplibs_check_method='unknown'
 # Need to set the preceding variable on all platforms that support
 # interlibrary dependencies.
@@ -1564,7 +1557,7 @@ deplibs_check_method='unknown'
 # 'pass_all' -- all dependencies passed with no checks.
 # 'test_compile' -- check by making test program.
 # 'file_magic [regex]' -- check by looking for files in library path
-# which responds to the $file_magic_command with a given egrep regex.
+# which responds to the $file_magic_cmd with a given egrep regex.
 # If you have `file' or equivalent on your system and you're not sure
 # whether `pass_all' will *always* work, you probably want this one.
 echo $ac_n "checking dynamic linker characteristics... $ac_c" 1>&6
@@ -1621,7 +1614,7 @@ cygwin* | mingw*)
   fi
   dynamic_linker='Win32 ld.exe'
   deplibs_check_method='file_magic file format pei*-i386.*architecture: i386'
-  file_magic_command='objdump -f'
+  file_magic_cmd='objdump -f'
   need_lib_prefix=no
   # FIXME: first we should search . and the directory the executable is in
   shlibpath_var=PATH
@@ -1637,7 +1630,7 @@ freebsd*)
   case "$version_type" in
     freebsd-elf*)
       deplibs_check_method='file_magic ELF [0-9][0-9]*-bit [LM]SB shared object'
-      file_magic_command=file
+      file_magic_cmd=file
       ;;
     freebsd-*)
       deplibs_check_method=unknown
@@ -1675,7 +1668,7 @@ irix5*)
   library_names_spec='${libname}${release}.so$versuffix ${libname}${release}.so $libname.so'
   shlibpath_var=LD_LIBRARY_PATH
   deplibs_check_method="file_magic ELF 32-bit MSB dynamic lib MIPS - version 1" # or should it be pass_all?
-  file_magic_command=file
+  file_magic_cmd=file
   ;;
 
 irix6*)
@@ -1693,7 +1686,7 @@ irix6*)
   shlibpath_var=LD_LIBRARY${shlibsuff}_PATH
   sys_lib_search_path_spec="/lib${libsuff} /usr/lib${libsuff} /usr/local/lib${libsuff}"
   deplibs_check_method="file_magic ELF ${libmagic} MSB mips-[1234] dynamic lib MIPS - version 1" # or should it be pass_all?
-  file_magic_command=file
+  file_magic_cmd=file
   ;;
 
 # No shared lib support for Linux oldld, aout, or coff.
@@ -1711,7 +1704,7 @@ linux-gnu*)
   finish_cmds='PATH="$PATH:/sbin" ldconfig -n $libdir'
   shlibpath_var=LD_LIBRARY_PATH
   deplibs_check_method='file_magic ELF [0-9][0-9]*-bit [LM]SB (shared object|dynamic lib )'
-  file_magic_command=file
+  file_magic_cmd=file
 
   if test -f /lib/ld.so.1; then
     dynamic_linker='GNU ld.so'
@@ -1782,7 +1775,7 @@ solaris*)
   # ldd complains unless libraries are executable
   postinstall_cmds='chmod +x $lib'
   deplibs_check_method="file_magic ELF [0-9][0-9]-bit [LM]SB dynamic lib"
-  file_magic_command="file"
+  file_magic_cmd="file"
   ;;
 
 sunos4*)
@@ -1893,16 +1886,16 @@ case "$ltmain" in
     thread_safe_flag_spec whole_archive_flag_spec libname_spec \
     library_names_spec soname_spec \
     RANLIB old_archive_cmds old_archive_from_new_cmds old_postinstall_cmds \
-    old_postuninstall_cmds archive_cmds archive_sym_cmds postinstall_cmds postuninstall_cmds \
-    file_magic_command deplibs_check_method allow_undefined_flag no_undefined_flag \
+    old_postuninstall_cmds archive_cmds archive_expsym_cmds postinstall_cmds postuninstall_cmds \
+    file_magic_cmd export_symbols_cmd deplibs_check_method allow_undefined_flag no_undefined_flag \
     finish_cmds finish_eval global_symbol_pipe hardcode_libdir_flag_spec \
     hardcode_libdir_separator sys_lib_search_path_spec \
-    compiler_c_o compiler_o_lo need_locks; do
+    compiler_c_o compiler_o_lo need_locks exclude_expsyms include_expsyms; do
 
     case "$var" in
     reload_cmds | old_archive_cmds | old_archive_from_new_cmds | \
     old_postinstall_cmds | old_postuninstall_cmds | \
-    archive_cmds | archive_sym_cmds | \
+    archive_cmds | archive_expsym_cmds | \
     postinstall_cmds | postuninstall_cmds | \
     finish_cmds | sys_lib_search_path_spec)
       # Double-quote double-evaled strings.
@@ -2108,7 +2101,7 @@ old_archive_from_new_cmds=$old_archive_from_new_cmds
 
 # Commands used to build and install a shared archive.
 archive_cmds=$archive_cmds
-archive_sym_cmds=$archive_sym_cmds
+archive_expsym_cmds=$archive_expsym_cmds
 postinstall_cmds=$postinstall_cmds
 postuninstall_cmds=$postuninstall_cmds
 
@@ -2116,7 +2109,7 @@ postuninstall_cmds=$postuninstall_cmds
 deplibs_check_method=$deplibs_check_method
 
 # Command to use when deplibs_check_method == file_magic
-file_magic_command=$file_magic_command
+file_magic_cmd=$file_magic_cmd
 
 # Flag that allows shared libraries with undefined symbols to be built.
 allow_undefined_flag=$allow_undefined_flag
@@ -2166,6 +2159,19 @@ sys_lib_search_path_spec=$sys_lib_search_path_spec
 
 # Fix the shell variable \$srcfile for the compiler.
 fix_srcfile_path="$fix_srcfile_path"
+
+# Set to yes if exported symbols are required
+always_export_symbols=$always_export_symbols
+
+# The command to extract exported symbols
+export_symbols_cmd=$export_symbols_cmd
+
+# Symbols that should not be listed in the preloaded symbols
+exclude_expsyms=$exclude_expsyms
+
+# Symbols that must always be exported
+include_expsyms=$include_expsyms
+
 EOF
 
 case "$ltmain" in

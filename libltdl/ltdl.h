@@ -48,6 +48,8 @@ Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 # define lt_ptr_t     char*
 #endif
 
+#include <stdlib.h>
+
 #ifdef _LTDL_COMPILE_
 typedef	struct lt_dlhandle_t *lt_dlhandle;
 #else
@@ -75,6 +77,9 @@ extern const char *lt_dlgetsearchpath __P((void));
 
 extern const lt_dlsymlist lt_preloaded_symbols[];
 #define LTDL_SET_PRELOADED_SYMBOLS() lt_dlpreload_default(lt_preloaded_symbols)
+
+extern lt_ptr_t (*lt_dlmalloc)(size_t size);
+extern void (*lt_dlfree)(lt_ptr_t ptr);
 
 __END_DECLS
 

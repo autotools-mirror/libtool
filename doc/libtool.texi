@@ -3137,16 +3137,16 @@ of the message that contained his patch:
 The basic architecture is this: in @file{ltconfig.in}, the person who
 writes libtool makes sure @samp{$deplibs}, or @samp{$compile_dependencylibs}
 are included in @samp{$archive_cmds} somewhere and also sets the
-@samp{$deplibs_check_method}, and maybe @samp{$file_magic_command} when
+@samp{$deplibs_check_method}, and maybe @samp{$file_magic_cmd} when
 @samp{deplibs_check_method} is file_magic.
 
 @samp{deplibs_check_method} can be one of five things:
 @table @samp
 @item file_magic [@var{regex}]
 @vindex file_magic
-@vindex file_magic_command
+@vindex file_magic_cmd
 looks in the library link path for libraries that have the right
-libname.  Then it runs @samp{$file_magic_command} on the library and
+libname.  Then it runs @samp{$file_magic_cmd} on the library and
 checks for a match against @samp{regex} using @code{egrep}.
 
 @item test_compile 
@@ -3377,10 +3377,10 @@ aren't defined in that library.
 @end defvar
 
 @defvar archive_cmds
-@defvarx archive_sym_cmds
+@defvarx archive_expsym_cmds
 @defvarx old_archive_cmds
 Commands used to create shared and static libraries, respectively.
-@samp{archive_sym_cmds} is used when -export-symbols was defined.
+@samp{archive_expsym_cmds} is used when -export-symbols was defined.
 @end defvar
 
 @defvar old_archive_from_new_cmds
