@@ -21,7 +21,8 @@ New in 1.3d: 2000-??-??; CVS version 1.3c, Libtool team:
 * Start of support code for cross-compiling to win32.
 * libltdl can now be built as a dll with win32.
 * m4 macros needed to configure libltdl split out into libltdl/ltdl.m4.
-* Improved support for mingw32, Compaq Tru64 V5.0 and Digital Unix V4.*.
+* Improved support for mingw32, NetBSD, Compaq Tru64 V5.0 and Digital
+  Unix V4.*.
 * Initial support for ia64 linux.
 * Initial support for a.out freebsd shared libs.
 * Initial support for Paul Sokolovsky's pw32 POSIX over win32 layer.

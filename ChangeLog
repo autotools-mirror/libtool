@@ -1,3 +1,8 @@
+2000-12-14  Nick Hudson  <nick@nthcliff.demon.co.uk>
+	
+	* libtool.m4 (hardcode_libdir_flag_spec):  Remove linker
+	specification for netbsd.
+	
 2000-12-14  Akim Demaille  <akim@epita.fr>
 
 	* libtool.m4:  Don't depend on Autoconf internals:
