@@ -1502,7 +1502,7 @@ EOF
       # +DA*, +DD* enable 64-bit mode on the HP compiler
       # -q* pass through compiler args for the IBM compiler
       # -m* pass through architecture-specific compiler args for GCC
-      -64|-mips[[0-9]]|-xarch=*|-xtarget=*|+DA*|+DD*|-q*|-m*)
+      -64|-mips[0-9]|-xarch=*|-xtarget=*|+DA*|+DD*|-q*|-m*)
 
 	# Unknown arguments in both finalize_command and compile_command need
 	# to be aesthetically quoted because they are evaled later.
