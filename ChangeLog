@@ -1,5 +1,8 @@
 2004-06-17  Gary V. Vaughan  <gary@gnu.org>
 
+	* m4/libtool.m4 (AC_LIBTOOL_PROG_LD_SHLIBS) [darwin*]: Fix a typo
+	in allow_undefined_flag: s,${Wl},${wl},g
+
 	* libtoolize.in (func_scan_files): Accept AC_WITH_LTDL as an
 	indication that libltdl is being used.
 	(Main): Without AC_CONFIG_MACRO_DIR, don't just dump all the

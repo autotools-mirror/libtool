@@ -3840,7 +3840,7 @@ _LT_EOF
          ;;
        *) # Darwin 1.3 on
          if test -z ${MACOSX_DEPLOYMENT_TARGET} ; then
-           _LT_AC_TAGVAR(allow_undefined_flag, $1)='${wl}-flat_namespace ${wl}-undefined ${Wl}suppress'
+           _LT_AC_TAGVAR(allow_undefined_flag, $1)='${wl}-flat_namespace ${wl}-undefined ${wl}suppress'
          else
            case ${MACOSX_DEPLOYMENT_TARGET} in
              10.[[012]])
@@ -4767,7 +4767,7 @@ if test -n "$compiler"; then
          ;;
        *) # Darwin 1.3 on
          if test -z ${MACOSX_DEPLOYMENT_TARGET} ; then
-           _LT_AC_TAGVAR(allow_undefined_flag, $1)='${wl}-flat_namespace ${wl}-undefined ${Wl}suppress'
+           _LT_AC_TAGVAR(allow_undefined_flag, $1)='${wl}-flat_namespace ${wl}-undefined ${wl}suppress'
          else
            case ${MACOSX_DEPLOYMENT_TARGET} in
              10.[[012]])
