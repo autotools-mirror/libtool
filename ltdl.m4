@@ -364,10 +364,10 @@ EOF
     ac_nlist=conftest.nm
     if AC_TRY_EVAL(NM conftest.$ac_objext \| $lt_cv_sys_global_symbol_pipe \> $ac_nlist) && test -s "$ac_nlist"; then
       # See whether the symbols have a leading underscore.
-      if egrep '^. _nm_test_func' "$ac_nlist" >/dev/null; then
+      if grep '^. _nm_test_func' "$ac_nlist" >/dev/null; then
         ac_cv_sys_symbol_underscore=yes
       else
-        if egrep '^. nm_test_func ' "$ac_nlist" >/dev/null; then
+        if grep '^. nm_test_func ' "$ac_nlist" >/dev/null; then
 	  :
         else
 	  echo "configure: cannot find nm_test_func in $ac_nlist" >&AC_FD_CC

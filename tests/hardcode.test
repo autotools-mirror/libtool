@@ -19,7 +19,7 @@ fi
 
 # Unfortunately, we need access to libtool internals for this test.
 objdir=NONE
-eval `egrep -e '^objdir=' ./libtool 2>/dev/null`
+eval `grep '^objdir=' ./libtool 2>/dev/null`
 if test "$objdir" = NONE; then
   echo "objdir not set in ../demo/libtool" 1>&2
   exit 1
@@ -27,7 +27,7 @@ fi
 
 # Check to make sure we have a dynamic library.
 library_names=NONE
-eval `egrep -e '^library_names=' ./libhello.la 2>/dev/null`
+eval `grep '^library_names=' ./libhello.la 2>/dev/null`
 
 if test "$library_names" = NONE; then
   echo "library_names not set in ../demo/libhello.la" 1>&2
@@ -48,7 +48,7 @@ hardcode_shlibpath_var=NONE
 hardcode_libdir_flag_spec=NONE
 
 # Suck in all the hardcode_* variable settings.
-eval `./libtool --config | egrep -e '^hardcode_' 2>/dev/null`
+eval `./libtool --config | grep '^hardcode_' 2>/dev/null`
 
 if test "$hardcode_direct" = NONE; then
   echo "hardcode_direct not set in ../demo/libtool" 1>&2
@@ -101,12 +101,12 @@ for file in hc-*; do
   # AIX fgrep also has a limited line length, so we turn unprintable
   # characters into newlines.
   if cat $file | (tr '\000-\037\200-\377' '\n' || cat) 2>/dev/null \
-	       | fgrep "$objdir" > /dev/null 2>&1; then
+	       | $FGREP "$objdir" > /dev/null 2>&1; then
     hardcoded=yes
-  elif fgrep "$objdir" $file > /dev/null 2>&1; then
+  elif $FGREP "$objdir" $file > /dev/null 2>&1; then
     # We retry fgrep without tr, in case the above lead to a false negative.
     hardcoded=yes
-  elif (sed -e '1!d' $file | egrep 'unsupported') >/dev/null 2>&1; then
+  elif (sed -e '1!d' $file | grep 'unsupported') >/dev/null 2>&1; then
     hardcoded=unsupported
   fi
 

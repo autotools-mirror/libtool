@@ -20,7 +20,7 @@ fi
 
 # Check to make sure we have a dynamic library.
 library_names=NONE
-eval `egrep -e '^library_names=' ./l3/libl3.la 2>/dev/null`
+eval `grep '^library_names=' ./l3/libl3.la 2>/dev/null`
 
 if test "$library_names" = NONE; then
   echo "library_names not set in ../depdemo/l3/libl3.la" 1>&2
@@ -32,35 +32,35 @@ fi
 
 # Unfortunately, we need access to libtool internals for this test.
 objdir=NONE
-eval `egrep -e '^objdir=' ./libtool 2>/dev/null`
+eval `grep '^objdir=' ./libtool 2>/dev/null`
 if test "$objdir" = NONE; then
   echo "objdir not set in ../depdemo/libtool" 1>&2
   exit 1
 fi
 
 shlibpath_overrides_runpath=NONE
-eval `egrep -e '^shlibpath_overrides_runpath=' ./libtool 2>/dev/null`
+eval `grep '^shlibpath_overrides_runpath=' ./libtool 2>/dev/null`
 if test "$shlibpath_overrides_runpath" = NONE; then
   echo "shlibpath_overrides_runpath not set in ../depdemo/libtool" 1>&2
   exit 1
 fi
 
 hardcode_action=NONE
-eval `egrep -e '^hardcode_action=' ./libtool 2>/dev/null`
+eval `grep '^hardcode_action=' ./libtool 2>/dev/null`
 if test "$hardcode_action" = NONE; then
   echo "hardcode_action not set in ../depdemo/libtool" 1>&2
   exit 1
 fi
 
 hardcode_direct=NONE
-eval `egrep -e '^hardcode_direct=' ./libtool 2>/dev/null`
+eval `grep '^hardcode_direct=' ./libtool 2>/dev/null`
 if test "$hardcode_direct" = NONE; then
   echo "hardcode_direct not set in ../depdemo/libtool" 1>&2
   exit 1
 fi
 
 hardcode_into_libs=NONE
-eval `egrep -e '^hardcode_into_libs=' ./libtool 2>/dev/null`
+eval `grep '^hardcode_into_libs=' ./libtool 2>/dev/null`
 if test "$hardcode_into_libs" = NONE; then
   echo "hardcode_into_libs not set in ../depdemo/libtool" 1>&2
   exit 1

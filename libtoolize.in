@@ -158,7 +158,7 @@ fi
 files='config.guess config.sub ltmain.sh'
 
 auxdir=.
-auxdirline=`egrep '^AC_CONFIG_AUX_DIR' $configure_ac 2>/dev/null`
+auxdirline=`grep '^AC_CONFIG_AUX_DIR' $configure_ac 2>/dev/null`
 if test -n "$auxdirline"; then
   # Handle explicit AC_CONFIG_AUX_DIR settings.
   auxdir=`echo "$auxdirline" | sed 's/^AC_CONFIG_AUX_DIR(\([^)]*\)).*$/\1/'`
@@ -193,12 +193,12 @@ else
 fi
 
 if test -z "$automake"; then
-  if egrep '^A[MC]_PROG_LIBTOOL' $configure_ac >/dev/null 2>&1; then :
+  if grep '^A[MC]_PROG_LIBTOOL' $configure_ac >/dev/null 2>&1; then :
   else
     echo "Remember to add \`AC_PROG_LIBTOOL' to \`$configure_ac'."
   fi
 
-  if egrep '^AC_PROG_RANLIB' $configure_ac >/dev/null 2>&1; then
+  if grep '^AC_PROG_RANLIB' $configure_ac >/dev/null 2>&1; then
     echo "Using \`AC_PROG_RANLIB' is rendered obsolete by \`AC_PROG_LIBTOOL'"
   fi
 
@@ -208,7 +208,7 @@ if test -z "$automake"; then
     updatemsg="add the contents of \`$libtool_m4' to \`aclocal.m4'"
   fi
 
-  if egrep '^AC_DEFUN\(\[A[MC]_PROG_LIBTOOL' aclocal.m4 >/dev/null 2>&1; then
+  if grep '^AC_DEFUN(\[A[MC]_PROG_LIBTOOL' aclocal.m4 >/dev/null 2>&1; then
     # Check the version number on libtool.m4 and the one used in aclocal.m4.
     instserial=`grep '^# serial ' $libtool_m4 | grep 'A[MC]_PROG_LIBTOOL' | sed -e 's/^# serial \([0-9][0-9]*\).*$/\1/; q'`
 
@@ -242,7 +242,7 @@ if test -z "$automake"; then
       updatemsg="add the contents of \`$ltdl_m4' to \`aclocal.m4'"
     fi
 
-    if egrep '^AC_DEFUN\(AC_LIB_LTDL' aclocal.m4 >/dev/null 2>&1; then
+    if grep '^AC_DEFUN(AC_LIB_LTDL' aclocal.m4 >/dev/null 2>&1; then
       # Check the version number on ltdl.m4 and the one used in aclocal.m4.
       instserial=`grep '^# serial ' $ltdl_m4 | grep 'AC_LIB_LTDL' | sed -e 's/^# serial \([0-9][0-9]*\).*$/\1/; q'`
 

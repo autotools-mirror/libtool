@@ -27,8 +27,8 @@ rm -f config.cache
 echo "= Configuring in ../demo (prefix=$prefix) with --disable-shared"
 CONFIG_SITE=/nonexistent ${CONFIG_SHELL-/bin/sh} $srcdir/../demo/configure --srcdir=$srcdir/../demo --prefix=$prefix --disable-shared || exit 1
 
-if egrep '^build_old_libs=yes' libtool > /dev/null &&
-   egrep '^build_libtool_libs=no' libtool > /dev/null; then :
+if grep '^build_old_libs=yes' libtool > /dev/null &&
+   grep '^build_libtool_libs=no' libtool > /dev/null; then :
 else rm -f Makefile && exit 77
 fi
 

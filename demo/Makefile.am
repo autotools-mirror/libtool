@@ -72,12 +72,13 @@ $(srcdir)/acinclude.m4:
 # Test programs to see what gets hardcoded.
 .PHONY: hardcode
 hardcode: $(hardcode_tests)
-SET_HARDCODE_FLAGS = eval `$(LIBTOOL) --config | egrep -e '^(hardcode_.*|wl)='`
+SET_HARDCODE_FLAGS = \
+  eval `$(LIBTOOL) --config | sed -n -e '/^hardcode_.*=/p; /^wl=/p'`
 hc-direct: $(hell_OBJECTS) $(hell_DEPENDENCIES) $(libdir)/libhello.la
 	@rm -f hc-direct
 	@echo "You may ignore any linking errors from the following command:"
 	@shlib=./$(objdir)/libhello.a; \
-	  eval "`egrep '^library_names' libhello.la`"; \
+	  eval "`grep '^library_names' libhello.la`"; \
 	  for lib in $$library_names; do \
 	    shlib="./$(objdir)/$$lib"; \
 	  done; \

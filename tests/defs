@@ -14,6 +14,17 @@ libtool="../libtool"
 make="${MAKE-make}"
 SHELL="${CONFIG_SHELL-/bin/sh}"
 
+if echo a | (grep -E '(a|b)') >/dev/null 2>&1; then
+  EGREP='grep -E'
+else
+  EGREP='egrep'
+fi
+if echo 'ab*c' | (grep -F 'ab*c') >/dev/null 2>&1; then
+  FGREP='grep -F'
+else
+  FGREP='fgrep'
+fi
+
 prefix="./_inst"
 if test "$need_prefix" = yes; then
   # An absolute path to a test installation directory.

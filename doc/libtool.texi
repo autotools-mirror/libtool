@@ -4043,7 +4043,7 @@ writes libtool makes sure @samp{$deplibs} is included in
 @vindex file_magic_test_file
 looks in the library link path for libraries that have the right
 libname.  Then it runs @samp{$file_magic_cmd} on the library and checks
-for a match against @var{regex} using @code{egrep}.  When
+for a match against the extended regular expression @var{regex}.  When
 @var{file_magic_test_file} is set by @file{libtool.m4}, it is used as an
 argument to @samp{$file_magic_cmd} in order to verify whether the
 regular expression matches its output, and warn the user otherwise.

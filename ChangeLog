@@ -1,3 +1,52 @@
+2002-11-19  Paul Eggert  <eggert@twinsun.com>
+
+	Don't assume that egrep and fgrep exist.  POSIX 1003.1-2001 no
+	longer requires them; you're supposed to use grep -E and grep -F
+	instead.  Also, don't assume that "test -a" works, since POSIX
+	doesn't require it.
+
+	* libtool.m4 (AC_LIBTOOL_SYS_DYNAMIC_LINKER, _LT_AC_LANG_C_CONFIG,
+	_LT_AC_LANG_CXX_CONFIG, AC_LIBTOOL_SYS_GLOBAL_SYMBOL_PIPE,
+	AC_LIBTOOL_PROG_LD_SHLIBS):
+	egrep -> grep, when that makes no difference.
+	* libtoolize.in: Likewise.
+	* ltdl.m4 (AC_LTDL_SYMBOL_USCORE): Likewise.
+	* ltmain.in: Likewise.
+	* demo/Makefile.am (hc-direct): Likewise.
+	* pdemo/Makefile.am (hc-direct): Likewise.
+	* tests/build-relink.test, tests/build-relink2.test,
+	tests/cdemo-conf.test, tests/cdemo-shared.test,
+	tests/cdemo-static.test, tests/demo-conf.test,
+	tests/demo-nofast.test, tests/demo-shared.test,
+	tests/demo-static.test, tests/depdemo-conf.test,
+	tests/depdemo-nofast.test, tests/depdemo-shared.test,
+	tests/depdemo-static.test, tests/hardcode.test,
+	tests/mdemo-conf.test, tests/mdemo-shared.test,
+	tests/mdemo-static.test, tests/pdemo-conf.test,
+	tests/tagdemo-conf.test, tests/tagdemo-shared.test,
+	tests/tagdemo-static.test: Likewise.
+
+	* libtool.m4 (AC_PROG_EGREP):
+	New macro, defined if Autoconf doesn't define.
+	(AC_PATH_TOOL_PREFIX, AC_PROG_LD_GNU): Use it.
+	(AC_PROG_LD, AC_PROG_NM, AC_LIBTOOL_SYS_GLOBAL_SYMBOL_PIPE):
+	Use shell pattern matching rather than egrep.
+	(AC_LIBTOOL_CONFIG): Set lt_EGREP and EGREP.
+
+	* demo/Makefile.am (SET_HARDCODE_FLAGS): Use sed instead of egrep.
+	* pdemo/Makefile.am (SET_HARDCODE_FLAGS): Likewise.
+
+	* tests/defs (EGREP, FGREP): New vars.
+
+	* ltmain.in: egrep -> $EGREP
+	* tests/assign.test, tests/demo-exec.test, tests/demo-inst.test,
+	tests/pdemo-exec.test, tests/pdemo-inst.test, tests/sh.test:
+	Likewise.
+
+	* tests/hardcode.test: fgrep -> $FGREP
+
+	* tests/f77demo-exec.test: test -a -> test &&
+
 2002-11-18  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
 
 	* ltmain.in: When using gcc, pass -mfoo to the linker
@@ -195,7 +244,7 @@
 
 2002-10-15  Charles Wilson  <cwilson@ece.gatech.edu>
 
-        * libtool.m4 (AC_LIBTOOL_SYS_MAX_CMD_LEN): avoid long delay on 
+        * libtool.m4 (AC_LIBTOOL_SYS_MAX_CMD_LEN): avoid long delay on
          cygwin/Win9x when computing commandline length.
         (AC_LIBTOOL_SYS_DYNAMIC_LINKER): fix postinstall_cmds when
         sources are in a subdirectory
@@ -281,8 +330,8 @@
 	* Makefile.am: Add support for FFLAGS and FLIBS.
 	* tests/Makefile.am: Add new Fortran tests.
 	* tests/f77demo-*.test: New files.
-	* f77demo/configure.ac, f77demo/cprogram.c, f77demo/fooc.c 
-	* f77demo/foof.f, f77demo/foo.h, f77demo/fprogram.f 
+	* f77demo/configure.ac, f77demo/cprogram.c, f77demo/fooc.c
+	* f77demo/foof.f, f77demo/foo.h, f77demo/fprogram.f
 	* f77demo/Makefile.am, f77demo/README: New files.
 
 2002-07-16  Gary V. Vaughan  <gary@gnu.org>

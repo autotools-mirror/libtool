@@ -27,8 +27,8 @@ rm -f config.cache
 echo "= Configuring in ../f77demo (prefix=$prefix)"
 CONFIG_SITE=/nonexistent ${CONFIG_SHELL-/bin/sh} $srcdir/../f77demo/configure --srcdir=$srcdir/../f77demo --prefix=$prefix || exit 1
 
-if egrep '^build_old_libs=yes' libtool > /dev/null &&
-   egrep '^build_libtool_libs=yes' libtool > /dev/null; then :
+if $EGREP '^build_old_libs=yes' libtool > /dev/null &&
+   $EGREP '^build_libtool_libs=yes' libtool > /dev/null; then :
 else rm -f Makefile && exit 77
 fi
 

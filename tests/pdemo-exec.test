@@ -32,7 +32,7 @@ else
   status=1
 fi
 
-if ../pdemo/helldl | egrep -e '(Welcome to .*GNU Hell|unsupported)'; then :
+if ../pdemo/helldl | $EGREP -e '(Welcome to .*GNU Hell|unsupported)'; then :
 else
   echo "$0: cannot execute ../pdemo/helldl" 1>&2
   status=1
