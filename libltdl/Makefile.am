@@ -6,27 +6,20 @@ LTDL_VERSION = -version-info 1:1:1
 
 if INSTALL_LTDL
 include_HEADERS = ltdl.h
+lib_LTLIBRARIES = libltdl.la
 else
 noinst_HEADERS = ltdl.h
 endif
 
 if CONVENIENCE_LTDL
-noinst_LTLIBRARIES = libltdl.la
+noinst_LTLIBRARIES = libltdlc.la
 endif
 
 libltdl_la_SOURCES = ltdl.c
 libltdl_la_LIBADD = $(LIBADD_DL)
 
-lib_LTLIBRARIES = @LIBLIBS@
-EXTRA_LTLIBRARIES =
-
-@TOINST@/libltdl.la: $(libltdl_la_OBJECTS) $(libltdl_la_DEPENDENCIES)
-	test -d $(TOINST) || mkdir $(TOINST)
-	$(LINK) $(libltdl_la_OBJECTS) \
-		-rpath $(libdir) $(LTDL_VERSION) $(libltdl_la_LIBADD)
-
-distclean-local:
-	test -z $(TOINST) || rm -rf $(TOINST)
+libltdlc_la_SOURCES = ltdl.c
+libltdlc_la_LIBADD = $(LIBADD_DL)
 
 libtool: $(LIBTOOL_DEPS)
 	$(SHELL) ./config.status --recheck

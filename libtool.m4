@@ -610,7 +610,7 @@ AC_CHECK_LIB(m, cos)
 # flat, and, if you're not using automake, define top_builddir as
 # appropriate in the Makefiles.
 AC_DEFUN(AC_LIBLTDL_CONVENIENCE, [
-  LIBLTDL=ifelse($#,1,$1,['${top_builddir}/libltdl'])/libltdl.la
+  LIBLTDL=ifelse($#,1,$1,['${top_builddir}/libltdl'])/libltdlc.la
   ac_configure_args="$ac_configure_args --enable-ltdl-convenience"
 ])
 
@@ -629,7 +629,7 @@ AC_DEFUN(AC_LIBLTDL_INSTALLABLE, [
     ac_configure_args="$ac_configure_args --enable-ltdl-install"
   ])
   if test x"$enable_ltdl_install" = x"yes"; then
-    LIBLTDL=ifelse($#,1,$1,['${top_builddir}/libltdl'])/toinst/libltdl.la
+    LIBLTDL=ifelse($#,1,$1,['${top_builddir}/libltdl'])/libltdl.la
   fi
 ])
 

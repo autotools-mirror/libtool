@@ -1,5 +1,10 @@
 1999-03-09  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* libtool.m4 (AC_LIBLTDL_INSTALLABLE, AC_LIBLTDL_CONVENIENCE):
+	renamed convenience libltdl, dropped toinst hack for installable
+	* libltdl/Makefile.am: ditto
+	* libltdl/configure.in: ditto; abort if none of the macros is used
+
 	* ltmain.in: $output_objdir/$objdir/ -> $output_objdir/lt-
 
 1999-03-09  Thomas Tanner  <tanner@gmx.de>
