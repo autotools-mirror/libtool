@@ -5572,6 +5572,23 @@ are used within @code{ltmain.sh} (@pxref{Configuring}):
 The name of the system library archiver.
 @end defvar
 
+@defvar AR_FLAGS
+Flags to create an archive.
+@end defvar
+
+@defvar AR_TFLAGS
+Flags to list archive content.
+@end defvar
+
+@defvar AR_XFLAGS
+Flags to extract files (or a single file, see @var{ar_extract_one_by_one})
+from an archive.
+@end defvar
+
+@defvar AR_SEP
+Separator between @var{AR} flags (e.g. @var{AR_TFLAGS}) and @var{AR} files.
+@end defvar
+
 @defvar CC
 The name of the compiler used to configure libtool.  This will always
 contain the compiler for the current language (@pxref{Tags}).
@@ -5637,6 +5654,13 @@ using @var{export_symbols_cmds} before linking an archive.
 Set to @samp{yes} or @samp{no}.  Default is @samp{no}.
 @end defvar
 
+@defvar ar_extract_one_by_one
+Extract archive members one by one as listed by @var{AR} using the
+option @var{AR_TFLAGS} in case the archiver does not support
+extracting all archive members with the @var{AR_XFLAGS} option.
+Normally @samp{no}, enable with @samp{yes}.
+@end defvar
+
 @defvar archive_cmds
 @defvarx archive_expsym_cmds
 @defvarx old_archive_cmds
@@ -5662,6 +5686,10 @@ these commands, libtool will proceed to link against @var{$objdir/$newlib}
 instead of @var{soname}.
 @end defvar
 
+@defvar archiver_list_spec
+How to feed a file listing to the archiver.
+@end defvar
+
 @defvar build
 @defvarx build_alias
 @defvarx build_os
@@ -5679,6 +5707,11 @@ Whether libtool should build static libraries on this system.  Set to
 @samp{yes} or @samp{no}.
 @end defvar
 
+@defvar compile_tag
+Add tag specific option for the compiler. Normally disabled (i.e.
+@var{compile_tag} is empty).
+@end defvar
+
 @defvar compiler_c_o
 Whether the compiler supports the @option{-c} and @option{-o} options
 simultaneously.  Set to @samp{yes} or @samp{no}.
@@ -5689,6 +5722,26 @@ Whether the compiler has to see an object listed on the command line in
 order to successfully invoke the linker.  If @samp{no}, then a set of
 convenience archives or a set of object file names can be passed via
 linker-specific options or linker scripts.
+@end defvar
+
+@defvar dashL_envvar
+When linking, move all paths specified with @option{-L} options to
+this variable, for toolchains where it makes sense to pass the library
+search paths in an environment variable. Normally disabled (i.e.
+@var{dashL_envvar} empty).
+@end defvar
+
+@defvar dashL_envvar_spec
+When moving library search paths with @var{dashL_envvar}, prepend this
+to each @option{-L} path that is added to @var{dashL_envvar}. Unused
+if @var{dashL_envvar} is empty.
+@end defvar
+
+@defvar dashl_xform
+@code{sed} expression for transforming -l options for the linker. The
+input to the @code{sed} instance is the original argument to the
+@option{-l} option, the output is fed as an arguments to the linker.
+Normally disabled (i.e. @var{dashl_xform} empty).
 @end defvar
 
 @defvar dlopen_support
@@ -5748,6 +5801,16 @@ On some systems, the linker always hardcodes paths to dependent libraries
 into the output.  In this case, @var{fast_install} is never set to @samp{yes},
 and relinking at install time is triggered.  This also means that @var{DESTDIR}
 installation does not work as expected.
+@end defvar
+
+@defvar file_magic_glob
+How to find potential files when @var{deplibs_check_method} is
+@samp{file_magic}. @var{file_magic_glob} is a @code{sed} expression,
+and the @code{sed} instance is fed potential files, that is
+transformed by the @var{file_magic_glob} expression. Useful when the
+shell does not support the shell option @code{nocaseglob}, making
+@var{want_nocaseglob} inappropriate. Normally disabled (i.e.
+@var{file_magic_glob} empty).
 @end defvar
 
 @defvar finish_cmds
@@ -5925,6 +5988,10 @@ Whether files must be locked to prevent conflicts when compiling
 simultaneously.  Set to @samp{yes} or @samp{no}.
 @end defvar
 
+@defvar nm_file_list_spec
+Specify filename containing input files for @var{NM}.
+@end defvar
+
 @defvar no_builtin_flag
 Compiler flag to disable builtin functions that conflict with declaring
 external global symbols as @code{char}.
@@ -5956,6 +6023,15 @@ Commands run after installing a shared or static library, respectively.
 @defvar postuninstall_cmds
 @defvarx old_postuninstall_cmds
 Commands run after uninstalling a shared or static library, respectively.
+@end defvar
+
+@defvar postlink_cmds
+Commands necessary for finishing linking programs. @var{postlink_cmds}
+are executed immediately after the program is linked. Any occurance of
+the string @code{@@OUTPUT@@} in @var{postlink_cmds} is replaced by the
+name of the created executable (i.e. not the wrapper, if a wrapper is
+generated) prior to execution. Normally disabled (i.e.
+@var{postlink_cmds} empty).
 @end defvar
 
 @defvar reload_cmds
@@ -6020,6 +6096,13 @@ libraries.
 The library version numbering type.  One of @samp{libtool},
 @samp{freebsd-aout}, @samp{freebsd-elf}, @samp{irix}, @samp{linux},
 @samp{osf}, @samp{sunos}, @samp{windows}, or @samp{none}.
+@end defvar
+
+@defvar want_nocaseglob
+Find potential files using the shell option @code{nocaseglob} when
+@var{deplibs_check_method} is @samp{file_magic}. Normally set to
+@samp{no}, set to @samp{yes} to enable the @code{nocaseglob} shell
+option when looking for potential files.
 @end defvar
 
 @defvar whole_archive_flag_spec
