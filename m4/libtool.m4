@@ -1996,7 +1996,7 @@ newsos6)
 openbsd*)
   version_type=sunos
   need_lib_prefix=no
-  need_version=yes
+  need_version=no
   library_names_spec='${libname}${release}${shared_ext}$versuffix ${libname}${shared_ext}$versuffix'
   finish_cmds='PATH="\$PATH:/sbin" ldconfig -m $libdir'
   shlibpath_var=LD_LIBRARY_PATH
@@ -2496,12 +2496,10 @@ newos6*)
   ;;
 
 openbsd*)
-  lt_cv_file_magic_cmd=/usr/bin/file
-  lt_cv_file_magic_test_file=`echo /usr/lib/libc.so.*`
   if test -z "`echo __ELF__ | $CC -E - | $GREP __ELF__`" || test "$host_os-$host_cpu" = "openbsd2.8-powerpc"; then
-    lt_cv_deplibs_check_method='file_magic ELF [[0-9]][[0-9]]*-bit [[LM]]SB shared object'
+    lt_cv_deplibs_check_method='match_pattern /lib[[^/]]+(\.so|_pic\.a)$'
   else
-    lt_cv_deplibs_check_method='file_magic OpenBSD.* shared library'
+    lt_cv_deplibs_check_method='match_pattern /lib[[^/]]+(\.so\.[[0-9]]+\.[[0-9]]+|_pic\.a)$'
   fi
   ;;
 
@@ -4048,6 +4046,7 @@ _LT_EOF
       _LT_AC_TAGVAR(hardcode_shlibpath_var, $1)=no
       if test -z "`echo __ELF__ | $CC -E - | $GREP __ELF__`" || test "$host_os-$host_cpu" = "openbsd2.8-powerpc"; then
 	_LT_AC_TAGVAR(archive_cmds, $1)='$CC -shared $pic_flag -o $lib $libobjs $deplibs $compiler_flags'
+	_LT_AC_TAGVAR(archive_expsym_cmds, $1)='$CC -shared $pic_flag -o $lib $libobjs $deplibs $compiler_flags ${wl}-retain-symbols-file,$export_symbols'
 	_LT_AC_TAGVAR(hardcode_libdir_flag_spec, $1)='${wl}-rpath,$libdir'
 	_LT_AC_TAGVAR(export_dynamic_flag_spec, $1)='${wl}-E'
       else
@@ -5100,6 +5099,19 @@ if test -n "$compiler"; then
       ;;
     *nto* | *qnx*)
       _LT_AC_TAGVAR(ld_shlibs, $1)=yes
+      ;;
+    openbsd2*)
+      # C++ shared libraries are fairly broken
+      _LT_AC_TAGVAR(ld_shlibs, $1)=no
+      ;;
+    openbsd*)
+      _LT_AC_TAGVAR(archive_cmds, $1)='$CC -shared $pic_flag $predep_objects $libobjs $deplibs $postdep_objects $compiler_flags -o $lib'
+      _LT_AC_TAGVAR(hardcode_libdir_flag_spec, $1)='${wl}-rpath,$libdir'
+      if test -z "`echo __ELF__ | $CC -E - | grep __ELF__`" || test "$host_os-$host_cpu" = "openbsd2.8-powerpc"; then
+        _LT_AC_TAGVAR(archive_expsym_cmds, $1)='$CC -shared $pic_flag $predep_objects $libobjs $deplibs $postdep_objects $compiler_flags ${wl}-retain-symbols-file,$export_symbols -o $lib'
+        _LT_AC_TAGVAR(export_dynamic_flag_spec, $1)='${wl}-E'
+        _LT_AC_TAGVAR(whole_archive_flag_spec, $1)="$wlarc"'--whole-archive$convenience '"$wlarc"'--no-whole-archive'
+      fi
       ;;
     osf3*)
       case $cc_basename in
