@@ -1,3 +1,12 @@
+2003-08-01  Peter O'Gorman  <peter@pogma.com>
+
+	* libtool.m4 (darwin): Use "-undefined dynamic_lookup" if the
+	user set MACOSX_DEPLOYMENT_TARGET to 10.3 or greater.  
+	* libltdl/ltdl.c (dyld): Save the error from the first lookup
+	to report in lt_dlerror(). Otherwise the error is always
+	"Symbol _foo not in /usr/lib/libSystem.dylib".
+	Thanks to Chris Zubrzycki for reporting this.
+
 2003-08-01  Robert Boehne  <rboehne@gnu.org>
 
 	* libltdl/ltdl.h: Tweak the header to support visual studio.
