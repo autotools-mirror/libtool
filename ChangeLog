@@ -1,3 +1,8 @@
+2004-02-18  Gary V. Vaughan  <gary@gnu.org>
+
+	* commit (SHELL): Set it explicitly, incase some madman is using
+	tcsh as their login shell :-b
+
 2004-02-15  Peter O'Gorman  <peter@pogma.com>
 
 	* libtool.m4, ltmain.in: Rename shrext to shrext_cmds.

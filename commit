@@ -67,12 +67,13 @@
 # Report bugs to <gary@gnu.org>
 
 : ${CVS="cvs"}
-: ${SHELL="/bin/sh"}
 : ${MAILNOTIFY="./mailnotify"}
 : ${MKSTAMP="./mkstamp"}
 : ${MV="mv -f"}
 : ${RM="rm -f"}
 : ${SED="sed"}
+
+SHELL="/bin/sh"
 
 dirname="s,/[^/]*$,,"
 basename="s,^.*/,,g"
