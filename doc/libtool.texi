@@ -2796,20 +2796,23 @@ Kuratomi @email{badger@@prtr-13.ucsc.edu}.  Here's a shortened version
 of the message that contained his patch:
 
 The basic architecture is this: in @file{ltconfig.in}, the person who
-writes libtool makes sure @samp{$deplibs} is included in
-@samp{$archive_cmds} somewhere and also sets the
-@samp{$deplibs_check_method}.  @samp{deplibs_check_method}
-can be any of five things:
+writes libtool makes sure @samp{$deplibs}, or @samp{$compile_dependencylibs}
+are included in @samp{$archive_cmds} somewhere and also sets the
+@samp{$deplibs_check_method}, and maybe @samp{$file_magic_command} when
+@samp{deplibs_check_method} is file_magic.
+
+@samp{deplibs_check_method} can be one of five things:
 @table @samp
 @item file_magic [@var{regex}]
 @vindex file_magic
+@vindex file_magic_command
 looks in the library link path for libraries that have the right
-libname.  Then it runs file on the library and checks for a match
-against [regex] using expr.  I currently have linux-elf looking for the
-string: "ELF 32-bit LSB shared object" which seems to work well.  (I
-don't know whether the "32-bit" would have to change on linux-alpha
-though....  change to 'ELF [0-9]+-bit LSB shared object' might work.  I
-don't know.)  This is one that works best I think.
+libname.  Then it runs @samp{$file_magic_command} on the library and checks
+for a match against [regex] using expr.  I currently have linux-elf looking
+for the string: "ELF [0-9][0-9]*-bit [LM]SB shared object" on the output of
+@samp{file}, and some of the win32 ports looking for the string: "file format
+pei*-i386.*architecture: i386" on the output of @samp{objdump -f}.
+This is option that works best I think.
 
 @item file_regex
 @vindex file_regex

@@ -19,6 +19,7 @@ i586-pc-linux-gnulibc1       gcc       1.2c      ok
 i586-pc-linux-gnulibc2       gcc       1.2c      ok
 i586-pc-gnu0.3               gcc       1.2b      ok
 i586-dg-dguxR4.20MU01        gcc       1.2       ok
+i686-pc-cygwin32             egcs      1.2e      ok
 m88k-dg-dguxR4.12TMU01**     gcc       1.2       ok
 mips-sgi-irix5.2             gcc       1.2c      ok
 mips-sgi-irix5.3             cc        0.8       ok

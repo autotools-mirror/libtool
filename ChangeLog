@@ -1,3 +1,45 @@
+1998-12-23  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
+
+	* doc/PLATFORMS: added my cygwin32 box (i686-pc-cygwin32).
+
+	* TODO: remind myself of the win32 tasks remaining.
+	
+	* ltconfig.in (archive_cmds, archive_sym_cmds,
+	old_archive_from_new_cmds): Fixed a bug which left an a.exe in the
+	build directory.  Fixed a bug where $soname-def was never deleted.
+
+	* ltconfig.in (file_magic_command): new variable holds the command
+	(including any args) to run to generate the string to match
+	against the regex in $file_magic.  Use the variable where
+	necessary. Added to libtool header output.
+	(deplibs_check_method): use file_magic for win32, but compare the
+	output of `objdump -f' with the regex (see below).
+	(archive_cmds, archive_sym_cmds): use compile_dependencylibs for
+	each $CC invokation (see below).
+
+	* ltmain.in: Set allow_undefined to `no' for win32 variants by
+	default, otherwise it is impossible to link a dll without forcing
+	the makefile maintainer to figure out whether to pass
+	--no-undefined at every libtool invokation.
+	(compile_dependencylibs): save the list of dependency library
+	flags needed for a deplib build on win32.
+	(link_against_libtool_libs): commented out the check for this;  if
+	it is left in, then ltlibs (i.e. *.la files) cannot be deplibs for
+	subsequent links.
+	Don't add -lc to the deplibs line for win32 platforms (which don't
+	have a libc as such).
+	(file_magic_command): use this to get some output to compare with
+	the file_magic regex (instead of hardcoding `file' which doesn't
+	exist on win32.
+	* doc/libtool.texi (Porting inter-library dependencies): Updated
+	to document the changes above.
+	
+	* ltconfig.in (deplibs_check_method): Changed the file_magic regex
+	to match more linux variants.  This is less lenient than Thomas
+	Tanner's commit to fix the same problem below.
+	Reported by Joel Klecker <espy@debian.org>
+	* THANKS: added Joel Klecker <espy@debian.org>
+
 1998-12-23  Thomas Tanner  <tanner@gmx.de>
 
 	* ltconfig.in: fixed file-magic for Linux shared libraries
@@ -14,6 +56,12 @@
 	* libltdl/ltdl.c: ditto
 	* libltdl/configure.in: warn if dlopen is not supported
 	* mdemo/Makefile.am (mdemo.debug): use libltdls
+
+1998-12-22  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
+
+	* ltconfig.in: revert Thomas Tanners change to create all
+	libraries without the `lib' prefix on win32, otherwise `gcc foo.c
+	-lbar' can't find libbar.a.
 
 1998-12-22  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
@@ -34,7 +82,7 @@
 1998-12-21  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
 
 	* libtool.m4 (AM_SYS_NM_PARSE): apparently  __ptr_t is predefined
-	  on some systems - use lt_ptr_t instead.
+	on some systems - use lt_ptr_t instead.
 	* ltconfig.in: ditto.
 	* ltmain.in: ditto.
 
@@ -46,7 +94,7 @@
 	* demo/dlmain.c (main): No need to specialcase underscores in
 	dld_preloaded_symbols - it is fixed by symxfrm above!
 	* libltdl/configure.in: use AM_SYS_SYMBOL_UNDERSCORE from
-	libtool.m4 rather than reincent the wheel here =)O|
+	libtool.m4 rather than reinvent the wheel here =)O|
 
 	* ltmain.in:  Fix deplibs methods to not rely on a.out (cygwin
 	uses a.exe!).

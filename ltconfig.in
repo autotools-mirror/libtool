@@ -1034,23 +1034,23 @@ DllMain (HINSTANCE hInst, DWORD reason, LPVOID reserved)
   return TRUE;
 }
 ' > ltdll.c
-      archive_cmds='$CC -c '"`pwd`"'/ltdll.c~echo EXPORTS > $lib-def~
-      $DLLTOOL --export-all --output-def $lib-def $libobjs ltdll.$objext~
-      $CC -Wl,--base-file,$soname-base -Wl,--dll -nostartfiles -Wl,-e,__cygwin_dll_entry@12 $libobjs ltdll.$objext~
-      $DLLTOOL --as=$AS --dllname $soname --exclude-symbol=_cygwin_dll_entry@12 --def $lib-def --base-file $soname-base --output-exp $soname-exp~
-      $CC -Wl,--base-file,$soname-base $soname-exp -Wl,--dll -nostartfiles -Wl,-e,__cygwin_dll_entry@12 -o $lib $libobjs ltdll.$objext$deplibs~
-      $DLLTOOL --as=$AS --dllname $soname --exclude-symbol=_cygwin_dll_entry@12 --def $lib-def --base-file $soname-base --output-exp $soname-exp~
-      $CC $soname-exp -Wl,--dll -nostartfiles -Wl,-e,__cygwin_dll_entry@12 -o $lib $libobjs ltdll.$objext$deplibs~
+      archive_cmds='$CC -c '"`pwd`"'/ltdll.c~echo EXPORTS > $soname-def~
+      $DLLTOOL --export-all --output-def $soname-def $libobjs ltdll.$objext~
+      $CC -Wl,--base-file,$soname-base -Wl,--dll -nostartfiles -Wl,-e,__cygwin_dll_entry@12 -o $lib $libobjs ltdll.$objext$compile_dependencylibs~
+      $DLLTOOL --as=$AS --dllname $soname --exclude-symbol=_cygwin_dll_entry@12 --def $soname-def --base-file $soname-base --output-exp $soname-exp~
+      $CC -Wl,--base-file,$soname-base $soname-exp -Wl,--dll -nostartfiles -Wl,-e,__cygwin_dll_entry@12 -o $lib $libobjs ltdll.$objext$compile_dependencylibs~
+      $DLLTOOL --as=$AS --dllname $soname --exclude-symbol=_cygwin_dll_entry@12 --def $soname-def --base-file $soname-base --output-exp $soname-exp~
+      $CC $soname-exp -Wl,--dll -nostartfiles -Wl,-e,__cygwin_dll_entry@12 -o $lib $libobjs ltdll.$objext$compile_dependencylibs~
       $rm ltdll.$objext $soname-base $soname-exp'
-      archive_sym_cmds='$CC -c '"`pwd`"'/ltdll.c~echo EXPORTS > $lib-def~
-      cat "$export_symbols" >> $lib-def~
-      $CC -Wl,--base-file,$soname-base -Wl,--dll -nostartfiles -Wl,-e,__cygwin_dll_entry@12 $libobjs ltdll.$objext~
-      $DLLTOOL --as=$AS --dllname $soname --exclude-symbol=_cygwin_dll_entry@12 --def $lib-def --base-file $soname-base --output-exp $soname-exp~
-      $CC -Wl,--base-file,$soname-base $soname-exp -Wl,--dll -nostartfiles -Wl,-e,__cygwin_dll_entry@12 -o $lib $libobjs ltdll.$objext$deplibs~
-      $DLLTOOL --as=$AS --dllname $soname --exclude-symbol=_cygwin_dll_entry@12 --def $lib-def --base-file $soname-base --output-exp $soname-exp~
-      $CC $soname-exp -Wl,--dll -nostartfiles -Wl,-e,__cygwin_dll_entry@12 -o $lib $libobjs ltdll.$objext$deplibs~
+      archive_sym_cmds='$CC -c '"`pwd`"'/ltdll.c~echo EXPORTS > $soname-def~
+      cat "$export_symbols" >> $soname-def~
+      $CC -Wl,--base-file,$soname-base -Wl,--dll -nostartfiles -Wl,-e,__cygwin_dll_entry@12 -o $lib $libobjs ltdll.$objext$compile_dependencylibs~
+      $DLLTOOL --as=$AS --dllname $soname --exclude-symbol=_cygwin_dll_entry@12 --def $soname-def --base-file $soname-base --output-exp $soname-exp~
+      $CC -Wl,--base-file,$soname-base $soname-exp -Wl,--dll -nostartfiles -Wl,-e,__cygwin_dll_entry@12 -o $lib $libobjs ltdll.$objext$compile_dependencylibs~
+      $DLLTOOL --as=$AS --dllname $soname --exclude-symbol=_cygwin_dll_entry@12 --def $soname-def --base-file $soname-base --output-exp $soname-exp~
+      $CC $soname-exp -Wl,--dll -nostartfiles -Wl,-e,__cygwin_dll_entry@12 -o $lib $libobjs ltdll.$objext$compile_dependencylibs~
       $rm ltdll.$objext $soname-base $soname-exp'
-      old_archive_from_new_cmds='$DLLTOOL --as=$AS --dllname $soname --def $lib-def --output-lib $objdir/$libname.a~$rm $lib.exp'
+      old_archive_from_new_cmds='$DLLTOOL --as=$AS --dllname $soname --def $soname-def --output-lib $objdir/$libname.a~$rm $soname-def'
    else
       # When not using gcc, we currently assume that we are using
       # Microsoft Visual C++.
@@ -1146,23 +1146,23 @@ DllMain (HINSTANCE hInst, DWORD reason, LPVOID reserved)
   return TRUE;
 }
 ' > ltdll.c
-      archive_cmds='$CC -c '"`pwd`"'/ltdll.c~echo EXPORTS > $lib-def~
-      $DLLTOOL --export-all --output-def $lib-def $libobjs ltdll.$objext~
-      $CC -Wl,--base-file,$soname-base -Wl,--dll -nostartfiles -Wl,-e,__cygwin_dll_entry@12 $libobjs ltdll.$objext~
-      $DLLTOOL --as=$AS --dllname $soname --exclude-symbol=_cygwin_dll_entry@12 --def $lib-def --base-file $soname-base --output-exp $soname-exp~
-      $CC -Wl,--base-file,$soname-base $soname-exp -Wl,--dll -nostartfiles -Wl,-e,__cygwin_dll_entry@12 -o $lib $libobjs ltdll.$objext$deplibs~
-      $DLLTOOL --as=$AS --dllname $soname --exclude-symbol=_cygwin_dll_entry@12 --def $lib-def --base-file $soname-base --output-exp $soname-exp~
-      $CC $soname-exp -Wl,--dll -nostartfiles -Wl,-e,__cygwin_dll_entry@12 -o $lib $libobjs ltdll.$objext$deplibs~
-      $rm ltdll.$objext $soname-base $soname-exp'
-      archive_sym_cmds='$CC -c '"`pwd`"'/ltdll.c~echo EXPORTS > $lib-def~
-      cat "$export_symbols" >> $lib-def~
-      $CC -Wl,--base-file,$soname-base -Wl,--dll -nostartfiles -Wl,-e,__cygwin_dll_entry@12 $libobjs ltdll.$objext~
-      $DLLTOOL --as=$AS --dllname $soname --exclude-symbol=_cygwin_dll_entry@12 --def $lib-def --base-file $soname-base --output-exp $soname-exp~
-      $CC -Wl,--base-file,$soname-base $soname-exp -Wl,--dll -nostartfiles -Wl,-e,__cygwin_dll_entry@12 -o $lib $libobjs ltdll.$objext$deplibs~
-      $DLLTOOL --as=$AS --dllname $soname --exclude-symbol=_cygwin_dll_entry@12 --def $lib-def --base-file $soname-base --output-exp $soname-exp~
-      $CC $soname-exp -Wl,--dll -nostartfiles -Wl,-e,__cygwin_dll_entry@12 -o $lib $libobjs ltdll.$objext$deplibs~
-      $rm ltdll.$objext $soname-base $soname-exp'
-      old_archive_from_new_cmds='$DLLTOOL --as=$AS --dllname $soname --def $lib-def --output-lib $objdir/$libname.a~$rm $lib.exp'
+      archive_cmds='$CC -c '"`pwd`"'/ltdll.c~echo EXPORTS > $soname-def~
+      $DLLTOOL --export-all --output-def $soname-def $libobjs ltdll.$objext~
+      $CC -Wl,--base-file,$soname-base -Wl,--dll -nostartfiles -Wl,-e,__cygwin_dll_entry@12 -o $lib $libobjs ltdll.$objext$compile_dependencylibs~
+      $DLLTOOL --as=$AS --dllname $soname --exclude-symbol=_cygwin_dll_entry@12 --def $soname-def --base-file $soname-base --output-exp $soname-exp~
+      $CC -Wl,--base-file,$soname-base $soname-exp -Wl,--dll -nostartfiles -Wl,-e,__cygwin_dll_entry@12 -o $lib $libobjs ltdll.$objext$compile_dependencylibs~
+      $DLLTOOL --as=$AS --dllname $soname --exclude-symbol=_cygwin_dll_entry@12 --def $soname-def --base-file $soname-base --output-exp $soname-exp~
+      $CC $soname-exp -Wl,--dll -nostartfiles -Wl,-e,__cygwin_dll_entry@12 -o $lib $libobjs ltdll.$objext$compile_dependencylibs~
+      $rm ltdll.$objext $soname-base $soname-exp $soname-def'
+      archive_sym_cmds='$CC -c '"`pwd`"'/ltdll.c~echo EXPORTS > $soname-def~
+      cat "$export_symbols" >> $soname-def~
+      $CC -Wl,--base-file,$soname-base -Wl,--dll -nostartfiles -Wl,-e,__cygwin_dll_entry@12 -o $lib $libobjs ltdll.$objext$compile_dependencylibs~
+      $DLLTOOL --as=$AS --dllname $soname --exclude-symbol=_cygwin_dll_entry@12 --def $soname-def --base-file $soname-base --output-exp $soname-exp~
+      $CC -Wl,--base-file,$soname-base $soname-exp -Wl,--dll -nostartfiles -Wl,-e,__cygwin_dll_entry@12 -o $lib $libobjs ltdll.$objext$compile_dependencylibs~
+      $DLLTOOL --as=$AS --dllname $soname --exclude-symbol=_cygwin_dll_entry@12 --def $soname-def --base-file $soname-base --output-exp $soname-exp~
+      $CC $soname-exp -Wl,--dll -nostartfiles -Wl,-e,__cygwin_dll_entry@12 -o $lib $libobjs ltdll.$objext$compile_dependencylibs~
+      $rm ltdll.$objext $soname-base $soname-exp $soname-def'
+      old_archive_from_new_cmds='$DLLTOOL --as=$AS --dllname $soname --def $soname-def --output-lib $objdir/$libname.a~$rm $soname-def'
     else
       # When not using gcc, we currently assume that we are using
       # Microsoft Visual C++.
@@ -1556,6 +1556,7 @@ shlibpath_var=
 version_type=none
 dynamic_linker="$host_os ld.so"
 sys_lib_search_path="/lib /usr/lib /usr/local/lib"
+file_magic_command=
 deplibs_check_method='none'
 # Need to set the preceding variable on all platforms that support
 # interlibrary dependencies.
@@ -1565,11 +1566,10 @@ deplibs_check_method='none'
 # 'file_regex' -- check by looking for filenames that look like the shared
 # library in the library path.
 # 'file_magic [regex]' -- check by looking for files in library path which
-# responds to the "file" command with a given regex.  This is actually a
-# superset of the file_regex command.  If you have file on your system, you'll
-# want to use this instead.
-# Notes: regexes are run through expr.
-
+# responds to the $file_magic_command with a given regex.  This is actually a
+# superset of the file_regex command.  If you have `file' or equivalent on
+# your system, you'll want to use this instead.
+# Notes: regexs are run through expr.
 echo $ac_n "checking dynamic linker characteristics... $ac_c" 1>&6
 case "$host_os" in
 aix3* | aix4*)
@@ -1603,7 +1603,8 @@ cygwin32* | mingw32*)
     library_names_spec='${libname}`echo ${release} | sed -e 's/[.]/-/g'`${versuffix}.dll $libname.lib'
   fi
   dynamic_linker='Win32 ld.exe'
-  libname_spec='$name'
+  deplibs_check_method='file_magic file format pei*-i386.*architecture: i386'
+  file_magic_command='objdump -f'
   need_lib_prefix=no
   # FIXME: first we should search . and the directory the executable is in
   shlibpath_var=PATH
@@ -1663,7 +1664,8 @@ linux-gnu*)
   soname_spec='${libname}${release}.so$major'
   finish_cmds='PATH="\$PATH:/sbin" ldconfig -n $libdir'
   shlibpath_var=LD_LIBRARY_PATH
-  deplibs_check_method='file_magic ELF .* shared object'
+  deplibs_check_method='file_magic ELF [0-9][0-9]*-bit [LM]SB shared object'
+  file_magic_command=file
   sys_lib_search_path="/lib /usr/lib /usr/local/lib `echo $LD_LIBRARY_PATH | sed -e 's/:/ /g'`"
 
   if test -f /lib/ld.so.1; then
@@ -1807,7 +1809,7 @@ case "$ltmain" in
     whole_archive_flag_spec libname_spec library_names_spec soname_spec \
     RANLIB old_archive_cmds old_archive_from_new_cmds old_postinstall_cmds \
     old_postuninstall_cmds archive_cmds archive_sym_cmds postinstall_cmds postuninstall_cmds \
-    deplibs_check_method allow_undefined_flag no_undefined_flag \
+    file_magic_command deplibs_check_method allow_undefined_flag no_undefined_flag \
     finish_cmds finish_eval global_symbol_pipe \
     hardcode_libdir_flag_spec hardcode_libdir_separator sys_lib_search_path \
     compiler_c_o compiler_o_lo need_locks; do
@@ -2024,6 +2026,9 @@ postuninstall_cmds=$postuninstall_cmds
 
 # Method to check whether dependent libraries are shared objects.
 deplibs_check_method=$deplibs_check_method
+
+# Command to use when deplibs_check_method == file_magic
+file_magic_command=$file_magic_command
 
 # Flag that allows shared libraries with undefined symbols to be built.
 allow_undefined_flag=$allow_undefined_flag
