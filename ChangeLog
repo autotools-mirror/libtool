@@ -1,8 +1,12 @@
 2001-08-13  Gary V. Vaughan  <gary@gnu.org>
 
+	* libltdl/ltdl.c (find_file_callback): Fix a multiple free()
+	bug.
+	(tryall_dlopen_module): Remove some unused variables.
+
 	* libltdl/ltdl.c (lt_dlinsertsearchdir): Calculate the address
 	of the end of user_search_path correctly.
-	
+
 	* libltdl/ltdl.c (rpl_argz_stringify): New fallback implementation.
 	* ltdl.m4 (AC_LTDL_FUNC_ARGZ):  Test for argz_stringify in libc.
 	* libltdl/ltdl.c (lt_argz_insertinorder): Renamed from 

@@ -1944,7 +1944,7 @@ tryall_dlopen_module (handle, prefix, dirname, dlname)
   if (!filename)
     return 1;
 
-  sprintf (filename, "%.*s/%s", dirname_len, dirname, dlname);
+  sprintf (filename, "%.*s/%s", (int) dirname_len, dirname, dlname);
 
   /* Now that we have combined DIRNAME and MODULENAME, if there is
      also a PREFIX to contend with, simply recurse with the arguments
@@ -1971,9 +1971,6 @@ find_module (handle, dir, libdir, dlname, old_name, installed)
      const char *old_name;
      int installed;
 {
-  int	error;
-  char	*filename;
-
   /* Try to open the old library first; if it was dlpreopened,
      we want the preopened version of it, even if a dlopenable
      module is available.  */
@@ -1985,8 +1982,6 @@ find_module (handle, dir, libdir, dlname, old_name, installed)
   /* Try to open the dynamic library.  */
   if (dlname)
     {
-      size_t len;
-
       /* try to open the installed module */
       if (installed && libdir)
 	{
@@ -2200,14 +2195,12 @@ find_file_callback (filename, data1, data2)
     {
       char *dirend = strrchr (filename, '/');
 
-      LT_DLFREE (*pdir);
-      *pdir    = filename;
-      filename = 0;
-
       if (dirend > filename)
 	*dirend   = LT_EOS_CHAR;
 
-      is_done = 1;
+      LT_DLFREE (*pdir);
+      *pdir   = lt_estrdup (filename);
+      is_done = (*pdir == 0) ? -1 : 1;
     }
 
   return is_done;
