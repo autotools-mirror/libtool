@@ -205,7 +205,7 @@ LT_GLOBAL_DATA void   (*lt_dlfree)	LT_PARAMS((lt_ptr ptr))
 
 static char *strdup LT_PARAMS((const char *str));
 
-char *
+static char *
 strdup(str)
      const char *str;
 {
@@ -231,7 +231,7 @@ strdup(str)
 
 static int strcmp LT_PARAMS((const char *str1, const char *str2));
 
-int
+static int
 strcmp (str1, str2)
      const char *str1;
      const char *str2;
@@ -263,7 +263,7 @@ strcmp (str1, str2)
 
 static const char *strchr LT_PARAMS((const char *str, int ch));
 
-const char*
+static const char*
 strchr(str, ch)
      const char *str;
      int ch;
@@ -289,7 +289,7 @@ strchr(str, ch)
 
 static const char *strrchr LT_PARAMS((const char *str, int ch));
 
-const char*
+static const char*
 strrchr(str, ch)
      const char *str;
      int ch;
@@ -323,7 +323,7 @@ strrchr(str, ch)
 
 static lt_ptr memcpy LT_PARAMS((lt_ptr dest, const lt_ptr src, size_t size));
 
-lt_ptr
+static lt_ptr
 memcpy (dest, src, size)
      lt_ptr dest;
      const lt_ptr src;
@@ -347,7 +347,7 @@ memcpy (dest, src, size)
 
 static lt_ptr memmove LT_PARAMS((lt_ptr dest, const lt_ptr src, size_t size));
 
-lt_ptr
+static lt_ptr
 memmove (dest, src, size)
      lt_ptr dest;
      const lt_ptr src;
@@ -382,7 +382,7 @@ memmove (dest, src, size)
 #undef realloc
 #define realloc rpl_realloc
 
-lt_ptr
+static lt_ptr
 realloc (ptr, size)
      lt_ptr ptr;
      size_t size;
@@ -426,7 +426,7 @@ realloc (ptr, size)
 static error_t argz_append LT_PARAMS((char **pargz, size_t *pargz_len,
 					const char *buf, size_t buf_len));
 
-error_t
+static error_t
 argz_append (pargz, pargz_len, buf, buf_len)
      char **pargz;
      size_t *pargz_len;
@@ -468,7 +468,7 @@ argz_append (pargz, pargz_len, buf, buf_len)
 static error_t argz_create_sep LT_PARAMS((const char *str, int delim,
 					    char **pargz, size_t *pargz_len));
 
-error_t
+static error_t
 argz_create_sep (str, delim, pargz, pargz_len)
      const char *str;
      int delim;
@@ -531,7 +531,7 @@ argz_create_sep (str, delim, pargz, pargz_len)
 static error_t argz_insert LT_PARAMS((char **pargz, size_t *pargz_len,
 					char *before, const char *entry));
 
-error_t
+static error_t
 argz_insert (pargz, pargz_len, before, entry)
      char **pargz;
      size_t *pargz_len;
@@ -593,7 +593,7 @@ argz_insert (pargz, pargz_len, before, entry)
 static char *argz_next LT_PARAMS((char *argz, size_t argz_len,
 				    const char *entry));
 
-char *
+static char *
 argz_next (argz, argz_len, entry)
      char *argz;
      size_t argz_len;
@@ -638,7 +638,7 @@ argz_next (argz, argz_len, entry)
 static void argz_stringify LT_PARAMS((char *argz, size_t argz_len,
 				       int sep));
 
-void
+static void
 argz_stringify (argz, argz_len, sep)
      char *argz;
      size_t argz_len;
@@ -874,7 +874,7 @@ lt_dlseterror (errindex)
   return errors;
 }
 
-lt_ptr
+static lt_ptr
 lt_emalloc (size)
      size_t size;
 {
@@ -884,7 +884,7 @@ lt_emalloc (size)
   return mem;
 }
 
-lt_ptr
+static lt_ptr
 lt_erealloc (addr, size)
      lt_ptr addr;
      size_t size;
@@ -895,7 +895,7 @@ lt_erealloc (addr, size)
   return mem;
 }
 
-char *
+static char *
 lt_estrdup (str)
      const char *str;
 {
@@ -2537,7 +2537,7 @@ free_vars (dlname, oldname, libdir, deplibs)
   return 0;
 }
 
-int
+static int
 try_dlopen (phandle, filename)
      lt_dlhandle *phandle;
      const char *filename;
@@ -3027,7 +3027,7 @@ lt_dlopenext (filename)
 }
 
 
-int
+static int
 lt_argz_insert (pargz, pargz_len, before, entry)
      char **pargz;
      size_t *pargz_len;
@@ -3053,7 +3053,7 @@ lt_argz_insert (pargz, pargz_len, before, entry)
   return 0;
 }
 
-int
+static int
 lt_argz_insertinorder (pargz, pargz_len, entry)
      char **pargz;
      size_t *pargz_len;
@@ -3077,7 +3077,7 @@ lt_argz_insertinorder (pargz, pargz_len, entry)
   return lt_argz_insert (pargz, pargz_len, before, entry);
 }
 
-int
+static int
 lt_argz_insertdir (pargz, pargz_len, dirnam, dp)
      char **pargz;
      size_t *pargz_len;
@@ -3143,7 +3143,7 @@ lt_argz_insertdir (pargz, pargz_len, dirnam, dp)
   return errors;
 }
 
-int
+static int
 list_files_by_dir (dirnam, pargz, pargz_len)
      const char *dirnam;
      char **pargz;
@@ -3437,7 +3437,7 @@ lt_dlerror ()
   return error ? error : LT_DLSTRERROR (UNKNOWN);
 }
 
-int
+static int
 lt_dlpath_insertdir (ppath, before, dir)
      char **ppath;
      char *before;

@@ -1,3 +1,9 @@
+2001-09-20  Albert Chin-A-Young <china@thewrittenword.com>
+
+	* libltdl/ltdl.c: Match function return type with prototype
+	(add static initializer to some functions) to prevent warnings
+	from HP-UX cc.
+
 2001-09-21  Gary V. Vaughan  <gary@gnu.org>
 
 	* libltdl/ltdl.c: Added support for dmalloc, and uncovered some
