@@ -570,6 +570,18 @@ else
     hardcode_minus_L=yes
     ;;
 
+  # FreeBSD 2.2.[012] allows us to include c++rt0.o to get C++ constructor
+  # support.  Future versions do this automatically, but an explicit c++rt0.o
+  # doesn't break anything, and helps significantly (at the cost of a little
+  # extra space).
+  freebsd2.2*)
+    archive_cmds='$LD -Bshareable -o $lib$libobjs$deplibs /usr/lib/c++rt0.o'
+    hardcode_direct=yes
+    hardcode_minus_L=yes
+    hardcode_shlibpath_var=no
+    ;;
+
+  # Unfortunately, older versions of FreeBSD 2 don't have this feature.
   freebsd2*)
     archive_cmds='$LD -Bshareable -o $lib$libobjs$deplibs'
     hardcode_direct=yes
@@ -577,6 +589,7 @@ else
     hardcode_shlibpath_var=no
     ;;
 
+  # FreeBSD 3, at last, uses gcc -shared to do shared libraries.
   freebsd3*)
     archive_cmds='$CC -shared -o $lib$libobjs$deplibs'
     hardcode_direct=yes

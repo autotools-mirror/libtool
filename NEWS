@@ -1,11 +1,13 @@
 NEWS - list of user-visible changes between releases of GNU libtool.
 
-New in 0.9e:
+New in 0.9f:
 * Bug fixes.
 * Automake support for Libtool now uses the LTLIBRARIES primary.  See
   the Automake documentation for more information.
 * Added new `--disable-static' flag to disable building static
   libraries on platforms that have shared libs.
+* New `-allow-undefined' flag to build shared libs that contain
+  references to unresolved symbols.
 * Basic support for dynamically loaded modules: new `-export-dynamic'
   linking flag and corresponding `dlname' mode.
 * New `--features' flag to display configured libtool attributes.

@@ -2,6 +2,8 @@ Thu Jun  5 10:40:15 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltconfig.in (allow_undefined_flag): New variable that implements
 	`-allow-undefined'.
+	(archive_cmds): Enable C++ constructors for FreeBSD 2.2.  From
+	David Nugent.
 
 	* ltmain.sh.in (link): Accept new `-allow-undefined' flag when
  	building libtool libraries.  This tells libtool to allow

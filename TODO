@@ -1,21 +1,7 @@
 Before 1.0:
 ***********
 
-* Document inter-library dependencies, and write a flag to allow
-undefined symbols (`-allow-undefined').  We'll need a special flag for
-OSF/1 not to warn about this
-(allow_undefined_flag='-expect_unresolved', inserted into
-archive_cmds).
-
-* The way we'll implement `-allow-undefined' is to have link mode
-search for `${allow_undefined_flag}' in the archive_cmds.  If it finds
-it, then either set allow_undefined_flag to empty, or leave it alone
-(if -allow-undefined is specified).  If it does not exist (such as on
-AIX), then create a static library instead.
-
-* Document the -export-dynamic flag, and the new dlname mode.  These
-should be discussed under a node called `Dynamic modules' or
-something.
+* Finish documenting inter-library dependencies and `-allow-undefined'.
 
 After 1.0:
 **********

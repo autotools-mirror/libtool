@@ -131,7 +131,7 @@ Invoking @file{libtool}
 
 * Compile mode::                Creating library object files.
 * Link mode::                   Generating executables and libraries.
-* Dlname mode::                 Obtaining a file to @code{dlopen(3)}.
+* Dlname mode::                 Obtaining a filename to @code{dlopen(3)}.
 * Install mode::                Making libraries and executables public.
 * Finish mode::                 Completing a library installation.
 * Uninstall mode::              Removing executables and libraries.
@@ -163,6 +163,12 @@ Library interface versions
 Tips for interface design
 
 * C header files::              How to write portable include files.
+
+Dlopened modules
+
+* Exporting dynamic symbols::   Preparing files to be dlopened.
+* Finding the dlname::          Choosing the right file to @code{dlopen(3)}.
+* Dlopen issues::               Unresolved problems that need your attention.
 
 Using libtool with other languages
 
@@ -416,9 +422,9 @@ library, @file{libhello}, out of the files @file{foo.c} and
 
 Note that the @file{foo.c} source file uses the cos(3) math library
 function, which is usually found in the standalone math library, and not
-the C library.  So, whenever we link an executable or a library against
-@file{foo.o} or @file{foo.lo}, we need to add @kbd{-lm} to the end of
-the link line.
+the C library.  So, we need to add @kbd{-lm} to the end of
+the link line whenever we link @file{foo.o} or @file{foo.lo} into an
+executable or a library (@pxref{Inter-library dependencies}).
 
 The same rule applies whenever you use functions that don't appear in
 the standard C library@dots{} you need to add the appropriate
@@ -972,9 +978,14 @@ output file (with the @samp{-o} flag) from several object files.
 The following components of @var{mode-args} are treated specially:
 
 @table @samp
+@item -allow-undefined
+If @var{output-file} is a libtool library, allow it to contain
+references to symbols that aren't defined in that library or its
+dependencies (@pxref{Inter-library dependencies}).
+
 @item -export-dynamic
 Allow symbols from @var{output-file} to be resolved with @code{dlsym(3)}
-(@pxref{Dynamic modules}).
+(@pxref{Dlopened modules}).
 
 @item -L@var{libdir}
 Search @var{libdir} for required libraries that have already been
@@ -1007,7 +1018,8 @@ If not specified, each of these variables defaults to 0
 If the @var{output-file} ends in `.la', then a libtool library is
 created, which must be built only from library objects (`.lo' files).
 The @samp{-rpath} option is required.  In the current implementation,
-libtool libraries may not depend on other uninstalled libtool libraries.
+libtool libraries may not depend on other uninstalled libtool libraries
+(@pxref{Inter-library dependencies}).
 
 If the @var{output-file} ends in `.a', then a standard library is
 created using @file{ar} and possibly @file{ranlib}.
@@ -1028,6 +1040,9 @@ modules}).
 Each of the @var{mode-args} specifies a libtool library that was linked
 using the @samp{-export-dynamic} option (@pxref{Link mode}).  The names
 of the modules to load are printed to standard output, one per line.
+
+If one of the @var{mode-args} was not linked with
+@samp{-export-dynamic}, then an error is displayed.
 
 @node Install mode
 @section Install mode
@@ -1752,11 +1767,20 @@ compilers, especially pre-ANSI compilers.
 The @code{long double} type is not supported by many compilers.
 @end itemize
 
+@node Inter-library dependencies
+@chapter Inter-library dependencies
+
+By definition, every shared library system provides a way for
+executables to depend on libraries, so that symbol resolution is
+deferred until runtime.
+
+FIXME: finish this chapter
+
 @node Dlopened modules
 @chapter Dlopened modules
 
 It can sometimes be confusing to discuss @dfn{dynamic linking}, because
-the term is used to refer to two completely different concepts:
+the term is used to refer to two different concepts:
 
 @enumerate 1
 @item
@@ -1784,8 +1808,8 @@ language.
 On most operating systems, dlopened modules must be compiled as PIC.
 This restriction simplifies the implementation of the @code{dlopen(3)}
 family of functions by avoiding symbol relocation.  ``True'' dlopen
-implementations (such as the unportable GNU DLD 3 implementation,
-@xref{Top, , The DLD Manual, dld, The DLD Manual}) don't have this
+implementations, such as the unportable GNU DLD 3 implementation
+(@pxref{Top, , The DLD Manual, dld, The DLD Manual}), don't have this
 restriction, as they can perform relocation at runtime.
 
 As of version @value{VERSION}, libtool provides only minimal support for
@@ -1800,17 +1824,106 @@ dlopen-accessible modules.  It is important to remember that these are
 experimental features, and not to rely on them for easy answers to the
 problems associated with dlopened modules.
 
-FIXME:
+@menu
+* Exporting dynamic symbols::   Preparing files to be dlopened.
+* Finding the dlname::          Choosing the right file to @code{dlopen(3)}.
+* Dlopen issues::               Unresolved problems that need your attention.
+@end menu
+
 @node Exporting dynamic symbols
 @section Exporting dynamic symbols
 
 In order for a symbol to be dynamically resolved (typically using the
-@code{dlsym(3)} function), it must be declared in the object module
-where it is defined.
+@code{dlsym(3)} function), it must be specially declared in the object
+module where it is defined.
 
 Libtool provides the @samp{-export-dynamic} link flag (@pxref{Link
 mode}), which does this declaration.  You need to use this flag if you
 are linking a shared library that will be dlopened.
+
+For example, if we wanted to build a shared library, @file{libhello},
+that would later be dlopened by an application, we would add
+@samp{-export-dynamic} to the other link flags:
+
+@example
+burger$ @kbd{libtool gcc -export-dynamic -o libhello.la foo.lo \
+                hello.lo -rpath /usr/local/lib -lm}
+@end example
+
+Another situation where you would use @samp{-export-dynamic} is if
+symbols from your @emph{executable} are needed to satisfy unresolved
+references in a library you want to dlopen.  In this case, you should
+use @samp{-export-dynamic} while linking the executable that calls
+dlopen:
+
+@example
+burger$ @kbd{libtool gcc -export-dynamic -o hell-dlopener main.o}
+@end example
+
+@node Finding the dlname
+@section Finding the correct name to dlopen
+
+After a library has been linked with @samp{-export-dynamic}, it can be
+dlopened.  Unfortunately, because of the variation in library names,
+your package needs to determine the correct file to dlopen.
+
+Dlname mode (@pxref{Dlname mode}) was designed for this purpose.  It
+returns the name that should be given as the first argument to a
+@code{dlopen(3)} function call.
+
+For example, on NetBSD 1.2:
+
+@example
+burger$ @kbd{libtool --mode=dlname libhello.la}
+libhello.so.3.12
+@end example
+
+The trick is in finding a way to hardcode this name into your program at
+compilation time, so that it opens the correct library.
+
+Another option is to determine the name at runtime, by finding the
+installed @samp{.la} file, and searching it for the following lines:
+
+@example
+# The name that we can dlopen(3).
+dlname='@var{dlname}'
+@end example
+
+If @var{dlname} is empty, then the library cannot be dlopened.
+Otherwise, it gives the dlname of the library.  So, if the library was
+installed as @file{/usr/local/lib/libhello.la}, and the @var{dlname} was
+@file{libhello.so.3}, then the file to @code{dlopen(3)} is
+@file{/usr/local/lib/libhello.so.3}.
+
+@node Dlopen issues
+@section Unresolved dlopen issues
+
+The following problems are not solved by using libtool's dlopen support:
+
+@itemize @bullet
+@item
+Dlopen functions are generally only available on shared library
+platforms.  If you want your package to be portable to static platforms,
+you have to develop your own alternatives to dlopening dynamic code.
+Most reasonable solutions involve writing wrapper functions for the
+@code{dlopen(3)} family, which do package-specific tricks when dlopening
+is unsupported or not available on a given platform.
+
+@item
+There are major differences in implementations of the @code{dlopen(3)}
+family of functions.  Some platforms do not even use the same function
+names (notably HP-UX, with its @samp{shl_load(3)} family).
+
+@item
+It is the burden of the libtool user to find a way to get the results of
+dlname mode (@pxref{Dlname mode}) into the call to @code{dlopen(3)}.
+@end itemize
+
+Each of these limitations will be addressed in GNU DLD
+4.@footnote{Unfortunately, the DLD maintainer is also the libtool
+maintainer, so time spent on one of these projects takes time away from
+the other.  When libtool is reasonably stable, DLD 4 development will
+proceed.}
 
 @node Other languages
 @chapter Using libtool with other languages
