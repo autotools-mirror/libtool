@@ -10,7 +10,7 @@ if test -z "$srcdir"; then
 fi
 . $srcdir/defs || exit 1
 
-if test -f ../mdemo/hell; then :
+if test -f ../mdemo/mdemo; then :
 else
   echo "You must run mdemo-make.test before running $0" 1>&2
   exit 1
@@ -20,15 +20,15 @@ fi
 echo "Executing uninstalled programs in ../mdemo"
 
 status=0
-if ../mdemo/hell.debug ../mdemo/libfoo1.la ../mdemo/libfoo2.la; then :
+if ../mdemo/mdemo.debug ../mdemo/libfoo1.la ../mdemo/libfoo2.la; then :
 else
-  echo "$0: cannot execute ../mdemo/hell.debug" 1>&2
+  echo "$0: cannot execute ../mdemo/mdemo.debug" 1>&2
   status=1
 fi
 
-if ../mdemo/hell ../mdemo/libfoo1.la ../mdemo/libfoo2.la; then :
+if ../mdemo/mdemo ../mdemo/libfoo1.la ../mdemo/libfoo2.la; then :
 else
-  echo "$0: cannot execute ../mdemo/hell" 1>&2
+  echo "$0: cannot execute ../mdemo/mdemo" 1>&2
   status=1
 fi
 

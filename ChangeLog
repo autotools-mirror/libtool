@@ -1,3 +1,9 @@
+1998-12-20  Thomas Tanner  <tanner@gmx.de>
+
+	* autogen: configure demo, depdemo, libltdl and mdemo
+	* tests/mdemo-exec.test: renamed hell* to mdemo*
+	* tests/mdemo-inst.test: ditto
+	
 1998-12-19  Thomas Tanner  <tanner@gmx.de>
 
 	* libltdl/Makefile.am: build a normal libtool library
