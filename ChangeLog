@@ -1,3 +1,10 @@
+1998-12-14  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
+
+	* ltconfig.in (archive_cmds): tweaked for cygwin b18->b20.1
+	compatibility and fixed a bug with generating the export
+	definitions file.  This is only tested on b20.1, but should
+	work back to b18 at least.
+
 1998-12-11  Thomas Tanner  <tanner@gmx.de>
 
 	* ltmain.in: -module implies now -export-dynamic,

@@ -1032,24 +1032,24 @@ DllMain (HINSTANCE hInst, DWORD reason, LPVOID reserved)
   return TRUE;
 }
 ' > ltdll.c
-      archive_cmds='$CC -c '"`pwd`"'/ltdll.c~echo EXPORTS > $lib.exp~
-      $DLLTOOL --export-all --output-def $lib.exp~
-      $CC -Wl,--base-file,$soname-base -Wl,--dll -nostartfiles -Wl,-e,__cygwin_dll_entry@12 $libobs ltdll.$objext~
-      $DLLTOOL --as=$AS --dllname $soname --exclude-symbol=_cygwin_dll_entry@12 --def $lib.exp --base-file $soname-base --output-exp $soname-exp~
+      archive_cmds='$CC -c '"`pwd`"'/ltdll.c~echo EXPORTS > $lib-def~
+      $DLLTOOL --export-all --output-def $lib-def $libobjs ltdll.$objext~
+      $CC -Wl,--base-file,$soname-base -Wl,--dll -nostartfiles -Wl,-e,__cygwin_dll_entry@12 $libobjs ltdll.$objext~
+      $DLLTOOL --as=$AS --dllname $soname --exclude-symbol=_cygwin_dll_entry@12 --def $lib-def --base-file $soname-base --output-exp $soname-exp~
       $CC -Wl,--base-file,$soname-base $soname-exp -Wl,--dll -nostartfiles -Wl,-e,__cygwin_dll_entry@12 -o $lib $libobjs ltdll.$objext$deplibs~
-      $DLLTOOL --as=$AS --dllname $soname --exclude-symbol=_cygwin_dll_entry@12 --def $lib.exp --base-file $soname-base --output-exp $soname-exp~
+      $DLLTOOL --as=$AS --dllname $soname --exclude-symbol=_cygwin_dll_entry@12 --def $lib-def --base-file $soname-base --output-exp $soname-exp~
       $CC $soname-exp -Wl,--dll -nostartfiles -Wl,-e,__cygwin_dll_entry@12 -o $lib $libobjs ltdll.$objext$deplibs~
       $rm ltdll.$objext $soname-base $soname-exp'
-      archive_sym_cmds='$CC -c '"`pwd`"'/ltdll.c~echo EXPORTS > $lib.exp~
-      cat "$export_symbols" >> $lib.exp~
-      $CC -Wl,--base-file,$soname-base -Wl,--dll -nostartfiles -Wl,-e,__cygwin_dll_entry@12 $libobs ltdll.$objext~
-      $DLLTOOL --as=$AS --dllname $soname --exclude-symbol=_cygwin_dll_entry@12 --def $lib.exp --base-file $soname-base --output-exp $soname-exp~
+      archive_sym_cmds='$CC -c '"`pwd`"'/ltdll.c~echo EXPORTS > $lib-def~
+      cat "$export_symbols" >> $lib-def~
+      $CC -Wl,--base-file,$soname-base -Wl,--dll -nostartfiles -Wl,-e,__cygwin_dll_entry@12 $libobjs ltdll.$objext~
+      $DLLTOOL --as=$AS --dllname $soname --exclude-symbol=_cygwin_dll_entry@12 --def $lib-def --base-file $soname-base --output-exp $soname-exp~
       $CC -Wl,--base-file,$soname-base $soname-exp -Wl,--dll -nostartfiles -Wl,-e,__cygwin_dll_entry@12 -o $lib $libobjs ltdll.$objext$deplibs~
-      $DLLTOOL --as=$AS --dllname $soname --exclude-symbol=_cygwin_dll_entry@12 --def $lib.exp --base-file $soname-base --output-exp $soname-exp~
+      $DLLTOOL --as=$AS --dllname $soname --exclude-symbol=_cygwin_dll_entry@12 --def $lib-def --base-file $soname-base --output-exp $soname-exp~
       $CC $soname-exp -Wl,--dll -nostartfiles -Wl,-e,__cygwin_dll_entry@12 -o $lib $libobjs ltdll.$objext$deplibs~
       $rm ltdll.$objext $soname-base $soname-exp'
-      old_archive_from_new_cmds='$DLLTOOL --as=$AS --dllname $soname --def $lib.exp --output-lib $objdir/$libname.a~$rm $lib.exp'
-    else
+      old_archive_from_new_cmds='$DLLTOOL --as=$AS --dllname $soname --def $lib-def --output-lib $objdir/$libname.a~$rm $lib.exp'
+   else
       # When not using gcc, we currently assume that we are using
       # Microsoft Visual C++.
       with_gnu_ld=no
@@ -1144,23 +1144,23 @@ DllMain (HINSTANCE hInst, DWORD reason, LPVOID reserved)
   return TRUE;
 }
 ' > ltdll.c
-      archive_cmds='$CC -c '"`pwd`"'/ltdll.c~echo EXPORTS > $lib.exp~
-      $DLLTOOL --export-all --output-def $lib.exp~
-      $CC -Wl,--base-file,$soname-base -Wl,--dll -nostartfiles -Wl,-e,__cygwin_dll_entry@12 $libobs ltdll.$objext~
-      $DLLTOOL --as=$AS --dllname $soname --exclude-symbol=_cygwin_dll_entry@12 --def $lib.exp --base-file $soname-base --output-exp $soname-exp~
+      archive_cmds='$CC -c '"`pwd`"'/ltdll.c~echo EXPORTS > $lib-def~
+      $DLLTOOL --export-all --output-def $lib-def $libobjs ltdll.$objext~
+      $CC -Wl,--base-file,$soname-base -Wl,--dll -nostartfiles -Wl,-e,__cygwin_dll_entry@12 $libobjs ltdll.$objext~
+      $DLLTOOL --as=$AS --dllname $soname --exclude-symbol=_cygwin_dll_entry@12 --def $lib-def --base-file $soname-base --output-exp $soname-exp~
       $CC -Wl,--base-file,$soname-base $soname-exp -Wl,--dll -nostartfiles -Wl,-e,__cygwin_dll_entry@12 -o $lib $libobjs ltdll.$objext$deplibs~
-      $DLLTOOL --as=$AS --dllname $soname --exclude-symbol=_cygwin_dll_entry@12 --def $lib.exp --base-file $soname-base --output-exp $soname-exp~
+      $DLLTOOL --as=$AS --dllname $soname --exclude-symbol=_cygwin_dll_entry@12 --def $lib-def --base-file $soname-base --output-exp $soname-exp~
       $CC $soname-exp -Wl,--dll -nostartfiles -Wl,-e,__cygwin_dll_entry@12 -o $lib $libobjs ltdll.$objext$deplibs~
       $rm ltdll.$objext $soname-base $soname-exp'
-      archive_sym_cmds='$CC -c '"`pwd`"'/ltdll.c~echo EXPORTS > $lib.exp~
-      cat "$export_symbols" >> $lib.exp~
-      $CC -Wl,--base-file,$soname-base -Wl,--dll -nostartfiles -Wl,-e,__cygwin_dll_entry@12 $libobs ltdll.$objext~
-      $DLLTOOL --as=$AS --dllname $soname --exclude-symbol=_cygwin_dll_entry@12 --def $lib.exp --base-file $soname-base --output-exp $soname-exp~
+      archive_sym_cmds='$CC -c '"`pwd`"'/ltdll.c~echo EXPORTS > $lib-def~
+      cat "$export_symbols" >> $lib-def~
+      $CC -Wl,--base-file,$soname-base -Wl,--dll -nostartfiles -Wl,-e,__cygwin_dll_entry@12 $libobjs ltdll.$objext~
+      $DLLTOOL --as=$AS --dllname $soname --exclude-symbol=_cygwin_dll_entry@12 --def $lib-def --base-file $soname-base --output-exp $soname-exp~
       $CC -Wl,--base-file,$soname-base $soname-exp -Wl,--dll -nostartfiles -Wl,-e,__cygwin_dll_entry@12 -o $lib $libobjs ltdll.$objext$deplibs~
-      $DLLTOOL --as=$AS --dllname $soname --exclude-symbol=_cygwin_dll_entry@12 --def $lib.exp --base-file $soname-base --output-exp $soname-exp~
+      $DLLTOOL --as=$AS --dllname $soname --exclude-symbol=_cygwin_dll_entry@12 --def $lib-def --base-file $soname-base --output-exp $soname-exp~
       $CC $soname-exp -Wl,--dll -nostartfiles -Wl,-e,__cygwin_dll_entry@12 -o $lib $libobjs ltdll.$objext$deplibs~
       $rm ltdll.$objext $soname-base $soname-exp'
-      old_archive_from_new_cmds='$DLLTOOL --as=$AS --dllname $soname --def $lib.exp --output-lib $objdir/$libname.a~$rm $lib.exp'
+      old_archive_from_new_cmds='$DLLTOOL --as=$AS --dllname $soname --def $lib-def --output-lib $objdir/$libname.a~$rm $lib.exp'
     else
       # When not using gcc, we currently assume that we are using
       # Microsoft Visual C++.
