@@ -2,7 +2,7 @@ m4_define([_m4_divert(SCRIPT)], 100)
 m4_divert_push([SCRIPT])#!/bin/sh
 # @configure_input@
 
-# clcommit (GNU @PACKAGE@) version 0.15
+# clcommit (GNU @PACKAGE@) version 0.16
 # Written by Gary V. Vaughan <gary@gnu.org>
 # and Alexandre Oliva <aoliva@redhat.com>
 
@@ -28,27 +28,28 @@ m4_divert_push([SCRIPT])#!/bin/sh
 
 # Usage: $progname [OPTION]... [--] [file|dir ...]
 
-# -C file --changelog=file   extract commit message from specified ChangeLog
-# -zN     --compress=N       set compression level (0-9, 0=none, 9=max)
-#         --debug            enable verbose shell tracing
-# -n      --dry-run          don't commit anything
-#         --fast             same as --force --first
-# -F file --file=file        read commit message from file
-# -1      --first            extract first entry from ChangeLog, no cvs diff
-# -f      --force            don't check (unless *followed* by -n), and just
-#                            display commit message instead of running $PAGER
-#         --from=addr        override default from address in commit email
-# -l      --local            don't descend into subdirectories
-# -m msg  --message=msg      set commit message
-#         --msg=msg          same as -m
-# -q      --quiet            run cvs in quiet mode
-# -s addr --sendmail=addr    send a commit email of the differences to ADDR
-#         --signature[=file] add FILE to the end of the email (~/.signature)
-# -S TEXT --summary=TEXT     specify a TEXT subject line for the commit email
-# -t      --tla              use tla as the scm (instead of cvs)
-# -v      --verbose          run in verbose mode
-#         --version          print version information
-# -h,-?   --help             print short or long help message
+# -C FILE   --changelog=file   extract commit message from specified ChangeLog
+# -zN       --compress=N       set compression level (0-9, 0=none, 9=max)
+#           --debug            enable verbose shell tracing
+# -n        --dry-run          don't commit anything
+#           --fast             same as --force --first
+# -F file   --file=file        read commit message from file
+# -1        --first            extract first entry from ChangeLog, no cvs diff
+# -f        --force            don't check (unless *followed* by -n), and just
+#                              display commit message instead of running $PAGER
+#           --from=addr        override default from address in commit email
+# -l        --local            don't descend into subdirectories
+# -m msg    --message=msg      set commit message
+#           --msg=msg          same as -m
+# -r [FILE] --rcfile[=FILE]    read default option from FILE [./.clcommitrc]
+# -q        --quiet            run cvs in quiet mode
+# -s addr   --sendmail=addr    send a commit email of the differences to ADDR
+#           --signature[=FILE] add FILE to the end of the email [~/.signature]
+# -S TEXT   --summary=TEXT     specify a TEXT subject line for the commit email
+# -t        --tla              use tla as the scm (and cvs in a dual tree)
+# -v        --verbose          run in verbose mode
+#           --version          print version information
+# -h,-?     --help             print short or long help message
 
 # This script eases checking in changes to CVS-maintained projects
 # with ChangeLog files.  It will check that there have been no
@@ -185,6 +186,23 @@ set -e
 
       -q|--quiet)	cvs_flags="$cvs_flags -q"		;;
 
+      -r|--rcfile)	rc_file="./.clcommitrc"
+			if test $# -gt 0; then
+			  case $1 in
+			    -*)				;;
+			    *)  rc_file="$1"; shift	;;
+			  esac
+			fi
+			if test -f "$rc_file"; then :; else
+			  func_error "rcfile \`$rc_file' does not exist"
+			  exit_cmd=exit
+			  break
+			fi
+			# The funny quoting allows keeping one option per
+			# line in $rc_file:
+			eval set -- `echo \`cat $rc_file\` \\\${1+\"\\\$@\"}`
+			;;
+
       -s|--sendmail)	test $# = 0 && func_missing_arg $opt && break
       			func_quote_for_eval "$1"
       			sendmail_to="$func_quote_for_eval_result"
@@ -225,7 +243,7 @@ set -e
 			;;
 
       # Separate optargs to long options:
-      --message=*|--msg=*|--from=*|--file=*|--[[Cc]]hange[[Ll]]og=*|--compress=*|--summary=*|--sendmail=*|--signature=*)
+      --*=*)
 			arg=`echo "$opt" | $SED "$my_sed_long_arg"`
 			opt=`echo "$opt" | $SED "$my_sed_long_opt"`
 			set -- "$opt" "$arg" ${1+"$@"}
