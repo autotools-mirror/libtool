@@ -1,3 +1,9 @@
+1999-01-22  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* Makefile.am (ltconfig, ltmain.sh, TIMESTAMP): let's not assume
+	anything about the format of the date, just that it does not
+	contain `$'
+
 1999-01-22  Gary V. Vaughan  <garyv@oranda.demon.co.uk>
 
 	* configure.in (date): echo the version number during
