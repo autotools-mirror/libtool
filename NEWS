@@ -1,6 +1,8 @@
 NEWS - list of user-visible changes between releases of GNU Libtool
 
 New in 1.5b: 2003-??-??; CVS version 1.5a, Libtool team:
+* -no-suppress in compile mode shows compiler output for both PIC and non-PIC
+  object compilation.
 * Shared objects (.lo) are no longer created when `-static' is passed in
   compile mode.
 * New compile mode option `-shared' prevents creation of static objects (.o).

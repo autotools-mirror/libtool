@@ -357,6 +357,7 @@ exec_cmd=
     # Get the compilation command and the source file.
     base_compile=
     srcfile="$nonopt"  #  always keep a non-empty value in "srcfile"
+    suppress_opt=yes
     suppress_output=
     arg_mode=normal
     libobj=
@@ -411,6 +412,11 @@ exec_cmd=
 
 	-prefer-non-pic)
 	  pic_mode=no
+	  continue
+	  ;;
+
+	-no-suppress)
+	  suppress_opt=no
 	  continue
 	  ;;
 
@@ -721,7 +727,9 @@ pic_object='$objdir/$objname'
 EOF
 
       # Allow error messages only from the first compilation.
-      suppress_output=' >/dev/null 2>&1'
+      if test "$suppress_opt" = yes; then
+        suppress_output=' >/dev/null 2>&1'
+      fi
     else
       # No PIC object so indicate it doesn't exist in the libtool
       # object file.
@@ -6235,6 +6243,7 @@ Compile a source file into a libtool library object.
 This mode accepts the following additional options:
 
   -o OUTPUT-FILE    set the output file name to OUTPUT-FILE
+  -no-suppress      do not suppress compiler output for multiple passes  
   -prefer-pic       try to building PIC objects only
   -prefer-non-pic   try to building non-PIC objects only
   -shared           do not build a \`.o' file suitable for static linking
