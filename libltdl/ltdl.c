@@ -2326,8 +2326,9 @@ load_deplibs (handle, deplibs)
 	      if (strncmp(p, "-l", 2) == 0)
 		{
 		  size_t name_len = 3+ /* "lib" */ LT_STRLEN (p + 2);
-		  name = LT_EMALLOC (1+ name_len);
-		  sprintf (name, "lib%s", p+2);
+		  name = LT_EMALLOC (char, 1+ name_len);
+		  if (name)
+		    sprintf (name, "lib%s", p+2);
 		}
 	      else
 		name = lt_estrdup(p);

@@ -1,3 +1,8 @@
+2001-08-05  Gary V. Vaughan  <gary@gnu.org>
+
+	* libltdl/ltdl.c (load_deplibs): Insert missing 1st argument to
+	LT_EMALLOC.
+
 2001-08-05  Tim Van Holder  <tim.van.holder@pandora.be>
 
 	* ltdl.m4: Canonicalize descriptive text used with
