@@ -1,3 +1,13 @@
+1999-04-06  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* tests/dryrun.test: Use cmp instead of diff.
+	(before, after): Create them within ../tests.
+	(libtool): Set to `/bin/sh ./libtool' by default, but use LIBTOOL, 
+	SHELL and top_builddir from the environment if available.  For dry 
+	runs, use "$libtool -n".
+	* tests/Makefile.am (CLEANFILES): Added before and after.
+	* ltmain.in: Do not create links to object files in dry runs.
+
 1999-04-06 Thomas Tanner  <tanner@gmx.de>
 
 	* ltmain.in: added a missing line of the ILD patch

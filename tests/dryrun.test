@@ -19,34 +19,38 @@ fi
 # Change to our build directory.
 cd ../mdemo || exit 1
 
+before=../tests/before
+after=../tests/after
+libtool=${LIBTOOL-${SHELL-/bin/sh}\ ${top_builddir-.}/libtool}
+
 echo "= Running $make clean in ../mdemo"
 $make clean || exit 1
 
 $make main.o || exit 1
 mkdir .libs
-rm -f .before .after
+rm -f $before $after
 
 echo "= Making object files in ../mdemo"
-ls -l . .libs > .before
-$make LIBTOOL="libtool -n" foo1.lo foo2.lo || exit 1
-ls -l . .libs > .after
-diff .before .after > /dev/null || exit 1
+ls -l . .libs > $before
+$make LIBTOOL="$libtool -n" foo1.lo foo2.lo || exit 1
+ls -l . .libs > $after
+cmp $before $after > /dev/null || exit 1
 # Now really make them
 $make foo1.lo foo2.lo || exit 1
 
 echo "= Making libraries in ../mdemo"
-ls -l . .libs > .before
-$make LIBTOOL="libtool -n" foo1.la libfoo2.la || exit 1
-ls -l . .libs > .after
-diff .before .after > /dev/null || exit 1
+ls -l . .libs > $before
+$make LIBTOOL="$libtool -n" foo1.la libfoo2.la || exit 1
+ls -l . .libs > $after
+cmp $before $after > /dev/null || exit 1
 # Now really make them
 $make foo1.la libfoo2.la || exit 1
 
 echo "= Making programs in ../mdemo"
-ls -l . .libs > .before
-$make LIBTOOL="libtool -n" mdemo mdemo.static || exit 1
-ls -l . .libs > .after
-diff .before .after > /dev/null || exit 1
+ls -l . .libs > $before
+$make LIBTOOL="$libtool -n" mdemo mdemo.static || exit 1
+ls -l . .libs > $after
+cmp $before $after > /dev/null || exit 1
 # Now really make them
 $make mdemo mdemo.static || exit 1
 
@@ -54,31 +58,31 @@ echo "= Running $make install in ../mdemo"
 # Libtool does not create these directories
 mkdir $prefix/bin
 mkdir $prefix/lib
-ls -l . .libs > .before
-ls -lR $prefix >> .before
-$make LIBTOOL="libtool -n" install || exit 1
-ls -l . .libs > .after
-ls -lR $prefix >> .after
-diff .before .after > /dev/null || exit 1
+ls -l . .libs > $before
+ls -lR $prefix >> $before
+$make LIBTOOL="$libtool -n" install || exit 1
+ls -l . .libs > $after
+ls -lR $prefix >> $after
+cmp $before $after > /dev/null || exit 1
 # Now really run it
 $make install || exit 1
 
 echo "= Running $make uninstall in ../mdemo"
-ls -l . .libs > .before
-ls -lR $prefix >> .before
+ls -l . .libs > $before
+ls -lR $prefix >> $before
 # Libtool does not uninstall the programs, save them
 cp $prefix/bin/mdemo mdemo.sav
 cp $prefix/bin/mdemo.static mdemo.static.sav
-$make LIBTOOL="libtool -n" uninstall || exit 1
+$make LIBTOOL="$libtool -n" uninstall || exit 1
 # Restore them
 mv mdemo.sav $prefix/bin/mdemo
 mv mdemo.static.sav $prefix/bin/mdemo.static
-ls -l . .libs > .after
-ls -lR $prefix >> .after
-diff .before .after > /dev/null || exit 1
+ls -l . .libs > $after
+ls -lR $prefix >> $after
+cmp $before $after > /dev/null || exit 1
 # Now really run it
 $make uninstall || exit 1
 
-rm -f .before .after
+rm -f $before $after
 
 exit 0

@@ -48,6 +48,8 @@ TESTS_ENVIRONMENT = CC="$(CC)" CFLAGS="$(CFLAGS)" CPPFLAGS="$(CPPFLAGS)" \
 
 EXTRA_DIST = defs $(TESTS)
 
+CLEANFILES = before after # created by dryrun.test
+
 # We need to remove any files that the above tests created.
 clean-local:
 	-test -f ../cdemo/Makefile && cd ../cdemo && $(MAKE) distclean
