@@ -11,6 +11,8 @@ New in 1.3d: 2000-??-??; CVS version 1.3c, Libtool team:
   in libltdl can be used to store application specific data in handles.
 * New functions lt_dladdtype, lt_dlgettypes, lt_dlsettypes in libltdl
   can be used for adding new types of module loading.
+* New functions lt_dladderror, lt_dlseterror in libltdl can be used to
+  integrate user module loaders with lt_dlerror.
 * "-Xcompiler" and "-Wc," does now work in compile mode, too.
 * Start of support code for cross-compiling to win32.
 * libltdl can now be built as a dll with win32.

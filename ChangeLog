@@ -3,6 +3,21 @@
 	* NEWS: Updated.
 	* doc/libtool.texi (Libltdl interface): Document new entry
 	points.
+	* libltdl/ltdl.c (lt_dladderror): New function to add a user
+	defined error message to the tables used by lt_dlerror().
+	(lt_dlseterror):  New function to allow setting of last_error by
+	user modules.
+	(ltdl_error_strings): New preprocessor generated table of internal 
+	error diagnostic strings.
+	(user_error_strings): New internal list of registered user error
+	diagnostic strings.
+	(throughout!): Use error messages from ltdl_error_strings.
+	* libltdl/ltdl.h (ltdl_error_table): New macro to tabulate
+	internal diagnostic error strings alongside enum keys.
+
+	* NEWS: Updated.
+	* doc/libtool.texi (Libltdl interface): Document new entry
+	points.
 	* libltdl/ltdl.c (lt_dltype_t):  Use new type definitions for
 	existing fields.
 	(lt_dladdtype): New function to add a new ltdl dynamic loader

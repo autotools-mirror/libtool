@@ -114,6 +114,33 @@ Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 
 #include <stdlib.h>
 
+#define ltdl_error_table						\
+	LTDL_ERROR(UNKNOWN, "unknown error")				\
+	LTDL_ERROR(DLOPEN_NOT_SUPPORTED, "dlopen support not available")\
+	LTDL_ERROR(INVALID_TYPE, "invalid dltype")			\
+	LTDL_ERROR(INIT_TYPE, "dltype initialization failed")		\
+	LTDL_ERROR(FILE_NOT_FOUND, "file not found")			\
+	LTDL_ERROR(DEPLIB_NOT_FOUND, "dependency library not found")	\
+	LTDL_ERROR(NO_SYMBOLS, "no symbols defined")			\
+	LTDL_ERROR(CANNOT_OPEN, "can't open the module")		\
+	LTDL_ERROR(CANNOT_CLOSE, "can't close the module")		\
+	LTDL_ERROR(SYMBOL_NOT_FOUND, "symbol not found")		\
+	LTDL_ERROR(NO_MEMORY, "not enough memory")			\
+	LTDL_ERROR(INVALID_HANDLE, "invalid module handle")		\
+	LTDL_ERROR(BUFFER_OVERFLOW, "internal buffer overflow")		\
+	LTDL_ERROR(SHUTDOWN, "library already sutdown")
+
+#ifdef __STDC__ 
+#  define LTDL_ERROR(name, diagnostic)	LTDL_ERROR_##name,
+#else
+#  define LTDL_ERROR(name, diagnostic)	LTDL_ERROR/**/name,
+#endif
+enum {
+	ltdl_error_table
+	LTDL_ERROR_MAX
+};
+#undef LTDL_ERROR
+
 #ifdef _LTDL_COMPILE_
 typedef	struct lt_dlhandle_t *lt_dlhandle;
 #else
@@ -170,6 +197,8 @@ extern lt_ptr_t lt_dlgetdata LTDL_PARAMS((lt_dlhandle handle));
 extern const lt_dlinfo *lt_dlgetinfo LTDL_PARAMS((lt_dlhandle handle));
 extern int lt_dlforeach LTDL_PARAMS((
 		int (*func)(lt_dlhandle handle, lt_ptr_t data), lt_ptr_t data));
+extern int lt_dladderror LTDL_PARAMS((const char *diagnostic));
+extern int lt_dlseterror LTDL_PARAMS((int errorcode));
 
 #define LTDL_SET_PRELOADED_SYMBOLS() 		LTDL_STMT_START{	\
 	extern const lt_dlsymlist lt_preloaded_symbols[];		\

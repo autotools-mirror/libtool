@@ -3013,6 +3013,33 @@ Return @code{NULL} if no errors have occurred since initialization
 or since it was last called.
 @end deftypefun
  
+@deftypefun int lt_dladderror (@w{const char *@var{diagnostic}})
+This function allows you to integrate your own error messages into
+@code{lt_dlerror}.  Pass in a suitable diagnostic message for return by
+@code{lt_dlerror}, and an error identifier for use with @code{lt_dlseterror}
+is returned.
+
+If the allocation of an identifier fails, this function returns -1.
+
+@example
+int myerror = lt_dladderror ("Doh!");
+if (myerror < 0)
+  perror (lt_dlerror ());
+@end example
+@end deftypefun
+
+@deftypefun int lt_dlseterror (@w{int @var{errorcode}})
+When writing your own module loaders, you should use this function to raise
+errors so that they are propogated through the @code{lt_dlerror} interface.
+All of the standard errors used by libltdl are declared in @file{ltdl.h}, or
+you can add more of your own with @code{lt_dladderror}.  This function returns 
+0 on success.
+
+@example
+if (lt_dlseterror (LTDL_ERROR_NO_MEMORY) != 0)
+  perror (lt_dlerror ());
+@end example
+
 @deftypefun int lt_dlpreload (const lt_dlsymlist *@var{preloaded})
 Register the list of preloaded modules @var{preloaded}.
 If @var{preloaded} is @code{NULL}, then all previously registered
