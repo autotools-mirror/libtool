@@ -1795,7 +1795,7 @@ else
   if test "$cross_compiling" = yes; then
     lt_cv_dlopen_self=cross
   else
-    cat > conftest.c <<EOF
+    cat > conftest.$ac_ext <<EOF
 #line @LINENO@ "ltconfig"
 
 #if HAVE_DLFCN_H
@@ -1868,7 +1868,7 @@ else
   if test "$cross_compiling" = yes; then
     lt_cv_dlopen_self_static=cross
   else
-    cat > conftest.c <<EOF
+    cat > conftest.$ac_ext <<EOF
 #line @LINENO@ "ltconfig"
 
 #if HAVE_DLFCN_H

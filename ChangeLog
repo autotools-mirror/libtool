@@ -1,3 +1,11 @@
+2000-09-20  Ossama Othman  <ossama@debian.org>
+
+	* ltconfig.in (lt_cv_dlopen_self, lt_cv_dlopen_self_static): Use
+	"$ac_ext" as test program extension instead of the hard-coded
+	"c" because the link command expects a test program ending with
+	the former.
+	Reported by Bob Friesenhahn <bfriesen@simple.dallas.tx.us>
+
 2000-09-15  Nick Hudson  <nick@nthcliff.demon.co.uk>
 
 	* ltcf-cxx.sh (netbsd): Improved support.
