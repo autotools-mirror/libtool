@@ -1,5 +1,8 @@
 2000-09-04  Alexandre Oliva  <aoliva@redhat.com>
 
+	* Makefile.am (libtool, clibtool): Pass CONFIG_SHELL along with
+	ECHO down to ltconfig.
+
 	* ltconfig.in (hardcode_libdir_flag_spec, export_dynamic_flag_spec):
 	Use ${wl}, not ${wlarc}.
 
