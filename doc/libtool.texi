@@ -2222,6 +2222,28 @@ If @command{libtoolize} detects an explicit call to
 autoconf, The Autoconf Manual}) in your @file{configure.ac}, it will
 put the Libtool macros in the specified directory.
 
+In the future other Autotools will automatically check the contents of
+@code{AC_CONFIG_MACRO_DIR}, but at the moment it is more portable to
+add the macro directory to @code{ACLOCAL_AMFLAGS} in
+@file{Makefile.am}, which is where the tools currently look.  If
+@command{libtoolize} doesn't see @code{AC_CONFIG_MACRO_DIR}, it too
+will honour the first @samp{-I} argument in @code{ACLOCAL_AMFLAGS}
+when choosing a directory to store libtool configuration macros in.
+It is perfectly sensible to use both @code{AC_CONFIG_MACRO_DIR} and
+@code{ACLOCAL_AMFLAGS}, as long as they are kept in synchronisation.
+
+@example
+ACLOCAL_AMFLAGS = -I m4
+@endif
+
+When you bootstrap your project with @command{aclocal}, then you will
+need to explicitly pass the same macro directory with
+@command{aclocal}'s @samp{-I} flag:
+
+@example
+trick$ @kbd{aclocal -I m4}
+@end example
+
 @findex AC_CONFIG_AUX_DIR
 If @command{libtoolize} detects an explicit call to
 @code{AC_CONFIG_AUX_DIR} (@pxref{Input, , The Autoconf Manual,
