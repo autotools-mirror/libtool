@@ -1634,12 +1634,13 @@ affects only the way @code{ltconfig} runs tests, not the produced
 
 @defvar NM
 Program to use rather than checking for @code{nm}.
+@end defvar
 
 @defvar RANLIB
 Program to use rather than checking for @code{ranlib}.
 @end defvar
 
-@devar LN_S
+@defvar LN_S
 A command that creates a link of a program, a soft-link if possible, a
 hard-link otherwise.
 @end defvar
@@ -1647,10 +1648,12 @@ hard-link otherwise.
 @defvar DLLTOOL
 Program to use rather than checking for @code{dlltool}.  Only meaningful 
 for MS-Windows.
+@end defvar
 
 @defvar AS
 Program to use rather than checking for @code{as}.  Only meaningful for
 MS-Windows.
+@end defvar
 
 @node ltconfig example
 @subsection Using @code{ltconfig}
