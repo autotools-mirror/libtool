@@ -514,16 +514,56 @@ sys_wll_exit LTDL_PARAMS((void))
 	return 0;
 }
 
+/* Forward declaration; required to implement handle search below. */
+static lt_dlhandle handles;
+
 static int
 sys_wll_open (handle, filename)
 	lt_dlhandle handle;
 	const char *filename;
 {
-	handle->handle = LoadLibrary(filename);
-	if (!handle->handle) {
+	lt_dlhandle cur;
+	char *searchname = NULL;
+	char *ext = strrchr(filename, '.');
+
+	if (ext) {
+		/* FILENAME already has an extension. */
+		searchname = strdup(filename);
+	} else {
+		/* Append a `.' to stop Windows from adding an
+		   implicit `.dll' extension. */
+		searchname = (char*)lt_dlmalloc(2+ strlen(filename));
+		strcpy(searchname, filename);
+		strcat(searchname, ".");
+	}
+    
+	handle->handle = LoadLibrary(searchname);
+	lt_dlfree(searchname);
+	
+	/* libltdl expects this function to fail if it is unable
+	   to physically load the library.  Sadly, LoadLibrary
+	   will search the loaded libraries for a match and return
+	   one of them if the path search load fails.
+
+	   We check whether LoadLibrary is returning a handle to
+	   an already loaded module, and simulate failure if we
+	   find one. */
+	cur = handles;
+	while (cur) {
+		if (!cur->handle) {
+			cur = 0;
+			break;
+		}
+		if (cur->handle == handle->handle)
+			break;
+		cur = cur->next;
+	}
+
+	if (cur || !handle->handle) {
 		last_error = cannot_open_error;
 		return 1;
 	}
+
 	return 0;
 }
 
