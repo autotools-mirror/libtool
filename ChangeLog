@@ -1,4 +1,10 @@
 2004-01-23  Scott James Remnant  <scott@netsplit.com>
+
+	* libtoolize.in: Fix libtoolize so the cd command run when
+	AC_CONFIG_AUX_DIR is used is shown when --dry-run is given.
+	(Debian Bug #153699)
+
+2004-01-23  Scott James Remnant  <scott@netsplit.com>
 	* ltmain.in: include newline in "sensible default" for IFS.
 	(Debian Bug #98492 and #95447)
 
