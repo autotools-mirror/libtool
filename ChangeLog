@@ -1,3 +1,8 @@
+2000-09-03  Alexandre Oliva  <aoliva@redhat.com>
+
+	* ltmain.in (variables_saved_for_relink): Attempt to unset them
+	instead of setting them to an empty string.
+
 2000-09-02  Alexandre Oliva  <aoliva@redhat.com>
 
 	* demo/Makefile.am: Don't extract configuration variables directly
