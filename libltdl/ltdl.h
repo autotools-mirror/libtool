@@ -175,7 +175,7 @@ extern	int	    lt_dlisresident	LT_PARAMS((lt_dlhandle handle));
 
 typedef void	lt_dlmutex_lock		LT_PARAMS((void));
 typedef void	lt_dlmutex_unlock	LT_PARAMS((void));
-typedef void	lt_dlmutex_seterror	LT_PARAMS((const char *error));
+typedef void	lt_dlmutex_seterror	LT_PARAMS((const char *errmsg));
 typedef const char *lt_dlmutex_geterror	LT_PARAMS((void));
 
 extern	int	lt_dlmutex_register	LT_PARAMS((lt_dlmutex_lock *lock,

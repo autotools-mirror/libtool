@@ -1,5 +1,17 @@
 2001-07-02  Gary V. Vaughan  <gary@gnu.org>
 
+	Cleanup of libltdl:
+	* ltdl.c (lt_dladderror): Don't use `index' as a variable name,
+	since it is a function on BSD based boxes.
+	(lt_dlseterror): Ditto.
+	(lt_dlexit): Remove unused errormsg declaration.
+	(foreach_dirinpath):  Make sure filename is initialised.
+	(find_handle):  Return NULL for a failed search.
+	(foreachfile_callback): Don't reuse data2 symbol from prototype
+	in func declaration to prevent symbol shadowing.
+	* ltdl.h (lt_dlmutex_seterror): Don't use `error' as a parameter
+	name, since it is a function on glibc boxes.
+
 	* libtoolize.in:  Display --version in the same format as
 	autoconf and automake.
 	* ltmain.in: Ditto.

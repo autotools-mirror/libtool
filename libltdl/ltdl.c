@@ -302,23 +302,23 @@ int
 lt_dladderror (diagnostic)
      const char *diagnostic;
 {
-  int		index	 = 0;
+  int		errindex = 0;
   int		result	 = -1;
   const char  **temp     = (const char **) 0;
 
   LT_DLMUTEX_LOCK ();
 
-  index	 = errorcount - LT_ERROR_MAX;
-  temp = LT_DLREALLOC (const char *, user_error_strings, 1 + index);
+  errindex = errorcount - LT_ERROR_MAX;
+  temp = LT_DLREALLOC (const char *, user_error_strings, 1 + errindex);
   if (temp == 0)
     {
       LT_DLMUTEX_SETERROR (LT_DLSTRERROR (NO_MEMORY));
     }
   else
     {
-      user_error_strings	= temp;
-      user_error_strings[index] = diagnostic;
-      result			= errorcount++;
+      user_error_strings		= temp;
+      user_error_strings[errindex]	= diagnostic;
+      result				= errorcount++;
     }
 
   LT_DLMUTEX_UNLOCK ();
@@ -327,20 +327,20 @@ lt_dladderror (diagnostic)
 }
 
 int
-lt_dlseterror (index)
-     int index;
+lt_dlseterror (errindex)
+     int errindex;
 {
   int		errors	 = 0;
 
   LT_DLMUTEX_LOCK ();
 
-  if (index >= errorcount || index < 0)
+  if (errindex >= errorcount || errindex < 0)
     {
       /* Ack!  Error setting the error message! */
       LT_DLMUTEX_SETERROR (LT_DLSTRERROR (INVALID_ERRORCODE));
       ++errors;
     }
-  else if (index < LT_ERROR_MAX)
+  else if (errindex < LT_ERROR_MAX)
     {
       /* No error setting the error message! */
       LT_DLMUTEX_SETERROR (lt_dlerror_strings[errorcount]);
@@ -1392,8 +1392,6 @@ lt_dlpreload (preloaded)
     }
   else
     {
-      const char *errormsg = 0;
-
       presym_free_symlists();
   
       LT_DLMUTEX_LOCK ();
@@ -1422,7 +1420,6 @@ lt_dlexit ()
 {
   /* shut down libltdl */
   lt_dlloader *loader;
-  const char  *errormsg;
   int	       errors   = 0;
 
   LT_DLMUTEX_LOCK ();
@@ -1720,7 +1717,8 @@ foreach_dirinpath (search_path, base_name, func, data1, data2)
   int	result		= 0;
   int	filenamesize	= 0;
   int	lenbase		= LT_DLSTRLEN (base_name);
-  char *filename, *canonical, *next;
+  char *filename	= 0;
+  char *canonical, *next;
 
   LT_DLMUTEX_LOCK ();
 
@@ -1865,7 +1863,10 @@ find_handle (search_path, base_name, handle)
      const char *base_name;
      lt_dlhandle *handle;
 {
-  foreach_dirinpath (search_path, base_name, find_handle_callback, handle, 0);
+  if (!foreach_dirinpath (search_path, base_name, find_handle_callback,
+			  handle, 0))
+    return 0;
+
   return handle;
 }
 
@@ -2552,8 +2553,8 @@ foreachfile_callback (dirname, data1, data2)
      lt_ptr data1;
      lt_ptr data2;
 {
-  int (*func) LT_PARAMS((const char *filename, lt_ptr data2))
-	= (int (*) LT_PARAMS((const char *filename, lt_ptr data2))) data1;
+  int (*func) LT_PARAMS((const char *filename, lt_ptr data))
+	= (int (*) LT_PARAMS((const char *filename, lt_ptr data))) data1;
 
   char *filename	= 0;
   int	filenamesize	= 0;
