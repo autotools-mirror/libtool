@@ -146,3 +146,10 @@ install-data-local:
 install-data-hook:
 	chmod +x $(DESTDIR)$(pkgdatadir)/config.guess
 	chmod +x $(DESTDIR)$(pkgdatadir)/config.sub
+
+dist-hook:
+## Ship README-alpha only in alpha release, but renamed to README
+	@case $(VERSION) in \
+	  *[a-z]) mv $(distdir)/README-alpha $(distdir)/README ;; \
+	  *)	  rm -f $(distdir)/README-alpha ;; \
+	esac

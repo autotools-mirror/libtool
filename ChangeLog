@@ -1,5 +1,8 @@
 2004-08-29  Gary V. Vaughan  <gary@gnu.org>
 
+	* Makefile.am (dist-hook): Always distribute just a README file,
+	but take its contents from README-alpha for alpha releases.
+
 	* TODO: Reformat.  Removed some items that have been implemented.
 
 2004-08-29  Gary V. Vaughan  <gary@gnu.org>
