@@ -3593,7 +3593,7 @@ _LT_EOF
 	fi~
 	$CC -shared $output_objdir/$soname.def $libobjs $deplibs $compiler_flags -o $output_objdir/$soname ${wl}--image-base=0x10000000  ${wl}--out-implib,$lib'
       else
-	ld_shlibs=no
+	_LT_TAGVAR(ld_shlibs, $1)=no
       fi
       ;;
 
