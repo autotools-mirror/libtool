@@ -45,20 +45,39 @@ libtoolize: $(srcdir)/libtoolize.in $(top_builddir)/config.status
 	CONFIG_FILES=libtoolize CONFIG_HEADERS= $(top_builddir)/config.status
 	chmod +x libtoolize
 
-# Do line number substitution, as well as PACKAGE and VERSION.
+# TSDEPS will be defined to TSDEPS_DIST at `make dist' time
+TSDEPS =
+TSDEPS_DIST = ChangeLog libtool.m4
+
+.PHONY: timestamps update-timestamps
+timestamps distdir: update-timestamps
+update-timestamps:
+	@if (cd $(srcdir) && test -d CVS && \
+	    cvs -n update $(TSDEPS_DIST) | grep '^M'); then \
+		echo "Cannot make dist before commit"; exit 1; else :; fi
+	$(MAKE) TSDEPS="$(TSDEPS_DIST)" $(srcdir)/ltconfig $(srcdir)/ltmain.sh
+
+# Do line number substitution, as well as PACKAGE, VERSION and TIMESTAMP.
 # Line numbering transliterated from a section in autoconf (Autoconf 2.12).
-$(srcdir)/ltconfig: $(srcdir)/ltconfig.in $(top_srcdir)/configure.in
+$(srcdir)/ltconfig: $(srcdir)/ltconfig.in $(top_srcdir)/configure.in $(TSDEPS)
 	rm -f ltconfig.T
+	date=`sed 's/.*\$$Date$$]*\)\$$.*/ (\1)/;t;d' \
+		< $(srcdir)/ChangeLog` && \
 	$(AWK) '/@LINENO@/ { printf "%d:", NR } { print }' $(srcdir)/ltconfig.in | \
 	  sed -e 's/@''PACKAGE@/@PACKAGE@/' -e 's/@''VERSION@/@VERSION@/' \
-	      -e '/@LINENO@/s/^\([0-9][0-9]*\):\(.*\)@LINENO@/\2\1/' > ltconfig.T
+	      -e "s/@""TIMESTAMP@/$$date/" \
+	      -e '/@LINENO@/s/^\([0-9][0-9]*\):\(.*\)@LINENO@/\2\1/' \
+		> ltconfig.T
 	chmod +x ltconfig.T
 	mv -f ltconfig.T $@ || \
 	(rm -f $@ && cp ltconfig.T $@ && rm -f ltconfig.T)
 
-$(srcdir)/ltmain.sh: $(srcdir)/ltmain.in $(top_srcdir)/configure.in
+$(srcdir)/ltmain.sh: $(srcdir)/ltmain.in $(top_srcdir)/configure.in $(TSDEPS)
 	rm -f ltmain.shT
-	sed -e 's/@''PACKAGE@/@PACKAGE@/' -e 's/@''VERSION@/@VERSION@/' $(srcdir)/ltmain.in > ltmain.shT
+	date=`sed 's/.*\$$Date$$]*\)\$$.*/ (\1)/;t;d' \
+		< $(srcdir)/ChangeLog` && \
+	sed -e 's/@''PACKAGE@/@PACKAGE@/' -e 's/@''VERSION@/@VERSION@/' \
+	    -e "s/@""TIMESTAMP@/$$date/" $(srcdir)/ltmain.in > ltmain.shT
 	mv -f ltmain.shT $@ || \
 	(rm -f $@ && cp ltmain.shT $@ && rm -f ltmain.shT)
 

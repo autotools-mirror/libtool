@@ -160,6 +160,7 @@ progname=`$echo "X$0" | $Xsed -e 's%^.*/%%'`
 PROGRAM=ltconfig
 PACKAGE=@PACKAGE@
 VERSION=@VERSION@
+TIMESTAMP="@TIMESTAMP@"
 ac_compile='${CC-cc} -c $CFLAGS $CPPFLAGS conftest.c 1>&5'
 ac_link='${CC-cc} -o conftest $CFLAGS $CPPFLAGS $LDFLAGS conftest.c $LIBS 1>&5'
 rm="rm -f"
@@ -262,7 +263,7 @@ EOM
   --output | -o) prev=ofile ;;
   --output=*) ofile="$optarg" ;;
 
-  --version) echo "$PROGRAM (GNU $PACKAGE) $VERSION"; exit 0 ;;
+  --version) echo "$PROGRAM (GNU $PACKAGE) $VERSION$TIMESTAMP"; exit 0 ;;
 
   --with-gcc) with_gcc=yes ;;
   --with-gnu-ld) with_gnu_ld=yes ;;
@@ -1939,7 +1940,7 @@ case "$ltmain" in
 #! $SHELL
 
 # `$echo "$ofile" | sed 's%^.*/%%'` - Provide generalized library-building support services.
-# Generated automatically by $PROGRAM (GNU $PACKAGE $VERSION)
+# Generated automatically by $PROGRAM (GNU $PACKAGE $VERSION$TIMESTAMP)
 # NOTE: Changes made to this file will be lost: look at ltconfig or ltmain.sh.
 #
 # Copyright (C) 1996-1999 Free Software Foundation, Inc.
@@ -1990,7 +1991,7 @@ EOF
   $rm "$cfgfile"
   cat <<EOF > "$cfgfile"
 # `$echo "$cfgfile" | sed 's%^.*/%%'` - Libtool configuration file.
-# Generated automatically by $PROGRAM (GNU $PACKAGE $VERSION)
+# Generated automatically by $PROGRAM (GNU $PACKAGE $VERSION$TIMESTAMP)
 EOF
   ;;
 esac
@@ -2007,7 +2008,7 @@ cat <<EOF >> "$cfgfile"
 # debugging $progname, is in ./config.log if it exists.
 
 # The version of $progname that generated this script.
-LTCONFIG_VERSION=$VERSION
+LTCONFIG_VERSION="$VERSION"
 
 # Shell to use when invoking shell scripts.
 SHELL=$LTSHELL

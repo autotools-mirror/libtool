@@ -1,3 +1,14 @@
+1999-01-22  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* Makefile.am (TSDEPS_DIST): dist-time dependencies for timestamps
+	(timestamps, update-timestamps): check whether TSDEPS_DIST are
+	up-to-date and update ltconfig and ltmain.sh if needed
+	(ltconfig, ltmain.sh): depend on TSDEPS; replace @TIMESTAMP@ with
+	the Date tag in the ChangeLog
+	(TSDEPS): empty unless overridden by update-timestamps
+	* ltconfig.in, ltmain.in (TIMESTAMP): append timestamp to most
+	references to VERSION
+
 1999-01-22  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
 
 	* ltmain.in (ild): Revert the change which allowed libtool to
@@ -3561,3 +3572,5 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 1996-03-15  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* For historical reasons: this is when I started writing libtool.
+
+	$Date$
