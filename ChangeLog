@@ -1,6 +1,7 @@
 1999-01-06  Thomas Tanner  <tanner@gmx.de>
 
-	* ChangeLog: merged with tests/ChangeLog
+	* ChangeLog: merged in tests/ChangeLog
+	* tests/ChangeLog: deleted
 	* libltdl/ltdl.c: assigned copyright to the FSF
 	* libltdl/ltdl.h, mdemo/foo*,main.c: likewise
 	
