@@ -78,7 +78,7 @@ if $EGREP -n -e '[^	 ]=[^	 ].*(break|continue)' $scripts; then
 fi
 
 # Check for uses of Xsed without corresponding echo "X
-if $EGREP -n -e '\$Xsed' $scripts | $EGREP -v -n -e '\$echo \\*"X'; then
+if $EGREP -n -e '\$Xsed' $scripts | $EGREP -v -n -e '\$ECHO \\*"X'; then
   echo "occurrences of \`\$Xsed\' without \`echo \"X\' on the same line"
   status=$EXIT_FAILURE
 fi

@@ -1,3 +1,11 @@
+2004-09-23  Gary V. Vaughan  <gary@gnu.org>
+
+	* m4/libtool.m4: _LT_DECL uppercase ECHO.
+	* config/ltmain.in: Use it throughout.
+	(func_mkdir_p): Now matches the other implementations in
+	tests/defs and libtoolize.in.
+	* tests/sh.test: Updated to detect ECHO misuse.
+
 2004-09-22  Gary V. Vaughan  <gary@gnu.org>
 
 	* config/ltmain.in (func_mode_link): Propagate a convenience
