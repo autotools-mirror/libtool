@@ -313,7 +313,6 @@ if test -z "$show_help"; then
   # libtool compile mode
   compile)
     modename="$modename: compile"
-    modename="$modename: compile"
     # Get the compilation command and the source file.
     base_compile=
     srcfile="$nonopt"  #  always keep a non-empty value in "srcfile"
