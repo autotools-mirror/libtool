@@ -600,7 +600,7 @@ if test "$with_gcc" = yes; then
     # list by gcc. This cause undefined symbols with -static flags.
     # This hack allows C programs to be linked with "-static -ldl", but
     # we not sure about C++ programs.
-    link_static_flag="$link_static_flag -Wl,-lC"
+    link_static_flag="$link_static_flag ${wl}-lC"
     ;;
   cygwin32* | mingw32* | os2*)
     # We can build DLLs from non-PIC.
@@ -1134,15 +1134,22 @@ else
   aix4*)
     allow_undefined_flag=
     if test "$with_gcc" = yes; then
-      # collect2 in egcs and probably latest gcc has full support for
-      # -shared flag, so we feel much better.
-      archive_cmds='$CC -shared -o $objdir/$soname $libobjs $deplibs'
+      if strings `${CC} -print-prog-name=collect2` | \
+         grep resolve_lib_name >/dev/null
+      then
+        # We have reworked collect2
+        hardcode_direct=yes
+      else
+        # We have old collect2
+        hardcode_direct=unsupported
+      fi
+      archive_cmds='$CC -shared -o ${wl}-bnoentry $objdir/$soname $libobjs $deplibs'
     else
       archive_cmds='$NM $libobjs | $global_symbol_pipe | sed '\''s/.* //'\' | sort | uniq' > $lib.exp        else cat $export_symbols > $lib.exp~
       $CC -o $objdir/$soname $libobjs $deplibs ${wl}-bE:$lib.exp ${wl}-bM:SRE ${wl}-bnoentry'
       archive_sym_cmds='$CC -o $objdir/$soname $libobjs $deplibs ${wl}-bE:$export_symbols ${wl}-bM:SRE ${wl}-bnoentry'
+      hardcode_direct=yes
     fi
-    hardcode_direct=yes
     hardcode_minus_L=yes
     # Though LIBPATH variable hardcodes shlibpath into executable,
     # it doesn't affect searching for -l* libraries; this confuses
