@@ -69,6 +69,7 @@ m4_include([getopt.m4sh])
 opt_force=false
 opt_install=false
 opt_link=:
+opt_debug=:
 
 seen_libtool=false
 seen_ltdl=false
@@ -105,7 +106,8 @@ configure_ac=configure.in
 	    		;;
 
       --debug)		func_echo "enabling shell trace mode"
-			set -x
+			opt_debug='set -x'
+			$opt_debug
 			;;
 
       --dry-run|-n)	if $opt_dry_run; then :; else
@@ -174,6 +176,7 @@ configure_ac=configure.in
 # then try to copy SRCFILE to DESTFILE.
 func_copy ()
 {
+    $opt_debug
     my_srcfile="$1"
     my_destfile="$2"
     my_return_status=1
@@ -205,6 +208,7 @@ func_copy ()
 # checks to decide whether to overwrite the dest file.
 func_copy_all_files ()
 {
+    $opt_debug
     my_opt_recurse=false
     if test "X$1" = X-r; then
       my_opt_recurse=:
@@ -258,6 +262,7 @@ func_copy_all_files ()
 # spaces in file and directory names.
 func_copy_some_files ()
 {
+    $opt_debug
     my_srcdir="$1"
     my_srcfile_spec="$2"
     my_destdir="$3"
@@ -294,6 +299,7 @@ func_copy_some_files ()
 # configure.(ac|in) and aclocal.m4.
 func_scan_files ()
 {
+    $opt_debug
     # Prefer configure.ac to configure.in
     test -f configure.ac && configure_ac=configure.ac
     test -f "$configure_ac" \
@@ -397,6 +403,7 @@ func_scan_files ()
 # Output INCLUDEFILE if SEARCHFILE m4_includes it, else output SEARCHFILE.
 func_included_files ()
 {
+    $opt_debug
     my_searchfile="$1"
 
     my_include_regex=
@@ -420,6 +427,7 @@ func_included_files ()
 # comment line must also match MACRO_REGEX, if given.
 func_serial ()
 {
+    $opt_debug
     my_filename="$1"
     my_macro_regex="$2"
     my_sed_serial='/^# serial [1-9][0-9]*[ 	]*'"$my_macro_regex"'[ 	]*$/ {
@@ -451,6 +459,7 @@ func_serial ()
 # both files.
 func_serial_update ()
 {
+    $opt_debug
     my_srcfile="$1"
     my_destfile="$2"
     my_macro_regex="$3"
@@ -511,6 +520,7 @@ func_serial_update ()
 # Sanity check macros from aclocal.m4 against installed versions.
 func_check_macros ()
 {
+    $opt_debug
     # Don't trace for this, we're just checking the user didn't invoke it
     # directly from configure.ac.
     $SED 's,[d]nl .*$,,; s,# .*$,,' "$configure_ac" | grep AC_PROG_RANLIB \
@@ -527,6 +537,7 @@ func_check_macros ()
 # or DESTFILE does not yet exist, or the user specified `--force'.
 func_ltmain_update ()
 {
+    $opt_debug
     my_srcfile="$1"
     my_destfile="$2"
     my_sed_ltmain='
@@ -555,6 +566,7 @@ func_ltmain_update ()
 # or DESTFILE does not yet exist, or the user specified `--force'.
 func_config_update ()
 {
+    $opt_debug
     my_srcfile="$1"
     my_destfile="$2"
     my_sed_config='s,^timestamp=[[^0-9]]*\([[.0-9-]]*\)[[^0-9]].*$,\1,; t; d'

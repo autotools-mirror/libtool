@@ -119,6 +119,7 @@ o2lo="s/\\.${objext}\$/.lo/"
 
 opt_dry_run=${run-false}  ## inherit $run when mdemo-dryrun.test sets it above
 opt_duplicate_deps=false
+opt_debug=:
 
 # If this variable is set in any of the actions, the command in it
 # will be execed at the end.  This prevents here-documents from being
@@ -438,7 +439,8 @@ Otherwise, only FILE itself is deleted using RM."
 
       --debug)		preserve_args="$preserve_args $opt"
 	    		func_echo "enabling shell trace mode"
-	    		set -x
+	    		opt_debug='set -x'
+			$opt_debug
 			;;
 
       -dlopen)		test "$#" -eq 0 && func_missing_arg "$opt" && break
@@ -583,6 +585,7 @@ _LT_EOF
 # Has to be a shell function in order to 'eat' the argument
 # that is supplied when $file_magic_command is called.
 func_win32_libid () {
+  $opt_debug
   win32_libid_type="unknown"
   win32_fileres=`file -L $1 2>/dev/null`
   case $win32_fileres in
@@ -624,6 +627,7 @@ func_win32_libid () {
 # command doesn't match the default compiler.
 # arg is usually of the form 'gcc ...'
 func_infer_tag () {
+    $opt_debug
     if test -n "$available_tags" && test -z "$tagname"; then
       CC_quoted=
       for arg in $CC; do
@@ -678,6 +682,7 @@ func_infer_tag () {
 # Extract symbols from dlprefiles and create ${outputname}S.o with
 # a dlpreopen symbol table.
 func_generate_dlsyms () {
+    $opt_debug
     my_outputname="$1"
     my_originator="$2"
     my_pic_p="${3-no}"
@@ -911,6 +916,7 @@ static const void *lt_preloaded_setup() {
 
 # func_extract_archives gentop oldlib ...
 func_extract_archives () {
+    $opt_debug
     my_gentop="$1"; shift
     my_oldlibs=${1+"$@"}
     my_oldobjs=""
@@ -1012,6 +1018,7 @@ func_extract_archives () {
 # func_mode_compile arg...
 func_mode_compile ()
 {
+    $opt_debug
     # Get the compilation command and the source file.
     base_compile=
     srcfile="$nonopt"  #  always keep a non-empty value in "srcfile"
@@ -1416,6 +1423,7 @@ EOF
 # func_mode_execute arg...
 func_mode_execute ()
 {
+    $opt_debug
     # The first argument is the command name.
     cmd="$nonopt"
     test -z "$cmd" && \
@@ -1545,6 +1553,7 @@ func_mode_execute ()
 # func_mode_finish arg...
 func_mode_finish ()
 {
+    $opt_debug
     libdirs="$nonopt"
     admincmds=
 
@@ -1630,6 +1639,7 @@ func_mode_finish ()
 # func_mode_install arg...
 func_mode_install ()
 {
+    $opt_debug
     # There may be an optional sh(1) argument at the beginning of
     # install_prog (especially on Windows NT).
     if test "$nonopt" = "$SHELL" || test "$nonopt" = /bin/sh ||
@@ -2094,6 +2104,7 @@ func_mode_install ()
 # func_mode_link arg...
 func_mode_link ()
 {
+    $opt_debug
     case $host in
     *-*-cygwin* | *-*-mingw* | *-*-pw32* | *-*-os2*)
       # It is impossible to link a dll without this setting, and
@@ -6445,6 +6456,7 @@ relink_command=\"$relink_command\""
 # func_mode_uninstall arg...
 func_mode_uninstall ()
 {
+    $opt_debug
     RM="$nonopt"
     files=
     rmforce=

@@ -45,13 +45,15 @@ fi
 # How verbose should we be?  Default is no test output.
 # Setting VERBOSE=yes enables test output.
 # Setting VERBOSE=debug also puts the shell in debug mode.
+opt_debug=:
 test "${VERBOSE+set}" != "set" && VERBOSE=no
 case "$VERBOSE" in
 NO | no | 0 | "")
   exec > /dev/null 2>&1
   ;;
 DEBUG | debug )
-  set -x
+  opt_debug='set -x'
+  $opt_debug
   ;;
 esac
 
@@ -85,6 +87,7 @@ func_fail ()
 # func_get_config varname_list src [failp] [regex]
 func_get_config ()
 {
+  $opt_debug
   my_varname_list="$1"
   my_src="$2"
   my_failp="false";  test -z "$3" || my_failp=:
@@ -123,6 +126,7 @@ func_get_config "host" "$LIBTOOL --config" ": fatal"
 # func_mkprefixdir
 func_mkprefixdir ()
 {
+    $opt_debug
     # An absolute path to a test installation directory.
     func_mkdir_p "$prefix"
     prefix=`cd $prefix && pwd`
@@ -131,6 +135,7 @@ func_mkprefixdir ()
 # func_rmprefixdir
 func_rmprefixdir ()
 {
+    $opt_debug
     test -d $prefix && rm -rf $prefix
     prefix=NONE
 }
@@ -139,6 +144,7 @@ func_rmprefixdir ()
 # Make sure a directory exists, and then change to it.
 func_cd ()
 {
+    $opt_debug
     my_dir="$1"
 
     # Maybe we have a VPATH build, in which case, create a new subdir.
@@ -153,6 +159,7 @@ func_cd ()
 # If FILE does not exist, give a fatal error regarding running PREREQ first.
 func_require ()
 {
+    $opt_debug
     my_prereq="$1"; shift
     my_files=${1+"$@"}
 
@@ -166,6 +173,7 @@ func_require ()
 # Configure the demonstration.
 func_configure ()
 {
+    $opt_debug
     my_args=${1+"$@"}
     my_dir=`pwd | $SED "$basename"`
     my_testdir="$srcdir/$my_dir"
@@ -192,6 +200,7 @@ func_configure ()
 # for the expected STATICP and SHAREDP library building
 func_check_static_shared ()
 {
+    $opt_debug
     my_staticp="$1"
     my_sharedp="$2"
 
@@ -208,6 +217,7 @@ func_check_static_shared ()
 # Do the actual build.
 func_make ()
 {
+    $opt_debug
     my_args=${1+"$@"}
     my_dir=`pwd | $SED "$basename"`
 
@@ -221,6 +231,7 @@ func_make ()
 # Possibly clean up the distribution.
 func_make_distclean ()
 {
+    $opt_debug
     if test -f Makefile; then
       func_make distclean
     fi
@@ -233,6 +244,7 @@ func_make_distclean ()
 # Ignore dotfiles, so that .nfsXXX files don't screw up the test.
 func_make_uninstall ()
 {
+    $opt_debug
     func_make uninstall
 
     leftovers=`find $prefix ! -type d ! -name '.*' -print`
@@ -247,6 +259,7 @@ func_make_uninstall ()
 # func_exec_init mode
 func_exec_init ()
 {
+    $opt_debug
     func_msg "Executing $1 programs in $my_dir"
 
     # Windows hosts search for dlls in the command path
@@ -259,6 +272,7 @@ func_exec_init ()
 # Check to see if PROGRAM was built. If not display MSG.
 func_exec_check ()
 {
+    $opt_debug
     my_program="$1"
 
     if test -f "$my_program"; then :
@@ -274,6 +288,7 @@ func_exec_check ()
 # If not display MSG.
 func_exec ()
 {
+    $opt_debug
     my_program="$1"
     my_exp_output="$2"
     my_dir=`pwd | $SED "$basename"`
