@@ -428,7 +428,7 @@ compiler."
       fbsd_hideous_sh_bug=$base_compile
 
       # All platforms use -DPIC, to notify preprocessed assembler code.
-      command="$base_compile$pic_flag -DPIC $srcfile"
+      command="$base_compile $pic_flag -DPIC $srcfile"
       if test "$build_old_libs" = yes; then
         lo_libobj="$libobj"
 	dir=`$echo "X$libobj" | $Xsed -e 's%/[^/]*$%%'`

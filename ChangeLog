@@ -1,3 +1,12 @@
+1999-01-21  Gary V. Vaughan  <garyv@oranda.demon.co.uk>
+
+	* THANKS: Added Chris Laas <golem@MIT.EDU>
+	
+	From Chris Laas <golem@MIT.EDU>
+	* ltmain.in (compile):  corrected a typo in compile mode which
+	caused "gcc: unrecognized option -c-fPIC" errors due to a missing
+	space.
+
 1999-01-21  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* libltdl/configure.in: reintroduce code to detect native library
