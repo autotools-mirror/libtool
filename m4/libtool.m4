@@ -102,6 +102,7 @@ _LT_DECL([objext], [ac_objext], [0], [Object file suffix (normally "o")])dnl
 AC_REQUIRE([AC_EXEEXT])dnl
 _LT_DECL([], [exeext], [0], [Executable file suffix (normally "")])dnl
 dnl
+m4_require([_LT_CHECK_XSI_SHELL])dnl
 m4_require([_LT_CMD_RELOAD])dnl
 m4_require([_LT_CHECK_MAGIC_METHOD])dnl
 m4_require([_LT_CMD_OLD_ARCHIVE])dnl
@@ -528,7 +529,13 @@ _LT_EOF
   # if finds mixed CR/LF and LF-only lines.  Since sed operates in
   # text mode, it properly converts lines to CR/LF.  This bash problem
   # is reportedly fixed, but why not run on old versions too?
-  sed '$q' "$ltmain" >> "$cfgfile" || (rm -f "$cfgfile"; exit 1)
+  sed '/^# Generated shell functions inserted here/q' "$ltmain" >> "$cfgfile" \
+    || (rm -f "$cfgfile"; exit 1)
+
+  _LT_PROG_XSI_SHELLFNS
+
+  sed -n '/^# Generated shell functions inserted here/,$p' "$ltmain" >> "$cfgfile" \
+    || (rm -f "$cfgfile"; exit 1)
 
   mv -f "$cfgfile" "$ofile" ||
     (rm -f "$ofile" && cp "$cfgfile" "$ofile" && rm -f "$cfgfile")
@@ -5978,3 +5985,70 @@ AC_SUBST([SED])
 AC_MSG_RESULT([$SED])
 ])#AC_PROG_SED
 ])#m4_ifndef
+
+# _LT_CHECK_XSI_SHELL
+# -------------------
+# define func_basename as either Bourne or XSI compatible
+m4_defun([_LT_CHECK_XSI_SHELL],
+[AC_MSG_CHECKING([whether the shell understands some XSI constructs])
+# Try some XSI features
+xsi_shell=no
+( _lt_dummy="a/b/c"
+  test "${_lt_dummy##*/},${_lt_dummy%/*},"${_lt_dummy%"$_lt_dummy"}, \
+      = c,a/b,, ) >/dev/null 2>&1 \
+  && xsi_shell=yes
+AC_MSG_RESULT([$xsi_shell])
+])
+fi
+_LT_CONFIG_LIBTOOL_INIT([xsi_shell='$xsi_shell'])
+])# _LT_CHECK_XSI_SHELL
+
+# _LT_PROG_XSI_SHELLFNS
+# ---------------------
+# Bourne and XSI compatible variants of some useful shell functions.
+m4_defun([_LT_PROG_XSI_SHELLFNS],
+[case $xsi_shell in
+  yes)
+    cat << \_LT_EOF >> "$cfgfile"
+# func_dirname file append nondir_replacement
+# Compute the dirname of FILE.  If nonempty, add APPEND to the result,
+# otherwise set result to NONDIR_REPLACEMENT.
+func_dirname ()
+{
+  case ${1} in
+    */*) func_dirname_result="${1%/*}${2}" ;;
+    *  ) func_dirname_result="${3}" ;;
+  esac
+}
+
+# func_basename file
+func_basename ()
+{
+  func_basename_result="${1##*/}"
+}
+_LT_EOF
+    ;;
+  *) # Bourne compatible functions.
+    cat << \_LT_EOF >> "$cfgfile"
+# func_dirname file append nondir_replacement
+# Compute the dirname of FILE.  If nonempty, add APPEND to the result,
+# otherwise set result to NONDIR_REPLACEMENT.
+func_dirname ()
+{
+  # Extract subdirectory from the argument.
+  func_dirname_result=`$ECHO "X${1}" | $Xsed -e "$dirname"`
+  if test "X$func_dirname_result" = "X${1}"; then
+    func_dirname_result="${3}"
+  else
+    func_dirname_result="$func_dirname_result${2}"
+  fi
+}
+
+# func_basename file
+func_basename ()
+{
+  func_basename_result=`$ECHO "X${1}" | $Xsed -e "$basename"`
+}
+_LT_EOF
+esac
+])
