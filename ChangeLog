@@ -1,3 +1,11 @@
+2002-11-18  Bob Friesenhahn <bfriesen@simple.dallas.tx.us>
+
+	* tests/*.test: MinGW's MSYS treats files under /dev
+	specially. This causes 'test -r /dev/null/config/site' to
+	improperly report success, causing configure to fail. Change the
+	CONFIG_SITE definition from "/dev/null/config/site" to
+	"/nonexistent" to avoid this problem.
+
 2002-11-18  Charles Wilson  <cwilson@ece.gatech.edu>
 
 	* libtool.m4 (_LT_AC_LOCK): remove support for ancient
