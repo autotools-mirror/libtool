@@ -28,7 +28,7 @@ so that the size of lt_preloaded_symbols can be reduced.
 - libltdl documentation needs to be completed.
 
 - AC_PROG_LIBTOOL, AC_ENABLE/DISABLE_SHARED/STATIC/FAST_INSTALL,
-  AC_LIBTOOL_DLOPEN are not documented.
+  AC_LIBTOOL_DLOPEN, AC_LIBLTDL_CONVENIENCE/INSTALLABLE are not documented
 
 - Purpose and usage of convenience libraries must be better documented
 
@@ -36,11 +36,6 @@ so that the size of lt_preloaded_symbols can be reduced.
 
 In the future:
 **************
-
-* test whether dlopening and self-dlopening work for statically linked
-  programs.  Self-dlopening, for example, is known to fail on DEC
-  OSF/1, for programs compiled with -static.  On other platforms,
-  dlopen may even fail to link.
 
 * Godmar Back writes:
   libltdl uses such stdio functions as fopen, fgets, feof, fclose, and others.

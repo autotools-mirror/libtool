@@ -1,5 +1,8 @@
 1999-03-10  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* TODO: need to document AC_LIBLTDL_*; static self dlopening
+	problem fixed
+
 	* libtool.m4 (AC_LIBTOOL_DLOPEN): just set lt_dlopen=yes
 	(AC_LIBTOOL_SETUP): if lt_dlopen=yes, add --enable-dlopen to
 	libtool_flags; drop --enable-dlopen-self
