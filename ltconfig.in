@@ -213,6 +213,7 @@ old_LIBS="$LIBS"
 old_NM="$NM"
 old_RANLIB="$RANLIB"
 old_DLLTOOL="$DLLTOOL"
+old_OBJDUMP="$OBJDUMP"
 old_AS="$AS"
 
 # Parse the command line options.
@@ -470,6 +471,9 @@ old_postuninstall_cmds=
 # Set a sane default for `AR'.
 test -z "$AR" && AR=ar
 
+# Set a sane default for `OBJDUMP'.
+test -z "$OBJDUMP" && OBJDUMP=objdump
+
 # If RANLIB is not set, then run the test.
 if test "${RANLIB+set}" != "set"; then
   result=no
@@ -494,8 +498,9 @@ if test -n "$RANLIB"; then
   old_postinstall_cmds="\$RANLIB \$oldlib~$old_postinstall_cmds"
 fi
 
-# Set sane defaults for `DLLTOOL' and `AS', used on cygwin.
+# Set sane defaults for `DLLTOOL', `OBJDUMP', and `AS', used on cygwin.
 test -z "$DLLTOOL" && DLLTOOL=dlltool
+test -z "$OBJDUMP" && OBJDUMP=objdump
 test -z "$AS" && AS=as
 
 # Check to see if we are using GCC.
@@ -1699,8 +1704,8 @@ cygwin* | mingw*)
     library_names_spec='${libname}`echo ${release} | sed -e 's/[.]/-/g'`${versuffix}.dll $libname.lib'
   fi
   dynamic_linker='Win32 ld.exe'
-  deplibs_check_method='file_magic file format pei*-i386.*architecture: i386'
-  file_magic_cmd='objdump -f'
+  deplibs_check_method='file_magic file format pei*-i386(.*architecture: i386)?'
+  file_magic_cmd='${OBJDUMP} -f'
   need_lib_prefix=no
   # FIXME: first we should search . and the directory the executable is in
   shlibpath_var=PATH
@@ -2461,7 +2466,7 @@ case "$ltmain" in
   # Now quote all the things that may contain metacharacters.
   for var in ltecho old_CC old_CFLAGS old_CPPFLAGS \
     old_LD old_LDFLAGS old_LIBS \
-    old_NM old_RANLIB old_LN_S old_DLLTOOL old_AS \
+    old_NM old_RANLIB old_LN_S old_DLLTOOL old_OBJDUMP old_AS \
     AR CC LD LN_S NM LTSHELL LTCONFIG_VERSION \
     reload_flag reload_cmds wl \
     pic_flag link_static_flag no_builtin_flag export_dynamic_flag_spec \
@@ -2544,7 +2549,7 @@ EOF
   # Double-quote the variables that need it (for aesthetics).
   for var in old_CC old_CFLAGS old_CPPFLAGS \
     old_LD old_LDFLAGS old_LIBS \
-    old_NM old_RANLIB old_LN_S old_DLLTOOL old_AS; do
+    old_NM old_RANLIB old_LN_S old_DLLTOOL old_OBJDUMP old_AS; do
     eval "$var=\\\"\$var\\\""
   done
 
@@ -2566,7 +2571,7 @@ cat <<EOF >> "$cfgfile"
 # CC=$old_CC CFLAGS=$old_CFLAGS CPPFLAGS=$old_CPPFLAGS \\
 # LD=$old_LD LDFLAGS=$old_LDFLAGS LIBS=$old_LIBS \\
 # NM=$old_NM RANLIB=$old_RANLIB LN_S=$old_LN_S \\
-# DLLTOOL=$old_DLLTOOL AS=$old_AS \\
+# DLLTOOL=$old_DLLTOOL OBJDUMP=$old_OBJDUMP AS=$old_AS \\
 #   $0$ltconfig_args
 #
 # Compiler and other test output produced by $progname, useful for
@@ -2611,6 +2616,9 @@ NM=$NM
 
 # Used on cygwin: DLL creation program.
 DLLTOOL="$DLLTOOL"
+
+# Used on cygwin: object dumper.
+OBJDUMP="$OBJDUMP"
 
 # Used on cygwin: assembler.
 AS="$AS"

@@ -112,6 +112,7 @@ case "$host" in
 *-*-cygwin*)
   AC_CHECK_TOOL(DLLTOOL, dlltool, false)
   AC_CHECK_TOOL(AS, as, false)
+  AC_CHECK_TOOL(OBJDUMP, objdump, false)
   ;;
 
 esac
