@@ -1180,11 +1180,11 @@ EOF
 	;;
 
       -static)
-	# If we have no pic_flag, then this is the same as -all-static.
-	if test -z "$pic_flag" && test -n "$link_static_flag"; then
-	  compile_command="$compile_command $link_static_flag"
-	  finalize_command="$finalize_command $link_static_flag"
-	fi
+        # The effects of -static are defined in a previous loop.
+	# We used to do the same as -all-static on platforms that
+	# didn't have a PIC flag, but the assumption that the effects
+	# would be equivalent was wrong.  It would break on at least
+	# Digital Unix and AIX.
 	continue
 	;;
 

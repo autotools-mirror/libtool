@@ -21,13 +21,6 @@ else
 fi
 AC_SUBST(STATIC)
 
-case $host_os in
-dnl aix 4.1 provides dlopen() through -lsvld, but this library can't
-dnl be linked statically.
-aix4.[[01]]*)
-  STATIC= ;;
-esac
-
 AC_CHECK_HEADERS(math.h)
 
 AC_CHECK_LIBM
