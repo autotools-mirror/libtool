@@ -58,7 +58,7 @@ get_vtable (lt_user_data loader_data)
 
   if (!vtable)
     {
-      vtable = lt__malloc (sizeof *vtable);
+      vtable = lt__zalloc (sizeof *vtable);
     }
 
   if (vtable && !vtable->name)

@@ -1,5 +1,7 @@
 2004-09-01  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* libltdl/loaders/preopen.c: Initialise memory in get_vtable.
+
 	* tests/sh.test: Look in the source tree for ltmain.sh.
 
 2004-09-01  Gary V. Vaughan  <gary@gnu.org>
