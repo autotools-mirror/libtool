@@ -1,3 +1,7 @@
+2000-07-24  Nick Hudson <skrll@netbsd.org>
+
+	* ltmain.in (ILD): fix addition of deplibs in relink case.
+
 2000-07-19  H.J. Lu  <hjl@gnu.org>,  Alexandre Oliva  <oliva@lsd.ic.unicamp.br>
 
 	* ltcf-c.sh, ltcf-cxx.sh: Check if -lc is necessary for building
