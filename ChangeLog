@@ -1,3 +1,8 @@
+2002-06-23  Albert Chin-A-Young  <china@thewrittenword.com>
+
+	* ltdl.m4 (AC_LTDL_SYS_DLOPEN_DEPLIBS): HP/UX needs
+	libltdl_cv_sys_dlopen_deplibs set to yes.
+
 2002-06-23  Gary V. Vaughan  <gary@gnu.org>
 
 	* libltdl/ltdl.c (argz_insert): Actually, BEFORE can be NULL

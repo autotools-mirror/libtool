@@ -124,6 +124,9 @@ AC_CACHE_CHECK([whether deplibs are loaded by dlopen],
 	# PORTME does your system automatically load deplibs for dlopen()?
 	libltdl_cv_sys_dlopen_deplibs=unknown
 	case "$host_os" in
+        hpux10*|hpux11*)
+          libltdl_cv_sys_dlopen_deplibs=yes
+          ;;
 	linux*)
 	  libltdl_cv_sys_dlopen_deplibs=yes
 	  ;;
