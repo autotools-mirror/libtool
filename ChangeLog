@@ -1,5 +1,10 @@
 1999-01-11  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* ltmain.in (convenience, libobjs): get only .o and .lo files from 
+	the files extract from the convenience library.  Some systems,
+	such as FreeBSD2, will add a SYMDEF file, that is not an object
+	file, and therefore should not be fed to the linker
+
 	* libtool.m4 (AM_SYS_NM_PARSE): while we are at it, we may well
  	cache the value of ac_cv_sys_symbol_underscore
 
