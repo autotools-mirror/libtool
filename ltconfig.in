@@ -1,7 +1,7 @@
 #! /bin/sh
 
 # ltconfig - Create a system-specific libtool.
-# Copyright (C) 1996-2000 Free Software Foundation, Inc.
+# Copyright (C) 1996, 1997, 1998, 1999, 2000 Free Software Foundation, Inc.
 # Originally by Gordon Matzigkeit <gord@gnu.ai.mit.edu>, 1996
 #
 # This file is free software; you can redistribute it and/or modify it
@@ -2233,6 +2233,11 @@ elif test "$shlibpath_overrides_runpath" = yes ||
   enable_fast_install=needless
 fi
 
+variables_saved_for_relink="PATH $shlibpath_var $runpath_var"
+if test "$with_gcc" = yes; then
+  variables_saved_for_relink="$variables_saved_for_relink GCC_EXEC_PREFIX COMPILER_PATH LIBRARY_PATH"
+fi
+
 echo $ac_n "checking for objdir... $ac_c" 1>&6
 rm -f .libs 2>/dev/null
 mkdir .libs 2>/dev/null
@@ -3004,6 +3009,10 @@ hardcode_minus_L=$hardcode_minus_L
 # Set to yes if using SHLIBPATH_VAR=DIR during linking hardcodes DIR into
 # the resulting binary.
 hardcode_shlibpath_var=$hardcode_shlibpath_var
+
+# Variables whose values should be saved in libtool wrapper scripts and
+# restored at relink time.
+variables_saved_for_relink="$variables_saved_for_relink"
 
 # Compile-time system search path for libraries
 sys_lib_search_path_spec=$sys_lib_search_path_spec

@@ -1,7 +1,7 @@
 # ltmain.sh - Provide generalized library-building support services.
 # NOTE: Changing this file will not affect anything until you rerun ltconfig.
 #
-# Copyright (C) 1996-1999 Free Software Foundation, Inc.
+# Copyright (C) 1996, 1997, 1998, 1999, 2000 Free Software Foundation, Inc.
 # Originally by Gordon Matzigkeit <gord@gnu.ai.mit.edu>, 1996
 #
 # This program is free software; you can redistribute it and/or modify
@@ -2766,6 +2766,13 @@ static const void *lt_preloaded_setup() {
 
       # Quote the relink command for shipping.
       if test -n "$relink_command"; then
+	# Preserve any variables that may affect compiler behavior
+	for var in $variables_saved_for_relink; do
+	  eval var_value=\$$var
+	  var_value=`$echo "X$var_value" | $Xsed -e "$sed_quote_subst"`
+	  relink_command="$var=\"$var_value\"; export $var; $relink_command"
+	done
+	relink_command="cd `pwd`; $relink_command"
 	relink_command=`$echo "X$relink_command" | $Xsed -e "$sed_quote_subst"`
       fi
 

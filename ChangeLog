@@ -1,3 +1,12 @@
+2000-07-26  Alexandre Oliva  <oliva@lsd.ic.unicamp.br>
+	
+	Merge from development tree:
+	2000-03-21  Alexandre Oliva  <oliva@lsd.ic.unicamp.br>
+	* ltconfig.in (variables_saved_for_relink): Set to `PATH
+	$shlibpath_var $runpath_var'.  If with_gcc, add gcc-related
+	environment variables.  Add it to the configuration section.
+	* ltmain.in (relink_command): Expand those variables.
+
 2000-07-24  Mocha  <netbsd_alpha@yahoo.com>
 
 	* ltconfig.in (NetBSD, deplibs_check_method): Use file_magic.
