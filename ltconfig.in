@@ -1023,7 +1023,13 @@ hardcode_shlibpath_var=unsupported
 runpath_var=
 always_export_symbols=no
 export_symbols_cmd="$NM $libobjs | $global_symbol_pipe | sed '\''s/.* //'\' | sort | uniq > $export_symbols"
+# include_expsyms should be a list of space-separated symbols to be *always*
+# included in the symbol list
 include_expsyms=
+# exclude_expsyms can be an egrep regular expression of symbols to exclude
+# it will be wrapped by `^(' and `) ', so one must not match beginning or
+# end of line.  Example: `a|bc|.*d.*' will exclude the symbols `a' and `bc',
+# as well as any symbol that contains `d'.
 exclude_expsyms=
 
 case "$host_os" in
@@ -1040,6 +1046,11 @@ cygwin* | mingw*)
     with_gnu_ld=no
   fi
   ;;
+
+freebsd2* | sunos4*)
+  exclude_expsyms="_GLOBAL_OFFSET_TABLE_"
+  ;;
+
 esac
 
 ld_shlibs=yes
