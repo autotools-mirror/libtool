@@ -1,5 +1,12 @@
 2004-10-03  Gary V. Vaughan  <gary@gnu.org>
 
+	* libltdl/Makefile.am (libltdlc_la_LIBADD): Don't use
+	libdlloader_la_OBJECTS, an undocumented Automake internal
+	variable...
+	(libltdlc_la_SOURCES): ...use libdlloader_la_SOURCES here
+	instead.
+	Reported by Bob Friesenhahn <bfriesen@simple.dallas.tx.us>
+
 	* libltdl/argz_.h: Forgot to spell lt_system.h with just one `_'.
 
 	* libltdl/argz_.h: Forgot to include lt__system.h for LT_SCOPE
