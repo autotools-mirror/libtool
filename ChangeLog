@@ -1,5 +1,16 @@
 1999-12-16  Alexandre Oliva  <oliva@lsd.ic.unicamp.br>
 
+	* ltdl.m4: Renamed from...
+	* libltdl/ltdl.m4: that no longer exists.
+	* configure.in (ACINCLUDE_M4_LIST): Removed libltdl/acinclude.m4.
+	* Makefile.am (aclocal_macros): Added ltdl.m4.
+	(libltdl/acinclude.m4): Concatenate libtool.m4 and ltdl.m4.
+	* bootstrap: Likewise.
+	* libltdl/Makefile.am (ACLOCAL): Remove the definition.  Relying
+	upon -I may lead to duplicates.
+	* doc/libtool.texi: Suggest appending ltdl.m4 to acinclude.m4.
+	* libtoolize.in: Check AC_LIB_LTDL version number in aclocal.m4.
+
 	* libltdl/configure.in (with_auxdir): Do not use it as the
 	argument of AC_CONFIG_AUX_DIR, automake requires a literal here.
 	Use AC_CONFIG_AUX_DIRS/DIR_DEFAULT instead.

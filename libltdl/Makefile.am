@@ -2,9 +2,6 @@
 
 AUTOMAKE_OPTIONS = no-dependencies foreign
 
-## for ltdl.m4
-ACLOCAL = @ACLOCAL@ -I .
-
 if INSTALL_LTDL
 include_HEADERS = ltdl.h
 lib_LTLIBRARIES = libltdl.la
