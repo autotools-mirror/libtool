@@ -1,18 +1,11 @@
-This file is intended to contain hints on how to port libtool to new
-platforms.  It is currently waiting for your contributions :-)
+In order to port libtool to a new platform, start by reading the node
+`New ports' in the info document (i.e., the libtool manual).  Some
+additional information, that has not been converted to the .texi
+format yet, is available in this file.
 
-
-General Instructions
---------------------
-
-In order to port libtool to a new platform, start by searching for
-PORTME in ltconfig.in.  Look for the string `Libtool was configured as
-follows'; that's the beginning of the platform-dependent configuration
-portion that will be inserted in the libtool script.  Most of the
-documentation about the variables you may have to set in your port is
-there.  Feel free (and compelled :-) to submit patches for this
-(PORTING) file, so that it complements the documentation within the
-script.
+If you find that any porting documentation is missing, please
+complain! :-) Complaints with patches and improvements to the
+documentation, or to libtool itself, are more than welcome.  :-) :-)
 
 
 Inter-library Dependencies

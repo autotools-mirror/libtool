@@ -1,5 +1,7 @@
 1998-11-12  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* PORTING: Porting instructions are in the libtool manual already
+
 	* NEWS: Mention -export-symbols and new dlpreopen
 
 1998-11-11  Alexandre Oliva  <oliva@dcc.unicamp.br>
