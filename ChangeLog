@@ -3,6 +3,18 @@
 	* ltdl.c (lt_dlopenext): tmp would be trashed if shlib_ext was
 	longer than 3 characters
 
+1999-02-02  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
+
+	* ltconfig.in: new config.guess returns *-*-cygwin now instead of
+	*-*-cygwin32.  sed -e 's%\(cygwin\|mingw\)32%\1%g' ltconfig.in
+	* ltmain.in:   sed -e 's%\(cygwin\|mingw\)32%\1%g' ltmain.in
+
+	* ltconfig.in (hardcode_libdir_flag_spec, allow_undefined_flag,
+	archive_cmds, archive_sym_cmds, old_archive_from_new_cmds):
+	removed duplication of config by assuming that `test $with_gcc =
+	yes' implies gnu ld, otherwise MSVC++ (which I haven't tested
+	since I inheritted the code from Ian Lance Taylor btw!) is implied.
+	
 1999-01-28  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
 
 	* ltmain.in: Reverted this change of Alexandre's from the
