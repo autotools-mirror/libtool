@@ -645,7 +645,7 @@ else
     wl='-Qoption ld '
     ;;
 
-  sysv4.2uw2*)
+  sysv4.2uw2* | sysv5*)
     pic_flag='-KPIC'
     link_static_flag='-Bstatic'
     wl='-Wl,'

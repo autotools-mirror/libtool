@@ -23,6 +23,7 @@ Shared library support has been implemented for these platforms:
   OpenBSD 2.x (*-*-openbsd*)
   OS/2 using EMX (*-*-os2*)
   SCO OpenServer 5.x (*-*-sco3.2v5*)
+  SCO UnixWare 7.x (*-*-sysv5*)
   Solaris 2.x (*-*-solaris2*)
   SunOS 4.x, a.k.a. Solaris 1.x  (*-*-sunos4*)
   UnixWare 2.x (*-*-sysv4.2uw2*)

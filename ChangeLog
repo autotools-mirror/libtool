@@ -1,3 +1,7 @@
+1998-12-04  Manfred Weichel  <Manfred.Weichel@pdb.siemens.de>
+
+	* ltconfig.in: Port to SCO UnixWare 7.x.
+
 1998-12-03  Thomas Tanner  <tanner@gmx.de>
 
 	* ChangeLog: converted CR/LF back to CR format
