@@ -1,3 +1,9 @@
+1999-05-18  Gary V. Vaughan  <gary@oranda.demon.co.uk>
+
+	* ltconfig.in (cygwin*, whole_archive_flag_spec): dlltool chokes
+	on this, so leave it unset in this case so that the ltmain code
+	knows it has to unpack convenience archives by itself.
+
 1999-05-17  Gary V. Vaughan  <gary@oranda.demon.co.uk>
 
 	* ltmain.in: Do not exit when an unknown library name is passed
