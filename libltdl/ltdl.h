@@ -185,6 +185,15 @@ LT_SCOPE	int	    lt_dlisresident	LT_PARAMS((lt_dlhandle handle));
 /* --- MUTEX LOCKING --- */
 
 
+typedef void	lt_dlmutex_lock		LT_PARAMS((void));
+typedef void	lt_dlmutex_unlock	LT_PARAMS((void));
+typedef void	lt_dlmutex_seterror	LT_PARAMS((const char *errmsg));
+typedef const char *lt_dlmutex_geterror	LT_PARAMS((void));
+
+LT_SCOPE	int	lt_dlmutex_register	LT_PARAMS((lt_dlmutex_lock *lock,
+					    lt_dlmutex_unlock *unlock,
+					    lt_dlmutex_seterror *seterror,
+					    lt_dlmutex_geterror *geterror));
 
 
 
@@ -232,8 +241,8 @@ LT_SCOPE	int	lt_dlpreload_default
 /* Read only information pertaining to a loaded module. */
 typedef	struct {
   char	*filename;		/* file name */
-  char	*int;			/* module name */
-  name	ref_count;		/* number of times lt_dlopened minus
+  char	*name;			/* module name */
+  int	ref_count;		/* number of times lt_dlopened minus
 				   number of times lt_dlclosed. */
 } lt_dlinfo;
 
