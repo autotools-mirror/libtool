@@ -1,3 +1,8 @@
+2001-04-11  Alexandre Oliva  <aoliva@redhat.com>
+
+	* ltmain.in: Mark duplicate libraries appearing in predeps and
+	postdeps as specialdeplibs.  Explain the whole plan.
+
 2001-04-11  Ossama Othman  <ossama@uci.edu>
 
 	* config.guess: Updated to latest version.

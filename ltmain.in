@@ -1630,6 +1630,18 @@ EOF
 
     if test $linkmode = lib; then
       libs="$predeps $libs $compiler_lib_search_path $postdeps"
+
+      # Compute libraries that are listed more than once in $predeps
+      # $postdeps and mark them as special (i.e., whose duplicates are
+      # not to be eliminated).
+      pre_post_deps=
+      for pre_post_dep in $predeps $postdeps; do
+        case "$pre_post_deps " in
+	*" $pre_post_dep "*) specialdeplibs="$specialdeplibs $pre_post_deps" ;;
+	esac
+	pre_post_deps="$pre_post_deps $pre_post_dep"
+      done
+      pre_post_deps=
     fi
 
     deplibs=
@@ -2373,6 +2385,20 @@ EOF
 	    case $deplib in
             -L*) new_libs="$deplib $new_libs" ;;
             *)
+	      # And here is the reason: when a library appears more
+	      # than once as an explicit dependence of a library, or
+	      # is implicitly linked in more than once by the
+	      # compiler, it is considered special, and multiple
+	      # occurrences thereof are not removed.  Compare this
+	      # with having the same library being listed as a
+	      # dependency of multiple other libraries: in this case,
+	      # we know (pedantically, we assume) the library does not
+	      # need to be listed more than once, so we keep only the
+	      # last copy.  This is not always right, but it is rare
+	      # enough that we require users that really mean to play
+	      # such unportable linking tricks to link the library
+	      # using -Wl,-lname, so that libtool does not consider it
+	      # for duplicate removal.
               case " $specialdeplibs " in
               *" $deplib "*) new_libs="$deplib $new_libs" ;;
               *)
