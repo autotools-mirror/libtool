@@ -1,5 +1,7 @@
 2004-10-24  Gary V. Vaughan  <gary@gnu.org>
 
+	* HACKING: Fix a typo in the gpg --verify instructions.
+
 	* Makefile.maint (cvs-dist): Generate signatures and directives
 	for bz2 upload.
 

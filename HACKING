@@ -319,7 +319,7 @@ Here are the gpg detached signatures:
 You should download the signature named after any tarball you download,
 and then verify its integrity with, for example:
 
-  gpg --verify libtool-@VERSION.tar.gz.
+  gpg --verify libtool-@VERSION.tar.gz.sig
 
 Here are the MD5 and SHA1 checksums:
 
@@ -406,7 +406,7 @@ Here are the gpg detached signatures:
 You should download the signature named after any tarball you download,
 and then verify its integrity with, for example:
 
-  gpg --verify libtool-@VERSION.tar.gz.
+  gpg --verify libtool-@VERSION.tar.gz.sig
 
 Here are the MD5 and SHA1 checksums:
 
