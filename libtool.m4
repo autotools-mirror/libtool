@@ -56,13 +56,6 @@ exec 5>>./config.log
 
 AC_DEFUN(AC_LIBTOOL_SETUP,
 [AC_PREREQ(2.13)dnl
-# Autoconf's AC_EXEEXT macro only works for C compilers.  AC_EXEEXT
-# gets confused and thinks that an extension such as the C++ source
-# file extenstion ".C" is an executable file extension, which screws
-# up the libtool configuration.
-AC_BEFORE([AC_LIBTOOL_SETUP],[AC_LANG_CPLUSPLUS])
-AC_BEFORE([AC_LIBTOOL_SETUP],[AC_LANG_FORTRAN77])
-#
 AC_REQUIRE([AC_ENABLE_SHARED])dnl
 AC_REQUIRE([AC_ENABLE_STATIC])dnl
 AC_REQUIRE([AC_ENABLE_FAST_INSTALL])dnl
@@ -74,8 +67,12 @@ AC_REQUIRE([AC_PROG_LD_RELOAD_FLAG])dnl
 AC_REQUIRE([AC_PROG_NM])dnl
 AC_REQUIRE([AC_PROG_LN_S])dnl
 AC_REQUIRE([AC_DEPLIBS_CHECK_METHOD])dnl
+# Autoconf's AC_OBJEXT and AC_EXEEXT macros only works for C compilers!
+AC_LANG_SAVE
+AC_LANG_C
 AC_REQUIRE([AC_OBJEXT])dnl
 AC_REQUIRE([AC_EXEEXT])dnl
+AC_LANG_RESTORE
 dnl
 
 # Only perform the check for file, if the check method requires it
