@@ -1,5 +1,9 @@
 1999-02-26  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
 
+	* ltconfig.in (cygwin, old_archive_from_new_cmds): no longer
+	required.
+	(library_names_spec): removed $libname.a.
+	
 	* ltconfig.in (cygwin, shlibpath_overrides_runpath): I'm not even
 	sure whether win32 honours the runpath at all when searching for
 	a dll to load!  Anyway, when set to yes this prevents a gratuitous
