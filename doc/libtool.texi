@@ -1195,7 +1195,14 @@ the @samp{-version-info} flag instead (@pxref{Versioning}).
 
 @item -rpath @var{libdir}
 If @var{output-file} is a library, it will eventually be installed in
-@var{libdir}.
+@var{libdir}.  If @var{output-file} is a program, add @var{libdir} to
+the run-time path of the program.
+
+@item -R @var{libdir}
+If @var{output-file} is a program, add @var{libdir} to its run-time
+path.  If @var{output-file} is a library, add -R@var{libdir} to its
+@var{dependency_libs}, so that, whenever the library is linked into a
+program, @var{libdir} will be added to its run-time path.
 
 @item -static
 If @var{output-file} is a program, then do not link it against any

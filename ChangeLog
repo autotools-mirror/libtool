@@ -1,5 +1,12 @@
 1999-01-11  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* ltmain.in, NEWS, doc/libtool.texi: Added support for -R flag
+	* ltmain.in, doc/libtool.texi: documented that -rpath is the same
+	as -R for programs
+	* ltmain.in: softened the instructions for linking with installed
+	libraries, and noted that libtool can be used to link with them;
+	documented that -rpath is not required for convenience libraries
+
 	* ltconfig.in (symxfrm): don't print $pipe_works twice, once for
  	each $ac_symprfx
 	Reported by Godmar Back <gback@cs.utah.edu>
