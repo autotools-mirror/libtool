@@ -30,15 +30,15 @@ bin_SCRIPTS = libtool libtoolize
 libtool: $(srcdir)/ltmain.sh $(srcdir)/ltconfig
 	CC="$(CC)" CFLAGS="$(CFLAGS)" CPPFLAGS="$(CPPFLAGS)" \
 	LD="$(LD)" LN_S="$(LN_S)" NM="$(NM)" RANLIB="$(RANLIB)" \
-	$(SHELL) $(srcdir)/ltconfig --srcdir=$(srcdir) 	--output=$@ \
-	  $(srcdir)/ltmain.sh
+	$(SHELL) $(srcdir)/ltconfig $(LIBTOOL_FLAGS) --srcdir=$(srcdir) \
+	  --output=$@ $(srcdir)/ltmain.sh
 
 # Experimental C version of libtool.
 clibtool: $(srcdir)/ltmain.c $(srcdir)/ltconfig
 	CC="$(CC)" CFLAGS="$(CFLAGS)" CPPFLAGS="$(CPPFLAGS)" \
 	LD="$(LD)" LN_S="$(LN_S)" NM="$(NM)" RANLIB="$(RANLIB)" \
-	$(SHELL) $(srcdir)/ltconfig --srcdir=$(srcdir) 	--output=$@ \
-	  $(srcdir)/ltmain.c
+	$(SHELL) $(srcdir)/ltconfig $(LIBTOOL_FLAGS) --srcdir=$(srcdir) \
+	  --output=$@ $(srcdir)/ltmain.c
 
 libtoolize: $(srcdir)/libtoolize.in $(top_builddir)/config.status
 	CONFIG_FILES=libtoolize CONFIG_HEADERS= $(top_builddir)/config.status

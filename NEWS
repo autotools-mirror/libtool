@@ -1,46 +1,44 @@
 NEWS - list of user-visible changes between releases of GNU Libtool
 
 New in 1.2e: CVS version; 1.2f: 1999-?-?, Libtool team:
-* libltdl is now built and installed unless --disable-ltdl-install
-* New AC_LIBLTDL_CONVENIENCE and AC_LIBLTDL_INSTALLABLE macros, to select
-  convenience and/or installable versions of libltdl.
-* In order for libtool to attempt to link a shared library (dll) on win32
-  platforms, you must pass the -no-undefined flag to libtool in link mode.
-* The path to GNU ld now works on cygwin-b18 to cygwin-b20.2 at least.
-* Support for IRIX library versioning.
-* Improved support for DJGPP envionment.
-* Wrapper scripts now work on win32.
 * libtool will correctly link uninstalled libraries into programs
   and prefer uninstalled libraries to installed ones
 * Library paths that are in the system search path are no longer hardcoded.
 * New fast installation mode, which links the final executable
   in order to avoid relinking during installation.
   Programs in the build-tree are relinked when executed.
-* New AC_DISABLE_FAST_INSTALL macro to disable the fast-install mode
+* New AC_DISABLE_FAST_INSTALL macro to set the default for
+  the fast-install mode to disabled
 * New -export-symbols-regex flag, to export symbols selectively by
   a regular expression
+* Support -R for specifying run-time path of programs and library dependencies
+* New -avoid-version option to avoid versioning for libraries
+* libtool module names no longer need to have a "lib" prefix
+  (requires automake 1.4).
+* New -thread-safe flag, to build thread-safe libraries
 * Major improvements in libltdl: API documentation, installable version,
   support for module search paths, support for lt_dlopen(0),
   can be embedded into packages as a tar file (libltdl.tar.gz),
   dynamic buffer allocation and buffer overflow checks,
   new macro LTDL_SET_PRELOADED_SYMBOLS() which must be used in the
   main program, dynamic memory allocation functions are user-defineable
-* If libtool could not satisfy all dependencies of a module
-  it will only build a static version of it
+* New AC_LIBLTDL_CONVENIENCE and AC_LIBLTDL_INSTALLABLE macros, to select
+  convenience and/or installable versions of libltdl.
+* libltdl is now built and installed unless --disable-ltdl-install
 * New "-dlopen self" flag for dlopening the executable itself
-* dld_preloaded_symbols was renamed to lt_preloaded_symbols
 * New AC_LIBTOOL_DLOPEN macro to check for dlopen support,
   required if you use -dlopen or -dlpreopen
-* New -thread-safe flag, to build thread-safe libraries
-* New demos and tests
-* Improved shared library checking
-* Support -R for specifying run-time path of programs and library dependencies
+* If libtool could not satisfy all dependencies of a module
+  it will only build a static version of it
+* dld_preloaded_symbols was renamed to lt_preloaded_symbols
 * Support for BeOS
-* Improved support for FreeBSD, AIX, IRIX, OSF, SysV 4.3, HP/UX, 
+* Improved support for FreeBSD, AIX, IRIX, OSF, SysV 4.3, HP/UX, DJGPP
   BSD/OS 4.x and NetBSD
-* New -avoid-version option to avoid versioning for libraries
-* libtool module names no longer need to have a "lib" prefix
-  (requires automake 1.4).
+* In order for libtool to attempt to link a shared library (dll) on win32
+  platforms, you must pass the -no-undefined flag to libtool in link mode.
+* The path to GNU ld now works on cygwin-b18 to cygwin-b20.2 at least.
+* Support for IRIX library versioning.
+* New demos and tests
 * Various bugfixes
 
 New in 1.2c: CVS version; 1.2d: 1998-12-16, Libtool team:

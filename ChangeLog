@@ -1,5 +1,10 @@
 1999-03-10  Thomas Tanner  <tanner@gmx.de>
 
+	* NEWS: ordered by importance
+	* Makefile.am: set LIBTOOL_FLAGS when generating libtool
+	* configure.in: check for dlopen support and set LIBTOOL_FLAGS
+	  accordingly
+	  
 	* configure.in: fix spacing for --disable-ltdl-install,
 	  always configure libltdl, add libltdl/acinclude.m4 to 
 	  ACINCLUDE_M4_LIST, disable installation of libltdl if necessary

@@ -39,6 +39,14 @@ AC_PROG_LN_S
 dnl For the `lineno' script (which puts line numbers into `ltconfig').
 AC_PROG_AWK
 
+dnl Check for dlopen support
+AC_LIBTOOL_DLOPEN
+
+LIBTOOL_FLAGS=
+test "x$lt_cv_dlopen" != xno && LIBTOOL_FLAGS="--enable-dlopen"
+test "x$lt_cv_dlopen_self" = xyes && LIBTOOL_FLAGS="$LIBTOOL_FLAGS --enable-dlopen-self"
+AC_SUBST(LIBTOOL_FLAGS)
+
 AC_ARG_ENABLE(ltdl-install,
 [  --disable-ltdl-install  do not install libltdl])
 if test x"$enable_ltdl_install" = xno; then
