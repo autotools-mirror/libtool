@@ -1,5 +1,8 @@
 2000-09-04  Alexandre Oliva  <aoliva@redhat.com>
 
+	* libltdl/ltdl.c (load_deplibs): Don't append shlib_ext; use
+	lt_dlopenext() instead.
+
 	* ltmain.in (link -static): Don't add $link_static_flag; only
 	-all-static should do that.
 	* mdemo/configure.in: Revert part of the previous delta.
