@@ -834,8 +834,8 @@ _LT_DECL([], [echo], [1],
 m4_defun([_LT_ENABLE_LOCK],
 [AC_REQUIRE([AC_OBJEXT])dnl
 AC_ARG_ENABLE([libtool-lock],
-    [AC_HELP_STRING([--disable-libtool-lock],
-	[avoid locking (might break parallel builds)])])
+  [AC_HELP_STRING([--disable-libtool-lock],
+    [avoid locking (might break parallel builds)])])
 test "x$enable_libtool_lock" != xno && enable_libtool_lock=yes
 
 # Some flags need to be propagated to the compiler or linker for good
@@ -846,12 +846,12 @@ ia64-*-hpux*)
   echo 'int i;' > conftest.$ac_ext
   if AC_TRY_EVAL(ac_compile); then
     case `/usr/bin/file conftest.$ac_objext` in
-    *ELF-32*)
-      HPUX_IA64_MODE="32"
-      ;;
-    *ELF-64*)
-      HPUX_IA64_MODE="64"
-      ;;
+      *ELF-32*)
+	HPUX_IA64_MODE="32"
+	;;
+      *ELF-64*)
+	HPUX_IA64_MODE="64"
+	;;
     esac
   fi
   rm -rf conftest*
@@ -860,31 +860,31 @@ ia64-*-hpux*)
   # Find out which ABI we are using.
   echo '[#]line __oline__ "configure"' > conftest.$ac_ext
   if AC_TRY_EVAL(ac_compile); then
-   if test "$lt_cv_prog_gnu_ld" = yes; then
-    case `/usr/bin/file conftest.$ac_objext` in
-    *32-bit*)
-      LD="${LD-ld} -melf32bsmip"
-      ;;
-    *N32*)
-      LD="${LD-ld} -melf32bmipn32"
-      ;;
-    *64-bit*)
-      LD="${LD-ld} -melf64bmip"
-      ;;
-    esac
-   else
-    case `/usr/bin/file conftest.$ac_objext` in
-    *32-bit*)
-      LD="${LD-ld} -32"
-      ;;
-    *N32*)
-      LD="${LD-ld} -n32"
-      ;;
-    *64-bit*)
-      LD="${LD-ld} -64"
-      ;;
-    esac
-   fi
+    if test "$lt_cv_prog_gnu_ld" = yes; then
+      case `/usr/bin/file conftest.$ac_objext` in
+	*32-bit*)
+	  LD="${LD-ld} -melf32bsmip"
+	  ;;
+	*N32*)
+	  LD="${LD-ld} -melf32bmipn32"
+	  ;;
+	*64-bit*)
+	  LD="${LD-ld} -melf64bmip"
+	;;
+      esac
+    else
+      case `/usr/bin/file conftest.$ac_objext` in
+	*32-bit*)
+	  LD="${LD-ld} -32"
+	  ;;
+	*N32*)
+	  LD="${LD-ld} -n32"
+	  ;;
+	*64-bit*)
+	  LD="${LD-ld} -64"
+	  ;;
+      esac
+    fi
   fi
   rm -rf conftest*
   ;;
@@ -894,38 +894,38 @@ x86_64-*linux*|ppc*-*linux*|powerpc*-*linux*|s390*-*linux*|sparc*-*linux*)
   echo 'int i;' > conftest.$ac_ext
   if AC_TRY_EVAL(ac_compile); then
     case "`/usr/bin/file conftest.o`" in
-    *32-bit*)
-      case $host in
-        x86_64-*linux*)
-          LD="${LD-ld} -m elf_i386"
-          ;;
-        ppc64-*linux*|powerpc64-*linux*)
-          LD="${LD-ld} -m elf32ppclinux"
-          ;;
-        s390x-*linux*)
-          LD="${LD-ld} -m elf_s390"
-          ;;
-        sparc64-*linux*)
-          LD="${LD-ld} -m elf32_sparc"
-          ;;
-      esac
-      ;;
-    *64-bit*)
-      case $host in
-        x86_64-*linux*)
-          LD="${LD-ld} -m elf_x86_64"
-          ;;
-        ppc*-*linux*|powerpc*-*linux*)
-          LD="${LD-ld} -m elf64ppc"
-          ;;
-        s390*-*linux*)
-          LD="${LD-ld} -m elf64_s390"
-          ;;
-        sparc*-*linux*)
-          LD="${LD-ld} -m elf64_sparc"
-          ;;
-      esac
-      ;;
+      *32-bit*)
+	case $host in
+	  x86_64-*linux*)
+	    LD="${LD-ld} -m elf_i386"
+	    ;;
+	  ppc64-*linux*|powerpc64-*linux*)
+	    LD="${LD-ld} -m elf32ppclinux"
+	    ;;
+	  s390x-*linux*)
+	    LD="${LD-ld} -m elf_s390"
+	    ;;
+	  sparc64-*linux*)
+	    LD="${LD-ld} -m elf32_sparc"
+	    ;;
+	esac
+	;;
+      *64-bit*)
+	case $host in
+	  x86_64-*linux*)
+	    LD="${LD-ld} -m elf_x86_64"
+	    ;;
+	  ppc*-*linux*|powerpc*-*linux*)
+	    LD="${LD-ld} -m elf64ppc"
+	    ;;
+	  s390*-*linux*)
+	    LD="${LD-ld} -m elf64_s390"
+	    ;;
+	  sparc*-*linux*)
+	    LD="${LD-ld} -m elf64_sparc"
+	    ;;
+	esac
+	;;
     esac
   fi
   rm -rf conftest*
