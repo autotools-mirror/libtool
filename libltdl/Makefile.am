@@ -67,7 +67,7 @@ libltdlc_la_LIBADD	= $(libdlloader_la_LIBADD)
 
 ## These are installed as a subdirectory of pkgdatadir so that
 ## libtoolize --ltdl can find them later:
-ltdldatadir		= $(pkgdatadir)/libltdl
+ltdldatadir		= $(pkgvdatadir)/libltdl
 nobase_ltdldata_DATA	= COPYING.LIB Makefile.am README configure.ac \
 			  $(libltdl_la_SOURCES) $(libdlloader_la_SOURCES) \
 			  lt__dirent.c lt__dirent.h argz_.h argz.c

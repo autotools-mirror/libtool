@@ -1,6 +1,13 @@
 NEWS - list of user-visible changes between releases of GNU Libtool
 
 New in 1.9h: 2004-??-??; CVS version 1.9g, Libtool team:
+* Libtool versions can now be parallel installed, except that only one
+  set of libltdl headers and static libs, and only one manual is retained.
+* In order for this to work, Libtool's aclocal macros are not installed
+  to a shared aclocal dir.  Either change your Makefile.am to use:
+     ACLOCAL_AMFLAGS = -I /usr/share/libtool-1.9g/m4
+  Or change your configure.ac to use:
+     AC_CONFIG_MACRO_DIR([m4])
 
 New in 1.9f: 2004-10-23; CVS version 1.9e, Libtool team:
 * Calculate dllsearchpath correctly for wrapper scripts on cygwin.

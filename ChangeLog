@@ -1,3 +1,22 @@
+2004-11-14  Gary V. Vaughan  <gary@gnu.org>
+
+	* configure.ac (APIVERSION): New substituted variable.
+	(pkgvdatadir): Ditto.  Versioned data directory.
+	(pkgvmacrodir): Ditto.  Versioned aclocal directory.
+	(LN): New check for LN command.
+	* Makefile.am (aclocal_DATA): Replaced with...
+	(pkgvmacro_DATA): ...this.
+	(install-data-local): Remove old shared resources.
+	(install-exec-hook): Make versioned links to executables.
+	(uninstall-hook): Remove versioned files.
+	* libltdl/Makefile.am (ltdldatadir): Redefine in terms of
+	pkgvdatadir.
+	* libltdl/loaders/Makefile.am (ltdldatadir): Ditto.
+	* libtoolize.m4sh: Copy macro files from versioned macro directory
+	instead of shared aclocal directory.
+	* doc/libtool.texi: Document it.
+	* NEWS: Updated.
+
 2004-11-10  Gary V. Vaughan  <gary@gnu.org>
 
 	From James Henstridge <james@jamesh.id.au>:
