@@ -36,7 +36,7 @@ EOF
 
 rm -rf `find . \( -name autom4te.cache -o -name libtool \) -print`
 
-fakes="config/ltmain.sh config/libtoolize libltdl/ltmain.sh"
+fakes="config/ltmain.sh config/libtoolize"
 if test -z "$reconfdirs"; then
   reconfdirs=". `ls -1d tests/*demo tests/*demo[0-9]`"
 fi

@@ -1,3 +1,16 @@
+2003-11-27  Gary V. Vaughan  <gary@gnu.org>
+
+	* libltdl/configure.ac: Removed.
+	* configure.ac (AC_CONFIG_HEADERS): Merged from
+	libltdl/configure.ac.
+	(AC_LIB_LTDL): Ditto.
+	(AC_CONFIG_FILES): Add libltdl/Makefile.
+	(AC_CONFIG_SUBDIRS): Removed.
+	(AC_CONFIG_COMMANDS): Remove generation of libltdl/ltmain.sh.
+	* libltdl/Makefile.am (libtool): Removed references, since we now
+	share $(top_builddir)/libtool.
+	* NEWS: Updated.
+
 2003-11-26  Gary V. Vaughan  <gary@gnu.org>
 
 	* Makefile.am (vcl.tmp): Be careful of VPATH builds.

@@ -25,6 +25,7 @@ AC_PREREQ(2.58) ## We use AS_HELP_STRING
 ## Autoconf initialisation. ##
 ## ------------------------ ##
 AC_INIT([libtool], [1.5a], [bug-libtool@gnu.org])
+AC_CONFIG_HEADERS([libltdl/config.h:libltdl/config-h.in])
 AC_CONFIG_SRCDIR([ltmain.in])
 AC_CONFIG_AUX_DIR([config])
 
@@ -125,9 +126,7 @@ AC_ARG_ENABLE(ltdl-install,
     [AS_HELP_STRING([--disable-ltdl-install], [do not install libltdl])])
 if test x"${enable_ltdl_install+set}" != xset; then
   enable_ltdl_install=yes
-  ac_configure_args="$ac_configure_args --enable-ltdl-install"
 fi
-AC_CONFIG_SUBDIRS([libltdl])
 
 # All subdirectories that are configured on demand, but that must be
 # included in the distribution.  This substitution is for tests/Makefile.am,
@@ -179,16 +178,15 @@ AM_CONDITIONAL(HAVE_RC, [test "x$RC" != xno])
 ## Libtool initialisation. ##
 ## ----------------------- ##
 AC_CONFIG_FILES([config/ltmain.sh:./ltmain.in])
-AC_CONFIG_COMMANDS([libltdl/ltmain.sh],
-    [cp -f config/ltmain.sh libltdl/ltmain.sh])
 AC_LIBTOOL_DLOPEN
 AC_LIBTOOL_WIN32_DLL
 AC_PROG_LIBTOOL
+AC_LIB_LTDL
 
 
 
 ## -------- ##
 ## Outputs. ##
 ## -------- ##
-AC_CONFIG_FILES([Makefile doc/Makefile tests/Makefile])
+AC_CONFIG_FILES([Makefile libltdl/Makefile doc/Makefile tests/Makefile])
 AC_OUTPUT

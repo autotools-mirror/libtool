@@ -4,6 +4,8 @@ New in 1.5b: 2003-??-??; CVS version 1.5a, Libtool team:
 * libtool script is now created by config.status.  Instead of interrogating
   `./libtool' from configure.ac after calling AC_PROG_LIBTOOL, use the
   variable names directly.
+* libltdl is no longer a self-contained package, and shares configury with
+  the top level directory now.
 * --tag, --silent and --debug options are preserved and reused when libtool
   calls itself for relinking etc.
 * -no-suppress in compile mode shows compiler output for both PIC and non-PIC

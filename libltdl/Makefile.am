@@ -28,10 +28,6 @@ libltdlc_la_LIBADD = $(LIBADD_DL)
 ## Because we do not have automatic dependency tracking:
 ltdl.lo: ltdl.h config.h
 
-$(libltdl_la_OBJECTS) $(libltdlc_la_OBJECTS): libtool
-libtool: $(LIBTOOL_DEPS)
-	$(SHELL) ./config.status --recheck
-
 ## This allows us to install libltdl without using ln and without creating
 ## a world writeable directory.
 ## FIXME:  Remove this rule once automake can do this properly by itself.
