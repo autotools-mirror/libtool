@@ -25,12 +25,33 @@ Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 #include <string.h>
 #endif
 
+#ifdef HAVE_STRINGS_H
+#include <strings.h>
+#endif
+
 #include <stdio.h>
+
+typedef	struct lt_dlhandle_t {
+	struct lt_dlhandle_t *next;
+	char	*filename;	/* file name */
+	char	*name;		/* module name */
+	int	usage;		/* usage */
+	__ptr_t handle;		/* system handle */
+	__ptr_t	sys;		/* system specific data */
+} lt_dlhandle_t;
+
+static int sys_dlinit    __P((void));
+static int sys_dlexit    __P((void));
+static int sys_dlopen    __P((lt_dlhandle handle, const char *filename));
+static int sys_dlclose   __P((lt_dlhandle handle));
+static __ptr_t sys_dlsym __P((lt_dlhandle handle, char *symbol));
+static void trim         __P((char *dest, const char *s));
 
 #ifndef HAVE_STRDUP
 
 static char *
-strdup(const char *str)
+strdup(str)
+    const char *str;
 {
 	char *tmp;
 
@@ -44,14 +65,27 @@ strdup(const char *str)
 
 #endif
 
-typedef	struct lt_dlhandle_t {
-	struct lt_dlhandle_t *next;
-	char	*filename;	/* file name */
-	char	*name;		/* module name */
-	int	usage;		/* usage */
-	void	*handle;	/* system handle */
-	void	*sys;		/* system specific data */
-} lt_dlhandle_t;
+#ifndef HAVE_STRRCHR
+
+static char*
+strrchr(str, ch)
+    const char *str;
+    int ch;
+{
+    char *p;
+
+    for (p = str; p != '\0'; p++)
+	/*NOWORK*/;
+
+    while (*p != (char)ch && p >= str)
+      {
+	  p--;
+      }
+
+    return (*p == (char)ch) ? p : NULL;
+}
+
+#endif
 
 #ifdef STATIC
 
@@ -60,7 +94,7 @@ typedef	struct lt_dlhandle_t {
 struct dld_symlist
 {
   char *name;
-  void *address;
+  __ptr_t address;
 };
 
 extern struct dld_symlist dld_preloaded_symbols[];
@@ -99,7 +133,7 @@ sys_dlclose (handle)  lt_dlhandle handle;
 	return 0;
 }
 
-static void *
+static __ptr_t
 sys_dlsym (handle, symbol)  lt_dlhandle handle; char *symbol;
 {
 	struct dld_symlist *s = (struct dld_symlist*)(handle->handle);
@@ -159,7 +193,7 @@ sys_dlclose (handle)  lt_dlhandle handle;
 	return dlclose(handle->handle);
 }
 
-static void *
+static __ptr_t
 sys_dlsym (handle, symbol)  lt_dlhandle handle; char *symbol;
 {
 	return dlsym(handle->handle, symbol);
@@ -202,7 +236,7 @@ sys_dlclose (handle)  lt_dlhandle handle;
 	return 0;
 }
 
-static void *
+static __ptr_t
 sys_dlsym (handle, symbol)  lt_dlhandle handle; char *symbol;
 {
 	int status, i;
@@ -249,7 +283,7 @@ sys_dlclose (handle)  lt_dlhandle handle;
 	return 0;
 }
 
-static void *
+static __ptr_t
 sys_dlsym (handle, symbol)  lt_dlhandle handle; char *symbol;
 {
 	return dld_get_func(symbol);
@@ -288,7 +322,7 @@ sys_dlclose (handle)  lt_dlhandle handle;
 	return 0;
 }
 
-static void *
+static __ptr_t
 sys_dlsym (handle, symbol)  lt_dlhandle handle; char *symbol;
 {
 	return GetProcAddress(handle->handle, symbol);
@@ -322,7 +356,7 @@ sys_dlclose (handle)  lt_dlhandle handle;
 	return 0;
 }
 
-static void *
+static __ptr_t
 sys_dlsym (handle, symbol)  lt_dlhandle handle; char *symbol;
 {
 	return 0;
@@ -374,9 +408,9 @@ lt_dlexit ()
 }
 
 static void
-trim (char *dest, const char *s)
+trim (dest, s) char *dest; const char *s;
 {
-	char *i = rindex(s, '\'');
+	char *i = strrchr(s, '\'');
 	int len = strlen(s);
 
 	if (len > 3 && s[0] == '\'') {
@@ -406,20 +440,20 @@ lt_dlopen (filename)  const char *filename;
 	handle = (lt_dlhandle) malloc(sizeof(lt_dlhandle_t));
 	if (!handle)
 		return 0;
-	basename = rindex(filename, '/'); /* FIXME: portable? */
+	basename = strrchr(filename, '/');
 	if (basename)
 		basename++;
 	strncpy(dir, filename, basename - filename);
 	dir[basename - filename] = '\0';
 	/* check whether we open a libtool module (.la extension) */
-	ext = rindex(basename, '.');
+	ext = strrchr(basename, '.');
 	if (ext && strcmp(ext, ".la") == 0) {
 		char	dlname[256], libdir[512], deps[512];
 		char	fullname[512];
 	
 		file = fopen(filename, "r"); /* FIXME: portable? */
 		if (!file) {
-			free(handle);
+		    free(handle);
 			return 0;
 		}
 		while (!feof(file)) {
@@ -520,11 +554,11 @@ lt_dlclose (handle)  lt_dlhandle handle;
 	return 0;
 }
 
-void *
+__ptr_t
 lt_dlsym (handle, symbol)  lt_dlhandle handle; char *symbol;
 {
 	char	sym[128];
-	void	*address;
+	__ptr_t address;
 
 	if (handle->name) {	/* libtool module */
 #ifdef NEED_USCORE

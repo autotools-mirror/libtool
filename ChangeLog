@@ -1,3 +1,17 @@
+1998-12-02  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
+
+	* libltdl/configure.in: look for string.h or else strings.h, and
+	also check for ANSI strrchr() function.  Fix `undescore before
+	symbols' macro to not rely on a.out (cygwin uses a.exe!).  Fix
+	`underscore for dlsym' to set cache variable properly, not just in
+	environment of AC_DEFINE(NEED_USCORE).
+	* libltdl/ltdl.h (__ptr_t): for K&R compatibility using char*.
+	* libltdl/ltdl.c (strrchr): fallback function incase none is
+	defined in libc.
+	(trim, ltdlopen): replace rindex with ANSI strrchr.
+	Add static function declarations so that we get type checking with
+	ANSI compilers.  Use __ptr_t instead of void*.
+
 1998-12-01  Thomas Tanner  <tanner@gmx.de>
 
 	* ltconfig.in: added -export-symbols support for GNU ld and
@@ -9,7 +23,7 @@
 	* mdemo/modules/Makefile.am: replaced -export-symbols with 
 	-export-dynamic since it doesn't work for modules
 	
-1998-12-01  Gary V. Vaughan  <garyv@oranda.demon.co.uk>
+1998-12-01  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
 
 	* README: Updated homepage pointer to gnu libtool page.
 
@@ -32,7 +46,7 @@
 
 	* config.guess, config.sub: imported from autoconf pre-2.13
 
-1998-11-27  Gary V. Vaughan  <garyv@oranda.demon.co.uk>
+1998-11-27  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
 
 	* libtool (AM_PROG_LD): Oops... we need to know the host_os for
 	the changes below.  I'm not sure whether mingw32 and os2 support

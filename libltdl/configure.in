@@ -7,7 +7,8 @@ AM_PROG_LIBTOOL
 
 AC_HEADER_STDC
 AC_CHECK_HEADERS(malloc.h dlfcn.h dl.h)
-AC_CHECK_FUNCS(strdup)
+AC_CHECK_HEADERS(string.h strings.h, break)
+AC_CHECK_FUNCS(strdup strrchr)
 
 LIBADD_DL=
 AC_CHECK_FUNCS(dlopen, AC_DEFINE(HAVE_LIBDL),
@@ -22,17 +23,17 @@ AC_SUBST(LIBADD_DL)
 AC_MSG_CHECKING(for underscore before symbols)
 AC_CACHE_VAL(libltdl_cv_uscore,[
   echo "main(){int i=1;} fnord(){int i=23; int ltuae=42;}" > conftest.c
-  ${CC} conftest.c > /dev/null
-  if (nm a.out | grep _fnord) > /dev/null; then
+  ${CC} -c conftest.c > /dev/null
+  if (nm conftest.$ac_objext | grep _fnord) > /dev/null; then
     libltdl_cv_uscore=yes
   else
     libltdl_cv_uscore=no
   fi])
 AC_MSG_RESULT($libltdl_cv_uscore)
-rm -f conftest.c a.out
+rm -f conftest*
 
 if test $libltdl_cv_uscore = yes; then
-  if test $ac_cv_func_dlopen = yes -o $ac_cv_lib_dl_dlopen = yes ; then
+  if test $ac_cv_func_dlopen = yes || test $ac_cv_lib_dl_dlopen = yes ; then
 	AC_MSG_CHECKING(whether we have to add an underscore for dlsym)
 	AC_CACHE_VAL(libltdl_cv_need_uscore,AC_TRY_RUN([
 #include <dlfcn.h>
@@ -42,7 +43,8 @@ main() { void *self, *ptr1, *ptr2; self=dlopen(NULL,RTLD_LAZY);
     if(self) { ptr1=dlsym(self,"fnord"); ptr2=dlsym(self,"_fnord");
     if(ptr1 && !ptr2) exit(0); } exit(1); } 
 ], libltdl_cv_need_uscore=no, 
-  [libltdl_cv_need_uscore=yes AC_DEFINE(NEED_USCORE)],
+  [libltdl_cv_need_uscore=yes
+   AC_DEFINE(NEED_USCORE)],
 	libltdl_cv_need_uscore=no))
 
         AC_MSG_RESULT($libltdl_cv_need_uscore)
