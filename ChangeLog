@@ -1,3 +1,17 @@
+2003-04-14  Robert Boehne  <rboehne@gnu.org>
+
+	* NEWS: Updated.
+	* configure.ac: Bumped version to 1.5a.
+
+	GNU libtool 1.5 was released.
+
+	* configure.ac: Bumped version to 1.5.
+	* NEWS: updated.
+	* README-alpha: Updated upload instructions.
+	* README: Changed typo in version description.
+	* config.guess, config.sub, texinfo.tex:  Synchronized from
+	ftp.gnu.org.
+
 2003-04-10  Alexandre Oliva  <aoliva@redhat.com>
 
 	* libtool.m4 (lt_cv_deplibs_check_method): Use pass_all on all
