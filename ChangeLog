@@ -1,3 +1,9 @@
+2003-01-28  Albert Chin-A-Young  <china@thewrittenword.com>
+
+	* libtool.m4: Allow compiler variable, CC, CXX, etc. to
+	be a program name with arguments. Original version stripped
+	arguments for CC.
+
 2003-01-28  Charles Wilson  <cwilson@ece.gatech.edu>
 
 	* ltmain.in: add code for a binary wrapper

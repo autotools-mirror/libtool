@@ -240,8 +240,7 @@ AC_DEFUN([_LT_AC_SYS_COMPILER],
 LTCC=${LTCC-"$CC"}
 
 # Allow CC to be a program name with arguments.
-set dummy $CC
-compiler="[$]2"
+compiler=$CC
 ])# _LT_AC_SYS_COMPILER
 
 
@@ -2541,8 +2540,7 @@ _LT_AC_SYS_COMPILER
 # Allow CC to be a program name with arguments.
 lt_save_CC="$CC"
 CC=${CXX-"c++"}
-set dummy $CC
-compiler="[$]2"
+compiler=$CC
 _LT_AC_TAGVAR(compiler, $1)=$CC
 cc_basename=`$echo X"$compiler" | $Xsed -e 's%^.*/%%'`
 
@@ -3510,8 +3508,7 @@ _LT_AC_SYS_COMPILER
 # Allow CC to be a program name with arguments.
 lt_save_CC="$CC"
 CC=${F77-"f77"}
-set dummy $CC
-compiler="[$]2"
+compiler=$CC
 _LT_AC_TAGVAR(compiler, $1)=$CC
 cc_basename=`$echo X"$compiler" | $Xsed -e 's%^.*/%%'`
 
@@ -3590,8 +3587,7 @@ _LT_AC_SYS_COMPILER
 # Allow CC to be a program name with arguments.
 lt_save_CC="$CC"
 CC=${GCJ-"gcj"}
-set dummy $CC
-compiler="[$]2"
+compiler=$CC
 _LT_AC_TAGVAR(compiler, $1)=$CC
 
 # GCJ did not exist at the time GCC didn't implicitly link libc in.
@@ -3646,8 +3642,7 @@ _LT_AC_SYS_COMPILER
 # Allow CC to be a program name with arguments.
 lt_save_CC="$CC"
 CC=${RC-"windres"}
-set dummy $CC
-compiler="[$]2"
+compiler=$CC
 _LT_AC_TAGVAR(compiler, $1)=$CC
 _LT_AC_TAGVAR(lt_cv_prog_compiler_c_o, $1)=yes
 
