@@ -1,3 +1,10 @@
+1999-04-29  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* libltdl/Makefile.am (ltdl.lo): Add dependencies.
+	* libltdl/configure.in: Clean up some duplicate defines.
+	* libltdl/acconfig.h: New file.  Add #undefs for defines that
+	would be duplicated.
+
 1999-04-29  Gary V. Vaughan  <gary@oranda.demon.co.uk>
 
 	* libtool.m4 (cygwin*|mingw*, DLLTOOL, OBJDUMP, AS): Only expand the
