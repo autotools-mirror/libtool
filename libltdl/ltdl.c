@@ -431,18 +431,6 @@ sys_shl = { 0, sys_shl_open, sys_shl_close, sys_shl_sym, 0 };
 
 #include <windows.h>
 
-static int
-sys_wll_init LTDL_PARAMS((void))
-{
-	return 0;
-}
-
-static int
-sys_wll_exit LTDL_PARAMS((void))
-{
-	return 0;
-}
-
 /* Forward declaration; required to implement handle search below. */
 static lt_dlhandle handles;
 
