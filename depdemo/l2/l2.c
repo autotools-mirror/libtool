@@ -17,21 +17,21 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307
 USA. */
 
-#include "l2.h"
+#include "l2/l2.h"
 
-#include "l1.h"
+#include "l1/l1.h"
 #include <stdio.h>
 
 int	var_l2;
 
 int
-func_l2(int ident)
+func_l2(int indent)
 {
   int i;
   
-  for (i = 0; i < ident; i++)
+  for (i = 0; i < indent; i++)
     putchar(' ');
   printf("l2\n");
-  func_l1(ident+1);
+  func_l1(indent+1);
   return 0; 
 }
