@@ -1,5 +1,12 @@
 1999-01-25  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* mkstamp: move the sed script to extract revision and date
+	information into a separate shell-script, so that we can break
+	lines between commands; FreeBSD's sed doesn't like `;' after `t'
+	Reported by Axel Thimm <Axel.Thimm@physik.fu-berlin.de>
+	* Makefile.am: use mkstamp
+	* THANKS: added Axel Thimm
+	
 	* ltmain.in: don't try to use .o instead of .lo just because
 	there's no PIC flag.  It loses if --disable-static, and there's
 	not much point if we're referring to the same file anyway...
