@@ -1,4 +1,4 @@
-2004-06-30  Maciej W. Rozycki  <macro@linux-mips.org>
+2004-08-12  Maciej W. Rozycki  <macro@linux-mips.org>
 
 	* demo/Makefile.am: Stop automake warning by defining
 	libhell0_a_CFLAGS.
