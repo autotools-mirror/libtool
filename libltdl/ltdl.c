@@ -689,11 +689,22 @@ sys_shl_open (loader_data, filename)
 {
   lt_module module = shl_load (filename, LT_BIND_FLAGS, 0L);
 
-  if (!module)
+  if (!filename)
     {
-      MUTEX_SETERROR (LT_DLSTRERROR (CANNOT_OPEN));
+      /* A NULL handle is used to get symbols from self and everything
+         else already loaded that was exported with -E compiler flag.  */
+      module = (lt_module) 0;
     }
+  else
+    {
+      module = shl_load (filename, LT_BIND_FLAGS, 0L);
 
+      if (!module)
+	{
+	  MUTEX_SETERROR (LT_DLSTRERROR (CANNOT_OPEN));
+	}
+    }
+  
   return module;
 }
 
@@ -704,7 +715,7 @@ sys_shl_close (loader_data, module)
 {
   int errors = 0;
 
-  if (shl_unload ((shl_t) (module)) != 0)
+  if (module && (shl_unload ((shl_t) (module)) != 0))
     {
       MUTEX_SETERROR (LT_DLSTRERROR (CANNOT_CLOSE));
       ++errors;
@@ -719,20 +730,25 @@ sys_shl_sym (loader_data, module, symbol)
      lt_module module;
      const char *symbol;
 {
-  lt_ptr address;
+  int    is_module_self = (module == (lt_module) 0);
+  lt_ptr address        = 0;
 
-  if (module && shl_findsym ((shl_t*) &module,
-			     symbol, TYPE_UNDEFINED, &address) == 0)
+  /* shl_findsym considers zero valued MODULE as an indicator to saerch
+     for a symbol among all loaded (and exported) symbols including those
+     in the main executable.  However, it sets MODULE to a valid module
+     address which breaks the semantics of libltdl's module management.  */
+  if (shl_findsym ((shl_t*) &module, symbol, TYPE_UNDEFINED, &address) == 0)
     {
-      if (address)
+      if (!address)
 	{
-	  return address;
+	  MUTEX_SETERROR (LT_DLSTRERROR (SYMBOL_NOT_FOUND));
 	}
-
-      MUTEX_SETERROR (LT_DLSTRERROR (SYMBOL_NOT_FOUND));
     }
+  
+  if (is_module_self)
+    module = (lt_module) 0;
 
-  return 0;
+  return address;
 }
 
 static struct lt_user_dlloader sys_shl = {
@@ -2048,6 +2064,7 @@ lt_dlopen (filename)
       char     *dlname = 0, *old_name = 0;
       char     *libdir = 0, *deplibs = 0;
       char     *line;
+      size_t	line_len;
       int	error = 0;
 
       /* if we can't find the installed flag, it is probably an

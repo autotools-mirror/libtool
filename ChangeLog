@@ -1,5 +1,12 @@
 2001-04-05  Gary V. Vaughan  <gvv@techie.com>
 
+	From Ahmed Masud <masud@googgun.com>
+	* libltdl/ltdl.c (sys_shl_open):  Return a NULL module handle
+	for self opening.
+	(sys_shl_close):  Be careful not to close a NULL module handle.
+	(sys_shl_sym):  Allow shl_findsym() to open NULL modules, but 
+	discard the modified module address it returns.
+
 	* libltdl/ltdl.c (lt_dlopen):  When reading the .la file,
 	reallocate the line buffer size if the line overflows the
 	original buffer.
