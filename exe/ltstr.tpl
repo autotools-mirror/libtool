@@ -52,21 +52,24 @@ ENDDEF  =][=
 #     define lt_ptr         char*
 #  endif
 #endif
+
+#define MODE_CT [=(+ 1 (high-lim "string"))=]
+typedef void (emitScriptProc) LT_PARAMS(( int argc, char** argv ));
+extern emitScriptProc emitScript;[=
+  FOR string=][=
+    % call-proc "\nextern emitScriptProc %s;" =][=
+  ENDFOR    =]
 [=
 
-ELSE
+ELSE  not h suffix
 
 =]
 #include "[=(. hdr-name)=]"
 [=
 
-ENDIF =][=
-
 FOR string
 
-=][=
-
-  IF (== (suffix) "c") =]
+=]
 /*
  *  [=(string-upcase! (get "str_name"))=] STRING
  */[=
@@ -83,12 +86,8 @@ tSCC zExplain[=(string-capitalize! (get "str_name"))=][ [=
 
 [=    ENDIF =][=
     ENDIF   =][=
-  ENDIF "c" =][=
 
-  IF (exist? "text")
-
-=][=
-    IF (== (suffix) "c") =]
+    IF (exist? "text")      =]
 tSCC z[= (string-capitalize! (get "str_name")) =]Cmd[] =
 [= (out-push-new ".lt.tpl") =][=
    text                     =][=
@@ -96,25 +95,16 @@ tSCC z[= (string-capitalize! (get "str_name")) =]Cmd[] =
    (out-push-new ".lt.xxx") =][=
    INCLUDE ".lt.tpl"        =][=
    (out-pop)
-   (kr-string (shell "cat .lt.xxx ; rm -f .lt.*")) =][=
-    ENDIF =];
+   (kr-string (shell "cat .lt.xxx ; rm -f .lt.*")) =];
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */[=
-  ENDIF =][=
+   ENDIF =][=
 
-ENDFOR
+ENDFOR =][=
 
-=][=
+ENDIF  c/h suffix
 
-IF (== (suffix) "h")
-
-=]#define MODE_CT [=(+ 1 (high-lim "string"))=]
-typedef void (emitScriptProc) LT_PARAMS(( int argc, char** argv ));
-extern emitScriptProc emitScript;[=
-  FOR string=][=
-    % call-proc "\nextern emitScriptProc %s;" =][=
-  ENDFOR    =][=
-ENDIF =]
+=]
 
 [=IF (== (suffix) "h")=]extern [=
   ENDIF=]tCC* apz_mode_explain[ MODE_CT ][=
