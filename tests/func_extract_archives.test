@@ -8,56 +8,20 @@ if test -z "$srcdir"; then
   test "${VERBOSE+set}" != "set" && VERBOSE=yes
 fi
 . $srcdir/defs || exit 1
-case $host in 
-*darwin*)
-  makefatdarwin=yes
-  ;;
-  *)
-  makefatdarwin=
-  ;;
-esac
 rm -f foo.o bar.o libfoo.a
 SED=${SED-sed}
 Xsed="$SED -e s/^X//"
 for afile in baz foobar foobaz
 do
-  if test -n "$makefatdarwin"; then
-    echo "ppc $afile" > $afile.ppc.o
-    echo "m68k $afile" > $afile.m68k.o
-    echo "i386 $afile" > $afile.i386.o
-    lipo -create -output $afile.o -arch ppc $afile.ppc.o -arch m68k \
-      $afile.m68k.o -arch i386 $afile.i386.o
-    rm -f $afile.*.o
-    ar -q libfoo.a $afile.o
-    rm -f $afile.o
-  else
     echo "$afile" > $afile.o
     ar -q libfoo.a $afile.o
     rm -f $afile.o
-  fi
 done
 for anum in 1 2 3 4 5 6 7 8 9 10 11 12
 do
-  if test -n "$makefatdarwin"; then
-    echo "ppc foo $anum" > foo.ppc.o
-    echo "m68k foo $anum" > foo.m68k.o
-    echo "i386 foo $anum" > foo.i386.o
-    lipo -create -output foo.o -arch ppc foo.ppc.o -arch m68k foo.m68k.o \
-      -arch i386 foo.i386.o
-    ar -q libfoo.a foo.o
-    rm -f foo.o foo.*.o
-    echo "ppc bar $anum" > bar.ppc.o
-    echo "m68k bar $anum" > bar.m68k.o
-    echo "i386 bar $anum" > bar.i386.o
-    lipo -create -output bar.o -arch ppc bar.ppc.o -arch m68k bar.m68k.o \
-      -arch i386 bar.i386.o
-    ar -q libfoo.a bar.o
-    rm -f bar.o bar.*.o
-  else
     echo "foo $anum" > foo.o
     echo "bar $anum" > bar.o
     ar -q libfoo.a foo.o bar.o
-  fi
 done
 test -d .libs || mkdir .libs
 

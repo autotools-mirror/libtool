@@ -1,5 +1,10 @@
 2005-02-05  Peter O'Gorman  <peter@pogma.com>
 
+	* ltmain.in (func_extract_archives) [darwin]: This didn't actually
+	work on a real fat archive, should do now.
+	* tests/func_extract_archives.test: remove darwin fat tests which
+	did not actually work.
+
 	* Makefile.am (web-manual): Make this target actually work.
 
 2005-02-04  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
