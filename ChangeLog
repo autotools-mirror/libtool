@@ -1,5 +1,10 @@
 2000-05-14  Alexandre Oliva  <oliva@lsd.ic.unicamp.br>
 
+	* configure.in (ACINCLUDE_M4_LIST): Removed libltdl/acinclude.m4.
+	* Makefile.am (aclocal_macros): Added ltdl.m4.
+	(libltdl/acinclude.m4): Concatenate libtool.m4 and ltdl.m4.
+	* bootstrap: Remove duplicate libltdl.
+
 	* libtool.m4 (AC_LIBLTDL_CONVENIENCE, AC_LIBLTDL_INSTALLABLE):
 	Pick LIBLTLD from top_builddir and INCLTDL from top_srcdir.
 	* mdemo/configure.in: Remove comments on

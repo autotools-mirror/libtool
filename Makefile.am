@@ -13,7 +13,7 @@ CXXFLAGS = @CXXFLAGS@
 LDFLAGS = @LDFLAGS@
 LIBS= @LIBS@
 
-aclocal_macros = libtool.m4
+aclocal_macros = libtool.m4 ltdl.m4
 
 EXTRA_DIST = $(aclocal_macros) libtoolize.in ltconfig.in ltmain.in \
         ltcf-c.sh ltcf-cxx.sh \
@@ -102,7 +102,7 @@ update-timestamps:
 	(rm -f $@ && cp ltconfig.T $@ && rm -f ltconfig.T)
 
 @srcdir@/ltmain.sh: $(srcdir)/ltmain.in $(top_srcdir)/configure.in $(TSDEPS)
-	rm -f ltmain.shT
+	-rm -f ltmain.shT
 	date=`$(SHELL) $(srcdir)/mkstamp < $(srcdir)/ChangeLog` && \
 	sed -e 's/@''PACKAGE@/@PACKAGE@/' -e 's/@''VERSION@/@VERSION@/' \
 	    -e "s%@""TIMESTAMP@%$$date%" $(srcdir)/ltmain.in > ltmain.shT
@@ -110,11 +110,17 @@ update-timestamps:
 	(rm -f $@ && cp ltmain.shT $@ && rm -f ltmain.shT)
 
 # All our rules should depend on these demo files.
-all-recursive: $(ACINCLUDE_M4_LIST)
+all-recursive: $(srcdir)/libltdl/acinclude.m4 $(ACINCLUDE_M4_LIST)
+
+@srcdir@/libltdl/acinclude.m4: $(srcdir)/libtool.m4 $(srcdir)/ltdl.m4
+	-rm -f $@ $@T
+	cat $(srcdir)/libtool.m4 $(srcdir)/ltdl.m4 > $@T
+	mv $@T $@
 
 @ACINCLUDE_M4_LIST@: $(srcdir)/libtool.m4
-	rm -f $@
-	cp $(srcdir)/libtool.m4 $@
+	-rm -f $@ $@T
+	cat $(srcdir)/libtool.m4 > $@T
+	mv $@T $@
 
 .PHONY: configure-subdirs
 configure-subdirs distdir: $(DIST_MAKEFILE_LIST)
