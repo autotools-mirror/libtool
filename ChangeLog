@@ -1,3 +1,7 @@
+2004-02-15  Peter O'Gorman  <peter@pogma.com>
+
+	* libtool.m4, ltmain.in: Rename shrext to shrext_cmds.
+	
 2004-02-13  Gary V. Vaughan  <gary@gnu.org>
 
 	* commit (MKSTAMP): Look for mkstamp in the right place.
