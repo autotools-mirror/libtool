@@ -2017,7 +2017,7 @@ if test "X\${CDPATH+set}" = Xset; then CDPATH=:; export CDPATH; fi
 ### BEGIN LIBTOOL CONFIG
 EOF
   else
-    echo "appending to $ofile"
+    echo "appending configuration tag \"$tagname\" to $ofile"
     echo "### BEGIN LIBTOOL TAG CONFIG: $tagname" >> "$ofile"
   fi
   cfgfile="$ofile"
