@@ -1,3 +1,7 @@
+2004-07-23  Joe Orton  <joe@manyfish.co.uk>
+
+	* libtool.m4: Treat bsdi5* like bsdi4*. 
+
 2004-07-22  Peter O'Gorman  <peter@pogma.com>
 
 	* ltmain.in [darwin](func_extract_archives): $SED not sed.

@@ -1670,7 +1670,7 @@ beos*)
   shlibpath_var=LIBRARY_PATH
   ;;
 
-bsdi4*)
+bsdi[[45]]*)
   version_type=linux
   need_version=no
   library_names_spec='${libname}${release}${shared_ext}$versuffix ${libname}${release}${shared_ext}$major $libname${shared_ext}'
@@ -2392,7 +2392,7 @@ beos*)
   lt_cv_deplibs_check_method=pass_all
   ;;
 
-bsdi4*)
+bsdi[[45]]*)
   lt_cv_deplibs_check_method='file_magic ELF [[0-9]][[0-9]]*-bit [[ML]]SB (shared object|dynamic lib)'
   lt_cv_file_magic_cmd='/usr/bin/file -L'
   lt_cv_file_magic_test_file=/shlib/libc.so
@@ -3756,7 +3756,7 @@ _LT_EOF
       _LT_AC_TAGVAR(ld_shlibs, $1)=no
       ;;
 
-    bsdi4*)
+    bsdi[[45]]*)
       _LT_AC_TAGVAR(export_dynamic_flag_spec, $1)=-rdynamic
       ;;
 
