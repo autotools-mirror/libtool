@@ -284,7 +284,8 @@ func_exec ()
 
     if eval $my_program $my_exp_output; then :
     else
-      shift; shift
+      shift
+      test "x$1" = x || shift
       func_error "$0: cannot execute $my_program ${1+$@}"
 
       # Simple check to see if they are superuser.
