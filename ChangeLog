@@ -1,3 +1,10 @@
+2002-10-11  Christoph Egger  <Christoph_Egger@gmx.de>
+
+	* libtool.m4 (darwin): Add -install_name to the link line only
+	when -dynamiclib is specified for a module.
+	* ltmain.in (darwin): Use -bind_at_load when linking shared
+	libraries.
+
 2002-09-09  Albert Chin-A-Young  <china@thewrittenword.com>
 
 	* libtool.m4: Custom $symcode for Tru64 UNIX to catch 'Q',

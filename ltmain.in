@@ -3172,6 +3172,13 @@ EOF
 	# On Rhapsody replace the C library is the System framework
 	compile_deplibs=`$echo "X $compile_deplibs" | $Xsed -e 's/ -lc / -framework System /'`
 	finalize_deplibs=`$echo "X $finalize_deplibs" | $Xsed -e 's/ -lc / -framework System /'`
+	case $host in
+	*darwin*)
+	  # Don't allow lazy linking, it breaks C++ global constructors
+	  compile_command="$compile_command ${wl}-bind_at_load"
+	  finalize_command="$finalize_command ${wl}-bind_at_load"
+	  ;;
+	esac
 	;;
       esac
 
