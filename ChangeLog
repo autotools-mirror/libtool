@@ -1,3 +1,9 @@
+2004-01-02  Scott James Remnant  <scott@netsplit.com>
+
+	Updated all copyright notices to include 2004.
+
+	* NEWS: Next release will be in 2004.
+
 2003-12-31  Scott James Remnant  <scott@netsplit.com>
 
 	* ltmain.sh: Infer tagged configuration for link mode with the

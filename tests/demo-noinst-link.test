@@ -2,7 +2,7 @@
 # demo-noinst-link.test - make sure we do not link with an installed
 # library when an uninstalled one is to be used
 
-# Copyright (C) 2003 Free Software Foundation, Inc.
+# Copyright (C) 2003, 2004 Free Software Foundation, Inc.
 # This is free software; see the source for copying conditions.  There is NO
 # warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 

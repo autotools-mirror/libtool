@@ -1,6 +1,6 @@
 NEWS - list of user-visible changes between releases of GNU Libtool
 
-New in 1.5b: 2003-??-??; CVS version 1.5a, Libtool team:
+New in 1.5b: 2004-??-??; CVS version 1.5a, Libtool team:
 * libtool script is now created by config.status.  Instead of interrogating
   `./libtool' from configure.ac after calling AC_PROG_LIBTOOL, use the
   variable names directly.

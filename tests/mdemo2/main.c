@@ -1,5 +1,5 @@
 /* main.c -- mdemo2 test program
-   Copyright (C) 2003 Free Software Foundation, Inc.
+   Copyright (C) 2003, 2004 Free Software Foundation, Inc.
    Originally by Greg Eisenhauer < eisen at cc.gatech.edu >
    This file is part of GNU Libtool.
 
