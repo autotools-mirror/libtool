@@ -46,6 +46,7 @@ test_dl (char *filename)
   handle = lt_dlopen(filename);
   if (!handle) {
     fprintf (stderr, "can't open the module %s!\n", filename);
+    fprintf (stderr, "error was: %s\n", lt_dlerror());
     return 1;
   }
   phello = lt_dlsym(handle, "hello");  
@@ -100,7 +101,7 @@ main (int argc, char **argv)
   }
 
   if (lt_dlinit() != 0) {
-    fprintf (stderr, "dlopen not supported\n");
+    fprintf (stderr, "error during initialization: %s\n", lt_dlerror());
     return 1;
   }
 

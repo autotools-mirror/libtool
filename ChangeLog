@@ -11,7 +11,11 @@
 	* demo/configure.in: check for libm, string.h and math.h
 	* mdemo/configure.in: likewise
 	* depdemo/configure.in: check for libm and math.h
-	* libltdl/ltdl.c: check for buffer overflows
+	* libltdl/configure.in: check for dlerror
+	* libltdl/ltdl.c: check for buffer overflows, implemented
+	  dlerror, fixed a severe bug which occured when opening 
+	  non-libtool modules, dlopen with the flags GLOBAL and NOW
+	* mdemo/main.c: report the error using lt_dlerror()
 	
 1999-01-07  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
 
