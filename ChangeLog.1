@@ -1,8 +1,56 @@
+2000-06-04  Mark Mitchell  <mark@codesourcery.com>
+
+	* ltcf-c.sh (archive_cmds, archive_expsym_cmds) [solaris,
+	with_gcc]: Use `gcc -shared' to build a shared library.
+
+2001-06-04  John David Anglin  <dave@hiauly1.hia.nrc.ca>
+
+	* ltcf-c.sh (archive_cmd) [hpux, with_gcc]: Use gcc to link shared
+	archives.
+
+2001-05-28  Simon Patarin <simon.patarin@inria.fr>
+
+	* ltcf-cxx.sh (osf3/osf4/osf5): Support creation of C++  shared
+	libraries when using g++ with native linker.
+
+2001-05-28  Albert Chin  <china@thewrittenword.com>
+
+	* ltconfig.in (version_type, soname_spec) [aix4* | aix5*]: Use
+	linux-style versioning, and remove trailing .o from soname_spec.
+
+2001-05-22  Alexandre Oliva  <aoliva@redhat.com>
+
+	* ltcf-cxx.sh (allow_undefined_flag, no_undefined_flag)
+	[aix4*|aix5*]: Prepend blank.
+
 2001-05-20  Alexandre Oliva  <aoliva@redhat.com>
 
 	* configure.in: Reverted to 1.4, to avoid confusion with MLB.
 	Mainline is the release snapshot, except for the ChangeLog version
 	number, until the multi-language branch is merged into it.
+
+	* ltconfig.in: Fix sh.test regression introduced in previous patch.
+
+	* ltconfig.in (lt_cv_sys_max_cmd_len): Improve test to work better
+	in case of non-built-in echo.  Set bounds correctly.
+
+	* ltcf-cxx.sh (allow_undefined_flag) [aix4* | aix5*]: Fix quote
+	error.
+
+	* ltmain.in (exec_cmd): New variable.  Don't exec programs within
+	the big `case'; set the variable instead, and exec the cmd
+	afterwards, so that the shell gets a chance to clean up here-doc
+	files.
+	* NEWS: Update.
+
+2001-05-16  Alan Modra  <amodra@one.net.au>
+
+	* libtool.m4 (lt_cv_deplibs_check_method): pass_all for hppa*-linux.
+
+2001-05-03  Andreas Jaeger  <aj@suse.de>, Andreas Schwab  <schwab@suse.de>
+
+	* ltmain.in (relink_command): Arrange for wrapper script to save
+	output to a variable and display it only if relinking fails.
 
 2001-04-25  Gary V. Vaughan  <gvv@techie.com>
 
