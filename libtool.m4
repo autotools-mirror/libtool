@@ -874,7 +874,7 @@ AC_CACHE_CHECK([if $compiler supports -c -o file.$ac_objext],
 		   FFLAGS="$FFLAGS -o out/conftest2.$ac_objext"],
 	  [$1],[GCJ],[save_GCJFLAGS="$CFLAGS"
 		   CFLAGS="$GCJFLAGS -o out/conftest2.$ac_objext"])
-   echo "$lt_simple_compile_test_code" > conftest.$ac_ext
+   printf "$lt_simple_compile_test_code" > conftest.$ac_ext
 
    # According to Tom Tromey, Ian Lance Taylor reported there are C compilers
    # that will create temporary files in the current directory regardless of
@@ -1947,8 +1947,9 @@ bsdi4*)
   ;;
 
 cygwin* | mingw* | pw32*)
-  lt_cv_deplibs_check_method='file_magic file format pei*-i386(.*architecture: i386)?'
-  lt_cv_file_magic_cmd='$OBJDUMP -f'
+  # win32_libid is a shell function defined in ltmain.sh
+  lt_cv_deplibs_check_method='file_magic ^x86 archive import|^x86 DLL'
+  lt_cv_file_magic_cmd='win32_libid'
   ;;
 
 darwin* | rhapsody*)

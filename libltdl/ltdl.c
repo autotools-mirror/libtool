@@ -211,7 +211,8 @@ static char   *lt_estrdup	LT_PARAMS((const char *str));
 static lt_ptr lt_emalloc	LT_PARAMS((size_t size));
 static lt_ptr lt_erealloc	LT_PARAMS((lt_ptr addr, size_t size));
 
-static lt_ptr rpl_realloc	LT_PARAMS((lt_ptr ptr, size_t size));
+/* static lt_ptr rpl_realloc	LT_PARAMS((lt_ptr ptr, size_t size)); */
+#define rpl_realloc realloc
 
 /* These are the pointers that can be changed by the caller:  */
 LT_GLOBAL_DATA lt_ptr (*lt_dlmalloc)	LT_PARAMS((size_t size))
@@ -502,8 +503,15 @@ static struct dirent *readdir(entry)
    Instead implement our own version (with known boundary conditions)
    using lt_dlmalloc and lt_dlfree. */
 
-#undef realloc
-#define realloc rpl_realloc
+/* #undef realloc
+   #define realloc rpl_realloc
+*/
+#if 0
+  /* You can't (re)define realloc unless you also (re)define malloc.
+     Right now, this code uses the size of the *destination* to decide
+     how much to copy.  That's not right, but you can't know the size
+     of the source unless you know enough about, or wrote malloc.  So
+     this code is disabled... */
 
 static lt_ptr
 realloc (ptr, size)
@@ -541,6 +549,7 @@ realloc (ptr, size)
       return mem;
     }
 }
+#endif
 
 
 #if ! HAVE_ARGZ_APPEND
@@ -2107,8 +2116,9 @@ tryall_dlopen_module (handle, prefix, dirname, dlname)
   assert (strchr (dirname, LT_DIRSEP_CHAR) == 0);
 #endif
 
-  if (dirname[dirname_len -1] == '/')
-    --dirname_len;
+  if (dirname_len > 0)
+    if (dirname[dirname_len -1] == '/')
+      --dirname_len;
   filename_len = dirname_len + 1 + LT_STRLEN (dlname);
 
   /* Allocate memory, and combine DIRNAME and MODULENAME into it.
@@ -2852,7 +2862,7 @@ try_dlopen (phandle, filename)
 
 	  /* Handle the case where we occasionally need to read a line
 	     that is longer than the initial buffer size.  */
-	  while (line[LT_STRLEN(line) -1] != '\n')
+	  while ((line[LT_STRLEN(line) -1] != '\n') && (!feof (file)))
 	    {
 	      line = LT_DLREALLOC (char, line, line_len *2);
 	      if (!fgets (&line[line_len -1], (int) line_len +1, file))
