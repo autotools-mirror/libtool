@@ -1,3 +1,9 @@
+2003-11-01  Scott James Remnant  <scott@netsplit.com>
+
+	* ltmain.in: When relinking, place the -L parameter containing
+	the installation prefix directory after the intended destination,
+	so we don't accidentally link against an older installed library.
+
 2003-11-01  Peter O'Gorman  <peter@pogma.com>
 
 	* tests/mdemo2/Makefile.am: Let mdemo2 find ltdl.h again.
