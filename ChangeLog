@@ -1,3 +1,7 @@
+2004-04-19  Albert Chin-A-Young  <china@thewrittenword.com>
+
+	* libltdl/loader-shl_load.c: Fix typos during reorg.
+
 2004-04-19  Alexandre Duret-Lutz  <adl@gnu.org>
 
 	* doc/libtool.texi (LT_INIT): Properly display options in a table.

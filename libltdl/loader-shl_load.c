@@ -74,8 +74,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 
 #define	LT_BIND_FLAGS	(BIND_IMMEDIATE | BIND_NONFATAL | DYNAMIC_PATH)
 
-lt_module
-lt__sys_shl_open (lt_user_data loader_data, const char *filenam)
+static lt_module
+sys_shl_open (lt_user_data loader_data, const char *filenam)
 {
   static shl_t self = (shl_t) 0;
   lt_module module = shl_load (filename, LT_BIND_FLAGS, 0L);
@@ -107,8 +107,8 @@ lt__sys_shl_open (lt_user_data loader_data, const char *filenam)
   return module;
 }
 
-int
-lt__sys_shl_close (lt_user_data loader_data, lt_module module)
+static int
+sys_shl_close (lt_user_data loader_data, lt_module module)
 {
   int errors = 0;
 
