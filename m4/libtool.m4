@@ -192,7 +192,8 @@ test -z "$LTCFLAGS" && LTCFLAGS=$CFLAGS
 test -z "$LD" && LD=ld
 test -z "$ac_objext" && ac_objext=o
 
-cc_basename=`$ECHO X"$compiler" | $Xsed -e 's%^.*/%%'`
+cc_basename=`$ECHO "X$compiler" \
+    | $Xsed -e 's%.*/%%;s%^[ 	]*\([^ 	]*\).*$%\1%'`
 
 # Only perform the check for file, if the check method requires it
 test -z "$MAGIC_CMD" && MAGIC_CMD=file
@@ -4675,7 +4676,8 @@ if test "$_lt_caught_CXX_error" != yes; then
   CC=${CXX-"c++"}
   compiler=$CC
   _LT_TAGVAR(compiler, $1)=$CC
-  cc_basename=`$ECHO X"$compiler" | $Xsed -e 's%^.*/%%'`
+  cc_basename=`$ECHO "X$compiler" \
+      | $Xsed -e 's%.*/%%;s%^[ 	]*\([^ 	]*\).*$%\1%'`
 
   if test -n "$compiler"; then
     # We don't want -fno-exception when compiling C++ code, so set the
@@ -5778,7 +5780,8 @@ if test "$_lt_caught_F77_error" != yes; then
   CC=${F77-"f77"}
   compiler=$CC
   _LT_TAGVAR(compiler, $1)=$CC
-  cc_basename=`$ECHO X"$compiler" | $Xsed -e 's%^.*/%%'`
+  cc_basename=`$ECHO "X$compiler" \
+      | $Xsed -e 's%.*/%%;s%^[ 	]*\([^ 	]*\).*$%\1%'`
 
   if test -n "$compiler"; then
     AC_MSG_CHECKING([if libtool supports shared libraries])
