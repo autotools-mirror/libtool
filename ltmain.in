@@ -483,7 +483,7 @@ if test -z "$show_help"; then
       "$CC "*) ;;
       # Blanks in the command may have been stripped by the calling shell,
       # but not from the CC environment variable when ltconfig was run.
-      "`$echo X$CC | $Xsed` "*) ;;
+      "`$echo $CC` "*) ;;
       *)
         for z in $available_tags; do
           if grep "^### BEGIN LIBTOOL TAG CONFIG: $z$" < "$0" > /dev/null; then
@@ -497,7 +497,7 @@ if test -z "$show_help"; then
               tagname=$z
               break
               ;;
-	    "`$echo X$CC | $Xsed` "*)
+	    "`$echo $CC` "*)
 	      tagname=$z
 	      break
 	      ;;
@@ -1414,7 +1414,7 @@ EOF
       "$CC "*) ;;
       # Blanks in the command may have been stripped by the calling shell,
       # but not from the CC environment variable when ltconfig was run.
-      "`$echo X$CC | $Xsed` "*) ;;
+      "`$echo $CC` "*) ;;
       *)
         for z in $available_tags; do
           if grep "^### BEGIN LIBTOOL TAG CONFIG: $z$" < "$0" > /dev/null; then
@@ -1428,7 +1428,7 @@ EOF
               tagname=$z
               break
 	      ;;
-	    "`$echo X$CC | $Xsed` "*)
+	    "`$echo $CC` "*)
 	      tagname=$z
 	      break
 	      ;;
