@@ -1,5 +1,8 @@
 2004-10-05  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
+	* libltdl/ltdl.c (load_deplibs, try_dlopen): Revert unnecessary casts
+	to int from my patch from 2004-10-01.
+
 	* AUTHORS: Add myself.
 
 2004-10-05  Peter O'Gorman  <peter@pogma.com>
