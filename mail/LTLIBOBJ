@@ -1,0 +1,101 @@
+From - Thu Jan 21 11:48:15 1999
+Return-Path: <bug-libtool-request@gnu.org>
+Received: from punt-2.mail.demon.net by mailstore
+          for gvaughan@oranda.demon.co.uk id 916916500:20:05273:1;
+          Thu, 21 Jan 99 11:01:40 GMT
+Received: from mescaline.gnu.org ([158.121.106.21]) by punt-2.mail.demon.net
+           id aa2109043; 21 Jan 99 11:01 GMT
+Received: (from slist@localhost)
+	by mescaline.gnu.org (8.9.1a/8.9.1) id GAA22496
+	for gvaughan@oranda.demon.co.uk; Thu, 21 Jan 1999 06:06:25 -0500
+Resent-Date: Thu, 21 Jan 1999 06:06:25 -0500
+Received: from hades.aethos.co.uk (router.aethos.co.uk [195.171.18.1] (may be forged))
+	by mescaline.gnu.org (8.9.1a/8.9.1) with ESMTP id GAA22431;
+	Thu, 21 Jan 1999 06:04:57 -0500
+Received: from [193.164.192.100] (helo=zeus.aethos.co.uk)
+	by hades.aethos.co.uk with esmtp (Exim 2.05 #1)
+	id 103HtW-000753-00; Thu, 21 Jan 1999 11:03:26 +0000
+Received: from oranda.demon.co.uk (samhain.aethos.co.uk [193.164.192.38]) by zeus.aethos.co.uk with ESMTP (8.7.1/8.7.1) id LAA16759; Thu, 21 Jan 1999 11:00:22 GMT
+Message-ID: <36A70897.32F60E81@oranda.demon.co.uk>
+Date: Thu, 21 Jan 1999 10:59:35 +0000
+From: "Gary V. Vaughan" <gvaughan@oranda.demon.co.uk>
+Organization: Aethos Communication Systems Ltd.
+X-Mailer: Mozilla 4.5 [en] (WinNT; I)
+X-Accept-Language: en
+MIME-Version: 1.0
+To: Akim Demaille <demaille@inf.enst.fr>
+CC: Alexandre Oliva <oliva@dcc.unicamp.br>, Erez Zadok <ezk@cs.columbia.edu>,
+        bug-libtool@gnu.org, automake@gnu.org
+Subject: Re: lazy question
+References: <199901202104.QAA04372@shekel.mcl.cs.columbia.edu> <or1zkpr5tq.fsf@araguaia.dcc.unicamp.br> <qylu2xkq5l6.fsf@quasimodo.enst.fr>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Resent-Message-ID: <"420Yv3.0.qU5.Ydmfs"@mescaline.gnu.org>
+Resent-From: bug-libtool@gnu.org
+X-Mailing-List: <bug-libtool@gnu.org> archive/latest/413
+X-Loop: bug-libtool@gnu.org
+Precedence: list
+Resent-Sender: bug-libtool-request@gnu.org
+X-Mozilla-Status: 8011
+X-Mozilla-Status2: 00000000
+X-UIDL: oranda.916916500:20:05273:1
+
+Akim Demaille wrote:
+> 
+> >>>>> "Alexandre" == Alexandre Oliva <oliva@dcc.unicamp.br> writes:
+> 
+> Alexandre> On Jan 20, 1999, Erez Zadok <ezk@cs.columbia.edu> wrote:
+> >> My application (am-utils) has this legacy stuff in my
+> >> configure.in. I think I can safely take that out, now right?
+> 
+> >> LTLIBOBJS=`echo "$LIBOBJS" | sed 's/\.o/.lo/g'` AC_SUBST(LTLIBOBJS)
+> >> LTALLOCA=`echo "$ALLOCA" | sed 's/\.o/.lo/g'` AC_SUBST(LTALLOCA)
+> 
+> Alexandre> Not really.  It looks like automake provides LTLIBOBJS,
+> Alexandre> but not LTALLOCA :-(
+> 
+> Are you sure?  I can't find the string LTLIBOBJS anywhere in the
+> sources.
+
+It seems you are right.  Nor can I find reference anywhere except in the
+documentation of both libtool and automake.  However, I stopped using
+these variables a few months ago (just forgot to include them really),
+and have suffered no ill effects.
+
+> Alexandre> Unless it does but it's not documented.
+> 
+> Another related issue is that Automake does not include the little
+> needed magic that enables ansi2knr on LIBOBJS files.  In addition to
+> all this, people who want ansi2knr to be run should also include
+> something like:
+> 
+> # This is necessary so that .o files in LIBOBJS are also built via
+> # the ANSI2KNR-filtering rules.
+> LIBOBJS=`echo $LIBOBJS|sed 's/\.o /\$U.o /g;s/\.o$/\$U.o/'`
+> 
+> (Stolen from Jim Meyering's fileutils's configure.in).
+
+Yes, that makes sense.  Or rather, automake should do this for us if it
+sees we are using ansi2knr.
+ 
+> Also, it seems that now we should not append just
+> replacement-function.o, but replacement-function.${ac_objext}[1].
+>
+> [1] What also mean that the above sed snippet should be adapted too.
+
+Agreed.
+
+> What is the real status of this?  Since Automake reads these LIBOBJS
+> extensions, if one solution is to be chosen, couldn't it issue
+> warnings for non complying additions?
+
+In my experience, Tom is very good about applying patches he receives.
+=)O|  Hopefully, I am too. =)O|
+
+This probably needs to be fixed in all of auto{make,conf} and libtool
+simultaneously.  I don't have time to look at it right now, but I can
+certainly add it to the libtool TODO if you are also busy.
+
+Cheers,
+	Gary.
+
