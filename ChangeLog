@@ -1,3 +1,8 @@
+2005-03-12  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* ltmain.in (link mode): Reword double negation in error message.
+	Reported by Jesper Louis Andersen <jlouis@mongers.org>.
+
 2005-03-10  Gary V. Vaughan  <gary@gnu.org>
 
 	* libltdl/Makefile.am (install-data-local): Don't force v7 tar
