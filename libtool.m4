@@ -231,9 +231,9 @@ compiler="[$]2"
 # to the aix ld manual.
 AC_DEFUN([_LT_AC_SYS_LIBPATH_AIX],
 [AC_LINK_IFELSE(AC_LANG_PROGRAM,[
-aix_libpath=`dump -H conftest$ac_exeext 2>/dev/null | ${AWK-awk} '/Import File Strings/ { getline; getline; if ($[2] ~ /^\//) print $[2] }'`
+aix_libpath=`dump -H conftest$ac_exeext 2>/dev/null |  sed -n -e '/Import File Strings/,/^$/ { /^0/ { s/^[0-9][0-9]*[ ][ ]*\(.*\)$/\1/; p; }; }'`
 # Check for a 64-bit object if we didn't find anything.
-if test -z "$aix_libpath"; then aix_libpath=`dump -HX64 conftest$ac_exeext 2>/dev/null | ${AWK-awk} '/Import File Strings/ { getline; getline; if ($[2] ~ /^\//) print $[2] }'`; fi],[])
+if test -z "$aix_libpath"; then aix_libpath=`dump -HX64 conftest$ac_exeext 2>/dev/null |  sed -n -e '/Import File Strings/,/^$/ { /^0/ { s/^[0-9][0-9]*[ ][ ]*\(.*\)$/\1/; p; }; }'`; fi],[])
 if test -z "$aix_libpath"; then aix_libpath="/usr/lib:/lib"; fi
 ])# _LT_AC_SYS_LIBPATH_AIX
 
