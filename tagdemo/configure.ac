@@ -1,32 +1,46 @@
-dnl -*-Autoconf-*-
-dnl $Id$
-
-dnl
-dnl An autoconf script to automatically configure the sample C++ "foo"
-dnl application.
-dnl Process this file with autoconf to produce a configure script.
-dnl
+## Process this file with autoconf to create configure. -*- autoconf -*-
+# Copyright 2001  Free Software Foundation, Inc.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+# 02111-1307  USA
 
 AC_PREREQ(2.50)
-dnl Can't use $PACKAGE/$VERSION here
-AC_INIT(foo, 0.1)
-AC_CONFIG_SRCDIR([foo.cpp])dnl
 
-dnl Check what platform we are running on.
-AC_CANONICAL_TARGET([])
 
-dnl Cause GNU Automake to initialize the state of things and run
-dnl some sanity checks
-PACKAGE=foo
-VERSION=0.1
-AM_INIT_AUTOMAKE($PACKAGE, $VERSION)
+## ------------------------ ##
+## Autoconf initialisation. ##
+## ------------------------ ##
+AC_INIT([tagdemo], [0.1], [bug-libtool@gnu.org])
+AC_CONFIG_SRCDIR([foo.cpp])
 
-dnl Check the C compiler and preprocessor.
+AC_CANONICAL_TARGET
+
+
+## ------------------------ ##
+## Automake Initialisation. ##
+## ------------------------ ##
+AM_INIT_AUTOMAKE(AC_PACKAGE_TARNAME, AC_PACKAGE_VERSION)
+
+
+## ---------------- ##
+## Compiler checks. ##
+## ---------------- ##
 AC_PROG_CC
 AC_PROG_CPP
 AC_PROG_CC_C_O
 
-dnl Check the C++ compiler and preprocessor.
 AC_PROG_CXX
 AC_PROG_CXXCPP
 
@@ -42,19 +56,31 @@ AC_OBJEXT
 AC_EXEEXT
 AC_LANG_POP
 
-dnl Setup Libtool
 
-dnl Set the test language to C++.
+## ----------------------- ##
+## Libtool initialisation. ##
+## ----------------------- ##
+
+# Set the test language to C++.
 AC_LANG([C++])
-
-dnl Check for libtool and turn on Automake processing for Libtool
 AM_PROG_LIBTOOL
 
-AC_CHECK_HEADERS(math.h)
 
+## ---------------------------- ##
+## C headers required by cdemo. ##
+## ---------------------------- ##
+AC_CHECK_HEADERS([math.h])
+
+
+## ---------------------------- ##
+## Libraries required by cdemo. ##
+## ---------------------------- ##
 AC_CHECK_LIBM
-AC_SUBST(LIBM)
+AC_SUBST([LIBM])
 
-AC_CONFIG_FILES(Makefile)
-AC_CONFIG_COMMANDS([default], [[echo "Done configuring package $PACKAGE"]])
+
+## -------- ##
+## Outputs. ##
+## -------- ##
+AC_CONFIG_FILES([Makefile])
 AC_OUTPUT

@@ -1,39 +1,100 @@
 ## Process this file with autoconf to create configure. -*- autoconf -*-
+# Copyright 2001  Free Software Foundation, Inc.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+# 02111-1307  USA
 
+
+## FIXME: Is this really new enough? ##
 AC_PREREQ(2.50)
+
+
+
+## ------------------------ ##
+## Autoconf initialisation. ##
+## ------------------------ ##
 AC_INIT([libtool], [1.4c], [bug-libtool@gnu.org])
 AC_CONFIG_SRCDIR([ltmain.in])
 
-AM_INIT_AUTOMAKE(libtool, 1.4c)
+
+
+## ---------------------------------------- ##
+## Display a configure time version banner. ##
+## ---------------------------------------- ##
 
 # This is a sanity check so we can see which version is used in bug reports.
 # It is assumed that we only want to see the date extension for cvs libtool
 # versions (i.e. "odd" letters) and not actual alpha releases.
 TIMESTAMP=
-case "$VERSION" in
+case AC_PACKAGE_VERSION in
   [*[acegikmoqsuwy])]
     TIMESTAMP=`${CONFIG_SHELL} ${srcdir}/mkstamp < ${srcdir}/ChangeLog`
-    banner="Configuring $PACKAGE $VERSION$TIMESTAMP"
-    dashes=`echo "$banner" | sed 's/./-/g'`
-
-    # Display an obvious version banner
-    echo
-    echo $dashes
-    echo "$banner"
-    echo $dashes
+    AS_BOX([Configuring AC_PACKAGE_TARNAME AC_PACKAGE_VERSION$TIMESTAMP])
     echo
     ;;
 esac
-AC_SUBST(TIMESTAMP)
+AC_SUBST([TIMESTAMP])
 
+
+
+## ------------------------------- ##
+## Libtool specific configuration. ##
+## ------------------------------- ##
 pkgdatadir='${datadir}'"/${PACKAGE}"
-AC_SUBST(pkgdatadir) # automake does not need this, but libtoolize does
+AC_SUBST([pkgdatadir]) # automake does not need this, but libtoolize does
+
 aclocaldir='${datadir}/aclocal'
-AC_SUBST(aclocaldir)
+AC_SUBST([aclocaldir])
+
+AC_ARG_ENABLE(ltdl-install,
+    [AC_HELP_STRING([--disable-ltdl-install], [do not install libltdl])])
+if test x"${enable_ltdl_install+set}" != xset; then
+  enable_ltdl_install=yes
+  ac_configure_args="$ac_configure_args --enable-ltdl-install"
+fi
+AC_CONFIG_SUBDIRS([libltdl])
+
+# all subdirectories that are configured on demand, but that must be
+# included in the distribution
+CONF_SUBDIRS="cdemo pdemo demo depdemo mdemo tagdemo"
+AC_SUBST([CONF_SUBDIRS])
+
+ACINCLUDE_M4_LIST="${srcdir}/acinclude.m4"
+DIST_MAKEFILE_LIST=
+for dir in $CONF_SUBDIRS; do
+  ACINCLUDE_M4_LIST="$ACINCLUDE_M4_LIST ${srcdir}/$dir/acinclude.m4"
+  DIST_MAKEFILE_LIST="$DIST_MAKEFILE_LIST$dir/Makefile "
+done
+AC_SUBST([ACINCLUDE_M4_LIST])
+AC_SUBST([DIST_MAKEFILE_LIST])
+
+
+
+## ------------------------ ##
+## Automake Initialisation. ##
+## ------------------------ ##
+AM_INIT_AUTOMAKE(AC_PACKAGE_TARNAME, AC_PACKAGE_VERSION)
+
+
+
+## ---------------- ##
+## compiler checks. ##
+## ---------------- ##
 
 # Use the specified CC and LD
 AC_PROG_CC
-
 AM_PROG_LD
 AC_SUBST(LD)
 AM_PROG_NM
@@ -52,34 +113,18 @@ LT_AC_PROG_RC
 AM_CONDITIONAL(HAVE_RC, [test "x$RC" != xno])
 
 
-# Declare win32 dll support
-AC_LIBTOOL_WIN32_DLL
 
-# Check for dlopen support
+## ----------------------- ##
+## Libtool initialisation. ##
+## ----------------------- ##
 AC_LIBTOOL_DLOPEN
+AC_LIBTOOL_WIN32_DLL
 AC_PROG_LIBTOOL
 
-AC_ARG_ENABLE(ltdl-install,
-[  --disable-ltdl-install  do not install libltdl])
-if test x"${enable_ltdl_install+set}" != xset; then
-  enable_ltdl_install=yes
-  ac_configure_args="$ac_configure_args --enable-ltdl-install"
-fi
-AC_CONFIG_SUBDIRS(libltdl)
 
-# all subdirectories that are configured on demand, but that must be
-# included in the distribution
-CONF_SUBDIRS="cdemo pdemo demo depdemo mdemo tagdemo"
-AC_SUBST(CONF_SUBDIRS)
 
-ACINCLUDE_M4_LIST="${srcdir}/acinclude.m4"
-DIST_MAKEFILE_LIST=
-for dir in $CONF_SUBDIRS; do
-  ACINCLUDE_M4_LIST="$ACINCLUDE_M4_LIST ${srcdir}/$dir/acinclude.m4"
-  DIST_MAKEFILE_LIST="$DIST_MAKEFILE_LIST$dir/Makefile "
-done
-AC_SUBST(ACINCLUDE_M4_LIST)
-AC_SUBST(DIST_MAKEFILE_LIST)
-
+## -------- ##
+## Outputs. ##
+## -------- ##
 AC_CONFIG_FILES([Makefile doc/Makefile tests/Makefile])
 AC_OUTPUT

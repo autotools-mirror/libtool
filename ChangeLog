@@ -1,3 +1,15 @@
+2001-10-06 Gary V. Vaughan  <gary@gnu.org>
+
+	* configure.ac: General modernisation and cleanup.
+	* cdemo/configure.ac: Ditto.
+	* demo/configure.ac: Ditto.
+	* depdemo/configrue.ac: Ditto.
+	* ltdl/configure.ac: Ditto.
+	* ltdldemo/configure.ac: Ditto.
+	* mdemo/configure.ac: Ditto.
+	* pdemo/configure.ac: Ditto.
+	* tagdemo/configure.ac: Ditto.
+
 2001-10-04  Albert Chin-A-Young <china@thewrittenword.com>
 
 	* libltdl/ltdl.c: Match function return type with prototype
