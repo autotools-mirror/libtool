@@ -290,7 +290,7 @@ lt_dlexit (void)
       /* close all loaders */
       while (loader = lt_dlloader_next (loader))
 	{
-	  const lt_dlvtable *vtable = lt_dlloader_get (loader);
+	  lt_dlvtable *vtable = (lt_dlvtable *) lt_dlloader_get (loader);
 
 	  if ((vtable = lt_dlloader_remove (vtable->name)))
 	    {

@@ -109,7 +109,7 @@ lt_dlloader_get	(lt_dlloader loader)
    was no match, return NULL; if there is an error, return NULL and
    set an error for lt_dlerror; in either case the loader list is
    not changed.  */
-const lt_dlvtable *
+lt_dlvtable *
 lt_dlloader_remove (const char *name)
 {
   const lt_dlvtable *	vtable	= lt_dlloader_find (name);

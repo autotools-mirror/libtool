@@ -1,3 +1,13 @@
+2004-08-30  Gary V. Vaughan  <gary@gnu.org>
+
+	* libltdl/lt_dlloader.c (lt_dlloader_remove): Since the return
+	value of this function is often passed to free, don't declare it
+	`const'. Responsibility for this memory is given back to the
+	caller on return.
+	* libltdl/lt_dlloader.h (lt_dlloader_remove): Ditto.
+	* libltdl/ltdl.c (lt_dlexit): Adjust.
+	* NEWS: Updated.
+
 2004-08-30  Andreas Schwab  <schwab@suse.de>
 
 	* libltdl/ltdl.c (lt_dlexit): Remove lvalue cast.

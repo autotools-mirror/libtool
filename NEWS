@@ -1,7 +1,7 @@
 NEWS - list of user-visible changes between releases of GNU Libtool
 
 New in 1.9d: 2004-??-??; CVS version 1.9c, Libtool team:
-* ???
+* Return type of lt_dlloader_remove is no longer `const'.
 
 New in 1.9b: 2004-08-29; CVS version 1.5a, Libtool team:
 * The /^_?LT_[A-Z_]+$/ namespace is now reserved for Libtool's own macros.
