@@ -1,3 +1,8 @@
+2004-09-05  Andreas Schwab  <schwab@suse.de>
+
+	* m4/ltdl.m4 (LT_WITH_LTDL): Remove excess quoting in argument of
+	AC_CONFIG_SUBDIRS.
+
 2004-09-05  Albert Chin-A-Young  <china@thewrittenword.com>
 
 	* config/ltmain.in (func_mode_link): Pass otherwise unrecognised +

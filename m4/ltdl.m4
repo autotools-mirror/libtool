@@ -63,7 +63,7 @@ fi
 AC_MSG_CHECKING([whether to use included libltdl])
 AC_MSG_RESULT([$with_included_ltdl])
 
-AC_CONFIG_SUBDIRS([m4_if($#, 1, [$1], [libltdl])])
+AC_CONFIG_SUBDIRS(m4_if($#, 1, [$1], [libltdl]))
 ])# LT_WITH_LTDL
 
 # Old name:
