@@ -20,7 +20,7 @@ cat 1>&2 <<_EOF_
 *** Warning: This library needs some functionality provided by [=libname=].
 *** I can automatically link to that library when you link
 *** to this library, but I can only do this if you have a shared
-*** version of the library.  You do not appear to have one.[=
+*** version of [=libname=].  You do not appear to have one.[=
 
 #  Right here would be a *really* good place to to add some hints
    about where to look to find info about making a shared version ... =]
