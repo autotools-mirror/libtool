@@ -407,25 +407,25 @@ Otherwise, only FILE itself is deleted using RM."
   # Shorthand for --mode=foo, only valid as the first argument
   case $1 in
   clean|clea|cle|cl)
-    shift; set -- --mode clean ${1+"$@"}
+    shift; set dummy --mode clean ${1+"$@"}; shift
     ;;
   compile|compil|compi|comp|com|co|c)
-    shift; set -- --mode compile ${1+"$@"}
+    shift; set dummy --mode compile ${1+"$@"}; shift
     ;;
   execute|execut|execu|exec|exe|ex|e)
-    shift; set -- --mode execute ${1+"$@"}
+    shift; set dummy --mode execute ${1+"$@"}; shift
     ;;
   finish|finis|fini|fin|fi|f)
-    shift; set -- --mode finish ${1+"$@"}
+    shift; set dummy --mode finish ${1+"$@"}; shift
     ;;
   install|instal|insta|inst|ins|in|i)
-    shift; set -- --mode install ${1+"$@"}
+    shift; set dummy --mode install ${1+"$@"}; shift
     ;;
   link|lin|li|l)
-    shift; set -- --mode link ${1+"$@"}
+    shift; set dummy --mode link ${1+"$@"}; shift
     ;;
   uninstall|uninstal|uninsta|uninst|unins|unin|uni|un|u)
-    shift; set -- --mode uninstall ${1+"$@"}
+    shift; set dummy --mode uninstall ${1+"$@"}; shift
     ;;
   esac
 
@@ -492,21 +492,24 @@ Otherwise, only FILE itself is deleted using RM."
       -dlopen=*|--mode=*|--tag=*)
 			arg=`$ECHO "X$opt" | $Xsed -e "$my_sed_long_arg"`
 			opt=`$ECHO "X$opt" | $Xsed -e "$my_sed_long_opt"`
-			set -- "$opt" "$arg" ${1+"$@"}
+			set dummy "$opt" "$arg" ${1+"$@"}
+			shift
 			;;
 
       # Separate optargs to short options:
 #      -x*|-y*)
 #			arg=`$ECHO "X$opt" |$Xsed -e "$my_sed_single_rest"`
 #			opt=`$ECHO "X$opt" |$Xsed -e "$my_sed_single_opt"`
-#			set -- "$opt" "$arg" ${1+"$@"}
+#			set dummy "$opt" "$arg" ${1+"$@"}
+#			shift
 #			;;
 
       # Separate non-argument short options:
 #      -z*|-z*|-y*)
 #			rest=`$ECHO "X$opt" |$Xsed -e "$my_sed_single_rest"`
 #			opt=`$ECHO "X$opt" |$Xsed -e "$my_sed_single_opt"`
-#			set -- "$opt" "-$rest" ${1+"$@"}
+#			set dummy "$opt" "-$rest" ${1+"$@"}
+#			shift
 #			;;
 
       -\?|-h)		func_usage					;;

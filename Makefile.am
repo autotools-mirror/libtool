@@ -46,7 +46,7 @@ edit = sed \
 	-e 's,@prefix\@,$(prefix),g' \
 	-e "s,@configure_input\@,Generated from $$input; do not edit by hand,g"
 
-timestamp = set -- `$(MKSTAMP) < $(top_srcdir)/ChangeLog`; \
+timestamp = set dummy `$(MKSTAMP) < $(top_srcdir)/ChangeLog`; shift; \
 	case $(VERSION) in \
 	  *[acegikmoqsuwy]) TIMESTAMP=" $$1 $$2 $$3" ;; \
 	  *) TIMESTAMP="" ;; \
@@ -101,7 +101,7 @@ pkgvmacro_DATA = m4/argz.m4 m4/libtool.m4 m4/ltdl.m4 \
 MKSTAMP = $(SHELL) $(top_srcdir)/config/mkstamp
 $(top_srcdir)/stamp-vcl: vcl-tmp clean-ltmain-sh ChangeLog
 vcl-tmp:
-	@set -- `$(MKSTAMP) < $(top_srcdir)/ChangeLog`; \
+	@set dummy `$(MKSTAMP) < $(top_srcdir)/ChangeLog`; shift; \
 	echo "$$1" > vcl.tmp; \
 	cmp -s vcl.tmp $(top_srcdir)/stamp-vcl \
 	  || (echo "Updating stamp-vcl"; cp vcl.tmp $(top_srcdir)/stamp-vcl)
@@ -124,7 +124,7 @@ clean-ltmain-sh:
 # how ltversion.m4 appears in our dependencies.
 EXTRA_DIST += m4/ltversion.in m4/ltversion.m4
 $(top_srcdir)/m4/ltversion.m4: m4/ltversion.in configure.ac $(top_srcdir)/stamp-vcl
-	set -- `$(MKSTAMP) < $(top_srcdir)/ChangeLog`; \
+	set dummy `$(MKSTAMP) < $(top_srcdir)/ChangeLog`; shift; \
 	cd $(top_srcdir); \
 	rm -f m4/ltversion.tmp; \
 	serial=`echo $$1 | sed 's,^1[.],,g'`; \

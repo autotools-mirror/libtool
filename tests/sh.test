@@ -75,4 +75,10 @@ if $EGREP -n -e '"[^`"]*`[^"`]*"[^"`]*".*`[^`"]*"' $scripts | \
   status=$EXIT_FAILURE
 fi
 
+# Check for using set -- instead of set dummy
+if $EGREP -n -e 'set[ 	]+--[ 	]+' $scripts; then
+  echo "use \`set dummy ...' instead of \`set -- ...'"
+  status=$EXIT_FAILURE
+fi
+
 exit $status

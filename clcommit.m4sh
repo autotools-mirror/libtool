@@ -130,7 +130,7 @@ set -e
 			set -x
 			;;
 
-      --fast)		set -- --force --first ${1+"$@"}	;;
+      --fast)		set dummy --force --first ${1+"$@"}; shift	;;
 
       -f|--force)	opt_update=false; PAGER=cat		;;
 
@@ -200,7 +200,8 @@ set -e
 			fi
 			# The funny quoting allows keeping one option per
 			# line in $rc_file:
-			eval set -- `echo \`cat $rc_file\` \\\${1+\"\\\$@\"}`
+			eval set dummy `echo \`cat $rc_file\` \\\${1+\"\\\$@\"}`
+			shift
 			;;
 
       -s|--sendmail)	test $# = 0 && func_missing_arg $opt && break
@@ -246,21 +247,24 @@ set -e
       --*=*)
 			arg=`echo "$opt" | $SED "$my_sed_long_arg"`
 			opt=`echo "$opt" | $SED "$my_sed_long_opt"`
-			set -- "$opt" "$arg" ${1+"$@"}
+			set dummy "$opt" "$arg" ${1+"$@"}
+			shift
 			;;
 
       # Separate optargs to short options:
       -m*|-F*|-C*|-S*|-s*|-z*)
 			arg=`echo "$opt" |$SED "$my_sed_single_rest"`
 			opt=`echo "$opt" |$SED "$my_sed_single_opt"`
-			set -- "$opt" "$arg" ${1+"$@"}
+			set dummy "$opt" "$arg" ${1+"$@"}
+			shift
 			;;
 
       # Separate non-argument short options:
       -f*|-1*|-n*|-q*)
 			rest=`echo "$opt" |$SED "$my_sed_single_rest"`
 			opt=`echo "$opt" |$SED "$my_sed_single_opt"`
-			set -- "$opt" "-$rest" ${1+"$@"}
+			set dummy "$opt" "-$rest" ${1+"$@"}
+			shift
 			;;
 
       -\?|-h)		func_usage					;;
@@ -268,7 +272,7 @@ set -e
       --version)	func_version					;;
       --)		break						;;
       -*)		func_fatal_help "unrecognized option \`$opt'"	;;
-      *)		set -- "$opt" ${1+"$@"};	break		;;
+      *)		set dummy "$opt" ${1+"$@"};	shift; break		;;
     esac
   done
 

@@ -161,14 +161,16 @@ configure_ac=configure.in
       --*=*)
       			arg=`$ECHO "X$opt" | $Xsed -e "$my_sed_long_arg"`
 			opt=`$ECHO "X$opt" | $Xsed -e "$my_sed_long_opt"`
-			set -- "$opt" "$arg" ${1+"$@"}
+			set dummy "$opt" "$arg" ${1+"$@"}
+			shift
 			;;
 
       # Separate non-argument short options:
       -c*|-i*|-f*|-n*|-q*|-v*)
 			rest=`$ECHO "X$opt" | $Xsed -e "$my_sed_single_rest"`
 			opt=`$ECHO "X$opt" | $Xsed -e "$my_sed_single_opt"`
-			set -- "$opt" "-$rest" ${1+"$@"}
+			set dummy "$opt" "-$rest" ${1+"$@"}
+			shift
 			;;
 
       -\?|-h)		func_usage					;;
