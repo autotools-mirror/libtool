@@ -1,3 +1,10 @@
+2003-10-16  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* m4/libtool.m4 (AC_DEPLIBS_CHECK_METHOD): For MinGW, reverted DLL
+	check method back to a working objdump-based test.  This is not as
+	concrete a test as using the 'file' command, but it does not
+	require that the 'file' command be available.
+
 2003-10-15  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
 
 	* doc/libtool.texi (AC_LIBTOOL_TAGS): Incorporate documentation
