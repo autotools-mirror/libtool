@@ -25,6 +25,8 @@
 AT_SETUP([duplicate convenience archive names])
 AT_KEYWORDS([libtool])
 
+eval `$LIBTOOL --config | sed -n '/^reload_cmds=/,/^$/p'`
+
 # We create two convenience archives with the same name, and _also_
 # containing an object with the same name.  This is necessary to detect
 # the failure with both 1.5.22 and HEAD, since the latter does not (did
@@ -74,6 +76,8 @@ AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o main$EXEEXT main.$OBJEXT 
 	 [0], [ignore], [ignore])
 LT_AT_EXEC_CHECK([./main],[0],[ignore],[ignore])
 $LIBTOOL --mode=clean rm -f libcee.la
+
+AT_CHECK([test "x$reload_cmds" = xfalse && exit 77], [1])
 
 # Test whether this works with reloadable objects as well.
 AT_CHECK([$LIBTOOL --mode=link --tag=CC $CC $CFLAGS $LDFLAGS -o cee.$OBJEXT c.lo a/liba.la b/liba.la],

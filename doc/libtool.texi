@@ -5960,7 +5960,8 @@ Commands run after uninstalling a shared or static library, respectively.
 
 @defvar reload_cmds
 @defvarx reload_flag
-Commands to create a reloadable object.
+Commands to create a reloadable object. Set @var{reload_cmds} to
+@samp{false} on systems that cannot create reloadable objects.
 @end defvar
 
 @defvar runpath_var
