@@ -1,35 +1,36 @@
 #! /bin/sh
-# tagdemo-conf.test - try configuring the ../tagdemo subdirectory
+# tagdemo-conf.test - try configuring the tagdemo subdirectory
 
-# Test script header.
-need_prefix=yes
+# Copyright (C) 2003 Free Software Foundation, Inc.
+# This is free software; see the source for copying conditions.  There is NO
+# warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, a copy can be downloaded from
+# http://www.gnu.org/copyleft/gpl.html, or by writing to the Free
+# Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
+# MA 02111-1307, USA.
+
 if test -z "$srcdir"; then
   srcdir=`echo "$0" | sed 's%/[^/]*$%%'`
   test "$srcdir" = "$0" && srcdir=.
-  test "${VERBOSE+set}" != "set" && VERBOSE=yes
 fi
 . $srcdir/defs || exit 1
 
-# Maybe we have a VPATH build, in which case, create a new subdir.
-test -d ../tagdemo || mkdir ../tagdemo
-
-# Change to our build directory.
-cd ../tagdemo || exit 1
-
-# Possibly clean up the distribution.
-if test -f Makefile; then
-  echo "= Running $make distclean in ../tagdemo"
-  $make distclean
-fi
-rm -f config.cache
-
-# Configure the demonstration.
-echo "= Configuring in ../tagdemo (prefix=$prefix)"
-${CONFIG_SHELL-/bin/sh} $srcdir/../tagdemo/configure --srcdir=$srcdir/../tagdemo --prefix=$prefix || exit 1
-
-if grep '^build_old_libs=yes' libtool > /dev/null &&
-   grep '^build_libtool_libs=yes' libtool > /dev/null; then :
-else rm -f Makefile && exit 77
-fi
+func_mkprefixdir
+func_cd "tagdemo"
+func_make_distclean
+func_configure
+func_check_static_shared "yes" "yes"
 
 exit 0

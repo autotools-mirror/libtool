@@ -1,37 +1,44 @@
 #! /bin/sh
-# dryrun.test - check whether the --dry-run mode works properly
+# mdemo-dryrun.test - check whether the --dry-run mode works properly
 
-# Test script header.
-need_prefix=yes
+# Copyright (C) 2003 Free Software Foundation, Inc.
+# This is free software; see the source for copying conditions.  There is NO
+# warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, a copy can be downloaded from
+# http://www.gnu.org/copyleft/gpl.html, or by writing to the Free
+# Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
+# MA 02111-1307, USA.
+
 if test -z "$srcdir"; then
   srcdir=`echo "$0" | sed 's%/[^/]*$%%'`
   test "$srcdir" = "$0" && srcdir=.
-  test "${VERBOSE+set}" != "set" && VERBOSE=yes
 fi
 . $srcdir/defs || exit 1
 
-if test -f ../mdemo/Makefile; then :
-else
-  echo "You must run mdemo-conf.test before running $0" 1>&2
-  exit 77
-fi
+func_require "mdemo-conf" "mdemo/Makefile"
 
-# Change to our build directory.
-cd ../mdemo || exit 1
-
-echo "= Running $make clean in ../mdemo"
-$make clean || exit 1
-
-eval `$libtool --config | grep "^objdir="`
+func_mkprefixdir
+func_cd "mdemo"
+func_make "clean"
 
 # create `before' and `after' in a directory deep within objdir,
 # so that their creation and removal does not modify even a timestamp
 # in the output of `ls -l . $objdir'
-for d in $objdir $objdir/temp $objdir/temp/temp; do
-  test -d $d || mkdir $d
-done
-before=$d/before
-after=$d/after
+func_mkdir_p "$objdir/temp/temp"
+before=$objdir/temp/temp/before
+after=$objdir/temp/temp/after
 
 # Create a new libtool script that will enter dry run if the environment
 # variable force_dry_run is set
@@ -44,39 +51,36 @@ mv $objdir/libtool.new libtool
 # main.o is not compiled with libtool, but it depends on it, so make
 # sure it is up-to-date.  libfoo2.la is linked with libsub.la, so make
 # sure it exists, otherwise libtool will complain.
-$make main.$OBJEXT || exit 1
+func_make main.$objext
 
-echo "= Making object files in ../mdemo (dry run)"
+func_msg "Making object files in mdemo (dry run)"
 ls -l . $objdir | grep -v total > $before
 force_dry_run=yes $make foo1.lo foo2.lo sub.lo || exit $?
 ls -l . $objdir | grep -v total > $after
 cmp $before $after > /dev/null || exit 1
 # Now really make them
-echo "= Making object files in ../mdemo"
-$make foo1.lo foo2.lo libsub.la || exit 1
+func_make foo1.lo foo2.lo libsub.la
 
-echo "= Making libraries in ../mdemo (dry run)"
+func_msg "Making libraries in mdemo (dry run)"
 ls -l . $objdir | grep -v total > $before
 force_dry_run=yes $make foo1.la libfoo2.la || exit $?
 ls -l . $objdir | grep -v total > $after
 cmp $before $after > /dev/null || exit 1
 # Now really make them
-echo "= Making libraries in ../mdemo"
-$make foo1.la libfoo2.la || exit 1
+func_make foo1.la libfoo2.la
 
-echo "= Making programs in ../mdemo (dry run)"
+func_msg "Making programs in ../mdemo (dry run)"
 ls -l . $objdir | grep -v total > $before
 force_dry_run=yes $make mdemo$EXEEXT mdemo_static$EXEEXT 1>&2 || exit $?
 ls -l . $objdir | grep -v total > $after
 cmp $before $after > /dev/null || exit 1
 # Now really make them
-echo "= Making programs in ../mdemo"
-$make mdemo$EXEEXT mdemo_static$EXEEXT || exit 1
+func_make mdemo$EXEEXT mdemo_static$EXEEXT
 
-echo "= Running $make install in ../mdemo (dry run)"
+func_msg "Running $make install in ../mdemo (dry run)"
 # Libtool does not create these directories
-mkdir $prefix/bin
-mkdir $prefix/lib
+func_mkdir_p "$prefix/bin"
+func_mkdir_p "$prefix/lib"
 ls -l . $objdir | grep -v total > $before
 ls -lR $prefix | grep -v total >> $before
 force_dry_run=yes $make install 1>&2 || exit 1
@@ -84,12 +88,11 @@ ls -l . $objdir | grep -v total > $after
 ls -lR $prefix | grep -v total >> $after
 cmp $before $after > /dev/null || exit 1
 # Now really run it
-echo "= Running $make install in ../mdemo"
-$make install || exit 1
+func_make install
 
-echo "= Running $make uninstall in ../mdemo (dry run)"
+func_msg "Running $make uninstall in ../mdemo (dry run)"
 # Libtool does not uninstall the programs, remove them first
-rm -f $prefix/bin/mdemo$EXEEXT $prefix/bin/mdemo_static$EXEEXT
+rm -f "$prefix/bin/mdemo$EXEEXT" "$prefix/bin/mdemo_static$EXEEXT"
 ls -l . $objdir | grep -v total > $before
 ls -lR $prefix | grep -v total >> $before
 force_dry_run=yes $make uninstall 1>&2 || exit $?
@@ -97,8 +100,7 @@ ls -l . $objdir | grep -v total > $after
 ls -lR $prefix | grep -v total >> $after
 cmp $before $after > /dev/null || exit 1
 # Now really run it
-echo "= Running $make uninstall in ../mdemo"
-$make uninstall || exit 1
+func_make uninstall
 
 rm -f $before $after libtool
 mv $objdir/libtool libtool

@@ -10,43 +10,42 @@ CXX_TESTS = \
 F77_TESTS = \
 	f77demo-static.test f77demo-make.test f77demo-exec.test \
 	f77demo-conf.test f77demo-make.test f77demo-exec.test \
-	f77demo-shared.test f77demo-make.test f77demo-exec.test 
+	f77demo-shared.test f77demo-make.test f77demo-exec.test
 
 COMMON_TESTS = \
+	assign.test link.test link-2.test nomode.test \
+	quote.test sh.test suffix.test \
 	cdemo-static.test cdemo-make.test cdemo-exec.test \
 	demo-static.test demo-make.test demo-exec.test \
 	demo-inst.test demo-unst.test \
-	depdemo-static.test depdemo-make.test \
-	depdemo-exec.test depdemo-inst.test depdemo-unst.test \
+	depdemo-static.test depdemo-make.test depdemo-exec.test \
+	depdemo-inst.test depdemo-unst.test \
 	mdemo-static.test mdemo-make.test mdemo-exec.test \
 	mdemo-inst.test mdemo-unst.test \
 	cdemo-conf.test cdemo-make.test cdemo-exec.test \
 	demo-conf.test demo-make.test demo-exec.test \
-	demo-inst.test demo-unst.test deplibs.test \
-	depdemo-conf.test depdemo-make.test \
-	depdemo-exec.test depdemo-inst.test depdemo-unst.test \
+	demo-inst.test demo-unst.test demo-deplibs.test \
+	depdemo-conf.test depdemo-make.test depdemo-exec.test \
+	depdemo-inst.test depdemo-unst.test \
 	mdemo-conf.test mdemo-make.test mdemo-exec.test \
-	mdemo-inst.test mdemo-unst.test dryrun.test \
+	mdemo-inst.test mdemo-unst.test mdemo-dryrun.test \
+	mdemo2-conf.test mdemo2-make.test mdemo2-exec.test \
+	pdemo-conf.test pdemo-make.test pdemo-exec.test \
+	pdemo-inst.test pdemo-unst.test \
 	demo-nofast.test demo-make.test demo-exec.test \
 	demo-inst.test demo-unst.test \
+	depdemo-nofast.test depdemo-make.test depdemo-exec.test \
+	depdemo-inst.test depdemo-unst.test \
 	demo-pic.test demo-make.test demo-exec.test \
 	demo-nopic.test demo-make.test demo-exec.test \
-	depdemo-nofast.test depdemo-make.test \
-	depdemo-exec.test depdemo-inst.test depdemo-unst.test \
 	cdemo-shared.test cdemo-make.test cdemo-exec.test \
 	demo-shared.test demo-make.test demo-exec.test demo-inst.test \
-	hardcode.test build-relink.test noinst-link.test demo-unst.test \
-	depdemo-shared.test depdemo-make.test \
-	depdemo-exec.test depdemo-inst.test build-relink2.test \
-	depdemo-unst.test \
+	demo-hardcode.test demo-relink.test demo-noinst-link.test \
+	demo-unst.test \
+	depdemo-shared.test depdemo-make.test depdemo-exec.test \
+	depdemo-inst.test depdemo-relink.test depdemo-unst.test \
 	mdemo-shared.test mdemo-make.test mdemo-exec.test \
-	mdemo-inst.test mdemo-unst.test \
-	assign.test link.test link-2.test nomode.test \
-	quote.test sh.test suffix.test pdemo-conf.test \
-	pdemo-make.test pdemo-exec.test pdemo-inst.test \
-	mdemo-conf.test mdemo-make.test mdemo2-conf.test \
-	mdemo2-make.test mdemo2-exec.test
-
+	mdemo-inst.test mdemo-unst.test
 
 if HAVE_CXX
 if HAVE_F77
@@ -67,28 +66,61 @@ demo-conf.test: $(top_builddir)/libtool
 $(top_builddir)/libtool:
 	cd $(top_builddir) && $(MAKE) all
 
-# We should export these variables when we build the libtool script.
-CFLAGS = @CFLAGS@
-CPPFLAGS = @CPPFLAGS@
-LDFLAGS = @LDFLAGS@
-LIBS = @LIBS@
-FFLAGS = @FFLAGS@
-
 # Be sure to reexport important environment variables.
 TESTS_ENVIRONMENT = MAKE="$(MAKE)" CC="$(CC)" CFLAGS="$(CFLAGS)" \
 	CPPFLAGS="$(CPPFLAGS)" LD="$(LD)" LDFLAGS="$(LDFLAGS)" \
 	LIBS="$(LIBS)" LN_S="$(LN_S)" NM="$(NM)" RANLIB="$(RANLIB)" \
-	OBJEXT="$(OBJEXT)" EXEEXT="$(EXEEXT)" FFLAGS="$(FFLAGS)" 
+	OBJEXT="$(OBJEXT)" EXEEXT="$(EXEEXT)" FFLAGS="$(FFLAGS)"
 
 EXTRA_DIST = defs $(COMMON_TESTS) $(CXX_TESTS) $(F77_TESTS)
 
 # We need to remove any files that the above tests created.
 clean-local:
-	-test -f ../pdemo/Makefile && cd ../pdemo && $(MAKE) distclean
-	-test -f ../cdemo/Makefile && cd ../cdemo && $(MAKE) distclean
-	-test -f ../demo/Makefile && cd ../demo && $(MAKE) distclean
-	-test -f ../depdemo/Makefile && cd ../depdemo && $(MAKE) distclean
-	-test -f ../mdemo/Makefile && cd ../mdemo && $(MAKE) distclean
-	-test -f ../tagdemo/Makefile && cd ../tagdemo && $(MAKE) distclean
-	-test -f ../f77demo/Makefile && cd ../f77demo && $(MAKE) distclean
+	-for dir in cdemo demo depdemo f77demo mdemo mdemo2 pdemo tagdemo;  \
+	do								    \
+	    test -f $$dir/Makefile && ( cd $$dir && $(MAKE) distclean; );   \
+	done
 	rm -rf _inst
+
+## ------------ ##
+## package.m4.  ##
+## ------------ ##
+
+$(srcdir)/package.m4: $(top_srcdir)/configure.ac
+	{					\
+	  echo '# Signature of the current package.'; \
+	  echo 'm4_define([AT_PACKAGE_NAME],      [@PACKAGE_NAME@])'; \
+	  echo 'm4_define([AT_PACKAGE_TARNAME],   [@PACKAGE_TARNAME@])'; \
+	  echo 'm4_define([AT_PACKAGE_VERSION],   [@PACKAGE_VERSION@])'; \
+	  echo 'm4_define([AT_PACKAGE_STRING],    [@PACKAGE_STRING@])'; \
+	  echo 'm4_define([AT_PACKAGE_BUGREPORT], [@PACKAGE_BUGREPORT@])'; \
+	} >$(srcdir)/package.m4
+
+## ------------ ##
+## Test suite.  ##
+## ------------ ##
+
+TESTSUITE_AT = \
+	testsuite.at \
+	demo.at fortran.at tools.at
+TESTSUITE = testsuite
+
+#EXTRA_DIST = $(TESTSUITE_AT) local.at atlocal.in package.m4
+
+#check-local: atconfig $(TESTSUITE)
+#	$(SHELL) $(srcdir)/$(TESTSUITE)
+
+#clean-local:
+#	$(srcdir)/testsuite --clean
+
+AUTOM4TE = autom4te
+AUTOTEST = $(AUTOM4TE) --language=autotest
+$(srcdir)/$(TESTSUITE): $(srcdir)/package.m4 local.at $(TESTSUITE_AT)
+	$(AUTOTEST) -I $(srcdir) testsuite.at -o $@
+
+atconfig: $(top_builddir)/config.status
+	cd $(top_builddir) && ./config.status tests/$@
+
+# Run the test suite on the *installed* tree.
+#installcheck-local:
+	$(SHELL) $(srcdir)/$(TESTSUITE) AUTOTEST_PATH=$(exec_prefix)/bin

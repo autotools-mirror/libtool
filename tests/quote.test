@@ -1,56 +1,36 @@
 #! /bin/sh
 # quote.test - make sure that shell metacharacters do not blow up libtool
 
-# Test script header.
-need_prefix=no
+# Copyright (C) 2003 Free Software Foundation, Inc.
+# This is free software; see the source for copying conditions.  There is NO
+# warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, a copy can be downloaded from
+# http://www.gnu.org/copyleft/gpl.html, or by writing to the Free
+# Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
+# MA 02111-1307, USA.
+
 if test -z "$srcdir"; then
   srcdir=`echo "$0" | sed 's%/[^/]*$%%'`
   test "$srcdir" = "$0" && srcdir=.
-  test "${VERBOSE+set}" != "set" && VERBOSE=yes
 fi
 . $srcdir/defs || exit 1
 
 # Do the torture test.
-status=0
+status=$EXIT_SUCCESS
 
-echo=echo
-if test "X`($echo '\t') 2>/dev/null`" = 'X\t'; then :
-else
-  # The Solaris, AIX, and Digital Unix default echo programs unquote
-  # backslashes.  This makes it impossible to quote backslashes using
-  #   echo "$something" | sed 's/\\/\\\\/g'
-  #
-  # So, first we look for a working echo in the user's PATH.
-  IFS="${IFS= 	}"; save_ifs="$IFS"; IFS="${IFS}:"
-  for dir in $PATH /usr/ucb; do
-    if test -f $dir/echo && test "X`($dir/echo '\t') 2>/dev/null`" = 'X\t'; then
-      echo="$dir/echo"
-      break
-    fi
-  done
-  IFS="$save_ifs"
-
-  if test "X$echo" = Xecho; then
-    # We didn't find a better echo, so look for alternatives.
-    if test "X`(print -r '\t') 2>/dev/null`" = 'X\t'; then
-      # This shell has a builtin print -r that does the trick.
-      echo='print -r'
-    elif test -f /bin/ksh && test "X$CONFIG_SHELL" != X/bin/ksh; then
-      # If we have ksh, try running $0 again with it.
-      CONFIG_SHELL=/bin/ksh
-      export CONFIG_SHELL
-      exec "$CONFIG_SHELL" "$0" --no-reexec ${1+"$@"}
-    else
-      # Try using printf.
-      echo='printf %s\n'
-      if test "X`($echo '\t') 2>/dev/null`" = 'X\t'; then :
-      else
-        # Oops.  We lost completely, so just stick with echo.
-        echo=echo
-      fi
-    fi
-  fi
-fi
+func_get_config "echo" "../libtool --config"
 
 for mode in compile link install; do
   $echo "== $mode mode"
@@ -85,7 +65,7 @@ for mode in compile link install; do
 
   # Trivial.
   $echo "= trying: no quoting"
-  result=`$libtool -n --mode=$mode $preargs ${preflag}"${flag}test" $postargs` || status=1
+  result=`$libtool -n --mode=$mode $preargs ${preflag}"${flag}test" $postargs` || status=$EXIT_FAILURE
   # We used to have the contents of $match in the case statement,
   # without an intermediate variable, but it would fail on at least
   # Solaris' and HP-UX's /bin/sh.  Ugh!
@@ -96,14 +76,14 @@ for mode in compile link install; do
     ;;
   *)
     $echo "= failed: $result"
-    status=1
+    status=$EXIT_FAILURE
     ;;
   esac
 
   # Metacharacters that should be backslashified.
   for mchar in \\ \" \` \$; do
     $echo "= trying: \\$mchar quoting"
-    result=`$libtool -n --mode=$mode $preargs ${preflag}"${flag}${mchar}test${mchar}" $postargs` || status=1
+    result=`$libtool -n --mode=$mode $preargs ${preflag}"${flag}${mchar}test${mchar}" $postargs` || status=$EXIT_FAILURE
     match="$preargs ${preflag}${flag}\\${mchar}test\\${mchar} "
     case "$result" in
     *"$match"*)
@@ -111,7 +91,7 @@ for mode in compile link install; do
       ;;
     *)
       $echo "= failed: $result"
-      status=1
+      status=$EXIT_FAILURE
       ;;
     esac
   done
@@ -121,7 +101,7 @@ for mode in compile link install; do
       "'" " " "	"; do
 
     $echo "= trying: \"$mchar\" quoting"
-    result=`$libtool -n --mode=$mode $preargs ${preflag}"${flag}${mchar}test${mchar}" $postargs` || status=1
+    result=`$libtool -n --mode=$mode $preargs ${preflag}"${flag}${mchar}test${mchar}" $postargs` || status=$EXIT_FAILURE
     match="$preargs ${preflag}\"${flag}${mchar}test${mchar}\" "
     case "$result" in
     *"$match"*)
@@ -129,7 +109,7 @@ for mode in compile link install; do
       ;;
     *)
       $echo "= failed: $result"
-      status=1
+      status=$EXIT_FAILURE
       ;;
     esac
   done

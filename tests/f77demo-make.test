@@ -1,25 +1,36 @@
 #! /bin/sh
-# f77demo-make.test - try building in the ../f77demo subdirectory
+# f77demo-make.test - try building in the f77demo subdirectory
 
-# Test script header.
-need_prefix=no
+# Copyright (C) 2003 Free Software Foundation, Inc.
+# This is free software; see the source for copying conditions.  There is NO
+# warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, a copy can be downloaded from
+# http://www.gnu.org/copyleft/gpl.html, or by writing to the Free
+# Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
+# MA 02111-1307, USA.
+
 if test -z "$srcdir"; then
   srcdir=`echo "$0" | sed 's%/[^/]*$%%'`
   test "$srcdir" = "$0" && srcdir=.
-  test "${VERBOSE+set}" != "set" && VERBOSE=yes
 fi
 . $srcdir/defs || exit 1
 
-if test -f ../f77demo/Makefile; then :
-else
-  echo "You must run f77demo-conf.test before running $0" 1>&2
-  exit 77
-fi
+func_require "f77demo-conf" "f77demo/Makefile"
 
-# Change to our build directory.
-cd ../f77demo || exit 1
+func_rmprefixdir
+func_cd "f77demo"
+func_make
 
-# Do the actual build.
-echo "Making in ../f77demo"
-$make || exit 1
 exit 0

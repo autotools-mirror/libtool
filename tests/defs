@@ -1,6 +1,7 @@
 # -*- sh -*-
 # Defines for Libtool testing environment.
 # Gord Matzigkeit <gord@gnu.ai.mit.edu>, 1996
+# Gary V. Vaughan <gary@gnu.org>, 2003
 
 # Check that srcdir is set to an absolute path.
 case "$srcdir" in
@@ -8,11 +9,16 @@ case "$srcdir" in
 *) srcdir=`cd $srcdir && pwd` ;;
 esac
 
-progname=`echo "$0" | sed 's%^.*/%%'`
+sed_basename='s,^.*/,,g'
+sed_dirname='s,/[^/]*$,,'
+
+progname=`echo "$0" | sed "$sed_basename"`
 
 libtool="../libtool"
+prefix="./_inst"
 make="${MAKE-make}"
 SHELL="${CONFIG_SHELL-/bin/sh}"
+MKDIR="${MKDIR-mkdir}"
 
 if echo a | (grep -E '(a|b)') >/dev/null 2>&1; then
   EGREP='grep -E'
@@ -25,22 +31,6 @@ else
   FGREP='fgrep'
 fi
 
-prefix="./_inst"
-if test "$need_prefix" = yes; then
-  # An absolute path to a test installation directory.
-  test -d $prefix || mkdir $prefix
-  prefix=`cd $prefix && pwd`
-else
-  test -d $prefix && rm -rf $prefix
-  prefix=NONE
-fi
-
-# Extract CC from the libtool configuration
-eval `$libtool --config | grep '^CC='`
-
-# Extract host from the libtool configuration
-eval `$libtool --config | grep '^host='`
-
 # Disable usage of config.site for autoconf, unless DJGPP is present.
 # The DJGPP port of autoconf requires config.site, to work correctly.
 if test -z "$DJGPP"; then
@@ -48,10 +38,272 @@ if test -z "$DJGPP"; then
 fi
 
 # See how redirections should work.
+test "${VERBOSE+set}" != "set" && VERBOSE=no
 case "$VERBOSE" in
 NO | no | 0 | "")
   exec > /dev/null 2>&1
   ;;
 esac
+
+
+EXIT_SUCCESS=0
+EXIT_FAILURE=1
+EXIT_SKIP=77
+
+# func_msg arg...
+# Echo message with prefix.
+func_msg ()
+{
+    echo "=" ${1+"$@"}
+}
+
+# func_error arg...
+# Echo message to standard error.
+func_error ()
+{
+    echo ${1+"$@"} 1>&2
+}
+
+# func_skip arg...
+# Echo message to standard error, and skip the rest of this test.
+func_skip ()
+{
+    func_error ${1+"$@"}
+    exit $EXIT_SKIP
+}
+
+# func_fail arg...
+# Echo message to standard error, and fail this test.
+func_fail ()
+{
+    func_error ${1+"$@"}
+    exit $EXIT_FAILURE
+}
+
+# func_get_config varname_list src [failp] [regex]
+func_get_config ()
+{
+  my_varname_list="$1"
+  my_src="$2"
+  my_failp="false";  test -z "$3" || my_failp=:
+  my_regex="$4"
+
+  my_exitp=false
+  for my_varname in $my_varname_list; do
+    test -z "$4" && my_regex="^${my_varname}="
+
+    eval $my_varname=NONE
+    eval `eval $my_src | eval grep \"$my_regex\"`
+
+    if eval test x\"\$$my_varname\" = xNONE; then
+      func_error "$my_varname not set in \`$my_src'"
+      $my_failp && my_exitp=:
+    fi
+  done
+
+  $my_exitp && exit $EXIT_FAILURE
+}
+
+
+# Extract objext from the libtool configuration
+func_get_config "objext" "$libtool --config" ": fatal"
+
+# Extract objdir from the libtool configuration
+func_get_config "objdir" "$libtool --config" ": fatal"
+
+# Extract CC from the libtool configuration
+func_get_config "CC" "$libtool --config" ": fatal"
+
+# Extract host from the libtool configuration
+func_get_config "host" "$libtool --config" ": fatal"
+
+
+# func_grep expression filename
+# Check whether EXPRESSION matches any line of FILENAME, without output.
+func_grep ()
+{
+    grep "$1" "$2" >/dev/null 2>&1
+}
+
+# func_mkdir_p dir
+# Make sure the entire path to DIR is available.
+func_mkdir_p ()
+{
+    my_dir=$1
+    my_dirs=
+
+    while test ! -d "$my_dir"; do
+      my_dirs="$my_dir $my_dirs"
+      case $my_dir in */*) ;; *) break ;; esac
+      my_dir=`echo "$my_dir" | sed "$sed_dirname"`
+    done
+   test ! -n "$my_dirs" || $MKDIR $my_dirs
+}
+
+# func_mkprefixdir
+func_mkprefixdir ()
+{
+    # An absolute path to a test installation directory.
+    func_mkdir_p "$prefix"
+    prefix=`cd $prefix && pwd`
+}
+
+# func_rmprefixdir
+func_rmprefixdir ()
+{
+    test -d $prefix && rm -rf $prefix
+    prefix=NONE
+}
+
+# func_cd dir
+# Make sure a directory exists, and then change to it.
+func_cd ()
+{
+    my_dir="$1"
+
+    # Maybe we have a VPATH build, in which case, create a new subdir.
+    func_mkdir_p "$my_dir"
+
+    # Change to our build directory.
+    cd "$my_dir" || exit 1
+}
+
+
+# func_require prereq file [...]
+# If FILE does not exist, give a fatal error regarding running PREREQ first.
+func_require ()
+{
+    my_prereq="$1"; shift
+    my_files=${1+"$@"}
+
+    for my_file in $my_files; do
+      test -f "$my_file" \
+        || func_skip "You must run ${my_prereq}.test before running $0"
+    done
+}
+
+# func_configure [args ...]
+# Configure the demonstration.
+func_configure ()
+{
+    my_args=${1+"$@"}
+    my_dir=`pwd | sed "$sed_basename"`
+    my_testdir="$srcdir/$my_dir"
+
+    test -n "$my_args" && my_args=" $my_args"
+    func_msg "Configuring in $my_dir (--prefix=$prefix$my_args)"
+
+    my_args="--srcdir="\""$my_testdir"\"" --prefix="\""$prefix"\""$my_args"
+
+    eval $SHELL "$my_testdir/configure" $my_args || exit $EXIT_FAILURE
+}
+
+# func_check_static_shared staticp sharedp
+# Determine whether the generated libtool script is configured properly
+# for the expected STATICP and SHAREDP library building
+func_check_static_shared ()
+{
+    my_staticp="$1"
+    my_sharedp="$2"
+
+    if func_grep "^build_old_libs=$staticp" libtool &&
+       func_grep "^build_libtool_libs=$sharedp" libtool; then :
+    else
+      rm -f Makefile
+      exit $EXIT_FAIL
+    fi
+}
+
+
+# func_make [args ...]
+# Do the actual build.
+func_make ()
+{
+    my_args=${1+"$@"}
+    my_dir=`pwd | sed "$sed_basename"`
+
+    func_msg "Running \`$make $my_args' in $my_dir"
+
+    eval $make $my_args || exit $EXIT_FAIL
+}
+
+
+# func_distclean
+# Possibly clean up the distribution.
+func_make_distclean ()
+{
+    if test -f Makefile; then
+      func_make distclean
+    fi
+    rm -rf autom4te.cache config.cache
+}
+
+
+# func_make_uninstall
+# See that there were no files leftover in $prefix.
+# Ignore dotfiles, so that .nfsXXX files don't screw up the test.
+func_make_uninstall ()
+{
+    func_make uninstall
+
+    leftovers=`find $prefix ! -type d ! -name '.*' -print`
+    if test -n "$leftovers"; then
+      func_msg "Leftover after make uninstall:"
+      ls -l $leftovers
+      exit 1
+    fi
+}
+
+
+# func_exec_init mode
+func_exec_init ()
+{
+    func_msg "Executing $1 programs in $my_dir"
+
+    # Windows hosts search for dlls in the command path
+    PATH=$prefix/lib:$PATH
+
+    exec_status=$EXIT_SUCCESS
+}
+
+# func_exec_check program [msg ...]
+# Check to see if PROGRAM was built. If not display MSG.
+func_exec_check ()
+{
+    my_program="$1"
+
+    if test -f "$my_program"; then :
+    else
+      shift
+      func_error "$0: $my_program did not build ${1+$@}"
+      exec_status=$EXIT_FAILURE
+    fi
+}
+
+# func_exec program [exp_output] [msg ...]
+# Check to see if PROGRAM really runs, and produces EXP_OUTPUT if given.
+# If not display MSG.
+func_exec ()
+{
+    my_program="$1"
+    my_exp_output="$2"
+    my_dir=`pwd | sed "$sed_basename"`
+
+    test -n "$my_exp_output" \
+      && my_exp_output="| $EGREP -e "\""$my_exp_output"\"
+
+    if eval $my_program $my_exp_output; then :
+    else
+      shift; shift
+      func_error "$0: cannot execute $my_program ${1+$@}"
+
+      # Simple check to see if they are superuser.
+      if test $exec_status = $EXIT_FAILURE || test -w /; then :
+      else
+        func_msg "You may need to run $0 as the superuser."
+      fi
+      exec_status=$EXIT_FAILURE
+    fi
+}
 
 echo "=== Running $progname"
