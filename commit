@@ -2,13 +2,13 @@
 
 # commit version 0.9
 
-# Copyright (C) ???
 # Copyright (C) 1999, Free Software Foundation
 
 # This script is Free Software, and it can be copied, distributed and
 # modified as defined in the GNU General Public License.  A copy of
 # its license can be downloaded from http://www.gnu.org/copyleft/gpl.html
 
+# Originally by Gary V. Vaughan <gvaughan@@oranda.demon.co.uk>
 # Heavily modified by Alexandre Oliva <oliva@dcc.unicamp.br>
 
 # This scripts eases checking in changes to CVS-maintained projects
