@@ -1,5 +1,12 @@
 2004-07-29  Gary V. Vaughan  <gary@gnu.org>
 
+	* Makefile.am ($(top_srcdir)/config/ltmain.sh): Automake assumes,
+	quite rightly for every project except libtool, that there will be
+	an ltmain.sh in the source tree.
+	(EXTRA_DIST): As do the dist rules it generates.
+	(dist-hook): Even though we definitely don't want to distribute
+	our local ltmain.sh.
+
 	* config/config.guess, config/config.sub: Don't check these in,
 	they cause spurious conflicts on cvs commit and update, and are
 	added by bootstrap in any case.
