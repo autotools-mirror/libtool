@@ -4,6 +4,7 @@ New in 1.9h: 2004-??-??; CVS version 1.9g, Libtool team:
 * Support for Portland Group compiler on Linux.
 * Fix libltdl on static platforms.
 * Support for linux-dietlibc (`diet' as well as `diet-dyn', separately).
+* `libtoolize --install' now also installs `install-sh'.
 
 New in 1.9f: 2004-10-23; CVS version 1.9e, Libtool team:
 * Calculate dllsearchpath correctly for wrapper scripts on cygwin.

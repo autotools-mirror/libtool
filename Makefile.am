@@ -56,7 +56,8 @@ CLEANFILES = libtool libtoolize \
 # These are required by libtoolize and must be executable when installed.
 # Since _SCRIPTS gets the program transform applied we make them
 # executable by hand
-dist_pkgdata_DATA = config/config.guess config/config.sub config/ltmain.sh
+dist_pkgdata_DATA = config/config.guess config/config.sub config/ltmain.sh \
+	config/install-sh
 
 # Everything that gets picked up by aclocal is automatically distributed,
 # this is the list of macro files we install on the user's system.
@@ -188,6 +189,7 @@ install-data-local:
 install-data-hook:
 	chmod +x $(DESTDIR)$(pkgdatadir)/config.guess
 	chmod +x $(DESTDIR)$(pkgdatadir)/config.sub
+	chmod +x $(DESTDIR)$(pkgdatadir)/install-sh
 
 ## Ship README.alpha only in alpha release, but renamed to README
 dist-hook:
