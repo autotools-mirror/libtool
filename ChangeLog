@@ -1,3 +1,15 @@
+2000-02-28  Ossama Othman  <ossama@debian.org>
+
+	* ltmain.in (libobjs, reload_conv_objs): When searching for object
+	files, search for "*.$objext," not "*.o."
+	(compile_command, finalize_command, progfiles): No need to
+	transform `.lo'	objects into standard `.o' objects.  `.lo' files
+	are converted to the appropriate `.o' file earlier in the link
+	mode code.
+	* doc/libtool.texi (AC_LIBTOOL_CXX): Documented this
+	macro, and the `tagdemo' test that utilizes it.  Updated C++ and
+	tagged configuration documentation.
+
 2000-02-25  Ossama Othman  <ossama@debian.org>
 
 	* libtool.m4, ltconfig.in: Merged in changes from most recent HEAD

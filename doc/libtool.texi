@@ -1861,6 +1861,14 @@ on @file{libtool}.
 
 @end defmac
 
+@defmac AC_LIBTOOL_CXX
+Enable C++ shared library support. This macro should be used if libtool
+will be used to generate C++ shared libraries.  It causes a C++-specific
+configuration to be appended to the @file{libtool} script.  The C++
+support can coexist with other configurations, including the default C
+shared library configuration.
+@end defmac
+
 @defmac AC_LIBTOOL_DLOPEN
 Enable checking for dlopen support. This macro should be used if
 the package makes use of the @samp{-dlopen} and @samp{-dlpreopen} flags,
@@ -3526,7 +3534,7 @@ A potential problem may occur if you use variables when setting
 the following:
 
 @example
-$ @kbd{CC=$CXX LTCC=$CC ./ltconfig -o libtool --add-tag=CXX ltcf-cxx.sh}
+$ @kbd{LTCC=$CC CC=$CXX ./ltconfig -o libtool --add-tag=CXX ltcf-cxx.sh}
 @end example
 
 In this example, @var{CC} is set to the C++ compiler and LTCC is set to
@@ -3534,6 +3542,17 @@ the compiler pointed to by @var{$CC}.  However, @var{CC} was previously
 set to the C++ compiler @var{$CXX}, which causes LTCC to be set to the
 C++ compiler @var{$CXX}, too.  This is a problem because LTCC must be a
 valid C compiler, not a C++ compiler for example.
+
+If @samp{ltconfig} is unable to determine the host type then you must
+explicitly provide a host when invoking @samp{ltconfig}.  This is
+typically necessary for new very platforms and many cross-compiled
+platforms.  For example, assuming that your host is @samp{i386-nto} then
+@samp{ltconfig} could be invoked as follows:
+
+@example
+$ @kbd{LTCC=$CC CC=$CXX ./ltconfig -o libtool \}
+> @kbd{--add-tag=CXX ltcf-cxx.sh i386-nto}
+@end example
 
 After a configuration tag has been added using the @samp{--add-tag}
 option, whenever you want to compile or link a library using
@@ -3561,12 +3580,21 @@ Only the two pre-defined tags, @samp{disable-shared} and
 @samp{disable-static}, override a single variable, and can be used
 cumulatively, after other tags.
 
+@emph{NOTE}: C++ support may be automatically added to your package by
+adding the @code{AC_LIBTOOL_CXX} macro to your package
+@file{configure.in} file.
+
 @node C++ libraries
 @section Writing libraries for C++
 @c FIXME: in the TOC, the ++ is too large (seems to be math mode)
 @cindex trouble with C++
 @cindex pitfalls using C++
 @cindex C++, pitfalls
+
+@emph{NOTE}: The problems described in this section may no longer
+relevant due to the @samp{libtool} multi-language support.  To enable
+C++ support in libtool, use the @code{AC_LIBTOOL_CXX} macro in your
+@file{configure.in} file.
 
 Creating libraries of C++ code should be a fairly straightforward
 process, because its object files differ from C ones in only three ways:
@@ -3806,6 +3834,33 @@ three times, under three different libtool configurations:
 static and shared libraries, @file{mdemo-static.test} builds only static
 libraries (@samp{--disable-shared}), and @file{mdemo-shared.test} builds
 only shared libraries (@samp{--disable-static}).
+
+@item tagdemo-conf.test
+@itemx tagdemo-exec.test
+@itemx tagdemo-make.test
+@itemx tagdemo-static.test
+@itemx tagdemo-shared.test
+@pindex tagdemo-conf.test
+@pindex tagdemo-exec.test
+@pindex tagdemo-make.test
+@pindex tagdemo-static.test
+@pindex tagdemo-shared.test
+These programs check to see that the @file{tagdemo} subdirectory of the
+libtool distribution can be configured and built correctly.
+
+The @file{tagdemo} subdirectory contains a demonstration of a package
+that uses libtool and its tagged configuration support
+(@pxref{Configuration tags}) build a C++ library.  C++ shared library
+support is enabled by using the @code{AC_LIBTOOL_CXX} macro in
+@file{tagdemo/configure.in}.
+
+The tests @file{tagdemo-make.test}, and @file{tagdemo-exec.test}, are
+executed three times, under three different libtool configurations:
+@file{tagdemo-conf.test} configures @file{tagdemo/libtool} to build both
+static and shared libraries, @file{tagdemo-static.test} builds only
+static libraries (@samp{--disable-shared}), and
+@file{tagdemo-shared.test} builds only shared libraries
+(@samp{--disable-static}).
 
 @item dryrun.test
 @pindex dryrun.test
