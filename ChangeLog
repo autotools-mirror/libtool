@@ -1,3 +1,8 @@
+1999-06-08  Gary V. Vaughan  <gary@oranda.demon.co.uk>
+
+	* ltconfig.in (cygwin, need_version): Set to no, otherwise module
+	dll's end up with mighty long names!
+	
 1999-06-06  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* ltconfig.in: Support new GNU ld --help output format.

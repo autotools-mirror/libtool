@@ -1148,7 +1148,7 @@ EOF
       $DLLTOOL --as=$AS --dllname $soname --exclude-symbols DllMain@12,_cygwin_dll_entry@12,_cygwin_noncygwin_dll_entry@12 --def $objdir/$soname-def --base-file $objdir/$soname-base --output-exp $objdir/$soname-exp~
       $CC $objdir/$soname-exp -Wl,--dll -nostartfiles -Wl,-e,__cygwin_dll_entry@12 -o $lib $objdir/$soname-ltdll.$objext $libobjs $deplibs $linkopts'
 
-      old_archive_from_new_cmds='$DLLTOOL --as=$AS --dllname $soname --def $objdir/$soname-def --output-lib $objdir/$libname.a'
+      old_archive_from_new_cmds='$DLLTOOL --as=$AS --dllname $soname --def $objdir/$soname-def --output-lib $objdir/$libname.a' 
     ;;
 
   netbsd*)
@@ -1768,6 +1768,8 @@ bsdi4*)
 
 cygwin* | mingw*)
   version_type=windows
+  need_version=no
+  need_lib_prefix=no
   if test "$with_gcc" = yes; then
     library_names_spec='${libname}`echo ${release} | sed -e 's/[.]/-/g'`${versuffix}.dll $libname.a'
   else
@@ -1776,7 +1778,6 @@ cygwin* | mingw*)
   dynamic_linker='Win32 ld.exe'
   deplibs_check_method='file_magic file format pei*-i386(.*architecture: i386)?'
   file_magic_cmd='${OBJDUMP} -f'
-  need_lib_prefix=no
   # FIXME: first we should search . and the directory the executable is in
   shlibpath_var=PATH
   lt_cv_dlopen="LoadLibrary"
