@@ -476,9 +476,9 @@ func_serial ()
     $opt_debug
     my_filename="$1"
     my_macro_regex="$2"
-    my_sed_serial='/^# serial [1-9][0-9]*[ 	]*'"$my_macro_regex"'[ 	]*$/ {
-	  s,^# serial \([1-9][0-9]*\).*$,\1,; q;
-	}; d'
+    my_sed_serial=['/^# serial [1-9][0-9.]*[ 	]*'"$my_macro_regex"'[ 	]*$/ {
+	  s,^# serial \([1-9][0-9.]*\).*$,\1,; q;
+	}; d']
 
     # Search FILENAME and all the files it m4_includes for a serial number
     # in the file that AC_DEFUNs MACRO_REGEX.
@@ -498,6 +498,90 @@ func_serial ()
     $ECHO $my_serial
 }
 
+
+# func_serial_max serial1 serial2
+# Compare (possibly multi-part, '.' delimited) serial numbers, and
+# return the largest in $func_serial_max_result.  If they are the
+# same, func_serial_max_result will be empty.
+func_serial_max ()
+{
+    $opt_debug
+    my_serial1="$1"
+    my_serial2="$2"
+
+    my_sed_dot='s/\..*$//g'
+    my_sed_rest='s/^[[0-9]][[1-9]]*\.*//'
+    my_sed_digits='s/[[^0-9.]]//g'
+
+    # Incase they turn out to be the same, we'll set it to empty
+    func_serial_max_result=
+
+    test "X$1$2" = X`$ECHO "X$1$2" | $Xsed -e "$my_sed_digits"` || {
+      func_error "serial numbers \`$1' or \`$2' contain non-digit chars"
+      return
+    }
+
+    while test -n "$my_serial1$my_serial2"; do
+      my_serial1_part=`$ECHO "X$my_serial1" | $Xsed -e "$my_sed_dot"`
+      my_serial2_part=`$ECHO "X$my_serial2" | $Xsed -e "$my_sed_dot"`
+
+      test -z "$my_serial1_part$my_serial2_part" \
+        && break
+
+      test -z "$my_serial1_part" \
+        && { func_serial_max_result="$2"; break; }
+
+      test -z "$my_serial2_part" \
+        && { func_serial_max_result="$1"; break; }
+
+      test "$my_serial1_part" -gt "$my_serial2_part" \
+        && { func_serial_max_result="$1"; break; }
+
+      test "$my_serial2_part" -gt "$my_serial1_part" \
+        && { func_serial_max_result="$2"; break; }
+
+      my_serial1=`$ECHO "X$my_serial1" | $Xsed -e "$my_sed_rest"`
+      my_serial2=`$ECHO "X$my_serial2" | $Xsed -e "$my_sed_rest"`
+    done
+}
+
+
+# func_serial_update_check srcfile src_serial destfile dest_serial
+# Unless SRC_SERIAL is newer than DEST_SERIAL set $func_serial_update_check
+# to 'false'.
+func_serial_update_check ()
+{
+    $opt_debug
+    my_srcfile="$1"
+    my_src_serial="$2"
+    my_destfile="$3"
+    my_dest_serial="$4"
+    my_update_p=:
+
+    if test -f "$my_destfile"; then
+      test "X$my_src_serial" = "X0" && {
+        func_error "warning: no serial number on \`$my_srcfile', not copying."
+	return
+      }
+
+      # Determine whether the destination has an older serial.
+      func_serial_max "$my_src_serial" "$my_dest_serial"
+      test "X$my_src_serial" = "X$func_serial_max_result" || my_update_p=false
+
+      test "X$my_src_serial" = "X$func_serial_max_result" \
+        && func_verbose "\`$my_srcfile' is serial $my_src_serial, greater than $my_dest_serial in \`$my_destfile'"
+
+      if test "X$my_dest_serial" = "X$func_serial_max_result"; then
+        func_verbose "\`$my_srcfile' is serial $my_src_serial, less than $my_dest_serial in \`$my_destfile'"
+	$opt_force \
+	  || func_error "\`$my_destfile' is newer: use \`--force' to overwrite"
+      fi
+    fi
+
+    func_serial_update_check_result="$my_update_p"
+}
+
+
 # func_serial_update filename srcdir destdir [macro_regex] [old_macro_regex]
 # Copy SRCFILE to DESTFILE provided SRCFILE has a newer serial number, or
 # DESTFILE does not yet exist, or the user specified `--force'.  If given,
@@ -513,43 +597,34 @@ func_serial_update ()
     my_old_macro_regex="$5"
 
     my_return_status=1
-    my_update_p=:
     my_srcfile="$my_srcdir/$my_filename"
     my_destfile="$my_destdir/$my_filename"
+
+    test -f "$my_srcfile" || {
+      func_error "\`$my_srcfile' does not exist."
+      return
+    }
 
     if test -f "$my_destfile"; then
       my_src_serial=`func_serial "$my_srcfile" "$my_macro_regex"`
       # Strictly, this libtoolize ought not to have to deal with ancient
       # serial formats, but we accept them here to be complete:
-      test "$my_src_serial" -eq 0 &&
+      test "X$my_src_serial" = "X0" &&
         my_src_serial=`func_serial "$my_srcfile" "$my_old_macro_regex"`
 
       my_dest_serial=`func_serial "$my_destfile" "$my_macro_regex"`
-      test "$my_dest_serial" -eq 0 &&
+      test "X$my_dest_serial" = "X0" &&
         my_dest_serial=`func_serial "$my_destfile" "$my_old_macro_regex"`
 
-      test "$my_src_serial" -eq 0 && {
-        func_error "warning: no serial number on \`$my_srcfile', not copying."
-	return
-      }
-
-      # Only perform the file update if the destination has an older serial.
-      test "$my_src_serial" -gt "$my_dest_serial" || my_update_p=false
-
-      test "$my_src_serial" -gt "$my_dest_serial" \
-        && func_verbose "\`$my_srcfile' is serial $my_srcserial, greater than $my_destserial in \`$my_destfile'"
-
-      if test "$my_src_serial" -lt "$my_dest_serial"; then
-        func_error "\`$my_srcfile' is serial $my_srcserial, less than $my_destserial in \`$my_destfile'"
-	$opt_force \
-          || func_fatal_error "Use \`--force' to replace newer libtool files with this version."
-      fi
+      func_serial_update_check \
+         "$my_srcfile" "$my_src_serial" "$my_destfile" "$my_dest_serial"
+      my_update_p="$func_serial_update_check_result"
     fi
 
     if $my_update_p || $opt_force; then
       func_copy "$my_srcfile" "$my_destfile"
       my_return_status=$?
-    else
+    elif test "X$my_dest_serial" = "X$my_src_serial"; then
       $opt_quiet \
         || func_echo "\`$my_destfile' is already up to date."
     fi
@@ -558,12 +633,100 @@ func_serial_update ()
     # it has `m4_include([DESTFILE])', so the copy effectively already
     # updated `aclocal.m4'.
     $use_aclocal || if test -f aclocal.m4; then
-      test "$my_src_serial" -gt `func_serial aclocal.m4 "$my_macro_regex"` \
+      func_serial_max \
+          "$my_src_serial" `func_serial aclocal.m4 "$my_macro_regex"`
+      test "X$my_src_serial" = "X$func_serial_max_result" \
 	  && func_echo "You should add the contents of \'$my_destfile' to \`aclocal.m4'."
     fi
 
     return $my_return_status
 }
+
+
+# func_ltmain_update srcfile destfile
+# Copy SRCFILE to DESTFILE provided SRCFILE has a newer VERSION,
+# or DESTFILE does not yet exist, or the user specified `--force'.
+func_ltmain_update ()
+{
+    $opt_debug
+    my_srcfile="$1"
+    my_destfile="$2"
+
+    my_update_p=:
+    my_sed_ltmain=['/^package_revision=[0-9][1-9.]*/ {
+      s,^package_revision=\([0-9.]*\)[ 	]*$,\1,; p;
+    }; d']
+
+    test -f "$my_srcfile" || {
+      func_error "\`$my_srcfile' does not exist."
+      return
+    }
+
+    if test -f "$my_destfile"; then
+      my_src_serial=`$SED -e "$my_sed_ltmain" "$my_srcfile"`
+      test -z "$my_src_serial" && {
+        func_error "warning: no serial number in \`$my_srcfile', not copying."
+	return
+      }
+
+      my_dest_serial=`$SED -e "$my_sed_ltmain" "$my_destfile"`
+      test -n "$my_dest_serial" || my_dest_serial=0
+
+      func_serial_update_check \
+         "$my_srcfile" "$my_src_serial" "$my_destfile" "$my_dest_serial"
+      my_update_p="$func_serial_update_check_result"
+    fi
+
+    if $my_update_p || $opt_force; then
+      func_copy "$my_srcfile" "$my_destfile"
+    elif test "X$my_dest_serial" = "X$my_src_serial"; then
+      $opt_quiet \
+        || func_echo "\`$my_destfile' is already up to date."
+    fi
+}
+
+# func_config_update srcfile destfile
+# Copy SRCFILE to DESTFILE provided SRCFILE has a newer TIMESTAMP,
+# or DESTFILE does not yet exist, or the user specified `--force'.
+func_config_update ()
+{
+    $opt_debug
+    my_srcfile="$1"
+    my_destfile="$2"
+
+    my_update_p=:
+    my_sed_config=['/^timestamp='\''\?[0-9][1-9-]*'\''\?/ {
+      s,^timestamp='\''\?\([0-9-]*\)'\''\?,\1,; s/-/./g; p;
+    }; d']
+
+    test -f "$my_srcfile" || {
+      func_error "\`$my_srcfile' does not exist."
+      return
+    }
+
+    if test -f "$my_destfile"; then
+      my_src_serial=`$SED -e "$my_sed_config" "$my_srcfile"`
+      test -z "$my_src_serial" && {
+        func_error "warning: no serial number in \`$my_srcfile', not copying."
+	return
+      }
+
+      my_dest_serial=`$SED -e "$my_sed_config" "$my_destfile"`
+      test -n "$my_dest_serial" || my_dest_serial=0
+
+      func_serial_update_check \
+         "$my_srcfile" "$my_src_serial" "$my_destfile" "$my_dest_serial"
+      my_update_p="$func_serial_update_check_result"
+    fi
+
+    if $my_update_p || $opt_force; then
+      func_copy "$my_srcfile" "$my_destfile"
+    elif test "X$my_dest_serial" = "X$my_src_serial"; then
+      $opt_quiet \
+        || func_echo "\`$my_destfile' is already up to date."
+    fi
+}
+
 
 # func_check_macros
 # Sanity check macros from aclocal.m4 against installed versions.
@@ -580,62 +743,6 @@ func_check_macros ()
 
     # FIXME: Ensure ltmain.sh, libtool.m4 and ltdl.m4 are from the same release
 }
-
-# func_ltmain_update srcfile destfile
-# Copy SRCFILE to DESTFILE provided SRCFILE has a newer VERSION/TIMESTAMP,
-# or DESTFILE does not yet exist, or the user specified `--force'.
-func_ltmain_update ()
-{
-    $opt_debug
-    my_srcfile="$1"
-    my_destfile="$2"
-    my_sed_ltmain='
-	s,^VERSION=[[^0-9]]*\(.*\)[[ 	]]*$,\1,; t
-	s,^TIMESTAMP=[[^0-9]]*\([[.0-9]]*\) .*$,\1,; t
-	d'
-
-    if test -f "$my_srcfile"; then :
-    else
-      func_error "\`$my_srcfile' does not exist."
-      return
-    fi
-
-    # FIXME:  check versions, and only downgrade with --force
-    cmp -s  "$my_srcfile" "$my_destfile"
-    if test "$?" -ne 0 || $opt_force; then
-      func_copy "$my_srcfile" "$my_destfile"
-    else
-      $opt_quiet \
-        || func_echo "\`$my_destfile' is already up to date."
-    fi
-}
-
-# func_config_update srcfile destfile
-# Copy SRCFILE to DESTFILE provided SRCFILE has a newer TIMESTAMP,
-# or DESTFILE does not yet exist, or the user specified `--force'.
-func_config_update ()
-{
-    $opt_debug
-    my_srcfile="$1"
-    my_destfile="$2"
-    my_sed_config='s,^timestamp=[[^0-9]]*\([[.0-9-]]*\)[[^0-9]].*$,\1,; t; d'
-
-    if test -f "$my_srcfile"; then :
-    else
-      func_error "\`$my_srcfile' does not exist."
-      return
-    fi
-
-    # FIXME:  check versions, and only downgrade with --force
-    cmp -s  "$my_srcfile" "$my_destfile"
-    if test "$?" -ne 0 || $opt_force; then
-      func_copy "$my_srcfile" "$my_destfile"
-    else
-      $opt_quiet \
-        || func_echo "\`$my_destfile' is already up to date."
-    fi
-}
-
 
 
 ## ----------- ##
@@ -669,7 +776,7 @@ func_config_update ()
   $opt_quiet || if test "$auxdir" != .; then
     func_echo "putting files in AC_CONFIG_AUX_DIR, \`$auxdir'."
   fi
-  if $opt_install || $opt_force; then
+  if $opt_install; then
     func_copy_all_files "$pkgdatadir" "$auxdir" "$glob_exclude_pkgaux_files"
     func_config_update "$pkgdatadir/config.guess" "$auxdir/config.guess"
     test -f "$pkgdatadir/config.sub" \
