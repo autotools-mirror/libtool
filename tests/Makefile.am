@@ -26,6 +26,7 @@ TESTSUITE_AT	= testsuite.at \
 		  am-subdir.at \
 		  functests.at \
 		  stresstest.at \
+		  template.at \
 		  inherited_flags.at
 
 EXTRA_DIST	= $(TESTSUITE) $(TESTSUITE_AT) package.m4
