@@ -1,3 +1,7 @@
+2000-07-24  Alexandre Oliva  <oliva@lsd.ic.unicamp.br>
+
+	* ltconfig.in (linkopts): Don't set for test.
+
 2000-07-24  Nick Hudson <skrll@netbsd.org>
 
 	* ltconfig.in (linkopts): Replace with linker_flags.
