@@ -801,3 +801,56 @@ Common subdirectories: libtool-1.2/tests and libtool-1.2-patched/tests
 
 --------------E06156B73BE5D4D4AD2BF900--
 
+From nobody Wed Oct 14 16:56:33 1998
+X-From-Line: gord@gnu.org Thu Aug 06 20:23:55 1998
+Return-Path: <gord@gnu.org>
+Delivered-To: gord@trick.fig.org
+Received: (qmail 1251 invoked from network); 6 Aug 1998 20:23:54 -0000
+Received: from gen2-93ip34.cadvision.com (HELO bambam.m-tech.ab.ca) (209.91.93.34)
+  by cs366707-a.cgmo1.ab.wave.home.com with SMTP; 6 Aug 1998 20:23:54 -0000
+Received: from mescaline.gnu.org (gateway [10.0.0.1]) by bambam.m-tech.ab.ca (8.8.5/8.6.9) with ESMTP id OAA21853 for <gord@m-tech.ab.ca>; Thu, 6 Aug 1998 14:21:27 -0600
+Received: from juliet.wcom.com by mescaline.gnu.org (8.8.5/8.6.12GNU) with SMTP id QAA20365 for <bug-libtool@gnu.org>; Thu, 6 Aug 1998 16:21:44 -0400
+Received: from moloko.wcom.com by juliet with ESMTP; Thu, 6 Aug 1998 15:17:19 -0500
+Received: from pinebilly.wcom.com (pinebilly.wcom.com [159.98.206.11])	by moloko.wcom.com (8.8.8/8.8.8) 
+          with SMTP id PAA27920	for <bug-libtool@gnu.org>; Thu, 6 Aug 1998 15:17:18 -0500 (CDT)
+X-Report-Problems-With-Moloko-To: brandon.black@wcom.com
+X-If-you-can-read-this-you-are-too-close: :)
+Date: Thu, 6 Aug 1998 15:17:11 -0500 (CDT)
+From: Ron Romero <ron.romero@wcom.com>
+Sender: rdromero@pinebilly.wcom.com
+Reply-To: ron.romero@wcom.com
+To: bug-libtool@gnu.org
+Subject: libtool Doesn't Export C++ Methods on AIX
+Message-ID: <Pine.A41.3.96.980806150532.36284A-100000@pinebilly.wcom.com>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Xref: araguaia.dcc.unicamp.br libtool-cxx:8
+Lines: 26
+X-Gnus-Article-Number: 8   Wed Nov  4 08:08:35 1998
+
+I'm trying to use libtool with C++ programs, and found that libtool
+wouldn't put any C++ methods into the shared library.  When I looked
+into it, I found that the nm command used to create the export list
+doesn't pass a -C flag.  On AIX, the -C flag says to leave C++ names
+mangled.  Since the function names weren't mangled, the sed line
+didn't recognize them as functions, so they weren't put into the .exp
+file.  I found that I could fix the problem by adding a -C flag to
+ac_cv_path_NM in config.guess.  I suppose the configure script should
+check for that and do it automatically.
+
+I'm running libtool version 1.2 on an AIX 4.2 box
+(powerpc-ibm-aix4.2.1.0).  
+
+I have some test files that I can give to anyone who wants to test
+this.  And I can test potential fixes on my machine.
+
+
+Thank you,
+
+Ron Romero
+ron.romero@wcom.com
+Object Developer
+WorldCom, Inc.
+
+
+
