@@ -1,3 +1,7 @@
+2004-01-02  Scott James Remnant <scott@netsplit.com>
+
+	* .cvsignore: Ignore stamp-vcl created by the Makefile.
+
 2004-01-02  Bob Friesenhahn <bfriesen@simple.dallas.tx.us>
 	Joe Orton <joe@manyfish.co.uk>
 

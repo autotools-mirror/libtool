@@ -12,3 +12,4 @@ config.*
 libtool
 libtoolize
 patches
+stamp-vcl
