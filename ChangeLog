@@ -1,5 +1,8 @@
 2004-02-06  Gary V. Vaughan  <gary@gnu.org>
 
+	* m4/libtool.m4 (AC_PROVIDE_IFELSE): Removed.  We now require
+	Autoconf 2.58, which ships this macro anyway.
+
 	* Makefile.am: Comment typo.
 
 	* m4/libtool.m4 (LT_PREREQ): Declare the minimum release number

@@ -30,15 +30,6 @@ m4_define([_LT_COPYING], [dnl
 # serial 49 AC_PROG_LIBTOOL
 
 
-# AC_PROVIDE_IFELSE(MACRO-NAME, IF-PROVIDED, IF-NOT-PROVIDED)
-# -----------------------------------------------------------
-# If this macro is not defined by Autoconf, define it here.
-m4_ifdef([AC_PROVIDE_IFELSE],
-         [],
-         [m4_define([AC_PROVIDE_IFELSE],
-	         [m4_ifdef([AC_PROVIDE_$1],
-		           [$2], [$3])])])
-
 # LT_PREREQ(VERSION)
 # ------------------
 # Complain and exit if this libtool version is less that VERSION.
@@ -101,7 +92,7 @@ test -f "$ltmain" || ltmain="$ac_aux_dir/ltmain.sh"
 # AC_LIBTOOL_SETUP
 # ----------------
 AC_DEFUN([AC_LIBTOOL_SETUP],
-[AC_PREREQ(2.56)dnl We use the new compiler based header checking in 2.56
+[AC_PREREQ(2.58)dnl We use AC_INCLUDES_DEFAULT
 AC_REQUIRE([LTSUGAR_VERSION])dnl
 AC_REQUIRE([AC_CANONICAL_HOST])dnl
 AC_REQUIRE([AC_CANONICAL_BUILD])dnl
