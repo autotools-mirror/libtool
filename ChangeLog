@@ -1,5 +1,9 @@
 2003-11-25  Gary V. Vaughan  <gary@gnu.org>
 
+	* Makefile.am (config/ltmain.sh): Note the dependency on the
+	timestamp in ChangeLog so we don't ship libtools that report the
+	wrong version number :-/
+
 	* bootstrap: Explain automake and autoconf version dependencies
 	truthfully, and the difference between bootstrap and user
 	dependencies.
