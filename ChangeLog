@@ -1,5 +1,8 @@
 2005-02-02  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* ltmain.in, libtoolize.in: Exit with nonzero status on write failures
+	with --help or --version or, in case of ltmain, --config or --features.
+
 	* NEWS: Update.
 
 2005-02-01  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>

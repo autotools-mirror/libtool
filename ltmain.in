@@ -442,7 +442,7 @@ do
     $echo "Copyright (C) 2003  Free Software Foundation, Inc."
     $echo "This is free software; see the source for copying conditions.  There is NO"
     $echo "warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE."
-    exit $EXIT_SUCCESS
+    exit $?
     ;;
 
   --config)
@@ -451,7 +451,7 @@ do
     for tagname in $taglist; do
       ${SED} -n -e "/^# ### BEGIN LIBTOOL TAG CONFIG: $tagname$/,/^# ### END LIBTOOL TAG CONFIG: $tagname$/p" < "$progpath"
     done
-    exit $EXIT_SUCCESS
+    exit $?
     ;;
 
   --debug)
@@ -476,7 +476,7 @@ do
     else
       $echo "disable static libraries"
     fi
-    exit $EXIT_SUCCESS
+    exit $?
     ;;
 
   --finish) mode="finish" ;;
@@ -6408,7 +6408,7 @@ esac
 $echo
 $echo "Try \`$modename --help' for more information about other modes."
 
-exit $EXIT_SUCCESS
+exit $?
 
 # The TAGs below are defined such that we never get into a situation
 # in which we disable both kinds of libraries.  Given conflicting
