@@ -1,3 +1,8 @@
+2001-03-03  Markus F.X.J. Oberhumer <markus@oberhumer.com>,
+	    Alexandre Oliva <oliva@lsd.ic.unicamp.br>
+
+	* ltconfig.in: Added explicit return type to all C functions.
+
 2001-01-29  Alexandre Oliva  <aoliva@redhat.com>
 
 	* libltdl/Makefile.am (CLEANFILES): Clean conditionally-built

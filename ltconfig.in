@@ -1665,7 +1665,7 @@ void nm_test_func(){}
 #ifdef __cplusplus
 }
 #endif
-main(){nm_test_var='a';nm_test_func();return(0);}
+int main(){nm_test_var='a';nm_test_func();return(0);}
 EOF
 
   echo "$progname:@LINENO@: checking if global_symbol_pipe works" >&5
@@ -2638,8 +2638,9 @@ else
 # endif
 #endif
 
-fnord() { int i=42;}
-main() { void *self, *ptr1, *ptr2; self=dlopen(0,LTDL_GLOBAL|LTDL_LAZY_OR_NOW);
+void fnord() { int i=42; }
+int main() {
+    void *self, *ptr1, *ptr2; self=dlopen(0,LTDL_GLOBAL|LTDL_LAZY_OR_NOW);
     if(self) { ptr1=dlsym(self,"fnord"); ptr2=dlsym(self,"_fnord");
 	       if(ptr1 || ptr2) { dlclose(self); exit(0); } } exit(1); } 
 
@@ -2711,8 +2712,9 @@ else
 # endif
 #endif
 
-fnord() { int i=42;}
-main() { void *self, *ptr1, *ptr2; self=dlopen(0,LTDL_GLOBAL|LTDL_LAZY_OR_NOW);
+void fnord() { int i=42;}
+int main() {
+    void *self, *ptr1, *ptr2; self=dlopen(0,LTDL_GLOBAL|LTDL_LAZY_OR_NOW);
     if(self) { ptr1=dlsym(self,"fnord"); ptr2=dlsym(self,"_fnord");
     if(ptr1 || ptr2) { dlclose(self); exit(0); } } exit(1); } 
 
