@@ -2481,10 +2481,10 @@ EOF
 	  ;;
 
 	windows)
-	  # Like Linux, but with '-' rather than '.', since we only
-	  # want one extension on Windows 95.
+	  # Use '-' rather than '.', since we only want one
+	  # extension on DOS 8.3 filesystems.
 	  major=`expr $current - $age`
-	  versuffix="-$major-$age-$revision"
+	  versuffix="-$major"
 	  ;;
 
 	*)
