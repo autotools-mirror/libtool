@@ -70,6 +70,10 @@ configure-subdirs distdir: $(DIST_MAKEFILE_LIST)
 	abs_srcdir=`cd $(top_srcdir) && pwd`; \
 	(cd $$dir && $$abs_srcdir/$$dir/configure) || exit 1
 
+# Don't install over the top of an old pkgdatadir
+install-data-local:
+	-rm -rf $(DESTDIR)$(pkgdatadir)
+
 # Create and install libltdl
 install-data-hook:
 	cd libltdl && $(MAKE) local-install-files

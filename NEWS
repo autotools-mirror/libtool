@@ -19,6 +19,8 @@ New in 1.5b: 2003-??-??; CVS version 1.5a, Libtool team:
 * Mode inferrence removed, shorthand for choosing modes added.
 * Specifying -allow-undefined is now an error.
 * Speed up max_cmd_len check.
+* make install now deletes preexisting $prefix/share/libtool before installing
+  latest files.
 * Extracting symbols from an import library on cygwin and win32 now works.
 * Recognises the 'R' symbol type on Solaris so read-only symbols can be
   exported.

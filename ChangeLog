@@ -1,5 +1,9 @@
 2003-11-07  Gary V. Vaughan  <gary@gnu.org>
 
+	* Makefile.am (install-data-local): Wipe out old installation
+	pkgdatadir before installing new files.
+	* NEWS: Updated.
+
 	* m4/libtoolize.in (func_scan_files): If libtoolize is run before
 	automake has created install-sh and configure.ac does not mention
 	AC_CONFIG_AUX_DIR, fall back to the current directory for auxdir.
