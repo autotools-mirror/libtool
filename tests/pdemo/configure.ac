@@ -30,7 +30,7 @@ AC_CONFIG_AUX_DIR([../../config])
 ## ------------------------ ##
 ## Automake Initialisation. ##
 ## ------------------------ ##
-AM_INIT_AUTOMAKE(hell,1.0)
+AM_INIT_AUTOMAKE
 
 
 ## ------------------ ##

@@ -1,5 +1,13 @@
 2003-10-21  Gary V. Vaughan  <gary@gnu.org>
 
+	* configure.ac, libltdl/configure.ac, tests/cdemo/configure.ac,
+	tests/demo/configure.ac, tests/depdemo/configure.ac,
+	tests/f77demo/configure.ac, tests/mdemo/configure.ac,
+	tests/mdemo2/configure.ac, tests/pdemo/configure.ac,
+	tests/tagdemo/configure.ac (AM_INIT_AUTOMAKE): Remove redundant
+	arguments.
+	* libltdl/configure.ac: Use quadrigraphs to escape macronames.
+
 	* bootstrap (reconfdirs): Same as yesterday, only with portable
 	bourne shell syntax.  :-/
 

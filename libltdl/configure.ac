@@ -40,7 +40,7 @@ if test -z "$enable_ltdl_install$enable_ltdl_convenience"; then
     enable_ltdl_install=yes
   else
     AC_MSG_WARN([*** The top-level configure must select either])
-    AC_MSG_WARN([*** [A""C_LIBLTDL_INSTALLABLE] or [A""C_LIBLTDL_CONVENIENCE].])
+    AC_MSG_WARN([*** AC@&t@_LIBLTDL_INSTALLABLE or AC@&t@_LIBLTDL_CONVENIENCE.])
     AC_MSG_ERROR([*** Maybe you want to --enable-ltdl-install?])
   fi
 fi
@@ -49,7 +49,7 @@ fi
 ## ------------------------ ##
 ## Automake Initialisation. ##
 ## ------------------------ ##
-AM_INIT_AUTOMAKE(AC_PACKAGE_TARNAME, AC_PACKAGE_VERSION, -)
+AM_INIT_AUTOMAKE
 
 
 ## ------------------ ##
