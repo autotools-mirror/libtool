@@ -1,3 +1,8 @@
+2003-11-19  Gary V. Vaughan  <gary@gnu.org>
+
+	* configure.ac (AC_PREREQ): AS_HELP_STRING was introduced after
+	autoconf-2.57 was released.
+
 2003-11-18  Gary V. Vaughan  <gary@gnu.org>
 
 	* libltdl/ltdl.c (lt_dlhandle_find): New function to find a handle

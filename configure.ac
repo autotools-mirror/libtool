@@ -17,8 +17,7 @@
 # 02111-1307  USA
 
 
-## FIXME: Is this really new enough? ##
-AC_PREREQ(2.54)
+AC_PREREQ(2.58) ## We use AS_HELP_STRING
 
 
 
