@@ -128,10 +128,12 @@ rs6000-ibm-aix4.1.4.0           gcc      1.2f     ok
   (gcc-2.7.2)
 rs6000-ibm-aix3.2.5             gcc      1.0i     ok
 rs6000-ibm-aix3.2.5             xlc      1.0i     ok
-sparc-sun-solaris2.8		gcc	 1.3e	  ok (1.911)
-sparc-sun-solaris2.7            gcc      1.3e     ok (1.911)
-sparc-sun-solaris2.6            gcc      1.3.2    ok
-  (egcs-1.1.2, GNU ld 2.9.1 & native ld)
+sparc-sun-solaris2.8		gcc	 1.3e	  ok (1.913)
+  (gcc-2.95.3 & native ld)
+sparc-sun-solaris2.7            gcc      1.3e     ok (1.913)
+  (gcc-2.95.3 & native ld)
+sparc-sun-solaris2.6            gcc      1.3e     ok (1.913)
+  (gcc-2.95.3 & native ld)
 sparc-sun-solaris2.5.1          gcc      1.3e     ok (1.911)
 sparc-sun-solaris2.5            gcc      1.3b     ok
   (egcs-1.1.2, GNU ld 2.9.1 & native ld)

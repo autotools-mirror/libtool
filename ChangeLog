@@ -1,5 +1,8 @@
 2001-04-24  Gary V. Vaughan  <gvv@techie.com>
 
+	* doc/PLATFORMS:  More updates from subscribers to
+	libtool@gnu.org.
+
 	From Tim Mooney <mooney@dogbert.cc.ndsu.NoDak.edu>
 	* tests/Makefile.am (TESTS_ENVIRONMENT): Make sure the *.test
 	scripts get the same make that was used in the top level
