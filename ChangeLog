@@ -1,3 +1,7 @@
+1998-11-04  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* THANKS: Added Eric Estievenart
+
 1998-11-04  Eric Estievenart  <eric@via.ecp.fr>
 
 	* doc/libtool.texi (Compile mode): Document that -o is fully
