@@ -1,3 +1,8 @@
+2001-03-03  Markus F.X.J. Oberhumer <markus@oberhumer.com>,
+	    Alexandre Oliva <oliva@lsd.ic.unicamp.br>
+
+	* libtool.m4: Added explicit return type to all C functions.
+
 2001-02-22  Gary Vaughan  <gvv@techie.com>
 
 	* NEWS: Updated.

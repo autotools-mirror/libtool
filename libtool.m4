@@ -1,5 +1,6 @@
 ## libtool.m4 - Configure libtool for the host system. -*-Shell-script-*-
-## Copyright 1996, 1997, 1998, 1999, 2000 Free Software Foundation, Inc.
+## Copyright 1996, 1997, 1998, 1999, 2000, 2001
+## Free Software Foundation, Inc.
 ## Originally by Gordon Matzigkeit <gord@gnu.ai.mit.edu>, 1996
 ##
 ## This program is free software; you can redistribute it and/or modify
@@ -231,7 +232,7 @@ void nm_test_func(){}
 #ifdef __cplusplus
 }
 #endif
-main(){nm_test_var='a';nm_test_func();return(0);}
+int main(){nm_test_var='a';nm_test_func();return(0);}
 EOF
 
   if AC_TRY_EVAL(ac_compile); then
@@ -557,8 +558,8 @@ else
 extern "C" void exit (int);
 #endif
 
-fnord() { int i=42;}
-main ()
+void fnord() { int i=42;}
+int main ()
 {
   void *self = dlopen (0, LT_DLGLOBAL|LT_DLLAZY_OR_NOW);
   int status = $lt_dlunknown;
