@@ -1,37 +1,49 @@
 #! /bin/sh
 
 # helps bootstrapping libtool, when checked out from CVS
-# requires GNU autoconf and GNU automake
-
-file=Makefile.in
+# requires at least GNU autoconf 2.50 and GNU automake1.4-p4
 
 : ${ACLOCAL=aclocal}
 : ${AUTOMAKE=automake}
 : ${AUTOCONF=autoconf}
 : ${AUTOHEADER=autoheader}
 
-rm -f acinclude.m4
-ln -s libtool.m4 acinclude.m4
 # fake the libtool scripts
 touch ltmain.sh
-touch ltconfig
 touch libtoolize
-$ACLOCAL
-$AUTOMAKE --gnu --add-missing --copy
-$AUTOCONF
 
-for sub in libltdl demo depdemo mdemo cdemo tagdemo pdemo; do
+for sub in . libltdl demo depdemo mdemo cdemo tagdemo pdemo; do
+  case $sub in
+  .) 
+    top_srcdir=.
+    acfiles="$top_srcdir/libtool.m4"
+    AUTOMAKE_FLAGS="--gnu --add-missing --copy"
+    ;;
+  libltdl)
+    top_srcdir=..
+    acfiles="$top_srcdir/libtool.m4 $top_srcdir/ltdl.m4"
+    AUTOMAKE_FLAGS="--gnits --add-missing"
+    ;;
+  *)
+    top_srcdir=..
+    acfiles="$top_srcdir/libtool.m4"
+    AUTOMAKE_FLAGS="--gnits --add-missing"
+    ;;
+  esac
+
   cd $sub
   rm -f acinclude.m4 Makefile
-  cat ../libtool.m4 > acinclude.m4
-  test "$sub" = libltdl && cat ../ltdl.m4 >> acinclude.m4
+  for file in $acfiles; do
+    cat $file >> ./acinclude.m4
+  done
+
   $ACLOCAL
-  test "$sub" = libltdl && $AUTOHEADER
-  $AUTOMAKE --gnits --add-missing
+  test $sub = libltdl && $AUTOHEADER
+  eval $AUTOMAKE $AUTOMAKE_FLAGS
   $AUTOCONF
-  cd ..
+  cd $top_srcdir
 done
 
-rm -f ltmain.sh ltconfig libtoolize Makefile
+rm -f ltmain.sh libtoolize
 
 exit 0
