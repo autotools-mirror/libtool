@@ -101,6 +101,10 @@ configure-subdirs distdir: $(DIST_MAKEFILE_LIST)
 install-data-hook:
 	cd libltdl && $(MAKE) distdir distdir=$(DESTDIR)$(pkgdatadir)/libltdl
 
+# Uninstall libltdl
+uninstall-local:
+       -rm -rf $(DESTDIR)$(pkgdatadir)/libltdl
+
 ################################################################
 ##
 ## Everything past here is useful to the maintainer, but probably not

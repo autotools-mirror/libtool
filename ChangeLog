@@ -1,3 +1,7 @@
+1999-04-25  Pavel Roskin  <pavel_roskin@geocities.com>
+
+	* Makefile.am (uninstall-local): Remove installed libltdl tree.
+
 1999-04-25  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* demo/Makefile.am (hc-direct, hc-libflag, hc-libpath, hc-minusl):
