@@ -1827,6 +1827,31 @@ Program to use rather than checking for @code{as}.  Only used on
 Cygwin/MS-Windows at the moment.
 @end defvar
 
+With 1.3 era libtool, if you wanted to know any details of what
+libtool had discovered about your architecture and environment, you
+had to run the script with @samp{--config} and grep through the
+results.  This ideom was supported up to and including 1.5.x era
+libtool, where it was possible to call the generated libtool script
+from @file{configure.in} as soon as @code{AC_PROG_LIBTOOL} had
+completed.  However, one of the features of libtool 1.4 was that the
+libtool configuration was migrated out of a separate @file{ltconfig}
+file, and added to the @code{AC_PROG_LIBTOOL} macro, so the results of
+the configuration tests were available directly to code in
+@file{configure.in}, rendering the call out to the generated libtool
+script obsolete.
+
+Starting with libtool 1.6, the multipass generation of the libtool
+script has been consolidated into a single @file{config.status} pass,
+which happens after all the code in @file{configure.in} has
+completed.  The implication of this is that the libtool script does
+not exist during execution of code from @file{configure.in}, and so
+obviously it cannot be called for @samp{--config} details anymore.  If
+you are upgrading projects that used this ideom to libtool 1.6 or
+newer, you should replace those calls with direct references to the
+equivalent Autoconf shell variables that are set by the configure time
+tests before being passed to @file{config.status} for inclusion in the
+generated libtool script.
+
 @pindex aclocal
 When you invoke the @code{libtoolize} program (@pxref{Invoking
 libtoolize}), it will tell you where to find a definition of

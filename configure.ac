@@ -130,6 +130,9 @@ AM_CONDITIONAL(HAVE_RC, [test "x$RC" != xno])
 ## ----------------------- ##
 ## Libtool initialisation. ##
 ## ----------------------- ##
+AC_CONFIG_FILES([config/ltmain.sh:./ltmain.in])
+AC_CONFIG_COMMANDS([libltdl/ltmain.sh],
+    [cp -f config/ltmain.sh libltdl/ltmain.sh])
 AC_LIBTOOL_DLOPEN
 AC_LIBTOOL_WIN32_DLL
 AC_PROG_LIBTOOL

@@ -1,5 +1,36 @@
 2003-10-21  Gary V. Vaughan  <gary@gnu.org>
 
+	Start to eliminate the double run of configure in a fresh CVS
+	checkout by generating ltmain.sh, using that to create libtool,
+	and then adding the tags to that, all from config.status.
+
+	* configure.ac (AC_CONFIG_FILES): Make config/ltmain.sh, and copy
+	it to libltdl.
+	* Makefile.am ($(srcdir)/config/ltmain.sh): This file is now
+	created by config.status.  Adjust this rule.
+	(libtoolize): Set CONFIG_COMMANDS to empty to prevent regenerating
+	the libtool script as a side effect of running this rule.
+	* libtool.m4: Bump serial number.  Fix comment typos.
+	(_LT_CONFIG_LIBTOOL_INIT, _LT_CONFIG_LIBTOOL,
+	_LT_CONFIG_SAVE_COMMANDS, _LT_CONFIG_COMMANDS: New macros.  They
+	don't work for some reason - the variable value quoting in the
+	init section is all wrong.  Not used at the moment.
+	(AC_LIBTOOL_CONFIG): Generate libtool from config.status.
+	(_LT_AC_TAG_CONFIG): Add the tags in config.status.
+	(compiler_DEFAULT): Save the compiler value for the DEFAULT tag,
+	or it gets overwritten by the other macros.
+	(EOF): Globally replace with _LT_EOF to avoid namespace pollution.
+	* tests/demo/configure.ac (STATIC): Check $enable_static instead
+	of running ./libtool which doesn't exist yet.
+	(BINARY_HELLDL): Check $lt_cv_sys_global_symbol_pipe with case
+	instead of grepping ./libtool which doesn't exist yet.
+	* tests/pdemo/configure.ac (STATIC, BINARY_HELLDL): Ditto.
+	* doc/libtool.texi (AC_PROG_LIBTOOL): Add some notes about trying
+	to get config details from `libtool --config'.
+	* NEWS: Updated.
+
+2003-10-21  Gary V. Vaughan  <gary@gnu.org>
+
 	* ChangeLog, ChangeLog.0, ChangeLog.1: Refactored...
 	* ChangeLog, ChangeLog.2002, ChangeLog.2001, ChangeLog.2000,
 	ChangeLog.1999, ChangeLog.1998, ChangeLog.1997, ChangeLog.1996:

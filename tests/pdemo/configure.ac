@@ -47,15 +47,14 @@ AC_LIBTOOL_DLOPEN
 AM_PROG_LIBTOOL
 AC_SUBST([LIBTOOL_DEPS])
 
-if ${CONFIG_SHELL} ./libtool --features | grep "enable static" >/dev/null; then
-  STATIC=-static
-else
-  STATIC=
-fi
+STATIC=
+test "X$enable_static" = Xyes && STATIC=-static
 AC_SUBST([STATIC])
 
-AM_CONDITIONAL([BINARY_HELLDL],
-    [grep '^global_symbol_pipe=..*$' ./libtool >/dev/null])
+case $lt_cv_sys_global_symbol_pipe in
+  ?*) binary_helldl=yes ;;
+esac
+AM_CONDITIONAL([BINARY_HELLDL], [test "X$binary_helldl" = Xyes])
 
 
 ## ---------------------------- ##

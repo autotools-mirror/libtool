@@ -1,6 +1,9 @@
 NEWS - list of user-visible changes between releases of GNU Libtool
 
 New in 1.5b: 2003-??-??; CVS version 1.5a, Libtool team:
+* libtool script is now created by config.status.  Instead of interrogating
+  `./libtool' from configure.ac after calling AC_PROG_LIBTOOL, use the
+  variable names directly.
 * --tag, --silent and --debug options are preserved and reused when libtool
   calls itself for relinking etc.
 * -no-suppress in compile mode shows compiler output for both PIC and non-PIC
@@ -12,7 +15,7 @@ New in 1.5b: 2003-??-??; CVS version 1.5a, Libtool team:
 * If you configure libtool with --disable-shared (or if libtool does not
   support shared libraries on your platform) trying to build a library using
   `-shared' is a fatal error.
-* libtoolize installs libtool.m4 (and ltdl.m4 if used) to AC_CONFIG_M4_DIR.
+* libtoolize installs libtool.m4 (and ltdl.m4 if used) to AC_CONFIG_MACRO_DIR.
 * Mode inferrence removed, shorthand for choosing modes added.
 * Specifying -allow-undefined is now an error.
 * Initial support for amigaos-ppc.

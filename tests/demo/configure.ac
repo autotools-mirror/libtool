@@ -49,15 +49,14 @@ AC_LIBTOOL_WIN32_DLL
 AM_PROG_LIBTOOL
 AC_SUBST([LIBTOOL_DEPS])
 
-if ./libtool --features | grep '^enable static libraries$' > /dev/null 2>&1; then
-  STATIC=-static
-else
-  STATIC=
-fi
+STATIC=
+test "X$enable_static" = Xyes && STATIC=-static
 AC_SUBST([STATIC])
 
-AM_CONDITIONAL([BINARY_HELLDL],
-    [grep '^global_symbol_pipe=..*$' ./libtool >/dev/null])
+case $lt_cv_sys_global_symbol_pipe in
+  ?*) binary_helldl=yes ;;
+esac
+AM_CONDITIONAL([BINARY_HELLDL], [test "X$binary_helldl" = Xyes])
 
 
 ## ---------------------------- ##
