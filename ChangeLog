@@ -1,3 +1,13 @@
+2004-03-14  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* m4/libtool.m4: Remove newlines from lt_ld_extra, so
+	variable can safely be stored in config.cache.
+
+2004-03-14  Scott James Remnant  <scott@netsplit.com>
+
+	* m4/libtool.m4: Rename ld_extra to lt_lt_extra to be consistent
+	with HEAD.
+
 2004-03-14  Peter O'Gorman  <peter@pogma.com>
 
 	* ltmain.in: Use $EGREP, $GREP is not set.
