@@ -1,5 +1,10 @@
 2000-05-29  Gary V. Vaughan  <gvv@techie.com>
 
+	* ltconfig.in (echo): The following code actually prints the
+	double quotes -- so I removed them:
+	    echo='printf "%s\n"' $echo '\t'
+	From Tuukka Toivonen <tutoivon@mail.student.oulu.fi>
+
 	* NEWS: updated.
 
 2000-05-29  Bernhard Rosenkraenzer <bero@redhat.de>
