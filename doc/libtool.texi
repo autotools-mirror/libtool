@@ -3506,9 +3506,10 @@ Kuratomi @email{badger@@prtr-13.ucsc.edu}.  Here's a shortened version
 of the message that contained his patch:
 
 The basic architecture is this: in @file{ltconfig.in}, the person who
-writes libtool makes sure @samp{$deplibs} is included in @samp{$archive_cmds}
-somewhere and also sets the @samp{$deplibs_check_method}, and maybe
-@samp{$file_magic_cmd} when @samp{deplibs_check_method} is file_magic.
+writes libtool makes sure @samp{$deplibs} is included in
+@samp{$archive_cmds} somewhere and also sets the variable
+@samp{$deplibs_check_method}, and maybe @samp{$file_magic_cmd} when
+@samp{deplibs_check_method} is file_magic.
 
 @samp{deplibs_check_method} can be one of five things:
 @table @samp
