@@ -1,3 +1,14 @@
+2004-09-22  Andreas Schwab  <schwab@suse.de>
+
+	The dlpreopen pass over libraries reverses the elements in the
+	$deplibs list.  This causes problems when the link pass tries to
+	find libraries when they are located in non-standard places
+	denoted by -L options.  Due to the reversed order these -L options
+	occur after the libraries that need them, and they are not found:
+
+	* config/ltmain.in: (Un)Reverse $deplibs list at the start of the
+	link pass in lib mode.
+
 2004-09-22  Charles Wilson  <cwilson@spam.protected>
 
 	* ltmain.in (func_generate_dlsyms) [cygwin, mingw]: when creating
