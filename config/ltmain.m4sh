@@ -5656,6 +5656,7 @@ EOF
 #include <stdarg.h>
 #include <assert.h>
 #include <string.h>
+#include <ctype.h>
 #include <sys/stat.h>
 
 #if defined(PATH_MAX)
