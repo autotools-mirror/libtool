@@ -1,12 +1,11 @@
 ;; -*- Lisp -*-
 (Created-By-Prcs-Version 1 2 1)
 (Project-Description "GNU Libtool library support script")
-(Project-Version libtool 1.2a 3)
-(Parent-Version libtool 1.2a 2)
-(Version-Log "Start using ksh print -r to try to avoid a buggy printf.
-More cleanliness fixes for ltconfig, ltmain.sh, and libtool.m4.")
+(Project-Version libtool 1.2a 4)
+(Parent-Version libtool 1.2a 3)
+(Version-Log "")
 (New-Version-Log "")
-(Checkin-Time "Sun, 19 Apr 1998 13:21:49 -0600")
+(Checkin-Time "Sun, 19 Apr 1998 13:22:44 -0600")
 (Checkin-Login gord)
 (Populate-Ignore ("~$" "Makefile$" "Makefile\\.in$" "aclocal\\.m4$"
 		  "configure$" "config\\.status$" "config\\.cache$"
@@ -33,7 +32,7 @@ More cleanliness fixes for ltconfig, ltmain.sh, and libtool.m4.")
   (libtool.spec (libtool/46_libtool.sp 1.7 664))
 
 ;; Top directory.
-  (Makefile.am (libtool/18_Makefile.a 1.40 664))
+  (Makefile.am (libtool/18_Makefile.a 1.41 664))
   (configure.in (libtool/13_configure. 1.4.1.29 664))
   (ltmain.in (libtool/2_ltmain.sh. 1.4.1.62 664))
   (ltconfig.in (libtool/3_ltconfig.i 1.4.1.63 775))
