@@ -1,3 +1,8 @@
+2005-01-09  Gary V. Vaughan  <gary@gnu.org>
+
+	* ChangeLog.2004: Trim 2005 entries.
+	* ChangeLog: Add missing entries.
+
 2005-01-08  Gary V. Vaughan  <gary@gnu.org>
 
 	* ChangeLog: Move 2004 change logs from here...
@@ -14,6 +19,13 @@
 	* ChangeLog: Reformatting.
 	* HACKING: Fix section numbering.
 	(Editing 'ChangeLog'): New notes on ChangeLog entry format.
+
+2005-01-03  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* tests/am-subdir.at tests/testsuite.at (AT_BOOTSTRAP,
+	AT_LIBTOOLIZE, AT_CHECK_LIBTOOLIZE): Rename to ...
+	(LT_AT_BOOTSTRAP, LT_AT_LIBTOOLIZE, LT_AT_CHECK_LIBTOOLIZE):
+	...and make use of new names.
 
 Continued in ChangeLog.2004
 
