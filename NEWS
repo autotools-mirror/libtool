@@ -8,11 +8,6 @@ New in 1.5b: 2004-??-??; CVS version 1.5a, Libtool team:
   variable names directly.
 * libltdl is no longer a self-contained package, and shares configury with
   the top level directory now.
-* --tag, --silent and --debug options are preserved and reused when libtool
-  calls itself for relinking etc.
-* -no-suppress in compile mode shows compiler output for both PIC and non-PIC
-  object compilation.
-* `-pthread' and similar options are honoured when linking shared libraries.
 * Shared objects (.lo) are no longer created when `-static' is passed in
   compile mode.
 * New compile mode option `-shared' prevents creation of static objects (.o).
@@ -21,7 +16,6 @@ New in 1.5b: 2004-??-??; CVS version 1.5a, Libtool team:
   support shared libraries on your platform) trying to build a library using
   `-shared' is a fatal error.
 * New AC_LIBTOOL_TAGS macro to limit configure checks to only the listed tags.
-* Directories specified in /etc/ld.so.conf are no longer hardcoded on Linux.
 * libtoolize installs libtool.m4 (and ltdl.m4 if used) to AC_CONFIG_MACRO_DIR.
 * Mode inferrence removed, shorthand for choosing modes added.
 * Specifying -allow-undefined is now an error.
@@ -31,12 +25,22 @@ New in 1.5b: 2004-??-??; CVS version 1.5a, Libtool team:
 * make install now deletes preexisting $prefix/share/libtool before installing
   latest files.
 * Extracting symbols from an import library on cygwin and win32 now works.
-* Recognises the 'R' symbol type on Solaris so read-only symbols can be
-  exported.
+* Initial support for amigaos-ppc.
+* Bug fixes.
+
+New in 1.5.2: 2004-01-25; CVS version 1.5.0a, Libtool team:
+* lt_dlrealloc is an official part of the libltdl API.
+* --tag, --silent and --debug options are preserved and reused when libtool
+  calls itself for relinking etc.
+* `-pthread' and similar options are honoured when linking shared libraries.
+* -no-suppress in compile mode shows compiler output for both PIC and non-PIC
+  object compilation.
 * New link mode option `-precious-files-regex' to prevent accidental removal
   of files you want to keep, such as test coverage data, from the temporary
   output directory.
-* Initial support for amigaos-ppc.
+* Directories specified in /etc/ld.so.conf are no longer hardcoded on Linux.
+* Recognises the 'R' symbol type on Solaris so read-only symbols can be
+  exported.
 * Bug fixes.
 
 New in 1.5.1: 2003-??-??; CVS version 1.5.0a, Libtool team:

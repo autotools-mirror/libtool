@@ -1,3 +1,7 @@
+2004-01-25  Scott James Remnant  <scott@netsplit.com>
+
+	* NEWS: Include 1.5.2 release information.
+
 2004-01-22  Gary V. Vaughan  <gary@gnu.org>
 
 	This fixes a bug in the libtoolize ltdl source installation rules,
