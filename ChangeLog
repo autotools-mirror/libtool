@@ -1,3 +1,10 @@
+2001-11-15   Mo DeJong  <supermo@bayarea.net>
+
+	* ltmain.in: Place parens around a generated relink_command
+	so it is run is a subshell. This avoids an install error
+	where libtool ended up in the wrong directory after
+	relinking a .la file.
+
 2001-10-31  Raja R Harinath  <harinath@cs.umn.edu>
 
 	* configure.ac (pkgdatadir): Move the invocation of AC_INIT_AUTOMAKE
