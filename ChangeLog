@@ -1,4 +1,11 @@
-2004-09-23  Gary V. Vaughan  <gary@gnu.org>
+2004-09-23  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
+	* m4/libtool.m4 (_LT_CMD_GLOBAL_SYMBOLS): move symcode calculation
+	to correct place.
+	* doc/libtool.texi (libtool script contents): update description
+	of global_symbol_to_cdecl.
+
+04-09-23  Gary V. Vaughan  <gary@gnu.org>
 
 	* configure.ac (M4SH): AC_SUBST m4sh expander.
 	* config/general.m4sh, config/getopt.m4sh: New files with factored

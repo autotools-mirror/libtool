@@ -2720,6 +2720,12 @@ sysv4)
   ;;
 esac
 
+# If we're using GNU nm, then use its standard symbol codes.
+case `$NM -V 2>&1` in
+*GNU* | *'with BFD'*)
+  symcode='[[ABCDGIRSTW]]' ;;
+esac
+
 # Transform an extracted symbol line into a proper C declaration.
 # Some systems (esp. on ia64) link data and code symols differently,
 # so use this general approach.
@@ -2734,12 +2740,6 @@ case $build_os in
 mingw*)
   opt_cr=`echo 'x\{0,1\}' | tr x '\015'` # option cr in regexp
   ;;
-esac
-
-# If we're using GNU nm, then use its standard symbol codes.
-case `$NM -V 2>&1` in
-*GNU* | *'with BFD'*)
-  symcode='[[ABCDGIRSTW]]' ;;
 esac
 
 # Try without a prefix undercore, then with it.
