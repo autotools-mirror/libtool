@@ -93,12 +93,26 @@ and is not part of a release distribution.
   of the loop itself should print each "important" command it runs.
 
 
-5. Editing libtoolize.in and ltmain.in
-======================================
+5. Editing `.m4sh' Files
+========================
 
 * Use shell functions, but be careful not to assume local scope for
   variable names.  Don't use `return', instead echo the result of a
   function and call it from within backquotes.
+
+* Function names should be prefixed `func_'.
+
+* For functions that are called frequently, if you need to return a
+  value, don't cause unneccessary forking of the shell using echo as
+  described above; instead set the return value in a variable named
+  after the called function with a suffix of `_result'.  For example
+  the function `func_quote_for_eval' stores its return value in the
+  variable `$func_quote_for_eval_result'.
+
+* Although sh-indentation is set to 2 (by the `Local Variables:' block
+  at the end of .m4sh files), the left margin of the body of shell
+  functions should begin indented by 4 spaces.
+
 
 6. Abstraction layers in libltdl
 ================================

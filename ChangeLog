@@ -1,5 +1,8 @@
 2004-10-22  Gary V. Vaughan  <gary@gnu.org>
 
+	* HACKING: Updated: `.in' files are now `.m4sh'; document some
+	more coding standards for these files.
+
 	* config/general.m4sh (sed_double_backslash): Undo an
 	over-optimisation.
 
