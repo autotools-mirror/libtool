@@ -270,16 +270,16 @@ EOF
       # Make sure that we snagged all the symbols we need.
       if egrep ' nm_test_var$' "$ac_nlist" >/dev/null; then
 	if egrep ' nm_test_func$' "$ac_nlist" >/dev/null; then
-	  cat <<EOF > conftest.c
+	  cat <<EOF > conftest.$ac_ext
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 EOF
 	  # Now generate the symbol file.
-	  eval "$ac_global_symbol_to_cdecl"' < "$ac_nlist" >> conftest.c'
+	  eval "$ac_global_symbol_to_cdecl"' < "$ac_nlist" >> conftest.$ac_ext'
 
-	  cat <<EOF >> conftest.c
+	  cat <<EOF >> conftest.$ac_ext
 #if defined (__STDC__) && __STDC__
 # define lt_ptr_t void *
 #else
@@ -297,8 +297,8 @@ lt_preloaded_symbols[] =
 changequote([,])dnl
 {
 EOF
-	sed 's/^. \(.*\) \(.*\)$/  {"\2", (lt_ptr_t) \&\2},/' < "$ac_nlist" >> conftest.c
-	cat <<\EOF >> conftest.c
+	sed 's/^. \(.*\) \(.*\)$/  {"\2", (lt_ptr_t) \&\2},/' <	"$ac_nlist" >> conftest.$ac_ext
+	cat <<\EOF >> conftest.$ac_ext
   {0, (lt_ptr_t) 0}
 };
 
@@ -316,7 +316,7 @@ EOF
 	    ac_pipe_works=yes
 	  else
 	    echo "configure: failed program was:" >&AC_FD_CC
-	    cat conftest.c >&AC_FD_CC
+	    cat conftest.$ac_ext >&AC_FD_CC
 	  fi
 	  LIBS="$ac_save_LIBS"
 	  CFLAGS="$ac_save_CFLAGS"
@@ -331,7 +331,7 @@ EOF
     fi
   else
     echo "$progname: failed program was:" >&AC_FD_CC
-    cat conftest.c >&AC_FD_CC
+    cat conftest.$ac_ext >&AC_FD_CC
   fi
   rm -rf conftest* conftst*
 
@@ -385,7 +385,7 @@ if AC_TRY_EVAL(ac_compile); then
   fi
 else
   echo "configure: failed program was:" >&AC_FD_CC
-  cat conftest.c >&AC_FD_CC
+  cat conftest.$ac_ext >&AC_FD_CC
 fi
 rm -rf conftest*
 ])

@@ -665,7 +665,7 @@ if test "$enable_shared" = yes && test "$with_gcc" = yes; then
 	cat conftest.err 1>&5
 	soname=conftest
 	lib=conftest
-	libobjs=conftest.o
+	libobjs=conftest.$ac_objext
 	deplibs=
 	wl=$ac_cv_prog_cc_wl
 	compiler_flags=-v
