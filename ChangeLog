@@ -1,5 +1,8 @@
 2004-10-22  Gary V. Vaughan  <gary@gnu.org>
 
+	* clcommit.m4sh, config/mailnotify.m4sh: Updated from
+	cvs-utils--tla--1.0 to fix quoting of metachars in patch names.
+
 	* HACKING: Updated: `.in' files are now `.m4sh'; document some
 	more coding standards for these files.
 

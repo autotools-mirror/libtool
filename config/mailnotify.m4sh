@@ -2,7 +2,7 @@ m4_define([_m4_divert(SCRIPT)], 100)
 m4_divert_push([SCRIPT])#!/bin/sh
 # @configure_input@
 
-# mailnotify (GNU @PACKAGE@) version 0.4
+# mailnotify (GNU @PACKAGE@) version 0.5
 # Written by Gary V. Vaughan <gary@gnu.org>
 
 # Copyright (C) 2004 Free Software Foundation, Inc.
@@ -93,12 +93,14 @@ sed_mail_address='s,^.*<\(.*\)>.*$,\1,'
 			;;
 
       -C|--carbon-copy) test $# -eq 0 && func_missing_arg "$opt" && break
-			cc="$1"
+	    		func_quote_for_eval "$1"
+			cc="$func_quote_for_eval_result"
 			shift
 			;;
 
       -F|--from)	test $# -eq 0 && func_missing_arg "$opt" && break
-			from="$1"
+	    		func_quote_for_eval "$1"
+			from="$func_quote_for_eval_result"
 			shift
 			;;
 
@@ -133,12 +135,14 @@ sed_mail_address='s,^.*<\(.*\)>.*$,\1,'
 			;;
 
       -o|--output-file)	test $# -eq 0 && func_missing_arg "$opt" && break
-			outputfile="$1"
+	    		func_quote_for_eval "$1"
+			outputfile="$func_quote_for_eval_result"
 			shift
 			;;
 
       -s|--subject)	test $# -eq 0 && func_missing_arg "$opt" && break
-			subject="$1"
+	    		func_quote_for_eval "$1"
+			subject="$func_quote_for_eval_result"
 			shift
 			;;
 
@@ -206,10 +210,10 @@ func_headers ()
     {
 	echo "User-Agent: $PROGRAM/`$SED \"$my_sed_version_no\" < $progpath`"
 	echo "MIME-Version: 1.0"
-	test -n "$from" && echo "From: $from"
-	echo "To: $my_destination"
-	test -n "$cc" && echo "CC: $cc"
-	test -n "$subject" && echo "Subject: $subject"
+	test -n "$from" && eval echo From: $from
+	eval echo To: $my_destination
+	test -n "$cc" && eval echo CC: $cc
+	test -n "$subject" && eval echo Subject: $subject
     } > "$my_outfile"
 }
 
@@ -283,19 +287,24 @@ func_sendmail ()
     my_destination="$2"
     my_from="$3"
 
-    from_name=`echo "$my_from" | sed 's, *<.*> *$,,;s,",,g'`
-    from_addr=`echo "$my_from" | sed "$sed_mail_address"`
+    from_name=`eval echo "X$my_from" | $Xsed -e 's, *<.*> *$,,'`
+    from_addr=`eval echo "X$my_from" | $Xsed -e "$sed_mail_address"`
+
+    save_PATH="$PATH"
+    PATH="/usr/lib:/usr/sbin:$PATH"
 
     save_IFS="$IFS"
     IFS=':'
     for try_sendmail_dir in /usr/lib:/usr/sbin:$PATH; do
         IFS="$save_IFS"
+	PATH="$save_PATH"
 	if test -x "$try_sendmail_dir/$SENDMAIL"; then
 	    SENDMAIL="$try_sendmail_dir/$SENDMAIL"
 	    break
 	fi
     done
     IFS="$save_IFS"
+    PATH="$save_PATH"
     test -x "$SENDMAIL" || func_fatal_error "sendmail executable not found"
 
     func_verbose "Delivering mail, please wait..."
@@ -324,14 +333,18 @@ func_sendmail ()
   fname="${TMPDIR}/$PROGRAM$RANDOM-$RANDOM.$$"
   trap 'rm -f "$fname"; exit 1' 1 2 15
 
+  # Generate a comma separated list of destination addresses for the
+  # mail headers:
   destination=""
   for to in : ${1+"$@"}
   do
       test "X$to" = X: && continue
 
+      func_quote_for_eval "$to"
+
       case $destination in
-	  "") destination="$to" ;;
-          *)  destination="$destination, $to" ;;
+	  "") destination="$func_quote_for_eval_result" ;;
+          *)  destination="$destination, $func_quote_for_eval_result" ;;
       esac
   done
 
@@ -342,14 +355,17 @@ func_sendmail ()
       func_single_content "$fname"
   fi
 
+  # Generate a space delimited list of destination addresses for sendmail:
   if test -z "$outputfile"; then
       destination=""
       for to in : ${1+"$@"}
       do
           test "X$to" = X: && continue
 
-          to_addr=`echo "$to" | sed "$sed_mail_address"`
-	  test -n "$to_addr" || to_addr="$to"
+	  func_quote_for_eval "$to"
+
+          to_addr=`echo "$func_quote_for_eval_result" | sed "$sed_mail_address"`
+	  test -n "$to_addr" || to_addr="$func_quote_for_eval_result"
 	  destination="$destination $to_addr"
       done
       func_sendmail "$fname" "$destination" "$from"
