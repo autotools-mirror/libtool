@@ -60,7 +60,7 @@ CLEANFILES = $(hardcode_tests)
 
 # Unfortunately, in order to test libtool thoroughly, we need access
 # to its private directory.
-objdir = `sed -n -e 's/^objdir=\(.*\)$$/\1/p' ../libtool`
+objdir = `$(LIBTOOL) --config | sed -n -e 's/^objdir=\(.*\)$$/\1/p'`
 
 # The following rules are only for the libtool demo and tests.
 # Regenerate our acinclude.m4 only if it doesn't exist.
@@ -72,6 +72,7 @@ $(srcdir)/acinclude.m4:
 # Test programs to see what gets hardcoded.
 .PHONY: hardcode
 hardcode: $(hardcode_tests)
+SET_HARDCODE_FLAGS = eval `$(LIBTOOL) --config | egrep -e '^(hardcode_.*|wl)='`
 hc-direct: $(hell_OBJECTS) $(hell_DEPENDENCIES) $(libdir)/libhello.la
 	@rm -f hc-direct
 	@echo "You may ignore any linking errors from the following command:"
@@ -80,14 +81,14 @@ hc-direct: $(hell_OBJECTS) $(hell_DEPENDENCIES) $(libdir)/libhello.la
 	  for lib in $$library_names; do \
 	    shlib="./$(objdir)/$$lib"; \
 	  done; \
-	  eval `egrep -e '^(hardcode_.*|wl)=' libtool`; \
+	  $(SET_HARDCODE_FLAGS); \
 	  libdir=$(libdir); \
 	  flag=`eval echo \"$$hardcode_libdir_flag_spec\"`; \
 	  echo "$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $(hell_OBJECTS) $$shlib $(LIBS) $(LIBM) $$flag || echo unsupported > $@"; \
 	  eval "$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $(hell_OBJECTS) $$shlib $(LIBS) $(LIBM) $$flag || echo unsupported > $@"
 
 hc-libflag: $(hell_OBJECTS) $(hell_DEPENDENCIES) $(libdir)/libhello.la
-	@eval `egrep -e '^(hardcode_.*|wl)=' libtool`; \
+	@$(SET_HARDCODE_FLAGS); \
 	  libdir=`pwd`/$(objdir); \
 	  flag=`eval echo \"$$hardcode_libdir_flag_spec\"`; \
 	  if test -z "$$flag"; then \
@@ -102,7 +103,8 @@ hc-libflag: $(hell_OBJECTS) $(hell_DEPENDENCIES) $(libdir)/libhello.la
 hc-libpath: $(hell_OBJECTS) $(hell_DEPENDENCIES) $(libdir)/libhello.la
 	@rm -f hc-libpath
 	@echo "You may ignore any linking errors from the following command:"
-	@eval `egrep -e '^(shlibpath_var|hardcode_.*|wl)=' libtool`; \
+	@$(SET_HARDCODE_FLAGS); \
+	  eval `$(LIBTOOL) --config | grep '^shlibpath_var='`; \
 	  libdir=$(libdir); \
 	  flag=`eval echo \"$$hardcode_libdir_flag_spec\"`; \
 	  echo "$$shlibpath_var=./$(objdir) $(CC) $(CFLAGS) $(LDFLAGS) -o $@ $(hell_OBJECTS) -lhello $(LIBS) $(LIBM) $$flag || echo unsupported > $@"; \
@@ -110,7 +112,7 @@ hc-libpath: $(hell_OBJECTS) $(hell_DEPENDENCIES) $(libdir)/libhello.la
 
 hc-minusL: $(hell_OBJECTS) $(hell_DEPENDENCIES)
 	@rm -f hc-minusL
-	@eval `egrep -e '^(hardcode_.*|wl)=' libtool`; \
+	@$(SET_HARDCODE_FLAGS); \
 	  libdir=$(libdir); \
 	  flag=`eval echo \"$$hardcode_libdir_flag_spec\"`; \
 	  echo "$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $(hell_OBJECTS) -L./$(objdir) -lhello $(LIBS) $(LIBM) $$flag || echo unsupported > $@"; \

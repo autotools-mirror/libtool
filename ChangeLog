@@ -1,3 +1,22 @@
+2001-06-06  Gary V. Vaughan  <gary@gnu.org>
+
+	* demo/Makefile.am (objdir): Use `libtool --config' for
+	extracting configuration values, since a given value may
+	be present in each tag.
+	(hc-libpath): Ditto.
+	(hc-minusL): Ditto.
+	* libtool.m4 (_LT_AC_TAGCONFIG): Add tagged configurations from
+	the --with-tags option.
+	(_LT_AC_LTCONFIG_HACK): Factored out into separate configuration
+	macros -- The interdependencies and running order are still
+	immutable, and need a lot of work to fix.
+	(AC_LIBTOOL_CONFIG): Taken from the previous incarnation of
+	_LT_AC_LTCONFIG_HACK -- this macro is used both to create the
+	primary (C language) libtool configuration from
+	_LT_AC_LTCONFIG_HACK and also to append tagged configurations from
+	_LT_AC_TAGCONFIG.
+	* NEWS:  Merged from multi-language-branch.
+
 2001-06-06  Robert Boehne  <rboehne@ricardo-us.com>
 
 	* bootstrap: Added tagdemo and pdemo tests from
