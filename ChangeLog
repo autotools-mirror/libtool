@@ -1,3 +1,8 @@
+1998-12-22  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* Makefile.am (SUBDIRS): prepend `.' to avoid am-recursive
+	dependency hack
+
 1998-12-21  Thomas Tanner  <tanner@gmx.de>
 
 	* ltconfig.in: indentation is now 8 character wide tabs 

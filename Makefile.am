@@ -1,7 +1,7 @@
 ## Process Makefile.am with automake to create Makefile.in. -*-Makefile-*-
 ## Gordon Matzigkeit <gord@gnu.ai.mit.edu>, 1996
 AUTOMAKE_OPTIONS = gnits
-SUBDIRS = doc tests libltdl
+SUBDIRS = . doc tests libltdl
 DIST_SUBDIRS = $(SUBDIRS) demo mdemo
 
 # We need to export these variables when we run ltconfig.
@@ -66,7 +66,7 @@ ACINCLUDE_M4_LIST = \
 	$(srcdir)/mdemo/acinclude.m4
 
 # All our rules should depend on these demo files.
-all-recursive check: $(ACINCLUDE_M4_LIST) $(LIBTOOL_DEPS)
+all check: $(ACINCLUDE_M4_LIST) $(LIBTOOL_DEPS)
 
 $(ACINCLUDE_M4_LIST): $(srcdir)/libtool.m4
 	rm -f $@
