@@ -4,6 +4,8 @@
 	* ltmain.in: Remove inferrence of mode, add shorthand for mode
 	choice.
 
+	* ltmain.in: Specifying -allow-undefined is now an error.
+	
 2003-09-29  Scott James Remnant  <scott@netsplit.com>
 
 	* m4/libtool.m4 (AC_DEPLIBS_CHECK_METHOD): Use pass_all for linux*

@@ -3,6 +3,7 @@ NEWS - list of user-visible changes between releases of GNU Libtool
 New in 1.5b: 2003-??-??; CVS version 1.5a, Libtool team:
 * Bug fixes.
 * Mode inferrence removed, shorthand for choosing modes added.
+* Specifying -allow-undefined is now an error.
 
 New in 1.5.1: 2003-??-??; CVS version 1.5.0a, Libtool team:
 * lt_dlrealloc is an official part of the libltdl API.

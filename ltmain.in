@@ -1164,8 +1164,8 @@ EOF
 
       -allow-undefined)
 	# FIXME: remove this flag sometime in the future.
-	$echo "$modename: \`-allow-undefined' is deprecated because it is the default" 1>&2
-	continue
+	$echo "$modename: \`-allow-undefined' must not be used because it is the default" 1>&2
+	exit 1
 	;;
 
       -avoid-version)
