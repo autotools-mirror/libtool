@@ -1,3 +1,10 @@
+1999-02-25  Thomas Tanner  <tanner@gmx.de>
+
+	* updated to HEAD
+	* libtool.m4: added the macros AC_ENABLE/DISABLE_FAST_INSTALL
+	  for optional fast installation
+	* ltconfig.in: added new flag --enable-fast-install
+
 1999-02-21  Thomas Tanner  <tanner@gmx.de>
 
 	* depdemo: moved each library into a subdirectory

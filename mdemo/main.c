@@ -79,6 +79,51 @@ test_dl (filename)
 }
 
 int
+myfunc ()
+{
+  return HELLO_RET;
+}
+
+int myvar;
+
+int
+test_dlself ()
+{
+  lt_dlhandle handle;	
+  int (*pmyfunc)() = 0;
+  int *pmyvar = 0;
+
+  handle = lt_dlopen(0);
+  if (!handle) {
+    fprintf (stderr, "can't dlopen the program!\n");
+    fprintf (stderr, "error was: %s\n", lt_dlerror());
+    return 1;
+  }
+  pmyfunc = (int(*)())lt_dlsym(handle, "myfunc");  
+  pmyvar  = (int*)lt_dlsym(handle, "myvar");  
+
+  if (pmyfunc)
+    {
+      int value = (*pmyfunc) ();
+      
+      printf ("myfunc returned: %i\n", value);
+      if (value == HELLO_RET)
+        printf("myfunc is ok!\n");
+    }
+  else
+    fprintf (stderr, "did not find the `myfunc' function\n");
+
+  /* Try assigning to the variable. */
+  if (pmyvar)
+    *pmyvar = 1;
+  else
+    fprintf (stderr, "did not find the `myvar' variable\n");
+
+  lt_dlclose(handle);
+  return 0;
+}
+
+int
 main (argc, argv)
   int argc;
   char **argv;
@@ -100,6 +145,9 @@ main (argc, argv)
   for (i = 1; i < argc; i++)
     if (test_dl(argv[i]))
        return 1;
+
+  if (test_dlself())
+    return 1;
 
   lt_dlexit();
   return 0;

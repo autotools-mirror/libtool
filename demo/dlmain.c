@@ -63,7 +63,6 @@ main (argc, argv)
 	  /* In an ideal world a shared lib would be able to export data */
 	  pnothing = (int*)&nothing;
 #endif
-
       } else 
         printf ("found file: %s\n", s->name);
       s ++;

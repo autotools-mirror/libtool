@@ -5,6 +5,7 @@ AM_INIT_AUTOMAKE(mdemo,0.1)
 AC_PROG_CC
 AC_C_CONST
 AC_EXEEXT
+AC_LIBTOOL_DLOPEN
 AM_PROG_LIBTOOL
 
 if ${CONFIG_SHELL} ./libtool --features | grep "enable static" >/dev/null; then
@@ -16,8 +17,7 @@ AC_SUBST(STATIC)
 
 AC_CHECK_HEADERS(math.h)
 
-AC_CHECK_LIB(m, cos, LIBADD_M="-lm", LIBADD_M=)
-AC_SUBST(LIBADD_M)
+AC_CHECK_LIBM
 
 dnl Output the makefile
 AC_OUTPUT(Makefile)

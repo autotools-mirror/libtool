@@ -19,8 +19,7 @@ grep '^global_symbol_pipe=..*$' ./libtool >/dev/null])
 
 AC_CHECK_HEADERS(string.h math.h)
 
-AC_CHECK_LIB(m, cos, LIBADD_M="-lm", LIBADD_M=)
-AC_SUBST(LIBADD_M)
+AC_CHECK_LIBM
 
 dnl Output the makefile
 AC_OUTPUT(Makefile)

@@ -9,10 +9,10 @@ EXTRA_DIST = acinclude.m4
 lib_LTLIBRARIES = foo1.la libfoo2.la
 
 foo1_la_SOURCES = foo1.c
-foo1_la_LDFLAGS = $(LIBADD_M) -module -avoid-version
+foo1_la_LDFLAGS = -module -avoid-version
 
 libfoo2_la_SOURCES = foo2.c
-libfoo2_la_LDFLAGS = $(LIBADD_M) -module
+libfoo2_la_LDFLAGS = -module
 
 noinst_HEADERS = foo.h
 
@@ -30,7 +30,8 @@ mdemo_SOURCES = main.c
 mdemo_LDFLAGS = -export-dynamic ## FIXME: remove this when libtool and libltdl
 ## handle dependencies of modules
 ## The quotes around -dlopen below fool automake into accepting it
-mdemo_LDADD = ../libltdl/libltdl.la "-dlopen" foo1.la "-dlopen" libfoo2.la
+mdemo_LDADD = ../libltdl/libltdl.la "-dlopen" self \
+		"-dlopen" foo1.la "-dlopen" libfoo2.la
 mdemo_DEPENDENCIES = ../libltdl/libltdl.la foo1.la libfoo2.la
 
 # Create a statically linked version of mdemo.

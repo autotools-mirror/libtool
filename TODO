@@ -1,62 +1,64 @@
-For next public release:
-************************
+For next alpha release:
+***********************
 
-* Create a new library version_type, `irix'.  Janos Farkas writes:
+* Fast installation (linking on demand in the build tree)
+must be optional.
 
-I just realized I also have mortal access to an SGI system, and found
-this in the dso.5 page, this looks more informative :)
+* check whether the version of libtool.m4 is compatible
+with ltconfig/ltmain.sh
 
-   Versioning of Shared Objects.
+* libltdl is broken when configured with --enable-ltdl-install
 
-   QUICK OVERVIEW
+* check whether the "file" command is available
 
-   For a shared object to be versioned the following needs to be done:
-
-   * Version strings consist of 3 parts and a dot: The string "sgi",
-     a decimal number (the major number), a dot, and a decimal number
-     (the minor number).
-
-   * Add the command -set_version sgi1.0 to the command to build
-     the shared object (cc -shared, ld -shared, etc.).
-
-   * Whenever you make a COMPATIBLE change update the minor version
-     number (the one after the dot), and add the latest version string
-     to colon-separated list of version strings, e.g., -set_version
-     sgi1.0:sgi1.1:sgi1.3
-
-   * Whenever you make an INCOMPATIBLE change, update the
-     major version number.  Pass this as the version list, e.g.,
-     -set_version sgi2.0.  Change the filename of the OLD shared object
-     by adding a dot followed by the previous major number to the filename
-     of the shared object.  DO NOT CHANGE the soname of the object.
-     No change to the file contents are necessary or desirable.  Simply
-     rename the file.
-
-* Inter-library dependencies should be fully tracked by libtool.
-Reminded by Alexandre Oliva.  This requires looking up installed
-libtool libraries for transparent support.
-
-* Inter-library dependencies need to work for ltlibraries too.
-Thomas Tanner has a patch for this.
-
-* Alexandre Oliva suggests that we hardcode paths into libraries, as
-well as binaries:  `... -Wl,-soname -Wl,/tmp/libtest.so.0 ...'.  Tim
-Mooney wants the same thing.
+* update the NEWS file
 
 * Tom Lane adds that HP-UX's linker, at least (I've also found this on
 AIX 4), distinguishes between global function and global variable
 references.  This means that we cannot declare every symbol as `extern
 char'.  Find a workaround.
 
-* Jeff Garzik <jgarzik@pobox.com> noticed that libtool wrapper scripts do
-not always work on Linux.  When running tests in a newly built package, the
-script is prone to picking up a similarly sonamed library in /usr/lib in
-preference to the newly built library in the distribution.  The scripts *do*
-work under Solaris however.
+For next public release:
+************************
+
+* Inter-library dependencies should be fully tracked by libtool
+and need to work for ltlibraries too. This requires looking up 
+installed libtool libraries for transparent support.
+Thomas Tanner has a patch for this. 
+
+* Alexandre Oliva suggests that we should have an option to hardcode
+paths into libraries, as well as binaries: `... -Wl,-soname
+-Wl,/tmp/libtest.so.0 ...'.  Tim Mooney wants the same thing.
+
+* Lists of exported symbols should be stored in the pseudo library
+so that the size of lt_preloaded_symbols can be reduced.
+
+* Godmar Back writes:
+  libltdl uses such stdio functions as fopen, fgets, feof, fclose, and others.
+  These functions are not async-signal-safe. While this does not make 
+  libltdl unusable, it restricts its usefulness and puts an 
+  unnecessary burden on the user.
+
+  As a remedy, I'd recommend to replace those functions with functions
+  that POSIX says are async-signal-safe, such as open, read, close.
+  This will require you to handle interrupted system calls and implement
+  fgets, but the former isn't hard and there's plenty of implementations
+  out from which you can steal the latter.
+
+  I believe relying on async-signal-safe functions to the greatest extent
+  possible would greatly improve libltdl's ability to be embedded in and 
+  used by other systems.
 
 * Documentation:
 
 - libltdl documentation needs to be completed.
+
+- AC_PROG_LIBTOOL, AC_ENABLE/DISABLE_SHARED/STATIC, AC_LIBTOOL_DLOPEN
+  are not documented.
+
+- Purpose and usage of convenience libraries must be better documented
+
+- some new internal variables are not documented yet.
 
 In the future:
 **************

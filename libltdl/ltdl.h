@@ -41,12 +41,14 @@ Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 #undef __P
 #undef lt_ptr_t
 #if defined (__STDC__) || defined (_AIX) || (defined (__mips) && defined (_SYSTYPE_SVR4)) || defined(WIN32) || defined(__cplusplus)
-# define __P(protos) protos
-# define lt_ptr_t     void*
+# define __P(protos)	protos
+# define lt_ptr_t	void*
 #else
-# define __P(protos) ()
-# define lt_ptr_t     char*
+# define __P(protos)	()
+# define lt_ptr_t	char*
 #endif
+
+#include <stdlib.h>
 
 #ifdef _LTDL_COMPILE_
 typedef	struct lt_dlhandle_t *lt_dlhandle;
@@ -75,6 +77,9 @@ extern const char *lt_dlgetsearchpath __P((void));
 
 extern const lt_dlsymlist lt_preloaded_symbols[];
 #define LTDL_SET_PRELOADED_SYMBOLS() lt_dlpreload_default(lt_preloaded_symbols)
+
+extern lt_ptr_t (*lt_dlmalloc)__P((size_t size));
+extern void (*lt_dlfree)__P((lt_ptr_t ptr));
 
 __END_DECLS
 
