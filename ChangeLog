@@ -1,3 +1,9 @@
+2001-11-28  Gary V. Vaughan  <gary@gnu.org>
+
+	* libtoolize.in: The test for whether AC_PROG_LIBTOOL is defined
+	in aclocal.m4 had bitrotted slightly.
+	Reported by Takahiko Kawasaki <Takahiko_Kawasaki@cii.csk.co.jp>
+
 2001-11-27  Donald D. Anderson  <dda@sleepycat.com>
 
 	* ltmain.in: Treat freebsd like openbsd, in that -lc/-lc_r should
@@ -13,6 +19,7 @@
 	* libtool.texi: Document it.
 
 2001-11-27  Kevin Ryde  <user42@zip.com.au>
+
 	* libtool.m4 (AC_LIBTOOL_SYS_MAX_CMD_LEN): Send "test"
 	warnings to /dev/null, helps FreeBSD and maybe others.
 

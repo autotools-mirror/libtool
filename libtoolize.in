@@ -208,7 +208,7 @@ if test -z "$automake"; then
     updatemsg="add the contents of \`$libtool_m4' to \`aclocal.m4'"
   fi
 
-  if egrep '^AC_DEFUN\(A[MC]_PROG_LIBTOOL' aclocal.m4 >/dev/null 2>&1; then
+  if egrep '^AC_DEFUN\(\[A[MC]_PROG_LIBTOOL' aclocal.m4 >/dev/null 2>&1; then
     # Check the version number on libtool.m4 and the one used in aclocal.m4.
     instserial=`grep '^# serial ' $libtool_m4 | grep 'A[MC]_PROG_LIBTOOL' | sed -e 's/^# serial \([0-9][0-9]*\).*$/\1/; q'`
 
