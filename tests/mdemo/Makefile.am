@@ -17,10 +17,8 @@
 ## the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 ## Boston, MA 02111-1307, USA.
 
-top_distdir = ../..
-
 AUTOMAKE_OPTIONS = no-dependencies foreign
-ACLOCAL_AMFLAGS  = -I $(top_distdir)/m4
+ACLOCAL_AMFLAGS  = -I ../../m4
 
 INCLUDES = $(INCLTDL)
 
@@ -48,6 +46,7 @@ bin_PROGRAMS = mdemo mdemo_static
 
 ## use @LIBLTDL@ because some broken makes do not accept macros in targets
 ## we can only do this because our LIBLTDL does not contain ${top_builddir}
+top_distdir = ../..
 @LIBLTDL@: $(top_distdir)/libtool $(top_distdir)/libltdl/libtool \
     $(top_distdir)/libltdl/config.h $(srcdir)/$(top_distdir)/libltdl/ltdl.c \
     $(srcdir)/$(top_distdir)/libltdl/ltdl.h

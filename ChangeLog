@@ -1,3 +1,11 @@
+2003-10-15  Gary V. Vaughan  <gary@gnu.org>
+
+	* tests/cdemo/Makefile.am, tests/demo/Makefile.am,
+	tests/depdemo/Makefile.am, tests/f77demo/Makefile.am,
+	tests/mdemo/Makefile.am, tests/mdemo2/Makefile.am,
+	tests/pdemo/Makefile.am, tests/tagdemo/Makefile.am (top_distdir):
+	Removed. `autoreconf' needs literals in ACLOCAL_AMFLAGS.
+
 2003-10-14  Gary V. Vaughan  <gary@gnu.org>
 
 	* libtoolize.in (func_mkdir_p): Synch with tests/defs; if there

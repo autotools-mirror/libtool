@@ -17,10 +17,8 @@
 ## the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 ## Boston, MA 02111-1307, USA.
 
-top_distdir = ../..
-
 AUTOMAKE_OPTIONS = no-dependencies foreign
-ACLOCAL_AMFLAGS  = -I$(top_distdir)/m4
+ACLOCAL_AMFLAGS  = -I ../../m4
 
 # Build a libtool library, libhello.la for installation in libdir.
 lib_LTLIBRARIES = libhello.la
