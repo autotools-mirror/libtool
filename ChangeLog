@@ -1,5 +1,8 @@
 2005-03-12  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* config/ltmain.m4sh (func_mode_link): Reword double negation in
+	error message.  Reported by Jesper Louis Andersen <jlouis@mongers.org>.
+
 	* doc/libtool.texi: Replace wicked whiches by thats or other
 	better-sounding constructs.
 
