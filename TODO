@@ -73,12 +73,6 @@ version is installed.
 symbols to be included in a libtool archive.  This would require some
 sort of -whole-archive option, as well.
 
-* Somehow we need to make sure that static libraries never appear in
-$deplibs.  This, will probably require that libtool discover exactly
-which files would be linked from which directories when somebody says
-`-lsomething'.  This adds a lot of complexity, but I see no other way
-around it.
-
 * Need to finalize the documentation, and give a specification of
 `.la' files so that people can depend on their format.  This also
 needs to be done so that DLD uses a public interface to libtool
@@ -87,11 +81,6 @@ notes.
 
 Things to think about:
 **********************
-
-* For OSes with symbol export lists, we should add some flags to allow
-packages to specify explicit lists, or to bypass them entirely.
-Automatic-generation using nm must be the default, since that is
-simplest.
 
 * Talk with RMS about his so-called `automatic package generation
 tool.'  This is probably what Thomas has been murmuring about for the

@@ -1,3 +1,12 @@
+1998-12-19  Thomas Tanner  <tanner@gmx.de>
+
+	* libltdl/Makefile.am: build a normal libtool library
+	* libltdl/ltdl.c: get LTDL_LIBRARY_PATH but don't make use of it yet,
+	  some reformatting
+	* ltmain.in: fixed a bug which listed symbols in 
+	  dld_preloaded_symbols twice
+	* TODO: removed symbol export lists and deplibs
+
 1998-12-18  Thomas Tanner  <tanner@gmx.de>
 
 	* ltconfig.in: added need_lib_prefix and need_version,

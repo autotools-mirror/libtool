@@ -5,7 +5,7 @@
 # level Makefile.
 AUTOMAKE_OPTIONS = no-dependencies foreign
 
-noinst_LTLIBRARIES = libltdl.la
+lib_LTLIBRARIES = libltdl.la
 libltdl_la_SOURCES = ltdl.c
 libltdl_la_LDFLAGS = $(LIBADD_DL) 
 

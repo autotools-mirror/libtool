@@ -81,7 +81,7 @@ typedef	struct lt_dlhandle_t {
 
 static char *
 strdup(str)
-    const char *str;
+	const char *str;
 {
 	char *tmp;
 
@@ -107,20 +107,18 @@ strdup(str)
 
 static const char*
 strrchr(str, ch)
-    const char *str;
-    int ch;
+	const char *str;
+	int ch;
 {
-    const char *p;
+	const char *p;
 
-    for (p = str; p != '\0'; p++)
-	/*NOWORK*/;
+	for (p = str; p != '\0'; p++)
+		/*NOWORK*/;
 
-    while (*p != (char)ch && p >= str)
-      {
-	  p--;
-      }
+	while (*p != (char)ch && p >= str) 
+		p--;
 
-    return (*p == (char)ch) ? p : NULL;
+	return (*p == (char)ch) ? p : NULL;
 }
 
 # endif
@@ -158,20 +156,25 @@ dl_exit ()
 }
 
 static int
-dl_open (handle, filename)  lt_dlhandle handle; const char *filename;
+dl_open (handle, filename)
+	lt_dlhandle handle;
+	const char *filename;
 {
 	handle->handle = dlopen(filename, DLOPEN_MODE);
 	return !(handle->handle);
 }
 
 static int
-dl_close (handle)  lt_dlhandle handle;
+dl_close (handle)
+	lt_dlhandle handle;
 {
 	return dlclose(handle->handle);
 }
 
 static lt_ptr_t
-dl_sym (handle, symbol)  lt_dlhandle handle; const char *symbol;
+dl_sym (handle, symbol)
+	lt_dlhandle handle;
+	const char *symbol;
 {
 	return dlsym(handle->handle, symbol);
 }
@@ -207,7 +210,9 @@ shl_exit ()
 }
 
 static int
-shl_open (handle, filename)  lt_dlhandle handle; const char *filename;
+shl_open (handle, filename)
+	lt_dlhandle handle;
+	const char *filename;
 {
 	/* Probably too much BIND_* flags */
 	handle->handle = shl_load (filename, BIND_IMMEDIATE || BIND_FIRST ||
@@ -216,14 +221,17 @@ shl_open (handle, filename)  lt_dlhandle handle; const char *filename;
 }
 
 static int
-shl_close (handle)  lt_dlhandle handle;
+shl_close (handle)
+	lt_dlhandle handle;
 {
 	shl_unload((shl_t) (handle->handle));
 	return 0;
 }
 
 static lt_ptr_t
-shl_sym (handle, symbol)  lt_dlhandle handle; const char *symbol;
+shl_sym (handle, symbol)
+	lt_dlhandle handle;
+	const char *symbol;
 {
 	int status, i;
 	struct shl_symbol *sym;
@@ -263,7 +271,9 @@ dld_exit ()
 }
 
 static int
-dld_open (handle, filename)  lt_dlhandle handle; const char *filename;
+dld_open (handle, filename)
+	lt_dlhandle handle;
+	const char *filename;
 {
 	if (dld_link(filename))
 		return 1;
@@ -272,7 +282,8 @@ dld_open (handle, filename)  lt_dlhandle handle; const char *filename;
 }
 
 static int
-dld_close (handle)  lt_dlhandle handle;
+dld_close (handle)
+	lt_dlhandle handle;
 {
 	dld_unlink_by_file((char*)(handle->handle), 1);
 	free(handle->filename);
@@ -280,7 +291,9 @@ dld_close (handle)  lt_dlhandle handle;
 }
 
 static lt_ptr_t
-dld_sym (handle, symbol)  lt_dlhandle handle; const char *symbol;
+dld_sym (handle, symbol)
+	lt_dlhandle handle;
+	const char *symbol;
 {
 	return dld_get_func(symbol);
 }
@@ -314,21 +327,26 @@ wll_exit ()
 }
 
 static int
-wll_open (handle, filename)  lt_dlhandle handle; const char *filename;
+wll_open (handle, filename)
+	lt_dlhandle handle;
+	const char *filename;
 {
 	handle->handle = LoadLibrary(filename);
 	return !(handle->handle);
 }
 
 static int
-wll_close (handle)  lt_dlhandle handle;
+wll_close (handle)
+	lt_dlhandle handle;
 {
 	FreeLibrary(handle->handle);
 	return 0;
 }
 
 static lt_ptr_t
-wll_sym (handle, symbol)  lt_dlhandle handle; const char *symbol;
+wll_sym (handle, symbol)
+	lt_dlhandle handle;
+	const char *symbol;
 {
 	return GetProcAddress(handle->handle, symbol);
 }
@@ -368,7 +386,9 @@ dldpre_exit ()
 }
 
 static int
-dldpre_open (handle, filename)  lt_dlhandle handle; const char *filename;
+dldpre_open (handle, filename)
+	lt_dlhandle handle;
+	const char *filename;
 {
 	struct dld_symlist *s = dld_preloaded_symbols;
 
@@ -384,13 +404,16 @@ dldpre_open (handle, filename)  lt_dlhandle handle; const char *filename;
 }
 
 static int
-dldpre_close (handle)  lt_dlhandle handle;
+dldpre_close (handle)
+	lt_dlhandle handle;
 {
 	return 0;
 }
 
 static lt_ptr_t
-dldpre_sym (handle, symbol)  lt_dlhandle handle; const char *symbol;
+dldpre_sym (handle, symbol)
+	lt_dlhandle handle;
+	const char *symbol;
 {
 	struct dld_symlist *s = (struct dld_symlist*)(handle->handle);
 
@@ -424,6 +447,7 @@ static lt_dltype types = LT_DLTYPE_TOP;
 int
 lt_dlinit ()       
 {
+	/* initialize libltdl */
 	lt_dltype *type = &types;
 	int typecount = 0;
 
@@ -438,7 +462,7 @@ lt_dlinit ()
 			*type = (*type)->next; /* Remove it from the list */
 		else {
 			type = &(*type)->next; /* Keep it */
-			++typecount;
+			typecount++;
 		}
 	}
 	if (typecount == 0)
@@ -450,12 +474,13 @@ lt_dlinit ()
 int
 lt_dlexit ()       
 {
+	/* shut down libltdl */
 	lt_dltype type = types;
 	int	error;
 	
 	if (!initialized)
 		return 1;	/* already deinitialized */	
-	if (initialized != 1) { /* deinitialize only at last call. */
+	if (initialized != 1) { /* shut down only at last call. */
 		initialized--;
 		return 0;
 	}
@@ -467,14 +492,16 @@ lt_dlexit ()
 	initialized = 0;
 	while (type) {
 		if (type->mod_exit())
-			++error;
+			error++;
 		type = type->next;
 	}
 	return error;
 }
 
 static void
-trim (dest, s) char *dest; const char *s;
+trim (dest, s)
+	char *dest;
+	const char *s;
 {
 	char *i = strrchr(s, '\'');
 	int len = strlen(s);
@@ -486,9 +513,10 @@ trim (dest, s) char *dest; const char *s;
 		*dest = '\0';
 }
 
-static
-int
-tryall_dlopen (handle, fullname)  lt_dlhandle handle; const char *fullname;
+static int
+tryall_dlopen (handle, fullname)
+	lt_dlhandle handle;
+	const char *fullname;
 {
 	lt_dltype type = types;
 	while (type) {
@@ -500,13 +528,60 @@ tryall_dlopen (handle, fullname)  lt_dlhandle handle; const char *fullname;
 	return !type;
 }
 
+#undef	MAX_FILENAME
+#define MAX_FILENAME 1024
+
+static int
+find_module (handle, search_path, dir, libdir, dlname, old_name)
+	lt_dlhandle handle; 
+	const char *search_path; 
+	const char *dir; 
+	const char *libdir;
+	const char *dlname;
+	const char *old_name;
+{
+	char	fullname[MAX_FILENAME]; /* FIXME: unchecked */
+	
+	/* search a module */
+	if (*dlname) {
+		/* try to open the installed module */
+		strcpy(fullname, libdir);
+		strcat(fullname, "/");
+		strcat(fullname, dlname);
+		if (tryall_dlopen(handle, fullname) == 0)
+			return 0;
+		/* try to open the not-installed module */
+		strcpy(fullname, dir);
+		strcat(fullname, ".libs/");
+		strcat(fullname, dlname);
+		if (tryall_dlopen(handle, fullname) == 0)
+			return 0;
+		strcpy(fullname, dir);
+		strcat(fullname, dlname);
+		if (tryall_dlopen(handle, fullname) == 0)
+			return 0;
+	}
+	if (*old_name && tryall_dlopen(handle, old_name) == 0)
+		return 0;  
+	return 1;
+}
+
+#undef	READTEXT_MODE
+
+#ifdef _WIN32
+#define	READTEXT_MODE "rt"
+#else
+#define	READTEXT_MODE "r"
+#endif
+
 lt_dlhandle
-lt_dlopen (filename)  const char *filename;
+lt_dlopen (filename)
+	const char *filename;
 {
 	lt_dlhandle handle, cur;
 	FILE	*file;
-	char	tmp[1024], dir[1024]; /* FIXME: unchecked buffer */
-	const char *basename, *ext;
+	char	dir[MAX_FILENAME]; /* FIXME: unchecked buffer */
+	const char *basename, *ext, *search_path;
 	
 	/* check whether the module was already opened */
 	cur = handles;
@@ -527,23 +602,24 @@ lt_dlopen (filename)  const char *filename;
 		basename = filename;
 	strncpy(dir, filename, basename - filename);
 	dir[basename - filename] = '\0';
+	search_path = getenv("LTDL_LIBRARY_PATH"); /* get the search path */
 	/* check whether we open a libtool module (.la extension) */
 	ext = strrchr(basename, '.');
 	if (ext && strcmp(ext, ".la") == 0) {
-		char	dlname[1024], libdir[1024], deps[1024];
-		char	fullname[1024], old_name[1024]; /* FIXME: unchecked */
+		char	tmp[MAX_FILENAME]; /* FIXME: unchecked */
+		char	dlname[MAX_FILENAME], old_name[MAX_FILENAME];
+		char	libdir[MAX_FILENAME], deps[MAX_FILENAME];
 		int	i;
-		lt_dltype type;
 
 		dlname[0] = libdir[0] = deps[0] = old_name[0] = '\0';
 	
-		file = fopen(filename, "r"); /* FIXME: portable? */
+		file = fopen(filename, READTEXT_MODE);
 		if (!file) {
 			free(handle);
 			return 0;
 		}
 		while (!feof(file)) {
-			if (!fgets(tmp, 1024, file))
+			if (!fgets(tmp, MAX_FILENAME, file))
 				break;
 			if (strncmp(tmp, "libdir=", 7) == 0)
 				trim(libdir, &tmp[7]);
@@ -558,31 +634,11 @@ lt_dlopen (filename)  const char *filename;
 				trim(old_name, &tmp[12]);
 		}
 		fclose(file);
-		if (!*dlname && !*old_name) {	/* filename not found */
+		if (find_module(handle, search_path, 
+			dir, libdir, dlname, old_name)) {
 			free(handle);
 			return 0;
 		}
-		/* search the module */
-		strcpy(fullname, libdir);
-		strcat(fullname, "/");
-		strcat(fullname, dlname);
-		if (!*dlname || tryall_dlopen(handle, fullname)) {
-			strcpy(fullname, dir);
-			strcat(fullname, dlname);
-			if (!*dlname || tryall_dlopen(handle, fullname)) {
-				strcpy(fullname, dir);
-				strcat(fullname, ".libs/");
-				strcat(fullname, dlname);
-				if (!*dlname || tryall_dlopen(handle, fullname)) {
-					strcpy(fullname, old_name);
-					if (!*old_name ||
-					    tryall_dlopen(handle, fullname)) {
-						free(handle);
-						return 0;
-					}
-				}
-			}
-		}	
 		handle->filename = strdup(filename);
 		/* extract the module name from the file name */
 		strcpy(tmp, basename);
@@ -608,7 +664,8 @@ lt_dlopen (filename)  const char *filename;
 }
 
 int
-lt_dlclose (handle)  lt_dlhandle handle;
+lt_dlclose (handle)
+	lt_dlhandle handle;
 {
 	lt_dlhandle cur, last;
 	
@@ -639,12 +696,14 @@ lt_dlclose (handle)  lt_dlhandle handle;
 }
 
 lt_ptr_t
-lt_dlsym (handle, symbol)  lt_dlhandle handle; const char *symbol;
+lt_dlsym (handle, symbol)
+	lt_dlhandle handle;
+	const char *symbol;
 {
-	char	sym[128];
+	char	sym[128]; /* FIXME: unchecked */
 	lt_ptr_t address;
 
-	if (handle->name) {	/* libtool module */
+	if (handle->name) { /* this is a libtool module */
 #ifdef NEED_USCORE
 		/* prefix symbol with leading underscore */
 		strcpy(sym, "_");
