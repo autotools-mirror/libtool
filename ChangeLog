@@ -1,5 +1,8 @@
 2004-12-28  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
+	* libtool.m4 (AC_LIBTOOL_PROG_LD_SHLIBS) [ cygwin, mingw, pw32 ]:
+	_LT_AC_TAGVAR missing for `ld_shlibs' and for `fix_srcfile_path'.
+
 	* ltmain.in (func_extract_archives): Not all shells grok
 	`read -r' (unnecessary in this case).
 	Reported by Ralf Menzel <menzel@ls6.cs.uni-dortmund.de>.
