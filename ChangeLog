@@ -1,3 +1,12 @@
+2005-01-16  Peter O'Gorman  <peter@pogma.com>
+
+	* libtool.m4 (LT_CMD_MAX_LEN) [osf]: On Tru64 there could
+	be a kernel panic when testing the maximum command line length
+	if exec_disable_arg_limit=1. Don't do the tests to figure it 
+	out on *-osf*.
+	Reported by Dr. Hans Ekkehard Plesser 
+	<hans.ekkehard.plesser@umb.no>
+
 2005-01-14  Guido Draheim  <guidod-2003-@gmx.de>  (tiny change)
 
 	* libtool.m4 (AC_PROG_SED): Don't break test loop early.
