@@ -1,3 +1,25 @@
+2005-02-26  Gary V. Vaughan  <gary@gnu.org>
+
+	I assume that it is okay to have undefined symbols in convenience
+	libraries that will be used as modules -- the pic objects are
+	built normally, and are not expected to resolve all their symbols
+	until they are linked into a library; convenience libraries are
+	then rolled using 'ar' and 'ranlib' (or equivalent) which also do
+	not check whether symbols are resolved.  We now build each of the
+	loaders as a convenience library module under these assumptions,
+	and link libltdl.la with selected modules, at which time all of
+	the symbols *are* resolved:
+
+	* TODO: Remove item addressed by this changeset.
+	* libltdl/Makefile.am (lib_LTLIBRARIES): Remove libdlloader.la.
+	(libdlloader_la_SOURCES): Declaration removed.  Changed all
+	clients.  Source files..
+	(libltdl_la_SOURCES): ...added back in here.
+	(libdlloader_LDFLAGS, libdlloader_la_LIBADD): Removed.
+	(libltdl_la_LIBADD): Remove libdlloader.la; add $(LTLIBOBJS).
+	* libltdl/loaders/Makefile.am: Removed all references to
+	libdlloader.la.
+
 2005-02-25  Gary V. Vaughan  <gary@gnu.org>
 
 	* libtoolize.m4sh (func_copy): Split arguments to func_copy_cb
@@ -9,10 +31,10 @@
 
 2005-02-24  Peter O'Gorman  <peter@pogma.com>
 
-	* m4/libtool.m4 (_LT_LINKER_SHLIBS): The Portland group's 
-	compiler does not pass --whole-archive. Move gnu ld check for 
+	* m4/libtool.m4 (_LT_LINKER_SHLIBS): The Portland group's
+	compiler does not pass --whole-archive. Move gnu ld check for
 	the flag to the top so it can be overridden.
-	(_LT_LANG_CXX_CONFIG, _LT_COMPILER_PIC): Unset 
+	(_LT_LANG_CXX_CONFIG, _LT_COMPILER_PIC): Unset
 	whole_archive_flag_spec for the portland group's c++ compiler too.
 	Reported by Jeff Squyres <jsquyres@lam-mpi.org>
 

@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in
 ##
-## Copyright (C) 2004, 2005 Free Software Foundation
+## Copyright (C) 2004, 2005 Free Software Foundation, Inc.
 ##
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -26,7 +26,7 @@ AUTOMAKE_OPTIONS	= foreign
 DEFS			= -DHAVE_CONFIG_H="<$(CONFIG_H)>" -DLTDL
 AM_CPPFLAGS		= -I$(top_builddir) -I$(top_srcdir)  \
 			  -I.. -I$(srcdir)/.. -I$(srcdir)/../libltdl
-AM_LDFLAGS		= -no-undefined -module -avoid-version -export-dynamic
+AM_LDFLAGS		= -module -avoid-version
 
 pkgincludedir		= $(includedir)/libltdl
 
@@ -39,13 +39,9 @@ noinst_LTLIBRARIES	= $(LT_DLLOADERS)
 EXTRA_LTLIBRARIES	= dlopen.la dld_link.la dyld.la load_add_on.la \
 			  loadlibrary.la shl_load.la
 
-## Build loaders (other than preopen) as modules:
-dlopen_la_LIBADD 	= ../libdlloader.la $(LIBADD_DLOPEN)
-shl_load_la_LIBADD	= ../libdlloader.la $(LIBADD_SHL_LOAD)
-dyld_la_LIBADD		= ../libdlloader.la
-load_add_on_la_LIBADD	= ../libdlloader.la
-loadlibrary_la_LIBADD	= ../libdlloader.la
-dld_link_la_LIBADD	= ../libdlloader.la -ldld
+dlopen_la_LIBADD 	= $(LIBADD_DLOPEN)
+shl_load_la_LIBADD	= $(LIBADD_SHL_LOAD)
+dld_link_la_LIBADD	= -ldld
 
 
 ## These are installed as a subdirectory of pkgdatadir so that
@@ -61,6 +57,3 @@ install-data-local:
 	$(mkinstalldirs) $(DESTDIR)$(ltdldatadir)
 	$(AMTAR) cf - $(ltdldatafiles) \
 	  | ( cd $(DESTDIR)$(ltdldatadir) && $(AMTAR) xf -; )
-
-../libdlloader.la:
-	cd ..; $(MAKE) $(AM_MAKEFLAGS) libdlloader.la
