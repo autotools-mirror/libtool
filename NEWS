@@ -1,9 +1,16 @@
 NEWS - list of user-visible changes between releases of GNU Libtool
 
 New:
-* Now you should use the `AM_DISABLE_SHARED' or `AM_DISABLE_STATIC'
+* http://www.profitpress.com/libtool/ is libtool's homepage.
+* Use the `AM_DISABLE_SHARED' or `AM_DISABLE_STATIC'
   macros instead of the `enable_shared' or `enable_static' variables
   if you wish to modify the default behaviour of `AM_PROG_LIBTOOL'.
+* libtool.m4 now supports turning shared or static libraries off with
+  the `--enable-shared=PKGS' and `--enable-static=PKGS' configure
+  flags.  See (libtool)AM_PROG_LIBTOOL.
+* `compile' mode honours the `-static' flag to prevent libtool
+  from building PIC objects.
+* Support for *-*-sysv4.2uw2*.
 
 New in 1.0i - 1998-02-06, Gordon Matzigkeit:
 * Bug fixes.
