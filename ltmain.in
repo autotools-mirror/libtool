@@ -3139,12 +3139,12 @@ EOF
            test $len -le $max_cmd_len; then
           :
         else
-          # the command line is too long to link in one step, link piecewise
+	  # The command line is too long to link in one step, link piecewise.
           $echo "creating reloadable object files..."
-          # save the value of $output and $libobjs because we want to use them later
+	  # Save the value of $output and $libobjs because we want to use them later.
           save_libobjs=$libobjs
           save_output=$output
-          # clear the reloadable object creation command queue and initialize k to one.
+	  # Clear the reloadable object creation command queue and initialize k to one.
           test_cmds=
           concat_cmds=
           objlist=
@@ -3152,7 +3152,7 @@ EOF
           last_robj=
           k=1
           output=$output_objdir/$save_output-${k}.$objext
-          # loop over the list of objects to be linked
+	  # Loop over the list of objects to be linked.
           for obj in $save_libobjs
           do
             eval test_cmds=\"$reload_cmds $objlist $last_robj\"
@@ -3160,12 +3160,12 @@ EOF
                   test $len -le $max_cmd_len; then
               objlist="$objlist $obj"
             else
-              # the command $test_cmds is almost too long
+	      # The command $test_cmds is almost too long, add a command to the queue.
               if test $k -eq 1 ; then
-                # the first file doesn't have a previous command to add
+	        # The first file doesn't have a previous command to add.
                 eval concat_cmds=\"$reload_cmds $objlist $last_robj\"
               else
-                # all subsequent reloadable object files will link in the last one created
+	        # All subsequent reloadable object files will link in the last one created.
                 eval concat_cmds=\"\$concat_cmds~$reload_cmds $objlist $last_robj\"
               fi
               last_robj=$output_objdir/$save_output-${k}.$objext
@@ -3175,11 +3175,11 @@ EOF
               len=1
             fi
           done
-          # handle the remaining objects by creating one last reloadable object file
-          # all subsequent reloadable object files will link in the last one created
+	  # Handle the remaining objects by creating one last reloadable object file.
+	  # All subsequent reloadable object files will link in the last one created.
           eval concat_cmds=\"\$concat_cmds~$reload_cmds $objlist $last_robj\"
 
-          # set up a command to remove the reloadale object files
+	  # Set up a command to remove the reloadale object files after they are used.
           i=0
           while test $i -lt $k
           do
@@ -3189,7 +3189,7 @@ EOF
 
           $echo "creating a temporary reloadable object file: $output"
 
-          # loop through the commands generated above and execute them
+	  # Loop through the commands generated above and execute them.
           IFS="${IFS= 	}"; save_ifs="$IFS"; IFS='~'
           for cmd in $concat_cmds; do
             IFS="$save_ifs"
@@ -3199,17 +3199,17 @@ EOF
           IFS="$save_ifs"
 
           libobjs=$output
-          # restore the value of output
+	  # Restore the value of output.
           output=$save_output
 
-          # expand the library linking commands again to reset the value of $libobjs for piecewise linking
-          # Do each of the archive commands.
+	  # Expand the library linking commands again to reset the value of $libobjs for piecewise linking.
+	  # Do each of the archive commands.
           if test -n "$export_symbols" && test -n "$archive_expsym_cmds"; then
             eval cmds=\"$archive_expsym_cmds\"
           else
             eval cmds=\"$archive_cmds\"
           fi
-          # append the command to remove the reloadable object files to the just-reset $cmds
+	  # Append the command to remove the reloadable object files to the just-reset $cmds.
           eval cmds=\"\$cmds~$rm $delfiles\"
         fi
         IFS="${IFS= 	}"; save_ifs="$IFS"; IFS='~'
