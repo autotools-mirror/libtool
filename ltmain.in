@@ -158,6 +158,25 @@ win32_libid () {
 # End of Shell function definitions
 #####################################
 
+# Shorthand for --mode=foo
+case $1 in
+compile|compil|compi|comp|com|co|o)
+  shift; set -- --mode=compile ${1+"$@"}
+  ;;
+execute|execut|execu|exec|exe|ex|e)
+  shift; set -- --mode=execute ${1+"$@"}
+  ;;
+install|instal|insta|inst|ins|in|i)
+  shift; set -- --mode=install ${1+"$@"}
+  ;;
+link|lin|li|l)
+  shift; set -- --mode=link ${1+"$@"}
+  ;;
+uninstall|uninstal|uninsta|uninst|unins|unin|uni|un|u)
+  shift; set -- --mode=uninstall ${1+"$@"}
+  ;;
+esac
+
 # Parse our command line options once, thoroughly.
 while test "$#" -gt 0
 do
@@ -307,49 +326,11 @@ fi
 # left over by shells.
 exec_cmd=
 
-if test -z "$show_help"; then
-
-  # Infer the operation mode.
-  if test -z "$mode"; then
-    $echo "*** Warning: inferring the mode of operation is deprecated." 1>&2
-    $echo "*** Future versions of Libtool will require -mode=MODE be specified." 1>&2
-    case $nonopt in
-    *cc | cc* | *++ | gcc* | *-gcc* | g++* | xlc*)
-      mode=link
-      for arg
-      do
-	case $arg in
-	-c)
-	   mode=compile
-	   break
-	   ;;
-	esac
-      done
-      ;;
-    *db | *dbx | *strace | *truss)
-      mode=execute
-      ;;
-    *install*|cp|mv)
-      mode=install
-      ;;
-    *rm)
-      mode=uninstall
-      ;;
-    *)
-      # If we have no mode, but dlfiles were specified, then do execute mode.
-      test -n "$execute_dlfiles" && mode=execute
-
-      # Just use the default operation mode.
-      if test -z "$mode"; then
-	if test -n "$nonopt"; then
-	  $echo "$modename: warning: cannot infer operation mode from \`$nonopt'" 1>&2
-	else
-	  $echo "$modename: warning: cannot infer operation mode without MODE-ARGS" 1>&2
-	fi
-      fi
-      ;;
-    esac
-  fi
+  if test -z "$show_help"; then
+    if test -z "$mode"; then
+      $echo "$modename: error: you must specify a MODE." 1>&2
+      exit 1
+    fi
 
   # Only execute mode is allowed to have -dlopen flags.
   if test -n "$execute_dlfiles" && test "$mode" != execute; then
@@ -6177,7 +6158,7 @@ Provide generalized library-building support services.
     --features        display basic configuration information and exit
     --finish          same as \`--mode=finish'
     --help            display this help message and exit
-    --mode=MODE       use operation mode MODE [default=inferred from MODE-ARGS]
+    --mode=MODE       use operation mode MODE
     --quiet           same as \`--silent'
     --silent          don't print informational messages
     --tag=TAG         use configuration variables from tag TAG
