@@ -1669,7 +1669,7 @@ hpux9* | hpux10* | hpux11*)
 irix5*)
   version_type=osf
   soname_spec='${libname}${release}.so'
-  library_names_spec='${libname}${release}.so$versuffix $libname.so'
+  library_names_spec='${libname}${release}.so$versuffix ${libname}${release}.so $libname.so'
   shlibpath_var=LD_LIBRARY_PATH
   ;;
 
