@@ -185,6 +185,7 @@ enable_shared=yes
 enable_static=yes
 enable_fast_install=yes
 enable_dlopen=unknown
+enable_win32_dll=no
 ltmain=
 silent=
 srcdir=
@@ -244,6 +245,7 @@ Generate a system-specific libtool script.
     --disable-static       do not build static libraries
     --disable-fast-install do not optimize for fast installation
     --enable-dlopen        enable dlopen support
+    --enable-win32-dll     enable building dlls on win32 hosts
     --help                 display this help and exit
     --no-verify            do not verify that HOST is a valid host type
 -o, --output=FILE          specify the output file [default=$default_ofile]
@@ -276,6 +278,8 @@ EOM
   --disable-fast-install) enable_fast_install=no ;;
 
   --enable-dlopen) enable_dlopen=yes ;;
+
+  --enable-win32-dll) enable_win32_dll=yes ;;
 
   --quiet | --silent) silent=yes ;;
 
@@ -1974,6 +1978,17 @@ test "$dynamic_linker" = no && can_build_shared=no
 
 # Report the final consequences.
 echo "checking if libtool supports shared libraries... $can_build_shared" 1>&6
+
+# Only try to build win32 dlls if AC_LIBTOOL_WIN32_DLL was used in
+# configure.in, otherwise build static only libraries.
+case "$host_os" in
+cygwin* | mingw* | os2*)
+  if test x$can_build_shared = xyes; then
+    test x$enable_win32_dll = xno && can_build_shared=no
+    echo "checking if package supports dlls... $can_build_shared" 1>&6
+  fi
+;;
+esac
 
 if test -n "$file_magic_test_file" && test -n "$file_magic_cmd"; then
   case "$deplibs_check_method" in

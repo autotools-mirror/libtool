@@ -75,6 +75,8 @@ test "$ac_cv_prog_gcc" = yes && libtool_flags="$libtool_flags --with-gcc"
 test "$ac_cv_prog_gnu_ld" = yes && libtool_flags="$libtool_flags --with-gnu-ld"
 ifdef([AC_PROVIDE_AC_LIBTOOL_DLOPEN],
 [libtool_flags="$libtool_flags --enable-dlopen"])
+ifdef([AC_PROVIDE_AC_LIBTOOL_WIN32_DLL],
+[libtool_flags="$libtool_flags --enable-win32-dll"])
 AC_ARG_ENABLE(libtool-lock,
   [  --disable-libtool-lock  avoid locking (might break parallel builds)])
 test "x$enable_libtool_lock" = xno && libtool_flags="$libtool_flags --disable-lock"
@@ -125,6 +127,10 @@ esac
 
 # AC_LIBTOOL_DLOPEN - enable checks for dlopen support
 AC_DEFUN(AC_LIBTOOL_DLOPEN, [AC_BEFORE([AC_LIBTOOL_SETUP])])
+
+# AC_LIBTOOL_WIN32_DLL - declare package support for building win32 dll's
+AC_DEFUN(AC_LIBTOOL_WIN32_DLL,
+[AC_BEFORE([AC_LIBTOOL_WIN32_DLL], [AC_LIBTOOL_SETUP])])
 
 # AC_ENABLE_SHARED - implement the --enable-shared flag
 # Usage: AC_ENABLE_SHARED[(DEFAULT)]

@@ -1800,7 +1800,22 @@ on @file{libtool}.
 Enable checking for dlopen support. This macro should be used if
 the package makes use of the @samp{-dlopen} and @samp{-dlpreopen} flags,
 otherwise libtool will assume that the system does not support dlopening.
-The macro must be called *before* @code{AM_PROG_LIBTOOL}.
+The macro must be called @strong{before} @code{AM_PROG_LIBTOOL}.
+@end defmac
+
+@defmac AC_LIBTOOL_WIN32_DLL
+This macro should be used if the package has been ported to build clean
+dlls on win32 platforms.  Usually this means that any library data items
+are exported with @code{__declspec(dllexport)} and imported with
+@code{__declspec(dllimport)}.  If this macro is not used, libtool will
+assume that the package libraries are not dll clean and will build only
+static libraries on win32 hosts.
+
+@code{AM_PROG_LIBTOOL} must be called @strong{after} this macro, and
+provision must be made to pass @samp{-no-undefined} to @code{libtool}
+in link mode from the package @code{Makefile}.  Naturally, passing
+@samp{-no-undefined} means that all the library symbols @strong{really are}
+defined at link time!
 @end defmac
 
 @defmac AC_DISABLE_FAST_INSTALL
