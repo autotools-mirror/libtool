@@ -1,3 +1,10 @@
+2000-01-13  Gary V. Vaughan  <gary@oranda.demon.co.uk>
+
+	* libtool.m4 (AC_LIBLTDL_CONVENIENCE): Add -I${top_srcdir}/libltdl
+	to default INCLTDL for VPATH.
+	(AC_LIBLTDL_INSTALLABLE): ditto.
+	Reported by Tom Tromey <tromey@cygnus.com>
+
 2000-01-12  Thomas Tanner  <tanner@ffii.org>
 
 	* update all copyright notices to 2000
