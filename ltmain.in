@@ -2151,10 +2151,17 @@ EOF
 	    absdir="$libdir"
 	  fi
 	else
-	  dir="$ladir/$objdir"
-	  absdir="$abs_ladir/$objdir"
-	  # Remove this search path later
-	  notinst_path="$notinst_path $abs_ladir"
+	  if test ! -f "$ladir/$objdir/$linklib" && test -f "$abs_ladir/$linklib"; then
+	    dir="$ladir"
+	    absdir="$abs_ladir"
+	    # Remove this search path later
+	    notinst_path="$notinst_path $abs_ladir"
+	  else
+	    dir="$ladir/$objdir"
+	    absdir="$abs_ladir/$objdir"
+	    # Remove this search path later
+	    notinst_path="$notinst_path $abs_ladir"
+	  fi
 	fi # $installed = yes
 	name=`$echo "X$laname" | $Xsed -e 's/\.la$//' -e 's/^lib//'`
 
