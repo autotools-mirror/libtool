@@ -206,8 +206,10 @@ old_AR="$AR"
 old_CC="$CC"
 old_CFLAGS="$CFLAGS"
 old_CPPFLAGS="$CPPFLAGS"
+old_LDFLAGS="$LDFLAGS"
 old_LD="$LD"
 old_LN_S="$LN_S"
+old_LIBS="$LIBS"
 old_NM="$NM"
 old_RANLIB="$RANLIB"
 old_DLLTOOL="$DLLTOOL"
@@ -2454,8 +2456,10 @@ LTCONFIG_VERSION="$VERSION"
 case "$ltmain" in
 *.sh)
   # Now quote all the things that may contain metacharacters.
-  for var in ltecho old_CC old_CFLAGS old_CPPFLAGS old_LD old_NM old_RANLIB \
-    old_LN_S old_DLLTOOL old_AS AR CC LD LN_S NM LTSHELL LTCONFIG_VERSION \
+  for var in ltecho old_CC old_CFLAGS old_CPPFLAGS \
+    old_LD old_LDFLAGS old_LIBS \
+    old_NM old_RANLIB old_LN_S old_DLLTOOL old_AS \
+    AR CC LD LN_S NM LTSHELL LTCONFIG_VERSION \
     reload_flag reload_cmds wl \
     pic_flag link_static_flag no_builtin_flag export_dynamic_flag_spec \
     thread_safe_flag_spec whole_archive_flag_spec libname_spec \
@@ -2535,8 +2539,9 @@ EOF
 
 *)
   # Double-quote the variables that need it (for aesthetics).
-  for var in old_CC old_CFLAGS old_CPPFLAGS old_LD old_NM old_RANLIB \
-    old_LN_S old_DLLTOOL old_AS; do
+  for var in old_CC old_CFLAGS old_CPPFLAGS \
+    old_LD old_LDFLAGS old_LIBS \
+    old_NM old_RANLIB old_LN_S old_DLLTOOL old_AS; do
     eval "$var=\\\"\$var\\\""
   done
 
@@ -2556,8 +2561,9 @@ cat <<EOF >> "$cfgfile"
 # Libtool was configured as follows, on host `(hostname || uname -n) 2>/dev/null | sed 1q`:
 #
 # CC=$old_CC CFLAGS=$old_CFLAGS CPPFLAGS=$old_CPPFLAGS \\
-# LD=$old_LD NM=$old_NM RANLIB=$old_RANLIB LN_S=$old_LN_S \\
-# DLLTOOL="$old_DLLTOOL" AS="$old_AS" \\
+# LD=$old_LD LDFLAGS=$old_LDFLAGS LIBS=$old_LIBS \\
+# NM=$old_NM RANLIB=$old_RANLIB LN_S=$old_LN_S \\
+# DLLTOOL=$old_DLLTOOL AS=$old_AS \\
 #   $0$ltconfig_args
 #
 # Compiler and other test output produced by $progname, useful for
