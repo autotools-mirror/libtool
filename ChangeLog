@@ -1,3 +1,8 @@
+2000-09-15  Gary V. Vaughan  <gvv@techie.com>
+
+	* doc/libtool.texi: Removes references to ltconfig, and a small
+	amount of tidying up to compensate.
+
 2000-09-15  Nick Hudson  <nick@nthcliff.demon.co.uk>
 
 	* libtool.m4 (netbsd): Improved support.
