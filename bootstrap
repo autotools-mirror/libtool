@@ -18,6 +18,7 @@ for sub in demo depdemo libltdl mdemo cdemo; do
   cd $sub
   rm -f acinclude.m4
   cp ../libtool.m4 acinclude.m4
+  test -f ltdl.m4 && cat ltdl.m4 >> acinclude.m4
   aclocal
   test "$sub" = libltdl && autoheader
   automake --gnits --add-missing

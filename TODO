@@ -14,6 +14,12 @@ be desirable.
 * Lists of exported symbols should be stored in the pseudo library
 so that the size of lt_preloaded_symbols can be reduced.
 
+* The definitions for AC_LTDL_SHLIBEXT and AC_LTDL_SHLIBPATH should not
+rely on the output of ./libtool --config.  This involves moving the code
+which sets the variables library_names_spec and shlibpath_var from
+ltconfig.in to libtool.m4, and AC_REQUIRING the newly moved macros in
+the respective ltdl.m4 macros.
+
 In the future:
 **************
 

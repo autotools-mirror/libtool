@@ -1,5 +1,12 @@
 1999-12-06  Gary V. Vaughan  <gary@oranda.demon.co.uk>
 
+	* NEWS: Updated.
+	* TODO: Note some cleanups that are now needed.
+	* libltdl/configure.in: Use the new macroised tests.
+	* libltdl/ltdl.m4: New file, macroised tests formerly in
+	libltdl/configure.in.
+	Reported by Stephan Kulow <coolo@kde.org>.
+
 	From Tim Mooney  <mooney@dogbert.cc.ndsu.NoDak.edu>
 	* ltconfig.in:  split off the osf3 section, so that the osf4 and
 	osf5 sections can add `-msym' to arguments passed to the linker
