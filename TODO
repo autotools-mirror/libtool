@@ -1,25 +1,39 @@
 For next public release:
 ************************
 
-* Kenneth Albanowski suggests an `execute' mode, where the paths from
-libtool libraries are extracted and put into shlibpath_var, then a
-command is executed with the wrapped binary as argument.
+* Document `execute' mode, and the experimental nature of -dlopen and
+-dlpreopen.
 
- KA> And 'libtool --mode=execute java test Java/libJavaPisock.la
- KA> libsock/libpisock.la' turns into:
+* Some packages, such as GIMP, choose to put a note about
+`--disable-shared' in their README:
 
- KA> LD_LIBRARY_PATH="libsock/.libs:Java/.libs" java test
+----------------------------------------------------------------------
+The GIMP uses GNU libtool in order to build shared libraries on a
+variety of systems. While this is very nice for making usable
+binaries, it can be a pain when trying to debug a program. For that
+reason, compilation of shared libraries can be turned off by
+specifying the "--disable-shared" option to "configure".
+----------------------------------------------------------------------
+Simply invoke configure in the top-level directory.  Besides the usual
+GNU configure options, there are the following SANE specific options:
 
-I think this is a good idea, but the nonobvious behaviour with libtool
-library arguments should be enabled by a flag, such as -dlopen LIB.
-Maybe -dlpreopen LIB should put these libraries in LD_PRELOAD.
+ --disable-shared
+	Don't use shared libraries.  Useful for debugging or when there
+	is a problem building shared libraries.
+----------------------------------------------------------------------
 
-Use *db | *dbx as triggers for this mode.
+Perhaps a similar note could be added to ABOUT-NLS.
 
-* Document `execute' mode.
+I'll add a suggestion to the libtool documentation, so that other
+maintainers add this kind of note to their package documentation.
 
 In the future:
 **************
+
+* Eliminate broken handling of single-quotes in arguments to
+ltmain.sh.  I've decided that we should backslashify `"', `$' and `\'.
+Then, if there are any other metacharacters in the argument, surround
+it with double quotes.
 
 * Implement full multi-language support.  Currently, this is only for
 C++, but there are beginnings of this in the manual (Other Languages).

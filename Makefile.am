@@ -11,7 +11,7 @@ aclocal_macros = libtool.m4
 
 noinst_SCRIPTS = lineno
 EXTRA_DIST = $(aclocal_macros) libtoolize.in ltconfig.in ltmain.sh.in \
-	libtool.spec libtool.prj
+	libtool.spec libtool.prj $(noinst_SCRIPTS)
 CLEANFILES = libtool libtoolize
 MAINTAINERCLEANFILES = ltconfig ltmain.sh
 

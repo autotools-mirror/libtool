@@ -1963,9 +1963,9 @@ aborts the program before it runs.
 @item
 Dlopening a module, so that the application can resolve its own,
 dynamically-computed references.  If there is an error opening the
-module, then the application can
+module, or the module is not found, then the application can recover
+without crashing.
 @end enumerate
-
 
 @node Finding the dlname
 @section Finding the correct name to dlopen
@@ -1976,8 +1976,9 @@ After a library has been linked with @samp{-export-dynamic}, it can be
 dlopened.  Unfortunately, because of the variation in library names,
 your package needs to determine the correct file to dlopen.
 
-The basic implementation is to determine the name at runtime, by finding
-the installed @samp{.la} file, and searching it for the following lines:
+The most straightforward and flexible implementation is to determine the
+name at runtime, by finding the installed @samp{.la} file, and searching
+it for the following lines:
 
 @example
 # The name that we can @code{dlopen(3)}.

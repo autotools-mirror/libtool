@@ -1,3 +1,24 @@
+Mon Aug 25 10:54:14 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltmain.sh.in: Change quoting procedure because some shells
+ 	cannot handle `]' in scan sets.  From Ian Dall.
+
+Fri Aug 22 11:00:58 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltmain.sh.in (execute): Added -dlopen flag handling.  Suggested
+	by Alexandre Oliva.
+
+Thu Aug 21 00:40:45 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltmain.sh.in (link): Change executable wrapper to fix up value
+	of thisdir, as well as progdir, if the $0 path doesn't work.  This
+	guarantees that shlibpath_var is set correctly.  Add support for
+	execute mode.
+
+	* ltmain.sh.in (execute): New mode to automatically set
+ 	shlibpath_var, which allows easy debugging of uninstalled
+ 	executables and libraries.  Suggested by Kenneth Albanowski.
+
 Wed Aug 20 10:51:02 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* Makefile.am ($(srcdir)/ltconfig): Use lineno.
