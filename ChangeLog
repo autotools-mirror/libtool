@@ -1,9 +1,37 @@
+2001-08-01  Gary V. Vaughan  <gary@gnu.org>
+
+	* ltdl.m4: Bump serial number.
+	General reformat and tify up in line with Autoconf-2.50 support.
+	(AC_LTDL_FUNC_ARGZ): Test for system implementations of a
+	handful of argz API calls, the error_t type, and the argz.h
+	header.
+	* libltdl/configure.ac (AM_INIT_AUTOMAKE): Bump version number.
+	* libltdl/ltdl.c (rpl_argz_append, rpl_argz_create_sep.
+	rpl_argz_insert, rpl_rgz_next):  Fallback implementations of
+	the similarly named functions for machines that don;t use glibc.
+	(lt_dlrealloc):  New memory function pointer that can be set by
+	the client.  Defaults to rpl_realloc, which in turn uses only
+	lt_dlmalloc and lt_dlfree.
+	(LT_EMALLOC, LT_EREALLOC): Set internal out-of-memory error
+	inside the functions called by these new macros.  Simplified all
+	callers by removing explicit client error reporting.
+	(memmove):  Fallback implementation of overlap safe memory copy
+	function.
+	(tryall_dlopen):  Factorized common code into...
+	(tryall_dlopen_module): ...this new helper function.
+	(canonicalize_path):  Changed function signature to return success
+	or failure.  Updated all callers.
+	(foreachfile_callback):  Make use of argz API.
+	(LT_DLSTRLEN): Moved from here...
+	* libltdl/ltdl.h (LT_STRLEN): ...to here.  Updated all callers.
+	(lt_dlrealloc):  Declare new memory management handle.
+
 2001-07-31  Robert Boehne  <rboehne@ricardo-us.com>
 
 	* libtool.m4 (mingw*) Revert the previous change as it was
 	applied by mistake.
 
-2001-07-31  Guido Draheim  <guidod-2001q3@gmx.de>
+2001-07-31  Guido Draheim  <Guido.Draheim@tek.com>
 
 	* libtool.m4 (mingw*) sys_lib_search_path_spec:
 	Sets the proper path separator for cross-compiling.

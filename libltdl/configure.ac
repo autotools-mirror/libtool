@@ -23,7 +23,7 @@ if test -z "$enable_ltdl_install$enable_ltdl_convenience"; then
   fi
 fi
 
-AM_INIT_AUTOMAKE(libltdl,1.1,-)
+AM_INIT_AUTOMAKE(libltdl,1.2,-)
 AM_CONFIG_HEADER(config.h:config-h.in)
 AM_MAINTAINER_MODE
 
@@ -32,7 +32,7 @@ AC_C_CONST
 AC_C_INLINE
 
 AC_LIBTOOL_WIN32_DLL
-AM_PROG_LIBTOOL
+AC_PROG_LIBTOOL
 AC_SUBST(LIBTOOL_DEPS)
 
 AC_LIB_LTDL
