@@ -72,53 +72,7 @@ done
 AC_SUBST(ACINCLUDE_M4_LIST)
 AC_SUBST(DIST_MAKEFILE_LIST)
 
-AC_OUTPUT_COMMANDS([
-  if test -n "$CONFIG_FILES" && test -n "$CONFIG_HEADERS"; then
-    # If both these vars are non-empty, then config.status wasn't run by
-    # automake rules (which always set one or the other to empty).
-    CONFIG_OTHER=${CONFIG_OTHER-ltconfig ltmain.sh}
-  fi
-  case "$CONFIG_FILES" in
-  *ltconfig*)
-    infile=ltconfig.in
-    outfile=ltconfig
-    tmpfile=${outfile}T
-
-    ( cd $top_srcdir
-      rm -f $tmpfile
-      ${AWK} '
-        /@LINENO@/	{ sub("@LINENO@", NR); }
-                 	{ print; }
-      ' $outfile > $tmpfile
-
-      chmod +x $tmpfile
-      rm -f $outfile
-      mv -f $tmpfile $outfile || \
-      (rm -f $outfile && cp $tmpfile $outfile && rm -f $tmpfile)
-    )
-    ;;
-
-  *ltmain.sh*)
-    infile=$top_srcdir/ltmain.in
-    outfile=$top_srcdir/ltmain.sh
-    tmpfile=${outfile}T
-
-    ( cd $top_srcdir
-      rm -f $tmpfile
-      ${AWK} '
-        /@LINENO@/	{ sub("@LINENO@", NR); }
-                   	{ print; }
-      ' $outfile > $tmpfile
-
-      rm -f $outfile
-      mv -f $tmpfile $outfile || \
-      (rm -f $outfile && cp $tmpfile $outfile && rm -f $tmpfile)
-    )
-    ;;
-  esac
-], [top_srcdir=$srcdir; AWK=$AWK])
-
-AC_OUTPUT([Makefile doc/Makefile tests/Makefile  $srcdir/ltconfig:ltconfig.in $srcdir/ltmain.sh:ltmain.in])
+AC_OUTPUT([Makefile doc/Makefile tests/Makefile])
 
 # Local Variables:
 # mode:shell-script

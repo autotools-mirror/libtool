@@ -66,6 +66,28 @@ update-timestamps:
 		echo "Cannot make dist before commit"; exit 1; else :; fi
 	$(MAKE) TSDEPS="$(TSDEPS_DIST)" $(srcdir)/ltconfig $(srcdir)/ltmain.sh
 
+# Do line number substitution, as well as PACKAGE, VERSION and TIMESTAMP.
+# Line numbering transliterated from a section in autoconf (Autoconf 2.12).
+@srcdir@/ltconfig: $(srcdir)/ltconfig.in $(top_srcdir)/configure.in $(TSDEPS)
+	rm -f ltconfig.T
+	date=`$(SHELL) $(srcdir)/mkstamp < $(srcdir)/ChangeLog` && \
+	$(AWK) '/@LINENO@/ { printf "%d:", NR } { print }' $(srcdir)/ltconfig.in | \
+	  sed -e 's/@''PACKAGE@/@PACKAGE@/' -e 's/@''VERSION@/@VERSION@/' \
+	      -e "s%@""TIMESTAMP@%$$date%" \
+	      -e '/@LINENO@/s/^\([0-9][0-9]*\):\(.*\)@LINENO@/\2\1/' \
+		> ltconfig.T
+	chmod +x ltconfig.T
+	mv -f ltconfig.T $@ || \
+	(rm -f $@ && cp ltconfig.T $@ && rm -f ltconfig.T)
+
+@srcdir@/ltmain.sh: $(srcdir)/ltmain.in $(top_srcdir)/configure.in $(TSDEPS)
+	rm -f ltmain.shT
+	date=`$(SHELL) $(srcdir)/mkstamp < $(srcdir)/ChangeLog` && \
+	sed -e 's/@''PACKAGE@/@PACKAGE@/' -e 's/@''VERSION@/@VERSION@/' \
+	    -e "s%@""TIMESTAMP@%$$date%" $(srcdir)/ltmain.in > ltmain.shT
+	mv -f ltmain.shT $@ || \
+	(rm -f $@ && cp ltmain.shT $@ && rm -f ltmain.shT)
+
 # All our rules should depend on these demo files.
 all-recursive: $(ACINCLUDE_M4_LIST)
 

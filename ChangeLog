@@ -1,3 +1,8 @@
+1999-11-04  Alexandre Oliva  <oliva@lsd.ic.unicamp.br>
+
+	* configure.in: Move ltconfig and ltmain.sh generation back...
+	* Makefile.am: here.
+	
 1999-11-02  Thomas Tanner  <tanner@ffii.org>
 
 	* NEWS: updated
