@@ -4421,7 +4421,26 @@ extern \"C\" {
 #endif
 
 /* The mapping between symbol names and symbols. */
+"
+
+	    case $host in
+	    *cygwin* | *mingw* )
+	  $echo >> "$output_objdir/$dlsyms" "\
+/* DATA imports from DLLs on WIN32 can't be const, because
+   runtime relocations are performed -- see ld's documentation
+   on pseudo-relocs */
+struct {
+"
+	      ;;
+	    * )
+	  $echo >> "$output_objdir/$dlsyms" "\
 const struct {
+"
+	      ;;
+	    esac
+
+
+	  $echo >> "$output_objdir/$dlsyms" "\
   const char *name;
   lt_ptr address;
 }
