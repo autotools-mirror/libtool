@@ -1,5 +1,8 @@
 1999-01-26  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* ltconfig.in (LTCONFIG_VERSION): add TIMESTAMP, remove
+	explicit quotes and add it to the list of variables to quote
+
 	* ltmain.in: reworded `dropped inter-library dependencies'
 	message, and added a warning about inter-library dependencies even 
 	for non-module builds

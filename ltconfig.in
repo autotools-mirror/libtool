@@ -1895,12 +1895,14 @@ if test "X$ltecho" = "X$CONFIG_SHELL $0 --fallback-echo"; then
 fi
 LTSHELL="$SHELL"
 
+LTCONFIG_VERSION="$VERSION$TIMESTAMP"
+
 # Only quote variables if we're using ltmain.sh.
 case "$ltmain" in
 *.sh)
   # Now quote all the things that may contain metacharacters.
   for var in ltecho old_CC old_CFLAGS old_CPPFLAGS old_LD old_NM old_RANLIB \
-    old_LN_S old_DLLTOOL old_AS AR CC LD LN_S NM LTSHELL VERSION \
+    old_LN_S old_DLLTOOL old_AS AR CC LD LN_S NM LTSHELL LTCCONFIG_VERSION \
     reload_flag reload_cmds wl \
     pic_flag link_static_flag no_builtin_flag export_dynamic_flag_spec \
     whole_archive_flag_spec libname_spec library_names_spec soname_spec \
@@ -2008,7 +2010,7 @@ cat <<EOF >> "$cfgfile"
 # debugging $progname, is in ./config.log if it exists.
 
 # The version of $progname that generated this script.
-LTCONFIG_VERSION="$VERSION"
+LTCONFIG_VERSION=$LTCONFIG_VERSION
 
 # Shell to use when invoking shell scripts.
 SHELL=$LTSHELL
