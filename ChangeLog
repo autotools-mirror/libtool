@@ -1,3 +1,10 @@
+2000-11-25  Gary V. Vaughan  <gvv@techie.com>
+
+	* libltdl/ltdl.c (lt_dlopen):  Change the default search order
+	for modules.  If the named module has no directory component,
+	always start the search with the user_search_path directories,
+	and then fall back on the current directory only if that fails.
+
 2000-11-20  Gary V. Vaughan  <gvv@techie.com>
 
 	* libltdl/Makefile.am (libltdl_la_LDFLAGS): increment the version

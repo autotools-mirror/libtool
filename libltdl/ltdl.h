@@ -284,7 +284,7 @@ enum {
 extern	int	lt_dladderror	LT_PARAMS((const char *diagnostic));
 extern	int	lt_dlseterror	LT_PARAMS((int errorcode));
 
-#ifdef LT_FUBAR_NAMESPACE
+#ifdef LT_NON_POSIX_NAMESPACE
 #  define lt_ptr_t		lt_ptr
 #  define lt_module_t		lt_module
 #  define lt_module_open_t	lt_module_open

@@ -1179,6 +1179,7 @@ tryall_dlopen (handle, filename)
       lt_user_data data = loader->dlloader_data;
 
       cur->module = loader->module_open (data, filename);
+
       if (cur->module != 0)
 	{
 	  break;
@@ -1696,6 +1697,7 @@ lt_dlopen (filename)
   const char *saved_error = last_error;
   char	*canonical = 0, *basename = 0, *dir = 0, *name = 0;
 	
+  /* dlopen self? */
   if (!filename)
     {
       handle = (lt_dlhandle) lt_dlmalloc (sizeof (struct lt_dlhandle));
@@ -1729,6 +1731,8 @@ lt_dlopen (filename)
       return 0;
     }
 
+  /* If the canonical module name is a path (relative or absolute)
+     then split it into a directory part and a name part.  */
   basename = strrchr (canonical, '/');
   if (basename)
     {
@@ -1790,15 +1794,12 @@ lt_dlopen (filename)
 
     name[ext - basename] = '\0';
 
-    /* now try to open the .la file */
-    file = fopen (filename, LT_READTEXT_MODE);
-    if (!file)
+    /* Now try to open the .la file.  If there is no directory name
+       component, try to find it first in user_search_path and then other
+       prescribed paths.  Otherwise (or in any case if the module was not
+       yet found) try opening just the module name as passed.  */
+    if (!dir)
       {
-	last_error = LT_DLSTRERROR (FILE_NOT_FOUND);
-      }
-    if (!file && !dir)
-      {
-	/* try other directories */
 	file = (FILE*) find_file(basename, user_search_path, &dir, 0);
 	if (!file)
 	  {
@@ -1819,6 +1820,14 @@ lt_dlopen (filename)
 	    file = (FILE*) find_file(basename, sys_search_path, &dir, 0);
 	  }
 #endif
+      }
+    if (!file)
+      {
+	file = fopen (filename, LT_READTEXT_MODE);
+      }
+    if (!file)
+      {
+	last_error = LT_DLSTRERROR (FILE_NOT_FOUND);
       }
     
     if (!file)
@@ -1974,8 +1983,11 @@ lt_dlopen (filename)
       handle->deplibs	  = 0;
       newhandle	    	  = handle;
 
-      if (tryall_dlopen (&newhandle, filename)
-	  && (dir || (!find_file (basename, user_search_path, 0, &newhandle)
+      /* If the module has no directory name component, try to find it
+	 first in user_search_path and then other prescribed paths.
+	 Otherwise (or in any case if the module was not yet found) try
+	 opening just the module name as passed.  */
+      if ((dir || (!find_file (basename, user_search_path, 0, &newhandle)
 		      && !find_file (basename, getenv ("LTDL_LIBRARY_PATH"),
 				     0, &newhandle)
 #ifdef LTDL_SHLIBPATH_VAR
@@ -1985,7 +1997,7 @@ lt_dlopen (filename)
 #ifdef LTDL_SYSSEARCHPATH
 		      && !find_file (basename, sys_search_path, 0, &newhandle)
 #endif
-		      )))
+		   )) && tryall_dlopen (&newhandle, filename))
 	{
 	  lt_dlfree (handle);
 	  handle = 0;
@@ -2040,13 +2052,6 @@ lt_dlopenext (filename)
       return 0;
     }
 
-  /* try the normal file name */
-  handle = lt_dlopen (filename);
-  if (handle)
-    {
-      return handle;
-    }
-  
   /* try "filename.la" */
   tmp = (char*) lt_dlmalloc (len+4);
   if (!tmp)
@@ -2092,6 +2097,13 @@ lt_dlopenext (filename)
     }
 #endif	
 
+  /* try the normal file name */
+  handle = lt_dlopen (filename);
+  if (handle)
+    {
+      return handle;
+    }
+  
   last_error = LT_DLSTRERROR (FILE_NOT_FOUND);
   lt_dlfree (tmp);
   return 0;
