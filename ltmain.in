@@ -672,6 +672,7 @@ compiler."
     dlprefiles=
     export_dynamic=no
     export_symbols=
+    export_symbols_regex=
     generated=
     hardcode_libdirs=
     finalize_hardcode_libdirs=
@@ -741,12 +742,17 @@ compiler."
 	    ;;
 	  esac
 	  ;;
-	exportsyms)
+	expsyms)
 	  export_symbols="$arg"
 	  if test ! -f "$arg"; then
 	    $echo "$modename: symbol file \`$arg' does not exist"
 	    exit 1
 	  fi
+	  prev=
+	  continue
+	  ;;
+	expsyms_regex)
+	  export_symbols_regex="$arg"
 	  prev=
 	  continue
 	  ;;
@@ -822,12 +828,16 @@ compiler."
 	fi
 	;;
 
-      -export-symbols)
-	if test -n "$export_symbols"; then
+      -export-symbols | -export-symbols-regex)
+	if test -n "$export_symbols" || test -n "$export_symbols_regex"; then
 	  $echo "$modename: cannot have more than one -exported-symbols"
 	  exit 1
 	fi
-	prev=exportsyms
+	if test "$arg" = "-export-symbols"; then
+	  prev=expsyms
+	else
+	  prev=expsyms_regex
+	fi
 	continue
 	;;
 
@@ -1859,13 +1869,20 @@ EOF
 	fi
         
 	# Prepare the list of exported symbols
-	if test "$always_export_symbols" = yes && test -z "$export_symbols"; then
-	  export_symbols="$objdir/$libname.exp"
-	  $run $rm $export_symbols
-	  $run eval "$export_symbols_cmd"
+	if test -z "$run" && test -z "$export_symbols"; then
+	  if test "$always_export_symbols" = yes || test -n "$export_symbols_regex"; then
+	    export_symbols="$objdir/$libname.exp"
+	    $rm $export_symbols
+	    eval cmd=\"$export_symbols_cmd\"
+	    eval "$cmd"
+	    if test -n "$export_symbols_regex"; then
+	      egrep -e "$export_symbols_regex" "$export_symbols" > "$export_symbols"T
+	      $mv "$export_symbols"T "$export_symbols"
+	    fi
+	  fi
 	fi
 	if test -n "$include_expsyms"; then
-	  $run $echo "X$include_expsyms" | $SP2NL >> $export_symbols
+	  $run $echo "X$include_expsyms" | $SP2NL >> "$export_symbols"
 	fi
 
 	# Do each of the archive commands.

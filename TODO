@@ -35,6 +35,7 @@ this in the dso.5 page, this looks more informative :)
 * Inter-library dependencies should be fully tracked by libtool.
 Reminded by Alexandre Oliva.  This requires looking up installed
 libtool libraries for transparent support.
+Thomas Tanner has a patch for this.
 
 * Inter-library dependencies need to work for ltlibraries too.
 Thomas Tanner has a patch for this.
@@ -42,6 +43,7 @@ Thomas Tanner has a patch for this.
 * Alexandre Oliva suggests that we hardcode paths into libraries, as
 well as binaries:  `... -Wl,-soname -Wl,/tmp/libtest.so.0 ...'.  Tim
 Mooney wants the same thing.
+Thomas Tanner has a patch for this.
 
 * Tom Lane adds that HP-UX's linker, at least (I've also found this on
 AIX 4), distinguishes between global function and global variable
@@ -57,6 +59,9 @@ work under Solaris however.
 * Documentation:
 
 - libltdl documentation needs to be completed.
+
+- AC_PROG_LIBTOOL, AC_ENABLE/DISABLE_SHARED/STATIC, AC_LIBTOOL_DLOPEN
+  are not documented.
 
 In the future:
 **************

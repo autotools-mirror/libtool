@@ -1,3 +1,17 @@
+1999-02-18  Thomas Tanner  <tanner@gmx.de>
+
+	* TODO: updated
+	* autogen: only libltdl needs autoheader 
+	* doc/libtool.texi (link mode): documented -export-symbols-regex
+	  and updated -export-symbols
+	* doc/libtool.texi (script contents): documented 
+	  always_export_symbols, export_symbols_cmd, exclude_expsyms, 
+	  include_expsyms, dlopen and dlopen_self
+	  more detailed description of need_lib_prefix
+	* ltconfig.in: a "'" was missing in the default value 
+	  of export_symbols_cmd
+	* ltmain.in: implemented -export-symbols-regex
+	
 1999-02-17  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* ltconfig.in: (freebsd2*, sunos4*, exclude_expsyms): exclude

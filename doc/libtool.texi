@@ -1163,8 +1163,12 @@ Allow symbols from @var{output-file} to be resolved with @code{dlsym}
 @item -export-symbols @var{symfile}
 Tells the linker to export only the symbols listed in @var{symfile}. 
 The symbol file should end in @samp{.sym} and must contain the name of one 
-symbol per line. This option does not work for modules and is not
-supported on all platforms.
+symbol per line. This option has no effect on some platforms.
+By default all symbols are exported.
+
+@item -export-symbols-regex @var{regex}
+Same as @samp{-export-symbols}, except that only symbols matching
+the regular expression @var{regex} are exported.
 By default all symbols are exported.
 
 @item -L@var{libdir}
@@ -3376,6 +3380,12 @@ is no way to generate a shared library with references to symbols that
 aren't defined in that library.
 @end defvar
 
+@defvar always_export_symbols
+Whether libtool should automatically generate a list of exported symbols
+using @var{export_symbols_cmd} before linking an archive.
+Set to @samp{yes} or @samp{no}.  Default is @samp{no}
+@end defvar
+
 @defvar archive_cmds
 @defvarx archive_expsym_cmds
 @defvarx old_archive_cmds
@@ -3411,14 +3421,33 @@ i.e whether object files do not have to have the suffix ".o".
 Set to @samp{yes} or @samp{no}.
 @end defvar
 
+@defvar dlopen
+Whether @code{dlopen} is supported on the platform.
+Set to @samp{yes} or @samp{no}.
+@end defvar
+
+@defvar dlopen_self
+Whether it is possible to @code{dlopen} the executable itself.
+Set to @samp{yes} or @samp{no}.
+@end defvar
+
 @defvar echo
 An @code{echo} program which does not interpret backslashes as an
 escape character.
 @end defvar
 
+@defvar exclude_expsyms
+List of symbols that should not be listed in the preloaded symbols.
+@end defvar
+
 @defvar export_dynamic_flag_spec
 Compiler link flag that allows a dlopened shared library to reference
 symbols that are defined in the program.
+@end defvar
+
+@defvar export_symbols_cmd
+Command to extract exported symbols from @var{libobjs} to the
+file @var{export_symbols}.
 @end defvar
 
 @defvar finish_cmds
@@ -3491,6 +3520,10 @@ For information purposes, set to the specified and canonical names of
 the system that libtool was configured for.
 @end defvar
 
+@defvar include_expsyms
+List of symbols that must always be exported when using @var{export_symbols}.
+@end defvar
+
 @defvar libext
 The standard old archive suffix (normally "a").
 @end defvar
@@ -3517,6 +3550,9 @@ Whether libtool should automatically prefix module names with 'lib'.
 Set to @samp{yes} or @samp{no}.  By default, it is @samp{unknown}, which 
 means the same as @samp{yes}, but documents that we are not really sure
 about it.
+@samp{yes} means that it is possible both to @code{dlopen} and to
+link against a library wihthout 'lib' prefix,
+i.e. it requires @var{hardcode_direct} to be @samp{yes}.
 @end defvar
 
 @defvar need_version

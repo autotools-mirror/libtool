@@ -1022,7 +1022,7 @@ hardcode_minus_L=no
 hardcode_shlibpath_var=unsupported
 runpath_var=
 always_export_symbols=no
-export_symbols_cmd="$NM $libobjs | $global_symbol_pipe | sed '\''s/.* //'\' | sort | uniq > $export_symbols"
+export_symbols_cmd='$NM $libobjs | $global_symbol_pipe | sed '\''s/.* //'\'' | sort | uniq > $export_symbols'
 # include_expsyms should be a list of space-separated symbols to be *always*
 # included in the symbol list
 include_expsyms=
