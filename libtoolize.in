@@ -140,7 +140,7 @@ if test ! -f configure.in; then
 fi
 
 
-if cd $pkgdatadir && ls; then :
+if (cd $pkgdatadir && ls); then :
 else
   echo "$progname: cannot list files in \`$pkgdatadir'" 1>&2
   exit 1

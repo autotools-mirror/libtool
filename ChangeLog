@@ -1,3 +1,16 @@
+1999-01-15  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
+
+	From Andrey Slepuhin <pooh@msu.ru>
+	* libtoolize.in (cd $pkgdatadir): Make sure we return the the
+	working directory when this is done.
+
+	From Andrey Slepuhin <pooh@msu.ru>
+	* ltconfig.in (aix): Use shared library support correctly on
+	aix4*, and tweak the config for aix3.
+	* NEWS: added aix3 and aix4 to list of hosts with improved
+	support.
+	* THANKS: added Andrey Slepuhin <pooh@msu.ru>.
+
 1999-01-15  Thomas Tanner  <tanner@gmx.de>
 
 	* Makefile.am (@DIST_MAKEFILE_LIST@): added a second '$' 
@@ -34,6 +47,7 @@
 	  
 1999-01-14  Gary V. Vaughan  <garyv@oranda.demon.co.uk>
 
+	* THANKS: added Mark Elbrecht.
 	* ltconfig.in (PATH_SEPARATOR): new variable to hold valid $PATH
 	separator characters for the build host, to support DJGPP
 	environment.
