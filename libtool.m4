@@ -636,7 +636,7 @@ else
 
   case $lt_cv_dlopen in
   dlopen)
-    save_CPPFLAGS="$CPP_FLAGS"
+    save_CPPFLAGS="$CPPFLAGS"
     AC_REQUIRE([_LT_AC_CHECK_DLFCN])dnl
     test "x$ac_cv_header_dlfcn_h" = xyes && CPPFLAGS="$CPPFLAGS -DHAVE_DLFCN_H"
 
