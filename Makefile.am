@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in
 
-AUTOMAKE_OPTIONS = 1.3e gnits readme-alpha
+AUTOMAKE_OPTIONS = 1.3e gnu
 
 BUILD_SUBDIRS = . libltdl doc tests
 SUBDIRS = $(BUILD_SUBDIRS)
@@ -15,7 +15,7 @@ LIBS= @LIBS@
 aclocal_macros = libtool.m4
 
 EXTRA_DIST = $(aclocal_macros) libtoolize.in ltconfig.in ltmain.in \
-	mkstamp ChangeLog.0 instutil/chmod instutil/ln
+	mkstamp ChangeLog.0
 CLEANFILES = libtool libtoolize ltconfig.T ltmain.shT
 
 # These are required by libtoolize.
@@ -101,8 +101,7 @@ configure-subdirs distdir: $(DIST_MAKEFILE_LIST)
 
 # Create and install libltdl
 install-data-hook:
-	PATH=`cd $(srcdir)/instutil && pwd`":$$PATH" && \
-	cd libltdl && $(MAKE) distdir distdir=$(DESTDIR)$(pkgdatadir)/libltdl
+	cd libltdl && $(MAKE) local-install-files
 
 # Uninstall libltdl
 uninstall-local:
