@@ -1827,7 +1827,7 @@ esac
 opt_cr=
 case "$host_os" in
 mingw*)
-  opt_cr=`echo 'x?' | tr x '\015'` # option cr in regexp
+  opt_cr=`echo 'x\{0,1\}' | tr x '\015'` # option cr in regexp
   ;;
 esac
 

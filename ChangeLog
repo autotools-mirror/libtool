@@ -1,3 +1,8 @@
+2000-01-14  Gary V. Vaughan  <gary@oranda.demon.co.uk>
+
+	* ltconfig.in (opt_cr, mingw*): replace unescaped ? with correctly
+	escaped and portable \{0,1\} in sed expression.
+
 2000-01-13  Gary V. Vaughan  <gary@oranda.demon.co.uk>
 
 	* libtool.m4 (AC_LIBLTDL_CONVENIENCE): Add -I${top_srcdir}/libltdl
