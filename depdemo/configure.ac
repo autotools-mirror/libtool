@@ -1,7 +1,7 @@
-dnl Process this file with autoconf to create configure.
+dnl Process this file with autoconf to create configure. -*-Autoconf-*-
 
 AC_PREREQ(2.50)
-AC_INIT
+AC_INIT(depdemo, 0.1)
 AC_CONFIG_SRCDIR([main.c])
 AM_INIT_AUTOMAKE(depdemo,0.1)
 

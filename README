@@ -61,6 +61,10 @@ NOTE: Libtool has only been tested with the Siemens C-compiler and
 an old version of gcc provided by Marco Walther you can find on
 ftp://ftp.mch.sni.de/sni/mr/pd/gnu/gcc/gcc.2.7.2.3 on Reliant Unix.  
 
+NOTE: libtool.m4, ltdl.m4 and the configure.ac files are marked to use
+autoconf-mode, which is distributed with GNU Emacs 21, and all recent
+releases of XEmacs.
+
 Libtool's home page is:
 
   http://www.gnu.org/software/libtool/libtool.html

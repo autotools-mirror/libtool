@@ -1,4 +1,4 @@
-# libtool.m4 - Configure libtool for the host system. -*-Shell-script-*-
+# libtool.m4 - Configure libtool for the host system. -*-Autoconf-*-
 ## Copyright 1996, 1997, 1998, 1999, 2000, 2001
 ## Free Software Foundation, Inc.
 ## Originally by Gordon Matzigkeit <gord@gnu.ai.mit.edu>, 1996
@@ -24,7 +24,6 @@
 
 # serial 47 AC_PROG_LIBTOOL
 
-# The next line was added by Bruno Haible 2001-06-28.
 builtin([undefine],[symbols])
 
 # AC_PROG_LIBTOOL
@@ -486,7 +485,7 @@ AC_DEFUN(AC_LIBTOOL_COMPILER_OPTION,
      # So say no if there are warnings
      if test -s conftest.err; then
        # Append any errors to the config.log.
-       cat conftest.err 1>&AS_MESSAGE_LOG_FD()
+       cat conftest.err 1>&AS_MESSAGE_LOG_FD
      else
        $2=yes
      fi
@@ -518,7 +517,7 @@ AC_DEFUN(AC_LIBTOOL_LINKER_OPTION,
      # So say no if there are warnings
      if test -s conftest.err; then
        # Append any errors to the config.log.
-       cat conftest.err 1>&AS_MESSAGE_LOG_FD()
+       cat conftest.err 1>&AS_MESSAGE_LOG_FD
      else
        $2=yes
      fi
@@ -802,7 +801,7 @@ AC_CACHE_CHECK([if $compiler supports -c -o file.$ac_objext],
      # So say no if there are warnings
      if test -s out/conftest.err; then
        # Append any errors to the config.log.
-       cat out/conftest.err 1>&AS_MESSAGE_LOG_FD()
+       cat out/conftest.err 1>&AS_MESSAGE_LOG_FD
      else
        _LT_AC_TAGVAR(lt_cv_prog_compiler_c_o, $1)=yes
      fi
@@ -3627,16 +3626,16 @@ EOF
 	  LIBS="$lt_save_LIBS"
 	  CFLAGS="$lt_save_CFLAGS"
 	else
-	  echo "cannot find nm_test_func in $nlist" >&AS_MESSAGE_LOG_FD()
+	  echo "cannot find nm_test_func in $nlist" >&AS_MESSAGE_LOG_FD
 	fi
       else
-	echo "cannot find nm_test_var in $nlist" >&AS_MESSAGE_LOG_FD()
+	echo "cannot find nm_test_var in $nlist" >&AS_MESSAGE_LOG_FD
       fi
     else
-      echo "cannot run $lt_cv_sys_global_symbol_pipe" >&AS_MESSAGE_LOG_FD()
+      echo "cannot run $lt_cv_sys_global_symbol_pipe" >&AS_MESSAGE_LOG_FD
     fi
   else
-    echo "$progname: failed program was:" >&AS_MESSAGE_LOG_FD()
+    echo "$progname: failed program was:" >&AS_MESSAGE_LOG_FD
     cat conftest.$ac_ext >&5
   fi
   rm -f conftest* conftst*

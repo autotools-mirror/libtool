@@ -1,7 +1,7 @@
-## Process this file with autoconf to create configure.
+## Process this file with autoconf to create configure. -*- autoconf -*-
 
 AC_PREREQ(2.50)
-AC_INIT
+AC_INIT([libtool], [1.4a], [bug-libtool@gnu.org])
 AC_CONFIG_SRCDIR([ltmain.in])
 
 AM_INIT_AUTOMAKE(libtool, 1.4a)

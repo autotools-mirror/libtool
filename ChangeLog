@@ -1,3 +1,24 @@
+2001-06-29  Tim Van Holder  <tim.van.holder@pandora.be>
+
+	General cleanup of autoconf-2.50 upgrade:
+	* configure.ac: Mark as needing autoconf-mode in
+	emacs.  Pass arguments to AC_INIT.
+	* cdemo/configure.ac: Ditto.
+	* demo/configure.ac: Ditto.
+	* depdemo/configure.ac: Ditto.
+	* libtldl/configure.ac: Ditto.
+	* mdemo/configure.ac: Ditto.
+	* pdemo/configure.ac: Ditto.
+	* tagdemo/configure.ac: Ditto.
+	* ltdl.m4: Mark as needing autoconf-mode in
+	emacs.
+	* libtool.m4: Mark as needing autoconf-mode in
+	emacs.  Don't add () to AS_MESSAGE_LOG_FD.
+	* libltdl/configure.ac: Use config-h.in as
+	template for config.h.
+	* tagdemo/configure.ac: Drop the AC_DIAGNOSTIC. Move
+	AC_LANG([C++]) after the OBJEXT/EXEEXT check.
+
 2001-06-29  Gary V. Vaughan  <gary@gnu.org>
 
 	From Tim Van Holder <tim.van.holder@pandora.be>

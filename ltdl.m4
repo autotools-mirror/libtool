@@ -1,4 +1,4 @@
-## ltdl.m4 - Configure ltdl for the target system. -*-Shell-script-*-
+## ltdl.m4 - Configure ltdl for the target system. -*-Autoconf-*-
 ## Copyright (C) 1999-2000 Free Software Foundation, Inc.
 ##
 ## This program is free software; you can redistribute it and/or modify
