@@ -789,7 +789,6 @@ compiler."
 	lib_search_path="$lib_search_path `expr $arg : '-L\(.*\)'`"
 	case "$host" in
 	*-*-cygwin32* | *-*-mingw32* | *-*-os2*)
-	  compile_dependencylibs="$compile_dependencylibs $arg"
 	  dllsearchdir="`expr $arg : '-L\(.*\)'`"
 	  dllsearchdir=`cd "$dllsearchdir" && pwd || echo "$dllsearchdir"`
 	  if test -n "$dllsearchpath"; then
@@ -803,7 +802,6 @@ compiler."
 
       -l*)
 	deplibs="$deplibs $arg"
-	compile_dependencylibs="$compile_dependencylibs $arg"
 	;;
 
       -module)
@@ -1046,9 +1044,9 @@ compiler."
 	  immediate | unsupported)
 	    if test "$hardcode_direct" = no; then
 	      compile_command="$compile_command $dir/$linklib"
+	      deplibs="$deplibs $dir/$linklib"
 	      case "$host" in
 	      *-*-cygwin32* | *-*-mingw32* | *-*-os2*)
-		compile_dependencylibs="$compile_dependencylibs -L$dir -l$name"
 		dllsearchdir=`cd "$dir" && pwd || echo "$dir"`
 		if test -n "$dllsearchpath"; then
 		  dllsearchpath="$dllsearchpath:$dllsearchdir"
@@ -1064,9 +1062,11 @@ compiler."
 		;;
 	      esac
 	      compile_command="$compile_command -L$dir -l$name"
+	      deplibs="$deplibs -L$dir -l$name"
 	    elif test "$hardcode_shlibpath_var" = no; then
 	      compile_shlibpath="$compile_shlibpath$dir:"
 	      compile_command="$compile_command -l$name"
+	      deplibs="$deplibs -l$name"
 	    else
 	      lib_linked=no
 	    fi
@@ -1088,11 +1088,14 @@ compiler."
 
 	    if test "$hardcode_direct" = yes; then
 	      compile_command="$compile_command $dir/$linklib"
+	      deplibs="$deplibs $dir/$linklib"
 	    elif test "$hardcode_minus_L" = yes; then
 	      compile_command="$compile_command -L$dir -l$name"
+	      deplibs="$deplibs $dir/$linklib"
 	    elif test "$hardcode_shlibpath_var" = yes; then
 	      compile_shlibpath="$compile_shlibpath$dir:"
 	      compile_command="$compile_command -l$name"
+	      deplibs="$deplibs -l$name"
 	    else
 	      lib_linked=no
 	    fi
