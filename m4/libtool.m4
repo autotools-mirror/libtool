@@ -191,6 +191,7 @@ AC_ARG_ENABLE([libtool-lock],
 test "x$enable_libtool_lock" != xno && enable_libtool_lock=yes
 
 # Use C for the default configuration in the libtool script
+LT_SUPPORTED_TAG([CC])
 _LT_LANG_C_CONFIG
 _LT_LANG_DEFAULT_CONFIG
 _LT_CONFIG_COMMANDS

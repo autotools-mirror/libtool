@@ -1,3 +1,9 @@
+2004-07-29  Alexandre Duret-Lutz  <adl@gnu.org>
+
+	* doc/libtool.texi (Tags): Document CC.
+	* m4/libtool.m4 (_LT_SETUP): Register CC as supported tag so that
+	Automake uses it.
+
 2004-07-28  Gary V. Vaughan  <gary@gnu.org>
 
 	Fix a long-standing bug where macro_version was always empty in

@@ -2243,7 +2243,7 @@ correspondence between language names and tags names.
 
 @multitable {Windows Resource} {Tag name}
 @item Language name    @tab Tag name
-@item C                @tab
+@item C                @tab CC
 @item C++              @tab CXX
 @item Java             @tab GCJ
 @item Fortran 77       @tab F77
@@ -2258,8 +2258,8 @@ The tag can also be specified using @command{libtool}'s
 @code{--tag=@var{tag}} option (@pxref{Invoking libtool}).  It is a good
 idea to do so in @file{Makefile} rules, because that will allow users to
 substitute the compiler without relying on @command{libtool} inference
-heuristics.  Note that there is no tag for @code{C} because that is
-the default configuration.
+heuristics.  When no tag is specified, @command{libtool} will default
++to @code{CC}; this tag always exists.
 
 Finally, the set of tags available in a particular project can be
 retrieved by tracing for the @code{LT_SUPPORTED_TAG} macro (@pxref{Trace
