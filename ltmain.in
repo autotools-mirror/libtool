@@ -2739,9 +2739,9 @@ EOF
 	  # Warn about portability, can't link against -module's on some
 	  # systems (darwin).  Don't bleat about dlopened modules though!
 	  dlopenmodule=""
-	  for module in $dlprefiles; do
-	    if test "X$module" = "X$lib"; then
-	      dlopenmodule="$module"
+	  for dlpremoduletest in $dlprefiles; do
+	    if test "X$dlpremoduletest" = "X$lib"; then
+	      dlopenmodule="$dlpremoduletest"
 	      break
 	    fi
 	  done
