@@ -38,14 +38,16 @@ endif
 ## default.
 CLEANFILES = libltdl.la libltdlc.la
 
-libltdl_la_SOURCES = lt__alloc.c lt__alloc.h lt_system.h ltdl.c ltdl.h
+libltdl_la_SOURCES = lt__alloc.c lt__alloc.h lt__pre89.h lt_system.h \
+		     ltdl.c ltdl.h
 libltdl_la_LDFLAGS = -no-undefined -version-info 5:0:2
-libltdl_la_LIBADD = $(LIBADD_DL)
+libltdl_la_LIBADD = $(LIBADD_DL) $(LTLIBOBJS)
 
 libltdlc_la_SOURCES = $(libltdl_la_SOURCES)
-libltdlc_la_LIBADD = $(LIBADD_DL)
+libltdlc_la_LIBADD = $(LIBADD_DL) $(LTLIBOBJS)
 
 ## These are installed as a subdirectory of pkgdatadir so that
 ## libtoolize --ltdl can find them later:
 ltdldatadir = $(pkgdatadir)/libltdl
-ltdldata_DATA = COPYING.LIB Makefile.am README $(libltdl_la_SOURCES)
+ltdldata_DATA = COPYING.LIB Makefile.am README $(libltdl_la_SOURCES) \
+		memcpy.c memmove.c strchr.c strcmp.c strrchr.c

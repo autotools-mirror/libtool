@@ -71,6 +71,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 
 #include "ltdl.h"
 #include "lt__alloc.h"
+#include "lt__pre89.h"
 
 #if defined(HAVE_CLOSEDIR) && defined(HAVE_OPENDIR) && defined(HAVE_READDIR) && defined(HAVE_DIRENT_H)
 /* We have a fully operational dirent subsystem.  */
@@ -141,134 +142,6 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 
 
 
-
-/* --- REPLACEMENT FUNCTIONS --- */
-
-
-#if ! HAVE_STRCMP
-
-#undef strcmp
-#define strcmp rpl_strcmp
-
-static int
-strcmp (const char *str1, const char *str2)
-{
-  if (str1 == str2)
-    return 0;
-  if (str1 == 0)
-    return -1;
-  if (str2 == 0)
-    return 1;
-
-  for (;*str1 && *str2; ++str1, ++str2)
-    {
-      if (*str1 != *str2)
-	break;
-    }
-
-  return (int)(*str1 - *str2);
-}
-#endif
-
-
-#if ! HAVE_STRCHR
-
-#  if HAVE_INDEX
-#    define strchr index
-#  else
-#    define strchr rpl_strchr
-
-static const char *
-strchr (const char *str, int ch)
-{
-  const char *p;
-
-  for (p = str; *p != (char)ch && *p != LT_EOS_CHAR; ++p)
-    /*NOWORK*/;
-
-  return (*p == (char)ch) ? p : 0;
-}
-
-#  endif
-#endif /* !HAVE_STRCHR */
-
-
-#if ! HAVE_STRRCHR
-
-#  if HAVE_RINDEX
-#    define strrchr rindex
-#  else
-#    define strrchr rpl_strrchr
-
-static const char *
-strrchr (const char *str, int ch)
-{
-  const char *p, *q = 0;
-
-  for (p = str; *p != LT_EOS_CHAR; ++p)
-    {
-      if (*p == (char) ch)
-	{
-	  q = p;
-	}
-    }
-
-  return q;
-}
-
-# endif
-#endif
-
-/* NOTE:  Neither bcopy nor the memcpy implementation below can
-          reliably handle copying in overlapping areas of memory.  Use
-          memmove (for which there is a fallback implmentation below)
-	  if you need that behaviour.  */
-#if ! HAVE_MEMCPY
-
-#  if HAVE_BCOPY
-#    define memcpy(dest, src, size)	bcopy (src, dest, size)
-#  else
-#    define memcpy rpl_memcpy
-
-static void *
-memcpy (void *dest, const void *src, size_t size)
-{
-  size_t i = 0;
-
-  for (i = 0; i < size; ++i)
-    {
-      dest[i] = src[i];
-    }
-
-  return dest;
-}
-
-#  endif /* !HAVE_BCOPY */
-#endif   /* !HAVE_MEMCPY */
-
-#if ! HAVE_MEMMOVE
-#  define memmove rpl_memmove
-
-static void *
-memmove (void *dest, const void *src, size_t size)
-{
-  size_t i;
-
-  if (dest < src)
-    for (i = 0; i < size; ++i)
-      {
-	dest[i] = src[i];
-      }
-  else if (dest > src)
-    for (i = size -1; i >= 0; --i)
-      {
-	dest[i] = src[i];
-      }
-
-  return dest;
-}
-
-#endif /* !HAVE_MEMMOVE */
 
 # if LT_USE_WINDOWS_DIRENT_EMULATION
 

@@ -1,5 +1,30 @@
 2004-04-08  Gary V. Vaughan  <gary@gnu.org>
 
+	Factor out the bottom portability layer from ltdl.  Code in this
+	layer has global symbols renamed by lt__pre89.h, and may not
+	refer to any symbols except those provided by the system libraries
+	or other code in the portability layer:
+
+	* libltdl/lt__pre89.h: New file.  Rename all the symbols from
+	LTLIBOBJS into the lt__ namespace so that they don't clash with
+	other libraries.
+	* libltdl/ltdl.c (rpl_memcpy, rpl_memmove, rpl_strchr, rpl_strcmp)
+	(rpl_strrchr): Moved from here...
+	* libltdl/memcpy.c (memcpy): ...to here, and fixed void *
+	dereference bug...
+	* libltdl/memmove.c (memmove): ...to here, and fixed void *
+	dereference bug...
+	* libltdl/strchr.c (strchr): ...to here...
+	* libltdl/strcmp.c (strcmp): ...here...
+	* libltdl/strrchr.c (strrchr): ...and here.
+	* libltdl/Makefile.am (libltdl_la_SOURCES): Add lt__pre89.h.
+	(libltdl_la_LIBADD, libltdlc_la_LIBADD): Add $(LTLIBOBJS).
+	(ltdldata_DATA): Add replacement sources files.
+	* m4/ltdl.m4 (AC_LIB_LTDL): Do careful config.h and LTLIBOBJ
+	setting for missing pre89 functions.
+
+2004-04-08  Gary V. Vaughan  <gary@gnu.org>
+
 	* libltdl/ltdl.h (LT_PARAMS): Removed.  Changed all users to
 	ANSI prototypes.
 	(lt_ptr): Keep backwards compatibility stub.
