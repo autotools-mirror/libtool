@@ -1,3 +1,8 @@
+2002-04-07  Robert Boehne  <rboehne@gnu.org>
+
+	* libtool.m4 (LT_AC_PROG_SED): Refactor, removing temporary directory
+	and consistent use of the shell variable namespace "lt_ac_".
+
 2002-04-02  Robert Boehne  <rboehne@gnu.org>
 
 	* ltmain.in: Finish the tag matching logic started yesterday and
