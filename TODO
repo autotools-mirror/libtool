@@ -81,7 +81,7 @@ almost definitely require that automake pass some hints about linkage in to
 each object compilation line.
 
 * jeffdb@goodnet.com writes
-	all you need to do for mutually dependant
+	all you need to do for mutually dependent
 	.dll's is to create an implib from a .def file
 so it appears that we might need to detect and handle mutual dependencies
 specially on win32 =(O|

@@ -1,3 +1,9 @@
+2002-06-20  Gary V. Vaughan  <gary@gnu.org>
+
+	From Kevin Ryde  <user42@zip.com.au>:
+	* doc/libtool.texi (Platform quirks): s/dependan/dependen/
+	* TODO: Ditto.
+
 2002-06-13  Rainer Orth  <ro@TechFak.Uni-Bielefeld.DE>
 
 	* ltmain.in (irix, nonstopux): Set major before use.
@@ -6,7 +12,7 @@
 
 	* libltdl/ltdl.c (try_dlopen): Don't return bogus handle to user
 	  if tryall_dlopen() fails.
-	
+
 2002-05-06  Paul Eggert  <eggert@twinsun.com>
 
 	* libtool.m4 (_LT_AC_LTCONFIG_HACK): head -1 -> sed 1q to
