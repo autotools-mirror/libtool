@@ -222,6 +222,7 @@ predep_objects=
 postdep_objects=
 predeps=
 postdeps=
+compiler_lib_search_path=
 
 ## Link characteristics:
 allow_undefined_flag=
@@ -1925,7 +1926,7 @@ case "$ltmain" in
     RANLIB old_archive_cmds old_archive_from_new_cmds old_postinstall_cmds \
     old_postuninstall_cmds archive_cmds archive_expsym_cmds postinstall_cmds \
     postuninstall_cmds extract_expsyms_cmds old_archive_from_expsyms_cmds \
-    predep_objects postdep_objects predeps postdeps \
+    predep_objects postdep_objects predeps postdeps compiler_lib_search_path \
     old_striplib striplib file_magic_cmd export_symbols_cmds \
     deplibs_check_method allow_undefined_flag no_undefined_flag \
     finish_cmds finish_eval global_symbol_pipe global_symbol_to_cdecl \
@@ -2218,6 +2219,10 @@ predeps=$predeps
 # Dependencies to place after the objects being linked to create a
 # shared library.
 postdeps=$postdeps
+
+# The library search path used internally by the compiler when linking
+# a shared library.
+compiler_lib_search_path=$compiler_lib_search_path
 
 # Method to check whether dependent libraries are shared objects.
 deplibs_check_method=$deplibs_check_method

@@ -1470,7 +1470,7 @@ EOF
     done
 
     if test $linkmode = lib; then
-      libs="$predeps $libs $postdeps"
+      libs="$predeps $libs $compiler_lib_search_path $postdeps"
     fi
 
     deplibs=

@@ -1,3 +1,13 @@
+2000-06-05  Ossama Othman  <ossama@debian.org>
+
+	* ltcf-cxx.sh (compiler_lib_search_path), ltconfig.in
+	(compiler_lib_search_path), ltmain.in (libs): The library path
+	that the compiler uses internally was being placed before the one
+	supplied by the user.  Added a loop that moves that path after the
+	user supplied one.
+	Reported by Stephan Kulow <coolo@kde.org> and Michael Matz
+	<matz@ifh.de>
+
 2000-05-30  Gary V. Vaughan  <gvv@techie.com>
 
 	* ltconfig.in (ORIGINAL_CONFIG_SHELL): Prevent lossage when

@@ -727,7 +727,7 @@ EOF
 
 if eval $ac_compile 2>&5; then
   # Parse the compiler output and extract the necessary
-  # object, libraries and library flags.
+  # objects, libraries and library flags.
 
   # Sentinel used to keep track of whether or not we are before
   # the conftest object file.
@@ -749,11 +749,20 @@ if eval $ac_compile 2>&5; then
        fi
 
        if test "$pre_test_object_deps_done" = no; then
-         if test -z "$predeps"; then
-           predeps="${prev}${p}"
-         else
-           predeps="${predeps} ${prev}${p}"
-         fi
+         case $p in
+	 -L* | -R*)
+	   # Internal compiler library paths should come after those
+	   # provided the user.  The postdeps already come after the
+	   # user supplied libs so there is no need to process them.
+           if test -z "$compiler_lib_search_path"; then
+             compiler_lib_search_path="${prev}${p}"
+           else
+             compiler_lib_search_path="${compiler_lib_search_path} ${prev}${p}"
+           fi
+           ;;
+         # The "-l" case would never come before the object being
+         # linked, so don't bother handling this case.
+         esac
        else
          if test -z "$postdeps"; then
            postdeps="${prev}${p}"
