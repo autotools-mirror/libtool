@@ -1,5 +1,11 @@
 2004-08-29  Gary V. Vaughan  <gary@gnu.org>
 
+	* config/ltmain.in (opt_help): Defer showing help messages until
+	after a possible following --mode argument has been parsed, so we
+	can handle `libtool --help --mode=foo'.
+
+2004-08-29  Gary V. Vaughan  <gary@gnu.org>
+
 	We have had shell functions in ltmain.in for a few years without
 	complaint now, and recently a few more have crept in.  Make a
 	start at refactoring the code with shell functions, and

@@ -186,6 +186,7 @@ execute_dlfiles=
 lo2o="s/\\.lo\$/.${objext}/"
 o2lo="s/\\.${objext}\$/.lo/"
 
+opt_help=false
 opt_duplicate_deps=false
 
 # If this variable is set in any of the actions, the command in it
@@ -673,7 +674,7 @@ Otherwise, only FILE itself is deleted using RM."
 #			;;
 
       -\?|-h)		func_usage					;;
-      --help)		func_mode_help					;;
+      --help)		opt_help=:					;;
       --version)	func_version					;;
 
       -*)		func_fatal_help "unrecognized option \`$opt'"	;;
@@ -683,6 +684,9 @@ Otherwise, only FILE itself is deleted using RM."
 			;;
     esac
   done
+
+  # Now that we've collected a possible --mode arg, show help if necessary
+  $opt_help && func_mode_help
 
   case $host in
     *cygwin* | *mingw* | *pw32*)
