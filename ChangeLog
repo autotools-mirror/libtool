@@ -1,3 +1,8 @@
+2001-09-18  Albert Chin  <china@thewrittenword.com>
+
+	* libtool.m4: Some uses of $GXX were unquoted, but GXX is either
+	NULL or yes.  Use "$GXX".
+
 2001-09-13  Assar Westerlund  <assar@sics.se>
 
 	* ltdl.m4 (AC_LTDL_DLLIB): call dlopen with arguments so the test

@@ -2590,9 +2590,9 @@ case $host_os in
         output_verbose_link_cmd='templist=`($CC -b $CFLAGS -v conftest.$objext 2>&1) | egrep "\-L"`; list=""; for z in $templist; do case $z in conftest.$objext) list="$list $z";; *.$objext);; *) list="$list $z";;esac; done; echo $list'
         ;;
       *)
-        if test $GXX = yes; then
+        if test "$GXX" = yes; then
 	  if test $with_gnu_ld = no; then
-	    case "$host_os" in
+	    case $host_os in
             hpux9*)
                 _LT_AC_TAGVAR(archive_cmds, $1)='$rm $output_objdir/$soname~$CC -shared -nostdlib -fPIC ${wl}+b ${wl}$install_libdir -o $output_objdir/$soname $predep_objects $libobjs $deplibs $postdep_objects $compiler_flags~test $output_objdir/$soname = $lib || mv $output_objdir/$soname $lib'
                 ;;
@@ -4721,7 +4721,7 @@ EOF
       ;;
 
     hpux9* | hpux10* | hpux11*)
-      if test $GXX = yes; then
+      if test "$GXX" = yes; then
         case $host_os in
           hpux9*)
             _LT_AC_TAGVAR(archive_cmds, $1)='$rm $output_objdir/$soname~$CC -shared -fPIC ${wl}+b ${wl}$install_libdir -o $output_objdir/$soname $libobjs $deplibs $compiler_flags~test $output_objdir/$soname = $lib || mv $output_objdir/$soname $lib'
