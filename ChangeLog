@@ -1,5 +1,10 @@
 1999-03-08  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* ltmain.in: temporarily disable dlopen_self when linking with
+	-static or -all-static, until we figure out how to test whether it
+	works at configure time
+	* TODO: remember to fix this later
+
 	* tests/build-relink.test: when hell is expected to fail, run it
 	within a subshell and redirect stderr to stdout, so that dynamic
 	linker errors are only printed in verbose mode

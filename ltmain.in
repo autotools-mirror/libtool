@@ -927,6 +927,10 @@ compiler."
 	if test -n "$link_static_flag"; then
 	  compile_command="$compile_command $link_static_flag"
 	  finalize_command="$finalize_command $link_static_flag"
+	  # Some platforms do not support self-dlopening with static
+	  # linking.  Assume self-dlopening does not work in this case
+	  # till we figure out how to test it at configure time
+	  dlopen_self=no
 	fi
 	continue
 	;;
@@ -1054,6 +1058,10 @@ compiler."
 	if test -z "$pic_flag" && test -n "$link_static_flag"; then
 	  compile_command="$compile_command $link_static_flag"
 	  finalize_command="$finalize_command $link_static_flag"
+	  # Some platforms do not support self-dlopening with static
+	  # linking.  Assume self-dlopening does not work in this case
+	  # till we figure out how to test it at configure time
+	  dlopen_self=no
 	fi
 	continue
 	;;

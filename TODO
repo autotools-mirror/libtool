@@ -37,6 +37,11 @@ so that the size of lt_preloaded_symbols can be reduced.
 In the future:
 **************
 
+* test whether dlopening and self-dlopening work for statically linked
+  programs.  Self-dlopening, for example, is known to fail on DEC
+  OSF/1, for programs compiled with -static.  On other platforms,
+  dlopen may even fail to link.
+
 * Godmar Back writes:
   libltdl uses such stdio functions as fopen, fgets, feof, fclose, and others.
   These functions are not async-signal-safe. While this does not make 
