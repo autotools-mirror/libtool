@@ -668,7 +668,7 @@ echo "$ac_t$ac_cv_exeext" 1>&6
 #the associated values are set (in the cache) correctly too.
 echo $ac_n "checking for $compiler option to produce PIC... $ac_c" 1>&6
 echo "$progname:@LINENO@:checking for $compiler option to produce PIC" 1>&5
-if test "${ac_cv_prog_cc_pic+set}" = "set"; then
+if test "X${ac_cv_prog_cc_pic+set}" = Xset; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
   ac_cv_prog_cc_pic=
@@ -848,6 +848,40 @@ else
   fi
   echo "$ac_t""$ac_cv_prog_cc_pic_works" 1>&6
 fi
+
+# Check for any special shared library compilation flags.
+if test -n "$ac_cv_prog_cc_shlib"; then
+  echo "$progname: warning: \`$CC' requires \`$ac_cv_prog_cc_shlib' to build shared libraries" 1>&2
+  if echo "$old_CC $old_CFLAGS " | egrep -e "[ 	]$ac_cv_prog_cc_shlib[ 	]" >/dev/null; then :
+  else
+    echo "$progname: add \`$ac_cv_prog_cc_shlib' to the CC or CFLAGS env variable and reconfigure" 1>&2
+    ac_cv_prog_cc_can_build_shared=no
+  fi
+fi
+
+echo $ac_n "checking if $compiler static flag $ac_cv_prog_cc_static works... $ac_c" 1>&6
+echo "$progname:@LINENO@: checking if $compiler static flag $link_static_flag works" >&5
+if test "X${ac_cv_prog_cc_static_works+set}" = Xset; then
+  echo $ac_n "(cached) $ac_c" 1>&6
+else
+  $rm conftest*
+  echo 'main(){return(0);}' > conftest.c
+  save_LDFLAGS="$LDFLAGS"
+  LDFLAGS="$LDFLAGS $link_static_flag"
+  if { (eval echo $progname:@LINENO@: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest; then
+    ac_cv_prog_cc_static_works=yes
+  else
+    ac_cv_prog_cc_static_works=no
+    ac_cv_prog_cc_static=
+  fi
+  LDFLAGS="$save_LDFLAGS"
+  $rm conftest*
+fi
+# Belt *and* braces to stop my trousers falling down:
+if test X$ac_cv_prog_cc_static_works = Xno; then
+  ac_cv_prog_cc_static=
+fi
+echo "$ac_t""$ac_cv_prog_cc_static_works" 1>&6
 pic_flag="$ac_cv_prog_cc_pic"
 special_shlib_compile_flags="$ac_cv_prog_cc_shlib"
 wl="$ac_cv_prog_cc_wl"
@@ -984,31 +1018,6 @@ if test "$with_gcc" = yes; then
   fi
   
 fi
-
-# Check for any special shared library compilation flags.
-if test -n "$special_shlib_compile_flags"; then
-  echo "$progname: warning: \`$CC' requires \`$special_shlib_compile_flags' to build shared libraries" 1>&2
-  if echo "$old_CC $old_CFLAGS " | egrep -e "[ 	]$special_shlib_compile_flags[ 	]" >/dev/null; then :
-  else
-    echo "$progname: add \`$special_shlib_compile_flags' to the CC or CFLAGS env variable and reconfigure" 1>&2
-    can_build_shared=no
-  fi
-fi
-
-echo $ac_n "checking if $compiler static flag $link_static_flag works... $ac_c" 1>&6
-$rm conftest*
-echo 'main(){return(0);}' > conftest.c
-save_LDFLAGS="$LDFLAGS"
-LDFLAGS="$LDFLAGS $link_static_flag"
-echo "$progname:@LINENO@: checking if $compiler static flag $link_static_flag works" >&5
-if { (eval echo $progname:@LINENO@: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest; then
-  echo "$ac_t$link_static_flag" 1>&6
-else
-  echo "$ac_t"none 1>&6
-  link_static_flag=
-fi
-LDFLAGS="$save_LDFLAGS"
-$rm conftest*
 
 # Check to see if we can use ln -s, or we need hard links.
 echo $ac_n "checking whether ln -s works... $ac_c" 1>&6
