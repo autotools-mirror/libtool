@@ -1,12 +1,13 @@
 ;; -*- Lisp -*-
 (Created-By-Prcs-Version 1 2 1)
 (Project-Description "GNU libtool library support script")
-(Project-Version libtool 1 1)
-(Parent-Version libtool 1 0)
+(Project-Version libtool 1 2)
+(Parent-Version libtool 1 1)
 
-(Version-Log "")
+(Version-Log "Added RPM spec file.
+Made a minor bug fix when no mode is specified.")
 (New-Version-Log "")
-(Checkin-Time "Tue, 08 Jul 1997 13:53:55 -0600")
+(Checkin-Time "Fri, 11 Jul 1997 19:37:13 -0600")
 (Checkin-Login gord)
 (Populate-Ignore ("~$" "Makefile$" "Makefile\\.in$" "aclocal\\.m4$"
 		  "configure$" "config\\.status$" "config\\.cache$"
@@ -22,18 +23,19 @@
 (Files
 ;; Administrivia.
   (AUTHORS (libtool/21_AUTHORS 1.1 664))
-  (ChangeLog (libtool/20_ChangeLog 1.4.1.34 664))
+  (ChangeLog (libtool/20_ChangeLog 1.4.1.35 664))
   (NEWS (libtool/19_NEWS 1.4.1.22 664))
   (PACKAGES (libtool/42_PACKAGES 1.5 664))
   (README (libtool/17_README 1.13 664))
   (README-alpha (libtool/16_README-alp 1.5 664))
   (TODO (libtool/14_TODO 1.3.1.18 664))
-  (THANKS (libtool/15_THANKS 1.8 664))
+  (THANKS (libtool/15_THANKS 1.9 664))
+  (libtool.spec (libtool/46_libtool.sp 1.1 664))
 
 ;; Top directory.
-  (Makefile.am (libtool/18_Makefile.a 1.22 664))
+  (Makefile.am (libtool/18_Makefile.a 1.23 664))
   (configure.in (libtool/13_configure. 1.4.1.18 664))
-  (ltmain.sh.in (libtool/2_ltmain.sh. 1.4.1.24 664))
+  (ltmain.sh.in (libtool/2_ltmain.sh. 1.4.1.25 664))
   (ltconfig.in (libtool/3_ltconfig.i 1.4.1.26 775))
   (libtoolize.in (libtool/4_libtoolize 1.6 664))
 
@@ -56,8 +58,8 @@
   (demo/foo.c (libtool/9_foo.c 1.2.1.5 664))
 
 ;; Tests subdirectory.
-  (tests/ChangeLog (libtool/26_ChangeLog 1.12 664))
-  (tests/Makefile.am (libtool/25_Makefile.a 1.10 664))
+  (tests/ChangeLog (libtool/26_ChangeLog 1.13 664))
+  (tests/Makefile.am (libtool/25_Makefile.a 1.11 664))
   (tests/defs (libtool/24_defs 1.3 664))
   (tests/tlibtool (libtool/29_tlibtool 1.2 775))
 
@@ -72,6 +74,7 @@
   (tests/if.test (libtool/45_if.test 1.1 775))
   (tests/link.test (libtool/30_link.test 1.3 775))
   (tests/link-2.test (libtool/31_link-2.tes 1.3 775))
+  (tests/nomode.test (libtool/47_nomode.tes 1.1 775))
   (tests/suffix.test (libtool/38_suffix.tes 1.1 775))
   (tests/test-e.test (libtool/22_test-e.tes 1.3 775))
 
