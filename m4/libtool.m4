@@ -3785,6 +3785,9 @@ _LT_EOF
 	  fi
 	esac
 	shared_flag='-shared'
+	if test "$aix_use_runtimelinking" = yes; then
+	  shared_flag="$shared_flag "'${wl}-G'
+	fi
       else
 	# not using gcc
 	if test "$host_cpu" = ia64; then
@@ -4738,6 +4741,9 @@ if test "$_lt_caught_CXX_error" != yes; then
   	  fi
           esac
           shared_flag='-shared'
+	  if test "$aix_use_runtimelinking" = yes; then
+	    shared_flag="$shared_flag "'${wl}-G'
+	  fi
         else
           # not using gcc
           if test "$host_cpu" = ia64; then
