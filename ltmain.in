@@ -2196,6 +2196,33 @@ EOF
 	# Use standard objects if they are pic
 	test -z "$pic_flag" && libobjs=`$echo "X$libobjs" | $SP2NL | $Xsed -e "$lo2o" | $NL2SP`
 
+	# Prepare the list of exported symbols
+	if test -z "$export_symbols"; then
+	  if test "$always_export_symbols" = yes || test -n "$export_symbols_regex"; then
+	    $show "generating symbol list for \`$libname.la'"
+	    export_symbols="$output_objdir/$libname.exp"
+	    $run $rm $export_symbols
+	    eval cmds=\"$export_symbols_cmds\"
+	    IFS="${IFS= 	}"; save_ifs="$IFS"; IFS='~'
+	    for cmd in $cmds; do
+	      IFS="$save_ifs"
+	      $show "$cmd"
+	      $run eval "$cmd" || exit $?
+	    done
+	    IFS="$save_ifs"
+	    if test -n "$export_symbols_regex"; then
+	      $show "egrep -e \"$export_symbols_regex\" \"$export_symbols\" > \"${export_symbols}T\""
+	      $run eval 'egrep -e "$export_symbols_regex" "$export_symbols" > "${export_symbols}T"'
+	      $show "$mv \"${export_symbols}T\" \"$export_symbols\""
+	      $run eval '$mv "${export_symbols}T" "$export_symbols"'
+	    fi
+	  fi
+	fi
+
+	if test -n "$export_symbols" && test -n "$include_expsyms"; then
+	  $run eval '$echo "X$include_expsyms" | $SP2NL >> "$export_symbols"'
+	fi
+
 	if test -n "$whole_archive_flag_spec"; then
 	  if test -n "$convenience"; then
 	    eval libobjs=\"\$libobjs $whole_archive_flag_spec\"
@@ -2239,33 +2266,6 @@ EOF
 	if test "$thread_safe" = yes && test -n "$thread_safe_flag_spec"; then
 	  eval flag=\"$thread_safe_flag_spec\"
 	  linker_flags="$linker_flags $flag"
-	fi
-
-	# Prepare the list of exported symbols
-	if test -z "$export_symbols"; then
-	  if test "$always_export_symbols" = yes || test -n "$export_symbols_regex"; then
-	    $show "generating symbol list for \`$libname.la'"
-	    export_symbols="$output_objdir/$libname.exp"
-	    $run $rm $export_symbols
-	    eval cmds=\"$export_symbols_cmds\"
-	    IFS="${IFS= 	}"; save_ifs="$IFS"; IFS='~'
-	    for cmd in $cmds; do
-	      IFS="$save_ifs"
-	      $show "$cmd"
-	      $run eval "$cmd" || exit $?
-	    done
-	    IFS="$save_ifs"
-	    if test -n "$export_symbols_regex"; then
-	      $show "egrep -e \"$export_symbols_regex\" \"$export_symbols\" > \"${export_symbols}T\""
-	      $run eval 'egrep -e "$export_symbols_regex" "$export_symbols" > "${export_symbols}T"'
-	      $show "$mv \"${export_symbols}T\" \"$export_symbols\""
-	      $run eval '$mv "${export_symbols}T" "$export_symbols"'
-	    fi
-	  fi
-	fi
-
-	if test -n "$export_symbols" && test -n "$include_expsyms"; then
-	  $run eval '$echo "X$include_expsyms" | $SP2NL >> "$export_symbols"'
 	fi
 
 	# Do each of the archive commands.

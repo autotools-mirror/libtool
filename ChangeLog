@@ -1,3 +1,12 @@
+1999-05-27  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* ltconfig.in (export_symbols_cmds): Add $convenience.
+	(cygwin, export_symbols_cmds): Ditto.
+	* ltmain.in: Generate export symbol list before expanding
+	convenience libraries, to avoid passing whole_archive_flag_spec to 
+	$NM.
+	Reported by Godmar Back <gback@cs.utah.edu>
+
 1999-05-27  David Jones  <jones@mosaid.com>
 
 	* libltdl/ltdl.c (LTDL_BIND_FLAGS): Remove BIND_VERBOSE, to avoid
