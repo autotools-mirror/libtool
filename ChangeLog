@@ -1,8 +1,22 @@
+Thu Aug 28 20:58:56 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltmain.sh.in (echo): Change test to one that uses printf.
+	This works on AIX, which has the same problems that Solaris does,
+	but no working echo program.
+
 Wed Aug 27 09:54:21 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltmain.sh.in (link): Make sure that compile_command and
  	finalize_command are always evaled.  Quote any unknown linker
  	flags we need to pass through.
+	(compile): Use quoting for flags we pass.
+	(echo): I hate Sun!  The /usr/bin/echo on Solaris handles
+	backslash sequences, which makes it impossible to do backslash
+	quoting using echo and sed.  So, we search for an echo that obeys
+	the `echo '\t'` = '\t' equality.  Then we use `$echo' everywhere
+	in ltmain.sh.
+	Put tabs back into the ${IFS= 	} sequences.  Emacs untabify is
+	libtool bane.
 
 	* ltconfig.in: Quote all variable values that may contain
 	metacharacters creating the libtool script.  This provides

@@ -5,6 +5,8 @@ New in 1.0b:
 * Suppress duplicate compiler output during `compile' mode.
 * New `execute' mode to support debugging uninstalled libtool
   libraries and executables.
+* New quoting code to robustly handle any metacharacters passed in
+  arguments to libtool commands.
 * Deleted `dlname' mode.  Dlopen applications should only use the
   runtime search method described in (libtool)Finding the dlname.
 * Experimental support for dynamically loaded modules, even on

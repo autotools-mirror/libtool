@@ -1,3 +1,13 @@
+Thu Aug 28 20:58:30 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* quote.test (echo): Change test to version that uses printf.
+	Be less strict about return results.
+
+Wed Aug 27 23:22:06 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* quote.test (echo): Add the test for a non-backslash-mangling
+	echo.
+
 Tue Aug 26 13:39:40 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* quote.test: New torture test for libtool metacharacter quoting.

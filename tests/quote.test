@@ -13,8 +13,34 @@ fi
 # Do the torture test.
 status=0
 
+echo=echo
+if test X`$echo '\t'` = 'X\t'; then :
+else
+  # The Solaris and AIX default echo program unquotes backslashes.
+  # This makes it impossible to quote backslashes using
+  #   echo "$something" | sed 's/\\/\\\\/g'
+  # So, we emulate echo with printf '%s\n'
+  echo='printf %s\n'
+  if test X`$echo '\t'` = 'X\t'; then :
+  else
+    # Oops.  We have no working printf.  Try to find a not-so-buggy echo.
+    echo=echo
+    IFS="${IFS= 	}"; save_ifs="$IFS"; IFS="${IFS}:"
+    save_PATH="$PATH"
+    PATH="$PATH":/usr/ucb
+    for dir in $PATH; do
+      if test -f $dir/echo && test X`$dir/echo '\t'` = 'X\t'; then
+        echo="$dir/echo"
+        break
+      fi
+    done
+    IFS="$save_ifs"
+    PATH="$save_PATH"
+  fi
+fi
+
 for mode in compile link install; do
-  echo "= $mode mode"
+  $echo "== $mode mode"
 
   # Unfortunately, without an array data type, it is nearly impossible
   # to protect libtool from metacharacters in filenames.  So, we just
@@ -42,28 +68,28 @@ for mode in compile link install; do
   esac
 
   # Trivial.
-  echo "TRYING: no quoting"
+  $echo "= trying: no quoting"
   result=`$libtool -n --mode=$mode $preargs "${flag}test" $postargs` || status=1
   case "$result" in
-  *"$preargs ${flag}test $postargs"*)
-    echo "PASSED: $result"
+  *"$preargs ${flag}test "*)
+    $echo "= passed: $result"
     ;;
   *)
-    echo "FAILED: $result"
+    $echo "= failed: $result"
     status=1
     ;;
   esac
 
   # Metacharacters that should be backslashified.
   for mchar in \\ \" \$; do
-    echo "TRYING: \\$mchar quoting"
+    $echo "= trying: \\$mchar quoting"
     result=`$libtool -n --mode=$mode $preargs "${flag}${mchar}test${mchar}" $postargs` || status=1
     case "$result" in
-    *"$preargs ${flag}\\${mchar}test\\${mchar} $postargs"*)
-      echo "PASSED: $result"
+    *"$preargs ${flag}\\${mchar}test\\${mchar} "*)
+      $echo "= passed: $result"
       ;;
     *)
-      echo "FAILED: $result"
+      $echo "= failed: $result"
       status=1
       ;;
     esac
@@ -73,14 +99,14 @@ for mode in compile link install; do
   for mchar in "[" "]" "~" "#" "^" "&" "*" "(" ")" "{" "}" "|" ";" "<" ">" "?" \
       "'" " " "	"; do
 
-    echo "TRYING: \"$mchar\" quoting"
+    $echo "= trying: \"$mchar\" quoting"
     result=`$libtool -n --mode=$mode $preargs "${flag}${mchar}test${mchar}" $postargs` || status=1
     case "$result" in
-    *"$preargs \"${flag}${mchar}test${mchar}\" $postargs"*)
-      echo "PASSED: $result"
+    *"$preargs \"${flag}${mchar}test${mchar}\" "*)
+      $echo "= passed: $result"
       ;;
     *)
-      echo "FAILED: $result"
+      $echo "= failed: $result"
       status=1
       ;;
     esac

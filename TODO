@@ -1,6 +1,14 @@
 For next public release:
 ************************
 
+* #@%$ing SUN makes their Solaris /usr/bin/echo always interpret
+backslashes, so:
+    var='\n'
+    newvar=`echo "$var"`
+    test "$var" = "$newvar"
+returns false.  We need to detect this, and use the other
+echo (/usr/ucb/echo).
+
 * Document `execute' mode, and the experimental nature of -dlopen and
 -dlpreopen.
 
