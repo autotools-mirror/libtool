@@ -1742,6 +1742,13 @@ EOF
 	none | unknown | *) newdeplibs=""
 	  if $echo "X$deplibs" | $Xsed -e 's/ -lc$//' -e 's/[ 	]//g' \
 	     | grep . >/dev/null; then
+	    echo
+	    if test "X$deplibs_check_method" = "Xnone"; then
+	      echo "*** Warning: inter-library dependencies are not supported in this platform."
+	    else
+	      echo "*** Warning: inter-library dependencies are not known to be supported."
+	    fi
+	    echo "*** All declared inter-library dependencies are being dropped."
 	    droppeddeps=yes
 	  fi
 	  ;;
@@ -1752,27 +1759,34 @@ EOF
 	libname=$libname_save
 	name=$name_save
 
-	if test "$module,$droppeddeps" = "yes,yes"; then
-	  echo
-	  echo "*** Warning: libtool could not satisfy all dependencies of module $libname"
-	  echo "*** Therefore, instead of creating a dynamic module that would not run, "
-	  echo "*** libtool will create a static module.  As long as the dlopening"
-	  echo "*** application is linked with the -dlopen flag, this should be enough."
-	  if test -z "$global_symbol_pipe"; then
+	if test "$droppeddeps" = yes; then
+	  if test "$module" = yes; then
 	    echo
-	    echo "*** However, this would only work if libtool was able to extract symbol"
-	    echo "*** lists from a program, using \`nm' or equivalent, but libtool could"
-	    echo "*** not find such a program.  So, this module is mostly useless."
-	  fi
-	  if test "$build_old_libs" = no; then
-	    oldlibs="$output_objdir/$libname.$libext"
-	    build_libtool_libs=module
-	    build_old_libs=yes
+	    echo "*** Warning: libtool could not satisfy all declared inter-library"
+	    echo "*** dependencies of module $libname.  Therefore, libtool will create"
+	    echo "*** a static module, that should work as long as the dlopening"
+	    echo "*** application is linked with the -dlopen flag."
+	    if test -z "$global_symbol_pipe"; then
+	      echo
+	      echo "*** However, this would only work if libtool was able to extract symbol"
+	      echo "*** lists from a program, using \`nm' or equivalent, but libtool could"
+	      echo "*** not find such a program.  So, this module is probably useless."
+	      echo "*** \`nm' from GNU binutils and a full rebuild may help."
+	    fi
+	    if test "$build_old_libs" = no; then
+	      oldlibs="$output_objdir/$libname.$libext"
+	      build_libtool_libs=module
+	      build_old_libs=yes
+	    else
+	      build_libtool_libs=no
+	    fi
+	    dlname=
+	    library_names=
 	  else
-	    build_libtool_libs=no
+	    echo "*** The inter-library dependencies that have been dropped here will be"
+	    echo "*** automatically added whenever a program is linked with this library"
+	    echo "*** or is declared to -dlopen it."
 	  fi
-	  dlname=
-	  library_names=
 	fi
       fi
 
