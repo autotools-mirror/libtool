@@ -1,3 +1,18 @@
+2005-03-10  Gary V. Vaughan  <gary@gnu.org>
+
+	* libltdl/Makefile.am (install-data-local): Don't force v7 tar
+	format with the `o' flag in create mode.
+	Set the umask to 0 when untarring to avoid copied files taking
+	their mode from the installer's umask.
+	* libtoolize.m4sh (func_copy_cb): Ditto.
+	Ignore errors from failed `cd' in the tar processes, since we
+	may be running in dryrun mode.
+	* libltdl/Makefile.am (ltdldatafiles): List all files needed to
+	build a newly libtoolize installed libltdl directory even if the
+	parent project doesn't use autoconf and automake.
+	Reported by Noah Misch <noah@cs.caltech.edu>,
+		Bob Friesenhahn <bfriesen@simple.dallas.tx.us>
+
 2005-03-08  Albert Chin-A-Young  <china@thewrittenword.com>
 
 	* libtool.m4 (AC_LIBTOOL_LANG_CXX_CONFIG,
