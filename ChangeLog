@@ -1,3 +1,7 @@
+2003-08-29  Gary V. Vaughan  <gary@gnu.org>
+
+	* bootstrap: Typo.
+
 2003-08-29  Alexandre Duret-Lutz  <adl@gnu.org>
 
 	* libtool.m4 (_LT_AC_LANG_C_CONFIG): Fix unquoted call to
