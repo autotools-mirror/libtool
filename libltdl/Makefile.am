@@ -20,6 +20,6 @@ libltdl_la_LIBADD = $(LIBADD_DL)
 libltdlc_la_SOURCES = ltdl.c
 libltdlc_la_LIBADD = $(LIBADD_DL)
 
+$(OBJECTS): libtool
 libtool: $(LIBTOOL_DEPS)
 	$(SHELL) ./config.status --recheck
-Makefile: libtool

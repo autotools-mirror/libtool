@@ -23,3 +23,7 @@ depdemo_static_LDADD = libl1.la libl2.la libl4.la \
 		libl3.la # remove this!
 depdemo_static_DEPENDENCIES = libl1.la libl2.la libl4.la
 depdemo_static_LDFLAGS = -static
+
+$(OBJECTS): libtool
+libtool: $(LIBTOOL_DEPS)
+	$(SHELL) ./config.status --recheck

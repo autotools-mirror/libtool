@@ -29,8 +29,7 @@ bin_PROGRAMS = mdemo mdemo.static
 
 # Create a version of mdemo that does dlopen.
 mdemo_SOURCES = main.c
-mdemo_LDFLAGS = -export-dynamic ## FIXME: remove this when libtool and libltdl
-## handle dependencies of modules
+mdemo_LDFLAGS = -export-dynamic
 ## The quotes around -dlopen below fool automake into accepting it
 mdemo_LDADD = @LIBLTDL@ "-dlopen" self \
 		"-dlopen" foo1.la "-dlopen" libfoo2.la
@@ -41,3 +40,7 @@ mdemo_static_SOURCES = $(mdemo_SOURCES)
 mdemo_static_LDFLAGS = $(STATIC) $(mdemo_LDFLAGS)
 mdemo_static_LDADD = $(mdemo_LDADD)
 mdemo_static_DEPENDENCIES = $(mdemo_DEPENDENCIES)
+
+$(OBJECTS): libtool
+libtool: $(LIBTOOL_DEPS)
+	$(SHELL) ./config.status --recheck

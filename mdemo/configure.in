@@ -7,6 +7,7 @@ AC_C_CONST
 AC_EXEEXT
 AC_LIBTOOL_DLOPEN
 AM_PROG_LIBTOOL
+AC_SUBST(LIBTOOL_DEPS)
 
 dnl AC_LIBLTDL_CONVENIENCE(['${top_builddir}/../libltdl'])
 dnl Since the package is flat, we need not use the line above,

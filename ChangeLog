@@ -1,5 +1,9 @@
 1999-03-11  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* */configure.in: AC_SUBST(LIBTOOL_DEPS)
+	* */Makefile.am $(OBJECTS): depend on libtool
+	(libtool): rebuild automatically
+
 	* ltconfig.in: set dlopen_* variables to unknown when appropriate
 	* ltmain.in: only emit warning about lack of AC_LIBTOOL_DLOPEN if
 	*all* dlopen_* variables are set to unknown
