@@ -976,20 +976,19 @@ burger#
 Why return to @code{ar} and @code{ranlib} silliness when you've had a
 taste of libtool?  Well, sometimes it is desirable to create a static
 archive that can never be shared.  The most frequent case is when you
-have a ``convenience library'' that is a collection of related object
-files without a really nice interface.
+have a set of object files that you use to build several different
+programs.  You can create a ``convenience library'' out of those
+objects, and link programs with the library, instead of listing all
+object files for every program.  This technique is often used to
+overcome GNU automake's lack of support for linking object files from
+other directories, because it supports linking with libraries from other
+directories.
 
-If you create a libtool library (@samp{.la} file) without using the
-@samp{-rpath} flag, then a libtool convenience library is generated.
-You can use these libraries just as if they were libtool object files:
-you can even use them to build other libtool libraries.
-
-If you just want a static convenience library, then you should just
-ignore libtool entirely, and use the old @code{ar} and @code{ranlib}
-commands.
-
-If you want to install a convenience library (but you probably don't),
-then you may use libtool:
+If you just want to link this convenience library into programs, then
+you could just ignore libtool entirely, and use the old @code{ar} and
+@code{ranlib} commands (or the corresponding GNU automake
+@samp{_LIBRARIES} rules).  You can even install a convenience library
+(but you probably don't want to) using libtool:
 
 @example
 burger$ @kbd{libtool ./install-sh -c libhello.a /local/lib/libhello.a}
@@ -1001,6 +1000,29 @@ burger$
 Using libtool for static library installation protects your library from
 being accidentally stripped (if the installer used the @samp{-s} flag),
 as well as automatically running the correct @code{ranlib} command.
+
+But libtool libraries are more than just collections of object files:
+they can also carry library dependency information, which old archives
+do not.  If you want to create a libtool static convenience library, you 
+can omit the @samp{-rpath} flag and use @samp{-static} to indicate that
+you're only interested in a static library.  When you link a program
+with such a library, libtool will actually link all object files and
+dependency libraries into the program.
+
+If you omit both @samp{-rpath} and @samp{-static}, libtool create a
+libtool convenience library that can be used to create other libtool
+libraries, even shared ones.  Just like in the static case, the library
+behaves as an alias to a set of object files and dependency libraries,
+but in this case the object files are suitable for inclusion in shared
+libraries.  But be careful not to link a single convenience library,
+directly or indirectly, into a single program or library, otherwise you
+may get errors about symbol redefinitions.
+
+As a rule of thumb, link a libtool convenience library into at most one
+libtool library, and never into a program, and link libtool static
+convenience libraries only into programs, and only if you need to carry
+library dependency information to the user of the static convenience
+library.
 
 @cindex standalone binaries
 Another common situation where static linking is desirable is in
@@ -1681,8 +1703,9 @@ The macro must be called *before* @code{AM_PROG_LIBTOOL}.
 
 @defmac AC_DISABLE_FAST_INSTALL
 Change the default behaviour for @code{AM_PROG_LIBTOOL} to disable
-optimization for fast installation.  The user may still override
-this default by specifying @samp{--enable-fast-install}.
+optimization for fast installation.  The user may still override this
+default, depending on platform support, by specifying
+@samp{--enable-fast-install}.
 @end defmac
 
 @defmac AC_DISABLE_SHARED
@@ -2928,7 +2951,8 @@ dnl Check for dlopen support
 AC_LIBTOOL_DLOPEN
 dnl Configure libtool
 AM_PROG_LIBTOOL
-dnl Enable building of the convenience library and set LIBLTDL accordingly
+dnl Enable building of the convenience library
+dnl and set LIBLTDL accordingly
 AC_LIBLTDL_CONVENIENCE
 dnl Substitute LIBLTDL in the Makefiles
 AC_SUBST(LIBLTDL)
@@ -3754,8 +3778,6 @@ line (such as @samp{@var{dir}/lib@var{name}.a}) when
 Flag to hardcode a @var{libdir} variable into a binary, so that the
 dynamic linker searches @var{libdir} for shared libraries at runtime.
 If it is empty, libtool will try to use some other hardcoding mechanism.
-If everything else fails, it will fallback to
-@samp{hardcode_action=relink}.
 @end defvar
 
 @defvar hardcode_libdir_separator
