@@ -1,3 +1,16 @@
+2003-11-06  Gary V. Vaughan  <gary@gnu.org>
+
+	* m4/libtool.m4 (AC_LIBTOOL_SETUP): Add a new
+	delay_single_quote_subst sed script to quote single quotes in
+	variables that are copied to `config.status'.
+	(_LT_CONFIG_STATUS_DECLARE): New macro to apply
+	delay_single_quote_subst to a named variable.
+	(AC_LIBTOOL_CONFIG): Use _LT_CONFIG_STATUS_DECLARE to declare all
+	`configure' variables that are copied to `config.status'.
+	(AC_LIBTOOL_PROG_COMPILER_PIC): Fix a quoting bug exposed by
+	_LT_CONFIG_STATUS_DECLARE using the null quadrigraph in the
+	rvalues of lt_prog_compiler_pic.
+
 2003-10-31  Scott James Remnant  <scott@netsplit.com>
 
 	* m4/libtool.m4: Include Owen Taylor's patch to recognise the 'R'
@@ -8,7 +21,7 @@
 
 	* m4/libtool.m4: Include James Henstridge's patch to fix the
 	-export-symbols and -export-symbols-regex options under Linux.
-	
+
 2003-10-31  Scott James Remnant  <scott@netsplit.com>
 
 	* tests/demo-nopic.test: Skip test on hppa, which don't like

@@ -114,6 +114,9 @@ Xsed='sed -e s/^X//'
 # double_quote_subst'ed string.
 delay_variable_subst='s/\\\\\\\\\\\$/\\\\\\$/g'
 
+# Sed substitution to delay expansion of an escaped single quote.
+delay_single_quote_subst='s/'\''/'\'\\\\\\\'\''/g'
+
 # Sed substitution to avoid accidental globbing in evaled expressions
 no_glob_subst='s/\*/\\\*/g'
 
@@ -3793,6 +3796,15 @@ CC="$lt_save_CC"
 ])# AC_LIBTOOL_LANG_RC_CONFIG
 
 
+# _LT_CONFIG_STATUS_DECLARE([VARNAME])
+# ------------------------------------
+# Quote a variable value, and forward it to `config.status' so that its
+# declaration there will have the same value as in `configure'.  VARNAME
+# must have a single quote delimited value for this to work.
+m4_define([_LT_CONFIG_STATUS_DECLARE],
+[$1='`echo "X$][$1" | $Xsed -e "$delay_single_quote_subst"`'])
+
+
 # AC_LIBTOOL_CONFIG([TAGNAME])
 # ----------------------------
 # If TAGNAME is not passed, then create an initial libtool script
@@ -4190,124 +4202,124 @@ _LT_EOF
   chmod +x "$ofile"
 ])
 ],
-[ifelse([$1], [], [
-  rm="$rm"
-  PACKAGE="$PACKAGE"
-  VERSION="$VERSION"
-  TIMESTAMP="$TIMESTAMP"
-  ltmain="$ltmain"
-  ofile="$ofile"
+[m4_if([$1], [], [
+  rm='$rm'
+  PACKAGE='$PACKAGE'
+  VERSION='$VERSION'
+  TIMESTAMP='$TIMESTAMP'
+  ltmain='$ltmain'
+  ofile='$ofile'
   sed_quote_subst='$sed_quote_subst'
   double_quote_subst='$double_quote_subst'
   delay_variable_subst='$delay_variable_subst'
-  SED="$SED"
-  Xsed="$Xsed"
+  SED='$SED'
+  Xsed='$Xsed'
 
-  SHELL='$SHELL'
-  enable_shared='$enable_shared'
-  enable_static='$enable_static'
-  enable_fast_install='$enable_fast_install'
-  host_alias='$host_alias'
-  host='$host'
-  echo='$echo'
-  AR='$AR'
-  AR_FLAGS='$AR_FLAGS'
-  LTCC='$LTCC'
-  EGREP='$EGREP'
-  LN_S='$LN_S'
-  NM='$NM'
-  STRIP='$STRIP'
-  MAGIC_CMD='$MAGIC_CMD'
-  DLLTOOL='$DLLTOOL'
-  OBJDUMP='$OBJDUMP'
-  AS='$AS'
-  objdir='$objdir'
-  reload_flag='$reload_flag'
-  reload_cmds='$reload_cmds'
-  ac_objext='$ac_objext'
-  libext='$libext'
-  shrext='$shrext'
-  exeext='$exeext'
-  pic_mode='$pic_mode'
-  lt_cv_sys_max_cmd_len='$lt_cv_sys_max_cmd_len'
-  need_locks='$need_locks'
-  need_lib_prefix='$need_lib_prefix'
-  need_version='$need_version'
-  enable_dlopen='$enable_dlopen'
-  enable_dlopen_self='$enable_dlopen_self'
-  enable_dlopen_self_static='$enable_dlopen_self_static'
-  version_type='$version_type'
-  libname_spec='$libname_spec'
-  library_names_spec='$library_names_spec'
-  soname_spec='$soname_spec'
-  RANLIB='$RANLIB'
-  old_postinstall_cmds='$old_postinstall_cmds'
-  old_postuninstall_cmds='$old_postuninstall_cmds'
-  postinstall_cmds='$postinstall_cmds'
-  postuninstall_cmds='$postuninstall_cmds'
-  striplib='$striplib'
-  old_striplib='$old_striplib'
-  deplibs_check_method='$deplibs_check_method'
-  file_magic_cmd='$file_magic_cmd'
-  finish_cmds='$finish_cmds'
-  finish_eval='$finish_eval'
-  lt_cv_sys_global_symbol_pipe="$lt_cv_sys_global_symbol_pipe"
-  lt_cv_sys_global_symbol_to_cdecl="$lt_cv_sys_global_symbol_to_cdecl"
-  lt_cv_sys_global_symbol_to_c_name_address=`echo "X$lt_cv_sys_global_symbol_to_c_name_address" | $Xsed -e "$sed_quote_subst" -e 's,^,",;s,$,",'`
-  runpath_var='$runpath_var'
-  shlibpath_var='$shlibpath_var'
-  hardcode_into_libs='$hardcode_into_libs'
-  shlibpath_overrides_runpath='$shlibpath_overrides_runpath'
-  variables_saved_for_relink='$variables_saved_for_relink'
-  sys_lib_search_path_spec='$sys_lib_search_path_spec'
-  sys_lib_dlsearch_path_spec='$sys_lib_dlsearch_path_spec'
-  extract_expsyms_cmds='$extract_expsyms_cmds'
+  _LT_CONFIG_STATUS_DECLARE([SHELL])
+  _LT_CONFIG_STATUS_DECLARE([enable_shared])
+  _LT_CONFIG_STATUS_DECLARE([enable_static])
+  _LT_CONFIG_STATUS_DECLARE([enable_fast_install])
+  _LT_CONFIG_STATUS_DECLARE([host_alias])
+  _LT_CONFIG_STATUS_DECLARE([host])
+  _LT_CONFIG_STATUS_DECLARE([echo])
+  _LT_CONFIG_STATUS_DECLARE([AR])
+  _LT_CONFIG_STATUS_DECLARE([AR_FLAGS])
+  _LT_CONFIG_STATUS_DECLARE([LTCC])
+  _LT_CONFIG_STATUS_DECLARE([EGREP])
+  _LT_CONFIG_STATUS_DECLARE([LN_S])
+  _LT_CONFIG_STATUS_DECLARE([NM])
+  _LT_CONFIG_STATUS_DECLARE([STRIP])
+  _LT_CONFIG_STATUS_DECLARE([MAGIC_CMD])
+  _LT_CONFIG_STATUS_DECLARE([DLLTOOL])
+  _LT_CONFIG_STATUS_DECLARE([OBJDUMP])
+  _LT_CONFIG_STATUS_DECLARE([AS])
+  _LT_CONFIG_STATUS_DECLARE([objdir])
+  _LT_CONFIG_STATUS_DECLARE([reload_flag])
+  _LT_CONFIG_STATUS_DECLARE([reload_cmds])
+  _LT_CONFIG_STATUS_DECLARE([ac_objext])
+  _LT_CONFIG_STATUS_DECLARE([libext])
+  _LT_CONFIG_STATUS_DECLARE([shrext])
+  _LT_CONFIG_STATUS_DECLARE([exeext])
+  _LT_CONFIG_STATUS_DECLARE([pic_mode])
+  _LT_CONFIG_STATUS_DECLARE([lt_cv_sys_max_cmd_len])
+  _LT_CONFIG_STATUS_DECLARE([need_locks])
+  _LT_CONFIG_STATUS_DECLARE([need_lib_prefix])
+  _LT_CONFIG_STATUS_DECLARE([need_version])
+  _LT_CONFIG_STATUS_DECLARE([enable_dlopen])
+  _LT_CONFIG_STATUS_DECLARE([enable_dlopen_self])
+  _LT_CONFIG_STATUS_DECLARE([enable_dlopen_self_static])
+  _LT_CONFIG_STATUS_DECLARE([version_type])
+  _LT_CONFIG_STATUS_DECLARE([libname_spec])
+  _LT_CONFIG_STATUS_DECLARE([library_names_spec])
+  _LT_CONFIG_STATUS_DECLARE([soname_spec])
+  _LT_CONFIG_STATUS_DECLARE([RANLIB])
+  _LT_CONFIG_STATUS_DECLARE([old_postinstall_cmds])
+  _LT_CONFIG_STATUS_DECLARE([old_postuninstall_cmds])
+  _LT_CONFIG_STATUS_DECLARE([postinstall_cmds])
+  _LT_CONFIG_STATUS_DECLARE([postuninstall_cmds])
+  _LT_CONFIG_STATUS_DECLARE([striplib])
+  _LT_CONFIG_STATUS_DECLARE([old_striplib])
+  _LT_CONFIG_STATUS_DECLARE([deplibs_check_method])
+  _LT_CONFIG_STATUS_DECLARE([file_magic_cmd])
+  _LT_CONFIG_STATUS_DECLARE([finish_cmds])
+  _LT_CONFIG_STATUS_DECLARE([finish_eval])
+  _LT_CONFIG_STATUS_DECLARE([lt_cv_sys_global_symbol_pipe])
+  _LT_CONFIG_STATUS_DECLARE([lt_cv_sys_global_symbol_to_cdecl])
+  _LT_CONFIG_STATUS_DECLARE([lt_cv_sys_global_symbol_to_c_name_address])
+  _LT_CONFIG_STATUS_DECLARE([runpath_var])
+  _LT_CONFIG_STATUS_DECLARE([shlibpath_var])
+  _LT_CONFIG_STATUS_DECLARE([hardcode_into_libs])
+  _LT_CONFIG_STATUS_DECLARE([shlibpath_overrides_runpath])
+  _LT_CONFIG_STATUS_DECLARE([variables_saved_for_relink])
+  _LT_CONFIG_STATUS_DECLARE([sys_lib_search_path_spec])
+  _LT_CONFIG_STATUS_DECLARE([sys_lib_dlsearch_path_spec])
+  _LT_CONFIG_STATUS_DECLARE([extract_expsyms_cmds])
 
   dnl ## --------------------------------------- ##
   dnl ## Carefully restore the default compiler. ##
   dnl ## --------------------------------------- ##
   compiler='$compiler_DEFAULT'],
-  [_LT_AC_TAGVAR(compiler, $1)='$_LT_AC_TAGVAR(compiler, $1)'])
-  _LT_AC_TAGVAR(archive_cmds_need_lc, $1)='$_LT_AC_TAGVAR(archive_cmds_need_lc, $1)'
-  _LT_AC_TAGVAR(enable_shared_with_static_runtimes, $1)='$_LT_AC_TAGVAR(enable_shared_with_static_runtimes, $1)'
-  _LT_AC_TAGVAR(GCC, $1)='$_LT_AC_TAGVAR(GCC, $1)'
-  _LT_AC_TAGVAR(LD, $1)='$_LT_AC_TAGVAR(LD, $1)'
-  _LT_AC_TAGVAR(lt_prog_compiler_wl, $1)='$_LT_AC_TAGVAR(lt_prog_compiler_wl, $1)'
-  _LT_AC_TAGVAR(lt_prog_compiler_pic, $1)='$_LT_AC_TAGVAR(lt_prog_compiler_pic, $1)'
-  _LT_AC_TAGVAR(lt_cv_prog_compiler_c_o, $1)='$_LT_AC_TAGVAR(lt_cv_prog_compiler_c_o, $1)'
-  _LT_AC_TAGVAR(lt_prog_compiler_static, $1)='$_LT_AC_TAGVAR(lt_prog_compiler_static, $1)'
-  _LT_AC_TAGVAR(lt_prog_compiler_no_builtin_flag, $1)='$_LT_AC_TAGVAR(lt_prog_compiler_no_builtin_flag, $1)'
-  _LT_AC_TAGVAR(export_dynamic_flag_spec, $1)='$_LT_AC_TAGVAR(export_dynamic_flag_spec, $1)'
-  _LT_AC_TAGVAR(whole_archive_flag_spec, $1)='$_LT_AC_TAGVAR(whole_archive_flag_spec, $1)'
-  _LT_AC_TAGVAR(thread_safe_flag_spec, $1)='$_LT_AC_TAGVAR(thread_safe_flag_spec, $1)'
-  _LT_AC_TAGVAR(old_archive_cmds, $1)='$_LT_AC_TAGVAR(old_archive_cmds, $1)'
-  _LT_AC_TAGVAR(old_archive_from_new_cmds, $1)='$_LT_AC_TAGVAR(old_archive_from_new_cmds, $1)'
-  _LT_AC_TAGVAR(old_archive_from_expsyms_cmds, $1)='$_LT_AC_TAGVAR(old_archive_from_expsyms_cmds, $1)'
-  _LT_AC_TAGVAR(archive_cmds, $1)='$_LT_AC_TAGVAR(archive_cmds, $1)'
-  _LT_AC_TAGVAR(archive_expsym_cmds, $1)='$_LT_AC_TAGVAR(archive_expsym_cmds, $1)'
-  _LT_AC_TAGVAR(module_cmds, $1)='$_LT_AC_TAGVAR(module_cmds, $1)'
-  _LT_AC_TAGVAR(module_expsym_cmds, $1)='$_LT_AC_TAGVAR(module_expsym_cmds, $1)'
-  _LT_AC_TAGVAR(predep_objects, $1)='$_LT_AC_TAGVAR(predep_objects, $1)'
-  _LT_AC_TAGVAR(postdep_objects, $1)='$_LT_AC_TAGVAR(postdep_objects, $1)'
-  _LT_AC_TAGVAR(predeps, $1)='$_LT_AC_TAGVAR(predeps, $1)'
-  _LT_AC_TAGVAR(postdeps, $1)='$_LT_AC_TAGVAR(postdeps, $1)'
-  _LT_AC_TAGVAR(compiler_lib_search_path, $1)='$_LT_AC_TAGVAR(compiler_lib_search_path, $1)'
-  _LT_AC_TAGVAR(allow_undefined_flag, $1)='$_LT_AC_TAGVAR(allow_undefined_flag, $1)'
-  _LT_AC_TAGVAR(no_undefined_flag, $1)='$_LT_AC_TAGVAR(no_undefined_flag, $1)'
-  _LT_AC_TAGVAR(hardcode_action, $1)='$_LT_AC_TAGVAR(hardcode_action, $1)'
-  _LT_AC_TAGVAR(hardcode_libdir_flag_spec, $1)='$_LT_AC_TAGVAR(hardcode_libdir_flag_spec, $1)'
-  _LT_AC_TAGVAR(hardcode_libdir_flag_spec_ld, $1)='$_LT_AC_TAGVAR(hardcode_libdir_flag_spec_ld, $1)'
-  _LT_AC_TAGVAR(hardcode_libdir_separator, $1)='$_LT_AC_TAGVAR(hardcode_libdir_separator, $1)'
-  _LT_AC_TAGVAR(hardcode_direct, $1)='$_LT_AC_TAGVAR(hardcode_direct, $1)'
-  _LT_AC_TAGVAR(hardcode_minus_L, $1)='$_LT_AC_TAGVAR(hardcode_minus_L, $1)'
-  _LT_AC_TAGVAR(hardcode_shlibpath_var, $1)='$_LT_AC_TAGVAR(hardcode_shlibpath_var, $1)'
-  _LT_AC_TAGVAR(hardcode_automatic, $1)='$_LT_AC_TAGVAR(hardcode_automatic, $1)'
-  _LT_AC_TAGVAR(link_all_deplibs, $1)='$_LT_AC_TAGVAR(link_all_deplibs, $1)'
-  _LT_AC_TAGVAR(fix_srcfile_path, $1)='$_LT_AC_TAGVAR(fix_srcfile_path, $1)'
-  _LT_AC_TAGVAR(always_export_symbols, $1)='$_LT_AC_TAGVAR(always_export_symbols, $1)'
-  _LT_AC_TAGVAR(export_symbols_cmds, $1)=`echo "$_LT_AC_TAGVAR(export_symbols_cmds, $1)" | $Xsed -e "$sed_quote_subst" -e 's,^,",;s,$,",'`
-  _LT_AC_TAGVAR(exclude_expsyms, $1)='$_LT_AC_TAGVAR(exclude_expsyms, $1)'
-  _LT_AC_TAGVAR(include_expsyms, $1)='$_LT_AC_TAGVAR(include_expsyms, $1)'
+  [_LT_CONFIG_STATUS_DECLARE([_LT_AC_TAGVAR(compiler, $1)])])
+  _LT_CONFIG_STATUS_DECLARE([_LT_AC_TAGVAR(archive_cmds_need_lc, $1)])
+  _LT_CONFIG_STATUS_DECLARE([_LT_AC_TAGVAR(enable_shared_with_static_runtimes, $1)])
+  _LT_CONFIG_STATUS_DECLARE([_LT_AC_TAGVAR(GCC, $1)])
+  _LT_CONFIG_STATUS_DECLARE([_LT_AC_TAGVAR(LD, $1)])
+  _LT_CONFIG_STATUS_DECLARE([_LT_AC_TAGVAR(lt_prog_compiler_wl, $1)])
+  _LT_CONFIG_STATUS_DECLARE([_LT_AC_TAGVAR(lt_prog_compiler_pic, $1)])
+  _LT_CONFIG_STATUS_DECLARE([_LT_AC_TAGVAR(lt_cv_prog_compiler_c_o, $1)])
+  _LT_CONFIG_STATUS_DECLARE([_LT_AC_TAGVAR(lt_prog_compiler_static, $1)])
+  _LT_CONFIG_STATUS_DECLARE([_LT_AC_TAGVAR(lt_prog_compiler_no_builtin_flag, $1)])
+  _LT_CONFIG_STATUS_DECLARE([_LT_AC_TAGVAR(export_dynamic_flag_spec, $1)])
+  _LT_CONFIG_STATUS_DECLARE([_LT_AC_TAGVAR(whole_archive_flag_spec, $1)])
+  _LT_CONFIG_STATUS_DECLARE([_LT_AC_TAGVAR(thread_safe_flag_spec, $1)])
+  _LT_CONFIG_STATUS_DECLARE([_LT_AC_TAGVAR(old_archive_cmds, $1)])
+  _LT_CONFIG_STATUS_DECLARE([_LT_AC_TAGVAR(old_archive_from_new_cmds, $1)])
+  _LT_CONFIG_STATUS_DECLARE([_LT_AC_TAGVAR(old_archive_from_expsyms_cmds, $1)])
+  _LT_CONFIG_STATUS_DECLARE([_LT_AC_TAGVAR(archive_cmds, $1)])
+  _LT_CONFIG_STATUS_DECLARE([_LT_AC_TAGVAR(archive_expsym_cmds, $1)])
+  _LT_CONFIG_STATUS_DECLARE([_LT_AC_TAGVAR(module_cmds, $1)])
+  _LT_CONFIG_STATUS_DECLARE([_LT_AC_TAGVAR(module_expsym_cmds, $1)])
+  _LT_CONFIG_STATUS_DECLARE([_LT_AC_TAGVAR(predep_objects, $1)])
+  _LT_CONFIG_STATUS_DECLARE([_LT_AC_TAGVAR(postdep_objects, $1)])
+  _LT_CONFIG_STATUS_DECLARE([_LT_AC_TAGVAR(predeps, $1)])
+  _LT_CONFIG_STATUS_DECLARE([_LT_AC_TAGVAR(postdeps, $1)])
+  _LT_CONFIG_STATUS_DECLARE([_LT_AC_TAGVAR(compiler_lib_search_path, $1)])
+  _LT_CONFIG_STATUS_DECLARE([_LT_AC_TAGVAR(allow_undefined_flag, $1)])
+  _LT_CONFIG_STATUS_DECLARE([_LT_AC_TAGVAR(no_undefined_flag, $1)])
+  _LT_CONFIG_STATUS_DECLARE([_LT_AC_TAGVAR(hardcode_action, $1)])
+  _LT_CONFIG_STATUS_DECLARE([_LT_AC_TAGVAR(hardcode_libdir_flag_spec, $1)])
+  _LT_CONFIG_STATUS_DECLARE([_LT_AC_TAGVAR(hardcode_libdir_flag_spec_ld, $1)])
+  _LT_CONFIG_STATUS_DECLARE([_LT_AC_TAGVAR(hardcode_libdir_separator, $1)])
+  _LT_CONFIG_STATUS_DECLARE([_LT_AC_TAGVAR(hardcode_direct, $1)])
+  _LT_CONFIG_STATUS_DECLARE([_LT_AC_TAGVAR(hardcode_minus_L, $1)])
+  _LT_CONFIG_STATUS_DECLARE([_LT_AC_TAGVAR(hardcode_shlibpath_var, $1)])
+  _LT_CONFIG_STATUS_DECLARE([_LT_AC_TAGVAR(hardcode_automatic, $1)])
+  _LT_CONFIG_STATUS_DECLARE([_LT_AC_TAGVAR(link_all_deplibs, $1)])
+  _LT_CONFIG_STATUS_DECLARE([_LT_AC_TAGVAR(fix_srcfile_path, $1)])
+  _LT_CONFIG_STATUS_DECLARE([_LT_AC_TAGVAR(always_export_symbols, $1)])
+  _LT_CONFIG_STATUS_DECLARE([_LT_AC_TAGVAR(export_symbols_cmds, $1)])
+  _LT_CONFIG_STATUS_DECLARE([_LT_AC_TAGVAR(exclude_expsyms, $1)])
+  _LT_CONFIG_STATUS_DECLARE([_LT_AC_TAGVAR(include_expsyms, $1)])
 
 
   # Now quote all the things that may contain metacharacters while being
@@ -5039,7 +5051,7 @@ AC_MSG_RESULT([$_LT_AC_TAGVAR(lt_prog_compiler_pic, $1)])
 if test -n "$_LT_AC_TAGVAR(lt_prog_compiler_pic, $1)"; then
   AC_LIBTOOL_COMPILER_OPTION([if $compiler PIC flag $_LT_AC_TAGVAR(lt_prog_compiler_pic, $1) works],
     _LT_AC_TAGVAR(lt_prog_compiler_pic_works, $1),
-    [$_LT_AC_TAGVAR(lt_prog_compiler_pic, $1)ifelse([$1],[],[ -DPIC],[ifelse([$1],[CXX],[ -DPIC],[])])], [],
+    [$_LT_AC_TAGVAR(lt_prog_compiler_pic, $1)@&t@ifelse([$1],[],[ -DPIC],[ifelse([$1],[CXX],[ -DPIC],[])])], [],
     [case $_LT_AC_TAGVAR(lt_prog_compiler_pic, $1) in
      "" | " "*) ;;
      *) _LT_AC_TAGVAR(lt_prog_compiler_pic, $1)=" $_LT_AC_TAGVAR(lt_prog_compiler_pic, $1)" ;;
@@ -5053,7 +5065,7 @@ case "$host_os" in
     _LT_AC_TAGVAR(lt_prog_compiler_pic, $1)=
     ;;
   *)
-    _LT_AC_TAGVAR(lt_prog_compiler_pic, $1)="$_LT_AC_TAGVAR(lt_prog_compiler_pic, $1)ifelse([$1],[],[ -DPIC],[ifelse([$1],[CXX],[ -DPIC],[])])"
+    _LT_AC_TAGVAR(lt_prog_compiler_pic, $1)="$_LT_AC_TAGVAR(lt_prog_compiler_pic, $1)@&t@ifelse([$1],[],[ -DPIC],[ifelse([$1],[CXX],[ -DPIC],[])])"
     ;;
 esac
 ])
