@@ -176,7 +176,7 @@ func_fatal_help ()
 
       --version)	sed "$my_sed_version" < $0;	exit 0	;;
       --help)		sed "$my_sed_help" < $0;	exit 0	;;
-      --)		shift ;;
+      --)		shift; break				;;
       -*)		func_fatal_help "unrecognized option \`$1'"	;;
       *)		func_fatal_help "too many arguments"		;;
     esac
