@@ -1075,7 +1075,7 @@ if test x"$compiler_c_o" = x"yes"; then
   CFLAGS="$save_CFLAGS"
   ])
   compiler_o_lo=$lt_cv_compiler_o_lo
-  AC_MSG_RESULT([$compiler_c_lo])
+  AC_MSG_RESULT([$compiler_o_lo])
 else
   compiler_o_lo=no
 fi

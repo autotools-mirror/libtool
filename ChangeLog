@@ -1,3 +1,7 @@
+2001-05-20  Peter Eisentraut  <peter_e@gmx.net>
+
+	* libtool.m4 (_LT_AC_LTCONFIG_HACK): Fix typo in variable name.
+
 2001-05-20  Alexandre Oliva  <aoliva@redhat.com>
 
 	* libtool.m4 (allow_undefined_flag) [aix4* | aix5*]: Fix quote
