@@ -3123,7 +3123,7 @@ m4_if([$1], [CXX], [
 	    _LT_TAGVAR(lt_prog_compiler_wl, $1)='-Wl,'
 	    _LT_TAGVAR(lt_prog_compiler_pic, $1)='-fpic'
 	    _LT_TAGVAR(lt_prog_compiler_static, $1)='-static'
-	    _LT_AC_TAGVAR(whole_archive_flag_spec, $1)=''
+	    _LT_TAGVAR(whole_archive_flag_spec, $1)=''
 	    ;;
 	  cxx)
 	    # Compaq C++
@@ -5206,7 +5206,7 @@ if test "$_lt_caught_CXX_error" != yes; then
 
 	    _LT_TAGVAR(hardcode_libdir_flag_spec, $1)='${wl}--rpath ${wl}$libdir'
 	    _LT_TAGVAR(export_dynamic_flag_spec, $1)='${wl}--export-dynamic'
-	    _LT_AC_TAGVAR(whole_archive_flag_spec, $1)=''
+	    _LT_TAGVAR(whole_archive_flag_spec, $1)=''
             ;;
 	  cxx)
 	    # Compaq C++
