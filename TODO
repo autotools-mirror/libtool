@@ -1,6 +1,10 @@
 For next public release:
 ************************
 
+* Inter-library dependencies should be fully tracked by libtool.
+Reminded by Alexandre Oliva.  This requires looking up installed
+libtool libraries for transparent support.
+
 * Get rid of the sections that try to change behaviour for GNU ld.  We
 really should make our shared library support just depend on the
 compiler type.
@@ -8,16 +12,18 @@ compiler type.
 * Alexandre Oliva suggests that we hardcode paths into libraries, as
 well as binaries:  `... -Wl,-soname -Wl,/tmp/libtest.so.0 ...'.
 
-* Tom Lane adds that HP-UX's linker, at least, distinguishes between
-global function and global variable references.  This means that we
-cannot declare every symbol as `extern char'.  Find a workaround.
+* Tom Lane adds that HP-UX's linker, at least (I've also found this on
+AIX 4), distinguishes between global function and global variable
+references.  This means that we cannot declare every symbol as `extern
+char'.  Find a workaround.
+
+* Maybe show other maintainers my nasty ~/bin/libtool trick.
 
 In the future:
 **************
 
-* Inter-library dependencies should be fully tracked by libtool.
-Reminded by Alexandre Oliva.  This requires looking up installed
-libtool libraries for transparent support.
+* If not cross-compiling, have the static flag test run the resulting
+binary to make sure everything works.
 
 * Implement full multi-language support.  Currently, this is only for
 C++, but there are beginnings of this in the manual (Other Languages).

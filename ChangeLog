@@ -1,8 +1,27 @@
+1998-03-08  Gordon Matzigkeit  <gord@profitpress.com>
+
+	* Release 1.1.
+
+	* ltmain.in: <sigh> I like `here documents' a lot, but apparently
+ 	they are so badly handled by old and buggy /bin/sh's, that
+ 	replacing `cat <<EOF ... EOF' by `$echo "..."' improves libtool's
+ 	speed by a factor of 5.  So, I've eliminated here docs from the
+ 	all-important ltmain.in.  From Tom Lane.
+
+1998-03-07  Gordon Matzigkeit  <gord@profitpress.com>
+
+	* ltconfig.in: Copy the contents of ltmain.sh into the generated
+	libtool.  This should more than halve the execution times on old
+	or buggy /bin/sh systems, such as HP-UX 9 and SunOS 4.1.4.  From
+	Tom Lane.
+
 1998-03-05  Gordon Matzigkeit  <gord@profitpress.com>
 
 	* libtool.m4 (AM_ENABLE_SHARED, AM_ENABLE_STATIC): Add support for
  	the `default' package, so that people can control unnamed
  	packages.
+	(LD): Only add an ABI flag under IRIX 6.x, since IRIX 5.x doesn't
+	support them.  From Alexandre Oliva.
 
 1998-03-01  Gordon Matzigkeit  <gord@profitpress.com>
 

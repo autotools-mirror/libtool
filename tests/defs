@@ -10,9 +10,7 @@ esac
 
 progname=`echo "$0" | sed 's%^.*/%%'`
 
-# tlibtool needs to know what srcdir is.
-export srcdir
-libtool="$srcdir/tlibtool"
+libtool="../libtool"
 make="${MAKE-make}"
 
 prefix="./_inst"

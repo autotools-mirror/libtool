@@ -31,11 +31,10 @@ aclocal_DATA = $(aclocal_macros)
 # The standalone libtool script, and the libtool distributor.
 bin_SCRIPTS = libtool libtoolize
 
-libtool: ltconfig
-	@echo 'WARNING: Warnings from ltconfig can be ignored. :-)'
+libtool: ltconfig ltmain.sh
 	CC="$(CC)" CFLAGS="$(CFLAGS)" CPPFLAGS="$(CPPFLAGS)" \
 	LD="$(LD)" LN_S="$(LN_S)" NM="$(NM)" RANLIB="$(RANLIB)" \
-	$(srcdir)/ltconfig --srcdir=$(srcdir) $(pkgdatadir)/ltmain.sh
+	$(srcdir)/ltconfig --srcdir=$(srcdir) $(srcdir)/ltmain.sh
 
 libtoolize: libtoolize.in $(top_builddir)/config.status
 	CONFIG_FILES=libtoolize CONFIG_HEADERS= $(top_builddir)/config.status

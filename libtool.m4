@@ -47,7 +47,7 @@ test "$ac_cv_prog_gnu_ld" = yes && libtool_flags="$libtool_flags --with-gnu-ld"
 # Some flags need to be propagated to the compiler or linker for good
 # libtool support.
 case "$host" in
-*-*-irix*)
+*-*-irix6*)
   # Find out which ABI we are using.
   echo '[#]line __oline__ "configure"' > conftest.$ac_ext
   if AC_TRY_EVAL(ac_compile); then

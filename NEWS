@@ -1,67 +1,51 @@
 NEWS - list of user-visible changes between releases of GNU Libtool
 
-New in 1.0j - 1998-03-05, Gordon Matzigkeit:
+New in 1.1 - 1998-03-08, Gordon Matzigkeit:
+* Bug fixes.
 * http://www.profitpress.com/libtool/ is libtool's homepage.
-* Use the `AM_DISABLE_SHARED' or `AM_DISABLE_STATIC'
-  macros instead of the `enable_shared' or `enable_static' variables
-  if you wish to modify the default behaviour of `AM_PROG_LIBTOOL'.
-* libtool.m4 supports turning shared or static libraries off with
-  the `--enable-shared=PKGS' and `--enable-static=PKGS' configure
+* `AM_PROG_LIBTOOL' supports turning shared or static libraries off
+  with the `--enable-shared=PKGS' and `--enable-static=PKGS' configure
   flags.  See (libtool)AM_PROG_LIBTOOL.
-* `compile' mode honours the `-static' flag to prevent libtool
-  from building PIC objects.
-* Support for *-*-sysv4.2uw2*.
-
-New in 1.0i - 1998-02-06, Gordon Matzigkeit:
-* Bug fixes.
-* Inter-library dependencies are automatically handled when linking
-  against a `.la' file.  This, along with `-no-undefined', should
-  prevent many accidental libtool misuses.
-* New `-release' flag to encode release numbers into libtool
-  libraries.  This breaks binary compatibility, but is useful for
-  libraries whose interfaces change very frequently.  See
-  (libtool)Versioning.
-
-New in 1.0h - 1997-12-01, Gordon Matzigkeit:
-* A fix for an insidious bug in the quoting code, which broke
-  everything on almost all platforms.
-
-New in 1.0g - 1997-11-29, Gordon Matzigkeit:
-* Bug fixes.
-* `-allow-undefined' is now the default.  You can use `-no-undefined'
-  to declare that a shared library is completely self-contained.
-* Support for *-*-amigaos*.
-
-New in 1.0f - 1997-11-08, Gordon Matzigkeit:
-* Bug fixes.
-* New `-all-static' flag to prevent any dynamic linking.  The regular
-  `-static' flag now just prevents dynamic linking of libtool libraries.
-* The `-rpath' flag can be used to hardcode absolute directories when
-  linking executables using libtool.
+* Use the `AM_DISABLE_SHARED' or `AM_DISABLE_STATIC' macros if you
+  wish to modify the default behaviour of `AM_PROG_LIBTOOL' for your
+  package.
+* New rules for `AM_PROG_LD' to use gcc's `-print-prog-name' flag in
+  order to find ld, if possible.
 * Suppress duplicate compiler output during `compile' mode.
-* New `execute' mode to support debugging uninstalled libtool
-  libraries and executables.
-* New quoting code to robustly handle any metacharacters passed in
-  arguments to libtool commands.
 * Deleted `dlname' mode.  Dlopen applications should only use the
   runtime search method described in (libtool)Finding the dlname.
 * Experimental support for dynamically loaded modules, even on
   static-only platforms, via new `-dlopen' and `-dlpreopen' link
   flags.
-* New rules for AM_PROG_LD to use gcc's -print-prog-name flag in order
-  to find ld, if possible.
-* Allow configure.in to change the defaults for AM_PROG_LIBTOOL's
-  `--enable-shared' and `--enable-static' flags by setting
-  the `enable_shared' or `enable_static' shell variables to `no'.
+* `compile' mode honours the `-static' flag to prevent libtool
+  from building PIC objects.
+* New `execute' mode to support debugging uninstalled libtool
+  libraries and executables.
+* `-allow-undefined' is now the default.  You can use `-no-undefined'
+  to declare that a shared library is completely self-contained.
+* Inter-library dependencies are automatically handled when linking
+  against an uninstalled `.la' file.
+* New `-all-static' flag to prevent any dynamic linking.  The regular
+  `-static' flag now just prevents dynamic linking of libtool libraries.
+* New `-release' flag to encode release numbers into libtool
+  libraries.  This breaks binary compatibility, but is useful for
+  libraries whose interfaces change very frequently.  See
+  (libtool)Versioning.
+* The `-rpath' flag can be used to hardcode absolute directories when
+  linking executables using libtool.
+* New robust quoting code to handle any metacharacters passed in
+  arguments to libtool commands.
+* Full support for broken collect2 on AIX 3.  Shared libraries
+  can now be built with all working versions of GCC on AIX.
+* Shell script speed optimizations for old and buggy /bin/sh systems,
+  such as HP-UX 9 and SunOS 4.1.4.
+* Maybe use `_libs' as a temporary libtool directory instead of `.libs'
+  in order to cope with MS-DOS filenames.
+* Portability fixes for Windows NT.
 * Refuse to create libtool libraries that don't begin with `lib'.
   This allows us to correctly handle OSes that don't have the `lib'
   prefix by default, such as OS/2.
-* Full support for broken collect2 on AIX 3.  Shared libraries
-  can now be built with all working versions of GCC on AIX.
-* Portability fixes for Windows NT.
-* Maybe use `_libs' as a temporary libtool directory instead of `.libs'
-  in order to cope with MS-DOS filenames.
-* Support for *-*-uts4* and *-*-os2*.
+* Support for *-*-amigaos*, *-*-os2*, *-*-sysv4.2uw2*, and *-*-uts4*.
 
 New in 1.0 - 1997-07-08, Gordon Matzigkeit:
 * Bug fixes.

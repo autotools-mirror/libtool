@@ -1,3 +1,10 @@
+1998-03-08  Gordon Matzigkeit  <gord@profitpress.com>
+
+	* tlibtool: Eliminate from distribution.
+
+	* defs (libtool): Don't use tlibtool anymore, since we can now use
+	the generated libtool directly.
+
 1998-02-18  Gordon Matzigkeit  <gord@profitpress.com>
 
 	* sh.test (scripts): Remove the lineno script, since it is no

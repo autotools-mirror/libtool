@@ -11,7 +11,7 @@ TESTS =	demo-conf.test $(makesequence) link.test link-2.test nomode.test \
 TESTS_ENVIRONMENT = CC="$(CC)" CFLAGS="$(CFLAGS)" CPPFLAGS="$(CPPFLAGS)" \
 	LD="$(LD)" NM="$(NM)" RANLIB="$(RANLIB)" LN_S="$(LN_S)"
 
-EXTRA_DIST = defs tlibtool $(TESTS)
+EXTRA_DIST = defs $(TESTS)
 
 # We need to remove any files that the above tests created.
 clean-local:
