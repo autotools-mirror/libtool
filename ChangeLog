@@ -1,3 +1,11 @@
+1999-05-25  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* ltconfig.in (solaris*, ld_shlibs): Do not enable shared
+	libraries with GNU ld 2.8.*, it's broken.  Emit a warning
+	suggesting an upgrade.
+	Reported by Brian Ford <ford@vss.fsi.com> and Ronald Pijnacker
+	<Ronald.Pijnacker@best.ms.philips.com>
+
 1999-05-25  Frank Ch. Eigler <fche@cygnus.com>
 
 	* ltmain.in: file_magic check would not avoid cyclic links.
