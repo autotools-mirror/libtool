@@ -2807,11 +2807,12 @@ func_mode_link ()
 	;;
 
       # -64, -mips[0-9] enable 64-bit mode on the SGI compiler
+      # -r[0-9][0-9]* specifies the processor on the SGI compiler
       # -xarch=*, -xtarget=* enable 64-bit mode on the Sun compiler
       # +DA*, +DD* enable 64-bit mode on the HP compiler
       # -q* pass through compiler args for the IBM compiler
       # -m* pass through architecture-specific compiler args for GCC
-      -64|-mips[[0-9]]|-xarch=*|-xtarget=*|+DA*|+DD*|-q*|-m*)
+      -64|-mips[[0-9]]|-r[[0-9]][[0-9]]*|-xarch=*|-xtarget=*|+DA*|+DD*|-q*|-m*)
         func_quote_for_eval "$arg"
 	arg="$func_quote_for_eval_result"
         compile_command="$compile_command $arg"
