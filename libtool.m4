@@ -23,23 +23,23 @@
 
 # serial 45 AC_PROG_LIBTOOL
 AC_DEFUN(AC_PROG_LIBTOOL,[AC_REQUIRE([_AC_PROG_LIBTOOL])
-# If AC_PROG_CXX has already been expanded, run AC_LIBTOOL_CXX
-# immediately, otherwise, hook it in at the end of AC_PROG_CXX.
+dnl If AC_PROG_CXX has already been expanded, run AC_LIBTOOL_CXX
+dnl immediately, otherwise, hook it in at the end of AC_PROG_CXX.
   AC_PROVIDE_IFELSE([AC_PROG_CXX],
     [AC_LIBTOOL_CXX],
     [define([AC_PROG_CXX], defn([AC_PROG_CXX])[AC_LIBTOOL_CXX
 ])])
-#
-# Quote A][M_PROG_GCJ so that aclocal doesn't bring it in needlessly.
-# If either AC_PROG_GCJ or A][M_PROG_GCJ have already been expanded, run
-# AC_LIBTOOL_GCJ immediately, otherwise, hook it in at the end of both.
+
+dnl Quote A][M_PROG_GCJ so that aclocal doesn't bring it in needlessly.
+dnl If either AC_PROG_GCJ or A][M_PROG_GCJ have already been expanded, run
+dnl AC_LIBTOOL_GCJ immediately, otherwise, hook it in at the end of both.
   AC_PROVIDE_IFELSE([AC_PROG_GCJ],
     [AC_LIBTOOL_GCJ],
     [AC_PROVIDE_IFELSE([A][M_PROG_GCJ],
         [AC_LIBTOOL_GCJ],
 	[ifdef([AC_PROG_GCJ],
 	       [define([AC_PROG_GCJ], defn([AC_PROG_GCJ])[AC_LIBTOOL_GCJ
-])])#
+])])
 	 ifdef([A][M_PROG_GCJ],
 	       [define([A][M_PROG_GCJ], defn([A][M_PROG_GCJ])[AC_LIBTOOL_GCJ
 ])])])])])
@@ -785,7 +785,11 @@ exec 5>>./config.log
 AC_DEFUN(AC_LIBTOOL_GCJ,[AC_REQUIRE([_AC_LIBTOOL_GCJ])])
 AC_DEFUN(_AC_LIBTOOL_GCJ,
 [AC_REQUIRE([AC_PROG_LIBTOOL])
-AC_REQUIRE([AC_PROG_GCJ])
+AC_PROVIDE_IFELSE([AC_PROG_GCJ],[],
+  [AC_PROVIDE_IFELSE([A][M_PROG_GCJ],[],
+    [ifdef([AC_PROG_GCJ],[AC_REQUIRE([AC_PROG_GCJ])],
+       [ifdef([A][M_PROG_GCJ],[AC_REQUIRE([A][M_PROG_GCJ])],
+         [AC_REQUIRE([A][C_PROG_GCJ_OR_A][M_PROG_GCJ])])])])])
 LIBTOOL_DEPS=$LIBTOOL_DEPS" $ac_aux_dir/ltcf-gcj.sh"
 lt_save_CC="$CC"
 lt_save_CFLAGS="$CFLAGS"

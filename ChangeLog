@@ -1,5 +1,10 @@
 2000-07-10  Alexandre Oliva  <aoliva@lsd.ic.unicamp.br>
 
+	* libtool.m4 (AC_LIBTOOL_GCJ): Require either AC_PROG_GCJ or
+	AM_PROG_GCJ.
+	(AC_PROG_LIBTOOL): Change internal comments to dnl, so that they
+	don't make it to the `configure' script.
+
 	* configure.in (AM_PROG_GCJ): Re-enable, with definition copied
 	from CVS automake.
 
