@@ -1262,9 +1262,6 @@ EOF
 	    # These systems don't actually have a C or math library (as such)
 	    continue
 	    ;;
-	  *-*-freebsd*-gnu*)
-	    # prevent being parsed by the freebsd regexp below
-	    ;;
 	  *-*-mingw* | *-*-os2*)
 	    # These systems don't actually have a C library (as such)
 	    test "X$arg" = "X-lc" && continue
@@ -1280,9 +1277,6 @@ EOF
 	  esac
 	elif test "X$arg" = "X-lc_r"; then
 	 case $host in
-	 *-*-freebsd*-gnu*)
-	   # prevent being parsed by the freebsd regexp below
-	   ;;
 	 *-*-openbsd* | *-*-freebsd*)
 	   # Do not include libc_r directly, use -pthread flag.
 	   continue
@@ -3127,12 +3121,6 @@ EOF
 	    ;;
 	  *-*-netbsd*)
 	    # Don't link with libc until the a.out ld.so is fixed.
-	    ;;
-	  *-*-freebsd*-gnu*)
-	    # Prevent $arg from being parsed by the freebsd regexp below.
-	    if test "$build_libtool_need_lc" = "yes"; then
-	      deplibs="$deplibs -lc"
-	    fi
 	    ;;
 	  *-*-openbsd* | *-*-freebsd*)
 	    # Do not include libc due to us having libc/libc_r.
