@@ -1944,9 +1944,6 @@ newsos6)
   library_names_spec='${libname}${release}.so$versuffix ${libname}${release}.so$major $libname.so'
   shlibpath_var=LD_LIBRARY_PATH
   shlibpath_overrides_runpath=yes
-  file_magic_cmd=/usr/bin/file
-  [deplibs_check_method='file_magic ELF [0-9][0-9]*-bit [ML]SB (executable|dynamic lib)']
-  file_magic_test_file=/usr/lib/libnls.so
   ;;
 
 openbsd*)
@@ -2017,15 +2014,8 @@ sysv4 | sysv4.2uw2* | sysv4.3* | sysv5*)
   shlibpath_var=LD_LIBRARY_PATH
   case "$host_vendor" in
     sni)
-      file_magic_cmd='/bin/file'
-      [deplibs_check_method="file_magic ELF [0-9][0-9]*-bit [LM]SB dynamic lib"]
-      file_magic_test_file=/lib/libc.so
       shlibpath_overrides_runpath=no
       ;;      
-    sequent)
-      file_magic_cmd='/bin/file'
-      [deplibs_check_method='file_magic ELF [0-9][0-9]*-bit [LM]SB (shared object|dynamic lib )']
-      ;;
     motorola)
       need_lib_prefix=no
       need_version=no
@@ -3096,6 +3086,12 @@ netbsd*)
   lt_cv_file_magic_test_file=`echo /usr/lib/libc.so*`
   ;;
 
+newos6*)
+  [lt_cv_deplibs_check_method='file_magic ELF [0-9][0-9]*-bit [ML]SB (executable|dynamic lib)']
+  lt_cv_file_magic_cmd=/usr/bin/file
+  lt_cv_file_magic_test_file=/usr/lib/libnls.so
+  ;;
+  
 osf3* | osf4* | osf5*)
   # this will be overridden with pass_all, but let us keep it just in case
   lt_cv_deplibs_check_method='file_magic COFF format alpha shared library'
@@ -3114,13 +3110,22 @@ solaris*)
 
 sysv4 | sysv4.2uw2* | sysv4.3* | sysv5*)
   case "$host_vendor" in
-  ncr)
-    lt_cv_deplibs_check_method=pass_all
-    ;;
   motorola)
     [lt_cv_deplibs_check_method='file_magic ELF [0-9][0-9]*-bit [ML]SB (shared object|dynamic lib) M[0-9][0-9]* Version [0-9]']
     lt_cv_file_magic_test_file=`echo /usr/lib/libc.so*`
     ;;
+  ncr)
+    lt_cv_deplibs_check_method=pass_all
+    ;;
+  sequent)
+    lt_cv_file_magic_cmd='/bin/file'
+    [lt_cv_deplibs_check_method='file_magic ELF [0-9][0-9]*-bit [LM]SB (shared object|dynamic lib )']
+    ;;
+  sni)
+    lt_cv_file_magic_cmd='/bin/file'
+    [lt_cv_deplibs_check_method="file_magic ELF [0-9][0-9]*-bit [LM]SB dynamic lib"]
+    lt_cv_file_magic_test_file=/lib/libc.so
+    ;;      
   esac
   ;;
 esac

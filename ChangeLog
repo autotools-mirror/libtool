@@ -3,6 +3,9 @@
 	* libtool.m4 (darwin*): Fixed a pair of stupid typos I made in the
 	last patch.
 
+	* libtool.m4 (AC_DEPLIBS_CHECK_METHOD):  moved rogue settings from
+	sequent, ncr and newos6 back into here from other macros.
+
 2000-12-16   Wilfredo Sanchez  <wsanchez@apple.com>
 
 	* libtool.m4: (dyld/darwin*) Much improved port.
