@@ -1,5 +1,11 @@
 NEWS - list of user-visible changes between releases of GNU Libtool
 
+New in 1.3a: CVS version, Libtool team:
+* Nothing so far
+
+New in 1.2g: CVS version, Libtool team:
+* Nothing so far
+
 New in 1.2e: CVS version; 1.2f: 1999-03-15, Libtool team:
 * libtool will correctly link uninstalled libraries into programs
   and prefer uninstalled libraries to installed ones
