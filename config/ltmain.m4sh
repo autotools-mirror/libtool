@@ -5661,6 +5661,7 @@ EOF
 #include <malloc.h>
 #include <stdarg.h>
 #include <assert.h>
+#include <ctype.h>
 #include <string.h>
 #include <sys/stat.h>
 
