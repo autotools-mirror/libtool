@@ -288,18 +288,15 @@ if test -z "$show_help"; then
     hardcode_libdirs=
     install_libdir=
     libobjs=
-    libobjlibs=
     link_against_libtool_libs=
     link_static=
     ltlibs=
     objs=
-    output=
     prev=
     prevarg=
     perm_rpath=
     temp_rpath=
     vinfo=
-    whole_archive=no
 
     # We need to know -static, to get the right output filenames.
     case " $@ " in
@@ -350,8 +347,6 @@ if test -z "$show_help"; then
 
       -l*) deplibs="$deplibs $arg" ;;
 
-      -no-whole-archive) whole_archive=no ;;
-
       -o) prev=output ;;
 
       -rpath)
@@ -376,8 +371,6 @@ if test -z "$show_help"; then
 	continue
 	;;
 
-      -whole-archive) whole_archive=yes ;;
-
       -*) cc="$cc $arg" ;; # Some other compiler flag.
 
       *.o)
@@ -391,37 +384,8 @@ if test -z "$show_help"; then
 	dir=`echo "$arg" | sed 's%/[^/]*$%/%'`
 	test "$dir" = "$arg" && dir=
 
-	# If -whole-archive was specified, we need to link all the members.
-	if test "$whole_archive" = yes; then
-	  if test -f $arg; then :
-	  else
-	    echo "$progname: \`$arg' does not exist" 1>&2
-	    echo "$help" 1>&2
-	    exit 1
-	  fi
-
-	  # Get the names of the members of the archive.
-	  members=`$AR t $arg 2>/dev/null`
-	  for m in $members; do
-	    case "$m" in
-	    *.lo) libobjs="$libobjs $dir$m" ;;
-	    *.o)
-	      if test "$build_libtool_libs" = yes; then
-		objs="$objs $dir$m"
-	      else
-		libobjs="$libobjs $dir$m"
-	      fi
-	      ;;
-	    esac
-	  done
-	elif test -f "$dir$objdir/$file"; then
-	  # .libs/libfoo.a exists, so this is an archive of libobjects.
-	  libobjlibs="$libobjlibs $dir$objdir/$file"
-	  arg="$dir$objdir/$file"
-	else
-	  # Standard archive.
-	  objs="$objs $arg"
-	fi
+	# Standard archive.
+	objs="$objs $arg"
 	;;
 
       *.lo)
@@ -641,9 +605,6 @@ if test -z "$show_help"; then
 	exit 1
       fi
 
-      # Incorporate all of the convenience libraries.
-      libobjs="$libobjs"`echo "$libobjlibs" | sed "s%/$objdir/%/%g"`
-
       # How the heck are we supposed to write a wrapper for a shared library?
       if test -n "$link_against_libtool_libs"; then
         echo "$progname: libtool library \`$output' may not depend on uninstalled libraries:$link_against_libtool_libs" 1>&2
@@ -839,9 +800,7 @@ if test -z "$show_help"; then
       $run $rm $obj $libobj
 
       # Create the old-style object.
-      # FIXME: simplistically, we include all libobjlibs here.
-      # We really should determine which members are needed to resolve symbols.
-      reload_objs="$objs"`echo "$libobjs " | sed 's/[^ 	]*\.a //g; s/\.lo /.o /g; s/ $//g'`"$libobjlibs"
+      reload_objs="$objs"`echo "$libobjs " | sed 's/[^ 	]*\.a //g; s/\.lo /.o /g; s/ $//g'`
 
       output="$obj"
       cmds=`eval echo \"$reload_cmds\"`
@@ -1059,12 +1018,13 @@ EOF
     # See if we need to build an old-fashioned archive.
     if test "$build_old_libs" = "yes"; then
       # Now set the variables for building old libraries.
-      oldlib="$objdir/$libname.a"
+      case "$output" in
+      *.a) oldlib="$output" ;;
+      *) oldlib="$objdir/$libname.a" ;;
+      esac
 
       # Transform .lo files to .o files.
-      # FIXME: simplistically, we include all libobjlibs here.
-      # We really should determine which members are needed to resolve symbols.
-      oldobjs="$objs"`echo "$libobjs " | sed 's/[^ 	]*\.a //g; s/\.lo /.o /g; s/ $//g'`"$libobjlibs"
+      oldobjs="$objs"`echo "$libobjs " | sed 's/[^ 	]*\.a //g; s/\.lo /.o /g; s/ $//g'`
 
       if test -d "$objdir"; then
 	$show "$rm $oldlib"
@@ -1083,38 +1043,6 @@ EOF
 	eval "$run $cmd" || exit $?
       done
       IFS="$save_ifs"
-
-      case "$output" in
-      *.a)
-	# Just move into place if there were any non-libtool objects.
-	if test -n "$objs"; then
-	  $show "$mv $oldlib $output"
-	  $run $mv $oldlib $output
-
-	elif test -z "$pic_flag" || test "$build_libtool_libs" != yes; then
-	  # Just symlink if libtool objects are the same.
-	  $show "$rm $output"
-	  $run $rm $output
-	  $show "$ln_s $oldlib $output"
-	  $run $ln_s $oldlib $output
-
-	else
-	  # Create an archive of libtool objects.
-	  oldlib="$output"
-	  oldobjs="$libobjs"
-
-	  # Do each command in the archive commands.
-	  cmds=`eval echo \"$old_archive_cmds\"`
-	  IFS="${IFS= 	}"; save_ifs="$IFS"; IFS=';'
-	  for cmd in $cmds; do
-	    IFS="$save_ifs"
-	    $show "$cmd"
-	    eval "$run $cmd" || exit $?
-	  done
-	  IFS="$save_ifs"
-	fi
-	;;
-      esac
     fi
 
     # Now create the libtool archive.
@@ -1716,16 +1644,14 @@ a program from several object files.
 
 The following components of LINK-COMMAND are treated specially:
 
-  -export-dynamic   allow the output file to be loaded with dlopen(3)
+  -export-dynamic   allow symbols from OUTPUT-FILE to be resolved with dlsym(3)
   -LLIBDIR          search LIBDIR for required installed libraries
   -lNAME            OUTPUT-FILE requires the installed library libNAME
-  -no-whole-archive turn off \`-whole-archive'
   -o OUTPUT-FILE    create OUTPUT-FILE from the specified objects
   -rpath LIBDIR     the created library will eventually be installed in LIBDIR
   -static           do not do any dynamic linking or shared library creation
   -version-info CURRENT[:REVISION[:AGE]]
 		    specify library version info [each variable defaults to 0]
-  -whole-archive    use all members from subsequent \`.a' files
 
 All other options (arguments beginning with \`-') are ignored.
 
@@ -1737,8 +1663,7 @@ If the OUTPUT-FILE ends in \`.la', then a libtool library is created, only
 library objects (\`.lo' files) may be specified, and \`-rpath' is required.
 
 If OUTPUT-FILE ends in \`.a', then a standard library is created using \`ar'
-and \`ranlib'.  If only libtool objects are specified, then the output file
-may be used in the creation of other libtool archives.
+and \`ranlib'.
 
 If OUTPUT-FILE ends in \`.lo' or \`.o', then a reloadable object file is
 created, otherwise an executable program is created.

@@ -1,41 +1,62 @@
-* Sanity check to detect broken collect2 on AIX (see collect2bug).
+Before 1.0:
+***********
 
-* Document inter-library dependencies, and allowing undefined
-symbols (`-allow-undefined').
+* Document inter-library dependencies, and write a flag to allow
+undefined symbols (`-allow-undefined').  We'll need a special flag for
+OSF/1 not to warn about this
+(allow_undefined_flag='-expect_unresolved', inserted into
+archive_cmds).
 
-* Document convenience libraries, -whole-archive, and
--no-whole-archive.
+* The way we'll implement `-allow-undefined' is to have link mode
+search for `${allow_undefined_flag}' in the archive_cmds.  If it finds
+it, then either set allow_undefined_flag to empty, or leave it alone
+(if -allow-undefined is specified).  If it does not exist (such as on
+AIX), then create a static library instead.
 
-* Document the -export-dynamic flag, and the new dlname mode.
+* Document the -export-dynamic flag, and the new dlname mode.  These
+should be discussed under a node called `Dynamic modules' or
+something.
 
-For 1.1:
+After 1.0:
+**********
 
-* We also need a way to use convenience libraries just to resolve
-symbols, rather than the (simplistic) whole-archive and
-no-whole-archive.
+* A better check to detect broken collect2 on AIX, once the bug is
+fixed in GCC.
 
-* Write libtool not to be dependent on the compiler used to configure
-it.
+* We could use libtool object convenience libraries that resolve
+symbols to be included in a libtool archive.
 
-* Implement full multi-language support.  There are beginnings of this
-in the manual (Other Languages).
+* Finish up the dlname mode, and get it integrated with DLD.  We need
+a way for different major versions of the same .la to coexist.  This
+also involves writing a better uninstall mode, so that nothing
+breaks.
 
-Sometime in the future (maybe):
+* Implement full multi-language support.  Currently, this is only for
+C++, but there are beginnings of this in the manual (Other Languages).
+This includes writing libtool not to be so dependent on the compiler
+used to configure it.
 
-* Implement `-static' linking against installed libraries, even when
-the OS does not have static system libraries.  This would need to be
-done by parsing `-L' and `-l', searching for libNAME.a manually, and
-adding the full path to it.
+Things to think about:
+**********************
 
-* Implement full support for other basic library types (libhello_g,
-libhello_p).  Make these types configurable.  Some thinking will have
-to be done about the defaults, and what libhello (standard type)
-should be.
+* Implement full support for other orthogonal library types
+(libhello_g, libhello_p).  Make these types configurable.  Some
+thinking will have to be done about the defaults, and what libhello
+(standard type) should be.
 
 Maybe we should just add an autoconf macro and get creative with
-program_transform_name, or something.  These changes should be
+library_transform_name, or something.  These changes should be
 partially driven by the needs of packaging tools, such as RPM and
 dpkg.
 
-* Add support for windoze DLL's.  Check out Lesstif and Tcl
-configuration again.  The Cygnus win32 project may also be of value.
+* Talk with RMS about his so-called `automatic package generation
+tool.'  This is probably what Thomas has been murmuring about for the
+Hurd.  We'll need to integrate package-supplied programs such as
+libtool into that scheme, since it manages some of the preinstall and
+postinstall commands, but isn't installed itself.  Probably, things
+like libtool should be distributed as part of such a binary package.
+
+* Add support for windoze DLL's, and maybe other jumptable libs.
+Check out Lesstif and Tcl configuration again (maybe they would be
+interested in libtool by now?).  The Cygnus win32 project may also be
+of value, though it still seems pretty rudimentary right now.

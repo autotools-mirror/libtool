@@ -1,3 +1,18 @@
+Sat May 10 12:21:58 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltconfig.in: Trivial port to FreeBSD 3.  From David Nugent.
+
+Fri Apr 25 13:23:33 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltmain.sh.in (link): Remove all traces of `-whole-archive',
+	`-no-whole-archive', and libtool convenience libraries.  They were
+	more trouble than they're worth.  If these are ever reimplemented,
+	they need more careful attention to make portable.
+
+	* libtool.m4, ltconfig.in: Added a `--disable-static' flag to turn
+	of static library creation.  From Tom Lees (who finally convinced
+	me that it was the Right Thing to do).
+
 Tue Apr 22 12:41:34 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltmain.sh.in (hardcode_runpath_var, runpath_var): Use them, if
