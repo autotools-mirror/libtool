@@ -42,4 +42,3 @@ local-install-files: $(DISTFILES)
 	    || cp -p $$d/$$file $(DESTDIR)$(datadir)/libtool/libltdl/$$file || :; \
 	  fi; \
 	done
-

@@ -1,3 +1,8 @@
+1999-05-23 Thomas Tanner  <tanner@ffii.org>
+
+	* ltmain.in: strip off the .exe suffix only on *Win
+	  (Reported by Matthew D. Langston <langston@SLAC.Stanford.EDU>)
+	
 1999-05-22 Thomas Tanner  <tanner@ffii.org>
 
 	* NEWS: updated
