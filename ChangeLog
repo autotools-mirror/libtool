@@ -1,7 +1,13 @@
 1999-04-28  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
-	* libtool.m4 (libtool_flags): Fix calls to AC_BEFORE.
-	Reported by Gary V. Vaughan
+	* libtool.m4 (AC_ENABLE_SHARED, AC_ENABLE_STATIC,
+	AC_ENABLE_FAST_INSTALL): Do not call AC_BEFORE here, they're
+	AC_REQUIREd by AC_LIBTOOL_SETUP.
+	(AC_DISABLE_SHARED, AC_DISABLE_STATIC, AC_DISABLE_FAST_INSTALL):
+	Call AC_BEFORE here, and now with two arguments, since these do
+	change the default.
+	(AC_LIBLTDL_CONVENIENCE, AC_LIBLTDL_INSTALLABLE): Fix calls to
+	AC_BEFORE.
 
 1999-04-28  Gary V. Vaughan  <gary@oranda.demon.co.uk>
 
