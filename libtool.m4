@@ -2215,7 +2215,7 @@ nto-qnx*)
 
 openbsd*)
   if test -z "`echo __ELF__ | $CC -E - | grep __ELF__`" || test "$host_os-$host_cpu" = "openbsd2.8-powerpc"; then
-    lt_cv_deplibs_check_method='match_pattern /lib[[^/]]+(\.so|_pic\.a)$'
+    lt_cv_deplibs_check_method='match_pattern /lib[[^/]]+(\.so\.[[0-9]]+\.[[0-9]]+|\.so|_pic\.a)$'
   else
     lt_cv_deplibs_check_method='match_pattern /lib[[^/]]+(\.so\.[[0-9]]+\.[[0-9]]+|_pic\.a)$'
   fi
@@ -3225,6 +3225,7 @@ case $host_os in
       _LT_AC_TAGVAR(export_dynamic_flag_spec, $1)='${wl}-E'
       _LT_AC_TAGVAR(whole_archive_flag_spec, $1)="$wlarc"'--whole-archive$convenience '"$wlarc"'--no-whole-archive'
     fi
+    output_verbose_link_cmd='echo'
     ;;
   osf3*)
     case $cc_basename in
