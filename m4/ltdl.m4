@@ -109,22 +109,6 @@ AC_CHECK_HEADERS([memory.h unistd.h dl.h sys/dl.h dld.h mach-o/dyld.h],
 	[], [], [AC_INCLUDES_DEFAULT])
 AC_CHECK_HEADERS([string.h strings.h], [break], [], [AC_INCLUDES_DEFAULT])
 
-AC_FOREACH([LTDL_Func], [strchr index strrchr rindex memcpy bcopy],
-    [AH_TEMPLATE(AS_TR_CPP(HAVE_[]LTDL_Func),
-		 [Define to 1 if you have the `]LTDL_Func[' function.])])
-
-AC_CHECK_FUNC([strchr], [AC_DEFINE([HAVE_STRCHR])],
-    [AC_CHECK_FUNC([index], [AC_DEFINE([HAVE_INDEX])],
-	[AC_LIBOBJ([strchr])])])
-
-AC_CHECK_FUNC([strrchr], [AC_DEFINE([HAVE_STRRCHR])],
-    [AC_CHECK_FUNC([rindex], [AC_DEFINE([HAVE_RINDEX])],
-	[AC_LIBOBJ([strrchr])])])
-
-AC_CHECK_FUNC([memcpy], [AC_DEFINE([HAVE_MEMCPY])],
-    [AC_CHECK_FUNC([bcopy],  [AC_DEFINE([HAVE_BCOPY])],
-	[AC_LIBOBJ([memcpy])])])
-
 AC_CHECK_FUNCS([closedir opendir readdir], [], [AC_LIBOBJ([lt__dirent])])
 
 AC_REPLACE_FUNCS([memmove strcmp])

@@ -42,7 +42,7 @@ libltdl_la_SOURCES  = ltdl.h ltdl.c \
 		      loader-preopen.c \
 		      lt_error.h lt_error.c lt_mutex.h lt_mutex.c \
 		      lt__private.h lt__alloc.h lt__alloc.c \
-		      lt__pre89.h lt__glibc.h argz.h lt__dirent.h \
+		      lt__glibc.h argz.h lt__dirent.h \
 		      lt_system.h
 libltdl_la_LDFLAGS  = -no-undefined -version-info 5:0:2
 libltdl_la_LIBADD   = $(LIBADD_DL) $(LTLIBOBJS)
@@ -53,5 +53,4 @@ libltdlc_la_LIBADD  = $(LIBADD_DL) $(LTLIBOBJS)
 ## These are installed as a subdirectory of pkgdatadir so that
 ## libtoolize --ltdl can find them later:
 ltdldatadir = $(pkgdatadir)/libltdl
-ltdldata_DATA = COPYING.LIB Makefile.am README $(libltdl_la_SOURCES) \
-		memcpy.c memmove.c strchr.c strcmp.c strrchr.c
+ltdldata_DATA = COPYING.LIB Makefile.am README $(libltdl_la_SOURCES)

@@ -58,7 +58,6 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 #include "lt__alloc.h"
 #include "lt__dirent.h"
 #include "lt__glibc.h"
-#include "lt__pre89.h"
 
 /* ...and all exported interfaces.  */
 #include "ltdl.h"

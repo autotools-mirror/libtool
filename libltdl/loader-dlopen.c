@@ -50,7 +50,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 #  endif /* !RTLD_LAZY */
 #endif
 #if !defined(LT_LAZY_OR_NOW)
-#  ifd efined(RTLD_NOW)
+#  if defined(RTLD_NOW)
 #    define LT_LAZY_OR_NOW	RTLD_NOW
 #  else
 #    if defined(DL_NOW)

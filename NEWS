@@ -42,6 +42,9 @@ New in 1.5b: 2004-??-??; CVS version 1.5a, Libtool team:
   up the stack; it is also not recommended practice.
 * libltdl no longer uses lt_dlmalloc, lt_dlrealloc and lt_dlfree.  The symbols
   are still exported for backwards compatibility.
+* libltdl no longer supports pre-c89 compilers.  Some of the pre89 portability
+  functions had compile time bugs in them anyway, so you guys can't have been
+  using it :-)
 * make install now deletes preexisting $prefix/share/libtool before installing
   latest files.
 * Extracting symbols from an import library on cygwin and win32 now works.

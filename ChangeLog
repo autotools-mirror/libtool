@@ -1,5 +1,13 @@
 2004-04-13  Gary V. Vaughan  <gary@gnu.org>
 
+	* libltdl/lt__pre89.h, libltdl/memcpy.c, libltdl/memmove.c,
+	libltdl/strchr.c, libltdl/strcmp.c, libltdl/strrchr.c: Remove
+	half-assed pre-c89 support entirely.
+	* libltdl/lt__private.h: Don't refer to lt__pre89.h.
+	* libltdl/Makefile.am (ltdldata_DATA): Remove references to
+	deleted files.
+	* NEWS: Mention it.
+
 	* libltdl/lt__pre89.h, libltdl/ltdl.c, libltdl/ltdl.h, libltdl/argz.c,
 	libltdl/argz.h, libltdl/lt__glibc.h, libltdl/lt_dlloader.h,
 	libltdl/lt__dirent.c, libltdl/lt__dirent.h, libltdl/lt__private.h,
