@@ -170,8 +170,9 @@ Using libltdl
 
 * Libltdl interface::           How to use libltdl in your programs.
 * Modules for libltdl::         Creating modules that can be @code{dlopen}ed.
-* Distributing libltdl::        How to distribute libltdl with your package.
+* User defined module data::    Associating data with loaded modules.
 * Module loaders for libltdl::  Creating user defined module loaders.
+* Distributing libltdl::        How to distribute libltdl with your package.
 
 Using libtool with other languages
 
@@ -2816,8 +2817,9 @@ distribution terms that you use for the rest of that program.
 @menu
 * Libltdl interface::           How to use libltdl in your programs.
 * Modules for libltdl::         Creating modules that can be @code{dlopen}ed.
-* Distributing libltdl::        How to distribute libltdl with your package.
+* User defined module data::    Associating data with loaded modules.
 * Module loaders for libltdl::  Creating user defined module loaders.
+* Distributing libltdl::        How to distribute libltdl with your package.
 @end menu
 
 @node Libltdl interface
@@ -2865,16 +2867,6 @@ The following types are defined in @file{ltdl.h}:
 @code{lt_dlhandle} is a module "handle".
 Every lt_dlopened module has a handle associated with it.
 @end deftp
-
-@deftypefn {Type} {struct} lt_dlinfo @{ @w{char *@var{filename};} @w{char *@var{name};} @w{int @var{ref_count};} @}
-@code{lt_dlinfo} is used to store information about a module.
-The @var{filename} attribute is a null-terminated character string of the
-real module file name.  If the module is a libtool module then @var{name}
-is its module name (e.g. @code{"libfoo"} for @code{"dir/libfoo.la"}),
-otherwise it is set to @code{NULL}.
-The @var{ref_count} attribute is a reference counter that describes how often
-the same module is currently loaded.
-@end deftypefn
 
 @deftp {Type} lt_dlsymlist
 @code{lt_dlsymlist} is a symbol list for dlpreopened modules.
@@ -3045,21 +3037,6 @@ function, return -1 and set an error message for retrieval with
 @code{lt_dlerror}.
 @end deftypefun
 
-@deftypefun {const lt_dlinfo *}lt_dlgetinfo (lt_dlhandle @var{handle})
-Return a pointer to a struct that contains some information about
-the module @var{handle}.  The contents of the struct must not be modified.
-Return @code{NULL} on failure.
-@end deftypefun
-
-@deftypefun int lt_dlforeach (int (*@var{func})(lt_dlhandle @var{handle}, lt_ptr @var{data}), lt_ptr @var{data})
-For each loaded module call the function @var{func}.  The argument
-@var{handle} is the handle of one of the loaded modules, @var{data} is
-the @var{data} argument passed to @code{lt_dlforeach}.
-As soon as @var{func} returns a non-zero value for one of the handles,
-@code{lt_dlforeach} will stop calling @var{func} and immediately return 1.
-Otherwise 0 is returned.
-@end deftypefun
-
 @deftypevar {lt_ptr (*) (size_t @var{size})} lt_dlmalloc
 @deftypevarx {void (*) (lt_ptr @var{ptr})} lt_dlfree
 These variables are set to @code{malloc} and @code{free}, by default,
@@ -3135,144 +3112,120 @@ foo1_la_LDFLAGS = -module
 ...
 @end example
 
-@node Distributing libltdl
-@section How to distribute libltdl with your package
 
-Even though libltdl is installed together with libtool, you may wish to
-include libltdl in the distribution of your package, for the convenience
-of users of your package that don't have libtool or libltdl installed.
-In this case, you must decide whether to manually add the @code{ltdl}
-objects to your package, or else which flavor of libltdl you want to use:
-a convenience library or an installable libtool library.
-
-The most simplistic way to add @code{ltdl} to your package is to copy
-the source files, @file{ltdl.c} and @file{ltdl.h}, to a source directory
-withing your package and to build and link them along with the rest of
-your sources.  To help you do this, the m4 macros for autoconf are
-available in @file{ltdl.m4}.  You must ensure that they are available in
-@file{aclocal.m4} before you run autoconf -- by appending the contents
-of @file{ltdl.m4} to @file{acinclude.m4}, if you are using automake, or
-to @file{aclocal.m4} if you are not.  Having made the macros available,
-you must add a call to the @samp{AC_LIB_LTDL} macro to your package's
-@file{configure.in} to perform the configure time checks required to
-build @file{ltdl.o} correctly.  This method has problems if you then try
-to link the package binaries with an installed libltdl, or a library
-which depends on libltdl: you may have problems with duplicate symbol
-definitions.
-
-One advantage of the convenience library is that it is not installed, so
-the fact that you use libltdl will not be apparent to the user, and it
-will not overwrite a pre-installed version of libltdl a user might have.
-On the other hand, if you want to upgrade libltdl for any reason
-(e.g. a bugfix) you'll have to recompile your package instead of just
-replacing an installed version of libltdl.
-However, if your programs or libraries are linked with other libraries
-that use such a pre-installed version of libltdl, you may get linker
-errors or run-time crashes.  Another problem is that you cannot link the
-convenience library into more than one libtool library, then link a
-single program with these libraries, because you may get duplicate
-symbols. In general you can safely use the convenience library in programs
-which don't depend on other libraries that might use libltdl too.
-In order to enable this flavor of libltdl, you should add the
-line @samp{AC_LIBLTDL_CONVENIENCE} to your @file{configure.in},
-@emph{before} @samp{AM_PROG_LIBTOOL}.
-
-In order to select the installable version of libltdl, you should add a
-call of the macro @samp{AC_LIBLTDL_INSTALLABLE} to your
-@file{configure.in} @emph{before} @samp{AM_PROG_LIBTOOL}.  This macro
-will check whether libltdl is already installed and, if not, request the
-libltdl embedded in your package to be built and installed.  Note,
-however, that no version checking is performed.  The user may override
-the test and determine that the libltdl embedded must be installed,
-regardless of the existence of another version, using the configure
-switch @samp{--enable-ltdl-install}.
-
-In order to embed libltdl into your package, just add @samp{--ltdl} to
-the @code{libtoolize} command line. It will copy the libltdl sources
-to a subdirectory @samp{libltdl} in your package.
-Both macros accept an optional argument to specify the location
-of the @samp{libltdl} directory. By the default both macros assume that it
-is @samp{$@{top_builddir@}/libltdl}.
-
-Whatever macro you use, it is up to you to ensure that your
-@file{configure.in} will configure libltdl, using
-@samp{AC_CONFIG_SUBDIRS}, and that your @file{Makefile}s will start
-sub-makes within libltdl's directory, using automake's @var{SUBDIRS},
-for example.  Both macros define the shell variables @var{LIBLTDL}, to
-the link flag that you should use to link with libltdl, and
-@var{INCLTDL}, to the preprocessor flag that you should use to compile
-with programs that include @file{ltdl.h}.  It is up to you to use
-@samp{AC_SUBST} to ensure that this variable will be available in
-@file{Makefile}s, or add them to variables that are @samp{AC_SUBST}ed by
-default, such as @var{LIBS} and @var{CPPFLAGS}.
-
-If you're using the convenience libltdl, @var{LIBLTDL} will be the
-pathname for the convenience version of libltdl and @var{INCLTDL} will be
-@samp{-I} followed by the directory that contains libltdl, both starting
-with @samp{$@{top_builddir@}/}.
-
-If you request an installed version of libltdl and one is
-found@footnote{Even if libltdl is installed,
-@samp{AC_LIBLTDL_INSTALLABLE} may fail to detect it, if libltdl depends
-on symbols provided by libraries other than the C library.  In this
-case, it will needlessly build and install libltdl.}, @var{LIBLTDL} will
-be set to @samp{-lltdl} and @var{INCLTDL} will be empty (which is just a
-blind assumption that @file{ltdl.h} is somewhere in the include path if
-libltdl is in the library path).  If an installable version of libltdl
-must be built, its pathname, starting with @samp{$@{top_builddir@}/},
-will be stored in @var{LIBLTDL}, and @var{INCLTDL} will be set just like
-in the case of convenience library.
-
-So, when you want to link a program with libltdl, be it a convenience,
-installed or installable library, just compile with @samp{$(INCLTDL)}
-and link it with @samp{$(LIBLTDL)}, using libtool.
-
-You should probably also add @samp{AC_LIBTOOL_DLOPEN} to your
-@file{configure.in} @emph{before} @samp{AM_PROG_LIBTOOL}, otherwise
-libtool will assume no dlopening mechanism is supported, and revert to
-dlpreopening, which is probably not what you want.
-
-Avoid using the @code{-static} or @code{-all-static} switches when
-linking programs with libltdl.  This will not work on all platforms,
-because the dlopening functions may not be available for static linking.
-
-The following example shows you how to embed the convenience libltdl in
-your package.  In order to use the installable variant just replace
-@samp{AC_LIBLTDL_CONVENIENCE} with @samp{AC_LIBLTDL_INSTALLABLE}.  We
-assume that libltdl was embedded using @samp{libtoolize --ltdl}.
-
-configure.in:
+@node User defined module data
+@section Data associated with loaded modules
+  
+Some of the internal information about each loaded module that is
+maintained by libltdl is available to the user, in the form of this
+structure:
+  
+@deftypefn {Type} {struct} lt_dlinfo @{ @w{char *@var{filename};} @w{char *@var{name};} @w{int @var{ref_count};} @}
+@code{lt_dlinfo} is used to store information about a module.
+The @var{filename} attribute is a null-terminated character string of
+the real module file name.  If the module is a libtool module then
+@var{name} is its module name (e.g. @code{"libfoo"} for
+@code{"dir/libfoo.la"}), otherwise it is set to @code{NULL}.  The
+@var{ref_count} attribute is a reference counter that describes how
+often the same module is currently loaded.
+@end deftypefn
+  
+The following function will return a pointer to libltdl's internal copy
+of this structure for the given @var{handle}:
+  
+@deftypefun {const lt_dlinfo *} lt_dlgetinfo (@w{lt_dlhandle @var{handle}})
+Return a pointer to a struct that contains some information about
+the module @var{handle}.  The contents of the struct must not be modified.
+Return @code{NULL} on failure.
+@end deftypefun
+  
+Furthermore, in order to save you from having to keep a list of the
+handles of all the modules you have loaded, this function will supply
+the @var{handle} for each loaded module to a given callback:
+  
+@deftypefun int lt_dlforeach (@w{int (*@var{func}) (lt_dlhandle @var{handle}, lt_ptr @var{data})}, @w{lt_ptr @var{data}})
+For each loaded module call the function @var{func}.  The argument
+@var{handle} is the handle of one of the loaded modules, @var{data} is
+the @var{data} argument passed to @code{lt_dlforeach}.
+As soon as @var{func} returns a non-zero value for one of the handles,
+@code{lt_dlforeach} will stop calling @var{func} and immediately return 1.
+Otherwise 0 is returned.
+@end deftypefun
+  
+Of course, you would still need to maintain your own list of loaded
+module handles to parallel the list maintained by libltdl if there are
+any other data that you need to associate with each handle for the
+purposes of your application.  However, if you use the following
+@sc{api} calls to associate your application data with individual module
+handles as they are loaded there is actually no need to do that.  You
+must first obtain a unique caller id from libltdl which you subsequently
+use to retrieve the data you stored earlier.  This allows for different
+libraries that each wish to store their own data against loaded modules
+to do so without interfering with one another's data.
+  
+@deftp {Type} lt_dlcaller_id
+The opaque type used to hold individual data set keys.
+@end deftp
+  
+@deftypefun lt_dlcaller_id lt_dlcaller_register (void)
+Use this to obtain a unique key to store and retrieve individual sets of
+per module data.
+@end deftypefun
+  
+@deftypefun lt_ptr lt_dlcaller_set_data (@w{lt_dlcaller_id @var{key}}, @w{lt_dlhandle @var{handle}}, @w{lt_ptr @var{data}})
+Set @var{data} as the set of data uniquely associated with @var{key} and
+@var{handle} for later retrieval.  This function returns the @var{data}
+previously associated with @var{key} and @var{handle} if any.  A result of
+0, may indicate that a diagnostic for the last error (if any) is available
+from @code{lt_dlerror()}.
+  
+For example, to correctly remove some associated data:
+  
 @example
-...
-dnl Enable building of the convenience library
-dnl and set LIBLTDL accordingly
-AC_LIBLTDL_CONVENIENCE
-dnl Substitute INCLTDL and LIBLTDL in the Makefiles
-AC_SUBST(INCLTDL)
-AC_SUBST(LIBLTDL)
-dnl Check for dlopen support
-AC_LIBTOOL_DLOPEN
-dnl Configure libtool
-AM_PROG_LIBTOOL
-dnl Configure libltdl
-AC_CONFIG_SUBDIRS(libltdl)
-...
-@end example
+    lt_ptr stale = lt_dlcaller_set_data (key, handle, 0);
+    if (stale == NULL)
+      @{
+        char *error_msg = lt_dlerror ();
 
-Makefile.am:
+        if (error_msg != NULL)
+          @{
+            my_error_handler (error_msg);
+            return STATUS_FAILED;
+          @}
+      @}
+    else
+      @{
+        free (stale);
+      @}
+@end example
+@end deftypefun
+  
+@deftypefun lt_ptr lt_dlcaller_get_data (@w{lt_dlcaller_id @var{key}}, @w{lt_dlhandle @var{handle}})
+Return the address of the data associated with @var{key} and
+@var{handle}, or else @code{NULL} if there is none.
+@end deftypefun
+
+The preceding functions can be combined with @code{lt_dlforeach} to
+implement search and apply operations without the need for your
+application to track the modules that have been loaded and unloaded:
+
 @example
-...
-SUBDIRS = libltdl
+int
+my_dlcaller_callback (lt_dlhandle handle, lt_ptr key_ptr)
+@{
+  struct my_module_data *my_data;
+  
+  my_data = lt_dlcaller_get_data (handle, (lt_dlcaller_id) *key_ptr);
+  
+  return process (my_data);
+@}
 
-INCLUDES = $(INCLTDL)
-
-myprog_LDFLAGS = -export-dynamic
-# The quotes around -dlopen below fool automake into accepting it
-myprog_LDADD = $(LIBLTDL) "-dlopen" self "-dlopen" libfoo.la
-myprog_DEPENDENCIES = $(LIBLTDL) libfoo.la
-...
+int
+my_dlcaller_foreach (lt_dlcaller_id key)
+@{
+  lt_dlforeach (my_dlcaller_callback, (lt_ptr) &key);
+@}
 @end example
-
 
 @node Module loaders for libltdl
 @section How to create and register new module loaders
@@ -3500,6 +3453,144 @@ if (lt_dlseterror (LTDL_ERROR_NO_MEMORY) != 0)
   perror (lt_dlerror ());
 @end example
 @end deftypefun
+
+@node Distributing libltdl
+@section How to distribute libltdl with your package
+
+Even though libltdl is installed together with libtool, you may wish to
+include libltdl in the distribution of your package, for the convenience
+of users of your package that don't have libtool or libltdl installed.
+In this case, you must decide whether to manually add the @code{ltdl}
+objects to your package, or else which flavor of libltdl you want to use:
+a convenience library or an installable libtool library.
+
+The most simplistic way to add @code{ltdl} to your package is to copy
+the source files, @file{ltdl.c} and @file{ltdl.h}, to a source directory
+withing your package and to build and link them along with the rest of
+your sources.  To help you do this, the m4 macros for autoconf are
+available in @file{ltdl.m4}.  You must ensure that they are available in
+@file{aclocal.m4} before you run autoconf -- by appending the contents
+of @file{ltdl.m4} to @file{acinclude.m4}, if you are using automake, or
+to @file{aclocal.m4} if you are not.  Having made the macros available,
+you must add a call to the @samp{AC_LIB_LTDL} macro to your package's
+@file{configure.in} to perform the configure time checks required to
+build @file{ltdl.o} correctly.  This method has problems if you then try
+to link the package binaries with an installed libltdl, or a library
+which depends on libltdl: you may have problems with duplicate symbol
+definitions.
+
+One advantage of the convenience library is that it is not installed, so
+the fact that you use libltdl will not be apparent to the user, and it
+will not overwrite a pre-installed version of libltdl a user might have.
+On the other hand, if you want to upgrade libltdl for any reason
+(e.g. a bugfix) you'll have to recompile your package instead of just
+replacing an installed version of libltdl.
+However, if your programs or libraries are linked with other libraries
+that use such a pre-installed version of libltdl, you may get linker
+errors or run-time crashes.  Another problem is that you cannot link the
+convenience library into more than one libtool library, then link a
+single program with these libraries, because you may get duplicate
+symbols. In general you can safely use the convenience library in programs
+which don't depend on other libraries that might use libltdl too.
+In order to enable this flavor of libltdl, you should add the
+line @samp{AC_LIBLTDL_CONVENIENCE} to your @file{configure.in},
+@emph{before} @samp{AM_PROG_LIBTOOL}.
+
+In order to select the installable version of libltdl, you should add a
+call of the macro @samp{AC_LIBLTDL_INSTALLABLE} to your
+@file{configure.in} @emph{before} @samp{AM_PROG_LIBTOOL}.  This macro
+will check whether libltdl is already installed and, if not, request the
+libltdl embedded in your package to be built and installed.  Note,
+however, that no version checking is performed.  The user may override
+the test and determine that the libltdl embedded must be installed,
+regardless of the existence of another version, using the configure
+switch @samp{--enable-ltdl-install}.
+
+In order to embed libltdl into your package, just add @samp{--ltdl} to
+the @code{libtoolize} command line. It will copy the libltdl sources
+to a subdirectory @samp{libltdl} in your package.
+Both macros accept an optional argument to specify the location
+of the @samp{libltdl} directory. By the default both macros assume that it
+is @samp{$@{top_builddir@}/libltdl}.
+
+Whatever macro you use, it is up to you to ensure that your
+@file{configure.in} will configure libltdl, using
+@samp{AC_CONFIG_SUBDIRS}, and that your @file{Makefile}s will start
+sub-makes within libltdl's directory, using automake's @var{SUBDIRS},
+for example.  Both macros define the shell variables @var{LIBLTDL}, to
+the link flag that you should use to link with libltdl, and
+@var{INCLTDL}, to the preprocessor flag that you should use to compile
+with programs that include @file{ltdl.h}.  It is up to you to use
+@samp{AC_SUBST} to ensure that this variable will be available in
+@file{Makefile}s, or add them to variables that are @samp{AC_SUBST}ed by
+default, such as @var{LIBS} and @var{CPPFLAGS}.
+
+If you're using the convenience libltdl, @var{LIBLTDL} will be the
+pathname for the convenience version of libltdl and @var{INCLTDL} will be
+@samp{-I} followed by the directory that contains libltdl, both starting
+with @samp{$@{top_builddir@}/}.
+
+If you request an installed version of libltdl and one is
+found@footnote{Even if libltdl is installed,
+@samp{AC_LIBLTDL_INSTALLABLE} may fail to detect it, if libltdl depends
+on symbols provided by libraries other than the C library.  In this
+case, it will needlessly build and install libltdl.}, @var{LIBLTDL} will
+be set to @samp{-lltdl} and @var{INCLTDL} will be empty (which is just a
+blind assumption that @file{ltdl.h} is somewhere in the include path if
+libltdl is in the library path).  If an installable version of libltdl
+must be built, its pathname, starting with @samp{$@{top_builddir@}/},
+will be stored in @var{LIBLTDL}, and @var{INCLTDL} will be set just like
+in the case of convenience library.
+
+So, when you want to link a program with libltdl, be it a convenience,
+installed or installable library, just compile with @samp{$(INCLTDL)}
+and link it with @samp{$(LIBLTDL)}, using libtool.
+
+You should probably also add @samp{AC_LIBTOOL_DLOPEN} to your
+@file{configure.in} @emph{before} @samp{AM_PROG_LIBTOOL}, otherwise
+libtool will assume no dlopening mechanism is supported, and revert to
+dlpreopening, which is probably not what you want.
+
+Avoid using the @code{-static} or @code{-all-static} switches when
+linking programs with libltdl.  This will not work on all platforms,
+because the dlopening functions may not be available for static linking.
+
+The following example shows you how to embed the convenience libltdl in
+your package.  In order to use the installable variant just replace
+@samp{AC_LIBLTDL_CONVENIENCE} with @samp{AC_LIBLTDL_INSTALLABLE}.  We
+assume that libltdl was embedded using @samp{libtoolize --ltdl}.
+
+configure.in:
+@example
+...
+dnl Enable building of the convenience library
+dnl and set LIBLTDL accordingly
+AC_LIBLTDL_CONVENIENCE
+dnl Substitute INCLTDL and LIBLTDL in the Makefiles
+AC_SUBST(INCLTDL)
+AC_SUBST(LIBLTDL)
+dnl Check for dlopen support
+AC_LIBTOOL_DLOPEN
+dnl Configure libtool
+AM_PROG_LIBTOOL
+dnl Configure libltdl
+AC_CONFIG_SUBDIRS(libltdl)
+...
+@end example
+
+Makefile.am:
+@example
+...
+SUBDIRS = libltdl
+
+INCLUDES = $(INCLTDL)
+
+myprog_LDFLAGS = -export-dynamic
+# The quotes around -dlopen below fool automake into accepting it
+myprog_LDADD = $(LIBLTDL) "-dlopen" self "-dlopen" libfoo.la
+myprog_DEPENDENCIES = $(LIBLTDL) libfoo.la
+...
+@end example
 
 @node Other languages
 @chapter Using libtool with other languages

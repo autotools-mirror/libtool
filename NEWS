@@ -15,6 +15,8 @@ New in 1.3d: 2000-??-??; CVS version 1.3c, Libtool team:
 * Libtool now allows you to link shared libraries against static code.
 * New functions in libltdl:
   lt_dlgetinfo, lt_dlforeach provide access to module specific data in handles.
+  lt_dlcaller_register, lt_dlcaller_set_data and lt_dlcaller_get_data provide
+  management for user storage of per module data.
   lt_dlloader_next, lt_dlloader_name, lt_dlloader_find, lt_dlloader_add and
   lt_dlloader_remove can be used for adding new types of module loaders.
   lt_dladderror, lt_dlseterror integrate user module loaders with lt_dlerror.
