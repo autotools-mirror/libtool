@@ -81,6 +81,9 @@ AC_CACHE_CHECK([whether deplibs are loaded by dlopen],
 	linux*)
 	  libltdl_cv_sys_dlopen_deplibs=yes
 	  ;;
+	netbsd*)
+	  libltdl_cv_sys_dlopen_deplibs=yes
+	  ;;
 	solaris*)
 	  libltdl_cv_sys_dlopen_deplibs=yes
 	  ;;
