@@ -1,3 +1,7 @@
+1999-02-24  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* ltmain.in (file_magic_regex): sed `10q' is faster than `11,$d'
+
 1999-02-22  Thomas Tanner  <tanner@gmx.de>
 
 	* ltconfig.in (dlopen, dlopen_self): default is unknown
