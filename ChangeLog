@@ -1,5 +1,7 @@
 2005-03-16  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* m4/libtool.m4 (_LT_CONFIG): Reset IFS to fix failure with ash.
+
 	* configure.ac, libltdl/configure.ac: s/##/dnl/ for comments
 	that are meaningless in configure.
 	Reported by Alexandre Duret-Lutz <adl@src.lip6.fr>.
