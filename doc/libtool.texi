@@ -3659,12 +3659,12 @@ If @var{place} is the last element in the list of loaded modules, this
 function returns @code{NULL}.
 
 @example
-  lt_dlhandle handle = 0;
+lt_dlhandle handle = 0;
 
-  while ((handle = lt_dlhandle_next (handle)))
-    @{
-      @dots{}
-    @}
+while ((handle = lt_dlhandle_next (handle)))
+  @{
+    @dots{}
+  @}
 @end example
 @end deftypefun
 
@@ -3710,21 +3710,21 @@ from @code{lt_dlerror()}.
 For example, to correctly remove some associated data:
 
 @example
-    lt_ptr stale = lt_dlcaller_set_data (key, handle, 0);
-    if (stale != NULL)
-      @{
-        free (stale);
-      @}
-    else
-      @{
-        char *error_msg = lt_dlerror ();
+lt_ptr stale = lt_dlcaller_set_data (key, handle, 0);
+if (stale != NULL)
+  @{
+    free (stale);
+  @}
+else
+  @{
+    char *error_msg = lt_dlerror ();
 
-        if (error_msg != NULL)
-          @{
-            my_error_handler (error_msg);
-            return STATUS_FAILED;
-          @}
+    if (error_msg != NULL)
+      @{
+        my_error_handler (error_msg);
+        return STATUS_FAILED;
       @}
+  @}
 @end example
 @end deftypefun
 
@@ -3786,19 +3786,19 @@ skip any loaded module handles that fail the registered interface
 validator callback function:
 
 @example
-  /* @r{Register for a} caller_id @r{to identify ourselves to} libltdl.  */
-  caller_id = lt_dlcaller_register ("example", iface_validator_callback);
+/* @r{Register for a} caller_id @r{to identify ourselves to} libltdl.  */
+caller_id = lt_dlcaller_register ("example", iface_validator_callback);
 
 @dots{}
-  /* @r{Iterate over the modules related to my} caller_id.  */
-  @{
-    lt_dlhandle handle = lt_dlhandle_first (caller_id);
+/* @r{Iterate over the modules related to my} caller_id.  */
+@{
+  lt_dlhandle handle = lt_dlhandle_first (caller_id);
 
-    while ((handle = lt_dlhandle_next (handle)))
-      @{
-        @dots{}
-      @}
-  @}
+  while ((handle = lt_dlhandle_next (handle)))
+    @{
+      @dots{}
+    @}
+@}
 @end example
 @end deftypefun
 
@@ -3949,11 +3949,9 @@ registered loader.  These @var{loader_name}s must be unique, or
 work.  Returns 0 for success.
 
 @example
-@{
-  /* Make myloader be the last one. */
-  if (lt_dlloader_add (NULL, myloader) != 0)
-    perror (lt_dlerror ());
-@}
+/* Make myloader be the last one. */
+if (lt_dlloader_add (NULL, myloader) != 0)
+  perror (lt_dlerror ());
 @end example
 @end deftypefun
 
@@ -3964,11 +3962,9 @@ have been closed.  Returns 0 for success, otherwise an error message can
 be obtained from @code{lt_dlerror}.
 
 @example
-@{
-  /* Remove myloader. */
-  if (lt_dlloader_remove ("myloader") != 0)
-    perror (lt_dlerror ());
-@}
+/* Remove myloader. */
+if (lt_dlloader_remove ("myloader") != 0)
+  perror (lt_dlerror ());
 @end example
 @end deftypefun
 
@@ -3978,11 +3974,9 @@ Iterate over the module loaders, returning the first loader if @var{place} is
 @code{lt_dlloader_add}.
 
 @example
-@{
-  /* Make myloader be the first one. */
-  if (lt_dlloader_add (lt_dlloader_next (NULL), myloader) != 0)
-    return ERROR;
-@}
+/* Make myloader be the first one. */
+if (lt_dlloader_add (lt_dlloader_next (NULL), myloader) != 0)
+  return ERROR;
 @end example
 @end deftypefun
 
@@ -3996,12 +3990,10 @@ the host dependent module loading @sc{api} -- @code{shl_load} and
 @code{LoadLibrary} for example}, @dfn{dld} and @dfn{dlpreload}.
 
 @example
-@{
-  /* Add a user loader as the next module loader to be tried if
-     the standard dlopen loader were to fail when lt_dlopening. */
-  if (lt_dlloader_add (lt_dlloader_find ("dlopen"), myloader) != 0)
-    return ERROR;
-@}
+/* Add a user loader as the next module loader to be tried if
+   the standard dlopen loader were to fail when lt_dlopening. */
+if (lt_dlloader_add (lt_dlloader_find ("dlopen"), myloader) != 0)
+  return ERROR;
 @end example
 @end deftypefun
 
@@ -4745,7 +4737,7 @@ The following is a list of valuable documentation references:
 @itemize @bullet
 @item
 SGI's IRIX Manual Pages, which can be found at
-@url{http://techpubs.sgi.com/cgi-bin/infosrch.cgi?cmd=browse&db=man}.
+@url{http://techpubs.sgi.com/cgi-bin/@/infosrch.cgi?cmd=browse&db=man}.
 
 @item
 Sun's free service area
@@ -4754,9 +4746,9 @@ server (@url{http://docs.sun.com/}).
 
 @item
 Compaq's Tru64 UNIX online documentation is at
-(@url{http://tru64unix.compaq.com/faqs/publications/pub_page/doc_list.html})
+(@url{http://tru64unix.compaq.com/@/faqs/publications/pub_page/doc_list.html})
 with C++ documentation at
-(@url{http://tru64unix.compaq.com/cplus/docs/index.htm}).
+(@url{http://tru64unix.compaq.com/@/cplus/docs/index.htm}).
 
 @item
 Hewlett-Packard has online documentation at
