@@ -1,5 +1,10 @@
 1999-04-02  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* ltmain.in (convenience): fixed race condition when more than one 
+	library was linked with the same convenience library by
+	uniquifying the extract directory.  It is now named after the new
+	library *and* the old one, and lives in the objdir of the new one.
+
 	* ltmain.in (-L*): do not abort just because a directory specified 
 	with -L does not exist; just warn and discard it
 
