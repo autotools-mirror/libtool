@@ -1,3 +1,15 @@
+2005-02-23  Gary V. Vaughan  <gary@gnu.org>
+
+	Preserving the installed timestamps for libltdl sources from
+	`libtoolize --ltdl --copy' is pointless if they are not preserved
+	from the libtool source tree at install time:
+
+	* libltdl/Makefile.am, libltdl/loaders/Makefile.am
+	(nobase_ltdldata_DATA): Renamed to...
+	(ltdldatafiles): ...this.
+	(install-data-local): New rule to install libltdl tree with tar to
+	preserve timestamps.
+
 2005-02-23  Christoph Egger  <Christoph_Egger@gmx.de> (tiny change)
 
 	* config/ltmain.m4sh (func_mode_link): Add -pthread like flags to

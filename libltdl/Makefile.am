@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in
 ##
-## Copyright (C) 1998, 1999, 2000, 2001, 2003, 2004 Free Software Foundation
+## Copyright (C) 1998, 1999, 2000, 2001, 2003, 2004, 2005 Free Software Foundation
 ##
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -71,11 +71,18 @@ libltdlc_la_LIBADD	= $(libdlloader_la_LIBADD)
 ## These are installed as a subdirectory of pkgdatadir so that
 ## libtoolize --ltdl can find them later:
 ltdldatadir		= $(pkgdatadir)/libltdl
-nobase_ltdldata_DATA	= COPYING.LIB Makefile.am README configure.ac \
+ltdldatafiles		= COPYING.LIB Makefile.am README configure.ac \
 			  $(libltdl_la_SOURCES) $(libdlloader_la_SOURCES) \
 			  lt__dirent.c libltdl/lt__dirent.h \
                           lt__strl.c libltdl/lt__strl.h \
 			  argz_.h argz.c
+
+## To avoid spurious reconfiguration when the user installs these files
+## with libtoolize, we have to preserve their timestamps carefully:
+install-data-local:
+	$(mkinstalldirs) $(ltdldatadir)
+	$(AMTAR) cf - $(ltdldatafiles) \
+	  | ( cd $(ltdldatadir) && $(AMTAR) xf -; )
 
 ## Make sure these will be cleaned even when they're not built by default:
 CLEANFILES		= libltdl.la libltdlc.la libdlloader.la

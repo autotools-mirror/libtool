@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in
 ##
-## Copyright (C) 2004 Free Software Foundation
+## Copyright (C) 2004, 2005 Free Software Foundation
 ##
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -51,8 +51,15 @@ dld_link_la_LIBADD	= ../libdlloader.la -ldld
 ## These are installed as a subdirectory of pkgdatadir so that
 ## libtoolize --ltdl can find them later:
 ltdldatadir		= $(pkgdatadir)/libltdl/loaders
-ltdldata_DATA		= Makefile.am dld_link.c dlopen.c dyld.c \
+ltdldatafiles		= Makefile.am dld_link.c dlopen.c dyld.c \
 			  load_add_on.c loadlibrary.c shl_load.c
+
+## To avoid spurious reconfiguration when the user installs these files
+## with libtoolize, we have to preserve their timestamps carefully:
+install-data-local:
+	$(mkinstalldirs) $(ltdldatadir)
+	$(AMTAR) cf - $(ltdldatafiles) \
+	  | ( cd $(ltdldatadir) && $(AMTAR) xf -; )
 
 ../libdlloader.la:
 	cd ..; $(MAKE) $(AM_MAKEFLAGS) libdlloader.la
