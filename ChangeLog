@@ -1,3 +1,14 @@
+1998-12-01  Thomas Tanner  <tanner@gmx.de>
+
+	* ltconfig.in: added -export-symbols support for GNU ld and
+	Solaris (untested), archive_sym_cmds for -export-symbols
+	* doc/libtool.texi, ltmain.in: -export-symbols is now
+	independent from -export-dynamic and does not work for modules 
+	anymore
+	* ltmain.in: added some checks for -export-symbols
+	* mdemo/modules/Makefile.am: replaced -export-symbols with 
+	-export-dynamic since it doesn't work for modules
+	
 1998-12-01  Gary V. Vaughan  <garyv@oranda.demon.co.uk>
 
 	* README: Updated homepage pointer to gnu libtool page.
