@@ -1,3 +1,8 @@
+2001-09-21  Gary V. Vaughan  <gary@gnu.org>
+
+	* libltdl/ltdl.c: Added support for dmalloc, and uncovered some
+	memory bugs as a result.
+
 2001-09-21  Albert Chin  <china@thewrittenword.com>
 
 	* libtool.m4: Don't include main() when testing for command to
