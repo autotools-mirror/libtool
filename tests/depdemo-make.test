@@ -13,7 +13,7 @@ fi
 if test -f ../depdemo/Makefile; then :
 else
   echo "You must run depdemo-conf.test before running $0" 1>&2
-  exit 1
+  exit 77
 fi
 
 # Change to our build directory.

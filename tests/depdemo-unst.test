@@ -10,15 +10,12 @@ if test -z "$srcdir"; then
 fi
 . $srcdir/defs || exit 1
 
-# Maybe we have a VPATH build, in which case, create a new subdir.
-if test "$prefix/bin/hell"; then :
+# Make sure it was installed already
+if test "$prefix/bin/hell" && cd ../depdemo; then :
 else
   echo "You must run depdemo-inst.test before $0." 1>&2
-  exit 1
+  exit 77
 fi
-
-# Change to our build directory.
-cd ../depdemo || exit 1
 
 echo "= Running $make uninstall in ../depdemo"
 $make uninstall || exit 1

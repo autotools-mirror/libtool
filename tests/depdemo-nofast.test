@@ -27,4 +27,8 @@ rm -f config.cache
 echo "= Configuring in ../depdemo (prefix=$prefix)"
 CONFIG_SITE=/dev/null ${CONFIG_SHELL-/bin/sh} $srcdir/../depdemo/configure --srcdir=$srcdir/../depdemo --prefix=$prefix --enable-fast-install=no || exit 1
 
+if egrep '^hardcode_action=relink' libtool > /dev/null; then
+  rm -f Makefile && exit 77
+fi
+
 exit 0
