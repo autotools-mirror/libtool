@@ -1,6 +1,7 @@
 NEWS - list of user-visible changes between releases of GNU Libtool
 
 New in 1.5.7a: 2004-??-??; CVS version 1.5.7a, Libtool team:
+* Support for Intel C++ version 8.0.
 * Bug Fixes.
 
 New in 1.5.6: 2004-04-11; CVS version 1.5.5a, Libtool team:

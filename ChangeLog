@@ -1,3 +1,11 @@
+2004-04-19  Gary V. Vaughan  <gary@gnu.org>
+
+	* m4/libtool.m4 (_LT_LANG_CXX_CONFIG): Intel C++ compiler 8.0 and
+	newer adds predep_objects and postdep_objects itself, so don't
+	duplicate them in $archive_cmds and $archive_expsym_cmds.
+	* NEWS: Updated.
+	Reported by Roberto Bagnare <bagnara@cs.unipr.it>
+
 2004-04-14  Alexandre Duret-Lutz  <adl@gnu.org>
 
 	* bootstrap: Delete acinclude.m4.
