@@ -61,6 +61,7 @@ installcheck-local:
 clean-local: clean-local-legacy
 	$(SHELL) $(srcdir)/$(TESTSUITE) --clean
 
+DISTCLEANFILES = atconfig
 
 ## ------------- ##
 ## Legacy tests. ##
@@ -155,4 +156,4 @@ clean-local-legacy:
 $(TESTS): defs
 defs: defs.in $(top_srcdir)/Makefile.am
 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) tests/defs
-DISTCLEANFILES = defs
+DISTCLEANFILES += defs

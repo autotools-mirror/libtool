@@ -1,5 +1,7 @@
 2005-02-01  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* tests/Makefile.am: Add `atconfig' to DISTCLEANFILES.
+
 	* clcommit.m4sh: Test whether the shell understands `read -r'.  Use as
 	`$read_r' if available, so `\' is preserved in commit notices.
 
