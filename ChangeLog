@@ -1,3 +1,11 @@
+1999-02-09  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
+
+	* ltmain.in: Applied Thomas Tanner's latest ild.diff.  This
+	clashes with my change from 1999-02-03 below, but what I had was a
+	bit of a mess, so I also reverted that at the same time.
+	* configure.in: Thomas' latest ILD patch again.
+	* depdemo/Makefile.am: And here.
+	
 1999-02-03  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
 
 	* ltmain.in (--mode=link): reinstate linking against ltlibraries.
