@@ -1,3 +1,8 @@
+2001-06-25  Maciej W. Rozycki  <macro@ds2.pg.gda.pl>
+
+	* libtool.m4 (AC_DEPLIBS_CHECK_METHOD): Use pass_all for
+	mips-*-linux* and mipsel-*-linux*.
+
 2001-06-24  Andreas Schwab  <schwab@suse.de>
 
 	* libtool.m4 (AC_LIBTOOL_SETUP): Remove failed try to
