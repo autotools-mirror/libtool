@@ -9,30 +9,31 @@ details.
 Libtool supports building static libraries on all platforms.
 
 Shared library support has been implemented for these platforms:
+  All ELF targets that use both the GNU C compiler (gcc) and GNU ld
   AIX 3.x (*-*-aix3*)
   AIX 4.x (*-*-aix4*)
   Digital/UNIX 3.x, 4.x, a.k.a. OSF/1 (*-*-osf3*, *-*-osf4*)
   FreeBSD 2.x, 3.x (*-*-freebsd2*, *-*-freebsd3*)
   HP-UX 9.x, 10.x (*-*-hpux9*, *-*-hpux10*)
   IRIX 5.x, 6.x (*-*-irix5*, *-*-irix6*)
-  Linux ELF targets (*-*-linux*, except *-*-linuxaout* and *-*-linuxoldld*)
+  Linux ELF (*-*-linux*, except aout, coff, and oldld)
   NetBSD 1.x (*-*-netbsd*)
   OpenBSD 2.x (*-*-openbsd*)
   SCO OpenServer 5.x (*-*-sco3.2v5*)
-  Solaris 1.x, a.k.a. SunOS 4.x (*-*-sunos4*)
   Solaris 2.x (*-*-solaris2*)
-  All ELF targets that use both the GNU C compiler (gcc) and GNU ld
+  SunOS 4.x, a.k.a. Solaris 1.x  (*-*-sunos4*)
 
 See the file NEWS for a description of recent changes to libtool.
 
-See the file INSTALL for instructions on how to build and install libtool.
+See the file INSTALL for instructions on how to build and install
+libtool.
 
-See the file README-automake for details on Automake support for libtool.
+See the info node (libtool)Tested Platforms. (or the file
+doc/platforms.texi) for a list of platforms that libtool shared
+library support was tested on.
 
-See the info node (libtool)Tested Platforms. (or the file doc/platforms.texi)
-for a list of platforms that libtool shared library support was tested on.
-
-If you have any suggestions or bug reports, or you wish to port libtool
-to a new platform, please send electronic mail to the libtool mailing list
-<bug-libtool@gnu.ai.mit.edu>.  Don't forget to mention the version of libtool
-that you are currently using (by typing `ltconfig --version').
+If you have any suggestions or bug reports, or you wish to port
+libtool to a new platform, please send electronic mail to the libtool
+mailing list <bug-libtool@gnu.ai.mit.edu>.  Don't forget to mention
+the version of libtool that you are currently using (by typing
+`ltconfig --version').

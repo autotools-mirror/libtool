@@ -1,5 +1,14 @@
 Tue Jul  8 11:01:27 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
+	* Release 1.0.
+
+	* ltconfig.in: On SunOS, append /usr/etc to the PATH before
+ 	running ldconfig; on *BSD, append /sbin.  This was done in line
+ 	with the Linux change suggested by Kenneth Albanowski.
+
+	* demo/Makefile.am (hardcode_tests): Aesthetic change to
+	alphabetize order of compiling the hardcode tests.
+
 	* Makefile.am (EXTRA_DIST): Delete README-automake.
 
 	* README-automake: Remove from distribution.
@@ -32,8 +41,9 @@ Tue Jul  1 13:03:49 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 Mon Jun 30 22:32:05 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
-	* ltconfig.in: Add /sbin into the path before running ldconfig on
-	Linux.  Suggested by Kenneth Albanowski.
+	* ltconfig.in: Append /sbin to the path before running ldconfig on
+ 	Linux.  This helps superusers who haven't set their PATH
+ 	correctly.  Suggested by Kenneth Albanowski.
 
 Sun Jun 29 19:51:50 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 

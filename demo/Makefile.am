@@ -3,7 +3,7 @@ AUTOMAKE_OPTIONS = foreign
 
 EXTRA_DIST = $(TESTS) acinclude.m4
 
-hardcode_tests = hc-direct hc-minusL hc-libpath
+hardcode_tests = hc-direct hc-libpath hc-minusL
 CLEANFILES = $(hardcode_tests)
 
 # Build a libtool library, libhello.la for installation in libdir.

@@ -769,7 +769,7 @@ aix3* | aix4*)
 freebsd2* | freebsd3*)
   version_type=sunos
   library_names_spec='$libname.so.$versuffix $libname.so'
-  finish_cmds='ldconfig -m $libdir'
+  finish_cmds='PATH="\$PATH:/sbin" ldconfig -m $libdir'
   shlibpath_var=LD_LIBRARY_PATH
   ;;
 
@@ -825,7 +825,7 @@ linux-gnu*)
 netbsd* | openbsd*)
   version_type=sunos
   library_names_spec='$libname.so.$versuffix'
-  finish_cmds='ldconfig -m $libdir'
+  finish_cmds='PATH="\$PATH:/sbin" ldconfig -m $libdir'
   shlibpath_var=LD_LIBRARY_PATH
   ;;
 
@@ -853,7 +853,7 @@ solaris2*)
 sunos4*)
   version_type=sunos
   library_names_spec='$libname.so.$versuffix'
-  finish_cmds='ldconfig $libdir'
+  finish_cmds='PATH="\$PATH:/usr/etc" ldconfig $libdir'
   shlibpath_var=LD_LIBRARY_PATH
   ;;
 
