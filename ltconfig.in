@@ -1434,13 +1434,11 @@ else
   echo "${ac_t}no" 1>&6
 fi
 
-reload_flag=
+reload_flag=@reload_flag@
 reload_cmds='$LD$reload_flag -o $output$reload_objs'
-echo $ac_n "checking for $LD option to reload object files... $ac_c" 1>&6
-# PORTME Some linkers may need a different reload flag.
-reload_flag='-r'
-echo "$ac_t$reload_flag" 1>&6
-test -n "$reload_flag" && reload_flag=" $reload_flag"
+
+file_magic_cmd=@file_magic_cmd@
+deplibs_check_method=@deplibs_check_method@
 
 # PORTME Fill in your ld.so characteristics
 library_names_spec=
@@ -1456,19 +1454,7 @@ version_type=none
 dynamic_linker="$host_os ld.so"
 sys_lib_dlsearch_path_spec="/lib /usr/lib"
 sys_lib_search_path_spec="/lib /usr/lib /usr/local/lib"
-file_magic_cmd="$FILE"
-file_magic_test_file=
-deplibs_check_method='unknown'
-# Need to set the preceding variable on all platforms that support
-# interlibrary dependencies.
-# 'none' -- dependencies not supported.
-# `unknown' -- same as none, but documents that we really don't know.
-# 'pass_all' -- all dependencies passed with no checks.
-# 'test_compile' -- check by making test program.
-# 'file_magic [regex]' -- check by looking for files in library path
-# which responds to the $file_magic_cmd with a given egrep regex.
-# If you have `file' or equivalent on your system and you're not sure
-# whether `pass_all' will *always* work, you probably want this one.
+
 echo $ac_n "checking dynamic linker characteristics... $ac_c" 1>&6
 case "$host_os" in
 aix3*)
@@ -1489,7 +1475,6 @@ aix4*)
   # and later linker supports .so
   library_names_spec='${libname}${release}.so$versuffix ${libname}${release}.so$major $libname.a'
   shlibpath_var=LIBPATH
-  deplibs_check_method=pass_all
   ;;
 
 amigaos*)
@@ -1502,7 +1487,6 @@ beos*)
   library_names_spec='${libname}.so'
   dynamic_linker="$host_os ld.so"
   shlibpath_var=LIBRARY_PATH
-  deplibs_check_method=pass_all
   lt_cv_dlopen="load_add_on"
   lt_cv_dlopen_libs=
   lt_cv_dlopen_self=yes
@@ -1515,8 +1499,6 @@ bsdi4*)
   soname_spec='${libname}${release}.so$major'
   finish_cmds='PATH="\$PATH:/sbin" ldconfig $libdir'
   shlibpath_var=LD_LIBRARY_PATH
-  deplibs_check_method='file_magic ELF [0-9][0-9]*-bit [ML]SB (shared object|dynamic lib)'
-  file_magic_test_file=/shlib/libc.so
   sys_lib_search_path_spec="/shlib /usr/lib /usr/X11/lib /usr/contrib/lib /lib /usr/local/lib"
   sys_lib_dlsearch_path_spec="/shlib /usr/lib /usr/local/lib"
   export_dynamic_flag_spec=-rdynamic
@@ -1535,8 +1517,6 @@ cygwin* | mingw*)
     library_names_spec='${libname}`echo ${release} | sed -e 's/[.]/-/g'`${versuffix}.dll $libname.lib'
   fi
   dynamic_linker='Win32 ld.exe'
-  deplibs_check_method='file_magic file format pei*-i386(.*architecture: i386)?'
-  file_magic_cmd='${OBJDUMP} -f'
   # FIXME: first we should search . and the directory the executable is in
   shlibpath_var=PATH
   lt_cv_dlopen="LoadLibrary"
@@ -1552,13 +1532,11 @@ freebsd*)
   version_type=freebsd-$objformat
   case "$version_type" in
     freebsd-elf*)
-      deplibs_check_method=pass_all
       library_names_spec='${libname}${release}.so$versuffix ${libname}${release}.so $libname.so'
       need_version=no
       need_lib_prefix=no
       ;;
     freebsd-*)
-      deplibs_check_method=unknown
       library_names_spec='${libname}${release}.so$versuffix $libname.so$versuffix'
       need_version=yes
       ;;
@@ -1586,7 +1564,6 @@ gnu*)
   library_names_spec='${libname}${release}.so$versuffix ${libname}${release}.so${major} ${libname}.so'
   soname_spec='${libname}${release}.so$major'
   shlibpath_var=LD_LIBRARY_PATH
-  deplibs_check_method=pass_all
   ;;
 
 hpux9* | hpux10* | hpux11*)
@@ -1613,8 +1590,6 @@ irix5* | irix6*)
   case "$host_os" in
   irix5*)
     libsuff= shlibsuff=
-    # this will be overridden with pass_all, but let us keep it just in case
-    deplibs_check_method="file_magic ELF 32-bit MSB dynamic lib MIPS - version 1"
     ;;
   *)
     case "$LD" in # libtool.m4 will add one of these switches to LD
@@ -1631,8 +1606,6 @@ irix5* | irix6*)
   shlibpath_overrides_runpath=no
   sys_lib_search_path_spec="/usr/lib${libsuff} /lib${libsuff} /usr/local/lib${libsuff}"
   sys_lib_dlsearch_path_spec="/usr/lib${libsuff} /lib${libsuff}"
-  file_magic_test_file=`echo /lib${libsuff}/libc.so*`
-  deplibs_check_method=pass_all
   ;;
 
 # No shared lib support for Linux oldld, aout, or coff.
@@ -1650,15 +1623,6 @@ linux-gnu*)
   finish_cmds='PATH="\$PATH:/sbin" ldconfig -n $libdir'
   shlibpath_var=LD_LIBRARY_PATH
   shlibpath_overrides_runpath=no
-
-  case "$host_cpu" in
-  alpha* | i*86 | sparc* )
-    deplibs_check_method=pass_all ;;
-  *)
-    # glibc up to 2.1.1 does not perform some relocations on ARM
-    deplibs_check_method='file_magic ELF [0-9][0-9]*-bit [LM]SB (shared object|dynamic lib )' ;;
-  esac
-  file_magic_test_file=`echo /lib/libc.so* /lib/libc-*.so`
 
   if test -f /lib/ld.so.1; then
     dynamic_linker='GNU ld.so'
@@ -1710,10 +1674,6 @@ osf3* | osf4* | osf5*)
   soname_spec='${libname}${release}.so'
   library_names_spec='${libname}${release}.so$versuffix ${libname}${release}.so $libname.so'
   shlibpath_var=LD_LIBRARY_PATH
-  # this will be overridden with pass_all, but let us keep it just in case
-  deplibs_check_method='file_magic COFF format alpha shared library'
-  file_magic_test_file=/shlib/libc.so
-  deplibs_check_method=pass_all
   sys_lib_search_path_spec="/usr/shlib /usr/ccs/lib /usr/lib/cmplrs/cc /usr/lib /usr/local/lib /var/shlib"
   sys_lib_dlsearch_path_spec="$sys_lib_search_path_spec"
   ;;
@@ -1723,7 +1683,6 @@ sco3.2v5*)
   soname_spec='${libname}${release}.so$major'
   library_names_spec='${libname}${release}.so$versuffix ${libname}${release}.so$major $libname.so'
   shlibpath_var=LD_LIBRARY_PATH
-  deplibs_check_method=pass_all
   ;;
 
 solaris*)
@@ -1736,8 +1695,6 @@ solaris*)
   shlibpath_overrides_runpath=yes
   # ldd complains unless libraries are executable
   postinstall_cmds='chmod +x $lib'
-  deplibs_check_method=pass_all
-  file_magic_test_file=/lib/libc.so
   ;;
 
 sunos4*)
@@ -1758,16 +1715,11 @@ sysv4 | sysv4.2uw2* | sysv4.3* | sysv5*)
   soname_spec='${libname}${release}.so$major'
   shlibpath_var=LD_LIBRARY_PATH
   case "$host_vendor" in
-    ncr)
-      deplibs_check_method=pass_all
-      ;;
     motorola)
       need_lib_prefix=no
       need_version=no
       shlibpath_overrides_runpath=no
       sys_lib_search_path_spec='/lib /usr/lib /usr/ccs/lib'
-      deplibs_check_method='file_magic ELF [0-9][0-9]*-bit [ML]SB (shared object|dynamic lib) M[0-9][0-9]* Version [0-9]'
-      file_magic_test_file=`echo /usr/lib/libc.so*`
       ;;
   esac
   ;;
@@ -1978,30 +1930,6 @@ cygwin* | mingw* | os2*)
   fi
 ;;
 esac
-
-if test -n "$file_magic_test_file"; then
-  case "$deplibs_check_method" in
-  "file_magic "*)
-    file_magic_regex="`expr \"$deplibs_check_method\" : \"file_magic \(.*\)\"`"
-    if eval $file_magic_cmd \$file_magic_test_file 2> /dev/null |
-       egrep "$file_magic_regex" > /dev/null; then
-      :
-    else
-      cat <<EOF 1>&2
-
-*** Warning: the command libtool uses to detect shared libraries,
-*** $file_magic_cmd, produces output that libtool cannot recognize.
-*** The result is that libtool may fail to recognize shared libraries
-*** as such.  This will affect the creation of libtool libraries that
-*** depend on shared libraries, but programs linked with such libtool
-*** libraries will work regardless of this problem.  Nevertheless, you
-*** may want to report the problem to your system manager and/or to
-*** bug-libtool@gnu.org
-
-EOF
-    fi ;;
-  esac
-fi
 
 echo $ac_n "checking whether to build shared libraries... $ac_c" 1>&6
 test "$can_build_shared" = "no" && enable_shared=no

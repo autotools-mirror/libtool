@@ -1,3 +1,14 @@
+1999-10-10  Gary V. Vaughan  <gary@oranda.demon.co.uk>
+
+	* libtool.m4 (AC_PATH_FILE): new macro replaces
+	AC_PATH_TOOL_GREP_OUTPUT.
+	(AC_PATH_TOOL_PREFIX): new macro replaces
+	AC_PATH_PROG_GREP_OUTPUT.
+	(AC_LD_RELOAD_FLAG):  migrated from ltconfig.in.
+	(AC_DEPLIBS_CHECK_METHOD): ditto.
+	* ltconfig.in (reload_flag): moved to libtool.m4.
+	(deplbs_check_method): ditto.
+
 1999-10-07  Gary V. Vaughan  <gary@oranda.demon.co.uk>
 
 	* libtool.m4 (AC_PATH_PROG_VERSION_GREP): removed in favour of the 
