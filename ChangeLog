@@ -1,3 +1,8 @@
+2002-04-14  Jean-Frederic Clere  <jfrederic.clere@fujitsu-siemens.com>
+
+	* libtool.m4: Update support for Fujistu-Siemens Computers (FSC).
+	* ltmain.in: Add support for EBCDIC based systems.
+
 2002-04-07  Robert Boehne  <rboehne@gnu.org>
 
 	* libtool.m4 (LT_AC_PROG_SED): Refactor, removing temporary directory
