@@ -1,3 +1,8 @@
+2004-11-23  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
+	* doc/libtool.texi (LT_INIT): s/libtool 1.6/libtool 2.0/.
+	(Invoking libtoolize): Fix typo.
+
 2004-11-22  Gary V. Vaughan  <gary@gnu.org>
 
 	* config/ltmain.m4sh (func_mode_install): Now that func_mktempdir

@@ -2077,13 +2077,13 @@ so the results of the configuration tests were available directly to code in
 @file{configure.ac}, rendering the call out to the generated libtool
 script obsolete.
 
-Starting with libtool 1.6, the multipass generation of the libtool
+Starting with libtool 2.0, the multipass generation of the libtool
 script has been consolidated into a single @file{config.status} pass,
 which happens after all the code in @file{configure.ac} has
 completed.  The implication of this is that the libtool script does
 not exist during execution of code from @file{configure.ac}, and so
 obviously it cannot be called for @samp{--config} details anymore.  If
-you are upgrading projects that used this idiom to libtool 1.6 or
+you are upgrading projects that used this idiom to libtool 2.0 or
 newer, you should replace those calls with direct references to the
 equivalent Autoconf shell variables that are set by the configure time
 tests before being passed to @file{config.status} for inclusion in the
@@ -2234,7 +2234,7 @@ It is perfectly sensible to use both @code{AC_CONFIG_MACRO_DIR} and
 
 @example
 ACLOCAL_AMFLAGS = -I m4
-@endif
+@end example
 
 When you bootstrap your project with @command{aclocal}, then you will
 need to explicitly pass the same macro directory with
