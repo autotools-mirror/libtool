@@ -10,6 +10,14 @@
 	yes' implies gnu ld, otherwise MSVC++ (which I haven't tested
 	since I inheritted the code from Ian Lance Taylor btw!) is implied.
 	
+1999-01-27  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* configure.in (pkgdatadir): define pkgdatadir explicitly, and
+ 	comment that automake does not need it, but libtoolize does
+
+	* Makefile.am (aclocaldir): do not set it explicitly, automake
+	does already
+	
 1999-01-26  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
 	
 	* configure.in:  It seems Alexandre accidentally removed the
