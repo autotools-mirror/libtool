@@ -119,6 +119,7 @@ WGETSGO = $(WGET) http://savannah.gnu.org/cgi-bin/viewcvs/~checkout~
 ## FIXME should be a lot more here
 FETCHFILES = \
 ./INSTALL \
+config/install-sh \
 config/config.guess \
 config/config.sub \
 config/texinfo.tex
@@ -131,6 +132,7 @@ fetch:
 ## If a get fails then that is a problem.
 	(cd Fetchdir && \
 	$(WGETSGO)/autoconf/autoconf/INSTALL; \
+	$(WGETSGO)/automake/automake/lib/install-sh; \
 	$(WGETSGO)/config/config/config.guess; \
 	$(WGETSGO)/config/config/config.sub; \
 	$(WGETSGO)/texinfo/texinfo/doc/texinfo.tex )

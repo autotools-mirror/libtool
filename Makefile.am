@@ -83,7 +83,8 @@ $(top_srcdir)/tests/package.m4: $(top_srcdir)/configure.ac
 # These are required by libtoolize and must be executable when installed.
 # Since _SCRIPTS gets the program transform applied we make them
 # executable by hand
-dist_pkgvdata_DATA = config/config.guess config/config.sub config/ltmain.sh
+dist_pkgvdata_DATA = config/config.guess config/config.sub config/ltmain.sh \
+	config/install-sh
 
 # Everything that gets picked up by aclocal is automatically distributed,
 # this is the list of macro files we install on the user's system.
@@ -224,6 +225,7 @@ install-data-local:
 install-data-hook:
 	chmod +x $(DESTDIR)$(pkgvdatadir)/config.guess
 	chmod +x $(DESTDIR)$(pkgvdatadir)/config.sub
+	chmod +x $(DESTDIR)$(pkgvdatadir)/install-sh
 
 ## Make versioned links.  We only run the transform on the root name;
 ## then we make a versioned link with the transformed base name.  This

@@ -680,7 +680,7 @@ func_config_update ()
   #       specially below though, so don't add them here):
   pkgvmacro_files='argz.m4:ltoptions.m4:ltsugar.m4:ltversion.m4'
 
-  glob_exclude_pkgaux_files='config.guess|config.sub|ltmain.sh'
+  glob_exclude_pkgaux_files='config.guess|config.sub|install-sh|ltmain.sh'
 
   func_scan_files
   $opt_quiet || func_check_macros
@@ -705,6 +705,7 @@ func_config_update ()
       "$auxdir" "$glob_exclude_pkgaux_files"
     func_config_update config.guess "$pkgvdatadirs" "$auxdir"
     func_config_update config.sub   "$pkgvdatadirs" "$auxdir"
+    func_config_update install-sh   "$pkgvdatadirs" "$auxdir"
   fi
   func_ltmain_update ltmain.sh "$pkgvdatadirs" "$auxdir"
 
