@@ -86,8 +86,12 @@ for mode in compile link install; do
   # Trivial.
   $echo "= trying: no quoting"
   result=`$libtool -n --mode=$mode $preargs ${preflag}"${flag}test" $postargs` || status=1
+  # We used to have the contents of $match in the case statement,
+  # without an intermediate variable, but it would fail on at least
+  # Solaris' and HP-UX's /bin/sh.  Ugh!
+  match="$preargs ${preflag}${flag}test "
   case "$result" in
-  *"$preargs ${preflag}${flag}test "*)
+  *"$match"*)
     $echo "= passed: $result"
     ;;
   *)
@@ -100,8 +104,9 @@ for mode in compile link install; do
   for mchar in \\ \" \` \$; do
     $echo "= trying: \\$mchar quoting"
     result=`$libtool -n --mode=$mode $preargs ${preflag}"${flag}${mchar}test${mchar}" $postargs` || status=1
+    match="$preargs ${preflag}${flag}\\${mchar}test\\${mchar} "
     case "$result" in
-    *"$preargs ${preflag}${flag}\\${mchar}test\\${mchar} "*)
+    *"$match"*)
       $echo "= passed: $result"
       ;;
     *)
@@ -117,8 +122,9 @@ for mode in compile link install; do
 
     $echo "= trying: \"$mchar\" quoting"
     result=`$libtool -n --mode=$mode $preargs ${preflag}"${flag}${mchar}test${mchar}" $postargs` || status=1
+    match="$preargs ${preflag}\"${flag}${mchar}test${mchar}\" "
     case "$result" in
-    *"$preargs ${preflag}\"${flag}${mchar}test${mchar}\" "*)
+    *"$match"*)
       $echo "= passed: $result"
       ;;
     *)

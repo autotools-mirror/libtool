@@ -1,5 +1,8 @@
 2000-09-03  Alexandre Oliva  <aoliva@redhat.com>
 
+	* tests/quote.test: Move the match test out of case statements, to
+	work around bug in /bin/sh of several OSs.
+
 	* tests/defs (CC): Extract from the libtool script.
 	* tests/link.test, tests/link-2.test, tests/quote.test: Use it.
 
