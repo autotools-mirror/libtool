@@ -2877,4 +2877,245 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 	* tests/tlibtool: Rewrote to grab all the settings from the generated
 	libtool script.
 
-	* tes
+	* tests/hardcode.test: Make allowances if shlibpath_var cannot be used
+	to find libraries at link time, such as on AIX.
+
+1997-01-15  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltmain.sh.in (link): Eval $link_static_flag.  Reported by Bruno
+	Haible.
+
+	* PLATFORMS: Add to distribution.  Suggested by Bruno Haible.
+
+1997-01-14  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* tests/demo-conf.test, tests/demo-inst.test, tests/demo-unst.test, 
+	tests/hardcode.test:
+ 	Use $make instead of make.
+
+	* tests/defs (make): Add definition of $make that uses the $MAKE
+	environment variable, if set.  Suggested by Bruno Haible.
+
+	* tests/demo-unst.test (leftovers): Change the find command to ignore
+	files beginning with a dot, as egrep -v doesn't seem to do the
+	trick.  Reported by Bruno Haible.
+
+1997-01-13  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltconfig.in: Add support for SCO OpenServer 5.x.  From
+	Christopher Olsen.
+
+	(can_build_shared): Initialize at the top of the file, so that
+	shared libraries aren't built on platforms that don't support
+	them.
+
+	* tests/hardcode.test: Added a test to make sure that libtool's idea of
+	hardcoding system linkers is correct.
+
+1997-01-11  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltmain.sh.in, ltconfig.in, libtoolize.in, doc/libtool.texi:
+	Update the copyright completion years.
+
+1997-01-08  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltconfig.in: Port to IRIX 5.3, 6.2.
+
+1997-01-06  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltconfig.in: HP-UX 9 support is the same as HP-UX 10, so the
+	port is trivial.
+
+	* libtoolize.in: Add --dry-run option, -n for short.
+
+1997-01-03  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltmain.sh.in (link): On at least SunOS, /bin/sh doesn't
+	understand "export something=val".  From Bruno Haible.
+
+	* tests/Makefile.am (distclean-local): Remove all files that the tests
+	may have created.  Reported by Bruno Haible.
+
+	* For all tests, discover srcdir when running from the command
+	line.
+
+	* tests/demo-unst.test: Don't fail if make uninstall doesn't delete
+ 	files beginning with a dot, since spurious .nfsXXX files may be
+ 	present when running NFS.  Reported by Bruno Haible.
+
+1997-01-02  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltmain.sh.in (compile): Recognize valid source file suffixes for
+	Fortran and C++.
+
+	* tests/suffix.test: New test to guarantee that libtool compile
+ 	recognizes valid source file suffices.
+
+1996-12-17  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltmain.sh.in (link): Don't allow *._o and *.l_o to be valid
+	object type suffixes, in spite of Automake's current ansi2knr
+	implementation.  Not all compilers allow non-`.o' suffixes.
+
+1996-12-16  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltmain.sh.in (link): Delete the `libtool' version type.
+
+1996-12-12  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltconfig.in: Use the full autoconf syntax when checking for GNU
+	C.  Delete library stripping program, until we have a correct
+	test.
+
+1996-12-11  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltconfig.in: On AIX 3, use /usr/ucb/nm, not /ucb/nm.  From Mark
+	Kettenis.
+
+1996-12-09  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	Reported by Charles Kerr:
+	* doc/libtool.texi (Creating Object Files): Doc fix independant ->
+	independent.
+
+	* ltconfig.in (ld_shlibs): SunOS 4 doesn't support shared library
+	dependencies.
+
+1996-12-08  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* Release 0.7.
+
+	* Makefile.am (EXTRA_DIST): Add README-automake to the
+	distribution.
+
+	* ltmain.sh.in (link): When linking libtool libraries, use
+	standard objects if they are PIC.  This prevents spurious warnings
+	about invalid suffixes on AIX.
+
+	* demo/Makefile.am: Rename libhell to libhello, so that we're not
+	quite as offensive.
+
+	* ltconfig.in: Remove unnecessary host validity checking.
+
+	* ltmain.sh.in: Don't force people to use libNAME.la: SOMETHING.la
+	is good enough (for consistency with *.a handling).
+
+	* tests/demo.test: Break up into demo-conf.test, demo-make.test,
+	demo-exec.test, demo-inst.test, and demo-unst.test, so that passes
+	and failures are reported more quickly.
+
+	* tests/link-2.test: Test to make sure that .lo files don't get built
+	directly into programs.
+
+1996-12-07  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltmain.sh.in (link): Accept files ending in .a as standard
+	object files.  Reported by Ulrich Drepper.
+	Remove support for creating profiled libraries (for now).
+	Transform all library objects into standard objects when linking a
+	program.
+
+	* ltconfig.in (thisdir): How embarrassing!  An error in the regexp
+	for finding the directory component of the script path.
+
+	* tests/tlibtool: A typically-configured libtool script, that uses
+	../ltmain.sh.in for its backend.
+
+	* tests/link.test: Make sure that it is legal to link against .a files.
+
+1996-12-05  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltmain.sh.in (compile): Support `.S' (preprocessed assembler)
+	files.  Reported by Anthony Green.
+
+	* libtoolize.in: Give clearer instrutions for how to update
+	aclocal.m4.
+
+	* ltconfig.in, ltmain.sh.in (link): Add support for creating
+	reloadable objects.
+
+1996-12-04  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltmain.sh.in (install): Fix passing -n flag to `libtool
+	--finish'.
+	(compile): Compile `.lo' and `.o' objects at the same time so that
+	non-PIC objects (if they are available) can be used for linking
+	into programs and creating static archives.  Suggested by Ulrich
+	Drepper.
+
+1996-12-03  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltmain.sh.in (link): Give the full path to the libtool library
+	when sourcing it.
+
+	* ltconfig.in (old_striplib): Do a configuration test to determine
+	if old-style libraries actually can be stripped or not.
+
+1996-12-02  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* tests/demo.test: Try compiling the ../demo subdirectory, with no
+	special options.
+
+	* test-e.test: Check that we haven't used `test -e' anywhere in
+	our portable shell scripts.
+
+1996-12-02  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltconfig.in: Delete reference to ABOUT-LIBS.
+
+	* tests: Added new subdirectory.
+
+	* doc/libtool.texi: Doc fixes, and finished up the Configuring
+	chapter.
+
+	* ltmain.sh.in (link): Allow *._o and *.l_o to be valid object
+	file suffixes, for Automake's ansi2knr implementation.
+	New option -version-info replaces -version-file.
+
+	[help]: Give a pointer to mode-specific help when appropriate.
+
+	* ltconfig.in: Changed messages to correspond to AM_PROG_CC_STDC.
+
+	* demo: Also test Automake's ansi2knr support.
+
+1996-11-19  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltconfig.in: Bug fixes for AIX 4, and for static platforms.
+
+	* ltmain.sh.in (install): Fix for loops over arguments.
+	Need to quote ${IFS= } -> "${IFS= }".
+	(link): Fix soname_spec bug.  Create objdir whether or not we have
+	shared libraries.
+
+	* ltconfig.in: Check for library stripping program.
+	Use test -f instead of test -e.
+
+1996-11-18  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltconfig.in: Don't run the RANLIB test unless RANLIB wasn't
+	set.
+	Be verbose about the environment variables we were configured
+	with.
+
+	* ltmain.sh.in (objdir): change to .libs.
+
+1996-11-16  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltmain.sh.in (install): Just plunge ahead with the
+	installation... don't try to enforce dependencies.
+
+1996-11-15  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltmain.sh.in: Fix up $libdir to be $dest in install mode.
+
+1996-11-10  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltmain.sh: Finished rewrite of compile, link, and install
+	modes.
+
+	* New ChangeLog file for libtool-0.7, since I've totally rewritten
+	libtool.
+
+1996-03-15  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* For historical reasons: this is when I started writing libtool.
