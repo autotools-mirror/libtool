@@ -10,8 +10,9 @@ New in 1.3d: 2000-??-??; CVS version 1.3c, Libtool team:
 * Libtool now allows you to link shared libraries against static code.
 * New functions lt_dlgetdata, lt_dlsetdata, lt_dlgetinfo, lt_dlforeach
   in libltdl can be used to store application specific data in handles.
-* New functions lt_dladdtype, lt_dlgettypes, lt_dlsettypes in libltdl
-  can be used for adding new types of module loading.
+* New functions lt_next_dlloader, lt_dlloader_name, lt_find_dlloader,
+  lt_add_dlloader in libltdl can be used for adding new types of module
+  loader to libltdl..
 * New functions lt_dladderror, lt_dlseterror in libltdl can be used to
   integrate user module loaders with lt_dlerror.
 * "-Xcompiler" and "-Wc," does now work in compile mode, too.

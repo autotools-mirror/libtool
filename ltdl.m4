@@ -37,6 +37,7 @@ AC_CHECK_HEADERS(malloc.h memory.h stdlib.h stdio.h ctype.h dlfcn.h dl.h dld.h)
 AC_CHECK_HEADERS(string.h strings.h, break)
 AC_CHECK_FUNCS(strchr index, break)
 AC_CHECK_FUNCS(strrchr rindex, break)
+AC_CHECK_FUNCS(strcmp)
 
 AC_REQUIRE([AC_LTDL_ENABLE_INSTALL])dnl
 AC_REQUIRE([AC_LTDL_SHLIBEXT])dnl

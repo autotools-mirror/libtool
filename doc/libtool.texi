@@ -181,6 +181,7 @@ Using libltdl
 * Libltdl interface::           How to use libltdl in your programs.
 * Modules for libltdl::         Creating modules that can be @code{dlopen}ed.
 * Distributing libltdl::        How to distribute libltdl with your package.
+* Module loaders for libltdl::  Creating user defined module loaders.
 
 Using libtool with other languages
 
@@ -2785,6 +2786,7 @@ distribution terms that you use for the rest of that program.
 * Libltdl interface::           How to use libltdl in your programs.
 * Modules for libltdl::         Creating modules that can be @code{dlopen}ed.
 * Distributing libltdl::        How to distribute libltdl with your package.
+* Module loaders for libltdl::  Creating user defined module loaders.
 @end menu
 
 @node Libltdl interface
@@ -2823,12 +2825,6 @@ The following types are defined in @file{ltdl.h}:
 Every lt_dlopened module has a handle associated with it.
 @end deftp
 
-@deftp {Type} lt_syshandle
-@code{lt_syshandle} is a generic system module "handle".
-The dynamic module loader type extensions communicate using these low level
-handles.
-@end deftp
-
 @deftypefn {Type} {struct} lt_dlinfo @{ @w{char *@var{filename};} @w{char *@var{name};} @w{int @var{ref_count};} @}
 @code{lt_dlinfo} is used to store information about a module.
 The @var{filename} attribute is a null-terminated character string of the
@@ -2837,51 +2833,6 @@ is its module name (e.g. @code{"libfoo"} for @code{"dir/libfoo.la"}),
 otherwise it is set to @code{NULL}.
 The @var{ref_count} attribute is a reference counter that describes how often
 the same module is currently loaded.
-@end deftypefn
-
-@deftypefn {Type} {struct} lt_dltype_t @{ @w{struct lt_dltype_t *@var{next};} @w{const char *@var{sym_prefix};} @w{lt_mod_init_t *@var{mod_init};} @w{lt_mod_exit_t *@var{mod_exit};} @w{lt_lib_open_t *@var{lib_open};} @w{lt_lib_close_t *@var{lib_close};} @w{lt_find_sym_t *@var{find_sym};} @}
-@code{lt_dltype_t} is used to store the functions used to access a dynamic
-module loader type.  If you want to define a new way to open dynamic modules,
-and have the @code{lt_dlopen} @sc{api} use it, you need to instantiate one of 
-these structures and pass it to @code{lt_dladdtype()}.
-@end deftypefn
-
-@deftypefn {Type} int lt_mod_init_t (void)
-The type of an initialisation function for an @code{lt_dltype_t} module
-loader.  Implementation of such a function should perform any initialisation
-required by the loader, and return non-zero if an error is encountered.  When
-used as part of an @code{lt_dltype_t} registration, if non-NULL, the function
-will be called by @code{lt_dlinit}, or if it is registered after the call to
-@code{lt_dlinit}, the function will be called immediately upon registration.
-@end deftypefn
-
-@deftypefn {Type} int lt_mod_exit_t (void)
-The type of the finalisation function for an @code{lt_dltype_t} module
-loader.  Implementation of such a function should free any resources
-associated with the loader.  If non-NULL, the function will be called by
-@code{lt_dlexit}.
-@end deftypefn
-
-@deftypefn {Type} lt_syshandle lt_lib_open_t (@w{const char *@var{filename}})
-The type of the loader function for an @code{lt_dltype_t} module loader.
-Implementation of such a function should attempt to load the named module, and 
-return an @code{lt_syshandle} suitable for passing in to the associated
-@code{lt_lib_close_t} and @code{lt_sym_find_t} function pointers.  If the
-function fails it should return NULL.
-@end deftypefn
-
-@deftypefn {Type} int lt_lib_close_t (@w{lt_syshandle @var{handle}})
-The type of the unloader function for an @code{lt_dltype_t} module loader.
-Implementatation of such a function should attempt to release any resources
-tied up by the @var{handle} module, and then unload it from memory.  If the
-function fails for some reason, return non-zero.
-@end deftypefn
-
-@deftypefn {Type} lt_ptr_t lt_find_sym_t (@w{lt_syshandle @var{handle},} @w{const char *@var{symbol}}) 
-The type of the symbol lookup function for an @code{lt_dltype_t} module
-loader.  Implementation of such a function should return the address of the
-named @var{symbol} in the module @var{handle}, or NULL if there is no such
-symbol.
 @end deftypefn
 
 @deftp {Type} lt_dlsymlist
@@ -2898,32 +2849,6 @@ Initialize libltdl.
 This function must be called before using libltdl
 and may be called several times.
 Return 0 on success, otherwise the number of errors.
-@end deftypefun
-
-@deftypefun int lt_dladdtype (@w{lt_dltype_t *@var{dltype}})
-Append a new module loader type to the list of all types.
-@var{dltype} should have its @code{next} field set to NULL.  If the
-@code{sym_prefix} field is set to NULL, then it will be replaced with a single 
-underscore if that is what the platform requires normally (use the empty
-string if you want an unconditional empty prefix).  The new type will be added 
-to the end of the module loader types list, and hence will be used only if all 
-of the preceding methods fail.
-
-If this function is used to add a type after calling @code{lt_dlinit}, then
-the @var{mod_init} function (if any) will be called immediately, otherwise
-it will be called at the same time as the other type initialisation function
-by @code{lt_dlinit}.
-@end deftypefun
-
-@deftypefun lt_dltype_t *lt_dlgettypes (void)
-Return the list of module loader types.
-@end deftypefun
-
-@deftypefun int lt_dlsettypes (@w{lt_dltype_t *@var{dltypes}})
-Change the list of module loader types to be @var{dltypes}.
-This completely replaces the default module loader types determined by libtool 
-with the new linked list of types -- which should probably be a superset of
-the original list.
 @end deftypefun
 
 @deftypefun int lt_dlexit (void)
@@ -3013,34 +2938,6 @@ Return @code{NULL} if no errors have occurred since initialization
 or since it was last called.
 @end deftypefun
  
-@deftypefun int lt_dladderror (@w{const char *@var{diagnostic}})
-This function allows you to integrate your own error messages into
-@code{lt_dlerror}.  Pass in a suitable diagnostic message for return by
-@code{lt_dlerror}, and an error identifier for use with @code{lt_dlseterror}
-is returned.
-
-If the allocation of an identifier fails, this function returns -1.
-
-@example
-int myerror = lt_dladderror ("Doh!");
-if (myerror < 0)
-  perror (lt_dlerror ());
-@end example
-@end deftypefun
-
-@deftypefun int lt_dlseterror (@w{int @var{errorcode}})
-When writing your own module loaders, you should use this function to raise
-errors so that they are propogated through the @code{lt_dlerror} interface.
-All of the standard errors used by libltdl are declared in @file{ltdl.h}, or
-you can add more of your own with @code{lt_dladderror}.  This function returns 
-0 on success.
-
-@example
-if (lt_dlseterror (LTDL_ERROR_NO_MEMORY) != 0)
-  perror (lt_dlerror ());
-@end example
-@end deftypefun
-
 @deftypefun int lt_dlpreload (const lt_dlsymlist *@var{preloaded})
 Register the list of preloaded modules @var{preloaded}.
 If @var{preloaded} is @code{NULL}, then all previously registered
@@ -3105,8 +3002,8 @@ As soon as @var{func} returns a non-zero value for one of the handles,
 Otherwise 0 is returned.
 @end deftypefun
 
-@deftypevar {lt_ptr_t (*} lt_dlmalloc ) (size_t size)
-@deftypevarx {void (*} lt_dlfree ) (lt_ptr_t ptr)
+@deftypevar {lt_ptr_t (*} lt_dlmalloc ) (size_t @var{size})
+@deftypevarx {void (*} lt_dlfree ) (lt_ptr_t @var{ptr})
 These variables are set to @code{malloc} and @code{free}, by default,
 but you can set them to any other functions that provides equivalent
 functionality.  However, you must not modify their values after calling
@@ -3317,6 +3214,234 @@ myprog_LDADD = $(LIBLTDL) "-dlopen" self "-dlopen" libfoo.la
 myprog_DEPENDENCIES = $(LIBLTDL) libfoo.la
 ...
 @end example
+
+
+@node Module loaders for libltdl
+@section How to create and register new module loaders
+
+Sometimes libltdl's many ways of gaining access to modules are not
+sufficient for the purposes of a project.  You can write your own
+loader, and register it with libltdl so that @code{lt_dlopen} will be
+able to use it. 
+
+Writing a loader involves writing at least three functions which can be
+called  by @code{lt_dlopen}, @code{lt_dlsym} and @code{lt_dlclose}.
+Optionally, you can provide a finalisation function to perform any
+cleanup operations when @code{lt_dlexit} executes, and a symbol prefix
+string which will be prepended to any symbols passed to @code{lt_dlsym}.
+These functions must match the function pointer types below, after
+which they can be allocated to an instance of @code{lt_user_dlloader}
+and registered.
+
+Registering the loader requires that you choose a name for it, so that it
+can be recognised by @code{lt_find_dlloader} and removed with
+@code{lt_remove_dlloader}.  The name you choose must be unique, and not
+already in use by libltdl's builtin loaders:
+
+@table @asis
+@item "dlopen"
+The system dynamic library loader, if one exists.
+@item "dld"
+The @sc{gnu} dld loader, if @file{libdld} wasinstalled when libltdl was
+built.
+@item "dlpreload"
+The loader for @code{lt_dlopen}ing of preloaded static modules.
+@end table
+
+The prefix "dl" is reserved for loaders supplied with future versions of 
+libltdl, so you should not use that for your own loader names.
+
+@noindent
+The following types are defined in @file{ltdl.h}:
+
+@deftp {Type} lt_module_t
+@code{lt_module_t} is a dlloader dependent module.
+The dynamic module loader extensions communicate using these low
+level types.
+@end deftp
+
+@deftp {Type} lt_dlloader_t
+@code{lt_dlloader_t} is a handle for module loader types.
+@end deftp
+
+@deftypefn {Type} {struct} lt_user_dlloader @{@w{const char *@var{sym_prefix};} @w{lt_module_open_t *@var{module_open};} @w{lt_module_close_t *@var{module_close};} @w{lt_find_sym_t *@var{find_sym};} @w{lt_dlloader_exit_t *@var{dlloader_exit};} @}
+If you want to define a new way to open dynamic modules, and have the
+@code{lt_dlopen} @sc{api} use it, you need to instantiate one of these
+structures and pass it to @code{lt_add_dlloader}.
+@end deftypefn
+
+@deftypefn {Type} lt_module_t lt_module_open_t (@w{const char *@var{filename}})
+The type of the loader function for an @code{lt_dlloader_t} module
+loader.  Implementation of such a function should attempt to load the
+named module, and return an @code{lt_module_t} suitable for passing in
+to the associated @code{lt_module_close_t} and @code{lt_sym_find_t}
+function pointers.  If the function fails it should return NULL, and set 
+the error message with @code{lt_dlseterror}.
+@end deftypefn
+
+@deftypefn {Type} int lt_module_close_t (@w{lt_module_t @var{module}})
+The type of the unloader function for a user defined module loader.
+Implementatation of such a function should attempt to release 
+any resources tied up by the @var{module} module, and then unload it
+from memory.  If the function fails for some reason, set the error
+message with @code{lt_dlseterror} and return non-zero.
+@end deftypefn
+
+@deftypefn {Type} lt_ptr_t lt_find_sym_t (@w{lt_module_t @var{module},} @w{const char *@var{symbol}}) 
+The type of the symbol lookup function for a user defined module loader.
+Implementation of such a function should return the address of the named
+@var{symbol} in the module @var{module}, or else set the error message
+with @code{lt_dlseterror} and return NULL if lookup fails.
+@end deftypefn
+
+@deftypefn {Type} int lt_dlloader_exit_t (void)
+The type of the finalisation function for a user defined module loader.
+Implementation of such a function should free any resources associated
+with the loader.  If non-NULL, the function will be called by
+@code{lt_dlexit}.
+@end deftypefn
+
+For example:
+
+@example
+int
+register_myloader (void)
+@{
+  lt_user_dlloader dlloader;
+
+  /* User modules are responsible for their own initialisation. */
+  if (myloader_init () != 0)
+    return MYLOADER_INIT_ERROR;
+
+  dlloader.sym_prefix    = NULL;
+  dlloader.module_open   = myloader_open;
+  dlloader.module_close  = myloader_close;
+  dlloader.find_sym      = myloader_find_sym.
+  dlloader.dlloader_exit = myloader_exit;
+
+  /* Add my loader as the default module loader. */
+  if (lt_add_dlloader (lt_next_dlloader (NULL), &dlloader, "myloader") != 0)
+    return ERROR;
+
+  return OK;
+@}
+@end example
+
+Note that if there is any initialisation required for the loader,
+it must be performed manually before the loader is registered --
+libltdl doesn't handle user loader initialisation.
+
+Finalisation @emph{is} handled by libltdl however, and it is important
+to ensure the @code{dlloader_exit} callback releases any resources claimed
+during the initialisation phase.
+
+@page
+@noindent
+libltdl provides the following functions for writing your own module
+loaders:
+
+@deftypefun int lt_add_dlloader (@w{lt_dlloader_t *@var{place},} @w{lt_user_dlloader *@var{dlloader},} @w{const char *@var{loader_name}})
+Add a new module loader to the list of all loaders, either as the
+last loader (if @var{place} is @code{NULL}), else immediately before the
+loader passed as @var{place}.  @var{loader_name} will be returned by
+@code{lt_dlloader_name} if it is subsequently passed a newly
+registered loader.  These @var{loader_name}s must be unique, or
+@code{lt_remove_dlloader} and @code{lt_find_dlloader} cannot
+work. Returns 0 for success.
+
+@example
+@{
+  /* Make myloader be the last one. */
+  if (lt_add_dlloader (NULL, myloader) != 0)
+    perror (lt_dlerror ());
+@}
+@end example
+@end deftypefun
+
+@deftypefun int lt_remove_dlloader (@w{const char *@var{loader_name}})
+Remove the loader identified by the unique name, @var{loader_name}.
+Before this can succeed, all modules opened by the named loader must
+have been closed.  Returns 0 for success, otherwise an error message can 
+be obtained from @code{lt_dlerror}.
+
+@example
+@{
+  /* Remove myloader. */
+  if (lt_remove_dlloader ("myloader") != 0)
+    perror (lt_dlerror ());
+@}
+@end example
+@end deftypefun
+
+@deftypefun lt_dlloader_t *lt_next_dlloader (@w{lt_dlloader_t *@var{place}})
+Iterate over the module loaders, returning the first loader if @var{place} is
+@code{NULL}, and the next one on subsequent calls. The handle is for use with
+@code{lt_add_dlloader}.
+
+@example
+@{
+  /* Make myloader be the first one. */
+  if (lt_add_dlloader (lt_next_dlloader (NULL), myloader) != 0)
+    return ERROR;
+@}
+@end example
+@end deftypefun
+
+@deftypefun lt_dlloader_t *lt_find_dlloader (@w{const char *@var{loader_name}})
+Return the first loader with a matching @var{loader_name} identifier, or else
+@code{NULL}, if the identifier is not found.
+
+The identifiers which may be used by ltdl itself, if the host
+architecture supports them are @dfn{dlopen}@footnote{This is used for
+the host dependent module loading @sc{api} -- @code{shl_load} and
+@code{LoadLibrary} for example}, @dfn{dld} and @dfn{dlpreload}.
+
+@example
+@{
+  /* Add a user loader as the next module loader to be tried if
+     the standard dlopen loader were to fail when lt_dlopening. */
+  if (lt_add_dlloader (lt_find_dlloader ("dlopen"), myloader) != 0)
+    return ERROR;
+@}
+@end example
+@end deftypefun
+
+@deftypefun char *lt_dlloader_name (@w{lt_dlloader_t *@var{place}})
+Return the identifying name of @var{PLACE}, as obtained from
+@code{lt_next_dlloader} or @code{lt_find_dlloader}.  If this function fails,
+it will return @code{NULL} and set an error for retrieval with
+@code{lt_dlerror}.
+@end deftypefun
+
+@subsection Error handling within user module loaders
+
+@deftypefun int lt_dladderror (@w{const char *@var{diagnostic}})
+This function allows you to integrate your own error messages into
+@code{lt_dlerror}.  Pass in a suitable diagnostic message for return by
+@code{lt_dlerror}, and an error identifier for use with
+@code{lt_dlseterror} is returned.
+
+If the allocation of an identifier fails, this function returns -1.
+
+@example
+int myerror = lt_dladderror ("Doh!");
+if (myerror < 0)
+  perror (lt_dlerror ());
+@end example
+@end deftypefun
+
+@deftypefun int lt_dlseterror (@w{int @var{errorcode}})
+When writing your own module loaders, you should use this function to
+raise errors so that they are propogated through the @code{lt_dlerror}
+interface. All of the standard errors used by libltdl are declared in
+@file{ltdl.h}, or you can add more of your own with
+@code{lt_dladderror}.  This function returns 0 on success.
+
+@example
+if (lt_dlseterror (LTDL_ERROR_NO_MEMORY) != 0)
+  perror (lt_dlerror ());
+@end example
+@end deftypefun
 
 @node Other languages
 @chapter Using libtool with other languages

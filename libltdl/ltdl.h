@@ -83,7 +83,6 @@ Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 #  endif
 #endif
 
-
 #ifdef WIN32
 #  ifndef __CYGWIN__
 /* LTDL_DIRSEP_CHAR is accepted *in addition* to '/' as a directory
@@ -114,11 +113,17 @@ Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 
 #include <stdlib.h>
 
+
+/* Defining error strings alongside their symbolic names in a macro in
+   this way allows us to expand the macro in different contexts with
+   confidence that the enumeration of symbolic names will map correctly
+   onto the table of error strings.  */
 #define ltdl_error_table						\
 	LTDL_ERROR(UNKNOWN, "unknown error")				\
 	LTDL_ERROR(DLOPEN_NOT_SUPPORTED, "dlopen support not available")\
-	LTDL_ERROR(INVALID_TYPE, "invalid dltype")			\
-	LTDL_ERROR(INIT_TYPE, "dltype initialization failed")		\
+	LTDL_ERROR(INVALID_LOADER, "invalid loader")			\
+	LTDL_ERROR(INIT_LOADER, "loader initialization failed")		\
+	LTDL_ERROR(REMOVE_LOADER, "loader removal failed")		\
 	LTDL_ERROR(FILE_NOT_FOUND, "file not found")			\
 	LTDL_ERROR(DEPLIB_NOT_FOUND, "dependency library not found")	\
 	LTDL_ERROR(NO_SYMBOLS, "no symbols defined")			\
@@ -131,6 +136,7 @@ Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 	LTDL_ERROR(INVALID_ERRORCODE, "invalid errorcode")		\
 	LTDL_ERROR(SHUTDOWN, "library already shutdown")
 
+/* Enumerate the symbolic error names. */
 #ifdef __STDC__ 
 #  define LTDL_ERROR(name, diagnostic)	LTDL_ERROR_##name,
 #else
@@ -142,68 +148,97 @@ enum {
 };
 #undef LTDL_ERROR
 
+
+/* An opaque handle for a successfully lt_dlopened module instance. */
 #ifdef _LTDL_COMPILE_
 typedef	struct lt_dlhandle_t *lt_dlhandle;
 #else
 typedef	lt_ptr_t lt_dlhandle;
 #endif
 
-typedef lt_ptr_t lt_syshandle;
-
+/* A preopened symbol. Arrays of this type comprise the exported
+   symbols for a dlpreopened module. */
 typedef struct {
 	const char *name;
 	lt_ptr_t address;
 } lt_dlsymlist;
 
+/* Read only information pertaining to a loaded module. */
 typedef	struct {
 	char	*filename;	/* file name */
 	char	*name;		/* module name */
-	int	ref_count;	/* reference count */
+	int	ref_count;	/* number of times lt_dlopened minus
+				   number of times lt_dlclosed. */
 } lt_dlinfo;
 
-typedef int lt_mod_init_t LTDL_PARAMS((void));
-typedef int lt_mod_exit_t LTDL_PARAMS((void));
-typedef lt_syshandle lt_lib_open_t LTDL_PARAMS((const char *filename));
-typedef int lt_lib_close_t LTDL_PARAMS((lt_syshandle handle));
-typedef lt_ptr_t lt_find_sym_t LTDL_PARAMS((lt_syshandle handle, const char *symbol));
+/* An opaque handle for a module loaded by a system call.  This is only
+   used internally by ltdl loaders, and by user module loaders. */
+typedef lt_ptr_t lt_module_t;
 
-typedef struct lt_dltype_t {
-	struct lt_dltype_t *next;
-	const char *sym_prefix;	/* prefix for symbols */
-	lt_mod_init_t *mod_init;
-	lt_mod_exit_t *mod_exit;
-	lt_lib_open_t *lib_open;
-	lt_lib_close_t *lib_close;
-	lt_find_sym_t *find_sym;
-} lt_dltype_t;
+/* An opaque handle for a module loader.  */
+#ifdef _LTDL_COMPILE_
+typedef	struct lt_dlloader_t lt_dlloader_t;
+#else
+typedef	lt_ptr_t lt_dlloader_t;
+#endif
+
+/* Function pointer types for creating user defined module loaders. */
+typedef lt_module_t lt_module_open_t LTDL_PARAMS((const char *filename));
+typedef int lt_module_close_t LTDL_PARAMS((lt_module_t handle));
+typedef lt_ptr_t lt_find_sym_t LTDL_PARAMS((lt_module_t handle, const char *symbol));
+typedef int lt_dlloader_exit_t LTDL_PARAMS((void));
 
 __BEGIN_DECLS
+/* Initialisation and finalisation functions for libltdl. */
 extern int lt_dlinit LTDL_PARAMS((void));
-extern int lt_dladdtype LTDL_PARAMS((lt_dltype_t *dltype));
-extern lt_dltype_t *lt_dlgettypes LTDL_PARAMS((void));
-extern int lt_dlsettypes LTDL_PARAMS((lt_dltype_t *dltypes));
-extern int lt_dlpreload LTDL_PARAMS((const lt_dlsymlist *preloaded));
-extern int lt_dlpreload_default LTDL_PARAMS((const lt_dlsymlist *preloaded));
 extern int lt_dlexit LTDL_PARAMS((void));
-extern lt_dlhandle lt_dlopen LTDL_PARAMS((const char *filename));
-extern lt_dlhandle lt_dlopenext LTDL_PARAMS((const char *filename));
-extern int lt_dlclose LTDL_PARAMS((lt_dlhandle handle));
-extern lt_ptr_t lt_dlsym LTDL_PARAMS((lt_dlhandle handle, const char *name));
-extern const char *lt_dlerror LTDL_PARAMS((void));
+
+/* Module search path manipultation.  */
 extern int lt_dladdsearchdir LTDL_PARAMS((const char *search_dir));
 extern int lt_dlsetsearchpath LTDL_PARAMS((const char *search_path));
 extern const char *lt_dlgetsearchpath LTDL_PARAMS((void));
-extern const lt_dlinfo *lt_dlgetinfo LTDL_PARAMS((lt_dlhandle handle));
-extern int lt_dlforeach LTDL_PARAMS((
-		int (*func)(lt_dlhandle handle, lt_ptr_t data), lt_ptr_t data));
-extern int lt_dladderror LTDL_PARAMS((const char *diagnostic));
-extern int lt_dlseterror LTDL_PARAMS((int errorcode));
+
+/* Portable libltdl versions of the system dlopen() API. */
+extern lt_dlhandle lt_dlopen LTDL_PARAMS((const char *filename));
+extern lt_dlhandle lt_dlopenext LTDL_PARAMS((const char *filename));
+extern lt_ptr_t lt_dlsym LTDL_PARAMS((lt_dlhandle handle, const char *name));
+extern const char *lt_dlerror LTDL_PARAMS((void));
+extern int lt_dlclose LTDL_PARAMS((lt_dlhandle handle));
+
+/* Support for preloaded modules through lt_dlopen() API. */
+extern int lt_dlpreload LTDL_PARAMS((const lt_dlsymlist *preloaded));
+extern int lt_dlpreload_default LTDL_PARAMS((const lt_dlsymlist *preloaded));
 
 #define LTDL_SET_PRELOADED_SYMBOLS() 		LTDL_STMT_START{	\
 	extern const lt_dlsymlist lt_preloaded_symbols[];		\
 	lt_dlpreload_default(lt_preloaded_symbols);			\
 						}LTDL_STMT_END
 
+/* Managing user data associated with a loaded modules.  */
+extern const lt_dlinfo *lt_dlgetinfo LTDL_PARAMS((lt_dlhandle handle));
+extern int lt_dlforeach LTDL_PARAMS((
+		int (*func)(lt_dlhandle handle, lt_ptr_t data), lt_ptr_t data));
+
+
+/* User module loader API. */
+struct lt_user_dlloader {
+	const char *sym_prefix;
+	lt_module_open_t *module_open;
+	lt_module_close_t *module_close;
+	lt_find_sym_t *find_sym;
+	lt_dlloader_exit_t *dlloader_exit;
+};
+
+extern lt_dlloader_t *lt_next_dlloader LTDL_PARAMS((lt_dlloader_t *place));
+extern const char *lt_dlloader_name LTDL_PARAMS((lt_dlloader_t *place));
+extern lt_dlloader_t *lt_find_dlloader LTDL_PARAMS((const char *loader_name));
+extern int lt_add_dlloader LTDL_PARAMS((lt_dlloader_t *place, const struct lt_user_dlloader *dlloader, const char *loader_name));
+
+/* Integrated lt_dlerror() messages for user loaders. */
+extern int lt_dladderror LTDL_PARAMS((const char *diagnostic));
+extern int lt_dlseterror LTDL_PARAMS((int errorcode));
+
+/* Pointers to memory management functions to be used by libltdl. */
 LTDL_SCOPE lt_ptr_t (*lt_dlmalloc)LTDL_PARAMS((size_t size));
 LTDL_SCOPE void (*lt_dlfree)LTDL_PARAMS((lt_ptr_t ptr));
 

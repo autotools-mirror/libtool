@@ -1,3 +1,61 @@
+2000-02-02  Gary V. Vaughan  <gary@oranda.demon.co.uk>
+
+	* NEWS: updated.
+	* doc/libtool.texi (Libltdl interface): Moved user defined module 
+	loader documentation from here...
+	(Module loaders for libltdl) ...to here, and updated the text and
+	added examples.
+	* ltdl.m4 (AC_CHECK_FUNCS): check strcmp for lt_find_dlloader.
+	* libltdl/ltdl.h: Reformatted and commented for readability.
+	(struct lt_user_dlloader): New data type for passing
+	initialisation pointers to lt_add_dlloader.
+	(LTDL_ERROR_INVALID_LOADER):  New error message when non loader
+	handles are passed to the user loader API.
+	(LTDL_ERROR_INIT_LOADER): New error when loader initialisation
+	fails.
+	(LTDL_ERROR_REMOVE_LOADER): New error when loader removal fails.
+	(lt_module_open_t): renamed from lt_lib_open_t.
+	(lt_module_close_t): renamed from lt_lib_close_t.
+	(lt_dlloader_exit_t): renamed from lt_dlloader_exit_t.
+	* libltdl/ltdl.c: Reordered builtin loaders so that the "dld"
+	loader no longer occurs before "dlopen" on some platforms and
+	after it on others.
+	(lt_dlloader_t): Moved here from ltdl.h, added a field,
+	"loader_name", for identifying the loader, and renamed from
+	lt_dltype_t.  Renamed type variables to loader IFF of type
+	lt_dlloader_t.
+	(lt_module_t): Renamed from lt_syshandle. Renamed handle variables
+	to module IFF of type lt_module_t.
+	(LTDL_TYPE_TOP): Deleted.  No longer required.
+	(sys_dl): Initialised as a struct lt_user_dlloader.
+	(sys_dl_init): Deleted.  No longer required.
+	(sys_dl_exit): Ditto.
+	(sys_shl): Initialised as a struct lt_user_dlloader.
+	(sys_shl_init): Deleted.  No longer required.
+	(sys_shl_exit): Ditto.
+	(sys_wll): Initialised as a struct lt_user_dlloader.
+	(sys_wll_init): Deleted.  No longer required.
+	(sys_wll_exit): Ditto.
+	(sys_bedl): Initialised as a struct lt_user_dlloader.
+	(sys_bedl_init): Deleted.  No longer required.
+	(sys_bedl_exit): Ditto.
+	(sys_dld): Initialised as a struct lt_user_dlloader.
+	(sys_dld_init): Deleted.  No longer required.
+	(sys_dld_exit): Ditto.
+	(sys_presym): Initialised as a struct lt_user_dlloader.
+	(lt_mod_init_t): Moved to here from ltdl.h.
+	(lt_dlinit): Add builtin loaders using the user loader API.
+	(lt_dlexit): Unregister and free all loaders.
+	(lt_add_dlloader): New function to add a new module loader after the 
+	loader specified in the argument.
+	(lt_remove_dlloader): New function to remove a module loader.
+	(lt_next_dlloader): New function for iterating over module loaders.
+	(lt_dlloader_name): Accessor function for name of dlloader.
+	(lt_find_dlloader): New function to get a reference to a registered
+	module loader.
+	(strcmp): static implementation incase the host has none.	
+	(lt_dlgettypes, lt_dlsettypes): Removed.
+
 2000-02-02  Thomas Tanner  <tanner@ffii.org>
 
 	* libltdl/ltdl.c: replace NULL with 0, remove unused system
@@ -89,7 +147,7 @@
 	(lt_dlsettypes): New function to replace the list of ltdl dynamic
 	loader types entirely -- e.g. to prepend a new type to the
 	existing list.
-	(sys_dl_open, sys_dl_close, sys_dl_sym): Work with lt_syshandle..
+	(sys_dl_open, sys_dl_close, sys_dl_sym): Work with lt_syshandle.
 	(sys_shl_open, sys_shl_close, sys_shl_sym): ditto.
 	(sys_dld_open, sys_dld_close, sys_dld_sym): ditto.
 	(sys_wll_open, sys_wll_close, sys_wll_sym): ditto.
