@@ -1,3 +1,10 @@
+2005-03-02  Gary V. Vaughan  <gary@gnu.org>
+
+	* libtoolize.m4sh (func_copy_cb): Use tar chof to avoid symlink
+	attacks.
+	* libltdl/Makefile.am, libltdl/loaders/Makefile.am
+	(install-data-local): Ditto.
+
 2005-02-27  Gary V. Vaughan  <gary@gnu.org>
 
 	In branch-2-0 (and in time, others) ltversion.m4 has a dot

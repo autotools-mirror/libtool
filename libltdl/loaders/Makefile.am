@@ -54,5 +54,5 @@ ltdldatafiles		= Makefile.am dld_link.c dlopen.c dyld.c \
 ## with libtoolize, we have to preserve their timestamps carefully:
 install-data-local:
 	$(mkinstalldirs) $(DESTDIR)$(ltdldatadir)
-	( cd $(srcdir) && $(AMTAR) cf - $(ltdldatafiles) preopen.c; ) \
+	( cd $(srcdir) && $(AMTAR) chof - $(ltdldatafiles); ) \
 	  | ( cd $(DESTDIR)$(ltdldatadir) && $(AMTAR) xf -; )
