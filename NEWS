@@ -2,6 +2,7 @@ NEWS - list of user-visible changes between releases of GNU Libtool
 
 New in 1.3.4: 1999-??-??, CVS version 1.3.3a, Libtool team:
 * Support for Compaq Tru64 V5.0.
+* Improved support for Digatal Unix V4.*.
 * Improved support for NetBSD, FreeBSD and Unixware.
 * Many fine bugfixes.
 

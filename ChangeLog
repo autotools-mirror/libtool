@@ -1,3 +1,10 @@
+1999-12-06  Gary V. Vaughan  <gary@oranda.demon.co.uk>
+
+	From Tim Mooney  <mooney@dogbert.cc.ndsu.NoDak.edu>
+	* ltconfig.in:  split off the osf3 section, so that the osf4 and
+	osf5 sections can add `-msym' to arguments passed to the linker
+	for shared libs.
+
 1999-12-03  Gary V. Vaughan  <gary@oranda.demon.co.uk>
 
 	* ltconfig.in (hardcode_into_libs):  Remove the commented out
