@@ -1,5 +1,8 @@
 2001-04-24  Gary V. Vaughan  <gvv@techie.com>
 
+	* libtool.m4, ltmain.in, libltdl/configure.in,
+	tests/quote.test:  Remove stale references to ltconfig.
+
 	* ltdl.m4 (AC_C_INLINE): No longer required.
 	* libltdl/ltdl.c (strdup, strcmp, strchr, strrchr, memcpy, trim,
 	free_vars):  Revoke inline keyword from declarations.  `static

@@ -437,7 +437,7 @@ else
       echo='print -r'
     elif (test -f /bin/ksh || test -f /bin/ksh$ac_exeext) &&
 	 test "X$CONFIG_SHELL" != X/bin/ksh; then
-      # If we have ksh, try running ltconfig again with it.
+      # If we have ksh, try running configure again with it.
       ORIGINAL_CONFIG_SHELL=${CONFIG_SHELL-/bin/sh}
       export ORIGINAL_CONFIG_SHELL
       CONFIG_SHELL=/bin/ksh

@@ -1,5 +1,5 @@
 # ltmain.sh - Provide generalized library-building support services.
-# NOTE: Changing this file will not affect anything until you rerun ltconfig.
+# NOTE: Changing this file will not affect anything until you rerun configure.
 #
 # Copyright (C) 1996, 1997, 1998, 1999, 2000, 2001
 # Free Software Foundation, Inc.
