@@ -1,3 +1,15 @@
+2004-02-12  Albert Chin-A-Young  <china@thewrittenword.com>,
+	    Gary V. Vaughan  <gary@gnu.org>
+
+	* ltmain.in (progpath): Work around backward compatibility issue
+	on IRIX 6.5. On IRIX 6.4+, sh is ksh but when the shell is invoked
+	as "sh" and the current value of the _XPG environment variable is
+	not equal to 1 (one), the special positional parameter $0, within
+	a function call, is the name of the function. So, rather than
+	using "$0" in functions, we set $progpath in the body and use that
+	everywhere instead (incase of code refactoring later).
+	(EXIT_SUCCESS, EXIT_FAILURE, EXIT_MISMATCH): For clarity.
+
 2004-02-11  Gary V. Vaughan  <gary@gnu.org>
 
 	* commit: Completely change CVS/Root->name sed script to actually
