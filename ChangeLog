@@ -1,5 +1,9 @@
 2004-08-12  Peter O'Gorman  <peter@pogma.com>
 
+	* configure.ac, libtool.m4: Ensure that a c++ compiler exists before
+	checking for the c++ preprocessor. Apparently reported by multiple
+	people, multiple times.
+
 	* libtool.m4 [GNU/linux] (AC_DEPLIBS_CHECK_METHOD): Cleanup,
 	thanks to Daniel Reed.
 
