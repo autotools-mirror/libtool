@@ -1149,6 +1149,8 @@ else
 
   aix4*)
     allow_undefined_flag=
+    hardcode_libdir_flag_spec='${wl}-b ${wl}nolibpath ${wl}-b ${wl}libpath:$libdir:/usr/lib:/lib'
+    hardcode_libdir_separator=':'
     if test "$with_gcc" = yes; then
       if strings `${CC} -print-prog-name=collect2` | \
 	 grep resolve_lib_name >/dev/null
@@ -1158,6 +1160,12 @@ else
       else
 	# We have old collect2
 	hardcode_direct=unsupported
+	# It fails to find uninstalled libraries when the uninstalled
+	# path is not listed in the libpath.  Setting hardcode_minus_L
+	# to unsupported forces relinking
+	hardcode_minus_L=yes
+	hardcode_libdir_flag_spec='-L$libdir'
+	hardcode_libdir_separator=
       fi
       archive_cmds='$CC -shared ${wl}-bnoentry -o $objdir/$soname $libobjs $deplibs $linkopts'
     else
@@ -1165,11 +1173,6 @@ else
       archive_expsym_cmds='$CC -o $objdir/$soname $libobjs $deplibs $linkopts ${wl}-bE:$export_symbols ${wl}-bM:SRE ${wl}-bnoentry'
       hardcode_direct=yes
     fi
-    hardcode_minus_L=yes
-    # Though LIBPATH variable hardcodes shlibpath into executable,
-    # it doesn't affect searching for -l* libraries; this confuses
-    # tests in mdemo.
-    hardcode_libdir_flag_spec='-L$libdir'
    ;;
 
   amigaos*)
