@@ -162,7 +162,7 @@ tests/defs: $(top_srcdir)/tests/defs.in
 # Use `$(top_srcdir)/tests' for the benefit of non-GNU makes: this is
 # how defs.in appears in our dependencies.
 # No need to EXTRA_DIST defs.m4sh here, that is handled in tests/Makefile.am.
-$(top_srcdir)/tests/defs.in: tests/defs.m4sh Makefile.am
+$(top_srcdir)/tests/defs.in: config/general.m4sh tests/defs.m4sh Makefile.am
 	cd $(top_srcdir); \
 	rm -f tests/defs.in; \
 	$(M4SH) -B ./config tests/defs.m4sh > tests/defs.in
