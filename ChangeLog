@@ -1,5 +1,14 @@
 2005-04-01  Gary V. Vaughan  <gary@gnu.org>
 
+	* Makefile.am (libtoolize): Substitute $(nobase_pkgvdata_DATA).
+	pkgvmacro_DATA is no longer set in the makefile.
+	* libtoolize.m4sh (func_massage_pkgvmacro_DATA): Use it and, for
+	consistency, renamed from this...
+	(func_massage_nobase_pkgvdata_DATA): ...to this.  Adjust all
+	callers.
+
+2005-04-01  Gary V. Vaughan  <gary@gnu.org>
+
 	Fix problems with serial comparison sed scripts, and factor out
 	common code from similar serial comparison functions:
 

@@ -793,17 +793,17 @@ func_check_macros ()
 }
 
 
-# func_massage_pkgvmacro_DATA [glob_exclude]
-# @pkgvmacro_DATA\@ is substituted as per its value in Makefile.am; this
-# function massages it into a suitable format for func_copy_some_files.
-func_massage_pkgvmacro_DATA ()
+# func_massage_nobase_pkgvdata_DATA [glob_exclude]
+# @nobase_pkgvdata_DATA\@ is substituted as per its value in Makefile.am;
+# this function massages it into a suitable format for func_copy_some_files.
+func_massage_nobase_pkgvdata_DATA ()
 {
     pkgvmacro_files=     # GLOBAL VAR
 
     my_glob_exclude="$1"
 
     # Massage a value for pkgvmacro_files from the value used in Makefile.am.
-    for my_filename in @pkgvmacro_DATA@; do
+    for my_filename in @nobase_pkgvdata_DATA@; do
       my_filename=`$ECHO "X$my_filename" | $Xsed -e "$basename"`
 
       # ignore excluded filenames
@@ -858,7 +858,7 @@ func_massage_pkgvltdl_files ()
   func_massage_pkgvltdl_files
 
   # libtool.m4 and ltdl.m4 are handled specially below
-  func_massage_pkgvmacro_DATA 'libtool.m4|ltdl.m4'
+  func_massage_nobase_pkgvdata_DATA 'libtool.m4|ltdl.m4'
 
   glob_exclude_pkgaux_files='config.guess|config.sub|install-sh|ltmain.sh'
 

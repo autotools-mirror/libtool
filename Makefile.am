@@ -163,7 +163,7 @@ libtoolize: $(top_srcdir)/libtoolize.in
 	input="libtoolize.m4sh"; \
 	ltdldatafiles=`cd libltdl; make show-ltdldatafiles`; \
 	$(edit) -e "s,@TIMESTAMP\@,$$TIMESTAMP,g" \
-		-e 's,@pkgvmacro_DATA\@,$(pkgvmacro_DATA),g' \
+		-e 's,@nobase_pkgvdata_DATA\@,$(nobase_pkgvdata_DATA),g' \
 		-e "s,@pkgvltdl_files\@,`echo $$ltdldatafiles`,g" \
 		$(top_srcdir)/libtoolize.in > libtoolize.tmp
 	chmod a+x libtoolize.tmp
