@@ -34,7 +34,7 @@ libtool: $(srcdir)/ltmain.sh $(srcdir)/ltconfig
 	LN_S="$(LN_S)" NM="$(NM)" RANLIB="$(RANLIB)" \
 	DLLTOOL="$(DLLTOOL)" OBJDUMP="$(OBJDUMP)" AS="$(AS)" \
 	$(SHELL) $(srcdir)/ltconfig $(LIBTOOL_FLAGS) --srcdir=$(srcdir) \
-	  --output=$@ $(srcdir)/ltmain.sh
+	  --output=$@ $(srcdir)/ltmain.sh $(host_alias)
 
 # Experimental C version of libtool.
 clibtool: $(srcdir)/ltmain.c $(srcdir)/ltconfig
@@ -43,7 +43,7 @@ clibtool: $(srcdir)/ltmain.c $(srcdir)/ltconfig
 	LN_S="$(LN_S)" NM="$(NM)" RANLIB="$(RANLIB)" \
 	DLLTOOL="$(DLLTOOL)" OBJDUMP="$(OBJDUMP)" AS="$(AS)" \
 	$(SHELL) $(srcdir)/ltconfig $(LIBTOOL_FLAGS) --srcdir=$(srcdir) \
-	  --output=$@ $(srcdir)/ltmain.c
+	  --output=$@ $(srcdir)/ltmain.c $(host_alias)
 
 libtoolize: $(srcdir)/libtoolize.in $(top_builddir)/config.status
 	CONFIG_FILES=libtoolize CONFIG_HEADERS= $(top_builddir)/config.status

@@ -1,3 +1,8 @@
+2000-07-10  Maciej W. Rozycki  <macro@ds2.pg.gda.pl>
+
+	* Makefile.am (libtool): Pass $(host_alias) to ltconfig.
+	(clibtool): Likewise.
+
 2000-07-10  Alexandre Oliva  <aoliva@lsd.ic.unicamp.br>
 
 	* ltconfig.in (netbsd*): archive_cmds and archive_expsym_cmds
