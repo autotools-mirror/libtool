@@ -15,7 +15,7 @@ LIBS= @LIBS@
 aclocal_macros = libtool.m4
 
 EXTRA_DIST = $(aclocal_macros) libtoolize.in ltconfig.in ltmain.in \
-	mkstamp ChangeLog.0
+	mkstamp ChangeLog.0 instutil/chmod instutil/ln
 CLEANFILES = libtool libtoolize ltconfig.T ltmain.shT
 
 # These are required by libtoolize.
@@ -101,8 +101,8 @@ configure-subdirs distdir: $(DIST_MAKEFILE_LIST)
 
 # Create and install libltdl
 install-data-hook:
+	PATH=`cd $(srcdir)/instutil && pwd`":$$PATH" && \
 	cd libltdl && $(MAKE) distdir distdir=$(DESTDIR)$(pkgdatadir)/libltdl
-	chmod 755 $(DESTDIR)$(pkgdatadir)/libltdl
 
 # Uninstall libltdl
 uninstall-local:

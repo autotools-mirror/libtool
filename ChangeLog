@@ -1,3 +1,13 @@
+1999-05-14  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* instutil/chmod: New script to avoid chmod'ing files while
+	installing libltdl's sources.
+	* instutil/ln: New script to avoid hard-linking libltdl's sources
+	in the install tree.
+	* Makefile.am (EXTRA_DIST): Dist them.
+	(instal-data-hook): Add srcdir/instutil to the beginning of the
+	PATH before installing libltdl's sources.
+
 1999-05-06  Gary V. Vaughan  <gary@oranda.demon.co.uk>
 
 	* Makefile.am (install-data-hook):  make sure the install directory
