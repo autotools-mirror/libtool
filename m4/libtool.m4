@@ -4765,7 +4765,7 @@ if test "$caught_CXX_error" != yes; then
           case ${MACOSX_DEPLOYMENT_TARGET-10.0} in
           10.[[0123]])
             # only use -single_module on bona fide Apple compilers.
-            if ($CC -v) && $CC -v 2>&1| grep Apple 2>&1 >/dev/null ; then
+            if ($CC -v) 2>&1 >/dev/null && $CC -v 2>&1| grep Apple 2>&1 >/dev/null ; then
               if $CC -dumpspecs 2>&1 | $GREP 'single_module' >/dev/null ; then
                 lt_int_apple_cc_single_mod=yes
               fi
