@@ -1,5 +1,8 @@
 2004-10-07  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
+	* tests/sh.test: Remove tests which fail on AS_SHELL_SANITIZE
+	from autoconf >= 2.59.
+
 	* TODO: Remove item: no need for a libltdl without stdio.
 
 2004-10-07  Gary V. Vaughan  <gary@gnu.org>
