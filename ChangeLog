@@ -1,11 +1,14 @@
 2004-08-07  Peter O'Gorman  <peter@pogma.com>
 
+	* configure.ac: Bumped version to 1.5.9a.
+	* NEWS: updated.
+
 	GNU libtool-1.5.8 is released.
 
 	* NEWS: updated.
 	* configure.ac: Bumped version to 1.5.8.
 	* config.guess, config.sub:  Synchronized from ftp.gnu.org.
-	
+
 2004-08-04  Peter O'Gorman  <peter@pogma.com>
 
 	* libtool.m4 (AC_LIBTOOL_SYS_MAX_CMD_LEN): Since CONFIG_SHELL may
