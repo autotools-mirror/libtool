@@ -1,6 +1,8 @@
 NEWS - list of user-visible changes between releases of GNU Libtool
 
 New in 1.2e: CVS version; 1.2f: 1999-?-?, Libtool team:
+* New AC_LIBLTDL_CONVENIENCE and AC_LIBLTDL_INSTALLABLE macros, to select
+  convenience and/or installable versions of libltdl.
 * In order for libtool to attempt to link a shared library (dll) on win32
   platforms, you must pass the -no-undefined flag to libtool in link mode.
 * The path to GNU ld now works on cygwin-b18 to cygwin-b20.2 at least.

@@ -1,3 +1,14 @@
+1999-03-09  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* libtool.m4 (AC_LIBLTDL_INSTALLABLE, AC_LIBLTDL_CONVENIENCE):
+	new macros
+	* NEWS: ditto
+	* libltdl/configure.in: if none of the new macros or configure
+	arguments are used, warn and build convenience library only
+	* libltdl/Makefile.am: conditionally build convenience libltdl.la
+	* mdemo/configure.in: use AC_LIBLTDL_CONVENIENCE
+	* mdemo/Makefile.am: refer to @LIBLTDL@
+
 1999-03-09  Gary V. Vaughan <gvaughan@oranda.demon.co.uk>
 
 	* NEWS: updated.

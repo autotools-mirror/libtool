@@ -10,7 +10,9 @@ else
 noinst_HEADERS = ltdl.h
 endif
 
+if CONVENIENCE_LTDL
 noinst_LTLIBRARIES = libltdl.la
+endif
 
 libltdl_la_SOURCES = ltdl.c
 libltdl_la_LIBADD = $(LIBADD_DL)

@@ -9,15 +9,24 @@ AM_MAINTAINER_MODE
 TOINST=toinst
 AC_SUBST(TOINST)
 
+if test -z "$enable_ltdl_install$enable_ltdl_convenience"; then
+  AC_MSG_WARN([*** Neither AC_LIBLTDL_INSTALLABLE nor AC_LIBLTDL_CONVENIENCE wre used])
+  AC_MSG_WARN([*** in configure.in; building convenience library for backward])
+  AC_MSG_WARN([*** compatibility.  This is deprecated, and will not work in the future])
+  enable_ltdl_convenience=yes
+fi
+
 AC_ARG_ENABLE(ltdl-install,
   [--enable-ltdl-install     install libltdl])
-AM_CONDITIONAL(INSTALL_LTDL, test x$enable_ltdl_install = xyes)
-if test x$enable_ltdl_install = xyes; then
+if test x"$enable_ltdl_install" != xno; then
   LIBLIBS=$TOINST/libltdl.la
 else
   LIBLIBS=
 fi
 AC_SUBST(LIBLIBS)
+
+AM_CONDITIONAL(INSTALL_LTDL, test x"$enable_ltdl_install" != xno)
+AM_CONDITIONAL(CONVENIENCE_LTDL, test x"$enable_ltdl_convenience" != xno)
 
 AC_PROG_CC
 AC_C_CONST
