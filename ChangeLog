@@ -1,5 +1,13 @@
 2001-03-20  Alexandre Oliva  <oliva@lsd.ic.unicamp.br>
 
+	* ltmain.in (piecewise linking): Make sure we link at least one
+	object file at a time into a new reloadable object file.
+	[whole_archive_flag_spec]: Don't link convenience archives
+	piecewise.
+	(piecewise archiving): Clear RANLIB except for the last run.
+
+2001-03-20  Alexandre Oliva  <oliva@lsd.ic.unicamp.br>
+
 	* configure.in (file_magic_cmd, reload_flag): Duplicate `$'s
 	before SUBSTin in the Makefile.
 	* ltconfig.in (reload_flag): Prepend a blank if it doesn't start

@@ -3081,6 +3081,7 @@ EOF
 
 	if test -n "$convenience"; then
 	  if test -n "$whole_archive_flag_spec"; then
+	    save_libobjs=$libobjs
 	    eval libobjs=\"\$libobjs $whole_archive_flag_spec\"
 	  else
 	    gentop="$output_objdir/${outputname}x"
@@ -3141,10 +3142,22 @@ EOF
         else
 	  # The command line is too long to link in one step, link piecewise.
           $echo "creating reloadable object files..."
-	  # Save the value of $output and $libobjs because we want to use them later.
-          save_libobjs=$libobjs
+
+	  # Save the value of $output and $libobjs because we want to
+	  # use them later.  If we have whole_archive_flag_spec, we
+	  # want to use save_libobjs as it was before
+	  # whole_archive_flag_spec was expanded, because we can't
+	  # assume the linker understands whole_archive_flag_spec.
+	  # This may have to be revisited, in case too many
+	  # convenience libraries get linked in and end up exceeding
+	  # the spec.
+	  if test -z "$convenience" || test -z "$whole_archive_flag_spec"; then
+	    save_libobjs=$libobjs
+	  fi
           save_output=$output
-	  # Clear the reloadable object creation command queue and initialize k to one.
+
+	  # Clear the reloadable object creation command queue and
+	  # initialize k to one.
           test_cmds=
           concat_cmds=
           objlist=
@@ -3156,16 +3169,19 @@ EOF
           for obj in $save_libobjs
           do
             eval test_cmds=\"$reload_cmds $objlist $last_robj\"
-            if len=`expr "X$test_cmds" : ".*"` &&
-                  test $len -le $max_cmd_len; then
+            if test "X$objlist" = X ||
+	       { len=`expr "X$test_cmds" : ".*"` &&
+                 test $len -le $max_cmd_len; }; then
               objlist="$objlist $obj"
             else
-	      # The command $test_cmds is almost too long, add a command to the queue.
+	      # The command $test_cmds is almost too long, add a
+	      # command to the queue.
               if test $k -eq 1 ; then
 	        # The first file doesn't have a previous command to add.
                 eval concat_cmds=\"$reload_cmds $objlist $last_robj\"
               else
-	        # All subsequent reloadable object files will link in the last one created.
+	        # All subsequent reloadable object files will link in
+	        # the last one created.
                 eval concat_cmds=\"\$concat_cmds~$reload_cmds $objlist $last_robj\"
               fi
               last_robj=$output_objdir/$save_output-${k}.$objext
@@ -3175,11 +3191,14 @@ EOF
               len=1
             fi
           done
-	  # Handle the remaining objects by creating one last reloadable object file.
-	  # All subsequent reloadable object files will link in the last one created.
-          eval concat_cmds=\"\$concat_cmds~$reload_cmds $objlist $last_robj\"
+	  # Handle the remaining objects by creating one last
+	  # reloadable object file.  All subsequent reloadable object
+	  # files will link in the last one created.
+	  test -z "$concat_cmds" || concat_cmds=$concat_cmds~
+          eval concat_cmds=\"\${concat_cmds}$reload_cmds $objlist $last_robj\"
 
-	  # Set up a command to remove the reloadale object files after they are used.
+	  # Set up a command to remove the reloadale object files
+	  # after they are used.
           i=0
           while test $i -lt $k
           do
@@ -3202,14 +3221,21 @@ EOF
 	  # Restore the value of output.
           output=$save_output
 
-	  # Expand the library linking commands again to reset the value of $libobjs for piecewise linking.
+	  if test -n "$convenience" && test -n "$whole_archive_flag_spec"; then
+	    eval libobjs=\"\$libobjs $whole_archive_flag_spec\"
+	  fi
+	  # Expand the library linking commands again to reset the
+	  # value of $libobjs for piecewise linking.
+
 	  # Do each of the archive commands.
           if test -n "$export_symbols" && test -n "$archive_expsym_cmds"; then
             eval cmds=\"$archive_expsym_cmds\"
           else
             eval cmds=\"$archive_cmds\"
           fi
-	  # Append the command to remove the reloadable object files to the just-reset $cmds.
+
+	  # Append the command to remove the reloadable object files
+	  # to the just-reset $cmds.
           eval cmds=\"\$cmds~$rm $delfiles\"
         fi
         IFS="${IFS= 	}"; save_ifs="$IFS"; IFS='~'
@@ -4126,6 +4152,8 @@ fi\
         else
           # the command line is too long to link in one step, link in parts
           $echo "using piecewise archive linking..."
+	  save_RANLIB=$RANLIB
+	  RANLIB=:
           objlist=
           concat_cmds=
           save_oldobjs=$oldobjs
@@ -4140,13 +4168,14 @@ fi\
             else
               # the above command should be used before it gets too long
               oldobjs=$objlist
-              eval concat_cmds=\"\$old_archive_cmds~$concat_cmds\"
+	      test -z "$concat_cmds" || concat_cmds=$concat_cmds~
+              eval concat_cmds=\"\${concat_cmds}$old_archive_cmds\"
               objlist=
             fi
           done
+	  RANLIB=$save_RANLIB
           oldobjs=$objlist
-          eval concat_cmds=\"\$old_archive_cmds~$concat_cmds\"
-          eval cmds=\"$concat_cmds\"
+          eval cmds=\"\$concat_cmds~$old_archive_cmds\"
         fi
       fi
       IFS="${IFS= 	}"; save_ifs="$IFS"; IFS='~'
