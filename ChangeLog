@@ -1,3 +1,22 @@
+2003-03-20  Peter O'Gorman  <peter@pogma.com>
+	
+	* ltmain.in: Always use $echo not echo for consistency.
+	Changes for darwin building. Warn if linking against libs linked
+	with -module. Use module_cmds if available and building a module,
+	move convenience double lib check,
+	* libltdl/ltdl.c: ltdl support for darwin (first blush)
+	* libltdl/README: note that darwin is supported
+	* ltdl.m4: Changes for darwin, and for new shrext
+	* libtool.m4: Changed the way darwin builds stuff (make check passes)
+	added module_cmds, module_expsym_cmds and hardcode_automatic and put
+	them in the libtool script. check for zsh's removal of escapes. Allow
+	libraries to be stripped on darwin.
+	* TODO: Remove the todo about zsh's removal of excapes. note that zsh
+	echo works perfectly well, eval is screwed up. Seems to be fixed in
+	latest zsh.
+	* THANKS: added self :)
+	* f77demo/configure.ac: Use config.h or it doesn't work.
+
 2003-03-19  Robert Boehne  <rboehne@gnu.org>
 
 	* libtool.m4 (_LT_AC_TAGCONFIG): Add test around the macro that

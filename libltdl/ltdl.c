@@ -1575,7 +1575,349 @@ static struct lt_user_dlloader sys_dld = {
 
 #endif /* HAVE_DLD */
 
+/* --- DYLD() MACOSX/DARWIN INTERFACE LOADER --- */
+#if HAVE_DYLD
 
+
+#if HAVE_MACH_O_DYLD_H
+# include <mach-o/dyld.h>
+#endif
+#include <mach-o/getsect.h>
+/*
+  sectname __mod_term_func
+   segname __DATA
+*/   
+
+/* We have to put some stuff here that isn't in older dyld.h files */
+#ifndef ENUM_DYLD_BOOL
+# define ENUM_DYLD_BOOL
+# undef FALSE
+# undef TRUE
+ enum DYLD_BOOL {
+    FALSE,
+    TRUE
+ };
+#endif
+#ifndef LC_REQ_DYLD
+# define LC_REQ_DYLD 0x80000000
+#endif
+#ifndef LC_LOAD_WEAK_DYLIB
+# define LC_LOAD_WEAK_DYLIB (0x18 | LC_REQ_DYLD)
+#endif
+static const struct mach_header * (*ltdl_NSAddImage)(const char *image_name, unsigned long options) = 0;
+static NSSymbol (*ltdl_NSLookupSymbolInImage)(const struct mach_header *image,const char *symbolName, unsigned long options) = 0;
+static enum DYLD_BOOL (*ltdl_NSIsSymbolNameDefinedInImage)(const struct mach_header *image, const char *symbolName) = 0;
+static enum DYLD_BOOL (*ltdl_NSMakePrivateModulePublic)(NSModule module) = 0;
+
+#ifndef NSADDIMAGE_OPTION_NONE
+#define NSADDIMAGE_OPTION_NONE                          0x0    
+#endif
+#ifndef NSADDIMAGE_OPTION_RETURN_ON_ERROR
+#define NSADDIMAGE_OPTION_RETURN_ON_ERROR               0x1
+#endif    
+#ifndef NSADDIMAGE_OPTION_WITH_SEARCHING
+#define NSADDIMAGE_OPTION_WITH_SEARCHING                0x2
+#endif    
+#ifndef NSADDIMAGE_OPTION_RETURN_ONLY_IF_LOADED
+#define NSADDIMAGE_OPTION_RETURN_ONLY_IF_LOADED         0x4
+#endif
+#ifndef NSADDIMAGE_OPTION_MATCH_FILENAME_BY_INSTALLNAME
+#define NSADDIMAGE_OPTION_MATCH_FILENAME_BY_INSTALLNAME 0x8
+#endif
+#ifndef NSLOOKUPSYMBOLINIMAGE_OPTION_BIND
+#define NSLOOKUPSYMBOLINIMAGE_OPTION_BIND            0x0
+#endif   
+#ifndef NSLOOKUPSYMBOLINIMAGE_OPTION_BIND_NOW
+#define NSLOOKUPSYMBOLINIMAGE_OPTION_BIND_NOW        0x1
+#endif
+#ifndef NSLOOKUPSYMBOLINIMAGE_OPTION_BIND_FULLY
+#define NSLOOKUPSYMBOLINIMAGE_OPTION_BIND_FULLY      0x2
+#endif
+#ifndef NSLOOKUPSYMBOLINIMAGE_OPTION_RETURN_ON_ERROR
+#define NSLOOKUPSYMBOLINIMAGE_OPTION_RETURN_ON_ERROR 0x4
+#endif
+
+
+static const char *
+lt_int_dyld_error(othererror)
+	char* othererror;
+{
+/* return the dyld error string, or the passed in error string if none */
+	NSLinkEditErrors ler;
+	int lerno;
+	const char *errstr;
+	const char *file;
+	NSLinkEditError(&ler,&lerno,&file,&errstr);	
+	if (!errstr || !strlen(errstr)) errstr = othererror;
+	return errstr;
+}
+ 
+static const struct mach_header *
+lt_int_dyld_get_mach_header_from_nsmodule(module)
+	NSModule module;
+{
+/* There should probably be an apple dyld api for this */
+	int i=_dyld_image_count();
+	int j;
+	const char *modname=NSNameOfModule(module);
+	const struct mach_header *mh=NULL;
+	if (!modname) return NULL;
+	for (j = 0; j < i; j++)
+	{
+		if (!strcmp(_dyld_get_image_name(j),modname))
+		{
+			mh=_dyld_get_image_header(j);
+			break;
+		}
+	}
+	return mh;
+}
+
+static const char* lt_int_dyld_lib_install_name(mh)
+	const struct mach_header *mh;
+{	
+/* NSAddImage is also used to get the loaded image, but it only works if the lib
+   is installed, for uninstalled libs we need to check the install_names against
+   each other. Note that this is still broken if DYLD_IMAGE_SUFFIX is set and a
+   different lib was loaded as a result
+*/
+	int j;
+	struct load_command *lc;
+	unsigned long offset = sizeof(struct mach_header);
+	const struct mach_header *mh1;
+	const char* retStr=NULL;
+	for (j = 0; j < mh->ncmds; j++)
+	{
+		lc = (struct load_command*)(((unsigned long)mh) + offset);
+		if (LC_ID_DYLIB == lc->cmd)
+		{
+			retStr=(char*)(((struct dylib_command*)lc)->dylib.name.offset + 
+									(unsigned long)lc);
+		}
+		offset += lc->cmdsize;
+	}
+	return retStr;
+}
+
+static const struct mach_header *
+lt_int_dyld_match_loaded_lib_by_install_name(const char *name)
+{
+	int i=_dyld_image_count();
+	int j;
+	const struct mach_header *mh=NULL;
+	const char *id=NULL;	
+	for (j = 0; j < i; j++)
+	{
+		id=lt_int_dyld_lib_install_name(_dyld_get_image_header(j));
+		if ((id) && (!strcmp(id,name)))
+		{
+			mh=_dyld_get_image_header(j);
+			break;
+		}
+	}
+	return mh;
+}
+	
+static NSSymbol
+lt_int_dyld_NSlookupSymbolInLinkedLibs(symbol,mh)
+	const char *symbol;
+	const struct mach_header *mh;
+{
+	/* Safe to assume our mh is good */
+	int j;
+	struct load_command *lc;
+	unsigned long offset = sizeof(struct mach_header);
+	NSSymbol retSym = 0;
+	const struct mach_header *mh1;
+	fprintf(stderr,"Symbol: %s\n",symbol);
+	if ((ltdl_NSLookupSymbolInImage) && NSIsSymbolNameDefined(symbol) )
+	{
+		for (j = 0; j < mh->ncmds; j++)
+		{
+			lc = (struct load_command*)(((unsigned long)mh) + offset);
+			if ((LC_LOAD_DYLIB == lc->cmd) || (LC_LOAD_WEAK_DYLIB == lc->cmd))
+			{
+				fprintf(stderr,"Symbol %s\n",(char*)(((struct dylib_command*)lc)->dylib.name.offset + 
+										(unsigned long)lc));
+				mh1=lt_int_dyld_match_loaded_lib_by_install_name((char*)(((struct dylib_command*)lc)->dylib.name.offset + 
+										(unsigned long)lc));
+				if (!mh1)
+				{	
+					/* Maybe NSAddImage can find it */												
+					mh1=ltdl_NSAddImage((char*)(((struct dylib_command*)lc)->dylib.name.offset + 
+										(unsigned long)lc),
+										NSADDIMAGE_OPTION_RETURN_ONLY_IF_LOADED + 
+										NSADDIMAGE_OPTION_WITH_SEARCHING +
+										NSADDIMAGE_OPTION_RETURN_ON_ERROR );
+				}						
+				if (mh1)
+				{
+					retSym = ltdl_NSLookupSymbolInImage(mh1,
+											symbol,
+											NSLOOKUPSYMBOLINIMAGE_OPTION_BIND_NOW 
+											| NSLOOKUPSYMBOLINIMAGE_OPTION_RETURN_ON_ERROR
+											);
+					if (retSym) break;						
+				}						
+			}
+			offset += lc->cmdsize;
+		}
+	}
+	return retSym;
+}
+
+static int
+sys_dyld_init()
+{
+	int retCode = 0;
+	int err = 0;
+	if (!_dyld_present()) { 
+		retCode=1;
+	}
+	else {
+      err = _dyld_func_lookup("__dyld_NSAddImage",(unsigned long*)&ltdl_NSAddImage);
+      err = _dyld_func_lookup("__dyld_NSLookupSymbolInImage",(unsigned long*)&ltdl_NSLookupSymbolInImage);
+      err = _dyld_func_lookup("__dyld_NSIsSymbolNameDefinedInImage",(unsigned long*)&ltdl_NSIsSymbolNameDefinedInImage);
+      err = _dyld_func_lookup("__dyld_NSMakePrivateModulePublic",(unsigned long*)&ltdl_NSMakePrivateModulePublic);
+    }
+ return retCode;
+}
+
+static lt_module
+sys_dyld_open (loader_data, filename)
+     lt_user_data loader_data;
+     const char *filename;
+{
+	lt_module   module   = 0;
+	NSObjectFileImage ofi = 0;
+	NSObjectFileImageReturnCode ofirc;
+	
+  	if (!filename) 
+  		return (lt_module)-1;
+	ofirc = NSCreateObjectFileImageFromFile(filename, &ofi);
+	switch (ofirc)
+	{
+		case NSObjectFileImageSuccess:
+			module = NSLinkModule(ofi, filename,
+						NSLINKMODULE_OPTION_RETURN_ON_ERROR
+						 | NSLINKMODULE_OPTION_PRIVATE
+						 | NSLINKMODULE_OPTION_BINDNOW);
+			NSDestroyObjectFileImage(ofi);
+			if (module)
+				ltdl_NSMakePrivateModulePublic(module);
+			break;
+		case NSObjectFileImageInappropriateFile:
+		    if (ltdl_NSIsSymbolNameDefinedInImage && ltdl_NSLookupSymbolInImage)
+		    {
+				module = (lt_module)ltdl_NSAddImage(filename, NSADDIMAGE_OPTION_RETURN_ON_ERROR);	
+				break;
+			}	
+		default:
+			LT_DLMUTEX_SETERROR (lt_int_dyld_error(LT_DLSTRERROR(CANNOT_OPEN)));
+			return 0;
+	}
+	if (!module) LT_DLMUTEX_SETERROR (lt_int_dyld_error(LT_DLSTRERROR(CANNOT_OPEN)));
+  return module;
+}
+
+static int
+sys_dyld_close (loader_data, module)
+     lt_user_data loader_data;
+     lt_module module;
+{
+	int retCode = 0;
+	int flags = 0;
+	unsigned long size=0;
+	if (module == (lt_module)-1) return 0;
+#ifdef __BIG_ENDIAN__  	
+  	if (((struct mach_header *)module)->magic == MH_MAGIC)
+#else  	
+    if (((struct mach_header *)module)->magic == MH_CIGAM)
+#endif 
+	{
+	  LT_DLMUTEX_SETERROR("Can not close a dylib");
+	  retCode = 1;
+	}
+	else
+	{
+#if 1
+/* Currently, if a module contains c++ static destructors and it is unloaded, we
+   get a segfault in atexit(), due to compiler and dynamic loader differences of
+   opinion, this works around that.
+*/   
+		if ((const struct section *)NULL != 
+		   getsectbynamefromheader(lt_int_dyld_get_mach_header_from_nsmodule(module),
+		   "__DATA","__mod_term_func"))
+		{
+			flags += NSUNLINKMODULE_OPTION_KEEP_MEMORY_MAPPED;
+		} 
+#endif		
+#ifdef __ppc__
+			flags += NSUNLINKMODULE_OPTION_RESET_LAZY_REFERENCES;
+#endif
+		retCode = NSUnLinkModule(module,flags);												
+	
+	}
+	
+ return retCode;
+}
+
+static lt_ptr
+sys_dyld_sym (loader_data, module, symbol)
+     lt_user_data loader_data;
+     lt_module module;
+     const char *symbol;
+{
+	lt_ptr address = 0;
+  	NSSymbol *nssym = 0;
+  	void *unused;
+  	const struct mach_header *mh=NULL;
+  	if (module == (lt_module)-1)
+  	{
+  		_dyld_lookup_and_bind(symbol,(unsigned long*)&address,&unused);
+  		return address;
+  	}
+#ifdef __BIG_ENDIAN__  	
+  	if (((struct mach_header *)module)->magic == MH_MAGIC)
+#else  	
+    if (((struct mach_header *)module)->magic == MH_CIGAM)
+#endif    
+  	{
+  	    if (ltdl_NSIsSymbolNameDefinedInImage && ltdl_NSLookupSymbolInImage)
+  	    {
+  	    	mh=module;
+			if (ltdl_NSIsSymbolNameDefinedInImage((struct mach_header*)module,symbol)) 
+			{
+				nssym = ltdl_NSLookupSymbolInImage((struct mach_header*)module,
+											symbol,
+											NSLOOKUPSYMBOLINIMAGE_OPTION_BIND_NOW 
+											| NSLOOKUPSYMBOLINIMAGE_OPTION_RETURN_ON_ERROR
+											);
+			}
+	    }	
+  
+  	}    
+  else {
+	nssym = NSLookupSymbolInModule(module, symbol);
+	}
+	if (!nssym) 
+	{
+		if (!mh) mh=lt_int_dyld_get_mach_header_from_nsmodule(module);
+		nssym = lt_int_dyld_NSlookupSymbolInLinkedLibs(symbol,mh);
+	}		
+	if (!nssym) 
+	{
+		LT_DLMUTEX_SETERROR (lt_int_dyld_error(LT_DLSTRERROR(SYMBOL_NOT_FOUND)));
+		return NULL;
+	}	
+	return NSAddressOfSymbol(nssym);
+}
+
+static struct lt_user_dlloader sys_dyld =
+  { "_", sys_dyld_open, sys_dyld_close, sys_dyld_sym, 0, 0 };
+
+
+#endif /* HAVE_DYLD */
 
 
 /* --- DLPREOPEN() INTERFACE LOADER --- */
@@ -1871,6 +2213,10 @@ lt_dlinit ()
 #endif
 #if HAVE_DLD
       errors += lt_dlloader_add (lt_dlloader_next (0), &sys_dld, "dld");
+#endif
+#if HAVE_DYLD
+       errors += lt_dlloader_add (lt_dlloader_next (0), &sys_dyld, "dyld");
+       errors += sys_dyld_init();
 #endif
       errors += lt_dlloader_add (lt_dlloader_next (0), &presym, "dlpreload");
 

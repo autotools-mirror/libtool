@@ -95,7 +95,7 @@ AC_REQUIRE([AC_LTDL_FUNC_ARGZ])
 
 AC_CHECK_HEADERS([assert.h ctype.h errno.h malloc.h memory.h stdlib.h \
 		  stdio.h unistd.h])
-AC_CHECK_HEADERS([dl.h sys/dl.h dld.h])
+AC_CHECK_HEADERS([dl.h sys/dl.h dld.h mach-o/dyld.h])
 AC_CHECK_HEADERS([string.h strings.h], [break])
 
 AC_CHECK_FUNCS([strchr index], [break])
@@ -205,22 +205,12 @@ fi
 # ----------------
 AC_DEFUN([AC_LTDL_SHLIBEXT],
 [AC_REQUIRE([AC_LIBTOOL_SYS_DYNAMIC_LINKER])
-AC_CACHE_CHECK([which extension is used for shared libraries],
+AC_CACHE_CHECK([which extension is used for loadable modules],
   [libltdl_cv_shlibext],
-  [ac_last=
-  for ac_spec in $library_names_spec; do
-    ac_last="$ac_spec"
-  done
-  echo "$ac_last" | [sed 's/\[.*\]//;s/^[^.]*//;s/\$.*$//;s/\.$//'] > conftest
-  libltdl_cv_shlibext=`cat conftest`
-  rm -f conftest
+[
+module=yes
+eval libltdl_cv_shlibext=$shrext
   ])
-  # The above does not work on darwin, due to the test's in the library_names_spec
-  # The test description should probably say "which extension is used for loadable
-  # modules"
-  case "$host_os" in
-    darwin*) libltdl_cv_shlibext=".so" ;;
-  esac  
 if test -n "$libltdl_cv_shlibext"; then
   AC_DEFINE_UNQUOTED(LTDL_SHLIB_EXT, "$libltdl_cv_shlibext",
     [Define to the extension used for shared libraries, say, ".so".])
@@ -339,7 +329,10 @@ AC_CHECK_FUNC([shl_load],
 	  [AC_CHECK_LIB([dld], [dld_link],
 	        [AC_DEFINE([HAVE_DLD], [1],
 			   [Define if you have the GNU dld library.])
-	 	LIBADD_DL="$LIBADD_DL -ldld"
+	 	LIBADD_DL="$LIBADD_DL -ldld"],
+	 	[AC_CHECK_FUNC([_dyld_func_lookup],
+	 	       [AC_DEFINE([HAVE_DYLD], [1],
+	 	          [Define if you have the _dyld_func_lookup function.])])
           ])
         ])
       ])
