@@ -1,3 +1,15 @@
+1999-04-28  Gary V. Vaughan  <gary@oranda.demon.co.uk>
+
+	* libtool.m4 (ltconfig_enable_win32_dll): pass --enable-win32-dll to
+	ltconfig if this is set.
+	(AC_LIBTOOL_WIN32_DLL): New macro required for libtool to attempt
+	a dll build on win32 hosts.
+	* ltconfig.in (--enable-win32-dll): new flag for the cli.
+	(cygwin*|mingw*|os2*, ltconfig_enable_win32_dll): if this is not set
+	to yes, then do not attempt to build shared libraries.
+	* doc/libtool.texi: document AC_LIBTOOL_WIN32_DLL.
+	* NEWS: noted new macro.
+
 1999-04-27  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* libtool.m4 (AC_LIBTOOL_DLOPEN, AC_ENABLE_SHARED,
