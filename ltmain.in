@@ -1717,13 +1717,8 @@ compiler."
 
       # Create the output directory, or remove our outputs if we need to.
       if test -d $output_objdir; then
-	$show "${rm}r $output_objdir/$outputname $output_objdir/$objdir/$outputname $output_objdir/$libname.* $output_objdir/${libname}${release}.*"
-	$run ${rm}r $output_objdir/$outputname $output_objdir/$objdir/$outputname $output_objdir/$libname.* $output_objdir/${libname}${release}.*
-
-	if test -z "$run" && test -f "$output_objdir/$objdir/$outputname"; then
-	  $echo "$modename: warning: $output_objdir/$objdir/$outputname could not be removed" 1>&2
-	  exit 1
-	fi
+	$show "${rm}r $output_objdir/$outputname $output_objdir/$libname.* $output_objdir/${libname}${release}.*"
+	$run ${rm}r $output_objdir/$outputname $output_objdir/$libname.* $output_objdir/${libname}${release}.*
       else
 	$show "$mkdir $output_objdir"
 	$run $mkdir $output_objdir
@@ -2012,7 +2007,7 @@ EOF
 	# Prepare the list of exported symbols
 	if test -z "$export_symbols"; then
 	  if test "$always_export_symbols" = yes || test -n "$export_symbols_regex"; then
-	    $show "extracting global symbols from \`$libname'"
+	    $show "generating symbol list for \`$libname.la'"
 	    export_symbols="$objdir/$libname.exp"
 	    $run $rm $export_symbols
 	    eval cmds=\"$export_symbols_cmds\"
@@ -2495,6 +2490,12 @@ static const void *lt_preloaded_setup() {
 	    esac
 	  fi
 	done
+
+        $run $rm "$output_objdir/$objdir/$outputname"
+
+	if test -z "$run" && test -f "$output_objdir/$objdir/$outputname"; then
+	  $echo "$modename: warning: $output_objdir/$objdir/$outputname could not be removed" 1>&2
+	fi
       fi
 
       if test -n "$shlibpath_var"; then
@@ -2659,13 +2660,17 @@ else
 	  echo >> $output "\
   progdir=\"\$thisdir/$objdir/$objdir\"
 
-  if test ! -f \"\$progdir/\$program\"; then
+  if test ! -f \"\$progdir/\$program\" || \\
+     { newestfile=\`ls -1dt \"\$progdir/\$program\" \"\$progdir/../\$program\" 2>/dev/null | sed 1q\`; \\
+       test \"X\$newestfile\" != \"X\$progdir/\$program\"; }; then
     if test ! -d \"\$progdir\"; then
-      mkdir \"\$progdir\"
+      $mkdir \"\$progdir\"
+    else
+      $rm \"\$progdir/\$program\"
     fi
 
-    # link executable that searches the build-dir
-    (cd \$thisdir && $compile_for_build_command)
+    # link executable that uses uninstalled libraries
+    (cd \$thisdir && $compile_for_build_command) || exit 1
   fi"
 	fi
 

@@ -1,5 +1,10 @@
 1999-02-22  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* ltmain.in: remove on-demand executable in the proper place, and
+	just warn if it can't be removed; add wrapper code to test whether 
+	the install-executable is newer than the build-executable, to
+	relink it when it appears to be out-of-date
+
 	* libltdl/configure.in: check for dld.h
 	* libltdl/ltdl.c: include dld.h
 	(dld_open) it's spelled memory_error, not no_memory_error
