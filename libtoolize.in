@@ -49,6 +49,8 @@ cp="cp -f"
 automake=
 copy=
 force=
+ltdl=
+ltdl_tar=
 status=0
 
 for arg
@@ -66,6 +68,8 @@ Prepare a package to use libtool.
 -n, --dry-run         print commands rather than running them
 -f, --force           replace existing files
     --help            display this message and exit
+    --ltdl            install libltdl in a subdirectory
+    --ltdl-tar        install the libltdl tarball
     --version         print version information and exit
 
 You must \`cd' to the top directory of your package before you run
@@ -105,6 +109,16 @@ EOF
     force=yes
     ;;
 
+  --ltdl)
+    ltdl=yes
+    ltdl_tar=
+    ;;
+
+  --ltdl-tar)
+    ltdl=
+    ltdl_tar=yes
+    ;;
+
   -*)
     echo "$progname: unrecognized option \`$arg'" 1>&2
     echo "$help" 1>&2
@@ -125,11 +139,14 @@ if test ! -f configure.in; then
   exit 1
 fi
 
-files=`cd $pkgdatadir && ls`
-if test -z "$files"; then
+
+if cd $pkgdatadir && ls; then :
+else
   echo "$progname: cannot list files in \`$pkgdatadir'" 1>&2
   exit 1
 fi
+files='config.guess config.sub ltconfig ltmain.sh'
+test "x$ltdl_tar" = xyes && files="$files libltdl.tar.gz"
 
 auxdir=.
 auxdirline=`egrep '^AC_CONFIG_AUX_DIR' configure.in 2>/dev/null`

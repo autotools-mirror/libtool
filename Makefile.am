@@ -4,7 +4,7 @@
 AUTOMAKE_OPTIONS = 1.3e gnits readme-alpha
 
 BUILD_SUBDIRS = . doc tests
-SUBDIRS = $(BUILD_SUBDIRS) $(BUILD_LTDL)
+SUBDIRS = $(BUILD_SUBDIRS)
 DIST_SUBDIRS = $(BUILD_SUBDIRS) $(CONF_SUBDIRS)
 
 # We need to export these variables when we run ltconfig.
@@ -15,12 +15,11 @@ aclocal_macros = libtool.m4
 
 EXTRA_DIST = $(aclocal_macros) libtoolize.in ltconfig.in ltmain.in \
 	libtool.spec
-CLEANFILES = libtool libtoolize
-MAINTAINERCLEANFILES = ltconfig ltmain.sh
+CLEANFILES = libtool libtoolize ltconfig ltmain.sh
 
 # These are required by libtoolize.
 pkgdata_SCRIPTS = config.guess config.sub ltconfig
-pkgdata_DATA = ltmain.sh
+pkgdata_DATA = ltmain.sh libltdl.tar.gz
 
 # This macro file should be visible to Automake's aclocal.
 aclocaldir = @aclocaldir@
@@ -29,20 +28,21 @@ aclocal_DATA = $(aclocal_macros)
 # The standalone libtool script, and the libtool distributor.
 bin_SCRIPTS = libtool libtoolize
 
-LIBTOOL_DEPS = $(srcdir)/ltmain.sh $(srcdir)/ltconfig
+libltdl.tar.gz: libltdl/Makefile
+	(cd libltdl && $(MAKE) dist)
+	rm -f libltdl.tar.gz
+	ln -s libltdl/libltdl-0.1.tar.gz libltdl.tar.gz
 
-libtool: $(LIBTOOL_DEPS)
+libtool: ltmain.sh ltconfig
 	CC="$(CC)" CFLAGS="$(CFLAGS)" CPPFLAGS="$(CPPFLAGS)" \
 	LD="$(LD)" LN_S="$(LN_S)" NM="$(NM)" RANLIB="$(RANLIB)" \
-	$(SHELL) $(srcdir)/ltconfig --srcdir=$(srcdir) --output=$@ \
-	  $(srcdir)/ltmain.sh
+	$(SHELL) ltconfig --srcdir=$(srcdir) --output=$@ ltmain.sh
 
 # Experimental C version of libtool.
-clibtool: $(srcdir)/ltmain.c $(srcdir)/ltconfig
+clibtool: $(srcdir)/ltmain.c ltconfig
 	CC="$(CC)" CFLAGS="$(CFLAGS)" CPPFLAGS="$(CPPFLAGS)" \
 	LD="$(LD)" LN_S="$(LN_S)" NM="$(NM)" RANLIB="$(RANLIB)" \
-	$(SHELL) $(srcdir)/ltconfig --srcdir=$(srcdir) --output=$@ \
-	  $(srcdir)/ltmain.c
+	$(SHELL) ltconfig --srcdir=$(srcdir) --output=$@ $(srcdir)/ltmain.c
 
 libtoolize: $(srcdir)/libtoolize.in $(top_builddir)/config.status
 	CONFIG_FILES=libtoolize CONFIG_HEADERS= $(top_builddir)/config.status
@@ -50,14 +50,14 @@ libtoolize: $(srcdir)/libtoolize.in $(top_builddir)/config.status
 
 # Do line number substitution, as well as PACKAGE and VERSION.
 # Line numbering transliterated from a section in autoconf (Autoconf 2.12).
-$(srcdir)/ltconfig: $(srcdir)/ltconfig.in $(top_srcdir)/configure.in
+ltconfig: $(srcdir)/ltconfig.in $(top_srcdir)/configure.in
 	$(AWK) '/@LINENO@/ { printf "%d:", NR } { print }' $(srcdir)/ltconfig.in | \
 	  sed -e 's/@''PACKAGE@/@PACKAGE@/' -e 's/@''VERSION@/@VERSION@/' \
 	      -e '/@LINENO@/s/^\([0-9][0-9]*\):\(.*\)@LINENO@/\2\1/' > ltconfig.T
 	chmod +x ltconfig.T
 	mv -f ltconfig.T $@
 
-$(srcdir)/ltmain.sh: $(srcdir)/ltmain.in $(top_srcdir)/configure.in
+ltmain.sh: $(srcdir)/ltmain.in $(top_srcdir)/configure.in
 	sed -e 's/@''PACKAGE@/@PACKAGE@/' -e 's/@''VERSION@/@VERSION@/' $(srcdir)/ltmain.in > ltmain.shT
 	mv -f ltmain.shT $@
 
@@ -67,14 +67,15 @@ all-local check-local: $(ACINCLUDE_M4_LIST) libtool
 @ACINCLUDE_M4_LIST@: $(srcdir)/libtool.m4
 	rm -f $@
 	cd `echo $@ | sed 's,/[^/]*$$,,'` && \
-	  $(LN_S) `echo $@ | sed -e 's|^$(srcdir)/||' -e 's,[^/]*$$,,' -e 's,[^/][^/]*,..,g'`libtool.m4 acinclude.m4
+	cp $(srcdir)/libtool.m4 acinclude.m4
 
 .PHONY: configure-subdirs
 configure-subdirs distdir: $(DIST_MAKEFILE_LIST)
 @DIST_MAKEFILE_LIST@:
 	dir=`echo $@ | sed 's,^[^/]*$$,.,;s,/[^/]*$$,,'`; \
 	test -d $$dir || mkdir $$dir || exit 1; \
-	(cd $$dir && $(srcdir)/$$dir/configure) || exit 1
+	save=`pwd` && cd $(top_srcdir) && abs_srcdir=`pwd` && cd $$save; \
+	(cd $$dir && $$abs_srcdir/$$dir/configure) || exit 1
 
 ################################################################
 ##

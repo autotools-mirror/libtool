@@ -8,16 +8,6 @@ AC_SUBST(pkgdatadir)
 aclocaldir='${datadir}/aclocal'
 AC_SUBST(aclocaldir)
 
-AC_ARG_ENABLE(ltdl-install,
-  [  --enable-ltdl-install   install libltdl])
-AM_CONDITIONAL(INSTALL_LTDL, test x$enable_ltdl_install = xyes)
-if test x$enable_ltdl_install = xyes; then
-  BUILD_LTDL=libltdl
-else
-  BUILD_LTDL=
-fi
-AC_SUBST(BUILD_LTDL)
-
 dnl Use the specified CC, RANLIB, and LD while running ltconfig.
 AC_PROG_CC
 AC_PROG_RANLIB
@@ -42,7 +32,6 @@ done
 AC_SUBST(ACINCLUDE_M4_LIST)
 AC_SUBST(DIST_MAKEFILE_LIST)
 
-AC_CONFIG_SUBDIRS($BUILD_LTDL)
 AC_OUTPUT([Makefile doc/Makefile tests/Makefile])
 
 # Local Variables:

@@ -6,18 +6,18 @@
 
 rm -f acinclude.m4
 ln -s libtool.m4 acinclude.m4
+aclocal
+automake --gnits --add-missing
+autoconf
 # fake the libtool scripts
 touch ltconfig
 touch ltmain.sh
 touch libtoolize
-aclocal
-automake --gnits --add-missing
-autoconf
 
 for sub in demo depdemo libltdl mdemo cdemo; do
   cd $sub
   rm -f acinclude.m4
-  ln -s ../libtool.m4 acinclude.m4
+  cp ../libtool.m4 acinclude.m4
   aclocal
   automake --gnits --add-missing
   autoconf

@@ -12,7 +12,23 @@
 
 	* autogen: fake the libtool scripts to help fixing
 	  the bootstrapping problem
-		
+	* Makefile.am: always configure libltdl, however after building
+	  the libtool scripts, 
+	  build the libtool scripts in builddir, not srcdir
+	  (unfortunately this breaks building when srcdir!=objdir, 
+	   but it was just plain wrong - need's to be fixed),
+	  build and install libltdl.tar.gz,
+	  copy acinclude.m4 instead of linking them, so that we 
+	  can 'make dist' in libltdl,
+	  fix configuring of subdirectories
+	* configure.in: remove --enable-ltdl-install - libltdl is supposed
+	  to be installed by packages, not by libtool itself
+	* libtoolize.in: new flags --ltdl and --ltdl-tar to install libltdl
+	  in packages (--ltdl doesn't work yet),
+	  install only the necessary libtool scripts, not just all 
+	  files in pkgdatadir
+	* mdemo/Makefile.am: remove rule for libltdl configuration
+	  		
 1999-01-13  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* mdemo/Makefile.am (../libltdl/libtool): mkdir and configure
