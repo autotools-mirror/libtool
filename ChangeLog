@@ -1,3 +1,15 @@
+2000-12-01  Gary V. Vaughan  <gvv@techie.com>
+
+	* libtool.m4 (_LT_AC_LTCONFIG_HACK): Move the tests for dlopen
+	from here...
+	(AC_LTDL_DLOPEN_SELF): ...to here.
+	(_LTDL_AC_CHECK_DLFCN):  Factor out repeated code for dlfcn.h
+	(_LT_AC_TRY_DLOPEN_SELF): Factor out repeated code for
+	checking dlopen status.
+	* ltdl.m4 (AC_LIB_LTDL):  Use _LTDL_AC_CHECK_DLFCN.
+	dlopen compile time checking.  Use _LTDL_AC_CHECK_DLFCN.
+	(AC_LTDL_DLSYM_USCORE):  Use _LTDL_AC_TRY_DLOPEN_SELF.
+
 2000-11-29  Gary V. Vaughan  <gvv@techie.com>
 
 	* libltdl/ltdl.h (lt_dlhandle): Rename the wrapped structure
