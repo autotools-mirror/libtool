@@ -1,5 +1,7 @@
 1999-04-04  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* ltconfig.in (sunos4*, GNU ld): Reordered.
+
 	* ltconfig.in (archive_cmds, sunos4*): Revert to -Bstatic; the
 	native linker doesn't even support -Bshareable, only GNU ld does.
 	Do not use `gcc -shared' in archive_cmds, it breaks deplibs.test.
