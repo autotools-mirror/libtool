@@ -1,3 +1,9 @@
+2001-04-22  Gary V. Vaughan  <gvv@techie.com>
+
+	* libtool.m4 (AC_DEPLIBS_CHECK_METHOD):  Use pass_all for
+	various releases of UnixWare and OpenServer that support it.
+	Reported by Matthew Schalit <mschalit@pacbell.net>
+
 2001-04-21  Gary V. Vaughan  <gvv@techie.com>
 
 	* TODO:  propose pkg-config merge.
