@@ -1,3 +1,28 @@
+2000-02-23  Thomas Tanner  <tanner@ffii.org>
+
+	* ltmain.in: remove duplicates from deplibs, handle
+	  interdependent libraries (e.g. -la -lb -la),
+	  this requires adding deplibs in reverse order
+	  
+	* ltmain.in: link dlpreopened libraries before other libraries
+	  (reported by Pavel Roskin)
+	* mdemo/Makefile.am: build and link libsub.la
+	* mdemo/sub.c: new file used by both dlopened modules
+	* mdemo/foo*: use sub() defined in libsub
+	* tests/dryrun.test: build libsub.la
+
+	* mdemo/Makefile.am: always link mdemo.static with -static
+	* mdemo/configure.in: ditto
+
+	* ltmain.in: fix dlopen/dlpreopening of objects
+	
+	* ltmain.in (ILD): fix misplaced `continue' in -R* argument handler
+		
+	* ltmain.in: merge duplicated code of clean and uninstall mode
+
+	* libtool.m4: recognize powerpc*linux* (reported by
+	  Dirk A. Mueller <dmuell@gmx.net>)
+
 2000-02-23  Gary V. Vaughan  <gary@oranda.demon.co.uk>
 
 	* ltconfig.in (old_MAGIC, old_STRIP, old_reload_flag,

@@ -56,12 +56,12 @@ $make foo1.lo foo2.lo || exit 1
 
 echo "= Making libraries in ../mdemo (dry run)"
 ls -l . $objdir > $before
-force_dry_run=yes $make foo1.la libfoo2.la || exit $?
+force_dry_run=yes $make foo1.la libfoo2.la libsub.la || exit $?
 ls -l . $objdir > $after
 cmp $before $after > /dev/null || exit 1
 # Now really make them
 echo "= Making libraries in ../mdemo"
-$make foo1.la libfoo2.la || exit 1
+$make foo1.la libfoo2.la libsub.la || exit 1
 
 echo "= Making programs in ../mdemo (dry run)"
 ls -l . $objdir > $before

@@ -26,4 +26,6 @@ USA. */
 #define HELLO_RET 0xe110
 #define FOO_RET 0xf00
 
+extern void sub();
+
 #endif /* !_FOO_H_ */

@@ -1,4 +1,4 @@
-/* foo2.c -- trivial test library
+/* sub.c -- trivial test library
    Copyright (C) 1998-1999 Free Software Foundation, Inc.
    Originally by Thomas Tanner <tanner@ffii.org>
    This file is part of GNU Libtool.
@@ -18,40 +18,10 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307
 USA. */
 
-#include "foo.h"
 #include <stdio.h>
 
-#ifdef HAVE_MATH_H
-#include <math.h>
-#endif
-
-#define nothing libfoo2_LTX_nothing
-#define foo2	libfoo2_LTX_foo2
-#define hello	libfoo2_LTX_hello
-
-/* Give a global variable definition. */
-int nothing;
-
-/* private function */
-int
-_foo2_helper()
+void
+sub()
 {
-  sub();
-  return FOO_RET;
-}
-
-/* exported functions */
-
-int
-foo2()
-{
-  printf ("sin (0.0) = %g\n", (double) sin ((double) 0.0));
-  return _foo2_helper();
-}
-
-int
-hello()
-{
-  printf ("** This is foolib 2 **\n");
-  return HELLO_RET;
+  printf ("sub() called\n");
 }
