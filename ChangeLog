@@ -1,3 +1,10 @@
+2004-02-03  Scott James Remnant  <scott@netsplit.com>
+
+	* ltmain.in: Create temporary directory under a strict umask
+	rather than running chmod afterwards, preventing a race
+	condition where the directory could be replaced with a symbolic
+	link in the time between the two commands.
+
 2004-02-03  Paul Eggert  <eggert@twinsun.com>
 	Scott James Remnant  <scott@netsplit.com>
 
