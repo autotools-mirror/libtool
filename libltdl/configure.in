@@ -5,7 +5,9 @@ AM_INIT_AUTOMAKE(libltdl,1.0)
 AC_PROG_CC
 AM_PROG_LIBTOOL
 
-AC_CHECK_HEADERS(string.h dlfcn.h dl.h)
+AC_HEADER_STDC
+AC_CHECK_HEADERS(malloc.h dlfcn.h dl.h)
+AC_CHECK_FUNCS(strdup)
 
 LIBADD_DL=
 AC_CHECK_FUNCS(dlopen, AC_DEFINE(HAVE_LIBDL),
@@ -16,6 +18,36 @@ AC_CHECK_FUNCS(dlopen, AC_DEFINE(HAVE_LIBDL),
  )]
 )
 AC_SUBST(LIBADD_DL)
+
+AC_MSG_CHECKING(for underscore before symbols)
+AC_CACHE_VAL(libltdl_cv_uscore,[
+  echo "main(){int i=1;} fnord(){int i=23; int ltuae=42;}" > conftest.c
+  ${CC} conftest.c > /dev/null
+  if (nm a.out | grep _fnord) > /dev/null; then
+    libltdl_cv_uscore=yes
+  else
+    libltdl_cv_uscore=no
+  fi])
+AC_MSG_RESULT($libltdl_cv_uscore)
+rm -f conftest.c a.out
+
+if test $libltdl_cv_uscore = yes; then
+  if test $ac_cv_func_dlopen = yes -o $ac_cv_lib_dl_dlopen = yes ; then
+	AC_MSG_CHECKING(whether we have to add an underscore for dlsym)
+	AC_CACHE_VAL(libltdl_cv_need_uscore,AC_TRY_RUN([
+#include <dlfcn.h>
+#include <stdio.h>
+fnord() { int i=42;}
+main() { void *self, *ptr1, *ptr2; self=dlopen(NULL,RTLD_LAZY);
+    if(self) { ptr1=dlsym(self,"fnord"); ptr2=dlsym(self,"_fnord");
+    if(ptr1 && !ptr2) exit(0); } exit(1); } 
+], libltdl_cv_need_uscore=no, 
+  [libltdl_cv_need_uscore=yes AC_DEFINE(NEED_USCORE)],
+	libltdl_cv_need_uscore=no))
+
+        AC_MSG_RESULT($libltdl_cv_need_uscore)
+  fi
+fi
 
 dnl Output the makefile
 AC_OUTPUT(Makefile)

@@ -1,3 +1,13 @@
+1998-11-22  Thomas Tanner  <tanner@gmx.de>
+
+	* libltdl: added support for .la files, LGPL license,
+	K&R compatibility, some API changes and bugfixes
+	* ltmain.in: renamed -module flag (for compiling) to -force-static,
+	define -DSTATIC when compiling static .o files,
+	do not include directories in dld_preloaded_symbols
+	* mdemo: modified mdemo to work with the new libltdl
+	* tests/mdemo-exec.test, tests/mdemo-inst.test: use .la files
+	
 1998-11-21  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* libltdl/ltdl.c: replace NULL with 0, so that we don't depend on

@@ -5,7 +5,7 @@
 # level Makefile.
 AUTOMAKE_OPTIONS = no-dependencies foreign
 
-CFLAGS = -module
+CFLAGS = -force-static
 
 EXTRA_DIST = acinclude.m4
 

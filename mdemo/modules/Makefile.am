@@ -5,8 +5,6 @@
 # level Makefile.
 AUTOMAKE_OPTIONS = no-dependencies foreign
 
-CFLAGS = @CFLAGS@ -module
-
 INCLUDES = -I$(srcdir)/../../libltdl
 
 lib_LTLIBRARIES = libfoo1.la libfoo2.la

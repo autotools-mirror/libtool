@@ -262,7 +262,7 @@ if test -z "$show_help"; then
     lastarg=
     srcfile="$nonopt"
     suppress_output=
-    module=no
+    force_static=no
 
     user_target=no
     for arg
@@ -277,8 +277,8 @@ if test -z "$show_help"; then
         user_target=next
 	;;
 
-      -module)
-        module=yes
+      -force-static)
+        force_static=yes
         continue
         ;;
 	
@@ -480,9 +480,9 @@ compiler."
 	fi
       fi
 
-      # If we have no pic_flag and do not compile a module, 
+      # If we have no pic_flag and do not have -force-static, 
       # then copy the object into place and finish.
-      if test -z "$pic_flag" && test "$module" = no; then
+      if test -z "$pic_flag" && test "$force_static" = no; then
         $show "$LN_S $libobj $obj"
         if $run $LN_S $libobj $obj; then
 	  exit 0
@@ -499,8 +499,7 @@ compiler."
 
     # Only build a position-dependent object if we build old libraries.
     if test "$build_old_libs" = yes; then
-      command="$base_compile $srcfile"
-      test "$module" = yes && command="$command -DLT_RENAME"
+      command="$base_compile -DSTATIC $srcfile"
       if test "$compiler_c_o" = yes; then
         command="$command -o $obj"
         output_obj="$obj"
@@ -1845,8 +1844,9 @@ dld_preloaded_symbols[] =
             fi
 
             for arg in $dlprefiles; do
+	      name=`basename $arg`
               echo >> "$objdir/$dlsyms" "\
-  {\"$arg\", (__ptr_t) 0},"
+  {\"$name\", (__ptr_t) 0},"
 	      eval "$NM $arg | $global_symbol_pipe > '$nlist'"
 
 	      if test -f "$nlist"; then

@@ -2,20 +2,20 @@
    Copyright (C) 1998 Thomas Tanner <tanner@gmx.de>
    This file is part of GNU Libtool.
 
-This program is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2 of the License, or
-(at your option) any later version.
+This library is free software; you can redistribute it and/or
+modify it under the terms of the GNU Library General Public
+License as published by the Free Software Foundation; either
+version 2 of the License, or (at your option) any later version.
 
-This program is distributed in the hope that it will be useful,
+This library is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+Library General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with this program; if not, write to the Free Software
-Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307
-USA. */
+You should have received a copy of the GNU Library General Public
+License along with this library; if not, write to the Free
+Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+*/
 
 /* Only include this header file once. */
 #ifndef _LTDL_H_
@@ -44,12 +44,17 @@ USA. */
 # define __P(protos) ()
 #endif
 
+#ifdef _LTDL_COMPILE_
+typedef	struct lt_dlhandle_t *lt_dlhandle;
+#else
 typedef	void *lt_dlhandle;
+#endif
 
 __BEGIN_DECLS
-void		lt_dlinit __P((void));
-lt_dlhandle	lt_dlopen __P((char *name));
-void		lt_dlclose __P((lt_dlhandle handle));
+int		lt_dlinit __P((void));
+int		lt_dlexit __P((void));
+lt_dlhandle	lt_dlopen __P((const char *filename));
+int		lt_dlclose __P((lt_dlhandle handle));
 void		*lt_dlsym __P((lt_dlhandle handle, char *name));
 __END_DECLS
 

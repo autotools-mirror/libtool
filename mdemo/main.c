@@ -87,9 +87,15 @@ main (int argc, char **argv)
     fprintf (stderr, "usage: %s module [module...]\n", argv[0]);
   }
 
-  lt_dlinit();
+  if (lt_dlinit() != 0) {
+    fprintf (stderr, "dlopen not supported\n");
+    return 1;
+  }
+
   for (i = 1; i < argc; i++)
     if (test_dl(argv[i]))
        return 1;
+
+  lt_dlexit();
   return 0;
 }

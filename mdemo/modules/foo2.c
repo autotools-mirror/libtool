@@ -21,12 +21,9 @@ USA. */
 #include <stdio.h>
 #include <math.h>
 
-#ifndef PIC /* fixme */
-/*#ifdef LT_RENAME */
-#define nothing ltexp_foo2___nothing
-#define foo2	ltexp_foo2___foo2
-#define hello	ltexp_foo2___hello
-#endif
+#define nothing libfoo2_LTX_nothing
+#define foo2	libfoo2_LTX_foo2
+#define hello	libfoo2_LTX_hello
 
 /* Give a global variable definition. */
 int nothing;
