@@ -1,3 +1,7 @@
+2003-09-10  Arne Woerner  <woerner@mediabase-gmbh.de>
+
+	* libtool.m4 [openbsd]: openbsd 3.x needs versioning information.
+
 2003-08-29  Gary V. Vaughan  <gary@gnu.org>
 
 	* bootstrap: Typo.
