@@ -1,5 +1,7 @@
 2001-09-11  Gary V. Vaughan  <gary@gnu.org>
 
+	* bootstrap: Be robust to having no files that need removing.
+
 	* libltdl/configure.ac (AM_INIT_AUTOMAKE): Bump libltdl version to
 	1.2.
 	* libltdl/Makefile.am (libltdl_la_LDFLAGS):  Bump libtool library
