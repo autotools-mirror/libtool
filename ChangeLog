@@ -1,3 +1,17 @@
+2003-11-17  Gary V. Vaughan  <gary@gnu.org>
+
+	* configure.ac (CONF_SUBDIRS): Make these relative to
+	tests/Makefile.am.
+	(DIST_MAKEFILE_LIST): Adjust to compensate for having removed the
+	`tests/' part in CONF_SUBDIRS.
+	* tests/Makefile.am (DIST_SUBDIRS): Distribute these directories.
+	(SUBDIRS): Set to `.', a NOP, to workaround an automake bug which
+	ignores DIST_SUBDIRS unless SUBDIRS is also set.
+	* Makefile.am (DIST_SUBDIRS): Don't try to distribute the tests
+	subdirectories from here, since the recursive automake dist rule
+	only works with direct child directories.  Defer to
+	tests/Makefile.am in this case.
+
 2003-11-15  Scott James Remnant  <scott@netsplit.com>
 
 	* ltmain.in: In compile mode, delay parsing of -shared, -static,

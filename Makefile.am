@@ -22,7 +22,7 @@ ACLOCAL_AMFLAGS  = -I m4
 
 BUILD_SUBDIRS = . libltdl doc tests
 SUBDIRS = $(BUILD_SUBDIRS)
-DIST_SUBDIRS = $(BUILD_SUBDIRS) $(CONF_SUBDIRS)
+DIST_SUBDIRS = $(BUILD_SUBDIRS)
 
 aclocal_macros = m4/libtool.m4 m4/ltdl.m4
 

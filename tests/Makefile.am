@@ -73,6 +73,11 @@ TESTS_ENVIRONMENT = MAKE="$(MAKE)" CC="$(CC)" CFLAGS="$(CFLAGS)" \
 	OBJEXT="$(OBJEXT)" EXEEXT="$(EXEEXT)" FFLAGS="$(FFLAGS)"
 
 EXTRA_DIST = defs $(COMMON_TESTS) $(CXX_TESTS) $(F77_TESTS)
+DIST_SUBDIRS = $(CONF_SUBDIRS)
+
+# FIXME: Automake-1.7b (at least) only honours DIST_SUBDIRS if SUBDIRS is
+#        also set.  Remove this line when that bug is fixed.
+SUBDIRS = .
 
 # We need to remove any files that the above tests created.
 clean-local:
