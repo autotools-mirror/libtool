@@ -421,7 +421,7 @@ if test "$with_gcc" = yes; then
   no_builtin_flag=' -fno-builtin'
 
   case "$host_os" in
-  irix5* | irix6*)
+  aix3* | aix4* | irix5* | irix6* | osf3* | osf4*)
     # PIC is the default for these OSes.
     pic_flag=
     ;;
@@ -1191,7 +1191,7 @@ test "$enable_shared" = yes || enable_static=yes
 echo "checking whether to build static libraries... $enable_static" 1>&6
 
 echo $ac_n "checking for objdir... $ac_c" 1>&6
-rm -f .libs
+rm -f .libs 2>/dev/null
 mkdir .libs 2>/dev/null
 if test -d .libs; then
   objdir=.libs
@@ -1215,8 +1215,7 @@ for var in old_CC old_CFLAGS old_CPPFLAGS old_LD old_NM old_RANLIB \
 
   case "$var" in
   reload_cmds | old_archive_cmds | old_archive_from_new_cmds | \
-  old_postinstall_cmds | archive_cmds | postinstall_cmds | finish_cmds | \
-  global_symbol_pipe)
+  old_postinstall_cmds | archive_cmds | postinstall_cmds | finish_cmds)
     # Double-quote double-evaled strings.
     eval "$var=\`echo \"\$$var\" | sed -e \"\$double_quote_subst\" -e \"\$sed_quote_subst\"\`"
     ;;

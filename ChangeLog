@@ -1,3 +1,18 @@
+Mon Oct 20 13:21:14 1997  Gordon Matzigkeit  <gord@gnu.org>
+
+	* ltmain.in: Silly me.  Change a bunch of occurances of "* $dir *"
+	into *" $dir "*.
+
+	* ltconfig.in (pic_flag): PIC is the default for AIX.  From Mark
+	Kettenis.  It is also the default for OSF/1.
+
+	* demo/Makefile.am (objdir): Quote double-quotes.  From Mark
+	Kettenis.
+
+	* ltconfig.in (global_symbol_pipe): This variable is not
+ 	double-evaled, so it should not be double quoted.  From Mark
+ 	Kettenis.
+
 Sun Oct 19 12:48:14 1997  Gordon Matzigkeit  <gord@gnu.org>
 
 	* ltconfig.in (LD): Same as below.

@@ -1,6 +1,16 @@
 For next public release:
 ************************
 
+* For every `-L' flag, hardcode a corresponding directory.  For
+aesthetics and least redundancy, this should only be done once for
+each dir (i.e. no duplicates).  So, if the expansion is the same as
+`-Llibdir', then don't add anything.  Also, check that directories
+added by this feature do not duplicate flags added with `-rpath'.
+
+The question is: should this only be done for programs?  The answer
+is, I think, YES!  Libtool libraries and inter-library dependencies
+are tricky enough without trying to factor in this complexity.
+
 * Document `execute' mode, and the experimental nature of -dlopen and
 -dlpreopen.
 
@@ -80,9 +90,10 @@ version is installed.
 symbols to be included in a libtool archive.
 
 * Somehow we need to make sure that static libraries never appear in
-$deplibs.  If a program linked against a library doesn't contain the
-basename of the library (or is the same size), then the library is
-probably static.
+$deplibs.  This, will probably require that libtool discover exactly
+which files would be linked from which directories when somebody says
+`-lsomething'.  This adds a lot of complexity, but I see no other way
+around it.
 
 * Need to finalize the documentation, and give a specification of
 `.la' files so that people can depend on their format.  This also

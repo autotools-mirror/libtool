@@ -1,6 +1,6 @@
 NEWS - list of user-visible changes between releases of GNU libtool.
 
-New in 1.0d:
+New in 1.0e:
 * Bug fixes.
 * Portability fixes for Windows NT.
 * Maybe use `_libs' as a temporary libtool directory instead of `.libs'
