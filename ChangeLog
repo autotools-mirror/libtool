@@ -1,5 +1,10 @@
 2003-11-26  Gary V. Vaughan  <gary@gnu.org>
 
+	* Makefile.am (EXTRA_DIST): Add stamp-vcl, or we go back to a
+	double configure run from a distributed tarball :-?
+
+2003-11-26  Gary V. Vaughan  <gary@gnu.org>
+
 	Okay, the problem I am trying to solve is that when a change (say,
 	bumping the version to 1.6 for the next release) is committed, the
 	timestamp in ChangeLog is updated, but ltmain.sh and libtoolize

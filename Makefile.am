@@ -26,8 +26,9 @@ DIST_SUBDIRS = $(BUILD_SUBDIRS)
 aclocal_macros = m4/libtool.m4 m4/ltdl.m4
 
 EXTRA_DIST = $(aclocal_macros) bootstrap libtoolize.in ltmain.in \
-	config/mkstamp ChangeLog.1996 ChangeLog.1997 ChangeLog.1998 \
-	ChangeLog.1999 ChangeLog.2000 ChangeLog.2001 ChangeLog.2002
+	config/mkstamp stamp-vtl ChangeLog.1996 ChangeLog.1997 \
+	ChangeLog.1998 ChangeLog.1999 ChangeLog.2000 ChangeLog.2001 \
+	ChangeLog.2002
 CLEANFILES = libtool libtoolize ltmain.shT
 
 # These are required by libtoolize.
