@@ -1,3 +1,9 @@
+2004-10-13  Gary V. Vaughan  <gary@gnu.org>
+
+	* tests/tagdemo-undef.test: New test for hosts that allow shared
+	libraries with undefined symbols.
+	* tests/Makefile.am (CXX_TESTS): Add it.
+
 2004-10-11  Charles Wilson  <spam.protected>
 
 	* tests/link.test: Fix check for use of libnlsut.a under
