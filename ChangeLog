@@ -1,3 +1,8 @@
+1999-09-30  Donald Anderson  <dda@world.std.com>
+
+	* ltconfig.in (sco3.2v5): use pass_all deplibs_check_method
+	for SCO3.2.
+
 1999-09-29  Gary V. Vaughan  <gary@oranda.demon.co.uk>
 
 	* ltconfig.in (whole-archive-flag-spec):  I had been
