@@ -2292,7 +2292,7 @@ func_mode_link ()
 	  if test -f "$arg"; then
 	    save_arg=$arg
 	    moreargs=
-	    for fil in `cat $save_arg`
+	    for fil in `cat "$save_arg"`
 	    do
 #	      moreargs="$moreargs $fil"
 	      arg=$fil
