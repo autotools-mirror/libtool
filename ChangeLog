@@ -1,3 +1,9 @@
+1999-09-14  Alexandre Oliva  <oliva@lsd.ic.unicamp.br>
+
+	* ltconfig.in (CDPATH): Set to `:' instead of empty.
+	* ltmain.in (CDPATH): Likewise.
+	Reported by Greg McGary <gkm@eng.ascend.com>
+
 1999-08-24  Gary V. Vaughan  <gary@oranda.demon.co.uk>
 
 	* ltconfig.in (ltdll.c, impgen.c): Prevent the shell from

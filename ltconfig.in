@@ -63,7 +63,7 @@ fi
 
 # The HP-UX ksh and POSIX shell print the target directory to stdout
 # if CDPATH is set.
-if test "X${CDPATH+set}" = Xset; then CDPATH=; export CDPATH; fi
+if test "X${CDPATH+set}" = Xset; then CDPATH=:; export CDPATH; fi
 
 if test "X${echo_test_string+set}" != Xset; then
   # find a string as large as possible, as long as the shell can cope with it
@@ -2893,7 +2893,7 @@ Xsed="sed -e s/^X//"
 
 # The HP-UX ksh and POSIX shell print the target directory to stdout
 # if CDPATH is set.
-if test "X\${CDPATH+set}" = Xset; then CDPATH=; export CDPATH; fi
+if test "X\${CDPATH+set}" = Xset; then CDPATH=:; export CDPATH; fi
 
 ### BEGIN LIBTOOL CONFIG
 EOF
