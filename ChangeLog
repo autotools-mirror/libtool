@@ -1,3 +1,7 @@
+2003-11-01  Peter O'Gorman  <peter@pogma.com>
+
+	* tests/mdemo2/Makefile.am: Let mdemo2 find ltdl.h again.
+
 2003-10-30  Peter O'Gorman  <peter@pogma.com>
 
 	* m4/libtool.m4 (Darwin): Fix stupidities for darwin tags support. 
