@@ -1,3 +1,7 @@
+1999-07-19  Erez Zadok  <ezk@cs.columbia.edu>
+	
+	* doc/PLATFORMS: Updated mostly *bsd platforms.
+	
 1999-07-19  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* doc/libtool.texi (Porting inter-library dependencies): Typos

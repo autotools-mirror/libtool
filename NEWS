@@ -23,7 +23,7 @@ New in 1.3b: 1999-07-02; CVS version 1.3a, Libtool team:
 * New demos and tests
 * Various bugfixes
 
-New in 1.3.3: 1999-07-0?, CVS version 1.3.2a, Libtool team:
+New in 1.3.3: 1999-07-02, CVS version 1.3.2a, Libtool team:
 * New `-dlpreopen force' flag to ensure that
   lt_preloaded_symbols is always defined.
 * Work around self-dlclose bug in FreeBSD 3.1.

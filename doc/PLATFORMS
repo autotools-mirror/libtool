@@ -24,25 +24,32 @@ hppa1.1-hp-hpux9.01             gcc      1.2f     ok
 hppa1.1-hp-hpux9.01             cc       1.2f     ok
 i*86-*-beos                     gcc      1.2f     ok
 i*86-*-bsdi4.0                  gcc      1.2f     ok
-i*86-*-bsdi4.0.1                gcc      1.2f     ok
+i*86-*-bsdi4.0.1                gcc      1.3c     ok
+  (gcc-2.7.2.1)
 i*86-*-bsdi3.1                  gcc      1.2e     NS
 i*86-*-bsdi3.0                  gcc      1.2e     NS
 i*86-*-bsdi2.1                  gcc      1.2e     NS
 i*86-pc-cygwin                  gcc      1.3b     NS
   (egcs-1.1 stock b20.1 compiler)
 i*86-*-dguxR4.20MU01            gcc      1.2      ok
-i*86-*-freebsdelf4.0            gcc      1.2f     ok
-i*86-*-freebsdelf3.1            gcc      1.3b     ok
+i*86-*-freebsdelf3.0            gcc      1.3c     ok
+i*86-*-freebsdelf3.1            gcc      1.3c     ok
+  (gcc-2.7.2.1)
+i*86-*-freebsdelf3.2            gcc      1.3c     ok
+  (gcc-2.7.2.1)
+i*86-*-freebsdelf4.0            gcc      1.3c     ok
+  (egcs-1.1.2)
 i*86-*-freebsd3.0               gcc      1.2e     ok
-i*86-*-freebsd2.2.8             gcc      1.2f     ok
+i*86-*-freebsd2.2.8             gcc      1.3c     ok
+  (gcc-2.7.2.1)
 i*86-*-freebsd2.2.6             gcc      1.3b     ok
   (egcs-1.1 & gcc-2.7.2.1, native ld)
 i*86-*-freebsd2.1.5             gcc      0.5      ok
 i*86-*-gnu                      gcc      1.3.3    ok
-i*86-*-netbsd1.4                gcc      1.3      ok
+i*86-*-netbsd1.4                gcc      1.3c     ok
   (egcs-1.1.1)
-i*86-*-netbsd1.3.3              gcc      1.3      ok
-  (gcc-2.7.2.2)
+i*86-*-netbsd1.3.3              gcc      1.3c     ok
+  (gcc-2.7.2.2+myc2)
 i*86-*-netbsd1.3.2              gcc      1.2e     ok
 i*86-*-netbsd1.3I               gcc      1.2e     ok
   (egcs 1.1?)
@@ -50,7 +57,8 @@ i*86-*-netbsd1.2                gcc      0.9g     ok
 i*86-*-linux-gnu                gcc      1.3b     ok
   (egcs-1.1.2, GNU ld 2.9.1.0.23)
 i*86-*-linux-gnulibc1           gcc      1.2f     ok
-i*86-*-openbsd2.4               gcc      1.2f     ok
+i*86-*-openbsd2.4               gcc      1.3c     ok
+  (gcc-2.8.1)
 i*86-*-solaris2.7               gcc      1.3b     ok
   (egcs-1.1.2, native ld)
 i*86-*-solaris2.6               gcc      1.2f     ok
