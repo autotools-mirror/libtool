@@ -1,5 +1,8 @@
 1999-01-17  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* ltmain.in (dlpredeps): append dependencies from dlopened modules 
+	(but not dlpreopened ones) after all explicitly linked libraries
+
 	* ltconfig.in (need_lib_prefix, need_version,
  	deplibs_check_method): default to unknown, so that we're
  	remembered that this needs porting; unknown is interpreted as yes,
