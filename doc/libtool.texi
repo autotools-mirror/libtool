@@ -2682,13 +2682,13 @@ In order to use this feature, you must declare the objects you want your
 application to dlopen by using the @samp{-dlopen} or @samp{-dlpreopen}
 flags when you link your program (@pxref{Link mode}).
 
-@deftypefn {Structure} {struct} lt_dlsymlist @{ @w{const char *@var{name};} @w{lt_ptr_t @var{address};} @}
+@deftypefn {Structure} {struct} lt_dlsymlist @{ @w{const char *@var{name};} @w{lt_ptr @var{address};} @}
 The @var{name} attribute is a null-terminated character string of the
 symbol name, such as @code{"fprintf"}.  The @var{address} attribute is a
 generic pointer to the appropriate object, such as @code{&fprintf}.
 @end deftypefn
 
-@deftypevar {const lt_dlsymlist *} lt_preloaded_symbols
+@deftypevar {const lt_dlsymlist *}lt_preloaded_symbols
 An array of @var{lt_symbol} structures, representing all the preloaded
 symbols linked into the program. For each @samp{-dlpreloaded} file 
 there is an element with the @var{name} of the file and a @var{address} 
@@ -2847,8 +2847,8 @@ certainly welcome.
 @noindent
 The following types are defined in @file{ltdl.h}:
 
-@deftp {Type} lt_ptr_t
-@code{lt_ptr_t} is a generic pointer.
+@deftp {Type} lt_ptr
+@code{lt_ptr} is a generic pointer.
 @end deftp
 
 @deftp {Type} lt_dlhandle
@@ -3014,17 +3014,17 @@ Replace the current user-defined library search path with
 directories.  Return 0 on success.
 @end deftypefun
 
-@deftypefun {const char *} lt_dlgetsearchpath (void)
+@deftypefun {const char *}lt_dlgetsearchpath (void)
 Return the current user-defined library search path.
 @end deftypefun
 
-@deftypefun {const lt_dlinfo *} lt_dlgetinfo (lt_dlhandle @var{handle})
+@deftypefun {const lt_dlinfo *}lt_dlgetinfo (lt_dlhandle @var{handle})
 Return a pointer to a struct that contains some information about
 the module @var{handle}.  The contents of the struct must not be modified.
 Return @code{NULL} on failure. 
 @end deftypefun
 
-@deftypefun int lt_dlforeach (int (*@var{func})(lt_dlhandle @var{handle}, lt_ptr_t @var{data}), lt_ptr_t @var{data})
+@deftypefun int lt_dlforeach (int (*@var{func})(lt_dlhandle @var{handle}, lt_ptr @var{data}), lt_ptr @var{data})
 For each loaded module call the function @var{func}.  The argument
 @var{handle} is the handle of one of the loaded modules, @var{data} is
 the @var{data} argument passed to @code{lt_dlforeach}.
@@ -3033,8 +3033,8 @@ As soon as @var{func} returns a non-zero value for one of the handles,
 Otherwise 0 is returned.
 @end deftypefun
 
-@deftypevar {lt_ptr_t (*} lt_dlmalloc ) (size_t @var{size})
-@deftypevarx {void (*} lt_dlfree ) (lt_ptr_t @var{ptr})
+@deftypevar {lt_ptr (*) (size_t @var{size})} lt_dlmalloc 
+@deftypevarx {void (*) (lt_ptr @var{ptr})} lt_dlfree 
 These variables are set to @code{malloc} and @code{free}, by default,
 but you can set them to any other functions that provides equivalent
 functionality.  However, you must not modify their values after calling
