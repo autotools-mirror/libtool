@@ -138,7 +138,7 @@ cvs-dist: cvs-news timestamps
 	$(MAKE) distcheck
 ## Finally, if everything was successful, tag the release
 	cd $(srcdir) \
-	  && $(CVS) -q tag -c `echo "release-$(VERSION)" | sed 's/\./-/g'`
+	  && $(CVS) -q tag `echo "release-$(VERSION)" | sed 's/\./-/g'`
 ## Generate signatures and directives for FSF ftp-upload:
 	ofile="$(PACKAGE)-$(VERSION).tar.gz"; \
 	$(GPG) --detach-sign $$ofile \
