@@ -1,5 +1,12 @@
 1999-03-25  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* demo/Makefile.am: create a static library, link two libtool
+	archives with it, then link the program hell0 with both
+	* demo/hell1.c, demo/hell2.c: dummy files used to create the
+	libtool archives without introducing symbol conflicts
+	* tests/demo-exec.test, tests/demo-inst.test: run the new program
+	* ltconfig.in (irix5*, irix6*, deplibs_check_method): pass_all
+
 	* ltmain.in ($PATH): instead of modifying the PATH, better prevent 
 	its expansion the first time *_cmds variables are eval'ed.  Modify 
 	$show within loops that eval them so as to expand variables

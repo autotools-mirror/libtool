@@ -1726,10 +1726,8 @@ irix5*)
   soname_spec='${libname}${release}.so'
   library_names_spec='${libname}${release}.so$versuffix ${libname}${release}.so $libname.so'
   shlibpath_var=LD_LIBRARY_PATH
-  deplibs_check_method="file_magic ELF 32-bit MSB dynamic lib MIPS - version 1" # or should it be pass_all?
-  file_magic_cmd=/usr/bin/file
-  file_magic_test_file=`echo /lib/libc.so*`
   shlibpath_overrides_runpath=no
+  deplibs_check_method=pass_all
   ;;
 
 irix6*)
@@ -1752,9 +1750,7 @@ irix6*)
   # there either
   sys_lib_search_path_spec="/lib${libsuff} /usr/lib${libsuff} /usr/local/lib${libsuff}"
   sys_lib_dlsearch_path_spec="/lib${libsuff} /usr/lib${libsuff} /usr/local/lib${libsuff}"
-  deplibs_check_method="file_magic ELF ${libmagic} MSB mips-[1234] dynamic lib MIPS - version 1" # or should it be pass_all?
-  file_magic_cmd=/usr/bin/file
-  file_magic_test_file=`echo /lib${libsuff}/libc.so*`
+  deplibs_check_method=pass_all
   ;;
 
 # No shared lib support for Linux oldld, aout, or coff.
