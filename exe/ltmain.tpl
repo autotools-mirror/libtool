@@ -1,5 +1,15 @@
 [= AutoGen5 Template in=ltmain.in =]
-[=( dne "# " "# " )=]
+[=( dne "# " "# " )=][=
+
+DEFINE test-or-exit =]
+if ([=test=]) > /dev/null 2>&1 ; then
+[=    invert "  :\nelse"=]
+  $echo "$modename: [=msg=]" 1>&2
+  $echo "$help"
+  exit 1
+fi[=
+
+ENDDEF  =]
 #
 # ltmain.sh - Provide generalized library-building support services.
 # NOTE: Changing this file will not affect anything until you rerun ltconfig.
@@ -314,11 +324,7 @@ if test -z "$show_help"; then
     ;;
 
   # libtool execute mode
-  execute)
-    modename="$modename: execute"
-
 [= include "lt_exe.tpl" =]
-    ;;
 
   # libtool clean and uninstall mode
   clean | uninstall)

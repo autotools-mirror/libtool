@@ -1,16 +1,8 @@
 [= AutoGen5 Template =]
-[=
+  execute)
+    modename="$modename: execute"
 
-DEFINE test-or-exit =]
-if ([=test=]) > /dev/null 2>&1 ; then [=
-    invert ":\nelse "
-=]  $echo "$modename: [=msg=]" 1>&2
-  $echo "$help"
-  exit 1
-fi[=
-
-ENDDEF
-=]    # The first argument is the command name.
+    # The first argument is the command name.
     cmd="$nonopt"
     [= test-or-exit test = 'test -z "$cmd"'
        msg  = "you must specify a COMMAND" =]
@@ -137,3 +129,4 @@ ENDDEF
       $echo "$cmd$args"
       exit 0
     fi
+    ;;
