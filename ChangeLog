@@ -1,3 +1,9 @@
+1999-02-12  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
+
+	* libltdl/ltdl.h (_LTDLL_EXTERN): libltdl is no longer linked as a
+	shared library, so the _declspec's were preventing the linker from
+	resolving symbols on win32.  They have been removed now.
+
 1999-02-09  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
 
 	* ltmain.in: Applied Thomas Tanner's latest ild.diff.  This
