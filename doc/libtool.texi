@@ -1199,7 +1199,7 @@ by programs libtool invokes, rather than libtool itself.
 @cindex compile mode
 
 For @dfn{compile} mode, @var{mode-args} is a compiler command to be used
-in creating a `standard' object file.  These arguments should begin with
+in creating a ``standard'' object file.  These arguments should begin with
 the name of the C compiler, and contain the @samp{-c} compiler flag so
 that only an object file is created.
 
@@ -1346,8 +1346,8 @@ executable.
 @item -module
 Creates a library that can be dlopened (@pxref{Dlopened modules}).
 This option doesn't work for programs.
-Module names don't need to be prefixed with 'lib'.
-In order to prevent name clashes, however, 'libname' and 'name'
+Module names don't need to be prefixed with @samp{lib}.
+In order to prevent name clashes, however, @file{lib@var{name}} and @file{@var{name}}
 must not be used at the same time in your package.
 
 @item -no-fast-install
@@ -3351,7 +3351,7 @@ The following types are defined in @file{ltdl.h}:
 @end deftp
 
 @deftp {Type} lt_dlhandle
-@code{lt_dlhandle} is a module "handle".
+@code{lt_dlhandle} is a module ``handle''.
 Every lt_dlopened module has a handle associated with it.
 @end deftp
 
@@ -4469,7 +4469,7 @@ This program checks libtool's metacharacter quoting.
 
 @item sh.test
 @pindex sh.test
-Checks whether a `test' command was forgotten in libtool.
+Checks whether a @code{test} command was forgotten in libtool.
 
 @item suffix.test
 @pindex suffix.test
@@ -5128,7 +5128,7 @@ Set to @samp{yes} or @samp{no}.  Default is @samp{no}.
 @end defvar
 
 @defvar libext
-The standard old archive suffix (normally "a").
+The standard old archive suffix (normally @samp{a}).
 @end defvar
 
 @defvar libname_spec
@@ -5191,7 +5191,7 @@ The name of the directory that contains temporary libtool files.
 @end defvar
 
 @defvar objext
-The standard object file suffix (normally "o").
+The standard object file suffix (normally @samp{o}).
 @end defvar
 
 @defvar pic_flag

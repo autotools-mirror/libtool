@@ -1,5 +1,9 @@
 2004-11-09  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
+	* doc/libtool.texi (Compile mode, Link mode,
+	Libltdl interface, Test descriptions, libtool script
+	contents): Some quote cleanup, more use of texinfo types.
+
 	* doc/libtool.texi (libtool script contents):
 	echo is now ECHO; mention argument restriction.
 
