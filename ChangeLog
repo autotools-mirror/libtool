@@ -1,5 +1,8 @@
 1999-01-25  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* ltconfig.in (freebsd2.2*, hardcode_minus_L): for FreeBSD 2.2.6,
+	this must be `no'
+
 	* mkstamp: move the sed script to extract revision and date
 	information into a separate shell-script, so that we can break
 	lines between commands; FreeBSD's sed doesn't like `;' after `t'

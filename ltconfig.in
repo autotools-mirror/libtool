@@ -1228,7 +1228,7 @@ else
     archive_cmds='$LD -Bshareable -o $lib $libobjs $deplibs /usr/lib/c++rt0.o'
     hardcode_libdir_flag_spec='-R$libdir'
     hardcode_direct=yes
-    hardcode_minus_L=yes
+    hardcode_minus_L=no # verified on 2.2.6
     hardcode_shlibpath_var=no
     ;;
 
