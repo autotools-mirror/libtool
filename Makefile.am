@@ -135,10 +135,9 @@ libtoolize: $(top_srcdir)/libtoolize.in
 	rm -f libtoolize.tmp libtoolize
 	$(timestamp); \
 	input="libtoolize.m4sh"; \
-	ltdldatafiles=`cd libltdl; make show-ltdldatafiles`; \
 	$(edit) -e "s,@TIMESTAMP\@,$$TIMESTAMP,g" \
 		-e 's,@aclocal_DATA\@,$(aclocal_DATA),g' \
-		-e "s,@pkgvltdl_files\@,`echo $$ltdldatafiles`,g" \
+		-e "s,@pkgvltdl_files\@,$(ltdldatafiles),g" \
 		$(top_srcdir)/libtoolize.in > libtoolize.tmp
 	chmod a+x libtoolize.tmp
 	chmod a-w libtoolize.tmp
@@ -183,9 +182,45 @@ configure-subdirs distdir: $(DIST_MAKEFILE_LIST)
 	abs_srcdir=`cd $(top_srcdir) && pwd`; \
 	(cd $$dir && $$abs_srcdir/$$dir/configure) || exit 1
 
+## These are installed as a subdirectory of pkgdatadir so that
+## libtoolize --ltdl can find them later:
+ltdldatadir		= $(pkgvdatadir)/libltdl
+ltdldatafiles		= COPYING.LIB README \
+			  Makefile.am Makefile.in \
+			  argz_.h argz.c \
+			  configure.ac configure \
+			  libltdl/lt__alloc.h \
+			  libltdl/lt__dirent.h \
+			  libltdl/lt__glibc.h \
+			  libltdl/lt__private.h \
+                          libltdl/lt__strl.h \
+			  libltdl/lt_dlloader.h \
+			  libltdl/lt_error.h \
+                          libltdl/lt_system.h \
+			  libltdl/slist.h \
+			  loaders/dld_link.c \
+			  loaders/dlopen.c \
+			  loaders/dyld.c \
+			  loaders/load_add_on.c \
+			  loaders/loadlibrary.c \
+			  loaders/preopen.c \
+			  loaders/shl_load.c \
+			  lt__alloc.c \
+			  lt__dirent.c \
+			  lt__strl.c \
+			  lt_dlloader.c \
+			  lt_error.c \
+			  ltdl.c ltdl.h \
+			  slist.c
+
 install-data-local:
 ## Don't install over the top of an old pkgdatadir
 	-rm -rf $(DESTDIR)$(pkgdatadir)
+## To avoid spurious reconfiguration when the user installs these files
+## with libtoolize, we have to preserve their timestamps carefully:
+	$(mkinstalldirs) $(DESTDIR)$(ltdldatadir)
+	( cd $(srcdir)/libltdl && $(AMTAR) chf - $(ltdldatafiles); ) \
+	  | ( umask 0 && cd $(DESTDIR)$(ltdldatadir) && $(AMTAR) xf -; )
 
 install-data-hook:
 	chmod +x $(DESTDIR)$(pkgdatadir)/config.guess

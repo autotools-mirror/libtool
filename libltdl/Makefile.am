@@ -18,8 +18,6 @@
 ## the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 ## Boston, MA 02111-1307, USA.
 
-SUBDIRS			= loaders .
-
 BUILT_SOURCES		=
 MOSTLYCLEANFILES	=
 EXTRA_DIST		= configure.ac
@@ -32,67 +30,74 @@ AM_CPPFLAGS		= -I. -I$(srcdir) -I$(srcdir)/libltdl
 AM_LDFLAGS		= -no-undefined
 VERSION_INFO		= -version-info 6:0:0
 
-pkgincludedir		= $(includedir)/libltdl
+noinst_LTLIBRARIES	= $(LT_DLLOADERS)
 
 if INSTALL_LTDL
-include_HEADERS		= ltdl.h
-pkginclude_HEADERS	= libltdl/lt_system.h libltdl/lt_error.h \
+nobase_include_HEADERS	= ltdl.h \
+			  libltdl/lt_system.h libltdl/lt_error.h \
 			  libltdl/lt_dlloader.h
 lib_LTLIBRARIES		= libltdl.la
 endif
 
 if CONVENIENCE_LTDL
-noinst_LTLIBRARIES	= libltdlc.la
+noinst_LTLIBRARIES	+= libltdlc.la
 endif
 
-libltdl_la_SOURCES	= ltdl.c ltdl.h \
-			  lt_error.c libltdl/lt_error.h \
+## !!NOTE!! Be sure to update ../Makefile.am:ltdldatafiles if you
+##          make any changes here:
+libltdl_la_SOURCES	= libltdl/lt__alloc.h \
+			  libltdl/lt__dirent.h \
+			  libltdl/lt__glibc.h \
 			  libltdl/lt__private.h \
 			  libltdl/lt__strl.h \
+			  libltdl/lt_dlloader.h \
+			  libltdl/lt_error.h \
 			  libltdl/lt_system.h \
-			  lt__alloc.c libltdl/lt__alloc.h \
-			  libltdl/lt__glibc.h \
-			  libltdl/lt__dirent.h \
-			  slist.c libltdl/slist.h \
-			  lt_dlloader.c libltdl/lt_dlloader.h loaders/preopen.c
+			  libltdl/slist.h \
+			  loaders/preopen.c \
+			  lt__alloc.c \
+			  lt_dlloader.c \
+			  lt_error.c \
+			  ltdl.c ltdl.h \
+			  slist.c
 libltdl_la_CPPFLAGS	= -DLTDLOPEN=libltdl $(AM_CPPFLAGS)
 libltdl_la_LDFLAGS	= $(AM_LDFLAGS) $(VERSION_INFO) $(LT_DLPREOPEN)
 libltdl_la_LIBADD	= $(LTLIBOBJS)
+libltdl_la_DEPENDENCIES	= $(LT_DLLOADERS) $(LTLIBOBJS)
 
 libltdlc_la_SOURCES	= $(libltdl_la_SOURCES)
 libltdlc_la_CPPFLAGS	= -DLTDLOPEN=libltdlc $(AM_CPPFLAGS)
 libltdlc_la_LDFLAGS	= $(AM_LDFLAGS) $(LT_DLPREOPEN)
 libltdlc_la_LIBADD	= $(libltdl_la_LIBADD)
+libltdlc_la_DEPENDENCIES= $(libltdl_la_DEPENDENCIES)
 
-## These are installed as a subdirectory of pkgdatadir so that
-## libtoolize --ltdl can find them later:
-ltdldatadir		= $(pkgdatadir)/libltdl
-ltdldatafiles		= COPYING.LIB README \
-			  Makefile.am Makefile.in \
-			  configure.ac configure \
-			  $(libltdl_la_SOURCES) \
-			  lt__dirent.c libltdl/lt__dirent.h \
-                          lt__strl.c libltdl/lt__strl.h \
-			  argz_.h argz.c \
-			  loaders/Makefile.am loaders/Makefile.in \
-			  loaders/dld_link.c \
-			  loaders/dlopen.c \
-			  loaders/dyld.c \
-			  loaders/load_add_on.c \
-			  loaders/loadlibrary.c \
-			  loaders/shl_load.c
+## The loaders are preopened by libltdl, itself always built from
+## pic-objects (either as a shared library, or a convenience library),
+## so the loaders themselves must be made from pic-objects too.  We
+## use convenience libraries for that purpose:
+EXTRA_LTLIBRARIES	= dlopen.la dld_link.la dyld.la load_add_on.la \
+			  loadlibrary.la shl_load.la
 
-## To avoid spurious reconfiguration when the user installs these files
-## with libtoolize, we have to preserve their timestamps carefully:
-install-data-local:
-	$(mkinstalldirs) $(DESTDIR)$(ltdldatadir)
-	( cd $(srcdir) && $(AMTAR) chf - $(ltdldatafiles); ) \
-	  | ( umask 0 && cd $(DESTDIR)$(ltdldatadir) && $(AMTAR) xf -; )
+dlopen_la_SOURCES	= loaders/dlopen.c
+dlopen_la_LDFLAGS	= -module -avoid-version
+dlopen_la_LIBADD 	= $(LIBADD_DLOPEN)
 
-## This rule is used by the top Makefile.am to get the list of ltdl
-## files that libtoolize will use to implement 'libtoolize --ltdl':
-show-ltdldatafiles:
-	@echo "$(ltdldatafiles)"
+dld_link_la_SOURCES	= loaders/dld_link.c
+dld_link_la_LDFLAGS	= -module -avoid-version
+dld_link_la_LIBADD	= -ldld
+
+dyld_la_SOURCES		= loaders/dyld.c
+dyld_la_LDFLAGS		= -module -avoid-version
+
+load_add_on_la_SOURCES	= loaders/load_add_on.c
+load_add_on_la_LDFLAGS	= -module -avoid-version
+
+loadlibrary_la_SOURCES	= loaders/loadlibrary.c
+loadlibrary_la_LDFLAGS	= -module -avoid-version
+
+shl_load_la_SOURCES	= loaders/shl_load.c
+shl_load_la_LDFLAGS	= -module -avoid-version
+shl_load_la_LIBADD	= $(LIBADD_SHL_LOAD)
 
 ## Make sure these will be cleaned even when they're not built by default:
 CLEANFILES		= libltdl.la libltdlc.la libdlloader.la

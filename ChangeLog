@@ -1,4 +1,25 @@
-2005-03-29  Gary V. Vaughan  <gary@gnu.org>
+2005-04-04  Gary V. Vaughan  <gary@gnu.org>
+
+	Getting the value of ltdldatafiles from a submake was not
+	portable, and had problems with GNU make-3.80 at least.  This
+	changeset pulls the installation rules for libtoolize's copy of
+	the libltdl sources out of libltdl/Makefile.am so that
+	ltdldatafiles is defined in the same Makefile that uses it.  Also,
+	this makes a start at cleaning up libltdl/Makefile.am so that it
+	is useful in a package that uses `libtoolize --ltdl':
+
+	* libltdl/loaders/Makefile.am: Removed entirely.
+	* libltdl/Makefile.am (dlopen.la, dld_link.la, dyld.la)
+	(load_add_on.la, loadlibrary.la, shl_load.la): All built from here
+	now that the loaders submake has gone.
+	(show-ltdldatafiles): Removed.  No longer required.
+	(ltdldatadir, ltdldatafiles, install-local): Moved from here...
+	* Makefile.am (ltdldatadir, ltdldatafiles, install-local): ..to
+	here.
+	(libtoolize): Substitute $(ltdldatafiles) directly without calling
+	make to get the value from libltdl/Makefile.
+
+2005-04-01  Gary V. Vaughan  <gary@gnu.org>
 
 	Fix problems with serial comparison sed scripts, and factor out
 	common code from similar serial comparison functions:

@@ -448,7 +448,7 @@ LT_DLPREOPEN=
 if test -n "$LT_DLLOADERS"
 then
   for lt_loader in $LT_DLLOADERS; do
-    LT_DLPREOPEN="$LT_DLPREOPEN-dlpreopen loaders/$lt_loader "
+    LT_DLPREOPEN="$LT_DLPREOPEN-dlpreopen $lt_loader "
   done
   AC_DEFINE([HAVE_LIBDLLOADER], [1],
             [Define if libdlloader will be built on this platform])
