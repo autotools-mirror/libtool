@@ -604,14 +604,19 @@ linux-gnu*)
   ;;
 
 netbsd*)
-  if echo __ELF__ | $CC -E - | grep __ELF__ > /dev/null; then :
+  if echo __ELF__ | $CC -E - | grep __ELF__ > /dev/null; then
+    [lt_cv_deplibs_check_method='file_magic NetBSD/[a-z0-9]* demand paged shared library']
   else
-    changequote(,)dnl
-    lt_cv_deplibs_check_method='file_magic ELF [0-9][0-9]*-bit [LM]SB shared object'
-    changequote([, ])dnl
-    lt_cv_file_magic_cmd='/usr/bin/file -L'
-    lt_cv_file_magic_test_file=`echo /usr/lib/libc.so*`
+    [lt_cv_deplibs_check_method='file_magic ELF [0-9][0-9]*-bit [LM]SB shared object']
   fi
+  lt_cv_file_magic_cmd='/usr/bin/file -L'
+  lt_cv_file_magic_test_file=`echo /usr/lib/libc.so*`
+  ;;
+
+newsos6)
+  [lt_cv_deplibs_check_method='file_magic ELF [0-9][0-9]*-bit [ML]SB (executable|dynamic lib)']
+  lt_cv_file_magic_cmd=/usr/bin/file
+  lt_cv_file_magic_test_file=/usr/lib/libnls.so
   ;;
 
 osf3* | osf4* | osf5*)

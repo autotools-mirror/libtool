@@ -1,5 +1,11 @@
 2000-12-16  Gary V. Vaughan  <gvv@techie.com>
 
+	* ltconfig.in (deplibs_check_method, file_magic_cmd,
+	file_magic_test_file): Arghh!  I keep forgetting that this stuff
+	has been moved...
+	* libtool.m4 (lt_cv_deplibs_check_method, lt_cv_file_magic_cmd,
+	lt_cv_file_magic_test_file): ...to here.  Now fixed (again).
+
 	* doc/libtool.texi (Libltdl interface):  Add documentation.
 	* libltdl/ltdl.h (lt_dlmakeresident, lt_dlisresident):  Add
 	prototypes.
@@ -9,6 +15,7 @@
 	module from being lt_dlclosed.
 	(lt_dlopen):  If lt_dlopen()ing self, make the module resident.
 	(lt_dlclose):  Return an error if the module is resident.
+	
 2000-12-16  Nick Hudson  <skrll@netbsd.org>
 
 	* ltconfig.in (netbsd*, deplibs_check_method): Enable ILD support
