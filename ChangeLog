@@ -1,3 +1,8 @@
+2000-07-24  Alexandre Oliva  <oliva@lsd.ic.unicamp.br>, David Kaelbling  <drk@orchietta.hudson.sgi.com>
+
+	* ltmain.in (irix, major): Prepend a `.'.
+	* ltconfig.in (irix, soname_spec, library_names_spec): Adjust.
+
 2000-07-24  Alexandre Oliva  <oliva@lsd.ic.unicamp.br>, Ralf S. Engelschall  <rse@engelschall.com>
 
 	* ltmain.in: Support GNU shtool's install.
