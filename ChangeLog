@@ -1,6 +1,13 @@
 1999-03-23  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
 
-	* TODO (cygwin):  food for though re: mutually dependant dlls.
+	* libltdl/configure.in: the sed expression for finding the shared
+	library extension used to think the . in [.] for the cygwin
+	shared_library_names_spec was the start of the extension!!  We now
+	remove anything in square brackets (assuming that the square
+	brackets delimit a sed or expr expression which is not part of the
+	extension) before looking for the extension.
+
+	* TODO (cygwin):  food for thought re: mutually dependant dlls.
 
 1999-03-21  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
