@@ -1,3 +1,11 @@
+2001-08-05  Gary V. Vaughan  <gary@gnu.org>
+
+	From Brad <brad@comstyle.com>:
+	* libtool.m4 (AC_LIBTOOL_SYS_DYNAMIC_LINKER) [openbsd]:  OpenBSD
+	can build modules without a `lib' prefix and version number.
+	Move the deplibs check code from here...
+	(AC_DEPLIBS_CHECK_METHOD): ...to here.
+
 2001-08-05  Tim Mooney <mooney@dogbert.cc.ndsu.NoDak.edu>
 
 	* libtool.m4 [osf3*, osf4*, osf5*]: Tru64 *can* build modules

@@ -1294,15 +1294,15 @@ nto-qnx)
 
 openbsd*)
   version_type=sunos
+  need_lib_prefix=no
+  need_version=no
   library_names_spec='${libname}${release}.so$versuffix ${libname}.so$versuffix'
   finish_cmds='PATH="\$PATH:/sbin" ldconfig -m $libdir'
   shlibpath_var=LD_LIBRARY_PATH
-  file_magic_cmd=/usr/bin/file
-  file_magic_test_file=`echo /usr/lib/libc.so.*`
   if test "`echo __ELF__ | $CC -E - | grep __ELF__`" = "" || test"$host_os-$host_cpu" = "openbsd2.8-powerpc"; then
-    [deplibs_check_method='file_magic ELF [0-9][0-9]*-bit [LM]SB shared object']
+    shlibpath_overrides_runpath=no
   else
-    deplibs_check_method='file_magic OpenBSD.* shared library'
+    shlibpath_overrides_runpath=yes
   fi
   ;;
 
@@ -1951,6 +1951,16 @@ newos6*)
 
 nto-qnx)
   lt_cv_deplibs_check_method=unknown
+  ;;
+
+openbsd*)
+  lt_cv_file_magic_cmd=/usr/bin/file
+  lt_cv_file_magic_test_file=`echo /usr/lib/libc.so.*`
+  if test "`echo __ELF__ | $CC -E - | grep __ELF__`" = "" -o "$host_os-$host_cpu" = "openbsd2.8-powerpc"; then
+    [lt_cv_deplibs_check_method='file_magic ELF [0-9][0-9]*-bit [LM]SB shared object']
+  else
+    lt_cv_deplibs_check_method='file_magic OpenBSD.* shared library'
+  fi
   ;;
      
 osf3* | osf4* | osf5*)
