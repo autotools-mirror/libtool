@@ -1,12 +1,13 @@
 ;; -*- Lisp -*-
 (Created-By-Prcs-Version 1 2 1)
 (Project-Description "GNU libtool library support script")
-(Project-Version libtool 1 16)
-(Parent-Version libtool 1 15)
+(Project-Version libtool 1 17)
+(Parent-Version libtool 1 16)
 
-(Version-Log "Release 1.0b.")
+(Version-Log "Fixed up problems with echo in ltmain.sh.
+Fixed GNU ld in ltconfig.")
 (New-Version-Log "")
-(Checkin-Time "Thu, 28 Aug 1997 21:09:18 -0600")
+(Checkin-Time "Fri, 05 Sep 1997 13:13:09 -0600")
 (Checkin-Login gord)
 (Populate-Ignore ("~$" "Makefile$" "Makefile\\.in$" "aclocal\\.m4$"
 		  "configure$" "config\\.status$" "config\\.cache$"
@@ -23,11 +24,11 @@
 (Files
 ;; Administrivia.
   (AUTHORS (libtool/21_AUTHORS 1.1 664))
-  (ChangeLog (libtool/20_ChangeLog 1.4.1.49 664))
+  (ChangeLog (libtool/20_ChangeLog 1.4.1.50 664))
   (NEWS (libtool/19_NEWS 1.4.1.31 664))
   (PACKAGES (libtool/42_PACKAGES 1.5 664))
   (README (libtool/17_README 1.15 664))
-  (README-alpha (libtool/16_README-alp 1.5 664))
+  (README-alpha (libtool/16_README-alp 1.6 664))
   (TODO (libtool/14_TODO 1.3.1.26 664))
   (THANKS (libtool/15_THANKS 1.9 664))
   (libtool.spec (libtool/46_libtool.sp 1.4 664))
@@ -36,12 +37,12 @@
   (Makefile.am (libtool/18_Makefile.a 1.27 664))
   (configure.in (libtool/13_configure. 1.4.1.21 664))
   (lineno (libtool/49_lineno 1.1 775))
-  (ltmain.sh.in (libtool/2_ltmain.sh. 1.4.1.37 664))
-  (ltconfig.in (libtool/3_ltconfig.i 1.4.1.38 775))
+  (ltmain.sh.in (libtool/2_ltmain.sh. 1.4.1.38 664))
+  (ltconfig.in (libtool/3_ltconfig.i 1.4.1.39 775))
   (libtoolize.in (libtool/4_libtoolize 1.6 664))
 
 ;; aclocal additions.
-  (libtool.m4 (libtool/12_libtool.m4 1.13 664))
+  (libtool.m4 (libtool/12_libtool.m4 1.14 664))
 
 ;; Documentation subdirectory.
   (doc/libtool.texi (libtool/0_libtool.te 1.3.1.25 664))
