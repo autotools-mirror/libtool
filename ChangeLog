@@ -1,3 +1,8 @@
+2000-12-16  Sascha Schumann <sascha@schumann.cx>
+
+	* libtool.m4 (AC_DEPLIBS_CHECK_METHOD): Use the HPUX 10.20
+	methods to check for library dependencies on HPUX 11.
+
 2000-12-16  Nick Hudson  <skrll@netbsd.org>
 
 	* libtool.m4 (netbsd*, deplibs_check_method): Enable ILD support
