@@ -6,6 +6,7 @@ New in 1.3b: 1999-??-??; CVS version 1.3a, Libtool team:
 * Libtool is able to find already-installed libtool libraries,
   even if they were moved out of their installation directory.
 * Support for linking DLLs on Win32
+* New port to NEC UX/4800.
 * New `clean' mode to delete uninstalled files.
 * New demos and tests
 * Various bugfixes

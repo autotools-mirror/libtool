@@ -650,6 +650,11 @@ if test "$with_gcc" = yes; then
     # like `-m68040'.
     pic_flag='-m68020 -resident32 -malways-restore-a4'
     ;;
+  sysv4*MP*)
+    if test -d /usr/nec; then
+       pic_flag=-Kconform_pic
+    fi
+    ;;
   *)
     pic_flag='-fPIC'
     ;;
@@ -712,6 +717,13 @@ else
   uts4*)
     pic_flag='-pic'
     link_static_flag='-Bstatic'
+    ;;
+
+  sysv4*MP*)
+    if test -d /usr/nec ;then
+      pic_flag='-Kconform_pic'
+      link_static_flag='-Bstatic'
+    fi
     ;;
 
   *)
@@ -1408,6 +1420,17 @@ else
     hardcode_shlibpath_var=no
     ;;
 
+  sysv4*MP*)
+    if test -d /usr/nec ;then
+    # archive_cmds='$LD -G -z text -h $soname -o $lib$libobjs$deplibs'
+    archive_cmds='$LD -G -h $soname -o $lib$libobjs$deplibs'
+    hardcode_shlibpath_var=no
+    runpath_var=LD_RUN_PATH
+    hardcode_runpath_var=yes
+    ld_shlibs=yes
+    fi
+    ;;
+
   *)
     ld_shlibs=no
     ;;
@@ -1968,6 +1991,15 @@ dgux*)
   library_names_spec='${libname}${release}.so$versuffix ${libname}${release}.so$major $libname.so'
   soname_spec='${libname}${release}.so$major'
   shlibpath_var=LD_LIBRARY_PATH
+  ;;
+
+sysv4*MP*)
+  if test -d /usr/nec ;then
+    version_type=linux
+    library_names_spec='$libname.so.$versuffix $libname.so.$major $libname.so'
+    soname_spec='$libname.so.$major'
+    shlibpath_var=LD_LIBRARY_PATH
+  fi
   ;;
 
 *)
