@@ -20,7 +20,7 @@
 // USA.
 
 #include "foo.h"
-#include <stdio.h>
+#include <iostream.h>
 
 #ifdef HAVE_MATH_H
 #include <math.h>
@@ -30,14 +30,14 @@
 int
 foo(void)
 {
-  printf ("cos (0.0) = %g\n", (double) cos ((double) 0.0));
+  cout << "cos (0.0) = " << (double) cos ((double) 0.0) << endl;
   return FOO_RET;
 }
 
 int
 hello(void)
 {
-  printf ("** This is libfoo (tagdemo) **\n");
+  cout << "** This is libfoo (tagdemo) **" << endl;
   return HELLO_RET;
 }
 

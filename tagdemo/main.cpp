@@ -22,13 +22,13 @@
 
 #include "foo.h"
 #include "baz.h"
-#include <stdio.h>
+#include <iostream.h>
 
 
 int
 main (int, char *[])
 {
-  printf ("Welcome to GNU libtool tagdemo!\n");
+  cout << "Welcome to GNU libtool tagdemo C++!" << endl;
 
   foobar_derived FB;
   // Instantiate the derived class.
@@ -38,12 +38,12 @@ main (int, char *[])
 
   int value = fb->hello();
 
-  printf ("foobar::hello returned: %i\n", value);
+  cout << "foobar::hello returned: " << value << endl;
   if (value == HELLO_RET)
-    printf("foobar::hello is ok!\n");
+    cout << "foobar::hello is ok!" << endl;
 
   if (fb->foo() == FOO_RET)
-    printf("foobar::foo is ok!\n");
+    cout << "foobar::foo is ok!" << endl;
 
   // --------------
 
@@ -57,7 +57,7 @@ main (int, char *[])
   // barbaz_derived::baz() should return FOO_RET since it calls
   // foobar_derived::foo(), which in turn calls ::foo().
   if (bb->baz() == FOO_RET)
-    printf("barbaz::baz is ok!\n");
+    cout << "barbaz::baz is ok!" << endl;
 
   return 0;
 }
