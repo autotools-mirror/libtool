@@ -1,5 +1,8 @@
 1998-11-19  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* ltconfig.in (echo_test_string): the whole ltconfig script was
+	too much for DU4.0's ksh, but the first 50 lines will be enough.
+
 	* ltmain.in (installed): new variable defined within a .la file,
  	so that libtool can now link already-installed libraries into a
 	program.

@@ -50,12 +50,15 @@ fi
 # if CDPATH is set.
 if test "${CDPATH+set}" = set; then CDPATH=; export CDPATH; fi
 
-echo_test_string=${echo_test_string-`cat "$0"`} || {
+if echo_test_string=${echo_test_string-`sed 50q "$0"`}; then :
+else
   # some shells may not be able to cope with such a large variable
   # I just hope they do not crash
-  echo ok, just ignore the message above >&2
-  echo_test_string=""
-}
+  echo_test_string=${echo_test_string-`sed 15q "$0"`} ||
+  echo_test_string=${echo_test_string-`sed 2q "$0"`} ||
+  echo_test_string=${echo_test_string-"test"}
+  echo ok, just ignore the messages above >&2
+fi
 if test "X`($echo '\t') 2>/dev/null`" != 'X\t' ||
    test "X`($echo "$echo_test_string")`" != X"$echo_test_string"; then
   # The Solaris, AIX, and Digital Unix default echo programs unquote
@@ -105,17 +108,13 @@ if test "X`($echo '\t') 2>/dev/null`" != 'X\t' ||
       elif test "X`("$CONFIG_SHELL" "$0" --fallback-echo '\t') 2>/dev/null`" = 'X\t' &&
 	   test "X`("$CONFIG_SHELL" "$0" --fallback-echo "$echo_test_string") 2>/dev/null`" = X"$echo_test_string"; then
         echo="$CONFIG_SHELL $0 --fallback-echo"
-      elif test "X$echo_test_string" != "Xsmaller" &&
+      elif test "X$echo_test_string" != "Xtest" &&
 	   test "X$echo_test_string" != "X"; then
         # maybe if we try with a smaller string...
 	if test "X$echo_test_string" != "X`sed 15q "$0"`"; then
-	  if test "X$echo_test_string" != "X`sed 50q "$0"`"; then
-	    echo_test_string="`sed 50q "$0"`" # about 2Kb
-	  else
-	    echo_test_string="`sed 15q "$0"`" # less than 1Kb
-	  fi
+	  echo_test_string="`sed 15q "$0"`" # less than 1Kb
 	else
-	  echo_test_string="smaller" # really small
+	  echo_test_string="test" # really small
 	fi
 	export echo_test_string
 	exec "${ORIGINAL_CONFIG_SHELL}" "$0" ${1+"$@"}
