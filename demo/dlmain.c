@@ -32,25 +32,6 @@ struct lt_symlist
 
 extern const struct lt_symlist lt_preloaded_symbols[];
 
-#ifdef __CYGWIN32__
-int
-win32_force_data_import_address __P((void))
-{
-  const struct lt_symlist *s;
-  
-  s = lt_preloaded_symbols;
-  while (s->name)
-    {
-      if (!strcmp ("nothing", s->name))
-        s->address = &nothing;
-      s++;
-    }
-
-  return 0;
-}
-#endif
-      
-
 int
 main (argc, argv)
      int argc;
@@ -62,11 +43,6 @@ main (argc, argv)
   int *pnothing = 0;
 
   printf ("Welcome to *modular* GNU Hell!\n");
-
-#ifdef __CYGWIN32__
-  /* runtime table initialisation */
-  (void) win32_force_data_import_address();
-#endif
 
   /* Look up the symbols we require for this demonstration. */
   s = lt_preloaded_symbols;
@@ -80,7 +56,14 @@ main (argc, argv)
         else if (!strcmp ("foo", name))
   	  pfoo = (int(*)())s->address;
         else if (!strcmp ("nothing", name))
+#ifndef _WIN32
+	  /* In an ideal world we could do this... */
   	  pnothing = (int*)s->address;
+#else /* !_WIN32 */
+	  /* In an ideal world a shared lib would be able to export data */
+	  pnothing = (int*)&nothing;
+#endif
+
       } else 
         printf ("found file: %s\n", s->name);
       s ++;

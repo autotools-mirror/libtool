@@ -1,3 +1,11 @@
+1999-02-15  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
+
+	* demo/dlmain.c (_WIN32): The lt_symlist structure is now const,
+	so my original horrible temporary win32 hack no longer worked.
+	Here is a new horrible temporary hack to prevent helldl from SEGVing
+	on win32.  I will fix this properly when we figure out how to do
+	data exports from dlls.
+
 1999-02-13  Thomas Tanner  <tanner@gmx.de>
 
 	* syncronized with HEAD
