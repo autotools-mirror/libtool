@@ -1,3 +1,8 @@
+2000-05-29  Michael Matz  <matz@ifh.de>       
+       
+	* ltconfig.in: check for dlfcn.h: include return value
+	to make -Wall in CFLAGS work.  
+
 2000-05-27  Gary V. Vaughan  <gvv@techie.com>
 
 	* README-alpha: note new location of config.(guess|sub).
