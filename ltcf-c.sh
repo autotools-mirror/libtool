@@ -1,7 +1,5 @@
 #### This script is meant to be sourced by ltconfig.
 
-# $Id$
-
 # ltcf-c.sh - Create a C compiler specific configuration
 #
 # Copyright (C) 1996-2000 Free Software Foundation, Inc.

@@ -1,3 +1,10 @@
+2000-08-31  Ossama Othman  <ossama@debian.org>
+
+	* ltcf-c.sh, ltcf-cxx.sh, ltcf-gcj.sh: Removed RCD ID tags.  They
+	were causing merge problems for those who maintain a copy of
+	libtool in their own CVS repository.
+	Reported by Bob Friesenhahn <bfriesen@simple.dallas.tx.us>
+
 2000-08-27  Gary V. Vaughan  <gvv@techie.com>
 
 	* ltconfig.in (with_gcc):  Make the value of this option
