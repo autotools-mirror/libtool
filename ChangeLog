@@ -1,3 +1,12 @@
+2004-06-17  Gary V. Vaughan  <gary@gnu.org>
+
+	* libtoolize.in (func_scan_files): Accept AC_WITH_LTDL as an
+	indication that libltdl is being used.
+	(Main): Without AC_CONFIG_MACRO_DIR, don't just dump all the
+	macro files in `.' since they are never used, and aclocal will
+	copy them from $aclocaldir into aclocal.m4 anyway.
+	Reported by Alexandre Duret-Lutz <adl@gnu.org>
+
 2004-06-16  Brad  <brad@comstyle.com>
 
 	* m4/libtool.m4: More improvements to OpenBSD support.

@@ -387,6 +387,7 @@ func_scan_files ()
 	/A[CM]_PROG_LIBTOOL/ { s,^.*$,seen_libtool=:,; p; };
 	/LT_INIT/	     { s,^.*$,seen_libtool=:,; p; };
 	/AC_LIB_LTDL/        { s,^.*$,seen_ltdl=:,; p; };
+	/AC_WITH_LTDL/       { s,^.*$,seen_ltdl=:,; p; };
 	d;'
     eval `cat aclocal.m4 "$configure_ac" 2>/dev/null | $SED "$my_sed_traces"`
 
@@ -446,9 +447,6 @@ func_scan_files ()
         fi
       done
     fi
-
-    # Just use the current directory if all else fails.
-    test -n "$m4dir" || m4dir=.
 }
 
 # func_included_files searchfile
@@ -668,20 +666,23 @@ func_config_update ()
   func_ltmain_update "$pkgdatadir/ltmain.sh" "$auxdir/ltmain.sh"
 
   # Copy libtool's m4 macros to the macro directory, if they are newer.
-  $opt_quiet || if test "$m4dir" != .; then
-    func_echo "putting macros in AC_CONFIG_MACRO_DIR, \`$m4dir'."
-  fi
+  if test -n "$m4dir"; then
+    libtool_m4="$aclocaldir/libtool.m4"
+    ltdl_m4="$aclocaldir/ltdl.m4"
 
-  libtool_m4="$aclocaldir/libtool.m4"
-  ltdl_m4="$aclocaldir/ltdl.m4"
+    $opt_quiet || func_echo "putting macros in AC_CONFIG_MACRO_DIR, \`$m4dir'."
 
-  func_copy_some_files "$aclocaldir" "$pkgmacro_files" "$m4dir" func_serial_update
-  func_serial_update  "$libtool_m4" "$m4dir/libtool.m4" LT_INIT 'A[CM]_PROG_LIBTOOL'
+    func_serial_update  "$libtool_m4" "$m4dir/libtool.m4" \
+      LT_INIT 'A[CM]_PROG_LIBTOOL'
 
-  if $seen_ltdl; then
-    func_serial_update "$ltdl_m4" "$m4dir/ltdl.m4" 'AC_LIB_LTDL'
-  else
-    func_verbose "Not copying \`$ltdl_m4', AC_LIB_LTDL not used."
+    if $seen_ltdl; then
+      func_serial_update "$ltdl_m4" "$m4dir/ltdl.m4" 'AC_LIB_LTDL'
+    else
+      func_verbose "Not copying \`$ltdl_m4', libltdl not used."
+    fi
+
+    func_copy_some_files "$aclocaldir" "$pkgmacro_files" \
+      "$m4dir" func_serial_update
   fi
 }
 
