@@ -110,8 +110,6 @@ AC_CHECK_HEADERS([memory.h unistd.h dl.h sys/dl.h dld.h mach-o/dyld.h],
 AC_CHECK_HEADERS([string.h strings.h], [break], [], [AC_INCLUDES_DEFAULT])
 
 AC_CHECK_FUNCS([closedir opendir readdir], [], [AC_LIBOBJ([lt__dirent])])
-
-AC_REPLACE_FUNCS([memmove strcmp])
 ])# AC_LIB_LTDL
 
 

@@ -1,5 +1,8 @@
 2004-04-13  Gary V. Vaughan  <gary@gnu.org>
 
+	* m4/ltdl.m4 (AC_LIB_LTDL): Remove AC_REPLACE_FUNCS for memmove
+	and strcpy.
+
 	* libltdl/lt__pre89.h, libltdl/memcpy.c, libltdl/memmove.c,
 	libltdl/strchr.c, libltdl/strcmp.c, libltdl/strrchr.c: Remove
 	half-assed pre-c89 support entirely.
