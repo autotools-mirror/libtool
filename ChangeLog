@@ -1,5 +1,7 @@
 2004-03-30  Gary V. Vaughan  <gary@gnu.org>
 
+	* Makefile.am (pkgmacro_DATA): Install ltoptions.m4.
+
 	* libltdl/Makefile.am (AM_CPPFLAGS): Also check $top_builddir for
 	config.h.
 	(ltdl.o): config.h is in $top_builddir.
