@@ -1,5 +1,8 @@
 2004-12-28  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* m4/libtool.m4 (_LT_PROG_ECHO_BACKSLASH): Fix variable
+	quoting; allows lt_ECHO to match --fallback-echo again.
+
 	* config/ltmain.m4sh (func_extract_archives): Not all shells grok
 	`read -r' (unnecessary in this case).
 	Reported by Ralf Menzel <menzel@ls6.cs.uni-dortmund.de>.

@@ -692,7 +692,7 @@ m4_defun([_LT_PROG_ECHO_BACKSLASH],
 # Check that we are running under the correct shell.
 SHELL=${CONFIG_SHELL-/bin/sh}
 
-case $lt_ECHO in
+case X$lt_ECHO in
 X*--fallback-echo)
   # Remove one level of quotation (which was required for Make).
   ECHO=`echo "$lt_ECHO" | sed 's,\\\\\[$]\\[$]0,'[$]0','`
