@@ -1,3 +1,13 @@
+1999-01-14  Thomas Tanner  <tanner@gmx.de>
+
+	* autogen: moved faking of the libtool scripts before
+	  the call of automake, so that ltconfig and ltmain.sh
+	  are included in the distribution
+	* ltconfig.in: when checking whether PIC is supported assume
+	  only on HP/UX that warnings during compilation mean that
+	  PIC is not supported (Thanks to Ron O'Hara)
+	* THANKS: added Ron O'Hara
+	  
 1999-01-14  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* Makefile.am: Moved ltconfig and ltmain.sh back into srcdir, and

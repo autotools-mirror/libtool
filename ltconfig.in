@@ -685,18 +685,26 @@ if test -n "$pic_flag"; then
   if { (eval echo $progname:@LINENO@: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>conftest.err; } && test -s conftest.$objext; then
     # Append any warnings to the config.log.
     cat conftest.err 1>&5
-
-    # On HP-UX, both CC and GCC only warn that PIC is supported... then they
-    # create non-PIC objects.  So, if there were any warnings, we assume that
-    # PIC is not supported.
-    if test -s conftest.err; then
-      echo "$ac_t"no 1>&6
-      can_build_shared=no
-      pic_flag=
-    else
+    
+    case "$host_os" in
+    hpux9* | hpux10* | hpux11*)
+      # On HP-UX, both CC and GCC only warn that PIC is supported... then they
+      # create non-PIC objects.  So, if there were any warnings, we assume that
+      # PIC is not supported.
+      if test -s conftest.err; then
+	echo "$ac_t"no 1>&6
+	can_build_shared=no
+	pic_flag=
+      else
+	echo "$ac_t"yes 1>&6
+	pic_flag=" $pic_flag"
+      fi
+      ;;
+    *)
       echo "$ac_t"yes 1>&6
       pic_flag=" $pic_flag"
-    fi
+      ;;
+    esac
   else
     # Append any errors to the config.log.
     cat conftest.err 1>&5
