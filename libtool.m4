@@ -576,6 +576,17 @@ linux-gnu*)
   lt_cv_file_magic_test_file=`echo /lib/libc.so* /lib/libc-*.so`
   ;;
 
+netbsd*)
+  if echo __ELF__ | $CC -E - | grep __ELF__ > /dev/null; then :
+  else
+    changequote(,)dnl
+    lt_cv_deplibs_check_method='file_magic ELF [0-9][0-9]*-bit [LM]SB shared object'
+    changequote([, ])dnl
+    lt_cv_file_magic_cmd='/usr/bin/file -L'
+    lt_cv_file_magic_test_file=`echo /usr/lib/libc.so*`
+  fi
+  ;;
+
 osf3* | osf4* | osf5*)
   # this will be overridden with pass_all, but let us keep it just in case
   lt_cv_deplibs_check_method='file_magic COFF format alpha shared library'

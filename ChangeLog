@@ -1,3 +1,10 @@
+2000-05-29  Gary V. Vaughan  <gvv@techie.com>
+
+	* libtool.m4 (netbsd*): Use -L option to file_magic_cmd as for
+	freebsd (below).
+	* libtool.m4 (netbsd ELF): support file_magic.
+	From Dan Winship <danw@helixcode.com>.
+
 2000-05-29  Steven M. Schultz <sms@moe.2bsd.com>
 
 	* libtool.m4 (bsdi4*): Add -L option to bsdi4's file_magic_cmd
