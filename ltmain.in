@@ -1236,7 +1236,7 @@ compiler."
 		 *) temp_deplibs="$temp_deplibs $deplib";;
 		 esac
 		 temp_dir=`$echo "X$deplib" | $Xsed -e 's/^-L//'`
-	         case " $lib_search_path " in
+		 case " $lib_search_path " in
 		 *" $temp_dir "*) ;;
 		 *) lib_search_path="$lib_search_path $temp_dir";;
 		 esac
