@@ -136,7 +136,7 @@
 
 1998-11-04  Marc J. Fraioli  <fraioli@dg-rtp.dg.com>
 
-	* ltconfig.in (uts4, dgux): new supported platforms
+	* ltconfig.in (dgux): new supported platforms
 
 1998-11-04  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
