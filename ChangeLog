@@ -1,3 +1,10 @@
+1999-05-17  Gary V. Vaughan  <gary@oranda.demon.co.uk>
+
+	* ltmain.in: Do not exit when an unknown library name is passed
+	passed in, simply warn and continue since some compilers require
+	-LANG:* like options to work.
+	Reported by Adam C. Powell, IV <adam.powell@nist.gov>
+	
 1999-05-17  Jiro Takabatake  <jiro@din.or.jp>
 	
 	* ltconfig.in: port to NEC UX/4800.
