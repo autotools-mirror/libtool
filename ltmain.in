@@ -1398,6 +1398,15 @@ compiler."
 	  continue
 	  ;;
 	-l*)
+	  case "$host" in
+	  *-*-cygwin*)
+	    # The cygwin environment doesn't actually have -lm, and
+	    # although the linker fakes having one, specifiying it to
+	    # libtool will break ILD!
+	    case "$deplib" in
+	    -lm) continue ;;
+	    esac
+	  esac
 	  name="`expr $deplib : '-l\(.*\)'`"
 	  libname=`eval \\$echo \"$libname_spec\"`
 	  found=no

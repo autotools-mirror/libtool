@@ -1,4 +1,9 @@
 1999-02-12  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
+	
+	* ltmain.in (deplib): The cygwin environment doesn't actually have
+	-lm, and although the linker fakes having one, specifiying it to
+	libtool will break ILD, so we ignore it when generating
+	dependencies.
 
 	* ltmain.in: Applied Thomas Tanner's latest ild.diff.  I seem to
 	be spending all my time merging these diffs rather than adding to
