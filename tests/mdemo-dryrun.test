@@ -39,7 +39,7 @@ after=$objdir/temp/temp/after
 # Create a new libtool script that will enter dry run if the environment
 # variable force_dry_run is set
 rm -f $objdir/libtool.new
-sed 's/^run=$/run=${force_dry_run+:}/' < libtool > $objdir/libtool.new
+sed 's/^opt_dry_run=.*$/opt_dry_run=${force_dry_run-false}/' < libtool > $objdir/libtool.new
 chmod +x $objdir/libtool.new
 mv libtool $objdir/libtool
 mv $objdir/libtool.new libtool
@@ -51,7 +51,7 @@ func_make main.$objext
 
 func_msg "Making object files in mdemo (dry run)"
 ls -l . $objdir | grep -v total > $before
-force_dry_run=yes $MAKE foo1.lo foo2.lo sub.lo || exit $?
+force_dry_run=: $MAKE foo1.lo foo2.lo sub.lo || exit $?
 ls -l . $objdir | grep -v total > $after
 cmp $before $after > /dev/null || exit 1
 # Now really make them
@@ -59,7 +59,7 @@ func_make foo1.lo foo2.lo libsub.la
 
 func_msg "Making libraries in mdemo (dry run)"
 ls -l . $objdir | grep -v total > $before
-force_dry_run=yes $MAKE foo1.la libfoo2.la || exit $?
+force_dry_run=: $MAKE foo1.la libfoo2.la || exit $?
 ls -l . $objdir | grep -v total > $after
 cmp $before $after > /dev/null || exit 1
 # Now really make them
@@ -67,7 +67,7 @@ func_make foo1.la libfoo2.la
 
 func_msg "Making programs in ../mdemo (dry run)"
 ls -l . $objdir | grep -v total > $before
-force_dry_run=yes $MAKE mdemo$EXEEXT mdemo_static$EXEEXT 1>&2 || exit $?
+force_dry_run=: $MAKE mdemo$EXEEXT mdemo_static$EXEEXT 1>&2 || exit $?
 ls -l . $objdir | grep -v total > $after
 cmp $before $after > /dev/null || exit 1
 # Now really make them
@@ -79,7 +79,7 @@ func_mkdir_p "$prefix/bin"
 func_mkdir_p "$prefix/lib"
 ls -l . $objdir | grep -v total > $before
 ls -lR $prefix | grep -v total >> $before
-force_dry_run=yes $MAKE install 1>&2 || exit 1
+force_dry_run=: $MAKE install 1>&2 || exit 1
 ls -l . $objdir | grep -v total > $after
 ls -lR $prefix | grep -v total >> $after
 cmp $before $after > /dev/null || exit 1
@@ -91,7 +91,7 @@ func_msg "Running $MAKE uninstall in ../mdemo (dry run)"
 rm -f "$prefix/bin/mdemo$EXEEXT" "$prefix/bin/mdemo_static$EXEEXT"
 ls -l . $objdir | grep -v total > $before
 ls -lR $prefix | grep -v total >> $before
-force_dry_run=yes $MAKE uninstall 1>&2 || exit $?
+force_dry_run=: $MAKE uninstall 1>&2 || exit $?
 ls -l . $objdir | grep -v total > $after
 ls -lR $prefix | grep -v total >> $after
 cmp $before $after > /dev/null || exit 1

@@ -1,5 +1,10 @@
 2004-10-24  Gary V. Vaughan  <gary@gnu.org>
 
+	* config/ltmain.m4sh (opt_silent): Whether --silent was given.
+	(run, show): Deleted.  All callers converted to opt_dry_run,
+	opt_silent or calls to func_show_eval.
+	* tests/mdemo-dryrun.test: Adjust.
+
 	* HACKING: Fix a typo in the gpg --verify instructions.
 
 	* Makefile.maint (cvs-dist): Generate signatures and directives
