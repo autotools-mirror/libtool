@@ -1,5 +1,10 @@
 1999-01-13  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* libtool.m4, ltconfig.in (NM): search for NM in PATH before
+	/usr/ccs/bin, /usr/ucb and /bin.  However, if the found one isn't
+	BSD-compat keep searching.  If no BSD-compat is found, use the
+	first we found.
+
 	* THANKS: added Raffaele Sena
 
 1999-01-13  Raffaele Sena  <raff@aromatic.com>

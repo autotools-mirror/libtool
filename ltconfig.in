@@ -1340,12 +1340,14 @@ if test -z "$NM"; then
 	#   nm: unknown option "B" ignored
 	if ($ac_dir/nm -B /dev/null 2>&1 | sed '1q'; exit 0) | egrep /dev/null >/dev/null; then
 	  NM="$ac_dir/nm -B"
+	  break
 	elif ($ac_dir/nm -p /dev/null 2>&1 | sed '1q'; exit 0) | egrep /dev/null >/dev/null; then
 	  NM="$ac_dir/nm -p"
+	  break
 	else
-	  NM="$ac_dir/nm"
+	  NM=${NM="$ac_dir/nm"} # keep the first match, but
+	  continue # so that we can try to find one that supports BSD flags
 	fi
-	break
       fi
     done
     IFS="$ac_save_ifs"
