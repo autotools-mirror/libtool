@@ -1,5 +1,8 @@
 2001-05-20  Alexandre Oliva  <aoliva@redhat.com>
 
+	* ltconfig.in (lt_cv_sys_max_cmd_len): Improve test to work better
+	in case of non-built-in echo.  Set bounds correctly.
+
 	* ltcf-cxx.sh (allow_undefined_flag) [aix4* | aix5*]: Fix quote
 	error.
 

@@ -783,11 +783,15 @@ if test "${lt_cv_sys_max_cmd_len+set}" = set; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
   i=0
-  testring="ABCDEF"
-  while test `$CONFIG_SHELL $0 --fallback-echo "X$testring" >/dev/null 2>&1` == `echo "X$testring" >/dev/null 2>&1` &&
+  testring="ABCD"
+  # If test is not a shell built-in, we'll probably end up computing a
+  # maximum length that is only half of the actual maximum length, but
+  # we can't tell.
+  while test X`$CONFIG_SHELL $0 --fallback-echo "X$testring" 2>/dev/null` \
+             = "XX$testring" &&
           new_result=`expr "X$testring" : ".*" 2>&1` &&
           lt_cv_sys_max_cmd_len=$new_result &&
-          test $i != 32 # 1 MB should be enough
+          test $i != 18 # 1 MB should be enough
   do
     i=`expr $i + 1`
     testring=$testring$testring
