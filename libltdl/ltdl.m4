@@ -120,11 +120,19 @@ fi
 
 AC_DEFUN(AC_LTDL_DLLIB,
 [LIBADD_DL=
-AC_CHECK_LIB(dl, dlopen, [AC_DEFINE(HAVE_LIBDL, 1) LIBADD_DL="-ldl"],
-[AC_CHECK_FUNC(dlopen, [AC_DEFINE(HAVE_LIBDL, 1)])])
-AC_CHECK_FUNC(shl_load, [AC_DEFINE(HAVE_SHL_LOAD, 1)],
-[AC_CHECK_LIB(dld, shl_load, [AC_DEFINE(HAVE_SHL_LOAD, 1) LIBADD_DL="$LIBADD_DL -ldld"])])
-AC_CHECK_LIB(dld, dld_link, [AC_DEFINE(HAVE_DLD, 1)dnl
+AC_CHECK_LIB(dl, dlopen, [AC_DEFINE(HAVE_LIBDL, 1,
+   [Define if you have the libdl library or equivalent. ]) LIBADD_DL="-ldl"],
+[AC_CHECK_FUNC(dlopen, [AC_DEFINE(HAVE_LIBDL, 1,
+   [Define if you have the libdl library or equivalent.])])])
+AC_CHECK_FUNC(shl_load, [AC_DEFINE(HAVE_SHL_LOAD, 1,
+   [Define if you have the shl_load function.])],
+[AC_CHECK_LIB(dld, shl_load,
+  [AC_DEFINE(HAVE_SHL_LOAD, 1,
+     [Define if you have the shl_load function.])
+   LIBADD_DL="$LIBADD_DL -ldld"])
+])
+AC_CHECK_LIB(dld, dld_link, [AC_DEFINE(HAVE_DLD, 1,
+  [Define if you have the GNU dld library.])dnl
 test "x$ac_cv_lib_dld_shl_load" = yes || LIBADD_DL="$LIBADD_DL -ldld"])
 AC_SUBST(LIBADD_DL)
 

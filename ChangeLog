@@ -1,3 +1,9 @@
+1999-12-10  Gary V. Vaughan  <gary@oranda.demon.co.uk>
+
+	From Stephan Kulow <coolo@kde.org>
+	* libltdl/ltdl.m4:  Add arg 3 to AC_DEFINE's to save the user
+	from having to hack acconfig.h.
+
 1999-12-06  Gary V. Vaughan  <gary@oranda.demon.co.uk>
 
 	* NEWS: Updated.
