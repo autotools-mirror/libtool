@@ -1,5 +1,7 @@
 2004-11-09  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
+	* doc/libtool.texi (Multiple dependencies): Minor rewording.
+
 	* doc/libtool.texi (User defined module data, References):
 	indentation and word-wrap cleanup.
 
