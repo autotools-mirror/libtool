@@ -1,3 +1,10 @@
+2003-08-29  Alexandre Duret-Lutz  <adl@gnu.org>
+
+	* libtool.m4 (_LT_AC_LANG_C_CONFIG): Fix unquoted call to
+	_LT_AC_LANG_C_CONFIG.
+	(AC_PROG_EGREP): Remove, now that Libtool requires Autoconf 2.56.
+	* bootstrap: Issue an upgrade warning.
+			
 2003-08-27  Gary V. Vaughan  <gary@gnu.org>
 
 	* libtool.m4 (_LT_AC_CHECK_DLFCN): Use the interrim new

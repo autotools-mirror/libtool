@@ -1,14 +1,25 @@
 #! /bin/sh
 
 # helps bootstrapping libtool, when checked out from CVS
-# requires at least GNU autoconf 2.50 and GNU automake1.4-p5
+# requires at least GNU autoconf 2.56 and GNU automake 1.7
 
-find . \( -name autom4te.cache -o -name libtool \) -exec rm -r {} \;
+rm -rf `find . \( -name autom4te.cache -o -name libtool \) -print`
 
 : ${ACLOCAL=aclocal}
 : ${AUTOMAKE=automake}
 : ${AUTOCONF=autoconf}
 : ${AUTOHEADER=autoheader}
+
+# Upgrade caveat
+
+cat <<'EOF'
+WARNING: If bootstrapping with this script fails, it may be due to an
+WARNING: incompatible installed `libtool.m4' being pulled in to
+WARNING: `aclocal.m4'.  The best way to work around such a problem is to
+WARNING: uninstall pour system libtool files, or failing that, overwrite
+WARNING: them with `libtool.m4' as shipped with this distribution.
+WARNING: After that, retry this bootstrap.
+EOF
 
 # fake the libtool scripts
 touch ltmain.sh
@@ -17,7 +28,7 @@ touch libtoolize
 
 for sub in . libltdl cdemo demo depdemo mdemo mdemo2 pdemo tagdemo f77demo; do
   case $sub in
-  .) 
+  .)
     top_srcdir=.
     acfiles="$top_srcdir/libtool.m4"
     AUTOMAKE_FLAGS="--gnu --add-missing --copy"
