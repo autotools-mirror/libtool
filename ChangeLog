@@ -1,3 +1,8 @@
+1999-03-07  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* ltconfig.in (enable_fast_install): test whether it can be forced 
+	off after shlibpath_overrides_runpath and enable_shared are set
+
 1999-03-07  Thomas Tanner  <tanner@gmx.de>
 
 	* TODO: updated
