@@ -1,5 +1,7 @@
 2004-09-24  Peter O'Gorman  <peter@pogma.com>
 
+	* m4/libtool.m4 (_LT_CMD_STRIPLIB) [darwin]: strip archives too.
+
 	* m4/libtool.m4 (_LT_LANG_CXX_CONFIG) [darwin]: Don't echo gcc -v
 	output during configure.
 
