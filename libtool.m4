@@ -683,7 +683,7 @@ lt_save_CFLAGS="$CFLAGS"
 dnl Make sure LTCC is set to the C compiler, i.e. set LTCC before CC
 dnl is set to the C++ compiler.
 AR="$AR" LTCC="$CC" CC="$CXX" CFLAGS="$CXXFLAGS" CPPFLAGS="$CPPFLAGS" \
-FILE="$FILE" LIBS="$LIBS" \
+FILE="$FILE" LDFLAGS="$LDFLAGS" LIBS="$LIBS" \
 LN_S="$LN_S" NM="$NM" RANLIB="$RANLIB" STRIP="$STRIP" \
 AS="$AS" DLLTOOL="$DLLTOOL" OBJDUMP="$OBJDUMP" \
 objext="$OBJEXT" exeext="$EXEEXT" \
