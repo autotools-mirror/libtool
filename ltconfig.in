@@ -1902,7 +1902,7 @@ case "$ltmain" in
 *.sh)
   # Now quote all the things that may contain metacharacters.
   for var in ltecho old_CC old_CFLAGS old_CPPFLAGS old_LD old_NM old_RANLIB \
-    old_LN_S old_DLLTOOL old_AS AR CC LD LN_S NM LTSHELL LTCCONFIG_VERSION \
+    old_LN_S old_DLLTOOL old_AS AR CC LD LN_S NM LTSHELL LTCONFIG_VERSION \
     reload_flag reload_cmds wl \
     pic_flag link_static_flag no_builtin_flag export_dynamic_flag_spec \
     whole_archive_flag_spec libname_spec library_names_spec soname_spec \
