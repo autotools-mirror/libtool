@@ -1,3 +1,8 @@
+2003-03-31  Naofumi Yasufuku  <naofumi@yasufuku.net>
+
+	* ltmain.in (win32_libid): Fixed sed expression error in
+	win32_nmres evaluation.
+
 2003-03-31  Albert Chin  <libtool@thewrittenword.com>
 
 	* ltmain.sh: Don't pass -R flags found in a .la's dependency_libs
