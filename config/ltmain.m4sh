@@ -5787,7 +5787,7 @@ basename (const char *name)
 
 #if defined (HAVE_DOS_BASED_FILE_SYSTEM)
   /* Skip over the disk name in MSDOS pathnames. */
-  if (isalpha (name[[0]]) && name[[1]] == ':')
+  if (isalpha ((unsigned char)name[[0]]) && name[[1]] == ':')
     name += 2;
 #endif
 
@@ -5842,7 +5842,7 @@ find_executable (const char* wrapper)
 
   /* Absolute path? */
 #if defined (HAVE_DOS_BASED_FILE_SYSTEM)
-  if (isalpha (wrapper[[0]]) && wrapper[[1]] == ':')
+  if (isalpha ((unsigned char)wrapper[[0]]) && wrapper[[1]] == ':')
   {
     concat_name = xstrdup (wrapper);
     if (check_executable(concat_name))
