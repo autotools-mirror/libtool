@@ -1,6 +1,5 @@
 1999-05-20 Thomas Tanner  <tanner@gmx.de>
 
-	* bootstrap: fix libltdl/Makefile.in
 	* cdemo/main.c: "Welcome _to_ ..."
 	* mdemo/main.c: ditto
 	* libltdl/configure.in: support multiple dlopening mechanisms
