@@ -2033,14 +2033,17 @@ tryall_dlopen (handle, filename)
   cur = *handle;
   if (filename)
     {
+      /* Comment out the check of file permissions using access.
+	 This call seems to always return -1 with error EACCES.
+      */
       /* We need to catch missing file errors early so that
-	 file_not_found() can detect what happened. */
+	 file_not_found() can detect what happened.
       if (access (filename, R_OK) != 0)
 	{
 	  LT_DLMUTEX_SETERROR (LT_DLSTRERROR (FILE_NOT_FOUND));
 	  ++errors;
 	  goto done;
-	}
+	} */
 
       cur->info.filename = lt_estrdup (filename);
       if (!cur->info.filename)

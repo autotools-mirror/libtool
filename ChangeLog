@@ -1,3 +1,9 @@
+2002-09-17  Robert Boehne  <rboehne@gnu.org>
+
+	* libltdl/ltdl.c: Commented out access() call that checks for a
+	library file's existence and permissions, as it appears to fail
+	in every case.
+
 2002-09-09  Albert Chin-A-Young  <china@thewrittenword.com>
 
 	* libtool.m4: Custom $symcode for Tru64 UNIX to catch 'Q',
