@@ -14,6 +14,9 @@ AM_PROG_LD
 AM_PROG_NM
 AC_PROG_LN_S
 
+dnl For lineno
+AC_PROG_AWK
+
 AC_OUTPUT([Makefile doc/Makefile tests/Makefile])
 
 # Local Variables:

@@ -1,3 +1,6 @@
+For next public release:
+************************
+
 * Kenneth Albanowski suggests an `execute' mode, where the paths from
 libtool libraries are extracted and put into shlibpath_var, then a
 command is executed with the wrapped binary as argument.
@@ -12,6 +15,11 @@ library arguments should be enabled by a flag, such as -dlopen LIB.
 Maybe -dlpreopen LIB should put these libraries in LD_PRELOAD.
 
 Use *db | *dbx as triggers for this mode.
+
+* Document `execute' mode.
+
+In the future:
+**************
 
 * Implement full multi-language support.  Currently, this is only for
 C++, but there are beginnings of this in the manual (Other Languages).
@@ -34,9 +42,6 @@ symbols to be included in a libtool archive.
 $deplibs.  If a program linked against a library doesn't contain the
 basename of the library (or is the same size), then the library is
 probably static.
-
-* A better check to detect broken collect2 on AIX, once the bug is
-fixed in GCC.
 
 * Need to finalize the documentation, and give a specification of
 `.la' files so that people can depend on their format.  This also

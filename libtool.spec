@@ -4,7 +4,7 @@ Version: 1.1
 Release: 1
 Copyright: GPL
 Group: Development/Build
-Source: ftp://prep.ai.mit.edu/pub/gnu/libtool-1.1.tar.gz
+Source: ftp://prep.ai.mit.edu/pub/gnu/libtool-%{PACKAGE_VERSION}.tar.gz
 BuildRoot: /tmp/libtool.root
 
 %description

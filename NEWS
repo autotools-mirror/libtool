@@ -4,6 +4,8 @@ New in 1.0b:
 * Bug fixes.
 * Full support for broken collect2 on AIX 3.  Now, shared libraries
   can be built with all working versions of GCC.
+* New rules for AM_PROG_LD to use gcc's -print-prog-name flag in order
+  to find ld, if possible.
 * Deleted `dlname' mode.  Dlopen applications should only use the
   runtime search method described in (libtool)Finding the dlname.
 * Experimental support for dynamically loaded modules, even on

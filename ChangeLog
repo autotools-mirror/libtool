@@ -1,3 +1,16 @@
+Wed Aug 20 10:51:02 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* Makefile.am ($(srcdir)/ltconfig): Use lineno.
+
+	* configure.in: Add AM_PROG_AWK for lineno.
+
+	* lineno: New program to automatically put line numbers in
+	ltconfig.
+
+	* libtool.m4, ltconfig.in (AM_PROG_LD): Yet Another Rewrite, which
+	incorporates the results of `gcc -print-program-name=ld'.
+	Suggested by Alexandre Oliva.
+
 Thu Aug 14 09:30:47 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltmain.sh.in: Accept `--quiet' and `--silent' flags to turn off

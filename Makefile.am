@@ -9,6 +9,7 @@ CPPLAGS = @CPPFLAGS@
 
 aclocal_macros = libtool.m4
 
+noinst_SCRIPTS = lineno
 EXTRA_DIST = $(aclocal_macros) libtoolize.in ltconfig.in ltmain.sh.in \
 	libtool.spec libtool.prj
 CLEANFILES = libtool libtoolize
@@ -46,6 +47,7 @@ libtoolize: libtoolize.in $(top_builddir)/config.status
 # This way, they aren't regenerated after people configure the package.
 $(srcdir)/ltconfig: ltconfig.in configure.in
 	CONFIG_FILES=ltconfig CONFIG_HEADERS= $(top_builddir)/config.status
+	AWK=@AWK@ $(top_srcdir)/lineno --delete ltconfig
 	chmod +x ltconfig
 	test "$(srcdir)" = . || mv ltconfig $(srcdir)/ltconfig
 
