@@ -1,3 +1,10 @@
+2000-07-26  Alexandre Oliva  <oliva@lsd.ic.unicamp.br>
+
+	* ltmain.in (tagname): Use `case' instead of `grep' to infer it.
+	Match even when there are changes in white-space.
+	(link): Accumulate base_compile so that -L flags that are part of
+	$CC aren't retained.
+
 2000-07-24  Mocha  <netbsd_alpha@yahoo.com>
 
 	* ltconfig.in (NetBSD, deplibs_check_method): Use file_magic.
