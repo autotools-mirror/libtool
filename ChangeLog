@@ -1,3 +1,15 @@
+1999-06-10  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* ltconfig.in: Reverted June 6's patch for new GNU ld output, it
+	is no longer needed, as ld reverted to the original format.
+	* NEWS: Likewise.
+
+	* ltconfig.in: When testing self-dlopening, test whether dlclose
+	crashes.  On FreeBSD 3.1, it does.  :-(
+	* libltdl/configure.in: Likewise.
+	* NEWS: Note work-around.
+	Reported by Pavel Roskin <pavel_roskin@geocities.com>
+
 1999-06-09  Gary V. Vaughan  <gary@oranda.demon.co.uk>
 
 	* ltconfig.in (exeext): autoconf's AC_EXEEXT uses "no" to indicate
