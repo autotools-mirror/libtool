@@ -1,5 +1,8 @@
 2003-10-14  Gary V. Vaughan  <gary@gnu.org>
 
+	* libtoolize.in (func_mkdir_p): Synch with tests/defs; if there
+	are no more directories in the stack, break out of the loop.
+
 	* tests/Makefile.am (COMMON_TESTS): Remove pdemo-unst.test, which
 	isn't a real test.
 

@@ -195,6 +195,7 @@ func_mkdir_p ()
 
     while test ! -d "$my_dir"; do
       my_dirs="$my_dir $my_dirs"
+      case $my_dir in */*) ;; *) break ;; esac
       my_dir=`echo "$my_dir" | sed "$sed_dirname"`
     done
    test ! -n "$my_dirs" || $MKDIR $my_dirs
