@@ -1,4 +1,8 @@
 2004-01-23  Scott James Remnant  <scott@netsplit.com>
+	* ltmain.in: include newline in "sensible default" for IFS.
+	(Debian Bug #98492 and #95447)
+
+2004-01-23  Scott James Remnant  <scott@netsplit.com>
 
 	* libtool.m4: allow STRIP to contain spaces and additional
 	arguments.  (Debian Bug #183055)
