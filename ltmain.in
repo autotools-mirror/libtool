@@ -5918,7 +5918,7 @@ relink_command=\"$relink_command\""
       $show "$install_prog $file $oldlib"
       $run eval "$install_prog \$file \$oldlib" || exit $?
 
-      if test -n "$stripme" && test -n "$striplib"; then
+      if test -n "$stripme" && test -n "$old_striplib"; then
 	$show "$old_striplib $oldlib"
 	$run eval "$old_striplib $oldlib" || exit $?
       fi
