@@ -87,10 +87,11 @@ $(top_builddir)/libtool:
 
 # Be sure to reexport important environment variables.
 TESTS_ENVIRONMENT = MAKE="$(MAKE)" CC="$(CC)" CFLAGS="$(CFLAGS)" \
-	CPPFLAGS="$(CPPFLAGS)" LD="$(LD)" LDFLAGS="$(LDFLAGS)" \
+	CPP="$(CPP)" CPPFLAGS="$(CPPFLAGS)" LD="$(LD)" LDFLAGS="$(LDFLAGS)" \
 	LIBS="$(LIBS)" LN_S="$(LN_S)" NM="$(NM)" RANLIB="$(RANLIB)" \
-	OBJEXT="$(OBJEXT)" EXEEXT="$(EXEEXT)" F77="$(F77)" \
-	FFLAGS="$(FFLAGS)" CXX="$(CXX)" CXXFLAGS="$(CXXFLAGS)" CPP="$(CPP)"
+	OBJEXT="$(OBJEXT)" EXEEXT="$(EXEEXT)" CONFIG_SHELL="$(SHELL)" \
+	CXX="$(CXX)" CXXFLAGS="$(CXXFLAGS)" CXXCPP="$(CXXCPP)" \
+	F77="$(F77)" FFLAGS="$(FFLAGS)"
 
 EXTRA_DIST = defs.in defs.m4sh $(COMMON_TESTS) $(CXX_TESTS) $(F77_TESTS)
 DIST_SUBDIRS = $(CONF_SUBDIRS)
