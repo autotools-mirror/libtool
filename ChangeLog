@@ -1,5 +1,8 @@
 2004-09-03  Gary V. Vaughan  <gary@gnu.org>
 
+	* HACKING: Explain how to verify detached signatures with gpg in
+	the release announcement templates.
+
 	* AUTHORS: Fix typo in my address.
 
 2004-09-02  Gary V. Vaughan  <gary@gnu.org>,

@@ -223,6 +223,11 @@ Here are the gpg detached signatures:
   ftp://alpha.gnu.org/gnu/libtool/libtool-@PREV_RELEASE_VERSION_ON_THIS_BRANCH@-@VERSION@.diff.gz.sig
   ftp://alpha.gnu.org/gnu/libtool/libtool-@PREV_RELEASE_VERSION_ON_THIS_BRANCH@-@VERSION@.xdelta.sig
 
+You should download the signature named after any tarball you download,
+and then verify its integrity with, for example:
+
+  gpg --verify libtool-@VERSION.tar.gz.
+
 Here are the MD5 and SHA1 checksums:
 
   @MD5SUM@ libtool-@VERSION@.tar.gz
@@ -304,6 +309,11 @@ Here are the gpg detached signatures:
   ftp://ftp.gnu.org/gnu/libtool/libtool-@VERSION@.tar.bz2.sig
   ftp://ftp.gnu.org/gnu/libtool/libtool-@PREV_RELEASE_VERSION_ON_THIS_BRANCH@-@VERSION@.diff.gz.sig
   ftp://ftp.gnu.org/gnu/libtool/libtool-@PREV_RELEASE_VERSION_ON_THIS_BRANCH@-@VERSION@.xdelta.sig
+
+You should download the signature named after any tarball you download,
+and then verify its integrity with, for example:
+
+  gpg --verify libtool-@VERSION.tar.gz.
 
 Here are the MD5 and SHA1 checksums:
 
