@@ -1,3 +1,9 @@
+2004-03-24  Scott James Remnant  <scott@netsplit.com>
+
+	* ltmain.in <prog linkmode>: Always add -L options to
+	$newlib_search_path instead of just in scan mode to ensure that
+	non-libtool libraries in user-specified directories can be found.
+
 2004-03-14  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* m4/libtool.m4: Remove newlines from lt_ld_extra, so
