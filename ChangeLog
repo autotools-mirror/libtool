@@ -1,3 +1,14 @@
+2002-03-14  Robert Boehne  <rboehne@gnu.org>
+
+	ltmain.in: Touch-up to make testsuite pass, and default tagname
+	to CC when it isn't explicitly set.
+
+2002-03-14  Anthony Green  <green@redhat.com>
+
+	* libtool.m4 (AC_LIBTOOL_PROG_CC_C_O): Albert Chin's gcj fix.
+	(AC_LIBTOOL_PROG_COMPILER_PIC): Per Bothner's change for not
+	using -DPIC with gcj.
+
 2002-03-11  Bruce Korb  <bkorb@gnu.org>
 
 	* ltmain.in(compile): bring a touch of order to the option processing

@@ -832,8 +832,8 @@ AC_CACHE_CHECK([if $compiler supports -c -o file.$ac_objext],
 		   CFLAGS="$CFLAGS -o out/conftest2.$ac_objext"],
 	  [$1],[CXX],[save_CXXFLAGS="$CXXFLAGS"
 		   CXXFLAGS="$CXXFLAGS -o out/conftest2.$ac_objext"],
-	  [$1],[GCJ],[save_GCJFLAGS="$GCJFLAGS"
-		   GCJFLAGS="$GCJFLAGS -o out/conftest2.$ac_objext"])
+	  [$1],[GCJ],[save_GCJFLAGS="$CFLAGS"
+		   CFLAGS="$GCJFLAGS -o out/conftest2.$ac_objext"])
    echo "$lt_simple_compile_test_code" > conftest.$ac_ext
 
    # According to Tom Tromey, Ian Lance Taylor reported there are C compilers
@@ -856,7 +856,7 @@ AC_CACHE_CHECK([if $compiler supports -c -o file.$ac_objext],
    fi
    ifelse([$1],[],[CFLAGS="$save_CFLAGS"],
 	  [$1],[CXX],[CXXFLAGS="$save_CXXFLAGS"],
-	  [$1],[GCJ],[GCJFLAGS="$save_GCJFLAGS"])
+	  [$1],[GCJ],[CFLAGS="$save_CFLAGS"])
    chmod u+w .
    $rm conftest* out/*
    rmdir out
@@ -984,7 +984,20 @@ shlibpath_overrides_runpath=unknown
 version_type=none
 dynamic_linker="$host_os ld.so"
 sys_lib_dlsearch_path_spec="/lib /usr/lib"
-sys_lib_search_path_spec="/lib /usr/lib /usr/local/lib"
+if test "$GCC" = yes; then
+  sys_lib_search_path_spec=`$CC -print-search-dirs | grep "^libraries:" | sed -e "s/^libraries://"`
+  if echo "$sys_lib_search_path_spec" | egrep ';' >/dev/null ; then
+    # if the path contains ";" then we assume it to be the separator
+    # otherwise default to the standard path separator (i.e. ":") - it is
+    # assumed that no part of a normal pathname contains ";" but that should
+    # okay in the real world where ";" in dirpaths is itself problematic.
+    sys_lib_search_path_spec=`echo "$sys_lib_search_path_spec" | sed -e 's/;/ /g'`
+  else
+    sys_lib_search_path_spec=`echo "$sys_lib_search_path_spec" | sed  -e "s/$PATH_SEPARATOR/ /g"`
+  fi
+else
+  sys_lib_search_path_spec="/lib /usr/lib /usr/local/lib"
+fi
 need_lib_prefix=unknown
 hardcode_into_libs=no
 
@@ -3177,7 +3190,7 @@ objext=o
 _LT_AC_TAGVAR(objext, $1)=$objext
 
 # Code to be used in simple compile tests
-lt_simple_compile_test_code="class foo {}"
+lt_simple_compile_test_code="class foo {};"
 
 # Code to be used in simple link tests
 lt_simple_link_test_code='public class conftest { public static void main(String[] argv) {}; }'
@@ -4316,7 +4329,7 @@ AC_MSG_RESULT([$_LT_AC_TAGVAR(lt_prog_compiler_pic, $1)])
 if test -n "$_LT_AC_TAGVAR(lt_prog_compiler_pic, $1)"; then
   AC_LIBTOOL_COMPILER_OPTION([if $compiler PIC flag $_LT_AC_TAGVAR(lt_prog_compiler_pic, $1) works],
     _LT_AC_TAGVAR(lt_prog_compiler_pic_works, $1),
-    [$_LT_AC_TAGVAR(lt_prog_compiler_pic, $1) -DPIC], [],
+    [$_LT_AC_TAGVAR(lt_prog_compiler_pic, $1)ifelse([$1],[GCJ],[],[ -DPIC])], [],
     [case $_LT_AC_TAGVAR(lt_prog_compiler_pic, $1) in
      "" | " "*) ;;
      *) _LT_AC_TAGVAR(lt_prog_compiler_pic, $1)=" $_LT_AC_TAGVAR(lt_prog_compiler_pic, $1)" ;;
@@ -4330,7 +4343,7 @@ case "$host_os" in
     _LT_AC_TAGVAR(lt_prog_compiler_pic, $1)=
     ;;
   *)
-    _LT_AC_TAGVAR(lt_prog_compiler_pic, $1)="$_LT_AC_TAGVAR(lt_prog_compiler_pic, $1) -DPIC"
+    _LT_AC_TAGVAR(lt_prog_compiler_pic, $1)="$_LT_AC_TAGVAR(lt_prog_compiler_pic, $1)ifelse([$1],[GCJ],[],[ -DPIC])"
     ;;
 esac
 ])
