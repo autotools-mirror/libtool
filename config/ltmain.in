@@ -3083,10 +3083,6 @@ func_mode_link ()
 	    func_warning "\`-l' is ignored for archives/objects"
 	    continue
 	  fi
-	  if test "$pass" = conv; then
-	    deplibs="$deplib $deplibs"
-	    continue
-	  fi
 	  name=`$ECHO "X$deplib" | $Xsed -e 's/^-l//'`
 	  for searchdir in $newlib_search_path $lib_search_path $sys_lib_search_path $shlib_search_path; do
 	    for search_ext in .la $std_shrext .so .a; do
