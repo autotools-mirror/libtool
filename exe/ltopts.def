@@ -66,14 +66,17 @@ flag = {
     name      = "finish";
     flag_code = '    SET_OPT_MODE("finish");';
     descrip   = "set mode to `finish'";
-    doc       = "This option is equivalent to ``--mode=finish''";
+    doc       = "This option is equivalent to `--mode=finish'";
 };
 
 flag = {
     name      = "fallback_echo";
     flag_code = '    SET_OPT_MODE("echo");';
-    descrip   = "set mode to echo";
-    doc       = "for when native `echo' is broken";
+    descrip   = "set mode to `echo'";
+    doc       = "This is used when native `echo' is broken.\n"
+                "This option is equivalent to `--mode=echo'.\n"
+                "Be sure to use `--' before the first argument you wish\n"
+                "to have echoed.";
 };
 
 flag = {
