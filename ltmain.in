@@ -2324,8 +2324,6 @@ extern \"C\" {
 
 	  if test "$dlself" = yes; then
 	    $show "generating symbol list for \`$output'"
-	    export_symbols="$objdir/$output.exp"
-	    $run $rm $export_symbols
 
 	    # Add our own program objects to the symbol list.
 	    progfiles=`$echo "X$objs" | $SP2NL | $Xsed -e "$lo2o" | $NL2SP`
@@ -2334,25 +2332,25 @@ extern \"C\" {
 	      $run eval "$NM $arg | $global_symbol_pipe >> '$nlist'"
 	    done
 
+	    if test -n "$exclude_expsyms"; then
+	      $run eval 'egrep -v "^($exclude_expsyms)" "$nlist" > "$nlist"T'
+	      $run eval '$mv "$nlist"T "$nlist"'
+	    fi
+	    
+	    if test -n "$export_symbols_regex"; then
+	      $show "egrep -e \"$export_symbols_regex\" \"$nlist\" > \"$nlist\"T"
+	      $run eval 'egrep -e "$export_symbols_regex" "$nlist" > "$nlist"T'
+	      $show "$mv \"$nlist\"T \"$nlist\""
+	      $run eval '$mv "$nlist"T "$nlist"'
+	    fi
+
 	    # Prepare the list of exported symbols
 	    if test -z "$export_symbols"; then
 	      export_symbols="$objdir/$output.exp"
 	      $run $rm $export_symbols
-
-	      if test -n "$exclude_expsyms"; then
-		$run eval 'egrep -v "^($exclude_expsyms)" "$nlist" > "$nlist"T'
-		$run eval '$mv "$nlist"T "$nlist"'
-	      fi
-	    
-	      if test -n "$export_symbols_regex"; then
-		$show "egrep -e \"$export_symbols_regex\" \"$nlist\" > \"$nlist\"T"
-		$run eval 'egrep -e "$export_symbols_regex" "$nlist" > "$nlist"T'
-		$show "$mv \"$nlist\"T \"$nlist\""
-		$run eval '$mv "$nlist"T "$nlist"'
-	      fi
-
-	      sed -e 's/^.* \(.*\)$/\1/' < "$nlist" > "$export_symbols"
 	    fi
+
+	    sed -e 's/^.* \(.*\)$/\1/' < "$nlist" > "$export_symbols"
 	  fi
 
 	  for arg in $dlprefiles; do
@@ -2364,6 +2362,11 @@ extern \"C\" {
 	    # Make sure we have at least an empty file.
 	    test -f "$nlist" || : > "$nlist"
 
+	    if test -n "$exclude_expsyms"; then
+	      $run eval 'egrep -v "^($exclude_expsyms)" "$nlist" > "$nlist"T'
+	      $run eval '$mv "$nlist"T "$nlist"'
+	    fi
+	    
 	    # Try sorting and uniquifying the output.
 	    if sort "$nlist" | uniq > "$nlist"T; then
 	      $mv "$nlist"T "$nlist"

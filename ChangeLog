@@ -1,5 +1,8 @@
 1999-03-10  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* ltmain.in: properly create an export file for a program,
+	avoiding error messages about not finding it
+
 	* TODO: need to document AC_LIBLTDL_*; static self dlopening
 	problem fixed
 
