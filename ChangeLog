@@ -1,5 +1,8 @@
 1998-11-02  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* autogen: new script; run it to bootstrap libtool after checking
+	it out from CVS
+
 	* libtool.m4 (CFLAGS): check whether -belf is needed on SCO, as
 	suggested by Robert Lipe <robertl@dgii.com>
 
