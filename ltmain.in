@@ -1952,15 +1952,7 @@ compiler."
 	esac
       done
       lib_search_path="$lib_search_path $sys_lib_search_path"
-      
-      # Make sure newdependency_libs contains only unique libraries and directories.
-      dependency_libs=
-      for deplib in $newdependency_libs; do
-	case "$dependency_libs " in
-	*" $deplib "*) ;;
-	*) dependency_libs="$dependency_libs $deplib" ;;
-	esac
-      done
+      dependency_libs="$newdependency_libs"
       
       # Eliminate all temporary directories.
       for path in $uninst_path; do

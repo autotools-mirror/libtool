@@ -1,3 +1,14 @@
+1999-12-15  Thomas Tanner  <tanner@ffii.org>
+
+	* libltdl/configure.in: path to auxiliary files can be specified
+	  using --with-auxdir (idea by Howard Chu <hyc@highlandsun.com>)
+
+	* ltmain.in: don't remove multiple occurences from dependency_libs
+	  of a library, otherwise many dependencies would get lost
+
+	* bootstrap: use "aclocal -I ." instead of adding the contents
+	  of ltdl.m4 to acinclude.m4
+
 1999-12-13  Gary V. Vaughan  <gary@oranda.demon.co.uk>
 
 	* NEWS: updated.
