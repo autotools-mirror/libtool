@@ -52,7 +52,10 @@ fi
 set -- `sed '/AC_INIT/{s/[][,()]/ /g; p;};d' configure.ac`
 
 # Building distributed files from configure is bad for automake, so we
-# generate them here, and have Makefile rules to keep them up to date:
+# generate them here, and have Makefile rules to keep them up to date.
+# We don't have all the substitution values to build ltmain.sh from this
+# script yet, but we need config/ltmain.sh for the libtool commands in
+# configure, and ltversion.m4 to generate configure in the first place:
 rm -f ./config/ltmain.sh ./m4/ltversion.m4
 test -f Makefile || { makefile=Makefile; cp Makefile.am $makefile; }
 make ./config/ltmain.sh ./m4/ltversion.m4 \
@@ -82,5 +85,10 @@ rm -f ./config/libtoolize
 
 # These files can cause an infinite configure loop if left behind.
 rm -f Makefile libltdl/Makefile libtool vcl.tmp
+
+# This file is misgenerated earlier in bootstrap to satisfy automake 1.9.1
+# and earlier, but has a new enough timestamp to not be updated.  Force it
+# to be regenerated at make-time with proper substitutions in place:
+touch config/ltmain.in
 
 exit 0
