@@ -188,13 +188,16 @@ ifdef([AC_PROVIDE_AC_LIBTOOL_DLOPEN], enable_dlopen=yes, enable_dlopen=no)
 ifdef([AC_PROVIDE_AC_LIBTOOL_WIN32_DLL],
 enable_win32_dll=yes, enable_win32_dll=no)
 
-AC_ARG_ENABLE(libtool-lock,
-  [  --disable-libtool-lock  avoid locking (might break parallel builds)])
+AC_ARG_ENABLE([libtool-lock],
+    [AC_HELP_STRING([--disable-libtool-lock],
+        [avoid locking (might break parallel builds)])])
 test "x$enable_libtool_lock" != xno && enable_libtool_lock=yes
 
-AC_ARG_WITH(pic,
-  [  --with-pic              try to use only PIC/non-PIC objects [default=use both]],
-pic_mode="$withval", pic_mode=default)
+AC_ARG_WITH([pic],
+    [AC_HELP_STRING([--with-pic],
+        [try to use only PIC/non-PIC objects @<:@default=use both@:>@])],
+    [pic_mode="$withval"],
+    [pic_mode=default])
 test -z "$pic_mode" && pic_mode=default
 
 # Use C for the default configuration in the libtool script
@@ -413,8 +416,9 @@ AC_DIVERT_POP
 # _LT_AC_LOCK
 # -----------
 AC_DEFUN([_LT_AC_LOCK],
-[AC_ARG_ENABLE(libtool-lock,
-  [  --disable-libtool-lock  avoid locking (might break parallel builds)])
+[AC_ARG_ENABLE([libtool-lock],
+    [AC_HELP_STRING([--disable-libtool-lock],
+        [avoid locking (might break parallel builds)])])
 test "x$enable_libtool_lock" != xno && enable_libtool_lock=yes
 
 # Some flags need to be propagated to the compiler or linker for good
@@ -1367,10 +1371,11 @@ test "$dynamic_linker" = no && can_build_shared=no
 # ----------------
 AC_DEFUN([_LT_AC_TAGCONFIG],
 [AC_REQUIRE([_LT_AC_LIBTOOL_SYS_PATH_SEPARATOR])dnl
-AC_ARG_WITH(tags, 
-  [  --with-tags=TAGS        include additional configurations [CXX,GCJ]],
-  [tagnames="$withval"],
-  [tagnames="CXX,GCJ"])
+AC_ARG_WITH([tags], 
+    [AC_HELP_STRING([--with-tags=TAGS],
+        [include additional configurations @<:@CXX,GCJ@:>@])],
+    [tagnames="$withval"],
+    [tagnames="CXX,GCJ"])
 
 if test -f "$ltmain" && test -n "$tagnames"; then
   if test ! -f "${ofile}"; then
@@ -1464,28 +1469,27 @@ AC_DEFUN([AC_LIBTOOL_WIN32_DLL],
 AC_DEFUN([AC_ENABLE_SHARED],
 [AC_REQUIRE([_LT_AC_LIBTOOL_SYS_PATH_SEPARATOR])dnl
 define([AC_ENABLE_SHARED_DEFAULT], ifelse($1, no, no, yes))dnl
-AC_ARG_ENABLE(shared,
-changequote(<<, >>)dnl
-<<  --enable-shared[=PKGS]  build shared libraries [default=>>AC_ENABLE_SHARED_DEFAULT],
-changequote([, ])dnl
-[p=${PACKAGE-default}
-case $enableval in
-yes) enable_shared=yes ;;
-no) enable_shared=no ;;
-*)
-  enable_shared=no
-  # Look at the argument we got.  We use all the common list separators.
-  IFS="${IFS= 	}"; lt_save_ifs="$IFS"; IFS="${IFS}${PATH_SEPARATOR-:},"
-  for pkg in $enableval; do
-    IFS="$lt_save_ifs"
-    if test "X$pkg" = "X$p"; then
-      enable_shared=yes
-    fi
-  done
-  IFS="$lt_save_ifs"
-  ;;
-esac],
-enable_shared=AC_ENABLE_SHARED_DEFAULT)dnl
+AC_ARG_ENABLE([shared],
+    [AC_HELP_STRING([--enable-shared@<:@=PKGS@:>@],
+        [build shared libraries @<:@default=]AC_ENABLE_SHARED_DEFAULT[@:>@])],
+    [p=${PACKAGE-default}
+    case $enableval in
+    yes) enable_shared=yes ;;
+    no) enable_shared=no ;;
+    *)
+      enable_shared=no
+      # Look at the argument we got.  We use all the common list separators.
+      IFS="${IFS= 	}"; lt_save_ifs="$IFS"; IFS="${IFS}${PATH_SEPARATOR-:},"
+      for pkg in $enableval; do
+        IFS="$lt_save_ifs"
+        if test "X$pkg" = "X$p"; then
+          enable_shared=yes
+        fi
+      done
+      IFS="$lt_save_ifs"
+      ;;
+    esac],
+    [enable_shared=]AC_ENABLE_SHARED_DEFAULT)
 ])# AC_ENABLE_SHARED
 
 
@@ -1505,28 +1509,27 @@ AC_ENABLE_SHARED(no)
 AC_DEFUN([AC_ENABLE_STATIC],
 [AC_REQUIRE([_LT_AC_LIBTOOL_SYS_PATH_SEPARATOR])dnl
 define([AC_ENABLE_STATIC_DEFAULT], ifelse($1, no, no, yes))dnl
-AC_ARG_ENABLE(static,
-changequote(<<, >>)dnl
-<<  --enable-static[=PKGS]  build static libraries [default=>>AC_ENABLE_STATIC_DEFAULT],
-changequote([, ])dnl
-[p=${PACKAGE-default}
-case $enableval in
-yes) enable_static=yes ;;
-no) enable_static=no ;;
-*)
-  enable_static=no
-  # Look at the argument we got.  We use all the common list separators.
-  IFS="${IFS= 	}"; lt_save_ifs="$IFS"; IFS="${IFS}${PATH_SEPARATOR-:},"
-  for pkg in $enableval; do
-    IFS="$lt_save_ifs"
-    if test "X$pkg" = "X$p"; then
-      enable_static=yes
-    fi
-  done
-  IFS="$lt_save_ifs"
-  ;;
-esac],
-enable_static=AC_ENABLE_STATIC_DEFAULT)dnl
+AC_ARG_ENABLE([static],
+    [AC_HELP_STRING([--enable-static@<:@=PKGS@:>@],
+        [build static libraries @<:@default=]AC_ENABLE_STATIC_DEFAULT[@:>@])],
+    [p=${PACKAGE-default}
+    case $enableval in
+    yes) enable_static=yes ;;
+    no) enable_static=no ;;
+    *)
+     enable_static=no
+      # Look at the argument we got.  We use all the common list separators.
+      IFS="${IFS= 	}"; lt_save_ifs="$IFS"; IFS="${IFS}${PATH_SEPARATOR-:},"
+      for pkg in $enableval; do
+        IFS="$lt_save_ifs"
+        if test "X$pkg" = "X$p"; then
+          enable_static=yes
+        fi
+      done
+      IFS="$lt_save_ifs"
+      ;;
+    esac],
+    [enable_static=]AC_ENABLE_STATIC_DEFAULT)
 ])# AC_ENABLE_STATIC
 
 
@@ -1546,28 +1549,27 @@ AC_ENABLE_STATIC(no)
 AC_DEFUN([AC_ENABLE_FAST_INSTALL],
 [AC_REQUIRE([_LT_AC_LIBTOOL_SYS_PATH_SEPARATOR])dnl
 define([AC_ENABLE_FAST_INSTALL_DEFAULT], ifelse($1, no, no, yes))dnl
-AC_ARG_ENABLE(fast-install,
-changequote(<<, >>)dnl
-<<  --enable-fast-install[=PKGS]  optimize for fast installation [default=>>AC_ENABLE_FAST_INSTALL_DEFAULT],
-changequote([, ])dnl
-[p=${PACKAGE-default}
-case $enableval in
-yes) enable_fast_install=yes ;;
-no) enable_fast_install=no ;;
-*)
-  enable_fast_install=no
-  # Look at the argument we got.  We use all the common list separators.
-  IFS="${IFS= 	}"; lt_save_ifs="$IFS"; IFS="${IFS}${PATH_SEPARATOR-:},"
-  for pkg in $enableval; do
-    IFS="$lt_save_ifs"
-    if test "X$pkg" = "X$p"; then
-      enable_fast_install=yes
-    fi
-  done
-  IFS="$lt_save_ifs"
-  ;;
-esac],
-enable_fast_install=AC_ENABLE_FAST_INSTALL_DEFAULT)dnl
+AC_ARG_ENABLE([fast-install],
+    [AC_HELP_STRING([--enable-fast-install@<:@=PKGS@:>@],
+    [optimize for fast installation @<:@default=]AC_ENABLE_FAST_INSTALL_DEFAULT[@:>@])],
+    [p=${PACKAGE-default}
+    case $enableval in
+    yes) enable_fast_install=yes ;;
+    no) enable_fast_install=no ;;
+    *)
+      enable_fast_install=no
+      # Look at the argument we got.  We use all the common list separators.
+      IFS="${IFS= 	}"; lt_save_ifs="$IFS"; IFS="${IFS}${PATH_SEPARATOR-:},"
+      for pkg in $enableval; do
+        IFS="$lt_save_ifs"
+        if test "X$pkg" = "X$p"; then
+          enable_fast_install=yes
+        fi
+      done
+      IFS="$lt_save_ifs"
+      ;;
+    esac],
+    [enable_fast_install=]AC_ENABLE_FAST_INSTALL_DEFAULT)
 ])# AC_ENABLE_FAST_INSTALL
 
 
@@ -1673,9 +1675,11 @@ fi
 # ----------
 # find the path to the GNU or non-GNU linker
 AC_DEFUN([AC_PROG_LD],
-[AC_ARG_WITH(gnu-ld,
-  [  --with-gnu-ld           assume the C compiler uses GNU ld [default=no]],
-  test "$withval" = no || with_gnu_ld=yes, with_gnu_ld=no)
+[AC_ARG_WITH([gnu-ld],
+    [AC_HELP_STRING([--with-gnu-ld],
+        [assume the C compiler uses GNU ld @<:@default=no@:>@])],
+    [test "$withval" = no || with_gnu_ld=yes],
+    [with_gnu_ld=no])
 AC_REQUIRE([AC_PROG_CC])dnl
 AC_REQUIRE([AC_CANONICAL_HOST])dnl
 AC_REQUIRE([AC_CANONICAL_BUILD])dnl

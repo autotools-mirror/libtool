@@ -1,6 +1,7 @@
 NEWS - list of user-visible changes between releases of GNU Libtool
 
 New in 1.4d: 2001-??-??; CVS version 1.4c, Libtool team:
+* Help strings display correctly again.
 * Support /lib/w32api in recent cygwin releases.
 * Support cross compilation to mingw.
 * Improved support for linking with gcc on aix4* and aix5*.

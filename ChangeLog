@@ -1,5 +1,20 @@
 2001-07-30  Gary V. Vaughan  <gary@gnu.org>
 
+	* libtool.m4 (AC_LIBTOOL_SETUP): Use Autoconf-2.50 era
+	quadrigraphs and AC_HELP_STRING to bring AC_ARG_WITH/ENABLE
+	macros up to date.
+	(_LT_AC_LOCK): Ditto.
+	(_LT_AC_TAGCONFIG): Ditto.
+	(AC_PROG_LD): Ditto.
+	(AC_ENABLE_SHARED): Ditto.  And eliminate the last remaining
+	changequote invocations.
+	(AC_ENABLE_STATIC): Ditto.  And Ditto.
+	(AC_ENABLE_FAST_INSTALL):  Ditto.  And Ditto.
+	* ltdl.m4 (AC_LTDL_ENABLE_INSTALL): Use Autoconf-2.50 era
+	quadrigraphs and AC_HELP_STRING to bring AC_ARG_ENABLE
+	macro up to date.
+	* NEWS: Updated.
+
 	* libtool.m4 [UnixWare7, OpenUNIX8]: Initial support for
 	UnixWare7 and OpenUNIX8.  Accept these identifiers from the
 	latest config.guess/config.sub as pseudonyms for sysv5uw[78].
