@@ -1,5 +1,9 @@
 1999-03-13  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* ltconfig.in (osf3*, osf4*, deplibs_check_method): pass_all does
+	not really work; use file_magic instead.
+	(osf3*, osf4*): customize sys_lib_[dl]search_path_spec 
+
 	* ltconfig.in (file_magic_test_file): new variable; if set, it
 	will be used as an argument for $file_magic_cmd to test whether
 	the regex in deplibs_check_method matches its output

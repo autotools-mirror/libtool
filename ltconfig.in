@@ -1796,7 +1796,16 @@ osf3* | osf4*)
   soname_spec='${libname}${release}.so'
   library_names_spec='${libname}${release}.so$versuffix ${libname}${release}.so $libname.so'
   shlibpath_var=LD_LIBRARY_PATH
-  deplibs_check_method='pass_all'
+  # deplibs_check_method='pass_all'
+  # Although pass_all appears to work, it copies symbols from static libraries
+  # into shared ones and exports them.  So, when a program is linked with two
+  # or more libraries that have got copies of the same symbols, link fails
+  # This was only tested on osf4:
+  deplibs_check_method='file_magic COFF format alpha shared library'
+  file_magic_cmd=/usr/bin/file
+  file_magic_test_file=/shlib/libc.so
+  sys_lib_search_path_spec="/usr/shlib /usr/ccs/lib /usr/lib/cmplrs/cc /usr/lib /usr/local/lib /var/shlib"
+  sys_lib_dlsearch_path_spec="$sys_lib_search_path_spec"
   ;;
 
 sco3.2v5*)
