@@ -1,3 +1,11 @@
+1999-12-12  Gary V. Vaughan  <gary@oranda.demon.co.uk>
+
+	* ltconfig.in (cygwin*, mingw*, export_symbols_cmds): keep any
+	DATA tags associated with symbols by recent dlltool.
+	(cygwin*, mingw*, archive_expsym_cmds): Honor any DATA tags
+	found in the symbol list.
+	Reported by Jon Leichter <jon@symas.com>.
+
 1999-12-10  Gary V. Vaughan  <gary@oranda.demon.co.uk>
 
 	From Stephan Kulow <coolo@kde.org>

@@ -1051,14 +1051,20 @@ EOF
     # Extract the symbol export list from an `--export-all' def file,
     # then regenerate the def file from the symbol export list, so that
     # the compiled dll only exports the symbol export list.
+    # Be careful not to strip the DATA tag left be newer dlltools.
     export_symbols_cmds="$ltdll_cmds"'
       $DLLTOOL --export-all --exclude-symbols '$dll_exclude_symbols' --output-def $objdir/$soname-def '$ltdll_obj'$libobjs $convenience~
-      sed -e "1,/EXPORTS/d" -e "s/ @ [0-9]* ;.*//" < $objdir/$soname-def > $export_symbols'
+      sed -e "1,/EXPORTS/d" -e "s/ @ [0-9]*//" -e "s/ *;.*$//" < $objdir/$soname-def > $export_symbols'
   
+    # If DATA tags from a recent dlltool are present, honour them!
     archive_expsym_cmds='echo EXPORTS > $objdir/$soname-def~
       _lt_hint=1;
       cat $export_symbols | while read symbol; do
-	echo "	\$symbol @ \$_lt_hint ; " >> $objdir/$soname-def;
+	set dummy \$symbol;
+        case \$# in
+          2) echo "	\$2 @ \$_lt_hint ; " >> $objdir/$soname-def;;
+          *) echo "     \$2 @ \$_lt_hint \$3 ; " >> $objdir/$soname-def;;
+        esac;
 	_lt_hint=`expr 1 + \$_lt_hint`;
       done~
       '"$ltdll_cmds"'
