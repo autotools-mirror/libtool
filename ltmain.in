@@ -1052,28 +1052,215 @@ compiler."
 	    dlprefiles="$dlprefiles $dir/$linklib"
 	  fi
 	  prev=
-	else
-	  # FIXME: remove this sometime in the future.
-	  $echo "$modename: linking against .la files is obsolete" 1>&2
 	fi
  
-	dir=`$echo "X$arg" | $Xsed -e 's%/[^/]*$%%'`
-	if test "X$dir" != "X$arg"; then
-	  # We need an absolute path.
-	  case "$dir" in
-	  /* | [A-Za-z]:[/\\]*) ;;
-	  *)
-	    dir=`cd "$dir" && pwd`
-	    if test -z "$dir"; then
-	      $echo "$modename: cannot determine absolute directory name of \`$dir'" 1>&2
-	      exit 1
+	if test "$build_libtool_libs" = yes && test -n "$library_names"; then
+	  link_against_libtool_libs="$link_against_libtool_libs $arg"
+	  if test -n "$shlibpath_var"; then
+	    # Make sure the rpath contains only unique directories.
+	    case "$temp_rpath " in
+	    *" $dir "*) ;;
+	    *) temp_rpath="$temp_rpath $dir" ;;
+	    esac
+	  fi
+
+	  # This is the magic to use -rpath.
+	  if test -n "$hardcode_libdir_flag_spec"; then
+	    saved_libdir="$libdir"
+	    libdir="$dir"
+
+	    # We need an absolute path.
+	    case "$libdir" in
+	    /* | [A-Za-z]:[/\\]*) ;;
+	    *)
+	      absdir=`cd "$libdir" && pwd`
+	      if test -z "$absdir"; then
+		$echo "$modename: cannot determine absolute directory name of \`$libdir'" 1>&2
+	      else
+		libdir="$absdir"
+	      fi
+	      ;;
+	    esac
+	    if test -n "$hardcode_libdir_separator"; then
+	      if test -z "$hardcode_libdirs"; then
+		# Put the magic libdir with the hardcode flag.
+		hardcode_libdirs="$libdir"
+		libdir="@HARDCODE_LIBDIRS@"
+	      else
+		# Just accumulate the unique libdirs.
+		case "$hardcode_libdir_separator$hardcode_libdirs$hardcode_libdir_separator" in
+		*"$hardcode_libdir_separator$libdir$hardcode_libdir_separator"*)
+		  ;;
+		*)
+		  hardcode_libdirs="$hardcode_libdirs$hardcode_libdir_separator$libdir"
+		  ;;
+		esac
+		libdir=
+	      fi
+	    fi
+
+	    if test -n "$libdir"; then
+	      eval flag=\"$hardcode_libdir_flag_spec\"
+
+	      compile_command="$compile_command $flag"
+	    fi
+
+	    libdir="$saved_libdir"
+	    if test -n "$hardcode_libdir_separator"; then
+	      if test -z "$finalize_hardcode_libdirs"; then
+		# Put the magic libdir with the hardcode flag.
+		finalize_hardcode_libdirs="$libdir"
+		libdir="@HARDCODE_LIBDIRS@"
+	      else
+		# Just accumulate the unique libdirs.
+		case "$hardcode_libdir_separator$finalize_hardcode_libdirs$hardcode_libdir_separator" in
+		*"$hardcode_libdir_separator$libdir$hardcode_libdir_separator"*)
+		  ;;
+		*)
+		  finalize_hardcode_libdirs="$finalize_hardcode_libdirs$hardcode_libdir_separator$libdir"
+		  ;;
+		esac
+		libdir=
+	      fi
+	    fi
+
+	    if test -n "$libdir"; then
+	      eval flag=\"$hardcode_libdir_flag_spec\"
+
+	      finalize_command="$finalize_command $flag"
+	    fi
+	    # libdir is also use after "$hardcode_action" case
+	    libdir="$saved_libdir"
+	  elif test -n "$runpath_var"; then
+	    # Do the same for the permanent run path.
+	    case "$dir" in
+	    /* | [A-Za-z]:[/\\]*) absdir="$dir";;
+	    *)
+	      absdir=`cd "$dir" && pwd`
+	      if test -z "$absdir"; then
+		$echo "$modename: cannot determine absolute directory name of \`$dir'" 1>&2
+		absdir="$dir"
+	      fi
+	      ;;
+	    esac
+	    case "$perm_rpath " in
+	    *" $absdir "*) ;;
+	    *) perm_rpath="$perm_rpath $absdir" ;;
+	    esac
+	    case "$finalize_perm_rpath " in
+	    *" $libdir "*) ;;
+	    *) finalize_perm_rpath="$finalize_perm_rpath $libdir" ;;
+	    esac
+	  fi
+
+
+	  lib_linked=yes
+	  case "$hardcode_action" in
+	  immediate | unsupported)
+	    if test "$hardcode_direct" = no; then
+	      compile_command="$compile_command $dir/$linklib"
+	      deplibs="$deplibs $dir/$linklib"
+	      case "$host" in
+	      *-*-cygwin* | *-*-mingw* | *-*-os2*)
+		dllsearchdir=`cd "$dir" && pwd || echo "$dir"`
+		if test -n "$dllsearchpath"; then
+		  dllsearchpath="$dllsearchpath:$dllsearchdir"
+		else
+		  dllsearchpath="$dllsearchdir"
+		fi
+		;;
+	      esac
+	    elif test "$hardcode_minus_L" = no; then
+	      case "$host" in
+	      *-*-sunos*)
+		compile_shlibpath="$compile_shlibpath$dir:"
+		;;
+	      esac
+	      compile_command="$compile_command -L$dir -l$name"
+	      deplibs="$deplibs -L$dir -l$name"
+	    elif test "$hardcode_shlibpath_var" = no; then
+	      compile_shlibpath="$compile_shlibpath$dir:"
+	      compile_command="$compile_command -l$name"
+	      deplibs="$deplibs -l$name"
+	    else
+	      lib_linked=no
 	    fi
 	    ;;
+
+	  relink)
+	    # We need an absolute path.
+	    case "$dir" in
+	    /* | [A-Za-z]:[/\\]*) ;;
+	    *)
+	      absdir=`cd "$dir" && pwd`
+	      if test -z "$absdir"; then
+		$echo "$modename: cannot determine absolute directory name of \`$dir'" 1>&2
+		exit 1
+	      fi
+	      dir="$absdir"
+	      ;;
+	    esac
+
+	    if test "$hardcode_direct" = yes; then
+	      compile_command="$compile_command $dir/$linklib"
+	      deplibs="$deplibs $dir/$linklib"
+	    elif test "$hardcode_minus_L" = yes; then
+	      compile_command="$compile_command -L$dir -l$name"
+	      deplibs="$deplibs -L$dir -l$name"
+	    elif test "$hardcode_shlibpath_var" = yes; then
+	      compile_shlibpath="$compile_shlibpath$dir:"
+	      compile_command="$compile_command -l$name"
+	      deplibs="$deplibs -l$name"
+	    else
+	      lib_linked=no
+	    fi
+	    ;;
+
+	  *)
+	    lib_linked=no
+	    ;;
 	  esac
-	  deplibs="$deplibs -L$dir"
-	fi 
-	# FIXME: this will fail for modules without a 'lib' prefix!
-	deplibs="$deplibs -l$name"
+
+	  if test "$lib_linked" != yes; then
+	    $echo "$modename: configuration error: unsupported hardcode properties"
+	    exit 1
+	  fi
+
+	  # Finalize command for both is simple: just hardcode it.
+	  if test "$hardcode_direct" = yes; then
+	    finalize_command="$finalize_command $libdir/$linklib"
+	  elif test "$hardcode_minus_L" = yes; then
+	    finalize_command="$finalize_command -L$libdir -l$name"
+	  elif test "$hardcode_shlibpath_var" = yes; then
+	    finalize_shlibpath="$finalize_shlibpath$libdir:"
+	    finalize_command="$finalize_command -l$name"
+	  else
+	    # We cannot seem to hardcode it, guess we'll fake it.
+	    finalize_command="$finalize_command -L$libdir -l$name"
+	  fi
+	else
+	  # Transform directly to old archives if we don't build new libraries.
+	  if test -n "$pic_flag" && test -z "$old_library"; then
+	    $echo "$modename: cannot find static library for \`$arg'" 1>&2
+	    exit 1
+	  fi
+
+	  # Here we assume that one of hardcode_direct or hardcode_minus_L
+	  # is not unsupported.  This is valid on all known static and
+	  # shared platforms.
+	  if test "$hardcode_direct" != unsupported; then
+	    test -n "$old_library" && linklib="$old_library"
+	    compile_command="$compile_command $dir/$linklib"
+	    finalize_command="$finalize_command $dir/$linklib"
+	  else
+	    compile_command="$compile_command -L$dir -l$name"
+	    finalize_command="$finalize_command -L$dir -l$name"
+	  fi
+	fi
+
+	# Add in any libraries that this one depends upon.
+	compile_command="$compile_command$dependency_libs"
+	finalize_command="$finalize_command$dependency_libs"
 	continue
 	;;
 
