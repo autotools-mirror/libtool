@@ -1,3 +1,8 @@
+2005-04-01  Mike Stump  <mrs@apple.com>
+
+	* m4/libtool.m4 (LT_CMD_MAX_LEN) [ netbsd, freebsd, openbsd,
+	darwin, dragonfly]: Use 3/4 of argmax, instead of 1/4.
+
 2005-03-28  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* m4/libtool.m4 (_LT_LANG_GCJ_CONFIG, _LT_LANG_RC_CONFIG):
