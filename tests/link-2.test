@@ -1,7 +1,7 @@
 #! /bin/sh
 # link-2.test - check that .lo files aren't made into programs.
 
-# Copyright (C) 2003 Free Software Foundation, Inc.
+# Copyright (C) 2003, 2004 Free Software Foundation, Inc.
 # This is free software; see the source for copying conditions.  There is NO
 # warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
@@ -35,7 +35,7 @@ non_pic_object=hell.o
 EOF
 
 # Try a sample link command.
-linkresult=`$libtool -n --mode=link $CC -o something foo.o hell.lo`
+linkresult=`$LIBTOOL -n --mode=link $CC -o something foo.o hell.lo`
 res=$?
 
 rm -f hell.lo

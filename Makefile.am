@@ -30,6 +30,7 @@ edit = sed \
 	-e 's,@pkgdatadir\@,$(pkgdatadir),g' \
 	-e 's,@aclocaldir\@,$(aclocaldir),g' \
 	-e 's,@host_triplet\@,$(host_triplet),g' \
+	-e 's,@mkdir_p\@,$(mkdir_p),g' \
 	-e "s,@configure_input\@,Generated from $$input; do not edit by hand,g"
 
 timestamp = set -- `$(MKSTAMP) < $(top_srcdir)/ChangeLog`; \

@@ -1,5 +1,29 @@
 2004-09-02  Gary V. Vaughan  <gary@gnu.org>,
 
+	Builds of packages that use libtool and make -j produce "directory
+	already exists warnings" for .lib directory.  Build on automake
+	wisdom to support make -j builds where a suitable mkdir is
+	available:
+
+	* configure.ac (AM_INIT_AUTOMAKE): Require 1.9, which goes to some
+	trouble to find a $(mkdir_p) that doesn't interfere with make -j.
+	* Makefile.am (edit): Substitute for @mkdir_p@.
+	* config/ltmain.in (MKDIR_P): Take @mkdir_p@ value.
+	(mkdir): Removed.
+	(func_mkdir_p): New function to use $MKDIR_P.  Factor out all
+	previous mkdir calls to use this function.
+	(RM, MV): Declared as in libtoolize.in.  Changed all callers.
+	* libtoolize.in (MKDIR_P): Take @mkdir_p@ value from automake.
+	(func_mkdir_p): Use it, similarly to new config/ltmain.in.
+	* tests/defs: Synchronize boiler plate code with ltmain.in.
+	Adjust all callers.
+	Add missing copyright preamble.
+	* tests/demo-static.test: Add missing copyright preamble.
+	* NEWS: Updated.
+	Reported by Daniel Reed <n@ml.org>
+
+2004-09-02  Gary V. Vaughan  <gary@gnu.org>,
+
 	* Makefile.am (clean-ltmain-sh): Quote $(top_builddir) for the
 	shell, incase it is not set when running maintainer rules with
 	`make -fMakefile.maint'.

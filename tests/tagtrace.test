@@ -48,7 +48,7 @@ test -n "$traced_tags"
 # (We do some useless operation like erasing an empty file, because
 # we are just interested in whether --tag accepts the tag or not.)
 for tag in $traced_tags; do
-  $libtool -n --mode=link --tag=$tag compiler -o liba.la foo.lo >output 2>&1
+  $LIBTOOL -n --mode=link --tag=$tag compiler -o liba.la foo.lo >output 2>&1
   cat output
   if grep 'ignoring unknown tag' output; then
     exit $EXIT_FAILURE
@@ -58,7 +58,7 @@ for tag in $traced_tags; do
 done
 
 # Ensure the above command would have failed for unknown tags
-$libtool -n --mode=link --tag=UnKnOwN compiler -o liba.la foo.lo >output 2>&1
+$LIBTOOL -n --mode=link --tag=UnKnOwN compiler -o liba.la foo.lo >output 2>&1
 cat output
 grep 'ignoring unknown tag' output
 

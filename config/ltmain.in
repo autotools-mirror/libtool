@@ -84,6 +84,11 @@ DUALCASE=1; export DUALCASE # for MKS sh
 # if CDPATH is set.
 (unset CDPATH) >/dev/null 2>&1 && unset CDPATH
 
+
+: ${MKDIR_P="@mkdir_p@"}
+: ${RM="rm -f"}
+: ${MV="mv -f"}
+
 dirname="s,/[^/]*$,,"
 basename="s,^.*/,,g"
 
@@ -145,9 +150,6 @@ fi
 default_mode=
 help="Try \`$progname --help' for more information."
 magic="%%%MAGIC variable%%%"
-mkdir="mkdir"
-mv="mv -f"
-rm="rm -f"
 
 # Sed substitution that helps us do robust quoting.  It backslashifies
 # metacharacters that are still active within double-quoted strings.
@@ -710,6 +712,31 @@ Otherwise, only FILE itself is deleted using RM."
 }
 
 
+# func_mkdir_p directory-path
+# Use automake's best guess at a multithreadable mkdir command to create
+# DIRECTORY-PATH in a way that shouldn't interfere with `make -j'.
+func_mkdir_p () {
+    my_directory_path="$1"
+    my_status=
+
+    test -f "$my_directory_path" && {
+      $show "${RM}r $my_directory_path"
+      $run ${RM}r "$my_directory_path"
+    }
+
+    $show "$MKDIR_P $my_directory_path"
+    test -n "$my_directory_path" && {
+      $run $MKDIR_P "$my_directory_path"
+      my_status=$?
+
+      # Bail out if $MKDIR_P failed to create a directory.
+      test "$my_status" -ne $EXIT_SUCCESS && \
+        test ! -d "$my_directory_path" && \
+        exit $my_status
+    }
+}
+
+
 # func_check_version_match
 # Ensure that we are using m4 macros, and libtool script from the same
 # release of libtool.
@@ -876,8 +903,8 @@ func_generate_dlsyms () {
 	# Discover the nlist of each of the dlfiles.
 	nlist="$output_objdir/${my_outputname}.nm"
 
-	$show "$rm $nlist ${nlist}S ${nlist}T"
-	$run $rm "$nlist" "${nlist}S" "${nlist}T"
+	$show "$RM $nlist ${nlist}S ${nlist}T"
+	$run $RM "$nlist" "${nlist}S" "${nlist}T"
 
 	# Parse the name list into a source file.
 	$show "creating $output_objdir/$my_dlsyms"
@@ -907,23 +934,23 @@ extern \"C\" {
 
 	  if test -n "$exclude_expsyms"; then
 	    $run eval '$EGREP -v " ($exclude_expsyms)$" "$nlist" > "$nlist"T'
-	    $run eval '$mv "$nlist"T "$nlist"'
+	    $run eval '$MV "$nlist"T "$nlist"'
 	  fi
 
 	  if test -n "$export_symbols_regex"; then
 	    $run eval '$EGREP -e "$export_symbols_regex" "$nlist" > "$nlist"T'
-	    $run eval '$mv "$nlist"T "$nlist"'
+	    $run eval '$MV "$nlist"T "$nlist"'
 	  fi
 
 	  # Prepare the list of exported symbols
 	  if test -z "$export_symbols"; then
 	    export_symbols="$output_objdir/$output.exp"
-	    $run $rm $export_symbols
+	    $run $RM $export_symbols
 	    $run eval "${SED} -n -e '/^: @PROGRAM@$/d' -e 's/^.* \(.*\)$/\1/p' "'< "$nlist" > "$export_symbols"'
 	  else
 	    $run eval "${SED} -e 's/\([][.*^$]\)/\\\1/g' -e 's/^/ /' -e 's/$/$/'"' < "$export_symbols" > "$output_objdir/$output.exp"'
 	    $run eval '$GREP -f "$output_objdir/$output.exp" < "$nlist" > "$nlist"T'
-	    $run eval 'mv "$nlist"T "$nlist"'
+	    $run eval '$MV "$nlist"T "$nlist"'
 	  fi
 	fi
 
@@ -940,7 +967,7 @@ extern \"C\" {
 
 	  if test -n "$exclude_expsyms"; then
 	    $EGREP -v " ($exclude_expsyms)$" "$nlist" > "$nlist"T
-	    $mv "$nlist"T "$nlist"
+	    $MV "$nlist"T "$nlist"
 	  fi
 
 	  # Try sorting and uniquifying the output.
@@ -1021,8 +1048,8 @@ static const void *lt_preloaded_setup() {
 	$run eval '(cd $output_objdir && $LTCC -c$no_builtin_flag$pic_flag_for_symtable "$my_dlsyms")' || exit $?
 
 	# Clean up the generated files.
-	$show "$rm $output_objdir/$my_dlsyms $nlist ${nlist}S ${nlist}T"
-	$run $rm "$output_objdir/$my_dlsyms" "$nlist" "${nlist}S" "${nlist}T"
+	$show "$RM $output_objdir/$my_dlsyms $nlist ${nlist}S ${nlist}T"
+	$run $RM "$output_objdir/$my_dlsyms" "$nlist" "${nlist}S" "${nlist}T"
 
 	# Transform the symbol file into the correct name.
 	symfileobj="$output_objdir/${my_outputname}S.$objext"
@@ -1044,8 +1071,6 @@ static const void *lt_preloaded_setup() {
     fi
 }
 
-
-
 # func_extract_archives gentop oldlib ...
 func_extract_archives () {
     my_gentop="$1"; shift
@@ -1054,16 +1079,8 @@ func_extract_archives () {
     my_xlib=""
     my_xabs=""
     my_xdir=""
-    my_status=""
 
-    $show "${rm}r $my_gentop"
-    $run ${rm}r "$my_gentop"
-    $show "$mkdir $my_gentop"
-    $run $mkdir "$my_gentop"
-    my_status=$?
-    if test "$my_status" -ne 0 && test ! -d "$my_gentop"; then
-      exit $my_status
-    fi
+    func_mkdir_p "$my_gentop"
 
     for my_xlib in $my_oldlibs; do
       # Extract the objects.
@@ -1074,14 +1091,8 @@ func_extract_archives () {
       my_xlib=`$echo "X$my_xlib" | $Xsed -e 's%^.*/%%'`
       my_xdir="$my_gentop/$my_xlib"
 
-      $show "${rm}r $my_xdir"
-      $run ${rm}r "$my_xdir"
-      $show "$mkdir $my_xdir"
-      $run $mkdir "$my_xdir"
-      status=$?
-      if test "$status" -ne 0 && test ! -d "$my_xdir"; then
-	exit $status
-      fi
+      func_mkdir_p "$my_xdir"
+
       case $host in
       *-darwin*)
 	$show "Extracting $my_xabs"
@@ -1098,14 +1109,14 @@ func_extract_archives () {
 	    darwin_arch=
 	    $show "$darwin_base_archive has multiple architectures $darwin_arches"
 	    for darwin_arch in  $darwin_arches ; do
-	      mkdir -p "unfat-$$/${darwin_base_archive}-${darwin_arch}"
+	      func_mkdir_p "unfat-$$/${darwin_base_archive}-${darwin_arch}"
 	      lipo -thin $darwin_arch -output "unfat-$$/${darwin_base_archive}-${darwin_arch}/${darwin_base_archive}" "${darwin_archive}"
 	      # Remove the table of contents from the thin files.
 	      $AR -d "unfat-$$/${darwin_base_archive}-${darwin_arch}/${darwin_base_archive}" __.SYMDEF 2>/dev/null || true
 	      $AR -d "unfat-$$/${darwin_base_archive}-${darwin_arch}/${darwin_base_archive}" __.SYMDEF\ SORTED 2>/dev/null || true
 	      cd "unfat-$$/${darwin_base_archive}-${darwin_arch}"
 	      $AR -xo "${darwin_base_archive}"
-	      rm "${darwin_base_archive}"
+	      $RM "${darwin_base_archive}"
 	      cd "$darwin_curdir"
 	    done # $darwin_arches
       ## Okay now we have a bunch of thin objects, gotta fatten them up :)
@@ -1116,7 +1127,7 @@ func_extract_archives () {
 	      darwin_files=`find unfat-$$ -name $darwin_file -print | $NL2SP`
 	      lipo -create -output "$darwin_file" $darwin_files
 	    done # $darwin_filelist
-	    rm -rf unfat-$$
+	    $RM -rf unfat-$$
 	    cd "$darwin_orig_dir"
 	  else
 	    cd $darwin_orig_dir
@@ -1147,8 +1158,8 @@ func_extract_archives () {
 	      do
 		name_to=`$echo "X$name_to" | $Xsed -e "s/\([^.]*\)/\1-$i/"`
 	      done
-	      $show "(cd $my_xdir && $AR xN $i $my_xabs '$name' && $mv '$name' '$name_to')"
-	      $run eval "(cd \$my_xdir && $AR xN $i \$my_xabs '$name' && $mv '$name' '$name_to')" || exit $?
+	      $show "(cd $my_xdir && $AR xN $i $my_xabs '$name' && $MV '$name' '$name_to')"
+	      $run eval "(cd \$my_xdir && $AR xN $i \$my_xabs '$name' && $MV '$name' '$name_to')" || exit $?
 	      i=`expr $i + 1`
 	    done
 	  done
@@ -1354,8 +1365,8 @@ func_mode_compile ()
       removelist="$lobj $libobj ${libobj}T"
     fi
 
-    $run $rm $removelist
-    trap "$run $rm $removelist; exit $EXIT_FAILURE" 1 2 15
+    $run $RM $removelist
+    trap "$run $RM $removelist; exit $EXIT_FAILURE" 1 2 15
 
     # On Cygwin there's no "real" PIC flag so we must build both object types
     case $host_os in
@@ -1374,7 +1385,7 @@ func_mode_compile ()
       output_obj=`$echo "X$srcfile" | $Xsed -e 's%^.*/%%' -e 's%\.[^.]*$%%'`.${objext}
       lockfile="$output_obj.lock"
       removelist="$removelist $output_obj $lockfile"
-      trap "$run $rm $removelist; exit $EXIT_FAILURE" 1 2 15
+      trap "$run $RM $removelist; exit $EXIT_FAILURE" 1 2 15
     else
       output_obj=
       need_locks=no
@@ -1401,7 +1412,7 @@ repeat this compilation, it may succeed, by chance, but you had better
 avoid parallel builds (make -j) in this platform, or get a better
 compiler."
 
-	$run $rm $removelist
+	$run $RM $removelist
 	exit $EXIT_FAILURE
       fi
       $echo $srcfile > "$lockfile"
@@ -1411,7 +1422,7 @@ compiler."
       eval srcfile=\"$fix_srcfile_path\"
     fi
 
-    $run $rm "$libobj" "${libobj}T"
+    $run $RM "$libobj" "${libobj}T"
 
     # Create a libtool object file (analogous to a ".la" file),
     # but don't create it if we're doing a dry run.
@@ -1437,26 +1448,19 @@ EOF
 	command="$base_compile $srcfile"
       fi
 
-      if test ! -d "${xdir}$objdir"; then
-	$show "$mkdir ${xdir}$objdir"
-	$run $mkdir ${xdir}$objdir
-	status=$?
-	if test "$status" -ne 0 && test ! -d "${xdir}$objdir"; then
-	  exit $status
-	fi
-      fi
+      func_mkdir_p "$xdir$objdir"
 
       if test -z "$output_obj"; then
 	# Place PIC objects in $objdir
 	command="$command -o $lobj"
       fi
 
-      $run $rm "$lobj" "$output_obj"
+      $run $RM "$lobj" "$output_obj"
 
       $show "$command"
       if $run eval "$command"; then :
       else
-	test -n "$output_obj" && $run $rm $removelist
+	test -n "$output_obj" && $run $RM $removelist
 	exit $EXIT_FAILURE
       fi
 
@@ -1476,17 +1480,17 @@ repeat this compilation, it may succeed, by chance, but you had better
 avoid parallel builds (make -j) in this platform, or get a better
 compiler."
 
-	$run $rm $removelist
+	$run $RM $removelist
 	exit $EXIT_FAILURE
       fi
 
       # Just move the object if needed, then go on to compile the next one
       if test -n "$output_obj" && test "X$output_obj" != "X$lobj"; then
-	$show "$mv $output_obj $lobj"
-	if $run $mv $output_obj $lobj; then :
+	$show "$MV $output_obj $lobj"
+	if $run $MV $output_obj $lobj; then :
 	else
 	  error=$?
-	  $run $rm $removelist
+	  $run $RM $removelist
 	  exit $error
 	fi
       fi
@@ -1524,11 +1528,11 @@ EOF
 
       # Suppress compiler output if we already did a PIC compilation.
       command="$command$suppress_output"
-      $run $rm "$obj" "$output_obj"
+      $run $RM "$obj" "$output_obj"
       $show "$command"
       if $run eval "$command"; then :
       else
-	$run $rm $removelist
+	$run $RM $removelist
 	exit $EXIT_FAILURE
       fi
 
@@ -1548,17 +1552,17 @@ repeat this compilation, it may succeed, by chance, but you had better
 avoid parallel builds (make -j) in this platform, or get a better
 compiler."
 
-	$run $rm $removelist
+	$run $RM $removelist
 	exit $EXIT_FAILURE
       fi
 
       # Just move the object if needed
       if test -n "$output_obj" && test "X$output_obj" != "X$obj"; then
-	$show "$mv $output_obj $obj"
-	if $run $mv $output_obj $obj; then :
+	$show "$MV $output_obj $obj"
+	if $run $MV $output_obj $obj; then :
 	else
 	  error=$?
-	  $run $rm $removelist
+	  $run $RM $removelist
 	  exit $error
 	fi
       fi
@@ -1580,11 +1584,11 @@ non_pic_object=none
 EOF
     fi
 
-    $run $mv "${libobj}T" "${libobj}"
+    $run $MV "${libobj}T" "${libobj}"
 
     # Unlock the critical section if it was locked
     if test "$need_locks" != no; then
-      $run $rm "$lockfile"
+      $run $RM "$lockfile"
     fi
 
     exit $EXIT_SUCCESS
@@ -2021,8 +2025,8 @@ func_mode_install ()
 	    for linkname
 	    do
 	      if test "$linkname" != "$realname"; then
-		$show "(cd $destdir && $rm $linkname && $LN_S $realname $linkname)"
-		$run eval "(cd $destdir && $rm $linkname && $LN_S $realname $linkname)"
+		$show "(cd $destdir && $RM $linkname && $LN_S $realname $linkname)"
+		$run eval "(cd $destdir && $RM $linkname && $LN_S $realname $linkname)"
 	      fi
 	    done
 	  fi
@@ -2184,7 +2188,7 @@ func_mode_install ()
 	      tmpdir="$tmpdir/libtool-$$"
 	      save_umask=`umask`
 	      umask 0077
-	      if $mkdir "$tmpdir"; then
+	      if $MKDIR_P "$tmpdir"; then
 	      	umask $save_umask
 	      else
 	      	umask $save_umask
@@ -2200,7 +2204,7 @@ func_mode_install ()
 	      if $run eval "$relink_command"; then :
 	      else
 		func_error "error: relink \`$file' with the above command before installing it"
-		${rm}r "$tmpdir"
+		${RM}r "$tmpdir"
 		continue
 	      fi
 	      file="$outputname"
@@ -2232,7 +2236,7 @@ func_mode_install ()
 	esac
 	$show "$install_prog$stripme $file $destfile"
 	$run eval "$install_prog\$stripme \$file \$destfile" || exit $?
-	test -n "$outputname" && ${rm}r "$tmpdir"
+	test -n "$outputname" && ${RM}r "$tmpdir"
 	;;
       esac
     done
@@ -3157,14 +3161,7 @@ func_mode_link ()
       output_objdir="$output_objdir/$objdir"
     fi
     # Create the object directory.
-    if test ! -d "$output_objdir"; then
-      $show "$mkdir $output_objdir"
-      $run $mkdir $output_objdir
-      status=$?
-      if test "$status" -ne 0 && test ! -d "$output_objdir"; then
-	exit $status
-      fi
-    fi
+    func_mkdir_p "$output_objdir"
 
     # Determine the type of output
     case $output in
@@ -4587,8 +4584,8 @@ func_mode_link ()
 	  esac
 	done
 	if test -n "$removelist"; then
-	  $show "${rm}r $removelist"
-	  $run ${rm}r $removelist
+	  $show "${RM}r $removelist"
+	  $run ${RM}r $removelist
 	fi
       fi
 
@@ -4696,11 +4693,11 @@ func_mode_link ()
 	  # limits. Maybe even breaks it.  We compile a program, linking it
 	  # against the deplibs as a proxy for the library.  Then we can check
 	  # whether they linked in statically or dynamically with ldd.
-	  $rm conftest.c
+	  $RM conftest.c
 	  cat > conftest.c <<EOF
 	  int main() { return 0; }
 EOF
-	  $rm conftest
+	  $RM conftest
 	  $LTCC -o conftest conftest.c $deplibs
 	  if test "$?" -eq 0 ; then
 	    ldd_output=`ldd conftest`
@@ -4745,7 +4742,7 @@ EOF
 	      name="`expr $i : '-l\(.*\)'`"
 	      # If $name is empty we are operating on a -L argument.
 	      if test "$name" != "" && test "$name" != "0"; then
-		$rm conftest
+		$RM conftest
 		$LTCC -o conftest conftest.c $i
 		# Did it work?
 		if test "$?" -eq 0 ; then
@@ -5097,7 +5094,7 @@ EOF
 	  if test "$always_export_symbols" = yes || test -n "$export_symbols_regex"; then
 	    $show "generating symbol list for \`$libname.la'"
 	    export_symbols="$output_objdir/$libname.exp"
-	    $run $rm $export_symbols
+	    $run $RM $export_symbols
 	    cmds=$export_symbols_cmds
 	    save_ifs="$IFS"; IFS='~'
 	    for cmd in $cmds; do
@@ -5118,8 +5115,8 @@ EOF
 	    if test -n "$export_symbols_regex"; then
 	      $show "$EGREP -e \"$export_symbols_regex\" \"$export_symbols\" > \"${export_symbols}T\""
 	      $run eval '$EGREP -e "$export_symbols_regex" "$export_symbols" > "${export_symbols}T"'
-	      $show "$mv \"${export_symbols}T\" \"$export_symbols\""
-	      $run eval '$mv "${export_symbols}T" "$export_symbols"'
+	      $show "$MV \"${export_symbols}T\" \"$export_symbols\""
+	      $run eval '$MV "${export_symbols}T" "$export_symbols"'
 	    fi
 	  fi
 	fi
@@ -5159,7 +5156,7 @@ EOF
 
 	# Make a backup of the uninstalled library when relinking
 	if test "$mode" = relink; then
-	  $run eval '(cd $output_objdir && $rm ${realname}U && $mv $realname ${realname}U)' || exit $?
+	  $run eval '(cd $output_objdir && $RM ${realname}U && $MV $realname ${realname}U)' || exit $?
 	fi
 
 	# Do each of the archive commands.
@@ -5260,7 +5257,7 @@ EOF
 	    if ${skipped_export-false}; then
 	      $show "generating symbol list for \`$libname.la'"
 	      export_symbols="$output_objdir/$libname.exp"
-	      $run $rm $export_symbols
+	      $run $RM $export_symbols
 	      libobjs=$output
 	      # Append the command to create the export file.
 	      eval concat_cmds=\"\$concat_cmds~$export_symbols_cmds\"
@@ -5287,7 +5284,7 @@ EOF
 
 		# Restore the uninstalled library and exit
 		if test "$mode" = relink; then
-		  $run eval '(cd $output_objdir && $rm ${realname}T && $mv ${realname}U $realname)'
+		  $run eval '(cd $output_objdir && $RM ${realname}T && $MV ${realname}U $realname)'
 		fi
 
 		exit $lt_exit
@@ -5323,7 +5320,7 @@ EOF
 
 	  # Append the command to remove the reloadable object files
 	  # to the just-reset $cmds.
-	  eval cmds=\"\$cmds~\$rm $delfiles\"
+	  eval cmds=\"\$cmds~\$RM $delfiles\"
 	fi
 
 	# Add any objects from preloaded convenience libraries
@@ -5345,7 +5342,7 @@ EOF
 
 	    # Restore the uninstalled library and exit
 	    if test "$mode" = relink; then
-	      $run eval '(cd $output_objdir && $rm ${realname}T && $mv ${realname}U $realname)'
+	      $run eval '(cd $output_objdir && $RM ${realname}T && $MV ${realname}U $realname)'
 	    fi
 
 	    exit $lt_exit
@@ -5355,12 +5352,12 @@ EOF
 
 	# Restore the uninstalled library and exit
 	if test "$mode" = relink; then
-	  $run eval '(cd $output_objdir && $rm ${realname}T && $mv $realname ${realname}T && $mv ${realname}U $realname)' || exit $?
+	  $run eval '(cd $output_objdir && $RM ${realname}T && $MV $realname ${realname}T && $MV ${realname}U $realname)' || exit $?
 
 	  if test -n "$convenience"; then
 	    if test -z "$whole_archive_flag_spec"; then
-	      $show "${rm}r $gentop"
-	      $run ${rm}r "$gentop"
+	      $show "${RM}r $gentop"
+	      $run ${RM}r "$gentop"
 	    fi
 	  fi
 
@@ -5370,8 +5367,8 @@ EOF
 	# Create links to the real library.
 	for linkname in $linknames; do
 	  if test "$realname" != "$linkname"; then
-	    $show "(cd $output_objdir && $rm $linkname && $LN_S $realname $linkname)"
-	    $run eval '(cd $output_objdir && $rm $linkname && $LN_S $realname $linkname)' || exit $?
+	    $show "(cd $output_objdir && $RM $linkname && $LN_S $realname $linkname)"
+	    $run eval '(cd $output_objdir && $RM $linkname && $LN_S $realname $linkname)' || exit $?
 	  fi
 	done
 
@@ -5418,7 +5415,7 @@ EOF
       esac
 
       # Delete the old objects.
-      $run $rm $obj $libobj
+      $run $RM $obj $libobj
 
       # Objects from convenience libraries.  This assumes
       # single-version convenience libraries.  Whenever we create
@@ -5459,8 +5456,8 @@ EOF
       # Exit if we aren't doing a library object file.
       if test -z "$libobj"; then
 	if test -n "$gentop"; then
-	  $show "${rm}r $gentop"
-	  $run ${rm}r $gentop
+	  $show "${RM}r $gentop"
+	  $run ${RM}r $gentop
 	fi
 
 	exit $EXIT_SUCCESS
@@ -5468,8 +5465,8 @@ EOF
 
       if test "$build_libtool_libs" != yes; then
 	if test -n "$gentop"; then
-	  $show "${rm}r $gentop"
-	  $run ${rm}r $gentop
+	  $show "${RM}r $gentop"
+	  $run ${RM}r $gentop
 	fi
 
 	# Create an invalid libtool object if no PIC, so that we don't
@@ -5495,8 +5492,8 @@ EOF
       fi
 
       if test -n "$gentop"; then
-	$show "${rm}r $gentop"
-	$run ${rm}r $gentop
+	$show "${RM}r $gentop"
+	$run ${RM}r $gentop
       fi
 
       exit $EXIT_SUCCESS
@@ -5654,8 +5651,8 @@ EOF
 
 	# Delete the generated files.
 	if test -f "$output_objdir/${outputname}S.${objext}"; then
-	  $show "$rm $output_objdir/${outputname}S.${objext}"
-	  $run $rm "$output_objdir/${outputname}S.${objext}"
+	  $show "$RM $output_objdir/${outputname}S.${objext}"
+	  $run $RM "$output_objdir/${outputname}S.${objext}"
 	fi
 
 	exit $status
@@ -5713,7 +5710,7 @@ EOF
 	# Replace the output file specification.
 	link_command=`$echo "X$link_command" | $Xsed -e 's%@OUTPUT@%'"$output"'%g'`
 	# Delete the old output file.
-	$run $rm $output
+	$run $RM $output
 	# Link the executable and exit
 	$show "$link_command"
 	$run eval "$link_command" || exit $?
@@ -5746,7 +5743,7 @@ EOF
       link_command=`$echo "X$link_command" | $Xsed -e 's%@OUTPUT@%'"$output_objdir/$outputname"'%g'`
 
       # Delete the old output files.
-      $run $rm $output $output_objdir/$outputname $output_objdir/lt-$outputname
+      $run $RM $output $output_objdir/$outputname $output_objdir/lt-$outputname
 
       $show "$link_command"
       $run eval "$link_command" || exit $?
@@ -5800,8 +5797,8 @@ EOF
 	  *cygwin* | *mingw* )
 	    cwrappersource=`$echo ${objdir}/lt-${output}.c`
 	    cwrapper=`$echo ${output}.exe`
-	    $rm $cwrappersource $cwrapper
-	    trap "$rm $cwrappersource $cwrapper; exit $EXIT_FAILURE" 1 2 15
+	    $RM $cwrappersource $cwrapper
+	    trap "$RM $cwrappersource $cwrapper; exit $EXIT_FAILURE" 1 2 15
 
 	    cat > $cwrappersource <<EOF
 
@@ -6140,8 +6137,8 @@ EOF
 	  $run $LTCC -s -o $cwrapper $cwrappersource
 	  ;;
 	esac
-	$rm $output
-	trap "$rm $output; exit $EXIT_FAILURE" 1 2 15
+	$RM $output
+	trap "$RM $output; exit $EXIT_FAILURE" 1 2 15
 
 	$echo > $output "\
 #! $SHELL
@@ -6228,9 +6225,9 @@ else
     file=\"\$\$-\$program\"
 
     if test ! -d \"\$progdir\"; then
-      $mkdir \"\$progdir\"
+      $MKDIR_P \"\$progdir\"
     else
-      $rm \"\$progdir/\$file\"
+      $RM \"\$progdir/\$file\"
     fi"
 
 	  $echo >> $output "\
@@ -6240,15 +6237,15 @@ else
       if relink_command_output=\`eval \$relink_command 2>&1\`; then :
       else
 	$echo \"\$relink_command_output\" >&2
-	$rm \"\$progdir/\$file\"
+	$RM \"\$progdir/\$file\"
 	exit 1
       fi
     fi
 
-    $mv \"\$progdir/\$file\" \"\$progdir/\$program\" 2>/dev/null ||
-    { $rm \"\$progdir/\$program\";
-      $mv \"\$progdir/\$file\" \"\$progdir/\$program\"; }
-    $rm \"\$progdir/\$file\"
+    $MV \"\$progdir/\$file\" \"\$progdir/\$program\" 2>/dev/null ||
+    { $RM \"\$progdir/\$program\";
+      $MV \"\$progdir/\$file\" \"\$progdir/\$program\"; }
+    $RM \"\$progdir/\$file\"
   fi"
 	else
 	  $echo >> $output "\
@@ -6433,8 +6430,8 @@ fi\
     done
 
     if test -n "$generated"; then
-      $show "${rm}r$generated"
-      $run ${rm}r$generated
+      $show "${RM}r$generated"
+      $run ${RM}r$generated
     fi
 
     # Now create the libtool archive.
@@ -6537,7 +6534,7 @@ fi\
 	    done
 	    dlprefiles="$newdlprefiles"
 	  fi
-	  $rm $output
+	  $RM $output
 	  # place dlname in correct position for cygwin
 	  tdlname=$dlname
 	  case $host,$output,$installed,$module,$dlname in
@@ -6594,8 +6591,8 @@ relink_command=\"$relink_command\""
 
       # Do a symbolic link so that the libtool archive can be found in
       # LD_LIBRARY_PATH before the program is installed.
-      $show "(cd $output_objdir && $rm $outputname && $LN_S ../$outputname $outputname)"
-      $run eval '(cd $output_objdir && $rm $outputname && $LN_S ../$outputname $outputname)' || exit $?
+      $show "(cd $output_objdir && $RM $outputname && $LN_S ../$outputname $outputname)"
+      $run eval '(cd $output_objdir && $RM $outputname && $LN_S ../$outputname $outputname)' || exit $?
       ;;
     esac
     exit $EXIT_SUCCESS
@@ -6605,7 +6602,7 @@ relink_command=\"$relink_command\""
 # func_mode_uninstall arg...
 func_mode_uninstall ()
 {
-    rm="$nonopt"
+    RM="$nonopt"
     files=
     rmforce=
     exit_status=0
@@ -6617,13 +6614,13 @@ func_mode_uninstall ()
     for arg
     do
       case $arg in
-      -f) rm="$rm $arg"; rmforce=yes ;;
-      -*) rm="$rm $arg" ;;
+      -f) RM="$RM $arg"; rmforce=yes ;;
+      -*) RM="$RM $arg" ;;
       *) files="$files $arg" ;;
       esac
     done
 
-    test -z "$rm" && \
+    test -z "$RM" && \
       func_fatal_help "you must specify an RM program"
 
     rmdirs=
@@ -6763,8 +6760,8 @@ func_mode_uninstall ()
 	fi
 	;;
       esac
-      $show "$rm $rmfiles"
-      $run $rm $rmfiles || exit_status=1
+      $show "$RM $rmfiles"
+      $run $RM $rmfiles || exit_status=1
     done
     objdir="$origobjdir"
 

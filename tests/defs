@@ -3,6 +3,26 @@
 # Gord Matzigkeit <gord@gnu.ai.mit.edu>, 1996
 # Gary V. Vaughan <gary@gnu.org>, 2003
 
+# Copyright (C) 2003, 2004 Free Software Foundation, Inc.
+# This is free software; see the source for copying conditions.  There is NO
+# warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, a copy can be downloaded from
+# http://www.gnu.org/copyleft/gpl.html, or by writing to the Free
+# Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
+# MA 02111-1307, USA.
+
 # Be Bourne compatible
 if test -n "${ZSH_VERSION+set}" && (emulate sh) >/dev/null 2>&1; then
   emulate sh
@@ -20,34 +40,59 @@ DUALCASE=1; export DUALCASE # for MKS sh
 # if CDPATH is set.
 (unset CDPATH) >/dev/null 2>&1 && unset CDPATH
 
+: ${AUTOCONF="autoconf"}
+: ${ECHO="echo"}
+: ${GREP="grep"}
+: ${LIBTOOL="../libtool"}
+: ${MAKE="make"}
+: ${MKDIR="mkdir"}		# FIXME: Use @mkdir_p@ substitution for make -j
+: ${SED="sed"}
+: ${SHELL="${CONFIG_SHELL-/bin/sh}"}
+
+# FIXME: Substitute @EGREP@ and @FGREP@ from the Makefile too
+if $ECHO a | ($GREP -E '(a|b)') >/dev/null 2>&1; then
+  EGREP="$GREP -E"
+else
+  EGREP='egrep'
+fi
+if $ECHO 'ab*c' | ($GREP -F 'ab*c') >/dev/null 2>&1; then
+  FGREP="$GREP -F"
+else
+  FGREP='fgrep'
+fi
+
+basename='s,^.*/,,g'
+dirname='s,/[^/]*$,,'
+
+# Work around backward compatibility issue on IRIX 6.5. On IRIX 6.4+, sh
+# is ksh but when the shell is invoked as "sh" and the current value of
+# the _XPG environment variable is not equal to 1 (one), the special
+# positional parameter $0, within a function call, is the name of the
+# function.
+progpath="$0"
+
+# The name of this program:
+progname=`$ECHO "$progpath" | $SED "$basename"`
+
+# Make sure we have an absolute path for reexecution:
+case $progpath in
+  [\\/]*|[A-Za-z]:\\*) ;;
+  *) progdir=`$ECHO "$progpath" | $SED "$dirname"`
+     progdir=`cd "$progdir" && pwd`
+     progpath="$progdir/$progname"
+     ;;
+esac
+
 # Check that srcdir is set to an absolute path.
 case "$srcdir" in
 /* | [A-Za-z]:\\*) ;;
 *) srcdir=`cd $srcdir && pwd` ;;
 esac
 
-sed_basename='s,^.*/,,g'
-sed_dirname='s,/[^/]*$,,'
-
-progname=`echo "$0" | sed "$sed_basename"`
-
-libtool="../libtool"
-prefix="./_inst"
-make="${MAKE-make}"
-SHELL="${CONFIG_SHELL-/bin/sh}"
-MKDIR="${MKDIR-mkdir}"
-AUTOCONF="${AUTOCONF-autoconf}"
-
-if echo a | (grep -E '(a|b)') >/dev/null 2>&1; then
-  EGREP='grep -E'
-else
-  EGREP='egrep'
-fi
-if echo 'ab*c' | (grep -F 'ab*c') >/dev/null 2>&1; then
-  FGREP='grep -F'
-else
-  FGREP='fgrep'
-fi
+# Global variables:
+EXIT_SUCCESS=0
+EXIT_FAILURE=1
+EXIT_SKIP=77  # $? = 77 is used to indicate a skipped test to automake
 
 # Disable usage of config.site for autoconf, unless DJGPP is present.
 # The DJGPP port of autoconf requires config.site, to work correctly.
@@ -64,22 +109,18 @@ NO | no | 0 | "")
 esac
 
 
-EXIT_SUCCESS=0
-EXIT_FAILURE=1
-EXIT_SKIP=77
-
 # func_msg arg...
 # Echo message with prefix.
 func_msg ()
 {
-    echo "=" ${1+"$@"}
+    $ECHO "=" ${1+"$@"}
 }
 
 # func_error arg...
 # Echo message to standard error.
 func_error ()
 {
-    echo ${1+"$@"} 1>&2
+    $ECHO ${1+"$@"} 1>&2
 }
 
 # func_skip arg...
@@ -111,7 +152,7 @@ func_get_config ()
     test -z "$4" && my_regex="^${my_varname}="
 
     eval $my_varname=NONE
-    eval `eval $my_src | eval grep \"$my_regex\"`
+    eval `eval $my_src | eval $GREP \"$my_regex\"`
 
     if eval test x\"\$$my_varname\" = xNONE; then
       func_error "$my_varname not set in \`$my_src'"
@@ -124,23 +165,23 @@ func_get_config ()
 
 
 # Extract objext from the libtool configuration
-func_get_config "objext" "$libtool --config" ": fatal"
+func_get_config "objext" "$LIBTOOL --config" ": fatal"
 
 # Extract objdir from the libtool configuration
-func_get_config "objdir" "$libtool --config" ": fatal"
+func_get_config "objdir" "$LIBTOOL --config" ": fatal"
 
 # Extract CC from the libtool configuration
-func_get_config "CC" "$libtool --config" ": fatal"
+func_get_config "CC" "$LIBTOOL --config" ": fatal"
 
 # Extract host from the libtool configuration
-func_get_config "host" "$libtool --config" ": fatal"
+func_get_config "host" "$LIBTOOL --config" ": fatal"
 
 
 # func_grep expression filename
 # Check whether EXPRESSION matches any line of FILENAME, without output.
 func_grep ()
 {
-    grep "$1" "$2" >/dev/null 2>&1
+    $GREP "$1" "$2" >/dev/null 2>&1
 }
 
 # func_mkdir_p dir
@@ -153,7 +194,7 @@ func_mkdir_p ()
     while test ! -d "$my_dir"; do
       my_dirs="$my_dir $my_dirs"
       case $my_dir in */*) ;; *) break ;; esac
-      my_dir=`echo "$my_dir" | sed "$sed_dirname"`
+      my_dir=`$ECHO "$my_dir" | $SED "$dirname"`
     done
    test ! -n "$my_dirs" || $MKDIR $my_dirs
 }
@@ -205,7 +246,7 @@ func_require ()
 func_configure ()
 {
     my_args=${1+"$@"}
-    my_dir=`pwd | sed "$sed_basename"`
+    my_dir=`pwd | $SED "$basename"`
     my_testdir="$srcdir/$my_dir"
 
     test -n "$my_args" && my_args=" $my_args"
@@ -247,11 +288,11 @@ func_check_static_shared ()
 func_make ()
 {
     my_args=${1+"$@"}
-    my_dir=`pwd | sed "$sed_basename"`
+    my_dir=`pwd | $SED "$basename"`
 
-    func_msg "Running \`$make $my_args' in $my_dir"
+    func_msg "Running \`$MAKE $my_args' in $my_dir"
 
-    eval $make $my_args || exit $EXIT_FAIL
+    eval $MAKE $my_args || exit $EXIT_FAIL
 }
 
 
@@ -314,7 +355,7 @@ func_exec ()
 {
     my_program="$1"
     my_exp_output="$2"
-    my_dir=`pwd | sed "$sed_basename"`
+    my_dir=`pwd | $SED "$basename"`
 
     test -n "$my_exp_output" \
       && my_exp_output="| $EGREP -e "\""$my_exp_output"\"
@@ -333,4 +374,8 @@ func_exec ()
     fi
 }
 
-echo "=== Running $progname"
+# Shared global variables for test scripts
+prefix="./_inst"
+scripts="$srcdir/../config/ltmain.sh ../libtoolize"
+
+$ECHO "=== Running $progname"

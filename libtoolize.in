@@ -76,7 +76,7 @@ DUALCASE=1; export DUALCASE # for MKS sh
 
 : ${CP="cp -f"}
 : ${LN_S="@LN_S@"}
-: ${MKDIR="mkdir"}
+: ${MKDIR_P="@mkdir_p@"}
 : ${RM="rm -f"}
 : ${SED="@SED@"}
 
@@ -251,7 +251,7 @@ func_version ()
 			  RM="echo $RM"
 			  test -n "$LN_S" && LN_S="echo $LN_S"
 			  CP="echo $CP"
-			  MKDIR="echo $MKDIR"
+			  MKDIR_P="echo $MKDIR_P"
 			fi
       			libtoolize_flags="${libtoolize_flags} --dry-run"
 			;;
@@ -306,20 +306,29 @@ func_version ()
   done
 }
 
-# func_mkdir_p dir
-# Make sure the entire path to DIR is available.
-func_mkdir_p ()
-{
-    my_dir=$1
-    my_dirs=
 
-    while test ! -d "$my_dir"; do
-      my_dirs="$my_dir $my_dirs"
-      case $my_dir in */*) ;; *) break ;; esac
-      my_dir=`echo "$my_dir" | $SED "$dirname"`
-    done
-   test ! -n "$my_dirs" || $MKDIR $my_dirs
+# func_mkdir_p directory-path
+# Use automake's best guess at a multithreadable mkdir command to create
+# DIRECTORY-PATH in a way that shouldn't interfere with `make -j'.
+func_mkdir_p () {
+    my_directory_path="$1"
+    my_status=
+
+    if test -n "$my_directory_path"; then
+      test -f "$my_directory_path" && {
+        ${RM}r "$my_directory_path"
+      }
+
+      $MKDIR_P "$my_directory_path"
+      my_status=$?
+
+      # Bail out if $MKDIR_P failed to create a directory.
+      test "$my_status" -ne $EXIT_SUCCESS && \
+        test ! -d "$my_directory_path" && \
+        exit $my_status
+    fi
 }
+
 
 # func_copy srcfile destfile
 # If option `--copy' was specified, or soft-linking SRCFILE to DESTFILE fails,
