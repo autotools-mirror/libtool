@@ -38,7 +38,7 @@ static lt_dlhandle handles;
 static lt_module
 sys_wll_open (lt_user_data loader_data, const char *filename)
 {
-  lt_dlhandle	cur;
+  lt_dlhandle	cur	   = 0;
   lt_module	module	   = 0;
   const char   *errormsg   = 0;
   char	       *searchname = 0;
@@ -92,21 +92,19 @@ sys_wll_open (lt_user_data loader_data, const char *filename)
      We check whether LoadLibrary is returning a handle to
      an already loaded module, and simulate failure if we
      find one. */
-  cur = handles;
-  while (cur)
+  while (cur = lt_dlhandle_next (cur))
     {
-      if (!cur->module)
+      const lt_dlinfo *info = lt_dlgetinfo (cur);
+      if (!info->module)
 	{
 	  cur = 0;
 	  break;
 	}
 
-      if (cur->module == module)
+      if (info->module == module)
 	{
 	  break;
 	}
-
-      cur = cur->next;
   }
 
   if (cur || !module)

@@ -1,3 +1,16 @@
+2004-07-08  Gary V. Vaughan  <gary@gnu.org>
+
+	* libltdl/ltdl.h (lt_dlinfo): Move private module field to here...
+	* libltdl/ltdl.c (lt_dlhandle_struct): ...from here.  Changed all
+	callers.
+	* libltdl/loader-loadlibrary.c (sys_wll_open): Use new inteface to
+	scan loaded handle->info.module fields for previously loaded
+	modules.
+	* doc/libtool.texi (User defined module data): Document changes to
+	the interface.
+	* NEWS: Updated.
+	Reported by Chuck Wilson <cwilson@ece.gatech.edu>
+
 2004-07-07  Brad <brad@comstyle.com>
 
 	* m4/libtool.m4: Fixes for the OpenBSD support

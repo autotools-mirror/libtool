@@ -91,7 +91,6 @@ struct lt_dlhandle_struct {
   lt_dlinfo		info;
   int			depcount;	/* number of dependencies */
   lt_dlhandle	       *deplibs;	/* dependencies */
-  lt_module		module;		/* system module handle */
   void *		system;		/* system specific data */
   lt_caller_data       *caller_data;	/* per caller associated data */
   int			flags;		/* various boolean stats */
@@ -404,9 +403,9 @@ tryall_dlopen (lt_dlhandle *handle, const char *filename)
     {
       lt_user_data data = loader->dlloader_data;
 
-      cur->module = loader->module_open (data, filename);
+      cur->info.module = loader->module_open (data, filename);
 
-      if (cur->module != 0)
+      if (cur->info.module != 0)
 	{
 	  break;
 	}
@@ -1712,7 +1711,7 @@ lt_dlclose (lt_dlhandle handle)
 	  handles = handle->next;
 	}
 
-      errors += handle->loader->module_close (data, handle->module);
+      errors += handle->loader->module_close (data, handle->info.module);
       errors += unload_deplibs(handle);
 
       /* It is up to the callers to free the data itself.  */
@@ -1795,7 +1794,7 @@ lt_dlsym (lt_dlhandle handle, const char *symbol)
       strcat(sym, symbol);
 
       /* try "modulename_LTX_symbol" */
-      address = handle->loader->find_sym (data, handle->module, sym);
+      address = handle->loader->find_sym (data, handle->info.module, sym);
       if (address)
 	{
 	  if (sym != lsym)
@@ -1818,7 +1817,7 @@ lt_dlsym (lt_dlhandle handle, const char *symbol)
       strcpy(sym, symbol);
     }
 
-  address = handle->loader->find_sym (data, handle->module, sym);
+  address = handle->loader->find_sym (data, handle->info.module, sym);
   if (sym != lsym)
     {
       FREE (sym);

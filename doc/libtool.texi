@@ -3329,14 +3329,17 @@ Some of the internal information about each loaded module that is
 maintained by libltdl is available to the user, in the form of this
 structure:
 
-@deftypefn {Type} {struct} lt_dlinfo @{ @w{char *@var{filename};} @w{char *@var{name};} @w{int @var{ref_count};} @}
+@deftypefn {Type} {struct} lt_dlinfo @{ @w{char *@var{filename};} @w{char *@var{name};} @w{int @var{ref_count};} @w{lt_module @var{module};}@}
 @code{lt_dlinfo} is used to store information about a module.
 The @var{filename} attribute is a null-terminated character string of
 the real module file name.  If the module is a libtool module then
 @var{name} is its module name (e.g. @code{"libfoo"} for
 @code{"dir/libfoo.la"}), otherwise it is set to @code{NULL}.  The
 @var{ref_count} attribute is a reference counter that describes how
-often the same module is currently loaded.
+often the same module is currently loaded. @var{module} is the
+dlloader's internal handle for the native module, and can be used, for
+example, by a loader to check whether @var{module} has already been
+loaded to save loading it again.
 @end deftypefn
 
 The following function will return a pointer to libltdl's internal copy

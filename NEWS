@@ -46,6 +46,7 @@ New in 1.5b: 2004-??-??; CVS version 1.5a, Libtool team:
   The symbols are deprecated but exported for backwards compatibility.
 * libltdl no longer uses lt_dlmalloc, lt_dlrealloc and lt_dlfree.  The symbols
   are still exported for backwards compatibility.
+* The lt_dlinfo struct has a new module field that can be used by dlloaders.
 * libltdl no longer supports pre-c89 compilers.  Some of the pre89 portability
   functions had compile time bugs in them anyway, so you guys can't have been
   using it :-)

@@ -1,5 +1,5 @@
 /* ltdl.h -- generic dlopen functions
-   Copyright (C) 1998-2000 Free Software Foundation, Inc.
+   Copyright (C) 1998-2000, 2004 Free Software Foundation, Inc.
    Originally by Thomas Tanner <tanner@ffii.org>
 
    NOTE: The canonical source of this file is maintained with the
@@ -32,6 +32,7 @@ Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 
 #include <libltdl/lt_system.h>
 #include <libltdl/lt_error.h>
+#include <libltdl/lt_dlloader.h>
 
 LT_BEGIN_C_DECLS
 
@@ -101,10 +102,11 @@ LT_SCOPE int	lt_dlpreload_default (const lt_dlsymlist *preloaded);
 
 /* Read only information pertaining to a loaded module. */
 typedef	struct {
-  char	*filename;		/* file name */
-  char	*name;			/* module name */
-  int	ref_count;		/* number of times lt_dlopened minus
+  char *	filename;	/* file name */
+  char *	name;		/* module name */
+  int		ref_count;	/* number of times lt_dlopened minus
 				   number of times lt_dlclosed. */
+  lt_module	module;		/* system module handle */
 } lt_dlinfo;
 
 LT_SCOPE const lt_dlinfo *lt_dlgetinfo	    (lt_dlhandle handle);
