@@ -19,7 +19,7 @@ CLEANFILES = libtool libtoolize ltconfig.T ltmain.shT libltdl.tar.gz
 
 # These are required by libtoolize.
 pkgdata_SCRIPTS = config.guess config.sub ltconfig
-pkgdata_DATA = ltmain.sh libltdl.tar.gz
+pkgdata_DATA = ltmain.sh
 
 # This macro file should be visible to Automake's aclocal.
 aclocaldir = @aclocaldir@
@@ -27,11 +27,6 @@ aclocal_DATA = $(aclocal_macros)
 
 # The standalone libtool script, and the libtool distributor.
 bin_SCRIPTS = libtool libtoolize
-
-libltdl.tar.gz: libltdl/Makefile
-	(cd libltdl && $(MAKE) dist)
-	rm -f libltdl.tar.gz
-	ln -s libltdl/libltdl-1.0.tar.gz libltdl.tar.gz
 
 libtool: $(srcdir)/ltmain.sh $(srcdir)/ltconfig
 	CC="$(CC)" CFLAGS="$(CFLAGS)" CPPFLAGS="$(CPPFLAGS)" \
@@ -81,6 +76,17 @@ configure-subdirs distdir: $(DIST_MAKEFILE_LIST)
 	test -d $$dir || mkdir $$dir || exit 1; \
 	abs_srcdir=`cd $(top_srcdir) >/dev/null && pwd`; \
 	(cd $$dir && $$abs_srcdir/$$dir/configure) || exit 1
+
+# Create and install libltdl.tar.gz
+install-data-hook: libltdl/Makefile
+	if (cd libltdl && $(MAKE) distdir distdir=libltdl && \
+	 tar -cf libltdl.tar libltdl && \
+	 gzip $(GZIP_ENV) libltdl.tar); then \
+	  $(INSTALL_DATA) libltdl/libltdl.tar.gz $(pkgdatadir)/libltdl.tar.gz; \
+	else \
+	  echo Warning: without gzip, libtool cannot install libltdl.tar.gz; \
+	fi; \
+	rm -rf libltdl/libltdl libltdl/libltdl.tar libltdl/libltdl.tar.gz
 
 ################################################################
 ##
