@@ -2121,7 +2121,8 @@ lt_dlopen (filename)
 	goto cleanup;
       }
 
-    line = LT_DLMALLOC (char, LT_FILENAME_MAX);
+    line_len = LT_FILENAME_MAX;
+    line = LT_DLMALLOC (char, line_len);
     if (!line)
       {
 	fclose (file);
@@ -2133,9 +2134,22 @@ lt_dlopen (filename)
     /* read the .la file */
     while (!feof(file))
       {
-	if (!fgets (line, LT_FILENAME_MAX, file))
+	if (!fgets (line, line_len, file))
 	  {
 	    break;
+	  }
+
+
+	/* Handle the case where we occasionally need to read a line 
+	   that is longer than the initial buffer size.  */
+	while (line[strlen(line) -1] != '\n')
+	  {
+	    line = LT_DLREALLOC (char, line, line_len *2);
+	    if (!fgets (&line[line_len -1], line_len +1, file))
+	      {
+		break;
+	      }
+	    line_len *= 2;
 	  }
 
 	if (line[0] == '\n' || line[0] == '#')
