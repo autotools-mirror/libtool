@@ -1,5 +1,8 @@
 1999-03-10  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* configure.in: fix AC_OUTPUT_COMMANDS for ltconfig and ltmain.sh
+	so that they work if srcdir is relative too
+	
 	* libtool.m4 (AC_LIBLTDL_INSTALLABLE, AC_LIBLTDL_CONVENIENCE): 
 	avoid introducing multiple --enable options when re-running
 	config.status
