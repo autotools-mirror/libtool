@@ -421,10 +421,8 @@ if test "$GCC" = yes; then
   esac
   case $ac_prog in
     # Accept absolute paths.
-changequote(,)dnl
-    [\\/]* | [A-Za-z]:[\\/]*)
-      re_direlt='/[^/][^/]*/\.\./'
-changequote([,])dnl
+    [[\\/]* | [A-Za-z]:[\\/]*)]
+      re_direlt=['/[^/][^/]*/\.\./']
       # Canonicalize the path of ld
       ac_prog=`echo $ac_prog| sed 's%\\\\%/%g'`
       while echo $ac_prog | grep "$re_direlt" > /dev/null 2>&1; do
@@ -526,9 +524,7 @@ beos*)
   ;;
 
 bsdi4*)
-  changequote(,)dnl
-  lt_cv_deplibs_check_method='file_magic ELF [0-9][0-9]*-bit [ML]SB (shared object|dynamic lib)'
-  changequote([, ])dnl
+  lt_cv_deplibs_check_method=['file_magic ELF [0-9][0-9]*-bit [ML]SB (shared object|dynamic lib)']
   lt_cv_file_magic_cmd='/usr/bin/file -L'
   lt_cv_file_magic_test_file=/shlib/libc.so
   ;;
@@ -550,9 +546,7 @@ freebsd* )
     i*86 )
       # Not sure whether the presence of OpenBSD here was a mistake.
       # Let's accept both of them until this is cleared up.
-      changequote(,)dnl
-      lt_cv_deplibs_check_method='file_magic (FreeBSD|OpenBSD)/i[3-9]86 (compact )?demand paged shared library'
-      changequote([, ])dnl
+      lt_cv_deplibs_check_method=['file_magic (FreeBSD|OpenBSD)/i[3-9]86 (compact )?demand paged shared library']
       lt_cv_file_magic_cmd=/usr/bin/file
       lt_cv_file_magic_test_file=`echo /usr/lib/libc.so.*`
       ;;
@@ -567,7 +561,7 @@ gnu*)
   ;;
 
 hpux10.20*|hpux11*)
-  lt_cv_deplibs_check_method='file_magic (s[0-9][0-9][0-9]|PA-RISC[0-9].[0-9]) shared library'
+  lt_cv_deplibs_check_method=['file_magic (s[0-9][0-9][0-9]|PA-RISC[0-9].[0-9]) shared library']
   lt_cv_file_magic_cmd=/usr/bin/file
   lt_cv_file_magic_test_file=/usr/lib/libc.sl
   ;;
@@ -586,9 +580,7 @@ irix5* | irix6*)
     *) libmagic=never-match;;
     esac
     # this will be overridden with pass_all, but let us keep it just in case
-    changequote(,)dnl
-    lt_cv_deplibs_check_method="file_magic ELF ${libmagic} MSB mips-[1234] dynamic lib MIPS - version 1"
-    changequote([, ])dnl
+    lt_cv_deplibs_check_method=["file_magic ELF ${libmagic} MSB mips-[1234] dynamic lib MIPS - version 1"]
     ;;
   esac
   lt_cv_file_magic_test_file=`echo /lib${libsuff}/libc.so*`
@@ -602,9 +594,7 @@ linux-gnu*)
     lt_cv_deplibs_check_method=pass_all ;;
   *)
     # glibc up to 2.1.1 does not perform some relocations on ARM
-    changequote(,)dnl
-    lt_cv_deplibs_check_method='file_magic ELF [0-9][0-9]*-bit [LM]SB (shared object|dynamic lib )' ;;
-    changequote([, ])dnl
+    lt_cv_deplibs_check_method=['file_magic ELF [0-9][0-9]*-bit [LM]SB (shared object|dynamic lib )'] ;;
   esac
   lt_cv_file_magic_test_file=`echo /lib/libc.so* /lib/libc-*.so`
   ;;
@@ -647,9 +637,7 @@ sysv4 | sysv4.2uw2* | sysv4.3* | sysv5*)
     lt_cv_deplibs_check_method=pass_all
     ;;
   motorola)
-    changequote(,)dnl
-    lt_cv_deplibs_check_method='file_magic ELF [0-9][0-9]*-bit [ML]SB (shared object|dynamic lib) M[0-9][0-9]* Version [0-9]'
-    changequote([, ])dnl
+    lt_cv_deplibs_check_method=['file_magic ELF [0-9][0-9]*-bit [ML]SB (shared object|dynamic lib) M[0-9][0-9]* Version [0-9]']
     lt_cv_file_magic_test_file=`echo /usr/lib/libc.so*`
     ;;
   esac
