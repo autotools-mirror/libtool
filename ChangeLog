@@ -8,7 +8,7 @@
 	soname_spec with $shrext.
 	* doc/libtool.texi (Link mode): Document it.
 
-2002-12-27  Charles Wilson  <cwilson@ece.gatech.edu>
+2002-12-30  Charles Wilson  <cwilson@ece.gatech.edu>
 
 	* libtool.m4 (AC_LIBTOOL_LANG_CXX_CONFIG): modify
 	$archive_expsym_cmds to restore support for using
@@ -305,7 +305,7 @@
 2002-10-24  Andrew Suffield  <asuffield@debian.org>
 
 	* libltdl/ltdl.c (lt_dlopenext): Corrected sense of "file not
-        found" check.
+	found" check.
 
 2002-10-24  Ossama Othman  <ossama@doc.ece.uci.edu>
 
@@ -313,8 +313,8 @@
 
 2002-10-23  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
 
-        * libtool.m4: Removed old Windows cruft.
-        * libtool.m4: Adapted pw32 to be like Cygwin/MinGW.
+	* libtool.m4: Removed old Windows cruft.
+	* libtool.m4: Adapted pw32 to be like Cygwin/MinGW.
 
 2002-10-23  Robert Boehne  <rboehne@gnu.org>
 
@@ -323,38 +323,37 @@
 
 2002-10-15  Charles Wilson  <cwilson@ece.gatech.edu>
 
-        * libtool.m4 (AC_LIBTOOL_SYS_MAX_CMD_LEN): avoid long delay on
-         cygwin/Win9x when computing commandline length.
-        (AC_LIBTOOL_SYS_DYNAMIC_LINKER): fix postinstall_cmds when
-        sources are in a subdirectory
-        * ltdl.m4 (AC_LTDL_SYSSEARCHPATH): use $PATH_SEPARATOR, not
-        $ac_path_separator
-        * configure.ac: move depdemo-specific stuff.  You must configure
-        libtool before you can try './libtool --features'.
-        * mdemo-inst.test: set $PATH to include the directory in which
-        the modules are installed (on cygwin, DLL search path is the
-        $PATH)
+	* libtool.m4 (AC_LIBTOOL_SYS_MAX_CMD_LEN): avoid long delay on
+	 cygwin/Win9x when computing commandline length.
+	(AC_LIBTOOL_SYS_DYNAMIC_LINKER): fix postinstall_cmds when
+	sources are in a subdirectory
+	* ltdl.m4 (AC_LTDL_SYSSEARCHPATH): use $PATH_SEPARATOR, not
+	$ac_path_separator
+	* configure.ac: move depdemo-specific stuff.  You must configure
+	libtool before you can try './libtool --features'.
+	* mdemo-inst.test: set $PATH to include the directory in which
+	the modules are installed (on cygwin, DLL search path is the
+	$PATH)
 
 2002-10-15  Bob Friesenhahn <bfriesen@simple.dallas.tx.us>
 
-        * ltmain.in: MinGW works identically to Cygwin.
+	* ltmain.in: MinGW works identically to Cygwin.
+	* libtool.m4: lt_cv_sys_max_cmd_len hard-coded to 8192
+	*  Model MinGW configuration after Cygwin configuration.
+	Some portions share implementation.
 
-        * libtool.m4: lt_cv_sys_max_cmd_len hard-coded to 8192
-        *  Model MinGW configuration after Cygwin configuration.
-           Some portions share implementation.
+2002-10-15  Elizabeth Barham <soggytrousers@yahoo.com>
 
-2002-10-11  Elizabeth Barham <soggytrousers@yahoo.com>
-
-        * libtool.m4: Pattern MinGW library naming after that
-        used by Cygwin except use 'lib' prefix rather than 'cyg'.
-        * Transfer some configuration from Cygwin with adjustments
-          for MinGW.
+	* libtool.m4: Pattern MinGW library naming after that
+	used by Cygwin except use 'lib' prefix rather than 'cyg'.
+	* Transfer some configuration from Cygwin with adjustments
+	for MinGW.
 
 2002-10-15  Albert Chin-A-Young  <china@thewrittenword.com>
 
-        * libtool.m4: When a module is built for AIX, the 'lib'
-        prefix isn't needed, neither is the version. AIX dlopen
-        will honor the RPATH in a library.
+	* libtool.m4: When a module is built for AIX, the 'lib'
+	prefix isn't needed, neither is the version. AIX dlopen
+	will honor the RPATH in a library.
 
 2002-10-11  Christoph Egger  <Christoph_Egger@gmx.de>
 
@@ -391,7 +390,7 @@
 
 2002-08-28  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
 
-        * ltdl.m4 & libltdl/ltdl.c: Port fully to native Win32 API.
+	* ltdl.m4 & libltdl/ltdl.c: Port fully to native Win32 API.
 
 2002-07-31  Robert Boehne  <rboehne@gnu.org>
 
