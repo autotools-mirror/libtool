@@ -598,6 +598,7 @@ func_serial_update ()
     my_macro_regex="$4"
     my_old_macro_regex="$5"
 
+    my_serial_update_p=:
     my_return_status=1
     my_srcfile="$my_srcdir/$my_filename"
     my_destfile="$my_destdir/$my_filename"
@@ -622,10 +623,10 @@ func_serial_update ()
 
       func_serial_update_check \
          "$my_srcfile" "$my_src_serial" "$my_destfile" "$my_dest_serial"
-      my_update_p="$func_serial_update_check_result"
+      my_serial_update_p="$func_serial_update_check_result"
     fi
 
-    if $my_update_p || $opt_force; then
+    if $my_serial_update_p || $opt_force; then
       func_copy "$my_srcfile" "$my_destfile"
       my_return_status=$?
     elif test "X$my_dest_serial" = "X$my_src_serial"; then
