@@ -1,3 +1,7 @@
+2000-09-04  Alexandre Oliva  <aoliva@redhat.com>
+
+	* mdemo/configure.in: Don't use -static on AIX4.1.
+
 2000-09-03  Alexandre Oliva  <aoliva@redhat.com>
 
 	* ltconfig.in: Get rid of hardcode_into_libs=all; use
