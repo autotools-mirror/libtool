@@ -261,7 +261,8 @@ _LT_CONFIG_LIBTOOL_INIT([$2])
 # full-stop to the whole comment if one is not present already.
 m4_define([_LT_FORMAT_COMMENT],
 [m4_ifval([$1], [
-m4_bpatsubst([$1], [^ *], [# ])]m4_bmatch([$1], [[!?.]$], [], [.])
+m4_bpatsubst([m4_bpatsubst([$1], [^ *], [# ])],
+              [['`$\]], [\\\&])]m4_bmatch([$1], [[!?.]$], [], [.])
 )])
 
 

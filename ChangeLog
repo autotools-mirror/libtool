@@ -1,3 +1,9 @@
+2004-10-07  Gary V. Vaughan  <gary@gnu.org>
+
+	* m4/libtool.m4 (_LT_FORMAT_COMMENT): Shell meta-characters in
+	_LT_DECL descriptions were not being escaped before injection into
+	TAG CONFIG here documents in config.status.
+
 2004-10-06  Peter O'Gorman  <peter@pogma.com>
 
 	* m4/libtool.m4 (_LT_PROG_CXX, _LT_PROG_F77): New macros to work
