@@ -1,3 +1,8 @@
+2005-03-14  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* libtool.m4 (AC_LIBTOOL_PROG_LD_SHLIBS) [linux]: Remove MAIN_
+	dependency when creating shared libraries with Portland pgf77.
+
 2005-03-12  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* ltmain.in (link mode): Reword double negation in error message.
