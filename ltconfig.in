@@ -296,7 +296,7 @@ args=
 prev=
 for option
 do
-  case "$option" in
+  case $option in
   -*=*) optarg=`echo "$option" | sed 's/[-_a-zA-Z0-9]*=//'` ;;
   *) optarg= ;;
   esac
@@ -308,7 +308,7 @@ do
     continue
   fi
 
-  case "$option" in
+  case $option in
   --help) cat <<EOM
 Usage: $progname [OPTION]... LTMAIN [HOST]
 
@@ -455,7 +455,7 @@ fi
 ltconfig_args=
 for arg
 do
-  case "$arg" in
+  case $arg in
   *" "*|*"	"*|*[\[\]\~\#\$\^\&\*\(\)\{\}\\\|\;\<\>\?]*)
   ltconfig_args="$ltconfig_args '$arg'" ;;
   *) ltconfig_args="$ltconfig_args $arg" ;;
@@ -538,7 +538,7 @@ if test "$verify_host" = yes; then
   echo $ac_n "checking host system type""... $ac_c" 1>&6
 
   host_alias=$host
-  case "$host_alias" in
+  case $host_alias in
   "")
     # Force config.guess to use the C compiler.
     # CC_FOR_BUILD overrides the CC variable in config.guess but I had
@@ -566,7 +566,7 @@ if test "$verify_host" = yes; then
   echo $ac_n "checking build system type... $ac_c" 1>&6
 
   build_alias=$build
-  case "$build_alias" in
+  case $build_alias in
   NONE)
     case $nonopt in
     NONE) build_alias=$host_alias ;;
@@ -601,12 +601,12 @@ host_vendor=`echo $host | sed 's/^\([^-]*\)-\([^-]*\)-\(.*\)$/\2/'`
 host_os=`echo $host | sed 's/^\([^-]*\)-\([^-]*\)-\(.*\)$/\3/'`
 
 # Transform linux* to *-*-linux-gnu*, to support old configure scripts.
-case "$host_os" in
+case $host_os in
 linux-gnu*) ;;
 linux*) host=`echo $host | sed 's/^\(.*-.*-linux\)\(.*\)$/\1-gnu\2/'`
 esac
 
-case "$host_os" in
+case $host_os in
 aix3*)
   # AIX sometimes has problems with the GCC collect2 program.  For some
   # reason, if we set the COLLECT_NAMES environment variable, the problems
@@ -698,7 +698,7 @@ else
       # Append any warnings to the config.log.
       cat conftest.err 1>&5
 
-      case "$host_os" in
+      case $host_os in
       hpux9* | hpux10* | hpux11*)
 	# On HP-UX, both CC and GCC only warn that PIC is supported... then
 	# they create non-PIC objects.  So, if there were any warnings, we
@@ -966,7 +966,7 @@ sys_lib_dlsearch_path_spec="/lib /usr/lib"
 sys_lib_search_path_spec="/lib /usr/lib /usr/local/lib"
 
 echo $ac_n "checking dynamic linker characteristics... $ac_c" 1>&6
-case "$host_os" in
+case $host_os in
 aix3*)
   version_type=linux
   library_names_spec='${libname}${release}.so$versuffix $libname.a'
@@ -1071,7 +1071,7 @@ freebsd1*)
 freebsd*)
   objformat=`test -x /usr/bin/objformat && /usr/bin/objformat || echo aout`
   version_type=freebsd-$objformat
-  case "$version_type" in
+  case $version_type in
     freebsd-elf*)
       library_names_spec='${libname}${release}.so$versuffix ${libname}${release}.so $libname.so'
       need_version=no
@@ -1083,7 +1083,7 @@ freebsd*)
       ;;
   esac
   shlibpath_var=LD_LIBRARY_PATH
-  case "$host_os" in
+  case $host_os in
   freebsd2*)
     shlibpath_overrides_runpath=yes
     ;;
@@ -1125,12 +1125,12 @@ irix5* | irix6*)
   need_version=no
   soname_spec='${libname}${release}.so$major'
   library_names_spec='${libname}${release}.so$versuffix ${libname}${release}.so$major ${libname}${release}.so $libname.so'
-  case "$host_os" in
+  case $host_os in
   irix5*)
     libsuff= shlibsuff=
     ;;
   *)
-    case "$LD" in # libtool.m4 will add one of these switches to LD
+    case $LD in # libtool.m4 will add one of these switches to LD
     *-32|*"-32 ") libsuff= shlibsuff= libmagic=32-bit;;
     *-n32|*"-n32 ") libsuff=32 shlibsuff=N32 libmagic=N32;;
     *-64|*"-64 ") libsuff=64 shlibsuff=64 libmagic=64-bit;;
@@ -1262,7 +1262,7 @@ sysv4 | sysv4.2uw2* | sysv4.3* | sysv5*)
   library_names_spec='${libname}${release}.so$versuffix ${libname}${release}.so$major $libname.so'
   soname_spec='${libname}${release}.so$major'
   shlibpath_var=LD_LIBRARY_PATH
-  case "$host_vendor" in
+  case $host_vendor in
     motorola)
       need_lib_prefix=no
       need_version=no
@@ -1323,7 +1323,7 @@ symxfrm='\1 \2\3 \3'
 global_symbol_to_cdecl="sed -n -e 's/^. .* \(.*\)$/extern char \1;/p'"
 
 # Define system-specific variables.
-case "$host_os" in
+case $host_os in
 aix*)
   symcode='[BCDT]'
   ;;
@@ -1346,7 +1346,7 @@ esac
 
 # Handle CRLF in mingw too chain
 opt_cr=
-case "$host_os" in
+case $host_os in
 mingw*)
   opt_cr=`echo 'x\{0,1\}' | tr x '\015'` # option cr in regexp
   ;;
@@ -1478,7 +1478,7 @@ echo "checking if libtool supports shared libraries... $can_build_shared" 1>&6
 
 # Only try to build win32 dlls if AC_LIBTOOL_WIN32_DLL was used in
 # configure.in, otherwise build static only libraries.
-case "$host_os" in
+case $host_os in
 cygwin* | mingw* | pw32* | os2*)
   if test x$can_build_shared = xyes; then
     test x$enable_win32_dll = xno && can_build_shared=no
@@ -1492,7 +1492,7 @@ test "$can_build_shared" = "no" && enable_shared=no
 
 # On AIX, shared libraries and static libraries use the same namespace, and
 # are all built from PIC.
-case "$host_os" in
+case $host_os in
 aix3*)
   test "$enable_shared" = yes && enable_static=no
   if test -n "$RANLIB"; then
@@ -1813,7 +1813,7 @@ fi
     enable_dlopen=no
   fi
 
-  case "$lt_cv_dlopen" in
+  case $lt_cv_dlopen in
   dlopen)
 for ac_hdr in dlfcn.h; do
 ac_safe=`echo "$ac_hdr" | sed 'y%./+-%__p_%'`
@@ -2005,12 +2005,12 @@ fi
     ;;
   esac
 
-  case "$lt_cv_dlopen_self" in
+  case $lt_cv_dlopen_self in
   yes|no) enable_dlopen_self=$lt_cv_dlopen_self ;;
   *) enable_dlopen_self=unknown ;;
   esac
 
-  case "$lt_cv_dlopen_self_static" in
+  case $lt_cv_dlopen_self_static in
   yes|no) enable_dlopen_self_static=$lt_cv_dlopen_self_static ;;
   *) enable_dlopen_self_static=unknown ;;
   esac
@@ -2027,7 +2027,7 @@ LTSHELL="$SHELL"
 LTCONFIG_VERSION="$VERSION"
 
 # Only quote variables if we're using ltmain.sh.
-case "$ltmain" in
+case $ltmain in
 *.sh)
   # Now quote all the things that may contain metacharacters.
   for var in ltecho old_AR old_AR_FLAGS old_CC old_LTCC old_CFLAGS old_CPPFLAGS \
@@ -2052,7 +2052,7 @@ case "$ltmain" in
     sys_lib_search_path_spec sys_lib_dlsearch_path_spec \
     compiler_c_o need_locks exclude_expsyms include_expsyms; do
 
-    case "$var" in
+    case $var in
     reload_cmds | old_archive_cmds | old_archive_from_new_cmds | \
     old_postinstall_cmds | old_postuninstall_cmds | \
     export_symbols_cmds | archive_cmds | archive_expsym_cmds | \
@@ -2068,7 +2068,7 @@ case "$ltmain" in
     esac
   done
 
-  case "$ltecho" in
+  case $ltecho in
   *'\$0 --fallback-echo"')
     ltecho=`$echo "X$ltecho" | $Xsed -e 's/\\\\\\\$0 --fallback-echo"$/$0 --fallback-echo"/'`
     ;;
@@ -2448,11 +2448,11 @@ else
   echo "### END LIBTOOL TAG CONFIG: $tagname" >> "$ofile"
 fi
 
-case "$ltmain" in
+case $ltmain in
 *.sh)
   echo >> "$ofile"
   if test -z "$tagname"; then
-    case "$host_os" in
+    case $host_os in
     aix3*)
       cat <<\EOF >> "$ofile"
 
@@ -2466,7 +2466,7 @@ fi
 EOF
       ;;
     esac
-    case "$host" in
+    case $host in
     *-*-cygwin* | *-*-mingw* | *-*-pw32* | *-*-os2*)
       cat <<'EOF' >> "$ofile"
       # This is a source program that is used to create dlls on Windows

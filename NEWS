@@ -5,6 +5,7 @@ New in 1.4b: 2000-??-??; CVS version 1.4a, Libtool team:
 * Support for GNU gcj compiler.
 
 New in 1.3d: 2000-??-??; CVS version 1.3c, Libtool team:
+* Multithread safe with lt_dlmutex_register callback registration.
 * New -no-install flag to avoid the use of executable wrapper scripts.
 * New --with-pic, -prefer-pic and -prefer-non-pic flags to control
   the generation of PIC/non-PIC code.

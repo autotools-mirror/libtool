@@ -104,7 +104,7 @@ AC_REQUIRE([AC_EXEEXT])dnl
 dnl
 
 # Only perform the check for file, if the check method requires it
-case "$deplibs_check_method" in
+case $deplibs_check_method in
 file_magic*)
   if test "$file_magic_cmd" = '$MAGIC_CMD'; then
     AC_PATH_MAGIC
@@ -139,12 +139,12 @@ test x"$pic_mode" = xno && libtool_flags="$libtool_flags --prefer-non-pic"
 
 # Some flags need to be propagated to the compiler or linker for good
 # libtool support.
-case "$host" in
+case $host in
 *-*-irix6*)
   # Find out which ABI we are using.
   echo '[#]line __oline__ "configure"' > conftest.$ac_ext
   if AC_TRY_EVAL(ac_compile); then
-    case "`/usr/bin/file conftest.$ac_objext`" in
+    case `/usr/bin/file conftest.$ac_objext` in
     *32-bit*)
       LD="${LD-ld} -32"
       ;;
@@ -188,7 +188,7 @@ ifdef([AC_PROVIDE_AC_LIBTOOL_WIN32_DLL],
       DllMain (0, 0, 0);],
       [lt_cv_need_dllmain=no],[lt_cv_need_dllmain=yes])])
 
-  case "$host/$CC" in
+  case $host/$CC in
   *-*-cygwin*/gcc*-mno-cygwin*|*-*-mingw*)
     # old mingw systems require "-dll" to link a DLL, while more recent ones
     # require "-mdll"
@@ -224,7 +224,7 @@ changequote(<<, >>)dnl
 <<  --enable-shared[=PKGS]  build shared libraries [default=>>AC_ENABLE_SHARED_DEFAULT],
 changequote([, ])dnl
 [p=${PACKAGE-default}
-case "$enableval" in
+case $enableval in
 yes) enable_shared=yes ;;
 no) enable_shared=no ;;
 *)
@@ -257,7 +257,7 @@ changequote(<<, >>)dnl
 <<  --enable-static[=PKGS]  build static libraries [default=>>AC_ENABLE_STATIC_DEFAULT],
 changequote([, ])dnl
 [p=${PACKAGE-default}
-case "$enableval" in
+case $enableval in
 yes) enable_static=yes ;;
 no) enable_static=no ;;
 *)
@@ -292,7 +292,7 @@ changequote(<<, >>)dnl
 <<  --enable-fast-install[=PKGS]  optimize for fast installation [default=>>AC_ENABLE_FAST_INSTALL_DEFAULT],
 changequote([, ])dnl
 [p=${PACKAGE-default}
-case "$enableval" in
+case $enableval in
 yes) enable_fast_install=yes ;;
 no) enable_fast_install=no ;;
 *)
@@ -328,7 +328,7 @@ pic_mode=ifelse($#,1,$1,default)])
 AC_DEFUN([AC_PATH_TOOL_PREFIX],
 [AC_MSG_CHECKING([for $1])
 AC_CACHE_VAL(lt_cv_path_MAGIC_CMD,
-[case "$MAGIC_CMD" in
+[case $MAGIC_CMD in
   /*)
   lt_cv_path_MAGIC_CMD="$MAGIC_CMD" # Let the user override the test with a path.
   ;;
@@ -347,7 +347,7 @@ dnl not every word.  This closes a longstanding sh security hole.
     if test -f $ac_dir/$1; then
       lt_cv_path_MAGIC_CMD="$ac_dir/$1"
       if test -n "$file_magic_test_file"; then
-	case "$deplibs_check_method" in
+	case $deplibs_check_method in
 	"file_magic "*)
 	  file_magic_regex="`expr \"$deplibs_check_method\" : \"file_magic \(.*\)\"`"
 	  MAGIC_CMD="$lt_cv_path_MAGIC_CMD"
@@ -419,7 +419,7 @@ if test "$GCC" = yes; then
   *)
     ac_prog=`($CC -print-prog-name=ld) 2>&5` ;;
   esac
-  case "$ac_prog" in
+  case $ac_prog in
     # Accept absolute paths.
 changequote(,)dnl
     [\\/]* | [A-Za-z]:[\\/]*)
@@ -516,7 +516,7 @@ lt_cv_deplibs_check_method='unknown'
 # If you have `file' or equivalent on your system and you're not sure
 # whether `pass_all' will *always* work, you probably want this one.
 
-case "$host_os" in
+case $host_os in
 aix*)
   lt_cv_deplibs_check_method=pass_all
   ;;
@@ -546,7 +546,7 @@ darwin* | rhapsody*)
 
 freebsd* )
   if echo __ELF__ | $CC -E - | grep __ELF__ > /dev/null; then
-    case "$host_cpu" in
+    case $host_cpu in
     i*86 )
       # Not sure whether the presence of OpenBSD here was a mistake.
       # Let's accept both of them until this is cleared up.
@@ -573,13 +573,13 @@ hpux10.20*|hpux11*)
   ;;
 
 irix5* | irix6*)
-  case "$host_os" in
+  case $host_os in
   irix5*)
     # this will be overridden with pass_all, but let us keep it just in case
     lt_cv_deplibs_check_method="file_magic ELF 32-bit MSB dynamic lib MIPS - version 1"
     ;;
   *)
-    case "$LD" in
+    case $LD in
     *-32|*"-32 ") libmagic=32-bit;;
     *-n32|*"-n32 ") libmagic=N32;;
     *-64|*"-64 ") libmagic=64-bit;;
@@ -597,7 +597,7 @@ irix5* | irix6*)
 
 # This must be Linux ELF.
 linux-gnu*)
-  case "$host_cpu" in
+  case $host_cpu in
   alpha* | i*86 | powerpc* | sparc* | ia64* )
     lt_cv_deplibs_check_method=pass_all ;;
   *)
@@ -642,7 +642,7 @@ solaris*)
   ;;
 
 sysv4 | sysv4.2uw2* | sysv4.3* | sysv5*)
-  case "$host_vendor" in
+  case $host_vendor in
   ncr)
     lt_cv_deplibs_check_method=pass_all
     ;;
@@ -701,7 +701,7 @@ AC_MSG_RESULT([$NM])
 AC_DEFUN([AC_CHECK_LIBM],
 [AC_REQUIRE([AC_CANONICAL_HOST])dnl
 LIBM=
-case "$host" in
+case $host in
 *-*-beos* | *-*-cygwin* | *-*-pw32*)
   # These system don't have libm
   ;;
@@ -727,7 +727,7 @@ esac
 # top_srcdir appropriately in the Makefiles.
 AC_DEFUN([AC_LIBLTDL_CONVENIENCE],
 [AC_BEFORE([$0],[AC_LIBTOOL_SETUP])dnl
-  case "$enable_ltdl_convenience" in
+  case $enable_ltdl_convenience in
   no) AC_MSG_ERROR([this package needs a convenience libltdl]) ;;
   "") enable_ltdl_convenience=yes
       ac_configure_args="$ac_configure_args --enable-ltdl-convenience" ;;

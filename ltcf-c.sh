@@ -38,7 +38,7 @@ lt_simple_compile_test_code="int some_variable = 0;"
 lt_simple_link_test_code='main(){return(0);}'
 
 ## Linker Characteristics
-case "$host_os" in
+case $host_os in
 cygwin* | mingw*)
   # FIXME: the MSVC++ port hasn't been tested in a loooong time
   # When not using gcc, we currently assume that we are using
@@ -56,7 +56,7 @@ if test "$with_gnu_ld" = yes; then
   wlarc='${wl}'
 
   # See if GNU ld supports shared libraries.
-  case "$host_os" in
+  case $host_os in
   aix3* | aix4* | aix5*)
     # On AIX, the GNU linker is very broken
     ld_shlibs=no
@@ -117,7 +117,7 @@ EOF
     # FIXME: what about values for MSVC?
     dll_entry=__cygwin_dll_entry@12
     dll_exclude_symbols=DllMain@12,_cygwin_dll_entry@12,_cygwin_noncygwin_dll_entry@12~
-    case "$host_os" in
+    case $host_os in
     mingw*)
       # mingw values
       dll_entry=_DllMainCRTStartup@12
@@ -248,7 +248,7 @@ EOF
   fi
 else
   # PORTME fill in a description of your system's linker (not GNU ld)
-  case "$host_os" in
+  case $host_os in
   aix3*)
     allow_undefined_flag=unsupported
     always_export_symbols=yes
@@ -273,7 +273,7 @@ else
     # CXXFLAGS/CFLAGS for g++/gcc.  In the cases where that is not
     # enough to fix the problem, add -Wl,-bbigtoc to LDFLAGS.
     if test "$with_gcc" = yes; then
-      case "$host_os" in aix4.[012]|aix4.[012].*)
+      case $host_os in aix4.[012]|aix4.[012].*)
       # We only want to do this on AIX 4.2 and lower, the check
       # below for broken collect2 doesn't work under 4.3+
         collect2name=`${CC} -print-prog-name=collect2`
@@ -407,7 +407,7 @@ else
     ;;
 
   hpux9* | hpux10* | hpux11*)
-    case "$host_os" in
+    case $host_os in
     hpux9*) archive_cmds='$rm $output_objdir/$soname~$LD -b +b $install_libdir -o $output_objdir/$soname $libobjs $deplibs $linker_flags~test $output_objdir/$soname = $lib || mv $output_objdir/$soname $lib' ;;
     *) archive_cmds='$LD -b +h $soname +b $install_libdir -o $lib $libobjs $deplibs $linker_flags' ;;
     esac
@@ -506,7 +506,7 @@ else
 		$LD -G${allow_undefined_flag} -M $lib.exp -h $soname -o $lib $libobjs $deplibs $linker_flags~$rm $lib.exp'
     hardcode_libdir_flag_spec='-R$libdir'
     hardcode_shlibpath_var=no
-    case "$host_os" in
+    case $host_os in
     solaris2.[0-5] | solaris2.[0-5].*) ;;
     *) # Supported since Solaris 2.6 (maybe 2.5.1?)
       whole_archive_flag_spec='-z allextract$convenience -z defaultextract' ;;
@@ -605,7 +605,7 @@ else
     ac_cv_prog_cc_wl='-Wl,'
     ac_cv_prog_cc_static='-static'
 
-    case "$host_os" in
+    case $host_os in
     beos* | irix5* | irix6* | osf3* | osf4* | osf5*)
       # PIC is the default for these OSes.
       ;;
@@ -640,7 +640,7 @@ else
     esac
   else
     # PORTME Check for PIC flags for the system compiler.
-    case "$host_os" in
+    case $host_os in
     aix*)
      # All AIX code is PIC.
       ac_cv_prog_cc_static="$ac_cv_prog_cc_static ${ac_cv_prog_cc_wl}-lC"
@@ -722,7 +722,7 @@ fi
 
 need_lc=yes
 if test "$enable_shared" = yes && test "$with_gcc" = yes; then
-  case "$archive_cmds" in
+  case $archive_cmds in
   *'~'*)
     # FIXME: we may have to deal with multi-command sequences.
     ;;

@@ -115,7 +115,7 @@ else
 fi
 
 # PORTME: fill in a description of your system's C++ link characteristics
-case "$host_os" in
+case $host_os in
   aix3*)
     # FIXME: insert proper C++ library support
     ld_shlibs=no
@@ -131,7 +131,7 @@ case "$host_os" in
     # CXXFLAGS/CFLAGS for g++/gcc.  In the cases where that is not
     # enough to fix the problem, add -Wl,-bbigtoc to LDFLAGS.
     if test "$with_gcc" = yes; then
-      case "$host_os" in aix4.[012]|aix4.[012].*)
+      case $host_os in aix4.[012]|aix4.[012].*)
       # We only want to do this on AIX 4.2 and lower, the check
       # below for broken collect2 doesn't work under 4.3+
         collect2name=`${CC} -print-prog-name=collect2`
@@ -209,7 +209,7 @@ case "$host_os" in
     fi
     ;;
   chorus*)
-    case "$cc_basename" in
+    case $cc_basename in
       *)
         # FIXME: insert proper C++ library support
         ld_shlibs=no
@@ -217,7 +217,7 @@ case "$host_os" in
     esac
     ;;
   dgux*)
-    case "$cc_basename" in
+    case $cc_basename in
       ec++)
         # FIXME: insert proper C++ library support
         ld_shlibs=no
@@ -239,13 +239,13 @@ case "$host_os" in
     ld_shlibs=no
     ;;
   hpux*)
-    case "$cc_basename" in
+    case $cc_basename in
       CC)
         # FIXME: insert proper C++ library support
         ld_shlibs=no
         ;;
       aCC)
-	case "$host_os" in
+	case $host_os in
 	hpux9*) archive_cmds='$rm $output_objdir/$soname~$CC -b ${wl}+b ${wl}$install_libdir -o $output_objdir/$soname $predep_objects $libobjs $deplibs $postdep_objects $compiler_flags~test $output_objdir/$soname = $lib || mv $output_objdir/$soname $lib' ;;
 	*) archive_cmds='$CC -b ${wl}+h ${wl}$soname ${wl}+b ${wl}$install_libdir -o $lib $predep_objects $libobjs $deplibs $postdep_objects $compiler_flags' ;;
 	esac
@@ -273,7 +273,7 @@ case "$host_os" in
     esac
     ;;
   irix5* | irix6*)
-    case "$cc_basename" in
+    case $cc_basename in
       CC)
         # SGI C++
         archive_cmds='$CC -shared -all -multigot $predep_objects $libobjs $deplibs $postdep_objects $compiler_flags -soname $soname `test -n "$verstring" && echo -set_version $verstring` -update_registry ${objdir}/so_locations -o $lib'
@@ -299,7 +299,7 @@ case "$host_os" in
     esac
     ;;
   linux*)
-    case "$cc_basename" in
+    case $cc_basename in
       KCC)
         # Kuck and Associates, Inc. (KAI) C++ Compiler
 
@@ -356,7 +356,7 @@ case "$host_os" in
     ld_shlibs=no
     ;;
   mvs*)
-    case "$cc_basename" in
+    case $cc_basename in
       cxx)
         # FIXME: insert proper C++ library support
         ld_shlibs=no
@@ -384,7 +384,7 @@ case "$host_os" in
       output_verbose_link_cmds='$CC -shared $CFLAGS -v conftest.$objext 2>&1 | egrep "\-L"'
     fi
 
-    case "$cc_basename" in
+    case $cc_basename in
       KCC)
         # Kuck and Associates, Inc. (KAI) C++ Compiler
 
@@ -443,7 +443,7 @@ case "$host_os" in
       output_verbose_link_cmds='$CC -shared $CFLAGS -v conftest.$objext 2>&1 | egrep "\-L"'
     fi
 
-    case "$cc_basename" in
+    case $cc_basename in
       KCC)
         # Kuck and Associates, Inc. (KAI) C++ Compiler
 
@@ -492,7 +492,7 @@ case "$host_os" in
     ld_shlibs=no
     ;;
   sco*)
-    case "$cc_basename" in
+    case $cc_basename in
       CC)
         # FIXME: insert proper C++ library support
         ld_shlibs=no
@@ -504,7 +504,7 @@ case "$host_os" in
     esac
     ;;
   sunos4*)
-    case "$cc_basename" in
+    case $cc_basename in
       CC)
         # Sun C++ 4.x
         # FIXME: insert proper C++ library support
@@ -522,7 +522,7 @@ case "$host_os" in
     esac
     ;;
   solaris*)
-    case "$cc_basename" in
+    case $cc_basename in
       CC)
 	# Sun C++ 4.2, 5.x and Centerline C++
         no_undefined_flag=' -ztext'
@@ -532,7 +532,7 @@ case "$host_os" in
 
         hardcode_libdir_flag_spec='-R$libdir'
         hardcode_shlibpath_var=no
-        case "$host_os" in
+        case $host_os in
           solaris2.[0-5] | solaris2.[0-5].*) ;;
           *)
             # The C++ compiler is used as linker so we must use $wl
@@ -598,7 +598,7 @@ case "$host_os" in
     esac
     ;;
   tandem*)
-    case "$cc_basename" in
+    case $cc_basename in
       NCC)
         # NonStop-UX NCC 3.20
         # FIXME: insert proper C++ library support
@@ -643,7 +643,7 @@ if test "$with_gcc" = yes; then
   ac_cv_prog_cc_wl='-Wl,'
   ac_cv_prog_cc_static='-static'
 
-  case "$host_os" in
+  case $host_os in
   beos* | irix5* | irix6* | osf3* | osf4* | osf5*)
     # PIC is the default for these OSes.
     ;;
@@ -677,7 +677,7 @@ if test "$with_gcc" = yes; then
     ;;
   esac
 else
-  case "$host_os" in
+  case $host_os in
     aix4* | aix5*)
       # All AIX code is PIC.
       if test "$host_cpu" = ia64; then
@@ -688,7 +688,7 @@ else
       fi
       ;;
     chorus*)
-      case "$cc_basename" in
+      case $cc_basename in
       cxch68)
         # Green Hills C++ Compiler
         # ac_cv_prog_cc_static="--no_auto_instantiation -u __main -u __premain -u _abort -r $COOL_DIR/lib/libOrb.a $MVME_DIR/lib/CC/libC.a $MVME_DIR/lib/classix/libcx.s.a"
@@ -696,7 +696,7 @@ else
       esac
       ;;
     dgux*)
-      case "$cc_basename" in
+      case $cc_basename in
         ec++)
           ac_cv_prog_cc_pic='-KPIC'
           ;;
@@ -712,7 +712,7 @@ else
       # FreeBSD uses GNU C++
       ;;
     hpux9* | hpux10* | hpux11*)
-      case "$cc_basename" in
+      case $cc_basename in
         CC)
           ac_cv_prog_cc_wl='-Wl,'
           ac_cv_prog_cc_static="${ac_cv_prog_cc_wl}-a ${ac_cv_prog_cc_wl}archive"
@@ -728,7 +728,7 @@ else
       esac
       ;;
     irix5* | irix6*)
-      case "$cc_basename" in
+      case $cc_basename in
         CC)
           ac_cv_prog_cc_wl='-Wl,'
           ac_cv_prog_cc_static='-non_shared'
@@ -739,7 +739,7 @@ else
       esac
       ;;
     linux*)
-      case "$cc_basename" in
+      case $cc_basename in
         KCC)
           # KAI C++ Compiler
           ac_cv_prog_cc_wl='--backend -Wl,'
@@ -761,7 +761,7 @@ else
     m88k*)
       ;;
     mvs*)
-      case "$cc_basename" in
+      case $cc_basename in
         cxx)
           ac_cv_prog_cc_pic='-W c,exportall'
           ;;
@@ -772,7 +772,7 @@ else
     netbsd*)
       ;;
     osf3* | osf4* | osf5*)
-      case "$cc_basename" in
+      case $cc_basename in
         KCC)
           ac_cv_prog_cc_wl='--backend -Wl,'
           ;;
@@ -795,7 +795,7 @@ else
     psos*)
       ;;
     sco*)
-      case "$cc_basename" in
+      case $cc_basename in
         CC)
           ac_cv_prog_cc_pic='-fPIC'
           ;;
@@ -804,7 +804,7 @@ else
       esac
       ;;
     solaris*)
-      case "$cc_basename" in
+      case $cc_basename in
         CC)
           # Sun C++ 4.2, 5.x and Centerline C++
           ac_cv_prog_cc_pic='-KPIC'
@@ -820,7 +820,7 @@ else
       esac
       ;;
     sunos4*)
-      case "$cc_basename" in
+      case $cc_basename in
         CC)
           # Sun C++ 4.x
           ac_cv_prog_cc_pic='-pic'
@@ -835,7 +835,7 @@ else
       esac
       ;;
     tandem*)
-      case "$cc_basename" in
+      case $cc_basename in
         NCC)
           # NonStop-UX NCC 3.20
           ac_cv_prog_cc_pic='-KPIC'
