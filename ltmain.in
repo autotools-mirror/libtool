@@ -105,9 +105,6 @@ execute_dlfiles=
 lo2o="s/\\.lo\$/.${objext}/"
 o2lo="s/\\.${objext}\$/.lo/"
 
-# set the tag name so that it defaults to CC
-tagname="CC"
-
 # Parse our command line options once, thoroughly.
 while test "$#" -gt 0
 do
@@ -470,11 +467,15 @@ if test -z "$show_help"; then
     # Only attempt this if the compiler in the base compile
     # command doesn't match the default compiler.
     if test -n "$available_tags" && test -z "$tagname"; then
-      case "$base_compile " in
-      "$CC "*) ;;
+      case $base_compile in
       # Blanks in the command may have been stripped by the calling shell,
       # but not from the CC environment variable when ltconfig was run.
+      "$CC "*) ;;
+      # Blanks at the start of $base_compile will cause this to fail
+      # if we don't check for them as well.
+      " $CC "*) ;;
       "`$echo $CC` "*) ;;
+      " `$echo $CC` "*) ;;
       *)
 	for z in $available_tags; do
 	  if grep "^# ### BEGIN LIBTOOL TAG CONFIG: $z$" < "$0" > /dev/null; then
@@ -1520,10 +1521,14 @@ EOF
     # command doesn't match the default compiler.
     if test -n "$available_tags" && test -z "$tagname"; then
       case $base_compile in
-      "$CC "*) ;;
       # Blanks in the command may have been stripped by the calling shell,
       # but not from the CC environment variable when ltconfig was run.
+      "$CC "*) ;;
+      # Blanks at the start of $base_compile will cause this to fail
+      # if we don't check for them as well.
+      " $CC "*) ;;
       "`$echo $CC` "*) ;;
+      " `$echo $CC` "*) ;;
       *)
 	for z in $available_tags; do
 	  if grep "^# ### BEGIN LIBTOOL TAG CONFIG: $z$" < "$0" > /dev/null; then

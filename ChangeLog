@@ -1,5 +1,11 @@
 2002-04-01  Robert Boehne  <rboehne@gnu.org>
 
+	* ltmain.in: Handle the case when no tag is explicitly set, and
+	$base_compile has a space in front of $CC, and revert the setting
+	of tagname checked in on 2002-3-14.
+
+2002-04-01  Robert Boehne  <rboehne@gnu.org>
+
 	* tagdemo/foo.cpp: Use C++ IO to catch problems linking to C++
 	runtime libraries.
 	* tagdemo/main.cpp: Ditto.
