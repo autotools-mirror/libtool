@@ -60,8 +60,10 @@ rm="rm -f"
 
 # Sed substitution that helps us do robust quoting.  It backslashifies
 # metacharacters that are still active within double-quoted strings.
-Xsed='sed -e s/^X//'
+Xsed='sed -e 1s/^X//'
 sed_quote_subst='s/\([\\`\\"$\\\\]\)/\\\1/g'
+SP2NL='tr \040 \012'
+NL2SP='tr \012 \040'
 
 # NLS nuisances.
 # Only set LANG and LC_ALL to C if already set.
@@ -97,7 +99,6 @@ show="$echo"
 show_help=
 execute_dlfiles=
 lo2o="s/\\.lo\$/.${objext}/"
-los2o="s/\\.lo /.${objext} /g"
 
 # Parse our command line options once, thoroughly.
 while test $# -gt 0
@@ -1377,7 +1378,7 @@ compiler."
 	oldlibs="$oldlibs $output_objdir/$libname.$libext"
 
 	# Transform .lo files to .o files.
-	oldobjs="$objs"`$echo "X$libobjs " | $Xsed -e 's/[^   ]*\.'${libext}' //g' -e "$los2o" -e 's/ $//g'`
+	oldobjs="$objs"`$echo "X$libobjs" | $SP2NL | $Xsed -e '/\.'${libext}'$/d' -e "$lo2o" -e '/^$/d' | $NL2SP`
       fi
 
       if test "$build_libtool_libs" = yes; then
@@ -1563,7 +1564,7 @@ EOF
 	done
 
 	# Use standard objects if they are PIC.
-	test -z "$pic_flag" && libobjs=`$echo "X$libobjs " | $Xsed -e "$los2o" -e 's/ $//g'`
+	test -z "$pic_flag" && libobjs=`$echo "X$libobjs" | $SP2NL | $Xsed -e "$lo2o" -e '/^$/d' | $NL2SP`
 
 	if test -n "$whole_archive_flag_spec"; then
 	  if test -n "$convenience"; then
@@ -1666,7 +1667,7 @@ EOF
       $run $rm $obj $libobj
 
       # Create the old-style object.
-      reload_objs="$objs"`$echo "X$libobjs " | $Xsed -e 's/[^       ]*\.'${libext}' //g' -e 's/[^       ]*\.lib //g' -e "$los2o" -e 's/ $//g'`
+      reload_objs="$objs"`$echo "X$libobjs" | $SP2NL | $Xsed -e '/\.'${libext}$'/d' -e '/\.lib$/d' -e "$lo2o" -e '/^$/d' | $NL2SP`
 
       output="$obj"
       eval cmds=\"$reload_cmds\"
@@ -1772,8 +1773,8 @@ EOF
 
       if test -n "$libobjs" && test "$build_old_libs" = yes; then
 	# Transform all the library objects into standard objects.
-	compile_command=`$echo "X$compile_command " | $Xsed -e "$los2o" -e 's/ $//'`
-	finalize_command=`$echo "X$finalize_command " | $Xsed -e "$los2o" -e 's/ $//'`
+	compile_command=`$echo "X$compile_command" | $SP2NL | $Xsed -e "$lo2o" -e '/^$/d' | $NL2SP`
+	finalize_command=`$echo "X$finalize_command" | $SP2NL | $Xsed -e "$lo2o" -e '/^$/d' | $NL2SP`
       fi
 
       if test "$export_dynamic" = yes && test -n "$NM" && test -n "$global_symbol_pipe"; then
@@ -1788,7 +1789,7 @@ EOF
 	*.c)
 	  if test -z "$export_symbols"; then
 	    # Add our own program objects to the preloaded list.
-	    dlprefiles=`$echo "X$objs$dlprefiles " | $Xsed -e "$los2o" -e 's/ $//'`
+	    dlprefiles=`$echo "X$objs$dlprefiles" | $SP2NL | $Xsed -e "$lo2o" -e '/^$/d' | $NL2SP`
 	  fi
 
 	  # Discover the nlist of each of the dlfiles.
@@ -2142,7 +2143,7 @@ fi\
 	addlibs="$convenience"
 	build_libtool_libs=no
       else
-	oldobjs="$objs"`$echo "X$libobjs " | $Xsed -e 's/[^   ]*\.'${libext}' //g' -e 's/[^   ]*\.lib //g' -e "$los2o" -e 's/ $//g'`
+	oldobjs="$objs "`$echo "X$libobjs" | $SP2NL | $Xsed -e '/\.'${libext}'$/d' -e '/\.lib$/d' -e "$lo2o" -e '/^$/d' | $NL2SP`
 	addlibs="$old_convenience"
       fi
 

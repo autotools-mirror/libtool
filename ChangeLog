@@ -1,5 +1,9 @@
 1998-12-23  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* ltmain.in (SP2NL, NL2SP): use `tr' magic to avoid passing very
+	long lines to sed
+	* doc/libtool.texi (sed): very long lines are no longer a problem
+
 	* libltdl/Makefile.am: install libltdl conditionally...
 	* libltdl/configure.in: ... if --enable-ltdl-install is issued
 	* libltdl/ltdl.c: removed #ifdef DEBUG
