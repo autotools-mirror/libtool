@@ -1,12 +1,16 @@
 2001-10-27  Gary V. Vaughan  <gary@gnu.org>
 
+	* libtool.m4 (_LT_AC_TAGCONFIG): Cray sed does not allow character
+	sets to contain the separator character.
+	Reported by Kevin Ryde <user42@zip.com.au>
+
 	* ltdl.m4 (AC_WITH_LTDL): New macro to add `--with-included-ltdl'
 	option to configure, but to find an appropriate ltdl library and
 	append the right options to link it.
 
 2001-10-24 Kevin Ryde  <user42@zip.com.au>
 
-	*libtool.m4 (AC_LIBTOOL_PROG_LD_SHLIBS): Remove a stray ' quote.
+	* libtool.m4 (AC_LIBTOOL_PROG_LD_SHLIBS): Remove a stray ' quote.
 
 2001-10-24 H.J. Lu  <hjl@gnu.org>
 
