@@ -1,0 +1,893 @@
+diff -ruNd libtool/Makefile.am libtool.new/Makefile.am
+--- libtool/Makefile.am	Tue Jan  5 19:15:23 1999
++++ libtool.new/Makefile.am	Sun Jan 10 15:38:50 1999
+@@ -2,7 +2,7 @@
+ ## Gordon Matzigkeit <gord@gnu.ai.mit.edu>, 1996
+ AUTOMAKE_OPTIONS = gnits
+ SUBDIRS = . doc tests
+-DIST_SUBDIRS = $(SUBDIRS) demo libltdl mdemo
++DIST_SUBDIRS = $(SUBDIRS) demo depdemo libltdl mdemo
+ 
+ # We need to export these variables when we run ltconfig.
+ CFLAGS = @CFLAGS@
+@@ -62,6 +62,7 @@
+ ACINCLUDE_M4_LIST = \
+ 	$(srcdir)/acinclude.m4 \
+ 	$(srcdir)/demo/acinclude.m4 \
++	$(srcdir)/depdemo/acinclude.m4 \
+ 	$(srcdir)/libltdl/acinclude.m4 \
+ 	$(srcdir)/mdemo/acinclude.m4
+ 
+diff -ruNd libtool/demo/Makefile.am libtool.new/demo/Makefile.am
+--- libtool/demo/Makefile.am	Sat Jan  9 10:51:42 1999
++++ libtool.new/demo/Makefile.am	Sun Jan 10 15:38:50 1999
+@@ -24,11 +24,11 @@
+ 
+ # Build hell from main.c and libhello.la
+ hell_SOURCES = main.c
+-hell_LDADD = libhello.la
++hell_LDADD = -lhello
+ 
+ # Create an easier-to-debug version of hell.
+ hell_debug_SOURCES = main.c
+-hell_debug_LDADD = libhello.la
++hell_debug_LDADD = -lhello
+ hell_debug_LDFLAGS = -static
+ 
+ if BINARY_HELLDL
+diff -ruNd libtool/depdemo/Makefile.am libtool.new/depdemo/Makefile.am
+--- libtool/depdemo/Makefile.am	Sat Jan  9 10:51:43 1999
++++ libtool.new/depdemo/Makefile.am	Sun Jan 10 15:38:50 1999
+@@ -5,21 +5,20 @@
+ lib_LTLIBRARIES = libl1.la libl2.la libl3.la libl4.la
+ libl1_la_SOURCES = l1.c l1.h sysdep.h
+ libl2_la_SOURCES = l2.c l2.h sysdep.h
+-libl2_la_LIBADD = libl1.la
++libl2_la_LDFLAGS = -ll1
+ libl3_la_SOURCES = l3.c l3.h sysdep.h
+-libl3_la_LIBADD = libl1.la libl2.la
++libl3_la_LDFLAGS = -ll1 -ll2
+ libl4_la_SOURCES = l4.c l4.h sysdep.h
+-libl4_la_LIBADD = libl3.la $(LIBADD_M)
+-
+-bin_PROGRAMS = depdemo depdemo.static
++libl4_la_LDFLAGS = -ll3 $(LIBADD_M)
+ 
+-depdemo_SOURCES = main.c
+-depdemo_LDADD = libl1.la libl2.la libl4.la \
+-		libl3.la # remove this!
+-depdemo_DEPENDENCIES = libl1.la libl2.la libl4.la
++bin_PROGRAMS = depdemo.static depdemo
+ 
+ depdemo_static_SOURCES = main.c
+-depdemo_static_LDADD = libl1.la libl2.la libl4.la \
+-		libl3.la # remove this!
++depdemo_static_LDADD = -ll1 -ll2 -ll4
+ depdemo_static_DEPENDENCIES = libl1.la libl2.la libl4.la
+ depdemo_static_LDFLAGS = -static
++
++depdemo_SOURCES = main.c
++depdemo_LDADD = -ll1 -ll2 -ll4
++depdemo_DEPENDENCIES = libl1.la libl2.la libl4.la
++
+diff -ruNd libtool/ltmain.in libtool.new/ltmain.in
+--- libtool/ltmain.in	Sun Jan 10 11:16:15 1999
++++ libtool.new/ltmain.in	Sun Jan 10 15:38:50 1999
+@@ -611,7 +611,6 @@
+     convenience=
+     old_convenience=
+     deplibs=
+-    eval lib_search_path=\"$sys_lib_search_path\"
+     
+     avoid_versioning=no
+     dlfiles=
+@@ -760,13 +759,18 @@
+ 
+       -L*)
+ 	dir=`$echo "X$arg" | $Xsed -e 's%^-L\(.*\)$%\1%'`
++	# We need an absolute path.
+ 	case "$dir" in
+ 	/* | [A-Za-z]:[/\\]*)
+ 	  # Add the corresponding hardcode_libdir_flag, if it is not identical.
+ 	  ;;
+ 	*)
+-	  $echo "$modename: \`-L$dir' cannot specify a relative directory" 1>&2
+-	  exit 1
++	  absdir=`cd "$dir" && pwd`
++	  if test -z "$absdir"; then
++	    $echo "$modename: cannot determine absolute directory name of \`$dir'" 1>&2
++	    exit 1
++	  fi
++	  arg="-L$absdir"
+ 	  ;;
+ 	esac
+ 	deplibs="$deplibs $arg"
+@@ -783,11 +787,13 @@
+ 	  fi
+ 	  ;;
+ 	esac
++	continue
+ 	;;
+ 
+       -l*)
+ 	deplibs="$deplibs $arg"
+ 	compile_dependencylibs="$compile_dependencylibs $arg"
++	continue
+ 	;;
+ 
+       -module)
+@@ -889,6 +895,7 @@
+ 	# it will not redefine variable installed.
+ 	installed=yes
+ 
++	# Read in the .la file
+ 	# If there is no directory component, then add one.
+ 	case "$arg" in
+ 	*/* | *\\*) . $arg ;;
+@@ -938,10 +945,7 @@
+ 	    # we need to preload.
+ 	    prev=dlprefiles
+ 	  else
+-	    # We should not create a dependency on this library, but we
+-	    # may need any libraries it requires.
+-	    compile_command="$compile_command$dependency_libs"
+-	    finalize_command="$finalize_command$dependency_libs"
++	    # We should not create a dependency on this library
+ 	    prev=
+ 	    continue
+ 	  fi
+@@ -957,155 +961,28 @@
+ 	    dlprefiles="$dlprefiles $dir/$linklib"
+ 	  fi
+ 	  prev=
++	else
++	  # FIXME: remove this sometime in the future.
++	  $echo "$modename: linking against .la files is obsolete" 1>&2
+ 	fi
+-
+-	if test "$build_libtool_libs" = yes && test -n "$library_names"; then
+-	  link_against_libtool_libs="$link_against_libtool_libs $arg"
+-	  if test -n "$shlibpath_var"; then
+-	    # Make sure the rpath contains only unique directories.
+-	    case "$temp_rpath " in
+-	    *" $dir "*) ;;
+-	    *) temp_rpath="$temp_rpath $dir" ;;
+-	    esac
+-	  fi
+-
+-	  # This is the magic to use -rpath.
+-	  if test -n "$hardcode_libdir_flag_spec"; then
+-	    if test -n "$hardcode_libdir_separator"; then
+-	      if test -z "$hardcode_libdirs"; then
+-		# Put the magic libdir with the hardcode flag.
+-		hardcode_libdirs="$libdir"
+-		libdir="@HARDCODE_LIBDIRS@"
+-	      else
+-		# Just accumulate the unique libdirs.
+-		case "$hardcode_libdir_separator$hardcode_libdirs$hardcode_libdir_separator" in
+-		*"$hardcode_libdir_separator$libdir$hardcode_libdir_separator"*)
+-		  ;;
+-		*)
+-		  hardcode_libdirs="$hardcode_libdirs$hardcode_libdir_separator$libdir"
+-		  ;;
+-		esac
+-		libdir=
+-	      fi
+-	    fi
+-
+-	    if test -n "$libdir"; then
+-	      eval flag=\"$hardcode_libdir_flag_spec\"
+-
+-	      compile_command="$compile_command $flag"
+-	      finalize_command="$finalize_command $flag"
+-	    fi
+-	  elif test -n "$runpath_var"; then
+-	    # Do the same for the permanent run path.
+-	    case "$perm_rpath " in
+-	    *" $libdir "*) ;;
+-	    *) perm_rpath="$perm_rpath $libdir" ;;
+-	    esac
+-	  fi
+-
+-
+-	  lib_linked=yes
+-	  case "$hardcode_action" in
+-	  immediate | unsupported)
+-	    if test "$hardcode_direct" = no; then
+-	      compile_command="$compile_command $dir/$linklib"
+-	      case "$host" in
+-	      *-*-cygwin32* | *-*-mingw32* | *-*-os2*)
+-		compile_dependencylibs="$compile_dependencylibs -L$dir -l$name"
+-		dllsearchdir=`cd "$dir" && pwd || echo "$dir"`
+-		if test -n "$dllsearchpath"; then
+-		  dllsearchpath="$dllsearchpath:$dllsearchdir"
+-		else
+-		  dllsearchpath="$dllsearchdir"
+-		fi
+-		;;
+-	      esac
+-	    elif test "$hardcode_minus_L" = no; then
+-	      case "$host" in
+-	      *-*-sunos*)
+-		compile_shlibpath="$compile_shlibpath$dir:"
+-		;;
+-	      esac
+-	      compile_command="$compile_command -L$dir -l$name"
+-	    elif test "$hardcode_shlibpath_var" = no; then
+-	      compile_shlibpath="$compile_shlibpath$dir:"
+-	      compile_command="$compile_command -l$name"
+-	    else
+-	      lib_linked=no
+-	    fi
+-	    ;;
+-
+-	  relink)
+-	    # We need an absolute path.
+-	    case "$dir" in
+-	    /* | [A-Za-z]:[/\\]*) ;;
+-	    *)
+-	      absdir=`cd "$dir" && pwd`
+-	      if test -z "$absdir"; then
+-		$echo "$modename: cannot determine absolute directory name of \`$dir'" 1>&2
+-		exit 1
+-	      fi
+-	      dir="$absdir"
+-	      ;;
+-	    esac
+-
+-	    if test "$hardcode_direct" = yes; then
+-	      compile_command="$compile_command $dir/$linklib"
+-	    elif test "$hardcode_minus_L" = yes; then
+-	      compile_command="$compile_command -L$dir -l$name"
+-	    elif test "$hardcode_shlibpath_var" = yes; then
+-	      compile_shlibpath="$compile_shlibpath$dir:"
+-	      compile_command="$compile_command -l$name"
+-	    else
+-	      lib_linked=no
+-	    fi
+-	    ;;
+-
++ 
++	dir=`$echo "X$arg" | $Xsed -e 's%/[^/]*$%%'`
++	if test "X$dir" != "X$arg"; then
++	  # We need an absolute path.
++	  case "$dir" in
++	  /* | [A-Za-z]:[/\\]*) ;;
+ 	  *)
+-	    lib_linked=no
++	    dir=`cd "$dir" && pwd`
++	    if test -z "$dir"; then
++	      $echo "$modename: cannot determine absolute directory name of \`$dir'" 1>&2
++	      exit 1
++	    fi
+ 	    ;;
+ 	  esac
+-
+-	  if test "$lib_linked" != yes; then
+-	    $echo "$modename: configuration error: unsupported hardcode properties"
+-	    exit 1
+-	  fi
+-
+-	  # Finalize command for both is simple: just hardcode it.
+-	  if test "$hardcode_direct" = yes; then
+-	    finalize_command="$finalize_command $libdir/$linklib"
+-	  elif test "$hardcode_minus_L" = yes; then
+-	    finalize_command="$finalize_command -L$libdir -l$name"
+-	  elif test "$hardcode_shlibpath_var" = yes; then
+-	    finalize_shlibpath="$finalize_shlibpath$libdir:"
+-	    finalize_command="$finalize_command -l$name"
+-	  else
+-	    # We cannot seem to hardcode it, guess we'll fake it.
+-	    finalize_command="$finalize_command -L$libdir -l$name"
+-	  fi
+-	else
+-	  # Transform directly to old archives if we don't build new libraries.
+-	  if test -n "$pic_flag" && test -z "$old_library"; then
+-	    $echo "$modename: cannot find static library for \`$arg'" 1>&2
+-	    exit 1
+-	  fi
+-
+-	  # Here we assume that one of hardcode_direct or hardcode_minus_L
+-	  # is not unsupported.  This is valid on all known static and
+-	  # shared platforms.
+-	  if test "$hardcode_direct" != unsupported; then
+-	    test -n "$old_library" && linklib="$old_library"
+-	    compile_command="$compile_command $dir/$linklib"
+-	    finalize_command="$finalize_command $dir/$linklib"
+-	  else
+-	    compile_command="$compile_command -L$dir -l$name"
+-	    finalize_command="$finalize_command -L$dir -l$name"
+-	  fi
+-	fi
+-
+-	# Add in any libraries that this one depends upon.
+-	compile_command="$compile_command$dependency_libs"
+-	finalize_command="$finalize_command$dependency_libs"
++	  deplibs="$deplibs -L$dir"
++	fi 
++	# FIXME: this will fail for modules without a 'lib' prefix!
++	deplibs="$deplibs -l$name"
+ 	continue
+ 	;;
+ 
+@@ -1145,6 +1022,25 @@
+     outputname=`$echo "X$output" | $Xsed -e 's%^.*/%%'`
+     libobjs_save="$libobjs"
+ 
++    # Make sure deplibs and lib_search_path contain
++    # only unique libraries and directories.
++    lib_search_path=`pwd`
++    newdeplibs=
++    for deplib in $deplibs; do
++      case "$newdeplibs " in
++      *" $deplib "*) ;;
++      *)
++	newdeplibs="$newdeplibs $deplib"
++	dir="`expr $deplib : '-L\(.*\)'`"
++	# If this is a -L argument add it to lib_search_path
++	test -n "$dir" && lib_search_path="$lib_search_path $dir"
++	;;
++      esac
++    done
++    deplibs="$newdeplibs"
++    eval sys_search_path=\"$sys_lib_search_path\"
++    lib_search_path="$lib_search_path $sys_search_path"
++
+     case "$output" in
+     "")
+       $echo "$modename: you must specify an output file" 1>&2
+@@ -1401,7 +1297,6 @@
+ 	  allow_undefined_flag="$no_undefined_flag"
+ 	fi
+ 
+-	dependency_libs="$deplibs"
+ 	case "$host" in
+ 	*-*-cygwin32* | *-*-mingw32* | *-*-os2*)
+ 	  # these systems don't actually have a c library (as such)!
+@@ -1434,6 +1329,206 @@
+ 	oldobjs="$objs "`$echo "X$libobjs" | $SP2NL | $Xsed -e '/\.'${libext}'$/d' -e "$lo2o" | $NL2SP`
+       fi
+ 
++      # Save some variables
++      dlname_save=$dlname
++      libdir_save=$libdir
++      library_names_save=$library_names
++      old_library_save=$old_library
++      name_save=$name
++      libname_save=$libname
++      release_save=$release
++      versuffix_save=$versuffix
++      major_save=$major
++	 
++      # Find libtool libraries and add their dependencies and directories
++      newdeplibs=      # libraries to link (uninstalled library)
++      inst_deplibs=    # libraries to link (installed library)
++      alldeplibs=      # all dependency libraries (uninstalled library)
++      inst_alldeplibs= # all dependency libraries (installed library)
++      remove_path=     # paths that contain uninstalled libtool libraries
++      new_lib_search_path=
++      for deplib in $deplibs; do
++	newdeplibs="$newdeplibs $deplib"
++	inst_deplibs="$inst_deplibs $deplib"
++	alldeplibs="$alldeplibs $deplib"
++	inst_alldeplibs="$inst_alldeplibs $deplib"
++	found=
++	name="`expr $deplib : '-l\(.*\)'`"
++	# If $name is empty we are operating on a -L argument.
++	if test -n "$name"; then
++	  libname=`eval \\$echo \"$libname_spec\"`
++	  for searchdir in $lib_search_path; do
++	    # Search the libtool library
++	    if test -f "$searchdir/$libname.la"; then
++	      lib="$searchdir/$libname.la"
++	      dlname=
++	      libdir=
++	      library_names=
++	      old_library=
++	      inst_dependency_libs=
++
++	      # Check to see that this really is a libtool archive.
++	      if (sed -e '2q' $lib | egrep "^# Generated by .*$PACKAGE") >/dev/null 2>&1; then :
++	      else
++		$echo "$modename: \`$lib' is not a valid libtool archive" 1>&2
++		exit 1
++	      fi
++
++	      # If the library was installed with an old release of libtool,
++	      # it will not redefine variable installed.
++	      installed=yes
++
++	      # Read in the .la file
++	      . $lib
++
++	      # Get the name of the library we link against.
++	      linklib=
++	      for l in $old_library $library_names; do
++		linklib="$l"
++	      done
++
++	      if test -z "$linklib"; then
++		$echo "$modename: cannot find name of link library for \`$lib'" 1>&2
++		exit 1
++	      fi
++
++	      if test "$build_libtool_libs" = yes; then
++		if test -z "$library_names" && test "$deplibs_check_method" != pass_all; then
++		  echo
++		  echo "*** Warning: This library needs some functionality provided by $libname."
++		  echo "*** I have the capability to make that library automatically link in when"
++		  echo "*** you link to this library.  But I can only do this if you have a"
++		  echo "*** shared version of the library, which you do not appear to have."
++		  break
++		fi
++		############################
++		# TODO: hardcode libraries
++		############################	      
++	      fi
++	      
++	      if test "X$installed" = Xyes; then
++		dir="$libdir"
++	      else
++		dir="$searchdir/$objdir"
++		# Remove this search path later
++		remove_path="$remove_path $searchdir"
++	      fi
++
++	      # Link against this library
++	      newdeplibs="$newdeplibs -L$dir"
++	      alldeplibs="$alldeplibs -L$dir $dependency_libs"
++	      new_lib_search_path="$new_lib_search_path $dir"
++	      
++	      case " $sys_search_path " in 
++	      *" $libdir "*) ;;
++	      *)
++		# Add path only if it isn't a system search path
++		inst_deplibs="$inst_deplibs -L$libdir"
++		inst_alldeplibs="$inst_alldeplibs -L$libdir"
++		;;
++	      esac
++
++	      # Set to dependency_libs if not defined
++	      test -z "$inst_dependency_libs" && inst_dependency_libs="$dependency_libs"
++	      inst_alldeplibs="$inst_alldeplibs $inst_dependency_libs"
++
++	      found=yes
++	      break
++	    fi
++	  done
++	  if test -z "$found"; then
++	    # Not a libtool library
++	    $echo "$deplib is a not libtool library"
++	  else
++	    $echo "$deplib is a libtool library"
++	  fi
++	else
++	  $echo "$deplib is a directory"
++	  new_lib_search_path="$new_lib_search_path `expr $deplib : '-L\(.*\)'`"
++	fi
++      done
++
++      # Make sure lib_search_path contains only unique directories.
++      lib_search_path=
++      for dir in $new_lib_search_path; do
++	case "$lib_search_path " in
++	*" $dir "*) ;;
++	*) lib_search_path="$lib_search_path $dir" ;;
++	esac
++      done
++      lib_search_path="$lib_search_path $sys_search_path"
++      
++      # Make sure deplibs contains only unique libraries and directories.
++      deplibs=
++      for deplib in $newdeplibs; do
++	case "$deplibs " in
++	*" $deplib "*) ;;
++	*) deplibs="$deplibs $deplib" ;;
++	esac
++      done
++      
++      # Make sure inst_deplibs contains only unique libraries and directories.
++      newinst_deplibs=
++      for deplib in $inst_deplibs; do
++	case "$newinst_deplibs " in
++	*" $deplib "*) ;;
++	*) newinst_deplibs="$newinst_deplibs $deplib" ;;
++	esac
++      done
++      inst_deplibs=$newinst_deplibs
++      
++      # Make sure alldeplibs contains only unique libraries and directories.
++      newalldeplibs=
++      for deplib in $alldeplibs; do
++	case "$newalldeplibs " in
++	*" $deplib "*) ;;
++	*) newalldeplibs="$newalldeplibs $deplib" ;;
++	esac
++      done
++      alldeplibs=$newalldeplibs
++      
++      # Make sure inst_alldeplibs contains only unique libraries and directories.
++      newinst_alldeplibs=
++      for deplib in $inst_alldeplibs; do
++	case "$newinst_alldeplibs " in
++	*" $deplib "*) ;;
++	*) newinst_alldeplibs="$newinst_alldeplibs $deplib" ;;
++	esac
++      done
++      inst_alldeplibs=$newinst_alldeplibs
++
++      # Eliminate all temporary directories.
++      for path in $remove_path; do
++	lib_search_path=`echo "$lib_search_path" | sed -e 's% $path % %g'`
++	deplibs=`echo "$deplibs" | sed -e 's% -L$path % %g'`
++	inst_deplibs=`echo "$inst_deplibs" | sed -e 's% -L$path % %g'`
++	alldeplibs=`echo "$alldeplibs" | sed -e 's% -L$path % %g'`
++	inst_alldeplibs=`echo "$inst_alldeplibs" | sed -e 's% -L$path % %g'`
++      done
++      
++      $echo "noinst deplibs:     $deplibs"
++      $echo "inst deplibs:       $inst_deplibs"
++      $echo "noinst all deplibs: $alldeplibs"
++      $echo "inst all deplibs:   $inst_alldeplibs"
++      $echo "search path:       '$lib_search_path'"
++
++      if test -n "$rpath"; then
++	# Building not a libtool convenience library.
++	dependency_libs="$alldeplibs"
++	inst_dependency_libs="$inst_alldeplibs"
++      fi
++
++      # Restore the variables
++      versuffix=$versuffix_save
++      major=$major_save
++      release=$release_save
++      libname=$libname_save
++      name=$name_save
++      old_library=$old_library_save
++      library_names=$library_names_save
++      libdir=$libdir_save
++      dlname=$dlname_save
++
+       if test "$build_libtool_libs" = yes; then
+ 	# Transform deplibs into only deplibs that can be linked in shared.
+ 	## Gordon: Do you check for the existence of the libraries in deplibs
+@@ -1777,6 +1872,294 @@
+ 	$echo "$modename: warning: \`-release' is ignored for programs" 1>&2
+       fi
+ 
++      $echo "old deplibs: $deplibs"
++      $echo "search path: $lib_search_path"
++
++      # Find libtool libraries and add their dependencies/rpaths
++      newdeplibs=
++      for deplib in $deplibs; do
++	newdeplibs="$newdeplibs $deplib"
++	name="`expr $deplib : '-l\(.*\)'`"
++	# If $name is empty we are operating on a -L argument.
++	if test -n "$name"; then
++	  libname=`eval \\$echo \"$libname_spec\"`
++	  for searchdir in $lib_search_path; do
++	    if test -f "$searchdir/$libname.la"; then
++	      lib="$searchdir/$libname.la"
++	      dlname=
++	      libdir=
++	      library_names=
++	      old_library=
++	      inst_dependency_libs=
++
++	      # Check to see that this really is a libtool archive.
++	      if (sed -e '2q' $lib | egrep "^# Generated by .*$PACKAGE") >/dev/null 2>&1; then :
++	      else
++		$echo "$modename: \`$lib' is not a valid libtool archive" 1>&2
++		exit 1
++	      fi
++
++	      # Read in the .la file
++	      # If there is no directory component, then add one.
++	      . $lib
++
++	      if test "$build_libtool_libs" = no || test "$deplibs_check_method" = none; then
++		# Add in any libraries that this one depends upon.
++		newdeplibs="$newdeplibs$dependency_libs"
++	      fi
++
++	      break
++	    fi
++	  done
++	fi
++      done
++	
++      # Make sure deplibs contains only unique libraries and directories.
++      deplibs=
++      for deplib in $newdeplibs; do
++	case "$deplibs " in
++	*" $deplib "*) ;;
++	*) deplibs="$deplibs $deplib" ;;
++	esac
++      done
++      $echo "deplibs: $deplibs"
++
++      # Find libtool libraries and add their directories
++      newdeplibs=
++      for deplib in $deplibs; do
++	found=
++	name="`expr $deplib : '-l\(.*\)'`"
++	# If $name is empty we are operating on a -L argument.
++	if test -n "$name"; then
++	  libname=`eval \\$echo \"$libname_spec\"`
++	  for searchdir in $lib_search_path; do
++	    if test -f "$searchdir/$libname.la"; then
++	      lib="$searchdir/$libname.la"
++	      dlname=
++	      libdir=
++	      library_names=
++	      old_library=
++	      inst_dependency_libs=
++
++	      # Check to see that this really is a libtool archive.
++	      if (sed -e '2q' $lib | egrep "^# Generated by .*$PACKAGE") >/dev/null 2>&1; then :
++	      else
++		$echo "$modename: \`$lib' is not a valid libtool archive" 1>&2
++		exit 1
++	      fi
++
++	      # If the library was installed with an old release of libtool,
++	      # it will not redefine variable installed.
++	      installed=yes
++
++	      # Read in the .la file
++	      . $lib
++
++	      # Get the name of the library we link against.
++	      linklib=
++	      for l in $old_library $library_names; do
++		linklib="$l"
++	      done
++
++	      if test -z "$linklib"; then
++		$echo "$modename: cannot find name of link library for \`$lib'" 1>&2
++		exit 1
++	      fi
++
++	      # Find the relevant object directory and library name.
++	      name=`$echo "X$lib" | $Xsed -e 's%^.*/%%' -e 's/\.la$//' -e 's/^lib//'`
++
++	      # Set to dependency_libs if not defined
++	      test -z "$inst_dependency_libs" && inst_dependency_libs="$dependency_libs"
++	      
++	      if test "X$installed" = Xyes; then
++		dir="$libdir"
++	      else
++		dir="$searchdir/$objdir"
++	      fi
++
++	      if test -z "$libdir"; then
++		# It is a libtool convenience library, so add in its objects.
++		convenience="$convenience $dir/$old_library"
++		old_convenience="$old_convenience $dir/$old_library"
++		compile_command="$compile_command $dir/$old_library"
++		finalize_command="$finalize_command $dir/$old_library"
++		continue
++	      fi
++
++	      if test "$build_libtool_libs" = yes && test -n "$library_names"; then
++		link_against_libtool_libs="$link_against_libtool_libs $lib"
++		if test -n "$shlibpath_var"; then
++		  # Make sure the rpath contains only unique directories.
++		  case "$temp_rpath " in
++		  *" $dir "*) ;;
++		  *) temp_rpath="$temp_rpath $dir" ;;
++		  esac
++		fi
++
++		# This is the magic to use -rpath.
++		if test -n "$hardcode_libdir_flag_spec"; then
++		  if test -n "$hardcode_libdir_separator"; then
++		    if test -z "$hardcode_libdirs"; then
++		      # Put the magic libdir with the hardcode flag.
++		      hardcode_libdirs="$libdir"
++		      libdir="@HARDCODE_LIBDIRS@"
++		    else
++		      # Just accumulate the unique libdirs.
++		      case "$hardcode_libdir_separator$hardcode_libdirs$hardcode_libdir_separator" in
++		      *"$hardcode_libdir_separator$libdir$hardcode_libdir_separator"*)
++			;;
++		      *)
++			hardcode_libdirs="$hardcode_libdirs$hardcode_libdir_separator$libdir"
++			;;
++		      esac
++		      libdir=
++		    fi
++		  fi
++
++		  if test -n "$libdir"; then
++		    eval flag=\"$hardcode_libdir_flag_spec\"
++
++		    compile_command="$compile_command $flag"
++		    finalize_command="$finalize_command $flag"
++		  fi
++		elif test -n "$runpath_var"; then
++		  # Do the same for the permanent run path.
++		  case "$perm_rpath " in
++		  *" $libdir "*) ;;
++		  *) perm_rpath="$perm_rpath $libdir" ;;
++		  esac
++		fi
++
++		lib_linked=yes
++		case "$hardcode_action" in
++		immediate | unsupported)
++		  if test "$hardcode_direct" = no; then
++		    compile_command="$compile_command $dir/$linklib"
++		    case "$host" in
++		    *-*-cygwin32* | *-*-mingw32* | *-*-os2*)
++		      compile_dependencylibs="$compile_dependencylibs -L$dir -l$name"
++		      dllsearchdir=`cd "$dir" && pwd || echo "$dir"`
++		      if test -n "$dllsearchpath"; then
++		        dllsearchpath="$dllsearchpath:$dllsearchdir"
++		      else
++		        dllsearchpath="$dllsearchdir"
++		      fi
++		      ;;
++		    esac
++		  elif test "$hardcode_minus_L" = no; then
++		    case "$host" in
++		    *-*-sunos*)
++		      compile_shlibpath="$compile_shlibpath$dir:"
++		      ;;
++		    esac
++		    compile_command="$compile_command -L$dir -l$name"
++		  elif test "$hardcode_shlibpath_var" = no; then
++		    compile_shlibpath="$compile_shlibpath$dir:"
++		    compile_command="$compile_command -l$name"
++		  else
++		    lib_linked=no
++		  fi
++		  ;;
++
++		relink)
++		  # We need an absolute path.
++		  case "$dir" in
++		  /* | [A-Za-z]:[/\\]*) ;;
++		  *)
++		    absdir=`cd "$dir" && pwd`
++		    if test -z "$absdir"; then
++		      $echo "$modename: cannot determine absolute directory name of \`$dir'" 1>&2
++		      exit 1
++		    fi
++		    dir="$absdir"
++		    ;;
++		  esac
++
++		  if test "$hardcode_direct" = yes; then
++		    compile_command="$compile_command $dir/$linklib"
++		  elif test "$hardcode_minus_L" = yes; then
++		    compile_command="$compile_command -L$dir -l$name"
++		  elif test "$hardcode_shlibpath_var" = yes; then
++		    compile_shlibpath="$compile_shlibpath$dir:"
++		    compile_command="$compile_command -l$name"
++		  else
++		    lib_linked=no
++		  fi
++		  ;;
++
++		*)
++		  lib_linked=no
++		  ;;
++		esac
++
++		if test "$lib_linked" != yes; then
++		  $echo "$modename: configuration error: unsupported hardcode properties"
++		  exit 1
++		fi
++
++		# Finalize command for both is simple: just hardcode it.
++		if test "$hardcode_direct" = yes; then
++		  finalize_command="$finalize_command $libdir/$linklib"
++		elif test "$hardcode_minus_L" = yes; then
++		  finalize_command="$finalize_command -L$libdir -l$name"
++		elif test "$hardcode_shlibpath_var" = yes; then
++		  finalize_shlibpath="$finalize_shlibpath$libdir:"
++		  finalize_command="$finalize_command -l$name"
++		else
++		  # We cannot seem to hardcode it, guess we'll fake it.
++		  finalize_command="$finalize_command -L$libdir -l$name"
++		fi
++	      else
++		# Transform directly to old archives if we don't build new libraries.
++		if test -n "$pic_flag" && test -z "$old_library"; then
++		  $echo "$modename: cannot find static library for \`$lib'" 1>&2
++		  exit 1
++		fi
++
++		# Here we assume that one of hardcode_direct or hardcode_minus_L
++		# is not unsupported.  This is valid on all known static and
++		# shared platforms.
++		if test "$hardcode_direct" != unsupported; then
++		  test -n "$old_library" && linklib="$old_library"
++		  compile_command="$compile_command $dir/$linklib"
++		  finalize_command="$finalize_command $dir/$linklib"
++		else
++		  compile_command="$compile_command -L$dir -l$name"
++		  finalize_command="$finalize_command -L$dir -l$name"
++		fi
++	      fi
++
++	      found=yes
++	      break
++	    fi
++	  done
++	  if test -z "$found"; then
++	    # Not a libtool library
++	    newdeplibs="$newdeplibs $deplib"
++	    $echo "$deplib is a not libtool library"
++	  else
++	    $echo "$deplib is a libtool library"
++	  fi
++	else
++	  $echo "$deplib is a directory"
++	fi
++      done
++
++      # Make sure deplibs contains only unique libraries and directories.
++      deplibs=
++      for deplib in $newdeplibs; do
++	case "$deplibs " in
++	*" $deplib "*) ;;
++	*) deplibs="$deplibs $deplib" ;;
++	esac
++      done
++      $echo "deplibs: $deplibs"
++	    
++      # Add in any non-libtool libraries.
++      compile_command="$compile_command $deplibs"
++      finalize_command="$finalize_command $deplibs"
++	      
+       if test -n "$rpath"; then
+ 	# If the user specified any rpath flags, then add them.
+ 	for libdir in $rpath; do
+@@ -2294,6 +2677,9 @@
+ # Libraries that this one depends upon.
+ dependency_libs='$dependency_libs'
+ 
++# Libraries that this one depends upon (installed).
++inst_dependency_libs='$inst_dependency_libs'
++
+ # Version information for $libname.
+ current=$current
+ age=$age
+@@ -2549,12 +2935,14 @@
+ 	  IFS="$save_ifs"
+ 	fi
+ 
++	# TODO: relink if necessary
++
+ 	# Install the pseudo-library for information purposes.
+ 	name=`$echo "X$file" | $Xsed -e 's%^.*/%%'`
+ 	instname="$dir/$name"i
+ 	$show "Creating $instname"
+ 	$rm "$instname"
+-	sed 's/^installed=no$/installed=yes/' "$file" > "$instname"
++	sed -e 's/^installed=no$/installed=yes/' -e 's/^dependency_libs=.*/dependency_libs=$inst_dependency_libs/' "$file" > "$instname"
+ 	$show "$install_prog $instname $destdir/$name"
+ 	$run eval "$install_prog $instname $destdir/$name" || exit $?
+ 	$show "$rm $instname"
+diff -ruNd libtool/mdemo/Makefile.am libtool.new/mdemo/Makefile.am
+--- libtool/mdemo/Makefile.am	Sun Jan 10 11:21:35 1999
++++ libtool.new/mdemo/Makefile.am	Sun Jan 10 15:39:38 1999
+@@ -30,13 +30,13 @@
+ 
+ # Create a version of mdemo that does dlopen.
+ mdemo_SOURCES = main.c
+-mdemo_LDADD = libltdl/libltdl.la \
++mdemo_LDADD = -Llibltdl -lltdl \
+ 	$(LIBADD_M) # We won't need this when libltdl takes care of dependencies
+ mdemo_LDFLAGS = -dlopen libfoo1.la -dlopen libfoo2.la
+ mdemo_DEPENDENCIES = libltdl/libltdl.la libfoo1.la libfoo2.la
+ 
+ # Create an easier-to-debug version of mdemo.
+ mdemo_debug_SOURCES = main.c
+-mdemo_debug_LDADD = libltdl/libltdl.la
++mdemo_debug_LDADD = -Llibltdl -lltdl
+ mdemo_debug_LDFLAGS = -static -dlopen libfoo1.la -dlopen libfoo2.la
+ mdemo_debug_DEPENDENCIES = libltdl/libltdl.la libfoo1.la libfoo2.la
