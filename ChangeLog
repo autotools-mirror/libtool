@@ -1,3 +1,8 @@
+2003-02-25  Benjamin Reed  <ranger@befunk.com>
+
+	* libtool.m4 (darwin): Disable hardcoding library paths to
+	make relinking unnecessary.
+
 2003-02-24  Robert Boehne  <rboehne@gnu.org>
 
 	* libltdl/configure.ac: Use AC_CONFIG_AUX_DIR([.]) to place

@@ -2519,7 +2519,8 @@ aix4*)
       #just in case a default was set somewhere
       _LT_AC_TAGVAR(archive_expsym_cmds, $1)=''
     fi
-    _LT_AC_TAGVAR(hardcode_direct, $1)=yes
+    _LT_AC_TAGVAR(hardcode_direct, $1)=no
+    _LT_AC_TAGVAR(hardcode_libdir_flag_spec, $1)='-L$libdir'
     _LT_AC_TAGVAR(hardcode_shlibpath_var, $1)=no
     _LT_AC_TAGVAR(whole_archive_flag_spec, $1)='-all_load $convenience'
     ;;  
@@ -2827,8 +2828,9 @@ case $host_os in
     else
       #just in case a default was set somewhere
       _LT_AC_TAGVAR(archive_expsym_cmds, $1)=''
-	fi
-    _LT_AC_TAGVAR(hardcode_direct, $1)=yes
+    fi
+    _LT_AC_TAGVAR(hardcode_direct, $1)=no
+    _LT_AC_TAGVAR(hardcode_libdir_flag_spec, $1)='-L$libdir'
     _LT_AC_TAGVAR(hardcode_shlibpath_var, $1)=no
     _LT_AC_TAGVAR(whole_archive_flag_spec, $1)='-all_load $convenience'
     ;;
@@ -5226,7 +5228,8 @@ EOF
         #just in case a default was set somewhere
         _LT_AC_TAGVAR(archive_expsym_cmds, $1)=''
       fi
-      _LT_AC_TAGVAR(hardcode_direct, $1)=yes
+      _LT_AC_TAGVAR(hardcode_direct, $1)=no
+      _LT_AC_TAGVAR(hardcode_libdir_flag_spec, $1)='-L$libdir'
       _LT_AC_TAGVAR(hardcode_shlibpath_var, $1)=no
       _LT_AC_TAGVAR(whole_archive_flag_spec, $1)='-all_load $convenience'
       ;;
