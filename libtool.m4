@@ -477,6 +477,32 @@ ia64-*-hpux*)
   rm -rf conftest*
   ;;
 
+x86_64-*linux*|ppc64-*linux*|s390x-*linux*|sparc64-*linux*)
+  # Find out which ABI we are using.
+  echo 'int i;' > conftest.$ac_ext
+  if AC_TRY_EVAL(ac_compile); then
+    case "`/usr/bin/file conftest.o`" in
+    *32-bit*)
+      case $host in
+       x86_64-*linux*)
+         LD="${LD-ld} -m elf_i386"
+         ;;
+       ppc64-*linux*)
+         LD="${LD-ld} -m elf32ppclinux"
+         ;;
+       s390x-*linux*)
+         LD="${LD-ld} -m elf_s390"
+         ;;
+       sparc64-*linux*)
+         LD="${LD-ld} -m elf32_sparc"
+         ;;
+      esac
+      ;;
+    esac
+  fi
+  rm -rf conftest*
+  ;;
+
 *-*-sco3.2v5*)
   # On SCO OpenServer 5, we need -belf to get full-featured binaries.
   SAVE_CFLAGS="$CFLAGS"

@@ -1,3 +1,8 @@
+2002-11-18  Andreas Jaeger  <aj@suse.de>, Bo Thorsen  <bo@suse.de>
+
+	* libtool.m4: Support linking of 32-bit libraries with ld
+	on the x86-64, ppc64, s390x and sparc64 GNU/Linux systems.
+
 2002-11-18  Akim Demaille  <akim@epita.fr>
 
 	* ltmain.in: Do not change the PATH in the wrappers: let them
