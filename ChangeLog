@@ -1,3 +1,9 @@
+2004-10-10  Charles Wilson  <spam.protected>
+
+	* config/ltmain.m4sh: Really don't require versions of GNU 
+	sed newer than 3.02 for Cygwin and MinGW, and don't break
+	dryrun mode.
+
 2004-10-10  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
 
 	* config/getopt.m4sh: Under MinGW, reported paths may include ':'

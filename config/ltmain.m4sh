@@ -745,15 +745,16 @@ extern \"C\" {
 	    $run eval "${SED} -n -e '/^: @PROGRAM@$/d' -e 's/^.* \(.*\)$/\1/p' "'< "$nlist" > "$export_symbols"'
 	    case $host in
 	    *cygwin* | *mingw* )
-              $run ${ECHO} EXPORTS > "$output_objdir/$output.def"
-              $run cat "$export_symbols" >> "$output_objdir/$output.def"
+              $run eval "${ECHO} EXPORTS "'> "$output_objdir/$output.def"'
+              $run eval 'cat "$export_symbols" >> "$output_objdir/$output.def"'
 	      ;;
 	    esac
 	  else
 	    $run eval "${SED} -e 's/\([[]][[.*^$]]\)/\\\1/g' -e 's/^/ /' -e 's/$/$/'"' < "$export_symbols" > "$output_objdir/$output.exp"'
 	    case $host in
 	    *cygwin | *mingw* )
-	      $run eval "${SED} -e '1iEXPORTS'"' < "$output_objdir/$output.exp" > "$output_objdir/$output.def"'
+	      $run eval "${ECHO} EXPORTS "'> "$output_objdir/$output.def"'
+	      $run eval 'cat "$output_objdir/$output.exp" >> "$output_objdir/$output.def"'
 	      ;;
 	    esac
 	    $run eval '$GREP -f "$output_objdir/$output.exp" < "$nlist" > "$nlist"T'
