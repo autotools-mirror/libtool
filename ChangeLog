@@ -3,6 +3,9 @@
 	* libtoolize.in: Check configure.ac and prefer configure.ac to
 	configure.in.
 	
+	* libtoolize.in: change recommendation from AM_PROG_LIBTOOL to
+	AC_PROG_LIBTOOL.
+
 2001-03-16  Albert Chin  <china@thewrittenword.com>
 
 	* libtool.m4 (save_CPPFLAGS): Fix typo.

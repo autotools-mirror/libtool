@@ -191,11 +191,11 @@ fi
 if test -z "$automake"; then
   if egrep '^A[MC]_PROG_LIBTOOL' $configure_ac >/dev/null 2>&1; then :
   else
-    echo "Remember to add \`AM_PROG_LIBTOOL' to \`$configure_ac'."
+    echo "Remember to add \`AC_PROG_LIBTOOL' to \`$configure_ac'."
   fi
 
   if egrep '^AC_PROG_RANLIB' $configure_ac >/dev/null 2>&1; then
-    echo "Using \`AC_PROG_RANLIB' is rendered obsolete by \`AM_PROG_LIBTOOL'"
+    echo "Using \`AC_PROG_RANLIB' is rendered obsolete by \`AC_PROG_LIBTOOL'"
   fi
 
   if grep 'generated automatically by aclocal' aclocal.m4 >/dev/null 2>&1; then
