@@ -1,3 +1,7 @@
+2004-10-07  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
+	* TODO: Remove item: no need for a libltdl without stdio.
+
 2004-10-07  Gary V. Vaughan  <gary@gnu.org>
 
 	* tests/defs.m4sh (scripts): Actually scan the generated ltmain.sh

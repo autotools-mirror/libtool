@@ -137,22 +137,6 @@ GNU Libtool
   of the functions that can't be linked statically.  This could hardly
   be made completely transparent, though.
 
-* Godmar Back writes:
-  libltdl uses such stdio functions as fopen, fgets, feof, fclose, and others.
-  These functions are not async-signal-safe. While this does not make
-  libltdl unusable, it restricts its usefulness and puts an
-  unnecessary burden on the user.
-
-  As a remedy, I'd recommend to replace those functions with functions
-  that POSIX says are async-signal-safe, such as open, read, close.
-  This will require you to handle interrupted system calls and implement
-  fgets, but the former isn't hard and there's plenty of implementations
-  out from which you can steal the latter.
-
-  I believe relying on async-signal-safe functions to the greatest extent
-  possible would greatly improve libltdl's ability to be embedded in and
-  used by other systems.
-
 2.6. win32 support
 ------------------
 
