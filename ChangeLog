@@ -1,3 +1,8 @@
+2003-02-27  Samuel Meder  <meder@mcs.anl.gov>
+
+	* libtool.m4 (ia64): Add support for Intel compiler (ecc) on IA64
+	Linux.
+
 2003-02-27  Benjamin Reed <ranger@befunk.com>
 
 	* THANKS: Added people who have submitted 3 or more patches
