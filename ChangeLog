@@ -1,5 +1,11 @@
 2005-04-04  Gary V. Vaughan  <gary@gnu.org>
 
+	* libtoolize.m4sh (func_serial_update): Replace missing
+	destination serial calculation line, presumably lost due to a bad
+	merge.
+
+2005-04-04  Gary V. Vaughan  <gary@gnu.org>
+
 	Getting the value of ltdldatafiles from a submake was not
 	portable, and had problems with GNU make-3.80 at least.  This
 	changeset pulls the installation rules for libtoolize's copy of

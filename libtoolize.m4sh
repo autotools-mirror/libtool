@@ -609,6 +609,8 @@ func_serial_update ()
 
     if test -f "$my_destfile"; then
       my_src_serial=`func_serial "$my_srcfile" "$my_macro_regex"`
+      my_dest_serial=`func_serial "$my_destfile" "$my_macro_regex"`
+
       # Strictly, this libtoolize ought not to have to deal with ancient
       # serial formats, but we accept them here to be complete:
       test "X$my_src_serial" = "X0" &&
