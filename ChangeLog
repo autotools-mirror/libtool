@@ -1,3 +1,9 @@
+2000-08-01  Alexandre Oliva  <aoliva@redhat.com>
+
+	* ltcf-c.sh (need_lc): Fix test message.  Set wl for archive_cmds.
+	(ac_cv_prog_cc_pic): Don't print `cached' without `checking'.
+	* ltcf-cxx.sh (need_lc): Set based on postdeps.
+
 2000-07-26  Alexandre Oliva  <oliva@lsd.ic.unicamp.br>
 
 	* configure.in (AM_PROG_GCJ): Moved definition...
