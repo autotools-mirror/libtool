@@ -1,3 +1,15 @@
+Tue Nov 19 14:09:27 1996  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltconfig.in: Bug fixes for AIX 4, and for static platforms.
+
+	* ltmain.sh.in (install): Fix for loops over arguments.
+	Need to quote ${IFS= } -> "${IFS= }".
+	(link): Fix soname_spec bug.  Create objdir whether or not we have
+	shared libraries.
+
+	* ltconfig.in: Check for library stripping program.
+	Use test -f instead of test -e.
+
 Mon Nov 18 20:10:42 1996  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltconfig.in: Don't run the RANLIB test unless RANLIB wasn't
