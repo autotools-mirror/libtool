@@ -3644,7 +3644,7 @@ $debug ||
     test ! -f ${_sed} && break
     cat /dev/null > "$tmp/sed.in"
     _count=0
-    echo $ECHO_N "0123456789$ECHO_C" >"$tmp/sed.in"
+    echo $ac_n "0123456789$ac_c" >"$tmp/sed.in"
     # Check for GNU sed and select it if it is found.
     if "${_sed}" --version 2>&1 < /dev/null | egrep '(GNU)' > /dev/null; then
       lt_cv_path_SED=${_sed}
@@ -3657,7 +3657,7 @@ $debug ||
       echo >>"$tmp/sed.nl"
       ${_sed} -e 's/a$//' < "$tmp/sed.nl" >"$tmp/sed.out" || break
       cmp -s "$tmp/sed.out" "$tmp/sed.nl" || break
-      # 10000 chars as input seems more than enough
+      # 40000 chars as input seems more than enough
       test $_count -gt 10 && break
       _count=`expr $_count + 1`
       if test $_count -gt $_max; then

@@ -1,3 +1,9 @@
+2002-02-25  Albert Chin-A-Young  <china@thewrittenword.com>
+
+	* Use $ac_n and $ac_c rather than $ECHO_N and $ECHO_C for
+	new LT_AC_PROG_SED macro. $ECHO_N and $ECHO_C defined for
+	autoconf 2.50 and above only.
+
 2002-02-01  Robert Boehne  <rboehne@ricardo-us.com>
 
 	* libtool.m4 (LT_AC_PROG_SED): New macro tests sed for truncation of
