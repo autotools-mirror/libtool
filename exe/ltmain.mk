@@ -18,7 +18,7 @@ clean :
 	rm -rf .libs lt*.o ltmain libtool $(GENED) *~
 
 ltmain.in : $(TXTTPL) ltstr.def
-	autogen -T ltmain.tpl -l ltmacros.tpl ltstr.def
+	autogen -T ltmain.tpl -l ltmacros.tpl -DSCRIPT=1 ltstr.def
 
 ltstr.c : ltstr.def ltstr.tpl ltmacros.tpl
 	autogen -T ltstr.tpl -l ltmacros.tpl ltstr.def

@@ -3,10 +3,13 @@ AutoGen Definitions ltmain.tpl;
 
 string = {
   str-name = base;
+  continues;
 };
 
 string = {
   str-name = clean;
+  end-exits = '$exit_status';
+
   explain = "
 <command> is the name of the program to use to delete files associated with
 each FILE (typically `/bin/rm').  `<cmd-arg>-s' are options (such as `-f')
@@ -20,6 +23,7 @@ the file itself is deleted using <command>.\n";
 string = {
   str-name = compile;
   call-proc = emitCompile;
+  end-exits = "0";
 
   explain = "
 Compile a source file into a libtool library object.\n
@@ -53,6 +57,8 @@ Then, <command> is executed, with  `<cmd-arg>...' as arguments.\n";
 
 string = {
   str-name = finish;
+  end-exits = "0";
+
   explain = "
 Complete the installation of libtool libraries.\n
 The <cmd-arg>-s must actually be directories that contain
@@ -73,6 +79,8 @@ It should be either the `install' or `cp' program.\n
 
 string = {
   str-name = link;
+  end-exits = "0";
+
   explain  = "
 Link object files or libraries together to form another library,
 or to create an executable program.\n
@@ -117,6 +125,7 @@ is created, otherwise an executable program is created.\n";
 
 string = {
   str-name = uninstall;
+  end-exits = '$exit_status';
   use_explain = clean;
   use_cmd = clean;
 };

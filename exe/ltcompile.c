@@ -23,16 +23,170 @@
  * the same distribution terms that you use for the rest of that program.
  */
 
+#include <sys/types.h>
 #include <stdio.h>              /* printf */
 #include <stdlib.h>             /* exit */
 #include <string.h>
 #include <unistd.h>
 #include <errno.h>
+#include <sys/stat.h>
 #include <sys/wait.h>
 #include <signal.h>
 
 #include "ltopts.h"
 #include "ltstr.h"
+
+static char*   pzTarget = NULL;
+static char*   pzSource = NULL;
+static int     oldLibs  = 0;
+static char*   pzPicMode = "default";
+static int     xCompile = 0;
+
+static void*
+xmalloc( size_t s )
+{
+    void* p = malloc( s );
+    if (p == NULL) {
+        fprintf( stderr, "%s error: cannot allocate %d bytes\n",
+                 libtoolOptions.pzProgPath );
+        exit( EXIT_FAILURE );
+    }
+    return p;
+}
+
+tCC*
+makeShellSafe( pzArg )
+    tCC*   pzArg;
+{
+    tSCC    zSpecial[] = "\\\"$`[~#^&*(){}|;<>?' \t|]";
+    tSCC*   pzProt     = zSpecial + 4;
+
+    size_t  len = strlen( pzArg );
+    char*   pz;
+
+    if (strcspn( pzArg, zSpecial ) == len)
+        return pzArg;
+
+    pz = strchr( pzArg, '\'' );
+    if (pz == NULL)
+        return pzArg;
+
+    do  {
+        len += 3;
+        pz = strchr( pz+1, '\'' );
+    } while (pz != NULL);
+
+    {
+        char*   pzRes = malloc( len + 1 );
+        pz = pzRes;
+        for (;;) {
+            char  ch = *(pzArg++);
+            *(pz++) = ch;
+
+            switch (ch) {
+            case '\0':
+                goto scan_done;
+
+            case '\'':
+                do  {
+                    strcpy( pz, "\\'" );
+                    pz += 2;
+                } while (*pzArg == '\'');
+                *(pz++) = '\'';
+                break;
+
+            default:
+                break;
+            }
+        } scan_done:;
+
+        return pzRes;
+    }
+}
+
+
+static void
+parseCompileOpts( pArgc, pArgv )
+    int*    pArgc;
+    char*** pArgv;
+{
+    tSCC    zTooManyTargets[] =
+        "%s compile: you cannot specify `-o' more than once\n";
+    tSCC    zNoTarget[] =
+        "%s compile:  `-o' must specify an output file name\n";
+    tSCC    zNoXcompile[] =
+        "%s compile:  `-Xcompiler' must specify a cross compiler\n";
+    tSCC    zEarlyOpts[] =
+        "%s compile: error: you cannot supply options before the command\n";
+
+    int     argc = *pArgc;
+    char**  argv = *pArgv;
+
+    tCC**   newArgv = xmalloc( sizeof( char* ) * (argc + 1) );
+    int     newCt   = 0;
+
+    tCC*    pzCmd   = NULL;
+    int     i;
+
+    for (i=0; i<argc; i++) {
+        if (strncmp( argv[i], "-o", 2 ) == 0) {
+            if (pzTarget != NULL) {
+                fprintf( stderr, zTooManyTargets, libtoolOptions.pzProgPath );
+                exit( EXIT_FAILURE );
+            }
+            if (argv[i][2] != '\0')
+                pzTarget = (argv[i]) + 2;
+            else {
+                pzTarget = argv[ ++i ];
+                if (pzTarget == NULL) {
+                    fprintf( stderr, zNoTarget, libtoolOptions.pzProgPath );
+                    exit( EXIT_FAILURE );
+                }
+            }
+
+        } else if (strcmp( argv[i], "-static"         ) == 0) {
+            oldLibs = 1;
+
+        } else if (strcmp( argv[i], "-prefer-pic"     ) == 0) {
+            pzPicMode = "yes";
+
+        } else if (strcmp( argv[i], "-prefer-non-pic" ) == 0) {
+            pzPicMode = "no";
+
+        } else if (strcmp( argv[i], "-Xcompiler"      ) == 0) {
+            if (argv[++i] == NULL) {
+                fprintf( stderr, zNoXcompile, libtoolOptions.pzProgPath );
+                exit( EXIT_FAILURE );
+            }
+            pzCmd = newArgv[ newCt++ ] = makeShellSafe( argv[i] );
+
+        } else if (argv[i][0] == '-') {
+            if (pzCmd == NULL) {
+                fprintf( stderr, zEarlyOpts, libtoolOptions.pzProgPath );
+                exit( EXIT_FAILURE );
+            }
+            newArgv[ newCt++ ] = makeShellSafe( argv[i] );
+
+        } else if (pzCmd == NULL) {
+            pzCmd = newArgv[ newCt++ ] = makeShellSafe( argv[i] );
+
+        } else {
+            if (pzSource != NULL)
+                newArgv[ newCt++ ] = makeShellSafe( pzSource );
+            pzSource = argv[i];
+        }
+    }
+
+    if (pzSource == NULL) {
+        fprintf( stderr, "%s compile: error: no source file to compile\n",
+                 libtoolOptions.pzProgName );
+        exit( EXIT_FAILURE );
+    }
+
+    newArgv[ newCt ] = NULL;
+    *pArgc = newCt;
+    *pArgv = (char**)newArgv;
+}
 
 
     void
@@ -72,6 +226,8 @@ else  echo='%s --echo --' ; fi\n";
 
 #    define CLOSEOK if (signalReceived != 0) { closeScript( fp ); return; }
 
+    parseCompileOpts( &argc, &argv );
+
     /*
      *  Emit the default configuration set up at program configuration time
      */
@@ -89,10 +245,11 @@ else  echo='%s --echo --' ; fi\n";
      *  IF we have DYNAMIC or STATIC, then we override the configured
      *  values.  We emitted the configured values with `z_ltconfig'.
      */
-    if (HAVE_OPT( DYNAMIC ))
+    if (HAVE_OPT( DYNAMIC ) && (oldLibs == 0))
         fprintf( fp, zDynFmt, ENABLED_OPT( DYNAMIC ) ? "yes" : "no" );
-    if (HAVE_OPT( STATIC ))
-        fprintf( fp, zStatic, ENABLED_OPT( STATIC )  ? "yes" : "no" );
+    if (HAVE_OPT( STATIC ) || oldLibs)
+        fprintf( fp, zStatic, ENABLED_OPT( STATIC )
+                 ? "yes" : (oldLibs ? "yes" : "no") );
 
     if (HAVE_OPT( DEBUG )) {
         fprintf( stderr, "%s: enabling shell trace mode\n",
@@ -120,45 +277,70 @@ else  echo='%s --echo --' ; fi\n";
      *  that one of the command scripts depends upon.
      */
     fprintf( fp, zModeName, libtoolOptions.pzProgName,
-            libtoolOptions.pOptDesc[ OPT_VALUE_MODE ].pz_Name );
+             libtoolOptions.pOptDesc[ OPT_VALUE_MODE ].pz_Name );
     CKSERV;
     fprintf( fp, zMode, libtoolOptions.pzProgName );
     CKSERV;
 
-    /*
-     *  Emit the real command.  The original shell script shifts off the
-     *  command name before it realizes what it has done.  We emulate
-     *  that behavior by setting `nonopt' to the command name and inserting
-     *  the remaining arguments as arguments via `set -- $@'.
-     */
-    fprintf( fp, zCmdName, argv[0] );
-    CKSERV;
-
-    while (--argc > 0) {
-        fputc( ' ', fp );
-        emitShellArg( *(++argv), fp );
-        CKSERV;
+    if (pzTarget == NULL) {
+        pzTarget = strrchr( pzSource, '/' );
+        if (pzTarget == NULL)
+            pzTarget = pzSource;
+        else
+            pzTarget++; 
     }
 
-    fputc( '\n', fp );
-    fflush( fp );
+    fprintf( fp, "libobj='%s'\n", makeShellSafe( pzTarget ));
     CKSERV;
 
-    /*
-     *  Up to now, we are just initializing variables.  Here, we write
-     *  a large chunk of text to the pipe and the shell may exit before
-     *  we are done.  If that happens, we get a SIGPIPE.  The `CLOSEOK'
-     *  macro will detect that, call closeScript() and return so as to
-     *  avoid segfaults and more SIGPIPEs.
-     */
-    fputs( apz_mode_cmd[ OPT_VALUE_MODE ], fp );
-    CLOSEOK;
+    fprintf( fp, "build_old_libs=%s\n", oldLibs ? "yes" : "no" );
+    CKSERV;
 
-    fputc( '\n', fp );
-    CLOSEOK;
+    fprintf( fp, "pic_mode=%s\n", pzPicMode );
+    CKSERV;
 
-    fflush( fp );
+    fputs( "base_compile='", fp );
+    for (;;) {
+        fputs( *(argv++), fp );
+        CKSERV;
+        if (--argc <= 0)
+            break;
+        fputc( ' ', fp );
+    }
 
-    if (fp != stdout)
-        closeScript( fp );
+    {
+        struct stat stbf;
+
+        if (stat( pzSource, &stbf ) != 0) do {
+            char* pz = getenv( "source" );
+            if (  (pz != NULL)
+               && (stat( pz, &stbf ) == 0)) {
+                pzSource = pz;
+                break;
+            }
+
+            pz = getenv( "srcdir" );
+            if (pz == NULL)
+                pz = getenv( "VPATH" );
+
+            if (pz != NULL) {
+                char* p = xmalloc( strlen( pz ) + strlen( pzSource ) + 2 );
+                sprintf( p, "%s/%s", pz, pzSource );
+                if (stat( p, &stbf ) == 0)
+                    pzSource = p;
+                else
+                    free( p );
+            }
+        } while (0);
+
+        fprintf( fp, "'\nsrcfile='%s'\n", pzSource );
+    }
+
+    emitCommands( fp, apz_mode_cmd[ OPT_VALUE_MODE ]);
 }
+/*
+ * Local Variables:
+ * c-file-style: "stroustrup"
+ * indent-tabs-mode: nil
+ * End:
+ * end of ltcompile.c */

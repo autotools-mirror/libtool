@@ -1,4 +1,5 @@
 [++ AutoGen5 Template ++]
+[++ IF (getenv "SCRIPT") ++]
     # Get the compilation command and the source file.
     base_compile=
     prev=
@@ -147,7 +148,7 @@
           no_help = true ++]
       ;;
     esac
-
+[++ ENDIF (getenv "SCRIPT") ++]
     # Recognize several different file suffixes.
     # If the user specifies -o file.o, it is replaced with file.lo
     xform='[cCFSifmso]'

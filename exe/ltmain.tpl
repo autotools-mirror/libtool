@@ -291,6 +291,7 @@ if test -z "$show_help"; then
   # libtool compile mode
   compile)
     modename="$modename: compile"
+
 [= INCLUDE "compile-txt.tpl" =]
 
     exit 0

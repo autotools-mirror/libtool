@@ -5,4 +5,4 @@ TPL  = base-txt.tpl clean-txt.tpl compile-txt.tpl execute-txt.tpl \
 DEF  = ltstr.def
 
 newltmain.in : $(TPL) $(DEF) $(MTPL)
-	autogen -T ltmain.tpl -l ltmacros.tpl ltstr.def
+	autogen -T ltmain.tpl -l ltmacros.tpl -DSCRIPT=1 ltstr.def

@@ -85,6 +85,19 @@ tSCC [= (. cmd-str)         =][] =[=
    (set! cmd-list (string-append cmd-list cmd-str "\n"))
    (out-push-new)
    (. tpl-name)             =][=
+
+   IF (exist? "end-exits") =]
+  exit [= end-exits =][=
+   ELIF (not (exist? "continues"))  =]
+if test -z "${exec_cmd}"
+then
+  $echo $modename: 'invalid operation mode:  `'$mode\' 1>&2
+  $echo 'Try `ltmain --help'\' for more information 1>&2
+fi
+eval exec $exec_cmd
+exit 1[=
+    ENDIF =]
+[=
    (kr-string (out-pop #t))
    =];
 
@@ -143,6 +156,7 @@ extern void closeScript     LT_PARAMS(( FILE* fp ));
 extern void modalUsage      LT_PARAMS(( tOptions* pOpts, int exitCode ));
 extern void emitShellQuoted LT_PARAMS(( tCC* pzArg, FILE* outFp ));
 extern void emitShellArg    LT_PARAMS(( tCC* pzArg, FILE* outFp ));
+extern void emitCommands    LT_PARAMS(( FILE* fp, tCC* pzCmds ));
 
 #endif /* [=(. header-guard)=] */[=
 

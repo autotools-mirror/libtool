@@ -149,25 +149,11 @@ else  echo='%s --echo --' ; fi\n";
         CKSERV;
     }
 
-    fputc( '\n', fp );
-    fflush( fp );
-    CKSERV;
-
-    /*
-     *  Up to now, we are just initializing variables.  Here, we write
-     *  a large chunk of text to the pipe and the shell may exit before
-     *  we are done.  If that happens, we get a SIGPIPE.  The `CLOSEOK'
-     *  macro will detect that, call closeScript() and return so as to
-     *  avoid segfaults and more SIGPIPEs.
-     */
-    fputs( apz_mode_cmd[ OPT_VALUE_MODE ], fp );
-    CLOSEOK;
-
-    fputc( '\n', fp );
-    CLOSEOK;
-
-    fflush( fp );
-
-    if (fp != stdout)
-        closeScript( fp );
+    emitCommands( fp, apz_mode_cmd[ OPT_VALUE_MODE ]);
 }
+/*
+ * Local Variables:
+ * c-file-style: "stroustrup"
+ * indent-tabs-mode: nil
+ * End:
+ * end of ltcompile.c */

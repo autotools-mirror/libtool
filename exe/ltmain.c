@@ -350,6 +350,13 @@ else  echo='%s --echo --' ; fi\n";
         CKSERV;
     }
 
+	emitCommands( fp, apz_mode_cmd[ OPT_VALUE_MODE ]);
+}
+
+
+void
+emitCommands( FILE* fp, tCC* pzCmds )
+{
     fputc( '\n', fp );
     fflush( fp );
     CKSERV;
@@ -361,26 +368,8 @@ else  echo='%s --echo --' ; fi\n";
      *  macro will detect that, call closeScript() and return so as to
      *  avoid segfaults and more SIGPIPEs.
      */
-    fputs( apz_mode_cmd[ OPT_VALUE_MODE ], fp );
+    fputs( pzCmds, fp );
     CLOSEOK;
-
-	/*
-	 *  Now all the commands have run.  Sometimes, however, the operation
-	 *  is deferred by putting the command to run into an environment variable
-	 *  and eval-ing it at the end.  So, emit some code that verifies that
-	 *  if the shell is still interpreting text, then "exec_cmd" is not empty.
-	 */
-	{
-		tSCC z[] =
-			"if test -z \"${exec_cmd}\"\nthen\n"
-			"  $echo $modename: 'invalid operation mode:  `$mode'\\' 1>&2\n"
-			"  $echo 'Try `%s --help'\\' for more information 1>&2\nfi\n"
-			"eval exec $exec_cmd\nexit 1\n";
-		fprintf( fp, z, libtoolOptions.pzProgName );
-		CLOSEOK;
-
-		fflush( fp );
-	}
 
     if (fp != stdout)
         closeScript( fp );
@@ -488,3 +477,9 @@ main( argc, argv )
 
     return scriptStatus;
 }
+/*
+ * Local Variables:
+ * c-file-style: "stroustrup"
+ * indent-tabs-mode: nil
+ * End:
+ * end of ltmain.c */
