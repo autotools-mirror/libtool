@@ -70,6 +70,10 @@ elif test -n "${BASH_VERSION+set}${KSH_VERSION+set}" && (set -o posix) >/dev/nul
 fi
 DUALCASE=1; export DUALCASE # for MKS sh
 
+# The HP-UX ksh and POSIX shell print the target directory to stdout
+# if CDPATH is set.
+(unset CDPATH) >/dev/null 2>&1 && unset CDPATH
+
 : ${CP="cp -f"}
 : ${LN_S="@LN_S@"}
 : ${MKDIR="mkdir"}

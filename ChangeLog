@@ -1,5 +1,12 @@
 2004-09-01  Gary V. Vaughan  <gary@gnu.org>
 
+	* libtoolize.in, config/ltmain.in: Add CDPATH protection to
+	preamble.
+	* tests/defs: Put a full m4sh.m4 style 'Be Bourne compatible'
+	preamble in here too.
+	* HACKING: Note that tests/defs needs synching with m4sh.m4 too.
+	* TODO: Add new item.
+
 	* libltdl/ltdl.c (try_dlopen, lt_dlforeachfile): Use correct cpp
 	macro name, LT_DLSEARCH_PATH.
 
