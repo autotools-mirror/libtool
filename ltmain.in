@@ -116,7 +116,7 @@ do
   if test -n "$prev"; then
     case "$prev" in
     execute_dlfiles)
-      eval "$prev=\"\$$prev \$arg\""
+      execute_dlfiles="$execute_dlfiles $arg"
       ;;
     *)
       eval "$prev=\$arg"
