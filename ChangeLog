@@ -1,3 +1,8 @@
+2001-06-25  Daniel Harvey <daniel@amristar.com.au>
+
+	* libtool.m4 (ltdll_cmds): [$]0 doesn't appear to translate through
+	the script correctly, change to $''0
+
 2001-09-11  Gary V. Vaughan  <gary@gnu.org>
 
 	* libltdl/configure.in (AC_CONFIG_HEADER): Use config-h.in for DOS
