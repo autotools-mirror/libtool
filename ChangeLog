@@ -1,5 +1,53 @@
 2004-01-07  Gary V. Vaughan  <gary@gnu.org>
 
+	A complete rewrite of the m4 code involved in the generation of
+	libtool via config.status.  The old way involved manually
+	synchronising disparate bits of shell code in several macros, to
+	quote a copy of a shell variable, put that in config.status, maybe
+	add it to some quotation loops to prevent early expansion, and
+	then add a block to _LT_CONFIG_COMMANDS to bring it into the
+	libtool script.  The new way is to mark shell variables for
+	propogation using _LT_DECL for language independent variables, or
+	_LT_TAGDECL for those that need to be propogated in several
+	language flavours.  The marking can be done in the macro that
+	probes the variables, and this new m4 machinery takes care of
+	synchronising all the other bits of code at autoconf time:
+
+	* m4/ltsugar.m4:  New file.  Macros that are useful outside the
+	context of libtool.  Initially, contains some generalised list
+	management macros, and the scaffolding for dictionary type data
+	storage and retrieval.
+	* Makefile.am (aclocal_macros): Install ltsugar.m4.
+	* m4/libtool.m4 (_LT_DECL): Mark a shell variable for export to
+	the libtool script, along with a comment, and hints for quoting
+	and renaming.
+	(_LT_TAGDECL): Similarly mark a tagged shell variable for export
+	in each tag.
+	(lt_decl_tag_varnames, lt_decl_quote_varnames)
+	(lt_decl_dquote_varnames, lt_decl_varnames_tagged)
+	(lt_decl_all_varnames):  New utility macros for managing lists of
+	shell variable names from _LT_DECL and _LT_TAGDECL.
+	(_LT_CONFIG_STATUS_DECLARATIONS, _LT_CONFIG_STATUS_DECLARE):
+	Expand to correctly quoted variable declarations in config.status
+	from all marked shell variables.
+	(_LT_LIBTOOL_DECLARE): Expand to commented and quoted variable
+	declaration for libtool tag section.
+	(_LT_LIBTOOL_CONFIG_VARS, _LT_LIBTOOL_TAG_VARS): Pass all marked
+	variables to _LT_LIBTOOL_DECLARE.
+	(_LT_CONFIG_COMMANDS): Use _LT_CONFIG_STATUS_DECLARATIONS and
+	friends to generate all the variable passing shell code for
+	config.status, to get marked variables from libtool.m4 into
+	libtool itself eventually.
+	(AC_LIBTOOL_CONFIG): Generate marked variable code for libtool tag
+	configuration.  Changed all client macros to mark variables
+	suitably rather than the hand pasting that was necessary
+	previously.
+	(AC_PROG_SED): Renamed from LT_AC_PROG_SED.
+	(LT_AC_PROG_SED): Wrap AC_PROG_SED, and mark shell variables for
+	propogation to the libtool script.
+
+2004-01-07  Gary V. Vaughan  <gary@gnu.org>
+
 	* libtoolize.in (seen_gettext): Removed unused variable.
 
 2004-01-06  Gary V. Vaughan  <gary@gnu.org>

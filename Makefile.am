@@ -1,6 +1,6 @@
 ## Makefile.am -- Process this file with automake to produce Makefile.in
 ##
-## Copyright (C) 2003 Free Software Foundation
+## Copyright (C) 2003, 2004 Free Software Foundation
 ##
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -23,7 +23,7 @@ BUILD_SUBDIRS = . libltdl doc tests
 SUBDIRS = $(BUILD_SUBDIRS)
 DIST_SUBDIRS = $(BUILD_SUBDIRS)
 
-aclocal_macros = m4/libtool.m4 m4/ltdl.m4
+aclocal_macros = m4/ltsugar.m4 m4/libtool.m4 m4/ltdl.m4
 
 EXTRA_DIST = $(aclocal_macros) bootstrap libtoolize.in ltmain.in \
 	config/mkstamp stamp-vcl ChangeLog.1996 ChangeLog.1997 \
