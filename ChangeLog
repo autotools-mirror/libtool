@@ -1,5 +1,9 @@
 1999-01-21  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* libltdl/ltdl.c: major rewrite to avoid almost all fixed-size
+	buffers; only `tmp' in lt_dlopen remained.  But the code got ugly
+	:-(
+
 	* ltconfig.in (linux-gnu*, finish_cmds): remove erroneous backslash
 
 	* demo/configure.in: set DLPREOPEN to -dlopen if we don't have
