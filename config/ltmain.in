@@ -1926,7 +1926,7 @@ func_mode_install ()
 	# Do a test to see if this is really a libtool program.
 	case $host in
 	*cygwin*|*mingw*)
-	    wrapper=`$ECHO "X$file" | $XSED -e 's,.exe$,,'`
+	    wrapper=`$ECHO "X$file" | $Xsed -e 's,.exe$,,'`
 	    ;;
 	*)
 	    wrapper=$file
