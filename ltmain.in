@@ -1045,26 +1045,36 @@ compiler."
 	;;
 	
       -Wc,*)
-	arg=`$echo "X$arg" | $Xsed -e "$sed_quote_subst"`
-	case "$arg" in
-	*[\[\~\#\^\&\*\(\)\{\}\|\;\<\>\?\'\ \	]*|*]*)
-	  arg="\"$arg\""
-	  ;;
-	esac
-	flag=`$echo "X$arg" | $Xsed -e 's/^-Wc,//'`
-	compiler_flags="$compiler_flags $flag"
+	arg=`$echo "X$arg" | $Xsed -e "$sed_quote_subst" -e 's/^-Wc,//'`
+	IFS="${IFS= 	}"; save_ifs="$IFS"; IFS=','
+	for flag in $arg; do
+	  IFS="$save_ifs"
+	  case "$flag" in
+	    *[\[\~\#\^\&\*\(\)\{\}\|\;\<\>\?\'\ \	]*|*]*)
+	    flag="\"$flag\""
+	    ;;
+	  esac
+	  compiler_flags="$compiler_flags $flag"
+	done
+	IFS="$save_ifs"
+	continue
 	;;
 
       -Wl,*)
-	arg=`$echo "X$arg" | $Xsed -e "$sed_quote_subst"`
-	case "$arg" in
-	*[\[\~\#\^\&\*\(\)\{\}\|\;\<\>\?\'\ \	]*|*]*)
-	  arg="\"$arg\""
-	  ;;
-	esac
-	flag=`$echo "X$arg" | $Xsed -e 's/^-Wl,//'`
-	linker_flags="$linker_flags $flag"
-	compiler_flags="$compiler_flags $wl$flag"
+	arg=`$echo "X$arg" | $Xsed -e "$sed_quote_subst" -e 's/^-Wl,//'`
+	IFS="${IFS= 	}"; save_ifs="$IFS"; IFS=','
+	for flag in $arg; do
+	  IFS="$save_ifs"
+	  case "$flag" in
+	    *[\[\~\#\^\&\*\(\)\{\}\|\;\<\>\?\'\ \	]*|*]*)
+	    flag="\"$flag\""
+	    ;;
+	  esac
+	  compiler_flags="$compiler_flags $wl$flag"
+	  linker_flags="$linker_flags $flag"
+	done
+	IFS="$save_ifs"
+	continue
 	;;
 
       -Xcompiler)
