@@ -15,6 +15,18 @@
 	* TODO: removed the reference to making libltdl and demo work on
 	win32.  They *do* work now that wrapper scripts are functioning.
 	
+	* ltmain.in (file_magic_command): It turns out that if the
+	file_magic_command generates huge output (e.g. running `objdump
+	-f' over a large import lib [say libX11.a]) the expr to check it
+	against the file_magic_regex blows up.  There is now an optimistic
+	heuristic, to save only the first 10 lines of running
+	file_magic_command which (at risk of sounding like Bill) should be
+	enough for anyone =)O|.
+
+	* ltmain.in: Set the compile_dependencylibs and	dllsearchpath for
+	non-libtool libs, or else libdeps only works between ltlibs for
+	cygwin32.
+
 1998-12-23  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* ltmain.in (SP2NL, NL2SP): use `tr' magic to avoid passing very

@@ -740,9 +740,22 @@ compiler."
 	esac
 	deplibs="$deplibs $arg"
 	lib_search_path="$lib_search_path `expr $arg : '-L\(.*\)'`"
+	case "$host" in
+	*-*-cygwin32* | *-*-mingw32* | *-*-os2*)
+	  compile_dependencylibs="$compile_dependencylibs $arg"
+	  if test -n "$dllsearchpath"; then
+	    dllsearchpath="$dllsearchpath:`expr $arg : '-L\(.*\)'`"
+	  else
+	    dllsearchpath="`expr $arg : '-L\(.*\)'`"
+	  fi
+	  ;;
+	esac
 	;;
 
-      -l*) deplibs="$deplibs $arg" ;;
+      -l*)
+	deplibs="$deplibs $arg"
+	compile_dependencylibs="$compile_dependencylibs $arg"
+	;;
 
       -module)
 	if test "$module" != yes; then
@@ -1504,8 +1517,9 @@ EOF
 		   # strict.  What do you think Gordon?
 		    potential_libs=`ls $i/$libname[.-]* 2>/dev/null`
 		    for potent_lib in $potential_libs; do
-		      file_output=`eval $file_magic_command $potent_lib`
-		      if test `expr "$file_output" : ".*$file_magic_regex"` -ne 0 ; then
+		      file_output=`eval $file_magic_command $potent_lib \
+				   | sed '11,$d'`
+		      if test `expr "X$file_output" : "X.*$file_magic_regex"` -ne 0 ; then
 			newdeplibs="$newdeplibs $a_deplib"
 			a_deplib=""
 			break 2
