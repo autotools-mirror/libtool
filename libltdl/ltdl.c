@@ -1535,11 +1535,12 @@ lt_dladdsearchdir (search_dir)
 	} else {
 		char	*new_search_path = (char*)
 			lt_dlmalloc(strlen(user_search_path) + 
-				strlen(search_dir) + 1);
+				strlen(search_dir) + 2); /* ':' + '\0' == 2 */
 		if (!new_search_path) {
 			last_error = memory_error;
 			return 1;
 		}
+		strcpy(new_search_path, user_search_path);
 		strcat(new_search_path, ":");
 		strcat(new_search_path, search_dir);
 		lt_dlfree(user_search_path);
