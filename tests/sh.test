@@ -29,7 +29,7 @@ fi
 
 # Check all the "portable" shell scripts.
 status=$EXIT_SUCCESS
-scripts="$srcdir/../config/ltmain.sh $srcdir/../libtoolize"
+scripts="../config/ltmain.sh ../libtoolize"
 
 # Check for bad binary operators.
 if $EGREP -n -e 'if[ 	]+["'\'']?\\$[^ 	]+[ 	]+(=|-[lg][te]|-eq|-ne)' $scripts; then

@@ -1,5 +1,11 @@
 2004-02-13  Scott James Remnant  <scott@netsplit.com>
 
+	* tests/sh.test: Test the config/ltmain.sh and libtoolize in the
+	build directory not the source directory, where they won't exist
+	during 'make distcheck'.
+	* ltmain.in: Revert one line of previous intendation clean-up
+	to enable one of the sh.test checks to pass.
+
 	* tests/cdemo/configure.ac: Drop AC_PREREQ back to 2.54, this
 	was debris from Gary's cvsapply going mad and wasn't backed
 	out.
