@@ -1,3 +1,8 @@
+2000-10-27  Robert Boehne  <rboehne@ricardo-us.com>
+
+	* docs/libtool.texi: Added pointers to documentation       
+	of Hewlett-Packard, Compaq Tru64 and IBM AIX systems.       
+
 2000-10-10  Alexandre Oliva  <aoliva@redhat.com>
 
 	* libtool.m4 (AC_LIBTOOL_CXX, AC_LIBTOOL_GCJ): Pass LD down to
