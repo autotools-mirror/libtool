@@ -70,12 +70,18 @@ dist-hook: $(demo_distfiles)
 # All our rules should depend on these demo files.
 all: demo/Makefile.in demo/configure
 
+# We use our own libtool.m4.
+$(srcdir)/aclocal.m4: acinclude.m4
+$(srcdir)/acinclude.m4:
+	rm -f $(srcdir)/acinclude.m4
+	ln -s libtool.m4 $(srcdir)/acinclude.m4
+
 # Rules for rebuilding some of the demo source files.
 $(srcdir)/demo/Makefile.in: demo/Makefile.am demo/configure.in demo/aclocal.m4
 	cd $(srcdir)/demo && $(AUTOMAKE)
 
 $(srcdir)/demo/configure: demo/configure.in demo/aclocal.m4
-	cd $(srcdir)/demo && $(AUTOMAKE)
+	cd $(srcdir)/demo && $(AUTOCONF)
 
 $(srcdir)/demo/aclocal.m4: demo/configure.in demo/acinclude.m4
 	cd $(srcdir)/demo && $(ACLOCAL)

@@ -2228,6 +2228,9 @@ you think the behaviour is a bug.  Be sure to include the word
 ``libtool'' in the subject line, as well as the version number you are
 using (which can be found by typing @kbd{ltconfig --version}).
 
+Please include the generated @code{libtool} script with your bug report,
+so that I can see what values @code{ltconfig} guessed for your system.
+
 @node Maintaining
 @chapter Maintainance notes for libtool
 

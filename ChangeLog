@@ -1,5 +1,14 @@
 Fri Jun 13 14:18:23 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
+	* Makefile.am (demo/configure): Fix up rules to run autoconf.
+	(aclocal.m4): Now we depend on our own libtool.m4.
+
+	* configure.in (AM_PATH_PROG_LD): Use it.
+
+	* libtool.m4 (AM_PATH_PROG_LD): New macro to find the linker used
+	by the C compiler.
+	(AM_PROG_LIBTOOL): Use it.
+
 	* ltmain.sh.in (install, uninstall): Support installing and
 	uninstalling `.lo' files.  From Jeff Dairiki.
 

@@ -10,8 +10,7 @@ AC_SUBST(aclocaldir)
 dnl Use the specified CC, RANLIB, and LD while running ltconfig.
 AC_PROG_CC
 AC_PROG_RANLIB
-LD="${LD-ld}"
-AC_SUBST(LD)
+AM_PATH_PROG_LD
 
 AC_OUTPUT([Makefile doc/Makefile tests/Makefile])
 
