@@ -5495,7 +5495,17 @@ EOF
 	    ;;
 	  *)
 	    # Relative path: add a thisdir entry.
-	    rpath="$rpath\$thisdir/$dir:"
+		case "$output" in
+		*[[\\/]]*)
+		  # the output file is not in the current dir
+		  # so we need an absolute path.
+		  absdir=`cd "$dir" && pwd`
+		  rpath="$rpath$absdir:"
+		  ;;
+		*)
+		  rpath="$rpath\$thisdir/$dir:"
+	      ;;
+	    esac
 	    ;;
 	  esac
 	done

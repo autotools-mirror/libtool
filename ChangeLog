@@ -1,3 +1,10 @@
+2004-10-23  Peter O'Gorman  <peter@pogma.com>
+
+	* config/ltmain.m4sh (func_mode_link): Make Gary's new tests
+	pass. When the output wrapper script is not in the current
+	directory, we can not use an rpath which is relative to the
+	current directory. Use an absolute path instead.
+
 2004-10-22  Gary V. Vaughan  <gary@gnu.org>
 
 	* clcommit.m4sh: Add --rcfile option.
