@@ -14,6 +14,13 @@ be desirable.
 * Lists of exported symbols should be stored in the pseudo library
 so that the size of lt_preloaded_symbols can be reduced.
 
+* Have some option to tell libtool not to include -L flags that point
+into a certain tree in the dependence list of an installed library.
+For example: -L-$top_builddir would let one link with libtool
+libraries in sibling subdirectories within a project, using the -L
+notation, without getting builddir pathnames ever mentioned in .la
+files that get installed.
+
 In the future:
 **************
 
