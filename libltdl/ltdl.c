@@ -817,7 +817,7 @@ load_deplibs (lt_dlhandle handle, char *deplibs)
 		    sprintf (name, "lib%s", p+2);
 		}
 	      else
-		name = strdup(p);
+		name = lt__strdup(p);
 
 	      if (!name)
 		goto cleanup_names;
@@ -1172,7 +1172,7 @@ try_dlopen (lt_dlhandle *phandle, const char *filename)
 		  && dlname
 		  && (last_libname = strrchr (dlname, ' ')) != 0)
 		{
-		  last_libname = strdup (last_libname + 1);
+		  last_libname = lt__strdup (last_libname + 1);
 		  if (!last_libname)
 		    {
 		      ++errors;
@@ -1834,7 +1834,7 @@ lt_dlpath_insertdir (char **ppath, char *before, const char *dir)
       assert (!before);		/* BEFORE cannot be set without PPATH.  */
       assert (dir);		/* Without DIR, don't call this function!  */
 
-      *ppath = strdup (dir);
+      *ppath = lt__strdup (dir);
       if (*ppath == 0)
 	++errors;
 

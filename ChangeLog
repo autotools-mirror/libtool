@@ -1,3 +1,7 @@
+2004-08-31  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* libltdl/ltdl.c: Replace strdup with lt__strdup.
+
 2004-08-30  Gary V. Vaughan  <gary@gnu.org>
 
 	* config/ltmain.in: Double quote even $# for the sake of sh.test.
