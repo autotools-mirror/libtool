@@ -1,4 +1,10 @@
-2002-06-20  Gary V. Vaughan  <gary@gnu.org>
+2002-06-21  Gary V. Vaughan  <gary@gnu.org>
+
+	* libltdl/ltdl.c (foreach_dirinpath): Ensure that filename is '\0'
+	terminated by all code paths.
+	Reported by Lutz Müller <lutz@users.sourceforge.net>
+
+22002-06-20  Gary V. Vaughan  <gary@gnu.org>
 
 	From Kevin Ryde  <user42@zip.com.au>:
 	* doc/libtool.texi (Platform quirks): s/dependan/dependen/

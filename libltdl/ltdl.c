@@ -2195,7 +2195,9 @@ foreach_dirinpath (search_path, base_name, func, data1, data2)
 	    goto cleanup;
 	}
 
-	strncpy (filename, dir_name, lendir);
+	assert (filenamesize > lendir);
+	strcpy (filename, dir_name);
+
 	if (base_name && *base_name)
 	  {
 	    if (filename[lendir -1] != '/')
