@@ -1,5 +1,8 @@
 2001-09-10   Brad  <brad@comstyle.com>
 
+	* libtool.m4 (AC_DEPLIBS_CHECK_METHOD): Missed an instance of
+	Autoconf square bracket quoting style normalisation.
+
 	* ltmain.in (-lc_r): Style improvement.
 
 	* doc/libtool.texi: Remove obsolete references to ltconfig.
