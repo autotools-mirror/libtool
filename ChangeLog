@@ -1,3 +1,8 @@
+1999-03-11  Thomas Tanner  <tanner@gmx.de>
+
+	* ltmain.in: when building a library it doesn't make 
+	  sense to remove a relinked program ("lt-" prefix)
+	  
 1999-03-11  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* mdemo/main.c (main, test_dl, test_dlself): propagate error
