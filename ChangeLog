@@ -1,3 +1,7 @@
+2004-09-01  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* tests/sh.test: Look in the source tree for ltmain.sh.
+
 2004-09-01  Gary V. Vaughan  <gary@gnu.org>
 
 	Don't use C99 flexible array types as we want to be C89
@@ -17,6 +21,7 @@
 	* m4/libtool.m4 (_LT_CMD_GLOBAL_SYMBOLS): Adjust preloaded symbols
 	test file to match.
 	* NEWS: Updated.
+	Reported by Andreas Schwab <schwab@suse.de>
 
 2004-09-01  Gary V. Vaughan  <gary@gnu.org>
 
