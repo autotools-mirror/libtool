@@ -1,5 +1,9 @@
 2004-10-01  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* libltdl/lt__alloc.c (lt__memdup): Allocation can fail, so we
+	need to guard against null pointer dereference here.
+	* libltdl/ltdl.c (lt_dlcaller_register): Ditto.
+
 	* libltdl/slist.c (slist_foreach): result was declared as
 	inner variable, shadowing the actually returned value.
 

@@ -1992,8 +1992,13 @@ lt_dlcaller_register (const char *id_string, lt_dlhandle_interface *iface)
 {
   lt__caller_id *caller_id = lt__malloc (sizeof *caller_id);
 
-  caller_id->id_string = lt__strdup (id_string);
-  caller_id->iface = iface;
+  /* If lt__malloc fails, it will LT__SETERROR (NO_MEMORY), which
+     can then be detected with lt_dlerror() if we return 0.  */
+  if (caller_id)
+    {
+      caller_id->id_string = lt__strdup (id_string);
+      caller_id->iface = iface;
+    }
 
   return (lt_dlcaller_id) caller_id;
 }

@@ -82,7 +82,12 @@ lt__realloc (void *mem, size_t n)
 void *
 lt__memdup (void const *mem, size_t n)
 {
-  return memcpy (lt__malloc (n), mem, n);
+  void *newmem;
+
+  if ((newmem = lt__malloc (n)))
+    return memcpy (newmem, mem, n);
+
+  return 0;
 }
 
 char *
