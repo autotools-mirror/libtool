@@ -24,8 +24,6 @@
 
 # serial 47 AC_PROG_LIBTOOL
 
-builtin([undefine],[symbols])
-
 # AC_PROG_LIBTOOL
 # ---------------
 AC_DEFUN([AC_PROG_LIBTOOL],

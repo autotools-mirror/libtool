@@ -1,3 +1,8 @@
+2001-09-11  Gary V. Vaughan  <gary@gnu.org>
+
+	* libtool.m4: No need to undefine([symbols]), proper quotation is
+	enough.
+
 2001-09-10  Gary V. Vaughan  <gary@gnu.org>
 
 	* libtool.m4: CVS Autoconf guarantees a decent default IFS, so
