@@ -129,6 +129,4 @@ maintainer-release: distcheck
 	  echo; \
 	  echo "Distribute \`$(PACKAGE)-$(VERSION).tar.gz' to the masses, and don't forget"; \
 	  echo "any other details you need to complete this release."; \
-	  echo; \
-	  echo "then run a \`make maintainer-checkin'."
 	  echo "============================="

@@ -1,17 +1,48 @@
+1998-04-19  Gordon Matzigkeit  <gord@profitpress.com>
+
+	* ltmain.in (finish): Notice when a finish command fails, so that
+	we can add it to the list of recommendations.
+
+1998-04-17  Gordon Matzigkeit  <gord@profitpress.com>
+
+	* libtool.m4 (AM_PROG_LIBTOOL): Append file descriptor 5 to
+	config.log, so that configure doesn't clobber the messages that
+	ltconfig put there.  From David Taylor.
+
+1998-04-15  Gordon Matzigkeit  <gord@profitpress.com>
+
+	* ltconfig.in (archive_cmds): Try using `$CC -shared' when
+	configuring for GCC under irix5 and irix6.  From Wolfram Gloger.
+	(ofile): Add `--output' flag to change the name of the generated
+	libtool.  Suggested by Wolfram Gloger.
+
 1998-04-14  Gordon Matzigkeit  <gord@profitpress.com>
+
+	* ltmain.in: Remove all hardcoded references to ltmain.in in
+	favour of $PACKAGE and $PROGRAM.
+	(install): Compute the installation name for programs, in case we
+	install a relinked file which has a different name.  Reported by
+	Pieter Schoenmakers.
+
+	* ltconfig.in (echo): Try using the ksh(1) `print -r' builtin
+	command, before reverting to printf(1).
 
 	* Makefile.am (libtool): Use $(SHELL) when invoking ltconfig.
 
 	* ltconfig.in (echo): Rewrite the test for a working echo so that
 	we win on Solaris by avoiding printf(1), if possible.
 
+1998-04-13  Ian Lance Taylor  <ian@cygnus.com>
+
+	* libtool.m4 (AM_PROG_NM): Don't override NM in the environment.
+
 1998-04-13  Gordon Matzigkeit  <gord@profitpress.com>
 
-	* ltmain.in: Make the `--features' flag print out all configured
+	* ltmain.in: New `--config' flag to print out all configured
 	variables.
 
 	* libtool.m4: Pass ltconfig the undocumented --no-reexec flag,
-	since we call it explicitly with CONFIG_SHELL.
+	since we call it explicitly using CONFIG_SHELL.
 
 	* ltconfig.in: Restart the script under a different shell if
 	CONFIG_SHELL is not /bin/sh.  This way, people can use Bash if
@@ -1607,6 +1638,6 @@
 	* New ChangeLog file for libtool-0.7, since I've totally rewritten
 	libtool.
 
-1996-03-15  Gord Matzigkeit  <gord@gnu.ai.mit.edu>
+1996-03-15  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* For historical reasons: this is when I started writing libtool.
