@@ -110,7 +110,7 @@ done
 
 if test -n "$prevopt"; then
   echo "$progname: option \`$prevopt' requires an argument" 1>&2
-  echo "$help"
+  echo "$help" 1>&2
   exit 1
 fi
 
@@ -174,12 +174,12 @@ if test -z "$show_help"; then
     done
 
     # Get the name of the library object.
-    libobj=`echo "$srcfile" | sed -e 's%^.*/%%`
+    libobj=`echo "$srcfile" | sed -e 's%^.*/%%'`
 
     # Recognize several different file suffixes.
     xform='[cCFSf]'
-    case $libobj in
-    *.c++) xform='c\+\+' ;;
+    case "$libobj" in
+    *.c++) xform='c++' ;;
     *.cc) xform=cc ;;
     *.cpp) xform=cpp ;;
     *.cxx) xform=cxx ;;
@@ -189,10 +189,10 @@ if test -z "$show_help"; then
 
     libobj=`echo "$libobj" | sed -e "s/\.$xform$/.lo/"`
 
-    case $libobj in
+    case "$libobj" in
     *.lo) obj=`echo "$libobj" | sed -e 's/\.lo$/.o/'` ;;
     *)
-      echo "$progname: cannot determine name of library object from \`$srcfile'"
+      echo "$progname: cannot determine name of library object from \`$srcfile'" 1>&2
       exit 1
       ;;
     esac
@@ -412,7 +412,7 @@ if test -z "$show_help"; then
 
       *)
         echo "$progname: unknown file suffix for \`$arg'" 1>&2
-	echo "$help"
+	echo "$help" 1>&2
 	exit 1
 	;;
       esac
@@ -425,7 +425,7 @@ if test -z "$show_help"; then
     done
 
     if test -n "$prev"; then
-      echo "$progname: the \`$prevarg' option requires an argument"
+      echo "$progname: the \`$prevarg' option requires an argument" 1>&2
       echo "$help" 1>&2
       exit 1
     fi
@@ -763,7 +763,7 @@ if test -z "$show_help"; then
 	# Things are fine, the world is a beautiful place.
 	$show "$compile_command"
 
-      elif test "$hardcode_shlibpath_var" != yes; then
+      elif test "$hardcode_shlibpath_var" = yes; then
 	# We just need to export the shlibpath for the link command.
 	$show "$shlibpath_var=$linkrpath $compile_command"
 	eval "$shlibpath_var=$linkrpath"
@@ -1128,7 +1128,7 @@ EOF
 
 	  # Check the variables that should have been set.
 	  if test -z "$link_against_libtool_libs" || test -z "$finalize_command"; then
-	    echo "$progname: invalid libtool wrapper script \`$file'"
+	    echo "$progname: invalid libtool wrapper script \`$file'" 1>&2
 	    exit 1
 	  fi
 
@@ -1145,7 +1145,7 @@ EOF
 	    fi
 	    libfile="$libdir/`echo "$lib" | sed 's%^.*/%%g'`"
 	    if test -z "$libdir"; then
-	      echo "$progname: warning: \`$lib' contains no -rpath information"
+	      echo "$progname: warning: \`$lib' contains no -rpath information" 1>&2
 	    elif test -f "$libfile"; then :
 	    else
 	      echo "$progname: warning: \`$lib' has not been installed in \`$libdir'" 1>&2
@@ -1155,9 +1155,9 @@ EOF
 
 	  if test "$hardcode_minus_L" = yes && test "$hardcode_shlibpath_var" = yes; then
 	    if test "$finalize" = no; then
-	      echo "$progname: warning: cannot relink \`$file' on behalf of your buggy system linker"
+	      echo "$progname: warning: cannot relink \`$file' on behalf of your buggy system linker" 1>&2
 	    else
-	      echo "$progname: warning: relinking \`$file' on behalf of your buggy system linker"
+	      echo "$progname: warning: relinking \`$file' on behalf of your buggy system linker" 1>&2
 	      $show "$finalize_command"
 	      if $run $finalize_command; then :
 	      else
@@ -1223,7 +1223,7 @@ EOF
     done
 
     if test -n "$future_libdirs"; then
-      echo "$progname: warning: remember to run \`$progname --finish$future_libdirs'"
+      echo "$progname: warning: remember to run \`$progname --finish$future_libdirs'" 1>&2
     fi
 
     if test -n "$current_libdirs"; then

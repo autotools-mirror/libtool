@@ -10,7 +10,7 @@ CLEANFILES = libtool libtoolize
 MAINTAINERCLEANFILES = ltconfig ltmain.sh
 
 # Files in the demo subdirectory that go in the distribution.
-demo_distfiles = Makefile.in Makefile.am README aclocal.m4 \
+demo_distfiles = Makefile.in Makefile.am README acinclude.m4 aclocal.m4 \
 	configure configure.in foo.c foo.h hello.c main.c \
 	run.test
 

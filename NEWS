@@ -1,8 +1,13 @@
-New in 0.7a:
+New in 0.7b:
 * Bug fixes, and more documentation.
 * Basic support for other language compilers (C++, Fortran, and
   preprocessed assembler).
-* Support for *-*-irix5 and *-*-irix6*.
+* Libtool is now more persistent when linking with the `-static'
+  flag fails.
+* New test for hardcoding system linkers, to verify that libtool
+  neither creates incorrect binaries, nor takes unnecessary
+  precautions while linking against uninstalled shared libraries.
+* Support for *-*-irix5, *-*-irix6*, and *-*-sco3.2v5*.
 
 New in 0.7:
 * Total rewrite of libtool, along with a new model for library building.

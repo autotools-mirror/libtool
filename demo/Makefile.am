@@ -23,7 +23,7 @@ hell_static_LDFLAGS = -static
 
 TESTS = run.test
 
-# Regenerate our acinclude.m4 only if it doesn't exist.
+# Only for libtool demo: Regenerate our acinclude.m4 only if it doesn't exist.
 $(srcdir)/acinclude.m4:
 	rm -f $(srcdir)/acinclude.m4
 	ln -s ../libtool.m4 $(srcdir)/acinclude.m4

@@ -1,30 +1,32 @@
 For 1.0:
 
-* Have people test libtool on AIX 3, OSF/1, HP-UX, and SunOS 4.
+* Give some hints for languages other than C, such as C++, Fortran,
+and preprocessed assembler.  There are beginnings of this in the
+manual (Other Languages).
 
-* Don't forget to find link_static_flag for native cc's on HP-UX and
-OSF/1.
+* Finish documenting shared library systems.  Ugh.  I'll need more
+primary documentation in order to do this well.
 
-* Implement shared libraries and `-static' linking on platforms that
-support them.  Ones that stand out, which libtool doesn't support:
-IRIX.
-
-For 1.1:
+Sometime in the future (maybe):
 
 * Implement full support for other basic library types (libhello_g,
 libhello_p).  Make these types configurable.  Some thinking will have
 to be done about the defaults, and what libhello (standard type)
 should be.
 
-Sometime in the future (maybe):
+Unfortunately, if we do this, we're back to the pre-0.6
+one-directory-per-object type.  Maybe we should just add an autoconf
+macro and get creative with program_transform_name, or something.
 
 * Add support for windoze DLL's, and maybe old Linux jumptable
 libraries.  Check out Lesstif and Tcl configuration again.
 
 * What should be done about the difference between -fpic and -fPIC?
+Probably nothing.
 
-* GCC docs imply that all rs6000 code is PIC.  See if it is true of
-any other processors (like maybe powerpc).
+* GCC docs imply that all rs6000 code is PIC.  See if it is really
+true of any other processors: at least powerpc, powerpcle.
 
 * Maybe choosing between ln -s and cp -p should be done in ltconfig,
-not ltmain.sh?
+not ltmain.sh?  Maybe we should avoid it entirely, and just create
+timestamp .lo files, with the PIC objects in .libs/*.o.

@@ -1,3 +1,39 @@
+Sun Jan 26 15:50:07 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* Release 0.8.
+
+Fri Jan 24 23:32:03 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* Makefile.am (demo_distfiles): Add demo/acinclude.m4 to the
+ 	distribution.
+
+Wed Jan 22 17:22:17 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* libtool.m4: For IRIX 6, ld needs -n32 if cc uses it.  Reported
+	by Bruno Haible.
+
+	* ltconfig.in: IRIX ld does not hardcode direct libraries.
+  	Reported by Bruno Haible.
+
+Sat Jan 18 15:15:12 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltconfig.in, ltmain.sh.in (hardcode_shlibpath_var): Allow new
+	value, `unsupported', since most linkers do not allow you to use
+	shlibpath_var for initial linking.
+
+	* ltconfig.in: Lots of bug fixes from Bruno Haible.  Set wl on
+	OSF/1, fix definitions of hardcode_* variables.
+	(archive_cmds): Fix not to use +h on HP-UX 9.x.  Reported by Bruno
+	Haible.
+
+Fri Jan 17 09:58:22 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* libtoolize.in: Handle explicit AC_CONFIG_AUX_DIR settings.
+	Suggested by Akim Demaille.
+
+	* libtool.m4: Change ltconfig line to use $CONFIG_SHELL when it is
+ 	specified.  Reported by Bruno Haible.
+
 Thu Jan 16 17:57:38 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* demo/Makefile.am (hc-direct): Do better searching for the proper

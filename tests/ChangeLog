@@ -1,3 +1,20 @@
+Fri Jan  3 23:15:22 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* Makefile.am (distclean-local): Remove all files that the tests
+	may have created.  Reported by Bruno Haible.
+
+	* For all tests, discover srcdir when running from the command
+	line.
+
+	* demo-unst.test: Don't fail if make uninstall doesn't delete
+ 	files beginning with a dot, since spurious .nfsXXX files may be
+ 	present when running NFS.  Reported by Bruno Haible.
+
+Thu Jan  2 13:03:41 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* suffix.test: New test to guarantee that libtool compile
+ 	recognizes valid source file suffixes.
+
 Sun Dec  8 14:43:15 1996  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* demo.test: Break up into demo-conf.test, demo-make.test,
@@ -21,4 +38,3 @@ Mon Dec  2 16:31:10 1996  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* test-e.test: Check that we haven't used `test -e' anywhere in
 	our portable shell scripts.
-

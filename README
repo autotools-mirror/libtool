@@ -14,7 +14,7 @@ Shared library support has been implemented for these platforms:
   NetBSD 1.x (*-*-netbsd*)
   Solaris 2.x (*-*-solaris2*)
   Linux ELF targets (*-*-linux*, except *-*-linuxaout* and *-*-linuxoldld*)
-  All ELF targets that use both GCC and GNU ld
+  All ELF targets that use both the GNU C compiler (gcc) and GNU ld
 
 Shared library support is implemented, but untested on:
   AIX 3.x (*-*-aix3*)

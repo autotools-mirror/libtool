@@ -93,7 +93,6 @@ version @value{VERSION}.
 * Integrating Libtool::         Using libtool in your own packages.
 * Versioning::                  Using library interface versions.
 * Library Tips::                Tips for library interface design.
-* Modifying::                   Changing the libtool script.
 * Index::                       Index of concepts, variables, and programs.
 
  --- The Detailed Node Listing ---
@@ -175,10 +174,10 @@ package build shared libraries.  They just run your package
 work.
 
 There are several examples throughout this document.  All assume the
-same environment: we want to build a library, @file{libfoo}, in a
+same environment: we want to build a library, @file{libhello}, in a
 generic way.
 
-@file{libfoo} could be a shared library, a static library, or
+@file{libhello} could be a shared library, a static library, or
 both@dots{} whatever is available on the host system, as long as libtool
 has been ported to it.
 
@@ -210,9 +209,8 @@ The problem is compounded by the absence of a standard procedure for
 creating shared libraries on different platforms.
 
 The following sections outline the major issues facing shared library
-support in GNU, how some developers have overcome these issues, and how
-I propose that shared library support should be standardized with
-libtool.
+support in GNU, and how I propose that shared library support could be
+standardized with libtool.
 
 @cindex Specifications for libtool
 @cindex Libtool specifications
@@ -334,6 +332,8 @@ object types.  After porting libtool to more platforms, the author
 discovered a new (at least for him) paradigm of what libraries and
 programs are.
 
+@cindex Definition of libraries
+@cindex Libraries, definition of
 In summary: ``libraries are programs with multiple entry points, and
 more formally defined interfaces.''
 
@@ -350,6 +350,8 @@ when you understand it the world gets simpler.
 @comment  node-name,  next,  previous,  up
 @chapter Using Libtool
 
+@cindex Examples of using libtool
+@cindex Libtool examples
 It makes little sense to talk about using libtool in your own packages
 until you have seen how it makes your life simpler.  The examples in
 this chapter introduce the main features of libtool by comparing the
@@ -389,6 +391,8 @@ After we have built that library, we want to create a program by linking
 @comment  node-name,  next,  previous,  up
 @section Creating Object Files
 
+@cindex Compiling object files
+@cindex Object files, compiling
 To create an object file from a source file, the compiler is invoked
 with the `-c' flag (and any other desired flags):
 
@@ -410,11 +414,16 @@ burger$ @kbd{gcc -g -O -c hello.c}
 burger$ 
 @end example
 
+@cindex Position-independant code
+@cindex PIC (position-independant code)
 Shared libraries, however, may only be built from
 @dfn{position-independant code} (PIC).  So, special flags must be passed
 to the compiler to tell it to generate PIC rather than the standard
 position-dependant code.
 
+@cindex Library object file
+@cindex `.lo' files
+@cindex Object files, library
 Since this is a library implementation detail, libtool hides the
 complexity of PIC compiler flags by using separate library object files
 (which end in `.lo' instead of `.o').  On systems without shared
@@ -460,6 +469,7 @@ burger$
 @comment  node-name,  next,  previous,  up
 @section Linking Libraries
 
+@pindex ar
 Without libtool, the programmer would invoke the @file{ar} command to
 create a static library:
 
@@ -468,6 +478,7 @@ burger$ @kbd{ar cru libhello.a hello.o foo.o}
 burger$ 
 @end example
 
+@pindex ranlib
 But of course, that would be too simple, so many systems require that
 you run the @file{ranlib} command on the resulting library (to give it
 better karma, or something):
@@ -482,6 +493,8 @@ libtool's ``libraries are programs'' approach.  So, on platforms without
 shared libraries, libtool simply acts as a wrapper for the system
 @file{ar} (and possibly @file{ranlib}) commands.
 
+@cindex Libtool libraries
+@cindex `.la' files
 Again, the libtool library name differs from the standard name (it has a
 `.la' suffix instead of a `.a' suffix).  The arguments to libtool are
 the same ones you would use to produce an executable named
@@ -540,6 +553,7 @@ Now that's significantly cooler@dots{} libtool just ran an obscure
 @file{ld} command to create a shared library, as well as the static
 library.
 
+@cindex @file{.libs} subdirectory
 Note how libtool creates extra files in the @file{.libs} subdirectory,
 rather than the current directory.  This feature is to make it easier to
 clean up the build directory, and to help ensure that other programs
@@ -549,15 +563,20 @@ fail horribly if you accidentally forget to use libtool when you should.
 @comment  node-name,  next,  previous,  up
 @section Linking Executables
 
+@cindex Linking against installed libraries
 If you choose at this point to @dfn{install} the library (put it in a
 permanent location) before linking executables against it, then you
-don't need to use libtool to do the linking.
+don't need to use libtool to do the linking.  Simply use the appropriate
+@samp{-L} and @samp{-l} flags to specify the library's location.
 
+@cindex Buggy system linkers
 Some system linkers insist on encoding the full directory name of each
 shared library in the resulting executable.  Libtool has to work around
 this misfeature by special magic to ensure that only permanent directory
 names are put into installed executables.
 
+@cindex Security problems with buggy linkers
+@cindex Bugs, subtle ones caused by buggy linkers
 The importance of this bug must not be overlooked: it won't cause
 programs to crash in obvious ways.  It creates a security hole,
 and possibly even worse, if you are modifying the library source code
@@ -567,6 +586,7 @@ the installed programs!
 So, if you want to link programs against the library before you install
 it, you must use libtool to do the linking.
 
+@cindex Linking against uninstalled libraries
 Here's the old way of linking against an uninstalled library:
 
 @example
@@ -598,6 +618,8 @@ creating hell
 burger$
 @end example
 
+@cindex Wrapper scripts for programs
+@cindex Program wrapper scripts
 Notice that the executable, @file{hell} was actually created in the
 @file{.libs} subdirectory.  Then, a wrapper script was created in the
 current directory.
@@ -653,10 +675,12 @@ until we link it against at least a few more programs.
 @comment  node-name,  next,  previous,  up
 @section Installing Libraries
 
+@pindex strip
 Installing libraries on a non-libtool system is quite
 straightforward@dots{} just copy them into place:@footnote{Don't
 accidentally strip the libraries, though, or they will be unusable.}
 
+@pindex su
 @example
 burger$ @kbd{su}
 Password: ********
@@ -671,6 +695,7 @@ burger# @kbd{ranlib /usr/local/lib/libhello.a}
 burger#
 @end example
 
+@pindex install
 Libtool installation is quite simple, as well.  Just use the
 @file{install} or @file{cp} command that you normally would:
 
@@ -683,7 +708,8 @@ a23#
 @end example
 
 Note that the libtool library @file{libhello.la} is also installed, for
-informational purposes.
+informational purposes, and to help libtool with uninstallation
+(@pxref{Uninstall Mode}).
 
 Here is the shared library example:
 
@@ -696,6 +722,8 @@ ranlib /usr/local/lib/libhello.a
 burger#
 @end example
 
+@cindex Stripping libraries
+@cindex Libraries, stripping
 It is safe to specify the @samp{-s} (strip symbols) flag to the install
 program (if you use a BSD-compatible install) when installing libraries.
 Libtool will either ignore the @samp{-s} flag, or will run a program
@@ -706,6 +734,9 @@ configuration that you need to do before using them.  First, you must
 make sure that where the library is installed actually agrees with the
 @samp{-rpath} flag you used to build it.
 
+@cindex Postinstallation
+@cindex Installation, finishing
+@cindex Libraries, finishing installation
 Then, running @samp{libtool -n --finish @var{libdir}} can give you
 further hints on what to do:
 
@@ -752,6 +783,8 @@ burger#
 @comment  node-name,  next,  previous,  up
 @section Linking Static Libraries
 
+@cindex Static linking
+@cindex Convenience libraries
 Sometimes it is desirable to create a static archive that can never be
 shared.  The most frequent case is when you have a ``convenience
 library'' that is a collection of unrelated object files without a
@@ -773,10 +806,10 @@ Link the files in the same way you would a libtool library, but use a
 `.a' suffix (instead of `.la'):
 
 @example
-burger$ @kbd{libtool gcc -o libfoo.a main.o foo.lo hello.lo}
-rm -f libfoo.a
-ar cru libfoo.a main.o foo.o hello.o
-ranlib libfoo.a
+burger$ @kbd{libtool gcc -o libhello.a main.o foo.lo hello.lo}
+rm -f libhello.a
+ar cru libhello.a main.o foo.o hello.o
+ranlib libhello.a
 burger$ 
 @end example
 
@@ -785,13 +818,14 @@ If you want to install the library (but you probably don't), then you
 can use libtool to do it, too:
 
 @example
-burger$ @kbd{libtool ./install-sh -c libfoo.a /local/lib/libfoo.a}
-./install-sh -c libfoo.a /local/lib/libfoo.a
-ranlib /local/lib/libfoo.a
+burger$ @kbd{libtool ./install-sh -c libhello.a /local/lib/libhello.a}
+./install-sh -c libhello.a /local/lib/libhello.a
+ranlib /local/lib/libhello.a
 burger$
 @end example
 @end enumerate
 
+@cindex Standalone binaries
 Another common situation where static linking is desirable is in
 creating a standalone binary.  Use libtool to do the linking and add the
 @samp{-static} flag.
@@ -800,6 +834,7 @@ creating a standalone binary.  Use libtool to do the linking and add the
 @comment  node-name,  next,  previous,  up
 @chapter Invoking @file{libtool}
 
+@c FIXME this is where I got sick of writing index entries
 The @file{libtool} program has the following synopsis:
 
 @example
@@ -1025,13 +1060,13 @@ First, to link a program against a libtool library, just use the
 @example
 bin_PROGRAMS = hell hell.static
 
-# Build hell from main.c and libhell.la
+# Build hell from main.c and libhello.la
 hell_SOURCES = main.c
-hell_LDADD = libhell.la
+hell_LDADD = libhello.la
 
 # Create a statically-linked version of hell.
 hell_static_SOURCES = main.c
-hell_static_LDADD = libhell.la
+hell_static_LDADD = libhello.la
 hell_static_LDFLAGS = -static
 @end example
 
@@ -1040,14 +1075,14 @@ you want to pass to libtool while linking @samp{program} (such as
 @samp{-static} to create a statically-linked executable).
 
 Building a libtool library is almost as trivial@dots{} note the use of
-@samp{libhell_la_LDFLAGS} to pass the @samp{-version-info}
+@samp{libhello_la_LDFLAGS} to pass the @samp{-version-info}
 (@pxref{Versioning}) and @samp{-rpath} options to libtool:
 
 @example
-# Build a libtool library, libhell.la for installation in libdir.
-lib_PROGRAMS = libhell.la
-libhell_la_SOURCES = hello.c foo.c
-libhell_la_LDFLAGS = -version-info 3:12:1 -rpath $(libdir)
+# Build a libtool library, libhello.la for installation in libdir.
+lib_PROGRAMS = libhello.la
+libhello_la_SOURCES = hello.c foo.c
+libhello_la_LDFLAGS = -version-info 3:12:1 -rpath $(libdir)
 @end example
 
 @node Configuring, Distributing, Using Automake, Integrating Libtool
@@ -1368,18 +1403,18 @@ library.
 Note that this can cause problems because libtool's compatibility
 requirements are actually stricter than is necessary.
 
-Say @file{libfoo} supports interfaces 5, 16, 17, 18, and 19, and that
-libtool is used to link @file{test} against @file{libfoo}.
+Say @file{libhello} supports interfaces 5, 16, 17, 18, and 19, and that
+libtool is used to link @file{test} against @file{libhello}.
 
 Libtool encodes the numbers 5 and 19 in @file{test}, and the dynamic
 linker will only link @file{test} against libraries that support
 @emph{every} interface between 5 and 19.  So, the dynamic linker refuses
-to link @file{test} against @file{libfoo}!
+to link @file{test} against @file{libhello}!
 
 In order to eliminate this problem, libtool only allows libraries to
-declare consecutive interface numbers.  So, @file{libfoo} can declare at
+declare consecutive interface numbers.  So, @file{libhello} can declare at
 most that it supports interfaces 16 through 19.  Then, the dynamic
-linker will link @file{test} against @file{libfoo}.
+linker will link @file{test} against @file{libhello}.
 
 So, libtool library versions are described by three integers:
 
@@ -1452,7 +1487,7 @@ set @var{age} to 0.
 to the release of the package that you are making.  This is an abuse
 that only fosters misunderstanding of the purpose of library versions.
 
-@node Library Tips, Modifying, Versioning, Top
+@node Library Tips, Index, Versioning, Top
 @comment  node-name,  next,  previous,  up
 @chapter Tips for Interface Design
 
@@ -1597,15 +1632,15 @@ and @code{__END_DECLS} into your own headers.  Then, you may use them to
 create header files that are valid for C++, ANSI, and non-ANSI
 compilers.
 
-@node Modifying, Index, Library Tips, Top
-@comment  node-name,  next,  previous,  up
-@chapter Modifying Libtool
+@c @node Modifying, Index, Library Tips, Top
+@c @comment  node-name,  next,  previous,  up
+@c @chapter Modifying Libtool
+@c
+@c FIXME
+@c Description of libtool script contents, the interface between
+@c ltconfig and libtool
 
-FIXME
-Description of libtool script contents, the interface between ltconfig
-and libtool
-
-@node Index,  , Modifying, Top
+@node Index,  , Library Tips, Top
 @comment  node-name,  next,  previous,  up
 @unnumbered Index
 
