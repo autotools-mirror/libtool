@@ -373,6 +373,7 @@ if test -z "$show_help"; then
     # Get the compilation command and the source file.
     base_compile=
     srcfile="$nonopt"  #  always keep a non-empty value in "srcfile"
+    suppress_opt=yes
     suppress_output=
     arg_mode=normal
     libobj=
@@ -407,6 +408,11 @@ if test -z "$show_help"; then
 
 	-static | -prefer-pic | -prefer-non-pic)
 	  later="$later $arg"
+	  continue
+	  ;;
+
+	-no-suppress)
+	  suppress_opt=no
 	  continue
 	  ;;
 
@@ -736,7 +742,9 @@ pic_object='$objdir/$objname'
 EOF
 
       # Allow error messages only from the first compilation.
-      suppress_output=' >/dev/null 2>&1'
+      if test "$suppress_opt" = yes; then
+        suppress_output=' >/dev/null 2>&1'
+      fi
     else
       # No PIC object so indicate it doesn't exist in the libtool
       # object file.

@@ -1153,6 +1153,12 @@ linker flags with @samp{-Wl,@var{flag}} and @samp{-Xlinker @var{flag}}.
 You can also pass compile specific flags using @samp{-Wc,@var{flag}}
 and @samp{-Xcompiler @var{flag}}.
 
+If both PIC and non-PIC objects are being built, libtool will normally
+supress the compiler output for the PIC object compilation to save
+showing very similar, if not identical duplicate output for each
+object.  If the @samp{-no-suppress} option is given in compile mode,
+libtool will show the compiler output for both objects.
+
 If the @samp{-static} option is given, then a @samp{.o} file is built,
 even if libtool was configured with @samp{--disable-static}.
 
