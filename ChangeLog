@@ -1,3 +1,11 @@
+2004-11-29  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* m4/ltdl.m4 (LT_LIB_DLLOAD): Define HAVE_LIBDLLOADER if we
+	have a dlloader to preload.
+	* libltdl/ltdl.c (lt_dlinit): Only preload if HAVE_LIBDLLOADER, only
+	declare preloaded_symbols then.  Fixes libltdl on static platforms.
+	* NEWS: Updated.
+
 2004-11-28  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* config/ltmain.m4sh (func_mode_link): $dlsymsobj is really

@@ -459,9 +459,14 @@ AC_SUBST([LIBADD_DLD_LINK])
 
 m4_pattern_allow([^LT_DLPREOPEN$])
 LT_DLPREOPEN=
-for lt_loader in $LT_DLLOADERS; do
-  LT_DLPREOPEN="$LT_DLPREOPEN-dlpreopen loaders/$lt_loader "
-done
+if test -n "$LT_DLLOADERS"
+then
+  for lt_loader in $LT_DLLOADERS; do
+    LT_DLPREOPEN="$LT_DLPREOPEN-dlpreopen loaders/$lt_loader "
+  done
+  AC_DEFINE([HAVE_LIBDLLOADER], [1],
+            [Define if libdlloader will be built on this platform])
+fi
 AC_SUBST([LT_DLPREOPEN])
 
 dnl This isn't used anymore, but set it for backwards compatibility
