@@ -1019,6 +1019,8 @@ esac
 
 ld_shlibs=yes
 if test "$with_gnu_ld" = yes; then
+  # If archive_cmds runs LD, not CC, wlarc should be empty
+  wlarc='${wl}'
 
   # See if GNU ld supports shared libraries.
   case "$host_os" in
@@ -1030,6 +1032,7 @@ if test "$with_gnu_ld" = yes; then
 
   sunos4*)
     archive_cmds='$LD -assert pure-text -Bstatic -o $lib $libobjs $deplibs'
+    wlarc=
     hardcode_direct=yes
     hardcode_minus_L=yes
     hardcode_shlibpath_var=no
@@ -1104,11 +1107,11 @@ if test "$with_gnu_ld" = yes; then
     ;;
   esac
 
-  if test "$ld_shlibs" = yes && test "$with_gnu_ld" = yes; then
+  if test "$ld_shlibs" = yes; then
     runpath_var=LD_RUN_PATH
     hardcode_libdir_flag_spec='${wl}--rpath ${wl}$libdir'
     export_dynamic_flag_spec='${wl}--export-dynamic'
-    whole_archive_flag_spec='${wl}--whole-archive$convenience ${wl}--no-whole-archive'
+    whole_archive_flag_spec="$wlarc"'--whole-archive$convenience '"$wlarc"'--no-whole-archive'
   fi
 else
   # PORTME fill in a description of your system's linker (not GNU ld)

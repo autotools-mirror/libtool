@@ -1,5 +1,9 @@
 1999-01-17  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* ltconfig.in (wlarc): set to either '${wl}' or an empty string,
+ 	depending on whether archive_cmds runs CC or LD
+	(gnu_ld=yes, whole_archive_flag_spec): "$wlarc" instead of '${wl}'
+
 	* mdemo/Makefile.am (../libltdl/libltdlc.la): depend on
 	../libtool, because ../libltdl/libtool depends on it
 	(mdemo_debug_*): copy from mdemo_*, adding -static to LDFLAGS
