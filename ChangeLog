@@ -1,5 +1,11 @@
 2003-10-31  Scott James Remnant  <scott@netsplit.com>
 
+	* m4/libtool.m4: Include Owen Taylor's patch to recognise the 'R'
+	symbol type so read-only symbols can be exported when combining
+	GCC and Solaris LD.
+
+2003-10-31  Scott James Remnant  <scott@netsplit.com>
+
 	* m4/libtool.m4: Include James Henstridge's patch to fix the
 	-export-symbols and -export-symbols-regex options under Linux.
 	
