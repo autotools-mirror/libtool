@@ -54,6 +54,7 @@ CXX=${CXX-c++}
 set dummy $CC
 CC=${CC-"$CXX"}
 CFLAGS=${CFLAGS-"$CXXFLAGS"}
+cc_basename=`$echo X"$CC" | $Xsed -e 's%^.*/%%'`
 
 # Check if we are using GNU gcc  (taken/adapted from configure script)
 # We need to check here since "--with-gcc" is set at configure time,
@@ -94,7 +95,7 @@ case "$host_os" in
     ld_shlibs=no
     ;;
   chorus*)
-    case "$CXX" in
+    case "$cc_basename" in
       *)
         # FIXME: insert proper C++ library support
         ld_shlibs=no
@@ -102,7 +103,7 @@ case "$host_os" in
     esac 
     ;;
   dgux*)
-    case "$CXX" in
+    case "$cc_basename" in
       ec++)
         # FIXME: insert proper C++ library support
         ld_shlibs=no
@@ -124,7 +125,7 @@ case "$host_os" in
     ld_shlibs=no
     ;;
   hpux*)
-    case "$CXX" in
+    case "$cc_basename" in
       CC)
         # FIXME: insert proper C++ library support
         ld_shlibs=no
@@ -158,7 +159,7 @@ case "$host_os" in
     esac
     ;;
   irix5* | irix6*)
-    case "$CXX" in
+    case "$cc_basename" in
       CC)
         # SGI C++
         archive_cmds='$CC -shared -all -multigot $predep_objects $libobjs $deplibs $postdep_objects $compiler_flags -soname $soname `test -n "$verstring" && echo -set_version $verstring` -update_registry ${objdir}/so_locations -o $lib'
@@ -176,7 +177,7 @@ case "$host_os" in
     esac
     ;;
   linux*)
-    case "$CXX" in
+    case "$cc_basename" in
       KCC)
         # KAI C++ Compiler
         # FIXME: insert proper C++ library support
@@ -237,7 +238,7 @@ case "$host_os" in
     ld_shlibs=no
     ;;
   mvs*)
-    case "$CXX" in
+    case "$cc_basename" in
       cxx)
         # FIXME: insert proper C++ library support
         ld_shlibs=no
@@ -266,7 +267,7 @@ case "$host_os" in
       output_verbose_link_cmds='$CC -shared $CFLAGS -v conftest.$objext 2>&1 | egrep "\-L"'
     fi
 
-    case "$CXX" in
+    case "$cc_basename" in
       KCC)
         # KAI C++ Compiler 3.3f
         # FIXME: insert proper C++ library support
@@ -314,7 +315,7 @@ case "$host_os" in
       output_verbose_link_cmds='$CC -shared $CFLAGS -v conftest.$objext 2>&1 | egrep "\-L"'
     fi
 
-    case "$CXX" in
+    case "$cc_basename" in
       KCC)
         # KAI C++ Compiler 3.3f
         # FIXME: insert proper C++ library support
@@ -353,7 +354,7 @@ case "$host_os" in
     ld_shlibs=no
     ;;
   sco*)
-    case "$CXX" in
+    case "$cc_basename" in
       CC)
         # FIXME: insert proper C++ library support
         ld_shlibs=no
@@ -365,7 +366,7 @@ case "$host_os" in
     esac
     ;;
   sunos4*)
-    case "$CXX" in
+    case "$cc_basename" in
       CC)
         # Sun C++ 4.x
         # FIXME: insert proper C++ library support
@@ -383,7 +384,7 @@ case "$host_os" in
     esac
     ;;
   solaris*)
-    case "$CXX" in
+    case "$cc_basename" in
       CC)
 	# Sun C++ 4.2, 5.x and Centerline C++
         no_undefined_flag=' -ztext'
@@ -431,7 +432,7 @@ case "$host_os" in
       *)
         # GNU C++ compiler
         if test "$with_gcc" = yes; then
-          if $CXX --version | egrep -v '^2\.7' > /dev/null; then
+          if $CC --version | egrep -v '^2\.7' > /dev/null; then
             archive_cmds='$LD -shared -nostdlib $LDFLAGS $predep_objects $libobjs $deplibs $postdep_objects $linkopts ${wl}-h $wl$soname -o $lib'
             archive_expsym_cmds='$echo "{ global:" > $lib.exp~cat $export_symbols | sed -e "s/\(.*\)/\1;/" >> $lib.exp~$echo "local: *; };" >> $lib.exp~
 		$LD -shared -nostdlib ${wl}-M $wl$lib.exp -o $lib $predep_objects $libobjs $deplibs $postdep_objects $linkopts~$rm $lib.exp'
@@ -459,7 +460,7 @@ case "$host_os" in
     esac   
     ;;
   tandem*)
-    case "$CXX" in
+    case "$cc_basename" in
       NCC)
         # NonStop-UX NCC 3.20
         # FIXME: insert proper C++ library support
@@ -544,7 +545,7 @@ else
       # All AIX code is PIC.
       ;;
     chorus*)
-      case "$CXX" in
+      case "$cc_basename" in
       cxch68)
         # Green Hills C++ Compiler
         # ac_cv_prog_cc_static="--no_auto_instantiation -u __main -u __premain -u _abort -r $COOL_DIR/lib/libOrb.a $MVME_DIR/lib/CC/libC.a $MVME_DIR/lib/classix/libcx.s.a"
@@ -552,7 +553,7 @@ else
       esac 
       ;;
     dgux*)
-      case "$CXX" in
+      case "$cc_basename" in
         ec++)
           ac_cv_prog_cc_pic='-KPIC'
           ;;
@@ -568,7 +569,7 @@ else
       # FreeBSD uses GNU C++
       ;;
     hpux9* | hpux10* | hpux11*)
-      case "$CXX" in
+      case "$cc_basename" in
         CC)
           ac_cv_prog_cc_wl='-Wl,'
           ac_cv_prog_cc_static="${ac_cv_prog_cc_wl}-a ${ac_cv_prog_cc_wl}archive"
@@ -584,7 +585,7 @@ else
       esac
       ;;
     irix5* | irix6*)
-      case "$CXX" in
+      case "$cc_basename" in
         CC)
           ac_cv_prog_cc_wl='-Wl,'
           ac_cv_prog_cc_static='-non_shared'
@@ -595,7 +596,7 @@ else
       esac
       ;;
     linux*)
-      case "$CXX" in
+      case "$cc_basename" in
         KCC)
           # KAI C++ Compiler
           ac_cv_prog_cc_pic='-fPIC'
@@ -616,7 +617,7 @@ else
     m88k*)
       ;;
     mvs*)
-      case "$CXX" in
+      case "$cc_basename" in
         cxx)
           ac_cv_prog_cc_pic='-W c,exportall'
           ;;
@@ -627,7 +628,7 @@ else
     netbsd*)
       ;;
     osf3* | osf4* | osf5*)
-      case "$CXX" in
+      case "$cc_basename" in
         KCC)
           # KAI C++ Compiler 3.3f
           ;;
@@ -650,7 +651,7 @@ else
     psos*)
       ;;
     sco*)
-      case "$CXX" in
+      case "$cc_basename" in
         CC)
           ac_cv_prog_cc_pic='-fPIC'
           ;;
@@ -659,7 +660,7 @@ else
       esac
       ;;
     solaris*)
-      case "$CXX" in
+      case "$cc_basename" in
         CC)
           # Sun C++ 4.2, 5.x and Centerline C++
           ac_cv_prog_cc_pic='-KPIC'
@@ -675,7 +676,7 @@ else
       esac   
       ;;
     sunos4*)
-      case "$CXX" in
+      case "$cc_basename" in
         CC)
           # Sun C++ 4.x
           ac_cv_prog_cc_pic='-pic'
@@ -690,7 +691,7 @@ else
       esac
       ;;
     tandem*)
-      case "$CXX" in
+      case "$cc_basename" in
         NCC)
           # NonStop-UX NCC 3.20
           ac_cv_prog_cc_pic='-KPIC'
