@@ -2735,8 +2735,9 @@ following search paths for the module (in the order as follows):
 
 @enumerate 1
 @item user-defined search path:
-This search path can be set by the program using the
-functions @code{lt_dlsetsearchpath} and @code{lt_dladdsearchdir}.
+This search path can be changed by the program using the
+functions @code{lt_dlsetsearchpath}, @code{lt_dladdsearchdir} and
+@code{lt_dlinsertsearchdir}.
 
 @item libltdl's search path:
 This search path is the value of the environment variable
@@ -2827,8 +2828,15 @@ int main() @{
 @end defmac
 
 @deftypefun int lt_dladdsearchdir (const char *@var{search_dir})
-Add the search directory @var{search_dir} to the user-defined library
-search path. Return 0 on success.
+Append the search directory @var{search_dir} to the current user-defined
+library search path. Return 0 on success.
+@end deftypefun
+
+@deftypefun int lt_dlinsertsearchdir (@w{const char *@var{before}}, @w{const char *@var{search_dir}})
+Insert the search directory @var{search_dir} into the user-defined library
+search path, immediately before the element starting at address
+@var{before}.  If @var{before} is @samp{NULL}, then @var{search_dir} is
+appending as if @code{lt_dladdsearchdir} had been called.  Return 0 on success.
 @end deftypefun
 
 @deftypefun int lt_dlsetsearchpath (const char *@var{search_path})

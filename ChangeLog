@@ -1,13 +1,30 @@
+2001-08-13  Gary V. Vaughan  <gary@gnu.org>
+
+	* libltdl/ltdl.c (rpl_argz_stringify): New fallback implementation.
+	* ltdl.m4 (AC_LTDL_FUNC_ARGZ):  Test for argz_stringify in libc.
+	* libltdl/ltdl.c (lt_argz_insertinorder): Renamed from 
+	lt_argz_insert to make room for...
+	(lt_argz_insert): Wraps argz_insert with libltdl error handling.
+	(lt_dlpath_insertdir): Insert new path elements into an
+	argzized path.
+	(lt_dlinsertsearchdir): New function to insert new search
+	directories anywhere into user_search_path using the above.
+	(lt_dladdsearchdir): Rewritten to use lt_dlpath_insertdir.
+	* libltdl/ltdl.h (lt_dlinsertsearchdir): Prototype for export.
+	* doc/libtool.texi (Libltdl interface): Document it.
+	* NEWS: Updated,
+	
 2001-08-07  Gary V. Vaughan  <gary@gnu.org>
 
-	ltmain.in [irix*]: $with_gcc is either "yes" or "" (empty string)
+	From Albert Chin <china@thewrittenword.com>:
+	* ltmain.in [irix*]: $with_gcc is either "yes" or "" (empty string)
 	with current autoconf, so we need to be robust to that when testing
 	it,
 
 2001-08-06  Gary V. Vaughan  <gary@gnu.org>
 
 	From Brad <brad@comstyle.com>:
-	libtool.m4 (deplibs_check_method) [aix*]: Removed redundant setting
+	* libtool.m4 (deplibs_check_method) [aix*]: Removed redundant setting
 	of this variable.
 
 2001-08-05  Gary V. Vaughan  <gary@gnu.org>

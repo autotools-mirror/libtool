@@ -597,6 +597,33 @@ argz_next (argz, argz_len, entry)
 
 
 
+#if ! HAVE_ARGZ_STRINGIFY
+#  define argz_stringify rpl_argz_stringify
+
+static void argz_stringify LT_PARAMS((char *argz, size_t argz_len,
+				       int sep));
+
+void
+argz_stringify (argz, argz_len, sep)
+     char *argz;
+     size_t argz_len;
+     int sep;
+{
+  assert ((argz && argz_len) || (!argz && !argz_len));
+
+  if (sep)
+    {
+      while (--argz_len >= 0)
+	{
+	  if (argz[argz_len] == LT_EOS_CHAR)
+	    argz[argz_len] = sep;
+	}
+    }
+}
+#endif /* !HAVE_ARGZ_STRINGIFY */
+
+
+
 
 /* --- TYPE DEFINITIONS -- */
 
@@ -1604,12 +1631,12 @@ static	int	foreachfile_callback  LT_PARAMS((char *filename, lt_ptr data1,
 						 lt_ptr data2));
 
 
-static	int      canonicalize_path    LT_PARAMS((const char *path,
+static	int     canonicalize_path     LT_PARAMS((const char *path,
 						 char **pcanonical));
-static	int	 argzize_path	      LT_PARAMS((const char *path,
+static	int	argzize_path 	      LT_PARAMS((const char *path,
 						 char **pargz,
 						 size_t *pargz_len));
-static	FILE    *find_file	      LT_PARAMS((const char *search_path,
+static	FILE   *find_file	      LT_PARAMS((const char *search_path,
 						 const char *base_name,
 						 char **pdir));
 static	lt_dlhandle *find_handle      LT_PARAMS((const char *search_path,
@@ -1630,7 +1657,16 @@ static	int	trim		      LT_PARAMS((char **dest,
 static	int	tryall_dlopen	      LT_PARAMS((lt_dlhandle *handle,
 						 const char *filename));
 static	int	unload_deplibs	      LT_PARAMS((lt_dlhandle handle));
-
+static	int	lt_argz_insert	      LT_PARAMS((char **pargz,
+						 size_t *pargz_len,
+						 char *before,
+						 const char *entry));
+static	int	lt_argz_insertinorder LT_PARAMS((char **pargz,
+						 size_t *pargz_len,
+						 const char *entry));
+static	int	lt_dlpath_insertdir   LT_PARAMS((char **ppath,
+						 char *before,
+						 const char *dir));
 
 static	char	       *user_search_path= 0;
 static	lt_dlloader    *loaders		= 0;
@@ -2855,8 +2891,35 @@ lt_dlopenext (filename)
   return 0;
 }
 
+
 int
-lt_argz_insert (pargz, pargz_len, entry)
+lt_argz_insert (pargz, pargz_len, before, entry)
+     char **pargz;
+     size_t *pargz_len;
+     char *before;
+     const char *entry;
+{
+  error_t error;
+
+  if ((error = argz_insert (pargz, pargz_len, before, entry)))
+    {
+      switch (error)
+	{
+	case ENOMEM:
+	  LT_DLMUTEX_SETERROR (LT_DLSTRERROR (NO_MEMORY));
+	  break;
+	default:
+	  LT_DLMUTEX_SETERROR (LT_DLSTRERROR (UNKNOWN));
+	  break;
+	}
+      return 1;
+    }
+
+  return 0;
+}
+
+int
+lt_argz_insertinorder (pargz, pargz_len, entry)
      char **pargz;
      size_t *pargz_len;
      const char *entry;
@@ -2875,26 +2938,8 @@ lt_argz_insert (pargz, pargz_len, entry)
 	if (cmp < 0)  break;
 	if (cmp == 0) return 0;	/* No duplicates! */
       }
-  
-  {
-    error_t error;
 
-    if ((error = argz_insert (pargz, pargz_len, before, entry)))
-      {
-	switch (error)
-	  {
-	  case ENOMEM:
-	    LT_DLMUTEX_SETERROR (LT_DLSTRERROR (NO_MEMORY));
-	    break;
-	  default:
-	    LT_DLMUTEX_SETERROR (LT_DLSTRERROR (UNKNOWN));
-	    break;
-	  }
-	return 1;
-      }
-  }
-
-  return 0;
+  return lt_argz_insert (pargz, pargz_len, before, entry);
 }
 
 int
@@ -2955,7 +3000,7 @@ lt_argz_insertdir (pargz, pargz_len, dirnam, dp)
   buf[buf_len] = LT_EOS_CHAR;
 
   /* Try to insert (in order) into ARGZ/ARGZ_LEN.  */
-  if (lt_argz_insert (pargz, pargz_len, buf) != 0)
+  if (lt_argz_insertinorder (pargz, pargz_len, buf) != 0)
     ++errors;
 
   LT_DLFREE (buf);
@@ -3255,41 +3300,124 @@ lt_dlerror ()
 }
 
 int
+lt_dlpath_insertdir (ppath, before, dir)
+     char **ppath;
+     char *before;
+     const char *dir;
+{
+  int    errors		= 0;
+  char  *canonical	= 0;
+  char  *argz		= 0;
+  size_t argz_len	= 0;
+
+  assert (ppath);
+  assert (dir && *dir);
+
+  if (canonicalize_path (dir, &canonical) != 0)
+    {
+      ++errors;
+      goto cleanup;
+    }
+
+  assert (canonical && *canonical);
+
+  /* If *PPATH is empty, set it to DIR.  */
+  if (*ppath == 0)
+    {
+      assert (!before);		/* BEFORE cannot be set without PPATH.  */
+      assert (dir);		/* Without DIR, don't call this function!  */
+
+      *ppath = lt_estrdup (dir);
+      if (*ppath == 0)
+	++errors;
+
+      return errors;
+    }
+
+  assert (ppath && *ppath);
+
+  if (argzize_path (*ppath, &argz, &argz_len) != 0)
+    {
+      ++errors;
+      goto cleanup;
+    }
+
+  /* Convert BEFORE into an equivalent offset into ARGZ.  This only works
+     if *PPATH is already canonicalized, and hence does not change length
+     with respect to ARGZ.  We canonicalize each entry as it is added to
+     the search path, and don't call this function with (uncanonicalized)
+     user paths, so this is a fair assumption.  */
+  if (before)
+    {
+      assert (*ppath <= before);
+      assert (before - *ppath <= strlen (*ppath));
+
+      before = before - *ppath + argz;
+    }
+
+  if (lt_argz_insert (&argz, &argz_len, before, dir) != 0)
+    {
+      ++errors;
+      goto cleanup;
+    }
+  
+  argz_stringify (argz, argz_len, LT_PATHSEP_CHAR);
+  LT_DLMEM_REASSIGN (*ppath,  argz);
+
+ cleanup:
+  LT_DLFREE (canonical);
+  LT_DLFREE (argz);
+
+  return errors;
+}
+  
+int
 lt_dladdsearchdir (search_dir)
      const char *search_dir;
 {
   int errors = 0;
 
-  if (!search_dir || !LT_STRLEN(search_dir))
+  if (search_dir && *search_dir)
     {
-      return errors;
-    }
-
-  LT_DLMUTEX_LOCK ();
-  if (!user_search_path)
-    {
-      user_search_path = lt_estrdup (search_dir);
-      if (!user_search_path)
+      LT_DLMUTEX_LOCK ();
+      if (lt_dlpath_insertdir (&user_search_path, 0, search_dir) != 0)
 	++errors;
+      LT_DLMUTEX_UNLOCK ();
     }
-  else
-    {
-      size_t len = LT_STRLEN (user_search_path) + 1 + LT_STRLEN (search_dir);
-      char  *new_search_path = LT_EMALLOC (char, 1+ len);
 
-      if (!new_search_path)
+  return errors;
+}
+
+int
+lt_dlinsertsearchdir (before, search_dir)
+     const char *before;
+     const char *search_dir;
+{
+  int errors = 0;
+
+  if (before)
+    {
+      LT_DLMUTEX_LOCK ();
+      if ((before < user_search_path) 
+	  || (before >= LT_STRLEN (user_search_path)))
+	{
+	  LT_DLMUTEX_UNLOCK ();
+	  LT_DLMUTEX_SETERROR (LT_DLSTRERROR (INVALID_POSITION));
+	  return 1;
+	}
+      LT_DLMUTEX_UNLOCK ();
+    }
+
+  if (search_dir && *search_dir)
+    {
+      LT_DLMUTEX_LOCK ();
+      if (lt_dlpath_insertdir (&user_search_path, 
+			       (char *) before, search_dir) != 0)
 	{
 	  ++errors;
 	}
-      else
-	{
-	  sprintf (new_search_path, "%s%c%s", user_search_path,
-		   LT_PATHSEP_CHAR, search_dir);
-
-	  LT_DLMEM_REASSIGN (user_search_path, new_search_path);
-	}
+      LT_DLMUTEX_UNLOCK ();
     }
-  LT_DLMUTEX_UNLOCK ();
 
   return errors;
 }
@@ -3298,7 +3426,7 @@ int
 lt_dlsetsearchpath (search_path)
      const char *search_path;
 {
-  int errors = 0;
+  int   errors	    = 0;
 
   LT_DLMUTEX_LOCK ();
   LT_DLFREE (user_search_path);
@@ -3310,8 +3438,7 @@ lt_dlsetsearchpath (search_path)
     }
 
   LT_DLMUTEX_LOCK ();
-  user_search_path = lt_estrdup (search_path);
-  if (!user_search_path)
+  if (canonicalize_path (search_path, &user_search_path) != 0)
     ++errors;
   LT_DLMUTEX_UNLOCK ();
 
