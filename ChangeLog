@@ -6,6 +6,14 @@
 	* libtoolize.in: change recommendation from AM_PROG_LIBTOOL to
 	AC_PROG_LIBTOOL.
 
+	* ltconfig.in, ltcf-c.sh, ltcf-gcj.sh: Generate dll/import
+	libraries for cygwin according to the following: libFOO.a (static
+	lib), libFOO.dll.a (import lib), cygFOO-version.dll (dll).  Update
+	postinstall_cmds and postuninstall_cmds to reflect this.
+	* ltmain.in: Generate installed .la files with dlnames set to 
+	../bin/cygFOO-version.dll for normal dlls. dlls for modules
+	remain with the .la file.
+
 2001-03-22  Laurynas Biveinis  <lauras@softhome.net>
 
 	* ltcf-c.sh: Clear ac_cv_prog_cc_pic for DJGPP.  Do not add
