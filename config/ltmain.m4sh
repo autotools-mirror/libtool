@@ -982,7 +982,7 @@ func_extract_archives () {
 	else
 	  func_warning "object name conflicts; renaming object files"
 	  func_warning "to ensure that they will not overwrite"
-	  $AR t "$my_xabs" | sort | uniq -cd | while read -r count name
+	  $AR t "$my_xabs" | sort | uniq -cd | while read count name
 	  do
 	    i=1
 	    while test "$i" -le "$count"
