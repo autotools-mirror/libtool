@@ -1,7 +1,9 @@
 NEWS - list of user-visible changes between releases of GNU Libtool
 
 New in 1.9f: 2004-??-??; CVS version 1.9e, Libtool team:
-* ??
+* Fix a regression in 1.9d, which required an installed automake to build the
+  bootstrapped tarball.
+* Fix hanging bug on MinGW.
 
 New in 1.9d: 2004-10-03; CVS version 1.9c, Libtool team:
 * If non-pic objects were not compiled, and libtool is called in link mode,

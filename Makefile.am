@@ -46,7 +46,7 @@ SUBDIRS = $(BUILD_SUBDIRS)
 DIST_SUBDIRS = $(BUILD_SUBDIRS)
 
 sh_files = config/general.m4sh config/getopt.m4sh
-EXTRA_DIST = bootstrap libtoolize.in config/ltmain.in config/mkstamp \
+EXTRA_DIST = bootstrap libtoolize.in config/ltmain.m4sh config/mkstamp \
 	$(sh_files) stamp-vcl ChangeLog.1996 ChangeLog.1997 ChangeLog.1998 \
 	ChangeLog.1999 ChangeLog.2000 ChangeLog.2001 ChangeLog.2002 \
 	ChangeLog.2003
@@ -115,47 +115,56 @@ $(top_srcdir)/m4/ltversion.m4: m4/ltversion.in configure.ac stamp-vcl
 ##          distcheck (at least) by rebuilding ltmain.sh in the source
 ##          tree whenever config.status regenerates the Makefile.
 EXTRA_DIST += config/ltmain.sh
-$(top_srcdir)/config/ltmain.sh: $(sh_files) config/ltmain.in configure.ac stamp-vcl
+$(top_srcdir)/config/ltmain.sh: $(sh_files) config/ltmain.m4sh configure.ac stamp-vcl
 	$(timestamp); \
 	cd $(top_srcdir); \
-	rm -f config/ltmain.m4sh config/ltmain.tmp config/ltmain.sh; \
-	$(M4SH) -B ./config config/ltmain.in > config/ltmain.m4sh; \
+	rm -f config/ltmain.in config/ltmain.tmp config/ltmain.sh; \
+	$(M4SH) -B ./config config/ltmain.m4sh > config/ltmain.in; \
 	input="ltmain.in"; \
 	$(edit) -e "s,@TIMESTAMP\@,$$TIMESTAMP,g" \
 		-e "s,@package_revision\@,$$1,g" \
-		config/ltmain.m4sh > config/ltmain.tmp; \
-	rm -f config/ltmain.m4sh; \
+		config/ltmain.in > config/ltmain.tmp; \
+	rm -f config/ltmain.in; \
 	chmod a-w config/ltmain.tmp; \
 	mv -f config/ltmain.tmp config/ltmain.sh
 
 # The libtool distributor and the standalone libtool script.
 bin_SCRIPTS = libtoolize libtool
 
-libtoolize: $(sh_files) libtoolize.in Makefile
-	rm -f libtoolize.m4sh libtoolize.tmp libtoolize
-	$(M4SH) -B $(top_srcdir)/config \
-		$(srcdir)/libtoolize.in > libtoolize.m4sh
+libtoolize: libtoolize.in
+	rm -f libtoolize.tmp libtoolize
 	$(timestamp); \
-	input="libtoolize.in"; \
+	input="libtoolize.m4sh"; \
 	$(edit) -e "s,@TIMESTAMP\@,$$TIMESTAMP,g" \
-		libtoolize.m4sh > libtoolize.tmp
-	rm -f libtoolize.m4sh
+		$(top_srcdir)/libtoolize.in > libtoolize.tmp
 	chmod a+x libtoolize.tmp
 	chmod a-w libtoolize.tmp
 	mv -f libtoolize.tmp libtoolize
 
+# Use `$(top_srcdir)' for the benefit of non-GNU makes: this is
+# how libtoolize.in appears in our dependencies.
+EXTRA_DIST += libtoolize.m4sh
+$(top_srcdir)/libtoolize.in: $(sh_files) libtoolize.m4sh Makefile.am
+	cd $(top_srcdir); \
+	rm -f libtoolize.in; \
+	$(M4SH) -B ./config libtoolize.m4sh > libtoolize.in
+
 # The defs script shouldn't be recreated whenever the Makefile is
 # regenerated since the source tree can be read-only.
 check-recursive: tests/defs
-tests/defs: tests/defs.in Makefile.am
-	rm -f tests/defs.m4sh tests/defs.tmp tests/defs; \
-	$(M4SH) -B $(top_srcdir)/config \
-		$(top_srcdir)/tests/defs.in > tests/defs.m4sh; \
-	input="defs.in"; \
-	$(edit) tests/defs.m4sh > tests/defs.tmp; \
-	rm -f tests/defs.m4sh; \
+tests/defs: tests/defs.in
+	rm -f tests/defs.tmp tests/defs; \
+	input="defs.m4sh"; \
+	$(edit) $(top_srcdir)/tests/defs.in > tests/defs.tmp; \
 	mv -f tests/defs.tmp tests/defs
 
+# Use `$(top_srcdir)/tests' for the benefit of non-GNU makes: this is
+# how defs.in appears in our dependencies.
+# No need to EXTRA_DIST defs.m4sh here, that is handled in tests/Makefile.am.
+$(top_srcdir)/tests/defs.in: tests/defs.m4sh Makefile.am
+	cd $(top_srcdir); \
+	rm -f tests/defs.in; \
+	$(M4SH) -B ./config tests/defs.m4sh > tests/defs.in
 
 # Automake doesn't want us to generate distributed files from config.status,
 # but the alternative (see libtool-1.4.3) was even uglier!
