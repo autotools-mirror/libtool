@@ -715,6 +715,11 @@ lt_dlpreload_default (preloaded)
 	return 0;
 }
 
+#ifndef HAVE_PRELOADED_SYMBOLS
+/* If libtool won't define it, we'd better do */
+const lt_dlsymlist lt_preloaded_symbols[1] = { { 0, 0 } };
+#endif
+
 int
 lt_dlexit ()
 {

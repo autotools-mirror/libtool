@@ -1,5 +1,12 @@
 1999-01-20  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* libltdl/configure.in (libltdl_cv_preloaded_symbols,
+	HAVE_PRELOADED_SYMBOLS): test whether we support -dl*open
+	* libltdl/ltdl.c (!HAVE_PRELOADED_SYMBOLS, lt_preloaded_symbols):
+	define it to an empty list if libtool won't generate it, so as to
+	avoid link errors.  This will cause silent dlopening failures, but 
+	maybe this is better than failing to link the program...
+
 	* libltdl/ltdl.h (LTDL_PRELOADED_SYMBOLS): remove it; better to
 	declare lt_preloaded_symbols
 	* doc/libtool.texi (LTDL_PRELOADED_SYMBOLS): ditto

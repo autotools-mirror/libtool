@@ -58,6 +58,18 @@ AC_CHECK_HEADERS(malloc.h memory.h stdlib.h stdio.h ctype.h dlfcn.h dl.h)
 AC_CHECK_HEADERS(string.h strings.h, break)
 AC_CHECK_FUNCS(strdup strchr strrchr index rindex)
 
+AC_CACHE_CHECK([whether libtool supports -dlopen/-dlpreopen],
+       libltdl_cv_preloaded_symbols, [dnl
+  if grep '^global_symbol_pipe=..*$' ./libtool >/dev/null; then
+    libltdl_cv_preloaded_symbols=yes
+  else
+    libltdl_cv_preloaded_symbols=no
+  fi
+])
+if test x"$libltdl_cv_preloaded_symbols" = x"yes"; then
+  AC_DEFINE(HAVE_PRELOADED_SYMBOLS)
+fi
+
 test_dlerror=no
 LIBADD_DL=
 AC_CHECK_FUNCS(dlopen, [AC_DEFINE(HAVE_LIBDL) test_dlerror=yes],
