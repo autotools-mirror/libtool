@@ -1,6 +1,10 @@
 2001-07-11  Gary V. Vaughan  <gary@gnu.org>
 
 	* libtool.m4 (_LT_AC_LANG_CXX_CONFIG) [hpux, linux, osf,
+	solaris]: Doh!  the evalled variable shouldn't have been
+	quoted.
+
+	* libtool.m4 (_LT_AC_LANG_CXX_CONFIG) [hpux, linux, osf,
 	solaris]: output_verbose_link_cmd have unquoted `*' in case
 	statements for these architectures.  Be sure to quote them
 	with a sed expression before passing to eval.

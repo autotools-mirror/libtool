@@ -2870,8 +2870,7 @@ if AC_TRY_EVAL(ac_compile); then
   # eval without this substitution.
   output_verbose_link_cmd="`$echo \"X$output_verbose_link_cmd\" | $Xsed -e \"$no_glob_subst\"`"
 
-  for p in `eval "$output_verbose_link_cmd"`; do
-
+  for p in `eval $output_verbose_link_cmd`; do
     case $p in
 
     -L* | -R* | -l*)
