@@ -82,6 +82,12 @@ extern int errno;
 void lt__alloc_die_callback (void);
 
 
+/* For readability:  */
+#define strneq(s1, s2)	(strcmp((s1), (s2)) != 0)
+#define streq(s1, s2)	(!strcmp((s1), (s2)))
+
+
+
 /* --- ERROR HANDLING --- */
 
 /* Extract the diagnostic strings from the error table macro in the same

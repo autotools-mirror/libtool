@@ -1,5 +1,12 @@
 2004-07-15  Gary V. Vaughan  <gary@gnu.org>
 
+	* libltdl/lt__private.h (streq, strneq): New macros to make strcmp
+	calls as used for simple comparison easier to read.
+	* libltdl/loaders/dyld.c, libltdl/loaders/preopen.c,
+	libltdl/ltdl.c: Use them!
+
+2004-07-15  Gary V. Vaughan  <gary@gnu.org>
+
 	This pervasive changeset makes two intertwined deep changes to the
 	operation of libtool (neither would work alone).  First, there is
 	a new feature that allows libraries to preopen modules.  This

@@ -368,7 +368,7 @@ tryall_dlopen (lt_dlhandle *handle, const char *filename)
 	}
 
       if (cur->info.filename && filename
-	  && strcmp (cur->info.filename, filename) == 0)
+	  && streq (cur->info.filename, filename))
 	{
 	  break;
 	}
@@ -1062,7 +1062,7 @@ try_dlopen (lt_dlhandle *phandle, const char *filename)
       }
 
   /* Check whether we are opening a libtool module (.la extension).  */
-  if (ext && strcmp (ext, archive_ext) == 0)
+  if (ext && streq (ext, archive_ext))
     {
       /* this seems to be a libtool module */
       FILE *	file	 = 0;
@@ -1195,11 +1195,11 @@ try_dlopen (lt_dlhandle *phandle, const char *filename)
 	    {
 	      errors += trim (&deplibs, &line[sizeof (STR_DL_DEPLIBS) - 1]);
 	    }
-	  else if (strcmp (line, "installed=yes\n") == 0)
+	  else if (streq (line, "installed=yes\n"))
 	    {
 	      installed = 1;
 	    }
-	  else if (strcmp (line, "installed=no\n") == 0)
+	  else if (streq (line, "installed=no\n"))
 	    {
 	      installed = 0;
 	    }
@@ -1398,9 +1398,9 @@ lt_dlopenext (const char *filename)
 
   /* If FILENAME already bears a suitable extension, there is no need
      to try appending additional extensions.  */
-  if (ext && ((strcmp (ext, archive_ext) == 0)
+  if (ext && ((streq (ext, archive_ext))
 #if defined(LTDL_SHLIB_EXT)
-	      || (strcmp (ext, shlib_ext) == 0)
+	      || (streq (ext, shlib_ext))
 #endif
       ))
     {
@@ -2050,7 +2050,7 @@ lt_dlhandle_find (const char *module_name)
     {
       do
 	{
-	  if (cur->info.name && strcmp (cur->info.name, module_name) == 0)
+	  if (cur->info.name && streq (cur->info.name, module_name))
 	    break;
 	}
       while ((cur = cur->next));
@@ -2250,7 +2250,7 @@ lt_dlloader_remove (const char *loader_name)
       lt_dlloader *prev;
       for (prev = loaders; prev->next; prev = prev->next)
 	{
-	  if (!strcmp (prev->next->loader_name, loader_name))
+	  if (streq (prev->next->loader_name, loader_name))
 	    {
 	      break;
 	    }
@@ -2317,7 +2317,7 @@ lt_dlloader_find (const char *loader_name)
 
   for (place = loaders; place; place = place->next)
     {
-      if (strcmp (place->loader_name, loader_name) == 0)
+      if (streq (place->loader_name, loader_name))
 	{
 	  break;
 	}

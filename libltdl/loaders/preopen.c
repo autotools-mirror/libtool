@@ -161,7 +161,7 @@ vm_open (lt_user_data loader_data, const char *filename)
       const lt_dlsymbol *symbol;
       for (symbol= lists->symlist->symbols; symbol->name; ++symbol)
 	{
-	  if (!symbol->address && strcmp(symbol->name, filename) == 0)
+	  if (!symbol->address && streq (symbol->name, filename))
 	    {
 	      module = (lt_module) lists->symlist;
 	      goto done;
@@ -199,7 +199,7 @@ vm_sym (lt_user_data loader_data, lt_module module, const char *name)
 
   while (symbol->name)
     {
-      if (strcmp (symbol->name, name) == 0)
+      if (streq (symbol->name, name))
 	{
 	  return symbol->address;
 	}
@@ -320,7 +320,7 @@ lt_dlpreload_open (const char *originator, lt_dlpreload_callback_func *func)
   for (list = preloaded_symlists; list; list = list->next)
     {
       /* ...that was preloaded by the requesting ORIGINATOR... */
-      if (strcmp (list->symlist->originator, originator) == 0)
+      if (streq (list->symlist->originator, originator))
 	{
 	  const lt_dlsymbol *symbol;
 	  unsigned int idx = 0;
@@ -331,7 +331,7 @@ lt_dlpreload_open (const char *originator, lt_dlpreload_callback_func *func)
 	  while ((symbol = &list->symlist->symbols[idx++])->name != 0)
 	    {
 	      if ((symbol->address == 0)
-		  && (strcmp (symbol->name, "@PROGRAM@") != 0))
+		  && (strneq (symbol->name, "@PROGRAM@")))
 		{
 		  lt_dlhandle handle = lt_dlopen (symbol->name);
 		  if (handle == 0)
