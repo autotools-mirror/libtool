@@ -1492,6 +1492,7 @@ EOF
 # define lt_ptr_t void *
 #else
 # define lt_ptr_t char *
+# define const
 #endif
 
 /* The mapping between symbol names and symbols. */

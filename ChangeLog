@@ -1,5 +1,8 @@
 1999-01-20  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* ltconfig.in (global_symbol_pipe): #define const to nothing if
+	not __STDC__
+
 	* demo/dlmain.c (main): cast s->address to the appropriate pointer
  	types, otherwise StunOS4's cc refuses to compile it
 
