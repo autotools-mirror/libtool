@@ -1,3 +1,10 @@
+1999-09-29  Gary V. Vaughan  <gary@oranda.demon.co.uk>
+
+	* ltconfig.in (whole-archive-flag-spec):  I had been
+	wondering why my file system was filling up with empty
+	files named `71'... seems I forgot to hold in the
+	shift key when redirecting stderr, 2>&1.  Doh!
+
 1999-09-29  Vadim  <vadim@olly.ru>
 
 	* ltconfig.in (sysv):  More UW7 support.
