@@ -14,7 +14,7 @@ CPPLAGS = @CPPFLAGS@
 aclocal_macros = libtool.m4
 
 EXTRA_DIST = $(aclocal_macros) libtoolize.in ltconfig.in ltmain.in \
-	libtool.spec ltconfig ltmain.sh
+	libtool.spec
 CLEANFILES = libtool libtoolize ltconfig.T ltmain.shT
 
 # These are required by libtoolize.
@@ -80,7 +80,7 @@ configure-subdirs distdir: $(DIST_MAKEFILE_LIST)
 	dir=`echo $@ | sed 's,^[^/]*$$,.,;s,/[^/]*$$,,'`; \
 	test -d $$dir || mkdir $$dir || exit 1; \
 	abs_srcdir=`cd $(top_srcdir) >/dev/null && pwd`; \
-	(cd $$dir && $abs_srcdir/$$dir/configure) || exit 1
+	(cd $$dir && $$abs_srcdir/$$dir/configure) || exit 1
 
 ################################################################
 ##

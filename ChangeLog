@@ -1,3 +1,9 @@
+1999-01-15  Thomas Tanner  <tanner@gmx.de>
+
+	* Makefile.am (@DIST_MAKEFILE_LIST@): added a second '$' 
+	  before abs_scrdir, removed ltconfig and ltmain.sh from
+	  EXTRA_DIST (automake distributes them by default)
+	
 1999-01-14  Thomas Tanner  <tanner@gmx.de>
 
 	* autogen: moved faking of the libtool scripts before
