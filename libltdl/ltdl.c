@@ -1019,9 +1019,10 @@ parse_dotla_file(FILE *file, char **dlname, char **libdir, char **deplibs,
 	}
 
       if (errors)
-	return 1;
+	break;
     }
 cleanup:
+  FREE (line);
   return errors;
 }
 

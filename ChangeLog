@@ -1,5 +1,7 @@
 2004-11-03  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
+	* libtldl/ltdl.c (parse_dotla_file): Fix memleak.
+
 	* ltmain.m4sh (cwrappersource): Cast isalpha arguments correctly.
 
 2004-11-03  Peter Ekberg  <spam.protected>
