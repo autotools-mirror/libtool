@@ -1,5 +1,8 @@
 1999-04-10  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* ltconfig.in (Usage): Removed --enable-dlopen-self.
+	Reported by Pavel Roskin <pavel_roskin@geocities.com>
+
 	* ltconfig.in: Moved sysv4 before sysv4.*.
 	(symcode): Brian's overrider is specific to sysv4, not sysv4*.
 
