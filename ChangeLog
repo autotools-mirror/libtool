@@ -1,3 +1,8 @@
+2004-01-23  Scott James Remnant  <scott@netsplit.com>
+
+	* m4/libtool.m4 (AC_DEPLIBS_CHECK_METHOD): Remove dead code
+	for platforms that have been using pass_all for some time now.
+
 2004-01-23  Gary V. Vaughan  <gary@gnu.org>
 	                                                                        
 	* ltmain.in: Don't suppress output of PIC mode compile if
