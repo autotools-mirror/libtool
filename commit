@@ -1,6 +1,6 @@
 #! /bin/sh
 
-# commit version 0.9
+# commit version 0.9.1
 
 # Copyright (C) 1999, Free Software Foundation
 
@@ -8,7 +8,7 @@
 # modified as defined in the GNU General Public License.  A copy of
 # its license can be downloaded from http://www.gnu.org/copyleft/gpl.html
 
-# Originally by Gary V. Vaughan <gvaughan@@oranda.demon.co.uk>
+# Originally by Gary V. Vaughan <gvaughan@oranda.demon.co.uk>
 # Heavily modified by Alexandre Oliva <oliva@dcc.unicamp.br>
 
 # This scripts eases checking in changes to CVS-maintained projects
@@ -29,50 +29,58 @@
 # files (at that moment) are checked in, unless `-n' was specified, in
 # which case nothing is checked in.
 
-# usage: commit [-v] [-h] [-f] [-l] [-n] [-zN] [-m msg|-F msg_file] \
-#               [file|dir ...]
+# usage: commit [-v] [-h] [-f] [-l] [-n] [-q] [-z N]
+#               [-m msg|-F msg_file] [--] [file|dir ...]
 
-# -f      --force       don't wait for confirmation (set PAGER=cat)
+# -f      --fast        don't check (unless *followed* by -n), and just 
+#         --force       display commit message instead of running $PAGER
 # -l      --local       don't descend into subdirectories
 # -m msg  --message=msg set commit message
+#         --msg=msg     same as -m
 # -F file --file=file   read commit message from file
 # -n      --dry-run     don't commit anything
+# -q      --quiet       run cvs in quiet mode
 # -zN     --compress=N  set compression level (0-9, 0=none, 9=max)
 # -v      --version     print version information
 # -h,-?   --help        print short or long help message
 
 name=commit
 cvsopt=
-statopt=
+updateopt=
 commitopt=
-dry_run=
+dry_run=false
+commit=:
+update=:
 log_file="${TMPDIR-/tmp}/commitlog.$$"
 
-rm -f $log_file
-trap "rm -f \"$log_file\"; exit 1" 1 2 15
+rm -f "$log_file"
+trap 'rm -f "$log_file"; exit 1' 1 2 15
+
+# this just eases exit handling
+main_repeat=":"
+while $main_repeat; do
 
 repeat="test $# -gt 0"
 while $repeat; do
     case "$1" in
-    -f|--force)
+    -f|--force|--fast)
+	update=false
 	PAGER=cat
 	shift
 	;;
     -l|--local)
-	statopt="$statopt -l"
+	updateopt="$updateopt -l"
 	commitopt="$commitopt -l"
 	shift
 	;;
     -m|--message|--msg)
 	if test $# = 1; then
-	    echo "$name: missing argument for $1"
-	    rm -f "$log_file"
-	    exit 1
+	    echo "$name: missing argument for $1" >&2
+	    break
 	fi
 	if test -f "$log_file"; then
-	    echo "$name: you can have at most one of -m and -F"
-	    rm -f "$log_file"
-	    exit 1
+	    echo "$name: you can have at most one of -m and -F" >&2
+	    break
 	fi
 	shift
 	echo "$1" > "$log_file"
@@ -80,42 +88,44 @@ while $repeat; do
 	;;
     -F|--file)
 	if test -f "$log_file"; then
-	    echo "$name: you can have at most one of -m and -F"
-	    rm -f "$log_file"
-	    exit 1
+	    echo "$name: you can have at most one of -m and -F" >&2
+	    break
 	fi
 	if test $# = 1; then
-	    echo "$name: missing argument for $1"
-	    rm -f "$log_file"
-	    exit 1
+	    echo "$name: missing argument for $1" >&2
+	    break
 	fi
 	shift
 	if cat < "$1" > "$log_file"; then :; else
-	    rm -f "$log_file"
-	    exit 1
+	    break
 	fi
 	shift
 	;;
     -n|--dry-run)
-	dry_run=:
+	commit=false
+	update=true
 	shift
 	;;
-    -z|-compress)
+    -q|--quiet)
+	cvsopt="$cvsopt -q"
+	shift
+	;;
+    -z|--compress)
 	if test $# = 1; then
-	    echo "$name: missing argument for $1"
-	    rm -f "$log_file"
-	    exit 1
+	    echo "$name: missing argument for $1" >&2
+	    break
 	fi
 	case "$2" in
 	[0-9]) :;;
-	*)  echo "$name: invalid argument for $1"
-	    rm -f "$log_file"
-	    exit 1;;
+	*)  echo "$name: invalid argument for $1" >&2
+	    break
+	    ;;
 	esac
 	cvsopt="$cvsopt -z$2"
 	shift
 	shift
 	;;
+
     -m*|-F*|-z*)
 	opt=`echo "$1" | sed '1s/^\(..\).*$/\1/;q'`
 	arg=`echo "$1" | sed '1s/^-[a-zA-Z0-9]//'`
@@ -128,6 +138,7 @@ while $repeat; do
 	shift
 	set -- "$opt" "$arg" ${1+"$@"}
 	;;
+
     -v|--version)
 	sed '/^# '$name' version /,/^# Heavily modified by/ { s/^# //; p; }; d' < $0
 	exit 0
@@ -146,41 +157,73 @@ while $repeat; do
 	shift
 	repeat=false
 	;;
+    -*)
+	echo "$name: invalid flag $1" >&2
+	break
+	;;
     *)
 	repeat=false
 	;;
     esac
 done
+# might have used break 2 within the previous loop, but so what
+$repeat && break
 
-echo "Checking whether repository is up to date..." >&2
-if cvs $cvsopt stat $statopt ${1+"$@"} 2>/dev/null | grep Status \
-   | while read File file Status rest; do
-	case "$rest" in
-	"Up-to-date") :;;
-	"Locally Modified") echo "M $file" >&2;;
-	"Locally Added") echo "A $file" >&2;;
-	"Locally Removed") echo "R $file" >&2;;
-	*Status:*Unknown) echo "? $rest"; echo "? $rest" >&2;;
-	*) echo "C $file"; echo "C $file" >&2;;
-	esac
-     done | grep . >/dev/null; then
-  exit 1
+$update && \
+if echo "$name: checking for conflicts..." >&2
+   (cvs $cvsopt -n update $updateopt ${1+"$@"} \
+    | while read line; do
+	echo "$line"
+	echo "$line" >&3
+      done | grep '^C') 3>&1 >/dev/null; then
+  echo "$name: some conflicts were found, aborting..." >&2
+  break
 fi
 
-echo "Checking commit message..." >&2
 if test ! -f "$log_file"; then
-  cvs diff -u ChangeLog | grep '+	' | sed 's,\+	,,' > $log_file
+  echo "$name: checking commit message..." >&2
+  cvs $cvsopt diff -u ChangeLog \
+  | while read line; do
+      case "$line" in
+      "-"*)
+	echo "$name: the following line in ChangeLog diff is suspicious:" >&2
+	echo "$line" >&2;;
+      "+ "*)
+	echo "$name: lines should start with tabs, not spaces; ignoring line:" >&2
+	echo "$line" >&2;;
+      "+") echo;;
+      "+	"*) echo "$line";;
+      esac
+    done \
+  | sed -e 's,\+	,,' -e '1/^$/d' -e '$/^$/d' > "$log_file" || break
 fi
 
-if test ! -s "$log_file"; then
-  echo "$progname: no ChangeLog entry!" >&2
-  exit 1
+if grep '[^ 	]' < "$log_file" > /dev/null; then :; else
+  echo "$name: empty commit message, aborting" >&2
+  break
 fi
 
-${PAGER-more} "$log_file" || exit 1
+if grep '^$' < "$log_file" > /dev/null; then
+  echo "$name: commit message contains blank lines" >&2
+  echo "$name: these should probably be committed separately" >&2
+fi
 
-$dry_run cvs $cvsopt commit $commitopt -F $log_file ${1+"$@"} || exit 1
+${PAGER-more} "$log_file" || break
 
-rm -f $log_file
+sleep 1 # give the user some time for a ^C
 
+# Do not check for empty $log_file again, even though the user might have
+# zeroed it out.  If s/he did, it was probably intentional.
+
+if $commit; then
+  cvs $cvsopt commit $commitopt -F $log_file ${1+"$@"} || break
+fi
+
+main_repeat=false
+done
+
+rm -f "$log_file"
+
+# if main_repeat was not set to `false', we failed
+$main_repeat && exit 1
 exit 0
