@@ -1,4 +1,4 @@
-/* l4.c -- trivial test library
+/* l1.c -- trivial test library
    Copyright (C) 1998-1999 Thomas Tanner <tanner@gmx.de>
    This file is part of GNU Libtool.
 
@@ -17,28 +17,18 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307
 USA. */
 
-#include "l4.h"
-
-#include "l3.h"
+#include "l1/l1.h"
 #include <stdio.h>
 
-#ifdef HAVE_MATH_H
-#include <math.h>
-#endif
-
-int	var_l4;
+int	var_l1;
 
 int
-func_l4(int ident)
+func_l1(int indent)
 {
   int i;
   
-  for (i = 0; i < ident; i++)
+  for (i = 0; i < indent; i++)
     putchar(' ');
-  printf("l4\n");
-  func_l3(ident+1);
-  for (i = 0; i <= ident; i++)
-    putchar(' ');
-  printf("libm [sin(1.5) = %f]\n", sin(1.5));
+  printf("l1\n");
   return 0; 
 }

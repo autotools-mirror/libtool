@@ -17,9 +17,9 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307
 USA. */
 
-#include "l1.h"
-#include "l2.h"
-#include "l4.h"
+#include "l1/l1.h"
+#include "l2/l2.h"
+#include "l4/l4.h"
 #include <stdio.h>
 #include <string.h>
 

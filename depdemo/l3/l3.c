@@ -1,4 +1,4 @@
-/* l1.c -- trivial test library
+/* l3.c -- trivial test library
    Copyright (C) 1998-1999 Thomas Tanner <tanner@gmx.de>
    This file is part of GNU Libtool.
 
@@ -17,18 +17,23 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307
 USA. */
 
-#include "l1.h"
+#include "l3/l3.h"
+
+#include "l1/l1.h"
+#include "l2/l2.h"
 #include <stdio.h>
 
-int	var_l1;
+int	var_l3;
 
 int
-func_l1(int ident)
+func_l3(int indent)
 {
   int i;
   
-  for (i = 0; i < ident; i++)
+  for (i = 0; i < indent; i++)
     putchar(' ');
-  printf("l1\n");
+  printf("l3\n");
+  func_l1(indent+1);
+  func_l2(indent+1);
   return 0; 
 }
