@@ -2488,6 +2488,13 @@ lt_dlgetinfo (handle)
   return &(handle->info);
 }
 
+lt_dlhandle
+lt_dlhandle_next (place)
+     lt_dlhandle place;
+{
+  return place ? place->next : (lt_dlhandle) 0;
+}
+
 int
 lt_dlforeach (func, data)
      int (*func) LT_PARAMS((lt_dlhandle handle, lt_ptr data));

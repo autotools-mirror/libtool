@@ -1,3 +1,10 @@
+2001-01-07  Gary V. Vaughan  <gvv@techie.com>
+
+	* NEWS: Updated.
+	* doc/libtool.texi (User defined module data): Updated.
+	* libltdl/ltdl.c (lt_dlhandle_next): New function.
+	* libltdl/ltdl.h (lt_dlhandle_next): Prototypes.
+
 2001-01-05  Gary V. Vaughan  <gvv@techie.com>
 
 	* NEWS: Updated.
