@@ -1,3 +1,8 @@
+2004-08-01  Maciej W. Rozycki  <macro@linux-mips.org>
+
+	* m4/libtool.m4 (LT_AC_PROG_SED): Set SED when running from cache as 
+	well.
+
 2004-07-31  Gary V. Vaughan  <gary@gnu.org>
 
 	Although libtool is optimised to not need to subconfigure libltdl,
