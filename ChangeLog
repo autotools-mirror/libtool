@@ -1,7 +1,13 @@
+2000-11-12  Gary V. Vaughan  <gvv@techie.com>
+
+	* doc/fdl.texi: New file.  The license for distributing the
+	libtool manual.
+	* doc/libtool.texi: Reference the new license.
+
 2000-10-31  Morten Eriksen  <mortene@sim.no>
 
-	* libtool.m4 (_LT_AC_LTCONFIG_HACK): Quote argument to avoid error      
-	output from cygpath when $srcdir is empty.       
+	* libtool.m4 (_LT_AC_LTCONFIG_HACK): Quote argument to avoid
+	error output from cygpath when $srcdir is empty.       
 
 2000-10-31  Gary V. Vaughan  <gvv@techie.com>
 
