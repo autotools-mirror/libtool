@@ -3,7 +3,7 @@
 # helps bootstrapping libtool, when checked out from CVS
 # requires GNU autoconf and GNU automake
 
-find . -name autom4te.cache -print | xargs rm -r
+find . \( -name autom4te.cache -o -name libtool \) -print | xargs rm -r
 
 file=Makefile.in
 
