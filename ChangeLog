@@ -1,3 +1,7 @@
+2001-05-30  Gary V. Vaughan  <gary@gnu.org>
+
+	* libtool.m4: Merged ltconfig.in from multi-language-branch.
+
 2001-05-28  Gary V. Vaughan  <gary@gnu.org>
 
 	* libtool.m4: Reformatting for consistency, and some refactoring
