@@ -43,7 +43,6 @@ libtoolize: libtoolize.in $(top_builddir)/config.status
 # Do line number substitution, as well as PACKAGE and VERSION.
 # Line numbering transliterated from a section in autoconf (Autoconf 2.12).
 $(srcdir)/ltconfig: ltconfig.in $(top_srcdir)/configure.in
-	CONFIG_FILES=ltconfig CONFIG_HEADERS= $(top_builddir)/config.status
 	$(AWK) '/@LINENO@/ { printf "%d:", NR } { print }' $(srcdir)/ltconfig.in | \
 	  sed -e 's/@''PACKAGE@/@PACKAGE@/' -e 's/@''VERSION@/@VERSION@/' \
 	      -e '/@LINENO@/s/^\([0-9][0-9]*\):\(.*\)@LINENO@/\2\1/' > ltconfig.T

@@ -1,3 +1,40 @@
+1998-03-20  Gordon Matzigkeit  <gord@profitpress.com>
+
+	* Release 1.2.
+
+1998-03-18  Gordon Matzigkeit  <gord@profitpress.com>
+
+	* ltmain.in: Rearrange some of the echos to make them more
+ 	consistent.
+
+1998-03-14  Gordon Matzigkeit  <gord@profitpress.com>
+
+	* ltmain.in: Break up an echo command that causes Solaris printf
+ 	to dump core.  Apparently the Solaris people hardcoded a 2110-byte
+ 	buffer into their printf(1).  Feh.  From John Judge.
+
+1998-03-11  Gordon Matzigkeit  <gord@profitpress.com>
+
+	* ltconfig.in: Change the test for the PIC compiler flag so that
+ 	we assume it doesn't work if there are any warning messages.  This
+ 	fixes a bug using old GCC's on HP-UX.  Reported by Akim Demaille.
+
+1998-03-10  Andreas Schwab  <schwab@issan.informatik.uni-dortmund.de>
+
+        * Makefile.am ($(srcdir)/ltconfig): Remove bogus command to create
+        a file ltconfig in the build directory.
+
+1998-03-09  Andreas Schwab  <schwab@issan.informatik.uni-dortmund.de>
+
+        * ltmain.in: Avoid unnecessary use of command substitution,
+ 	replacing foo=`eval \\$echo \"$mumble\"` by eval foo=\"$mumble\".
+
+	(link): Use ${1+"$@"} in wrapper scripts in order to pass
+	arguments safely to a program.
+
+        * ltconfig.in: Use -fpic instead of -fPIC if $host_cpu matches
+        m68*.
+
 1998-03-08  Gordon Matzigkeit  <gord@profitpress.com>
 
 	* Release 1.1.

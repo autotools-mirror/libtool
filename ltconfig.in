@@ -546,12 +546,13 @@ if test -n "$pic_flag"; then
   CFLAGS="$CFLAGS $pic_flag -DPIC"
   echo "$progname:@LINENO@: checking if $compiler PIC flag $pic_flag works" >&5
   if { (eval echo $progname:@LINENO@: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>conftest.err; } && test -s conftest.o; then
-    # Append any errors to the config.log.
+    # Append any warnings to the config.log.
     cat conftest.err 1>&5
 
-    # On HP-UX, the stripped-down bundled CC does not accept +Z, but also
-    # reports no error.  So, we need to grep stderr for (Bundled).
-    if grep '(Bundled)' conftest.err >/dev/null; then
+    # On HP-UX, both CC and GCC only warn that PIC is supported... then they
+    # create non-PIC objects.  So, if there were any warnings, we assume that
+    # PIC is not supported.
+    if test -s conftest.err; then
       echo "$ac_t"no 1>&6
       can_build_shared=no
       pic_flag=

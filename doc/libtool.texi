@@ -1756,9 +1756,9 @@ Think of a library as exporting several sets of interfaces, arbitrarily
 represented by integers.  When a program is linked against a library, it
 may use any subset of those interfaces.
 
-Libtool's description of the interfaces that a program uses is very
-simple: it encodes the least and the greatest interface numbers in the
-resulting binary (@var{first-interface}, @var{last-interface}).
+Libtool's description of the interfaces that a program uses is simple:
+it encodes the least and the greatest interface numbers in the resulting
+binary (@var{first-interface}, @var{last-interface}).
 
 The dynamic linker is guaranteed that if a library supports @emph{every}
 interface number between @var{first-interface} and @var{last-interface},
@@ -2382,10 +2382,10 @@ your library.  GCC 2.7 and later versions work around this problem, but
 previous versions and other compilers do not.
 @end enumerate
 
-This second issue is very complex.  Basically, you should avoid any
-global or static variable initializations that would cause an
-``initializer element is not constant'' error if you compiled them with
-a standard C compiler.
+This second issue is complex.  Basically, you should avoid any global or
+static variable initializations that would cause an ``initializer
+element is not constant'' error if you compiled them with a standard C
+compiler.
 
 There are other ways of working around this problem, but they are beyond
 the scope of this manual.
@@ -2599,11 +2599,11 @@ This section is dedicated to the sanity of the libtool maintainer.  It
 describes the programs that libtool uses, how they vary from system to
 system, and how to test for them.
 
-Because libtool is a shell script, it is @emph{very} difficult to
-understand just by reading it from top to bottom.  This section helps
-show why libtool does things a certain way.  After reading it, then
-reading the scripts themselves, you should have a better sense of how to
-improve libtool, or write your own.
+Because libtool is a shell script, it is difficult to understand just by
+reading it from top to bottom.  This section helps show why libtool does
+things a certain way.  After reading it, then reading the scripts
+themselves, you should have a better sense of how to improve libtool, or
+write your own.
 
 @menu
 * References::                  Finding more information.

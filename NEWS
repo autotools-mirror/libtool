@@ -1,5 +1,10 @@
 NEWS - list of user-visible changes between releases of GNU Libtool
 
+New in 1.2 - 1998-03-20, Gordon Matzigkeit:
+* Minor bug fixes to provide a stable public release.
+* Libtool no longer causes Solaris printf to barf due to silly
+  2110-byte static buffers.
+
 New in 1.1 - 1998-03-08, Gordon Matzigkeit:
 * Bug fixes.
 * http://www.profitpress.com/libtool/ is libtool's homepage.

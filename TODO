@@ -1,6 +1,9 @@
 For next public release:
 ************************
 
+* Remove references to `ltmain.sh' in generated files, because it's
+name really is an internal implementation detail.
+
 * Inter-library dependencies should be fully tracked by libtool.
 Reminded by Alexandre Oliva.  This requires looking up installed
 libtool libraries for transparent support.
