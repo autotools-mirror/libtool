@@ -34,7 +34,7 @@ AC_CONFIG_SRCDIR([ltdl.c])
 ## ------------------------------- ##
 
 if test -z "$enable_ltdl_install$enable_ltdl_convenience"; then
-  if test -f ${srcdir}/ltmain.sh; then
+  if test -f ltmain.sh; then
     # if libltdl is libtoolized, it is assumed to be stand-alone and
     # installed unless the command line overrides it (tested above)
     enable_ltdl_install=yes

@@ -46,12 +46,13 @@ AC_DEFUN([AC_PROG_LIBTOOL],
 # ----------------
 AC_DEFUN([_AC_PROG_LIBTOOL],
 [AC_REQUIRE([AC_LIBTOOL_SETUP])dnl
+AC_REQUIRE([_LT_PROG_LTMAIN])dnl
 AC_BEFORE([$0],[AC_LIBTOOL_CXX])dnl
 AC_BEFORE([$0],[AC_LIBTOOL_F77])dnl
 AC_BEFORE([$0],[AC_LIBTOOL_GCJ])dnl
 
 # This can be used to rebuild libtool when needed
-LIBTOOL_DEPS="$ac_aux_dir/ltmain.sh"
+LIBTOOL_DEPS="$ltmain"
 
 # Always use our own libtool.
 LIBTOOL='$(SHELL) $(top_builddir)/libtool'
@@ -60,6 +61,20 @@ AC_SUBST(LIBTOOL)dnl
 # Prevent multiple expansion
 define([AC_PROG_LIBTOOL], [])
 ])# _AC_PROG_LIBTOOL
+
+
+# _LT_PROG_LTMAIN
+# ---------------
+# In libtool itself `ltmain.sh' is in the build tree, but everything else
+# ships it in the source tree, for completeness, if we find a copy in the
+# build tree use that before falling back to auxdir.
+AC_DEFUN([_LT_PROG_LTMAIN],
+[case $ac_aux_dir in
+  $srcdir)   ltmain=./ltmain.sh ;;
+  $srcdir/*) ltmain=`expr "$ac_aux_dir" : "$srcdir/\(.*\)"`/ltmain.sh ;;
+esac
+test -f "$ltmain" || ltmain="$ac_aux_dir/ltmain.sh"
+])# _LT_PROG_LTMAIN
 
 
 # AC_LIBTOOL_SETUP
@@ -125,14 +140,15 @@ rm="rm -f"
 
 # Global variables:
 default_ofile=libtool
+ofile="$default_ofile"
 can_build_shared=yes
 
 # All known linkers require a `.a' archive for static linking (except M$VC,
 # which needs '.lib').
 libext=a
-ltmain="$ac_aux_dir/ltmain.sh"
-ofile="$default_ofile"
+
 with_gnu_ld="$lt_cv_prog_gnu_ld"
+
 
 AC_CHECK_TOOL(AR, ar, false)
 AC_CHECK_TOOL(RANLIB, ranlib, :)
@@ -1717,6 +1733,7 @@ m4_define([_LT_AC_TAG_CONFIG],
   ])
 
   AC_CONFIG_COMMANDS([libtool-tags], [
+    _LT_PROG_LTMAIN
     if test -f "$ltmain"; then
       if test ! -f "${ofile}"; then
         AC_MSG_ERROR([output file `$ofile' does not exist])
@@ -4197,6 +4214,7 @@ _LT_EOF
     ;;
   esac
 
+  _LT_PROG_LTMAIN
   # We use sed instead of cat because bash on DJGPP gets confused if
   # if finds mixed CR/LF and LF-only lines.  Since sed operates in
   # text mode, it properly converts lines to CR/LF.  This bash problem
@@ -4213,7 +4231,6 @@ _LT_EOF
   PACKAGE='$PACKAGE'
   VERSION='$VERSION'
   TIMESTAMP='$TIMESTAMP'
-  ltmain='$ltmain'
   ofile='$ofile'
   sed_quote_subst='$sed_quote_subst'
   double_quote_subst='$double_quote_subst'
