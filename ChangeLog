@@ -1,5 +1,9 @@
 2000-02-03  Gary V. Vaughan  <gary@oranda.demon.co.uk>
 
+	* libltdl/ltdl.c (find_file): Prevent early release of memory
+	in filename/*pdir.
+	From Jon Leichter <jon@symas.com>
+
 	(sys_wll_init): Deleted.  No longer required.  And this time,
 	with feeling!
 	(sys_wll_exit): Ditto.

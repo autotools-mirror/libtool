@@ -1075,8 +1075,8 @@ find_file (basename, search_path, pdir, handle)
 					   strdup, but there would be some
 					   memory overhead. */
 					*pdir = filename;
-				} else
 					filename = 0;
+				}
 				result = (lt_ptr_t) file;
 				goto cleanup;
 			}
@@ -1106,7 +1106,7 @@ load_deplibs(handle, deplibs)
 	if (!deplibs)
 		return 0;
 	save_search_path = strdup(user_search_path);
-	if (user_search_path && !save_search_path) {				
+	if (user_search_path && !save_search_path) {
 		last_error = LT_DLSTRERROR(NO_MEMORY);
 		return 1;
 	}
