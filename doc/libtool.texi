@@ -1638,7 +1638,7 @@ If you are using GNU Autoconf (or Automake), you should add a call to
 adds many new tests to the @code{configure} script so that the generated
 libtool script will understand the characteristics of the host:
 
-@defmac LT_PREREQ(@var{VERSION})
+@defmac LT_PREREQ (@var{VERSION})
 Ensure that a recent enough version of Libtool is being used.  If the
 version of Libtool used for @code{LT_INIT} is earlier than
 @var{version}, print an error message to the standard
@@ -1753,13 +1753,11 @@ default, depending on platform support, by specifying
 Change the default behaviour for @code{LT_INIT} to disable
 shared libraries.  The user may still override this default by
 specifying @samp{--enable-shared}.
-@end defmac
 
 @item disable-static
 Change the default behaviour for @code{LT_INIT} to disable
 static libraries.  The user may still override this default by
 specifying @samp{--enable-static}.
-@end defmac
 
 @end itemize
 
