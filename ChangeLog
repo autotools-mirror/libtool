@@ -1,3 +1,10 @@
+2000-05-29  Steven M. Schultz <sms@moe.2bsd.com>
+
+	* libtool.m4 (bsdi4*): Add -L option to bsdi4's file_magic_cmd
+	command.  Under BSD/OS 4.1 several libraries are now symlinks
+	rather than regular files.  Adding -L tells the file program
+	to follow the symlink.
+			    
 2000-05-29  Gary V. Vaughan  <gvv@techie.com>
 
 	* libtool.m4 (i*86-*-freebsd*): Forgot to changequote(,).

@@ -500,6 +500,7 @@ bsdi4*)
   changequote(,)dnl
   lt_cv_deplibs_check_method='file_magic ELF [0-9][0-9]*-bit [ML]SB (shared object|dynamic lib)'
   changequote([, ])dnl
+  lt_cv_file_magic_cmd='/usr/bin/file -L'
   lt_cv_file_magic_test_file=/shlib/libc.so
   ;;
 
