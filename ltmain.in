@@ -3407,9 +3407,14 @@ static const void *lt_preloaded_setup() {
       if test -n "$relink_command"; then
 	# Preserve any variables that may affect compiler behavior
 	for var in $variables_saved_for_relink; do
-	  eval var_value=\$$var
-	  var_value=`$echo "X$var_value" | $Xsed -e "$sed_quote_subst"`
-	  relink_command="$var=\"$var_value\"; export $var; $relink_command"
+	  if eval test -z \"\${$var+set}\"; then
+	    relink_command="{ test -z \"\${$var+set}\" || unset $var || { $var=; export $var; }; }; $relink_command"
+	  elif eval var_value=\$$var; test -z "$var_value"; then
+	    relink_command="$var=; export $var; $relink_command"
+	  else
+	    var_value=`$echo "X$var_value" | $Xsed -e "$sed_quote_subst"`
+	    relink_command="$var=\"$var_value\"; export $var; $relink_command"
+	  fi
 	done
 	relink_command="cd `pwd`; $relink_command"
 	relink_command=`$echo "X$relink_command" | $Xsed -e "$sed_quote_subst"`
@@ -3725,9 +3730,14 @@ fi\
 
       # Preserve any variables that may affect compiler behavior
       for var in $variables_saved_for_relink; do
-	eval var_value=\$$var
-	var_value=`$echo "X$var_value" | $Xsed -e "$sed_quote_subst"`
-	relink_command="$var=\"$var_value\"; export $var; $relink_command"
+	if eval test -z \"\${$var+set}\"; then
+	  relink_command="{ test -z \"\${$var+set}\" || unset $var || { $var=; export $var; }; }; $relink_command"
+	elif eval var_value=\$$var; test -z "$var_value"; then
+	  relink_command="$var=; export $var; $relink_command"
+	else
+	  var_value=`$echo "X$var_value" | $Xsed -e "$sed_quote_subst"`
+	  relink_command="$var=\"$var_value\"; export $var; $relink_command"
+	fi
       done
       # Quote the link command for shipping.
       relink_command="cd `pwd`; $SHELL $0 --mode=relink $libtool_args"
