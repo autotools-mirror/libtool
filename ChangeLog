@@ -1,5 +1,14 @@
 1998-12-09  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* PORTING: removed the text Akim Demaille converted to .texi
+
+1998-12-09  Akim Demaille  <demaille@inf.enst.fr>
+
+	* doc/libtool.texi: converted inter-library dependencies
+ 	instructions from PORTING
+
+1998-12-09  Alexandre Oliva  <oliva@dcc.unicamp.br>
+	
 	* ltmain.in (convenience, deplibs): propagate dependencies
 	* libltdl/Makefile.am (noinst_HEADERS): don't install ltdl.h yet
 	(noinst_LTLIBRARIES): ditto for libltdl.la
