@@ -878,10 +878,10 @@ find_file (basename, search_path, pdir, handle)
 	/* when handle != NULL search a library, otherwise a file */
 	/* return NULL on failure, otherwise the file/handle */
 
-	char	filename[LTDL_FILENAME_MAX];
+	char	*filename = 0;
+	int     filenamesize = 0;
 	const char *cur, *next;
-	FILE	*file;
-	int	lendir;
+	int	lenbase = strlen(basename);
 	
 	if (!search_path || !strlen(search_path)) {
 		last_error = file_not_found_error;
@@ -889,53 +889,58 @@ find_file (basename, search_path, pdir, handle)
 	}
 	cur = search_path;
 	while (cur) {
+		int lendir;
+		
 		next = strchr(cur, ':');
-		if (next) {
-			if (next - cur + 1 >= LTDL_FILENAME_MAX) {
-				last_error = buffer_overflow_error;
-				return 0;
-			}
-			strncpy(filename, cur, next - cur);
-			filename[next - cur] = '\0';
-			cur = next+1;
-		} else {
-			if (strlen(cur)+1 >= LTDL_FILENAME_MAX) {
-				last_error = buffer_overflow_error;
-				return 0;
-			}
-			strcpy(filename, cur);
-			cur = 0;
-		}
-		if (!*filename)
+		if (!next)
+			next = cur + strlen(cur);
+		lendir = next - cur + 1;
+		if (*next == ':')
+			++next;
+		else
+			next = 0;
+		if (lendir == 0)
 			continue;
-		lendir = strlen(filename);
-		if (filename[lendir-1] != '/') {
-			strcat(filename, "/");
-			lendir++;
+		if (lendir + 1 + lenbase >= filenamesize) {
+			if (filename)
+				free(filename);
+			filename = (char*) malloc(lendir + 1 + lenbase);
+			if (filename)
+				filenamesize = filename;
+			else {
+				last_error = memory_error;
+				return 0;
+			}
 		}
-		if (lendir+strlen(basename) < LTDL_FILENAME_MAX) {
-			strcat(filename, basename);
-			if (handle) {
-				if (tryall_dlopen(handle, filename) == 0)
-					return (lt_ptr_t) handle;
-			} else {
-				file = fopen(filename, LTDL_READTEXT_MODE);
-				if (file) {
-					if (*pdir)
-						free(*pdir);
-					filename[lendir] = '\0';
-					*pdir = (char*) malloc(lendir + 1);
-					if (!*pdir) {
-						fclose(file);
-						last_error = memory_error;
-						return 0;
-					}
-					strcpy(*pdir, filename);
-					return (lt_ptr_t) file;
-				}
+		strncpy(filename, cur, lendir);
+		if (filename[lendir-1] != '/')
+			filename[lendir++] = '/';
+		strcpy(filename+lendir, basename);
+		if (handle) {
+			if (tryall_dlopen(handle, filename) == 0) {
+				free(filename);
+				return (lt_ptr_t) handle;
+			}
+		} else {
+			FILE *file = fopen(filename, LTDL_READTEXT_MODE);
+			if (file) {
+				if (*pdir)
+					free(*pdir);
+				filename[lendir] = '\0';
+				*pdir = strdup(filename);
+				if (!*pdir) {
+					/* We could have even avoided the
+					   strdup, but there would be some
+					   memory overhead. */
+					*pdir = filename;
+				} else
+					free(filename);
+				return (lt_ptr_t) file;
 			}
 		}
 	}
+	if (filename)
+		free(filename);
 	last_error = file_not_found_error;
 	return 0;
 }

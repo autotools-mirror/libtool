@@ -1,5 +1,7 @@
 1999-01-27  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* libltdl/ltdl.c (find_file): allocate filename dynamically
+
 	* libltdl/configure.in (AC_PROG_LIBTOOL): automake does not
 	recognize it and fail, better keep using AM_PROG_LIBTOOL until the
 	next release of automake
