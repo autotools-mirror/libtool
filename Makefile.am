@@ -97,26 +97,38 @@ $(srcdir)/demo/aclocal.m4: demo/configure.in demo/acinclude.m4
 # This works because of the special `$Format: ...$' string I have in my
 # `configure.in'.
 PRCS = prcs
+released = $(top_srcdir)/.released
 
-.PHONY: maintainer-checkin maintainer-check-versions maintainer-release
-maintainer-checkin:
+# At least configure.in should be rekeyed, but you can also add other files.
+rekey_files = configure.in libtool.spec
+
+.PHONY: maintainer-checkin maintainer-rekey maintainer-release
+maintainer-checkin: maintainer-rekey
 	cd $(top_srcdir) && $(PRCS) checkin -f $(PACKAGE)
 
-maintainer-check-versions:
+maintainer-rekey:
 	@newver=`grep '^(Project-Version[ 	]' $(srcdir)/$(PACKAGE).prj | \
 	   sed 's/^.*[ 	]\+\([^ 	]\+\)[ 	]\+[0-9]\+).*$$/\1/'`; \
 	  if test "X$$newver" = "X$(VERSION)"; then \
-	    echo "Project-Version major \`$$newver' is the same as the released version." 1>&2; \
-	    echo "You must change Project-Version in $(top_srcdir)/$(PACKAGE).prj before releasing." 1>&2; \
-	    exit 1; \
+	    if test -f "$(released)"; then \
+	      echo "New development cycle: change Project-Version in $(top_srcdir)/$(PACKAGE).prj."; \
+	    else \
+	      echo "No need to rekey any files"; \
+	    fi; \
+	  else \
+	    rm -f "$(released)"; \
+	    echo "Rekeying $(rekey_files)..."; \
+	    cd $(top_srcdir) && $(PRCS) rekey -f $(PACKAGE) $(rekey_files); \
 	  fi
 
-maintainer-release: maintainer-check-versions distcheck
+maintainer-release: distcheck
 	cd $(top_srcdir) && $(PRCS) checkin -f $(PACKAGE)
-	cd $(top_srcdir) && $(PRCS) rekey -f $(PACKAGE) configure.in libtool.spec
+	echo timestamp > "$(released)"
 	@echo "============================="; \
 	  echo "Congratulations!  $(PACKAGE)-$(VERSION) is now complete."; \
 	  echo; \
 	  echo "Distribute \`$(PACKAGE)-$(VERSION).tar.gz' to the masses, and don't forget"; \
 	  echo "any other details you need to complete this release."; \
+	  echo; \
+	  echo "then run a \`make maintainer-checkin'."
 	  echo "============================="
