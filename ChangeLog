@@ -1,6 +1,10 @@
 1999-05-17  Gary V. Vaughan  <gary@oranda.demon.co.uk>
 
-	* demo/foo.h: Don't set any declspecs until we have full dlli
+	* libltdl/configure.in: Fix test failures on AIX 4.3.2 by checking
+	for dlopen *with* -ldl first.
+	Reported by Greg Wooledge <ic5035%tss1crs.amgreetings.com@rose.amgreetings.com> 
+
+	* demo/foo.h: Don't set any declspecs until we have full dll
 	support.
 
 1999-05-16  Alexandre Oliva  <oliva@dcc.unicamp.br>
