@@ -42,7 +42,6 @@ edit = sed \
 	-e 's,@datadir\@,$(datadir),g' \
 	-e 's,@host_triplet\@,$(host_triplet),g' \
 	-e 's,@pkgvdatadir\@,$(pkgvdatadir),g' \
-	-e 's,@pkgvmacrodir\@,$(pkgvmacrodir),g' \
 	-e 's,@prefix\@,$(prefix),g' \
 	-e "s,@configure_input\@,Generated from $$input; do not edit by hand,g"
 
@@ -83,12 +82,12 @@ $(top_srcdir)/tests/package.m4: $(top_srcdir)/configure.ac
 # These are required by libtoolize and must be executable when installed.
 # Since _SCRIPTS gets the program transform applied we make them
 # executable by hand
-dist_pkgvdata_DATA = config/config.guess config/config.sub config/ltmain.sh \
-	config/install-sh
+nobase_dist_pkgvdata_DATA = config/config.guess config/config.sub \
+	config/ltmain.sh config/install-sh
 
 # Everything that gets picked up by aclocal is automatically distributed,
 # this is the list of macro files we install on the user's system.
-pkgvmacro_DATA = m4/argz.m4 m4/libtool.m4 m4/ltdl.m4 \
+nobase_pkgvdata_DATA = m4/argz.m4 m4/libtool.m4 m4/ltdl.m4 \
 	m4/ltoptions.m4 m4/ltsugar.m4 m4/ltversion.m4
 
 ## We know that $(top_srcdir)/ChangeLog has been edited if stamp-vcl
@@ -224,9 +223,9 @@ install-data-local:
 	-rm -rf $(DESTDIR)$(aclocaldir)/libtool.m4
 
 install-data-hook:
-	chmod +x $(DESTDIR)$(pkgvdatadir)/config.guess
-	chmod +x $(DESTDIR)$(pkgvdatadir)/config.sub
-	chmod +x $(DESTDIR)$(pkgvdatadir)/install-sh
+	chmod +x $(DESTDIR)$(pkgvdatadir)/config/config.guess
+	chmod +x $(DESTDIR)$(pkgvdatadir)/config/config.sub
+	chmod +x $(DESTDIR)$(pkgvdatadir)/config/install-sh
 
 ## Make versioned links.  We only run the transform on the root name;
 ## then we make a versioned link with the transformed base name.  This

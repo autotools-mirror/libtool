@@ -40,7 +40,6 @@ m4_divert_push([SCRIPT])#! /bin/sh
 # -f, --force           replace existing files
 # -i, --install         copy missing auxiliary files
 #     --ltdl[=DIR]      install libltdl in a subdirectory [default: libltdl]
-# -I DIR                search DIR for libtoolize master source files
 # -q, --quiet           work silently
 # -v, --verbose         verbosely report processing
 #     --version         print version information and exit
@@ -81,11 +80,9 @@ seen_ltdl=false
 libtoolize_flags=
 
 # Locations for important files:
+: ${pkgvdatadir="@pkgvdatadir@"}
 prefix=@prefix@
 datadir=@datadir@
-pkgvdatadirs=@pkgvdatadir@		# ltmain.sh et. al.
-pkgvltdldirs=@pkgvdatadir@/libltdl	# libltdl source tree
-pkgvmacrodirs=@pkgvmacrodir@		# libtool.m4 et. al.
 auxdir=
 m4dir=
 ltdldir=
@@ -132,25 +129,6 @@ configure_ac=configure.in
 
       --install|-i)	opt_install=:
       			libtoolize_flags="${libtoolize_flags} --install"
-			;;
-
-      -I)		test "$#" = 0 && func_missing_arg $opt && break
-	    		# for installed share/libtool trees:
-	    		test -d "$1" \
-			  && pkgvdatadirs="`cd $1 && pwd`:$pkgvdatadirs"
-			# for uninstalled ltmain.sh location:
-	    		test -d "$1/config" \
-			  && pkgvdatadirs="`cd $1/config && pwd`:$pkgvdatadirs"
-			# for libltdl source files:
-	    		test -d "$1" \
-			  && pkgvltdldirs="`cd $1/libltdl \
-			  		      && pwd`:$pkgvltdldirs"
-			# for libtool.m4 and other macro files:
-			test -d "$1/m4" \
-			  && pkgvmacrodirs="`cd $1/m4 && pwd`:$pkgvmacrodirs"
-			func_quote_for_eval "$1"
-      			libtoolize_flags="$libtoolize_flags -I $func_quote_for_eval_result"
-			shift
 			;;
 
       --ltdl)		ltdldir=libltdl
@@ -408,9 +386,9 @@ func_scan_files ()
     test -f "$configure_ac" \
         || func_fatal_help "\`$configure_ac' does not exist"
 
-    # TODO: check that existing directories from the list can be ls'ed
-    #test -n "`{ cd $pkgvdatadirs && ls; } 2>dev/null`" \
-    #    || func_fatal_error "can not list files in \`$pkgvdatadirs'"
+    # check that existing directories from the list can be ls'ed
+    test -n "`{ cd $pkgvdatadir && ls; } 2>/dev/null`" \
+        || func_fatal_error "can not list files in \`$pkgvdatadir'"
 
     # Set local variables to reflect contents of configure.ac
     my_uses_autoconf=false
@@ -523,23 +501,6 @@ func_included_files ()
     for my_filename in `$SED "$my_sed_include" "$my_searchfile"`; do
       func_included_files $my_filename
     done
-}
-
-
-# func_filename_path_search filename dirs
-func_filename_path_search ()
-{
-    $opt_debug
-    func_filename_path_search_result=
-
-    my_save_IFS="$IFS"; IFS=:
-    for mydir in $2; do
-      IFS="$my_save_IFS"
-      test -f "$mydir/$1" && break
-    done
-    IFS="$my_save_IFS"
-
-    test -f "$mydir/$1" && func_filename_path_search_result="$mydir/$1"
 }
 
 
@@ -657,28 +618,28 @@ func_serial_update_check ()
 }
 
 
-# func_serial_update filename srcdirs destdir [macro_regex] [old_macro_regex]
-# Copy the first file named FILENAME from a directory listed in the
-# ':' delimited SRCDIRS to DESTFILE provided that either FILENAME has
-# a newer serial number, or DESTFILE does not yet exist, or the user
+# func_serial_update filename srcdir destdir [macro_regex] [old_macro_regex]
+# Copy the FILENAME from a SRCDIR to DESTDIR provided that either FILENAME
+# has a newer serial number, or DESTFILE does not yet exist, or the user
 # specified `--force' at the command line.  If given, MACRO_REGEX or
 # OLD_MACRO_REGEX must match any text after "# serial N" in both files.
 func_serial_update ()
 {
     $opt_debug
     my_filename="$1"
-    my_srcdirs="$2"
+    my_srcdir="$2"
     my_destdir="$3"
     my_macro_regex="$4"
     my_old_macro_regex="$5"
 
     my_return_status=1
-    func_filename_path_search "$my_filename" "$my_srcdirs"
-    my_srcfile="$func_filename_path_search_result"
+    my_srcfile="$my_srcdir/$my_filename"
     my_destfile="$my_destdir/$my_filename"
 
-    test -f "$my_srcfile" || \
-      { func_error "\`$my_filename' not found in \`$my_srcdirs'"; return; }
+    test -f "$my_srcfile" || {
+      func_error "\`$my_srcfile' does not exist."
+      return
+    }
 
     if test -f "$my_destfile"; then
       my_src_serial=`func_serial "$my_srcfile" "$my_macro_regex"`
@@ -717,20 +678,18 @@ func_serial_update ()
 }
 
 
-# func_ltmain_update filename srcdirs destdir
-# Copy the first file named FILENAME from a directory listed in the
-# ':' delimited SRCDIRS to DESTFILE provided that either FILENAME has
-# a newer TIMESTAMP, or DESTFILE does not yet exist, or the user
+# func_ltmain_update filename srcdir destdir
+# Copy the FILENAME from a SRCDIR to DESTDIR provided that either FILENAME
+# has a newer revision, or DESTFILE does not yet exist, or the user
 # specified `--force' at the command line.
 func_ltmain_update ()
 {
     $opt_debug
     my_filename="$1"
-    my_srcdirs="$2"
+    my_srcdir="$2"
     my_destdir="$3"
 
-    func_filename_path_search "$my_filename" "$my_srcdirs"
-    my_srcfile="$func_filename_path_search_result"
+    my_srcfile="$my_srcdir/$my_filename"
     my_destfile="$my_destdir/$my_filename"
 
     my_update_p=:
@@ -767,20 +726,18 @@ func_ltmain_update ()
 }
 
 
-# func_config_update filename srcdirs destdir
-# Copy the first file named FILENAME from a directory listed in the
-# ':' delimited SRCDIRS to DESTFILE provided that either FILENAME has
-# a newer TIMESTAMP, or DESTFILE does not yet exist, or the user
+# func_config_update filename srcdir destdir
+# Copy the FILENAME from a SRCDIR to DESTDIR provided that either FILENAME
+# has a newer timestamp, or DESTFILE does not yet exist, or the user
 # specified `--force' at the command line.
 func_config_update ()
 {
     $opt_debug
     my_filename="$1"
-    my_srcdirs="$2"
+    my_srcdir="$2"
     my_destdir="$3"
 
-    func_filename_path_search "$my_filename" "$my_srcdirs"
-    my_srcfile="$func_filename_path_search_result"
+    my_srcfile="$my_srcdir/$my_filename"
     my_destfile="$my_destdir/$my_filename"
 
     my_update_p=:
@@ -909,7 +866,7 @@ func_massage_pkgvltdl_files ()
   # Copy all the files from installed (or specified, if `-I' was used)
   # libltdl to this project, if the user specified `--ltdl'.
   if test -n "$ltdldir"; then
-    func_copy_some_files "$pkgvltdl_files" "$pkgvltdldirs" "$ltdldir"
+    func_copy_some_files "$pkgvltdl_files" "$pkgvdatadir/libltdl" "$ltdldir"
 
     # libtoolize the newly copied libltdl tree
     ( cd "$ltdldir" && eval "$progpath" $libtoolize_flags ) \
@@ -922,28 +879,26 @@ func_massage_pkgvltdl_files ()
     func_echo "putting files in AC_CONFIG_AUX_DIR, \`$auxdir'."
   fi
   if $opt_install; then
-    func_copy_all_from_path . "$pkgvdatadirs" \
-      "$auxdir" "$glob_exclude_pkgaux_files"
-    func_config_update config.guess "$pkgvdatadirs" "$auxdir"
-    func_config_update config.sub   "$pkgvdatadirs" "$auxdir"
-    func_config_update install-sh   "$pkgvdatadirs" "$auxdir"
+    func_config_update config.guess "$pkgvdatadir/config" "$auxdir"
+    func_config_update config.sub   "$pkgvdatadir/config" "$auxdir"
+    func_config_update install-sh   "$pkgvdatadir/config" "$auxdir"
   fi
-  func_ltmain_update ltmain.sh "$pkgvdatadirs" "$auxdir"
+  func_ltmain_update ltmain.sh "$pkgvdatadir/config" "$auxdir"
 
   # Copy libtool's m4 macros to the macro directory, if they are newer.
   if test -n "$m4dir"; then
     $opt_quiet || func_echo "putting macros in AC_CONFIG_MACRO_DIR, \`$m4dir'."
 
-    func_serial_update  libtool.m4 "$pkgvmacrodirs" "$m4dir" \
+    func_serial_update  libtool.m4 "$pkgvdatadir/m4" "$m4dir" \
       LT_INIT 'A[[CM]]_PROG_LIBTOOL'
 
     if $seen_ltdl; then
-      func_serial_update ltdl.m4 "$pkgvmacrodirs" "$m4dir" 'LTDL_INIT'
+      func_serial_update ltdl.m4 "$pkgvdatadir/m4" "$m4dir" 'LTDL_INIT'
     else
       func_verbose "Not copying \`$m4dir/ltdl.m4', libltdl not used."
     fi
 
-    func_copy_some_files "$pkgvmacro_files" "$pkgvmacrodirs" \
+    func_copy_some_files "$pkgvmacro_files" "$pkgvdatadir/m4" \
       "$m4dir" func_serial_update
   else
     func_verbose "AC_CONFIG_MACRO_DIR not defined, not copying libtool macro files."

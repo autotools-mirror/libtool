@@ -1,5 +1,5 @@
 ## Process this file with autoconf to create configure. -*- autoconf -*-
-# Copyright (C) 2001, 2004 Free Software Foundation, Inc.
+# Copyright (C) 2001, 2004, 2005 Free Software Foundation, Inc.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -136,7 +136,6 @@ APIVERSION=`echo "$VERSION" | sed -e 's/^\([[0-9]]*\.[[0-9]]*[[a-z]]*\).*$/\1/'`
 AC_SUBST([APIVERSION])
 AC_SUBST([aclocaldir],   ["\${datadir}/aclocal"])
 AC_SUBST([pkgvdatadir],  ["\${datadir}/$PACKAGE-$APIVERSION"])
-AC_SUBST([pkgvmacrodir], ["\${datadir}/$PACKAGE-$APIVERSION/m4"])
 
 AC_ARG_ENABLE(ltdl-install,
     [AS_HELP_STRING([--disable-ltdl-install], [do not install libltdl])])

@@ -1,3 +1,28 @@
+2005-04-01  Gary V. Vaughan  <gary@gnu.org>
+
+	Most of the hair introduced ostensibly to enable testing of
+	uninstalled libtoolize isn't necessary if we allow overriding of
+	the libtool master copy directory:
+
+	* configure.ac (pkvmacrodir): No need to substitute this.
+	* Makefile.am (edit): No need to substitute pkgvmacrodir.
+	(dist_pkgvdata_DATA): Use nobase_ prefix so that these files are
+	installed to $(pkgvdatadir)/config.
+	(pkgvmacro_DATA): Renamed to...
+	(nobase_pkgvdata_DATA): ...this, so that files are installed to
+	$(pkgvdatadir)/m4.
+	(install-data-hook): Adjust.
+	* libtoolize.m4sh: Remove -I processing.
+	(func_filename_path_search): No longer required without -I.
+	Adjust all callers.
+	(pkgvltdldirs, pkgvmacrodirs): Deleted.
+	(pkgvdatadir): Allow overriding from the environment so that we
+	can write tests for uninstalled libtoolize.
+	(func_serial_update, func_ltmain_update, func_config_update):
+	Rename srcdirs parameter to srcdir, and don't call the path_search
+	function anymore.  Adjust all callers.
+	(--install): Don't blindly copy all config files.
+
 2005-04-01  Mike Stump  <mrs@apple.com>
 
 	* m4/libtool.m4 (LT_CMD_MAX_LEN) [ netbsd, freebsd, openbsd,
