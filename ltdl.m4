@@ -1,5 +1,5 @@
 ## ltdl.m4 - Configure ltdl for the target system. -*-Shell-script-*-
-## Copyright (C) 1999-2000 Free Software Foundation, Inc.
+## Copyright (C) 1999, 2000, 2001 Free Software Foundation, Inc.
 ##
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -467,8 +467,9 @@ if test x"$ac_cv_sys_symbol_underscore" = xyes; then
 # endif
 #endif
 
-fnord() { int i=42;}
-main() { void *self, *ptr1, *ptr2; self=dlopen(0,LTDL_GLOBAL|LTDL_LAZY_OR_NOW);
+void fnord() { int i=42;}
+int main() {
+    void *self, *ptr1, *ptr2; self=dlopen(0,LTDL_GLOBAL|LTDL_LAZY_OR_NOW);
     if(self) { ptr1=dlsym(self,"fnord"); ptr2=dlsym(self,"_fnord");
 	       if(ptr1 && !ptr2) { dlclose(self); exit(0); } } exit(1); }
 ],	libltdl_cv_need_uscore=no, libltdl_cv_need_uscore=yes,

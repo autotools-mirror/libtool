@@ -1,3 +1,9 @@
+2001-03-03  Markus F.X.J. Oberhumer <markus@oberhumer.com>,
+	    Alexandre Oliva <oliva@lsd.ic.unicamp.br>
+
+	* ltconfig.in: Added explicit return type to all C functions.
+	* ltdl.m4: Likewise.
+
 2001-02-22  Robert Boehne  <rboehne@ricardo-us.com>
 
 	* ltconfig.in: Add a test to find the approximate limit
