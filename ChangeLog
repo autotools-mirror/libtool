@@ -1,3 +1,8 @@
+1999-06-23  Olly Betts  <olly@muscat.co.uk>
+
+	* ltmain.in (ltdll.c): Support for crosscompiling from linux to
+	mingw32.
+
 1999-06-23  Gary V. Vaughan  <gary@oranda.demon.co.uk>
 
 	* ltconfig.in (cygwin, export_symbols_cmds): If there is already
