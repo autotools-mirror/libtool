@@ -18,7 +18,7 @@ FLIBS = @FLIBS@
 aclocal_macros = libtool.m4 ltdl.m4
 
 EXTRA_DIST = $(aclocal_macros) bootstrap libtoolize.in ltmain.in \
-	mkstamp ChangeLog.0 ChangeLog.1 config.guess config.sub
+	mkstamp ChangeLog.0 ChangeLog.1
 CLEANFILES = libtool libtoolize ltmain.shT
 
 # These are required by libtoolize and must be executable when installed.

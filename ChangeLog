@@ -1,3 +1,9 @@
+2004-02-06  Scott James Remnant  <scott@netsplit.com>
+
+	* Makefile.am (EXTRA_DIST): No need to specify config.guess
+	and config.sub, all Automake versions know we want to
+	distribute these.
+
 2004-02-05  Peter O'Gorman  <peter@pogma.com>
 	
 	* ltmain.in (infer_tag, win32_libid): Style changes. Rename
