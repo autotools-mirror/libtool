@@ -1448,6 +1448,7 @@ freebsd*)
   case "$host_os" in
   freebsd2*)
     shlibpath_overrides_runpath=yes
+    ;;
   *)
     shlibpath_overrides_runpath=no
     hardcode_into_libs=yes

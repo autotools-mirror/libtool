@@ -1,5 +1,10 @@
 2000-09-07  Gary V. Vaughan  <gvv@techie.com>
 
+	* libtool.m4 (_LT_AC_LTCONFIG_HACK): Deleted a vital `;;'
+	terminator from a case statement by mistake.
+
+2000-09-06  Gary V. Vaughan  <gvv@techie.com>
+
 	libtool.m4 now contains a version of the code that used to run
 	from ltconfig, so that ltmain.sh and then libtool are
 	generated at configure time.
