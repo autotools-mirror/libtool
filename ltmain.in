@@ -1723,8 +1723,8 @@ EOF
 	finalize_command=`$echo "X$finalize_command" | $Xsed -e "s%@HARDCODE_LIBDIRS@%$hardcode_libdirs%g"`
       fi
 
-      output_objdir=`$echo "X$arg" | $Xsed -e 's%/[^/]*$%%'`
-      if test "X$output_objdir" = "X$arg"; then
+      output_objdir=`$echo "X$output" | $Xsed -e 's%/[^/]*$%%'`
+      if test "X$output_objdir" = "X$output"; then
         output_objdir="$objdir"
       else
         output_objdir="$output_objdir/$objdir"

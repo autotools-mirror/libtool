@@ -1,3 +1,7 @@
+1998-11-19  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* ltmain.in (output_objdir): compute it from $output, not $arg
+
 1998-11-18  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* NEWS: -module and libtldl
