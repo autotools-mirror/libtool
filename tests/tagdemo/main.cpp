@@ -22,6 +22,7 @@
 
 #include "foo.h"
 #include "baz.h"
+#include "conv.h"
 #include <iostream.h>
 
 
@@ -58,6 +59,11 @@ main (int, char *[])
   // foobar_derived::foo(), which in turn calls ::foo().
   if (bb->baz() == FOO_RET)
     cout << "barbaz::baz is ok!" << endl;
+
+  // --------------
+
+  if (convenience())
+    cout << "convenience is ok!" << endl;
 
   return 0;
 }

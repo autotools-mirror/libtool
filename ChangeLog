@@ -1,5 +1,15 @@
 2004-03-24  Albert Chin-A-Young  <china@thewrittenword.com>
 
+	* libtool.m4: When linking convenience libraries on Solaris
+	with the Sun C++ compiler, pass convenience libraries through
+	to the linker with -Qoption between allextract/defaultextract.
+	The Sun C++ compiler bundles -Qoption arguments so
+	convenience libraries are linked with defaultextract
+	otherwise.
+	* tagdemo/Makefile.am, tagdemo/main.cpp, tagdemo/conv.h,   
+	tagdemo/conv.cpp: Augment tagdemo test to link a convenience
+	library with a libtool library.
+
 	* ltmain.in: Piecewise linking doesn't work when the output
 	file is an absolute path, use the basename only instead.
 
