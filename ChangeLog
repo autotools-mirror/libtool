@@ -1,3 +1,10 @@
+1999-02-18  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
+
+	* ltmain.in (impgen.c): Added a new embedded C file that can be
+	used under win32 to extract a def file (symbol export list) from a
+	dll that has none.  Code to use it might need to wait for the ILD
+	merge before it will be useful...
+	
 1999-02-18  Thomas Tanner  <tanner@gmx.de>
 
 	* TODO: updated
@@ -411,7 +418,7 @@
 	anything about the format of the date, just that it does not
 	contain `$'
 
-1999-01-22  Gary V. Vaughan  <garyv@oranda.demon.co.uk>
+1999-01-22  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
 
 	* configure.in (date): echo the version number during
 	configuration, and show $date for cvs versions.
@@ -467,7 +474,7 @@
 	* demo/configure.in, demo/Makefile.am (DLPREOPEN): reverted; it
 	didn't make any difference.
 
-1999-01-21  Gary V. Vaughan  <garyv@oranda.demon.co.uk>
+1999-01-21  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
 
 	* THANKS: Added Chris Laas <golem@MIT.EDU>
 	
@@ -811,7 +818,7 @@
 	* mdemo/Makefile.am: use -export-dynamic until libtool 
 	  and libltdl are able to handle module dependencies
 	  
-1999-01-14  Gary V. Vaughan  <garyv@oranda.demon.co.uk>
+1999-01-14  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
 
 	* THANKS: added Mark Elbrecht.
 	* ltconfig.in (PATH_SEPARATOR): new variable to hold valid $PATH
@@ -1653,7 +1660,7 @@
 	* mdemo/modules/Makefile.am: replaced -export-symbols with 
 	-export-dynamic since it doesn't work for modules
 	
-1998-12-01  Gary V. Vaughan  <garyv@oranda.demon.co.uk>
+1998-12-01  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
 
 	* README: Updated homepage pointer to gnu libtool page.
 
@@ -1676,7 +1683,7 @@
 
 	* config.guess, config.sub: imported from autoconf pre-2.13
 
-1998-11-27  Gary V. Vaughan  <garyv@oranda.demon.co.uk>
+1998-11-27  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
 
 	* libtool (AM_PROG_LD): Oops... we need to know the host_os for
 	the changes below.  I'm not sure whether mingw32 and os2 support
