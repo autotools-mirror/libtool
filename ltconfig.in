@@ -2061,6 +2061,9 @@ SHELL=$LTSHELL
 # Whether or not to build shared libraries.
 build_libtool_libs=$enable_shared
 
+# Whether or not to add -lc for building shared libraries.
+build_libtool_need_lc=$need_lc
+
 # Whether or not to build static libraries.
 build_old_libs=$enable_static
 

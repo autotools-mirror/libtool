@@ -568,3 +568,6 @@ fi
       ac_cv_prog_cc_pic='-fPIC'
       ;;
     esac
+
+# GCJ did not exist at the time GCC didn't implicitly link libc in.
+need_lc=no
