@@ -569,6 +569,28 @@ compiler."
       # which system we are compiling for in order to pass an extra
       # flag for every libtool invokation.
       allow_undefined=no
+
+      # This is a source program that is used to create dlls on Windows
+      # Don't remove nor modify the starting and closing comments
+# /* ltdll.c starts here */
+# #define WIN32_LEAN_AND_MEAN
+# #include <windows.h>
+# #undef WIN32_LEAN_AND_MEAN
+# #include <stdio.h>
+# 
+# BOOL APIENTRY DllMain (HINSTANCE hInst, DWORD reason, LPVOID reserved);
+# 
+# #include <cygwin/cygwin_dll.h>
+# DECLARE_CYGWIN_DLL( DllMain );
+# HINSTANCE __hDllInstance_base;
+# 
+# BOOL APIENTRY
+# DllMain (HINSTANCE hInst, DWORD reason, LPVOID reserved)
+# {
+#   __hDllInstance_base = hInst;
+#   return TRUE;
+# }
+# /* ltdll.c ends here */
       ;;
     *)
       allow_undefined=yes
