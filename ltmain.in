@@ -4892,7 +4892,7 @@ relink_command=\"$relink_command\""
 
 	if test -n "$relink_command"; then
 	  # Determine the prefix the user has applied to our future dir.
-	  inst_prefix_dir=`$echo "$destdir" | sed "s%$libdir\$%%"`
+	  inst_prefix_dir=`$echo "$destdir" | $SED "s%$libdir\$%%"`
 
 	  # Don't allow the user to place us outside of our expected
 	  # location b/c this prevents finding dependent libraries that
@@ -4907,9 +4907,9 @@ relink_command=\"$relink_command\""
 
 	  if test -n "$inst_prefix_dir"; then
 	    # Stick the inst_prefix_dir data into the link command.
-	    relink_command=`$echo "$relink_command" | sed "s%@inst_prefix_dir@%-inst-prefix-dir $inst_prefix_dir%"`
+	    relink_command=`$echo "$relink_command" | $SED "s%@inst_prefix_dir@%-inst-prefix-dir $inst_prefix_dir%"`
 	  else
-	    relink_command=`$echo "$relink_command" | sed "s%@inst_prefix_dir@%%"`
+	    relink_command=`$echo "$relink_command" | $SED "s%@inst_prefix_dir@%%"`
 	  fi
 
 	  $echo "$modename: warning: relinking \`$file'" 1>&2

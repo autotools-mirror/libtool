@@ -1,3 +1,8 @@
+2002-12-19  Robert Boehne  <rboehne@gnu.org>
+
+	* ltmain.in: Use the sed program found by LT_AC_PROG_SED
+	so that relink commands don't get truncated.
+
 2002-12-18  Robert Boehne  <rboehne@gnu.org>
 
 	* libtool.m4: Move AC_REQUIRE([LT_AC_PROG_SED]) to AC_PROG_LD
