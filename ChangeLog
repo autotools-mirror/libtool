@@ -1,5 +1,13 @@
 2005-02-01  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* m4/libtool.m4 (AC_LIBTOOL_SYS_DYNAMIC_LINKER)
+	[ pw32, freebsd3.[01], freebsdelf3.[01] ]
+	(AC_LIBTOOL_LANG_CXX_CONFIG) [ aix4.[012]*, freebsd[12] ]
+	[ hpux9* with aCC  solaris2.[0-5] ]
+	(AC_LIBTOOL_PROG_LD_SHLIBS) [ linux with GNU ld < 2.11, aix4.[012]* ]
+	(AC_LIBTOOL_LANG_GCJ_CONFIG): Fix [] quoting.  Should fix various spurious
+	failures.
+
 	* tests/func_extract_archives.test: Clean up afterwards.
 
 2005-02-01  Peter O'Gorman  <peter@pogma.com>
