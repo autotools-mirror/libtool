@@ -1,5 +1,8 @@
 2004-11-29   Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
+	* doc/libtool.texi (Reloadable objects): Fix typo, reported by
+	rsc@merit.edu.
+
 	* ltmain.in: Allow some compiler/linker flags through unchecked.
 	Backport of patch `2004-09-14 Albert Chin-A-Young' from branch-2-0.
 

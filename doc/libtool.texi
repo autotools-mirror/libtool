@@ -4266,7 +4266,7 @@ to listed after those libraries whose symbols they provide.
 Particularly, if a pair of static archives each resolve some of the
 other's symbols, it might be necessary to list one of those archives
 both before and after the other one.  Libtool does not currently cope
-with this situation well, since dupicate libraries are removed from
+with this situation well, since duplicate libraries are removed from
 the link line by default.  Libtool provides the command line option
 @samp{--preserve-dup-deps} to preserve all duplicate dependencies
 in cases where it is necessary.
