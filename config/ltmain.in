@@ -2963,6 +2963,26 @@ func_mode_link ()
 	continue
 	;;
 
+      # -64, -mips[0-9] enable 64-bit mode on the SGI compiler
+      # -xarch=*, -xtarget=* enable 64-bit mode on the Sun compiler
+      # +DA*, +DD* enable 64-bit mode on the HP compiler
+      # -q* pass through compiler args for the IBM compiler
+      # -m* pass through architecture-specific compiler args for GCC
+      -64|-mips[0-9]||-xarch=*|-xtarget=*|+DA*|+DD*|-q*|-m*)
+	# Unknown arguments in both finalize_command and compile_command need
+	# to be aesthetically quoted because they are evaled later.
+	arg=`$echo "X$arg" | $Xsed -e "$sed_quote_subst"`
+	case $arg in
+	*[\[\~\#\^\&\*\(\)\{\}\|\;\<\>\?\'\ \	]*|*]*|"")
+	arg="\"$arg\""
+	;;
+      esac
+      compile_command="$compile_command $arg"
+      finalize_command="$finalize_command $arg"
+      compiler_flags="$compiler_flags $arg"
+      continue
+      ;;
+
       # Some other compiler flag.
       -* | +*)
 	# Unknown arguments in both finalize_command and compile_command need
@@ -2973,10 +2993,6 @@ func_mode_link ()
 	  arg="\"$arg\""
 	  ;;
 	esac
-
-	if test -z "$prev"; then
-	  compiler_flags="$compiler_flags $arg"
-	fi
 	;;
 
       *.$objext)

@@ -1,3 +1,15 @@
+2004-09-14  Albert Chin-A-Young  <china@thewrittenword.com>
+
+	Unfortunately, libtool has no way of telling if unrecognized
+	compiler flags need an argument or not, and can disect options and
+	pass parts through incorrectly.  This changeset reverts both
+	2004-09-06 Albert Chin-A-Young (topmost) and 2004-09-05 Albert
+	Chin-A-Young below, and recognises more options explicitly:
+
+	* config/ltmain.in (func_mode_link): Pass through options needed
+	to compile in 64-bit mode with gcc, and the SGI, Sun, HP and IBM
+	compilers.
+
 2004-09-13  Gary V. Vaughan  <gary@gnu.org>
 
 	* m4/libtool.m4 (_LT_CMD_GLOBALS_SYMBOLS): Fix a typo I made when
