@@ -1,3 +1,9 @@
+2003-11-09  Peter O'Gorman  <peter@pogma.com>
+
+	* ltmain.in (linkalldeplibs,darwin): Fix a bug reported by Idar 
+	Tollefsen where a dir could be added to the link line with no '-L'
+	on darwin.
+
 2003-11-07  Gary V. Vaughan  <gary@gnu.org>
 
 	* tests/cdemo/configure.ac, tests/demo/configure.ac,
