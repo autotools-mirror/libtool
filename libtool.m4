@@ -1473,7 +1473,7 @@ newsos6)
   shlibpath_overrides_runpath=yes
   ;;
 
-nto-qnx)
+nto-qnx*)
   version_type=linux
   need_lib_prefix=no
   need_version=no
@@ -2202,7 +2202,7 @@ newos6*)
   lt_cv_file_magic_test_file=/usr/lib/libnls.so
   ;;
 
-nto-qnx)
+nto-qnx*)
   lt_cv_deplibs_check_method=unknown
   ;;
 
