@@ -1,0 +1,14 @@
+#! /bin/sh
+
+# by Alexandre Oliva <oliva@dcc.unicamp.br>
+
+# Libtool's `make install' uses libltdl's `make dist' to install the
+# libltdl source tree.  automake will try to create hard-links into
+# the source tree by default, to speed things up, but we don't want
+# editing the source tree to mess up the installed version, so we'd
+# better avoid hard links.  Since automake will try `cp' when `ln'
+# fails, we just echo the `cp' command automake will run, to tell
+# installers what's going on, and then fail.
+
+echo cp -p ${1+"$@"}
+exit 1

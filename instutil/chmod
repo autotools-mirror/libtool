@@ -1,0 +1,13 @@
+#! /bin/sh
+
+# by Alexandre Oliva <oliva@dcc.unicamp.br>
+
+# Libtool's `make install' uses libltdl's `make dist' to install the
+# libltdl source tree.  automake will try to create directories with
+# mode 777, because the GNU coding standards mandate so, but we don't
+# want installed directories with such modes, so we just ignore such
+# chmods, and leave it up to the installer's umask to do the right
+# thing.
+
+test x"$1" = x"777" && echo Possibly unsafe chmod ignored >&2
+exit 0
