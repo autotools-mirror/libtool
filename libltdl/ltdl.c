@@ -2005,12 +2005,13 @@ canonicalize_path (path, pcanonical)
 		|| (path[1+ src] == LT_EOS_CHAR))
 	      continue;
 	  }
+
 	/* Anything other than a directory separator is copied verbatim.  */
-	else if ((path[src] != '/')
+	if ((path[src] != '/')
 #ifdef LT_DIRSEP_CHAR
-		 && (path[src] != LT_DIRSEP_CHAR)
+	    && (path[src] != LT_DIRSEP_CHAR)
 #endif
-		 )
+	    )
 	  {
 	    canonical[dest++] = path[src];
 	  }
@@ -2018,7 +2019,11 @@ canonicalize_path (path, pcanonical)
 	   not at the end of a path -- i.e. before a path separator or
 	   NULL terminator.  */
 	else if ((path[1+ src] != LT_PATHSEP_CHAR)
-		 && (path[1 + src] != LT_EOS_CHAR))
+		 && (path[1+ src] != LT_EOS_CHAR)
+#ifdef LT_DIRSEP_CHAR
+		 && (path[1+ src] != LT_DIRSEP_CHAR)
+#endif
+		 && (path[1+ src] != '/'))
 	  {
 	    canonical[dest++] = '/';
 	  }
@@ -2079,9 +2084,10 @@ foreach_dirinpath (search_path, base_name, func, data1, data2)
   int	result		= 0;
   int	filenamesize	= 0;
   int	lenbase		= LT_STRLEN (base_name);
+  int	argz_len	= 0;
+  char *argz		= 0;
   char *filename	= 0;
   char *canonical	= 0;
-  char *next;
 
   LT_DLMUTEX_LOCK ();
 
@@ -2092,56 +2098,43 @@ foreach_dirinpath (search_path, base_name, func, data1, data2)
     }
 
   if (canonicalize_path (search_path, &canonical) != 0)
-    {
-      LT_DLMUTEX_SETERROR (LT_DLSTRERROR (NO_MEMORY));
-      goto cleanup;
-    }
+    goto cleanup;
 
-  next = canonical;
-  while (next)
-    {
-      char *cur	    = next;
-      int   lendir;
+  if (argzize_path (canonical, &argz, &argz_len) != 0)
+    goto cleanup;
 
-      next = strchr (cur, LT_PATHSEP_CHAR);
-      if (!next)
-	next = cur + strlen (cur);
+  {
+    char *dir_name = 0;
+    while ((dir_name = argz_next (argz, argz_len, dir_name)))
+      {
+	int lendir = LT_STRLEN (dir_name);
 
-      lendir = next - cur;
-      if (*next == LT_PATHSEP_CHAR)
-	++next;
-      else
-	next = 0;
-
-      if (lendir == 0)
-	continue;
-
-      if (lendir +1 +lenbase >= filenamesize)
+	if (lendir +1 +lenbase >= filenamesize)
 	{
 	  LT_DLFREE (filename);
 	  filenamesize	= lendir +1 +lenbase +1; /* "/d" + '/' + "f" + '\0' */
-	  filename	= LT_DLMALLOC (char, filenamesize);
-
+	  filename	= LT_EMALLOC (char, filenamesize);
 	  if (!filename)
-	    {
-	      LT_DLMUTEX_SETERROR (LT_DLSTRERROR (NO_MEMORY));
-	      goto cleanup;
-	    }
+	    goto cleanup;
 	}
 
-      strncpy (filename, cur, lendir);
-      if (filename[lendir -1] != '/')
-	filename[lendir++] = '/';
-      if (base_name && *base_name)
-	strcpy (filename +lendir, base_name);
-
-      if ((result = (*func) (filename, data1, data2)))
-	{
-	  break;
-	}
-    }
+	strncpy (filename, dir_name, lendir);
+	if (base_name && *base_name)
+	  {
+	    if (filename[lendir -1] != '/')
+	      filename[lendir++] = '/';
+	    strcpy (filename +lendir, base_name);
+	  }
+	
+	if ((result = (*func) (filename, data1, data2)))
+	  {
+	    break;
+	  }
+      }
+  }
 
  cleanup:
+  LT_DLFREE (argz);
   LT_DLFREE (canonical);
   LT_DLFREE (filename);
 
@@ -2689,7 +2682,7 @@ lt_dlopen (filename)
       LT_DLFREE (line);
 
       /* allocate the handle */
-      handle = (lt_dlhandle) LT_DLMALLOC (struct lt_dlhandle_struct, 1);
+      handle = (lt_dlhandle) LT_EMALLOC (struct lt_dlhandle_struct, 1);
       if (!handle)
 	++error;
 
@@ -2949,7 +2942,7 @@ lt_argz_insertdir (pargz, pargz_len, dirnam, dp)
   /* Prepend the directory name.  */
   end_offset	= end - dp->d_name;
   buf_len	= dir_len + 1+ end_offset;
-  buf		= LT_DLMALLOC (char, 1+ buf_len);
+  buf		= LT_EMALLOC (char, 1+ buf_len);
   if (!buf)
     return ++errors;
     
@@ -2976,8 +2969,6 @@ list_files_by_dir (dirnam, pargz, pargz_len)
      size_t *pargz_len;
 {
   DIR	*dirp	  = 0;
-  char	*argz     = 0;
-  size_t argz_len = 0;
   int    errors	  = 0;
   
   assert (dirnam && *dirnam);
@@ -2992,7 +2983,7 @@ list_files_by_dir (dirnam, pargz, pargz_len)
 
       while ((dp = readdir (dirp)))
 	if (dp->d_name[0] != '.')
-	  if (lt_argz_insertdir (&argz, &argz_len, dirnam, dp))
+	  if (lt_argz_insertdir (pargz, pargz_len, dirnam, dp))
 	    {
 	      ++errors;
 	      break;
@@ -3000,6 +2991,8 @@ list_files_by_dir (dirnam, pargz, pargz_len)
 
       closedir (dirp);
     }
+  else
+    ++errors;
 
   return errors;
 }
@@ -3016,11 +3009,13 @@ foreachfile_callback (dirname, data1, data2)
   int (*func) LT_PARAMS((const char *filename, lt_ptr data))
 	= (int (*) LT_PARAMS((const char *filename, lt_ptr data))) data1;
 
-  int is_done = 0;
-  char *argz;
-  size_t argz_len;
+  int	  is_done  = 0;
+  char   *argz     = 0;
+  size_t  argz_len = 0;
 
   if (list_files_by_dir (dirname, &argz, &argz_len) != 0)
+    goto cleanup;
+  if (!argz)
     goto cleanup;
 
   {

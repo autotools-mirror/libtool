@@ -1,3 +1,9 @@
+2001-08-05  Gary V. Vaughan  <gary@gnu.org>
+
+	* libltdl/ltdl.c:  Fixed several careless mistakes in the 
+	foreach_dirinpath support functions.
+	(foreach_dirinpath): Walk path elements with the argz API.
+
 2001-08-04  Gary V. Vaughan  <gary@gnu.org>
 
 	From Sedi Master Albert Chin <china@thewrittenword.com>:
