@@ -1,3 +1,10 @@
+2004-09-19  Peter O'Gorman  <peter@pogma.com>
+
+	GNU libtool 1.5.10 is released.
+
+	* configure.ac: Bump version.
+	* NEWS: Updated.
+
 2004-09-19  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
 	* libtool.m4 (AC_LIBTOOL_SYS_GLOBAL_SYMBOL_PIPE): The linker

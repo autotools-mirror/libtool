@@ -1,6 +1,8 @@
 NEWS - list of user-visible changes between releases of GNU Libtool
 
-New in 1.5.9a: 2004-??-??; CVS version 1.5.9a, Libtool team:
+New in 1.5.10: 2004-09-19; CVS version 1.5.9a, Libtool team:
+* GNU/linux ia64 fixes.
+* Works on platforms with no c++ compiler.
 * Bug Fixes.
 
 New in 1.5.8: 2004-08-07; CVS version 1.5.7a, Libtool team:
