@@ -248,7 +248,7 @@ do
 
   case "$option" in
   --help) cat <<EOM
-Usage: $progname [OPTION]... [HOST [LTMAIN]]
+Usage: $progname [OPTION]... LTMAIN [HOST]
 
 Generate a system-specific libtool script.
 
