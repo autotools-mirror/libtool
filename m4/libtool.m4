@@ -2507,7 +2507,10 @@ case $reload_flag in
 *) reload_flag=" $reload_flag" ;;
 esac
 reload_cmds='$LD$reload_flag -o $output$reload_objs'
-
+case $host_os in
+  darwin*)
+    reload_cmds='$CC -nostdlib ${wl}-r -o $output$reload_objs'
+esac
 _LT_DECL([], [reload_flag], [1], [How to create reloadable object files])dnl
 _LT_DECL([], [reload_cmds], [2])dnl
 ])# AC_PROG_LD_RELOAD_FLAG
