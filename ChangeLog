@@ -1,5 +1,8 @@
 1999-03-11  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* mdemo/main.c (main, test_dl, test_dlself): propagate error
+	conditions better, to avoid false positives
+
 	* */configure.in: AC_SUBST(LIBTOOL_DEPS)
 	* */Makefile.am $(OBJECTS): depend on libtool
 	(libtool): rebuild automatically
