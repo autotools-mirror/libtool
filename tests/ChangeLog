@@ -1,0 +1,8 @@
+Mon Dec  2 16:31:10 1996  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* demo.test: Try compiling the ../demo subdirectory, with no
+	special options.
+
+	* test-e.test: Check that we haven't used `test -e' anywhere in
+	our portable shell scripts.
+

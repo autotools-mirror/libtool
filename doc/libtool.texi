@@ -1,0 +1,1356 @@
+\input texinfo   @c -*-texinfo-*-
+@c %**start of header
+@setfilename libtool.info
+@settitle libtool
+@setchapternewpage off
+@c %**end of header
+@syncodeindex vr cp
+@synindex pg cp
+
+@include version.texi
+@set MAINT Gord Matzigkeit <gord@@gnu.ai.mit.edu>
+
+@ifinfo
+@format
+START-INFO-DIR-ENTRY
+* Libtool: (libtool).   Generic shared library support script.
+END-INFO-DIR-ENTRY
+@end format
+@end ifinfo
+
+@ifinfo
+This file documents the Libtool library support script.
+
+Copyright (C) 1996 Free Software Foundation, Inc.
+
+Permission is granted to make and distribute verbatim copies of this
+manual provided the copyright notice and this permission notice are
+preserved on all copies.
+
+@ignore
+Permission is granted to process this file through TeX and print the
+results, provided the printed document carries copying permission notice
+identical to this one except for the removal of this paragraph
+
+
+@end ignore
+Permission is granted to copy and distribute modified versions of this
+manual under the conditions for verbatim copying, provided that the
+entire resulting derived work is distributed under the terms of a
+permission notice identical to this one.
+
+Permission is granted to copy and distribute translations of this manual
+into another language, under the above conditions for modified versions,
+except that this permission notice may be stated in a translation
+approved by the Foundation.
+@end ifinfo
+
+
+@titlepage
+@title GNU Libtool
+@subtitle For version @value{VERSION}, @value{UPDATED}
+@c copyright page
+@page
+@vskip 0pt plus 1filll
+Copyright @copyright{} 1996 Free Software Foundation, Inc.
+@sp 2
+This is the second edition of the GNU Libtool documentation,@*
+and is consistent with GNU Libtool @value{VERSION}.@*
+@sp 2
+Published by the Free Software Foundation @*
+675 Massachusetts Avenue, @*
+Cambridge, MA 02139 USA @*
+
+Permission is granted to make and distribute verbatim copies of this
+manual provided the copyright notice and this permission notice are
+preserved on all copies.
+
+Permission is granted to copy and distribute modified versions of this
+manual under the conditions for verbatim copying, provided that the
+entire resulting derived work is distributed under the terms of a
+permission notice identical to this one.
+
+Permission is granted to copy and distribute translations of this manual
+into another language, under the above conditions for modified versions,
+except that this permission notice may be stated in a translation
+approved by the Free Software Foundation.
+@end titlepage
+
+@ifinfo
+@node Top, Introduction, (dir), (dir)
+@comment  node-name,  next,  previous,  up
+@top Shared library support for GNU
+
+This file documents GNU libtool, a script that allows package developers
+to provide generic shared library support.  This edition documents
+version @value{VERSION}.
+
+@menu
+* Introduction::                What the heck is libtool?
+* Libtool Paradigm::            How libtool's view of libraries is different.
+* Using Libtool::               Example of using libtool to build libraries.
+* Invoking @file{libtool}::     Running the @file{libtool} script.
+* Integrating Libtool::         Using libtool in your own packages.
+* Versioning::                  Using library interface versions.
+* Library Tips::                Tips for library interface design.
+* Modifying::                   Changing the libtool script.
+* Index::                       Index of concepts, variables, and programs.
+
+ --- The Detailed Node Listing ---
+
+Introduction
+
+* Motivation::                  Why does GNU need a libtool?
+* Issues::                      The problems that need to be addressed.
+* Other Implementations::       How other people have solved these issues.
+* Postmortem::                  Learning from past difficulties.
+
+Using Libtool
+
+* Creating Object Files::       Compiling object files for libraries.
+* Linking Libraries::           
+* Linking Executables::         Linking object files against libtool libraries.
+* Installing Libraries::        Making libraries available to users.
+* Installing Executables::      Making programs available to users.
+* Static Libraries::            When shared libraries are not wanted.
+
+Invoking @file{libtool}
+
+* Compile Mode::                Creating library object files.
+* Link Mode::                   Generating executables and libraries.
+* Install Mode::                Making libraries and executables public.
+* Finish Mode::                 Completing a library installation.
+* Uninstall Mode::              Removing executables and libraries.
+
+Integrating Libtool with Your Own Packages
+
+* Makefile Rules::              Writing Makefile rules for libtool.
+* Using Automake::              Automatically supporting libtool.
+* Configuring::                 Configuring libtool for a host system.
+* Distributing::                What files to distribute with your package.
+
+Including Libtool with Your Package
+
+* Invoking @file{libtoolize}::  @file{libtoolize} command line options.
+
+Library Interface Versions
+
+* Interfaces::                  What are library interfaces?
+* Libtool Versioning::          Libtool's versioning system.
+* Version Files::               How libtool tracks library versions.
+* Updating @file{libinfo}::     Keeping a library version file up-to-date.
+@end menu
+
+@end ifinfo
+
+@node Introduction, Libtool Paradigm, Top, Top
+@comment  node-name,  next,  previous,  up
+@chapter Introduction
+
+In the past, if a source code package developer wanted to take advantage
+of the power of shared libraries, he needed to write custom support code
+for each platform his package ran on.  He also had to design a
+configuration interface so that the user could choose what sort of
+libraries were built.
+
+GNU libtool simplifies the developer's job by encapsulating both the
+platform-specific dependencies, and the user interface, in a single
+script.  GNU libtool is designed so that the complete functionality of
+each host type is available via a generic interface, but nasty quirks
+are hidden from the programmer.
+
+GNU libtool's consistent interface is reassuring@dots{} users don't need
+to read obscure documentation in order to have their favorite source
+package build shared libraries.  They just run your package
+@file{configure} script (or equivalent), and libtool does all the dirty
+work.
+
+There are several examples throughout this document.  All assume the
+same environment: we want to build a library, @file{libfoo}, in a
+generic way.
+
+@file{libfoo} could be a shared library, a static library, or
+both@dots{} whatever is available on the host system, as long as libtool
+has been ported to it.
+
+This chapter explains the original design philosophy of libtool.  Feel
+free to skip to the next chapter, unless you are interested in history,
+or want to write code to extend libtool in a consistent way.
+
+@menu
+* Motivation::                  Why does GNU need a libtool?
+* Issues::                      The problems that need to be addressed.
+* Other Implementations::       How other people have solved these issues.
+* Postmortem::                  Learning from past difficulties.
+@end menu
+
+@node Motivation, Issues, Introduction, Introduction
+@comment  node-name,  next,  previous,  up
+@section Motivation for Writing Libtool
+
+@cindex Motivation for writing libtool
+@cindex Design philosophy
+Since early 1995, several different GNU developers have recognized the
+importance of having shared library support for their packages.  The
+primary motivation for such a change is to encourage modularity and
+reuse of code (both conceptually and physically) in GNU programs.
+
+Such a demand means that the way libraries are built in GNU packages
+needs to be general, to allow for any library type the user might want.
+The problem is compounded by the absence of a standard procedure for
+creating shared libraries on different platforms.
+
+The following sections outline the major issues facing shared library
+support in GNU, how some developers have overcome these issues, and how
+I propose that shared library support should be standardized with
+libtool.
+
+@cindex Specifications for libtool
+@cindex Libtool specifications
+The following specifications were used in developing and evaluating this
+system:
+
+@enumerate
+@item
+The system must be as elegant as possible.
+
+@item
+The system must be fully integrated with the GNU Autoconf and Automake
+utilities, so that it will be easy for GNU maintainers to use.  However,
+the system must not require these tools, so that it can be used by
+non-GNU packages.
+
+@item
+Portablility to other (non-GNU) architectures and tools is desirable.
+@end enumerate
+
+@node Issues, Other Implementations, Motivation, Introduction
+@comment  node-name,  next,  previous,  up
+@section Implementation Issues
+
+@cindex Tricky design issues
+@cindex Design issues
+The following issues need to be addressed in any reusable shared library
+system, specifically libtool:
+
+@enumerate
+@item
+The user should be able to control what sort of libraries are built.
+
+@item
+It can be tricky to run dynamically linked programs whose libraries have
+not yet been installed.  @var{LD_LIBRARY_PATH} must be set properly (if
+it is supported), or the program fails.
+
+@item
+The system must operate consistently even on hosts which don't support
+shared libraries.
+
+@item
+The commands required to build shared libraries may differ wildly from
+host to host.  These need to be guessed and tested at configure time in
+a consistent way.
+
+@item
+Some operating systems do not support shared object version numbers, and
+it is not obvious with which suffix a shared object should be installed.
+This makes it difficult for Makefile rules, since they generally assume
+that filenames are the same from host to host.
+
+@item
+Programmers need to be aware of what assumptions they are allowed to
+make.  Library names will need to be carefully chosen (to avoid name
+clashes), binary compatibility needs to be accounted for,
+
+@item
+The system needs a simple library version number abstraction, so that
+shared libraries can be upgraded in place.  The programmer should be
+informed how to design the interfaces to the library to maximize binary
+compatibility.
+
+@item
+The install Makefile target should warn the user to set
+@var{LD_LIBRARY_PATH} (or equivalent) or run @kbd{ldconfig}, if
+required.
+@end enumerate
+
+@node Other Implementations, Postmortem, Issues, Introduction
+@comment  node-name,  next,  previous,  up
+@section Other Implementations
+
+I have investigated several different implementations of building shared
+libraries as part of a freeware package.  At first, I made notes on the
+features of each of these packages for comparison purposes.
+
+Now it is clear that none of these packages have documented the details
+of shared library systems that libtool requires.  So, other packages
+have been more or less abandoned as influences.
+
+@node Postmortem,  , Other Implementations, Introduction
+@comment  node-name,  next,  previous,  up
+@section A Postmortem Analysis of Other Implementations
+
+@cindex Other implementations, flaws in
+@cindex Reuseability of library systems
+In all fairness, each of the implementations that I examined do the job
+that they were intended to do, for a number of different host systems.
+However, none of these solutions seem to function well as a generalized,
+reuseable component.
+
+@cindex Complexity of library systems
+Most were too complex for me to use (much less modify) without
+understanding exactly what the implementation does, and they were
+generally not documented.
+
+I think the main problem is that different vendors have different views
+of what libraries are, and none of the packages I examined seemed to be
+confident enough to settle on a single paradigm that just @emph{works}.
+
+Ideally, libtool would be a standard that would be implemented as series
+of extensions and modifications to existing library systems to make them
+work consistently.  However, I don't have the time or power to convince
+operating system developers to mend their evil ways, and I want to build
+shared libraries right now, even on buggy, broken, confused operating
+systems.
+
+For this reason, I have designed libtool as an independent shell script.
+It isolates the problems and inconsistencies in library building that
+plague Makefile writers by wrapping the compiler suite on different
+platforms with a consistent, powerful interface.
+
+I hope that libtool will be useful to and used by the GNU community, and
+that the lessons I've learned in writing it will be taken up and
+implemented by designers of library systems.
+
+@node Libtool Paradigm, Using Libtool, Introduction, Top
+@comment  node-name,  next,  previous,  up
+@chapter The Libtool Paradigm
+
+At first, libtool was designed to support an arbitrary number of library
+object types.  After porting libtool to more platforms, the author
+discovered a new (at least for him) paradigm of what libraries and
+programs are.
+
+In summary: ``libraries are programs with multiple entry points, and
+more formally defined interfaces.''
+
+Version 0.7 of libtool was a complete redesign and rewrite of libtool to
+reflect this new paradigm.  So far, it has proved to be successful:
+libtool is simpler and more functional than before.
+
+The best way to introduce the libtool paradigm is to contrast it with
+the paradigm of existing library systems, with examples from each.  It
+is a new way of thinking, so it may take a little time to absorb, but
+when you understand it the world gets simpler.
+
+@node Using Libtool, Invoking @file{libtool}, Libtool Paradigm, Top
+@comment  node-name,  next,  previous,  up
+@chapter Using Libtool
+
+It makes little sense to talk about using libtool in your own packages
+until you have seen how it makes your life simpler.  The examples in
+this chapter introduce the main features of libtool by comparing the
+standard library building procedure to libtool's operation on two
+different platforms:
+
+@table @asis
+@item `a23'
+An Ultrix 4.2 platform with only static libraries.
+
+@item `burger'
+A NetBSD/i386 1.2 platform with shared libraries.
+@end table
+
+You can follow these examples on your own platform, using the
+pre-configured (@pxref{Configuring}) libtool script that was installed
+with the libtool distribution.
+
+Source files for the following examples are taken from the @file{demo}
+subdirectory of the libtool distribution.  Assume that we are building a
+library, @file{libhello}, out of the files @file{foo.c} and
+@file{hello.c}.
+
+After we have built that library, we want to create a program by linking
+@file{main.o} against @file{libhello}.
+
+@menu
+* Creating Object Files::       Compiling object files for libraries.
+* Linking Libraries::           
+* Linking Executables::         Linking object files against libtool libraries.
+* Installing Libraries::        Making libraries available to users.
+* Installing Executables::      Making programs available to users.
+* Static Libraries::            When shared libraries are not wanted.
+@end menu
+
+@node Creating Object Files, Linking Libraries, Using Libtool, Using Libtool
+@comment  node-name,  next,  previous,  up
+@section Creating Object Files
+
+To create an object file from a source file, the compiler is invoked
+with the `-c' flag (and any other desired flags):
+
+@example
+burger$ @kbd{gcc -g -O -c main.c}
+burger$ 
+@end example
+
+The above compiler command produces an object file, @file{main.o}, from
+the source file @file{main.c}.
+
+For most library systems, creating object files that become part of a
+static library is as simple as creating object files that are linked to
+form an executable:
+
+@example
+burger$ @kbd{gcc -g -O -c foo.c}
+burger$ @kbd{gcc -g -O -c hello.c}
+burger$ 
+@end example
+
+Shared libraries, however, may only be built from
+@dfn{position-independant code} (PIC).  So, special flags must be passed
+to the compiler to tell it to generate PIC rather than the standard
+position-dependant code.
+
+Since this is a library implementation detail, libtool hides the
+complexity of PIC compiler flags by using separate library object files
+(which end in `.lo' instead of `.o').  On systems without shared
+libraries (or without special PIC compiler flags), these library object
+files are identical to ``standard'' object files.
+
+To create library object files for @file{foo.c} and @file{hello.c},
+simply invoke libtool with the standard compilation command as an
+argument:
+
+@example
+a23$ libtool gcc -g -O -c foo.c
+gcc -g -O -c foo.c -o foo.lo
+a23$ libtool gcc -g -O -c hello.c
+gcc -g -O -c hello.c -o hello.lo
+a23$
+@end example
+
+On shared library systems, libtool automatically inserts the PIC
+generation flags into the compilation command:
+
+@example
+burger$ @kbd{libtool gcc -g -O -c foo.c}
+gcc -g -O -c -fPIC -DPIC foo.c -o foo.lo
+burger$ @kbd{libtool gcc -g -O -c hello.c}
+gcc -g -O -c -fPIC -DPIC hello.c -o hello.lo
+burger$
+@end example
+
+@node Linking Libraries, Linking Executables, Creating Object Files, Using Libtool
+@comment  node-name,  next,  previous,  up
+@section Linking Libraries
+
+Without libtool, the programmer would invoke the @file{ar} command to
+create a static library:
+
+@example
+burger$ @kbd{ar cru libhello.a hello.o foo.o}
+burger$ 
+@end example
+
+But of course, that would be too simple, so many systems require that
+you run the @file{ranlib} command on the resulting library (to give it
+better karma, or something):
+
+@example
+burger$ @kbd{ranlib libhello.a}
+burger$
+@end example
+
+It seems more natural to use the C compiler for this task, given
+libtool's ``libraries are programs'' approach.  So, on platforms without
+shared libraries, libtool simply acts as a wrapper for the system
+@file{ar} (and possibly @file{ranlib}) commands.
+
+Again, the libtool library name differs from the standard name (it has a
+`.la' suffix instead of a `.a' suffix).  The arguments to libtool are
+the same ones you would use to produce an executable named
+@file{libhello.la} with your compiler:
+
+@example
+burger$ @kbd{libtool gcc -g -O -o libhello.la foo.o hello.o}
+libtool: cannot build libtool library `libhello.la' from non-libtool objects
+burger$ 
+@end example
+
+Aha!  Libtool caught a common error@dots{} trying to build a library
+from standard objects instead of library objects.@footnote{The converse,
+however, is perfectly legal.  Library objects can do anything that
+standard objects can do@dots{} it makes sense to link them directly into
+programs.}  This doesn't matter much for static libraries, but on shared
+library systems, it is of great importance.
+
+So, let's try again, this time with the library object files:
+
+@example
+a23$ @kbd{libtool gcc -g -O -o libhello.la foo.lo hello.lo}
+libtool: you must specify an installation directory with `-rpath'
+a23$ 
+@end example
+
+Argh.  Another complication in building shared libraries is that we need
+to specify the path to the directory in which they (eventually) will be
+installed.  So, we try again, with an @code{rpath} setting of
+@file{/usr/local/lib}:
+
+@example
+a23$ @kbd{libtool gcc -g -O -o libhello.la foo.lo hello.lo -rpath /usr/local/lib}
+mkdir LIBS
+ar cru LIBS/libhello.a foo.lo hello.lo
+ranlib LIBS/libhello.a
+creating libhello.la
+a23$ 
+@end example
+
+Now, let's try the same trick on the shared library platform:
+
+@example
+burger$ @kbd{libtool gcc -g -O -o libhello.la foo.lo hello.lo -rpath /usr/local/lib}
+mkdir LIBS
+ld -Bshareable -o LIBS/libhello.so.0.0 foo.lo hello.lo
+ar cru LIBS/libhello.a foo.lo hello.lo
+ranlib LIBS/libhello.a
+creating libhello.la
+burger$
+@end example
+
+Now that's significantly cooler@dots{} libtool just ran an obscure
+@file{ld} command to create a shared library, as well as the static
+library.
+
+Note how libtool creates extra files in the @file{LIBS} subdirectory,
+rather than the current directory.  This feature is to make it easier to
+clean up the build directory, and to help ensure that other programs
+fail horribly if you accidentally forget to use libtool when you should.
+
+@node Linking Executables, Installing Libraries, Linking Libraries, Using Libtool
+@comment  node-name,  next,  previous,  up
+@section Linking Executables
+
+If you choose at this point to @dfn{install} the library (put it in a
+permanent location) before linking executables against it, then you
+don't need to use libtool to do the linking.
+
+Some system linkers insist on encoding the full directory name of each
+shared library in the resulting executable.  Libtool has to work around
+this misfeature by special magic to ensure that only permanent directory
+names are put into installed executables.
+
+The importance of this bug must not be overlooked: it won't cause
+programs to crash in obvious ways.  It creates a security hole,
+and possibly even worse, if you are modifying the library source code
+after you have installed the package, you will change the behaviour of
+the installed programs!
+
+So, if you want to link programs against the library before you install
+it, you must use libtool to do the linking.
+
+Here's the old way of linking against an uninstalled library:
+
+@example
+burger$ @kbd{gcc -g -O -o hell.old main.o libhello.a}
+burger$ 
+@end example
+
+This is libtool's way:
+
+@example
+a23$ @kbd{libtool gcc -g -O -o hell main.o libhello.la}
+gcc -g -O -o hell main.o ./LIBS/libhello.a
+a23$ 
+@end example
+
+That looks too simple to be true.  All libtool did was transform
+@file{libhello.la} to @file{./LIBS/libhello.a}, but remember that
+`a23' has no shared libraries.
+
+On `burger' the situation is different:
+
+@example
+burger$ @kbd{libtool gcc -g -O -o hell main.o libhello.la}
+gcc -g -O -o LIBS/hell main.o -L./LIBS -R/usr/local/lib -lhello
+creating hell
+burger$
+@end example
+
+Notice that the executable, @file{hell} was actually created in the
+@file{LIBS} subdirectory.  Then, a wrapper script was created in the
+current directory.
+
+On NetBSD 1.2, libtool encodes the installation directory of
+@file{libhello}, @file{/usr/local/lib}, by using the @code{-R} compiler
+flag.  Then, the wrapper script guarantees that the executable finds the
+correct shared library (the one in @file{./LIBS}) until it is properly
+installed.
+
+Let's compare the two different programs:
+
+@example
+burger$ @kbd{time ./hell.old}
+Welcome to GNU Hell!
+** This is not GNU Hello.  There is no built-in mail reader. **
+        0.21 real         0.02 user         0.08 sys
+burger$ @kbd{time ./hell}
+Welcome to GNU Hell!
+** This is not GNU Hello.  There is no built-in mail reader. **
+        0.63 real         0.09 user         0.59 sys
+burger$ 
+@end example
+
+The wrapper script takes significantly longer to execute, but at least
+the results are correct, even though the shared library hasn't been
+installed yet.
+
+So, what about all the space savings that shared libraries are supposed
+to yield?
+
+@example
+burger$ @kbd{ls -l hell.old libhello.a}
+-rwxr-xr-x  1 gord  gord  15481 Nov 14 12:11 hell.old
+-rw-r--r--  1 gord  gord   4274 Nov 13 18:02 libhello.a
+burger$ @kbd{ls -l LIBS/hell LIBS/libhello.*}
+-rwxr-xr-x  1 gord  gord  11602 Nov 14 12:10 LIBS/hell
+-rw-r--r--  1 gord  gord   4352 Nov 13 18:44 LIBS/libhello.a
+-rwxr-xr-x  1 gord  gord  12205 Nov 13 18:44 LIBS/libhello.so.0.0
+burger$ 
+@end example
+
+Well, that sucks.  Maybe I should just scrap this project and take up
+basket weaving.
+
+Actually, it just proves an important point: shared libraries incur
+overhead because of their (relative) complexity.  In this situation, the
+price of being dynamic is eight kilobytes, and the payoff is about four
+kilobytes.  So, having a shared @file{libhello} won't be an advantage
+until we link it against at least a few more programs.
+
+@node Installing Libraries, Installing Executables, Linking Executables, Using Libtool
+@comment  node-name,  next,  previous,  up
+@section Installing Libraries
+
+Installing libraries on a non-libtool system is quite
+straightforward@dots{} just copy them into place:@footnote{Don't
+accidentally strip the libraries, though, or they will be unusable.}
+
+@example
+burger$ @kbd{su}
+Password: ********
+burger# @kbd{cp libhello.a /usr/local/lib/libhello.a}
+burger#
+@end example
+
+Oops, don't forget the @file{ranlib} command:
+
+@example
+burger# @kbd{ranlib /usr/local/lib/libhello.a}
+burger#
+@end example
+
+Libtool installation is quite simple, as well.  Just use the
+@file{install} or @file{cp} command that you normally would:
+
+@example
+a23# @kbd{libtool cp libhello.la /usr/local/lib/libhello.la}
+cp libhello.la /local/lib/libhello.la
+cp LIBS/libhello.a /local/lib/libhello.a
+ranlib /local/lib/libhello.a
+a23# 
+@end example
+
+Note that the libtool library @file{libhello.la} is also installed, for
+informational purposes.
+
+Here is the shared library example:
+
+@example
+burger# libtool install -c libhello.la /usr/local/lib/libhello.la
+install -c LIBS/libhello.so.0.0 /usr/local/lib/libhello.so.0.0
+install -c libhello.la /usr/local/lib/libhello.la
+install -c LIBS/libhello.a /usr/local/lib/libhello.a
+ranlib /usr/local/lib/libhello.a
+burger#
+@end example
+
+It is safe to specify the @samp{-s} (strip symbols) flag to the install
+program (if you use a BSD-compatible install) when installing libraries.
+Libtool will either ignore the @samp{-s} flag, or will run a program
+that will strip only debugging and compiler symbols from the library.
+
+Once the libraries have been put in place, there may be some additional
+configuration that you need to do before using them.  First, you must
+make sure that where the library is installed actually agrees with the
+@samp{-rpath} flag you used to build it.
+
+Then, running @samp{libtool -n --finish @var{libdir}} can give you
+further hints on what to do:
+
+@example
+burger# @kbd{libtool -n --finish /usr/local/lib}
+ldconfig -m /usr/local/lib
+To link against installed libraries in LIBDIR, users may have to:
+   - add LIBDIR to their `LD_LIBRARY_PATH' environment variable
+   - use the `-LLIBDIR' linker flag
+burger# 
+@end example
+
+After you have completed these steps, you can go on to begin using the
+installed libraries.  You may also install any executables that depend
+on libraries you created.
+
+@node Installing Executables, Static Libraries, Installing Libraries, Using Libtool
+@comment  node-name,  next,  previous,  up
+@section Installing Executables
+
+If you used libtool to link any executables against uninstalled libtool
+libraries (@pxref{Linking Executables}), you need to use libtool to
+install the executables after the libraries have been installed
+(@pxref{Installing Libraries}).
+
+So, for our Ultrix example, we would run:
+
+@example
+a23# libtool install -c hell /usr/local/bin/hell
+install -c hell /usr/local/bin/hell
+a23#
+@end example
+
+On shared library systems, libtool just ignores the wrapper script and
+installs the correct binary:
+
+@example
+burger# libtool install -c hell /usr/local/bin/hell
+install -c LIBS/hell /usr/local/bin/hell
+burger# 
+@end example
+
+@node Static Libraries,  , Installing Executables, Using Libtool
+@comment  node-name,  next,  previous,  up
+@section Linking Static Libraries
+
+Sometimes it is desirable to create a static archive that can never be
+shared.  The most frequent case is when you have a ``convenience
+library'' that is a collection of unrelated object files without a
+really nice interface.
+
+Why return to @file{ar} and @file{ranlib} silliness when you've had a
+taste of libtool?  libtool works consistently with standard object
+files, static libraries, and programs created without libtool's help.
+
+So, to create a static library:
+
+@enumerate 1
+@item
+Compile the object files with or without using libtool.  It doesn't
+matter whether these objects are PIC (end with the `.lo' suffix) or not.
+
+@item
+Link the files in the same way you would a libtool library, but use a
+`.a' suffix (instead of `.la'):
+
+@example
+burger$ @kbd{libtool gcc -o libfoo.a main.o foo.lo hello.lo}
+rm -f libfoo.a
+ar cru libfoo.a main.o foo.lo hello.lo
+ranlib libfoo.a
+burger$ 
+@end example
+
+@item
+If you want to install the library (but you probably don't), then you
+can use libtool to do it, too:
+
+@example
+burger$ @kbd{libtool ./install-sh -c libfoo.a /local/lib/libfoo.a}
+./install-sh -c libfoo.a /local/lib/libfoo.a
+ranlib /local/lib/libfoo.a
+burger$
+@end example
+@end enumerate
+
+Another common situation where static linking is desirable is in
+creating a standalone binary.  Use libtool to do the linking and add the
+@samp{-static} flag.
+
+@node Invoking @file{libtool}, Integrating Libtool, Using Libtool, Top
+@comment  node-name,  next,  previous,  up
+@chapter Invoking @file{libtool}
+
+The @file{libtool} program has the following synopsis:
+
+@example
+libtool [@var{option}]@dots{} [@var{mode-arg}]...
+@end example
+
+@noindent
+and accepts the following options:
+
+@table @samp
+@item -n
+@itemx --dry-run
+Don't create, modify, or delete any files, just show what commands would
+be executed by libtool.
+
+@item --finish
+Same as @samp{--mode=finish}.
+
+@item --help
+Display a help message and exit.  If @samp{--mode=@var{mode}} is
+specified, then detailed help for operation mode @var{mode} is
+displayed.
+
+@item --mode=@var{mode}
+Use operation mode @var{mode}.  By default, the operation mode is
+inferred from the contents of @var{mode-args}.
+
+If @var{mode} is specified, it must be one of the following:
+
+@table @samp
+@item compile
+Compile a source file into a libtool object.
+
+@item finish
+Complete the installation of libtool libraries on the system.
+
+@item install
+Install libraries or executables.
+
+@item link
+Create a library or an executable.
+
+@item uninstall
+Delete libraries or executables.
+@end table
+
+@item --version
+Print libtool version information and exit.
+@end table
+
+@menu
+* Compile Mode::                Creating library object files.
+* Link Mode::                   Generating executables and libraries.
+* Install Mode::                Making libraries and executables public.
+* Finish Mode::                 Completing a library installation.
+* Uninstall Mode::              Removing executables and libraries.
+@end menu
+
+@node Compile Mode, Link Mode, Invoking @file{libtool}, Invoking @file{libtool}
+@comment  node-name,  next,  previous,  up
+@section Compile Mode
+
+For @samp{compile} mode, @var{mode-args} is a compiler command to be
+used in creating a `standard' object file.  These arguments should begin
+with the name of the C compiler, and contain the @samp{-c} compiler flag
+so that only an object file is created.
+
+Libtool determines the name of the output file by removing the directory
+component from the source file name, then substituting the C source code
+suffix `.c' with the library object suffix, `.lo'.
+
+If shared libraries are being built, any necessary PIC generation flags
+are substituted into the compilation command.
+
+@node Link Mode, Install Mode, Compile Mode, Invoking @file{libtool}
+@comment  node-name,  next,  previous,  up
+@section Link Mode
+
+@samp{link} mode links together object files (including library
+objects) to form another library or to create an executable program.
+
+@var{mode-args} consist of a command using the C compiler to create an
+output file (with the @samp{-o} flag) from several object files.
+
+The following components of @var{mode-args} are treated specially:
+
+@table @samp
+@item -L@var{libdir}
+Search @var{libdir} for required libraries that have already been
+installed.
+
+@item -l@var{name}
+@var{output-file} requires the installed library @file{lib@var{name}}.
+
+@item -o @var{output-file}
+Create @var{output-file} from the specified objects and libraries.
+
+@item -rpath @var{libdir}
+If @var{output-file} is a library, it will eventually be installed in
+@var{libdir}.
+
+@item -static
+If @var{output-file} is a program, then do not link it against any
+shared libraries.  If @var{output-file} is a library, then only create a
+static library.
+
+@item -version-file @var{verfile}
+If @var{output-file} is a library, then search for library versioning
+information in @var{verfile}.
+@end table
+
+If the @var{output-file} ends in `.la', then a libtool library is
+created, which must be build only from library objects (`.lo' files).
+The @samp{-rpath} option is required.  In the current implementation,
+libtool libraries may not depend on other uninstalled libtool
+libraries.
+
+If the @var{output-file} ends in `.a', then a standard library is
+created using @file{ar} and possibly @file{ranlib}.
+
+Otherwise, an executable program is created.
+
+@node Install Mode, Finish Mode, Link Mode, Invoking @file{libtool}
+@comment  node-name,  next,  previous,  up
+@section Install Mode
+
+In @samp{install} mode, libtool interprets @var{mode-args} as an
+installation command beginning with @file{cp}, or a BSD-compatible
+@file{install} program.
+
+The rest of the @var{mode-args} are interpreted as arguments to that
+command.
+
+The command is run, and any necessary unprivileged post-installation
+commands are also completed.
+
+@node Finish Mode, Uninstall Mode, Install Mode, Invoking @file{libtool}
+@comment  node-name,  next,  previous,  up
+@section Finish Mode
+
+@samp{finish} mode helps system administrators install libtool
+libraries so that they can be located and linked into user programs.
+
+Each @var{mode-arg} is interpreted as the name of a library directory.
+Running this command may require superuser privileges, so the
+@samp{--dry-run} option may be useful.
+
+@node Uninstall Mode,  , Finish Mode, Invoking @file{libtool}
+@comment  node-name,  next,  previous,  up
+@section Uninstall Mode
+
+This mode deletes installed libraries (and other files).
+
+The first @var{mode-arg} is the name of the program to use to delete
+files (typically @file{/bin/rm}).
+
+The remaning @var{mode-args} are either flags for the deletion program
+(beginning with a `-'), or the names of files to delete.
+
+@node Integrating Libtool, Versioning, Invoking @file{libtool}, Top
+@comment  node-name,  next,  previous,  up
+@chapter Integrating Libtool with Your Own Packages
+
+This chapter describes how to integrate libtool with your packages so
+that your users can install hassle-free shared libraries.
+
+@menu
+* Makefile Rules::              Writing Makefile rules for libtool.
+* Using Automake::              Automatically supporting libtool.
+* Configuring::                 Configuring libtool for a host system.
+* Distributing::                What files to distribute with your package.
+@end menu
+
+@node Makefile Rules, Using Automake, Integrating Libtool, Integrating Libtool
+@comment  node-name,  next,  previous,  up
+@section Writing Makefile Rules for Libtool
+
+Libtool is fully integrated with Automake (@pxref{Top, , The Automake
+Manual, automake.info, The Automake Manual}), starting with Automake
+version 1.2.
+
+If you want to use libtool in a regular @file{Makefile} (or
+@file{Makefile.in}), you are on your own.  If you're not using Automake
+1.2, and you don't know how to incorporate libtool into your package you
+need to do one of the following:
+
+@enumerate 1
+@item
+Download Automake (version 1.2 or later) from your nearest GNU mirror,
+install it, and start using it.
+
+@item
+Learn how to write Makefile rules by hand.  They're sometimes complex,
+but if you're clever enough to write rules for compiling your old
+libraries, then you should be able to easily figure out new rules for
+libtool libraries (hint: examine the @file{Makefile.in} in the
+@file{demo} subdirectory of the libtool distribution@dots{} note
+especially that it was generated automatically from the
+@file{Makefile.am} by Automake).
+@end enumerate
+
+@node Using Automake, Configuring, Makefile Rules, Integrating Libtool
+@comment  node-name,  next,  previous,  up
+@section Using Automake with Libtool
+
+Libtool library support fits conveniently into Automake's understanding
+of what a @samp{PROGRAM} is.
+
+Here are some samples from the Automake @file{Makefile.am} in the
+libtool distribution's @file{demo} subdirectory.
+
+First, to link a program against a libtool library, just use the
+@samp{program_LDADD} variable:
+
+@example
+# Build hell from main.c and libhell.la
+bin_PROGRAMS = hell
+hell_SOURCES = main.c
+hell_LDADD = libhell.la
+@end example
+
+You may use the @samp{program_LDFLAGS} variable to stuff in any flags
+you want to pass to libtool while linking @samp{program}, such as
+@samp{-static}.
+
+Building a libtool library is almost as trivial@dots{} note the use of
+@samp{libhell_la_LDFLAGS} to pass the @samp{-version-file}
+(@pxref{Versioning}) and @samp{-rpath} options to libtool:
+
+@example
+# Build a libtool library, libhell.la for installation in libdir.
+lib_PROGRAMS = libhell.la
+libhell_la_SOURCES = hello.c foo.c
+libhell_la_LDFLAGS = -version-file $(srcdir)/libinfo -rpath $(libdir)
+@end example
+
+@node Configuring, Distributing, Using Automake, Integrating Libtool
+@comment  node-name,  next,  previous,  up
+@section Configuring Libtool
+
+FIXME
+Description of what it means to configure libtool.  ltconfig synopsis
+description of AM_PROG_LIBTOOL, how to add to aclocal
+
+@node Distributing,  , Configuring, Integrating Libtool
+@comment  node-name,  next,  previous,  up
+@section Including Libtool with Your Package
+
+In order to use libtool, you need to include the following files with
+your package:
+
+@table @file
+@item config.guess
+Attempt to guess a canonical system name.
+
+@item config.sub
+Canonical system name validation subroutine script.
+
+@item ltconfig
+Generate a libtool script for a given system.
+
+@item ltmain.sh
+A generic script implementing basic libtool functionality.
+@end table
+
+Note that the libtool script itself should @emph{not} be included with
+your package.  @xref{Configuring}.
+
+Rather than coping these files into your package manually, you should
+use the @file{libtoolize} program.
+
+@menu
+* Invoking @file{libtoolize}::  @file{libtoolize} command line options.
+@end menu
+
+@node Invoking @file{libtoolize},  , Distributing, Distributing
+@comment  node-name,  next,  previous,  up
+@subsection Invoking @file{libtoolize}
+
+The @file{libtoolize} program provides a standard way to add libtool
+support to your package.  In the future, it may implement better usage
+checking, or other features to make libtool even easier to use.
+
+The @file{libtoolize} program has the following synopsis:
+
+@example
+libtoolize [@var{option}]@dots{}
+@end example
+
+@noindent
+and accepts the following options:
+
+@table @samp
+@item --automake
+Work silently, and assume that Automake libtool support is used.
+
+@samp{libtoolize --automake} is used by Automake to add libtool files to
+your package, when @samp{AM_PROG_LIBTOOL} appears in your
+@file{configure.in}.
+
+@item --copy
+@itemx -c
+Copy files from the libtool data directory rather than creating
+symlinks.
+
+@item --force
+@itemx -f
+Replace existing libtool files.  By default, @file{libtoolize} won't
+overwrite existing files.
+
+@item --help
+Display a help message and exit.
+
+@item --version
+Print @file{libtoolize} version information and exit.
+@end table
+
+@file{libtoolize} displays hints for adding libtool support to your
+package, as well.
+
+@node Versioning, Library Tips, Integrating Libtool, Top
+@comment  node-name,  next,  previous,  up
+@chapter Library Interface Versions
+
+The most difficult issue introduced by shared libraries is that of
+creating and resolving runtime dependencies.  Dependencies on programs
+and libraries are often described in terms of a single name, such as
+@file{sed}.  So, I may say ``libtool depends on sed,'' and that is good
+enough for most purposes.
+
+However, when an interface changes regularly, we need to be more
+specific: ``Gnus 5.1 requires Emacs 19.28 or above.''  Here, the
+description of an interface consists of a name, and a ``version
+number.''
+
+Even that sort of description is not accurate enough for some purposes.
+What if Emacs 20 changes enough to break Gnus 5.1?
+
+The same problem exists in shared libraries: we require a formal version
+system to describe the sorts of dependencies that programs have on
+shared libraries, so that the dynamic linker can guarantee that programs
+are linked only against libraries that provide the interface they
+require.
+
+@menu
+* Interfaces::                  What are library interfaces?
+* Libtool Versioning::          Libtool's versioning system.
+* Version Files::               How libtool tracks library versions.
+* Updating @file{libinfo}::     Keeping a library version file up-to-date.
+@end menu
+
+@node Interfaces, Libtool Versioning, Versioning, Versioning
+@comment  node-name,  next,  previous,  up
+@section What Are Library Interfaces?
+
+Interfaces for libraries may be any of the following (and more):
+
+@itemize @bullet
+@item
+global variables (names and types)
+
+@item
+global functions (arguments types and number, return types, and function names)
+
+@item
+standard input, standard output, standard error, and file formats
+
+@item
+sockets, pipes, and other inter-process communication protocols
+@end itemize
+
+Note that static functions do not count as interfaces, because they are
+not directly available to the user of the library.
+
+@node Libtool Versioning, Version Files, Interfaces, Versioning
+@comment  node-name,  next,  previous,  up
+@section Libtool's Versioning System
+
+Libtool has its own formal versioning system.  It is not as flexible as
+some, but it is definitely the simplest of the more powerful versioning
+systems.
+
+Think of a library as exporting several sets of interfaces, arbitrarily
+represented by integers.  When a program is linked against a library, it
+may use any subset of all those interfaces.
+
+Libtool's description of the interfaces that a program uses is very
+simple: it encodes the least and the greatest interface numbers in the
+resulting binary (@var{first-interface}, @var{last-interface}).
+
+Then, the dynamic linker is guaranteed that if a library supports
+@emph{every} interface number between @var{first-interface} and
+@var{last-interface}, then the program can be relinked against that
+library.
+
+Note that this can cause problems because libtool's compatibility
+requirements are actually stricter than is necessary.
+
+Say @file{libfoo} supports interfaces 5, 16, 17, 18, and 19, and that
+libtool is used to link @file{test} against @file{libfoo}.
+
+Libtool encodes the numbers 5 and 19 in @file{test}, and the dynamic
+linker will only link @file{test} against libraries that support
+@emph{every} interface between 5 and 19.  So, the dynamic linker refuses
+to link @file{test} against @file{libfoo}!
+
+In order to eliminate this problem, libtool only allows libraries to
+declare consecutive interface numbers.  So, @file{libfoo} can declare at
+most that it supports interfaces 16 through 19.  Then, the dynamic
+linker will link @file{test} against @file{libfoo}.
+
+So, libtool library versions are described by three integers:
+
+@table @var
+@item current
+The most recent interface number that this library implements.
+
+@item age
+The difference between the oldest and newest interfaces that this
+library implements.  In other words, the library implements all the
+interface numbers in the range from number @code{@var{current} -
+@var{age}} to @code{@var{current}}.
+
+@item revision
+The implementation number of the @var{current} interface.
+@end table
+
+If two libraries have identical @var{current} and @var{age} numbers,
+then the dynamic linker chooses the library with the greater
+@var{revision} number.
+
+@node Version Files, Updating @file{libinfo}, Libtool Versioning, Versioning
+@comment  node-name,  next,  previous,  up
+@section Version Files
+
+By default, libtool creates libraries with @var{current}, @var{age}, and
+@var{revision} all set to 0.
+
+If you want to use libtool's versioning system, then you must specify a
+file that contains version information for the library you are creating,
+using the @samp{-version-file} flag during link mode (@pxref{Link
+Mode}).
+
+By convention, the name of the version file is @file{libinfo}, though it
+can be any file you want.
+
+Here are the contents of the @file{libinfo} file from the @file{demo}
+subdirectory of the libtool distribution:
+
+@example
+# libinfo - used by libtool for library version information
+#
+# Comments begin with a hash sign.
+#
+# Each non-comment line has the following format:
+#   libNAME CURRENT AGE REVISION
+libhell 3 1 12
+@end example
+
+So, this file tells libtool that @file{libhello} supports interfaces 2
+and 3, and that it should be used instead of libraries with revisions
+less than 12.
+
+@node Updating @file{libinfo},  , Version Files, Versioning
+@comment  node-name,  next,  previous,  up
+@section Updating the @file{libinfo} File
+
+Here are a set of rules to help you update your library version file:
+
+@enumerate 1
+@item
+Start with a version file that contains only:
+
+@example
+libNAME 0 0 0
+@end example
+
+@noindent
+for each libtool library @file{lib@var{name}}.
+
+@item
+Update the version file only immediately before a public release of your
+software.  More frequent updates are unnecessary, and only guarantee
+that the current interface number gets larger faster.
+
+@item
+If the library source code has changed at all since the last update,
+then increment @var{revision}.
+
+@item
+If any interfaces have been added, removed, or changed since the last
+update, increment @var{current}, and set @var{revision} to 0.
+
+@item
+If any interfaces have been added since the last public release, then
+increment @var{age}.
+
+@item
+If any interfaces have been removed since the last public release, then
+set @var{age} to 0.
+@end enumerate
+
+@emph{NEVER} try to set library version numbers so that they correspond
+to the release of the package that you are making.  This is an abuse
+that only fosters misunderstanding of the purpose of library versions,
+and you would be better off not using a @file{libinfo} file at all.
+
+@node Library Tips, Modifying, Versioning, Top
+@comment  node-name,  next,  previous,  up
+@chapter Tips for Interface Design
+
+Writing a good library interface takes a lot of practice and thorough
+understanding of the problem that the library is intended to solve.
+
+If you design a good interface, it won't have to change often, you won't
+have to keep updating documentation, and users won't have to keep
+relearning how to use the library.
+
+Here is a brief list of tips for library interface design, which may
+help you in your exploits:
+
+@table @asis
+@item Plan ahead
+Try to make every interface truly minimal, so that you won't need to
+delete entry points very often.
+
+@item Avoid interface changes
+Some people love redesigning and changing entry points just for the heck
+of it (note: @emph{renaming} a function is considered changing an entry
+point).  Don't be one of those people.  If you must redesign an
+interface, then leave compatibility functions behind so that users don't
+need to rewrite their code.
+
+@item Use opaque data types
+The fewer data type definitions a library user has access to, the
+better.  If possible, design your functions to accept a generic pointer
+(which you can cast to an internal data type), and provide access
+functions rather than allowing the user to directly manipulate the data.
+That way, you have the freedom to change the data structures without
+changing the interface.
+
+This is essentially the same thing as using abstract data types and
+inheritance in an object-oriented system.
+
+@item Use header files
+If you are careful to document each of your library's global functions
+and variables in header files, and include them in your source files,
+then the compiler will let you know if you make any interface changes by
+accident.
+
+@item Use the @code{static} keyword whenever possible
+The fewer global functions your library has, the more flexibility you'll
+have in changing them.  Static functions and variables may change forms
+as often as you like@dots{} your users cannot access them, so they
+aren't interface changes.
+@end table
+
+@node Modifying, Index, Library Tips, Top
+@comment  node-name,  next,  previous,  up
+@chapter Modifying Libtool
+
+FIXME
+Description of libtool script contents, the interface between ltconfig
+and libtool
+
+@node Index,  , Modifying, Top
+@comment  node-name,  next,  previous,  up
+@unnumbered Index
+
+@printindex cp
+
+@c summarycontents
+@contents
+@bye

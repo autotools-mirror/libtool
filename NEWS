@@ -1,0 +1,67 @@
+New in 0.6a:
+* Total rewrite of libtool, along with a new model for library building.
+* Updated documentation for the new paradigm.
+* Proper handling of broken system linkers, such as the ones on AIX
+  and HP-UX.
+* configure mode is now a separate program, `ltconfig'
+* Libtool only supports `compile', `link', and `install' modes, via
+  the `--mode' command line option.
+* Automatic mode guessing, based on the command line.
+
+New in 0.6: (never released)
+* Optimization to cut `libtool archive' execution time by a factor of 5.
+* New AM_REPLACE_FUNCS macro to generate LTLIBOBJS as well as LIBOBJS.
+  From Karl Berry.
+* Renamed ABOUT-LIBS to ABOUT-LIBTOOL.  From Karl Berry.
+* Include the generated libtool script in the distribution.
+* Quote metacharacters in arguments to `libtool compile'.
+* Bug fixes.
+* Removed `link' and `install-progs' modes because they cannot be 
+  correctly implemented.  See (libtool)Linking Against Pseudo-Libraries.
+
+New in 0.5:
+* Disabled install-progs until next version, when it will be correctly
+  implemented.
+* Clearer library versioning documentation.  See (libtool)Versioning.
+* Renamed gm_PROG_LIBTOOL to AM_PROG_LIBTOOL
+* Libtool now creates pseudo-objects named foo.lo and pseudo-archives named
+  libfoo.la instead of foo.o and libfoo.a.  See the documentation.
+* libtool compile doesn't interfere with user CFLAGS if they don't
+  conflict with the current objtype.  From Karl Berry.
+* Created new libinfo helper script.
+* libversion.in files are obsolete -- libtool uses libinfo to read the
+  new LIBINFO files.
+* Libtool is better at finding its config file and helper scripts.
+* Support for *-*-gnu*
+
+New in 0.4:
+* Bug fixes and new regression tests
+* On unsupported configurations, ``libtool configure'' demotes OBJTYPES to
+  `standard' instead of aborting
+* Added new object type, `t', for tcov(1) support
+* Support for *-*-aix3*, *-*-aix4*, *-*-hpux10*, *-*-osf3*, and *-*-solaris2*
+
+New in 0.3:
+* Bug fixes and new regression tests
+* Added new uninstall-libs mode
+* Added a host argument to configure mode
+* Fixed debugging/hyper-optimizing flags conflict (from Karl Berry)
+* Support for --no-whole-archive when needed by GNU ld (from Ulrich Drepper)
+* Implementation of --enable-linktype, --enable-profile, --enable-shared,
+  --enable-static in gm_PROG_LIBTOOL macro
+* New `libtoolize' program (modeled after GNU gettext's `gettextize') to help
+  conversion to libtool
+* New ABOUT-LIBS document for inclusion with libtool-supported packages
+
+New in 0.2:
+* Support for *-*-linux
+* Better checking for GNU ld
+* Reimplemented the config file so that it corresponds more closely to the
+  variables listed in (libtool)Porting Libtool.
+* Reimplemented the shared library version scheme.  See (libtool)Versioning.
+* Replaced `--config-file' and `--version-file' options with `--confdir'
+* Added new install-libs and install-progs modes
+
+New in 0.1:
+* First release of libtool
+* Support for: *-*-freebsd*, *-*-netbsd*, *-*-sunos4*, *-*-ultrix4*

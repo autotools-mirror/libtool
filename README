@@ -1,0 +1,20 @@
+This is GNU libtool, a generic library support script.  Libtool hides
+the complexity of generating special library types (such as shared
+libraries) behind a consistent interface.
+
+To use libtool, add the new generic library building commands to your
+Makefile, Makefile.in, or Makefile.am.  See the documentation for
+details.
+
+Libtool supports building static libraries on all platforms.
+
+Shared library support has been implemented for these platforms:
+  NetBSD 1.x (*-*-netbsd*)
+
+See the file NEWS for a description of recent changes to libtool.
+
+See the file INSTALL for instructions on how to build and install libtool.
+
+If you have any suggestions or bug reports, or you wish to port libtool
+to a new platform, please send electronic mail to Gord Matzigkeit
+<gord@gnu.ai.mit.edu>.
