@@ -1,6 +1,19 @@
 dnl Process this file with autoconf to create configure.
 dnl Initialize the libltdl package.
 AC_INIT(ltdl.c)
+
+if test -z "$enable_ltdl_install$enable_ltdl_convenience"; then
+  if test -f ${srcdir}/ltconfig && test -f ${srcdir}/ltmain.sh; then
+    # if libltdl is libtoolized, it is assumed to be stand-alone and
+    # installed unless the command line overrides it (tested above)
+    enable_ltdl_install=yes
+  else
+    AC_MSG_WARN([*** The top-level configure must select either])
+    AC_MSG_WARN([*** [A""C_LIBLTDL_INSTALLABLE] or [A""C_LIBLTDL_CONVENIENCE].])
+    AC_MSG_ERROR([*** Maybe you want to --enable-ltdl-install?])
+  fi
+fi
+
 AM_INIT_AUTOMAKE(libltdl,1.0,-)
 AM_CONFIG_HEADER(config.h)
 AM_MAINTAINER_MODE

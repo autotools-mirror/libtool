@@ -1,5 +1,10 @@
 1999-03-10  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* libltdl/configure.in: only assume implicit installation if
+	libltdl was libtoolized.  If not, print a warning message
+	suggesting the use of --enable-ltdl-install or of one of the
+	AC_LIBLTDL_* macros.
+
 	* libtool.m4 (AC_LIBTOOL_SETUP): new macro, that does all the
 	configure-work that AC_PROG_LIBTOOL used to do; add
 	--cache-file=$cache_file to libtool_flags
