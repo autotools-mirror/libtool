@@ -1639,8 +1639,11 @@ bsdi4*)
   deplibs_check_method='file_magic ELF 32-bit LSB shared object'
   file_magic_cmd=/usr/bin/file
   file_magic_test_file=/shlib/libc.so
-  sys_lib_search_path="/shlib /usr/lib /usr/local/lib"
-  sys_lib_dlsearch_path="/shlib /usr/lib" # /usr/local/lib ?
+  sys_lib_search_path_spec="/shlib /usr/lib /usr/X11/lib /usr/contrib/lib /lib /usr/local/lib"
+  sys_lib_dlsearch_path_spec="/shlib /usr/lib /usr/local/lib"
+  # the default ld.so.conf also contains /usr/contrib/lib and
+  # /usr/X11R6/lib (/usr/X11 is a link to /usr/X11R6), but let us allow
+  # libtool to hard-code these into programs
   ;;
 
 cygwin* | mingw*)

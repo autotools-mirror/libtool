@@ -1,5 +1,9 @@
 1999-03-14  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* ltconfig.in (bsdi4*, sys_lib_search_path_spec,
+	sys_lib_dlsearch_path_spec): fix thinko in variable names; add
+	standard directories
+
 	* ltmain.in (exclude_expsyms): exclude symbols before sorting,
 	otherwise only the sorted list will have them excluded
 
