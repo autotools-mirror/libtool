@@ -113,7 +113,6 @@ static const char *ltdl_error_strings[] = {
 static const char *last_error = 0;
 
 LTDL_GLOBAL_DATA lt_ptr_t (*lt_dlmalloc) LTDL_PARAMS((size_t size)) = (lt_ptr_t(*)LTDL_PARAMS((size_t)))malloc;
-LTDL_GLOBAL_DATA lt_ptr_t (*lt_dlrealloc) LTDL_PARAMS((lt_ptr_t ptr, size_t size)) = (lt_ptr_t(*)LTDL_PARAMS((lt_ptr_t, size_t)))realloc;
 LTDL_GLOBAL_DATA void	 (*lt_dlfree)  LTDL_PARAMS((lt_ptr_t ptr)) = (void(*)LTDL_PARAMS((lt_ptr_t)))free;
 
 #define LTDL_TYPE_TOP 0
@@ -1882,20 +1881,23 @@ lt_dladderror (diagnostic)
 	const char *diagnostic;
 {
 	int index = errorcode - LTDL_ERROR_MAX;
-	
-	if (user_error_strings == 0)
-		user_error_strings = (const char **) lt_dlmalloc
-			((1+index) * sizeof(const char*));
-	else
-		user_error_strings = (const char **) lt_dlrealloc
-			(user_error_strings, (1+index) * sizeof(const char*));
+	char **temp = 0;
 
-	if (user_error_strings == 0) {
+	/* realloc is not entirely portable, so simulate it using
+	   lt_dlmalloc and lt_dlfree. */
+	temp = (const char **) lt_dlmalloc ((1+index) * sizeof(const char*));
+	if (temp == 0) {
 		last_error = LT_DLSTRERROR(NO_MEMORY);
 		return -1;
 	}
-		
-	user_error_strings[index] = diagnostic;
+
+	/* Build the new vector in the memory addressed by temp. */
+	temp[index] = diagnostic;
+	while (--index >= 0)
+		temp[index] = user_error_strings[index];
+
+	lt_dlfree (user_error_strings);
+	user_error_strings = temp;
 	return errorcode++;
 }
 

@@ -1,3 +1,10 @@
+2000-01-31  Gary V. Vaughan  <gary@oranda.demon.co.uk>
+
+	* libltdl/ltdl.h (lt_dlrealloc): removed declaration.
+	* libltdl/ltdl.c (lt_dlrealloc): removed definition.
+	(lt_dladderror): Instead of calling lt_dlrealloc, use lt_dlmalloc,
+	and lt_dlfree.
+
 2000-01-30  Ossama Othman  <ossama@debian.org>
 
 	* libtool.m4 (lt_cv_cc_needs_belf): Set the test language to C
