@@ -1,5 +1,8 @@
 1999-12-03  Alexandre Oliva  <oliva@lsd.ic.unicamp.br>
 
+	* configure.in: AC_SUBST variables that are used by ltconfig to
+	build libtool.
+
 	* ltconfig.in (irix6*): Do not override deplibs_check_method
 	here.
 
