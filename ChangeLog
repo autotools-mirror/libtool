@@ -1,3 +1,11 @@
+2003-10-19  Kevin P. Fleming  <kpfleming@backtobasicsmgmt.com>
+	Charles Wilson <cygwin@cwilson.fastmail.fm>
+
+	* ltmain.in: include --tag options, if specified, in the
+	relink_command in uninstalled .la files.  Also, preserve --silent,
+	--debug options when libtool re-execs itself.
+	* NEWS: Updated.
+
 2003-10-19  Charles Wilson  <cygwin@cwilson.fastmail.fm>
 
 	* libtoolize.in: protect sed expression against
