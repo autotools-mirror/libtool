@@ -14,7 +14,7 @@ foo1_la_LDFLAGS = -module -avoid-version
 
 libfoo2_la_SOURCES = foo2.c
 libfoo2_la_LIBADD = $(LIBM)
-libfoo2_la_LDFLAGS = -module
+libfoo2_la_LDFLAGS = -module -export-symbols-regex "libfoo2.*"
 
 noinst_HEADERS = foo.h
 

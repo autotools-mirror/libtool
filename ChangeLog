@@ -1,3 +1,7 @@
+1999-03-31 Thomas Tanner  <tanner@gmx.de>
+
+	* mdemo/Makefile.am: test -export-symbols-regex
+
 1999-03-30 Thomas Tanner  <tanner@gmx.de>
 
 	* doc/libtool.texi: fixed a typo
