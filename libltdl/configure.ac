@@ -17,7 +17,7 @@
 # 02111-1307  USA
 
 
-## FIXME: Is this really new enough? ##
+dnl FIXME: Is this really new enough?
 AC_PREREQ(2.50)
 
 

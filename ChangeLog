@@ -1,3 +1,9 @@
+2005-03-16  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* configure.ac, libltdl/configure.ac: s/##/dnl/ for comments
+	that are meaningless in configure.
+	Reported by Alexandre Duret-Lutz <adl@src.lip6.fr>.
+
 2005-03-15  Per Bothner <per@bothner.com>,
 	    Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
