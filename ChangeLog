@@ -1,3 +1,10 @@
+2004-07-12  Peter O'Gorman  <peter@pogma.com>
+
+	* m4/libtool.m4 [darwin]: Set whole_archive_flag_spec to '' for xlc,
+	or it does not pass it's tests. xlc passes -noall_load (the default)
+	and when -all_load is also specified Apple's /usr/bin/libtool barfs
+	and dies.
+
 2004-07-08  Gary V. Vaughan  <gary@gnu.org>
 
 	* libltdl/ltdl.h (lt_dlinfo): Move private module field to here...

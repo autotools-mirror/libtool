@@ -3810,6 +3810,7 @@ _LT_EOF
     else
       case "$cc_basename" in
         xlc*)
+         _LT_AC_TAGVAR(whole_archive_flag_spec, $1)=''
          output_verbose_link_cmd='echo'
           _LT_AC_TAGVAR(archive_cmds, $1)='$CC -qmkshrobj $allow_undefined_flag -o $lib $libobjs $deplibs $compiler_flags ${wl}-install_name ${wl}`echo $rpath/$soname` $verstring'
           _LT_AC_TAGVAR(module_cmds, $1)='$CC $allow_undefined_flag -o $lib -bundle $libobjs $deplibs$compiler_flags'
@@ -4750,6 +4751,7 @@ if test -n "$compiler"; then
       else
       case "$cc_basename" in
         xlc*)
+         _LT_AC_TAGVAR(whole_archive_flag_spec, $1)=''
          output_verbose_link_cmd='echo'
           _LT_AC_TAGVAR(archive_cmds, $1)='$CC -qmkshrobj ${wl}-single_module $allow_undefined_flag -o $lib $libobjs $deplibs $compiler_flags ${wl}-install_name ${wl}`echo $rpath/$soname` $verstring'
           _LT_AC_TAGVAR(module_cmds, $1)='$CC $allow_undefined_flag -o $lib -bundle $libobjs $deplibs$compiler_flags'
