@@ -1,3 +1,15 @@
+1999-05-20 Thomas Tanner  <tanner@gmx.de>
+
+	* bootstrap: fix libltdl/Makefile.in
+	* cdemo/main.c: "Welcome _to_ ..."
+	* mdemo/main.c: ditto
+	* libltdl/configure.in: support multiple dlopening mechanisms
+	  at once
+	* libltdl/ltdl.c: prefix system dependent functions with "sys_"
+	  to avoid symbol conflicts (libdld didn't work)
+	* libtool.m4 (AC_LIBLTDL_*): set INCLTDL to the path of ltdl.h
+	* ltconfig.in: check for dlopen with -ldl first
+
 1999-05-19  Gary V. Vaughan  <gary@oranda.demon.co.uk>
 
 	* NEWS: Added 1.3.1 news items.
