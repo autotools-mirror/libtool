@@ -1,3 +1,8 @@
+2004-10-13  Peter O'Gorman  <peter@pogma.com>
+
+	* config/ltmain.m4sh: Make sure that we $show what we will $run,
+	use eval $show if we do $run eval.
+
 2004-10-13  Charles Wilson  <spam.protected>
 
 	* config/ltmain.m4sh: add foo/bin for every foo/lib 
