@@ -2515,7 +2515,6 @@ EOF
 	  if test "$link_all_deplibs" != no; then
 	    # Add the search paths of all dependency libraries
 	    for deplib in $dependency_libs; do
-	      depdepl=
 	      case $deplib in
 	      -L*) path="$deplib" ;;
 	      *.la)
@@ -2548,28 +2547,37 @@ EOF
 		depdepl=
 		case $host in
 		*-*-darwin*)
-		  depdepl=`$echo "X$deplib" | ${SED} -e 's,.*/,,' -e 's,^lib,,' -e 's,\.la$,,'`
-		  newlib_search_path="$newlib_search_path $path"
-		  if grep "^installed=no" $deplib > /dev/null; then
-		  # FIXME - ugly
-		   if test -f "$path/lib${depdepl}.dylib" ; then
-  		       eval depdepl=$path/lib${depdepl}.dylib
-		   else
-		   # We shouldn't get here
-		       depdepl="-l$depdepl"
+		  # we do not want to link against static libs, but need to link against shared
+		  eval deplibrary_names=`${SED} -n -e 's/^library_names=\(.*\)$/\1/p' $deplib`
+		  if test -n "$deplibrary_names" ; then
+		    for tmp in $deplibrary_names ; do
+		      depdepl=$tmp
+		    done
+		    if test -f "$path/$depdepl" ; then
+		      depdepl="$path/$depdepl"
 		   fi
-		  else
-		    depdepl="-l$depdepl"
+		    newlib_search_path="$newlib_search_path $path"
+		    path=""
 		  fi
 		  ;;
-		  # end ugly FIXME
-		esac 
+		*)
 		path="-L$path"
+		;;
+		esac 
+		
 		;;
 		  -l*)
 		case $host in
 		*-*-darwin*)
-           depdepl=$deplib
+		 # Again, we only want to link against shared libraries
+		 eval tmp_libs=`$echo "X$deplib" | $Xsed -e "s,^\-l,,"`
+		 for tmp in $newlib_search_path ; do
+		     if test -f "$tmp/lib$tmp_libs.dylib" ; then
+		       eval depdepl="$tmp/lib$tmp_libs.dylib"
+		       break
+		     fi  
+         done
+         path=""
 		  ;;
 		*) continue ;;
 		esac  		  

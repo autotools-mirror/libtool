@@ -1583,10 +1583,6 @@ static struct lt_user_dlloader sys_dld = {
 # include <mach-o/dyld.h>
 #endif
 #include <mach-o/getsect.h>
-/*
-  sectname __mod_term_func
-   segname __DATA
-*/   
 
 /* We have to put some stuff here that isn't in older dyld.h files */
 #ifndef ENUM_DYLD_BOOL
@@ -1729,7 +1725,6 @@ lt_int_dyld_NSlookupSymbolInLinkedLibs(symbol,mh)
 	unsigned long offset = sizeof(struct mach_header);
 	NSSymbol retSym = 0;
 	const struct mach_header *mh1;
-	fprintf(stderr,"Symbol: %s\n",symbol);
 	if ((ltdl_NSLookupSymbolInImage) && NSIsSymbolNameDefined(symbol) )
 	{
 		for (j = 0; j < mh->ncmds; j++)
@@ -1737,8 +1732,6 @@ lt_int_dyld_NSlookupSymbolInLinkedLibs(symbol,mh)
 			lc = (struct load_command*)(((unsigned long)mh) + offset);
 			if ((LC_LOAD_DYLIB == lc->cmd) || (LC_LOAD_WEAK_DYLIB == lc->cmd))
 			{
-				fprintf(stderr,"Symbol %s\n",(char*)(((struct dylib_command*)lc)->dylib.name.offset + 
-										(unsigned long)lc));
 				mh1=lt_int_dyld_match_loaded_lib_by_install_name((char*)(((struct dylib_command*)lc)->dylib.name.offset + 
 										(unsigned long)lc));
 				if (!mh1)
@@ -1855,8 +1848,11 @@ sys_dyld_close (loader_data, module)
 #ifdef __ppc__
 			flags += NSUNLINKMODULE_OPTION_RESET_LAZY_REFERENCES;
 #endif
-		retCode = NSUnLinkModule(module,flags);												
-	
+		if (!NSUnLinkModule(module,flags))
+		{
+			retCode=1;
+			LT_DLMUTEX_SETERROR (lt_int_dyld_error(LT_DLSTRERROR(CANNOT_CLOSE)));
+		}										
 	}
 	
  return retCode;

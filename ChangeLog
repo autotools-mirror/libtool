@@ -1,3 +1,9 @@
+2003-03-28  Peter O'Gorman  <peter@pogma.com>
+
+	* libltdl/ltdl.c (dyld): Remove some debug printf's, fix a bug.
+	* ltmain.in (darwin): Only link against shared libraries when doing
+	link_all_deplibs.
+
 2003-03-25  Robert Boehne  <rboehne@gnu.org>
 
 	* bootstrap: Add f77demo to the directories that AUTOHEADER
