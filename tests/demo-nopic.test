@@ -10,6 +10,14 @@ if test -z "$srcdir"; then
 fi
 . $srcdir/defs || exit 1
 
+# This doesn't work on hppa
+HOST=`../config.guess`
+case "$HOST" in
+hppa*)
+        echo "Not running on hppa, it doesn't like non-PIC shared libs" 2>&1
+        exit 77
+esac
+
 # Maybe we have a VPATH build, in which case, create a new subdir.
 test -d ../demo || mkdir ../demo
 
