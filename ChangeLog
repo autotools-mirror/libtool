@@ -1,5 +1,7 @@
 2005-03-15  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* libltdl/configure.ac: Update version; require Autoconf >= 2.59.
+
 	* bootstrap: Allow to override tools.
 
 2005-03-15  Gary V. Vaughan  <gary@gnu.org>
