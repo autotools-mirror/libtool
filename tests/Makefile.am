@@ -30,7 +30,10 @@ TESTS = cdemo-static.test cdemo-make.test cdemo-exec.test \
 	mdemo-shared.test mdemo-make.test mdemo-exec.test \
 	mdemo-inst.test mdemo-unst.test \
 	assign.test link.test link-2.test nomode.test \
-	quote.test sh.test suffix.test
+	quote.test sh.test suffix.test \
+	tagdemo-static.test tagdemo-make.test tagdemo-exec.test \
+	tagdemo-conf.test tagdemo-make.test tagdemo-exec.test \
+	tagdemo-shared.test tagdemo-make.test tagdemo-exec.test
 
 demo-conf.test: $(top_builddir)/libtool
 
@@ -56,4 +59,5 @@ clean-local:
 	-test -f ../demo/Makefile && cd ../demo && $(MAKE) distclean
 	-test -f ../depdemo/Makefile && cd ../depdemo && $(MAKE) distclean
 	-test -f ../mdemo/Makefile && cd ../mdemo && $(MAKE) distclean
+	-test -f ../tagdemo/Makefile && cd ../mdemo && $(MAKE) distclean
 	rm -rf _inst

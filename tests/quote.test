@@ -63,18 +63,21 @@ for mode in compile link install; do
   case "$mode" in
   compile)
     preargs="gcc -c"
+    preflag=
     flag="-DVAR="
     postargs="foo.c"
     ;;
 
   link)
     preargs="gcc -o hell -g -O"
-    flag="-Wl,-someflag="
+    preflag=-Wl,
+    flag="-someflag="
     postargs="foo.o"
     ;;
 
   install)
     preargs="install -c"
+    preflag=
     flag="--something="
     postargs="hell /usr/local/bin/hell"
     ;;
@@ -82,9 +85,9 @@ for mode in compile link install; do
 
   # Trivial.
   $echo "= trying: no quoting"
-  result=`$libtool -n --mode=$mode $preargs "${flag}test" $postargs` || status=1
+  result=`$libtool -n --mode=$mode $preargs ${preflag}"${flag}test" $postargs` || status=1
   case "$result" in
-  *"$preargs ${flag}test "*)
+  *"$preargs ${preflag}${flag}test "*)
     $echo "= passed: $result"
     ;;
   *)
@@ -96,9 +99,9 @@ for mode in compile link install; do
   # Metacharacters that should be backslashified.
   for mchar in \\ \" \` \$; do
     $echo "= trying: \\$mchar quoting"
-    result=`$libtool -n --mode=$mode $preargs "${flag}${mchar}test${mchar}" $postargs` || status=1
+    result=`$libtool -n --mode=$mode $preargs ${preflag}"${flag}${mchar}test${mchar}" $postargs` || status=1
     case "$result" in
-    *"$preargs ${flag}\\${mchar}test\\${mchar} "*)
+    *"$preargs ${preflag}${flag}\\${mchar}test\\${mchar} "*)
       $echo "= passed: $result"
       ;;
     *)
@@ -113,9 +116,9 @@ for mode in compile link install; do
       "'" " " "	"; do
 
     $echo "= trying: \"$mchar\" quoting"
-    result=`$libtool -n --mode=$mode $preargs "${flag}${mchar}test${mchar}" $postargs` || status=1
+    result=`$libtool -n --mode=$mode $preargs ${preflag}"${flag}${mchar}test${mchar}" $postargs` || status=1
     case "$result" in
-    *"$preargs \"${flag}${mchar}test${mchar}\" "*)
+    *"$preargs ${preflag}\"${flag}${mchar}test${mchar}\" "*)
       $echo "= passed: $result"
       ;;
     *)

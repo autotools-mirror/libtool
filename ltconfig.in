@@ -428,7 +428,7 @@ if test -n "$tagname"; then
   fi
 
   if test -z "$LTCC"; then
-    eval "`\"$SHELL\" \"$ofile\" --config | grep '^LTCC='`"
+    eval "`$SHELL $ofile --config | grep '^LTCC='`"
     if test -z "$LTCC"; then
       echo "$progname: warning: output file \`$ofile' does not look like a libtool script" 1>&2
     else

@@ -1,5 +1,41 @@
 2000-01-31 Ossama Othman  <ossama@debian.org>
 
+	* configure.in (CONF_SUBDIRS): Added the `tagdemo' directory to
+	the list.
+	* ltcf-cxx.sh: Remove any residual `a.out' files resulting from
+	the "eval $output_verbose_link_cmds."
+	* ltconfig.in: Cleaned up nested quotes that were introduced with
+	the tags patch.  This fixes part sh.test failure.
+	* ltmain.in: Check if "$run" is of zero length before creating a
+	`.lo' file.  This fixes the dryrun.test failure.
+	Cleaned up nested quotes that were introduced with
+	the tags patch.  This fixes another part sh.test failure.
+	Remove "$libobj" not "libobj."
+	Exit with an error if both $object_name and $old_object are set to
+	"none" in the corresponding `.lo' file.  This should never happen.
+	Changed remaining uses of "mkdir" to "$mkdir."
+	Added dry run case to `.lo' case in link mode.  This fixes the
+	link-2.test failure.
+	(object_name, old_object): Prepend the subdirectory the `.lo'
+	resides in to the object names extracted from the `.lo' file.
+	This fixes the build-relink2.test failure.
+	(tempemovelist): Use $echo "X..." instead of echo "..." since
+	$Xsed is being used.  This fixes the last part of the sh.test
+	failure.
+	* tagdemo/Makefile.am, tagdemo/Makefile.in, tagdemo/README,
+	tagdemo/acinclude.m4, tagdemo/aclocal.m4, tagdemo/configure,
+	tagdemo/configure.in, tagdemo/foo.cpp, tagdemo/foo.h,
+	tagdemo/main.cpp, tests/tagdemo-conf.test tests/tagdemo-exec.test
+	tests/tagdemo-make.test tests/tagdemo-shared.test
+	tests/tagdemo-static.test: Added a new tagdemo that exercises
+	libtool's tagged configuration support found in the multilanguage
+	branch.
+	* tests/Makefile.am (TESTS): Added the tagdemo tests to the list.
+	* tests/quote.test: Updated to HEAD branch version.  This fixes
+	the quote.test failure.
+
+2000-01-31 Ossama Othman  <ossama@debian.org>
+
 	* ltconfig.in (compile_c_lo): Removed the test that checks if
 	compiler support "-c -o file.lo" since the changes made to
 	ltmain.in remove the need to do this.
