@@ -210,7 +210,11 @@ strrchr(str, ch)
 
 #endif
 
-#if HAVE_LIBDL
+/* The Cygwin dlopen implementation prints a spurious error message to
+   stderr if its call to LoadLibrary() fails for any reason.  We can
+   mitigate this by not using the Cygwin implementation, and falling
+   back to our own LoadLibrary() wrapper. */
+#if HAVE_LIBDL && !defined(__CYGWIN__)
 
 /* dynamic linking with dlopen/dlsym */
 

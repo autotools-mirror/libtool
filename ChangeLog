@@ -1,3 +1,9 @@
+2000-01-27  Gary V. Vaughan  <gary@oranda.demon.co.uk>
+
+	* libltdl/ltdl.c (sys_dl_init, sys_dl_exit, sys_dl_open,
+	sys_dl_close, sys_dl_sym):  Preprocess these away on cygwin to
+	avoid spurious error messages.
+
 2000-01-24  Thomas Tanner  <tanner@ffii.org>
 
 	fix severe bugs reported by Elrond <Elrond@Wunder-Nett.org>
