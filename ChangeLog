@@ -1,5 +1,7 @@
 2004-08-29  Gary V. Vaughan  <gary@gnu.org>
 
+	* NEWS: Merge changes from branch-1-5.
+
 	* Makefile.am (dist-hook): Always distribute just a README file,
 	but take its contents from README-alpha for alpha releases.
 

@@ -1,6 +1,6 @@
 NEWS - list of user-visible changes between releases of GNU Libtool
 
-New in 1.5b: 2004-??-??; CVS version 1.5a, Libtool team:
+New in 1.9b: 2004-??-??; CVS version 1.5a, Libtool team:
 * The /^_?LT_[A-Z_]+$/ namespace is now reserved for Libtool's own macros.
   If you have any shell variables in this namespace they will need to be
   renamed.  If you have any macros in this namespace please rename them to
@@ -66,6 +66,23 @@ New in 1.5b: 2004-??-??; CVS version 1.5a, Libtool team:
 * Support for Intel C++ version 8.0.
 * New support for IBM's xlc and xlc++ on Mac OS X.
 * Finished support for QNX RTOS.
+* Bug fixes.
+
+New in 1.5.8: 2004-08-07; CVS version 1.5.7a, Libtool team:
+* Support for Intel C++ version 8.0.
+* Improved support for OpenBSD.
+* Support for xlc on Mac OS X.
+* Better support for zsh as /bin/sh.
+* Much faster check for command line length on all BSD systems.
+* Better Mac OS X/darwin support.
+* Bug Fixes.
+
+New in 1.5.6: 2004-04-11; CVS version 1.5.5a, Libtool team:
+* Installs libltdl files properly in $prefix/share/libtool/libltdl. 1.5.4
+  did not install them at all.
+* libltdl correctly guesses the extension for loadable modules again.
+
+New in 1.5.4: 2004-04-03; CVS version 1.5.3a, Libtool team:
 * Bug fixes.
 
 New in 1.5.2: 2004-01-25; CVS version 1.5.0a, Libtool team:
