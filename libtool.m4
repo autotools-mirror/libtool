@@ -3914,10 +3914,10 @@ if test "$with_gnu_ld" = yes; then
   # See if GNU ld supports shared libraries.
   case $host_os in
   aix3* | aix4* | aix5*)
-    # On AIX, the GNU linker is very broken
-    # Note:Check GNU linker on AIX 5-IA64 when/if it becomes available.
-    _LT_AC_TAGVAR(ld_shlibs, $1)=no
-    cat <<EOF 1>&2
+    # On AIX/PPC, the GNU linker is very broken
+    if test "$host_cpu" != ia64; then
+      _LT_AC_TAGVAR(ld_shlibs, $1)=no
+      cat <<EOF 1>&2
 
 *** Warning: the GNU linker, at least up to release 2.9.1, is reported
 *** to be unable to reliably create shared libraries on AIX.
@@ -3926,6 +3926,7 @@ if test "$with_gnu_ld" = yes; then
 *** so that a non-GNU linker is found, and then restart.
 
 EOF
+    fi
     ;;
 
   amigaos*)
@@ -4171,7 +4172,9 @@ else
       # On IA64, the linker does run time linking by default, so we don't
       # have to do anything special.
       aix_use_runtimelinking=no
-      exp_sym_flag='-Bexport'
+	if test $with_gnu_ld = no; then
+	  exp_sym_flag='-Bexport'
+	fi
       no_entry_flag=""
     else
       # Test if we are trying to use run time linking, or normal AIX style
@@ -4198,9 +4201,11 @@ else
       _LT_AC_TAGVAR(archive_expsym_cmds, $1)="\$CC $shared_flag"' -o $output_objdir/$soname $libobjs $deplibs $compiler_flags ${allow_undefined_flag} '"\${wl}$no_entry_flag \${wl}$exp_sym_flag:\$export_symbols"
     else
       if test "$host_cpu" = ia64; then
-        _LT_AC_TAGVAR(hardcode_libdir_flag_spec, $1)='${wl}-R $libdir:/usr/lib:/lib'
-        _LT_AC_TAGVAR(allow_undefined_flag, $1)="-z nodefs"
-        _LT_AC_TAGVAR(archive_expsym_cmds, $1)="\$CC $shared_flag"' -o $output_objdir/$soname $libobjs $deplibs $compiler_flags ${wl}${allow_undefined_flag} '"\${wl}$no_entry_flag \${wl}$exp_sym_flag:\$export_symbols"
+	if test $with_gnu_ld = no; then
+	  _LT_AC_TAGVAR(hardcode_libdir_flag_spec, $1)='${wl}-R $libdir:/usr/lib:/lib'
+	  _LT_AC_TAGVAR(allow_undefined_flag, $1)="-z nodefs"
+	  _LT_AC_TAGVAR(archive_expsym_cmds, $1)="\$CC $shared_flag"' -o $output_objdir/$soname $libobjs $deplibs $compiler_flags ${wl}${allow_undefined_flag} '"\${wl}$no_entry_flag \${wl}$exp_sym_flag:\$export_symbols"
+	fi
       else
         _LT_AC_TAGVAR(hardcode_libdir_flag_spec, $1)='${wl}-bnolibpath ${wl}-blibpath:$libdir:/usr/lib:/lib'
         _LT_AC_TAGVAR(allow_undefined_flag, $1)=' ${wl}-berok'
