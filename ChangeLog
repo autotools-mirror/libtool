@@ -1,4 +1,12 @@
-2002-10-20  Albert Chin-A-Young  <china@thewrittenword.com>
+2002-10-22  Alexandre Duret-Lutz  <adl@gnu.org>
+
+	* ltdl.m4 (AC_LIB_LTDL, AC_LTDL_ENABLE_INSTALL,
+	AC_LTDL_SYS_DLOPEN_DEPLIBS, AC_LTDL_SHLIBEXT, AC_LTDL_SHLIBPATH,
+	AC_LTDL_SYSSEARCHPATH, AC_LTDL_OBJDIR, AC_LTDL_DLPREOPEN,
+	AC_LTDL_DLLIB, AC_LTDL_SYMBOL_USCORE, AC_LTDL_DLSYM_USCORE): Quote
+	macro name in definition.
+
+2002-10-22  Albert Chin-A-Young  <china@thewrittenword.com>
 
 	* libtool.m4: When a module is built for AIX, the 'lib'
 	prefix isn't needed, neither is the version. AIX dlopen
