@@ -1,9 +1,9 @@
 NEWS - list of user-visible changes between releases of GNU Libtool
 
 New in 1.5.11a: 2004-??-??; CVS version 1.5.11a, Libtool team:
-* Support for Portland Group compiler on Linux.
+* Support for Portland Group compiler on GNU/Linux.
 * Support (mostly) for DragonFly BSD.
-* Updated support for Intel compilers on Linux.
+* Updated support for Intel compilers on GNU/Linux.
 * Makes use of $datarootdir, which is necessary for Autoconf >= 2.60.
 * Fix for a buffer overrun in the opendir/readdir replacement code.
   This code was used by older versions of MinGW only.
@@ -12,7 +12,7 @@ New in 1.5.11a: 2004-??-??; CVS version 1.5.11a, Libtool team:
   -framework.
 * Handling of archives that have multiple members with the same name on Darwin.
 * Relaxed copyright permissions for the .m4 macro files.
-* Bug Fixes, among others for: Linux search path parsing, a Tru64
+* Bug Fixes, among others for: GNU/Linux search path parsing, a Tru64
   kernel panic, UNICOS, linking of dependent libraries.
 
 New in 1.5.10: 2004-09-19; CVS version 1.5.9a, Libtool team:
@@ -47,7 +47,7 @@ New in 1.5.2: 2004-01-25; CVS version 1.5.0a, Libtool team:
 * New link mode option `-precious-files-regex' to prevent accidental removal
   of files you want to keep, such as test coverage data, from the temporary
   output directory.
-* Directories specified in /etc/ld.so.conf are no longer hardcoded on Linux.
+* Directories specified in /etc/ld.so.conf are no longer hardcoded on GNU/Linux.
 * Recognises the 'R' symbol type on Solaris so read-only symbols can be
   exported.
 * Bug fixes.
