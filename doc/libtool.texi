@@ -2918,14 +2918,6 @@ to be able to @code{dlopen} such libraries as well as libtool modules
 transparently.
 @end deftypefun
 
-@deftypefun lt_dlhandle lt_find_dlhandle (const char *@var{name})
-Lookup the module handle for the module that was loaded from
-@var{name}.  @var{name} must be exactly the same as the name used to
-open the module with @samp{lt_dlopen} or @samp{lt_dlopenext}.  If
-@var{name} was not previously used to open a module with either of those
-functions, @code{NULL} is returned.
-@end deftypefun
-
 @deftypefun int lt_dlclose (lt_dlhandle @var{handle})
 Decrement the reference count on the module @var{handle}.
 If it drops to zero and no other module depends on this module,

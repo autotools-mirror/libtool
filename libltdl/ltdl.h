@@ -195,7 +195,7 @@ __BEGIN_DECLS
 extern int lt_dlinit LTDL_PARAMS((void));
 extern int lt_dlexit LTDL_PARAMS((void));
 
-/* Module search path manipulation.  */
+/* Module search path manipultation.  */
 extern int lt_dladdsearchdir LTDL_PARAMS((const char *search_dir));
 extern int lt_dlsetsearchpath LTDL_PARAMS((const char *search_path));
 extern const char *lt_dlgetsearchpath LTDL_PARAMS((void));
@@ -203,7 +203,6 @@ extern const char *lt_dlgetsearchpath LTDL_PARAMS((void));
 /* Portable libltdl versions of the system dlopen() API. */
 extern lt_dlhandle lt_dlopen LTDL_PARAMS((const char *filename));
 extern lt_dlhandle lt_dlopenext LTDL_PARAMS((const char *filename));
-extern lt_dlhandle lt_find_dlhandle LTDL_PARAMS((const char *name));
 extern lt_ptr_t lt_dlsym LTDL_PARAMS((lt_dlhandle handle, const char *name));
 extern const char *lt_dlerror LTDL_PARAMS((void));
 extern int lt_dlclose LTDL_PARAMS((lt_dlhandle handle));

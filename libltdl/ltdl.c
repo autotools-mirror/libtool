@@ -1602,26 +1602,6 @@ lt_dlopenext (filename)
 	return 0;
 }
 
-lt_dlhandle
-lt_find_dlhandle (name)
-	const char *name;
-{
-	lt_dlhandle cur = handles;
-	
-	/* check whether the module was already opened */
-	while (cur) {
-		/* try to dlopen the program itself? */
-		if (!cur->info.name && !name)
-			break;
-		if (cur->info.name && name && 
-		    strcmp(cur->info.name, name) == 0)
-			break;
-		cur = cur->next;
-	}
-
-	return cur;
-}
-
 int
 lt_dlclose (handle)
 	lt_dlhandle handle;
