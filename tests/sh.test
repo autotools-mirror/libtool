@@ -91,4 +91,18 @@ do
   fi
 done
 
+# Check for opening brace on next line in shell function definition.
+for s in $scripts
+do
+  if $SED -n '/^func_/{N;/^func_[^ 	]* ()\n{$/d;p;}' "$s" |
+     $EGREP .; then
+    echo "Function definitions should look like this in $s:
+func_foo ()
+{
+  # ...
+}"
+    status=$EXIT_FAILURE
+  fi
+done
+
 exit $status
