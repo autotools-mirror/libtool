@@ -5,7 +5,7 @@ DEFINE test-or-exit =]
 if ([=test=]) > /dev/null 2>&1 ; then
 [=    invert "  :\nelse"=]
   $echo "$modename: [=msg=]" 1>&2
-  $echo "$help"
+  $echo "$help" 1>&2
   exit 1
 fi[=
 
