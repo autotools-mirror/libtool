@@ -1,3 +1,7 @@
+2004-09-12  Brad <brad@comstyle.com>
+
+	* libtool.m4: Fixes for the OpenBSD support
+
 2004-09-12  Peter O'Gorman  <peter@pogma.com>
 
 	Our fortran tests were not very good. All the libraries created
