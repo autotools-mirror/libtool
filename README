@@ -1,4 +1,4 @@
-This is GNU libtool, a generic library support script.  Libtool hides
+This is GNU Libtool, a generic library support script.  Libtool hides
 the complexity of using shared libraries behind a consistent, portable
 interface.
 
@@ -30,14 +30,18 @@ and cannot handle libtool's requirements, so users may report unusual
 problems.  There is no workaround except to install a working sed
 (such as GNU sed) on these systems.
 
+Libtool's home page is:
+
+  http://www.profitpress.com/libtool/
+
 See the file NEWS for a description of recent changes to libtool.
 
 See the file INSTALL for instructions on how to build and install
 libtool.
 
 See the info node (libtool)Tested Platforms. (or the file
-doc/platforms.texi) for a list of platforms that libtool shared
-library support was tested on.
+doc/PLATFORMS) for a list of platforms that libtool shared library
+support was tested on.
 
 If you have any suggestions or bug reports, or you wish to port
 libtool to a new platform, please send electronic mail to the libtool

@@ -1,4 +1,33 @@
+Wed Feb 11 22:20:33 1998  Gordon Matzigkeit  <gord@profitpress.com>
+
+	* ltconfig.in (no_undefined_flag): Add a flag to declare under
+	Solaris that the library should not have any undefined
+	references.  Suggested by Bob Friesenhahn.
+
+	* ltmain.in (mkdir): Fix one more mkdir race.  From H.J. Lu.
+
+Sun Feb  8 18:16:41 1998  Gordon Matzigkeit  <gord@profitpress.com>
+
+	* ltconfig.in, ltmain.in (striplib, old_striplib): Ditto.
+
+	* ltconfig.in (profile_flag_pattern): Get rid of dead code.
+
+Sat Feb  7 11:49:33 1998  Gordon Matzigkeit  <gord@profitpress.com>
+
+	* libtool.m4 (AM_ENABLE_SHARED, AM_ENABLE_STATIC): New macros to
+ 	modify the `--enable-shared' and `--enable-static' defaults in the
+ 	configure script.  This works a lot better than the old
+ 	`enable_shared' and `enable_static' variables did.  Reported by
+ 	Bob Friesenhahn.
+
+Sat Feb  7 16:16:02 1998  Samuel Tardieu  <sam@inf.enst.fr>
+
+	* ltmain.in: Recognize .ada, .ads and .adb as known suffixes (they
+	are used by GNAT, the GNU Ada compiler).
+
 Fri Feb  6 00:20:41 1998  Gordon Matzigkeit  <gord@profitpress.com>
+
+	* ltconfig.in: Turn on IRIX shared libraries again!
 
 	* libtool.m4 (LD): Use file(1) to discover which ABI we're using
  	on IRIX, and propagate the correct linker flag.  From Jim Wilson.
@@ -284,7 +313,7 @@ Thu Nov  6 08:11:25 1997  Gordon Matzigkeit  <gord@gnu.org>
 
 	* ltmain.in (mkdir): Check that the directory doesn't exist before
  	we exit with error, so that we don't get races during parallel
- 	builds.  From H. J. Lu.
+ 	builds.  From H.J. Lu.
 	(fbsd_hideous_sh_bug): Apparently, some FreeBSD /bin/sh's have a
  	bug that will empty base_compile unless we do this dummy
  	assignment.  From Marc van Kempen.

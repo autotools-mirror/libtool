@@ -269,6 +269,9 @@ if test -z "$show_help"; then
     # Recognize several different file suffixes.
     xform='[cCFSfms]'
     case "$libobj" in
+    *.ada) xform=ada ;;
+    *.adb) xform=adb ;;
+    *.ads) xform=ads ;;
     *.asm) xform=asm ;;
     *.c++) xform=c++ ;;
     *.cc) xform=cc ;;
@@ -342,8 +345,8 @@ if test -z "$show_help"; then
       fi
     fi
 
-    # Create an invalid libtool object if no PIC, so that we don't accidentally
-    # link it into a program.
+    # Create an invalid libtool object if no PIC, so that we do not
+    # accidentally link it into a program.
     if test "$build_libtool_libs" != yes; then
       $show "echo timestamp > $libobj"
       $run eval "echo timestamp > \$libobj" || exit $?
@@ -735,7 +738,7 @@ if test -z "$show_help"; then
             finalize_shlibpath="$finalize_shlibpath$libdir:"
             finalize_command="$finalize_command -l$name"
           else
-            # We can't seem to hardcode it, guess we'll fake it.
+            # We cannot seem to hardcode it, guess we'll fake it.
             finalize_command="$finalize_command -L$libdir -l$name"
           fi
         else
@@ -982,8 +985,8 @@ if test -z "$show_help"; then
 	  build_old_libs=yes
         fi
       else
-        # Clear the flag.
-        allow_undefined_flag=
+        # Don't allow undefined symbols.
+        allow_undefined_flag="$no_undefined_flag"
       fi
 
       if test "$build_libtool_libs" = yes; then
@@ -1340,7 +1343,12 @@ EOF
       if test -d $objdir; then :
       else
         $show "$mkdir $objdir"
-        $run $mkdir $objdir || exit $?
+	$run $mkdir $objdir
+	status=$?
+	if test $status -eq 0 || test -d $objdir; then :
+	else
+	  exit $status
+	fi
       fi
 
       if test -n "$shlibpath_var"; then
@@ -1371,7 +1379,7 @@ EOF
         finalize_command="$shlibpath_var=\"$finalize_shlibpath\$$shlibpath_var\" $finalize_command"
       fi
 
-      if test -n "$runpath_var"; then
+      if test -n "$runpath_var" && test -n "$perm_rpath"; then
         # We should set the runpath_var.
         rpath=
         for dir in $perm_rpath; do
@@ -1788,12 +1796,6 @@ EOF
           $run eval "$install_prog $dir/$realname $destdir/$realname" || exit $?
           test "X$dlname" = "X$realname" && dlname=
 
-          # Support stripping libraries.
-          if test -n "$stripme" && test -n "$striplib"; then
-            $show "$striplib $destdir/$realname"
-            $run $striplib $destdir/$realname || exit $?
-          fi
-
           if test $# -gt 0; then
             # Delete the old symlinks.
             rmcmd="$rm"
@@ -1956,12 +1958,6 @@ EOF
 
       $show "$install_prog $file $oldlib"
       $run eval "$install_prog \$file \$oldlib" || exit $?
-
-      # Support stripping libraries.
-      if test -n "$stripme" && test -n "$old_striplib"; then
-        $show "$old_striplib $oldlib"
-        $run $old_striplib $oldlib || exit $?
-      fi
 
       # Do each command in the postinstall commands.
       cmds=`eval \\$echo \"$old_postinstall_cmds\"`

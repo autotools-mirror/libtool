@@ -56,8 +56,8 @@ helldl: $(helldl_OBJECTS) $(helldl_DEPENDENCIES)
 	  chmod +x helldlT; \
 	  mv -f helldlT helldl; \
 	else \
-	  echo '$(LINK) $(helldl_LDFLAGS) $(helldl_OBJECTS) $(helldl_LDADD) -lm'; \
-	  $(LINK) $(helldl_LDFLAGS) $(helldl_OBJECTS) $(helldl_LDADD) -lm; \
+	  echo '$(LINK) $(helldl_LDFLAGS) $(helldl_OBJECTS) $(helldl_LDADD)'; \
+	  $(LINK) $(helldl_LDFLAGS) $(helldl_OBJECTS) $(helldl_LDADD); \
 	fi
 
 # Test programs to see what gets hardcoded.

@@ -58,7 +58,7 @@ fi
 Xsed='sed -e s/^X//'
 sed_quote_subst='s/\([\\"\\`$\\\\]\)/\\\1/g'
 
-# Same as above, but don't quote variable references.
+# Same as above, but do not quote variable references.
 double_quote_subst='s/\([\\"\\`\\\\]\)/\\\1/g'
 
 # The name of this program.
@@ -127,7 +127,7 @@ Generate a system-specific libtool script.
     --help                 display this help and exit
     --no-verify            do not verify that HOST is a valid host type
     --quiet                same as \`--silent'
-    --silent               don't print informational messages
+    --silent               do not print informational messages
     --srcdir=DIR           find \`config.guess' in DIR
     --version              output version information and exit
     --with-gcc             assume that the GNU C compiler will be used
@@ -296,10 +296,10 @@ else
   host_alias=$host
 fi
 
-# Transform *-*-linux* to *-*-linux-gnu*, to support old configure scripts.
-case "$host" in
-*-*-linux-gnu*) ;;
-*-*-linux*) host=`echo $host | sed 's/^\(.*-.*-linux\)\(.*\)$/\1-gnu\2/'`
+# Transform linux* to *-*-linux-gnu*, to support old configure scripts.
+case "$host_os" in
+linux-gnu*) ;;
+linux*) host=`echo $host | sed 's/^\(.*-.*-linux\)\(.*\)$/\1-gnu\2/'`
 esac
 
 host_cpu=`echo $host | sed 's/^\([^-]*\)-\([^-]*\)-\(.*\)$/\1/'`
@@ -441,14 +441,12 @@ compiler="$2"
 
 echo $ac_n "checking for $compiler option to produce PIC... $ac_c" 1>&6
 pic_flag=
-profile_flag_pattern=
 special_shlib_compile_flags=
 wl=
 link_static_flag=
 no_builtin_flag=
 
 if test "$with_gcc" = yes; then
-  profile_flag_pattern='-pg?'
   wl='-Wl,'
   link_static_flag='-static'
   no_builtin_flag=' -fno-builtin'
@@ -544,7 +542,7 @@ if test -n "$pic_flag"; then
     # Append any errors to the config.log.
     cat conftest.err 1>&5
 
-    # On HP-UX, the stripped-down bundled CC doesn't accept +Z, but also
+    # On HP-UX, the stripped-down bundled CC does not accept +Z, but also
     # reports no error.  So, we need to grep stderr for (Bundled).
     if grep '(Bundled)' conftest.err >/dev/null; then
       echo "$ac_t"no 1>&6
@@ -623,7 +621,7 @@ if test -z "$LD"; then
       test -z "$LD" && LD="$ac_prog"
       ;;
     "")
-      # If it fails, then pretend we aren't using GCC.
+      # If it fails, then pretend we are not using GCC.
       ac_prog=ld
       ;;
     *)
@@ -670,7 +668,7 @@ if test -z "$LD"; then
   fi
 fi
 
-# Check to see if it really is or isn't GNU ld.
+# Check to see if it really is or is not GNU ld.
 echo $ac_n "checking if the linker ($LD) is GNU ld... $ac_c" 1>&6
 # I'd rather use --version here, but apparently some GNU ld's only accept -v.
 if $LD -v 2>&1 </dev/null | egrep '(GNU|with BFD)' 1>&5; then
@@ -684,6 +682,7 @@ echo "$ac_t$with_gnu_ld" 1>&6
 echo $ac_n "checking whether the linker ($LD) supports shared libraries... $ac_c" 1>&6
 
 allow_undefined_flag=
+no_undefined_flag=
 archive_cmds=
 old_archive_from_new_cmds=
 export_dynamic_flag_spec=
@@ -751,7 +750,7 @@ else
 
   # FreeBSD 2.2.[012] allows us to include c++rt0.o to get C++ constructor
   # support.  Future versions do this automatically, but an explicit c++rt0.o
-  # doesn't break anything, and helps significantly (at the cost of a little
+  # does not break anything, and helps significantly (at the cost of a little
   # extra space).
   freebsd2.2*)
     archive_cmds='$LD -Bshareable -o $lib$libobjs /usr/lib/c++rt0.o'
@@ -761,7 +760,7 @@ else
     hardcode_shlibpath_var=no
     ;;
 
-  # Unfortunately, older versions of FreeBSD 2 don't have this feature.
+  # Unfortunately, older versions of FreeBSD 2 do not have this feature.
   freebsd2*)
     archive_cmds='$LD -Bshareable -o $lib$libobjs'
     hardcode_direct=yes
@@ -794,11 +793,10 @@ else
     export_dynamic_flag_spec='${wl}-E'
     ;;
 
-# FIXME: reimplement IRIX shared libraries.
-#  irix5* | irix6*)
-#    archive_cmds='$LD -shared -o $lib -soname $soname -set_version $verstring$libobjs'
-#    hardcode_libdir_flag_spec='${wl}-rpath ${wl}$libdir'
-#    ;;
+  irix5* | irix6*)
+    archive_cmds='$LD -shared -o $lib -soname $soname -set_version $verstring$libobjs'
+    hardcode_libdir_flag_spec='${wl}-rpath ${wl}$libdir'
+    ;;
 
   netbsd*)
     # Tested with NetBSD 1.2 ld
@@ -836,7 +834,8 @@ else
     ;;
 
   solaris2*)
-    archive_cmds='$LD -G -z text -h $soname -o $lib$libobjs'
+    no_undefined_flag=' -z text'
+    archive_cmds='$LD -G${allow_undefined_flag} -h $soname -o $lib$libobjs'
     hardcode_libdir_flag_spec='-R$libdir'
     hardcode_shlibpath_var=no
 
@@ -1045,7 +1044,7 @@ else
 fi
 $rm conftest*
 
-# Don't use the global_symbol_pipe unless it works.
+# Do not use the global_symbol_pipe unless it works.
 echo "$ac_t$pipe_works" 1>&6
 test "$pipe_works" = yes || global_symbol_pipe=
 
@@ -1069,7 +1068,7 @@ if test -n "$hardcode_libdir_flag_spec" || \
 elif test "$hardcode_direct" != yes && \
      test "$hardcode_minus_L" != yes && \
      test "$hardcode_shlibpath_var" != yes; then
-  # We can't hardcode anything.
+  # We cannot hardcode anything.
   hardcode_action=unsupported
 else
   # We can only hardcode existing directories.
@@ -1228,12 +1227,6 @@ esac
 echo "$ac_t$dynamic_linker"
 test "$dynamic_linker" = no && can_build_shared=no
 
-# FIXME add checks for striplib and old_striplib here.
-# strip -x works for most platforms, though not for static libraries on NetBSD
-# HP-UX requires "-r" for library stripping
-striplib=
-old_striplib=
-
 # Report the final consequences.
 echo "checking if libtool supports shared libraries... $can_build_shared" 1>&6
 
@@ -1279,11 +1272,11 @@ ltecho="$echo"
 for var in ltecho old_CC old_CFLAGS old_CPPFLAGS old_LD old_NM old_RANLIB \
   old_LN_S AR CC LD LN_S NM reload_flag reload_cmds wl pic_flag \
   link_static_flag no_builtin_flag export_dynamic_flag_spec \
-  profile_flag_pattern libname_spec library_names_spec soname_spec RANLIB \
+  libname_spec library_names_spec soname_spec RANLIB \
   old_archive_cmds old_archive_from_new_cmds old_postinstall_cmds \
   old_postuninstall_cmds archive_cmds postinstall_cmds postuninstall_cmds \
-  allow_undefined_flag finish_cmds finish_eval global_symbol_pipe \
-  striplib old_striplib \
+  allow_undefined_flag no_undefined_flag \
+  finish_cmds finish_eval global_symbol_pipe \
   hardcode_libdir_flag_spec hardcode_libdir_separator; do
 
   case "$var" in
@@ -1326,7 +1319,7 @@ Xsed="sed -e s/^X//"
 # if CDPATH is set.
 if test "\${CDPATH+set}" = set; then CDPATH=; export CDPATH; fi
 
-# An echo program that doesn't interpret backslashes.
+# An echo program that does not interpret backslashes.
 echo="$ltecho"
 
 # The version of $progname that generated this script.
@@ -1382,9 +1375,6 @@ no_builtin_flag="$no_builtin_flag"
 # Compiler flag to allow reflexive dlopens.
 export_dynamic_flag_spec="$export_dynamic_flag_spec"
 
-# Pattern to match compiler flags for creating libNAME_p libraries:
-profile_flag_pattern="$profile_flag_pattern"
-
 # Library versioning type.
 version_type=$version_type
 
@@ -1415,6 +1405,9 @@ postuninstall_cmds="$postuninstall_cmds"
 # Flag that allows shared libraries with undefined symbols to be built.
 allow_undefined_flag="$allow_undefined_flag"
 
+# Flag that forces no undefined symbols.
+no_undefined_flag="$no_undefined_flag"
+
 # Commands used to finish a libtool library installation in a directory.
 finish_cmds="$finish_cmds"
 
@@ -1423,10 +1416,6 @@ finish_eval="$finish_eval"
 
 # Take the output of nm and produce a listing of raw symbols and C names.
 global_symbol_pipe="$global_symbol_pipe"
-
-# How to strip a library file.
-striplib="$striplib"
-old_striplib="$old_striplib"
 
 # This is the shared library runtime path variable.
 runpath_var=$runpath_var

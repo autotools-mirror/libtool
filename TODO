@@ -8,16 +8,12 @@ compiler type.
 * Alexandre Oliva suggests that we hardcode paths into libraries, as
 well as binaries:  `... -Wl,-soname -Wl,/tmp/libtest.so.0 ...'.
 
-* Implement full support for other orthogonal library types
-(libhello_g, libhello_p, 64 vs 32-bit ABI's, etc).  Make these types
-configurable.
-
 In the future:
 **************
 
-* Inter-library dependencies should be automatically tracked by
-libtool.  Reminded by Alexandre Oliva.  This also would require
-looking up installed libtool libraries for transparent support.
+* Inter-library dependencies should be fully tracked by libtool.
+Reminded by Alexandre Oliva.  This requires looking up installed
+libtool libraries for transparent support.
 
 * Implement full multi-language support.  Currently, this is only for
 C++, but there are beginnings of this in the manual (Other Languages).
@@ -32,15 +28,6 @@ longer a satisfactory answer.
 People who need it:
   Jean Daniel Fekete <Jean-Daniel.Fekete@emn.fr>
   Thomas Hiller <hiller@tu-harburg.d400.de>
-
-* Writing libtool as a shell script means that proper variable quoting
-is a real problem.  Be careful when `eval'ing a string that the
-arguments are properly quoted.  Note that arguments with embedded
-whitespace probably will cause problems (because of IFS).
-
-I don't have good ideas on to fix the problems with whitespace, other
-than subverting IFS entirely, perhaps always using an `eval "set
-$quoted_args"' sequence.
 
 * Another form of convenience library, suggested by Alexandre Oliva,
 is to have undocumented utility libraries, where only the shared
@@ -71,6 +58,10 @@ Hurd.  We'll need to integrate package-supplied programs such as
 libtool into that scheme, since it manages some of the preinstall and
 postinstall commands, but isn't installed itself.  Probably, things
 like libtool should be distributed as part of such a binary package.
+
+* Maybe implement full support for other orthogonal library types
+(libhello_g, libhello_p, 64 vs 32-bit ABI's, etc).  Make these types
+configurable.
 
 * Add support for windoze DLL's, and maybe other jumptable libs.
 Check out Lesstif and Tcl configuration again (maybe they would be

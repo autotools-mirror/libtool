@@ -7,7 +7,7 @@
 @c %**end of header
 
 @include version.texi
-@set BUGADDR the libtool mailing list @code{<bug-libtool@@gnu.org>}
+@set BUGADDR the libtool mailing list @email{<bug-libtool@@gnu.org>}
 @set objdir .libs
 
 @dircategory GNU programming tools
@@ -23,7 +23,7 @@
 @ifinfo
 This file documents GNU Libtool @value{VERSION}
 
-Copyright (C) 1996--1998 Free Software Foundation, Inc.
+Copyright (C) 1996-1998 Free Software Foundation, Inc.
 
 Permission is granted to make and distribute verbatim copies of this
 manual provided the copyright notice and this permission notice are
@@ -55,7 +55,7 @@ approved by the Foundation.
 
 @page
 @vskip 0pt plus 1filll
-Copyright @copyright{} 1996--1998 Free Software Foundation, Inc.
+Copyright @copyright{} 1996-1998 Free Software Foundation, Inc.
 @sp 2
 This is the first edition of the GNU Libtool documentation,@*
 and is consistent with GNU Libtool @value{VERSION}.@*
@@ -204,7 +204,6 @@ Platform quirks
 * Compilers::                   Creating object files from source files.
 * Reloadable objects::          Binding object files together.
 * Archivers::                   Programs that create static archives.
-* Strip::                       Removing unnecessary linkage information.
 
 @end detailmenu
 @end menu
@@ -338,9 +337,9 @@ or run @code{ldconfig(8)}.
 @section Other implementations
 
 I have investigated several different implementations of systems that
-build shared
-libraries as part of a freeware package.  At first, I made notes on the
-features of each of these packages for comparison purposes.
+build shared libraries as part of a free software package.  At first, I
+made notes on the features of each of these packages for comparison
+purposes.
 
 Now it is clear that none of these packages have documented the details
 of shared library systems that libtool requires.  So, other packages
@@ -1461,6 +1460,30 @@ ltconfig}).@footnote{@code{AM_PROG_LIBTOOL} requires that you define the
 Automake does this automatically, but Autoconf users should set it to
 the relative path to the top of your build directory (@file{../..}, for
 example).}
+
+By default, this macro turns on shared libraries if they are available,
+and also enables static libraries if they don't conflict with the shared
+libraries.  You can modify these defaults by setting calling either the
+@code{AM_DISABLE_SHARED} or @code{AM_DISABLE_STATIC} macros:
+
+@example
+# Turn off shared libraries during beta-testing, since they make the
+# build process take too long.
+AM_DISABLE_SHARED
+AM_PROG_LIBTOOL
+@end example
+@end defmac
+
+@defmac AM_DISABLE_SHARED
+Change the default behaviour for @code{AM_PROG_LIBTOOL} to disable
+shared libraries.  The user may still override this default by
+specifying @samp{--enable-shared}.
+@end defmac
+
+@defmac AM_DISABLE_STATIC
+Change the default behaviour for @code{AM_PROG_LIBTOOL} to disable
+static libraries.  The user may still override this default by
+specifying @samp{--enable-static}.
 @end defmac
 
 @pindex aclocal
@@ -1529,7 +1552,7 @@ and accepts the following options:
 Work silently, and assume that Automake libtool support is used.
 
 @samp{libtoolize --automake} is used by Automake to add libtool files to
-your package, when @samp{AM_PROG_LIBTOOL} appears in your
+your package, when @code{AM_PROG_LIBTOOL} appears in your
 @file{configure.in}.
 
 @item --copy
@@ -1613,9 +1636,10 @@ AC_OUTPUT(@dots{})
 @cindex Saving time
 
 When you are developing a package, it is often worthwhile to configure
-your package with the @samp{--disable-shared} flag
-(@pxref{AM_PROG_LIBTOOL}).  This prevents libtool from building shared
-libraries, which has several advantages:
+your package with the @samp{--disable-shared} flag, or to override the
+defaults for @code{AM_PROG_LIBTOOL} by using the @code{AM_DISABLE_SHARED}
+Autoconf macro (@pxref{AM_PROG_LIBTOOL}).  This prevents libtool from
+building shared libraries, which has several advantages:
 
 @itemize @bullet
 @item
@@ -1636,11 +1660,11 @@ Manipulation Program, for those who haven't taken the plunge.  See
 @url{http://www.gimp.org/}.} distribution @file{README}:
 
 @example
-The GIMP uses GNU libtool in order to build shared libraries on a
+The GIMP uses GNU Libtool in order to build shared libraries on a
 variety of systems. While this is very nice for making usable
 binaries, it can be a pain when trying to debug a program. For that
 reason, compilation of shared libraries can be turned off by
-specifying the "--disable-shared" option to "configure".
+specifying the @samp{--disable-shared} option to @file{configure}.
 @end example
 
 @node Versioning
@@ -2546,7 +2570,7 @@ This table describes when libtool was last known to be tested on
 platforms where it claims to support shared libraries:
 
 @example
-@include platforms.texi
+@include PLATFORMS
 @end example
 
 @node Platform quirks
@@ -2567,7 +2591,6 @@ improve libtool, or write your own.
 * Compilers::                   Creating object files from source files.
 * Reloadable objects::          Binding object files together.
 * Archivers::                   Programs that create static archives.
-* Strip::                       Removing unnecessary linkage information.
 @end menu
 
 @node References
@@ -2662,32 +2685,6 @@ On all known systems, if there is a program named @code{ranlib}, then it
 must be used to ``bless'' the created library before linking against it,
 with the @kbd{ranlib lib@var{name}.a} command.
 
-@node Strip
-@subsection The @code{strip} program
-
-Stripping a library is essentially the same problem as stripping an
-object file.  Only local and debugging symbols must be removed, or else
-linking against a stripped library will fail.
-
-With GNU @code{strip}, the @samp{--discard-all} (or equivalent
-@samp{-x}) flag will do the appropriate stripping, for both shared and
-static libraries.
-
-Here is a list of some other operating systems, and what their bundled
-@code{strip} programs will do:
-
-@c FIXME complete this section
-
-@table @code
-@item netbsd*
-The @samp{-x} flag works for shared libraries, but fails with
-``Inappropriate file type or format'' when used on static libraries.
-
-@item hpux10*
-HP-UX @code{strip} requires the @samp{-r} and @samp{-x} flags in order
-to strip libraries.
-@end table
-
 @node libtool script contents
 @section @code{libtool} script contents
 @cindex Implementation of libtool
@@ -2758,6 +2755,11 @@ Whether libtool should build static libraries on this system.  Set to
 @samp{yes} or @samp{no}.
 @end defvar
 
+@defvar echo
+An @code{echo(1)} program which does not interpret backslashes as an
+escape character.
+@end defvar
+
 @defvar export_dynamic_flag_spec
 Compiler link flag that allows a dlopened shared library to reference
 symbols that are defined in the program.
@@ -2768,12 +2770,16 @@ Commands to tell the dynamic linker how to find shared libraries in a
 specific directory.
 @end defvar
 
-@defvar global_symbol_cmd
+@defvar finish_eval
+Same as @var{finish_cmds}, except the commands are not displayed.
+@end defvar
+
+@defvar global_symbol_pipe
 A pipeline that takes the output of @var{NM}, and produces a listing of
 raw symbols followed by their C names.  For example:
 
 @example
-$ @kbd{$NM | $global_symbol_cmd}
+$ @kbd{$NM | $global_symbol_pipe}
 @var{symbol1} @var{C-symbol1}
 @var{symbol2} @var{C-symbol2}
 @var{symbol3} @var{C-symbol3}
@@ -2811,12 +2817,6 @@ hardcodes directories specified by @samp{-L} flags into the resulting
 executable.
 @end defvar
 
-@defvar hardcode_runpath_var
-Set to @samp{yes} or @samp{no}, depending on whether the linker
-hardcodes directories by writing the contents of @samp{$runpath_var}
-into the resulting executable.
-@end defvar
-
 @defvar hardcode_shlibpath_var
 Set to @samp{yes} or @samp{no}, depending on whether the linker
 hardcodes directories by writing the contents of @samp{$shlibpath_var}
@@ -2829,6 +2829,12 @@ link time.
 @defvarx host_alias
 For information purposes, set to the specified and canonical names of
 the system that libtool was configured for.
+@end defvar
+
+@defvar libname_spec
+The format of a library name prefix.  On all Unix systems, static
+libraries are called @samp{lib@var{name}.a}, but on some systems (such
+as OS/2 or MS-DOS), the library is just called @samp{@var{name}.a}.
 @end defvar
 
 @defvar library_names_spec
@@ -2845,6 +2851,12 @@ linking.
 @defvar no_builtin_flag
 Compiler flag to disable builtin functions that conflict with declaring
 external global symbols as @code{char}.
+@end defvar
+
+@defvar no_undefined_flag
+The flag that is used by @samp{archive_cmds} in order to declare that
+there will be no unresolved symbols in the resulting shared library.
+Empty, if no such flag is required.
 @end defvar
 
 @defvar pic_flag
@@ -2876,14 +2888,6 @@ The name coded into shared libraries, if different from the real name of
 the file.
 @end defvar
 
-@defvar striplib
-@defvarx old_striplib
-Programs to strip shared and static libraries, respectively.@footnote{In
-the current implementation, libtool does not use any programs to strip
-libraries.  Support will be added after it is clear how to write a
-portable test for library stripping programs.}
-@end defvar
-
 @defvar version_type
 The library version numbering type.  One of @samp{libtool},
 @samp{linux}, @samp{osf}, @samp{sunos}, or @samp{none}.
@@ -2894,10 +2898,10 @@ The C compiler flag that allows libtool to pass a flag directly to the
 linker.  Used as: @samp{$@{wl@}@var{some-flag}}.
 @end defvar
 
-Variables ending in @samp{_cmds} contain a semicolon-separated list of
-commands that are @code{eval}ed one after another.  If any of the
-commands return a nonzero exit status, libtool generally exits with an
-error message.
+Variables ending in @samp{_cmds} or @samp{_eval} contain a
+semicolon-separated list of commands that are @code{eval}ed one after
+another.  If any of the commands return a nonzero exit status, libtool
+generally exits with an error message.
 
 Variables ending in @samp{_spec} are @code{eval}ed before being used by
 libtool.

@@ -1,3 +1,8 @@
+Sat Feb  7 10:52:55 1998  Gordon Matzigkeit  <gord@profitpress.com>
+
+	* suffix.test (extensions): Added GNAT (GNU Ada Translator)
+	suffices, `.ada', `.ads', `.adb'.  From Samuel Tardieu.
+
 Fri Jan 23 01:28:06 1998  Gordon Matzigkeit  <gord@profitpress.com>
 
 	* Makefile.am (TESTS_ENVIRONMENT): Export some important
@@ -182,7 +187,7 @@ Fri Jan  3 23:15:22 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 Thu Jan  2 13:03:41 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* suffix.test: New test to guarantee that libtool compile
- 	recognizes valid source file suffixes.
+ 	recognizes valid source file suffices.
 
 Sun Dec  8 14:43:15 1996  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 

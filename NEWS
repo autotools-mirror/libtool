@@ -1,5 +1,10 @@
 NEWS - list of user-visible changes between releases of GNU Libtool
 
+New:
+* Now you should use the `AM_DISABLE_SHARED' or `AM_DISABLE_STATIC'
+  macros instead of the `enable_shared' or `enable_static' variables
+  if you wish to modify the default behaviour of `AM_PROG_LIBTOOL'.
+
 New in 1.0i - 1998-02-06, Gordon Matzigkeit:
 * Bug fixes.
 * Inter-library dependencies are automatically handled when linking
