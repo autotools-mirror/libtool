@@ -3150,6 +3150,11 @@ executables}.  This test checks the conditions under which your system
 linker hardcodes the library location, and guarantees that they
 correspond to libtool's own notion of how your linker behaves.
 
+@item noinst-link.test
+@pindex noinst-link.test
+Checks whether libtool will not try to link with a previously installed
+version of a library when it should be linking with a just-built one.
+
 @item link.test
 @pindex link.test
 This test guarantees that linking directly against a non-libtool static

@@ -22,7 +22,7 @@ TESTS = cdemo-static.test cdemo-make.test cdemo-exec.test \
 	depdemo-inst.test depdemo-unst.test \
 	cdemo-shared.test cdemo-make.test cdemo-exec.test \
 	demo-shared.test demo-make.test demo-exec.test demo-inst.test \
-	hardcode.test build-relink.test demo-unst.test \
+	hardcode.test build-relink.test noinst-link.test demo-unst.test \
 	depdemo-shared.test depdemo-make.test depdemo-exec.test \
 	depdemo-inst.test depdemo-unst.test \
 	mdemo-shared.test mdemo-make.test mdemo-exec.test \
