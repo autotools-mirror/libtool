@@ -1,3 +1,12 @@
+1999-01-07  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
+
+	* ltmain.sh (cygwin, allow_undefined): Unfortunately, there are
+	problems with the above when trying to make a dll which has
+	undefined symbols, in which case not even a static library is
+	built.  For now, we need to specify -no-undefined on the libtool
+	link line when we can be certain that all symbols are satisfied,
+	otherwise we get a static library.
+
 1999-01-06  Thomas Tanner  <tanner@gmx.de>
 
 	* ChangeLog: merged in tests/ChangeLog
