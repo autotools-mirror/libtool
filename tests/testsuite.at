@@ -66,3 +66,5 @@ m4_include([am-subdir.at])
 m4_include([functests.at])
 # Test that inherited_linker_flags in the .la actually gets used.
 m4_include([inherited_flags.at])
+# stress test
+m4_include([stresstest.at])

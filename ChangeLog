@@ -1,3 +1,10 @@
+2005-02-03  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* tests/Makefile.am, tests/testsuite.at, tests/stresstest.at:
+	New test.  Stresses several combinations of link flags and
+	path specifications.  Uses several data types to test linkage
+	against symbols in all kinds of (e.g., ELF) sections.
+
 2005-02-03  Reid Spencer  <reid@x10sys.com>,
 	    Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
