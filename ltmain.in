@@ -1497,13 +1497,13 @@ EOF
 	continue
 	;;
 
-      # gcc -m* arguments should be passed to the linker via $compiler_flags
-      # in order to pass architecture information to the linker
-      # (e.g. 32 vs 64-bit).  This may also be accomplished via -Wl,-mfoo
-      # but this is not reliable with gcc because gcc may use -mfoo to
-      # select a different linker, different libraries, etc, while
-      # -Wl,-mfoo simply passes -mfoo to the linker.
-      -m*)
+      # -64, -mips[0-9] enable 64-bit mode on the SGI compiler
+      # -xarch=*, -xtarget=* enable 64-bit mode on the Sun compiler
+      # +DA*, +DD* enable 64-bit mode on the HP compiler
+      # -q* pass through compiler args for the IBM compiler
+      # -m* pass through architecture-specific compiler args for GCC
+      -64|-mips[[0-9]]|-xarch=*|-xtarget=*|+DA*|+DD*|-q*|-m*)
+
 	# Unknown arguments in both finalize_command and compile_command need
 	# to be aesthetically quoted because they are evaled later.
 	arg=`$echo "X$arg" | $Xsed -e "$sed_quote_subst"`

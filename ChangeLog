@@ -1,3 +1,8 @@
+2004-11-29   Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
+	* ltmain.in: Allow some compiler/linker flags through unchecked.
+	Backport of patch `2004-09-14 Albert Chin-A-Young' from branch-2-0.
+
 2004-11-24  Jeff Squyres <jsquyres@lam-mpi.org>
 
 	* libtool.m4 [linux] (AC_LIBTOOL_LANG_CXX_CONFIG,
