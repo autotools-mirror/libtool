@@ -663,7 +663,7 @@ if test "$with_gcc" = yes; then
   link_static_flag='-static'
 
   case "$host_os" in
-  beos* | irix5* | irix6* | osf3* | osf4*)
+  beos* | irix5* | irix6* | osf3* | osf4* | osf5*)
     # PIC is the default for these OSes.
     ;;
   aix*)
@@ -718,7 +718,7 @@ else
     # We can build DLLs from non-PIC.
     ;;
 
-  osf3* | osf4*)
+  osf3* | osf4* | osf5*)
     # All OSF/1 code is PIC.
     wl='-Wl,'
     link_static_flag='-non_shared'
@@ -1410,7 +1410,7 @@ else
     old_archive_from_new_cmds='emximp -o $objdir/$libname.a $objdir/$libname.def'
     ;;
 
-  osf3* | osf4*)
+  osf3* | osf4* | osf5*)
     if test "$with_gcc" = yes; then
       allow_undefined_flag=' ${wl}-expect_unresolved ${wl}\*'
       archive_cmds='$CC -shared${allow_undefined_flag} $libobjs $deplibs $linkopts ${wl}-soname ${wl}$soname `test -n "$verstring" && echo ${wl}-set_version ${wl}$verstring` ${wl}-update_registry ${wl}${objdir}/so_locations -o $lib'
@@ -1977,7 +1977,7 @@ os2*)
   shlibpath_var=LIBPATH
   ;;
 
-osf3* | osf4*)
+osf3* | osf4* | osf5*)
   version_type=osf
   need_version=no
   soname_spec='${libname}${release}.so'
