@@ -45,7 +45,7 @@ libdlloader_la_LIBADD	= $(LTLIBOBJS)
 
 ## Libltdl brings it all together:
 if INSTALL_LTDL
-include_HEADERS		= libltdl/ltdl.h
+include_HEADERS		= ltdl.h
 pkginclude_HEADERS	= libltdl/lt_system.h libltdl/lt_error.h \
 			  libltdl/lt_dlloader.h
 lib_LTLIBRARIES		+= libltdl.la
@@ -55,7 +55,7 @@ if CONVENIENCE_LTDL
 noinst_LTLIBRARIES	= libltdlc.la
 endif
 
-libltdl_la_SOURCES	= libltdl/ltdl.h ltdl.c \
+libltdl_la_SOURCES	= ltdl.h ltdl.c \
 			  libltdl/lt_dlloader.h lt_dlloader.c loaders/preopen.c
 libltdl_la_CPPFLAGS	= -DLTDLOPEN=libltdl $(AM_CPPFLAGS)
 libltdl_la_LDFLAGS	=  $(VERSION_INFO) $(LT_DLPREOPEN)
