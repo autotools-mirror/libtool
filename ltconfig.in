@@ -764,16 +764,26 @@ fi
 
 # Check to see if options -o and -c are simultaneously supported by compiler
 echo $ac_n "checking if $compiler supports -c -o file.o... $ac_c" 1>&6
+$rm -r conftest 2>/dev/null
+mkdir conftest
+cd conftest
 $rm conftest*
 echo "int some_variable = 0;" > conftest.c
+mkdir out
+# According to Tom Tromey, Ian Lance Taylor reported there are C compilers
+# that will create temporary files in the current directory regardless of
+# the output directory.  Thus, making CWD read-only will cause this test
+# to fail, enabling locking or at least warning the user not to do parallel
+# builds.
+chmod -w .
 save_CFLAGS="$CFLAGS"
-CFLAGS="$CFLAGS -c -o conftest2.o"
+CFLAGS="$CFLAGS -o out/conftest2.o"
 echo "$progname:@LINENO@: checking if $compiler supports -c -o file.o" >&5
-if { (eval echo $progname:@LINENO@: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>conftest.err; } && test -s conftest2.o; then
+if { (eval echo $progname:@LINENO@: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>out/conftest.err; } && test -s out/conftest2.o; then
 
   # The compiler can only warn and ignore the option if not recognized
   # So say no if there are warnings
-    if test -s conftest.err; then
+    if test -s out/conftest.err; then
       echo "$ac_t"no 1>&6
       compiler_c_o=no
     else
@@ -782,12 +792,17 @@ if { (eval echo $progname:@LINENO@: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>
     fi
 else
   # Append any errors to the config.log.
-  cat conftest.err 1>&5
+  cat out/conftest.err 1>&5
   compiler_c_o=no
   echo "$ac_t"no 1>&6
 fi
 CFLAGS="$save_CFLAGS"
-$rm conftest*
+chmod u+w .
+$rm conftest* out/*
+rmdir out
+cd ..
+rmdir conftest
+$rm -r conftest 2>/dev/null
 
 if test x"$compiler_c_o" = x"yes"; then
   # Check to see if we can write to a .lo
