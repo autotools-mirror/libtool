@@ -1,3 +1,11 @@
+2000-07-24  Raja R Harinath  <harinath@cs.umn.edu>
+
+	* tests/Makefile.am (COMMON_TESTS): New variable.
+	(CXX_TESTS): Define unconditionally.
+	(TESTS): Move all tests to COMMON_TESTS, and conditionally
+	include CXX_TESTS.
+	(EXTRA_DIST): Don't use $(TESTS).
+
 2000-07-24  Alexandre Oliva  <oliva@lsd.ic.unicamp.br>
 
 	* ltcf-c.sh (linkopts): Don't set for test.

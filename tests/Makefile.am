@@ -2,14 +2,13 @@
 
 AUTOMAKE_OPTIONS = gnits
 
-if HAVE_CXX
 CXX_TESTS = \
 	tagdemo-static.test tagdemo-make.test tagdemo-exec.test \
 	tagdemo-conf.test tagdemo-make.test tagdemo-exec.test \
 	tagdemo-shared.test tagdemo-make.test tagdemo-exec.test
-endif
 
-TESTS = cdemo-static.test cdemo-make.test cdemo-exec.test \
+COMMON_TESTS = \
+	cdemo-static.test cdemo-make.test cdemo-exec.test \
 	demo-static.test demo-make.test demo-exec.test \
 	demo-inst.test demo-unst.test \
 	depdemo-static.test depdemo-make.test depdemo-exec.test \
@@ -37,7 +36,13 @@ TESTS = cdemo-static.test cdemo-make.test cdemo-exec.test \
 	mdemo-shared.test mdemo-make.test mdemo-exec.test \
 	mdemo-inst.test mdemo-unst.test \
 	assign.test link.test link-2.test nomode.test \
-	quote.test sh.test suffix.test $(CXX_TESTS)
+	quote.test sh.test suffix.test
+
+if HAVE_CXX
+TESTS = $(COMMON_TESTS) $(CXX_TESTS)
+else
+TESTS = $(COMMON_TESTS)
+endif
 
 demo-conf.test: $(top_builddir)/libtool
 
@@ -55,7 +60,7 @@ TESTS_ENVIRONMENT = CC="$(CC)" CFLAGS="$(CFLAGS)" CPPFLAGS="$(CPPFLAGS)" \
 	LD="$(LD)" LDFLAGS="$(LDFLAGS)" LIBS="$(LIBS)" \
 	LN_S="$(LN_S)" NM="$(NM)" RANLIB="$(RANLIB)"
 
-EXTRA_DIST = defs $(TESTS)
+EXTRA_DIST = defs $(COMMON_TESTS) $(CXX_TESTS)
 
 # We need to remove any files that the above tests created.
 clean-local:
