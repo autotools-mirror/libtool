@@ -1,4 +1,4 @@
-g/* ltdl.c -- system independent dlopen wrapper
+/* ltdl.c -- system independent dlopen wrapper
    Copyright (C) 1998-2000 Free Software Foundation, Inc.
    Originally by Thomas Tanner <tanner@ffii.org>
    This file is part of GNU Libtool.
