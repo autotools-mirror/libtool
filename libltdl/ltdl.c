@@ -1,5 +1,5 @@
 /* ltdl.c -- system independent dlopen wrapper
-   Copyright (C) 1998 Thomas Tanner <tanner@gmx.de>
+   Copyright (C) 1998-1999 Thomas Tanner <tanner@gmx.de>
    This file is part of GNU Libtool.
 
 This library is free software; you can redistribute it and/or

@@ -1,5 +1,5 @@
 /* hello.c -- trivial test function for libfoo
-   Copyright (C) 1996 Free Software Foundation, Inc.
+   Copyright (C) 1996-1999 Free Software Foundation, Inc.
    This file is part of GNU Libtool.
 
 This program is free software; you can redistribute it and/or modify

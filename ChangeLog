@@ -1,3 +1,12 @@
+1998-12-31  Thomas Tanner  <tanner@gmx.de>
+
+	* verified all copyright notices 
+	  and updated them to 1999
+	* TODO: added some things that need to documented
+	* doc/libtool.texi: -export-symbols is not 
+	  supported on all platforms
+	* doc/PLATFORMS: added a few new platforms
+	
 1998-12-30  Thomas Tanner  <tanner@gmx.de>
 
 	* NEWS: updated

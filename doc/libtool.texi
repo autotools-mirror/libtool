@@ -23,7 +23,7 @@
 @ifinfo
 This file documents GNU Libtool @value{VERSION}
 
-Copyright (C) 1996-1998 Free Software Foundation, Inc.
+Copyright (C) 1996-1999 Free Software Foundation, Inc.
 
 Permission is granted to make and distribute verbatim copies of this
 manual provided the copyright notice and this permission notice are
@@ -55,7 +55,7 @@ approved by the Foundation.
 
 @page
 @vskip 0pt plus 1filll
-Copyright @copyright{} 1996-1998 Free Software Foundation, Inc.
+Copyright @copyright{} 1996-1999 Free Software Foundation, Inc.
 
 Permission is granted to make and distribute verbatim copies of this
 manual provided the copyright notice and this permission notice are
@@ -1156,7 +1156,8 @@ Allow symbols from @var{output-file} to be resolved with @code{dlsym}
 @item -export-symbols @var{symfile}
 Tells the linker to export only the symbols listed in @var{symfile}. 
 The symbol file should end in @samp{.sym} and must contain the name of one 
-symbol per line. This option does not work for modules.
+symbol per line. This option does not work for modules and is not
+supported on all platforms.
 By default all symbols are exported.
 
 @item -L@var{libdir}

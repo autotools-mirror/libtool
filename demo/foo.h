@@ -1,5 +1,5 @@
 /* foo.h -- interface to the libfoo library
-   Copyright (C) 1996 Free Software Foundation, Inc.
+   Copyright (C) 1996-1999 Free Software Foundation, Inc.
    Gordon Matzigkeit <gord@gnu.ai.mit.edu>, 1996
    This file is part of GNU Libtool.
 
