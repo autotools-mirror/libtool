@@ -2062,7 +2062,26 @@ compiler."
 	  eval tmp_libs=\"\$$var\"
 	  new_libs=
 	  for deplib in $tmp_libs; do
-	    new_libs="$deplib $new_libs"
+	    # FIXME: Pedantically, this is the right thing to do, so
+	    #        that some nasty dependency loop isn't accidentally
+	    #        broken:
+	    #new_libs="$deplib $new_libs"
+	    # Pragmatically, this seems to cause very few problems in
+	    # practice:
+	    case $deplib in
+            -L*) new_libs="$deplib $new_libs" ;;
+            *)
+              case " $specialdeplibs " in
+              *" $deplib "*) new_libs="$deplib $new_libs" ;;
+              *)
+                case " $new_libs " in
+                *" $deplib "*) ;;
+                *) new_libs="$deplib $new_libs" ;;
+                esac
+                ;;
+              esac
+              ;;
+            esac
 	  done
 	  tmp_libs=
 	  for deplib in $new_libs; do
