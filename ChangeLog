@@ -1,3 +1,8 @@
+2002-07-16  Gary V. Vaughan  <gary@gnu.org>
+
+	* libltdl/ltdl.c (tryall_dlopen): We need to catch missing file
+	errors early so that file_not_found() can detect what happened.
+
 2002-06-26  Bob Friesenhahn  <bfreisen@simple.dallas.tx.us>
 
 	* libtool.m4 (AC_LIBTOOL_SYS_DYNAMIC_LINKER) [mingw]: Remove

@@ -1910,6 +1910,15 @@ tryall_dlopen (handle, filename)
   cur = *handle;
   if (filename)
     {
+      /* We need to catch missing file errors early so that
+	 file_not_found() can detect what happened. */
+      if (access (filename, R_OK) != 0)
+	{
+	  LT_DLMUTEX_SETERROR (LT_DLSTRERROR (FILE_NOT_FOUND));
+	  ++errors;
+	  goto done;
+	}
+
       cur->info.filename = lt_estrdup (filename);
       if (!cur->info.filename)
 	{
