@@ -1,3 +1,10 @@
+2004-12-13  Albert Chin-A-Young  <china@thewrittenword.com>
+
+	* libtool.m4 (AC_LIBTOOL_LANG_CXX_CONFIG,
+	AC_LIBTOOL_PROG_LD_SHLIBS): Append -G to link command-line on AIX
+	to honor -brtl on command-line (runtime linking). Already done
+	for IBM C/C++ compilers.
+
 2004-12-10  Peter O'Gorman  <peter@pogma.com>
 
 	* ltmain.in (func_extract_archives,func_extract_an_archive): On 
