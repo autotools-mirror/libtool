@@ -146,6 +146,183 @@ esac
 _LT_AC_LTCONFIG_HACK
 ])
 
+# AC_LIBTOOL_SYS_GLOBAL_SYMBOL_PIPE
+# ---------------------------------
+AC_DEFUN(AC_LIBTOOL_SYS_GLOBAL_SYMBOL_PIPE,
+[AC_REQUIRE([AC_CANONICAL_HOST])
+AC_REQUIRE([AC_PROG_NM])
+AC_REQUIRE([AC_OBJEXT])
+# Check for command to grab the raw symbol name followed by C symbol from nm.
+AC_MSG_CHECKING([command to parse $NM output])
+AC_CACHE_VAL([ac_cv_sys_global_symbol_pipe], [dnl
+
+# These are sane defaults that work on at least a few old systems.
+# [They come from Ultrix.  What could be older than Ultrix?!! ;)]
+
+# Character class describing NM global symbol codes.
+[symcode='[BCDEGRST]']
+
+# Regexp to match symbols that can be accessed directly from C.
+[sympat='\([_A-Za-z][_A-Za-z0-9]*\)']
+
+# Transform the above into a raw symbol and a C symbol.
+symxfrm='\1 \2\3 \3'
+
+# Transform an extracted symbol line into a proper C declaration
+ac_cv_global_symbol_to_cdecl="sed -n -e 's/^. .* \(.*\)$/extern char \1;/p'"
+
+# Define system-specific variables.
+case "$host_os" in
+aix*)
+  [symcode='[BCDT]']
+  ;;
+cygwin* | mingw* | pw32*)
+  [symcode='[ABCDGISTW]']
+  ;;
+hpux*) # Its linker distinguishes data from code symbols
+  ac_cv_global_symbol_to_cdecl="sed -n -e 's/^T .* \(.*\)$/extern char \1();/p' -e 's/^. .* \(.*\)$/extern char \1;/p'"
+  ;;
+irix*)
+  [symcode='[BCDEGRST]']
+  ;;
+solaris* | sysv5*)
+  [symcode='[BDT]']
+  ;;
+sysv4)
+  [symcode='[DFNSTU]']
+  ;;
+esac
+
+# Handle CRLF in mingw tool chain
+opt_cr=
+case "$host_os" in
+mingw*)
+  opt_cr=`echo 'x\{0,1\}' | tr x '\015'` # option cr in regexp
+  ;;
+esac
+
+# If we're using GNU nm, then use its standard symbol codes.
+if $NM -V 2>&1 | egrep '(GNU|with BFD)' > /dev/null; then
+  [symcode='[ABCDGISTW]']
+fi
+
+# Try without a prefix undercore, then with it.
+for ac_symprfx in "" "_"; do
+
+  # Write the raw and C identifiers.
+[ac_cv_sys_global_symbol_pipe="sed -n -e 's/^.*[ 	]\($symcode\)[ 	][ 	]*\($ac_symprfx\)$sympat$opt_cr$/$symxfrm/p'"]
+
+  # Check to see that the pipe works correctly.
+  pipe_works=no
+  rm -f conftest*
+  cat > conftest.c <<EOF
+#ifdef __cplusplus
+extern "C" {
+#endif
+char nm_test_var;
+void nm_test_func(){}
+#ifdef __cplusplus
+}
+#endif
+main(){nm_test_var='a';nm_test_func();return(0);}
+EOF
+
+  if AC_TRY_EVAL(ac_compile); then
+    # Now try to grab the symbols.
+    nlist=conftest.nm
+    if AC_TRY_EVAL(NM conftest.$ac_objext \| $ac_cv_sys_global_symbol_pipe \> $nlist) && test -s "$nlist"; then
+      # Try sorting and uniquifying the output.
+      if sort "$nlist" | uniq > "$nlist"T; then
+	mv -f "$nlist"T "$nlist"
+      else
+	rm -f "$nlist"T
+      fi
+
+      # Make sure that we snagged all the symbols we need.
+      if egrep ' nm_test_var$' "$nlist" >/dev/null; then
+	if egrep ' nm_test_func$' "$nlist" >/dev/null; then
+	  cat <<EOF > conftest.c
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+EOF
+	  # Now generate the symbol file.
+	  eval "$ac_cv_global_symbol_to_cdecl"' < "$nlist" >> conftest.c'
+
+	  cat <<EOF >> conftest.c
+#if defined (__STDC__) && __STDC__
+# define lt_ptr_t void *
+#else
+# define lt_ptr_t char *
+# define const
+#endif
+
+/* The mapping between symbol names and symbols. */
+const struct {
+  const char *name;
+  lt_ptr_t address;
+}
+[lt_preloaded_symbols[] =]
+{
+EOF
+	  sed 's/^. \(.*\) \(.*\)$/  {"\2", (lt_ptr_t) \&\2},/' < "$nlist" >> conftest.c
+	  cat <<\EOF >> conftest.c
+  {0, (lt_ptr_t) 0}
+};
+
+#ifdef __cplusplus
+}
+#endif
+EOF
+	  # Now try linking the two files.
+	  mv conftest.$ac_objext conftstm.$ac_objext
+	  save_LIBS="$LIBS"
+	  save_CFLAGS="$CFLAGS"
+	  LIBS="conftstm.$ac_objext"
+	  CFLAGS="$CFLAGS$no_builtin_flag"
+	  if AC_TRY_EVAL(ac_link) && test -s conftest; then
+	    pipe_works=yes
+	  fi
+	  LIBS="$save_LIBS"
+	  CFLAGS="$save_CFLAGS"
+	else
+	  echo "cannot find nm_test_func in $nlist" >&AC_FD_CC
+	fi
+      else
+	echo "cannot find nm_test_var in $nlist" >&AC_FD_CC
+      fi
+    else
+      echo "cannot run $ac_cv_sys_global_symbol_pipe" >&AC_FD_CC
+    fi
+  else
+    echo "$progname: failed program was:" >&AC_FD_CC
+    cat conftest.c >&5
+  fi
+  rm -f conftest* conftst*
+
+  # Do not use the global_symbol_pipe unless it works.
+  if test "$pipe_works" = yes; then
+    break
+  else
+    ac_cv_sys_global_symbol_pipe=
+    ac_cv_global_symbol_to_cdecl=
+  fi
+done
+])
+global_symbol_pipe="$ac_cv_sys_global_symbol_pipe"
+if test -z "$ac_cv_sys_global_symbol_pipe"; then
+  global_symbol_to_cdecl=
+else
+  global_symbol_to_cdecl="$ac_cv_global_symbol_to_cdecl"
+fi
+if test -z "$global_symbol_pipe$global_symbol_to_cdecl"; then
+  AC_MSG_RESULT(failed)
+else
+  AC_MSG_RESULT(ok)
+fi
+]) # AC_LIBTOOL_SYS_GLOBAL_SYMBOL_PIPE
+
 # _LT_AC_LIBTOOL_SYS_PATH_SEPARATOR
 # ---------------------------------
 AC_DEFUN([_LT_AC_LIBTOOL_SYS_PATH_SEPARATOR],
@@ -318,7 +495,8 @@ AC_SUBST(ECHO)
 AC_DIVERT_POP
 ])# _LT_AC_PROG_ECHO_BACKSLASH
 
-AC_DEFUN([_LT_AC_LTCONFIG_HACK], [dnl
+AC_DEFUN([_LT_AC_LTCONFIG_HACK],
+[AC_REQUIRE([AC_LIBTOOL_SYS_GLOBAL_SYMBOL_PIPE])
 # Sed substitution that helps us do robust quoting.  It backslashifies
 # metacharacters that are still active within double-quoted strings.
 Xsed='sed -e s/^X//'
@@ -362,7 +540,7 @@ test -z "$NM" && NM=nm
 test -z "$OBJDUMP" && OBJDUMP=objdump
 test -z "$RANLIB" && RANLIB=:
 test -z "$STRIP" && STRIP=:
-test -z "$objext" && objext=o
+test -z "$ac_objext" && ac_objext=o
 
 if test x"$host" != x"$build"; then
   ac_tool_prefix=${host_alias}-
@@ -883,9 +1061,9 @@ EOF
     # recent cygwin and mingw systems supply a stub DllMain which the user
     # can override, but on older systems we have to supply one (in ltdll.c)
     if test "x$lt_cv_need_dllmain" = "xyes"; then
-      ltdll_obj='$output_objdir/$soname-ltdll.'"$objext "
+      ltdll_obj='$output_objdir/$soname-ltdll.'"$ac_objext "
       ltdll_cmds='test -f $output_objdir/$soname-ltdll.c || sed -e "/^# \/\* ltdll\.c starts here \*\//,/^# \/\* ltdll.c ends here \*\// { s/^# //; p; }" -e d < [$]0 > $output_objdir/$soname-ltdll.c~
-	test -f $output_objdir/$soname-ltdll.$objext || (cd $output_objdir && $CC -c $soname-ltdll.c)~'
+	test -f $output_objdir/$soname-ltdll.$ac_objext || (cd $output_objdir && $CC -c $soname-ltdll.c)~'
     else
       ltdll_obj=
       ltdll_cmds=
@@ -1668,177 +1846,6 @@ test "$dynamic_linker" = no && can_build_shared=no
 
 ## FIXME: this should be a separate macro
 ##
-# Check for command to grab the raw symbol name followed by C symbol from nm.
-AC_MSG_CHECKING([command to parse $NM output])
-AC_CACHE_VAL([ac_cv_sys_global_symbol_pipe], [dnl
-
-# These are sane defaults that work on at least a few old systems.
-# [They come from Ultrix.  What could be older than Ultrix?!! ;)]
-
-# Character class describing NM global symbol codes.
-symcode='[[BCDEGRST]]'
-
-# Regexp to match symbols that can be accessed directly from C.
-[sympat='\([_A-Za-z][_A-Za-z0-9]*\)']
-
-# Transform the above into a raw symbol and a C symbol.
-symxfrm='\1 \2\3 \3'
-
-# Transform an extracted symbol line into a proper C declaration
-global_symbol_to_cdecl="sed -n -e 's/^. .* \(.*\)$/extern char \1;/p'"
-
-# Define system-specific variables.
-case "$host_os" in
-aix*)
-  [symcode='[BCDT]']
-  ;;
-cygwin* | mingw* | pw32*)
-  [symcode='[ABCDGISTW]']
-  ;;
-hpux*) # Its linker distinguishes data from code symbols
-  global_symbol_to_cdecl="sed -n -e 's/^T .* \(.*\)$/extern char \1();/p' -e 's/^. .* \(.*\)$/extern char \1;/p'"
-  ;;
-irix*)
-  [symcode='[BCDEGRST]']
-  ;;
-solaris* | sysv5*)
-  [symcode='[BDT]']
-  ;;
-sysv4)
-  [symcode='[DFNSTU]']
-  ;;
-esac
-
-# Handle CRLF in mingw tool chain
-opt_cr=
-case "$host_os" in
-mingw*)
-  opt_cr=`echo 'x\{0,1\}' | tr x '\015'` # option cr in regexp
-  ;;
-esac
-
-# If we're using GNU nm, then use its standard symbol codes.
-if $NM -V 2>&1 | egrep '(GNU|with BFD)' > /dev/null; then
-  [symcode='[ABCDGISTW]']
-fi
-
-# Try without a prefix undercore, then with it.
-for ac_symprfx in "" "_"; do
-
-  # Write the raw and C identifiers.
-[ac_cv_sys_global_symbol_pipe="sed -n -e 's/^.*[ 	]\($symcode\)[ 	][ 	]*\($ac_symprfx\)$sympat$opt_cr$/$symxfrm/p'"]
-
-  # Check to see that the pipe works correctly.
-  pipe_works=no
-  $rm conftest*
-  cat > conftest.c <<EOF
-#ifdef __cplusplus
-extern "C" {
-#endif
-char nm_test_var;
-void nm_test_func(){}
-#ifdef __cplusplus
-}
-#endif
-main(){nm_test_var='a';nm_test_func();return(0);}
-EOF
-
-  if AC_TRY_EVAL(ac_compile); then
-    # Now try to grab the symbols.
-    nlist=conftest.nm
-    if AC_TRY_EVAL(NM conftest.$ac_objext \| $ac_cv_sys_global_symbol_pipe \> $nlist) && test -s "$nlist"; then
-      # Try sorting and uniquifying the output.
-      if sort "$nlist" | uniq > "$nlist"T; then
-	mv -f "$nlist"T "$nlist"
-      else
-	rm -f "$nlist"T
-      fi
-
-      # Make sure that we snagged all the symbols we need.
-      if egrep ' nm_test_var$' "$nlist" >/dev/null; then
-	if egrep ' nm_test_func$' "$nlist" >/dev/null; then
-	  cat <<EOF > conftest.c
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-EOF
-	  # Now generate the symbol file.
-	  eval "$global_symbol_to_cdecl"' < "$nlist" >> conftest.c'
-
-	  cat <<EOF >> conftest.c
-#if defined (__STDC__) && __STDC__
-# define lt_ptr_t void *
-#else
-# define lt_ptr_t char *
-# define const
-#endif
-
-/* The mapping between symbol names and symbols. */
-const struct {
-  const char *name;
-  lt_ptr_t address;
-}
-[lt_preloaded_symbols[] =]
-{
-EOF
-	  sed 's/^. \(.*\) \(.*\)$/  {"\2", (lt_ptr_t) \&\2},/' < "$nlist" >> conftest.c
-	  cat <<\EOF >> conftest.c
-  {0, (lt_ptr_t) 0}
-};
-
-#ifdef __cplusplus
-}
-#endif
-EOF
-	  # Now try linking the two files.
-	  mv conftest.$objext conftstm.$objext
-	  save_LIBS="$LIBS"
-	  save_CFLAGS="$CFLAGS"
-	  LIBS="conftstm.$ac_objext"
-	  CFLAGS="$CFLAGS$no_builtin_flag"
-	  if AC_TRY_EVAL(ac_link) && test -s conftest; then
-	    pipe_works=yes
-	  fi
-	  LIBS="$save_LIBS"
-	  CFLAGS="$save_CFLAGS"
-	else
-	  echo "cannot find nm_test_func in $nlist" >&AC_FD_CC
-	fi
-      else
-	echo "cannot find nm_test_var in $nlist" >&AC_FD_CC
-      fi
-    else
-      echo "cannot run $ac_cv_sys_global_symbol_pipe" >&AC_FD_CC
-    fi
-  else
-    echo "$progname: failed program was:" >&AC_FD_CC
-    cat conftest.c >&5
-  fi
-  $rm conftest* conftst*
-
-  # Do not use the global_symbol_pipe unless it works.
-  if test "$pipe_works" = yes; then
-    break
-  else
-    ac_cv_sys_global_symbol_pipe=
-  fi
-done
-])
-global_symbol_pipe="$ac_cv_sys_global_symbol_pipe"
-if test -z "$ac_cv_sys_global_symbol_pipe"; then
-  global_symbol_to_cdecl=
-fi
-if test "$pipe_works" = yes; then
-  AC_MSG_RESULT(ok)
-else
-  AC_MSG_RESULT(failed)
-fi
-##
-## END FIXME
-
-## FIXME: this should be a separate macro
-##
 # Report the final consequences.
 AC_MSG_CHECKING([if libtool supports shared libraries])
 AC_MSG_RESULT([$can_build_shared])
@@ -2205,7 +2212,7 @@ reload_cmds=$lt_reload_cmds
 wl=$lt_wl
 
 # Object file suffix (normally "o").
-objext="$objext"
+objext="$ac_objext"
 
 # Old archive suffix (normally "a").
 libext="$libext"

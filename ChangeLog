@@ -1,5 +1,13 @@
 2000-09-16  Gary V. Vaughan  <gvv@techie.com>
 
+	* ltdl.m4 (AC_LTDL_DLPREOPEN): require the libtool.m4 symbol_pipe
+	macro.
+	(AC_LTDL_SYMBOL_USCORE): ditto.
+	(AC_LTDL_GLOBAL_SYMBOL_PIPE): Removed, since it is a duplicate
+	of...
+	* libtool.m4 (AC_LIBTOOL_SYS_GLOBAL_SYMBOL_PIPE): ...this new
+	macro, extracted from _LT_AC_LTCONFIG_HACK.
+	
 	* ltdl.m4 (changequote): An audit of changequote and m4
 	quote usage -- all changequotes have been removed, and some
 	latent unquoted `[' and `]' bugs have been fixed.
