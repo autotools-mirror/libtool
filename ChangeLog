@@ -1,42 +1,43 @@
-Sun Dec  5 19:45:22 1999  Ossama Othman  <othman@cs.wustl.edu>
+1999-12-06  Ossama Othman  <ossama@debian.org>
 
-	* libtool.m4:
+	* ltcf-c.sh: split off the osf3 section, so that the osf4 and osf5
+	sections can add `-msym' to arguments passed to the linker for
+	shared libs.
+	Reported by Tim Mooney  <mooney@dogbert.cc.ndsu.NoDak.edu>
 
-	Temporarily reset the test language to C just before calling
-	AC_OBJEXT and AC_EXEEXT and then restore the previous one when
-	done, instead of doing an AC_BEFORE(...AC_LANG_CPLUSPLUS...).  A
-	warning would always occur anyway because AC_PROG_CXX calls
-	AC_LANG_CPLUSPLUS.
+1999-12-05  Ossama Othman  <ossama@debian.org>
 
-Sun Dec  5 16:34:04 1999  Ossama Othman  <othman@cs.wustl.edu>
+	* libtool.m4 (AC_LIBTOOL_SETUP): Temporarily reset the test
+	language to C just before calling AC_OBJEXT and AC_EXEEXT and then
+	restore the previous one when done, instead of doing an
+	AC_BEFORE(...AC_LANG_CPLUSPLUS...).  A warning would always occur
+	anyway because AC_PROG_CXX calls AC_LANG_CPLUSPLUS.
 
-	* libtool.m4:
+1999-12-05  Ossama Othman  <ossama@debian.org>
 
-	Make sure AC_LIBTOOL_SETUP is called before any macros that set
-	the autoconf test language (e.g. AC_LANG_CPLUSPLUS).  Autoconf's
-	AC_EXEEXT macro only works for C compilers.  AC_EXEEXT gets
-	confused and thinks that an extension such as the C++ source file
-	extenstion ".C" is an executable file extension, which screws up
-	the libtool configuration.
+	* libtool.m4 (AC_LIBTOOL_SETUP): Make sure AC_LIBTOOL_SETUP is
+	called before any macros that set the autoconf test language
+	(e.g. AC_LANG_CPLUSPLUS).  Autoconf's AC_EXEEXT macro only works
+	for C compilers.  AC_EXEEXT gets confused and thinks that an
+	extension such as the C++ source file extenstion ".C" is an
+	executable file extension, which screws up the libtool
+	configuration.
 
 	Pass the same autoconf variables used in the main ltconfig run to
 	the ltconfig configuration tag run (with the exception of a few).
 	This probably isn't necessary but I think it is a good idea to do
 	so.
 
-	* ltconfig.in:
+	* ltconfig.in: The tagged configuration was being cached and
+	overwriting the C compiler cached configuration.  For now,
+	the tagged configuration will not be cached.
 
-	The tagged configuration was being cached and overwriting the C
-	compiler cached configuration.  For now, the tagged configuration
-	will not be cached.
+1999-12-04  Ossama Othman  <ossama@debian.org>
 
-Sat Dec  4 18:59:57 1999  Ossama Othman  <othman@cs.wustl.edu>
+	* ltconfig.in: Made "appending to libtool" message more
+	descriptive.
 
-	* ltconfig.in:
-
-	Made "appending to libtool" message more descriptive.
-
-Sat Dec  4 18:26:02 1999  Ossama Othman  <othman@cs.wustl.edu>
+1999-12-04  Ossama Othman  <ossama@debian.org>
 
 	With this latest set of updates I was able to build a C++ shared
 	library using a C++ configuration tag for g++ on Linux!  Some may
@@ -44,30 +45,26 @@ Sat Dec  4 18:26:02 1999  Ossama Othman  <othman@cs.wustl.edu>
 	constructors appear to work now, whereas prior to the addition of
 	the multi-language support patches they didn't.
 
-	* libtool.m4:
-
-	Made invocation of ltconfig in AC_LIBTOOL_CXX macro more like the
-	one in AC_PROG_LIBTOOL.  This adds some ILD related flags to the
-	invocation, in addition to providing the $libtool_flags to
+	* libtool.m4 (AC_LIBTOOL_CXX): Made invocation of ltconfig more
+	like the one in AC_PROG_LIBTOOL.  This adds some ILD related flags
+	to the invocation, in addition to providing the $libtool_flags to
 	ltconfig that was previously in AC_PROG_LIBTOOL (via
 	AC_LIBTOOL_SETUP).  This fixes an ILD related bug with the C++
 	support, and also fixes a problem where both the static and shared
 	libraries were being built even if one of them was explicitly
 	disabled.
 	
-	* ltcf-cxx.sh:
+	* ltcf-cxx.sh: Make sure $ac_cv_prog_cc_pic_works and
+	$ac_cv_prog_cc_static_works are unset since their C compiler
+	cached values will override their C++ compiler specific values.
+	Note that it was not enough to reset their values.  They had to be
+	unset.
 
-	Make sure $ac_cv_prog_cc_pic_works and $ac_cv_prog_cc_static_works
-	are unset since their C compiler cached values will override their
-	C++ compiler specific values.  Note that it was not enough to
-	reset their values.  They had to be unset.
+1999-12-04  Ossama Othman  <ossama@debian.org>
 
-Sat Dec  4 14:31:24 1999  Ossama Othman  <ossama@debian.org>
-
-	* doc/libtool.texi:
-
-	Moved "LTCC" in "--add-tag" example before "CC" because users may
-	inadvertently do something like the following:
+	* doc/libtool.texi: Moved "LTCC" in "--add-tag" example before
+	"CC" because users may inadvertently do something like the
+	following:
 
 		CC=$CXX LTCC=$CC ./ltconfig --add-tag=...
 
@@ -75,19 +72,15 @@ Sat Dec  4 14:31:24 1999  Ossama Othman  <ossama@debian.org>
 	is incorrect since LTCC should be the C compiler.  Also added
 	documentation explaining this potential problem.
 
-	* Makefile.am:
+	* Makefile.am (EXTRA_DIST): Added ltcf-c.sh, ltcf-cxx.sh and
+	ChangeLog.1 to list of files to include in the distribution.
+	(pkgdata_DATA): Added ltcf-sh.sh and ltcf-cxx.sh to the list of
+	data files.
 
-	Added ltcf-c.sh, ltcf-cxx.sh and ChangeLog.1 to list of files to
-	include in the distribution.
-
-	Added ltcf-sh.sh and ltcf-cxx.sh to the list of data files.
-
-	* libtool.m4:
-
-	Change name of macro that enables C++ support in libtool from
-	"AC_LIBTOOL_CPP" to "AC_LIBTOOL_CXX."  "CPP" is typically
-	associated with preprocessors, whereas CXX is associated with C++
-	compilers.
+	* libtool.m4 (AC_LIBTOOL_CPP): Change name of macro that enables
+	C++ support in libtool from "AC_LIBTOOL_CPP" to "AC_LIBTOOL_CXX."
+	"CPP" is typically associated with preprocessors, whereas CXX is
+	associated with C++ compilers.
 
 	Moved LTCC before CC in call to ltconfig to make sure LTCC is not
 	set to the compiler pointed to by CC after CC has been reset to
@@ -99,36 +92,24 @@ Sat Dec  4 14:31:24 1999  Ossama Othman  <ossama@debian.org>
 	Save value of $CC and $CFLAGS before resetting them for use with
 	configuration tags.
 
-	* libtoolize.in:
+	* libtoolize.in (files): Added ltcf-c.sh to list of files related
+	to "libtoolization."  Until we decide if other compiler/language
+	libtool configuation scripts should also be included in the file
+	list, leave out ltcf-cxx.sh for now.
 
-	Added ltcf-c.sh to list of files related to "libtoolization."
-	Until we decide if other compiler/language libtool configuation
-	scripts should also be included in the file list, leave out
-	ltcf-cxx.sh for now.
+	* ltcf-cxx.sh (ld_shlibs): Disable shared library support for
+	currently unconfigured platforms. Updated IRIX, Linux and Solaris
+	link characteristics.  They now match more with their C compiler
+	counterparts.
 
-	* ltcf-cxx.sh:
+	* ltconfig.in: Corrected tag name variable in "END LIBTOOL TAG
+	CONFIG: $tagname" text.
 
-	Disable shared library support for currently unconfigured
-	platforms.
+1999-12-03  Ossama Othman  <ossama@debian.org>
 
-	Updated IRIX, Linux and Solaris link characteristics.  They now
-	match more with their C compiler counterparts.
-
-	* ltconfig.in:
-
-	Corrected tag name variable in "END LIBTOOL TAG CONFIG: $tagname"
-	text.
-
-Fri Dec  3 19:21:39 1999  Ossama Othman  <ossama@debian.org>
-
-	* Makefile.am:
-	* libtool.m4:
-	* ltconfig.in:
-	* ltmain.in:
-	* doc/libtool.texi
-	* tests/defs:
-
-	The beginnings of multi-compiler/language support in libtool.
+	* Makefile.am, libtool.m4, ltconfig.in, ltmain.in,
+	doc/libtool.texi, tests/defs: The beginnings of
+	multi-compiler/language support in libtool.
 
 	Integrated Alexandre's configuration tags patch, part of Thomas'
 	patch and part of my patch.
@@ -144,22 +125,18 @@ Fri Dec  3 19:21:39 1999  Ossama Othman  <ossama@debian.org>
 	Multi-compiler/language still isn't complete but testing is now
 	possible.
 
-	* ltcf-c.sh:
+	* ltcf-c.sh: Added this file.  It contains all of the C compiler
+	related configuration code that was previously in ltconfig.in.
+	This script is meant to be sourced by the ltconfig script alone.
+	It is not meant for use by the user.  Eventually, the contents of
+	this file will be moved to `libtool.m4'.
 
-	Added this file.  It contains all of the C compiler related
-	configuration code that was previously in ltconfig.in.  This
-	script is meant to be sourced by the ltconfig script alone.  It is
-	not meant for use by the user.  Eventually, the contents of this
-	file will be moved to `libtool.m4'.
-
-	* ltcf-cxx.sh:
-
-	Added this file.  It contains C++ compiler related configuration
-	code (e.g. C++ compiler as linker, etc).  It is meant to be used
-	when creating configuration tags using the newly added "--add-tag"
-	ltconfig option.  See the libtool documentation for more details.
-	Eventually, the contents of this file will be moved to
-	`libtool.m4'.
+	* ltcf-cxx.sh: Added this file.  It contains C++ compiler related
+	configuration code (e.g. C++ compiler as linker, etc).  It is
+	meant to be used	when creating configuration tags using the
+	newly added "--add-tag" ltconfig option.  See the libtool
+	documentation for more details.  Eventually, the contents of this
+	file will be moved to 	`libtool.m4'.
 
 	This script also includes support for extracting the objects and
 	libraries the compiler would use when linking a C++ binary.  This
