@@ -1,5 +1,8 @@
 2000-07-10  Alexandre Oliva  <aoliva@lsd.ic.unicamp.br>
 
+	* configure.in (AM_PROG_GCJ): Re-enable, with definition copied
+	from CVS automake.
+
 	* libtool.m4 (AM_PROG_GCJ): Quote it so that aclocal won't bring
 	it in if it only appears in libtool.m4.
 	(AC_PROG_LIBTOOL): Move AC_PROG_CXX, AC_PROG_GCJ and AM_PROG_GCJ
