@@ -1,3 +1,13 @@
+2004-01-22  Jeff Squyres  <jsquyres@lam-mpi.org>
+
+	* libtool.m4 (AC_LIBTOOL_PROG_CC_C_O): Some compilers (e.g. Intel
+	Linux icc compiler) write temporary files to the current
+	directory. These compilers do support -c and -o simultaneously but
+	wrongly fail the test due to the failure to create temporary
+	files. It is incorrect to penalize compilers which write temporary
+	files to the current directory so the 'chmod -w .' is therefore
+	removed.
+
 2004-01-21  Nick Hudson  <skrll@netbsd.org>
 
 	* m4/libtool.m4 (AC_LIBTOOL_SYS_DYNAMIC_LINKER) [netbsd*]: Remove
