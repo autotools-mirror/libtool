@@ -1,3 +1,7 @@
+1998-11-04  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* libtool.m4 (sco): fix typo
+
 1998-11-04  Ian Lance Taylor  <ian@cygnus.com>
 
 	* ltconfig.in: On AIX, don't treat GNU ld specially.
