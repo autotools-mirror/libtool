@@ -1,3 +1,8 @@
+1999-01-13  Manish Singh  <yosh@gimp.org>
+
+	* ltconfig.in (osf3*, osf4*, irix6*): include
+	${libname}{release}.so for library_names_spec
+
 1999-01-13  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* configure.in (AC_CONFIG_SUBDIRS): added cdemo
