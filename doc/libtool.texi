@@ -4367,7 +4367,11 @@ Use @samp{-PIC} to generate PIC.
 On all known systems, a reloadable object can be created by running
 @kbd{ld -r -o @var{output}.o @var{input1}.o @var{input2}.o}.  This
 reloadable object may be treated as exactly equivalent to other
-objects.
+objects.  This is the piecewise method that libtool uses to get around
+shell limitations when building large libraries.  The object files
+created by libtool are linked together in as few steps as necessary
+into a single reloadable object file.  This temporary object file
+is then used to generate a shared library.
 
 @node Archivers
 @subsection Archivers

@@ -216,6 +216,7 @@ need_locks=yes
 ac_ext=c
 libext=a
 cache_file=
+max_cmd_len=
 
 ## Dependencies to place before and after the object being linked:
 predep_objects=
@@ -773,6 +774,37 @@ wl="$ac_cv_prog_cc_wl"
 link_static_flag="$ac_cv_prog_cc_static"
 no_builtin_flag="$ac_cv_prog_cc_no_builtin"
 can_build_shared="$ac_cv_prog_cc_can_build_shared"
+
+# find the maximum length of command line arguments
+echo "$progname:@LINENO@: finding the maximum length of command line arguments" 1>&5
+echo $ac_n "finding the maximum length of command line arguments... $ac_c" 1>&6
+if test "${lt_cv_sys_max_cmd_len+set}" = set; then
+  echo $ac_n "(cached) $ac_c" 1>&6
+else
+  i=0
+  testring="ABCDEF"
+  while test `$CONFIG_SHELL $0 --fallback-echo "X$testring" >/dev/null 2>&1` == `echo "X$testring" >/dev/null 2>&1` &&
+          new_result=`expr "X$testring" : ".*" 2>&1` &&
+          lt_cv_sys_max_cmd_len=$new_result &&
+          test $i != 32 # 1 MB should be enough
+  do
+    i=`expr $i + 1`
+    testring=$testring$testring
+  done
+  testring=
+  # add a significant safety factor because C++ compilers can tack on massive amounts
+  # of additional arguments before passing them to the linker.  1/4 should be good.
+  len=`expr $lt_cv_sys_max_cmd_len \/ 4`
+  lt_cv_sys_max_cmd_len=`expr $lt_cv_sys_max_cmd_len - $len`
+fi
+echo "$progname:@lineno@: result: $lt_cv_sys_max_cmd_len" 1>&5
+echo "${ac_t}$lt_cv_sys_max_cmd_len" 1>&6
+
+if test -n $lt_cv_sys_max_cmd_len ; then
+  max_cmd_len=$lt_cv_sys_max_cmd_len
+else
+  max_cmd_len=none
+fi
 
 # Check to see if options -o and -c are simultaneously supported by compiler
 echo $ac_n "checking if $compiler supports -c -o file.$objext... $ac_c" 1>&6
@@ -2221,6 +2253,9 @@ exeext="$exeext"
 # Additional compiler flags for building library objects.
 pic_flag=$pic_flag
 pic_mode=$pic_mode
+
+# What is the maximum length of a command?
+max_cmd_len=$max_cmd_len
 
 # Does compiler simultaneously support -c and -o options?
 compiler_c_o=$compiler_c_o

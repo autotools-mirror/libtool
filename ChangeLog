@@ -1,3 +1,19 @@
+2001-02-22  Robert Boehne  <rboehne@ricardo-us.com>
+
+	* ltconfig.in: Add a test to find the approximate limit
+	to the length of command line arguments.  The number
+	calculated here should always be lower than the actual
+	limit.
+	* ltmain.in: Test the length of the command line to be
+	executed and use an incremtnal linking scheme if the
+	command is too long to be interpreted without error.
+	* doc: Test the length of the command line to be
+	executed and use an incremtnal linking scheme if the
+	command is too long to be interpreted without error.
+	* doc/libtool.texi (Reloadable Objects): Added a few
+	sentences to describe how piecewise linking is done
+	for shared objects by creating reloadable object files.
+
 2001-02-20  Gary Vaughan  <gvv@techie.com>
 
 	* libltdl/ltdl.c (lt_dlcaller_register): dont set an unsigned
