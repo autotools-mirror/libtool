@@ -1,3 +1,12 @@
+2000-12-23  Gary V. Vaughan  <gvv@techie.com>
+
+	From vvv@vsu.ru:
+	* doc/fdl.texi (GNU Free Documentation License): contained @bye
+	command which prevented part of document to be generated (indices,
+	etc).
+	* doc/libtool.texi (Dlpreopening): the @deftypevar did not contain
+	a space after a type.
+
 2000-12-22  Akim Demaille  <akim@epita.fr>
 
 	* libtool.m4: s/[ \t]*$//
