@@ -1,5 +1,8 @@
 1999-03-13  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* ltconfig.in (global_symbol_to_cdecl): was reset before trying
+	`symprfx=_', rendering the test with `_' useless
+
 	* doc/libtool.texi (AM_PROG_LIBTOOL): eliminate overfull boxes
 	
 	* doc/libtool.texi: complete dlopening/libltdl documentation

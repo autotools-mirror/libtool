@@ -1518,10 +1518,13 @@ EOF
     break
   else
     global_symbol_pipe=
-    global_symbol_to_cdecl=
   fi
 done
 echo "$ac_t$pipe_works" 1>&6
+
+if test -z "$global_symbol_pipe"; then
+  global_symbol_to_cdecl=
+fi
 
 # Check hardcoding attributes.
 echo $ac_n "checking how to hardcode library paths into programs... $ac_c" 1>&6
