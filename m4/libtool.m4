@@ -1342,12 +1342,12 @@ else
   mingw* | pw32*)
     lt_cv_dlopen="LoadLibrary"
     lt_cv_dlopen_libs=
-   ;;
+    ;;
 
   cygwin*)
     lt_cv_dlopen="dlopen"
     lt_cv_dlopen_libs=
-   ;;
+    ;;
 
   darwin*)
   # if libdl is installed we need to link against it
@@ -1357,7 +1357,7 @@ else
     lt_cv_dlopen_libs=
     lt_cv_dlopen_self=yes
     ])
-   ;;
+    ;;
 
   *)
     AC_CHECK_FUNC([shl_load],
@@ -1607,17 +1607,17 @@ if test -n "$STRIP" && $STRIP -V 2>&1 | $GREP "GNU strip" >/dev/null; then
 else
 # FIXME - insert some real tests, host_os isn't really good enough
   case $host_os in
-   darwin*)
-       if test -n "$STRIP" ; then
-         striplib="$STRIP -x"
-         old_striplib="$STRIP -S"
-         AC_MSG_RESULT([yes])
-       else
-         AC_MSG_RESULT([no])
-       fi
-       ;;
-   *)
-  AC_MSG_RESULT([no])
+  darwin*)
+    if test -n "$STRIP" ; then
+      striplib="$STRIP -x"
+      old_striplib="$STRIP -S"
+      AC_MSG_RESULT([yes])
+    else
+      AC_MSG_RESULT([no])
+    fi
+    ;;
+  *)
+    AC_MSG_RESULT([no])
     ;;
   esac
 fi
@@ -1908,7 +1908,7 @@ hpux9* | hpux10* | hpux11*)
   version_type=sunos
   need_lib_prefix=no
   need_version=no
-  case "$host_cpu" in
+  case $host_cpu in
   ia64*)
     shrext_cmds='.so'
     hardcode_into_libs=yes
@@ -1924,18 +1924,18 @@ hpux9* | hpux10* | hpux11*)
     fi
     sys_lib_dlsearch_path_spec=$sys_lib_search_path_spec
     ;;
-   hppa*64*)
-     shrext_cmds='.sl'
-     hardcode_into_libs=yes
-     dynamic_linker="$host_os dld.sl"
-     shlibpath_var=LD_LIBRARY_PATH # How should we handle SHLIB_PATH
-     shlibpath_overrides_runpath=yes # Unless +noenvvar is specified.
-     library_names_spec='${libname}${release}${shared_ext}$versuffix ${libname}${release}${shared_ext}$major $libname${shared_ext}'
-     soname_spec='${libname}${release}${shared_ext}$major'
-     sys_lib_search_path_spec="/usr/lib/pa20_64 /usr/ccs/lib/pa20_64"
-     sys_lib_dlsearch_path_spec=$sys_lib_search_path_spec
-     ;;
-   *)
+  hppa*64*)
+    shrext_cmds='.sl'
+    hardcode_into_libs=yes
+    dynamic_linker="$host_os dld.sl"
+    shlibpath_var=LD_LIBRARY_PATH # How should we handle SHLIB_PATH
+    shlibpath_overrides_runpath=yes # Unless +noenvvar is specified.
+    library_names_spec='${libname}${release}${shared_ext}$versuffix ${libname}${release}${shared_ext}$major $libname${shared_ext}'
+    soname_spec='${libname}${release}${shared_ext}$major'
+    sys_lib_search_path_spec="/usr/lib/pa20_64 /usr/ccs/lib/pa20_64"
+    sys_lib_dlsearch_path_spec=$sys_lib_search_path_spec
+    ;;
+  *)
     shrext_cmds='.sl'
     dynamic_linker="$host_os dld.sl"
     shlibpath_var=SHLIB_PATH
@@ -2538,7 +2538,7 @@ gnu*)
 
 hpux10.20* | hpux11*)
   lt_cv_file_magic_cmd=/usr/bin/file
-  case "$host_cpu" in
+  case $host_cpu in
   ia64*)
     lt_cv_deplibs_check_method='file_magic (s[[0-9]][[0-9]][[0-9]]|ELF-[[0-9]][[0-9]]) shared object file - IA64'
     lt_cv_file_magic_test_file=/usr/lib/hpux32/libc.so
@@ -3008,7 +3008,7 @@ m4_if([$1], [CXX], [
     hpux*)
       # PIC is the default for IA64 HP-UX and 64-bit HP-UX, but
       # not for PA HP-UX.
-      case "$host_cpu" in
+      case $host_cpu in
       hppa*64*|ia64*)
 	;;
       *)
@@ -3044,16 +3044,16 @@ m4_if([$1], [CXX], [
 	  ;;
 	esac
 	;;
-       darwin*)
-         # PIC is the default on this platform
-         # Common symbols not allowed in MH_DYLIB files
-         case $cc_basename in
-           xlc*)
-           _LT_TAGVAR(lt_prog_compiler_pic, $1)='-qnocommon'
-           _LT_TAGVAR(lt_prog_compiler_wl, $1)='-Wl,'
-           ;;
-         esac
-       ;;
+      darwin*)
+        # PIC is the default on this platform
+        # Common symbols not allowed in MH_DYLIB files
+        case $cc_basename in
+          xlc*)
+          _LT_TAGVAR(lt_prog_compiler_pic, $1)='-qnocommon'
+          _LT_TAGVAR(lt_prog_compiler_wl, $1)='-Wl,'
+          ;;
+        esac
+        ;;
       dgux*)
 	case $cc_basename in
 	  ec++*)
@@ -3082,7 +3082,7 @@ m4_if([$1], [CXX], [
 	  aCC*)
 	    _LT_TAGVAR(lt_prog_compiler_wl, $1)='-Wl,'
 	    _LT_TAGVAR(lt_prog_compiler_static, $1)="${ac_cv_prog_cc_wl}-a ${ac_cv_prog_cc_wl}archive"
-	    case "$host_cpu" in
+	    case $host_cpu in
 	    hppa*64*|ia64*)
 	      # +Z the default
 	      ;;
@@ -3282,7 +3282,7 @@ m4_if([$1], [CXX], [
     hpux*)
       # PIC is the default for IA64 HP-UX and 64-bit HP-UX, but
       # not for PA HP-UX.
-      case "$host_cpu" in
+      case $host_cpu in
       hppa*64*|ia64*)
 	# +Z the default
 	;;
@@ -3327,16 +3327,16 @@ m4_if([$1], [CXX], [
 	_LT_TAGVAR(lt_prog_compiler_static, $1)='-bnso -bI:/lib/syscalls.exp'
       fi
       ;;
-      darwin*)
-        # PIC is the default on this platform
-        # Common symbols not allowed in MH_DYLIB files
-       case $cc_basename in
-         xlc*)
-         _LT_TAGVAR(lt_prog_compiler_pic, $1)='-qnocommon'
-         _LT_TAGVAR(lt_prog_compiler_wl, $1)='-Wl,'
-         ;;
-       esac
-       ;;
+    darwin*)
+      # PIC is the default on this platform
+      # Common symbols not allowed in MH_DYLIB files
+      case $cc_basename in
+      xlc*)
+        _LT_TAGVAR(lt_prog_compiler_pic, $1)='-qnocommon'
+        _LT_TAGVAR(lt_prog_compiler_wl, $1)='-Wl,'
+        ;;
+      esac
+      ;;
 
     mingw* | pw32* | os2*)
       # This hack is so that the source file can tell whether it is being
@@ -3348,7 +3348,7 @@ m4_if([$1], [CXX], [
       _LT_TAGVAR(lt_prog_compiler_wl, $1)='-Wl,'
       # PIC is the default for IA64 HP-UX and 64-bit HP-UX, but
       # not for PA HP-UX.
-      case "$host_cpu" in
+      case $host_cpu in
       hppa*64*|ia64*)
 	# +Z the default
 	;;
@@ -3451,7 +3451,7 @@ m4_if([$1], [CXX], [
     esac
   fi
 ])
-case "$host_os" in
+case $host_os in
   # For platforms which do not support PIC, -DPIC is meaningless:
   *djgpp*)
     _LT_TAGVAR(lt_prog_compiler_pic, $1)=
@@ -3938,20 +3938,20 @@ _LT_EOF
       ;;
 
     darwin* | rhapsody*)
-      case "$host_os" in
-        rhapsody* | darwin1.[[012]])
-         _LT_TAGVAR(allow_undefined_flag, $1)='${wl}-undefined ${wl}suppress'
-         ;;
-       *) # Darwin 1.3 on
-         case ${MACOSX_DEPLOYMENT_TARGET-10.0} in
-           10.[[012]])
-             _LT_TAGVAR(allow_undefined_flag, $1)='${wl}-flat_namespace ${wl}-undefined ${wl}suppress'
-             ;;
-           10.*)
-             _LT_TAGVAR(allow_undefined_flag, $1)='${wl}-undefined ${wl}dynamic_lookup'
-             ;;
-         esac
-         ;;
+      case $host_os in
+      rhapsody* | darwin1.[[012]])
+	_LT_TAGVAR(allow_undefined_flag, $1)='${wl}-undefined ${wl}suppress'
+	;;
+      *) # Darwin 1.3 on
+	case ${MACOSX_DEPLOYMENT_TARGET-10.0} in
+	10.[[012]])
+	  _LT_TAGVAR(allow_undefined_flag, $1)='${wl}-flat_namespace ${wl}-undefined ${wl}suppress'
+	  ;;
+	10.*)
+	  _LT_TAGVAR(allow_undefined_flag, $1)='${wl}-undefined ${wl}dynamic_lookup'
+	  ;;
+	esac
+	;;
       esac
       _LT_TAGVAR(archive_cmds_need_lc, $1)=no
       _LT_TAGVAR(hardcode_direct, $1)=no
@@ -3959,28 +3959,28 @@ _LT_EOF
       _LT_TAGVAR(hardcode_shlibpath_var, $1)=unsupported
       _LT_TAGVAR(whole_archive_flag_spec, $1)=''
       _LT_TAGVAR(link_all_deplibs, $1)=yes
-    if test "$GCC" = yes ; then
-    	output_verbose_link_cmd=echo
-        _LT_TAGVAR(archive_cmds, $1)='$CC -dynamiclib $allow_undefined_flag -o $lib $libobjs $deplibs $compiler_flags -install_name $rpath/$soname $verstring'
-      _LT_TAGVAR(module_cmds, $1)='$CC $allow_undefined_flag -o $lib -bundle $libobjs $deplibs$compiler_flags'
-      # Don't fix this by using the ld -exported_symbols_list flag, it doesn't exist in older darwin ld's
-      _LT_TAGVAR(archive_expsym_cmds, $1)='sed -e "s,#.*,," -e "s,^[    ]*,," -e "s,^\(..*\),_&," < $export_symbols > $output_objdir/${libname}-symbols.expsym~$CC -dynamiclib $allow_undefined_flag -o $lib $libobjs $deplibs $compiler_flags -install_name $rpath/$soname $verstring~nmedit -s $output_objdir/${libname}-symbols.expsym ${lib}'
-      _LT_TAGVAR(module_expsym_cmds, $1)='sed -e "s,#.*,," -e "s,^[    ]*,," -e "s,^\(..*\),_&," < $export_symbols > $output_objdir/${libname}-symbols.expsym~$CC $allow_undefined_flag  -o $lib -bundle $libobjs $deplibs$compiler_flags~nmedit -s $output_objdir/${libname}-symbols.expsym ${lib}'
-    else
-      case $cc_basename in
-        xlc*)
-         output_verbose_link_cmd=echo
-          _LT_TAGVAR(archive_cmds, $1)='$CC -qmkshrobj $allow_undefined_flag -o $lib $libobjs $deplibs $compiler_flags ${wl}-install_name ${wl}`$ECHO $rpath/$soname` $verstring'
-          _LT_TAGVAR(module_cmds, $1)='$CC $allow_undefined_flag -o $lib -bundle $libobjs $deplibs$compiler_flags'
-          # Don't fix this by using the ld -exported_symbols_list flag, it doesn't exist in older darwin ld's
-          _LT_TAGVAR(archive_expsym_cmds, $1)='sed -e "s,#.*,," -e "s,^[    ]*,," -e "s,^\(..*\),_&," < $export_symbols > $output_objdir/${libname}-symbols.expsym~$CC -qmkshrobj $allow_undefined_flag -o $lib $libobjs $deplibs $compiler_flags ${wl}-install_name ${wl}$rpath/$soname $verstring~nmedit -s $output_objdir/${libname}-symbols.expsym ${lib}'
-          _LT_TAGVAR(module_expsym_cmds, $1)='sed -e "s,#.*,," -e "s,^[    ]*,," -e "s,^\(..*\),_&," < $export_symbols > $output_objdir/${libname}-symbols.expsym~$CC $allow_undefined_flag  -o $lib -bundle $libobjs $deplibs$compiler_flags~nmedit -s $output_objdir/${libname}-symbols.expsym ${lib}'
-          ;;
-       *)
-         _LT_TAGVAR(ld_shlibs, $1)=no
-          ;;
-      esac
-    fi
+      if test "$GCC" = yes ; then
+	output_verbose_link_cmd=echo
+	_LT_TAGVAR(archive_cmds, $1)='$CC -dynamiclib $allow_undefined_flag -o $lib $libobjs $deplibs $compiler_flags -install_name $rpath/$soname $verstring'
+	_LT_TAGVAR(module_cmds, $1)='$CC $allow_undefined_flag -o $lib -bundle $libobjs $deplibs$compiler_flags'
+	# Don't fix this by using the ld -exported_symbols_list flag, it doesn't exist in older darwin ld's
+	_LT_TAGVAR(archive_expsym_cmds, $1)='sed -e "s,#.*,," -e "s,^[    ]*,," -e "s,^\(..*\),_&," < $export_symbols > $output_objdir/${libname}-symbols.expsym~$CC -dynamiclib $allow_undefined_flag -o $lib $libobjs $deplibs $compiler_flags -install_name $rpath/$soname $verstring~nmedit -s $output_objdir/${libname}-symbols.expsym ${lib}'
+	_LT_TAGVAR(module_expsym_cmds, $1)='sed -e "s,#.*,," -e "s,^[    ]*,," -e "s,^\(..*\),_&," < $export_symbols > $output_objdir/${libname}-symbols.expsym~$CC $allow_undefined_flag  -o $lib -bundle $libobjs $deplibs$compiler_flags~nmedit -s $output_objdir/${libname}-symbols.expsym ${lib}'
+      else
+	case $cc_basename in
+	xlc*)
+	  output_verbose_link_cmd=echo
+	  _LT_TAGVAR(archive_cmds, $1)='$CC -qmkshrobj $allow_undefined_flag -o $lib $libobjs $deplibs $compiler_flags ${wl}-install_name ${wl}`$ECHO $rpath/$soname` $verstring'
+	  _LT_TAGVAR(module_cmds, $1)='$CC $allow_undefined_flag -o $lib -bundle $libobjs $deplibs$compiler_flags'
+	  # Don't fix this by using the ld -exported_symbols_list flag, it doesn't exist in older darwin ld's
+	  _LT_TAGVAR(archive_expsym_cmds, $1)='sed -e "s,#.*,," -e "s,^[    ]*,," -e "s,^\(..*\),_&," < $export_symbols > $output_objdir/${libname}-symbols.expsym~$CC -qmkshrobj $allow_undefined_flag -o $lib $libobjs $deplibs $compiler_flags ${wl}-install_name ${wl}$rpath/$soname $verstring~nmedit -s $output_objdir/${libname}-symbols.expsym ${lib}'
+	  _LT_TAGVAR(module_expsym_cmds, $1)='sed -e "s,#.*,," -e "s,^[    ]*,," -e "s,^\(..*\),_&," < $export_symbols > $output_objdir/${libname}-symbols.expsym~$CC $allow_undefined_flag  -o $lib -bundle $libobjs $deplibs$compiler_flags~nmedit -s $output_objdir/${libname}-symbols.expsym ${lib}'
+	  ;;
+	*)
+	  _LT_TAGVAR(ld_shlibs, $1)=no
+	  ;;
+	esac
+      fi
       ;;
     dgux*)
       _LT_TAGVAR(archive_cmds, $1)='$LD -G -h $soname -o $lib $libobjs $deplibs $linker_flags'
@@ -4036,26 +4036,26 @@ _LT_EOF
       ;;
 
     hpux10*)
-     if test "$GCC" = yes -a "$with_gnu_ld" = no; then
-       _LT_TAGVAR(archive_cmds, $1)='$CC -shared -fPIC ${wl}+h ${wl}$soname ${wl}+b ${wl}$install_libdir -o $lib $libobjs $deplibs $compiler_flags'
-     else
-       _LT_TAGVAR(archive_cmds, $1)='$LD -b +h $soname +b $install_libdir -o $lib $libobjs $deplibs $linker_flags'
-     fi
-     if test "$with_gnu_ld" = no; then
-       _LT_TAGVAR(hardcode_libdir_flag_spec, $1)='${wl}+b ${wl}$libdir'
-       _LT_TAGVAR(hardcode_libdir_flag_spec_ld, $1)='+b $libdir'
-       _LT_TAGVAR(hardcode_libdir_separator, $1)=:
-       _LT_TAGVAR(hardcode_direct, $1)=yes
-       _LT_TAGVAR(export_dynamic_flag_spec, $1)='${wl}-E'
-       # hardcode_minus_L: Not really in the search PATH,
-       # but as the default location of the library.
-       _LT_TAGVAR(hardcode_minus_L, $1)=yes
-     fi
-     ;;
-
-     hpux11*)
       if test "$GCC" = yes -a "$with_gnu_ld" = no; then
-	case "$host_cpu" in
+	_LT_TAGVAR(archive_cmds, $1)='$CC -shared -fPIC ${wl}+h ${wl}$soname ${wl}+b ${wl}$install_libdir -o $lib $libobjs $deplibs $compiler_flags'
+      else
+	_LT_TAGVAR(archive_cmds, $1)='$LD -b +h $soname +b $install_libdir -o $lib $libobjs $deplibs $linker_flags'
+      fi
+      if test "$with_gnu_ld" = no; then
+	_LT_TAGVAR(hardcode_libdir_flag_spec, $1)='${wl}+b ${wl}$libdir'
+	_LT_TAGVAR(hardcode_libdir_flag_spec_ld, $1)='+b $libdir'
+	_LT_TAGVAR(hardcode_libdir_separator, $1)=:
+	_LT_TAGVAR(hardcode_direct, $1)=yes
+	_LT_TAGVAR(export_dynamic_flag_spec, $1)='${wl}-E'
+	# hardcode_minus_L: Not really in the search PATH,
+	# but as the default location of the library.
+	_LT_TAGVAR(hardcode_minus_L, $1)=yes
+      fi
+      ;;
+
+    hpux11*)
+      if test "$GCC" = yes -a "$with_gnu_ld" = no; then
+	case $host_cpu in
 	hppa*64*|ia64*)
 	  _LT_TAGVAR(archive_cmds, $1)='$CC -shared ${wl}+h ${wl}$soname -o $lib $libobjs $deplibs $compiler_flags'
 	  ;;
@@ -4064,7 +4064,7 @@ _LT_EOF
 	  ;;
 	esac
       else
-	case "$host_cpu" in
+	case $host_cpu in
 	hppa*64*|ia64*)
 	  _LT_TAGVAR(archive_cmds, $1)='$CC -b ${wl}+h ${wl}$soname -o $lib $libobjs $deplibs $compiler_flags'
 	  ;;
@@ -4074,7 +4074,7 @@ _LT_EOF
 	esac
       fi
       if test "$with_gnu_ld" = no; then
-	case "$host_cpu" in
+	case $host_cpu in
 	hppa*64*)
 	  _LT_TAGVAR(hardcode_libdir_flag_spec, $1)='${wl}+b ${wl}$libdir'
 	  _LT_TAGVAR(hardcode_libdir_separator, $1)=:
@@ -4158,16 +4158,16 @@ _LT_EOF
 	_LT_TAGVAR(hardcode_libdir_flag_spec, $1)='${wl}-rpath,$libdir'
 	_LT_TAGVAR(export_dynamic_flag_spec, $1)='${wl}-E'
       else
-       case $host_os in
-	 openbsd[[01]].* | openbsd2.[[0-7]] | openbsd2.[[0-7]].*)
-	   _LT_TAGVAR(archive_cmds, $1)='$LD -Bshareable -o $lib $libobjs $deplibs $linker_flags'
-	   _LT_TAGVAR(hardcode_libdir_flag_spec, $1)='-R$libdir'
-	   ;;
-	 *)
-	   _LT_TAGVAR(archive_cmds, $1)='$CC -shared $pic_flag -o $lib $libobjs $deplibs $compiler_flags'
-	   _LT_TAGVAR(hardcode_libdir_flag_spec, $1)='${wl}-rpath,$libdir'
-	   ;;
-       esac
+        case $host_os in
+	openbsd[[01]].* | openbsd2.[[0-7]] | openbsd2.[[0-7]].*)
+	  _LT_TAGVAR(archive_cmds, $1)='$LD -Bshareable -o $lib $libobjs $deplibs $linker_flags'
+	  _LT_TAGVAR(hardcode_libdir_flag_spec, $1)='-R$libdir'
+	  ;;
+	*)
+	  _LT_TAGVAR(archive_cmds, $1)='$CC -shared $pic_flag -o $lib $libobjs $deplibs $compiler_flags'
+	  _LT_TAGVAR(hardcode_libdir_flag_spec, $1)='${wl}-rpath,$libdir'
+	  ;;
+        esac
       fi
       ;;
 
@@ -4312,7 +4312,7 @@ _LT_EOF
       runpath_var=LD_RUN_PATH
       ;;
 
-   sysv5OpenUNIX8* | sysv5UnixWare7* |  sysv5uw[[78]]* | unixware7*)
+    sysv5OpenUNIX8* | sysv5UnixWare7* |  sysv5uw[[78]]* | unixware7*)
       _LT_TAGVAR(no_undefined_flag, $1)='${wl}-z ${wl}text'
       if test "$GCC" = yes; then
 	_LT_TAGVAR(archive_cmds, $1)='$CC -shared ${wl}-h ${wl}$soname -o $lib $libobjs $deplibs $compiler_flags'
@@ -4565,7 +4565,7 @@ if test -n "$compiler"; then
 
   # On AIX, shared libraries and static libraries use the same namespace, and
   # are all built from PIC.
-  case "$host_os" in
+  case $host_os in
   aix3*)
     test "$enable_shared" = yes && enable_static=no
     if test -n "$RANLIB"; then
@@ -4905,7 +4905,7 @@ if test "$_lt_caught_CXX_error" != yes; then
         fi
         ;;
       darwin* | rhapsody*)
-        case "$host_os" in
+        case $host_os in
           rhapsody* | darwin1.[[012]])
             _LT_TAGVAR(allow_undefined_flag, $1)='${wl}-undefined ${wl}suppress'
             ;;
@@ -5051,7 +5051,7 @@ if test "$_lt_caught_CXX_error" != yes; then
 
       hpux10*|hpux11*)
         if test $with_gnu_ld = no; then
-          case "$host_cpu" in
+          case $host_cpu in
             hppa*64*)
   	      _LT_TAGVAR(hardcode_libdir_flag_spec, $1)='${wl}+b ${wl}$libdir'
   	      _LT_TAGVAR(hardcode_libdir_separator, $1)=:
@@ -5066,7 +5066,7 @@ if test "$_lt_caught_CXX_error" != yes; then
               ;;
           esac
         fi
-        case "$host_cpu" in
+        case $host_cpu in
           hppa*64*)
             _LT_TAGVAR(hardcode_direct, $1)=no
             _LT_TAGVAR(hardcode_shlibpath_var, $1)=no
@@ -5092,7 +5092,7 @@ if test "$_lt_caught_CXX_error" != yes; then
   	    _LT_TAGVAR(ld_shlibs, $1)=no
   	    ;;
           aCC*)
-  	    case "$host_cpu" in
+  	    case $host_cpu in
   	      hppa*64*|ia64*)
   	        _LT_TAGVAR(archive_cmds, $1)='$LD -b +h $soname -o $lib $linker_flags $libobjs $deplibs'
   	        ;;
@@ -5113,7 +5113,7 @@ if test "$_lt_caught_CXX_error" != yes; then
           *)
   	    if test "$GXX" = yes; then
   	      if test $with_gnu_ld = no; then
-  	        case "$host_cpu" in
+  	        case $host_cpu in
   	          ia64*|hppa*64*)
   	            _LT_TAGVAR(archive_cmds, $1)='$LD -b +h $soname -o $lib $linker_flags $libobjs $deplibs'
   	            ;;
@@ -5801,7 +5801,7 @@ if test "$_lt_caught_F77_error" != yes; then
 
     # On AIX, shared libraries and static libraries use the same namespace, and
     # are all built from PIC.
-    case "$host_os" in
+    case $host_os in
       aix3*)
         test "$enable_shared" = yes && enable_static=no
         if test -n "$RANLIB"; then
