@@ -202,7 +202,7 @@ Platform quirks
 * References::                  Finding more information.
 * Compilers::                   Creating object files from source files.
 * Reloadable objects::          Binding object files together.
-* Multiple dependencies::	Removing duplicate dependant libraries.
+* Multiple dependencies::	Removing duplicate dependent libraries.
 * Archivers::                   Programs that create static archives.
 
 @end detailmenu
@@ -4066,7 +4066,7 @@ write your own.
 * References::                  Finding more information.
 * Compilers::                   Creating object files from source files.
 * Reloadable objects::          Binding object files together.
-* Multiple dependencies::	Removing duplicate dependant libraries.
+* Multiple dependencies::	Removing duplicate dependent libraries.
 * Archivers::                   Programs that create static archives.
 @end menu
 

@@ -1,3 +1,10 @@
+2002-06-20  Gary V. Vaughan  <gary@gnu.org>
+
+	From Kevin Ryde  <user42@zip.com.au>:
+	* doc/libtool.texi (Platform quirks): s/dependan/dependen/
+	* libtool.m4 (AC_DEPLIBS_CHECK_METHOD): Ditto.
+	* TODO: Ditto.
+
 2002-06-13  Rainer Orth  <ro@TechFak.Uni-Bielefeld.DE>
 
 	* ltmain.in (irix, nonstopux): Set major before use.
