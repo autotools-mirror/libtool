@@ -1,3 +1,12 @@
+2001-06-28  Gary V. Vaughan  <gary@gnu.org>
+
+	* libtool.m4 (AC_LIBTOOL_SYS_GLOBAL_SYMBOL_PIPE) [HPUX]: Define
+	lt_cv_sys_global_symbol_to_c_name_address to be a sed expression
+	for mangling the output of the symbol pipe into a brace delimited
+	C declaration of symbol name and address.
+	* ltmain.in: Use it to generate the fooS.c symbol name
+	Reported by Albert Chin-A-Young  <china@thewrittenword.com>
+	
 2001-06-28  Tim Van Holder  <tim.van.holder@pandora.be>, Gary V. Vaughan  <gary@gnu.org>
 
 	* bootstrap: Use cp instead of ln -s, for systems without
