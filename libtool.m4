@@ -559,7 +559,7 @@ extern "C" void exit (int);
 
 fnord() { int i=42;}
 main ()
-{ 
+{
   void *self = dlopen (0, LT_DLGLOBAL|LT_DLLAZY_OR_NOW);
   int status = $lt_dlunknown;
 
@@ -666,7 +666,7 @@ else
     LDFLAGS="$save_LDFLAGS"
     LIBS="$save_LIBS"
     ;;
-  esac  
+  esac
 
   case "$lt_cv_dlopen_self" in
   yes|no) enable_dlopen_self=$lt_cv_dlopen_self ;;
@@ -872,7 +872,7 @@ AC_CACHE_VAL(lt_cv_prog_cc_pic,
 
     osf3* | osf4* | osf5*)
       # All OSF/1 code is PIC.
-      lt_cv_prog_cc_wl='-WL,'
+      lt_cv_prog_cc_wl='-Wl,'
       lt_cv_prog_cc_static='-non_shared'
       ;;
 
@@ -1445,7 +1445,7 @@ else
     hardcode_shlibpath_var=no
     whole_archive_flag_spec='-all_load'
     ;;
-    
+
   freebsd1*)
     ld_shlibs=no
     ;;
@@ -1557,7 +1557,7 @@ else
       archive_expsym_cmds='for i in `cat $export_symbols`; do printf "-exported_symbol " >> $lib.exp; echo "\$i" >> $lib.exp; done; echo "-hidden">> $lib.exp~
       $LD -shared${allow_undefined_flag} -input $lib.exp $linker_flags $libobjs $deplibs -soname $soname `test -n "$verstring" && echo -set_version $verstring` -update_registry ${objdir}/so_locations -o $lib~$rm $lib.exp'
     fi
-#Both c and cxx compiler support -rpath directly 
+#Both c and cxx compiler support -rpath directly
     hardcode_libdir_flag_spec='-rpath $libdir'
     hardcode_libdir_separator=:
     ;;
@@ -2015,7 +2015,7 @@ sysv4 | sysv4.2uw2* | sysv4.3* | sysv5*)
   case "$host_vendor" in
     sni)
       shlibpath_overrides_runpath=no
-      ;;      
+      ;;
     motorola)
       need_lib_prefix=no
       need_version=no
@@ -2547,17 +2547,17 @@ EOF
 #  along with this program; if not, write to the Free Software
 #  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 #  */
-# 
+#
 # #include <stdio.h>		/* for printf() */
 # #include <unistd.h>		/* for open(), lseek(), read() */
 # #include <fcntl.h>		/* for O_RDONLY, O_BINARY */
 # #include <string.h>		/* for strdup() */
-# 
+#
 # /* O_BINARY isn't required (or even defined sometimes) under Unix */
 # #ifndef O_BINARY
 # #define O_BINARY 0
 # #endif
-# 
+#
 # static unsigned int
 # pe_get16 (fd, offset)
 #      int fd;
@@ -2568,7 +2568,7 @@ EOF
 #   read (fd, b, 2);
 #   return b[0] + (b[1]<<8);
 # }
-# 
+#
 # static unsigned int
 # pe_get32 (fd, offset)
 #     int fd;
@@ -2579,7 +2579,7 @@ EOF
 #   read (fd, b, 4);
 #   return b[0] + (b[1]<<8) + (b[2]<<16) + (b[3]<<24);
 # }
-# 
+#
 # static unsigned int
 # pe_as32 (ptr)
 #      void *ptr;
@@ -2587,7 +2587,7 @@ EOF
 #   unsigned char *b = ptr;
 #   return b[0] + (b[1]<<8) + (b[2]<<16) + (b[3]<<24);
 # }
-# 
+#
 # int
 # main (argc, argv)
 #     int argc;
@@ -2599,32 +2599,32 @@ EOF
 #     unsigned long name_rvas, nexp;
 #     unsigned char *expdata, *erva;
 #     char *filename, *dll_name;
-# 
+#
 #     filename = argv[1];
-# 
+#
 #     dll = open(filename, O_RDONLY|O_BINARY);
 #     if (!dll)
 # 	return 1;
-# 
+#
 #     dll_name = filename;
-# 
+#
 #     for (i=0; filename[i]; i++)
 # 	if (filename[i] == '/' || filename[i] == '\\'  || filename[i] == ':')
 # 	    dll_name = filename + i +1;
-# 
+#
 #     pe_header_offset = pe_get32 (dll, 0x3c);
 #     opthdr_ofs = pe_header_offset + 4 + 20;
 #     num_entries = pe_get32 (dll, opthdr_ofs + 92);
-# 
+#
 #     if (num_entries < 1) /* no exports */
 # 	return 1;
-# 
+#
 #     export_rva = pe_get32 (dll, opthdr_ofs + 96);
 #     export_size = pe_get32 (dll, opthdr_ofs + 100);
 #     nsections = pe_get16 (dll, pe_header_offset + 4 +2);
 #     secptr = (pe_header_offset + 4 + 20 +
 # 	      pe_get16 (dll, pe_header_offset + 4 + 16));
-# 
+#
 #     expptr = 0;
 #     for (i = 0; i < nsections; i++)
 #     {
@@ -2643,22 +2643,22 @@ EOF
 # 	    break;
 # 	}
 #     }
-# 
+#
 #     expdata = (unsigned char*)malloc(export_size);
 #     lseek (dll, expptr, SEEK_SET);
 #     read (dll, expdata, export_size);
 #     erva = expdata - export_rva;
-# 
+#
 #     nexp = pe_as32 (expdata+24);
 #     name_rvas = pe_as32 (expdata+32);
-# 
+#
 #     printf ("EXPORTS\n");
 #     for (i = 0; i<nexp; i++)
 #     {
 # 	unsigned long name_rva = pe_as32 (erva+name_rvas+i*4);
 # 	printf ("\t%s @ %ld ;\n", erva+name_rva, 1+ i);
 #     }
-# 
+#
 #     return 0;
 # }
 # /* impgen.c ends here */
@@ -3091,7 +3091,7 @@ newos6*)
   lt_cv_file_magic_cmd=/usr/bin/file
   lt_cv_file_magic_test_file=/usr/lib/libnls.so
   ;;
-  
+
 osf3* | osf4* | osf5*)
   # this will be overridden with pass_all, but let us keep it just in case
   lt_cv_deplibs_check_method='file_magic COFF format alpha shared library'
@@ -3125,7 +3125,7 @@ sysv4 | sysv4.2uw2* | sysv4.3* | sysv5*)
     lt_cv_file_magic_cmd='/bin/file'
     [lt_cv_deplibs_check_method="file_magic ELF [0-9][0-9]*-bit [LM]SB dynamic lib"]
     lt_cv_file_magic_test_file=/lib/libc.so
-    ;;      
+    ;;
   esac
   ;;
 esac
