@@ -1,5 +1,7 @@
 1999-07-02  Gary V. Vaughan  <gary@oranda.demon.co.uk>
 
+	* configure.in: bumped version to 1.3c.
+
 	GNU libtool 1.3b was released.
 
 	* NEWS: inserted todays date.
