@@ -1,3 +1,11 @@
+Fri Jun 20 08:21:34 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltmain.sh.in: Redo two robustness fixes.  Alexandre had the
+ 	correct approach, but I botched them.
+
+	* ltconfig.in (dynamic_linker): Disable shared libraries on
+ 	MkLinux unless GNU libc is in use.  Reported by Akim Demaille.
+
 Thu Jun 19 14:24:06 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltmain.sh.in (install): Add a missing `test' command.  Reported

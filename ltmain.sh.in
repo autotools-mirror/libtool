@@ -63,81 +63,70 @@ show=echo
 show_help=
 
 # Parse our command line options once, thoroughly.
-seen_nonopt=no
-seen_c_flag=no
-seen_static_flag=no
 while test $# -gt 0
 do
   arg="$1"
   shift
 
-  if test "$seen_nonopt" != yes; then
-    case "$arg" in
-    -*=*) optarg=`echo "$arg" | sed 's/[-_a-zA-Z0-9]*=//'` ;;
-    *) optarg= ;;
-    esac
+  case "$arg" in
+  -*=*) optarg=`echo "$arg" | sed 's/[-_a-zA-Z0-9]*=//'` ;;
+  *) optarg= ;;
+  esac
 
-    # If the previous option needs an argument, assign it.
-    if test -n "$prev"; then
-      eval "$prev=\$arg"
-      prev=
-      prevopt=
-      continue
-    fi
-
-    # Have we seen a non-optional argument yet?
-    case "$arg" in
-    --help)
-      show_help=yes
-      ;;
-
-    --version)
-      echo "$PROGRAM (GNU $PACKAGE) $VERSION"
-      exit 0
-      ;;
-
-    --dry-run | -n)
-      run=:
-      ;;
-
-    --features)
-      echo "host: $host"
-      if test "$build_libtool_libs" = yes; then
-        echo "enable shared libraries"
-      else
-	echo "disable shared libraries"
-      fi
-      if test "$build_old_libs" = yes; then
-	echo "enable static libraries"
-      else
-	echo "disable static libraries"
-      fi
-      exit 0
-      ;;
-
-    --finish) mode="finish" ;;
-
-    --mode) prevopt="--mode" prev=mode ;;
-    --mode=*) mode="$optarg" ;;
-
-    -*)
-      echo "$progname: unrecognized option \`$arg'" 1>&2
-      echo "$help" 1>&2
-      exit 1
-      ;;
-
-    *)
-      nonopt="$arg"
-      seen_nonopt=yes
-      ;;
-    esac
-  else
-    # Just check for flags that other modes need to have knowledge of.
-    case "$arg" in
-    -c) seen_c_flag=yes ;;
-    -static) seen_static_flag=yes ;;
-    esac
+  # If the previous option needs an argument, assign it.
+  if test -n "$prev"; then
+    eval "$prev=\$arg"
+    prev=
+    prevopt=
+    continue
   fi
+
+  # Have we seen a non-optional argument yet?
+  case "$arg" in
+  --help)
+    show_help=yes
+    ;;
+
+  --version)
+    echo "$PROGRAM (GNU $PACKAGE) $VERSION"
+    exit 0
+    ;;
+
+  --dry-run | -n)
+    run=:
+    ;;
+
+  --features)
+    echo "host: $host"
+    if test "$build_libtool_libs" = yes; then
+      echo "enable shared libraries"
+    else
+      echo "disable shared libraries"
+    fi
+    if test "$build_old_libs" = yes; then
+      echo "enable static libraries"
+    else
+      echo "disable static libraries"
+    fi
+    exit 0
+    ;;
+
+  --finish) mode="finish" ;;
+
+  --mode) prevopt="--mode" prev=mode ;;
+  --mode=*) mode="$optarg" ;;
+
+  -*)
+    echo "$progname: unrecognized option \`$arg'" 1>&2
+    echo "$help" 1>&2
+    exit 1
+    ;;
+
+  *)
+    nonopt="$arg"
+    break
+    ;;
+  esac
 done
 
 
@@ -154,11 +143,16 @@ if test -z "$show_help"; then
   if test "$mode" = NONE; then
     case "$nonopt" in
     *cc)
-      if test "$seen_c_flag" = yes; then
-        mode=compile
-      else
-        mode=link
-      fi
+      mode=link
+      for arg
+      do
+        case "$arg" in
+        -c)
+           mode=compile
+           break
+           ;;
+        esac
+      done
       ;;
     *install*|cp)
       mode=install
@@ -318,9 +312,16 @@ if test -z "$show_help"; then
     vinfo=
 
     # We need to know -static, to get the right output filenames.
-    if test "$seen_static_flag" = yes; then
-      build_libtool_libs=no build_old_libs=yes
-    fi
+    for arg
+    do
+      case "$arg" in
+      -static)
+        build_libtool_libs=no
+        build_old_libs=yes
+        break
+        ;;
+      esac
+    done
 
     for arg
     do

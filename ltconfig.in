@@ -538,9 +538,8 @@ with_gnu_ld=no
 set dummy $LD
 linker="$2"
 echo $ac_n "checking if $LD is GNU ld... $ac_c" 1>&6
-# I'd rather use --version here, but apparently some GNU ld's don't accept
-# it, but do accept -v.
-if $LD -v 2>&1 | egrep '(GNU ld|with BFD)' > /dev/null; then
+# I'd rather use --version here, but apparently some GNU ld's only accept -v.
+if $LD -v 2>&1 </dev/null | egrep '(GNU ld|with BFD)' > /dev/null; then
   with_gnu_ld=yes
   linker="GNU ld"
 fi
@@ -786,7 +785,6 @@ irix5* | irix6*)
 # No shared lib support for Linux oldld, aout, or coff.
 linux-gnuoldld* | linux-gnuaout* | linux-gnucoff*)
   dynamic_linker=no
-  can_build_shared=no
   ;;
 
 # This must be Linux ELF.
@@ -796,6 +794,16 @@ linux-gnu*)
   soname_spec='$libname.so.$major'
   finish_cmds='ldconfig -n $libdir'
   shlibpath_var=LD_LIBRARY_PATH
+
+  if test -f /lib/ld.so.1; then
+    dynamic_linker='GNU ld.so'
+  else
+    # Only the GNU ld.so supports shared libraries on MkLinux.
+    case "$host_cpu" in
+    powerpc*) dynamic_linker=no ;;
+    *) dynamic_linker='Linux ld.so' ;;
+    esac
+  fi
   ;;
 
 netbsd* | openbsd*)
@@ -835,11 +843,10 @@ sunos4*)
 
 *)
   dynamic_linker=no
-  can_build_shared=no
   ;;
 esac
 echo "$ac_t""$dynamic_linker"
-
+test "$dynamic_linker" = no && can_build_shared=no
 
 # FIXME need to add library stripping features
 # strip -x works for most platforms, though not for static libraries on NetBSD
