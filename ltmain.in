@@ -1052,6 +1052,10 @@ compiler."
 	  $echo "$modename: warning: assuming \`-no-fast-install' instead" 1>&2
 	  fast_install=no
 	  ;;
+        *-*-rhapsody*)
+	  # rhapsody is a little odd...
+	  deplibs="$deplibs -framework System"
+	  ;;
 	*)
 	  no_install=yes
 	  ;;

@@ -1329,6 +1329,12 @@ else
     hardcode_libdir_flag_spec='${wl}-rpath ${wl}$libdir'
     hardcode_libdir_separator=:
     ;;
+  rhapsody*)
+    archive_cmds='$CC -bundle -undefined suppress -o $lib $libobjs $deplibs $linkopts'
+    hardcode_libdir_flags_spec='-L$libdir'
+    hardcode_direct=yes
+    hardcode_shlibpath_var=no
+    ;;
 
   sco3.2v5*)
     archive_cmds='$LD -G -h $soname -o $lib $libobjs $deplibs $linker_flags'
@@ -1715,6 +1721,14 @@ osf3* | osf4* | osf5*)
   shlibpath_var=LD_LIBRARY_PATH
   sys_lib_search_path_spec="/usr/shlib /usr/ccs/lib /usr/lib/cmplrs/cc /usr/lib /usr/local/lib /var/shlib"
   sys_lib_dlsearch_path_spec="$sys_lib_search_path_spec"
+  ;;
+
+rhapsody*)
+  version_type=sunos
+  library_names_spec='${libname}.so'
+  soname_spec='${libname}.so'
+  shlibpath_var=DYLD_LIBRARY_PATH
+  deplibs_check_method=pass_all
   ;;
 
 sco3.2v5*)
