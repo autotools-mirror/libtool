@@ -1,5 +1,12 @@
 2001-02-15  Robert Boehne  <rboehne@ricardo-us.com>
 	
+	* ltconfig.in: Under AIX 4&5 check to see if we're using
+        GNU nm, if so, remove -C from the options to $NM.  The -C
+        is required to demangle with AIX nm, but -C means don't
+        demangle to GNU nm.
+
+2001-02-15  Robert Boehne  <rboehne@ricardo-us.com>
+	
 	* ltcf-cxx.sh: Only check for broken collect2 under
         AIX 4.[012], the check only works on these OS versions.
 	

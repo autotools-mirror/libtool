@@ -964,7 +964,13 @@ aix4* | aix5*)
       library_names_spec='${libname}${release}.a $libname.a'
       soname_spec='${libname}${release}.so$major.o'
     fi
-    export_symbols_cmds='$NM -BCpg $libobjs $convenience | awk '\''{ if (((\$2 == "T") || (\$2 == "D") || (\$2 == "B")) && (substr(\$3,1,1) != ".")) { print \$3 } }'\'' | sort -u > $export_symbols'
+    # If we're using GNU nm, then we don't want the "-C" option.
+    # -C means demangle to AIX nm, but means don't demangle with GNU nm
+    if $NM -V 2>&1 | egrep '(GNU)' > /dev/null; then
+      export_symbols_cmds='$NM -Bpg $libobjs $convenience | awk '\''{ if (((\$2 == "T") || (\$2 == "D") || (\$2 == "B")) && (substr(\$3,1,1) != ".")) { print \$3 } }'\'' | sort -u > $export_symbols'
+    else
+      export_symbols_cmds='$NM -BCpg $libobjs $convenience | awk '\''{ if (((\$2 == "T") || (\$2 == "D") || (\$2 == "B")) && (substr(\$3,1,1) != ".")) { print \$3 } }'\'' | sort -u > $export_symbols'
+    fi
     shlibpath_var=LIBPATH
     deplibs_check_method='pass_all'
   fi
