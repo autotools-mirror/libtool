@@ -1,3 +1,8 @@
+2005-04-01  Mike Stump  <mrs@apple.com>
+
+	* libtool.m4 (AC_LIBTOOL_SYS_MAX_CMD_LEN) [ netbsd, freebsd, openbsd,
+	darwin, dragonfly]: Use 3/4 of argmax, instead of 1/4.
+
 2005-03-28  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* libtool.m4 (AC_LIBTOOL_CONFIG): Typo.
@@ -5,7 +10,7 @@
 	* libtool.m4 (AC_LIBTOOL_LANG_GCJ_CONFIG, AC_LIBTOOL_LANG_RC_CONFIG):
 	Set $cc_basename.
 
-2005-05-22  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+2005-03-22  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* libtool.m4 (AC_LIBTOOL_PROG_LD_SHLIBS): Move linux entry to
 	correct position, re-indent.
@@ -16,7 +21,7 @@
 	Reported by Ralf Menzel <menzel@ls6.cs.uni-dortmund.de> and
 	Пухальский Юрий Андреевич <pooh@cryptopro.ru>.
 
-2005-05-21  Gary V. Vaughan  <gary@gnu.org>,
+2005-03-21  Gary V. Vaughan  <gary@gnu.org>,
 	    Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* libtool.m4 (AC_LIBTOOL_SETUP, AC_LIBTOOL_LANG_CXX_CONFIG,
