@@ -31,27 +31,10 @@ Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 #define LTDL_H 1
 
 #include <libltdl/lt_system.h>
+#include <libltdl/lt_error.h>
+#include <libltdl/lt_mutex.h>
 
 LT_BEGIN_C_DECLS
-
-
-/* DLL building support on win32 hosts;  mostly to workaround their
-   ridiculous implementation of data symbol exporting. */
-#ifndef LT_SCOPE
-#  ifdef __WINDOWS__
-#    ifdef DLL_EXPORT		/* defined by libtool (if required) */
-#      define LT_SCOPE	__declspec(dllexport)
-#    endif
-#    ifdef LIBLTDL_DLL_IMPORT	/* define if linking with this dll */
-#      define LT_SCOPE	extern __declspec(dllimport)
-#    endif
-#  endif
-#  ifndef LT_SCOPE		/* static linking or !__WINDOWS__ */
-#    define LT_SCOPE	extern
-#  endif
-#endif
-
-
 
 
 /* LT_STRLEN can be used safely on NULL pointers.  */
@@ -89,22 +72,6 @@ LT_SCOPE int	    lt_dlclose		(lt_dlhandle handle);
 /* Module residency management. */
 LT_SCOPE int	    lt_dlmakeresident	(lt_dlhandle handle);
 LT_SCOPE int	    lt_dlisresident	(lt_dlhandle handle);
-
-
-
-
-/* --- MUTEX LOCKING --- */
-
-
-typedef void	lt_dlmutex_lock		(void);
-typedef void	lt_dlmutex_unlock	(void);
-typedef void	lt_dlmutex_seterror	(const char *errmsg);
-typedef const char *lt_dlmutex_geterror	(void);
-
-LT_SCOPE int	lt_dlmutex_register	(lt_dlmutex_lock *lock,
-					 lt_dlmutex_unlock *unlock,
-					 lt_dlmutex_seterror *seterror,
-					 lt_dlmutex_geterror *geterror);
 
 
 
@@ -192,49 +159,6 @@ LT_SCOPE int		lt_dlloader_add     (lt_dlloader *place,
 				const struct lt_user_dlloader *dlloader,
 				const char *loader_name);
 LT_SCOPE int		lt_dlloader_remove  (const char *loader_name);
-
-
-
-/* --- ERROR MESSAGE HANDLING --- */
-
-
-/* Defining error strings alongside their symbolic names in a macro in
-   this way allows us to expand the macro in different contexts with
-   confidence that the enumeration of symbolic names will map correctly
-   onto the table of error strings.  */
-#define lt_dlerror_table						\
-    LT_ERROR(UNKNOWN,		    "unknown error")			\
-    LT_ERROR(DLOPEN_NOT_SUPPORTED,  "dlopen support not available")	\
-    LT_ERROR(INVALID_LOADER,	    "invalid loader")			\
-    LT_ERROR(INIT_LOADER,	    "loader initialization failed")	\
-    LT_ERROR(REMOVE_LOADER,	    "loader removal failed")		\
-    LT_ERROR(FILE_NOT_FOUND,	    "file not found")			\
-    LT_ERROR(DEPLIB_NOT_FOUND,      "dependency library not found")	\
-    LT_ERROR(NO_SYMBOLS,	    "no symbols defined")		\
-    LT_ERROR(CANNOT_OPEN,	    "can't open the module")		\
-    LT_ERROR(CANNOT_CLOSE,	    "can't close the module")		\
-    LT_ERROR(SYMBOL_NOT_FOUND,      "symbol not found")			\
-    LT_ERROR(NO_MEMORY,		    "not enough memory")		\
-    LT_ERROR(INVALID_HANDLE,	    "invalid module handle")		\
-    LT_ERROR(BUFFER_OVERFLOW,	    "internal buffer overflow")		\
-    LT_ERROR(INVALID_ERRORCODE,     "invalid errorcode")		\
-    LT_ERROR(SHUTDOWN,		    "library already shutdown")		\
-    LT_ERROR(CLOSE_RESIDENT_MODULE, "can't close resident module")	\
-    LT_ERROR(INVALID_MUTEX_ARGS,    "invalid mutex handler registration") \
-    LT_ERROR(INVALID_POSITION,	    "invalid search path insert position")
-
-/* Enumerate the symbolic error names. */
-enum {
-#define LT_ERROR(name, diagnostic)	LT_CONC(LT_ERROR_, name),
-	lt_dlerror_table
-#undef LT_ERROR
-
-	LT_ERROR_MAX
-};
-
-/* These functions are only useful from inside custom module loaders. */
-LT_SCOPE int	lt_dladderror	(const char *diagnostic);
-LT_SCOPE int	lt_dlseterror	(int errorcode);
 
 
 

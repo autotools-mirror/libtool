@@ -26,7 +26,7 @@ pkgincludedir = $(includedir)/libltdl
 
 if INSTALL_LTDL
 include_HEADERS = ltdl.h
-pkginclude_HEADERS = lt_system.h
+pkginclude_HEADERS = lt_system.h lt_error.h lt_mutex.h
 lib_LTLIBRARIES = libltdl.la
 endif
 
@@ -39,6 +39,7 @@ endif
 CLEANFILES	    = libltdl.la libltdlc.la
 
 libltdl_la_SOURCES  = ltdl.h ltdl.c \
+		      lt_error.h lt_error.c lt_mutex.h lt_mutex.c \
 		      lt__private.h lt__alloc.h lt__alloc.c \
 		      lt__pre89.h lt__glibc.h argz.h lt__dirent.h \
 		      lt_system.h

@@ -1,3 +1,42 @@
+2004-04-13  Gary V. Vaughan  <gary@gnu.org>
+
+	Factor out the mutex handling and error handling into their own
+	modules.  Mutex handling is not currently useful in combination
+	with posix threads, and should be easier to replace if it is in a
+	separate module.  Additionally, we can factor out the loaders in
+	such a way as to depend on only the portability layer and these
+	new mutex and error modules now:
+
+	* libltdl/Makefile.am (pkginclude_HEADERS): Install lt_error.h and
+	lt_mutex.h to $includedir/libltdl.
+	(libltdl_la_SOURCES): Build lt_error and lt_mutex objects.
+	* libltdl/ltdl.h (LT_SCOPE): Moved from here...
+	* libltdl/lt_system.h (LT_SCOPE): ...to here.
+	* libltdl/ltdl.c (lt_dlerror_strings, LT_DLSTRERROR): Moved from
+	here...
+	* libltdl/lt__private.h (lt__error_strings, LT__STRERROR): ...to
+	here as additional internal interfaces to lt_error.  Changed all
+	callers.
+	* libltdl/ltdl.c (LT_DLMUTEX_LOCK, LT_DLMUTEX_UNLOCK)
+	(LT_DLMUTEX_SETERROR, LT_DLMUTEX_GETERROR, lt_dlmutex_lock_func)
+	(lt_dlmutex_unlock_func, lt_dlmutex_geterror_func)
+	(lt_dllast_error): Moved from here...
+	(LT__MUTEX_LOCK, LT__MUTEX_UNLOCK, LT__MUTEX_SETERRORSTR)
+	(LT__MUTEX_GETERROR, lt__mutex_lock_func, lt__mutex_unlock_func)
+	(lt__mutex_geterror_func, lt__last_error): ...to here as
+	additional internal interfaces to lt_mutex.  Changed all callers.
+	(LT_MUTEX_SETERROR): Take an errorcode rather than a string.
+	Changed all callers.
+	* libltdl/ltdl.c, libltdl/ltdl.h (lt_dlmutex_register): Moved from
+	here...
+	* libltdl/lt_mutex.c, libltdl/lt_mutex.h (lt_dlmutex_register):
+	...to here. New files.
+	* libltdl/ltdl.c, libltdl/ltdl.h (lt_dladderror, lt_dlseterror)
+	(lt_dlerror_table):
+	Moved from here...
+	* libltdl/lt_error.c, libltdl/lt_error.h (lt_dladderror)
+	(lt_dlseterror, lt_dlerror_table): ...to here. New files.
+
 2004-04-13  Scott James Remnant  <scott@netsplit.com>
 
 	* Makefile.am (XDELTA_OPTIONS): Remove --pristine as that

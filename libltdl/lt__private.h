@@ -54,11 +54,13 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 #  include <memory.h>
 #endif
 
+/* Import internal interfaces...  */
 #include "lt__alloc.h"
 #include "lt__dirent.h"
 #include "lt__glibc.h"
 #include "lt__pre89.h"
-#include "lt_system.h"
+
+/* ...and all exported interfaces.  */
 #include "ltdl.h"
 
 #if WITH_DMALLOC
@@ -71,11 +73,65 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 #  define LT_GLOBAL_DATA
 #endif
 
+
 LT_BEGIN_C_DECLS
 
 #ifndef errno
 extern int errno;
 #endif
+
+
+
+/* --- ERROR HANDLING --- */
+
+/* Extract the diagnostic strings from the error table macro in the same
+   order as the enumerated indices in lt_error.h. */
+
+static const char *lt__error_strings[] =
+  {
+#define LT_ERROR(name, diagnostic)	(diagnostic),
+    lt_dlerror_table
+#undef LT_ERROR
+
+    0
+  };
+
+#define LT__STRERROR(name)	lt__error_strings[LT_CONC(LT_ERROR_,name)]
+
+
+
+/* --- MUTEX LOCKING --- */
+
+/* Macros to make it easier to run the lock functions only if they have
+   been registered.  The reason for the complicated lock macro is to
+   ensure that the stored error message from the last error is not
+   accidentally erased if the current function doesn't generate an
+   error of its own.  */
+
+#define LT__MUTEX_LOCK()			LT_STMT_START {	\
+	if (lt__mutex_lock_func) (*lt__mutex_lock_func)();	\
+						} LT_STMT_END
+#define LT__MUTEX_UNLOCK()			LT_STMT_START { \
+	if (lt__mutex_unlock_func) (*lt__mutex_unlock_func)();\
+						} LT_STMT_END
+#define LT__MUTEX_SETERRORSTR(errormsg)		LT_STMT_START {	\
+	if (lt__mutex_seterror_func)				\
+		(*lt__mutex_seterror_func) (errormsg);		\
+	else 	lt__last_error = (errormsg);	} LT_STMT_END
+#define LT__MUTEX_GETERROR(errormsg)		LT_STMT_START {	\
+	if (lt__mutex_seterror_func)				\
+		(errormsg) = (*lt__mutex_geterror_func) ();	\
+	else	(errormsg) = lt__last_error;	} LT_STMT_END
+#define LT__MUTEX_SETERROR(errorcode)	     			\
+	LT__MUTEX_SETERRORSTR(LT__STRERROR(errorcode))
+
+/* The mutex functions stored here are global, and are necessarily the
+   same for all threads that wish to share access to libltdl.  */
+LT_SCOPE lt_dlmutex_lock	*lt__mutex_lock_func;
+LT_SCOPE lt_dlmutex_unlock	*lt__mutex_unlock_func;
+LT_SCOPE lt_dlmutex_seterror	*lt__mutex_seterror_func;
+LT_SCOPE lt_dlmutex_geterror	*lt__mutex_geterror_func;
+LT_SCOPE const char		*lt__last_error;
 
 LT_END_C_DECLS
 
