@@ -1,3 +1,15 @@
+1999-01-01  Thomas Tanner  <tanner@gmx.de>
+
+	* NEWS: new BeOS support
+	* THANKS: added Joseph Beckenbach
+	* libltdl/ltdl.h: use dllimport/export on Win32
+	
+1998-12-31  Joseph Beckenbach III <jrb3@best.com>
+
+	* ltconfig.in: added support for BeOS
+	* ltmain.in (shlibpath_var): added a workaround for 
+	  an odd bug in the BeOS R4 sed
+	
 1998-12-31  Thomas Tanner  <tanner@gmx.de>
 
 	* verified all copyright notices 

@@ -580,7 +580,7 @@ if test "$with_gcc" = yes; then
   link_static_flag='-static'
 
   case "$host_os" in
-  aix3* | aix4* | irix5* | irix6* | osf3* | osf4*)
+  aix3* | aix4* | beos* | irix5* | irix6* | osf3* | osf4*)
     # PIC is the default for these OSes.
     ;;
   cygwin32* | mingw32* | os2*)
@@ -1006,6 +1006,14 @@ if test "$with_gnu_ld" = yes; then
     hardcode_direct=yes
     hardcode_minus_L=yes
     hardcode_shlibpath_var=no
+    ;;
+
+  beos*)
+    if $LD --help 2>&1 | egrep ': supported targets:.* elf' > /dev/null; then
+      archive_cmds='$CC -nostart ${wl}-soname $wl$soname -o $lib $libobjs $deplibs'
+    else
+      ld_shlibs=no
+    fi
     ;;
 
   cygwin32* | mingw32*)
@@ -1588,6 +1596,12 @@ amigaos*)
   library_names_spec='$libname.ixlibrary $libname.a'
   # Create ${libname}_ixlibrary.a entries in /sys/libs.
   finish_eval='for lib in `ls $libdir/*.ixlibrary 2>/dev/null`; do libname=`$echo "X$lib" | $Xsed -e '\''s%^.*/\([^/]*\)\.ixlibrary$%\1%'\''`; test $rm /sys/libs/${libname}_ixlibrary.a; $show "(cd /sys/libs && $LN_S $lib ${libname}_ixlibrary.a)"; (cd /sys/libs && $LN_S $lib ${libname}_ixlibrary.a) || exit 1; done'
+  ;;
+
+beos*)
+  library_names_spec='${libname}.so'
+  dynamic_linker="$host_os ld.so"
+  shlibpath_var=LIBRARY_PATH
   ;;
 
 bsdi4*)

@@ -1,6 +1,7 @@
 NEWS - list of user-visible changes between releases of GNU Libtool
 
 New in 1.2e: CVS version:
+* Support for BeOS
 * Improved support for Win32, SysV 4.3 and NetBSD
 * Various bugfixes
 

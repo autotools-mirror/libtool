@@ -47,6 +47,16 @@ Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 # define lt_ptr_t     char*
 #endif
 
+#if defined(_WIN32) ||  defined(__CYGWIN__) || defined(__CYGWIN32__) || defined(WIN32)
+#  ifdef _LTDL_COMPILE_
+#    define EXTERN __declspec(dllexport)
+#  else
+#    define EXTERN extern __declspec(dllimport)
+#  endif
+#else
+#  define EXTERN extern
+#endif
+
 #ifdef _LTDL_COMPILE_
 typedef	struct lt_dlhandle_t *lt_dlhandle;
 #else
@@ -54,11 +64,11 @@ typedef	lt_ptr_t lt_dlhandle;
 #endif
 
 __BEGIN_DECLS
-int		lt_dlinit __P((void));
-int		lt_dlexit __P((void));
-lt_dlhandle	lt_dlopen __P((const char *filename));
-int		lt_dlclose __P((lt_dlhandle handle));
-lt_ptr_t	lt_dlsym __P((lt_dlhandle handle, const char *name));
+EXTERN int		lt_dlinit __P((void));
+EXTERN int		lt_dlexit __P((void));
+EXTERN lt_dlhandle	lt_dlopen __P((const char *filename));
+EXTERN int		lt_dlclose __P((lt_dlhandle handle));
+EXTERN lt_ptr_t		lt_dlsym __P((lt_dlhandle handle, const char *name));
 __END_DECLS
 
 #endif /* !_LTDL_H_ */
