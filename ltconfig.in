@@ -1282,7 +1282,7 @@ solaris2*)
 
 sunos4*)
   version_type=sunos
-  library_names_spec='${libname}${release}.so$versuffix'
+  library_names_spec='${libname}${release}.so$versuffix ${libname}.so$versuffix'
   finish_cmds='PATH="\$PATH:/usr/etc" ldconfig $libdir'
   shlibpath_var=LD_LIBRARY_PATH
   ;;

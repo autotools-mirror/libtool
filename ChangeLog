@@ -1,3 +1,10 @@
+1998-11-02  Ian Lance Taylor  <ian@cygnus.com>
+
+	* ltconfig.in: For sunos4, add ${libname}.so$versuffix to
+	library_names_spec.
+	* ltmain.in: For version_type of sunos, set versuffix even if
+	-version-info was not used.
+
 1998-11-02  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* ltmain.in (libobj): default value must not contain directory
