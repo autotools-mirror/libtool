@@ -57,7 +57,7 @@ _LT_AC_PROG_ECHO_BACKSLASH
 # Only perform the check for file, if the check method requires it
 case "$deplibs_check_method" in
 file_magic*)
-  if test "$file_magic_cmd" = '${MAGIC}'; then
+  if test "$file_magic_cmd" = '${MAGIC_CMD}'; then
     AC_PATH_MAGIC
   fi
   ;;
@@ -536,7 +536,7 @@ test -z "$CC" && CC=cc
 test -z "$DLLTOOL" && DLLTOOL=dlltool
 test -z "$LD" && LD=ld
 test -z "$LN_S" && LN_S="ln -s"
-test -z "$MAGIC" && MAGIC=file
+test -z "$MAGIC_CMD" && MAGIC_CMD=file
 test -z "$NM" && NM=nm
 test -z "$OBJDUMP" && OBJDUMP=objdump
 test -z "$RANLIB" && RANLIB=:
@@ -2207,7 +2207,7 @@ NM=$lt_NM
 STRIP=$STRIP
 
 # Used to examine libraries when file_magic_cmd begins "file"
-MAGIC=$MAGIC
+MAGIC_CMD=$MAGIC_CMD
 
 # Used on cygwin: DLL creation program.
 DLLTOOL="$DLLTOOL"
@@ -2735,16 +2735,16 @@ pic_mode=ifelse($#,1,$1,default)])
 # AC_PATH_TOOL_PREFIX - find a file program which can recognise shared library
 AC_DEFUN(AC_PATH_TOOL_PREFIX,
 [AC_MSG_CHECKING([for $1])
-AC_CACHE_VAL(lt_cv_path_MAGIC,
-[case "$MAGIC" in
+AC_CACHE_VAL(lt_cv_path_MAGIC_CMD,
+[case "$MAGIC_CMD" in
   /*)
-  lt_cv_path_MAGIC="$MAGIC" # Let the user override the test with a path.
+  lt_cv_path_MAGIC_CMD="$MAGIC_CMD" # Let the user override the test with a path.
   ;;
   ?:/*)
-  ac_cv_path_MAGIC="$MAGIC" # Let the user override the test with a dos path.
+  ac_cv_path_MAGIC_CMD="$MAGIC_CMD" # Let the user override the test with a dos path.
   ;;
   *)
-  ac_save_MAGIC="$MAGIC"
+  ac_save_MAGIC_CMD="$MAGIC_CMD"
   IFS="${IFS=   }"; ac_save_ifs="$IFS"; IFS=":"
 dnl $ac_dummy forces splitting on constant user-supplied paths.
 dnl POSIX.2 word splitting is done only on the output of word expansions,
@@ -2753,12 +2753,12 @@ dnl not every word.  This closes a longstanding sh security hole.
   for ac_dir in $ac_dummy; do
     test -z "$ac_dir" && ac_dir=.
     if test -f $ac_dir/$1; then
-      lt_cv_path_MAGIC="$ac_dir/$1"
+      lt_cv_path_MAGIC_CMD="$ac_dir/$1"
       if test -n "$file_magic_test_file"; then
 	case "$deplibs_check_method" in
 	"file_magic "*)
 	  file_magic_regex="`expr \"$deplibs_check_method\" : \"file_magic \(.*\)\"`"
-	  MAGIC="$lt_cv_path_MAGIC"
+	  MAGIC_CMD="$lt_cv_path_MAGIC_CMD"
 	  if eval $file_magic_cmd \$file_magic_test_file 2> /dev/null |
 	    egrep "$file_magic_regex" > /dev/null; then
 	    :
@@ -2782,12 +2782,12 @@ EOF
     fi
   done
   IFS="$ac_save_ifs"
-  MAGIC="$ac_save_MAGIC"
+  MAGIC_CMD="$ac_save_MAGIC_CMD"
   ;;
 esac])
-MAGIC="$lt_cv_path_MAGIC"
-if test -n "$MAGIC"; then
-  AC_MSG_RESULT($MAGIC)
+MAGIC_CMD="$lt_cv_path_MAGIC_CMD"
+if test -n "$MAGIC_CMD"; then
+  AC_MSG_RESULT($MAGIC_CMD)
 else
   AC_MSG_RESULT(no)
 fi
@@ -2798,11 +2798,11 @@ fi
 AC_DEFUN(AC_PATH_MAGIC,
 [AC_REQUIRE([AC_CHECK_TOOL_PREFIX])dnl
 AC_PATH_TOOL_PREFIX(${ac_tool_prefix}file, /usr/bin:$PATH)
-if test -z "$lt_cv_path_MAGIC"; then
+if test -z "$lt_cv_path_MAGIC_CMD"; then
   if test -n "$ac_tool_prefix"; then
     AC_PATH_TOOL_PREFIX(file, /usr/bin:$PATH)
   else
-    MAGIC=:
+    MAGIC_CMD=:
   fi
 fi
 ])
@@ -2908,7 +2908,7 @@ test -n "$reload_flag" && reload_flag=" $reload_flag"
 AC_DEFUN(AC_DEPLIBS_CHECK_METHOD,
 [AC_CACHE_CHECK([how to recognise dependant libraries],
 lt_cv_deplibs_check_method,
-[lt_cv_file_magic_cmd='${MAGIC}'
+[lt_cv_file_magic_cmd='${MAGIC_CMD}'
 lt_cv_file_magic_test_file=
 lt_cv_deplibs_check_method='unknown'
 # Need to set the preceding variable on all platforms that support

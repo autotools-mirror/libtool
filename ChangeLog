@@ -1,4 +1,11 @@
-2000-09-29  Gary V. Vaughan  <gvv@techie.com>
+2000-09-28  Gary V. Vaughan  <gvv@techie.com>
+
+	* libtool.m4 (MAGIC_CMD): Don't use MAGIC, since BSD versions of
+	the file command use this environment variable to hold the
+	location of the magic database.
+	Reported by Marc Espie <Marc.Espie@liafa.jussieu.fr>
+
+2000-09-19  Gary V. Vaughan  <gvv@techie.com>
 
 	* doc/PLATFORMS: Updated.
 	* demo/configure.in:  Revert to the `libtool --features' test.
