@@ -1,3 +1,8 @@
+2003-06-03  Robert Millan <rmh@debian.org>
+
+	* ltdl.m4: Add support for GNU/FreeBSD.
+	* ltmain.in: Add support for GNU/FreeBSD.
+
 2003-06-03  Albert Chin-A-Young  <china@thewrittenword.com>
 
 	* libtool.m4: No need to use sed to remove leading comma when
