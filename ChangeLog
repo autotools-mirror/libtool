@@ -1,5 +1,12 @@
-2003-09-22  Bob Friesenhahn <bfriesen@simple.dallas.tx.us>,
-            Dalibor Topic <robilad@kaffe.org>
+2003-09-29  Scott James Remnant  <scott@netsplit.com>
+
+	* libtool.m4 (AC_DEPLIBS_CHECK_METHOD): Use pass_all for linux*
+	solving many build problems on ARM, and hopefully preventing any
+	future ones.
+	(Debian Bug #191133 and #190569)
+
+2003-09-29  Bob Friesenhahn <bfriesen@simple.dallas.tx.us>,
+	Dalibor Topic <robilad@kaffe.org>
 
 	* libltdl/ltdl.c: Only include malloc.h if stdlib.h can not be
 	found.
