@@ -1,3 +1,7 @@
+2002-12-11  Allan Sandfeld Jensen  <snowwolf@one2one-networks.com>
+
+	* libtool.m4: Add support for Intel icc compiler for Linux.
+
 2002-12-11  Robert Boehne  <rboehne@gnu.org>
 
 	* ltmain.in: Revert the version +1 change for IRIX, it could
