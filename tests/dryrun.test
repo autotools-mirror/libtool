@@ -42,26 +42,27 @@ mv libtool $objdir/libtool
 mv $objdir/libtool.new libtool
 
 # main.o is not compiled with libtool, but it depends on it, so make
-# sure it is up-to-date
+# sure it is up-to-date.  libfoo2.la is linked with libsub.la, so make
+# sure it exists, otherwise libtool will complain.
 $make main.$OBJEXT || exit 1
 
 echo "= Making object files in ../mdemo (dry run)"
 ls -l . $objdir > $before
-force_dry_run=yes $make foo1.lo foo2.lo || exit $?
+force_dry_run=yes $make foo1.lo foo2.lo sub.lo || exit $?
 ls -l . $objdir > $after
 cmp $before $after > /dev/null || exit 1
 # Now really make them
 echo "= Making object files in ../mdemo"
-$make foo1.lo foo2.lo || exit 1
+$make foo1.lo foo2.lo libsub.la || exit 1
 
 echo "= Making libraries in ../mdemo (dry run)"
 ls -l . $objdir > $before
-force_dry_run=yes $make foo1.la libfoo2.la libsub.la || exit $?
+force_dry_run=yes $make foo1.la libfoo2.la || exit $?
 ls -l . $objdir > $after
 cmp $before $after > /dev/null || exit 1
 # Now really make them
 echo "= Making libraries in ../mdemo"
-$make foo1.la libfoo2.la libsub.la || exit 1
+$make foo1.la libfoo2.la || exit 1
 
 echo "= Making programs in ../mdemo (dry run)"
 ls -l . $objdir > $before

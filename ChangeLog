@@ -1,5 +1,8 @@
 2000-09-04  Alexandre Oliva  <aoliva@redhat.com>
 
+	* tests/dryrun.test: Build libsub.la along with the object files,
+	since it is needed by libfoo2.la.
+
 	* mdemo/Makefile.am: Mark only libfoo2 as -no-undefined.
 	Explicitly link it with libsub.la.
 
