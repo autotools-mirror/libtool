@@ -5,9 +5,17 @@
 # level Makefile.
 AUTOMAKE_OPTIONS = no-dependencies foreign
 
-lib_LTLIBRARIES = libltdl.la
-libltdl_la_SOURCES = ltdl.c
+ltdls.lo: ltdl.c
+	$(LTCOMPILE) -DDEBUG -o $@ -c $<
+
+lib_LTLIBRARIES = libltdl.la libltdls.la
+
+libltdl_la_SOURCES = ltdl.c ltdl.h
 libltdl_la_LDFLAGS = $(LIBADD_DL) 
+
+libltdls_la_LIBADD = ltdls.lo
+libltdls_la_SOURCES = ltdl.h
+libltdls_la_LDFLAGS = $(LIBADD_DL) 
 
 include_HEADERS = ltdl.h
 

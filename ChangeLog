@@ -1,3 +1,12 @@
+1998-12-23  Thomas Tanner  <tanner@gmx.de>
+
+	* libltdl/Makefile.am: build two versions of libltdl: 
+	  libltdl (support native dlopen if available, otherwise dlpreopen), 
+	  libltdls (like libltdl, but always support for dlpreopen)
+	* libltdl/ltdl.c: ditto
+	* libltdl/configure.in: warn if dlopen is not supported
+	* mdemo/Makefile.am (mdemo.debug): use libltdls
+
 1998-12-22  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* Makefile.am (SUBDIRS): prepend `.' to avoid am-recursive

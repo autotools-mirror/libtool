@@ -361,6 +361,7 @@ wll = { LT_DLTYPE_TOP, wll_init, wll_exit,
 
 #endif
 
+#if DEBUG
 #if HAVE_DLPREOPEN
 
 /* emulate dynamic linking using dld_preloaded_symbols */
@@ -436,6 +437,7 @@ dldpre = { LT_DLTYPE_TOP, dldpre_init, dldpre_exit,
 #undef LT_DLTYPE_TOP
 #define LT_DLTYPE_TOP &dldpre
 
+#endif
 #endif
 
 static lt_dlhandle handles;
