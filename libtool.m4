@@ -424,6 +424,21 @@ test "x$enable_libtool_lock" != xno && enable_libtool_lock=yes
 # Some flags need to be propagated to the compiler or linker for good
 # libtool support.
 case $host in
+ia64-*-hpux*)
+  # Find out which ABI we are using.
+  echo 'int i;' > conftest.$ac_ext
+  if AC_TRY_EVAL(ac_compile); then
+    case `/usr/bin/file conftest.$ac_objext` in
+    *ELF-32*)
+      HPUX_IA64_MODE="32"
+      ;;
+    *ELF-64*)
+      HPUX_IA64_MODE="64"
+      ;;
+    esac
+  fi
+  rm -rf conftest*
+  ;;
 *-*-irix6*)
   # Find out which ABI we are using.
   echo '[#]line __oline__ "configure"' > conftest.$ac_ext
@@ -736,7 +751,7 @@ else
   *)
     AC_CHECK_FUNC(shl_load, lt_cv_dlopen="shl_load",
       [AC_CHECK_LIB(dld, shl_load,
-        [lt_cv_dlopen="dld_link" lt_cv_dlopen_libs="-dld"],
+        [lt_cv_dlopen="shl_load" lt_cv_dlopen_libs="-dld"],
         [AC_CHECK_LIB(dl, dlopen,
           [lt_cv_dlopen="dlopen" lt_cv_dlopen_libs="-ldl"],
           [AC_CHECK_FUNC(dlopen, lt_cv_dlopen="dlopen",
@@ -1159,14 +1174,29 @@ gnu*)
 hpux9* | hpux10* | hpux11*)
   # Give a soname corresponding to the major version so that dld.sl refuses to
   # link against other versions.
-  dynamic_linker="$host_os dld.sl"
   version_type=sunos
   need_lib_prefix=no
   need_version=no
-  shlibpath_var=SHLIB_PATH
-  shlibpath_overrides_runpath=no # +s is required to enable SHLIB_PATH
-  library_names_spec='${libname}${release}.sl$versuffix ${libname}${release}.sl$major $libname.sl'
-  soname_spec='${libname}${release}.sl$major'
+  if test "$host_cpu" = ia64; then
+    hardcode_into_libs=yes
+    dynamic_linker="$host_os dld.so"
+    shlibpath_var=LD_LIBRARY_PATH
+    shlibpath_overrides_runpath=yes # Unless +noenvvar is specified.
+    library_names_spec='${libname}${release}.so$versuffix ${libname}${release}.so$major $libname.so'
+    soname_spec='${libname}${release}.so$major'
+    if test "X$HPUX_IA64_MODE" = X32; then
+      sys_lib_search_path_spec="/usr/lib/hpux32 /usr/local/lib/hpux32 /usr/local/lib"
+    else
+      sys_lib_search_path_spec="/usr/lib/hpux64 /usr/local/lib/hpux64"
+    fi
+    sys_lib_dlsearch_path_spec=$sys_lib_search_path_spec
+  else
+    dynamic_linker="$host_os dld.sl"
+    shlibpath_var=SHLIB_PATH
+    shlibpath_overrides_runpath=no # +s is required to enable SHLIB_PATH
+    library_names_spec='${libname}${release}.sl$versuffix ${libname}${release}.sl$major $libname.sl'
+    soname_spec='${libname}${release}.sl$major'
+  fi
   # HP-UX runs *really* slowly unless shared libraries are mode 555.
   postinstall_cmds='chmod 555 $lib'
   ;;
@@ -1859,9 +1889,14 @@ gnu*)
   ;;
 
 hpux10.20* | hpux11*)
-  [lt_cv_deplibs_check_method='file_magic (s[0-9][0-9][0-9]|PA-RISC[0-9].[0-9]) shared library']
   lt_cv_file_magic_cmd=/usr/bin/file
-  lt_cv_file_magic_test_file=/usr/lib/libc.sl
+  if test "$host_cpu" = ia64; then
+    [lt_cv_deplibs_check_method='file_magic (s[0-9][0-9][0-9]|ELF-[0-9][0-9]) shared object file - IA64']
+    lt_cv_file_magic_test_file=/usr/lib/hpux32/libc.so
+  else
+    [lt_cv_deplibs_check_method='file_magic (s[0-9][0-9][0-9]|PA-RISC[0-9].[0-9]) shared library']
+    lt_cv_file_magic_test_file=/usr/lib/libc.sl
+  fi
   ;;
 
 irix5* | irix6*)
@@ -2502,11 +2537,20 @@ case $host_os in
     ;;
   hpux*)
     if test $with_gnu_ld = no; then
-      _LT_AC_TAGVAR(hardcode_libdir_flag_spec, $1)='${wl}+b ${wl}$libdir'
-      _LT_AC_TAGVAR(hardcode_libdir_separator, $1)=:
-      _LT_AC_TAGVAR(export_dynamic_flag_spec, $1)='${wl}-E'
+      if test "$host_cpu" = ia64; then
+        _LT_AC_TAGVAR(hardcode_libdir_flag_spec, $1)='-L$libdir'
+      else
+        _LT_AC_TAGVAR(hardcode_libdir_flag_spec, $1)='${wl}+b ${wl}$libdir'
+        _LT_AC_TAGVAR(hardcode_libdir_separator, $1)=:
+        _LT_AC_TAGVAR(export_dynamic_flag_spec, $1)='${wl}-E'
+      fi
     fi
-    _LT_AC_TAGVAR(hardcode_direct, $1)=yes
+    if test "$host_cpu" = ia64; then
+      _LT_AC_TAGVAR(hardcode_direct, $1)=no
+      _LT_AC_TAGVAR(hardcode_shlibpath_var, $1)=no
+    else
+      _LT_AC_TAGVAR(hardcode_direct, $1)=yes
+    fi
     _LT_AC_TAGVAR(hardcode_minus_L, $1)=yes # Not in the search PATH, but as the default
 			 # location of the library.
 
@@ -2517,8 +2561,16 @@ case $host_os in
         ;;
       aCC)
 	case $host_os in
-	hpux9*) _LT_AC_TAGVAR(archive_cmds, $1)='$rm $output_objdir/$soname~$CC -b ${wl}+b ${wl}$install_libdir -o $output_objdir/$soname $predep_objects $libobjs $deplibs $postdep_objects $compiler_flags~test $output_objdir/$soname = $lib || mv $output_objdir/$soname $lib' ;;
-	*) _LT_AC_TAGVAR(archive_cmds, $1)='$CC -b ${wl}+h ${wl}$soname ${wl}+b ${wl}$install_libdir -o $lib $predep_objects $libobjs $deplibs $postdep_objects $compiler_flags' ;;
+        hpux9*)
+            _LT_AC_TAGVAR(archive_cmds, $1)='$rm $output_objdir/$soname~$CC -b ${wl}+b ${wl}$install_libdir -o $output_objdir/$soname $predep_objects $libobjs $deplibs $postdep_objects $compiler_flags~test $output_objdir/$soname = $lib || mv $output_objdir/$soname $lib'
+          ;;
+      *)
+          if test "$host_cpu" = ia64; then
+            _LT_AC_TAGVAR(archive_cmds, $1)='$LD -b +h $soname -o $lib $linker_flags $libobjs $deplibs'
+          else
+            _LT_AC_TAGVAR(archive_cmds, $1)='$CC -b ${wl}+h ${wl}$soname ${wl}+b ${wl}$install_libdir -o $lib $predep_objects $libobjs $deplibs $postdep_objects $compiler_flags'
+          fi
+          ;;
 	esac
         # Commands to make compiler produce verbose output that lists
         # what "hidden" libraries, object files and flags are used when
@@ -2534,8 +2586,16 @@ case $host_os in
         if test $GXX = yes; then
 	  if test $with_gnu_ld = no; then
 	    case "$host_os" in
-	    hpux9*) _LT_AC_TAGVAR(archive_cmds, $1)='$rm $output_objdir/$soname~$CC -shared -nostdlib -fPIC ${wl}+b ${wl}$install_libdir -o $output_objdir/$soname $predep_objects $libobjs $deplibs $postdep_objects $compiler_flags~test $output_objdir/$soname = $lib || mv $output_objdir/$soname $lib' ;;
-	    *) _LT_AC_TAGVAR(archive_cmds, $1)='$CC -shared -nostdlib -fPIC ${wl}+h ${wl}$soname ${wl}+b ${wl}$install_libdir -o $lib $predep_objects $libobjs $deplibs $postdep_objects $compiler_flags' ;;
+            hpux9*)
+                _LT_AC_TAGVAR(archive_cmds, $1)='$rm $output_objdir/$soname~$CC -shared -nostdlib -fPIC ${wl}+b ${wl}$install_libdir -o $output_objdir/$soname $predep_objects $libobjs $deplibs $postdep_objects $compiler_flags~test $output_objdir/$soname = $lib || mv $output_objdir/$soname $lib'
+                ;;
+          *)
+                if test "$host_cpu" = ia64; then
+                  _LT_AC_TAGVAR(archive_cmds, $1)='$LD -b +h $soname -o $lib $linker_flags $libobjs $deplibs'
+                else
+                  _LT_AC_TAGVAR(archive_cmds, $1)='$CC -shared -nostdlib -fPIC ${wl}+h ${wl}$soname ${wl}+b ${wl}$install_libdir -o $lib $predep_objects $libobjs $deplibs $postdep_objects $compiler_flags'
+                fi
+                ;;
 	    esac
 	  fi
 	else
@@ -3600,6 +3660,9 @@ cygwin* | mingw* | pw32*)
   [symcode='[ABCDGISTW]']
   ;;
 hpux*) # Its linker distinguishes data from code symbols
+  if test "$host_cpu" = ia64; then
+    [symcode='[ABCDEGRST]']
+  fi
   lt_cv_sys_global_symbol_to_cdecl="sed -n -e 's/^T .* \(.*\)$/extern int \1();/p' -e 's/^$symcode* .* \(.*\)$/extern char \1;/p'"
   lt_cv_sys_global_symbol_to_c_name_address="sed -n -e 's/^: \([[^ ]]*\) $/  {\\\"\1\\\", (lt_ptr) 0},/p' -e 's/^$symcode* \([[^ ]]*\) \([[^ ]]*\)$/  {\"\2\", (lt_ptr) \&\2},/p'"
   ;;
@@ -3791,6 +3854,12 @@ ifelse([$1],[CXX],[
         _LT_AC_TAGVAR(lt_prog_compiler_pic, $1)=-Kconform_pic
       fi
       ;;
+    hpux*)
+      # PIC is the default for IA64 HP-UX, but not for PA HP-UX.
+      if test "$host_cpu" != ia64; then
+        _LT_AC_TAGVAR(lt_prog_compiler_pic, $1)='-fPIC'
+      fi
+      ;;
     *)
       _LT_AC_TAGVAR(lt_prog_compiler_pic, $1)='-fPIC'
       ;;
@@ -3835,12 +3904,16 @@ ifelse([$1],[CXX],[
           CC)
             _LT_AC_TAGVAR(lt_prog_compiler_wl, $1)='-Wl,'
             _LT_AC_TAGVAR(lt_prog_compiler_static, $1)="${ac_cv_prog_cc_wl}-a ${ac_cv_prog_cc_wl}archive"
-            _LT_AC_TAGVAR(lt_prog_compiler_pic, $1)='+Z'
+            if test "$host_cpu" != ia64; then
+              _LT_AC_TAGVAR(lt_prog_compiler_pic, $1)='+Z'
+            fi
             ;;
           aCC)
             _LT_AC_TAGVAR(lt_prog_compiler_wl, $1)='-Wl,'
             _LT_AC_TAGVAR(lt_prog_compiler_static, $1)="${ac_cv_prog_cc_wl}-a ${ac_cv_prog_cc_wl}archive"
-            _LT_AC_TAGVAR(lt_prog_compiler_pic, $1)='+Z'
+            if test "$host_cpu" != ia64; then
+              _LT_AC_TAGVAR(lt_prog_compiler_pic, $1)='+Z'
+            fi
             ;;
           *)
             ;;
@@ -4022,6 +4095,13 @@ ifelse([$1],[CXX],[
         _LT_AC_TAGVAR(lt_prog_compiler_pic, $1)=-Kconform_pic
       fi
       ;;
+
+    hpux*)
+      # PIC is the default for IA64 HP-UX, but not for PA HP-UX.
+      if test "$host_cpu" != ia64; then
+        _LT_AC_TAGVAR(lt_prog_compiler_pic, $1)='-fPIC'
+      fi
+      ;;
   
     *)
       _LT_AC_TAGVAR(lt_prog_compiler_pic, $1)='-fPIC'
@@ -4048,7 +4128,9 @@ ifelse([$1],[CXX],[
   
     hpux9* | hpux10* | hpux11*)
       _LT_AC_TAGVAR(lt_prog_compiler_wl, $1)='-Wl,'
-      _LT_AC_TAGVAR(lt_prog_compiler_pic, $1)='+Z'
+      if test "$host_cpu" != ia64; then
+        _LT_AC_TAGVAR(lt_prog_compiler_pic, $1)='+Z'
+      fi
       # Is there a better lt_prog_compiler_static that works with the bundled CC?
       _LT_AC_TAGVAR(lt_prog_compiler_static, $1)='${wl}-a ${wl}archive'
       ;;
@@ -4598,20 +4680,43 @@ EOF
     hpux9* | hpux10* | hpux11*)
       if test $GXX = yes; then
         case $host_os in
-        hpux9*) _LT_AC_TAGVAR(archive_cmds, $1)='$rm $output_objdir/$soname~$CC -shared -fPIC ${wl}+b ${wl}$install_libdir -o $output_objdir/$soname $libobjs $deplibs $compiler_flags~test $output_objdir/$soname = $lib || mv $output_objdir/$soname $lib' ;;
-        *) _LT_AC_TAGVAR(archive_cmds, $1)='$CC -shared -fPIC ${wl}+h ${wl}$soname ${wl}+b ${wl}$install_libdir -o $lib $libobjs $deplibs $compiler_flags' ;;
+          hpux9*)
+            _LT_AC_TAGVAR(archive_cmds, $1)='$rm $output_objdir/$soname~$CC -shared -fPIC ${wl}+b ${wl}$install_libdir -o $output_objdir/$soname $libobjs $deplibs $compiler_flags~test $output_objdir/$soname = $lib || mv $output_objdir/$soname $lib'
+            ;;
+        *)
+            if test "$host_cpu" = ia64; then
+              _LT_AC_TAGVAR(archive_cmds, $1)='$CC -shared ${wl}+h ${wl}$soname -o $lib $libobjs $deplibs $compiler_flags'
+            else
+              _LT_AC_TAGVAR(archive_cmds, $1)='$CC -shared -fPIC ${wl}+h ${wl}$soname ${wl}+b ${wl}$install_libdir -o $lib $libobjs $deplibs $compiler_flags'
+            fi
+            ;;
         esac
       else
         case $host_os in
-        hpux9*) _LT_AC_TAGVAR(archive_cmds, $1)='$rm $output_objdir/$soname~$LD -b +b $install_libdir -o $output_objdir/$soname $libobjs $deplibs $linker_flags~test $output_objdir/$soname = $lib || mv $output_objdir/$soname $lib' ;;
-        *) _LT_AC_TAGVAR(archive_cmds, $1)='$LD -b +h $soname +b $install_libdir -o $lib $libobjs $deplibs $linker_flags' ;;
+          hpux9*)
+            _LT_AC_TAGVAR(archive_cmds, $1)='$rm $output_objdir/$soname~$LD -b +b $install_libdir -o $output_objdir/$soname $libobjs $deplibs $linker_flags~test $output_objdir/$soname = $lib || mv $output_objdir/$soname $lib'
+            ;;
+          *) 
+            if test "$host_cpu" = ia64; then
+              _LT_AC_TAGVAR(archive_cmds, $1)='$LD -b +h $soname -o $lib $libobjs $deplibs $linker_flags'
+            else
+              _LT_AC_TAGVAR(archive_cmds, $1)='$LD -b +h $soname +b $install_libdir -o $lib $libobjs $deplibs $linker_flags'
+            fi
+            ;;
         esac
       fi
-      _LT_AC_TAGVAR(hardcode_libdir_flag_spec, $1)='${wl}+b ${wl}$libdir'
-      _LT_AC_TAGVAR(hardcode_libdir_separator, $1)=:
-      _LT_AC_TAGVAR(hardcode_direct, $1)=yes
-      _LT_AC_TAGVAR(hardcode_minus_L, $1)=yes # Not in the search PATH, but as the default
-  			 # location of the library.
+      if test "$host_cpu" = ia64; then
+        _LT_AC_TAGVAR(hardcode_libdir_flag_spec, $1)='-L$libdir'
+        _LT_AC_TAGVAR(hardcode_direct, $1)=no
+        _LT_AC_TAGVAR(hardcode_shlibpath_var, $1)=no
+      else
+        _LT_AC_TAGVAR(hardcode_libdir_flag_spec, $1)='${wl}+b ${wl}$libdir'
+        _LT_AC_TAGVAR(hardcode_libdir_separator, $1)=:
+        _LT_AC_TAGVAR(hardcode_direct, $1)=yes
+      fi
+      # hardcode_minus_L: Not really in the search PATH,
+      # but as the default location of the library.
+      _LT_AC_TAGVAR(hardcode_minus_L, $1)=yes
       _LT_AC_TAGVAR(export_dynamic_flag_spec, $1)='${wl}-E'
       ;;
   

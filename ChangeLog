@@ -1,3 +1,7 @@
+2001-07-30  Steve Ellcey  <sje@cup.hp.com>
+
+	* libtool.m4 (ia64-*-hpux*) Add support for ia64*-*-hpux* platform.
+
 2001-07-30  Robert Boehne  <rboehne@ricardo-us.com>
 
 	* libtool.m4 (AC_LIBTOOL_PROG_COMPILER_PIC) [aix*]: Fixed an
