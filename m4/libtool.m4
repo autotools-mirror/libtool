@@ -5251,6 +5251,26 @@ _LT_EOF
       _LT_AC_TAGVAR(hardcode_shlibpath_var, $1)=no
       ;;
 
+  linux*)
+    if $LD --help 2>&1 | egrep ': supported targets:.* elf' > /dev/null; then
+      _LT_AC_TAGVAR(archive_cmds, $1)='$CC -shared $libobjs $deplibs $compiler_flags ${wl}-soname $wl$soname -o $lib'
+      case `$LD -v 2>&1` in
+        *\ [01].* | *\ 2.[[0-9]].* | *\ 2.10.*) ;; # catch versions < 2.11
+        *\ 2.11.93.0.2\ *) supports_anon_versioning=yes ;; # RH7.3 ...
+        *\ 2.11.92.0.12\ *) supports_anon_versioning=yes ;; # Mandrake 8.2 ...
+        *\ 2.11.*) ;; # other 2.11 versions
+        *) supports_anon_versioning=yes ;;
+      esac
+      if test "x$supports_anon_versioning" = xyes; then
+        _LT_AC_TAGVAR(archive_expsym_cmds, $1)='$echo "{ global:" > $output_objdir/$libname.ver~cat $export_symbols | sed -e "s/\(.*\)/\1;/" >> $output_objdir/$libname.ver~$echo "local: *; };" >> $output_objdir/$libname.ver~$CC -shared $libobjs $deplibs $compiler_flags ${wl}-soname $wl$soname ${wl}-version-script ${wl}$output_objdir/$libname.ver -o $lib'
+      else
+        _LT_AC_TAGVAR(archive_expsym_cmds, $1)=$_LT_AC_TAGVAR(archive_cmds, $1)
+      fi
+    else
+      _LT_AC_TAGVAR(ld_shlibs, $1)=no
+    fi
+    ;;
+
     *)
       if $LD --help 2>&1 | grep ': supported targets:.* elf' > /dev/null; then
 	_LT_AC_TAGVAR(archive_cmds, $1)='$CC -shared $libobjs $deplibs $compiler_flags ${wl}-soname $wl$soname -o $lib'

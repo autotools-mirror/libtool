@@ -1,5 +1,10 @@
 2003-10-31  Scott James Remnant  <scott@netsplit.com>
 
+	* m4/libtool.m4: Include James Henstridge's patch to fix the
+	-export-symbols and -export-symbols-regex options under Linux.
+	
+2003-10-31  Scott James Remnant  <scott@netsplit.com>
+
 	* tests/demo-nopic.test: Skip test on hppa, which don't like
 	non-PIC shared libraries.
 
