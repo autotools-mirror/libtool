@@ -115,6 +115,9 @@ the same version number, but depending on different versions of libc,
 for example.  In the future, we might even have an option to encode
 the sonames of all dependencies of a library into its soname.
 
+* The current implementation of libltdl in a subdirectory doesn't work
+properly with AC_CONFIG_AUX_DIR using projects.
+
 Things to think about:
 **********************
 
