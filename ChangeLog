@@ -1,5 +1,10 @@
 2004-08-31  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* bootstrap: Update warning message to reflect having split
+	libtool.m4 into several files.
+	Also, add config/ltmain.sh to list of stale files from previous
+	versions to be removed before bootstrap.
+
 	* libltdl/ltdl.c: Replace strdup with lt__strdup.
 
 2004-08-30  Gary V. Vaughan  <gary@gnu.org>

@@ -35,14 +35,14 @@ WARNING: If bootstrapping with this script fails, it may be due to an
 WARNING: incompatible installed `libtool.m4' being pulled in to
 WARNING: `aclocal.m4'.  The best way to work around such a problem is to
 WARNING: uninstall your system libtool files, or failing that, overwrite
-WARNING: them with `libtool.m4' as shipped with this distribution.
-WARNING: After that, retry this bootstrap.
+WARNING: them with all m4 file as shipped with this distribution (except
+WARNING: `lt~obsolete.m4').  After that, retry this bootstrap.
 EOF
 
 rm -rf `find . -path './{arch}' -prune -o \( -name autom4te.cache -o -name libtool \) -print`
 
 # Delete stale files from previous libtool versions.
-rm -f acinclude.m4 libltdl/config.h
+rm -f acinclude.m4 config/ltmain.sh libltdl/config.h
 
 if test -z "$reconfdirs"; then
   reconfdirs=". `ls -1d tests/*demo tests/*demo[0-9]`"
