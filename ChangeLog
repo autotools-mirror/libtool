@@ -1,5 +1,8 @@
 2004-11-14  Gary V. Vaughan  <gary@gnu.org>
 
+	* m4/libtool.m4 (_LT_LINKER_SHLIBS): Typo: s/--rpath/-rpath/g.
+	(_LT_LANG_CXX_CONFIG): Ditto.
+
 	* configure.ac (APIVERSION): New substituted variable.
 	(pkgvdatadir): Ditto.  Versioned data directory.
 	(pkgvmacrodir): Ditto.  Versioned aclocal directory.

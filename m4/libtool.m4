@@ -3667,7 +3667,7 @@ _LT_EOF
 
     if test "$_LT_TAGVAR(ld_shlibs, $1)" = yes; then
       runpath_var=LD_RUN_PATH
-      _LT_TAGVAR(hardcode_libdir_flag_spec, $1)='${wl}--rpath ${wl}$libdir'
+      _LT_TAGVAR(hardcode_libdir_flag_spec, $1)='${wl}-rpath ${wl}$libdir'
       _LT_TAGVAR(export_dynamic_flag_spec, $1)='${wl}--export-dynamic'
       # ancient GNU ld didn't support --whole-archive et. al.
       if $LD --help 2>&1 | $GREP 'no-whole-archive' > /dev/null; then
@@ -4605,7 +4605,7 @@ if test "$_lt_caught_CXX_error" != yes; then
         _LT_TAGVAR(archive_cmds, $1)='$CC -shared -nostdlib $predep_objects $libobjs $deplibs $postdep_objects $compiler_flags ${wl}-soname $wl$soname -o $lib'
         _LT_TAGVAR(archive_expsym_cmds, $1)='$CC -shared -nostdlib $predep_objects $libobjs $deplibs $postdep_objects $compiler_flags ${wl}-soname $wl$soname ${wl}-retain-symbols-file $wl$export_symbols -o $lib'
 
-        _LT_TAGVAR(hardcode_libdir_flag_spec, $1)='${wl}--rpath ${wl}$libdir'
+        _LT_TAGVAR(hardcode_libdir_flag_spec, $1)='${wl}-rpath ${wl}$libdir'
         _LT_TAGVAR(export_dynamic_flag_spec, $1)='${wl}--export-dynamic'
 
         # If archive_cmds runs LD, not CC, wlarc should be empty
@@ -5072,7 +5072,7 @@ if test "$_lt_caught_CXX_error" != yes; then
 	    # dependencies.
 	    output_verbose_link_cmd='templist=`$CC $CFLAGS -v conftest.$objext -o libconftest$shared_ext 2>&1 | $GREP "ld"`; rm -f libconftest$shared_ext; list=""; for z in $templist; do case $z in conftest.$objext) list="$list $z";; *.$objext);; *) list="$list $z";;esac; done; $ECHO $list'
 
-	    _LT_TAGVAR(hardcode_libdir_flag_spec, $1)='${wl}--rpath,$libdir'
+	    _LT_TAGVAR(hardcode_libdir_flag_spec, $1)='${wl}-rpath,$libdir'
 	    _LT_TAGVAR(export_dynamic_flag_spec, $1)='${wl}--export-dynamic'
 
 	    # Archives containing C++ object files must be created using
