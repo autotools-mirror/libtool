@@ -48,6 +48,9 @@ GNU Libtool
   most packages that use pkg-config also use libtool, I think this
   would be a good way to reduce maintainer and developer dependencies.
 
+* Have libtoolize install `install-sh' if a newer version is available,
+  and/or Automake is not used.
+
 1.2. libtldl
 ------------
 

@@ -1,5 +1,7 @@
 2005-01-12  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* TODO: Update.
+
 	* libltdl/ltdl.c: Whitespace cleanup.
 
 	* config/ltmain.m4sh: New option `--verbose'/`-v' to enable
