@@ -3323,7 +3323,7 @@ m4_if([$1], [CXX], [
       ;;
 
     linux*)
-      case $CC in
+      case "$cc_basename" in
       icc* | ecc*)
 	_LT_TAGVAR(lt_prog_compiler_wl, $1)='-Wl,'
 	_LT_TAGVAR(lt_prog_compiler_pic, $1)='-KPIC'
