@@ -730,7 +730,7 @@ compiler."
       shift
       case "$arg" in
       *[\[\~\#\^\&\*\(\)\{\}\|\;\<\>\?\'\ \	]*|*]*)
-	qarg=\"`echo "X$arg" | $Xsed -e "$sed_quote_subst"`\"
+	qarg=\"`$echo "X$arg" | $Xsed -e "$sed_quote_subst"`\" ### testsuite: skip nested quoting test
 	;;
       *) qarg=$arg ;;
       esac

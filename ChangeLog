@@ -1,8 +1,10 @@
 1999-12-18  Alexandre Oliva  <oliva@lsd.ic.unicamp.br>
 
+	* ltmain.in: Oops, `echo' -> `$echo'.
+
 	* ltmain.in (-Wl, -Wc): Make commas argument separators, just like
 	in gcc.
-	
+
 	* ltmain.in (libtool_args): Get all arguments properly enclosed in
 	quotes and backslash-protected when needed.
 
