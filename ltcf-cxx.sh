@@ -707,7 +707,7 @@ else
           ;;
         cxx)
           # Digital/Compaq C++
-          ac_cv_prog_cc_wl='-Wl,'
+          ac_cv_prog_cc_wl='-WL,'
           # Make sure the PIC flag is empty.  It appears that all Alpha
           # Linux and Compaq Tru64 Unix objects are PIC.
           ac_cv_prog_cc_pic=

@@ -1,3 +1,9 @@
+2000-12-16  Aneesh Kumar K.V  <kvaneesh@hotmail.com>
+
+	* ltcf-c.sh (OSF/1): Change  the way to pass linker flags through
+	compiler on a Tru64 machine.
+	* ltcf-cxx.sh (OSF/1): ditto.
+
 2000-12-16  Gary V. Vaughan  <gvv@techie.com>
 
 	* ltcf-c.sh (archive_cmds): And another one.  Use test instead of

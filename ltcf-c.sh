@@ -620,7 +620,7 @@ else
 
     osf3* | osf4* | osf5*)
       # All OSF/1 code is PIC.
-      ac_cv_prog_cc_wl='-Wl,'
+      ac_cv_prog_cc_wl='-WL,'
       ac_cv_prog_cc_static='-non_shared'
       ;;
 
