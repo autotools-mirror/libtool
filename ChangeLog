@@ -1,3 +1,41 @@
+2004-02-20  Gary V. Vaughan  <gary@gnu.org>
+
+	Sweeping changes to the user interface to libtool from
+	`configure.ac' to be more like AC_INIT and accept a space
+	delimited list of options.  Instead of calling `AC_LIBTOOL_DLOPEN;
+	AC_PROG_LIBTOOL', we now recommend `LT_INIT([dlopen])':
+
+	* m4/libtool.m4	(AC_PROG_LIBTOOL, _AC_PROG_LIBTOOL)
+	(AC_LIBTOOL_SETUP): Removed.  Added AU_DEFUNs.
+	(LT_INIT): Replace with an Autoconf like interface which accepts a
+	version number as a minimum required libtool release at configure
+	time.
+	* m4/ltoptions.m4: New file inspired by automake/m4/amoptions.m4,
+	which additionally flags an error if the configuring libtool
+	macros are not new enough according to LT_INIT.
+	(LT_OPTION_DEFINE): New macro to declare option handlers.
+	(dlopen, win32-dll, shared, disable-shared, static)
+	(disable-static, fast-install, disable-fast-install, pic-only)
+	(no-pic): Newly LT_OPTION_DEFINEd option handlers that use...
+	(_LT_ENABLE_SHARED, _LT_ENABLE_STATIC, _LT_ENABLE_FAST_INSTALL)
+	(_LT_WITH_PIC, _LT_WIN32_DLL): New macros to handle
+	LT_LIBTOOL_INIT options...
+	* m4/libtool.m4 (AC_ENABLE_SHARED, AC_ENABLE_STATIC)
+	(AC_ENABLE_FAST_INSTALL, AC_LIBTOOL_DLOPEN, AC_LIBTOOL_WIN32_DLL):
+	...to replace these user interface macros, now defined as
+	AU_DEFUNs.
+	(AC_DISABLE_SHARED, AC_DISABLE_STATIC, AC_DISABLE_FAST_INSTALL):
+	Removed.  No longer required with LT_INIT_LIBTOOL interface.
+	Added AU_DEFUNs.
+	(AM_ENABLE_SHARED, AM_DISABLE_SHARED, AM_ENABLE_STATIC)
+	(AM_DISABLE_STATIC): Changed AU_DEFUNs to match new interface.
+	(_LT_SETUP): Internal to LT_INIT, replaces AC_LIBTOOL_SETUP.
+	* m4/lt~obsolete.m4 (AC_LIBTOOL_SETUP, _AC_PROG_LIBTOOL)
+	(_LT_PROG_LTMAIN):  More AC_DEFUNs that have been retracted.
+	* configure.ac: Use new interface.
+	* doc/libtool.texi: Document new interface.
+	* NEWS: Updated.
+
 2004-02-18  Gary V. Vaughan  <gary@gnu.org>
 
 	* commit (SHELL): Set it explicitly, incase some madman is using

@@ -43,12 +43,12 @@ AC_C_CONST
 ## ----------------------- ##
 ## Libtool initialisation. ##
 ## ----------------------- ##
-AC_LIBTOOL_DLOPEN
 AC_LIBTOOL_TAGS([])
-AC_PROG_LIBTOOL
+LT_INIT([dlopen])
 AC_SUBST(LIBTOOL_DEPS)
 
-STATIC="\`${CONFIG_SHELL} ./libtool --features | ${SED} -n -e '/enable static/s/^.*\$\$/-static/p'\`"
+STATIC=""
+test "X$enable_static" = Xyes && STATIC="-static"
 AC_SUBST([STATIC])
 
 

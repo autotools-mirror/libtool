@@ -136,7 +136,7 @@ Integrating libtool with your package
 
 Configuring libtool
 
-* AC_PROG_LIBTOOL::             Configuring @code{libtool} in @file{configure.in}.
+* LT_INIT::                     Configuring @code{libtool} in @file{configure.in}.
 
 Including libtool in your package
 
@@ -1627,20 +1627,20 @@ Libtool adds its own tests to your @code{configure} script in order to
 generate a libtool script for the installer's host machine.
 
 @menu
-* AC_PROG_LIBTOOL::             Configuring @code{libtool} in @file{configure.in}.
+* LT_INIT::                     Configuring @code{libtool} in @file{configure.in}.
 @end menu
 
-@node AC_PROG_LIBTOOL
-@subsection The @code{AC_PROG_LIBTOOL} macro
+@node LT_INIT
+@subsection The @code{LT_INIT} macro
 
 If you are using GNU Autoconf (or Automake), you should add a call to
-@code{AC_PROG_LIBTOOL} to your @file{configure.in} file.  This macro
+@code{LT_INIT} to your @file{configure.in} file.  This macro
 adds many new tests to the @code{configure} script so that the generated
 libtool script will understand the characteristics of the host:
 
 @defmac LT_PREREQ(@var{VERSION})
 Ensure that a recent enough version of Libtool is being used.  If the
-version of Libtool used for @code{AC_PROG_LIBTOOL} is earlier than
+version of Libtool used for @code{LT_INIT} is earlier than
 @var{version}, print an error message to the standard
 error output and exit with failure (exit status is 63).  For example:
 
@@ -1649,27 +1649,31 @@ LT_PREREQ(@value{VERSION})
 @end example
 @end defmac
 
-@defmac AC_PROG_LIBTOOL
+@defmac LT_INIT
+@defmacx AC_PROG_LIBTOOL
 @defmacx AM_PROG_LIBTOOL
 Add support for the @samp{--enable-shared} and @samp{--disable-shared}
-@code{configure} flags.@footnote{@code{AC_PROG_LIBTOOL} requires that
+@code{configure} flags.@footnote{@code{LT_INIT} requires that
 you define the @file{Makefile} variable @code{top_builddir} in your
 @file{Makefile.in}.  Automake does this automatically, but Autoconf
 users should set it to the relative path to the top of your build
-directory (@file{../..}, for example).}  @code{AM_PROG_LIBTOOL} was the
-old name for this macro, and although supported at the moment is
-deprecated.
+directory (@file{../..}, for example).}  @code{AC_PROG_LIBTOOL} and
+@code{AM_PROG_LIBTOOL} were names for older versions of this macro;
+@code{autoupdate} will upgrade your @file{configure.ac} files.
 
 By default, this macro turns on shared libraries if they are available,
 and also enables static libraries if they don't conflict with the shared
-libraries.  You can modify these defaults by calling either the
-@code{AC_DISABLE_SHARED} or @code{AC_DISABLE_STATIC} macros:
+libraries.  You can modify these defaults by passing either
+@code{disable-shared} or @code{disable-static} in the option list to
+@code{LT_INIT}:@footnote{This used to be done with additional macro
+calls, @code{AC_DISABLE_SHARED} and @code{AC_DISABLE_STATIC}.  If you
+are upgrading from such an old version, again @code{autoupdate} is your
+friend.}
 
 @example
 # Turn off shared libraries during beta-testing, since they
 # make the build process take too long.
-AC_DISABLE_SHARED
-AC_PROG_LIBTOOL
+LT_INIT([disable-shared])
 @end example
 
 The user may specify modified forms of the configure flags
@@ -1700,7 +1704,7 @@ use to automatically update the libtool script if it becomes
 out-of-date.  In order to do that, add to your @file{configure.in}:
 
 @example
-AC_PROG_LIBTOOL
+LT_INIT
 AC_SUBST(LIBTOOL_DEPS)
 @end example
 
@@ -1716,53 +1720,53 @@ If you are using GNU automake, you can omit the assignment, as automake
 will take care of it.  You'll obviously have to create some dependency
 on @file{libtool}.
 
-@end defmac
+Aside from @code{disable-static} and @code{disable-shared}, there are
+other options that you can pass to @code{LT_INIT} to modify its
+behaviour.  Here is a full list:
 
-@defmac AC_LIBTOOL_DLOPEN
-Enable checking for dlopen support. This macro should be used if
+@itemize @bullet
+@item dlopen
+Enable checking for dlopen support. This option should be used if
 the package makes use of the @samp{-dlopen} and @samp{-dlpreopen} flags,
 otherwise libtool will assume that the system does not support dlopening.
-The macro must be called @strong{before} @code{AC_PROG_LIBTOOL}.
-@end defmac
 
-@defmac AC_LIBTOOL_WIN32_DLL
-This macro should be used if the package has been ported to build clean
+@item win32-dll
+This option should be used if the package has been ported to build clean
 dlls on win32 platforms.  Usually this means that any library data items
 are exported with @code{__declspec(dllexport)} and imported with
 @code{__declspec(dllimport)}.  If this macro is not used, libtool will
 assume that the package libraries are not dll clean and will build only
 static libraries on win32 hosts.
 
-This macro must be called @strong{before} @code{AC_PROG_LIBTOOL}, and
-provision must be made to pass @samp{-no-undefined} to @code{libtool}
+Provision must be made to pass @samp{-no-undefined} to @code{libtool}
 in link mode from the package @code{Makefile}.  Naturally, if you pass
 @samp{-no-undefined}, you must ensure that all the library symbols
 @strong{really are} defined at link time!
-@end defmac
 
-@defmac AC_DISABLE_FAST_INSTALL
-Change the default behaviour for @code{AC_PROG_LIBTOOL} to disable
+@item disable-fast-install
+Change the default behaviour for @code{LT_INIT} to disable
 optimization for fast installation.  The user may still override this
 default, depending on platform support, by specifying
 @samp{--enable-fast-install}.
-@end defmac
 
-@defmac AC_DISABLE_SHARED
-@defmacx AM_DISABLE_SHARED
-Change the default behaviour for @code{AC_PROG_LIBTOOL} to disable
+@item disable-shared
+Change the default behaviour for @code{LT_INIT} to disable
 shared libraries.  The user may still override this default by
 specifying @samp{--enable-shared}.
 @end defmac
 
-@defmac AC_DISABLE_STATIC
-@defmacx AM_DISABLE_STATIC
-Change the default behaviour for @code{AC_PROG_LIBTOOL} to disable
+@item disable-static
+Change the default behaviour for @code{LT_INIT} to disable
 static libraries.  The user may still override this default by
 specifying @samp{--enable-static}.
 @end defmac
 
+@end itemize
+
+@end defmac
+
 @defmac AC_LIBTOOL_TAGS ([tag1 tag2 ...])
-Change the default behaviour for @code{AC_PROG_LIBTOOL} to limit
+Change the default behaviour for @code{LT_INIT} to limit
 configuration to a specified set of language tags. This is valuable in
 case libtool is embedded in a package which only uses a subset of the
 languages libtool supports. Configuring a subset of the supported
@@ -1772,45 +1776,45 @@ configuration. Tag names accepted are "CXX", "F77", "GCJ", and
 disabled.
 @end defmac
 
-The tests in @code{AC_PROG_LIBTOOL} also recognize the following
+The tests in @code{LT_INIT} also recognize the following
 environment variables:
 
 @defvar CC
 The C compiler that will be used by the generated @code{libtool}.  If
-this is not set, @code{AC_PROG_LIBTOOL} will look for @code{gcc} or
+this is not set, @code{LT_INIT} will look for @code{gcc} or
 @code{cc}.
 @end defvar
 
 @defvar CFLAGS
 Compiler flags used to generate standard object files.  If this is not
-set, @code{AC_PROG_LIBTOOL} will not use any such flags.  It affects
-only the way @code{AC_PROG_LIBTOOL} runs tests, not the produced
+set, @code{LT_INIT} will not use any such flags.  It affects
+only the way @code{LT_INIT} runs tests, not the produced
 @code{libtool}.
 @end defvar
 
 @defvar CPPFLAGS
-C preprocessor flags.  If this is not set, @code{AC_PROG_LIBTOOL} will
-not use any such flags.  It affects only the way @code{AC_PROG_LIBTOOL}
+C preprocessor flags.  If this is not set, @code{LT_INIT} will
+not use any such flags.  It affects only the way @code{LT_INIT}
 runs tests, not the produced @code{libtool}.
 @end defvar
 
 @defvar LD
 The system linker to use (if the generated @code{libtool} requires one).
-If this is not set, @code{AC_PROG_LIBTOOL} will try to find out what is
+If this is not set, @code{LT_INIT} will try to find out what is
 the linker used by @var{CC}.
 @end defvar
 
 @defvar LDFLAGS
 The flags to be used by @code{libtool} when it links a program.  If
-this is not set, @code{AC_PROG_LIBTOOL} will not use any such flags.  It
-affects only the way @code{AC_PROG_LIBTOOL} runs tests, not the produced
+this is not set, @code{LT_INIT} will not use any such flags.  It
+affects only the way @code{LT_INIT} runs tests, not the produced
 @code{libtool}.
 @end defvar
 
 @defvar LIBS
-The libraries to be used by @code{AC_PROG_LIBTOOL} when it links a
-program.  If this is not set, @code{AC_PROG_LIBTOOL} will not use any
-such flags.  It affects only the way @code{AC_PROG_LIBTOOL} runs tests,
+The libraries to be used by @code{LT_INIT} when it links a
+program.  If this is not set, @code{LT_INIT} will not use any
+such flags.  It affects only the way @code{LT_INIT} runs tests,
 not the produced @code{libtool}.
 @end defvar
 
@@ -1824,7 +1828,7 @@ Program to use rather than checking for @code{ranlib}.
 
 @defvar LN_S
 A command that creates a link of a program, a soft-link if possible, a
-hard-link otherwise.  @code{AC_PROG_LIBTOOL} will check for a suitable
+hard-link otherwise.  @code{LT_INIT} will check for a suitable
 program if this variable is not set.
 @end defvar
 
@@ -1848,11 +1852,11 @@ libtool had discovered about your architecture and environment, you
 had to run the script with @samp{--config} and grep through the
 results.  This ideom was supported up to and including 1.5.x era
 libtool, where it was possible to call the generated libtool script
-from @file{configure.in} as soon as @code{AC_PROG_LIBTOOL} had
+from @file{configure.in} as soon as @code{LT_INIT} had
 completed.  However, one of the features of libtool 1.4 was that the
 libtool configuration was migrated out of a separate @file{ltconfig}
-file, and added to the @code{AC_PROG_LIBTOOL} macro, so the results of
-the configuration tests were available directly to code in
+file, and added to the @code{LT_INIT} macro (nee @code{AC_PROG_LIBTOOL}),
+so the results of the configuration tests were available directly to code in
 @file{configure.in}, rendering the call out to the generated libtool
 script obsolete.
 
@@ -1871,8 +1875,8 @@ generated libtool script.
 @pindex aclocal
 When you invoke the @code{libtoolize} program (@pxref{Invoking
 libtoolize}), it will tell you where to find a definition of
-@code{AC_PROG_LIBTOOL}.  If you use Automake, the @code{aclocal} program
-will automatically add @code{AC_PROG_LIBTOOL} support to your
+@code{LT_INIT}.  If you use Automake, the @code{aclocal} program
+will automatically add @code{LT_INIT} support to your
 @code{configure} script.
 
 Nevertheless, it is advisable to include a copy of @file{libtool.m4} in
@@ -1939,8 +1943,7 @@ and accepts the following options:
 Work silently, and assume that Automake libtool support is used.
 
 @samp{libtoolize --automake} is used by Automake to add libtool files to
-your package, when @code{AC_PROG_LIBTOOL} appears in your
-@file{configure.in}.
+your package, when @code{LT_INIT} appears in your @file{configure.in}.
 
 @item --copy
 @itemx -c
@@ -2035,10 +2038,9 @@ AC_OUTPUT(@dots{})
 
 When you are developing a package, it is often worthwhile to configure
 your package with the @samp{--disable-shared} flag, or to override the
-defaults for @code{AC_PROG_LIBTOOL} by using the
-@code{AC_DISABLE_SHARED} Autoconf macro (@pxref{AC_PROG_LIBTOOL, , The
-@code{AC_PROG_LIBTOOL} macro}).  This prevents libtool from building
-shared libraries, which has several advantages:
+defaults for @code{LT_INIT} by using the @code{disable-shared} option
+(@pxref{LT_INIT, , The @code{LT_INIT} macro}).  This prevents libtool
+from building shared libraries, which has several advantages:
 
 @itemize @bullet
 @item
@@ -2563,10 +2565,9 @@ language.
 
 As of version @value{VERSION}, libtool provides support for dlopened
 modules.  However, you should indicate that your package is willing to
-use such support, by using the macro @samp{AC_LIBTOOL_DLOPEN} in
-@file{configure.in}.  If this macro is not used (or it is used
-@emph{after} @samp{AC_PROG_LIBTOOL}), libtool will assume no dlopening
-mechanism is available, and will try to simulate it.
+use such support, by using the @code{LT_INIT} option @samp{dlopen} in
+@file{configure.ac}.  If this option is not given, libtool will assume
+no dlopening mechanism is available, and will try to simulate it.
 
 This chapter discusses how you as a dlopen application developer might
 use libtool to generate dlopen-accessible modules.
@@ -3583,11 +3584,11 @@ symbols. In general you can safely use the convenience library in programs
 which don't depend on other libraries that might use libltdl too.
 In order to enable this flavor of libltdl, you should add the
 line @samp{AC_LIBLTDL_CONVENIENCE} to your @file{configure.in},
-@emph{before} @samp{AC_PROG_LIBTOOL}.
+@emph{before} @samp{LT_INIT}.
 
 In order to select the installable version of libltdl, you should add a
 call of the macro @samp{AC_LIBLTDL_INSTALLABLE} to your
-@file{configure.in} @emph{before} @samp{AC_PROG_LIBTOOL}.  This macro
+@file{configure.in} @emph{before} @samp{LT_INIT}.  This macro
 will check whether libltdl is already installed and, if not, request the
 libltdl embedded in your package to be built and installed.  Note,
 however, that no version checking is performed.  The user may override
@@ -3635,10 +3636,10 @@ So, when you want to link a program with libltdl, be it a convenience,
 installed or installable library, just compile with @samp{$(LTDLINCL)}
 and link it with @samp{$(LIBLTDL)}, using libtool.
 
-You should probably also add @samp{AC_LIBTOOL_DLOPEN} to your
-@file{configure.in} @emph{before} @samp{AC_PROG_LIBTOOL}, otherwise
-libtool will assume no dlopening mechanism is supported, and revert to
-dlpreopening, which is probably not what you want.
+You should probably also use the @samp{dlopen} option to @code{LT_INIT}
+in your @file{configure.ac}, otherwise libtool will assume no dlopening
+mechanism is supported, and revert to dlpreopening, which is probably not
+what you want.
 
 Avoid using the @code{-static} or @code{-all-static} switches when
 linking programs with libltdl.  This will not work on all platforms,
@@ -3656,14 +3657,10 @@ dnl Enable building of the convenience library
 dnl and set LIBLTDL accordingly
 AC_LIBLTDL_CONVENIENCE
 dnl Substitute LTDLINCL and LIBLTDL in the Makefiles
-AC_SUBST(LTDLINCL)
-AC_SUBST(LIBLTDL)
-dnl Check for dlopen support
-AC_LIBTOOL_DLOPEN
-dnl Configure libtool
-AC_PROG_LIBTOOL
-dnl Configure libltdl
-AC_CONFIG_SUBDIRS(libltdl)
+AC_SUBST([LTDLINCL])
+AC_SUBST([LIBLTDL])
+dnl Configure libtool with dlopen support if possible
+LT_INIT([dlopen])
 ...
 @end example
 

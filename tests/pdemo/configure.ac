@@ -43,9 +43,8 @@ AC_C_CONST
 ## ----------------------- ##
 ## Libtool initialisation. ##
 ## ----------------------- ##
-AC_LIBTOOL_DLOPEN
 AC_LIBTOOL_TAGS([])
-AC_PROG_LIBTOOL
+LT_INIT([dlopen])
 AC_SUBST([LIBTOOL_DEPS])
 
 STATIC=

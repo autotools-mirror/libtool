@@ -41,21 +41,22 @@ m4_define([LT_PREREQ],
        [$2])])
 
 
-# AC_PROG_LIBTOOL
-# ---------------
-AC_DEFUN([AC_PROG_LIBTOOL],
-[AC_REQUIRE([_AC_PROG_LIBTOOL])dnl
-]) # AC_PROG_LIBTOOL
-
-
-# _AC_PROG_LIBTOOL
-# ----------------
-AC_DEFUN([_AC_PROG_LIBTOOL],
-[AC_REQUIRE([AC_LIBTOOL_SETUP])dnl
+# LT_INIT([OPTIONS])
+# --------------------------
+AC_DEFUN_ONCE([LT_INIT],
+[AC_PREREQ([2.58])dnl We use AC_INCLUDES_DEFAULT
+dnl Autoconf doesn't catch unexpanded LT_ macros by default:
+m4_pattern_forbid([^_?LT_[A-Z_]+$])dnl
+m4_pattern_allow([^(_LT_EOF|LT_DLGLOBAL|LT_DLLAZY_OR_NOW)$])dnl
+dnl aclocal doesn't pull ltoptions.m4, ltsugar.m4, or ltversion.m4
+dnl unless we require an AC_DEFUNed macro:
+AC_REQUIRE([LTOPTIONS_VERSION])dnl
+AC_REQUIRE([LTSUGAR_VERSION])dnl
+AC_REQUIRE([LTVERSION_VERSION])dnl
 AC_REQUIRE([_LT_PROG_LTMAIN])dnl
-AC_BEFORE([$0],[AC_LIBTOOL_CXX])dnl
-AC_BEFORE([$0],[AC_LIBTOOL_F77])dnl
-AC_BEFORE([$0],[AC_LIBTOOL_GCJ])dnl
+AC_BEFORE([$0], [AC_LIBTOOL_CXX])dnl
+AC_BEFORE([$0], [AC_LIBTOOL_F77])dnl
+AC_BEFORE([$0], [AC_LIBTOOL_GCJ])dnl
 
 # This can be used to rebuild libtool when needed
 LIBTOOL_DEPS="$ltmain"
@@ -64,61 +65,39 @@ LIBTOOL_DEPS="$ltmain"
 LIBTOOL='$(SHELL) $(top_builddir)/libtool'
 AC_SUBST(LIBTOOL)dnl
 
-# Prevent multiple expansion
-define([AC_PROG_LIBTOOL], [])
-])# _AC_PROG_LIBTOOL
+# Set options
+_LT_SET_OPTIONS([$1])dnl
+
+_LT_SETUP
+])# _LT_INIT
+
+# Old names:
+AU_DEFUN([AC_PROG_LIBTOOL],	    [LT_INIT])
+AU_DEFUN([AM_PROG_LIBTOOL],	    [LT_INIT])
 
 
-# _LT_PROG_LTMAIN
-# ---------------
-# In libtool itself `ltmain.sh' is in the build tree, but everything else
-# ships it in the source tree, for completeness, if we find a copy in the
-# build tree use that before falling back to auxdir.
-#
-# Note that this code is called both from `configure', and `config.status'
-# now that we use AC_CONFIG_COMMANDS to generate libtool.  Notably,
-# `config.status' has no value for ac_aux_dir unless we are using Automake,
-# so we pass a copy along to make sure it has a sensible value anyway.
-AC_DEFUN([_LT_PROG_LTMAIN],
-[_LT_CONFIG_LIBTOOL_INIT([ac_aux_dir='$ac_aux_dir'])
-case $ac_aux_dir in
-  $srcdir)   ltmain=./ltmain.sh ;;
-  $srcdir/*) ltmain=`expr "$ac_aux_dir" : "$srcdir/\(.*\)"`/ltmain.sh ;;
-esac
-test -f "$ltmain" || ltmain="$ac_aux_dir/ltmain.sh"
-])# _LT_PROG_LTMAIN
-
-
-# AC_LIBTOOL_SETUP
-# ----------------
-AC_DEFUN([AC_LIBTOOL_SETUP],
-[AC_PREREQ(2.58)dnl We use AC_INCLUDES_DEFAULT
-dnl Autoconf doesn't catch unexpanded LT_ macros by default:
-m4_pattern_forbid([^_?LT_[A-Z_]+$])dnl
-m4_pattern_allow([^(_LT_EOF|LT_DLGLOBAL|LT_DLLAZY_OR_NOW)$])dnl
-AC_REQUIRE([LTSUGAR_VERSION])dnl
-AC_REQUIRE([LTVERSION_VERSION])dnl
-AC_REQUIRE([AC_CANONICAL_HOST])dnl
+# _LT_SETUP
+# ---------
+m4_define([_LT_SETUP],
+[AC_REQUIRE([AC_CANONICAL_HOST])dnl
 AC_REQUIRE([AC_CANONICAL_BUILD])dnl
 _LT_DECL([], [host_alias], [0], [The host system])dnl
 _LT_DECL([], [host], [0])dnl
-
+dnl
 AC_REQUIRE([AC_PROG_CC])dnl
 AC_REQUIRE([AC_PROG_LD])dnl
 AC_REQUIRE([AC_PROG_LD_RELOAD_FLAG])dnl
 AC_REQUIRE([AC_PROG_NM])dnl
-
+dnl
 AC_REQUIRE([AC_PROG_LN_S])dnl
 test -z "$LN_S" && LN_S="ln -s"
 _LT_DECL([], [LN_S], [1], [Whether we need soft or hard links])dnl
-
+dnl
 AC_REQUIRE([AC_DEPLIBS_CHECK_METHOD])dnl
 AC_REQUIRE([AC_LIBTOOL_SYS_OLD_ARCHIVE])dnl
 AC_REQUIRE([AC_LIBTOOL_SYS_MAX_CMD_LEN])dnl
 AC_REQUIRE([AC_LIBTOOL_SYS_GLOBAL_SYMBOL_PIPE])dnl
 AC_REQUIRE([AC_OBJEXT])dnl
-
-# Autoconf 2.13's AC_OBJEXT and AC_EXEEXT macros only works for C compilers!
 _LT_DECL([objext], [ac_objext], [0], [Object file suffix (normally "o")])dnl
 AC_REQUIRE([AC_EXEEXT])dnl
 _LT_DECL([], [exeext], [0], [Executable file suffix (normally "")])dnl
@@ -135,9 +114,6 @@ if test -n "${ZSH_VERSION+set}" ; then
    setopt NO_GLOB_SUBST
 fi
 
-AC_ENABLE_SHARED
-AC_ENABLE_STATIC
-AC_ENABLE_FAST_INSTALL
 AC_LIBTOOL_OBJDIR
 
 AC_REQUIRE([_LT_AC_SYS_COMPILER])dnl
@@ -206,29 +182,36 @@ file_magic*)
   ;;
 esac
 
-AC_PROVIDE_IFELSE([AC_LIBTOOL_DLOPEN], enable_dlopen=yes, enable_dlopen=no)
-AC_PROVIDE_IFELSE([AC_LIBTOOL_WIN32_DLL],
-enable_win32_dll=yes, enable_win32_dll=no)
-
 AC_ARG_ENABLE([libtool-lock],
     [AC_HELP_STRING([--disable-libtool-lock],
 	[avoid locking (might break parallel builds)])])
 test "x$enable_libtool_lock" != xno && enable_libtool_lock=yes
 
-AC_ARG_WITH([pic],
-    [AC_HELP_STRING([--with-pic],
-	[try to use only PIC/non-PIC objects @<:@default=use both@:>@])],
-    [pic_mode="$withval"],
-    [pic_mode=default])
-test -z "$pic_mode" && pic_mode=default
-_LT_DECL([], [pic_mode], [0], [What type of objects to build])
-
 # Use C for the default configuration in the libtool script
 AC_LIBTOOL_LANG_C_CONFIG
 _LT_AC_TAG_CONFIG
 _LT_CONFIG_COMMANDS
-])# AC_LIBTOOL_SETUP
+])# _LT_SETUP
 
+
+# _LT_PROG_LTMAIN
+# ---------------
+# In libtool itself `ltmain.sh' is in the build tree, but everything else
+# ships it in the source tree, for completeness, if we find a copy in the
+# build tree use that before falling back to auxdir.
+#
+# Note that this code is called both from `configure', and `config.status'
+# now that we use AC_CONFIG_COMMANDS to generate libtool.  Notably,
+# `config.status' has no value for ac_aux_dir unless we are using Automake,
+# so we pass a copy along to make sure it has a sensible value anyway.
+AC_DEFUN([_LT_PROG_LTMAIN],
+[_LT_CONFIG_LIBTOOL_INIT([ac_aux_dir='$ac_aux_dir'])
+case $ac_aux_dir in
+  $srcdir)   ltmain=./ltmain.sh ;;
+  $srcdir/*) ltmain=`expr "$ac_aux_dir" : "$srcdir/\(.*\)"`/ltmain.sh ;;
+esac
+test -f "$ltmain" || ltmain="$ac_aux_dir/ltmain.sh"
+])# _LT_PROG_LTMAIN
 
 
 
@@ -2137,173 +2120,6 @@ m4_define([_LT_AC_TAG_CONFIG],
 ])# _LT_AC_TAG_CONFIG
 
 
-# AC_LIBTOOL_DLOPEN
-# -----------------
-# enable checks for dlopen support
-AC_DEFUN([AC_LIBTOOL_DLOPEN],
- [AC_BEFORE([$0],[AC_LIBTOOL_SETUP])
-])# AC_LIBTOOL_DLOPEN
-
-
-# AC_LIBTOOL_WIN32_DLL
-# --------------------
-# declare package support for building win32 dll's
-AC_DEFUN([AC_LIBTOOL_WIN32_DLL],
-[AC_BEFORE([$0], [AC_LIBTOOL_SETUP])
-test -z "$AS" && AS=as
-test -z "$DLLTOOL" && DLLTOOL=dlltool
-test -z "$OBJDUMP" && OBJDUMP=objdump
-
-case $host in
-*-*-cygwin* | *-*-mingw* | *-*-pw32*)
-  AC_CHECK_TOOL(AS, as, false)
-  AC_CHECK_TOOL(DLLTOOL, dlltool, false)
-  AC_CHECK_TOOL(OBJDUMP, objdump, false)
-  ;;
-esac
-
-_LT_DECL([], [AS],      [0], [Assembler program])dnl
-_LT_DECL([], [DLLTOOL], [0], [DLL creation program])dnl
-_LT_DECL([], [OBJDUMP], [0], [Object dumper program])dnl
-])# AC_LIBTOOL_WIN32_DLL
-
-
-# AC_ENABLE_SHARED([DEFAULT])
-# ---------------------------
-# implement the --enable-shared flag
-# DEFAULT is either `yes' or `no'.  If omitted, it defaults to `yes'.
-AC_DEFUN([AC_ENABLE_SHARED],
-[m4_define([AC_ENABLE_SHARED_DEFAULT], [m4_if($1, no, no, yes)])dnl
-AC_ARG_ENABLE([shared],
-    [AC_HELP_STRING([--enable-shared@<:@=PKGS@:>@],
-	[build shared libraries @<:@default=]AC_ENABLE_SHARED_DEFAULT[@:>@])],
-    [p=${PACKAGE-default}
-    case $enableval in
-    yes) enable_shared=yes ;;
-    no) enable_shared=no ;;
-    *)
-      enable_shared=no
-      # Look at the argument we got.  We use all the common list separators.
-      lt_save_ifs="$IFS"; IFS="${IFS}$PATH_SEPARATOR,"
-      for pkg in $enableval; do
-	IFS="$lt_save_ifs"
-	if test "X$pkg" = "X$p"; then
-	  enable_shared=yes
-	fi
-      done
-      IFS="$lt_save_ifs"
-      ;;
-    esac],
-    [enable_shared=]AC_ENABLE_SHARED_DEFAULT)
-
-    _LT_DECL([build_libtool_libs], [enable_shared], [0],
-	[Whether or not to build shared libraries])
-])# AC_ENABLE_SHARED
-
-
-# AC_DISABLE_SHARED
-# -----------------
-#- set the default shared flag to --disable-shared
-AC_DEFUN([AC_DISABLE_SHARED],
-[AC_BEFORE([$0],[AC_LIBTOOL_SETUP])dnl
-AC_ENABLE_SHARED(no)
-])# AC_DISABLE_SHARED
-
-
-# AC_ENABLE_STATIC([DEFAULT])
-# ---------------------------
-# implement the --enable-static flag
-# DEFAULT is either `yes' or `no'.  If omitted, it defaults to `yes'.
-AC_DEFUN([AC_ENABLE_STATIC],
-[m4_define([AC_ENABLE_STATIC_DEFAULT], [m4_if($1, no, no, yes)])dnl
-AC_ARG_ENABLE([static],
-    [AC_HELP_STRING([--enable-static@<:@=PKGS@:>@],
-	[build static libraries @<:@default=]AC_ENABLE_STATIC_DEFAULT[@:>@])],
-    [p=${PACKAGE-default}
-    case $enableval in
-    yes) enable_static=yes ;;
-    no) enable_static=no ;;
-    *)
-     enable_static=no
-      # Look at the argument we got.  We use all the common list separators.
-      lt_save_ifs="$IFS"; IFS="${IFS}$PATH_SEPARATOR,"
-      for pkg in $enableval; do
-	IFS="$lt_save_ifs"
-	if test "X$pkg" = "X$p"; then
-	  enable_static=yes
-	fi
-      done
-      IFS="$lt_save_ifs"
-      ;;
-    esac],
-    [enable_static=]AC_ENABLE_STATIC_DEFAULT)
-
-    _LT_DECL([build_old_libs], [enable_static], [0],
-	[Whether or not to build static libraries])
-])# AC_ENABLE_STATIC
-
-
-# AC_DISABLE_STATIC
-# -----------------
-# set the default static flag to --disable-static
-AC_DEFUN([AC_DISABLE_STATIC],
-[AC_BEFORE([$0],[AC_LIBTOOL_SETUP])dnl
-AC_ENABLE_STATIC(no)
-])# AC_DISABLE_STATIC
-
-
-# AC_ENABLE_FAST_INSTALL([DEFAULT])
-# ---------------------------------
-# implement the --enable-fast-install flag
-# DEFAULT is either `yes' or `no'.  If omitted, it defaults to `yes'.
-AC_DEFUN([AC_ENABLE_FAST_INSTALL],
-[m4_define([AC_ENABLE_FAST_INSTALL_DEFAULT], [m4_if($1, no, no, yes)])dnl
-AC_ARG_ENABLE([fast-install],
-    [AC_HELP_STRING([--enable-fast-install@<:@=PKGS@:>@],
-    [optimize for fast installation @<:@default=]AC_ENABLE_FAST_INSTALL_DEFAULT[@:>@])],
-    [p=${PACKAGE-default}
-    case $enableval in
-    yes) enable_fast_install=yes ;;
-    no) enable_fast_install=no ;;
-    *)
-      enable_fast_install=no
-      # Look at the argument we got.  We use all the common list separators.
-      lt_save_ifs="$IFS"; IFS="${IFS}$PATH_SEPARATOR,"
-      for pkg in $enableval; do
-	IFS="$lt_save_ifs"
-	if test "X$pkg" = "X$p"; then
-	  enable_fast_install=yes
-	fi
-      done
-      IFS="$lt_save_ifs"
-      ;;
-    esac],
-    [enable_fast_install=]AC_ENABLE_FAST_INSTALL_DEFAULT)
-
-    _LT_DECL([fast_install], [enable_fast_install], [0],
-	[Whether or not to optimize for fast installation])
-])# AC_ENABLE_FAST_INSTALL
-
-
-# AC_DISABLE_FAST_INSTALL
-# -----------------------
-# set the default to --disable-fast-install
-AC_DEFUN([AC_DISABLE_FAST_INSTALL],
-[AC_BEFORE([$0],[AC_LIBTOOL_SETUP])dnl
-AC_ENABLE_FAST_INSTALL(no)
-])# AC_DISABLE_FAST_INSTALL
-
-
-# AC_LIBTOOL_PICMODE([MODE])
-# --------------------------
-# implement the --with-pic flag
-# MODE is either `yes' or `no'.  If omitted, it defaults to `both'.
-AC_DEFUN([AC_LIBTOOL_PICMODE],
-[AC_BEFORE([$0],[AC_LIBTOOL_SETUP])dnl
-pic_mode=m4_if($#, 1, $1, default)
-])# AC_LIBTOOL_PICMODE
-
-
 # AC_PATH_TOOL_PREFIX
 # -------------------
 # find a file program which can recognise shared library
@@ -2472,6 +2288,9 @@ AC_SUBST([LD])
 
 _LT_TAGDECL([], [LD], [1], [The linker used to build libraries])
 ])# AC_PROG_LD
+
+# Old name:
+AU_DEFUN([AM_PROG_LD], [AC_PROG_LD])
 
 
 # AC_PROG_LD_GNU
@@ -2756,6 +2575,9 @@ test -z "$NM" && NM=nm
 AC_SUBST([NM])
 _LT_DECL([], [NM], [1], [A BSD-compatible nm program])dnl
 ])# AC_PROG_NM
+
+# Old name:
+AU_DEFUN([AM_PROG_NM], [AC_PROG_NM])
 
 
 # AC_CHECK_LIBM
@@ -5847,18 +5669,6 @@ AC_DEFUN([LT_AC_PROG_GCJ],
 AC_DEFUN([LT_AC_PROG_RC],
 [AC_CHECK_TOOL(RC, windres, no)
 ])
-
-# old names
-AU_DEFUN([AM_PROG_LIBTOOL],   [AC_PROG_LIBTOOL])
-AU_DEFUN([AM_ENABLE_SHARED],  [AC_ENABLE_SHARED($@)])
-AU_DEFUN([AM_ENABLE_STATIC],  [AC_ENABLE_STATIC($@)])
-AU_DEFUN([AM_DISABLE_SHARED], [AC_DISABLE_SHARED($@)])
-AU_DEFUN([AM_DISABLE_STATIC], [AC_DISABLE_STATIC($@)])
-AU_DEFUN([AM_PROG_LD],        [AC_PROG_LD])
-AU_DEFUN([AM_PROG_NM],        [AC_PROG_NM])
-
-# This is just to silence aclocal about the macro not being used
-m4_if([AC_DISABLE_FAST_INSTALL])
 
 
 # LT_AC_PROG_EGREP

@@ -44,10 +44,8 @@ AC_EXEEXT
 ## ----------------------- ##
 ## Libtool initialisation. ##
 ## ----------------------- ##
-AC_LIBTOOL_DLOPEN
-AC_LIBTOOL_WIN32_DLL
 AC_LIBTOOL_TAGS([])
-AC_PROG_LIBTOOL
+LT_INIT([dlopen win32-dll])
 AC_SUBST([LIBTOOL_DEPS])
 
 STATIC=

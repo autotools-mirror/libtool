@@ -47,13 +47,12 @@ AC_LIBLTDL_CONVENIENCE([../../libltdl])
 AC_SUBST([INCLTDL])
 AC_SUBST([LIBLTDL])
 
-AC_LIBTOOL_WIN32_DLL
-AC_LIBTOOL_DLOPEN
 AC_LIBTOOL_TAGS([])
-AC_PROG_LIBTOOL
+LT_INIT([dlopen win32-dll])
 AC_SUBST(LIBTOOL_DEPS)
 
-STATIC="\`${CONFIG_SHELL} ./libtool --features | ${SED} -n -e '/enable static/s/^.*\$\$/-static/p'\`"
+STATIC=""
+test "X$enable_static" = Xyes && STATIC="-static"
 AC_SUBST([STATIC])
 
 
