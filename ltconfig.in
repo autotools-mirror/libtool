@@ -642,7 +642,9 @@ if test "$with_gcc" = yes; then
     link_static_flag="$link_static_flag ${wl}-lC"
     ;;
   cygwin* | mingw* | os2*)
-    # We can build DLLs from non-PIC.
+    # This hack is so that the source file can tell whether it is being
+    # built for inclusion in a dll (and should export symbols for example).
+    pic_flag='-DDLL_EXPORT'
     ;;
   amigaos*)
     # FIXME: we need at least 68020 code to build shared libraries, but

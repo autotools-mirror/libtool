@@ -1,3 +1,10 @@
+1999-06-08  Gary V. Vaughan  <gary@oranda.demon.co.uk>
+
+	* ltconfig.in (cygwin, pic_flag):  Force separate compilation of
+	objects for dlls vs. objects for static archives.  Using a cpp
+	macro also allows us to decide whether or not we need to use
+	dllexport/import declarations.
+
 1999-06-06  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* ltconfig.in: Support new GNU ld --help output format.
