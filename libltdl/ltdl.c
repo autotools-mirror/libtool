@@ -824,12 +824,12 @@ lt_dlseterror (errindex)
   else if (errindex < LT_ERROR_MAX)
     {
       /* No error setting the error message! */
-      LT_DLMUTEX_SETERROR (lt_dlerror_strings[errorcount]);
+      LT_DLMUTEX_SETERROR (lt_dlerror_strings[errindex]);
     }
   else
     {
       /* No error setting the error message! */
-      LT_DLMUTEX_SETERROR (user_error_strings[errorcount - LT_ERROR_MAX]);
+      LT_DLMUTEX_SETERROR (user_error_strings[errindex - LT_ERROR_MAX]);
     }
 
   LT_DLMUTEX_UNLOCK ();

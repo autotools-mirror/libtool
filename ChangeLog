@@ -1,5 +1,8 @@
 2001-08-15  Gary V. Vaughan  <gary@gnu.org>
 
+	* libltdl/ltdl.c (lt_dlseterror): Oops.  This never worked
+	either, due to a pair of typos.  Now fixed.
+
 	* libltdl/ltdl.c (N_ELEMENTS):  Deleted.  How come nobody noticed
 	there was no way this could have ever worked?
 	(lt_dlcaller_set_data): Now that valid caller_ids must be
