@@ -1,3 +1,8 @@
+2001-07-31  Gary V. Vaughan  <gary@gnu.org>
+
+	* bootstrap: Remove generated files (incase they are links) before
+	rerunning the autotools to regenerate them.
+
 2001-07-30  Gary V. Vaughan  <gary@gnu.org>
 
 	* libtool.m4 (AC_LIBTOOL_SETUP): Use Autoconf-2.50 era

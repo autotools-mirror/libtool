@@ -12,7 +12,7 @@
 touch ltmain.sh
 touch libtoolize
 
-for sub in . libltdl demo depdemo mdemo cdemo tagdemo pdemo; do
+for sub in . libltdl cdemo demo depdemo mdemo ltdldemo pdemo tagdemo; do
   case $sub in
   .) 
     top_srcdir=.
@@ -32,7 +32,7 @@ for sub in . libltdl demo depdemo mdemo cdemo tagdemo pdemo; do
   esac
 
   cd $sub
-  rm -f acinclude.m4 Makefile
+  rm -f acinclude.m4 aclocal.m4 Makefile configure
   for file in $acfiles; do
     cat $file >> ./acinclude.m4
   done
