@@ -1,3 +1,9 @@
+1998-12-17  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
+
+	* libtool.m4 (AM_PROG_LIBTOOL): Added AC_PREREQ(2.12) to prevent
+	people using libtool with old autoconfs that don't provide the
+	features we need.
+
 1998-12-16  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* NEWS, configure.in, libtool.spec: Bumped to 1.2e for CVS
