@@ -101,6 +101,17 @@ AC_REQUIRE([AC_OBJEXT])dnl
 AC_REQUIRE([AC_EXEEXT])dnl
 dnl
 
+_LT_CONFIG_LIBTOOL_INIT([
+# See if we are running on zsh, and set the options which allow our
+# commands through without removal of \ escapes INIT.                             
+if test -n "${ZSH_VERSION+set}" ; then
+   setopt NO_GLOB_SUBST
+fi
+])
+if test -n "${ZSH_VERSION+set}" ; then
+   setopt NO_GLOB_SUBST
+fi
+
 AC_ENABLE_SHARED
 AC_ENABLE_STATIC
 AC_ENABLE_FAST_INSTALL

@@ -1,3 +1,8 @@
+2003-11-28  Peter O'Gorman  <peter@pogma.com>
+
+	* m4/libtool.m4: Move things around so that "setopt NO_GLOB_SUBST"
+	to make zsh behave wrt \ escapes happens early in config.status.
+
 2003-11-27  Gary V. Vaughan  <gary@gnu.org>
 
 	* libltdl/configure.ac: Removed.
