@@ -4669,7 +4669,7 @@ static const void *lt_preloaded_setup() {
 	esac
 	case $host in
 	  *cygwin* | *mingw* )
-	    cwrappersource=`$echo ${objdir}/lt-${output}.c`
+	    cwrappersource=`$echo ${objdir}/lt-${outputname}.c`
 	    cwrapper=`$echo ${output}.exe`
 	    $rm $cwrappersource $cwrapper
 	    trap "$rm $cwrappersource $cwrapper; exit $EXIT_FAILURE" 1 2 15
