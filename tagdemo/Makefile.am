@@ -1,0 +1,23 @@
+## Process this file with automake to produce Makefile.in
+##
+## $Id$
+
+AUTOMAKE_OPTIONS = no-dependencies foreign
+
+EXTRA_DIST = acinclude.m4
+
+noinst_LTLIBRARIES = libfoo.la
+
+libfoo_la_SOURCES = foo.cpp
+libfoo_la_LIBADD = $(LIBM)
+
+noinst_HEADERS = foo.h
+
+bin_PROGRAMS = tagdemo
+
+tagdemo_SOURCES = main.cpp
+tagdemo_LDADD = libfoo.la
+
+$(OBJECTS): libtool
+libtool: $(LIBTOOL_DEPS)
+	$(SHELL) ./config.status --recheck
