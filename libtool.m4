@@ -507,11 +507,14 @@ AC_PROVIDE_IFELSE([AC_LIBTOOL_WIN32_DLL],
   case $host/$CC in
   *-*-cygwin*/gcc*-mno-cygwin*|*-*-mingw*)
     # old mingw systems require "-dll" to link a DLL, while more recent ones
-    # require "-mdll"
+    # require "-mdll" (and still newer ones would rather have "-shared")
     SAVE_CFLAGS="$CFLAGS"
-    CFLAGS="$CFLAGS -mdll"
+    CFLAGS="$CFLAGS -shared"
     AC_CACHE_CHECK([how to link DLLs], lt_cv_cc_dll_switch,
-      [AC_TRY_LINK([], [], [lt_cv_cc_dll_switch=-mdll],[lt_cv_cc_dll_switch=-dll])])
+      [AC_TRY_LINK([],[],[lt_cv_cc_dll_switch=-shared],
+	[
+	  CFLAGS="$SAVE_CFLAGS -mdll"
+	AC_TRY_LINK([], [], [lt_cv_cc_dll_switch=-mdll],[lt_cv_cc_dll_switch=-dll])])])
     CFLAGS="$SAVE_CFLAGS" ;;
   *-*-cygwin* | *-*-pw32*)
     # cygwin systems need to pass --dll to the linker, and not link

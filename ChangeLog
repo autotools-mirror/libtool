@@ -1,3 +1,8 @@
+2002-10-04  Elizabeth Barham  <soggytrousers@yahoo.com>
+
+	* libtool.m4 (AC_LIBTOOL_SETUP): GCC now checks -shared to
+	create a dll for Windows targets.
+
 2002-09-24  Robert Boehne  <rboehne@gnu.org>
 
 	* ltmain.in: Fixed a few spelling errors.
