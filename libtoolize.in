@@ -267,8 +267,11 @@ func_grep ()
 }
 
 # func_scan_files
-# Trace configure.(ac|in) for use of autoconf, gettext, aclocal, automake,
-# libltdl and libtool.  Possibly running some of these tools if necessary.
+# Scan configure.(ac|in) and aclocal.m4 (if present) for use of libltdl
+# and libtool.  Possibly running some of these tools if necessary.
+# Libtoolize affects the contents of aclocal.m4, and should be run before
+# aclocal, so we can't use configure --trace which relies on a consistent
+# configure.(ac|in) and aclocal.m4.
 func_scan_files ()
 {
     # Prefer configure.ac to configure.in
@@ -306,7 +309,7 @@ func_scan_files ()
 	/A[CM]_PROG_LIBTOOL/ { s,^.*$,seen_libtool=:,; p; };
 	/AC_LIB_LTDL/        { s,^.*$,seen_ltdl=:,; p; };
 	d;'
-    eval `cat aclocal.m4 "$configure_ac" | sed "$my_sed_traces"`
+    eval `cat aclocal.m4 "$configure_ac" | sed "$my_sed_traces" 2>/dev/null`
 
 
     # ---------------- #
