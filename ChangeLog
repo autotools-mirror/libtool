@@ -1,3 +1,8 @@
+1999-12-03  Gary V. Vaughan  <gary@oranda.demon.co.uk>
+
+	* ltconfig.in (hardcode_into_libs):  Remove the commented out
+	hardcode_into_libs reference.  Doh!
+
 1999-12-03  Alexandre Oliva  <oliva@lsd.ic.unicamp.br>
 
 	* ltconfig.in (ac_compile): Use $ac_ext instead of .c.
