@@ -85,10 +85,6 @@ get_vtable (lt_user_data loader_data)
 
 #include <windows.h>
 
-/* Forward declaration; required to implement handle search below. */
-static lt_dlhandle handles;
-
-
 /* A function called through the vtable to open a module with this
    loader.  Returns an opaque representation of the newly opened
    module for processing with this loader's other vtable functions.  */
