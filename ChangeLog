@@ -1,5 +1,13 @@
 2005-02-26  Gary V. Vaughan  <gary@gnu.org>
 
+	* libltdl/Makefile.am (install-data-local):  cd to $(srcdir) before
+	tarring up the files for installation to $(DESTDIR)$(ltdldatadir).
+	Don't remove the destination directory, since that interacts badly
+	with the multi-Makefile installation.
+	* libltdl/loaders/Makefile.am (install-data-local): Ditto.
+
+2005-02-26  Gary V. Vaughan  <gary@gnu.org>
+
 	I assume that it is okay to have undefined symbols in convenience
 	libraries that will be used as modules -- the pic objects are
 	built normally, and are not expected to resolve all their symbols
