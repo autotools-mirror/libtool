@@ -1,5 +1,9 @@
 2001-06-29  Gary V. Vaughan  <gary@gnu.org>
 
+	From Tim Van Holder <tim.van.holder@pandora.be>
+	* libltdl/Makefile.am (OBJECTS):  This was an implicit variable.
+	instead state the list of object variables explicitly.
+
 	From Bruno Haible <haible@ilog.fr>
 	* libtool.m4:  undefine the m4 builtin `symbols', so that the
 	string `symbols' can be used in the rest of the code without
