@@ -641,7 +641,7 @@ AC_DEFUN([AC_LIBTOOL_SYS_MAX_CMD_LEN],
 AC_MSG_CHECKING([the maximum length of command line arguments])
 AC_CACHE_VAL([lt_cv_sys_max_cmd_len], [dnl
   i=0
-  testring="ABCD"
+  teststring="ABCD"
 
   case $build_os in
   msdosdjgpp*)
@@ -680,16 +680,16 @@ AC_CACHE_VAL([lt_cv_sys_max_cmd_len], [dnl
     # If test is not a shell built-in, we'll probably end up computing a
     # maximum length that is only half of the actual maximum length, but
     # we can't tell.
-    while (test "X"`$CONFIG_SHELL [$]0 --fallback-echo "X$testring" 2>/dev/null` \
-	       = "XX$testring") >/dev/null 2>&1 &&
-	    new_result=`expr "X$testring" : ".*" 2>&1` &&
+    while (test "X"`$CONFIG_SHELL [$]0 --fallback-echo "X$teststring" 2>/dev/null` \
+	       = "XX$teststring") >/dev/null 2>&1 &&
+	    new_result=`expr "X$teststring" : ".*" 2>&1` &&
 	    lt_cv_sys_max_cmd_len=$new_result &&
 	    test $i != 17 # 1/2 MB should be enough
     do
       i=`expr $i + 1`
-      testring=$testring$testring
+      teststring=$teststring$teststring
     done
-    testring=
+    teststring=
     # Add a significant safety factor because C++ compilers can tack on massive
     # amounts of additional arguments before passing them to the linker.
     # It appears as though 1/2 is a usable value.
