@@ -1,3 +1,8 @@
+1999-05-23  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* doc/PLATFORMS: Release 1.3.1 passes on GNU Hurd/x86.
+	Reported by Pavel Roskin <pavel_roskin@geocities.com>
+
 1999-05-23 Thomas Tanner  <tanner@ffii.org>
 
 	* ltmain.in: strip off the .exe suffix only on *Win
