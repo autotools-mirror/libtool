@@ -1,4 +1,4 @@
-1999-05-24 Thomas Tanner  <tanner@ffii.org>
+1999-05-27 Thomas Tanner  <tanner@ffii.org>
 
 	* ltmain.in: when linking another library add its
 	  -L paths to lib_search_path (otherwise the deplibs check will fail)
