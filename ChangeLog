@@ -1,5 +1,9 @@
 2000-09-30  Alexandre Oliva  <aoliva@redhat.com>
 
+	* ltconfig.in [netbsd*] (deplibs_check_method, file_magic_cmd,
+	file_magic_test_file): Removed inappropriate duplicate
+	definitions; these variables are set in AC_DEPLIBS_CHECK_METHOD.
+
 	* libtool.m4 (lt_cv_file_magic_cmd): Don't use '${MAGIC_CMD}' or
 	'${OBJDUMP}'; Solaris' /bin/sh loses with `}' in cache files.
 	(ac_cv_path_MAGIC_CMD): Renamed to lt_cv_path_MAGIC_CMD.
