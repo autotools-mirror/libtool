@@ -802,6 +802,7 @@ compiler."
     convenience=
     old_convenience=
     deplibs=
+    old_deplibs=
     compiler_flags=
     linker_flags=
     dllsearchpath=
@@ -1188,7 +1189,7 @@ compiler."
 	esac
 	;;
 
-      *.o | *.obj | *.a | *.lib)
+      *.o | *.obj)
 	# A standard object.
 	objs="$objs $arg"
 	;;
@@ -1212,6 +1213,13 @@ compiler."
 	  prev=
 	fi
 	libobjs="$libobjs $arg"
+	;;
+
+      *.a | *.lib)
+	# An archive.
+	deplibs="$deplibs $arg"
+	old_deplibs="$old_deplibs $arg"
+	continue
 	;;
 
       *.la)
@@ -1378,6 +1386,7 @@ compiler."
       # Now set the variables for building old libraries.
       build_libtool_libs=no
       oldlibs="$output"
+      objs="$objs$old_deplibs"
       ;;
 
     *.la)
@@ -1410,7 +1419,7 @@ compiler."
 	output_objdir="$output_objdir/$objdir"
       fi
 
-      if test -n "$objs"; then
+      if test -n "$objs$old_deplibs"; then
 	$echo "$modename: cannot build libtool library \`$output' from non-libtool objects:$objs" 2>&1
 	exit 1
       fi
@@ -1622,12 +1631,12 @@ compiler."
       libname_save=$libname
 	
       # Find libtool libraries and add their dependencies and directories
-      old_deplibs="$deplibs"
+      save_deplibs="$deplibs"
       deplibs=            # libraries to link (used in archive_cmds)
       newdependency_libs= # all dependency libraries
       uninst_path=        # paths that contain uninstalled libtool libraries
       new_lib_search_path=
-      for deplib in $old_deplibs; do
+      for deplib in $save_deplibs; do
 	lib=
 	case "$deplib" in
 	-L*)
@@ -1687,9 +1696,9 @@ compiler."
 	*)
 	  abs_ladir=`cd "$ladir" && pwd`
 	  if test -z "$abs_ladir"; then
-	    $echo "$modename: warning: cannot determine absolute directory name of \`$dir'" 1>&2
+	    $echo "$modename: warning: cannot determine absolute directory name of \`$ladir'" 1>&2
 	    $echo "$modename: passing it literally to the linker, although it might fail" 1>&2
-	    absdir="$dir"
+	    abs_ladir="$ladir"
 	  fi
 	  ;;
 	esac
@@ -1889,6 +1898,47 @@ compiler."
 	test "$link_static" = no && newdependency_libs="$newdependency_libs $abs_ladir/$laname"
 	# ... and its dependency_libs
 	newdependency_libs="$newdependency_libs $dependency_libs"
+
+	if test $link_all_deplibs != no; then
+	  # Add the search paths of all dependency libraries
+	  for deplib in $dependency_libs; do
+	    case "$deplib" in
+	    -L*) path="$deplib" ;;
+	    *.la) 
+	      if grep "^installed=no" $deplib > /dev/null; then
+		dir=`$echo "X$deplib" | $Xsed -e 's%/[^/]*$%%'`
+		test "X$dir" = "X$deplib" && dir="."
+		# We need an absolute path.
+		case "$dir" in
+		[\\/]* | [A-Za-z]:[\\/]*) absdir="$dir" ;;
+		*)
+		  absdir=`cd "$dir" && pwd`
+		  if test -z "$absdir"; then
+		    $echo "$modename: warning: cannot determine absolute directory name of \`$dir'" 1>&2
+		    absdir="$dir"
+		  fi
+		  ;;
+		esac
+		path="-L$absdir/$objdir"
+	      else
+		eval libdir=`sed -n -e 's/^libdir=\(.*\)$/\1/p' $deplib`
+		if test -z "$libdir"; then
+		  $echo "$modename: \`$deplib' is not a valid libtool archive" 1>&2
+		  exit 1
+		fi
+		path="-L$libdir"
+	      fi
+	      ;;
+	    *)
+	      continue
+	      ;;
+	    esac
+	    case "$deplibs " in
+	    *" $path "*) ;;
+	    *) deplibs="$path $deplibs" ;;
+	    esac
+	  done
+	fi
       done
 
       # Make sure lib_search_path contains only unique directories.
@@ -2325,7 +2375,7 @@ EOF
 
       case "$output" in
       *.lo)
-	if test -n "$objs"; then
+	if test -n "$objs$old_deplibs"; then
 	  $echo "$modename: cannot build library object \`$output' from non-libtool objects" 1>&2
 	  exit 1
 	fi
@@ -2392,7 +2442,7 @@ EOF
       fi
 
       # Create the old-style object.
-      reload_objs="$objs "`$echo "X$libobjs" | $SP2NL | $Xsed -e '/\.'${libext}$'/d' -e '/\.lib$/d' -e "$lo2o" | $NL2SP`" $reload_conv_objs"
+      reload_objs="$objs$old_deplibs "`$echo "X$libobjs" | $SP2NL | $Xsed -e '/\.'${libext}$'/d' -e '/\.lib$/d' -e "$lo2o" | $NL2SP`" $reload_conv_objs"
 
       output="$obj"
       eval cmds=\"$reload_cmds\"
@@ -2490,13 +2540,17 @@ EOF
       fi
 
       # Find libtool libraries and add their dependencies
-      old_deplibs="$deplibs"
+      save_deplibs="$deplibs"
       deplibs=
       newdependency_libs=
       new_lib_search_path=
-      for deplib in $old_deplibs; do
+      for deplib in $save_deplibs; do
 	lib=
 	case "$deplib" in
+	*.a | *.lib)
+	  deplibs="$deplibs $deplib"
+	  continue
+	  ;;
 	-L*)
 	  deplibs="$deplibs $deplib"
 	  new_lib_search_path="$new_lib_search_path "`$echo "X$deplib" | $Xsed -e 's/^-L//'`
@@ -2610,7 +2664,7 @@ EOF
       for deplib in $deplibs @DEPLIBS@ $dependency_libs; do
 	lib=
 	case "$deplib" in
-	-L*)
+	-L* | *.a | *.lib)
 	  compile_command="$compile_command $deplib"
 	  finalize_command="$finalize_command $deplib"
 	  continue
@@ -2674,9 +2728,9 @@ EOF
 	*)
 	  abs_ladir=`cd "$ladir" && pwd`
 	  if test -z "$abs_ladir"; then
-	    $echo "$modename: warning: cannot determine absolute directory name of \`$dir'" 1>&2
+	    $echo "$modename: warning: cannot determine absolute directory name of \`$abs_ladir'" 1>&2
 	    $echo "$modename: passing it literally to the linker, although it might fail" 1>&2
-	    absdir="$dir"
+	    abs_ladir="$ladir"
 	  fi
 	  ;;
 	esac
@@ -3073,7 +3127,7 @@ extern \"C\" {
 	    test -z "$run" && $echo ': @PROGRAM@ ' > "$nlist"
 
 	    # Add our own program objects to the symbol list.
-	    progfiles=`$echo "X$objs" | $SP2NL | $Xsed -e "$lo2o" | $NL2SP`
+	    progfiles=`$echo "X$objs$old_deplibs" | $SP2NL | $Xsed -e "$lo2o" | $NL2SP`
 	    for arg in $progfiles; do
 	      $show "extracting global C symbols from \`$arg'"
 	      $run eval "$NM $arg | $global_symbol_pipe >> '$nlist'"
@@ -3529,7 +3583,7 @@ fi\
 	  oldobjs="$libobjs_save"
 	  build_libtool_libs=no
 	else
-	  oldobjs="$objs "`$echo "X$libobjs_save" | $SP2NL | $Xsed -e '/\.'${libext}'$/d' -e '/\.lib$/d' -e "$lo2o" | $NL2SP`
+	  oldobjs="$objs$old_deplibs "`$echo "X$libobjs_save" | $SP2NL | $Xsed -e '/\.'${libext}'$/d' -e '/\.lib$/d' -e "$lo2o" | $NL2SP`
 	fi
 	addlibs="$old_convenience"
       fi

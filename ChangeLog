@@ -1,3 +1,11 @@
+1999-06-12 Thomas Tanner  <tanner@ffii.org>
+
+	* ltmain.in: store old archives in deplibs and old_deplibs, 
+	  retain the order of dependency libraries (even old archives),
+	  determining the absolute directory name didn't work due to a typo,
+	  add the library search paths of all dependency libraries when
+	  linking a library (fixes IRIX 5.2 bug)
+
 1999-06-10  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* ltconfig.in: Reverted June 6's patch for new GNU ld output, it
