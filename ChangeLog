@@ -1,5 +1,7 @@
 2003-11-14  Gary V. Vaughan  <gary@gnu.org>
 
+	* Makefile.am (EXTRA_DIST): List ChangeLog files correctly.
+
 	* tests/cdemo/configure.ac, tests/demo/configure.ac,
 	tests/depdemo/configure.ac, tests/f77demo/configure.ac,
 	tests/mdemo/configure.ac, tests/mdemo2/configure.ac,
