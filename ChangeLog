@@ -1,4 +1,18 @@
+Fri Jul 25 10:13:49 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltmain.sh.in (link): Remove code for `-version-file', since it
+	has been long-deprecated.
+	Disable static linking if hardcode_direct is unsupported.
+
+	* ltconfig.in: Fix typo in test polarity.  From Mark Kettenis.
+
 Thu Jul 24 10:42:30 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltconfig.in (hardcode_direct): Set to `unsupported' if aix3 uses
+	a broken collect2.  Adapted out of test results from Mark
+	Kettenis.
+	(link_static_flag): Make sure the link_static_flag actually works
+	with a trivial binary.
 
 	* ltmain.sh.in, ltconfig.in (export_dynamic_flag_spec): Renamed
  	from export_dynamic_flag because we eval it in ltmain.sh.

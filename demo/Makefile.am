@@ -60,13 +60,14 @@ helldl: $(helldl_OBJECTS) $(helldl_DEPENDENCIES)
 hardcode: $(hardcode_tests)
 hc-direct: $(hell_OBJECTS) $(hell_DEPENDENCIES)
 	@rm -f hc-direct
+	@echo "You may ignore any linking errors from the following command:"
 	@shlib=./.libs/libhello.a; \
 	  eval "`egrep '^library_names' libhello.la`"; \
 	  for lib in $$library_names; do \
 	    shlib="./.libs/$$lib"; \
 	  done; \
-	  echo "$(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) $$shlib $(LIBS)"; \
-	  eval "$(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) $$shlib $(LIBS)"
+	  echo "$(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) $$shlib $(LIBS) || echo unsupported > $@"; \
+	  eval "$(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) $$shlib $(LIBS) || echo unsupported > $@"
 
 hc-minusL: $(hell_OBJECTS) $(hell_DEPENDENCIES)
 	@rm -f hc-minusL

@@ -6,8 +6,8 @@ New in 1.0a:
   platforms, via new `-dlopen' and `-pre-dlopen' link flags.
 * New tests for a BSD-compatible `nm' program, required for dlopened
   modules.
-* FIXME: Deleted `dlname' mode, now that the internal structure of `.la'
-  files is a public interface.
+* Deleted `dlname' mode.  Dlopen applications should only use the
+  runtime search method described in (libtool)Finding the dlname.
 
 New in 1.0:
 * Bug fixes.

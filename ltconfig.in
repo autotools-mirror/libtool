@@ -606,8 +606,9 @@ else
     # Note: this linker hardcodes the directories in LIBPATH if there
     # are no directories specified by -L.
     hardcode_minus_L=yes
-    # Direct hardcoding is not supported with a broken collect2.
-    if test "$with_gcc" = yes && test -n "$link_static_flag"; then
+    if test "$with_gcc" = yes && test -z "$link_static_flag"; then
+      # Neither direct hardcoding nor static linking is supported with a
+      # broken collect2.
       hardcode_direct=unsupported
     fi
     ;;

@@ -130,7 +130,6 @@ Invoking @code{libtool}
 
 * Compile mode::                Creating library object files.
 * Link mode::                   Generating executables and libraries.
-* Dlname mode::                 Obtaining a file name to @code{dlopen(3)}.
 * Install mode::                Making libraries and executables public.
 * Finish mode::                 Completing a library installation.
 * Uninstall mode::              Removing executables and libraries.
@@ -183,7 +182,7 @@ The libtool test suite
 * Test descriptions::           The contents of the test suite.
 * When tests fail::             What to do when a test fails.
 
-Maintainance notes for libtool
+Maintenance notes for libtool
 
 * New ports::                   How to port libtool to new systems.
 * Tested platforms::            When libtool was last tested.
@@ -936,7 +935,6 @@ Print libtool version information and exit.
 @menu
 * Compile mode::                Creating library object files.
 * Link mode::                   Generating executables and libraries.
-* Dlname mode::                 Obtaining a file name to @code{dlopen(3)}.
 * Install mode::                Making libraries and executables public.
 * Finish mode::                 Completing a library installation.
 * Uninstall mode::              Removing executables and libraries.
@@ -1028,22 +1026,6 @@ file is created from the input files (generally using @samp{ld -r}).
 This method is often called @dfn{partial linking}.
 
 Otherwise, an executable program is created.
-
-@node Dlname mode
-@section Dlname mode
-@cindex Dlname mode
-@cindex Mode, dlname
-
-The @samp{dlname} mode simply prints the name of a libtool library that
-can be passed to the @code{dlopen(3)} function call (@pxref{Dlopened
-modules}).
-
-Each of the @var{mode-args} specifies a libtool library linked
-using the @samp{-export-dynamic} option (@pxref{Link mode}).  The names
-of the modules to load are printed to standard output, one per line.
-
-If one of the @var{mode-args} was not linked with
-@samp{-export-dynamic}, then an error is displayed.
 
 @node Install mode
 @section Install mode
@@ -1963,24 +1945,8 @@ After a library has been linked with @samp{-export-dynamic}, it can be
 dlopened.  Unfortunately, because of the variation in library names,
 your package needs to determine the correct file to dlopen.
 
-Dlname mode (@pxref{Dlname mode}) was designed for this purpose.  It
-returns the name that should be given as the first argument to a
-@code{dlopen(3)} function call.
-
-For example, on NetBSD 1.2:
-
-@example
-burger$ @kbd{libtool --mode=dlname libhello.la}
-libhello.so.3.12
-burger$
-@end example
-
-The trick is in finding a way to hardcode this name into your program at
-compilation time, so that it opens the correct library.
-
-An alternative implementation that avoids hardcoding is to determine the
-name at runtime, by finding the installed @samp{.la} file, and searching
-it for the following lines:
+The basic implementation is to determine the name at runtime, by finding
+the installed @samp{.la} file, and searching it for the following lines:
 
 @example
 # The name that we can @code{dlopen(3)}.
@@ -2024,8 +1990,8 @@ family of functions.  Some platforms do not even use the same function
 names (notably HP-UX, with its @samp{shl_load(3)} family).
 
 @item
-It is the burden of the libtool user to find a way to get the results of
-dlname mode (@pxref{Dlname mode}) into the call to @code{dlopen(3)}.
+The application developer must write a custom search function in order
+to discover the correct module filename to supply to @code{dlopen(3)}.
 @end itemize
 
 Each of these limitations will be addressed in GNU DLD
@@ -2234,7 +2200,7 @@ Please include the generated @code{libtool} script with your bug report,
 so that I can see what values @code{ltconfig} guessed for your system.
 
 @node Maintaining
-@chapter Maintainance notes for libtool
+@chapter Maintenance notes for libtool
 
 This chapter contains information that the libtool maintainer finds
 important.  It will be of no use to you unless you are considering

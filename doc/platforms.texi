@@ -28,9 +28,9 @@ rs6000-ibm-aix3.2.5          gcc       0.9h      ok*
 sparc-sun-linux2.1.23        gcc       0.9h      ok
 sparc-sun-sunos4.1.4         cc        1.0       ok
 sparc-sun-sunos4.1.4         gcc       1.0       ok
-sparc-sun-solaris2.4         cc        0.9       ok
-sparc-sun-solaris2.4         gcc       0.9       ok
-sparc-sun-solaris2.5         cc        0.9       ok
+sparc-sun-solaris2.4         cc        1.0a      ok
+sparc-sun-solaris2.4         gcc       1.0a      ok
+sparc-sun-solaris2.5         cc        1.0a      ok
 sparc-sun-solaris2.5         gcc       1.0a      ok
 --------------------------------------------------------
 
