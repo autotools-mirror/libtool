@@ -2183,26 +2183,31 @@ lt_dlinit ()
       handles = 0;
       user_search_path = 0; /* empty search path */
 
-#if defined(__WINDOWS__) || defined(__CYGWIN__)
-      errors += lt_dlloader_add (lt_dlloader_next (0), &sys_wll, "dlopen");
-#endif
-#if HAVE_LIBDL
-      errors += lt_dlloader_add (lt_dlloader_next (0), &sys_dl, "dlopen");
-#endif
-#if HAVE_SHL_LOAD
-      errors += lt_dlloader_add (lt_dlloader_next (0), &sys_shl, "dlopen");
-#endif
-#ifdef __BEOS__
-      errors += lt_dlloader_add (lt_dlloader_next (0), &sys_bedl, "dlopen");
-#endif
+      /* Append the available loaders to the internal list in the order
+	 they should be used -- if the first fails, then try again with
+	 the next loader in the chain.  */
+#     define LOADER_APPEND 0
+
+      errors += lt_dlloader_add (LOADER_APPEND, &presym,   "dlpreload");
 #if HAVE_DLD
-      errors += lt_dlloader_add (lt_dlloader_next (0), &sys_dld, "dld");
+      errors += lt_dlloader_add (LOADER_APPEND, &sys_dld,  "dld");
 #endif
 #if HAVE_DYLD
-       errors += lt_dlloader_add (lt_dlloader_next (0), &sys_dyld, "dyld");
-       errors += sys_dyld_init();
+      errors += lt_dlloader_add (LOADER_APPEND, &sys_dyld, "dyld");
+      errors += sys_dyld_init();
 #endif
-      errors += lt_dlloader_add (lt_dlloader_next (0), &presym, "dlpreload");
+#ifdef __BEOS__
+      errors += lt_dlloader_add (LOADER_APPEND, &sys_bedl, "dlopen");
+#endif
+#if HAVE_SHL_LOAD
+      errors += lt_dlloader_add (LOADER_APPEND, &sys_shl,  "dlopen");
+#endif
+#if HAVE_LIBDL
+      errors += lt_dlloader_add (LOADER_APPEND, &sys_dl,   "dlopen");
+#endif
+#if defined(__WINDOWS__) || defined(__CYGWIN__)
+      errors += lt_dlloader_add (LOADER_APPEND, &sys_wll,  "dlopen");
+#endif
 
       if (presym_init (presym.dlloader_data))
 	{

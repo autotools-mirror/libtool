@@ -1,5 +1,11 @@
 2003-11-11  Gary V. Vaughan  <gary@gnu.org>
 
+	* libltdl/ltdl.c (lt_dlinit): Save a function call for each loader
+	added to the list, in exchange for appending loaders to the list
+	with O(N) rather than O(1).  The longest the loader list can ever
+	get is 4 (on cygwin with dld installed) so it probably constitutes
+	a small speedup, in addition to making the code much more readable.
+
 	* m4/libtool.m4 (AC_LIBTOOL_SETUP): Don't define the value for
 	ltmain unconditionally.
 	(_LT_PROG_LTMAIN): New macro to ensure that the
