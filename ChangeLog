@@ -1,3 +1,9 @@
+2003-09-10  Peter O'Gorman  <peter@pogma.com>
+
+	* ltmain.in: Accept -framework for darwin and put it in
+	dependency_libs. For non-installed .la's try to avoid having
+	./.libs/.libs/libfoo.so on the link line.
+
 2003-09-10  Arne Woerner  <woerner@mediabase-gmbh.de>
 
 	* libtool.m4 [openbsd]: openbsd 3.x needs versioning information.
@@ -12,7 +18,7 @@
 	_LT_AC_LANG_C_CONFIG.
 	(AC_PROG_EGREP): Remove, now that Libtool requires Autoconf 2.56.
 	* bootstrap: Issue an upgrade warning.
-			
+
 2003-08-27  Gary V. Vaughan  <gary@gnu.org>
 
 	* libtool.m4 (_LT_AC_CHECK_DLFCN): Use the interrim new
