@@ -4533,6 +4533,8 @@ relink_command=\"$relink_command\""
       exit 1
     fi
 
+    rmdirs=
+
     for file in $files; do
       dir=`$echo "X$file" | $Xsed -e 's%/[^/]*$%%'`
       if test "X$dir" = "X$file"; then
@@ -4543,6 +4545,14 @@ relink_command=\"$relink_command\""
       fi
       name=`$echo "X$file" | $Xsed -e 's%^.*/%%'`
       test $mode = uninstall && objdir="$dir"
+
+      # Remember objdir for removal later, being careful to avoid duplicates
+      if test $mode = clean; then
+        case " $rmdirs " in
+	  *" $objdir "*) ;;
+	  *) rmdirs="$rmdirs $objdir" ;;
+	esac
+      fi
 
       rmfiles="$file"
 
@@ -4612,6 +4622,15 @@ relink_command=\"$relink_command\""
       $show "$rm $rmfiles"
       $run $rm $rmfiles
     done
+
+    # Try to remove the ${objdir}s in the directories where we deleted files
+    for dir in $rmdirs; do
+      if test -d "$dir"; then
+        $show "rmdir $dir"
+        $run rmdir $dir >/dev/null 2>&1
+      fi
+    done
+
     exit 0
     ;;
 
