@@ -26,7 +26,7 @@ TESTSUITE_AT	= testsuite.at \
 		  am-subdir.at \
 		  functests.at \
 		  inherited_flags.at \
-		  libtoolize,at \
+		  libtoolize.at \
 		  stresstest.at \
 		  template.at
 

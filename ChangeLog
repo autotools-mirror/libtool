@@ -1,3 +1,7 @@
+2005-04-05  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* tests/Makefile.am: Typo.
+
 2005-04-04  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* notes.texi: Platform-specific configuration notes.
