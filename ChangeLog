@@ -1,3 +1,7 @@
+2001-01-25  Michael Sokolov  <msokolov@ivan.Harhan.ORG>
+
+	* ltcf-cxx.sh: Use parentheses around eval $ac_compile.
+
 2001-01-24  Alexandre Oliva  <aoliva@redhat.com>
 
 	* ltmain.in (TAG disable-shared, TAG disable-static): Make sure we
