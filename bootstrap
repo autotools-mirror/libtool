@@ -59,7 +59,10 @@ set -- `sed '/AC_INIT/{s/[][,()]/ /g; p;};d' configure.ac`
 rm -f ./config/ltmain.sh ./m4/ltversion.m4
 test -f Makefile || { makefile=Makefile; cp Makefile.am $makefile; }
 make ./config/ltmain.sh ./m4/ltversion.m4 ./libtoolize.in ./tests/defs.in \
-    top_srcdir=. PACKAGE="$2" VERSION="$3" M4SH="autom4te -l m4sh"
+    top_srcdir=. PACKAGE="$2" VERSION="$3" M4SH="autom4te --language=m4sh"
+
+make ./tests/testsuite AUTOTEST="autom4te --language=autotest" \
+    top_srcdir=. PACKAGE="$2" VERSION="$3" PACKAGE_BUGREPORT="bug-$2@gnu.org"
 
 test -f clcommit.m4sh && make -f Makefile.maint commit \
     top_srcdir=. PACKAGE="$2" VERSION="$3" M4SH="autom4te -l m4sh" \

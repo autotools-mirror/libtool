@@ -1,0 +1,47 @@
+# Process with autom4te to create an -*- Autotest -*- test suite.
+
+# Test suite for GNU Libtool.
+# Copyright 2004 Free Software Foundation, Inc.
+
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2, or (at your option)
+# any later version.
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
+# 02111-1307, USA.
+
+# AT_BOOTSTRAP
+# ------------
+m4_define([AT_BOOTSTRAP],
+[[LIBTOOLIZE=${abs_top_builddir}/libtoolize
+export LIBTOOLIZE
+
+test -f ./ltmain.sh || $LIBTOOLIZE --copy
+test -f ./configure || autoreconf --force --verbose --install
+test -f ./configure || exit 1
+./configure
+${MAKE-make}
+]])
+
+# We use `dnl' in zillions of places...
+m4_pattern_allow([^dnl$])
+
+# We exercise libtool.
+AT_TESTED([grep autoreconf autom4te automake])
+
+## ----------- ##
+## The suite.  ##
+## ----------- ##
+
+AT_INIT
+
+# Torturing subdir-objects builds
+m4_include([am-subdir.at])

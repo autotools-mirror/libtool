@@ -34,8 +34,9 @@ AC_CONFIG_AUX_DIR([config])
 ## Autotest initialisation. ##
 ## ------------------------ ##
 
-dnl AC_CONFIG_TESTDIR([tests])
-dnl AC_CONFIG_FILES([tests/atlocal])
+AC_CONFIG_TESTDIR([tests])
+AC_SUBST([AUTOM4TE], [autom4te])
+AC_SUBST([AUTOTEST], ['$(AUTOM4TE) --language=autotest'])
 
 
 ## ---------------------------------------- ##
@@ -115,7 +116,7 @@ dnl much older releases of autoconf and automake.  See release notes.
 AM_INIT_AUTOMAKE([1.8 gnits dist-bzip2]) ## We use auto-m4_including
 
 dnl We use m4sh to generate libtool's portable shell scripts
-AC_SUBST([M4SH], ['autom4te -l m4sh'])
+AC_SUBST([M4SH], ['$(AUTOM4TE) --language=m4sh'])
 
 dnl Make sure config.status is regenerated when the version timestamp changes
 AC_SUBST([CONFIG_STATUS_DEPENDENCIES], ['$(top_builddir)/stamp-vcl'])

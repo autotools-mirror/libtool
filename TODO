@@ -7,6 +7,8 @@ GNU Libtool
 1.1. libtool
 ------------
 
+* Fix the bug exposed by am-subdir.at tests.
+
 * Rather than looking up the linker's hardcode characteristics in a
   table of shell code, use objdump or equivalent to probe a test program
   at configure time.

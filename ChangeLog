@@ -1,3 +1,40 @@
+2004-10-16  Gary V. Vaughan  <gary@gnu.org>
+
+	Add some new tests for Libtool's support of Automake
+	subdir-objects builds.  This marks the beginning of a move to an
+	Autotest driven test framework, which will eventually allow us to
+	trim away many of the generated files in the current test demo
+	subdirectories:
+
+	* configure.ac (AC_CONFIG_TESTDIR): Re-enable commented out
+	Autotest macros.
+	(AUTOTEST, M4SH): Use --language long hand.
+	* bootstrap: Generate tests/testsuite, and by implication
+	tests/package.m4.
+	* Makefile.am (edit): Add substitutions needed to generate
+	tests/package.m4 from bootstrap.
+	(check-recursive): Add tests/testsuite.
+	(TESTSUITE): The new Autotest testsuite target.
+	(TESTSUITE_AT): The Autotest sources.
+	(EXTRA_DIST): Distribute the generated testsuite and sources.
+	(tests/package.m4): Use $(edit) to propagate package metadata to
+	the new tests.
+	(tests/testsuite): Build the testsuite.
+	(tests/atconfig): How to regenerate the file.
+	(check-local): Hook Autotest into `make check'.
+	(installcheck-local): Run the testsuite on the installed tree.
+	(clean-local): Tidy our file droppings.
+	* tests/Makefile.am: Remove bitrotted code from Autotest
+	experiments in Autoconf 2.52 era.  Updated the rest and moved into
+	Makefile.am.
+	* tests/testsuite.at: New container for Autotest test groups.
+	* tests/am-subdir.at: New test group for compatibility with
+	Automake's subdir-objects builds.  Currently holds two tests, one
+	for a C project and another similar project in C++.
+	* TODO: Add an entry to remind us that these new tests expose a
+	bug in libtool.
+	* NEWS: Updated.
+
 2004-10-14  Peter O'Gorman  <peter@pogma.com>
 
 	* config/ltmain.m4sh: Revert most of my last commit, only eval
@@ -22,7 +59,7 @@
 
 2004-10-13  Charles Wilson  <spam.protected>
 
-	* config/ltmain.m4sh: add foo/bin for every foo/lib 
+	* config/ltmain.m4sh: add foo/bin for every foo/lib
 	in dllsearchpath when creating wrapper script.  Fixes
 	depdemo-relink test failure.
 
