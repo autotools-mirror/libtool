@@ -2927,13 +2927,21 @@ else
       # Run the actual program with our arguments.
 "
 	case $host in
-	*-*-cygwin* | *-*-mingw | *-*-os2*)
 	  # win32 systems need to use the prog path for dll
 	  # lookup to work
+	*-*-cygwin*)
+	  $echo >> $output "\
+      exec \$progdir/\$program \${1+\"\$@\"}
+"
+	  ;;
+
+	# Backslashes separate directories on plain windows
+	*-*-mingw | *-*-os2*)
 	  $echo >> $output "\
       exec \$progdir\\\\\$program \${1+\"\$@\"}
 "
 	  ;;
+
 	*)
 	  $echo >> $output "\
       # Export the path to the program.
