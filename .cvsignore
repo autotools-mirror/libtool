@@ -13,3 +13,4 @@ libtool
 libtoolize
 patches
 stamp-vcl
+config-h.in

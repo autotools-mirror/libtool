@@ -6,4 +6,5 @@ mdate-sh
 missing
 mkinstalldirs
 texinfo.tex
-
+depcomp
+compile
