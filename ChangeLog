@@ -1,5 +1,8 @@
 1999-03-14  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* doc/PLATFORMS: updated platforms tested on 1.2f-pre; clean up;
+	reorder; untabify
+
 	* config.guess, config.sub: updated from GNU common
 
 	* doc/libtool.texi: notes on thread-safety problems of
