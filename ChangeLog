@@ -1,3 +1,9 @@
+2003-10-08  Gary V. Vaughan  <gary@gnu.org>
+
+	* libtoolize.in: AC_CONFIG_M4_DIR has landed in CVS autoconf.
+	Only it's called AC_CONFIG_MACRO_DIR.  Search and replace.
+	Grumble. ;-)
+
 2003-10-08  Scott James Remnant  <scott@netsplit.com>
 
 	* libltdl/ltdl.c (lt_dlerror): change return value when

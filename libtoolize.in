@@ -299,8 +299,8 @@ func_scan_files ()
     	/AC_CONFIG_AUX_DIR/  {
 	    s,^.*AC_CONFIG_AUX_DIR([[ 	]*\([^])]*\).*$,auxdir=\1,; p;
         };
-    	/AC_CONFIG_M4_DIR/   {
-	     s,^.*AC_CONFIG_M4_DIR([[ 	]*\([^])]*\).*$,m4dir=\1,; p;
+    	/AC_CONFIG_MACRO_DIR/   {
+	     s,^.*AC_CONFIG_MACRO_DIR([[ 	]*\([^])]*\).*$,m4dir=\1,; p;
         };
 	/A[CM]_PROG_LIBTOOL/ { s,^.*$,seen_libtool=:,; p; };
 	/AC_LIB_LTDL/        { s,^.*$,seen_ltdl=:,; p; };
@@ -340,7 +340,7 @@ func_scan_files ()
     # Find local m4 macro directory. #
     # ------------------------------ #
 
-    # If AC_CONFIG_M4_DIR turned nothing up, we hunt for ACLOCAL_AMFLAGS
+    # If AC_CONFIG_MACRO_DIR turned nothing up, we hunt for ACLOCAL_AMFLAGS
     # in `Makefile.am' for a `-I' argument.
 
     my_sed_aclocal_flags='/^[ 	]*ACLOCAL_[A-Z_]*FLAGS[ 	]*=/ {
@@ -579,7 +579,7 @@ func_config_update ()
 
   # Copy libtool's m4 macros to the macro directory, if they are newer.
   $quiet_opt || if test "$m4dir" != .; then
-    func_echo "putting macros in AC_CONFIG_M4_DIR, \`$m4dir'."
+    func_echo "putting macros in AC_CONFIG_MACRO_DIR, \`$m4dir'."
   fi
   func_serial_update 'A[CM]_PROG_LIBTOOL' "$aclocaldir/libtool.m4" "$m4dir/libtool.m4"
 
