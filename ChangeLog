@@ -1,5 +1,10 @@
 2005-01-24  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* m4/libtool.m4 (_LT_PROG_XSI_SHELLFNS): Define Bourne and XSI
+	variants of new function func_stripname for stripping literal
+	prefixes and suffixes.
+	* config/ltmain.m4sh (all over): Use func_stripname.
+
 	* tests/defs.m4sh: Extract $build from $LIBTOOL.
 	(func_configure): Pass --host if $host != $build.
 	(func_exec): Try executing cross-compiled binaries (e.g. i686 -> i386),

@@ -6060,6 +6060,17 @@ func_basename ()
 {
   func_basename_result="${1##*/}"
 }
+
+# func_stripname prefix suffix name
+# strip PREFIX and SUFFIX off of NAME.
+# PREFIX and SUFFIX must not contain globbing or regex special
+# characters, hashes, percent signs, but SUFFIX may contain a leading
+# dot (in which case that matches only a dot).
+func_stripname ()
+{
+  func_stripname_result=${3#"${1}"}
+  func_stripname_result=${func_stripname_result%"${2}"}
+}
 _LT_EOF
     ;;
   *) # Bourne compatible functions.
@@ -6082,6 +6093,22 @@ func_dirname ()
 func_basename ()
 {
   func_basename_result=`$ECHO "X${1}" | $Xsed -e "$basename"`
+}
+
+# func_stripname prefix suffix name
+# strip PREFIX and SUFFIX off of NAME.
+# PREFIX and SUFFIX must not contain globbing or regex special
+# characters, hashes, percent signs, but SUFFIX may contain a leading
+# dot (in which case that matches only a dot).
+# func_strip_suffix prefix name
+func_stripname ()
+{
+  case ${2} in
+    .*) func_stripname_result=`$ECHO "X${3}" \
+           | $Xsed -e "s%^${1}%%" -e "s%\\\\${2}\$%%"`;;
+    *)  func_stripname_result=`$ECHO "X${3}" \
+           | $Xsed -e "s%^${1}%%" -e "s%${2}\$%%"`;;
+  esac
 }
 _LT_EOF
 esac

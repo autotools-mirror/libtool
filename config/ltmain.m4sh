@@ -1138,7 +1138,8 @@ func_mode_compile ()
 	  ;;            #  replaced later.  I would guess that would be a bug.
 
 	-Wc,*)
-	  args=`$ECHO "X$arg" | $Xsed -e "s/^-Wc,//"`
+	  func_stripname '-Wc,' '' "$arg"
+	  args=$func_stripname_result
 	  lastarg=
 	  save_ifs="$IFS"; IFS=','
 	  for arg in $args; do
@@ -1147,7 +1148,8 @@ func_mode_compile ()
 	    lastarg="$lastarg $func_quote_for_eval_result"
 	  done
 	  IFS="$save_ifs"
-	  lastarg=`$ECHO "X$lastarg" | $Xsed -e "s/^ //"`
+	  func_stripname ' ' '' "$lastarg"
+	  lastarg=$func_stripname_result
 
 	  # Add the arguments to base_compile.
 	  base_compile="$base_compile $lastarg"
@@ -1771,7 +1773,8 @@ func_mode_install ()
     fi
 
     # Strip any trailing slash from the destination.
-    dest=`$ECHO "X$dest" | $Xsed -e 's%/$%%'`
+    func_stripname '' '/' "$dest"
+    dest=$func_stripname_result
 
     # Check to see that the destination is a directory.
     test -d "$dest" && isdir=yes
@@ -1989,7 +1992,8 @@ func_mode_install ()
 	case $file in
 	  *.exe)
 	    if test ! -f "$file"; then
-	      file=`$ECHO "X$file"| $Xsed -e 's,.exe$,,'`
+	      func_stripname '' '.exe' "$file"
+	      file=$func_stripname_result
 	      stripped_ext=".exe"
 	    fi
 	    ;;
@@ -1998,7 +2002,8 @@ func_mode_install ()
 	# Do a test to see if this is really a libtool program.
 	case $host in
 	*cygwin*|*mingw*)
-	    wrapper=`$ECHO "X$file" | $Xsed -e 's,.exe$,,'`
+	    func_stripname '' '.exe' "$file"
+	    wrapper=$func_stripname_result
 	    ;;
 	*)
 	    wrapper=$file
@@ -2101,7 +2106,8 @@ func_mode_install ()
 	    destfile=$destfile.exe
 	    ;;
 	  *:*.exe)
-	    destfile=`$ECHO "X$destfile" | $Xsed -e 's,.exe$,,'`
+	    func_stripname '' '.exe' "$destfile"
+	    destfile=$func_stripname_result
 	    ;;
 	  esac
 	  ;;
@@ -2590,7 +2596,8 @@ func_mode_link ()
 	;;
 
       -L*)
-	dir=`$ECHO "X$arg" | $Xsed -e 's/^-L//'`
+	func_stripname '-L' '' "$arg"
+	dir=$func_stripname_result
 	# We need an absolute path.
 	case $dir in
 	[[\\/]]* | [[A-Za-z]]:[[\\/]]*) ;;
@@ -2728,7 +2735,8 @@ func_mode_link ()
 	;;
 
       -R*)
-	dir=`$ECHO "X$arg" | $Xsed -e 's/^-R//'`
+	func_stripname '-R' '' "$arg"
+	dir=$func_stripname_result
 	# We need an absolute path.
 	case $dir in
 	[[\\/]]* | [[A-Za-z]]:[[\\/]]*) ;;
@@ -2784,7 +2792,8 @@ func_mode_link ()
 	;;
 
       -Wc,*)
-	args=`$ECHO "X$arg" | $Xsed -e 's/^-Wc,//'`
+	func_stripname '-Wc,' '' "$arg"
+	args=$func_stripname_result
 	arg=
 	save_ifs="$IFS"; IFS=','
 	for flag in $args; do
@@ -2794,11 +2803,13 @@ func_mode_link ()
 	  compiler_flags="$compiler_flags $func_quote_for_eval_result"
 	done
 	IFS="$save_ifs"
-	arg=`$ECHO "X$arg" | $Xsed -e "s/^ //"`
+	func_stripname ' ' '' "$arg"
+	arg=$func_stripname_result
 	;;
 
       -Wl,*)
-	args=`$ECHO "X$arg" | $Xsed -e 's/^-Wl,//'`
+	func_stripname '-Wl,' '' "$arg"
+	args=$func_stripname_result
 	arg=
 	save_ifs="$IFS"; IFS=','
 	for flag in $args; do
@@ -2809,7 +2820,8 @@ func_mode_link ()
 	  linker_flags="$linker_flags $func_quote_for_eval_result"
 	done
 	IFS="$save_ifs"
-	arg=`$ECHO "X$arg" | $Xsed -e "s/^ //"`
+	func_stripname ' ' '' "$arg"
+	arg=$func_stripname_result
 	;;
 
       -Xcompiler)
@@ -3158,7 +3170,8 @@ func_mode_link ()
 	    func_warning "\`-l' is ignored for archives/objects"
 	    continue
 	  fi
-	  name=`$ECHO "X$deplib" | $Xsed -e 's/^-l//'`
+	  func_stripname '-l' '' "$deplib"
+	  name=$func_stripname_result
 	  for searchdir in $newlib_search_path $lib_search_path $sys_lib_search_path $shlib_search_path; do
 	    for search_ext in .la $std_shrext .so .a; do
 	      # Search the libtool library
@@ -3241,7 +3254,8 @@ func_mode_link ()
 	    deplibs="$deplib $deplibs"
 	    test "$pass" = conv && continue
 	    newdependency_libs="$deplib $newdependency_libs"
-	    newlib_search_path="$newlib_search_path "`$ECHO "X$deplib" | $Xsed -e 's/^-L//'`
+	    func_stripname '-L' '' "$deplib"
+	    newlib_search_path="$newlib_search_path $func_stripname_result"
 	    ;;
 	  prog)
 	    if test "$pass" = conv; then
@@ -3254,7 +3268,8 @@ func_mode_link ()
 	      compile_deplibs="$deplib $compile_deplibs"
 	      finalize_deplibs="$deplib $finalize_deplibs"
 	    fi
-	    newlib_search_path="$newlib_search_path "`$ECHO "X$deplib" | $Xsed -e 's/^-L//'`
+	    func_stripname '-L' '' "$deplib"
+	    newlib_search_path="$newlib_search_path $func_stripname_result"
 	    ;;
 	  *)
 	    func_warning "\`-L' is ignored for archives/objects"
@@ -3264,7 +3279,8 @@ func_mode_link ()
 	  ;; # -L
 	-R*)
 	  if test "$pass" = link; then
-	    dir=`$ECHO "X$deplib" | $Xsed -e 's/^-R//'`
+	    func_stripname '-R' '' "$deplib"
+	    dir=$func_stripname_result
 	    # Make sure the xrpath contains only unique directories.
 	    case "$xrpath " in
 	    *" $dir "*) ;;
@@ -3499,7 +3515,8 @@ func_mode_link ()
 	    notinst_path="$notinst_path $abs_ladir"
 	  fi
 	fi # $installed = yes
-	name=`$ECHO "X$laname" | $Xsed -e 's/\.la$//' -e 's/^lib//'`
+	func_stripname 'lib' '.la' "$laname"
+	name=$func_stripname_result
 
 	# This library was specified with -dlpreopen.
 	if test "$pass" = dlpreopen; then
@@ -3549,7 +3566,9 @@ func_mode_link ()
 	  tmp_libs=
 	  for deplib in $dependency_libs; do
 	    case $deplib in
-	    -L*) newlib_search_path="$newlib_search_path "`$ECHO "X$deplib" | $Xsed -e 's/^-L//'`;; ### testsuite: skip nested quoting test
+	    -L*) func_stripname '-L' '' "$deplib"
+	         newlib_search_path="$newlib_search_path $func_stripname_result"
+		 ;;
 	    esac
 	    # Need to link against all dependency_libs?
 	    if test "$linkalldeplibs" = yes; then
@@ -3701,7 +3720,8 @@ func_mode_link ()
 	    soroot="$soname"
 	    func_basename "$soroot"
 	    soname="$func_basename_result"
-	    newlib=libimp-`$ECHO "X$soname" | $Xsed -e 's/^lib//;s/\.dll$//'`.a
+	    func_stripname 'lib' '.dll' "$soname"
+	    newlib=libimp-$func_stripname_result.a
 
 	    # If the library has no export list, then create one now
 	    if test -f "$output_objdir/$soname-def"; then :
@@ -3933,7 +3953,8 @@ func_mode_link ()
 	    temp_deplibs=
 	    for libdir in $dependency_libs; do
 	      case $libdir in
-	      -R*) temp_xrpath=`$ECHO "X$libdir" | $Xsed -e 's/^-R//'`
+	      -R*) func_stripname '-R' '' "$libdir"
+	           temp_xrpath=$func_stripname_result
 		   case " $xrpath " in
 		   *" $temp_xrpath "*) ;;
 		   *) xrpath="$xrpath $temp_xrpath";;
@@ -4158,7 +4179,8 @@ func_mode_link ()
       # Make sure we only generate libraries of the form `libNAME.la'.
       case $outputname in
       lib*)
-	name=`$ECHO "X$outputname" | $Xsed -e 's/\.la$//' -e 's/^lib//'`
+	func_stripname 'lib' '.la' "$outputname"
+	name=$func_stripname_result
 	eval shared_ext=\"$shrext_cmds\"
 	eval libname=\"$libname_spec\"
 	;;
@@ -4168,11 +4190,13 @@ func_mode_link ()
 
 	if test "$need_lib_prefix" != no; then
 	  # Add the "lib" prefix for modules if required
-	  name=`$ECHO "X$outputname" | $Xsed -e 's/\.la$//'`
+	  func_stripname '' '.la' "$outputname"
+	  name=$func_stripname_result
 	  eval shared_ext=\"$shrext_cmds\"
 	  eval libname=\"$libname_spec\"
 	else
-	  libname=`$ECHO "X$outputname" | $Xsed -e 's/\.la$//'`
+	  func_stripname '' '.la' "$outputname"
+	  libname=$func_stripname_result
 	fi
 	;;
       esac
@@ -5371,7 +5395,8 @@ EOF
 
     prog)
       case $host in
-	*cygwin*) output=`$ECHO "X$output" | $Xsed -e 's,.exe$,,;s,$,.exe,'` ;;
+	*cygwin*) func_stripname '' '.exe' "$output"
+	          output=$func_stripname_result.exe;;
       esac
       test -n "$vinfo" && \
 	func_warning "\`-version-info' is ignored for programs"
@@ -5656,13 +5681,15 @@ EOF
 	# win32 will think the script is a binary if it has
 	# a .exe suffix, so we strip it off here.
 	case $output in
-	  *.exe) output=`$ECHO "X$output" | $Xsed -e 's,.exe$,,'` ;;
+	  *.exe) func_stripname '' '.exe' "$output"
+	         output=$func_stripname_result ;;
 	esac
 	# test for cygwin because mv fails w/o .exe extensions
 	case $host in
 	  *cygwin*)
 	    exeext=.exe
-	    outputname=`$ECHO "X$outputname" | $Xsed -e 's,.exe$,,'` ;;
+	    func_stripname '' '.exe' "$outputname"
+	    outputname=$func_stripname_result ;;
 	  *) exeext= ;;
 	esac
 	case $host in
@@ -6623,8 +6650,10 @@ func_mode_uninstall ()
 	  noexename=$name
 	  case $file in
 	  *.exe)
-	    file=`$ECHO "X$file" | $Xsed -e 's,.exe$,,'`
-	    noexename=`$ECHO "X$name" | $Xsed -e 's,.exe$,,'`
+	    func_stripname '' '.exe' "$file"
+	    file=$func_stripname_result
+	    func_stripname '' '.exe' "$name"
+	    noexename=$func_stripname_result
 	    # $file with .exe has already been added to rmfiles,
 	    # add $file without .exe
 	    rmfiles="$rmfiles $file"
