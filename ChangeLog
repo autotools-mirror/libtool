@@ -1,3 +1,11 @@
+2001-09-11  Gary V. Vaughan  <gary@gnu.org>
+
+	GNU libtool 1.4.2 was released.
+
+	* configure.in: Bumped version to 1.4.2.
+	* config.sub, config.guess:  Synchronised from ftp.gnu.org.
+	* NEWS: Updated.
+
 2001-09-11  Gary V. Vaughan  <gary@gnu.org>,  Albert Chin <china@thewrittenword.com>.  Tim Van Holder  <tim.van.holder@pandora.be>
 
 	* libtool.m4 (no_undefine_flag) [solaris*]:  Don't set this flag
@@ -16,7 +24,7 @@
 	* ltdl.m4 (AC_LIB_LTDL):  Require AC_LIBTOOL_HEADER_ASSERT.
 	* doc/PLATFORMS:  Updated.
 
-2001-06-25  Daniel Harvey <daniel@amristar.com.au>
+2001-09-11  Daniel Harvey <daniel@amristar.com.au>
 
 	* libtool.m4 (ltdll_cmds): [$]0 doesn't appear to translate through
 	the script correctly, change to $''0

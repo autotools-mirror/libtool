@@ -1,5 +1,13 @@
 NEWS - list of user-visible changes between releases of GNU Libtool
 
+New in 1.4.2: 2001-09-11; CVS version 1.4.1a, Gary V. Vaughan:
+* libltdl now builds on solaris again
+* diagnose and warn about not-quite-working combinations of gcc and
+* ld on solaris
+* Improved OpenBSD support.
+* Improved cygwin support.
+* Bugfixes.
+
 New in 1.4.1: 2001-09-03; CVS version 1.4.0a, Libtool team:
 * Better error messages from libltdl when loading fails.
 * Don't leave here-doc files behind.
