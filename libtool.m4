@@ -2452,7 +2452,7 @@ if test -f "$ltmain"; then
   # careful not to overquote the AC_SUBSTed values.  We take copies of the
   # variables and quote the copies for generation of the libtool script.
   for var in echo old_CC old_CFLAGS \
-    AR AR_FLAGS CC LD LN_S NM SHELL \
+    AR AR_FLAGS CC LD LN_S LTCC NM SHELL \
     reload_flag reload_cmds wl \
     pic_flag link_static_flag no_builtin_flag export_dynamic_flag_spec \
     thread_safe_flag_spec whole_archive_flag_spec libname_spec \
