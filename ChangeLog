@@ -1,9 +1,3 @@
-2001-11-15  Albert Chin-A-Young  <china@thewrittenword.com>
-
-	* libtool.m4: quote LTCC because autoconf AC_PROG_CC_STDC
-	macro might add to $CC if options needed by compiler to
-	grok ANSI.
-
 2001-11-15  Gary V. Vaughan  <gary@gnu.org>
 
 	From Joseph S. Myers  <jsm28@cam.ac.uk>:
