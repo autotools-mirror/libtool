@@ -1,3 +1,10 @@
+2000-12-14  Masahiro Nobori  <nobori@ss.titech.ac.jp>
+
+	* README:  Updated.
+	* NEWS: Updated.
+	* libtool.m4:  New port to NEWS-OS Release 6.
+	* ltcf-c.sh: ditto.
+	
 2000-12-14  Nick Hudson  <nick@nthcliff.demon.co.uk>
 	
 	* ltcf-c.sh (hardcode_libdir_flag_spec):  Remove linker

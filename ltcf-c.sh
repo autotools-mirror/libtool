@@ -377,6 +377,14 @@ else
     hardcode_shlibpath_var=no
     ;;
 
+  newsos6)
+    archive_cmds='$LD -G -h $soname -o $lib $libobjs $deplibs $linkopts'
+    hardcode_direct=yes
+    hardcode_libdir_flag_spec='${wl}-rpath ${wl}$libdir'
+    hardcode_libdir_separator=:
+    hardcode_shlibpath_var=no
+    ;;
+
   openbsd*)
     archive_cmds='$LD -Bshareable -o $lib $libobjs $deplibs $linker_flags'
     hardcode_libdir_flag_spec='-R$libdir'
@@ -591,6 +599,11 @@ else
       # This hack is so that the source file can tell whether it is being
       # built for inclusion in a dll (and should export symbols for example).
       ac_cv_prog_cc_pic='-DDLL_EXPORT'
+      ;;
+
+    newsos6)
+      ac_cv_prog_cc_pic='-KPIC'
+      ac_cv_prog_cc_static='-Bstatic'
       ;;
 
     osf3* | osf4* | osf5*)
