@@ -1,5 +1,8 @@
 1999-04-25  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* ltconfig.in (irix*, osf*, archive_cmds): Write so_locations
+	within objdir.
+
 	* ltconfig.in (irix*, soname_spec): Append $major.
 	(irix*, library_names_spec): Add new soname.
 	Reported by David Kaelbling <drk@sgi.com>
