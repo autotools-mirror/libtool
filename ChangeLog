@@ -1,3 +1,10 @@
+1998-12-16  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* NEWS: Added Thomas Tanner and Gary V. Vaughan to the list of new 
+	maintainers.  Detailed expected failures of libtldl+mdemo.  Listed 
+	recent ports.  Added full URL for the home page.  Note that
+	libtool C program is unusable.
+
 1998-12-16  Bruno Haible  <haible@ilog.fr>
 
 	* doc/libtool.texi (Tested platforms): broken `sed' programs

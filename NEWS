@@ -1,13 +1,18 @@
 NEWS - list of user-visible changes between releases of GNU Libtool
 
-New in 1.2c - 1998-XX-XX:
+New in 1.2c: CVS version
 * libtool will correctly link already-installed libraries into programs.
 * New -module flag, to create loadable modules.
-* New libltdl, a small library for portable dynamic loading of modules.
+* New libltdl, a small library for portable dlopening of modules.
+It is still undocumented, but you can already find some examples in:
+* New mdemo directory, with tests of -module and dlopening examples.
+Be aware that libltdl is only known to work on a few platforms such as
+GNU/Linux and Solaris2.  Some mdemo tests are known to FAIL on several 
+other platforms; please ignore these failures by now (or work to fix
+them :-).
 * Inter-library dependencies patch finally integrated, but there's
 still much porting to do.  See PORTING for details (some plans for the 
 future in mail/deplibs in the CVS tree).
-* Initial support for portable dlopen()ing of modules (see mdemo).
 * New option -export-symbols to control symbol exporting when possible.
 * Fixed -export-dynamic problem with C++ programs in egcs 1.1.
 * New dlpreopen structure.
@@ -17,18 +22,17 @@ this.  In this case, file locking occurs to avoid problems with
 parallel builds.
 * New `echo' variant that should fix most problems with long command
 lines and broken printf programs.
-* Support for *-*-dgux*, and improved support for Microsoft Windows
+* Support for DG/UX, UnixWare 7.x and FreeBSD 3.0, and improved
+support for Microsoft Windows
 * Various bugfixes
 * We now have anonymous CVS access to GNU libtool.  CVSROOT is
 :pserver:anoncvs@anoncvs.gnu.org:/gd/gnu/anoncvsroot.  The password
 is empty.  The directory is libtool.  Check our home-page at
-www.gnu.org for details.
-* Alexandre Oliva has taken over the maintenance of libtool, but Gord
-agree to keep helping us, and many other developers have kind of
-joined the team.  But your contributions are still necessary for
-libtool to make progress.
+http://www.gnu.org/software/libtool/libtool.html for details.
+* Alexandre Oliva, Thomas Tanner and Gary V. Vaughan have taken over
+the maintenance of libtool.
 * Arguments to ltconfig have been changed to allow creation of a
-libtool C program.
+libtool C program, totally unusable as of this release.
 
 New in 1.2b - 1998-07-01, Gordon Matzigkeit:
 * Libtool needs a new maintainer, since Gordon Matzigkeit has quit.
