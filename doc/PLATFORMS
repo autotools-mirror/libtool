@@ -33,7 +33,8 @@ i*86-*-gnu0.3                   gcc      1.2b     ok
 i*86-*-netbsd1.3.3              gcc      1.2f     ok
   (gcc-2.7.2.2)
 i*86-*-netbsd1.3.2              gcc      1.2e     ok
-i*86-*-netbsd1.3I               egcs     1.2e     ok
+i*86-*-netbsd1.3I               gcc      1.2e     ok
+  (egcs 1.1?)
 i*86-*-netbsd1.2                gcc      0.9g     ok
 i*86-*-linux-gnu                gcc      1.2f     ok
   (egcs 1.1.1, GNU ld 2.9.1)
@@ -49,7 +50,8 @@ m68k-next-nextstep3             gcc      1.2f     NS
 m68k-sun-sunos4.1.1             gcc      1.2f     NS
   (gcc-2.5.7)
 m88k-dg-dguxR4.12TMU01          gcc      1.2      ok
-mips-sgi-irix6.5                gcc      1.2e     ok
+mips-sgi-irix6.5                gcc      1.2f     ok
+  (gcc-2.8.1)
 mips-sgi-irix6.4                gcc      1.2f     ok
 mips-sgi-irix6.3                gcc      1.2f     ok
   (egcs 1.1.1)
@@ -65,9 +67,9 @@ mips-sgi-irix5.2                gcc      1.2f     ok
   (egcs 1.1.1)
 mips-sgi-irix5.2                cc       1.2f     ok
 mipsel-unknown-openbsd2.1       gcc      1.0      ok
-powerpc-ibm-aix4.3.1.0          egcs     1.2e     ok
+powerpc-ibm-aix4.3.1.0          gcc      1.2f     ok
   (egcs-1.1.1)
-powerpc-ibm-aix4.2.1.0          egcs     1.2f     ok
+powerpc-ibm-aix4.2.1.0          gcc      1.2f     ok
   (egcs-1.1.1)
 powerpc-ibm-aix4.1.5.0          gcc      1.2f     ok
   (egcs-1.1.1)

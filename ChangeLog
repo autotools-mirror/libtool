@@ -1,3 +1,7 @@
+1999-03-17  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* doc/PLATFORMS: egcs is gcc; updates from Erez Zadoc
+
 1999-03-16  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* ltmain.in (deplibs, beos*): don't append -lc
@@ -5,8 +9,6 @@
 
 	* tests/build-relink.test (hardcode_action): when set to relink,
 	skip the test with lt-hell
-
-1999-03-16  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* Makefile.am (EXTRA_DIST): add mkstamp
 	Reported by Xavier Pianet <xavier@xingo.com>
