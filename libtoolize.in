@@ -146,15 +146,15 @@ configure_ac=configure.in
 
       # Separate optargs to long options:
       --ltdl=*)
-      			arg=`$ECHO "$opt" | $SED "$my_sed_long_arg"`
-			opt=`$ECHO "$opt" | $SED "$my_sed_long_opt"`
+      			arg=`$ECHO "X$opt" | $Xsed -e "$my_sed_long_arg"`
+			opt=`$ECHO "X$opt" | $Xsed -e "$my_sed_long_opt"`
 			set -- "$opt" "$arg" ${1+"$@"}
 			;;
 
       # Separate non-argument short options:
       -c*|-i*|-f*|-n*|-q*|-v*)
-			rest=`$ECHO "$opt" |$SED "$my_sed_single_rest"`
-			opt=`$ECHO "$opt" |$SED "$my_sed_single_opt"`
+			rest=`$ECHO "X$opt" | $Xsed -e "$my_sed_single_rest"`
+			opt=`$ECHO "X$opt" | $Xsed -e "$my_sed_single_opt"`
 			set -- "$opt" "-$rest" ${1+"$@"}
 			;;
 
@@ -178,7 +178,7 @@ func_copy ()
     my_destfile="$2"
     my_return_status=1
 
-    func_mkdir_p `$ECHO "$my_destfile" | $SED "$dirname"`
+    func_mkdir_p `$ECHO "X$my_destfile" | $Xsed -e "$dirname"`
 
     $RM "$my_destfile"
     if $opt_link && $LN_S "$my_srcfile" "$my_destfile"; then
@@ -224,8 +224,8 @@ func_copy_all_files ()
     while test -n "$my_srcdirs"; do
 
       IFS="$my_save_IFS"
-      my_srcdir=`$ECHO "$my_srcdirs" | sed 's,:.*,,g'`
-      my_srcdirs=`$ECHO "$my_srcdirs" | sed 's,:*[[^:]][[^:]]*:*,,'`
+      my_srcdir=`$ECHO "X$my_srcdirs" | $Xsed -e 's,:.*,,g'`
+      my_srcdirs=`$ECHO "X$my_srcdirs" | $Xsed -e 's,:*[[^:]][[^:]]*:*,,'`
 
       for my_filename in `cd "$my_srcdir" && ls`; do
 
@@ -236,7 +236,8 @@ func_copy_all_files ()
 
 	# Add to the appropriate list
 	if test -f "$my_srcdir/$my_filename"; then
-	  my_srcfile=`$ECHO "$my_srcdir/$my_filename" |sed "s,^$my_basedir/*,,"`
+	  my_srcfile=`$ECHO "X$my_srcdir/$my_filename" | $Xsed \
+	      -e "s,^$my_basedir/*,,"`
 	  my_srcfiles="$my_srcfiles${my_srcfiles:+:}$my_srcfile"
 	elif $my_opt_recurse && test -d "$my_srcdir/$my_filename"; then
 	  my_srcdirs="$my_srcdirs${my_srcdirs:+:}$my_srcdir/$my_filename"
@@ -403,7 +404,9 @@ func_included_files ()
         /^[m4]_include(\[[.*\]])$/ { s,^[m4]_include(\[[\(.*\)\]])$,\1,; p; };
         d'
 
-    test -f "$my_searchfile" && $ECHO "$my_searchfile"
+    if test -f "$my_searchfile"; then
+      $ECHO "X$my_searchfile" | $Xsed
+    fi
 
     # Only recurse when we don't care if all the variables we use get
     # trashed, since they are in global scope.

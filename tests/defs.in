@@ -34,6 +34,8 @@ m4_include([general.m4sh])
 : ${LIBTOOL="../libtool"}
 : ${SHELL="${CONFIG_SHELL-/bin/sh}"}
 
+# Sed that helps us avoid accidentally triggering echo(1) options like -n.
+Xsed="$SED -e s/^X//"
 
 # Disable usage of config.site for autoconf, unless DJGPP is present.
 # The DJGPP port of autoconf requires config.site, to work correctly.
@@ -50,7 +52,7 @@ NO | no | 0 | "")
 esac
 
 if test -z "$srcdir"; then
-  srcdir=`$ECHO "$0" | $SED "$dirname"`
+  srcdir=`$ECHO "X$0" | $Xsed -e "$dirname"`
   test "$srcdir" = "$0" && srcdir=.
 fi
 

@@ -491,22 +491,22 @@ Otherwise, only FILE itself is deleted using RM."
 
       # Separate optargs to long options:
       -dlopen=*|--mode=*|--tag=*)
-			arg=`$ECHO "$opt" | $SED "$my_sed_long_arg"`
-			opt=`$ECHO "$opt" | $SED "$my_sed_long_opt"`
+			arg=`$ECHO "X$opt" | $Xsed -e "$my_sed_long_arg"`
+			opt=`$ECHO "X$opt" | $Xsed -e "$my_sed_long_opt"`
 			set -- "$opt" "$arg" ${1+"$@"}
 			;;
 
       # Separate optargs to short options:
 #      -x*|-y*)
-#			arg=`$ECHO "$opt" |$SED "$my_sed_single_rest"`
-#			opt=`$ECHO "$opt" |$SED "$my_sed_single_opt"`
+#			arg=`$ECHO "X$opt" |$Xsed -e "$my_sed_single_rest"`
+#			opt=`$ECHO "X$opt" |$Xsed -e "$my_sed_single_opt"`
 #			set -- "$opt" "$arg" ${1+"$@"}
 #			;;
 
       # Separate non-argument short options:
 #      -z*|-z*|-y*)
-#			rest=`$ECHO "$opt" |$SED "$my_sed_single_rest"`
-#			opt=`$ECHO "$opt" |$SED "$my_sed_single_opt"`
+#			rest=`$ECHO "X$opt" |$Xsed -e "$my_sed_single_rest"`
+#			opt=`$ECHO "X$opt" |$Xsed -e "$my_sed_single_opt"`
 #			set -- "$opt" "-$rest" ${1+"$@"}
 #			;;
 
@@ -762,7 +762,7 @@ extern \"C\" {
 
 	for dlprefile in $dlprefiles; do
 	  func_echo "extracting global C symbols from \`$dlprefile'"
-	  name=`$ECHO "$dlprefile" | ${SED} -e 's%^.*/%%'`
+	  name=`$ECHO "X$dlprefile" | $Xsed -e 's%^.*/%%'`
 	  $run eval '$ECHO ": $name " >> "$nlist"'
 	  $run eval "$NM $dlprefile | $global_symbol_pipe >> '$nlist'"
 	done
@@ -1579,7 +1579,7 @@ func_mode_finish ()
     # Exit here if they wanted silent mode.
     test "$show" = : && exit $EXIT_SUCCESS
 
-    $ECHO "----------------------------------------------------------------------"
+    $ECHO "X----------------------------------------------------------------------" | $Xsed
     $ECHO "Libraries have been installed in:"
     for libdir in $libdirs; do
       $ECHO "   $libdir"
@@ -1612,7 +1612,7 @@ func_mode_finish ()
     $ECHO
     $ECHO "See any operating system documentation about shared libraries for"
     $ECHO "more information, such as the ld(1) and ld.so(8) manual pages."
-    $ECHO "----------------------------------------------------------------------"
+    $ECHO "X----------------------------------------------------------------------" | $Xsed
     exit $EXIT_SUCCESS
 }
 
@@ -1783,7 +1783,7 @@ func_mode_install ()
 
 	if test -n "$relink_command"; then
 	  # Determine the prefix the user has applied to our future dir.
-	  inst_prefix_dir=`$ECHO "$destdir" | $SED "s%$libdir\$%%"`
+	  inst_prefix_dir=`$ECHO "X$destdir" | $Xsed -e "s%$libdir\$%%"`
 
 	  # Don't allow the user to place us outside of our expected
 	  # location b/c this prevents finding dependent libraries that
@@ -1917,7 +1917,7 @@ func_mode_install ()
 	case $file in
 	  *.exe)
 	    if test ! -f "$file"; then
-	      file=`$ECHO $file|${SED} 's,.exe$,,'`
+	      file=`$ECHO "X$file"| $Xsed -e 's,.exe$,,'`
 	      stripped_ext=".exe"
 	    fi
 	    ;;
@@ -1926,7 +1926,7 @@ func_mode_install ()
 	# Do a test to see if this is really a libtool program.
 	case $host in
 	*cygwin*|*mingw*)
-	    wrapper=`$ECHO $file | ${SED} -e 's,.exe$,,'`
+	    wrapper=`$ECHO "X$file" | $XSED -e 's,.exe$,,'`
 	    ;;
 	*)
 	    wrapper=$file
@@ -2023,7 +2023,7 @@ func_mode_install ()
 	    destfile=$destfile.exe
 	    ;;
 	  *:*.exe)
-	    destfile=`$ECHO $destfile | ${SED} -e 's,.exe$,,'`
+	    destfile=`$ECHO "X$destfile" | $Xsed -e 's,.exe$,,'`
 	    ;;
 	  esac
 	  ;;
@@ -3050,7 +3050,7 @@ func_mode_link ()
 	  # Collect preopened libtool deplibs, except any this library
 	  # has declared as weak libs
 	  for deplib in $dependency_libs; do
-            deplib_base=`$ECHO "$deplib" |$SED "$basename"`
+            deplib_base=`$ECHO "X$deplib" | $Xsed -e "$basename"`
 	    case " $weak_libs " in
 	    *" $deplib_base "*) ;;
 	    *) deplibs="$deplibs $deplib" ;;
@@ -3222,8 +3222,7 @@ func_mode_link ()
 		match_pattern*)
 		  set dummy $deplibs_check_method
 		  match_pattern_regex=`expr "$deplibs_check_method" : "$2 \(.*\)"`
-		  if eval $ECHO \"$deplib\" 2>/dev/null \
-		    | $SED 10q \
+		  if eval $ECHO \"X$deplib\" 2>/dev/null | $Xsed -e 10q \
 		    | $EGREP "$match_pattern_regex" > /dev/null; then
 		    valid_a_lib=yes
 		  fi
@@ -3616,8 +3615,8 @@ func_mode_link ()
 
 	    # Make a new name for the extract_expsyms_cmds to use
 	    soroot="$soname"
-	    soname=`$ECHO $soroot | ${SED} -e 's/^.*\///'`
-	    newlib="libimp-`$ECHO $soname | ${SED} 's/^lib//;s/\.dll$//'`.a"
+	    soname=`$ECHO "X$soroot" | $Xsed -e 's/^.*\///'`
+	    newlib=libimp-`$ECHO "X$soname" | $Xsed -e 's/^lib//;s/\.dll$//'`.a
 
 	    # If the library has no export list, then create one now
 	    if test -f "$output_objdir/$soname-def"; then :
@@ -4386,9 +4385,9 @@ func_mode_link ()
 
       # Eliminate all temporary directories.
       for path in $notinst_path; do
-	lib_search_path=`$ECHO "$lib_search_path " | ${SED} -e 's% $path % %g'`
+	lib_search_path=`$ECHO "X$lib_search_path " | $Xsed -e 's% $path % %g'`
 	deplibs=`$ECHO "$deplibs " | ${SED} -e 's% -L$path % %g'`
-	dependency_libs=`$ECHO "$dependency_libs " | ${SED} -e 's% -L$path % %g'`
+	dependency_libs=`$ECHO "X$dependency_libs " | $Xsed -e 's% -L$path % %g'`
       done
 
       if test -n "$xrpath"; then
@@ -4613,7 +4612,7 @@ EOF
 			esac
 		      done
 		      if eval $file_magic_cmd \"\$potlib\" 2>/dev/null |
-			 ${SED} 10q |
+			 $SED -e 10q |
 			 $EGREP "$file_magic_regex" > /dev/null; then
 			newdeplibs="$newdeplibs $a_deplib"
 			a_deplib=""
@@ -4664,8 +4663,7 @@ EOF
 		  potential_libs=`ls $i/$libname[[.-]]* 2>/dev/null`
 		  for potent_lib in $potential_libs; do
 		    potlib="$potent_lib" # see symlink-check above in file_magic test
-		    if eval $ECHO \"$potent_lib\" 2>/dev/null |
-		       ${SED} 10q |
+		    if eval $ECHO \"X$potent_lib\" 2>/dev/null | $Xsed -e 10q | \
 		       $EGREP "$match_pattern_regex" > /dev/null; then
 		      newdeplibs="$newdeplibs $a_deplib"
 		      a_deplib=""
@@ -4702,7 +4700,7 @@ EOF
 	  if test "X$allow_libtool_libs_with_static_runtimes" = "Xyes" ; then
 	    for i in $predeps $postdeps ; do
 	      # can't use Xsed below, because $i might contain '/'
-	      tmp_deplibs=`$ECHO "X $tmp_deplibs" | ${SED} -e "1s,^X,," -e "s,$i,,"`
+	      tmp_deplibs=`$ECHO "X $tmp_deplibs" | $Xsed -e "s,$i,,"`
 	    done
 	  fi
 	  if $ECHO "X $tmp_deplibs" | $Xsed -e 's/[[ 	]]//g' |
@@ -4986,7 +4984,7 @@ EOF
 	    save_libobjs=$libobjs
 	  fi
 	  save_output=$output
-	  output_la=`$ECHO "$output" | $SED $basename`
+	  output_la=`$ECHO "X$output" | $Xsed -e "$basename"`
 
 	  # Clear the reloadable object creation command queue and
 	  # initialize k to one.
@@ -5288,7 +5286,7 @@ EOF
 
     prog)
       case $host in
-	*cygwin*) output=`$ECHO $output | ${SED} -e 's,.exe$,,;s,$,.exe,'` ;;
+	*cygwin*) output=`$ECHO "X$output" | $Xsed -e 's,.exe$,,;s,$,.exe,'` ;;
       esac
       test -n "$vinfo" && \
 	func_warning "\`-version-info' is ignored for programs"
@@ -5576,21 +5574,21 @@ EOF
 	# win32 will think the script is a binary if it has
 	# a .exe suffix, so we strip it off here.
 	case $output in
-	  *.exe) output=`$ECHO $output|${SED} 's,.exe$,,'` ;;
+	  *.exe) output=`$ECHO "X$output" | $Xsed -e 's,.exe$,,'` ;;
 	esac
 	# test for cygwin because mv fails w/o .exe extensions
 	case $host in
 	  *cygwin*)
 	    exeext=.exe
-	    outputname=`$ECHO $outputname|${SED} 's,.exe$,,'` ;;
+	    outputname=`$ECHO "X$outputname" | $Xsed -e 's,.exe$,,'` ;;
 	  *) exeext= ;;
 	esac
 	case $host in
 	  *cygwin* | *mingw* )
 	    output_name=`basename $output`
 	    output_path=`dirname $output`
-	    cwrappersource=`$ECHO "$output_path/$objdir/lt-$output_name.c"`
-	    cwrapper=`$ECHO "$output_path/$output_name.exe"`
+	    cwrappersource="$output_path/$objdir/lt-$output_name.c"
+	    cwrapper="$output_path/$output_name.exe"
 	    $RM $cwrappersource $cwrapper
 	    trap "$RM $cwrappersource $cwrapper; exit $EXIT_FAILURE" 1 2 15
 
@@ -6529,8 +6527,8 @@ func_mode_uninstall ()
 	  noexename=$name
 	  case $file in
 	  *.exe)
-	    file=`$ECHO $file|${SED} 's,.exe$,,'`
-	    noexename=`$ECHO $name|${SED} 's,.exe$,,'`
+	    file=`$ECHO "X$file" | $Xsed -e 's,.exe$,,'`
+	    noexename=`$ECHO "X$name" | $Xsed -e 's,.exe$,,'`
 	    # $file with .exe has already been added to rmfiles,
 	    # add $file without .exe
 	    rmfiles="$rmfiles $file"

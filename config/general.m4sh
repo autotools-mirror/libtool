@@ -36,6 +36,7 @@ m4_if([# general.m4sh -- general shell script boiler plate -*- Autoconf -*-
 : ${MV="mv -f"}
 : ${RM="rm -f"}
 : ${SED="@SED@"}
+: ${Xsed="$SED -e s/^X//"}
 
 # Global variables:
 EXIT_SUCCESS=0
@@ -60,12 +61,14 @@ basename="s,^.*/,,g"
 progpath="$0"
 
 # The name of this program:
-progname=`$ECHO "$progpath" | $SED "$basename"`
+# In the unlikely event $progname began with a '-', it would play havoc with
+# func_echo (imagine progname=-n), so we substitute for _ in that case.
+progname=`$ECHO "X$progpath" | $Xsed -e "$basename" -e 's,^-,_,'`
 
 # Make sure we have an absolute path for reexecution:
 case $progpath in
   [[\\/]]*|[[A-Za-z]]:\\*) ;;
-  *) progdir=`$ECHO "$progpath" | $SED "$dirname"`
+  *) progdir=`$ECHO "X$progpath" | $Xsed -e "$dirname"`
      progdir=`cd "$progdir" && pwd`
      progpath="$progdir/$progname"
      ;;
@@ -98,7 +101,7 @@ opt_verbose=false
 # name if it has been set yet.
 func_echo ()
 {
-    $ECHO $progname${mode+: }$mode: ${1+"$@"}
+    $ECHO "$progname${mode+: }$mode: "${1+"$@"}
 }
 
 # func_verbose arg...
@@ -112,14 +115,14 @@ func_verbose ()
 # Echo program name prefixed message to standard error.
 func_error ()
 {
-    $ECHO $progname${mode+: }$mode: ${1+"$@"} 1>&2
+    $ECHO "$progname${mode+: }$mode: "${1+"$@"} 1>&2
 }
 
 # func_warning arg...
 # Echo program name prefixed warning message to standard error.
 func_warning ()
 {
-    $ECHO $progname${mode+: }$mode: warning: ${1+"$@"} 1>&2
+    $ECHO "$progname${mode+: }$mode: warning: "${1+"$@"} 1>&2
 }
 
 # func_fatal_error arg...
@@ -173,9 +176,9 @@ func_mkdir_p ()
         case $my_directory_path in */*) ;; *) break ;; esac
 
         # ...otherwise throw away the child directory and loop
-        my_directory_path=`$ECHO "$my_directory_path" | $SED "$dirname"`
+        my_directory_path=`$ECHO "X$my_directory_path" | $Xsed -e "$dirname"`
       done
-      my_dir_list=`$ECHO $my_dir_list | $SED 's,:*$,,'`
+      my_dir_list=`$ECHO "X$my_dir_list" | $Xsed -e 's,:*$,,'`
 
       save_mkdir_p_IFS="$IFS"; IFS=':'
       for my_dir in $my_dir_list; do
@@ -224,7 +227,7 @@ func_mktempdir ()
         func_fatal_error "cannot create temporary directory \`$my_tmpdir'"
     fi
 
-    $ECHO "$my_tmpdir"
+    $ECHO "X$my_tmpdir" | $Xsed
 }
 
 

@@ -1,3 +1,14 @@
+2004-09-24  Gary V. Vaughan  <gary@gnu.org>
+
+	* config/general.m4sh (Xsed): Set a default when not used from
+	ltmain.in.
+	(ECHO): Audit for (and correct!) uses of $ECHO with more than one
+	argument, which breaks when ECHO='printf %s\n', and with possible
+	`-' as first character of the argument, which breaks `print -r'
+	and some implementations of `echo'.
+	* config/ltmain.in, tests/defs.in, libtoolize.in (ECHO): Ditto.
+	Reported by Albert Chin-A-Young <china@thewrittenword.com>
+
 2004-09-24  Peter O'Gorman  <peter@pogma.com>
 
 	* m4/libtool.m4 (_LT_CMD_STRIPLIB) [darwin]: strip archives too.
