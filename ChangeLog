@@ -1,3 +1,8 @@
+1999-09-28  Albert Cheng  <acheng@ncsa.uiuc.edu>
+
+	* ltmain.in (shlibpath_var): ensure the variable is non-empty before
+	exporting it.
+
 1999-09-22  Gary V. Vaughan  <gary@oranda.demon.co.uk>
  
 	* ltconfig.in (whole-archive-flag-spec): test whether the
