@@ -1,3 +1,15 @@
+1999-01-10  Thomas Tanner  <tanner@gmx.de>
+
+	* ltmain.in: define dld_preloaded_symbols if at least one of
+	  -export-dynamic, -dlopen or -dlpreopen was specified,
+	  do not include program objects in the symbol list
+	  if -export-dynamic was not enabled
+	* libltdl/ltdl.c: limit symbols to max. 256 bytes
+	* mdemo/Makefile.am: build libltdl in a subdirectory,
+	  do not use -export-dynamic for mdemo and mdemo.debug
+	* tests/mdemo-conf.test,tests/mdemo-make.test,tests/mdemo-inst.test:
+	  do not check for libltdl
+	
 1999-01-09  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* libltdl/ltdl.c (lt_dlopen): missing strlen in bound test

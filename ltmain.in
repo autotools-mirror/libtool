@@ -1833,7 +1833,7 @@ EOF
 	finalize_command=`$echo "X$finalize_command" | $SP2NL | $Xsed -e "$lo2o" | $NL2SP`
       fi
 
-      if test "$export_dynamic" = yes && test -n "$NM" && test -n "$global_symbol_pipe"; then
+      if test "$export_dynamic" = yes || test -n "$dlfiles$dlprefiles" && test -n "$NM" && test -n "$global_symbol_pipe"; then
 	dlsyms="${outputname}S.c"
       else
 	dlsyms=
@@ -1843,7 +1843,7 @@ EOF
 	case "$dlsyms" in
 	"") ;;
 	*.c)
-	  if test -z "$export_symbols"; then
+	  if test "$export_dynamic" = yes && test -z "$export_symbols"; then
 	    # Add our own program objects to the preloaded list.
 	    dlprefiles=`$echo "X$objs $dlprefiles" | $SP2NL | $Xsed -e "$lo2o" | $NL2SP`
 	  fi
@@ -1880,7 +1880,7 @@ extern \"C\" {
 /* External symbol declarations for the compiler. */\
 "
 
-	  if test -n "$export_symbols"; then
+	  if test "$export_dynamic" = yes && test -n "$export_symbols"; then
 	    sed -e 's/^\(.*\)/\1 \1/' < "$export_symbols" > "$nlist"
 	  fi
 
@@ -1890,7 +1890,7 @@ extern \"C\" {
 	  done
 
 	  if test -z "$run"; then
-	    # Make sure we at least have an empty file.
+	    # Make sure we have at least an empty file.
 	    test -f "$nlist" || : > "$nlist"
 
 	    # Try sorting and uniquifying the output.
@@ -1925,7 +1925,7 @@ dld_preloaded_symbols[] =
 {\
 "
 
-	    if test -n "$export_symbols"; then
+	    if test "$export_dynamic" = yes && test -n "$export_symbols"; then
 	      echo >> "$output_objdir/$dlsyms" "\
   {\"${output}\", (lt_ptr_t) 0},"
 	      sed 's/^\(.*\)/  {"\1", (lt_ptr_t) \&\1},/' < "$export_symbols" >> "$output_objdir/$dlsyms"
@@ -1967,8 +1967,6 @@ dld_preloaded_symbols[] =
 	  exit 1
 	  ;;
 	esac
-      elif test "$export_dynamic" != yes; then
-	test -n "$dlfiles$dlprefiles" && $echo "$modename: warning: \`-dlopen' and \`-dlpreopen' are ignored without \`-export-dynamic'" 1>&2
       else
 	# We keep going just in case the user didn't refer to
 	# dld_preloaded_symbols.  The linker will fail if global_symbol_pipe

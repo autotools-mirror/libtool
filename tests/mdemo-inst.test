@@ -17,13 +17,6 @@ else
   exit 1
 fi
 
-# Check that things are built.
-if test -f ../libltdl/libltdl.la; then :
-else
-  echo "You must build libltdl before $0" 1>&2
-  exit 1
-fi
-
 # Change to our build directory.
 cd ../mdemo || exit 1
 

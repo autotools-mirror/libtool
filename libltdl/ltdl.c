@@ -961,7 +961,7 @@ lt_dlclose (handle)
 	return 0;
 }
 
-#define MAX_SYMBOL_LENGTH	128
+#define MAX_SYMBOL_LENGTH	256
 
 lt_ptr_t
 lt_dlsym (handle, symbol)
