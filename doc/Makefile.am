@@ -1,4 +1,4 @@
-## Process Makefile.am with automake to create Makefile.in.
+## Process Makefile.am with automake to create Makefile.in. -*-Makefile-*-
 ##
 ## Copyright (C) 1996 Free Software Foundation, Inc.
 ## This Makefile.am is free software; the Free Software Foundation

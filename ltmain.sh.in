@@ -881,8 +881,8 @@ if test -z "$show_help"; then
 
       if test -z "$link_against_libtool_libs" || test "$build_libtool_libs" != yes; then
 	# Replace the output file specification.
-	compile_command=`echo "$compile_command" | sed "s%@OUTPUT@%$output%g"`
-	finalize_command=`echo "$finalize_command" | sed "s%@OUTPUT@%$output%g"`
+	compile_command=`echo "$compile_command" | sed 's%@OUTPUT@%'"$output"'%g'`
+	finalize_command=`echo "$finalize_command" | sed 's%@OUTPUT@%'"$output"'%g'`
 
 	# We have no uninstalled library dependencies, so finalize right now.
 	$show "$compile_command"
@@ -901,8 +901,8 @@ if test -z "$show_help"; then
       fi
 
       # Replace the output file specification.
-      compile_command=`echo "$compile_command" | sed "s%@OUTPUT@%$objdir/$output%g"`
-      finalize_command=`echo "$finalize_command" | sed "s%@OUTPUT@%$objdir/$output"T"%g`
+      compile_command=`echo "$compile_command" | sed 's%@OUTPUT@%'"$objdir/$output"'%g'`
+      finalize_command=`echo "$finalize_command" | sed 's%@OUTPUT@%'"$objdir/$output"'T%g'`
 
       # Create the binary in the object directory, then wrap it.
       if test -d $objdir; then :

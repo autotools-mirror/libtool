@@ -122,24 +122,59 @@ fi
 
 files=`cd $pkgdatadir && ls`
 if test -z "$files"; then
-  echo "$progname: cannot \`cd' to \`$pkgdatadir'" 1>&2
+  echo "$progname: cannot list files in \`$pkgdatadir'" 1>&2
   exit 1
 fi
 
+auxdir=.
+auxdirline=`egrep '^AC_CONFIG_AUX_DIR' configure.in 2>/dev/null`
+if test -n "$auxdirline"; then
+  # Handle explicit AC_CONFIG_AUX_DIR settings.
+  auxdir=`echo "$auxdirline" | sed 's/^AC_CONFIG_AUX_DIR(\([^)]*\)).*$/\1/'`
+
+  if test "$auxdir" = "$auxdirline"; then
+    echo "$progname: invalid AC_CONFIG_AUX_DIR syntax: $auxdirline" 1>&2
+    exit 1
+  else
+    # Strip any quote brackets.
+    auxdir=`echo "$auxdir" | sed 's/^\[\(.*\)\]$/\1/g'`
+    case "$auxdir" in
+    *\$*)
+      echo "$progname: cannot handle variables in AC_CONFIG_AUX_DIR" 1>&2
+      exit 1
+      ;;
+    *)
+    ;;
+    esac
+  fi
+else
+  # Try to discover auxdir the same way it is discovered by configure.
+  # Note that we default to the current directory.
+  for dir in . .. ../..; do
+    if test -f $dir/install-sh; then
+      auxdir=$dir
+      break
+    elif test -f $dir/install.sh; then
+      auxdir=$dir
+      break
+    fi
+  done
+fi
+
 if test -z "$automake"; then
-  if egrep AM_PROG_LIBTOOL configure.in >/dev/null 2>&1; then :
+  if egrep '^AM_PROG_LIBTOOL' configure.in >/dev/null 2>&1; then :
   else
     echo "Remember to add \`AM_PROG_LIBTOOL' to \`configure.in'."
   fi
 
-  if egrep AC_PROG_RANLIB configure.in >/dev/null 2>&1; then
+  if egrep '^AC_PROG_RANLIB' configure.in >/dev/null 2>&1; then
     echo "Using \`AC_PROG_RANLIB' is rendered obsolete by \`AM_PROG_LIBTOOL'"
   fi
 
   if grep 'generated automatically by aclocal' aclocal.m4 >/dev/null 2>&1; then
-    updatemsg="You should update your \`aclocal.m4' by running aclocal."
+    updatemsg="update your \`aclocal.m4' by running aclocal"
   else
-    updatemsg="You should add the contents of \`$libtool_m4' to \`aclocal.m4'."
+    updatemsg="add the contents of \`$libtool_m4' to \`aclocal.m4'"
   fi
 
   if egrep '^AC_DEFUN\(AM_PROG_LIBTOOL' aclocal.m4 >/dev/null 2>&1; then
@@ -155,15 +190,28 @@ if test -z "$automake"; then
       test -z "$localserial" && localserial=0
 
       if test "$localserial" -lt "$instserial"; then
-        echo "$updatemsg"
+        echo "You should $updatemsg."
       elif test "$localserial" -gt "$instserial"; then
-	echo "$progname: \`$libtool_m4' has serial number $instserial, less than $localserial found in \`aclocal.m4'" 1>&2
+	echo "$progname: \`$libtool_m4' is serial $instserial, less than $localserial in \`aclocal.m4'" 1>&2
+	if test -z "$force"; then
+	  echo "Use \`--force' to replace newer libtool files with this version." 1>&2
+	  exit 1
+	fi
+	echo "To remain compatible, you should $updatemsg."
       fi
     fi
   else
-    echo "$updatemsg"
+    echo "You should $updatemsg."
   fi
 fi
+
+
+# Change to the auxillary directory.
+if test "$auxdir" != .; then
+  test -z "$automake" && echo "Putting files in AC_CONFIG_AUX_DIR, \`$auxdir'."
+  cd $auxdir || exit 1
+fi
+
 
 for file in $files; do
   if test -f "$file" && test -z "$force"; then

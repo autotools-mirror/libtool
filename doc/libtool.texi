@@ -6,7 +6,7 @@
 @c %**end of header
 
 @include version.texi
-@set BUGADDR Gord Matzigkeit <gord@@gnu.ai.mit.edu>
+@set BUGADDR Gordon Matzigkeit <gord@@gnu.ai.mit.edu>
 
 @dircategory GNU programming tools
 @direntry
@@ -77,8 +77,12 @@ except that this permission notice may be stated in a translation
 approved by the Free Software Foundation.
 @end titlepage
 
+@c Index of Autoconf macros.
+@defindex am
+
 @c Put everything in one index (arbitrarily chosen to be the concept index).
 @syncodeindex vr cp
+@syncodeindex fn cp
 @synindex pg cp
 
 @ifinfo
@@ -101,9 +105,10 @@ version @value{VERSION}.
 * Other Languages::             Using libtool without a C compiler.
 * Troubleshooting::             When libtool doesn't work as advertised.
 * Maintaining::                 Information used by the libtool maintainer.
-* Index::                       Index of concepts, variables, and programs.
+* Index::                       Full index.
 
 @detailmenu
+
  --- The Detailed Node Listing ---
 
 Introduction
@@ -146,6 +151,7 @@ Configuring Libtool
 Including Libtool with Your Package
 
 * Invoking libtoolize::         @file{libtoolize} command line options.
+* Autoconf .o Macros::          Autoconf macros that set object file names.
 
 Library Interface Versions
 
@@ -1051,7 +1057,7 @@ that your users can install hassle-free shared libraries.
 @section Writing Makefile Rules for Libtool
 
 Libtool is fully integrated with Automake (@pxref{Top, , The Automake
-Manual, automake.info, The Automake Manual}), starting with Automake
+Manual, automake, The Automake Manual}), starting with Automake
 version 1.2.
 
 If you want to use libtool in a regular @file{Makefile} (or
@@ -1076,8 +1082,8 @@ was generated automatically from the @file{Makefile.am} by Automake).
 @node Using Automake
 @section Using Automake with Libtool
 
-Libtool library support fits conveniently into Automake's understanding
-of what a @samp{PROGRAM} is.
+Libtool library support is implemented under the @samp{LTLIBRARIES}
+primary.
 
 Here are some samples from the Automake @file{Makefile.am} in the
 libtool distribution's @file{demo} subdirectory.
@@ -1104,14 +1110,20 @@ you want to pass to libtool while linking @samp{program} (such as
 
 Building a libtool library is almost as trivial@dots{} note the use of
 @samp{libhello_la_LDFLAGS} to pass the @samp{-version-info}
-(@pxref{Versioning}) and @samp{-rpath} options to libtool:
+(@pxref{Versioning}) option to libtool:
 
 @example
 # Build a libtool library, libhello.la for installation in libdir.
-lib_PROGRAMS = libhello.la
+lib_LTLIBRARIES = libhello.la
 libhello_la_SOURCES = hello.c foo.c
-libhello_la_LDFLAGS = -version-info 3:12:1 -rpath $(libdir)
+libhello_la_LDFLAGS = -version-info 3:12:1
 @end example
+
+The @samp{-rpath} option is passed automatically by Automake, so you
+should not specify it.
+
+@xref{A Shared Library, Building a Shared Library, The Automake Manual,
+automake, The Automake Manual}, for more information.
 
 @node Configuring
 @section Configuring Libtool
@@ -1189,22 +1201,25 @@ guessed by running @file{config.guess}.
 
 @file{ltconfig} also recognizes the following environment variables:
 
-@table @var
-@item CC
+@defvar CC
 The C compiler that will be used by the generated @file{libtool}.
+@end defvar
 
-@item CFLAGS
+@defvar CFLAGS
 Compiler flags used to generate standard object files.
+@end defvar
 
-@item CPPFLAGS
+@defvar CPPFLAGS
 C preprocessor flags.
+@end defvar
 
-@item LD
+@defvar LD
 The system linker to use (if the generated @file{libtool} requires one).
+@end defvar
 
-@item RANLIB
+@defvar RANLIB
 Program to use rather than checking for @file{ranlib}.
-@end table
+@end defvar
 
 @node ltconfig Example
 @subsection Using @file{ltconfig}
@@ -1253,24 +1268,28 @@ burger$
 
 @node AM_PROG_LIBTOOL
 @subsection The @code{AM_PROG_LIBTOOL} macro
+@amindex AM_PROG_LIBTOOL
 
 If you are using GNU Autoconf (or Automake), you should add a call to
 @code{AM_PROG_LIBTOOL} to your @file{configure.in} file.  This macro
 offers seamless integration between the @file{configure} script and
-@file{ltconfig}.
+@file{ltconfig}:
 
-@code{AM_PROG_LIBTOOL} also adds support for the @samp{--enable-shared}
-and @samp{--disable-shared} @file{configure} flags.
+@defmac AM_PROG_LIBTOOL
+Add support for the @samp{--enable-shared} and @samp{--disable-shared}
+@file{configure} flags.  Invoke @file{ltconfig} with the correct
+arguments to configure the package.@footnote{@code{AM_PROG_LIBTOOL}
+requires that you define the Makefile variable @code{top_builddir} in
+your @file{Makefile.in}.  Automake does this automatically, but Autoconf
+users should set it to the relative path to the top of your build
+directory (@file{../..}, for example).}
+@end defmac
 
 When you invoke the @file{libtoolize} program (@pxref{Invoking
 libtoolize}), it will tell you where to find a definition of
 @code{AM_PROG_LIBTOOL}.  If you use Automake, the @file{aclocal} program
 will automatically add @code{AM_PROG_LIBTOOL} support to your
-@file{configure} script.@footnote{@code{AM_PROG_LIBTOOL} requires that
-you define the Makefile variable @code{top_builddir} in your
-@file{Makefile.in}.  Automake does this automatically, but Autoconf
-users should set it to the relative path to the top of your build
-directory (@file{../..}, for example).}
+@file{configure} script.
 
 @node Distributing
 @section Including Libtool with Your Package
@@ -1300,6 +1319,7 @@ use the @file{libtoolize} program.
 
 @menu
 * Invoking libtoolize::         @file{libtoolize} command line options.
+* Autoconf .o Macros::          Autoconf macros that set object file names.
 @end menu
 
 @node Invoking libtoolize
@@ -1350,11 +1370,48 @@ Print @file{libtoolize} version information and exit.
 
 If @file{libtoolize} detects an explicit call to
 @code{AC_CONFIG_AUX_DIR} (@pxref{Input, , The Autoconf Manual,
-autoconf.info, The Autoconf Manual}) in your @file{configure.in}, it
+autoconf, The Autoconf Manual}) in your @file{configure.in}, it
 will put the files in the specified directory.
 
 @file{libtoolize} displays hints for adding libtool support to your
 package, as well.
+
+@node Autoconf .o Macros
+@subsection Autoconf @samp{.o} Macros
+
+The Autoconf package comes with a few macros that run tests, then set a
+variable corresponding to the name of an object file.  Sometimes it is
+necessary to use corresponding names for libtool objects.
+
+So, included with libtool are convenience macros that do this kind of
+work:
+
+@defmac AM_REPLACE_FUNCS (@var{function}@dots{})
+Same as @code{AC_REPLACE_FUNCS} (@pxref{Generic Functions, Generic
+Function Checks, The Autoconf Manual, autoconf, The Autoconf
+Manual}), except it also adds @samp{@var{function}.lo} to the value of
+the output variable @code{LTLIBOBJS}.
+@end defmac
+
+@defmac AM_FUNC_ALLOCA
+Same as @code{AC_FUNC_ALLOCA} (@pxref{Particular Functions, Particular
+Function Checks, The Autoconf Manual, autoconf, The Autoconf
+Manual}), but also sets the output variable @code{LTALLOCA} to
+@samp{alloca.lo}.
+@end defmac
+
+@defmac AM_FUNC_MEMCMP
+Same as @code{AC_FUNC_MEMCMP} (@pxref{Particular Functions, Particular
+Function Checks, The Autoconf Manual, autoconf, The Autoconf
+Manual}), except it also adds @samp{memcmp.lo} to the value of the output
+variable @code{LTLIBOBJS}.
+@end defmac
+
+@defmac AM_STRUCT_ST_BLOCKS
+Same as @code{AC_STRUCT_ST_BLOCKS} (@pxref{Structures, Structures, The
+Autoconf Manual, autoconf, The Autoconf Manual}), except it also
+adds @samp{fileblocks.lo} to the output variable @code{LTLIBOBJS}.
+@end defmac
 
 @node Versioning
 @chapter Library Interface Versions
@@ -1830,7 +1887,7 @@ First, check the documentation and help screens to make sure that the
 behaviour you think is a problem is not already mentioned as a feature.
 
 Then, you should read the Emacs guide to reporting bugs (@pxref{Bugs, , The
-Emacs Manual, emacs.info, The Emacs Manual}).  Some of the details
+Emacs Manual, emacs, The Emacs Manual}).  Some of the details
 listed there are specific to Emacs, but the priciple behind them is a
 general one.
 
@@ -1892,10 +1949,6 @@ platforms where it claims to support shared libraries:
 @example
 @include platforms.texi
 @end example
-
-Libtool versions ending in a single letter (such as @samp{0.7a})
-designate beta releases.  So, @samp{0.7a} comes after public release
-@samp{0.7}, but before @samp{0.8}.
 
 @node Platform Quirks
 @section Platform Quirks
@@ -2029,104 +2082,139 @@ The @file{libtool} script is generated by @file{ltconfig}
 simply sets shell variables, then sources the libtool backend,
 @file{ltmain.sh}.
 
-Here is a listing of each of these variable, and how it is used within
-@file{ltmain.sh}:
+Here is a listing of each of these variables, and how they are used
+within @file{ltmain.sh}:
 
-@table @samp
-@item LD
+@defvar LD
 The name of the linker that libtool should use internally for reloadable
 linking and possibly shared libraries.
+@end defvar
 
-@item LTCONFIG_VERSION
+@defvar LTCONFIG_VERSION
 This is set to the version number of the @file{ltconfig} script, to
 prevent mismatches between the configuration information in
 @file{libtool}, and how that information is used in @file{ltmain.sh}.
+@end defvar
 
-@item RANLIB
+@defvar RANLIB
 Set to the name of the ranlib program, if any.
+@end defvar
 
-@item archive_cmds
-@itemx old_archive_cmds
+@defvar archive_cmds
+@defvarx old_archive_cmds
 Commands used to create shared and static libraries, respectively.
+@end defvar
 
-@item build_libtool_libs
+@defvar build_libtool_libs
 Whether libtool should build shared libraries on this system.  Set to
 @samp{yes} or @samp{no}.
+@end defvar
 
-@item build_old_libs
+@defvar build_old_libs
 Whether libtool should build static libraries on this system.  Set to
 @samp{yes} or @samp{no}.
+@end defvar
 
-@item finish_cmds
+@defvar finish_cmds
 Commands to tell the dynamic linker to find shared libraries a
 directory.
+@end defvar
 
-@item hardcode_shlibpath_var
+@defvar hardcode_action
+Either @samp{immediately} or @samp{relink}, depending on whether shared
+library paths can be hardcoded into executables before they are installed,
+or if they need to be relinked.
+@end defvar
+
+@defvar hardcode_direct
 Set to @samp{yes} or @samp{no}, depending on whether the linker
-hardcodes directories specified by setting @samp{$shlibpath_var} into
-the resulting executable.
+hardcodes directories if a library is directly specified on the command
+line (such as @samp{@var{dir}/lib@var{name}.a}).
+@end defvar
 
-@item hardcode_minus_L
+@defvar hardcode_libdir_flag_spec
+Flag to hardcode a @var{libdir} variable into a binary, so that the
+dynamic linker searches @var{libdir} for shared libraries at runtime.
+@end defvar
+
+@defvar hardcode_minus_L
 Set to @samp{yes} or @samp{no}, depending on whether the linker
 hardcodes directories specified by @samp{-L} flags into the resulting
 executable.
+@end defvar
 
-@item host
-@itemx host_alias
+@defvar hardcode_shlibpath_var
+Set to @samp{yes} or @samp{no}, depending on whether the linker
+hardcodes directories specified by setting @samp{$shlibpath_var} into
+the resulting executable.
+@end defvar
+
+@defvar host
+@defvarx host_alias
 For information purposes, set to the specified and canonical names of
 the system that libtool was configured for.
+@end defvar
 
-@item lib_names
+@defvar library_names_spec
 A list of shared library names.  The first name is the name of the file,
-the rest are symbolic links to the file.
+the rest are symbolic links to the file.  The last name in the list is
+the one that the linker finds when given @samp{-l@var{name}}.
+@end defvar
 
-@item link_rpath_flag
-Linker flag to specify a runtime search path for the dynamic linker.
-
-@item link_static_flag
+@defvar link_static_flag
 Linker flag (passed through the C compiler) used to prevent dynamic
 linking.
+@end defvar
 
-@item pic_flag
+@defvar pic_flag
 Any additional compiler flags for building library object files.
+@end defvar
 
-@item postinstall_cmds
-@item old_postinstall_cmds
+@defvar postinstall_cmds
+@defvarx old_postinstall_cmds
 Commands run after installing a shared or static librar, respectively.
+@end defvar
 
-@item reload_cmds
-@itemx reload_flag
+@defvar reload_cmds
+@defvarx reload_flag
 Commands to create a reloadable object.
+@end defvar
 
-@item shlibpath_var
+@defvar shlibpath_var
 The environment variable that tells the dynamic linker where to find
 shared libraries.
+@end defvar
 
-@item striplib
-@itemx old_striplib
+@defvar striplib
+@defvarx old_striplib
 Programs to strip shared and static libraries, respectively.@footnote{In
 the current implementation, libtool does not use any programs to strip
 libraries.  Support will be added after it is clear how to write a
 portable test for library stripping programs.}
+@end defvar
 
-@item soname_spec
+@defvar soname_spec
 The name coded into shared libraries, if different from the real name of
 the file.
+@end defvar
 
-@item version_type
+@defvar version_type
 The library version numbering type.  One of @samp{libtool},
 @samp{linux}, @samp{osf}, @samp{sunos}, or @samp{none}.
+@end defvar
 
-@item wl
+@defvar wl
 The C compiler flag that allows libtool to pass a flag directly to the
 linker.  Used as: @samp{$@{wl@}@var{some-flag}}.
-
-@end table
+@end defvar
 
 Variables ending in @samp{_cmds} may contain a semicolon-separated list
-of commands that are evaluated one after another.  If any of the
+of commands that are @code{eval}'ed one after another.  If any of the
 commands return a nonzero exit status, libtool generally exits with an
 error message.
+
+Variables ending in @samp{_spec} are @code{eval}'ed before being used by
+libtool.
 
 @node Index
 @unnumbered Index

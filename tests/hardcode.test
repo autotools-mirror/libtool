@@ -76,8 +76,9 @@ for file in hc-*; do
   hardcoded=no
   if fgrep '.libs' $file > /dev/null; then
     hardcoded=yes
-  elif strings -a $file 2>/dev/null | fgrep '.libs' > /dev/null; then
-    # At least AIX fgrep doesn't work for binary files, so we need strings.
+  elif cat $file | tr '\200-\277' '\100-\177' | tr '\300-\377' '\100-\177' | tr '\000-\037' '\040-\077' | fgrep '.libs' > /dev/null; then
+    # At least AIX fgrep doesn't work for binary files, and AIX also
+    # doesn't have strings(1), so we need this strange conversion.
     hardcoded=yes
   elif egrep 'unsupported' $file > /dev/null; then
     hardcoded=unsupported

@@ -1,4 +1,4 @@
-## Process this file with automake to create Makefile.in
+## Process this file with automake to create Makefile.in -*-Makefile-*-
 
 AUTOMAKE_OPTIONS = gnits
 

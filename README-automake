@@ -1,6 +1,7 @@
 There are several references to a future release of Automake in
 libtool, that may not work with your own copy of Automake.  Only
-releases of Automake after automake-1.1j work with libtool.
+releases of Automake after automake-1.1m work with libtool as
+documented in the manual.
 
 You can find the latest Automake prerelease (warning: it may have
 bugs) at:
@@ -13,19 +14,3 @@ mirror.
 Thanks,
 
 --Gord
-
-** If you have automake-1.1k, you'll need to apply the following patch
-before installing it:
-
-diff -u automake-1.1k/automake.in.orig automake-1.1k/automake.in
---- automake-1.1k/automake.in.orig	Sun Dec  8 04:03:10 1996
-+++ automake-1.1k/automake.in	Sun Dec  8 04:03:12 1996
-@@ -4294,7 +4294,7 @@
- 	    {
- 		# Note that we explicitly set the mode, to avoid
- 		# lossage if the program name isn't what we expect.
--		$more_xform = 's/\@LIBTOOL\@/$(LIBTOOL) --mode=install/;';
-+		$more_xform = 's/\@LIBTOOL\@/\$(LIBTOOL) --mode=install/;';
- 	    }
- 	    else
- 	    {

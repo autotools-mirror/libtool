@@ -1,5 +1,6 @@
 /* foo.c -- trivial test function for libfoo
    Copyright (C) 1996 Free Software Foundation, Inc.
+   Gordon Matzigkeit <gord@gnu.ai.mit.edu>, 1996
    This file is part of GNU Libtool.
 
 This program is free software; you can redistribute it and/or modify
@@ -16,10 +17,12 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.  */
 
-/* Written by Gordon Matzigkeit <gord@gnu.ai.mit.edu> */
 #include "foo.h"
 #include <stdio.h>
 #include <math.h>
+
+/* Give a global variable definition. */
+int nothing;
 
 int
 foo ()

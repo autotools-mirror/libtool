@@ -1,4 +1,4 @@
-# A brief demonstration of using Automake with Libtool.
+# A brief demonstration of using Automake with Libtool. -*-Makefile-*-
 AUTOMAKE_OPTIONS = foreign
 
 EXTRA_DIST = $(TESTS) acinclude.m4

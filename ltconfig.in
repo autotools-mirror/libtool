@@ -243,12 +243,6 @@ if test "$verify_host" = yes; then
   host=`$ac_config_sub $host_alias`
   echo "$ac_t""$host" 1>&6
 
-  # Transform *-*-linux* to *-*-linux-gnu*, to support old configure scripts.
-  case "$host" in
-  *-*-linux-gnu*) ;;
-  *-*-linux*) host=`echo $host | sed 's/^\(.*-.*-linux\)\(.*\)$/\1-gnu\2/'`
-  esac
-
 elif test "$host" = NONE; then
   echo "$progname: you must specify a host type if you use \`--no-verify'" 1>&2
   echo "$help" 1>&2

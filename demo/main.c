@@ -27,6 +27,9 @@ main (argc, argv)
 {
   printf ("Welcome to GNU Hell!\n");
 
+  /* Try assigning to the nothing variable */
+  nothing = 1;
+
   /* Just call the functions and check return values. */
   if (foo () != FOO_RET)
     return 1;

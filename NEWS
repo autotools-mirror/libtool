@@ -1,7 +1,9 @@
 NEWS - list of user-visible changes between releases of GNU libtool.
 
-New in 0.9c:
+New in 0.9d:
 * Bug fixes.
+* Support for convenience libraries made of libtool objects.
+* New `-whole-archive' and `-no-whole-archive' linking flags.
 * New Autoconf macros, AM_REPLACE_FUNCS, AM_FUNC_ALLOCA, AM_FUNC_MEMCMP,
   AM_STRUCT_ST_BLOCKS that set and substitute LTLIBOBJS and LTALLOCA.
 * Automake support for Libtool now uses the LTLIBRARIES primary.  See

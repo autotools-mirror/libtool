@@ -1,14 +1,13 @@
-* Need to change `-rpath FOO -rpath BAR' to `-rpath FOO:BAR' with at
-least OSF/1 ld.
+* Document convenience libraries, -whole-archive, and
+-no-whole-archive.
+
+* Document the -export-dynamic flag, and the new dlname mode.
 
 For 1.1:
 
-* Complete the -export-dynamic flag, and the new dlname mode.
-
-* Complete convenience libraries made of libtool objects.  Document
--whole-archive and -no-whole-archive.  We also need a way to use these
-convenience libraries just to resolve symbols, rather than the
-(simplistic) whole-archive and no-whole-archive.
+* We also need a way to use convenience libraries just to resolve
+symbols, rather than the (simplistic) whole-archive and
+no-whole-archive.
 
 * Write libtool not to be dependent on the compiler used to configure
 it.

@@ -19,13 +19,13 @@ fi
 # Check to see if the programs really run.
 echo "Executing uninstalled programs in ../demo"
 
-if ../demo/hell.static | grep 'GNU Hell'; then :
+if ../demo/hell.static | grep 'Welcome to GNU Hell'; then :
 else
   echo "$0: cannot execute ./hell.static" 1>&2
   exit 1
 fi
 
-if ../demo/hell | grep 'GNU Hell'; then :
+if ../demo/hell | grep 'Welcome to GNU Hell'; then :
 else
   echo "$0: cannot execute ./hell" 1>&2
   exit 1

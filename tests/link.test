@@ -11,5 +11,15 @@ fi
 . $srcdir/defs || exit 1
 
 # Try a sample link command.
-$libtool -n --mode=link gcc -o gettext ../lib/libnlsut.a
-exit $?
+linkresult=`$libtool -n --mode=link gcc -o gettext ../lib/libnlsut.a`
+test $? -eq 0 || exit 1
+
+echo "$linkresult"
+case "$linkresult" in
+*../lib/libnlsut.a) ;;
+*)
+  echo "$progname: ../lib/libnlsut.a was not used as expected in linking"
+  exit 1
+  ;;
+esac
+exit 0

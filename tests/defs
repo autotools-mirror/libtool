@@ -8,9 +8,12 @@ case "$srcdir" in
 *) srcdir=`cd $srcdir && pwd` ;;
 esac
 
+progname=`echo "$0" | sed 's%^.*/%%'`
+
 # tlibtool needs to know what srcdir is.
 export srcdir
 libtool="$srcdir/tlibtool"
+make="${MAKE-make}"
 
 prefix="./=inst"
 if test "$need_prefix" = yes; then
@@ -23,8 +26,10 @@ else
 fi
 
 # See how redirections should work.
-if test -z "$VERBOSE"; then
-   exec > /dev/null 2>&1
-fi
+case "$VERBOSE" in
+NO | no | 0 | "")
+  exec > /dev/null 2>&1
+  ;;
+esac
 
-echo "=== Running test $0"
+echo "=== Running $progname"

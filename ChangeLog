@@ -1,5 +1,10 @@
 Tue Apr  1 10:01:20 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
+	* Makefile.am (EXTRA_DIST): Distribute libtool.pkg.
+
+	* Shameless plug: Changed source code management system from CVS
+	to PRCS.
+
 	* libtool.scm: Initial Guile implementation of libtool.
 
 	* ltmain.sh.in: An unexpected inconsistency in my whole approach
@@ -33,7 +38,8 @@ Tue Apr  1 10:01:20 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	I was hoping to get libtool 1.0 out the door by early April, but
  	now it looks like it will take at least another year before it'll
- 	be usable by the public at large.  April fools.
+ 	be usable by the public at large.  April fools.  libtool.scm
+	doesn't exist yet, either.
 
 	* ltconfig.in (verify_host): Remove redundant `Transform *-*-linux*
 	to *-*-linux-gnu*'.  From Bruno Haible.

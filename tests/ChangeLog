@@ -1,3 +1,8 @@
+Tue Apr  1 12:48:32 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* hardcode.test: AIX 3 doesn't have strings(1) so we need to do a
+	funny tr and pipe the output to fgrep.  From Bruno Haible.
+
 Mon Feb  3 15:17:18 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* Makefile.am (TESTS): Do the full make sequence with

@@ -1,7 +1,7 @@
 /* foo.h -- interface to the libfoo library
    Copyright (C) 1996 Free Software Foundation, Inc.
-   This file is part of GNU Libtool.
    Gordon Matzigkeit <gord@gnu.ai.mit.edu>, 1996
+   This file is part of GNU Libtool.
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -48,10 +48,11 @@ Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.  */
 #define HELLO_RET 0xe110
 #define FOO_RET 0xf00
 
-/* Function declarations.  Note the wonderful use of the above macros. */
+/* Declarations.  Note the wonderful use of the above macros. */
 __BEGIN_DECLS
 int foo __P((void));
 int hello __P((void));
+extern int nothing;
 __END_DECLS
 
 #endif /* !_FOO_H_ */

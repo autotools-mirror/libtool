@@ -20,12 +20,12 @@ fi
 # Change to our build directory.
 cd ../demo || exit 1
 
-echo "= Running make uninstall in ../demo"
-make uninstall || exit 1
+echo "= Running $make uninstall in ../demo"
+$make uninstall || exit 1
 
 # See that there were no files leftover in $prefix.
 # Ignore dotfiles, so that .nfsXXX files don't screw up the test.
-leftovers=`find $prefix ! -type d -print | egrep -v '^\.'`
+leftovers=`find $prefix ! -type d ! -name '.*' -print`
 if test -n "$leftovers"; then
   echo "= Leftover after make uninstall:"
   ls -l $leftovers
