@@ -1115,7 +1115,7 @@ lt_dlexit ()
 	    {
 	      lt_dlhandle tmp = cur;
 	      cur = cur->next;
-	      if (!LT_DLIS_RESIDENT (cur) && tmp->info.ref_count <= level)
+	      if (!LT_DLIS_RESIDENT (tmp) && tmp->info.ref_count <= level)
 		{
 		  if (lt_dlclose (tmp))
 		    {

@@ -1,5 +1,9 @@
 2000-12-20  Gary V. Vaughan  <gvv@techie.com>
 
+	* libltdl/ltdl.c (lt_dlexit): Was checking for residency of the
+	wrong module.
+	Reported by Robert Boehne  <rboehne@ricardo-us.com>
+
 	* ltmain.in (dlprefiles): Now that `2000-12-15 Utz-Uwe Haus' patch
 	below can detect preopened library deplibs correctly in libltdl,
 	we need to ensure that libtool library deplibs are also preloaded
