@@ -1,3 +1,9 @@
+1998-11-10  Toshio Kuratomi  <badger@prtr-13.ucsc.edu>
+
+	* ltconfig.in: re-enable deplibs
+	* ltmain.in: support deplibs, at least for GNU/Linux/x86
+	Updated to current libtool by Thomas Tanner  <tanner@gmx.de>
+
 1998-11-10  Gordon Matzigkeit  <gord@trick.fig.org>
 
 	* ltmain.in (link): Make the relink warning less harsh.
