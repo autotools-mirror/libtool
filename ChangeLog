@@ -1,5 +1,10 @@
 2004-10-04  Gary V. Vaughan  <gary@gnu.org>
 
+	* m4/libtool.m4 (_LT_PROG_ECHO_BACKSLASH): Don't confuse $ECHO
+	with $lt_ECHO, or we always get a libtool with ECHO=echo, rather
+	than testing for a mechanism that quotes \ properly.
+	* NEWS: Updated.
+
 	* config/ltmain.m4sh: Need to include getopt.m4sh earlier so that
 	progpath is set before it is called to --no-reexec.
 	* NEWS: Updated.
@@ -10,7 +15,7 @@
 	dependency on autom4te.  There was some inconsistency in the
 	filenames: now we have foo.m4sh -> m4sh -> foo.in -> configure
 	-> foo[.sh].  Bootstrap runs the m4sh steps and the resulting .in
-	files are distributed.
+	files are distributed:
 
 	* tests/Makefile.am (EXTRA_DIST): Distribute defs.m4sh.
 	* Makefile.am (EXTRA_DIST): Distribute libtoolize.m4sh.
