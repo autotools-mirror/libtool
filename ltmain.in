@@ -1882,8 +1882,8 @@ EOF
 	  done # Gone through all deplibs.
 	  ;;
 	none | unknown | *) newdeplibs=""
-	  if $echo "X $deplibs" |
-	     $Xsed -e 's/ -lc$//' -e 's/ -[LR][^ ]*//g' -e 's/[ 	]//g' |
+	  if $echo "X $deplibs" | $Xsed -e 's/ -lc$//' \
+	       -e 's/ -[LR][^ ]*//g' -e 's/[ 	]//g' |
 	     grep . >/dev/null; then
 	    echo
 	    if test "X$deplibs_check_method" = "Xnone"; then
