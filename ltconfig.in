@@ -2698,6 +2698,9 @@ AR_FLAGS=$AR_FLAGS
 # The default C compiler.
 CC=$CC
 
+# Is the compiler the GNU C compiler?
+with_gcc=$with_gcc
+
 # The linker used to build libraries.
 LD=$LD
 
