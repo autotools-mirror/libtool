@@ -1,3 +1,13 @@
+2005-01-10  Peter O'Gorman  <peter@pogma.com>
+
+	* config/ltmain.m4sh (func_mode_link): Fix
+	inherited_linker_flags so it puts it on the link line when
+	linking shared libraries as well as when linking executables.
+	* tests/inherited_flags.at: test inherited_linker_flags.  
+	* tests/Makefile.am: Add test.  
+	* tests/testsuite.at: Add test.
+	Reported by: Albert Chin-A-Young <china@thewrittenword.com>
+
 2005-01-10  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* tests/sh.test: After `set dummy [...]', check for `shift'

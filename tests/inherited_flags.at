@@ -1,0 +1,65 @@
+# Hand crafted tests for GNU Libtool.                         -*- Autotest -*-
+# Copyright 2004 Free Software Foundation, Inc.
+
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2, or (at your option)
+# any later version.
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
+# 02111-1307, USA.
+
+
+AT_SETUP([inherited_linker_flags])
+
+: ${LIBTOOL=$abs_top_builddir/libtool}
+
+AT_DATA([foo.c],
+[
+int foo() { return 1;}
+])
+
+AT_DATA([bar.c],
+[
+int bar() { return 1;}
+])
+
+AT_DATA([baz.c],
+[
+int baz() { return 1;}
+])
+
+AT_DATA([main.c],
+[
+int main() { return 0;}
+])
+
+eval `$LIBTOOL --config | grep ^CC`
+
+${LIBTOOL} --mode=compile --tag=CC $CC -c -o foo.lo foo.c
+${LIBTOOL} --mode=compile --tag=CC $CC -c -o bar.lo bar.c
+${LIBTOOL} --mode=compile --tag=CC $CC -c -o baz.lo baz.c
+${LIBTOOL} --mode=compile --tag=CC $CC -c -o main.lo main.c
+${LIBTOOL} --mode=link --tag=CC $CC -o libfoo.la foo.lo -rpath /usr/local/lib
+${LIBTOOL} --mode=link --tag=CC $CC -o libbar.la bar.lo -rpath /usr/local/lib
+
+
+mv libfoo.la libfoo.la.bak
+sed -e 's/^inherited_linker_flags.*/inherited_linker_flags=-llt_inlikely_existing_lib/g' < libfoo.la.bak > libfoo.la
+rm libfoo.la.bak
+
+mv libbar.la libbar.la.bak
+sed -e 's/^inherited_linker_flags.*/inherited_linker_flags=-llt_unlikely_existing_lib/g' < libbar.la.bak > libbar.la
+rm libbar.la.bak
+
+AT_CHECK([${LIBTOOL} --mode=link --tag=CC $CC -o libbaz.la baz.lo -rpath /usr/local/lib ./libfoo.la ./libbar.la | grep 'llt_[[ui]]nlikely_existing_lib.*llt_[[ui]]nlikely_existing_lib'],[0],[ignore],[ignore])
+AT_CHECK([${LIBTOOL} --mode=link --tag=CC $CC -o main main.lo -rpath /usr/local/lib  ./libfoo.la ./libbar.la | grep 'llt_[[ui]]nlikely_existing_lib.*llt_[[ui]]nlikely_existing_lib'],[0],[ignore],[ignore])
+
+AT_CLEANUP

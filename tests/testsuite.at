@@ -62,4 +62,7 @@ AT_INIT
 
 # Torturing subdir-objects builds
 m4_include([am-subdir.at])
+# Testing func_extract_archives
 m4_include([functests.at])
+# Test that inherited_linker_flags in the .la actually gets used.
+m4_include([inherited_flags.at])
