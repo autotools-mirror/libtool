@@ -1,4 +1,7 @@
 \input texinfo   @c -*-texinfo-*-
+
+@c $Id$
+
 @c %**start of header
 @setfilename libtool.info
 @settitle Libtool
@@ -3227,15 +3230,15 @@ For example, in order to create a tag for a C++ compiler @samp{CC}, you
 could run:
 
 @example
-$ @kbd{CC=c++ CFLAGS=-g CPPFLAGS=-Dfoo LTCC=gcc \}
+$ @kbd{LTCC=gcc CC=c++ CFLAGS=-g CPPFLAGS=-Dfoo \}
 > @kbd{./ltconfig -o libtool --add-tag=CXX ltcf-cxx.sh}
 @end example
 
-@samp{ltcf-cxx.sh} is a shell script that configures C++ specific
-variables that get placed within the appended configuration tag.
-Another shell script called @samp{ltcf-c.sh} that contains C compiler
-configurations also exists but it should not be used by the user.  It is
-used internally by the ltconfig script.
+@samp{ltcf-cxx.sh} is a shell script fragment that configures C++
+specific variables that get placed within the appended configuration
+tag.  Another shell script called @samp{ltcf-c.sh} that contains C
+compiler configurations also exists but it should not be used by the
+user.  It is used internally by the ltconfig script.
 
 Note that you should set @var{LTCC} to a valid C compiler, because
 libtool may need to compile additional C sources internally.  Note also
@@ -3243,11 +3246,26 @@ that, although @samp{CC} is not a C compiler, you should use variables
 such as @var{CC}, @var{CFLAGS} and @var{CPPFLAGS} to tell libtool which
 flags to use when compiling test programs.
 
-You can use existing compiler/language specific scripts, such as
-@samp{ltcf-cxx.sh}, as a reference for other compilers/languages you
-would like libtool to support.
+You can use existing compiler/language specific shell script fragments,
+such as @samp{ltcf-cxx.sh}, as a reference for other compilers/languages
+you would like libtool to support.
 
-After this command, whenever you want to compile or link a library using
+A potential problem may occur if you use variables when setting
+@var{LTCC} and @var{CC}.  For example, a problem will occur if you do
+the following:
+
+@example
+$ @kbd{CC=$CXX LTCC=$CC ./ltconfig -o libtool --add-tag=CXX ltcf-cxx.sh}
+@end example
+
+In this example, @var{CC} is set to the C++ compiler and LTCC is set to
+the compiler pointed to by @var{$CC}.  However, @var{CC} was previously
+set to the C++ compiler @var{$CXX}, which causes LTCC to be set to the
+C++ compiler @var{$CXX}, too.  This is a problem because LTCC must be a
+valid C compiler, not a C++ compiler for example.
+
+After a configuration tag has been added using the @samp{--add-tag}
+option, whenever you want to compile or link a library using
 @samp{c++}, you should run:
 
 @example
