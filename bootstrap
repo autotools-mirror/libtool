@@ -83,7 +83,7 @@ test -f clcommit.m4sh && make -f Makefile.maint commit \
     top_srcdir=. PACKAGE="$2" VERSION="$3" M4SH="autom4te -l m4sh" \
     SED=sed GREP=grep FGREP=fgrep EGREP=egrep LN_S="ln -s"
 
-test -z "$makefiles" || rm -f "$makefiles"
+test -z "$makefiles" || rm -f $makefiles
 
 # Make a dummy libtoolize script for autoreconf:
 test -f clcommit.m4sh && cat > ./config/libtoolize <<'EOF'
