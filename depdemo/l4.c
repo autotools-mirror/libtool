@@ -1,0 +1,41 @@
+/* l4.c -- trivial test library
+   Copyright (C) 1998 Thomas Tanner <tanner@gmx.de>
+   This file is part of GNU Libtool.
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307
+USA. */
+
+#include "l4.h"
+
+#include "l3.h"
+#include <stdio.h>
+#include <math.h>
+
+int	var_l4;
+
+int
+func_l4(int ident)
+{
+  int i;
+  
+  for (i = 0; i < ident; i++)
+    putchar(' ');
+  printf("l4\n");
+  func_l3(ident+1);
+  for (i = 0; i <= ident; i++)
+    putchar(' ');
+  printf("libm [sin(1.5) = %f]\n", sin(1.5));
+  return 0; 
+}
