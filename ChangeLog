@@ -1,3 +1,12 @@
+2005-03-08  Albert Chin-A-Young  <china@thewrittenword.com>
+
+	* libtool.m4 (AC_LIBTOOL_LANG_CXX_CONFIG,
+	AC_LIBTOOL_PROG_LD_SHLIBS) [irix*, osf*]: Output -update_registry
+	information to ${output_objdir} directory, not ${objdir}.
+	${output_objdir} will work when a project has a single Makefile and
+	performs builds in subdirectories. ${objdir} expects the source in
+	the current directory, breaking single-Makefile builds.
+
 2005-03-08  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* THANKS: Update.
