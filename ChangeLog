@@ -1,3 +1,10 @@
+1999-02-25  Thomas Tanner  <tanner@gmx.de>
+
+	* TODO: added items for next alpha release, ILD etc.
+	* libltdl/ltdl.c: removed unnecessary check from presym_sym, 
+	  fixed bug in lt_dlclose, allow lt_dlopenext(NULL),
+	  set deplibs for lt_dlopen(NULL)
+
 1999-02-24  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* ltmain.in (file_magic_regex): sed `10q' is faster than `11,$d'
