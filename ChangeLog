@@ -1,4 +1,15 @@
-2003-07-14  Andreas Schwab  <schwab@bogus.example.com>
+2003-07-14  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* config.guess, config.sub: Synchronized from ftp.gnu.org since
+	Robert Millan's patch requires it.
+
+2003-07-14  Robert Millan  <zeratul2@wanadoo.es>
+
+	* libtool.m4: Fixed to use the new GNU/FreeBSD triplet.
+	* ltdl.m4: Fixed to use the new GNU/FreeBSD triplet.
+	* ltmain.in: Remove GNU/FreeBSD cases, which are no longer needed.
+
+2003-07-14  Andreas Schwab  <schwab@suse.de>
 
 	* libtool.m4 (_LT_AC_LOCK): Also match powerpc64-*linux* in
 	addition to ppc64-*linux*.  From Markus Meissner

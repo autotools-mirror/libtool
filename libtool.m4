@@ -1290,7 +1290,7 @@ freebsd1*)
   dynamic_linker=no
   ;;
 
-freebsd*-gnu*)
+kfreebsd*-gnu)
   version_type=linux
   need_lib_prefix=no
   need_version=no
@@ -1299,7 +1299,7 @@ freebsd*-gnu*)
   shlibpath_var=LD_LIBRARY_PATH
   shlibpath_overrides_runpath=no
   hardcode_into_libs=yes
-  dynamic_linker='GNU ld.so'
+  dynamic_linker='GNU/FreeBSD ld.so'
   ;;
 
 freebsd*)
