@@ -1222,7 +1222,7 @@ compiler."
 	fi
 
 	if test -n "$dependency_libs"; then
-	  # Extract -R from dependency_libs
+	  # Extract -R and -L from dependency_libs
 	  temp_deplibs=
 	  for deplib in $dependency_libs; do
 	    case "$deplib" in
@@ -1234,7 +1234,13 @@ compiler."
 	    -L*) case "$compile_command $temp_deplibs " in
 		 *" $deplib "*) ;;
 		 *) temp_deplibs="$temp_deplibs $deplib";;
-		 esac;;
+		 esac
+		 temp_dir=`$echo "X$deplib" | $Xsed -e 's/^-L//'`
+	         case " $lib_search_path " in
+		 *" $temp_dir "*) ;;
+		 *) lib_search_path="$lib_search_path $temp_dir";;
+		 esac
+		 ;;
 	    *) temp_deplibs="$temp_deplibs $deplib";;
 	    esac
 	  done
