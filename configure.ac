@@ -17,8 +17,8 @@
 # 02111-1307  USA
 
 
-AC_PREREQ(2.58) ## We use AS_HELP_STRING
-## Oldest automake required for bootstrap is below in AM_INIT_AUTOMAKE.
+AC_PREREQ(2.59)dnl We use AS_HELP_STRING
+dnl Oldest automake required for bootstrap is below in AM_INIT_AUTOMAKE.
 
 
 ## ------------------------ ##
@@ -113,7 +113,7 @@ AC_SUBST([package_revision])
 
 dnl These are bootstrap requirements, once built, libtool may work with
 dnl much older releases of autoconf and automake.  See release notes.
-AM_INIT_AUTOMAKE([1.8 gnits dist-bzip2]) ## We use auto-m4_including
+AM_INIT_AUTOMAKE([1.8 gnits dist-bzip2])dnl We use auto-m4_including
 
 dnl We use m4sh to generate libtool's portable shell scripts
 AC_SUBST([M4SH], ['$(AUTOM4TE) --language=m4sh'])
