@@ -3182,7 +3182,7 @@ EOF
   esac
   case "$host" in
   *-*-cygwin* | *-*-mingw* | *-*-os2*)
-    cat <<EOF >> "$ofile"
+    cat <<'EOF' >> "$ofile"
       # This is a source program that is used to create dlls on Windows
       # Don't remove nor modify the starting and closing comments
 # /* ltdll.c starts here */

@@ -1,3 +1,9 @@
+1999-08-24  Gary V. Vaughan  <gary@oranda.demon.co.uk>
+
+	* ltconfig.in (ltdll.c, impgen.c): Prevent the shell from
+	expanding variables & backslash escapes when writing these
+	files to the libtool script.
+
 1999-08-24  Thomas Tanner  <tanner@ffii.org>
 
 	* NEWS: mention fixes
