@@ -1,3 +1,10 @@
+1998-11-16  Steve Price  <sprice@hiwaay.net>
+
+	* ltconfig.in: when $host_os is freebsd[23]* determine whether
+	the current linker format is a.out or ELF
+	* ltmain.in: add two new $version_type's, freebsd-aout and
+	freebsd-elf, to support above change
+
 1998-11-16  Stephan Kulow  <coolo@kde.org>
 
 	* ltconfig.in: extent no_builtin_flag to contain -fno-rtti and

@@ -1240,6 +1240,16 @@ compiler."
 	  versuffix=".$current.$revision"
 	  ;;
 
+	freebsd-aout)
+	  major=".$current"
+	  versuffix="$current.$revision";
+	  ;;
+
+	freebsd-elf)
+	  major=".$current"
+	  versuffix="$current";
+	  ;;
+
 	windows)
 	  # Like Linux, but with '-' rather than '.', since we only
 	  # want one extension on Windows 95.

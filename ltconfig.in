@@ -1506,9 +1506,10 @@ cygwin32* | mingw32*)
   ;;
 
 freebsd2* | freebsd3*)
-  version_type=sunos
+  objformat=`test -x /usr/bin/objformat && /usr/bin/objformat || echo aout`
+  version_type=freebsd-$objformat
   library_names_spec='${libname}${release}.so$versuffix $libname.so'
-  finish_cmds='PATH="\$PATH:/sbin" ldconfig -m $libdir'
+  finish_cmds='PATH="$PATH:/sbin" OBJFORMAT="$objformat" ldconfig -m $libdir'
   shlibpath_var=LD_LIBRARY_PATH
   ;;
 
