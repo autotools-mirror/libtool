@@ -1,8 +1,8 @@
 ## Process Makefile.am with automake to create Makefile.in. -*-Makefile-*-
 ## Gordon Matzigkeit <gord@gnu.ai.mit.edu>, 1996
 AUTOMAKE_OPTIONS = gnits
-SUBDIRS = . doc tests libltdl
-DIST_SUBDIRS = $(SUBDIRS) demo mdemo
+SUBDIRS = . doc tests
+DIST_SUBDIRS = $(SUBDIRS) demo libltdl mdemo
 
 # We need to export these variables when we run ltconfig.
 CFLAGS = @CFLAGS@
@@ -61,8 +61,8 @@ $(srcdir)/ltmain.sh: $(srcdir)/ltmain.in $(top_srcdir)/configure.in
 # We use our own libtool.m4 for these.
 ACINCLUDE_M4_LIST = \
 	$(srcdir)/acinclude.m4 \
-	$(srcdir)/libltdl/acinclude.m4 \
 	$(srcdir)/demo/acinclude.m4 \
+	$(srcdir)/libltdl/acinclude.m4 \
 	$(srcdir)/mdemo/acinclude.m4
 
 # All our rules should depend on these demo files.

@@ -4,7 +4,7 @@ AUTOMAKE_OPTIONS = no-dependencies foreign
 
 LTDL_VERSION = -version-info 0:1:0
 
-ltdls.lo: ltdl.c
+ltdls.lo: ltdl.c libtool
 	$(LTCOMPILE) -DUSE_DLPREOPEN -o $@ -c $<
 
 lib_LTLIBRARIES = @LIBLIBS@

@@ -10,18 +10,18 @@ if test -z "$srcdir"; then
 fi
 . $srcdir/defs || exit 1
 
-# Check that things are built.
-if test -f ../libltdl/libltdl.la; then :
-else
-  echo "You must built libltdl before $0" 1>&2
-  exit 1
-fi
-
-if test -f ../mdemo/Makefile; then :
+if test -f ../libltdl/Makefile && test -f ../mdemo/Makefile; then :
 else
   echo "You must run mdemo-conf.test before running $0" 1>&2
   exit 1
 fi
+
+# Change to our build directory.
+cd ../libltdl || exit 1
+
+# Do the actual build.
+echo "Making in ../libltdl"
+$make || exit 1
 
 # Change to our build directory.
 cd ../mdemo || exit 1

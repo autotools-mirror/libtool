@@ -1,3 +1,13 @@
+1999-01-05  Thomas Tanner  <tanner@gmx.de>
+
+	* configure.in: do not configure libltdl by default
+	* Makefile.am: do not build libltdl by default
+	* libltdl/Makefile.am: ltdls.lo depends on libtool
+	* tests/Makefile.am: before starting the tests 
+	  make sure that libtool was build
+	* tests/mdemo-conf.test: configure libltdl
+	* tests/mdemo-make.test: build libltdl
+		
 1999-01-05  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* ltmain.in (SP2NL, NL2SP): Don't delete empty lines, as this

@@ -9,6 +9,11 @@ TESTS = demo-conf.test demo-make.test demo-exec.test \
 	link.test link-2.test nomode.test \
 	quote.test sh.test suffix.test
 
+demo-conf.test: $(top_builddir)/libtool
+
+$(top_builddir)/libtool:
+	cd $(top_builddir) && $(MAKE) all
+
 # Be sure to reexport important environment variables.
 TESTS_ENVIRONMENT = CC="$(CC)" CFLAGS="$(CFLAGS)" CPPFLAGS="$(CPPFLAGS)" \
 	LD="$(LD)" NM="$(NM)" RANLIB="$(RANLIB)" LN_S="$(LN_S)"

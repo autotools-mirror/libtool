@@ -18,8 +18,6 @@ AC_PROG_LN_S
 dnl For the `lineno' script (which puts line numbers into `ltconfig').
 AC_PROG_AWK
 
-AC_CONFIG_SUBDIRS(libltdl)
-
 AC_OUTPUT([Makefile doc/Makefile tests/Makefile])
 
 # Local Variables:
