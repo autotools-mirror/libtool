@@ -270,7 +270,6 @@ delta-xdelta: prev-tarball new-tarball got-xdelta
 
 .PHONY: web-manual
 web-manual:
-	@$(LN_S) $(top_srcdir)/doc/libtool.texi doc/manual.texi
-	$(TEXI2HTML) -I doc -monolithic -number -verbose doc/manual.texi
-	@mv doc/manual.html manual.html
-	@rm -f doc/manual.texi
+	@$(LN_S) $(top_srcdir)/doc/libtool.texi manual.texi
+	$(TEXI2HTML) -I $(top_srcdir)/doc -monolithic -number -verbose manual.texi
+	@rm -f manual.texi

@@ -1,3 +1,7 @@
+2005-02-05  Peter O'Gorman  <peter@pogma.com>
+
+	* Makefile.am (web-manual): Make this target actually work.
+
 2005-02-04  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* ltmain.in (link mode): Allow five digits in version-info 
