@@ -1,24 +1,3 @@
-
-AutoGen Definitions ltmain.tpl;
-
-#define EXECUTE_STRING 3
-
-string[EXECUTE_STRING] = {
-  str-name  = execute;
-  call-proc = emitExecute;
-
-  explain = "
-Automatically set library path, then run a program.\n
-This mode accepts the following additional options:\n
-  -dlopen FILE      add the directory containing FILE to the library path\n
-This mode sets the library path environment variable,
-according to `-dlopen' flags.\n
-If any of the <cmd-arg> are libtool executable wrappers, then they are
-translated into their corresponding uninstalled binary, and any of their
-required library directories are added to the library path.\n
-Then, <command> is executed, with  `<cmd-arg>...' as arguments.\n";
-
-  text = << _END_EXECUTE_STRING_
 [++ AutoGen5 Template ++]
     # Handle -dlopen flags immediately.
     for file in $execute_dlfiles; do
@@ -139,13 +118,3 @@ Then, <command> is executed, with  `<cmd-arg>...' as arguments.\n";
       $echo "$cmd$args"
       exit 0
     fi
-_END_EXECUTE_STRING_;
-};
-
-/*
- * Local Variables:
- * mode:shell-script
- * sh-indentation:2
- * End:
- *
- * lt_execute.def ends here */

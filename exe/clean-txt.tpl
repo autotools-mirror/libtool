@@ -1,29 +1,3 @@
-
-AutoGen Definitions ltmain.tpl;
-
-#define UNINSTALL_STRING 7
-
-string[UNINSTALL_STRING] = {
-  str-name = uninstall;
-  use_explain = clean;
-  use_cmd = clean;
-};
-
-
-#define CLEAN_STRING 1
-
-string[CLEAN_STRING] = {
-  str-name = clean;
-  explain = "
-<command> is the name of the program to use to delete files associated with
-each FILE (typically `/bin/rm').  `<cmd-arg>-s' are options (such as `-f')
-to be passed to <command>.
-
-If one of the arguments specifies the removal of a libtool library, object
-or program, all the files associated with it are deleted. Otherwise, only
-the file itself is deleted using <command>.\n";
-
-  text = << _END_EXECUTE_STRING_
 [++ AutoGen5 Template ++]
     rm="$nonopt"
     files=
@@ -178,14 +152,3 @@ the file itself is deleted using <command>.\n";
 	$run rmdir $dir >/dev/null 2>&1
       fi
     done
-_END_EXECUTE_STRING_;
-};
-
-
-/*
- * Local Variables:
- * mode:shell-script
- * sh-indentation:2
- * End:
- *
- * lt_clean.def ends here */

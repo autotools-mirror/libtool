@@ -1,18 +1,3 @@
-
-AutoGen Definitions ltmain.tpl;
-
-#define FINISH_STRING 4
-
-string[FINISH_STRING] = {
-  str-name = finish;
-  explain = "
-Complete the installation of libtool libraries.\n
-The <cmd-arg>-s must actually be directories that contain
-libtool libraries.\n
-The commands that this mode executes may require superuser privileges.  Use
-the `--dry-run' option if you just want to see what would be executed.\n";
-
-  text = << _END_FINISH_STRING_
 [++ AutoGen5 Template ++]
     libdirs="$nonopt"
     admincmds=
@@ -82,13 +67,3 @@ the `--dry-run' option if you just want to see what would be executed.\n";
     echo "See any operating system documentation about shared libraries for"
     echo "more information, such as the ld(1) and ld.so(8) manual pages."
     echo "----------------------------------------------------------------------"
-_END_FINISH_STRING_;
-};
-
-/*
- * Local Variables:
- * mode:shell-script
- * sh-indentation:2
- * End:
- *
- * lt_finish.def ends here */

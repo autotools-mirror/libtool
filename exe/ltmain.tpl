@@ -65,11 +65,7 @@ TIMESTAMP="@TIMESTAMP@"
 default_mode=
 help="Try \`$progname --help' for more information."
 
-[= (out-push-new ".lt.tmp")    =][=
-   string[BASE_STRING].text    =][=
-   (out-pop)                   =][=
-   INCLUDE ".lt.tmp"           =][=
-   `rm -f .lt.tmp`             =]
+[= INCLUDE "base-txt.tpl" =]
 
 if test "$LTCONFIG_VERSION" != "$VERSION"; then
   echo "$modename: ltconfig version \`$LTCONFIG_VERSION' does not match $PROGRAM version \`$VERSION'" 1>&2
@@ -289,10 +285,7 @@ if test -z "$show_help"; then
   # libtool compile mode
   compile)
     modename="$modename: compile"
-[= (out-push-new ".lt.tmp")    =][=
-   string[COMPILE_STRING].text =][=
-   (out-pop)                   =][=
-   INCLUDE ".lt.tmp"           =]
+[= INCLUDE "compile-txt.tpl" =]
 
     exit 0
     ;;
@@ -300,10 +293,7 @@ if test -z "$show_help"; then
   # libtool link mode
   link | relink)
     modename="$modename: link"
-[= (out-push-new ".lt.tmp")    =][=
-   string[LINK_STRING].text    =][=
-   (out-pop)                   =][=
-   INCLUDE ".lt.tmp"           =]
+[= INCLUDE "link-txt.tpl" =]
     exit 0
     ;;
 
@@ -311,10 +301,7 @@ if test -z "$show_help"; then
   install)
     modename="$modename: install"
 
-[= (out-push-new ".lt.tmp")    =][=
-   string[INSTALL_STRING].text =][=
-   (out-pop)                   =][=
-   INCLUDE ".lt.tmp"           =]
+[= INCLUDE "install-txt.tpl" =]
 
     exit 0
     ;;
@@ -322,10 +309,7 @@ if test -z "$show_help"; then
   # libtool finish mode
   finish)
     modename="$modename: finish"
-[= (out-push-new ".lt.tmp")    =][=
-   string[FINISH_STRING].text  =][=
-   (out-pop)                   =][=
-   INCLUDE ".lt.tmp"           =]
+[= INCLUDE "finish-txt.tpl" =]
     exit 0
     ;;
 
@@ -337,20 +321,13 @@ if test -z "$show_help"; then
     cmd="$nonopt"
     [= test-or-exit test = 'test -z "$cmd"'
        msg  = "you must specify a COMMAND" =]
-[= (out-push-new ".lt.tmp")    =][=
-   string[EXECUTE_STRING].text =][=
-   (out-pop)                   =][=
-   INCLUDE ".lt.tmp"           =]
+[= INCLUDE "execute-txt.tpl" =]
     ;;
 
   # libtool clean and uninstall mode
   clean | uninstall)
     modename="$modename: $mode"
-[= (out-push-new ".lt.tmp")    =][=
-   string[CLEAN_STRING].text   =][=
-   (out-pop)                   =][=
-   INCLUDE ".lt.tmp"           =][=
-   `rm -f .lt.tmp`             =]
+[= INCLUDE "clean-txt.tpl" =]
     exit $exit_status
     ;;
 

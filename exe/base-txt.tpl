@@ -1,12 +1,3 @@
-
-AutoGen Definitions ltmain.tpl;
-
-#define BASE_STRING 0
-
-string[0] = {
-  str-name = base;
-
-  text = <<_END_OF_BASE_TEXT_
 [++ AutoGen5 Template ++]
 # Global variables.
 lo2o="s/\\.lo\$/.${objext}/"
@@ -34,13 +25,3 @@ fi
 if test "${LANG+set}" = set; then
   save_LANG="$LANG"; LANG=C; export LANG
 fi
-_END_OF_BASE_TEXT_;
-};
-
-/*
- * Local Variables:
- * mode:shell-script
- * sh-indentation:2
- * End:
- *
- * lt_base.def ends here */

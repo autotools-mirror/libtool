@@ -1,13 +1,141 @@
 
 AutoGen Definitions ltmain.tpl;
 
-#include lt_base.def
-#include lt_clean.def
-#include lt_compile.def
-#include lt_execute.def
-#include lt_finish.def
-#include lt_install.def
-#include lt_link.def
+#define BASE_STRING 0
+
+string[0] = {
+  str-name = base;
+};
+
+#define CLEAN_STRING 1
+
+string[CLEAN_STRING] = {
+  str-name = clean;
+  explain = "
+<command> is the name of the program to use to delete files associated with
+each FILE (typically `/bin/rm').  `<cmd-arg>-s' are options (such as `-f')
+to be passed to <command>.
+
+If one of the arguments specifies the removal of a libtool library, object
+or program, all the files associated with it are deleted. Otherwise, only
+the file itself is deleted using <command>.\n";
+};
+
+#define COMPILE_STRING 2
+
+string[COMPILE_STRING] = {
+  str-name = compile;
+  call-proc = emitCompile;
+
+  explain = "
+Compile a source file into a libtool library object.\n
+This mode accepts the following additional options:\n
+  -o OUTPUT-FILE    set the output file name to OUTPUT-FILE
+  -prefer-pic       try to building PIC objects only
+  -prefer-non-pic   try to building non-PIC objects only
+  -static           always build a `.o' file suitable for static linking\n
+<command> is a command to be used in creating a `standard' object file
+from the source file in the <cmd-arg> list.\n
+The output file name is determined by removing the directory component from
+source file name in the <cmd-arg> list and then substituting the C source
+code suffix `.c' with the library object suffix, `.lo'.\n";
+};
+
+#define EXECUTE_STRING 3
+
+string[EXECUTE_STRING] = {
+  str-name  = execute;
+  call-proc = emitExecute;
+
+  explain = "
+Automatically set library path, then run a program.\n
+This mode accepts the following additional options:\n
+  -dlopen FILE      add the directory containing FILE to the library path\n
+This mode sets the library path environment variable,
+according to `-dlopen' flags.\n
+If any of the <cmd-arg> are libtool executable wrappers, then they are
+translated into their corresponding uninstalled binary, and any of their
+required library directories are added to the library path.\n
+Then, <command> is executed, with  `<cmd-arg>...' as arguments.\n";
+};
+
+#define FINISH_STRING 4
+
+string[FINISH_STRING] = {
+  str-name = finish;
+  explain = "
+Complete the installation of libtool libraries.\n
+The <cmd-arg>-s must actually be directories that contain
+libtool libraries.\n
+The commands that this mode executes may require superuser privileges.  Use
+the `--dry-run' option if you just want to see what would be executed.\n";
+};
+
+#define INSTALL_STRING 5
+
+string[INSTALL_STRING] = {
+  str-name = install;
+  explain = "
+Install executables or libraries.\n
+<command> is the installation command.
+It should be either the `install' or `cp' program.\n
+<cmd-arg>-s are interpreted as arguments to that command
+(only BSD-compatible install options are recognized).\n";
+};
+
+#define LINK_STRING 6
+
+string[LINK_STRING] = {
+  str-name = link;
+  explain  = "
+Link object files or libraries together to form another library,
+or to create an executable program.\n
+<command> is a command using the C compiler that you would use to create
+a program from several object files.\n
+The following <cmd-arg>-s are treated specially:\n
+  -all-static       do not do any dynamic linking at all
+  -avoid-version    do not add a version suffix if possible
+  -dlopen FILE      `-dlpreopen' FILE if it cannot be dlopened at runtime
+  -dlpreopen FILE   link in FILE and add its symbols to lt_preloaded_symbols
+  -export-dynamic   allow symbols from OUTPUT-FILE to be resolved with dlsym(3)
+  -export-symbols SYMFILE
+                    try to export only the symbols listed in SYMFILE
+  -export-symbols-regex REGEX
+                    try to export only the symbols matching REGEX
+  -LLIBDIR          search LIBDIR for required installed libraries
+  -lNAME            OUTPUT-FILE requires the installed library libNAME
+  -module           build a library that can dlopened
+  -no-fast-install  disable the fast-install mode
+  -no-install       link a not-installable executable
+  -no-undefined     declare that a library does not refer to external symbols
+  -o OUTPUT-FILE    create OUTPUT-FILE from the specified objects
+  -objectlist FILE  Use a list of object files found in FILE to specify objects
+  -release RELEASE  specify package release information
+  -rpath LIBDIR     the created library will eventually be installed in LIBDIR
+  -R[ ]LIBDIR       add LIBDIR to the runtime path of programs and libraries
+  -static           do not do any dynamic linking of libtool libraries
+  -version-info CURRENT[:REVISION[:AGE]]
+                    specify library version info [each variable defaults to 0]\n
+All other options (arguments beginning with `-') are ignored.\n
+Every other argument is treated as a filename.  Files ending in `.la' are
+treated as uninstalled libtool libraries, other files are standard or library
+object files.\n
+If the OUTPUT-FILE ends in `.la', then a libtool library is created,
+only library objects (`.lo' files) may be specified, and `-rpath' is
+required, except when creating a convenience library.\n
+If OUTPUT-FILE ends in `.a' or `.lib', then a standard library is created
+using `ar' and `ranlib', or on Windows using `lib'.\n
+If OUTPUT-FILE ends in `.lo' or `.${objext}', then a reloadable object file
+is created, otherwise an executable program is created.\n";
+};
+
+#define UNINSTALL_STRING 7
+
+string[UNINSTALL_STRING] = {
+  str-name = uninstall;
+  use_explain = clean;
+  use_cmd = clean;
+};
 
 #define ECHO_STRING 8
 

@@ -1,52 +1,3 @@
-
-AutoGen Definitions ltmain.tpl;
-
-#define LINK_STRING 6
-
-string[LINK_STRING] = {
-  str-name = link;
-  explain  = "
-Link object files or libraries together to form another library,
-or to create an executable program.\n
-<command> is a command using the C compiler that you would use to create
-a program from several object files.\n
-The following <cmd-arg>-s are treated specially:\n
-  -all-static       do not do any dynamic linking at all
-  -avoid-version    do not add a version suffix if possible
-  -dlopen FILE      `-dlpreopen' FILE if it cannot be dlopened at runtime
-  -dlpreopen FILE   link in FILE and add its symbols to lt_preloaded_symbols
-  -export-dynamic   allow symbols from OUTPUT-FILE to be resolved with dlsym(3)
-  -export-symbols SYMFILE
-                    try to export only the symbols listed in SYMFILE
-  -export-symbols-regex REGEX
-                    try to export only the symbols matching REGEX
-  -LLIBDIR          search LIBDIR for required installed libraries
-  -lNAME            OUTPUT-FILE requires the installed library libNAME
-  -module           build a library that can dlopened
-  -no-fast-install  disable the fast-install mode
-  -no-install       link a not-installable executable
-  -no-undefined     declare that a library does not refer to external symbols
-  -o OUTPUT-FILE    create OUTPUT-FILE from the specified objects
-  -objectlist FILE  Use a list of object files found in FILE to specify objects
-  -release RELEASE  specify package release information
-  -rpath LIBDIR     the created library will eventually be installed in LIBDIR
-  -R[ ]LIBDIR       add LIBDIR to the runtime path of programs and libraries
-  -static           do not do any dynamic linking of libtool libraries
-  -version-info CURRENT[:REVISION[:AGE]]
-                    specify library version info [each variable defaults to 0]\n
-All other options (arguments beginning with `-') are ignored.\n
-Every other argument is treated as a filename.  Files ending in `.la' are
-treated as uninstalled libtool libraries, other files are standard or library
-object files.\n
-If the OUTPUT-FILE ends in `.la', then a libtool library is created,
-only library objects (`.lo' files) may be specified, and `-rpath' is
-required, except when creating a convenience library.\n
-If OUTPUT-FILE ends in `.a' or `.lib', then a standard library is created
-using `ar' and `ranlib', or on Windows using `lib'.\n
-If OUTPUT-FILE ends in `.lo' or `.${objext}', then a reloadable object file
-is created, otherwise an executable program is created.\n";
-
-  text = << _END_LINK_STRING_
 [++ AutoGen5 Template ++]
     case $host in
     *-*-cygwin* | *-*-mingw* | *-*-pw32* | *-*-os2*)
@@ -3635,13 +3586,3 @@ relink_command=\"$relink_command\""
       $run eval '(cd $output_objdir && $rm $outputname && $LN_S ../$outputname $outputname)' || exit $?
       ;;
     esac
-_END_LINK_STRING_;
-};
-
-/*
- * Local Variables:
- * mode:shell-script
- * sh-indentation:2
- * End:
- *
- * lt_link.def ends here */

@@ -55,6 +55,7 @@ ELSE  not h suffix
 =]
 #include "[=(. hdr-name)=]"
 [=
+(define tpl-name "") =][=
 
 FOR string
 
@@ -64,27 +65,25 @@ FOR string
  */[=
 
 
-    IF (exist? "explain")
+   IF (exist? "explain")
 
 =]
 tSCC zExplain[=(string-capitalize! (get "str_name"))=][ [=
   (+ 1 (len "explain")) =] ] =
 [=(kr-string (get "explain"))=];[=
+   ENDIF   =][=
 
-      IF (exist? "text") =]
+   IF (set! tpl-name (string-append (get "str_name") "-txt.tpl"))
+      (access? tpl-name R_OK)   =][=
 
-[=    ENDIF =][=
-    ENDIF   =][=
+      IF (exist? "explain")     =]
 
-    IF (exist? "text")      =]
-tSCC z[= (string-capitalize! (get "str_name")) =]Cmd[] =
-[= (out-push-new ".lt.tpl") =][=
-   text                     =][=
+[=    ENDIF                     =]
+tSCC z[= (string-capitalize! (get "str_name")) =]Cmd[] =[=
+   (out-push-new ".lt.sh")      =][=
+   INCLUDE (. tpl-name)         =][=
    (out-pop)
-   (out-push-new ".lt.xxx") =][=
-   INCLUDE ".lt.tpl"        =][=
-   (out-pop)
-   (kr-string (shell "cat .lt.xxx ; rm -f .lt.*")) =];
+   (kr-string (shell "cat .lt.sh ; rm -f .lt.sh")) =];
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */[=
    ENDIF =][=

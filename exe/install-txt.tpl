@@ -1,18 +1,3 @@
-
-AutoGen Definitions ltmain.tpl;
-
-#define INSTALL_STRING 5
-
-string[INSTALL_STRING] = {
-  str-name = install;
-  explain = "
-Install executables or libraries.\n
-<command> is the installation command.
-It should be either the `install' or `cp' program.\n
-<cmd-arg>-s are interpreted as arguments to that command
-(only BSD-compatible install options are recognized).\n";
-
-  text = << _END_INSTALL_STRING_
 [++ AutoGen5 Template ++]
     # There may be an optional sh(1) argument at the beginning of
     # install_prog (especially on Windows NT).
@@ -454,13 +439,3 @@ It should be either the `install' or `cp' program.\n
       exec $SHELL $0 --finish$current_libdirs
       exit 1
     fi
-_END_INSTALL_STRING_;
-};
-
-/*
- * Local Variables:
- * mode:shell-script
- * sh-indentation:2
- * End:
- *
- * lt_install.def ends here */

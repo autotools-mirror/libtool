@@ -1,26 +1,3 @@
-
-AutoGen Definitions ltmain.tpl;
-
-#define COMPILE_STRING 2
-
-string[COMPILE_STRING] = {
-  str-name = compile;
-  call-proc = emitCompile;
-
-  explain = "
-Compile a source file into a libtool library object.\n
-This mode accepts the following additional options:\n
-  -o OUTPUT-FILE    set the output file name to OUTPUT-FILE
-  -prefer-pic       try to building PIC objects only
-  -prefer-non-pic   try to building non-PIC objects only
-  -static           always build a `.o' file suitable for static linking\n
-<command> is a command to be used in creating a `standard' object file
-from the source file in the <cmd-arg> list.\n
-The output file name is determined by removing the directory component from
-source file name in the <cmd-arg> list and then substituting the C source
-code suffix `.c' with the library object suffix, `.lo'.\n";
-
-  text = << _END_COMPILE_STRING_
 [++ AutoGen5 Template ++]
     # Get the compilation command and the source file.
     base_compile=
@@ -497,13 +474,3 @@ EOF
     if test "$need_locks" != no; then
       $run $rm "$lockfile"
     fi
-_END_COMPILE_STRING_;
-};
-
-/*
- * Local Variables:
- * mode:shell-script
- * sh-indentation:2
- * End:
- *
- * lt_compile.def ends here */

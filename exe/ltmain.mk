@@ -1,8 +1,10 @@
 
-SRC = ltmain.c ltopts.c ltstr.c ltcompile.c ltexe.c ltversion.c
-OBJ = $(SRC:.c=.o)
-GENED = ltmain.in ltstr.[ch] ltopts.[ch]
-CC    = cc -I/usr/local/include -g
+SRC    = ltmain.c ltopts.c ltstr.c ltcompile.c ltexe.c ltversion.c
+OBJ    = $(SRC:.c=.o)
+GENED  = ltmain.in ltstr.[ch] ltopts.[ch]
+CC     = cc -I/usr/local/include -g
+TXTTPL = base-txt.tpl clean-txt.tpl compile-txt.tpl execute-txt.tpl \
+	finish-txt.tpl install-txt.tpl link-txt.tpl
 
 default : ltmain.in
 
@@ -15,28 +17,22 @@ ltmain : $(OBJ)
 clean :
 	rm -f lt*.o ltmain $(GENED) *~
 
-STRDEFS = ltstr.def \
-	lt_base.def      lt_clean.def     lt_compile.def   lt_execute.def \
-	lt_finish.def    lt_install.def   lt_link.def
-
-ltmain.in : $(STRDEFS) ltmain.tpl ltmacros.tpl
+ltmain.in : $(TXTTPL) ltstr.def
 	autogen -T ltmain.tpl -l ltmacros.tpl ltstr.def
+
+ltstr.c : ltstr.def ltstr.tpl ltmacros.tpl
+	autogen -T ltstr.tpl -l ltmacros.tpl ltstr.def
+
+ltstr.h : ltstr.c
+	@-:
 
 ltopts.c : ltopts.def
 	autogen ltopts.def
 
+ltopts.h : ltopts.h
+	@-:
+
 ltopts.o : ltopts.c
 	$(CC) -c -o ltopts.o -I/usr/local/include ltopts.c
 
-ltstr.c : $(STRDEFS) ltstr.tpl ltmacros.tpl
-	autogen -T ltstr.tpl -l ltmacros.tpl ltstr.def
-
 gen : ltmain.in ltstr.c ltopts.c
-
-zip :
-	@ [ -f ltmain ] && mv -f ltmain ltmain.sav ; \
-	mkdir ltmain ; \
-	cp -fp *.def *.tpl ltmain.c ltmain.mk ltmain/
-	tar cvf - ltmain | gzip --best > ltmain.tgz
-	@ rm -rf ltmain ; \
-	if [ -f ltmain.sav ] ; then mv -f ltmain.sav ltmain ; fi
