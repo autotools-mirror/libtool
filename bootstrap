@@ -51,24 +51,38 @@ fi
 # Extract the package name and version number from configure.ac:
 set -- `sed '/AC_INIT/{s/[][,()]/ /g; p;};d' configure.ac`
 
+# Whip up some dirty Makefiles:
+makefiles=
+for dirty in ./Makefile ./tests/Makefile
+do
+  test -f $dirty || {
+    makefiles="$makefiles $dirty"
+    sed '/^if /,/^endif$/d;/^else$/,/^endif$/d' $dirty.am > $dirty
+  }
+done
+
 # Building distributed files from configure is bad for automake, so we
 # generate them here, and have Makefile rules to keep them up to date.
 # We don't have all the substitution values to build ltmain.sh from this
 # script yet, but we need config/ltmain.sh for the libtool commands in
 # configure, and ltversion.m4 to generate configure in the first place:
 rm -f ./config/ltmain.sh ./m4/ltversion.m4
-test -f Makefile || { makefile=Makefile; cp Makefile.am $makefile; }
+
 make ./config/ltmain.sh ./m4/ltversion.m4 ./libtoolize.in ./tests/defs.in \
     top_srcdir=. PACKAGE="$2" VERSION="$3" M4SH="autom4te --language=m4sh"
 
-make ./tests/testsuite AUTOTEST="autom4te --language=autotest" \
-    top_srcdir=. PACKAGE="$2" VERSION="$3" PACKAGE_BUGREPORT="bug-$2@gnu.org"
+{
+  cd tests
+  make ./testsuite AUTOTEST="autom4te --language=autotest" \
+    top_srcdir=.. PACKAGE="$2" VERSION="$3" PACKAGE_BUGREPORT="bug-$2@gnu.org"
+  cd ..
+}
 
 test -f clcommit.m4sh && make -f Makefile.maint commit \
     top_srcdir=. PACKAGE="$2" VERSION="$3" M4SH="autom4te -l m4sh" \
     SED=sed GREP=grep FGREP=fgrep EGREP=egrep LN_S="ln -s"
 
-test -z "$makefile" || rm -f "$makefile"
+test -z "$makefiles" || rm -f "$makefiles"
 
 # Make a dummy libtoolize script for autoreconf:
 test -f clcommit.m4sh && cat > ./config/libtoolize <<'EOF'

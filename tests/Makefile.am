@@ -1,4 +1,4 @@
-## Process this file with automake to produce Makefile.in
+## Makefile.am -- Process this file with automake to produce Makefile.in
 ##
 ## Copyright (C) 2003, 2004 Free Software Foundation
 ##
@@ -17,7 +17,56 @@
 ## the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 ## Boston, MA 02111-1307, USA.
 
-DISTCLEANFILES =
+## ------------ ##
+## Test suite.  ##
+## ------------ ##
+
+TESTSUITE	= testsuite
+TESTSUITE_AT	= testsuite.at \
+		  am-subdir.at
+
+EXTRA_DIST	= $(TESTSUITE) $(TESTSUITE_AT) package.m4
+
+# Be sure to reexport important environment variables:
+TESTS_ENVIRONMENT = MAKE="$(MAKE)" CC="$(CC)" CFLAGS="$(CFLAGS)" \
+	CPPFLAGS="$(CPPFLAGS)" LD="$(LD)" LDFLAGS="$(LDFLAGS)" \
+	LIBS="$(LIBS)" LN_S="$(LN_S)" NM="$(NM)" RANLIB="$(RANLIB)" \
+	OBJEXT="$(OBJEXT)" EXEEXT="$(EXEEXT)" F77="$(F77)" \
+	FFLAGS="$(FFLAGS)" CXX="$(CXX)" CXXFLAGS="$(CXXFLAGS)" CPP="$(CPP)"
+
+# ../Makefile knows how to rebuild this file:
+$(srcdir)/package.m4:
+	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) update-package-m4
+
+$(srcdir)/$(TESTSUITE): $(srcdir)/package.m4 $(TESTSUITE_AT)
+	cd $(srcdir); \
+	$(AUTOTEST) testsuite.at -o $(TESTSUITE)
+
+atconfig: $(top_builddir)/config.status
+	cd $(top_builddir); \
+	./config.status tests/atconfig
+
+# Hook the test suite into the check rule
+check-local: atconfig $(srcdir)/$(TESTSUITE)
+	$(TESTS_ENVIRONMENT) $(SHELL) $(srcdir)/$(TESTSUITE) $(TESTSUITE_FLAGS)
+
+# Run the test suite on the *installed* tree.
+installcheck-local:
+	$(TESTS_ENVIRONMENT) $(SHELL) $(srcdir)/$(TESTSUITE) $(TESTSUITE_FLAGS) AUTOTEST_PATH=$(exec_prefix)/bin
+
+# We need to remove any file droppings left behind by testsuite
+clean-local: clean-local-legacy
+	$(SHELL) $(srcdir)/$(TESTSUITE) --clean
+
+
+## ------------- ##
+## Legacy tests. ##
+## ------------- ##
+
+# !WARNING! Don't add any new tests here, we are migrating to an
+#           Autotest driven framework, please add new test cases
+#           using the new framework above.  When the migration is
+#           complete this section should be removed.
 
 CXX_TESTS = \
 	tagdemo-static.test tagdemo-make.test tagdemo-exec.test \
@@ -85,16 +134,7 @@ demo-conf.test: $(top_builddir)/libtool
 $(top_builddir)/libtool:
 	cd $(top_builddir) && $(MAKE) all
 
-# Be sure to reexport important environment variables.
-# This is a copy of ../Makefile.am (TESTS_ENVIRONMENT), be sure to
-# keep them is sync if you change them before these tests are migrated!
-TESTS_ENVIRONMENT = MAKE="$(MAKE)" CC="$(CC)" CFLAGS="$(CFLAGS)" \
-	CPPFLAGS="$(CPPFLAGS)" LD="$(LD)" LDFLAGS="$(LDFLAGS)" \
-	LIBS="$(LIBS)" LN_S="$(LN_S)" NM="$(NM)" RANLIB="$(RANLIB)" \
-	OBJEXT="$(OBJEXT)" EXEEXT="$(EXEEXT)" F77="$(F77)" \
-	FFLAGS="$(FFLAGS)" CXX="$(CXX)" CXXFLAGS="$(CXXFLAGS)" CPP="$(CPP)"
-
-EXTRA_DIST = defs.in defs.m4sh $(COMMON_TESTS) $(CXX_TESTS) $(F77_TESTS)
+EXTRA_DIST += defs.in defs.m4sh $(COMMON_TESTS) $(CXX_TESTS) $(F77_TESTS)
 DIST_SUBDIRS = $(CONF_SUBDIRS)
 
 # FIXME: Automake-1.7b (at least) only honours DIST_SUBDIRS if SUBDIRS is
@@ -102,7 +142,7 @@ DIST_SUBDIRS = $(CONF_SUBDIRS)
 SUBDIRS = .
 
 # We need to remove any files that the above tests created.
-clean-local:
+clean-local-legacy:
 	-for dir in cdemo demo depdemo f77demo mdemo mdemo2 pdemo tagdemo;  \
 	do								    \
 	    test -f $$dir/Makefile && ( cd $$dir && $(MAKE) distclean; );   \
@@ -110,6 +150,6 @@ clean-local:
 	rm -rf _inst
 
 $(TESTS): defs
-defs: defs.in ../Makefile.am
-	cd .. && $(MAKE) $(AM_MAKEFLAGS) tests/defs
-DISTCLEANFILES += defs
+defs: defs.in $(top_srcdir)/Makefile.am
+	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) tests/defs
+DISTCLEANFILES = defs

@@ -1,3 +1,11 @@
+2004-11-24  Gary V. Vaughan  <gary@gnu.org>
+
+	* Makefile.am: Move Autotest rules from here...
+	* tests/Makefile.am: ...to here.
+	* bootstrap: Adjust.  Also, create temporary Makefile from
+	tests/Makefile.am so that bootstrap can create the Autotest
+	testsuite.
+
 2004-11-23  Gary V. Vaughan  <gary@gnu.org>
 
 	If the user's login shell is something crazy like, oooh,
