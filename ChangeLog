@@ -1,3 +1,8 @@
+2004-04-20  Gary V. Vaughan  <gary@gnu.org>
+
+	* m4/libtool.m4 (_LT_LANG_CXX_CONFIG): Detect Intel C++ compiler
+	version more idiomatically.
+
 2004-04-19  Gary V. Vaughan  <gary@gnu.org>
 
 	* m4/libtool.m4 (_LT_LANG_CXX_CONFIG): Intel C++ compiler 8.0 and
