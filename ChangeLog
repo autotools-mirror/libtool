@@ -1,3 +1,22 @@
+2000-01-31 Ossama Othman  <ossama@debian.org>
+
+	* ltconfig.in (compile_c_lo): Removed the test that checks if
+	compiler support "-c -o file.lo" since the changes made to
+	ltmain.in remove the need to do this.
+	* ltmain.in:  Changed compile mode to generate `.lo' libtool
+	objects, instead of generating PIC objects that end in `.lo'.
+	These are analogous to libtool archive `.la' files.  They contain
+	the name of the PIC and non-PIC objects.  All PIC objects will now
+	be placed in `$objdir' (usually `.libs').  No changes to existing
+	Makefiles should be necessary.  Libtool should work the same as it
+	did prior to this change.  This change was necessary to correct a
+	problem with Sun C++'s template repository mechanism since it
+	couldn't handle repository objects ending in `.lo'.  This change
+	causes some tests to fail, so it still needs some work.  The tests
+	that fail are: dryrun.test, build-relink2.test, link-2.test.  The
+	quote.test and sh.test tests also fail but they failed after the
+	initial multi-language changes were made.
+
 2000-01-25  Ossama Othman  <ossama@uci.edu>
 
 	* libtool.m4, ltconfig.in, ltmain.in:  Merged updates found in
