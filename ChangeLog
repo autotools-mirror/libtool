@@ -1,3 +1,8 @@
+1998-09-24  Gordon Matzigkeit  <gord@trick.fig.org>
+
+	* ltmain.in (link): Fix problems when building only static
+	libraries.  From Owen Taylor.
+
 1998-08-20  Gordon Matzigkeit  <gord@trick.fig.org>
 
 	* ltmain.in (install): When library_names_spec has redundancies,
