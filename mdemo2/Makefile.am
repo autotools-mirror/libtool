@@ -3,7 +3,7 @@
 AUTOMAKE_OPTIONS = no-dependencies foreign
 ACLOCAL_AMFLAGS  = -I ../m4
 
-INCLUDES = -I../libltdl
+INCLUDES = -I$(top_srcdir)/../libltdl
 
 bin_PROGRAMS = mdemo2 mdemo2_static
 
