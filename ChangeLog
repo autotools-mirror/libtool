@@ -1,3 +1,13 @@
+1998-12-30  Thomas Tanner  <tanner@gmx.de>
+
+	* NEWS: updated
+	* THANKS: added Todd Vierling <tv@pobox.com>
+	
+1998-12-30  Todd Vierling  <tv@pobox.com>
+
+	* ltconfig.in: improved shared object handling on both
+	  a.out and ELF platforms for NetBSD
+
 1998-12-29  Thomas Tanner  <tanner@gmx.de>
 
 	* ltconfig.in: do not rely on a leading space when concatenating
