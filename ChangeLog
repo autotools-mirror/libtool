@@ -1,5 +1,8 @@
 2001-09-11  Gary V. Vaughan  <gary@gnu.org>
 
+	* libltdl/configure.in (AC_CONFIG_HEADER): Use config-h.in for DOS
+	compatibility.
+
 	* libtool.m4: Add missing M4 quotation to $1 of AC_DEFUN calls.
 
 	* libltdl/configure.in (AM_INIT_AUTOMAKE): Bump libltdl version to
