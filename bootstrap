@@ -1,9 +1,9 @@
 #! /bin/sh
 
-# helps bootstrapping libtool, when checked out from CVS
-# requires at least GNU autoconf 2.58 and GNU automake 1.8
+# Helps bootstrapping libtool, when checked out from CVS
+# requires at least GNU autoconf 2.58 and GNU automake 1.8.
 
-# Upgrade caveat
+# Upgrade caveat.
 
 cat <<'EOF'
 WARNING: If bootstrapping with this script fails, it may be due to an
@@ -16,11 +16,22 @@ EOF
 
 rm -rf `find . \( -name autom4te.cache -o -name libtool \) -print`
 
-fakes="config/ltmain.sh config/libtoolize libltdl/ltmain.sh libltdl/libtoolize"
+fakes="config/ltmain.sh config/libtoolize libltdl/ltmain.sh"
 
 for file in $fakes; do
-  touch $file
+  cat > $file <<'EOF'
+#! /bin/sh
+# This is a dummy file for bootstrapping CVS libtool.
+echo "$0: Bootstrap detected, no files installed." | sed 's,^.*/,,g'
+exit 0
+EOF
+  chmod 755 $file
 done
+
+# Running the installed `libtoolize' will trash the local (newer) libtool.m4
+# among others.  Call the dummy script we made earlier.
+LIBTOOLIZE=`pwd`/config/libtoolize
+export LIBTOOLIZE
 
 for sub in . tests/*demo tests/*demo[1-9]; do
   autoreconf --force --verbose --install $sub

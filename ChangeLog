@@ -1,5 +1,11 @@
 2003-10-15  Gary V. Vaughan  <gary@gnu.org>
 
+	* bootstrap: Make the fake files valid shell scripts with a
+	comment incase they get left around.
+	(LIBTOOLIZE): Use a dummy script to prevent the installed
+	`libtoolize' from trashing the distributed libtool.m4,
+	config.guess and config.sub.
+
 	* configure.ac (AC_CONFIG_TESTDIR, AC_CONFIG_TESTFILES): Comment
 	this out for now, the autotest testsuite rewrite is not ready
 	yet.
