@@ -1,5 +1,8 @@
 2005-03-16  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* ltmain.in: unconditionally set IFS, and set it
+	to the one true right sequence: space, tab, newline.
+
 	* configure.ac, libltdl/configure.ac: s/##/dnl/ for comments
 	that are meaningless in configure.
 	Reported by Alexandre Duret-Lutz <adl@src.lip6.fr>.

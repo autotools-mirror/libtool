@@ -112,8 +112,9 @@ if test "${LANG+set}" = set; then
 fi
 
 # Make sure IFS has a sensible default
-: ${IFS=" 	
-"}
+lt_nl='
+'
+IFS=" 	$lt_nl"
 
 if test "$build_libtool_libs" != yes && test "$build_old_libs" != yes; then
   $echo "$modename: not configured to build any kind of library" 1>&2
