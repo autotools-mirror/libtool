@@ -1,5 +1,13 @@
 1999-04-06  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* tests/dryrun.test: We cannot rely on setting LIBTOOL, because
+	automake may use sub-makes, and the setting will not be propagated
+	to them on some makes.  Instead, create a dry version of libtool
+	and switch between it and the original one before and after dry
+	runs.
+	* tests/Makefile.am (CLEANFILES): Added libtool-*, created by
+	dryrun.test.
+
 	* tests/dryrun.test: Use cmp instead of diff.
 	(before, after): Create them within ../tests.
 	(libtool): Set to `/bin/sh ./libtool' by default, but use LIBTOOL, 
