@@ -1,3 +1,23 @@
+2004-01-22  Gary V. Vaughan  <gary@gnu.org>
+
+	This fixes a bug in the libtoolize ltdl source installation rules,
+	which were copying Makefile.in from the libtool tree into the
+	package running libtoolize.  Now we explicitly list the files to
+	copy to force the package to generate its own Makefile.in:
+
+	* libltdl/Makefile.am (libltdl_la_SOURCES, libltdlc_la_SOURCES):
+	Add ltdl.h.
+	(ltdldatadir): New variable for installation directory of
+	libtoolize --ltdl files.
+	(ltdldata_DATA): Tell automake what files to copy there at install
+	time (and remove at unistall time!).
+	(local-install-files): Removed.  This hack is not required
+	anymore, the automake generated install rules are much more
+	advanced than this.
+	* Makefile.am (install-data-hook, uninstall-local): Removed.
+	Libltdl files for libtoolize are installed by their own Makefile
+	now.
+
 2004-01-22  Jeff Squyres  <jsquyres@lam-mpi.org>
 
 	* m4/libtool.m4 (AC_LIBTOOL_PROG_CC_C_O): Some compilers

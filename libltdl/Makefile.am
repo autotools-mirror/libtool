@@ -1,4 +1,21 @@
 ## Process this file with automake to produce Makefile.in
+##
+## Copyright (C) 1998, 1999, 2000, 2001, 2003, 2004 Free Software Foundation
+##
+## This program is free software; you can redistribute it and/or modify
+## it under the terms of the GNU General Public License as published by
+## the Free Software Foundation; either version 2 of the License, or
+## (at your option) any later version.
+##
+## This program is distributed in the hope that it will be useful,
+## but WITHOUT ANY WARRANTY; without even the implied warranty of
+## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+## GNU General Public License for more details.
+##
+## You should have received a copy of the GNU General Public License
+## along with this program; see the file COPYING.  If not, write to
+## the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+## Boston, MA 02111-1307, USA.
 
 AUTOMAKE_OPTIONS = no-dependencies foreign
 ACLOCAL_AMFLAGS  = -I ../m4
@@ -20,28 +37,18 @@ endif
 ## default.
 CLEANFILES = libltdl.la libltdlc.la
 
-libltdl_la_SOURCES = ltdl.c
+libltdl_la_SOURCES = ltdl.c ltdl.h
 libltdl_la_LDFLAGS = -no-undefined -version-info 4:0:1
 libltdl_la_LIBADD = $(LIBADD_DL)
 
-libltdlc_la_SOURCES = ltdl.c
+libltdlc_la_SOURCES = ltdl.c ltdl.h
 libltdlc_la_LIBADD = $(LIBADD_DL)
 
 ## Because we do not have automatic dependency tracking:
 ltdl.lo: ltdl.h $(top_srcdir)/$(CONFIG_H)
 
-## This allows us to install libltdl without using ln and without creating
-## a world writeable directory.
-## FIXME:  Remove this rule once automake can do this properly by itself.
-local-install-files: $(DISTFILES)
-	-rm -rf $(DESTDIR)$(datadir)/libtool/libltdl
-	$(mkinstalldirs) $(DESTDIR)$(datadir)/libtool/libltdl
-	@for file in $(DISTFILES); do \
-	  d=$(srcdir); \
-	  if test -d $$d/$$file; then \
-	    cp -r $$d/$$file $(DESTDIR)$(datadir)/libtool/libltdl/$$file; \
-	  else \
-	    test -f $(DESTDIR)$(datadir)/libtool/libltdl/$$file \
-	    || cp $$d/$$file $(DESTDIR)$(datadir)/libtool/libltdl/$$file || :; \
-	  fi; \
-	done
+
+## These are installed as a subdirectory of pkgdatadir so that
+## libtoolize --ltdl can find them later:
+ltdldatadir = $(pkgdatadir)/libltdl
+ltdldata_DATA = COPYING.LIB Makefile.am README $(libltdl_la_SOURCES)

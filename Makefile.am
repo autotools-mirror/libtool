@@ -81,14 +81,6 @@ install-data-local:
 	-rm -rf $(DESTDIR)$(aclocaldir)/ltdl.m4
 	-rm -rf $(DESTDIR)$(aclocaldir)/libtool.m4
 
-# Create and install libltdl
-install-data-hook:
-	cd libltdl && $(MAKE) local-install-files
-
-# Uninstall libltdl
-uninstall-local:
-	-rm -rf $(DESTDIR)$(pkgdatadir)/libltdl
-
 
 ## ---------------------------------------------------------------- ##
 ##  Everything past here is useful to the maintainer, but probably  ##
