@@ -1,4 +1,5 @@
 2003-07-30  Tony Wyatt <wyattaw@optushome.com.au>
+
 	* libtool.m4: Remove parentheses around finish_eval part which
 	broke on amigaos pdksh.
 
