@@ -80,8 +80,8 @@ file_magic*)
   ;;
 esac
 
-case "$target" in
-NONE) lt_target="$host" ;;
+case "x$target" in
+xNONE|x) lt_target="$host" ;;
 *) lt_target="$target" ;;
 esac
 

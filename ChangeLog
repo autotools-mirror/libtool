@@ -1,3 +1,8 @@
+2000-05-06  Pavel Roskin  <pavel_roskin@geocities.com>
+
+	* libtool.m4 (AC_LIBTOOL_SETUP): CVS autoconf no longer sets
+	target to "NONE", but to an empty string.
+
 2000-05-05  Paul Sokolovsky  <Paul.Sokolovsky@technologist.com>
 
 	* ltdl.c: support lt_dlopen(0) for win32
