@@ -1,5 +1,8 @@
 2004-12-09  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* config/ltmain.m4sh (all over the map): Make use of func_basename and
+	func_dirname in most occasions.
+
 	* m4/libtool.m4 (_LT_CHECK_XSI_SHELL, _LT_PROG_XSI_SHELLFNS): New macros
 	to detect at `configure' time whether the shell supports some XSI
 	extensions and to copy appropriate versions of new shell functions into

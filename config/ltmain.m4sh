@@ -814,7 +814,8 @@ extern \"C\" {
 
 	for dlprefile in $dlprefiles; do
 	  func_echo "extracting global C symbols from \`$dlprefile'"
-	  name=`$ECHO "X$dlprefile" | $Xsed -e 's%^.*/%%'`
+	  func_basename "$dlprefile"
+	  name="$func_basename_result"
 	  $opt_dry_run || {
 	    eval '$ECHO ": $name " >> "$nlist"'
 	    eval "$NM $dlprefile | $global_symbol_pipe >> '$nlist'"
@@ -974,7 +975,8 @@ func_extract_archives () {
 	[[\\/]]* | [[A-Za-z]]:[[\\/]]*) my_xabs="$my_xlib" ;;
 	*) my_xabs=`pwd`"/$my_xlib" ;;
       esac
-      my_xlib=`$ECHO "X$my_xlib" | $Xsed -e 's%^.*/%%'`
+      func_basename "$my_xlib"
+      my_xlib="$func_basename_result"
       my_xdir="$my_gentop/$my_xlib"
 
       func_mkdir_p "$my_xdir"
@@ -1152,7 +1154,10 @@ func_mode_compile ()
       ;;
     *)
       # Get the name of the library object.
-      test -z "$libobj" && libobj=`$ECHO "X$srcfile" | $Xsed -e 's%^.*/%%'`
+      test -z "$libobj" && {
+	func_basename "$srcfile"
+	libobj="$func_basename_result"
+      }
       ;;
     esac
 
@@ -1213,13 +1218,10 @@ func_mode_compile ()
       esac
     done
 
-    objname=`$ECHO "X$obj" | $Xsed -e 's%^.*/%%'`
-    xdir=`$ECHO "X$obj" | $Xsed -e 's%/[[^/]]*$%%'`
-    if test "X$xdir" = "X$obj"; then
-      xdir=
-    else
-      xdir=$xdir/
-    fi
+    func_basename "$obj"
+    objname="$func_basename_result"
+    func_dirname "$obj" "/" ""
+    xdir="$func_dirname_result"
     lobj=${xdir}$objdir/$objname
 
     test -z "$base_compile" && \
@@ -1484,8 +1486,8 @@ func_mode_execute ()
 	  continue
 	fi
 
-	dir=`$ECHO "X$file" | $Xsed -e 's%/[[^/]]*$%%'`
-	test "X$dir" = "X$file" && dir=.
+	func_dirname "$file" "" "."
+	dir="$func_dirname_result"
 
 	if test -f "$dir/$objdir/$dlname"; then
 	  dir="$dir/$objdir"
@@ -1496,8 +1498,8 @@ func_mode_execute ()
 
       *.lo)
 	# Just add the directory containing the .lo file.
-	dir=`$ECHO "X$file" | $Xsed -e 's%/[[^/]]*$%%'`
-	test "X$dir" = "X$file" && dir=.
+	func_dirname "$file" "" "."
+	dir="$func_dirname_result"
 	;;
 
       *)
@@ -1749,9 +1751,10 @@ func_mode_install ()
       destdir="$dest"
       destname=
     else
-      destdir=`$ECHO "X$dest" | $Xsed -e 's%/[[^/]]*$%%'`
-      test "X$destdir" = "X$dest" && destdir=.
-      destname=`$ECHO "X$dest" | $Xsed -e 's%^.*/%%'`
+      func_dirname "$dest" "" "."
+      destdir="$func_dirname_result"
+      func_basename "$dest"
+      destname="$func_basename_result"
 
       # Not a directory, so check to see that there is only one file specified.
       set dummy $files
@@ -1816,8 +1819,8 @@ func_mode_install ()
 	  esac
 	fi
 
-	dir=`$ECHO "X$file" | $Xsed -e 's%/[[^/]]*$%%'`/
-	test "X$dir" = "X$file/" && dir=
+	func_dirname "$file" "/" ""
+	dir="$func_dirname_result"
 	dir="$dir$objdir"
 
 	if test -n "$relink_command"; then
@@ -1894,7 +1897,8 @@ func_mode_install ()
 	fi
 
 	# Install the pseudo-library for information purposes.
-	name=`$ECHO "X$file" | $Xsed -e 's%^.*/%%'`
+	func_basename "$file"
+	name="$func_basename_result"
 	instname="$dir/$name"i
 	func_show_eval "$install_prog $instname $destdir/$name" 'exit $?'
 
@@ -1909,7 +1913,8 @@ func_mode_install ()
 	if test -n "$destname"; then
 	  destfile="$destdir/$destname"
 	else
-	  destfile=`$ECHO "X$file" | $Xsed -e 's%^.*/%%'`
+	  func_basename "$file"
+	  destfile="$func_basename_result"
 	  destfile="$destdir/$destfile"
 	fi
 
@@ -1945,7 +1950,8 @@ func_mode_install ()
 	if test -n "$destname"; then
 	  destfile="$destdir/$destname"
 	else
-	  destfile=`$ECHO "X$file" | $Xsed -e 's%^.*/%%'`
+	  func_basename "$file"
+	  destfile="$func_basename_result"
 	  destfile="$destdir/$destfile"
 	fi
 
@@ -2029,7 +2035,8 @@ func_mode_install ()
 	    $opt_dry_run || {
 	      if test "$finalize" = yes; then
 	        tmpdir=`func_mktempdir`
-	        file=`$ECHO "X$file$stripped_ext" | $Xsed -e 's%^.*/%%'`
+		func_basename "$file$stripped_ext"
+		file="$func_basename_result"
 	        outputname="$tmpdir/$file"
 	        # Replace the output file specification.
 	        relink_command=`$ECHO "X$relink_command" | $Xsed -e 's%@OUTPUT@%'"$outputname"'%g'`
@@ -2081,7 +2088,8 @@ func_mode_install ()
     done
 
     for file in $staticlibs; do
-      name=`$ECHO "X$file" | $Xsed -e 's%^.*/%%'`
+      func_basename "$file"
+      name="$func_basename_result"
 
       # Set up the ranlib parameters.
       oldlib="$destdir/$name"
@@ -2343,12 +2351,8 @@ func_mode_link ()
 		fi
 
 		# Extract subdirectory from the argument.
-		xdir=`$ECHO "X$arg" | $Xsed -e 's%/[[^/]]*$%%'`
-		if test "X$xdir" = "X$arg"; then
-		  xdir=
-		else
-		  xdir="$xdir/"
-		fi
+		func_dirname "$arg" "/" ""
+		xdir="$func_dirname_result"
 
 		if test "$pic_object" != none; then
 		  # Prepend the subdirectory the object is found in.
@@ -2397,12 +2401,8 @@ func_mode_link ()
 		# Only an error if not doing a dry-run.
 		if $opt_dry_run; then
 		  # Extract subdirectory from the argument.
-		  xdir=`$ECHO "X$arg" | $Xsed -e 's%/[[^/]]*$%%'`
-		  if test "X$xdir" = "X$arg"; then
-		    xdir=
-		  else
-		    xdir="$xdir/"
-		  fi
+		  func_dirname "$arg" "/" ""
+		  xdir="$func_dirname_result"
 
 		  pic_object=`$ECHO "X${xdir}${objdir}/${arg}" | $Xsed -e "$lo2o"`
 		  non_pic_object=`$ECHO "X${xdir}${arg}" | $Xsed -e "$lo2o"`
@@ -2836,12 +2836,8 @@ func_mode_link ()
 	  fi
 
 	  # Extract subdirectory from the argument.
-	  xdir=`$ECHO "X$arg" | $Xsed -e 's%/[[^/]]*$%%'`
-	  if test "X$xdir" = "X$arg"; then
-	    xdir=
- 	  else
-	    xdir="$xdir/"
-	  fi
+	  func_dirname "$arg" "/" ""
+	  xdir="$func_dirname_result"
 
 	  if test "$pic_object" != none; then
 	    # Prepend the subdirectory the object is found in.
@@ -2890,12 +2886,8 @@ func_mode_link ()
 	  # Only an error if not doing a dry-run.
 	  if $opt_dry_run; then
 	    # Extract subdirectory from the argument.
-	    xdir=`$ECHO "X$arg" | $Xsed -e 's%/[[^/]]*$%%'`
-	    if test "X$xdir" = "X$arg"; then
-	      xdir=
-	    else
-	      xdir="$xdir/"
-	    fi
+	    func_dirname "$arg" "/" ""
+	    xdir="$func_dirname_result"
 
 	    pic_object=`$ECHO "X${xdir}${objdir}/${arg}" | $Xsed -e "$lo2o"`
 	    non_pic_object=`$ECHO "X${xdir}${arg}" | $Xsed -e "$lo2o"`
@@ -2958,7 +2950,8 @@ func_mode_link ()
 
     oldlibs=
     # calculate the name of the file, without its directory
-    outputname=`$ECHO "X$output" | $Xsed -e 's%^.*/%%'`
+    func_basename "$output"
+    outputname="$func_basename_result"
     libobjs_save="$libobjs"
 
     if test -n "$shlibpath_var"; then
@@ -2970,12 +2963,8 @@ func_mode_link ()
     eval sys_lib_search_path=\"$sys_lib_search_path_spec\"
     eval sys_lib_dlsearch_path=\"$sys_lib_dlsearch_path_spec\"
 
-    output_objdir=`$ECHO "X$output" | $Xsed -e 's%/[[^/]]*$%%'`
-    if test "X$output_objdir" = "X$output"; then
-      output_objdir="$objdir"
-    else
-      output_objdir="$output_objdir/$objdir"
-    fi
+    func_dirname "$output" "/" ""
+    output_objdir="$func_dirname_result$objdir"
     # Create the object directory.
     func_mkdir_p "$output_objdir"
 
@@ -3173,8 +3162,8 @@ func_mode_link ()
 		  done
 		  if test "X$ll" = "X$old_library" ; then # only static version available
 		    found=no
-		    ladir=`$ECHO "X$lib" | $Xsed -e 's%/[[^/]]*$%%'`
-		    test "X$ladir" = "X$lib" && ladir="."
+		    func_dirname "$lib" "" "."
+		    ladir="$func_dirname_result"
 		    lib=$ladir/$old_library
 		    if test "$linkmode,$pass" = "prog,link"; then
 		      compile_deplibs="$deplib $compile_deplibs"
@@ -3333,8 +3322,8 @@ func_mode_link ()
 	func_lalib_unsafe_p "$lib" \
 	  || func_fatal_error "\`$lib' is not a valid libtool archive"
 
-	ladir=`$ECHO "X$lib" | $Xsed -e 's%/[[^/]]*$%%'`
-	test "X$ladir" = "X$lib" && ladir="."
+	func_dirname "$lib" "" "."
+	ladir="$func_dirname_result"
 
 	dlname=
 	dlopen=
@@ -3438,7 +3427,8 @@ func_mode_link ()
 	  fi
 	  ;;
 	esac
-	laname=`$ECHO "X$lib" | $Xsed -e 's%^.*/%%'`
+	func_basename "$lib"
+	laname="$func_basename_result"
 
 	# Find the relevant object directory and library name.
 	if test "X$installed" = Xyes; then
@@ -3663,7 +3653,8 @@ func_mode_link ()
 
 	    # Make a new name for the extract_expsyms_cmds to use
 	    soroot="$soname"
-	    soname=`$ECHO "X$soroot" | $Xsed -e 's/^.*\///'`
+	    func_basename "$soroot"
+	    soname="$func_basename_result"
 	    newlib=libimp-`$ECHO "X$soname" | $Xsed -e 's/^lib//;s/\.dll$//'`.a
 
 	    # If the library has no export list, then create one now
@@ -3928,8 +3919,8 @@ func_mode_link ()
 	      case $deplib in
 	      -L*) path="$deplib" ;;
 	      *.la)
-		dir=`$ECHO "X$deplib" | $Xsed -e 's%/[[^/]]*$%%'`
-		test "X$dir" = "X$deplib" && dir="."
+	        func_dirname "$deplib" "" "."
+		dir="$func_dirname_result"
 		# We need an absolute path.
 		case $dir in
 		[[\\/]]* | [[A-Za-z]]:[[\\/]]*) absdir="$dir" ;;
@@ -6226,7 +6217,8 @@ fi\
 	  # names appear in distinct ar calls; check, warn and compensate.
 	    if (for obj in $save_oldobjs
 	    do
-	      $ECHO "X$obj" | $Xsed -e 's%^.*/%%'
+	      func_basename "$obj"
+	      $ECHO "$func_basename_result"
 	    done | sort | sort -uc >/dev/null 2>&1); then
 	    :
 	  else
@@ -6317,7 +6309,8 @@ fi\
 	    for deplib in $dependency_libs; do
 	      case $deplib in
 	      *.la)
-		name=`$ECHO "X$deplib" | $Xsed -e 's%^.*/%%'`
+		func_basename "$deplib"
+		name="$func_basename_result"
 		eval libdir=`${SED} -n -e 's/^libdir=\(.*\)$/\1/p' $deplib`
 		test -z "$libdir" && \
 		  func_fatal_error "\`$deplib' is not a valid libtool archive"
@@ -6332,7 +6325,8 @@ fi\
 	    for lib in $dlfiles; do
 	      case $lib in
 	      *.la)
-		name=`$ECHO "X$lib" | $Xsed -e 's%^.*/%%'`
+	        func_basename "$lib"
+		name="$func_basename_result"
 		eval libdir=`${SED} -n -e 's/^libdir=\(.*\)$/\1/p' $lib`
 		test -z "$libdir" && \
 		  func_fatal_error "\`$lib' is not a valid libtool archive"
@@ -6350,7 +6344,8 @@ fi\
 		# eventual linking with the app. that links it) if we
 		# didn't already link the preopened objects directly into
 		# the library:
-		name=`$ECHO "X$lib" | $Xsed -e 's%^.*/%%'`
+		func_basename "$lib"
+		name="$func_basename_result"
 		eval libdir=`${SED} -n -e 's/^libdir=\(.*\)$/\1/p' $lib`
 		test -z "$libdir" && \
 		  func_fatal_error "\`$lib' is not a valid libtool archive"
@@ -6471,14 +6466,15 @@ func_mode_uninstall ()
 
     origobjdir="$objdir"
     for file in $files; do
-      dir=`$ECHO "X$file" | $Xsed -e 's%/[[^/]]*$%%'`
-      if test "X$dir" = "X$file"; then
-	dir=.
+      func_dirname "$file" "" "."
+      dir="$func_dirname_result"
+      if test "X$dir" = X.; then
 	objdir="$origobjdir"
       else
 	objdir="$dir/$origobjdir"
       fi
-      name=`$ECHO "X$file" | $Xsed -e 's%^.*/%%'`
+      func_basename "$file"
+      name="$func_basename_result"
       test "$mode" = uninstall && objdir="$dir"
 
       # Remember objdir for removal later, being careful to avoid duplicates
