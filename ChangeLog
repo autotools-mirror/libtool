@@ -1,3 +1,8 @@
+2005-02-12  Alexandre Duret-Lutz  <adl@gnu.org>,
+	    Peter O'Gorman  <peter@pogma.com>
+
+	* Makefile.am (web-manual): Use makeinfo, not texi2html.
+
 2005-02-12  Peter O'Gorman  <peter@pogma.com>
 
 	* ChangeLog: Upped version to 1.5.15a.
