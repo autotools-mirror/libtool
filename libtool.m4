@@ -1226,7 +1226,7 @@ darwin* | rhapsody*)
   shlibpath_var=DYLD_LIBRARY_PATH
   shrext='$(test .$module = .yes && echo so || echo dylib)'
   # Apple's gcc prints 'gcc -print-search-dirs' doesn't operate the same.
-  sys_lib_search_path_spec=`$CC -print-search-dirs | tr "\n" "$PATH_SEPARATOR" | sed -e 's/libraries:/\nlibraries:/' | grep "^libraries:" | sed -e "s/^libraries://" -e "s,=/,/,g" -e "s,$PATH_SEPARATOR, ,g"`
+  sys_lib_search_path_spec=`$CC -print-search-dirs | tr "\n" "$PATH_SEPARATOR" | sed -e 's/libraries:/@libraries:/' | tr "@" "\n" | grep "^libraries:" | sed -e "s/^libraries://" -e "s,=/,/,g" -e "s,$PATH_SEPARATOR, ,g"`
   ;;
 
 dgux*)

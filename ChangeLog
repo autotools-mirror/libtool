@@ -1,3 +1,8 @@
+2003-02-05  Robert Boehne  <rboehne@gnu.org>
+
+	* libtool.m4: Modify the sys_lib_search_path_spec to allow
+	for either native sed or GNU sed to be used.
+
 2003-02-04  Nick Hudson  <skrll@netbsd.org>
 
 	* libtool.m4: don't use -nodefaultlibs in archive_commands
