@@ -2667,18 +2667,19 @@ certainly welcome.
 @noindent
 The following types are defined in @file{ltdl.h}:
 
-@table @code
-@item lt_ptr_t
+@deftp {Type} lt_ptr_t
 @code{lt_ptr_t} is a generic pointer.
+@end deftp
 
-@item lt_dlhandle
+@deftp {Type} lt_dlhandle
 @code{lt_dlhandle} is a module "handle". 
 Every dlopened module has a handle associated with it.
+@end deftp
 
-@item lt_dlsymlist
+@deftp {Type} lt_dlsymlist
 @code{lt_dlsymlist} is a symbol list for dlpreopened modules.
 This structure is described in @pxref{Dlpreopening}.
-@end table
+@end deftp
 
 @page
 @noindent
@@ -2771,7 +2772,7 @@ by the null terminated string @var{name} is loaded.
 If the symbol cannot be found, NULL is returned.
 @end deftypefun
  
-@deftypefun const char *lt_dlerror (void)
+@deftypefun {const char *} lt_dlerror (void)
 Return a human readable string describing the most 
 recent error that occurred from any of libltdl's functions.
 Return NULL if no errors have occurred since initialization
@@ -2823,18 +2824,18 @@ Replace the current user-defined library search path with
 directories.  Return 0 on success.
 @end deftypefun
 
-@deftypefun const char *lt_dlgetsearchpath (void)
+@deftypefun {const char *} lt_dlgetsearchpath (void)
 Return the current user-defined library search path.
 @end deftypefun
 
-@defvar lt_ptr_t (*lt_dlmalloc) (size_t size)
-@defvarx void (*lt_dlfree) (lt_ptr_t ptr)
+@deftypevar {lt_ptr_t (*} lt_dlmalloc ) (size_t size)
+@deftypevarx {void (*} lt_dlfree ) (lt_ptr_t ptr)
 These variables are set to @code{malloc} and @code{free}, by default,
 but you can set them to any other functions that provides equivalent
 functionality.  However, you must not modify their values after calling
 any libltdl function other than @code{lt_dlpreopen_default} or the macro
 @code{LTDL_SET_PRELOADED_SYMBOLS}.
-@end defvar
+@end deftypevar
 
 @node Modules for libltdl
 @section Creating modules that can be @code{dlopen}ed
