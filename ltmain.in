@@ -921,7 +921,7 @@ compiler."
 	rpath | xrpath)
 	  # We need an absolute path.
 	  case "$arg" in
-	  /* | [A-Za-z]:[/\\]*) ;;
+	  [\\/]* | [A-Za-z]:[\\/]*) ;;
 	  *)
 	    $echo "$modename: only absolute run-paths are allowed" 1>&2
 	    exit 1
@@ -1008,7 +1008,7 @@ compiler."
 	fi
 	# We need an absolute path.
 	case "$dir" in
-	/* | [A-Za-z]:[/\\]*) ;;
+	[\\/]* | [A-Za-z]:[\\/]*) ;;
 	*)
 	  absdir=`cd "$dir" && pwd`
 	  if test -z "$absdir"; then
@@ -1088,7 +1088,7 @@ compiler."
 	dir=`$echo "X$arg" | $Xsed -e 's/^-R//'`
 	# We need an absolute path.
 	case "$dir" in
-	/* | [A-Za-z]:[/\\]*) ;;
+	[\\/]* | [A-Za-z]:[\\/]*) ;;
 	*)
 	  $echo "$modename: only absolute run-paths are allowed" 1>&2
 	  exit 1
@@ -1280,7 +1280,7 @@ compiler."
 
 	  # We need an absolute path.
 	  case "$dir" in
-	  /* | [A-Za-z]:[/\\]*) absdir="$dir" ;;
+	  [\\/] | [A-Za-z]:[\\/]*) absdir="$dir" ;;
 	  *)
 	    absdir=`cd "$dir" && pwd`
 	    if test -z "$absdir"; then
@@ -1905,7 +1905,7 @@ EOF
 		      while test -h "$potlib" 2>/dev/null; do
 			potliblink=`ls -ld $potlib | sed 's/.* -> //'`
 			case "$potliblink" in
-			/*) potlib="$potliblink";;
+			[\\/]* | [A-Za-z]:[\\/]*) potlib="$potliblink";;
 			*) potlib=`$echo "X$potlib" | $Xsed -e 's,[^/]*$,,'`"$potliblink";;
 			esac
 		      done
@@ -2039,7 +2039,7 @@ EOF
 	  for xlib in $convenience; do
 	    # Extract the objects.
 	    case "$xlib" in
-	    /* | [A-Za-z]:[/\\]*) xabs="$xlib" ;;
+	    [\\/]* | [A-Za-z]:[\\/]*) xabs="$xlib" ;;
 	    *) xabs=`pwd`"/$xlib" ;;
 	    esac
 	    xlib=`$echo "X$xlib" | $Xsed -e 's%^.*/%%'`
@@ -2539,7 +2539,7 @@ static const void *lt_preloaded_setup() {
 	rpath=
 	for dir in $temp_rpath; do
 	  case "$dir" in
-	  /* | [A-Za-z]:[/\\]*)
+	  [\\/]* | [A-Za-z]:[\\/]*)
 	    # Absolute path.
 	    rpath="$rpath$dir:"
 	    ;;
@@ -2632,7 +2632,7 @@ static const void *lt_preloaded_setup() {
       # Quote $echo for shipping.
       if test "X$echo" = "X$SHELL $0 --fallback-echo"; then
 	case "$0" in
-	/* | [A-Za-z]:[/\\]*) qecho="$SHELL $0 --fallback-echo";;
+	[\\/]* | [A-Za-z]:[\\/]*) qecho="$SHELL $0 --fallback-echo";;
 	*) qecho="$SHELL `pwd`/$0 --fallback-echo";;
 	esac
 	qecho=`$echo "X$qecho" | $Xsed -e "$sed_quote_subst"`
@@ -2709,7 +2709,7 @@ else
     # If there was a directory component, then change thisdir.
     if test \"x\$destdir\" != \"x\$file\"; then
       case \"\$destdir\" in
-      /* | [A-Za-z]:[/\\]*) thisdir=\"\$destdir\" ;;
+      [\\/]* | [A-Za-z]:[\\/]*) thisdir=\"\$destdir\" ;;
       *) thisdir=\"\$thisdir/\$destdir\" ;;
       esac
     fi
@@ -2863,7 +2863,7 @@ fi\
 	for xlib in $addlibs; do
 	  # Extract the objects.
 	  case "$xlib" in
-	  /* | [A-Za-z]:[/\\]*) xabs="$xlib" ;;
+	  [\\/]* | [A-Za-z]:[\\/]*) xabs="$xlib" ;;
 	  *) xabs=`pwd`"/$xlib" ;;
 	  esac
 	  xlib=`$echo "X$xlib" | $Xsed -e 's%^.*/%%'`
@@ -3093,7 +3093,7 @@ libdir='$install_libdir'\
       fi
     fi
     case "$destdir" in
-    /* | [A-Za-z]:[/\\]*) ;;
+    [\\/]* | [A-Za-z]:[\\/]*) ;;
     *)
       for file in $files; do
 	case "$file" in
