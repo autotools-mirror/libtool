@@ -460,6 +460,19 @@ ia64-*-hpux*)
   # Find out which ABI we are using.
   echo '[#]line __oline__ "configure"' > conftest.$ac_ext
   if AC_TRY_EVAL(ac_compile); then
+   if test "$lt_cv_prog_gnu_ld" = yes; then
+    case `/usr/bin/file conftest.$ac_objext` in
+    *32-bit*)
+      LD="${LD-ld} -melf32bsmip"
+      ;;
+    *N32*)
+      LD="${LD-ld} -melf32bmipn32"
+      ;;
+    *64-bit*)
+      LD="${LD-ld} -melf64bmip"
+      ;;
+    esac
+   else
     case `/usr/bin/file conftest.$ac_objext` in
     *32-bit*)
       LD="${LD-ld} -32"
@@ -471,6 +484,7 @@ ia64-*-hpux*)
       LD="${LD-ld} -64"
       ;;
     esac
+   fi
   fi
   rm -rf conftest*
   ;;
@@ -1331,7 +1345,12 @@ hpux9* | hpux10* | hpux11*)
 irix5* | irix6* | nonstopux*)
   case $host_os in
     nonstopux*) version_type=nonstopux ;;
-    *)          version_type=irix ;;
+    *)
+	if test "$lt_cv_prog_gnu_ld" = yes; then
+		version_type=linux
+	else
+		version_type=irix
+	fi ;;
   esac
   need_lib_prefix=no
   need_version=no
@@ -1343,9 +1362,12 @@ irix5* | irix6* | nonstopux*)
     ;;
   *)
     case $LD in # libtool.m4 will add one of these switches to LD
-    *-32|*"-32 ") libsuff= shlibsuff= libmagic=32-bit;;
-    *-n32|*"-n32 ") libsuff=32 shlibsuff=N32 libmagic=N32;;
-    *-64|*"-64 ") libsuff=64 shlibsuff=64 libmagic=64-bit;;
+    *-32|*"-32 "|*-melf32bsmip|*"-melf32bsmip ")
+      libsuff= shlibsuff= libmagic=32-bit;;
+    *-n32|*"-n32 "|*-melf32bmipn32|*"-melf32bmipn32 ")
+      libsuff=32 shlibsuff=N32 libmagic=N32;;
+    *-64|*"-64 "|*-melf64bmip|*"-melf64bmip ")
+      libsuff=64 shlibsuff=64 libmagic=64-bit;;
     *) libsuff= shlibsuff= libmagic=never-match;;
     esac
     ;;
@@ -2942,7 +2964,7 @@ case $host_os in
 	  if test "$with_gnu_ld" = no; then
 	    _LT_AC_TAGVAR(archive_cmds, $1)='$CC -shared -nostdlib $predep_objects $libobjs $deplibs $postdep_objects $compiler_flags ${wl}-soname ${wl}$soname `test -n "$verstring" && echo ${wl}-set_version ${wl}$verstring` ${wl}-update_registry ${wl}${objdir}/so_locations -o $lib'
 	  else
-	    _LT_AC_TAGVAR(archive_cmds, $1)='$CC -shared -nostdlib $predep_objects $libobjs $deplibs $postdep_objects $linker_flags -soname $soname `test -n "$verstring" && echo -set_version $verstring` -o $lib'
+	    _LT_AC_TAGVAR(archive_cmds, $1)='$CC -shared -nostdlib $predep_objects $libobjs $deplibs $postdep_objects $compiler_flags ${wl}-soname ${wl}$soname `test -n "$verstring" && echo ${wl}-set_version ${wl}$verstring` -o $lib'
 	  fi
 	fi
 	_LT_AC_TAGVAR(link_all_deplibs, $1)=yes

@@ -1,3 +1,10 @@
+2003-02-19  Alexandre Oliva  <aoliva@redhat.com>
+
+	* libtool.m4: Use linux version_type on IRIX with GNU ld.
+	Prefix -soname, -set_version and their arguments with ${wl}.  Add
+	-melf* linker scripts to LD, and use them to determine libsuff,
+	shlibsuff and libmagic.
+
 2003-02-17  Allan Sandfeld Jensen  <snowwolf@one2one-networks.com>
 
 	* libtool.m4: Intel icc fixups for version 7.0.
