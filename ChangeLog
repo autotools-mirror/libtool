@@ -1,3 +1,21 @@
+2001-01-05  Gary V. Vaughan  <gvv@techie.com>
+
+	* NEWS: Updated.
+	* doc/libtool.texi (User defined module data):  Document it all.
+	* ltdl.m4:  Check for memcpy, or else bcopy.
+	* ltdl.c (lt_caller_data): New type.
+	(lt_dl_handle_struct): Add an lt_caller_data field.
+	(lt_dlcaller_register, lt_dlcaller_set_data,
+	lt_dlcaller_get_data): New functions.
+	(rpl_memcpy): A minimal fallback implementation.
+	(rpl_realloc): A realloc implemented with lt_dlmalloc and
+	lt_dlfree.
+	(LT_DLMALLOC, LT_DLFREE, LT_DLREALLOC, LT_DLMEM_REASSIGN):
+	New memory handling convenience macros.  Use them
+	appropriately throughout the rest of this file.
+	* ltdl.h (lt_dlcaller_register, lt_dlcaller_set_data,
+	lt_dlcaller_get_data): Prototyped.
+
 2001-01-04  Gary V. Vaughan  <gvv@techie.com>
 
 	* libltdl/ltdl.h:  formatting change.
