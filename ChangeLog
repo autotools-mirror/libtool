@@ -1,3 +1,10 @@
+1999-05-27  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* TODO: Remove the short list of people interested in C++
+	constructors; it's not meaningful, since there are so many more
+	people requesting this feature, and we just can't maintain it
+	accurate.
+
 1999-05-27 Thomas Tanner  <tanner@ffii.org>
 
 	* ltmain.in: when linking another library add its

@@ -68,10 +68,6 @@ does not handle static constructors properly, even on operating
 systems that support them.  ``Don't use static constructors'' is no
 longer a satisfactory answer.
 
-People who need it:
-  Jean Daniel Fekete <Jean-Daniel.Fekete@emn.fr>
-  Thomas Hiller <hiller@tu-harburg.d400.de>
-
 * We need some mechanism to allow users to pass flags to the linker
 and/or to the compiler, when creating libtool archives.  We could
 recognize linker flags such as `-Wl,flag' and `-Xlinker flag' in
