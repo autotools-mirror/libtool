@@ -1,5 +1,8 @@
 1999-03-19  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* tests/*.test: when a test fails, skip tests that depend on it.
+	If a certain configuration is not supported, skip all its tests.
+
 	* doc/libtool.texi: reorder tests to reflect execution order
 
 	* tests/noinst-link.test: new test

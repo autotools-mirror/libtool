@@ -13,7 +13,7 @@ fi
 if test -f ../mdemo/Makefile; then :
 else
   echo "You must run mdemo-conf.test before running $0" 1>&2
-  exit 1
+  exit 77
 fi
 
 # Change to our build directory.

@@ -13,7 +13,7 @@ fi
 if test -f ../mdemo/mdemo; then :
 else
   echo "You must run mdemo-make.test before running $0" 1>&2
-  exit 1
+  exit 77
 fi
 
 # Check to see if the programs really run.

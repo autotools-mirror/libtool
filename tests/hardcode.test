@@ -2,7 +2,7 @@
 # hardcode.test - check to see what the system linker hardcodes
 
 # Test script header.
-need_prefix=yes # otherwise it will be removed, and build-relink fails
+need_prefix=yes
 if test -z "$srcdir"; then
   srcdir=`echo "$0" | sed 's%/[^/]*$%%'`
   test "$srcdir" = "$0" && srcdir=.
@@ -11,14 +11,11 @@ fi
 . $srcdir/defs || exit 1
 
 # Check that things are built.
-if test -f ../demo/hell; then :
+if test -f $prefix/lib/libhello.la && cd ../demo; then :
 else
-  echo "You must run demo-make.test before $0" 1>&2
-  exit 1
+  echo "You must run demo-inst.test before $0" 1>&2
+  exit 77
 fi
-
-# Change to our build directory.
-cd ../demo || exit 1
 
 # Unfortunately, we need access to libtool internals for this test.
 objdir=NONE
