@@ -1,3 +1,8 @@
+2003-09-21  Robert Millan  <robertmh@gnu.org>
+
+	* libtool.m4: Add GNU/KNetBSD support.
+	* ltdl.m4: Likewise.
+
 2003-09-13  Scott James Remnant  <scott@netsplit.com>
 
 	* libtool.m4: allow STRIP to contain spaces and additional

@@ -145,10 +145,8 @@ AC_CACHE_CHECK([whether deplibs are loaded by dlopen],
     # If you are looking for one http://www.opendarwin.org/projects/dlcompat
     libltdl_cv_sys_dlopen_deplibs=yes
     ;;
-  kfreebsd*-gnu)
-    libltdl_cv_sys_dlopen_deplibs=yes
-    ;;
-  gnu*)
+  gnu* | linux* | kfreebsd*-gnu | knetbsd*-gnu)
+    # GNU and its variants, using gnu ld.so (Glibc)
     libltdl_cv_sys_dlopen_deplibs=yes
     ;;
   hpux10*|hpux11*)
@@ -162,9 +160,6 @@ AC_CACHE_CHECK([whether deplibs are loaded by dlopen],
   irix*)
     # The case above catches anything before 6.2, and it's known that
     # at 6.2 and later dlopen does load deplibs.
-    libltdl_cv_sys_dlopen_deplibs=yes
-    ;;
-  linux*)
     libltdl_cv_sys_dlopen_deplibs=yes
     ;;
   netbsd*)
