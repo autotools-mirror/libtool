@@ -1,3 +1,58 @@
+Mon Mar 31 16:15:03 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltmain.sh.in (link): Only fail if a convenience library doesn't
+	exist, and the user specified -whole-archive.
+
+Fri Mar 28 19:09:08 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltmain.sh.in (link): Use the hardcode_libdir_separator.
+	Convenience libraries are libtool objects if we're not building
+	libtool libs.
+
+	* ltconfig.in (hardcode_libdir_separator): Added in case the
+ 	linker only honours the last of the -rpath flags (but it can
+ 	contain multiple colon-separated directories), such as on OSF/1.
+  	Reported by Carl D. Roth.
+
+	* ltmain.sh.in (link): Set the dlname if -export-dynamic is given.
+	(install, uninstall): Handle the dlname file separately.
+
+	* ltconfig.in (export_dynamic_flag): Added to allow programs to
+	use reflexive dlopens.
+
+	* ltmain.sh.in: Include the mode name in any help messages.
+	(dlname): New mode to give the name to be used with dlopen(3).
+
+	* ltconfig.in (AR): Allow AR to be set by the user, and export it
+	to ltmain.sh.
+
+	* ltmain.sh.in: Remove broken profiled library support.
+	Added `-whole-archive' and `-no-whole-archive' to manipulate
+	convenience libraries.
+
+Thu Mar 27 15:55:34 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltmain.sh.in (link): Allow the creation of static convenience
+	libraries made of libtool objects.  Suggested by David
+	Mosberger-Tang.
+
+Tue Mar 25 08:38:23 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltconfig.in: On AIX, libtool also needs to look for `B' symbols
+ 	in nm output.  These are global variable definitions.
+
+	* ltmain.sh.in: Linking with -static should link against the
+	linklib if old_library is empty (like it is on AIX).
+
+	* ltconfig.in: Change the order of OS detection, so that
+ 	linux-gnu* is detected before gnu*.
+
+	* Makefile.am (libtool): Use the correct CC, RANLIB, LD, when
+	generating libtool.  From Carl D. Roth.
+
+	* configure.in: Find out the user-supplied CC, LD, RANLIB.  From
+	Carl D. Roth.
+
 Mon Mar 24 01:26:48 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltmain.sh.in: Linking with -static should link against the old

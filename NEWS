@@ -1,3 +1,11 @@
+NEWS - list of user-visible changes between releases of GNU libtool.
+
+New in 0.9:
+* Bug fixes.
+* The libtool demo now uses the libm cos(3) function, to demonstrate
+  inter-library dependencies.
+* The PLATFORMS file has been moved to doc/platforms.texi.
+
 New in 0.8:
 * Bug fixes, and more documentation.
 * Basic support for other language compilers (C++, Fortran, and

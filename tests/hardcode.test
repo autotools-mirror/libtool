@@ -69,18 +69,18 @@ for file in hc-*; do
       status=1
     fi
   elif egrep 'unsupported' $file > /dev/null; then
-    if test $expected = yes; then
+    if test $expected = unsupported; then
       echo "\`$file' was not linked properly, as libtool expected"
     else
       echo "\`$file' was not linked properly, which fooled libtool" 1>&2
       status=1
     fi
   else
-    if test $expected = yes; then
+    if test $expected = no; then
+      echo ".libs was not hardcoded in \`$file', as libtool expected"
+    else
       echo ".libs was not hardcoded in \`$file', which fooled libtool" 1>&2
       status=1
-    else
-      echo ".libs was not hardcoded in \`$file', as libtool expected"
     fi
   fi
 done

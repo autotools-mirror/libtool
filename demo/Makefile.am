@@ -48,6 +48,7 @@ hc-minusL: $(hell_OBJECTS) $(hell_DEPENDENCIES)
 	$(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) -L./.libs -lhello $(LIBS)
 
 hc-libpath: $(hell_OBJECTS) $(hell_DEPENDENCIES)
+	@echo "You may ignore any linking errors from the following command:"
 	@eval `egrep -e '^shlibpath_var=' ./libtool`; \
 	  echo "$$shlibpath_var=./.libs $(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) -lhello $(LIBS) || echo unsupported > $@"; \
 	  eval "$$shlibpath_var=./.libs $(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) -lhello $(LIBS) || echo unsupported > $@"

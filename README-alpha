@@ -9,6 +9,8 @@ libtool, that may not work with your own copy of Automake.  Gordon is
 working closely with Tom Tromey to integrate libtool patches into
 Automake.
 
-In the meantime, just ignore these references, or ask Gord for his
+In the meantime, just ignore these references, or use Gord's
 modified version of automake-1.1g that supports all the features
-described in the libtool manual.
+described in the libtool manual:
+
+<URL:http://www.enci.ucalgary.ca/~gord/src/automake-1.1g-libtool.tar.gz>

@@ -1,3 +1,5 @@
+* Implement new idea for Automake support: LTLIBRARIES.
+
 For 1.1:
 
 * Write libtool not to be dependent on the compiler used to configure
@@ -5,6 +7,10 @@ it.
 
 * Implement full multi-language support.  There are beginnings of this
 in the manual (Other Languages).
+
+* Consider allowing the creation of convenience libraries made of
+libtool objects.  From David Mosberger-Tang.  Think about how this
+would be done with Automake.
 
 Sometime in the future (maybe):
 

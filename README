@@ -17,7 +17,7 @@ Shared library support has been implemented for these platforms:
   IRIX 5.x, 6.x (*-*-irix5*, *-*-irix6*)
   Linux ELF targets (*-*-linux*, except *-*-linuxaout* and *-*-linuxoldld*)
   NetBSD 1.x (*-*-netbsd*)
-  SCO OpenServer 5.x (*-*-sco3.2v5*) [FIXME: in progress]
+  SCO OpenServer 5.x (*-*-sco3.2v5*)
   Solaris 1.x, a.k.a. SunOS 4.x (*-*-sunos4*)
   Solaris 2.x (*-*-solaris2*)
   All ELF targets that use both the GNU C compiler (gcc) and GNU ld
@@ -27,6 +27,10 @@ See the file NEWS for a description of recent changes to libtool.
 See the file INSTALL for instructions on how to build and install libtool.
 
 See the file README-automake for details on Automake support for libtool.
+
+See the file PLATFORMS for a list of platforms that libtool shared
+library support was tested on.  This information is also in
+(libtool)Tested Platforms.
 
 If you have any suggestions or bug reports, or you wish to port libtool
 to a new platform, please send electronic mail to Gord Matzigkeit

@@ -4,7 +4,8 @@
 # Test script header.
 need_prefix=yes
 if test -z "$srcdir"; then
-  srcdir=.
+  srcdir=`echo "$0" | sed 's%/[^/]*$%%'`
+  test "$srcdir" = "$0" && srcdir=.
   test "${VERBOSE+set}" != "set" && VERBOSE=yes
 fi
 . $srcdir/defs || exit 1

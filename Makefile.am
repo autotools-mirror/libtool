@@ -1,7 +1,11 @@
-## Process Makefile.am with automake to create Makefile.in.
+## Process Makefile.am with automake to create Makefile.in. -*-Makefile-*-
 ## Gordon Matzigkeit <gord@gnu.ai.mit.edu>, 1996
 AUTOMAKE_OPTIONS = gnits
 SUBDIRS = doc tests
+
+# We need to export these variables when we run ltconfig.
+CFLAGS = @CFLAGS@
+CPPLAGS = @CPPFLAGS@
 
 aclocal_macros = libtool.m4 replfunc.m4
 
@@ -30,18 +34,23 @@ bin_SCRIPTS = libtool libtoolize
 
 libtool: ltconfig
 	@echo 'WARNING: Warnings from ltconfig can be ignored. :-)'
+	CC="${CC}" \
+	CFLAGS="${CFLAGS}" \
+	CPPFLAGS="${CPPFLAGS}" \
+	LD="${LD}" \
+	RANLIB="${RANLIB}" \
 	$(srcdir)/ltconfig --srcdir=$(srcdir) $(pkgdatadir)/ltmain.sh
 
-# These depend on configure.in for version numbers.
-libtoolize: libtoolize.in configure.in
+# These depend on config.status for version numbers.
+libtoolize: libtoolize.in $(top_builddir)/config.status
 	CONFIG_FILES=libtoolize CONFIG_HEADERS= $(top_builddir)/config.status
 	chmod +x libtoolize
 
-$(srcdir)/ltconfig: ltconfig.in configure.in
+$(srcdir)/ltconfig: ltconfig.in $(top_builddir)/config.status
 	CONFIG_FILES=ltconfig CONFIG_HEADERS= $(top_builddir)/config.status
 	chmod +x ltconfig
 
-$(srcdir)/ltmain.sh: ltmain.sh.in configure.in
+$(srcdir)/ltmain.sh: ltmain.sh.in $(top_builddir)/config.status
 	CONFIG_FILES=ltmain.sh CONFIG_HEADERS= $(top_builddir)/config.status
 
 # Distribute the demo subdirectory.

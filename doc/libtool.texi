@@ -8,7 +8,7 @@
 @synindex pg cp
 
 @include version.texi
-@set MAINT Gord Matzigkeit <gord@@gnu.ai.mit.edu>
+@set BUGADDR Gord Matzigkeit <gord@@gnu.ai.mit.edu>
 
 @ifinfo
 @format
@@ -154,7 +154,6 @@ Tips for Interface Design
 Using Libtool with Other Languages
 
 * C++ Libraries::               Using libtool with C++.
-* Unsupported Languages::       Using libtool with arbitrary languages.
 
 Maintainance Notes for Libtool
 
@@ -167,7 +166,6 @@ Platform Quirks
 
 * Compilers::                   Creating object files from source files.
 * Reloadable Objects::          Binding object files together.
-* Shared Libraries::            Shared library implementations.
 * Archivers::                   Programs that create static archives.
 * Strip::                       Removing unnecessary linkage information.
 
@@ -1356,6 +1354,11 @@ Display a help message and exit.
 Print @file{libtoolize} version information and exit.
 @end table
 
+If @file{libtoolize} detects an explicit call to
+@code{AC_CONFIG_AUX_DIR} (@pxref{Input, , The Autoconf Manual,
+autoconf.info, The Autoconf Manual}) in your @file{configure.in}, it
+will put the files in the specified directory.
+
 @file{libtoolize} displays hints for adding libtool support to your
 package, as well.
 
@@ -1663,12 +1666,19 @@ compilers.
 Do not be naive about writing portable code.  Following the tips given
 above will help you miss the most obvious problems, but there are
 definitely other subtle portability issues.  You may need to cope with
-any of the following issues:
+some of the following issues:
 
 @itemize @bullet
 @item
 Pre-ANSI compilers do not always support the @code{void *} generic
 pointer type, and so need to use @code{char *} in its place.
+
+@item
+The @code{const} and @code{signed} keywords are not supported by some
+compilers, especially pre-ANSI compilers.
+
+@item
+The @code{long double} type is not supported by many compilers.
 @end itemize
 
 @node Other Languages, Maintaining, Library Tips, Top
@@ -1685,37 +1695,169 @@ and what special considerations you need to make if you do not use C.
 
 @menu
 * C++ Libraries::               Using libtool with C++.
-* Unsupported Languages::       Using libtool with arbitrary languages.
 @end menu
 
-@node C++ Libraries, Unsupported Languages, Other Languages, Other Languages
+@node C++ Libraries,  , Other Languages, Other Languages
 @comment  node-name,  next,  previous,  up
 @section Writing Libraries for C++
 
-There are ways to use libraries with C++:
+Creating libraries of C++ code is a fairly straightforward process, and
+differs from C code in only two ways:
 
 @enumerate 1
 @item
-Libraries written in C, which define only normal C functions, but are
-linked into C++ programs.  @xref{C Header Files} for additional
-information.
+Because of name mangling, C++ libraries are only usable by the C++
+compiler that created them.  This decision was made by the designers of
+C++ in order to protect users from conflicting implementations of
+features such as constructors, exception handling, and RTTI.
 
 @item
-Libraries written in C++, which define C++ classes and methods.
+On some systems, notably SunOS 4, the dynamic linker does not call
+non-constant initializers.  This can lead to hard-to-pinpoint bugs in
+your library.
 @end enumerate
 
-This section deals only with the second possibility.
+This second issue is very complex.  Basically, avoid any global or
+static variable initializations that would cause an ``initializer
+element is not constant'' error if you compiled themwith a standard C
+compiler.
 
-FIXME include Bruno's notes here
+There are ways of working around this problem, but they are beyond the
+scope of this manual.
 
-@node Unsupported Languages,  , C++ Libraries, Other Languages
+@node Troubleshooting, Index, Maintaining, Top
 @comment  node-name,  next,  previous,  up
-@section Unsupported Languages
+@chapter Troubleshooting
 
-Even if your favourite programming language is not directly supported by
-libtool, you may still be able to use it with libtool.
+Libtool is under constant development, changing to keep up-to-date with
+new operating systems.  If libtool doesn't work the way you think it
+should on your platform, you should read this chapter to help determine
+what the problem is, and how to resolve it.
 
-FIXME tell how to skip the libtool --mode=compile stage and keep going
+@menu
+* Libtool Test Suite::          Libtool's self-tests.
+* Reporting Bugs::              How to report problems with libtool.
+@end menu
+
+@node Libtool Test Suite, Reporting Bugs, Troubleshooting, Troubleshooting
+@comment  node-name,  next,  previous,  up
+@section The Libtool Test Suite
+
+Libtool comes with its own set of programs that test its capabilities,
+and report obvious bugs in the libtool program.  These tests, too, are
+constantly evolving, based on past problems with libtool, and known
+deficiencies in other operating systems.
+
+As described in the @file{INSTALL} file, you may run @kbd{make check}
+after you have built libtool (possibly before you install it) in order
+to make sure that it has the functionality demanded by the test
+programs.
+
+@menu
+* Test Descriptions::           The contents of the test suite.
+* When Tests Fail::             What to do when a test fails.
+@end menu
+
+@node Test Descriptions, When Tests Fail, Libtool Test Suite, Libtool Test Suite
+@comment  node-name,  next,  previous,  up
+@subsection Description of Test Suite
+
+Here is a list of the current programs in the test suite, and what they
+test for:
+
+@table @file
+@item demo-conf.test
+@itemx demo-exec.test
+@itemx demo-inst.test
+@itemx demo-make.test
+@itemx demo-unst.test
+These programs check to see that the @file{demo} subdirectory of the
+libtool distribution can be configured, built, installed, and
+uninstalled correctly.
+
+The @file{demo} subdirectory contains a demonstration of a trivial
+package that uses libtool.
+
+@item hardcode.test
+On all systems with shared libraries, the location of the library can be
+encoded in executables that are linked against it @pxref{Linking
+Executables}.  This test checks the conditions under which your system
+linker hardcodes the library location, and guarantees that they
+correspond to libtool's own notion of how your linker behaves.
+
+@item link.test
+This test guarantees that linking directly against a non-libtool static
+library works properly.
+
+@item link-2.test
+This test makes sure that files ending in @samp{.lo} are never linked
+directly into a program file.
+
+@item suffix.test
+When other programming languages are used with libtool (@pxref{Other
+Languages}), the source files may end in suffixes other than @samp{.c}.
+This test validates that libtool can handle suffixes for all the file
+types that it supports, and that it fails when the suffix is invalid.
+
+@item test-e.test
+This program checks that the @code{test -e} construct is @emph{never} in
+the libtool scripts.  Checking for the existence of a file can only be
+done in a portable way by using @code{test -f}.
+@end table
+
+@node When Tests Fail,  , Test Descriptions, Libtool Test Suite
+@comment  node-name,  next,  previous,  up
+@subsection When Tests Fail
+
+Each of the above tests are designed to produce no output when they are
+run via @kbd{make check}.  The exit status of each program tells the
+Makefile whether or not the test succeeded.
+
+If a test fails, it means that there is either a programming error in
+libtool, or in the test itself.
+
+To investigate a particular test, you may run it directly, as you would
+a normal program.  When the test is invoked in this way, it produces
+output which may be useful in determining what the problem is.
+
+Another way to have the test programs produce output is to set the
+@var{VERBOSE} environment variable to @samp{yes} before running them.
+For example, @kbd{env VERBOSE=yes make check} runs all the tests, and
+has each of them display debugging information.
+
+@node Reporting Bugs,  , Libtool Test Suite, Troubleshooting
+@comment  node-name,  next,  previous,  up
+@section Reporting Bugs
+
+If you think you have discovered a bug in libtool, you should think
+twice: the libtool maintainer is notorious for passing the buck (or
+maybe that should be ``passing the bug'').
+
+Libtool was invented to fix known deficiencies in shared library
+implementations, so, in a way, most of the bugs in libtool are actually
+bugs in other operating systems.
+
+However, the libtool maintainer would definitely be happy to add support
+for somebody else's buggy operating system.  [I wish there was a good
+way to do winking smiley-faces in texinfo.]
+
+Genuine bugs in libtool include problems with shell script portability,
+documentation errors, and failures in the test suite (@pxref{Libtool
+Test Suite}).
+
+First, check the documentation and help screens to make sure that the
+behaviour you think is a problem is not already mentioned as a feature.
+
+Then, you should read the Emacs guide to reporting bugs (@pxref{Bugs, , The
+Emacs Manual, emacs.info, The Emacs Manual}).  Some of the details
+listed there are specific to Emacs, but the priciple behind them is a
+general one.
+
+Finally, send a bug report to @value{BUGADDR} with any appropriate
+@emph{facts}, such as test suite output (@pxref{When Tests Fail}), all
+the details needed to reproduce the bug, and a brief description of why
+you think the behaviour is a bug.  Be sure to include the word
+``libtool'' in the subject line.
 
 @node Maintaining, Troubleshooting, Other Languages, Top
 @comment  node-name,  next,  previous,  up
@@ -1795,7 +1937,6 @@ improve libtool, or write your own.
 @menu
 * Compilers::                   Creating object files from source files.
 * Reloadable Objects::          Binding object files together.
-* Shared Libraries::            Shared library implementations.
 * Archivers::                   Programs that create static archives.
 * Strip::                       Removing unnecessary linkage information.
 @end menu
@@ -1859,7 +2000,7 @@ Use @samp{-KPIC} to generate PIC.
 Use @samp{-PIC} to generate PIC.
 @end table
 
-@node Reloadable Objects, Shared Libraries, Compilers, Platform Quirks
+@node Reloadable Objects, Archivers, Compilers, Platform Quirks
 @comment  node-name,  next,  previous,  up
 @subsection Reloadable Objects
 
@@ -1868,23 +2009,7 @@ On all known systems, a reloadable object can be created by running
 reloadable object may be treated as exactly equivalent to other
 objects.
 
-@node Shared Libraries, Archivers, Reloadable Objects, Platform Quirks
-@comment  node-name,  next,  previous,  up
-@subsection Shared Libraries
-
-The basic motivation for writing libtool was the different approaches to
-creating shared libraries (@pxref{Issues}).  This subsection documents
-some of the basic shared library paradigms, and how to build shared
-libraries on each system.
-
-FIXME we really should paraphrase a bunch of the system docs here, in
-more detail than just what libtool requires right now.  Organization of
-this section is up for grabs, as well.
-
-We need to cover versioning (including soname), actual linker commands,
-and path information.  AIX deserves its own section, as usual.
-
-@node Archivers, Strip, Shared Libraries, Platform Quirks
+@node Archivers, Strip, Reloadable Objects, Platform Quirks
 @comment  node-name,  next,  previous,  up
 @subsection Archivers
 
@@ -2031,139 +2156,6 @@ Variables ending in @samp{_cmds} may contain a semicolon-separated list
 of commands that are evaluated one after another.  If any of the
 commands return a nonzero exit status, libtool generally exits with an
 error message.
-
-@node Troubleshooting, Index, Maintaining, Top
-@comment  node-name,  next,  previous,  up
-@chapter Troubleshooting
-
-Libtool is under constant development, changing to keep up-to-date with
-new operating systems.  If libtool doesn't work the way you think it
-should on your platform, you should read this chapter to help determine
-what the problem is, and how to resolve it.
-
-@menu
-* Libtool Test Suite::          Libtool's self-tests.
-* Reporting Bugs::              How to report problems with libtool.
-@end menu
-
-@node Libtool Test Suite, Reporting Bugs, Troubleshooting, Troubleshooting
-@comment  node-name,  next,  previous,  up
-@section The Libtool Test Suite
-
-Libtool comes with its own set of programs that test its capabilities,
-and report obvious bugs in the libtool program.  These tests, too, are
-constantly evolving, based on past problems with libtool, and known
-deficiencies in other operating systems.
-
-As described in the @file{INSTALL} file, you may run @kbd{make check}
-after you have built libtool (possibly before you install it) in order
-to make sure that it has the functionality demanded by the test
-programs.
-
-@menu
-* Test Descriptions::           The contents of the test suite.
-* When Tests Fail::             What to do when a test fails.
-@end menu
-
-@node Test Descriptions, When Tests Fail, Libtool Test Suite, Libtool Test Suite
-@comment  node-name,  next,  previous,  up
-@subsection Description of Test Suite
-
-Here is a list of the current programs in the test suite, and what they
-test for:
-
-@table @file
-@item demo-conf.test
-@itemx demo-exec.test
-@itemx demo-inst.test
-@itemx demo-make.test
-@itemx demo-unst.test
-These programs check to see that the @file{demo} subdirectory of the
-libtool distribution can be configured, built, installed, and
-uninstalled correctly.
-
-The @file{demo} subdirectory contains a demonstration of a trivial
-package that uses libtool.
-
-@item hardcode.test
-On all systems with shared libraries, the location of the library can be
-encoded in executables that are linked against it @pxref{Linking
-Executables}.  This test checks the conditions under which your system
-linker hardcodes the library location, and guarantees that they
-correspond to libtool's own notion of how your linker behaves.
-
-@item link.test
-This test guarantees that linking directly against a non-libtool static
-library works properly.
-
-@item link-2.test
-This test makes sure that files ending in @samp{.lo} are never linked
-directly into a program file.
-
-@item suffix.test
-When other programming languages are used with libtool (@pxref{Other
-Languages}), the source files may end in suffixes other than @samp{.c}.
-This test validates that libtool can handle suffixes for all the file
-types that it supports, and that it fails when the suffix is invalid.
-
-@item test-e.test
-This program checks that the @code{test -e} construct is @emph{never} in
-the libtool scripts.  Checking for the existence of a file can only be
-done in a portable way by using @code{test -f}.
-@end table
-
-@node When Tests Fail,  , Test Descriptions, Libtool Test Suite
-@comment  node-name,  next,  previous,  up
-@subsection When Tests Fail
-
-Each of the above tests are designed to produce no output when they are
-run via @kbd{make check}.  The exit status of each program tells the
-Makefile whether or not the test succeeded.
-
-If a test fails, it means that there is either a programming error in
-libtool, or in the test itself.
-
-To investigate a particular test, you may run it directly, as you would
-a normal program.  When the test is invoked in this way, it produces
-output which may be useful in determining what the problem is.
-
-Another way to have the test programs produce output is to set the
-@var{VERBOSE} environment variable to @samp{yes} before running them.
-For example, @kbd{make check VERBOSE=yes} runs all the tests, and has
-each of them display debugging information.
-
-@node Reporting Bugs,  , Libtool Test Suite, Troubleshooting
-@comment  node-name,  next,  previous,  up
-@section Reporting Bugs
-
-If you think you have discovered a bug in libtool, you should think
-twice: the libtool maintainer is notorious for passing the buck (or
-maybe that should be ``passing the bug'').
-
-Libtool was invented to fix known deficiencies in shared library
-implementations, so, in a way, most of the bugs in libtool are actually
-bugs in other operating systems.
-
-However, the libtool maintainer would definitely be happy to add support
-for somebody else's buggy operating system.  (I wish there was a way to
-do winking smiley-faces in texinfo).
-
-Genuine bugs in libtool include problems with shell script portability,
-documentation errors, and failures in the test suite (@pxref{Libtool
-Test Suite}).
-
-First, check the documentation and help screens to make sure that the
-behaviour you think is a problem is not already mentioned.
-
-Then, you should read the Emacs guide to reporting bugs (@pxref{Bugs, , The
-Emacs Manual, emacs.info, The Emacs Manual}).  Some of the details
-listed there are specific to Emacs, but the priciple behind them is a
-general one.
-
-Finally, send a bug report to the libtool maintainer (@value{MAINT}),
-with any appropriate @emph{facts}, such as test suite output
-(@pxref{When Tests Fail}), all the details needed to reproduce the bug,
-and a brief description of why you think the behaviour is a bug.
 
 @node Index,  , Troubleshooting, Top
 @comment  node-name,  next,  previous,  up

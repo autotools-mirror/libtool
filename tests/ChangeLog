@@ -1,3 +1,15 @@
+Sat Jan 18 10:33:21 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* demo-conf.test: Use the CONFIG_SHELL environment variable when
+ 	running configure in the demo directory.  From Bruno Haible.
+
+	* Makefile.am (clean-local): Make distclean in the demo directory,
+	so that ``make clean; env CC=cc make check'' works as one would
+	expect.
+
+	* demo-make.test: Fix typo (use $make instead of make).  Reported
+ 	by Akim Demaille.
+
 Thu Jan 16 21:43:18 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* tlibtool: Rewrote to grab all the settings from the generated
@@ -8,8 +20,8 @@ Thu Jan 16 21:43:18 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 Tue Jan 14 09:17:27 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
-	* demo-conf.test, demo-inst.test, demo-make.test, demo-unst.test,
-	hardcode.test: Use $make instead of make.
+	* demo-conf.test, demo-inst.test, demo-unst.test, hardcode.test:
+ 	Use $make instead of make.
 
 	* defs (make): Add definition of $make that uses the $MAKE
 	environment variable, if set.  Suggested by Bruno Haible.

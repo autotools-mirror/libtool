@@ -20,7 +20,7 @@ Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.  */
 #include "foo.h"
 
 int
-foo (void)
+foo ()
 {
   return FOO_RET;
 }

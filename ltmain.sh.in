@@ -46,6 +46,13 @@ if test "$LTCONFIG_VERSION" != "$VERSION"; then
   exit 1
 fi
 
+#
+if test "$build_libtool_libs" != yes && test "$build_old_libs" != yes; then
+  echo "$progname: not configured to build any kind of library" 1>&2
+  echo "Fatal configuration error.  See the $PACKAGE docs for more information." 1>&2
+  exit 1
+fi
+
 # Global variables.
 mode=$default_mode
 nonopt=
@@ -294,7 +301,7 @@ if test -z "$show_help"; then
 
     # We need to know -static, to get the right output filenames.
     case " $@ " in
-    *" -static "*) build_libtool_libs=no ;;
+    *" -static "*) build_libtool_libs=no build_old_libs=yes ;;
     esac
 
     for arg
@@ -400,11 +407,16 @@ if test -z "$show_help"; then
 	  exit 1
 	fi
 
-	# Get the name of the link library.
+	# Get the name of the library we link against.
 	linklib=
-	for linklib in $library_names; do
-	  :
+	for l in $old_library $library_names; do
+	  linklib="$l"
 	done
+
+	if test -z "$linklib"; then
+	  echo "$progname: cannot find name of link library for \`$arg'" 1>&2
+	  exit 1
+	fi
 
 	# Find the relevant object directory and library name.
 	name=`echo "$arg" | sed 's%^.*/%%; s/\.la$//; s/^lib//'`
@@ -426,19 +438,14 @@ if test -z "$show_help"; then
 	    esac
 	  fi
 
-	  if test -z "$linklib"; then
-	    echo "$progname: cannot find name of link library for \`$arg'" 1>&2
-	    exit 1
-	  fi
-
-	  if test -n "$hardcode_libdir_flag"; then
-	    tmp=`eval echo \"$hardcode_libdir_flag\"`
-	    compile_command="$compile_command $tmp"
-	    finalize_command="$finalize_command $tmp"
+	  if test -n "$hardcode_libdir_flag_spec"; then
+	    hardcode_libdir_flag=`eval echo \"$hardcode_libdir_flag_spec\"`
+	    compile_command="$compile_command $hardcode_libdir_flag"
+	    finalize_command="$finalize_command $hardcode_libdir_flag"
 	  fi
 
 	  case "$hardcode_action" in
-	  rpath)
+	  immediate)
 	    if test "$hardcode_direct" = no; then
 	      compile_command="$compile_command $dir/$linklib"
 	    elif test "$hardcode_minus_L" = no; then
@@ -472,20 +479,27 @@ if test -z "$show_help"; then
 	      compile_command="$compile_command -l$name"
 	    fi
 	    ;;
+
+	  *)
+	    echo "$progname: \`$hardcode_action' is an unknown hardcode action" 1>&2
+	    exit 1
+	    ;;
 	  esac
 
 	  # Finalize command for both is simple: just hardcode it.
 	  if test "$hardcode_direct" = yes; then
 	    finalize_command="$finalize_command $libdir/$linklib"
-	  elif test "$hardcode_minus_L" = no; then
+	  elif test "$hardcode_minus_L" = yes; then
 	    finalize_command="$finalize_command -L$libdir -l$name"
-	  elif test "$hardcode_shlibpath_var" = no; then
+	  elif test "$hardcode_shlibpath_var" = yes; then
 	    finalize_shlibpath="$finalize_shlibpath$libdir:"
 	    finalize_command="$finalize_command -l$name"
+          else
+            # We can't seem to hardcode it, guess we'll fake it.
+	    finalize_command="$finalize_command -L$libdir -l$name"
 	  fi
         else
           # Transform directly to old archives if we don't build new libraries.
-	  test -z "$old_library" && old_library="$linklib"
           compile_command="$compile_command $dir/$old_library"
 	  finalize_command="$finalize_command $dir/$old_library"
         fi
@@ -661,7 +675,7 @@ if test -z "$show_help"; then
 
       if test "$build_libtool_libs" = yes; then
 	# Get the real and link names of the library.
-	library_names=`eval echo \"$lib_names\"`
+	library_names=`eval echo \"$library_names_spec\"`
 	set dummy $library_names
 	realname="$2"
 	shift; shift
@@ -787,6 +801,13 @@ if test -z "$show_help"; then
 	compile_command=`echo "$compile_command " | sed 's/\.lo /.o /g; s/ $//'`
       fi
 
+      # Create the binary in the object directory, then wrap it.
+      if test -d $objdir; then :
+      else
+        $show "$mkdir $objdir"
+        $run $mkdir $objdir || exit $?
+      fi
+
       if test -z "$link_against_libtool_libs" || test "$build_libtool_libs" != yes; then
 	# We have no uninstalled library dependencies, so finalize right now.
 	$show "$compile_command"
@@ -802,13 +823,6 @@ if test -z "$show_help"; then
 	  status=$?
 	fi
 	exit $status
-      fi
-
-      # Create the binary in the object directory, then wrap it.
-      if test -d $objdir; then :
-      else
-        $show "$mkdir $objdir"
-        $run $mkdir $objdir || exit $?
       fi
 
       if test -n "$shlibpath_var"; then
