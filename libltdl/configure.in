@@ -42,7 +42,7 @@ AC_CACHE_CHECK([which extension is used for shared libraries],
   done
   rm -f conftest
 changequote(, )
-  echo "$last" | sed 's/^[^.]*//;s/\$.*$//;s/\.$//' > conftest
+  echo "$last" | sed 's/\[.*\]//;s/^[^.]*//;s/\$.*$//;s/\.$//' > conftest
 changequote([, ])
 )
 libltdl_cv_shlibext=`cat conftest`

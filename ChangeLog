@@ -5,6 +5,15 @@
 	* ltmain.in: don't allow relative run-paths, fixed a typo in a warning,
 	  ignore -dlopen self for libraries and objects
 
+1999-03-23  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
+
+	* libltdl/configure.in: the sed expression for finding the shared
+	library extension used to think the . in [.] for the cygwin
+	shared_library_names_spec was the start of the extension!!  We now
+	remove anything in square brackets (assuming that the square
+	brackets delimit a sed or expr expression which is not part of the
+	extension) before looking for the extension.
+
 1999-03-21  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* tests/build-relink.test: if we relink and have hardcode_direct, 
