@@ -81,7 +81,7 @@ for mode in compile link install; do
   esac
 
   # Metacharacters that should be backslashified.
-  for mchar in \\ \" \$; do
+  for mchar in \\ \" \` \$; do
     $echo "= trying: \\$mchar quoting"
     result=`$libtool -n --mode=$mode $preargs "${flag}${mchar}test${mchar}" $postargs` || status=1
     case "$result" in

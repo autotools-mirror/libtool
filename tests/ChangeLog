@@ -1,3 +1,7 @@
+Tue Nov 11 15:08:12 1997  Gordon Matzigkeit  <gord@gnu.org>
+
+	* quote.test: Add backticks to the backslashify test.
+
 Tue Oct  7 10:48:37 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* hardcode.test (hardcode_libdir_flag_spec): Check the hardcoding

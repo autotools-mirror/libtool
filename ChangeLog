@@ -1,3 +1,24 @@
+Fri Nov 14 10:44:07 1997  Gordon Matzigkeit  <gord@gnu.org>
+
+	* ltconfig.in (hardcode_libdir_flag_spec): Set to `-R' for FreeBSD
+ 	2.2.  From Sean Kelly.
+	(postuninstall_cmds, old_postuninstall_cmds): Commands to run
+ 	after uninstall mode deletes the libraries.  Suggested by Joop van
+	de Wege.
+
+Tue Nov 11 15:05:58 1997  Gordon Matzigkeit  <gord@gnu.org>
+
+	* ltconfig.in, ltmain.in (sed_quote_subst): Oops.  We forgot to
+ 	quote backticks.  Reported by Joop van de Wege.
+
+Sun Nov  9 18:36:23 1997  Gordon Matzigkeit  <gord@gnu.org>
+
+	* ltconfig.in (symcode): On IRIX, don't extract undefined
+	symbols.  When a function is inlined by G++, references to it are
+	still marked as undefined in the object file.  This means that our
+	symbol file causes undefined references, because there are
+	actually no matching global symbols.  Reported by Paul Kendall.
+
 Sat Nov  8 08:11:26 1997  Gordon Matzigkeit  <gord@gnu.org>
 
 	* ltconfig.in: Don't forget to redirect the COLLECT_NAMES libtool

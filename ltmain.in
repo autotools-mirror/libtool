@@ -66,7 +66,7 @@ rm="rm -f"
 
 # Sed substitution that helps us do robust quoting.  It backslashifies
 # metacharacters that are still active within double-quoted strings.
-sed_quote_subst='s/\([\\"$\\\\]\)/\\\1/g'
+sed_quote_subst='s/\([\\`\\"$\\\\]\)/\\\1/g'
 
 # NLS nuisances.
 # Only set LANG and LC_ALL to C if already set.
@@ -1983,7 +1983,7 @@ EOF
       done
 
       for libdir in $libdirs; do
-        # Do each command in the postinstall commands.
+        # Do each command in the finish commands.
         cmds=`eval \\$echo \"$finish_cmds\"`
         IFS="${IFS= 	}"; save_ifs="$IFS"; IFS=';'
         for cmd in $cmds; do
@@ -2174,6 +2174,33 @@ EOF
           test -n "$dlname" && rmfiles="$rmfiles $dir/$dlname"
           test -n "$old_library" && rmfiles="$rmfiles $dir/$old_library"
 
+	  $show "$rm $rmfiles"
+	  $run $rm $rmfiles
+
+	  if test -n "$library_names"; then
+	    # Do each command in the postuninstall commands.
+	    cmds=`eval \\$echo \"$postuninstall_cmds\"`
+	    IFS="${IFS= 	}"; save_ifs="$IFS"; IFS=';'
+	    for cmd in $cmds; do
+	      IFS="$save_ifs"
+	      $show "$cmd"
+	      $run eval "$cmd"
+	    done
+	    IFS="$save_ifs"
+	  fi
+
+          if test -n "$old_library"; then
+	    # Do each command in the old_postuninstall commands.
+	    cmds=`eval \\$echo \"$old_postuninstall_cmds\"`
+	    IFS="${IFS= 	}"; save_ifs="$IFS"; IFS=';'
+	    for cmd in $cmds; do
+	      IFS="$save_ifs"
+	      $show "$cmd"
+	      $run eval "$cmd"
+	    done
+	    IFS="$save_ifs"
+	  fi
+
           # FIXME: should reinstall the best remaining shared library.
         fi
         ;;
@@ -2183,11 +2210,15 @@ EOF
           oldobj=`$echo "$name" | sed 's/\.lo$/\.o/'`
           rmfiles="$rmfiles $dir/$oldobj"
         fi
+	$show "$rm $rmfiles"
+	$run $rm $rmfiles
         ;;
-      esac
 
-      $show "$rm $rmfiles"
-      $run $rm $rmfiles
+      *)
+      	$show "$rm $rmfiles"
+	$run $rm $rmfiles
+	;;
+      esac
     done
     exit 0
     ;;
