@@ -1,8 +1,7 @@
 ## Process this file with automake to produce Makefile.in
 
 AUTOMAKE_OPTIONS = no-dependencies foreign
-
-EXTRA_DIST = acinclude.m4
+ACLOCAL_AMFLAGS  = -I ../m4
 
 noinst_LTLIBRARIES = libfoo.la
 

@@ -27,7 +27,7 @@ AC_PREREQ(2.50)
 ## ------------------------ ##
 AC_INIT([libtool], [1.5a], [bug-libtool@gnu.org])
 AC_CONFIG_SRCDIR([ltmain.in])
-
+AC_CONFIG_AUX_DIR([config])
 
 
 ## ---------------------------------------- ##
@@ -40,7 +40,7 @@ AC_CONFIG_SRCDIR([ltmain.in])
 TIMESTAMP=
 case AC_PACKAGE_VERSION in
   [*[acegikmoqsuwy])]
-    TIMESTAMP=`${CONFIG_SHELL} ${srcdir}/mkstamp < ${srcdir}/ChangeLog`
+    TIMESTAMP=`${CONFIG_SHELL} ${ac_aux_dir}/mkstamp < ${srcdir}/ChangeLog`
     AS_BOX([Configuring AC_PACKAGE_TARNAME AC_PACKAGE_VERSION$TIMESTAMP])
     echo
     ;;
@@ -77,13 +77,10 @@ AC_CONFIG_SUBDIRS([libltdl])
 CONF_SUBDIRS="cdemo pdemo demo depdemo mdemo mdemo2 tagdemo f77demo"
 AC_SUBST([CONF_SUBDIRS])
 
-ACINCLUDE_M4_LIST="${srcdir}/acinclude.m4"
 DIST_MAKEFILE_LIST=
 for dir in $CONF_SUBDIRS; do
-  ACINCLUDE_M4_LIST="$ACINCLUDE_M4_LIST ${srcdir}/$dir/acinclude.m4"
   DIST_MAKEFILE_LIST="$DIST_MAKEFILE_LIST$dir/Makefile "
 done
-AC_SUBST([ACINCLUDE_M4_LIST])
 AC_SUBST([DIST_MAKEFILE_LIST])
 
 

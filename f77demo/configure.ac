@@ -22,13 +22,14 @@ AC_PREREQ(2.50)
 ## Autoconf initialisation. ##
 ## ------------------------ ##
 AC_INIT([f77demo], [0.1], [bug-libtool@gnu.org])
-AC_CONFIG_SRCDIR([foof.f])dnl
+AC_CONFIG_HEADERS([config.h:config-h.in])
+AC_CONFIG_SRCDIR([foof.f])
+AC_CONFIG_AUX_DIR([../config])
 
 ## ------------------------ ##
 ## Automake Initialisation. ##
 ## ------------------------ ##
 AM_INIT_AUTOMAKE(AC_PACKAGE_TARNAME, AC_PACKAGE_VERSION)
-AM_CONFIG_HEADER([config.h:config-h.in])
 
 
 ## ------------------ ##
@@ -42,7 +43,7 @@ AC_PROG_CC
 AC_PROG_F77
 dnl Check the flags needed to link f77 programs with ld (i.e. cc)
 AC_F77_LIBRARY_LDFLAGS
-dnl Check for underscoring of external names  
+dnl Check for underscoring of external names
 AC_F77_WRAPPERS
 
 # As of the writing of this demo, GNU Autoconf's AC_OBJEXT and

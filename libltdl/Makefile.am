@@ -1,6 +1,7 @@
 ## Process this file with automake to produce Makefile.in
 
 AUTOMAKE_OPTIONS = no-dependencies foreign
+ACLOCAL_AMFLAGS  = -I ../m4
 
 if INSTALL_LTDL
 include_HEADERS = ltdl.h

@@ -1,29 +1,21 @@
 ## Process this file with automake to produce Makefile.in
 
-AUTOMAKE_OPTIONS = 1.3e gnu
+AUTOMAKE_OPTIONS = 1.7a gnu
+ACLOCAL_AMFLAGS  = -I m4
 
 BUILD_SUBDIRS = . libltdl doc tests
-CONF_SUBDIRS = @CONF_SUBDIRS@
 SUBDIRS = $(BUILD_SUBDIRS)
 DIST_SUBDIRS = $(BUILD_SUBDIRS) $(CONF_SUBDIRS)
 
-# We need to export these variables
-CFLAGS = @CFLAGS@
-CPPLAGS = @CPPFLAGS@
-LDFLAGS = @LDFLAGS@
-LIBS= @LIBS@
-FFLAGS = @FFLAGS@
-FLIBS = @FLIBS@
-
-aclocal_macros = libtool.m4 ltdl.m4
+aclocal_macros = m4/libtool.m4 m4/ltdl.m4
 
 EXTRA_DIST = $(aclocal_macros) bootstrap libtoolize.in ltmain.in \
-	mkstamp ChangeLog.0 ChangeLog.1
+	config/mkstamp ChangeLog.0 ChangeLog.1
 CLEANFILES = libtool libtoolize ltmain.shT
 
 # These are required by libtoolize.
-pkgdata_SCRIPTS = config.guess config.sub
-pkgdata_DATA = ltmain.sh
+pkgdata_SCRIPTS = config/config.guess config/config.sub
+pkgdata_DATA = config/ltmain.sh
 
 # This macro file should be visible to Automake's aclocal.
 aclocal_DATA = $(aclocal_macros)
@@ -31,7 +23,7 @@ aclocal_DATA = $(aclocal_macros)
 # The standalone libtool script, and the libtool distributor.
 bin_SCRIPTS = libtool libtoolize
 
-libtool: $(srcdir)/ltmain.sh $(top_builddir)/configure.ac
+libtool: $(srcdir)/config/ltmain.sh $(top_builddir)/configure.ac
 	$(SHELL) $(top_builddir)/config.status --recheck
 	chmod +x $@
 
@@ -39,9 +31,9 @@ libtoolize: $(srcdir)/libtoolize.in $(top_builddir)/config.status
 	CONFIG_FILES=$@ CONFIG_HEADERS= $(SHELL) $(top_builddir)/config.status
 	chmod +x $@
 
-$(srcdir)/ltmain.sh: $(srcdir)/ltmain.in $(TSDEPS)
+$(srcdir)/config/ltmain.sh: $(srcdir)/ltmain.in $(TSDEPS)
 	-rm -f ltmain.shT
-	date=`$(SHELL) $(srcdir)/mkstamp < $(srcdir)/ChangeLog` && \
+	date=`$(SHELL) $(srcdir)/config/mkstamp < $(srcdir)/ChangeLog` && \
 	sed -e 's/@''PACKAGE@/@PACKAGE@/' -e 's/@''VERSION@/@VERSION@/' \
 	    -e "s%@""TIMESTAMP@%$$date%" $(srcdir)/ltmain.in > ltmain.shT
 	mv -f ltmain.shT $@ || \
@@ -50,7 +42,7 @@ $(srcdir)/ltmain.sh: $(srcdir)/ltmain.in $(TSDEPS)
 
 # TSDEPS will be defined to TSDEPS_DIST at `make dist' time
 TSDEPS =
-TSDEPS_DIST = ChangeLog libtool.m4
+TSDEPS_DIST = ChangeLog config/libtool.m4
 CVS = cvs # set it to `:' to avoid CVS operations
 
 .PHONY: timestamps update-timestamps
@@ -59,19 +51,6 @@ update-timestamps:
 	@if (cd $(srcdir) && test -d CVS && \
 	    $(CVS) -n update $(TSDEPS_DIST) | grep '^M'); then \
 		echo "Cannot make dist before commit"; exit 1; else :; fi
-
-# All our rules should depend on these demo files.
-all-recursive: $(srcdir)/libltdl/acinclude.m4 $(ACINCLUDE_M4_LIST)
-
-@srcdir@/libltdl/acinclude.m4: $(srcdir)/libtool.m4 $(srcdir)/ltdl.m4
-	-rm -f $@ $@T
-	cat $(srcdir)/libtool.m4 $(srcdir)/ltdl.m4 > $@T
-	mv $@T $@
-
-@ACINCLUDE_M4_LIST@: $(srcdir)/libtool.m4
-	-rm -f $@ $@T
-	cat $(srcdir)/libtool.m4 > $@T
-	mv $@T $@
 
 .PHONY: configure-subdirs
 configure-subdirs distdir: $(DIST_MAKEFILE_LIST)

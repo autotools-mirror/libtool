@@ -1,6 +1,7 @@
 ## Process this file with automake to produce Makefile.in
 
 AUTOMAKE_OPTIONS = no-dependencies foreign
+ACLOCAL_AMFLAGS  = -I ../m4
 
 SUBDIRS = l1 l2 l3 l4
 

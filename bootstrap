@@ -1,14 +1,7 @@
 #! /bin/sh
 
 # helps bootstrapping libtool, when checked out from CVS
-# requires at least GNU autoconf 2.56 and GNU automake 1.7
-
-rm -rf `find . \( -name autom4te.cache -o -name libtool \) -print`
-
-: ${ACLOCAL=aclocal}
-: ${AUTOMAKE=automake}
-: ${AUTOCONF=autoconf}
-: ${AUTOHEADER=autoheader}
+# requires at least GNU autoconf 2.58 and GNU automake 1.8
 
 # Upgrade caveat
 
@@ -21,44 +14,23 @@ WARNING: them with `libtool.m4' as shipped with this distribution.
 WARNING: After that, retry this bootstrap.
 EOF
 
-# fake the libtool scripts
-touch ltmain.sh
-touch libtoolize
-(cd libltdl && touch ltmain.sh)
+rm -rf `find . \( -name autom4te.cache -o -name libtool \) -print`
 
-for sub in . libltdl cdemo demo depdemo mdemo mdemo2 pdemo tagdemo f77demo; do
-  case $sub in
-  .)
-    top_srcdir=.
-    acfiles="$top_srcdir/libtool.m4"
-    AUTOMAKE_FLAGS="--gnu --add-missing --copy"
-    ;;
-  libltdl)
-    top_srcdir=..
-    acfiles="$top_srcdir/libtool.m4 $top_srcdir/ltdl.m4"
-    AUTOMAKE_FLAGS="--gnits --add-missing --copy"
-    ;;
-  *)
-    top_srcdir=..
-    acfiles="$top_srcdir/libtool.m4"
-    AUTOMAKE_FLAGS="--gnits --add-missing"
-    ;;
-  esac
+fakes="config/ltmain.sh config/libtoolize libltdl/ltmain.sh libltdl/libtoolize"
 
-  cd $sub
-  rm -f acinclude.m4 aclocal.m4 Makefile configure
-  for file in $acfiles; do
-    cat $file >> ./acinclude.m4
-  done
-
-  $ACLOCAL
-  test $sub = libltdl && $AUTOHEADER
-  test $sub = f77demo && $AUTOHEADER
-  eval $AUTOMAKE $AUTOMAKE_FLAGS
-  $AUTOCONF
-  cd $top_srcdir
+for file in $fakes; do
+  touch $file
 done
 
-rm -f ltmain.sh libtoolize libltdl/ltmain.sh
+for sub in . *demo *demo[1-9]; do
+  autoreconf --force --verbose --install $sub
+done
+
+for file in $fakes; do
+  rm -f $file
+done
+
+# These files con cause an infinite configure loop if left behind.
+rm -f Makefile libltdl/Makefile libtool
 
 exit 0

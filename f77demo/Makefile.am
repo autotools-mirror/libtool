@@ -3,18 +3,17 @@
 ## $Id$
 
 AUTOMAKE_OPTIONS = no-dependencies foreign
-
-EXTRA_DIST = acinclude.m4
+ACLOCAL_AMFLAGS  = -I ../m4
 
 noinst_LTLIBRARIES = libfoo.la libmix.la
 
 libfoo_la_SOURCES = foof.f
 libfoo_la_LDFLAGS = -no-undefined
 
-libmix_la_SOURCES = foof.f fooc.c 
+libmix_la_SOURCES = foof.f fooc.c
 libmix_la_LDFLAGS = -no-undefined
 
-noinst_HEADERS = foo.h 
+noinst_HEADERS = foo.h
 
 bin_PROGRAMS = fprogram cprogram
 
@@ -27,8 +26,3 @@ cprogram_LDADD = libmix.la
 $(OBJECTS): libtool
 libtool: $(LIBTOOL_DEPS)
 	$(SHELL) ./config.status --recheck
-
-
-
-
-

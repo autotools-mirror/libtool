@@ -1,8 +1,7 @@
 ## Process this file with automake to produce Makefile.in
 
 AUTOMAKE_OPTIONS = no-dependencies foreign
-
-EXTRA_DIST = acinclude.m4
+ACLOCAL_AMFLAGS  = -I ../m4
 
 # Build a libtool library, libhello.la for installation in libdir.
 lib_LTLIBRARIES = libhello.la

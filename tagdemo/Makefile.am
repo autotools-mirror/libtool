@@ -3,8 +3,7 @@
 ## $Id$
 
 AUTOMAKE_OPTIONS = no-dependencies foreign
-
-EXTRA_DIST = acinclude.m4
+ACLOCAL_AMFLAGS  = -I ../m4
 
 noinst_LTLIBRARIES = libfoo.la
 lib_LTLIBRARIES = libbaz.la

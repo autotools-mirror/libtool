@@ -1,10 +1,9 @@
 ## Process this file with automake to produce Makefile.in
 
 AUTOMAKE_OPTIONS = no-dependencies foreign
+ACLOCAL_AMFLAGS  = -I ../m4
 
 INCLUDES = -I../libltdl
-
-EXTRA_DIST = acinclude.m4
 
 bin_PROGRAMS = mdemo2 mdemo2_static
 

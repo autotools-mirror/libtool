@@ -1,10 +1,9 @@
 ## Process this file with automake to produce Makefile.in
 
 AUTOMAKE_OPTIONS = no-dependencies foreign
+ACLOCAL_AMFLAGS  = -I ../m4
 
 INCLUDES = $(INCLTDL)
-
-EXTRA_DIST = acinclude.m4
 
 lib_LTLIBRARIES = libsub.la foo1.la libfoo2.la libmlib.la
 

@@ -24,6 +24,7 @@ AC_PREREQ(2.50)
 ## ------------------------ ##
 AC_INIT([tagdemo], [0.1], [bug-libtool@gnu.org])
 AC_CONFIG_SRCDIR([foo.cpp])
+AC_CONFIG_AUX_DIR([../config])
 
 AC_CANONICAL_TARGET
 

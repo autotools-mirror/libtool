@@ -24,6 +24,7 @@ AC_PREREQ(2.50)
 ## ------------------------ ##
 AC_INIT([pdemo], [0.1], [bug-libtool@gnu.org])
 AC_CONFIG_SRCDIR([longer_file_name_hello.c])
+AC_CONFIG_AUX_DIR([../config])
 
 
 ## ------------------------ ##

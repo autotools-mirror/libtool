@@ -24,15 +24,14 @@ AC_PREREQ(2.50)
 ## ------------------------ ##
 ## Autoconf initialisation. ##
 ## ------------------------ ##
-AC_INIT([libltdl], [1.2], [bug-libtool@gnu.org])
+AC_INIT([libltdl], [1.3], [bug-libtool@gnu.org])
+AC_CONFIG_HEADERS([config.h:config-h.in])
 AC_CONFIG_SRCDIR([ltdl.c])
 
 
 ## ------------------------------- ##
 ## Libltdl specific configuration. ##
 ## ------------------------------- ##
-
-AC_CONFIG_AUX_DIR([.])
 
 if test -z "$enable_ltdl_install$enable_ltdl_convenience"; then
   if test -f ${srcdir}/ltmain.sh; then
@@ -51,7 +50,6 @@ fi
 ## Automake Initialisation. ##
 ## ------------------------ ##
 AM_INIT_AUTOMAKE(AC_PACKAGE_TARNAME, AC_PACKAGE_VERSION, -)
-AM_CONFIG_HEADER([config.h:config-h.in])
 
 
 ## ------------------ ##

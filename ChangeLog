@@ -1,3 +1,41 @@
+2003-09-24  Gary V. Vaughan  <gary@gnu.org>
+
+	* bootstrap: Rewritten to use autoreconf.
+	* config.guess, config.sub, mkstamp:  Moved from here...
+	* config/config.guess, config/config.sub, config/mkstamp: ...to
+	here, respectively.
+	* libtool.m4, ltdl.m4: Moved from here...
+	* m4/libtool.m4, m4/ltdl.m4: ...to here, respectively.
+	* configure.ac: Removed various acinclude.m4 hackery, as these
+	files are no longer needed with automake 1.8.
+	* Makefile.am: Removed various acinclude.m4 hackery, as these
+	files are no longer needed with automake 1.8.
+	(AUTOMAKE_OPTIONS): Require CVS automake.
+	(CONF_SUBDIRS, CFLAGS, CPPFLAGS, LDFLAGS, LIBS, FFLAGS, FLIBS):
+	Automake now makes a Make variable from every AC_SUBST, so these
+	are NOP.
+	(aclocal_macros): These files are now in their own m4 subdir.
+	Changed all clients.
+	(EXTRA_DIST): mkstamp has moved to the new config subdir.  Changed
+	all clients.
+	(pkgdata_SCRIPTS): Ditto wrt config.guess and config.sub.
+	(pkgdata_DATA): Ditto wrt ltmain.sh.
+	* f77demo/configure.ac, libltdl/configure.ac (AM_CONFIG_HEADER):
+	Is deprecated in favour of AC_CONFIG_HEADERS.  Updated to the
+	latter.
+	* Makefile.am, cdemo/Makefile.am, demo/Makefile.am,
+	depdemo/Makefile.am, f77demo/Makefile.am, mdemo/Makefile.am,
+	mdemo2/Makefile.am, pdemo/Makefile.am, tagdemo/Makefile.am
+	(EXTRA_DIST): Remove acinclude.m4.
+	(ACLOCAL_AMFLAGS): Search new `m4' macro directory.
+	* configure.ac, cdemo/configure.ac, demo/configure.ac,
+	depdemo/configure.ac, f77demo/configure.ac, mdemo/configure.ac,
+	mdemo2/configure.ac, pdemo/configure.ac, tagdemo/configure.ac
+	(AC_CONFIG_AUX_DIR): Declare that config helper	scripts are now
+	kept in the new config subdir.
+	* libltdl/configure.ac (AC_CONFIG_AUX_DIR): Removed.  Defaults to
+	`.' anyway.
+
 2003-09-21  Robert Millan  <robertmh@gnu.org>
 
 	* libtool.m4: Add GNU/KNetBSD support.
@@ -8,7 +46,7 @@
 	* libtool.m4: allow STRIP to contain spaces and additional
 	arguments.  (Debian Bug #183055)
 	* ltmain.in: include newline in "sensible default" for IFS.
-	(Debian Bug #98492 and #95447)	
+	(Debian Bug #98492 and #95447)
 
 2003-09-11  Peter O'Gorman  <peter@pogma.com>
 
