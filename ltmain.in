@@ -2152,7 +2152,7 @@ EOF
 	      esac
 	      case " $deplibs " in
 	      *" $path "*) ;;
-	      *) deplibs="$deplibs $path" ;;
+	      *) deplibs="$path $deplibs" ;;
 	      esac
 	    done
 	  fi

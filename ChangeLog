@@ -1,3 +1,33 @@
+2000-06-10  Ossama Othman  <ossama@debian.org>
+
+	* libtool.m4: Updated comment.
+	* ltcf-cxx.sh (archive_cmds, archive_expsym_cmds,
+	hardcode_libdir_flag_spec, export_dynamic_flag_spec,
+	whole_archive_flag_spec, with_gnu_ld): Added two default
+	configurations for GNU g++ (one for g++ with GNU ld, and one for
+	g++ with native linker).  Updated all platform-specific g++
+	configurations to only be used if GNU ld isn't the backend linker.
+	Added support for the KCC (Kuck and Associates, Inc. (KAI) C++
+	Compiler) to the Linux and OSF/1 configurations.
+	(ac_cv_prog_cc_wl): Added KAI C++ configuration.
+	(archive_expsym_cmds): Some configurations were missing the
+	argument that sets the name of the output library.
+	* libltdl/ltdl.c, libltdl/libltdl.h: Synchronized with HEAD branch
+	versions.
+
+2000-06-10  Michael Matz  <matz@ifh.de>
+
+	* ltcf-cxx.sh (whole_archive_flag_spec): Added missing back quotes
+	(`) around a command that had to be evaluated.  This fixes GNU ld
+	"--whole-archive" support detection.
+	(wlarc): Fixed usage of $wlarc, which must be $wl in all cases,
+	but when really using $LD for linking.
+
+2000-06-10  Stephan Kulow  <coolo@kde.org>
+	* ltmain.in (deplibs): Add the library paths to end of the
+	deplibs, instead of the beginning, since deplibs is reordered
+	later on.
+
 2000-06-05  Ossama Othman  <ossama@debian.org>
 
 	* ltcf-cxx.sh (compiler_lib_search_path), ltconfig.in

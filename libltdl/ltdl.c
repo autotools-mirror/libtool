@@ -4,24 +4,25 @@
    This file is part of GNU Libtool.
 
 This library is free software; you can redistribute it and/or
-modify it under the terms of the GNU Library General Public
+modify it under the terms of the GNU Lesser General Public
 License as published by the Free Software Foundation; either
 version 2 of the License, or (at your option) any later version.
 
-As a special exception to the GNU Library General Public License,
-if you distribute this file as part of a program that uses GNU libtool
-to create libraries and programs, you may include it under the same
+As a special exception to the GNU Lesser General Public License,
+if you distribute this file as part of a program or library that
+is built using GNU libtool, you may include it under the same
 distribution terms that you use for the rest of that program.
 
 This library is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-Library General Public License for more details.
+Lesser General Public License for more details.
 
-You should have received a copy of the GNU Library General Public
+You should have received a copy of the GNU Lesser General Public
 License along with this library; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 02111-1307  USA
+
 */
 
 #define _LTDL_COMPILE_
@@ -93,10 +94,11 @@ struct lt_dlloader_t {
 	struct lt_dlloader_t *next;
 	const char *loader_name; /* identifying name for each loader */
 	const char *sym_prefix;	 /* prefix for symbols */
-	lt_dlloader_exit_t *dlloader_exit;
 	lt_module_open_t *module_open;
 	lt_module_close_t *module_close;
 	lt_find_sym_t *find_sym;
+	lt_dlloader_exit_t *dlloader_exit;
+  	lt_dlloader_data_t dlloader_data;
 };
 
 typedef	struct lt_dlhandle_t {
@@ -283,7 +285,8 @@ strrchr(str, ch)
 #endif
 
 static lt_module_t
-sys_dl_open (filename)
+sys_dl_open (loader_data, filename)
+	lt_dlloader_data_t loader_data;
 	const char *filename;
 {
 	lt_module_t module = dlopen(filename, LTDL_GLOBAL | LTDL_LAZY_OR_NOW);
@@ -298,7 +301,8 @@ sys_dl_open (filename)
 }
 
 static int
-sys_dl_close (module)
+sys_dl_close (loader_data, module)
+	lt_dlloader_data_t loader_data;
 	lt_module_t module;
 {
 	if (dlclose(module) != 0) {
@@ -313,7 +317,8 @@ sys_dl_close (module)
 }
 
 static lt_ptr_t
-sys_dl_sym (module, symbol)
+sys_dl_sym (loader_data, module, symbol)
+	lt_dlloader_data_t loader_data;
 	lt_module_t module;
 	const char *symbol;
 {
@@ -334,7 +339,7 @@ static struct lt_user_dlloader sys_dl = {
 #  else
 	   0,
 #  endif
-	   sys_dl_open, sys_dl_close, sys_dl_sym, 0 };
+	   sys_dl_open, sys_dl_close, sys_dl_sym, 0, 0 };
 #endif
 
 #if HAVE_SHL_LOAD
@@ -381,7 +386,8 @@ static struct lt_user_dlloader sys_dl = {
 #define	LTDL_BIND_FLAGS	(BIND_IMMEDIATE | BIND_NONFATAL | DYNAMIC_PATH)
 
 static lt_module_t
-sys_shl_open (filename)
+sys_shl_open (loader_data, filename)
+	lt_dlloader_data_t loader_data;
 	const char *filename;
 {
 	lt_module_t module = shl_load(filename, LTDL_BIND_FLAGS, 0L);
@@ -392,7 +398,8 @@ sys_shl_open (filename)
 }
 
 static int
-sys_shl_close (module)
+sys_shl_close (loader_data, module)
+	lt_dlloader_data_t loader_data;
 	lt_module_t module;
 {
 	if (shl_unload((shl_t) (module)) != 0) {
@@ -403,7 +410,8 @@ sys_shl_close (module)
 }
 
 static lt_ptr_t
-sys_shl_sym (module, symbol)
+sys_shl_sym (loader_data, module, symbol)
+	lt_dlloader_data_t loader_data;
 	lt_module_t module;
 	const char *symbol;
 {
@@ -418,7 +426,7 @@ sys_shl_sym (module, symbol)
 }
 
 static struct lt_user_dlloader
-sys_shl = { 0, sys_shl_open, sys_shl_close, sys_shl_sym, 0 };
+sys_shl = { 0, sys_shl_open, sys_shl_close, sys_shl_sym, 0, 0 };
 
 #undef LTDL_TYPE_TOP
 #define LTDL_TYPE_TOP &sys_shl
@@ -435,13 +443,23 @@ sys_shl = { 0, sys_shl_open, sys_shl_close, sys_shl_sym, 0 };
 static lt_dlhandle handles;
 
 static lt_module_t
-sys_wll_open (filename)
+sys_wll_open (loader_data, filename)
+	lt_dlloader_data_t loader_data;
 	const char *filename;
 {
 	lt_dlhandle cur;
 	lt_module_t module;
 	char *searchname = 0;
-	char *ext = strrchr(filename, '.');
+        char *ext;
+        char self_name_buf[MAX_PATH];
+
+	if (!filename) {
+		/* Get the name of main module */
+		*self_name_buf = 0;
+		GetModuleFileName(NULL, self_name_buf, sizeof(self_name_buf));
+		filename = ext = self_name_buf;
+	}
+	else ext = strrchr(filename, '.');
 
 	if (ext) {
 		/* FILENAME already has an extension. */
@@ -489,7 +507,8 @@ sys_wll_open (filename)
 }
 
 static int
-sys_wll_close (module)
+sys_wll_close (loader_data, module)
+	lt_dlloader_data_t loader_data;
 	lt_module_t module;
 {
 	if (FreeLibrary(module) == 0) {
@@ -500,7 +519,8 @@ sys_wll_close (module)
 }
 
 static lt_ptr_t
-sys_wll_sym (module, symbol)
+sys_wll_sym (loader_data, module, symbol)
+	lt_dlloader_data_t loader_data;
 	lt_module_t module;
 	const char *symbol;
 {
@@ -512,7 +532,7 @@ sys_wll_sym (module, symbol)
 }
 
 static struct lt_user_dlloader
-sys_wll = { 0, sys_wll_open, sys_wll_close, sys_wll_sym, 0 };
+sys_wll = { 0, sys_wll_open, sys_wll_close, sys_wll_sym, 0, 0 };
 
 #endif
 
@@ -523,7 +543,8 @@ sys_wll = { 0, sys_wll_open, sys_wll_close, sys_wll_sym, 0 };
 #include <kernel/image.h>
 
 static lt_module_t
-sys_bedl_open (filename)
+sys_bedl_open (loader_data, filename)
+	lt_dlloader_data_t loader_data;
 	const char *filename;
 {
 	image_id image = 0;
@@ -545,7 +566,8 @@ sys_bedl_open (filename)
 }
 
 static int
-sys_bedl_close (module)
+sys_bedl_close (loader_data, module)
+	lt_dlloader_data_t loader_data;
 	lt_module_t module;
 {
 	if (unload_add_on((image_id)module) != B_OK) {
@@ -556,7 +578,8 @@ sys_bedl_close (module)
 }
 
 static lt_ptr_t
-sys_bedl_sym (module, symbol)
+sys_bedl_sym (loader_data, module, symbol)
+	lt_dlloader_data_t loader_data;
 	lt_module_t module;
 	const char *symbol;
 {
@@ -572,7 +595,7 @@ sys_bedl_sym (module, symbol)
 }
 
 static struct lt_user_dlloader
-sys_bedl = { 0, sys_bedl_open, sys_bedl_close, sys_bedl_sym, 0 };
+sys_bedl = { 0, sys_bedl_open, sys_bedl_close, sys_bedl_sym, 0, 0 };
 
 #endif
 
@@ -585,7 +608,8 @@ sys_bedl = { 0, sys_bedl_open, sys_bedl_close, sys_bedl_sym, 0 };
 #endif
 
 static lt_module_t
-sys_dld_open (filename)
+sys_dld_open (loader_data, filename)
+	lt_dlloader_data_t loader_data;
 	const char *filename;
 {
 	lt_module_t module = strdup(filename);
@@ -602,7 +626,8 @@ sys_dld_open (filename)
 }
 
 static int
-sys_dld_close (module)
+sys_dld_close (loader_data, module)
+	lt_dlloader_data_t loader_data;
 	lt_module_t module;
 {
 	if (dld_unlink_by_file((char*)(module), 1) != 0) {
@@ -614,7 +639,8 @@ sys_dld_close (module)
 }
 
 static lt_ptr_t
-sys_dld_sym (module, symbol)
+sys_dld_sym (loader_data, module, symbol)
+	lt_dlloader_data_t loader_data;
 	lt_module_t module;
 	const char *symbol;
 {
@@ -626,7 +652,7 @@ sys_dld_sym (module, symbol)
 }
 
 static struct lt_user_dlloader
-sys_dld = { 0, sys_dld_open, sys_dld_close, sys_dld_sym, 0 };
+sys_dld = { 0, sys_dld_open, sys_dld_close, sys_dld_sym, 0, 0 };
 
 #endif
 
@@ -641,7 +667,8 @@ static const lt_dlsymlist *default_preloaded_symbols = 0;
 static lt_dlsymlists_t *preloaded_symbols = 0;
 
 static int
-presym_init LTDL_PARAMS((void))
+presym_init (loader_data)
+	lt_dlloader_data_t loader_data;
 {
 	preloaded_symbols = 0;
 	if (default_preloaded_symbols)
@@ -665,7 +692,8 @@ presym_free_symlists LTDL_PARAMS((void))
 }
 
 static int
-presym_exit LTDL_PARAMS((void))
+presym_exit (loader_data)
+	lt_dlloader_data_t loader_data;
 {
 	presym_free_symlists();
 	return 0;
@@ -696,7 +724,8 @@ presym_add_symlist (preloaded)
 }
 
 static lt_module_t
-presym_open (filename)
+presym_open (loader_data, filename)
+	lt_dlloader_data_t loader_data;
 	const char *filename;
 {
 	lt_dlsymlists_t *lists = preloaded_symbols;
@@ -724,7 +753,8 @@ presym_open (filename)
 }
 
 static int
-presym_close (module)
+presym_close (loader_data, module)
+	lt_dlloader_data_t loader_data;
 	lt_module_t module;
 {
 	/* Just to silence gcc -Wall */
@@ -733,7 +763,8 @@ presym_close (module)
 }
 
 static lt_ptr_t
-presym_sym (module, symbol)
+presym_sym (loader_data, module, symbol)
+	lt_dlloader_data_t loader_data;
 	lt_module_t module;
 	const char *symbol;
 {
@@ -750,7 +781,7 @@ presym_sym (module, symbol)
 }
 
 static struct lt_user_dlloader
-presym = { 0, presym_open, presym_close, presym_sym, presym_exit };
+presym = { 0, presym_open, presym_close, presym_sym, presym_exit, 0 };
 
 
 static char *user_search_path = 0;
@@ -762,7 +793,6 @@ int
 lt_dlinit LTDL_PARAMS((void))
 {
 	/* initialize libltdl */
-	lt_dlloader_t **loader = &loaders;
 	int errors = 0;
 
 	if (initialized) {	/* Initialize only at first call. */
@@ -773,25 +803,25 @@ lt_dlinit LTDL_PARAMS((void))
 	user_search_path = 0; /* empty search path */
 	
 #if HAVE_LIBDL && !defined(__CYGWIN__)
-	errors += lt_add_dlloader (lt_next_dlloader(0), &sys_dl, "dlopen");
+	errors += lt_dlloader_add (lt_dlloader_next(0), &sys_dl, "dlopen");
 #endif	
 #if HAVE_SHL_LOAD
-	errors += lt_add_dlloader (lt_next_dlloader(0), &sys_shl, "dlopen");
+	errors += lt_dlloader_add (lt_dlloader_next(0), &sys_shl, "dlopen");
 #endif
 #ifdef _WIN32
-	errors += lt_add_dlloader (lt_next_dlloader(0), &sys_wll, "dlopen");
+	errors += lt_dlloader_add (lt_dlloader_next(0), &sys_wll, "dlopen");
 #endif
 #ifdef __BEOS__
-	errors += lt_add_dlloader (lt_next_dlloader(0), &sys_bedl, "dlopen");
+	errors += lt_dlloader_add (lt_dlloader_next(0), &sys_bedl, "dlopen");
 #endif
 #if HAVE_DLD
-	errors += lt_add_dlloader (lt_next_dlloader(0), &sys_dld, "dld");
+	errors += lt_dlloader_add (lt_dlloader_next(0), &sys_dld, "dld");
 #endif
-	errors += lt_add_dlloader (lt_next_dlloader(0), &presym, "dlpreload");
-	if (presym_init()) {
+	errors += lt_dlloader_add (lt_dlloader_next(0), &presym, "dlpreload");
+	if (presym_init(presym.dlloader_data)) {
 		last_error = LT_DLSTRERROR(INIT_LOADER);
 			return 1;
-		}
+	}
 
 	if (errors != 0) {
 		last_error = LT_DLSTRERROR(DLOPEN_NOT_SUPPORTED);
@@ -852,7 +882,8 @@ lt_dlexit LTDL_PARAMS((void))
 	/* close all loaders */
 	while (loader) {
 	  	lt_dlloader_t *next = loader->next;
-		if (loader->dlloader_exit && loader->dlloader_exit())
+		lt_dlloader_data_t data = loader->dlloader_data;
+		if (loader->dlloader_exit && loader->dlloader_exit(data))
 			errors++;
 		lt_dlfree (loader);
 		loader = next;
@@ -867,12 +898,11 @@ tryall_dlopen (handle, filename)
 	lt_dlhandle *handle;
 	const char *filename;
 {
-	lt_dlhandle cur;
+	lt_dlhandle cur = handles;
 	lt_dlloader_t *loader = loaders;
 	const char *saved_error = last_error;
 	
 	/* check whether the module was already opened */
-	cur = handles;
 	while (cur) {
 		/* try to dlopen the program itself? */
 		if (!cur->info.filename && !filename)
@@ -882,6 +912,7 @@ tryall_dlopen (handle, filename)
 			break;
 		cur = cur->next;
 	}
+
 	if (cur) {
 		cur->info.ref_count++;
 		*handle = cur;
@@ -898,7 +929,8 @@ tryall_dlopen (handle, filename)
 	} else
 		cur->info.filename = 0;
 	while (loader) {
-		cur->module = loader->module_open(filename);
+		lt_dlloader_data_t data = loader->dlloader_data;
+		cur->module = loader->module_open(data, filename);
 		if (cur->module != 0)
 			break;
 		loader = loader->next;
@@ -1579,12 +1611,13 @@ lt_dlclose (handle)
 	handle->info.ref_count--;
 	if (!handle->info.ref_count) {
 		int	error;
+	  	lt_dlloader_data_t data = handle->loader->dlloader_data;
 	
 		if (handle != handles)
 			last->next = handle->next;
 		else
 			handles = handle->next;
-		error = handle->loader->module_close(handle->module);
+		error = handle->loader->module_close(data, handle->module);
 		error += unload_deplibs(handle);
 		if (handle->info.filename)
 			lt_dlfree(handle->info.filename);
@@ -1605,6 +1638,7 @@ lt_dlsym (handle, symbol)
 	char	lsym[LTDL_SYMBOL_LENGTH];
 	char	*sym;
 	lt_ptr_t address;
+	lt_dlloader_data_t data;
 
 	if (!handle) {
 		last_error = LT_DLSTRERROR(INVALID_HANDLE);
@@ -1627,6 +1661,7 @@ lt_dlsym (handle, symbol)
 		last_error = LT_DLSTRERROR(BUFFER_OVERFLOW);
 		return 0;
 	}
+	data = handle->loader->dlloader_data;
 	if (handle->info.name) {
 		const char *saved_error = last_error;
 		
@@ -1639,7 +1674,7 @@ lt_dlsym (handle, symbol)
 		strcat(sym, "_LTX_");
 		strcat(sym, symbol);
 		/* try "modulename_LTX_symbol" */
-		address = handle->loader->find_sym(handle->module, sym);
+		address = handle->loader->find_sym(data, handle->module, sym);
 		if (address) {
 			if (sym != lsym)
 				lt_dlfree(sym);
@@ -1653,7 +1688,7 @@ lt_dlsym (handle, symbol)
 		strcat(sym, symbol);
 	} else
 		strcpy(sym, symbol);
-	address = handle->loader->find_sym(handle->module, sym);
+	address = handle->loader->find_sym(data, handle->module, sym);
 	if (sym != lsym)
 		lt_dlfree(sym);
 	return address;
@@ -1743,9 +1778,8 @@ lt_dlforeach (func, data)
 	return 0;
 }
 
-
 int
-lt_add_dlloader (place, dlloader, loader_name)
+lt_dlloader_add (place, dlloader, loader_name)
 	lt_dlloader_t *place;
 	const struct lt_user_dlloader *dlloader;
 	const char *loader_name;
@@ -1773,6 +1807,7 @@ lt_add_dlloader (place, dlloader, loader_name)
 	node->module_open = dlloader->module_open;
 	node->module_close = dlloader->module_close;
 	node->find_sym = dlloader->find_sym;
+	node->dlloader_data = dlloader->dlloader_data;
 	
 	if (!loaders)
 		/* If there are no loaders, NODE becomes the list! */
@@ -1806,10 +1841,10 @@ lt_add_dlloader (place, dlloader, loader_name)
 }
 
 int
-lt_remove_dlloader (loader_name)
+lt_dlloader_remove (loader_name)
 	const char *loader_name;
 {
-	lt_dlloader_t *place = lt_find_dlloader (loader_name);
+	lt_dlloader_t *place = lt_dlloader_find (loader_name);
 	lt_dlhandle handle;
 	int result = 0;
 
@@ -1820,7 +1855,7 @@ lt_remove_dlloader (loader_name)
 
 	/* Fail if there are any open modules which use this loader. */
 	for  (handle = handles; handle; handle = handle->next)
-		if (handle->loader = place) {
+		if (handle->loader == place) {
 			last_error = LT_DLSTRERROR(REMOVE_LOADER);
 			return 1;
 		}
@@ -1839,14 +1874,14 @@ lt_remove_dlloader (loader_name)
 		prev->next = prev->next->next;
 	}
 	if (place->dlloader_exit)
-		result = place->dlloader_exit ();
+		result = place->dlloader_exit (place->dlloader_data);
 	lt_dlfree (place);
 
 	return result;
 }
 
 lt_dlloader_t *
-lt_next_dlloader (place)
+lt_dlloader_next (place)
 	lt_dlloader_t *place;
 {
 	return place ? place->next : loaders;
@@ -1861,8 +1896,17 @@ lt_dlloader_name (place)
 	return place ? place->loader_name : 0;
 }	
 
+lt_dlloader_data_t *
+lt_dlloader_data (place)
+	lt_dlloader_t *place;
+{
+	if (!place)
+		last_error =  LT_DLSTRERROR(INVALID_LOADER);
+	return place ? &(place->dlloader_data) : 0;
+}	
+
 lt_dlloader_t *
-lt_find_dlloader (loader_name)
+lt_dlloader_find (loader_name)
 	const char *loader_name;
 {
 	lt_dlloader_t *place = 0;
@@ -1874,7 +1918,6 @@ lt_find_dlloader (loader_name)
 	return place;
 }
 
-
 static const char **user_error_strings = 0;
 static int errorcode = LTDL_ERROR_MAX;
 

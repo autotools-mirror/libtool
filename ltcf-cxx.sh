@@ -66,8 +66,54 @@ cat > conftest.$ac_ext <<EOF
 EOF
 if { ac_try='${CC-c++} -E conftest.$ac_ext'; { (eval echo \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }; } | egrep yes >/dev/null 2>&1; then
   with_gcc=yes
+
+  # Set up default GNU C++ configuration
+
+  # Check if GNU C++ uses GNU ld as the underlying linker, since the
+  # archiving commands below assume that GNU ld is being used.
+  if eval "`$CC -print-prog-name=ld` --version 2>&1" | \
+      egrep 'GNU ld' > /dev/null; then
+    with_gnu_ld=yes
+
+    archive_cmds='$CC -shared -nostdlib $predep_objects $libobjs $deplibs $postdep_objects $compiler_flags ${wl}-soname $wl$soname -o $lib'
+    archive_expsym_cmds='$CC -shared -nostdlib $predep_objects $libobjs $deplibs $postdep_objects $compiler_flags ${wl}-soname $wl$soname ${wl}-retain-symbols-file $wl$export_symbols -o $lib'
+
+    hardcode_libdir_flag_spec='${wl}--rpath ${wl}$libdir'
+    export_dynamic_flag_spec='${wl}--export-dynamic'
+
+    # If archive_cmds runs LD, not CC, wlarc should be empty
+    # XXX I think wlarc can be eliminated in ltcf-cxx, but I need to
+    #     investigate it a little bit more. (MM)
+    wlarc='${wl}'
+
+    # ancient GNU ld didn't support --whole-archive et. al.
+    if eval "`$CC -print-prog-name=ld` --help 2>&1" | \
+        egrep 'no-whole-archive' > /dev/null; then
+      whole_archive_flag_spec="$wlarc"'--whole-archive$convenience '"$wlarc"'--no-whole-archive'
+    else
+      whole_archive_flag_spec=
+    fi
+  else
+    with_gnu_ld=no
+    wlarc=
+
+    # A generic and very simple default shared library creation
+    # command for GNU C++ for the case where it uses the native
+    # linker, instead of GNU ld.  If possible, this setting should
+    # overridden to take advantage of the native linker features on
+    # the platform it is being used on.
+    archive_cmds='$CC -shared $predep_objects $libobjs $deplibs $postdep_objects $compiler_flags -o $lib'
+  fi
+
+  # Commands to make compiler produce verbose output that lists
+  # what "hidden" libraries, object files and flags are used when
+  # linking a shared library.
+  output_verbose_link_cmds='$CC -shared $CFLAGS -v conftest.$objext 2>&1 | egrep "\-L"'
+
 else
   with_gcc=no
+  with_gnu_ld=no
+  wlarc=
 fi
 
 # In general, the C++ compiler should always link C++ objects.
@@ -166,9 +212,11 @@ case "$host_os" in
         ;;
       *)
         if test "$with_gcc" = yes; then
-          archive_cmds='$CC -shared $predep_objects $libobjs $deplibs $postdep_objects $linker_flags ${wl}-soname ${wl}$soname `test -n "$verstring" && echo ${wl}-set_version ${wl}$verstring` -update_registry ${objdir}/so_locations -o $lib'
-        else
-          archive_cmds='$LD -shared $predep_objects $libobjs $deplibs $postdep_objects $linkopts -soname $soname `test -n "$verstring" && echo -set_version $verstring` -o $lib'
+          if test "$with_gnu_ld" = no; then
+            archive_cmds='$CC -shared $predep_objects $libobjs $deplibs $postdep_objects $linker_flags ${wl}-soname ${wl}$soname `test -n "$verstring" && echo ${wl}-set_version ${wl}$verstring` -update_registry ${objdir}/so_locations -o $lib'
+          else
+            archive_cmds='$LD -shared $predep_objects $libobjs $deplibs $postdep_objects $linkopts -soname $soname `test -n "$verstring" && echo -set_version $verstring` -o $lib'
+          fi
         fi
         hardcode_libdir_flag_spec='${wl}-rpath ${wl}$libdir'
         hardcode_libdir_separator=:
@@ -179,14 +227,35 @@ case "$host_os" in
   linux*)
     case "$cc_basename" in
       KCC)
-        # KAI C++ Compiler
-        # FIXME: insert proper C++ library support
-        ld_shlibs=no
+        # Kuck and Associates, Inc. (KAI) C++ Compiler
+
+        # KCC will only create a shared library if the output file
+        # ends with ".so" (or ".sl" for HP-UX), so rename the library
+        # to its proper name (with version) after linking.
+        archive_cmds='templib=`echo $lib | sed -e "s/\.so\..*/\.so/"`; $CC $predep_objects $libobjs $deplibs $postdep_objects $linker_flags --soname $soname -o \$templib; mv \$templib $lib'
+        archive_expsym_cmds='templib=`echo $lib | sed -e "s/\.so\..*/\.so/"`; $CC $predep_objects $libobjs $deplibs $postdep_objects $linker_flags --soname $soname -o \$templib ${wl}-retain-symbols-file,$export_symbols; mv \$templib $lib'
+
+        # Commands to make compiler produce verbose output that lists
+        # what "hidden" libraries, object files and flags are used when
+        # linking a shared library.
+        #
+        # There doesn't appear to be a way to prevent this compiler from
+        # explicitly linking system object files so we need to strip them
+        # from the output so that they don't get included in the library
+        # dependencies.
+        output_verbose_link_cmds='templist=`$CC $CFLAGS -v conftest.$objext -o libconftest.so 2>&1 | egrep "ld"`; rm -f libconftest.so; list=""; for z in $templist; do case $z in conftest.$objext) list="$list $z";; *.$objext);; *) list="$list $z";;esac; done; echo $list'
+
+        hardcode_libdir_flag_spec='${wl}--rpath,$libdir'
+        export_dynamic_flag_spec='${wl}--export-dynamic'
+
+	# Archives containing C++ object files must be created using
+	# "CC -Bstatic", where "CC" is the KAI C++ compiler.
+        old_archive_cmds='$CC -Bstatic -o $oldlib $oldobjs'
         ;;
       cxx)
         # Compaq C++
         archive_cmds='$CC -shared $predep_objects $libobjs $deplibs $postdep_objects $linker_flags ${wl}-soname $wl$soname -o $lib'
-        archive_expsym_cmds='$CC -shared $predep_objects $libobjs $deplibs $postdep_objects $linker_flags ${wl}-soname $wl$soname ${wl}-retain-symbols-file $wl$export_symbols'
+        archive_expsym_cmds='$CC -shared $predep_objects $libobjs $deplibs $postdep_objects $linker_flags ${wl}-soname $wl$soname  -o $lib ${wl}-retain-symbols-file $wl$export_symbols'
 
         runpath_var=LD_RUN_PATH
         hardcode_libdir_flag_spec='-rpath $libdir'
@@ -201,31 +270,6 @@ case "$host_os" in
         # from the output so that they don't get included in the library
         # dependencies.
         output_verbose_link_cmds='templist=`$CC -shared $CFLAGS -v conftest.$objext 2>&1 | grep "ld"`; templist=`echo $templist | sed "s/\(^.*ld.*\)\( .*ld .*$\)/\1/"`; list=""; for z in $templist; do case $z in conftest.$objext) list="$list $z";; *.$objext);; *) list="$list $z";;esac; done; echo $list'
-          ;;
-      *)
-        # GNU C++ compiler
-        if test "$with_gcc" = yes; then
-          archive_cmds='$CC -shared -nostdlib $predep_objects $libobjs $deplibs $postdep_objects $compiler_flags ${wl}-soname $wl$soname -o $lib'
-          archive_expsym_cmds='$CC -shared -nostdlib $predep_objects $libobjs $deplibs $postdep_objects $compiler_flags ${wl}-soname $wl$soname ${wl}-retain-symbols-file $wl$export_symbols -o $lib'
-
-          runpath_var=LD_RUN_PATH
-          hardcode_libdir_flag_spec='${wl}--rpath ${wl}$libdir'
-          export_dynamic_flag_spec='${wl}--export-dynamic'
-
-          # ancient GNU ld didn't support --whole-archive et. al.
-          if eval "$CC -print-prog-name=ld --help 2>&1" | \
-                egrep 'no-whole-archive' > /dev/null; then
-            whole_archive_flag_spec="$wlarc"'--whole-archive$convenience '"$wlarc"'--no-whole-archive'
-
-          else
-            whole_archive_flag_spec=
-          fi
-
-          # Commands to make compiler produce verbose output that lists
-          # what "hidden" libraries, object files and flags are used when
-          # linking a shared library.
-          output_verbose_link_cmds='$CC -shared $CFLAGS -v conftest.$objext 2>&1 | egrep "\-L"'
-        fi
         ;;
     esac
     ;;
@@ -254,7 +298,7 @@ case "$host_os" in
     ld_shlibs=no
     ;;
   osf3*)
-    if test "$with_gcc" = yes; then
+    if test "$with_gcc" = yes && test "$with_gnu_ld" = no; then
       allow_undefined_flag=' ${wl}-expect_unresolved ${wl}\*'
       archive_cmds='$CC -shared -nostdlib ${allow_undefined_flag} $predep_objects $libobjs $deplibs $postdep_objects $compiler_flags ${wl}-soname ${wl}$soname `test -n "$verstring" && echo ${wl}-set_version ${wl}$verstring` ${wl}-update_registry ${wl}${objdir}/so_locations -o $lib'
 
@@ -269,9 +313,20 @@ case "$host_os" in
 
     case "$cc_basename" in
       KCC)
-        # KAI C++ Compiler 3.3f
-        # FIXME: insert proper C++ library support
-        ld_shlibs=no
+        # Kuck and Associates, Inc. (KAI) C++ Compiler
+
+        # KCC will only create a shared library if the output file
+        # ends with ".so" (or ".sl" for HP-UX), so rename the library
+        # to its proper name (with version) after linking.
+        archive_cmds='templib=`echo $lib | sed -e "s/\.so\..*/\.so/"`; $CC $predep_objects $libobjs $deplibs $postdep_objects $linker_flags --soname $soname -o \$templib; mv \$templib $lib'
+
+        hardcode_libdir_flag_spec='${wl}-rpath,$libdir'
+        hardcode_libdir_separator=:
+
+	# Archives containing C++ object files must be created using
+	# "CC -Bstatic", where "CC" is the KAI C++ compiler.
+        old_archive_cmds='$CC -Bstatic -o $oldlib $oldobjs'
+
         ;;
       RCC)
         # Rational C++ 2.4.1
@@ -281,7 +336,7 @@ case "$host_os" in
       cxx)
         allow_undefined_flag=' ${wl}-expect_unresolved ${wl}\*'
         archive_cmds='$CC -shared${allow_undefined_flag} $predep_objects $libobjs $deplibs $postdep_objects $linker_flags ${wl}-soname $soname `test -n "$verstring" && echo ${wl}-set_version $verstring` -update_registry ${objdir}/so_locations -o $lib'
-        
+
         hardcode_libdir_flag_spec='${wl}-rpath ${wl}$libdir'
         hardcode_libdir_separator=:
 
@@ -302,7 +357,7 @@ case "$host_os" in
     esac
     ;;
   osf4* | osf5*)
-    if test "$with_gcc" = yes; then
+    if test "$with_gcc" = yes && test "$with_gnu_ld" = no; then
       allow_undefined_flag=' ${wl}-expect_unresolved ${wl}\*'
       archive_cmds='$CC -shared -nostdlib ${allow_undefined_flag} $predep_objects $libobjs $deplibs $postdep_objects $compiler_flags ${wl}-msym ${wl}-soname ${wl}$soname `test -n "$verstring" && echo ${wl}-set_version ${wl}$verstring` ${wl}-update_registry ${wl}${objdir}/so_locations -o $lib'
 
@@ -317,9 +372,19 @@ case "$host_os" in
 
     case "$cc_basename" in
       KCC)
-        # KAI C++ Compiler 3.3f
-        # FIXME: insert proper C++ library support
-        ld_shlibs=no
+        # Kuck and Associates, Inc. (KAI) C++ Compiler
+
+        # KCC will only create a shared library if the output file
+        # ends with ".so" (or ".sl" for HP-UX), so rename the library
+        # to its proper name (with version) after linking.
+        archive_cmds='templib=`echo $lib | sed -e "s/\.so\..*/\.so/"`; $CC $predep_objects $libobjs $deplibs $postdep_objects $linker_flags --soname $soname -o \$templib; mv \$templib $lib'
+
+        hardcode_libdir_flag_spec='${wl}-rpath,$libdir'
+        hardcode_libdir_separator=:
+
+	# Archives containing C++ object files must be created using
+	# the KAI C++ compiler.
+        old_archive_cmds='$CC -o $oldlib $oldobjs'
         ;;
       RCC)
         # Rational C++ 2.4.1
@@ -430,8 +495,8 @@ case "$host_os" in
         old_archive_cmds='$CC $LDFLAGS -archive -o $oldlib $oldobjs'
         ;;
       *)
-        # GNU C++ compiler
-        if test "$with_gcc" = yes; then
+        # GNU C++ compiler with Solaris linker
+        if test "$with_gcc" = yes && test "$with_gnu_ld" = no; then
           if $CC --version | egrep -v '^2\.7' > /dev/null; then
             archive_cmds='$LD -shared -nostdlib $LDFLAGS $predep_objects $libobjs $deplibs $postdep_objects $linkopts ${wl}-h $wl$soname -o $lib'
             archive_expsym_cmds='$echo "{ global:" > $lib.exp~cat $export_symbols | sed -e "s/\(.*\)/\1;/" >> $lib.exp~$echo "local: *; };" >> $lib.exp~
@@ -599,6 +664,7 @@ else
       case "$cc_basename" in
         KCC)
           # KAI C++ Compiler
+          ac_cv_prog_cc_wl='--backend -Wl,'
           ac_cv_prog_cc_pic='-fPIC'
           ;;
         cxx)
@@ -630,7 +696,7 @@ else
     osf3* | osf4* | osf5*)
       case "$cc_basename" in
         KCC)
-          # KAI C++ Compiler 3.3f
+          ac_cv_prog_cc_wl='--backend -Wl,'
           ;;
         RCC)
           # Rational C++ 2.4.1

@@ -4,21 +4,21 @@
    This file is part of GNU Libtool.
 
 This library is free software; you can redistribute it and/or
-modify it under the terms of the GNU Library General Public
+modify it under the terms of the GNU Lesser General Public
 License as published by the Free Software Foundation; either
 version 2 of the License, or (at your option) any later version.
 
-As a special exception to the GNU Library General Public License,
-if you distribute this file as part of a program that uses GNU libtool
-to create libraries and programs, you may include it under the same
+As a special exception to the GNU Lesser General Public License,
+if you distribute this file as part of a program or library that
+is built using GNU libtool, you may include it under the same
 distribution terms that you use for the rest of that program.
 
 This library is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-Library General Public License for more details.
+Lesser General Public License for more details.
 
-You should have received a copy of the GNU Library General Public
+You should have received a copy of the GNU Lesser General Public
 License along with this library; if not, write to the Free
 Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 02111-1307  USA
@@ -113,7 +113,6 @@ Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 
 #include <stdlib.h>
 
-
 /* Defining error strings alongside their symbolic names in a macro in
    this way allows us to expand the macro in different contexts with
    confidence that the enumeration of symbolic names will map correctly
@@ -148,7 +147,6 @@ enum {
 };
 #undef LTDL_ERROR
 
-
 /* An opaque handle for a successfully lt_dlopened module instance. */
 #ifdef _LTDL_COMPILE_
 typedef	struct lt_dlhandle_t *lt_dlhandle;
@@ -182,11 +180,13 @@ typedef	struct lt_dlloader_t lt_dlloader_t;
 typedef	lt_ptr_t lt_dlloader_t;
 #endif
 
+typedef lt_ptr_t lt_dlloader_data_t;
+
 /* Function pointer types for creating user defined module loaders. */
-typedef lt_module_t lt_module_open_t LTDL_PARAMS((const char *filename));
-typedef int lt_module_close_t LTDL_PARAMS((lt_module_t handle));
-typedef lt_ptr_t lt_find_sym_t LTDL_PARAMS((lt_module_t handle, const char *symbol));
-typedef int lt_dlloader_exit_t LTDL_PARAMS((void));
+typedef lt_module_t lt_module_open_t LTDL_PARAMS((lt_dlloader_data_t loader_data, const char *filename));
+typedef int lt_module_close_t LTDL_PARAMS((lt_dlloader_data_t loader_data, lt_module_t handle));
+typedef lt_ptr_t lt_find_sym_t LTDL_PARAMS((lt_dlloader_data_t loader_data, lt_module_t handle, const char *symbol));
+typedef int lt_dlloader_exit_t LTDL_PARAMS((lt_dlloader_data_t loader_data));
 
 __BEGIN_DECLS
 /* Initialisation and finalisation functions for libltdl. */
@@ -219,7 +219,6 @@ extern const lt_dlinfo *lt_dlgetinfo LTDL_PARAMS((lt_dlhandle handle));
 extern int lt_dlforeach LTDL_PARAMS((
 		int (*func)(lt_dlhandle handle, lt_ptr_t data), lt_ptr_t data));
 
-
 /* User module loader API. */
 struct lt_user_dlloader {
 	const char *sym_prefix;
@@ -227,12 +226,16 @@ struct lt_user_dlloader {
 	lt_module_close_t *module_close;
 	lt_find_sym_t *find_sym;
 	lt_dlloader_exit_t *dlloader_exit;
+  	lt_dlloader_data_t dlloader_data;
 };
 
-extern lt_dlloader_t *lt_next_dlloader LTDL_PARAMS((lt_dlloader_t *place));
+extern lt_dlloader_t *lt_dlloader_next LTDL_PARAMS((lt_dlloader_t *place));
+extern lt_dlloader_t *lt_dlloader_find LTDL_PARAMS((const char *loader_name));
 extern const char *lt_dlloader_name LTDL_PARAMS((lt_dlloader_t *place));
+extern lt_dlloader_data_t *lt_dlloader_data LTDL_PARAMS((lt_dlloader_t *place));
 extern lt_dlloader_t *lt_find_dlloader LTDL_PARAMS((const char *loader_name));
-extern int lt_add_dlloader LTDL_PARAMS((lt_dlloader_t *place, const struct lt_user_dlloader *dlloader, const char *loader_name));
+extern int lt_dlloader_add LTDL_PARAMS((lt_dlloader_t *place, const struct lt_user_dlloader *dlloader, const char *loader_name));
+extern int lt_dlloader_remove LTDL_PARAMS((const char *loader_name));
 
 /* Integrated lt_dlerror() messages for user loaders. */
 extern int lt_dladderror LTDL_PARAMS((const char *diagnostic));
