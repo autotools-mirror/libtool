@@ -3,15 +3,10 @@
  *
  *  Strings that, when written from 'C', must be the same as
  *  the strings typed in the definition and template files.
- */[=
-
+ */
+[=
 IF (== (suffix) "h") =][=
-
-  (define guard (string-append "HDRGRD_" (string-upcase!
-                (string->c-name! (out-name)) )))
-  (define hdr-name (out-name)) =]
-#ifndef [=(. guard)=]
-#define [=(. guard)=] 1
+  (make-header-guard "ltmain") =]
 
 #include <stdio.h>
 #include <options.h>
@@ -52,17 +47,18 @@ extern emitScriptProc emitScript;[=
 
 ELSE  not h suffix
 
-=]
-#include "[=(. hdr-name)=]"
+=]#include "[=(. header-file)=]"
 [=
 (define tpl-name  "")
 (define cmd-list  "")
+(define cmd-str   "")
 (define proc-list "")
 (define Cmd-Name  "") =][=
 
 FOR string           =][=
 
   (set! Cmd-Name (string-capitalize! (get "str_name")))
+  (set! cmd-str  (string-append "z" Cmd-Name "Cmd"))
 
 =]
 /*
@@ -84,12 +80,12 @@ tSCC zExplain[=(. Cmd-Name)=][ [=
       IF (exist? "explain")     =]
 
 [=    ENDIF                     =]
-tSCC z[= (. Cmd-Name) =]Cmd[] =[=
-   (out-push-new ".lt.sh")      =][=
-   INCLUDE (. tpl-name)         =][=
-   (out-pop)
-   (set! cmd-list (string-append cmd-list "z" Cmd-Name "Cmd\n"))
-   (kr-string (shell "cat .lt.sh ; rm -f .lt.sh"))
+tSCC [= (. cmd-str)         =][] =[=
+   INCLUDE
+   (set! cmd-list (string-append cmd-list cmd-str "\n"))
+   (out-push-new)
+   (. tpl-name)             =][=
+   (kr-string (out-pop #t))
    =];
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */[=
@@ -148,6 +144,6 @@ extern void modalUsage      LT_PARAMS(( tOptions* pOpts, int exitCode ));
 extern void emitShellQuoted LT_PARAMS(( tCC* pzArg, FILE* outFp ));
 extern void emitShellArg    LT_PARAMS(( tCC* pzArg, FILE* outFp ));
 
-#endif /* [=(. guard)=] */[=
+#endif /* [=(. header-guard)=] */[=
 
 ENDIF =]

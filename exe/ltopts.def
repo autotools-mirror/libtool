@@ -29,7 +29,8 @@ one of the following values:
 \tinstall    install libraries or executables
 \tlink       create a library or an executable
 \trelink     (synonym for `link')
-\tuninstall  remove libraries from an installed directory";
+\tuninstall  remove libraries from an installed directory
+\techo       the program behaves as a reimplementation of echo";
 
 
 include =
@@ -79,13 +80,6 @@ flag = {
     flag_code = '    SET_OPT_MODE("finish");';
     descrip   = "set mode to `finish'";
     doc       = "This option is equivalent to `--mode=finish'";
-};
-
-flag = {
-    name      = "preserve_dup_deps";
-    descrip   = "normally, duplicate libs are removed";
-    doc       = "Sometimes in some circumstances it is necessary to search\n"
-                "a library multiple times.  By default, we do not.";
 };
 
 flag = {
@@ -182,7 +176,7 @@ flag = {
  * * * * * * * * * * * * * * * * * * * * * * * * * *
  */
 flag = {
-    name        = doc_link;
+    name        = doc_comp_and_link;
     documentation;
     descrip     = 'compile and link mode options:';
 };
@@ -211,9 +205,25 @@ flag = {
  * * * * * * * * * * * * * * * * * * * * * * * * * *
  */
 flag = {
+    name        = doc_link;
+    documentation;
+    descrip     = 'link only mode options:';
+};
+
+flag = {
+    name      = "preserve_dup_deps";
+    descrip   = " -- normally, duplicate libs are removed";
+    doc       = "Sometimes in some circumstances it is necessary to search\n"
+                "a library multiple times.  By default, we do not.";
+};
+
+/*
+ * * * * * * * * * * * * * * * * * * * * * * * * * *
+ */
+flag = {
     name        = doc_compile;
     documentation;
-    descrip     = 'compile-only mode options:';
+    descrip     = 'compile only mode options:';
 };
 
 flag = {
