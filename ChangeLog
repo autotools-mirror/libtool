@@ -1,3 +1,7 @@
+2004-02-11  Gary V. Vaughan  <gary@gnu.org>
+
+	* commit: Mail a nicer commit notification.
+
 2004-02-10  Gary V. Vaughan  <gary@gnu.org>
 
 	* NEWS, bootstrap, configure.ac, ltmain.in, m4/libtool.m4:

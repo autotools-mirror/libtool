@@ -93,8 +93,8 @@ my_sed_version='/^# '$name' (GNU /,/# warranty; / {
 	        p;
 	     }; d'
 
-rm -f "$log_file"
-trap 'rm -f "$log_file"; exit 1' 1 2 15
+rm -f "${log_file}*"
+trap 'rm -f "${log_file}*"; exit 1' 1 2 15
 
 set -e
 
@@ -374,17 +374,35 @@ done
 
 # Send a copy of the log_file if sendmail_to was set:
 if test -n "$sendmail_to"; then
+  notify_file="${log_file}.2"
   echo "$name: Mailing commit notification to $sendmail_to" >&2
   test $# -gt 0 && filelist="$@"
-  test -f "$signature_file" && cat "$signature_file" >> "$log_file"
+
+  {
+    test -f CVS/Root &&
+        echo "CVSROOT:		`sed -e 's,.*:,,g' CVS/Root`"
+    test -f ./mkstamp &&
+        echo "TIMESTAMP: 	`$SHELL ./mkstamp < ./ChangeLog`"
+    test -f CVS/Repository &&
+        echo "Module name:	`cat CVS/Repository`"
+    test -f CVS/Tag &&
+        echo "Branch:		`sed -e 's,^T,,;1q' CVS/Tag`"
+    test -f CVS/Root &&
+        echo "Changes by:	`sed -e 's,^.*:\(.*\):.*$,\1,' CVS/Root`"
+    echo ""
+    echo "Log Message:"
+    sed -e 's,^,	,' "$log_file"
+    test -f "$signature_file" && cat "$signature_file"
+  } >> "$notify_file"
+
   if test -n "$sendmail_from"; then
-    $SHELL $MAILNOTIFY -F "$sendmail_from" -s "`echo $filelist`" -f "$log_file" -m "text/plain" "$sendmail_to"
+    $SHELL $MAILNOTIFY -F "$sendmail_from" -s "`echo $filelist`" -f "$notify_file" -m "text/plain" "$sendmail_to"
   else
-    $SHELL $MAILNOTIFY -s "`echo $filelist`" -f "$log_file" -m "text/plain" "$sendmail_to"
+    $SHELL $MAILNOTIFY -s "`echo $filelist`" -f "$notify_file" -m "text/plain" "$sendmail_to"
   fi
 fi
 
-rm -f "$log_file"
+rm -f "${log_file}*"
 
 # if main_repeat was not set to `false', we failed
 $main_repeat && exit 1
