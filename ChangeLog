@@ -1,5 +1,7 @@
 1999-04-25  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* ltconfig.in (irix*, osf*, deplibs_check_method): Use pass_all.
+
 	* ltconfig.in (old_LDFLAGS, old_LIBS): Save and write to comments
 	in output file.
 
