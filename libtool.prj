@@ -1,12 +1,12 @@
 ;; -*- Lisp -*-
 (Created-By-Prcs-Version 1 2 1)
 (Project-Description "GNU libtool library support script")
-(Project-Version libtool 1 18)
-(Parent-Version libtool 1 17)
+(Project-Version libtool 1 19)
+(Parent-Version libtool 1 18)
 
-(Version-Log "Getting ready for release 1.0c.")
+(Version-Log "Fix some more portability problems on MS-DOS.")
 (New-Version-Log "")
-(Checkin-Time "Fri, 05 Sep 1997 15:59:39 -0600")
+(Checkin-Time "Mon, 15 Sep 1997 06:31:09 -0600")
 (Checkin-Login gord)
 (Populate-Ignore ("~$" "Makefile$" "Makefile\\.in$" "aclocal\\.m4$"
 		  "configure$" "config\\.status$" "config\\.cache$"
@@ -24,21 +24,21 @@
 (Files
 ;; Administrivia.
   (AUTHORS (libtool/21_AUTHORS 1.1 664))
-  (ChangeLog (libtool/20_ChangeLog 1.4.1.51 664))
-  (NEWS (libtool/19_NEWS 1.4.1.32 664))
-  (PACKAGES (libtool/42_PACKAGES 1.5 664))
+  (ChangeLog (libtool/20_ChangeLog 1.4.1.52 664))
+  (NEWS (libtool/19_NEWS 1.4.1.33 664))
+  (PACKAGES (libtool/42_PACKAGES 1.6 664))
   (README (libtool/17_README 1.15 664))
   (README-alpha (libtool/16_README-alp 1.7 664))
-  (TODO (libtool/14_TODO 1.3.1.27 664))
-  (THANKS (libtool/15_THANKS 1.9 664))
+  (TODO (libtool/14_TODO 1.3.1.28 664))
+  (THANKS (libtool/15_THANKS 1.10 664))
   (libtool.spec (libtool/46_libtool.sp 1.4 664))
 
 ;; Top directory.
-  (Makefile.am (libtool/18_Makefile.a 1.27 664))
-  (configure.in (libtool/13_configure. 1.4.1.22 664))
+  (Makefile.am (libtool/18_Makefile.a 1.28 664))
+  (configure.in (libtool/13_configure. 1.4.1.23 664))
   (lineno (libtool/49_lineno 1.1 775))
-  (ltmain.sh.in (libtool/2_ltmain.sh. 1.4.1.39 664))
-  (ltconfig.in (libtool/3_ltconfig.i 1.4.1.40 775))
+  (ltmain.in (libtool/2_ltmain.sh. 1.4.1.40 664))
+  (ltconfig.in (libtool/3_ltconfig.i 1.4.1.41 775))
   (libtoolize.in (libtool/4_libtoolize 1.6 664))
 
 ;; aclocal additions.
@@ -64,7 +64,7 @@
   (tests/ChangeLog (libtool/26_ChangeLog 1.19 664))
   (tests/Makefile.am (libtool/25_Makefile.a 1.12 664))
   (tests/defs (libtool/24_defs 1.3 664))
-  (tests/tlibtool (libtool/29_tlibtool 1.2 775))
+  (tests/tlibtool (libtool/29_tlibtool 1.3 775))
 
 ;; The actual tests.
   (tests/assign.test (libtool/44_assign.tes 1.1 775))
