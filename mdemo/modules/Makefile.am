@@ -10,9 +10,9 @@ INCLUDES = -I$(srcdir)/../../libltdl
 lib_LTLIBRARIES = libfoo1.la libfoo2.la
 
 libfoo1_la_SOURCES = foo1.c
-libfoo1_la_LDFLAGS = -export-symbols $(srcdir)/libfoo1.sym -lm -module
+libfoo1_la_LDFLAGS = -export-dynamic -lm -module
 
 libfoo2_la_SOURCES = foo2.c
-libfoo2_la_LDFLAGS = -export-symbols $(srcdir)/libfoo2.sym -lm -module
+libfoo2_la_LDFLAGS = -export-dynamic -lm -module
 
 include_HEADERS = foo.h

@@ -646,15 +646,6 @@ compiler."
             $echo "$modename: symbol file \`$arg' does not exist"
             exit 1
           fi
-	  if test -n "$export_dynamic_flag_spec"; then
-	    eval arg=\"$export_dynamic_flag_spec\"
-	  else
-	    arg=
-	  fi
-
-          # Add the symbol object into the linking commands.
-	  compile_command="$compile_command @SYMFILE@"
-	  finalize_command="$finalize_command @SYMFILE@"
 	  prev=
 	  ;;
 	release)
@@ -718,10 +709,6 @@ compiler."
         ;;
 
       -export-symbols)
-        if test "$export_dynamic" != no; then
-          $echo "$modename: cannot have both -export-dynamic and -export-symbols"
-          exit 1
-        fi
         if test -n "$export_symbols"; then
           $echo "$modename: cannot have more than one -exported-symbols"
           exit 1
@@ -1075,6 +1062,11 @@ compiler."
       exit 1
     fi
 
+    if test -n "$export_symbols" && test "$module" = yes; then
+      $echo "$modename: \`-export-symbols' is not supported for modules"
+      exit 1
+    fi
+    
     oldlibs=
     # calculate the name of the file, without its directory
     outputname=`$echo "X$output" | $Xsed -e 's%^.*/%%'`
@@ -1110,6 +1102,10 @@ compiler."
 
       if test -n "$release"; then
         $echo "$modename: warning: \`-release' is ignored for archives" 1>&2
+      fi
+
+      if test -n "$export_symbols"; then
+        $echo "$modename: warning: \`-export-symbols' is ignored for archives" 1>&2
       fi
 
       # Now set the variables for building old libraries.
@@ -1566,7 +1562,11 @@ EOF
 	fi
 
 	# Do each of the archive commands.
-	eval cmds=\"$archive_cmds\"
+	if test -n "$export_symbols" && test -n "$archive_sym_cmds"; then
+	  eval cmds=\"$archive_sym_cmds\"
+	else
+	  eval cmds=\"$archive_cmds\"
+	fi
 	IFS="${IFS= 	}"; save_ifs="$IFS"; IFS='~'
 	for cmd in $cmds; do
 	  IFS="$save_ifs"
@@ -1583,8 +1583,8 @@ EOF
 	  fi
 	done
 
-	# If -export-dynamic/symbols was specified, set the dlname.
-	if test "$export_dynamic" = yes || test -n "$export_symbols"; then
+	# If -export-dynamic was specified, set the dlname.
+	if test "$export_dynamic" = yes; then
 	  # On all known operating systems, these are identical.
 	  dlname="$soname"
 	fi
@@ -1746,8 +1746,7 @@ EOF
         finalize_command=`$echo "X$finalize_command " | $Xsed -e "$los2o" -e 's/ $//'`
       fi
 
-      if { test "$export_dynamic" = yes || test "$export_dynamic" = yes; } &&
-         test -n "$NM" && test -n "$global_symbol_pipe"; then
+      if test "$export_dynamic" = yes && test -n "$NM" && test -n "$global_symbol_pipe"; then
         dlsyms="${outputname}S.c"
       else
         dlsyms=
@@ -1886,7 +1885,7 @@ dld_preloaded_symbols[] =
           exit 1
           ;;
         esac
-      elif test "$export_dynamic" != yes && test -z "$export_symbols"; then
+      elif test "$export_dynamic" != yes; then
         test -n "$dlfiles$dlprefiles" && $echo "$modename: warning: \`-dlopen' and \`-dlpreopen' are ignored without \`-export-dynamic'" 1>&2
       else
         # We keep going just in case the user didn't refer to
