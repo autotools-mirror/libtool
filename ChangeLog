@@ -1,3 +1,9 @@
+2005-02-03  Peter O'Gorman  <peter@pogma.com>
+
+	* ltmain.in [darwin]: Don't add installed libs to temp_rpath when
+	building executables on darwin, or other systems which use
+	hardcode_automatic. It may break our wrapper scripts.
+
 2005-02-02  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* ltmain.in, libtoolize.in: Exit with nonzero status on write failures
