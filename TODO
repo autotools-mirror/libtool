@@ -64,19 +64,13 @@ In the future:
 **************
 
 * Fix */demo on win32.
-This may require resolving some of the items below.
+This may simply require resolving the item below.
 
 * Figure out how to use data items in dlls with win32.
 The difficult part is compiling each object which will be linked with an
 import lib differently than if it will be linked with a static lib.  This will
 almost definitely require that automake pass some hints about linkage in to
 each object compilation line.
-
-* Resolve the name clash between import libs and static libs on win32.
-Probably the best way to do this is to create lib$name-dll.a for the import
-library, and continue to use lib$name.a for the static lib.  libtool
---mode=link can then favour -dll.a over .a if there is a choice.  No point in
-doing this until we can export data items (above).
 
 * If not cross-compiling, have the static flag test run the resulting
 binary to make sure everything works.
