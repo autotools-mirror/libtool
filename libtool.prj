@@ -1,12 +1,12 @@
 ;; -*- Lisp -*-
 (Created-By-Prcs-Version 1 2 1)
 (Project-Description "GNU libtool library support script")
-(Project-Version libtool 0.7a 1)
-(Parent-Version libtool 0.7a 0)
+(Project-Version libtool 0.7b 1)
+(Parent-Version libtool 0.7b 0)
 
-(Version-Log "libtool-0.7a")
+(Version-Log "libtool-0.7b")
 (New-Version-Log "")
-(Checkin-Time "Tue, 01 Apr 1997 11:57:49 -0700")
+(Checkin-Time "Tue, 01 Apr 1997 11:59:30 -0700")
 (Checkin-Login gord)
 (Populate-Ignore ("~$"
 		  "CVS" ".cvsignore$"))
@@ -17,36 +17,36 @@
 
 ;; Files added by populate at Tue, 01 Apr 1997 11:24:29 -0700:
 
-  (doc/libtool.texi (libtool/0_libtool.te 1.3.1.2 664))
-  (doc/Makefile.am (libtool/1_Makefile.a 1.2 664))
-  (ltmain.sh.in (libtool/2_ltmain.sh. 1.4.1.2 664))
-  (ltconfig.in (libtool/3_ltconfig.i 1.4.1.2 775))
-  (libtoolize.in (libtool/4_libtoolize 1.4 664))
+  (doc/libtool.texi (libtool/0_libtool.te 1.3.1.3 664))
+  (doc/Makefile.am (libtool/1_Makefile.a 1.3 664))
+  (ltmain.sh.in (libtool/2_ltmain.sh. 1.4.1.3 664))
+  (ltconfig.in (libtool/3_ltconfig.i 1.4.1.3 775))
+  (libtoolize.in (libtool/4_libtoolize 1.5 664))
   (demo/main.c (libtool/5_main.c 1.2 664))
 
   (demo/hello.c (libtool/7_hello.c 1.2 664))
   (demo/foo.h (libtool/8_foo.h 1.3 664))
   (demo/foo.c (libtool/9_foo.c 1.2.1.1 664))
   (demo/configure.in (libtool/10_configure. 1.2 664))
-  (demo/Makefile.am (libtool/11_Makefile.a 1.6 664))
-  (libtool.m4 (libtool/12_libtool.m4 1.2 664))
-  (configure.in (libtool/13_configure. 1.4.1.2 664))
-  (TODO (libtool/14_TODO 1.3.1.2 664))
+  (demo/Makefile.am (libtool/11_Makefile.a 1.7 664))
+  (libtool.m4 (libtool/12_libtool.m4 1.3 664))
+  (configure.in (libtool/13_configure. 1.4.1.3 664))
+  (TODO (libtool/14_TODO 1.3.1.3 664))
   (THANKS (libtool/15_THANKS 1.3 664))
   (README-alpha (libtool/16_README-alp 1.4 664))
-  (README (libtool/17_README 1.5 664))
-  (Makefile.am (libtool/18_Makefile.a 1.5 664))
-  (NEWS (libtool/19_NEWS 1.4.1.2 664))
-  (ChangeLog (libtool/20_ChangeLog 1.4.1.2 664))
+  (README (libtool/17_README 1.6 664))
+  (Makefile.am (libtool/18_Makefile.a 1.6 664))
+  (NEWS (libtool/19_NEWS 1.4.1.3 664))
+  (ChangeLog (libtool/20_ChangeLog 1.4.1.3 664))
   (AUTHORS (libtool/21_AUTHORS 1.1 664))
 
 ;; Files added by populate at Tue, 01 Apr 1997 11:28:43 -0700:
 
   (tests/test-e.test (libtool/22_test-e.tes 1.2 775))
 
-  (tests/defs (libtool/24_defs 1.2 664))
-  (tests/Makefile.am (libtool/25_Makefile.a 1.3 664))
-  (tests/ChangeLog (libtool/26_ChangeLog 1.3 664))
+  (tests/defs (libtool/24_defs 1.3 664))
+  (tests/Makefile.am (libtool/25_Makefile.a 1.4 664))
+  (tests/ChangeLog (libtool/26_ChangeLog 1.4 664))
   (demo/run.test (libtool/27_run.test 1.1 775))
   (demo/README (libtool/28_README 1.1 664))
 
@@ -57,13 +57,13 @@
 ;; Files added by populate at Tue, 01 Apr 1997 11:52:52 -0700:
 
   (tests/tlibtool (libtool/29_tlibtool 1.1 775))
-  (tests/link.test (libtool/30_link.test 1.2 775))
-  (tests/link-2.test (libtool/31_link-2.tes 1.2 775))
-  (tests/demo-unst.test (libtool/32_demo-unst. 1.2 775))
+  (tests/link.test (libtool/30_link.test 1.3 775))
+  (tests/link-2.test (libtool/31_link-2.tes 1.3 775))
+  (tests/demo-unst.test (libtool/32_demo-unst. 1.3 775))
   (tests/demo-make.test (libtool/33_demo-make. 1.2 775))
-  (tests/demo-inst.test (libtool/34_demo-inst. 1.2 775))
+  (tests/demo-inst.test (libtool/34_demo-inst. 1.3 775))
   (tests/demo-exec.test (libtool/35_demo-exec. 1.2 775))
-  (tests/demo-conf.test (libtool/36_demo-conf. 1.2 775))
+  (tests/demo-conf.test (libtool/36_demo-conf. 1.3 775))
   (README-automake (libtool/37_README-aut 1.1 664))
 
 ;; Files deleted by populate at Tue, 01 Apr 1997 11:52:52 -0700:
@@ -73,6 +73,11 @@
 ;; Files added by populate at Tue, 01 Apr 1997 11:57:05 -0700:
 
   (tests/suffix.test (libtool/38_suffix.tes 1.1 775))
+
+;; Files added by populate at Tue, 01 Apr 1997 11:59:10 -0700:
+
+  (tests/hardcode.test (libtool/39_hardcode.t 1.1 775))
+  (PLATFORMS (libtool/40_PLATFORMS 1.1 664))
 )
 (Merge-Parents)
 (New-Merge-Parents)
