@@ -1,3 +1,9 @@
+1999-05-27  Alexandre Oliva  <oliva@dcc.unicamp.br>, Olly Betts  <olly@muscat.co.uk>
+
+	* ltmain.in: Expand convenience libraries when creating reloadable 
+	objects.
+	* NEWS: Ditto.
+
 1999-05-27  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* NEWS: Mention the two bugfixes below.
