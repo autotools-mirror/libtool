@@ -25,9 +25,9 @@ USA. */
 #include <math.h>
 #endif
 
-#define nothing libfoo1_LTX_nothing
-#define foo1	libfoo1_LTX_foo1
-#define hello	libfoo1_LTX_hello
+#define nothing foo1_LTX_nothing
+#define foo1	foo1_LTX_foo1
+#define hello	foo1_LTX_hello
 
 /* Give a global variable definition. */
 int nothing;

@@ -4,7 +4,7 @@ AC_INIT(ltdl.c)
 AM_INIT_AUTOMAKE(libltdl,0.1)
 
 AC_ARG_ENABLE(ltdl-install,
-  [--enable-ltdl-install     install libltdl (breaks check before install)])
+  [--enable-ltdl-install     install libltdl])
 AM_CONDITIONAL(INSTALL_LTDL, test x$enable_ltdl_install = xyes)
 if test x$enable_ltdl_install = xyes; then
   LIBLIBS=libltdl.la

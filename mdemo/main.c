@@ -22,18 +22,6 @@ USA. */
 #include "ltdl.h"
 #include <stdio.h>
 
-#ifdef HAVE_STRING_H
-#include <string.h>
-#endif
-
-#ifdef HAVE_MATH_H
-#include <math.h>
-#endif
-
-/* import sin and cos (used by the modules) */
-extern double sin (double x);
-extern double cos (double x);
-
 int
 test_dl (char *filename)
 {

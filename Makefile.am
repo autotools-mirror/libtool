@@ -1,8 +1,8 @@
 ## Process Makefile.am with automake to create Makefile.in. -*-Makefile-*-
 ## Gordon Matzigkeit <gord@gnu.ai.mit.edu>, 1996
 AUTOMAKE_OPTIONS = gnits
-SUBDIRS = . doc tests
-DIST_SUBDIRS = $(SUBDIRS) demo libltdl mdemo
+SUBDIRS = . doc tests $(BUILD_LTDL)
+DIST_SUBDIRS = . doc tests libltdl demo mdemo # depdemo
 
 # We need to export these variables when we run ltconfig.
 CFLAGS = @CFLAGS@

@@ -1,5 +1,25 @@
 1999-01-10  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* configure.in (AC_CONFIG_SUBDIRS): add libltdl, demo, mdemo and
+	depdemo commented out, so that `dist' works before `check'
+	(BUILD_LTDL): will contain libltdl if --enable-ltdl-install
+	* Makefile.am (DIST_SUBDIRS): expand SUBDIRS and add depdemo,
+	commented out
+	(SUBDIRS): add $(BUILT_LTDL)
+	* libltdl/Makefile.am (EXTRA_LTLIBRARIES): add libtest.la, the
+	same as libltdl but always a convenience library.  Not built by
+	default.  Both libraries now depend on the libtool script, that
+	depends on ../libtool and is rebuilt when needed
+	* mdemo/Makefile.am (mdemo, mdemo.debug): depend on and link with
+	../libltdl/libtest.la, that is rebuilt if needed
+	(mdemo_LDADD): removed $(LIBADD_M), to avoid silent failures
+	(foo1.la): renamed from libfoo1.la; test removing the lib prefix
+	* mdemo/foo1.c: renamed libfoo1_LTX symbols to foo1_LTX
+	* mdemo/main.c: don't include string.h nor math.h, nor refer to
+	sin nor cos
+	* tests/mdemo-exec.test: renamed libfoo1.la to foo1.la
+	* tests/mdemo-inst.test: ditto
+
 	* libltdl/ltdl.c (FILENAME_MAX): use it instead of MAX_FILENAME,
 	and don't redefine it if already defined; default to 1024, as on
 	most systems
