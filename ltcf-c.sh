@@ -372,7 +372,7 @@ else
     else
       archive_cmds='$LD -shared -o $lib $libobjs $deplibs $linker_flags'      # ELF
     fi
-    hardcode_libdir_flag_spec='${wl}-R$libdir'
+    hardcode_libdir_flag_spec='-R$libdir'
     hardcode_direct=yes
     hardcode_shlibpath_var=no
     ;;
