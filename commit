@@ -388,7 +388,7 @@ if test -n "$sendmail_to"; then
     test -f CVS/Tag &&
         echo "Branch:		`sed -e 's,^T,,;1q' CVS/Tag`"
     test -f CVS/Root &&
-        echo "Changes by:	`sed -e 's,^.*:\(.*\):.*$,\1,' CVS/Root`"
+        echo "Changes by:	`sed -e 's,:.*$,,g;s,^.*:,,' CVS/Root`"
     echo ""
     echo "Log Message:"
     sed -e 's,^,	,' "$log_file"
