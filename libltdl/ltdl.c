@@ -342,7 +342,7 @@ lt_dlseterror (index)
 #undef strdup
 #define strdup rpl_strdup
 
-static inline char *
+static char *
 strdup(str)
      const char *str;
 {
@@ -366,7 +366,7 @@ strdup(str)
 #undef strcmp
 #define strcmp rpl_strcmp
 
-static inline int
+static int
 strcmp (str1, str2)
      const char *str1;
      const char *str2;
@@ -396,7 +396,7 @@ strcmp (str1, str2)
 #  else
 #    define strchr rpl_strchr
 
-static inline const char*
+static const char*
 strchr(str, ch)
      const char *str;
      int ch;
@@ -419,7 +419,7 @@ strchr(str, ch)
 #  else
 #    define strrchr rpl_strrchr
 
-static inline const char*
+static const char*
 strrchr(str, ch)
      const char *str;
      int ch;
@@ -450,7 +450,7 @@ strrchr(str, ch)
 #  else
 #    define memcpy rpl_memcpy
 
-static inline char *
+static char *
 memcpy (dest, src, size)
      char *dest;
      const char *src;
@@ -1953,7 +1953,7 @@ unload_deplibs(handle)
   return errors;
 }
 
-static inline int
+static int
 trim (dest, str)
      char **dest;
      const char *str;
@@ -1987,7 +1987,7 @@ trim (dest, str)
   return 0;
 }
 
-static inline int
+static int
 free_vars( dlname, oldname, libdir, deplibs)
      char *dlname;
      char *oldname;

@@ -1,3 +1,13 @@
+2001-04-24  Gary V. Vaughan  <gvv@techie.com>
+
+	* ltdl.m4 (AC_C_INLINE): No longer required.
+	* libltdl/ltdl.c (strdup, strcmp, strchr, strrchr, memcpy, trim,
+	free_vars):  Revoke inline keyword from declarations.  `static
+	inline' is not very portable, and in addition Unixware 7.1.1's
+	compiler says you can't access static variables from inline
+	functions.
+	Reported by Peter Eisentraut  <peter_e@gmx.net>
+
 2001-04-24 Albert Chin-A-Young <china@thewrittenword.com>
 
 	* ltconfig.in: Handle case where /bin/nm -p outputs multiple
