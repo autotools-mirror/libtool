@@ -49,6 +49,19 @@ helldl:
 	chmod +x $@
 endif
 
+# This is one of the essential tests for deplibs_check_method=pass_all.
+# If this one passes with pass_all, it is likely that pass_all works
+noinst_LIBRARIES = libhell0.a
+libhell0_a_SOURCES = hello.c foo.c
+lib_LTLIBRARIES += libhell1.la libhell2.la
+libhell1_la_SOURCES = hell1.c
+libhell2_la_SOURCES = hell2.c
+libhell1_la_LIBADD = -L. -lhell0 # libtool rejects libhell0.la
+libhell2_la_LIBADD = -L. -lhell0 # we have to use -L/-l.  Why?
+bin_PROGRAMS += hell0
+hell0_SOURCES = main.c
+hell0_LDADD = libhell1.la libhell2.la
+
 # Unfortunately, in order to test libtool thoroughly, we need access
 # to its private directory.
 objdir = `sed -n -e 's/^objdir=\(.*\)$$/\1/p' ../libtool`
