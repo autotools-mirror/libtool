@@ -1,3 +1,7 @@
+2002-07-31  Robert Boehne  <rboehne@gnu.org>
+
+	* f77demo/.cvsignore: New file, forgotten in the last commit.
+
 2002-07-31  Eric Lindahl  <erik@theophys.kth.se>
 
 	* libtool.m4 (AC_PROG_LIBTOOL): Added support for the new F77
