@@ -24,8 +24,6 @@
 
 # serial 46 AC_PROG_LIBTOOL
 
-builtin([undefine],[symbols])
-
 AC_DEFUN([AC_PROG_LIBTOOL],
 [AC_REQUIRE([AC_LIBTOOL_SETUP])dnl
 
@@ -1709,12 +1707,12 @@ else
     ;;
 
   solaris*)
-    no_undefined_flag=' -z defs'
+    no_undefined_flag=' -z text'
     # $CC -shared without GNU ld will not create a library from C++
     # object files and a static libstdc++, better avoid it by now
-    archive_cmds='$LD -G${allow_undefined_flag} -h $soname -o $lib $libobjs $deplibs $linker_flags `test "x$allow_undefined_flag" = "x$no_undefined_flag" && $CC --print-libgcc-file-name`'
+    archive_cmds='$LD -G${allow_undefined_flag} -h $soname -o $lib $libobjs $deplibs $linker_flags'
     archive_expsym_cmds='$echo "{ global:" > $lib.exp~cat $export_symbols | sed -e "s/\(.*\)/\1;/" >> $lib.exp~$echo "local: *; };" >> $lib.exp~
-		$LD -G${allow_undefined_flag} -M $lib.exp -h $soname -o $lib $libobjs $deplibs $linker_flags `test "x$allow_undefined_flag" = "x$no_undefined_flag" && $CC --print-libgcc-file-name`~$rm $lib.exp'
+		$LD -G${allow_undefined_flag} -M $lib.exp -h $soname -o $lib $libobjs $deplibs $linker_flags~$rm $lib.exp'
     hardcode_libdir_flag_spec='-R$libdir'
     hardcode_shlibpath_var=no
     case $host_os in
