@@ -1,5 +1,7 @@
 1999-02-22  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* ltmain.in: added missing mkdir $progdir for on-demand executable
+
 	* ltmain.in: create on-demand executable as $progdir/$$-$program,
 	and rename it to $progdir/$program only when it's finished, to
 	avoid race conditions.  We can still get the program linked

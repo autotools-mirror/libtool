@@ -2666,7 +2666,11 @@ else
 
     file=\"\$\$-\$program\"
 
-    $rm \"\$progdir/\$file\""
+    if test ! -d \"\$progdir\"; then
+      $mkdir \"\$progdir\"
+    else
+      $rm \"\$progdir/\$file\"
+    fi"
 
 	  echo >> $output "\
 
