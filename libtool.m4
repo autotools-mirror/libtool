@@ -203,8 +203,8 @@ file_magic*)
   ;;
 esac
 
-ifdef([AC_PROVIDE_AC_LIBTOOL_DLOPEN], enable_dlopen=yes, enable_dlopen=no)
-ifdef([AC_PROVIDE_AC_LIBTOOL_WIN32_DLL],
+AC_PROVIDE_IFELSE([AC_LIBTOOL_DLOPEN], enable_dlopen=yes, enable_dlopen=no)
+AC_PROVIDE_IFELSE([AC_LIBTOOL_WIN32_DLL],
 enable_win32_dll=yes, enable_win32_dll=no)
 
 AC_ARG_ENABLE([libtool-lock],
@@ -484,7 +484,7 @@ ia64-*-hpux*)
     CFLAGS="$SAVE_CFLAGS"
   fi
   ;;
-ifdef([AC_PROVIDE_AC_LIBTOOL_WIN32_DLL],
+AC_PROVIDE_IFELSE([AC_LIBTOOL_WIN32_DLL],
 [*-*-cygwin* | *-*-mingw* | *-*-pw32*)
   AC_CHECK_TOOL(DLLTOOL, dlltool, false)
   AC_CHECK_TOOL(AS, as, false)

@@ -1,3 +1,9 @@
+2002-06-23  Kevin Ryde  <user42@zip.com.au>
+
+	* libtool.m4 (AC_LIBTOOL_SETUP, _LT_AC_LOCK): Use
+	AC_PROVIDE_IFELSE to test AC_LIBTOOL_WIN32_DLL and
+	AC_LIBTOOL_DLOPEN, necessary for autoconf 2.53.
+
 2002-06-23  Gary V. Vaughan  <gary@gnu.org>
 
 	* libltdl/ltdl.c (argz_insert): Actually, BEFORE can be NULL
