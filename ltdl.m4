@@ -102,6 +102,7 @@ AC_CHECK_FUNCS([strchr index], [break])
 AC_CHECK_FUNCS([strrchr rindex], [break])
 AC_CHECK_FUNCS([memcpy bcopy], [break])
 AC_CHECK_FUNCS([memmove strcmp])
+AC_CHECK_FUNCS([closedir opendir readdir])
 ])# AC_LIB_LTDL
 
 
