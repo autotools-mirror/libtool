@@ -1,3 +1,9 @@
+2004-08-27  Gary V. Vaughan  <gary@gnu.org>
+
+	* doc/libtool.texi (Cheap tricks): Fix the instructions for making
+	a ltmain.in wrapping libtool in light of recent changes to the
+	version checking code.
+
 2004-08-26  Peter O'Gorman  <peter@pogma.com>
 
 	* config/ltmain.in [darwin]: Use the -dylib_file flag and avoid
