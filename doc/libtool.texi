@@ -1155,6 +1155,11 @@ and @samp{-Xcompiler @var{flag}}.
 If the @samp{-static} option is given, then only a @samp{.o} file is
 built, even if libtool was configured with @samp{--disable-static}.
 
+If the @samp{-shared} option is given, then no @samp{.o} file is built,
+even if libtool was configured with @samp{--enable-static}.  Libtool
+will signal an error if it was configured with @samp{--disable-shared},
+or if the host does not support shared libraries.
+
 Note that the @samp{-o} option is now fully supported.  It is emulated
 on the platforms that don't support it (by locking and moving the
 objects), so it is really easy to use libtool, just with minor
@@ -1294,6 +1299,14 @@ If @var{output-file} is a program, add @var{libdir} to its run-time
 path.  If @var{output-file} is a library, add -R@var{libdir} to its
 @var{dependency_libs}, so that, whenever the library is linked into a
 program, @var{libdir} will be added to its run-time path.
+
+@item -shared
+If @var{output-file} is a program, then link it against any
+uninstalled shared libtool libraries (this is the default behavior).
+If @var{output-file} is a library, then only create a shared library.
+In the later case, libtool will signal an error if it was configured
+with @samp{--disable-shared}, or if the host does not support shared
+libraries.
 
 @item -static
 If @var{output-file} is a program, then do not link it against any

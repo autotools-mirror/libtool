@@ -3,6 +3,11 @@ NEWS - list of user-visible changes between releases of GNU Libtool
 New in 1.5b: 2003-??-??; CVS version 1.5a, Libtool team:
 * Shared objects (.lo) are no longer created when `-static' is passed in
   compile mode.
+* New compile mode option `-shared' prevents creation of static objects (.o).
+* New link mode option `-shared' creates only shared libraries at link time.
+* If you configure libtool with --disable-shared (or if libtool does not
+  support shared libraries on your platform) trying to build a library using
+  `-shared' is a fatal error.
 * libtoolize installs libtool.m4 (and ltdl.m4 if used) to AC_CONFIG_M4_DIR.
 * Mode inferrence removed, shorthand for choosing modes added.
 * Specifying -allow-undefined is now an error.

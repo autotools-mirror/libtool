@@ -388,6 +388,16 @@ exec_cmd=
 	  continue
 	  ;;
 
+	-shared)
+	  if test "$build_libtool_libs" != yes; then
+	    $echo "$modename: can not build a shared library" 1>&2
+	    $echo "Fatal configuration error." 1>&2
+	    exit 1
+	  fi
+	  build_old_libs=no
+	  continue
+	  ;;
+
 	-static)
 	  build_libtool_libs=no
 	  build_old_libs=yes
@@ -873,6 +883,15 @@ EOF
     for arg
     do
       case $arg in
+      -shared)
+	if test "$build_libtool_libs" != yes; then
+	  $echo "$modename: can not build a shared library" 1>&2
+	  $echo "Fatal configuration error." 1>&2
+	  exit 1
+	fi
+	build_old_libs=no
+	break
+	;;
       -all-static | -static)
 	if test "X$arg" = "X-all-static"; then
 	  if test "$build_libtool_libs" = yes && test -z "$link_static_flag"; then
@@ -1382,6 +1401,11 @@ EOF
 	*" $dir "*) ;;
 	*) xrpath="$xrpath $dir" ;;
 	esac
+	continue
+	;;
+
+      -shared)
+	# The effects of -shared are defined in a previous loop.
 	continue
 	;;
 
@@ -6213,7 +6237,8 @@ This mode accepts the following additional options:
   -o OUTPUT-FILE    set the output file name to OUTPUT-FILE
   -prefer-pic       try to building PIC objects only
   -prefer-non-pic   try to building non-PIC objects only
-  -static           always build a \`.o' file suitable for static linking
+  -shared           do not build a \`.o' file suitable for static linking
+  -static           only build a \`.o' file suitable for static linking
 
 COMPILE-COMMAND is a command to be used in creating a \`standard' object file
 from the given SOURCEFILE.
@@ -6300,6 +6325,7 @@ The following components of LINK-COMMAND are treated specially:
   -release RELEASE  specify package release information
   -rpath LIBDIR     the created library will eventually be installed in LIBDIR
   -R[ ]LIBDIR       add LIBDIR to the runtime path of programs and libraries
+  -shared           only do dynamic linking of libtool libraries
   -static           do not do any dynamic linking of libtool libraries
   -version-info CURRENT[:REVISION[:AGE]]
 		    specify library version info [each variable defaults to 0]

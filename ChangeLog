@@ -1,5 +1,12 @@
 2003-10-07  Ralph Schleicher  <rs@nunatak.allgaeu.org>
 
+	* ltmain.in: Do not create `.o' objects when `-shared' is
+	specified in compile mode.
+	Do not make a static library when `-shared' is specified in link
+	mode.
+	* doc/libtool.texi (Compile mode): Document it.
+	* NEWS: Updated.
+
 	* doc/libtool.texi (Compile mode): Be more specific about the
 	effect of `-static'.
 	* ltmain.in: Do not create `.lo' objects when `-static' is
