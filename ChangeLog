@@ -1,3 +1,7 @@
+2001-03-06  Alexandre Oliva  <aoliva@redhat.com>
+
+	* ltcf-cxx.sh (archive_cmds) [HP-UX, GCC]: Port.
+
 2001-03-06  Gary Vaughan  <gvv@techie.com>
 
 	From Albert Chin-A-Young <china@thewrittenword.com>
