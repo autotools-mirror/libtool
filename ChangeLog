@@ -1,3 +1,13 @@
+2000-11-20  Gary V. Vaughan  <gvv@techie.com>
+
+	* libltdl/Makefile.am (libltdl_la_LDFLAGS): increment the version
+	number to reflect the breakage of binary compatibility.
+	* doc/libtool.texi (Libltdl interface):  Document
+	LT_NON_POSIX_NAMESPACE.
+	* libltdl/ltdl.h (LT_POSIX_NAMESPACE):  Deleted.  The default is
+	now to use this namespace, so the cpp macro is no longer
+	necessary.
+
 2000-11-20  Morten Eriksen  <mortene@sim.no>
 	
 	* ltdl.m4 (AC_LIB_LTDL, AC_LTDL_SYMBOL_USCORE): Break a circular

@@ -2653,6 +2653,16 @@ To use libltdl in your program you have to include the header file @file{ltdl.h}
 @end example
 
 @noindent
+The last release of libltdl used some symbols that violated the
+@sc{posix} namespace conventions.  These symbols are now deprecated,
+and have been replaced by those described here.  If you have code that
+relies on the old deprecated symbol names, defining
+@samp{LT_NON_POSIX_NAMESPACE} before you include @file{ltdl.h} provides
+conversion macros.  Whichever set of symbols you use, the new api is
+not binary compatible with the last, so you will need to recompile
+your application in order to use this version of libltdl.
+
+@noindent
 Note that libltdl is not threadsafe, i.e. a multithreaded application
 has to use a mutex for libltdl.  It was reported that GNU/Linux's glibc
 2.0's @code{dlopen} with @samp{RTLD_LAZY} (which libltdl uses by
