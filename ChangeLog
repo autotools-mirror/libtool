@@ -1,3 +1,8 @@
+1999-08-07  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* libltdl/COPYING.LIB: Update to version 2.1.
+	* libltdl/ltdl.h, libltdl/ltdl.c: Update FSF address.
+
 1999-08-03  Gary V. Vaughan  <gary@oranda.demon.co.uk>
 
 	* libtool.m4 (mingw*, AC_PROG_LD): use tr for carriage return
