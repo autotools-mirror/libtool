@@ -1,5 +1,7 @@
 2005-01-31  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* tests/quote.test: Match link quoting against `"$wl"', not `-Wl,'.
+
 	* tests/quote.test: Check for `--no-reexec' in $1 to avoid one reexec.
 
 	* m4/libtool.m4 (_LT_COMPILER_C_O): _LT_TAGDECL(lt_compiler_c_o),
