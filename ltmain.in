@@ -1743,8 +1743,8 @@ dld_preloaded_symbols[] =
 
       if test "$hardcode_action" = relink; then
         # AGH! Flame the AIX and HP-UX people for me, will ya?
-        $echo "$modename: warning: linking against uninstalled shared libraries is not properly supported" 1>&2
-        $echo "$modename: libtool will relink \`$output' during installation" 1>&2
+        $echo "$modename: warning: this platform doesn\'t like uninstalled shared libraries" 1>&2
+        $echo "$modename: \`$output' will be relinked during installation" 1>&2
       fi
 
       $show "$compile_command"
