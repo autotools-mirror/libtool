@@ -1,4 +1,18 @@
-2002-10-15 Bob Friesenhahn <bfriesen@simple.dallas.tx.us>
+2002-10-15  Charles Wilson  <cwilson@ece.gatech.edu>
+
+        * libtool.m4 (AC_LIBTOOL_SYS_MAX_CMD_LEN): avoid long delay on 
+         cygwin/Win9x when computing commandline length.
+        (AC_LIBTOOL_SYS_DYNAMIC_LINKER): fix postinstall_cmds when
+        sources are in a subdirectory
+        * ltdl.m4 (AC_LTDL_SYSSEARCHPATH): use $PATH_SEPARATOR, not
+        $ac_path_separator
+        * configure.ac: move depdemo-specific stuff.  You must configure
+        libtool before you can try './libtool --features'.
+        * mdemo-inst.test: set $PATH to include the directory in which
+        the modules are installed (on cygwin, DLL search path is the
+        $PATH)
+
+2002-10-15  Bob Friesenhahn <bfriesen@simple.dallas.tx.us>
 
         * ltmain.in: MinGW works identically to Cygwin.
 
@@ -6,7 +20,7 @@
         *  Model MinGW configuration after Cygwin configuration.
            Some portions share implementation.
 
-2002-10-11 Elizabeth Barham <soggytrousers@yahoo.com>
+2002-10-11  Elizabeth Barham <soggytrousers@yahoo.com>
 
         * libtool.m4: Pattern MinGW library naming after that
         used by Cygwin except use 'lib' prefix rather than 'cyg'.

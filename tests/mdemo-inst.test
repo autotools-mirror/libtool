@@ -24,6 +24,8 @@ echo "= Running $make install in ../mdemo"
 $make install || exit 1
 
 echo "= Executing installed programs"
+path_old=$PATH
+PATH=$prefix/lib:$PATH
 
 status=0
 if $prefix/bin/mdemo_static $prefix/lib/foo1.la $prefix/lib/libfoo2.la; then :
@@ -44,4 +46,5 @@ else
   status=1
 fi
 
+PATH=$path_old
 exit $status

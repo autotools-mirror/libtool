@@ -620,11 +620,14 @@ AC_CACHE_VAL([lt_cv_sys_max_cmd_len], [dnl
     lt_cv_sys_max_cmd_len=-1;
     ;;
 
-  
-  mingw*)
-    # On msys 1.0 and win98, the maximum length was something like
-    # 200,000 and took around 45 minutes to get there... ouch!
-    # libtool calculates a length of 8192 for NT-based systems (including XP)
+  cygwin* | mingw*)
+    # On Win9x/ME, this test blows up -- it succeeds, but takes
+    # about 5 minutes as the teststring grows exponentially.
+    # Worse, since 9x/ME are not pre-emptively multitasking,
+    # you end up with a "frozen" computer, even though with patience
+    # the test eventually succeeds (with a max line length of 256k).
+    # Instead, let's just punt: use the minimum linelength reported by
+    # all of the supported platforms: 8192 (on NT/2K/XP).
     lt_cv_sys_max_cmd_len=8192;
     ;;
 
@@ -1132,10 +1135,11 @@ cygwin* | mingw* | pw32*)
   yes,cygwin* | yes,mingw*)
     library_names_spec='$libname.dll.a'
     # DLL is installed to $(libdir)/../bin by postinstall_cmds
-    postinstall_cmds='dlpath=`$SHELL 2>&1 -c '\''. $dir/${file}i;echo \$dlname'\''`~
+    postinstall_cmds='base_file=`basename \${file}`~
+      dlpath=`$SHELL 2>&1 -c '\''. $dir/'\''\${base_file}'\''i;echo \$dlname'\''`~
       dldir=$destdir/`dirname \$dlpath`~
       test -d \$dldir || mkdir -p \$dldir~
-      $install_prog .libs/$dlname \$dldir/$dlname'
+      $install_prog $dir/$dlname \$dldir/$dlname'
     postuninstall_cmds='dldll=`$SHELL 2>&1 -c '\''. $file; echo \$dlname'\''`~
       dlpath=$dir/\$dldll~
        $rm \$dlpath'

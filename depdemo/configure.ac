@@ -26,17 +26,6 @@ AC_INIT([depdemo], [0.1], [bug-libtool@gnu.org])
 AC_CONFIG_SRCDIR([main.c])
 
 
-## ------------------------------- ##
-## depdemo specific configuration. ##
-## ------------------------------- ##
-if ${CONFIG_SHELL} ./libtool --features | grep "enable static" >/dev/null; then
-  STATIC=-static
-else
-  STATIC=
-fi
-AC_SUBST([STATIC])
-
-
 ## ------------------------ ##
 ## Automake Initialisation. ##
 ## ------------------------ ##
@@ -56,6 +45,15 @@ AC_LIBTOOL_WIN32_DLL
 AM_PROG_LIBTOOL
 AC_SUBST([LIBTOOL_DEPS])
 
+## ------------------------------- ##
+## depdemo specific configuration. ##
+## ------------------------------- ##
+if ${CONFIG_SHELL} ./libtool --features | grep "enable static" >/dev/null; then
+  STATIC=-static
+else
+  STATIC=
+fi
+AC_SUBST([STATIC])
 
 ## ---------------------------- ##
 ## C headers required by cdemo. ##

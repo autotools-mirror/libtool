@@ -243,7 +243,7 @@ if test -n "$libltdl_cv_sys_search_path"; then
     if test -z "$sys_search_path"; then
       sys_search_path="$dir"
     else
-      sys_search_path="$sys_search_path$ac_path_separator$dir"
+      sys_search_path="$sys_search_path$PATH_SEPARATOR$dir"
     fi
   done
   AC_DEFINE_UNQUOTED(LTDL_SYSSEARCHPATH, "$sys_search_path",
