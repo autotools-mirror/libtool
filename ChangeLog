@@ -1,3 +1,8 @@
+2002-10-23  Robert Boehne  <rboehne@gnu.org>
+
+	ltmain.in: Do not add 1 to the version under IRIX, it is
+	not necessary.
+
 2002-10-15  Charles Wilson  <cwilson@ece.gatech.edu>
 
         * libtool.m4 (AC_LIBTOOL_SYS_MAX_CMD_LEN): avoid long delay on 
