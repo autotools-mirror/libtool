@@ -1,9 +1,9 @@
 This is an alpha testing release of GNU Libtool.  To get the latest
 CVS version of this package, do:
 
-  cvs -d :pserver:anoncvs@anoncvs.gnu.org:/gd/gnu/anoncvsroot login
+  cvs -d :pserver:anoncvs@subversions.gnu.org:/home/cvs login
   [Hit return when prompted for the password]
-  cvs -d :pserver:anoncvs@anoncvs.gnu.org:/gd/gnu/anoncvsroot checkout libtool
+  cvs -d :pserver:anoncvs@subversions.gnu.org:/home/cvs checkout libtool
   cd libtool
   ./bootstrap
 
@@ -73,18 +73,19 @@ using (by typing `ltconfig --version').
   release tag (set OLDVERSION=min.maj<alpha> in the environment beforehand
   if necessary).
 
-* Get a copy of the previous release tarball (by reverse applying the diff,
-  or downloading from gnu.org), and generate an xdelta with: 
+* Download a copy of the previous release tarball and generate an
+  xdelta with:
 
     xdelta delta libtool-<prev>.tar.gz libtool-<version>.tar.gz > \
     libtool-<prev>-<version>.tar.xdp.gz'
 
 * Upload release tarball, diff file and xdelta file 
-  ftp://melange/~ftp/gnu/libtool and send announcement to libtool@gnu.org.
+  ftp://melange.gnu.org/~ftp/gnu/libtool and send announcement to
+  libtool@gnu.org.
 
 * If not an alpha, announcement must also go to info-gnu@gnu.org, and an
   upload request be sent to ftp-upload@gnu.org requesting files be transferred
-  from ftp://alpha.gnu,org/gnu/libtool to ftp://ftp.gnu.org/gnu/libtool.
+  from ftp://alpha.gnu.org/gnu/libtool to ftp://ftp.gnu.org/gnu/libtool.
 
 * Update version number in configure.in to next alpha number.
 
