@@ -1,3 +1,8 @@
+2004-10-10  Albert Chin-A-Young  <china@thewrittenword.com>
+
+	* config/ltmain.m4sh: Don't require versions of GNU sed newer than
+	3.02 for Cygwin and MinGW.
+
 2004-10-10  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
 
 	* tests/pdemo-inst.test: Correction for mis-application of
