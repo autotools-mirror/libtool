@@ -1,5 +1,11 @@
 2001-06-29  Gary V. Vaughan  <gary@gnu.org>
 
+	* mdemo/Makefile,am (foo1_la_LIBADD): Add libsub.la, since foo1
+	does use symbols from libsub.la -- only platforms that allow
+	undefined symbols in libraries were able to cope with this
+	previously.
+	Reported by Robert Collins <robert.collins@itdomain.com.au>
+
 	From "Golubev I. N." <gin@mo.msk.ru>
 	* libtool.m4 (AC_LIBTOOL_PROG_LD_SHLIBS) [sco3.2v5*]: Needs
 	-wl,-Bexport to make self dlopen work.
