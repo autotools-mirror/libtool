@@ -6,11 +6,6 @@ New in 1.5b: 2004-??-??; CVS version 1.5a, Libtool team:
   renamed.  If you have any macros in this namespace please rename them to
   prevent any possible future clash with libtool supplied macros.
 * New LT_PREREQ macro for specifying minimum libtool requirement.
-* New LT_INIT interface replaces AC_PROG_LIBTOOL, AC_ENABLE_SHARED,
-  AC_DISABLE_SHARED, AC_ENABLE_STATIC, AC_DISABLE_STATIC,
-  AC_ENABLE_FAST_INSTALL, AC_DISABLE_FAST_INSTALL, AC_LIBTOOL_DLOPEN,
-  AC_LIBTOOL_WIN32_DLL and AC_LIBTOOL_PIC_MODE.  Use autoupdate to modernise
-  your configure.ac files after installing this release.
 * The libtool script will complain if it was built from mismatched ltmain.sh
   and libtool m4 macro versions.
 * Like automake, libtoolize no longer installs config.guess and config.sub by

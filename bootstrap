@@ -67,6 +67,6 @@ for file in $fakes; do
 done
 
 # These files con cause an infinite configure loop if left behind.
-rm -f Makefile libltdl/Makefile libtool vcl.tmp
+rm -f Makefile libltdl/Makefile libtool
 
 exit 0

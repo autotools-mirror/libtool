@@ -1,5 +1,10 @@
 2004-02-10  Gary V. Vaughan  <gary@gnu.org>
 
+	* NEWS, bootstrap, configure.ac, ltmain.in, m4/libtool.m4:
+	* m4/lt~obsolete.m4, tests/cdemo/configure.ac: Arghh.  cvsapply just
+	went crazy and committed a bunch of stuff that shouldn't have been
+	in the last changeset.  The patch backs it all out.
+
 	* config/mailnotify: New file for mailing commit notifications,
 	imported from cvs-utils.
 	* commit: Updated from cvs-utils and tweaked for libtool.

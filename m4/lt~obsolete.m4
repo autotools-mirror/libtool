@@ -1,5 +1,5 @@
 # lt~obsolete.m4 -- aclocal satisfying obsolete definitions.    -*-Autoconf-*-
-#
+# 
 # Copyright (C) 2004 Free Software Foundation, Inc.
 # Written by Scott James Remnant.
 #
@@ -35,25 +35,22 @@
 # using a macro with the same name in our local m4/libtool.m4 it'll
 # pull the old libtool.m4 in (it doesn't see our shiny new m4_define
 # and doesn't know about Autoconf macros at all.)
-#
+# 
 # So we provide this file, which has a silly filename so it's always
 # included after everything else.  This provides aclocal with the
 # AU_DEFUNs it wants, but when m4 processes it, it doesn't do anything
 # because those macros already exist.
-#
+# 
 # Anytime we withdraw an AC_DEFUN or AU_DEFUN, but still refer to it,
 # remember to add it here.
 
-m4_ifdef([AC_LIBTOOL_CONFIG],,		[AU_DEFUN([AC_LIBTOOL_CONFIG])])
-m4_ifdef([AC_LIBTOOL_LINKER_OPTION],,	[AU_DEFUN([AC_LIBTOOL_LINKER_OPTION])])
-m4_ifdef([AC_LIBTOOL_SETUP],,		[AU_DEFUN([AC_LIBTOOL_SETUP])])
-m4_ifdef([AC_PROG_EGREP],,		[AU_DEFUN([AC_PROG_EGREP])])
-m4_ifdef([_AC_PROG_LIBTOOL],,		[AU_DEFUN([_AC_PROG_LIBTOOL])])
-m4_ifdef([_LT_AC_LANG_C_CONFIG],,	[AU_DEFUN([_LT_AC_LANG_C_CONFIG])])
-m4_ifdef([_LT_AC_LANG_GCJ_CONFIG],,	[AU_DEFUN([_LT_AC_LANG_GCJ_CONFIG])])
-m4_ifdef([_LT_AC_LANG_RC_CONFIG],,	[AU_DEFUN([_LT_AC_LANG_RC_CONFIG])])
-m4_ifdef([_LT_AC_PROG_ECHO_BACKSLASH],,	[AU_DEFUN([_LT_AC_PROG_ECHO_BACKSLASH])])
-m4_ifdef([_LT_AC_SHELL_INIT],,		[AU_DEFUN([_LT_AC_SHELL_INIT])])
-m4_ifdef([_LT_AC_SYS_LIBPATH_AIX],,	[AU_DEFUN([_LT_AC_SYS_LIBPATH_AIX])])
-m4_ifdef([_LT_PROG_LTMAIN],,		[AU_DEFUN([_LT_PROG_LTMAIN])])
-m4_ifdef([_LT_AC_TAGVAR],,		[AU_DEFUN([_LT_AC_TAGVAR])])
+m4_ifdef([AC_LIBTOOL_CONFIG], [], [AU_DEFUN([AC_LIBTOOL_CONFIG])])dnl
+m4_ifdef([AC_LIBTOOL_LINKER_OPTION], [], [AU_DEFUN([AC_LIBTOOL_LINKER_OPTION])])dnl
+m4_ifdef([AC_PROG_EGREP], [], [AU_DEFUN([AC_PROG_EGREP])])dnl
+m4_ifdef([_LT_AC_LANG_C_CONFIG], [], [AU_DEFUN([_LT_AC_LANG_C_CONFIG])])dnl
+m4_ifdef([_LT_AC_LANG_GCJ_CONFIG], [], [AU_DEFUN([_LT_AC_LANG_GCJ_CONFIG])])dnl
+m4_ifdef([_LT_AC_LANG_RC_CONFIG], [], [AU_DEFUN([_LT_AC_LANG_RC_CONFIG])])dnl
+m4_ifdef([_LT_AC_PROG_ECHO_BACKSLASH], [], [AU_DEFUN([_LT_AC_PROG_ECHO_BACKSLASH])])dnl
+m4_ifdef([_LT_AC_SHELL_INIT], [], [AU_DEFUN([_LT_AC_SHELL_INIT])])dnl
+m4_ifdef([_LT_AC_SYS_LIBPATH_AIX], [], [AU_DEFUN([_LT_AC_SYS_LIBPATH_AIX])])dnl
+m4_ifdef([_LT_AC_TAGVAR], [], [AU_DEFUN([_LT_AC_TAGVAR])])dnl
