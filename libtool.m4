@@ -597,16 +597,16 @@ fi
 ## END FIXME
 
 # Check for any special shared library compilation flags.
-changequote(,)dnl
 if test -n "$ac_cv_prog_cc_shlib"; then
   AC_MSG_WARN([\`$CC' requires \`$ac_cv_prog_cc_shlib' to build shared libraries])
+changequote(,)dnl
   if echo "$old_CC $old_CFLAGS " | egrep -e "[ 	]$ac_cv_prog_cc_shlib[ 	]" >/dev/null; then :
+changequote([,])dnl
   else
    AC_MSG_WARN([add \`$ac_cv_prog_cc_shlib' to the CC or CFLAGS env variable and reconfigure])
     ac_cv_prog_cc_can_build_shared=no
   fi
 fi
-changequote([,])dnl
 
 ## FIXME: this should be a separate macro
 ##
