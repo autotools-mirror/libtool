@@ -1,3 +1,15 @@
+2004-09-01  Gary V. Vaughan  <gary@gnu.org>
+
+	Libtool currently assumes that certain characteristics, such as
+	enable_shared, apply to the host architecture rather than per-
+	language.  Running the tests over a broken compiler can corrupt
+	these values, when there is no C++ compiler for example, so we
+	skip most of the tests in those cases.
+
+	* m4/libtool.m4 (_LT_LANG_CXX_CONFIG): If caught_CXX_compiler was
+	set from configure.ac, then don't run all the compiler tests.
+	(_LT_LANG_F77_CONFIG): Similarly for caught_F77_compiler.
+
 2004-08-31  Gary V. Vaughan  <gary@gnu.org>
 
 	* Makefile.am (clean-ltmain-sh): Remove stale config/ltmain.sh
