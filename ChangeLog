@@ -1,3 +1,11 @@
+2001-11-27  Robert Boehne  <rboehne@ricardo-us.com>
+
+	With help from Michael Matz <matz@kde.org>:
+	* ltmain.in:  Add a new command line argument
+	--preserve-dup-deps for preserving duplicate
+	dependent libraries.
+	* libtool.texi: Document it.
+
 2001-11-27  Kevin Ryde  <user42@zip.com.au>
 	* libtool.m4 (AC_LIBTOOL_SYS_MAX_CMD_LEN): Send "test"
 	warnings to /dev/null, helps FreeBSD and maybe others.
