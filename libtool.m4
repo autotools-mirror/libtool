@@ -218,6 +218,23 @@ compiler="[$]2"
 ])# _LT_AC_SYS_COMPILER
 
 
+# _LT_AC_SYS_LIBPATH_AIX
+# ----------------------
+# Links a minimal program and checks the executable
+# for the system default hardcoded library path. In most cases,
+# this is /usr/lib:/lib, but when the MPI compilers are used
+# the location of the communication and MPI libs are included too.
+# If we don't find anything, use the default library path according 
+# to the aix ld manual.
+AC_DEFUN([_LT_AC_SYS_LIBPATH_AIX],
+[AC_LINK_IFELSE(AC_LANG_PROGRAM,[
+aix_libpath=`dump -H conftest$ac_exeext 2>/dev/null | ${AWK-awk} '/Import File Strings/ { getline; getline; if ($[2] ~ /^\//) print $[2] }'`
+# Check for a 64-bit object if we didn't find anything.
+if test -z "$aix_libpath"; then aix_libpath=`dump -HX64 conftest$ac_exeext 2>/dev/null | ${AWK-awk} '/Import File Strings/ { getline; getline; if ($[2] ~ /^\//) print $[2] }'`; fi],[])
+if test -z "$aix_libpath"; then aix_libpath="/usr/lib:/lib"; fi
+])# _LT_AC_SYS_LIBPATH_AIX
+
+
 # _LT_AC_LIBTOOL_SYS_PATH_SEPARATOR
 # ---------------------------------
 AC_DEFUN([_LT_AC_LIBTOOL_SYS_PATH_SEPARATOR],
@@ -2412,7 +2429,10 @@ case $host_os in
       # Warning - without using the other runtime loading flags (-brtl),
       # -berok will link without error, but may produce a broken library.
       _LT_AC_TAGVAR(allow_undefined_flag, $1)='-berok'
-      _LT_AC_TAGVAR(hardcode_libdir_flag_spec, $1)='${wl}-blibpath:$libdir:/usr/lib:/lib'
+      # Determine the default libpath from the value encoded in an empty executable.
+      _LT_AC_SYS_LIBPATH_AIX
+      _LT_AC_TAGVAR(hardcode_libdir_flag_spec, $1)='${wl}-blibpath:$libdir:'"$aix_libpath"
+
       _LT_AC_TAGVAR(archive_expsym_cmds, $1)="\$CC"' -o $output_objdir/$soname $libobjs $deplibs $compiler_flags `if test "x${allow_undefined_flag}" != "x"; then echo "${wl}${allow_undefined_flag}"; else :; fi` '"\${wl}$no_entry_flag \${wl}$exp_sym_flag:\$export_symbols $shared_flag"
      else
       if test "$host_cpu" = ia64; then
@@ -2420,7 +2440,9 @@ case $host_os in
         _LT_AC_TAGVAR(allow_undefined_flag, $1)="-z nodefs"
         _LT_AC_TAGVAR(archive_expsym_cmds, $1)="\$CC $shared_flag"' -o $output_objdir/$soname $libobjs $deplibs $compiler_flags ${wl}${allow_undefined_flag} '"\${wl}$no_entry_flag \${wl}$exp_sym_flag:\$export_symbols"
       else
-        _LT_AC_TAGVAR(hardcode_libdir_flag_spec, $1)='${wl}-blibpath:$libdir:/usr/lib:/lib'
+        # Determine the default libpath from the value encoded in an empty executable.
+        _LT_AC_SYS_LIBPATH_AIX
+        _LT_AC_TAGVAR(hardcode_libdir_flag_spec, $1)='${wl}-blibpath:$libdir:'"$aix_libpath"
         # Warning - without using the other run time loading flags,
         # -berok will link without error, but may produce a broken library.
         _LT_AC_TAGVAR(no_undefined_flag, $1)=' ${wl}-bnoerok'
@@ -4477,7 +4499,9 @@ EOF
         # Warning - without using the other runtime loading flags (-brtl),
         # -berok will link without error, but may produce a broken library.
         _LT_AC_TAGVAR(allow_undefined_flag, $1)='-berok'
-        _LT_AC_TAGVAR(hardcode_libdir_flag_spec, $1)='${wl}-blibpath:$libdir:/usr/lib:/lib'
+       # Determine the default libpath from the value encoded in an empty executable.
+       _LT_AC_SYS_LIBPATH_AIX
+       _LT_AC_TAGVAR(hardcode_libdir_flag_spec, $1)='${wl}-blibpath:$libdir:'"$aix_libpath"
         _LT_AC_TAGVAR(archive_expsym_cmds, $1)="\$CC"' -o $output_objdir/$soname $libobjs $deplibs $compiler_flags `if test "x${allow_undefined_flag}" != "x"; then echo "${wl}${allow_undefined_flag}"; else :; fi` '"\${wl}$no_entry_flag \${wl}$exp_sym_flag:\$export_symbols $shared_flag"
        else
         if test "$host_cpu" = ia64; then
@@ -4485,7 +4509,9 @@ EOF
           _LT_AC_TAGVAR(allow_undefined_flag, $1)="-z nodefs"
           _LT_AC_TAGVAR(archive_expsym_cmds, $1)="\$CC $shared_flag"' -o $output_objdir/$soname $libobjs $deplibs $compiler_flags ${wl}${allow_undefined_flag} '"\${wl}$no_entry_flag \${wl}$exp_sym_flag:\$export_symbols"
         else
-          _LT_AC_TAGVAR(hardcode_libdir_flag_spec, $1)='${wl}-blibpath:$libdir:/usr/lib:/lib'
+         # Determine the default libpath from the value encoded in an empty executable.
+         _LT_AC_SYS_LIBPATH_AIX
+         _LT_AC_TAGVAR(hardcode_libdir_flag_spec, $1)='${wl}-blibpath:$libdir:'"$aix_libpath"
           # Warning - without using the other run time loading flags,
           # -berok will link without error, but may produce a broken library.
           _LT_AC_TAGVAR(no_undefined_flag, $1)=' ${wl}-bnoerok'

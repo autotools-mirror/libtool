@@ -1,3 +1,11 @@
+2001-07-23  Gary V. Vaughan  <gary@gnu.org>
+
+	From Erik Lindahl <E.Lindahl@chem.rug.nl>
+	* libtool.m4 (_LT_AC_SYS_LIBPATH_AIX): Used on aix to discover
+	the compiler's default library search path so that the MPI
+	compiler suite is not hosed by the previously hardcoded path.
+	* libtool.m4 (AC_LIBTOOL_PROG_LD_SHLIBS) [aix4*, aix5*]: Use it.
+
 2001-07-23  Andreas Schwab  <schwab@suse.de>
 
 	* libtool.m4 (AC_DEPLIBS_CHECK_METHOD): Use pass_all for
