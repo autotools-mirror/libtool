@@ -1,3 +1,9 @@
+2003-04-05  Peter O'Gorman  <peter@pogma.com>
+
+	* libtool.m4: if ZSH_VERSION is set then setopt NO_GLOB_SUBST so
+	libtool works. Remove zsh echo test code, don't bother checking
+	for zsh anymore in the darwin archive_expsym_cmds.
+
 2003-04-05  Allan Sandfeld Jensen  <snowwolf@one2one-networks.com>
 
 	* libtool.m4: Switch on $CC not $cc_basename.

@@ -298,9 +298,7 @@ if test "X[$]1" = X--no-reexec; then
 elif test "X[$]1" = X--fallback-echo; then
   # Avoid inline document here, it may be left over
   :
-elif test "X`($echo '\t') 2>/dev/null`" = 'X\t' && 
-     eval echo_test_var=`$echo '\\\t'` &&
-          test "X$echo_test_var" = "X\t"; then
+elif test "X`($echo '\t') 2>/dev/null`" = 'X\t' ; then
   # Yippee, $echo works!
   :
 else
@@ -336,8 +334,6 @@ if test "X${echo_test_string+set}" != Xset; then
 fi
 
 if test "X`($echo '\t') 2>/dev/null`" = 'X\t' &&
-     eval echo_test_var=`$echo '\\\t'` &&
-          test "X$echo_test_var" = "X\t" &&
    echo_testing_string=`($echo "$echo_test_string") 2>/dev/null` &&
    test "X$echo_testing_string" = "X$echo_test_string"; then
   :
@@ -353,8 +349,6 @@ else
     IFS="$lt_save_ifs"
     if (test -f $dir/echo || test -f $dir/echo$ac_exeext) &&
        test "X`($dir/echo '\t') 2>/dev/null`" = 'X\t' &&
-     eval echo_test_var=`$dir/echo '\\\t'` &&
-          test "X$echo_test_var" = "X\t" &&
        echo_testing_string=`($dir/echo "$echo_test_string") 2>/dev/null` &&
        test "X$echo_testing_string" = "X$echo_test_string"; then
       echo="$dir/echo"
@@ -366,8 +360,6 @@ else
   if test "X$echo" = Xecho; then
     # We didn't find a better echo, so look for alternatives.
     if test "X`(print -r '\t') 2>/dev/null`" = 'X\t' &&
-          eval echo_test_var=`print -r '\\\t'` &&
-          test "X$echo_test_var" = "X\t" &&
        echo_testing_string=`(print -r "$echo_test_string") 2>/dev/null` &&
        test "X$echo_testing_string" = "X$echo_test_string"; then
       # This shell has a builtin print -r that does the trick.
@@ -384,16 +376,12 @@ else
       # Try using printf.
       echo='printf %s\n'
       if test "X`($echo '\t') 2>/dev/null`" = 'X\t' &&
-     eval echo_test_var=`$echo '\\\t'` &&
-          test "X$echo_test_var" = "X\t" &&
 	 echo_testing_string=`($echo "$echo_test_string") 2>/dev/null` &&
 	 test "X$echo_testing_string" = "X$echo_test_string"; then
 	# Cool, printf works
 	:
       elif echo_testing_string=`($ORIGINAL_CONFIG_SHELL "[$]0" --fallback-echo '\t') 2>/dev/null` &&
 	   test "X$echo_testing_string" = 'X\t' &&
-	   eval echo_test_var=`($ORIGINAL_CONFIG_SHELL "[$]0" --fallback-echo '\\\t') 2>/dev/null` &&
-	   test "X$echo_test_var" = "X\t" &&
 	   echo_testing_string=`($ORIGINAL_CONFIG_SHELL "[$]0" --fallback-echo "$echo_test_string") 2>/dev/null` &&
 	   test "X$echo_testing_string" = "X$echo_test_string"; then
 	CONFIG_SHELL=$ORIGINAL_CONFIG_SHELL
@@ -403,8 +391,6 @@ else
 	echo="$CONFIG_SHELL [$]0 --fallback-echo"
       elif echo_testing_string=`($CONFIG_SHELL "[$]0" --fallback-echo '\t') 2>/dev/null` &&
 	   test "X$echo_testing_string" = 'X\t' &&
-	   eval echo_test_var=`($CONFIG_SHELL "[$]0" --fallback-echo '\\\t') 2>/dev/null` &&
-	   test "X$echo_test_var" = "X\t" &&   
 	   echo_testing_string=`($CONFIG_SHELL "[$]0" --fallback-echo "$echo_test_string") 2>/dev/null` &&
 	   test "X$echo_testing_string" = "X$echo_test_string"; then
 	echo="$CONFIG_SHELL [$]0 --fallback-echo"
@@ -2571,14 +2557,8 @@ aix4*)
     _LT_AC_TAGVAR(archive_cmds, $1)='$CC -dynamiclib $allow_undefined_flag -o $lib $libobjs $deplibs$compiler_flags -install_name $rpath/$soname $verstring'
     _LT_AC_TAGVAR(module_cmds, $1)='$CC -bundle $allow_undefined_flag -o $lib $libobjs $deplibs$compiler_flags'
     # Don't fix this by using the ld -exported_symbols_list flag, it doesn't exist in older darwin ld's
-    if test -z ${ZSH_VERSION} ; then
 		  _LT_AC_TAGVAR(archive_expsym_cmds, $1)='sed -e "s,#.*,," -e "s,^[    ]*,," -e "s,^\(..*\),_&," < $export_symbols > $output_objdir/${libname}-symbols.expsym~$CC -dynamiclib $allow_undefined_flag  -o $lib $libobjs $deplibs$compiler_flags -install_name $rpath/$soname $verstring~nmedit -s $output_objdir/${libname}-symbols.expsym ${lib}'
 		  _LT_AC_TAGVAR(module_expsym_cmds, $1)='sed -e "s,#.*,," -e "s,^[    ]*,," -e "s,^\(..*\),_&," < $export_symbols > $output_objdir/${libname}-symbols.expsym~$CC -bundle $allow_undefined_flag  -o $lib $libobjs $deplibs$compiler_flags~nmedit -s $output_objdir/${libname}-symbols.expsym ${lib}'
-    else
-      #just in case a default was set somewhere
-      _LT_AC_TAGVAR(archive_expsym_cmds, $1)=''
-      _LT_AC_TAGVAR(module_expsym_cmds, $1)=''
-    fi
     _LT_AC_TAGVAR(hardcode_direct, $1)=no
     _LT_AC_TAGVAR(hardcode_automatic, $1)=yes
     _LT_AC_TAGVAR(hardcode_shlibpath_var, $1)=unsupported
@@ -2910,18 +2890,12 @@ case $host_os in
       _LT_AC_TAGVAR(module_cmds, $1)='$CC -bundle ${wl}-bind_at_load $allow_undefined_flag -o $lib $libobjs $deplibs$compiler_flags'
 
     # Don't fix this by using the ld -exported_symbols_list flag, it doesn't exist in older darwin ld's
-    if test -z ${ZSH_VERSION} ; then
       if test "X$lt_int_apple_cc_single_mod" = Xyes ; then
         _LT_AC_TAGVAR(archive_expsym_cmds, $1)='sed -e "s,#.*,," -e "s,^[    ]*,," -e "s,^\(..*\),_&," < $export_symbols > $output_objdir/${libname}-symbols.expsym~$CC -dynamiclib -single_module $allow_undefined_flag -o $lib $libobjs $deplibs $compiler_flags -install_name $rpath/$soname $verstring~nmedit -s $output_objdir/${libname}-symbols.expsym ${lib}'
       else
         _LT_AC_TAGVAR(archive_expsym_cmds, $1)='sed -e "s,#.*,," -e "s,^[    ]*,," -e "s,^\(..*\),_&," < $export_symbols > $output_objdir/${libname}-symbols.expsym~$CC -r ${wl}-bind_at_load -keep_private_externs -nostdlib -o ${lib}-master.o $libobjs~$CC -dynamiclib $allow_undefined_flag -o $lib ${lib}-master.o $deplibs $compiler_flags -install_name $rpath/$soname $verstring~nmedit -s $output_objdir/${libname}-symbols.expsym ${lib}'
       fi
         _LT_AC_TAGVAR(module_expsym_cmds, $1)='sed -e "s,#.*,," -e "s,^[    ]*,," -e "s,^\(..*\),_&," < $export_symbols > $output_objdir/${libname}-symbols.expsym~$CC -bundle $allow_undefined_flag  -o $lib $libobjs $deplibs$compiler_flags~nmedit -s $output_objdir/${libname}-symbols.expsym ${lib}'
-    else
-      #just in case a default was set somewhere
-      _LT_AC_TAGVAR(archive_expsym_cmds, $1)=''
-      _LT_AC_TAGVAR(module_expsym_cmds, $1)=''
-    fi
     _LT_AC_TAGVAR(hardcode_direct, $1)=no
     _LT_AC_TAGVAR(hardcode_automatic, $1)=yes
     _LT_AC_TAGVAR(hardcode_shlibpath_var, $1)=unsupported
@@ -3829,6 +3803,11 @@ AC_DEFUN([AC_LIBTOOL_CONFIG],
 # with your package, and you will get complaints that there are
 # no rules to generate ltmain.sh.
 if test -f "$ltmain"; then
+  # See if we are running on zsh, and set the options which allow our commands through
+  # without removal of \ escapes.
+  if test -n "${ZSH_VERSION+set}" ; then
+    setopt NO_GLOB_SUBST
+  fi  
   # Now quote all the things that may contain metacharacters while being
   # careful not to overquote the AC_SUBSTed values.  We take copies of the
   # variables and quote the copies for generation of the libtool script.
@@ -5362,18 +5341,12 @@ EOF
       fi
       _LT_AC_TAGVAR(module_cmds, $1)='$CC -bundle ${wl}-bind_at_load $allow_undefined_flag -o $lib $libobjs $deplibs$compiler_flags'
       # Don't fix this by using the ld -exported_symbols_list flag, it doesn't exist in older darwin ld's
-      if test -z ${ZSH_VERSION} ; then
         if test "X$lt_int_apple_cc_single_mod" = Xyes ; then
           _LT_AC_TAGVAR(archive_expsym_cmds, $1)='sed -e "s,#.*,," -e "s,^[    ]*,," -e "s,^\(..*\),_&," < $export_symbols > $output_objdir/${libname}-symbols.expsym~$CC -dynamiclib -single_module $allow_undefined_flag -o $lib $libobjs $deplibs $compiler_flags -install_name $rpath/$soname $verstring~nmedit -s $output_objdir/${libname}-symbols.expsym ${lib}'
         else
           _LT_AC_TAGVAR(archive_expsym_cmds, $1)='sed -e "s,#.*,," -e "s,^[    ]*,," -e "s,^\(..*\),_&," < $export_symbols > $output_objdir/${libname}-symbols.expsym~$CC -r ${wl}-bind_at_load -keep_private_externs -nostdlib -o ${lib}-master.o $libobjs~$CC -dynamiclib $allow_undefined_flag -o $lib ${lib}-master.o $deplibs $compiler_flags -install_name $rpath/$soname $verstring~nmedit -s $output_objdir/${libname}-symbols.expsym ${lib}'
         fi
           _LT_AC_TAGVAR(module_expsym_cmds, $1)='sed -e "s,#.*,," -e "s,^[    ]*,," -e "s,^\(..*\),_&," < $export_symbols > $output_objdir/${libname}-symbols.expsym~$CC -bundle $allow_undefined_flag  -o $lib $libobjs $deplibs$compiler_flags~nmedit -s $output_objdir/${libname}-symbols.expsym ${lib}'
-      else
-        #just in case a default was set somewhere
-        _LT_AC_TAGVAR(archive_expsym_cmds, $1)=''
-        _LT_AC_TAGVAR(module_expsym_cmds, $1)=''
-      fi
       _LT_AC_TAGVAR(hardcode_direct, $1)=no
       _LT_AC_TAGVAR(hardcode_automatic, $1)=yes
       _LT_AC_TAGVAR(hardcode_shlibpath_var, $1)=unsupported
