@@ -1,3 +1,8 @@
+2004-09-05  Albert Chin-A-Young  <china@thewrittenword.com>
+
+	* m4/libtool.m4, config/ltmain.in: When calling $LTCC,
+	pass default $CFLAGS through with $LTCFLAGS.
+
 2004-09-03  David Edelsohn  <dje@watson.ibm.com>
 
 	* config/ltmain.in (func_mode_link): Use $pic_object as

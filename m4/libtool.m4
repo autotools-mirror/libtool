@@ -170,6 +170,7 @@ old_CFLAGS="$CFLAGS"
 # Set sane defaults for various variables
 test -z "$CC" && CC=cc
 test -z "$LTCC" && LTCC=$CC
+test -z "$LTCFLAGS" && LTCFLAGS=$CFLAGS
 test -z "$LD" && LD=ld
 test -z "$ac_objext" && ac_objext=o
 
@@ -435,6 +436,7 @@ double_quote_subst='$double_quote_subst'
 delay_variable_subst='$delay_variable_subst'
 _LT_CONFIG_STATUS_DECLARATIONS
 LTCC='$LTCC'
+LTCFLAGS='$LTCFLAGS'
 compiler='$compiler_DEFAULT'
 
 # Quote evaled strings.
@@ -628,11 +630,15 @@ m4_defun([_LT_TAG_COMPILER],
 [AC_REQUIRE([AC_PROG_CC])dnl
 
 _LT_DECL([LTCC], [CC], [1], [A C compiler])dnl
+_LT_DECL([LTCFLAGS], [CFLAGS], [1], [LTCC compiler flags])dnl
 _LT_TAGDECL([CC], [compiler], [1], [A language specific compiler])dnl
 _LT_TAGDECL([with_gcc], [GCC], [0], [Is the compiler the GNU C compiler?])dnl
 
 # If no C compiler was specified, use CC.
 LTCC=${LTCC-"$CC"}
+
+# If no C compiler flags were specified, use CFLAGS.
+LTCFLAGS=${LTCFLAGS-"$CFLAGS"}
 
 # Allow CC to be a program name with arguments.
 compiler=$CC

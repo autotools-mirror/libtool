@@ -60,6 +60,7 @@
 #       host-triplet:	@host_triplet@
 #       shell:		$SHELL
 #       compiler:		$LTCC
+#       compiler flags:		$LTCFLAGS
 #       linker:		$LD (gnu? $with_gnu_ld)
 #       $progname:		(GNU @PACKAGE@@TIMESTAMP@) @VERSION@
 #       automake:		$automake_version
@@ -300,6 +301,7 @@ func_help ()
 	s:\$progname:'$progname':;
 	s:\$SHELL:'"$SHELL"':;
 	s:\$LTCC:'"$LTCC"':;
+	s:\$LTCFLAGS:'"$LTCFLAGS"':;
 	s:\$LD:'"$LD"':;
 	s/\$with_gnu_ld/'"$with_gnu_ld"'/;
 	s/\$automake_version/'"`automake --version 2>/dev/null |$SED 1q`"'/;
@@ -1044,8 +1046,8 @@ static const void *lt_preloaded_setup() {
 	esac
 
 	# Now compile the dynamic symbol file.
-	$show "(cd $output_objdir && $LTCC -c$no_builtin_flag$pic_flag_for_symtable \"$my_dlsyms\")"
-	$run eval '(cd $output_objdir && $LTCC -c$no_builtin_flag$pic_flag_for_symtable "$my_dlsyms")' || exit $?
+	$show "(cd $output_objdir && $LTCC $LTCFLAGS -c$no_builtin_flag$pic_flag_for_symtable \"$my_dlsyms\")"
+	$run eval '(cd $output_objdir && $LTCC $LTCFLAGS -c$no_builtin_flag$pic_flag_for_symtable "$my_dlsyms")' || exit $?
 
 	# Clean up the generated files.
 	$show "$RM $output_objdir/$my_dlsyms $nlist ${nlist}S ${nlist}T"
@@ -4708,7 +4710,7 @@ func_mode_link ()
 	  int main() { return 0; }
 EOF
 	  $RM conftest
-	  $LTCC -o conftest conftest.c $deplibs
+	  $LTCC $LTCFLAGS -o conftest conftest.c $deplibs
 	  if test "$?" -eq 0 ; then
 	    ldd_output=`ldd conftest`
 	    for i in $deplibs; do
@@ -4753,7 +4755,7 @@ EOF
 	      # If $name is empty we are operating on a -L argument.
 	      if test "$name" != "" && test "$name" != "0"; then
 		$RM conftest
-		$LTCC -o conftest conftest.c $i
+		$LTCC $LTCFLAGS -o conftest conftest.c $i
 		# Did it work?
 		if test "$?" -eq 0 ; then
 		  ldd_output=`ldd conftest`
@@ -6144,7 +6146,7 @@ EOF
 	  # are only useful if you want to execute the "real" binary.
 	  # Since the "real" binary is built for $host, then this
 	  # wrapper might as well be built for $host, too.
-	  $run $LTCC -s -o $cwrapper $cwrappersource
+	  $run $LTCC $LTCFLAGS -s -o $cwrapper $cwrappersource
 	  ;;
 	esac
 	$RM $output
