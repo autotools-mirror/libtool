@@ -11,7 +11,8 @@ fi
 . $srcdir/defs || exit 1
 
 # Check that things are built.
-if test -f $prefix/lib/extra/libl3.la && cd ../depdemo && test -f l3/libl3.la; then :
+if (test -f $prefix/lib/extra/libl3.la || test -f $prefix/lib/libl3.la) \
+    && cd ../depdemo && test -f l3/libl3.la; then :
 else
   echo "You must run depdemo-inst.test before $0" 1>&2
   exit 77

@@ -1,3 +1,8 @@
+2002-05-30  Charles Wilson  <cwilson@ece.gatech.edu>
+
+	* tests/build-relink2.test: look for installed libl3.la
+	in $prefix/lib/ as well as $prefix/lib/extra/.
+
 2002-05-30  Gary V. Vaughan  <gary@gnu.org>
 
 	* tests/hardcode.test: Use libtool --config to collect the
