@@ -51,9 +51,9 @@ demo-conf.test: $(top_builddir)/libtool
 $(top_builddir)/libtool:
 	cd $(top_builddir) && $(MAKE) all
 
-# We should export these variables when we run ltconfig.
+# We should export these variables when we build the libtool script.
 CFLAGS = @CFLAGS@
-CPPLAGS = @CPPFLAGS@
+CPPFLAGS = @CPPFLAGS@
 LDFLAGS = @LDFLAGS@
 LIBS = @LIBS@
 
