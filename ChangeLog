@@ -1,5 +1,9 @@
 1999-03-06  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* ltconfig.in (archive_expsym_cmds, solaris, without_gnu_ld):
+	$lib.exp already starts with $objdir/
+	Reported by Godmar Back <gback@cs.utah.edu>
+
 	* ltmain.in (freebsd): compile symbol table file with pic_flag
 	only on FreeBSD and when not static linking; it's been causing
 	trouble on platforms such as OpenBSD.
