@@ -385,10 +385,10 @@ AC_CHECK_LIB([dl], [dlopen],
 		   [Define if you have the libdl library or equivalent.])
 	LIBADD_DLOPEN="-ldl" libltdl_cv_lib_dl_dlopen="yes"
 	LT_DLLOADERS="$LT_DLLOADERS dlopen.la"],
-    [AC_TRY_LINK([#if HAVE_DLFCN_H
+    [AC_LINK_IFELSE([AC_LANG_PROGRAM([[#if HAVE_DLFCN_H
 #  include <dlfcn.h>
 #endif
-    ], [dlopen(0, 0);],
+    ]], [[dlopen(0, 0);]])],
 	    [AC_DEFINE([HAVE_LIBDL], [1],
 		       [Define if you have the libdl library or equivalent.])
 	    libltdl_cv_func_dlopen="yes"
