@@ -144,11 +144,13 @@ libtoolize: $(sh_files) libtoolize.in Makefile
 	chmod a-w libtoolize.tmp
 	mv -f libtoolize.tmp libtoolize
 
+# The defs script shouldn't be recreated whenever the Makefile is
+# regenerated since the source tree can be read-only.
 check-recursive: tests/defs
-tests/defs: tests/defs.in Makefile
-	cd $(top_srcdir); \
+tests/defs: tests/defs.in Makefile.am
 	rm -f tests/defs.m4sh tests/defs.tmp tests/defs; \
-	$(M4SH) -B ./config tests/defs.in > tests/defs.m4sh; \
+	$(M4SH) -B $(top_srcdir)/config \
+		$(top_srcdir)/tests/defs.in > tests/defs.m4sh; \
 	input="defs.in"; \
 	$(edit) tests/defs.m4sh > tests/defs.tmp; \
 	rm -f tests/defs.m4sh; \

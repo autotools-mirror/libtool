@@ -49,6 +49,10 @@ NO | no | 0 | "")
   ;;
 esac
 
+if test -z "$srcdir"; then
+  srcdir=`$ECHO "$0" | $SED "$dirname"`
+  test "$srcdir" = "$0" && srcdir=.
+fi
 
 # func_msg arg...
 # Echo message with prefix.

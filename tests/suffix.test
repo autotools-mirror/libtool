@@ -26,11 +26,7 @@
 extensions="C F S ada adb ads asm c c++ cc cpp cxx f f90 for m s"
 bad_names="foo."
 
-if test -z "$srcdir"; then
-  srcdir=`echo "$0" | sed 's%/[^/]*$%%'`
-  test "$srcdir" = "$0" && srcdir=.
-fi
-. $srcdir/defs || exit 1
+. defs || exit 1
 
 status=$EXIT_SUCCESS
 for ext in $extensions; do
