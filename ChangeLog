@@ -65,6 +65,11 @@
 
 	* libltdl/ltdl.c: Remove trivial warnings.
 
+1999-04-22  Frank Ch. Eigler  <fche@cygnus.com>
+
+	* ltconfig.in: Correct sed expression that extracts symbols
+	from cygwin def files.  Ignore demangled C++ names, if any.
+
 1999-04-12  John David Anglin  <dave.anglin@nrc.ca>
 
 	* libltdl/ltdl.c (shl_close): shl_t was correct here...
