@@ -14,7 +14,7 @@ LIBS= @LIBS@
 
 aclocal_macros = libtool.m4 ltdl.m4
 
-EXTRA_DIST = $(aclocal_macros) libtoolize.in ltmain.in \
+EXTRA_DIST = $(aclocal_macros) bootstrap libtoolize.in ltmain.in \
 	mkstamp ChangeLog.0
 CLEANFILES = libtool libtoolize ltmain.shT
 
