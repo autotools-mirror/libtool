@@ -1,3 +1,7 @@
+2004-01-06  Gary V. Vaughan  <gary@gnu.org>
+
+	* ltmain.in: Output 2004 in the copyright from libtool --version.
+
 2004-01-03  Stefan Nordhausen  <nordhaus@informatik.hu-berlin.de>
 	Scott James Remnant  <scott@netsplit.com>
 
@@ -9,7 +13,7 @@
 2004-01-02  Peter O'Gorman  <peter@pogma.com>
 
 	* m4/libtool.m4: Ensure that ${ZSH_VERSION+set} is properly escaped.
-	
+
 	* m4/libtool.m4 (CDPATH): Change the CDPATH setting so that it
 	allows for zsh differences, as noted in the autoconf manual's
 	Portable Shell - Special Shell Variables section.

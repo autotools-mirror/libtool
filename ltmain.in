@@ -247,7 +247,7 @@ do
   --version)
     $echo "$PROGRAM (GNU $PACKAGE$TIMESTAMP) $VERSION"
     $echo
-    $echo "Copyright (C) 2003  Free Software Foundation, Inc."
+    $echo "Copyright (C) 2004  Free Software Foundation, Inc."
     $echo "This is free software; see the source for copying conditions.  There is NO"
     $echo "warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE."
     exit 0
@@ -4667,10 +4667,10 @@ EOF
 #if defined (_WIN32) || defined (__MSDOS__) || defined (__DJGPP__) || \
   defined (__OS2__)
 # define HAVE_DOS_BASED_FILE_SYSTEM
-# ifndef DIR_SEPARATOR_2 
+# ifndef DIR_SEPARATOR_2
 #  define DIR_SEPARATOR_2 '\\'
 # endif
-# ifndef PATH_SEPARATOR_2 
+# ifndef PATH_SEPARATOR_2
 #  define PATH_SEPARATOR_2 ';'
 # endif
 #endif
@@ -4696,7 +4696,7 @@ EOF
 #if defined DEBUGWRAPPER
 # define DEBUG(format, ...) fprintf(stderr, format, __VA_ARGS__)
 #else
-# define DEBUG(format, ...) 
+# define DEBUG(format, ...)
 #endif
 
 const char *program_name = NULL;
@@ -4819,7 +4819,7 @@ find_executable (const char* wrapper)
   char* concat_name;
 
   DEBUG("(find_executable)  : %s\n", wrapper ? (*wrapper ? wrapper : "EMPTY!") : "NULL!");
-  
+
   if ((wrapper == NULL) || (*wrapper == '\0'))
     return NULL;
 
@@ -6419,7 +6419,7 @@ Compile a source file into a libtool library object.
 This mode accepts the following additional options:
 
   -o OUTPUT-FILE    set the output file name to OUTPUT-FILE
-  -no-suppress      do not suppress compiler output for multiple passes  
+  -no-suppress      do not suppress compiler output for multiple passes
   -prefer-pic       try to building PIC objects only
   -prefer-non-pic   try to building non-PIC objects only
   -shared           do not build a \`.o' file suitable for static linking
