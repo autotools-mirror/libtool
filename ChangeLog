@@ -1,5 +1,7 @@
 1999-04-29  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* doc/libtool.texi: Clear up overfull hbox.
+
 	* libltdl/Makefile.am (ltdl.lo): Add dependencies.
 	* libltdl/configure.in: Clean up some duplicate defines.  Enable
 	support for multiple dlopening mechanisms.
