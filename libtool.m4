@@ -161,7 +161,7 @@ AC_REQUIRE([AC_PROG_NM])
 AC_REQUIRE([AC_OBJEXT])
 # Check for command to grab the raw symbol name followed by C symbol from nm.
 AC_MSG_CHECKING([command to parse $NM output])
-AC_CACHE_VAL([ac_cv_sys_global_symbol_pipe], [dnl
+AC_CACHE_VAL([lt_cv_sys_global_symbol_pipe], [dnl
 
 # These are sane defaults that work on at least a few old systems.
 # [They come from Ultrix.  What could be older than Ultrix?!! ;)]
@@ -176,7 +176,7 @@ AC_CACHE_VAL([ac_cv_sys_global_symbol_pipe], [dnl
 symxfrm='\1 \2\3 \3'
 
 # Transform an extracted symbol line into a proper C declaration
-ac_cv_global_symbol_to_cdecl="sed -n -e 's/^. .* \(.*\)$/extern char \1;/p'"
+lt_cv_global_symbol_to_cdecl="sed -n -e 's/^. .* \(.*\)$/extern char \1;/p'"
 
 # Define system-specific variables.
 case "$host_os" in
@@ -187,7 +187,7 @@ cygwin* | mingw* | pw32*)
   [symcode='[ABCDGISTW]']
   ;;
 hpux*) # Its linker distinguishes data from code symbols
-  ac_cv_global_symbol_to_cdecl="sed -n -e 's/^T .* \(.*\)$/extern char \1();/p' -e 's/^. .* \(.*\)$/extern char \1;/p'"
+  lt_cv_global_symbol_to_cdecl="sed -n -e 's/^T .* \(.*\)$/extern char \1();/p' -e 's/^. .* \(.*\)$/extern char \1;/p'"
   ;;
 irix*)
   [symcode='[BCDEGRST]']
@@ -217,7 +217,7 @@ fi
 for ac_symprfx in "" "_"; do
 
   # Write the raw and C identifiers.
-[ac_cv_sys_global_symbol_pipe="sed -n -e 's/^.*[ 	]\($symcode\)[ 	][ 	]*\($ac_symprfx\)$sympat$opt_cr$/$symxfrm/p'"]
+[lt_cv_sys_global_symbol_pipe="sed -n -e 's/^.*[ 	]\($symcode\)[ 	][ 	]*\($ac_symprfx\)$sympat$opt_cr$/$symxfrm/p'"]
 
   # Check to see that the pipe works correctly.
   pipe_works=no
@@ -237,7 +237,7 @@ EOF
   if AC_TRY_EVAL(ac_compile); then
     # Now try to grab the symbols.
     nlist=conftest.nm
-    if AC_TRY_EVAL(NM conftest.$ac_objext \| $ac_cv_sys_global_symbol_pipe \> $nlist) && test -s "$nlist"; then
+    if AC_TRY_EVAL(NM conftest.$ac_objext \| $lt_cv_sys_global_symbol_pipe \> $nlist) && test -s "$nlist"; then
       # Try sorting and uniquifying the output.
       if sort "$nlist" | uniq > "$nlist"T; then
 	mv -f "$nlist"T "$nlist"
@@ -255,7 +255,7 @@ extern "C" {
 
 EOF
 	  # Now generate the symbol file.
-	  eval "$ac_cv_global_symbol_to_cdecl"' < "$nlist" >> conftest.$ac_ext'
+	  eval "$lt_cv_global_symbol_to_cdecl"' < "$nlist" >> conftest.$ac_ext'
 
 	  cat <<EOF >> conftest.$ac_ext
 #if defined (__STDC__) && __STDC__
@@ -300,7 +300,7 @@ EOF
 	echo "cannot find nm_test_var in $nlist" >&AC_FD_CC
       fi
     else
-      echo "cannot run $ac_cv_sys_global_symbol_pipe" >&AC_FD_CC
+      echo "cannot run $lt_cv_sys_global_symbol_pipe" >&AC_FD_CC
     fi
   else
     echo "$progname: failed program was:" >&AC_FD_CC
@@ -312,15 +312,15 @@ EOF
   if test "$pipe_works" = yes; then
     break
   else
-    ac_cv_sys_global_symbol_pipe=
+    lt_cv_sys_global_symbol_pipe=
   fi
 done
 ])
-global_symbol_pipe="$ac_cv_sys_global_symbol_pipe"
-if test -z "$ac_cv_sys_global_symbol_pipe"; then
+global_symbol_pipe="$lt_cv_sys_global_symbol_pipe"
+if test -z "$lt_cv_sys_global_symbol_pipe"; then
   global_symbol_to_cdecl=
 else
-  global_symbol_to_cdecl="$ac_cv_global_symbol_to_cdecl"
+  global_symbol_to_cdecl="$lt_cv_global_symbol_to_cdecl"
 fi
 if test -z "$global_symbol_pipe$global_symbol_to_cdecl"; then
   AC_MSG_RESULT(failed)
@@ -706,7 +706,7 @@ can_build_shared=yes
 libext=a
 ltmain="$ac_aux_dir/ltmain.sh"
 ofile="$default_ofile"
-with_gnu_ld="$ac_cv_prog_gnu_ld"
+with_gnu_ld="$lt_cv_prog_gnu_ld"
 need_locks="$enable_libtool_lock"
 
 old_CC="$CC"
@@ -789,21 +789,21 @@ AC_ARG_WITH(pic, [dnl
 pic_mode="$withval", pic_mode=default)
 test -z "$pic_mode" && pic_mode=default
 
-# We assume here that the value for ac_cv_prog_cc_pic will not be cached
+# We assume here that the value for lt_cv_prog_cc_pic will not be cached
 # in isolation, and that seeing it set (from the cache) indicates that
 # the associated values are set (in the cache) correctly too.
 AC_MSG_CHECKING([for $compiler option to produce PIC])
-AC_CACHE_VAL(ac_cv_prog_cc_pic,
-[ ac_cv_prog_cc_pic=
-  ac_cv_prog_cc_shlib=
-  ac_cv_prog_cc_wl=
-  ac_cv_prog_cc_static=
-  ac_cv_prog_cc_no_builtin=
-  ac_cv_prog_cc_can_build_shared=$can_build_shared
+AC_CACHE_VAL(lt_cv_prog_cc_pic,
+[ lt_cv_prog_cc_pic=
+  lt_cv_prog_cc_shlib=
+  lt_cv_prog_cc_wl=
+  lt_cv_prog_cc_static=
+  lt_cv_prog_cc_no_builtin=
+  lt_cv_prog_cc_can_build_shared=$can_build_shared
 
   if test "$GCC" = yes; then
-    ac_cv_prog_cc_wl='-Wl,'
-    ac_cv_prog_cc_static='-static'
+    lt_cv_prog_cc_wl='-Wl,'
+    lt_cv_prog_cc_static='-static'
 
     case "$host_os" in
     beos* | irix5* | irix6* | osf3* | osf4* | osf5*)
@@ -816,26 +816,26 @@ AC_CACHE_VAL(ac_cv_prog_cc_pic,
       # list by gcc. This cause undefined symbols with -static flags.
       # This hack allows C programs to be linked with "-static -ldl", but
       # we not sure about C++ programs.
-      ac_cv_prog_cc_static="$ac_cv_prog_cc_static ${ac_cv_prog_cc_wl}-lC"
+      lt_cv_prog_cc_static="$lt_cv_prog_cc_static ${lt_cv_prog_cc_wl}-lC"
       ;;
     cygwin* | mingw* | pw32* | os2*)
       # This hack is so that the source file can tell whether it is being
       # built for inclusion in a dll (and should export symbols for example).
-      ac_cv_prog_cc_pic='-DDLL_EXPORT'
+      lt_cv_prog_cc_pic='-DDLL_EXPORT'
       ;;
     amigaos*)
       # FIXME: we need at least 68020 code to build shared libraries, but
       # adding the `-m68020' flag to GCC prevents building anything better,
       # like `-m68040'.
-      ac_cv_prog_cc_pic='-m68020 -resident32 -malways-restore-a4'
+      lt_cv_prog_cc_pic='-m68020 -resident32 -malways-restore-a4'
       ;;
     sysv4*MP*)
       if test -d /usr/nec; then
-	 ac_cv_prog_cc_pic=-Kconform_pic
+	 lt_cv_prog_cc_pic=-Kconform_pic
       fi
       ;;
     *)
-      ac_cv_prog_cc_pic='-fPIC'
+      lt_cv_prog_cc_pic='-fPIC'
       ;;
     esac
   else
@@ -843,95 +843,95 @@ AC_CACHE_VAL(ac_cv_prog_cc_pic,
     case "$host_os" in
     aix3* | aix4*)
      # All AIX code is PIC.
-      ac_cv_prog_cc_static='-bnso -bI:/lib/syscalls.exp'
+      lt_cv_prog_cc_static='-bnso -bI:/lib/syscalls.exp'
       ;;
 
     hpux9* | hpux10* | hpux11*)
-      # Is there a better ac_cv_prog_cc_static that works with the bundled CC?
-      ac_cv_prog_cc_wl='-Wl,'
-      ac_cv_prog_cc_static="${ac_cv_prog_cc_wl}-a ${ac_cv_prog_cc_wl}archive"
-      ac_cv_prog_cc_pic='+Z'
+      # Is there a better lt_cv_prog_cc_static that works with the bundled CC?
+      lt_cv_prog_cc_wl='-Wl,'
+      lt_cv_prog_cc_static="${lt_cv_prog_cc_wl}-a ${lt_cv_prog_cc_wl}archive"
+      lt_cv_prog_cc_pic='+Z'
       ;;
 
     irix5* | irix6*)
-      ac_cv_prog_cc_wl='-Wl,'
-      ac_cv_prog_cc_static='-non_shared'
+      lt_cv_prog_cc_wl='-Wl,'
+      lt_cv_prog_cc_static='-non_shared'
       # PIC (with -KPIC) is the default.
       ;;
 
     cygwin* | mingw* | pw32* | os2*)
       # This hack is so that the source file can tell whether it is being
       # built for inclusion in a dll (and should export symbols for example).
-      ac_cv_prog_cc_pic='-DDLL_EXPORT'
+      lt_cv_prog_cc_pic='-DDLL_EXPORT'
       ;;
 
     newsos6)
-      ac_cv_prog_cc_pic='-KPIC'
-      ac_cv_prog_cc_static='-Bstatic'
+      lt_cv_prog_cc_pic='-KPIC'
+      lt_cv_prog_cc_static='-Bstatic'
       ;;
 
     osf3* | osf4* | osf5*)
       # All OSF/1 code is PIC.
-      ac_cv_prog_cc_wl='-Wl,'
-      ac_cv_prog_cc_static='-non_shared'
+      lt_cv_prog_cc_wl='-Wl,'
+      lt_cv_prog_cc_static='-non_shared'
       ;;
 
     sco3.2v5*)
-      ac_cv_prog_cc_pic='-Kpic'
-      ac_cv_prog_cc_static='-dn'
-      ac_cv_prog_cc_shlib='-belf'
+      lt_cv_prog_cc_pic='-Kpic'
+      lt_cv_prog_cc_static='-dn'
+      lt_cv_prog_cc_shlib='-belf'
       ;;
 
     solaris*)
-      ac_cv_prog_cc_pic='-KPIC'
-      ac_cv_prog_cc_static='-Bstatic'
-      ac_cv_prog_cc_wl='-Wl,'
+      lt_cv_prog_cc_pic='-KPIC'
+      lt_cv_prog_cc_static='-Bstatic'
+      lt_cv_prog_cc_wl='-Wl,'
       ;;
 
     sunos4*)
-      ac_cv_prog_cc_pic='-PIC'
-      ac_cv_prog_cc_static='-Bstatic'
-      ac_cv_prog_cc_wl='-Qoption ld '
+      lt_cv_prog_cc_pic='-PIC'
+      lt_cv_prog_cc_static='-Bstatic'
+      lt_cv_prog_cc_wl='-Qoption ld '
       ;;
 
     sysv4 | sysv4.2uw2* | sysv4.3* | sysv5*)
-      ac_cv_prog_cc_pic='-KPIC'
-      ac_cv_prog_cc_static='-Bstatic'
+      lt_cv_prog_cc_pic='-KPIC'
+      lt_cv_prog_cc_static='-Bstatic'
       if test "x$host_vendor" = xsni; then
-        ac_cv_prog_cc_wl='-LD'
+        lt_cv_prog_cc_wl='-LD'
       else
-        ac_cv_prog_cc_wl='-Wl,'
+        lt_cv_prog_cc_wl='-Wl,'
       fi
       ;;
 
     uts4*)
-      ac_cv_prog_cc_pic='-pic'
-      ac_cv_prog_cc_static='-Bstatic'
+      lt_cv_prog_cc_pic='-pic'
+      lt_cv_prog_cc_static='-Bstatic'
       ;;
 
     sysv4*MP*)
       if test -d /usr/nec ;then
-	ac_cv_prog_cc_pic='-Kconform_pic'
-	ac_cv_prog_cc_static='-Bstatic'
+	lt_cv_prog_cc_pic='-Kconform_pic'
+	lt_cv_prog_cc_static='-Bstatic'
       fi
       ;;
 
     *)
-      ac_cv_prog_cc_can_build_shared=no
+      lt_cv_prog_cc_can_build_shared=no
       ;;
     esac
   fi
 ])
-if test -z "$ac_cv_prog_cc_pic"; then
+if test -z "$lt_cv_prog_cc_pic"; then
   AC_MSG_RESULT([none])
 else
-  AC_MSG_RESULT([$ac_cv_prog_cc_pic])
+  AC_MSG_RESULT([$lt_cv_prog_cc_pic])
 
   # Check to make sure the pic_flag actually works.
-  AC_MSG_CHECKING([if $compiler PIC flag $ac_cv_prog_cc_pic works])
-  AC_CACHE_VAL(ac_cv_prog_cc_pic_works, [dnl
+  AC_MSG_CHECKING([if $compiler PIC flag $lt_cv_prog_cc_pic works])
+  AC_CACHE_VAL(lt_cv_prog_cc_pic_works, [dnl
     save_CFLAGS="$CFLAGS"
-    CFLAGS="$CFLAGS $ac_cv_prog_cc_pic -DPIC"
+    CFLAGS="$CFLAGS $lt_cv_prog_cc_pic -DPIC"
     AC_TRY_COMPILE([], [], [dnl
       case "$host_os" in
       hpux9* | hpux10* | hpux11*)
@@ -939,64 +939,64 @@ else
 	# they create non-PIC objects.  So, if there were any warnings, we
 	# assume that PIC is not supported.
 	if test -s conftest.err; then
-	  ac_cv_prog_cc_pic_works=no
+	  lt_cv_prog_cc_pic_works=no
 	else
-	  ac_cv_prog_cc_pic_works=yes
+	  lt_cv_prog_cc_pic_works=yes
 	fi
 	;;
       *)
-	ac_cv_prog_cc_pic_works=yes
+	lt_cv_prog_cc_pic_works=yes
 	;;
       esac
     ], [dnl
-      ac_cv_prog_cc_pic_works=no
+      lt_cv_prog_cc_pic_works=no
     ])
     CFLAGS="$save_CFLAGS"
   ])
 
-  if test "X$ac_cv_prog_cc_pic_works" = Xno; then
-    ac_cv_prog_cc_pic=
-    ac_cv_prog_cc_can_build_shared=no
+  if test "X$lt_cv_prog_cc_pic_works" = Xno; then
+    lt_cv_prog_cc_pic=
+    lt_cv_prog_cc_can_build_shared=no
   else
-    ac_cv_prog_cc_pic=" $ac_cv_prog_cc_pic"
+    lt_cv_prog_cc_pic=" $lt_cv_prog_cc_pic"
   fi
 
-  AC_MSG_RESULT([$ac_cv_prog_cc_pic_works])
+  AC_MSG_RESULT([$lt_cv_prog_cc_pic_works])
 fi
 ##
 ## END FIXME
 
 # Check for any special shared library compilation flags.
-if test -n "$ac_cv_prog_cc_shlib"; then
-  AC_MSG_WARN([\`$CC' requires \`$ac_cv_prog_cc_shlib' to build shared libraries])
-  if echo "$old_CC $old_CFLAGS " | [egrep -e "[ 	]$ac_cv_prog_cc_shlib[ 	]"] >/dev/null; then :
+if test -n "$lt_cv_prog_cc_shlib"; then
+  AC_MSG_WARN([\`$CC' requires \`$lt_cv_prog_cc_shlib' to build shared libraries])
+  if echo "$old_CC $old_CFLAGS " | [egrep -e "[ 	]$lt_cv_prog_cc_shlib[ 	]"] >/dev/null; then :
   else
-   AC_MSG_WARN([add \`$ac_cv_prog_cc_shlib' to the CC or CFLAGS env variable and reconfigure])
-    ac_cv_prog_cc_can_build_shared=no
+   AC_MSG_WARN([add \`$lt_cv_prog_cc_shlib' to the CC or CFLAGS env variable and reconfigure])
+    lt_cv_prog_cc_can_build_shared=no
   fi
 fi
 
 ## FIXME: this should be a separate macro
 ##
-AC_MSG_CHECKING([if $compiler static flag $ac_cv_prog_cc_static works])
-AC_CACHE_VAL([ac_cv_prog_cc_static_works], [dnl
-  ac_cv_prog_cc_static_works=no
+AC_MSG_CHECKING([if $compiler static flag $lt_cv_prog_cc_static works])
+AC_CACHE_VAL([lt_cv_prog_cc_static_works], [dnl
+  lt_cv_prog_cc_static_works=no
   save_LDFLAGS="$LDFLAGS"
-  LDFLAGS="$LDFLAGS $ac_cv_prog_cc_static"
-  AC_TRY_LINK([], [], [ac_cv_prog_cc_static_works=yes])
+  LDFLAGS="$LDFLAGS $lt_cv_prog_cc_static"
+  AC_TRY_LINK([], [], [lt_cv_prog_cc_static_works=yes])
   LDFLAGS="$save_LDFLAGS"
 ])
 
 # Belt *and* braces to stop my trousers falling down:
-test "X$ac_cv_prog_cc_static_works" = Xno && ac_cv_prog_cc_static=
-AC_MSG_RESULT([$ac_cv_prog_cc_static_works])
+test "X$lt_cv_prog_cc_static_works" = Xno && lt_cv_prog_cc_static=
+AC_MSG_RESULT([$lt_cv_prog_cc_static_works])
 
-pic_flag="$ac_cv_prog_cc_pic"
-special_shlib_compile_flags="$ac_cv_prog_cc_shlib"
-wl="$ac_cv_prog_cc_wl"
-link_static_flag="$ac_cv_prog_cc_static"
-no_builtin_flag="$ac_cv_prog_cc_no_builtin"
-can_build_shared="$ac_cv_prog_cc_can_build_shared"
+pic_flag="$lt_cv_prog_cc_pic"
+special_shlib_compile_flags="$lt_cv_prog_cc_shlib"
+wl="$lt_cv_prog_cc_wl"
+link_static_flag="$lt_cv_prog_cc_static"
+no_builtin_flag="$lt_cv_prog_cc_no_builtin"
+can_build_shared="$lt_cv_prog_cc_can_build_shared"
 ##
 ## END FIXME
 
@@ -2098,7 +2098,7 @@ if test "$enable_shared" = yes && test "$GCC" = yes; then
     # systems, -lgcc has to come before -lc. If gcc already passes -lc
     # to ld, don't add -lc before -lgcc.
     AC_MSG_CHECKING([whether -lc should be explicitly linked in])
-    AC_CACHE_VAL([ac_cv_archive_cmds_need_lc],
+    AC_CACHE_VAL([lt_cv_archive_cmds_need_lc],
     [$rm conftest*
     echo 'static int dummy;' > conftest.$ac_ext
 
@@ -2107,7 +2107,7 @@ if test "$enable_shared" = yes && test "$GCC" = yes; then
       lib=conftest
       libobjs=conftest.$ac_objext
       deplibs=
-      wl=$ac_cv_prog_cc_wl
+      wl=$lt_cv_prog_cc_wl
       compiler_flags=-v
       linker_flags=-v
       verstring=
@@ -2117,19 +2117,19 @@ if test "$enable_shared" = yes && test "$GCC" = yes; then
       allow_undefined_flag=
       if AC_TRY_EVAL(archive_cmds 2\>\&1 \| grep \" -lc \" \>/dev/null 2\>\&1)
       then
-	ac_cv_archive_cmds_need_lc=no
+	lt_cv_archive_cmds_need_lc=no
       else
-	ac_cv_archive_cmds_need_lc=yes
+	lt_cv_archive_cmds_need_lc=yes
       fi
       allow_undefined_flag=$save_allow_undefined_flag
     else
       cat conftest.err 1>&5
     fi])
-    AC_MSG_RESULT([$ac_cv_archive_cmds_need_lc])
+    AC_MSG_RESULT([$lt_cv_archive_cmds_need_lc])
     ;;
   esac
 fi
-need_lc=${ac_cv_archive_cmds_need_lc-yes}
+need_lc=${lt_cv_archive_cmds_need_lc-yes}
 ##
 ## END FIXME
 
@@ -2923,17 +2923,17 @@ elif test "$with_gnu_ld" = yes; then
 else
   AC_MSG_CHECKING([for non-GNU ld])
 fi
-AC_CACHE_VAL(ac_cv_path_LD,
+AC_CACHE_VAL(lt_cv_path_LD,
 [if test -z "$LD"; then
   IFS="${IFS= 	}"; ac_save_ifs="$IFS"; IFS="${IFS}${PATH_SEPARATOR-:}"
   for ac_dir in $PATH; do
     test -z "$ac_dir" && ac_dir=.
     if test -f "$ac_dir/$ac_prog" || test -f "$ac_dir/$ac_prog$ac_exeext"; then
-      ac_cv_path_LD="$ac_dir/$ac_prog"
+      lt_cv_path_LD="$ac_dir/$ac_prog"
       # Check to see if the program is GNU ld.  I'd rather use --version,
       # but apparently some GNU ld's only accept -v.
       # Break only if it was the GNU/non-GNU ld that we prefer.
-      if "$ac_cv_path_LD" -v 2>&1 < /dev/null | egrep '(GNU|with BFD)' > /dev/null; then
+      if "$lt_cv_path_LD" -v 2>&1 < /dev/null | egrep '(GNU|with BFD)' > /dev/null; then
 	test "$with_gnu_ld" != no && break
       else
 	test "$with_gnu_ld" != yes && break
@@ -2942,9 +2942,9 @@ AC_CACHE_VAL(ac_cv_path_LD,
   done
   IFS="$ac_save_ifs"
 else
-  ac_cv_path_LD="$LD" # Let the user override the test with a path.
+  lt_cv_path_LD="$LD" # Let the user override the test with a path.
 fi])
-LD="$ac_cv_path_LD"
+LD="$lt_cv_path_LD"
 if test -n "$LD"; then
   AC_MSG_RESULT($LD)
 else
@@ -2956,14 +2956,14 @@ AC_PROG_LD_GNU
 
 # AC_PROG_LD_GNU -
 AC_DEFUN([AC_PROG_LD_GNU],
-[AC_CACHE_CHECK([if the linker ($LD) is GNU ld], ac_cv_prog_gnu_ld,
+[AC_CACHE_CHECK([if the linker ($LD) is GNU ld], lt_cv_prog_gnu_ld,
 [# I'd rather use --version here, but apparently some GNU ld's only accept -v.
 if $LD -v 2>&1 </dev/null | egrep '(GNU|with BFD)' 1>&5; then
-  ac_cv_prog_gnu_ld=yes
+  lt_cv_prog_gnu_ld=yes
 else
-  ac_cv_prog_gnu_ld=no
+  lt_cv_prog_gnu_ld=no
 fi])
-with_gnu_ld=$ac_cv_prog_gnu_ld
+with_gnu_ld=$lt_cv_prog_gnu_ld
 ])
 
 # AC_PROG_LD_RELOAD_FLAG - find reload flag for linker
@@ -3120,10 +3120,10 @@ deplibs_check_method=$lt_cv_deplibs_check_method
 # AC_PROG_NM - find the path to a BSD-compatible name lister
 AC_DEFUN([AC_PROG_NM],
 [AC_MSG_CHECKING([for BSD-compatible nm])
-AC_CACHE_VAL(ac_cv_path_NM,
+AC_CACHE_VAL(lt_cv_path_NM,
 [if test -n "$NM"; then
   # Let the user override the test.
-  ac_cv_path_NM="$NM"
+  lt_cv_path_NM="$NM"
 else
   IFS="${IFS= 	}"; ac_save_ifs="$IFS"; IFS="${IFS}${PATH_SEPARATOR-:}"
   for ac_dir in $PATH /usr/ccs/bin /usr/ucb /bin; do
@@ -3135,21 +3135,21 @@ else
       #   nm: unknown option "B" ignored
       # Tru64's nm complains that /dev/null is an invalid object file
       if ($tmp_nm -B /dev/null 2>&1 | sed '1q'; exit 0) | egrep '(/dev/null|Invalid file or object type)' >/dev/null; then
-	ac_cv_path_NM="$tmp_nm -B"
+	lt_cv_path_NM="$tmp_nm -B"
 	break
       elif ($tmp_nm -p /dev/null 2>&1 | sed '1q'; exit 0) | egrep /dev/null >/dev/null; then
-	ac_cv_path_NM="$tmp_nm -p"
+	lt_cv_path_NM="$tmp_nm -p"
 	break
       else
-	ac_cv_path_NM=${ac_cv_path_NM="$tmp_nm"} # keep the first match, but
+	lt_cv_path_NM=${lt_cv_path_NM="$tmp_nm"} # keep the first match, but
 	continue # so that we can try to find one that supports BSD flags
       fi
     fi
   done
   IFS="$ac_save_ifs"
-  test -z "$ac_cv_path_NM" && ac_cv_path_NM=nm
+  test -z "$lt_cv_path_NM" && lt_cv_path_NM=nm
 fi])
-NM="$ac_cv_path_NM"
+NM="$lt_cv_path_NM"
 AC_MSG_RESULT([$NM])
 ])
 
