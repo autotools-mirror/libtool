@@ -2,6 +2,7 @@ Makefile
 Makefile.in
 stamp-vti
 version.texi
+notes.txt
 *.log
 *.dvi
 *.aux

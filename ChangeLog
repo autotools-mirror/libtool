@@ -1,3 +1,9 @@
+2005-04-04  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* notes.texi: Platform-specific configuration notes.
+	* doc/libtool.texi: Include as section.
+	* bootstrap, doc/Makefile.am: build also as notes.txt and distribute.
+
 2005-04-04  Gary V. Vaughan  <gary@gnu.org>
 
 	Under certain circumstances, not all of the macro files were

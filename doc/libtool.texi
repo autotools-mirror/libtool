@@ -140,6 +140,7 @@ Integrating libtool with your package
 Configuring libtool
 
 * LT_INIT::                     Configuring @code{libtool} in @file{configure.ac}.
+* Configure notes::             Platform-specific notes for configuration.
 
 Including libtool in your package
 
@@ -1825,6 +1826,7 @@ generate a libtool script for the installer's host machine.
 
 @menu
 * LT_INIT::                     Configuring @code{libtool} in @file{configure.ac}.
+* Configure notes::             Platform-specific notes for configuration.
 @end menu
 
 @node LT_INIT
@@ -2120,6 +2122,16 @@ to use @code{ACLOCAL_AMFLAGS} in your @file{Makefile.am}:
 @example
 ACLOCAL_AMFLAGS += -I $(prefix)/share/libtool-2.0/m4
 @end example
+
+
+@node Configure notes
+@subsection Platform-specific configuration notes
+
+While Libtool tries to hide as many platform-specific features as possible,
+some have to be taken into account when configuring either the Libtool package
+or a libtoolized package.
+
+@include notes.texi
 
 
 @node Distributing
