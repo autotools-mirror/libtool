@@ -1,6 +1,7 @@
 NEWS - list of user-visible changes between releases of GNU Libtool
 
-New in 1.5.13a: 2005-??-??; CVS version 1.5.13a, Libtool team:
+New in 1.5.14: 2005-02-12; CVS version 1.5.13a, Libtool team:
+* Make -pthread work when building executabless too.
 * Bug Fixes.
 
 New in 1.5.12: 2004-02-05; CVS version 1.5.11a, Libtool team:

@@ -1,3 +1,11 @@
+2005-02-12  Peter O'Gorman  <peter@pogma.com>
+
+	GNU libtool 1.5.14 is released.
+
+	* ChangeLog: Upped version to 1.5.14.
+	* NEWS: Updated.
+	* config.guess, config.sub: Updated.
+
 2005-02-10  Peter O'Gorman  <peter@pogma.com>
 
 	* ltmain.in, libtoolize.in: --version should show "(C) 2005".
