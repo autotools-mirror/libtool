@@ -1,3 +1,13 @@
+2002-05-09  Nick Hudson  <skrll@netbsd.org>
+
+	* libtool.m4: Update support for NetBSD
+	* ltdl.m4: Make sure that libltdl_cv_func_dlopen and
+	libltdl_cv_lib_dl_dlopen are set and used instead of the
+	ac_cv_ versions. Also, use lt_cv_sys_global_symbol_pipe
+	instread of global_symbol_pipe. This fixes the detection of
+	dlopen on BSD derived plaforms and more importantly fixes
+	need_uscore detection.
+
 2002-05-06  Paul Eggert  <eggert@twinsun.com>
 
 	* libtool.m4 (AC_LIBTOOL_PROG_LD_SHLIBS): head -1 -> sed 1q to
