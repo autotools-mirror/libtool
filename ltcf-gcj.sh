@@ -93,7 +93,7 @@ EOF
       allow_undefined_flag=unsupported
       # Joseph Beckenbach <jrb3@best.com> says some releases of gcc
       # support --undefined.  This deserves some investigation.  FIXME
-      archive_cmds='$CC -nostart $libobjs $deplibs $linker_flags ${wl}-soname $wl$soname -o $lib'
+      archive_cmds='$CC -nostart $libobjs $deplibs $compiler_flags ${wl}-soname $wl$soname -o $lib'
     else
       ld_shlibs=no
     fi
@@ -194,8 +194,8 @@ EOF
 
 EOF
     elif $LD --help 2>&1 | egrep ': supported targets:.* elf' > /dev/null; then
-      archive_cmds='$CC -shared $libobjs $deplibs $linker_flags ${wl}-soname $wl$soname -o $lib'
-      archive_expsym_cmds='$CC -shared $libobjs $deplibs $linker_flags ${wl}-soname $wl$soname ${wl}-retain-symbols-file $wl$export_symbols -o $lib'
+      archive_cmds='$CC -shared $libobjs $deplibs $compiler_flags ${wl}-soname $wl$soname -o $lib'
+      archive_expsym_cmds='$CC -shared $libobjs $deplibs $compiler_flags ${wl}-soname $wl$soname ${wl}-retain-symbols-file $wl$export_symbols -o $lib'
     else
       ld_shlibs=no
     fi

@@ -1,3 +1,10 @@
+2000-09-02  Alexandre Oliva  <aoliva@redhat.com>
+
+	* ltcf-c.sh, ltcf-cxx.sh, ltcf-gcj.sh (archive_cmds,
+	archive_expsym_cmds) : Use compiler_flags instead of linker flags
+	when $CC is used for linking.
+	Reported by Alex Hornby <alex@anvil.co.uk>
+
 2000-09-02  Makoto Ishisone  <ishisone@sra.co.jp>
 
 	* libtool.m4 (lt_cv_deplibs_check_method, freebsd): Fix typo,
