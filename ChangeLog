@@ -1,3 +1,9 @@
+2004-06-21  Gary V. Vaughan  <gary@gnu.org>
+
+	* libtoolize.in (libtoolize_flags): With the --ltdl option, we
+	libtoolize the libltdl subdirectory automatically.
+	* m4/ltdl.m4 (AC_WITH_LTDL): Fix overquoted args.
+
 2004-06-21  Peter O'Gorman  <peter@pogma.com>
 
 	* ltmain.in (dependency_libs) [darwin]: Remove -framework stuff from
@@ -7,7 +13,7 @@
 	dependency_libs. Any unusual flags in dependency_libs cause recent
 	versions of libtool to die with "cannot find the library `'", so
 	it is required to move frameworks out of there. :(
-	
+
 2004-06-21  Gary V. Vaughan  <gary@gnu.org>
 
 	From Ralf Wildenhues <Ralf.Wildenhues@gmx.de>:

@@ -67,6 +67,15 @@ progpath="$0"
 progname=`echo "$progpath" | $SED "$basename"`
 PROGRAM=libtoolize
 
+# Make sure we have an absolute path for reexecution:
+case $progpath in
+  [\\/]*|[A-Za-z]:\\*) ;;
+  *) progdir=`echo "$progpath" | $SED "$dirname"`
+     progdir=`cd "$progdir" && pwd`
+     progpath="$progdir/$progname"
+     ;;
+esac
+
 # Global variables:
 EXIT_SUCCESS=0
 EXIT_FAILURE=1
@@ -80,6 +89,9 @@ opt_verbose=false
 
 seen_libtool=false
 seen_ltdl=false
+
+# Collect flags to pass into libltdl libtoolize
+libtoolize_flags=
 
 exit_status=$EXIT_SUCCESS
 
@@ -193,7 +205,9 @@ func_version ()
     opt="$1"
     shift
     case $opt in
-      --copy|-c)	opt_link=false		;;
+      --copy|-c)	opt_link=false
+      			libtoolize_flags="$libtoolize_flags --copy"
+	    		;;
 
       --debug)		func_echo "enabling shell trace mode"
 			set -x
@@ -206,10 +220,16 @@ func_version ()
 			  CP="echo $CP"
 			  MKDIR="echo $MKDIR"
 			fi
+      			libtoolize_flags="${libtoolize_flags} --dry-run"
 			;;
 
-      --force|-f)	opt_force=:			;;
-      --install|-i)	opt_install=:			;;
+      --force|-f)	opt_force=:
+      			libtoolize_flags="${libtoolize_flags} --force"
+			;;
+
+      --install|-i)	opt_install=:
+      			libtoolize_flags="${libtoolize_flags} --install"
+			;;
 
       --ltdl)		ltdldir=libltdl
       			if test "$#" -gt 0; then
@@ -221,8 +241,13 @@ func_version ()
 			;;
 
       --quiet|--automake|-q) # --automake is for 1.5 compatibility
-			opt_quiet=:			;;
-      --verbose|-v)	opt_verbose=:			;;
+			opt_quiet=:
+      			libtoolize_flags="${libtoolize_flags} --quiet"
+			;;
+
+      --verbose|-v)	opt_verbose=:
+      			libtoolize_flags="${libtoolize_flags} --verbose"
+			;;
 
       # Separate optargs to long options:
       --ltdl=*)
@@ -669,6 +694,9 @@ func_config_update ()
   # user specified `--ltdl'.
   if test -n "$ltdldir"; then
     eval func_copy_all_files "$pkgdatadir/libltdl" "$ltdldir"
+
+    # libtoolize the newly copied libltdl tree
+    ( cd "$ltdldir" && "$progpath" $libtoolize_flags ) || exit $EXIT_FAILURE
   fi
 
   # Copy all the installed utility files to the auxiliary directory if

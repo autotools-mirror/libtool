@@ -63,7 +63,7 @@ fi
 AC_MSG_CHECKING([whether to use included libltdl])
 AC_MSG_RESULT([$with_included_ltdl])
 
-AC_CONFIG_SUBDIRS([m4_if($#, 1, [$1], [libltdl])])
+AC_CONFIG_SUBDIRS(m4_if($#, 1, [$1], [libltdl]))
 ])# AC_WITH_LTDL
 
 
@@ -84,7 +84,7 @@ AC_DEFUN([AC_LIBLTDL_CONVENIENCE],
   "") enable_ltdl_convenience=yes
       ac_configure_args="$ac_configure_args --enable-ltdl-convenience" ;;
   esac
-LIBLTDL='${top_builddir}/'m4_if($#, 1,[$1], ['libltdl'])/libltdlc.la
+LIBLTDL='${top_builddir}/'m4_if($#, 1, [$1], ['libltdl'])/libltdlc.la
 LTDLINCL='-I${top_srcdir}/'m4_if($#, 1, [$1], ['libltdl'])
 
 AC_SUBST([LIBLTDL])
