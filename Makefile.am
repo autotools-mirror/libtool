@@ -30,20 +30,24 @@ bin_SCRIPTS = libtool libtoolize
 
 libtool: $(srcdir)/ltmain.sh $(srcdir)/ltconfig
 	AR="$(AR)" CC="$(CC)" CFLAGS="$(CFLAGS)" CPPFLAGS="$(CPPFLAGS)" \
-	FILE="$(FILE)" LD="$(LD)" LDFLAGS="$(LDFLAGS)" LIBS="$(LIBS)" \
-	LN_S="$(LN_S)" NM="$(NM)" RANLIB="$(RANLIB)" STRIP="$(STRIP)" \
-	AS="$(AS)" DLLTOOL="$(DLLTOOL)" OBJDUMP="$(OBJDUMP)" \
-	objext="$(OBJEXT)" exeext="$(EXEEXT)" reload_flag="$(reload_flag)" \
-	deplibs_check_method="$(deplibs_check_method)" file_magic_cmd="$(file_magic_cmd)" \
+	LTCC="$(CC)" FILE="$(FILE)" LD="$(LD)" LDFLAGS="$(LDFLAGS)" \
+	LIBS="$(LIBS)" LN_S="$(LN_S)" NM="$(NM)" RANLIB="$(RANLIB)" \
+	STRIP="$(STRIP)" AS="$(AS)" DLLTOOL="$(DLLTOOL)" \
+	OBJDUMP="$(OBJDUMP)" \
+	objext="$(OBJEXT)" exeext="$(EXEEXT)" \
+	reload_flag="$(reload_flag)" \
+	deplibs_check_method="$(deplibs_check_method)" \
+	file_magic_cmd="$(file_magic_cmd)" \
 	$(SHELL) $(srcdir)/ltconfig $(LIBTOOL_FLAGS) --srcdir=$(srcdir) \
 	  --output=$@ $(srcdir)/ltmain.sh
 
 # Experimental C version of libtool.
 clibtool: $(srcdir)/ltmain.c $(srcdir)/ltconfig
 	AR="$(AR)" CC="$(CC)" CFLAGS="$(CFLAGS)" CPPFLAGS="$(CPPFLAGS)" \
-	FILE="$(FILE)" LD="$(LD)" LDFLAGS="$(LDFLAGS)" LIBS="$(LIBS)" \
-	LN_S="$(LN_S)" NM="$(NM)" RANLIB="$(RANLIB)" STRIP="$(STRIP)" \
-	AS="$(AS)" DLLTOOL="$(DLLTOOL)" OBJDUMP="$(OBJDUMP)" \
+	LTCC="$(CC)" FILE="$(FILE)" LD="$(LD)" LDFLAGS="$(LDFLAGS)" \
+	LIBS="$(LIBS)" LN_S="$(LN_S)" NM="$(NM)" RANLIB="$(RANLIB)" \
+	STRIP="$(STRIP)" AS="$(AS)" DLLTOOL="$(DLLTOOL)" \
+	OBJDUMP="$(OBJDUMP)" \
 	objext="$(objext)" exeext="$(exeext)" reload_flag="$(reload_flag)" \
 	deplibs_check_method="$(deplibs_check_method)" file_magic_cmd="$(file_magic_cmd)" \
 	$(SHELL) $(srcdir)/ltconfig $(LIBTOOL_FLAGS) --srcdir=$(srcdir) \
