@@ -1,3 +1,13 @@
+2005-03-20  Peter Ekberg  <peda@lysator.liu.se>
+
+	* m4/libtool.m4 (_LT_LINKER_SHLIBS) [ irix5, irix6, nonstopux ]:
+	Test if it is possible to use the -exports_file linker option on
+	irix with gcc, as the gcc specs file may include a -hidden_symbol
+	option that is clashing with the -exports_file option.
+	See this gcc bugzilla entry for further details:
+	http://gcc.gnu.org/bugzilla/show_bug.cgi?id=15288
+	* THANKS: Update.
+
 2005-03-19  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* tests/demo-nopic.test: Enhance status output
