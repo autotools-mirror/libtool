@@ -54,9 +54,7 @@ AC_REQUIRE([LTOPTIONS_VERSION])dnl
 AC_REQUIRE([LTSUGAR_VERSION])dnl
 AC_REQUIRE([LTVERSION_VERSION])dnl
 AC_REQUIRE([_LT_PROG_LTMAIN])dnl
-AC_BEFORE([$0], [AC_LIBTOOL_CXX])dnl
-AC_BEFORE([$0], [AC_LIBTOOL_F77])dnl
-AC_BEFORE([$0], [AC_LIBTOOL_GCJ])dnl
+AC_BEFORE([$0], [LT_LANG])dnl
 
 # This can be used to rebuild libtool when needed
 LIBTOOL_DEPS="$ltmain"
@@ -188,8 +186,8 @@ AC_ARG_ENABLE([libtool-lock],
 test "x$enable_libtool_lock" != xno && enable_libtool_lock=yes
 
 # Use C for the default configuration in the libtool script
-AC_LIBTOOL_LANG_C_CONFIG
-_LT_AC_TAG_CONFIG
+_LT_LANG_C_CONFIG
+_LT_LANG_DEFAULT_CONFIG
 _LT_CONFIG_COMMANDS
 ])# _LT_SETUP
 
@@ -367,6 +365,14 @@ m4_define([_LT_CONFIG_STATUS_DECLARATIONS],
     [m4_n([_LT_CONFIG_STATUS_DECLARE(_lt_var)])])])
 
 
+# _LT_LIBTOOL_TAGS
+# ----------------
+# Output comment and list of tags supported by the script
+m4_define([_LT_LIBTOOL_TAGS],
+[_LT_FORMAT_COMMENT([The names of the tagged configurations supported by this script])dnl
+available_tags="[]_LT_TAGS[]"dnl
+])
+
 # _LT_LIBTOOL_DECLARE(VARNAME, [TAG])
 # -----------------------------------
 # Extract the dictionary values for VARNAME (optionally with TAG) and
@@ -454,13 +460,13 @@ _LT_OUTPUT_LIBTOOL_INIT
 ])#_LT_CONFIG_COMMANDS
 
 
-# AC_LIBTOOL_CONFIG([TAGNAME])
+# _LT_CONFIG(TAG)
 # ----------------------------
-# If TAGNAME is not passed, then create an initial libtool script
-# with a default configuration from the untagged config vars.  Otherwise
-# add code to config.status for appending the configuration named by
-# TAGNAME from the matching tagged config vars.
-m4_define([AC_LIBTOOL_CONFIG],
+# If TAG is the built-in tag, create an initial libtool script with a
+# default configuration from the untagged config vars.  Otherwise add code
+# to config.status for appending the configuration named by TAG from the
+# matching tagged config vars.
+m4_define([_LT_CONFIG],
 [_LT_CONFIG_SAVE_COMMANDS([
   m4_define([_LT_TAG], m4_if([$1], [], [C], [$1]))dnl
   m4_if(_LT_TAG, [C], [
@@ -484,8 +490,7 @@ m4_define([AC_LIBTOOL_CONFIG],
 #
 _LT_COPYING
 
-# The names of the tagged configurations supported by this script.
-available_tags=
+_LT_LIBTOOL_TAGS
 
 # ### BEGIN LIBTOOL CONFIG
 _LT_LIBTOOL_CONFIG_VARS
@@ -524,8 +529,7 @@ _LT_EOF
     (rm -f "$ofile" && cp "$cfgfile" "$ofile" && rm -f "$cfgfile")
   chmod +x "$ofile"
 ],
-[if test -n "[$]_LT_TAG" && test "X[$]_LT_TAG" != "Xno"; then
-  cat <<_LT_EOF >> "$ofile"
+[cat <<_LT_EOF >> "$ofile"
 
 dnl Unfortunately we have to use $1 here, since _LT_TAG is not expanded
 dnl in a comment (ie after a #).
@@ -533,7 +537,6 @@ dnl in a comment (ie after a #).
 _LT_LIBTOOL_TAG_VARS(_LT_TAG)
 # ### END LIBTOOL TAG CONFIG: $1
 _LT_EOF
-fi
 ])dnl /m4_if
 ],
 [m4_if([$1], [], [
@@ -543,7 +546,79 @@ fi
     rm='$rm'
     ofile='$ofile'], [$1='[$]$1'])
 ])dnl /_LT_CONFIG_SAVE_COMMANDS
-])# AC_LIBTOOL_CONFIG
+])# _LT_CONFIG
+
+
+# C support is built-in for now
+m4_define([_LT_LANG_C_enabled], [])
+m4_define([_LT_TAGS], [])
+m4_define([_LT_LANG_DEFAULT], [AUTO])
+
+# LT_LANG(LANG)
+# -------------
+# Enable libtool support for the given language if not already enabled.
+AC_DEFUN([LT_LANG],
+[m4_case([$1],
+  [C],			[_LT_LANG(C)],
+  [C++],		[_LT_LANG(CXX)],
+  [Java],		[_LT_LANG(GCJ)],
+  [Fortran 77],		[_LT_LANG(F77)],
+  [Windows Resource],	[_LT_LANG(RC)],
+  [m4_ifdef([_LT_LANG_]$1[_CONFIG],
+    [_LT_LANG($1)],
+    [m4_fatal([$0: unsupported language: "$1"])])])dnl
+])# LT_LANG
+
+# _LT_LANG(LANGNAME, TAG)
+# ------------------------
+m4_define([_LT_LANG],
+[m4_ifdef([_LT_LANG_]$1[_enabled], [],
+  [m4_append([_LT_TAGS], [$1 ])dnl
+  m4_define([_LT_LANG_]$1[_enabled], [])dnl
+  _LT_LANG_$1_CONFIG($1)])dnl
+])# _LT_LANG
+
+# _LT_LANG_DEFAULT_CONFIG
+# -----------------------
+m4_define([_LT_LANG_DEFAULT_CONFIG],
+[m4_case(m4_defn([_LT_LANG_DEFAULT]),
+  [NONE], [m4_define([_LT_TAGS], [])],
+  [ALL],  [m4_foreach(LT_Lang, [CXX, GCJ, F77, RC], [LT_LANG(LT_Lang)])],
+  [AUTO], [
+    AC_PROVIDE_IFELSE([AC_PROG_CXX],
+      [LT_LANG(CXX)],
+      [m4_define([AC_PROG_CXX], defn([AC_PROG_CXX])[LT_LANG(CXX)])])
+
+    AC_PROVIDE_IFELSE([AC_PROG_F77],
+      [LT_LANG(F77)],
+      [m4_define([AC_PROG_F77], defn([AC_PROG_F77])[LT_LANG(F77)])])
+
+    dnl The call to [A][M_PROG_GCJ] is quoted like that to stop aclocal
+    dnl pulling things in needlessly.
+    AC_PROVIDE_IFELSE([AC_PROG_GCJ],
+      [LT_LANG(GCJ)],
+      [AC_PROVIDE_IFELSE([A][M_PROG_GCJ],
+	[LT_LANG(GCJ)],
+	[AC_PROVIDE_IFELSE([LT_PROG_GCJ],
+	  [LT_LANG(GCJ)],
+	  [m4_ifdef([AC_PROG_GCJ],
+	    [m4_define([AC_PROG_GCJ], defn([AC_PROG_GCJ])[LT_LANG(GCJ)])])
+	   m4_ifdef([A][M_PROG_GCJ],
+	    [m4_define([A][M_PROG_GCJ], defn([A][M_PROG_GCJ])[LT_LANG(GCJ)])])
+	   m4_ifdef([LT_PROG_GCJ],
+	    [m4_define([LT_PROG_GCJ], defn([LT_PROG_GCJ])[LT_LANG(GCJ)])])])])])
+
+    AC_PROVIDE_IFELSE([LT_PROG_RC],
+      [LT_LANG(RC)],
+      [m4_define([LT_PROG_RC], defn([LT_PROG_RC])[LT_LANG(RC)])])
+  ],
+  [])dnl
+])# _LT_LANG_DEFAULT_CONFIG
+
+# Obsolete macros
+AU_DEFUN([AC_LIBTOOL_CXX], [LT_LANG(C++)])
+AU_DEFUN([AC_LIBTOOL_F77], [LT_LANG(Fortran 77)])
+AU_DEFUN([AC_LIBTOOL_GCJ], [LT_LANG(Java])])
 
 
 # _LT_AC_SYS_COMPILER
@@ -2039,85 +2114,6 @@ _LT_DECL([], [sys_lib_search_path_spec], [2],
 _LT_DECL([], [sys_lib_dlsearch_path_spec], [2],
     [Run-time system search path for libraries])
 ])# AC_LIBTOOL_SYS_DYNAMIC_LINKER
-
-
-# AC_LIBTOOL_TAGS
-# ---------------
-# tags to enable
-AC_DEFUN([AC_LIBTOOL_TAGS],
-[m4_define([_LT_TAGS],[$1])
-]) # AC_LIBTOOL_TAGS
-
-# _LT_AC_TAG_CHECK
-# ----------------
-m4_define([_LT_AC_TAG_CHECK],
-[m4_ifdef([_LT_TAG_]$1,
-  [m4_errprintn(m4_location[: error: duplicate tag: ]"$1")
-  m4_exit(1)],
-  [m4_define([_LT_TAG_]$1, [])])
-]) # _LT_AC_TAG_CHECK
-
-# _LT_AC_TAG_CONFIG
-# -----------------
-m4_define([_LT_AC_TAG_CONFIG],
-[AC_PROVIDE_IFELSE([AC_LIBTOOL_TAGS], [], [
-  AC_LIBTOOL_TAGS([CXX F77 GCJ RC])])dnl
-  available_tags=""
-  AC_FOREACH([_LT_TAG], _LT_TAGS,
-      [m4_case(_LT_TAG,
-      [CXX], [_LT_AC_TAG_CHECK([CXX])
-  if test -n "$CXX" && test "X$CXX" != "Xno"; then
-      AC_LIBTOOL_LANG_CXX_CONFIG
-      available_tags="$available_tags _LT_TAG"
-  fi],
-      [F77], [_LT_AC_TAG_CHECK(_LT_TAG)
-  if test -n "$F77" && test "X$F77" != "Xno"; then
-      AC_LIBTOOL_LANG_F77_CONFIG
-      available_tags="$available_tags _LT_TAG"
-  fi],
-      [GCJ], [_LT_AC_TAG_CHECK(_LT_TAG)
-  if test -n "$GCJ" && test "X$GCJ" != "Xno"; then
-      AC_LIBTOOL_LANG_GCJ_CONFIG
-      available_tags="$available_tags _LT_TAG"
-  fi],
-      [RC], [_LT_AC_TAG_CHECK(_LT_TAG)
-  if test -n "$RC" && test "X$RC" != "Xno"; then
-      AC_LIBTOOL_LANG_RC_CONFIG
-      available_tags="$available_tags _LT_TAG"
-  fi],
-      [m4_errprintn(m4_location[: error: invalid tag name: ]"_LT_TAG")
-      m4_exit(1)])
-  ])
-
-  _LT_CONFIG_SAVE_COMMANDS([
-    _LT_PROG_LTMAIN
-    if test -f "$ltmain"; then
-      if test ! -f "${ofile}"; then
-        AC_MSG_ERROR([output file `$ofile' does not exist])
-      fi
-      if test -z "$LTCC"; then
-        eval "`$SHELL ${ofile} --config | $GREP '^LTCC='`"
-        if test -z "$LTCC"; then
-          AC_MSG_ERROR([output file `$ofile' does not look like a libtool script])
-        else
-          AC_MSG_WARN([using `LTCC=$LTCC', extracted from `$ofile'])
-        fi
-      fi
-
-      # Now substitute the updated list of available tags.
-      if eval "sed -e 's/^available_tags=.*\$/available_tags=\"$available_tags\"/' \"$ofile\" > \"${ofile}T\""; then
-        mv "${ofile}T" "$ofile"
-        chmod +x "$ofile"
-      else
-        rm -f "${ofile}T"
-        AC_MSG_ERROR([unable to update list of available tagged configurations.])
-      fi
-    fi
-  ], [
-    libtool='$ofile'
-    available_tags='$available_tags'
-  ])dnl
-])# _LT_AC_TAG_CONFIG
 
 
 # AC_PATH_TOOL_PREFIX
@@ -4260,76 +4256,12 @@ dnl    [Compiler flag to generate thread safe objects])
 ])# AC_LIBTOOL_PROG_LD_SHLIBS
 
 
-# AC_LIBTOOL_CXX
-# --------------
-# enable support for C++ libraries
-AC_DEFUN([AC_LIBTOOL_CXX],
-[AC_REQUIRE([_LT_AC_LANG_CXX])
-])# AC_LIBTOOL_CXX
-
-
-# _LT_AC_LANG_CXX
-# ---------------
-AC_DEFUN([_LT_AC_LANG_CXX],
-[AC_REQUIRE([AC_PROG_CXX])
-AC_REQUIRE([AC_PROG_CXXCPP])
-_LT_AC_SHELL_INIT([tagnames=${tagnames+${tagnames},}CXX])
-])# _LT_AC_LANG_CXX
-
-
-# AC_LIBTOOL_F77
-# --------------
-# enable support for Fortran 77 libraries
-AC_DEFUN([AC_LIBTOOL_F77],
-[AC_REQUIRE([_LT_AC_LANG_F77])
-])# AC_LIBTOOL_F77
-
-
-# _LT_AC_LANG_F77
-# ---------------
-AC_DEFUN([_LT_AC_LANG_F77],
-[AC_REQUIRE([AC_PROG_F77])
-_LT_AC_SHELL_INIT([tagnames=${tagnames+${tagnames},}F77])
-])# _LT_AC_LANG_F77
-
-
-# AC_LIBTOOL_GCJ
-# --------------
-# enable support for GCJ libraries
-AC_DEFUN([AC_LIBTOOL_GCJ],
-[AC_REQUIRE([_LT_AC_LANG_GCJ])
-])# AC_LIBTOOL_GCJ
-
-
-# _LT_AC_LANG_GCJ
-# ---------------
-AC_DEFUN([_LT_AC_LANG_GCJ],
-[AC_PROVIDE_IFELSE([AC_PROG_GCJ],[],
-  [AC_PROVIDE_IFELSE([A][M_PROG_GCJ],[],
-    [AC_PROVIDE_IFELSE([LT_AC_PROG_GCJ],[],
-      [ifdef([AC_PROG_GCJ],[AC_REQUIRE([AC_PROG_GCJ])],
-	 [ifdef([A][M_PROG_GCJ],[AC_REQUIRE([A][M_PROG_GCJ])],
-	   [AC_REQUIRE([A][C_PROG_GCJ_OR_A][M_PROG_GCJ])])])])])])
-_LT_AC_SHELL_INIT([tagnames=${tagnames+${tagnames},}GCJ])
-])# _LT_AC_LANG_GCJ
-
-
-# AC_LIBTOOL_RC
-# --------------
-# enable support for Windows resource files
-AC_DEFUN([AC_LIBTOOL_RC],
-[AC_REQUIRE([LT_AC_PROG_RC])
-_LT_AC_SHELL_INIT([tagnames=${tagnames+${tagnames},}RC])
-])# AC_LIBTOOL_RC
-
-
-# AC_LIBTOOL_LANG_C_CONFIG
+# _LT_LANG_C_CONFIG([TAG])
 # ------------------------
-# Ensure that the configuration vars for the C compiler are
-# suitably defined.  Those variables are subsequently used by
-# AC_LIBTOOL_CONFIG to write the compiler configuration to `libtool'.
-AC_DEFUN([AC_LIBTOOL_LANG_C_CONFIG], [_LT_AC_LANG_C_CONFIG])
-m4_define([_LT_AC_LANG_C_CONFIG],
+# Ensure that the configuration variables for a C compiler are suitably
+# defined.  These variables are subsequently used by _LT_CONFIG to write
+# the compiler configuration to `libtool'.
+m4_define([_LT_LANG_C_CONFIG],
 [AC_REQUIRE([LT_AC_PROG_EGREP])
 lt_save_CC="$CC"
 AC_LANG_PUSH(C)
@@ -4418,20 +4350,19 @@ AC_MSG_CHECKING([whether to build static libraries])
 test "$enable_shared" = yes || enable_static=yes
 AC_MSG_RESULT([$enable_static])
 
-AC_LIBTOOL_CONFIG($1)
+_LT_CONFIG($1)
 
 AC_LANG_POP
 CC="$lt_save_CC"
-])# AC_LIBTOOL_LANG_C_CONFIG
+])# _LT_LANG_C_CONFIG
 
 
-# AC_LIBTOOL_LANG_CXX_CONFIG
+# _LT_LANG_CXX_CONFIG([TAG])
 # --------------------------
-# Ensure that the configuration vars for the C compiler are
-# suitably defined.  Those variables are subsequently used by
-# AC_LIBTOOL_CONFIG to write the compiler configuration to `libtool'.
-AC_DEFUN([AC_LIBTOOL_LANG_CXX_CONFIG], [_LT_AC_LANG_CXX_CONFIG(CXX)])
-AC_DEFUN([_LT_AC_LANG_CXX_CONFIG],
+# Ensure that the configuration variables for a C++ compiler are suitably
+# defined.  These variables are subsequently used by _LT_CONFIG to write
+# the compiler configuration to `libtool'.
+m4_define([_LT_LANG_CXX_CONFIG],
 [AC_LANG_PUSH(C++)
 AC_REQUIRE([LT_AC_PROG_EGREP])
 AC_REQUIRE([AC_PROG_CXX])
@@ -5298,7 +5229,7 @@ AC_LIBTOOL_PROG_LD_HARDCODE_LIBPATH($1)
 AC_LIBTOOL_SYS_LIB_STRIP
 AC_LIBTOOL_DLOPEN_SELF($1)
 
-AC_LIBTOOL_CONFIG($1)
+_LT_CONFIG($1)
 
 AC_LANG_POP
 CC=$lt_save_CC
@@ -5311,7 +5242,7 @@ lt_cv_path_LDCXX=$lt_cv_path_LD
 lt_cv_path_LD=$lt_save_path_LD
 lt_cv_prog_gnu_ldcxx=$lt_cv_prog_gnu_ld
 lt_cv_prog_gnu_ld=$lt_save_with_gnu_ld
-])# AC_LIBTOOL_LANG_CXX_CONFIG
+])# _LT_LANG_CXX_CONFIG
 
 
 # AC_LIBTOOL_POSTDEP_PREDEP([TAGNAME])
@@ -5466,13 +5397,12 @@ _LT_TAGDECL([], [compiler_lib_search_path], [1],
     a shared library])
 ])# AC_LIBTOOL_POSTDEP_PREDEP
 
-# AC_LIBTOOL_LANG_F77_CONFIG
-# ------------------------
-# Ensure that the configuration vars for the C compiler are
-# suitably defined.  Those variables are subsequently used by
-# AC_LIBTOOL_CONFIG to write the compiler configuration to `libtool'.
-AC_DEFUN([AC_LIBTOOL_LANG_F77_CONFIG], [_LT_AC_LANG_F77_CONFIG(F77)])
-AC_DEFUN([_LT_AC_LANG_F77_CONFIG],
+# _LT_LANG_F77_CONFIG([TAG])
+# --------------------------
+# Ensure that the configuration variables for a Fortran 77 compiler are
+# suitably defined.  These variables are subsequently used by _LT_CONFIG
+# to write the compiler configuration to `libtool'.
+m4_define([_LT_LANG_F77_CONFIG],
 [AC_REQUIRE([AC_PROG_F77])
 AC_LANG_PUSH(Fortran 77)
 
@@ -5559,20 +5489,19 @@ AC_LIBTOOL_PROG_LD_HARDCODE_LIBPATH($1)
 AC_LIBTOOL_SYS_LIB_STRIP
 
 
-AC_LIBTOOL_CONFIG($1)
+_LT_CONFIG($1)
 
 AC_LANG_POP
 CC="$lt_save_CC"
-])# AC_LIBTOOL_LANG_F77_CONFIG
+])# _LT_LANG_F77_CONFIG
 
 
-# AC_LIBTOOL_LANG_GCJ_CONFIG
+# _LT_LANG_GCJ_CONFIG([TAG])
 # --------------------------
-# Ensure that the configuration vars for the C compiler are
-# suitably defined.  Those variables are subsequently used by
-# AC_LIBTOOL_CONFIG to write the compiler configuration to `libtool'.
-AC_DEFUN([AC_LIBTOOL_LANG_GCJ_CONFIG], [_LT_AC_LANG_GCJ_CONFIG(GCJ)])
-m4_define([_LT_AC_LANG_GCJ_CONFIG],
+# Ensure that the configuration variables for the GNU Java Compiler compiler
+# are suitably defined.  These variables are subsequently used by _LT_CONFIG
+# to write the compiler configuration to `libtool'.
+m4_define([_LT_LANG_GCJ_CONFIG],
 [AC_LANG_SAVE
 
 # Source file extension for Java test sources.
@@ -5614,20 +5543,19 @@ AC_LIBTOOL_PROG_LD_HARDCODE_LIBPATH($1)
 AC_LIBTOOL_SYS_LIB_STRIP
 AC_LIBTOOL_DLOPEN_SELF($1)
 
-AC_LIBTOOL_CONFIG($1)
+_LT_CONFIG($1)
 
 AC_LANG_RESTORE
 CC="$lt_save_CC"
-])# AC_LIBTOOL_LANG_GCJ_CONFIG
+])# _LT_LANG_GCJ_CONFIG
 
 
-# AC_LIBTOOL_LANG_RC_CONFIG
+# _LT_LANG_RC_CONFIG([TAG])
 # --------------------------
-# Ensure that the configuration vars for the Windows resource compiler are
-# suitably defined.  Those variables are subsequently used by
-# AC_LIBTOOL_CONFIG to write the compiler configuration to `libtool'.
-AC_DEFUN([AC_LIBTOOL_LANG_RC_CONFIG], [_LT_AC_LANG_RC_CONFIG(RC)])
-m4_define([_LT_AC_LANG_RC_CONFIG],
+# Ensure that the configuration variables for the Windows resource compiler
+# are suitably defined.  These variables are subsequently used by _LT_CONFIG
+# to write the compiler configuration to `libtool'.
+m4_define([_LT_LANG_RC_CONFIG],
 [AC_LANG_SAVE
 
 # Source file extension for RC test sources.
@@ -5653,22 +5581,24 @@ compiler=$CC
 _LT_AC_TAGVAR(compiler, $1)=$CC
 _LT_AC_TAGVAR(lt_cv_prog_compiler_c_o, $1)=yes
 
-AC_LIBTOOL_CONFIG($1)
+_LT_CONFIG($1)
 
 AC_LANG_RESTORE
 CC="$lt_save_CC"
-])# AC_LIBTOOL_LANG_RC_CONFIG
+])# _LT_LANG_RC_CONFIG
 
 
-AC_DEFUN([LT_AC_PROG_GCJ],
+AC_DEFUN([LT_PROG_GCJ],
 [AC_CHECK_TOOL(GCJ, gcj, no)
   test "x${GCJFLAGS+set}" = xset || GCJFLAGS="-g -O2"
   AC_SUBST(GCJFLAGS)
 ])
+AU_DEFUN([LT_AC_PROG_GCJ], [LT_PROG_GCJ])
 
-AC_DEFUN([LT_AC_PROG_RC],
+AC_DEFUN([LT_PROG_RC],
 [AC_CHECK_TOOL(RC, windres, no)
 ])
+AU_DEFUN([LT_AC_PROG_RC], [LT_PROG_RC])
 
 
 # LT_AC_PROG_EGREP

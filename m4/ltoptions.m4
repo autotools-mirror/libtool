@@ -356,3 +356,11 @@ AC_DIAGNOSE([obsolete],
 [$0: Remove this warning and the call to _LT_SET_OPTION when you
 put the `pic-only' option into LT_LIBTOOL_INIT's first parameter.])
 ])
+
+
+# _LT_LANG_DEFAULT is predefined in libtool.m4 and used by
+# _LT_LANG_DEFAULT_CONFIG()
+
+LT_OPTION_DEFINE([no-lang],   [m4_define([_LT_LANG_DEFAULT], [NONE])])
+LT_OPTION_DEFINE([auto-lang], [m4_define([_LT_LANG_DEFAULT], [AUTO])])
+LT_OPTION_DEFINE([all-lang],  [m4_define([_LT_LANG_DEFAULT], [ALL])])

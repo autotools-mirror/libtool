@@ -43,7 +43,6 @@ AC_C_CONST
 ## ----------------------- ##
 ## Libtool initialisation. ##
 ## ----------------------- ##
-AC_LIBTOOL_TAGS([])
 LT_INIT([dlopen])
 AC_SUBST(LIBTOOL_DEPS)
 

@@ -11,6 +11,9 @@ New in 1.5b: 2004-??-??; CVS version 1.5a, Libtool team:
   AC_ENABLE_FAST_INSTALL, AC_DISABLE_FAST_INSTALL, AC_LIBTOOL_DLOPEN,
   AC_LIBTOOL_WIN32_DLL and AC_LIBTOOL_PIC_MODE.  Use autoupdate to modernise
   your configure.ac files after installing this release.
+* New LT_LANG interface to enable libtool support for a specific language.
+* Language support is now only included if your configure.ac enables it,
+  either through a call to AC_PROG_CXX etc. or LT_LANG.
 * The libtool script will complain if it was built from mismatched ltmain.sh
   and libtool m4 macro versions.
 * Like automake, libtoolize no longer installs config.guess and config.sub by
@@ -28,7 +31,6 @@ New in 1.5b: 2004-??-??; CVS version 1.5a, Libtool team:
 * If you configure libtool with --disable-shared (or if libtool does not
   support shared libraries on your platform) trying to build a library using
   `-shared' is a fatal error.
-* New AC_LIBTOOL_TAGS macro to limit configure checks to only the listed tags.
 * libtoolize installs libtool.m4 (and ltdl.m4 if used) to AC_CONFIG_MACRO_DIR.
 * Mode inferrence removed, shorthand for choosing modes added.
 * Specifying -allow-undefined is now an error.
