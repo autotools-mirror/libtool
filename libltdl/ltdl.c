@@ -901,6 +901,9 @@ trim (char **dest, const char *str)
 
   FREE (*dest);
 
+  if (!end)
+    return 1;
+
   if (len > 3 && str[0] == '\'')
     {
       tmp = MALLOC (char, end - str);
