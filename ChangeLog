@@ -1,5 +1,10 @@
 1999-01-26  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
 
+	* Makefile.am (install-data-hook): Don't show the if expression
+	that tests for gzip with a conditional error message; just do it
+	quietly and show the error if it fails, or the next action if it
+	succeeds.
+	
 	* configure.in:  It seems Alexandre accidentally removed the
 	AC_SUBST(pkgdatadir) line recently which breaks libtoolize.
 	Reverted that small change.
