@@ -26,20 +26,21 @@ USA. */
 #include <math.h>
 #endif
 
-int	var_l4;
+int	var_l4 = 0;
 
 int
 func_l4(indent)
     int indent;
 {
   int i;
-  
+
   for (i = 0; i < indent; i++)
     putchar(' ');
-  printf("l4\n");
+  printf("l4 (%i)\n", var_l4);
   func_l3(indent+1);
   for (i = 0; i <= indent; i++)
     putchar(' ');
   printf("libm [sin(1.5) = %f]\n", sin(1.5));
+  var_l4 += var_l3;
   return 0; 
 }

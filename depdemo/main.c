@@ -32,5 +32,7 @@ main (argc,argv)
   func_l1(0);
   func_l2(0);
   func_l4(0);
+  if (var_l1 + var_l2 + var_l4 != 20)
+  	return 1;
   return 0;
 }

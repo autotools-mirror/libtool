@@ -1025,6 +1025,10 @@ libraries.  But be careful not to link a single convenience library,
 directly or indirectly, into a single program or library, otherwise you
 may get errors about symbol redefinitions.
 
+When GNU automake is used, you should use @code{noinst_LTLIBRARIES}
+instead of @code{lib_LTLIBRARIES} for convenience libraries, so that
+the @samp{-rpath} option is not passed when they are linked.
+
 As a rule of thumb, link a libtool convenience library into at most one
 libtool library, and never into a program, and link libtool static
 convenience libraries only into programs, and only if you need to carry

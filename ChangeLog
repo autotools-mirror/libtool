@@ -1,3 +1,33 @@
+1999-08-24  Thomas Tanner  <tanner@ffii.org>
+
+	* NEWS: mention fixes
+	* doc/PLATFORMS: GNU/Hurd update
+	* depdemo: make use of variables
+	* ltconfig.in: use CC -E when checking for ELF support
+	  on NetBSD (reported by Todd Vierling <tv@pobox.com>),
+	  replace all occurences of 'linkopts' with 'linker_flags'
+	* ltmain.in: move ltdll.c and impgen.c to ltconfig.in and
+	  only add them to the libtool script if it's necessary
+
+1999-08-24  Boyd Gerber  <gerberb@zenez.com>
+
+	* ltconfig.in: add support for UnixWare 7.X.X
+	* doc/PLATFORMS: add new platforms
+
+1999-08-24  Pavel Roskin  <pavel_roskin@geocities.com>
+
+	* doc/libtool.texi: document use of noinst_LTLIBRARIES for
+	  convenience libraries
+	
+	* ltconfig.in: check for freebsdelf3, not just freebsd3.
+	Set hardcode_into_libs=yes for FreeBSD 3.0 and 3.1
+
+	* ltmain.in: enable workaround for freebsdelf3.0
+
+1999-08-24  Bert Driehuis  <bert_driehuis@nl.compuware.com>
+
+	* ltconfig.in: export_dynamic_flag_spec is -rdynamic on BSD/OS
+
 1999-08-07  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* libltdl/COPYING.LIB: Update to version 2.1.

@@ -23,18 +23,19 @@ USA. */
 #include "l2/l2.h"
 #include <stdio.h>
 
-int	var_l3;
+int	var_l3 = 0;
 
 int
 func_l3(indent)
     int indent;
 {
   int i;
-  
+
   for (i = 0; i < indent; i++)
     putchar(' ');
-  printf("l3\n");
+  printf("l3 (%i)\n", var_l3);
   func_l1(indent+1);
   func_l2(indent+1);
+  var_l3 += var_l1 + var_l2;
   return 0; 
 }

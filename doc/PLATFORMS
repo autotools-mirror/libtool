@@ -45,7 +45,7 @@ i*86-*-freebsd2.2.8             gcc      1.3c     ok
 i*86-*-freebsd2.2.6             gcc      1.3b     ok
   (egcs-1.1 & gcc-2.7.2.1, native ld)
 i*86-*-freebsd2.1.5             gcc      0.5      ok
-i*86-*-gnu                      gcc      1.3.3    ok
+i*86-*-gnu                      gcc      1.3c     ok (1.602)
 i*86-*-netbsd1.4                gcc      1.3c     ok
   (egcs-1.1.1)
 i*86-*-netbsd1.3.3              gcc      1.3c     ok
@@ -68,6 +68,14 @@ i*86-*-solaris2.5.1             gcc      1.2f     ok
 i*86-ncr-sysv4.3.03             gcc      1.2f     ok
 i*86-ncr-sysv4.3.03             cc       1.2e     ok
   (cc -Hnocopyr)
+i*86-pc-sco3.2v5.0.5		cc	 1.3c	  ok
+i*86-pc-sco3.2v5.0.5		gcc	 1.3c	  ok
+  (gcc 95q4c)
+i*86-pc-sco3.2v5.0.5		gcc	 1.3c	  ok
+  (egcs-1.1.2)
+i*86-UnixWare7.1.0-sysv5	cc	 1.3c	  ok
+i*86-UnixWare7.1.0-sysv5	gcc	 1.3c	  ok
+  (egcs-1.1.1)
 m68k-next-nextstep3             gcc      1.2f     NS
 m68k-sun-sunos4.1.1             gcc      1.2f     NS
   (gcc-2.5.7)
