@@ -1,3 +1,10 @@
+2000-02-17  Ossama Othman  <ossama@debian.org>
+
+	* libtoolize.in (files): Add C++ support if configure.in uses
+	AC_LIBTOOL_CXX, i.e. add `ltcf-cxx.sh' to list of files to be
+	copied during libtoolization.
+	* ltdl.m4: Added this file to the multi-language branch.
+
 2000-02-08  Ossama Othman  <ossama@debian.org>
 
 	* ltcf-cxx.sh (predeps, postdeps, predep_objects,

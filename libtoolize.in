@@ -1,7 +1,7 @@
 #! /bin/sh
 # libtoolize - Prepare a package to use libtool.
 # @configure_input@
-# Copyright (C) 1996-1999 Free Software Foundation, Inc.
+# Copyright (C) 1996-2000 Free Software Foundation, Inc.
 # Originally by Gordon Matzigkeit <gord@gnu.ai.mit.edu>, 1996
 #
 # This program is free software; you can redistribute it and/or modify
@@ -38,6 +38,7 @@ pkgdatadir=@pkgdatadir@
 aclocaldir=@aclocaldir@
 
 libtool_m4="$aclocaldir/libtool.m4"
+ltdl_m4="$aclocaldir/ltdl.m4"
 
 dry_run=no
 help="Try \`$progname --help' for more information."
@@ -147,6 +148,12 @@ if test -z "$files"; then
 fi
 files='config.guess config.sub ltconfig ltmain.sh ltcf-c.sh'
 
+#Add C++ support if configure.in uses AC_LIBTOOL_CXX.
+if egrep '^[ ]*AC_LIBTOOL_CXX' configure.in > /dev/null 2>&1; then
+  files="$files ltcf-cxx.sh"
+fi
+
+
 auxdir=.
 auxdirline=`egrep '^AC_CONFIG_AUX_DIR' configure.in 2>/dev/null`
 if test -n "$auxdirline"; then
@@ -223,6 +230,41 @@ if test -z "$automake"; then
     fi
   else
     echo "You should $updatemsg."
+  fi
+
+  if grep '^AC_LIB_LTDL' configure.in >/dev/null 2>&1; then
+    if grep 'generated automatically by aclocal' aclocal.m4 >/dev/null 2>&1; then
+      updatemsg="update your \`aclocal.m4' by running aclocal"
+    else
+      updatemsg="add the contents of \`$ltdl_m4' to \`aclocal.m4'"
+    fi
+
+    if egrep '^AC_DEFUN\(AC_LIB_LTDL' aclocal.m4 >/dev/null 2>&1; then
+      # Check the version number on ltdl.m4 and the one used in aclocal.m4.
+      instserial=`grep '^# serial ' $ltdl_m4 | grep 'AC_LIB_LTDL' | sed -e 's/^# serial \([0-9][0-9]*\).*$/\1/; q'`
+
+      if test -z "$instserial"; then
+	echo "$progname: warning: no serial number on \`$ltdl_m4'" 1>&2
+      else
+	# If the local macro has no serial number, we assume it's ancient.
+	localserial=`grep '^# serial ' aclocal.m4 | grep 'AC_LIB_LTDL' | sed -e 's/^# serial \([0-9][0-9]*\).*$/\1/; q'`
+
+	test -z "$localserial" && localserial=0
+
+	if test "$localserial" -lt "$instserial"; then
+	  echo "You should $updatemsg."
+	elif test "$localserial" -gt "$instserial"; then
+	  echo "$progname: \`$ltld_m4' is serial $instserial, less than $localserial in \`aclocal.m4'" 1>&2
+	  if test -z "$force"; then
+	    echo "Use \`--force' to replace newer libtool files with this version." 1>&2
+	    exit 1
+	  fi
+	  echo "To remain compatible, you should $updatemsg."
+	fi
+      fi
+    else
+      echo "You should $updatemsg."
+    fi
   fi
 fi
 
