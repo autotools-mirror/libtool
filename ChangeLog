@@ -1,5 +1,9 @@
 2000-05-30  Gary V. Vaughan  <gvv@techie.com>
 
+	* ltconfig.in (ORIGINAL_CONFIG_SHELL): Prevent lossage when
+	the echo probing code falls into this branch without setting
+	this variable.
+
 	* ltconfig.in (netbsd*): archive_cmds and archive_expsym_cmds
 	were reversed with respect to definition of __ELF__.
 	From Keisuke Inoue <keisuke@csl.sony.co.jp>
