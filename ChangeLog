@@ -1,3 +1,9 @@
+2004-10-14  Peter O'Gorman  <peter@pogma.com>
+
+	* config/ltmain.m4sh: Revert most of my last commit, only eval
+	\$show \"$cmds\", and only when building a library. I'm a wimp.
+	Thanks Gary for pointing out errors in previous commit.
+
 2004-10-13  Gary V. Vaughan  <gary@gnu.org>
 
 	* config/ltmain.m4sh (func_mode_finish): Mention crle(1) on
