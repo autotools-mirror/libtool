@@ -1,3 +1,14 @@
+2003-03-21  Peter O'Gorman  <peter@pogma.com>
+
+	* README: Remove "Important" information about patching automake.
+	* configure.ac: Fix misapplied patch in last commit
+	* libtool.m4 (darwin): Check compiler is apple gcc, add -single_module
+	support so that dyloading c++ shared libraries will work.
+	* libtool.m4 (_LT_AC_TAGCONFIG): Add test -n to the tests so that
+	it will work outside of libtool.
+	* doc/PLATFORMS: Add darwin
+	* f77demo/configure.ac: Add config.h which was misapplied previously.
+
 2003-03-20  Peter O'Gorman  <peter@pogma.com>
 	
 	* ltmain.in: Always use $echo not echo for consistency.
