@@ -10,7 +10,7 @@ CPPLAGS = @CPPFLAGS@
 aclocal_macros = libtool.m4
 
 EXTRA_DIST = $(aclocal_macros) libtoolize.in ltconfig.in ltmain.in \
-	libtool.spec libtool.prj
+	libtool.spec
 CLEANFILES = libtool libtoolize
 MAINTAINERCLEANFILES = ltconfig ltmain.sh
 
@@ -154,47 +154,3 @@ $(srcdir)/libltdl/configure: libltdl/configure.in libltdl/aclocal.m4
 
 $(srcdir)/libltdl/aclocal.m4: libltdl/configure.in libltdl/acinclude.m4
 	cd $(srcdir)/libltdl && $(ACLOCAL)
-
-######################################################################
-# These commands really help my life as a maintainer who uses PRCS.
-# Feel free to copy them to your own project.  I just run a
-# maintainer-checkin whenever I feel like it, then I run a maintainer-release
-# after changing the project major version number in my project file.
-#
-# This works because of the special `$Format: ...$' string I have in my
-# `configure.in'.
-PRCS = prcs
-released = $(top_srcdir)/.released
-
-# At least configure.in should be rekeyed, but you can also add other files.
-rekey_files = configure.in libtool.spec
-
-.PHONY: maintainer-checkin maintainer-rekey maintainer-release
-maintainer-checkin: maintainer-rekey
-	cd $(top_srcdir) && $(PRCS) checkin -f $(PACKAGE).prj
-
-maintainer-rekey:
-	@newver=`grep '^(Project-Version[ 	]' $(srcdir)/$(PACKAGE).prj | \
-	   sed 's/^.*[ 	]\+\([^ 	]\+\)[ 	]\+[0-9]\+).*$$/\1/'`; \
-	  if test "X$$newver" = "X$(VERSION)"; then \
-	    if test -f "$(released)"; then \
-	      echo "New development cycle: change Project-Version in $(top_srcdir)/$(PACKAGE).prj."; \
-	      exit 1; \
-	    else \
-	      echo "No need to rekey any files"; \
-	    fi; \
-	  else \
-	    rm -f "$(released)"; \
-	    echo "cd $(top_srcdir) && $(PRCS) rekey -f $(PACKAGE).prj $(rekey_files)"; \
-	    cd $(top_srcdir) && $(PRCS) rekey -f $(PACKAGE).prj $(rekey_files); \
-	  fi
-
-maintainer-release: maintainer-rekey distcheck
-	cd $(top_srcdir) && $(PRCS) checkin -f $(PACKAGE).prj
-	echo "$(VERSION)" > "$(release)"
-	@echo "============================="; \
-	  echo "Congratulations!  $(PACKAGE)-$(VERSION) is now complete."; \
-	  echo; \
-	  echo "Distribute \`$(PACKAGE)-$(VERSION).tar.gz' to the masses, and don't forget"; \
-	  echo "any other details you need to complete this release."; \
-	  echo "============================="

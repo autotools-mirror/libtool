@@ -6,8 +6,8 @@ Version: 1.2c
 Release: 1
 Copyright: GPL
 Group: Development/Build
-Source: ftp://prep.ai.mit.edu/pub/gnu/libtool-%{PACKAGE_VERSION}.tar.gz
-URL: http://www.profitpress.com/libtool/
+Source: ftp://ftp.gnu.org/pub/gnu/libtool-%{PACKAGE_VERSION}.tar.gz
+URL: http://www.gnu.org/software/libtool/libtool.html
 BuildRoot: /tmp/libtool.root
 
 %description

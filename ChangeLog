@@ -1,3 +1,11 @@
+1998-11-25  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* libtool.spec (URL): point to www.gnu.org
+	(Source): point to ftp.gnu.org
+
+	* Makefile.am (EXTRA_DIST): removed libtool.prj
+	Reported by Akim Demaille <demaille@inf.enst.fr>
+
 1998-11-24  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* ltconfig.in (echo): avoid shell error messages when we're
