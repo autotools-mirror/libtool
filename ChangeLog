@@ -1,5 +1,8 @@
 2003-06-11  Gary V. Vaughan  <gary@gnu.org>
 
+	* libtool.m4 (AC_LIBTOOL_COMPILER_OPTION): Require LT_AC_PROG_SED to
+	ensure $SED is set by the time it is used.
+
 	* configure.ac (AC_INIT): Bumped revision to 1.5.0a -- the first cvs
 	revision number for the 1.5 maintenance branch, leading towards a
 	1.5.1 release.
@@ -78,7 +81,7 @@
 2003-04-22  Peter O'Gorman  <peter@pogma.com>
 
 	* libtool.m4: Move the AC_LIBTOOL_SYS_DYNAMIC_LINKER check
-	to be before AC_LIBTOOL_PROG_LD_HARDCODE_LIBPATH, becuase the
+	to be before AC_LIBTOOL_PROG_LD_HARDCODE_LIBPATH, because the
 	value of shlibpath_overrides_runpath is used in the HARDCODE
 	test and is set in the DYNAMIC_LINKER test.
 	* ltmain.in(darwin): We never need to relink on darwin.

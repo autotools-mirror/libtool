@@ -564,7 +564,8 @@ need_locks="$enable_libtool_lock"
 # ----------------------------------------------------------------
 # Check whether the given compiler option works
 AC_DEFUN([AC_LIBTOOL_COMPILER_OPTION],
-[AC_CACHE_CHECK([$1], [$2],
+[AC_REQUIRE([LT_AC_PROG_SED])
+AC_CACHE_CHECK([$1], [$2],
   [$2=no
   ifelse([$4], , [ac_outfile=conftest.$ac_objext], [ac_outfile=$4])
    printf "$lt_simple_compile_test_code" > conftest.$ac_ext
