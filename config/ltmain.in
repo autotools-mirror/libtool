@@ -5511,9 +5511,14 @@ EOF
       case $host in
       *-*-darwin*)
 	# Don't allow lazy linking, it breaks C++ global constructors
+	# But is supposedly fixed on 10.4 or later (yay!).
 	if test "$tagname" = CXX ; then
-	compile_command="$compile_command ${wl}-bind_at_load"
-	finalize_command="$finalize_command ${wl}-bind_at_load"
+	  case ${MACOSX_DEPLOYMENT_TARGET-10.0} in
+	    10.[0123])
+	      compile_command="$compile_command ${wl}-bind_at_load"
+	      finalize_command="$finalize_command ${wl}-bind_at_load"
+	    ;;
+	  esac
 	fi
 	# Time to change all our "foo.ltframework" stuff back to "-framework foo"
 	compile_deplibs=`$echo "X $compile_deplibs" | $Xsed -e 's% \([^ $]*\).ltframework% -framework \1%g'`

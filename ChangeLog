@@ -1,3 +1,8 @@
+2004-09-17  Peter O'Gorman  <peter@pogma.com>
+
+	* m4/libtool.m4 [darwin] (_LT_LANG_CXX_CONFIG): Changes for 10.4.
+	* config/libtool.in [darwin]: ditto.
+
 2004-09-16  Gary V. Vaughan  <gary@gnu.org>
 
 	My most recent `2004-09-02 Gary V. Vaughan' patch for mkdir_p

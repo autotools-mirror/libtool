@@ -3803,18 +3803,14 @@ _LT_EOF
          _LT_TAGVAR(allow_undefined_flag, $1)='${wl}-undefined ${wl}suppress'
          ;;
        *) # Darwin 1.3 on
-         if test -z ${MACOSX_DEPLOYMENT_TARGET} ; then
-           _LT_TAGVAR(allow_undefined_flag, $1)='${wl}-flat_namespace ${wl}-undefined ${wl}suppress'
-         else
-           case ${MACOSX_DEPLOYMENT_TARGET} in
-             10.[[012]])
-               _LT_TAGVAR(allow_undefined_flag, $1)='${wl}-flat_namespace ${wl}-undefined ${wl}suppress'
-               ;;
-             10.*)
-               _LT_TAGVAR(allow_undefined_flag, $1)='${wl}-undefined ${wl}dynamic_lookup'
-               ;;
-           esac
-         fi
+         case ${MACOSX_DEPLOYMENT_TARGET-10.0} in
+           10.[[012]])
+             _LT_TAGVAR(allow_undefined_flag, $1)='${wl}-flat_namespace ${wl}-undefined ${wl}suppress'
+             ;;
+           10.*)
+             _LT_TAGVAR(allow_undefined_flag, $1)='${wl}-undefined ${wl}dynamic_lookup'
+             ;;
+         esac
          ;;
       esac
       _LT_TAGVAR(archive_cmds_need_lc, $1)=no
@@ -4742,18 +4738,14 @@ if test "$caught_CXX_error" != yes; then
             _LT_TAGVAR(allow_undefined_flag, $1)='${wl}-undefined ${wl}suppress'
             ;;
           *) # Darwin 1.3 on
-            if test -z ${MACOSX_DEPLOYMENT_TARGET} ; then
-              _LT_TAGVAR(allow_undefined_flag, $1)='${wl}-flat_namespace ${wl}-undefined ${wl}suppress'
-            else
-              case ${MACOSX_DEPLOYMENT_TARGET} in
-                10.[[012]])
-                  _LT_TAGVAR(allow_undefined_flag, $1)='${wl}-flat_namespace ${wl}-undefined ${wl}suppress'
-                  ;;
-                10.*)
-                  _LT_TAGVAR(allow_undefined_flag, $1)='${wl}-undefined ${wl}dynamic_lookup'
-                  ;;
-              esac
-            fi
+            case ${MACOSX_DEPLOYMENT_TARGET-10.0} in
+              10.[[012]])
+                _LT_TAGVAR(allow_undefined_flag, $1)='${wl}-flat_namespace ${wl}-undefined ${wl}suppress'
+                ;;
+              10.*)
+                _LT_TAGVAR(allow_undefined_flag, $1)='${wl}-undefined ${wl}dynamic_lookup'
+                ;;
+            esac
             ;;
         esac
         _LT_TAGVAR(archive_cmds_need_lc, $1)=no
@@ -4766,14 +4758,24 @@ if test "$caught_CXX_error" != yes; then
         if test "$GXX" = yes ; then
           lt_int_apple_cc_single_mod=no
           output_verbose_link_cmd='echo'
-          if $CC -dumpspecs 2>&1 | $GREP 'single_module' >/dev/null ; then
-            lt_int_apple_cc_single_mod=yes
-          fi
-          if test "X$lt_int_apple_cc_single_mod" = Xyes ; then
-           _LT_TAGVAR(archive_cmds, $1)='$CC -dynamiclib -single_module $allow_undefined_flag -o $lib $libobjs $deplibs $compiler_flags -install_name $rpath/$soname $verstring'
-          else
-            _LT_TAGVAR(archive_cmds, $1)='$CC -r -keep_private_externs -nostdlib -o ${lib}-master.o $libobjs~$CC -dynamiclib $allow_undefined_flag -o $lib ${lib}-master.o $deplibs $compiler_flags -install_name $rpath/$soname $verstring'
-          fi
+          case ${MACOSX_DEPLOYMENT_TARGET-10.0} in
+          10.[[0123]])
+            # only use -single_module on bona fide Apple compilers.
+            if ($CC -v) && $CC -v 2>&1| grep Apple 2>&1 >/dev/null ; then
+              if $CC -dumpspecs 2>&1 | $GREP 'single_module' >/dev/null ; then
+                lt_int_apple_cc_single_mod=yes
+              fi
+            fi
+            if test "X$lt_int_apple_cc_single_mod" = Xyes ; then
+             _LT_TAGVAR(archive_cmds, $1)='$CC -dynamiclib -single_module $allow_undefined_flag -o $lib $libobjs $deplibs $compiler_flags -install_name $rpath/$soname $verstring'
+            else
+              _LT_TAGVAR(archive_cmds, $1)='$CC -r -keep_private_externs -nostdlib -o ${lib}-master.o $libobjs~$CC -dynamiclib $allow_undefined_flag -o $lib ${lib}-master.o $deplibs $compiler_flags -install_name $rpath/$soname $verstring'
+            fi
+            ;;
+          *)
+            _LT_TAGVAR(archive_cmds, $1)='$CC -dynamiclib $allow_undefined_flag -o $lib $libobjs $deplibs $compiler_flags -install_name $rpath/$soname $verstring'
+            ;;
+          esac
           _LT_TAGVAR(module_cmds, $1)='$CC $allow_undefined_flag -o $lib -bundle $libobjs $deplibs$compiler_flags'
           # Don't fix this by using the ld -exported_symbols_list flag,
 	  # it doesn't exist in older darwin ld's
