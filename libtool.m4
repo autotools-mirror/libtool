@@ -1711,9 +1711,6 @@ netbsd*)
     finish_cmds='PATH="\$PATH:/sbin" ldconfig -m $libdir'
     dynamic_linker='NetBSD (a.out) ld.so'
   else
-    [deplibs_check_method='file_magic ELF [0-9][0-9]*-bit [LM]SB shared object']
-    file_magic_cmd=/usr/bin/file
-    file_magic_test_file=`echo /usr/lib/libc.so*`
     library_names_spec='${libname}${release}.so$versuffix ${libname}${release}.so$major ${libname}${release}.so ${libname}.so'
     soname_spec='${libname}${release}.so$major'
     dynamic_linker='NetBSD ld.elf_so'
