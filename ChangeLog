@@ -1,5 +1,9 @@
 1999-01-20  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* libltdl/ltdl.h (LTDL_PRELOADED_SYMBOLS): remove it; better to
+	declare lt_preloaded_symbols
+	* doc/libtool.texi (LTDL_PRELOADED_SYMBOLS): ditto
+
 	* ltmain.in (dlpredeps): removed, reverting 1999-01-17's change
 
 1999-01-19  Alexandre Oliva  <oliva@dcc.unicamp.br>

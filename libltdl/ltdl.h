@@ -86,7 +86,7 @@ _LTDLL_EXTERN int lt_dladdsearchdir __P((const char *search_dir));
 _LTDLL_EXTERN int lt_dlsetsearchpath __P((const char *search_path));
 _LTDLL_EXTERN const char *lt_dlgetsearchpath __P((void));
 
-#define LTDL_PRELOADED_SYMBOLS extern const lt_dlsymlist lt_preloaded_symbols[];
+extern const lt_dlsymlist lt_preloaded_symbols[];
 #define LTDL_SET_PRELOADED_SYMBOLS() lt_dlpreload_default(lt_preloaded_symbols)
 
 __END_DECLS

@@ -2663,28 +2663,31 @@ are deleted. Return 0 on success.
 @end deftypefun
 
 @deftypefun int lt_dlpreload_default (const lt_dlsymlist *@var{preloaded})
-Set the default list of preloaded modules to @var{preloaded}, 
-which won't be deleted by @code{lt_dlpreload}.
-Note that this function does *not* require libltdl to be initialized
-using @code{lt_dlinit} and can be used in the program to register
-the default preloaded modules.
-Usually the main function in the program will set libtool's default
-symbol list:
-
-@example
-extern const lt_dlsymlist lt_preloaded_symbols[];
-
-...
-
-lt_dlpreload_default(lt_preloaded_symbols);
-@end example
-
-Libltdl defines the macros @code{LTDL_PRELOADED_SYMBOLS} and 
-@code{LTDL_SET_PRELOADED_SYMBOLS}, which hide these libtool dependent
-declaration for you.
+Set the default list of preloaded modules to @var{preloaded}, which
+won't be deleted by @code{lt_dlpreload}.  Note that this function does
+@emph{not} require libltdl to be initialized using @code{lt_dlinit} and
+can be used in the program to register the default preloaded modules.
+Instead of calling this function directly, most programs will use the
+macro @code{LTDL_SET_PRELOADED_SYMBOLS}.
 
 Return 0 on success.
 @end deftypefun
+
+@defmac LTDL_SET_PRELOADED_SYMBOLS()
+Set the default list of preloaded symbols.
+Should be used together with @code{LTDL_PRELOADED_SYMBOLS}
+in your program to initialize libltdl's list of preloaded modules.
+
+@example
+#include <ltdl.h>
+
+int main() @{
+  /* ... */
+  LTDL_SET_PRELOADED_SYMBOLS();
+  /* ... */
+@}
+@end example
+@end defmac
 
 @deftypefun int lt_dladdsearchdir (const char *@var{search_dir})
 Add the search directory @var{search_dir} to the user-defined library 
@@ -2699,27 +2702,6 @@ Replace the current user-defined library search path with
 @deftypefun const char *lt_dlgetsearchpath (void)
 Return the current user-defined library search path.
 @end deftypefun
-
-@defmac LTDL_PRELOADED_SYMBOLS
-Import libtool's preloaded symbols.
-See @code{LTDL_SET_PRELOADED_SYMBOLS}.
-@end defmac
-
-@defmac LTDL_SET_PRELOADED_SYMBOLS()
-Set the default list of preloaded symbols.
-Should be used together with @code{LTDL_PRELOADED_SYMBOLS}
-in your program to initialize libltdl's list of preloaded modules.
-
-@example
-LTDL_PRELOADED_SYMBOLS;
-
-int main() @{
-...
-LTDL_SET_PRELOADED_SYMBOLS();
-...
-@}
-@end example
-@end defmac
 
 @node Modules for libltdl
 @section Creating modules that can be @code{dlopen}ed
