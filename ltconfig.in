@@ -150,8 +150,9 @@ else
 
 	if test "$prev" != 'sed 50q "$0"'; then
 	  echo_test_string=`eval $prev`
+	  
 	  export echo_test_string
-	  exec "${ORIGINAL_CONFIG_SHELL}" "$0" ${1+"$@"}
+	  exec "${ORIGINAL_CONFIG_SHELL-${CONFIG_SHELL-/bin/sh}}" "$0" ${1+"$@"}
 	else
 	  # Oops.  We lost completely, so just stick with echo.
 	  echo=echo
