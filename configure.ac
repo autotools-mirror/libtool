@@ -159,20 +159,6 @@ AC_SUBST([DIST_MAKEFILE_LIST])
 AC_PROG_CC
 AC_PROG_CPP
 
-# The Autoconf tests for C++ and Fortran 77 sometimes call AC_MSG_ERROR
-# and we don't want that to be an error whilst creating the libtool script.
-# As these are AC_REQUIREd inside libtool.m4 we can simply call them here
-# and catch the errors now.
-pushdef([AC_MSG_ERROR], [caught_CXX_error=yes])
-AC_PROG_CXX
-AC_PROG_CXXCPP
-popdef([AC_MSG_ERROR])
-
-pushdef([AC_MSG_ERROR], [caught_F77_error=yes])
-AC_PROG_F77
-popdef([AC_MSG_ERROR])
-
-
 ## ----------------------- ##
 ## Libtool initialisation. ##
 ## ----------------------- ##
@@ -189,12 +175,8 @@ LT_LANG(Windows Resource)
 ## --------------------------- ##
 ## Work out which tests to run ##
 ## --------------------------- ##
-AM_CONDITIONAL(HAVE_CXX,
-[test "X$caught_CXX_error" != "Xyes" &&
- test -n "[$]_LT_TAGVAR(compiler, CXX)"])
-AM_CONDITIONAL(HAVE_F77,
-[test "X$caught_F77_error" != "Xyes" &&
- test -n "[$]_LT_TAGVAR(compiler, F77)"])
+AM_CONDITIONAL(HAVE_CXX,[test -n "[$]_LT_TAGVAR(compiler, CXX)"])
+AM_CONDITIONAL(HAVE_F77,[test -n "[$]_LT_TAGVAR(compiler, F77)"])
 AM_CONDITIONAL(HAVE_GCJ, [test -n "[$]_LT_TAGVAR(compiler, GCJ)"])
 AM_CONDITIONAL(HAVE_RC, [test -n "[$]_LT_TAGVAR(compiler, RC)"])
 

@@ -4462,6 +4462,24 @@ AC_LANG_POP
 CC="$lt_save_CC"
 ])# _LT_LANG_C_CONFIG
 
+# _LT_PROG_CXX
+# ------------
+# Since AC_PROG_CXX is broken, in that it returns g++ if there is no c++
+# compiler, we have our own version here.
+m4_defun([_LT_PROG_CXX],
+[
+pushdef([AC_MSG_ERROR], [_lt_caught_CXX_error=yes])
+AC_PROG_CXX
+if test -n "$CXX" && ( test "X$CXX" != "Xno" &&
+    ( (test "X$CXX" = "Xg++" && `g++ -v >/dev/null 2>&1` ) || 
+    (test "X$CXX" != "Xg++"))) ; then
+  AC_PROG_CXXCPP
+else  
+  _lt_caught_CXX_error=yes 
+fi
+popdef([AC_MSG_ERROR])
+])# _LT_PROG_CXX
+
 
 # _LT_LANG_CXX_CONFIG([TAG])
 # --------------------------
@@ -4469,8 +4487,7 @@ CC="$lt_save_CC"
 # defined.  These variables are subsequently used by _LT_CONFIG to write
 # the compiler configuration to `libtool'.
 m4_defun([_LT_LANG_CXX_CONFIG],
-[AC_REQUIRE([AC_PROG_CXX])dnl
-AC_REQUIRE([AC_PROG_CXXCPP])dnl
+[AC_REQUIRE([_LT_PROG_CXX])dnl
 AC_REQUIRE([LT_SYS_DLOPEN_SELF])dnl
 m4_require([_LT_DECL_EGREP])dnl
 
@@ -4506,7 +4523,7 @@ _LT_TAGVAR(objext, $1)=$objext
 # the CXX compiler isn't working.  Some variables (like enable_shared)
 # are currently assumed to apply to all compilers on this platform,
 # and will be corrupted by setting them based on a non-working compiler.
-if test "$caught_CXX_error" != yes; then
+if test "$_lt_caught_CXX_error" != yes; then
   # Code to be used in simple compile tests
   lt_simple_compile_test_code="int some_variable = 0;\n"
 
@@ -5386,7 +5403,7 @@ if test "$caught_CXX_error" != yes; then
 
     _LT_CONFIG($1)
   fi # test -n "$compiler"
-fi # test "$caught_CXX_error" != yes
+fi # test "$_lt_caught_CXX_error" != yes
 
 AC_LANG_POP
 CC=$lt_save_CC
@@ -5553,13 +5570,28 @@ _LT_TAGDECL([], [compiler_lib_search_path], [1],
     a shared library])
 ])# _LT_SYS_HIDDEN_LIBDEPS
 
+# _LT_PROG_F77
+# ------------
+# Since AC_PROG_F77 is broken, in that it returns the empty string
+# if there is no fortran compiler, we have our own version here.
+m4_defun([_LT_PROG_F77],
+[
+pushdef([AC_MSG_ERROR], [_lt_caught_F77_error=yes])
+AC_PROG_F77
+if test -z "$F77"; then
+  _lt_caught_F77_error=yes 
+fi
+popdef([AC_MSG_ERROR])
+])# _LT_PROG_F77
+
+
 # _LT_LANG_F77_CONFIG([TAG])
 # --------------------------
 # Ensure that the configuration variables for a Fortran 77 compiler are
 # suitably defined.  These variables are subsequently used by _LT_CONFIG
 # to write the compiler configuration to `libtool'.
 m4_defun([_LT_LANG_F77_CONFIG],
-[AC_REQUIRE([AC_PROG_F77])dnl
+[AC_REQUIRE([_LT_PROG_F77])dnl
 AC_LANG_PUSH(Fortran 77)
 
 _LT_TAGVAR(archive_cmds_need_lc, $1)=no
@@ -5593,7 +5625,7 @@ _LT_TAGVAR(objext, $1)=$objext
 # the F77 compiler isn't working.  Some variables (like enable_shared)
 # are currently assumed to apply to all compilers on this platform,
 # and will be corrupted by setting them based on a non-working compiler.
-if test "$caught_F77_error" != yes; then
+if test "$_lt_caught_F77_error" != yes; then
   # Code to be used in simple compile tests
   lt_simple_compile_test_code="      subroutine t\n      return\n      end\n"
 
@@ -5657,7 +5689,7 @@ if test "$caught_F77_error" != yes; then
 
     _LT_CONFIG($1)
   fi # test -n "$compiler"
-fi # test "$caught_F77_error" != yes
+fi # test "$_lt_caught_F77_error" != yes
 
 AC_LANG_POP
 CC="$lt_save_CC"

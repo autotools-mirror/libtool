@@ -1,3 +1,10 @@
+2004-10-06  Peter O'Gorman  <peter@pogma.com>
+
+	* m4/libtool.m4 (_LT_PROG_CXX, _LT_PROG_F77): New macros to work
+	around the deficiencies in AC_PROG_CXX and AC_PROG_F77.
+	* configure.ac: Cleaned up, having moved the checks for compilers
+	which do not exist to libtool.m4.
+
 2004-10-05  Peter O'Gorman  <peter@pogma.com>
 
 	* config/ltmain.m4sh [darwin]: Make the -dylib_file flag work on
