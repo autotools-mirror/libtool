@@ -27,6 +27,9 @@ case "$host" in
 hppa*|x86_64*|s390*)
 	func_skip "$host doesn't like non-PIC shared libs"
 	;;
+*-solaris*|*-sunos*)
+	func_skip "libtool does not build non-PIC shared libs on $host_os"
+	;;
 esac
 
 func_rmprefixdir
