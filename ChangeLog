@@ -1,3 +1,12 @@
+2000-12-05  Gary V. Vaughan  <gvv@techie.com>
+
+	Oh My! Cygwin support has bitrotted while I was looking the other
+	way.  This should fix it some:
+	* libtool.m4 (extract_expsyms_cmds): There is a quoting problem
+	with autoconf-2.13 that prevents [$]0 from expanding.  Use shell
+	quotes instead to delay eval of $0.
+	(impgen.c) The '# ' sequence stripped by sed works again.
+
 2000-12-01  Gary V. Vaughan  <gvv@techie.com>
 
 	* doc/libtool.texi (Libltdl interface):  Add documentation.
