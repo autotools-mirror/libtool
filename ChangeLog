@@ -1,3 +1,8 @@
+1999-02-17  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* libltdl/ltdl.c (lt_dlmalloc, lt_dlfree): SunOS' cc can't cope
+	with argument lists, we __P even in the definition
+
 1999-02-15  Thomas Tanner  <tanner@gmx.de>
 
 	* cdemo/Makefile.am: renamed *foo1 to *foo, removed $(MATH_LIB)

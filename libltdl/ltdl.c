@@ -99,8 +99,8 @@ const lt_dlsymlist lt_preloaded_symbols[1] = { { 0, 0 } };
 
 static const char *last_error = 0;
 
-lt_ptr_t (*lt_dlmalloc)(size_t size) = malloc;
-void	(*lt_dlfree)(lt_ptr_t ptr) = free;
+lt_ptr_t (*lt_dlmalloc) __P((size_t size)) = malloc;
+void	 (*lt_dlfree)  __P((lt_ptr_t ptr)) = free;
 
 typedef struct lt_dltype_t {
 	struct lt_dltype_t *next;
