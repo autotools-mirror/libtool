@@ -1,3 +1,9 @@
+1999-03-14  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* ltconfig.in (aix3*, aix4*): GNU ld on AIX is very broken: it
+	cannot create working shared libraries.  Print a warning
+	suggesting the user not to use it and disable shared libraries.
+
 1999-03-13  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* ltconfig.in (global_symbol_to_cdecl): was reset before trying

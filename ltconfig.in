@@ -1018,11 +1018,6 @@ include_expsyms=
 exclude_expsyms=
 
 case "$host_os" in
-aix3* | aix4*)
-  # On AIX, the GNU linker works like the native linker.
-  with_gnu_ld=no
-  ;;
-
 cygwin* | mingw*)
   # FIXME: the MSVC++ port hasn't been tested in a loooong time
   # When not using gcc, we currently assume that we are using
@@ -1045,6 +1040,20 @@ if test "$with_gnu_ld" = yes; then
 
   # See if GNU ld supports shared libraries.
   case "$host_os" in
+  aix3* | aix4*)
+    # On AIX, the GNU linker is very broken
+    ld_shlibs=no
+    cat <<EOF 1>&2
+
+*** Warning: the GNU linker, at least up to release 2.9.1, is reported
+*** to be unable to reliably create shared libraries on AIX.
+*** Therefore, libtool is disabling shared libraries support.  If you
+*** really care for shared libraries, you may want to modify your PATH
+*** so that a non-GNU linker is found, and then restart.
+
+EOF
+    ;;
+
   amigaos*)
     archive_cmds='$rm $objdir/a2ixlibrary.data~$echo "#define NAME $libname" > $objdir/a2ixlibrary.data~$echo "#define LIBRARY_ID 1" >> $objdir/a2ixlibrary.data~$echo "#define VERSION $major" >> $objdir/a2ixlibrary.data~$echo "#define REVISION $revision" >> $objdir/a2ixlibrary.data~$AR cru $lib $libobjs~$RANLIB $lib~(cd $objdir && a2ixlibrary -32)'
     hardcode_libdir_flag_spec='-L$libdir'
@@ -1891,7 +1900,7 @@ if test -n "$file_magic_test_file" && test -n "$file_magic_cmd"; then
        egrep "$file_magic_regex" > /dev/null; then
       :
     else
-      cat <<EOF
+      cat <<EOF 1>&2
 
 *** Warning: the command libtool uses to detect shared libraries,
 *** $file_magic_cmd, produces output that libtool cannot recognize.
