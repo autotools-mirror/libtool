@@ -1,3 +1,13 @@
+Sun Dec  5 19:45:22 1999  Ossama Othman  <othman@cs.wustl.edu>
+
+	* libtool.m4:
+
+	Temporarily reset the test language to C just before calling
+	AC_OBJEXT and AC_EXEEXT and then restore the previous one when
+	done, instead of doing an AC_BEFORE(...AC_LANG_CPLUSPLUS...).  A
+	warning would always occur anyway because AC_PROG_CXX calls
+	AC_LANG_CPLUSPLUS.
+
 Sun Dec  5 16:34:04 1999  Ossama Othman  <othman@cs.wustl.edu>
 
 	* libtool.m4:
