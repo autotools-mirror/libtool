@@ -22,7 +22,7 @@
 # configure this directory if your user doesn't want to use the installed
 # libltdl.
 
-AC_PREREQ(2.59) ## We use AS_HELP_STRING
+AC_PREREQ(2.59)dnl We use AS_HELP_STRING
 
 
 ## ------------------------ ##
