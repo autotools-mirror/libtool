@@ -1,3 +1,8 @@
+1999-01-22  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* demo/configure.in, demo/Makefile.am (DLPREOPEN): reverted; it
+	didn't make any difference.
+
 1999-01-21  Gary V. Vaughan  <garyv@oranda.demon.co.uk>
 
 	* THANKS: Added Chris Laas <golem@MIT.EDU>

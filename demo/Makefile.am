@@ -35,7 +35,7 @@ if BINARY_HELLDL
 
 # Create a version of hell that does a preloaded dlopen.
 helldl_SOURCES = dlmain.c
-helldl_LDFLAGS = -export-dynamic $(DLPREOPEN) libhello.la
+helldl_LDFLAGS = -export-dynamic -dlpreopen libhello.la
 helldl_DEPENDENCIES = libhello.la
 
 else
