@@ -4374,6 +4374,7 @@ else
   sco3.2v5*)
     _LT_AC_TAGVAR(archive_cmds, $1)='$LD -G -h $soname -o $lib $libobjs $deplibs $linker_flags'
     _LT_AC_TAGVAR(hardcode_shlibpath_var, $1)=no
+    _LT_AC_TAGVAR(export_dynamic_flag_spec, $1)='${wl}-Bexport'
     runpath_var=LD_RUN_PATH
     hardcode_runpath_var=yes
     ;;
