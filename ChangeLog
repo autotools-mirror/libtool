@@ -1,3 +1,11 @@
+2001-10-28  Albert Chin-A-Young <china@thewrittenword.com>
+
+	* ltdl.c: change some types to size_t from int because
+	strlen() returns size_t. argz_len changed to size_t in
+	foreach_dirinpath() because argzize_path() takes 3rd
+	argument as size_t, not int. Based on lint run from
+	Bob Friesenhahn <bfriesen@simple.dallas.tx.us>.
+
 2001-10-27  Gary V. Vaughan  <gary@gnu.org>
 
 	* libtool.m4 (_LT_AC_TAGCONFIG): Cray sed does not allow character
