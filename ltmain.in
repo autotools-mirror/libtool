@@ -557,7 +557,7 @@ if test -z "$show_help"; then
     # Calculate the filename of the output object if compiler does
     # not support -o with -c
     if test "$compiler_c_o" = no; then
-      output_obj=`$echo "X$srcfile" | $Xsed -e 's%^.*/%%' -e 's%\..*$%%'`.${objext}
+      output_obj=`$echo "X$srcfile" | $Xsed -e 's%^.*/%%' -e 's%\.[^.]*$%%'`.${objext}
       lockfile="$output_obj.lock"
       removelist="$removelist $output_obj $lockfile"
       trap "$run $rm $removelist; exit 1" 1 2 15
