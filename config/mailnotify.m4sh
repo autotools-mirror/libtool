@@ -58,7 +58,6 @@ m4_divert_push([SCRIPT])#!/bin/sh
 
 # Report bugs to <gary@gnu.org>
 
-: ${TMPDIR=/tmp}
 : ${HOST=`hostname`}
 : ${SENDMAIL=sendmail}
 
@@ -330,8 +329,9 @@ func_sendmail ()
 ## ----- ##
 
 {
-  fname="${TMPDIR}/$PROGRAM$RANDOM-$RANDOM.$$"
-  trap 'rm -f "$fname"; exit 1' 1 2 15
+  tmp_dir="`func_mktempdir`"
+  fname="$tmp_dir/mail"
+  trap '$RM -r "$tmp_dir"; exit $EXIT_FAILURE' 1 2 15
 
   # Generate a comma separated list of destination addresses for the
   # mail headers:
@@ -372,6 +372,8 @@ func_sendmail ()
   else
       mv $fname $outputfile || exit $EXIT_FAILURE
   fi
+
+  $RM -r "$tmp_dir"
 }
 
 exit $EXIT_SUCCESS

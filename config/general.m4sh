@@ -227,12 +227,13 @@ func_mkdir_p ()
 }
 
 
-# func_mktempdir
+# func_mktempdir [string]
 # Make a temporary directory that won't clash with other running
-# libtool processes, and avoids race conditions if possible
+# libtool processes, and avoids race conditions if possible.  If
+# given, STRING is the basename for that directory.
 func_mktempdir ()
 {
-    my_template="${TMPDIR-/tmp}/libtool"
+    my_template="${TMPDIR-/tmp}/${1-$progname}"
 
     if test "$opt_dry_run" = ":"; then
       # Return a directory name, but don't create it in dry-run mode
