@@ -1,3 +1,8 @@
+2000-05-14  Alexandre Oliva  <oliva@lsd.ic.unicamp.br>
+
+	* configure.in: Bump version number to 1.4a, since this will
+	eventually become libtool 1.5.
+
 2000-02-28  Ossama Othman  <ossama@debian.org>
 
 	* ltmain.in (libobjs, reload_conv_objs): When searching for object
