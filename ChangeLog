@@ -1,3 +1,9 @@
+2005-01-12  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* m4/libtool.m4 (_LT_SYS_DYNAMIC_LINKER) [linux]: While "parsing"
+	/etc/ld.so.conf, skip comments.
+	Reported by Jens Elkner <elkner@linofee.org>.
+
 2005-01-10  Peter O'Gorman  <peter@pogma.com>
 
 	* config/ltmain.m4sh (func_mode_link): Fix
