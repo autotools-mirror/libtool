@@ -1,6 +1,9 @@
 2001-07-12  Dan McNichol  <mcnichol@austin.ibm.com>
 
 	From albert chin <china@thewrittenword.com>
+	* libtool.m4: Fix AIX run-time-linking when using gcc.
+
+	From albert chin <china@thewrittenword.com>
 	* ltmain.in: Fix a case where the lockfile is not removed, thus
 	causing libtool to loop forever waiting for it to be removed.
 

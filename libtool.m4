@@ -823,7 +823,7 @@ AC_CACHE_VAL(lt_cv_prog_cc_pic,
       # libC (AIX C++ library), which obviously doesn't included in libraries
       # list by gcc. This cause undefined symbols with -static flags.
       # This hack allows C programs to be linked with "-static -ldl", but
-      # we not sure about C++ programs.
+      # not sure about C++ programs.
       lt_cv_prog_cc_static="$lt_cv_prog_cc_static ${lt_cv_prog_cc_wl}-lC"
       ;;
     amigaos*)
@@ -1415,41 +1415,6 @@ else
     ;;
 
   aix4* | aix5*)
-    # When large executables or shared objects are built, AIX ld can
-    # have problems creating the table of contents.  If linking a library
-    # or program results in "error TOC overflow" add -mminimal-toc to
-    # CXXFLAGS/CFLAGS for g++/gcc.  In the cases where that is not
-    # enough to fix the problem, add -Wl,-bbigtoc to LDFLAGS.
-
-    archive_cmds=''
-    hardcode_libdir_separator=':'
-    if test "$GCC" = yes; then
-      collect2name=`${CC} -print-prog-name=collect2`
-      if test -f "$collect2name" && \
-	 strings "$collect2name" | grep resolve_lib_name >/dev/null
-      then
-	# We have reworked collect2
-	hardcode_direct=yes
-      else
-        # We have old collect2
-        hardcode_direct=unsupported
-        # It fails to find uninstalled libraries when the uninstalled
-        # path is not listed in the libpath.  Setting hardcode_minus_L
-        # to unsupported forces relinking
-        hardcode_minus_L=yes
-        hardcode_libdir_flag_spec='-L$libdir'
-        hardcode_libdir_separator=
-      fi
-      shared_flag='-shared'
-    else
-      if test "$host_cpu" = ia64; then
-        shared_flag='-G'
-      else
-        shared_flag='${wl}-bM:SRE'
-      fi
-      hardcode_direct=yes
-    fi
-
     if test "$host_cpu" = ia64; then
       # On IA64, the linker does run time linking by default, so we don't
       # have to do anything special.
@@ -1457,34 +1422,85 @@ else
       exp_sym_flag='-Bexport'
       no_entry_flag=""
     else
-      # Test if we are trying to use run time linking, or normal AIX style linking.
-      # If -brtl is somewhere in LDFLAGS, we need to do run time linking.
       aix_use_runtimelinking=no
-      for ld_flag in $LDFLAGS; do
-        if (test $ld_flag = "-brtl" || test $ld_flag = "-Wl,-brtl" ); then
-          aix_use_runtimelinking=yes
-          break
-        fi
-      done
+
+      # Test if we are trying to use run time linking or normal
+      # AIX style linking. If -brtl is somewhere in LDFLAGS, we
+      # need to do runtime linking.
+      case $host_os in aix4.[[23]]|aix4.[[23]].*|aix5*)
+        for ld_flag in $LDFLAGS; do
+	  if (test $ld_flag = "-brtl" || test $ld_flag = "-Wl,-brtl"); then
+	    aix_use_runtimelinking=yes
+	    break
+	  fi
+        done
+      esac
+
       exp_sym_flag='-bexport'
       no_entry_flag='-bnoentry'
     fi
+
+    # When large executables or shared objects are built, AIX ld can
+    # have problems creating the table of contents.  If linking a library
+    # or program results in "error TOC overflow" add -mminimal-toc to
+    # CXXFLAGS/CFLAGS for g++/gcc.  In the cases where that is not
+    # enough to fix the problem, add -Wl,-bbigtoc to LDFLAGS.
+
+    hardcode_direct=yes
+    archive_cmds=''
+    hardcode_libdir_separator=':'
+    if test "$GCC" = yes; then
+      case $host_os in aix4.[012]|aix4.[012].*)
+        collect2name=`${CC} -print-prog-name=collect2`
+        if test -f "$collect2name" && \
+          strings "$collect2name" | grep resolve_lib_name >/dev/null
+        then
+          # We have reworked collect2
+          hardcode_direct=yes
+        else
+          # We have old collect2
+          hardcode_direct=unsupported
+          # It fails to find uninstalled libraries when the uninstalled
+          # path is not listed in the libpath.  Setting hardcode_minus_L
+          # to unsupported forces relinking
+          hardcode_minus_L=yes
+          hardcode_libdir_flag_spec='-L$libdir'
+          hardcode_libdir_separator=
+        fi
+      esac
+
+      shared_flag='-shared'
+    else
+      # not using gcc
+      if test "$host_cpu" = ia64; then
+        shared_flag='${wl}-G'
+      else
+        if test "$aix_use_runtimelinking" = yes; then
+          shared_flag='${wl}-G'
+        else
+          shared_flag='${wl}-bM:SRE'
+        fi
+      fi
+    fi
+
     # It seems that -bexpall can do strange things, so it is better to
     # generate a list of symbols to export.
     always_export_symbols=yes
     if test "$aix_use_runtimelinking" = yes; then
+      # Warning - without using the other runtime loading flags (-brtl),
+      # -berok will link without error, but may produce a broken library.
+      allow_undefined_flag='-berok'
       hardcode_libdir_flag_spec='${wl}-blibpath:$libdir:/usr/lib:/lib'
-      allow_undefined_flag=' -Wl,-G'
-      archive_expsym_cmds="\$CC $shared_flag"' -o $output_objdir/$soname $libobjs $deplibs $compiler_flags ${allow_undefined_flag} '"\${wl}$no_entry_flag \${wl}$exp_sym_flag:\$export_symbols"
+      archive_expsym_cmds="\$CC"' -o $output_objdir/$soname $libobjs $deplibs $compiler_flags `if test "x${allow_undefined_flag}" != "x"; then echo "${wl}${allow_undefined_flag}"; else :; fi` '"\${wl}$no_entry_flag \${wl}$exp_sym_flag:\$export_symbols $shared_flag"
     else
       if test "$host_cpu" = ia64; then
         hardcode_libdir_flag_spec='${wl}-R $libdir:/usr/lib:/lib'
-       allow_undefined_flag="-znodefs"
+        allow_undefined_flag="-z nodefs"
         archive_expsym_cmds="\$CC $shared_flag"' -o $output_objdir/$soname ${wl}-h$soname $libobjs $deplibs $compiler_flags ${wl}${allow_undefined_flag} '"\${wl}$no_entry_flag \${wl}$exp_sym_flag:\$export_symbols"
       else
         hardcode_libdir_flag_spec='${wl}-bnolibpath ${wl}-blibpath:$libdir:/usr/lib:/lib'
-        # Warning - without using the other run time loading flags, -berok will
-        #           link without error, but may produce a broken library.
+        # Warning - without using the other run time loading flags,
+        # -berok will link without error, but may produce a broken library.
         allow_undefined_flag='${wl}-berok'
         # This is a bit strange, but is similar to how AIX traditionally builds
         # it's shared libraries.
@@ -1881,12 +1897,14 @@ aix4* | aix5*)
       fi
       ;;
     esac
-    # AIX (on Power*) has no versioning support, so currently we can not hardcode correct
-    # soname into executable. Probably we can add versioning support to
-    # collect2, so additional links can be useful in future.
+    # AIX (on Power*) has no versioning support, so currently we can
+    # not hardcode correct soname into executable. Probably we can
+    # add versioning support to collect2, so additional links can
+    # be useful in future.
     if test "$aix_use_runtimelinking" = yes; then
-      # If using run time linking (on AIX 4.2 or later) use lib<name>.so instead of
-      # lib<name>.a to let people know that these are not typical AIX shared libraries.
+      # If using run time linking (on AIX 4.2 or later) use lib<name>.so
+      # instead of lib<name>.a to let people know that these are not
+      # typical AIX shared libraries.
       library_names_spec='${libname}${release}.so$versuffix ${libname}${release}.so$major $libname.so'
     else
       # We preserve .a as extension for shared libraries through AIX4.2
