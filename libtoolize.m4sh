@@ -645,19 +645,18 @@ func_serial_update ()
 }
 
 
-# func_ltmain_update srcfile destfile
-# Copy SRCFILE to DESTFILE provided SRCFILE has a newer VERSION,
-# or DESTFILE does not yet exist, or the user specified `--force'.
-func_ltmain_update ()
+# func_keyword_update srcfile destfile sed_script
+# Copy SRCFILE to DESTFILE provided SRCFILE has a newer revision according
+# to the serial number extracted by SED_SCRIPT, or DESTFILE does not yet
+# exist, or the user specified `--force'.
+func_keyword_update ()
 {
     $opt_debug
     my_srcfile="$1"
     my_destfile="$2"
+    my_sed_script="$3"
 
-    my_update_p=:
-    my_sed_ltmain=['/^package_revision=[0-9][1-9.]*/ {
-      s,^package_revision=\([0-9.]*\)[ 	]*$,\1,; p;
-    }; d']
+    my_keyword_update_p=:
 
     test -f "$my_srcfile" || {
       func_error "\`$my_srcfile' does not exist."
@@ -665,26 +664,40 @@ func_ltmain_update ()
     }
 
     if test -f "$my_destfile"; then
-      my_src_serial=`$SED -e "$my_sed_ltmain" "$my_srcfile"`
+      my_src_serial=`$SED -e "$my_sed_script" "$my_srcfile"`
       test -z "$my_src_serial" && {
         func_error "warning: no serial number in \`$my_srcfile', not copying."
 	return
       }
 
-      my_dest_serial=`$SED -e "$my_sed_ltmain" "$my_destfile"`
+      my_dest_serial=`$SED -e "$my_sed_script" "$my_destfile"`
       test -n "$my_dest_serial" || my_dest_serial=0
 
       func_serial_update_check \
          "$my_srcfile" "$my_src_serial" "$my_destfile" "$my_dest_serial"
-      my_update_p="$func_serial_update_check_result"
+      my_keyword_update_p="$func_serial_update_check_result"
     fi
 
-    if $my_update_p || $opt_force; then
+    if $my_keyword_update_p || $opt_force; then
       func_copy "$my_srcfile" "$my_destfile"
     elif test "X$my_dest_serial" = "X$my_src_serial"; then
       $opt_quiet \
         || func_echo "\`$my_destfile' is already up to date."
     fi
+}
+
+
+# func_ltmain_update srcfile destfile
+# Copy SRCFILE to DESTFILE provided SRCFILE has a newer VERSION,
+# or DESTFILE does not yet exist, or the user specified `--force'.
+func_ltmain_update ()
+{
+    $opt_debug
+    my_sed_ltmain=['/^package_revision='\''*[0-9][1-9.]*'\''*/ {
+      s,^package_revision='\''*\([0-9.]*\)'\''[ 	]*$,\1,; p;
+    }; d']
+
+    func_keyword_update "$1" "$2" "$my_sed_ltmain"
 }
 
 # func_config_update srcfile destfile
@@ -696,37 +709,25 @@ func_config_update ()
     my_srcfile="$1"
     my_destfile="$2"
 
-    my_update_p=:
-    my_sed_config=['/^timestamp='\''\?[0-9][1-9-]*'\''\?/ {
-      s,^timestamp='\''\?\([0-9-]*\)'\''\?,\1,; s/-/./g; p;
+    my_sed_config=['/^timestamp='\''*[0-9][1-9-]*'\''*/ {
+      s,^timestamp='\''*\([0-9-]*\)'\''*,\1,; s/-/./g; p;
     }; d']
 
-    test -f "$my_srcfile" || {
-      func_error "\`$my_srcfile' does not exist."
-      return
-    }
+    func_keyword_update "$1" "$2" "$my_sed_config"
+}
 
-    if test -f "$my_destfile"; then
-      my_src_serial=`$SED -e "$my_sed_config" "$my_srcfile"`
-      test -z "$my_src_serial" && {
-        func_error "warning: no serial number in \`$my_srcfile', not copying."
-	return
-      }
 
-      my_dest_serial=`$SED -e "$my_sed_config" "$my_destfile"`
-      test -n "$my_dest_serial" || my_dest_serial=0
+# func_install_update srcfile destfile
+# Copy SRCFILE to DESTFILE provided SRCFILE has a newer SCRIPTVERSION,
+# or DESTFILE does not yet exist, or the user specified `--force'.
+func_install_update ()
+{
+    $opt_debug
+    my_sed_install=['/^scriptversion='\''*[0-9][1-9.-]*'\''*/ {
+      s,^scriptversion='\''*\([0-9.-]*\)'\''*,\1,; s/-/./g; p;
+    }; d']
 
-      func_serial_update_check \
-         "$my_srcfile" "$my_src_serial" "$my_destfile" "$my_dest_serial"
-      my_update_p="$func_serial_update_check_result"
-    fi
-
-    if $my_update_p || $opt_force; then
-      func_copy "$my_srcfile" "$my_destfile"
-    elif test "X$my_dest_serial" = "X$my_src_serial"; then
-      $opt_quiet \
-        || func_echo "\`$my_destfile' is already up to date."
-    fi
+    func_keyword_update "$1" "$2" "$my_sed_install"
 }
 
 
@@ -835,8 +836,10 @@ func_massage_pkgvltdl_files ()
   if $opt_install; then
     func_copy_all_files "$pkgdatadir" "$auxdir" "$glob_exclude_pkgaux_files"
     func_config_update "$pkgdatadir/config.guess" "$auxdir/config.guess"
-    test -f "$pkgdatadir/config.sub" \
-      && func_config_update "$pkgdatadir/config.sub" "$auxdir/config.sub"
+    func_config_update "$pkgdatadir/config.sub" "$auxdir/config.sub"
+    # disabled for the moment, as it clashes with automake, see
+    # http://lists.gnu.org/archive/html/libtool-patches/2004-12/msg00229.html:
+    # func_install_update "$pkgdatadir/install-sh" "$auxdir/install-sh"
   fi
   func_ltmain_update "$pkgdatadir/ltmain.sh" "$auxdir/ltmain.sh"
 
