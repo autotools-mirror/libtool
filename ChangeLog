@@ -1,3 +1,9 @@
+2000-11-29  Gary V. Vaughan  <gvv@techie.com>
+
+	* libltdl/ltdl.h (lt_dlhandle): Rename the wrapped structure
+	to prevent nameclash when used from C++.
+	* libltdl/ltdl.c: Fixed all references.
+
 2000-11-25  Gary V. Vaughan  <gvv@techie.com>
 
 	* libltdl/ltdl.c (lt_dlopen):  Change the default search order

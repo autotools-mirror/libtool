@@ -114,8 +114,8 @@ struct lt_dlloader {
   lt_user_data		dlloader_data;
 };
 
-struct lt_dlhandle {
-  struct lt_dlhandle   *next;
+struct lt_dlhandle_struct {
+  struct lt_dlhandle_struct   *next;
   lt_dlloader	       *loader;		/* dlopening interface */
   lt_dlinfo		info;
   int			depcount;	/* number of dependencies */
@@ -1700,7 +1700,7 @@ lt_dlopen (filename)
   /* dlopen self? */
   if (!filename)
     {
-      handle = (lt_dlhandle) lt_dlmalloc (sizeof (struct lt_dlhandle));
+      handle = (lt_dlhandle) lt_dlmalloc (sizeof (struct lt_dlhandle_struct));
       if (!handle)
 	{
 	  last_error = LT_DLSTRERROR (NO_MEMORY);
@@ -1758,7 +1758,7 @@ lt_dlopen (filename)
   if (ext && strcmp(ext, ".la") == 0)
     {
       /* this seems to be a libtool module */
-      FILE     *file;
+      FILE     *file = 0;
       int	i;
       char     *dlname = 0, *old_name = 0;
       char     *libdir = 0, *deplibs = 0;
@@ -1921,7 +1921,7 @@ lt_dlopen (filename)
     lt_dlfree (line);
 
     /* allocate the handle */
-    handle = (lt_dlhandle) lt_dlmalloc (sizeof (struct lt_dlhandle));
+    handle = (lt_dlhandle) lt_dlmalloc (sizeof (struct lt_dlhandle_struct));
     if (!handle || error)
       {
 	if (handle)
@@ -1970,7 +1970,7 @@ lt_dlopen (filename)
   else
     {
       /* not a libtool module */
-      handle = (lt_dlhandle) lt_dlmalloc (sizeof (struct lt_dlhandle));
+      handle = (lt_dlhandle) lt_dlmalloc (sizeof (struct lt_dlhandle_struct));
       if (!handle)
 	{
 	  last_error = LT_DLSTRERROR (NO_MEMORY);
