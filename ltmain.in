@@ -757,6 +757,15 @@ if test -z "$show_help"; then
       esac
     done
 
+    qlibobj=`$echo "X$libobj" | $Xsed -e "$sed_quote_subst"`
+    case $qlibobj in
+      *$quote_scanset* | *]* | *\|* | *\&* | *\(* | *\)* | "")
+	qlibobj="\"$qlibobj\"" ;;
+    esac
+    if test "X$libobj" != "X$qlibobj"; then
+	$echo "$modename: libobj name \`$libobj' may not contain shell special characters."
+	exit $EXIT_FAILURE
+    fi
     objname=`$echo "X$obj" | $Xsed -e 's%^.*/%%'`
     xdir=`$echo "X$obj" | $Xsed -e 's%/[^/]*$%%'`
     if test "X$xdir" = "X$obj"; then
@@ -829,12 +838,17 @@ compiler."
 	$run $rm $removelist
 	exit $EXIT_FAILURE
       fi
-      $echo $srcfile > "$lockfile"
+      $echo "$srcfile" > "$lockfile"
     fi
 
     if test -n "$fix_srcfile_path"; then
       eval srcfile=\"$fix_srcfile_path\"
     fi
+    qsrcfile=`$echo "X$srcfile" | $Xsed -e "$sed_quote_subst"`
+    case $qsrcfile in
+      *$quote_scanset* | *]* | *\|* | *\&* | *\(* | *\)* | "")
+      qsrcfile="\"$qsrcfile\"" ;;
+    esac
 
     $run $rm "$libobj" "${libobj}T"
 
@@ -856,10 +870,10 @@ EOF
       fbsd_hideous_sh_bug=$base_compile
 
       if test "$pic_mode" != no; then
-	command="$base_compile $srcfile $pic_flag"
+	command="$base_compile $qsrcfile $pic_flag"
       else
 	# Don't build PIC code
-	command="$base_compile $srcfile"
+	command="$base_compile $qsrcfile"
       fi
 
       if test ! -d "${xdir}$objdir"; then
@@ -939,9 +953,9 @@ EOF
     if test "$build_old_libs" = yes; then
       if test "$pic_mode" != yes; then
 	# Don't build PIC code
-	command="$base_compile $srcfile"
+	command="$base_compile $qsrcfile"
       else
-	command="$base_compile $srcfile $pic_flag"
+	command="$base_compile $qsrcfile $pic_flag"
       fi
       if test "$compiler_c_o" = yes; then
 	command="$command -o $obj"
