@@ -42,6 +42,7 @@ AC_C_CONST
 ## ----------------------- ##
 ## Libtool initialisation. ##
 ## ----------------------- ##
+AC_LIBTOOL_DLOPEN
 AM_PROG_LIBTOOL
 AC_SUBST(LIBTOOL_DEPS)
 

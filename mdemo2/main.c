@@ -19,6 +19,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307
 USA. */
 
 #include <stdio.h>
+#include "ltdl.h"
 
 int
 main (argc, argv)
@@ -28,10 +29,12 @@ main (argc, argv)
   int ret = 0;
 
   printf ("Welcome to GNU libtool mdemo2!\n");
-
   if (argc < 2) {
     fprintf (stderr, "usage: %s module [module...]\n", argv[0]);
   }
+
+/* This must be called in the program to get the preloaded symbols */
+  LTDL_SET_PRELOADED_SYMBOLS();
 
   ret = mlib_func(argc, argv);
 
