@@ -30,7 +30,7 @@ bin_SCRIPTS = libtool libtoolize
 
 libtool: $(srcdir)/ltmain.sh $(srcdir)/ltconfig
 	AR="$(AR)" CC="$(CC)" CFLAGS="$(CFLAGS)" CPPFLAGS="$(CPPFLAGS)" \
-	FILE="$(FILE)" LD="$(LD)" LDFLAGS="$(LDFLAGS)" LIBS="$(LIBS)" \
+	MAGIC="$(MAGIC)" LD="$(LD)" LDFLAGS="$(LDFLAGS)" LIBS="$(LIBS)" \
 	LN_S="$(LN_S)" NM="$(NM)" RANLIB="$(RANLIB)" STRIP="$(STRIP)" \
 	AS="$(AS)" DLLTOOL="$(DLLTOOL)" OBJDUMP="$(OBJDUMP)" \
 	objext="$(OBJEXT)" exeext="$(EXEEXT)" reload_flag="$(reload_flag)" \
@@ -41,7 +41,7 @@ libtool: $(srcdir)/ltmain.sh $(srcdir)/ltconfig
 # Experimental C version of libtool.
 clibtool: $(srcdir)/ltmain.c $(srcdir)/ltconfig
 	AR="$(AR)" CC="$(CC)" CFLAGS="$(CFLAGS)" CPPFLAGS="$(CPPFLAGS)" \
-	FILE="$(FILE)" LD="$(LD)" LDFLAGS="$(LDFLAGS)" LIBS="$(LIBS)" \
+	MAGIC="$(MAGIC)" LD="$(LD)" LDFLAGS="$(LDFLAGS)" LIBS="$(LIBS)" \
 	LN_S="$(LN_S)" NM="$(NM)" RANLIB="$(RANLIB)" STRIP="$(STRIP)" \
 	AS="$(AS)" DLLTOOL="$(DLLTOOL)" OBJDUMP="$(OBJDUMP)" \
 	objext="$(objext)" exeext="$(exeext)" reload_flag="$(reload_flag)" \

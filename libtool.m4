@@ -30,7 +30,7 @@ AC_CACHE_SAVE
 
 # Actually configure libtool.  ac_aux_dir is where install-sh is found.
 AR="$AR" CC="$CC" CFLAGS="$CFLAGS" CPPFLAGS="$CPPFLAGS" \
-FILE="$FILE" LD="$LD" LDFLAGS="$LDFLAGS" LIBS="$LIBS" \
+MAGIC="$MAGIC" LD="$LD" LDFLAGS="$LDFLAGS" LIBS="$LIBS" \
 LN_S="$LN_S" NM="$NM" RANLIB="$RANLIB" STRIP="$STRIP" \
 AS="$AS" DLLTOOL="$DLLTOOL" OBJDUMP="$OBJDUMP" \
 objext="$OBJEXT" exeext="$EXEEXT" reload_flag="$reload_flag" \
@@ -74,8 +74,8 @@ dnl
 # Only perform the check for file, if the check method requires it
 case "$deplibs_check_method" in
 file_magic*)
-  if test "$file_magic_cmd" = '$FILE'; then
-    AC_PATH_FILE
+  if test "$file_magic_cmd" = '${MAGIC}'; then
+    AC_PATH_MAGIC
   fi
   ;;
 esac
@@ -290,16 +290,16 @@ AC_ENABLE_FAST_INSTALL(no)])
 # AC_PATH_TOOL_PREFIX - find a file program which can recognise shared library
 AC_DEFUN(AC_PATH_TOOL_PREFIX,
 [AC_MSG_CHECKING([for $1])
-AC_CACHE_VAL(lt_cv_path_FILE,
-[case "$FILE" in
+AC_CACHE_VAL(lt_cv_path_MAGIC,
+[case "$MAGIC" in
   /*)
-  lt_cv_path_FILE="$FILE" # Let the user override the test with a path.
+  lt_cv_path_MAGIC="$MAGIC" # Let the user override the test with a path.
   ;;
   ?:/*)
-  ac_cv_path_FILE="$FILE" # Let the user override the test with a dos path.
+  ac_cv_path_MAGIC="$MAGIC" # Let the user override the test with a dos path.
   ;;
   *)
-  ac_save_file="$FILE"
+  ac_save_MAGIC="$MAGIC"
   IFS="${IFS=   }"; ac_save_ifs="$IFS"; IFS=":"
 dnl $ac_dummy forces splitting on constant user-supplied paths.
 dnl POSIX.2 word splitting is done only on the output of word expansions,
@@ -308,12 +308,12 @@ dnl not every word.  This closes a longstanding sh security hole.
   for ac_dir in $ac_dummy; do
     test -z "$ac_dir" && ac_dir=.
     if test -f $ac_dir/$1; then
-      lt_cv_path_FILE="$ac_dir/$1"
+      lt_cv_path_MAGIC="$ac_dir/$1"
       if test -n "$file_magic_test_file"; then
 	case "$deplibs_check_method" in
 	"file_magic "*)
 	  file_magic_regex="`expr \"$deplibs_check_method\" : \"file_magic \(.*\)\"`"
-	  FILE="$lt_cv_path_FILE"
+	  MAGIC="$lt_cv_path_MAGIC"
 	  if eval $file_magic_cmd \$file_magic_test_file 2> /dev/null |
 	    egrep "$file_magic_regex" > /dev/null; then
 	    :
@@ -337,27 +337,27 @@ EOF
     fi
   done
   IFS="$ac_save_ifs"
-  FILE="$ac_save_file"
+  MAGIC="$ac_save_MAGIC"
   ;;
 esac])
-FILE="$lt_cv_path_FILE"
-if test -n "$FILE"; then
-  AC_MSG_RESULT($FILE)
+MAGIC="$lt_cv_path_MAGIC"
+if test -n "$MAGIC"; then
+  AC_MSG_RESULT($MAGIC)
 else
   AC_MSG_RESULT(no)
 fi
 ])
 
 
-# AC_PATH_FILE - find a file program which can recognise a shared library
-AC_DEFUN(AC_PATH_FILE,
+# AC_PATH_MAGIC - find a file program which can recognise a shared library
+AC_DEFUN(AC_PATH_MAGIC,
 [AC_REQUIRE([AC_CHECK_TOOL_PREFIX])dnl
 AC_PATH_TOOL_PREFIX(${ac_tool_prefix}file, /usr/bin:$PATH)
-if test -z "$lt_cv_path_FILE"; then
+if test -z "$lt_cv_path_MAGIC"; then
   if test -n "$ac_tool_prefix"; then
     AC_PATH_TOOL_PREFIX(file, /usr/bin:$PATH)
   else
-    FILE=:
+    MAGIC=:
   fi
 fi
 ])
@@ -465,7 +465,7 @@ test -n "$reload_flag" && reload_flag=" $reload_flag"
 AC_DEFUN(AC_DEPLIBS_CHECK_METHOD,
 [AC_CACHE_CHECK([how to recognise dependant libraries],
 lt_cv_deplibs_check_method,
-[lt_cv_file_magic_cmd='$FILE'
+[lt_cv_file_magic_cmd='${MAGIC}'
 lt_cv_file_magic_test_file=
 lt_cv_deplibs_check_method='unknown'
 # Need to set the preceding variable on all platforms that support
