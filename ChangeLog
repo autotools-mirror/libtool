@@ -1,5 +1,10 @@
 2000-05-14  Alexandre Oliva  <oliva@lsd.ic.unicamp.br>
 
+	* libtool.m4 (AC_LIBLTDL_CONVENIENCE, AC_LIBLTDL_INSTALLABLE):
+	Pick LIBLTLD from top_builddir and INCLTDL from top_srcdir.
+	* mdemo/configure.in: Remove comments on
+	AC_LIBLTLD_CONVENIENCE.
+
 	* libtool.m4 (_AC_PROG_LIBTOOL): Renamed from...
 	(AC_PROG_LIBTOOL): Just AC_REQUIRE(_AC_PROG_LIBTOOL), to avoid
 	effects of multiple runs.
