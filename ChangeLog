@@ -1,5 +1,16 @@
 2001-06-26  Gary V. Vaughan  <gary@gnu.org>
 	
+	* NEWS: Updated.
+	* libltdl/ltdl,c (LT_DLMUTEX_LOCK): Renamed from MUTEX_LOCK to
+	avoid potential namespace clash.
+	(LT_DLMUTEX_UNLOCK, LT_DLMUTEX_SETERROR, LT_DLMUTEX_GETERROR):
+	Ditto.
+	(lt_dlmutex_lock_func): Renamed from mutex_lock to avoid a
+	namespace clash of NCR MP-RAS.
+	(lt_dlmutex_unlock_func, lt_dlmutex_seterror_func,
+	lt_dlmutex_geterror_func): Ditto.
+	Reported by Edouard G. Parmelan <Edouard.Parmelan@France.NCR.COM>
+
 	* libltdl/ltdl.c (LT_DLSTRLEN): Call strlen only if the argument
 	is non-NULL and non-zero in length.  Changed all calls to strlen
 	appropriately.
