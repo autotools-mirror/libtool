@@ -1,3 +1,12 @@
+2002-06-26  Bob Friesenhahn  <bfreisen@simple.dallas.tx.us>
+
+	* libtool.m4 (AC_LIBTOOL_SYS_DYNAMIC_LINKER) [mingw]: Remove
+	extraneous '=' character which appears in gcc 3.1
+	-print-search-dirs output.
+	Handle both upper and lower case drive letters when testing for
+	Windows vs POSIX style path output from -print-search-dirs
+	output.
+
 2002-06-24  Robert Boehne  <rboehne@gnu.org>
 
 	* ltmain.in (Piecewise linking): Add a clause to skip creating
@@ -8,6 +17,7 @@
 
 	* ltdl.m4 (AC_LTDL_SYS_DLOPEN_DEPLIBS): Need to quote [ and ] for
 	Autoconf.
+
 	* ltdl.m4 (AC_LTDL_SYS_DLOPEN_DEPLIBS): HP/UX needs
 	libltdl_cv_sys_dlopen_deplibs set to yes.
 
@@ -31,7 +41,7 @@
 	terminated by all code paths.
 	Reported by Lutz Müller <lutz@users.sourceforge.net>
 
-22002-06-20  Gary V. Vaughan  <gary@gnu.org>
+2002-06-20  Gary V. Vaughan  <gary@gnu.org>
 
 	From Kevin Ryde  <user42@zip.com.au>:
 	* doc/libtool.texi (Platform quirks): s/dependan/dependen/

@@ -1003,7 +1003,7 @@ version_type=none
 dynamic_linker="$host_os ld.so"
 sys_lib_dlsearch_path_spec="/lib /usr/lib"
 if test "$GCC" = yes; then
-  sys_lib_search_path_spec=`$CC -print-search-dirs | grep "^libraries:" | sed -e "s/^libraries://"`
+  sys_lib_search_path_spec=`$CC -print-search-dirs | grep "^libraries:" | sed -e "s/^libraries://" -e "s,=/,/,g"`
   if echo "$sys_lib_search_path_spec" | egrep ';' >/dev/null ; then
     # if the path contains ";" then we assume it to be the separator
     # otherwise default to the standard path separator (i.e. ":") - it is
@@ -1120,8 +1120,8 @@ cygwin* | mingw* | pw32*)
     ;;
   yes,mingw*)
     library_names_spec='${libname}`echo ${release} | sed -e 's/[[.]]/-/g'`${versuffix}.dll'
-    sys_lib_search_path_spec=`$CC -print-search-dirs | grep "^libraries:" | sed -e "s/^libraries://"`
-    if echo "$sys_lib_search_path_spec" | [egrep ';[C-Z]:/' >/dev/null]; then
+    sys_lib_search_path_spec=`$CC -print-search-dirs | grep "^libraries:" | sed -e "s/^libraries://" -e "s,=/,/,g"`
+    if echo "$sys_lib_search_path_spec" | [egrep ';[c-zC-Z]:/' >/dev/null]; then
       # It is most probably a Windows format PATH printed by
       # mingw gcc, but we are running on Cygwin. Gcc prints its search
       # path with ; separators, and with drive letters. We can handle the
