@@ -27,10 +27,10 @@ Shared library support has been implemented for these platforms:
   UTS 4.x (*-*-uts4*)
   All ELF targets that use both the GNU C compiler (gcc) and GNU ld
 
-NOTE: The vendor-distributed HP-UX sed(1) programs are horribly broken,
-and cannot handle libtool's requirements, so users may report unusual
-problems.  There is no workaround except to install a working sed
-(such as GNU sed) on these systems.
+NOTE: Some HP-UX sed programs are horribly broken, and cannot handle
+libtool's requirements, so users may report unusual problems.  There
+is no workaround except to install a working sed (such as GNU sed) on
+these systems.
 
 Libtool's home page is:
 

@@ -1,3 +1,9 @@
+1998-05-21  Gordon Matzigkeit  <gord@profitpress.com>
+
+	* ltmain.in (compile): Don't have `-static' turn off libtool
+	libraries, so that people can use it just to guarantee that `.o'
+	files exist.  Suggested by David Mosberger-Tang.
+
 1998-05-18  Gordon Matzigkeit  <gord@profitpress.com>
 
 	* ltmain.in (link): Possibly reexec the shell from within the
@@ -6,6 +12,7 @@
 	want to shoot themselves in the foot, I'd better let them do so,
 	so that people who are smart enough not to can squeeze out another
 	ounce of functionality.  From Tim Janik.
+	(version_vars): Delete dead variable.
 
 	* ltconfig.in (hardcode_minus_L): FreeBSD 3.0 doesn't hardcode, at
 	last.  Reported by Jason Nordwick.
@@ -1560,8 +1567,8 @@
 
 1996-12-11  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
-	* ltconfig.in: On AIX 3, use /usr/ucb/nm, not /ucb/nm.  From
-	ir. M.M. Kettenis.
+	* ltconfig.in: On AIX 3, use /usr/ucb/nm, not /ucb/nm.  From Mark
+	Kettenis.
 
 1996-12-09  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 

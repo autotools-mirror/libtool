@@ -265,7 +265,6 @@ if test -z "$show_help"; then
 	;;
 
       -static)
-	build_libtool_libs=no
 	build_old_libs=yes
 	continue
 	;;
@@ -879,9 +878,6 @@ if test -z "$show_help"; then
       library_names=
       old_library=
       dlname=
-      current=0
-      revision=0
-      age=0
 
       if test -n "$objs"; then
         $echo "$modename: cannot build libtool library \`$output' from non-libtool objects:$objs" 2>&1
@@ -915,94 +911,100 @@ if test -z "$show_help"; then
 
       # Parse the version information argument.
       IFS="${IFS= 	}"; save_ifs="$IFS"; IFS=':'
-      set dummy $vinfo
+      set dummy $vinfo 0 0 0
       IFS="$save_ifs"
 
-      if test -n "$5"; then
-        $echo "$modename: too many parameters to \`-version-info'" 1>&2
-        $echo "$help" 1>&2
-        exit 1
+      if test -n "$8"; then
+	$echo "$modename: too many parameters to \`-version-info'" 1>&2
+	$echo "$help" 1>&2
+	exit 1
       fi
 
-      test -n "$2" && current="$2"
-      test -n "$3" && revision="$3"
-      test -n "$4" && age="$4"
+      current="$2"
+      revision="$3"
+      age="$4"
 
       # Check that each of the things are valid numbers.
       case "$current" in
       0 | [1-9] | [1-9][0-9]*) ;;
       *)
-        $echo "$modename: CURRENT \`$current' is not a nonnegative integer" 1>&2
-        $echo "$modename: \`$vinfo' is not valid version information" 1>&2
-        exit 1
-        ;;
+	$echo "$modename: CURRENT \`$current' is not a nonnegative integer" 1>&2
+	$echo "$modename: \`$vinfo' is not valid version information" 1>&2
+	exit 1
+	;;
       esac
 
       case "$revision" in
       0 | [1-9] | [1-9][0-9]*) ;;
       *)
-        $echo "$modename: REVISION \`$revision' is not a nonnegative integer" 1>&2
-        $echo "$modename: \`$vinfo' is not valid version information" 1>&2
-        exit 1
-        ;;
+	$echo "$modename: REVISION \`$revision' is not a nonnegative integer" 1>&2
+	$echo "$modename: \`$vinfo' is not valid version information" 1>&2
+	exit 1
+	;;
       esac
 
       case "$age" in
       0 | [1-9] | [1-9][0-9]*) ;;
       *)
-        $echo "$modename: AGE \`$age' is not a nonnegative integer" 1>&2
-        $echo "$modename: \`$vinfo' is not valid version information" 1>&2
-        exit 1
-        ;;
+	$echo "$modename: AGE \`$age' is not a nonnegative integer" 1>&2
+	$echo "$modename: \`$vinfo' is not valid version information" 1>&2
+	exit 1
+	;;
       esac
 
       if test $age -gt $current; then
-        $echo "$modename: AGE \`$age' is greater than the current interface number \`$current'" 1>&2
-        $echo "$modename: \`$vinfo' is not valid version information" 1>&2
-        exit 1
+	$echo "$modename: AGE \`$age' is greater than the current interface number \`$current'" 1>&2
+	$echo "$modename: \`$vinfo' is not valid version information" 1>&2
+	exit 1
       fi
 
       # Calculate the version variables.
-      version_vars="version_type current age revision"
+      major=
+      versuffix=
+      verstring=
       case "$version_type" in
       none) ;;
 
       linux)
-        version_vars="$version_vars major versuffix"
-        major=`expr $current - $age`
-        versuffix="$major.$age.$revision"
-        ;;
+	major=.`expr $current - $age`
+	versuffix="$major.$age.$revision"
+	;;
 
       osf)
-        version_vars="$version_vars versuffix verstring"
-        major=`expr $current - $age`
-        versuffix="$current.$age.$revision"
-        verstring="$versuffix"
+	major=`expr $current - $age`
+	versuffix=".$current.$age.$revision"
+	verstring="$current.$age.$revision"
 
-        # Add in all the interfaces that we are compatible with.
-        loop=$age
-        while test $loop != 0; do
-          iface=`expr $current - $loop`
-          loop=`expr $loop - 1`
-          verstring="$verstring:${iface}.0"
-        done
+	# Add in all the interfaces that we are compatible with.
+	loop=$age
+	while test $loop != 0; do
+	  iface=`expr $current - $loop`
+	  loop=`expr $loop - 1`
+	  verstring="$verstring:${iface}.0"
+	done
 
-        # Make executables depend on our current version.
-        verstring="$verstring:${current}.0"
-        ;;
+	# Make executables depend on our current version.
+	verstring="$verstring:${current}.0"
+	;;
 
       sunos)
-        version_vars="$version_vars major versuffix"
-        major="$current"
-        versuffix="$current.$revision"
-        ;;
+	major=".$current"
+	versuffix=".$current.$revision"
+	;;
 
       *)
-        $echo "$modename: unknown library version type \`$version_type'" 1>&2
-        echo "Fatal configuration error.  See the $PACKAGE docs for more information." 1>&2
-        exit 1
-        ;;
+	$echo "$modename: unknown library version type \`$version_type'" 1>&2
+	echo "Fatal configuration error.  See the $PACKAGE docs for more information." 1>&2
+	exit 1
+	;;
       esac
+
+      # Clear the version info if we defaulted, and they specified a release.
+      if test -z "$vinfo" && test -n "$release"; then
+	major=
+	versuffix=
+	verstring="0.0"
+      fi
 
       # Create the output directory, or remove our outputs if we need to.
       if test -d $objdir; then
@@ -1067,8 +1069,10 @@ if test -z "$show_help"; then
 
         # Create links to the real library.
         for linkname in $linknames; do
-          $show "(cd $objdir && $LN_S $realname $linkname)"
-          $run eval '(cd $objdir && $LN_S $realname $linkname)' || exit $?
+	  if test "$realname" != "$linkname"; then
+	    $show "(cd $objdir && $LN_S $realname $linkname)"
+	    $run eval '(cd $objdir && $LN_S $realname $linkname)' || exit $?
+	  fi
         done
 
         # If -export-dynamic was specified, set the dlname.
@@ -2381,6 +2385,10 @@ compile)
 "Usage: $modename [OPTION]... --mode=compile COMPILE-COMMAND... SOURCEFILE
 
 Compile a source file into a libtool library object.
+
+This mode accepts the following additional options:
+
+  -static           always build a \`.o' file suitable for static linking
 
 COMPILE-COMMAND is a command to be used in creating a \`standard' object file
 from the given SOURCEFILE.

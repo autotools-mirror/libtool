@@ -56,13 +56,6 @@ approved by the Foundation.
 @page
 @vskip 0pt plus 1filll
 Copyright @copyright{} 1996-1998 Free Software Foundation, Inc.
-@sp 2
-This is the first edition of the GNU Libtool documentation,@*
-and is consistent with GNU Libtool @value{VERSION}.@*
-@sp 2
-Published by the Free Software Foundation @*
-59 Temple Place, Suite 330, @*
-Boston, MA 02111-1307 USA @*
 
 Permission is granted to make and distribute verbatim copies of this
 manual provided the copyright notice and this permission notice are
@@ -174,7 +167,7 @@ Dlopened modules
 
 * Building modules::            Creating dlopenable objects and libraries.
 * Dlpreopening::                Dlopening that works on static platforms.
-* Finding the dlname::          Choosing the right file to @code{dlopen(3)}.
+* Finding the dlname::          Choosing the right file to @code{dlopen}.
 * Dlopen issues::               Unresolved problems that need your attention.
 
 Using libtool with other languages
@@ -304,7 +297,7 @@ are built.
 
 @item
 It can be tricky to run dynamically linked programs whose libraries have
-not yet been installed.  @var{LD_LIBRARY_PATH} must be set properly (if
+not yet been installed.  @code{LD_LIBRARY_PATH} must be set properly (if
 it is supported), or programs fail to run.
 
 @item
@@ -329,8 +322,8 @@ compatibility.
 
 @item
 The install @file{Makefile} target should warn the package installer to set
-the proper environment variables (@var{LD_LIBRARY_PATH} or equivalent),
-or run @code{ldconfig(8)}.
+the proper environment variables (@code{LD_LIBRARY_PATH} or equivalent),
+or run @code{ldconfig}.
 @end enumerate
 
 @node Other implementations
@@ -430,11 +423,12 @@ subdirectory of the libtool distribution.  Assume that we are building a
 library, @file{libhello}, out of the files @file{foo.c} and
 @file{hello.c}.
 
-Note that the @file{foo.c} source file uses the @code{cos(3)} math library
+Note that the @file{foo.c} source file uses the @code{cos} math library
 function, which is usually found in the standalone math library, and not
-the C library.  So, we need to add @kbd{-lm} to the end of
-the link line whenever we link @file{foo.o} or @file{foo.lo} into an
-executable or a library (@pxref{Inter-library dependencies}).
+the C library (@pxref{Trig Functions, , Trigonometric Functions, libc,
+The GNU C Library Reference Manual}).  So, we need to add @kbd{-lm} to
+the end of the link line whenever we link @file{foo.o} or @file{foo.lo}
+into an executable or a library (@pxref{Inter-library dependencies}).
 
 The same rule applies whenever you use functions that don't appear in
 the standard C library@dots{} you need to add the appropriate
@@ -583,7 +577,7 @@ importance.
 
 So, let's try again, this time with the library object files.  Remember
 also that we need to add @kbd{-lm} to the link command line because
-@file{foo.c} uses the @code{cos(3)} math library function (@pxref{Using
+@file{foo.c} uses the @code{cos} math library function (@pxref{Using
 libtool}):
 
 @example
@@ -898,7 +892,7 @@ you must use the `-LLIBDIR' flag during linking.
    - use the `-RLIBDIR' linker flag
 
 See any operating system documentation about shared libraries for
-more information, such as the ld(1) and ld.so(8) manual pages.
+more information, such as the ld and ld.so manual pages.
 -----------------------------------------------------------------
 burger#
 @end example
@@ -987,8 +981,8 @@ Display libtool configuration variables and exit.
 
 @item --debug
 Dump a trace of shell script execution to standard output.  This
-produces a lot of output, so you may wish to pipe it to @code{more(1)}
-or redirect to a file.
+produces a lot of output, so you may wish to pipe it to @code{less} (or
+@code{more}) or redirect to a file.
 
 @item -n
 @itemx --dry-run
@@ -1052,10 +1046,10 @@ Print libtool version information and exit.
 @cindex mode, compile
 @cindex compile mode
 
-For @samp{compile} mode, @var{mode-args} is a compiler command to be
-used in creating a `standard' object file.  These arguments should begin
-with the name of the C compiler, and contain the @samp{-c} compiler flag
-so that only an object file is created.
+For @dfn{compile} mode, @var{mode-args} is a compiler command to be used
+in creating a `standard' object file.  These arguments should begin with
+the name of the C compiler, and contain the @samp{-c} compiler flag so
+that only an object file is created.
 
 Libtool determines the name of the output file by removing the directory
 component from the source file name, then substituting the C source code
@@ -1063,6 +1057,9 @@ suffix @samp{.c} with the library object suffix, @samp{.lo}.
 
 If shared libraries are being built, any necessary PIC generation flags
 are substituted into the compilation command.
+
+If the @samp{-static} option is given, then a @samp{.o} file is built,
+even if libtool was configured with @samp{--disable-static}.
 
 Note that the @samp{-o} option is not supported for compile mode,
 because it cannot be implemented properly for all platforms.  It is far
@@ -1074,7 +1071,7 @@ the current working directory.
 @cindex link mode
 @cindex mode, link
 
-@samp{link} mode links together object files (including library
+@dfn{Link} mode links together object files (including library
 objects) to form another library or to create an executable program.
 
 @var{mode-args} consist of a command using the C compiler to create an
@@ -1100,7 +1097,7 @@ Link @var{file} into the output program, and add its symbols to
 @var{dld_preloaded_symbols} (@pxref{Dlpreopening}).
 
 @item -export-dynamic
-Allow symbols from @var{output-file} to be resolved with @code{dlsym(3)}
+Allow symbols from @var{output-file} to be resolved with @code{dlsym}
 (@pxref{Dlopened modules}).
 
 @item -L@var{libdir}
@@ -1165,7 +1162,7 @@ Otherwise, an executable program is created.
 @cindex execute mode
 @cindex mode, execute
 
-For @samp{execute} mode, the library path is automatically set, then a
+For @dfn{execute} mode, the library path is automatically set, then a
 program is executed.
 
 The first of the @var{mode-args} is treated as a program name, with the
@@ -1190,7 +1187,7 @@ any of their required library directories are added to the library path.
 @cindex install mode
 @cindex mode, install
 
-In @samp{install} mode, libtool interprets @var{mode-args} as an
+In @dfn{install} mode, libtool interprets @var{mode-args} as an
 installation command beginning with @code{cp}, or a BSD-compatible
 @code{install} program.
 
@@ -1205,8 +1202,8 @@ commands are also completed.
 @cindex finish mode
 @cindex mode, finish
 
-@samp{finish} mode helps system administrators install libtool
-libraries so that they can be located and linked into user programs.
+@dfn{Finish} mode helps system administrators install libtool libraries
+so that they can be located and linked into user programs.
 
 Each @var{mode-arg} is interpreted as the name of a library directory.
 Running this command may require superuser privileges, so the
@@ -1217,7 +1214,7 @@ Running this command may require superuser privileges, so the
 @cindex uninstall mode
 @cindex mode, uninstall
 
-This mode deletes installed libraries (and other files).
+@dfn{Uninstall} mode deletes installed libraries (and other files).
 
 The first @var{mode-arg} is the name of the program to use to delete
 files (typically @file{/bin/rm}).
@@ -1364,8 +1361,8 @@ and accepts the following options:
 @table @samp
 @item --debug
 Dump a trace of shell script execution to standard output.  This
-produces a lot of output, so you may wish to pipe it to @code{more(1)}
-or redirect to a file.
+produces a lot of output, so you may wish to pipe it to @code{less} (or
+@code{more}) or redirect to a file.
 
 @item --disable-shared
 Create a @code{libtool} that only builds static libraries.
@@ -1617,8 +1614,8 @@ symlinks.
 
 @item --debug
 Dump a trace of shell script execution to standard output.  This
-produces a lot of output, so you may wish to pipe it to @code{more(1)}
-or redirect to a file.
+produces a lot of output, so you may wish to pipe it to @code{less} (or
+@code{more}) or redirect to a file.
 
 @item --dry-run
 @itemx -n
@@ -1697,20 +1694,21 @@ AC_OUTPUT(@dots{})
 
 When you are developing a package, it is often worthwhile to configure
 your package with the @samp{--disable-shared} flag, or to override the
-defaults for @code{AM_PROG_LIBTOOL} by using the @code{AM_DISABLE_SHARED}
-Autoconf macro (@pxref{AM_PROG_LIBTOOL}).  This prevents libtool from
-building shared libraries, which has several advantages:
+defaults for @code{AM_PROG_LIBTOOL} by using the
+@code{AM_DISABLE_SHARED} Autoconf macro (@pxref{AM_PROG_LIBTOOL, , The
+@code{AM_PROG_LIBTOOL} macro}).  This prevents libtool from building
+shared libraries, which has several advantages:
 
 @itemize @bullet
 @item
-compilation is twice as fast, which can speed up your development cycle
+compilation is twice as fast, which can speed up your development cycle,
 
 @item
 debugging is easier because you don't need to deal with any complexities
-added by shared libraries
+added by shared libraries, and
 
 @item
-you can see how libtool behaves on static-only platforms
+you can see how libtool behaves on static-only platforms.
 @end itemize
 
 You may want to put a small note in your package @file{README} to let
@@ -1872,7 +1870,7 @@ guarantee that the current interface number gets larger faster.
 @item
 If the library source code has changed at all since the last update,
 then increment @var{revision} (@samp{@var{c}:@var{r}:@var{a}} becomes
-@samp{@var{c}:@var{r+1}:@var{a}}).
+@samp{@var{c}:@math{r+1}:@var{a}}).
 
 @item
 If any interfaces have been added, removed, or changed since the last
@@ -1900,7 +1898,7 @@ with any other release.
 Often, people want to encode the name of the package release into the
 shared library so that it is obvious to the user which package their
 programs are linked against.  This convention is used especially on
-Linux:
+GNU/Linux:
 
 @example
 trick$ @kbd{ls /usr/lib/libbfd*}
@@ -1922,7 +1920,7 @@ So, in order to accomodate both views, you can use the @samp{-release}
 flag in order to set release information for libraries which you do not
 want to use @samp{-version-info}.  For the @file{libbfd} example, the
 next release which uses libtool should be built with @samp{-release
-2.9.0}, which will produce the following files on Linux:
+2.9.0}, which will produce the following files on GNU/Linux:
 
 @example
 trick$ @kbd{ls /usr/lib/libbfd*}
@@ -2119,8 +2117,8 @@ deferred until runtime.
 
 An @dfn{inter-library dependency} is one in which a library depends on
 other libraries.  For example, if the libtool library @file{libhello}
-uses the @code{cos(3)} function, then it has an inter-library dependency
-on @file{libm}, the math library that implements @code{cos(3)}.
+uses the @code{cos} function, then it has an inter-library dependency
+on @file{libm}, the math library that implements @code{cos}.
 
 Some shared library systems provide this feature in an
 internally-consistent way: these systems allow chains of dependencies of
@@ -2161,10 +2159,10 @@ builds only static libraries on these kinds of platforms.
 
 @node Dlopened modules
 @chapter Dlopened modules
-@findex dlopen(3)
-@findex dlsym(3)
-@findex dlclose(3)
-@findex shl_load(3)
+@findex dlopen
+@findex dlsym
+@findex dlclose
+@findex shl_load
 @cindex dynamic linking, applications
 @cindex dlopening modules
 @cindex modules, dynamic
@@ -2180,11 +2178,10 @@ resolved automatically at run time by the dynamic linker.  In this
 process, dynamic linking is transparent to the application.
 
 @item
-The application calling functions such as
-@code{dlopen(3)},@footnote{HP-UX, to be different, uses a function named
-@code{shl_load(3)}.} which load arbitrary, user-specified modules at
-runtime.  This type of dynamic linking is explicitly controlled by the
-application.
+The application calling functions such as @code{dlopen},@footnote{HP-UX,
+to be different, uses a function named @code{shl_load}.} which load
+arbitrary, user-specified modules at runtime.  This type of dynamic
+linking is explicitly controlled by the application.
 @end enumerate
 
 To mitigate confusion, this manual refers to the second type of dynamic
@@ -2210,7 +2207,7 @@ problems associated with dlopened modules.
 @menu
 * Building modules::            Creating dlopenable objects and libraries.
 * Dlpreopening::                Dlopening that works on static platforms.
-* Finding the dlname::          Choosing the right file to @code{dlopen(3)}.
+* Finding the dlname::          Choosing the right file to @code{dlopen}.
 * Dlopen issues::               Unresolved problems that need your attention.
 @end menu
 
@@ -2218,7 +2215,7 @@ problems associated with dlopened modules.
 @section Building modules to dlopen
 
 On some operating systems, a program symbol must be specially declared
-in order to be dynamically resolved with the @code{dlsym(3)} (or
+in order to be dynamically resolved with the @code{dlsym} (or
 equivalent) function.
 
 Libtool provides the @samp{-export-dynamic} link flag (@pxref{Link
@@ -2252,7 +2249,7 @@ burger$
 
 Libtool provides special support for dlopening libtool object and
 libtool library files, so that their symbols can be resolved @emph{even
-on platforms without any @code{dlopen(3)} and @code{dlsym(3)}
+on platforms without any @code{dlopen} and @code{dlsym}
 functions.}.
 
 Consider the following alternative ways of loading code into your
@@ -2330,7 +2327,7 @@ name at runtime, by finding the installed @samp{.la} file, and searching
 it for the following lines:
 
 @example
-# The name that we can @code{dlopen(3)}.
+# The name that we can @code{dlopen}.
 dlname='@var{dlname}'
 @end example
 
@@ -2341,8 +2338,8 @@ installed as @file{/usr/local/lib/libhello.la}, and the @var{dlname} was
 dlopened.
 
 If your program uses this approach, then it should search the
-directories listed in the @var{LD_LIBRARY_PATH}@footnote{@var{LIBPATH}
-on AIX, and @var{SHLIB_PATH} on HP-UX.} environment variable, as well as
+directories listed in the @code{LD_LIBRARY_PATH}@footnote{@code{LIBPATH}
+on AIX, and @code{SHLIB_PATH} on HP-UX.} environment variable, as well as
 the directory where libraries will eventually be installed.  Searching
 this variable (or equivalent) will guarantee that your program can find
 its dlopened modules, even before installation, provided you have linked
@@ -2362,17 +2359,17 @@ Dlopen functions are generally only available on shared library
 platforms.  If you want your package to be portable to static platforms,
 you have to develop your own alternatives to dlopening dynamic code.
 Most reasonable solutions involve writing wrapper functions for the
-@code{dlopen(3)} family, which do package-specific tricks when dlopening
+@code{dlopen} family, which do package-specific tricks when dlopening
 is unsupported or not available on a given platform.
 
 @item
-There are major differences in implementations of the @code{dlopen(3)}
+There are major differences in implementations of the @code{dlopen}
 family of functions.  Some platforms do not even use the same function
-names (notably HP-UX, with its @samp{shl_load(3)} family).
+names (notably HP-UX, with its @code{shl_load} family).
 
 @item
 The application developer must write a custom search function in order
-to discover the correct module filename to supply to @code{dlopen(3)}.
+to discover the correct module filename to supply to @code{dlopen}.
 @end itemize
 
 Each of these limitations will be addressed in GNU DLD
@@ -2472,7 +2469,7 @@ to make sure that it meets basic functional requirements.
 Here is a list of the current programs in the test suite, and what they
 test for:
 
-@table @code
+@table @file
 @item demo-conf.test
 @itemx demo-exec.test
 @itemx demo-inst.test
@@ -2608,17 +2605,17 @@ You need the output of @code{config.guess} for this system, so that you
 can make changes to the libtool configuration process without affecting
 other systems.
 
-@item man pages for @code{ld(1)} and @code{cc(1)}
+@item man pages for @code{ld} and @code{cc}
 These generally describe what flags are used to generate PIC, to create
 shared libraries, and to link against only static libraries.  You may
 need to follow some cross references to find the information that is
 required.
 
-@item man pages for @code{ld.so(8)}, @code{rtld(8)}, or equivalent
+@item man pages for @code{ld.so}, @code{rtld}, or equivalent
 These are a valuable resource for understanding how shared libraries are
 loaded on the system.
 
-@item man page for @code{ldconfig(8)}, or equivalent
+@item man page for @code{ldconfig}, or equivalent
 This page usually describes how to install shared libraries.
 
 @item output from @kbd{ls -l /lib /usr/lib}
@@ -2669,9 +2666,9 @@ This section is dedicated to the sanity of the libtool maintainer.  It
 describes the programs that libtool uses, how they vary from system to
 system, and how to test for them.
 
-Because libtool is a shell script, it is difficult to understand just by
-reading it from top to bottom.  This section helps show why libtool does
-things a certain way.  After reading it, then reading the scripts
+Because libtool is a shell script, it can be difficult to understand
+just by reading it from top to bottom.  This section helps show why
+libtool does things a certain way.  Combined with the scripts
 themselves, you should have a better sense of how to improve libtool, or
 write your own.
 
@@ -2714,7 +2711,7 @@ of the platform:
 @item gcc
 
 This is the GNU C compiler, which is also the system compiler for many
-free operating systems (FreeBSD, GNU/Hurd, Linux/GNU, Lites, NetBSD, and
+free operating systems (FreeBSD, GNU/Hurd, GNU/Linux, Lites, NetBSD, and
 OpenBSD, to name a few).
 
 The @samp{-fpic} or @samp{-fPIC} flags can be used to generate
@@ -2848,7 +2845,7 @@ Whether libtool should build static libraries on this system.  Set to
 @end defvar
 
 @defvar echo
-An @code{echo(1)} program which does not interpret backslashes as an
+An @code{echo} program which does not interpret backslashes as an
 escape character.
 @end defvar
 
@@ -2987,7 +2984,7 @@ The library version numbering type.  One of @samp{libtool},
 
 @defvar wl
 The C compiler flag that allows libtool to pass a flag directly to the
-linker.  Used as: @samp{$@{wl@}@var{some-flag}}.
+linker.  Used as: @code{$@{wl@}@var{some-flag}}.
 @end defvar
 
 Variables ending in @samp{_cmds} or @samp{_eval} contain a
