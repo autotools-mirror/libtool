@@ -33,7 +33,7 @@ else
   # This makes it impossible to quote backslashes using
   #   echo "$something" | sed 's/\\/\\\\/g'
   # So, we emulate echo with printf '%s\n'
-  echo='printf %s\n'
+  echo="printf %s\\n"
   if test "X`($echo '\t') 2>/dev/null`" = 'X\t'; then :
   else
     # Oops.  We have no working printf.  Try to find a not-so-buggy echo.
@@ -1260,8 +1260,12 @@ fi
 rmdir .libs 2>/dev/null
 echo "$ac_t$objdir" 1>&6
 
+# Copy echo and quote the copy, instead of the original, because it is
+# used later.
+ltecho="$echo"
+
 # Now quote all the things that may contain metacharacters.
-for var in echo old_CC old_CFLAGS old_CPPFLAGS old_LD old_NM old_RANLIB \
+for var in ltecho old_CC old_CFLAGS old_CPPFLAGS old_LD old_NM old_RANLIB \
   old_LN_S AR CC LD LN_S NM reload_flag reload_cmds wl pic_flag \
   link_static_flag no_builtin_flag export_dynamic_flag_spec \
   profile_flag_pattern libname_spec library_names_spec soname_spec RANLIB \
@@ -1276,10 +1280,10 @@ for var in echo old_CC old_CFLAGS old_CPPFLAGS old_LD old_NM old_RANLIB \
   old_postinstall_cmds | old_postuninstall_cmds | archive_cmds | \
   postinstall_cmds | postuninstall_cmds | finish_cmds)
     # Double-quote double-evaled strings.
-    eval "$var=\`$echo \"\$$var\" | sed -e \"\$double_quote_subst\" -e \"\$sed_quote_subst\"\`"
+    eval "$var=\`\$echo \"\$$var\" | sed -e \"\$double_quote_subst\" -e \"\$sed_quote_subst\"\`"
     ;;
   *)
-    eval "$var=\`$echo \"\$$var\" | sed \"\$sed_quote_subst\"\`"
+    eval "$var=\`\$echo \"\$$var\" | sed \"\$sed_quote_subst\"\`"
     ;;
   esac
 done
@@ -1305,7 +1309,7 @@ cat <<EOF > $ofile
 # debugging $progname, is in ./config.log if it exists.
 
 # An echo program that doesn't interpret backslashes.
-echo="$echo"
+echo="$ltecho"
 
 # The version of $progname that generated this script.
 LTCONFIG_VERSION="$VERSION"

@@ -1,3 +1,8 @@
+Mon Dec  1 00:50:37 1997  Gordon Matzigkeit  <gord@gnu.org>
+
+	* ltconfig.in (ltecho): We need special handling to quote the
+	`echo' variable itself.  From Alexandre Oliva.
+
 Sat Nov 29 11:19:18 1997  Gordon Matzigkeit  <gord@gnu.org>
 
 	* ltconfig.in (COLLECT_NAMES): Enable this workaround for a broken

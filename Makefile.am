@@ -103,7 +103,7 @@ PRCS = prcs
 
 .PHONY: maintainer-checkin maintainer-check-versions maintainer-release
 maintainer-checkin:
-	cd $(top_srcdir) && $(PRCS) checkin $(PACKAGE)
+	cd $(top_srcdir) && $(PRCS) checkin -f $(PACKAGE)
 
 maintainer-check-versions:
 	@newver=`grep '^(Project-Version[ 	]' $(srcdir)/$(PACKAGE).prj | \
