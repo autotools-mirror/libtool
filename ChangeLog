@@ -1,5 +1,8 @@
 2004-06-21  Gary V. Vaughan  <gary@gnu.org>
 
+	From Ralf Wildenhues <Ralf.Wildenhues@gmx.de>:
+	* libtoolize.in: Quote $# to make sh.test happy again.
+
 	* m4/ltdl.m4 (AC_WITH_LTDL): Remove redundant AC_REQUIRE calls.
 	Either set variables to allow a client to link with the installed
 	libltdl, or else compile a local libltdl as a convenience library.

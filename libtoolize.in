@@ -212,7 +212,7 @@ func_version ()
       --install|-i)	opt_install=:			;;
 
       --ltdl)		ltdldir=libltdl
-      			if test $# -gt 0; then
+      			if test "$#" -gt 0; then
 			  case $1 in
 			    -*)				;;
 			    *)  ltdldir="$1"; shift	;;
