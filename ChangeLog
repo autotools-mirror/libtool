@@ -1,3 +1,10 @@
+1999-01-22  Edouard G. Parmelan  <Edouard.Parmelan@France.NCR.COM>
+
+	* ltmain.in (finalize_hardcode_libdirs, finalize_rpath): in
+	platforms that use -rpath, programs must be finalized at
+	installation time, otherwise build-tree programs will
+	prefer installed libraries over build-tree ones
+
 1999-01-22  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* mdemo/Makefile.am (../libltdl/libtool): if it does not exist,
