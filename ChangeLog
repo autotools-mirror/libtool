@@ -1,5 +1,7 @@
 2000-07-24  Nick Hudson <skrll@netbsd.org>
 
+	* ltcf-cxx.sh (linkopts): Replace with linker_flags.
+
 	* ltmain.in (ILD): fix addition of deplibs in relink case.
 
 2000-07-19  H.J. Lu  <hjl@gnu.org>,  Alexandre Oliva  <oliva@lsd.ic.unicamp.br>
