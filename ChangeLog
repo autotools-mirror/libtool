@@ -1,3 +1,11 @@
+2002-06-23  Gary V. Vaughan  <gary@gnu.org>
+
+	* libltdl/ltdl.c (argz_insert): Actually, BEFORE can be NULL
+	when *PARGZ_LEN is non-NULL, so the assertion to the contrary was
+	bogus.
+	Reported by Bob Friesenhahn <bfreisen@simple.dallas.tx.us>
+	and Albert Chin-A-Young <china@thewrittenword.com>
+
 2002-06-21  Gary V. Vaughan  <gary@gnu.org>
 
 	* libltdl/ltdl.c (foreach_dirinpath): Ensure that filename is '\0'
