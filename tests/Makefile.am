@@ -45,7 +45,8 @@ COMMON_TESTS = \
 	quote.test sh.test suffix.test pdemo-conf.test \
 	pdemo-make.test pdemo-exec.test pdemo-inst.test \
 	mdemo-conf.test mdemo-make.test mdemo2-conf.test \
-	mdemo2-make.test mdemo2-exec.test
+	mdemo2-make.test mdemo2-exec.test \
+	func_extract_archives.test 
 
 
 if HAVE_CXX
@@ -91,4 +92,4 @@ clean-local:
 	-test -f ../mdemo/Makefile && cd ../mdemo && $(MAKE) distclean
 	-test -f ../tagdemo/Makefile && cd ../tagdemo && $(MAKE) distclean
 	-test -f ../f77demo/Makefile && cd ../f77demo && $(MAKE) distclean
-	rm -rf _inst
+	rm -rf _inst .libs

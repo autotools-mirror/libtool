@@ -1,3 +1,14 @@
+2004-12-10  Peter O'Gorman  <peter@pogma.com>
+
+	* ltmain.in (func_extract_archives,func_extract_an_archive): On 
+	darwin, uniq can not take teh flags -cd together, thanks to Ralf
+	for the fix, also ar does not accept N, so we use the fact that
+	ar x libfoo.a foo.o will always extract the first foo.o in the
+	archive and we then delete foo.o from the archive, which will also
+	delete only the first foo.o, then rinse and repeat.
+	* tests/func_extract_archives.test: Test this feature.
+	* tests/Makefile.am: Add the test.
+
 2004-12-09  Albert Chin-A-Young  <china@thewrittenword.com>
 
 	* ltmain.in: Preserve -model [arg] option, used
