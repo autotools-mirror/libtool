@@ -1,5 +1,7 @@
 2000-09-04  Alexandre Oliva  <aoliva@redhat.com>
 
+	* ltconfig.in (need_lc): Preserve allow_undefined_flag.
+
 	* tests/*.test (CONFIG_SITE): Ultrix's /bin/sh fails on
 	`. /dev/null'.  Set CONFIG_SITE to /dev/null/config/site, to make
 	sure we pick a non-existent file.
