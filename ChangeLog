@@ -1,3 +1,13 @@
+2004-03-24  Albert Chin-A-Young  <china@thewrittenword.com>
+
+	* ltmain.in: When a library is installed, dependent on a
+	convenience library, and it involves relinking, the object
+	files extracted from the convenience library are not removed
+	after the relink. This is a problem if you build as non-root,
+	install as root, then try to remove the build directory as
+	non-root; Clean up properly if relink fails; Change
+	"$realname"U to ${realname}T to be consistent.
+
 2004-03-24  Scott James Remnant  <scott@netsplit.com>
 
 	* ltmain.in <prog linkmode>: Always add -L options to

@@ -3962,7 +3962,16 @@ EOF
 	    IFS="$save_ifs"
 	    eval cmd=\"$cmd\"
 	    $show "$cmd"
-	    $run eval "$cmd" || exit $?
+	    $run eval "$cmd" || {
+	      lt_exit=$?
+
+	      # Restore the uninstalled library and exit
+	      if test "$mode" = relink; then
+		$run eval '(cd $output_objdir && $rm ${realname}T && $mv ${realname}U $realname)'
+	      fi
+
+	      exit $lt_exit
+	    }
 	  done
 	  IFS="$save_ifs"
 
@@ -4000,14 +4009,31 @@ EOF
 	  IFS="$save_ifs"
 	  eval cmd=\"$cmd\"
 	  $show "$cmd"
-	  $run eval "$cmd" || exit $?
+	  $run eval "$cmd" || {
+	    lt_exit=$?
+
+	    # Restore the uninstalled library and exit
+	    if test "$mode" = relink; then
+	      $run eval '(cd $output_objdir && $rm ${realname}T && $mv ${realname}U $realname)'
+	    fi
+
+	    exit $lt_exit
+	  }
 	done
 	IFS="$save_ifs"
 
 	# Restore the uninstalled library and exit
 	if test "$mode" = relink; then
-	  $run eval '(cd $output_objdir && $rm ${realname}T && $mv $realname ${realname}T && $mv "$realname"U $realname)' || exit $?
-	  exit $EXIT_SUCCESS
+	  $run eval '(cd $output_objdir && $rm ${realname}T && $mv $realname ${realname}T && $mv ${realname}U $realname)' || exit $?
+
+	  if test -n "$convenience"; then
+	    if test -z "$whole_archive_flag_spec"; then
+	      $show "${rm}r $gentop"
+	      $run ${rm}r "$gentop"
+	    fi
+	  fi
+
+	  exit $EXIT_SUCCESS 
 	fi
 
 	# Create links to the real library.
