@@ -294,7 +294,7 @@ lt_dlexit (void)
 
 	  if ((vtable = lt_dlloader_remove (vtable->name)))
 	    {
-	      FREE ((void *) vtable);
+	      FREE (vtable);
 	    }
 	  else
 	    {
