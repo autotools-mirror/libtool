@@ -2341,6 +2341,8 @@ fi
 
   if test "x$lt_cv_dlopen" != xno; then
     enable_dlopen=yes
+  else
+    enable_dlopen=no
   fi
 
   case "$lt_cv_dlopen" in
