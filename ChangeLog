@@ -1,3 +1,8 @@
+2003-10-07  Scott James Remnant  <scott@netsplit.com>
+
+	* m4/libtool.m4 (AC_DEPLIBS_CHECK_METHOD): Remove dead code
+	for platforms that have been using pass_all for some time now.
+
 2003-10-07  Gary V. Vaughan  <gary@gnu.org>
 
 	* libtoolize.in: Completely rewritten.
