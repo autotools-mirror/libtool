@@ -1,3 +1,11 @@
+2001-07-12  Gary V. Vaughan  <gary@gnu.org>
+
+	From Stefan Ondrejicka <ondrej@idata.sk>:
+	* libtool.m4 (AC_LIBTOOL_SYS_DYNAMIC_LINKER) [cygwin*]: Make
+	sure that /lib/w32api is searched for system libraries to
+	match recent versions of cygwin.
+	* NEWS: Updated.
+
 2001-07-12  Dan McNichol  <mcnichol@austin.ibm.com>
 
 	From albert chin <china@thewrittenword.com>

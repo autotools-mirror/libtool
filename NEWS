@@ -1,5 +1,10 @@
 NEWS - list of user-visible changes between releases of GNU Libtool
 
+New in 1.4d: 2001-??-??; CVS version 1.4c, Libtool team:
+* Support /lib/w32api in recent cygwin releases.
+* Improved support for linking with gcc on aix4* and aix5*.
+* Bug fixes.
+
 New in 1.4b: 2001-07-09; CVS version 1.4a, Libtool team:
 * Now bootstraps with autoconf-2.50 and automake-1.4-p4.
 * Always try to build at least a static lib, even if both static and
