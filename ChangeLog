@@ -1,3 +1,9 @@
+Tue Jul  8 11:01:27 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* Makefile.am (EXTRA_DIST): Delete README-automake.
+
+	* README-automake: Remove from distribution.
+
 Wed Jul  2 19:13:00 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltmain.sh.in (link): In the executable wrapper, strip trailing

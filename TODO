@@ -22,6 +22,12 @@ C++, but there are beginnings of this in the manual (Other Languages).
 This includes writing libtool not to be so dependent on the compiler
 used to configure it.
 
+* Need to finalize the documentation, and give a specification of
+`.la' files so that people can depend on their format.  This also
+needs to be done so that DLD uses a public interface to libtool
+archives.  This would be a good thing to put before the maintainance
+notes.
+
 Things to think about:
 **********************
 
