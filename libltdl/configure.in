@@ -96,7 +96,7 @@ AC_CHECK_LIB(dld, dld_link, [AC_DEFINE(HAVE_DLD, 1)dnl
 test "x$ac_cv_lib_dld_shl_load" = yes || LIBADD_DL="$LIBADD_DL -ldld"])
 AC_SUBST(LIBADD_DL)
 
-if test "x$ac_cv_func_dlopen" = xyes || test "x$ac_cv_lib_dl_dlopen" = yes; then
+if test "x$ac_cv_func_dlopen" = xyes || test "x$ac_cv_lib_dl_dlopen" = xyes; then
  LIBS_SAVE="$LIBS"
  LIBS="$LIBS $LIBADD_DL"
  AC_CHECK_FUNCS(dlerror)
