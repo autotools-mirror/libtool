@@ -165,6 +165,8 @@ slist_cons (SList *item, SList *slist)
       return slist;
     }
 
+  assert (!item->next);
+
   item->next = slist;
   return item;
 }
@@ -206,7 +208,7 @@ slist_length (SList *slist)
 /* Destructively reverse the order of items in SLIST.  The value of SLIST
    is undefined after calling this function.
 
-  CAVEAT: You must stare the result of this function, or you might not
+  CAVEAT: You must store the result of this function, or you might not
           be able to get all the items except the first one back again.
 
   e.g.    slist = slist_reverse (slist);  */
