@@ -15,7 +15,7 @@ include_HEADERS = foo.h
 if BINARY_HELLDL
 BUILD_helldl = helldl
 else
-BUILD_helldl = 
+BUILD_helldl =
 endif
 
 bin_PROGRAMS = hell hell.static $(BUILD_helldl)
@@ -40,7 +40,7 @@ else
 
 bin_SCRIPTS = helldl
 # create a script that says that -dlopen is not supported
-helldl:
+helldl helldl$(EXEEXT):
 	rm -f $@
 	echo '#! /bin/sh' > $@
 	echo '-dlopen is unsupported' >> $@
