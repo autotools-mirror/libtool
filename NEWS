@@ -2,9 +2,18 @@ NEWS - list of user-visible changes between releases of GNU Libtool
 
 New in 1.5.11a: 2004-??-??; CVS version 1.5.11a, Libtool team:
 * Support for Portland Group compiler on Linux.
-* libtoolize now also installs `install-sh'.
 * Support (mostly) for DragonFly BSD.
-* Bug Fixes.
+* Updated support for Intel compilers on Linux.
+* Makes use of $datarootdir, which is necessary for Autoconf >= 2.60.
+* Fix for a buffer overrun in the opendir/readdir replacement code.
+  This code was used by older versions of MinGW only.
+* Some compiler/linker flags commonly used to select ABI features are allowed
+  through in link mode.  This fixes some 64bit build failures and Darwin's
+  -framework.
+* Handling of archives that have multiple members with the same name on Darwin.
+* Relaxed copyright permissions for the .m4 macro files.
+* Bug Fixes, among others for: Linux search path parsing, a Tru64
+  kernel panic, UNICOS, linking of dependent libraries.
 
 New in 1.5.10: 2004-09-19; CVS version 1.5.9a, Libtool team:
 * GNU/linux ia64 fixes.

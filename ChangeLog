@@ -1,3 +1,7 @@
+2005-02-02  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* NEWS: Update.
+
 2005-02-01  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* m4/libtool.m4 (AC_LIBTOOL_SYS_DYNAMIC_LINKER)
