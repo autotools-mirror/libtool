@@ -48,41 +48,41 @@ dnl AC_CONFIG_FILES([tests/atlocal])
 #	http://www.gnu.org/software/libtool/contribute.html
 
 # First we break the version number up into its constituent parts.
-LT_MAJOR=`echo "AC_PACKAGE_VERSION" | sed ['s,\..*$,,g']`
-LT_MINOR=`echo "AC_PACKAGE_VERSION" | sed ['s,^[0-9]*\.\([0-9]*\).*$,\1,']`
-LT_MICRO=`echo "AC_PACKAGE_VERSION" | sed ['s,^[0-9]*\.[0-9]*\(\.[0-9]*\).*$,\1,']`
-LT_ALPHA=`echo "AC_PACKAGE_VERSION" | sed ['s,^[0-9.]*,,']`
+lt_major=`echo "AC_PACKAGE_VERSION" | sed ['s,\..*$,,g']`
+lt_minor=`echo "AC_PACKAGE_VERSION" | sed ['s,^[0-9]*\.\([0-9]*\).*$,\1,']`
+lt_micro=`echo "AC_PACKAGE_VERSION" | sed ['s,^[0-9]*\.[0-9]*\(\.[0-9]*\).*$,\1,']`
+lt_alpha=`echo "AC_PACKAGE_VERSION" | sed ['s,^[0-9.]*,,']`
 
-test "$LT_MINOR" = "AC_PACKAGE_VERSION" && LT_MINOR=0
-test "$LT_MICRO" = "AC_PACKAGE_VERSION" && LT_MICRO=""
+test "$lt_minor" = "AC_PACKAGE_VERSION" && lt_minor=0
+test "$lt_micro" = "AC_PACKAGE_VERSION" && lt_micro=""
 
 # Then we try to work out what the release before this one would have been
 # numbered.  The only time we come unstuck is when this is the first release
-# from a stable branch (LT_MICRO=LT_ALPHA=""), so LASTRELEASE is the last
+# from a stable branch (lt_micro=lt_alpha=""), so LASTRELEASE is the last
 # release from the old stable branch, and we don't know what version that
 # was, so leave it unset so that the Makefile can complain.
-case $LT_ALPHA in
+case $lt_alpha in
   [[ab]])
-    case $LT_MICRO in
+    case $lt_micro in
       [.[01]])
-	LASTRELEASE="$LT_MAJOR.$LT_MINOR" ;;
+	LASTRELEASE="$lt_major.$lt_minor" ;;
       *)
-	LASTRELEASE="$LT_MAJOR.$LT_MINOR$LT_MICRO" ;;
+	LASTRELEASE="$lt_major.$lt_minor$lt_micro" ;;
     esac
     ;;
   [[cegikmoqsuwy]])
     LASTRELEASE=`echo "AC_PACKAGE_VERSION" | tr 'c-y' 'b-w'` ;;
   [[dfhjlnprtvxz]])
     LASTRELEASE=`echo "AC_PACKAGE_VERSION" | tr 'd-z' 'b-x'` ;;
-  *) # No LT_ALPHA component
-    case $LT_MICRO in
+  *) # No lt_alpha component
+    case $lt_micro in
       .0)
 	LASTRELEASE="" ;;
       .1)
-        LASTRELEASE="$LT_MAJOR.$LT_MINOR" ;;
+        LASTRELEASE="$lt_major.$lt_minor" ;;
       .*)
-	lt_micro_value=`echo $LT_MICRO | sed 's,^\.,,'`
-	LASTRELEASE="$LT_MAJOR.$LT_MINOR.`expr $lt_micro_value - 1`" ;;
+	lt_micro_value=`echo $lt_micro | sed 's,^\.,,'`
+	LASTRELEASE="$lt_major.$lt_minor.`expr $lt_micro_value - 1`" ;;
       *)
 	LASTRELEASE="" ;;
     esac
@@ -94,7 +94,7 @@ AC_SUBST([LASTRELEASE])
 # It is assumed that we only want to see the date extension for cvs libtool
 # versions (i.e. "odd" letters) and not actual alpha releases.
 TIMESTAMP=
-case $LT_ALPHA in
+case $lt_alpha in
   [[acegikmoqsuwy]])
     TIMESTAMP=`${CONFIG_SHELL} ${ac_aux_dir}/mkstamp < ${srcdir}/ChangeLog`
     AS_BOX([Configuring AC_PACKAGE_TARNAME (Build:$TIMESTAMP) AC_PACKAGE_VERSION])

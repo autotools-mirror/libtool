@@ -1,5 +1,11 @@
 2004-02-06  Gary V. Vaughan  <gary@gnu.org>
 
+	* m4/libtool.m4 (AC_LIBTOOL_SETUP): Catch unexpanded macros with
+	beginning with LT_ and _LT_.
+	* configure.ac (LT_MAJOR, LT_MINOR, LT_MICRO, LT_ALPHA): Renamed
+	to lt_major, lt_minor, lt_micro, lt_alpha to save triggering the
+	unexpanded macros error.
+
 	* m4/libtool.m4 (AC_PROVIDE_IFELSE): Removed.  We now require
 	Autoconf 2.58, which ships this macro anyway.
 

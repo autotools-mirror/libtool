@@ -93,6 +93,9 @@ test -f "$ltmain" || ltmain="$ac_aux_dir/ltmain.sh"
 # ----------------
 AC_DEFUN([AC_LIBTOOL_SETUP],
 [AC_PREREQ(2.58)dnl We use AC_INCLUDES_DEFAULT
+dnl Autoconf doesn't catch unexpanded LT_ macros by default:
+m4_pattern_forbid([^_?LT_[A-Z_]+$])dnl
+m4_pattern_allow([^(_LT_EOF|LT_DLGLOBAL|LT_DLLAZY_OR_NOW)$])dnl
 AC_REQUIRE([LTSUGAR_VERSION])dnl
 AC_REQUIRE([AC_CANONICAL_HOST])dnl
 AC_REQUIRE([AC_CANONICAL_BUILD])dnl
