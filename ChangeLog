@@ -1,3 +1,8 @@
+2003-11-07  Robert Millan  <zeratul2@wanadoo.es>
+
+	* m4/libtool.m4 (AC_DEPLIBS_CHECK_METHOD) [GNU/KNetBSD]: Detect
+	inter-library dependencies.
+
 2003-11-06  Gary V. Vaughan  <gary@gnu.org>
 
 	* m4/libtool.m4 (_LT_AC_FILE_LTDLL_C): Removed; no longer in use.
