@@ -1,3 +1,8 @@
+2004-09-02  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* libltdl/ltdl.c (try_dlopen): Fix memory leak.
+	* NEWS: Updated.
+
 2004-09-02  Gary V. Vaughan  <gary@gnu.org>,
 	    Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 

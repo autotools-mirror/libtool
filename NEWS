@@ -10,6 +10,7 @@ New in 1.9d: 2004-??-??; CVS version 1.9c, Libtool team:
   types have been exchanged.  See libltdl/slist.c for documentation.
 * libltdl is C89 compatible again.  lt_dlsymbol type removed, and lt_dlsymlist
   structure changed to avoid using C99 flexible arrays.
+* Fixed some memory leaks in libltdl.
 
 New in 1.9b: 2004-08-29; CVS version 1.5a, Libtool team:
 * The /^_?LT_[A-Z_]+$/ namespace is now reserved for Libtool's own macros.

@@ -1289,6 +1289,8 @@ try_dlopen (lt_dlhandle *phandle, const char *filename)
  cleanup:
   FREE (dir);
   FREE (name);
+  if (!canonical)		/* was MEMREASSIGNed */
+    FREE (base_name);
   FREE (canonical);
 
   return errors;
