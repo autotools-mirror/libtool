@@ -83,6 +83,7 @@ libtoolize_flags=
 prefix=@prefix@
 datadir=@datadir@
 pkgdatadir=@pkgdatadir@
+pkgltdldir=@pkgdatadir@/libltdl
 aclocaldir=@aclocaldir@
 auxdir=
 m4dir=
@@ -298,20 +299,20 @@ func_copy_all_files ()
     done
     IFS="$my_save_IFS"
 
-    func_copy_some_files "$my_basedir" "$my_srcfiles" \
+    func_copy_some_files "$my_srcfiles" "$my_basedir" \
       "$my_destdir" "$my_copy_cb"
 }
 
 
-# func_copy_some_files srcdir srcfile_spec destdir [copy_cb=func_copy_cb]
+# func_copy_some_files srcfile_spec srcdirs destdir [copy_cb=func_copy_cb]
 # Call COPY_CB for each regular file in SRCDIR named by the ':' delimited
 # names in SRCFILE_SPEC.  The odd calling convention is needed to allow
 # spaces in file and directory names.
 func_copy_some_files ()
 {
     $opt_debug
-    my_srcdir="$1"
-    my_srcfile_spec="$2"
+    my_srcfile_spec="$1"
+    my_srcdir="$2"
     my_destdir="$3"
     my_copy_cb="${4-func_copy_cb}"
 
@@ -354,7 +355,6 @@ func_scan_files ()
 
     test -n "`cd $pkgdatadir && ls`" \
         || func_fatal_error "can not list files in \`$pkgdatadir'"
-
 
     # Set local variables to reflect contents of configure.ac
     my_uses_autoconf=false
@@ -758,7 +758,7 @@ func_massage_aclocal_DATA ()
     for my_filename in @aclocal_DATA@; do
       my_filename=`$ECHO "X$my_filename" | $Xsed -e "$basename"`
 
-       # ignore excluded filenames
+      # ignore excluded filenames
       if test -n "$my_glob_exclude"; then
         eval 'case $my_filename in '$my_glob_exclude') continue ;; esac'
       fi
@@ -771,12 +771,43 @@ func_massage_aclocal_DATA ()
 }
 
 
+# func_massage_pkgvltdl_files [glob_exclude]
+# @pkgvltdl_files\@ is substituted as per its value in Makefile.am; this
+# function massages it into a suitable format for func_copy_some_files.
+func_massage_pkgvltdl_files ()
+{
+    pkgvltdl_files=	# GLOBAL VAR
+
+    my_glob_exclude="$1"
+
+    # Massage a value for pkgvltdl_files from the value used in Makefile.am
+    for my_filename in @pkgvltdl_files@; do
+
+      # ignore excluded filenames
+      if test -n "$my_glob_exclude"; then
+        eval 'case $my_filename in '$my_glob_exclude') continue ;; esac'
+      fi
+
+      # ignore duplicates
+      case :$pkgvltdl_files: in
+        *:$my_filename:*) ;;
+	*) pkgvltdl_files="$pkgvltdl_files:$my_filename" ;;
+      esac
+    done
+
+    # strip spurious leading `:'
+    pkgvltdl_files=`$ECHO "X$pkgvltdl_files" | $Xsed -e 's,^:*,,'`
+}
+
+
 ## ----------- ##
 ##    Main.    ##
 ## ----------- ##
 
 {
   rerun_aclocal=false
+
+  func_massage_pkgvltdl_files
 
   # libtool.m4 and ltdl.m4 are handled specially below
   func_massage_aclocal_DATA 'libtool.m4|ltdl.m4'
@@ -789,7 +820,7 @@ func_massage_aclocal_DATA ()
   # Copy all the files from installed libltdl to this project, if the
   # user specified `--ltdl'.
   if test -n "$ltdldir"; then
-    eval func_copy_all_files -r "$pkgdatadir/libltdl" "$ltdldir"
+    eval func_copy_some_files "$pkgvltdl_files" "$pkgltdldir" "$ltdldir"
 
     # libtoolize the newly copied libltdl tree
     ( cd "$ltdldir" && "$progpath" $libtoolize_flags ) || exit $EXIT_FAILURE
@@ -821,7 +852,7 @@ func_massage_aclocal_DATA ()
       func_verbose "Not copying \`$m4dir/ltdl.m4', libltdl not used."
     fi
 
-    func_copy_some_files "$aclocaldir" "$pkgmacro_files" \
+    func_copy_some_files "$pkgmacro_files" "$aclocaldir" \
       "$m4dir" func_serial_update
   fi
 }

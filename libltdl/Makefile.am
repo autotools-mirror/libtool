@@ -73,7 +73,14 @@ ltdldatafiles		= COPYING.LIB README \
 			  $(libltdl_la_SOURCES) \
 			  lt__dirent.c libltdl/lt__dirent.h \
                           lt__strl.c libltdl/lt__strl.h \
-			  argz_.h argz.c
+			  argz_.h argz.c \
+			  loaders/Makefile.am loaders/Makefile.in \
+			  loaders/dld_link.c \
+			  loaders/dlopen.c \
+			  loaders/dyld.c \
+			  loaders/load_add_on.c \
+			  loaders/loadlibrary.c \
+			  loaders/shl_load.c
 
 ## To avoid spurious reconfiguration when the user installs these files
 ## with libtoolize, we have to preserve their timestamps carefully:
@@ -81,6 +88,11 @@ install-data-local:
 	$(mkinstalldirs) $(DESTDIR)$(ltdldatadir)
 	( cd $(srcdir) && $(AMTAR) chf - $(ltdldatafiles); ) \
 	  | ( umask 0 && cd $(DESTDIR)$(ltdldatadir) && $(AMTAR) xf -; )
+
+## This rule is used by the top Makefile.am to get the list of ltdl
+## files that libtoolize will use to implement 'libtoolize --ltdl':
+show-ltdldatafiles:
+	@echo "$(ltdldatafiles)"
 
 ## Make sure these will be cleaned even when they're not built by default:
 CLEANFILES		= libltdl.la libltdlc.la libdlloader.la

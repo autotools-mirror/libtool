@@ -1,3 +1,27 @@
+2005-03-24  Gary V. Vaughan  <gary@gnu.org>
+
+	As a prerequisite for being able to test an uninstalled libtoolize
+	for copying files correctly from the source tree, we must know
+	exactly which files should be copied by the --ltdl option to avoid
+	accidentally picking up compilation objects and other noise when
+	$builddir == $srcdir:
+
+	* libltdl/loaders/Makefile.am (ltdldatadir, ltdldatafiles)
+	(install-data-local): Removed...
+	* libltdl/Makefile.am (ltdldatafiles): ...and consolidated here.
+	(show-ltdldatafiles): New rule...
+	* Makefile.am (ltdldatafiles, libtoolize): ...used to substitute
+	exactly which files are installed by libtoolize --ltdl.
+	(edit): Move pkgvmacro_DATA substitution expression...
+	(libtoolize): ...to here.
+	* libtoolize.m4sh: Use func_copy_some_files() instead of
+	func_copy_all_from_path() to copy the --ltdl option installed
+	files.
+	(pkgvltdldirs): New path variable to search for	files installed by
+	--ltdl option.
+	(func_massage_pkgvltdl_files): New function to calculate the list
+	of ltdl installation files.
+
 2005-03-22  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>  (tiny change)
 
 	* m4/libtool.m4, m4/ltdl.m4: Indentation and quoting cleanup.
