@@ -1,3 +1,9 @@
+2004-02-15  Scott James Remnant  <scott@netsplit.com>
+
+	* m4/ltversion.in: Add a serial number to this file otherwise
+	libtoolize will refuse to copy it into $pkgdatadir, where it
+	is needed by m4/libtool.m4.
+
 2004-02-15  Peter O'Gorman  <peter@pogma.com>
 
 	* m4/libtool.m4, ltmain.in: Rename shrext to shrext_cmds.
