@@ -156,7 +156,7 @@ ifdef([AC_PROVIDE_AC_LIBTOOL_WIN32_DLL],
     [AC_TRY_LINK([],
       [extern int __attribute__((__stdcall__)) DllMain(void*, int, void*);
       DllMain (0, 0, 0);],
-      [lt_cv_need_dllmain=yes],[lt_cv_need_dllmain=no])])
+      [lt_cv_need_dllmain=no],[lt_cv_need_dllmain=yes])])
 
   case "$lt_target/$CC" in
   *-*-cygwin*/gcc*-mno-cygwin*|*-*-mingw*)

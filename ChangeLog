@@ -1,5 +1,11 @@
 2000-01-14  Gary V. Vaughan  <gary@oranda.demon.co.uk>
 
+	* libtool,m4 (AC_LIBTOOL_SETUP):  The result of lt_cv_need_dllmain
+	was set to the opposite of what it should be.
+	* configure.in (AC_LIBTOOL_WIN32_DLL):  Call to this macro is
+	required for libtool configury to test lt_cv_need_dllmain on
+	Windows.
+
 	* ltconfig.in (opt_cr, mingw*): replace unescaped ? with correctly
 	escaped and portable \{0,1\} in sed expression.
 
