@@ -34,11 +34,13 @@
 #include "ltopts.h"
 #include "ltstr.h"
 
+/* BEGIN-STATIC-FORWARD */
+/* END-STATIC-FORWARD */
 
-    void
+EXPORT void
 emitExecute( argc, argv )
-    int argc;
-    char** argv;
+    int    argc;
+    char** argv;    /*end-decl*/
 {
     tSCC zDbgFmt[]   = "set -x\n";
     tSCC zQuiet[]    = "run=\nshow=%s\n";
@@ -129,7 +131,7 @@ else  echo='%s --echo --' ; fi\n";
      *  that one of the command scripts depends upon.
      */
     fprintf( fp, zModeName, libtoolOptions.pzProgName,
-            libtoolOptions.pOptDesc[ OPT_VALUE_MODE ].pz_Name );
+             apzModeName[ OPT_VALUE_MODE ]);
     CKSERV;
     fprintf( fp, zMode, libtoolOptions.pzProgName );
     CKSERV;

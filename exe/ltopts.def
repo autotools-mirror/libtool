@@ -30,7 +30,9 @@ one of the following values:
 \tlink       create a library or an executable
 \trelink     (synonym for `link')
 \tuninstall  remove libraries from an installed directory
-\techo       the program behaves as a reimplementation of echo";
+\techo       the program behaves as a reimplementation of echo
+
+Use --mode=xxx before the --help option to get more help on one of the modes.";
 
 
 include =
@@ -56,6 +58,8 @@ flag = {
     arg_type  = keyword;
     arg_name  = mode;
     settable;
+	immediate;  /* must be able to take effect before ``--help'' */
+	no-preset;
     descrip   = "ltmain's operational mode";
 
     /*
@@ -72,7 +76,9 @@ flag = {
     doc =
     "This enumerates all of the libtool operational modes.\n"
     "If this option is not specified, then this program tries to infer\n"
-    "it from the command name or the name of the file being operated on.";
+    "it from the command name or the name of the file being operated on.\n"
+    "If this option is set before the ``--help'' option on the command line,\n"
+    "then explanitory text for that mode will be included in the usage text.";
 };
 
 flag = {

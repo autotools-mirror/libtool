@@ -51,332 +51,19 @@ static const char*  pz_cmd_name = (char*)NULL;
 int scriptStatus   = EXIT_SUCCESS;
 int signalReceived = 0;
 
+/* BEGIN-STATIC-FORWARD */
+LOCAL void
+handleSignal LT_PARAMS((
+    int signo ));
 
-/*
- *  Handle SIGPIPE and SIGSEGV by telling emitScript() to call close.
- */
-    void
-handleSignal( int signo )
-{
-    signalReceived = signo;
-}
+LOCAL void
+validateMode LT_PARAMS((
+    int     argct,
+    char**  argvec ));
 
+/* END-STATIC-FORWARD */
 
-/*
- *  Close script is called either right after a signal is handled above,
- *  or when we have finished writing to a popen-ed shell.  If we get
- *  a signal on writes to stdout (rather than a popen-ed shell), then
- *  this routine will be called, too.  However, it will choke.  If that
- *  is a problem, then check `fp' for being stdout.
- */
-    void
-closeScript( FILE* fp )
-{
-    int scriptStatus = pclose( fp );
-
-    if (scriptStatus == -1) {
-        fprintf( stderr, "%s EXIT FAILURE:  pclose returned %d (%s)\n",
-                 libtoolOptions.pzProgName, errno, strerror( errno ));
-        scriptStatus = EXIT_FAILURE;
-        return;
-    }
-
-    if (! WIFEXITED( scriptStatus )) {
-        fprintf( stderr, "%s EXIT FAILURE:  %s did not exit - code %x\n",
-                 libtoolOptions.pzProgName, pz_cmd_name, scriptStatus );
-        scriptStatus = EXIT_FAILURE;
-        return;
-    }
-
-    scriptStatus = WEXITSTATUS(scriptStatus);
-    if (scriptStatus != 0) {
-        fprintf( stderr, "%s BAD EXIT:  %s exited %d\n",
-                 libtoolOptions.pzProgName, pz_cmd_name, scriptStatus );
-        return;
-    }
-
-    switch (signalReceived) {
-    case 0: /* no signal received */
-    case SIGPIPE:
-        /*
-         *  SIGPIPE just means the script exited before we could
-         *  write out everything.  This is terribly ugly, but correct.  Ick.
-         */
-        scriptStatus = EXIT_SUCCESS;
-        break;
-
-    default:
-        fprintf( stderr, "%s WRONG SIGNAL:  %d\n",
-                 libtoolOptions.pzProgName, signalReceived );
-        scriptStatus = EXIT_FAILURE;
-    }
-}
-
-/*
- *  The usage text varies a bit, depending on operational mode.
- *  Therefore, catch the usage call, do the variation and then
- *  finish up with the library routine.
- */
-    void
-modalUsage( pOpts, exitCode )
-    tOptions* pOpts;
-    int exitCode;
-{
-    tSCC zFmt[] = "%s --mode=%s";
-    char z[ 256 ];
-
-    if (HAVE_OPT( MODE )) {
-        sprintf( z, zFmt, pOpts->pzProgName,
-                 pOpts->pOptDesc[ OPT_VALUE_MODE ].pz_Name );
-        pOpts->pzProgName = z;
-        pOpts->pzExplain = apz_mode_explain[ OPT_VALUE_MODE ];
-    }
-
-    optionUsage( pOpts, exitCode );
-}
-
-
-    void
-validateMode( argct, argvec )
-    int     argct;
-    char**  argvec;
-{
-    char*  pzCmd = *argvec;
-    char*  pzEnd = pzCmd + strlen( pzCmd );
-
-    if (HAVE_OPT( MODE ))
-        return;
-
-    /*
-     *  IF we don't even have two letters in our command,
-     *  THEN we won't try to figure out what the command is supposed to be.
-     *  Tandem's C compiler fails this test, however.
-     */
-    if ((pzEnd - pzCmd) < 2)
-        return;
-
-    do  {
-        if (  ((pzEnd[-2] == 'c') && (pzEnd[-1] == 'c'))
-           || ((pzEnd[-2] == '+') && (pzEnd[-1] == '+'))
-           || (strncmp( pzCmd, "gcc", 3 ) == 0)
-           || (strstr( pzCmd, "-gcc" ) != (char*)NULL)  )
-            break;
-
-        if (  (strcmp( pzEnd-2, "db"     ) == 0)
-           || (strcmp( pzEnd-3, "dbx"    ) == 0)
-           || (strcmp( pzEnd-6, "strace" ) == 0)
-           || (strcmp( pzEnd-5, "truss"  ) == 0) )  {
-            SET_OPT_MODE( "execute" );
-            return;
-        }
-
-        if (  ((pzEnd[-2] == 'c') && (pzEnd[-1] == 'p'))
-           || ((pzEnd[-2] == 'm') && (pzEnd[-1] == 'v'))
-           || (strstr( pzCmd, "install" ) != (char*)NULL) )  {
-            SET_OPT_MODE( "install" );
-            return;
-        }
-
-        return;
-    } while (0);
-
-    while (--argct > 0) {
-        if (strcmp( *++argvec, "-c" ) == 0) {
-            SET_OPT_MODE( "compile" );
-            return;
-        }
-    }
-
-    SET_OPT_MODE( "link" );
-}
-
-
-    void
-emitShellQuoted( pzArg, outFp )
-    tCC*   pzArg;
-    FILE*  outFp;
-{
-    for (;;) {
-        char  ch = *(pzArg++);
-        switch (ch) {
-        case '\0':
-            return;
-
-        case '\'':
-            fputs( "'\\'", outFp );
-            while (*pzArg == '\'') {
-                fputs( "\\'", outFp );
-                pzArg++;
-            }
-            /* FALLTHROUGH */
-
-        default:
-            fputc( ch, outFp );
-        }
-    }
-}
-
-
-    void
-emitShellArg( pzArg, outFp )
-    tCC*   pzArg;
-    FILE*  outFp;
-{
-    tSCC  zMetas[] = "<>{}()[]|&^#~*;?$`'\"\\ \t\v\f\r\n";
-
-    if (strpbrk( pzArg, zMetas ) == (char*)NULL) {
-        fputs( pzArg, outFp );
-        return;
-    }
-
-    if (strchr( pzArg, '\'' ) == (char*)NULL) {
-        fprintf( outFp, "'%s'", pzArg );
-        return;
-    }
-
-    fputc( '\'', outFp );
-    emitShellQuoted( pzArg, outFp );
-    fputc( '\'', outFp );
-}
-
-
-    void
-emitScript( argc, argv )
-    int argc;
-    char** argv;
-{
-    tSCC zDbgFmt[]   = "set -x\n";
-    tSCC zQuiet[]    = "run=\nshow=%s\n";
-    tSCC zDynFmt[]   = "build_libtool_libs=%s\n";
-    tSCC zStatic[]   = "build_old_libs=%s\n";
-    tSCC zDupDeps[]  = "duplicate_deps=%s\n";
-    tSCC zModeName[] = "modename='%s: %s'\n";
-    tSCC zMode[]     = "mode='%s'\n";
-    tSCC zCmdName[]  = "nonopt='%s'\nset --";
-    tSCC zDlOpt[]    = "execute_dlfiles='";
-
-    /*
-     *  When we emit our script, we want the interpreter to invoke *US*
-     *  if echo does not work right.
-     */
-    tSCC zChkEcho[]  = 
-"\n\nif test \"X`($echo '\\t') 2>/dev/null`\" = 'X\\t'\n\
-then  :\n\
-else  echo='%s --echo --' ; fi\n";
-
-    FILE* fp = HAVE_OPT( DRY_RUN ) ? stdout : popen( pz_shell, "w" );
-    if (fp == (FILE*)NULL) {
-        tSCC zErr[] = "%s error:  fs error %d (%s) on popen( \"%s\",\"w\")\n";
-        fprintf( stderr, zErr, libtoolOptions.pzProgPath, errno,
-                 strerror( errno ), pz_shell );
-        exit( EXIT_FAILURE );
-    }
-
-#    define CKSERV if (signalReceived != 0) { \
-     closeScript( fp ); if (scriptStatus == 0) scriptStatus = EXIT_FAILURE; \
-     return; }
-
-#    define CLOSEOK if (signalReceived != 0) { closeScript( fp ); return; }
-
-    /*
-     *  Emit the default configuration set up at program configuration time
-     */
-    fputs( z_ltconfig, fp );
-    CKSERV;
-    fputs( apz_mode_cmd[ 0 ], fp );
-    CKSERV;
-    fprintf( fp, zChkEcho, libtoolOptions.pzProgPath );
-    CKSERV;
-
-    fprintf( fp, zQuiet,  HAVE_OPT( QUIET )      ? ":"   : "\"$echo\"" );
-    CKSERV;
-
-    /*
-     *  IF we have DYNAMIC or STATIC, then we override the configured
-     *  values.  We emitted the configured values with `z_ltconfig'.
-     */
-    if (HAVE_OPT( DYNAMIC ))
-        fprintf( fp, zDynFmt, ENABLED_OPT( DYNAMIC ) ? "yes" : "no" );
-    if (HAVE_OPT( STATIC ))
-        fprintf( fp, zStatic, ENABLED_OPT( STATIC )  ? "yes" : "no" );
-    if (HAVE_OPT( PRESERVE_DUP_DEPS ))
-		fprintf( fp, zDupDeps, "yes" );
-	else
-		fprintf( fp, zDupDeps, "no" );
-
-    if (HAVE_OPT( DEBUG )) {
-        fprintf( stderr, "%s: enabling shell trace mode\n",
-                 libtoolOptions.pzProgName );
-        fputs( zDbgFmt, fp );
-    }
-    CKSERV;
-
-    if (HAVE_OPT( DLOPEN )) {
-        int    ct = STACKCT_OPT(  DLOPEN );
-        char** al = STACKLST_OPT( DLOPEN );
-        fputs( zDlOpt, fp );
-        for (;;) {
-            emitShellQuoted( *(al++), fp );
-            if (--ct <= 0)
-                break;
-            fputc( ' ', fp ); /* between each value only */
-        }
-        fputs( "'\n", fp );
-    }
-    CKSERV;
-
-    /*
-     *  Insert our modal stuff and one shell option processing dinkleberry
-     *  that one of the command scripts depends upon.
-     */
-    fprintf( fp, zModeName, libtoolOptions.pzProgName,
-            libtoolOptions.pOptDesc[ OPT_VALUE_MODE ].pz_Name );
-    CKSERV;
-    fprintf( fp, zMode, libtoolOptions.pzProgName );
-    CKSERV;
-
-    /*
-     *  Emit the real command.  The original shell script shifts off the
-     *  command name before it realizes what it has done.  We emulate
-     *  that behavior by setting `nonopt' to the command name and inserting
-     *  the remaining arguments as arguments via `set -- $@'.
-     */
-    fprintf( fp, zCmdName, argv[0] );
-    CKSERV;
-
-    while (--argc > 0) {
-        fputc( ' ', fp );
-        emitShellArg( *(++argv), fp );
-        CKSERV;
-    }
-
-	emitCommands( fp, apz_mode_cmd[ OPT_VALUE_MODE ]);
-}
-
-
-void
-emitCommands( FILE* fp, tCC* pzCmds )
-{
-    fputc( '\n', fp );
-    fflush( fp );
-    CKSERV;
-
-    /*
-     *  Up to now, we are just initializing variables.  Here, we write
-     *  a large chunk of text to the pipe and the shell may exit before
-     *  we are done.  If that happens, we get a SIGPIPE.  The `CLOSEOK'
-     *  macro will detect that, call closeScript() and return so as to
-     *  avoid segfaults and more SIGPIPEs.
-     */
-    fputs( pzCmds, fp );
-    CLOSEOK;
-
-    if (fp != stdout)
-        closeScript( fp );
-}
-
-
-    int
+int
 main( argc, argv )
     int argc;
     char** argv;
@@ -476,6 +163,311 @@ main( argc, argv )
     }
 
     return scriptStatus;
+}
+
+
+/*
+ *  Handle SIGPIPE and SIGSEGV by telling emitScript() to call close.
+ */
+LOCAL void
+handleSignal( signo )
+    int signo;    /*end-decl*/
+{
+    signalReceived = signo;
+}
+
+
+/*
+ *  Close script is called either right after a signal is handled above,
+ *  or when we have finished writing to a popen-ed shell.  If we get
+ *  a signal on writes to stdout (rather than a popen-ed shell), then
+ *  this routine will be called, too.  However, it will choke.  If that
+ *  is a problem, then check `fp' for being stdout.
+ */
+EXPORT void
+closeScript( fp )
+    FILE* fp;    /*end-decl*/
+{
+    int scriptStatus = pclose( fp );
+
+    if (scriptStatus == -1) {
+        fprintf( stderr, "%s EXIT FAILURE:  pclose returned %d (%s)\n",
+                 libtoolOptions.pzProgName, errno, strerror( errno ));
+        scriptStatus = EXIT_FAILURE;
+        return;
+    }
+
+    if (! WIFEXITED( scriptStatus )) {
+        fprintf( stderr, "%s EXIT FAILURE:  %s did not exit - code %x\n",
+                 libtoolOptions.pzProgName, pz_cmd_name, scriptStatus );
+        scriptStatus = EXIT_FAILURE;
+        return;
+    }
+
+    scriptStatus = WEXITSTATUS(scriptStatus);
+    if (scriptStatus != 0) {
+        fprintf( stderr, "%s BAD EXIT:  %s exited %d\n",
+                 libtoolOptions.pzProgName, pz_cmd_name, scriptStatus );
+        return;
+    }
+
+    switch (signalReceived) {
+    case 0: /* no signal received */
+    case SIGPIPE:
+        /*
+         *  SIGPIPE just means the script exited before we could
+         *  write out everything.  This is terribly ugly, but correct.  Ick.
+         */
+        scriptStatus = EXIT_SUCCESS;
+        break;
+
+    default:
+        fprintf( stderr, "%s WRONG SIGNAL:  %d\n",
+                 libtoolOptions.pzProgName, signalReceived );
+        scriptStatus = EXIT_FAILURE;
+    }
+}
+
+
+LOCAL void
+validateMode( argct, argvec )
+    int     argct;
+    char**  argvec;    /*end-decl*/
+{
+    char*  pzCmd = *argvec;
+    char*  pzEnd = pzCmd + strlen( pzCmd );
+
+    if (HAVE_OPT( MODE ))
+        return;
+
+    /*
+     *  IF we don't even have two letters in our command,
+     *  THEN we won't try to figure out what the command is supposed to be.
+     *  Tandem's C compiler fails this test, however.
+     */
+    if ((pzEnd - pzCmd) < 2)
+        return;
+
+    do  {
+        if (  ((pzEnd[-2] == 'c') && (pzEnd[-1] == 'c'))
+           || ((pzEnd[-2] == '+') && (pzEnd[-1] == '+'))
+           || (strncmp( pzCmd, "gcc", 3 ) == 0)
+           || (strstr( pzCmd, "-gcc" ) != (char*)NULL)  )
+            break;
+
+        if (  (strcmp( pzEnd-2, "db"     ) == 0)
+           || (strcmp( pzEnd-3, "dbx"    ) == 0)
+           || (strcmp( pzEnd-6, "strace" ) == 0)
+           || (strcmp( pzEnd-5, "truss"  ) == 0) )  {
+            SET_OPT_MODE( "execute" );
+            return;
+        }
+
+        if (  ((pzEnd[-2] == 'c') && (pzEnd[-1] == 'p'))
+           || ((pzEnd[-2] == 'm') && (pzEnd[-1] == 'v'))
+           || (strstr( pzCmd, "install" ) != (char*)NULL) )  {
+            SET_OPT_MODE( "install" );
+            return;
+        }
+
+        return;
+    } while (0);
+
+    while (--argct > 0) {
+        if (strcmp( *++argvec, "-c" ) == 0) {
+            SET_OPT_MODE( "compile" );
+            return;
+        }
+    }
+
+    SET_OPT_MODE( "link" );
+}
+
+
+EXPORT void
+emitShellQuoted( pzArg, outFp )
+    tCC*   pzArg;
+    FILE*  outFp;    /*end-decl*/
+{
+    for (;;) {
+        char  ch = *(pzArg++);
+        switch (ch) {
+        case '\0':
+            return;
+
+        case '\'':
+            fputs( "'\\'", outFp );
+            while (*pzArg == '\'') {
+                fputs( "\\'", outFp );
+                pzArg++;
+            }
+            /* FALLTHROUGH */
+
+        default:
+            fputc( ch, outFp );
+        }
+    }
+}
+
+
+EXPORT void
+emitShellArg( pzArg, outFp )
+    tCC*   pzArg;
+    FILE*  outFp;    /*end-decl*/
+{
+    tSCC  zMetas[] = "<>{}()[]|&^#~*;?$`'\"\\ \t\v\f\r\n";
+
+    if (strpbrk( pzArg, zMetas ) == (char*)NULL) {
+        fputs( pzArg, outFp );
+        return;
+    }
+
+    if (strchr( pzArg, '\'' ) == (char*)NULL) {
+        fprintf( outFp, "'%s'", pzArg );
+        return;
+    }
+
+    fputc( '\'', outFp );
+    emitShellQuoted( pzArg, outFp );
+    fputc( '\'', outFp );
+}
+
+
+EXPORT void
+emitScript( argc, argv )
+    int    argc;
+    char** argv;    /*end-decl*/
+{
+    tSCC zDbgFmt[]   = "set -x\n";
+    tSCC zQuiet[]    = "run=\nshow=%s\n";
+    tSCC zDynFmt[]   = "build_libtool_libs=%s\n";
+    tSCC zStatic[]   = "build_old_libs=%s\n";
+    tSCC zDupDeps[]  = "duplicate_deps=%s\n";
+    tSCC zModeName[] = "modename='%s: %s'\n";
+    tSCC zMode[]     = "mode='%s'\n";
+    tSCC zCmdName[]  = "nonopt='%s'\nset --";
+    tSCC zDlOpt[]    = "execute_dlfiles='";
+
+    /*
+     *  When we emit our script, we want the interpreter to invoke *US*
+     *  if echo does not work right.
+     */
+    tSCC zChkEcho[]  = 
+"\n\nif test \"X`($echo '\\t') 2>/dev/null`\" = 'X\\t'\n\
+then  :\n\
+else  echo='%s --echo --' ; fi\n";
+
+    FILE* fp = HAVE_OPT( DRY_RUN ) ? stdout : popen( pz_shell, "w" );
+    if (fp == (FILE*)NULL) {
+        tSCC zErr[] = "%s error:  fs error %d (%s) on popen( \"%s\",\"w\")\n";
+        fprintf( stderr, zErr, libtoolOptions.pzProgPath, errno,
+                 strerror( errno ), pz_shell );
+        exit( EXIT_FAILURE );
+    }
+
+#    define CKSERV if (signalReceived != 0) { \
+     closeScript( fp ); if (scriptStatus == 0) scriptStatus = EXIT_FAILURE; \
+     return; }
+
+#    define CLOSEOK if (signalReceived != 0) { closeScript( fp ); return; }
+
+    /*
+     *  Emit the default configuration set up at program configuration time
+     */
+    fputs( z_ltconfig, fp );
+    CKSERV;
+    fputs( apz_mode_cmd[ 0 ], fp );
+    CKSERV;
+    fprintf( fp, zChkEcho, libtoolOptions.pzProgPath );
+    CKSERV;
+
+    fprintf( fp, zQuiet,  HAVE_OPT( QUIET )      ? ":"   : "\"$echo\"" );
+    CKSERV;
+
+    /*
+     *  IF we have DYNAMIC or STATIC, then we override the configured
+     *  values.  We emitted the configured values with `z_ltconfig'.
+     */
+    if (HAVE_OPT( DYNAMIC ))
+        fprintf( fp, zDynFmt, ENABLED_OPT( DYNAMIC ) ? "yes" : "no" );
+    if (HAVE_OPT( STATIC ))
+        fprintf( fp, zStatic, ENABLED_OPT( STATIC )  ? "yes" : "no" );
+    if (HAVE_OPT( PRESERVE_DUP_DEPS ))
+		fprintf( fp, zDupDeps, "yes" );
+	else
+		fprintf( fp, zDupDeps, "no" );
+
+    if (HAVE_OPT( DEBUG )) {
+        fprintf( stderr, "%s: enabling shell trace mode\n",
+                 libtoolOptions.pzProgName );
+        fputs( zDbgFmt, fp );
+    }
+    CKSERV;
+
+    if (HAVE_OPT( DLOPEN )) {
+        int    ct = STACKCT_OPT(  DLOPEN );
+        char** al = STACKLST_OPT( DLOPEN );
+        fputs( zDlOpt, fp );
+        for (;;) {
+            emitShellQuoted( *(al++), fp );
+            if (--ct <= 0)
+                break;
+            fputc( ' ', fp ); /* between each value only */
+        }
+        fputs( "'\n", fp );
+    }
+    CKSERV;
+
+    /*
+     *  Insert our modal stuff and one shell option processing dinkleberry
+     *  that one of the command scripts depends upon.
+     */
+    fprintf( fp, zModeName, libtoolOptions.pzProgName,
+             apzModeName[ OPT_VALUE_MODE ]);
+    CKSERV;
+    fprintf( fp, zMode, libtoolOptions.pzProgName );
+    CKSERV;
+
+    /*
+     *  Emit the real command.  The original shell script shifts off the
+     *  command name before it realizes what it has done.  We emulate
+     *  that behavior by setting `nonopt' to the command name and inserting
+     *  the remaining arguments as arguments via `set -- $@'.
+     */
+    fprintf( fp, zCmdName, argv[0] );
+    CKSERV;
+
+    while (--argc > 0) {
+        fputc( ' ', fp );
+        emitShellArg( *(++argv), fp );
+        CKSERV;
+    }
+
+	emitCommands( fp, apz_mode_cmd[ OPT_VALUE_MODE ]);
+}
+
+
+EXPORT void
+emitCommands( fp, pzCmds )
+    FILE* fp;
+    tCC*  pzCmds;    /*end-decl*/
+{
+    fputc( '\n', fp );
+    fflush( fp );
+    CKSERV;
+
+    /*
+     *  Up to now, we are just initializing variables.  Here, we write
+     *  a large chunk of text to the pipe and the shell may exit before
+     *  we are done.  If that happens, we get a SIGPIPE.  The `CLOSEOK'
+     *  macro will detect that, call closeScript() and return so as to
+     *  avoid segfaults and more SIGPIPEs.
+     */
+    fputs( pzCmds, fp );
+    CLOSEOK;
+
+    if (fp != stdout)
+        closeScript( fp );
 }
 /*
  * Local Variables:

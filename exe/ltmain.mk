@@ -39,3 +39,16 @@ gen : ltmain.in ltstr.c ltopts.c
 
 libtool : ltmain
 	./ltmain --mode=link $(CC) -o $@ $(OBJ) -lopts
+
+fwd:
+	for f in `egrep -l '^LOCAL ' *.c` ; do \
+	( sed '/BEGIN-STATIC-FORWARD/q' $$f ; \
+	  sed -n '1,/END-STATIC-FORWARD/d;/^LOCAL /,/^{/p' $$f | \
+	  sed 's/^\([a-zA-Z0-9_]*\)(.*/\1 LT_PARAMS((/;\
+		s/;/,/;\
+		s=,[ \t]*/\*end-decl.*= ));=;\
+		s/^{//' ;\
+	  echo '/* END-STATIC-FORWARD */';\
+	  sed '1,/END-STATIC-FORWARD/d' $$f ) > XXX ; \
+	if cmp XXX $$f > /dev/null ; then rm -f XXX ; else mv -f XXX $$f ; fi ; \
+	done

@@ -42,157 +42,22 @@ static int     oldLibs  = 0;
 static char*   pzPicMode = "default";
 static int     xCompile = 0;
 
-static void*
-xmalloc( size_t s )
-{
-    void* p = malloc( s );
-    if (p == NULL) {
-        fprintf( stderr, "%s error: cannot allocate %d bytes\n",
-                 libtoolOptions.pzProgPath );
-        exit( EXIT_FAILURE );
-    }
-    return p;
-}
+/* BEGIN-STATIC-FORWARD */
+LOCAL tCC*
+makeShellSafe LT_PARAMS((
+    tCC*   pzArg ));
 
-tCC*
-makeShellSafe( pzArg )
-    tCC*   pzArg;
-{
-    tSCC    zSpecial[] = "\\\"$`[~#^&*(){}|;<>?' \t|]";
-    tSCC*   pzProt     = zSpecial + 4;
+LOCAL void
+parseCompileOpts LT_PARAMS((
+    int*    pArgc,
+    char*** pArgv ));
 
-    size_t  len = strlen( pzArg );
-    char*   pz;
+/* END-STATIC-FORWARD */
 
-    if (strcspn( pzArg, zSpecial ) == len)
-        return pzArg;
-
-    pz = strchr( pzArg, '\'' );
-    if (pz == NULL)
-        return pzArg;
-
-    do  {
-        len += 3;
-        pz = strchr( pz+1, '\'' );
-    } while (pz != NULL);
-
-    {
-        char*   pzRes = malloc( len + 1 );
-        pz = pzRes;
-        for (;;) {
-            char  ch = *(pzArg++);
-            *(pz++) = ch;
-
-            switch (ch) {
-            case '\0':
-                goto scan_done;
-
-            case '\'':
-                do  {
-                    strcpy( pz, "\\'" );
-                    pz += 2;
-                } while (*pzArg == '\'');
-                *(pz++) = '\'';
-                break;
-
-            default:
-                break;
-            }
-        } scan_done:;
-
-        return pzRes;
-    }
-}
-
-
-static void
-parseCompileOpts( pArgc, pArgv )
-    int*    pArgc;
-    char*** pArgv;
-{
-    tSCC    zTooManyTargets[] =
-        "%s compile: you cannot specify `-o' more than once\n";
-    tSCC    zNoTarget[] =
-        "%s compile:  `-o' must specify an output file name\n";
-    tSCC    zNoXcompile[] =
-        "%s compile:  `-Xcompiler' must specify a cross compiler\n";
-    tSCC    zEarlyOpts[] =
-        "%s compile: error: you cannot supply options before the command\n";
-
-    int     argc = *pArgc;
-    char**  argv = *pArgv;
-
-    tCC**   newArgv = xmalloc( sizeof( char* ) * (argc + 1) );
-    int     newCt   = 0;
-
-    tCC*    pzCmd   = NULL;
-    int     i;
-
-    for (i=0; i<argc; i++) {
-        if (strncmp( argv[i], "-o", 2 ) == 0) {
-            if (pzTarget != NULL) {
-                fprintf( stderr, zTooManyTargets, libtoolOptions.pzProgPath );
-                exit( EXIT_FAILURE );
-            }
-            if (argv[i][2] != '\0')
-                pzTarget = (argv[i]) + 2;
-            else {
-                pzTarget = argv[ ++i ];
-                if (pzTarget == NULL) {
-                    fprintf( stderr, zNoTarget, libtoolOptions.pzProgPath );
-                    exit( EXIT_FAILURE );
-                }
-            }
-
-        } else if (strcmp( argv[i], "-static"         ) == 0) {
-            oldLibs = 1;
-
-        } else if (strcmp( argv[i], "-prefer-pic"     ) == 0) {
-            pzPicMode = "yes";
-
-        } else if (strcmp( argv[i], "-prefer-non-pic" ) == 0) {
-            pzPicMode = "no";
-
-        } else if (strcmp( argv[i], "-Xcompiler"      ) == 0) {
-            if (argv[++i] == NULL) {
-                fprintf( stderr, zNoXcompile, libtoolOptions.pzProgPath );
-                exit( EXIT_FAILURE );
-            }
-            pzCmd = newArgv[ newCt++ ] = makeShellSafe( argv[i] );
-
-        } else if (argv[i][0] == '-') {
-            if (pzCmd == NULL) {
-                fprintf( stderr, zEarlyOpts, libtoolOptions.pzProgPath );
-                exit( EXIT_FAILURE );
-            }
-            newArgv[ newCt++ ] = makeShellSafe( argv[i] );
-
-        } else if (pzCmd == NULL) {
-            pzCmd = newArgv[ newCt++ ] = makeShellSafe( argv[i] );
-
-        } else {
-            if (pzSource != NULL)
-                newArgv[ newCt++ ] = makeShellSafe( pzSource );
-            pzSource = argv[i];
-        }
-    }
-
-    if (pzSource == NULL) {
-        fprintf( stderr, "%s compile: error: no source file to compile\n",
-                 libtoolOptions.pzProgName );
-        exit( EXIT_FAILURE );
-    }
-
-    newArgv[ newCt ] = NULL;
-    *pArgc = newCt;
-    *pArgv = (char**)newArgv;
-}
-
-
-    void
+EXPORT void
 emitCompile( argc, argv )
-    int argc;
-    char** argv;
+    int    argc;
+    char** argv;    /*end-decl*/
 {
     tSCC zDbgFmt[]   = "set -x\n";
     tSCC zQuiet[]    = "run=\nshow=%s\n";
@@ -277,7 +142,7 @@ else  echo='%s --echo --' ; fi\n";
      *  that one of the command scripts depends upon.
      */
     fprintf( fp, zModeName, libtoolOptions.pzProgName,
-             libtoolOptions.pOptDesc[ OPT_VALUE_MODE ].pz_Name );
+             apzModeName[ OPT_VALUE_MODE ]);
     CKSERV;
     fprintf( fp, zMode, libtoolOptions.pzProgName );
     CKSERV;
@@ -338,9 +203,159 @@ else  echo='%s --echo --' ; fi\n";
 
     emitCommands( fp, apz_mode_cmd[ OPT_VALUE_MODE ]);
 }
+
+
+EXPORT void*
+xmalloc( size )
+    size_t size;    /*end-decl*/
+{
+    void* p = malloc( size );
+    if (p == NULL) {
+        fprintf( stderr, "%s error: cannot allocate %d bytes\n",
+                 libtoolOptions.pzProgPath );
+        exit( EXIT_FAILURE );
+    }
+    return p;
+}
+
+
+LOCAL tCC*
+makeShellSafe( pzArg )
+    tCC*   pzArg;    /*end-decl*/
+{
+    tSCC    zSpecial[] = "\\\"$`[~#^&*(){}|;<>?' \t|]";
+    tSCC*   pzProt     = zSpecial + 4;
+
+    size_t  len = strlen( pzArg );
+    char*   pz;
+
+    if (strcspn( pzArg, zSpecial ) == len)
+        return pzArg;
+
+    pz = strchr( pzArg, '\'' );
+    if (pz == NULL)
+        return pzArg;
+
+    do  {
+        len += 3;
+        pz = strchr( pz+1, '\'' );
+    } while (pz != NULL);
+
+    {
+        char*   pzRes = malloc( len + 1 );
+        pz = pzRes;
+        for (;;) {
+            char  ch = *(pzArg++);
+            *(pz++) = ch;
+
+            switch (ch) {
+            case '\0':
+                goto scan_done;
+
+            case '\'':
+                do  {
+                    strcpy( pz, "\\'" );
+                    pz += 2;
+                } while (*pzArg == '\'');
+                *(pz++) = '\'';
+                break;
+
+            default:
+                break;
+            }
+        } scan_done:;
+
+        return pzRes;
+    }
+}
+
+
+LOCAL void
+parseCompileOpts( pArgc, pArgv )
+    int*    pArgc;
+    char*** pArgv;    /*end-decl*/
+{
+    tSCC    zTooManyTargets[] =
+        "%s compile: you cannot specify `-o' more than once\n";
+    tSCC    zNoTarget[] =
+        "%s compile:  `-o' must specify an output file name\n";
+    tSCC    zNoXcompile[] =
+        "%s compile:  `-Xcompiler' must specify a cross compiler\n";
+    tSCC    zEarlyOpts[] =
+        "%s compile: error: you cannot supply options before the command\n";
+
+    int     argc = *pArgc;
+    char**  argv = *pArgv;
+
+    tCC**   newArgv = xmalloc( sizeof( char* ) * (argc + 1) );
+    int     newCt   = 0;
+
+    tCC*    pzCmd   = NULL;
+    int     i;
+
+    for (i=0; i<argc; i++) {
+        if (strncmp( argv[i], "-o", 2 ) == 0) {
+            if (pzTarget != NULL) {
+                fprintf( stderr, zTooManyTargets, libtoolOptions.pzProgPath );
+                exit( EXIT_FAILURE );
+            }
+            if (argv[i][2] != '\0')
+                pzTarget = (argv[i]) + 2;
+            else {
+                pzTarget = argv[ ++i ];
+                if (pzTarget == NULL) {
+                    fprintf( stderr, zNoTarget, libtoolOptions.pzProgPath );
+                    exit( EXIT_FAILURE );
+                }
+            }
+
+        } else if (strcmp( argv[i], "-static"         ) == 0) {
+            oldLibs = 1;
+
+        } else if (strcmp( argv[i], "-prefer-pic"     ) == 0) {
+            pzPicMode = "yes";
+
+        } else if (strcmp( argv[i], "-prefer-non-pic" ) == 0) {
+            pzPicMode = "no";
+
+        } else if (strcmp( argv[i], "-Xcompiler"      ) == 0) {
+            if (argv[++i] == NULL) {
+                fprintf( stderr, zNoXcompile, libtoolOptions.pzProgPath );
+                exit( EXIT_FAILURE );
+            }
+            pzCmd = newArgv[ newCt++ ] = makeShellSafe( argv[i] );
+
+        } else if (argv[i][0] == '-') {
+            if (pzCmd == NULL) {
+                fprintf( stderr, zEarlyOpts, libtoolOptions.pzProgPath );
+                exit( EXIT_FAILURE );
+            }
+            newArgv[ newCt++ ] = makeShellSafe( argv[i] );
+
+        } else if (pzCmd == NULL) {
+            pzCmd = newArgv[ newCt++ ] = makeShellSafe( argv[i] );
+
+        } else {
+            if (pzSource != NULL)
+                newArgv[ newCt++ ] = makeShellSafe( pzSource );
+            pzSource = argv[i];
+        }
+    }
+
+    if (pzSource == NULL) {
+        fprintf( stderr, "%s compile: error: no source file to compile\n",
+                 libtoolOptions.pzProgName );
+        exit( EXIT_FAILURE );
+    }
+
+    newArgv[ newCt ] = NULL;
+    *pArgc = newCt;
+    *pArgv = (char**)newArgv;
+}
 /*
  * Local Variables:
  * c-file-style: "stroustrup"
  * indent-tabs-mode: nil
+ * tab-width: 4
  * End:
  * end of ltcompile.c */

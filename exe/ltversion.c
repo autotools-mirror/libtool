@@ -52,7 +52,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "options.h"
+#include "ltstr.h"
 #include "ltopts.h"
 
 tSCC zAO[] =
@@ -64,11 +64,13 @@ tSCC zBadArg[] =
 \t'c' - version and copyright\n\
 \t'n' - version and copyright notice\n";
 
+/* BEGIN-STATIC-FORWARD */
+/* END-STATIC-FORWARD */
 
-    void
+EXPORT void
 doVersion( pOpts, pOD )
     tOptions*  pOpts;
-    tOptDesc*  pOD;
+    tOptDesc*  pOD;    /*end-decl*/
 {
     char swCh;
 
@@ -117,8 +119,29 @@ doVersion( pOpts, pOD )
 
     exit( EXIT_SUCCESS );
 }
+
+
+EXPORT void
+modalUsage( pOpts, exitCode )
+	tOptions*  pOpts;
+    int        exitCode;    /*end-decl*/
+{
+	char z[ 256 ];
+
+	if (OPT_VALUE_MODE != MODE_UNDEFINED) {
+		tSCC zFmt[] = "%s --mode=%s";
+
+        sprintf( z, zFmt, pOpts->pzProgName, apzModeName[ OPT_VALUE_MODE ]);
+        pOpts->pzProgName = z;
+        pOpts->pzExplain = apzModeExplain[ OPT_VALUE_MODE ];
+	}
+
+    optionUsage( pOpts, exitCode );
+}
 /*
  * Local Variables:
  * c-file-style: "stroustrup"
+ * indent-tabs-mode: nil
+ * tab-width: 4
  * End:
  * version.c ends here */

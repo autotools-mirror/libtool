@@ -116,7 +116,7 @@ ENDIF  c/h suffix
 =]
 
 [=IF (== (suffix) "h")=]extern [=
-  ENDIF=]tCC* apz_mode_explain[ MODE_CT ][=
+  ENDIF=]tCC* apzModeExplain[ MODE_CT ][=
 IF (== (suffix) "c") =] = {[=
 
   FOR string , =]
@@ -132,7 +132,7 @@ IF (== (suffix) "c") =] = {[=
 ENDIF =];
 
 [=IF (== (suffix) "h")=]extern [=
-  ENDIF=]tCC* apz_mode_cmd[     MODE_CT ][=
+  ENDIF=]tCC* apz_mode_cmd[   MODE_CT ][=
 IF (== (suffix) "c") =] = {
 [=(shellf "columns -I4 -S, <<_EOF_\n%s_EOF_" cmd-list) =]
 }[=
@@ -145,18 +145,43 @@ IF (== (suffix) "c") =] = {[=
   FOR string , =]
     [=?% call-proc "%s" emitScript=][=
   ENDFOR  =]
-};[=
+}[=
 
-ELSE =];
+ENDIF =];
+
+[=IF (== (suffix) "h")=]extern [=
+  ENDIF=]tCC* apzModeName[    MODE_CT+1 ][=
+IF (== (suffix) "c") =] = { NULL[=
+
+  FOR string =],
+    "[=str-name=]"[=
+  ENDFOR  =]
+}[=
+
+ENDIF =];[=
+
+IF (== (suffix) "h")  =]
+
+#define EXPORT
+#ifdef DEBUG
+#  define LOCAL
+#else
+#  define LOCAL static
+#endif
 
 extern int signalReceived;
 extern int scriptStatus;
-
-extern void closeScript     LT_PARAMS(( FILE* fp ));
-extern void modalUsage      LT_PARAMS(( tOptions* pOpts, int exitCode ));
-extern void emitShellQuoted LT_PARAMS(( tCC* pzArg, FILE* outFp ));
-extern void emitShellArg    LT_PARAMS(( tCC* pzArg, FILE* outFp ));
-extern void emitCommands    LT_PARAMS(( FILE* fp, tCC* pzCmds ));
+[=`
+for f in \`egrep -l '^EXPORT ' *.c\`
+do
+  sed -n '/^EXPORT /,/^{/p' $f
+done | \
+sed '
+  s/EXPORT /extern /
+  s/^\\([a-zA-Z0-9_]*\\)(.*/\\1 LT_PARAMS((/
+  s/;/,/
+  s=,[ \t]*/\\*end-decl.*= ));=
+  s/^{//' `=]
 
 #endif /* [=(. header-guard)=] */[=
 
