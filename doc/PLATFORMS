@@ -32,6 +32,7 @@ i*86-*-bsdi2.1                  gcc      1.2e     NS
 i*86-pc-cygwin                  gcc      1.3b     NS
   (egcs-1.1 stock b20.1 compiler)
 i*86-*-dguxR4.20MU01            gcc      1.2      ok
+i*86-*-freebsd4.3		gcc      1.3e     ok (1.912)
 i*86-*-freebsdelf4.0            gcc      1.3c     ok
   (egcs-1.1.2)
 i*86-*-freebsdelf3.2            gcc      1.3c     ok

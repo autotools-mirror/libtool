@@ -1,3 +1,10 @@
+2001-04-23  Peter Eisentraut  <peter_e@gmx.net>
+
+	* doc/PLATFORMS:  With this patch, freebsd4.3 passes the test
+	suite.
+	* libltdl/ltdl.c (lt_dlexit): Quit loop if only resident modules
+	are left.
+	
 2001-04-23  Gary V. Vaughan  <gvv@techie.com>
 
 	* doc/PLATFORMS:  With this patch, my Solaris boxes now pass the
