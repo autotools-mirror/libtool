@@ -1,3 +1,8 @@
+1999-01-13  Edouard G. Parmelan  <Edouard.Parmelan@France.NCR.COM>
+
+	* ltmain.in (dependency_libs, -R): use `dep' instead of `arg' to
+ 	iterate, otherwise we'd overwrite `arg'
+
 1999-01-13  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* libltdl/configure.in (libltdl_cv_shlibext, LTDL_SHLIB_EXT):
