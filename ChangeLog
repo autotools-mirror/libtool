@@ -1,3 +1,7 @@
+1999-02-12  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* libltdl/ltdl.c (tryall_dlopen): strcmp filenames was reversed
+
 1999-02-11  Thomas Tanner  <tanner@gmx.de>
 
 	* autogen: libltdl needs autoheader

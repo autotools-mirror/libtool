@@ -778,7 +778,7 @@ tryall_dlopen (handle, filename)
 		if (!cur->filename && !filename)
 			break;
 		if (cur->filename && filename && 
-		    strcmp(cur->filename, filename))
+		    strcmp(cur->filename, filename) == 0)
 			break;
 		cur = cur->next;
 	}
