@@ -1,5 +1,8 @@
 2004-10-03  Gary V. Vaughan  <gary@gnu.org>
 
+	* NEWS: Updated.
+	* configure.ac: Bumped version to 1.9e.
+
 	GNU libtool 1.9d was released.
 
 	* configure.ac: Bumped version to 1.9d.
