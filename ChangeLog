@@ -1,3 +1,12 @@
+2002-01-14  Ossama Othman  <ossama@uci.edu>
+
+	From Roger Leigh <rl117@york.ac.uk>:
+	* libtoolize.in (auxdirline): Fixed hardcoded value of
+	"configure.in." Instead use "$configure_ac" variable.  Corrects
+	AC_CONFIG_AUX_DIR support when using new style `configure.ac.'
+
+	* doc/libtool.texi:  Corrected typo.  "Safety" not "Saftey".
+
 2002-01-14  Robert Boehne  <rboehne@ricardo-us.com>
 
 	* libtool.m4 (AC_DEPLIBS_CHECK_METHOD): Add mips/mipsel to list of
