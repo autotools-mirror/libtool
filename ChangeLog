@@ -1,3 +1,13 @@
+2001-03-31  Gary V. Vaughan  <gvv@techie.com>
+
+	* ltmain.in: Remove the code for stripping duplicate deplibs
+	from libtool link lines -- duplicates are somtimes necessary
+	to satisfy inter-library dependencies, and never cause link to
+	fail even if they are spurious.
+	* tests/depdemo-dups.test: New file.  Make sure this bug doesn't
+	creep back in again!
+	* tests/Makefile.am (TESTS): Use the new test above.
+
 2001-03-29  Edward M. Lee  <tailbert@yahoo.com>
 
 	* libtoolize.in: Check configure.ac and prefer configure.ac to
