@@ -1091,7 +1091,7 @@ compiler."
 	      deplibs="$deplibs $dir/$linklib"
 	    elif test "$hardcode_minus_L" = yes; then
 	      compile_command="$compile_command -L$dir -l$name"
-	      deplibs="$deplibs $dir/$linklib"
+	      deplibs="$deplibs -L$dir -l$name"
 	    elif test "$hardcode_shlibpath_var" = yes; then
 	      compile_shlibpath="$compile_shlibpath$dir:"
 	      compile_command="$compile_command -l$name"

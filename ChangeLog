@@ -1,13 +1,16 @@
 1999-01-19  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
 
+	From Andrey Slepuhin <pooh@msu.ru>
+	* ltmain.in (hardcode_action) Oops, misapplied the patch!
+	
 	* ltconfig.in (compile_dependencylbs): removed this
 	variable and pick up the library dependencies from $deplibs.
 	* ltmain.in (compile_dependencylibs): removed this
 	variable, use deplibs to hold these dependencies.
 
 	From Andrey Slepuhin <pooh@msu.ru>
-	(hardcode_action) make sure deplibs is set to include all the
-	extra libs added to compile_command.
+	* ltmain.in (hardcode_action) make sure deplibs is set to include
+	all the	extra libs added to compile_command.
 
 1999-01-18  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
