@@ -1,3 +1,8 @@
+2001-07-27  NIIBE Yutaka  <gniibe@m17n.org>
+
+	* libtool.m4 (lt_cv_deplibs_check_method): Use pass_all
+	for sh*-*-linux* (SuperH) too.
+
 2001-07-25  Ossama Othman  <ossama@debian.org>
 
 	From Thomas Poindessous <poinde_t@epita.fr>
