@@ -1,5 +1,7 @@
 2005-02-04  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* ltmain.in (link mode): Allow five digits in version-info 
+
 	* NEWS: s/Linux/GNU &/.
 
 2005-02-03 Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
