@@ -1,3 +1,8 @@
+1999-03-08  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* tests/build-relink.test: link broken libhello.la with at least
+	one libtool object
+
 1999-03-08  Thomas Tanner  <tanner@gmx.de>
 
 	* TODO: updated (libltdl build problem fixed)

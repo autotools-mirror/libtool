@@ -61,7 +61,7 @@ else
 fi
 
 echo "linking a broken ../demo/libhello.la"
-if $make libhello.la libhello_la_OBJECTS=; then
+if $make libhello.la libhello_la_OBJECTS=hello.lo; then
   :
 else
   echo "= Exiting: cannot link broken libhello.la"
