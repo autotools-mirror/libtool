@@ -2,7 +2,7 @@ NEWS - list of user-visible changes between releases of GNU Libtool
 
 New in 1.3d: 2000-??-??; CVS version 1.3c, Libtool team:
 * ltconfig is no more.  Generation of libtool happens directly from
-  the configure file. 
+  the configure file.
 * New -no-install flag to avoid the use of executable wrapper scripts.
 * New --with-pic, -prefer-pic and -prefer-non-pic flags to control
   the generation of PIC/non-PIC code.
@@ -12,7 +12,8 @@ New in 1.3d: 2000-??-??; CVS version 1.3c, Libtool team:
 * Support -dlopen and -dlpreopen for libraries.
 * Libtool now allows you to link shared libraries against static code.
 * New functions in libltdl:
-  lt_dlgetinfo, lt_dlforeach provide access to module specific data in handles.
+  lt_dlgetinfo, lt_dlhandle_next and lt_dlforeach provide access to module
+  specific data in handles.
   lt_dlcaller_register, lt_dlcaller_set_data and lt_dlcaller_get_data provide
   management for user storage of per module data.
   lt_dlloader_next, lt_dlloader_name, lt_dlloader_find, lt_dlloader_add and
@@ -101,10 +102,10 @@ New in 1.3: 1999-04-29, Libtool team:
   libtool libraries.  Linking of uninstalled libtool libraries into
   libraries is under development for 1.4.
 * Do not drop library dependencies on platforms that allow them.
-* Linking with uninstalled libraries no longer picks installed ones by 
+* Linking with uninstalled libraries no longer picks installed ones by
   mistake.
 * Use libraries from the build tree when running uninstalled
-  executables (may require double linking).  
+  executables (may require double linking).
 * Allow developers to optimize for build-tree executions.
 * Support -export-symbols-regex for controlled symbol exporting.
 * Support -R to hardcode directories in library search paths.
@@ -175,11 +176,11 @@ New in 1.2d: 1998-12-16; CVS version 1.2c, Libtool team:
   It is still undocumented, but you can already find some examples in:
 * New mdemo directory, with tests of -module and dlopening examples.
   Be aware that libltdl is only known to work on a few platforms such as
-  GNU/Linux and Solaris2.  Some mdemo tests are known to FAIL on several 
+  GNU/Linux and Solaris2.  Some mdemo tests are known to FAIL on several
   other platforms; please ignore these failures by now (or work to fix
   them :-).
 * Inter-library dependencies patch finally integrated, but there's
-  still much porting to do.  See PORTING for details (some plans for the 
+  still much porting to do.  See PORTING for details (some plans for the
   future in mail/deplibs in the CVS tree).
 * New option -export-symbols to control symbol exporting when possible.
 * Fixed -export-dynamic problem with C++ programs in egcs 1.1.
