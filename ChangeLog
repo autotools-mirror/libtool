@@ -1,5 +1,30 @@
 2001-09-02  Gary V. Vaughan  <gary@gnu.org>
 
+	Based on a patch from Marius Vollmer <mvo@zagadka.ping.de>:
+	* NEWS: updated.
+	* ltdl.m4 (AC_LIB_LTDL): Check for unistd.h.
+	* ltdl.c: Include unistd.h if it exists.
+	(LTDL_SEARCHPATH_VAR): Macro to prevent hardcoding
+	"LTDL_LIBRARY_PATH".
+	(LTDL_ARCHIVE_EXT): Macro to prevent hardcoding ".la".
+	(archive_ext): Have only one copy of ".la" in the readonly
+	segment of the compiled library.
+	(find_handle_callback): Don't bother trying to dlopen the file if
+	it doesn't exist.
+	(find_handle): Don't bother searching for files if no search_path
+	was supplied.
+	(file_not_found): A new function to determine whether the last
+	error was due to a file not found condition.
+	(try_dlopen): Renamed from lt_dlopen() and changed to have the
+	same footprint as tryall_dlopen.  This involved a minor rewrite of
+	much of the internals of this function.
+	(lt_dlopen): A new function wrapped arounf try_dlopen().
+	(lt_dlopenext): If a file already has a suitable extension, don't
+	bother adding additional extensions and trying to open those.
+	Tidy up the rest of the code to prevent continued searching with
+	an eventual FILE_NOT_FOUND when a genuine failure earlier in the
+	search process could be legitimately reported.
+
 	* demo/Makefile.am (helldl$(EXEEXT)): Automake-1.5 made me change
 	this from just `helldl'.
 

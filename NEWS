@@ -3,6 +3,7 @@ NEWS - list of user-visible changes between releases of GNU Libtool
 New in 1.4d: 2001-??-??; CVS version 1.4c, Libtool team:
 * Help strings display correctly again.
 * Better error messages when library linking fails.
+* Better error messages from libltdl when loading fails.
 * Better search path management in libltdl with `lt_dlinsertsearchdir' call.
 * Support /lib/w32api in recent cygwin releases.
 * Support cross compilation to mingw.

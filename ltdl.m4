@@ -45,7 +45,7 @@ AC_REQUIRE([AC_LTDL_DLSYM_USCORE])
 AC_REQUIRE([AC_LTDL_SYS_DLOPEN_DEPLIBS])
 AC_REQUIRE([AC_LTDL_FUNC_ARGZ])
 
-AC_CHECK_HEADERS([ctype.h errno.h malloc.h memory.h stdlib.h stdio.h])
+AC_CHECK_HEADERS([ctype.h errno.h malloc.h memory.h stdlib.h stdio.h unistd.h])
 AC_CHECK_HEADERS([dl.h sys/dl.h dld.h])
 AC_CHECK_HEADERS([string.h strings.h], [break])
 
@@ -246,7 +246,7 @@ AC_DEFUN([AC_LTDL_DLLIB],
 [LIBADD_DL=
 AC_SUBST(LIBADD_DL)
 AC_LANG_PUSH([C])
-AC_CHECK_LIB([dl], [dlopen], 
+AC_CHECK_LIB([dl], [dlopen],
   [AC_DEFINE([HAVE_LIBDL], [1],
      [Define if you have the libdl library or equivalent.])
    LIBADD_DL="-ldl"],
@@ -254,10 +254,10 @@ AC_CHECK_LIB([dl], [dlopen],
 #  include <dlfcn.h>
 #endif
     ],
-    [dlopen();], 
+    [dlopen();],
     [AC_DEFINE(HAVE_LIBDL, 1,
       [Define if you have the libdl library or equivalent.])],
-    [AC_CHECK_LIB(svld, dlopen, 
+    [AC_CHECK_LIB(svld, dlopen,
       [AC_DEFINE(HAVE_LIBDL, 1,
         [Define if you have the libdl library or equivalent.])
       LIBADD_DL="-lsvld"
