@@ -1,3 +1,9 @@
+1999-06-18  Gary V. Vaughan  <gary@oranda.demon.co.uk>
+
+	* ltmain.in (outputname): When generating the executable wrapper
+	script, $outputname already has the $exeext suffix, so we needn't
+	add it again.
+
 1999-06-16  Gary V. Vaughan  <gary@oranda.demon.co.uk>
 
 	* libltdl/configure.in (ac_cv_lib_dl_dlopen): missing "x" in test
