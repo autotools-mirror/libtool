@@ -1,3 +1,9 @@
+20001-03-05  Akim Demaille  <akim@epita.fr>
+
+	* ltmain.sh: Don't quote the argument of case/esac and
+	assignments.
+	* libtool.m4: Likewise.
+
 2001-03-03  Markus F.X.J. Oberhumer <markus@oberhumer.com>,
 	    Alexandre Oliva <oliva@lsd.ic.unicamp.br>
 

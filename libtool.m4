@@ -56,7 +56,7 @@ dnl
 
 _LT_AC_PROG_ECHO_BACKSLASH
 # Only perform the check for file, if the check method requires it
-case "$deplibs_check_method" in
+case $deplibs_check_method in
 file_magic*)
   if test "$file_magic_cmd" = '$MAGIC_CMD'; then
     AC_PATH_MAGIC
@@ -77,12 +77,12 @@ test "x$enable_libtool_lock" != xno && enable_libtool_lock=yes
 
 # Some flags need to be propagated to the compiler or linker for good
 # libtool support.
-case "$host" in
+case $host in
 *-*-irix6*)
   # Find out which ABI we are using.
   echo '[#]line __oline__ "configure"' > conftest.$ac_ext
   if AC_TRY_EVAL(ac_compile); then
-    case "`/usr/bin/file conftest.$ac_objext`" in
+    case `/usr/bin/file conftest.$ac_objext` in
     *32-bit*)
       LD="${LD-ld} -32"
       ;;
@@ -126,7 +126,7 @@ ifdef([AC_PROVIDE_AC_LIBTOOL_WIN32_DLL],
       DllMain (0, 0, 0);],
       [lt_cv_need_dllmain=no],[lt_cv_need_dllmain=yes])])
 
-  case "$host/$CC" in
+  case $host/$CC in
   *-*-cygwin*/gcc*-mno-cygwin*|*-*-mingw*)
     # old mingw systems require "-dll" to link a DLL, while more recent ones
     # require "-mdll"
@@ -180,7 +180,7 @@ symxfrm='\1 \2\3 \3'
 lt_cv_global_symbol_to_cdecl="sed -n -e 's/^. .* \(.*\)$/extern char \1;/p'"
 
 # Define system-specific variables.
-case "$host_os" in
+case $host_os in
 aix*)
   [symcode='[BCDT]']
   ;;
@@ -203,7 +203,7 @@ esac
 
 # Handle CRLF in mingw tool chain
 opt_cr=
-case "$host_os" in
+case $host_os in
 mingw*)
   opt_cr=`echo 'x\{0,1\}' | tr x '\015'` # option cr in regexp
   ;;
@@ -356,7 +356,7 @@ _LT_AC_LIBTOOL_SYS_PATH_SEPARATOR
 # Check that we are running under the correct shell.
 SHELL=${CONFIG_SHELL-/bin/sh}
 
-case "X$ECHO" in
+case X$ECHO in
 X*--fallback-echo)
   # Remove one level of quotation (which was required for Make).
   ECHO=`echo "$ECHO" | sed 's,\\\\\[$]\\[$]0,'[$]0','`
@@ -601,7 +601,7 @@ else
   lt_cv_dlopen=no
   lt_cv_dlopen_libs=
 
-  case "$host_os" in
+  case $host_os in
   beos*)
     lt_cv_dlopen="load_add_on"
     lt_cv_dlopen_libs=
@@ -634,7 +634,7 @@ else
     enable_dlopen=no
   fi
 
-  case "$lt_cv_dlopen" in
+  case $lt_cv_dlopen in
   dlopen)
     save_CPPFLAGS="$CPP_FLAGS"
     AC_REQUIRE([_LT_AC_CHECK_DLFCN])dnl
@@ -669,12 +669,12 @@ else
     ;;
   esac
 
-  case "$lt_cv_dlopen_self" in
+  case $lt_cv_dlopen_self in
   yes|no) enable_dlopen_self=$lt_cv_dlopen_self ;;
   *) enable_dlopen_self=unknown ;;
   esac
 
-  case "$lt_cv_dlopen_self_static" in
+  case $lt_cv_dlopen_self_static in
   yes|no) enable_dlopen_self_static=$lt_cv_dlopen_self_static ;;
   *) enable_dlopen_self_static=unknown ;;
   esac
@@ -735,12 +735,12 @@ else
 fi
 
 # Transform linux* to *-*-linux-gnu*, to support old configure scripts.
-case "$host_os" in
+case $host_os in
 linux-gnu*) ;;
 linux*) host=`echo $host | sed 's/^\(.*-.*-linux\)\(.*\)$/\1-gnu\2/'`
 esac
 
-case "$host_os" in
+case $host_os in
 aix3*)
   # AIX sometimes has problems with the GCC collect2 program.  For some
   # reason, if we set the COLLECT_NAMES environment variable, the problems
@@ -806,7 +806,7 @@ AC_CACHE_VAL(lt_cv_prog_cc_pic,
     lt_cv_prog_cc_wl='-Wl,'
     lt_cv_prog_cc_static='-static'
 
-    case "$host_os" in
+    case $host_os in
     beos* | irix5* | irix6* | osf3* | osf4* | osf5*)
       # PIC is the default for these OSes.
       ;;
@@ -841,7 +841,7 @@ AC_CACHE_VAL(lt_cv_prog_cc_pic,
     esac
   else
     # PORTME Check for PIC flags for the system compiler.
-    case "$host_os" in
+    case $host_os in
     aix3* | aix4*)
      # All AIX code is PIC.
       lt_cv_prog_cc_static='-bnso -bI:/lib/syscalls.exp'
@@ -934,7 +934,7 @@ else
     save_CFLAGS="$CFLAGS"
     CFLAGS="$CFLAGS $lt_cv_prog_cc_pic -DPIC"
     AC_TRY_COMPILE([], [], [dnl
-      case "$host_os" in
+      case $host_os in
       hpux9* | hpux10* | hpux11*)
 	# On HP-UX, both CC and GCC only warn that PIC is supported... then
 	# they create non-PIC objects.  So, if there were any warnings, we
@@ -1162,7 +1162,7 @@ exclude_expsyms="_GLOBAL_OFFSET_TABLE_"
 # preloaded symbol tables.
 extract_expsyms_cmds=
 
-case "$host_os" in
+case $host_os in
 cygwin* | mingw* | pw32* )
   # FIXME: the MSVC++ port hasn't been tested in a loooong time
   # When not using gcc, we currently assume that we are using
@@ -1180,7 +1180,7 @@ if test "$with_gnu_ld" = yes; then
   wlarc='${wl}'
 
   # See if GNU ld supports shared libraries.
-  case "$host_os" in
+  case $host_os in
   aix3* | aix4*)
     # On AIX, the GNU linker is very broken
     ld_shlibs=no
@@ -1241,7 +1241,7 @@ EOF
     # FIXME: what about values for MSVC?
     dll_entry=__cygwin_dll_entry@12
     dll_exclude_symbols=DllMain@12,_cygwin_dll_entry@12,_cygwin_noncygwin_dll_entry@12~
-    case "$host_os" in
+    case $host_os in
     mingw*)
       # mingw values
       dll_entry=_DllMainCRTStartup@12
@@ -1360,7 +1360,7 @@ EOF
   fi
 else
   # PORTME fill in a description of your system's linker (not GNU ld)
-  case "$host_os" in
+  case $host_os in
   aix3*)
     allow_undefined_flag=unsupported
     always_export_symbols=yes
@@ -1403,7 +1403,7 @@ else
     allow_undefined_flag=' ${wl}-berok'
     archive_cmds="\$CC $shared_flag"' -o $output_objdir/$soname $libobjs $deplibs $compiler_flags ${wl}-bexpall ${wl}-bnoentry${allow_undefined_flag}'
     archive_expsym_cmds="\$CC $shared_flag"' -o $output_objdir/$soname $libobjs $deplibs $compiler_flags ${wl}-bE:$export_symbols ${wl}-bnoentry${allow_undefined_flag}'
-    case "$host_os" in [aix4.[01]|aix4.[01].*])
+    case $host_os in [aix4.[01]|aix4.[01].*])
       # According to Greg Wooledge, -bexpall is only supported from AIX 4.2 on
       always_export_symbols=yes ;;
     esac
@@ -1485,7 +1485,7 @@ else
     ;;
 
   hpux9* | hpux10* | hpux11*)
-    case "$host_os" in
+    case $host_os in
     hpux9*) archive_cmds='$rm $output_objdir/$soname~$LD -b +b $install_libdir -o $output_objdir/$soname $libobjs $deplibs $linker_flags~test $output_objdir/$soname = $lib || mv $output_objdir/$soname $lib' ;;
     *) archive_cmds='$LD -b +h $soname +b $install_libdir -o $lib $libobjs $deplibs $linker_flags' ;;
     esac
@@ -1585,7 +1585,7 @@ else
 		$LD -G${allow_undefined_flag} -M $lib.exp -h $soname -o $lib $libobjs $deplibs $linker_flags~$rm $lib.exp'
     hardcode_libdir_flag_spec='-R$libdir'
     hardcode_shlibpath_var=no
-    case "$host_os" in
+    case $host_os in
     [solaris2.[0-5] | solaris2.[0-5].*]) ;;
     *) # Supported since Solaris 2.6 (maybe 2.5.1?)
       whole_archive_flag_spec='-z allextract$convenience -z defaultextract' ;;
@@ -1750,7 +1750,7 @@ dynamic_linker="$host_os ld.so"
 sys_lib_dlsearch_path_spec="/lib /usr/lib"
 sys_lib_search_path_spec="/lib /usr/lib /usr/local/lib"
 
-case "$host_os" in
+case $host_os in
 aix3*)
   version_type=linux
   library_names_spec='${libname}${release}.so$versuffix $libname.a'
@@ -1828,7 +1828,7 @@ freebsd1*)
 freebsd*)
   objformat=`test -x /usr/bin/objformat && /usr/bin/objformat || echo aout`
   version_type=freebsd-$objformat
-  case "$version_type" in
+  case $version_type in
     freebsd-elf*)
       library_names_spec='${libname}${release}.so$versuffix ${libname}${release}.so $libname.so'
       need_version=no
@@ -1840,7 +1840,7 @@ freebsd*)
       ;;
   esac
   shlibpath_var=LD_LIBRARY_PATH
-  case "$host_os" in
+  case $host_os in
   freebsd2*)
     shlibpath_overrides_runpath=yes
     ;;
@@ -1882,12 +1882,12 @@ irix5* | irix6*)
   need_version=no
   soname_spec='${libname}${release}.so$major'
   library_names_spec='${libname}${release}.so$versuffix ${libname}${release}.so$major ${libname}${release}.so $libname.so'
-  case "$host_os" in
+  case $host_os in
   irix5*)
     libsuff= shlibsuff=
     ;;
   *)
-    case "$LD" in # libtool.m4 will add one of these switches to LD
+    case $LD in # libtool.m4 will add one of these switches to LD
     *-32|*"-32 ") libsuff= shlibsuff= libmagic=32-bit;;
     *-n32|*"-n32 ") libsuff=32 shlibsuff=N32 libmagic=N32;;
     *-64|*"-64 ") libsuff=64 shlibsuff=64 libmagic=64-bit;;
@@ -2019,7 +2019,7 @@ sysv4 | sysv4.2uw2* | sysv4.3* | sysv5*)
   library_names_spec='${libname}${release}.so$versuffix ${libname}${release}.so$major $libname.so'
   soname_spec='${libname}${release}.so$major'
   shlibpath_var=LD_LIBRARY_PATH
-  case "$host_vendor" in
+  case $host_vendor in
     sni)
       shlibpath_overrides_runpath=no
       ;;
@@ -2093,7 +2093,7 @@ AC_LIBTOOL_DLOPEN_SELF
 ## FIXME: this should be a separate macro
 ##
 if test "$enable_shared" = yes && test "$GCC" = yes; then
-  case "$archive_cmds" in
+  case $archive_cmds in
   *'~'*)
     # FIXME: we may have to deal with multi-command sequences.
     ;;
@@ -2177,7 +2177,7 @@ if test -f "$ltmain"; then
     sys_lib_search_path_spec sys_lib_dlsearch_path_spec \
     compiler_c_o compiler_o_lo need_locks exclude_expsyms include_expsyms; do
 
-    case "$var" in
+    case $var in
     reload_cmds | old_archive_cmds | old_archive_from_new_cmds | \
     old_postinstall_cmds | old_postuninstall_cmds | \
     export_symbols_cmds | archive_cmds | archive_expsym_cmds | \
@@ -2479,7 +2479,7 @@ include_expsyms=$lt_include_expsyms
 
 __EOF__
 
-  case "$host_os" in
+  case $host_os in
   aix3*)
     cat <<\EOF >> "${ofile}T"
 
@@ -2494,7 +2494,7 @@ EOF
     ;;
   esac
 
-  case "$host_os" in
+  case $host_os in
   cygwin* | mingw* | pw32* | os2*)
     cat <<'EOF' >> "${ofile}T"
       # This is a source program that is used to create dlls on Windows
@@ -2706,7 +2706,7 @@ changequote(<<, >>)dnl
 <<  --enable-shared[=PKGS]  build shared libraries [default=>>AC_ENABLE_SHARED_DEFAULT],
 changequote([, ])dnl
 [p=${PACKAGE-default}
-case "$enableval" in
+case $enableval in
 yes) enable_shared=yes ;;
 no) enable_shared=no ;;
 *)
@@ -2740,7 +2740,7 @@ changequote(<<, >>)dnl
 <<  --enable-static[=PKGS]  build static libraries [default=>>AC_ENABLE_STATIC_DEFAULT],
 changequote([, ])dnl
 [p=${PACKAGE-default}
-case "$enableval" in
+case $enableval in
 yes) enable_static=yes ;;
 no) enable_static=no ;;
 *)
@@ -2775,7 +2775,7 @@ changequote(<<, >>)dnl
 <<  --enable-fast-install[=PKGS]  optimize for fast installation [default=>>AC_ENABLE_FAST_INSTALL_DEFAULT],
 changequote([, ])dnl
 [p=${PACKAGE-default}
-case "$enableval" in
+case $enableval in
 yes) enable_fast_install=yes ;;
 no) enable_fast_install=no ;;
 *)
@@ -2811,7 +2811,7 @@ pic_mode=ifelse($#,1,$1,default)])
 AC_DEFUN([AC_PATH_TOOL_PREFIX],
 [AC_MSG_CHECKING([for $1])
 AC_CACHE_VAL(lt_cv_path_MAGIC_CMD,
-[case "$MAGIC_CMD" in
+[case $MAGIC_CMD in
   /*)
   lt_cv_path_MAGIC_CMD="$MAGIC_CMD" # Let the user override the test with a path.
   ;;
@@ -2830,7 +2830,7 @@ dnl not every word.  This closes a longstanding sh security hole.
     if test -f $ac_dir/$1; then
       lt_cv_path_MAGIC_CMD="$ac_dir/$1"
       if test -n "$file_magic_test_file"; then
-	case "$deplibs_check_method" in
+	case $deplibs_check_method in
 	"file_magic "*)
 	  file_magic_regex="`expr \"$deplibs_check_method\" : \"file_magic \(.*\)\"`"
 	  MAGIC_CMD="$lt_cv_path_MAGIC_CMD"
@@ -2902,7 +2902,7 @@ if test "$GCC" = yes; then
   *)
     ac_prog=`($CC -print-prog-name=ld) 2>&5` ;;
   esac
-  case "$ac_prog" in
+  case $ac_prog in
     # Accept absolute paths.
     [[\\/]* | [A-Za-z]:[\\/]*)]
       [re_direlt='/[^/][^/]*/\.\./']
@@ -2998,7 +2998,7 @@ lt_cv_deplibs_check_method='unknown'
 # If you have `file' or equivalent on your system and you're not sure
 # whether `pass_all' will *always* work, you probably want this one.
 
-case "$host_os" in
+case $host_os in
 aix4*)
   lt_cv_deplibs_check_method=pass_all
   ;;
@@ -3026,7 +3026,7 @@ darwin*|rhapsody*)
 
 freebsd*)
   if echo __ELF__ | $CC -E - | grep __ELF__ > /dev/null; then
-    case "$host_cpu" in
+    case $host_cpu in
     i*86 )
       # Not sure whether the presence of OpenBSD here was a mistake.
       # Let's accept both of them until this is cleared up.
@@ -3051,13 +3051,13 @@ hpux10.20*|hpux11*)
   ;;
 
 irix5* | irix6*)
-  case "$host_os" in
+  case $host_os in
   irix5*)
     # this will be overridden with pass_all, but let us keep it just in case
     lt_cv_deplibs_check_method="file_magic ELF 32-bit MSB dynamic lib MIPS - version 1"
     ;;
   *)
-    case "$LD" in
+    case $LD in
     *-32|*"-32 ") libmagic=32-bit;;
     *-n32|*"-n32 ") libmagic=N32;;
     *-64|*"-64 ") libmagic=64-bit;;
@@ -3073,7 +3073,7 @@ irix5* | irix6*)
 
 # This must be Linux ELF.
 linux-gnu*)
-  case "$host_cpu" in
+  case $host_cpu in
   alpha* | i*86 | powerpc* | sparc* | ia64* )
     lt_cv_deplibs_check_method=pass_all ;;
   *)
@@ -3116,7 +3116,7 @@ solaris*)
   ;;
 
 sysv4 | sysv4.2uw2* | sysv4.3* | sysv5*)
-  case "$host_vendor" in
+  case $host_vendor in
   motorola)
     [lt_cv_deplibs_check_method='file_magic ELF [0-9][0-9]*-bit [ML]SB (shared object|dynamic lib) M[0-9][0-9]* Version [0-9]']
     lt_cv_file_magic_test_file=`echo /usr/lib/libc.so*`
@@ -3182,7 +3182,7 @@ AC_MSG_RESULT([$NM])
 AC_DEFUN([AC_CHECK_LIBM],
 [AC_REQUIRE([AC_CANONICAL_HOST])dnl
 LIBM=
-case "$host" in
+case $host in
 *-*-beos* | *-*-cygwin* | *-*-pw32*)
   # These system don't have libm
   ;;
@@ -3208,7 +3208,7 @@ esac
 # top_srcdir appropriately in the Makefiles.
 AC_DEFUN([AC_LIBLTDL_CONVENIENCE],
 [AC_BEFORE([$0],[AC_LIBTOOL_SETUP])dnl
-  case "$enable_ltdl_convenience" in
+  case $enable_ltdl_convenience in
   no) AC_MSG_ERROR([this package needs a convenience libltdl]) ;;
   "") enable_ltdl_convenience=yes
       ac_configure_args="$ac_configure_args --enable-ltdl-convenience" ;;
