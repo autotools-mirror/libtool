@@ -246,7 +246,7 @@ func_copy_all_files ()
       fi
 
       if test -f "$my_srcdir/$my_filename"; then
-        if test "X$my_copy_cb" = xfunc_copy; then
+        if test "X$my_copy_cb" = Xfunc_copy; then
 	  $force_opt || if test -f "$my_destdir/$my_filename"; then
   	    $quiet_opt \
 	      || func_error "\`$my_destdir/$my_filename' exists: use \`--force' to overwrite"

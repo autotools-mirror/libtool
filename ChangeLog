@@ -1,3 +1,8 @@
+2004-01-08  Gary V. Vaughan  <gary@gnu.org>
+
+	* libtoolize.in (func_copy_all_files): s/xfunc_copy/Xfunc_copy.
+	Now the test can actually succeed sometimes.
+
 2004-01-09  Gary V. Vaughan  <gary@gnu.org>
 
 	* libtoolize.in: Break out of the command argument parse loop when
