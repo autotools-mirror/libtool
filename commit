@@ -25,11 +25,14 @@ elif test $# -gt 1 && test x"$1" = x"-F"; then
 fi
 
 echo "Checking whether repository is up to date..." >&2
-commit=`cvs $cvsopt stat ${1+"$@"} 2>/dev/null | grep Status \
-        | egrep -v '(Up-to-date|Locally )'`
-
-if test -n "$commit"; then
-  echo "$commit"
+if cvs $cvsopt stat ${1+"$@"} 2>/dev/null | grep Status \
+   | while read line; do
+	case "$line" in
+	*"Up-to-date") :;;
+	*"Locally Modified") echo "$line" >&2;;
+	*) echo "$line";;
+	esac
+     done | grep .; then
   exit 1
 fi
 
