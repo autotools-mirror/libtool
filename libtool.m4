@@ -1217,7 +1217,7 @@ cygwin* | mingw* | pw32*)
     cygwin*)
       # Cygwin DLLs use 'cyg' prefix rather than 'lib'
       soname_spec='`echo ${libname} | sed -e 's/^lib/cyg/'``echo ${release} | $SED -e 's/[[.]]/-/g'`${versuffix}${shared_ext}'
-      sys_lib_search_path_spec="/lib /lib/w32api /usr/lib /usr/local/lib"
+      sys_lib_search_path_spec="/usr/lib /lib/w32api /lib /usr/local/lib"
       ;;
     mingw*)
       # MinGW DLLs use traditional 'lib' prefix

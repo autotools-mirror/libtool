@@ -1,3 +1,8 @@
+2003-06-03  Max Bowsher  <maxb@ukf.net>
+
+	* libtool.m4 (AC_LIBTOOL_SYS_DYNAMIC_LINKER): Reorder cygwin's
+	system library search path.
+
 2003-06-01  Robert Boehne  <rboehne@gnu.org>
 
 	* libtool.m4 (AC_LIBTOOL_SYS_DYNAMIC_LINKER): Match all qnx-nto
