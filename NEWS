@@ -1,7 +1,7 @@
 NEWS - list of user-visible changes between releases of GNU Libtool
 
 New in CVS version 1.3.2a, Libtool team:
-* Support new GNU ld (ELF support detection).
+* Work around self-dlclose bug in FreeBSD 3.1.
 * Expand convenience libraries when creating reloadable objects.
 * Do not pass -whole-archive or equivalent to symbol extractor.
 * Create directory to expand convenience libraries only when needed.
