@@ -21,7 +21,7 @@ SUBDIRS			= loaders .
 
 BUILT_SOURCES		=
 MOSTLYCLEANFILES	=
-EXTRA_DIST		=
+EXTRA_DIST		= configure.ac
 
 AUTOMAKE_OPTIONS	= foreign
 ACLOCAL_AMFLAGS		= -I m4
@@ -68,7 +68,7 @@ libltdlc_la_LIBADD	=  $(libdlloader_la_OBJECTS) $(libdlloader_la_LIBADD)
 ## These are installed as a subdirectory of pkgdatadir so that
 ## libtoolize --ltdl can find them later:
 ltdldatadir		= $(pkgdatadir)/libltdl
-nobase_ltdldata_DATA	= COPYING.LIB Makefile.am README $(top_srcdir)/configure.ac \
+nobase_ltdldata_DATA	= COPYING.LIB Makefile.am README configure.ac \
 			  $(libltdl_la_SOURCES) $(libdlloader_la_SOURCES) \
 			  lt__dirent.c lt__dirent.h argz_.h argz.c
 

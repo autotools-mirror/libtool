@@ -1,3 +1,16 @@
+2004-07-31  Gary V. Vaughan  <gary@gnu.org>
+
+	Although libtool is optimised to not need to subconfigure libltdl,
+	the installed libltdl sources for libtoolize need to put
+	libltdl/configure.ac in the parent package so that *it* can
+	subconfigure libltdl.  That way we don't put any constraints on
+	the build system used by the parent package because the
+	libtoolized libltdl subtree is a self-contained sub-project:
+
+	* libltdl/Makefile.am (EXTRA_DIST): Add configure.ac.
+	(nobase_ltdldata_DATA): Change back to libltdl's own
+	configure.ac.
+
 2004-07-30  Gary V. Vaughan  <gary@gnu.org>
 
 	My thanks to Alexandre Duret-Lutz <adl@gnu.org> for the insight
