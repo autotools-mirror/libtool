@@ -1,17 +1,24 @@
-2005-1-9  Peter O'Gorman  <peter@pogma.com>
+2005-01-09  Gary V. Vaughan  <gary@gnu.org>
 
-	* config/ltmain.m4sh (func_extract_archives,func_extract_an_archive): 
-	On darwin, uniq can not take the flags -cd together, thanks to Ralf
-	for the fix, also ar does not accept N, so we use the fact that
-	ar x libfoo.a foo.o will always extract the first foo.o in the
-	archive and we then delete foo.o from the archive, which will also
-	delete only the first foo.o, then rinse and repeat.
+	* ChangeLog: Reformatting.
+	* HACKING: Fix section numbering.
+	(Editing 'ChangeLog'): New notes on ChangeLog entry format.
+
+2005-01-09  Peter O'Gorman  <peter@pogma.com>
+
+	* config/ltmain.m4sh (func_extract_archives)
+	(func_extract_an_archive): On darwin, uniq can not take the flags
+	-cd together, thanks to Ralf for the fix, also ar does not accept
+	N, so we use the fact that ar x libfoo.a foo.o will always extract
+	the first foo.o in the archive and we then delete foo.o from the
+	archive, which will also delete only the first foo.o, then rinse
+	and repeat.
 
 2004-12-30  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* config/getopt.m4sh (func_version, func_usage, func_help):
 	Use `$SED -n' instead of `$SED RANGE {..}; d' as AIX sed cannot
-	handle the latter.  
+	handle the latter.
 	(func_help): start autoconf and automake in subshells to avoid
 	error messages from ash or Bourne shell if not available.
 
@@ -20,33 +27,37 @@
 
 	* Makefile.am, bootstrap, clcommit.m4sh, libtoolize.m4sh,
 	config/ltmain.m4sh: Replace `set --' with `set dummy [...]; shift'
-	for portability.  tests/sh.test: Test for this.
+	for portability.
+	* tests/sh.test: Test for this.
 
 2004-12-28  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
-	* libtoolize.m4sh, config/ltmain.m4sh (most functions):
-	New variable $opt_debug is either `:' or `set -x' depending on --debug.
-	Execute at most function entries to cater for ksh which resets `-x'.
+	* libtoolize.m4sh, config/ltmain.m4sh (most functions): New
+	variable $opt_debug is either `:' or `set -x' depending on
+	--debug.  Execute at most function entries to cater for ksh which
+	resets `-x'.
 	* tests/defs.m4sh: Ditto for VERBOSE=debug.
 
-	* m4/libtool.m4 (_LT_LINKER_SHLIBS)
-	[cygwin, mingw, pw32 ]: _LT_TAGVAR missing for `fix_srcfile_path'.
-	[ sysv4, sysv5 ]: _LT_TAGVAR missing for `export_dynamic_flag_spec'.
+	* m4/libtool.m4 (_LT_LINKER_SHLIBS) [cygwin, mingw, pw32]:
+	_LT_TAGVAR missing for `fix_srcfile_path'.
+	[sysv4, sysv5]: _LT_TAGVAR missing for
+	`export_dynamic_flag_spec'.
 
 	* doc/libtool.texi (all over): Use @option and @command.
 	Some more minor formatting updates, typos.
 
-	* m4/libtool.m4 (_LT_PROG_ECHO_BACKSLASH): Fix variable
-	quoting; allows lt_ECHO to match --fallback-echo again.
+	* m4/libtool.m4 (_LT_PROG_ECHO_BACKSLASH): Fix variable	quoting;
+	allows lt_ECHO to match --fallback-echo again.
 
 	* config/ltmain.m4sh (func_extract_archives): Not all shells grok
 	`read -r' (unnecessary in this case).
 	Reported by Ralf Menzel <menzel@ls6.cs.uni-dortmund.de>.
 
-	* config/general.m4sh: New variable quote_scanset..
-	(func_quote_for_eval, func_quote_for_expand)  ..use it to work around
-	SunOS ksh `case' backslash-escaping bug: protect character class by
-	variable expansion.  Reported by Alexander Kurz <alexander.kurz@qsc.de>.
+	* config/general.m4sh: New variable quote_scanset...
+	(func_quote_for_eval, func_quote_for_expand): ...use it to work
+	around SunOS ksh `case' backslash-escaping bug: protect character
+	class by variable expansion.
+	Reported by Alexander Kurz <alexander.kurz@qsc.de>.
 
 	* tests/quote.test: Restart under the correct shell (the one
 	$ECHO was computed for).
@@ -58,27 +69,29 @@
 
 2004-12-20  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
-	* libtoolize.m4sh: Install `install-sh' as well, needed for configure ..
-	* Makefile.am, Makefile.maint: .. install, update it.
-	* NEWS, doc/libtool.texi (Distributing): .. document it.
+	* libtoolize.m4sh: Install `install-sh' as well, needed for
+	configure.
+	* Makefile.am, Makefile.maint: Install, update it.
+	* NEWS, doc/libtool.texi (Distributing): Document it.
 	Reported by Ross Boylan <ross@biostat.ucsf.edu>.
 
-	* m4/libtool.m4 [solaris] (_LT_LINKER_SHLIBS): Add '${wl}-z ${wl}text'
-	to archive_cmds and archive_expsyms_cmds.  I.e., do not allow nopic in
-	shared libraries.
+	* m4/libtool.m4 (_LT_LINKER_SHLIBS) [solaris]: Add '${wl}-z
+	${wl}text' to archive_cmds and archive_expsyms_cmds.  I.e., do not
+	allow nopic in shared libraries.
 
-	* m4/libtool.m4 [solaris] (_LT_LINKER_SHLIBS): Change no_undefined_flag
-	back to ' -z defs'.  Problems with linking against libgcc.a will have
-	to be resolved differently.
+	* m4/libtool.m4 (_LT_LINKER_SHLIBS) [solaris]: Change
+	no_undefined_flag back to ' -z defs'.  Problems with linking
+	against libgcc.a will have to be resolved differently.
 
 	* tests/demo-nopic.test [solaris, sunos]: Skip test.
 
 2004-12-18  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
-	* libtool.m4 [linux] (_LT_COMPILER_PIC, _LT_LANG_CXX_CONFIG):
-	Match icpc* and ecpc* (ia64 version of icpc) instead of only icpc.
+	* libtool.m4 (_LT_COMPILER_PIC, _LT_LANG_CXX_CONFIG) [linux]:
+	Match icpc* and ecpc* (ia64 version of icpc) instead of only
+	icpc.
 
-	* libltdl/lt__dirent.c [mingw] (opendir): Fix write of constant
+	* libltdl/lt__dirent.c (opendir) [mingw]: Fix write of constant
 	strings past end of buffer.
 	(opendir, readdir): Fix read past end of buffer.
 
@@ -101,8 +114,9 @@
 2004-12-13  Albert Chin-A-Young  <china@thewrittenword.com>
 
 	* libtool.m4 (_LT_LINKER_SHLIBS, _LT_LANG_CXX_CONFIG):
-	Append -G to link command-line on AIX to honor -brtl on command-line
-	(runtime linking). Already done for IBM C/C++ compilers.
+	Append -G to link command-line on AIX to honor -brtl on
+	command-line (runtime linking). Already done for IBM C/C++
+	compilers.
 
 2004-12-13  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
 
@@ -121,7 +135,8 @@
 
 2004-12-09  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
-	* config/ltmain.m4sh (func_mode_finish) [solaris]: Fix [] escaping bug.
+	* config/ltmain.m4sh (func_mode_finish) [solaris]: Fix [] escaping
+	bug.
 
 2004-12-02  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
 
@@ -140,8 +155,9 @@
 
 	* m4/ltdl.m4 (LT_LIB_DLLOAD): Define HAVE_LIBDLLOADER if we
 	have a dlloader to preload.
-	* libltdl/ltdl.c (lt_dlinit): Only preload if HAVE_LIBDLLOADER, only
-	declare preloaded_symbols then.  Fixes libltdl on static platforms.
+	* libltdl/ltdl.c (lt_dlinit): Only preload if HAVE_LIBDLLOADER,
+	only declare preloaded_symbols then.  Fixes libltdl on static
+	platforms.
 	* NEWS: Updated.
 
 2004-11-28  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
@@ -165,9 +181,10 @@
 
 2004-11-24  Jeff Squyres <jsquyres@lam-mpi.org>
 
-	* m4/libtool.m4 [linux] (_LT_COMPILER_PIC, _LT_LINKER_SHLIBS,
-	_LT_LANG_CXX_CONFIG), NEWS, THANKS: Support for Portland Group
-	(aka "pgi") compilers.
+	* m4/libtool.m4 (_LT_COMPILER_PIC, _LT_LINKER_SHLIBS)
+	(_LT_LANG_CXX_CONFIG) [linux]: Support for Portland Group (aka
+	"pgi") compilers.
+	* NEWS, THANKS: Updated.
 
 2004-11-23  Gary V. Vaughan  <gary@gnu.org>
 
@@ -195,20 +212,20 @@
 2004-11-23  Peter O'Gorman  <peter@pogma.com>
 
 	Do not require that libtoolize --ltdl=/some/path end in libltdl.
-	Move most libltdl headers to libtldl/libltdl to allow 
+	Move most libltdl headers to libtldl/libltdl to allow
 	`#include <libltdl/ltdl.h>' to always work:
 
-	* libltdl/Makefile.am, libltdl/loaders/Makefile.am: Look for includes
-	in the new location.
-	* libltdl/libltdl/lt__alloc.h, libltdl/libltdl/lt__dirent.h, 
+	* libltdl/Makefile.am, libltdl/loaders/Makefile.am: Look for
+	includes in the new location.
+	* libltdl/libltdl/lt__alloc.h, libltdl/libltdl/lt__dirent.h,
 	libltdl/libltdl/lt__glibc.h, libltdl/libltdl/lt__private.h,
 	libltdl/libltdl/lt_dlloader.h, libltdl/libltdl/lt_error.h,
 	libltdl/libltdl/lt_system.h, libltdl/libltdl/ltdl.h,
 	libltdl/libltdl/slist.h: Added files, moved from libtdl/.
 	* libltdl/lt__alloc.h, libltdl/lt__dirent.h, libltdl/lt__glibc.h,
 	libltdl/lt__private.h, libltdl/lt_dlloader.h, libltdl/lt_error.h,
-	libltdl/lt_system.h, libltdl/ltdl.h, libltdl/slist.h: Removed, moved
-	to libltdl/libltdl.
+	libltdl/lt_system.h, libltdl/ltdl.h, libltdl/slist.h: Removed,
+	moved to libltdl/libltdl.
 
 2004-11-23  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
@@ -257,7 +274,7 @@
 
 2004-11-18  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
-	* m4/libtool.m4 (_LT_LINKER_SHLIBS) [cygwin/mingw/pw32]:
+	* m4/libtool.m4 (_LT_LINKER_SHLIBS) [cygwin, mingw, pw32]:
 	tag-protect setting of ld_shlibs.
 
 2004-11-17  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
@@ -274,7 +291,7 @@
 2004-11-17  Mats Rynge  <rynge@isi.edu>
 
 	* libtool.m4 [linux]: Use only the CC basename in case statment
-	when checking for icc/ecc. Allows for setting CC to the full path
+	when checking for icc/ecc.  Allows for setting CC to the full path
 	to the compiler.
 
 	* libtool.m4 [solaris]: Added missing 'with linker' flags to
@@ -313,7 +330,8 @@
 	Fix error message with `-objectlist' file that does not exist.
 	* tests/objectlist.test:  New test for this.
 
-	* Makefile.am: config/ltmain.sh is generated by config/ltmain.m4sh.
+	* Makefile.am: config/ltmain.sh is generated by
+	config/ltmain.m4sh.
 
 2004-11-09  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
