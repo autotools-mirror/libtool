@@ -2598,6 +2598,10 @@ installed=no
 # Directory that this library needs to be installed in:
 libdir='$install_libdir'\
 "
+
+	$rm "$output_dir/$outputname"i
+	sed 's/^installed=no$/installed=yes/' \
+	  < "$output_dir/$outputname" > "$output_dir/$outputname"i
       fi
 
       # Do a symbolic link so that the libtool archive can be found in
@@ -2845,13 +2849,14 @@ libdir='$install_libdir'\
 	# Install the pseudo-library for information purposes.
 	name=`$echo "X$file" | $Xsed -e 's%^.*/%%'`
 	instname="$dir/$name"i
-	$show "Creating $instname"
-	$rm "$instname"
-	sed 's/^installed=no$/installed=yes/' "$file" > "$instname"
+	if test ! -f "$instname"; then
+	  # Just in case it was removed...
+	  $show "Creating $instname"
+	  $rm "$instname"
+	  sed 's/^installed=no$/installed=yes/' "$file" > "$instname"
+	fi
 	$show "$install_prog $instname $destdir/$name"
 	$run eval "$install_prog $instname $destdir/$name" || exit $?
-	$show "$rm $instname"
-	$rm "$instname"
 
 	# Maybe install the static library, too.
 	test -n "$old_library" && staticlibs="$staticlibs $dir/$old_library"
