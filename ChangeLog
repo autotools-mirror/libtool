@@ -1,5 +1,7 @@
 2000-09-04  Alexandre Oliva  <aoliva@redhat.com>
 
+	* mdemo/Makefile.am: Mark only libfoo2 as -no-undefined.
+
 	* ltcf-c.sh (need_lc): Preserve allow_undefined_flag.
 
 	* tests/*.test (CONFIG_SITE): Ultrix's /bin/sh fails on
