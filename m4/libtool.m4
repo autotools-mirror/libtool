@@ -433,9 +433,7 @@ m4_define([_LT_AC_TAGVAR], [m4_ifval([$2], [$1_$2], [$1])])
 m4_define([_LT_CONFIG_COMMANDS],
 [AC_CONFIG_COMMANDS([libtool], [_LT_OUTPUT_LIBTOOL_COMMANDS], [
 
-# The HP-UX ksh and POSIX shell print the target directory to stdout
-# if CDPATH is set.
-if test "X${CDPATH+set}" = Xset; then CDPATH=${ZSH_VERSION+.}:; export CDPATH; fi
+(unset CDPATH) >/dev/null 2>&1 && unset CDPATH
 
 sed_quote_subst='$sed_quote_subst'
 double_quote_subst='$double_quote_subst'
@@ -503,9 +501,7 @@ _LT_LIBTOOL_CONFIG_VARS
 _LT_LIBTOOL_TAG_VARS
 # ### END LIBTOOL CONFIG
 
-# The HP-UX ksh and POSIX shell print the target directory to stdout
-# if CDPATH is set.
-if test "X\${CDPATH+set}" = Xset; then CDPATH=:; export CDPATH; fi
+(unset CDPATH) >/dev/null 2>&1 && unset CDPATH
 
 _LT_EOF
 
@@ -716,9 +712,7 @@ _LT_EOF
   exit 0
 fi
 
-# The HP-UX ksh and POSIX shell print the target directory to stdout
-# if CDPATH is set.
-if test "X${CDPATH+set}" = Xset; then CDPATH=:; export CDPATH; fi
+(unset CDPATH) >/dev/null 2>&1 && unset CDPATH
 
 if test -z "$ECHO"; then
 if test "X${echo_test_string+set}" != Xset; then

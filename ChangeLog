@@ -1,3 +1,9 @@
+2004-07-30  Peter O'Gorman  <peter@pogma.com>
+
+	* m4/libtool.m4, ltmain.in: autoconf now says the best thing to do
+	with CDPATH is to (unset CDPATH) >/dev/null 2>&1 && unset CDPATH,
+	so do it.
+
 2004-07-29  Gary V. Vaughan  <gary@gnu.org>
 
 	* Makefile.am ($(top_srcdir)/config/ltmain.sh): Ugh. More hair to
