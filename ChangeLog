@@ -1,3 +1,11 @@
+2005-04-04  Gary V. Vaughan  <gary@gnu.org>
+
+	* libtoolize.m4sh (pkgvdatadir): Renamed from this...
+	(_lt_pkgvdatadir): ...to this.
+	* tests/testsuite.at (LT_AT_LIBTOOLIZE): The `-I' option is no
+	longer supported by libtoolize.  Set _lt_pkgvdatadir in the
+	environment of the invocation instead.
+
 2005-04-04  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* tests/template.at: New Autotest tests for C++ with templates.

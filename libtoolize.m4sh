@@ -80,7 +80,7 @@ seen_ltdl=false
 libtoolize_flags=
 
 # Locations for important files:
-: ${pkgvdatadir="@pkgvdatadir@"}
+: ${_lt_pkgvdatadir="@pkgvdatadir@"}
 prefix=@prefix@
 datadir=@datadir@
 auxdir=
@@ -387,8 +387,8 @@ func_scan_files ()
         || func_fatal_help "\`$configure_ac' does not exist"
 
     # check that existing directories from the list can be ls'ed
-    test -n "`{ cd $pkgvdatadir && ls; } 2>/dev/null`" \
-        || func_fatal_error "can not list files in \`$pkgvdatadir'"
+    test -n "`{ cd $_lt_pkgvdatadir && ls; } 2>/dev/null`" \
+        || func_fatal_error "can not list files in \`$_lt_pkgvdatadir'"
 
     # Set local variables to reflect contents of configure.ac
     my_uses_autoconf=false
@@ -870,7 +870,7 @@ func_massage_pkgvltdl_files ()
   # Copy all the files from installed (or specified, if `-I' was used)
   # libltdl to this project, if the user specified `--ltdl'.
   if test -n "$ltdldir"; then
-    func_copy_some_files "$pkgvltdl_files" "$pkgvdatadir/libltdl" "$ltdldir"
+    func_copy_some_files "$pkgvltdl_files" "$_lt_pkgvdatadir/libltdl" "$ltdldir"
 
     # libtoolize the newly copied libltdl tree
     ( cd "$ltdldir" && eval "$progpath" $libtoolize_flags ) \
@@ -883,26 +883,26 @@ func_massage_pkgvltdl_files ()
     func_echo "putting files in AC_CONFIG_AUX_DIR, \`$auxdir'."
   fi
   if $opt_install; then
-    func_config_update config.guess "$pkgvdatadir/config" "$auxdir"
-    func_config_update config.sub   "$pkgvdatadir/config" "$auxdir"
-    func_install_update install-sh  "$pkgvdatadir/config" "$auxdir"
+    func_config_update config.guess "$_lt_pkgvdatadir/config" "$auxdir"
+    func_config_update config.sub   "$_lt_pkgvdatadir/config" "$auxdir"
+    func_install_update install-sh  "$_lt_pkgvdatadir/config" "$auxdir"
   fi
-  func_ltmain_update ltmain.sh "$pkgvdatadir/config" "$auxdir"
+  func_ltmain_update ltmain.sh "$_lt_pkgvdatadir/config" "$auxdir"
 
   # Copy libtool's m4 macros to the macro directory, if they are newer.
   if test -n "$m4dir"; then
     $opt_quiet || func_echo "putting macros in AC_CONFIG_MACRO_DIR, \`$m4dir'."
 
-    func_serial_update  libtool.m4 "$pkgvdatadir/m4" "$m4dir" \
+    func_serial_update  libtool.m4 "$_lt_pkgvdatadir/m4" "$m4dir" \
       LT_INIT 'A[[CM]]_PROG_LIBTOOL'
 
     if $seen_ltdl; then
-      func_serial_update ltdl.m4 "$pkgvdatadir/m4" "$m4dir" 'LTDL_INIT'
+      func_serial_update ltdl.m4 "$_lt_pkgvdatadir/m4" "$m4dir" 'LTDL_INIT'
     else
       func_verbose "Not copying \`$m4dir/ltdl.m4', libltdl not used."
     fi
 
-    func_copy_some_files "$pkgvmacro_files" "$pkgvdatadir/m4" \
+    func_copy_some_files "$pkgvmacro_files" "$_lt_pkgvdatadir/m4" \
       "$m4dir" func_serial_update
   else
     func_verbose "AC_CONFIG_MACRO_DIR not defined, not copying libtool macro files."
