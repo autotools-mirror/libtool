@@ -1,3 +1,11 @@
+2004-10-15  Gary V. Vaughan  <gary@gnu.org>
+
+	Update to the latest mailnotify script from
+	gary@gnu.org--2004/cvs-utils--tla--1.0:
+
+	* config/mailnotify.m4sh: Fix bugs in sendmail search and
+	for loop invocations.
+
 2004-10-14  Peter O'Gorman  <peter@pogma.com>
 
 	* config/ltmain.m4sh: Revert most of my last commit, only eval

@@ -60,6 +60,7 @@ m4_divert_push([SCRIPT])#!/bin/sh
 
 : ${TMPDIR=/tmp}
 : ${HOST=`hostname`}
+: ${SENDMAIL=sendmail}
 
 PROGRAM=mailnotify
 
@@ -285,13 +286,17 @@ func_sendmail ()
     from_name=`echo "$my_from" | sed 's, *<.*> *$,,;s,",,g'`
     from_addr=`echo "$my_from" | sed "$sed_mail_address"`
 
-    SENDMAIL=sendmail
-    for try_sendmail in sendmail /usr/lib/sendmail /usr/sbin/sendmail; do
-	if which $try_sendmail >/dev/null 2>&1; then
-	    SENDMAIL=$try_sendmail
+    save_IFS="$IFS"
+    IFS=':'
+    for try_sendmail_dir in /usr/lib:/usr/sbin:$PATH; do
+        IFS="$save_IFS"
+	if test -x "$try_sendmail_dir/$SENDMAIL"; then
+	    SENDMAIL="$try_sendmail_dir/$SENDMAIL"
 	    break
 	fi
     done
+    IFS="$save_IFS"
+    test -x "$SENDMAIL" || func_fatal_error "sendmail executable not found"
 
     func_verbose "Delivering mail, please wait..."
     if test -n "$from_name"; then
@@ -320,8 +325,10 @@ func_sendmail ()
   trap 'rm -f "$fname"; exit 1' 1 2 15
 
   destination=""
-  for to;
+  for to in : ${1+"$@"}
   do
+      test "X$to" = X: && continue
+
       case $destination in
 	  "") destination="$to" ;;
           *)  destination="$destination, $to" ;;
@@ -337,7 +344,10 @@ func_sendmail ()
 
   if test -z "$outputfile"; then
       destination=""
-      for to; do
+      for to in : ${1+"$@"}
+      do
+          test "X$to" = X: && continue
+
           to_addr=`echo "$to" | sed "$sed_mail_address"`
 	  test -n "$to_addr" || to_addr="$to"
 	  destination="$destination $to_addr"
