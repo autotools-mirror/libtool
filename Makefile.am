@@ -50,8 +50,8 @@ libtoolize: $(srcdir)/libtoolize.in $(top_builddir)/config.status
 	CONFIG_FILES=$@ CONFIG_HEADERS= CONFIG_COMMANDS= $(SHELL) $(config_status)
 	chmod +x $@
 
-# Make sure ltmain.sh is regenerated when the version timestamp changes
-config/ltmain.sh: ChangeLog
+# Make sure configure is regenerated when the version timestamp changes
+config.status: ChangeLog
 
 .PHONY: configure-subdirs
 configure-subdirs distdir: $(DIST_MAKEFILE_LIST)
