@@ -1,3 +1,13 @@
+1999-04-27  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* libtool.m4 (AC_LIBTOOL_DLOPEN, AC_ENABLE_SHARED,
+	AC_ENABLE_STATIC, AC_ENABLE_FAST_INSTALL, AC_LIBLTDL_CONVENIENCE,
+	AC_LIBLTDL_INSTALLABLE): Warn if they appear after
+	AC_PROG_LIBTOOL.  AC_LIBTOOL_SETUP, actually.
+	(AC_LIBTOOL_SETUP): Check whether DLOPEN support is to be enabled
+	at autoconf time, not configure time.  Simplify code and
+	improve (?) help message about --disable-libtool-lock.
+
 1999-04-27 Thomas Tanner  <tanner@gmx.de>
 
 	* ltconfig.in: set need_version=no on OSF (reported by
