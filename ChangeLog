@@ -1,3 +1,10 @@
+2004-08-04  Peter O'Gorman  <peter@pogma.com>
+
+	* m4/libtool.m4 (AC_LIBTOOL_SYS_MAX_CMD_LEN): Since CONFIG_SHELL may
+	not actually be set, we should use SHELL here, also make darn sure
+	that SHELL is set to something. Bug from Willem Jan Palenstijn
+	<wpalenst@math.leidenuniv.nl>.
+
 2004-08-03  Jacob Meuser <jakemsr@jakemsr.com>
 
 	* ltmain.in: Allow some static libraries to be used in generating a

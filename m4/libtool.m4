@@ -1135,10 +1135,11 @@ AC_CACHE_VAL([lt_cv_sys_max_cmd_len], [dnl
     for i in 1 2 3 4 5 6 7 8 ; do
       teststring=$teststring$teststring
     done
+    SHELL=${SHELL-${CONFIG_SHELL-/bin/sh}}
     # If test is not a shell built-in, we'll probably end up computing a
     # maximum length that is only half of the actual maximum length, but
     # we can't tell.
-    while (test "X"`$CONFIG_SHELL [$]0 --fallback-echo "X$teststring$teststring" 2>/dev/null` \
+    while (test "X"`$SHELL [$]0 --fallback-echo "X$teststring$teststring" 2>/dev/null` \
 	       = "XX$teststring$teststring") >/dev/null 2>&1 &&
 	    test $i != 17 # 1/2 MB should be enough
     do
