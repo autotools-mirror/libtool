@@ -895,7 +895,7 @@ ia64-*-hpux*)
   rm -rf conftest*
   ;;
 
-x86_64-*linux*|ppc*-*linux*|powerpc*-*linux*|s390*-*linux*|sparc*-*linux*)
+x86_64-*linux*|ppc*-*linux*|powerpc*-*linux*|s390*-*linux*|s390*-*tpf*|sparc*-*linux*)
   # Find out which ABI we are using.
   $ECHO 'int i;' > conftest.$ac_ext
   if AC_TRY_EVAL(ac_compile); then
@@ -924,7 +924,7 @@ x86_64-*linux*|ppc*-*linux*|powerpc*-*linux*|s390*-*linux*|sparc*-*linux*)
 	  ppc*-*linux*|powerpc*-*linux*)
 	    LD="${LD-ld} -m elf64ppc"
 	    ;;
-	  s390*-*linux*)
+	  s390*-*linux*|s390*-*tpf*)
 	    LD="${LD-ld} -m elf64_s390"
 	    ;;
 	  sparc*-*linux*)
@@ -2122,6 +2122,17 @@ sysv4*MP*)
   fi
   ;;
 
+tpf*)
+  # TPF is a cross-target only.  Preferred cross-host = GNU/Linux.
+  version_type=linux
+  need_lib_prefix=no
+  need_version=no
+  library_name_spec='${libname}${release}${shared_ext}$versuffix ${libname}${release}${shared_ext}$major $libname${shared_ext}'
+  shlibpath_var=LD_LIBRARY_PATH
+  shlibpath_overrides_runpath=no
+  hardcode_into_libs=yes
+  ;;
+
 uts4*)
   version_type=linux
   library_names_spec='${libname}${release}${shared_ext}$versuffix ${libname}${release}${shared_ext}$major $libname${shared_ext}'
@@ -2562,6 +2573,10 @@ sysv4 | sysv4.2uw2* | sysv4.3* | sysv5*)
 sysv5OpenUNIX8* | sysv5UnixWare7* | sysv5uw[[78]]* | unixware7* | sysv4*uw2*)
   lt_cv_deplibs_check_method=pass_all
   ;;
+
+tpf*)
+  lt_cv_deplibs_check_method=pass_all
+  ;;
 esac
 ])
 file_magic_cmd=$lt_cv_file_magic_cmd
@@ -2732,7 +2747,7 @@ case `$NM -V 2>&1` in
 esac
 
 # Transform an extracted symbol line into a proper C declaration.
-# Some systems (esp. on ia64) link data and code symols differently,
+# Some systems (esp. on ia64) link data and code symbols differently,
 # so use this general approach.
 lt_cv_sys_global_symbol_to_cdecl="sed -n -e 's/^T .* \(.*\)$/extern int \1();/p' -e 's/^$symcode* .* \(.*\)$/extern char \1;/p'"
 
@@ -2747,7 +2762,7 @@ mingw*)
   ;;
 esac
 
-# Try without a prefix undercore, then with it.
+# Try without a prefix underscore, then with it.
 for ac_symprfx in "" "_"; do
 
   # Write the raw and C identifiers.
@@ -3553,6 +3568,26 @@ _LT_EOF
       fi
       ;;
 
+    linux*|tpf*)
+      if $LD --help 2>&1 | $EGREP ': supported targets:.* elf' > /dev/null; then
+        _LT_TAGVAR(archive_cmds, $1)='$CC -shared $libobjs $deplibs $compiler_flags ${wl}-soname $wl$soname -o $lib'
+        case `$LD -v 2>&1` in
+          *\ [01].* | *\ 2.[[0-9]].* | *\ 2.10.*) ;; # catch versions < 2.11
+          *\ 2.11.93.0.2\ *) supports_anon_versioning=yes ;; # RH7.3 ...
+          *\ 2.11.92.0.12\ *) supports_anon_versioning=yes ;; # Mandrake 8.2 ...
+          *\ 2.11.*) ;; # other 2.11 versions
+          *) supports_anon_versioning=yes ;;
+        esac
+        if test "x$supports_anon_versioning" = xyes; then
+          _LT_TAGVAR(archive_expsym_cmds, $1)='$ECHO "{ global:" > $output_objdir/$libname.ver~cat $export_symbols | sed -e "s/\(.*\)/\1;/" >> $output_objdir/$libname.ver~$ECHO "local: *; };" >> $output_objdir/$libname.ver~$CC -shared $libobjs $deplibs $compiler_flags ${wl}-soname $wl$soname ${wl}-version-script ${wl}$output_objdir/$libname.ver -o $lib'
+        else
+          _LT_TAGVAR(archive_expsym_cmds, $1)=$_LT_TAGVAR(archive_cmds, $1)
+        fi
+      else
+        _LT_TAGVAR(ld_shlibs, $1)=no
+      fi
+      ;;
+
     netbsd*)
       if $ECHO __ELF__ | $CC -E - | $GREP __ELF__ >/dev/null; then
 	_LT_TAGVAR(archive_cmds, $1)='$LD -Bshareable $libobjs $deplibs $linker_flags -o $lib'
@@ -3590,26 +3625,6 @@ _LT_EOF
       _LT_TAGVAR(hardcode_direct, $1)=yes
       _LT_TAGVAR(hardcode_shlibpath_var, $1)=no
       ;;
-
-  linux*)
-    if $LD --help 2>&1 | $EGREP ': supported targets:.* elf' > /dev/null; then
-      _LT_TAGVAR(archive_cmds, $1)='$CC -shared $libobjs $deplibs $compiler_flags ${wl}-soname $wl$soname -o $lib'
-      case `$LD -v 2>&1` in
-        *\ [01].* | *\ 2.[[0-9]].* | *\ 2.10.*) ;; # catch versions < 2.11
-        *\ 2.11.93.0.2\ *) supports_anon_versioning=yes ;; # RH7.3 ...
-        *\ 2.11.92.0.12\ *) supports_anon_versioning=yes ;; # Mandrake 8.2 ...
-        *\ 2.11.*) ;; # other 2.11 versions
-        *) supports_anon_versioning=yes ;;
-      esac
-      if test "x$supports_anon_versioning" = xyes; then
-        _LT_TAGVAR(archive_expsym_cmds, $1)='$ECHO "{ global:" > $output_objdir/$libname.ver~cat $export_symbols | sed -e "s/\(.*\)/\1;/" >> $output_objdir/$libname.ver~$ECHO "local: *; };" >> $output_objdir/$libname.ver~$CC -shared $libobjs $deplibs $compiler_flags ${wl}-soname $wl$soname ${wl}-version-script ${wl}$output_objdir/$libname.ver -o $lib'
-      else
-        _LT_TAGVAR(archive_expsym_cmds, $1)=$_LT_TAGVAR(archive_cmds, $1)
-      fi
-    else
-      _LT_TAGVAR(ld_shlibs, $1)=no
-    fi
-    ;;
 
     *)
       if $LD --help 2>&1 | $GREP ': supported targets:.* elf' > /dev/null; then
