@@ -1,3 +1,8 @@
+1999-04-29 Thomas Tanner  <tanner@gmx.de>
+
+	* doc/libtool.texi (inter-library dependencies):
+	  libtool 1.4 will have full inter-library dependencies support
+	  
 1999-04-29  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* NEWS: Improved support for DU and IRIX too.

@@ -2427,8 +2427,9 @@ your own library depends on, simply add a corresponding
 @code{-l@var{name}} option to the link line when you create your
 library.@footnote{Unfortunately, as of libtool version @value{VERSION},
 there is no way to specify inter-library dependencies on libtool
-libraries that have not yet been installed.}  To make an example of our
-@file{libhello} that depends on @file{libm}:
+libraries that have not yet been installed.  Libtool 1.4 will support
+this feature.}  To make an example of our @file{libhello}
+that depends on @file{libm}:
 
 @example
 burger$ @kbd{libtool gcc -g -O -o libhello.la foo.lo hello.lo \
