@@ -4089,7 +4089,7 @@ i.e whether object files do not have to have the suffix ".o".
 Set to @samp{yes} or @samp{no}.
 @end defvar
 
-@defvar dlopen
+@defvar dlopen_support
 Whether @code{dlopen} is supported on the platform.
 Set to @samp{yes} or @samp{no}.
 @end defvar

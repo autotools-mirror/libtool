@@ -6,6 +6,7 @@ New in 1.3d: 2000-??-??; CVS version 1.3c, Libtool team:
 * New --build flag to ltconfig to help with build cross compilation
   environments is inherited from --build flag passed to configure.
 * Support for hardcoding run-time paths (-R) into libraries.
+* Support -dlopen and -dlpreopen for libraries.
 * Libtool now allows you to link shared libraries against static code.
 * New functions lt_dlgetdata, lt_dlsetdata, lt_dlgetinfo, lt_dlforeach
   in libltdl can be used to store application specific data in handles.

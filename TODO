@@ -39,11 +39,6 @@ In the future:
   possible would greatly improve libltdl's ability to be embedded in and 
   used by other systems.
 
-* Support -dlopen/dlpreopen for libraries.
-  This requires adding two new variables (dlopen/dlpreopen) to
-  the pseudo-library and later dlopening them when a program is linked
-  against such a library.
-
 * Arrange that EXEEXT suffixes are stripped from wrapper script names
 only when needed, and that a timestamp file or a wrapper program is
 created with the EXEEXT suffix, so that `make' doesn't build it every
