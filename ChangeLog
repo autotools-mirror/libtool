@@ -1,3 +1,10 @@
+2000-01-27  Thomas Tanner  <tanner@ffii.org>
+
+	* ltconfig.in: Oops, replace the remaining $objdir's
+	
+	* ltmain.in: merge library linking code of programs and libraries,
+	  some cleanups
+
 2000-01-27  Gary V. Vaughan  <gary@oranda.demon.co.uk>
 
 	* NEWS: Updated.
