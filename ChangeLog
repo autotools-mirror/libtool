@@ -1,5 +1,9 @@
 2003-10-15  Gary V. Vaughan  <gary@gnu.org>
 
+	* configure.ac (AC_CONFIG_TESTDIR, AC_CONFIG_TESTFILES): Comment
+	this out for now, the autotest testsuite rewrite is not ready
+	yet.
+
 	* tests/cdemo/Makefile.am, tests/demo/Makefile.am,
 	tests/depdemo/Makefile.am, tests/f77demo/Makefile.am,
 	tests/mdemo/Makefile.am, tests/mdemo2/Makefile.am,

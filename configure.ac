@@ -29,8 +29,13 @@ AC_INIT([libtool], [1.5a], [bug-libtool@gnu.org])
 AC_CONFIG_SRCDIR([ltmain.in])
 AC_CONFIG_AUX_DIR([config])
 
-AC_CONFIG_TESTDIR([tests])
-AC_CONFIG_FILES([tests/atlocal])
+
+## ------------------------ ##
+## Autotest initialisation. ##
+## ------------------------ ##
+
+dnl AC_CONFIG_TESTDIR([tests])
+dnl AC_CONFIG_FILES([tests/atlocal])
 
 
 ## ---------------------------------------- ##
