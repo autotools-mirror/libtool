@@ -1403,7 +1403,7 @@ fi
 for ac_symprfx in "" "_"; do
 
   # Write the raw and C identifiers.
-  global_symbol_pipe="sed -n -e 's/^.* $symcode $ac_symprfx$sympat$/$symxfrm/p'"
+  global_symbol_pipe="sed -n -e 's/^.*[ 	]$symcode[ 	][ 	]*$ac_symprfx$sympat$/$symxfrm/p'"
 
   # Check to see that the pipe works correctly.
   pipe_works=no
@@ -1605,7 +1605,7 @@ bsdi4*)
   soname_spec='${libname}.so'
   finish_cmds='PATH="$PATH:/sbin" ldconfig $libdir'
   shlibpath_var=LD_LIBRARY_PATH
-  check_shared_deplibs_method='file_magic ELF 32-bit LSB shared object'
+  deplibs_check_method='file_magic ELF 32-bit LSB shared object'
   sys_lib_search_path="/shlib /usr/lib /usr/local/lib"
   ;;
 

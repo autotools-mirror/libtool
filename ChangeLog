@@ -1,5 +1,16 @@
 1999-02-04  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* libtool.m4 (ac_cv_sys_global_symbol_pipe): accept TAB in
+	addition to space as separator, and allow more than one space
+	between the symbol code and the symbol name; HP/UX's nm, for
+	example, uses two spaces
+	* ltconfig.in (global_symbol_pipe): ditto
+	(bsdi4, deplibs_check_method): variable name was misspelled
+	* libltdl/configure.in (libltdl_cv_preloaded_symbols): rewrite
+	test, so as not to depend on the way global_symbol_pipe is
+	initialized; the current test would get false positives, as
+	global_symbol_pipe was initialized `x=""', not `x='
+
 	* libltdl/ltdl.c (find_module): initialize filename if dir is NULL 
 	Reported by Godmar Back <gback@cs.utah.edu>
 
