@@ -1,3 +1,7 @@
+2004-07-22  Joe Orton  <joe@manyfish.co.uk>
+
+	* libtool.m4: Treat bsdi5* like bsdi4*. 
+
 2004-07-08  Peter O'Gorman  <peter@pogma.com>
 
 	* libtool.m4 [darwin](AC_PROG_LD_RELOAD_FLAG): Use $CC -nostdlib -r
