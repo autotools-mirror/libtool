@@ -1,5 +1,35 @@
 [++ AutoGen5 Template ++]
-[++ IF (getenv "SCRIPT") ++]
+[++ IF (getenv "SCRIPT") ++][++ #
+
+This twisty little maze is very hard to follow.  Here is what is
+happening:
+
+The first non-flagged argument has already been pulled from the arg list
+and stashed in "nonopt".
+
+The script assumes that the last unrecognized argument must, perforce,
+be the name of the file being compiled.  We know we are compiling and
+not producing an executable because we were told so, or else we stumbled
+upon a ``-c'' command line argument.  Therefore, the command won't end
+with library names.
+
+We strip out all the options we recognize and stuff the information
+into shell variables.  Everything else gets dropped into the "base_compile"
+shell variable massaged so that when it is eval-ed, the compiler will
+see the same characters as we have here in our arguments.  It's an
+ugly process that goes through two layers of quoting:  double quotes
+inside of single quotes.
+
+A final interesting note:  -Xcompiler can appear anywhere and the following
+argument will be inserted whereever we happen to be in the "base_compile"
+variable.  It is not clear what the purpose here is, but if it is supposed
+to mark the compiler, then it won't work unless it is the first argument.
+If it is the first argument, then it would work anyway.  Therefore, it
+seems that the ``-Xcompiler'' is some sort of dinkleberry that could be
+simply ignored as a compatibility artifact.  It would render this logic
+easier to understand.
+
+++]
     # Get the compilation command and the source file.
     base_compile=
     prev=
@@ -421,4 +451,12 @@ EOF
     # Unlock the critical section if it was locked
     if test "$need_locks" != no; then
       $run $rm "$lockfile"
-    fi
+    fi[++ # 
+
+# Local Variables:
+# mode:shell-script
+# sh-indentation:2
+# tab-width:8
+# End:
+
+++]
