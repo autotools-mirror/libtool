@@ -1,3 +1,9 @@
+1999-03-16  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
+
+	* ltconfig.in (extract_expsyms_cmds): Create $objdir if it does
+	not exist -- i.e. we need to generate import an import library
+	in a directory which has no libs of its own.
+
 1999-03-16  Thomas Tanner  <tanner@gmx.de>
 
 	* updated

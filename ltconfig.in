@@ -1086,7 +1086,8 @@ EOF
     allow_undefined_flag=unsupported
     always_export_symbols=yes
 
-    extract_expsyms_cmds='test -f $objdir/impgen.c || \
+    extract_expsyms_cmds='test -d $objdir || mkdir -p $objdir~
+      test -f $objdir/impgen.c || \
       sed -e "/^# \/\* impgen\.c starts here \*\//,/^# \/\* impgen.c ends here \*\// { s/^# //; p; }" -e d < $0 > $objdir/impgen.c~
       test -f $objdir/impgen.exe || (cd $objdir && $CC -o impgen impgen.c)~
       $objdir/impgen $dir/$soname > $objdir/$soname-def'
