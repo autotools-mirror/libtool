@@ -1,8 +1,19 @@
+2004-11-23  Gary V. Vaughan  <gary@gnu.org>
+
+	The ltdl.h header is the published interface to libltdl, and
+	is thus not installed to $prefix/include/libltdl.  It has always
+	been used with `#include <ltdl.h>', so move just that one file
+	back to where it was before:
+
+	* libltdl/libltdl/ltdl.h: Moved from here...
+	* libltdl/ltdl.h: ...to here.
+	* libltdl/Makefile.am: Adjust.
+
 2004-11-23  Peter O'Gorman  <peter@pogma.com>
 
-	Do not require that libtoolize --ltdl=/some/path end in libltdl. Move
-	most libltdl headers to libtldl/libltdl to allow 
-	#include <libltdl/ltdl.h> to always work.
+	Do not require that libtoolize --ltdl=/some/path end in libltdl.
+	Move most libltdl headers to libtldl/libltdl to allow 
+	`#include <libltdl/ltdl.h>' to always work:
 
 	* libltdl/Makefile.am, libltdl/loaders/Makefile.am: Look for includes
 	in the new location.
@@ -16,7 +27,7 @@
 	libltdl/lt_system.h, libltdl/ltdl.h, libltdl/slist.h: Removed, moved
 	to libltdl/libltdl.
 
-2004-11-23  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+2004-11-23  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* doc/libtool.texi (LT_INIT): s/libtool 1.6/libtool 2.0/.
 	(Invoking libtoolize): Fix typo.
@@ -30,7 +41,7 @@
 	* doc/libtool.texi (Invoking libtoolize): Improve documentation
 	for use of ACLOCAL_AMFLAGS and AC_CONFIG_MACRO_DIR.
 
-2004-11-22  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+2004-11-22  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* m4/libtool.m4 (_LT_TAG_COMPILER): Document that with_gcc is
 	tag-dependent.
