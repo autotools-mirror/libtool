@@ -1389,11 +1389,14 @@ compiler."
 	exit 1
       fi
 
+      # If the following section is uncommented, then it is impossible to
+      # link with ltlibrary deplibs...
+      
       # How the heck are we supposed to write a wrapper for a shared library?
-      if test -n "$link_against_libtool_libs"; then
-      	 $echo "$modename: error: cannot link shared libraries into libtool libraries" 1>&2
-      	 exit 1
-      fi
+      #if test -n "$link_against_libtool_libs"; then
+      #	 $echo "$modename: error: cannot link shared libraries into libtool libraries" 1>&2
+      #	 exit 1
+      #fi
 
       if test -n "$dlfiles$dlprefiles"; then
 	$echo "$modename: warning: \`-dlopen' is ignored for libtool libraries" 1>&2
