@@ -1,3 +1,8 @@
+2004-10-24  Gary V. Vaughan  <gary@gnu.org>
+
+	* Makefile.maint (cvs-dist): Generate signatures and directives
+	for bz2 upload.
+
 2004-10-23  Peter O'Gorman  <peter@pogma.com>
 
 	* config/ltmain.m4sh (func_mode_link): Make Gary's new tests
