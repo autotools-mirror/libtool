@@ -1,5 +1,12 @@
 2001-09-11  Gary V. Vaughan  <gary@gnu.org>
 
+	* libltdl/Makefile.am (OBJECTS):  In addition to making $(OBJECTS)
+	depend on libtool -- which causes Automake 1.4 to generate the
+	ibtool script in this directory during bootstrap -- also add
+	libltdl_la_OBJECTS and libltdlc_la_OBJECTS, the Automake 1.5
+	equivalents.
+	* NEWS: Updated.
+
 	* bootstrap: Be robust to having no files that need removing.
 
 	* configure.in: Bumped version to 1.4.2a.
