@@ -1,3 +1,9 @@
+2001-04-02  Gary V. Vaughan  <gvv@techie.com>
+
+	GNU libtool 1.3d was released.
+
+	* NEWS: inserted todays date.
+
 2001-04-01  Christoph Pfisterer  <cp@chrisp.de>
 
 	* libtool.m4: Fixed support for Darwin and Rhapsody. Now correctly
