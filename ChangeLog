@@ -1,5 +1,8 @@
 1999-04-07  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* doc/libtool.texi (Compile mode): Document potential problem and
+	work-around for `-c -o dir/foo.lo'.
+
 	* tests/dryrun.test: The constant modifications of libtool would
 	cause main.o to be updated at the wrong time; the new approach is
 	to modify the libtool script so that it enables dry run depending
