@@ -1,6 +1,9 @@
 2001-06-29  Gary V. Vaughan  <gary@gnu.org>
 
 	From Tim Van Holder <tim.van.holder@pandora.be>
+	* tests/suffix.test: Typo in 2nd for loop.
+
+	From Tim Van Holder <tim.van.holder@pandora.be>
 	* libltdl/Makefile.am (OBJECTS):  This was an implicit variable.
 	instead state the list of object variables explicitly.
 
