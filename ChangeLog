@@ -1,3 +1,20 @@
+1998-12-24  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
+
+	* libltdl/configure.in: fixup spacing in --enable-ltdl-install
+	help string so that it lines up nicely for configure --help.
+
+	* ltmain.in (dllsearchpath): keep track of what the dll search path
+	will need to be in the wrapper scripts as deplibs are calculated.
+	Make sure the wrapper script doesn't end in `.exr', which makes
+	win32 try to execute it as a binary!
+	Add the contents of dllsearchpath to $PATH in the wrapper script.
+	Use the relative path to the wrapped program so that the dll
+	search path is calculated properly by win32 OSes.
+	* TODO: removed the item for making wrapper scripts work on win32.
+
+	* TODO: removed the reference to making libltdl and demo work on
+	win32.  They *do* work now that wrapper scripts are functioning.
+	
 1998-12-23  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* ltmain.in (SP2NL, NL2SP): use `tr' magic to avoid passing very

@@ -966,6 +966,11 @@ compiler."
 	      case "$host" in
 	      *-*-cygwin32* | *-*-mingw32* | *-*-os2*)
 		compile_dependencylibs="$compile_dependencylibs -L$dir -l$name"
+		if test -n "$dllsearchpath"; then
+		  dllsearchpath="$dllsearchpath:$dir"
+		else
+		  dllsearchpath="$dir"
+		fi
 		;;
 	      esac
 	    elif test "$hardcode_minus_L" = no; then
@@ -2015,6 +2020,11 @@ dld_preloaded_symbols[] =
 
       # Only actually do things if our run command is non-null.
       if test -z "$run"; then
+        # win32 will think the script is a binary if it has
+	# a .exe suffix, so we strip it off here.
+        case $output in
+	  *.exe) output=`echo $output|sed 's,.exe$,,'` ;;
+	esac
 	$rm $output
 	trap "$rm $output; exit 1" 1 2 15
 
@@ -2107,16 +2117,37 @@ else
 "
 	fi
 
+	# fixup the dll searchpath if we need to.
+	if test -n "$dllsearchpath"; then
+	  $echo >> $output "\
+    # Add the dll search path components to the executable PATH
+    PATH=$dllsearchpath:\$PATH
+"
+	fi
+
 	$echo >> $output "\
     if test \"\$libtool_execute_magic\" != \"$magic\"; then
       # Run the actual program with our arguments.
-
+"
+	case $host in
+	*-*-cygwin32* | *-*-mingw32 | *-*-os2*)
+	  # win32 systems need to use the prog path for dll
+	  # lookup to work
+	  $echo >> $output "\
+      exec \$progdir\\\\\$program \${1+\"\$@\"}
+"
+	  ;;
+	*)
+	  $echo >> $output "\
       # Export the path to the program.
       PATH=\"\$progdir:\$PATH\"
       export PATH
 
       exec \$program \${1+\"\$@\"}
-
+"
+	  ;;
+	esac
+	$echo >> $output "\
       \$echo \"\$0: cannot exec \$program \${1+\"\$@\"}\"
       exit 1
     fi
