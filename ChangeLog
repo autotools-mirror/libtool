@@ -1,3 +1,8 @@
+2004-03-11  Peter O'Gorman  <peter@pogma.com>
+
+	* ltmain.in (link_all_deplibs,darwin): Link libraries in the
+	correct order. Bug from Zachary Pincus <zpincus@stanford.edu>.
+
 2004-03-14  Scott James Remnant  <scott@netsplit.com>
 
 	* m4/ltmain.in: Only check precious_files_regex if it is not empty.
