@@ -1,3 +1,7 @@
+1999-04-25  Boyd Lynn Gerber  <gerberb@zenez.com>
+
+	* ltconfig.in (sco3.2v5*): Use LD_RUN_PATH for hard-coding.
+
 1999-04-25  Pavel Roskin  <pavel_roskin@geocities.com>
 
 	* Makefile.am (uninstall-local): Remove installed libltdl tree.
