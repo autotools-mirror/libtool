@@ -1,3 +1,16 @@
+2005-03-10  Gary V. Vaughan  <gary@gnu.org>
+
+	* libltdl/Makefile.am (install-data-local): Don't force v7 tar
+	format with the `o' flag in create mode.
+	Set the umask to 0 when untarring to avoid copied files taking
+	their mode from the installer's umask.
+	* libltdl/loaders/Makefile.am (install-data-local): Ditto.
+	* libtoolize.m4sh (func_copy_cb): Ditto.
+	Ignore errors from failed `cd' in the tar processes, since we
+	may be running in dryrun mode.
+	Reported by Noah Misch <noah@cs.caltech.edu>,
+		Bob Friesenhahn <bfriesen@simple.dallas.tx.us>
+
 2005-03-10  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* libltdl/Makefile.am: $(builddir) is not defined, replace by `.'.

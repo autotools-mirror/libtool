@@ -67,18 +67,21 @@ libltdlc_la_LIBADD	= $(libltdl_la_LIBADD)
 ## These are installed as a subdirectory of pkgdatadir so that
 ## libtoolize --ltdl can find them later:
 ltdldatadir		= $(pkgvdatadir)/libltdl
-ltdldatafiles		= COPYING.LIB Makefile.am README configure.ac \
+ltdldatafiles		= COPYING.LIB README \
+			  Makefile.am Makefile.in \
+			  configure.ac configure \
+			  $(libltdl_la_SOURCES) \
 			  $(libltdl_la_SOURCES) \
 			  lt__dirent.c libltdl/lt__dirent.h \
-                          lt__strl.c libltdl/lt__strl.h \
+			  lt__strl.c libltdl/lt__strl.h \
 			  argz_.h argz.c
 
 ## To avoid spurious reconfiguration when the user installs these files
 ## with libtoolize, we have to preserve their timestamps carefully:
 install-data-local:
 	$(mkinstalldirs) $(DESTDIR)$(ltdldatadir)
-	( cd $(srcdir) && $(AMTAR) chof - $(ltdldatafiles); ) \
-	  | ( cd $(DESTDIR)$(ltdldatadir) && $(AMTAR) xf -; )
+	( cd $(srcdir) && $(AMTAR) chf - $(ltdldatafiles); ) \
+	  | ( umask 0 && cd $(DESTDIR)$(ltdldatadir) && $(AMTAR) xf -; )
 
 ## Make sure these will be cleaned even when they're not built by default:
 CLEANFILES		= libltdl.la libltdlc.la libdlloader.la
