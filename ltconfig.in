@@ -1558,10 +1558,11 @@ finish_eval=
 shlibpath_var=
 version_type=none
 dynamic_linker="$host_os ld.so"
+sys_lib_search_path="/lib /usr/lib /usr/local/lib"
 check_shared_deplibs_method='none'
 # Need to set the preceding variable on all platforms that support
 # interlibrary dependencies.
-# 'none' -- dependencies disabled.
+# 'none' -- dependencies not supported.
 # 'pass_all' -- all dependencies passed with no checks.
 # 'test_compile' -- check by making test program.
 # 'file_regex' -- check by looking for filenames that look like the shared
@@ -1662,6 +1663,7 @@ linux-gnu*)
   finish_cmds='PATH="\$PATH:/sbin" ldconfig -n $libdir'
   shlibpath_var=LD_LIBRARY_PATH
   check_shared_deplibs_method='file_magic ELF 32-bit LSB shared object'
+  sys_lib_search_path="/lib /usr/lib /usr/local/lib `echo $LD_LIBRARY_PATH | sed -e 's/:/ /g'`"
 
   if test -f /lib/ld.so.1; then
     dynamic_linker='GNU ld.so'
@@ -1802,16 +1804,18 @@ case "$ltmain" in
     pic_flag link_static_flag no_builtin_flag export_dynamic_flag_spec \
     whole_archive_flag_spec libname_spec library_names_spec soname_spec \
     RANLIB old_archive_cmds old_archive_from_new_cmds old_postinstall_cmds \
-    old_postuninstall_cmds archive_cmds postinstall_cmds postuninstall_cmds \
+    old_postuninstall_cmds archive_cmds archive_sym_cmds postinstall_cmds postuninstall_cmds \
     check_shared_deplibs_method allow_undefined_flag no_undefined_flag \
     finish_cmds finish_eval global_symbol_pipe \
-    hardcode_libdir_flag_spec hardcode_libdir_separator \
+    hardcode_libdir_flag_spec hardcode_libdir_separator sys_lib_search_path \
     compiler_c_o compiler_o_lo need_locks; do
 
     case "$var" in
     reload_cmds | old_archive_cmds | old_archive_from_new_cmds | \
-    old_postinstall_cmds | old_postuninstall_cmds | archive_cmds | \
-    postinstall_cmds | postuninstall_cmds | finish_cmds)
+    old_postinstall_cmds | old_postuninstall_cmds | \
+    archive_cmds | archive_sym_cmds | \
+    postinstall_cmds | postuninstall_cmds | \
+    finish_cmds | sys_lib_search_path)
       # Double-quote double-evaled strings.
       eval "$var=\\\"\`\$echo \"X\$$var\" | \$Xsed -e \"\$double_quote_subst\" -e \"\$sed_quote_subst\"\`\\\""
       ;;
@@ -2006,6 +2010,7 @@ old_archive_from_new_cmds=$old_archive_from_new_cmds
 
 # Commands used to build and install a shared archive.
 archive_cmds=$archive_cmds
+archive_sym_cmds=$archive_sym_cmds
 postinstall_cmds=$postinstall_cmds
 postuninstall_cmds=$postuninstall_cmds
 
@@ -2054,6 +2059,9 @@ hardcode_minus_L=$hardcode_minus_L
 # Set to yes if using SHLIBPATH_VAR=DIR during linking hardcodes DIR into
 # the resulting binary.
 hardcode_shlibpath_var=$hardcode_shlibpath_var
+
+# System search path for libraries
+sys_lib_search_path=$sys_lib_search_path
 
 # Fix the shell variable \$srcfile for the compiler.
 fix_srcfile_path="$fix_srcfile_path"
