@@ -604,35 +604,43 @@ set dummy $CC
 compiler="$2"
 
 echo $ac_n "checking for object suffix... $ac_c" 1>&6
-$rm conftest*
-echo 'int i = 1;' > conftest.c
-echo "$progname:@LINENO@: checking for object suffix" >& 5
-if { (eval echo $progname:@LINENO@: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>conftest.err; }; then
-  # Append any warnings to the config.log.
-  cat conftest.err 1>&5
-
-  for ac_file in conftest.*; do
-    case $ac_file in
-    *.c) ;;
-    *) objext=`echo $ac_file | sed -e s/conftest.//` ;;
-    esac
-  done
+echo "$progname:@LINENO@: checking for object suffix" 1>&5
+if test X`echo ${ac_cv_objext+set}` = Xset; then
+  echo $ac_n "(cached) $ac_c" 1>&6
 else
-  cat conftest.err 1>&5
-  echo "$progname: failed program was:" >&5
-  cat conftest.c >&5
+  ac_cv_objext="none"
+  $rm conftest*
+  echo 'int i = 1;' > conftest.c
+  if { (eval echo $progname:@LINENO@: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>conftest.err; }; then
+    # Append any warnings to the config.log.
+    cat conftest.err 1>&5
+
+    for ac_file in conftest.*; do
+      case $ac_file in
+      *.c) ;;
+      *) ac_cv_objext=`echo $ac_file | sed -e s/conftest.//` ;;
+      esac
+    done
+  else
+    cat conftest.err 1>&5
+    echo "$progname: failed program was:" >&5
+    cat conftest.c >&5
+  fi
+  $rm conftest*
 fi
-$rm conftest*
-echo "$ac_t$objext" 1>&6
+if test X$ac_cv_objext != Xnone; then
+  objext="$ac_cv_objext"
+fi
+echo "$ac_t$ac_cv_objext" 1>&6
 
 echo $ac_n "checking for executable suffix... $ac_c" 1>&6
-if eval "test \"`echo '$''{'ac_cv_exeext'+set}'`\" = set"; then
+echo "$progname:@LINENO@: checking for executable suffix" 1>&5
+if test X`echo ${ac_cv_exeext+set}` = Xset; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
   ac_cv_exeext="none"
   $rm conftest*
   echo 'main () { return 0; }' > conftest.c
-  echo "$progname:@LINENO@: checking for executable suffix" >& 5
   if { (eval echo $progname:@LINENO@: \"$ac_link\") 1>&5; (eval $ac_link) 2>conftest.err; }; then
     # Append any warnings to the config.log.
     cat conftest.err 1>&5

@@ -1,5 +1,8 @@
 1999-06-08  Gary V. Vaughan  <gary@oranda.demon.co.uk>
 
+	* ltconfig.in (objext): Accept, in order of decreasing preference:
+	the cached value; the result of a test object compilation.
+
 	* ltconfig.in (RANLIB): Accept, in order of decreasing preference:
 	the cached value; an environment setting; the first file called
 	``ranlib'' in the user's path.
