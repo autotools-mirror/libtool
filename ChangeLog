@@ -1,5 +1,11 @@
 1999-01-26  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* ltconfig.in (LTCONFIG_VERSION): damn!, adding TIMESTAMP doesn't
+ 	always work, because then different ChangeLog timestamps fail to
+ 	pass the version test.  Instead of forcing both ltconfig and
+	ltmain.sh to be updated every time ChangeLog changes, better
+	revert it
+	
 	* ltconfig.in (LTCONFIG_VERSION): add TIMESTAMP, remove
 	explicit quotes and add it to the list of variables to quote
 

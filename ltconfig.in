@@ -1895,7 +1895,7 @@ if test "X$ltecho" = "X$CONFIG_SHELL $0 --fallback-echo"; then
 fi
 LTSHELL="$SHELL"
 
-LTCONFIG_VERSION="$VERSION$TIMESTAMP"
+LTCONFIG_VERSION="$VERSION"
 
 # Only quote variables if we're using ltmain.sh.
 case "$ltmain" in
