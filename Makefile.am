@@ -33,7 +33,7 @@ CLEANFILES = libtool libtoolize ltmain.shT
 # executable by hand
 dist_pkgdata_DATA = config/config.guess config/config.sub config/ltmain.sh
 
-# Me maintain our own macros to provent problems with ancient definitions.
+# We maintain our own macros to provent problems with ancient definitions.
 # lt~obsolete.m4 doesn't belong here, it's for bootstrapping us only
 pkgmacrodir = $(pkgdatadir)/m4
 pkgmacro_DATA = m4/libtool.m4 m4/ltdl.m4 m4/ltsugar.m4

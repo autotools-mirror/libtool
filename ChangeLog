@@ -1,5 +1,7 @@
 2004-02-06  Gary V. Vaughan  <gary@gnu.org>
 
+	* Makefile.am: Comment typo.
+
 	* m4/libtool.m4 (LT_PREREQ): Declare the minimum release number
 	that is required for the calling code.
 	* doc/libtool.texi (AC_PROG_LIBTOOL): Document it.
