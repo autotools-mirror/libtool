@@ -1,3 +1,7 @@
+2001-04-18  Alexandre Oliva  <aoliva@redhat.com>
+
+	* TODO: Add -L- flag.
+
 2001-04-11  Alexandre Oliva  <aoliva@redhat.com>
 
 	* libtool.m4 (no_undefined_flag) [Solaris ld]: Change to -zdefs.
