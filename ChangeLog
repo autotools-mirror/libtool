@@ -1,5 +1,9 @@
 2004-01-25  Scott James Remnant  <scott@netsplit.com>
 
+	* NEWS: updated.
+	* configure.ac: Bumped version to 1.5.3 also in accordance with
+	the new versioning scheme.
+
 	GNU libtool 1.5.2 was released.
 
 	* configure.ac: Bumped version to 1.5.2 in accordance with the
