@@ -1,5 +1,7 @@
 1999-01-19  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* Makefile.am (check-local): depend on libltdl/Makefile
+
 	* mdemo/Makefile.am (mdemo_LDFLAGS, mdemo_LDADD): moved -dlopen
 	flags to LDADD
 	* doc/libtool.texi (Using Automake): how to add -dlopen to LDADD

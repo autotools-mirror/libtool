@@ -63,7 +63,8 @@ $(srcdir)/ltmain.sh: $(srcdir)/ltmain.in $(top_srcdir)/configure.in
 	(rm -f $@ && cp ltmain.shT $@ && rm -f ltmain.shT)
 
 # All our rules should depend on these demo files.
-all-local check-local: $(ACINCLUDE_M4_LIST) libltdl/Makefile libtool
+all-local check-local: $(ACINCLUDE_M4_LIST) libtool
+check-local: libltdl/Makefile
 
 @ACINCLUDE_M4_LIST@: $(srcdir)/libtool.m4
 	rm -f $@
