@@ -1,5 +1,9 @@
 NEWS - list of user-visible changes between releases of GNU Libtool
 
+New in 1.2c - 1998-XX-XX:
+* Arguments to ltconfig have been changed to allow creation of a
+libtool C program.
+
 New in 1.2b - 1998-07-01, Gordon Matzigkeit:
 * Libtool needs a new maintainer, since Gordon Matzigkeit has quit.
 If you think you can do the job, send mail to bug-libtool@gnu.org.

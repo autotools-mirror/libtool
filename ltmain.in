@@ -1528,7 +1528,7 @@ dld_preloaded_symbols[] =
 # The $output program cannot be directly executed until all the libtool
 # libraries that it depends on are installed.
 #
-# This wrapper script should never be moved out of \``pwd`'.
+# This wrapper script should never be moved out of the build directory.
 # If it is, it will not operate correctly.
 
 # Sed substitution that helps us do robust quoting.  It backslashifies
@@ -1738,7 +1738,7 @@ libdir='$install_libdir'\
 
     # There may be an optional sh(1) argument at the beginning of
     # install_prog (especially on Windows NT).
-    if test "$nonopt" = "$SHELL"; then
+    if test "$nonopt" = "$SHELL" || test "$nonopt" = /bin/sh; then
       # Aesthetically quote it.
       arg=`$echo "X$nonopt" | $Xsed -e "$sed_quote_subst"`
       case "$arg" in
@@ -1936,21 +1936,14 @@ libdir='$install_libdir'\
           test "X$dlname" = "X$realname" && dlname=
 
           if test $# -gt 0; then
-            # Delete the old symlinks.
-            rmcmd="$rm"
-            for linkname
-            do
-              rmcmd="$rmcmd $destdir/$linkname"
-            done
-            $show "$rmcmd"
-            $run $rmcmd
-
-            # ... and create new ones.
+            # Delete the old symlinks, and create new ones.
             for linkname
             do
               test "X$dlname" = "X$linkname" && dlname=
-              $show "(cd $destdir && $LN_S $realname $linkname)"
-              $run eval "(cd $destdir && $LN_S $realname $linkname)"
+	      if test "$linkname" != "$realname"; then
+		$show "(cd $destdir && $rm $linkname && $LN_S $realname $linkname)"
+		$run eval "(cd $destdir && $rm $linkname && $LN_S $realname $linkname)"
+	      fi
             done
           fi
 
@@ -2161,6 +2154,9 @@ libdir='$install_libdir'\
 	fi
       done
     fi
+
+    # Exit here if they wanted silent mode.
+    test "$show" = : && exit 0
 
     echo "----------------------------------------------------------------------"
     echo "Libraries have been installed in:"

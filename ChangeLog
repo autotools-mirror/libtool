@@ -1,4 +1,28 @@
-1998-06-30  Gordon Matzigkeit  <gord@fig.org>
+1998-08-20  Gordon Matzigkeit  <gord@trick.fig.org>
+
+	* ltmain.in (install): When library_names_spec has redundancies,
+	avoid deleting the main library when installing symlinks.  From
+	Jeff Dairiki.
+	(link): Get rid of backticks in a here doc comment.
+	This causes segfaults on Solaris 2.  From Aleksandar Bakic.
+	(finish): Don't display messages
+
+	* ltconfig.in (archive_cmds): On HP-UX 9, make sure we don't try
+	to move a file to itself.  From Jeff Dairiki.
+
+1998-08-19  Gordon Matzigkeit  <gord@trick.fig.org>
+
+	* ltconfig.in: Make changes to accomodate ltmain.c.
+
+	* Makefile.am (clibtool): New target for the C version of libtool.
+
+	* ltmain.c: Experimental C version of libtool.
+
+1998-07-10  Ian Lance Taylor  <ian@cygnus.com>
+
+	* ltmain.in (install): Test against both $SHELL and /bin/sh.
+
+1998-06-30  Gordon Matzigkeit  <gord@trick.fig.org>
 
 	* ltmain.in: Convenience archive support.  From Ulrich Drepper.
 

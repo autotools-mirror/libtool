@@ -146,7 +146,7 @@ do
 
   case "$option" in
   --help) cat <<EOM
-Usage: $progname [OPTION]... LTMAIN [HOST]
+Usage: $progname [OPTION]... [HOST [LTMAIN]]
 
 Generate a system-specific libtool script.
 
@@ -163,8 +163,8 @@ Generate a system-specific libtool script.
     --with-gcc             assume that the GNU C compiler will be used
     --with-gnu-ld          assume that the C compiler uses the GNU linker
 
-LTMAIN is the \`ltmain.sh' shell script fragment that provides basic libtool
-functionality.
+LTMAIN is the \`ltmain.sh' shell script fragment or \`ltmain.c' program
+that provides basic libtool functionality.
 
 HOST is the canonical host system name [default=guessed].
 EOM
@@ -278,7 +278,7 @@ else
 fi
 
 if test -z "$srcdir"; then
-  # Assume the source directory is the same one as the path to ltmain.sh.
+  # Assume the source directory is the same one as the path to LTMAIN.
   srcdir=`$echo "$ltmain" | $Xsed -e 's%/[^/]*$%%'`
   test "$srcdir" = "$ltmain" && srcdir=.
 fi
@@ -832,7 +832,7 @@ else
     ;;
 
   hpux9*)
-    archive_cmds='$rm $objdir/$soname;$LD -b +s +b $install_libdir -o $objdir/$soname$libobjs;mv $objdir/$soname $lib'
+    archive_cmds='$rm $objdir/$soname;$LD -b +s +b $install_libdir -o $objdir/$soname$libobjs;test $objdir/$soname = $lib || mv $objdir/$soname $lib'
     hardcode_libdir_flag_spec='${wl}+b ${wl}$libdir'
     hardcode_direct=yes
     hardcode_minus_L=yes
@@ -1321,39 +1321,43 @@ echo "$ac_t$objdir" 1>&6
 # Copy echo and quote the copy, instead of the original, because it is
 # used later.
 ltecho="$echo"
+LTSHELL="$SHELL"
 
-# Now quote all the things that may contain metacharacters.
-for var in ltecho old_CC old_CFLAGS old_CPPFLAGS old_LD old_NM old_RANLIB \
-  old_LN_S AR CC LD LN_S NM reload_flag reload_cmds wl pic_flag \
-  link_static_flag no_builtin_flag export_dynamic_flag_spec \
-  whole_archive_flag_spec libname_spec library_names_spec soname_spec RANLIB \
-  old_archive_cmds old_archive_from_new_cmds old_postinstall_cmds \
-  old_postuninstall_cmds archive_cmds postinstall_cmds postuninstall_cmds \
-  allow_undefined_flag no_undefined_flag \
-  finish_cmds finish_eval global_symbol_pipe \
-  hardcode_libdir_flag_spec hardcode_libdir_separator; do
+# Only quote variables if we're using ltmain.sh.
+case "$ltmain" in
+*.sh)
+  # Now quote all the things that may contain metacharacters.
+  for var in ltecho old_CC old_CFLAGS old_CPPFLAGS old_LD old_NM old_RANLIB \
+    old_LN_S AR CC LD LN_S NM LTSHELL VERSION reload_flag reload_cmds wl \
+    pic_flag link_static_flag no_builtin_flag export_dynamic_flag_spec \
+    whole_archive_flag_spec libname_spec library_names_spec soname_spec \
+    RANLIB old_archive_cmds old_archive_from_new_cmds old_postinstall_cmds \
+    old_postuninstall_cmds archive_cmds postinstall_cmds postuninstall_cmds \
+    allow_undefined_flag no_undefined_flag \
+    finish_cmds finish_eval global_symbol_pipe \
+    hardcode_libdir_flag_spec hardcode_libdir_separator; do
 
-  case "$var" in
-  reload_cmds | old_archive_cmds | old_archive_from_new_cmds | \
-  old_postinstall_cmds | old_postuninstall_cmds | archive_cmds | \
-  postinstall_cmds | postuninstall_cmds | finish_cmds)
-    # Double-quote double-evaled strings.
-    eval "$var=\`\$echo \"X\$$var\" | \$Xsed -e \"\$double_quote_subst\" -e \"\$sed_quote_subst\"\`"
-    ;;
-  *)
-    eval "$var=\`\$echo \"X\$$var\" | \$Xsed -e \"\$sed_quote_subst\"\`"
-    ;;
-  esac
-done
+    case "$var" in
+    reload_cmds | old_archive_cmds | old_archive_from_new_cmds | \
+    old_postinstall_cmds | old_postuninstall_cmds | archive_cmds | \
+    postinstall_cmds | postuninstall_cmds | finish_cmds)
+      # Double-quote double-evaled strings.
+      eval "$var=\\\"\`\$echo \"X\$$var\" | \$Xsed -e \"\$double_quote_subst\" -e \"\$sed_quote_subst\"\`\\\""
+      ;;
+    *)
+      eval "$var=\\\"\`\$echo \"X\$$var\" | \$Xsed -e \"\$sed_quote_subst\"\`\\\""
+      ;;
+    esac
+  done
 
-trap "$rm \"$ofile\"; exit 1" 1 2 15
-echo "creating $ofile"
-$rm "$ofile"
-cat <<EOF > "$ofile"
+  trap "$rm \"$ofile\"; exit 1" 1 2 15
+  echo "creating $ofile"
+  $rm "$ofile"
+  cat <<EOF > "$ofile"
 #! $SHELL
 
 # `$echo "$ofile" | sed 's%^.*/%%'` - Provide generalized library-building support services.
-# Generated automatically by $PROGRAM - GNU $PACKAGE $VERSION
+# Generated automatically by $PROGRAM (GNU $PACKAGE $VERSION)
 # NOTE: Changes made to this file will be lost: look at ltconfig or ltmain.sh.
 #
 # Copyright (C) 1996-1998 Free Software Foundation, Inc.
@@ -1386,20 +1390,44 @@ Xsed="sed -e s/^X//"
 if test "\${CDPATH+set}" = set; then CDPATH=; export CDPATH; fi
 
 ### BEGIN LIBTOOL CONFIG
+EOF
+  cfgfile="$ofile"
+  ;;
+
+*)
+  # Double-quote the variables that need it (for aesthetics).
+  for var in old_CC old_CFLAGS old_CPPFLAGS old_LD old_NM old_RANLIB \
+    old_LN_S; do
+    eval "$var=\\\"\$var\\\""
+  done
+
+  # Just create a config file.
+  cfgfile="$ofile.cfg"
+  trap "$rm \"$cfgfile\"; exit 1" 1 2 15
+  echo "creating $cfgfile"
+  $rm "$cfgfile"
+  cat <<EOF > "$cfgfile"
+# `$echo "$cfgfile" | sed 's%^.*/%%'` - Libtool configuration file.
+# Generated automatically by $PROGRAM (GNU $PACKAGE $VERSION)
+EOF
+  ;;
+esac
+
+cat <<EOF >> "$cfgfile"
 # Libtool was configured as follows, on host `(hostname || uname -n) 2>/dev/null | sed 1q`:
 #
-# CC="$old_CC" CFLAGS="$old_CFLAGS" CPPFLAGS="$old_CPPFLAGS" \\
-# LD="$old_LD" NM="$old_NM" RANLIB="$old_RANLIB" LN_S="$old_LN_S" \\
+# CC=$old_CC CFLAGS=$old_CFLAGS CPPFLAGS=$old_CPPFLAGS \\
+# LD=$old_LD NM=$old_NM RANLIB=$old_RANLIB LN_S=$old_LN_S \\
 #   $0$ltconfig_args
 #
 # Compiler and other test output produced by $progname, useful for
 # debugging $progname, is in ./config.log if it exists.
 
 # The version of $progname that generated this script.
-LTCONFIG_VERSION="$VERSION"
+LTCONFIG_VERSION=$VERSION
 
 # Shell to use when invoking shell scripts.
-SHELL="$SHELL"
+SHELL=$LTSHELL
 
 # Whether or not to build shared libraries.
 build_libtool_libs=$enable_shared
@@ -1408,93 +1436,93 @@ build_libtool_libs=$enable_shared
 build_old_libs=$enable_static
 
 # The host system.
-host_alias="$host_alias"
-host="$host"
+host_alias=$host_alias
+host=$host
 
 # An echo program that does not interpret backslashes.
-echo="$ltecho"
+echo=$ltecho
 
 # The archiver.
-AR="$AR"
+AR=$AR
 
 # The default C compiler.
-CC="$CC"
+CC=$CC
 
 # The linker used to build libraries.
-LD="$LD"
+LD=$LD
 
 # Whether we need hard or soft links.
-LN_S="$LN_S"
+LN_S=$LN_S
 
 # A BSD-compatible nm program.
-NM="$NM"
+NM=$NM
 
 # The name of the directory that contains temporary libtool files.
-objdir="$objdir"
+objdir=$objdir
 
 # How to create reloadable object files.
-reload_flag="$reload_flag"
-reload_cmds="$reload_cmds"
+reload_flag=$reload_flag
+reload_cmds=$reload_cmds
 
 # How to pass a linker flag through the compiler.
-wl="$wl"
+wl=$wl
 
 # Additional compiler flags for building library objects.
-pic_flag="$pic_flag"
+pic_flag=$pic_flag
 
 # Compiler flag to prevent dynamic linking.
-link_static_flag="$link_static_flag"
+link_static_flag=$link_static_flag
 
 # Compiler flag to turn off builtin functions.
-no_builtin_flag="$no_builtin_flag"
+no_builtin_flag=$no_builtin_flag
 
 # Compiler flag to allow reflexive dlopens.
-export_dynamic_flag_spec="$export_dynamic_flag_spec"
+export_dynamic_flag_spec=$export_dynamic_flag_spec
 
 # Compiler flag to generate shared objects directly from archives.
-whole_archive_flag_spec="$whole_archive_flag_spec"
+whole_archive_flag_spec=$whole_archive_flag_spec
 
 # Library versioning type.
 version_type=$version_type
 
 # Format of library name prefix.
-libname_spec="$libname_spec"
+libname_spec=$libname_spec
 
 # List of archive names.  First name is the real one, the rest are links.
 # The last name is the one that the linker finds with -lNAME.
-library_names_spec="$library_names_spec"
+library_names_spec=$library_names_spec
 
 # The coded name of the library, if different from the real name.
-soname_spec="$soname_spec"
+soname_spec=$soname_spec
 
 # Commands used to build and install an old-style archive.
-RANLIB="$RANLIB"
-old_archive_cmds="$old_archive_cmds"
-old_postinstall_cmds="$old_postinstall_cmds"
-old_postuninstall_cmds="$old_postuninstall_cmds"
+RANLIB=$RANLIB
+old_archive_cmds=$old_archive_cmds
+old_postinstall_cmds=$old_postinstall_cmds
+old_postuninstall_cmds=$old_postuninstall_cmds
 
 # Create an old-style archive from a shared archive.
-old_archive_from_new_cmds="$old_archive_from_new_cmds"
+old_archive_from_new_cmds=$old_archive_from_new_cmds
 
 # Commands used to build and install a shared archive.
-archive_cmds="$archive_cmds"
-postinstall_cmds="$postinstall_cmds"
-postuninstall_cmds="$postuninstall_cmds"
+archive_cmds=$archive_cmds
+postinstall_cmds=$postinstall_cmds
+postuninstall_cmds=$postuninstall_cmds
 
 # Flag that allows shared libraries with undefined symbols to be built.
-allow_undefined_flag="$allow_undefined_flag"
+allow_undefined_flag=$allow_undefined_flag
 
 # Flag that forces no undefined symbols.
-no_undefined_flag="$no_undefined_flag"
+no_undefined_flag=$no_undefined_flag
 
 # Commands used to finish a libtool library installation in a directory.
-finish_cmds="$finish_cmds"
+finish_cmds=$finish_cmds
 
 # Same as above, but a single script fragment to be evaled but not shown.
-finish_eval="$finish_eval"
+finish_eval=$finish_eval
 
 # Take the output of nm and produce a listing of raw symbols and C names.
-global_symbol_pipe="$global_symbol_pipe"
+global_symbol_pipe=$global_symbol_pipe
 
 # This is the shared library runtime path variable.
 runpath_var=$runpath_var
@@ -1507,10 +1535,10 @@ hardcode_action=$hardcode_action
 
 # Flag to hardcode \$libdir into a binary during linking.
 # This must work even if \$libdir does not exist.
-hardcode_libdir_flag_spec="$hardcode_libdir_flag_spec"
+hardcode_libdir_flag_spec=$hardcode_libdir_flag_spec
 
 # Whether we need a single -rpath flag with a separated argument.
-hardcode_libdir_separator="$hardcode_libdir_separator"
+hardcode_libdir_separator=$hardcode_libdir_separator
 
 # Set to yes if using DIR/libNAME.so during linking hardcodes DIR into the
 # resulting binary.
@@ -1525,9 +1553,13 @@ hardcode_minus_L=$hardcode_minus_L
 hardcode_shlibpath_var=$hardcode_shlibpath_var
 EOF
 
-case "$host_os" in
-aix3*)
-  cat <<\EOF >> "$ofile"
+case "$ltmain" in
+*.sh)
+  echo '### END LIBTOOL CONFIG' >> "$ofile"
+  echo >> "$ofile"
+  case "$host_os" in
+  aix3*)
+    cat <<\EOF >> "$ofile"
 
 # AIX sometimes has problems with the GCC collect2 program.  For some
 # reason, if we set the COLLECT_NAMES environment variable, the problems
@@ -1537,16 +1569,20 @@ if test "${COLLECT_NAMES+set}" != set; then
   export COLLECT_NAMES
 fi
 EOF
+    ;;
+  esac
+
+  # Append the ltmain.sh script.
+  cat "$ltmain" >> "$ofile" || (rm -f "$ofile"; exit 1)
+
+  chmod +x "$ofile"
+  ;;
+
+*)
+  # Compile the libtool program.
+  echo "FIXME: would compile $ltmain"
   ;;
 esac
-
-echo '### END LIBTOOL CONFIG' >> "$ofile"
-echo >> "$ofile"
-
-# Append the ltmain.sh script.
-cat "$ltmain" >> "$ofile" || (rm -f "$ofile"; exit 1)
-
-chmod +x "$ofile"
 exit 0
 
 # Local Variables:
