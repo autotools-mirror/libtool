@@ -1,3 +1,8 @@
+2004-04-11  Peter O'Gorman  <peter@pogma.com>
+
+	* configure.ac: Bumped version to 1.5.6.
+	* NEWS: updated.
+
 2004-04-10  Peter Breitenlohner <peb@mppmu.mpg.de>
 	
 	* libltdl/Makefile.am (local-install-files): remove $srcdir from

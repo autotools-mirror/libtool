@@ -1,7 +1,9 @@
 NEWS - list of user-visible changes between releases of GNU Libtool
 
-New in 1.5.5a: 2004-??-??; CVS version 1.5.5a, Libtool team:
-* Bug fixes.
+New in 1.5.6: 2004-04-11; CVS version 1.5.5a, Libtool team:
+* Installs libltdl files properly in $prefix/share/libtool/libltdl. 1.5.4
+  did not install them at all.
+* libltdl correctly guesses the extension for loadable modules again.
 
 New in 1.5.4: 2004-04-03; CVS version 1.5.3a, Libtool team:
 * Bug fixes.
