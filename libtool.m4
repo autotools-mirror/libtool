@@ -4434,27 +4434,6 @@ EOF
         $CC $output_objdir/$soname-exp '$lt_cv_cc_dll_switch' -Wl,-e,'$dll_entry' -o $output_objdir/$soname '$ltdll_obj'$libobjs $deplibs $compiler_flags'
       ;;
 
-    darwin* | rhapsody*)
-      case "$host_os" in
-      rhapsody* | darwin1.[[012]])
-        _LT_AC_TAGVAR(allow_undefined_flag, $1)='-undefined suppress'
-        ;;
-      *) # Darwin 1.3 on
-        _LT_AC_TAGVAR(allow_undefined_flag, $1)='-flat_namespace -undefined suppress'
-        ;;
-      esac
-
-      # FIXME: Relying on posixy $() will cause problems for
-      #        cross-compilation, but unfortunately the echo tests do not
-      #        yet detect zsh echo's removal of \ escapes.
-      _LT_AC_TAGVAR(archive_cmds, $1)='$CC $(test "x$module" = xyes && echo -bundle || echo -dynamiclib) $allow_undefined_flag -o $lib $libobjs $deplibs$linker_flags -install_name $rpath/$soname $verstring'
-      # We need to add '_' to the symbols in $export_symbols first
-      #_LT_AC_TAGVAR(archive_expsym_cmds, $1)="$_LT_AC_TAGVAR(archive_cmds, $1)"' && strip -s $export_symbols'
-      _LT_AC_TAGVAR(hardcode_direct, $1)=yes
-      _LT_AC_TAGVAR(hardcode_shlibpath_var, $1)=no
-      _LT_AC_TAGVAR(whole_archive_flag_spec, $1)='-all_load $convenience'
-      ;;
-
     netbsd*)
       if echo __ELF__ | $CC -E - | grep __ELF__ >/dev/null; then
         _LT_AC_TAGVAR(archive_cmds, $1)='$LD -Bshareable $libobjs $deplibs $linker_flags -o $lib'
@@ -4683,6 +4662,27 @@ EOF
       # FIXME: Should let the user specify the lib program.
       _LT_AC_TAGVAR(old_archive_cmds, $1)='lib /OUT:$oldlib$oldobjs$old_deplibs'
       fix_srcfile_path='`cygpath -w "$srcfile"`'
+      ;;
+
+    darwin* | rhapsody*)
+      case "$host_os" in
+      rhapsody* | darwin1.[[012]])
+        _LT_AC_TAGVAR(allow_undefined_flag, $1)='-undefined suppress'
+        ;;
+      *) # Darwin 1.3 on
+        _LT_AC_TAGVAR(allow_undefined_flag, $1)='-flat_namespace -undefined suppress'
+        ;;
+      esac
+
+      # FIXME: Relying on posixy $() will cause problems for
+      #        cross-compilation, but unfortunately the echo tests do not
+      #        yet detect zsh echo's removal of \ escapes.
+      _LT_AC_TAGVAR(archive_cmds, $1)='$CC $(test "x$module" = xyes && echo -bundle || echo -dynamiclib) $allow_undefined_flag -o $lib $libobjs $deplibs$linker_flags -install_name $rpath/$soname $verstring'
+      # We need to add '_' to the symbols in $export_symbols first
+      #_LT_AC_TAGVAR(archive_expsym_cmds, $1)="$_LT_AC_TAGVAR(archive_cmds, $1)"' && strip -s $export_symbols'
+      _LT_AC_TAGVAR(hardcode_direct, $1)=yes
+      _LT_AC_TAGVAR(hardcode_shlibpath_var, $1)=no
+      _LT_AC_TAGVAR(whole_archive_flag_spec, $1)='-all_load $convenience'
       ;;
 
     dgux*)
