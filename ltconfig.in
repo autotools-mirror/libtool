@@ -868,11 +868,11 @@ if test -z "$LD"; then
     case "$ac_prog" in
     # Accept absolute paths.
     /* | [A-Za-z]:/*)
-      re_direlt='/[^/]*/\.\./'
+      re_direlt='/[^/][^/]*/\.\./'
       sub_uncdrive='s%^\([A-Za-z]\):/%//\1/%'
       # Canonicalize the path of ld
       while echo $ac_prog | grep "$re_direlt" > /dev/null 2>&1; do
-        ac_prog=`echo $ac_prog| sed "s%$re_direlt%/%g"`
+        ac_prog=`echo $ac_prog| sed "s%$re_direlt%/%"`
       done
       case "$host_os" in
       cygwin*)
@@ -889,12 +889,12 @@ if test -z "$LD"; then
     ##         '\\' path separators.
     ##
     [A-Za-z]:[\\]*)
-      re_direlt='\\[^\\]*\\\.\.\(\\\)'
+      re_direlt='\\[^\\][^\\]*\\\.\.\(\\\)'
       sub_uncdrive='s%^\([A-Za-z]\):\\%//\1/%'
       sub_uncdir='s%\\%/%g'
       # Canonicalize the path of ld
       while echo $ac_prog | grep "$re_direlt" > /dev/null 2>&1; do
-        ac_prog=`echo $ac_prog| sed "s%$re_direlt%\1%g"`
+        ac_prog=`echo $ac_prog| sed "s%$re_direlt%\1%"`
       done
       case "$host_os" in
       cygwin*)
@@ -1023,14 +1023,14 @@ __dll_entry (HINSTANCE hinst, DWORD reason, LPVOID reserved)
   _impure_ptr = __imp_reent_data;
 }
 ' > ltdll.c
-      archive_cmds='$CC -c '"`pwd`"'/ltdll.c~ echo EXPORTS > $lib.exp~
+      archive_cmds='$CC -c '"`pwd`"'/ltdll.c~echo EXPORTS > $lib.exp~
       if test -z "$export_symbols"; then $NM$libobjs | $global_symbol_pipe | sed '\''s/.* //'\'' > $lib.exp;
-      else cat "$export_symbols" > $lib.exp; fi~\
-      $LD -s --base-file $soname-base --dll -e ___dll_entry@12 -o $lib libtool.$objext$libobjs$deplibs~\
-      $DLLTOOL --as=$AS --dllname $soname --def $lib.exp --base-file $soname-base --output-exp $soname-exp~\
-      $LD -s --base-file $soname-base $soname-exp --dll -e ___dll_entry@12 -o $lib libtool.$objext$libobjs$deplibs~\
-      $DLLTOOL --as=$AS --dllname $soname --def $lib.exp --base-file $soname-base --output-exp $soname-exp~\
-      $LD $soname-exp --dll -e ___dll_entry@12 -o $lib libtool.$objext$libobjs$deplibs~\
+      else cat "$export_symbols" > $lib.exp; fi~
+      $LD -s --base-file $soname-base --dll -e ___dll_entry@12 -o $lib libtool.$objext$libobjs$deplibs~
+      $DLLTOOL --as=$AS --dllname $soname --def $lib.exp --base-file $soname-base --output-exp $soname-exp~
+      $LD -s --base-file $soname-base $soname-exp --dll -e ___dll_entry@12 -o $lib libtool.$objext$libobjs$deplibs~
+      $DLLTOOL --as=$AS --dllname $soname --def $lib.exp --base-file $soname-base --output-exp $soname-exp~
+      $LD $soname-exp --dll -e ___dll_entry@12 -o $lib libtool.$objext$libobjs$deplibs~
       $rm libtool.$objext $soname-base $soname-exp'
       old_archive_from_new_cmds='$DLLTOOL --as=$AS --dllname $soname --def $lib.exp --output-lib $objdir/$libname.a~$rm $lib.exp'
     else
@@ -1119,12 +1119,12 @@ __dll_entry (HINSTANCE hinst, DWORD reason, LPVOID reserved)
 ' > ltdll.c
       archive_cmds='$CC -c '"`pwd`"'/ltdll.c~ echo EXPORTS > $lib.exp~
       if test -z "$export_symbols"; then $NM$libobjs | $global_symbol_pipe | sed '\''s/.* //'\'' > $lib.exp;
-      else cat "$export_symbols" > $lib.exp; fi~\
-      $LD -s --base-file $soname-base --dll -e ___dll_entry@12 -o $lib libtool.$objext$libobjs$deplibs~\
-      $DLLTOOL --as=$AS --dllname $soname --def $lib.exp --base-file $soname-base --output-exp $soname-exp~\
-      $LD -s --base-file $soname-base $soname-exp --dll -e ___dll_entry@12 -o $lib libtool.$objext$libobjs$deplibs~\
-      $DLLTOOL --as=$AS --dllname $soname --def $lib.exp --base-file $soname-base --output-exp $soname-exp~\
-      $LD $soname-exp --dll -e ___dll_entry@12 -o $lib libtool.$objext$libobjs$deplibs~\
+      else cat "$export_symbols" > $lib.exp; fi~
+      $LD -s --base-file $soname-base --dll -e ___dll_entry@12 -o $lib libtool.$objext$libobjs$deplibs~
+      $DLLTOOL --as=$AS --dllname $soname --def $lib.exp --base-file $soname-base --output-exp $soname-exp~
+      $LD -s --base-file $soname-base $soname-exp --dll -e ___dll_entry@12 -o $lib libtool.$objext$libobjs$deplibs~
+      $DLLTOOL --as=$AS --dllname $soname --def $lib.exp --base-file $soname-base --output-exp $soname-exp~
+      $LD $soname-exp --dll -e ___dll_entry@12 -o $lib libtool.$objext$libobjs$deplibs~
       $rm libtool.$objext $soname-base $soname-exp'
       old_archive_from_new_cmds='$DLLTOOL --as=$AS --dllname $soname --def $lib.exp --output-lib $objdir/$libname.a~$rm $lib.exp'
     else

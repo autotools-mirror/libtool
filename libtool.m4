@@ -182,7 +182,9 @@ AC_DEFUN(AM_PROG_LD,
 [AC_ARG_WITH(gnu-ld,
 [  --with-gnu-ld           assume the C compiler uses GNU ld [default=no]],
 test "$withval" = no || with_gnu_ld=yes, with_gnu_ld=no)
-AC_REQUIRE([AC_PROG_CC])
+AC_REQUIRE([AC_PROG_CC])dnl
+AC_REQUIRE([AC_CANONICAL_HOST])dnl
+AC_REQUIRE([AC_CANONICAL_BUILD])dnl
 ac_prog=ld
 if test "$ac_cv_prog_gcc" = yes; then
   # Check if gcc -print-prog-name=ld gives a path.
@@ -193,11 +195,11 @@ if test "$ac_cv_prog_gcc" = yes; then
 changequote(,)dnl
     /* | [A-Za-z]:/*)
       # Canonicalize the path of ld
-      re_direlt='/[^/]*/\.\./'
+      re_direlt='/[^/][^/]*/\.\./'
       sub_uncdrive='s%^\([A-Za-z]\):/%//\1/%'
 changequote([,])dnl
       while echo $ac_prog | grep "$re_direlt" > /dev/null 2>&1; do
-        ac_prog=`echo $ac_prog| sed "s%$re_direlt%/%g"`
+        ac_prog=`echo $ac_prog| sed "s%$re_direlt%/%"`
       done
       case "$host_os" in
       cygwin*)
@@ -216,12 +218,12 @@ changequote([,])dnl
 changequote(,)dnl
     [A-Za-z]:[\\]*)
       # Canonicalize the path of ld
-      re_direlt='\\[^\\]*\\\.\.\(\\\)'
+      re_direlt='\\[^\\][^\\]*\\\.\.\(\\\)'
       sub_uncdrive='s%^\([A-Za-z]\):\\%//\1/%'
 changequote([,])dnl
       sub_uncdir='s%\\%/%g'
       while echo $ac_prog | grep "$re_direlt" > /dev/null 2>&1; do
-        ac_prog=`echo $ac_prog| sed "s%$re_direlt%\1%g"`
+        ac_prog=`echo $ac_prog| sed "s%$re_direlt%\1%"`
       done
       case "$host_os" in
       cygwin*)

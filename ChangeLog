@@ -1,5 +1,12 @@
 1998-11-27  Gary V. Vaughan  <garyv@oranda.demon.co.uk>
 
+	* libtool (AM_PROG_LD): Oops... we need to know the host_os for
+	the above changes.  I'm not sure whether mingw32 and os2 support
+	UNC paths, if they did we wouldn't need the check, we could use
+	UNC paths on all three; or if the bug with $LD not being
+	shell-meta escaped was fixed, we could use '\\' separators on all
+	three. AC_REQUIRE'ed AC_CANONICAL_HOST.
+	
 	* libtool.m4 (AM_PROG_LD): Cannonicalize the absolute path for the
 	ld program;  The order is funny to provide canonicalization to
 	paths with '\\' separators as well as '/'.
