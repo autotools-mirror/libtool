@@ -49,7 +49,8 @@ if test -z "$reconfdirs"; then
 fi
 
 # Extract the package name and version number from configure.ac:
-set -- `sed '/AC_INIT/{s/[][,()]/ /g; p;};d' configure.ac`
+set dummy `sed '/AC_INIT/{s/[][,()]/ /g; p;};d' configure.ac`
+shift
 
 # Building distributed files from configure is bad for automake, so we
 # generate them here, and have Makefile rules to keep them up to date.

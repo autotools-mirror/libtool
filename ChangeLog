@@ -1,3 +1,10 @@
+2004-12-28  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>,
+	    Gary V. Vaughan <gary@gnu.org>
+
+	* Makefile.am, bootstrap, clcommit.m4sh, libtoolize.m4sh,
+	config/ltmain.m4sh: Replace `set --' with `set dummy [...]; shift'
+	for portability.  tests/sh.test: Test for this.
+
 2004-12-28  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* libtoolize.m4sh, config/ltmain.m4sh (most functions):
