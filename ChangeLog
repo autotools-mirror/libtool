@@ -1,3 +1,8 @@
+2001-12-06  Jens Petersen  <petersen@redhat.com>
+
+	* ltmain.in: Replace all test "-a"s by "&& test"
+	for portability.
+
 2001-11-28  Robert Boehne  <rboehne@ricardo-us.com>
 
 	* libtool.m4 (AC_LIBTOOL_SYS_MAX_CMD_LEN): Change the
