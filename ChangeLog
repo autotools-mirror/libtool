@@ -1,3 +1,8 @@
+1999-03-08  Thomas Tanner  <tanner@gmx.de>
+
+	* doc/libtool.texi (tests): documented demo-nofast.test and
+	  renamed cdemo* to demo*
+
 1999-03-08  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* libltdl/Makefile.am, libltdl/configure.in, mdemo/Makefile.am:

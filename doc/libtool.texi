@@ -2869,6 +2869,7 @@ line as an assignment in the libtool script.
 @itemx demo-unst.test
 @itemx demo-static.test
 @itemx demo-shared.test
+@itemx demo-nofast.test
 @pindex demo-conf.test
 @pindex demo-exec.test
 @pindex demo-inst.test
@@ -2876,19 +2877,22 @@ line as an assignment in the libtool script.
 @pindex demo-unst.test
 @pindex demo-static.test
 @pindex demo-shared.test
+@pindex demo-nofast.test
 These programs check to see that the @file{demo} subdirectory of the
 libtool distribution can be configured, built, installed, and
 uninstalled correctly.
 
 The @file{demo} subdirectory contains a demonstration of a trivial
-package that uses libtool.  The tests @file{cdemo-make.test},
-@file{cdemo-exec.test}, @file{cdemo-inst.test} and
-@file{cdemo-unst.test} are executed three times, under three different
-libtool configurations: @file{cdemo-conf.test} configures
-@file{cdemo/libtool} to build both static and shared libraries,
-@file{cdemo-static.test} builds only static libraries
-(@samp{--disable-shared}), and @file{cdemo-shared.test} builds only
+package that uses libtool.  The tests @file{demo-make.test},
+@file{demo-exec.test}, @file{demo-inst.test} and
+@file{demo-unst.test} are executed four times, under four different
+libtool configurations: @file{demo-conf.test} configures
+@file{demo/libtool} to build both static and shared libraries,
+@file{demo-static.test} builds only static libraries
+(@samp{--disable-shared}), and @file{demo-shared.test} builds only
 shared libraries (@samp{--disable-static}).
+@file{demo-nofast.test} configures @file{demo/libtool} to
+disable the fast-install mode (@samp{--enable-fast-install=no}.
 
 @item mdemo-conf.test
 @itemx mdemo-exec.test
