@@ -1,5 +1,9 @@
 2003-11-19  Gary V. Vaughan  <gary@gnu.org>
 
+	* m4/libtool.m4 (_LT_PROG_LTMAIN): Ensure config.status has a
+	value for `ac_aux_dir' when automake is not used.
+	Reported by Patrick Welche <prlw1@newn.cam.ac.uk>.
+
 	* configure.ac (AC_PREREQ): AS_HELP_STRING was introduced after
 	autoconf-2.57 was released.
 

@@ -68,8 +68,14 @@ define([AC_PROG_LIBTOOL], [])
 # In libtool itself `ltmain.sh' is in the build tree, but everything else
 # ships it in the source tree, for completeness, if we find a copy in the
 # build tree use that before falling back to auxdir.
+#
+# Note that this code is called both from `configure', and `config.status'
+# now that we use AC_CONFIG_COMMANDS to generate libtool.  Notably,
+# `config.status' has no value for ac_aux_dir unless we are using Automake,
+# so we pass a copy along to make sure it has a sensible value anyway.
 AC_DEFUN([_LT_PROG_LTMAIN],
-[case $ac_aux_dir in
+[_LT_CONFIG_LIBTOOL_INIT([ac_aux_dir='$ac_aux_dir'])
+case $ac_aux_dir in
   $srcdir)   ltmain=./ltmain.sh ;;
   $srcdir/*) ltmain=`expr "$ac_aux_dir" : "$srcdir/\(.*\)"`/ltmain.sh ;;
 esac
