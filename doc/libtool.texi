@@ -148,8 +148,8 @@ Including libtool in your package
 
 Using libtool with other languages
 
-* C++ libraries::		Writing libraries for C++
-* Tags::			Tags
+* C++ libraries::               Writing libraries for C++
+* Tags::                        Tags
 
 Library interface versions
 
@@ -887,7 +887,7 @@ Breakpoint 1 at 0x8048547: file main.c, line 29.
 Starting program: /home/src/libtool/demo/.libs/hell
 
 Breakpoint 1, main (argc=1, argv=0xbffffc40) at main.c:29
-29	  printf ("Welcome to GNU Hell!\n");
+29        printf ("Welcome to GNU Hell!\n");
 (gdb) @kbd{quit}
 The program is running.  Quit anyway (and kill it)? (y or n) @kbd{y}
 burger$
@@ -1218,7 +1218,7 @@ The following components of @var{mode-args} are treated specially:
 Note that the @samp{-o} option is now fully supported.  It is emulated
 on the platforms that don't support it (by locking and moving the
 objects), so it is really easy to use libtool, just with minor
-modifications to your Makefiles. Typing for example
+modifications to your Makefiles.  Typing for example
 @example
 libtool compile gcc -c foo/x.c -o foo/x.lo
 @end example
@@ -1326,7 +1326,7 @@ Allow symbols from @var{output-file} to be resolved with @code{dlsym}
 @item -export-symbols @var{symfile}
 Tells the linker to export only the symbols listed in @var{symfile}.
 The symbol file should end in @samp{.sym} and must contain the name of one
-symbol per line. This option has no effect on some platforms.
+symbol per line.  This option has no effect on some platforms.
 By default all symbols are exported.
 
 @item -export-symbols-regex @var{regex}
@@ -1884,7 +1884,7 @@ configuring with @samp{--enable-shared} every package named in the
 comma-separated @var{pkgs} list, and every other package with
 @samp{--disable-shared}.  The @samp{--enable-static=@var{pkgs}} flag
 behaves similarly, but it uses @samp{--enable-static} and
-@samp{--disable-static}. The same applies to the
+@samp{--disable-static}.  The same applies to the
 @samp{--enable-fast-install=@var{pkgs}} flag, which uses
 @samp{--enable-fast-install} and @samp{--disable-fast-install}.
 
@@ -1918,7 +1918,7 @@ behaviour.  Here is a full list:
 
 @table @samp
 @item dlopen
-Enable checking for dlopen support. This option should be used if
+Enable checking for dlopen support.  This option should be used if
 the package makes use of the @samp{-dlopen} and @samp{-dlpreopen}
 libtool flags, otherwise libtool will assume that the system does not
 support dlopening.
@@ -2188,7 +2188,7 @@ Install libltdl in a the @var{TARGET-DIRECTORY-NAME} subdirectory of
 your package.  If you specify a subdirectory name, then you will need
 to be careful to pass the same directory name to the autoconf macros:
 @code{LT_WITH_LTDL}; @code{LTDL_CONVENIENCE};
-@code{LTDL_INSTALLABLE} (@pxref{Distributing libltdl}). Without
+@code{LTDL_INSTALLABLE} (@pxref{Distributing libltdl}).  Without
 an argument, @samp{libltdl} is used as the default target directory
 name.
 
@@ -2284,7 +2284,7 @@ Manipulation Program, for those who haven't taken the plunge.  See
 @example
 The GIMP uses @sc{gnu} Libtool in order to build shared libraries on a
 variety of systems.  While this is very nice for making usable
-binaries, it can be a pain when trying to debug a program. For that
+binaries, it can be a pain when trying to debug a program.  For that
 reason, compilation of shared libraries can be turned off by
 specifying the @samp{--disable-shared} option to @file{configure}.
 @end example
@@ -2305,8 +2305,8 @@ This chapter describes how libtool interacts with other languages,
 and what special considerations you need to make if you do not use C.
 
 @menu
-* C++ libraries::		Writing libraries for C++
-* Tags::			Tags
+* C++ libraries::               Writing libraries for C++
+* Tags::                        Tags
 @end menu
 
 @node C++ libraries
@@ -2990,7 +2990,7 @@ though Libtool takes care of that detail if you use
 
 @deftypevar {const lt_dlsymlist *} lt_preloaded_symbols
 An array of @var{lt_symbol} structures, representing all the preloaded
-symbols linked into the program proper. For each module
+symbols linked into the program proper.  For each module
 @samp{-dlpreloaded} by the Libtool linked program
 there is an element with the @var{name} of the module and a @var{address}
 of @code{0}, followed by all symbols exported from this file.
@@ -3009,7 +3009,7 @@ in @var{lt_preloaded_symbols}.
 Register the list of preloaded modules @var{preloaded}.
 If @var{preloaded} is @code{NULL}, then all previously registered
 symbol lists, except the list set by @code{lt_dlpreload_default},
-are deleted. Return 0 on success.
+are deleted.  Return 0 on success.
 @end deftypefun
 
 @deftypefun int lt_dlpreload_default (const lt_dlsymlist *@var{preloaded})
@@ -3465,7 +3465,7 @@ or since it was last called.
 
 @deftypefun int lt_dladdsearchdir (const char *@var{search_dir})
 Append the search directory @var{search_dir} to the current user-defined
-library search path. Return 0 on success.
+library search path.  Return 0 on success.
 @end deftypefun
 
 @deftypefun int lt_dlinsertsearchdir (@w{const char *@var{before}}, @w{const char *@var{search_dir}})
@@ -3544,7 +3544,7 @@ about their internals: In order to avoid symbol conflicts all exported
 symbols must be prefixed with "modulename_LTX_" (@samp{modulename} is
 the name of the module).  Internal symbols must be named in such a way
 that they won't conflict with other modules, for example, by prefixing
-them with "_modulename_". Although some platforms support having the
+them with "_modulename_".  Although some platforms support having the
 same symbols defined more than once it is generally not portable and
 it makes it impossible to dlpreopen such modules.
 
@@ -3554,7 +3554,7 @@ prefix so that you can also dlopen non-libtool modules.
 
 @file{foo1.c} gives an example of a portable libtool module.
 Exported symbols are prefixed with "foo1_LTX_", internal symbols
-with "_foo1_". Aliases are defined at the beginning so that the code
+with "_foo1_".  Aliases are defined at the beginning so that the code
 is more readable.
 
 @example
@@ -3812,7 +3812,7 @@ loader, and register it with libltdl so that @code{lt_dlopen} will be
 able to use it.
 
 Writing a loader involves writing at least three functions which can be
-called  by @code{lt_dlopen}, @code{lt_dlsym} and @code{lt_dlclose}.
+called by @code{lt_dlopen}, @code{lt_dlsym} and @code{lt_dlclose}.
 Optionally, you can provide a finalisation function to perform any
 cleanup operations when @code{lt_dlexit} executes, and a symbol prefix
 string which will be prepended to any symbols passed to @code{lt_dlsym}.
@@ -3946,7 +3946,7 @@ loader passed as @var{place}.  @var{loader_name} will be returned by
 @code{lt_dlloader_name} if it is subsequently passed a newly
 registered loader.  These @var{loader_name}s must be unique, or
 @code{lt_dlloader_remove} and @code{lt_dlloader_find} cannot
-work. Returns 0 for success.
+work.  Returns 0 for success.
 
 @example
 @{
@@ -3974,7 +3974,7 @@ be obtained from @code{lt_dlerror}.
 
 @deftypefun {lt_dlloader *}lt_dlloader_next (@w{lt_dlloader *@var{place}})
 Iterate over the module loaders, returning the first loader if @var{place} is
-@code{NULL}, and the next one on subsequent calls. The handle is for use with
+@code{NULL}, and the next one on subsequent calls.  The handle is for use with
 @code{lt_dlloader_add}.
 
 @example
@@ -4039,7 +4039,7 @@ if (myerror < 0)
 @deftypefun int lt_dlseterror (@w{int @var{errorcode}})
 When writing your own module loaders, you should use this function to
 raise errors so that they are propagated through the @code{lt_dlerror}
-interface. All of the standard errors used by libltdl are declared in
+interface.  All of the standard errors used by libltdl are declared in
 @file{ltdl.h}, or you can add more of your own with
 @code{lt_dladderror}.  This function returns 0 on success.
 
@@ -4968,7 +4968,7 @@ Whether libtool should build static libraries on this system.  Set to
 
 @defvar compiler_c_o
 Whether the compiler supports the @code{-c} and @code{-o} options
-simultaneously. Set to @samp{yes} or @samp{no}.
+simultaneously.  Set to @samp{yes} or @samp{no}.
 @end defvar
 
 @defvar compiler_o_lo
@@ -5089,7 +5089,7 @@ line (such as @samp{@var{dir}/lib@var{name}.a}) when
 @defvar hardcode_into_libs
 Whether the platform supports hardcoding of run-paths into libraries.
 If enabled, linking of programs will be much simpler but libraries will
-need to be relinked during installation.   Set to @samp{yes} or @samp{no}.
+need to be relinked during installation.  Set to @samp{yes} or @samp{no}.
 @end defvar
 
 @defvar hardcode_libdir_flag_spec
@@ -5179,7 +5179,7 @@ about it.
 
 @defvar need_locks
 Whether files must be locked to prevent conflicts when compiling
-simultaneously. Set to @samp{yes} or @samp{no}.
+simultaneously.  Set to @samp{yes} or @samp{no}.
 @end defvar
 
 @defvar no_builtin_flag
