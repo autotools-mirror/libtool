@@ -1,3 +1,18 @@
+2004-09-19  Gary V. Vaughan  <gary@gnu.org>
+
+	The checks in assign.test are trying to catch case of this ilk:
+	`foo=bar break', but unfortunately they also choke on `foo=bar;
+	break' and `foo=bar && break'.  Writing a sophisticated test to
+	catch just the intended case seems like more trouble than it's
+	worth, but leaving the test in causes the testsuite to fail on
+	valid m4sh output:
+
+	* tests/assign.test: Removed; chokes on perfectly valid shell
+	syntax.
+	* tests/Makefile.am (COMMON_TESTS): Remove assign.test.
+	* tests/defs.in (scripts): Don't check the m4sh inputs, go back
+	to checking the generated ltmain.sh script.
+
 2004-09-17  Gary V. Vaughan  <gary@gnu.org>
 
 	* config/ltmain.in (func_echo): Except for multi-line warnings and
