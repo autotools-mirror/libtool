@@ -1,3 +1,7 @@
+1998-11-12  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* NEWS: Mention -export-symbols and new dlpreopen
+
 1998-11-11  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* ltmain.in (IFS): revert Gary's patch when parsing version
