@@ -1,12 +1,12 @@
 ;; -*- Lisp -*-
 (Created-By-Prcs-Version 1 2 1)
 (Project-Description "GNU libtool library support script")
-(Project-Version libtool 0.9i 1)
-(Parent-Version libtool 0.9i 0)
+(Project-Version libtool 0.9i 2)
+(Parent-Version libtool 0.9i 1)
 
-(Version-Log "Minor bug fixes for Joel Weber.")
+(Version-Log "Made more robust.")
 (New-Version-Log "")
-(Checkin-Time "Thu, 19 Jun 1997 14:37:00 -0600")
+(Checkin-Time "Thu, 19 Jun 1997 22:20:39 -0600")
 (Checkin-Login gord)
 (Populate-Ignore ("~$" "Makefile$" "Makefile\\.in$" "aclocal\\.m4$"
 		  "configure$" "config\\.status$" "config\\.cache$"
@@ -20,19 +20,19 @@
 (Files
 ;; Administrivia.
   (AUTHORS (libtool/21_AUTHORS 1.1 664))
-  (ChangeLog (libtool/20_ChangeLog 1.4.1.26 664))
+  (ChangeLog (libtool/20_ChangeLog 1.4.1.27 664))
   (NEWS (libtool/19_NEWS 1.4.1.19 664))
   (PACKAGES (libtool/42_PACKAGES 1.3 664))
   (README (libtool/17_README 1.12 664))
   (README-alpha (libtool/16_README-alp 1.5 664))
   (README-automake (libtool/37_README-aut 1.4 664))
-  (TODO (libtool/14_TODO 1.3.1.14 664))
+  (TODO (libtool/14_TODO 1.3.1.15 664))
   (THANKS (libtool/15_THANKS 1.7 664))
 
 ;; Top directory.
-  (Makefile.am (libtool/18_Makefile.a 1.19 664))
+  (Makefile.am (libtool/18_Makefile.a 1.20 664))
   (configure.in (libtool/13_configure. 1.4.1.14 664))
-  (ltmain.sh.in (libtool/2_ltmain.sh. 1.4.1.19 664))
+  (ltmain.sh.in (libtool/2_ltmain.sh. 1.4.1.20 664))
   (ltconfig.in (libtool/3_ltconfig.i 1.4.1.20 775))
   (libtoolize.in (libtool/4_libtoolize 1.6 664))
 
@@ -55,7 +55,7 @@
   (demo/foo.c (libtool/9_foo.c 1.2.1.4 664))
 
 ;; Tests subdirectory.
-  (tests/ChangeLog (libtool/26_ChangeLog 1.10 664))
+  (tests/ChangeLog (libtool/26_ChangeLog 1.11 664))
   (tests/Makefile.am (libtool/25_Makefile.a 1.8 664))
   (tests/defs (libtool/24_defs 1.3 664))
   (tests/tlibtool (libtool/29_tlibtool 1.2 775))
@@ -66,9 +66,9 @@
   (tests/link-2.test (libtool/31_link-2.tes 1.3 775))
   (tests/demo-unst.test (libtool/32_demo-unst. 1.3 775))
   (tests/demo-make.test (libtool/33_demo-make. 1.3 775))
-  (tests/demo-inst.test (libtool/34_demo-inst. 1.4 775))
+  (tests/demo-inst.test (libtool/34_demo-inst. 1.5 775))
   (tests/demo-exec.test (libtool/35_demo-exec. 1.3 775))
-  (tests/demo-conf.test (libtool/36_demo-conf. 1.5 775))
+  (tests/demo-conf.test (libtool/36_demo-conf. 1.6 775))
   (tests/suffix.test (libtool/38_suffix.tes 1.1 775))
   (tests/test-e.test (libtool/22_test-e.tes 1.2 775))
 
