@@ -131,12 +131,21 @@ Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 #  define LT_READTEXT_MODE "r"
 #endif
 
-/* LT_CONC creates a new concatenated symbol for the compiler
-   in a portable way.  */
-#if defined(__STDC__) || defined(__cplusplus) || defined(_MSC_VER)
-#  define LT_CONC(s,t)	s##t
-#else
-#  define LT_CONC(s,t)	s/**/t
+/* The extra indirection to the LT__STR and LT__CONC macros is required so
+   that if the arguments to LT_STR() (or LT_CONC()) are themselves macros,
+   they will be expanded before being quoted.   */
+#ifndef LT_STR
+#  define LT__STR(arg)		#arg
+#  define LT_STR(arg)		LT__STR(arg)
 #endif
 
-#endif /*!defined(LT__SYSTEM_H)*/
+#ifndef LT_CONC
+#  define LT__CONC(a, b)	a##b
+#  define LT_CONC(a, b)		LT__CONC(a, b)
+#endif
+#ifndef LT_CONC3
+#  define LT__CONC3(a, b, c)	a##b##c
+#  define LT_CONC3(a, b, c)	LT__CONC3(a, b, c)
+#endif
+
+#endif /*!defined(LT_SYSTEM_H)*/

@@ -30,6 +30,59 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 #include "lt__private.h"
 #include "lt_dlloader.h"
 
+/* Use the preprocessor to rename non-static symbols to avoid namespace
+   collisions when the loader code is statically linked into libltdl.
+   Use the "<module_name>_LTX_" prefix so that the symbol addresses can
+   be fetched from the preloaded symbol list by lt_dlsym():  */
+#define get_vtable	shl_load_LTX_get_vtable
+
+extern lt_user_dlloader *get_vtable (lt_user_data loader_data);
+
+
+/* Boilerplate code to set up the vtable for hooking this loader into
+   libltdl's loader list:  */
+static lt_module vm_open  (lt_user_data loader_data, const char *filename);
+static int	 vm_close (lt_user_data loader_data, lt_module module);
+static void *	 vm_sym   (lt_user_data loader_data, lt_module module,
+			  const char *symbolname);
+
+/* Return the vtable for this loader, only the name and sym_prefix
+   attributes (plus the virtual function implementations, obviously)
+   change between loaders.  */
+lt_user_dlloader *
+get_vtable (lt_user_data loader_data)
+{
+  static lt_user_dlloader *vtable = 0;
+
+  if (!vtable)
+    {
+      vtable = lt__zalloc (sizeof *vtable);
+    }
+
+  if (!vtable->name)
+    {
+      vtable->name		= "lt_shl_load";
+      vtable->module_open	= vm_open;
+      vtable->module_close	= vm_close;
+      vtable->find_sym		= vm_sym;
+      vtable->dlloader_data	= loader_data;
+      vtable->priority		= LT_DLLOADER_APPEND;
+    }
+
+  if (vtable->dlloader_data != loader_data)
+    {
+      LT__SETERROR (INIT_LOADER);
+      return 0;
+    }
+
+  return vtable;
+}
+
+
+
+/* --- IMPLEMENTATION --- */
+
+
 #if defined(HAVE_DL_H)
 #  include <dl.h>
 #endif
@@ -74,8 +127,12 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 
 #define	LT_BIND_FLAGS	(BIND_IMMEDIATE | BIND_NONFATAL | DYNAMIC_PATH)
 
+
+/* A function called through the vtable to open a module with this
+   loader.  Returns an opaque representation of the newly opened
+   module for processing with this loader's other vtable functions.  */
 static lt_module
-sys_shl_open (lt_user_data loader_data, const char *filenam)
+vm_open (lt_user_data loader_data, const char *filename)
 {
   static shl_t self = (shl_t) 0;
   lt_module module = shl_load (filename, LT_BIND_FLAGS, 0L);
@@ -107,8 +164,10 @@ sys_shl_open (lt_user_data loader_data, const char *filenam)
   return module;
 }
 
+/* A function called through the vtable when a particular module
+   should be unloaded.  */
 static int
-sys_shl_close (lt_user_data loader_data, lt_module module)
+vm_close (lt_user_data loader_data, lt_module module)
 {
   int errors = 0;
 
@@ -121,8 +180,11 @@ sys_shl_close (lt_user_data loader_data, lt_module module)
   return errors;
 }
 
+
+/* A function called through the vtable to get the address of
+   a symbol loaded from a particular module.  */
 static void *
-sys_shl_sym (lt_user_data loader_data, lt_module module, const char *symbol)
+vm_sym (lt_user_data loader_data, lt_module module, const char *name)
 {
   void *address = 0;
 
@@ -131,7 +193,7 @@ sys_shl_sym (lt_user_data loader_data, lt_module module, const char *symbol)
   {
     LT__SETERROR (INVALID_HANDLE);
   }
-  else if (!shl_findsym((shl_t*) &module, symbol, TYPE_UNDEFINED, &address))
+  else if (!shl_findsym((shl_t*) &module, name, TYPE_UNDEFINED, &address))
     {
       if (!address)
 	{
@@ -141,7 +203,3 @@ sys_shl_sym (lt_user_data loader_data, lt_module module, const char *symbol)
 
   return address;
 }
-
-struct lt_user_dlloader lt__sys_shl = {
-  0, sys_shl_open, sys_shl_close, sys_shl_sym, 0, 0
-};

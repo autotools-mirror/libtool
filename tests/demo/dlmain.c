@@ -1,5 +1,5 @@
 /* dlmain.c -- hello test program that uses simulated dynamic linking
-   Copyright (C) 1996-1999 Free Software Foundation, Inc.
+   Copyright (C) 1996-1999, 2004 Free Software Foundation, Inc.
    This file is part of GNU Libtool.
 
 This program is free software; you can redistribute it and/or modify
@@ -23,6 +23,8 @@ USA. */
 #ifdef HAVE_STRING_H
 #include <string.h>
 #endif
+
+#define lt_preloaded_symbols lt__PROGRAM__LTX_preloaded_symbols
 
 struct lt_symlist
 {
@@ -63,7 +65,7 @@ main (argc, argv)
 	  /* In an ideal world a shared lib would be able to export data */
 	  pnothing = (int*)&nothing;
 #endif
-      } else 
+      } else
         printf ("found file: %s\n", s->name);
       s ++;
     }

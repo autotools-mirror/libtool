@@ -34,6 +34,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 #include <stdio.h>
 
 #include "lt__alloc.h"
+#include "lt__private.h"
 
 static void alloc_die_default (void);
 
@@ -54,6 +55,17 @@ lt__malloc (size_t n)
 
   if (! (mem = malloc (n)))
     (*lt__alloc_die) ();
+
+  return mem;
+}
+
+void *
+lt__zalloc (size_t n)
+{
+  void *mem;
+
+  if ((mem = lt__malloc (n)))
+    memset (mem, 0, n);
 
   return mem;
 }

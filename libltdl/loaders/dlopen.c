@@ -27,8 +27,64 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 
 */
 
-#include "lt__private.h"
 #include "lt_dlloader.h"
+#include "lt__private.h"
+
+/* Use the preprocessor to rename non-static symbols to avoid namespace
+   collisions when the loader code is statically linked into libltdl.
+   Use the "<module_name>_LTX_" prefix so that the symbol addresses can
+   be fetched from the preloaded symbol list by lt_dlsym():  */
+#define get_vtable	dlopen_LTX_get_vtable
+
+extern lt_user_dlloader *get_vtable (lt_user_data loader_data);
+
+
+/* Boilerplate code to set up the vtable for hooking this loader into
+   libltdl's loader list:  */
+static lt_module vm_open  (lt_user_data loader_data, const char *filename);
+static int	 vm_close (lt_user_data loader_data, lt_module module);
+static void *	 vm_sym   (lt_user_data loader_data, lt_module module,
+			  const char *symbolname);
+
+/* Return the vtable for this loader, only the name and sym_prefix
+   attributes (plus the virtual function implementations, obviously)
+   change between loaders.  */
+lt_user_dlloader *
+get_vtable (lt_user_data loader_data)
+{
+  static lt_user_dlloader *vtable = 0;
+
+  if (!vtable)
+    {
+      vtable = lt__zalloc (sizeof *vtable);
+    }
+
+  if (!vtable->name)
+    {
+      vtable->name		= "lt_dlopen";
+#if defined(NEED_USCORE)
+      vtable->sym_prefix	= "_";
+#endif
+      vtable->module_open	= vm_open;
+      vtable->module_close	= vm_close;
+      vtable->find_sym		= vm_sym;
+      vtable->dlloader_data	= loader_data;
+      vtable->priority		= LT_DLLOADER_PREPEND;
+    }
+
+  if (vtable->dlloader_data != loader_data)
+    {
+      LT__SETERROR (INIT_LOADER);
+      return 0;
+    }
+
+  return vtable;
+}
+
+
+
+/* --- IMPLEMENTATION --- */
+
 
 #if defined(HAVE_DLFCN_H)
 #  include <dlfcn.h>
@@ -37,6 +93,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 #if defined(HAVE_SYS_DL_H)
 #  include <sys/dl.h>
 #endif
+
 
 /* We may have to define LT_LAZY_OR_NOW in the command line if we
    find out it does not work in some platform. */
@@ -71,10 +128,13 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 #define DL__SETERROR(errorcode) \
 	LT__SETERRORSTR (DLERROR (errorcode))
 
+/* A function called through the vtable to open a module with this
+   loader.  Returns an opaque representation of the newly opened
+   module for processing with this loader's other vtable functions.  */
 static lt_module
-sys_dl_open (lt_user_data loader_data, const char *filename)
+vm_open (lt_user_data loader_data, const char *filename)
 {
-  lt_module   module   = dlopen (filename, LT_LAZY_OR_NOW);
+  lt_module module = dlopen (filename, LT_LAZY_OR_NOW);
 
   if (!module)
     {
@@ -84,8 +144,11 @@ sys_dl_open (lt_user_data loader_data, const char *filename)
   return module;
 }
 
+
+/* A function called through the vtable when a particular module
+   should be unloaded.  */
 static int
-sys_dl_close (lt_user_data loader_data, lt_module module)
+vm_close (lt_user_data loader_data, lt_module module)
 {
   int errors = 0;
 
@@ -98,10 +161,13 @@ sys_dl_close (lt_user_data loader_data, lt_module module)
   return errors;
 }
 
+
+/* A function called through the vtable to get the address of
+   a symbol loaded from a particular module.  */
 static void *
-sys_dl_sym (lt_user_data loader_data, lt_module module, const char *symbol)
+vm_sym (lt_user_data loader_data, lt_module module, const char *name)
 {
-  void *address = dlsym (module, symbol);
+  void *address = dlsym (module, name);
 
   if (!address)
     {
@@ -110,12 +176,3 @@ sys_dl_sym (lt_user_data loader_data, lt_module module, const char *symbol)
 
   return address;
 }
-
-struct lt_user_dlloader lt__sys_dl =
-  {
-#  if defined(NEED_USCORE)
-    "_",
-#  else
-    0,
-#  endif
-    sys_dl_open, sys_dl_close, sys_dl_sym, 0, 0 };

@@ -319,7 +319,7 @@ host to host.  These need to be determined at configure time in
 a consistent way.
 
 @item
-It is not always obvious with which suffix a shared library should be
+It is not always obvious with what suffix a shared library should be
 installed.  This makes it difficult for @file{Makefile} rules, since they
 generally assume that file names are the same from host to host.
 
@@ -614,14 +614,14 @@ libtool are the same ones you would use to produce an executable named
 @example
 a23$ @kbd{libtool link gcc -g -O -o libhello.la foo.o hello.o}
 libtool: cannot build libtool library `libhello.la' from non-libtool \
-                objects
+         objects
 a23$
 @end example
 
 Aha!  Libtool caught a common error@dots{} trying to build a library
 from standard objects instead of library objects.  This doesn't matter
-for static libraries, but on shared library systems, it is of great
-importance.
+so much for static libraries, but on shared library systems, it is of
+great importance.
 
 So, let's try again, this time with the library object files.  Remember
 also that we need to add @kbd{-lm} to the link command line because
@@ -1062,6 +1062,12 @@ libraries.  But be careful not to link a single convenience library,
 directly or indirectly, into a single program or library, otherwise you
 may get errors about symbol redefinitions.
 
+The key is remembering that a convenience library contains @sc{pic}
+objects, and can linked where a list of @sc{pic} objects makes sense;
+i.e. into a shared library.  A static convenience library contains
+non-@sc{pic} objects, so can be linked into an old static library, or
+a program.
+
 When @sc{gnu} Automake is used, you should use @code{noinst_LTLIBRARIES}
 instead of @code{lib_LTLIBRARIES} for convenience libraries, so that
 the @samp{-rpath} option is not passed when they are linked.
@@ -1304,13 +1310,12 @@ sure that the program can @code{dlopen} itself, either by enabling
 @code{-export-dynamic} or by falling back to @samp{-dlpreopen self}.
 
 @item -dlpreopen @var{file}
-Link @var{file} into the output program, and add its symbols to
-@var{lt_preloaded_symbols} (@pxref{Dlpreopening}).  If @var{file} is
+Link @var{file} into the output program, and add its symbols to the
+list of preloaded symbols (@pxref{Dlpreopening}).  If @var{file} is
 @code{self}, the symbols of the program itself will be added to
-@var{lt_preloaded_symbols}.
-If @var{file} is @code{force} Libtool will make sure that
-@var{lt_preloaded_symbols} is always @emph{defined}, regardless of whether
-it's empty or not.
+preloaded symbol lists.  If @var{file} is @code{force} Libtool will
+make sure that a preloaded symbol list is always @emph{defined},
+regardless of whether it's empty or not.
 
 @item -export-dynamic
 Allow symbols from @var{output-file} to be resolved with @code{dlsym}
@@ -1621,7 +1626,7 @@ libtool distribution's @file{demo} subdirectory.
 First, to link a program against a libtool library, just use the
 @samp{program_LDADD}@footnote{@c
 @c
-With recent @sc{gnu} Automake (1.5 or newer), the flags @samp{-dlopen}
+Since @sc{gnu} Automake 1.5, the flags @samp{-dlopen}
 or @samp{-dlpreopen} (@pxref{Link mode}) can be employed with the
 @var{program_LDADD} variable.  Unfortunately, older releases didn't
 accept these flags, so if you are stuck with an ancient Automake, we
@@ -1829,12 +1834,12 @@ specifying @samp{--enable-static} to @command{configure}.
 
 @item pic-only
 Change the default behaviour for @command{libtool} to try to use only
-PIC objects.  The user may still override this default by specifying
+@sc{pic} objects.  The user may still override this default by specifying
 @samp{--with-pic} to @command{configure}.
 
 @item no-pic
 Change the default behaviour of @command{libtool} to try to use only
-non-PIC objects.  The user may still override this default by
+non-@sc{pic} objects.  The user may still override this default by
 specifying @samp{--without-pic} to @command{configure}.
 
 @end table
@@ -1969,14 +1974,17 @@ When you invoke the @code{libtoolize} program (@pxref{Invoking
 libtoolize}), it will tell you where to find a definition of
 @code{LT_INIT}.  If you use Automake, the @code{aclocal} program
 will automatically add @code{LT_INIT} support to your
-@code{configure} script.
+@file{configure} script when it sees the invocation of @code{LT_INIT}
+in @file{configure.ac}.
 
 Because of these changes, and the runtime version compatibility checks
-Libtool now executes, we now advise @emph{against} including a copy of
-@file{libtool.m4} (and bretheren) in @file{acinclude.m4}.  When you
-@command{libtoolize} your project, a copy of the relevant macro
-definitions will be placed in your @code{AC_CONFIG_MACRO_DIR}, where
-@command{aclocal} can reference them directly from @file{aclocal.m4}.
+Libtool now executes, we now advise @strong{against} including a copy of
+@file{libtool.m4} (and bretheren) in @file{acinclude.m4}.  Instead,
+you should set your project macro directory with
+@code{AC_CONFIG_MACRO_DIR}.  When you @command{libtoolize} your
+project, a copy of the relevant macro definitions will be placed in
+your @code{AC_CONFIG_MACRO_DIR}, where @command{aclocal} can reference
+them directly from @file{aclocal.m4}.
 
 
 @node Distributing
@@ -2082,8 +2090,7 @@ Print @command{libtoolize} version information and exit.
 If @command{libtoolize} detects an explicit call to
 @code{AC_CONFIG_MACRO_DIR} (@pxref{Input, , The Autoconf Manual,
 autoconf, The Autoconf Manual}) in your @file{configure.ac}, it will
-put the Libtool macros in the specified directory.  Otherwise they are
-dumped in the project root directory.
+put the Libtool macros in the specified directory.
 
 @findex AC_CONFIG_AUX_DIR
 If @command{libtoolize} detects an explicit call to
@@ -2156,7 +2163,7 @@ Manipulation Program, for those who haven't taken the plunge.  See
 
 @example
 The GIMP uses @sc{gnu} Libtool in order to build shared libraries on a
-variety of systems. While this is very nice for making usable
+variety of systems.  While this is very nice for making usable
 binaries, it can be a pain when trying to debug a program. For that
 reason, compilation of shared libraries can be turned off by
 specifying the @samp{--disable-shared} option to @file{configure}.
@@ -2659,6 +2666,7 @@ supported by some compilers, especially pre-ANSI compilers.
 The @code{long double} type is not supported by many compilers.
 @end itemize
 
+
 @node Inter-library dependencies
 @chapter Inter-library dependencies
 @cindex dependencies between libraries
@@ -2738,8 +2746,7 @@ resolved automatically at run time by the dynamic linker.  In this
 process, dynamic linking is transparent to the application.
 
 @item
-The application calling functions such as @code{dlopen},@footnote{HP-UX,
-to be different, uses a function named @code{shl_load}.} which load
+The application calling functions such as @code{dlopen}, which load
 arbitrary, user-specified modules at runtime.  This type of dynamic
 linking is explicitly controlled by the application.
 @end enumerate
@@ -2780,12 +2787,12 @@ declaration.  You need to use these flags if you are linking an
 application program that dlopens other modules or a libtool library
 that will also be dlopened.
 
-For example, if we wanted to build a shared library, @file{libhello},
+For example, if we wanted to build a shared library, @file{hello},
 that would later be dlopened by an application, we would add
 @samp{-module} to the other link flags:
 
 @example
-burger$ @kbd{libtool link gcc -module -o libhello.la foo.lo \
+burger$ @kbd{libtool link gcc -module -o hello.la foo.lo \
                 hello.lo -rpath /usr/local/lib -lm}
 burger$
 @end example
@@ -2843,19 +2850,32 @@ you must declare the objects you want your application to dlopen by
 using the @samp{-dlopen} or @samp{-dlpreopen} flags when you link your
 program (@pxref{Link mode}).
 
-@deftypefn {Structure} {struct} lt_dlsymlist @{ @w{const char *@var{name};} @w{lt_ptr @var{address};} @}
+@deftypefn {Structure} {struct} lt_dlsymbol @{ @w{const char *@var{name};} @w{void *@var{address};} @}
 The @var{name} attribute is a null-terminated character string of the
 symbol name, such as @code{"fprintf"}.  The @var{address} attribute is a
 generic pointer to the appropriate object, such as @code{&fprintf}.
 @end deftypefn
 
+@deftypefn {Structure} {struct} lt_dlsymlist @{ @w{const char *@var{originator};} @w{const lt_dlsymbol @var{symbols}[];} @}
+The @var{originator} attribute is a null-terminated character string,
+naming the compilation unit that @var{symbols} were preloaded on
+behalf of.  This is usually the basename of a library,
+@file{libltdl.la} has a corresponding @var{originator} value of
+@samp{libltdl}; if the @var{symbols} are for the benefit of the
+application proper, then @var{originator} is @samp{@@PROGRAM@@},
+though Libtool takes care of that detail if you use
+@samp{LTDL_SET_PRELOADED_SYMBOLS}.
+@end deftypefn
+
 @deftypevar {const lt_dlsymlist *} lt_preloaded_symbols
 An array of @var{lt_symbol} structures, representing all the preloaded
-symbols linked into the program. For each @samp{-dlpreloaded} file
-there is an element with the @var{name} of the file and a @var{address}
+symbols linked into the program proper. For each module
+@samp{-dlpreloaded} by the Libtool linked program
+there is an element with the @var{name} of the module and a @var{address}
 of @code{0}, followed by all symbols exported from this file.
-For the executable itself the special name @@PROGRAM@@ is used.
-The last element has a @var{name} and @var{address} of @code{0}.
+For the executable itself the special name @samp{@@PROGRAM@@} is used.
+The last element of all has a @var{name} and @var{address} of
+@code{0}.
 @end deftypevar
 
 Some compilers may allow identifiers which are not valid in ANSI C, such
@@ -2863,6 +2883,81 @@ as dollar signs.  Libtool only recognizes valid ANSI C symbols (an
 initial ASCII letter or underscore, followed by zero or more ASCII
 letters, digits, and underscores), so non-ANSI symbols will not appear
 in @var{lt_preloaded_symbols}.
+
+@deftypefun int lt_dlpreload (const lt_dlsymlist *@var{preloaded})
+Register the list of preloaded modules @var{preloaded}.
+If @var{preloaded} is @code{NULL}, then all previously registered
+symbol lists, except the list set by @code{lt_dlpreload_default},
+are deleted. Return 0 on success.
+@end deftypefun
+
+@deftypefun int lt_dlpreload_default (const lt_dlsymlist *@var{preloaded})
+Set the default list of preloaded modules to @var{preloaded}, which
+won't be deleted by @code{lt_dlpreload}.  Note that this function does
+@emph{not} require libltdl to be initialized using @code{lt_dlinit} and
+can be used in the program to register the default preloaded modules.
+Instead of calling this function directly, most programs will use the
+macro @code{LTDL_SET_PRELOADED_SYMBOLS}.
+
+Return 0 on success.
+@end deftypefun
+
+@defmac LTDL_SET_PRELOADED_SYMBOLS
+Set the default list of preloaded symbols.
+Should be used in your program to initialize libltdl's
+list of preloaded modules.
+
+@example
+#include <ltdl.h>
+
+int main() @{
+  /* ... */
+  LTDL_SET_PRELOADED_SYMBOLS();
+  /* ... */
+@}
+@end example
+@end defmac
+
+@deftypefn {Function Type} {int} lt_dlpreload_callback_func (lt_dlhandle @var{handle})
+Functions of this type can be passed to @code{lt_dlpreload_open},
+which in turn will call back into a function thus passed for each
+preloaded module that it opens.
+@end deftypefn
+
+@deftypefun int lt_dlpreload_open (@w{const char *@var{originator},} @w{lt_dlpreload_callback_func *@var{func})}
+Load all of the preloaded modules for @var{originator}.  For every
+module opened in this way, call @var{func}.
+
+@noindent
+To open all of the modules preloaded into @file{libhell.la}
+(presumably from within the @samp{libhell.a} initialisation code):
+
+@example
+#define preloaded_symbols lt_libhell_LTX_preloaded_symbols
+
+static int hell_preload_callback (lt_dlhandle handle);
+
+int
+hell_init (void)
+@{
+  @dots{}
+  if (lt_dlpreload (&preloaded_symbols) == 0)
+    @{
+      lt_dlpreload_open ("libhell", preload_callback);
+    @}
+  @dots{}
+@}
+@end example
+
+@noindent
+Note that to prevent clashes between multiple preloaded modules, the
+preloaded symbols are accessed via a mangled symbol name: to get the
+symbols preloaded into @samp{libhell}, you must prefix
+@samp{preloaded_symbols} with @samp{lt_}; the originator name,
+@samp{libhell} in this case; and @samp{_LTX_}.  That is,
+@samp{lt_libhell_LTX_preloaded_symbols} here.
+@end deftypefun
+
 
 @node Finding the dlname
 @section Finding the correct name to dlopen
@@ -3140,40 +3235,6 @@ recent error that occurred from any of libltdl's functions.
 Return @code{NULL} if no errors have occurred since initialization
 or since it was last called.
 @end deftypefun
-
-@deftypefun int lt_dlpreload (const lt_dlsymlist *@var{preloaded})
-Register the list of preloaded modules @var{preloaded}.
-If @var{preloaded} is @code{NULL}, then all previously registered
-symbol lists, except the list set by @code{lt_dlpreload_default},
-are deleted. Return 0 on success.
-@end deftypefun
-
-@deftypefun int lt_dlpreload_default (const lt_dlsymlist *@var{preloaded})
-Set the default list of preloaded modules to @var{preloaded}, which
-won't be deleted by @code{lt_dlpreload}.  Note that this function does
-@emph{not} require libltdl to be initialized using @code{lt_dlinit} and
-can be used in the program to register the default preloaded modules.
-Instead of calling this function directly, most programs will use the
-macro @code{LTDL_SET_PRELOADED_SYMBOLS}.
-
-Return 0 on success.
-@end deftypefun
-
-@defmac LTDL_SET_PRELOADED_SYMBOLS
-Set the default list of preloaded symbols.
-Should be used in your program to initialize libltdl's
-list of preloaded modules.
-
-@example
-#include <ltdl.h>
-
-int main() @{
-  /* ... */
-  LTDL_SET_PRELOADED_SYMBOLS();
-  /* ... */
-@}
-@end example
-@end defmac
 
 @deftypefun int lt_dladdsearchdir (const char *@var{search_dir})
 Append the search directory @var{search_dir} to the current user-defined
@@ -4000,8 +4061,8 @@ shared libraries (@samp{--disable-static}).
 @file{demo-nofast.test} configures @file{demo/libtool} to
 disable the fast-install mode (@samp{--enable-fast-install=no}).
 @file{demo-pic.test} configures @file{demo/libtool} to
-prefer building PIC code (@samp{--with-pic}), @file{demo-nopic.test}
-to prefer non-PIC code (@samp{--without-pic}).
+prefer building @sc{pic} code (@samp{--with-pic}), @file{demo-nopic.test}
+to prefer non-@sc{pic} code (@samp{--without-pic}).
 
 @item deplibs.test
 @pindex deplibs.test
@@ -4234,7 +4295,7 @@ can make changes to the libtool configuration process without affecting
 other systems.
 
 @item man pages for @code{ld} and @code{cc}
-These generally describe what flags are used to generate PIC, to create
+These generally describe what flags are used to generate @sc{pic}, to create
 shared libraries, and to link against only static libraries.  You may
 need to follow some cross references to find the information that is
 required.
@@ -4418,8 +4479,8 @@ IBM has online documentation at
 @subsection Compilers
 
 The only compiler characteristics that affect libtool are the flags
-needed (if any) to generate PIC objects.  In general, if a C compiler
-supports certain PIC flags, then any derivative compilers support the
+needed (if any) to generate @sc{pic} objects.  In general, if a C compiler
+supports certain @sc{pic} flags, then any derivative compilers support the
 same flags.  Until there are some noteworthy exceptions to this rule,
 this section will document only C compilers.
 
@@ -4448,26 +4509,26 @@ they are bundled with:
 @table @code
 @item aix3*
 @itemx aix4*
-Most AIX compilers have no PIC flags, since AIX (with the exception of
+Most AIX compilers have no @sc{pic} flags, since AIX (with the exception of
 AIX for IA-64) runs on PowerPC and RS/6000 chips. @footnote{All code compiled
 for the PowerPC and RS/6000 chips (@code{powerpc-*-*}, @code{powerpcle-*-*},
 and @code{rs6000-*-*}) is position-independent, regardless of the operating
 system or compiler suite.  So, ``regular objects'' can be used to build
-shared libraries on these systems and no special PIC compiler flags are
+shared libraries on these systems and no special @sc{pic} compiler flags are
 required.}
 
 @item hpux10*
-Use @samp{+Z} to generate PIC.
+Use @samp{+Z} to generate @sc{pic}.
 
 @item osf3*
-Digital/UNIX 3.x does not have PIC flags, at least not on the PowerPC
+Digital/UNIX 3.x does not have @sc{pic} flags, at least not on the PowerPC
 platform.
 
 @item solaris2*
-Use @samp{-KPIC} to generate PIC.
+Use @samp{-KPIC} to generate @sc{pic}.
 
 @item sunos4*
-Use @samp{-PIC} to generate PIC.
+Use @samp{-PIC} to generate @sc{pic}.
 @end table
 
 @node Reloadable objects
@@ -4971,7 +5032,9 @@ configured for your platform, and @code{~/bin} is a directory in your
 
 @example
 trick$ cd ~/bin
-trick$ sed '/^# ltmain\.sh/q' /home/src/libtool/libtool > libtool
+trick$ sed 's%^\(macro_version=\).*$%\1@@VERSION@@%;
+            s%^\(macro_revision=\).*$%\1@@TIMESTAMP@@%;
+            /^# ltmain\.sh/q' /home/src/libtool/libtool > libtool
 trick$ echo '. /home/src/libtool/ltmain.in' >> libtool
 trick$ chmod +x libtool
 trick$ libtool --version

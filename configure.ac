@@ -200,5 +200,6 @@ AM_CONDITIONAL(HAVE_RC, [test -n "[$]_LT_AC_TAGVAR(compiler, RC)"])
 ## -------- ##
 ## Outputs. ##
 ## -------- ##
-AC_CONFIG_FILES([Makefile libltdl/Makefile doc/Makefile tests/Makefile])
+AC_CONFIG_FILES([Makefile libltdl/Makefile libltdl/loaders/Makefile 
+		doc/Makefile tests/Makefile])
 AC_OUTPUT

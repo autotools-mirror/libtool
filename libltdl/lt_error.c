@@ -30,6 +30,14 @@ Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 #include "lt__private.h"
 
 LT_GLOBAL_DATA const char	*lt__last_error	= 0;
+LT_GLOBAL_DATA const char	*lt__error_strings[] =
+  {
+#define LT_ERROR(name, diagnostic)	(diagnostic),
+    lt_dlerror_table
+#undef LT_ERROR
+
+    0
+  };
 
 static	const char    **user_error_strings	= 0;
 static	int		errorcount		= LT_ERROR_MAX;

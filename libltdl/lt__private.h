@@ -79,6 +79,7 @@ LT_BEGIN_C_DECLS
 extern int errno;
 #endif
 
+void lt__alloc_die_callback (void);
 
 
 /* --- ERROR HANDLING --- */
@@ -86,14 +87,7 @@ extern int errno;
 /* Extract the diagnostic strings from the error table macro in the same
    order as the enumerated indices in lt_error.h. */
 
-static const char *lt__error_strings[] =
-  {
-#define LT_ERROR(name, diagnostic)	(diagnostic),
-    lt_dlerror_table
-#undef LT_ERROR
-
-    0
-  };
+LT_SCOPE const char		*lt__error_strings[];
 
 #define LT__STRERROR(name)	lt__error_strings[LT_CONC(LT_ERROR_,name)]
 

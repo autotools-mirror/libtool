@@ -1,3 +1,94 @@
+2004-07-15  Gary V. Vaughan  <gary@gnu.org>
+
+	This pervasive changeset makes two intertwined deep changes to the
+	operation of libtool (neither would work alone).  First, there is
+	a new feature that allows libraries to preopen modules.  This
+	entails a backwards incompatible change to the libltdl API for
+	separating out the preloaded symbol lists by owner.  Second, in
+	the tradition of "eating our own dogfood", libltdl now preloads
+	its own dlloaders.  The internal API for dlloaders has also had to
+	change in a backwards incompatible way in support of the new
+	library preloading feature.  If you don't use preloaded libraries,
+	you needn't change your project sources, though you will need to
+	recompile against the new libltdl.  The API changes are mostly
+	confined to dlloaders, so you probably needn't worry about those
+	(unless you have written a custom loader that you want libltdl to
+	use):
+
+	* configure.ac (AC_CONFIG_FILES): Add libltdl/loaders/Makefile.
+	* libltdl/configure.ac (AC_CONFIG_FILES): Add loaders/Makefile.
+	* libltdl/loaders: New directory for module loaders, to simplify
+	Makefile rules, and to give the loaders themselves names that are
+	unique in the first few characters.
+	* libtoolize.in (func_copy_all_files): Copy recursively to pick up
+	the loaders directory contents.
+	* libltdl/loaders/Makefile.am: New file.  Move module building
+	rules to here...
+	* libltdl/Makefile.am: ...from here.
+	(VERSION_INFO): Bumped version info to signify interface changes.
+	(libltdl_la_CPPFLAGS, libltdlc_la_CPPFLAGS): Set LTDLOPEN
+	appropriately for each library.
+	* libltdl/loader-dld_link.c, libltdl/loader-dlopen.c,
+	libltdl/loader-dyld.c, libltdl/loader-load_add_on.c,
+	libltdl/loader-loadlibrary.c libltdl/loader-preopen.c,
+	libltdl/loader-shl_load.c: Moved from here...
+	* libltdl/loaders/dld_link.c, libltdl/loaders/dlopen.c,
+	libltdl/loaders/dyld.c, libltdl/loaders/load_add_on.c,
+	libltdl/loaders/loadlibrary.c libltdl/loaders/preopen.c,
+	libltdl/loaders/shl_load.c: ...to here.
+	(get_vtable): New entry function for each.
+	* libltdl/loaders/preopen.c (lt_dlsymlists_t): Replaced by...
+	(symlist_chain): ...a new structure which maps lists of preloaded
+	symbols from the object that loads them.
+	(lt_dlpreload_open): New function to automatically open all
+	preloaded modules belonging to a named object (ORIGINATOR).
+	* libltdl/lt__alloc.c (lt__zalloc): New function to return a block
+	of zeroed out new memory.
+	* libltdl/lt__alloc.h (lt__zalloc): Prototype it.
+	* libltdl/lt__private.h (lt__alloc_die_callback): Add missing
+	prototype.
+	(lt__error_strings): Make this opaque to callers.
+	* libltdl/lt_error.c (lt__error_strings): Move the implementation
+	to here.
+	* libltdl/lt_dlloader.h (lt_user_dlloader): Add extra fields to
+	make originator focused preloading possible.  *BREAKS BACKWARDS
+	COMPATIBILITY*
+	(lt_dlloader_add): Take advantage of new fields to simplify
+	paramater list.
+	* libltdl/lt_system.h (LT_STR): New ANSI stringification macro.
+	(LT_CONC): Fix it to work from within macros.
+	* libltdl/ltdl.c (loader_init, loader_init_callback): Simplify
+	dlloader loading.
+	(get_vtable, preloaded_symbols): Point these at the preopen.c
+	symbols to bootstrap the loader chain.
+	(lt_dlinit): Load the preopen dlloader manually, and then use it
+	to load any other preloaded dlloaders.
+	(lt_dlloader_add): Simplify parameter list. Populate new
+	fields. Chain new loaders according to priority field.
+	* libltdl/ltdl.h (lt_dlsymlist): Add a new originator field.
+	(lt_dlpreload_callback_func): Type of a callback for automatic
+	lt_dlpreload_open loading.
+	(LTDL_SET_PRELOADED_SYMBOLS): Adjust to hook into preloaded
+	symbols from the "@PROGRAM@" originator.
+	* tests/demo/dlmain.c (main): Use mangled preloaded_symbols symbol.
+	* tests/pdemo/longer_file_name_dlmain.c (main): Ditto.
+	* ltmain.in: Don't spew spurious warnings when dlopening and
+	dlpreopening modules.
+	(func_generate_dlsyms): Factored out from multiple copies in the
+	rest of the code. Generate originator keyed symbol lists.
+	(func_extract_archives): Also factored.  Extract the contents of
+	convenience archives for linking with dependent libraries when
+	--whole-archive is not available.
+	[darwin]: Don't try to link $old_library unless it exists, and
+	$lib is a bundle.
+	* m4/ltdl.m4 (AC_LTDL_DLLIB): Check for all possible dynamic
+	loading libraries/apis rather that stopping when an acceptable one
+	is discovered.
+	(LT_DLLOADERS): New variable for holding dlloaders that can be
+	preloaded.
+	* doc/libtool.texi: Document interface changes.
+	* NEWS: Updated.
+
 2004-07-12  Peter O'Gorman  <peter@pogma.com>
 
 	* m4/libtool.m4 [darwin]: Set whole_archive_flag_spec to '' for xlc,
@@ -5,7 +96,7 @@
 	and when -all_load is also specified Apple's /usr/bin/libtool barfs
 	and dies.
 
-2004-07-08  Gary V. Vaughan  <gary@gnu.org>
+2004-07-07  Gary V. Vaughan  <gary@gnu.org>
 
 	* libltdl/ltdl.h (lt_dlinfo): Move private module field to here...
 	* libltdl/ltdl.c (lt_dlhandle_struct): ...from here.  Changed all

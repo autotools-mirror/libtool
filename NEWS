@@ -36,8 +36,12 @@ New in 1.5b: 2004-??-??; CVS version 1.5a, Libtool team:
 * Mode inferrence removed, shorthand for choosing modes added.
 * Specifying -allow-undefined is now an error.
 * Speed up max_cmd_len check.
+* libltdl can now preopen modules from within a library, and libtool will
+  accept -dlpreopen options when linking either a shared library or a
+  convenience library.
 * New function in libltdl: lt_dlhandle_find provides access to module handles
   by module name.
+* New function in libltdl: lt_dlpreload_open opens all preloaded modules.
 * libltdl no longer loads shared libraries with global symbol resolution,
   this caused problems when the symbols were intended to be overriden further
   up the stack; it is also not recommended practice.

@@ -46,6 +46,7 @@ LT_BEGIN_C_DECLS
 extern void (*lt__alloc_die) (void);
 
 void *lt__malloc (size_t n);
+void *lt__zalloc (size_t n);
 void *lt__realloc (void *mem, size_t n);
 void *lt__memdup (void const *mem, size_t n);
 

@@ -27,6 +27,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 
 */
 
+#include "lt_system.h"
 #include "lt_dlloader.h"
 #include "lt__private.h"
 
@@ -118,31 +119,6 @@ static	const char	sys_search_path[]	= LTDL_SYSSEARCHPATH;
 
 
 
-/* --- DLLOADER VIRTUAL FUNCTION TABLES --- */
-
-#if defined(HAVE_LIBDL)
-LT_SCOPE struct lt_user_dlloader lt__sys_dl;
-#endif
-#if defined(HAVE_SHL_LOAD)
-LT_SCOPE struct lt_user_dlloader lt__sys_shl;
-#endif
-#if defined(__WINDOWS__) || defined(__CYGWIN__)
-LT_SCOPE struct lt_user_dlloader lt__sys_wll;
-#endif
-#if defined(__BEOS__)
-LT_SCOPE struct lt_user_dlloader lt__sys_bedl;
-#endif
-#if defined(HAVE_DLD)
-LT_SCOPE struct lt_user_dlloader lt__sys_dld;
-#endif
-#if defined(HAVE_DYLD)
-LT_SCOPE struct lt_user_dlloader lt__sys_dyld;
-LT_SCOPE int lt__sys_dyld_init (void);
-#endif
-LT_SCOPE struct lt_user_dlloader lt__presym;
-LT_SCOPE int lt__presym_init (lt_user_data loader_data);
-
-
 
 /* --- DYNAMIC MODULE LOADING --- */
 
@@ -194,6 +170,10 @@ static	int	list_files_by_dir     (const char *dirnam,
 				       char **pargz, size_t *pargz_len);
 static	int	file_not_found	      (void);
 
+static	int	loader_init_callback  (lt_dlhandle handle);
+static	int	loader_init	      (lt_get_vtable *vtable_func,
+				       lt_user_data data);
+
 static	char	       *user_search_path= 0;
 static	lt_dlloader    *loaders		= 0;
 static	lt_dlhandle	handles 	= 0;
@@ -208,6 +188,60 @@ lt__alloc_die_callback (void)
   LT__SETERROR (NO_MEMORY);
 }
 
+/* This function is called to initialise each preloaded module loader,
+   and hook it into the list of loaders to be used when attempting to
+   dlopen an application module.  */
+static int
+loader_init_callback (lt_dlhandle handle)
+{
+  return loader_init (lt_dlsym (handle, "get_vtable"), 0);
+}
+
+static int
+loader_init (lt_get_vtable *vtable_func, lt_user_data data)
+{
+  lt_user_dlloader *vtable = 0;
+  int errors = 0;
+
+  if (vtable_func)
+    {
+      vtable = (*vtable_func) (data);
+    }
+
+  if (!vtable)
+    {
+      LT__SETERROR (INVALID_LOADER);
+      ++errors;
+    }
+
+  if (!errors)
+    {
+      if (lt_dlloader_add (vtable, data))
+	{
+	  LT__SETERROR (DLOPEN_NOT_SUPPORTED);
+	  ++errors;
+	}
+    }
+
+  if ((!errors) && vtable->dlloader_init)
+    {
+      if ((*vtable->dlloader_init) (vtable->dlloader_data))
+	{
+	  LT__SETERROR (INIT_LOADER);
+	  ++errors;
+	}
+    }
+
+  return errors;
+}
+
+/* Bootstrap the loader loading with the preopening loader.  */
+#define get_vtable  		preopen_LTX_get_vtable
+#define preloaded_symbols	LT_CONC3(lt_, LTDLOPEN, _LTX_preloaded_symbols)
+
+extern lt_user_dlloader *	get_vtable (lt_user_data data);
+extern lt_dlsymlist		preloaded_symbols;
+
 /* Initialize libltdl. */
 int
 lt_dlinit (void)
@@ -217,47 +251,24 @@ lt_dlinit (void)
   /* Initialize only at first call. */
   if (++initialized == 1)
     {
-      lt__alloc_die = lt__alloc_die_callback;
+      lt__alloc_die	= lt__alloc_die_callback;
+      handles		= 0;
+      user_search_path	= 0; /* empty search path */
 
-      handles = 0;
-      user_search_path = 0; /* empty search path */
+      /* First set up the statically loaded preload module loader, so
+	 we can use it to preopen the other loaders we linked in at
+	 compile time.  */
+      errors += loader_init (get_vtable, 0);
 
-      /* Append the available loaders to the internal list in the order
-	 they should be used -- if the first fails, then try again with
-	 the next loader in the chain.  */
-#     define LOADER_APPEND 0
-
-      /* All ltdl supplied loaders are in the /dl[a-z-]+/ namespace.  */
-      errors += lt_dlloader_add (LOADER_APPEND, &lt__presym,   "dlpreload");
-#if defined(HAVE_DLD)
-      errors += lt_dlloader_add (LOADER_APPEND, &lt__sys_dld,  "dld");
-#endif
-#if defined(HAVE_DYLD)
-      errors += lt_dlloader_add (LOADER_APPEND, &lt__sys_dyld, "dldyld");
-      errors += lt__sys_dyld_init();
-#endif
-#if defined(__BEOS__)
-      errors += lt_dlloader_add (LOADER_APPEND, &lt__sys_bedl, "dlopen");
-#endif
-#if defined(HAVE_SHL_LOAD)
-      errors += lt_dlloader_add (LOADER_APPEND, &lt__sys_shl,  "dlopen");
-#endif
-#if defined(HAVE_LIBDL)
-      errors += lt_dlloader_add (LOADER_APPEND, &lt__sys_dl,   "dlopen");
-#endif
-#if defined(__WINDOWS__) || defined(__CYGWIN__)
-      errors += lt_dlloader_add (LOADER_APPEND, &lt__sys_wll,  "dlopen");
-#endif
-
-      if (lt__presym_init (lt__presym.dlloader_data))
+      /* Now open all the preloaded module loaders, so the application
+	 can use them to lt_dlopen their own modules.  */
+      if (!errors)
 	{
-	  LT__SETERROR (INIT_LOADER);
-	  ++errors;
+	  errors += lt_dlpreload (&preloaded_symbols);
 	}
-      else if (errors != 0)
+      if (!errors)
 	{
-	  LT__SETERROR (DLOPEN_NOT_SUPPORTED);
-	  ++errors;
+	  errors += lt_dlpreload_open (LT_STR(LTDLOPEN), loader_init_callback);
 	}
     }
 
@@ -1023,23 +1034,7 @@ try_dlopen (lt_dlhandle *phandle, const char *filename)
 
   assert (base_name && *base_name);
 
-  /* Check whether we are opening a libtool module (.la extension).  */
   ext = strrchr (base_name, '.');
-  if (ext && strcmp (ext, archive_ext) == 0)
-    {
-      /* this seems to be a libtool module */
-      FILE *	file	 = 0;
-      char *	dlname	 = 0;
-      char *	old_name = 0;
-      char *	libdir	 = 0;
-      char *	deplibs	 = 0;
-      char *    line	 = 0;
-      size_t	line_len;
-
-      /* if we can't find the installed flag, it is probably an
-	 installed libtool archive, produced with an old version
-	 of libtool */
-      int	installed = 1;
 
       /* extract the module name from the file name */
       name = MALLOC (char, ext - base_name + 1);
@@ -1065,6 +1060,24 @@ try_dlopen (lt_dlhandle *phandle, const char *filename)
 	  }
         name[ext - base_name] = LT_EOS_CHAR;
       }
+
+  /* Check whether we are opening a libtool module (.la extension).  */
+  if (ext && strcmp (ext, archive_ext) == 0)
+    {
+      /* this seems to be a libtool module */
+      FILE *	file	 = 0;
+      char *	dlname	 = 0;
+      char *	old_name = 0;
+      char *	libdir	 = 0;
+      char *	deplibs	 = 0;
+      char *    line	 = 0;
+      size_t	line_len;
+
+      /* if we can't find the installed flag, it is probably an
+	 installed libtool archive, produced with an old version
+	 of libtool */
+      int	installed = 1;
+
 
       /* Now try to open the .la file.  If there is no directory name
          component, try to find it first in user_search_path and then other
@@ -2148,8 +2161,8 @@ lt_dlcaller_get_data  (lt_dlcaller_id key, lt_dlhandle handle)
 
 
 int
-lt_dlloader_add (lt_dlloader *place, const struct lt_user_dlloader *dlloader,
-		 const char *loader_name)
+lt_dlloader_add (const struct lt_user_dlloader *dlloader,
+		 lt_user_data data)
 {
   int errors = 0;
   lt_dlloader *node = 0, *ptr = 0;
@@ -2164,60 +2177,40 @@ lt_dlloader_add (lt_dlloader *place, const struct lt_user_dlloader *dlloader,
     }
 
   /* Create a new dlloader node with copies of the user callbacks.  */
-  node = MALLOC (lt_dlloader, 1);
+  node = lt__malloc (sizeof *node);
   if (!node)
     return 1;
 
+  /* There is no need to record the dlloader->dlloader_init function,
+     since we won't need it again.  */
   node->next		= 0;
-  node->loader_name	= loader_name;
+  node->loader_name	= dlloader->name;
   node->sym_prefix	= dlloader->sym_prefix;
-  node->dlloader_exit	= dlloader->dlloader_exit;
   node->module_open	= dlloader->module_open;
   node->module_close	= dlloader->module_close;
   node->find_sym	= dlloader->find_sym;
+  node->dlloader_exit	= dlloader->dlloader_exit;
   node->dlloader_data	= dlloader->dlloader_data;
 
-  if (!loaders)
+  switch (dlloader->priority)
     {
-      /* If there are no loaders, NODE becomes the list! */
-      loaders = node;
-    }
-  else if (!place)
-    {
-      /* If PLACE is not set, add NODE to the end of the
-	 LOADERS list. */
+    case LT_DLLOADER_PREPEND:
+      /* Tack NODE on the front of the LOADERS list.  */
+      node->next = loaders;
+      loaders	 = node;
+      break;
+
+    case LT_DLLOADER_APPEND:
+      /* Add NODE to the end of the LOADERS list.  */
       for (ptr = loaders; ptr->next; ptr = ptr->next)
-	{
-	  /*NOWORK*/;
-	}
-
+	/*NOWORK*/;
       ptr->next = node;
-    }
-  else if (loaders == place)
-    {
-      /* If PLACE is the first loader, NODE goes first. */
-      node->next = place;
-      loaders = node;
-    }
-  else
-    {
-      /* Find the node immediately preceding PLACE. */
-      for (ptr = loaders; ptr->next != place; ptr = ptr->next)
-	{
-	  /*NOWORK*/;
-	}
+      break;
 
-      if (ptr->next != place)
-	{
-	  LT__SETERROR (INVALID_LOADER);
-	  ++errors;
-	}
-      else
-	{
-	  /* Insert NODE between PTR and PLACE. */
-	  node->next = place;
-	  ptr->next  = node;
-	}
+    default:
+      LT__SETERROR (INVALID_LOADER);
+      ++errors;
+      break;
     }
 
   return errors;
@@ -2352,8 +2345,10 @@ lt_dlmutex_register (lt_dlmutex_lock *lock, lt_dlmutex_unlock *unlock,
 
   if (warned++ == 0)
     {
-      fputs ("libltdl: WARNING: lt_dlmutex_register() is deprecated.\n"
+      fputs ("libltdl: WARNING: lt_dlmutex_register() is deprecated,\n"
 	     "libltdl: WARNING: this version of libltdl is not thread safe.\n",
 	     stderr);
     }
+
+  return 0;
 }

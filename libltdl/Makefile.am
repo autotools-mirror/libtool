@@ -17,50 +17,60 @@
 ## the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 ## Boston, MA 02111-1307, USA.
 
-BUILT_SOURCES =
-MOSTLYCLEANFILES =
-EXTRA_DIST =
+SUBDIRS			= loaders .
 
-AUTOMAKE_OPTIONS = foreign
-ACLOCAL_AMFLAGS  = -I m4
-AM_CPPFLAGS = -I$(top_builddir) -I$(top_srcdir)
-DEFS = -DHAVE_CONFIG_H="<$(CONFIG_H)>" -DLTDL
+BUILT_SOURCES		=
+MOSTLYCLEANFILES	=
+EXTRA_DIST		=
 
-pkgincludedir = $(includedir)/libltdl
+AUTOMAKE_OPTIONS	= foreign
+ACLOCAL_AMFLAGS		= -I m4
 
+DEFS			= -DHAVE_CONFIG_H="<$(CONFIG_H)>" -DLTDL
+AM_CPPFLAGS		= -I$(top_builddir)/.. -I$(top_srcdir)/..
+AM_LDFLAGS		= -no-undefined
+VERSION_INFO		= -version-info 6:0:0
+
+pkgincludedir		= $(includedir)/libltdl
+
+lib_LTLIBRARIES		= libdlloader.la
+libdlloader_la_SOURCES  = lt_error.h lt_error.c \
+			  lt__private.h lt_dlloader.h \
+			  lt__alloc.h lt__alloc.c \
+			  lt__glibc.h lt_system.h
+libdlloader_la_LDFLAGS	= $(VERSION_INFO)
+libdlloader_la_LIBADD	= $(LTLIBOBJS)
+
+## Libltdl brings it all together:
 if INSTALL_LTDL
-include_HEADERS = ltdl.h
-pkginclude_HEADERS = lt_system.h lt_error.h
-lib_LTLIBRARIES = libltdl.la
+include_HEADERS		= ltdl.h
+pkginclude_HEADERS	= lt_system.h lt_error.h
+lib_LTLIBRARIES		+= libltdl.la
 endif
 
 if CONVENIENCE_LTDL
-noinst_LTLIBRARIES  = libltdlc.la
+noinst_LTLIBRARIES	= libltdlc.la
 endif
 
-## Make sure these will be cleaned even when they're not built by
-## default.
-CLEANFILES	    = libltdl.la libltdlc.la
+libltdl_la_SOURCES	= ltdl.h ltdl.c loaders/preopen.c
+libltdl_la_CPPFLAGS	= -DLTDLOPEN=libltdl $(AM_CPPFLAGS)
+libltdl_la_LDFLAGS	=  $(VERSION_INFO) $(LT_DLPREOPEN)
+libltdl_la_LIBADD	= libdlloader.la
 
-libltdl_la_SOURCES  = loader-preopen.c \
-		      lt__alloc.c lt__alloc.h lt__dirent.h lt__glibc.h \
-		      lt__private.h lt_dlloader.h \
-		      lt_error.c lt_error.h lt_system.h \
-		      ltdl.c ltdl.h
-libltdl_la_LDFLAGS  = -no-undefined -version-info 5:0:2
-libltdl_la_LIBADD   = $(LIBADD_DL) $(LTLIBOBJS)
-
-libltdlc_la_SOURCES = $(libltdl_la_SOURCES)
-libltdlc_la_LIBADD  = $(LIBADD_DL) $(LTLIBOBJS)
+libltdlc_la_SOURCES	= $(libltdl_la_SOURCES)
+libltdlc_la_CPPFLAGS	= -DLTDLOPEN=libltdlc $(AM_CPPFLAGS)
+libltdlc_la_LDFLAGS	= $(LT_DLPREOPEN)
+libltdlc_la_LIBADD	=  $(libdlloader_la_OBJECTS) $(libdlloader_la_LIBADD)
 
 ## These are installed as a subdirectory of pkgdatadir so that
 ## libtoolize --ltdl can find them later:
-ltdldatadir = $(pkgdatadir)/libltdl
-ltdldata_DATA = COPYING.LIB Makefile.am README configure.ac \
-		argz_.h argz.c $(libltdl_la_SOURCES) \
-		loader-dld_link.c loader-dlopen.c loader-dyld.c \
-		loader-load_add_on.c loader-loadlibrary.c loader-shl_load.c \
-		lt__dirent.c
+ltdldatadir		= $(pkgdatadir)/libltdl
+nobase_ltdldata_DATA	= COPYING.LIB Makefile.am README configure.ac \
+			  $(libltdl_la_SOURCES) $(libdlloader_la_SOURCES) \
+			  lt__dirent.c lt__dirent.h argz_.h argz.c
+
+## Make sure these will be cleaned even when they're not built by default:
+CLEANFILES		= libltdl.la libltdlc.la libdlloader.la
 
 
 ## --------------------------- ##

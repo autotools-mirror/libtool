@@ -2676,7 +2676,7 @@ symxfrm='\1 \2\3 \3'
 lt_cv_sys_global_symbol_to_cdecl="sed -n -e 's/^. .* \(.*\)$/extern int \1;/p'"
 
 # Transform an extracted symbol line into symbol name and symbol address
-lt_cv_sys_global_symbol_to_c_name_address="sed -n -e 's/^: \([[^ ]]*\) $/  {\\\"\1\\\", (lt_ptr) 0},/p' -e 's/^$symcode \([[^ ]]*\) \([[^ ]]*\)$/  {\"\2\", (lt_ptr) \&\2},/p'"
+lt_cv_sys_global_symbol_to_c_name_address="sed -n -e 's/^: \([[^ ]]*\) $/  {\\\"\1\\\", (void *) 0},/p' -e 's/^$symcode \([[^ ]]*\) \([[^ ]]*\)$/  {\"\2\", (void *) \&\2},/p'"
 
 # Define system-specific variables.
 case $host_os in
@@ -2691,7 +2691,7 @@ hpux*) # Its linker distinguishes data from code symbols
     symcode='[[ABCDEGRST]]'
   fi
   lt_cv_sys_global_symbol_to_cdecl="sed -n -e 's/^T .* \(.*\)$/extern int \1();/p' -e 's/^$symcode* .* \(.*\)$/extern char \1;/p'"
-  lt_cv_sys_global_symbol_to_c_name_address="sed -n -e 's/^: \([[^ ]]*\) $/  {\\\"\1\\\", (lt_ptr) 0},/p' -e 's/^$symcode* \([[^ ]]*\) \([[^ ]]*\)$/  {\"\2\", (lt_ptr) \&\2},/p'"
+  lt_cv_sys_global_symbol_to_c_name_address="sed -n -e 's/^: \([[^ ]]*\) $/  {\\\"\1\\\", (void *) 0},/p' -e 's/^$symcode* \([[^ ]]*\) \([[^ ]]*\)$/  {\"\2\", (void *) \&\2},/p'"
   ;;
 irix* | nonstopux*)
   symcode='[[BCDEGRST]]'
@@ -2767,25 +2767,32 @@ _LT_EOF
 	  eval "$lt_cv_sys_global_symbol_to_cdecl"' < "$nlist" | $GREP -v main >> conftest.$ac_ext'
 
 	  cat <<_LT_EOF >> conftest.$ac_ext
-#if defined (__STDC__) && __STDC__
-# define lt_ptr_t void *
-#else
-# define lt_ptr_t char *
-# define const
-#endif
 
-/* The mapping between symbol names and symbols. */
+/* The mapping between symbol names and symbols.  */
 const struct {
-  const char *name;
-  lt_ptr_t address;
+  const char *originator;
+  const struct {
+    const char *name;
+    void       *address;
+  } symbols[[]];
 }
-lt_preloaded_symbols[[]] =
+lt__PROGRAM__LTX_preloaded_symbols =
 {
+  "@PROGRAM@",
+  {
 _LT_EOF
-	  $SED "s/^$symcode$symcode* \(.*\) \(.*\)$/  {\"\2\", (lt_ptr_t) \&\2},/" < "$nlist" | $GREP -v main >> conftest.$ac_ext
+	  $SED "s/^$symcode$symcode* \(.*\) \(.*\)$/  {\"\2\", (void *) \&\2},/" < "$nlist" | $GREP -v main >> conftest.$ac_ext
 	  cat <<\_LT_EOF >> conftest.$ac_ext
-  {0, (lt_ptr_t) 0}
+  {0, (void *) 0}
+  }
 };
+
+/* This works around a problem in FreeBSD linker */
+#ifdef FREEBSD_WORKAROUND
+static const void *lt_preloaded_setup() {
+  return lt__PROGRAM__LTX_preloaded_symbols;
+}
+#endif
 
 #ifdef __cplusplus
 }

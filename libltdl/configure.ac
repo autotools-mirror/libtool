@@ -88,5 +88,5 @@ AC_LIB_LTDL
 ## -------- ##
 ## Outputs. ##
 ## -------- ##
-AC_CONFIG_FILES([Makefile])
+AC_CONFIG_FILES([Makefile loaders/Makefile])
 AC_OUTPUT

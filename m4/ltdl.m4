@@ -370,70 +370,83 @@ fi
 # AC_LTDL_DLLIB
 # -------------
 AC_DEFUN([AC_LTDL_DLLIB],
-[LIBADD_DL=
-AC_SUBST(LIBADD_DL)
+[m4_pattern_allow([^LT_DLLOADERS$])
+LT_DLLOADERS=
+AC_SUBST([LT_DLLOADERS])
+
 AC_LANG_PUSH([C])
 
-AC_CHECK_FUNC([shl_load],
-      [AC_DEFINE([HAVE_SHL_LOAD], [1],
-	         [Define if you have the shl_load function.])
-      AC_LIBOBJ([loader-shl_load])],
-  [AC_CHECK_LIB([dld], [shl_load],
-	[AC_DEFINE([HAVE_SHL_LOAD], [1],
-		   [Define if you have the shl_load function.])
-	LIBADD_DL="$LIBADD_DL -ldld"
-	AC_LIBOBJ([loader-shl_load])],
-    [AC_CHECK_LIB([dl], [dlopen],
-	  [AC_DEFINE([HAVE_LIBDL], [1],
-		     [Define if you have the libdl library or equivalent.])
-	  LIBADD_DL="-ldl" libltdl_cv_lib_dl_dlopen="yes"
-	  AC_LIBOBJ([loader-dlopen])],
-      [AC_TRY_LINK([#if HAVE_DLFCN_H
+LIBADD_DLOPEN=
+AC_CHECK_LIB([dl], [dlopen],
+	[AC_DEFINE([HAVE_LIBDL], [1],
+		   [Define if you have the libdl library or equivalent.])
+	LIBADD_DLOPEN="-ldl" libltdl_cv_lib_dl_dlopen="yes"
+	LT_DLLOADERS="$LT_DLLOADERS dlopen.la"],
+    [AC_TRY_LINK([#if HAVE_DLFCN_H
 #  include <dlfcn.h>
 #endif
-      ],
-	    [dlopen(0, 0);],
+    ], [dlopen(0, 0);],
 	    [AC_DEFINE([HAVE_LIBDL], [1],
 		       [Define if you have the libdl library or equivalent.])
 	    libltdl_cv_func_dlopen="yes"
-	    AC_LIBOBJ([loader-dlopen])],
-        [AC_CHECK_LIB([svld], [dlopen],
-	      [AC_DEFINE([HAVE_LIBDL], [1],
+	    LT_DLLOADERS="$LT_DLLOADERS dlopen.la"],
+	[AC_CHECK_LIB([svld], [dlopen],
+		[AC_DEFINE([HAVE_LIBDL], [1],
 			 [Define if you have the libdl library or equivalent.])
-	      LIBADD_DL="-lsvld" libltdl_cv_func_dlopen="yes"
-	      AC_LIBOBJ([loader-dlopen])],
-	  [AC_CHECK_LIB([dld], [dld_link],
-	        [AC_DEFINE([HAVE_DLD], [1],
-			   [Define if you have the GNU dld library.])
-	 	LIBADD_DL="$LIBADD_DL -ldld"
-		AC_LIBOBJ([loader-dld_link])],
-	    [AC_CHECK_FUNC([_dyld_func_lookup],
-	 	  [AC_DEFINE([HAVE_DYLD], [1],
-	 	             [Define if you have the _dyld_func_lookup function.])
-		  AC_LIBOBJ([loader-dyld])])#_dyld_func_lookup
-            ])#dld
-          ])#svld
-        ])#dlfcn.h
-      ])#dl
-    ])#dld
-  ])#shl_load
-
-case $host_os in
-beos*)
-  AC_LIBOBJ([loader-load_add_on])
-  ;;
-cygwin* | mingw* | os2* | pw32*)
-  AC_LIBOBJ([loader-loadlibrary])
-  ;;
-esac
-
+	        LIBADD_DLOPEN="-lsvld" libltdl_cv_func_dlopen="yes"
+		LT_DLLOADERS="$LT_DLLOADERS dlopen.la"])])])
 if test x"$libltdl_cv_func_dlopen" = xyes || test x"$libltdl_cv_lib_dl_dlopen" = xyes
 then
   lt_save_LIBS="$LIBS"
-  LIBS="$LIBS $LIBADD_DL"
+  LIBS="$LIBS $LIBADD_DLOPEN"
   AC_CHECK_FUNCS([dlerror])
   LIBS="$lt_save_LIBS"
 fi
+AC_SUBST([LIBADD_DLOPEN])
+
+LIBADD_SHL_LOAD=
+AC_CHECK_FUNC([shl_load],
+	[AC_DEFINE([HAVE_SHL_LOAD], [1],
+		   [Define if you have the shl_load function.])
+	LT_DLLOADERS="$LT_DLLOADERS shl_load.la"],
+    [AC_CHECK_LIB([dld], [shl_load],
+	    [AC_DEFINE([HAVE_SHL_LOAD], [1],
+		       [Define if you have the shl_load function.])
+	    LT_DLLOADERS="$LT_DLLOADERS shl_load.la"
+	    LIBADD_SHL_LOAD="-ldld"])])
+AC_SUBST([LIBADD_SHL_LOAD])
+
+AC_CHECK_FUNC([_dyld_func_lookup],
+	[AC_DEFINE([HAVE_DYLD], [1],
+		   [Define if you have the _dyld_func_lookup function.])
+	LT_DLLOADERS="$LT_DLLOADERS dyld.la"])
+
+case $host_os in
+beos*)
+  LT_DLLOADERS="$LT_DLLOADERS load_add_on.la"
+  ;;
+cygwin* | mingw* | os2* | pw32*)
+  LT_DLLOADERS="$LT_DLLOADERS loadlibrary.la"
+  ;;
+esac
+
+AC_CHECK_LIB([dld], [dld_link],
+	[AC_DEFINE([HAVE_DLD], [1],
+		   [Define if you have the GNU dld library.])
+		LT_DLLOADERS="$LT_DLLOADERS dld_link.la"])
+AC_SUBST([LIBADD_DLD_LINK])
+
+m4_pattern_allow([^LT_DLPREOPEN$])
+LT_DLPREOPEN=
+for lt_loader in $LT_DLLOADERS; do
+  LT_DLPREOPEN="$LT_DLPREOPEN-dlpreopen loaders/$lt_loader "
+done
+AC_SUBST([LT_DLPREOPEN])
+
+dnl This isn't used anymore, but set it for backwards compatibility
+LIBADD_DL="$LIBADD_DLOPEN $LIBADD_SHL_LOAD"
+AC_SUBST([LIBADD_DL])
+
 AC_LANG_POP
 ])# AC_LTDL_DLLIB
 
@@ -487,7 +500,7 @@ if test x"$ac_cv_sys_symbol_underscore" = xyes; then
 	  [libltdl_cv_need_uscore],
 	  [libltdl_cv_need_uscore=unknown
           save_LIBS="$LIBS"
-          LIBS="$LIBS $LIBADD_DL"
+          LIBS="$LIBS $LIBADD_DLOPEN"
 	  _LT_AC_TRY_DLOPEN_SELF(
 	    [libltdl_cv_need_uscore=no], [libltdl_cv_need_uscore=yes],
 	    [],				 [libltdl_cv_need_uscore=cross])
