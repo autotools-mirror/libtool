@@ -1,5 +1,15 @@
 2001-09-06  Gary V. Vaughan  <gary@gnu.org>
 
+	* libtool.m4 (archive_cmds, archive_expsym_cmds) [solaris*]: Changing
+	no_undefined_flag from `-z text' to `-z defs' (see entry below at
+	2001-04-11  Alexandre Oliva  <aoliva@redhat.com>) has a problem.
+	when linking a shared library with gcc calling /usr/ccs/bin/ld (eg.
+	the gcc supplied with Solaris 8 companion CD), using the flag
+	-no-undefined, shared library linking will always fail because of
+	the unresolved symbols from libgcc.a.  Consequently we have to
+	provide a path to libgcc.a when linking shared libraries in
+	conjunction with -no-undefined!
+
 	From Michael Pruett <mpruett@engr.sgi.com>:
 	* libltdl/ltdl.c (find_module): `0' valued arguments to
 	tryall_dlopen_module() must be explicitly cast to avoid compiler
