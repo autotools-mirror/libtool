@@ -230,8 +230,9 @@ func_copy_cb ()
     if $opt_link && $LN_S "$my_srcdir/$my_file" "$my_destdir/$my_file"; then
       $opt_quiet || func_echo "copying file \`$my_destdir/$my_file'"
       copy_return_status=0
-    elif { ( cd "$my_srcdir" && $TAR chof - "$my_file" 2> /dev/null; ) \
-        | ( cd "$my_destdir" && "$TAR" xf - > /dev/null 2>&1; ) } ; then
+    elif { ( cd "$my_srcdir" 2>/dev/null && $TAR chf - "$my_file" 2> /dev/null; ) \
+        | ( umask 0; cd "$my_destdir" 2>/dev/null && "$TAR" xf - > /dev/null 2>&1; ) }
+    then
       $opt_quiet || func_echo "copying file \`$my_destdir/$my_file'"
       copy_return_status=0
     elif $CP -p "$my_srcdir/$my_file" "$my_destdir/$my_file"; then
