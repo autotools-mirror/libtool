@@ -1,5 +1,11 @@
 1999-01-27  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* libltdl/configure.in (AC_PROG_LIBTOOL): automake does not
+	recognize it and fail, better keep using AM_PROG_LIBTOOL until the
+	next release of automake
+	* demo/configure.in, cdemo/configure.in: ditto
+	* depdemo/configure.in, mdemo/configure.in: ditto
+
 	* libltdl/ltdl.c: make all global strings char[], not char*; check 
 	that all calls to malloc() are properly cast
 	(strdup, strchr, strrchr, trim, free_vars): declare as inline
