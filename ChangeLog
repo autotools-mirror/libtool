@@ -1,3 +1,11 @@
+2004-01-23  Stefan Nordhausen  <nordhaus@informatik.hu-berlin.de>
+	Scott James Remnant  <scott@netsplit.com>
+
+	* ltmain.in: Don't use the mkdir -p option when creating a
+	temporary output directory so a symlink attack can't be used to
+	arbitrarily chmod other directories on the system if libtool
+	gets run as root.
+
 2004-01-23  Scott James Remnant  <scott@netsplit.com>
 
 	* ltmain.in: new -precious-files-regex link mode option
