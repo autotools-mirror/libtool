@@ -1,3 +1,9 @@
+1999-03-08  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* libltdl/Makefile.am (@TOINST@/libltdl.la): do not hide the
+	command that creates the TOINST directory; remove `-o $@' from the 
+	LINK command, $(LINK) already contains it.
+
 1999-03-08  Thomas Tanner  <tanner@gmx.de>
 
 	* doc/libtool.texi (tests): documented demo-nofast.test and

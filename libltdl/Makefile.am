@@ -19,8 +19,8 @@ lib_LTLIBRARIES = @LIBLIBS@
 EXTRA_LTLIBRARIES =
 
 @TOINST@/libltdl.la: $(libltdl_la_OBJECTS) $(libltdl_la_DEPENDENCIES)
-	@test -d $(TOINST) || mkdir $(TOINST)
-	$(LINK) -o $@ $(libltdl_la_OBJECTS) \
+	test -d $(TOINST) || mkdir $(TOINST)
+	$(LINK) $(libltdl_la_OBJECTS) \
 		-rpath $(libdir) $(LTDL_VERSION) $(libltdl_la_LIBADD)
 
 distclean-local:
