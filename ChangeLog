@@ -1,3 +1,7 @@
+2000-05-29  Bernhard Rosenkraenzer <bero@redhat.de>
+ 
+	* libtool.m4: adding ia64 as supported linux platform
+
 2000-05-29  Michael Matz  <matz@ifh.de>       
 
 	* ltmain.in: fix quoting for $var_value.
