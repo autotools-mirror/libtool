@@ -1,5 +1,11 @@
 2001-04-08  Gary V. Vaughan  <gvv@techie.com>
 
+	* libltdl/ltdl.c (sys_shl_open): Cache a handle for the `self'
+	module, since HPUX adds module symbols into the `self' pool if
+	it is opened later.  Return the cached pointer if the caller
+	subsequently tries to open `self'.
+	(sys_shl_sym): Diagnose NULL modules.
+
 	From Peter Eisentraut  <peter_e@gmx.net>
 	* ltmain.in (clean,uninstall): test -e is not portable.  Well,
 	neither is -L, but I'm hoping that redirecting error messages
