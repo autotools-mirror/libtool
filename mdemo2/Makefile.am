@@ -2,7 +2,7 @@
 
 AUTOMAKE_OPTIONS = no-dependencies foreign
 
-INCLUDES = $(INCLTDL)
+INCLUDES = -I../libltdl
 
 EXTRA_DIST = acinclude.m4
 
@@ -10,7 +10,7 @@ bin_PROGRAMS = mdemo2 mdemo2_static
 
 # Create a version of mdemo2 that links a library that does dlopen.
 mdemo2_SOURCES = main.c
-mdemo2_LDFLAGS = -export-dynamic
+mdemo2_LDFLAGS = -export-dynamic "-dlopen" force
 mdemo2_LDADD = ../mdemo/libmlib.la
 
 # Create a statically linked version of mdemo.

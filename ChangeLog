@@ -1,3 +1,10 @@
+2003-09-10  Peter O'Gorman  <peter@pogma.com>
+
+	* mdemo2/configure.ac: Use AC_LIBTOOL_DLOPEN.
+	* mdemo2/main.c: Use LTDL_SET_PRELOADED_SYMBOLS().
+	* mdemo2/Makefile.am: Set INCLUDES properly and add -dlopen force
+	to make sure the symbols file is included in the link line.
+
 2003-09-10  Arne Woerner  <woerner@mediabase-gmbh.de>
 
 	* libtool.m4 [openbsd]: openbsd 3.x needs versioning information.
