@@ -1,3 +1,11 @@
+2001-09-22  Albert Chin-A-Young  <china@thewrittenword.com>
+
+	* ltdl.m4 (AC_LTDL_DLLIB): Even though HP-UX 10.20 and 11.00
+	support shl_load *and* dlopen, dlopen works correctly only
+	with a patch. Because we want to avoid the situation where we
+	build on a system with the patch but deploy on a system without,
+	use shl_load exclusively if found.
+
 2001-09-22  Gary V. Vaughan  <gary@gnu.org>
 
 	* libtool.m4 (_LT_AC_FILE_LTDLL_C): Be carefule that the start
