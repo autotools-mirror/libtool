@@ -1,5 +1,7 @@
 2000-12-16  Sascha Schumann <sascha@schumann.cx>
 
+	* ltmain.in: Accept darwin as an alias for rhapsody.
+	
 	* libtool.m4 (AC_DEPLIBS_CHECK_METHOD): Use the HPUX 10.20
 	methods to check for library dependencies on HPUX 11.
 

@@ -1129,7 +1129,7 @@ EOF
 	  $echo "$modename: warning: assuming \`-no-fast-install' instead" 1>&2
 	  fast_install=no
 	  ;;
-	*-*-rhapsody*)
+	*-*-rhapsody*|*-*-darwin*)
 	  # rhapsody is a little odd...
 	  deplibs="$deplibs -framework System"
 	  ;;
