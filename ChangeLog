@@ -1,5 +1,9 @@
 2005-01-09  Gary V. Vaughan  <gary@gnu.org>
 
+	* HACKING (Editing 'ChangeLog'): Follow the GCS with respect to
+	attributions, and mention how to handle tiny changes.
+	Reported by Alexandre Duret-Lutz <adl@src.lip6.fr>.
+
 	* ChangeLog: Move 2004 change logs from here...
 	* ChangeLog.2004: ...to here.
 
