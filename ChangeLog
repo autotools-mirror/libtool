@@ -1,3 +1,8 @@
+1999-10-29  Gary V. Vaughan  <gary@oranda.demon.co.uk>
+
+	* ltmain.in:  Damnit!  Cygwin cvs committed all the
+	dos line endings.
+
 1999-10-28  Stephane Conversy  <Stephane.Conversy@lri.fr>
 
 	* ltmain.in (-DPIC):  changed the order of pic flags a little to
