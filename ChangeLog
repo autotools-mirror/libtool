@@ -1,3 +1,16 @@
+2001-02-12  Robert Boehne  <rboehne@ricardo-us.com>
+	
+	* ltcf-cxx.sh: Added support for g++ under
+	AIX 4 and 5 on Power* and IA64.
+	
+	* ltcf-c.sh: Added support for gcc under
+	AIX 4 and 5 on Power* and IA64
+	
+	* ltcf-gcj.sh: Ditto.
+	
+	* ltconfig.in: The export_symbols_cmds had to be
+	specifically changed under AIX. 
+	
 2001-01-31  Robert Boehne  <rboehne@ricardo-us.com>
 
         * ltcf-cxx.sh: Eliminated setting LD to $CC

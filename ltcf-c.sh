@@ -57,7 +57,7 @@ if test "$with_gnu_ld" = yes; then
 
   # See if GNU ld supports shared libraries.
   case "$host_os" in
-  aix3* | aix4*)
+  aix3* | aix4* | aix5*)
     # On AIX, the GNU linker is very broken
     ld_shlibs=no
     cat <<EOF 1>&2
@@ -263,9 +263,15 @@ else
     fi
     ;;
 
-  aix4*)
-    hardcode_libdir_flag_spec='${wl}-b ${wl}nolibpath ${wl}-b ${wl}libpath:$libdir:/usr/lib:/lib'
+  aix4* | aix5*)
+    hardcode_direct=yes
     hardcode_libdir_separator=':'
+    link_all_deplibs=yes
+    # When large executables or shared objects are built, AIX ld can
+    # have problems creating the table of contents.  If linking a library
+    # or program results in "error TOC overflow" add -mminimal-toc to
+    # CXXFLAGS/CFLAGS for g++/gcc.  In the cases where that is not
+    # enough to fix the problem, add -Wl,-bbigtoc to LDFLAGS.
     if test "$with_gcc" = yes; then
       collect2name=`${CC} -print-prog-name=collect2`
       if test -f "$collect2name" && \
@@ -285,23 +291,58 @@ else
       fi
       shared_flag='-shared'
     else
-      shared_flag='${wl}-bM:SRE'
-      hardcode_direct=yes
+      if test "$host_cpu" = ia64; then
+        shared_flag='${wl}-G'
+      else
+        shared_flag='${wl}-bM:SRE'
+      fi
     fi
-    allow_undefined_flag=' ${wl}-berok'
-    archive_cmds="\$CC $shared_flag"' -o $output_objdir/$soname $libobjs $deplibs $compiler_flags ${wl}-bexpall ${wl}-bnoentry${allow_undefined_flag}'
-    archive_expsym_cmds="\$CC $shared_flag"' -o $output_objdir/$soname $libobjs $deplibs $compiler_flags ${wl}-bE:$export_symbols ${wl}-bnoentry${allow_undefined_flag}'
-    case "$host_os" in aix4.[01]|aix4.[01].*)
-      # According to Greg Wooledge, -bexpall is only supported from AIX 4.2 on
-      always_export_symbols=yes ;;
-    esac
 
-    # We don't want to build shared libraries on unknown CPU types.
-    case $host_cpu in
-    powerpc | rs6000) ;;
-    *) ld_shlibs=no ;;
-    esac
-   ;;
+    if test "$host_cpu" = ia64; then
+      # On IA64, the linker does run time linking by default, so we don't
+      # have to do anything special.
+      aix_use_runtimelinking=no
+      exp_sym_flag='-Bexport'
+      no_entry_flag=""
+    else
+      # Test if we are trying to use run time linking, or normal AIX style linking.
+      # If -brtl is somewhere in LDFLAGS, we need to do run time linking.
+      aix_use_runtimelinking=no
+      for ld_flag in $LDFLAGS; do
+        if (test $ld_flag = "-brtl" || test $ld_flag = "-Wl,-brtl" ); then
+          aix_use_runtimelinking=yes
+          break
+        fi
+      done
+      exp_sym_flag='-bexport'
+      no_entry_flag='-bnoentry'
+    fi
+    # -bexpall does not export symbols beginning with underscore (_)
+    always_export_symbols=yes
+    if test "$aix_use_runtimelinking" = yes; then
+      # Warning - without using the other run time loading flags (-brtl), -berok will
+      #           link without error, but may produce a broken library.
+      allow_undefined_flag=' ${wl}-berok'
+      hardcode_libdir_flag_spec='${wl}-blibpath:$libdir:/usr/lib:/lib'
+      archive_expsym_cmds="\$CC $shared_flag"' -o $output_objdir/$soname $libobjs $deplibs $compiler_flags ${allow_undefined_flag} '"\${wl}$no_entry_flag \${wl}$exp_sym_flag:\$export_symbols"
+    else
+      if test "$host_cpu" = ia64; then
+        hardcode_libdir_flag_spec='${wl}-R $libdir:/usr/lib:/lib'
+        allow_undefined_flag="-z nodefs"
+        archive_expsym_cmds="\$CC $shared_flag"' -o $output_objdir/$soname $libobjs $deplibs $compiler_flags ${wl}${allow_undefined_flag} '"\${wl}$no_entry_flag \${wl}$exp_sym_flag:\$export_symbols"
+      else
+        allow_undefined_flag=' ${wl}-berok'
+        # -bexpall does not export symbols beginning with underscore (_)
+        always_export_symbols=yes
+        # Exported symbols can be pulled into shared objects from archives
+        whole_archive_flag_spec=' '
+        build_libtool_need_lc=yes
+        hardcode_libdir_flag_spec='${wl}-blibpath:$libdir:/usr/lib:/lib'
+        # This is similar to how AIX traditionally builds it's shared libraries.
+        archive_expsym_cmds="\$CC $shared_flag"' -o $output_objdir/$soname $libobjs $deplibs $compiler_flags ${wl}-bE:$export_symbols ${wl}-bnoentry${allow_undefined_flag}~$AR $AR_FLAGS $output_objdir/$libname$release.a $output_objdir/$soname'
+      fi
+    fi
+    ;;
 
   amigaos*)
     archive_cmds='$rm $output_objdir/a2ixlibrary.data~$echo "#define NAME $libname" > $output_objdir/a2ixlibrary.data~$echo "#define LIBRARY_ID 1" >> $output_objdir/a2ixlibrary.data~$echo "#define VERSION $major" >> $output_objdir/a2ixlibrary.data~$echo "#define REVISION $revision" >> $output_objdir/a2ixlibrary.data~$AR $AR_FLAGS $lib $libobjs~$RANLIB $lib~(cd $output_objdir && a2ixlibrary -32)'
@@ -564,13 +605,13 @@ else
       # PIC is the default for these OSes.
       ;;
     aix*)
-      # Below there is a dirty hack to force normal static linking with -ldl
-      # The problem is because libdl dynamically linked with both libc and
-      # libC (AIX C++ library), which obviously doesn't included in libraries
-      # list by gcc. This cause undefined symbols with -static flags.
-      # This hack allows C programs to be linked with "-static -ldl", but
-      # we not sure about C++ programs.
-      ac_cv_prog_cc_static="$ac_cv_prog_cc_static ${ac_cv_prog_cc_wl}-lC"
+      # All AIX code is PIC.
+      if test "$host_cpu" = ia64; then
+        # AIX 5 now supports IA64 processor
+        lt_cv_prog_cc_static='-Bstatic'
+      else
+        lt_cv_prog_cc_static='-bnso -bI:/lib/syscalls.exp'
+      fi
       ;;
     cygwin* | mingw* | os2*)
       # This hack is so that the source file can tell whether it is being
@@ -595,9 +636,9 @@ else
   else
     # PORTME Check for PIC flags for the system compiler.
     case "$host_os" in
-    aix3* | aix4*)
+    aix*)
      # All AIX code is PIC.
-      ac_cv_prog_cc_static='-bnso -bI:/lib/syscalls.exp'
+      ac_cv_prog_cc_static="$ac_cv_prog_cc_static ${ac_cv_prog_cc_wl}-lC"
       ;;
 
     hpux9* | hpux10* | hpux11*)
