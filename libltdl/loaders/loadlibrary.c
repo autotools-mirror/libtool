@@ -52,7 +52,7 @@ static void *	 vm_sym   (lt_user_data loader_data, lt_module module,
 lt_dlvtable *
 get_vtable (lt_user_data loader_data)
 {
-  static lt_dlloader *vtable = 0;
+  static lt_dlvtable *vtable = 0;
 
   if (!vtable)
     {
@@ -95,7 +95,6 @@ static lt_dlhandle handles;
 static lt_module
 vm_open (lt_user_data loader_data, const char *filename)
 {
-  lt_dlhandle	cur	   = 0;
   lt_module	module	   = 0;
   const char   *errormsg   = 0;
   char	       *searchname = 0;
@@ -149,25 +148,29 @@ vm_open (lt_user_data loader_data, const char *filename)
      We check whether LoadLibrary is returning a handle to
      an already loaded module, and simulate failure if we
      find one. */
-  while (cur = lt_dlhandle_next (cur))
-    {
-      if (!cur->module)
-	{
-	  cur = 0;
-	  break;
-	}
+  {
+    lt__handle *        cur        = 0;
 
-      if (cur->module == module)
-	{
-	  break;
-	}
+    while (cur = (lt__handle *) lt_dlhandle_next ((lt_dlhandle) cur))
+      {
+        if (!cur->module)
+          {
+            cur = 0;
+            break;
+          }
+        
+        if (cur->module == module)
+          {
+            break;
+          }
+      }
+    
+    if (cur || !module)
+      {
+        LT__SETERROR (CANNOT_OPEN);
+        module = 0;
+      }
   }
-
-  if (cur || !module)
-    {
-      LT__SETERROR (CANNOT_OPEN);
-      module = 0;
-    }
 
   return module;
 }

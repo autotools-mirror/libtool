@@ -1,3 +1,13 @@
+2004-09-15  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* libltdl/loaders/loadlibrary.c: Compilation fixes (originally
+	from Gary V. Vaughan) to compile under MinGW.
+	* config/mkstamp: Translate input data so that it is assured to
+	use the Unix line terminations. This is necessary under Windows if
+	the files are checked out with CR/NL line terminations. A
+	side-effect of this change is that input must always be from
+	stdin. Previously a filename argument was accepted as well.
+
 2004-09-15  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* tests/Makefile.am: Use the same CPP, F77, CXX and CXXFLAGS

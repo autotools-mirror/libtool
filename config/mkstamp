@@ -27,10 +27,10 @@
 # tags, and it edits this line so that it looks like ` $rev $date'
 
 # Command-line arguments are passed down to sed; additional -e cmd
-# arguments are acceptable.  If no input filename is specified in the
-# command line, sed will read from stdin.
+# arguments are acceptable.  Input is from from stdin.  The original
+# version of this script accepted input from a named file or stdin.
 
-exec sed -e '
+tr -d "\015" | sed -e '
 	s%.*\$''Revision: \([^$]*\) \$.*\$''Date: \([^$]*\) \$.*% \1 \2%
 	t end
 	d
