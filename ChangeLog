@@ -1,3 +1,11 @@
+1999-04-04  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* ltconfig.in: if ld_shlibs=no, set can_build_shared=no too,
+	otherwise it will just be disregarded.  This would cause
+	netbsd/m68k with GNU ld a.out, and certainly many other platforms, 
+	to incorrectly believe that shared libraries were supported, while 
+	archive_cmds was empty, causing shared libraries not to be created
+
 1999-04-03  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* NEWS: improved support for AIX and HP/UX
