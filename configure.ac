@@ -25,7 +25,7 @@ AC_PREREQ(2.50)
 ## ------------------------ ##
 ## Autoconf initialisation. ##
 ## ------------------------ ##
-AC_INIT([libtool], [1.4d], [bug-libtool@gnu.org])
+AC_INIT([libtool], [1.4e], [bug-libtool@gnu.org])
 AC_CONFIG_SRCDIR([ltmain.in])
 
 
