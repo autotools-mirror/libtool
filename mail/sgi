@@ -1,3 +1,4 @@
+From Janos.Farkas-nouce/priv-#5HYEEI07/9C6uVbFUutOXk6szqe@lk9qw.mail.eon.ml.org Tue Mar 31 15:39:15 1998
 X-From-Line: Janos.Farkas-nouce/priv-#5HYEEI07/9C6uVbFUutOXk6szqe@lk9qw.mail.eon.ml.org Tue Mar 31 15:39:15 1998
 Return-Path: <Janos.Farkas-nouce/priv-#5HYEEI07/9C6uVbFUutOXk6szqe@lk9qw.mail.eon.ml.org>
 Delivered-To: gord@trick.profitpress.com
@@ -19,8 +20,9 @@ Mime-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 In-Reply-To: <199803300034.TAA16378@subrogation.cygnus.com>; from Ian Lance Taylor on Sun, Mar 29, 1998 at 07:34:01PM -0500
 Errors-To: Janos Farkas <Janos.Farkas-sys/priv-#5zJlUoBBccl/-errors@lk9qw.mail.eon.ml.org>
-Lines: 44
 Xref: trick.profitpress.com mail.libtool:1249
+Lines: 44
+X-Gnus-Article-Number: 1   Wed Nov  4 08:02:28 1998
 
 On 1998-03-29 at 19:34:01, Ian Lance Taylor wrote:
 >    From: Gordon Matzigkeit <gord@m-tech.ab.ca>
@@ -65,6 +67,7 @@ this in the dso.5 page, this looks more informative :)
 
 -- 
 Janos - Don't worry, my address is real.  I'm just bored of spam.
+
 From nobody Wed Oct 14 16:54:11 1998
 X-From-Line: gord@gnu.org Fri Jul 03 02:26:01 1998
 Return-Path: <gord@gnu.org>
@@ -82,8 +85,9 @@ To: bug-libtool@gnu.org
 Subject: misc. libtool bugs
 Phase-of-Moon: Waxing Gibbous (62% of Full)
 Organization: Mathematics Department, University of Arizona
-Lines: 46
 Xref: trick.fig.org mail.libtool:1516
+Lines: 46
+X-Gnus-Article-Number: 2   Wed Nov  4 08:02:28 1998
 
 Through installing the plotutils package on several platforms, I've turned
 up a few additional bugs in libtool-1.2.  Here they are...
@@ -130,90 +134,4 @@ built specially to be linked with -lXm, that gives error messages about SGI
 version numbering for -lplot.
 
 --Robert
-
-From nobody Wed Oct 14 17:10:58 1998
-X-From-Line: gord@mescaline.gnu.org Tue Sep 29 01:34:53 1998
-Return-Path: <gord@mescaline.gnu.org>
-Delivered-To: gord@trick.fig.org
-Received: (qmail 20064 invoked from network); 29 Sep 1998 01:34:52 -0000
-Received: from www.m-tech.ab.ca (HELO bambam.m-tech.ab.ca) (209.91.93.34)
-  by www.fig.org with SMTP; 29 Sep 1998 01:34:52 -0000
-Received: from mescaline.gnu.org (gateway [10.0.0.1])
-	by bambam.m-tech.ab.ca (8.8.7/8.8.7) with ESMTP id TAA10331
-	for <gord@m-tech.ab.ca>; Mon, 28 Sep 1998 19:37:37 -0600
-Received: from moshpit.cygnus.com (bje@moshpit.cygnus.com [203.24.38.233])
-	by mescaline.gnu.org (8.9.1a/8.9.1) with ESMTP id VAA16422
-	for <bug-libtool@gnu.org>; Mon, 28 Sep 1998 21:36:45 -0400
-Received: from localhost by moshpit.cygnus.com (8.8.8/8.8.8)
-	with SMTP id LAA24934; Tue, 29 Sep 1998 11:33:52 +1000
-X-Authentication-Warning: moshpit.cygnus.com: bje owned process doing -bs
-Date: Tue, 29 Sep 1998 11:33:52 +1000 (EST)
-From: Ben Elliston <bje@cygnus.com>
-To: bug-libtool@gnu.org
-cc: Michael Tiemann <tiemann@cygnus.com>
-Subject: libtool patch (fwd)
-Message-ID: <Pine.LNX.3.95.980929113311.24925A-100000@moshpit.cygnus.com>
-MIME-Version: 1.0
-Content-Type: TEXT/PLAIN; charset=US-ASCII
-Xref: trick.fig.org libtool:1637
-Lines: 58
-X-Gnus-Article-Number: 1   Mon Nov  2 17:20:30 1998
-
-I didn't realise libtool was under active maintainership, so here is a
-patch from Michael Tiemann.
-
-Ben
-
----------- Forwarded message ----------
-Date: Tue, 22 Sep 1998 08:14:25 -0700 (PDT)
-From: Michael Tiemann <tiemann@cygnus.com>
-To: bje@cygnus.com
-Subject: libtool patch
-
-Irix6 is really not an o32 system anymore...it's an n32 system (gcc
-doesn't even support o32).  So you need to change all the
-LD_LIBRARY_PATHs to LD_LIBRARYN32_PATH.
-
-tiemann@holodeck$ cvs diff -c ltconfig
-Index: ltconfig
-===================================================================
-RCS file: /cvs/cvsfiles/devo/libtool/ltconfig,v
-retrieving revision 1.16
-diff -c -r1.16 ltconfig
-*** ltconfig	1998/07/07 20:22:52	1.16
---- ltconfig	1998/09/22 15:13:36
-***************
-*** 1328,1338 ****
-    postinstall_cmds='chmod 555 $lib'
-    ;;
-  
-! irix5* | irix6*)
-    version_type=osf
-    soname_spec='${libname}${release}.so'
-    library_names_spec='${libname}${release}.so$versuffix $libname.so'
-    shlibpath_var=LD_LIBRARY_PATH
-    ;;
-  
-  # No shared lib support for Linux oldld, aout, or coff.
---- 1328,1345 ----
-    postinstall_cmds='chmod 555 $lib'
-    ;;
-  
-! irix5*)
-    version_type=osf
-    soname_spec='${libname}${release}.so'
-    library_names_spec='${libname}${release}.so$versuffix $libname.so'
-    shlibpath_var=LD_LIBRARY_PATH
-+   ;;
-+ 
-+ irix6*)
-+   version_type=osf
-+   soname_spec='${libname}${release}.so'
-+   library_names_spec='${libname}${release}.so$versuffix $libname.so'
-+   shlibpath_var=LD_LIBRARYN32_PATH
-    ;;
-  
-  # No shared lib support for Linux oldld, aout, or coff.
-tiemann@holodeck$ 
-
 

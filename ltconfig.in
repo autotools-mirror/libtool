@@ -1434,11 +1434,18 @@ hpux9* | hpux10* | hpux11*)
   postinstall_cmds='chmod 555 $lib'
   ;;
 
-irix5* | irix6*)
+irix5*)
   version_type=osf
   soname_spec='${libname}${release}.so'
   library_names_spec='${libname}${release}.so$versuffix $libname.so'
   shlibpath_var=LD_LIBRARY_PATH
+  ;;
+
+irix6*)
+  version_type=osf
+  soname_spec='${libname}${release}.so'
+  library_names_spec='${libname}${release}.so$versuffix $libname.so'
+  shlibpath_var=LD_LIBRARYN32_PATH
   ;;
 
 # No shared lib support for Linux oldld, aout, or coff.
