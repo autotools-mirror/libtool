@@ -3399,7 +3399,7 @@ lt_dlinsertsearchdir (before, search_dir)
     {
       LT_DLMUTEX_LOCK ();
       if ((before < user_search_path) 
-	  || (before >= LT_STRLEN (user_search_path)))
+	  || (before >= user_search_path + LT_STRLEN (user_search_path)))
 	{
 	  LT_DLMUTEX_UNLOCK ();
 	  LT_DLMUTEX_SETERROR (LT_DLSTRERROR (INVALID_POSITION));
