@@ -35,7 +35,7 @@ helldl: libhello.la
 
 # Unfortunately, in order to test libtool thoroughly, we need access
 # to its private directory.
-objdir = `sed -n -e 's/^objdir=\"\(.*\)\"$$/\1/p' ./libtool`
+objdir = `sed -n -e 's/^objdir=\(.*\)$$/\1/p' ./libtool`
 
 TESTS = run.test
 
