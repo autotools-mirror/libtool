@@ -1,3 +1,7 @@
+2004-10-22  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* Makefile.maint: Fix typo.
+
 2004-10-22  Gary V. Vaughan  <gary@gnu.org>
 
 	* clcommit.m4sh, config/mailnotify.m4sh: Updated again, but
