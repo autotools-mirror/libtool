@@ -1,4 +1,21 @@
+Thu Dec  5 14:19:21 1996  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltconfig.in, ltmain.sh.in (link): Add support for creating
+ 	reloadable objects.
+
+Wed Dec  4 00:42:53 1996  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltmain.sh.in (install): Fix passing -n flag to `libtool
+ 	--finish'.
+	(compile): Compile `.lo' and `.o' objects at the same time so that
+ 	non-PIC objects (if they are available) can be used for linking
+ 	into programs and creating static archives.  Suggested by Ulrich
+	Drepper.
+
 Tue Dec  3 10:43:22 1996  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltmain.sh.in (link): Give the full path to the libtool library
+	when sourcing it.
 
 	* ltconfig.in (old_striplib): Do a configuration test to determine
 	if old-style libraries actually can be stripped or not.

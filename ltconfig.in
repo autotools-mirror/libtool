@@ -33,6 +33,7 @@ progname=`echo "$0" | sed 's%^.*/%%'`
 PROGRAM=ltconfig
 PACKAGE=@PACKAGE@
 VERSION=@VERSION@
+ac_compile='${CC-cc} -c $CFLAGS $CPPFLAGS conftest.c 1>&5'
 rm="rm -f"
 
 help="Try \`$progname --help' for more information."
@@ -53,6 +54,7 @@ with_gcc=no
 
 old_CC="$CC"
 old_CFLAGS="$CFLAGS"
+old_CPPFLAGS="$CPPFLAGS"
 old_LD="$LD"
 old_RANLIB="$RANLIB"
 
@@ -274,7 +276,7 @@ fi
 
 if test -n "$RANLIB"; then
   old_archive_cmds="$old_archive_cmds;\$RANLIB \$oldlib"
-  old_postinstall_cmds='$RANLIB $oldlib'
+  old_postinstall_cmds="$old_postinstall_cmds;\$RANLIB \$oldlib"
 fi
 
 # FIXME: this is simplistic, and doesn't allow for cross-compiling.
@@ -290,6 +292,55 @@ if test -n "$striplib"; then
 else
   echo $ac_t none 1>&6
 fi
+
+
+# Check if old-style libraries may be stripped.
+old_striplib=
+if test -n "$striplib"; then
+  echo $ac_n "checking if $striplib works for static archives... $ac_c" 1>&6
+  old_striplib="$striplib"
+  trap 'rm -rf conftest*; exit 1' 1 2 15
+  cat > conftest.c <<EOF
+#line 305 "$progname"
+int external_func() { return 1; }
+static int hidden_func() { return 2; }
+EOF
+  if { (eval echo $progname:308: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>&5; }; then
+    oldlib=conftest.a
+    oldobjs=' conftest.o'
+
+    # Do each of the archive commands.
+    cmds=`eval echo \"$old_archive_cmds\"`
+    IFS="${IFS= 	}"; save_ifs="$IFS"; IFS=';'
+    for cmd in $cmds; do
+      IFS="$save_ifs"
+      if { (echo $progname:317: \"$cmd\") 1>&5; ($cmd) 2>&5; }; then :
+      else
+	old_striplib=
+	break
+      fi
+    done
+    IFS="$save_ifs"
+
+    if test -n "$old_striplib"; then
+      if { (echo $progname:326: \"$old_striplib conftest.a\") 1>&5; ($old_striplib conftest.a) 2>&5; }; then :
+      else
+	old_striplib=
+      fi
+    fi
+  else
+    old_striplib=
+  fi
+  rm -rf conftest*
+  trap '' 1 2 15
+
+  if test -n "$old_striplib"; then
+    echo "$ac_t""yes" 1>&6
+  else
+    echo "$ac_t""no" 1>&6
+  fi
+fi
+
 
 # Check to see if we are using GCC.
 if test "$with_gcc" = no; then
@@ -678,14 +729,13 @@ echo "$ac_t""$enable_shared" 1>&6
 
 
 ofile=libtool
-trap "rm -fr $ofile; exit 1" 1 2 15
+trap "$rm $ofile; exit 1" 1 2 15
 echo creating $ofile
 rm -fr $ofile
 cat <<EOF > $ofile
 #! /bin/sh
 
 # libtool - Provide generalized library-building support services.
-#           See ABOUT-LIBS for more information.
 #
 # Generated automatically by $PROGRAM - GNU $PACKAGE $VERSION
 # This program was configured as follows,
@@ -751,6 +801,7 @@ link_rpath_flag='$link_rpath_flag'
 
 # How to strip a library file.
 striplib='$striplib'
+old_striplib='$old_striplib'
 
 # This is the shared library path variable.
 shlibpath_var=$shlibpath_var

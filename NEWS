@@ -1,4 +1,4 @@
-New in 0.6b:
+New in 0.6c:
 * Total rewrite of libtool, along with a new model for library building.
 * Completely rewritten documentation for the new paradigm.
 * Sane handling of broken system linkers, such as the ones on AIX
@@ -8,6 +8,8 @@ New in 0.6b:
   libtool program.
 * Automatic mode guessing, based on the command line.
 * Support for new `-static' linking flag.
+* Library version information is now passed on the command line, not
+  through a version file.
 * Quote metacharacters in arguments to compile mode.
 
 Version 0.6 was never released.

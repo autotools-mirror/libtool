@@ -1081,9 +1081,9 @@ EOF
 
       # Support stripping libraries.
       if test -n "$stripme"; then
-	if test -n "$striplib"; then
-	  $show "$striplib $oldlib"
-	  $run $striplib $oldlib || exit $?
+	if test -n "$old_striplib"; then
+	  $show "$old_striplib $oldlib"
+	  $run $old_striplib $oldlib || exit $?
 	else
 	  echo "$progname: warning: no library stripping program" 1>&2
 	fi
