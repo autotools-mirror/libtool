@@ -1,3 +1,7 @@
+2000-09-02  Tom Kacvinsky  <tjk@ams.org>, Tim Mooney <mooney@dogbert.cc.ndsu.NoDak.edu>
+
+	* libtool.m4: Ignore Tru64's nm's complaint.
+
 2000-09-02  Pavel Roskin <proski@gnu.org>
 
 	* ltconfig.in: only load $cache_file if it's a regular file
