@@ -1,3 +1,8 @@
+2001-03-08  Gary V. Vaughan  <gvv@techie.com>
+
+	* ltconfig.in (library_names_spec): Undo latin-1 spaces I pasted
+	in yesterday by mistake.
+
 2001-03-07  Gary V. Vaughan  <gvv@techie.com>
 
 	From Tor Lillqvist <tml@iki.fi>
