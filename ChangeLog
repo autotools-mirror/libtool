@@ -1,3 +1,11 @@
+2001-04-11  Alexandre Oliva  <aoliva@redhat.com>
+
+	* ltcf-c.sh (no_undefined_flag) [Solaris ld]: Change to -zdefs.
+	* ltcf-cxx.sh (no_undefined_flag) [Solaris ld]: Likewise.
+	* ltcf-gcj.sh (no_undefined_flag) [Solaris ld]: Likewise.
+	(archive_cmds, archive_expsym_cmds, output_verbose_link_cmds,
+	whole_archive_flag_spec) [Solaris]: Copy from ltcf-cxx.sh.
+
 2001-04-11  Michael Matz  <matzmich@cs.tu-berlin.de>
 
 	* ltmain.in: Recognize "CC" as default --tag argument to resolve

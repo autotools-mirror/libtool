@@ -505,7 +505,7 @@ else
     ;;
 
   solaris*)
-    no_undefined_flag=' -z text'
+    no_undefined_flag=' -z defs'
     # $CC -shared without GNU ld will not create a library from C++
     # object files and a static libstdc++, better avoid it by now
     archive_cmds='$LD -G${allow_undefined_flag} -h $soname -o $lib $libobjs $deplibs $linker_flags'

@@ -540,7 +540,7 @@ case $host_os in
     case $cc_basename in
       CC)
 	# Sun C++ 4.2, 5.x and Centerline C++
-        no_undefined_flag=' -ztext'
+        no_undefined_flag=' -zdefs'
         archive_cmds='$CC -G${allow_undefined_flag} -nolib -h$soname -o $lib $predep_objects $libobjs $deplibs $postdep_objects $compiler_flags'
         archive_expsym_cmds='$echo "{ global:" > $lib.exp~cat $export_symbols | sed -e "s/\(.*\)/\1;/" >> $lib.exp~$echo "local: *; };" >> $lib.exp~
         $CC -G${allow_undefined_flag} -nolib ${wl}-M ${wl}$lib.exp -h$soname -o $lib $predep_objects $libobjs $deplibs $postdep_objects $compiler_flags~$rm $lib.exp'
@@ -585,6 +585,7 @@ case $host_os in
       *)
         # GNU C++ compiler with Solaris linker
         if test "$with_gcc" = yes && test "$with_gnu_ld" = no; then
+	  no_undefined_flag=' ${wl}-z ${wl}defs'
           if $CC --version | egrep -v '^2\.7' > /dev/null; then
             archive_cmds='$CC -shared -nostdlib $LDFLAGS $predep_objects $libobjs $deplibs $postdep_objects $linker_flags ${wl}-h $wl$soname -o $lib'
             archive_expsym_cmds='$echo "{ global:" > $lib.exp~cat $export_symbols | sed -e "s/\(.*\)/\1;/" >> $lib.exp~$echo "local: *; };" >> $lib.exp~

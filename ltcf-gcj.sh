@@ -485,18 +485,22 @@ else
     ;;
 
   solaris*)
-    no_undefined_flag=' -z text'
-    # $CC -shared without GNU ld will not create a library from C++
-    # object files and a static libstdc++, better avoid it by now
-    archive_cmds='$LD -G${allow_undefined_flag} -h $soname -o $lib $libobjs $deplibs $linker_flags'
+    no_undefined_flag=' ${wl}-z ${wl}defs'
+    archive_cmds='$CC -shared -nostdlib $LDFLAGS $predep_objects $libobjs $deplibs $postdep_objects $linker_flags ${wl}-h $wl$soname -o $lib'
     archive_expsym_cmds='$echo "{ global:" > $lib.exp~cat $export_symbols | sed -e "s/\(.*\)/\1;/" >> $lib.exp~$echo "local: *; };" >> $lib.exp~
-		$LD -G${allow_undefined_flag} -M $lib.exp -h $soname -o $lib $libobjs $deplibs $linker_flags~$rm $lib.exp'
-    hardcode_libdir_flag_spec='-R$libdir'
+      $CC -shared -nostdlib ${wl}-M $wl$lib.exp -o $lib $predep_objects $libobjs $deplibs $postdep_objects $linker_flags~$rm $lib.exp'
+
+    # Commands to make compiler produce verbose output that lists
+    # what "hidden" libraries, object files and flags are used when
+    # linking a shared library.
+    output_verbose_link_cmds="$CC -shared $CFLAGS -v conftest.$objext 2>&1 | egrep \"\-L\""
+
+    hardcode_libdir_flag_spec='${wl}-R $wl$libdir'
     hardcode_shlibpath_var=no
     case $host_os in
     solaris2.[0-5] | solaris2.[0-5].*) ;;
     *) # Supported since Solaris 2.6 (maybe 2.5.1?)
-      whole_archive_flag_spec='-z allextract$convenience -z defaultextract' ;;
+      whole_archive_flag_spec='${wl}-z ${wl}allextract$convenience ${wl}-z ${wl}defaultextract' ;;
     esac
     link_all_deplibs=yes
     ;;
