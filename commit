@@ -1,56 +1,49 @@
 #! /bin/sh
 
+# Copyright ????
+
 progname=`echo $0 | sed 's,.*/,,g'`
-log_file=${TMPDIR-/tmp}/commitlog.$$
-config_file=${TMPDIR-/tmp}/configure.in.$$
+log_file="${TMPDIR-/tmp}/commitlog.$$"
 
-echo "Checking repository is up to date..." >&2
-commit=`cvs -z3 stat 2>/dev/null | grep Status | egrep -v '(Up-to-date|Locally )'`
-test -z "$commit" || { echo "$commit"; exit 1; }
+rm -f $log_file
 
-#####
-##### Uncomment for ChangeLog based versioning
-#####
-# echo "Calculating new version number..." >&2
-# version=`egrep '^AM_INIT_AUTOMAKE' configure.in | sed 's/^.*,//;s/).*$//'`
-# major=`echo $version | sed 's,\..*,,g'`
-# minor=`echo $version | sed 's,^[^.]*\.,,;s,\([a-z]\|\.[0-9]*\)$,,'`
-# micro=`cvs -z3 stat ChangeLog | grep Working | sed 's,^.*\.,,;s,[^0-9]*$,,'`
-# micro=`expr 1 + $micro`
-# for val in X$major X$minor X$micro; do
-#   if echo $val | egrep '^X[0-9][0-9]*$' >/dev/null 2>&1; then :
-#   else
-#     echo "$progname: couldn"\'"t get ChangeLog version" >&2
-#     exit 1
-#   fi
-# done
-#    
-# echo "Substituting version $major.$minor.$micro in configure.in..." >&2
-# search='^\(AM_INIT_AUTOMAKE([^,]*\),.*)'
-# if sed "s/$search/\1,$major.$minor.$micro)/" configure.in > $config_file; then
-#   if test -s $config_file; then
-#     mv -f $config_file configure.in || \
-#       { echo "$progname: mv $config_file: failed" >&2; exit 1; }
-#   else
-#     echo "$progname: version substitution failed" >&2
-#     exit 1
-#   fi
-# else
-#   echo "$progname: couldn"\'"t set ChangeLog version" >&2
-#   exit 1
-# fi
+trap "rm -f \"$log_file\"; exit 1" 1 2 15
+
+if test x"$1" = x"-l"; then
+  cvsopt=-l
+  shift
+else
+  cvsopt=
+fi
+
+if test $# -gt 1 && test x"$1" = x"-m"; then
+  echo "$2" > "$log_file"
+  shift; shift
+fi
+
+echo "Checking whether repository is up to date..." >&2
+commit=`cvs $cvsopt stat ${1+"$@"} 2>/dev/null | grep Status \
+        | egrep -v '(Up-to-date|Cvsoptly )'`
+
+if test -n "$commit"; then
+  echo "$commit"
+  exit 1
+fi
 
 echo "Checking commit message..." >&2
-if test $# -gt 1 && test $1 = -m; then
-  echo "$2" > $log_file
-  shift; shift
-else
-  cvs -z3 diff -u ChangeLog | grep '+	' | sed 's,\+	,,' > $log_file
+if test ! -f "$log_file"; then
+  cvs diff -u ChangeLog | grep '+	' | sed 's,\+	,,' > $log_file
 fi
-test -s $log_file || { echo "$progname: no ChangeLog entry!" >&2; exit 1; }
 
-cvs -z3 commit -F $log_file ${1+"$@"}
+if test ! -s "$log_file"; then
+  echo "$progname: no ChangeLog entry!" >&2
+  exit 1
+fi
 
-rm -f $log_file $config_file
+${PAGER-more} "$log_file" || exit 1
+
+cvs $cvsopt commit -F $log_file ${1+"$@"} || exit 1
+
+rm -f $log_file
 
 exit 0
