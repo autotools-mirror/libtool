@@ -1,3 +1,12 @@
+1999-06-29  Thomas Tanner  <tanner@ffii.org>
+
+	* NEWS: rename dummy to force
+	* doc/libtool.texi: better documentation of uninstall mode,
+	  rename dummy to force, AC_LIBLTDL_* must be called before
+	  AC_PROG_LIBTOOL
+	* ltmain.in: dlname is always soname or in library_names so
+	  we don't need to handle different file names
+
 1999-06-29  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* ltconfig.in (freebsd*, shlibpath_overrides_runpath): Set to yes

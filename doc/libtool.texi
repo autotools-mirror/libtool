@@ -1204,7 +1204,7 @@ Link @var{file} into the output program, and add its symbols to
 @var{lt_preloaded_symbols} (@pxref{Dlpreopening}).  If @var{file} is
 @code{self}, the symbols of the program itself will be added to
 @var{lt_preloaded_symbols}.
-If @var{file} is @code{dummy} libtool will make sure that
+If @var{file} is @code{force} libtool will make sure that
 @var{lt_preloaded_symbols} is always @emph{defined}, regardless of whether
 it's empty or not.
 
@@ -1351,7 +1351,7 @@ Running this command may require superuser privileges, so the
 @cindex uninstall mode
 @cindex mode, uninstall
 
-@dfn{Uninstall} mode deletes installed libraries (and other files).
+@dfn{Uninstall} mode deletes installed libraries, executables and objects.
 
 The first @var{mode-arg} is the name of the program to use to delete
 files (typically @file{/bin/rm}).
@@ -3028,11 +3028,11 @@ symbols. In general you can safely use the convenience library in programs
 which don't depend on other libraries that might use libltdl too.
 In order to enable this flavor of libltdl, you should add the
 line @samp{AC_LIBLTDL_CONVENIENCE} to your @file{configure.in},
-@emph{after} @samp{AM_PROG_LIBTOOL}.
+@emph{before} @samp{AM_PROG_LIBTOOL}.
 
 In order to select the installable version of libltdl, you should add a
 call of the macro @samp{AC_LIBLTDL_INSTALLABLE} to your
-@file{configure.in} @emph{after} @samp{AM_PROG_LIBTOOL}.  This macro
+@file{configure.in} @emph{before} @samp{AM_PROG_LIBTOOL}.  This macro
 will check whether libltdl is already installed and, if not, request the
 libltdl embedded in your package to be built and installed.  Note,
 however, that no version checking is performed.  The user may override
@@ -3060,7 +3060,7 @@ with programs that include @file{ltdl.h}.  It is up to you to use
 default, such as @var{LIBS} and @var{CPPFLAGS}.
 
 If you're using the convenience libltdl, @var{LIBLTDL} will be the
-pathname for the convenience version of libltdland @var{INCLTDL} will be
+pathname for the convenience version of libltdl and @var{INCLTDL} will be
 @samp{-I} followed by the directory that contains libltdl, both starting
 with @samp{$@{top_builddir@}/}.
 
@@ -3097,17 +3097,16 @@ assume that libltdl was embedded using @samp{libtoolize --ltdl}.
 configure.in:
 @example
 ...
+dnl Enable building of the convenience library
+dnl and set LIBLTDL accordingly
+AC_LIBLTDL_CONVENIENCE
+dnl Substitute INCLTDL and LIBLTDL in the Makefiles
+AC_SUBST(INCLTDL)
+AC_SUBST(LIBLTDL)
 dnl Check for dlopen support
 AC_LIBTOOL_DLOPEN
 dnl Configure libtool
 AM_PROG_LIBTOOL
-dnl Enable building of the convenience library
-dnl and set LIBLTDL accordingly
-AC_LIBLTDL_CONVENIENCE
-dnl Substitute LIBLTDL in the Makefiles
-AC_SUBST(LIBLTDL)
-dnl Add INCLTDL to the include path
-CPPFLAGS="$CPPFLAGS $INCLTDL"
 dnl Configure libltdl
 AC_CONFIG_SUBDIRS(libltdl)
 ...
@@ -3117,6 +3116,8 @@ Makefile.am:
 @example
 ...
 SUBDIRS = libltdl
+
+INCLUDES = $(INCLTDL)
 
 myprog_LDFLAGS = -export-dynamic
 # The quotes around -dlopen below fool automake into accepting it

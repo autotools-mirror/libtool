@@ -1,7 +1,7 @@
 NEWS - list of user-visible changes between releases of GNU Libtool
 
 New in 1.3.3: 1999-06-2?, CVS version 1.3.2a, Libtool team:
-* New `-dlpreopen dummy' flag to ensure that
+* New `-dlpreopen force' flag to ensure that
   lt_preloaded_symbols is always defined.
 * Work around self-dlclose bug in FreeBSD 3.1.
 * Expand convenience libraries when creating reloadable objects.

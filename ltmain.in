@@ -901,7 +901,7 @@ compiler."
 	  fi
 	  case "$arg" in
 	  *.la | *.lo) ;;  # We handle these cases below.
-	  dummy)
+	  force)
 	    if test "$dlself" = no; then
 	      dlself=needless
 	      export_dynamic=yes
@@ -3290,24 +3290,16 @@ libdir='$install_libdir'\
 	  # Install the shared library and build the symlinks.
 	  $show "$install_prog $dir/$realname $destdir/$realname"
 	  $run eval "$install_prog $dir/$realname $destdir/$realname" || exit $?
-	  test "X$dlname" = "X$realname" && dlname=
 
 	  if test $# -gt 0; then
 	    # Delete the old symlinks, and create new ones.
 	    for linkname
 	    do
-	      test "X$dlname" = "X$linkname" && dlname=
 	      if test "$linkname" != "$realname"; then
 		$show "(cd $destdir && $rm $linkname && $LN_S $realname $linkname)"
 		$run eval "(cd $destdir && $rm $linkname && $LN_S $realname $linkname)"
 	      fi
 	    done
-	  fi
-
-	  if test -n "$dlname"; then
-	    # Install the dynamically-loadable library.
-	    $show "$install_prog $dir/$dlname $destdir/$dlname"
-	    $run eval "$install_prog $dir/$dlname $destdir/$dlname" || exit $?
 	  fi
 
 	  # Do each command in the postinstall commands.
@@ -3741,9 +3733,7 @@ libdir='$install_libdir'\
 	  # Delete the libtool libraries and symlinks.
 	  for n in $library_names; do
 	    rmfiles="$rmfiles $dir/$n"
-	    test "X$n" = "X$dlname" && dlname=
 	  done
-	  test -n "$dlname" && rmfiles="$rmfiles $dir/$dlname"
 	  test -n "$old_library" && rmfiles="$rmfiles $dir/$old_library"
 
 	  $show "$rm $rmfiles"
