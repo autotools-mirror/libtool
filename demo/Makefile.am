@@ -83,8 +83,8 @@ hc-direct: $(hell_OBJECTS) $(hell_DEPENDENCIES) $(libdir)/libhello.la
 	  eval `egrep -e '^(hardcode_.*|wl)=' libtool`; \
 	  libdir=$(libdir); \
 	  flag=`eval echo \"$$hardcode_libdir_flag_spec\"`; \
-	  echo "$(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) $$shlib $(LIBS) $(LIBM) $$flag || echo unsupported > $@"; \
-	  eval "$(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) $$shlib $(LIBS) $(LIBM) $$flag || echo unsupported > $@"
+	  echo "$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $(hell_OBJECTS) $$shlib $(LIBS) $(LIBM) $$flag || echo unsupported > $@"; \
+	  eval "$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $(hell_OBJECTS) $$shlib $(LIBS) $(LIBM) $$flag || echo unsupported > $@"
 
 hc-libflag: $(hell_OBJECTS) $(hell_DEPENDENCIES) $(libdir)/libhello.la
 	@eval `egrep -e '^(hardcode_.*|wl)=' libtool`; \
@@ -94,8 +94,8 @@ hc-libflag: $(hell_OBJECTS) $(hell_DEPENDENCIES) $(libdir)/libhello.la
 	    echo "echo unsupported > $@"; \
 	    echo unsupported > $@ || status="$$?"; \
 	  else \
-	    echo "$(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) $$flag -L$(libdir) -lhello $(LIBS) $(LIBM)"; \
-	    $(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) $$flag -L$(libdir) -lhello $(LIBS) $(LIBM) || status="$$?"; \
+	    echo "$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $(hell_OBJECTS) $$flag -L$(libdir) -lhello $(LIBS) $(LIBM)"; \
+	    $(CC) $(CFLAGS) $(LDFLAGS) -o $@ $(hell_OBJECTS) $$flag -L$(libdir) -lhello $(LIBS) $(LIBM) || status="$$?"; \
 	  fi; \
 	  exit $$status
 
@@ -105,16 +105,16 @@ hc-libpath: $(hell_OBJECTS) $(hell_DEPENDENCIES) $(libdir)/libhello.la
 	@eval `egrep -e '^(shlibpath_var|hardcode_.*|wl)=' libtool`; \
 	  libdir=$(libdir); \
 	  flag=`eval echo \"$$hardcode_libdir_flag_spec\"`; \
-	  echo "$$shlibpath_var=./$(objdir) $(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) -lhello $(LIBS) $(LIBM) $$flag || echo unsupported > $@"; \
-	  eval "$$shlibpath_var=./$(objdir) $(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) -lhello $(LIBS) $(LIBM) $$flag || echo unsupported > $@"
+	  echo "$$shlibpath_var=./$(objdir) $(CC) $(CFLAGS) $(LDFLAGS) -o $@ $(hell_OBJECTS) -lhello $(LIBS) $(LIBM) $$flag || echo unsupported > $@"; \
+	  eval "$$shlibpath_var=./$(objdir) $(CC) $(CFLAGS) $(LDFLAGS) -o $@ $(hell_OBJECTS) -lhello $(LIBS) $(LIBM) $$flag || echo unsupported > $@"
 
 hc-minusL: $(hell_OBJECTS) $(hell_DEPENDENCIES)
 	@rm -f hc-minusL
 	@eval `egrep -e '^(hardcode_.*|wl)=' libtool`; \
 	  libdir=$(libdir); \
 	  flag=`eval echo \"$$hardcode_libdir_flag_spec\"`; \
-	  echo "$(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) -L./$(objdir) -lhello $(LIBS) $(LIBM) $$flag || echo unsupported > $@"; \
-	  eval "$(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) -L./$(objdir) -lhello $(LIBS) $(LIBM) $$flag || echo unsupported > $@"
+	  echo "$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $(hell_OBJECTS) -L./$(objdir) -lhello $(LIBS) $(LIBM) $$flag || echo unsupported > $@"; \
+	  eval "$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $(hell_OBJECTS) -L./$(objdir) -lhello $(LIBS) $(LIBM) $$flag || echo unsupported > $@"
 
 # This is one of the essential tests for deplibs_check_method=pass_all.
 # If this one passes with pass_all, it is likely that pass_all works
