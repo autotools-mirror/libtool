@@ -1942,7 +1942,7 @@ fi
 
 # AC_PROG_LD
 # ----------
-# find the path to the GNU or non-GNU linker
+# find the pathname to the GNU or non-GNU linker
 AC_DEFUN([AC_PROG_LD],
 [AC_ARG_WITH([gnu-ld],
     [AC_HELP_STRING([--with-gnu-ld],
@@ -1968,7 +1968,7 @@ if test "$GCC" = yes; then
     # Accept absolute paths.
     [[\\/]]* | ?:[[\\/]]*)
       re_direlt='/[[^/]][[^/]]*/\.\./'
-      # Canonicalize the path of ld
+      # Canonicalize the pathname of ld
       ac_prog=`echo $ac_prog| $SED 's%\\\\%/%g'`
       while echo $ac_prog | grep "$re_direlt" > /dev/null 2>&1; do
 	ac_prog=`echo $ac_prog| $SED "s%$re_direlt%/%"`
@@ -2031,7 +2031,7 @@ AC_DEFUN([AC_PROG_LD_GNU],
 [AC_REQUIRE([AC_PROG_EGREP])dnl
 AC_CACHE_CHECK([if the linker ($LD) is GNU ld], lt_cv_prog_gnu_ld,
 [# I'd rather use --version here, but apparently some GNU ld's only accept -v.
-case `"$LD" -v 2>&1 </dev/null` in
+case `$LD -v 2>&1 </dev/null` in
 *GNU* | *'with BFD'*)
   lt_cv_prog_gnu_ld=yes
   ;;
@@ -2269,7 +2269,7 @@ test -z "$deplibs_check_method" && deplibs_check_method=unknown
 
 # AC_PROG_NM
 # ----------
-# find the path to a BSD-compatible name lister
+# find the pathname to a BSD-compatible name lister
 AC_DEFUN([AC_PROG_NM],
 [AC_CACHE_CHECK([for BSD-compatible nm], lt_cv_path_NM,
 [if test -n "$NM"; then
@@ -2710,7 +2710,7 @@ if test "$GXX" = yes; then
     # linker, instead of GNU ld.  If possible, this setting should
     # overridden to take advantage of the native linker features on
     # the platform it is being used on.
-    _LT_AC_TAGVAR(archive_cmds, $1)='$CC -shared $predep_objects $libobjs $deplibs $postdep_objects $compiler_flags -o $lib'
+    _LT_AC_TAGVAR(archive_cmds, $1)='$CC -shared -nostdlib $predep_objects $libobjs $deplibs $postdep_objects $compiler_flags -o $lib'
   fi
 
   # Commands to make compiler produce verbose output that lists
