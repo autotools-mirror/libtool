@@ -1,3 +1,8 @@
+1999-11-16  Thomas Tanner  <tanner@ffii.org>
+
+	* configure.in: generate ltconfig and ltmain.sh before configuring
+	  libltdl
+
 1999-11-04  Alexandre Oliva  <oliva@lsd.ic.unicamp.br>
 
 	* tests/sh.test: New test to detect uses of quotes within
