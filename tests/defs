@@ -12,6 +12,7 @@ progname=`echo "$0" | sed 's%^.*/%%'`
 
 libtool="../libtool"
 make="${MAKE-make}"
+SHELL="${CONFIG_SHELL-/bin/sh}"
 
 prefix="./_inst"
 if test "$need_prefix" = yes; then
