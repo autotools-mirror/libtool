@@ -31,7 +31,7 @@ F77_TESTS = \
 	f77demo-shared.test f77demo-make.test f77demo-exec.test
 
 COMMON_TESTS = \
-	link.test link-2.test nomode.test \
+	link.test link-2.test nomode.test objectlist.test \
 	quote.test sh.test suffix.test tagtrace.test \
 	cdemo-static.test cdemo-make.test cdemo-exec.test \
 	demo-static.test demo-make.test demo-exec.test \

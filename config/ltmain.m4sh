@@ -2391,7 +2391,7 @@ func_mode_link ()
 	      fi
 	    done
 	  else
-	    func_fatal_error "link input file \`$save_arg' does not exist"
+	    func_fatal_error "link input file \`$arg' does not exist"
 	  fi
 	  arg=$save_arg
 	  prev=
