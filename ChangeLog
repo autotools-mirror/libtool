@@ -1,5 +1,10 @@
 1999-04-09 Thomas Tanner  <tanner@gmx.de>
 
+	* NEWS, README: Motorola System V 4 support
+	* doc/PLATFORMS: added mk88-motorola-sysv4
+	* ltconfig.in: installed patch from Brian Ford <ford@vss.fsi.com>
+	  to support mk88-motorola-sysv4
+
 	* doc/libtool.texi: some cleanups in the libltdl documentation
 
 1999-04-07  Alexandre Oliva  <oliva@dcc.unicamp.br>
