@@ -84,7 +84,7 @@ fi
 # Check for using shift after set dummy (same or following line).
 for s in $scripts
 do
-  if $SED -n '/set[ 	][ 	]*dummy/{/set.*dummy.*;.*shift/d;N;/set.*dummy.*\n.*shift/D;p;}' "$s" |
+  if $SED -n '/set[ 	][ 	]*dummy/{/set.*dummy.*;.*shift/d;N;/\n.*shift/D;p;}' "$s" |
      $EGREP .; then
     echo "use \`shift' after \`set dummy' in $s"
     status=$EXIT_FAILURE
