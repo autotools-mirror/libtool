@@ -9,8 +9,8 @@ CFLAGS = -force-static
 
 EXTRA_DIST = acinclude.m4
 
-lib_LTLIBRARIES = libltdl.la
+noinst_LTLIBRARIES = libltdl.la
 libltdl_la_SOURCES = ltdl.c
 libltdl_la_LDFLAGS = $(LIBADD_DL) 
 
-include_HEADERS = ltdl.h
+noinst_HEADERS = ltdl.h

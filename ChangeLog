@@ -1,3 +1,9 @@
+1998-12-09  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* ltmain.in (convenience, deplibs): propagate dependencies
+	* libltdl/Makefile.am (noinst_HEADERS): don't install ltdl.h yet
+	(noinst_LTLIBRARIES): ditto for libltdl.la
+
 1998-12-08  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
 
 	* README-alpha: adapted the release procedure from

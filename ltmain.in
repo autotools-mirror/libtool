@@ -859,10 +859,11 @@ compiler."
 
         if test -z "$libdir"; then
 	  # It is a libtool convenience library, so add in its objects.
-	  convenience="$convenience $dir/$old_library"l
+	  convenience="$convenience $dir/$old_library"
 	  old_convenience="$old_convenience $dir/$old_library"
-	  compile_command="$compile_command $dir/$old_library"
-	  finalize_command="$finalize_command $dir/$old_library"
+	  deplibs="$deplibs$dependency_libs"
+	  compile_command="$compile_command $dir/$old_library$dependency_libs"
+	  finalize_command="$finalize_command $dir/$old_library$dependency_libs"
 	  continue
 	fi
 
@@ -1160,8 +1161,10 @@ compiler."
       oldlibs=
       if test -z "$rpath"; then
 	# Building a libtool convenience library.
-	oldlibs="$output_objdir/$libname.al $oldlibs"
+        libext=al
+	oldlibs="$output_objdir/$libname.$libext $oldlibs"
 	build_libtool_libs=convenience
+	dependency_libs="$deplibs"
 
 	if test -n "$vinfo"; then
 	  $echo "$modename: warning: \`-version-info' is ignored for convenience libraries" 1>&2
