@@ -3,7 +3,7 @@
 	* ltconfig.in (hpux*, hardcode_minus_L): should be no, we have +b
 	(hpux*, hardcode_libdir_separator): set to colon
 
-	* doc/PLATFORMS: egcs is gcc; updates from Erez Zadoc
+	* doc/PLATFORMS: egcs is gcc; updates from Erez Zadok
 
 1999-03-16  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
