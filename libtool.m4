@@ -185,7 +185,8 @@ if test -n "$RANLIB"; then
   old_archive_cmds="$old_archive_cmds~\$RANLIB \$oldlib"
 fi
 
-cc_basename=`$echo X"$compiler" | $Xsed -e 's%^.*/%%'`
+cc_basename=`$echo "X$compiler" \
+     | $Xsed -e 's%.*/%%;s%^[ 	]*\([^ 	]*\).*$%\1%'`
 
 # Only perform the check for file, if the check method requires it
 case $deplibs_check_method in
@@ -2668,7 +2669,8 @@ test -z "${LDCXX+set}" || LD=$LDCXX
 CC=${CXX-"c++"}
 compiler=$CC
 _LT_AC_TAGVAR(compiler, $1)=$CC
-cc_basename=`$echo X"$compiler" | $Xsed -e 's%^.*/%%'`
+cc_basename=`$echo "X$compiler" \
+     | $Xsed -e 's%.*/%%;s%^[ 	]*\([^ 	]*\).*$%\1%'`
 
 # We don't want -fno-exception wen compiling C++ code, so set the
 # no_builtin_flag separately
@@ -3733,7 +3735,8 @@ lt_save_CC="$CC"
 CC=${F77-"f77"}
 compiler=$CC
 _LT_AC_TAGVAR(compiler, $1)=$CC
-cc_basename=`$echo X"$compiler" | $Xsed -e 's%^.*/%%'`
+cc_basename=`$echo "X$compiler" \
+     | $Xsed -e 's%.*/%%;s%^[ 	]*\([^ 	]*\).*$%\1%'`
 
 AC_MSG_CHECKING([if libtool supports shared libraries])
 AC_MSG_RESULT([$can_build_shared])
@@ -5143,7 +5146,8 @@ ifelse([$1],[CXX],[
   # preloaded symbol tables.
   extract_expsyms_cmds=
   # Just being paranoid about ensuring that cc_basename is set.
-  cc_basename=`$echo X"$compiler" | $Xsed -e 's%^.*/%%'`
+  cc_basename=`$echo "X$compiler" \
+      | $Xsed -e 's%.*/%%;s%^[ 	]*\([^ 	]*\).*$%\1%'`
   case $host_os in
   cygwin* | mingw* | pw32*)
     # FIXME: the MSVC++ port hasn't been tested in a loooong time

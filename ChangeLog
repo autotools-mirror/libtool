@@ -1,3 +1,12 @@
+2005-05-21  Gary V. Vaughan  <gary@gnu.org>,
+	    Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* libtool.m4 (AC_LIBTOOL_SETUP, AC_LIBTOOL_LANG_CXX_CONFIG,
+	AC_LIBTOOL_LANG_F77_CONFIG, AC_LIBTOOL_PROG_LD_SHLIBS):
+	For matching compiler names: Pick only first word, allow leading white
+	space..
+	* tests/sh.test: ..and test for missing `*' at end of patterns.
+
 2005-03-19  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* tests/demo-nopic.test: Enhance status output
