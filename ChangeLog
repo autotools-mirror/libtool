@@ -1,4 +1,8 @@
-2005-05-22  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+2005-03-22  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>  (tiny change)
+
+	* m4/libtool.m4, m4/ltdl.m4: Indentation and quoting cleanup.
+
+2005-03-22  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* m4/libtool.m4 (_LT_LINKER_SHLIBS) [solaris]: Use ${wlarc}
 	and set to empty when using $LD for linking.  Fixes regression
@@ -6,7 +10,7 @@
 	Reported by Ralf Menzel <menzel@ls6.cs.uni-dortmund.de> and
 	Пухальский Юрий Андреевич <pooh@cryptopro.ru>.
 
-2005-05-21  Gary V. Vaughan  <gary@gnu.org>,
+2005-03-21  Gary V. Vaughan  <gary@gnu.org>,
 	    Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* m4/libtool.m4 (_LT_SETUP, _LT_LANG_CXX_CONFIG, * _LT_LANG_F77_CONFIG):
