@@ -23,6 +23,9 @@
 ## the same distribution terms that you use for the rest of that program.
 
 # serial 46 AC_PROG_LIBTOOL
+
+builtin([undefine],[symbols])
+
 AC_DEFUN([AC_PROG_LIBTOOL],
 [AC_REQUIRE([AC_LIBTOOL_SETUP])dnl
 
