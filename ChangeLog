@@ -1,6 +1,10 @@
 2004-12-18  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
-	* libltdl/ltdl.c [cygwin, mingw] (opendir): Fix write of constant
+	* libtool.m4 [linux] (AC_LIBTOOL_PROG_COMPILER_PIC): match
+	$cc_basename, not $CC against icc.  Also, for symmetry match
+	icpc* and ecpc* (ia64 version of icpc).
+
+	* libltdl/ltdl.c [mingw] (opendir): Fix write of constant
 	strings past end of buffer.
 	(opendir, readdir): Fix read past end of buffer.
 
