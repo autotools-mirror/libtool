@@ -1,3 +1,7 @@
+2004-09-06  Gary V. Vaughan  <gary@gnu.org>
+
+	* libltdl/loaders/shl_load.c (get_vtable): Typo.
+
 2004-09-06  Albert Chin-A-Young  <china@thewrittenword.com>
 
 	Hopefully, passing unrecognised compiler arguments through

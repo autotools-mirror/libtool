@@ -59,7 +59,7 @@ get_vtable (lt_user_data loader_data)
       vtable = lt__zalloc (sizeof *vtable);
     }
 
-  if (table && !vtable->name)
+  if (vtable && !vtable->name)
     {
       vtable->name		= "lt_shl_load";
       vtable->module_open	= vm_open;
