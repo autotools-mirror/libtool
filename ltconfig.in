@@ -1389,7 +1389,7 @@ EOF
   
     archive_expsym_cmds='echo EXPORTS > $objdir/$soname-def~
       _lt_hint=1;
-      for symbol in `cat $export_symbols`; do
+      cat $export_symbols | while read symbol; do
 	echo "	\$symbol @ \$_lt_hint ; " >> $objdir/$soname-def;
 	_lt_hint=`expr 1 + \$_lt_hint`;
       done~

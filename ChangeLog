@@ -1,3 +1,8 @@
+1999-07-30  Mumit Khan  <khan@xraylith.wisc.edu>
+
+	* ltconfig.in:  Read line at a time to avoid tokenisation by
+	shell.
+
 1999-07-29  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* ltmain.in: Fix creation of relative links to object files in
