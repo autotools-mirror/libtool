@@ -71,7 +71,7 @@
 	* doc/libtool.texi: Removes references to ltconfig, and a small
 	amount of tidying up to compensate.
 
-2000-09-15  Nick Hudson  <nick@nthcliff.demon.co.uk>
+2000-09-15  Nick Hudson  <skrll@netbsd.org>
 
 	* libtool.m4 (netbsd): Improved support.
 
