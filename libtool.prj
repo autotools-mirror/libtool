@@ -1,12 +1,12 @@
 ;; -*- Lisp -*-
 (Created-By-Prcs-Version 1 2 1)
 (Project-Description "GNU libtool library support script")
-(Project-Version libtool 0.9h 3)
-(Parent-Version libtool 0.9h 2)
+(Project-Version libtool 0.9h 4)
+(Parent-Version libtool 0.9h 3)
 
-(Version-Log "Use AM_PATH_PROG_LD to find the linker.")
+(Version-Log "Cut the 0.9h release.")
 (New-Version-Log "")
-(Checkin-Time "Sat, 14 Jun 1997 21:00:00 -0600")
+(Checkin-Time "Wed, 18 Jun 1997 22:30:26 -0600")
 (Checkin-Login gord)
 (Populate-Ignore ("~$" "Makefile$" "Makefile\\.in$" "aclocal\\.m4$"
 		  "configure$" "config\\.status$" "config\\.cache$"
@@ -20,8 +20,8 @@
 (Files
 ;; Administrivia.
   (AUTHORS (libtool/21_AUTHORS 1.1 664))
-  (ChangeLog (libtool/20_ChangeLog 1.4.1.24 664))
-  (NEWS (libtool/19_NEWS 1.4.1.18 664))
+  (ChangeLog (libtool/20_ChangeLog 1.4.1.25 664))
+  (NEWS (libtool/19_NEWS 1.4.1.19 664))
   (PACKAGES (libtool/42_PACKAGES 1.3 664))
   (README (libtool/17_README 1.12 664))
   (README-alpha (libtool/16_README-alp 1.5 664))
@@ -32,7 +32,7 @@
 ;; Top directory.
   (Makefile.am (libtool/18_Makefile.a 1.19 664))
   (configure.in (libtool/13_configure. 1.4.1.13 664))
-  (ltmain.sh.in (libtool/2_ltmain.sh. 1.4.1.17 664))
+  (ltmain.sh.in (libtool/2_ltmain.sh. 1.4.1.18 664))
   (ltconfig.in (libtool/3_ltconfig.i 1.4.1.20 775))
   (libtoolize.in (libtool/4_libtoolize 1.6 664))
 
