@@ -1,3 +1,8 @@
+2002-10-25  Howard Chu  <hyc@highlandsun.com>
+
+	* ltmain.in [aix]: Be sure to deal with xlc_r, cc_r and other
+	compiler variants.
+
 2002-10-25  Gary V. Vaughan  <gary@gnu.org>
 
 	* libtool.m4 (_LT_AC_FILE_IMPGEN_C): Removed.  No longer used.
