@@ -1,3 +1,7 @@
+2001-04-16  Alan Curry <pacman@world.std.com>
+
+	* libltdl/ltdl.c (lt_dlopen): Fixed a memory leak.
+
 2001-03-06  Alexandre Oliva  <aoliva@redhat.com>
 
 	* ltconfig.in (can_build_shared) [AIX 4.[01], GCC]: GCC up to

@@ -1365,6 +1365,7 @@ lt_dlopen (filename)
 			free_vars(name, dir, dlname, old_name, libdir, deplibs);
 			return 0;
 		}
+		free_vars(NULL, NULL, dlname, old_name, libdir, deplibs);
 		if (handle != newhandle) {
 			unload_deplibs(handle);
 		}
