@@ -1,5 +1,10 @@
 2004-10-03  Gary V. Vaughan  <gary@gnu.org>
 
+	GNU libtool 1.9d was released.
+
+	* configure.ac: Bumped version to 1.9d.
+	* NEWS: Updated.
+
 	* libltdl/lt__alloc.h (lt__alloc_die): Declare with LT_SCOPE as
 	per Ralf's original patch.
 	Reported by Bob Friesenhahn <bfriesen@simple.dallas.tx.us>

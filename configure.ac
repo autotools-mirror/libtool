@@ -24,7 +24,7 @@ AC_PREREQ(2.58) ## We use AS_HELP_STRING
 ## ------------------------ ##
 ## Autoconf initialisation. ##
 ## ------------------------ ##
-AC_INIT([libtool], [1.9c], [bug-libtool@gnu.org])
+AC_INIT([libtool], [1.9d], [bug-libtool@gnu.org])
 AC_CONFIG_HEADERS([config.h:config-h.in])
 AC_CONFIG_SRCDIR([libtoolize.in])
 AC_CONFIG_AUX_DIR([config])
