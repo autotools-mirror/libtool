@@ -1,4 +1,4 @@
-2003-10-29  Peter O'Gorman  <peter@pogma.com>
+2003-10-30  Peter O'Gorman  <peter@pogma.com>
 
 	* m4/libtool.m4 (Darwin): Fix stupidities for darwin tags support. 
 	Makes it work again if AC_LIBTOOL_TAGS is specified in configure.ac.
