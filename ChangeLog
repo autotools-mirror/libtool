@@ -1,5 +1,7 @@
 2003-11-26  Gary V. Vaughan  <gary@gnu.org>
 
+	* Makefile.am (vcl.tmp): Be careful of VPATH builds.
+
 	* Makefile.am (EXTRA_DIST): Add stamp-vcl, or we go back to a
 	double configure run from a distributed tarball :-?
 

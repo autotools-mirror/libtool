@@ -52,13 +52,19 @@ libtoolize: $(srcdir)/libtoolize.in $(top_builddir)/config.status
 	chmod +x $@
 
 # Make sure config.status is regenerated when the version timestamp changes
+MKSTAMP = $(SHELL) $(top_srcdir)/config/mkstamp
 $(config_status): stamp-vcl
 stamp-vcl: vcl.tmp $(top_srcdir)/ChangeLog
 vcl.tmp:
-	@set `$(SHELL) config/mkstamp < $(top_srcdir)/ChangeLog`; \
-	echo "$$1" > vcl.tmp
-	@cmp -s vcl.tmp stamp-vcl \
-	  || (echo "Updating stamp-vcl"; cp vcl.tmp stamp-vcl)
+	@dir=.; test -f $$dir/stamp-vcl || dir=$(srcdir); \
+	set `$(MKSTAMP) < $(top_srcdir)/ChangeLog`; \
+	echo "$$1" > vcl.tmp; \
+	cmp -s vcl.tmp $$dir/stamp-vcl \
+## If mkstamp does not match $(srcdir)/stamp-vcl, we still put the new one
+## in the current dir, incase $(srcdir) is not writable.  The dir selection
+## at the top of this rule takes care of prefering the right one on
+## subsequent runs.
+	  || (echo "Updating stamp-vcl"; cp vcl.tmp ./stamp-vcl)
 	-@rm -f vcl.tmp
 
 .PHONY: configure-subdirs
