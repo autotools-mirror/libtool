@@ -3984,8 +3984,6 @@ ifelse([$1],[CXX],[
       if test "$host_cpu" = ia64; then
         # AIX 5 now supports IA64 processor
         _LT_AC_TAGVAR(lt_prog_compiler_static, $1)='-Bstatic'
-      else
-        _LT_AC_TAGVAR(lt_prog_compiler_static, $1)='-bnso -bI:/lib/syscalls.exp'
       fi
       ;;
   

@@ -1,3 +1,9 @@
+2001-07-30  Robert Boehne  <rboehne@ricardo-us.com>
+
+	* libtool.m4 (AC_LIBTOOL_PROG_COMPILER_PIC) [aix*]: Fixed an
+	incorrect resetting of lt_prog_compiler_static when using gcc
+	under AIX Power.
+
 2001-07-31  Gary V. Vaughan  <gary@gnu.org>
 
 	* bootstrap: Remove generated files (incase they are links) before
