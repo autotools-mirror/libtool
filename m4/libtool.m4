@@ -1,4 +1,14 @@
 # libtool.m4 - Configure libtool for the host system. -*-Autoconf-*-
+#
+# Copyright (C) 1996, 1997, 1998, 1999, 2000, 2001, 2003, 2004, 2005
+# Free Software Foundation, Inc.
+#
+# This file is part of GNU Libtool:
+# Originally by Gordon Matzigkeit <gord@gnu.ai.mit.edu>, 1996
+#
+# This file is free software; the Free Software Foundation gives
+# unlimited permission to copy and/or distribute it, with or without
+# modifications, as long as this notice is preserved.
 
 m4_define([_LT_COPYING], [dnl
 # Copyright (C) 1996, 1997, 1998, 1999, 2000, 2001, 2003, 2004
@@ -27,7 +37,7 @@ m4_define([_LT_COPYING], [dnl
 # the same distribution terms that you use for the rest of that program.
 ])
 
-# serial 49 LT_INIT
+# serial 50 LT_INIT
 
 
 # LT_PREREQ(VERSION)

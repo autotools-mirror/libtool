@@ -1,5 +1,15 @@
 2005-01-09  Gary V. Vaughan  <gary@gnu.org>
 
+	* m4/argz.m4, m4/libtool.m4, m4/ltdl.m4, m4/ltoptions.m4,
+	m4/ltsugar.m4, m4/ltversion.m4, m4/lt~obsolete.m4: RMS says,
+	'I think the [license of autoconf macro files] should be:
+	# This file is free software; the Free Software Foundation
+	# gives unlimited permission to copy and/or distribute it,
+	# with or without modifications, as long as this notice is
+	# preserved.'.
+
+2005-01-08  Gary V. Vaughan  <gary@gnu.org>
+
 	* ChangeLog: Reformatting.
 	* HACKING: Fix section numbering.
 	(Editing 'ChangeLog'): New notes on ChangeLog entry format.
