@@ -37,11 +37,9 @@
 
       # Accept any command-line options.
       case $arg in
-      -o)
-	if test "$user_target" != "no"; then
-	  $echo "$modename: you cannot specify \`-o' more than once" 1>&2
-	  exit 1
-	fi
+      -o)[++
+	test-or-exit test = 'test "$user_target" != "no"'   no_help = true
+	  msg = "you cannot specify \\`-o' more than once" ++]
 	user_target=next
 	;;
 
@@ -144,9 +142,9 @@
       # Get the name of the library object.
       libobj=`$echo "X$srcfile" | $Xsed -e 's%^.*/%%'`
       ;;
-    *)
-      $echo "$modename: you must specify a target with \`-o'" 1>&2
-      exit 1
+    *)[++
+      test-or-exit msg = "you must specify a target with \\`-o'"
+          no_help = true ++]
       ;;
     esac
 
@@ -172,9 +170,9 @@
 
     case $libobj in
     *.lo) obj=`$echo "X$libobj" | $Xsed -e "$lo2o"` ;;
-    *)
-      $echo "$modename: cannot determine name of library object from \`$libobj'" 1>&2
-      exit 1
+    *)[++
+      test-or-exit no_help = true
+          msg = "cannot determine name of library object from \\`$libobj'"++]
       ;;
     esac
 
@@ -210,14 +208,10 @@
         done
         # If $tagname still isn't set, then no tagged configuration
         # was found and let the user know that the "--tag" command
-        # line option must be used.
-        if test -z "$tagname"; then
-          echo "$modename: unable to infer tagged configuration"
-          echo "$modename: specify a tag with \`--tag'" 1>&2
-	  exit 1
-#        else
-#          echo "$modename: using $tagname tagged configuration"
-        fi
+        # line option must be used.[++
+        test-or-exit test = 'test -z "$tagname"'  no_help = true
+msg = "unable to infer tagged configuration\n\tspecify a tag with \\`--tag'"++]
+#       echo "$modename: using $tagname tagged configuration"
 	;;
       esac
     fi
@@ -229,13 +223,9 @@
     else
       xdir=$xdir/
     fi
-    lobj=${xdir}$objdir/$objname
-
-    if test -z "$base_compile"; then
-      $echo "$modename: you must specify a compilation command" 1>&2
-      $echo "$help" 1>&2
-      exit 1
-    fi
+    lobj=${xdir}$objdir/$objname[++
+    test-or-exit test = 'test -z "$base_compile"'
+       msg = "you must specify a compilation command" ++]
 
     # Delete any leftover library objects.
     if test "$build_old_libs" = yes; then
@@ -278,22 +268,8 @@
 	$show "Waiting for $lockfile to be removed"
 	sleep 2
       done
-    elif test "$need_locks" = warn; then
-      if test -f "$lockfile"; then
-	echo "\
-*** ERROR, $lockfile exists and contains:
-`cat $lockfile 2>/dev/null`
-
-This indicates that another process is trying to use the same
-temporary object file, and libtool could not work around it because
-your compiler does not support \`-c' and \`-o' together.  If you
-repeat this compilation, it may succeed, by chance, but you had better
-avoid parallel builds (make -j) in this platform, or get a better
-compiler."
-
-	$run $rm $removelist
-	exit 1
-      fi
+    elif test "$need_locks" = warn; then[++
+      lock-conflict test = 'test -f "$lockfile"' ++]
       echo $srcfile > "$lockfile"
     fi
 
@@ -351,23 +327,8 @@ EOF
       fi
 
       if test "$need_locks" = warn &&
-	 test x"`cat $lockfile 2>/dev/null`" != x"$srcfile"; then
-	echo "\
-*** ERROR, $lockfile contains:
-`cat $lockfile 2>/dev/null`
-
-but it should contain:
-$srcfile
-
-This indicates that another process is trying to use the same
-temporary object file, and libtool could not work around it because
-your compiler does not support \`-c' and \`-o' together.  If you
-repeat this compilation, it may succeed, by chance, but you had better
-avoid parallel builds (make -j) in this platform, or get a better
-compiler."
-
-	$run $rm $removelist
-	exit 1
+	 test x"`cat $lockfile 2>/dev/null`" != x"$srcfile"; then[++
+	 lock-conflict ++]
       fi
 
       # Just move the object if needed, then go on to compile the next one
@@ -421,23 +382,8 @@ EOF
       fi
 
       if test "$need_locks" = warn &&
-	 test x"`cat $lockfile 2>/dev/null`" != x"$srcfile"; then
-	echo "\
-*** ERROR, $lockfile contains:
-`cat $lockfile 2>/dev/null`
-
-but it should contain:
-$srcfile
-
-This indicates that another process is trying to use the same
-temporary object file, and libtool could not work around it because
-your compiler does not support \`-c' and \`-o' together.  If you
-repeat this compilation, it may succeed, by chance, but you had better
-avoid parallel builds (make -j) in this platform, or get a better
-compiler."
-
-	$run $rm $removelist
-	exit 1
+	 test x"`cat $lockfile 2>/dev/null`" != x"$srcfile"; then[++
+	 lock-conflict ++]
       fi
 
       # Just move the object if needed
