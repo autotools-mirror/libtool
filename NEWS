@@ -1,6 +1,8 @@
 NEWS - list of user-visible changes between releases of GNU Libtool
 
-New in 1.4f: 2002-??-??; CVS version 1.4e, Libtool team:
+New in 1.5: 2002-04-14; CVS version 1.4e, Libtool team:
+* First stable release of multi-language architecture.
+* libtool and libltdl support for Mac OS/X.
 * libltdl will now use cygwins dlopen API instead of always forcing
   LoadLibrary.
 * Support auto-import patch to binutils on cygwin for much improved dll

@@ -15,7 +15,7 @@ If you have any suggestions or bug reports, or you wish to port
 libtool to a new platform, please send electronic mail to the libtool
 mailing list <libtool@gnu.org> or bug reports to <bug-libtool@gnu.org>.
 Don't forget to mention the version of libtool that you are currently
-using (by typing `ltconfig --version').
+using (by typing `libtool --version').
 
 ================================================================
 = Administrivia
