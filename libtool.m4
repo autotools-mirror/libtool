@@ -826,13 +826,8 @@ AC_DEFUN(AM_PROG_NM, [indir([AC_PROG_NM])])dnl
 dnl This is just to silence aclocal about the macro not being used
 ifelse([AC_DISABLE_FAST_INSTALL])dnl
 
-ifdef([AM_PROG_GCJ],,[
-# Stolen from automake
-AC_DEFUN([AM_PROG_GCJ],[
-  AC_CHECK_PROGS(GCJ, gcj, gcj)
-  dnl Automake uses ``='' in the test below, it seems wrong
-  if test "x${GCJFLAGS+set}" != xset; then
-    GCJFLAGS="-g -O2"
-  fi
+AC_DEFUN([LT_AC_PROG_GCJ],[
+  AC_CHECK_TOOL(GCJ, gcj, no)
+  test "x${GCJFLAGS+set}" = xset || GCJFLAGS="-g -O2"
   AC_SUBST(GCJFLAGS)
 ])])

@@ -61,9 +61,7 @@ AC_PROG_CXX
 popdef([AC_MSG_ERROR])
 AM_CONDITIONAL(HAVE_CXX, [test "x$CXX" != xno])
 
-pushdef([AC_MSG_ERROR], [GCJ=no])
-ifdef([AC_PROG_GCJ],[AC_PROG_GCJ],[AM_PROG_GCJ])
-popdef([AC_MSG_ERROR])
+LT_AC_PROG_GCJ
 AM_CONDITIONAL(HAVE_GCJ, [test "x$GCJ" != xno])
 
 AC_ARG_ENABLE(ltdl-install,
