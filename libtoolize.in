@@ -293,7 +293,7 @@ for file in $ltdlfiles; do
 
   $rm $file
   if test -n "$ln_s" && $ln_s $pkgdatadir/$file $file; then :
-  elif { ( cd $pkgdatadir && $tar cf - $file 2> /dev/null; ) \
+  elif { ( cd $pkgdatadir && $tar chof - $file 2> /dev/null; ) \
       | $tar xf - > /dev/null 2>&1; } ; then :
   elif $cp $pkgdatadir/$file $file; then :
   else

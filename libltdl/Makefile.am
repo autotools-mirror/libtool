@@ -37,5 +37,5 @@ ltdldatadir = $(datadir)/libtool/libltdl
 install-data-local:
 	-rm -rf $(DESTDIR)$(ltdldatadir)
 	$(mkinstalldirs) $(DESTDIR)$(ltdldatadir)
-	$(AMTAR) cf - $(DISTFILES) \
+	$(AMTAR) chof - $(DISTFILES) \
 	  | ( cd $(DESTDIR)$(ltdldatadir) && $(AMTAR) xf -; )
