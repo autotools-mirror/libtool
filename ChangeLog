@@ -1,3 +1,11 @@
+2003-11-15  Scott James Remnant  <scott@netsplit.com>
+
+	* ltmain.in: In compile mode, delay parsing of -shared, -static,
+	-prefer-pic and -prefer-non-pic until after tagged configuration
+	has been read.  In link mode, read tagged configuration before
+	parsing any arguments.  These arguments will now work when using
+	a non-C compiler.
+
 2003-11-14  Gary V. Vaughan  <gary@gnu.org>
 
 	* NEWS: Mention AC_LIBTOOL_TAGS.
