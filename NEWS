@@ -15,6 +15,7 @@ New in 1.5b: 2004-??-??; CVS version 1.5a, Libtool team:
   and libtool m4 macro versions.
 * Like automake, libtoolize no longer installs config.guess and config.sub by
   default.  Use new --install option to get the old behaviour.
+* libtoolize no longer supports the --ltdl-tar option.
 * libtool script is now created by config.status.  Instead of interrogating
   `./libtool' from configure.ac after calling AC_PROG_LIBTOOL, use the
   variable names directly.

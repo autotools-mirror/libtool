@@ -2036,9 +2036,6 @@ Display a help message and exit.
 @item --ltdl
 Install libltdl in a subdirectory of your package.
 
-@item --ltdl-tar
-Add the file libltdl.tar.gz to your package.
-
 @item --quiet
 @itemx -q
 Work silently.  @samp{libtoolize --quiet} is used by @sc{gnu} Automake

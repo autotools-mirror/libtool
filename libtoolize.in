@@ -38,7 +38,6 @@
 #     --help            display this message and exit
 # -i, --install         copy missing auxiliary files
 #     --ltdl            install libltdl in a subdirectory
-#     --ltdl-tar        install the libltdl tarball
 # -q, --quiet           work silently
 # -v, --verbose         verbosely report processing
 #     --version         print version information and exit
@@ -77,7 +76,6 @@ opt_force=false
 opt_install=false
 opt_link=:
 opt_ltdl=false
-opt_ltdl_tar=false
 opt_quiet=false
 opt_verbose=false
 
@@ -213,7 +211,6 @@ func_version ()
       --force|-f)	opt_force=:		;;
       --install|-i)	opt_install=:		;;
       --ltdl)		opt_ltdl=:		;;
-      --ltdl-tar)	opt_ltdl_tar=:		;;
       --quiet|--automake|-q) # --automake is for 1.5 compatibility
 			opt_quiet=:		;;
       --verbose|-v)	opt_verbose=:		;;
@@ -613,21 +610,6 @@ func_config_update ()
   # Copy all the files from installed libltdl to this project, if the
   # user specified `--with-ltdl'.
   $opt_ltdl && eval func_copy_all_files "$pkgdatadir/libltdl" libltdl
-
-  # Copy all the files from installed libltdl to a tarball in this project,
-  # if the user specified `--with-ltdl-tar'.
-  $opt_ltdl_tar && {
-      if test -f libltdl.tar.gz; then
-        if $opt_force; then
-          test -d libltdl && ${RM}r libltdl
-          func_copy_all_files "$pkgdatadir/libltdl" libltdl
-          tar -chof - libltdl | gzip --best > libltdl.tar.gz
-          ${RM}r libltdl
-        else
-          func_error "\`libltdl.tar.gz' exists: use \`--force' to overwrite"
-        fi
-      fi
-  }
 
   # Copy all the installed utility files to the auxiliary directory if
   # `--install' was passed, or else copy just ltmain.sh.
