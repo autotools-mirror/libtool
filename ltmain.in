@@ -1524,8 +1524,8 @@ EOF
 	    *" $dir "*) ;;
 	    *) xrpath="$xrpath $dir" ;;
 	    esac
-	    continue
 	  fi
+	  continue
 	  ;;
 	*.la) lib="$deplib" ;;
 	*.$libext)

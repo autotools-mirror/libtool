@@ -1,5 +1,16 @@
 2000-02-05  Ossama Othman  <ossama@debian.org>
 
+	* ltmain.in: The "-R*" case in the loop that iterates through
+	library dependencies doesn't handle the case of the "lib" link
+	mode.  As such, the next iteration should immediately follow.  The
+	"continue" inside the "if" block has been moved outside that
+	block. 	Previously, the "-R*" case would just "fall through" when
+	in "lib" link mode, but $lib="" which caused a "library not found"
+	error later on.
+	Reported by Stephan Kulow <coolo@kde.org>
+
+2000-02-05  Ossama Othman  <ossama@debian.org>
+
 	* bootstrap: Merged updates from HEAD branch.
 	(sub): Added tagdemo to list of subdirectories to be
 	bootstrapped.
