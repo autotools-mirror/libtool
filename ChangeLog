@@ -1,3 +1,8 @@
+1998-11-24  Thomas Tanner  <tanner@gmx.de>
+
+	* depdemo: added inter-library dependencies demo (doesn't work yet!)
+	* AUTHORS: added me to the list of maintainers
+
 1998-11-22  Thomas Tanner  <tanner@gmx.de>
 
 	* libltdl: added support for .la files, LGPL license,
