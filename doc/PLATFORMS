@@ -2,9 +2,9 @@
 canonical host name          compiler  libtool results
   (tools versions)                     release
 -------------------------------------------------------
-alpha-dec-osf4.0*               gcc      1.3b     ok
-  (egcs-1.1.2)
-alpha-dec-osf4.0*               cc       1.3b     ok
+alpha-dec-osf5.1		cc	 1.3e	  ok (1.910)
+alpha-dec-osf4.0f               gcc      1.3e     ok (1.910)
+alpha-dec-osf4.0f               cc       1.3e     ok (1.910)
 alpha-dec-osf3.2                gcc      0.8      ok
 alpha-dec-osf3.2                cc       0.8      ok
 alpha-dec-osf2.1                gcc      1.2f     NS
