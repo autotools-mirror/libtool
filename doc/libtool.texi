@@ -1021,9 +1021,11 @@ libtool libraries may not depend on other uninstalled libtool libraries
 If the @var{output-file} ends in @samp{.a}, then a standard library is
 created using @code{ar} and possibly @code{ranlib}.
 
+@cindex Partial linking
+@cindex Linking, partial
 If @var{output-file} ends in @samp{.o} or @samp{.lo}, then a reloadable object
 file is created from the input files (generally using @samp{ld -r}).
-This method is called @dfn{incremental linking}.
+This method is often called @dfn{partial linking}.
 
 Otherwise, an executable program is created.
 

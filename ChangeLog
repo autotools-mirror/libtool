@@ -1,7 +1,10 @@
 Wed Jun 11 11:04:59 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* Makefile.am (ltconfig, ltmain.sh): Only move if $(srcdir) is not
-	the current directory.  Reported by Tom Tromey.
+	the current directory.  Don't regenerate every time the package is
+	reconfigured.  Reported by Tom Tromey.
+	(MAINTAINERCLEANFILES): Added ltconfig, ltmain.sh, so that
+	$(srcdir) is not messed with during a regular clean.
 
 Tue Jun 10 12:26:00 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 

@@ -11,7 +11,8 @@ aclocal_macros = libtool.m4
 
 EXTRA_DIST = $(aclocal_macros) libtoolize.in ltconfig.in ltmain.sh.in \
 	README-automake libtool.prj
-CLEANFILES = libtool libtoolize ltconfig ltmain.sh
+CLEANFILES = libtool libtoolize
+MAINTAINERCLEANFILES = ltconfig ltmain.sh
 
 # Files in the demo subdirectory that go in the distribution.
 demo_distfiles = demo/Makefile.in demo/Makefile.am demo/README \
@@ -36,19 +37,21 @@ libtool: ltconfig
 	LD="${LD}" RANLIB="${RANLIB}" \
 	$(srcdir)/ltconfig --srcdir=$(srcdir) $(pkgdatadir)/ltmain.sh
 
-# These depend on config.status for version numbers.
 libtoolize: libtoolize.in $(top_builddir)/config.status
 	CONFIG_FILES=libtoolize CONFIG_HEADERS= $(top_builddir)/config.status
 	chmod +x libtoolize
 
-$(srcdir)/ltconfig: ltconfig.in $(top_builddir)/config.status
+# These depend on NEWS (rather then config.status) so that version numbers
+# are correctly updated.
+# This way, they aren't regenerated after people configure the package.
+$(srcdir)/ltconfig: ltconfig.in NEWS
 	CONFIG_FILES=ltconfig CONFIG_HEADERS= $(top_builddir)/config.status
 	chmod +x ltconfig
-	mv ltconfig $(srcdir)/ltconfig
+	test "$(srcdir)" = . || mv ltconfig $(srcdir)/ltconfig
 
-$(srcdir)/ltmain.sh: ltmain.sh.in $(top_builddir)/config.status
+$(srcdir)/ltmain.sh: ltmain.sh.in NEWS
 	CONFIG_FILES=ltmain.sh CONFIG_HEADERS= $(top_builddir)/config.status
-	mv ltmain.sh $(srcdir)/ltmain.sh
+	test "$(srcdir)" = . || mv ltmain.sh $(srcdir)/ltmain.sh
 
 # Distribute the demo subdirectory.
 dist-hook: $(demo_distfiles)
