@@ -1,3 +1,10 @@
+2004-04-17  Todd Vierling  <tv@duh.org>, 
+	Peter O'Gorman  <peter@pogma.com>
+
+	* m4/libtool.m4 (AC_LIBTOOL_SYS_MAX_CMD_LEN): Use sysctl to get the
+	max cmd length on BSD* and darwin. Make sure that there is a safety
+	factor too.
+
 2004-04-15  Scott James Remnant  <scott@netsplit.com>
 
 	* m4/libtool.m4 (_LT_LANG_DEFAULT_CONFIG): Remove code to handle 'none'
