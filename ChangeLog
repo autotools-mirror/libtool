@@ -1,3 +1,8 @@
+2002-06-26  Bob Friesenhahn  <bfreisen@simple.dallas.tx.us>
+
+	* libtool.m4 (sys_lib_search_path_spec):  Remove extraneous '='
+	character which appears in gcc 3.1 -print-search-dirs output.
+
 2002-06-23  Albert Chin-A-Young  <china@thewrittenword.com>
 
 	* ltdl.m4 (AC_LTDL_SYS_DLOPEN_DEPLIBS): HP/UX needs
