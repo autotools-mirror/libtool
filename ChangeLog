@@ -1,3 +1,10 @@
+2001-07-12  Dan McNichol  <mcnichol@austin.ibm.com>
+
+	From albert chin <china@thewrittenword.com>
+	* libtool.m4 (AC_LIBTOOL_PROG_LD_SHLIBS): Fix AIX
+	run-time-linking when using gcc.
+	(AC_LIBTOOL_LANG_CXX_CONFIG):  Ditto.
+
 2001-07-11  Gary V. Vaughan  <gary@gnu.org>
 
 	* libtool.m4 (_LT_AC_LANG_CXX_CONFIG) [hpux, linux, osf,

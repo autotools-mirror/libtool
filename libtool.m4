@@ -2314,15 +2314,42 @@ case $host_os in
     _LT_AC_TAGVAR(ld_shlibs, $1)=no
     ;;
   aix4* | aix5*)
-    _LT_AC_TAGVAR(archive_cmds, $1)=''
-    _LT_AC_TAGVAR(hardcode_direct, $1)=yes
-    _LT_AC_TAGVAR(hardcode_libdir_separator, $1)=':'
-    _LT_AC_TAGVAR(link_all_deplibs, $1)=yes
+    if test "$host_cpu" = ia64; then
+      # On IA64, the linker does run time linking by default, so we don't
+      # have to do anything special.
+      aix_use_runtimelinking=no
+      exp_sym_flag='-Bexport'
+      no_entry_flag=""
+    else
+      aix_use_runtimelinking=no
+
+      # Test if we are trying to use run time linking or normal
+      # AIX style linking. If -brtl is somewhere in LDFLAGS, we
+      # need to do runtime linking.
+      case $host_os in aix4.[[23]]|aix4.[[23]].*|aix5*)
+        for ld_flag in $LDFLAGS; do
+	  if (test $ld_flag = "-brtl" || test $ld_flag = "-Wl,-brtl"); then
+	    aix_use_runtimelinking=yes
+	    break
+	  fi
+        done
+      esac
+
+      exp_sym_flag='-bexport'
+      no_entry_flag='-bnoentry'
+    fi
+
     # When large executables or shared objects are built, AIX ld can
     # have problems creating the table of contents.  If linking a library
     # or program results in "error TOC overflow" add -mminimal-toc to
     # CXXFLAGS/CFLAGS for g++/gcc.  In the cases where that is not
     # enough to fix the problem, add -Wl,-bbigtoc to LDFLAGS.
+
+    _LT_AC_TAGVAR(archive_cmds, $1)=''
+    _LT_AC_TAGVAR(hardcode_direct, $1)=yes
+    _LT_AC_TAGVAR(hardcode_libdir_separator, $1)=':'
+    _LT_AC_TAGVAR(link_all_deplibs, $1)=yes
+
     if test "$GXX" = yes; then
       case $host_os in aix4.[012]|aix4.[012].*)
       # We only want to do this on AIX 4.2 and lower, the check
@@ -2350,36 +2377,23 @@ case $host_os in
       if test "$host_cpu" = ia64; then
         shared_flag='${wl}-G'
       else
-        shared_flag='${wl}-bM:SRE'
+	if test "$aix_use_runtimelinking" = yes; then
+          shared_flag='${wl}-G'
+        else
+          shared_flag='${wl}-bM:SRE'
+	fi
       fi
     fi
 
-    if test "$host_cpu" = ia64; then
-      # On IA64, the linker does run time linking by default, so we don't
-      # have to do anything special.
-      aix_use_runtimelinking=no
-      exp_sym_flag='-Bexport'
-      no_entry_flag=""
-    else
-      # Test if we are trying to use run time linking, or normal AIX style linking.
-      # If -brtl is somewhere in LDFLAGS, we need to do run time linking.
-      aix_use_runtimelinking=no
-      for ld_flag in $LDFLAGS; do
-        if (test $ld_flag = "-brtl" || test $ld_flag = "-Wl,-brtl" ); then
-          aix_use_runtimelinking=yes
-          break
-        fi
-      done
-      exp_sym_flag='-bexport'
-      no_entry_flag='-bnoentry'
-    fi
     # It seems that -bexpall does not export symbols beginning with
     # underscore (_), so it is better to generate a list of symbols to export.
     _LT_AC_TAGVAR(always_export_symbols, $1)=yes
     if test "$aix_use_runtimelinking" = yes; then
+      # Warning - without using the other runtime loading flags (-brtl),
+      # -berok will link without error, but may produce a broken library.
+      _LT_AC_TAGVAR(allow_undefined_flag, $1)='-berok'
       _LT_AC_TAGVAR(hardcode_libdir_flag_spec, $1)='${wl}-blibpath:$libdir:/usr/lib:/lib'
-      _LT_AC_TAGVAR(allow_undefined_flag, $1)=' -Wl,-G'
-      _LT_AC_TAGVAR(archive_expsym_cmds, $1)="\$CC $shared_flag"' -o $output_objdir/$soname $libobjs $deplibs $compiler_flags ${allow_undefined_flag} '"\${wl}$no_entry_flag \${wl}-brtl \${wl}$exp_sym_flag:\$export_symbols"
+      _LT_AC_TAGVAR(archive_expsym_cmds, $1)="\$CC"' -o $output_objdir/$soname $libobjs $deplibs $compiler_flags `if test "x${allow_undefined_flag}" != "x"; then echo "${wl}${allow_undefined_flag}"; else :; fi` '"\${wl}$no_entry_flag \${wl}$exp_sym_flag:\$export_symbols $shared_flag"
      else
       if test "$host_cpu" = ia64; then
         _LT_AC_TAGVAR(hardcode_libdir_flag_spec, $1)='${wl}-R $libdir:/usr/lib:/lib'
@@ -2387,8 +2401,8 @@ case $host_os in
         _LT_AC_TAGVAR(archive_expsym_cmds, $1)="\$CC $shared_flag"' -o $output_objdir/$soname $libobjs $deplibs $compiler_flags ${wl}${allow_undefined_flag} '"\${wl}$no_entry_flag \${wl}$exp_sym_flag:\$export_symbols"
       else
         _LT_AC_TAGVAR(hardcode_libdir_flag_spec, $1)='${wl}-blibpath:$libdir:/usr/lib:/lib'
-        # Warning - without using the other run time loading flags, -berok will
-        #           link without error, but may produce a broken library.
+        # Warning - without using the other run time loading flags,
+        # -berok will link without error, but may produce a broken library.
         _LT_AC_TAGVAR(no_undefined_flag, $1)=' ${wl}-bnoerok'
         _LT_AC_TAGVAR(allow_undefined_flag, $1)=' ${wl}-berok'
         # -bexpall does not export symbols beginning with underscore (_)
@@ -4136,18 +4150,46 @@ else
     ;;
 
   aix4* | aix5*)
-    _LT_AC_TAGVAR(hardcode_direct, $1)=yes
-    _LT_AC_TAGVAR(hardcode_libdir_separator, $1)=':'
-    _LT_AC_TAGVAR(link_all_deplibs, $1)=yes
+    if test "$host_cpu" = ia64; then
+      # On IA64, the linker does run time linking by default, so we don't
+      # have to do anything special.
+      aix_use_runtimelinking=no
+      exp_sym_flag='-Bexport'
+      no_entry_flag=""
+    else
+      aix_use_runtimelinking=no
+
+      # Test if we are trying to use run time linking or normal
+      # AIX style linking. If -brtl is somewhere in LDFLAGS, we
+      # need to do runtime linking.
+      case $host_os in aix4.[[23]]|aix4.[[23]].*|aix5*)
+        for ld_flag in $LDFLAGS; do
+	  if (test $ld_flag = "-brtl" || test $ld_flag = "-Wl,-brtl"); then
+	    aix_use_runtimelinking=yes
+	    break
+	  fi
+        done
+      esac
+
+      exp_sym_flag='-bexport'
+      no_entry_flag='-bnoentry'
+    fi
+
     # When large executables or shared objects are built, AIX ld can
     # have problems creating the table of contents.  If linking a library
     # or program results in "error TOC overflow" add -mminimal-toc to
     # CXXFLAGS/CFLAGS for g++/gcc.  In the cases where that is not
     # enough to fix the problem, add -Wl,-bbigtoc to LDFLAGS.
+
+    _LT_AC_TAGVAR(archive_cmds, $1)=''
+    _LT_AC_TAGVAR(hardcode_direct, $1)=yes
+    _LT_AC_TAGVAR(hardcode_libdir_separator, $1)=':'
+    _LT_AC_TAGVAR(link_all_deplibs, $1)=yes
+
     if test "$GCC" = yes; then
-      case $host_os in aix4.[012]|aix4.[-12].*)
-        # We only want to do this on AIX 4.2 and lower, the check
-        # below for broken collect2 doesn't work under 4.3+
+      case $host_os in aix4.[012]|aix4.[012].*)
+      # We only want to do this on AIX 4.2 and lower, the check
+      # below for broken collect2 doesn't work under 4.3+
         collect2name=`${CC} -print-prog-name=collect2`
         if test -f "$collect2name" && \
 	   strings "$collect2name" | grep resolve_lib_name >/dev/null
@@ -4155,14 +4197,14 @@ else
 	  # We have reworked collect2
 	  _LT_AC_TAGVAR(hardcode_direct, $1)=yes
         else
-          # We have old collect2
-          _LT_AC_TAGVAR(hardcode_direct, $1)=unsupported
-          # It fails to find uninstalled libraries when the uninstalled
-          # path is not listed in the libpath.  Setting hardcode_minus_L
-          # to unsupported forces relinking
-          _LT_AC_TAGVAR(hardcode_minus_L, $1)=yes
-          _LT_AC_TAGVAR(hardcode_libdir_flag_spec, $1)='-L$libdir'
-          _LT_AC_TAGVAR(hardcode_libdir_separator, $1)=
+	  # We have old collect2
+	  _LT_AC_TAGVAR(hardcode_direct, $1)=unsupported
+	  # It fails to find uninstalled libraries when the uninstalled
+	  # path is not listed in the libpath.  Setting hardcode_minus_L
+	  # to unsupported forces relinking
+	  _LT_AC_TAGVAR(hardcode_minus_L, $1)=yes
+	  _LT_AC_TAGVAR(hardcode_libdir_flag_spec, $1)='-L$libdir'
+	  _LT_AC_TAGVAR(hardcode_libdir_separator, $1)=
         fi
       esac
       shared_flag='-shared'
@@ -4171,59 +4213,40 @@ else
       if test "$host_cpu" = ia64; then
         shared_flag='${wl}-G'
       else
-        shared_flag='${wl}-bM:SRE'
+	if test "$aix_use_runtimelinking" = yes; then
+          shared_flag='${wl}-G'
+        else
+          shared_flag='${wl}-bM:SRE'
+	fi
       fi
     fi
 
-    if test "$host_cpu" = ia64; then
-      # On IA64, the linker does run time linking by default, so we don't
-      # have to do anything special.
-      aix_use_runtimelinking=no
-	if test $with_gnu_ld = no; then
-	  exp_sym_flag='-Bexport'
-	fi
-      no_entry_flag=""
-    else
-      # Test if we are trying to use run time linking, or normal AIX style
-      # linking.  If -brtl is somewhere in LDFLAGS, we need to do run time
-      # linking.
-      aix_use_runtimelinking=no
-      for ld_flag in $LDFLAGS; do
-        if (test $ld_flag = "-brtl" || test $ld_flag = "-Wl,-brtl" ); then
-          aix_use_runtimelinking=yes
-          break
-        fi
-      done
-      exp_sym_flag='-bexport'
-      no_entry_flag='-bnoentry'
-    fi
-    # -bexpall does not export symbols beginning with underscore (_)
+    # It seems that -bexpall does not export symbols beginning with
+    # underscore (_), so it is better to generate a list of symbols to export.
     _LT_AC_TAGVAR(always_export_symbols, $1)=yes
     if test "$aix_use_runtimelinking" = yes; then
-      # Warning - without using the other run time loading flags (-brtl),
-      #           -berok will link without error, but may produce a broken
-      #           library.
-      _LT_AC_TAGVAR(allow_undefined_flag, $1)=' $wl}-berok'
+      # Warning - without using the other runtime loading flags (-brtl),
+      # -berok will link without error, but may produce a broken library.
+      _LT_AC_TAGVAR(allow_undefined_flag, $1)='-berok'
       _LT_AC_TAGVAR(hardcode_libdir_flag_spec, $1)='${wl}-blibpath:$libdir:/usr/lib:/lib'
-      _LT_AC_TAGVAR(archive_expsym_cmds, $1)="\$CC $shared_flag"' -o $output_objdir/$soname $libobjs $deplibs $compiler_flags ${allow_undefined_flag} '"\${wl}$no_entry_flag \${wl}$exp_sym_flag:\$export_symbols"
-    else
+      _LT_AC_TAGVAR(archive_expsym_cmds, $1)="\$CC"' -o $output_objdir/$soname $libobjs $deplibs $compiler_flags `if test "x${allow_undefined_flag}" != "x"; then echo "${wl}${allow_undefined_flag}"; else :; fi` '"\${wl}$no_entry_flag \${wl}$exp_sym_flag:\$export_symbols $shared_flag"
+     else
       if test "$host_cpu" = ia64; then
-	if test $with_gnu_ld = no; then
-	  _LT_AC_TAGVAR(hardcode_libdir_flag_spec, $1)='${wl}-R $libdir:/usr/lib:/lib'
-	  _LT_AC_TAGVAR(allow_undefined_flag, $1)="-z nodefs"
-	  _LT_AC_TAGVAR(archive_expsym_cmds, $1)="\$CC $shared_flag"' -o $output_objdir/$soname $libobjs $deplibs $compiler_flags ${wl}${allow_undefined_flag} '"\${wl}$no_entry_flag \${wl}$exp_sym_flag:\$export_symbols"
-	fi
+        _LT_AC_TAGVAR(hardcode_libdir_flag_spec, $1)='${wl}-R $libdir:/usr/lib:/lib'
+        _LT_AC_TAGVAR(allow_undefined_flag, $1)="-z nodefs"
+        _LT_AC_TAGVAR(archive_expsym_cmds, $1)="\$CC $shared_flag"' -o $output_objdir/$soname $libobjs $deplibs $compiler_flags ${wl}${allow_undefined_flag} '"\${wl}$no_entry_flag \${wl}$exp_sym_flag:\$export_symbols"
       else
-        _LT_AC_TAGVAR(hardcode_libdir_flag_spec, $1)='${wl}-bnolibpath ${wl}-blibpath:$libdir:/usr/lib:/lib'
+        _LT_AC_TAGVAR(hardcode_libdir_flag_spec, $1)='${wl}-blibpath:$libdir:/usr/lib:/lib'
+        # Warning - without using the other run time loading flags,
+        # -berok will link without error, but may produce a broken library.
+        _LT_AC_TAGVAR(no_undefined_flag, $1)=' ${wl}-bnoerok'
         _LT_AC_TAGVAR(allow_undefined_flag, $1)=' ${wl}-berok'
         # -bexpall does not export symbols beginning with underscore (_)
         _LT_AC_TAGVAR(always_export_symbols, $1)=yes
         # Exported symbols can be pulled into shared objects from archives
         _LT_AC_TAGVAR(whole_archive_flag_spec, $1)=' '
         _LT_AC_TAGVAR(archive_cmds_need_lc, $1)=yes
-        _LT_AC_TAGVAR(hardcode_libdir_flag_spec, $1)='${wl}-blibpath:$libdir:/usr/lib:/lib'
-        # This is similar to how AIX traditionally builds it's shared
-	# libraries.
+        # This is similar to how AIX traditionally builds it's shared libraries.
         _LT_AC_TAGVAR(archive_expsym_cmds, $1)="\$CC $shared_flag"' -o $output_objdir/$soname $libobjs $deplibs $compiler_flags ${wl}-bE:$export_symbols ${wl}-bnoentry${allow_undefined_flag}~$AR $AR_FLAGS $output_objdir/$libname$release.a $output_objdir/$soname'
       fi
     fi
