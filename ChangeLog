@@ -1,3 +1,10 @@
+2004-09-11  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* m4/libtool.m4 (_LT_CMD_GLOBAL_SYMBOLS): The linker distinguishes
+	data and code symbols on linux-gnu/ia64.  Fixes multiple testsuite
+	failures.
+	* NEWS: Updated.
+
 2004-09-06  Gary V. Vaughan  <gary@gnu.org>
 
 	* libltdl/loaders/shl_load.c (get_vtable): Typo.
