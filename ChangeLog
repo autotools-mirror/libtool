@@ -1,5 +1,8 @@
 2004-11-29  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* libltdl/ltdl.c (trim): Use memcpy instead of strncpy here, to
+	avoid problems with non-conforming strncpy.  This is safe here.
+
 	* m4/ltdl.m4 (LT_LIB_DLLOAD): Define HAVE_LIBDLLOADER if we
 	have a dlloader to preload.
 	* libltdl/ltdl.c (lt_dlinit): Only preload if HAVE_LIBDLLOADER, only

@@ -907,7 +907,7 @@ trim (char **dest, const char *str)
       if (!tmp)
 	return 1;
 
-      strncpy(tmp, &str[1], (end - str) - 1);
+      memcpy(tmp, &str[1], (end - str) - 1);
       tmp[len-3] = LT_EOS_CHAR;
       *dest = tmp;
     }
