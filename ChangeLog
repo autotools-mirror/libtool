@@ -1,3 +1,7 @@
+2005-01-14  Guido Draheim  <guidod-2003-@gmx.de>  (tiny change)
+
+	* libtool.m4 (AC_PROG_SED): Don't break test loop early.
+
 2005-01-13  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* libtoolize.in: Back out copying `install-sh' by libtoolize.
