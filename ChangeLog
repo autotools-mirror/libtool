@@ -1,5 +1,8 @@
 1999-03-10  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* ltconfig.in (dlfcn.h): function definition may cause warnings;
+	define variable instead
+
 	* ltmain.in: properly create an export file for a program,
 	avoiding error messages about not finding it
 
