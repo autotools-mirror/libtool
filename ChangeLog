@@ -1,3 +1,8 @@
+2000-07-10  Mo DeJong  <mdejong@redhat.com>
+
+	* libtool.m4 (AC_PROG_NM): Fix macro so that it
+	finds a cross NM on the PATH.
+
 2000-07-10  Maciej W. Rozycki  <macro@ds2.pg.gda.pl>
 
 	* Makefile.am (libtool): Pass $(host_alias) to ltconfig.
