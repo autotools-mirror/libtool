@@ -1,5 +1,8 @@
 2005-03-28  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* m4/libtool.m4 (_LT_LANG_GCJ_CONFIG, _LT_LANG_RC_CONFIG):
+	Set $cc_basename.
+
 	* HACKING: echo vs $ECHO.
 
 2005-03-28  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>  (tiny change)
