@@ -1012,7 +1012,7 @@ export_symbols_cmds='$NM $libobjs | $global_symbol_pipe | sed '\''s/.* //'\'' | 
 # included in the symbol list
 include_expsyms=
 # exclude_expsyms can be an egrep regular expression of symbols to exclude
-# it will be wrapped by ` (' and `)$', so one must not match beginning or
+# it will be wrapped by `^(' and `) ', so one must not match beginning or
 # end of line.  Example: `a|bc|.*d.*' will exclude the symbols `a' and `bc',
 # as well as any symbol that contains `d'.
 exclude_expsyms=
@@ -1087,7 +1087,7 @@ EOF
     # then regenerate the def file from the symbol export list, so that
     # the compiled dll only exports the symbol export list.
     export_symbols_cmds='rm -f $objdir/$soname-ltdll.c~
-      sed -e "/^# \/\* ltdll.c starts here \*\//,/^# \/\* ltdll.c ends here \*\// { s/^# //; p; }" -e d < $0 > $objdir/$soname-ltdll.c~
+      sed -e "/^# \/\* ltdll\.c starts here \*\//,/^# \/\* ltdll.c ends here \*\// { s/^# //; p; }" -e d < $0 > $objdir/$soname-ltdll.c~
       (cd $objdir && $CC -c $soname-ltdll.c)~
       $DLLTOOL --export-all --exclude-symbols DllMain@12,_cygwin_dll_entry@12,_cygwin_noncygwin_dll_entry@12 --output-def $objdir/$soname-def  $objdir/$soname-ltdll.$objext $libobjs~
       sed -e "1,/EXPORTS/d" -e "s/ @ [0-9]* ; *//" < $objdir/$soname-def > $export_symbols'
@@ -1095,7 +1095,7 @@ EOF
     archive_expsym_cmds='echo EXPORTS > $objdir/$soname-def~
       _lt_hint=1;
       for symbol in `cat $export_symbols`; do
-        echo "	\$symbol @ \$_lt_hint ; " >> $objdir/$soname-def;
+	echo "	\$symbol @ \$_lt_hint ; " >> $objdir/$soname-def;
 	_lt_hint=`expr 1 + \$_lt_hint`;
       done~
       $CC -Wl,--base-file,$objdir/$soname-base -Wl,--dll -nostartfiles -Wl,-e,__cygwin_dll_entry@12 -o $lib $objdir/$soname-ltdll.$objext $libobjs $deplibs $linkopts~
@@ -2587,7 +2587,7 @@ libext="$libext"
 # Additional compiler flags for building library objects.
 pic_flag=$pic_flag
 
-# Does compiler simultaneously support -c and -o options
+# Does compiler simultaneously support -c and -o options?
 compiler_c_o=$compiler_c_o
 
 # Can we write directly to a .lo ?
@@ -2657,7 +2657,7 @@ postuninstall_cmds=$postuninstall_cmds
 # Method to check whether dependent libraries are shared objects.
 deplibs_check_method=$deplibs_check_method
 
-# Command to use when deplibs_check_method == file_magic
+# Command to use when deplibs_check_method == file_magic.
 file_magic_cmd=$file_magic_cmd
 
 # Flag that allows shared libraries with undefined symbols to be built.
@@ -2718,16 +2718,16 @@ sys_lib_dlsearch_path_spec=$sys_lib_dlsearch_path_spec
 # Fix the shell variable \$srcfile for the compiler.
 fix_srcfile_path="$fix_srcfile_path"
 
-# Set to yes if exported symbols are required
+# Set to yes if exported symbols are required.
 always_export_symbols=$always_export_symbols
 
-# The command to extract exported symbols
+# The commands to list exported symbols.
 export_symbols_cmds=$export_symbols_cmds
 
-# Symbols that should not be listed in the preloaded symbols
+# Symbols that should not be listed in the preloaded symbols.
 exclude_expsyms=$exclude_expsyms
 
-# Symbols that must always be exported
+# Symbols that must always be exported.
 include_expsyms=$include_expsyms
 
 EOF

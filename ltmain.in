@@ -1128,6 +1128,7 @@ compiler."
 	# it will not redefine variable installed.
 	installed=yes
 
+	# Read the .la file
 	# If there is no directory component, then add one.
 	case "$arg" in
 	*/* | *\\*) . $arg ;;
@@ -1747,12 +1748,13 @@ compiler."
 	droppeddeps=no
 	case "$deplibs_check_method" in
 	pass_all)
+	  # Don't check for shared/static.  Everything works.
+	  # This might be a little naive.  We might want to check
+	  # whether the library exists or not.  But this is on
+	  # osf3 & osf4 and I'm not really sure... Just
+	  # implementing what was already the behaviour.
 	  newdeplibs=$deplibs
-		    ;; # Don't check for shared/static.  Everything works.
-		       # This might be a little naive.  We might want to check
-		       # whether the library exists or not.  But this is on
-		       # osf3 & osf4 and I'm not really sure... Just
-		       # implementing what was already the behaviour.
+	  ;;
 	test_compile)
 	  # This code stresses the "libraries are programs" paradigm to its
 	  # limits. Maybe even breaks it.  We compile a program, linking it
@@ -1800,20 +1802,20 @@ EOF
 		# Did it work?
 		if test $? -eq 0 ; then
 		  ldd_output=`ldd conftest`
-		    libname=`eval \\$echo \"$libname_spec\"`
-		    deplib_matches=`eval \\$echo \"$library_names_spec\"`
-		    set dummy $deplib_matches
-		    deplib_match=$2
-		    if test `expr "$ldd_output" : ".*$deplib_match"` -ne 0 ; then
-		      newdeplibs="$newdeplibs $i"
-		    else
-		      droppeddeps=yes
-		      echo
-		      echo "*** Warning: This library needs some functionality provided by $i."
-		      echo "*** I have the capability to make that library automatically link in when"
-		      echo "*** you link to this library.  But I can only do this if you have a"
-		      echo "*** shared version of the library, which you do not appear to have."
-		    fi
+		  libname=`eval \\$echo \"$libname_spec\"`
+		  deplib_matches=`eval \\$echo \"$library_names_spec\"`
+		  set dummy $deplib_matches
+		  deplib_match=$2
+		  if test `expr "$ldd_output" : ".*$deplib_match"` -ne 0 ; then
+		    newdeplibs="$newdeplibs $i"
+		  else
+		    droppeddeps=yes
+		    echo
+		    echo "*** Warning: This library needs some functionality provided by $i."
+		    echo "*** I have the capability to make that library automatically link in when"
+		    echo "*** you link to this library.  But I can only do this if you have a"
+		    echo "*** shared version of the library, which you do not appear to have."
+		  fi
 		else
 		  droppeddeps=yes
 		  echo
@@ -2207,7 +2209,6 @@ EOF
 	    fi
 	  else
 	    eval flag=\"$hardcode_libdir_flag_spec\"
-
 	    rpath="$rpath $flag"
 	  fi
 	elif test -n "$runpath_var"; then
@@ -2244,7 +2245,6 @@ EOF
 	    fi
 	  else
 	    eval flag=\"$hardcode_libdir_flag_spec\"
-
 	    rpath="$rpath $flag"
 	  fi
 	elif test -n "$runpath_var"; then
@@ -2426,7 +2426,7 @@ static const void *lt_preloaded_setup() {
 	  fi
 
 	  pic_flag_for_symtable=
-          case "$host" in
+	  case "$host" in
 	  # compiling the symbol table file with pic_flag works around
 	  # a FreeBSD bug that causes programs to crash when -lm is
 	  # linked before any other PIC object.  But we must not use
