@@ -1,3 +1,8 @@
+1999-03-18  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
+
+	* ltconfig.in (cygwin, library_names_spec):  removed $libname.a.
+	Creating a dll with libtool no longer creates an import library.
+
 1999-03-16  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
 
 	* ltconfig.in (extract_expsyms_cmds): Create $objdir if it does
