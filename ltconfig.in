@@ -823,6 +823,13 @@ hardcode_minus_L=no
 hardcode_shlibpath_var=unsupported
 runpath_var=
 
+case "$host_os" in
+aix3* | aix4*)
+  # On AIX, the GNU linker works like the native linker.
+  with_gnu_ld=no
+  ;;
+esac
+
 ld_shlibs=yes
 if test "$with_gnu_ld" = yes; then
 
