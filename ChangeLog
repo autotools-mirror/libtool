@@ -1,3 +1,16 @@
+1999-03-18  Thomas Tanner  <tanner@gmx.de>
+
+	* NEWS: improved support for BeOS and Cygwin
+	* libltdl/ltdl.c: added two new error messages (cannot_open_error,
+	  cannot_close_error), use them where approriate,
+	  BeOS support (thanks to Xavier Pianet), on BeOS search modules
+	  additionally in ADDON_PATH
+	* libtool.m4: rewrote AC_CHECK_LIBM: BeOS and Cygwin don't have
+	  libm and *-ncr-sysv4.3* requires libmw
+	* ltconfig.in: don't check for LoadLibrary, hardcode dlopen
+	  configuration for BeOS and Cygwin
+	* ltmain.in: ignore -lm on BeOS and Cygwin, always ignore -lc
+	  
 1999-03-17  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* ltconfig.in (hpux*, hardcode_minus_L): should be no, we have +b

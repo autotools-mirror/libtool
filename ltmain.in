@@ -1010,6 +1010,17 @@ compiler."
 	;;
 
       -l*)
+	if test "$arg" = "-lm"; then
+	  case "$host" in
+	  *-*-cygwin* | *-*-beos*)
+	    # Ignore -lm on Cygwin and BeOS
+	    continue
+	    ;;
+	  esac	
+	elif test "$arg" = "-lc"; then
+	  # Always ignore -lc
+	  continue
+	fi
 	deplibs="$deplibs $arg"
 	;;
 
