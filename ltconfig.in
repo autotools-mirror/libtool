@@ -1603,8 +1603,6 @@ irix5* | irix6*)
     *-64|*"-64 ") libsuff=64 shlibsuff=64 libmagic=64-bit;;
     *) libsuff= shlibsuff= libmagic=never-match;;
     esac
-    # this will be overridden with pass_all, but let us keep it just in case
-    deplibs_check_method="file_magic ELF ${libmagic} MSB mips-[1234] dynamic lib MIPS - version 1"
     ;;
   esac
   shlibpath_var=LD_LIBRARY${shlibsuff}_PATH
