@@ -888,6 +888,7 @@ EOF
     no_install=no
     objs=
     non_pic_objects=
+    precious_files_regex=
     prefer_static_libs=no
     preload=no
     prev=
@@ -1060,6 +1061,11 @@ EOF
 	  ;;
 	inst_prefix)
 	  inst_prefix_dir="$arg"
+	  prev=
+	  continue
+	  ;;
+	precious_regex)
+	  precious_files_regex="$arg"
 	  prev=
 	  continue
 	  ;;
@@ -1438,6 +1444,11 @@ EOF
 	;;
 
       -o) prev=output ;;
+
+      -precious-files-regex)
+	prev=precious_regex
+	continue
+	;;
 
       -release)
 	prev=release
@@ -3151,6 +3162,10 @@ EOF
 	    *.$objext)
 	       ;;
 	    $output_objdir/$outputname | $output_objdir/$libname.* | $output_objdir/${libname}${release}.*)
+	       if echo $p | $EGREP -e "$precious_files_regex" >/dev/null 2>&1
+	       then
+		 continue
+	       fi
 	       removelist="$removelist $p"
 	       ;;
 	    *) ;;
@@ -6507,6 +6522,8 @@ The following components of LINK-COMMAND are treated specially:
   -no-undefined     declare that a library does not refer to external symbols
   -o OUTPUT-FILE    create OUTPUT-FILE from the specified objects
   -objectlist FILE  Use a list of object files found in FILE to specify objects
+  -precious-files-regex REGEX
+                    don't remove output files matching REGEX
   -release RELEASE  specify package release information
   -rpath LIBDIR     the created library will eventually be installed in LIBDIR
   -R[ ]LIBDIR       add LIBDIR to the runtime path of programs and libraries

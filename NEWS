@@ -33,6 +33,9 @@ New in 1.5b: 2004-??-??; CVS version 1.5a, Libtool team:
 * Extracting symbols from an import library on cygwin and win32 now works.
 * Recognises the 'R' symbol type on Solaris so read-only symbols can be
   exported.
+* New link mode option `-precious-files-regex' to prevent accidental removal
+  of files you want to keep, such as test coverage data, from the temporary
+  output directory.
 * Initial support for amigaos-ppc.
 * Bug fixes.
 

@@ -1,3 +1,12 @@
+2004-01-11  Scott James Remnant  <scott@netsplit.com>
+
+	* ltmain.in: new -precious-files-regex link mode option
+	to prevent removal of matching files from the temporary
+	output directory.
+	(Debian Bug #221420)
+	* doc/libtool.texi: document the new option.
+	* NEWS: announce the new option.
+
 2004-01-08  Gary V. Vaughan  <gary@gnu.org>
 
 	* libtoolize.in (func_copy_all_files): s/xfunc_copy/Xfunc_copy.
