@@ -1,4 +1,8 @@
-2001-10-24  H.J. Lu <hjl@gnu.org>
+2001-10-24 Kevin Ryde  <user42@zip.com.au>
+
+	*libtool.m4 (AC_LIBTOOL_PROG_LD_SHLIBS): Remove a stray ' quote.
+
+2001-10-24 H.J. Lu  <hjl@gnu.org>
 
 	* ltmain.sh: Allow link against an archive when building a
 	shared library.
