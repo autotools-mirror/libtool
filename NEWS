@@ -1,6 +1,6 @@
 NEWS - list of user-visible changes between releases of GNU Libtool
 
-New:
+New in 1.0j - 1998-03-05, Gordon Matzigkeit:
 * http://www.profitpress.com/libtool/ is libtool's homepage.
 * Use the `AM_DISABLE_SHARED' or `AM_DISABLE_STATIC'
   macros instead of the `enable_shared' or `enable_static' variables

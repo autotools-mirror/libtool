@@ -1,5 +1,4 @@
 # ltmain.sh - Provide generalized library-building support services.
-# @configure_input@
 # Copyright (C) 1996-1998 Free Software Foundation, Inc.
 # Gordon Matzigkeit <gord@gnu.ai.mit.edu>, 1996
 #
@@ -228,12 +227,20 @@ if test -z "$show_help"; then
 
     for arg
     do
-      # The only flag that cannot be specified is the output filename.
-      if test "X$arg" = "X-o"; then
+      # Accept any command-line options.
+      case "$arg" in
+      -o)
 	$echo "$modename: you cannot specify the output filename with \`-o'" 1>&2
 	$echo "$help" 1>&2
 	exit 1
-      fi
+	;;
+
+      -static)
+	build_libtool_libs=no
+	build_old_libs=yes
+	continue
+	;;
+      esac
 
       # Accept the current argument as the source file.
       lastarg="$srcfile"
@@ -793,6 +800,12 @@ if test -z "$show_help"; then
       exit 1
     fi
 
+    if test -n "$vinfo" && test -n "$release"; then
+      $echo "$modename: you cannot specify both \`-version-info' and \`-release'" 1>&2
+      $echo "$help" 1>&2
+      exit 1
+    fi
+
     oldlib=
     oldobjs=
     case "$output" in
@@ -848,10 +861,6 @@ if test -z "$show_help"; then
         $echo "$modename: libtool library \`$output' may not depend on uninstalled libraries:$link_against_libtool_libs" 1>&2
         exit 1
       fi
-
-      # Add libc to deplibs on all systems.
-      dependency_libs="$deplibs"
-      deplibs="$deplibs -lc"
 
       if test -n "$dlfiles$dlprefiles"; then
         $echo "$modename: warning: \`-dlopen' is ignored while creating libtool libraries" 1>&2
@@ -988,6 +997,10 @@ if test -z "$show_help"; then
         # Don't allow undefined symbols.
         allow_undefined_flag="$no_undefined_flag"
       fi
+
+      # Add libc to deplibs on all systems.
+      dependency_libs="$deplibs"
+      deplibs="$deplibs -lc"
 
       if test "$build_libtool_libs" = yes; then
         # Get the real and link names of the library.

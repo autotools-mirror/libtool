@@ -3,7 +3,7 @@
 
 # Extensions taken from the ones that Automake recognizes, plus Objective C,
 # and GNU Ada.
-extensions="C F S ada ads adb asm c c++ cc cpp cxx f f90 for m s"
+extensions="C F S ada adb ads asm c c++ cc cpp cxx f f90 for m s"
 bad_names="foo."
 
 # Test script header.

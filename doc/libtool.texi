@@ -1472,6 +1472,25 @@ libraries.  You can modify these defaults by setting calling either the
 AM_DISABLE_SHARED
 AM_PROG_LIBTOOL
 @end example
+
+The user may specify a modified form of @samp{--enable-shared} and
+@samp{--enable-static} to choose whether shared or static libraries are
+built based on the name of the package.  For example, to have shared
+@samp{bfd} and @samp{gdb} libraries built, but not shared @samp{libg++},
+you can run all three @code{configure} scripts as follows:
+
+@example
+trick$ ./configure --enable-shared=bfd,gdb
+@end example
+
+In general, specifying @samp{--enable-shared=@var{pkgs}} is the same as
+specifying @samp{--enable-shared} to every package named in the
+@var{pkgs} list, and @samp{--disable-shared} to every other package.
+The @samp{--enable-static=@var{pkgs}} flag behaves similarly, except it
+translates into @samp{--enable-static} and @samp{--disable-static}.
+
+The package name @samp{default} matches any packages which have not set
+their name in the @code{PACKAGE} environment variable.
 @end defmac
 
 @defmac AM_DISABLE_SHARED
@@ -1858,11 +1877,11 @@ library interface versions, because the library interface rarely changes
 at the same time that the release number does, and the library suffix is
 never the same across all platforms.
 
-So, in order to accomodate both views, you should use the
-@samp{-release} flag in order to set any release information.  For the
-@file{libbfd} example, the next release which uses libtool should be
-built with @samp{-release 2.9.0}, which will produce the following files
-on Linux:
+So, in order to accomodate both views, you can use the @samp{-release}
+flag in order to set release information for libraries which you do not
+want to use @samp{-version-info}.  For the @file{libbfd} example, the
+next release which uses libtool should be built with @samp{-release
+2.9.0}, which will produce the following files on Linux:
 
 @example
 trick$ @kbd{ls /usr/lib/libbfd*}
@@ -2093,10 +2112,10 @@ systems.
 
 Some platforms, such as AIX, do not even allow you this flexibility.  In
 order to build a shared library, it must be entirely self-contained
-(i.e. have no references to external symbols), and you need to specify
-the @var{-no-undefined} flag to allow a shared library to be built.  By
-default, libtool builds only static libraries on these kinds of
-platforms.
+(that is, have no references to external symbols), and you need to
+specify the @var{-no-undefined} flag to allow a shared library to be
+built.  By default, libtool builds only static libraries on these kinds
+of platforms.
 
 @node Dlopened modules
 @chapter Dlopened modules

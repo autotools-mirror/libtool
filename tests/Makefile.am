@@ -4,9 +4,8 @@ AUTOMAKE_OPTIONS = gnits
 
 makesequence = demo-make.test demo-exec.test \
 	demo-inst.test demo-unst.test hardcode.test
-TESTS =	assign.test demo-conf.test $(makesequence) \
-	if.test link.test link-2.test nomode.test \
-	quote.test suffix.test test-e.test
+TESTS =	demo-conf.test $(makesequence) link.test link-2.test nomode.test \
+	quote.test sh.test suffix.test
 
 # Be sure to reexport important environment variables.
 TESTS_ENVIRONMENT = CC="$(CC)" CFLAGS="$(CFLAGS)" CPPFLAGS="$(CPPFLAGS)" \

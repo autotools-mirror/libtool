@@ -1,7 +1,6 @@
 #! /bin/sh
 
 # ltconfig - Create a system-specific libtool.
-# @configure_input@
 # Copyright (C) 1996-1998 Free Software Foundation, Inc.
 # Gordon Matzigkeit <gord@gnu.ai.mit.edu>, 1996
 #
@@ -167,7 +166,7 @@ EOM
     if test -z "$ltmain"; then
       ltmain="$option"
     elif test -z "$host"; then
-# FIXME This generates an unnecessary warning for sparc-sun-solaris4.1.3_U1
+# This generates an unnecessary warning for sparc-sun-solaris4.1.3_U1
 #      if test -n "`echo $option| sed 's/[-a-z0-9.]//g'`"; then
 #        echo "$progname: warning \`$option' is not a valid host type" 1>&2
 #      fi
@@ -515,6 +514,12 @@ else
     pic_flag='-PIC'
     link_static_flag='-Bstatic'
     wl='-Qoption ld '
+    ;;
+
+  sysv4.2uw2*)
+    pic_flag='-KPIC'
+    link_static_flag='-Bstatic'
+    wl='-Wl,'
     ;;
 
   uts4*)
@@ -886,7 +891,7 @@ if test -z "$NM"; then
   *)
     IFS="${IFS= 	}"; ac_save_ifs="$IFS"; IFS="${IFS}:"
     for ac_dir in /usr/ucb /usr/ccs/bin $PATH /bin; do
-      test -z "$ac_dir" && dir=.
+      test -z "$ac_dir" && ac_dir=.
       if test -f $ac_dir/nm; then
         # Check to see if the nm accepts a BSD-compat flag.
         # Adding the `sed 1q' prevents false positives on HP-UX, which says:
@@ -1117,14 +1122,14 @@ amigaos*)
 
 freebsd2* | freebsd3*)
   version_type=sunos
-  library_names_spec='$libname.so.$versuffix $libname.so'
+  library_names_spec='${libname}${release}.so.$versuffix $libname.so'
   finish_cmds='PATH="$PATH:/sbin" ldconfig -m $libdir'
   shlibpath_var=LD_LIBRARY_PATH
   ;;
 
 gnu*)
   version_type=sunos
-  library_names_spec='$libname.so.$versuffix'
+  library_names_spec='${libname}${release}.so.$versuffix'
   shlibpath_var=LD_LIBRARY_PATH
   ;;
 
@@ -1173,7 +1178,7 @@ linux-gnu*)
 
 netbsd* | openbsd*)
   version_type=sunos
-  library_names_spec='$libname.so.$versuffix'
+  library_names_spec='${libname}${release}.so.$versuffix'
   finish_cmds='PATH="$PATH:/sbin" ldconfig -m $libdir'
   shlibpath_var=LD_LIBRARY_PATH
   ;;
@@ -1208,8 +1213,15 @@ solaris2*)
 
 sunos4*)
   version_type=sunos
-  library_names_spec='$libname.so.$versuffix'
+  library_names_spec='${libname}${release}.so.$versuffix'
   finish_cmds='PATH="$PATH:/usr/etc" ldconfig $libdir'
+  shlibpath_var=LD_LIBRARY_PATH
+  ;;
+
+sysv4.2uw2*)
+  version_type=linux
+  library_names_spec='${libname}${release}.so.$versuffix ${libname}${release}.so.$major $libname.so'
+  soname_spec='${libname}${release}.so.$major'
   shlibpath_var=LD_LIBRARY_PATH
   ;;
 

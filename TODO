@@ -8,6 +8,10 @@ compiler type.
 * Alexandre Oliva suggests that we hardcode paths into libraries, as
 well as binaries:  `... -Wl,-soname -Wl,/tmp/libtest.so.0 ...'.
 
+* Tom Lane adds that HP-UX's linker, at least, distinguishes between
+global function and global variable references.  This means that we
+cannot declare every symbol as `extern char'.  Find a workaround.
+
 In the future:
 **************
 

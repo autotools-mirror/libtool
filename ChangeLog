@@ -1,4 +1,45 @@
-Mon Feb 16 12:44:26 1998  Gordon Matzigkeit  <gord@profitpress.com>
+1998-03-05  Gordon Matzigkeit  <gord@profitpress.com>
+
+	* libtool.m4 (AM_ENABLE_SHARED, AM_ENABLE_STATIC): Add support for
+ 	the `default' package, so that people can control unnamed
+ 	packages.
+
+1998-03-01  Gordon Matzigkeit  <gord@profitpress.com>
+
+	* ltconfig.in: Port to UnixWare 2.x.  From Christopher Olsen.
+
+1998-02-25  Gordon Matzigkeit  <gord@profitpress.com>
+
+	* ltmain.in (compile): For consistency, honour the `-static' flag
+ 	during compilation.
+
+1998-02-23  Brendan Kehoe  <brendan@cygnus.com>
+
+	* libtool.m4 (AM_ENABLE_SHARED, AM_ENABLE_STATIC): For
+ 	--enable-shared, heed the value of $PACKAGE from AM_INIT_AUTOMAKE
+ 	if given as the argument for the library to be built shared.
+
+1998-02-20  Gordon Matzigkeit  <gord@profitpress.com>
+
+	* libtool.m4, ltconfig.in (NM): Fix up a typo confusion between
+ 	$ac_dir and $dir.  Reported by Akim Demaille.
+
+	* ltmain.in (link): Don't allow both `-version-info' and
+	`-release'.  Reported by Danny Backx.
+
+1998-02-18  Gordon Matzigkeit  <gord@profitpress.com>
+
+	* Makefile.am (noinst_SCRIPTS): Remove lineno from distribution.
+
+	* lineno: Remove from distribution, as it is no longer needed.
+
+	* Makefile.am ($(srcdir)/ltconfig.in, $(srcdir)/ltmain.sh):
+ 	Rewrite these rules not to use config.status or lineno.  This
+ 	makes things simpler, and reduces dependencies, so that the
+ 	scripts are rebuilt and installed in srcdir only when necessary.
+  	Reported by Stephan Kulow.
+
+1998-02-16  Gordon Matzigkeit  <gord@profitpress.com>
 
 	* libtool.m4, ltmain.in, ltconfig.in: Correctly identify absolute
  	directory names on MS-DOS.  Suggested by Bob Friesenhahn.
@@ -11,7 +52,7 @@ Mon Feb 16 12:44:26 1998  Gordon Matzigkeit  <gord@profitpress.com>
  	from taking forever to look at a 10MB binary on Solaris.  From
  	Stephan Kulow.
 
-Wed Feb 11 22:20:33 1998  Gordon Matzigkeit  <gord@profitpress.com>
+1998-02-11  Gordon Matzigkeit  <gord@profitpress.com>
 
 	* ltconfig.in (no_undefined_flag): Add a flag to declare under
 	Solaris that the library should not have any undefined
@@ -19,13 +60,13 @@ Wed Feb 11 22:20:33 1998  Gordon Matzigkeit  <gord@profitpress.com>
 
 	* ltmain.in (mkdir): Fix one more mkdir race.  From H.J. Lu.
 
-Sun Feb  8 18:16:41 1998  Gordon Matzigkeit  <gord@profitpress.com>
+1998-02-08  Gordon Matzigkeit  <gord@profitpress.com>
 
 	* ltconfig.in, ltmain.in (striplib, old_striplib): Ditto.
 
 	* ltconfig.in (profile_flag_pattern): Get rid of dead code.
 
-Sat Feb  7 11:49:33 1998  Gordon Matzigkeit  <gord@profitpress.com>
+1998-02-07  Gordon Matzigkeit  <gord@profitpress.com>
 
 	* libtool.m4 (AM_ENABLE_SHARED, AM_ENABLE_STATIC): New macros to
  	modify the `--enable-shared' and `--enable-static' defaults in the
@@ -33,12 +74,12 @@ Sat Feb  7 11:49:33 1998  Gordon Matzigkeit  <gord@profitpress.com>
  	`enable_shared' and `enable_static' variables did.  Reported by
  	Bob Friesenhahn.
 
-Sat Feb  7 16:16:02 1998  Samuel Tardieu  <sam@inf.enst.fr>
+1998-02-07  Samuel Tardieu  <sam@inf.enst.fr>
 
 	* ltmain.in: Recognize .ada, .ads and .adb as known suffixes (they
 	are used by GNAT, the GNU Ada compiler).
 
-Fri Feb  6 00:20:41 1998  Gordon Matzigkeit  <gord@profitpress.com>
+1998-02-06  Gordon Matzigkeit  <gord@profitpress.com>
 
 	* ltconfig.in: Turn on IRIX shared libraries again!
 
@@ -50,17 +91,17 @@ Fri Feb  6 00:20:41 1998  Gordon Matzigkeit  <gord@profitpress.com>
  	echo(1).  So, use `echo "X$arg" | sed -e 's/^X//' ...' everywhere,
 	via the $Xsed convenience variable.  Suggested by H.J. Lu.
 
-Mon Feb  2 12:24:22 1998  Gordon Matzigkeit  <gord@profitpress.com>
+1998-02-02  Gordon Matzigkeit  <gord@profitpress.com>
 
 	* ltconfig.in: Turn off IRIX shared library support until 32-bit
 	and 64-bit ABI differences can be resolved.
 
-Wed Jan 28 14:33:04 1998  Gordon Matzigkeit  <gord@profitpress.com>
+1998-01-28  Gordon Matzigkeit  <gord@profitpress.com>
 
 	* libtool.m4 (LD): Reverse yesterday's change because `-old_ld'
 	isn't accepted by GCC.
 
-Tue Jan 27 09:59:19 1998  Gordon Matzigkeit  <gord@profitpress.com>
+1998-01-27  Gordon Matzigkeit  <gord@profitpress.com>
 
 	* ltconfig.in (soname_spec): Add in user-specified release numbers
 	for every host system that supports an soname that differs from
@@ -73,7 +114,7 @@ Tue Jan 27 09:59:19 1998  Gordon Matzigkeit  <gord@profitpress.com>
  	fix a typo because `-version-info' takes only 3 args.  From
  	H.J. Lu.
 
-Sun Jan 25 12:44:50 1998  Gordon Matzigkeit  <gord@profitpress.com>
+1998-01-25  Gordon Matzigkeit  <gord@profitpress.com>
 
 	* ltconfig.in (library_names_spec): On Linux, use the
  	user-specified release.
@@ -82,7 +123,7 @@ Sun Jan 25 12:44:50 1998  Gordon Matzigkeit  <gord@profitpress.com>
  	the library using the `-release' flag.  Suggested by H.J. Lu and
  	Ian Lance Taylor.
 
-Mon Jan 19 10:03:03 1998  Gordon Matzigkeit  <gord@profitpress.com>
+1998-01-19  Gordon Matzigkeit  <gord@profitpress.com>
 
 	* ltconfig.in (old_postuninstall_cmds): Reorder so that chmod
 	happens after ranlib.  From Markus F.X.J. Oberhumer.
@@ -92,24 +133,24 @@ Mon Jan 19 10:03:03 1998  Gordon Matzigkeit  <gord@profitpress.com>
 	(link): Recognize `.a' files again.  Suggested by Pieter
 	Schoenmakers.
 
-Sun Jan 18 15:16:34 1998  Gordon Matzigkeit  <gord@profitpress.com>
+1998-01-18  Gordon Matzigkeit  <gord@profitpress.com>
 
 	* ltmain.in (compile): Recognize `.asm' extension, for use with
 	the nasm assembler.  From Markus F.X.J. Oberhumer.
 
-Mon Jan 12 14:01:06 1998  Gordon Matzigkeit  <gord@profitpress.com>
+1998-01-12  Gordon Matzigkeit  <gord@profitpress.com>
 
 	* ltconfig.in (runpath_var): Use instead of
 	`hardcode_runpath_var'.
 
-Sun Jan 11 11:55:32 1998  Gordon Matzigkeit  <gord@profitpress.com>
+1998-01-11  Gordon Matzigkeit  <gord@profitpress.com>
 
 	* ltmain.in (finish): Add a better --finish message.  Suggested by
 	Kenneth Albanowski.
 
 	* ltconfig.in, ltmain.in: Fix a few typos.
 
-Sat Jan  3 10:03:41 1998  Gordon Matzigkeit  <gord@profitpress.com>
+1998-01-03  Gordon Matzigkeit  <gord@profitpress.com>
 
 	* ltmain.in (link): Quote the definition of $echo in the wrapper
 	script.
@@ -121,18 +162,18 @@ Sat Jan  3 10:03:41 1998  Gordon Matzigkeit  <gord@profitpress.com>
 	* ltmain.in (install): Don't print silly `library stripping'
 	warnings.  Reported by François Pinard.
 
-Fri Dec 19 08:24:32 1997  Gordon Matzigkeit  <gord@profitpress.com>
+1997-12-19  Gordon Matzigkeit  <gord@profitpress.com>
 
 	* ltmain.in: Don't forget to quote the CDPATH substitution.  From
  	Tor Lillqvist.
 
-Thu Dec 18 07:10:27 1997  Gordon Matzigkeit  <gord@profitpress.com>
+1997-12-18  Gordon Matzigkeit  <gord@profitpress.com>
 
 	* ltconfig.in, ltmain.in (CDPATH): Unset this environment variable
  	so that HP-UX shells, at least, don't print out the directory name
  	after a `cd' command.  From Tor Lillqvist.
 
-Wed Dec 10 23:00:12 1997  Gordon Matzigkeit  <gord@gnu.org>
+1997-12-10  Gordon Matzigkeit  <gord@gnu.org>
 
 	* demo/Makefile.am (hardcode): Change a bunch of references to
 	`$(LIBS)' to `-lm', since we no longer put -lm in LIBS.
@@ -150,7 +191,7 @@ Wed Dec 10 23:00:12 1997  Gordon Matzigkeit  <gord@gnu.org>
  	restriction to the generated libtool script.  Reported by Stefan
  	Westerfeld.
 
-Fri Dec  5 00:21:07 1997  Gordon Matzigkeit  <gord@gnu.org>
+1997-12-05  Gordon Matzigkeit  <gord@gnu.org>
 
 	* ltconfig.in (thisdir): Quote $echo in the generated libtool
 	script for HP-UX.  From Markus F.X.J. Oberhumer.
@@ -161,7 +202,7 @@ Fri Dec  5 00:21:07 1997  Gordon Matzigkeit  <gord@gnu.org>
 	* ltconfig.in (link_static_flag): Don't quote ${wl} on HP-UX
  	because link_static_flag is never evaled.  From Eric Backus.
 
-Mon Dec  1 00:50:37 1997  Gordon Matzigkeit  <gord@gnu.org>
+1997-12-01  Gordon Matzigkeit  <gord@gnu.org>
 
 	* demo/Makefile.am (helldl_DEPENDENCIES): Add `libhello.la' to our
 	dependencies so that parallel builds work correctly.  From Jim
@@ -174,7 +215,7 @@ Mon Dec  1 00:50:37 1997  Gordon Matzigkeit  <gord@gnu.org>
 	* ltconfig.in (ltecho): We need special handling to quote the
 	`echo' variable itself.  From Alexandre Oliva.
 
-Sat Nov 29 11:19:18 1997  Gordon Matzigkeit  <gord@gnu.org>
+1997-11-29  Gordon Matzigkeit  <gord@gnu.org>
 
 	* ltconfig.in (COLLECT_NAMES): Enable this workaround for a broken
  	collect2 only on AIX 3.  This avoids problems on other AIX
@@ -191,7 +232,7 @@ Sat Nov 29 11:19:18 1997  Gordon Matzigkeit  <gord@gnu.org>
 	* ltconfig.in (echo): Include this definition in the generated
 	libtool script.
 
-Fri Nov 28 09:28:02 1997  Gordon Matzigkeit  <gord@gnu.org>
+1997-11-28  Gordon Matzigkeit  <gord@gnu.org>
 
 	* ltconfig.in, libtool.m4 (NM): Add /usr/ccs/bin to the PATH
 	before checking.  From Kaveh R. Ghazi.
@@ -201,7 +242,7 @@ Fri Nov 28 09:28:02 1997  Gordon Matzigkeit  <gord@gnu.org>
 	This makes Linux behave like other systems, which is more in line
 	with what libtool needs.
 
-Thu Nov 27 08:53:05 1997  Gordon Matzigkeit  <gord@gnu.org>
+1997-11-27  Gordon Matzigkeit  <gord@gnu.org>
 
 	* ltmain.in: Change a whole bunch of `progname' variables to
 	`modename'.  This is for clarity, and to fix a tiny typo in finish
@@ -235,7 +276,7 @@ Thu Nov 27 08:53:05 1997  Gordon Matzigkeit  <gord@gnu.org>
 	addresses to __ptr_t.  This fixes a bug due to a strict IRIX
 	compiler.  Suggested by Kaveh R. Ghazi.
 
-Sun Nov 23 09:29:58 1997  Gordon Matzigkeit  <gord@gnu.org>
+1997-11-23  Gordon Matzigkeit  <gord@gnu.org>
 
 	* ltmain.in (echo): For aesthetics, avoid using `$echo' when
  	`echo' will do *exactly* the same thing.  This prevents ugly
@@ -257,7 +298,7 @@ Sun Nov 23 09:29:58 1997  Gordon Matzigkeit  <gord@gnu.org>
 	what you get for testing obscure code paths and forgetting to
 	revert to the original version.  Reported by Danny Backx.
 
-Fri Nov 14 10:44:07 1997  Gordon Matzigkeit  <gord@gnu.org>
+1997-11-14  Gordon Matzigkeit  <gord@gnu.org>
 
 	* ltconfig.in (hardcode_libdir_flag_spec): Set to `-R' for FreeBSD
  	2.2.  From Sean Kelly.
@@ -267,12 +308,12 @@ Fri Nov 14 10:44:07 1997  Gordon Matzigkeit  <gord@gnu.org>
 	(export_dynamic_flag_spec): On HP-UX, add the `${wl}-E'
 	export_dynamic_flag_spec.  Reported by Matthias Hoelzer.
 
-Tue Nov 11 15:05:58 1997  Gordon Matzigkeit  <gord@gnu.org>
+1997-11-11  Gordon Matzigkeit  <gord@gnu.org>
 
 	* ltconfig.in, ltmain.in (sed_quote_subst): Oops.  We forgot to
  	quote backticks.  Reported by Joop van de Wege.
 
-Sun Nov  9 18:36:23 1997  Gordon Matzigkeit  <gord@gnu.org>
+1997-11-09  Gordon Matzigkeit  <gord@gnu.org>
 
 	* ltconfig.in (symcode): On IRIX, don't extract undefined
 	symbols.  When a function is inlined by G++, references to it are
@@ -280,12 +321,12 @@ Sun Nov  9 18:36:23 1997  Gordon Matzigkeit  <gord@gnu.org>
 	symbol file causes undefined references, because there are
 	actually no matching global symbols.  Reported by Paul Kendall.
 
-Sat Nov  8 08:11:26 1997  Gordon Matzigkeit  <gord@gnu.org>
+1997-11-08  Gordon Matzigkeit  <gord@gnu.org>
 
 	* ltconfig.in: Don't forget to redirect the COLLECT_NAMES libtool
 	script fragment to the generated libtool, rather than to stdout.
 
-Fri Nov  7 11:31:22 1997  Gordon Matzigkeit  <gord@gnu.org>
+1997-11-07  Gordon Matzigkeit  <gord@gnu.org>
 
 	* libtool.m4 (LD): Add a more sophisticated test to determine the
  	ABI flag on IRIX 6.  Suggested by Lars Hecking and Ian Lance
@@ -300,7 +341,7 @@ Fri Nov  7 11:31:22 1997  Gordon Matzigkeit  <gord@gnu.org>
 	* ltconfig.in (allow_undefined_flag): OSF/1 3.x also requires a
  	wildcard argument to `-expect_unresolved'.  From Stephan Kulow.
 
-Thu Nov  6 08:11:25 1997  Gordon Matzigkeit  <gord@gnu.org>
+1997-11-06  Gordon Matzigkeit  <gord@gnu.org>
 
 	* ltmain.in (link): Use libname_spec.
 
@@ -331,7 +372,7 @@ Thu Nov  6 08:11:25 1997  Gordon Matzigkeit  <gord@gnu.org>
  	bug that will empty base_compile unless we do this dummy
  	assignment.  From Marc van Kempen.
 
-Wed Oct 22 10:27:45 1997  Gordon Matzigkeit  <gord@gnu.org>
+1997-10-22  Gordon Matzigkeit  <gord@gnu.org>
 
 	* libtool.m4 (libtool_shared, libtool_static): Fixed logic error
 	to reenable override of libtool's defaults by setting
@@ -341,7 +382,7 @@ Wed Oct 22 10:27:45 1997  Gordon Matzigkeit  <gord@gnu.org>
 	* ltmain.in (link): Add explicit support for compiler options that
  	begin with `+'.  Reported by Aubert Pierre.
 
-Mon Oct 20 13:21:14 1997  Gordon Matzigkeit  <gord@gnu.org>
+1997-10-20  Gordon Matzigkeit  <gord@gnu.org>
 
 	* ltmain.in: Silly me.  Change a bunch of occurances of "* $dir *"
 	into *" $dir "*.
@@ -356,7 +397,7 @@ Mon Oct 20 13:21:14 1997  Gordon Matzigkeit  <gord@gnu.org>
  	double-evaled, so it should not be double quoted.  From Mark
  	Kettenis.
 
-Sun Oct 19 12:48:14 1997  Gordon Matzigkeit  <gord@gnu.org>
+1997-10-19  Gordon Matzigkeit  <gord@gnu.org>
 
 	* ltconfig.in (LD): Same as below.
 
@@ -374,13 +415,13 @@ Sun Oct 19 12:48:14 1997  Gordon Matzigkeit  <gord@gnu.org>
 	* ltmain.in (link): Only `eval' export_dynamic_flag_spec if it is
 	not empty.  Reported by Stephan Kulow.
 
-Sat Oct 18 00:44:14 1997  Gordon Matzigkeit  <gord@gnu.org>
+1997-10-18  Gordon Matzigkeit  <gord@gnu.org>
 
 	* ltconfig.in (objdir): Use the .libs directory on all systems for
  	which that name is valid, and _libs on the others (like MS-DOS).
   	Suggested by Juergen Erhard.
 
-Tue Oct 14 10:19:18 1997  Gordon Matzigkeit  <gord@gnu.org>
+1997-10-14  Gordon Matzigkeit  <gord@gnu.org>
 
 	* ltmain.in (link): Added a bit more inter-language support to the
  	symbol file generation process.
@@ -389,13 +430,13 @@ Tue Oct 14 10:19:18 1997  Gordon Matzigkeit  <gord@gnu.org>
 	mandatory arguments to linker flags.  Reported by Michael
 	Tiemann.
 
-Thu Oct  9 12:56:13 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-10-09  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltmain.in (link): Change the wrapper script to follow symlinks
 	in order to find thisdir.  This should put the final nail in the
 	coffin for problems with wrapper scripts.  From Ian Lance Taylor.
 
-Tue Oct  7 10:49:29 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-10-07  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltmain.in: Change a few `$echo' commands into `$show' to make
 	--silent mode behave as advertised.
@@ -416,27 +457,27 @@ Tue Oct  7 10:49:29 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 	* demo/Makefile.am (hc-libflag): Add rules to make this binary for
 	hardcode.test.
 
-Wed Sep 24 19:54:53 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-09-24  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltconfig.in (LD): As with libtool.m4, don't override LD.
 	Do a whole bunch of ac_t quoting.
 
-Wed Sep 24 11:11:01 1997  Ian Lance Taylor  <ian@cygnus.com>
+1997-09-24  Ian Lance Taylor  <ian@cygnus.com>
 
 	* libtool.m4 (AM_PROG_LD): Don't override LD in the environment.
 
-Sun Sep 21 13:13:06 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-09-21  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* libtool.m4, ltconfig.in (NM): Arguments to the for loop must be
 	whitespace separated.  This fixes a bug under FreeBSD's /bin/sh.
 	From George Scott.
 
-Sat Sep 20 13:59:47 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-09-20  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltmain.in (deplibs): When building shared libraries, always add
 	-lc to deplibs.  Reported by Andreas Jellinghaus.
 
-Mon Sep 15 07:08:35 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-09-15  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltconfig.in, ltmain.in (COLLECT_NAMES): If the COLLECT_NAMES
 	environment variable has not been set, set it to empty.  This
@@ -447,7 +488,7 @@ Mon Sep 15 07:08:35 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
  	Changed objdir variable .libs to _libs.  This is another MS-DOS
  	portability fix.  Suggested by Robert Hoehne.
 
-Sat Sep 13 11:41:44 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-09-13  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltconfig.in, ltmain.in (hardcode_minusL): Fix typo by renaming
  	hardcode_minusL to hardcode_minus_L.  Also add FreeBSD
@@ -465,12 +506,12 @@ Sat Sep 13 11:41:44 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 	portability problem (on MS-DOS, of all places!).  From Robert
 	Hoehne.
 
-Thu Sep 11 21:14:26 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-09-11  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltmain.sh.in (link): Do not transform libtool objects to regular
 	objects if we did not build old libs.  Reported by Tomas Hiller.
 
-Fri Sep  5 13:11:38 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-09-05  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* demo/Makefile.am (hell_debug_LDFLAGS): Change hell.static to
 	hell.debug in order to reflect the new static linking semantics.
@@ -486,20 +527,20 @@ Fri Sep  5 13:11:38 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 	(global_symbol_pipe): Delete symbols that are not valid C
 	identifiers.  Reported by Johan Danielsson and Bengt Martensson.
 
-Thu Sep  4 21:53:08 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-09-04  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltmain.sh.in (echo): Quote all the uses of `echo' in all eval
 	statements.  Reported by Bengt Martensson and Alexandre Oliva.
 	(echo): Need to surround test args with double quotes, or the echo
 	test fails on Digital Unix 4.0.  From Todd Kover.
 
-Thu Aug 28 20:58:56 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-08-28  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltmain.sh.in (echo): Change test to one that uses printf.
 	This works on AIX, which has the same problems that Solaris does,
 	but no working echo program.
 
-Wed Aug 27 09:54:21 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-08-27  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltmain.sh.in (link): Make sure that compile_command and
  	finalize_command are always evaled.  Quote any unknown linker
@@ -521,23 +562,23 @@ Wed Aug 27 09:54:21 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 	* ltmain.sh.in (link): Quote finalize_command before putting it in
  	the wrapper script.
 
-Tue Aug 26 13:32:19 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-08-26  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltmain.sh.in (sed_quote_subst): Change the quoting procedure
  	again.  I think that the new one is robust for *all* characters,
  	including whitespace and metacharacters.
 
-Mon Aug 25 10:54:14 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-08-25  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltmain.sh.in: Change quoting procedure because some shells
  	cannot handle `]' in scan sets.  From Ian Dall.
 
-Fri Aug 22 11:00:58 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-08-22  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltmain.sh.in (execute): Added -dlopen flag handling.  Suggested
 	by Alexandre Oliva.
 
-Thu Aug 21 00:40:45 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-08-21  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltmain.sh.in (link): Change executable wrapper to fix up value
 	of thisdir, as well as progdir, if the $0 path doesn't work.  This
@@ -548,7 +589,7 @@ Thu Aug 21 00:40:45 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
  	shlibpath_var, which allows easy debugging of uninstalled
  	executables and libraries.  Suggested by Kenneth Albanowski.
 
-Wed Aug 20 10:51:02 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-08-20  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* Makefile.am ($(srcdir)/ltconfig): Use lineno.
 
@@ -561,7 +602,7 @@ Wed Aug 20 10:51:02 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 	incorporates the results of `gcc -print-program-name=ld'.
 	Suggested by Alexandre Oliva.
 
-Thu Aug 14 09:30:47 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-08-14  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltmain.sh.in: Accept `--quiet' and `--silent' flags to turn off
  	command echoing.  From Juergen A. Erhard.
@@ -573,7 +614,7 @@ Thu Aug 14 09:30:47 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
  	any) so that we don't get those frustrating duplicate error
  	messages.
 
-Tue Aug 12 09:36:59 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-08-12  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltconfig.in: Added messages to config.log to describe what sort
  	of test we are running.
@@ -581,7 +622,7 @@ Tue Aug 12 09:36:59 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
  	bugs reported using the cc bundled with HP-UX 10.  Suggested by
  	Bruno Haible and Akim Demaille.
 
-Fri Aug  1 10:06:55 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-08-01  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltmain.sh.in (link): Add -dlopen and -dlpreopen support for
 	libtool objects.  This means that dlopened modules no longer need
@@ -593,14 +634,14 @@ Fri Aug  1 10:06:55 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 	* libtool.m4 (LD): Always add `-n32' to the linker if we are using
 	GCC on IRIX 6.  Reported by Ian Lance Taylor.
 
-Wed Jul 30 13:11:09 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-07-30  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* libtool.m4 (AM_PROG_LIBTOOL): Explicitly check enable_shared and
  	enable_static rather than just enableval.  This allows
  	configure.in scripts to set their own defaults.  Suggested by
  	Tommy Reilly.
 
-Tue Jul 29 11:52:10 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-07-29  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltmain.sh.in: Add NLS environment variable handling copied from
 	ltconfig.in.  Reported by Akim Demaille.
@@ -618,7 +659,7 @@ Tue Jul 29 11:52:10 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
  	if the list wasn't both sorted and counted.  This allows
  	applications to do a quick binary search, if they are so inclined.
 
-Fri Jul 25 10:13:49 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-07-25  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltmain.sh.in (link): Remove code for `-version-file', since it
  	has been long-deprecated.
@@ -630,7 +671,7 @@ Fri Jul 25 10:13:49 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltconfig.in: Fix typo in test polarity.  From Mark Kettenis.
 
-Thu Jul 24 10:42:30 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-07-24  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltconfig.in (hardcode_direct): Set to `unsupported' if aix3 uses
 	a broken collect2.  Adapted out of test results from Mark
@@ -654,13 +695,13 @@ Thu Jul 24 10:42:30 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 	functions when compiling an object file.
 	(pipe_works): Use it.
 
-Wed Jul 23 08:18:19 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-07-23  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltconfig.in (pic_flag): According to the libg++ 2.7.2 configure
  	script, DEC alpha CPUs are PIC-only, as well.  Reported by Kevin
  	Jacobs.
 
-Mon Jul 21 09:46:02 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-07-21  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltconfig.in, ltmain.sh.in: Replace all occurances of "sed 'X;
  	Y'" with "sed -e 'X' -e 'Y'".
@@ -685,7 +726,7 @@ Mon Jul 21 09:46:02 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 	* demo/dlmain.c (main): Succeed, even if none of the libhello
 	symbols have been preloaded.
 
-Sun Jul 20 10:17:04 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-07-20  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltconfig.in (global_symbol_pipe): Add `U' to the accepted global
  	symbol types.  This means that we will get duplicate symbols, but
@@ -694,7 +735,7 @@ Sun Jul 20 10:17:04 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 	* ltconfig.in (pipe_works), ltmain.sh.in (link): Sort and make
 	symbol output unique.
 
-Sat Jul 19 21:54:33 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-07-19  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltconfig.in (pipe_works): Check to make sure our guessed
 	global_symbol_pipe actually works.
@@ -709,18 +750,18 @@ Sat Jul 19 21:54:33 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
  	`$cc'.  This fixes a FreeBSD bug.  Reported by Chuck Robey, and
  	others.
 
-Mon Jul 14 22:26:15 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-07-14  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltmain.sh.in (link): In wrapper scripts, hardcode the current
  	directory to prevent phony argv[0] values from screwing up our
 	program.  From Kenneth Albanowski.
 
-Sun Jul 13 19:14:32 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-07-13  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* Makefile.am (demo_distfiles): Add demo/dlmain.c to the
 	distribution.
 
-Sat Jul 12 10:07:28 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-07-12  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* demo/Makefile.am: Add helldl, made from dlmain.c, to demostrate
 	`-dlopen' usage.
@@ -742,7 +783,7 @@ Sat Jul 12 10:07:28 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 	(link): Make sure $export_dynamic_flag is eval'ed before it is
  	used.
 
-Fri Jul 11 19:33:02 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-07-11  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* libtool.spec: New Red Hat Package Manager specification file in
 	order to help people prepare distributions of libtool for Linux.
@@ -751,7 +792,7 @@ Fri Jul 11 19:33:02 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
  	value.  These were breaking libtool's behaviour when no mode is
  	specified.
 
-Tue Jul  8 11:01:27 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-07-08  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* Release 1.0.
 
@@ -766,14 +807,14 @@ Tue Jul  8 11:01:27 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* README-automake: Remove from distribution.
 
-Wed Jul  2 19:13:00 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-07-02  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltmain.sh.in (link): In the executable wrapper, strip trailing
  	colons from the shlibpath_var because some ld.so's, notably
  	OpenBSD 2.0's (!), don't parse colon-terminated values correctly.
   	From Tim Pierce.
 
-Tue Jul  1 13:03:49 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-07-01  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltmain.sh.in, ltconfig.in: Eliminate uses of the NONE magic
 	variable value.  Use an empty variable instead.
@@ -792,13 +833,13 @@ Tue Jul  1 13:03:49 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 	to indicate his preference.
 	(AM_PROG_LIBTOOL): Use it.
 
-Mon Jun 30 22:32:05 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-06-30  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltconfig.in: Append /sbin to the path before running ldconfig on
  	Linux.  This helps superusers who haven't set their PATH
  	correctly.  Suggested by Kenneth Albanowski.
 
-Sun Jun 29 19:51:50 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-06-29  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltmain.sh.in: Change all the `eval "$run ..."' sequences to
  	`$run "eval ..."'.
@@ -814,17 +855,17 @@ Sun Jun 29 19:51:50 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* libtool.m4: Increment serial number, and require AC_PROG_LN_S.
 
-Thu Jun 26 17:55:26 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-06-26  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltmain.sh.in (link): Add missing `test' statement.  Reported by
 	Akim Demaille.
 
-Tue Jun 24 14:58:41 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-06-24  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* libtool.m4 (LD): Consistently use ac_cv_path_ld instead of
 	am_cv_path_ld.  From Tim Pierce.
 
-Fri Jun 20 08:21:34 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-06-20  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltmain.sh.in: Redo two robustness fixes.  Alexandre had the
  	correct approach, but I botched them.
@@ -832,20 +873,20 @@ Fri Jun 20 08:21:34 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 	* ltconfig.in (dynamic_linker): Disable shared libraries on
  	MkLinux unless GNU libc is in use.  Reported by Akim Demaille.
 
-Thu Jun 19 14:24:06 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-06-19  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltmain.sh.in (install): Add a missing `test' command.  Reported
 	by Joel Weber.
 	Miscellaneous fixes to improve robustness.  From Alexandre Oliva.
 
-Sat Jun 14 21:01:03 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-06-14  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltmain.sh.in (link): Create invalid libtool objects when partial
 	linking if we don't have PIC.  From Jeff Dairiki.
 	(install): Fix bug if libtool object is installed to a file name
 	without directory components.  From Jeff Dairiki.
 
-Fri Jun 13 14:18:23 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-06-13  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* Makefile.am (demo/configure): Fix up rules to run autoconf.
 	(aclocal.m4): Now we depend on our own libtool.m4.
@@ -859,7 +900,7 @@ Fri Jun 13 14:18:23 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 	* ltmain.sh.in (install, uninstall): Support installing and
 	uninstalling `.lo' files.  From Jeff Dairiki.
 
-Wed Jun 11 11:04:59 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-06-11  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* Makefile.am (ltconfig, ltmain.sh): Only move if $(srcdir) is not
 	the current directory.  Don't regenerate every time the package is
@@ -867,7 +908,7 @@ Wed Jun 11 11:04:59 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 	(MAINTAINERCLEANFILES): Added ltconfig, ltmain.sh, so that
 	$(srcdir) is not messed with during a regular clean.
 
-Tue Jun 10 12:26:00 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-06-10  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* Makefile.am (ltconfig, ltmain.sh): Be sure to move these files
 	into $(srcdir) once they are created.
@@ -877,7 +918,7 @@ Tue Jun 10 12:26:00 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 	Disable building old-style objects if `--disable-static' is
 	given.  Suggested by Tom Lees and Stephan Kulow.
 
-Sun Jun  8 12:10:14 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-06-08  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltconfig.in (host_cpu, host_vendor, host_os): Patch up
  	definitions, to allow for the fact that the host_os may contain
@@ -889,12 +930,12 @@ Sun Jun  8 12:10:14 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 	can be found by programs that want to find a library's dlname by
 	searching LD_LIBRARY_PATH.  Reported by David Mosberger-Tang.
 
-Fri Jun  6 15:52:28 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-06-06  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* Tell people to report bugs to the new libtool mailing list,
 	<bug-libtool@gnu.ai.mit.edu>.
 
-Thu Jun  5 10:40:15 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-06-05  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltconfig.in (allow_undefined_flag): New variable that implements
 	`-allow-undefined'.
@@ -906,17 +947,17 @@ Thu Jun  5 10:40:15 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
  	unresolved symbols to exist in shared libraries.  Basically, this
  	turns off shared libraries on AIX.  Suggested by Ian Lance Taylor.
 
-Mon May 26 08:24:55 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-05-26  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* libtool.m4 (LD): On at least IRIX, many different flags need to
 	be propagated to the linker if they are part of the compiler
 	command line.  Reported by Anthony Green.
 
-Sat May 10 12:21:58 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-05-10  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltconfig.in: Trivial port to FreeBSD 3.  From David Nugent.
 
-Fri Apr 25 13:23:33 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-04-25  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltmain.sh.in (link): Remove all traces of `-whole-archive',
 	`-no-whole-archive', and libtool convenience libraries.  They were
@@ -927,7 +968,7 @@ Fri Apr 25 13:23:33 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 	off static library creation.  From Tom Lees (who finally convinced
 	me that it was the Right Thing to do).
 
-Tue Apr 22 12:41:34 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-04-22  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltmain.sh.in (hardcode_runpath_var, runpath_var): Use them, if
 	the linker has no -rpath flag.
@@ -942,34 +983,34 @@ Tue Apr 22 12:41:34 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 	* ltmain.sh.in (dlname): Distinguish between missing
  	`-export-dynamic' and when the library is only statically linked.
 
-Mon Apr 21 09:52:51 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-04-21  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltconfig.in: Trivial port to OpenBSD by making it an alias for
 	NetBSD.  From Tim Pierce.
 
-Wed Apr 16 19:32:05 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-04-16  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltconfig.in: Temporary measures to check for a broken collect2
 	program.  Right now, we just see if we're using GCC on AIX 3.
 
-Sun Apr 13 19:40:58 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-04-13  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltmain.sh.in (mode): Use `egrep -e' when inferring the operation
 	mode.
 
-Sat Apr 12 13:09:24 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-04-12  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltconfig.in (linker): Some GNU ld's don't accept `--version',
 	but do accept `-v'.  From Jukka Honkela.
 	(ld_shlibs): AIX lossage may be settling down.  AIX 3.2.5 ld does
  	*not* hardcode direct libraries, but AIX 4.1.[45] ld does.
 
-Mon Apr  7 09:39:02 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-04-07  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltconfig.in (hardcode_action): Fix silly logic error.  From
 	Bruno Haible.
 
-Sat Apr  5 11:26:06 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-04-05  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltmain.sh.in (install): Relink if hardcode_action is `relink',
 	rather than using complex conditionals based on the other
@@ -980,7 +1021,7 @@ Sat Apr  5 11:26:06 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
  	conditionals to make the intent clearer, otherwise this can be one
  	hellish piece of code for the already-dizzy libtool maintainer.
 
-Wed Apr  2 10:36:31 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-04-02  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* replfunc.m4: Delete from the distribution.  Documentation now
 	describes how to set LTALLOCA and LTLIBOBJS in your own
@@ -992,7 +1033,7 @@ Wed Apr  2 10:36:31 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 	symlinking to the real object.  This helps invalid mixtures of PIC
 	and non-PIC to fail.
 
-Tue Apr  1 10:01:20 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-04-01  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* Makefile.am (EXTRA_DIST): Distribute libtool.prj.
 
@@ -1038,7 +1079,7 @@ Tue Apr  1 10:01:20 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 	* ltconfig.in (verify_host): Remove redundant `Transform *-*-linux*
 	to *-*-linux-gnu*'.  From Bruno Haible.
 
-Mon Mar 31 16:15:03 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-03-31  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* Makefile.am: Use the new AUTOMAKE and ACLOCAL variables.
 
@@ -1046,7 +1087,7 @@ Mon Mar 31 16:15:03 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 	exist, and the user specified -whole-archive.
 	Fix shell quoting that was breaking @OUTPUT@ substitution.
 
-Fri Mar 28 19:09:08 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-03-28  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltmain.sh.in (link): Use the hardcode_libdir_separator.
 	Convenience libraries are libtool objects if we're not building
@@ -1073,13 +1114,13 @@ Fri Mar 28 19:09:08 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 	Added `-whole-archive' and `-no-whole-archive' to manipulate
 	convenience libraries.
 
-Thu Mar 27 15:55:34 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-03-27  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltmain.sh.in (link): Allow the creation of static convenience
 	libraries made of libtool objects.  Suggested by David
 	Mosberger-Tang.
 
-Tue Mar 25 08:38:23 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-03-25  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltconfig.in: On AIX, libtool also needs to look for `B' symbols
  	in nm output.  These are global variable definitions.
@@ -1096,14 +1137,14 @@ Tue Mar 25 08:38:23 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 	* configure.in: Find out the user-supplied CC, LD, RANLIB.  From
 	Carl D. Roth.
 
-Mon Mar 24 01:26:48 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-03-24  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltmain.sh.in: Linking with -static should link against the old
 	library, not linklib.
 
 	* README-automake: Updated to point to Automake 1.1m.
 
-Sat Mar 15 14:15:43 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-03-15  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* demo/main.c: Use it.
 
@@ -1112,14 +1153,14 @@ Sat Mar 15 14:15:43 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 	* demo/foo.c: Added definition of `nothing' so that we have an
 	global variable definition, as well as functions.
 
-Wed Mar 12 19:00:44 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-03-12  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltconfig.in: Make sure either enable_shared or enable_static is
 	configured.  Reported by Tom Tromey.
 
 	* ltmain.sh.in: Bomb out if no library types are configured.
 
-Sat Feb 22 12:47:59 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-02-22  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltconfig.in, ltmain.sh.in (hardcode_libdir_flag_spec): Renamed
  	from `hardcode_libdir_flag'.
@@ -1131,37 +1172,37 @@ Sat Feb 22 12:47:59 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 	* replfunc.m4: Add AM_FUNC_ALLOCA, AM_FUNC_MEMCMP, and
  	AM_STRUCT_ST_BLOCKS.
 
-Tue Feb 18 09:36:24 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-02-18  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltconfig.in: Transform *-*-linux* to *-*-linux-gnu* to support
 	old-style config.guess scripts.
 
-Mon Feb 17 23:30:32 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-02-17  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltmain.sh.in: Create objdir *before* linking a program into it.
 
-Wed Feb 12 01:20:45 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-02-12  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltconfig.in: Any ld --version that returns GNU is probably a GNU
 	ld.  From Marcus Daniels.
 
 	* libtool.m4: Added AM_REPLACE_FUNCS.
 
-Tue Feb 11 01:28:19 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-02-11  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltconfig.in: Trivial port to *-*-osf4.  From Bruno Haible.
 
-Mon Feb 10 09:54:07 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-02-10  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltconfig.in: AIX 3 and 4 ld only hardcodes LIBPATH if -L is not
  	specified.  This behaviour is the same with both xlc and gcc.
 
-Fri Feb  7 08:37:54 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-02-07  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* doc/platforms.texi: Yaay!  We found a workaround for HP-UX
 	/bin/sh buffer overflows.  From Eric Backus.
 
-Mon Feb  3 11:15:01 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-02-03  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* Release 0.9.
 
@@ -1179,7 +1220,7 @@ Mon Feb  3 11:15:01 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 	hardcode_libdir_flag.
 	(hardcode_action): New variable to simplify ltmain.sh.
 
-Wed Jan 29 12:58:00 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-01-29  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltmain.sh.in: Change to take advantage of linkers that don't
 	hardcode direct libraries.
@@ -1193,22 +1234,22 @@ Wed Jan 29 12:58:00 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 	* demo/foo.c (foo): Change to use the `cos' function, so that we
 	need to link against another library.
 
-Tue Jan 28 20:32:19 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-01-28  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltmain.sh.in (link): Export the PATH variable in order to find
 	the program, rather than giving a full path.  This helps give the
 	program a less confusing value for argv[0].
 
-Sun Jan 26 15:50:07 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-01-26  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* Release 0.8.
 
-Fri Jan 24 23:32:03 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-01-24  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* Makefile.am (demo_distfiles): Add demo/acinclude.m4 to the
  	distribution.
 
-Wed Jan 22 17:22:17 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-01-22  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* libtool.m4: For IRIX 6, ld needs -n32 if cc uses it.  Reported
 	by Bruno Haible.
@@ -1216,7 +1257,7 @@ Wed Jan 22 17:22:17 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 	* ltconfig.in: IRIX ld does not hardcode direct libraries.
   	Reported by Bruno Haible.
 
-Sat Jan 18 15:15:12 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-01-18  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltconfig.in, ltmain.sh.in (hardcode_shlibpath_var): Allow new
 	value, `unsupported', since most linkers do not allow you to use
@@ -1227,7 +1268,7 @@ Sat Jan 18 15:15:12 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 	(archive_cmds): Fix not to use +h on HP-UX 9.x.  Reported by Bruno
 	Haible.
 
-Fri Jan 17 09:58:22 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-01-17  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* libtoolize.in: Handle explicit AC_CONFIG_AUX_DIR settings.
 	Suggested by Akim Demaille.
@@ -1235,7 +1276,7 @@ Fri Jan 17 09:58:22 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 	* libtool.m4: Change ltconfig line to use $CONFIG_SHELL when it is
  	specified.  Reported by Bruno Haible.
 
-Thu Jan 16 17:57:38 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-01-16  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* demo/Makefile.am (hc-direct): Do better searching for the proper
 	name to do a direct link.
@@ -1265,69 +1306,70 @@ Thu Jan 16 17:57:38 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
  	then retry without it, but still use the .a versions of
  	uninstalled libtool archives.
 
-Wed Jan 15 08:59:22 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-01-15  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltmain.sh.in (link): Eval $link_static_flag.  Reported by Bruno
 	Haible.
 
 	* PLATFORMS: Add to distribution.  Suggested by Bruno Haible.
 
-Mon Jan 13 12:59:29 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-01-13  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
-	* ltconfig.in: Add support for SCO OpenServer 5.x.
+	* ltconfig.in: Add support for SCO OpenServer 5.x.  From
+	Christopher Olsen.
 
 	(can_build_shared): Initialize at the top of the file, so that
  	shared libraries aren't built on platforms that don't support
  	them.
 
-Sat Jan 11 13:29:08 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-01-11  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltmain.sh.in, ltconfig.in, libtoolize.in, doc/libtool.texi:
  	Update the copyright completion years.
 
-Wed Jan  8 15:01:06 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-01-08  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltconfig.in: Port to IRIX 5.3, 6.2.
 
-Mon Jan  6 08:54:00 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-01-06  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltconfig.in: HP-UX 9 support is the same as HP-UX 10, so the
 	port is trivial.
 
 	* libtoolize.in: Add --dry-run option, -n for short.
 
-Fri Jan  3 17:26:07 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-01-03  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltmain.sh.in (link): On at least SunOS, /bin/sh doesn't
 	understand "export something=val".  From Bruno Haible.
 
-Thu Jan  2 13:04:17 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-01-02  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltmain.sh.in (compile): Recognize valid source file suffixes for
 	Fortran and C++.
 
-Tue Dec 17 23:17:17 1996  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1996-12-17  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltmain.sh.in (link): Don't allow *._o and *.l_o to be valid
  	object type suffixes, in spite of Automake's current ansi2knr
  	implementation.  Not all compilers allow non-`.o' suffixes.
 
-Mon Dec 16 20:16:35 1996  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1996-12-16  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltmain.sh.in (link): Delete the `libtool' version type.
 
-Thu Dec 12 00:04:27 1996  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1996-12-12  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltconfig.in: Use the full autoconf syntax when checking for GNU
 	C.  Delete library stripping program, until we have a correct
 	test.
 
-Wed Dec 11 11:41:33 1996  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1996-12-11  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltconfig.in: On AIX 3, use /usr/ucb/nm, not /ucb/nm.  From
 	ir. M.M. Kettenis.
 
-Mon Dec  9 12:06:31 1996  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1996-12-09  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	Reported by Charles Kerr:
 	* doc/libtool.texi (Creating Object Files): Doc fix independant ->
@@ -1336,7 +1378,7 @@ Mon Dec  9 12:06:31 1996  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 	* ltconfig.in (ld_shlibs): SunOS 4 doesn't support shared library
 	dependencies.
 
-Sun Dec  8 14:39:04 1996  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1996-12-08  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* Release 0.7.
 
@@ -1355,7 +1397,7 @@ Sun Dec  8 14:39:04 1996  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 	* ltmain.sh.in: Don't force people to use libNAME.la: SOMETHING.la
 	is good enough (for consistency with *.a handling).
 
-Sat Dec  7 12:31:15 1996  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1996-12-07  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltmain.sh.in (link): Accept files ending in .a as standard
 	object files.  Reported by Ulrich Drepper.
@@ -1366,7 +1408,7 @@ Sat Dec  7 12:31:15 1996  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 	* ltconfig.in (thisdir): How embarrassing!  An error in the regexp
 	for finding the directory component of the script path.
 
-Thu Dec  5 14:19:21 1996  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1996-12-05  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltmain.sh.in (compile): Support `.S' (preprocessed assembler)
  	files.  Reported by Anthony Green.
@@ -1377,7 +1419,7 @@ Thu Dec  5 14:19:21 1996  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 	* ltconfig.in, ltmain.sh.in (link): Add support for creating
  	reloadable objects.
 
-Wed Dec  4 00:42:53 1996  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1996-12-04  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltmain.sh.in (install): Fix passing -n flag to `libtool
  	--finish'.
@@ -1386,7 +1428,7 @@ Wed Dec  4 00:42:53 1996  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
  	into programs and creating static archives.  Suggested by Ulrich
 	Drepper.
 
-Tue Dec  3 10:43:22 1996  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1996-12-03  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltmain.sh.in (link): Give the full path to the libtool library
 	when sourcing it.
@@ -1394,7 +1436,7 @@ Tue Dec  3 10:43:22 1996  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 	* ltconfig.in (old_striplib): Do a configuration test to determine
 	if old-style libraries actually can be stripped or not.
 
-Mon Dec  2 13:57:28 1996  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1996-12-02  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltconfig.in: Delete reference to ABOUT-LIBS.
 
@@ -1413,7 +1455,7 @@ Mon Dec  2 13:57:28 1996  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* demo: Also test Automake's ansi2knr support.
 
-Tue Nov 19 14:09:27 1996  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1996-11-19  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltconfig.in: Bug fixes for AIX 4, and for static platforms.
 
@@ -1425,7 +1467,7 @@ Tue Nov 19 14:09:27 1996  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 	* ltconfig.in: Check for library stripping program.
 	Use test -f instead of test -e.
 
-Mon Nov 18 20:10:42 1996  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1996-11-18  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltconfig.in: Don't run the RANLIB test unless RANLIB wasn't
 	set.
@@ -1434,16 +1476,16 @@ Mon Nov 18 20:10:42 1996  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltmain.sh.in (objdir): change to .libs.
 
-Sat Nov 16 12:02:03 1996  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1996-11-16  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltmain.sh.in (install): Just plunge ahead with the
 	installation... don't try to enforce dependencies.
 
-Fri Nov 15 17:57:36 1996  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1996-11-15  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltmain.sh.in: Fix up $libdir to be $dest in install mode.
 
-Sun Nov 10 13:08:04 1996  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1996-11-10  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltmain.sh: Finished rewrite of compile, link, and install
 	modes.
@@ -1451,6 +1493,6 @@ Sun Nov 10 13:08:04 1996  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 	* New ChangeLog file for libtool-0.7, since I've totally rewritten
 	libtool.
 
-Fri Mar 15 14:21:15 1996  Gord Matzigkeit  <gord@gnu.ai.mit.edu>
+1996-03-15  Gord Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* For historical reasons: this is when I started writing libtool.

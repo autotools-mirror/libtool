@@ -5,44 +5,6 @@ forums (such as GNU newsgroups), send them directly to the libtool
 mailing list <bug-libtool@gnu.org>.
 
 
-Automake
-********
-
-Between beta release 1.0b and 1.0c, libtool changed its private
-directory name from `.libs' to `_libs' in order to be compatible with
-MS-DOS filenames.  This change allows libtool to run under the DJGPP
-build environment.  In 1.0d, I've changed *again*... most platforms
-use `.libs', and only MS-DOS uses `_libs', which helps libtool to
-remain unobtrusive under Unix.  Unfortunately, I've reintroduced a
-minor bug into Automake's `clean' rules.
-
-This should not affect anybody else's programs unless you depend on
-libtool internals.  If you do, and it isn't just for deleting
-unnecessary directories, then let me know so libtool can support the
-functionality you require.
-
-To fix Automake, edit libtool.am, and change the following lines:
-i.e.
-
-clean-libtool:
-	rm -rf .libs
-
-or:
-
-clean-libtool:
-	rm -rf _libs
-
-to:
-
-clean-libtool:
-	rm -rf .libs _libs
-
-and reinstall Automake.  If you've already installed Automake, you can
-make the same change in /usr/local/share/automake/libtool.am, to avoid
-having to reinstall.
-
-
-
 global_symbol_pipe
 ******************
 

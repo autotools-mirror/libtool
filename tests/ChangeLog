@@ -1,48 +1,60 @@
-Mon Feb 16 13:10:17 1998  Gordon Matzigkeit  <gord@profitpress.com>
+1998-02-18  Gordon Matzigkeit  <gord@profitpress.com>
+
+	* sh.test (scripts): Remove the lineno script, since it is no
+	longer distributed.
+
+	* assign.test, if.test, test-e.test: Even though 15 tests looks
+ 	impressive, these are now redundant.  Remove them from the
+ 	distribution.
+
+	* sh.test: Do what assign.test, if.test, and test-e.test used to
+ 	do.
+
+1998-02-16  Gordon Matzigkeit  <gord@profitpress.com>
 
 	* defs: Correctly identify absolute directory names on MS-DOS.
   	Suggested by Bob Friesenhahn.
 
-Sat Feb  7 10:52:55 1998  Gordon Matzigkeit  <gord@profitpress.com>
+1998-02-07  Gordon Matzigkeit  <gord@profitpress.com>
 
 	* suffix.test (extensions): Added GNAT (GNU Ada Translator)
 	suffices, `.ada', `.ads', `.adb'.  From Samuel Tardieu.
 
-Fri Jan 23 01:28:06 1998  Gordon Matzigkeit  <gord@profitpress.com>
+1998-01-23  Gordon Matzigkeit  <gord@profitpress.com>
 
 	* Makefile.am (TESTS_ENVIRONMENT): Export some important
 	environment variables.  Reported by Ian Haggard.
 
-Sun Jan 18 15:23:04 1998  Gordon Matzigkeit  <gord@profitpress.com>
+1998-01-18  Gordon Matzigkeit  <gord@profitpress.com>
 
 	* suffix.test (extensions): Recognize `.asm'.  From Markus
 	F.X.J. Oberhumer.
 
-Fri Dec  5 00:26:13 1997  Gordon Matzigkeit  <gord@gnu.org>
+1997-12-05  Gordon Matzigkeit  <gord@gnu.org>
 
 	* suffix.test (extensions): Recognize `.s'.  From Markus
 	F.X.J. Oberhumer.
 
-Tue Nov 11 15:08:12 1997  Gordon Matzigkeit  <gord@gnu.org>
+1997-11-11  Gordon Matzigkeit  <gord@gnu.org>
 
 	* quote.test: Add backticks to the backslashify test.
 
-Tue Oct  7 10:48:37 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-10-07  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* hardcode.test (hardcode_libdir_flag_spec): Check the hardcoding
 	properties of the flag_spec, too.
 
-Sun Sep 21 13:17:00 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-09-21  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* defs, Makefile.am (clean-local): Change =inst to _inst to fix
  	portability on MS-DOS.  From Robert Hoehne.
 
-Mon Sep 15 07:14:37 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-09-15  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* hardcode.test (objdir): New variable to simplify change from
 	.libs to _libs (MS-DOS portability fix).
 
-Fri Sep  5 13:36:24 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-09-05  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* demo-exec.test, demo-inst.test: Change references from
 	hell.static to hell.debug.
@@ -55,46 +67,46 @@ Fri Sep  5 13:36:24 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 	* if.test: Check for accidental use of test X$something rather
 	than test "X$something".
 
-Thu Aug 28 20:58:30 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-08-28  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* quote.test (echo): Change test to version that uses printf.
 	Be less strict about return results.
 
-Wed Aug 27 23:22:06 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-08-27  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* quote.test (echo): Add the test for a non-backslash-mangling
 	echo.
 
-Tue Aug 26 13:39:40 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-08-26  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* quote.test: New torture test for libtool metacharacter quoting.
 
-Thu Aug 14 09:30:29 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-08-14  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* suffix.test (extensions): Added Objective C extension, `.m'.
 
-Thu Jul 24 11:04:22 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-07-24  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* demo-exec.test (status): Use status variables so that we try to
 	execute all the programs.
 
-Sat Jul 12 15:38:25 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-07-12  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* demo-exec.test, demo-inst.test: Check the new helldl program,
 	too.
 
-Fri Jul 11 19:31:43 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-07-11  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* nomode.test: New test to make sure there is correct behaviour
  	when we don't specify a mode.
 
-Mon Jun 30 06:49:13 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-06-30  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* if.test: New test to make sure that we haven't forgotten to
 	follow an `if' statement with a `test' command.  This should avoid
 	the majority of hard-to-track bugs.
 
-Thu Jun 19 14:31:49 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-06-19  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* demo-conf.test (CONFIG_SITE): Set to /dev/null, so that the
 	config.site file doesn't mess up our prefix.  Reported by Joel
@@ -107,7 +119,7 @@ Thu Jun 19 14:31:49 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 	directory is not cleaned up if a user uses their own config.cache.
 	Reported by Joel Weber.
 
-Wed Apr 16 19:21:00 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-04-16  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* hardcode.test: AIX also has arbitrary limits on the line length
 	of input to fgrep(1), so we need to translate NUL characters to
@@ -116,12 +128,12 @@ Wed Apr 16 19:21:00 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 	Also redirect stderr to /dev/null, so that AIX users don't get
 	worried by `fgrep: Maximum line length of 2048 exceeded.'.
 
-Tue Apr  1 12:48:32 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-04-01  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* hardcode.test: AIX 3 doesn't have strings(1) so we need to do a
 	funny tr and pipe the output to fgrep.  From Bruno Haible.
 
-Mon Feb  3 15:17:18 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-02-03  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* Makefile.am (TESTS): Do the full make sequence with
 	--disable-shared, then without.
@@ -129,18 +141,18 @@ Mon Feb  3 15:17:18 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 	* demo-sttc.test: Configure the demo directory with
 	--disable-shared.
 
-Wed Jan 29 14:02:03 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-01-29  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* hardcode.test: Rewrite to use fgrep on output from ``strings
  	-a'' if using fgrep directly on the binary files fails.  From Mark
  	Kettenis.
 
-Tue Jan 28 14:00:23 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-01-28  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* hardcode.test: Make sure that ../demo/libhello.la really is a
 	shared library before running hardcoding tests.
 
-Sat Jan 18 10:33:21 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-01-18  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* demo-conf.test: Use the CONFIG_SHELL environment variable when
  	running configure in the demo directory.  From Bruno Haible.
@@ -152,7 +164,7 @@ Sat Jan 18 10:33:21 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 	* demo-make.test: Fix typo (use $make instead of make).  Reported
  	by Akim Demaille.
 
-Thu Jan 16 21:43:18 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-01-16  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* tlibtool: Rewrote to grab all the settings from the generated
 	libtool script.
@@ -160,7 +172,7 @@ Thu Jan 16 21:43:18 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 	* hardcode.test: Make allowances if shlibpath_var cannot be used
 	to find libraries at link time, such as on AIX.
 
-Tue Jan 14 09:17:27 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-01-14  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* demo-conf.test, demo-inst.test, demo-unst.test, hardcode.test:
  	Use $make instead of make.
@@ -172,12 +184,12 @@ Tue Jan 14 09:17:27 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 	files beginning with a dot, as egrep -v doesn't seem to do the
 	trick.  Reported by Bruno Haible.
 
-Mon Jan 13 14:01:17 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-01-13  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* hardcode.test: Added a test to make sure that libtool's idea of
 	hardcoding system linkers is correct.
 
-Fri Jan  3 23:15:22 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-01-03  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* Makefile.am (distclean-local): Remove all files that the tests
 	may have created.  Reported by Bruno Haible.
@@ -189,12 +201,12 @@ Fri Jan  3 23:15:22 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
  	files beginning with a dot, since spurious .nfsXXX files may be
  	present when running NFS.  Reported by Bruno Haible.
 
-Thu Jan  2 13:03:41 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1997-01-02  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* suffix.test: New test to guarantee that libtool compile
  	recognizes valid source file suffices.
 
-Sun Dec  8 14:43:15 1996  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1996-12-08  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* demo.test: Break up into demo-conf.test, demo-make.test,
 	demo-exec.test, demo-inst.test, and demo-unst.test, so that passes
@@ -203,14 +215,14 @@ Sun Dec  8 14:43:15 1996  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 	* link-2.test: Test to make sure that .lo files don't get built
 	directly into programs.
 
-Sat Dec  7 15:44:49 1996  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1996-12-07  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* tlibtool: A typically-configured libtool script, that uses
 	../ltmain.sh.in for its backend.
 
 	* link.test: Make sure that it is legal to link against .a files.
 
-Mon Dec  2 16:31:10 1996  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+1996-12-02  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* demo.test: Try compiling the ../demo subdirectory, with no
 	special options.

@@ -9,9 +9,8 @@ CPPLAGS = @CPPFLAGS@
 
 aclocal_macros = libtool.m4
 
-noinst_SCRIPTS = lineno
 EXTRA_DIST = $(aclocal_macros) libtoolize.in ltconfig.in ltmain.in \
-	libtool.spec libtool.prj $(noinst_SCRIPTS)
+	libtool.spec libtool.prj
 CLEANFILES = libtool libtoolize
 MAINTAINERCLEANFILES = ltconfig ltmain.sh
 
@@ -42,20 +41,19 @@ libtoolize: libtoolize.in $(top_builddir)/config.status
 	CONFIG_FILES=libtoolize CONFIG_HEADERS= $(top_builddir)/config.status
 	chmod +x libtoolize
 
-$(srcdir)/ltconfig: ltconfig.in $(top_builddir)/config.status
+# Do line number substitution, as well as PACKAGE and VERSION.
+# Line numbering transliterated from a section in autoconf (Autoconf 2.12).
+$(srcdir)/ltconfig: ltconfig.in $(top_srcdir)/configure.in
 	CONFIG_FILES=ltconfig CONFIG_HEADERS= $(top_builddir)/config.status
-	AWK=@AWK@ $(top_srcdir)/lineno --delete ltconfig
-	chmod +x ltconfig
-	test "$(srcdir)" = . || \
-	  (cmp -s ltconfig $(srcdir)/ltconfig && rm -f ltconfig) || \
-	  mv -f ltconfig $(srcdir)/ltconfig
+	$(AWK) '/@LINENO@/ { printf "%d:", NR } { print }' $(srcdir)/ltconfig.in | \
+	  sed -e 's/@''PACKAGE@/@PACKAGE@/' -e 's/@''VERSION@/@VERSION@/' \
+	      -e '/@LINENO@/s/^\([0-9][0-9]*\):\(.*\)@LINENO@/\2\1/' > ltconfig.T
+	chmod +x ltconfig.T
+	mv -f ltconfig.T $@
 
-$(srcdir)/ltmain.sh: ltmain.in $(top_builddir)/config.status
-	CONFIG_FILES=ltmain.sh:ltmain.in CONFIG_HEADERS= \
-	  $(top_builddir)/config.status
-	test "$(srcdir)" = . || \
-	  (cmp -s ltmain.sh $(srcdir)/ltmain.sh && rm -f ltmain.sh) || \
-	  mv -f ltmain.sh $(srcdir)/ltmain.sh
+$(srcdir)/ltmain.sh: ltmain.in $(top_srcdir)/configure.in
+	sed -e 's/@''PACKAGE@/@PACKAGE@/' -e 's/@''VERSION@/@VERSION@/' $(srcdir)/ltmain.in > ltmain.shT
+	mv -f ltmain.shT $@
 
 # Distribute the demo subdirectory.
 dist-hook: $(demo_distfiles)
