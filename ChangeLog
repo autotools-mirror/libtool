@@ -1,5 +1,11 @@
 2004-10-04  Gary V. Vaughan  <gary@gnu.org>
 
+	* config/ltmain.m4sh: Need to include getopt.m4sh earlier so that
+	progpath is set before it is called to --no-reexec.
+	* NEWS: Updated.
+
+2004-10-04  Gary V. Vaughan  <gary@gnu.org>
+
 	Without this change, the distributed libtool tarball has a
 	dependency on autom4te.  There was some inconsistency in the
 	filenames: now we have foo.m4sh -> m4sh -> foo.in -> configure
