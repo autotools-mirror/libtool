@@ -79,8 +79,8 @@ libtoolize_flags=
 # Locations for important files:
 prefix=@prefix@
 datadir=@datadir@
-pkgvdatadir=@pkgvdatadir@
-pkgvmacrodir=@pkgvmacrodir@
+pkgdatadir=@pkgdatadir@
+aclocaldir=@aclocaldir@
 auxdir=
 m4dir=
 ltdldir=
@@ -299,8 +299,8 @@ func_scan_files ()
     test -f "$configure_ac" \
         || func_fatal_help "\`$configure_ac' does not exist"
 
-    test -n "`cd $pkgvdatadir && ls`" \
-        || func_fatal_error "can not list files in \`$pkgvdatadir'"
+    test -n "`cd $pkgdatadir && ls`" \
+        || func_fatal_error "can not list files in \`$pkgdatadir'"
 
 
     # Set local variables to reflect contents of configure.ac
@@ -584,10 +584,10 @@ func_config_update ()
 {
   rerun_aclocal=false
 
-  # NOTE: PKGVMACRO_FILES must be kept in synch with pkgvmacro_DATA in the
+  # NOTE: PKGMACRO_FILES must be kept in synch with aclocal_DATA in the
   #       libtool top_srcdir/Makefile.am (libtool.m4 and ltdl.m4 are handled
   #       specially below though, so don't add them here):
-  pkgvmacro_files='argz.m4:ltoptions.m4:ltsugar.m4:ltversion.m4'
+  pkgmacro_files='argz.m4:ltoptions.m4:ltsugar.m4:ltversion.m4'
 
   glob_exclude_pkgaux_files='config.guess|config.sub|ltmain.sh'
 
@@ -597,7 +597,7 @@ func_config_update ()
   # Copy all the files from installed libltdl to this project, if the
   # user specified `--ltdl'.
   if test -n "$ltdldir"; then
-    eval func_copy_all_files -r "$pkgvdatadir/libltdl" "$ltdldir"
+    eval func_copy_all_files -r "$pkgdatadir/libltdl" "$ltdldir"
 
     # libtoolize the newly copied libltdl tree
     ( cd "$ltdldir" && "$progpath" $libtoolize_flags ) || exit $EXIT_FAILURE
@@ -609,17 +609,17 @@ func_config_update ()
     func_echo "putting files in AC_CONFIG_AUX_DIR, \`$auxdir'."
   fi
   if $opt_install || $opt_force; then
-    func_copy_all_files "$pkgvdatadir" "$auxdir" "$glob_exclude_pkgaux_files"
-    func_config_update "$pkgvdatadir/config.guess" "$auxdir/config.guess"
-    test -f "$pkgvdatadir/config.sub" \
-      && func_config_update "$pkgvdatadir/config.sub" "$auxdir/config.sub"
+    func_copy_all_files "$pkgdatadir" "$auxdir" "$glob_exclude_pkgaux_files"
+    func_config_update "$pkgdatadir/config.guess" "$auxdir/config.guess"
+    test -f "$pkgdatadir/config.sub" \
+      && func_config_update "$pkgdatadir/config.sub" "$auxdir/config.sub"
   fi
-  func_ltmain_update "$pkgvdatadir/ltmain.sh" "$auxdir/ltmain.sh"
+  func_ltmain_update "$pkgdatadir/ltmain.sh" "$auxdir/ltmain.sh"
 
   # Copy libtool's m4 macros to the macro directory, if they are newer.
   if test -n "$m4dir"; then
-    libtool_m4="$pkgvmacrodir/libtool.m4"
-    ltdl_m4="$pkgvmacrodir/ltdl.m4"
+    libtool_m4="$aclocaldir/libtool.m4"
+    ltdl_m4="$aclocaldir/ltdl.m4"
 
     $opt_quiet || func_echo "putting macros in AC_CONFIG_MACRO_DIR, \`$m4dir'."
 
@@ -632,7 +632,7 @@ func_config_update ()
       func_verbose "Not copying \`$ltdl_m4', libltdl not used."
     fi
 
-    func_copy_some_files "$pkgvmacrodir" "$pkgvmacro_files" \
+    func_copy_some_files "$aclocaldir" "$pkgmacro_files" \
       "$m4dir" func_serial_update
   fi
 }

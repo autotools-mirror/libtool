@@ -1,3 +1,10 @@
+2004-11-22  Gary V. Vaughan  <gary@gnu.org>
+ 
+	* configure.ac, Makefile.am, libltdl/Makefile.am,
+	libltdl/loaders/Makefile.am, libtoolize.m4sh, doc/libtool.texi:
+	Revert libtool--release--2.0--patch-68, my 2004-11-14 patch for
+	parallel installation.
+
 2004-11-22  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
 	* m4/libtool.m4 (_LT_TAG_COMPILER): Document that with_gcc is
