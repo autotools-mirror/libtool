@@ -1,3 +1,7 @@
+1999-01-20  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* mdemo/main.c (LTDL_PREOPENED_SYMBOLS): remove
+
 1999-01-20  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
 
 	* THANKS: Added Vladimir Kushnir.

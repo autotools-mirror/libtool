@@ -22,9 +22,6 @@ USA. */
 #include "ltdl.h"
 #include <stdio.h>
 
-/* the dlpreopened modules */
-LTDL_PRELOADED_SYMBOLS;
-
 int
 test_dl (char *filename)
 {
