@@ -1046,7 +1046,7 @@ compiler."
 	module=yes
 	continue
 	;;
-	
+
       -no-undefined)
 	allow_undefined=no
 	continue
@@ -2431,7 +2431,6 @@ EOF
       # Find libtool libraries and add their dependencies
       old_deplibs="$deplibs"
       deplibs=
-      absdeplibs=
       newdependency_libs=
       new_lib_search_path=
       for deplib in $old_deplibs; do
@@ -2439,7 +2438,6 @@ EOF
 	case "$deplib" in
 	-L*)
 	  deplibs="$deplibs $deplib"
-	  absdeplibs="$absdeplibs $deplib"
 	  new_lib_search_path="$new_lib_search_path "`$echo "X$deplib" | $Xsed -e 's/^-L//'`
 	  continue
 	  ;;
@@ -2456,7 +2454,6 @@ EOF
 	  done
 	  if test "$found" != yes; then
 	    deplibs="$deplibs $deplib"
-	    absdeplibs="$absdeplibs $deplib"
 	    continue
 	  fi
 	  ;;
@@ -2502,25 +2499,8 @@ EOF
 	  exit 1
 	fi
 
-	ladir=`$echo "X$lib" | $Xsed -e 's%/[^/]*$%%'`
-	test "X$ladir" = "X$lib" && ladir="."
-	# We need an absolute path.
-	case "$ladir" in
-	/* | [A-Za-z]:[/\\]*) ;;
-	*)
-	  abs_ladir=`cd "$ladir" && pwd`
-	  if test -z "$abs_ladir"; then
-	    $echo "$modename: cannot determine absolute directory name of \`$ladir'" 1>&2
-	    exit 1
-	  fi
-	  ladir="$abs_ladir"
-	  ;;
-	esac
-	laname=`$echo "X$lib" | $Xsed -e 's%^.*/%%'`
 	new_lib_search_path="$new_lib_search_path `$echo "X$lib" | $Xsed -e 's%/[^/]*$%%'`"
-
 	deplibs="$deplibs $lib"
-	absdeplibs="$absdeplibs $ladir/$laname"
 
 	for deplib in $dependency_libs; do
 	  case "$deplib" in
@@ -2530,24 +2510,15 @@ EOF
 	  esac
 	  
 	  if test "$link_all_deplibs" != no || \
-	     test "$fast_install" = yes || \
+	     test "$fast_install" != no || \
 	     test "$build_libtool_libs" = no || \
 	     test -z "$library_names"; then
 	    # Need to link against all dependency_libs
-	    case "$absdeplibs " in
-	    *" $deplib "*) ;;
-	    *)
-	      deplibs="$deplibs $deplib"
-	      absdeplibs="$absdeplibs $deplib"
-	      ;;
-	    esac
+	    deplibs="$deplibs $deplib"
 	  else
 	    # Need to hardcode shared library paths
 	    # or/and link against static libraries
-	    case "$newdependency_libs " in
-	    *" $deplib "*) ;;
-	    *) newdependency_libs="$newdependency_libs $deplib" ;;
-	    esac
+	    newdependency_libs="$newdependency_libs $deplib"
 	  fi
 	done
       done

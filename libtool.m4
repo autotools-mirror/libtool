@@ -359,10 +359,10 @@ case "$host" in
   ;;
 *-ncr-sysv4.3*)
   AC_CHECK_LIB(mw, _mwvalidcheckl, LIBM="-lmw")
-  AC_CHECK_LIB(m, cos, LIBM="$LIBM -lm")
+  AC_CHECK_LIB(m, main, LIBM="$LIBM -lm")
   ;;
 *)
-  AC_CHECK_LIB(m, cos, LIBM="-lm")
+  AC_CHECK_LIB(m, main, LIBM="-lm")
   ;;
 esac
 ])

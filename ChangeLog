@@ -1,3 +1,10 @@
+1999-04-03 Thomas Tanner  <tanner@gmx.de>
+
+	* NEWS: updated
+	* libtool.m4: check for main in libm instead of cos
+	* ltmain.in: cosmetic fixes, don't try to link libraries only once
+	  (although it's not necessary on many platforms and looks ugly...),
+
 1999-04-02  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* ltmain.in (convenience): fixed race condition when more than one 

@@ -1163,7 +1163,7 @@ else
     if test "$with_gcc" = yes; then
       collect2name=`${CC} -print-prog-name=collect2`
       if test -f "$collect2name" && \
-         strings "$collect2name" | grep resolve_lib_name >/dev/null
+	 strings "$collect2name" | grep resolve_lib_name >/dev/null
       then
 	# We have reworked collect2
 	hardcode_direct=yes
