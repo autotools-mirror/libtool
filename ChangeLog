@@ -1,3 +1,14 @@
+2001-09-10  Gary V. Vaughan  <gary@gnu.org>
+
+	* libtool.m4 (_LT_AC_LIBTOOL_SYS_PATH_SEPARATOR):  Oops.  We
+	really ought to set PATH_SEPARATOR in here somewhere.
+	(AC_PROG_LD): Don't forget to AC_REQUIRE it!  Be careful not to
+	set IFS="${IFS}$PATH_SEPARATOR" for PATH splitting, otherwise
+	spaces in directory names will be lost.
+	(AC_PROG_NM): Dittp.
+	* ltmain.in: Default IFS once, at the start.
+	Reported by Akim Demaille <akim@epita.fr>
+
 2001-09-10  Brad  <brad@comstyle.com>
 
 	* ltmain.in (-lc_r): Style improvement.
