@@ -1,3 +1,7 @@
+1999-04-29  Gary V. Vaughan  <gary@oranda.demon.co.uk>
+
+	* doc/PLATFORMS: updated my hpux-10.20 and cygwin box entries.
+
 1999-04-29 Thomas Tanner  <tanner@gmx.de>
 
 	* doc/libtool.texi (inter-library dependencies):
