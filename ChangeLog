@@ -1,3 +1,7 @@
+2004-10-05  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
+	* AUTHORS: Add myself.
+
 2004-10-05  Peter O'Gorman  <peter@pogma.com>
 
 	* config/ltmain.m4sh [darwin]: Make the -dylib_file flag work on
