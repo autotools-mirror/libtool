@@ -2996,6 +2996,10 @@ func_mode_link ()
 	  arg="\"$arg\""
 	  ;;
 	esac
+
+	if test -z "$prev"; then
+	  compiler_flags="$compiler_flags $arg"
+	fi
 	;;
 
       *.$objext)

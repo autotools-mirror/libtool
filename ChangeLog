@@ -1,3 +1,9 @@
+2004-09-05  Albert Chin-A-Young  <china@thewrittenword.com>
+
+	* config/ltmain.in (func_mode_link): Pass otherwise unrecognised +
+	and - style switches to the compiler.
+	* NEWS: Updated.
+
 2004-09-05  Gary V. Vaughan  <gary@gnu.org>
 
 	* Makefile.am (libtool): Force libtool to be regenerated if
