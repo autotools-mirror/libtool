@@ -36,7 +36,7 @@ AC_OUTPUT
 ]])
 
 AT_DATA([[Makefile.am]],
-[[AC_LOCAL_AMFLAGS = -I ../../m4
+[[ACLOCAL_AMFLAGS = -I m4
 AM_CPPFLAGS	= -I$(top_srcdir)/../..
 
 lib_LTLIBRARIES		= subdir/libsub.la
@@ -73,6 +73,7 @@ AT_DATA(expout,
 ]])
 
 AT_BOOTSTRAP
+"${MAKE-make}"
 AT_CHECK([subdir/subdemo], 0, expout)
 
 AT_CLEANUP
@@ -111,7 +112,7 @@ AC_OUTPUT
 ]])
 
 AT_DATA([[Makefile.am]],
-[[AC_LOCAL_AMFLAGS = -I ../../m4
+[[ACLOCAL_AMFLAGS = -I m4
 AM_CPPFLAGS	= -I$(top_srcdir)/../..
 
 lib_LTLIBRARIES		= subdir/libsub.la
@@ -155,6 +156,7 @@ AT_DATA(expout,
 ]])
 
 AT_BOOTSTRAP
+"${MAKE-make}"
 AT_CHECK([subdir/subdemo], 0, expout)
 
 AT_CLEANUP

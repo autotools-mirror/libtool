@@ -1,3 +1,37 @@
+2004-11-29  Gary V. Vaughan  <gary@gnu.org>
+
+	Add a search path option to libtoolize so that we can run it from
+	the testsuite without pulling in the last installed macros and
+	ltdl sources:
+
+	* libtoolize.m4sh:  Add a -I option to change libtoolize's search
+	path for macro files, and libltdl master sources.
+	(pkgvdatadir, pkgvmacrodir): Renamed...
+	(pkgvdatadirs, pkgvmacrodirs): ...as they can now contain a ':'
+	delimited list of directories.  Adjust all callers.
+	(func_copy_all_from_path): New function to search a ':' delimited
+	search path for a directory to copy.
+	(func_serial_update, func_ltmain_update, func_config_update): New
+	first parameter is a filename to search for.  srcdir parameter can
+	now be a ':' delimited search path.  Adjust all callers.
+	(func_copy_some_files): Ditto.
+	Put srcfile_spec first in parameter list for consistency with
+	other functions.  Adjust all callers.
+	(func_copy_cb): func_copy adapter function to call func_copy
+	correctly from func_copy_some_files.
+	(func_filename_path_search): Return the full path to the first
+	occurence of a named file found in a list of directories.
+	* tests/testsuite.at (LIBTOOLIZE): Wrap exported LIBTOOLIZE
+	initialisation in PREPARE_TESTS diversion to stop it being
+	discarded when testsuite is generated.
+	(AT_LIBTOOLIZE): Factor out libtoolize calls,
+	and set search path to find macros and libltdl source files from
+	the source tree.
+	(AT_CHECK_LIBTOOLIZE): Test it.
+	(AT_BOOTSTRAP): Adjust.  Split out call to make.
+	* tests/am-subdir.at: Call make explicitly.
+	(Makefile.am): Fix typo in ACLOCAL_AMFLAGS,
+
 2004-11-28  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* config/ltmain.m4sh (func_mode_link): $dlsymsobj is really
@@ -17,7 +51,7 @@
 	rather than unqualified paths in order to avoid possible errors
 	when computing the fully-qualified path later.
 
-2004-11-24  Jeff Squyres <jsquyres@lam-mpi.org>
+2004-11-24  Jeff Squyres  <jsquyres@lam-mpi.org>
 
 	* m4/libtool.m4 [linux] (_LT_COMPILER_PIC, _LT_LINKER_SHLIBS,
 	_LT_LANG_CXX_CONFIG), NEWS, THANKS: Support for Portland Group
@@ -57,12 +91,12 @@
 2004-11-23  Peter O'Gorman  <peter@pogma.com>
 
 	Do not require that libtoolize --ltdl=/some/path end in libltdl.
-	Move most libltdl headers to libtldl/libltdl to allow 
+	Move most libltdl headers to libtldl/libltdl to allow
 	`#include <libltdl/ltdl.h>' to always work:
 
 	* libltdl/Makefile.am, libltdl/loaders/Makefile.am: Look for includes
 	in the new location.
-	* libltdl/libltdl/lt__alloc.h, libltdl/libltdl/lt__dirent.h, 
+	* libltdl/libltdl/lt__alloc.h, libltdl/libltdl/lt__dirent.h,
 	libltdl/libltdl/lt__glibc.h, libltdl/libltdl/lt__private.h,
 	libltdl/libltdl/lt_dlloader.h, libltdl/libltdl/lt_error.h,
 	libltdl/libltdl/lt_system.h, libltdl/libltdl/ltdl.h,

@@ -40,6 +40,7 @@ m4_divert_push([SCRIPT])#! /bin/sh
 # -f, --force           replace existing files
 # -i, --install         copy missing auxiliary files
 #     --ltdl[=DIR]      install libltdl in a subdirectory [default: libltdl]
+# -I DIR                search DIR for libtoolize master source files
 # -q, --quiet           work silently
 # -v, --verbose         verbosely report processing
 #     --version         print version information and exit
@@ -79,8 +80,8 @@ libtoolize_flags=
 # Locations for important files:
 prefix=@prefix@
 datadir=@datadir@
-pkgvdatadir=@pkgvdatadir@
-pkgvmacrodir=@pkgvmacrodir@
+pkgvdatadirs=@pkgvdatadir@
+pkgvmacrodirs=@pkgvmacrodir@
 auxdir=
 m4dir=
 ltdldir=
@@ -135,6 +136,16 @@ configure_ac=configure.in
 			fi
 			;;
 
+      -I)		test "$#" = 0 && func_missing_arg $opt && break
+	    		test -d "$1" \
+			  && pkgvdatadirs="`cd $1 && pwd`:$pkgvdatadirs"
+			test -d "$1/m4" \
+			  && pkgvmacrodirs="`cd $1/m4 && pwd`:$pkgvmacrodirs"
+			func_quote_for_eval "$1"
+      			libtoolize_flags="$libtoolize_flags -I $func_quote_for_eval_result"
+			shift
+			;;
+
       --quiet|--automake|-q) # --automake is for 1.5 compatibility
 			opt_quiet=:
       			libtoolize_flags="${libtoolize_flags} --quiet"
@@ -145,7 +156,7 @@ configure_ac=configure.in
 			;;
 
       # Separate optargs to long options:
-      --ltdl=*)
+      --*=*)
       			arg=`$ECHO "X$opt" | $Xsed -e "$my_sed_long_arg"`
 			opt=`$ECHO "X$opt" | $Xsed -e "$my_sed_long_opt"`
 			set -- "$opt" "$arg" ${1+"$@"}
@@ -195,7 +206,46 @@ func_copy ()
     return $my_return_status
 }
 
-# func_copy_all_files [-r] srcdir destdir [glob_exclude] [copy_cb=func_copy]
+
+# func_copy_cb filename srcdir destdir
+# A wrapper for func_copy that accepts arguments in the order
+# used by func_copy_all_files callbacks.
+func_copy_cb ()
+{
+    func_copy "$2/$1" "$3/$1"
+}
+
+
+# func_copy_all_from_path [-r] dirname srcpath destdir [glob_exclude]
+# Search each : delimited directory in SRCPATH for a directory named
+# DIRNAME.  Recursively copy the contents of the first match found
+# to DESTDIR.
+func_copy_all_from_path ()
+{
+    if test "X$1" = X-r; then
+      my_args=-r
+      shift
+    fi
+
+    my_dirname="$1"
+    my_srcpath="$2"
+    my_destdir="$3"
+    my_globexc="$4"
+
+    save_IFS="$IFS"; IFS=:
+    for myvdir in $my_srcpath; do
+      IFS="$save_IFS"
+      test "X$my_dirname" = X. || myvdir="$myvdir/$my_dirname"
+      if test -d "$myvdir"; then
+        eval func_copy_all_files $my_args "$myvdir" "$my_destdir" "$my_globexc"
+        break
+      fi
+    done
+    IFS="$save_IFS"
+}
+
+
+# func_copy_all_files [-r] srcdir destdir [glob_exclude] [copy_cb=func_copy_cb]
 # For each file in SRCDIR, then try to copy the file to DESTDIR by calling
 # COPY_CB with the src and dest files.  With the `-r' option, recurse into
 # subdirectories of srcdir too.  If GLOB_EXCLUDE is given, exclude any
@@ -214,7 +264,7 @@ func_copy_all_files ()
     my_srcdir="$1"
     my_destdir="$2"
     my_glob_exclude="$3"
-    my_copy_cb="${4-func_copy}"
+    my_copy_cb="${4-func_copy_cb}"
 
     my_srcfiles=
     my_basedir="$my_srcdir"
@@ -229,7 +279,7 @@ func_copy_all_files ()
 
       for my_filename in `cd "$my_srcdir" && ls`; do
 
-        # ignore excluded filenames
+         # ignore excluded filenames
         if test -n "$my_glob_exclude"; then
           eval 'case $my_filename in '$my_glob_exclude') continue ;; esac'
         fi
@@ -247,41 +297,43 @@ func_copy_all_files ()
     done
     IFS="$my_save_IFS"
 
-    func_copy_some_files "$my_basedir" "$my_srcfiles" \
+    func_copy_some_files "$my_srcfiles" "$my_basedir" \
       "$my_destdir" "$my_copy_cb"
 }
 
 
-# func_copy_some_files srcdir srcfile_spec destdir [copy_cb=func_copy]
-# Call COPY_CB for each regular file in SRCDIR named by the ':' delimited
-# names in SRCFILE_SPEC.  The odd calling convention is needed to allow
-# spaces in file and directory names.
+# func_copy_some_files srcfile_spec srcdirs destdir [copy_cb=func_copy_cb]
+# Call COPY_CB for each regular file named by the ':' delimited names in
+# SRCFILE_SPEC first found in a directory from SRCDIRS.  The odd calling
+# convention is needed to allow spaces in file and directory names.
 func_copy_some_files ()
 {
-    my_srcdir="$1"
-    my_srcfile_spec="$2"
+    my_srcfile_spec="$1"
+    my_srcdirs="$2"
     my_destdir="$3"
-    my_copy_cb="${4-func_copy}"
+    my_copy_cb="${4-func_copy_cb}"
 
     my_save_IFS="$IFS"
     IFS=:
     for my_filename in $my_srcfile_spec; do
-
-      IFS="$my_save_IFS"
-      if test -f "$my_srcdir/$my_filename"; then
-        if test "X$my_copy_cb" = Xfunc_copy; then
-	  $opt_force || if test -f "$my_destdir/$my_filename"; then
-  	    $opt_quiet \
-	      || func_error "\`$my_destdir/$my_filename' exists: use \`--force' to overwrite"
-	    continue
-	  fi
+      for my_srcdir in $my_srcdirs; do
+        IFS="$my_save_IFS"
+        if test -f "$my_srcdir/$my_filename"; then
+          if test "X$my_copy_cb" = Xfunc_copy_cb; then
+	    $opt_force || if test -f "$my_destdir/$my_filename"; then
+  	      $opt_quiet \
+	        || func_error "\`$my_destdir/$my_filename' exists: use \`--force' to overwrite"
+	      continue
+	    fi
+          fi
+        else
+          # Not a regular file
+          continue
         fi
-      else
-        # Not a regular file
-        continue
-      fi
 
-      $my_copy_cb "$my_srcdir/$my_filename" "$my_destdir/$my_filename"
+        $my_copy_cb "$my_filename" "$my_srcdir" "$my_destdir"
+      done
+      IFS="$my_save_IFS"
     done
     IFS="$my_save_IFS"
 }
@@ -299,9 +351,9 @@ func_scan_files ()
     test -f "$configure_ac" \
         || func_fatal_help "\`$configure_ac' does not exist"
 
-    test -n "`cd $pkgvdatadir && ls`" \
-        || func_fatal_error "can not list files in \`$pkgvdatadir'"
-
+    # TODO: check that existing directories from the list can be ls'ed
+    #test -n "`{ cd $pkgvdatadir && ls; } 2>dev/null`" \
+    #    || func_fatal_error "can not list files in \`$pkgvdatadir'"
 
     # Set local variables to reflect contents of configure.ac
     my_uses_autoconf=false
@@ -415,6 +467,23 @@ func_included_files ()
     done
 }
 
+
+# func_filename_path_search filename dirs
+func_filename_path_search ()
+{
+    func_filename_path_search_result=
+
+    my_save_IFS="$IFS"; IFS=:
+    for mydir in $2; do
+      IFS="$my_save_IFS"
+      test -f "$mydir/$1" && break
+    done
+    IFS="$my_save_IFS"
+
+    test -f "$mydir/$1" && func_filename_path_search_result="$mydir/$1"
+}
+
+
 # func_serial filename [macro_regex]
 # Output the value of the serial number comment in FILENAME, where the
 # comment line must also match MACRO_REGEX, if given.
@@ -444,20 +513,28 @@ func_serial ()
     $ECHO $my_serial
 }
 
-# func_serial_update srcfile destfile [macro_regex] [old_macro_regex]
-# Copy SRCFILE to DESTFILE provided SRCFILE has a newer serial number, or
-# DESTFILE does not yet exist, or the user specified `--force'.  If given,
-# MACRO_REGEX or OLD_MACRO_REGEX must match any text after "# serial N" in
-# both files.
+# func_serial_update filename srcdirs destdir [macro_regex] [old_macro_regex]
+# Copy the first file named FILENAME from a directory listed in the
+# ':' delimited SRCDIRS to DESTFILE provided that either FILENAME has
+# a newer serial number, or DESTFILE does not yet exist, or the user
+# specified `--force' at the command line.  If given, MACRO_REGEX or
+# OLD_MACRO_REGEX must match any text after "# serial N" in both files.
 func_serial_update ()
 {
-    my_srcfile="$1"
-    my_destfile="$2"
-    my_macro_regex="$3"
-    my_old_macro_regex="$4"
+    my_filename="$1"
+    my_srcdirs="$2"
+    my_destdir="$3"
+    my_macro_regex="$4"
+    my_old_macro_regex="$5"
 
     my_return_status=1
     my_update_p=:
+    func_filename_path_search "$my_filename" "$my_srcdirs"
+    my_srcfile="$func_filename_path_search_result"
+    my_destfile="$my_destdir/$my_filename"
+
+    test -f "$my_srcfile" || \
+      { func_error "\`$my_filename' not found in \`$my_srcdirs'"; return; }
 
     if test -f "$my_destfile"; then
       my_src_serial=`func_serial "$my_srcfile" "$my_macro_regex"`
@@ -522,56 +599,70 @@ func_check_macros ()
     # FIXME: Ensure ltmain.sh, libtool.m4 and ltdl.m4 are from the same release
 }
 
-# func_ltmain_update srcfile destfile
-# Copy SRCFILE to DESTFILE provided SRCFILE has a newer VERSION/TIMESTAMP,
-# or DESTFILE does not yet exist, or the user specified `--force'.
+# func_ltmain_update filename srcdirs destdir
+# Copy the first file named FILENAME from a directory listed in the
+# ':' delimited SRCDIRS to DESTFILE provided that either FILENAME has
+# a newer TIMESTAMP, or DESTFILE does not yet exist, or the user
+# specified `--force' at the command line.
 func_ltmain_update ()
 {
-    my_srcfile="$1"
-    my_destfile="$2"
+    my_filename="$1"
+    my_srcdirs="$2"
+    my_destdir="$3"
+
+    func_filename_path_search "$my_filename" "$my_srcdirs"
+    my_srcfile="$func_filename_path_search_result"
+    my_destfile="$my_destdir/$my_filename"
     my_sed_ltmain='
 	s,^VERSION=[[^0-9]]*\(.*\)[[ 	]]*$,\1,; t
 	s,^TIMESTAMP=[[^0-9]]*\([[.0-9]]*\) .*$,\1,; t
 	d'
 
-    if test -f "$my_srcfile"; then :
-    else
-      func_error "\`$my_srcfile' does not exist."
-      return
-    fi
+    if test -n "$my_srcfile"; then
 
-    # FIXME:  check versions, and only downgrade with --force
-    cmp -s  "$my_srcfile" "$my_destfile"
-    if test "$?" -ne 0 || $opt_force; then
-      func_copy "$my_srcfile" "$my_destfile"
+      # FIXME:  check versions, and only downgrade with --force
+      cmp -s  "$my_srcfile" "$my_destfile"
+      if test "$?" -ne 0 || $opt_force; then
+        func_copy "$my_srcfile" "$my_destfile"
+      else
+        $opt_quiet \
+          || func_echo "\`$my_destfile' is already up to date."
+      fi
+
     else
-      $opt_quiet \
-        || func_echo "\`$my_destfile' is already up to date."
+      func_error "\`$my_filename' not found in \`$my_srcdirs'."
     fi
 }
 
-# func_config_update srcfile destfile
-# Copy SRCFILE to DESTFILE provided SRCFILE has a newer TIMESTAMP,
-# or DESTFILE does not yet exist, or the user specified `--force'.
+# func_config_update filename srcdirs destdir
+# Copy the first file named FILENAME from a directory listed in the
+# ':' delimited SRCDIRS to DESTFILE provided that either FILENAME has
+# a newer TIMESTAMP, or DESTFILE does not yet exist, or the user
+# specified `--force' at the command line.
 func_config_update ()
 {
-    my_srcfile="$1"
-    my_destfile="$2"
+    my_filename="$1"
+    my_srcdirs="$2"
+    my_destdir="$3"
+
+    func_filename_path_search "$my_filename" "$my_srcdirs"
+    my_srcfile="$func_filename_path_search_result"
+    my_destfile="$my_destdir/$my_filename"
     my_sed_config='s,^timestamp=[[^0-9]]*\([[.0-9-]]*\)[[^0-9]].*$,\1,; t; d'
 
-    if test -f "$my_srcfile"; then :
-    else
-      func_error "\`$my_srcfile' does not exist."
-      return
-    fi
+    if test -n "$my_srcfile"; then
 
-    # FIXME:  check versions, and only downgrade with --force
-    cmp -s  "$my_srcfile" "$my_destfile"
-    if test "$?" -ne 0 || $opt_force; then
-      func_copy "$my_srcfile" "$my_destfile"
+      # FIXME:  check versions, and only downgrade with --force
+      cmp -s  "$my_srcfile" "$my_destfile"
+      if test "$?" -ne 0 || $opt_force; then
+        func_copy "$my_srcfile" "$my_destfile"
+      else
+        $opt_quiet \
+          || func_echo "\`$my_destfile' is already up to date."
+      fi
+
     else
-      $opt_quiet \
-        || func_echo "\`$my_destfile' is already up to date."
+      func_error "\`$my_filename' not found in \`$my_srcdirs'."
     fi
 }
 
@@ -594,13 +685,14 @@ func_config_update ()
   func_scan_files
   $opt_quiet || func_check_macros
 
-  # Copy all the files from installed libltdl to this project, if the
-  # user specified `--ltdl'.
+  # Copy all the files from installed (or specified, if `-I' was used)
+  # libltdl to this project, if the user specified `--ltdl'.
   if test -n "$ltdldir"; then
-    eval func_copy_all_files -r "$pkgvdatadir/libltdl" "$ltdldir"
+    func_copy_all_from_path -r libltdl "$pkgvdatadirs" "$ltdldir"
 
     # libtoolize the newly copied libltdl tree
-    ( cd "$ltdldir" && "$progpath" $libtoolize_flags ) || exit $EXIT_FAILURE
+    ( cd "$ltdldir" && eval "$progpath" $libtoolize_flags ) \
+      || exit $EXIT_FAILURE
   fi
 
   # Copy all the installed utility files to the auxiliary directory if
@@ -609,30 +701,27 @@ func_config_update ()
     func_echo "putting files in AC_CONFIG_AUX_DIR, \`$auxdir'."
   fi
   if $opt_install || $opt_force; then
-    func_copy_all_files "$pkgvdatadir" "$auxdir" "$glob_exclude_pkgaux_files"
-    func_config_update "$pkgvdatadir/config.guess" "$auxdir/config.guess"
-    test -f "$pkgvdatadir/config.sub" \
-      && func_config_update "$pkgvdatadir/config.sub" "$auxdir/config.sub"
+    func_copy_all_from_path . "$pkgvdatadirs" \
+      "$auxdir" "$glob_exclude_pkgaux_files"
+    func_config_update config.guess "$pkgvdatadirs" "$auxdir"
+    func_config_update config.sub   "$pkgvdatadirs" "$auxdir"
   fi
-  func_ltmain_update "$pkgvdatadir/ltmain.sh" "$auxdir/ltmain.sh"
+  func_ltmain_update ltmain.sh "$pkgvdatadirs" "$auxdir"
 
   # Copy libtool's m4 macros to the macro directory, if they are newer.
   if test -n "$m4dir"; then
-    libtool_m4="$pkgvmacrodir/libtool.m4"
-    ltdl_m4="$pkgvmacrodir/ltdl.m4"
-
     $opt_quiet || func_echo "putting macros in AC_CONFIG_MACRO_DIR, \`$m4dir'."
 
-    func_serial_update  "$libtool_m4" "$m4dir/libtool.m4" \
+    func_serial_update  libtool.m4 "$pkgvmacrodirs" "$m4dir" \
       LT_INIT 'A[[CM]]_PROG_LIBTOOL'
 
     if $seen_ltdl; then
-      func_serial_update "$ltdl_m4" "$m4dir/ltdl.m4" 'LTDL_INIT'
+      func_serial_update ltdl.m4 "$pkgvmacrodirs" "$m4dir" 'LTDL_INIT'
     else
-      func_verbose "Not copying \`$ltdl_m4', libltdl not used."
+      func_verbose "Not copying \`$m4dir/ltdl.m4', libltdl not used."
     fi
 
-    func_copy_some_files "$pkgvmacrodir" "$pkgvmacro_files" \
+    func_copy_some_files "$pkgvmacro_files" "$pkgvmacrodirs" \
       "$m4dir" func_serial_update
   fi
 }
