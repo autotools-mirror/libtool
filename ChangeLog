@@ -1,3 +1,8 @@
+2001-09-21  Gary V. Vaughan  <gary@gnu.org>
+
+	* libltdl/ltdl.c: Added support for dmalloc, and uncovered some
+	memory bugs as a result.
+
 2001-09-13  Gary V. Vaughan  <gary@gnu.org>
 
 	* ltmain.in (exec_cmd): Don't overquote or we end up with this:
