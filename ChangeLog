@@ -1,3 +1,9 @@
+2004-01-02  Peter O'Gorman  <peter@pogma.com>
+
+	* m4/libtool.m4 (CDPATH): Change the CDPATH setting so that it
+	allows for zsh differences, as noted in the autoconf manual's
+	Portable Shell - Special Shell Variables section.
+
 2004-01-02  Scott James Remnant <scott@netsplit.com>
 
 	* .cvsignore: Ignore stamp-vcl created by the Makefile.
