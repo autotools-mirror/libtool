@@ -1,6 +1,7 @@
 NEWS - list of user-visible changes between releases of GNU Libtool
 
 New in 1.5b: 2004-??-??; CVS version 1.5a, Libtool team:
+* New LT_PREREQ macro for specifying minimum libtool requirement.
 * Like automake, libtoolize no longer installs config.guess and config.sub by
   default.  Use new --install option to get the old behaviour.
 * libtool script is now created by config.status.  Instead of interrogating

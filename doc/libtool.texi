@@ -1638,6 +1638,17 @@ If you are using GNU Autoconf (or Automake), you should add a call to
 adds many new tests to the @code{configure} script so that the generated
 libtool script will understand the characteristics of the host:
 
+@defmac LT_PREREQ(@var{VERSION})
+Ensure that a recent enough version of Libtool is being used.  If the
+version of Libtool used for @code{AC_PROG_LIBTOOL} is earlier than
+@var{version}, print an error message to the standard
+error output and exit with failure (exit status is 63).  For example:
+
+@example
+LT_PREREQ(@value{VERSION})
+@end example
+@end defmac
+
 @defmac AC_PROG_LIBTOOL
 @defmacx AM_PROG_LIBTOOL
 Add support for the @samp{--enable-shared} and @samp{--disable-shared}

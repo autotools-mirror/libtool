@@ -39,6 +39,17 @@ m4_ifdef([AC_PROVIDE_IFELSE],
 	         [m4_ifdef([AC_PROVIDE_$1],
 		           [$2], [$3])])])
 
+# LT_PREREQ(VERSION)
+# ------------------
+# Complain and exit if this libtool version is less that VERSION.
+m4_define([LT_PREREQ],
+[m4_if(m4_version_compare(m4_defn([LT_PACKAGE_VERSION]), [$1]), -1,
+       [m4_default([$3],
+		   [m4_fatal([Libtool version $1 or higher is required],
+		             63)])],
+       [$2])])
+
+
 # AC_PROG_LIBTOOL
 # ---------------
 AC_DEFUN([AC_PROG_LIBTOOL],

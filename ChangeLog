@@ -1,9 +1,16 @@
+2004-02-06  Gary V. Vaughan  <gary@gnu.org>
+
+	* m4/libtool.m4 (LT_PREREQ): Declare the minimum release number
+	that is required for the calling code.
+	* doc/libtool.texi (AC_PROG_LIBTOOL): Document it.
+	* NEWS: Updated.
+
 2004-02-05  Peter O'Gorman  <peter@pogma.com>
-	
+
 	* ltmain.in (infer_tag, win32_libid): Style changes. Rename
 	infer_tag to func_infer_tag and win32_libid to func_win32_libid.
 	* m4/libtool.m4 (cygwin): rename win32_libid to func_win32_libid.
-	
+
 2004-02-04  Peter O'Gorman  <peter@pogma.com>
 
 	* ltmain.in (infer_tag): Move tag inferrence to a shell function.
@@ -28,7 +35,7 @@
 
 2004-01-31  Peter O'Gorman  <peter@pogma.com>
 
-	* m4/libtool.m4 (_LT_CONFIG_STATUS_DECLARE): Change `echo to 
+	* m4/libtool.m4 (_LT_CONFIG_STATUS_DECLARE): Change `echo to
 	`$echo, causes problems when builtin echo is broken. Reported
 	by Ralf Wildenhues <Ralf.Wildenhues@gmx.de>.
 
