@@ -3056,8 +3056,25 @@ foo1_la_LDFLAGS = -module
 Even though libltdl is installed together with libtool, you may wish to
 include libltdl in the distribution of your package, for the convenience 
 of users of your package that don't have libtool or libltdl installed.
-In this case, you may decide which flavor of libltdl you want to use: a
-convenience library or an installable libtool library.
+In this case, you must decide whether to manually add the @code{ltdl}
+objects to your package, or else which flavor of libltdl you want to use:
+a convenience library or an installable libtool library.
+
+The most simplistic way to add @code{ltdl} to your package is to copy
+the source files, @file{ltdl.c} and @file{ltdl.h}, to a source
+directory withing your package and to build and link them along with
+the rest of your sources.  To help you do this, the m4 macros for
+autoconf are available in @file{ltdl.m4}.  You must ensure that they
+are available in @file{aclocal.m4} before you run autoconf -- either
+by copying @file{ltdl.m4} to the macro directory of your package (if
+you have one) before running aclocal, or else @code{cat}ting its contents
+directly to the end of @file{aclocal.m4} if you are not using automake.
+Having made the macros available, you must add a call to the
+@samp{AC_LIB_LTDL} macro to your package's @file{configure.in} to perform
+the configure time checks required to build @file{ltdl.o} correctly.
+This method has problems if you then try to link the package binaries
+with an installed libltdl, or a library which depends on libltdl, which
+will cause problems with multiple symbol definitions.
 
 One advantage of the convenience library is that it is not installed, so
 the fact that you use libltdl will not be apparent to the user, and it

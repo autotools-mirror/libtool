@@ -24,6 +24,20 @@
 
 AC_DEFUN(AC_LIB_LTDL,
 [AC_PREREQ(2.13)dnl
+AC_REQUIRE([AC_PROG_CC])dnl
+AC_REQUIRE([AC_C_CONST])dnl
+AC_REQUIRE([AC_C_INLINE])dnl
+
+dnl AC_LIB_LTDL must perform all the checks necessary for compilation
+dnl of the ltdl objects -- including compiler checks (above) and header
+dnl checks (below).
+AC_REQUIRE([AC_HEADER_STDC])dnl
+
+AC_CHECK_HEADERS(malloc.h memory.h stdlib.h stdio.h ctype.h dlfcn.h dl.h dld.h)
+AC_CHECK_HEADERS(string.h strings.h, break)
+AC_CHECK_FUNCS(strchr index, break)
+AC_CHECK_FUNCS(strrchr rindex, break)
+
 AC_REQUIRE([AC_LTDL_ENABLE_INSTALL])dnl
 AC_REQUIRE([AC_LTDL_SHLIBEXT])dnl
 AC_REQUIRE([AC_LTDL_SHLIBPATH])dnl

@@ -1,5 +1,13 @@
 1999-12-13  Gary V. Vaughan  <gary@oranda.demon.co.uk>
 
+	* doc/libtool.texi (Distributing libltdl): document use of
+	ltdl.m4.
+	* libltdl/configure.in: Removed header checks, as they are
+        automatically performed by AC_LIB_LTDL.
+	* libltdl/ltdl.m4: Added header checks from configure.in, so that
+	AC_LIB_LTDL is sufficient to compile ltdl.c.
+	Reported by Stephan Kulow <coolo@kde.org>.
+
 	* ltconfig.in (ltdll_obj): fixed typo: objdir -> $objdir
 
 1999-12-12  Gary V. Vaughan  <gary@oranda.demon.co.uk>
