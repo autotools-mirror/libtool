@@ -1,3 +1,8 @@
+1999-03-21  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* tests/*-unst.test: if directory is not configured, skip it
+	* tests/demo.test, tests/mdemo.test: unused, removed
+
 1999-03-20 Thomas Tanner  <tanner@gmx.de>
 
 	* use the same header in all configure.in's and Makefile.am's
