@@ -1,3 +1,11 @@
+1999-04-02  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* libtool.m4 (LDFLAGS, LIBS): pass them to ltconfig, for the tests 
+	that involve linking
+	* Makefile.am (LDFLAGS, LIBS, libtool, clibtool): ditto
+	* tests/Makefile.am (CFLAGS, CPPFLAGS, LDFLAGS, LIBS): set
+	(LDFLAGS, LIBS, TESTS_ENVIRONMENT): pass them down
+
 1999-04-02  Erez Zadok  <ezk@cs.columbia.edu>
 
 	* doc/PLATFORMS: 1.2f ok on various versions of hpux cc
