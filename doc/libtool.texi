@@ -1596,24 +1596,61 @@ guessed by running @code{config.guess}.
 @code{ltconfig} also recognizes the following environment variables:
 
 @defvar CC
-The C compiler that will be used by the generated @code{libtool}.
+The C compiler that will be used by the generated @code{libtool}.  If
+this is not set, @code{ltconfig} will look for @code{gcc} or @code{cc}.
 @end defvar
 
 @defvar CFLAGS
-Compiler flags used to generate standard object files.
+Compiler flags used to generate standard object files.  If this is not
+set, @code{ltconfig} will not use any such flags.  It affects only the
+way @code{ltconfig} runs tests, not the produced @code{libtool}.
 @end defvar
 
 @defvar CPPFLAGS
-C preprocessor flags.
+C preprocessor flags.  If this is not set, @code{ltconfig} will not use
+any such flags.  It affects only the way @code{ltconfig} runs tests, not
+the produced @code{libtool}.
 @end defvar
 
 @defvar LD
 The system linker to use (if the generated @code{libtool} requires one).
+If this is not set, @code{ltconfig} will try to find out what is the
+linker used by @var{CC}.
 @end defvar
+
+@defvar LDFLAGS
+The flags to be used by @code{ltconfig} when it links a program.  If
+this is not set, @code{ltconfig} will not use any such flags.  It
+affects only the way @code{ltconfig} runs tests, not the produced
+@code{libtool}.
+@end defvar
+
+@defvar LIBS
+The libraries to be used by @code{ltconfig} when it links a program.  If
+this is not set, @code{ltconfig} will not use any such flags.  It
+affects only the way @code{ltconfig} runs tests, not the produced
+@code{libtool}.
+@end defvar
+
+@defvar NM
+Program to use rather than checking for @code{nm}.
 
 @defvar RANLIB
 Program to use rather than checking for @code{ranlib}.
 @end defvar
+
+@devar LN_S
+A command that creates a link of a program, a soft-link if possible, a
+hard-link otherwise.
+@end defvar
+
+@defvar DLLTOOL
+Program to use rather than checking for @code{dlltool}.  Only meaningful 
+for MS-Windows.
+
+@defvar AS
+Program to use rather than checking for @code{as}.  Only meaningful for
+MS-Windows.
 
 @node ltconfig example
 @subsection Using @code{ltconfig}
