@@ -3397,6 +3397,8 @@ func_mode_link ()
 	# it will not redefine variables installed, or shouldnotlink
 	installed=yes
 	shouldnotlink=no
+	avoidtemprpath=
+
 
 	# Read the .la file
 	case $lib in
@@ -3508,6 +3510,7 @@ func_mode_link ()
 	    dir="$libdir"
 	    absdir="$libdir"
 	  fi
+	  test "X$hardcode_automatic" = Xyes && avoidtemprpath=yes
 	else
 	  if test ! -f "$ladir/$objdir/$linklib" && test -f "$abs_ladir/$linklib"; then
 	    dir="$ladir"
@@ -3598,7 +3601,7 @@ func_mode_link ()
 	  if test -n "$library_names" &&
 	     { test "$prefer_static_libs" = no || test -z "$old_library"; }; then
 	    # We need to hardcode the library path
-	    if test -n "$shlibpath_var"; then
+	    if test -n "$shlibpath_var" && test -z "$avoidtemprpath" ; then
 	      # Make sure the rpath contains only unique directories.
 	      case "$temp_rpath " in
 	      *"$absdir:"*) ;;
