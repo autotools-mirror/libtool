@@ -1,3 +1,8 @@
+1999-10-28  Stephane Conversy  <Stephane.Conversy@lri.fr>
+
+	* ltmain.in (-DPIC):  changed the order of pic flags a little to
+	prevent upsetting the sgi c++ compiler.
+
 1999-10-28  Olly Betts  <olly@muscat.co.uk>
 
 	* ltconfig.in (opt_cr):  Handle crlf sequences output by the

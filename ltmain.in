@@ -436,7 +436,7 @@ compiler."
 
       if test "$pic_mode" != no; then
 	# All platforms use -DPIC, to notify preprocessed assembler code.
-	command="$base_compile $pic_flag -DPIC $srcfile"
+	command="$base_compile $srcfile $pic_flag -DPIC"
       else
 	# Don't build PIC code
 	command="$base_compile $srcfile"
