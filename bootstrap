@@ -11,7 +11,7 @@ touch ltconfig
 touch ltmain.sh
 touch libtoolize
 aclocal
-automake --gnits --add-missing
+automake --gnu --add-missing
 autoconf
 
 for sub in demo libltdl mdemo cdemo; do

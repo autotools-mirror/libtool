@@ -1,6 +1,6 @@
 NEWS - list of user-visible changes between releases of GNU Libtool
 
-New in 1.3.1: 1999-05-??, CVS version 1.3.0a, Libtool team:
+New in 1.3.1: 1999-05-21, CVS version 1.3.0a, Libtool team:
 * Documentation improvements; recommend automake users to insert libtool.m4
   in acinclude.m4
 * AC_LIBLTDL_CONVENIENCE and AC_LIBLTDL_INSTALLABLE now set INCLTDL.
