@@ -1020,8 +1020,8 @@ you're only interested in a static library.  When you link a program
 with such a library, libtool will actually link all object files and
 dependency libraries into the program.
 
-If you omit both @samp{-rpath} and @samp{-static}, libtool create a
-libtool convenience library that can be used to create other libtool
+If you omit both @samp{-rpath} and @samp{-static}, libtool will create a
+convenience library that can be used to create other libtool
 libraries, even shared ones.  Just like in the static case, the library
 behaves as an alias to a set of object files and dependency libraries,
 but in this case the object files are suitable for inclusion in shared
