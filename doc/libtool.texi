@@ -3571,22 +3571,14 @@ C++ compilers will link some Standard C++ library in by default, but
 libtool does not know which are these libraries, so it cannot even run
 the inter-library dependence analyzer to check how to link it in.
 Therefore, running @file{ld} to link a C++ program or library is deemed
-to fail.  However, running the C++ compiler directly may lead to
-problems related with inter-library dependencies.
+to fail.
 @end enumerate
 
-The conclusion is that libtool is not ready for general use for C++
-libraries.  You should avoid any global or static variable
-initializations that would cause an ``initializer element is not
-constant'' error if you compiled them with a standard C compiler.
-
-There are other ways of working around this problem, but they are beyond
-the scope of this manual.
-
-Furthermore, you'd better find out, at configure time, what are the C++
-Standard libraries that the C++ compiler will link in by default, and
-explicitly list them in the link command line.  Hopefully, in the
-future, libtool will be able to do this job by itself.
+Because of these three issues, Libtool has been designed to always use
+the C++ compiler to compile and link C++ programs and libraries.  In
+some instances the @code{main()} function of a program must also be
+compiled with the C++ compiler for static C++ objects to be properly
+initialized.
 
 
 @node Troubleshooting
