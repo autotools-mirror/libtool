@@ -24,6 +24,15 @@
 # better features, and configure.ac documents oldest version of each
 # required for bootstrap (AC_PREREQ, and AM_INIT_AUTOMAKE).
 
+: ${AUTORECONF=autoreconf}
+: ${AUTOM4TE=autom4te}
+: ${MAKE=make}
+: ${GREP=grep}
+: ${EGREP=egrep}
+: ${FGREP=fgrep}
+: ${SED=sed}
+: ${LN_S='ln -s'}
+
 test -f ./configure.ac || {
   echo "bootstrap: can't find ./configure.ac, please rerun from top_srcdir"
   exit 1
@@ -49,7 +58,7 @@ if test -z "$reconfdirs"; then
 fi
 
 # Extract the package name and version number from configure.ac:
-set dummy `sed '/AC_INIT/{s/[][,()]/ /g; p;};d' configure.ac`
+set dummy `$SED '/AC_INIT/{s/[][,()]/ /g; p;};d' configure.ac`
 shift
 
 # Whip up some dirty Makefiles:
@@ -58,7 +67,7 @@ for dirty in ./Makefile ./tests/Makefile
 do
   test -f $dirty || {
     makefiles="$makefiles $dirty"
-    sed '/^if /,/^endif$/d;/^else$/,/^endif$/d' $dirty.am > $dirty
+    $SED '/^if /,/^endif$/d;/^else$/,/^endif$/d' $dirty.am > $dirty
   }
 done
 
@@ -69,22 +78,23 @@ done
 # configure, and ltversion.m4 to generate configure in the first place:
 rm -f ./config/ltmain.sh ./m4/ltversion.m4
 
-make ./config/ltmain.sh ./m4/ltversion.m4 ./libtoolize.in ./tests/defs.in \
+
+$MAKE ./config/ltmain.sh ./m4/ltversion.m4 ./libtoolize.in ./tests/defs.in \
     srcdir=. top_srcdir=. PACKAGE="$2" VERSION="$3" \
-    M4SH="autom4te --language=m4sh"
+    M4SH="$AUTOM4TE --language=m4sh"
 
 {
-  make update-package-m4 srcdir=. top_srcdir=. \
+  $MAKE update-package-m4 srcdir=. top_srcdir=. \
     PACKAGE="$2" VERSION="$3" PACKAGE_BUGREPORT="bug-$2@gnu.org"
   cd tests
-  make ./testsuite AUTOTEST="autom4te --language=autotest" \
-    srcdir=. top_srcdir=.. top_builddir=..  PACKAGE="$2" VERSION="$3"
+  $MAKE ./testsuite AUTOTEST="$AUTOM4TE --language=autotest" \
+    srcdir=. top_srcdir=.. PACKAGE="$2" VERSION="$3"
   cd ..
 }
 
-test -f clcommit.m4sh && make -f Makefile.maint commit \
-    top_srcdir=. PACKAGE="$2" VERSION="$3" M4SH="autom4te -l m4sh" \
-    SED=sed GREP=grep FGREP=fgrep EGREP=egrep LN_S="ln -s"
+test -f clcommit.m4sh && $MAKE -f Makefile.maint commit \
+    top_srcdir=. PACKAGE="$2" VERSION="$3" M4SH="$AUTOM4TE -l m4sh" \
+    SED="$SED" GREP="$GREP" FGREP="$FGREP" EGREP="${EGREP}" LN_S="$LN_S"
 
 test -z "$makefiles" || rm -f $makefiles
 
@@ -103,7 +113,7 @@ LIBTOOLIZE=`pwd`/config/libtoolize
 export LIBTOOLIZE
 
 for sub in $reconfdirs; do
-  autoreconf --force --verbose --install $sub
+  $AUTORECONF --force --verbose --install $sub
 done
 
 # Remove our dummy libtoolize

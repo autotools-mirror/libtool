@@ -1,3 +1,7 @@
+2005-03-15  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* bootstrap: Allow to override tools.
+
 2005-03-15  Gary V. Vaughan  <gary@gnu.org>
 
 	* libtoolize.m4sh (func_massage_pkgvmacro_DATA): New function
