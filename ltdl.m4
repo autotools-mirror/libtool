@@ -44,8 +44,11 @@ if test "x$with_included_ltdl" != xyes; then
   AC_CHECK_HEADER([ltdl.h],
       [AC_CHECK_LIB([ltdl], [lt_dlcaller_register],
           [with_included_ltdl=no],
-          [with_included_ltdl=yes])
-  ])
+          [with_included_ltdl=yes])],
+
+      [],
+      [AC_INCLUDES_DEFAULT]
+  )
 fi
 
 if test "x$enable_ltdl_install" != xyes; then
@@ -94,9 +97,9 @@ AC_REQUIRE([AC_LTDL_SYS_DLOPEN_DEPLIBS])
 AC_REQUIRE([AC_LTDL_FUNC_ARGZ])
 
 AC_CHECK_HEADERS([assert.h ctype.h errno.h malloc.h memory.h stdlib.h \
-		  stdio.h unistd.h])
-AC_CHECK_HEADERS([dl.h sys/dl.h dld.h mach-o/dyld.h])
-AC_CHECK_HEADERS([string.h strings.h], [break])
+		  stdio.h unistd.h dl.h sys/dl.h dld.h mach-o/dyld.h],
+	[], [], [AC_INCLUDES_DEFAULT])
+AC_CHECK_HEADERS([string.h strings.h], [break], [], [AC_INCLUDES_DEFAULT])
 
 AC_CHECK_FUNCS([strchr index], [break])
 AC_CHECK_FUNCS([strrchr rindex], [break])
@@ -141,7 +144,7 @@ AC_CACHE_CHECK([whether deplibs are loaded by dlopen],
     # Assuming the user has installed a libdl from somewhere, this is true
     # If you are looking for one http://www.opendarwin.org/projects/dlcompat
     libltdl_cv_sys_dlopen_deplibs=yes
-    ;;   
+    ;;
   kfreebsd*-gnu)
     libltdl_cv_sys_dlopen_deplibs=yes
     ;;
@@ -421,7 +424,7 @@ fi
 # AC_LTDL_FUNC_ARGZ
 # -----------------
 AC_DEFUN([AC_LTDL_FUNC_ARGZ],
-[AC_CHECK_HEADERS([argz.h])
+[AC_CHECK_HEADERS([argz.h], [], [], [AC_INCLUDES_DEFAULT])
 
 AC_CHECK_TYPES([error_t],
   [],
