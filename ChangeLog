@@ -1,3 +1,8 @@
+2003-02-04  Nick Hudson  <skrll@netbsd.org>
+
+	* libtool.m4: don't use -nodefaultlibs in archive_commands
+	or archive_expsym_commands on NetBSD.
+
 2003-02-04  Albert Chin-A-Young  <china@thewrittenword.com>
 
 	* libtool.m4: Change setting of archive_cmds_need_lc
