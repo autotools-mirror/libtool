@@ -1,5 +1,12 @@
 2002-05-06  Paul Eggert  <eggert@twinsun.com>
 
+	* libtool.m4 (AC_LIBTOOL_PROG_LD_SHLIBS): head -1 -> sed 1q to
+	port to POSIX 1003.1-2001 hosts, like textutils 2.0.21 with
+	_POSIX2_VERSION=200112.
+	* exe/link-txt.tpl: Include the previous change in the template.
+
+2002-05-06  Paul Eggert  <eggert@twinsun.com>
+
 	* ltmain.in: Don't assume that "sort +2" works, as POSIX
 	1003.1-2001 says that "sort +2" is supposed to sort the file
 	named "+2".  An example host that behaves like this is
@@ -7,7 +14,7 @@
 
 2002-05-06  Loren James Rittle  <rittle@latour.rsch.comm.mot.com>
 
-	* ltmain.sh: Detect and handle object name conflicts while
+	* ltmain.in: Detect and handle object name conflicts while
 	piecewise linking a static library.
 
 2002-05-02  Dave Vasilevsky  <thevas@mac.com>
