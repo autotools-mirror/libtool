@@ -1,5 +1,7 @@
 2001-09-11  Gary V. Vaughan  <gary@gnu.org>
 
+	* bootstrap: Be robust to having no files that need removing.
+
 	* configure.in: Bumped version to 1.4.2a.
 
 	GNU libtool 1.4.2 was released.
@@ -50,7 +52,7 @@
 	(AC_PROG_LD): Don't forget to AC_REQUIRE it!  Be careful not to
 	set IFS="${IFS}$PATH_SEPARATOR" for PATH splitting, otherwise
 	spaces in directory names will be lost.
-	(AC_PROG_NM): Dittp.
+	(AC_PROG_NM): Ditto.
 	* ltmain.in: Default IFS once, at the start.
 	Reported by Akim Demaille <akim@epita.fr>
 
