@@ -1,3 +1,12 @@
+2004-02-03  Scott James Remnant  <scott@netsplit.com>
+
+	* Makefile.am (install-data-hook): Manually make config.guess
+	and config.sub executable after they are installed as _DATA.
+	We can't use _SCRIPTS because the various program name
+	transforms may be applied to them.
+	(dist_pkgdata_DATA): List config.guess and config.sub here
+	(pkgdata_SCRIPTS): instead of here.
+
 2003-02-03  Scott James Remnant  <scott@netsplit.com>
 
 	* ltmain.in: Create temporary directory under a strict umask

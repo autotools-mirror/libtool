@@ -28,9 +28,10 @@ EXTRA_DIST = bootstrap libtoolize.in ltmain.in config/mkstamp stamp-vcl \
 	ChangeLog.2000 ChangeLog.2001 ChangeLog.2002 ChangeLog.2003
 CLEANFILES = libtool libtoolize ltmain.shT
 
-# These are required by libtoolize.
-pkgdata_SCRIPTS = config/config.guess config/config.sub
-pkgdata_DATA = config/ltmain.sh
+# These are required by libtoolize and must be executable when installed.
+# Since _SCRIPTS gets the program transform applied we make them
+# executable by hand
+dist_pkgdata_DATA = config/config.guess config/config.sub config/ltmain.sh
 
 # Me maintain our own macros to provent problems with ancient definitions.
 # lt~obsolete.m4 doesn't belong here, it's for bootstrapping us only
@@ -80,6 +81,10 @@ install-data-local:
 ## Remove old macro definitions
 	-rm -rf $(DESTDIR)$(aclocaldir)/ltdl.m4
 	-rm -rf $(DESTDIR)$(aclocaldir)/libtool.m4
+
+install-data-hook:
+	chmod +x $(DESTDIR)$(pkgdatadir)/config.guess
+	chmod +x $(DESTDIR)$(pkgdatadir)/config.sub
 
 
 ## ---------------------------------------------------------------- ##
