@@ -1,3 +1,44 @@
+Thu Nov  6 08:11:25 1997  Gordon Matzigkeit  <gord@gnu.org>
+
+	* ltmain.in (link): Use libname_spec.
+
+	* ltconfig.in (pic_flag): Somehow, the HP-UX pic_flag (`+Z') was
+ 	dropped between libtool-1.0 and now.  Add it back in.  Reported by
+	Akim Demaille.
+	Integrated more patches for OS/2.  From Jeff Freedman.
+	(libname_spec): New variable for OSes that don't require their
+	libraries to look like `libNAME.a'.
+
+	* ltmain.in (link): Only use global_symbol_pipe if it has been
+	defined.  From Stephan Kulow.
+
+	* ltconfig.in (global_symbol_pipe): Protect C fragment under C++
+	compilers.  From Stephan Kulow.
+
+	* Makefile.am ($(srcdir)/acinclude.m4,
+	$(srcdir)/demo/acinclude.m4): Change rules to use LN_S so that
+	they can be run on any system.
+
+	* ltconfig.in (archive_cmds): For NetBSD, don't include deplibs.
+	From Dieter Baron.
+
+	* ltmain.in (mkdir): Check that the directory doesn't exist before
+ 	we exit with error, so that we don't get races during parallel
+ 	builds.  From H. J. Lu.
+	(fbsd_hideous_sh_bug): Apparently, some FreeBSD /bin/sh's have a
+ 	bug that will empty base_compile unless we do this dummy
+ 	assignment.  From Marc van Kempen.
+
+Wed Oct 22 10:27:45 1997  Gordon Matzigkeit  <gord@gnu.org>
+
+	* libtool.m4 (libtool_shared, libtool_static): Fixed logic error
+	to reenable override of libtool's defaults by setting
+	enable_shared or enable_static in configure.in.  Reported by Tom
+	Tromey and Stephan Kulow.
+
+	* ltmain.in (link): Add explicit support for compiler options that
+ 	begin with `+'.  Reported by Aubert Pierre.
+
 Mon Oct 20 13:21:14 1997  Gordon Matzigkeit  <gord@gnu.org>
 
 	* ltmain.in: Silly me.  Change a bunch of occurances of "* $dir *"
@@ -18,11 +59,10 @@ Sun Oct 19 12:48:14 1997  Gordon Matzigkeit  <gord@gnu.org>
 	* ltconfig.in (LD): Same as below.
 
 	* libtool.m4 (LD): Set LD if we discover an absolute path to GNU
-	ld.  This avoids unnecessary tests.  Reported by Ulrich Drepper.
+ 	ld.  This prevents breakage when `$CC -print-prog-name=ld' returns
+ 	an absolute directory name.  Reported by Ulrich Drepper.
 
 	* ltconfig.in: Port to OS/2 using EMX.  From Jeff Freedman.
-	(double_quote_subst): sed substitution to protect metacharacters
-	in variables that are evaled twice.
 
 	* ltmain.in (link): Use old_archive_from_new_cmds.
 

@@ -42,7 +42,7 @@ TESTS = run.test
 # Regenerate our acinclude.m4 only if it doesn't exist.
 $(srcdir)/acinclude.m4:
 	rm -f $(srcdir)/acinclude.m4
-	ln -s ../libtool.m4 $(srcdir)/acinclude.m4
+	cd $(srcdir) && $(LN_S) ../libtool.m4 acinclude.m4
 
 # Don't build helldl on unsupported platforms.
 helldl: $(helldl_OBJECTS) $(helldl_DEPENDENCIES)

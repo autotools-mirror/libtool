@@ -423,7 +423,9 @@ if test "$with_gcc" = yes; then
   case "$host_os" in
   aix3* | aix4* | irix5* | irix6* | osf3* | osf4*)
     # PIC is the default for these OSes.
-    pic_flag=
+    ;;
+  os2*)
+    # We can build DLLs from non-PIC.
     ;;
   *)
     pic_flag='-fPIC'
@@ -438,16 +440,16 @@ else
     ;;
 
   hpux9* | hpux10*)
-    # FIXME is there a better link_static_flag that works with the bundled CC?
+    # Is there a better link_static_flag that works with the bundled CC?
     wl='-Wl,'
     link_static_flag='${wl}-a ${wl}archive'
+    pic_flag='+Z'
     ;;
 
   irix5* | irix6*)
     wl='-Wl,'
     link_static_flag='-non_shared'
     # PIC (with -KPIC) is the default.
-    pic_flag=
     ;;
 
   os2*)
@@ -751,8 +753,15 @@ else
     hardcode_libdir_flag_spec='${wl}-rpath ${wl}$libdir'
     ;;
 
-  netbsd* | openbsd*)
+  netbsd*)
     # Tested with NetBSD 1.2 ld
+    archive_cmds='$LD -Bshareable -o $lib$libobjs'
+    hardcode_libdir_flag_spec='-R$libdir'
+    hardcode_direct=yes
+    hardcode_shlibpath_var=no
+    ;;
+
+  openbsd*)
     archive_cmds='$LD -Bshareable -o $lib$libobjs$deplibs'
     hardcode_libdir_flag_spec='-R$libdir'
     hardcode_direct=yes
@@ -760,11 +769,11 @@ else
     ;;
 
   os2*)
-    # FIXME: unsure of OS/2 hardcoding properties
-    hardcode_direct=yes
+    hardcode_libdir_flag_spec='-L$libdir'
+    hardcode_minus_L=yes
     allow_undefined_flag=unsupported
-    archive_cmds='echo "LIBRARY $libname INITINSTANCE" > $objdir/$libname.def;echo "DESCRIPTION \"$libname\"" >> $objdir/$libname.def;echo DATA >> $objdir/$libname.def;echo " SINGLE NONSHARED" >> $objdir/$libname.def;echo EXPORTS >> $objdir/$libname.def;emxexp$libobjs >> $objdir/$libname.def;$CC -Zdll -Zcrtdll -o $lib$libobjs $objdir/$libname.def$deplibs'
-    old_archive_from_new_cmds='emximp -o $libname.a $objdir/$libname.def'
+    archive_cmds='echo "LIBRARY $libname INITINSTANCE" > $objdir/$libname.def;echo "DESCRIPTION \"$libname\"" >> $objdir/$libname.def;echo DATA >> $objdir/$libname.def;echo " SINGLE NONSHARED" >> $objdir/$libname.def;echo EXPORTS >> $objdir/$libname.def;emxexp$libobjs >> $objdir/$libname.def;$CC -Zdll -Zcrtdll -o $lib$libobjs $objdir/$libname.def'
+    old_archive_from_new_cmds='emximp -o $objdir/$libname.a $objdir/$libname.def'
     ;;
 
   osf3*)
@@ -880,8 +889,14 @@ global_symbol_pipe="sed -n -e 's/^.* $symcode $sympat$/$symxfrm/p'"
 pipe_works=no
 $rm conftest*
 cat > conftest.c <<EOF
+#ifdef __cplusplus
+extern "C" {
+#endif
 char nm_test_var;
 void nm_test_func(){}
+#ifdef __cplusplus
+}
+#endif
 main(){nm_test_var='a';nm_test_func();return(0);}
 EOF
 
@@ -1013,6 +1028,7 @@ test -n "$reload_flag" && reload_flag=" $reload_flag"
 
 # PORTME Fill in your ld.so characteristics
 library_names_spec=
+libname_spec='lib$name'
 soname_spec=
 postinstall_cmds=
 finish_cmds=
@@ -1096,8 +1112,10 @@ netbsd* | openbsd*)
 
 os2*)
   version_type=none
-  library_names_spec='$libname.dll'
+  libname_spec='$name'
+  library_names_spec='$libname.dll $libname.a'
   dynamic_linker='OS/2 ld.exe'
+  shlibpath_var=LIBPATH
   ;;
 
 osf3* | osf4*)
@@ -1142,30 +1160,13 @@ esac
 echo "$ac_t$dynamic_linker"
 test "$dynamic_linker" = no && can_build_shared=no
 
-# FIXME need to add library stripping features
+# FIXME add checks for striplib and old_striplib here.
 # strip -x works for most platforms, though not for static libraries on NetBSD
 # HP-UX requires "-r" for library stripping
 striplib=
 old_striplib=
 
-#echo $ac_n "checking for static library strip program... $ac_c" 1>&6
-#if test -n "$old_striplib"; then
-#  echo "$ac_t$old_striplib" 1>&6
-#else
-#  echo "$ac_t"none 1>&6
-#fi
-
-#if test "$can_build_shared" = yes; then
-#  echo $ac_n "checking for shared library strip program... $ac_c" 1>&6
-#
-#  if test -n "$striplib"; then
-#    echo "$ac_t$striplib" 1>&6
-#  else
-#    echo "$ac_t"none 1>&6
-#  fi
-#fi
-
-# Report the consequences.
+# Report the final consequences.
 echo "checking if libtool supports shared libraries... $can_build_shared" 1>&6
 
 echo $ac_n "checking whether to build shared libraries... $ac_c" 1>&6
@@ -1206,7 +1207,7 @@ echo "$ac_t$objdir" 1>&6
 for var in old_CC old_CFLAGS old_CPPFLAGS old_LD old_NM old_RANLIB \
   old_LN_S AR CC LD LN_S NM reload_flag reload_cmds wl pic_flag \
   link_static_flag no_builtin_flag export_dynamic_flag_spec \
-  profile_flag_pattern library_names_spec soname_spec RANLIB \
+  profile_flag_pattern libname_spec library_names_spec soname_spec RANLIB \
   old_archive_cmds old_archive_from_new_cmds old_postinstall_cmds \
   archive_cmds postinstall_cmds \
   allow_undefined_flag finish_cmds global_symbol_pipe \
@@ -1303,6 +1304,9 @@ profile_flag_pattern="$profile_flag_pattern"
 
 # Library versioning type.
 version_type=$version_type
+
+# Format of library name prefix.
+libname_spec="$libname_spec"
 
 # List of archive names.  First name is the real one, the rest are links.
 # The last name is the one that the linker finds with -lNAME.

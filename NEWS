@@ -1,10 +1,10 @@
 NEWS - list of user-visible changes between releases of GNU libtool.
 
-New in 1.0e:
+New in 1.0f:
 * Bug fixes.
 * Portability fixes for Windows NT.
 * Maybe use `_libs' as a temporary libtool directory instead of `.libs'
-  in order to cope with MS-DOS filenames.  See README-alpha.
+  in order to cope with MS-DOS filenames.
 * New `-all-static' flag to prevent any dynamic linking.  The regular
   `-static' flag just prevents dynamic linking of libtool libraries.
 * The `-rpath' flag can be used to hardcode absolute directories when
@@ -26,6 +26,9 @@ New in 1.0e:
 * Allow configure.in to change the defaults for AM_PROG_LIBTOOL's
   `--enable-shared' and `--enable-static' flags by setting
   the `enable_shared' or `enable_static' shell variables to `no'.
+* Refuse to create libtool libraries that don't begin with `lib'.
+  This allows us to correctly handle OSes that don't have the `lib'
+  prefix by default.
 * Support for *-*-uts4* and *-*-os2*.
 
 New in 1.0:

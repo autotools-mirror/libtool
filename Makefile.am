@@ -74,10 +74,12 @@ dist-hook: $(demo_distfiles)
 all: demo/Makefile.in demo/configure
 
 # We use our own libtool.m4.
-$(srcdir)/aclocal.m4: acinclude.m4
-$(srcdir)/acinclude.m4:
+$(srcdir)/acinclude.m4: libtool.m4
 	rm -f $(srcdir)/acinclude.m4
-	ln -s libtool.m4 $(srcdir)/acinclude.m4
+	cd $(srcdir) && $(LN_S) libtool.m4 acinclude.m4
+$(srcdir)/demo/acinclude.m4: libtool.m4
+	rm -f $(srcdir)/demo/acinclude.m4
+	cd $(srcdir)/demo && $(LN_S) ../libtool.m4 acinclude.m4
 
 # Rules for rebuilding some of the demo source files.
 $(srcdir)/demo/Makefile.in: demo/Makefile.am demo/configure.in demo/aclocal.m4
@@ -88,7 +90,3 @@ $(srcdir)/demo/configure: demo/configure.in demo/aclocal.m4
 
 $(srcdir)/demo/aclocal.m4: demo/configure.in demo/acinclude.m4
 	cd $(srcdir)/demo && $(ACLOCAL)
-
-$(srcdir)/demo/acinclude.m4:
-	rm -f $(srcdir)/demo/acinclude.m4
-	ln -s ../libtool.m4 $(srcdir)/demo/acinclude.m4
