@@ -1,6 +1,10 @@
 2001-06-29  Gary V. Vaughan  <gary@gnu.org>
 
-	From Bruno Haible  <haible@ilog.fr>
+	From Chris Leishman <chris@sharinga.com>
+	* libtool,m4 (_LT_AC_LTCONFIG_HACK) [darwin]:  Cheap hack to
+	help fake a C++ compilation.
+
+	From Bruno Haible <haible@ilog.fr>
 	* NEWS: Updated.
 	* libtool.m4 (_LT_AC_LTCONFIG_HACK):  Make sure ac_objext is
 	set to `lo' when testing for compiler output to *.lo filenames.
