@@ -482,7 +482,7 @@ compiler."
 
       # If we have no pic_flag and do not compile a module, 
       # then copy the object into place and finish.
-      if test -z "$pic_flag" && "$module" = no; then
+      if test -z "$pic_flag" && test "$module" = no; then
         $show "$LN_S $libobj $obj"
         if $run $LN_S $libobj $obj; then
 	  exit 0
