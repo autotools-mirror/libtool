@@ -1,3 +1,7 @@
+2000-09-02  Pavel Roskin <proski@gnu.org>
+
+	* ltconfig.in: only load $cache_file if it's a regular file
+
 2000-09-02  Assar Westerlund  <assar@sics.se>
 
 	* ltconfig.in: Add back ranlib calls for static libraries if there
