@@ -1,5 +1,7 @@
 2002-10-22  Robert Boehne  <rboehne@gnu.org>
 
+	* configure.in: Bumped version to 1.4.3a.
+
 	GNU libtool 1.4.3 was released.
 
 	* configure.in: Bumped version to 1.4.3.
