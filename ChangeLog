@@ -1,3 +1,10 @@
+2000-09-16  Gary V. Vaughan  <gvv@techie.com>
+
+	* bootstrap (ltconfig): When bootstrapping libtool with a
+	stock automake (i.e. without the README patch applied),
+	references to ltconfig are manually removed from the generated
+	Makefile.in files.
+
 2000-09-15  Gary V. Vaughan  <gvv@techie.com>
 
 	* doc/libtool.texi: Removes references to ltconfig, and a small

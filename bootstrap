@@ -3,6 +3,8 @@
 # helps bootstrapping libtool, when checked out from CVS
 # requires GNU autoconf and GNU automake
 
+file=Makefile.in
+
 rm -f acinclude.m4
 ln -s libtool.m4 acinclude.m4
 # fake the libtool scripts
@@ -11,6 +13,7 @@ touch ltconfig
 touch libtoolize
 aclocal
 automake --gnu --add-missing --copy
+sed 's/ ltconfig//' < $file > ${file}T && mv ${file}T $file || rm -f ${file}T
 autoconf
 
 for sub in libltdl demo depdemo mdemo cdemo; do
@@ -21,6 +24,7 @@ for sub in libltdl demo depdemo mdemo cdemo; do
   aclocal
   test "$sub" = libltdl && autoheader
   automake --gnits --add-missing
+  sed 's/ ltconfig//' < $file > ${file}T && mv ${file}T $file || rm -f ${file}T
   autoconf
   cd ..
 done
