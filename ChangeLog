@@ -1,3 +1,7 @@
+2003-09-11  Peter O'Gorman  <peter@pogma.com>
+
+	* AUTHORS, THANKS: Added myself to AUTHORS, removed from THANKS.
+
 2003-09-10  Peter O'Gorman  <peter@pogma.com>
 
 	* mdemo2/configure.ac: Use AC_LIBTOOL_DLOPEN.
