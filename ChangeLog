@@ -1,3 +1,8 @@
+2004-10-03  Gary V. Vaughan  <gary@gnu.org>
+
+	* libltdl/argz_.h: Forgot to include lt__system.h for LT_SCOPE
+	definition.
+
 2004-10-03  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>,
 	    Gary V. Vaughan  <gary@gnu.org>
 
