@@ -23,7 +23,8 @@ USA. */
 #include <stdio.h>
 
 int
-test_dl (char *filename)
+test_dl (filename)
+  char *filename;
 {
   lt_dlhandle handle;	
   int (*pfoo1)() = 0;
@@ -37,10 +38,10 @@ test_dl (char *filename)
     fprintf (stderr, "error was: %s\n", lt_dlerror());
     return 1;
   }
-  phello = lt_dlsym(handle, "hello");  
-  pfoo1 = lt_dlsym(handle, "foo1");  
-  pfoo2 = lt_dlsym(handle, "foo2");  
-  pnothing = lt_dlsym(handle, "nothing");  
+  phello = (int(*)())lt_dlsym(handle, "hello");  
+  pfoo1 = (int(*)())lt_dlsym(handle, "foo1");  
+  pfoo2 = (int(*)())lt_dlsym(handle, "foo2");  
+  pnothing = (int*)lt_dlsym(handle, "nothing");  
 
   if (phello)
     {
@@ -78,7 +79,9 @@ test_dl (char *filename)
 }
 
 int
-main (int argc, char **argv)
+main (argc, argv)
+  int argc;
+  char **argv;
 {
   int i;
 

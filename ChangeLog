@@ -1,5 +1,9 @@
 1999-01-20  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* cdemo/main.c (main): use K&R definition syntax
+	* mdemo/main.c (test_dl, main): ditto
+	(test_dl): casts return value of lt_dlsym to appropriate types
+
 	* ltmain.in (dlsyms): #define const to nothing if not __STDC__
 
 	* ltconfig.in (global_symbol_pipe): #define const to nothing if

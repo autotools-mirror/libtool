@@ -23,7 +23,9 @@ USA. */
 
 
 int
-main (int argc, char **argv)
+main (argc,argv)
+  int argc;
+  char **argv;
 {
   int value;
 
