@@ -1172,15 +1172,33 @@ EOF
     test -d "$dest" && isdir=yes
     if test -n "$isdir"; then
       destdir="$dest"
+      destname=
     else
       destdir=`echo "$dest" | sed 's%/[^/]*$%%'`
+      destname=`echo "$dest" | sed 's%^.*/%%'`
+
+      # Not a directory, so check to see that there is only one file specified.
+      set dummy $files
+      if $# -gt 2; then
+        echo "$progname: \`$dest' is not a directory" 1>&2
+        echo "$help" 1>&2
+	exit 1
+      fi
     fi
     case "$destdir" in
     /*) ;;
     *)
-      echo "$progname: $destdir must be an absolute directory name" 1>&2
-      echo "$help" 1>&2
-      exit 1
+      for file in $files; do
+	case "$file" in
+	*.lo) ;;
+	*)
+	  echo "$progname: \`$destdir' must be an absolute directory name" 1>&2
+	  echo "$help" 1>&2
+	  exit 1
+	  ;;
+	esac
+      done
+      ;;
     esac
 
     staticlibs=
@@ -1296,6 +1314,50 @@ EOF
 
 	# Maybe install the static library, too.
 	test -n "$old_library" && staticlibs="$staticlibs $dir/$old_library"
+	;;
+
+      *.lo)
+        # Install (i.e. copy) a libtool object.
+
+        # Figure out destination file name, if it wasn't already specified.
+        if test -n "$destname"; then
+	  destfile="$destdir/$destname"
+	else
+	  destfile=`echo "$file" | sed 's%^.*/%%;'`
+	  destfile="$destdir/$destfile"
+        fi
+
+	# Deduce the name of the destination old-style object file.
+	case "$destfile" in
+	*.lo)
+	  staticdest=`echo "$destfile" | sed 's/\.lo$/\.o/;'`
+	  ;;
+	*.o)
+	  staticdest="$destfile"
+	  destfile=
+	  ;;
+	*)
+	  echo "$progname: cannot copy a libtool object to \`$destfile'" 1>&2
+	  echo "$help" 1>&2
+	  exit 1
+          ;;
+	esac
+
+	# Install the libtool object if requested.
+	if test -n "$destfile"; then
+	  $show "$install_prog $file $destfile"
+	  $run $install_prog $file $destfile || exit $?
+	fi
+
+	# Install the old object if enabled.
+	if test "$build_old_libs" = yes; then
+	  # Deduce the name of the old-style object file.
+	  staticobj=`echo "$file" | sed 's/\.lo$/\.o/;'`
+
+	  $show "$install_prog $staticobj $staticdest"
+	  $run $install_prog $staticobj $staticdest || exit $?
+	fi
+	exit 0
 	;;
 
       *)
@@ -1542,6 +1604,13 @@ EOF
 	  # FIXME: should reinstall the best remaining shared library.
 	fi
 	;;
+
+      *.lo)
+	if test "$build_old_libs" = yes; then
+      	  oldobj=`echo "$name" | sed 's/\.lo$/\.o/'`
+	  rmfiles="$rmfiles $dir/$oldobj"
+	fi
+  	;;
       esac
 
       $show "$rm $rmfiles"

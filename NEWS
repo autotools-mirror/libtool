@@ -12,6 +12,8 @@ New in 0.9h:
 * Basic support for dynamically loaded modules: new `-export-dynamic'
   linking flag and corresponding `dlname' mode.
 * New `--features' flag to display configured libtool attributes.
+* Added support for installing libtool objects, both in absolute and
+  relative directories.
 * Support *-*-linux-gnu* as an alias for *-*-linux*.
 * Support for *-*-openbsd* and *-*-freebsd3*.
 
