@@ -1,3 +1,17 @@
+2004-01-16  Gary V. Vaughan  <gary@gnu.org>
+
+	* configure.ac (AC_CONFIG_HEADERS): Create config.h in
+	$top_srcdir.
+	* m4/ltdl.m4 (AC_LIB_LTDL): Run AC_CONFIG_HEADERS for the user if
+	necessary. Calculate filename from first argument to
+	AC_CONFIG_HEADERS, and substitute as CONFIG_H.
+	* libltdl/Makefile.am (AM_CPPFLAGS): Make sure we are searching in
+	$top_srcdir for headers.
+	(DEFS): Override the default HAVE_CONFIG_H with the config.h
+	filename.
+	(ltdl.lo): Reference config.h via $(CONFIG_H).
+	* libltdl/ltdl.c (HAVE_CONFIG_H): Ditto.
+
 2004-01-15  Scott James Remnant  <scott@netsplit.com>
 
 	* m4/lt~obsolete.m4: Add a file containing aclocal-fooling
@@ -17,7 +31,7 @@
 2004-01-13  Peter O'Gorman  <peter@pogma.com>
 
 	* m4/libtool.m4: Quote shrext as it is evaled in ltmain.
-	
+
 2004-01-11  Scott James Remnant  <scott@netsplit.com>
 
 	* ltmain.in: new -precious-files-regex link mode option

@@ -96,6 +96,15 @@ AC_REQUIRE([AC_LTDL_DLSYM_USCORE])
 AC_REQUIRE([AC_LTDL_SYS_DLOPEN_DEPLIBS])
 AC_REQUIRE([AC_LTDL_FUNC_ARGZ])
 
+# In order that ltdl.c can compile, run AC_CONFIG_HEADERS for the user
+# if they did not call it themself.  This is so that ltdl.h can pick up
+# the parent projects config.h file, The first file in AC_CONFIG_HEADERS
+# must contain the definitions required by ltdl.c.
+m4_ifset([AC_LIST_HEADERS],
+    [CONFIG_H=`echo "AC_LIST_HEADERS" | $SED 's,^[[ 	]]*,,;s,[[ :]].*$,,'`],
+  [CONFIG_H=config.h;AC_CONFIG_HEADERS([config.h])])
+AC_SUBST([CONFIG_H])
+
 AC_CHECK_HEADERS([assert.h ctype.h errno.h malloc.h memory.h stdlib.h \
 		  stdio.h unistd.h dl.h sys/dl.h dld.h mach-o/dyld.h],
 	[], [], [AC_INCLUDES_DEFAULT])

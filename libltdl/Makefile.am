@@ -2,6 +2,8 @@
 
 AUTOMAKE_OPTIONS = no-dependencies foreign
 ACLOCAL_AMFLAGS  = -I ../m4
+AM_CPPFLAGS = -I$(top_srcdir)
+DEFS = -DHAVE_CONFIG_H="<$(CONFIG_H)>"
 
 if INSTALL_LTDL
 include_HEADERS = ltdl.h
@@ -26,7 +28,7 @@ libltdlc_la_SOURCES = ltdl.c
 libltdlc_la_LIBADD = $(LIBADD_DL)
 
 ## Because we do not have automatic dependency tracking:
-ltdl.lo: ltdl.h config.h
+ltdl.lo: ltdl.h $(top_srcdir)/$(CONFIG_H)
 
 ## This allows us to install libltdl without using ln and without creating
 ## a world writeable directory.
