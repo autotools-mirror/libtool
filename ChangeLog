@@ -1,5 +1,9 @@
 2000-12-16  Gary V. Vaughan  <gvv@techie.com>
 
+	* libtool.m4 (sys_lib_search_path_spec): Use test instead of
+	`['.
+	(archive_cmds): And another one.
+	
 	* libtool.m4 (darwin*): Fixed a pair of stupid typos I made in the
 	last patch.
 

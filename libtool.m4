@@ -1436,8 +1436,8 @@ else
 
   darwin* | rhapsody*)
     allow_undefined_flag='-undefined warning'
-    [archive_cmds='$CC `if [ "$module" = "yes" ]; then echo -bundle; else
-      echo -dynamiclib; fi` -o $lib $libobjs $deplibs $linkopts']
+    archive_cmds='$CC `if test "$module" = "yes"; then echo -bundle; else
+      echo -dynamiclib; fi` -o $lib $libobjs $deplibs $linkopts'
     archive_expsym_cmds="$archive_cmds"' && strip -s $export_symbols'
     ## What we need is to hardcode the path to the library, not the search path
     #hardcode_direct=yes
@@ -1805,10 +1805,10 @@ cygwin* | mingw* | pw32*)
   shlibpath_var=PATH
   ;;
 
-darwin*|rhapsody*)
+darwin* | rhapsody*)
   need_lib_prefix=no
   need_version=no
-  library_names_spec='${libname}.`if [ "$module" = "yes"]; then echo so; else echo dylib; fi`'
+  library_names_spec='${libname}.`if test "$module" = "yes"; then echo so; else echo dylib; fi`'
   shlibpath_overrides_runpath=yes
   shlibpath_var=DYLD_LIBRARY_PATH
   postinstall_cmds='chmod +x $lib'
