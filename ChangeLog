@@ -1,3 +1,12 @@
+1999-10-07  Gary V. Vaughan  <gary@oranda.demon.co.uk>
+
+	* libtool.m4 (AC_PATH_PROG_VERSION_GREP): removed in favour of the 
+	more general AC_PATH_PROG_GREP_OUTPUT.
+	(AC_PATH_TOOL_VERSION_GREP): removed in favour of the more general 
+	AC_PATH_TOOL_GREP_OUTPUT.
+	(AC_PROG_LIBTOOL):  Search for a working find program in the
+	user's PATH using the new macros.
+	
 1999-10-06  Gary V. Vaughan  <gary@oranda.demon.co.uk>
 
 	* NEWS: updtaed.
