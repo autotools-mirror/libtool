@@ -142,6 +142,9 @@ AC_CACHE_CHECK([whether deplibs are loaded by dlopen],
     # If you are looking for one http://www.opendarwin.org/projects/dlcompat
     libltdl_cv_sys_dlopen_deplibs=yes
     ;;   
+  freebsd*-gnu*)
+    libltdl_cv_sys_dlopen_deplibs=yes
+    ;;
   gnu*)
     libltdl_cv_sys_dlopen_deplibs=yes
     ;;
