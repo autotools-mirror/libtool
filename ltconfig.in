@@ -681,7 +681,8 @@ else
   # Check to make sure the pic_flag actually works.
   echo $ac_n "checking if $compiler PIC flag $ac_cv_prog_cc_pic works... $ac_c" 1>&6
   echo "$progname:@LINENO@:checking that $compiler PIC flag $ac_cv_prog_cc_pic works." 1>&5
-  if test "X${ac_cv_prog_cc_pic_works+set}" = Xset; then
+  if test "X${ac_cv_prog_cc_pic_works+set}" = Xset && \
+     test "X${ac_cv_prog_cc_pic_works}" != X; then
     echo $ac_n "(cached) $ac_c" 1>&6
   else
     ac_cv_prog_cc_pic_works=yes
@@ -742,7 +743,8 @@ fi
 
 echo $ac_n "checking if $compiler static flag $ac_cv_prog_cc_static works... $ac_c" 1>&6
 echo "$progname:@LINENO@: checking if $compiler static flag $ac_cv_prog_cc_static works" >&5
-if test "X${ac_cv_prog_cc_static_works+set}" = Xset; then
+if test "X${ac_cv_prog_cc_static_works+set}" = Xset && \
+   test "X${ac_cv_prog_cc_static_works}" != X; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
   $rm conftest*
