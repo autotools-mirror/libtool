@@ -1076,7 +1076,7 @@ if test "$with_gnu_ld" = yes; then
 
   beos*)
     if $LD --help 2>&1 | egrep ': supported targets:.* elf' > /dev/null; then
-      archive_cmds='$CC -nostart ${wl}-soname $wl$soname -o $lib $libobjs $deplibs $linkopts'
+      archive_cmds='$CC -nostart $libobjs $deplibs $linkopts ${wl}-soname $wl$soname -o $lib'
     else
       ld_shlibs=no
     fi
@@ -1106,8 +1106,8 @@ if test "$with_gnu_ld" = yes; then
 
   *)
     if $LD --help 2>&1 | egrep ': supported targets:.* elf' > /dev/null; then
-      archive_cmds='$CC -shared ${wl}-soname $wl$soname -o $lib $libobjs $deplibs $linkopts'
-      archive_expsym_cmds='$CC -shared ${wl}-soname $wl$soname ${wl}-retain-symbols-file $wl$export_symbols -o $lib $libobjs $deplibs $linkopts'
+      archive_cmds='$CC -shared $libobjs $deplibs $linkopts ${wl}-soname $wl$soname -o $lib'
+      archive_expsym_cmds='$CC -shared $libobjs $deplibs $linkopts ${wl}-soname $wl$soname ${wl}-retain-symbols-file $wl$export_symbols -o $lib'
     else
       ld_shlibs=no
     fi
@@ -1239,9 +1239,9 @@ else
 
   irix5* | irix6*)
     if test "$with_gcc" = yes; then
-      archive_cmds='$CC -shared -o $lib ${wl}-soname ${wl}$soname `test -n "$verstring" && echo ${wl}-set_version ${wl}$verstring` $libobjs $deplibs $linkopts'
+      archive_cmds='$CC -shared $libobjs $deplibs $linkopts ${wl}-soname ${wl}$soname `test -n "$verstring" && echo ${wl}-set_version ${wl}$verstring` -o $lib'
     else
-      archive_cmds='$LD -shared -o $lib -soname $soname `test -n "$verstring" && echo -set_version $verstring` $libobjs $deplibs $linkopts'
+      archive_cmds='$LD -shared $libobjs $deplibs $linkopts -soname $soname `test -n "$verstring" && echo -set_version $verstring` -o $lib'
     fi
     hardcode_libdir_flag_spec='${wl}-rpath ${wl}$libdir'
     hardcode_libdir_separator=:
@@ -1276,10 +1276,10 @@ else
   osf3* | osf4*)
     if test "$with_gcc" = yes; then
       allow_undefined_flag=' ${wl}-expect_unresolved ${wl}\*'
-      archive_cmds='$CC -shared${allow_undefined_flag} -o $lib ${wl}-soname ${wl}$soname `test -n "$verstring" && echo ${wl}-set_version ${wl}$verstring` $libobjs $deplibs $linkopts'
+      archive_cmds='$CC -shared${allow_undefined_flag} $libobjs $deplibs $linkopts ${wl}-soname ${wl}$soname `test -n "$verstring" && echo ${wl}-set_version ${wl}$verstring` -o $lib'
     else
       allow_undefined_flag=' -expect_unresolved \*'
-      archive_cmds='$LD -shared${allow_undefined_flag} -o $lib -soname $soname `test -n "$verstring" && echo -set_version $verstring` $libobjs $deplibs $linkopts'
+      archive_cmds='$LD -shared${allow_undefined_flag} $libobjs $deplibs $linkopts -soname $soname `test -n "$verstring" && echo -set_version $verstring` -o $lib'
     fi
     hardcode_libdir_flag_spec='${wl}-rpath ${wl}$libdir'
     hardcode_libdir_separator=:

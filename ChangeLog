@@ -1,5 +1,10 @@
 1999-02-18  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* ltconfig.in (ld_shlibs): move -soname and similar flags to the
+	end of archive_cmds and archive_expsym_cmds, so as to prevent
+	gcc's collect2 from inserting an object file between -soname and
+	the library name
+
 	* ltconfig.in (openbsd*, netbsd*, library_names_spec): append
 	alternate name without ${release}, otherwise build fails when
 	-release is used
