@@ -1021,9 +1021,9 @@ compiler."
 	*)
 	  absdir=`cd "$dir" && pwd`
 	  if test -z "$absdir"; then
-            $echo "$modename: warning: cannot determine absolute directory name of \`$dir'" 1>&2
-            $echo "$modename: passing it literally to the linker, although it might fail" 1>&2
-            absdir="$dir"
+	    $echo "$modename: warning: cannot determine absolute directory name of \`$dir'" 1>&2
+	    $echo "$modename: passing it literally to the linker, although it might fail" 1>&2
+	    absdir="$dir"
 	  fi
 	  dir="$absdir"
 	  ;;
@@ -1295,9 +1295,9 @@ compiler."
 	  *)
 	    absdir=`cd "$dir" && pwd`
 	    if test -z "$absdir"; then
-              $echo "$modename: warning: cannot determine absolute directory name of \`$dir'" 1>&2
-              $echo "$modename: passing it literally to the linker, although it might fail" 1>&2
-              absdir="$dir"
+	      $echo "$modename: warning: cannot determine absolute directory name of \`$dir'" 1>&2
+	      $echo "$modename: passing it literally to the linker, although it might fail" 1>&2
+	      absdir="$dir"
 	    fi
 	    ;;
 	  esac
@@ -2658,10 +2658,14 @@ static const void *lt_preloaded_setup() {
 
       # Only actually do things if our run command is non-null.
       if test -z "$run"; then
-	# win32 will think the script is a binary if it has
-	# a .exe suffix, so we strip it off here.
-	case $output in
-	  *.exe) output=`echo $output|sed 's,.exe$,,'` ;;
+	case "$host" in
+	*-*-cygwin* | *-*-mingw* | *-*-os2*)
+	  # win32 will think the script is a binary if it has
+	  # a .exe suffix, so we strip it off here.
+	  case $output in
+	    *.exe) output=`echo $output|sed 's,.exe$,,'` ;;
+	  esac
+	  ;;
 	esac
 	$rm $output
 	trap "$rm $output; exit 1" 1 2 15

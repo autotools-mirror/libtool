@@ -1,3 +1,9 @@
+1999-05-24 Thomas Tanner  <tanner@ffii.org>
+
+	* doc/libtool.texi: fix "wierd" typo :)
+	* ltmain.in: strip off the .exe suffix only on *Win
+	  (Reported by Matthew D. Langston <langston@SLAC.Stanford.EDU>)
+
 1999-05-23  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* doc/PLATFORMS: Release 1.3.1 passes on GNU Hurd/x86.
