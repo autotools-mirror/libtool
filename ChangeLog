@@ -1,3 +1,15 @@
+1998-12-01  Gary V. Vaughan  <garyv@oranda.demon.co.uk>
+
+	* libtool.m4 (AM_SYS_SYMBOL_UNDERSCORE): New macro; find out
+	whether compiled symbols have an extra leading underscore.
+	(AM_SYS_NM_PARSE): New macro (converted to m4 from ltconfig.in);
+	find a sed expression to parse global symbols from the output of
+	$NM.
+	(AM_PROG_LIBTOOL): require AM_SYS_NM_PARSE and
+	AM_SYS_SYMBOL_UNDERSCORE.
+	* demo/dlmain.c (main): Remove a single	leading underscore from
+	compiled symbol names if necessary.
+
 1998-12-01  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* config.guess, config.sub: imported from autoconf pre-2.13
@@ -5,7 +17,7 @@
 1998-11-27  Gary V. Vaughan  <garyv@oranda.demon.co.uk>
 
 	* libtool (AM_PROG_LD): Oops... we need to know the host_os for
-	the above changes.  I'm not sure whether mingw32 and os2 support
+	the changes below.  I'm not sure whether mingw32 and os2 support
 	UNC paths, if they did we wouldn't need the check, we could use
 	UNC paths on all three; or if the bug with $LD not being
 	shell-meta escaped was fixed, we could use '\\' separators on all

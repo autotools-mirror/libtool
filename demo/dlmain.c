@@ -46,13 +46,21 @@ main (argc, argv)
   while (s->name)
     {
       if (s->address) {
-        /* FIXME: we are simplistic about leading underscores. */
-        printf ("found symbol: %s\n", s->name);
-        if (!strcmp ("hello", s->name))
+        char *name = s->name;
+#ifdef WITH_SYMBOL_UNDERSCORE      
+        if (*name != '_')
+          {
+            fprintf(stderr, "ERROR: configure detected leading underscores incorrectly.\n");
+            exit(1);
+          }
+        name++;
+#endif      
+        printf ("found symbol: %s\n", name);
+        if (!strcmp ("hello", name))
  	  phello = s->address;
-        else if (!strcmp ("foo", s->name))
+        else if (!strcmp ("foo", name))
   	  pfoo = s->address;
-        else if (!strcmp ("nothing", s->name))
+        else if (!strcmp ("nothing", name))
   	  pnothing = s->address;
       } else 
         printf ("found file: %s\n", s->name);
