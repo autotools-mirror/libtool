@@ -3,6 +3,12 @@
 # Gord Matzigkeit <gord@gnu.ai.mit.edu>, 1996
 # Gary V. Vaughan <gary@gnu.org>, 2003
 
+# See if we are running on zsh, and set the options which allow our
+# commands through without removal of \ escapes.
+if test -n "${ZSH_VERSION+set}" ; then
+  setopt NO_GLOB_SUBST
+fi
+
 # Check that srcdir is set to an absolute path.
 case "$srcdir" in
 /* | [A-Za-z]:\\*) ;;
