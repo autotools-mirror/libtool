@@ -191,11 +191,20 @@ func_configure ()
     my_testdir="$srcdir/$my_dir"
 
     test -n "$my_args" && my_args=" $my_args"
-    func_msg "Configuring in $my_dir (--prefix=$prefix$my_args)"
-
     my_args="--srcdir="\""$my_testdir"\"" --prefix="\""$prefix"\""$my_args"
 
-    eval $SHELL "$my_testdir/configure" $my_args || exit $EXIT_FAILURE
+    func_msg "Configuring in $my_dir"
+
+    test -f "$my_testdir/configure" || autoreconf --force --install $my_testdir
+    test -f "$my_testdir/configure" || exit $EXIT_FAILURE
+
+    eval func_msg $SHELL "$my_testdir/configure" $my_args
+    eval $SHELL "$my_testdir/configure" $my_args || \
+      { func_msg "FAILED: Configuring in $my_testdir"
+        ls -ltr $my_testdir
+        eval $SHELL -vx "$my_testdir/configure" $my_args;
+	exit $EXIT_FAILURE;
+      }
 }
 
 # func_check_static_shared staticp sharedp

@@ -1,3 +1,9 @@
+2003-11-24  Gary V. Vaughan  <gary@gnu.org>
+
+	* tests/defs (func_configure): cdemo, demo and mdemo are shows
+	signs of indeterminacy for some users.  Be more verbose during
+	failure to help track down the cause.
+
 2003-11-22  Peter O'Gorman  <peter@pogma.com>
 
 	* ltmain.in: Check for module_cmds if max_cmd_len is exceeded too.
@@ -7,7 +13,7 @@
 	* tests/demo-hardcode.test: Call ./libtool not libtool.
 
 	* ltmain.in: Test $old_striplib before using it, not $striplib.
-	
+
 2003-11-22  Gary V. Vaughan  <gary@gnu.org>
 
 	* configure.ac (LASTRELEASE): Calculate it as best as we can from
