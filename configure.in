@@ -1,6 +1,11 @@
 dnl Process this file with autoconf to create configure.
 AC_INIT(ltmain.in)
-dnl $Format "AM_INIT_AUTOMAKE($ProjectName$,$ProjectMajorVersion: 1.0g $"$
+
+dnl This little magic works with my `maintainer-release' rule in the toplevel
+dnl `Makefile.am.'  It uses PRCS, which is like CVS, except better... get
+dnl `prcs.README' from your nearest GNU mirror.
+
+dnl $Format: "AM_INIT_AUTOMAKE($Project$,$ProjectMajorVersion$)"$
 AM_INIT_AUTOMAKE(libtool,1.0g)
 
 pkgdatadir='${datadir}/libtool'
@@ -15,7 +20,7 @@ AM_PROG_LD
 AM_PROG_NM
 AC_PROG_LN_S
 
-dnl For lineno
+dnl For the `lineno' script (which puts line numbers into `ltconfig').
 AC_PROG_AWK
 
 AC_OUTPUT([Makefile doc/Makefile tests/Makefile])
