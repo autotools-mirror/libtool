@@ -133,13 +133,13 @@ AC_CACHE_CHECK([whether deplibs are loaded by dlopen],
     # we want this `case' here to explicitly catch those versions.
     libltdl_cv_sys_dlopen_deplibs=unknown
     ;;
-  aix[45]*)
+  aix[[45]]*)
     libltdl_cv_sys_dlopen_deplibs=yes
     ;;
   gnu*)
     libltdl_cv_sys_dlopen_deplibs=yes
     ;;
-  irix[12345]*|irix6.[01]*)
+  irix[[12345]]*|irix6.[[01]]*)
     # Catch all versions of IRIX before 6.2, and indicate that we don't
     # know how it worked for any of those versions.
     libltdl_cv_sys_dlopen_deplibs=unknown
@@ -158,7 +158,7 @@ AC_CACHE_CHECK([whether deplibs are loaded by dlopen],
   openbsd*)
     libltdl_cv_sys_dlopen_deplibs=yes
     ;;
-  osf[1234]*)
+  osf[[1234]]*)
     # dlopen did load deplibs (at least at 4.x), but until the 5.x series,
     # it did *not* use an RPATH in a shared library to find objects the
     # library depends on, so we explictly say `no'.

@@ -1,3 +1,8 @@
+2002-06-23  Albert Chin-A-Young  <china@thewrittenword.com>
+
+	* ltdl.m4 (AC_LTDL_SYS_DLOPEN_DEPLIBS): Need to quote [ and ] for
+	Autoconf.
+
 2002-06-23  Kevin Ryde  <user42@zip.com.au>
 
 	* libtool.m4 (AC_LIBTOOL_SETUP, _LT_AC_LOCK): Use
