@@ -1,3 +1,10 @@
+2003-08-27  Gary V. Vaughan  <gary@gnu.org>
+
+	Work around a bug in AU_ALIAS in CVS Autoconf that inserts a
+	newline just before AC_FD_CC, by hand updating:
+
+	* ltdl.m4 (AC_LTDL_SYMBOL_USCORE): s/AC_FD_CC/AS_MESSAGE_LOG_FD/g.
+
 2003-08-05  Jim Pick <jim@kaffe.org>,
 	Ito Kazumitsu <kaz@maczuka.gcd.org>,
 	Gary V. Vaughan  <gary@gnu.org>

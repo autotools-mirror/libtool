@@ -377,15 +377,15 @@ EOF
         if grep '^. nm_test_func ' "$ac_nlist" >/dev/null; then
 	  :
         else
-	  echo "configure: cannot find nm_test_func in $ac_nlist" >&AC_FD_CC
+	  echo "configure: cannot find nm_test_func in $ac_nlist" >&AS_MESSAGE_LOG_FD
         fi
       fi
     else
-      echo "configure: cannot run $lt_cv_sys_global_symbol_pipe" >&AC_FD_CC
+      echo "configure: cannot run $lt_cv_sys_global_symbol_pipe" >&AS_MESSAGE_LOG_FD
     fi
   else
-    echo "configure: failed program was:" >&AC_FD_CC
-    cat conftest.c >&AC_FD_CC
+    echo "configure: failed program was:" >&AS_MESSAGE_LOG_FD
+    cat conftest.c >&AS_MESSAGE_LOG_FD
   fi
   rm -rf conftest*
   ])
