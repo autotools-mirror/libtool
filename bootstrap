@@ -55,7 +55,7 @@ set -- `sed '/AC_INIT/{s/[][,()]/ /g; p;};d' configure.ac`
 # generate them here, and have Makefile rules to keep them up to date:
 rm -f ./config/ltmain.sh ./m4/ltversion.m4
 test -f Makefile || { makefile=Makefile; cp Makefile.am $makefile; }
-make -f Makefile.am ./config/ltmain.sh ./m4/ltversion.m4 \
+make ./config/ltmain.sh ./m4/ltversion.m4 \
     top_srcdir=. PACKAGE="$2" VERSION="$3"
 test -z "$makefile" || rm -f "$makefile"
 

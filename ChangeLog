@@ -1,5 +1,10 @@
 2004-08-05  Gary V. Vaughan  <gary@gnu.org>
 
+	* bootstrap: Remove `-f Makefile.am' now that we have an actual
+	Makefile to build ltmain.sh.
+
+2004-08-05  Gary V. Vaughan  <gary@gnu.org>
+
 	* bootstrap: Run the bootstrap rules from a file named Makefile,
 	copied from Makefile.am for fresh checkouts.
 
