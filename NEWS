@@ -1,6 +1,6 @@
 NEWS - list of user-visible changes between releases of GNU Libtool
 
-New in 1.5.4: 2004-??-??; CVS version 1.5.3, Libtool team:
+New in 1.5.4: 2004-??-??; CVS version 1.5.3a, Libtool team:
 
 New in 1.5.2: 2004-01-25; CVS version 1.5.0a, Libtool team:
 * lt_dlrealloc is an official part of the libltdl API.
