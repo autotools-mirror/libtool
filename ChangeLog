@@ -1,5 +1,9 @@
 1999-03-08  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* tests/build-relink.test: when hell is expected to fail, run it
+	within a subshell and redirect stderr to stdout, so that dynamic
+	linker errors are only printed in verbose mode
+
 	* ltmain.in (hardcode_libdir_separator, compile_rpath,
 	finalize_rpath): only substitute hardcode_libdir_flag_spec if
 	hardcode_libdirs is non-empty

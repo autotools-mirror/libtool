@@ -70,7 +70,7 @@ fi
 rm -f libhello.la
 
 echo "running ../demo/hell with broken libhello.la"
-if ./hell; then
+if (./hell) 2>&1; then
   echo "= Exiting: ../demo/hell runs even though libhello.la is incomplete"
   echo "shlibpath_overrides_runpath should be set to no"
   exit 1
