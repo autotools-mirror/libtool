@@ -1,3 +1,8 @@
+2003-11-14  Marius Vollmer  <mvo@zagadka.de>
+
+	* doc/libtool.texi (Libltdl interface): libltdl does in fact load
+	dependency libs for lt_dlopen()ed modules.
+
 2003-11-14  Gary V. Vaughan  <gary@gnu.org>
 
 	Run our configure.ac files through Autoconf 2.59's autoupdate, and

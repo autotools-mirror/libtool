@@ -2855,10 +2855,10 @@ modules, preloaded static modules, the program itself and
 native dynamic libraries.
 
 Unresolved symbols in the module are resolved using its dependency
-libraries (not implemented yet) and previously dlopened modules.  If the
-executable using this module was linked with the @code{-export-dynamic}
-flag, then the global symbols in the executable will also be used to
-resolve references in the module.
+libraries and previously dlopened modules.  If the executable using
+this module was linked with the @code{-export-dynamic} flag, then the
+global symbols in the executable will also be used to resolve
+references in the module.
 
 If @var{filename} is @code{NULL} and the program was linked with
 @code{-export-dynamic} or @code{-dlopen self}, @code{lt_dlopen} will
