@@ -5,25 +5,30 @@
 
 file=Makefile.in
 
+: ${ACLOCAL=aclocal}
+: ${AUTOMAKE=automake}
+: ${AUTOCONF=autoconf}
+: ${AUTOHEADER=autoheader}
+
 rm -f acinclude.m4
 ln -s libtool.m4 acinclude.m4
 # fake the libtool scripts
 touch ltmain.sh
 touch ltconfig
 touch libtoolize
-aclocal
-automake --gnu --add-missing --copy
-autoconf
+$ACLOCAL
+$AUTOMAKE --gnu --add-missing --copy
+$AUTOCONF
 
 for sub in libltdl demo depdemo mdemo cdemo; do
   cd $sub
   rm -f acinclude.m4 Makefile
   cat ../libtool.m4 > acinclude.m4
   test "$sub" = libltdl && cat ../ltdl.m4 >> acinclude.m4
-  aclocal
-  test "$sub" = libltdl && autoheader
-  automake --gnits --add-missing
-  autoconf
+  $ACLOCAL
+  test "$sub" = libltdl && $AUTOHEADER
+  $AUTOMAKE --gnits --add-missing
+  $AUTOCONF
   cd ..
 done
 
