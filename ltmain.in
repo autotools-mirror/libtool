@@ -113,39 +113,6 @@ _LT_EOF
   exit $EXIT_MISMATCH
 fi
 
-# Ensure that we are using m4 macros, and libtool script from the same
-# release of libtool.
-package_revision=`( set $TIMESTAMP; echo $1; )`
-if test "$package_revision" != "$macro_revision"; then
-  if test "$VERSION" != "$macro_version"; then
-    if test -z "$macro_version"; then
-      cat >&2 <<_LT_EOF
-$progname: Version mismatch error.  This is $PACKAGE $VERSION, but the
-$progname: definition of this AC_PROG_LIBTOOL comes from an older release.
-$progname: You should recreate aclocal.m4 with macros from $PACKAGE $VERSION
-$progname: and run autoconf again.
-_LT_EOF
-    else
-      cat >&2 <<_LT_EOF
-$progname: Version mismatch error.  This is $PACKAGE $VERSION, but the
-$progname: definition of this AC_PROG_LIBTOOL comes from $PACKAGE $macro_version.
-$progname: You should recreate aclocal.m4 with macros from $PACKAGE $VERSION
-$progname: and run autoconf again.
-_LT_EOF
-    fi
-  else
-    cat >&2 <<_LT_EOF
-$progname: Version mismatch error.  This is $PACKAGE $VERSION, revision $package_revision,
-$progname: but the definition used by this AC_PROG_LIBTOOL comes from revision
-$progname: $macro_revision.
-$progname: You should recreate aclocal.m4 with macros from revision $package_revision
-$progname: of $PACKAGE $VERSION and run autoconf again.
-_LT_EOF
-  fi
-
-  exit $EXIT_MISMATCH
-fi
-
 # Sed substitution that helps us do robust quoting.  It backslashifies
 # metacharacters that are still active within double-quoted strings.
 Xsed="${SED}"' -e 1s/^X//'

@@ -1,5 +1,7 @@
 2004-02-12  Scott James Remnant  <scott@netsplit.com>
 
+	* ltmain.in: Remove duplicated version checking block.
+
 	* bootstrap, m4/libtool.m4: Argh, Gary went crazy after cvsapply
 	went crazy and backed out more than he should've.  This patch puts
 	some of it back again.
