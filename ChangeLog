@@ -1,5 +1,17 @@
 2004-03-24  Scott James Remnant  <scott@netsplit.com>
 
+	* configure.ac: Catch errors during calls to AC_PROG_CXX,
+	AC_PROG_CXXCPP and AC_PROG_F77 before LT_INIT.  Only set the
+	HAVE_CXX and HAVE_F77 conditions to true if an error didn't
+	occur (AC_PROG_CXX leaves CXX="g++" even if it didn't find one).
+	Set HAVE_GCJ and HAVE_RC to true correctly as well.
+	* m4/libtool.m4 (LT_PROG_GCJ): If AC_PROG_GCJ or AM_PROG_GCJ are
+	defined, expand to the definition of those instead of our own.
+	Define GCJ to '' instead of 'no' if not found.
+	(LT_PROG_RC) Define RC to '' instead of 'no' if not found.
+	(_LT_LANG_GCJ_CONFIG): Require LT_PROG_GCJ to be expanded first.
+	(_LT_LANG_RC_CONFIG): Require LT_PROG_RC to be expanded first.
+
 	* libltdl/ltdl.c (sys_dl_open): Don't load libraries with global
 	symbol resolution.
 	* NEWS: Updated.

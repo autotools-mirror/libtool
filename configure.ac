@@ -155,25 +155,19 @@ AC_PROG_LD
 AC_PROG_NM
 AC_PROG_LN_S
 
-pushdef([AC_MSG_ERROR], [CXX=no])
+# Other languages get automatically inferred by the all-lang option passed
+# to LT_INIT below, however the Autoconf tests for C++ and Fortran 77
+# sometimes call AC_MSG_ERROR and we don't want that to be an error while
+# creating the libtool script, as these macros are AC_REQUIREd we can simply
+# call them here and catch the errors.
+pushdef([AC_MSG_ERROR], [caught_CXX_error=yes])
 AC_PROG_CXX
+AC_PROG_CXXCPP
 popdef([AC_MSG_ERROR])
-AM_CONDITIONAL(HAVE_CXX, [test "x$CXX" != xno])
 
-pushdef([AC_MSG_ERROR], [F77=no])
+pushdef([AC_MSG_ERROR], [caught_F77_error=yes])
 AC_PROG_F77
 popdef([AC_MSG_ERROR])
-if test -z "$F77"; then
-  F77="no"
-fi
-AM_CONDITIONAL(HAVE_F77, [test "x$F77" != xno])
-
-LT_AC_PROG_GCJ
-AM_CONDITIONAL(HAVE_GCJ, [test "x$GCJ" != xno])
-
-LT_AC_PROG_RC
-AM_CONDITIONAL(HAVE_RC, [test "x$RC" != xno])
-
 
 
 ## ----------------------- ##
@@ -184,6 +178,18 @@ AC_CONFIG_FILES([libtoolize], [chmod a+x libtoolize])
 LT_INIT([dlopen win32-dll all-lang])
 AC_LIB_LTDL
 
+
+## --------------------------- ##
+## Work out which tests to run ##
+## --------------------------- ##
+AM_CONDITIONAL(HAVE_CXX,
+[test "X$caught_CXX_error" != "Xyes" &&
+ test -n "[$]_LT_AC_TAGVAR(compiler, CXX)"])
+AM_CONDITIONAL(HAVE_F77,
+[test "X$caught_F77_error" != "Xyes" &&
+ test -n "[$]_LT_AC_TAGVAR(compiler, F77)"])
+AM_CONDITIONAL(HAVE_GCJ, [test -n "[$]_LT_AC_TAGVAR(compiler, GCJ)"])
+AM_CONDITIONAL(HAVE_RC, [test -n "[$]_LT_AC_TAGVAR(compiler, RC)"])
 
 
 ## -------- ##

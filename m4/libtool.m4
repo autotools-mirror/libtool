@@ -5515,7 +5515,8 @@ CC="$lt_save_CC"
 # are suitably defined.  These variables are subsequently used by _LT_CONFIG
 # to write the compiler configuration to `libtool'.
 m4_define([_LT_LANG_GCJ_CONFIG],
-[AC_LANG_SAVE
+[AC_REQUIRE([LT_PROG_GCJ])
+AC_LANG_SAVE
 
 # Source file extension for Java test sources.
 ac_ext=java
@@ -5569,7 +5570,8 @@ CC="$lt_save_CC"
 # are suitably defined.  These variables are subsequently used by _LT_CONFIG
 # to write the compiler configuration to `libtool'.
 m4_define([_LT_LANG_RC_CONFIG],
-[AC_LANG_SAVE
+[AC_REQUIRE([LT_PROG_RC])
+AC_LANG_SAVE
 
 # Source file extension for RC test sources.
 ac_ext=rc
@@ -5602,14 +5604,16 @@ CC="$lt_save_CC"
 
 
 AC_DEFUN([LT_PROG_GCJ],
-[AC_CHECK_TOOL(GCJ, gcj, no)
-  test "x${GCJFLAGS+set}" = xset || GCJFLAGS="-g -O2"
-  AC_SUBST(GCJFLAGS)
+[m4_ifdef([AC_PROG_GCJ], [AC_PROG_GCJ],
+  [m4_ifdef([A][M_PROG_GCJ], [A][M_PROG_GCJ],
+    [AC_CHECK_TOOL(GCJ, gcj,)
+      test "x${GCJFLAGS+set}" = xset || GCJFLAGS="-g -O2"
+      AC_SUBST(GCJFLAGS)])])dnl
 ])
 AU_DEFUN([LT_AC_PROG_GCJ], [LT_PROG_GCJ])
 
 AC_DEFUN([LT_PROG_RC],
-[AC_CHECK_TOOL(RC, windres, no)
+[AC_CHECK_TOOL(RC, windres,)
 ])
 AU_DEFUN([LT_AC_PROG_RC], [LT_PROG_RC])
 
