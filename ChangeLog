@@ -1,3 +1,20 @@
+1999-03-20 Thomas Tanner  <tanner@gmx.de>
+
+	* use the same header in all configure.in's and Makefile.am's
+	* TODO: all internal variables and macros are now documented
+	* demo/Makefile.am: use $(LIBS) instead of -lm
+	* doc/libtool.texi: documented thread_safe_flag_spec,
+	  renamed all AM_ENABLE/DISABLE_* macros to AC_*, 
+	  documented AC_DISABLE_FAST_INSTALL and AC_LIBTOOL_DLOPEN
+	  documentation for -module updated
+	* ltmain.in: bugfix: "-dlopen self [-all]-static" wouldn't use
+	  dlopen_self_static, automatically enable -export-dynamic when
+	  using "-dlopen self",	always make run-paths absolute,
+	  ignore -lc only on platforms that don't have such a library,
+	  don't generate an installable pseudo-library for convenience
+	  libraries, bugfix: export_symbols would be removed immediately
+	  before it is be used
+
 1999-03-19  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* ltconfig.in (sunos4*, with_gnu_ld, hardcode_minus_L): remove,	we

@@ -1189,9 +1189,7 @@ executable.
 
 @item -module
 Creates a library that can be dlopenend (@pxref{Dlopened modules}). 
-This option doesn't work for programs and must not be used 
-together with @samp{-export-symbols}.
-It enables the option @samp{-export-dynamic} automatically.
+This option doesn't work for programs.
 Module names don't need to be prefixed with 'lib'.
 In order to prevent name clashes, however, 'libname' and 'name' 
 must not be used at the same time in your package.
@@ -1619,12 +1617,12 @@ example).}
 By default, this macro turns on shared libraries if they are available,
 and also enables static libraries if they don't conflict with the shared
 libraries.  You can modify these defaults by calling either the
-@code{AM_DISABLE_SHARED} or @code{AM_DISABLE_STATIC} macros:
+@code{AC_DISABLE_SHARED} or @code{AC_DISABLE_STATIC} macros:
 
 @example
 # Turn off shared libraries during beta-testing, since they
 # make the build process take too long.
-AM_DISABLE_SHARED
+AC_DISABLE_SHARED
 AM_PROG_LIBTOOL
 @end example
 
@@ -1644,7 +1642,9 @@ configuring with @samp{--enable-shared} every package named in the
 comma-separated @var{pkgs} list, and every other package with
 @samp{--disable-shared}.  The @samp{--enable-static=@var{pkgs}} flag
 behaves similarly, but it uses @samp{--enable-static} and
-@samp{--disable-static}.
+@samp{--disable-static}. The same applies to the 
+@samp{--enable-fast-install=@var{pkgs}} flag, which uses
+@samp{--enable-fast-install} and @samp{--disable-fast-install}.
 
 The package name @samp{default} matches any packages which have not set
 their name in the @code{PACKAGE} environment variable.
@@ -1672,13 +1672,28 @@ on @file{libtool}.
 
 @end defmac
 
-@defmac AM_DISABLE_SHARED
+@defmac AC_LIBTOOL_DLOPEN
+Enable checking for dlopen support. This macro should be used if
+the package makes use of the -dlopen and -dlpreopen flags, otherwise
+libtool will assume that the system does not support dlopening.
+The macro must be called *before* @code{AM_PROG_LIBTOOL}.
+@end defmac
+
+@defmac AC_DISABLE_FAST_INSTALL
+Change the default behaviour for @code{AM_PROG_LIBTOOL} to disable
+optimization for fast installation.  The user may still override
+this default by specifying @samp{--enable-fast-install}.
+@end defmac
+
+@defmac AC_DISABLE_SHARED
+@defmacx AM_DISABLE_SHARED
 Change the default behaviour for @code{AM_PROG_LIBTOOL} to disable
 shared libraries.  The user may still override this default by
 specifying @samp{--enable-shared}.
 @end defmac
 
-@defmac AM_DISABLE_STATIC
+@defmac AC_DISABLE_STATIC
+@defmacx AM_DISABLE_STATIC
 Change the default behaviour for @code{AM_PROG_LIBTOOL} to disable
 static libraries.  The user may still override this default by
 specifying @samp{--enable-static}.
@@ -3594,7 +3609,7 @@ aren't defined in that library.
 @defvar always_export_symbols
 Whether libtool should automatically generate a list of exported symbols
 using @var{export_symbols_cmds} before linking an archive.
-Set to @samp{yes} or @samp{no}.  Default is @samp{no}
+Set to @samp{yes} or @samp{no}.  Default is @samp{no}.
 @end defvar
 
 @defvar archive_cmds
@@ -3893,6 +3908,11 @@ library is shared or static.  The directories listed in
 libtool runs (i.e., not at configuration time), because some linkers use
 this variable to extend the library search path.  Linker switches such
 as @code{-L} also augment the search path.
+@end defvar
+
+@defvar thread_safe_flag_spec
+Linker flag (passed through the C compiler) used to generate thread-safe
+libraries.
 @end defvar
 
 @defvar version_type
