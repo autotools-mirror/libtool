@@ -1,3 +1,8 @@
+2000-12-16  Gary V. Vaughan  <gvv@techie.com>
+
+	* ltconfig.in (sys_lib_search_path_spec): Use test instead of
+	`['.
+
 2000-12-16   Wilfredo Sanchez  <wsanchez@apple.com>
 
 	* ltconfig.in: (dyld/darwin*) Much improved port.
