@@ -104,7 +104,7 @@ rekey_files = configure.in libtool.spec
 
 .PHONY: maintainer-checkin maintainer-rekey maintainer-release
 maintainer-checkin: maintainer-rekey
-	cd $(top_srcdir) && $(PRCS) checkin -f $(PACKAGE)
+	cd $(top_srcdir) && $(PRCS) checkin -f $(PACKAGE).prj
 
 maintainer-rekey:
 	@newver=`grep '^(Project-Version[ 	]' $(srcdir)/$(PACKAGE).prj | \
@@ -118,13 +118,13 @@ maintainer-rekey:
 	    fi; \
 	  else \
 	    rm -f "$(released)"; \
-	    echo "Rekeying $(rekey_files)..."; \
-	    cd $(top_srcdir) && $(PRCS) rekey -f $(PACKAGE) $(rekey_files); \
+	    echo "cd $(top_srcdir) && $(PRCS) rekey -f $(PACKAGE).prj $(rekey_files)"; \
+	    cd $(top_srcdir) && $(PRCS) rekey -f $(PACKAGE).prj $(rekey_files); \
 	  fi
 
 maintainer-release: maintainer-rekey distcheck
-	cd $(top_srcdir) && $(PRCS) checkin -f $(PACKAGE)
-	echo timestamp > "$(released)"
+	cd $(top_srcdir) && $(PRCS) checkin -f $(PACKAGE).prj
+	echo "$(VERSION)" > "$(release)"
 	@echo "============================="; \
 	  echo "Congratulations!  $(PACKAGE)-$(VERSION) is now complete."; \
 	  echo; \

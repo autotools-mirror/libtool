@@ -119,8 +119,7 @@ EOF
   esac
 done
 
-if test -f configure.in; then :
-else
+if test ! -f configure.in; then
   echo "$progname: \`configure.in' does not exist" 1>&2
   echo "$help" 1>&2
   exit 1

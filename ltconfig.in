@@ -27,9 +27,13 @@
 
 # Check that we are running under the correct shell.
 SHELL=${CONFIG_SHELL-/bin/sh}
-if test "X$1" = "X--no-reexec"; then
+echo=echo
+if test "X$1" = X--no-reexec; then
   # Discard the --no-reexec flag, and continue.
   shift
+elif test "X`($echo '\t') 2>/dev/null`" = 'X\t'; then
+  # Yippee, $echo works!
+  :
 else
   # Restart under the correct shell.
   exec "$SHELL" "$0" --no-reexec ${1+"$@"}
@@ -39,9 +43,7 @@ fi
 # if CDPATH is set.
 if test "${CDPATH+set}" = set; then CDPATH=; export CDPATH; fi
 
-echo=echo
-if test "X`($echo '\t') 2>/dev/null`" = 'X\t'; then :
-else
+if test "X`($echo '\t') 2>/dev/null`" != 'X\t'; then
   # The Solaris, AIX, and Digital Unix default echo programs unquote
   # backslashes.  This makes it impossible to quote backslashes using
   #   echo "$something" | sed 's/\\/\\\\/g'
@@ -69,8 +71,7 @@ else
     else
       # Try using printf.
       echo='printf %s\n'
-      if test "X`($echo '\t') 2>/dev/null`" = 'X\t'; then :
-      else
+      if test "X`($echo '\t') 2>/dev/null`" != 'X\t'; then
         # Oops.  We lost completely, so just stick with echo.
         echo=echo
       fi
@@ -223,8 +224,7 @@ if test -z "$ltmain"; then
   exit 1
 fi
 
-if test -f "$ltmain"; then :
-else
+if test ! -f "$ltmain"; then
   echo "$progname: \`$ltmain' does not exist" 1>&2
   echo "$help" 1>&2
   exit 1
@@ -822,7 +822,7 @@ else
     archive_cmds='$CC -shared -o $lib$libobjs'
     hardcode_libdir_flag_spec='-R$libdir'
     hardcode_direct=yes
-    hardcode_minus_L=yes
+    hardcode_minus_L=no
     hardcode_shlibpath_var=no
     ;;
 
@@ -1163,8 +1163,8 @@ freebsd2* | freebsd3*)
   ;;
 
 gnu*)
-  version_type=sunos
-  library_names_spec='${libname}${release}.so.$versuffix'
+  version_type=linux
+  library_names_spec='${libname}${release}.so.$versuffix ${libname}.so'
   shlibpath_var=LD_LIBRARY_PATH
   ;;
 

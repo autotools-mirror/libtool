@@ -24,7 +24,7 @@
 # the same distribution terms that you use for the rest of that program.
 
 # Check that we have a working $echo.
-if test "X$1" = "X--no-reexec"; then
+if test "X$1" = X--no-reexec; then
   # Discard the --no-reexec flag, and continue.
   shift
 elif test "X`($echo '\t') 2>/dev/null`" = 'X\t'; then
@@ -32,7 +32,7 @@ elif test "X`($echo '\t') 2>/dev/null`" = 'X\t'; then
   :
 else
   # Restart under the correct shell, and then maybe $echo will work.
-  exec "$SHELL" "$0" --no-reexec ${1+"$@"}
+  exec $SHELL "$0" --no-reexec ${1+"$@"}
 fi
 
 # The name of this program.
@@ -60,8 +60,13 @@ sed_quote_subst='s/\([\\`\\"$\\\\]\)/\\\1/g'
 # Only set LANG and LC_ALL to C if already set.
 # These must not be set unconditionally because not all systems understand
 # e.g. LANG=C (notably SCO).
-if test "${LC_ALL+set}" = set; then LC_ALL=C; export LC_ALL; fi
-if test "${LANG+set}"   = set; then LANG=C;   export LANG;   fi
+# We save the old values to restore during execute mode.
+if test "${LC_ALL+set}" = set; then
+  save_LC_ALL="$LC_ALL"; LC_ALL=C; export LC_ALL
+fi
+if test "${LANG+set}" = set; then
+  save_LANG="$LANG"; LANG=C; export LANG
+fi
 
 if test "$LTCONFIG_VERSION" != "$VERSION"; then
   echo "$modename: ltconfig version \`$LTCONFIG_VERSION' does not match $PROGRAM version \`$VERSION'" 1>&2
@@ -202,7 +207,7 @@ if test -z "$show_help"; then
         esac
       done
       ;;
-    *db | *dbx)
+    *db | *dbx | *strace | *truss)
       mode=execute
       ;;
     *install*|cp|mv)
@@ -718,8 +723,9 @@ if test -z "$show_help"; then
           fi
 
 
+	  lib_linked=yes
           case "$hardcode_action" in
-          immediate)
+          immediate | unsupported)
             if test "$hardcode_direct" = no; then
               compile_command="$compile_command $dir/$linklib"
             elif test "$hardcode_minus_L" = no; then
@@ -727,6 +733,8 @@ if test -z "$show_help"; then
             elif test "$hardcode_shlibpath_var" = no; then
               compile_shlibpath="$compile_shlibpath$dir:"
               compile_command="$compile_command -l$name"
+	    else
+	      lib_linked=no
             fi
             ;;
 
@@ -751,9 +759,20 @@ if test -z "$show_help"; then
             elif test "$hardcode_shlibpath_var" = yes; then
               compile_shlibpath="$compile_shlibpath$dir:"
               compile_command="$compile_command -l$name"
+	    else
+	      lib_linked=no
             fi
             ;;
+
+	  *)
+	    lib_linked=no
+	    ;;
           esac
+
+	  if test "$lib_linked" != yes; then
+	    $echo "$modename: configuration error: unsupported hardcode properties"
+	    exit 1
+	  fi
 
           # Finalize command for both is simple: just hardcode it.
           if test "$hardcode_direct" = yes; then
@@ -815,12 +834,6 @@ if test -z "$show_help"; then
 
     if test -n "$prev"; then
       $echo "$modename: the \`$prevarg' option requires an argument" 1>&2
-      $echo "$help" 1>&2
-      exit 1
-    fi
-
-    if test -n "$vinfo" && test -n "$release"; then
-      $echo "$modename: you cannot specify both \`-version-info' and \`-release'" 1>&2
       $echo "$help" 1>&2
       exit 1
     fi
@@ -999,8 +1012,7 @@ if test -z "$show_help"; then
         $show "$mkdir $objdir"
         $run $mkdir $objdir
 	status=$?
-	if test $status -eq 0 || test -d $objdir; then :
-	else
+	if test $status -ne 0 && test ! -d $objdir; then
 	  exit $status
 	fi
       fi
@@ -1240,8 +1252,7 @@ if test -z "$show_help"; then
 	  $show "$mkdir $objdir"
 	  $run $mkdir $objdir
 	  status=$?
-	  if test $status -eq 0 || test -d $objdir; then :
-	  else
+	  if test $status -ne 0 && test ! -d $objdir; then
 	    exit $status
 	  fi
 	fi
@@ -1372,13 +1383,11 @@ dld_preloaded_symbols[] =
       finalize_command=`$echo "X$finalize_command" | $Xsed -e 's%@OUTPUT@%'"$objdir/$output"'T%g'`
 
       # Create the binary in the object directory, then wrap it.
-      if test -d $objdir; then :
-      else
+      if test ! -d $objdir; then
         $show "$mkdir $objdir"
 	$run $mkdir $objdir
 	status=$?
-	if test $status -eq 0 || test -d $objdir; then :
-	else
+	if test $status -ne 0 && test ! -d $objdir; then
 	  exit $status
 	fi
       fi
@@ -1472,10 +1481,20 @@ if test \"\$libtool_install_magic\" = \"$magic\"; then
   finalize_command=\"$finalize_command\"
 else
   # When we are sourced in execute mode, \$file and \$echo are already set.
-  if test \"\$libtool_execute_magic\" = \"$magic\"; then :
-  else
+  if test \"\$libtool_execute_magic\" != \"$magic\"; then
     echo=\"$qecho\"
     file=\"\$0\"
+    # Make sure echo works.
+    if test \"X\$1\" = X--no-reexec; then
+      # Discard the --no-reexec flag, and continue.
+      shift
+    elif test \"X\`(\$echo '\t') 2>/dev/null\`\" = 'X\t'; then
+      # Yippee, \$echo works!
+      :
+    else
+      # Restart under the correct shell, and then maybe \$echo will work.
+      exec $SHELL \"\$0\" --no-reexec \${1+\"\$@\"}
+    fi
   fi\
 "
         $echo >> $output "\
@@ -1949,8 +1968,7 @@ libdir='$install_libdir'\
             libfile="$libdir/`$echo "X$lib" | $Xsed -e 's%^.*/%%g'`"
             if test -z "$libdir"; then
               $echo "$modename: warning: \`$lib' contains no -rpath information" 1>&2
-            elif test -f "$libfile"; then :
-            else
+            elif test ! -f "$libfile"; then
               $echo "$modename: warning: \`$lib' has not been installed in \`$libdir'" 1>&2
               finalize=no
             fi
@@ -2100,8 +2118,7 @@ libdir='$install_libdir'\
 
     # Handle -dlopen flags immediately.
     for file in $execute_dlfiles; do
-      if test -f "$file"; then :
-      else
+      if test ! -f "$file"; then
 	$echo "$modename: \`$file' is not a file" 1>&2
 	$echo "$help" 1>&2
 	exit 1
@@ -2202,6 +2219,14 @@ libdir='$install_libdir'\
     if test -z "$run"; then
       # Export the shlibpath_var.
       eval "export $shlibpath_var"
+
+      # Restore saved enviroment variables
+      if test "${save_LC_ALL+set}" = set; then
+        LC_ALL="$save_LC_ALL"; export LC_ALL
+      fi
+      if test "${save_LANG+set}" = set; then
+        LANG="$save_LANG"; export LANG
+      fi
 
       # Now actually exec the command.
       eval "exec \$cmd$args"

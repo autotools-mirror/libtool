@@ -1,3 +1,42 @@
+1998-05-18  Gordon Matzigkeit  <gord@profitpress.com>
+
+	* ltmain.in (link): Possibly reexec the shell from within the
+	wrapper script.
+	Allow `-version-info' and `-release' to coexist again.  If people
+	want to shoot themselves in the foot, I'd better let them do so,
+	so that people who are smart enough not to can squeeze out another
+	ounce of functionality.  From Tim Janik.
+
+	* ltconfig.in (hardcode_minus_L): FreeBSD 3.0 doesn't hardcode, at
+	last.  Reported by Jason Nordwick.
+
+	* libtoolize.in, ltconfig.in, ltmain.in: Change a bunch of `if
+	test ...; then : ; else ...' constructs to `if test ! ...; then
+	...', for clarity.
+
+1998-05-17  Gordon Matzigkeit  <gord@profitpress.com>
+
+	* ltmain.in (LC_ALL, LANG): Save these values and restore them
+	during execute mode.  From Pavel Kankovsky.
+	(mode): Accept strace and truss as programs that throw us into
+	execute mode.  From Pavel Kankovsky.
+
+1998-05-07  Ian Lance Taylor  <ian@cygnus.com>
+
+	* ltconfig.in: Don't use .$versuffix or .$major.  Instead, assume
+	the variable will include any required prefix.
+	* ltmain.in: If no -version-info option was used, produce empty
+	version strings rather than 0.0.0.  When making library symlinks,
+	avoid making a symlink if the name would be the same.
+
+1998-04-27  Gordon Matzigkeit  <gord@profitpress.com>
+
+	* ltmain.in (link): Support `unsupported' as a hardcode_action.
+	Reported by Lars Hecking.
+	(lib_linked): Do some sanity checking to make sure that we
+	actually do link libtool libraries into the program to prevent the
+	above problem from happening again.
+
 1998-04-20  Gordon Matzigkeit  <gord@profitpress.com>
 
 	* ltmain.in: Maybe reexec under $SHELL, if $echo doesn't work.
