@@ -171,10 +171,10 @@ EOF
 
   netbsd*)
     if echo __ELF__ | $CC -E - | grep __ELF__ >/dev/null; then
+      archive_cmds='$LD -Bshareable $libobjs $deplibs $linker_flags -o $lib'
+    else
       archive_cmds='$CC -shared $libobjs $deplibs $compiler_flags ${wl}-soname $wl$soname -o $lib'
       archive_expsym_cmds='$CC -shared $libobjs $deplibs $compiler_flags ${wl}-soname $wl$soname ${wl}-retain-symbols-file $wl$export_symbols -o $lib'
-    else
-      archive_cmds='$LD -Bshareable $libobjs $deplibs $linker_flags -o $lib'
     fi
     ;;
 
