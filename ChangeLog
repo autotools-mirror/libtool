@@ -1,5 +1,10 @@
 2005-03-24  Gary V. Vaughan  <gary@gnu.org>
 
+	* libtoolize.m4sh: Fix a typo, s/pkgvltdldirs/pkgvdatadirs/.
+	When using -I to test an uninstalled libtoolize, we need to add
+	the config subdirectory to the search path so that ltmain.sh can
+	be found in the source tree.
+
 	* libtoolize.m4sh (func_copy_some_files): IFS needs to be set to
 	path delimiter for all inner loop iterations.
 	Once a matching file has been copied, no need to keep searching

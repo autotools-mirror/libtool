@@ -83,9 +83,9 @@ libtoolize_flags=
 # Locations for important files:
 prefix=@prefix@
 datadir=@datadir@
-pkgvdatadirs=@pkgvdatadir@
-pkgvltdldirs=@pkgvdatadir@/libltdl
-pkgvmacrodirs=@pkgvmacrodir@
+pkgvdatadirs=@pkgvdatadir@		# ltmain.sh et. al.
+pkgvltdldirs=@pkgvdatadir@/libltdl	# libltdl source tree
+pkgvmacrodirs=@pkgvmacrodir@		# libtool.m4 et. al.
 auxdir=
 m4dir=
 ltdldir=
@@ -133,6 +133,25 @@ configure_ac=configure.in
       			libtoolize_flags="${libtoolize_flags} --install"
 			;;
 
+      -I)		test "$#" = 0 && func_missing_arg $opt && break
+	    		# for installed share/libtool trees:
+	    		test -d "$1" \
+			  && pkgvdatadirs="`cd $1 && pwd`:$pkgvdatadirs"
+			# for uninstalled ltmain.sh location:
+	    		test -d "$1/config" \
+			  && pkgvdatadirs="`cd $1/config && pwd`:$pkgvdatadirs"
+			# for libltdl source files:
+	    		test -d "$1" \
+			  && pkgvltdldirs="`cd $1/libltdl \
+			  		      && pwd`:$pkgvltdldirs"
+			# for libtool.m4 and other macro files:
+			test -d "$1/m4" \
+			  && pkgvmacrodirs="`cd $1/m4 && pwd`:$pkgvmacrodirs"
+			func_quote_for_eval "$1"
+      			libtoolize_flags="$libtoolize_flags -I $func_quote_for_eval_result"
+			shift
+			;;
+
       --ltdl)		ltdldir=libltdl
       			if test "$#" -gt 0; then
 			  case $1 in
@@ -140,19 +159,6 @@ configure_ac=configure.in
 			    *)  ltdldir="$1"; shift	;;
 			  esac
 			fi
-			;;
-
-      -I)		test "$#" = 0 && func_missing_arg $opt && break
-	    		test -d "$1" \
-			  && pkgvdatadirs="`cd $1 && pwd`:$pkgvltdldirs"
-	    		test -d "$1" \
-			  && pkgvltdldirs="`cd $1/libltdl \
-			  		      && pwd`:$pkgvltdldirs"
-			test -d "$1/m4" \
-			  && pkgvmacrodirs="`cd $1/m4 && pwd`:$pkgvmacrodirs"
-			func_quote_for_eval "$1"
-      			libtoolize_flags="$libtoolize_flags -I $func_quote_for_eval_result"
-			shift
 			;;
 
       --quiet|--automake|-q) # --automake is for 1.5 compatibility
