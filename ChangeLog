@@ -1,3 +1,7 @@
+1999-04-02  Erez Zadok  <ezk@cs.columbia.edu>
+
+	* doc/PLATFORMS: 1.2f ok on various versions of hpux cc
+
 1999-04-02  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* ltconfig.in (link_all_deplibs): set to unknown by default
