@@ -1,4 +1,7 @@
 1999-02-26  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
+
+	* depdemo/l4/Makefile.am (LIBADD_M): removed.  ILD takes care of
+	this for us.
 	
 	* libtool.m4 (cygwin): s/\\(mingw\\|cygwin\\)32/\\1/g.  Must've
 	missed this file when I changed to cygnus' new sanction name.
