@@ -13,7 +13,7 @@ fi
 # Check that things are built.
 if test -f ../libltdl/libltdl.la; then :
 else
-  echo "You must run ltdl-make.test before $0" 1>&2
+  echo "You must built libltdl before $0" 1>&2
   exit 1
 fi
 

@@ -2568,23 +2568,6 @@ uninstalled correctly.
 The @file{demo} subdirectory contains a demonstration of a trivial
 package that uses libtool.
 
-@item libltdl-conf.test
-@itemx libltdl-inst.test
-@itemx libltdl-make.test
-@itemx libltdl-unst.test
-@pindex libltdl-conf.test
-@pindex libltdl-inst.test
-@pindex libltdl-make.test
-@pindex libltdl-unst.test
-These programs check to see that the @file{libltdl} subdirectory of the
-libtool distribution can be configured, built, installed, and
-uninstalled correctly.
-
-The @file{libltdl} subdirectory contains the library 'libltdl',
-which provides a dlopen wrapper for various platforms 
-(Linux, Solaris, HP/UX, Win32 etc.) including support for dlpreopened modules
-(@pxref{Dlpreopening}).
-
 @item mdemo-conf.test
 @itemx mdemo-exec.test
 @itemx mdemo-inst.test
@@ -2599,12 +2582,14 @@ These programs check to see that the @file{mdemo} subdirectory of the
 libtool distribution can be configured, built, installed, and
 uninstalled correctly.
 
-The @file{mdemo} subdirectory contains a demonstration of a package that 
-uses libtool and the system independent dlopen wrapper 'libltdl' to load
-modules.
+The @file{mdemo} subdirectory contains a demonstration of a package that
+uses libtool and the system independent dlopen wrapper @file{libltdl} to
+load modules.  The library @file{libltdl} provides an experimental
+dlopen wrapper for various platforms (Linux, Solaris, HP/UX, Win32 etc.) 
+including support for dlpreopened modules (@pxref{Dlpreopening}).
 
 NOTE: The tests @file{mdemo-exec.test} and @file{mdemo-inst.test} are known 
-to fail on platforms that do not support inter-library dependencies.
+to fail on platforms that do not fully support inter-library dependencies.
 
 @item hardcode.test
 @pindex hardcode.test

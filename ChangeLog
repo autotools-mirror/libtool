@@ -1,5 +1,16 @@
 1998-12-16  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* tests/Makefile.am (EXTRA_DIST): remove ltdl-*.test
+	(clean-local): don't clean libltdl any more
+	* tests/ltdl-conf.test: removed
+	* tests/ltdl-inst.test: ditto
+	* tests/ltdl-make.test: ditto
+	* tests/ltdl-unst.test: ditto
+	* tests/mdemo-make.test: updated accordingly
+	* tests/mdemo-inst.test: ditto
+	* tests/mdemo-unst.test: ditto
+	* doc/libtool.texi: ditto
+
 	* ltmain.in (-DSTATIC): changed to -DLIBTOOL_STATIC, and defined
 	only for -force-static; it should be removed soon, before people
 	start to use it
