@@ -15,10 +15,12 @@ New in 1.3d: 2000-??-??; CVS version 1.3c, Libtool team:
   lt_dlloader_remove can be used for adding new types of module loaders.
   lt_dladderror, lt_dlseterror integrate user module loaders with lt_dlerror.
 * "-Xcompiler" and "-Wc," does now work in compile mode, too.
+* Support recent dlltool formats.
 * Start of support code for cross-compiling to win32.
 * libltdl can now be built as a dll with win32.
 * m4 macros needed to configure libltdl split out into libltdl/ltdl.m4.
 * Improved support for mingw32, Compaq Tru64 V5.0 and Digital Unix V4.*.
+* Support for *-sequent-sysv4.
 * Many bugfixes (especially in libltdl)
 
 New in 1.3.4: 1999-12-08, CVS version 1.3.3a, Libtool team:
