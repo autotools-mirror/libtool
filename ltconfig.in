@@ -1769,6 +1769,7 @@ freebsd*)
   esac
   finish_cmds='PATH="\$PATH:/sbin" OBJFORMAT="'"$objformat"'" ldconfig -m $libdir'
   shlibpath_var=LD_LIBRARY_PATH
+  shlibpath_overrides_runpath=yes
   ;;
 
 gnu*)

@@ -1,3 +1,8 @@
+1999-06-29  Pavel Roskin <pavel_roskin@geocities.com>, Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* ltconfig.in (freebsd*, shlibpath_overrides_runpath): Set to
+	yes; tested on 3.1-ELF by Pavel and on 2.2.6 by Alexandre.
+
 1999-06-25  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* ltconfig.in (linux-gnu*, deplibs_check_method): Use pass_all on
