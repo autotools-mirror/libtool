@@ -1,0 +1,139 @@
+From nobody Wed Jul  2 19:28:31 1997
+X-From-Line: norm@connectware.ca Wed Jul 02 22:32:39 1997
+Return-Path: <norm@connectware.ca>
+Delivered-To: gord@profitpress.com
+Received: (qmail 5508 invoked from network); 2 Jul 1997 22:32:38 -0000
+Received: from localhost (HELO bambam.m-tech.ab.ca) (127.0.0.1)
+  by localhost with SMTP; 2 Jul 1997 22:32:38 -0000
+X-POP3-Rcpt: gord@bambam
+Return-Path: norm@connectware.ca
+Received: from bunker.connectware.ca (norm.HIP.CAM.ORG [199.84.42.109]) by m-tech.ab.ca (8.6.12/8.6.9) with ESMTP id KAA07116 for <gord@m-tech.ab.ca>; Wed, 2 Jul 1997 10:12:18 -0600
+Received: from castle.connectware.ca (castle.connectware.ca [204.19.223.2])
+	by bunker.connectware.ca (8.8.5/8.8.5) with SMTP id MAA02233
+	for <gord@m-tech.ab.ca>; Wed, 2 Jul 1997 12:15:54 -0400 (EDT)
+Received: by castle.connectware.ca (AIX 3.2/UCB 5.64/4.03)
+          id AA21851; Wed, 2 Jul 1997 12:08:56 -0400
+Date: Wed, 2 Jul 1997 12:08:53 -0400 (EDT)
+From: Normand McGuire <norm@connectware.ca>
+To: Gordon Matzigkeit <gord@m-tech.ab.ca>
+Subject: Re: -lc_s shared libraries
+In-Reply-To: <86yb7qipsd.fsf_-_@trick.profitpress.com>
+Message-Id: <Pine.A32.3.91.970702113816.24858A-100000@castle.connectware.ca>
+Mime-Version: 1.0
+Content-Type: TEXT/PLAIN; charset=US-ASCII
+Xref: trick.profitpress.com mail.libtool:299
+Lines: 113
+
+
+
+On 1 Jul 1997, Gordon Matzigkeit wrote:
+
+> Are you sure that on SCO Openserver 5 you need to specify
+> /lib/libc.so?  From what I understood about that platform, specifying
+> `-lc' (which is what the C compiler does by default) is good enough,
+> and links in the shared version if it exists.
+
+>From my experience, definitely. Look below.
+
+> Do you know otherwise?  Can you show the results of specific tests to
+> me that would prove your point?
+
+Here is a sample of a session demonstrating this on my system. I show the 
+source code, default cc file and three compiles with three a.out file 
+sizes. See for yourself:
+
+Script started on Wed Jul  2 11:21:58 1997
+$ cat t.c
+main()
+
+	{
+	printf("Hello, world\n");
+	}
+$ cat /etc/default/cc
+#	@(#) cc.default 20.1 94/12/04 
+#	
+#	Copyright (C) The Santa Cruz Operation, Inc. 1994-1995.
+#	This Module contains Proprietary Information of
+#	The Santa Cruz Operation, and should be treated as Confidential.
+#
+#	Core development /bin/cc reads /etc/default/cc.
+#	Cross development /usr/ods30/bin/cc reads /etc/default/crossdevcc.
+#	If a prefix is specified, cc reads /etc/default/<prefix>cc instead.
+#
+FLAGS=
+LIBS=
+$ cc t.c
+$ l a.out
+-rwxrwxr-x   1 root     sys        46334 Jul  2 11:22 a.out
+$ cc t.c -lc
+$ l a.out
+-rwxrwxr-x   1 root     sys        46334 Jul  2 11:22 a.out
+$ cc t.c /lib/libc.so
+$ l a.out
+-rwxrwxr-x   1 root     sys         3988 Jul  2 11:22 a.out
+$ exit
+
+script done on Wed Jul  2 11:22:32 1997
+
+And believe me, this script session is not a fake.
+
+> The reason I'm asking is that I, too, would like to know how Autoconf
+> packages can best take advantage of shared libraries, especially in a
+> general, rather than a test-by-test way.
+
+The section of my configure.in script that takes care of shared libraries
+is short and not annoying to repeat. You may want to incorporate it into 
+the AC_PROG_CC macro or create a new one for it. So far, I've seen only 
+two kinds of behaviors regarding shared libraries: if they are not used 
+automatically when invoking cc, just include them when linking the 
+program. And it worked so far. However, you guys may have a whole lot 
+more flavors of system to run on compared to me.
+
+Here is the portion of the shared library check in my configure.in script:
+
+# STEP 2 - Check for libraries
+
+AC_MSG_CHECKING([for libc.so])
+if test -r /lib/libc.so; then
+    AC_MSG_RESULT([yes (/lib/libc.so)])
+    LIBS="$LIBS /lib/libc.so"
+elif test -r /usr/lib/libc.so; then
+    AC_MSG_RESULT([yes (/usr/lib/libc.so)])
+    LIBS="$LIBS /usr/lib/libc.so"
+else
+    AC_MSG_RESULT(no)
+    AC_CHECK_LIB(c_s, main)
+    fi
+
+> Could you be more specific when you mention `some other System V Unix
+> systems'?  What are their canonical system names (i.e. *-*-sco3.2v4*)?
+
+By 'some other Unix systems' requiring that you explicitely specify the 
+shared library name when linking the program, I meant specifically:
+
+o Bull Open Software (Unix System V Release 4, but don't remember if it is x86)
+
+o Interactive Unix System V/386 all versions
+
+o SCO Unix 3.2v4 and SCO OpenServer 5
+
+o Sun Solaris 2.3 / SunOS 5.3
+
+All others that we've compiled and run on will automatically use shared 
+libraries when available, namely:
+
+IBM's AIX 3.2.* and 4.*
+HP's HPUX 8.*, 9.* and 10.*
+DEC Ultrix, OSF/1 and DEC Unix all versions tried
+DataGeneral's DGUX all versions tried
+Sequent's DYNIX/ptx 2.1 and 4
+Linux all versions tried
+SGI's Irix all versions tried
+NCR and AT&T Unix System V/386 Release 4
+Sun Solaris 2.4 (SunOS 5.4) and Solaris 2.5 (SunOS 5.5)
+SunOS 4.1*
+Unisys Unix System V/386
+Unixware all versions
+
+Normand McGuire
+

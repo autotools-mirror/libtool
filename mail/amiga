@@ -1,0 +1,339 @@
+From nobody Sun Dec 14 10:48:09 1997
+X-From-Line: JoopvandeWege@mococo.nl Wed Dec 03 04:15:19 1997
+Return-Path: <JoopvandeWege@mococo.nl>
+Delivered-To: gord@trick.profitpress.com
+Received: (qmail 1795 invoked from network); 3 Dec 1997 04:15:16 -0000
+Received: from localhost (HELO bambam.m-tech.ab.ca) (127.0.0.1)
+  by localhost with SMTP; 3 Dec 1997 04:15:16 -0000
+Received: from mcc-server.mococo.nl (mail.mococo.nl [195.193.4.2]) by bambam.m-tech.ab.ca (8.8.5/8.6.9) with SMTP id GAA28567 for <gord@m-tech.ab.ca>; Tue, 2 Dec 1997 06:06:47 -0700
+Received: from laptop.mococo.nl (unverified [195.193.4.9]) by mcc-server.mococo.nl
+ (EMWAC SMTPRS 0.83) with SMTP id <B0000011089@mcc-server.mococo.nl>;
+ Tue, 02 Dec 1997 14:06:15 +0100
+Date: Tue, 02 Dec 1997 14:06:15 +0100
+Message-ID: <B0000011089@mcc-server.mococo.nl>
+From: Joop van de Wege <JoopvandeWege@mococo.nl>
+To: Gordon Matzigkeit <gord@m-tech.ab.ca>
+Subject: Re: AmigaOS libtool port
+In-Reply-To: <86oh339y7g.fsf@trick.profitpress.com>
+References: <86oh339y7g.fsf@trick.profitpress.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Mailer: Becky! ver 1.23
+Lines: 177
+Xref: trick.profitpress.com mail.libtool:816
+
+
+
+On 29 Nov 1997 14:39:31 -0700
+Gordon Matzigkeit <gord@m-tech.ab.ca> wrote:
+
+> Hi!
+> 
+> libtool-1.0g contains some preliminary AmigaOS support.  It is a
+> little different than the patches you sent me, simply because I
+> modified libtool slightly so that it would better accomodate your
+> changes.
+> 
+> Here are what I consider to be some unresolved issues:
+> 
+> * I have attempted to automatically generate $objdir/a2ixlibrary.data,
+> just as the OS/2 port does with $objdir/$libname.def.  It currently
+> looks like this:
+> 
+> #define NAME $libname
+> #define LIBRARY_ID 1
+> #define VERSION $major
+> #define REVISION $revision
+> 
+> So, for libhello.la in the libtool distribution, this would make an
+> a2ixlibrary.data that looks like:
+> 
+> #define NAME libhello
+> #define LIBRARY_ID 1
+> #define VERSION 2
+> #define REVISION 12
+> 
+> Is that alright?  My concerns are for the NAME definition, and the
+> LIBRARY_ID, as I don't know what is valid, or what they are used
+> for.
+I have done this also but removed it because there are indeed two
+problem. The NAME should be 'hello' but this can be solved but the
+second issue is not so easy. LIBRARY_ID is a uniquely assign number
+which needs to be different for each .ixlibrary build. The developer of
+the ixlibrary is maintaining a database of which numbers are assign to
+which library. Everything below 10 can be used for locally build
+libraries, thats why I used 1.
+So it is specific to the Amiga but it looks like overkill to me to
+include the whole list into Libtool (about 50 entries right now).
+
+> 
+> * What does `assign libs: SOMEDIR [add|remove]' do, exactly?  Is it
+> something like `ldconfig'?  If so, then we should do something cleaner
+> than in your current patch: it doesn't belong in archive_cmds or
+> finish_cmds, it belongs in the generated executable wrapper.
+Yes, it does something like ldconfig. I followed that thread about it
+and its very similar but also has some differences.
+LIBS: is a logical directory where all libraries are, but that doesn't
+mean that they reside physically in the same directory on disk.
+It is a way of telling the OS where to look when a program requests a
+library, something along these lines:
+main()
+{
+	GfxBase=OpenLibrary("graphics.library",37L);
+	HelloBase=OpenLibrary("libhello.ixlibrary",3L);
+}
+
+Graphics.library is in ROM and will just have its open count incremented
+but nothing else will happen. libhello.ixlibrary is loaded from disk if
+it isn't already in memory, but one needs to tell the system where to
+load it from. It will look in SYS:libs (another logical device (normally
+the boot partition ~= /usr ) containing a libs directory) but it is
+possible to add directories to this logical assignment with 'assign',
+like this:
+assign SOMEDIR LIBS: add
+or remove them like this:
+assign SOMEDIR LIBS: remove
+SOMEDIR is composed of DRIVE+DIRECTORY (absolute) or DIRECTORY
+(relative) from where the assign is executed.
+The reason I used the assignment was because 'make check' didn't work
+correctly because libhello.ixlibrary is generated in .libs which is not
+where 'hell' is started from. The system looks in the current directory
+for .libraries but I'm not sure about .ixlibraries. The alternative was
+to install them first before 'make check'. Bad idea.
+The assignment is not placed into a config file or so. The next reboot
+will destroy it, no ld.so.conf.
+
+Probably you're now more confused then ever :)
+
+
+> * I suspect you don't know what I mean by `hardcoding' a library
+> directory, so I've interpreted your patch, and come up with hardcode_*
+> settings that I believe will work.  We need to test that, during the
+> next release.
+I have already merged most things into lt-1.0h but I'm short on freetime
+this week. I hope to have a couple of hours but it could be that I can
+do only some work during the weekend.
+
+
+> * Could you please tell me more about the AmigaOS requirements?  Some
+> of your patch is impossible for me to decipher, because I have no idea
+> what you want to accomplish, and I don't think you're taking full
+> advantage of libtool's internal conventions.
+> 
+> In plain language, what are the answers to the following questions:
+> 
+> * What exactly are `$libname_ixlibrary.a', `$libname.ixlibrary', and
+> `$libname.a'?  Is `$libname.a' the same file and installed in the same
+> place when building static libraries?
+Just in case I don't manage to make this clear. Have a look at the
+readme of the following archive (and maybe the rest of it aswell:
+ftp://ftp.ninemoons.com/pub/geekgadgets/971125/amiga-src/a2ixlibrary-2.0-src.tgz
+(35Kb)
+
+Dynamic libraries on the Amiga (in short)
+first compile all object with the following additional CFLAGS:
+-resident32 -malways-restore-a4 (these are the safest, -resident and
+-m...restore.. can also be use but then certain limitations and
+restrictions are  imposed)
+AR and RANLIB these into libNAME.a (-->$libname.a)
+run a2ixlibrary on libNAME.a --> $libname_ixlibrary.a and $libname.ixlibrary
+where _ixlibrary.a contains stubs and .ixlibrary contains the real code.
+(NAME.h and NAME.x are also generated and automatically installed by
+a2ixlibrary and are used by collect2)
+libNAME.a can be discarded after running a2ixlibrary.
+libNAME_ixlibrary.a gets installed in /usr/lib together with all the
+other linker libraries.
+libNAME.ixlibrary should be installed somewhere in a directory belonging
+to LIBS: There is a subdirectory in /gg where the gnu-tools are
+installed called sys/libs which should be used for this, prevents
+cluttering the main libs directories.
+
+Static libraries on the Amiga:
+compile all objects with the CFLAGS of your choice
+AR and RANLIB these into libNAME.a
+install in /usr/lib
+done.
+
+> 
+> * How are each of them generated?
+> 
+> * Where do they need to be installed?
+Answered above, I hope.
+> 
+> * `shlibpath_var' is the name of the runtime library search path
+> environment variable.  On Linux, it is `LD_LIBRARY_PATH'.  So, if you
+> install libhello.so in /home/gord/lib, binaries won't be able to
+> execute unless you set `LD_LIBRARY_PATH=/home/gord/lib' before running
+> them.  Is there an equivalent variable under AmigaOS?
+Assign LIBS: home:gord/lib add
+Nope, ':' is NOT a typo. The root directory is ':' on the amiga and 
+cd / means move up one level, cd : means move to root.
+There is a unix emulation library, ixemul.library, which handles things
+like cd .. and cd / when one is using programs linked against it.
+Thats why almost, if not all gnu tools are available for the Amiga and
+they also work like on Unix. These leads to difficulties when mixing
+'native' Amiga programs and ixemul.library linked ones. The path
+differences are most prominent.
+
+Somewhere in my patches I use a native program 'assign' inside ksh.
+Further I have the gnu-tools installed under the 'gg' directory and
+reference them in ksh using /gg.
+Libtool libraries end up in /gg/lib (libNAME_ixlibrary.a, libNAME.a) and
+the dynamic library ends up in /gg/sys/libs (libNAME.ixlibrary)
+The system finds these because of the following statement:
+assign LIBS: gg:sys/libs add
+But some people like to specify --prefix=/local when configuring
+packages and they also want the dynamic library to appear under
+/local/sys/libs and thats why I have the sed substitution in postinstall_cmds
+(?). Those people are responsible that they have an assignment that
+tells the system to look into the proper directory for .ixlibraries.
+
+> Thanks!
+No thanks, hope this clears up a lot of things. If not, ask me and I'll
+try to clarify things.
+
+Joop
+
+----
+Joop van de Wege (JoopvandeWege@mail.mococo.nl)
+Mobile Computing Consultants
++31 (0) 318 553292
+
+From nobody Sun Dec 14 10:48:13 1997
+X-From-Line: JoopvandeWege@mococo.nl Sat Dec 13 03:05:34 1997
+Return-Path: <JoopvandeWege@mococo.nl>
+Delivered-To: gord@trick.profitpress.com
+Received: (qmail 11049 invoked from network); 13 Dec 1997 03:05:32 -0000
+Received: from localhost (HELO bambam.m-tech.ab.ca) (127.0.0.1)
+  by localhost with SMTP; 13 Dec 1997 03:05:32 -0000
+Received: from mcc-server.mococo.nl (mail.mococo.nl [195.193.4.2]) by bambam.m-tech.ab.ca (8.8.5/8.6.9) with SMTP id GAA11738 for <gord@m-tech.ab.ca>; Fri, 12 Dec 1997 06:47:52 -0700
+Received: from laptop.mococo.nl (unverified [195.193.4.9]) by mcc-server.mococo.nl
+ (EMWAC SMTPRS 0.83) with SMTP id <B0000011567@mcc-server.mococo.nl>;
+ Fri, 12 Dec 1997 14:48:06 +0100
+Date: Fri, 12 Dec 1997 14:48:06 +0100
+Message-ID: <B0000011567@mcc-server.mococo.nl>
+From: Joop van de Wege <JoopvandeWege@mococo.nl>
+To: Gordon Matzigkeit <gord@m-tech.ab.ca>
+Cc: gg@ninemoons.com
+Subject: Re: AmigaOS libtool port
+In-Reply-To: <86zpm8qm6o.fsf@trick.profitpress.com>
+References: <B0000011089@mcc-server.mococo.nl> <86zpm8qm6o.fsf@trick.profitpress.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Mailer: Becky! ver 1.23
+Lines: 111
+Xref: trick.profitpress.com mail.libtool:868
+
+
+
+On 11 Dec 1997 02:11:11 -0700
+Gordon Matzigkeit <gord@m-tech.ab.ca> wrote:
+
+> Hi!
+> 
+> >>>>> Joop van de Wege writes:
+> 
+>  >> Is that alright?  My concerns are for the NAME definition, and the
+>  >> LIBRARY_ID, as I don't know what is valid, or what they are used
+>  >> for.
+> 
+>  JvdW> I have done this also but removed it because there are indeed
+>  JvdW> two problem. The NAME should be 'hello' but this can be solved
+>  JvdW> but the second issue is not so easy. LIBRARY_ID is a uniquely
+>  JvdW> assign number which needs to be different for each .ixlibrary
+>  JvdW> build. The developer of the ixlibrary is maintaining a database
+>  JvdW> of which numbers are assign to which library. Everything below
+>  JvdW> 10 can be used for locally build libraries, thats why I used 1.
+>  JvdW> So it is specific to the Amiga but it looks like overkill to me
+>  JvdW> to include the whole list into Libtool (about 50 entries right
+>  JvdW> now).
+> 
+> I suggest that the ixlibrary maintainer come up with a hash function
+> that will map library names to numbers, so that if the LIBRARY_ID is
+> not specified, it will be automatically generated by this hash
+> function.
+> 
+> If two hashed library codes conflict, then libtool will still have to
+> provide a way for maintainers to specify the correct LIBRARY_ID.
+> 
+> However, the current design of ixlibrary is not good because it means
+> installing two libtool libraries will *always* cause a conflict,
+> unless both package maintainers cared enough to be assigned a
+> LIBRARY_ID.
+The current situation is that all packages on ftp.ninemoons.com are
+under CVS (amiga specific code added) and that for each snapshot Amiga
+specific patches are applied to the baseline sources, whether they
+originate from FSF or someplace else doesn't matter.
+This means that for each library which can be turned into a *.ixlibrary
+an a2ixlibrary.data{.in} exists.
+
+It would be nice if the LIBRARY_ID's could be maintained in one location
+and that location being libtool. On the other hand lots of people might
+have objections against such a special treatment to the Amiga.
+It might mean a lot of code just to support on platform.
+
+> 
+> When I accepted the patches for the AmigaOS shared libraries, I was
+> not aware of this limitation.  You are basically telling me that there
+> is no way for me to automatically generate correct shared libraries on
+> AmigaOS.
+No, unless I start digging into the a2ixlibrary source to see if I can
+find a way to automate things. The problem is in the fact that the ID is
+hardcoded into the library (like paths on some other platforms) and the
+ID must be unique, making distribution of binaries almost impossible.
+
+
+> Unless this issue can be resolved, I think I should remove the AmigaOS
+> support, because it will cause more problems than it solves.  Shared
+> libraries, IMO, are not worth the time and effort of every maintainer
+> having to register with the AmigaOS ixlibrary project.
+Libtool can still be a package useful for the Amiga but it will get the
+same treatment as all others, keep a baseline and apply patches when
+needed.
+
+> 
+>  JvdW> Somewhere in my patches I use a native program 'assign' inside
+>  JvdW> ksh.  Further I have the gnu-tools installed under the 'gg'
+>  JvdW> directory and reference them in ksh using /gg.  Libtool
+>  JvdW> libraries end up in /gg/lib (libNAME_ixlibrary.a, libNAME.a)
+>  JvdW> and the dynamic library ends up in /gg/sys/libs
+>  JvdW> (libNAME.ixlibrary)
+> 
+>  JvdW> But some
+>  JvdW> people like to specify --prefix=/local when configuring
+>  JvdW> packages and they also want the dynamic library to appear under
+>  JvdW> /local/sys/libs and thats why I have the sed substitution in
+>  JvdW> postinstall_cmds (?). Those people are responsible that they
+>  JvdW> have an assignment that tells the system to look into the
+>  JvdW> proper directory for .ixlibraries.
+> 
+> This is a problem.  Why do dynamic libraries have to go into a
+> separate directory?
+This way it doesn't clutter a directory where no executables belong in.
+It is also historical and because the Amiga isn't a real Unix machine.
+It uses ixemul.library for its unix emulation, something like cygwin32.dll
+
+> sys/libs sounds like a violation of the GNU directory conventions,
+> which is a problem.  It means that even GNU packages will not install
+> binaries according to their own conventions. :(
+> 
+> It seems to me to be much better if we just put everything into
+> libdir.  Can this work?
+Yes, it can.
+
+I'll forward this reply to some relevant Amiga mailinglists to see if
+people are willing to change things.
+
+Joop
+
+PS:
+Please comment on this, Fred, Hans?
+
+----
+
+Joop van de Wege (JoopvandeWege@mail.mococo.nl)
+Mobile Computing Consultants
++31 (0) 318 553292
+

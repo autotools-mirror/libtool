@@ -1,0 +1,796 @@
+From nobody Sat Sep 13 12:49:21 1997
+X-From-Line: gord@gnu.ai.mit.edu Fri Sep 12 11:33:52 1997
+Return-Path: <gord@gnu.ai.mit.edu>
+Delivered-To: gord@trick.profitpress.com
+Received: (qmail 5853 invoked from network); 12 Sep 1997 11:33:52 -0000
+Received: from localhost (HELO bambam.m-tech.ab.ca) (127.0.0.1)
+  by localhost with SMTP; 12 Sep 1997 11:33:52 -0000
+X-POP3-Rcpt: gord@bambam
+Received: from mescaline.gnu.ai.mit.edu (root@mescaline.gnu.ai.mit.edu [128.52.46.63]) by m-tech.ab.ca (8.6.12/8.6.9) with ESMTP id DAA32184 for <gord@m-tech.ab.ca>; Fri, 12 Sep 1997 03:29:36 -0600
+Received: from deneb.dfn.de by mescaline.gnu.ai.mit.edu (8.8.5/8.6.12GNU) with ESMTP id FAA15584 for <bug-libtool@gnu.ai.mit.edu>; Fri, 12 Sep 1997 05:26:22 -0400
+Received: from mail.iuk.tu-harburg.de (merlin.iuk.tu-harburg.de [134.28.37.139])
+	by deneb.dfn.de (8.8.7/8.8.7) with SMTP id LAA10284
+	for <bug-libtool@gnu.ai.mit.edu>; Fri, 12 Sep 1997 11:26:24 +0200 (MET DST)
+Received: from radagast.iuk.tu-harburg.de by mail.iuk.tu-harburg.de (SMI-8.6/SMI-SVR4)
+	id LAA03507; Fri, 12 Sep 1997 11:26:24 +0200
+Received: from radagast.iuk.tu-harburg.de by radagast.iuk.tu-harburg.de (SMI-8.6/SMI-SVR4)
+	id LAA09711; Fri, 12 Sep 1997 11:26:19 +0200
+Message-Id: <199709120926.LAA09711@radagast.iuk.tu-harburg.de>
+Date: Fri, 12 Sep 1997 11:26:19 +0200 (MET DST)
+From: Thomas Hiller <hiller@merlin.iuk.tu-harburg.de>
+Reply-To: Thomas Hiller <hiller@merlin.iuk.tu-harburg.de>
+Subject: libtool and c++
+To: bug-libtool@gnu.ai.mit.edu
+MIME-Version: 1.0
+Content-Type: TEXT/plain; charset=us-ascii
+Lines: 21
+Xref: trick.profitpress.com mail.libtool:497
+
+Content-MD5: PkFtlfmXLmdAHDrBATl72w==
+X-Mailer: dtmail 1.2.0 CDE Version 1.2 SunOS 5.6 sun4u sparc
+
+Hi,
+
+I'm using - with success - libtool and c++ on linux 2.0.x.
+Now in the office I tried on solaris (with gcc) - without success. The culprit
+is the linker call. (I use the sun linker)
+
+Why does libtool use the direct call to ld and not gcc -shared ?
+Or collect2 from the gcc distribution ?
+
+Thanks in advance
+
+Thomas Hiller				email: hiller@tu-harburg.d400.de
+TU Hamburg-Harburg
+Zentrallabor Informations- und Kommunikationstechnik
+Harburger Schloss-Str. 20		Tel.: +49-40-7718-3448
+D - 21071 Hamburg			Fax : +49-40-7718-2579
+
+
+From nobody Sat Sep 13 12:49:24 1997
+X-From-Line: gord@gnu.ai.mit.edu Fri Sep 12 11:33:54 1997
+Return-Path: <gord@gnu.ai.mit.edu>
+Delivered-To: gord@trick.profitpress.com
+Received: (qmail 5858 invoked from network); 12 Sep 1997 11:33:53 -0000
+Received: from localhost (HELO bambam.m-tech.ab.ca) (127.0.0.1)
+  by localhost with SMTP; 12 Sep 1997 11:33:53 -0000
+X-POP3-Rcpt: gord@bambam
+Received: from mescaline.gnu.ai.mit.edu (root@mescaline.gnu.ai.mit.edu [128.52.46.63]) by m-tech.ab.ca (8.6.12/8.6.9) with ESMTP id DAA32233 for <gord@m-tech.ab.ca>; Fri, 12 Sep 1997 03:51:50 -0600
+Received: from deneb.dfn.de by mescaline.gnu.ai.mit.edu (8.8.5/8.6.12GNU) with ESMTP id FAA16004 for <bug-libtool@gnu.ai.mit.edu>; Fri, 12 Sep 1997 05:48:38 -0400
+Received: from mail.iuk.tu-harburg.de (merlin.iuk.tu-harburg.de [134.28.37.139])
+	by deneb.dfn.de (8.8.7/8.8.7) with SMTP id LAA10810
+	for <bug-libtool@gnu.ai.mit.edu>; Fri, 12 Sep 1997 11:48:40 +0200 (MET DST)
+Received: from radagast.iuk.tu-harburg.de by mail.iuk.tu-harburg.de (SMI-8.6/SMI-SVR4)
+	id LAA11251; Fri, 12 Sep 1997 11:48:41 +0200
+Received: from radagast.iuk.tu-harburg.de by radagast.iuk.tu-harburg.de (SMI-8.6/SMI-SVR4)
+	id LAA11083; Fri, 12 Sep 1997 11:48:36 +0200
+Message-Id: <199709120948.LAA11083@radagast.iuk.tu-harburg.de>
+Date: Fri, 12 Sep 1997 11:48:36 +0200 (MET DST)
+From: Thomas Hiller <hiller@merlin.iuk.tu-harburg.de>
+Reply-To: Thomas Hiller <hiller@merlin.iuk.tu-harburg.de>
+Subject: libtool and c++ (follow-up)
+To: bug-libtool@gnu.ai.mit.edu
+MIME-Version: 1.0
+Content-Type: TEXT/plain; charset=us-ascii
+Lines: 50
+Xref: trick.profitpress.com mail.libtool:498
+
+Content-MD5: pYKoLEegluk256lZh3GEEg==
+X-Mailer: dtmail 1.2.0 CDE Version 1.2 SunOS 5.6 sun4u sparc
+
+Hi,
+
+after further investigation I found the difference is not the linker itself, but
+the call of the linker especially the start and endfiles:
+crti crtbegin crtend crtn are not linked in.
+
+libtool:
+/usr/ccs/bin/ld -G -z text -h libbase.so.1 -o .libs/libbase.so.1.1.0
+./dloadlib.lo ./caches.lo ./damages.lo ./debug.lo ./displays.lo ./drawings.lo
+./externaliz.lo ./fresco_lib.lo ./glyphs.lo ./memory.lo ./names.lo ./octetbuf.lo
+./os.lo ./painters.lo ./proxyobs.lo ./rasters.lo ./styles.lo ./threads.lo
+./typess.lo ./viewers.lo ./windows.lo
+
+gcc -shared:
+
+radagast{hiller}107: gcc -v -shared ...
+Reading specs from /tools/gcc-2.7/lib/gcc-lib/sparc-sun-solaris2.6/2.7.2.3/specs
+gcc version 2.7.2.3
+ /usr/ccs/bin/ld -V -G -dy -z text -h libbase.la
+-R/home/radagast/hiller/work/Fresco97/Fresco/Build/lib
+-R/home/radagast/hiller/work/Fresco97/Fresco/Build/lib -Y
+P,/usr/ccs/lib:/usr/lib -Qy -o libbase.la
+/tools/gcc-2.7/lib/gcc-lib/sparc-sun-solaris2.6/2.7.2.3/crti.o
+/usr/ccs/lib/values-Xa.o
+/tools/gcc-2.7/lib/gcc-lib/sparc-sun-solaris2.6/2.7.2.3/crtbegin.o
+-L/tools/gcc-2.7/lib/gcc-lib/sparc-sun-solaris2.6/2.7.2.3 -L/usr/ccs/bin
+-L/usr/ccs/lib -L/tools/gcc-2.7/lib ./dloadlib.lo ./caches.lo ./damages.lo
+./debug.lo ./displays.lo ./drawings.lo ./externaliz.lo ./fresco_lib.lo
+./glyphs.lo ./memory.lo ./names.lo ./octetbuf.lo ./os.lo ./painters.lo
+./proxyobs.lo ./rasters.lo ./styles.lo ./threads.lo ./typess.lo ./viewers.lo
+./windows.lo /tools/gcc-2.7/lib/gcc-lib/sparc-sun-solaris2.6/2.7.2.3/crtend.o
+/tools/gcc-2.7/lib/gcc-lib/sparc-sun-solaris2.6/2.7.2.3/crtn.o
+ld: Software Generation Utilities - Solaris/ELF (3.0)
+
+Platform: Solaris 2.6
+Compiler: gcc-2.7.2.3 (with SUN linker)
+Libtool: 1.0b
+
+Greetings
+
+Thomas Hiller				email: hiller@tu-harburg.d400.de
+TU Hamburg-Harburg
+Zentrallabor Informations- und Kommunikationstechnik
+Harburger Schloss-Str. 20		Tel.: +49-40-7718-3448
+D - 21071 Hamburg			Fax : +49-40-7718-2579
+
+
+From nobody Sat Sep 13 12:49:26 1997
+X-From-Line: gord@gnu.ai.mit.edu Sat Sep 13 06:08:19 1997
+Return-Path: <gord@gnu.ai.mit.edu>
+Delivered-To: gord@trick.profitpress.com
+Received: (qmail 3043 invoked from network); 13 Sep 1997 06:08:19 -0000
+Received: from localhost (HELO bambam.m-tech.ab.ca) (127.0.0.1)
+  by localhost with SMTP; 13 Sep 1997 06:08:19 -0000
+X-POP3-Rcpt: gord@bambam
+Received: from ethanol.gnu.ai.mit.edu (root@ethanol.gnu.ai.mit.edu [128.52.46.64]) by m-tech.ab.ca (8.6.12/8.6.9) with ESMTP id LAA24598 for <gord@m-tech.ab.ca>; Fri, 12 Sep 1997 11:42:10 -0600
+Received: from rztsun.rz.tu-harburg.de by ethanol.gnu.ai.mit.edu (8.8.5/8.6.12GNU) with SMTP id NAA27280 for <bug-libtool@gnu.ai.mit.edu>; Fri, 12 Sep 1997 13:38:42 -0400
+Date: Fri, 12 Sep 1997 18:43:39 +0000 (met)
+From: Thomas Hiller <hiller@tu-harburg.d400.de>
+Reply-To: Thomas Hiller <hiller@tu-harburg.d400.de>
+Subject: libtool and solaris (and c++)
+To: bug-libtool@gnu.ai.mit.edu
+Message-ID: <Roam2.0.6.874089819.24146.hiller@mail.iuk.tu-harburg.de>
+MIME-Version: 1.0
+Content-Type: TEXT/PLAIN; CHARSET=US-ASCII
+Lines: 16
+Xref: trick.profitpress.com mail.libtool:502
+
+Hi,
+
+I found a bug on solaris_x86:
+    'printf %s\n'
+should read
+    'printf %s\\n'
+in ltmain.sh.
+
+Another follow-up to c++:
+I changed the script to use c++ -shared and AFAIK all works. Maybe the script
+could use '$CC <platform switches>' or - with gcc - 'gcc -shared'.
+
+Greetings
+    Thomas
+(hiller@tu-harburg.d400.de)
+
+From nobody Tue Oct  7 19:29:17 1997
+X-From-Line: gord@gnu.org Wed Oct 08 00:03:13 1997
+Return-Path: <gord@gnu.org>
+Delivered-To: gord@trick.profitpress.com
+Received: (qmail 13926 invoked from network); 8 Oct 1997 00:03:12 -0000
+Received: from localhost (HELO bambam.m-tech.ab.ca) (127.0.0.1)
+  by localhost with SMTP; 8 Oct 1997 00:03:12 -0000
+X-POP3-Rcpt: gord@bambam
+Received: from mescaline.gnu.org (root@mescaline.gnu.org [158.121.106.21]) by m-tech.ab.ca (8.6.12/8.6.9) with ESMTP id LAA01054 for <gord@m-tech.ab.ca>; Tue, 7 Oct 1997 11:58:02 -0600
+Received: from listserv.ucalgary.ca by mescaline.gnu.org (8.8.5/8.6.12GNU) with SMTP id NAA18464 for <bug-libtool@gnu.ai.mit.edu>; Tue, 7 Oct 1997 13:53:36 -0400
+Received: from ts3-port-52.acs.ucalgary.ca by listserv.ucalgary.ca (AIX 3.2/UCB 5.64/4.03)
+          id AA15145; Tue, 7 Oct 1997 11:53:10 -0600
+Received: (qmail 11153 invoked by uid 1001); 7 Oct 1997 17:52:59 -0000
+Sender: gord@trick.profitpress.com
+To: Akim Demaille <demaille@inf.enst.fr>
+Cc: bug-libtool@gnu.org
+Subject: Re: Shared libs before installation
+References: <qylg1qstg1o.fsf@gargantua.enst.fr>
+X-Attribution:  Gord
+Mime-Version: 1.0 (generated by tm-edit 7.92)
+Content-Type: text/plain; charset=US-ASCII
+From: Gordon Matzigkeit <gord@m-tech.ab.ca>
+Date: 07 Oct 1997 11:52:59 -0600
+In-Reply-To: Akim Demaille's message of 26 Sep 1997 14:28:51 +0200
+Message-Id: <86201xcves.fsf@trick.profitpress.com>
+X-Mailer: Gnus v5.4.42/Emacs 19.34
+Lines: 41
+Xref: trick.profitpress.com mail.libtool:570
+
+Hi!
+
+>>>>> Akim Demaille writes:
+
+ AD> 	We once talked about this, but let's do it again :)
+
+Okay! ;)
+
+ AD> 	I know this is the kind of things version numbers should
+ AD> solve.  Nevertheless, to avoid having quickly too big a version
+ AD> number, the version should be set right before a _public_
+ AD> distribution (correct?).  Not when sharing with
+ AD> testers/maintainers.
+
+ AD> 	But then they are most likely to link with an old installed
+ AD> version of the .so, failing to compile correctly.
+
+Actually, you may consider having *huge* version numbers for testers,
+and using tiny ones for public releases.
+
+For testing releases use a major version corresponding with the
+current date:  -version-info 19971007
+
+Then for the public release, figure out what has actually changed
+since last time:  -version-info 3:0:1
+
+The huge test release major numbers will guarantee that every new test
+release will require relinking, but the public versions will be
+smarter and possibly backwards-compatible.
+
+ AD> 	I am no system guy, so I may say stupid things :)
+
+Nothing stupid.  These are legitimate questions that I will have to
+answer eventually in the documentation.
+
+Thanks for your questions,
+
+--
+  Gord Matzigkeit   | Proudly running pieces of the GNU operating system.
+ gord@m-tech.ab.ca  |  Jacques Cousteau loved programming in assembler.
+
+From nobody Wed Oct 15 00:04:31 1997
+X-From-Line: coolo@itm.mu-luebeck.de Wed Oct 15 00:11:44 1997
+Return-Path: <coolo@itm.mu-luebeck.de>
+Delivered-To: gord@trick.profitpress.com
+Received: (qmail 4396 invoked from network); 15 Oct 1997 00:11:42 -0000
+Received: from localhost (HELO bambam.m-tech.ab.ca) (127.0.0.1)
+  by localhost with SMTP; 15 Oct 1997 00:11:42 -0000
+X-POP3-Rcpt: gord@bambam
+Received: from itm.mu-luebeck.de (wotan.itm.mu-luebeck.de [141.83.21.121]) by m-tech.ab.ca (8.6.12/8.6.9) with ESMTP id MAA12037 for <gord@m-tech.ab.ca>; Tue, 14 Oct 1997 12:59:53 -0600
+Received: from buri.itm.mu-luebeck.de (coolo@buri [141.83.21.130]) by itm.mu-luebeck.de (8.8.7/8.7.1) with ESMTP id UAA12900 for <gord@m-tech.ab.ca>; Tue, 14 Oct 1997 20:54:08 +0200 (MET DST)
+From: Stephan Kulow <coolo@itm.mu-luebeck.de>
+Received: (from coolo@localhost)
+          by buri.itm.mu-luebeck.de (8.8.4/8.8.4)
+	  id UAA01692 for gord@m-tech.ab.ca; Tue, 14 Oct 1997 20:55:19 +0200
+Message-Id: <199710141855.UAA01692@buri.itm.mu-luebeck.de>
+Subject: Re: dlopen [was: libs dependencies]
+To: gord@m-tech.ab.ca (Gordon Matzigkeit)
+Date: Tue, 14 Oct 1997 20:55:19 +0200 (MET DST)
+In-Reply-To: <86wwjg1av8.fsf@trick.profitpress.com> from "Gordon Matzigkeit" at Oct 14, 97 12:02:35 pm
+Content-Type: text
+Lines: 88
+Xref: trick.profitpress.com mail.libtool:589
+
+>
+> Hi!
+>
+> >>>>> Stephan Kulow writes:
+>
+> I think we've adequately discussed your library dependencies, but I
+> wanted to comment on the dlopen support that you mention below:
+>
+>  SK> BTW: I made some efforts to use the dlopen support in libtool. I
+>  SK> think, it works the way I tried it. I link staticly, if dlfcn.h
+>  SK> or libdl is not supported. For this I patched libtool.m4 to
+>  SK> support this.  I had to remove the --enable-shared/static options
+>  SK> and replaced it with --disable-dlopen option, since it looks
+>  SK> somewhat strange, if you have --enable-shared in a package, where
+>  SK> you do not expect libs.
+>
+> Yes, you are right.  When I fully support dlopen emulation, I will
+> need to make a configure flag that can turn things on and off.
+>
+>  SK> We create a binary, that loads libraries, that contain C++
+>  SK> classes derived from a specific class. So, it's not necessary,
+>  SK> that the binary knows, which "applets" are there while compile
+>  SK> time.
+>
+> Okay, this makes sense.  This is why I generate the `symbol file' when
+> -export-dynamic is given, which contains a list of symbols mapped to
+> pointers in a C source file.
+>
+> Your solution is acceptable, and if it works for your application,
+> congratulations!  As I've said before, my eventual solution will be
+> generic and application-independent: I will write a true dlopen
+> implementation that uses a libtool `symbol file' to resolve pointers
+> rather than dynamic loading of code.
+>
+> The C++ portion of this will need to understand name mangling, which
+> is probably why you chose the easier way, of making your dlopening
+> application-specific.
+You say, you will write code? I tried to imagine a solution without
+new code, but I failed. So you write a new linker or just a library,
+that I can use in my own code?
+>
+>  SK> This is somewhat a problem and I don't know a solution, how to
+>  SK> solve this.  So, I added a header file, that contains all
+>  SK> currently known modules and this is only used, if no dlopen is
+>  SK> available.
+>
+> Okay, I think I understand.  You are saying that when dlopen is not
+> available, you emulate it by knowing in advance which modules have
+> been linked into the executable (SANE calls this `preloading'), and
+> changing your application to refer to specific C++ modules.
+Yes. I have to know while compilation time of the binary, which libraries
+get linked.
+>
+> As I've said above, when I release DLD 4.0 I'll let you know, but
+> until then, your application-specific preloading is acceptable, and
+> the Right Thing To Do.
+Thanks, it's a pleasure to hear such comments ;)
+>
+>  SK> Thanks for writing libtool, Stephan
+>
+> My pleasure!  Thanks for using it, :)
+BTW: Perhaps you remember, I once contacted you because of some problems
+with C++ and static objects in shared libs. I found out (or read in a
+news group), that most compilers on such plattforms do some magic before
+calling the linker. So, what libtool have to do to support such plattforms
+(Solaris, FreeBSD and perhaps some more), is to call the compiler and not
+the linker to create C++ shared libs.
+CC (under Solaris) has the same options then the linker, but should create
+correct libraries.
+Currently I set CC to CXX before I run AM_PROG_LIBTOOL to let libtool
+find the correct linker options for the C++ compiler instead of the C
+compiler.
+
+I just wanted to let you know, what I found out. I thought about patching
+libtool to have better support for C++, but this would mean some drastic
+changes, so I left it up to you ;)
+
+Greets, Stephan
+
+--
+Stephan Kulow (coolo@kde.org)
+Student of medical CS
+Medical University of Luebeck
+
+GCS/M/MD d-x s++: a-- C+++$ ULS+++ P--- L++ E W- N- o? K--? w
+!O-- !M !V PS++ !PE Y PGP++ t+ 5 X+ !R tv+ b+ DI? D- G e+>$
+h--(++) r y
+
+
+From nobody Thu Aug 20 09:31:03 1998
+X-From-Line: gord@gnu.org Wed Aug 05 11:02:23 1998
+Return-Path: <gord@gnu.org>
+Delivered-To: gord@trick.fig.org
+Received: (qmail 6829 invoked from network); 5 Aug 1998 11:02:23 -0000
+Received: from gen2-93ip34.cadvision.com (HELO bambam.m-tech.ab.ca) (209.91.93.34)
+  by cs366707-a.cgmo1.ab.wave.home.com with SMTP; 5 Aug 1998 11:02:23 -0000
+Received: from mescaline.gnu.org (gateway [10.0.0.1]) by bambam.m-tech.ab.ca (8.8.5/8.6.9) with ESMTP id EAA09526 for <gord@m-tech.ab.ca>; Wed, 5 Aug 1998 04:59:58 -0600
+Received: from uranus.ubs.com by mescaline.gnu.org (8.8.5/8.6.12GNU) with ESMTP id HAA22473 for <bug-libtool@gnu.org>; Wed, 5 Aug 1998 07:00:29 -0400
+From: alois.camenzind@ubs.com
+Received: by uranus.ubs.com; id MAA10838; Wed, 5 Aug 1998 12:56:10 +0200 (MET DST)
+Received: from <alois.camenzind@ubs.com> (svscan [192.168.85.11]) by uranus via smap (V2.1)
+	id xma010753; Wed, 5 Aug 98 12:55:53 +0200
+Received: from localhost by svscan.ubinet.ubs.com (SMI-8.6/SMI-SVR4)
+	id MAA01005; Wed, 5 Aug 1998 12:58:25 +0200
+Received: from localhost (root@localhost)
+	by svcastor.flur.zuerich.ubs.ch (8.8.6 (PHNE_12836)/8.8.6) with SMTP id MAA21146
+	for bug-libtool@gnu.org; Wed, 5 Aug 1998 12:58:23 +0200 (METDST)
+X-OpenMail-Hops: 2
+Date: Wed, 5 Aug 1998 12:58:13 +0200
+Message-Id: <5499F13A@MHS>
+Subject: libtool bug/problem
+MIME-Version: 1.0
+TO: bug-libtool@gnu.org
+Content-Type: multipart/mixed; boundary="MimeMultipartBoundary"
+Lines: 33
+Xref: trick.fig.org libtool:1548
+
+--MimeMultipartBoundary
+Content-Type: text/plain; charset=US-ASCII; name="PUBLIC:"
+Content-Disposition: inline; filename="PUBLIC:"
+Content-Transfer-Encoding: 7bit
+
+Hi
+
+I'd like to use libtool (ltmain.sh (GNU libtool) 1.2 togheter with the SUN C++
+compiler (CC: WorkShop Compilers 4.2 30 Oct 1996 C++ 4.2) on Solaris 5.5.1.
+
+Everything works good  except if I'm trying to use C++ templates in my code and
+put this in a shared library. The linker is afterwards always complaining
+about missing references.  The problem occurs because libtool renames
+the object
+files from xxx.o to xxx.lo. The SUN C++ compiler builds for himself a
+Template.DB
+and this somehow doens't match anymore with the object file.
+
+Have you ever heard of this problem and do you eventually allready have
+a solution?
+
+I search in Deja News but couldn't find anything.
+A solution I could think of would be to rename the xxx.lo file back to
+xxx.o  before
+the linking phase.
+
+Thanks for any hints.
+
+ciao
+Alois
+
+--MimeMultipartBoundary--
+From nobody Wed Oct 14 17:08:59 1998
+X-From-Line: gord@mescaline.gnu.org Mon Oct 05 20:10:38 1998
+Return-Path: <gord@mescaline.gnu.org>
+Delivered-To: gord@trick.fig.org
+Received: (qmail 2026 invoked from network); 5 Oct 1998 20:10:30 -0000
+Received: from gen2-93ip34.cadvision.com (HELO bambam.m-tech.ab.ca) (209.91.93.34)
+  by ip223.net247210.cr.sk.ca with SMTP; 5 Oct 1998 20:10:30 -0000
+Received: from mescaline.gnu.org (gateway [10.0.0.1])
+	by bambam.m-tech.ab.ca (8.8.7/8.8.7) with ESMTP id OAA31749
+	for <gord@m-tech.ab.ca>; Mon, 5 Oct 1998 14:13:57 -0600
+Received: from proxy.grad.kiev.ua (grad-UTC-28k8.ukrtel.net [195.5.25.54])
+	by mescaline.gnu.org (8.9.1a/8.9.1) with ESMTP id PAA26247
+	for <bug-libtool@gnu.org>; Mon, 5 Oct 1998 15:57:59 -0400
+Received: from Shevchenko.Kiev.UA (cam [10.0.0.50])
+	by proxy.grad.kiev.ua (8.8.8/8.8.7) with ESMTP id WAA07178
+	for <bug-libtool@gnu.org>; Mon, 5 Oct 1998 22:56:50 +0300 (EEST)
+	(envelope-from Ruslan@Shevchenko.Kiev.UA)
+Sender: rssh@proxy.grad.kiev.ua
+Message-ID: <3619242C.C441DA29@Shevchenko.Kiev.UA>
+Date: Mon, 05 Oct 1998 22:55:24 +0300
+From: Ruslan Shevchenko <Ruslan@Shevchenko.Kiev.UA>
+Reply-To: rssh@grad.kiev.ua
+X-Mailer: Mozilla 4.05 [en] (X11; I; FreeBSD 2.2.5-STABLE i386)
+MIME-Version: 1.0
+To: bug-libtool@gnu.org
+Subject: C++ libs on Solaris 2.6 with Sun CC 4.2
+Content-Type: multipart/mixed; boundary="------------48AE685394F01B5105112CF0"
+Lines: 109
+Xref: trick.fig.org libtool:1646
+
+This is a multi-part message in MIME format.
+--------------48AE685394F01B5105112CF0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+
+envirowment:
+
+uname -a:
+
+SunOS satory 5.6 Generic_105181-06 sun4u sparc SUNW,Ultra-4
+
+Sun CC 4.1
+
+libtool 1.2
+
+Problem:
+
+  building of shared libraries not supported.
+ (output of simple conffigure is attached.)
+
+  and in reality, the process of linking CC library is different,
+ becouse generation of templates can be doing on stage of linking.
+
+ In general, command for linking is 
+ CC -xar -o$(LIBNAME) $(CXXFLAGS) $(OBJECTS)
+
+ If anybody will tell me, from what I must begin, I will help to
+add such support.
+
+ Thanks.
+
+
+-- 
+    @=                                   
+     //RSSH                             
+mailto:Ruslan@Shevchenko.Kiev.UA
+
+CORBA in Ukraine & ex-USSR: http://www.corbadev.kiev.ua
+--------------48AE685394F01B5105112CF0
+Content-Type: text/plain; charset=us-ascii; name="errs"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline; filename="errs"
+
+creating cache ./config.cache
+checking host system type... sparc-sun-solaris2.6
+checking target system type... sparc-sun-solaris2.6
+checking build system type... sparc-sun-solaris2.6
+checking for a BSD compatible install... config/install-sh -c
+checking whether build environment is sane... yes
+checking whether make sets ${MAKE}... yes
+checking for working aclocal... found
+checking for working autoconf... found
+checking for working automake... found
+checking for working autoheader... found
+checking for working makeinfo... missing
+checking for c++... no
+checking for g++... no
+checking for gcc... no
+checking for CC... CC
+checking whether the C++ compiler (CC  ) works... yes
+checking whether the C++ compiler (CC  ) is a cross-compiler... no
+checking whether we are using GNU C++... no
+checking how to run the C++ preprocessor... CC -E
+checking for ranlib... ranlib
+checking for gcc... no
+checking for cc... cc
+checking whether the C compiler (cc  ) works... yes
+checking whether the C compiler (cc  ) is a cross-compiler... no
+checking whether we are using GNU C... no
+checking for non-GNU ld... /usr/ucb/ld
+checking if the linker (/usr/ucb/ld) is GNU ld... no
+checking for BSD-compatible nm... /usr/ccs/bin/nm -p
+checking whether ln -s works... yes
+checking whether we are using GNU C... no
+checking for cc option to produce PIC... -KPIC
+checking if cc PIC flag -KPIC works... no
+checking if cc static flag -Bstatic works... -Bstatic
+checking if the linker (/usr/ucb/ld) is GNU ld... no
+checking whether the linker (/usr/ucb/ld) supports shared libraries... yes
+checking command to parse /usr/ccs/bin/nm -p output... yes
+checking how to hardcode library paths into programs... immediate
+checking for /usr/ucb/ld option to reload object files... -r
+checking dynamic linker characteristics... solaris2.6 ld.so
+checking if libtool supports shared libraries... no
+checking whether to build shared libraries... no
+checking whether to build static libraries... yes
+checking for objdir... .libs
+creating libtool
+checking for a BSD compatible install... config/install-sh -c
+CPPFLAGS= -I/usr/local/include
+checking for OB/CORBA.h... yes
+
+checking for JTC/JTC.h... yes
+checking for OB/CosNaming.h... yes
+checking for nanosleep in -lposix4... yes
+solaris2.6
+checking for socket in -lsocket... yes
+updating cache ./config.cache
+creating ./config.status
+creating Makefile
+creating src/Makefile
+creating include/Makefile
+creating tests/Makefile
+creating tests/naming/Makefile
+creating include/SyntaxShugarConfig.h
+include/SyntaxShugarConfig.h is unchanged
+
+--------------48AE685394F01B5105112CF0--
+
+From nobody Wed Oct 14 17:11:47 1998
+X-From-Line: gord@mescaline.gnu.org Tue Oct 13 18:11:55 1998
+Return-Path: <gord@mescaline.gnu.org>
+Delivered-To: gord@trick.fig.org
+Received: (qmail 694 invoked from network); 13 Oct 1998 18:11:25 -0000
+Received: from gen2-93ip34.cadvision.com (HELO bambam.m-tech.ab.ca) (209.91.93.34)
+  by ip223.net247210.cr.sk.ca with SMTP; 13 Oct 1998 18:11:25 -0000
+Received: from mescaline.gnu.org (gateway [10.0.0.1])
+	by bambam.m-tech.ab.ca (8.8.7/8.8.7) with ESMTP id MAA30151
+	for <gord@m-tech.ab.ca>; Tue, 13 Oct 1998 12:14:55 -0600
+Received: from proxy.grad.kiev.ua (grad-UTC-28k8.ukrtel.net [195.5.25.54])
+	by mescaline.gnu.org (8.9.1a/8.9.1) with ESMTP id NAA14314
+	for <bug-libtool@gnu.org>; Tue, 13 Oct 1998 13:56:26 -0400
+Received: from Shevchenko.Kiev.UA (cam [10.0.0.50])
+	by proxy.grad.kiev.ua (8.8.8/8.8.7) with ESMTP id UAA04080
+	for <bug-libtool@gnu.org>; Tue, 13 Oct 1998 20:54:29 +0300 (EEST)
+	(envelope-from Ruslan@Shevchenko.Kiev.UA)
+Sender: rssh@proxy.grad.kiev.ua
+Message-ID: <3623937C.7E903DF8@Shevchenko.Kiev.UA>
+Date: Tue, 13 Oct 1998 20:53:00 +0300
+From: Ruslan Shevchenko <Ruslan@shevchenko.kiev.ua>
+Reply-To: rssh@grad.kiev.ua
+X-Mailer: Mozilla 4.05 [en] (X11; I; FreeBSD 2.2.5-STABLE i386)
+MIME-Version: 1.0
+To: bug-libtool@gnu.org
+Subject: overriding ARFLAGS.
+Content-Type: multipart/mixed; boundary="------------E06156B73BE5D4D4AD2BF900"
+Lines: 221
+Xref: trick.fig.org libtool:1683
+
+This is a multi-part message in MIME format.
+--------------E06156B73BE5D4D4AD2BF900
+Content-Type: text/plain; charset=koi8-r
+Content-Transfer-Encoding: 7bit
+
+As I noted few days ago, the process of building a library (static or
+shared)
+with C++ can include addition steps, such as template instaniation.
+
+In libtool AR can be overrided from configure ${AR}, but ${ARFLAGS}
+(cru)
+is hardcoded into ltconfig.sh
+
+setting ${ARFLAGS} as variable (or cru if "$ARFLAGS" is empty ) actually
+enable
+building of templated C++ variables (static only yet) by overriding AR
+and ARFLAGS
+from configure.
+
+So, I attached to this messages  diff, which change cru to ${ARFLAGS} in 
+ltconfig.in (and therefore in ltconfig)
+
+Also, I think somewhere in documentation must exists the  next note
+about 
+Sun Solaris Workshop:
+/--------
+  When you want build libraries with implicit templates instaniated in, 
+  You must puss to ltconfig next envirowmnent variables:
+  AR=CC
+  ARFLAGS=$CXXFLAGS -xar -o
+----------/ 
+
+
+
+
+
+  
+
+
+-- 
+    @=                                   
+     //RSSH                             
+mailto:Ruslan@Shevchenko.Kiev.UA
+
+CORBA in Ukraine & ex-USSR: http://www.corbadev.kiev.ua
+--------------E06156B73BE5D4D4AD2BF900
+Content-Type: text/plain; charset=koi8-r; name="libtool.diff"
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline; filename="libtool.diff"
+
+Only in libtool-1.2-patched: Makefile
+Only in libtool-1.2-patched: config.cache
+Only in libtool-1.2-patched: config.log
+Only in libtool-1.2-patched: config.status
+Common subdirectories: libtool-1.2/demo and libtool-1.2-patched/demo
+Common subdirectories: libtool-1.2/doc and libtool-1.2-patched/doc
+Only in libtool-1.2-patched: libtool
+Only in libtool-1.2-patched: libtoolize
+diff -c libtool-1.2/ltconfig libtool-1.2-patched/ltconfig
+*** libtool-1.2/ltconfig	Fri Mar 20 10:00:29 1998
+--- libtool-1.2-patched/ltconfig	Tue Oct 13 20:01:31 1998
+***************
+*** 89,95 ****
+--- 89,101 ----
+  with_gcc=no
+  with_gnu_ld=no
+  
++ if test "x$ARFLAGS" = x
++ then
++  ARFLAGS=cru
++ fi
++ 
+  old_AR="$AR"
++ old_ARFLAGS="$ARFLAGS"
+  old_CC="$CC"
+  old_CFLAGS="$CFLAGS"
+  old_CPPFLAGS="$CPPFLAGS"
+***************
+*** 320,326 ****
+  esac
+  
+  # Determine commands to create old-style static archives.
+! old_archive_cmds='$AR cru $oldlib$oldobjs'
+  old_postinstall_cmds='chmod 644 $oldlib'
+  old_postuninstall_cmds=
+  
+--- 326,332 ----
+  esac
+  
+  # Determine commands to create old-style static archives.
+! old_archive_cmds='$AR $ARFLAGS $oldlib$oldobjs'
+  old_postinstall_cmds='chmod 644 $oldlib'
+  old_postuninstall_cmds=
+  
+***************
+*** 732,738 ****
+    case "$host_os" in
+    aix3*)
+      allow_undefined_flag=unsupported
+!     archive_cmds='$NM$libobjs | $global_symbol_pipe | sed '\''s/.* //'\'' > $lib.exp;$LD -o $objdir/$soname$libobjs -bE:$lib.exp -T512 -H512 -bM:SRE;$AR cru $lib $objdir/$soname'
+      # Note: this linker hardcodes the directories in LIBPATH if there
+      # are no directories specified by -L.
+      hardcode_minus_L=yes
+--- 738,744 ----
+    case "$host_os" in
+    aix3*)
+      allow_undefined_flag=unsupported
+!     archive_cmds='$NM$libobjs | $global_symbol_pipe | sed '\''s/.* //'\'' > $lib.exp;$LD -o $objdir/$soname$libobjs -bE:$lib.exp -T512 -H512 -bM:SRE;$AR $ARFLAGS $lib $objdir/$soname'
+      # Note: this linker hardcodes the directories in LIBPATH if there
+      # are no directories specified by -L.
+      hardcode_minus_L=yes
+***************
+*** 745,757 ****
+  
+    aix4*)
+      allow_undefined_flag=unsupported
+!     archive_cmds='$NM$libobjs | $global_symbol_pipe | sed '\''s/.* //'\'' > $lib.exp;$CC -o $objdir/$soname$libobjs ${wl}-bE:$lib.exp ${wl}-bM:SRE ${wl}-bnoentry;$AR cru $lib $objdir/$soname'
+      hardcode_direct=yes
+      hardcode_minus_L=yes
+      ;;
+  
+    amigaos*)
+!     archive_cmds='$rm $objdir/a2ixlibrary.data;$echo "#define NAME $libname" > $objdir/a2ixlibrary.data;$echo "#define LIBRARY_ID 1" >> $objdir/a2ixlibrary.data;$echo "#define VERSION $major" >> $objdir/a2ixlibrary.data;$echo "#define REVISION $revision" >> $objdir/a2ixlibrary.data;$AR cru $lib$libobjs;$RANLIB $lib;(cd $objdir && a2ixlibrary -32)'
+      hardcode_libdir_flag_spec='-L$libdir'
+      hardcode_minus_L=yes
+      ;;
+--- 751,763 ----
+  
+    aix4*)
+      allow_undefined_flag=unsupported
+!     archive_cmds='$NM$libobjs | $global_symbol_pipe | sed '\''s/.* //'\'' > $lib.exp;$CC -o $objdir/$soname$libobjs ${wl}-bE:$lib.exp ${wl}-bM:SRE ${wl}-bnoentry;$AR $ARFLAGS $lib $objdir/$soname'
+      hardcode_direct=yes
+      hardcode_minus_L=yes
+      ;;
+  
+    amigaos*)
+!     archive_cmds='$rm $objdir/a2ixlibrary.data;$echo "#define NAME $libname" > $objdir/a2ixlibrary.data;$echo "#define LIBRARY_ID 1" >> $objdir/a2ixlibrary.data;$echo "#define VERSION $major" >> $objdir/a2ixlibrary.data;$echo "#define REVISION $revision" >> $objdir/a2ixlibrary.data;$AR $ARFLAGS $lib$libobjs;$RANLIB $lib;(cd $objdir && a2ixlibrary -32)'
+      hardcode_libdir_flag_spec='-L$libdir'
+      hardcode_minus_L=yes
+      ;;
+diff -c libtool-1.2/ltconfig.in libtool-1.2-patched/ltconfig.in
+*** libtool-1.2/ltconfig.in	Wed Mar 11 18:10:51 1998
+--- libtool-1.2-patched/ltconfig.in	Tue Oct 13 20:44:56 1998
+***************
+*** 320,331 ****
+  esac
+  
+  # Determine commands to create old-style static archives.
+! old_archive_cmds='$AR cru $oldlib$oldobjs'
+  old_postinstall_cmds='chmod 644 $oldlib'
+  old_postuninstall_cmds=
+  
+  # Set a sane default for `AR'.
+  test -z "$AR" && AR=ar
+  
+  # If RANLIB is not set, then run the test.
+  if test "${RANLIB+set}" != "set"; then
+--- 320,332 ----
+  esac
+  
+  # Determine commands to create old-style static archives.
+! old_archive_cmds='$AR $ARFLAGS $oldlib$oldobjs'
+  old_postinstall_cmds='chmod 644 $oldlib'
+  old_postuninstall_cmds=
+  
+  # Set a sane default for `AR'.
+  test -z "$AR" && AR=ar
++ test -z "$ARFLAGS" && ARFLAGS=cru
+  
+  # If RANLIB is not set, then run the test.
+  if test "${RANLIB+set}" != "set"; then
+***************
+*** 732,738 ****
+    case "$host_os" in
+    aix3*)
+      allow_undefined_flag=unsupported
+!     archive_cmds='$NM$libobjs | $global_symbol_pipe | sed '\''s/.* //'\'' > $lib.exp;$LD -o $objdir/$soname$libobjs -bE:$lib.exp -T512 -H512 -bM:SRE;$AR cru $lib $objdir/$soname'
+      # Note: this linker hardcodes the directories in LIBPATH if there
+      # are no directories specified by -L.
+      hardcode_minus_L=yes
+--- 733,739 ----
+    case "$host_os" in
+    aix3*)
+      allow_undefined_flag=unsupported
+!     archive_cmds='$NM$libobjs | $global_symbol_pipe | sed '\''s/.* //'\'' > $lib.exp;$LD -o $objdir/$soname$libobjs -bE:$lib.exp -T512 -H512 -bM:SRE;$AR $ARFLAGS $lib $objdir/$soname'
+      # Note: this linker hardcodes the directories in LIBPATH if there
+      # are no directories specified by -L.
+      hardcode_minus_L=yes
+***************
+*** 745,757 ****
+  
+    aix4*)
+      allow_undefined_flag=unsupported
+!     archive_cmds='$NM$libobjs | $global_symbol_pipe | sed '\''s/.* //'\'' > $lib.exp;$CC -o $objdir/$soname$libobjs ${wl}-bE:$lib.exp ${wl}-bM:SRE ${wl}-bnoentry;$AR cru $lib $objdir/$soname'
+      hardcode_direct=yes
+      hardcode_minus_L=yes
+      ;;
+  
+    amigaos*)
+!     archive_cmds='$rm $objdir/a2ixlibrary.data;$echo "#define NAME $libname" > $objdir/a2ixlibrary.data;$echo "#define LIBRARY_ID 1" >> $objdir/a2ixlibrary.data;$echo "#define VERSION $major" >> $objdir/a2ixlibrary.data;$echo "#define REVISION $revision" >> $objdir/a2ixlibrary.data;$AR cru $lib$libobjs;$RANLIB $lib;(cd $objdir && a2ixlibrary -32)'
+      hardcode_libdir_flag_spec='-L$libdir'
+      hardcode_minus_L=yes
+      ;;
+--- 746,758 ----
+  
+    aix4*)
+      allow_undefined_flag=unsupported
+!     archive_cmds='$NM$libobjs | $global_symbol_pipe | sed '\''s/.* //'\'' > $lib.exp;$CC -o $objdir/$soname$libobjs ${wl}-bE:$lib.exp ${wl}-bM:SRE ${wl}-bnoentry;$AR $ARFLAGS $lib $objdir/$soname'
+      hardcode_direct=yes
+      hardcode_minus_L=yes
+      ;;
+  
+    amigaos*)
+!     archive_cmds='$rm $objdir/a2ixlibrary.data;$echo "#define NAME $libname" > $objdir/a2ixlibrary.data;$echo "#define LIBRARY_ID 1" >> $objdir/a2ixlibrary.data;$echo "#define VERSION $major" >> $objdir/a2ixlibrary.data;$echo "#define REVISION $revision" >> $objdir/a2ixlibrary.data;$AR $ARFLAGS $lib$libobjs;$RANLIB $lib;(cd $objdir && a2ixlibrary -32)'
+      hardcode_libdir_flag_spec='-L$libdir'
+      hardcode_minus_L=yes
+      ;;
+Common subdirectories: libtool-1.2/tests and libtool-1.2-patched/tests
+
+--------------E06156B73BE5D4D4AD2BF900--
+

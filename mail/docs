@@ -1,0 +1,47 @@
+From nobody Wed Oct 14 17:14:44 1998
+X-From-Line: rms@santafe.edu Mon Jun 01 19:52:46 1998
+Return-Path: <rms@santafe.edu>
+Delivered-To: gord@trick.profitpress.com
+Received: (qmail 15232 invoked from network); 1 Jun 1998 19:52:45 -0000
+Received: from unknown (HELO bambam.m-tech.ab.ca) (127.0.0.1)
+  by 127.0.0.1 with SMTP; 1 Jun 1998 19:52:45 -0000
+Received: from sfi.santafe.edu (gateway [10.0.0.1]) by bambam.m-tech.ab.ca (8.8.5/8.6.9) with SMTP id MAA32739 for <gord@m-tech.ab.ca>; Mon, 1 Jun 1998 12:09:11 -0600
+Received: from wijiji.santafe.edu by sfi.santafe.edu (4.1/SMI-4.1)
+	id AA03877; Mon, 1 Jun 98 11:55:41 MDT
+Received: by wijiji.santafe.edu (SMI-8.6/SMI-SVR4)
+	id LAA04106; Mon, 1 Jun 1998 11:55:40 -0600
+Date: Mon, 1 Jun 1998 11:55:40 -0600
+Message-Id: <199806011755.LAA04106@wijiji.santafe.edu>
+From: Richard Stallman <rms@santafe.edu>
+To: gord@m-tech.ab.ca
+In-Reply-To: <86hg27twsh.fsf@trick.profitpress.com> (message from Gordon
+	Matzigkeit on 30 May 1998 12:53:50 -0600)
+Subject: Re: libtool manual comments
+Reply-To: rms@gnu.org
+References: <199805240500.XAA01237@wijiji.santafe.edu> <86hg27twsh.fsf@trick.profitpress.com>
+Lines: 23
+Xref: trick.profitpress.com mail.libtool:1476
+
+      Regarless, it needs to have a light touch on the option
+    namespace, since it forwards any unrecognized options to the
+    underlying compiler.  This is so that people can pass arbitrary flags
+    that libtool doesn't know about.
+
+Sorry, I don't follow the logic.
+
+Long-named options are the GNU standard, so every a GNU program should
+provide a long-named version of every option name.
+
+If you think there is some practical reason why libtool should not support
+long-named versions of its own options, would you please spell it out?
+I don't see why it would cause any problem.
+
+     RMS> In section 5.3.1 there is a table of environment variable names,
+     RMS> that should be @table @code.  Section 12.4 has one too.
+
+    Actually, these are not tables, they are lists of `@defvar' blocks.
+    What would you recommend in this situation?
+
+I'd recommend @table @code.  We don't use @defvar for environment
+variables.
+
