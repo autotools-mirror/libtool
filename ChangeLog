@@ -1,5 +1,8 @@
 1999-03-14  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* ltconfig.in (file_magic_cmd, file_magic_test_file, freebsd-elf*, 
+	bsdi4*): use full pathnames when possible
+
 	* Makefile.am (all-recursive): depend on ACINCLUDE_M4_LIST
 	(all-local, check-local): remove, unused
 
