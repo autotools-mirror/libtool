@@ -1,0 +1,90 @@
+#! /bin/sh
+# quote.test - make sure that shell metacharacters do not blow up libtool
+
+# Test script header.
+need_prefix=no
+if test -z "$srcdir"; then
+  srcdir=`echo "$0" | sed 's%/[^/]*$%%'`
+  test "$srcdir" = "$0" && srcdir=.
+  test "${VERBOSE+set}" != "set" && VERBOSE=yes
+fi
+. $srcdir/defs || exit 1
+
+# Do the torture test.
+status=0
+
+for mode in compile link install; do
+  echo "= $mode mode"
+
+  # Unfortunately, without an array data type, it is nearly impossible
+  # to protect libtool from metacharacters in filenames.  So, we just
+  # try metacharacters in the options it needs to pass to other programs.
+
+  # preargs and postargs need to go through libtool unmodified.
+  case "$mode" in
+  compile)
+    preargs="gcc -c"
+    flag="-DVAR="
+    postargs="foo.c"
+    ;;
+
+  link)
+    preargs="gcc -o hell -g -O"
+    flag="-Wl,-someflag="
+    postargs="foo.o"
+    ;;
+
+  install)
+    preargs="install -c"
+    flag="--something="
+    postargs="hell /usr/local/bin/hell"
+    ;;
+  esac
+
+  # Trivial.
+  echo "TRYING: no quoting"
+  result=`$libtool -n --mode=$mode $preargs "${flag}test" $postargs` || status=1
+  case "$result" in
+  *"$preargs ${flag}test $postargs"*)
+    echo "PASSED: $result"
+    ;;
+  *)
+    echo "FAILED: $result"
+    status=1
+    ;;
+  esac
+
+  # Metacharacters that should be backslashified.
+  for mchar in \\ \" \$; do
+    echo "TRYING: \\$mchar quoting"
+    result=`$libtool -n --mode=$mode $preargs "${flag}${mchar}test${mchar}" $postargs` || status=1
+    case "$result" in
+    *"$preargs ${flag}\\${mchar}test\\${mchar} $postargs"*)
+      echo "PASSED: $result"
+      ;;
+    *)
+      echo "FAILED: $result"
+      status=1
+      ;;
+    esac
+  done
+
+  # Metacharacters that should be double quoted.
+  for mchar in "[" "]" "~" "#" "^" "&" "*" "(" ")" "{" "}" "|" ";" "<" ">" "?" \
+      "'" " " "	"; do
+
+    echo "TRYING: \"$mchar\" quoting"
+    result=`$libtool -n --mode=$mode $preargs "${flag}${mchar}test${mchar}" $postargs` || status=1
+    case "$result" in
+    *"$preargs \"${flag}${mchar}test${mchar}\" $postargs"*)
+      echo "PASSED: $result"
+      ;;
+    *)
+      echo "FAILED: $result"
+      status=1
+      ;;
+    esac
+  done
+done
+
+exit $status
