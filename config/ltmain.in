@@ -517,6 +517,7 @@ The following components of LINK-COMMAND are treated specially:
   -static           do not do any dynamic linking of libtool libraries
   -version-info CURRENT[:REVISION[:AGE]]
 		    specify library version info [each variable defaults to 0]
+  -weak LIBNAME     declare that the target provides the LIBNAME interface
 
 All other options (arguments beginning with \`-') are ignored.
 
@@ -2343,6 +2344,7 @@ func_mode_link ()
     thread_safe=no
     vinfo=
     vinfo_number=no
+    weak_libs=
 
     func_infer_tag $base_compile
 
@@ -2457,18 +2459,21 @@ func_mode_link ()
 	  prev=
 	  continue
 	  ;;
+	framework)
+	  case $host in
+	    *-*-darwin*)
+	      case "$deplibs " in
+		*" $qarg.ltframework "*) ;;
+		*) deplibs="$deplibs $qarg.ltframework" # this is fixed later
+		   ;;
+	      esac
+	      ;;
+   	  esac
+	  prev=
+	  continue
+	  ;;
 	inst_prefix)
 	  inst_prefix_dir="$arg"
-	  prev=
-	  continue
-	  ;;
-	precious_regex)
-	  precious_files_regex="$arg"
-	  prev=
-	  continue
-	  ;;
-	release)
-	  release="-$arg"
 	  prev=
 	  continue
 	  ;;
@@ -2576,6 +2581,16 @@ func_mode_link ()
 	  prev=
 	  continue
 	  ;;
+	precious_regex)
+	  precious_files_regex="$arg"
+	  prev=
+	  continue
+	  ;;
+	release)
+	  release="-$arg"
+	  prev=
+	  continue
+	  ;;
 	rpath | xrpath)
 	  # We need an absolute path.
 	  case $arg in
@@ -2598,6 +2613,24 @@ func_mode_link ()
 	  prev=
 	  continue
 	  ;;
+	shrext)
+  	  shrext_cmds="$arg"
+	  prev=
+	  continue
+	  ;;
+	weak)
+	  weak_libs="$weak_libs $arg"
+	  prev=
+	  continue
+	  ;;
+	xcclinker)
+	  linker_flags="$linker_flags $qarg"
+	  compiler_flags="$compiler_flags $qarg"
+	  prev=
+	  compile_command="$compile_command $qarg"
+	  finalize_command="$finalize_command $qarg"
+	  continue
+	  ;;
 	xcompiler)
 	  compiler_flags="$compiler_flags $qarg"
 	  prev=
@@ -2611,32 +2644,6 @@ func_mode_link ()
 	  prev=
 	  compile_command="$compile_command $wl$qarg"
 	  finalize_command="$finalize_command $wl$qarg"
-	  continue
-	  ;;
-	xcclinker)
-	  linker_flags="$linker_flags $qarg"
-	  compiler_flags="$compiler_flags $qarg"
-	  prev=
-	  compile_command="$compile_command $qarg"
-	  finalize_command="$finalize_command $qarg"
-	  continue
-	  ;;
-	framework)
-	  case $host in
-	    *-*-darwin*)
-	      case "$deplibs " in
-		*" $qarg.ltframework "*) ;;
-		*) deplibs="$deplibs $qarg.ltframework" # this is fixed later
-		   ;;
-	      esac
-	      ;;
-   	  esac
-	  prev=
-	  continue
-	  ;;
-	shrext)
-  	  shrext_cmds="$arg"
-	  prev=
 	  continue
 	  ;;
 	*)
@@ -2689,6 +2696,11 @@ func_mode_link ()
 	else
 	  prev=expsyms_regex
 	fi
+	continue
+	;;
+
+      -framework)
+	prev=framework
 	continue
 	;;
 
@@ -2804,11 +2816,6 @@ func_mode_link ()
 	continue
 	;;
 
-      -shrext)
-	prev=shrext
-	continue
-	;;
-
       -no-fast-install)
 	fast_install=no
 	continue
@@ -2881,6 +2888,11 @@ func_mode_link ()
 	continue
 	;;
 
+      -shrext)
+	prev=shrext
+	continue
+	;;
+
       -static)
 	# The effects of -static are defined in a previous loop.
 	# We used to do the same as -all-static on platforms that
@@ -2899,9 +2911,15 @@ func_mode_link ()
 	prev=vinfo
 	continue
 	;;
+
       -version-number)
 	prev=vinfo
 	vinfo_number=yes
+	continue
+	;;
+
+      -weak)
+        prev=weak
 	continue
 	;;
 
@@ -2954,11 +2972,6 @@ func_mode_link ()
 
       -XCClinker)
 	prev=xcclinker
-	continue
-	;;
-
-      -framework)
-	prev=framework
 	continue
 	;;
 
@@ -3244,16 +3257,21 @@ func_mode_link ()
 	# Collect and forward deplibs of preopened libtool libs
 	for lib in $dlprefiles; do
 	  # Ignore non-libtool-libs
+	  dependency_libs=
 	  case $lib in
-	  */*.la | *\\*.la)
-	    . $lib
-	    deplibs="$deplibs $dependency_libs"
-	    ;;
-	  *.la)
-	    . ./$lib
-	    deplibs="$deplibs $dependency_libs"
-	    ;;
+	  *[\\/]*.la) . $lib   ;;
+	  *.la)	      . ./$lib ;;
 	  esac
+
+	  # Collect preopened libtool deplibs, except any this library
+	  # has declared as weak libs
+	  for deplib in $dependency_libs; do
+            deplib_base=`echo "$deplib" |$SED "$basename"`
+	    case " $weak_libs " in
+	    *" $deplib_base "*) ;;
+	    *) deplibs="$deplibs $deplib" ;;
+	    esac
+	  done
 	done
 	libs="$dlprefiles"
       fi
@@ -6546,6 +6564,9 @@ inherited_linker_flags='$inherited_linker_flags'
 
 # Libraries that this one depends upon.
 dependency_libs='$dependency_libs'
+
+# Names of additional weak libraries provided by this library
+weak_library_names='$weak_libs'
 
 # Version information for $libname.
 current=$current

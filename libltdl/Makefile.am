@@ -62,7 +62,7 @@ libltdl_la_LIBADD	= libdlloader.la
 
 libltdlc_la_SOURCES	= $(libltdl_la_SOURCES)
 libltdlc_la_CPPFLAGS	= -DLTDLOPEN=libltdlc $(AM_CPPFLAGS)
-libltdlc_la_LDFLAGS	= $(LT_DLPREOPEN)
+libltdlc_la_LDFLAGS	= -weak libdlloader.la $(LT_DLPREOPEN)
 libltdlc_la_LIBADD	=  $(libdlloader_la_OBJECTS) $(libdlloader_la_LIBADD)
 
 ## These are installed as a subdirectory of pkgdatadir so that

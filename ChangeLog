@@ -1,5 +1,17 @@
 2004-08-29  Gary V. Vaughan  <gary@gnu.org>
 
+	Add a new `-weak' flag to tell libtool when not to propogate
+	dependency libraries from dlpreopened modules to libraries:
+
+	* config/ltmain.in: Support new -weak link mode option.  Adjust
+	help message.
+	* libltdl/Makefile.am (libltdlc_la_LDFLAGS): Use it.
+	* doc/libtool.texi (Linking with dlopened modules): Document it.
+	(Link mode): Mention -weak.
+	* NEWS: Updated.
+
+2004-08-29  Gary V. Vaughan  <gary@gnu.org>
+
 	* config/ltmain.in (opt_help): Defer showing help messages until
 	after a possible following --mode argument has been parsed, so we
 	can handle `libtool --help --mode=foo'.
@@ -64,6 +76,8 @@
 2004-08-27  Gary V. Vaughan  <gary@gnu.org>
 
 	* doc/libtool.texi (Cheap tricks): Escape the `@' for texinfo.
+
+2004-08-27  Gary V. Vaughan  <gary@gnu.org>
 
 	* doc/libtool.texi (Cheap tricks): Fix the instructions for making
 	a ltmain.in wrapping libtool in light of recent changes to the

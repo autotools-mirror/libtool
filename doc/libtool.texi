@@ -166,6 +166,7 @@ Dlopened modules
 
 * Building modules::            Creating dlopenable objects and libraries.
 * Dlpreopening::                Dlopening that works on static platforms.
+* Linking with dlopened modules:: Using dlopenable modules in libraries.
 * Finding the dlname::          Choosing the right file to @code{dlopen}.
 * Dlopen issues::               Unresolved problems that need your attention.
 
@@ -1426,6 +1427,13 @@ revision numbers.  This is designed to permit libtool to be used with
 existing projects where identical version numbers are already used across
 operating systems.  New projects should use the @samp{-version-info} flag
 instead.
+
+@item -weak @var{libname}
+if @var{output-file} is a libtool library, declare that it provides a
+weak @var{libname} interface.  This is a hint to libtool that there is
+no need to append @var{libname} to the list of dependency libraries of
+@var{output-file}, because linking against @var{output-file} already
+supplies the same interface (@pxref{Linking with dlopened modules}).
 
 @item -Wl,@var{flag}
 @itemx -Xlinker @var{flag}
@@ -2884,6 +2892,7 @@ use libtool to generate dlopen-accessible modules.
 @menu
 * Building modules::            Creating dlopenable objects and libraries.
 * Dlpreopening::                Dlopening that works on static platforms.
+* Linking with dlopened modules:: Using dlopenable modules in libraries.
 * Finding the dlname::          Choosing the right file to @code{dlopen}.
 * Dlopen issues::               Unresolved problems that need your attention.
 @end menu
@@ -3069,6 +3078,112 @@ symbols preloaded into @samp{libhell}, you must prefix
 @samp{libhell} in this case; and @samp{_LTX_}.  That is,
 @samp{lt_libhell_LTX_preloaded_symbols} here.
 @end deftypefun
+
+
+@node Linking with dlopened modules
+@section Linking with dlopened modules
+@cindex linking, dlopen
+@cindex linking, dlpreopen
+
+When, say, an interpreter application uses dlopened modules to extend
+the list of methods it provides, an obvious abstraction for the
+maintainers of the interpreter is to have all methods (including the
+built in ones supplied with the interpreter) accessed through
+dlopen.  For one thing, the dlopening functionality will be tested
+even during routine invocations.  For another, only one subsystem has
+to be written for getting methods into the interpreter.
+
+The downside of this abstraction is, of course, that environments that
+provide only static linkage can't even load the intrinsic interpreter
+methods.  Not so!  We can statically link those methods by
+@strong{dlpreopening} them.
+
+Unfortunately, since platforms such as @sc{aix} and cygwin require
+that all library symbols must be resolved at compile time, the
+interpreter maintainers will need to provide a library to both its own
+dlpreopened modules, and third-party modules loaded by dlopen.  In
+itself, that is not so bad, except that the interpreter too must
+provide those same symbols otherwise it will be impossible to resolve
+all the symbols required by the modules as they are loaded.  Things
+are even worse if the code that loads the modules for the interpreter
+is itself in a library -- and that is usually the case for any
+non-trivial application.  Modern platforms take care of this by
+automatically loading all of a module's dependency libraries as the
+module is loaded (libltdl can do this even on platforms that can't do
+it by themselves).  In the end, this leads to problems with duplicated
+symbols and prevents modules from loading, and prevents the
+application from compiling when modules are preloaded.
+
+@example
+,-------------.    ,------------------.    ,-----------------.
+| Interpreter |---->     Module------------>   Third-party   |
+`-------------'    |     Loader       |    |Dlopened Modules |
+                   |        |         |    `-----------------'
+                   |,-------v--------.|             |
+                   ||  Dlpreopened   ||             |
+                   ||    Modules     ||             |
+                   |`----------------'|             |
+                   |        |         |             |
+                   |,-------v--------.|    ,--------v--------.
+                   ||Module Interface||    |Module Interface |
+                   ||    Library     ||    |     Library     |
+                   |`----------------'|    `-----------------'
+                   `------------------'
+@end example
+
+Libtool has the concept of @dfn{weak library interfaces} to circumvent
+this problem.  Recall that the code that dlopens method-provider
+modules for the interpreter application resides in a library: All of
+the modules and the dlopener library itself should be linked against
+the common library that resolves the module symbols at compile time.
+To guard against duplicate symbol definitions, and for dlpreopened
+modules to work at all in this scenario, the dlopener library must
+declare that it provides a weak library interface to the common
+symbols in the library it shares with the modules.  That way, when
+@command{libtool} links the @strong{Module Loader} library with some
+@strong{Dlpreopened Modules} that were in turn linked against the
+@strong{Module Interface Library}, it knows that the @strong{Module
+Loader} provides an already loaded @strong{Module Interface Library}
+to resolve symbols for the @strong{Dlpreopened Modules}, and doesn't
+ask the compiler driver to link an identical @strong{Module Interface
+Library} dependency library too.
+
+In conjunction with Automake, the @file{Makefile.am} for the
+@strong{Module Loader} might look like this:
+
+@example
+lib_LTLIBRARIES = libinterface.la libloader.la
+
+libinterface_la_SOURCES = interface.c interface.h
+libinterface_la_LDFLAGS = -version-info 3:2:1
+
+libloader_la_SOURCES    = loader.c
+libloader_la_LDFLAGS    = -weak libinterface.la \
+                          -version-info 3:2:1 \
+                          -dlpreopen ../modules/intrinsics.la
+libloader_la_LIBADD     = $(libinterface_la_OBJECTS)
+@end example
+
+And the @file{Makefile.am} for the @file{intrinsics.la} module in a
+sibling @file{modules} directory might look like this:
+
+@example
+AM_CPPFLAGS             = -I$(srcdir)/../libloader
+AM_LDFLAGS              = -no-undefined -module -avoid-version \
+                          -export-dynamic
+
+noinst_LTLIBRARIES      = intrinsics.la
+
+intrinsics_la_LIBADD    = ../libloader/libinterface.la
+
+../libloader/libinterface.la:
+        cd ../libloader; $(MAKE) $(AM_MAKEFLAGS) libinterface.la
+@end example
+
+@cindex -weak option
+For a more complex example, see the sources of @file{libltdl} in the
+Libtool distribution, which is built with the help of the @samp{-weak}
+option.
 
 
 @node Finding the dlname
