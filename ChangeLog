@@ -1,3 +1,9 @@
+1999-04-12  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* doc/libtool.texi (Invoking ltconfig): Document
+	--disable-fast-install, --enable-dlopen, --with-gnu-ld and
+	--disable-lock.
+
 1999-04-11 Thomas Tanner  <tanner@gmx.de>
 
 	* libltdl/configure.in: check for shl_load in libdld
