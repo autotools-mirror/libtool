@@ -1,3 +1,8 @@
+2001-05-28  Albert Chin  <china@thewrittenword.com>
+
+	* ltconfig.in (version_type, soname_spec) [aix4* | aix5*]: Use
+	linux-style versioning, and remove trailing .o from soname_spec.
+
 2001-05-22  Alexandre Oliva  <aoliva@redhat.com>
 
 	* ltcf-cxx.sh (allow_undefined_flag, no_undefined_flag)
