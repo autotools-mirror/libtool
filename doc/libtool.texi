@@ -1144,10 +1144,11 @@ suffix (e.g. @samp{.c} for C source code) with the library object suffix,
 @samp{.lo}.
 
 If shared libraries are being built, any necessary PIC generation flags
-are substituted into the compilation command.
-You can pass compiler and linker specific flags using @samp{-Wc,@var{flag}}
-and @samp{-Xcompiler @var{flag}} or @samp{-Wl,@var{flag}} and
-@samp{-Xlinker @var{flag}}, respectively.
+are substituted into the compilation command.  You can pass link specific
+flags to the compiler driver using @samp{-XCClinker @var{flag}} or pass
+linker flags with @samp{-Wl,@var{flag}} and @samp{-Xlinker @var{flag}}.
+You can also pass compile specific flags using @samp{-Wc,@var{flag}}
+and @samp{-Xcompiler @var{flag}}.
 
 If the @samp{-static} option is given, then a @samp{.o} file is built,
 even if libtool was configured with @samp{--disable-static}.
@@ -1298,6 +1299,9 @@ release information, rather see the @samp{-release} flag.
 @item -Wl,@var{flag}
 @itemx -Xlinker @var{flag}
 Pass a linker specific flag directly to the linker.
+
+@item -XCClinker @var{flag}
+Pass a link specific flag to the compiler driver (@var{CC}) during linking.
 @end table
 
 If the @var{output-file} ends in @samp{.la}, then a libtool library is

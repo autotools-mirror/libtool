@@ -1,3 +1,8 @@
+2002-10-25  Robert Boehne  <rboehne@gnu.org>
+
+	* ltmain.in (-XCClinker): New flag passes a linking option
+	directly to the compiler driver without appending ${wl}.
+
 2002-10-25  Gary V. Vaughan  <gary@gnu.org>
 
 	* README-alpha: Add some release not templates for inspiration and

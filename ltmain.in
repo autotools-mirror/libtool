@@ -1089,6 +1089,14 @@ EOF
 	  finalize_command="$finalize_command $wl$qarg"
 	  continue
 	  ;;
+	xcclinker)
+	  linker_flags="$linker_flags $qarg"
+	  compiler_flags="$compiler_flags $qarg"
+	  prev=
+	  compile_command="$compile_command $qarg"
+	  finalize_command="$finalize_command $qarg"
+	  continue
+	  ;;
 	*)
 	  eval "$prev=\"\$arg\""
 	  prev=
@@ -1354,6 +1362,11 @@ EOF
 
       -Xlinker)
 	prev=xlinker
+	continue
+	;;
+
+      -XCClinker)
+	prev=xcclinker
 	continue
 	;;
 
