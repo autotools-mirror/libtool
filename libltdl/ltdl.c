@@ -37,8 +37,14 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 #  include <stdio.h>
 #endif
 
+/* Include the header defining malloc.  On K&R C compilers,
+   that's <malloc.h>, on ANSI C and ISO C compilers, that's <stdlib.h>.  */
 #if HAVE_STDLIB_H
 #  include <stdlib.h>
+#else
+#  if HAVE_MALLOC_H
+#    include <malloc.h>
+#  endif
 #endif
 
 #if HAVE_STRING_H
@@ -51,10 +57,6 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 
 #if HAVE_CTYPE_H
 #  include <ctype.h>
-#endif
-
-#if HAVE_MALLOC_H
-#  include <malloc.h>
 #endif
 
 #if HAVE_MEMORY_H

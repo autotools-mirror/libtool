@@ -1,3 +1,9 @@
+2003-09-29  Bob Friesenhahn <bfriesen@simple.dallas.tx.us>,
+            Dalibor Topic <robilad@kaffe.org>
+
+	* libltdl/ltdl.c: Only include malloc.h if stdlib.h can not be
+	found.
+
 2003-09-26  Alfred M. Szmidt  <ams@kemisten.nu>
 	* mdemo2/Makefile.am (INCLUDES): Include `$(top_srcdir)/../libltdl'
 	instead of `../libltdl'.
