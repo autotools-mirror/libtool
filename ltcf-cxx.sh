@@ -7,7 +7,7 @@
 # Copyright (C) 1996-1999,2000 Free Software Foundation, Inc.
 # Originally by Gordon Matzigkeit <gord@gnu.ai.mit.edu>, 1996
 #
-# Original C++ support by:
+# Original C++ support by:Gary V. Vaughan <gvv@techie.com>
 #    Alexandre Oliva <oliva@lsd.ic.unicamp.br>
 #    Ossama Othman <ossama@debian.org>
 #    Thomas Thanner <tanner@gmx.de>
@@ -209,7 +209,13 @@ case "$host_os" in
       CC)
         # SGI C++
         archive_cmds='$CC -shared -all -multigot $predep_objects $libobjs $deplibs $postdep_objects $compiler_flags -soname $soname `test -n "$verstring" && echo -set_version $verstring` -update_registry ${objdir}/so_locations -o $lib'
-        ;;
+
+	# Archives containing C++ object files must be created using
+	# "CC -ar", where "CC" is the IRIX C++ compiler.  This is
+	# necessary to make sure instantiated templates are included
+	# in the archive.
+	old_archive_cmds='$CC -ar -WR,-u -o $oldlib $oldobjs'
+	;;
       *)
         if test "$with_gcc" = yes; then
           if test "$with_gnu_ld" = no; then

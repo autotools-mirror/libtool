@@ -1,3 +1,8 @@
+2000-08-26  Albert Chin-A-Young  <china@thewrittenword.com>
+	
+	* ltcf-cxx.sh (old_archive_cmds):  With IRIX C++ 7.3.1.1m, CC -ar
+	must be used to create archive libraries, not ar.
+	
 2000-08-01  Alexandre Oliva  <oliva@lsd.ic.unicamp.br>
 
 	* ltmain.in (shtool): Use echo|grep instead of expr, as in the
