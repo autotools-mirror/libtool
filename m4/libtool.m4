@@ -1491,7 +1491,7 @@ AC_CACHE_CHECK([if $compiler supports -c -o file.$ac_objext],
    rmdir conftest
    $RM conftest*
 ])
-_LT_DECL([compiler_c_o], [lt_cv_prog_compiler_c_o], [1],
+_LT_TAGDECL([compiler_c_o], [lt_cv_prog_compiler_c_o], [1],
 	[Does compiler simultaneously support -c and -o options?])
 ])# _LT_COMPILER_C_O
 

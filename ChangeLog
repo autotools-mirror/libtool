@@ -1,5 +1,8 @@
 2005-01-31  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* m4/libtool.m4 (_LT_COMPILER_C_O): _LT_TAGDECL(lt_compiler_c_o),
+	not _LT_DECL, since this is tag-dependent.
+
 	* config/ltmain.m4sh, m4/libtool.m4: Change `( cmd ) 2>/dev/null' to
 	`{ cmd; } 2>/dev/null', when cmd has no side effects and might be a
 	builtin.  Note that it is unspecified whether cmd will run within a
