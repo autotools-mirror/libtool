@@ -1,6 +1,8 @@
 #! /bin/sh
+# @configure_input@
+
 # libtoolize (GNU @PACKAGE@@TIMESTAMP@) @VERSION@
-# Written by Gary V. Vaughan <gary@gnu.org>
+# Written by Gary V. Vaughan <gary@gnu.org>, 2003
 
 # Copyright (C) 2003, 2004 Free Software Foundation, Inc.
 # This is free software; see the source for copying conditions.  There is NO
@@ -35,15 +37,23 @@
 #     --debug           enable verbose shell tracing
 # -n, --dry-run         print commands rather than running them
 # -f, --force           replace existing files
-#     --help            display this message and exit
 # -i, --install         copy missing auxiliary files
 #     --ltdl[=DIR]      install libltdl in a subdirectory [default: libltdl]
 # -q, --quiet           work silently
 # -v, --verbose         verbosely report processing
 #     --version         print version information and exit
+# -h, --help            print short or long help message
 #
 # You must `cd' to the top directory of your package before you run
 # `$progname'.
+#
+# When reporting a bug, please describe a test case to reproduce it and
+# include the following information:
+#
+#       host-triplet:	@host_triplet@
+#       $progname:	(GNU @PACKAGE@@TIMESTAMP@) @VERSION@
+#       automake:		$automake_version
+#       autoconf:		$autoconf_version
 #
 # Report bugs to <bug-libtool@gnu.org>.
 
@@ -186,7 +196,13 @@ func_help ()
 {
     $SED '/^# Usage:/,/# Report bugs to/ {
         s/^# //; s/^# *$//;
-	s/\$progname/'$progname'/;
+	s:\$progname:'$progname':;
+	s:\$SHELL:'"$SHELL"':;
+	s:\$LTCC:'"$LTCC"':;
+	s:\$LD:'"$LD"':;
+	s/\$with_gnu_ld/'"$with_gnu_ld"'/;
+	s/\$automake_version/'"`automake --version 2>/dev/null |$SED 1q`"'/;
+	s/\$autoconf_version/'"`autoconf --version 2>/dev/null |$SED 1q`"'/;
 	p;
      }; d' < "$progpath"
     exit $EXIT_SUCCESS

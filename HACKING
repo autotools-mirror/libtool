@@ -1,0 +1,356 @@
+GNU Libtool
+***********
+
+1. Introduction
+===============
+
+This file attempts to describe the processes we use to maintain libtool,
+and is not part of a release distribution.
+
+2. Maintenance Notes
+====================
+
+* If you incorporate a change from somebody on the net:
+  If it is a large change, you must make sure they have signed the
+  appropriate paperwork, and be sure to add their name and email
+  address to THANKS
+
+* If a change fixes a test, mention the test in the ChangeLog entry.
+
+* If somebody reports a new bug, mention his name in the ChangeLog entry
+  and in the test case you write.
+
+* The correct response to most actual bugs is to write a new test case
+  which demonstrates the bug.  Then fix the bug, re-run the test suite,
+  and check everything in.
+
+* Some files in the libtool package are not owned by libtool.  These
+  files should never be edited here.  These files are:
+	COPYING
+	INSTALL
+	config/
+	    + config.guess
+	    + config.sub
+	    + depcomp
+	    + install-sh
+	    + mdate-sh
+	    + missing
+	    + texinfo.tex
+	doc/
+	    + fdl.texi
+	libltdl/
+	    + COPYING.LESSER
+	    + config.guess
+	    + config.sub
+	    + install-sh
+	    + missing
+  The ones that are important for a release can be udated with,
+  `make -fMakefile.maint fetch'.
+
+* Changes other than bug fixes must be mentioned in NEWS
+
+
+2. Test Suite
+=============
+
+* Use "make check" liberally, on as many platforms as you can.  Use as
+  many compilers and linkers you can.
+
+
+3. Naming
+=========
+
+* We've adopted the convention that exported Autoconf macros should be
+  named with a leading `LT_' and be documented in the libtool manual.
+  Internal macros begin with `_LT_' if they are visible to aclocal, or
+  potentially part of an AC_DEFUN/AC_REQUIRE path, or else `_lt_' if
+  they are very low level.  This convention was only introduced just
+  before libtool-2.0, so there may still be exceptions in the existing
+  code.  But all new code should use it.
+
+* All shell variables used internally by libtool's Autoconf macros
+  should be named with the a leading `lt_' (not that they cannot clash
+  with the `_lt_' macro namespace).
+
+
+4. Editing `.am' Files
+======================
+
+* Always use $(...) and not ${...}
+
+* Use `:', not `true'.  Use `exit 1', not `false'.
+
+* Use `##' comments liberally.  Comment anything even remotely unusual.
+
+* Never use basename or dirname.  Instead use sed.
+
+* Do not use `cd' within back-quotes, use `$(am__cd)' instead.
+  Otherwise the directory name may be printed, depending on CDPATH.
+
+* In general, if a loop is required, it should be silent.  Then the body
+  of the loop itself should print each "important" command it runs.
+
+
+5. Editing libtoolize.in and ltmain.in
+======================================
+
+* Use shell functions, but be careful not to assume local scope for
+  variable names.  Don't use `return', instead echo the result of a
+  function and call it from within backquotes.
+
+6. Release Procedure
+====================
+
+* If you are a libtool maintainer, but have not yet registered your
+  gpg public key and (preferred) email address with the FSF, send an
+  email, preferably GPG-signed, to <ftp-upload@gnu.org> that includes
+  the following:
+
+    (a) name of package(s) that you are the maintainer for, and your
+        preferred email address.
+
+    (b) an ASCII armored copy of your GnuPG key, as an attachment.
+	("gpg --export -a YOUR_KEY_ID > mykey.asc" should give you
+	this.)
+
+  When you have received acknowledgement of your message, the proper GPG
+  keys will be registered on ftp-upload.gnu.org and only then will you be
+  authorized to upload files to the FSF ftp machines.
+
+* Make sure you have a copy of xdelta installed, and a copy of the previous
+  release tarball in the build directory.
+
+* Update the version number in configure.ac.
+  See http://www.gnu.org/software/libtool/contribute.html for details of
+  the numbering scheme.
+
+* Update NEWS, ChangeLog.
+
+* Make sure the 'Be Bourne compatible' shell snippet near the top of
+  ./libtoolize.in, ./ltmain.in matches the latest autoconf wisdom by
+  updating to match CVS autoconf AS_SHELL_SANITIZE in autoconf's
+  lib/m4sugar/m4sh.m4.
+
+* Run ./bootstrap.
+
+* Have some tea.  If you are running on less than 3.6GHz CPU, order
+  a pizza too ;-)
+
+* Run ./configure and then make.
+
+* Run `make -fMakefile.maint fetch', which will fetch new versions of the
+  files that are maintained outside of libtool.
+
+* Run ./commit.
+
+* Run `make -fMakefile.maint cvs-dist' which will build a release tarball
+  (with `make distcheck'), tag the tree with release-$(VERSION) and generate
+  the gpg signature files.
+
+* Run 'make -fMakefile.maint deltas' (pass LASTRELEASE=min.maj[.mic[alpha]]
+  if needed) to create both diff and xdelta files between the previous
+  release tarball and the new with detached gpg signature files and clear
+  signed directive files.
+
+* Upload release tarball, diff file and xdelta file, plus their associated
+  detached gpg signature files and clear signed directive files to
+  ftp-upload.gnu.org.  If the upload is destined for ftp.gnu.org, then the
+  files should be placed in the /incoming/ftp directory.  If the upload is
+  an alpha release destined for alpha.gnu.org, then the files should be
+  placed in the /incoming/alpha directory.
+
+* Send announcement to libtool@gnu.org and autotools-announce@gnu.org,
+  if not an alpha send to info-gnu@gnu.org as well.
+
+* Update version number in configure.ac to next alpha number.
+  See http://www.gnu.org/software/libtool/contribute.html for details of
+  the numbering scheme.
+
+* Update NEWS, ChangeLog.
+
+* Run ./commit.
+
+* Update the webpages, libtool.html will need to indicate the latest
+  release number and the news page should get a HTMLified copy of your
+  release announcement.
+
+* If not an alpha, replace manual.html with the new one
+  (generate with `make -f Makefile.maint web-manual').
+
+
+
+7. Alpha release note template
+==============================
+
+To: libtool@gnu.org, autotools-announce@gnu.org
+Subject: GNU Libtool @VERSION@ released (alpha release).
+
+The Libtool Team is pleased to announce alpha release @VERSION@ of GNU
+Libtool.
+
+GNU Libtool hides the complexity of using shared libraries behind a
+consistent, portable interface. GNU Libtool ships with GNU libltdl,
+which hides the complexity of loading dynamic runtime libraries
+(modules) behind a consistent, portable interface.
+
+Here are the compressed sources:
+
+  ftp://alpha.gnu.org/gnu/libtool/libtool-@VERSION@.tar.gz
+  ftp://alpha.gnu.org/gnu/libtool/libtool-@VERSION@.tar.bz2
+
+Here are the xdeltas and diffs against libtool-@PREV_RELEASE_VERSION_ON_THIS_BRANCH@:
+
+  ftp://alpha.gnu.org/gnu/libtool/libtool-@PREV_RELEASE_VERSION_ON_THIS_BRANCH@-@VERSION@.diff.gz
+  ftp://alpha.gnu.org/gnu/libtool/libtool-@PREV_RELEASE_VERSION_ON_THIS_BRANCH@-@VERSION@.xdelta
+
+Here are the gpg detached signatures:
+
+  ftp://alpha.gnu.org/gnu/libtool/libtool-@VERSION@.tar.gz.sig
+  ftp://alpha.gnu.org/gnu/libtool/libtool-@VERSION@.tar.bz2.sig
+  ftp://alpha.gnu.org/gnu/libtool/libtool-@PREV_RELEASE_VERSION_ON_THIS_BRANCH@-@VERSION@.diff.gz.sig
+  ftp://alpha.gnu.org/gnu/libtool/libtool-@PREV_RELEASE_VERSION_ON_THIS_BRANCH@-@VERSION@.xdelta.sig
+
+Here are the MD5 and SHA1 checksums:
+
+  @MD5SUM@ libtool-@VERSION@.tar.gz
+  @MD5SUM@ libtool-@VERSION@.tar.bz2
+  @MD5SUM@ libtool-@PREV_RELEASE_VERSION_ON_THIS_BRANCH@-@VERSION@.diff.gz
+  @MD5SUM@ libtool-@PREV_RELEASE_VERSION_ON_THIS_BRANCH@-@VERSION@.xdelta
+  @SHA1SUM@ libtool-@VERSION@.tar.gz
+  @SHA1SUM@ libtool-@VERSION@.tar.bz2
+  @SHA1SUM@ libtool-@PREV_RELEASE_VERSION_ON_THIS_BRANCH@-@VERSION@.diff.gz
+  @SHA1SUM@ libtool-@PREV_RELEASE_VERSION_ON_THIS_BRANCH@-@VERSION@.xdelta
+
+This release has @SUMMARY_OF_IMPROVEMENTS_SINCE_LAST_RELEASE_ON_THIS_BRANCH@.
+
+This release was bootstrapped with @BOOTSTRAP_TOOLS_WITH_VERSIONS@,
+but is useable with @COMPATIBLE_AUTOTOOL_VERSIONS@ in your own
+projects.
+
+Alternatively, you can fetch the unbootstrapped sourcecode from
+anonymous cvs by using the following commands:
+
+  $ export CVS_RSH=ssh
+  $ cvs -z3 -d :ext:anoncvs@savannah.gnu.org:/cvsroot/libtool \
+  co -r @CVS_RELEASE_TAG@ libtool
+
+You will then need to have recent (possibly as yet unreleased) versions
+of Automake and Autoconf installed to bootstrap the checked out
+sources yourself.
+
+New in @VERSION@: @RELEASE_DATE@
+
+  @EXCERPT_FROM_NEWS_FILE@
+
+Please report bugs to <bug-libtool@gnu.org>, along with the verbose
+output of any failed test groups, and the output from `./libtool --help.'
+
+
+
+8. Full release note template
+=============================
+
+To: info-gnu@gnu.org
+Cc: libtool@gnu.org, autotools-announce@gnu.org
+Subject: GNU Libtool @VERSION@ released.
+
+The Libtool Team is pleased to announce the release of GNU Libtool
+@VERSION@.
+
+GNU Libtool hides the complexity of using shared libraries behind a
+consistent, portable interface. GNU Libtool ships with GNU libltdl,
+which hides the comlexity of loading dynamic runtime libraries
+(modules) behind a consistent, portable interface.
+
+This release has @SUMMARY_OF_IMPROVEMENTS_SINCE_LAST_RELEASE_ON_THIS_BRANCH@.
+
+New in @VERSION@: @RELEASE_DATE@
+
+  @EXCERPT_FROM_NEWS_FILE@
+
+libtool-@VERSION@ is available now from ftp.gnu.org, along with
+diffs and xdeltas against libtool-@PREV_RELEASE_VERSION_ON_THIS_BRANCH@
+that are also available from ftp.gnu.org.  Please
+use a mirror to reduce stress on the main gnu machine:
+
+  http://www.gnu.org/order/ftp.html
+
+Here are the compressed sources:
+
+  ftp://ftp.gnu.org/gnu/libtool/libtool-@VERSION@.tar.gz
+  ftp://ftp.gnu.org/gnu/libtool/libtool-@VERSION@.tar.bz2
+
+Here are the xdeltas and diffs against libtool-@PREV_RELEASE_VERSION_ON_THIS_BRANCH@:
+
+  ftp://ftp.gnu.org/gnu/libtool/libtool-@PREV_RELEASE_VERSION_ON_THIS_BRANCH@-@VERSION@.diff.gz
+  ftp://ftp.gnu.org/gnu/libtool/libtool-@PREV_RELEASE_VERSION_ON_THIS_BRANCH@-@VERSION@.xdelta
+
+Here are the gpg detached signatures:
+
+  ftp://ftp.gnu.org/gnu/libtool/libtool-@VERSION@.tar.gz.sig
+  ftp://ftp.gnu.org/gnu/libtool/libtool-@VERSION@.tar.bz2.sig
+  ftp://ftp.gnu.org/gnu/libtool/libtool-@PREV_RELEASE_VERSION_ON_THIS_BRANCH@-@VERSION@.diff.gz.sig
+  ftp://ftp.gnu.org/gnu/libtool/libtool-@PREV_RELEASE_VERSION_ON_THIS_BRANCH@-@VERSION@.xdelta.sig
+
+Here are the MD5 and SHA1 checksums:
+
+  @MD5SUM@ libtool-@VERSION@.tar.gz
+  @MD5SUM@ libtool-@VERSION@.tar.bz2
+  @MD5SUM@ libtool-@PREV_RELEASE_VERSION_ON_THIS_BRANCH@-@VERSION@.diff.gz
+  @MD5SUM@ libtool-@PREV_RELEASE_VERSION_ON_THIS_BRANCH@-@VERSION@.xdelta
+  @SHA1SUM@ libtool-@VERSION@.tar.gz
+  @SHA1SUM@ libtool-@VERSION@.tar.bz2
+  @SHA1SUM@ libtool-@PREV_RELEASE_VERSION_ON_THIS_BRANCH@-@VERSION@.diff.gz
+  @SHA1SUM@ libtool-@PREV_RELEASE_VERSION_ON_THIS_BRANCH@-@VERSION@.xdelta
+
+This release was bootstrapped with @BOOTSTRAP_TOOLS_WITH_VERSIONS@,
+but is useable with @COMPATIBLE_AUTOTOOL_VERSIONS@ in your own
+projects.
+
+Alternatively, you can fetch the unbootstrapped sourcecode from
+anonymous cvs by using the following commands (just hit return when
+you are prompted for the password):
+
+  $ export CVS_RSH=ssh
+  $ cvs -z3 -d :ext:anoncvs@savannah.gnu.org:/cvsroot/libtool \
+  co -r @CVS_RELEASE_TAG@ libtool
+
+You will then need to have the latest release versions of Automake
+(@AUTOMAKE_VERSION@) and Autoconf (@AUTOCONF_VERSION@) installed to
+bootstrap the checked out sources yourself.
+
+Please report bugs to <bug-libtool@gnu.org>, along with the verbose
+output of any failed test groups, and the output from `./libtool --help.'
+
+
+-- 
+Copyright (C) 2004 Free Software Foundation, Inc.
+
+The canonical source of this file is maintained with the
+GNU Libtool package.  Report bugs to bug-libtool@gnu.org.
+
+GNU Libtool is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License as
+published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+As a special exception to the GNU General Public License,
+if you distribute this file as part of a program or library that
+is built using GNU libtool, you may include it under the same
+distribution terms that you use for the rest of that program.
+
+GNU Libtool is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with GNU Libtool; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+02111-1307  USA
+
+
+Local Variables:
+mode: text
+fill-column: 72
+End:

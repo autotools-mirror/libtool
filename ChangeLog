@@ -1,3 +1,16 @@
+2004-08-28  Gary V. Vaughan  <gary@gnu.org>
+
+	To help users submit better bug reports, improve the general
+	instructions, and provide additional useful info alongside the bug
+	reporting address in --help output:
+
+	* Makefile.am (edit): Substitute $host_triplet.
+	* libtoolize.in: Output useful debug info with --help.
+	* config/ltmain.in: Ditto.
+	* README: Rewritten.  Added copyright info.
+	* README-alpha: Rewritten.  Added copyright info.
+	* HACKING: New file, partly taken from old README-alpha.
+
 2004-08-27  Gary V. Vaughan  <gary@gnu.org>
 
 	Two things to stop `make distcheck' from trying to rebuild
