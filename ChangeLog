@@ -1,5 +1,8 @@
 2004-02-11  Gary V. Vaughan  <gary@gnu.org>
 
+	* commit: Completely change CVS/Root->name sed script to actually
+	work when :ext: is not shown.
+
 	* commit: Improve CVS/Root->name sed script to work when :ext: is
 	not shown.
 

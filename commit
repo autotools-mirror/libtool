@@ -380,15 +380,15 @@ if test -n "$sendmail_to"; then
 
   {
     test -f CVS/Root &&
-        echo "CVSROOT:		`sed -e 's,.*:,,g' CVS/Root`"
+        echo " CVSROOT:	`sed -e 's,.*:,,g' CVS/Root`"
     test -f ./mkstamp &&
-        echo "TIMESTAMP: 	`$SHELL ./mkstamp < ./ChangeLog`"
+        echo "TIMESTAMP:	`$SHELL ./mkstamp < ./ChangeLog`"
     test -f CVS/Repository &&
         echo "Module name:	`cat CVS/Repository`"
     test -f CVS/Tag &&
         echo "Branch:		`sed -e 's,^T,,;1q' CVS/Tag`"
     test -f CVS/Root &&
-        echo "Changes by:	`sed -e 's,^.*:*\(.*@.*\):.*$,\1,' CVS/Root`"
+        echo "Changes by:	`sed -e 's,:.*$,,g;s^.*:,,' CVS/Root`"
     echo ""
     echo "Log Message:"
     sed -e 's,^,	,' "$log_file"
