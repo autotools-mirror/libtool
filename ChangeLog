@@ -1,3 +1,10 @@
+2001-09-11  Gary V. Vaughan  <gary@gnu.org>
+
+	* libltdl/configure.in (AM_INIT_AUTOMAKE): Bump libltdl version to
+	1.2.
+	* libltdl/Makefile.am (libltdl_la_LDFLAGS):  Bump libtool library
+	version info to 4:0:1.
+
 2001-09-10  Gary V. Vaughan  <gary@gnu.org>
 
 	* libtool.m4 (_LT_AC_LIBTOOL_SYS_PATH_SEPARATOR):  Oops.  We
