@@ -2726,12 +2726,6 @@ case `$NM -V 2>&1` in
   symcode='[[ABCDGIRSTW]]' ;;
 esac
 
-# If we're using GNU nm, then use its standard symbol codes.
-case `$NM -V 2>&1` in
-*GNU* | *'with BFD'*)
-  symcode='[[ABCDGIRSTW]]' ;;
-esac
-
 # Transform an extracted symbol line into a proper C declaration.
 # Some systems (esp. on ia64) link data and code symols differently,
 # so use this general approach.
