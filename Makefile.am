@@ -103,7 +103,7 @@ install-data-hook:
 
 # Uninstall libltdl
 uninstall-local:
-       -rm -rf $(DESTDIR)$(pkgdatadir)/libltdl
+	-rm -rf $(DESTDIR)$(pkgdatadir)/libltdl
 
 ################################################################
 ##
