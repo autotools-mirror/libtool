@@ -23,6 +23,7 @@
 ## the same distribution terms that you use for the rest of that program.
 
 # serial 47 AC_PROG_LIBTOOL
+# -------------------------
 AC_DEFUN([AC_PROG_LIBTOOL],
 [AC_REQUIRE([_AC_PROG_LIBTOOL])dnl
 dnl If AC_PROG_CXX has already been expanded, run AC_LIBTOOL_CXX
@@ -50,6 +51,9 @@ dnl AC_LIBTOOL_GCJ immediately, otherwise, hook it in at the end of both.
                 defn([LT_AC_PROG_GCJ])[AC_LIBTOOL_GCJ])])])])
 ])])# AC_PROG_LIBTOOL
 
+
+# _AC_PROG_LIBTOOL
+# ----------------
 AC_DEFUN([_AC_PROG_LIBTOOL],
 [AC_REQUIRE([AC_LIBTOOL_SETUP])dnl
 AC_BEFORE([$0],[AC_LIBTOOL_CXX])dnl
@@ -64,8 +68,11 @@ AC_SUBST(LIBTOOL)dnl
 
 # Prevent multiple expansion
 define([AC_PROG_LIBTOOL], [])
-])
+])# _AC_PROG_LIBTOOL
 
+
+# AC_LIBTOOL_SETUP
+# ----------------
 AC_DEFUN([AC_LIBTOOL_SETUP],
 [AC_PREREQ(2.13)dnl
 AC_REQUIRE([AC_ENABLE_SHARED])dnl
@@ -84,7 +91,85 @@ AC_REQUIRE([AC_OBJEXT])dnl
 AC_REQUIRE([AC_EXEEXT])dnl
 dnl
 
+AC_REQUIRE([_LT_AC_SYS_COMPILER])dnl
 _LT_AC_PROG_ECHO_BACKSLASH
+
+# Transform linux* to *-*-linux-gnu*, to support old configure scripts.
+case $host_os in
+linux-gnu*) ;;
+linux*) host=`echo $host | sed 's/^\(.*-.*-linux\)\(.*\)$/\1-gnu\2/'`
+esac
+
+case $host_os in
+aix3*)
+  # AIX sometimes has problems with the GCC collect2 program.  For some
+  # reason, if we set the COLLECT_NAMES environment variable, the problems
+  # vanish in a puff of smoke.
+  if test "X${COLLECT_NAMES+set}" != Xset; then
+    COLLECT_NAMES=
+    export COLLECT_NAMES
+  fi
+  ;;
+esac
+
+# Sed substitution that helps us do robust quoting.  It backslashifies
+# metacharacters that are still active within double-quoted strings.
+Xsed='sed -e s/^X//'
+[sed_quote_subst='s/\([\\"\\`$\\\\]\)/\\\1/g']
+
+# Same as above, but do not quote variable references.
+[double_quote_subst='s/\([\\"\\`\\\\]\)/\\\1/g']
+
+# Sed substitution to delay expansion of an escaped shell variable in a
+# double_quote_subst'ed string.
+delay_variable_subst='s/\\\\\\\\\\\$/\\\\\\$/g'
+
+# Constants:
+rm="rm -f"
+
+# Global variables:
+default_ofile=libtool
+can_build_shared=yes
+
+# All known linkers require a `.a' archive for static linking (except M$VC,
+# which needs '.lib').
+libext=a
+ltmain="$ac_aux_dir/ltmain.sh"
+ofile="$default_ofile"
+with_gnu_ld="$lt_cv_prog_gnu_ld"
+
+AC_CHECK_TOOL(RANLIB, ranlib, :)
+AC_CHECK_TOOL(STRIP, strip, :)
+
+old_CC="$CC"
+old_CFLAGS="$CFLAGS"
+
+# Set sane defaults for various variables
+test -z "$AR" && AR=ar
+test -z "$AR_FLAGS" && AR_FLAGS=cru
+test -z "$AS" && AS=as
+test -z "$CC" && CC=cc
+test -z "$LTCC" && LTCC=$CC
+test -z "$DLLTOOL" && DLLTOOL=dlltool
+test -z "$LD" && LD=ld
+test -z "$LN_S" && LN_S="ln -s"
+test -z "$MAGIC_CMD" && MAGIC_CMD=file
+test -z "$NM" && NM=nm
+test -z "$OBJDUMP" && OBJDUMP=objdump
+test -z "$RANLIB" && RANLIB=:
+test -z "$STRIP" && STRIP=:
+test -z "$ac_objext" && ac_objext=o
+
+# Determine commands to create old-style static archives.
+old_archive_cmds='$AR $AR_FLAGS $oldlib$oldobjs$old_deplibs'
+old_postinstall_cmds='chmod 644 $oldlib'
+old_postuninstall_cmds=
+
+if test -n "$RANLIB"; then
+  old_archive_cmds="$old_archive_cmds~\$RANLIB \$oldlib"
+  old_postinstall_cmds="\$RANLIB \$oldlib~$old_postinstall_cmds"
+fi
+
 # Only perform the check for file, if the check method requires it
 case $deplibs_check_method in
 file_magic*)
@@ -94,14 +179,212 @@ file_magic*)
   ;;
 esac
 
-AC_CHECK_TOOL(RANLIB, ranlib, :)
-AC_CHECK_TOOL(STRIP, strip, :)
-
 ifdef([AC_PROVIDE_AC_LIBTOOL_DLOPEN], enable_dlopen=yes, enable_dlopen=no)
 ifdef([AC_PROVIDE_AC_LIBTOOL_WIN32_DLL],
 enable_win32_dll=yes, enable_win32_dll=no)
 
 AC_ARG_ENABLE(libtool-lock,
+  [  --disable-libtool-lock  avoid locking (might break parallel builds)])
+test "x$enable_libtool_lock" != xno && enable_libtool_lock=yes
+
+_LT_AC_LOCK
+_LT_AC_LTCONFIG_HACK
+_LT_AC_TAGCONFIG
+])# AC_LIBTOOL_SETUP
+
+
+# _LT_AC_SYS_COMPILER
+# -------------------
+AC_DEFUN([_LT_AC_SYS_COMPILER],
+[AC_REQUIRE([AC_PROG_CC])dnl
+
+# If no C compiler was specified, use CC.
+LTCC=${LTCC-"$CC"}
+
+# Allow CC to be a program name with arguments.
+set dummy $CC
+compiler="[$]2"
+])# _LT_AC_SYS_COMPILER
+
+
+# _LT_AC_LIBTOOL_SYS_PATH_SEPARATOR
+# ---------------------------------
+AC_DEFUN([_LT_AC_LIBTOOL_SYS_PATH_SEPARATOR],
+[# Find the correct PATH separator.  Usually this is `:', but
+# DJGPP uses `;' like DOS.
+if test "X${PATH_SEPARATOR+set}" != Xset; then
+  UNAME=${UNAME-`uname 2>/dev/null`}
+  case X$UNAME in
+    *-DOS) lt_cv_sys_path_separator=';' ;;
+    *)     lt_cv_sys_path_separator=':' ;;
+  esac
+fi
+])# _LT_AC_LIBTOOL_SYS_PATH_SEPARATOR
+
+
+# _LT_AC_PROG_ECHO_BACKSLASH
+# --------------------------
+# Add some code to the start of the generated configure script which
+# will find an echo command which doesn't interpret backslashes.
+AC_DEFUN([_LT_AC_PROG_ECHO_BACKSLASH],
+[ifdef([AC_DIVERSION_NOTICE], [AC_DIVERT_PUSH(AC_DIVERSION_NOTICE)],
+                              [AC_DIVERT_PUSH(NOTICE)])
+_LT_AC_LIBTOOL_SYS_PATH_SEPARATOR
+
+# Check that we are running under the correct shell.
+SHELL=${CONFIG_SHELL-/bin/sh}
+
+case X$ECHO in
+X*--fallback-echo)
+  # Remove one level of quotation (which was required for Make).
+  ECHO=`echo "$ECHO" | sed 's,\\\\\[$]\\[$]0,'[$]0','`
+  ;;
+esac
+
+echo=${ECHO-echo}
+if test "X[$]1" = X--no-reexec; then
+  # Discard the --no-reexec flag, and continue.
+  shift
+elif test "X[$]1" = X--fallback-echo; then
+  # Avoid inline document here, it may be left over
+  :
+elif test "X`($echo '\t') 2>/dev/null`" = 'X\t'; then
+  # Yippee, $echo works!
+  :
+else
+  # Restart under the correct shell.
+  exec $SHELL "[$]0" --no-reexec ${1+"[$]@"}
+fi
+
+if test "X[$]1" = X--fallback-echo; then
+  # used as fallback echo
+  shift
+  cat <<EOF
+[$]*
+EOF
+  exit 0
+fi
+
+# The HP-UX ksh and POSIX shell print the target directory to stdout
+# if CDPATH is set.
+if test "X${CDPATH+set}" = Xset; then CDPATH=:; export CDPATH; fi
+
+if test -z "$ECHO"; then
+if test "X${echo_test_string+set}" != Xset; then
+# find a string as large as possible, as long as the shell can cope with it
+  for cmd in 'sed 50q "[$]0"' 'sed 20q "[$]0"' 'sed 10q "[$]0"' 'sed 2q "[$]0"' 'echo test'; do
+    # expected sizes: less than 2Kb, 1Kb, 512 bytes, 16 bytes, ...
+    if (echo_test_string="`eval $cmd`") 2>/dev/null &&
+       echo_test_string="`eval $cmd`" &&
+       (test "X$echo_test_string" = "X$echo_test_string") 2>/dev/null
+    then
+      break
+    fi
+  done
+fi
+
+if test "X`($echo '\t') 2>/dev/null`" = 'X\t' &&
+   echo_testing_string=`($echo "$echo_test_string") 2>/dev/null` &&
+   test "X$echo_testing_string" = "X$echo_test_string"; then
+  :
+else
+  # The Solaris, AIX, and Digital Unix default echo programs unquote
+  # backslashes.  This makes it impossible to quote backslashes using
+  #   echo "$something" | sed 's/\\/\\\\/g'
+  #
+  # So, first we look for a working echo in the user's PATH.
+
+  IFS="${IFS= 	}"; save_ifs="$IFS"; IFS="${IFS}${PATH_SEPARATOR}"
+  for dir in $PATH /usr/ucb; do
+    if (test -f $dir/echo || test -f $dir/echo$ac_exeext) &&
+       test "X`($dir/echo '\t') 2>/dev/null`" = 'X\t' &&
+       echo_testing_string=`($dir/echo "$echo_test_string") 2>/dev/null` &&
+       test "X$echo_testing_string" = "X$echo_test_string"; then
+      echo="$dir/echo"
+      break
+    fi
+  done
+  IFS="$save_ifs"
+
+  if test "X$echo" = Xecho; then
+    # We didn't find a better echo, so look for alternatives.
+    if test "X`(print -r '\t') 2>/dev/null`" = 'X\t' &&
+       echo_testing_string=`(print -r "$echo_test_string") 2>/dev/null` &&
+       test "X$echo_testing_string" = "X$echo_test_string"; then
+      # This shell has a builtin print -r that does the trick.
+      echo='print -r'
+    elif (test -f /bin/ksh || test -f /bin/ksh$ac_exeext) &&
+	 test "X$CONFIG_SHELL" != X/bin/ksh; then
+      # If we have ksh, try running configure again with it.
+      ORIGINAL_CONFIG_SHELL=${CONFIG_SHELL-/bin/sh}
+      export ORIGINAL_CONFIG_SHELL
+      CONFIG_SHELL=/bin/ksh
+      export CONFIG_SHELL
+      exec $CONFIG_SHELL "[$]0" --no-reexec ${1+"[$]@"}
+    else
+      # Try using printf.
+      echo='printf %s\n'
+      if test "X`($echo '\t') 2>/dev/null`" = 'X\t' &&
+	 echo_testing_string=`($echo "$echo_test_string") 2>/dev/null` &&
+	 test "X$echo_testing_string" = "X$echo_test_string"; then
+	# Cool, printf works
+	:
+      elif echo_testing_string=`($ORIGINAL_CONFIG_SHELL "[$]0" --fallback-echo '\t') 2>/dev/null` &&
+	   test "X$echo_testing_string" = 'X\t' &&
+	   echo_testing_string=`($ORIGINAL_CONFIG_SHELL "[$]0" --fallback-echo "$echo_test_string") 2>/dev/null` &&
+	   test "X$echo_testing_string" = "X$echo_test_string"; then
+	CONFIG_SHELL=$ORIGINAL_CONFIG_SHELL
+	export CONFIG_SHELL
+	SHELL="$CONFIG_SHELL"
+	export SHELL
+	echo="$CONFIG_SHELL [$]0 --fallback-echo"
+      elif echo_testing_string=`($CONFIG_SHELL "[$]0" --fallback-echo '\t') 2>/dev/null` &&
+	   test "X$echo_testing_string" = 'X\t' &&
+	   echo_testing_string=`($CONFIG_SHELL "[$]0" --fallback-echo "$echo_test_string") 2>/dev/null` &&
+	   test "X$echo_testing_string" = "X$echo_test_string"; then
+	echo="$CONFIG_SHELL [$]0 --fallback-echo"
+      else
+	# maybe with a smaller string...
+	prev=:
+
+	for cmd in 'echo test' 'sed 2q "[$]0"' 'sed 10q "[$]0"' 'sed 20q "[$]0"' 'sed 50q "[$]0"'; do
+	  if (test "X$echo_test_string" = "X`eval $cmd`") 2>/dev/null
+	  then
+	    break
+	  fi
+	  prev="$cmd"
+	done
+
+	if test "$prev" != 'sed 50q "[$]0"'; then
+	  echo_test_string=`eval $prev`
+	  export echo_test_string
+	  exec ${ORIGINAL_CONFIG_SHELL-${CONFIG_SHELL-/bin/sh}} "[$]0" ${1+"[$]@"}
+	else
+	  # Oops.  We lost completely, so just stick with echo.
+	  echo=echo
+	fi
+      fi
+    fi
+  fi
+fi
+fi
+
+# Copy echo and quote the copy suitably for passing to libtool from
+# the Makefile, instead of quoting the original, which is used later.
+ECHO=$echo
+if test "X$ECHO" = "X$CONFIG_SHELL [$]0 --fallback-echo"; then
+   ECHO="$CONFIG_SHELL \\\$\[$]0 --fallback-echo"
+fi
+
+AC_SUBST(ECHO)
+AC_DIVERT_POP
+])# _LT_AC_PROG_ECHO_BACKSLASH
+
+
+# _LT_AC_LOCK
+# -----------
+AC_DEFUN([_LT_AC_LOCK],
+[AC_ARG_ENABLE(libtool-lock,
   [  --disable-libtool-lock  avoid locking (might break parallel builds)])
 test "x$enable_libtool_lock" != xno && enable_libtool_lock=yes
 
@@ -141,7 +424,6 @@ case $host in
     CFLAGS="$SAVE_CFLAGS"
   fi
   ;;
-
 ifdef([AC_PROVIDE_AC_LIBTOOL_WIN32_DLL],
 [*-*-cygwin* | *-*-mingw* | *-*-pw32*)
   AC_CHECK_TOOL(DLLTOOL, dlltool, false)
@@ -174,15 +456,68 @@ ifdef([AC_PROVIDE_AC_LIBTOOL_WIN32_DLL],
   ])
 esac
 
-_LT_AC_LTCONFIG_HACK
+need_locks="$enable_libtool_lock"
 
+])# _LT_AC_LOCK
+
+
+# AC_LIBTOOL_COMPILER_OPTION(MESSAGE, VARIABLE-NAME, FLAGS,
+#                            [ACTION-SUCCESS], [ACTION-FAILURE])
+# --------------------------------------------------------------
+# Check whether the given compiler option works
+AC_DEFUN(AC_LIBTOOL_COMPILER_OPTION,
+[AC_CACHE_CHECK([$1], [$2],
+  [$2=no
+  save_CFLAGS="$CFLAGS"
+  CFLAGS="$CFLAGS $3"
+  AC_TRY_COMPILE([], [$lt_simple_compile_test_code],
+    [# The compiler can only warn and ignore the option if not recognized
+     # So say no if there are warnings
+     if test -s conftest.err; then
+       $2=no
+     else
+       $2=yes
+     fi],
+    [$2=no])
+  CFLAGS="$save_CFLAGS"
 ])
 
-# _LT_AC_CHECK_DLFCN
-# --------------------
-AC_DEFUN(_LT_AC_CHECK_DLFCN,
-[AC_CHECK_HEADERS(dlfcn.h)
-])# _LT_AC_CHECK_DLFCN
+if test x"[$]$2" = xyes; then
+    ifelse([$4], , :, [$4])
+else
+    ifelse([$5], , :, [$5])
+fi
+])# AC_LIBTOOL_COMPILER_OPTION
+
+
+# AC_LIBTOOL_LINKER_OPTION(MESSAGE, VARIABLE-NAME, FLAGS,
+#                          [ACTION-SUCCESS], [ACTION-FAILURE])
+# ------------------------------------------------------------
+# Check whether the given compiler option works
+AC_DEFUN(AC_LIBTOOL_LINKER_OPTION,
+[AC_CACHE_CHECK([$1], [$2],
+  [$2=no
+  save_LDFLAGS="$LDFLAGS"
+  LDFLAGS="$LDFLAGS $3"
+  AC_TRY_LINK([], [$lt_simple_link_test_code],
+    [# The compiler can only warn and ignore the option if not recognized
+     # So say no if there are warnings
+     if test -s conftest.err; then
+       $2=no
+     else
+       $2=yes
+     fi],
+    [$2=no])
+  LDFLAGS="$save_LDFLAGS"
+])
+
+if test x"[$]$2" = xyes; then
+    ifelse([$4], , :, [$4])
+else
+    ifelse([$5], , :, [$5])
+fi
+])# AC_LIBTOOL_LINKER_OPTION
+
 
 # AC_LIBTOOL_SYS_MAX_CMD_LEN
 # --------------------------
@@ -220,6 +555,7 @@ else
 fi
 AC_MSG_RESULT($max_cmd_len)
 ])# AC_LIBTOOL_SYS_MAX_CMD_LEN
+
 
 # AC_LIBTOOL_SYS_GLOBAL_SYMBOL_PIPE
 # ---------------------------------
@@ -397,186 +733,22 @@ else
 fi
 ]) # AC_LIBTOOL_SYS_GLOBAL_SYMBOL_PIPE
 
-# _LT_AC_LIBTOOL_SYS_PATH_SEPARATOR
-# ---------------------------------
-AC_DEFUN([_LT_AC_LIBTOOL_SYS_PATH_SEPARATOR],
-[# Find the correct PATH separator.  Usually this is `:', but
-# DJGPP uses `;' like DOS.
-if test "X${PATH_SEPARATOR+set}" != Xset; then
-  UNAME=${UNAME-`uname 2>/dev/null`}
-  case X$UNAME in
-    *-DOS) lt_cv_sys_path_separator=';' ;;
-    *)     lt_cv_sys_path_separator=':' ;;
-  esac
-fi
-])# _LT_AC_LIBTOOL_SYS_PATH_SEPARATOR
 
-# _LT_AC_PROG_ECHO_BACKSLASH
-# --------------------------
-# Add some code to the start of the generated configure script which
-# will find an echo command which doesn't interpret backslashes.
-AC_DEFUN([_LT_AC_PROG_ECHO_BACKSLASH],
-[ifdef([AC_DIVERSION_NOTICE], [AC_DIVERT_PUSH(AC_DIVERSION_NOTICE)],
-                              [AC_DIVERT_PUSH(NOTICE)])
-_LT_AC_LIBTOOL_SYS_PATH_SEPARATOR
+# _LT_AC_CHECK_DLFCN
+# --------------------
+AC_DEFUN(_LT_AC_CHECK_DLFCN,
+[AC_CHECK_HEADERS(dlfcn.h)dnl
+])# _LT_AC_CHECK_DLFCN
 
-# Check that we are running under the correct shell.
-SHELL=${CONFIG_SHELL-/bin/sh}
-
-case X$ECHO in
-X*--fallback-echo)
-  # Remove one level of quotation (which was required for Make).
-  ECHO=`echo "$ECHO" | sed 's,\\\\\[$]\\[$]0,'[$]0','`
-  ;;
-esac
-
-echo=${ECHO-echo}
-if test "X[$]1" = X--no-reexec; then
-  # Discard the --no-reexec flag, and continue.
-  shift
-elif test "X[$]1" = X--fallback-echo; then
-  # Avoid inline document here, it may be left over
-  :
-elif test "X`($echo '\t') 2>/dev/null`" = 'X\t'; then
-  # Yippee, $echo works!
-  :
-else
-  # Restart under the correct shell.
-  exec $SHELL "[$]0" --no-reexec ${1+"[$]@"}
-fi
-
-if test "X[$]1" = X--fallback-echo; then
-  # used as fallback echo
-  shift
-  cat <<EOF
-[$]*
-EOF
-  exit 0
-fi
-
-# The HP-UX ksh and POSIX shell print the target directory to stdout
-# if CDPATH is set.
-if test "X${CDPATH+set}" = Xset; then CDPATH=:; export CDPATH; fi
-
-if test -z "$ECHO"; then
-if test "X${echo_test_string+set}" != Xset; then
-# find a string as large as possible, as long as the shell can cope with it
-  for cmd in 'sed 50q "[$]0"' 'sed 20q "[$]0"' 'sed 10q "[$]0"' 'sed 2q "[$]0"' 'echo test'; do
-    # expected sizes: less than 2Kb, 1Kb, 512 bytes, 16 bytes, ...
-    if (echo_test_string="`eval $cmd`") 2>/dev/null &&
-       echo_test_string="`eval $cmd`" &&
-       (test "X$echo_test_string" = "X$echo_test_string") 2>/dev/null
-    then
-      break
-    fi
-  done
-fi
-
-if test "X`($echo '\t') 2>/dev/null`" = 'X\t' &&
-   echo_testing_string=`($echo "$echo_test_string") 2>/dev/null` &&
-   test "X$echo_testing_string" = "X$echo_test_string"; then
-  :
-else
-  # The Solaris, AIX, and Digital Unix default echo programs unquote
-  # backslashes.  This makes it impossible to quote backslashes using
-  #   echo "$something" | sed 's/\\/\\\\/g'
-  #
-  # So, first we look for a working echo in the user's PATH.
-
-  IFS="${IFS= 	}"; save_ifs="$IFS"; IFS="${IFS}${PATH_SEPARATOR}"
-  for dir in $PATH /usr/ucb; do
-    if (test -f $dir/echo || test -f $dir/echo$ac_exeext) &&
-       test "X`($dir/echo '\t') 2>/dev/null`" = 'X\t' &&
-       echo_testing_string=`($dir/echo "$echo_test_string") 2>/dev/null` &&
-       test "X$echo_testing_string" = "X$echo_test_string"; then
-      echo="$dir/echo"
-      break
-    fi
-  done
-  IFS="$save_ifs"
-
-  if test "X$echo" = Xecho; then
-    # We didn't find a better echo, so look for alternatives.
-    if test "X`(print -r '\t') 2>/dev/null`" = 'X\t' &&
-       echo_testing_string=`(print -r "$echo_test_string") 2>/dev/null` &&
-       test "X$echo_testing_string" = "X$echo_test_string"; then
-      # This shell has a builtin print -r that does the trick.
-      echo='print -r'
-    elif (test -f /bin/ksh || test -f /bin/ksh$ac_exeext) &&
-	 test "X$CONFIG_SHELL" != X/bin/ksh; then
-      # If we have ksh, try running configure again with it.
-      ORIGINAL_CONFIG_SHELL=${CONFIG_SHELL-/bin/sh}
-      export ORIGINAL_CONFIG_SHELL
-      CONFIG_SHELL=/bin/ksh
-      export CONFIG_SHELL
-      exec $CONFIG_SHELL "[$]0" --no-reexec ${1+"[$]@"}
-    else
-      # Try using printf.
-      echo='printf %s\n'
-      if test "X`($echo '\t') 2>/dev/null`" = 'X\t' &&
-	 echo_testing_string=`($echo "$echo_test_string") 2>/dev/null` &&
-	 test "X$echo_testing_string" = "X$echo_test_string"; then
-	# Cool, printf works
-	:
-      elif echo_testing_string=`($ORIGINAL_CONFIG_SHELL "[$]0" --fallback-echo '\t') 2>/dev/null` &&
-	   test "X$echo_testing_string" = 'X\t' &&
-	   echo_testing_string=`($ORIGINAL_CONFIG_SHELL "[$]0" --fallback-echo "$echo_test_string") 2>/dev/null` &&
-	   test "X$echo_testing_string" = "X$echo_test_string"; then
-	CONFIG_SHELL=$ORIGINAL_CONFIG_SHELL
-	export CONFIG_SHELL
-	SHELL="$CONFIG_SHELL"
-	export SHELL
-	echo="$CONFIG_SHELL [$]0 --fallback-echo"
-      elif echo_testing_string=`($CONFIG_SHELL "[$]0" --fallback-echo '\t') 2>/dev/null` &&
-	   test "X$echo_testing_string" = 'X\t' &&
-	   echo_testing_string=`($CONFIG_SHELL "[$]0" --fallback-echo "$echo_test_string") 2>/dev/null` &&
-	   test "X$echo_testing_string" = "X$echo_test_string"; then
-	echo="$CONFIG_SHELL [$]0 --fallback-echo"
-      else
-	# maybe with a smaller string...
-	prev=:
-
-	for cmd in 'echo test' 'sed 2q "[$]0"' 'sed 10q "[$]0"' 'sed 20q "[$]0"' 'sed 50q "[$]0"'; do
-	  if (test "X$echo_test_string" = "X`eval $cmd`") 2>/dev/null
-	  then
-	    break
-	  fi
-	  prev="$cmd"
-	done
-
-	if test "$prev" != 'sed 50q "[$]0"'; then
-	  echo_test_string=`eval $prev`
-	  export echo_test_string
-	  exec ${ORIGINAL_CONFIG_SHELL-${CONFIG_SHELL-/bin/sh}} "[$]0" ${1+"[$]@"}
-	else
-	  # Oops.  We lost completely, so just stick with echo.
-	  echo=echo
-	fi
-      fi
-    fi
-  fi
-fi
-fi
-
-# Copy echo and quote the copy suitably for passing to libtool from
-# the Makefile, instead of quoting the original, which is used later.
-ECHO=$echo
-if test "X$ECHO" = "X$CONFIG_SHELL [$]0 --fallback-echo"; then
-   ECHO="$CONFIG_SHELL \\\$\[$]0 --fallback-echo"
-fi
-
-AC_SUBST(ECHO)
-AC_DIVERT_POP
-])# _LT_AC_PROG_ECHO_BACKSLASH
 
 # _LT_AC_TRY_DLOPEN_SELF (ACTION-IF-TRUE, ACTION-IF-TRUE-W-USCORE,
 #                           ACTION-IF-FALSE, ACTION-IF-CROSS-COMPILING)
 # ------------------------------------------------------------------
 AC_DEFUN(_LT_AC_TRY_DLOPEN_SELF,
-[if test "$cross_compiling" = yes; then :
+[AC_REQUIRE([_LT_AC_CHECK_DLFCN])dnl
+if test "$cross_compiling" = yes; then :
   [$4]
 else
-  AC_REQUIRE([_LT_AC_CHECK_DLFCN])dnl
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
@@ -657,10 +829,12 @@ fi
 rm -fr conftest*
 ])# _LT_AC_TRY_DLOPEN_SELF
 
+
 # AC_LIBTOOL_DLOPEN_SELF
 # -------------------
 AC_DEFUN(AC_LIBTOOL_DLOPEN_SELF,
-[if test "x$enable_dlopen" != xyes; then
+[AC_REQUIRE([_LT_AC_CHECK_DLFCN])dnl
+if test "x$enable_dlopen" != xyes; then
   enable_dlopen=unknown
   enable_dlopen_self=unknown
   enable_dlopen_self_static=unknown
@@ -704,7 +878,6 @@ else
   case $lt_cv_dlopen in
   dlopen)
     save_CPPFLAGS="$CPPFLAGS"
-    AC_REQUIRE([_LT_AC_CHECK_DLFCN])dnl
     test "x$ac_cv_header_dlfcn_h" = xyes && CPPFLAGS="$CPPFLAGS -DHAVE_DLFCN_H"
 
     save_LDFLAGS="$LDFLAGS"
@@ -748,129 +921,87 @@ else
 fi
 ])# AC_LIBTOOL_DLOPEN_SELF
 
-AC_DEFUN([_LT_AC_TAGCONFIG],
-[tagname=
 
-## Dependencies to place before and after the object being linked:
-predep_objects=
-postdep_objects=
-predeps=
-postdeps=
-compiler_lib_search_path=
-])# _LT_AC_TAGCONFIG
+# AC_LIBTOOL_PROG_CC_C_O
+# ----------------------
+AC_DEFUN([AC_LIBTOOL_PROG_CC_C_O],
+[AC_REQUIRE([_LT_AC_SYS_COMPILER])dnl
 
-AC_DEFUN([_LT_AC_LTCONFIG_HACK],
-[AC_REQUIRE([AC_LIBTOOL_SYS_MAX_CMD_LEN])dnl
-AC_REQUIRE([AC_LIBTOOL_SYS_GLOBAL_SYMBOL_PIPE])dnl
-
-# Sed substitution that helps us do robust quoting.  It backslashifies
-# metacharacters that are still active within double-quoted strings.
-Xsed='sed -e s/^X//'
-[sed_quote_subst='s/\([\\"\\`$\\\\]\)/\\\1/g']
-
-# Same as above, but do not quote variable references.
-[double_quote_subst='s/\([\\"\\`\\\\]\)/\\\1/g']
-
-# Sed substitution to delay expansion of an escaped shell variable in a
-# double_quote_subst'ed string.
-delay_variable_subst='s/\\\\\\\\\\\$/\\\\\\$/g'
-
-# Constants:
-rm="rm -f"
-
-# Global variables:
-default_ofile=libtool
-can_build_shared=yes
-
-# All known linkers require a `.a' archive for static linking (except M$VC,
-# which needs '.lib').
-libext=a
-ltmain="$ac_aux_dir/ltmain.sh"
-ofile="$default_ofile"
-with_gnu_ld="$lt_cv_prog_gnu_ld"
-need_locks="$enable_libtool_lock"
-
-old_CC="$CC"
-old_CFLAGS="$CFLAGS"
-
-# Set sane defaults for various variables
-test -z "$AR" && AR=ar
-test -z "$AR_FLAGS" && AR_FLAGS=cru
-test -z "$AS" && AS=as
-test -z "$CC" && CC=cc
-test -z "$LTCC" && LTCC=$CC
-test -z "$DLLTOOL" && DLLTOOL=dlltool
-test -z "$LD" && LD=ld
-test -z "$LN_S" && LN_S="ln -s"
-test -z "$MAGIC_CMD" && MAGIC_CMD=file
-test -z "$NM" && NM=nm
-test -z "$OBJDUMP" && OBJDUMP=objdump
-test -z "$RANLIB" && RANLIB=:
-test -z "$STRIP" && STRIP=:
-test -z "$ac_objext" && ac_objext=o
-
-if test x"$host" != x"$build"; then
-  ac_tool_prefix=${host_alias}-
-else
-  ac_tool_prefix=
-fi
-
-# Transform linux* to *-*-linux-gnu*, to support old configure scripts.
-case $host_os in
-linux-gnu*) ;;
-linux*) host=`echo $host | sed 's/^\(.*-.*-linux\)\(.*\)$/\1-gnu\2/'`
-esac
-
-case $host_os in
-aix3*)
-  # AIX sometimes has problems with the GCC collect2 program.  For some
-  # reason, if we set the COLLECT_NAMES environment variable, the problems
-  # vanish in a puff of smoke.
-  if test "X${COLLECT_NAMES+set}" != Xset; then
-    COLLECT_NAMES=
-    export COLLECT_NAMES
+# Check to see if options -c and -o are simultaneously supported by compiler
+AC_MSG_CHECKING([if $compiler supports -c -o file.$ac_objext])
+AC_CACHE_VAL([lt_cv_compiler_c_o], [
+$rm -r conftest 2>/dev/null
+mkdir conftest
+cd conftest
+echo "$lt_simple_compile_test_code" > conftest.$ac_ext
+mkdir out
+# According to Tom Tromey, Ian Lance Taylor reported there are C compilers
+# that will create temporary files in the current directory regardless of
+# the output directory.  Thus, making CWD read-only will cause this test
+# to fail, enabling locking or at least warning the user not to do parallel
+# builds.
+chmod -w .
+save_CFLAGS="$CFLAGS"
+CFLAGS="$CFLAGS -o out/conftest2.$ac_objext"
+compiler_c_o=no
+if { (eval echo configure:__oline__: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>out/conftest.err; } && test -s out/conftest2.$ac_objext; then
+  # The compiler can only warn and ignore the option if not recognized
+  # So say no if there are warnings
+  if test -s out/conftest.err; then
+    lt_cv_compiler_c_o=no
+  else
+    lt_cv_compiler_c_o=yes
   fi
-  ;;
-esac
-
-# Determine commands to create old-style static archives.
-old_archive_cmds='$AR $AR_FLAGS $oldlib$oldobjs$old_deplibs'
-old_postinstall_cmds='chmod 644 $oldlib'
-old_postuninstall_cmds=
-
-if test -n "$RANLIB"; then
-  old_archive_cmds="$old_archive_cmds~\$RANLIB \$oldlib"
-  old_postinstall_cmds="\$RANLIB \$oldlib~$old_postinstall_cmds"
-fi
-
-# If no C compiler was specified, use CC.
-LTCC=${LTCC-"$CC"}
-
-# Allow CC to be a program name with arguments.
-set dummy $CC
-compiler="[$]2"
-
-## FIXME: this should be a separate macro
-##
-AC_MSG_CHECKING([for objdir])
-rm -f .libs 2>/dev/null
-mkdir .libs 2>/dev/null
-if test -d .libs; then
-  objdir=.libs
 else
-  # MS-DOS does not allow filenames that begin with a dot.
-  objdir=_libs
+  # Append any errors to the config.log.
+  cat out/conftest.err 1>&AC_FD_CC
+  lt_cv_compiler_c_o=no
 fi
-rmdir .libs 2>/dev/null
-AC_MSG_RESULT($objdir)
-##
-## END FIXME
+CFLAGS="$save_CFLAGS"
+chmod u+w .
+$rm conftest* out/*
+rmdir out
+cd ..
+rmdir conftest
+$rm -r conftest 2>/dev/null
+])
+compiler_c_o=$lt_cv_compiler_c_o
+AC_MSG_RESULT([$compiler_c_o])
+
+if test x"$compiler_c_o" = x"yes"; then
+  # Check to see if we can write to a .lo
+  AC_LIBTOOL_COMPILER_OPTION([if $compiler supports -c -o file.lo],
+    lt_cv_prog_cc_c_o_lo, [-c -o conftest.lo])
+  compiler_o_lo=$lt_cv_prog_cc_c_o_lo
+else
+  compiler_o_lo=no
+fi
+])# AC_LIBTOOL_PROG_CC_C_O
 
 
-## FIXME: this should be a separate macro
-##
+# AC_LIBTOOL_PROG_CC_NO_RTTI
+# --------------------------
+AC_DEFUN([AC_LIBTOOL_PROG_CC_NO_RTTI],
+[AC_REQUIRE([_LT_AC_SYS_COMPILER])dnl
+
+if test "$GCC" = yes; then
+  AC_LIBTOOL_COMPILER_OPTION([if $compiler supports -fno-rtti -fno-exceptions],
+    lt_cv_prog_cc_rtti_exceptions,
+    [-fno-rtti -fno-exceptions -c conftest.$ac_ext],
+    [no_builtin_flag=' -fno-builtin -fno-rtti -fno-exceptions'],
+    [no_builtin_flag=' -fno-builtin'])
+  compiler_rtti_exceptions=$lt_cv_prog_cc_rtti_exceptions
+fi
+])# AC_LIBTOOL_PROG_CC_NO_RTTI
+
+
+# AC_LIBTOOL_PROG_CC_PIC
+# ----------------------
+AC_DEFUN([AC_LIBTOOL_PROG_CC_PIC],
+[AC_REQUIRE([_LT_AC_SYS_COMPILER])dnl
+
 AC_ARG_WITH(pic, 
-[  --with-pic              try to use only PIC/non-PIC objects [default=use both]],
+  [  --with-pic              try to use only PIC/non-PIC objects [default=use both]],
 pic_mode="$withval", pic_mode=default)
 test -z "$pic_mode" && pic_mode=default
 
@@ -892,13 +1023,13 @@ AC_CACHE_VAL(lt_cv_prog_cc_pic,
 
     case $host_os in
     aix*)
-      # Below there is a dirty hack to force normal static linking with -ldl
-      # The problem is because libdl dynamically linked with both libc and
-      # libC (AIX C++ library), which obviously doesn't included in libraries
-      # list by gcc. This cause undefined symbols with -static flags.
-      # This hack allows C programs to be linked with "-static -ldl", but
-      # we not sure about C++ programs.
-      lt_cv_prog_cc_static="$lt_cv_prog_cc_static ${lt_cv_prog_cc_wl}-lC"
+      # All AIX code is PIC.
+      if test "$host_cpu" = ia64; then
+        # AIX 5 now supports IA64 processor
+        lt_cv_prog_cc_static='-Bstatic'
+      else
+        lt_cv_prog_cc_static='-bnso -bI:/lib/syscalls.exp'
+      fi
       ;;
     amigaos*)
       # FIXME: we need at least 68020 code to build shared libraries, but
@@ -909,15 +1040,19 @@ AC_CACHE_VAL(lt_cv_prog_cc_pic,
     beos* | irix5* | irix6* | osf3* | osf4* | osf5*)
       # PIC is the default for these OSes.
       ;;
+    cygwin* | mingw* | pw32* | os2*)
+      # This hack is so that the source file can tell whether it is being
+      # built for inclusion in a dll (and should export symbols for example).
+      lt_cv_prog_cc_pic='-DDLL_EXPORT'
+      ;;
     darwin* | rhapsody*)
       # PIC is the default on this platform
       # Common symbols not allowed in MH_DYLIB files
       lt_cv_prog_cc_pic='-fno-common'
       ;;
-    cygwin* | mingw* | pw32* | os2*)
-      # This hack is so that the source file can tell whether it is being
-      # built for inclusion in a dll (and should export symbols for example).
-      lt_cv_prog_cc_pic='-DDLL_EXPORT'
+    *djgpp*)
+      # DJGPP does not support shared libraries at all
+      ac_cv_prog_cc_pic=
       ;;
     sysv4*MP*)
       if test -d /usr/nec; then
@@ -931,7 +1066,7 @@ AC_CACHE_VAL(lt_cv_prog_cc_pic,
   else
     # PORTME Check for PIC flags for the system compiler.
     case $host_os in
-    aix3* | aix4* | aix5*)
+    aix*)
       # All AIX code is PIC.
       if test "$host_cpu" = ia64; then
         # AIX 5 now supports IA64 processor
@@ -940,6 +1075,12 @@ AC_CACHE_VAL(lt_cv_prog_cc_pic,
       else
         lt_cv_prog_cc_static='-bnso -bI:/lib/syscalls.exp'
       fi
+      ;;
+
+    cygwin* | mingw* | pw32* | os2*)
+      # This hack is so that the source file can tell whether it is being
+      # built for inclusion in a dll (and should export symbols for example).
+      lt_cv_prog_cc_pic='-DDLL_EXPORT'
       ;;
 
     hpux9* | hpux10* | hpux11*)
@@ -953,12 +1094,6 @@ AC_CACHE_VAL(lt_cv_prog_cc_pic,
       lt_cv_prog_cc_wl='-Wl,'
       lt_cv_prog_cc_static='-non_shared'
       # PIC (with -KPIC) is the default.
-      ;;
-
-    cygwin* | mingw* | pw32* | os2*)
-      # This hack is so that the source file can tell whether it is being
-      # built for inclusion in a dll (and should export symbols for example).
-      lt_cv_prog_cc_pic='-DDLL_EXPORT'
       ;;
 
     newsos6)
@@ -1017,48 +1152,140 @@ AC_CACHE_VAL(lt_cv_prog_cc_pic,
       ;;
     esac
   fi
+  case "$host_os" in
+      # For platforms which do not support PIC, -DPIC is meaningless:
+      *djgpp*)
+        ac_cv_prog_cc_pic=
+        ;;
+      *)
+        ac_cv_prog_cc_pic="$ac_cv_prog_cc_pic -DPIC"
+        ;;
+  esac
 ])
 if test -z "$lt_cv_prog_cc_pic"; then
   AC_MSG_RESULT([none])
 else
   AC_MSG_RESULT([$lt_cv_prog_cc_pic])
+fi
+])# AC_LIBTOOL_PROG_CC_PIC
 
+
+# AC_LIBTOOL_PROG_CC_PIC_WORKS
+# ----------------------------
+AC_DEFUN([AC_LIBTOOL_PROG_CC_PIC_WORKS],
+[AC_REQUIRE([AC_LIBTOOL_PROG_CC_PIC])
+
+if test -n "$lt_cv_prog_cc_pic"; then
   # Check to make sure the pic_flag actually works.
-  AC_MSG_CHECKING([if $compiler PIC flag $lt_cv_prog_cc_pic works])
-  AC_CACHE_VAL(lt_cv_prog_cc_pic_works, [dnl
-    save_CFLAGS="$CFLAGS"
-    CFLAGS="$CFLAGS $lt_cv_prog_cc_pic -DPIC"
-    AC_TRY_COMPILE([], [], [dnl
-      case $host_os in
-      hpux9* | hpux10* | hpux11*)
-	# On HP-UX, both CC and GCC only warn that PIC is supported... then
-	# they create non-PIC objects.  So, if there were any warnings, we
-	# assume that PIC is not supported.
-	if test -s conftest.err; then
-	  lt_cv_prog_cc_pic_works=no
-	else
-	  lt_cv_prog_cc_pic_works=yes
-	fi
-	;;
-      *)
-	lt_cv_prog_cc_pic_works=yes
-	;;
-      esac
-    ], [dnl
-      lt_cv_prog_cc_pic_works=no
-    ])
-    CFLAGS="$save_CFLAGS"
-  ])
+  AC_LIBTOOL_COMPILER_OPTION([if $compiler PIC flag $lt_cv_prog_cc_pic works],
+    lt_cv_prog_cc_pic_works, [$lt_cv_prog_cc_pic -DPIC],
+    [lt_cv_prog_cc_pic=" $lt_cv_prog_cc_pic"],
+    [lt_cv_prog_cc_pic=
+    lt_cv_prog_cc_can_build_shared=no])
+fi
+])# AC_LIBTOOL_PROG_CC_PIC_WORKS
 
-  if test "X$lt_cv_prog_cc_pic_works" = Xno; then
-    lt_cv_prog_cc_pic=
-    lt_cv_prog_cc_can_build_shared=no
-  else
-    lt_cv_prog_cc_pic=" $lt_cv_prog_cc_pic"
+
+# AC_LIBTOOL_PROG_CC_STATIC
+# -------------------------
+AC_DEFUN([AC_LIBTOOL_PROG_CC_STATIC],
+[## FIXME: lt_cv_prog_cc_static is set from here at the moment:
+AC_REQUIRE([AC_LIBTOOL_PROG_CC_PIC])
+
+compiler_static="$lt_cv_prog_cc_static"
+AC_LIBTOOL_LINKER_OPTION([if $compiler static flag $compiler_static works],
+  lt_cv_prog_cc_static_works, $compiler_static,
+  [],
+  lt_cv_prog_cc_static=)
+link_static_flag="$lt_cv_prog_cc_static"
+])# AC_LIBTOOL_PROG_CC_STATIC
+
+
+# _LT_AC_TAGCONFIG
+# ----------------
+AC_DEFUN([_LT_AC_TAGCONFIG],
+[AC_ARG_WITH(tag, 
+  [  --with-tags=TAG[:TAG]   include an alternate configuration],
+  tagnames="$withval", tagnames=)
+
+## Dependencies to place before and after the object being linked:
+predep_objects=
+postdep_objects=
+predeps=
+postdeps=
+compiler_lib_search_path=
+
+if test -n "$tagnames"; then
+  IFS="${IFS= 	}"; ac_save_ifs="$IFS"; IFS="${IFS}:,"
+  for tagname in $tagnames; do
+    # Check whether tagname contains only valid characters
+    [case `$echo "X$tagname" | $Xsed -e 's/[-_ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890,/]//g'` in]
+    "") ;;
+    *)  AC_MSG_ERROR([invalid tag name: $tagname])
+        ;;
+    esac
+
+    if grep "^# ### BEGIN LIBTOOL TAG CONFIG: $tagname$" < "$ofile" > /dev/null; then
+      AC_MSG_ERROR([tag name $tagname already exists])
+    fi
+  done
+
+  if test ! -f "$ofile"; then
+    AC_MSG_WARN([output file \`$ofile' does not exist])
   fi
 
-  AC_MSG_RESULT([$lt_cv_prog_cc_pic_works])
+  if test -z "$LTCC"; then
+    eval "`$SHELL $ofile --config | grep '^LTCC='`"
+    if test -z "$LTCC"; then
+      AC_MSG_WARN([output file \`$ofile' does not look like a libtool script])
+    else
+      AC_MSG_WARN([using \`LTCC=$LTCC', extracted from \`$ofile'])
+    fi
+  fi
 fi
+])# _LT_AC_TAGCONFIG
+
+
+# _LT_AC_SYS_C_CONFIG
+# -------------------
+AC_DEFUN([_LT_AC_SYS_C_CONFIG],
+[# Source file extension for C test sources.
+ac_ext=c
+
+# Object file extension for compiled C test sources.
+objext=o
+
+# Code to be used in simple compile tests
+lt_simple_compile_test_code="int some_variable = 0;"
+
+# Code to be used in simple link tests
+lt_simple_link_test_code='main(){return(0);}'
+])# _LT_AC_SYS_C_CONFIG
+
+
+# _LT_AC_LTCONFIG_HACK
+# --------------------
+AC_DEFUN([_LT_AC_LTCONFIG_HACK],
+[AC_REQUIRE([AC_LIBTOOL_SYS_MAX_CMD_LEN])dnl
+AC_REQUIRE([AC_LIBTOOL_SYS_GLOBAL_SYMBOL_PIPE])dnl
+AC_LIBTOOL_PROG_CC_PIC_WORKS
+AC_LIBTOOL_PROG_CC_NO_RTTI
+AC_LIBTOOL_PROG_CC_C_O
+AC_LIBTOOL_PROG_CC_STATIC
+
+## FIXME: this should be a separate macro
+##
+AC_MSG_CHECKING([for objdir])
+rm -f .libs 2>/dev/null
+mkdir .libs 2>/dev/null
+if test -d .libs; then
+  objdir=.libs
+else
+  # MS-DOS does not allow filenames that begin with a dot.
+  objdir=_libs
+fi
+rmdir .libs 2>/dev/null
+AC_MSG_RESULT($objdir)
 ##
 ## END FIXME
 
@@ -1072,99 +1299,12 @@ if test -n "$lt_cv_prog_cc_shlib"; then
   fi
 fi
 
-## FIXME: this should be a separate macro
-##
-AC_MSG_CHECKING([if $compiler static flag $lt_cv_prog_cc_static works])
-AC_CACHE_VAL([lt_cv_prog_cc_static_works], [dnl
-  lt_cv_prog_cc_static_works=no
-  save_LDFLAGS="$LDFLAGS"
-  LDFLAGS="$LDFLAGS $lt_cv_prog_cc_static"
-  AC_TRY_LINK([], [], [lt_cv_prog_cc_static_works=yes])
-  LDFLAGS="$save_LDFLAGS"
-])
-
-# Belt *and* braces to stop my trousers falling down:
-test "X$lt_cv_prog_cc_static_works" = Xno && lt_cv_prog_cc_static=
-AC_MSG_RESULT([$lt_cv_prog_cc_static_works])
-
 pic_flag="$lt_cv_prog_cc_pic"
 special_shlib_compile_flags="$lt_cv_prog_cc_shlib"
 wl="$lt_cv_prog_cc_wl"
-link_static_flag="$lt_cv_prog_cc_static"
 no_builtin_flag="$lt_cv_prog_cc_no_builtin"
 can_build_shared="$lt_cv_prog_cc_can_build_shared"
-##
-## END FIXME
 
-
-## FIXME: this should be a separate macro
-##
-# Check to see if options -o and -c are simultaneously supported by compiler
-AC_MSG_CHECKING([if $compiler supports -c -o file.$ac_objext])
-AC_CACHE_VAL([lt_cv_compiler_c_o], [
-$rm -r conftest 2>/dev/null
-mkdir conftest
-cd conftest
-echo "int some_variable = 0;" > conftest.$ac_ext
-mkdir out
-# According to Tom Tromey, Ian Lance Taylor reported there are C compilers
-# that will create temporary files in the current directory regardless of
-# the output directory.  Thus, making CWD read-only will cause this test
-# to fail, enabling locking or at least warning the user not to do parallel
-# builds.
-chmod -w .
-save_CFLAGS="$CFLAGS"
-CFLAGS="$CFLAGS -o out/conftest2.$ac_objext"
-compiler_c_o=no
-if { (eval echo configure:__oline__: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>out/conftest.err; } && test -s out/conftest2.$ac_objext; then
-  # The compiler can only warn and ignore the option if not recognized
-  # So say no if there are warnings
-  if test -s out/conftest.err; then
-    lt_cv_compiler_c_o=no
-  else
-    lt_cv_compiler_c_o=yes
-  fi
-else
-  # Append any errors to the config.log.
-  cat out/conftest.err 1>&AC_FD_CC
-  lt_cv_compiler_c_o=no
-fi
-CFLAGS="$save_CFLAGS"
-chmod u+w .
-$rm conftest* out/*
-rmdir out
-cd ..
-rmdir conftest
-$rm -r conftest 2>/dev/null
-])
-compiler_c_o=$lt_cv_compiler_c_o
-AC_MSG_RESULT([$compiler_c_o])
-
-if test x"$compiler_c_o" = x"yes"; then
-  # Check to see if we can write to a .lo
-  AC_MSG_CHECKING([if $compiler supports -c -o file.lo])
-  AC_CACHE_VAL([lt_cv_compiler_o_lo], [
-  lt_cv_compiler_o_lo=no
-  save_CFLAGS="$CFLAGS"
-  CFLAGS="$CFLAGS -c -o conftest.lo"
-  AC_TRY_COMPILE([], [int some_variable = 0;], [dnl
-    # The compiler can only warn and ignore the option if not recognized
-    # So say no if there are warnings
-    if test -s conftest.err; then
-      lt_cv_compiler_o_lo=no
-    else
-      lt_cv_compiler_o_lo=yes
-    fi
-  ])
-  CFLAGS="$save_CFLAGS"
-  ])
-  compiler_o_lo=$lt_cv_compiler_o_lo
-  AC_MSG_RESULT([$compiler_c_lo])
-else
-  compiler_o_lo=no
-fi
-##
-## END FIXME
 
 ## FIXME: this should be a separate macro
 ##
@@ -1190,35 +1330,6 @@ fi
 ##
 ## END FIXME
 
-## FIXME: this should be a separate macro
-##
-if test "$GCC" = yes; then
-  # Check to see if options -fno-rtti -fno-exceptions are supported by compiler
-  AC_MSG_CHECKING([if $compiler supports -fno-rtti -fno-exceptions])
-  echo "int some_variable = 0;" > conftest.$ac_ext
-  save_CFLAGS="$CFLAGS"
-  CFLAGS="$CFLAGS -fno-rtti -fno-exceptions -c conftest.$ac_ext"
-  compiler_rtti_exceptions=no
-  AC_TRY_COMPILE([], [int some_variable = 0;], [dnl
-    # The compiler can only warn and ignore the option if not recognized
-    # So say no if there are warnings
-    if test -s conftest.err; then
-      compiler_rtti_exceptions=no
-    else
-      compiler_rtti_exceptions=yes
-    fi
-  ])
-  CFLAGS="$save_CFLAGS"
-  AC_MSG_RESULT([$compiler_rtti_exceptions])
-
-  if test "$compiler_rtti_exceptions" = "yes"; then
-    no_builtin_flag=' -fno-builtin -fno-rtti -fno-exceptions'
-  else
-    no_builtin_flag=' -fno-builtin'
-  fi
-fi
-##
-## END FIXME
 
 ## FIXME: this should be a separate macro
 ##
@@ -2905,16 +3016,27 @@ fi
 
 ])# _LT_AC_LTCONFIG_HACK
 
-# AC_LIBTOOL_DLOPEN - enable checks for dlopen support
-AC_DEFUN([AC_LIBTOOL_DLOPEN], [AC_BEFORE([$0],[AC_LIBTOOL_SETUP])])
 
-# AC_LIBTOOL_WIN32_DLL - declare package support for building win32 dll's
-AC_DEFUN([AC_LIBTOOL_WIN32_DLL], [AC_BEFORE([$0], [AC_LIBTOOL_SETUP])])
+# AC_LIBTOOL_DLOPEN
+# -----------------
+# enable checks for dlopen support
+AC_DEFUN([AC_LIBTOOL_DLOPEN],
+ [AC_BEFORE([$0],[AC_LIBTOOL_SETUP])
+])# AC_LIBTOOL_DLOPEN
 
-# AC_ENABLE_SHARED - implement the --enable-shared flag
-# Usage: AC_ENABLE_SHARED[(DEFAULT)]
-#   Where DEFAULT is either `yes' or `no'.  If omitted, it defaults to
-#   `yes'.
+
+# AC_LIBTOOL_WIN32_DLL
+# --------------------
+# declare package support for building win32 dll's
+AC_DEFUN([AC_LIBTOOL_WIN32_DLL],
+[AC_BEFORE([$0], [AC_LIBTOOL_SETUP])
+])# AC_LIBTOOL_WIN32_DLL
+
+
+# AC_ENABLE_SHARED([DEFAULT])
+# ---------------------------
+# implement the --enable-shared flag
+# DEFAULT is either `yes' or `no'.  If omitted, it defaults to `yes'.
 AC_DEFUN([AC_ENABLE_SHARED],
 [define([AC_ENABLE_SHARED_DEFAULT], ifelse($1, no, no, yes))dnl
 AC_ARG_ENABLE(shared,
@@ -2938,17 +3060,22 @@ no) enable_shared=no ;;
   ;;
 esac],
 enable_shared=AC_ENABLE_SHARED_DEFAULT)dnl
-])
+])# AC_ENABLE_SHARED
 
-# AC_DISABLE_SHARED - set the default shared flag to --disable-shared
+
+# AC_DISABLE_SHARED
+# -----------------
+#- set the default shared flag to --disable-shared
 AC_DEFUN([AC_DISABLE_SHARED],
 [AC_BEFORE([$0],[AC_LIBTOOL_SETUP])dnl
-AC_ENABLE_SHARED(no)])
+AC_ENABLE_SHARED(no)
+])# AC_DISABLE_SHARED
 
-# AC_ENABLE_STATIC - implement the --enable-static flag
-# Usage: AC_ENABLE_STATIC[(DEFAULT)]
-#   Where DEFAULT is either `yes' or `no'.  If omitted, it defaults to
-#   `yes'.
+
+# AC_ENABLE_STATIC([DEFAULT])
+# ---------------------------
+# implement the --enable-static flag
+# DEFAULT is either `yes' or `no'.  If omitted, it defaults to `yes'.
 AC_DEFUN([AC_ENABLE_STATIC],
 [define([AC_ENABLE_STATIC_DEFAULT], ifelse($1, no, no, yes))dnl
 AC_ARG_ENABLE(static,
@@ -2972,18 +3099,22 @@ no) enable_static=no ;;
   ;;
 esac],
 enable_static=AC_ENABLE_STATIC_DEFAULT)dnl
-])
+])# AC_ENABLE_STATIC
 
-# AC_DISABLE_STATIC - set the default static flag to --disable-static
+
+# AC_DISABLE_STATIC
+# -----------------
+# set the default static flag to --disable-static
 AC_DEFUN([AC_DISABLE_STATIC],
 [AC_BEFORE([$0],[AC_LIBTOOL_SETUP])dnl
-AC_ENABLE_STATIC(no)])
+AC_ENABLE_STATIC(no)
+])# AC_DISABLE_STATIC
 
 
-# AC_ENABLE_FAST_INSTALL - implement the --enable-fast-install flag
-# Usage: AC_ENABLE_FAST_INSTALL[(DEFAULT)]
-#   Where DEFAULT is either `yes' or `no'.  If omitted, it defaults to
-#   `yes'.
+# AC_ENABLE_FAST_INSTALL([DEFAULT])
+# ---------------------------------
+# implement the --enable-fast-install flag
+# DEFAULT is either `yes' or `no'.  If omitted, it defaults to `yes'.
 AC_DEFUN([AC_ENABLE_FAST_INSTALL],
 [define([AC_ENABLE_FAST_INSTALL_DEFAULT], ifelse($1, no, no, yes))dnl
 AC_ARG_ENABLE(fast-install,
@@ -3007,23 +3138,31 @@ no) enable_fast_install=no ;;
   ;;
 esac],
 enable_fast_install=AC_ENABLE_FAST_INSTALL_DEFAULT)dnl
-])
+])# AC_ENABLE_FAST_INSTALL
 
-# AC_DISABLE_FAST_INSTALL - set the default to --disable-fast-install
+
+# AC_DISABLE_FAST_INSTALL
+# -----------------------
+# set the default to --disable-fast-install
 AC_DEFUN([AC_DISABLE_FAST_INSTALL],
 [AC_BEFORE([$0],[AC_LIBTOOL_SETUP])dnl
-AC_ENABLE_FAST_INSTALL(no)])
+AC_ENABLE_FAST_INSTALL(no)
+])# AC_DISABLE_FAST_INSTALL
 
-# AC_LIBTOOL_PICMODE - implement the --with-pic flag
-# Usage: AC_LIBTOOL_PICMODE[(MODE)]
-#   Where MODE is either `yes' or `no'.  If omitted, it defaults to
-#   `both'.
+
+# AC_LIBTOOL_PICMODE([MODE])
+# --------------------------
+# implement the --with-pic flag
+# MODE is either `yes' or `no'.  If omitted, it defaults to `both'.
 AC_DEFUN([AC_LIBTOOL_PICMODE],
 [AC_BEFORE([$0],[AC_LIBTOOL_SETUP])dnl
-pic_mode=ifelse($#,1,$1,default)])
+pic_mode=ifelse($#,1,$1,default)
+])# AC_LIBTOOL_PICMODE
 
 
-# AC_PATH_TOOL_PREFIX - find a file program which can recognise shared library
+# AC_PATH_TOOL_PREFIX
+# -------------------
+# find a file program which can recognise shared library
 AC_DEFUN([AC_PATH_TOOL_PREFIX],
 [AC_MSG_CHECKING([for $1])
 AC_CACHE_VAL(lt_cv_path_MAGIC_CMD,
@@ -3082,10 +3221,12 @@ if test -n "$MAGIC_CMD"; then
 else
   AC_MSG_RESULT(no)
 fi
-])
+])# AC_PATH_TOOL_PREFIX
 
 
-# AC_PATH_MAGIC - find a file program which can recognise a shared library
+# AC_PATH_MAGIC
+# -------------
+# find a file program which can recognise a shared library
 AC_DEFUN([AC_PATH_MAGIC],
 [AC_REQUIRE([AC_CHECK_TOOL_PREFIX])dnl
 AC_PATH_TOOL_PREFIX(${ac_tool_prefix}file, /usr/bin:$PATH)
@@ -3096,14 +3237,16 @@ if test -z "$lt_cv_path_MAGIC_CMD"; then
     MAGIC_CMD=:
   fi
 fi
-])
+])# AC_PATH_MAGIC
 
 
-# AC_PROG_LD - find the path to the GNU or non-GNU linker
+# AC_PROG_LD
+# ----------
+ find the path to the GNU or non-GNU linker
 AC_DEFUN([AC_PROG_LD],
 [AC_ARG_WITH(gnu-ld,
-[  --with-gnu-ld           assume the C compiler uses GNU ld [default=no]],
-test "$withval" = no || with_gnu_ld=yes, with_gnu_ld=no)
+  [  --with-gnu-ld           assume the C compiler uses GNU ld [default=no]],
+  test "$withval" = no || with_gnu_ld=yes, with_gnu_ld=no)
 AC_REQUIRE([AC_PROG_CC])dnl
 AC_REQUIRE([AC_CANONICAL_HOST])dnl
 AC_REQUIRE([AC_CANONICAL_BUILD])dnl
@@ -3172,9 +3315,11 @@ else
 fi
 test -z "$LD" && AC_MSG_ERROR([no acceptable ld found in \$PATH])
 AC_PROG_LD_GNU
-])
+])# AC_PROG_LD
 
-# AC_PROG_LD_GNU -
+
+# AC_PROG_LD_GNU
+# --------------
 AC_DEFUN([AC_PROG_LD_GNU],
 [AC_CACHE_CHECK([if the linker ($LD) is GNU ld], lt_cv_prog_gnu_ld,
 [# I'd rather use --version here, but apparently some GNU ld's only accept -v.
@@ -3184,18 +3329,25 @@ else
   lt_cv_prog_gnu_ld=no
 fi])
 with_gnu_ld=$lt_cv_prog_gnu_ld
-])
+])# AC_PROG_LD_GNU
 
-# AC_PROG_LD_RELOAD_FLAG - find reload flag for linker
+
+# AC_PROG_LD_RELOAD_FLAG
+# ----------------------
+# find reload flag for linker
 #   -- PORTME Some linkers may need a different reload flag.
 AC_DEFUN([AC_PROG_LD_RELOAD_FLAG],
-[AC_CACHE_CHECK([for $LD option to reload object files], lt_cv_ld_reload_flag,
-[lt_cv_ld_reload_flag='-r'])
+[AC_CACHE_CHECK([for $LD option to reload object files],
+  lt_cv_ld_reload_flag,
+  [lt_cv_ld_reload_flag='-r'])
 reload_flag=$lt_cv_ld_reload_flag
 test -n "$reload_flag" && reload_flag=" $reload_flag"
-])
+])# AC_PROG_LD_RELOAD_FLAG
 
-# AC_DEPLIBS_CHECK_METHOD - how to check for library dependencies
+
+# AC_DEPLIBS_CHECK_METHOD
+# -----------------------
+# how to check for library dependencies
 #  -- PORTME fill in with the dynamic library characteristics
 AC_DEFUN([AC_DEPLIBS_CHECK_METHOD],
 [AC_CACHE_CHECK([how to recognise dependant libraries],
@@ -3364,13 +3516,14 @@ esac
 ])
 file_magic_cmd=$lt_cv_file_magic_cmd
 deplibs_check_method=$lt_cv_deplibs_check_method
-])
+])# AC_DEPLIBS_CHECK_METHOD
 
 
-# AC_PROG_NM - find the path to a BSD-compatible name lister
+# AC_PROG_NM
+# ----------
+# find the path to a BSD-compatible name lister
 AC_DEFUN([AC_PROG_NM],
-[AC_MSG_CHECKING([for BSD-compatible nm])
-AC_CACHE_VAL(lt_cv_path_NM,
+[AC_CACHE_CHECK([for BSD-compatible nm], lt_cv_path_NM,
 [if test -n "$NM"; then
   # Let the user override the test.
   lt_cv_path_NM="$NM"
@@ -3400,10 +3553,12 @@ else
   test -z "$lt_cv_path_NM" && lt_cv_path_NM=nm
 fi])
 NM="$lt_cv_path_NM"
-AC_MSG_RESULT([$NM])
-])
+])# AC_PROG_NM
 
-# AC_CHECK_LIBM - check for math library
+
+# AC_CHECK_LIBM
+# -------------
+# check for math library
 AC_DEFUN([AC_CHECK_LIBM],
 [AC_REQUIRE([AC_CANONICAL_HOST])dnl
 LIBM=
@@ -3419,15 +3574,17 @@ case $host in
   AC_CHECK_LIB(m, main, LIBM="-lm")
   ;;
 esac
-])
+])# AC_CHECK_LIBM
 
-# AC_LIBLTDL_CONVENIENCE[(dir)] - sets LIBLTDL to the link flags for
-# the libltdl convenience library and INCLTDL to the include flags for
-# the libltdl header and adds --enable-ltdl-convenience to the
-# configure arguments.  Note that LIBLTDL and INCLTDL are not
-# AC_SUBSTed, nor is AC_CONFIG_SUBDIRS called.  If DIR is not
-# provided, it is assumed to be `libltdl'.  LIBLTDL will be prefixed
-# with '${top_builddir}/' and INCLTDL will be prefixed with
+
+# AC_LIBLTDL_CONVENIENCE([DIRECTORY])
+# -----------------------------------
+# sets LIBLTDL to the link flags for the libltdl convenience library and 
+# INCLTDL to the include flags for the libltdl header and adds
+# --enable-ltdl-convenience to the configure arguments.  Note that LIBLTDL
+# and INCLTDL are not AC_SUBSTed, nor is AC_CONFIG_SUBDIRS called.  If
+# DIRECTORY is not provided, it is assumed to be `libltdl'.  LIBLTDL will
+# be prefixed with '${top_builddir}/' and INCLTDL will be prefixed with
 # '${top_srcdir}/' (note the single quotes!).  If your package is not
 # flat and you're not using automake, define top_builddir and
 # top_srcdir appropriately in the Makefiles.
@@ -3440,18 +3597,20 @@ AC_DEFUN([AC_LIBLTDL_CONVENIENCE],
   esac
   LIBLTDL='${top_builddir}/'ifelse($#,1,[$1],['libltdl'])/libltdlc.la
   INCLTDL='-I${top_srcdir}/'ifelse($#,1,[$1],['libltdl'])
-])
+])# AC_LIBLTDL_CONVENIENCE
 
-# AC_LIBLTDL_INSTALLABLE[(dir)] - sets LIBLTDL to the link flags for
-# the libltdl installable library and INCLTDL to the include flags for
-# the libltdl header and adds --enable-ltdl-install to the configure
-# arguments.  Note that LIBLTDL and INCLTDL are not AC_SUBSTed, nor is
-# AC_CONFIG_SUBDIRS called.  If DIR is not provided and an installed
-# libltdl is not found, it is assumed to be `libltdl'.  LIBLTDL will
-# be prefixed with '${top_builddir}/' and INCLTDL will be prefixed
-# with '${top_srcdir}/' (note the single quotes!).  If your package is
-# not flat and you're not using automake, define top_builddir and
-# top_srcdir appropriately in the Makefiles.
+
+# AC_LIBLTDL_INSTALLABLE([DIRECTORY])
+# -----------------------------------
+# sets LIBLTDL to the link flags for the libltdl installable library and
+# INCLTDL to the include flags for the libltdl header and adds
+# --enable-ltdl-install to the configure arguments.  Note that LIBLTDL
+# and INCLTDL are not AC_SUBSTed, nor is AC_CONFIG_SUBDIRS called.  If
+# DIRECTORY is not provided and an installed libltdl is not found, it is
+# assumed to be `libltdl'.  LIBLTDL will be prefixed with '${top_builddir}/'
+# and INCLTDL will be prefixed with '${top_srcdir}/' (note the single
+# quotes!).  If your package is not flat and you're not using automake,
+# define top_builddir and top_srcdir appropriately in the Makefiles.
 # In the future, this macro may have to be called after AC_PROG_LIBTOOL.
 AC_DEFUN([AC_LIBLTDL_INSTALLABLE],
 [AC_BEFORE([$0],[AC_LIBTOOL_SETUP])dnl
@@ -3472,7 +3631,8 @@ AC_DEFUN([AC_LIBLTDL_INSTALLABLE],
     LIBLTDL="-lltdl"
     INCLTDL=
   fi
-])
+])# AC_LIBLTDL_INSTALLABLE
+
 
 # If this macro is not defined by Autoconf, define it here.
 ifdef([AC_PROVIDE_IFELSE],
@@ -3481,10 +3641,18 @@ ifdef([AC_PROVIDE_IFELSE],
               [ifdef([AC_PROVIDE_$1],
                      [$2], [$3])])])
 
-# AC_LIBTOOL_CXX - enable support for C++ libraries
-AC_DEFUN([AC_LIBTOOL_CXX], [AC_REQUIRE([_AC_LIBTOOL_CXX])])
 
-AC_DEFUN([_AC_LIBTOOL_CXX],
+# AC_LIBTOOL_CXX
+# --------------
+# enable support for C++ libraries
+AC_DEFUN([AC_LIBTOOL_CXX],
+[AC_REQUIRE([_LT_AC_LANG_CXX])
+])# AC_LIBTOOL_CXX
+
+
+# _LT_AC_LANG_CXX
+# ---------------
+AC_DEFUN([_LT_AC_LANG_CXX],
 [AC_REQUIRE([AC_PROG_CXX])
 AC_REQUIRE([AC_PROG_CXXCPP])
 LIBTOOL_DEPS=$LIBTOOL_DEPS" $ac_aux_dir/ltcf-cxx.sh"
@@ -3508,12 +3676,20 @@ CFLAGS="$lt_save_CFLAGS"
 # Redirect the config.log output again, so that the ltconfig log is not
 # clobbered by the next message.
 exec 5>>./config.log
-])# _AC_LIBTOOL_CXX -
+])# _LT_AC_LANG_CXX
 
-# AC_LIBTOOL_GCJ - enable support for GCJ libraries
-AC_DEFUN([AC_LIBTOOL_GCJ],[AC_REQUIRE([_AC_LIBTOOL_GCJ])])
 
-AC_DEFUN([_AC_LIBTOOL_GCJ],
+# AC_LIBTOOL_GCJ
+# --------------
+# enable support for GCJ libraries
+AC_DEFUN([AC_LIBTOOL_GCJ],
+[AC_REQUIRE([_LT_AC_LANG_GCJ])
+])# AC_LIBTOOL_GCJ
+
+
+# _LT_AC_LANG_GCJ
+# ---------------
+AC_DEFUN([_LT_AC_LANG_GCJ],
 [AC_REQUIRE([AC_PROG_LIBTOOL])
 AC_PROVIDE_IFELSE([AC_PROG_GCJ],[],
   [AC_PROVIDE_IFELSE([A][M_PROG_GCJ],[],
@@ -3542,7 +3718,8 @@ CFLAGS="$lt_save_CFLAGS"
 # Redirect the config.log output again, so that the ltconfig log is not
 # clobbered by the next message.
 exec 5>>./config.log
-])
+])# _LT_AC_LANG_GCJ
+
 
 # old names
 AC_DEFUN([AM_PROG_LIBTOOL],   [AC_PROG_LIBTOOL])
