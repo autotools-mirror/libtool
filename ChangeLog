@@ -2,6 +2,8 @@
 
 	* ltmain.in: Check for module_cmds if max_cmd_len is exceeded too.
 
+	* ltmain.in: Test $old_striplib before using it, not $striplib.
+	
 2004-01-23  Scott James Remnant  <scott@netsplit.com>
 
 	* libtool.m4 (AC_LIBTOOL_CONFIG): Don't attempt to
