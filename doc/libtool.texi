@@ -5215,7 +5215,7 @@ trick$ sed 's%^\(macro_version=\).*$%\1@@VERSION@@%;
 trick$ echo '. /home/src/libtool/ltmain.in' >> libtool
 trick$ chmod +x libtool
 trick$ libtool --version
-ltmain.sh (GNU @PACKAGE@@TIMESTAMP@) @VERSION@
+ltmain.sh (GNU @@PACKAGE@@@@TIMESTAMP@@) @@VERSION@@
 
 Copyright (C) 2004  Free Software Foundation, Inc.
 This is free software; see the source for copying conditions.  There is NO
