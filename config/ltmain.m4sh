@@ -1615,7 +1615,7 @@ func_mode_finish ()
 
     $ECHO "See any operating system documentation about shared libraries for"
     case $host in
-      solaris2.[789]|solaris2.1[0-9])
+      solaris2.[6789]|solaris2.1[0-9])
         $ECHO "more information, such as the ld(1), crle(1) and ld.so(8) manual"
 	$ECHO "pages."
 	;;
