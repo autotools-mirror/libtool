@@ -219,7 +219,7 @@ test -z "$pic_mode" && pic_mode=default
 # Use C for the default configuration in the libtool script
 AC_LIBTOOL_LANG_C_CONFIG
 _LT_AC_TAG_CONFIG
-dnl _LT_CONFIG_COMMANDS
+_LT_CONFIG_COMMANDS
 ])# AC_LIBTOOL_SETUP
 
 
@@ -269,8 +269,8 @@ _LT_CONFIG_LIBTOOL_INIT([$2])
 # -------------------
 # Send accumulated output to $CONFIG_STATUS.
 m4_define([_LT_CONFIG_COMMANDS],
-[AC_CONFIG_COMMANDS([libtool-bogus],
-    [_LT_OUTPUT_LIBTOOL_COMMANDS],  [_LT_OUTPUT_LIBTOOL_INIT])
+[AC_CONFIG_COMMANDS([libtool],
+    [_LT_OUTPUT_LIBTOOL_COMMANDS], [_LT_OUTPUT_LIBTOOL_INIT])
 ])
 
 
@@ -1732,7 +1732,7 @@ m4_define([_LT_AC_TAG_CONFIG],
       m4_exit(1)])
   ])
 
-  AC_CONFIG_COMMANDS([libtool-tags], [
+  _LT_CONFIG_SAVE_COMMANDS([
     _LT_PROG_LTMAIN
     if test -f "$ltmain"; then
       if test ! -f "${ofile}"; then
@@ -3837,7 +3837,7 @@ m4_define([_LT_CONFIG_STATUS_DECLARE],
 # add code to config.status for appending the configuration named by
 # TAGNAME from the matching tagged config vars.
 m4_define([AC_LIBTOOL_CONFIG],
-[AC_CONFIG_COMMANDS([libtool]$1, [
+[_LT_CONFIG_SAVE_COMMANDS([
   # See if we are running on zsh, and set the options which allow our
   # commands through without removal of \ escapes.
   if test -n "${ZSH_VERSION+set}" ; then
@@ -3847,11 +3847,9 @@ m4_define([AC_LIBTOOL_CONFIG],
   m4_if([$1], [],
       [cfgfile="${ofile}T"
       trap "$rm \"$cfgfile\"; exit 1" 1 2 15
-      $rm -f "$cfgfile"
-      AC_MSG_NOTICE([creating $ofile])],
-    [cfgfile="$ofile"
-    AC_MSG_NOTICE([appending configuration tag `$1' to $ofile])
-  ])
+      $rm -f "$cfgfile"],
+    [cfgfile="$ofile"]
+  )
 
   cat <<_LT_EOF >> "$cfgfile"
 m4_if([$1], [],

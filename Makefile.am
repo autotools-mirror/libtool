@@ -44,7 +44,7 @@ bin_SCRIPTS = libtool libtoolize
 config_status = $(top_builddir)/config.status
 
 libtool: config/ltmain.sh $(top_builddir)/configure
-	CONFIG_FILES= CONFIG_HEADERS= $(SHELL) $(config_status)
+	CONFIG_FILES= CONFIG_HEADERS= CONFIG_COMMANDS=$@ $(SHELL) $(config_status)
 	chmod +x $@
 
 libtoolize: $(srcdir)/libtoolize.in $(top_builddir)/config.status
