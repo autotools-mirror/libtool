@@ -2500,13 +2500,13 @@ In order to use this feature, you must declare the objects you want your
 application to dlopen by using the @samp{-dlopen} or @samp{-dlpreopen}
 flags when you link your program (@pxref{Link mode}).
 
-@deftypefn {Structure} {struct} lt_dlsymlist @{ @w{const char *@var{name};} @w{lt_ptr_t @var{address};} @}
+@deftypefn {Structure} {struct} lt_dlsymlist @{ @w{const char *@var{name};} @w{lt_ptr @var{address};} @}
 The @var{name} attribute is a null-terminated character string of the
 symbol name, such as @code{"fprintf"}.  The @var{address} attribute is a
 generic pointer to the appropriate object, such as @code{&fprintf}.
 @end deftypefn
 
-@deftypevar {const lt_dlsymlist *} lt_preloaded_symbols
+@deftypevar {const lt_dlsymlist *}lt_preloaded_symbols
 An array of @var{lt_symbol} structures, representing all the preloaded
 symbols linked into the program. For each @samp{-dlpreloaded} file 
 there is an element with the @var{name} of the file and a @var{address} 
@@ -2665,8 +2665,8 @@ certainly welcome.
 @noindent
 The following types are defined in @file{ltdl.h}:
 
-@deftp {Type} lt_ptr_t
-@code{lt_ptr_t} is a generic pointer.
+@deftp {Type} lt_ptr
+@code{lt_ptr} is a generic pointer.
 @end deftp
 
 @deftp {Type} lt_dlhandle
@@ -2774,13 +2774,13 @@ then the module is unloaded.
 Return 0 on success.
 @end deftypefun
  
-@deftypefun lt_ptr_t lt_dlsym (lt_dlhandle @var{handle}, const char *@var{name})
+@deftypefun lt_ptr lt_dlsym (lt_dlhandle @var{handle}, const char *@var{name})
 Return the address in the module @var{handle}, where the symbol given 
 by the null-terminated string @var{name} is loaded.
 If the symbol cannot be found, @code{NULL} is returned.
 @end deftypefun
  
-@deftypefun {const char *} lt_dlerror (void)
+@deftypefun {const char *}lt_dlerror (void)
 Return a human readable string describing the most 
 recent error that occurred from any of libltdl's functions.
 Return @code{NULL} if no errors have occurred since initialization
@@ -2832,17 +2832,17 @@ Replace the current user-defined library search path with
 directories.  Return 0 on success.
 @end deftypefun
 
-@deftypefun {const char *} lt_dlgetsearchpath (void)
+@deftypefun {const char *}lt_dlgetsearchpath (void)
 Return the current user-defined library search path.
 @end deftypefun
 
-@deftypefun {const lt_dlinfo *} lt_dlgetinfo (lt_dlhandle @var{handle})
+@deftypefun {const lt_dlinfo *}lt_dlgetinfo (lt_dlhandle @var{handle})
 Return a pointer to a struct that contains some information about
 the module @var{handle}.  The contents of the struct must not be modified.
 Return @code{NULL} on failure. 
 @end deftypefun
 
-@deftypefun int lt_dlforeach (int (*@var{func})(lt_dlhandle @var{handle}, lt_ptr_t @var{data}), lt_ptr_t @var{data})
+@deftypefun int lt_dlforeach (int (*@var{func})(lt_dlhandle @var{handle}, lt_ptr @var{data}), lt_ptr @var{data})
 For each loaded module call the function @var{func}.  The argument
 @var{handle} is the handle of one of the loaded modules, @var{data} is
 the @var{data} argument passed to @code{lt_dlforeach}.
@@ -2851,8 +2851,8 @@ As soon as @var{func} returns a non-zero value for one of the handles,
 Otherwise 0 is returned.
 @end deftypefun
 
-@deftypevar {lt_ptr_t (*} lt_dlmalloc ) (size_t @var{size})
-@deftypevarx {void (*} lt_dlfree ) (lt_ptr_t @var{ptr})
+@deftypevar {lt_ptr (*) (size_t @var{size})} lt_dlmalloc 
+@deftypevarx {void (*) (lt_ptr @var{ptr})} lt_dlfree 
 These variables are set to @code{malloc} and @code{free}, by default,
 but you can set them to any other functions that provides equivalent
 functionality.  However, you must not modify their values after calling
@@ -3102,21 +3102,21 @@ libltdl, so you should not use that for your own loader names.
 @noindent
 The following types are defined in @file{ltdl.h}:
 
-@deftp {Type} lt_module_t
-@code{lt_module_t} is a dlloader dependent module.
+@deftp {Type} lt_module
+@code{lt_module} is a dlloader dependent module.
 The dynamic module loader extensions communicate using these low
 level types.
 @end deftp
 
-@deftp {Type} lt_dlloader_t
-@code{lt_dlloader_t} is a handle for module loader types.
+@deftp {Type} lt_dlloader
+@code{lt_dlloader} is a handle for module loader types.
 @end deftp
 
-@deftp {Type} lt_dlloader_data_t
-@code{lt_dlloader_data_t} is used for specifying loader instance data.
+@deftp {Type} lt_dlloader_data
+@code{lt_dlloader_data} is used for specifying loader instance data.
 @end deftp
 
-@deftypefn {Type} {struct} lt_user_dlloader @{@w{const char *@var{sym_prefix};} @w{lt_module_open_t *@var{module_open};}@w{lt_module_close_t *@var{module_close};} @w{lt_find_sym_t *@var{find_sym};} @w{lt_dlloader_exit_t *@var{dlloader_exit};} @w{lt_dlloader_data_t @var{dlloader_data};} @}
+@deftypefn {Type} {struct} lt_user_dlloader @{@w{const char *@var{sym_prefix};} @w{lt_module_open *@var{module_open};}@w{lt_module_close *@var{module_close};} @w{lt_find_sym *@var{find_sym};} @w{lt_dlloader_exit *@var{dlloader_exit};} @w{lt_dlloader_data @var{dlloader_data};} @}
 If you want to define a new way to open dynamic modules, and have the
 @code{lt_dlopen} @sc{api} use it, you need to instantiate one of these
 structures and pass it to @code{lt_dlloader_add}.  You can pass whatever
@@ -3125,18 +3125,18 @@ the value of the first parameter to each of the functions specified in
 the function pointer fields.
 @end deftypefn
 
-@deftypefn {Type} lt_module_t lt_module_open_t (@w{lt_dlloader_data_t @var{loader_data},} @w{const char *@var{filename}})
-The type of the loader function for an @code{lt_dlloader_t} module
+@deftypefn {Type} lt_module lt_module_open (@w{lt_user_data @var{loader_data},} @w{const char *@var{filename}})
+The type of the loader function for an @code{lt_dlloader} module
 loader.  The value set in the dlloader_data field of the @code{struct
 lt_user_dlloader} structure will be passed into this function in the
 @var{loader_data} parameter.  Implementation of such a function should
-attempt to load the named module, and return an @code{lt_module_t}
-suitable for passing in to the associated @code{lt_module_close_t} and
-@code{lt_sym_find_t} function pointers.  If the function fails it should
+attempt to load the named module, and return an @code{lt_module}
+suitable for passing in to the associated @code{lt_module_close} and
+@code{lt_sym_find} function pointers.  If the function fails it should
 return @code{NULL}, and set the error message with @code{lt_dlseterror}.
 @end deftypefn
 
-@deftypefn {Type} int lt_module_close_t (@w{lt_dlloader_data_t @var{loader_data},} @w{lt_module_t @var{module}})
+@deftypefn {Type} int lt_module_close (@w{lt_dlloader_data @var{loader_data},} @w{lt_module @var{module}})
 The type of the unloader function for a user defined module loader.
 Implementatation of such a function should attempt to release 
 any resources tied up by the @var{module} module, and then unload it
@@ -3144,14 +3144,14 @@ from memory.  If the function fails for some reason, set the error
 message with @code{lt_dlseterror} and return non-zero.
 @end deftypefn
 
-@deftypefn {Type} lt_ptr_t lt_find_sym_t (@w{lt_dlloader_data_t @var{loader_data},} @w{lt_module_t @var{module},} @w{const char *@var{symbol}}) 
+@deftypefn {Type} lt_ptr lt_find_sym (@w{lt_user_data @var{loader_data},} @w{lt_module @var{module},} @w{const char *@var{symbol}}) 
 The type of the symbol lookup function for a user defined module loader.
 Implementation of such a function should return the address of the named
 @var{symbol} in the module @var{module}, or else set the error message
 with @code{lt_dlseterror} and return @code{NULL} if lookup fails.
 @end deftypefn
 
-@deftypefn {Type} int lt_dlloader_exit_t (@w{lt_dlloader_data_t @var{loader_data}})
+@deftypefn {Type} int lt_dlloader_exit (@w{lt_user_data @var{loader_data}})
 The type of the finalisation function for a user defined module loader.
 Implementation of such a function should free any resources associated
 with the loader, including any user specified data in the
@@ -3177,7 +3177,7 @@ register_myloader (void)
   dlloader.module_close  = myloader_close;
   dlloader.find_sym      = myloader_find_sym.
   dlloader.dlloader_exit = myloader_exit;
-  dlloader.dlloader_data = (lt_dlloader_data_t)myloader_function;
+  dlloader.dlloader_data = (lt_user_data)myloader_function;
 
   /* Add my loader as the default module loader. */
   if (lt_dlloader_add (lt_dlloader_next (NULL), &dlloader, "myloader") != 0)
@@ -3200,7 +3200,7 @@ during the initialisation phase.
 libltdl provides the following functions for writing your own module
 loaders:
 
-@deftypefun int lt_dlloader_add (@w{lt_dlloader_t *@var{place},} @w{lt_user_dlloader *@var{dlloader},} @w{const char *@var{loader_name}})
+@deftypefun int lt_dlloader_add (@w{lt_dlloader *@var{place},} @w{lt_user_dlloader *@var{dlloader},} @w{const char *@var{loader_name}})
 Add a new module loader to the list of all loaders, either as the
 last loader (if @var{place} is @code{NULL}), else immediately before the
 loader passed as @var{place}.  @var{loader_name} will be returned by
@@ -3233,7 +3233,7 @@ be obtained from @code{lt_dlerror}.
 @end example
 @end deftypefun
 
-@deftypefun {lt_dlloader_t *}lt_dlloader_next (@w{lt_dlloader_t *@var{place}})
+@deftypefun {lt_dlloader *}lt_dlloader_next (@w{lt_dlloader *@var{place}})
 Iterate over the module loaders, returning the first loader if @var{place} is
 @code{NULL}, and the next one on subsequent calls. The handle is for use with
 @code{lt_dlloader_add}.
@@ -3247,7 +3247,7 @@ Iterate over the module loaders, returning the first loader if @var{place} is
 @end example
 @end deftypefun
 
-@deftypefun {lt_dlloader_t *}lt_dlloader_find (@w{const char *@var{loader_name}})
+@deftypefun {lt_dlloader *}lt_dlloader_find (@w{const char *@var{loader_name}})
 Return the first loader with a matching @var{loader_name} identifier, or else
 @code{NULL}, if the identifier is not found.
 
@@ -3266,14 +3266,14 @@ the host dependent module loading @sc{api} -- @code{shl_load} and
 @end example
 @end deftypefun
 
-@deftypefun {const char *}lt_dlloader_name (@w{lt_dlloader_t *@var{place}})
+@deftypefun {const char *}lt_dlloader_name (@w{lt_dlloader *@var{place}})
 Return the identifying name of @var{PLACE}, as obtained from
 @code{lt_dlloader_next} or @code{lt_dlloader_find}.  If this function fails,
 it will return @code{NULL} and set an error for retrieval with
 @code{lt_dlerror}.
 @end deftypefun
 
-@deftypefun {lt_dlloader_data_t *}lt_dlloader_data (@w{lt_dlloader_t *@var{place}})
+@deftypefun {lt_user_data *}lt_dlloader_data (@w{lt_dlloader *@var{place}})
 Return the address of the @code{dlloader_data} of @var{PLACE}, as
 obtained from @code{lt_dlloader_next} or @code{lt_dlloader_find}.  If
 this function fails, it will return @code{NULL} and set an error for
