@@ -3107,7 +3107,7 @@ try_dlopen (phandle, filename)
       ++base_name;
     }
   else
-    LT_DLMEM_REASSIGN (base_name, canonical);
+    base_name = canonical;
 
   assert (base_name && *base_name);
 

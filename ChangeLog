@@ -1,3 +1,8 @@
+2005-01-21  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>  (tiny change)
+	
+	* libltdl.c (try_dlopen): Fix memleak.
+	Savannah BTS patch #3670 by Lennart Poettering.
+
 2005-01-16  Peter O'Gorman  <peter@pogma.com>
 
 	* ltmain.in: Don't pass through compiler-like thread flags when
