@@ -48,8 +48,9 @@ EXIT_SKIP=77	  # $? = 77 is used to indicate a skipped test to automake.
 exit_status=$EXIT_SUCCESS
 
 # Make sure IFS has a sensible default
-: ${IFS="
- 	"}
+lt_nl='
+'
+IFS=" 	$lt_nl"
 
 dirname="s,/[[^/]]*$,,"
 basename="s,^.*/,,g"
