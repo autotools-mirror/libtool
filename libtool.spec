@@ -1,6 +1,6 @@
 Summary: GNU Libtool - shared library support for source packages
 Name: libtool
-Version: 1.2d
+Version: 1.2e
 Release: 1
 Copyright: GPL
 Group: Development/Build

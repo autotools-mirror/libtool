@@ -1,5 +1,7 @@
 NEWS - list of user-visible changes between releases of GNU Libtool
 
+New in 1.2e: CVS version:
+
 New in 1.2c: CVS version; 1.2d: 1998-12-16, Libtool team:
 * libtool will correctly link already-installed libraries into programs.
 * New -module flag, to create loadable modules.
