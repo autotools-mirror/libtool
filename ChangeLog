@@ -1,3 +1,9 @@
+2001-07-31  Robert Boehne  <rboehne@ricardo-us.com>
+
+	* libtool.m4 (AC_LIBTOOL_PROG_LD_SHLIBS) Fixed a problem
+	with export_symbols_cmds not being set for CXX tags, and
+	not being properly set for any tag under AIX/Power.
+
 2001-08-19  Ossama Othman  <ossama@uci.edu>
 
 	* libtool.m4 (AC_LIBTOOL_LANG_CXX_CONFIG): Corrected and improved

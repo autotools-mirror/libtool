@@ -3801,7 +3801,8 @@ AC_DEFUN([AC_LIBTOOL_PROG_COMPILER_PIC],
 _LT_AC_TAGVAR(lt_prog_compiler_pic, $1)=
 _LT_AC_TAGVAR(lt_prog_compiler_static, $1)=
 
-ifelse([$1],[CXX],[
+AC_MSG_CHECKING([for $compiler option to produce PIC])
+ ifelse([$1],[CXX],[
   # C++ specific cases for pic, static, wl, etc.
   if test "$GXX" = yes; then
     _LT_AC_TAGVAR(lt_prog_compiler_wl, $1)='-Wl,'
@@ -4035,7 +4036,7 @@ ifelse([$1],[CXX],[
     esac
   fi
 ],
-[AC_MSG_CHECKING([for $compiler option to produce PIC])
+[
   if test "$GCC" = yes; then
     _LT_AC_TAGVAR(lt_prog_compiler_wl, $1)='-Wl,'
     _LT_AC_TAGVAR(lt_prog_compiler_static, $1)='-static'
@@ -4219,7 +4220,26 @@ esac
 # See if the linker supports building shared libraries.
 AC_DEFUN([AC_LIBTOOL_PROG_LD_SHLIBS],
 [AC_MSG_CHECKING([whether the $compiler linker ($LD) supports shared libraries])
-ifelse([$1],[CXX],[],[
+ifelse([$1],[CXX],[
+  _LT_AC_TAGVAR(export_symbols_cmds, $1)='$NM $libobjs $convenience | $global_symbol_pipe | sed '\''s/.* //'\'' | sort | uniq > $export_symbols'
+  case $host_os in
+  aix4* | aix5*)
+    # If we're using GNU nm, then we don't want the "-C" option.
+    # -C means demangle to AIX nm, but means don't demangle with GNU nm
+    if $NM -V 2>&1 | egrep '(GNU)' > /dev/null; then
+      _LT_AC_TAGVAR(export_symbols_cmds, $1)='$NM -Bpg $libobjs $convenience | awk '\''{ if (((\[$]2 == "T") || (\[$]2 == "D") || (\[$]2 == "B")) && ([substr](\[$]3,1,1) != ".")) { print \[$]3 } }'\'' | sort -u > $export_symbols'
+    else
+      _LT_AC_TAGVAR(export_symbols_cmds, $1)='$NM -BCpg $libobjs $convenience | awk '\''{ if (((\[$]2 == "T") || (\[$]2 == "D") || (\[$]2 == "B")) && ([substr](\[$]3,1,1) != ".")) { print \[$]3 } }'\'' | sort -u > $export_symbols'
+    fi
+    ;;
+  cygwin* | mingw* | pw32*)
+    _LT_AC_TAGVAR(export_symbols_cmds, $1)="$ltdll_cmds"'
+  ;;
+  *)
+    _LT_AC_TAGVAR(export_symbols_cmds, $1)='$NM $libobjs $convenience | $global_symbol_pipe | sed '\''s/.* //'\'' | sort | uniq > $export_symbols'
+  ;;
+  esac
+],[
   runpath_var=
   _LT_AC_TAGVAR(allow_undefined_flag, $1)=
   
@@ -4498,6 +4518,13 @@ EOF
         exp_sym_flag='-Bexport'
         no_entry_flag=""
       else
+	# If we're using GNU nm, then we don't want the "-C" option.
+	# -C means demangle to AIX nm, but means don't demangle with GNU nm
+	if $NM -V 2>&1 | egrep '(GNU)' > /dev/null; then
+          _LT_AC_TAGVAR(export_symbols_cmds, $1)='$NM -Bpg $libobjs $convenience | awk '\''{ if (((\[$]2 == "T") || (\[$]2 == "D") || (\[$]2 == "B")) && ([substr](\[$]3,1,1) != ".")) { print \[$]3 } }'\'' | sort -u > $export_symbols'
+	else
+	  _LT_AC_TAGVAR(export_symbols_cmds, $1)='$NM -BCpg $libobjs $convenience | awk '\''{ if (((\[$]2 == "T") || (\[$]2 == "D") || (\[$]2 == "B")) && ([substr](\[$]3,1,1) != ".")) { print \[$]3 } }'\'' | sort -u > $export_symbols'
+	fi
         aix_use_runtimelinking=no
   
         # Test if we are trying to use run time linking or normal
