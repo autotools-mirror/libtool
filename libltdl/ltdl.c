@@ -1831,7 +1831,7 @@ lt_dlpath_insertdir (char **ppath, char *before, const char *dir)
   size_t argz_len	= 0;
 
   assert (ppath);
-  assert (dir && *dir);		/* Without DIR, don't call this function!  */
+  assert (dir && *dir);
 
   if (canonicalize_path (dir, &canonical) != 0)
     {
@@ -1845,8 +1845,9 @@ lt_dlpath_insertdir (char **ppath, char *before, const char *dir)
   if (*ppath == 0)
     {
       assert (!before);		/* BEFORE cannot be set without PPATH.  */
+      assert (dir);		/* Without DIR, don't call this function!  */
 
-      *ppath = lt__strdup (canonical);
+      *ppath = lt__strdup (dir);
       if (*ppath == 0)
 	++errors;
 
@@ -1874,7 +1875,7 @@ lt_dlpath_insertdir (char **ppath, char *before, const char *dir)
       before = before - *ppath + argz;
     }
 
-  if (lt_argz_insert (&argz, &argz_len, before, canonical) != 0)
+  if (lt_argz_insert (&argz, &argz_len, before, dir) != 0)
     {
       ++errors;
       goto cleanup;
@@ -1891,13 +1892,21 @@ lt_dlpath_insertdir (char **ppath, char *before, const char *dir)
 }
 
 int
-lt_dladdsearchdir (const char *search_path)
+lt_dladdsearchdir (const char *search_dir)
 {
-  return lt_dlinsertsearchdir (NULL, search_path);
+  int errors = 0;
+
+  if (search_dir && *search_dir)
+    {
+      if (lt_dlpath_insertdir (&user_search_path, 0, search_dir) != 0)
+	++errors;
+    }
+
+  return errors;
 }
 
 int
-lt_dlinsertsearchdir (const char *before, const char *search_path)
+lt_dlinsertsearchdir (const char *before, const char *search_dir)
 {
   int errors = 0;
 
@@ -1911,10 +1920,10 @@ lt_dlinsertsearchdir (const char *before, const char *search_path)
 	}
     }
 
-  if (search_path && *search_path)
+  if (search_dir && *search_dir)
     {
       if (lt_dlpath_insertdir (&user_search_path,
-			       (char *) before, search_path) != 0)
+			       (char *) before, search_dir) != 0)
 	{
 	  ++errors;
 	}
@@ -1926,15 +1935,29 @@ lt_dlinsertsearchdir (const char *before, const char *search_path)
 int
 lt_dlsetsearchpath (const char *search_path)
 {
+  int   errors	    = 0;
+
   FREE (user_search_path);
 
-  return lt_dlinsertsearchdir(NULL, search_path);
+  if (!search_path || !LT_STRLEN (search_path))
+    {
+      return errors;
+    }
+
+  if (canonicalize_path (search_path, &user_search_path) != 0)
+    ++errors;
+
+  return errors;
 }
 
 const char *
 lt_dlgetsearchpath (void)
 {
-  return user_search_path;
+  const char *saved_path;
+
+  saved_path = user_search_path;
+
+  return saved_path;
 }
 
 int

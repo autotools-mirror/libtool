@@ -51,8 +51,6 @@ GNU Libtool
 1.2. libtldl
 ------------
 
-* Adjust version-info of libltdl before next release.
-
 * Fix the following bugs in libltdl:
  - error reporting of tryall_dlopen():
    if the file actually doesn't exist (stat() fails or it wasn't dlpreopened)
@@ -63,16 +61,6 @@ GNU Libtool
     or if a specific module type can only be loaded by one of them, how report its dlerror?
    Also report dlerror() for dlclose and dlsym if available
  - Make sure that the dependency_libs of a dlpreopened module won't be loaded.
-
-* Split out get_line as getline, preferably cooperate with gnulib's version.
-  Otherwise have it use ssize_t for correctness (this needs adding a ssize_t
-  check to m4/ltdl.m4).
-
-* Implement even stricter checking of .la file structure.
-  Especially leading and trailing white space in the right hand side of a
-  variable assignment need checking (in ltdl as well as libtool).
-  Also, add a way of communicating parse errors more verbosely.
-  Add regression tests.
 
 
 2. In the future

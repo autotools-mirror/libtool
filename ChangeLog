@@ -1,5 +1,8 @@
 2004-10-22  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* TODO, libltdl/lt_error.h, libltdl/ltdl.c, libltdl/ltdl.h:
+	Undo accidental commit.
+
 	* Makefile.maint: Fix typo.
 
 2004-10-22  Gary V. Vaughan  <gary@gnu.org>

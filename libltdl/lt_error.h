@@ -57,8 +57,7 @@ LT_BEGIN_C_DECLS
     LT_ERROR(SHUTDOWN,		    "library already shutdown")		\
     LT_ERROR(CLOSE_RESIDENT_MODULE, "can't close resident module")	\
     LT_ERROR(INVALID_MUTEX_ARGS,    "internal error (code withdrawn)")  \
-    LT_ERROR(INVALID_POSITION,	    "invalid search path insert position") \
-    LT_ERROR(INVALID_LALIB,	    "malformed library file")
+    LT_ERROR(INVALID_POSITION,	    "invalid search path insert position")
 
 /* Enumerate the symbolic error names. */
 enum {
