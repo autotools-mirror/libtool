@@ -41,7 +41,7 @@ sys_dld_open (lt_user_data loader_data, const char *filename)
 
   if (dld_link (filename) != 0)
     {
-      LT__MUTEX_SETERROR (CANNOT_OPEN);
+      LT__SETERROR (CANNOT_OPEN);
       FREE (module);
     }
 
@@ -55,7 +55,7 @@ sys_dld_close (lt_user_data loader_data, lt_module module)a
 
   if (dld_unlink_by_file ((char*)(module), 1) != 0)
     {
-      LT__MUTEX_SETERROR (CANNOT_CLOSE);
+      LT__SETERROR (CANNOT_CLOSE);
       ++errors;
     }
   else
@@ -73,7 +73,7 @@ sys_dld_sym (lt_user_data loader_data, lt_module module, const char *symbol)
 
   if (!address)
     {
-      LT__MUTEX_SETERROR (SYMBOL_NOT_FOUND);
+      LT__SETERROR (SYMBOL_NOT_FOUND);
     }
 
   return address;

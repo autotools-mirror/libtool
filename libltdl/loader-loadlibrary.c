@@ -92,7 +92,6 @@ sys_wll_open (lt_user_data loader_data, const char *filename)
      We check whether LoadLibrary is returning a handle to
      an already loaded module, and simulate failure if we
      find one. */
-  LT__MUTEX_LOCK ();
   cur = handles;
   while (cur)
     {
@@ -109,11 +108,10 @@ sys_wll_open (lt_user_data loader_data, const char *filename)
 
       cur = cur->next;
   }
-  LT__MUTEX_UNLOCK ();
 
   if (cur || !module)
     {
-      LT__MUTEX_SETERROR (CANNOT_OPEN);
+      LT__SETERROR (CANNOT_OPEN);
       module = 0;
     }
 
@@ -127,7 +125,7 @@ sys_wll_close (lt_user_data loader_data, lt_module module)
 
   if (FreeLibrary(module) == 0)
     {
-      LT__MUTEX_SETERROR (CANNOT_CLOSE);
+      LT__SETERROR (CANNOT_CLOSE);
       ++errors;
     }
 
@@ -141,7 +139,7 @@ sys_wll_sym (lt_user_data loader_data, lt_module module,const char *symbol)
 
   if (!address)
     {
-      LT__MUTEX_SETERROR (SYMBOL_NOT_FOUND);
+      LT__SETERROR (SYMBOL_NOT_FOUND);
     }
 
   return address;

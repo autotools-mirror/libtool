@@ -109,8 +109,8 @@ static int dyld_cannot_close				= 0;
 #  define LT__MAGIC	MH_CIGAM
 #endif
 
-#define DYLD__MUTEX_SETERROR(errorcode) \
-	LT__MUTEX_SETERRORSTR (lt__dylderror (errorcode))
+#define DYLD__SETERROR(errorcode) \
+	LT__SETERRORSTR (lt__dylderror (errorcode))
 
 /* Return the dyld error string, or the passed in error string if none. */
 static const char *
@@ -254,8 +254,6 @@ lt__sys_dyld_init (void)
 {
   int errors = 0;
 
-  LT__MUTEX_LOCK ();
-
   if (! dyld_cannot_close)
     {
       if (!_dyld_present ())
@@ -275,8 +273,6 @@ lt__sys_dyld_init (void)
 	  dyld_cannot_close = lt_dladderror ("can't close a dylib");
 	}
     }
-
-  LT__MUTEX_UNLOCK ();
 
   return errors;
 }
@@ -317,7 +313,7 @@ sys_dyld_open (lt_user_data loader_data, const char *filename)
 
   if (!module)
     {
-      DYLD__MUTEX_SETERROR (LT_ERROR_CANNOT_OPEN);
+      DYLD__SETERROR (LT_ERROR_CANNOT_OPEN);
     }
 
   return module;
@@ -334,7 +330,7 @@ sys_dyld_close (lt_user_data loader_data, lt_module module)
       int flags = 0;
       if (mh->magic == LT__MAGIC)
 	{
-	  DYLD__MUTEX_SETERROR(dyld_cannot_close);
+	  DYLD__SETERROR(dyld_cannot_close);
 	  ++errors;
 	}
       else
@@ -353,7 +349,7 @@ sys_dyld_close (lt_user_data loader_data, lt_module module)
 #endif
 	  if (!NSUnLinkModule (module, flags))
 	    {
-	      DYLD__MUTEX_SETERROR (LT_ERROR_CANNOT_CLOSE);
+	      DYLD__SETERROR (LT_ERROR_CANNOT_CLOSE);
 	      ++errors;
 	    }
 	}
@@ -405,7 +401,7 @@ sys_dyld_sym (lt_user_data loader_data, lt_module module, const char *symbol)
 
   if (!nssym)
     {
-      LT__MUTEX_SETERRORSTR (saveError);
+      LT__SETERRORSTR (saveError);
     }
 
   return nssym ? NSAddressOfSymbol (nssym) : 0;

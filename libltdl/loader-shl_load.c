@@ -100,7 +100,7 @@ sys_shl_open (lt_user_data loader_data, const char *filenam)
 
       if (!module)
 	{
-	  LT__MUTEX_SETERROR (CANNOT_OPEN);
+	  LT__SETERROR (CANNOT_OPEN);
 	}
     }
 
@@ -114,7 +114,7 @@ sys_shl_close (lt_user_data loader_data, lt_module module)
 
   if (module && (shl_unload ((shl_t) (module)) != 0))
     {
-      LT__MUTEX_SETERROR (CANNOT_CLOSE);
+      LT__SETERROR (CANNOT_CLOSE);
       ++errors;
     }
 
@@ -129,13 +129,13 @@ sys_shl_sym (lt_user_data loader_data, lt_module module, const char *symbol)
   /* sys_shl_open should never return a NULL module handle */
   if (module == (lt_module) 0)
   {
-    LT__MUTEX_SETERROR (INVALID_HANDLE);
+    LT__SETERROR (INVALID_HANDLE);
   }
   else if (!shl_findsym((shl_t*) &module, symbol, TYPE_UNDEFINED, &address))
     {
       if (!address)
 	{
-	  LT__MUTEX_SETERROR (SYMBOL_NOT_FOUND);
+	  LT__SETERROR (SYMBOL_NOT_FOUND);
 	}
     }
 

@@ -68,8 +68,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 #  define DLERROR(arg)	LT__STRERROR (arg)
 #endif
 
-#define DL__MUTEX_SETERROR(errorcode) \
-	LT__MUTEX_SETERRORSTR (DLERROR (errorcode))
+#define DL__SETERROR(errorcode) \
+	LT__SETERRORSTR (DLERROR (errorcode))
 
 static lt_module
 sys_dl_open (lt_user_data loader_data, const char *filename)
@@ -78,7 +78,7 @@ sys_dl_open (lt_user_data loader_data, const char *filename)
 
   if (!module)
     {
-      DL__MUTEX_SETERROR (CANNOT_OPEN);
+      DL__SETERROR (CANNOT_OPEN);
     }
 
   return module;
@@ -91,7 +91,7 @@ sys_dl_close (lt_user_data loader_data, lt_module module)
 
   if (dlclose (module) != 0)
     {
-      DL__MUTEX_SETERROR (CANNOT_CLOSE);
+      DL__SETERROR (CANNOT_CLOSE);
       ++errors;
     }
 
@@ -105,7 +105,7 @@ sys_dl_sym (lt_user_data loader_data, lt_module module, const char *symbol)
 
   if (!address)
     {
-      DL__MUTEX_SETERROR (SYMBOL_NOT_FOUND);
+      DL__SETERROR (SYMBOL_NOT_FOUND);
     }
 
   return address;

@@ -32,7 +32,6 @@ Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 
 #include <libltdl/lt_system.h>
 #include <libltdl/lt_error.h>
-#include <libltdl/lt_mutex.h>
 
 LT_BEGIN_C_DECLS
 
@@ -128,9 +127,20 @@ LT_SCOPE void *		lt_dlcaller_get_data  (lt_dlcaller_id key,
 
 /* --- BINARY COMPATIBILITY WITH OLD LIBLTDL --- */
 
+typedef void	lt_dlmutex_lock		(void);
+typedef void	lt_dlmutex_unlock	(void);
+typedef void	lt_dlmutex_seterror	(const char *errmsg);
+typedef const char *lt_dlmutex_geterror	(void);
+
 LT_SCOPE void * (*lt_dlmalloc)	(size_t size);
 LT_SCOPE void * (*lt_dlrealloc)	(void *ptr, size_t size);
 LT_SCOPE void	(*lt_dlfree)	(void *ptr);
+
+
+LT_SCOPE int	lt_dlmutex_register	(lt_dlmutex_lock *lock,
+					 lt_dlmutex_unlock *unlock,
+					 lt_dlmutex_seterror *seterror,
+					 lt_dlmutex_geterror *geterror);
 
 # define lt_ptr		void *
 

@@ -46,15 +46,11 @@ lt__presym_init (lt_user_data loader_data)
 {
   int errors = 0;
 
-  LT__MUTEX_LOCK ();
-
   preloaded_symbols = 0;
   if (default_preloaded_symbols)
     {
       errors = lt_dlpreload (default_preloaded_symbols);
     }
-
-  LT__MUTEX_UNLOCK ();
 
   return errors;
 }
@@ -63,8 +59,6 @@ static int
 presym_free_symlists (void)
 {
   lt_dlsymlists_t *lists;
-
-  LT__MUTEX_LOCK ();
 
   lists = preloaded_symbols;
   while (lists)
@@ -76,8 +70,6 @@ presym_free_symlists (void)
     }
   preloaded_symbols = 0;
 
-  LT__MUTEX_UNLOCK ();
-
   return 0;
 }
 
@@ -87,8 +79,6 @@ lt__presym_add_symlist (const lt_dlsymlist *preloaded)
   lt_dlsymlists_t *tmp;
   lt_dlsymlists_t *lists;
   int		   errors   = 0;
-
-  LT__MUTEX_LOCK ();
 
   lists = preloaded_symbols;
   while (lists)
@@ -114,7 +104,6 @@ lt__presym_add_symlist (const lt_dlsymlist *preloaded)
     }
 
  done:
-  LT__MUTEX_UNLOCK ();
   return errors;
 }
 
@@ -124,12 +113,11 @@ presym_open (lt_user_data loader_data, const char *filename)
   lt_dlsymlists_t *lists;
   lt_module	   module = (lt_module) 0;
 
-  LT__MUTEX_LOCK ();
   lists = preloaded_symbols;
 
   if (!lists)
     {
-      LT__MUTEX_SETERROR (NO_SYMBOLS);
+      LT__SETERROR (NO_SYMBOLS);
       goto done;
     }
 
@@ -159,10 +147,9 @@ presym_open (lt_user_data loader_data, const char *filename)
       lists = lists->next;
     }
 
-  LT__MUTEX_SETERROR (FILE_NOT_FOUND);
+  LT__SETERROR (FILE_NOT_FOUND);
 
  done:
-  LT__MUTEX_UNLOCK ();
   return module;
 }
 
@@ -190,7 +177,7 @@ presym_sym (lt_user_data loader_data, lt_module module, const char *symbol)
     ++syms;
   }
 
-  LT__MUTEX_SETERROR (SYMBOL_NOT_FOUND);
+  LT__SETERROR (SYMBOL_NOT_FOUND);
 
   return 0;
 }
@@ -220,12 +207,10 @@ lt_dlpreload (const lt_dlsymlist *preloaded)
     {
       presym_free_symlists();
 
-      LT__MUTEX_LOCK ();
       if (default_preloaded_symbols)
 	{
 	  errors = lt_dlpreload (default_preloaded_symbols);
 	}
-      LT__MUTEX_UNLOCK ();
     }
 
   return errors;
@@ -234,8 +219,6 @@ lt_dlpreload (const lt_dlsymlist *preloaded)
 int
 lt_dlpreload_default (const lt_dlsymlist *preloaded)
 {
-  LT__MUTEX_LOCK ();
   default_preloaded_symbols = preloaded;
-  LT__MUTEX_UNLOCK ();
   return 0;
 }

@@ -1,3 +1,24 @@
+2004-04-22  Gary V. Vaughan  <gary@gnu.org>
+
+	According to Howard Chu <hyc@highlandsun.com>:
+	Applications should assume that the native dlopen is NOT
+	thread-safe, and take care of locking themselves. All application
+	calls into libltdl should thus be protected by the caller.
+
+	* libltdl/lt_mutex.c, libltdl/lt_mutex.h: Removed.
+	* libltdl/Makefile.am (pkginclude_HEADERS): Removed lt_mutex.h.
+	(libltdl_la_SOURCES): Removed lt_mutex.c and lt_mutex.h.
+	* libltdl/ltdl.h: Don't include lt_mutex.h.
+	* libltdl/lt__private.h (LT__MUTEX_GETERROR, LT__MUTEX_SETERROR)
+	(LT__MUTEX_SETERRORSTR): Renamed to...
+	(LT__GETERROR, LT__SETERROR, LT__SETERRORSTR): ...this.  Changed
+	all callers.
+	(LT__MUTEX_LOCK, LT__MUTEX_UNLOCK, lt_dlmutex_lock)
+	(lt_dlmutex_unlock, lt_dlmutex_seterror, lt_dlmutex_geterror):
+	Removed.  Changed all callers.
+	* doc/libtool.texi (Thread Saftey in libltdl):
+	* NEWS: Updated.
+
 2004-04-19  Gary V. Vaughan  <gary@gnu.org>
 
 	* m4/libtool.m4 (_LT_LANG_CXX_CONFIG): Detect Intel C++ compiler

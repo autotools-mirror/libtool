@@ -3254,51 +3254,22 @@ foo1_la_LDFLAGS = -module
 @node Thread Saftey in libltdl
 @section Using libtldl in a multi threaded environment
 
-Using the @code{lt_dlmutex_register()} function, and by providing some
-appropriate callback function definitions, libltdl can be used in a
-multi-threaded environment.
+Libltdl provides a wrapper around whatever dynamic run-time object
+loading mechanisms are provided by the host system, many of which are
+themselves not thread safe.  Consequently libltdl cannot itself be
+consistently thread safe.
 
-@deftypefn {Type} void lt_dlmutex_lock (void)
-This is the type of a function pointer holding the address of a function
-which will be called at the start of parts of the libltdl implementation
-code which require a mutex lock.
+If you wish to use libltdl in a multithreaded environment, then you
+must mutex lock around libltdl calls, since they may in turn be calling
+non-thread-safe system calls on some target hosts.
 
-Because libltdl is inherantly recursive, it is important that the
-locking mechanism employed by these callback functions are reentrant, or
-else strange problems will occur.
-@end deftypefn
+Some old releases of libtool provided a mutex locking API that was
+unusable with POSIX threads, so callers were forced to lock around all
+libltdl API calls anyway.  That mutex locking API was next to useless,
+and is not present in current releases.
 
-@deftypefn {Type} void lt_dlmutex_unlock (void)
-The type of a matching unlock function.
-@end deftypefn
-
-@deftypefn {Type} void lt_dlmutex_seterror @w{(const char *@var{error});}
-Many of the functions in the libltdl @sc{api} have a special return
-value to indicate to the client that an error has occured.  Normally (in
-single threaded applications) a string describing that error can be
-retrieved from internal storage with @code{lt_dlerror()}.
-
-A function of this type must be registered with the library in order for
-it to work in a multi-threaded context.  The function should store any
-error message passed in thread local storage.
-@end deftypefn
-
-@deftypefn {Type} {const char *} lt_dlmutex_geterror (void)
-The type of a matching callback function to retrieve the last stored
-error message from thread local storage.
-
-When registered correctly this function will be used by
-@code{lt_dlerror())} from all threads to retrieve error messages for the
-client.
-@end deftypefn
-
-@deftypefn {Function} int lt_dlmutex_register (@w{lt_dlmutex_lock *@var{lock}}, @w{lt_dlmutex_unlock *@var{unlock}}, @w{lt_dlmutex_set_error *@var{seterror}}, @w{lt_dlmutex_geterror *@var{geterror})}
-Use this function to register one of each of function types described
-above in preparation for multi-threaded use of libltdl.  All arguments
-must be valid non-@code{NULL} function addresses, or else all
-@code{NULL} to return to single threaded operation.
-@end deftypefn
-
+Some future release of libtool may provide a new POSIX thread
+compliant mutex locking API.
 
 @node User defined module data
 @section Data associated with loaded modules

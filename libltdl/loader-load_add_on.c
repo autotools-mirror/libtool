@@ -51,7 +51,7 @@ sys_bedl_open (lt_user_data loader_data, const char *filename)
 
   if (image <= 0)
     {
-      LT__MUTEX_SETERROR (CANNOT_OPEN);
+      LT__SETERROR (CANNOT_OPEN);
       image = 0;
     }
 
@@ -65,7 +65,7 @@ sys_bedl_close (lt_user_data loader_data, lt_module module)
 
   if (unload_add_on ((image_id) module) != B_OK)
     {
-      LT__MUTEX_SETERROR (CANNOT_CLOSE);
+      LT__SETERROR (CANNOT_CLOSE);
       ++errors;
     }
 
@@ -80,7 +80,7 @@ sys_bedl_sym (lt_user_data loader_data, lt_module module, const char *symbol)
 
   if (get_image_symbol (image, symbol, B_SYMBOL_TYPE_ANY, address) != B_OK)
     {
-      LT__MUTEX_SETERROR (SYMBOL_NOT_FOUND);
+      LT__SETERROR (SYMBOL_NOT_FOUND);
       address = 0;
     }
 

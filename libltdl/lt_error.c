@@ -27,8 +27,9 @@ Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 */
 
 #include "lt_error.h"
-#include "lt_mutex.h"
 #include "lt__private.h"
+
+LT_GLOBAL_DATA const char	*lt__last_error	= 0;
 
 static	const char    **user_error_strings	= 0;
 static	int		errorcount		= LT_ERROR_MAX;
@@ -42,8 +43,6 @@ lt_dladderror (const char *diagnostic)
 
   assert (diagnostic);
 
-  LT__MUTEX_LOCK ();
-
   errindex = errorcount - LT_ERROR_MAX;
   temp = REALLOC (const char *, user_error_strings, 1 + errindex);
   if (temp)
@@ -53,8 +52,6 @@ lt_dladderror (const char *diagnostic)
       result				= errorcount++;
     }
 
-  LT__MUTEX_UNLOCK ();
-
   return result;
 }
 
@@ -63,26 +60,22 @@ lt_dlseterror (int errindex)
 {
   int		errors	 = 0;
 
-  LT__MUTEX_LOCK ();
-
   if (errindex >= errorcount || errindex < 0)
     {
       /* Ack!  Error setting the error message! */
-      LT__MUTEX_SETERROR (INVALID_ERRORCODE);
+      LT__SETERROR (INVALID_ERRORCODE);
       ++errors;
     }
   else if (errindex < LT_ERROR_MAX)
     {
       /* No error setting the error message! */
-      LT__MUTEX_SETERRORSTR (lt__error_strings[errindex]);
+      LT__SETERRORSTR (lt__error_strings[errindex]);
     }
   else
     {
       /* No error setting the error message! */
-      LT__MUTEX_SETERRORSTR (user_error_strings[errindex - LT_ERROR_MAX]);
+      LT__SETERRORSTR (user_error_strings[errindex - LT_ERROR_MAX]);
     }
-
-  LT__MUTEX_UNLOCK ();
 
   return errors;
 }
