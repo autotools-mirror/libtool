@@ -1,3 +1,7 @@
+2004-02-15  Peter O'Gorman  <peter@pogma.com>
+
+	* m4/libtool.m4, ltmain.in: Rename shrext to shrext_cmds.
+	
 2004-02-13  Scott James Remnant  <scott@netsplit.com>
 
 	* ltmain.in, libtoolize.in, commit, config/mailnotify: Correctly
