@@ -1,4 +1,4 @@
-2001-06-28  Gary V. Vaughan  <gary@gnu.org>, Paolo Bonzini  <bonzini@gnu.org>
+2001-06-28  Paolo Bonzini  <bonzini@gnu.org>, Gary V. Vaughan  <gary@gnu.org>
 
 	Libtool now builds with the help of Autoconf-2.50!
 	* configure.ac (AC_PREREQ):  Require Autoconf-2.50 or newer.
