@@ -1884,7 +1884,7 @@ netbsd*)
     finish_cmds='PATH="\$PATH:/sbin" ldconfig -m $libdir'
     dynamic_linker='NetBSD (a.out) ld.so'
   else
-    library_names_spec='${libname}${release}${shared_ext}$versuffix ${libname}${release}${shared_ext}$major ${libname}${release}${shared_ext} ${libname}${shared_ext}'
+    library_names_spec='${libname}${release}${shared_ext}$versuffix ${libname}${release}${shared_ext}$major ${libname}${shared_ext}'
     soname_spec='${libname}${release}${shared_ext}$major'
     dynamic_linker='NetBSD ld.elf_so'
   fi

@@ -1,7 +1,13 @@
+2004-01-21  Nick Hudson  <skrll@netbsd.org>
+
+	* m4/libtool.m4 (AC_LIBTOOL_SYS_DYNAMIC_LINKER) [netbsd*]: Remove
+	gratuitous ${libname}${release}${shared_ext} from
+	library_names_spec.
+
 2004-01-21  Peter O'Gorman  <peter@pogma.com>
 
 	* m4/libtool.m4 (AC_PROG_LD_RELOAD_FLAG): On darwin change the
-	reload_cmds to use $CC, otherwise ld will thin out any fat 
+	reload_cmds to use $CC, otherwise ld will thin out any fat
 	objects.
 
 2004-01-18  Benjamin Reed  <ranger@befunk.com>
