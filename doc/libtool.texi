@@ -3264,22 +3264,31 @@ level types.
 @code{lt_dlloader_t} is a handle for module loader types.
 @end deftp
 
-@deftypefn {Type} {struct} lt_user_dlloader @{@w{const char *@var{sym_prefix};} @w{lt_module_open_t *@var{module_open};} @w{lt_module_close_t *@var{module_close};} @w{lt_find_sym_t *@var{find_sym};} @w{lt_dlloader_exit_t *@var{dlloader_exit};} @}
+@deftp {Type} lt_dlloader_data_t
+@code{lt_dlloader_data_t} is used for specifying loader instance data.
+@end deftp
+
+@deftypefn {Type} {struct} lt_user_dlloader @{@w{const char *@var{sym_prefix};} @w{lt_module_open_t *@var{module_open};}@w{lt_module_close_t *@var{module_close};} @w{lt_find_sym_t *@var{find_sym};} @w{lt_dlloader_exit_t *@var{dlloader_exit};} @w{lt_dlloader_data_t @var{dlloader_data};} @}
 If you want to define a new way to open dynamic modules, and have the
 @code{lt_dlopen} @sc{api} use it, you need to instantiate one of these
-structures and pass it to @code{lt_add_dlloader}.
+structures and pass it to @code{lt_add_dlloader}.  You can pass whatever
+you like in the @var{dlloader_data} field, and it will be passed back as
+the value of the first parameter to each of the functions specified in
+the function pointer fields.
 @end deftypefn
 
-@deftypefn {Type} lt_module_t lt_module_open_t (@w{const char *@var{filename}})
+@deftypefn {Type} lt_module_t lt_module_open_t (@w{lt_dlloader_data_t @var{loader_data},} @w{const char *@var{filename}})
 The type of the loader function for an @code{lt_dlloader_t} module
-loader.  Implementation of such a function should attempt to load the
-named module, and return an @code{lt_module_t} suitable for passing in
-to the associated @code{lt_module_close_t} and @code{lt_sym_find_t}
-function pointers.  If the function fails it should return NULL, and set 
-the error message with @code{lt_dlseterror}.
+loader.  The value set in the dlloader_data field of the @code{struct
+lt_user_dlloader} structure will be passed into this function in the
+@var{loader_data} parameter.  Implementation of such a function should
+attempt to load the named module, and return an @code{lt_module_t}
+suitable for passing in to the associated @code{lt_module_close_t} and
+@code{lt_sym_find_t} function pointers.  If the function fails it should
+return NULL, and set the error message with @code{lt_dlseterror}.
 @end deftypefn
 
-@deftypefn {Type} int lt_module_close_t (@w{lt_module_t @var{module}})
+@deftypefn {Type} int lt_module_close_t (@w{lt_dlloader_data_t @var{loader_data},} @w{lt_module_t @var{module}})
 The type of the unloader function for a user defined module loader.
 Implementatation of such a function should attempt to release 
 any resources tied up by the @var{module} module, and then unload it
@@ -3287,18 +3296,20 @@ from memory.  If the function fails for some reason, set the error
 message with @code{lt_dlseterror} and return non-zero.
 @end deftypefn
 
-@deftypefn {Type} lt_ptr_t lt_find_sym_t (@w{lt_module_t @var{module},} @w{const char *@var{symbol}}) 
+@deftypefn {Type} lt_ptr_t lt_find_sym_t (@w{lt_dlloader_data_t @var{loader_data},} @w{lt_module_t @var{module},} @w{const char *@var{symbol}}) 
 The type of the symbol lookup function for a user defined module loader.
 Implementation of such a function should return the address of the named
 @var{symbol} in the module @var{module}, or else set the error message
 with @code{lt_dlseterror} and return NULL if lookup fails.
 @end deftypefn
 
-@deftypefn {Type} int lt_dlloader_exit_t (void)
+@deftypefn {Type} int lt_dlloader_exit_t (@w{lt_dlloader_data_t @var{loader_data}})
 The type of the finalisation function for a user defined module loader.
 Implementation of such a function should free any resources associated
-with the loader.  If non-NULL, the function will be called by
-@code{lt_dlexit}.
+with the loader, including any user specified data in the
+@code{dlloader_data} field of the @code{lt_user_dlloader}.  If non-NULL,
+the function will be called by @code{lt_dlexit}, and
+@code{lt_remove_dlloader}.
 @end deftypefn
 
 For example:
@@ -3318,6 +3329,7 @@ register_myloader (void)
   dlloader.module_close  = myloader_close;
   dlloader.find_sym      = myloader_find_sym.
   dlloader.dlloader_exit = myloader_exit;
+  dlloader.dlloader_data = (lt_dlloader_data_t)myloader_function;
 
   /* Add my loader as the default module loader. */
   if (lt_add_dlloader (lt_next_dlloader (NULL), &dlloader, "myloader") != 0)
@@ -3406,11 +3418,18 @@ the host dependent module loading @sc{api} -- @code{shl_load} and
 @end example
 @end deftypefun
 
-@deftypefun char *lt_dlloader_name (@w{lt_dlloader_t *@var{place}})
+@deftypefun const char *lt_dlloader_name (@w{lt_dlloader_t *@var{place}})
 Return the identifying name of @var{PLACE}, as obtained from
 @code{lt_next_dlloader} or @code{lt_find_dlloader}.  If this function fails,
 it will return @code{NULL} and set an error for retrieval with
 @code{lt_dlerror}.
+@end deftypefun
+
+@deftypefun lt_dlloader_data_t *lt_dlloader_data (@w{lt_dlloader_t *@var{place}})
+Return the address of the @code{dlloader_data} of @var{PLACE}, as
+obtained from @code{lt_next_dlloader} or @code{lt_find_dlloader}.  If
+this function fails, it will return @code{NULL} and set an error for
+retrieval with @code{lt_dlerror}.
 @end deftypefun
 
 @subsection Error handling within user module loaders

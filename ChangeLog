@@ -1,5 +1,37 @@
 2000-02-03  Gary V. Vaughan  <gary@oranda.demon.co.uk>
 
+	* libltdl/ltdl.h (lt_dlloader_data_t):  New type for loader
+	instance data.
+	(lt_user_dlloader): New lt_dlloader_data_t field.
+	(lt_module_open_t): Add lt_dlloader_data_t parameter.
+	(lt_module_close_t): Add lt_dlloader_data_t parameter.
+	(lt_find_sym_t): Add lt_dlloader_data_t parameter.
+	(lt_dlloader_exit_t): Add lt_dlloader_data_t parameter.
+	* libltdl/ltdl.c:  A sprinkling of /*ARGSUSED*/ markers to
+	reassure lint that the unused arguments are intentional.
+	(lt_dlloader_t): New lt_dlloader_data_t field.
+	(lt_dlloader_data): New function to return the contents of the
+	dlloader_data field.
+	(sys_dl_open): Take an additional lt_dlloader_data_t argument.
+	(sys_dl_close): Ditto.
+	(sys_dl_sym): Ditto.
+	(sys_dl): Initialise lt_dlloader_data_t field.
+	(sys_shl_open, sys_shl_close, sys_shl_sym, sys_shl): As above.
+	(sys_wll_open, sys_wll_close, sys_wll_sym, sys_wll): As above.
+	(sys_bedl_open, sys_bedl_close, sys_bedl_sym, sys_bedl): As
+	above.
+	(sys_dld_open, sys_dld_close, sys_dld_sym, sys_dld): As above.
+	(presym_init, presym_exit, presym_open, presym_close, presym_sym,
+	presym): As above.
+	(lt_dlinit): Call presym_init with additional argument.
+	(lt_dlexit): Call dlloader_exit method with additional argument.
+	(tryall_dlopen): Call module_open method with additional argument.
+	(lt_dlclose): Call module_close method with additional argument.
+	(lt_dlsym): Call find_sym method with additional argument.
+	(lt_add_dlloader): Initialise dlloader_data field.
+	(lt_remove_dlloader): Call dlloader_exit method with additional
+	argument.
+
 	* libltdl/ltdl.c (find_file): Prevent early release of memory
 	in filename/*pdir.
 	From Jon Leichter <jon@symas.com>

@@ -182,11 +182,13 @@ typedef	struct lt_dlloader_t lt_dlloader_t;
 typedef	lt_ptr_t lt_dlloader_t;
 #endif
 
+typedef lt_ptr_t lt_dlloader_data_t;
+
 /* Function pointer types for creating user defined module loaders. */
-typedef lt_module_t lt_module_open_t LTDL_PARAMS((const char *filename));
-typedef int lt_module_close_t LTDL_PARAMS((lt_module_t handle));
-typedef lt_ptr_t lt_find_sym_t LTDL_PARAMS((lt_module_t handle, const char *symbol));
-typedef int lt_dlloader_exit_t LTDL_PARAMS((void));
+typedef lt_module_t lt_module_open_t LTDL_PARAMS((lt_dlloader_data_t loader_data, const char *filename));
+typedef int lt_module_close_t LTDL_PARAMS((lt_dlloader_data_t loader_data, lt_module_t handle));
+typedef lt_ptr_t lt_find_sym_t LTDL_PARAMS((lt_dlloader_data_t loader_data, lt_module_t handle, const char *symbol));
+typedef int lt_dlloader_exit_t LTDL_PARAMS((lt_dlloader_data_t loader_data));
 
 __BEGIN_DECLS
 /* Initialisation and finalisation functions for libltdl. */
@@ -227,10 +229,12 @@ struct lt_user_dlloader {
 	lt_module_close_t *module_close;
 	lt_find_sym_t *find_sym;
 	lt_dlloader_exit_t *dlloader_exit;
+  	lt_dlloader_data_t dlloader_data;
 };
 
 extern lt_dlloader_t *lt_next_dlloader LTDL_PARAMS((lt_dlloader_t *place));
 extern const char *lt_dlloader_name LTDL_PARAMS((lt_dlloader_t *place));
+extern lt_dlloader_data_t *lt_dlloader_data LTDL_PARAMS((lt_dlloader_t *place));
 extern lt_dlloader_t *lt_find_dlloader LTDL_PARAMS((const char *loader_name));
 extern int lt_add_dlloader LTDL_PARAMS((lt_dlloader_t *place, const struct lt_user_dlloader *dlloader, const char *loader_name));
 
