@@ -101,6 +101,14 @@ mailnotify_flags=
 sendmail_to=
 exit_cmd=:
 
+# try to find out whether read supports -r
+if echo bt | tr b '\\' | { read -r line; test "X$line" = 'X\t'; } 2>/dev/null
+then
+  read_r='read -r'
+else
+  read_r=read
+fi
+
 # Locations for important files:
 signature_file=
 log_dir="`func_mktempdir`"
@@ -297,7 +305,7 @@ func_check_conflicts ()
     func_verbose "$progname: checking for conflicts..."
     if $opt_tla; then
       if ( $TLA changes |
-	    while read line; do
+	    while $read_r line; do
 	      echo "$line"
 	      echo "$line" >&3
 	    done | grep '^C'
@@ -308,7 +316,7 @@ func_check_conflicts ()
 
     if test -f CVS/Entries; then
       if ( $CVS $cvs_flags -q -n update $update_flags ${1+"$@"} |
-            while read line; do
+            while $read_r line; do
 	      echo "$line"
 	      echo "$line" >&3
             done | grep '^C'
@@ -340,7 +348,7 @@ func_check_commit_msg ()
     if $opt_first; then
       skipping=:
       $SED 's,^,+,' < ${ChangeLog-ChangeLog} |
-        while read line; do
+        while $read_r line; do
           case "$line" in
             "+") if $skipping; then skipping=false; else break; fi;;
             "+ "*)
@@ -358,7 +366,7 @@ func_check_commit_msg ()
         cmd="$CVS $cvs_flags diff -u"
       fi
       $cmd ${ChangeLog-ChangeLog} |
-        while read line; do
+        while $read_r line; do
           case $line in
             "--- "*) :;;
             "-"*)

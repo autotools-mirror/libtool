@@ -1,5 +1,8 @@
 2005-02-01  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* clcommit.m4sh: Test whether the shell understands `read -r'.  Use as
+	`$read_r' if available, so `\' is preserved in commit notices.
+
 	* HACKING (Editing `.m4sh' Files): Document preferred function
 	header layout.
 	* config/ltmain.m4sh (func_win32_libid, func_infer_tag)
