@@ -1,3 +1,8 @@
+1998-12-08  Thomas Tanner  <tanner@gmx.de>
+
+	* ltconfig.in: fixed some typos in archive_sym_cmds
+	* ltmain.in: replaced basename with a sed expression
+
 1998-12-07  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* configure.in: we no longer use PRCS

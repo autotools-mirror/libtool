@@ -1824,7 +1824,7 @@ dld_preloaded_symbols[] =
             fi
 
             for arg in $dlprefiles; do
-	      name=`basename $arg`
+	      name=`echo "$arg" | sed -e 's%^.*/%%'`
               echo >> "$objdir/$dlsyms" "\
   {\"$name\", (__ptr_t) 0},"
 	      eval "$NM $arg | $global_symbol_pipe > '$nlist'"

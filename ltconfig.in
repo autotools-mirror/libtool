@@ -1041,7 +1041,7 @@ DllMain (HINSTANCE hInst, DWORD reason, LPVOID reserved)
       $CC $soname-exp -Wl,--dll -nostartfiles -Wl,-e,__cygwin_dll_entry@12 -o $lib $libobjs ltdll.$objext$deplibs~
       $rm ltdll.$objext $soname-base $soname-exp'
       archive_sym_cmds='$CC -c '"`pwd`"'/ltdll.c~echo EXPORTS > $lib.exp~
-      cat "$export_symbols" > $lib.exp~
+      cat "$export_symbols" >> $lib.exp~
       $CC -Wl,--base-file,$soname-base -Wl,--dll -nostartfiles -Wl,-e,__cygwin_dll_entry@12 $libobs ltdll.$objext~
       $DLLTOOL --as=$AS --dllname $soname --exclude-symbol=_cygwin_dll_entry@12 --def $lib.exp --base-file $soname-base --output-exp $soname-exp~
       $CC -Wl,--base-file,$soname-base $soname-exp -Wl,--dll -nostartfiles -Wl,-e,__cygwin_dll_entry@12 -o $lib $libobjs ltdll.$objext$deplibs~
@@ -1092,8 +1092,7 @@ else
     allow_undefined_flag=unsupported
     archive_cmds='$NM$libobjs | $global_symbol_pipe | sed '\''s/.* //'\' | sort | uniq' > $lib.exp~
         $LD -o $objdir/$soname$libobjs$deplibs -bE:$lib.exp -T512 -H512 -bM:SRE~$AR cru $lib $objdir/$soname'
-    archive_sym_cmds='cat $export_symbols > $lib.exp~
-    	$LD -o $objdir/$soname$libobjs$deplibs -bE:$lib.exp -T512 -H512 -bM:SRE~$AR cru $lib $objdir/$soname~$rm $lib.exp'
+    archive_sym_cmds='$LD -o $objdir/$soname$libobjs$deplibs -bE:$export_symbols -T512 -H512 -bM:SRE~$AR cru $lib $objdir/$soname'
     # Note: this linker hardcodes the directories in LIBPATH if there
     # are no directories specified by -L.
     hardcode_minus_L=yes
@@ -1108,8 +1107,7 @@ else
     allow_undefined_flag=unsupported
     archive_cmds='$NM$libobjs | $global_symbol_pipe | sed '\''s/.* //'\' | sort | uniq' > $lib.exp        else cat $export_symbols > $lib.exp~
     	$CC -o $objdir/$soname$libobjs$deplibs ${wl}-bE:$lib.exp ${wl}-bM:SRE ${wl}-bnoentry~$AR cru $lib $objdir/$soname'
-    archive_sym_cmds='cat $export_symbols > $lib.exp~
-    	$CC -o $objdir/$soname$libobjs$deplibs ${wl}-bE:$lib.exp ${wl}-bM:SRE ${wl}-bnoentry~$AR cru $lib $objdir/$soname~$rm $lib.exp'
+    archive_sym_cmds='$CC -o $objdir/$soname$libobjs$deplibs ${wl}-bE:$export_symbols ${wl}-bM:SRE ${wl}-bnoentry~$AR cru $lib $objdir/$soname'
     hardcode_direct=yes
     hardcode_minus_L=yes
     ;;
@@ -1155,7 +1153,7 @@ DllMain (HINSTANCE hInst, DWORD reason, LPVOID reserved)
       $CC $soname-exp -Wl,--dll -nostartfiles -Wl,-e,__cygwin_dll_entry@12 -o $lib $libobjs ltdll.$objext$deplibs~
       $rm ltdll.$objext $soname-base $soname-exp'
       archive_sym_cmds='$CC -c '"`pwd`"'/ltdll.c~echo EXPORTS > $lib.exp~
-      cat "$export_symbols" > $lib.exp~
+      cat "$export_symbols" >> $lib.exp~
       $CC -Wl,--base-file,$soname-base -Wl,--dll -nostartfiles -Wl,-e,__cygwin_dll_entry@12 $libobs ltdll.$objext~
       $DLLTOOL --as=$AS --dllname $soname --exclude-symbol=_cygwin_dll_entry@12 --def $lib.exp --base-file $soname-base --output-exp $soname-exp~
       $CC -Wl,--base-file,$soname-base $soname-exp -Wl,--dll -nostartfiles -Wl,-e,__cygwin_dll_entry@12 -o $lib $libobjs ltdll.$objext$deplibs~
@@ -1281,7 +1279,7 @@ DllMain (HINSTANCE hInst, DWORD reason, LPVOID reserved)
     # $CC -shared without GNU ld will not create a library from C++
     # object files and a static libstdc++, better avoid it by now
     archive_cmds='$LD -G${allow_undefined_flag} -h $soname -o $lib$libobjs$deplibs'
-    archive_sym_cmds='$echo "{ global:" > $lib.exp~sed $export_symbols -e "s/.*/\1;/" >> $lib.exp~$echo "local: * }" > $lib.exp~
+    archive_sym_cmds='$echo "{ global:" > $lib.exp~sed $export_symbols -e "s/.*/\1;/" >> $lib.exp~$echo "local: * }" >> $lib.exp~
 		$LD -G${allow_undefined_flag} -M $export_symbols -h $soname -o $lib$libobjs$deplibs~$rm $lib.exp'
     hardcode_libdir_flag_spec='-R$libdir'
     hardcode_shlibpath_var=no
