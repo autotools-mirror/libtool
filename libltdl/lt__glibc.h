@@ -1,4 +1,4 @@
-/* lt__private.h -- internal apis for libltdl
+/* lt__glibc.h -- support for non glibc environments
    Copyright (C) 2004 Free Software Foundation, Inc.
    Originally by Gary V. Vaughan  <gary@gnu.org>
 
@@ -27,56 +27,47 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 
 */
 
-#ifndef LT__PRIVATE_H
-#define LT__PRIVATE_H 1
+#ifndef LT__GLIBC_H
+#define LT__GLIBC_H 1
 
 #ifdef HAVE_CONFIG_H
 #  include HAVE_CONFIG_H
 #endif
 
-#include <stdio.h>
-#include <ctype.h>
-#include <assert.h>
-#include <errno.h>
-
-#if HAVE_UNISTD_H
-#  include <unistd.h>
-#endif
-
-#if HAVE_STRING_H
-#  include <string.h>
-#else
-#  if HAVE_STRINGS_H
-#    include <strings.h>
-#  endif
-#endif
-#if HAVE_MEMORY_H
-#  include <memory.h>
-#endif
-
-#include "lt__alloc.h"
-#include "lt__dirent.h"
-#include "lt__glibc.h"
-#include "lt__pre89.h"
 #include "lt_system.h"
-#include "ltdl.h"
 
-#if WITH_DMALLOC
-#  include <dmalloc.h>
+/* First redefine any glibc symbols we reimplement... */
+#undef  argz_append
+#define argz_append		lt__argz_append
+#undef  argz_create_sep
+#define argz_create_sep		lt__argz_create_sep
+#undef  argz_insert
+#define argz_insert		lt__argz_insert
+#undef  argz_next
+#define argz_next		lt__argz_next
+#undef  argz_stringify
+#define argz_stringify		lt__argz_stringify
+
+/* ...import our implementations into the lt__ namespace... */
+#include "argz.h"
+
+/* ...finally, we revert to the library implementations of any symbols
+   that are provided by the host since they may be more optimised (say
+   with inline assembler) than the generic versions we provide here.  */
+#if HAVE_ARGZ_APPEND
+#  undef argz_append
+#endif
+#if HAVE_ARGZ_CREATE_SEP
+#  undef argz_create_sep
+#endif
+#if HAVE_ARGZ_INSERT
+#  undef argz_insert
+#endif
+#if HAVE_ARGZ_NEXT
+#  undef argz_next
+#endif
+#if HAVE_ARGZ_STRINGIFY
+#  undef argz_stringify
 #endif
 
-#ifdef DLL_EXPORT
-#  define LT_GLOBAL_DATA	__declspec(dllexport)
-#else
-#  define LT_GLOBAL_DATA
-#endif
-
-LT_BEGIN_C_DECLS
-
-#ifndef errno
-extern int errno;
-#endif
-
-LT_END_C_DECLS
-
-#endif /*!LT__PRIVATE_H*/
+#endif /*!LT__GLIBC_H*/

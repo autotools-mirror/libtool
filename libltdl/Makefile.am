@@ -20,7 +20,7 @@
 AUTOMAKE_OPTIONS = foreign
 ACLOCAL_AMFLAGS  = -I ../m4
 AM_CPPFLAGS = -I$(top_builddir) -I$(top_srcdir)
-DEFS = -DHAVE_CONFIG_H="<$(CONFIG_H)>"
+DEFS = -DHAVE_CONFIG_H="<$(CONFIG_H)>" -DLTDL
 
 pkgincludedir = $(includedir)/libltdl
 
@@ -31,20 +31,22 @@ lib_LTLIBRARIES = libltdl.la
 endif
 
 if CONVENIENCE_LTDL
-noinst_LTLIBRARIES = libltdlc.la
+noinst_LTLIBRARIES  = libltdlc.la
 endif
 
 ## Make sure these will be cleaned even when they're not built by
 ## default.
-CLEANFILES = libltdl.la libltdlc.la
+CLEANFILES	    = libltdl.la libltdlc.la
 
-libltdl_la_SOURCES = lt__alloc.c lt__alloc.h lt__pre89.h lt_system.h \
-		     ltdl.c ltdl.h
-libltdl_la_LDFLAGS = -no-undefined -version-info 5:0:2
-libltdl_la_LIBADD = $(LIBADD_DL) $(LTLIBOBJS)
+libltdl_la_SOURCES  = ltdl.h ltdl.c \
+		      lt__private.h lt__alloc.h lt__alloc.c \
+		      lt__pre89.h lt__glibc.h argz.h lt__dirent.h \
+		      lt_system.h
+libltdl_la_LDFLAGS  = -no-undefined -version-info 5:0:2
+libltdl_la_LIBADD   = $(LIBADD_DL) $(LTLIBOBJS)
 
 libltdlc_la_SOURCES = $(libltdl_la_SOURCES)
-libltdlc_la_LIBADD = $(LIBADD_DL) $(LTLIBOBJS)
+libltdlc_la_LIBADD  = $(LIBADD_DL) $(LTLIBOBJS)
 
 ## These are installed as a subdirectory of pkgdatadir so that
 ## libtoolize --ltdl can find them later:

@@ -1,4 +1,4 @@
-/* lt__private.h -- internal apis for libltdl
+/* lt__argz.h -- internal argz interface for non-glibc systems
    Copyright (C) 2004 Free Software Foundation, Inc.
    Originally by Gary V. Vaughan  <gary@gnu.org>
 
@@ -27,56 +27,28 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 
 */
 
-#ifndef LT__PRIVATE_H
-#define LT__PRIVATE_H 1
+#ifndef ARGZ_H
+#define ARGZ_H 1
 
-#ifdef HAVE_CONFIG_H
-#  include HAVE_CONFIG_H
+#if LTDL
+#  include "lt__glibc.h"
 #endif
 
-#include <stdio.h>
-#include <ctype.h>
-#include <assert.h>
-#include <errno.h>
-
-#if HAVE_UNISTD_H
-#  include <unistd.h>
+#ifdef _cplusplus
+extern "C" {
 #endif
 
-#if HAVE_STRING_H
-#  include <string.h>
-#else
-#  if HAVE_STRINGS_H
-#    include <strings.h>
-#  endif
-#endif
-#if HAVE_MEMORY_H
-#  include <memory.h>
-#endif
+error_t	argz_append	(char **pargz, size_t *pargz_len,
+			 const char *buf, size_t buf_len);
+error_t	argz_create_sep	(const char *str, int delim,
+			 char **pargz, size_t *pargz_len);
+error_t	argz_insert	(char **pargz, size_t *pargz_len,
+			 char *before, const char *entry);
+char *	argz_next	(char *argz, size_t argz_len, const char *entry);
+void	argz_stringify	(char *argz, size_t argz_len, int sep);
 
-#include "lt__alloc.h"
-#include "lt__dirent.h"
-#include "lt__glibc.h"
-#include "lt__pre89.h"
-#include "lt_system.h"
-#include "ltdl.h"
-
-#if WITH_DMALLOC
-#  include <dmalloc.h>
+#ifdef _cplusplus
+}
 #endif
 
-#ifdef DLL_EXPORT
-#  define LT_GLOBAL_DATA	__declspec(dllexport)
-#else
-#  define LT_GLOBAL_DATA
-#endif
-
-LT_BEGIN_C_DECLS
-
-#ifndef errno
-extern int errno;
-#endif
-
-LT_END_C_DECLS
-
-#endif /*!LT__PRIVATE_H*/
+#endif /*!ARGZ_H*/

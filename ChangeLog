@@ -1,5 +1,20 @@
 2004-04-08  Gary V. Vaughan  <gary@gnu.org>
 
+	* libltdl/ltdl.c (argz_append, argz_create_sep, argz_insert)
+	(argz_next, argz_stringify): Move from here...
+	* libltdl/argz.c: New file. ...to here.
+	* libltdl/lt__glibc.h: New file. Rename global symbols into the
+	lt__ namespace.
+	* libltdl/lt__private.h: Include lt__glibc.h.
+	* libltdl/Makefile.am (libltdl_la_SOURCES): Add new files.
+	(AM_CPPFLAGS): Add -DLTDL.
+	* libltdl/argz.h (argz_append, argz_create_sep, argz_insert)
+	(argz_next, argz_stringify): New file. Declare argz functions
+	here, including lt__glibc.h when LTDL is defined to rename global
+	symbols for libltdl.
+	* m4/ltdl.m4 (AC_LTDL_FUNC_ARGZ): Add argz to AC_LIBOBJ if any of
+	our argz_* functions are missing from the system libraries.
+
 	* libltdl/ltdl.c: Move standard headers and preprocessor guards
 	from here...
 	* libltdl/lt__private.h: ...to here.  New file to declare ltdl's

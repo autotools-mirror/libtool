@@ -438,6 +438,7 @@ if test x"$libltdl_cv_need_uscore" = xyes; then
 fi
 ])# AC_LTDL_DLSYM_USCORE
 
+
 # AC_LTDL_FUNC_ARGZ
 # -----------------
 AC_DEFUN([AC_LTDL_FUNC_ARGZ],
@@ -451,5 +452,6 @@ AC_CHECK_TYPES([error_t],
 #  include <argz.h>
 #endif])
 
-AC_CHECK_FUNCS([argz_append argz_create_sep argz_insert argz_next argz_stringify])
+AC_CHECK_FUNCS([argz_append argz_create_sep argz_insert argz_next \
+	argz_stringify], [], [AC_LIBOBJ([argz])])
 ])# AC_LTDL_FUNC_ARGZ
