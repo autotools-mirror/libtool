@@ -1,5 +1,8 @@
 1998-12-04  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* libtool.m4 (ac_cv_sys_symbol_underscore): `test a == b' doesn't
+ 	work, use `test a = b' instead
+
 	* Makefile.am (mdemo_distfiles): libfoo[12].sym no longer exist
 
 	* ltconfig.in (solaris): do not use $CC for linking if GNU ld is

@@ -536,7 +536,7 @@ fi
 rm -rf conftest*
 ])
 AC_MSG_RESULT($ac_cv_sys_symbol_underscore)
-if test x$ac_cv_sys_symbol_underscore == xyes; then
+if test x$ac_cv_sys_symbol_underscore = xyes; then
   AC_DEFINE(WITH_SYMBOL_UNDERSCORE,1,
   [define if compiled symbols have a leading underscore])
 fi
