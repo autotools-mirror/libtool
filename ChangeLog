@@ -1,3 +1,9 @@
+1999-03-21  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* tests/*-unst.test: if directory is not configured, skip it
+	* tests/demo.test, tests/mdemo.test: unused, removed
+	* tests/depdemo.test: ditto
+
 1999-03-20 Thomas Tanner  <tanner@gmx.de>
 
 	* doc/libtool.texi (link mode): documentation for -module updated
@@ -52,8 +58,6 @@
 	libraries instead of yet-to-be-installed ones
 	(*, hardcode_direct, hardcode_minus_L): remove entries that set
 	them to no, that is default
-
-1999-03-19  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* demo/Makefile.am (hc-direct, hc-libpath, hc-minusL): link with
 	$$hardcode_libdir_flag_spec, if available, with libdir=$(libdir),

@@ -11,7 +11,7 @@ fi
 . $srcdir/defs || exit 1
 
 # Make sure it was installed already
-if test "$prefix/bin/hell" && cd ../depdemo; then :
+if test "$prefix/bin/hell" && cd ../depdemo && test -f Makefile; then :
 else
   echo "You must run depdemo-inst.test before $0." 1>&2
   exit 77

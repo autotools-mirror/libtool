@@ -11,14 +11,11 @@ fi
 . $srcdir/defs || exit 1
 
 # Make sure it was installed already
-if test "$prefix/bin/hell"; then :
+if test "$prefix/bin/hell" && cd ../demo && test -f Makefile; then :
 else
   echo "You must run demo-inst.test before $0." 1>&2
   exit 77
 fi
-
-# Change to our build directory.
-cd ../demo || exit 1
 
 echo "= Running $make uninstall in ../demo"
 $make uninstall || exit 1
