@@ -5782,6 +5782,8 @@ test -z "$GREP" && GREP=grep
 _LT_DECL([], [GREP], [1], [A grep program that handles long line])
 _LT_DECL([], [EGREP], [1], [An ERE matcher])
 _LT_DECL([], [FGREP], [1], [A literal string matcher])
+dnl Non-bleeding-edge autoconf doesn't subst GREP, so do it here too
+AC_SUBST([GREP])
 ])
 
 

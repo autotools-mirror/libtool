@@ -1,5 +1,9 @@
 2004-09-24  Gary V. Vaughan  <gary@gnu.org>
 
+	* m4/libtool.m4 (_LT_DECL_EGREP): Only the newest CVS autoconf
+	AC_SUBSTs for GREP.  Do our own here too to cater for release
+	autoconfen.
+
 	* m4/libtool.m4 (_LT_SYS_DYNAMIC_LINKER) [openbsd3.3]: Set
 	need_version to yes or no depending on the os release.
 	Reported by Dalibor Topic <robilad@kaffe.org>
