@@ -1,3 +1,48 @@
+2002-11-18  Charles Wilson  <cwilson@ece.gatech.edu>
+
+	* libtool.m4 (_LT_AC_LOCK): remove support for ancient
+	versions of mingw and cygwin.
+	(AC_LIBTOOL_POSTDEP_PREDEP): new function.
+	moved the "find hidden library dependencies" code here
+	from AC_LIBTOOL_LANG_CXX_CONFIG.  Attempted to make it
+	multi-tag compatible, but currently only CXX calls it.
+	(AC_LIBTOOL_LANG_CXX_CONFIG): set
+	enable_shared_with_satic_runtimes to 'no' by default
+	Set it to 'yes' for cygwin, mingw, pw32. Replace
+	"find hidden library dependencies" code with a call
+	to the new function AC_LIBTOOL_POSTDEP_PREDEP.
+	Consolidate cygwin and mingw/pw32 stanzas.
+	(AC_LIBTOOL_LANG_F77_CONFIG): set
+	enable_shared_with_static_runtimes to 'no' by default
+	(AC_LIBTOOL_CONFIG): add
+	enable_shared_with_static_runtimes to the list of variables
+	to write into ltmain.sh; include it in the libtool script
+	template as allow_libtool_libs_with_static_runtimes.
+	(AC_LIBTOOL_PROG_LD_SHLIBS): set
+	enable_shared_with_static_runtimes to 'no' by default
+	Set it to 'yes' for cygwin, mingw, pw32.
+	(AC_LIBTOOL_SYS_GLOBAL_SYMBOL_PIPE): only put cr in regexp
+	if the build_os is mingw, not host_os
+
+	* ltmain.in (case deplibs_check_method): for all appropriate
+	cases, if allow_libtool_libs_with_static_runtimes, then remove
+	predeps and postdeps from the list of dependencies that must
+	be checked for "dynamicness".  For the "none" case, the
+	presence of compiler-generated postdeps and predeps should
+	not trigger "inter-library dependencies not supported" error.
+	(initial setup after arg processing): on cygwin/mingw, allow
+	compiler-generated dependent libs to be duplicated without
+	elimination.
+	(initial search loop for deplibs): if the deplib in question
+	is a libtool lib, then if
+	allow_libtool_libs_with_static_runtimes then parse the .la file.
+	If the .la file only has an "old_library", add the deplib
+	directly to the deplibs list (-lstdc++) and DON'T use the .la
+	file; this allows the (case deplibs_check_method) change above
+	to take effect.
+	* ltmain.in (for pass in $passes loop): remove predeps,
+	postdeps, and compiler_lib_search_path from dependency_libs.
+
 2002-11-08  Robert Boehne  <rboehne@gnu.org>
 
 	* doc/libtool.texi: Add --mode=* to every example using libtool.
