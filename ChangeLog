@@ -1,3 +1,11 @@
+2001-09-02  Gary V. Vaughan  <gary@gnu.org>
+
+	From Albert Chin <china@thewrittenword.com>:
+	* libtool.m4 (_LT_AC_LANG_C_CONFIG) [aix4*]: Be careful with
+	shared namespaces for static and shared libs.
+	(AC_LIBTOOL_DLOPEN_SELF): If all else fails, try dld_link from GNU
+	DLD.
+
 2001-09-02  Christopher Pfisterer <cp@chrisp.de>
 
 	* libtool.m4, ltmain.in: Linker flag and version numbering fixes
