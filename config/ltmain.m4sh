@@ -4309,7 +4309,7 @@ func_mode_link ()
 	case $current in
 	0|[[1-9]]|[[1-9]][[0-9]]|[[1-9]][[0-9]][[0-9]]|[[1-9]][[0-9]][[0-9]][[0-9]]|[[1-9]][[0-9]][[0-9]][[0-9]][[0-9]]) ;;
 	*)
-	  func_error "CURRENT \`$current' is not a nonnegative integer"
+	  func_error "CURRENT \`$current' must be a nonnegative integer"
 	  func_fatal_error "\`$vinfo' is not valid version information"
 	  ;;
 	esac
@@ -4317,7 +4317,7 @@ func_mode_link ()
 	case $revision in
 	0|[[1-9]]|[[1-9]][[0-9]]|[[1-9]][[0-9]][[0-9]]|[[1-9]][[0-9]][[0-9]][[0-9]]|[[1-9]][[0-9]][[0-9]][[0-9]][[0-9]]) ;;
 	*)
-	  func_error "REVISION \`$revision' is not a nonnegative integer"
+	  func_error "REVISION \`$revision' must be a nonnegative integer"
 	  func_fatal_error "\`$vinfo' is not valid version information"
 	  ;;
 	esac
@@ -4325,7 +4325,7 @@ func_mode_link ()
 	case $age in
 	0|[[1-9]]|[[1-9]][[0-9]]|[[1-9]][[0-9]][[0-9]]|[[1-9]][[0-9]][[0-9]][[0-9]]|[[1-9]][[0-9]][[0-9]][[0-9]][[0-9]]) ;;
 	*)
-	  func_error "AGE \`$age' is not a nonnegative integer"
+	  func_error "AGE \`$age' must be a nonnegative integer"
 	  func_fatal_error "\`$vinfo' is not valid version information"
 	  ;;
 	esac
