@@ -1,3 +1,7 @@
+2004-12-09  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* config/ltmain.m4sh (func_mode_finish) [solaris]: Fix [] escaping bug.
+
 2004-12-02  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
 
 	* config/ltmain.m4sh: Remove code which is no longer needed
