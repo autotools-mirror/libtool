@@ -29,6 +29,25 @@ struct dld_symlist
 
 extern struct dld_symlist dld_preloaded_symbols[];
 
+#ifdef __CYGWIN32__
+int
+win32_force_data_import_address __P((void))
+{
+  struct dld_symlist *s;
+  
+  s = dld_preloaded_symbols;
+  while (s->name)
+    {
+      if (!strcmp ("nothing", s->name))
+        s->address = &nothing;
+      s++;
+    }
+
+  return 0;
+}
+#endif
+      
+
 int
 main (argc, argv)
      int argc;
@@ -41,20 +60,17 @@ main (argc, argv)
 
   printf ("Welcome to *modular* GNU Hell!\n");
 
+#ifdef __CYGWIN32__
+  /* runtime table initialisation */
+  (void) win32_force_data_import_address();
+#endif
+
   /* Look up the symbols we require for this demonstration. */
   s = dld_preloaded_symbols;
   while (s->name)
     {
       if (s->address) {
         char *name = s->name;
-#ifdef WITH_SYMBOL_UNDERSCORE      
-        if (*name != '_')
-          {
-            fprintf(stderr, "ERROR: configure detected leading underscores incorrectly.\n");
-            exit(1);
-          }
-        name++;
-#endif      
         printf ("found symbol: %s\n", name);
         if (!strcmp ("hello", name))
  	  phello = s->address;

@@ -1,3 +1,39 @@
+1998-12-21  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
+
+	* libtool.m4 (AM_SYS_NM_PARSE): apparently  __ptr_t is predefined
+	  on some systems - use lt_ptr_t instead.
+	* ltconfig.in: ditto.
+	* ltmain.in: ditto.
+
+	* libtool.m4 (AM_SYS_SYMBOL_UNDERSCORE): use an AC_SUBST to pass
+	the result of this into the compile rather than AC_DEFINE which
+	breaks when building with older versions of autoconf.
+	* ltconfig.in (symxfrm): Don't put the leading underscore back
+	with the global_symbol_pipe.
+	* demo/dlmain.c (main): No need to specialcase underscores in
+	dld_preloaded_symbols - it is fixed by symxfrm above!
+	* libltdl/configure.in: use AM_SYS_SYMBOL_UNDERSCORE from
+	libtool.m4 rather than reincent the wheel here =)O|
+
+	* ltmain.in:  Fix deplibs methods to not rely on a.out (cygwin
+	uses a.exe!).
+
+	* libltdl/configure.in: Cleanups - fix header comment and emacs
+	local-vars.
+	
+	* demo/dlmain.c (win32_force_data_import_address): a nasty hack
+	to force the address of imported data symbols into
+	dld_preloaded_symbols on win32, which does data imports
+	differently to function imports (sheesh!).  This functionality
+	needs to be moved into the dld_preloaded_symbols generation code.
+	demo/helldl with static linking is broken on win32 by this change,
+	probably until after libtool-1.3 =(O|
+	* demo/foo.h: make sure __CYGWIN32__ is always defined on cygwin32
+	systems.  Use the correct __declspec macro for lib exports/imports
+	on cygwin32.
+	* demo/foo.c, demo/hello.c: Make sure we tell foo.h that these
+	sources are inside libfoo, and want to export symbols.
+	
 1998-12-20  Thomas Tanner  <tanner@gmx.de>
 
 	* autogen: configure demo, depdemo, libltdl and mdemo

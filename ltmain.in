@@ -1399,10 +1399,10 @@ compiler."
           cat > conftest.c <<EOF
           int main() { return 0; }
 EOF
-          $rm a.out
-          $C_compiler conftest.c $deplibs
+          $rm conftest
+          $C_compiler -o conftest conftest.c $deplibs
           if test $? -eq 0 ; then
-            ldd_output=`ldd a.out`
+            ldd_output=`ldd conftest`
             for i in $deplibs; do
               name="`expr $i : '-l\(.*\)'`"
               # If $name is empty we are operating on a -L argument.
@@ -1431,11 +1431,11 @@ EOF
               name="`expr $i : '-l\(.*\)'`"
              # If $name is empty we are operating on a -L argument.
               if test "$name" != "" ; then
-                $rm a.out
-                $C_compiler conftest.c $i
+                $rm conftest
+                $C_compiler -o conftest conftest.c $i
                 # Did it work?
                 if test $? -eq 0 ; then
-                  ldd_output=`ldd a.out`
+                  ldd_output=`ldd conftest`
                     libname=`eval \\$echo \"$libname_spec\"`
                     deplib_matches=`eval \\$echo \"$library_names_spec\"`
                     set dummy $deplib_matches
@@ -1838,15 +1838,15 @@ extern \"C\" {
 #undef dld_preloaded_symbols
 
 #if defined (__STDC__) && __STDC__
-# define __ptr_t void *
+# define lt_ptr_t void *
 #else
-# define __ptr_t char *
+# define lt_ptr_t char *
 #endif
 
 /* The mapping between symbol names and symbols. */
 struct {
   char *name;
-  __ptr_t address;
+  lt_ptr_t address;
 }
 dld_preloaded_symbols[] =
 {\
@@ -1854,25 +1854,25 @@ dld_preloaded_symbols[] =
 
             if test -n "$export_symbols"; then
               echo >> "$output_objdir/$dlsyms" "\
-  {\"${output}\", (__ptr_t) 0},"
-	      sed 's/^\(.*\)/  {"\1", (__ptr_t) \&\1},/' < "$export_symbols" >> "$output_objdir/$dlsyms"
+  {\"${output}\", (lt_ptr_t) 0},"
+	      sed 's/^\(.*\)/  {"\1", (lt_ptr_t) \&\1},/' < "$export_symbols" >> "$output_objdir/$dlsyms"
             fi
 
             for arg in $dlprefiles; do
 	      name=`echo "$arg" | sed -e 's%^.*/%%'`
               echo >> "$output_objdir/$dlsyms" "\
-  {\"$name\", (__ptr_t) 0},"
+  {\"$name\", (lt_ptr_t) 0},"
 	      eval "$NM $arg | $global_symbol_pipe > '$nlist'"
 
 	      if test -f "$nlist"; then
-	        sed 's/^\(.*\) \(.*\)$/  {"\1", (__ptr_t) \&\2},/' < "$nlist" >> "$output_objdir/$dlsyms"
+	        sed 's/^\(.*\) \(.*\)$/  {"\1", (lt_ptr_t) \&\2},/' < "$nlist" >> "$output_objdir/$dlsyms"
 	      else
 		echo '/* NONE */' >> "$output_objdir/$dlsyms"
 	      fi
             done
 
 	    $echo >> "$output_objdir/$dlsyms" "\
-  {0, (__ptr_t) 0}
+  {0, (lt_ptr_t) 0}
 };
 
 #ifdef __cplusplus

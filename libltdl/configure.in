@@ -1,4 +1,5 @@
-dnl Initialize the hell package.
+dnl Process this file with autoconf to create configure.
+dnl Initialize the ltdl package.
 AC_INIT(ltdl.c)
 AM_INIT_AUTOMAKE(libltdl,1.0)
 
@@ -32,18 +33,8 @@ AC_CHECK_FUNCS(dlopen, AC_DEFINE(HAVE_LIBDL),
 )
 AC_SUBST(LIBADD_DL)
 
-AC_CACHE_CHECK([for underscore before symbols], libltdl_cv_uscore, [
-  echo "main(){int i=1;} fnord(){int i=23; int ltuae=42;}" > conftest.c
-  ${CC} -c conftest.c > /dev/null
-  if (nm conftest.$ac_objext | grep _fnord) > /dev/null; then
-    libltdl_cv_uscore=yes
-  else
-    libltdl_cv_uscore=no
-  fi
-  rm -f conftest*
-])
-
-if test x"$libltdl_cv_uscore" = xyes; then
+AM_SYS_SYMBOL_UNDERSCORE
+if test x"$USE_SYMBOL_UNDERSCORE" = xyes; then
   if test x"$ac_cv_func_dlopen" = xyes ||
      test x"$ac_cv_lib_dl_dlopen" = xyes ; then
 	AC_CACHE_CHECK([whether we have to add an underscore for dlsym],
@@ -67,3 +58,8 @@ fi
 
 dnl Output the makefile
 AC_OUTPUT(Makefile)
+
+# Local Variables:
+# mode:shell-script
+# sh-indentation:2
+# End:

@@ -18,12 +18,15 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307
 USA. */
 
+#define _LIBFOO_COMPILATION_
 #include "foo.h"
+#undef _LIBFOO_COMPILATION
+
 #include <stdio.h>
 #include <math.h>
 
 /* Give a global variable definition. */
-int nothing;
+int nothing = FOO_RET;
 
 int
 foo ()

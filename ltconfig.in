@@ -1382,7 +1382,6 @@ aix*)
   ;;
 sunos* | cygwin32* | mingw32*)
   sympat='_\([_A-Za-z][_A-Za-z0-9]*\)'
-  symxfrm='_\1 \1'
   ;;
 irix*)
   # Cannot use undefined symbols on IRIX because inlined functions mess us up.
@@ -1455,9 +1454,9 @@ EOF
 
 	cat <<EOF >> conftest.c
 #if defined (__STDC__) && __STDC__
-# define __ptr_t void *
+# define lt_ptr_t void *
 #else
-# define __ptr_t char *
+# define lt_ptr_t char *
 #endif
 
 /* The number of symbols in dld_preloaded_symbols, -1 if unsorted. */
@@ -1466,14 +1465,14 @@ int dld_preloaded_symbol_count = $count;
 /* The mapping between symbol names and symbols. */
 struct {
   char *name;
-  __ptr_t address;
+  lt_ptr_t address;
 }
 dld_preloaded_symbols[] =
 {
 EOF
-        sed 's/^\(.*\) \(.*\)$/  {"\1", (__ptr_t) \&\2},/' < "$nlist" >> conftest.c
+        sed 's/^\(.*\) \(.*\)$/  {"\1", (lt_ptr_t) \&\2},/' < "$nlist" >> conftest.c
         cat <<\EOF >> conftest.c
-  {0, (__ptr_t) 0}
+  {0, (lt_ptr_t) 0}
 };
 
 #ifdef __cplusplus
@@ -1606,6 +1605,7 @@ cygwin32* | mingw32*)
   dynamic_linker='Win32 ld.exe'
   libname_spec='$name'
   need_lib_prefix=no
+  # FIXME: first we should search . and the directory the executable is in
   shlibpath_var=PATH
   ;;
 

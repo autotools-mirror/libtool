@@ -22,6 +22,16 @@ USA. */
 #ifndef _FOO_H_
 #define _FOO_H_ 1
 
+/* At some point, cygwin will stop defining __CYGWIN32__, but b19 and
+ * earlier do not define __CYGWIN__.  This snippit allows us to check
+ * for __CYGWIN32__ reliably for both old and (probable) future releases.
+ */
+#ifdef __CYGWIN__
+#  ifndef __CYGWIN32__
+#    define __CYGWIN32__
+#  endif
+#endif
+
 /* __BEGIN_DECLS should be used at the beginning of your declarations,
    so that C++ compilers don't mangle their names.  Use __END_DECLS at
    the end of C declarations. */
@@ -39,21 +49,32 @@ USA. */
    that don't understand ANSI C prototypes still work, and ANSI C
    compilers can issue warnings about type mismatches. */
 #undef __P
-#if defined (__STDC__) || defined (_AIX) || (defined (__mips) && defined (_SYSTYPE_SVR4)) || defined(WIN32) || defined(__cplusplus)
+#if defined (__STDC__) || defined (_AIX) || (defined (__mips) && defined (_SYSTYPE_SVR4)) || defined(__CYGWIN32__) || defined(__cplusplus)
 # define __P(protos) protos
 #else
 # define __P(protos) ()
+#endif
+
+#ifdef __CYGWIN32__
+#  ifdef _LIBFOO_COMPILATION_
+#    define EXTERN __declspec(dllexport)
+#  else
+#    define EXTERN extern __declspec(dllimport)
+#  endif
+#else
+#  define EXTERN extern
 #endif
 
 /* Silly constants that the functions return. */
 #define HELLO_RET 0xe110
 #define FOO_RET 0xf00
 
+
 /* Declarations.  Note the wonderful use of the above macros. */
 __BEGIN_DECLS
 int foo __P((void));
 int hello __P((void));
-extern int nothing;
+EXTERN int nothing;
 __END_DECLS
 
 #endif /* !_FOO_H_ */

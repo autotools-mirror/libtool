@@ -428,9 +428,9 @@ EOF
 
 	cat <<EOF >> conftest.c
 #if defined (__STDC__) && __STDC__
-# define __ptr_t void *
+# define lt_ptr_t void *
 #else
-# define __ptr_t char *
+# define lt_ptr_t char *
 #endif
 
 /* The number of symbols in dld_preloaded_symbols, -1 if unsorted. */
@@ -439,16 +439,16 @@ int dld_preloaded_symbol_count = $ac_count;
 /* The mapping between symbol names and symbols. */
 struct {
   char *name;
-  __ptr_t address;
+  lt_ptr_t address;
 }
 changequote(,)dnl
 dld_preloaded_symbols[] =
 changequote([,])dnl
 {
 EOF
-        sed 's/^\(.*\) \(.*\)$/  {"\1", (__ptr_t) \&\2},/' < "$ac_nlist" >> conftest.c
+        sed 's/^\(.*\) \(.*\)$/  {"\1", (lt_ptr_t) \&\2},/' < "$ac_nlist" >> conftest.c
         cat <<\EOF >> conftest.c
-  {0, (__ptr_t) 0}
+  {0, (lt_ptr_t) 0}
 };
 
 #ifdef __cplusplus
@@ -537,8 +537,6 @@ fi
 rm -rf conftest*
 ])
 AC_MSG_RESULT($ac_cv_sys_symbol_underscore)
-if test x$ac_cv_sys_symbol_underscore = xyes; then
-  AC_DEFINE(WITH_SYMBOL_UNDERSCORE,1,
-  [define if compiled symbols have a leading underscore])
-fi
+USE_SYMBOL_UNDERSCORE=${ac_cv_sys_symbol_underscore=no}
+AC_SUBST(USE_SYMBOL_UNDERSCORE)dnl
 ])

@@ -18,7 +18,10 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307
 USA. */
 
 /* Written by Gordon Matzigkeit <gord@gnu.ai.mit.edu> */
+#define _LIBFOO_COMPILATION
 #include "foo.h"
+#undef _LIBFOO_COMPILATION
+
 #include <stdio.h>
 
 int
