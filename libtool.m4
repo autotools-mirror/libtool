@@ -86,6 +86,8 @@ AC_REQUIRE([AC_PROG_CC])dnl
 AC_REQUIRE([AC_PROG_LD])dnl
 AC_REQUIRE([AC_PROG_LD_RELOAD_FLAG])dnl
 AC_REQUIRE([AC_PROG_NM])dnl
+AC_REQUIRE([LT_AC_PROG_SED])dnl
+
 AC_REQUIRE([AC_PROG_LN_S])dnl
 AC_REQUIRE([AC_DEPLIBS_CHECK_METHOD])dnl
 # Autoconf 2.13's AC_OBJEXT and AC_EXEEXT macros only works for C compilers!
@@ -158,6 +160,7 @@ test -z "$LD" && LD=ld
 test -z "$LN_S" && LN_S="ln -s"
 test -z "$MAGIC_CMD" && MAGIC_CMD=file
 test -z "$NM" && NM=nm
+test -z "$SED" && SED=sed
 test -z "$OBJDUMP" && OBJDUMP=objdump
 test -z "$RANLIB" && RANLIB=:
 test -z "$STRIP" && STRIP=:
@@ -3247,7 +3250,7 @@ if test -f "$ltmain"; then
   # Now quote all the things that may contain metacharacters while being
   # careful not to overquote the AC_SUBSTed values.  We take copies of the
   # variables and quote the copies for generation of the libtool script.
-  for var in echo old_CC old_CFLAGS AR AR_FLAGS RANLIB LN_S LTCC NM SHELL \
+  for var in echo old_CC old_CFLAGS AR AR_FLAGS RANLIB LN_S LTCC NM SED SHELL \
     libname_spec library_names_spec soname_spec extract_expsyms_cmds \
     old_striplib striplib file_magic_cmd finish_cmds finish_eval \
     deplibs_check_method reload_flag reload_cmds need_locks \
@@ -3410,6 +3413,9 @@ LN_S=$lt_LN_S
 
 # A BSD-compatible nm program.
 NM=$lt_NM
+
+# A sed program that does not truncate output.
+SED=$lt_SED
 
 # A symbol stripping program
 STRIP=$STRIP
@@ -5304,4 +5310,90 @@ AC_DEFUN([LT_AC_PROG_GCJ],
 
 AC_DEFUN([LT_AC_PROG_RC],
 [AC_CHECK_TOOL(RC, windres, no)
+])
+
+############################################################
+# NOTE: This macro has been submitted for inclusion into   #
+#  GNU Autoconf as AC_PROG_SED.  When it is available in   #
+#  a released version of Autoconf we should remove this    #
+#  macro and use it instead.                               #
+############################################################
+# LT_AC_PROG_SED
+# --------------
+# Check for a fully-functional sed program, that truncates
+# as few characters as possible.  Prefer GNU sed if found.
+AC_DEFUN([LT_AC_PROG_SED],
+[AC_MSG_CHECKING([for a sed that does not truncate output])
+AC_CACHE_VAL(lt_cv_path_SED,
+[# Loop through the user's path and test for sed and gsed.
+# Then use that list of sed's as ones to test for truncation.
+as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+  for ac_prog in sed gsed; do
+    for ac_exec_ext in '' $ac_executable_extensions; do
+      if $as_executable_p "$as_dir/$ac_prog$ac_exec_ext"; then
+        _sed_list="$_sed_list $as_dir/$ac_prog$ac_exec_ext"
+      fi
+    done
+  done
+done
+
+  # Create a temporary directory, and hook for its removal unless debugging.
+$debug ||
+{
+  trap 'exit_status=$?; rm -rf $tmp && exit $exit_status' 0
+  trap '{ (exit 1); exit 1; }' 1 2 13 15
+}
+
+# Create a (secure) tmp directory for tmp files.
+: ${TMPDIR=/tmp}
+{
+  tmp=`(umask 077 && mktemp -d -q "$TMPDIR/sedXXXXXX") 2>/dev/null` &&
+  test -n "$tmp" && test -d "$tmp"
+}  ||
+{
+  tmp=$TMPDIR/sed$$-$RANDOM
+  (umask 077 && mkdir $tmp)
+} ||
+{
+   echo "$me: cannot create a temporary directory in $TMPDIR" >&2
+   { (exit 1); exit 1; }
+}
+  _max=0
+  _count=0
+  # Add /usr/xpg4/bin/sed as it is typically found on Solaris
+  # along with /bin/sed that truncates output.
+  for _sed in $_sed_list /usr/xpg4/bin/sed; do
+    test ! -f ${_sed} && break
+    cat /dev/null > "$tmp/sed.in"
+    _count=0
+    echo $ECHO_N "0123456789$ECHO_C" >"$tmp/sed.in"
+    # Check for GNU sed and select it if it is found.
+    if "${_sed}" --version 2>&1 < /dev/null | egrep '(GNU)' > /dev/null;
+then
+      lt_cv_path_SED=${_sed}
+      break;
+    fi
+    while true; do
+      cat "$tmp/sed.in" "$tmp/sed.in" >"$tmp/sed.tmp"
+      mv "$tmp/sed.tmp" "$tmp/sed.in"
+      cp "$tmp/sed.in" "$tmp/sed.nl"
+      echo >>"$tmp/sed.nl"
+      ${_sed} -e 's/a$//' < "$tmp/sed.nl" >"$tmp/sed.out" || break
+      cmp -s "$tmp/sed.out" "$tmp/sed.nl" || break
+      # 10000 chars as input seems more than enough
+      test $_count -gt 10 && break
+      _count=`expr $_count + 1`
+      if test $_count -gt $_max; then
+        _max=$_count
+        lt_cv_path_SED=$_sed
+      fi
+    done
+  done
+  rm -rf "$tmp"
+])
+AC_MSG_RESULT([$SED])
 ])
