@@ -1568,6 +1568,7 @@ shlibpath_var=
 shlibpath_overrides_runpath=unknown
 version_type=none
 dynamic_linker="$host_os ld.so"
+sys_lib_dlsearch_path_spec="/lib /usr/lib"
 sys_lib_search_path_spec="/lib /usr/lib /usr/local/lib"
 file_magic_cmd=
 deplibs_check_method='unknown'
@@ -1624,6 +1625,7 @@ bsdi4*)
   shlibpath_var=LD_LIBRARY_PATH
   deplibs_check_method='file_magic ELF 32-bit LSB shared object'
   sys_lib_search_path="/shlib /usr/lib /usr/local/lib"
+  sys_lib_dlsearch_path="/shlib /usr/lib" # /usr/local/lib?
   ;;
 
 cygwin* | mingw*)
@@ -1710,7 +1712,12 @@ irix6*)
   esac
   shlibpath_var=LD_LIBRARY${shlibsuff}_PATH
   shlibpath_overrides_runpath=no
+  # even though /usr/local/lib is always searched, the man-page says
+  # shared libraries should not be installed there if they use an ABI
+  # different from -32, so we'd better not search for shared libraries
+  # there either
   sys_lib_search_path_spec="/lib${libsuff} /usr/lib${libsuff} /usr/local/lib${libsuff}"
+  sys_lib_dlsearch_path_spec="/lib${libsuff} /usr/lib${libsuff} /usr/local/lib${libsuff}"
   deplibs_check_method="file_magic ELF ${libmagic} MSB mips-[1234] dynamic lib MIPS - version 1" # or should it be pass_all?
   file_magic_cmd=file
   ;;
@@ -2364,7 +2371,7 @@ case "$ltmain" in
     file_magic_cmd export_symbols_cmds deplibs_check_method allow_undefined_flag no_undefined_flag \
     finish_cmds finish_eval global_symbol_pipe global_symbol_to_cdecl \
     hardcode_libdir_flag_spec hardcode_libdir_separator  \
-    sys_lib_search_path_spec \
+    sys_lib_search_path_spec sys_lib_dlsearch_path_spec \
     compiler_c_o compiler_o_lo need_locks exclude_expsyms include_expsyms; do
 
     case "$var" in
@@ -2372,7 +2379,7 @@ case "$ltmain" in
     old_postinstall_cmds | old_postuninstall_cmds | \
     export_symbols_cmds | archive_cmds | archive_expsym_cmds | \
     postinstall_cmds | postuninstall_cmds | \
-    finish_cmds | sys_lib_search_path_spec)
+    finish_cmds | sys_lib_search_path_spec | sys_lib_dlsearch_path_spec)
       # Double-quote double-evaled strings.
       eval "$var=\\\"\`\$echo \"X\$$var\" | \$Xsed -e \"\$double_quote_subst\" -e \"\$sed_quote_subst\" -e \"\$delay_variable_subst\"\`\\\""
       ;;
@@ -2646,8 +2653,11 @@ hardcode_minus_L=$hardcode_minus_L
 # the resulting binary.
 hardcode_shlibpath_var=$hardcode_shlibpath_var
 
-# System search path for libraries
+# Compile-time system search path for libraries
 sys_lib_search_path_spec=$sys_lib_search_path_spec
+
+# Run-time system search path for libraries
+sys_lib_dlsearch_path_spec=$sys_lib_dlsearch_path_spec
 
 # Fix the shell variable \$srcfile for the compiler.
 fix_srcfile_path="$fix_srcfile_path"

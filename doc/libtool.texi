@@ -3675,10 +3675,19 @@ The name coded into shared libraries, if different from the real name of
 the file.
 @end defvar
 
+@defvar sys_lib_dlsearch_path_spec
+Expression to get the run-time system library search path.  Directories
+that appear in this list are never hard-coded into executables.
+@end defvar
+
 @defvar sys_lib_search_path_spec
-Expression to get the system library search path.  The directories
-listed in @var{shlibpath_var} are automatically appended to this list,
-every time libtool runs (i.e., not at configuration time).
+Expression to get the compile-time system library search path.  This
+variable is used by libtool when it has to test whether a certain
+library is shared or static.  The directories listed in
+@var{shlibpath_var} are automatically appended to this list, every time
+libtool runs (i.e., not at configuration time), because some linkers use
+this variable to extend the library search path.  Linker switches such
+as @code{-L} also augment the search path.
 @end defvar
 
 @defvar version_type

@@ -2173,13 +2173,18 @@ EOF
       fi
 
       # Now hardcode the library paths
-      eval sys_lib_search_path=\"$sys_lib_search_path_spec\"
+      eval sys_lib_dlsearch_path=\"$sys_lib_dlsearch_path_spec\"
       rpath=
       hardcode_libdirs=
       for libdir in $compile_rpath $finalize_rpath; do
-	# Skip directories that are in the system search path
-	case " $sys_lib_search_path " in
-	*" $libdir "*) continue ;;
+	# Skip directories that are in the system default run-time
+	# search path, unless they have been requested with -R.
+	case " $sys_lib_dlsearch_path " in
+	*" $libdir "*)
+	  case " $xrpath " in
+	  *" $libdir "*) ;;
+	  *) continue ;;
+	  esac
 	*) ;;
 	esac
 	
@@ -2220,9 +2225,13 @@ EOF
       rpath=
       hardcode_libdirs=
       for libdir in $finalize_rpath; do
-	# Skip directories that are in the system search path
-	case " $sys_lib_search_path " in
-	*" $libdir "*) continue ;;
+	# Skip directories that are in the system default run-time
+	# search path, unless they have been requested with -R.
+	case " $sys_lib_dlsearch_path " in
+	*" $libdir "*)
+	  case " $xrpath " in
+	  *" $libdir "*) ;;
+	  *) continue ;;
 	*) ;;
 	esac
 	

@@ -1,5 +1,13 @@
 1999-03-13  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* ltconfig.in (sys_lib_dlsearch_path_spec): new variable, that
+	lists the system *run-time* search path.  Listed directories are
+	not implicitly hard-coded into executables.
+	* ltmain.in: use it, but *never* discard -R flags
+	* doc/libtool.texi: document it
+	* NEWS: ditto
+	Reported by Bob Friesenhahn <bfriesen@simple.dallas.tx.us>
+
 	* tests/sh.test: look for `$Xsed' without `$echo "X...' 
 	* ltconfig.in, ltmain.in: fixed a few such occurrences
 
