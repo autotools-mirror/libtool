@@ -1785,7 +1785,7 @@ Aside from @code{disable-static} and @code{disable-shared}, there are
 other options that you can pass to @code{LT_INIT} to modify its
 behaviour.  Here is a full list:
 
-@itemize @samp
+@table @samp
 @item dlopen
 Enable checking for dlopen support. This option should be used if
 the package makes use of the @samp{-dlopen} and @samp{-dlpreopen}
@@ -1831,7 +1831,7 @@ Change the default behaviour of @command{libtool} to try to use only
 non-PIC objects.  The user may still override this default by
 specifying @samp{--without-pic} to @command{configure}.
 
-@end itemize
+@end table
 
 @end defmac
 
