@@ -46,6 +46,11 @@ PACKAGE=@PACKAGE@
 VERSION=@VERSION@
 TIMESTAMP="@TIMESTAMP@"
 
+# See if we are running on zsh, and set the options which allow our
+# commands through without removal of \ escapes.
+if test -n "${ZSH_VERSION+set}" ; then
+  setopt NO_GLOB_SUBST
+fi
 
 # Check that we have a working $echo.
 if test "X$1" = X--no-reexec; then

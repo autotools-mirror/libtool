@@ -1,3 +1,9 @@
+2004-06-24  Noah Misch  <noah@cs.caltech.edu>
+
+	* ltmain.in: Unset the zsh GLOB_SUBST option, which makes zsh
+	handle backslash quoting poorly, before doing anything else.
+	* tests/defs: Likewise.
+
 2004-06-16  Brad  <brad@comstyle.com>
 
 	* libtool.m4: More improvements to OpenBSD support.
