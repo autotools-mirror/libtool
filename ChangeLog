@@ -1,3 +1,12 @@
+2004-09-22  Charles Wilson  <cwilson@spam.protected>
+
+	* config/ltmain.in (func_generate_dlsyms): Addresses in
+	_preloaded_symbols[] cannot go into .rdata section if symbols are
+	DATA imported from DLL, on windows, because runtime relocations
+	must happen.
+	* m4/libtool.m4 (_LT_LINKER_SHLIBS([TAGNAME])):	Build exports for
+	symbols in .rdata sections.
+
 2004-09-19  Gary V. Vaughan  <gary@gnu.org>
 
 	The checks in assign.test are trying to catch case of this ilk:
