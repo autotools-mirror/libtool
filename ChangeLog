@@ -1,5 +1,12 @@
 2001-02-12  Robert Boehne  <rboehne@ricardo-us.com>
 
+        * libtool.m4: Removed the AC_REQUIRE of
+        AC_PROG_LIBTOOL from AC_LIBTOOL_CXX.
+        This caused a circular dependency using
+        CVS autoconf on the tagdemo directory.
+
+2001-02-12  Robert Boehne  <rboehne@ricardo-us.com>
+
         * libtool.m4: Changed aix4* to aix* to set
         deplibs_check_method to pass_all for all aix.
         This should have been part of the patch below.
