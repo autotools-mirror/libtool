@@ -1088,7 +1088,7 @@ if test "$with_gnu_ld" = yes; then
     hardcode_libdir_flag_spec='-L$libdir'
     allow_undefined_flag=unsupported
     always_export_symbols=yes
-    export_symbols_cmd='$DLLTOOL --exclude-symbols DllMain@12,_cygwin_dll_entry@12,_cygwin_noncygwin_dll_entry@12 --output-def $export_symbols $objdir/$soname-ltdll.$objext $libobjs'
+    export_symbols_cmd='$DLLTOOL --export-all --exclude-symbols DllMain@12,_cygwin_dll_entry@12,_cygwin_noncygwin_dll_entry@12 --output-def $export_symbols $objdir/$soname-ltdll.$objext $libobjs'
 
     archive_expsym_cmds='rm -f $objdir/$soname-ltdll.c~
       sed -e "/^# \/\* ltdll.c starts here \*\//,/^# \/\* ltdll.c ends here \*\// { s/^# //; p; }" -e d < $0 > $objdir/$soname-ltdll.c~
