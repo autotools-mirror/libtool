@@ -1,3 +1,12 @@
+1999-01-22  Gary V. Vaughan  <garyv@oranda.demon.co.uk>
+
+	* Makefile.am ($(srcdir)/ltconfig): Oops.  cvs co keyword
+	expansion ate the sed expression! Changed sed separator to '%'
+	because there are '/' in the date.  Added missing '\(' to search
+	expression.  Inserted a null string to stop cvs from expanding it
+	next time =)O|
+	($(srcdir)/ltmain.sh): ditto.
+
 1999-01-22  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* Makefile.am (TSDEPS_DIST): dist-time dependencies for timestamps
