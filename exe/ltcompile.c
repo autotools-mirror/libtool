@@ -43,10 +43,6 @@ static char*   pzPicMode = "default";
 static int     xCompile = 0;
 
 /* BEGIN-STATIC-FORWARD */
-LOCAL tCC*
-makeShellSafe LT_PARAMS((
-    tCC*   pzArg ));
-
 LOCAL void
 parseCompileOpts LT_PARAMS((
     int*    pArgc,
@@ -63,10 +59,7 @@ emitCompile( argc, argv )
     tSCC zQuiet[]    = "run=\nshow=%s\n";
     tSCC zDynFmt[]   = "build_libtool_libs=%s\n";
     tSCC zStatic[]   = "build_old_libs=%s\n";
-    tSCC zModeName[] = "modename='%s: %s'\n";
-    tSCC zMode[]     = "mode='%s'\n";
-    tSCC zCmdName[]  = "nonopt='%s'\nset --";
-    tSCC zDlOpt[]    = "execute_dlfiles='";
+    tSCC zModeName[] = "suppress_output=\nmodename='%s: %s'\nmode='%s'\n";
 
     /*
      *  When we emit our script, we want the interpreter to invoke *US*
@@ -124,27 +117,16 @@ else  echo='%s --echo --' ; fi\n";
     CKSERV;
 
     if (HAVE_OPT( DLOPEN )) {
-        int    ct = STACKCT_OPT(  DLOPEN );
-        char** al = STACKLST_OPT( DLOPEN );
-        fputs( zDlOpt, fp );
-        for (;;) {
-            emitShellQuoted( *(al++), fp );
-            if (--ct <= 0)
-                break;
-            fputc( ' ', fp ); /* between each value only */
-        }
-        fputs( "'\n", fp );
+        emitDlopenOption( fp );
+        CKSERV;
     }
-    CKSERV;
 
     /*
      *  Insert our modal stuff and one shell option processing dinkleberry
      *  that one of the command scripts depends upon.
      */
     fprintf( fp, zModeName, libtoolOptions.pzProgName,
-             apzModeName[ OPT_VALUE_MODE ]);
-    CKSERV;
-    fprintf( fp, zMode, libtoolOptions.pzProgName );
+             apzModeName[ OPT_VALUE_MODE ], libtoolOptions.pzProgName );
     CKSERV;
 
     if (pzTarget == NULL) {
@@ -155,10 +137,9 @@ else  echo='%s --echo --' ; fi\n";
             pzTarget++; 
     }
 
-    fprintf( fp, "libobj='%s'\n", makeShellSafe( pzTarget ));
-    CKSERV;
-
-    fprintf( fp, "build_old_libs=%s\n", oldLibs ? "yes" : "no" );
+    fputs( "libobj='", fp );
+    emitRawQuoted( pzTarget, fp );
+    fprintf( fp, "'\nbuild_old_libs=%s\n", oldLibs ? "yes" : "no" );
     CKSERV;
 
     fprintf( fp, "pic_mode=%s\n", pzPicMode );
@@ -166,12 +147,13 @@ else  echo='%s --echo --' ; fi\n";
 
     fputs( "base_compile='", fp );
     for (;;) {
-        fputs( *(argv++), fp );
+        emitShellArg( *(argv++), fp, '"' );
         CKSERV;
         if (--argc <= 0)
             break;
         fputc( ' ', fp );
     }
+    fputs( "'\n", fp );
 
     {
         struct stat stbf;
@@ -198,7 +180,7 @@ else  echo='%s --echo --' ; fi\n";
             }
         } while (0);
 
-        fprintf( fp, "'\nsrcfile='%s'\n", pzSource );
+        fprintf( fp, "srcfile='%s'\n", pzSource );
     }
 
     emitCommands( fp, apz_mode_cmd[ OPT_VALUE_MODE ]);
@@ -219,57 +201,6 @@ xmalloc( size )
 }
 
 
-LOCAL tCC*
-makeShellSafe( pzArg )
-    tCC*   pzArg;    /*end-decl*/
-{
-    tSCC    zSpecial[] = "\\\"$`[~#^&*(){}|;<>?' \t|]";
-    tSCC*   pzProt     = zSpecial + 4;
-
-    size_t  len = strlen( pzArg );
-    char*   pz;
-
-    if (strcspn( pzArg, zSpecial ) == len)
-        return pzArg;
-
-    pz = strchr( pzArg, '\'' );
-    if (pz == NULL)
-        return pzArg;
-
-    do  {
-        len += 3;
-        pz = strchr( pz+1, '\'' );
-    } while (pz != NULL);
-
-    {
-        char*   pzRes = malloc( len + 1 );
-        pz = pzRes;
-        for (;;) {
-            char  ch = *(pzArg++);
-            *(pz++) = ch;
-
-            switch (ch) {
-            case '\0':
-                goto scan_done;
-
-            case '\'':
-                do  {
-                    strcpy( pz, "\\'" );
-                    pz += 2;
-                } while (*pzArg == '\'');
-                *(pz++) = '\'';
-                break;
-
-            default:
-                break;
-            }
-        } scan_done:;
-
-        return pzRes;
-    }
-}
-
-
 LOCAL void
 parseCompileOpts( pArgc, pArgv )
     int*    pArgc;
@@ -287,7 +218,7 @@ parseCompileOpts( pArgc, pArgv )
     int     argc = *pArgc;
     char**  argv = *pArgv;
 
-    tCC**   newArgv = xmalloc( sizeof( char* ) * (argc + 1) );
+    tCC**   newArgv = xmalloc( sizeof( char* ) * argc );
     int     newCt   = 0;
 
     tCC*    pzCmd   = NULL;
@@ -323,21 +254,22 @@ parseCompileOpts( pArgc, pArgv )
                 fprintf( stderr, zNoXcompile, libtoolOptions.pzProgPath );
                 exit( EXIT_FAILURE );
             }
-            pzCmd = newArgv[ newCt++ ] = makeShellSafe( argv[i] );
+            pzCmd = newArgv[ newCt++ ] = argv[i];
 
-        } else if (argv[i][0] == '-') {
-            if (pzCmd == NULL) {
-                fprintf( stderr, zEarlyOpts, libtoolOptions.pzProgPath );
-                exit( EXIT_FAILURE );
-            }
-            newArgv[ newCt++ ] = makeShellSafe( argv[i] );
+        } else if (strncmp( argv[i], "-Wc,", 4 ) == 0) {
+            if (pzSource != NULL)
+                newArgv[ newCt++ ] = pzSource;
+            pzSource = argv[i] + 4;
+            while (isspace( *pzSource ))  pzSource++;
+            newArgv[ newCt++ ] = pzSource;
+            pzSource = NULL;
 
         } else if (pzCmd == NULL) {
-            pzCmd = newArgv[ newCt++ ] = makeShellSafe( argv[i] );
+            pzCmd = newArgv[ newCt++ ] = argv[i];
 
         } else {
             if (pzSource != NULL)
-                newArgv[ newCt++ ] = makeShellSafe( pzSource );
+                newArgv[ newCt++ ] = pzSource;
             pzSource = argv[i];
         }
     }
