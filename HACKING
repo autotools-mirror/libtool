@@ -39,11 +39,7 @@ and is not part of a release distribution.
 	doc/
 	    + fdl.texi
 	libltdl/
-	    + COPYING.LESSER
-	    + config.guess
-	    + config.sub
-	    + install-sh
-	    + missing
+	    + COPYING.LIB
   The ones that are important for a release can be udated with,
   `make -fMakefile.maint fetch' (or `make -f../Makefile.maint fetch'
   if you are running from a VPATH build directory, where `../' is the
