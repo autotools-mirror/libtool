@@ -2,7 +2,7 @@
 # hardcode.test - check to see what the system linker hardcodes
 
 # Test script header.
-need_prefix=no
+need_prefix=yes # otherwise it will be removed, and build-relink fails
 if test -z "$srcdir"; then
   srcdir=`echo "$0" | sed 's%/[^/]*$%%'`
   test "$srcdir" = "$0" && srcdir=.

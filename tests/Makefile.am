@@ -14,7 +14,7 @@ TESTS = demo-static.test demo-make.test demo-exec.test \
 	cdemo-conf.test cdemo-make.test cdemo-exec.test \
 	demo-shared.test demo-make.test demo-exec.test \
 	demo-inst.test \
-	build-relink.test hardcode.test \
+	hardcode.test build-relink.test \
 	demo-unst.test \
 	mdemo-shared.test mdemo-make.test mdemo-exec.test \
 	mdemo-inst.test mdemo-unst.test \

@@ -1,5 +1,10 @@
 1999-03-07  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* tests/Makefile.am (TESTS): run hardcode before build-relink
+	trashes libhello.la
+	* tests/hardcode.test (need_prefix): set to yes so that _inst is
+	not removed
+
 	* ltmain.in (compile_command): append finalize search path to
 	compile search path
 
