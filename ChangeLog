@@ -1,3 +1,9 @@
+1999-01-19  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* mdemo/Makefile.am (mdemo_LDFLAGS, mdemo_LDADD): moved -dlopen
+	flags to LDADD
+	* doc/libtool.texi (Using Automake): how to add -dlopen to LDADD
+
 1999-01-19  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
 
 	From Andrey Slepuhin <pooh@msu.ru>

@@ -1373,6 +1373,36 @@ hell_debug_LDADD = libhello.la
 hell_debug_LDFLAGS = -static
 @end example
 
+The flags @samp{-dlopen} or @samp{-dlpreopen} (@pxref{Link mode}) would
+fit better in the @var{program_LDADD} variable.  Unfortunately, GNU
+automake, up to release 1.4, doesn't accept these flags in a
+@var{program_LDADD} variable, so you have the following alternatives:
+
+@itemize @bullet
+@item
+add them to @var{program_LDFLAGS}, and optionally list the libraries in
+@var{program_DEPENDENCIES}, then wait for a release of GNU automake that
+accepts these flags where they belong;
+
+@item
+surround the flags between quotes, but then you must set
+@var{program_DEPENDENCIES} too:
+
+@example
+program_LDADD = "-dlopen" libfoo.la
+program_DEPENDENCIES = libfoo.la
+@end example
+
+@item
+set and @samp{AC_SUBST} variables @var{DLOPEN} and @var{DLPREOPEN} in
+@file{configure.in} and use @samp{@@DLOPEN@@} and @samp{@@DLPREOPEN@@}
+instead of @samp{-dlopen} and @samp{-dlpreopen} in
+@samp{program_LDADD}.  Automake will discard @samp{AC_SUBST}ed variables 
+from dependencies, so it will behave exactly as we expect it to behave
+when it accepts these flags in @samp{program_LDADD}.  But hey!, this is
+ugly!
+@end itemize
+
 You may use the @samp{program_LDFLAGS} variable to stuff in any flags
 you want to pass to libtool while linking @samp{program} (such as
 @samp{-static} to avoid linking uninstalled shared libtool libraries).
@@ -1622,11 +1652,12 @@ and, to @file{Makefile.in} or @file{Makefile.am}:
 @example
 LIBTOOL_DEPS = @@LIBTOOL_DEPS@@
 libtool: $(LIBTOOL_DEPS)
-        ./config.status --recheck
+        $(SHELL) ./config.status --recheck
 @end example
 
 If you are using GNU automake, you can omit the assignment, as automake
-will take care of it.
+will take care of it.  You'll obviously have to create some dependency
+on @file{libtool}.
 
 @end defmac
 
