@@ -1,3 +1,9 @@
+2001-11-27  Donald D. Anderson  <dda@sleepycat.com>
+
+	* ltmain.in: Treat freebsd like openbsd, in that -lc/-lc_r should
+	not be explicitly used.  ld handles this depending on the presence
+	of the -pthread option.
+
 2001-11-15  Guido Draheim  <guidod-2001q3@gmx.de>
 
 	* ltdl.m4: Changed "underscode to underscore".
