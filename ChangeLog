@@ -1,4 +1,8 @@
 1999-01-06  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
+	
+	* ltmain.in (dllsearchpath): add absolute directory paths to
+	dllsearchpath so that the wrapper scripts can be called from any
+	directory (e.g. tests) on cygwin.
 
 	* ltconfig.in (cygwin, library_names_spec): revert Alexandre's
 	change from yesterday to use `-dll.a' suffix.  That change caused

@@ -767,10 +767,12 @@ compiler."
 	case "$host" in
 	*-*-cygwin32* | *-*-mingw32* | *-*-os2*)
 	  compile_dependencylibs="$compile_dependencylibs $arg"
+	  dllsearchdir="`expr $arg : '-L\(.*\)'`"
+	  dllsearchdir=`cd "$dllsearchdir" && pwd || echo "$dllsearchdir"`
 	  if test -n "$dllsearchpath"; then
-	    dllsearchpath="$dllsearchpath:`expr $arg : '-L\(.*\)'`"
+	    dllsearchpath="$dllsearchpath:$dllsearchdir"
 	  else
-	    dllsearchpath="`expr $arg : '-L\(.*\)'`"
+	    dllsearchpath="$dllsearchdir"
 	  fi
 	  ;;
 	esac
@@ -1003,10 +1005,11 @@ compiler."
 	      case "$host" in
 	      *-*-cygwin32* | *-*-mingw32* | *-*-os2*)
 		compile_dependencylibs="$compile_dependencylibs -L$dir -l$name"
+		dllsearchdir=`cd "$dir" && pwd || echo "$dir"`
 		if test -n "$dllsearchpath"; then
-		  dllsearchpath="$dllsearchpath:$dir"
+		  dllsearchpath="$dllsearchpath:$dllsearchdir"
 		else
-		  dllsearchpath="$dir"
+		  dllsearchpath="$dllsearchdir"
 		fi
 		;;
 	      esac
