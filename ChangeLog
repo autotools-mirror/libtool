@@ -1,5 +1,9 @@
 1999-04-04  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* ltconfig.in (archive_cmds, sunos4*): Revert to -Bstatic; the
+	native linker doesn't even support -Bshareable, only GNU ld does.
+	Do not use `gcc -shared' in archive_cmds, it breaks deplibs.test.
+
 	* ltconfig.in: if ld_shlibs=no, set can_build_shared=no too,
 	otherwise it will just be disregarded.  This would cause
 	netbsd/m68k with GNU ld a.out, and certainly many other platforms, 
@@ -23,8 +27,6 @@
 	library was linked with the same convenience library by
 	uniquifying the extract directory.  It is now named after the new
 	library *and* the old one, and lives in the objdir of the new one.
-
-1999-04-02  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* ltmain.in (-L*): do not abort just because a directory specified 
 	with -L does not exist; just warn and discard it
