@@ -1,3 +1,13 @@
+2000-09-14  Gary V. Vaughan  <gvv@techie.com>
+
+	From Paul Sokolovsky <Paul.Sokolovsky@technologist.com>
+	* libtool.m4 (pw32): Initial support for pw32, assuming that
+	libtool's behaviour in this environment is identical to under
+	cygwin.
+	* ltconfig.in (pw32): ditto.
+	* ltmain.in (pw32): ditto.
+	* NEWS: Updated.
+	
 2000-09-12  Michael Matz <matz@ifh.de>
 
 	* ltmain.in:  Be careful about filenames with multiple `.'s in

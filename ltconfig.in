@@ -983,7 +983,7 @@ bsdi4*)
   # libtool to hard-code these into programs
   ;;
 
-cygwin* | mingw*)
+cygwin* | mingw* | pw32*)
   version_type=windows
   need_version=no
   need_lib_prefix=no
@@ -1256,7 +1256,7 @@ case "$host_os" in
 aix*)
   symcode='[BCDT]'
   ;;
-cygwin* | mingw*)
+cygwin* | mingw* | pw32*)
   symcode='[ABCDGISTW]'
   ;;
 hpux*) # Its linker distinguishes data from code symbols
@@ -1408,7 +1408,7 @@ echo "checking if libtool supports shared libraries... $can_build_shared" 1>&6
 # Only try to build win32 dlls if AC_LIBTOOL_WIN32_DLL was used in
 # configure.in, otherwise build static only libraries.
 case "$host_os" in
-cygwin* | mingw* | os2*)
+cygwin* | mingw* | pw32* | os2*)
   if test x$can_build_shared = xyes; then
     test x$enable_win32_dll = xno && can_build_shared=no
     echo "checking if package supports dlls... $can_build_shared" 1>&6
@@ -2391,7 +2391,7 @@ EOF
       ;;
     esac
     case "$host" in
-    *-*-cygwin* | *-*-mingw* | *-*-os2*)
+    *-*-cygwin* | *-*-mingw* | *-*-pw32* | *-*-os2*)
       cat <<'EOF' >> "$ofile"
       # This is a source program that is used to create dlls on Windows
       # Don't remove nor modify the starting and closing comments
