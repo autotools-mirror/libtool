@@ -1,3 +1,8 @@
+2001-04-24 Albert Chin-A-Young <china@thewrittenword.com>
+
+	* libtool.m4: Handle case where /bin/nm -p outputs multiple
+	symbol types (like under HP-UX 11.00).
+
 2001-04-24  Thomas Tanner  <tanner@ffii.org>
 
 	* TODO: describe problems with libltdl
