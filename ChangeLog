@@ -1,3 +1,7 @@
+2004-09-01  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* libltdl/slist.c (slist_new): Handle malloc failure gracefully.
+
 2004-09-01  Gary V. Vaughan  <gary@gnu.org>
 
 	* libtoolize.in, config/ltmain.in: Add CDPATH protection to

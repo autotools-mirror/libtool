@@ -37,8 +37,11 @@ slist_new (const void *userdata)
 {
   SList *node = malloc (sizeof *node);
 
-  node->next	 = 0;
-  node->userdata = userdata;
+  if (node)
+    {
+      node->next     = 0;
+      node->userdata = userdata;
+    }
 
   return node;
 }
