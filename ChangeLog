@@ -1,3 +1,18 @@
+1999-06-18  Thomas Tanner  <tanner@ffii.org>
+
+	* ltconfig.in (bsdi4, deplibs_check_method): use a less restrictive
+	  regex (reported by Chris P. Ross <cross@eng.us.uu.net>)
+	* ltmain.in: support `-dlopen self', define lt_preloaded_symbols
+	  if dlself != no
+	* doc/libtool.texi (Compile and Link mode): document it,
+	  documented the -Wc, -Wl flags, libtool does also support non C
+	  source code
+
+1999-06-18  Teun Burgers  <burgers@ecn.nl>
+
+	* ltconfig.in: CR/LF fix for broken DJGPP bash
+	* ltmain.in: CR/LF fix for DJGPP
+
 1999-06-18  Gary V. Vaughan  <gary@oranda.demon.co.uk>
 
 	* ltmain.in (outputname): When generating the executable wrapper
