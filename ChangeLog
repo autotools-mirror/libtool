@@ -1,3 +1,36 @@
+2004-09-02  Gary V. Vaughan  <gary@gnu.org>,
+	    Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* libltdl/slist.c, libltdl/slist.h: Merge in changes from latest
+	upstream.  Mostly comments, formal item boxing, a sort function,
+	and const madness reduction.
+	(slist_new): Removed.
+	(slist_box, slist_unbox, slist_sort): New.
+	(SListCompare, SListCallback): Swapped!
+	(slist_remove, slist_find): Change order of parameters for
+	orthogonality with slist_foreach.  Changed all callers.
+	* libltdl/lt_dlloader.c (loader_cmp): Renamed to...
+	(loader_callback): ...this.  Return boxed item.
+	(lt_dlloader_remove): Adjust to new loader_callback semantics;
+	unbox each removed item before returning.
+	Remove unused variable.
+	Remove const from name parameter, since the slist API cannot
+	guarantee userdata const-ancy for its callback functions.
+	(lt_dlloader_find): Adjust to new loader_callback semantics; need
+	to return the contents of the boxed item.
+	Remove const from name parameter, since the slist API cannot
+	guarantee userdata const-ancy for its callback functions.
+	* libltdl/lt_dlloader.h (lt_dlloader_find, lt_dlloader_remove):
+	Adjust to new constless footprint.
+	* libltdl/ltdl.c (ltdl_exit): The global `loaders' list is changed
+        by `lt_dlloader_remove' while cleaning up, so the address in local
+	variable `loader' is invalidated.  Since some loaders may be
+	resident modules that cannot be unloaded (though we have none
+	yet), we must save each `next' address before calling
+	`lt_dlloader_remove'.
+	* NEWS: Updated.
+	* THANKS: Added Ralf.
+
 2004-09-01  Gary V. Vaughan  <gary@gnu.org>
 
 	* libltdl/lt_dlloader.c (lt_dlloader_add): Handle malloc failure

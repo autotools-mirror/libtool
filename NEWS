@@ -1,7 +1,13 @@
 NEWS - list of user-visible changes between releases of GNU Libtool
 
 New in 1.9d: 2004-??-??; CVS version 1.9c, Libtool team:
-* Return type of lt_dlloader_remove is no longer `const'.
+* Return type, and name parameter of lt_dlloader_remove are no longer
+  `const'.
+* Name parameter of lt_dlloader_find is no longer 'const'.
+* The API for the slist ADT has been updated: slist_new has been replaced
+  by slist_box; slist_unbox and slist_sort are new; the footprint of
+  slist_remove and slist_fnid have changed; SListCallback and SListCompare
+  types have been exchanged.  See libltdl/slist.c for documentation.
 * libltdl is C89 compatible again.  lt_dlsymbol type removed, and lt_dlsymlist
   structure changed to avoid using C99 flexible arrays.
 

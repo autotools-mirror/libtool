@@ -1,6 +1,6 @@
 /* slist.h -- generalised singly linked lists
    Copyright (C) 2000, 2004 Free Software Foundation, Inc.
-   Originally by Gary V. Vaughan  <gary@gnu.org>
+   Written by Gary V. Vaughan  <gary@gnu.org>
 
    NOTE: The canonical source of this file is maintained with the
    GNU Libtool package.  Report bugs to bug-libtool@gnu.org.
@@ -47,26 +47,34 @@ LT_BEGIN_C_DECLS
 
 typedef struct slist {
   struct slist *next;		/* chain forward pointer*/
-  const void *	userdata;	/* incase you want to use raw `SList's */
+  const void *userdata;		/* for boxed `SList' item */
 } SList;
 
-typedef void *	SListCompare	(const SList *node, const void *userdata);
-typedef int	SListCallback	(const SList *node, const void *userdata);
+typedef void *	SListCallback	(SList *item, void *userdata);
+typedef int	SListCompare	(const SList *item1, const SList *item2,
+				 void *userdata);
 
-LT_SCOPE SList *slist_new	(const void *userdata);
-LT_SCOPE SList *slist_delete	(SList *head, void (*delete) (void *data));
-LT_SCOPE void *	slist_remove	(SList **phead, const void *match,
-				 SListCompare *find);
 LT_SCOPE SList *slist_concat	(SList *head, SList *tail);
-LT_SCOPE SList *slist_cons	(SList *head, SList *tail);
-LT_SCOPE SList *slist_tail	(SList *head);
-LT_SCOPE SList *slist_nth	(SList *head, size_t n);
-LT_SCOPE void *	slist_find	(SList *head, const void *match,
-				 SListCompare *find);
-LT_SCOPE size_t slist_length	(SList *head);
-LT_SCOPE SList *slist_reverse	(SList *head);
-LT_SCOPE int	slist_foreach   (SList *head, SListCallback *foreach,
-				 const void *userdata);
+LT_SCOPE SList *slist_cons	(SList *item, SList *slist);
+
+LT_SCOPE SList *slist_delete	(SList *slist, void (*delete) (void *item));
+LT_SCOPE void *	slist_remove	(SList **phead, SListCallback *find,
+				 void *matchdata);
+LT_SCOPE SList *slist_reverse	(SList *slist);
+LT_SCOPE SList *slist_sort	(SList *slist, SListCompare *compare,
+				 void *userdata);
+
+LT_SCOPE SList *slist_tail	(SList *slist);
+LT_SCOPE SList *slist_nth	(SList *slist, size_t n);
+LT_SCOPE void *	slist_find	(SList *slist, SListCallback *find,
+				 void *matchdata);
+LT_SCOPE size_t slist_length	(SList *slist);
+
+LT_SCOPE void *	slist_foreach   (SList *slist, SListCallback *foreach,
+				 void *userdata);
+
+LT_SCOPE SList *slist_box	(const void *userdata);
+LT_SCOPE void *	slist_unbox	(SList *item);
 
 LT_END_C_DECLS
 

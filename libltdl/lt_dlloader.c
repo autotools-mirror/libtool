@@ -33,24 +33,25 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 #define RETURN_SUCCESS 0
 #define RETURN_FAILURE 1
 
-static void *	loader_cmp (const SList *node, const void *userdata);
+static void *	loader_callback (SList *item, void *userdata);
 
-/* A list of all the dlloaders we know about, each stored in the
-   USERDATA field of an SList node:  */
+/* A list of all the dlloaders we know about, each stored as a boxed
+   SList item:  */
 static	SList    *loaders		= 0;
 
-/* Return NULL, unless the loader in this NODE has a matching name,
-   in which case we return the vtable from matching node so that its
-   address is passed back out (for possible freeing) by slist_remove.  */
+
+/* Return NULL, unless the loader in this ITEM has a matching name,
+   in which case we return the matching item so that its address is
+   passed back out (for possible freeing) by slist_remove.  */
 static void *
-loader_cmp (const SList *node, const void *userdata)
+loader_callback (SList *item, void *userdata)
 {
-  const lt_dlvtable *vtable = node->userdata;
+  const lt_dlvtable *vtable = item->userdata;
   const char *	    name    = userdata;
 
   assert (vtable);
 
-  return streq (vtable->name, name) ? (void *) vtable : 0;
+  return streq (vtable->name, name) ? (void *) item : 0;
 }
 
 
@@ -59,7 +60,7 @@ loader_cmp (const SList *node, const void *userdata)
 int
 lt_dlloader_add (const lt_dlvtable *vtable)
 {
-  SList *list;
+  SList *item;
 
   if ((vtable == 0)	/* diagnose invalid vtable fields */
       || (vtable->module_open == 0)
@@ -72,8 +73,8 @@ lt_dlloader_add (const lt_dlvtable *vtable)
       return RETURN_FAILURE;
     }
 
-  list = slist_new (vtable);
-  if (!list)
+  item = slist_box (vtable);
+  if (!item)
     {
       (*lt__alloc_die) ();
 
@@ -84,12 +85,12 @@ lt_dlloader_add (const lt_dlvtable *vtable)
 
   if (vtable->priority == LT_DLLOADER_PREPEND)
     {
-      loaders = slist_cons (list, loaders);
+      loaders = slist_cons (item, loaders);
     }
   else
     {
       assert (vtable->priority == LT_DLLOADER_APPEND);
-      loaders = slist_concat (loaders, list);
+      loaders = slist_concat (loaders, item);
     }
 
   return RETURN_SUCCESS;
@@ -101,28 +102,29 @@ lt_dlloader_add (const lt_dlvtable *vtable)
 lt_dlloader
 lt_dlloader_next (lt_dlloader loader)
 {
-  SList *node = (SList *) loader;
-  return (lt_dlloader) (node ? node->next : loaders);
+  SList *item = (SList *) loader;
+  return (lt_dlloader) (item ? item->next : loaders);
 }
 
 
+/* Non-destructive unboxing of a loader.  */
 const lt_dlvtable *
 lt_dlloader_get	(lt_dlloader loader)
 {
-  return ((SList *) loader)->userdata;
+  return loader ? ((SList *) loader)->userdata : 0;
 }
+
 
 /* Return the contents of the first item in the global loader list
    with a matching NAME after removing it from that list.  If there
    was no match, return NULL; if there is an error, return NULL and
-   set an error for lt_dlerror; in either case the loader list is
-   not changed.  */
+   set an error for lt_dlerror; in either case, the loader list is
+   not changed if NULL is returned.  */
 lt_dlvtable *
-lt_dlloader_remove (const char *name)
+lt_dlloader_remove (char *name)
 {
   const lt_dlvtable *	vtable	= lt_dlloader_find (name);
   lt__handle *		handle	= 0;
-  int			errors	= 0;
 
   if (!vtable)
     {
@@ -153,12 +155,12 @@ lt_dlloader_remove (const char *name)
     }
 
   /* If we got this far, remove the loader from our global list.  */
-  return slist_remove (&loaders, name, loader_cmp);
+  return slist_unbox (slist_remove (&loaders, loader_callback, name));
 }
 
 
 const lt_dlvtable *
-lt_dlloader_find (const char *name)
+lt_dlloader_find (char *name)
 {
-  return slist_find (loaders, name, loader_cmp);
+  return lt_dlloader_get (slist_find (loaders, loader_callback, name));
 }

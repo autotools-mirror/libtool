@@ -278,8 +278,9 @@ lt_dlexit (void)
 	}
 
       /* close all loaders */
-      while ((loader = lt_dlloader_next (loader)))
+      for (loader = lt_dlloader_next (NULL); loader;)
 	{
+	  lt_dlloader *next   = lt_dlloader_next (loader);
 	  lt_dlvtable *vtable = (lt_dlvtable *) lt_dlloader_get (loader);
 
 	  if ((vtable = lt_dlloader_remove (vtable->name)))
@@ -290,6 +291,8 @@ lt_dlexit (void)
 	    {
 	      ++errors;
 	    }
+
+	  loader = next;
 	}
     }
 
