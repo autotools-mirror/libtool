@@ -1565,11 +1565,16 @@ load_deplibs(handle, deplibs)
      lt_dlhandle handle;
      char *deplibs;
 {
+  int	ret = 0;
+
+#if LTDL_DLOPEN_DEPLIBS
+
   char	*p, *save_search_path;
+  int   depcount = 0;
   int	i;
-  int	ret = 1, depcount = 0;
   char	**names = 0;
 
+  ret = 1;
   handle->depcount = 0;
   if (!deplibs)
     {
@@ -1700,11 +1705,11 @@ load_deplibs(handle, deplibs)
 	  if (handle->deplibs[j])
 	    {
 	      ++j;
+	    }
 	}
-    }
 
       handle->depcount	= j;	/* Number of successfully loaded deplibs */
-  ret		    = 0;
+      ret		= 0;
     }
 
  cleanup_names:
@@ -1719,6 +1724,7 @@ load_deplibs(handle, deplibs)
   /* restore the old search path */
   LT_DLFREE (user_search_path);
   user_search_path = save_search_path;
+#endif
 
   return ret;
 }
