@@ -4849,13 +4849,13 @@ AC_MSG_CHECKING([for $compiler option to produce PIC])
       ;;
 
     linux*)
-      case `basename $CC` in
-      icc|ecc)
+      case $CC in
+      icc* | ecc*)
 	_LT_AC_TAGVAR(lt_prog_compiler_wl, $1)='-Wl,'
 	_LT_AC_TAGVAR(lt_prog_compiler_pic, $1)='-KPIC'
 	_LT_AC_TAGVAR(lt_prog_compiler_static, $1)='-static'
         ;;
-      ccc)
+      ccc*)
         _LT_AC_TAGVAR(lt_prog_compiler_wl, $1)='-Wl,'
         # All Alpha code is PIC.
         _LT_AC_TAGVAR(lt_prog_compiler_static, $1)='-non_shared'

@@ -1,3 +1,7 @@
+2003-04-09  Samuel Meder  <meder@mcs.anl.gov>
+
+	* libtool.m4 Switch on $CC and add paterns to cases.
+
 2003-04-09  Peter O'Gorman  <peter@pogma.com>
 
 	* libtool.m4: Move the AC_LIBTOOL_SYS_DYNAMIC_LINKER check
