@@ -974,7 +974,7 @@ func_extract_an_archive () {
       func_warning "$modename: warning: object name conflicts; renaming object files" 1>&2
       func_warning "$modename: warning: to ensure that they will not overwrite" 1>&2
       func_show_eval "cp \$f_ex_an_ar_oldlib \$f_ex_an_ar_dir/\$f_ex_an_ar_lib"
-      $AR t "$f_ex_an_ar_oldlib" | sort | uniq -c | while read -r count name
+      $AR t "$f_ex_an_ar_oldlib" | sort | uniq -c | while read count name
       do
 	# We don't want to do anything to objects with unique names
         test "$count" -eq 1 && continue

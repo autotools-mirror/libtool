@@ -1,5 +1,9 @@
 2004-12-28  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* config/ltmain.m4sh (func_extract_archives): Not all shells grok
+	`read -r' (unnecessary in this case).
+	Reported by Ralf Menzel <menzel@ls6.cs.uni-dortmund.de>.
+
 	* config/general.m4sh: New variable quote_scanset..
 	(func_quote_for_eval, func_quote_for_expand)  ..use it to work around
 	SunOS ksh `case' backslash-escaping bug: protect character class by
