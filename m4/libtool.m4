@@ -728,7 +728,7 @@ if test "X[$]1" = X--no-reexec; then
 elif test "X[$]1" = X--fallback-echo; then
   # Avoid inline document here, it may be left over
   :
-elif test "X`($ECHO '\t') 2>/dev/null`" = 'X\t' ; then
+elif test "X`{ $ECHO '\t'; } 2>/dev/null`" = 'X\t' ; then
   # Yippee, $ECHO works!
   :
 else
@@ -754,17 +754,16 @@ if test -z "$lt_ECHO"; then
     # find a string as large as possible, as long as the shell can cope with it
     for cmd in 'sed 50q "[$]0"' 'sed 20q "[$]0"' 'sed 10q "[$]0"' 'sed 2q "[$]0"' 'echo test'; do
       # expected sizes: less than 2Kb, 1Kb, 512 bytes, 16 bytes, ...
-      if (echo_test_string="`eval $cmd`") 2>/dev/null &&
-         echo_test_string="`eval $cmd`" &&
-         (test "X$echo_test_string" = "X$echo_test_string") 2>/dev/null
+      if { echo_test_string="`eval $cmd`"; } 2>/dev/null &&
+	 { test "X$echo_test_string" = "X$echo_test_string"; } 2>/dev/null
       then
         break
       fi
     done
   fi
 
-  if test "X`($ECHO '\t') 2>/dev/null`" = 'X\t' &&
-     echo_testing_string=`($ECHO "$echo_test_string") 2>/dev/null` &&
+  if test "X`{ $ECHO '\t'; } 2>/dev/null`" = 'X\t' &&
+     echo_testing_string=`{ $ECHO "$echo_test_string"; } 2>/dev/null` &&
      test "X$echo_testing_string" = "X$echo_test_string"; then
     :
   else
@@ -789,12 +788,12 @@ if test -z "$lt_ECHO"; then
 
     if test "X$ECHO" = Xecho; then
       # We didn't find a better echo, so look for alternatives.
-      if test "X`(print -r '\t') 2>/dev/null`" = 'X\t' &&
-         echo_testing_string=`(print -r "$echo_test_string") 2>/dev/null` &&
+      if test "X`{ print -r '\t'; } 2>/dev/null`" = 'X\t' &&
+         echo_testing_string=`{ print -r "$echo_test_string"; } 2>/dev/null` &&
          test "X$echo_testing_string" = "X$echo_test_string"; then
         # This shell has a builtin print -r that does the trick.
         ECHO='print -r'
-      elif (test -f /bin/ksh || test -f /bin/ksh$ac_exeext) &&
+      elif { test -f /bin/ksh || test -f /bin/ksh$ac_exeext; } &&
 	   test "X$CONFIG_SHELL" != X/bin/ksh; then
         # If we have ksh, try running configure again with it.
         ORIGINAL_CONFIG_SHELL=${CONFIG_SHELL-/bin/sh}
@@ -805,8 +804,8 @@ if test -z "$lt_ECHO"; then
       else
         # Try using printf.
         ECHO='printf %s\n'
-        if test "X`($ECHO '\t') 2>/dev/null`" = 'X\t' &&
-	   echo_testing_string=`($ECHO "$echo_test_string") 2>/dev/null` &&
+        if test "X`{ $ECHO '\t'; } 2>/dev/null`" = 'X\t' &&
+	   echo_testing_string=`{ $ECHO "$echo_test_string"; } 2>/dev/null` &&
 	   test "X$echo_testing_string" = "X$echo_test_string"; then
 	  # Cool, printf works
 	  :
@@ -829,7 +828,7 @@ if test -z "$lt_ECHO"; then
 	  prev=:
 
 	  for cmd in 'echo test' 'sed 2q "[$]0"' 'sed 10q "[$]0"' 'sed 20q "[$]0"' 'sed 50q "[$]0"'; do
-	    if (test "X$echo_test_string" = "X`eval $cmd`") 2>/dev/null
+	    if { test "X$echo_test_string" = "X`eval $cmd`"; } 2>/dev/null
 	    then
 	      break
 	    fi
@@ -1191,8 +1190,8 @@ AC_CACHE_VAL([lt_cv_sys_max_cmd_len], [dnl
     # If test is not a shell built-in, we'll probably end up computing a
     # maximum length that is only half of the actual maximum length, but
     # we can't tell.
-    while (test "X"`$SHELL [$]0 --fallback-echo "X$teststring$teststring" 2>/dev/null` \
-	       = "XX$teststring$teststring") >/dev/null 2>&1 &&
+    while { test "X"`$SHELL [$]0 --fallback-echo "X$teststring$teststring" 2>/dev/null` \
+	       = "XX$teststring$teststring"; } >/dev/null 2>&1 &&
 	    test $i != 17 # 1/2 MB should be enough
     do
       i=`expr $i + 1`

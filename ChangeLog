@@ -1,3 +1,11 @@
+2005-01-31  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* config/ltmain.m4sh, m4/libtool.m4: Change `( cmd ) 2>/dev/null' to
+	`{ cmd; } 2>/dev/null', when cmd has no side effects and might be a
+	builtin.  Note that it is unspecified whether cmd will run within a
+	subshell (e.g. Bourne shells) or within the current shell (most modern
+	shells).
+
 2005-01-29  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* m4/libtool.m4 (_LT_LINKER_SHLIBS, _LT_LANG_CXX_CONFIG) [linux]:
