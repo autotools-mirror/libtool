@@ -9,6 +9,8 @@ DIST_SUBDIRS = $(BUILD_SUBDIRS) $(CONF_SUBDIRS)
 # We need to export these variables when we run ltconfig.
 CFLAGS = @CFLAGS@
 CPPLAGS = @CPPFLAGS@
+LDFLAGS = @LDFLAGS@
+LIBS= @LIBS@
 
 aclocal_macros = libtool.m4
 
@@ -28,14 +30,16 @@ bin_SCRIPTS = libtool libtoolize
 
 libtool: $(srcdir)/ltmain.sh $(srcdir)/ltconfig
 	CC="$(CC)" CFLAGS="$(CFLAGS)" CPPFLAGS="$(CPPFLAGS)" \
-	LD="$(LD)" LN_S="$(LN_S)" NM="$(NM)" RANLIB="$(RANLIB)" \
+	LD="$(LD)" LDFLAGS="$(LDFLAGS)" LIBS="$(LIBS)" \
+	LN_S="$(LN_S)" NM="$(NM)" RANLIB="$(RANLIB)" \
 	$(SHELL) $(srcdir)/ltconfig $(LIBTOOL_FLAGS) --srcdir=$(srcdir) \
 	  --output=$@ $(srcdir)/ltmain.sh
 
 # Experimental C version of libtool.
 clibtool: $(srcdir)/ltmain.c $(srcdir)/ltconfig
 	CC="$(CC)" CFLAGS="$(CFLAGS)" CPPFLAGS="$(CPPFLAGS)" \
-	LD="$(LD)" LN_S="$(LN_S)" NM="$(NM)" RANLIB="$(RANLIB)" \
+	LD="$(LD)" LDFLAGS="$(LDFLAGS)" LIBS="$(LIBS)" \
+	LN_S="$(LN_S)" NM="$(NM)" RANLIB="$(RANLIB)" \
 	$(SHELL) $(srcdir)/ltconfig $(LIBTOOL_FLAGS) --srcdir=$(srcdir) \
 	  --output=$@ $(srcdir)/ltmain.c
 

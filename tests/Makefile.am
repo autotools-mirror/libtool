@@ -35,9 +35,16 @@ demo-conf.test: $(top_builddir)/libtool
 $(top_builddir)/libtool:
 	cd $(top_builddir) && $(MAKE) all
 
+# We should export these variables when we run ltconfig.
+CFLAGS = @CFLAGS@
+CPPLAGS = @CPPFLAGS@
+LDFLAGS = @LDFLAGS@
+LIBS = @LIBS@
+
 # Be sure to reexport important environment variables.
 TESTS_ENVIRONMENT = CC="$(CC)" CFLAGS="$(CFLAGS)" CPPFLAGS="$(CPPFLAGS)" \
-	LD="$(LD)" NM="$(NM)" RANLIB="$(RANLIB)" LN_S="$(LN_S)"
+	LD="$(LD)" LDFLAGS="$(LDFLAGS)" LIBS="$(LIBS)" \
+	LN_S="$(LN_S)" NM="$(NM)" RANLIB="$(RANLIB)"
 
 EXTRA_DIST = defs $(TESTS)
 
