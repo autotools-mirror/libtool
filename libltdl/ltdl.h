@@ -207,6 +207,7 @@ extern int lt_dlseterror LTDL_PARAMS((int errorcode));
 						}LTDL_STMT_END
 
 LTDL_SCOPE lt_ptr_t (*lt_dlmalloc)LTDL_PARAMS((size_t size));
+LTDL_SCOPE lt_ptr_t (*lt_dlrealloc)LTDL_PARAMS((lt_ptr_t ptr, size_t size));
 LTDL_SCOPE void (*lt_dlfree)LTDL_PARAMS((lt_ptr_t ptr));
 
 __END_DECLS

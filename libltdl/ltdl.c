@@ -113,6 +113,7 @@ static const char *ltdl_error_strings[] = {
 static const char *last_error = 0;
 
 LTDL_GLOBAL_DATA lt_ptr_t (*lt_dlmalloc) LTDL_PARAMS((size_t size)) = (lt_ptr_t(*)LTDL_PARAMS((size_t)))malloc;
+LTDL_GLOBAL_DATA lt_ptr_t (*lt_dlrealloc) LTDL_PARAMS((lt_ptr_t ptr, size_t size)) = (lt_ptr_t(*)LTDL_PARAMS((lt_ptr_t, size_t)))realloc;
 LTDL_GLOBAL_DATA void	 (*lt_dlfree)  LTDL_PARAMS((lt_ptr_t ptr)) = (void(*)LTDL_PARAMS((lt_ptr_t)))free;
 
 #define LTDL_TYPE_TOP 0
