@@ -75,6 +75,9 @@ m4_define([LT_INIT])
 # Old names:
 AU_DEFUN([AC_PROG_LIBTOOL], [LT_INIT])
 AU_DEFUN([AM_PROG_LIBTOOL], [LT_INIT])
+dnl aclocal-1.4 backwards compatibility:
+dnl AC_DEFUN([AC_PROG_LIBTOOL], [])
+dnl AC_DEFUN([AM_PROG_LIBTOOL], [])
 
 
 # _LT_SETUP
@@ -619,10 +622,14 @@ AC_PROVIDE_IFELSE([LT_PROG_RC],
   [m4_define([LT_PROG_RC], defn([LT_PROG_RC])[LT_LANG(RC)])])
 ])# _LT_LANG_DEFAULT_CONFIG
 
-# Obsolete macros
+# Obsolete macros:
 AU_DEFUN([AC_LIBTOOL_CXX], [LT_LANG(C++)])
 AU_DEFUN([AC_LIBTOOL_F77], [LT_LANG(Fortran 77)])
 AU_DEFUN([AC_LIBTOOL_GCJ], [LT_LANG(Java)])
+dnl aclocal-1.4 backwards compatibility:
+dnl AC_DEFUN([AC_LIBTOOL_CXX], [])
+dnl AC_DEFUN([AC_LIBTOOL_F77], [])
+dnl AC_DEFUN([AC_LIBTOOL_GCJ], [])
 
 
 # _LT_TAG_COMPILER
@@ -1043,6 +1050,8 @@ fi
 
 # Old name:
 AU_DEFUN([AC_LIBTOOL_COMPILER_OPTION], [_LT_COMPILER_OPTION])
+dnl aclocal-1.4 backwards compatibility:
+dnl AC_DEFUN([AC_LIBTOOL_COMPILER_OPTION], [])
 
 
 # _LT_LINKER_OPTION(MESSAGE, VARIABLE-NAME, FLAGS,
@@ -1078,6 +1087,8 @@ fi
 
 # Old name:
 AU_DEFUN([AC_LIBTOOL_LINKER_OPTION], [_LT_LINKER_OPTION])
+dnl aclocal-1.4 backwards compatibility:
+dnl AC_DEFUN([AC_LIBTOOL_LINKER_OPTION], [])
 
 
 # LT_CMD_MAX_LEN
@@ -1174,6 +1185,8 @@ _LT_DECL([], [max_cmd_len], [0],
 
 # Old name:
 AU_DEFUN([AC_LIBTOOL_SYS_MAX_CMD_LEN], [LT_CMD_MAX_LEN])
+dnl aclocal-1.4 backwards compatibility:
+dnl AC_DEFUN([AC_LIBTOOL_SYS_MAX_CMD_LEN], [])
 
 
 # _LT_HEADER_DLFCN
@@ -1392,6 +1405,8 @@ _LT_DECL([dlopen_self_static], [enable_dlopen_self_static], [0],
 
 # Old name:
 AU_DEFUN([AC_LIBTOOL_DLOPEN_SELF], [LT_SYS_DLOPEN_SELF])
+dnl aclocal-1.4 backwards compatibility:
+dnl AC_DEFUN([AC_LIBTOOL_DLOPEN_SELF], [])
 
 
 # _LT_COMPILER_C_O([TAGNAME])
@@ -2248,6 +2263,8 @@ _LT_DECL([], [MAGIC_CMD], [0],
 
 # Old name:
 AU_DEFUN([AC_PATH_TOOL_PREFIX], [_LT_PATH_TOOL_PREFIX])
+dnl aclocal-1.4 backwards compatibility:
+dnl AC_DEFUN([AC_PATH_TOOL_PREFIX], [])
 
 
 # _LT_PATH_MAGIC
@@ -2358,6 +2375,9 @@ _LT_TAGDECL([], [LD], [1], [The linker used to build libraries])
 # Old names:
 AU_DEFUN([AM_PROG_LD], [LT_PATH_LD])
 AU_DEFUN([AC_PROG_LD], [LT_PATH_LD])
+dnl aclocal-1.4 backwards compatibility:
+dnl AC_DEFUN([AM_PROG_LD], [])
+dnl AC_DEFUN([AC_PROG_LD], [])
 
 
 # _LT_PATH_LD_GNU
@@ -2644,6 +2664,9 @@ _LT_DECL([], [NM], [1], [A BSD-compatible nm program])dnl
 # Old names:
 AU_DEFUN([AM_PROG_NM], [LT_PATH_NM])
 AU_DEFUN([AC_PROG_NM], [LT_PATH_NM])
+dnl aclocal-1.4 backwards compatibility:
+dnl AC_DEFUN([AM_PROG_NM], [])
+dnl AC_DEFUN([AC_PROG_NM], [])
 
 
 # LT_LIB_M
@@ -2669,6 +2692,8 @@ AC_SUBST([LIBM])
 
 # Old name:
 AU_DEFUN([AC_CHECK_LIBM], [LT_LIB_M])
+dnl aclocal-1.4 backwards compatibility:
+dnl AC_DEFUN([AC_CHECK_LIBM], [])
 
 
 # _LT_COMPILER_NO_RTTI([TAGNAME])
@@ -5813,6 +5838,8 @@ AC_DEFUN([LT_PROG_GCJ],
 
 # Old name:
 AU_DEFUN([LT_AC_PROG_GCJ], [LT_PROG_GCJ])
+dnl aclocal-1.4 backwards compatibility:
+dnl AC_DEFUN([LT_AC_PROG_GCJ], [])
 
 
 # LT_PROG_RC
@@ -5823,6 +5850,8 @@ AC_DEFUN([LT_PROG_RC],
 
 # Old name:
 AU_DEFUN([LT_AC_PROG_RC], [LT_PROG_RC])
+dnl aclocal-1.4 backwards compatibility:
+dnl AC_DEFUN([LT_AC_PROG_RC], [])
 
 
 # _LT_DECL_EGREP

@@ -112,6 +112,9 @@ AC_DIAGNOSE([obsolete],
 put the `dlopen' option into LT_INIT's first parameter.])
 ])
 
+dnl aclocal-1.4 backwards compatibility:
+dnl AC_DEFUN([AC_LIBTOOL_DLOPEN], [])
+
 
 # win32-dll
 # ---------
@@ -143,6 +146,9 @@ AC_DIAGNOSE([obsolete],
 [$0: Remove this warning and the call to _LT_SET_OPTION when you
 put the `win32-dll' option into LT_INIT's first parameter.])
 ])
+
+dnl aclocal-1.4 backwards compatibility:
+dnl AC_DEFUN([AC_LIBTOOL_WIN32_DLL], [])
 
 
 # _LT_ENABLE_SHARED([DEFAULT])
@@ -210,6 +216,13 @@ AC_DIAGNOSE([obsolete],
 the `disable-shared' option into LT_INIT's first parameter.])
 ])
 
+dnl aclocal-1.4 backwards compatibility:
+dnl AC_DEFUN([AC_ENABLE_SHARED], [])
+dnl AC_DEFUN([AM_ENABLE_SHARED], [])
+dnl AC_DEFUN([AC_DISABLE_SHARED], [])
+dnl AC_DEFUN([AM_DISABLE_SHARED], [])
+
+
 
 # _LT_ENABLE_STATIC([DEFAULT])
 # ----------------------------
@@ -276,6 +289,13 @@ AC_DIAGNOSE([obsolete],
 the `disable-static' option into LT_INIT's first parameter.])
 ])
 
+dnl aclocal-1.4 backwards compatibility:
+dnl AC_DEFUN([AC_ENABLE_STATIC], [])
+dnl AC_DEFUN([AM_ENABLE_STATIC], [])
+dnl AC_DEFUN([AC_DISABLE_STATIC], [])
+dnl AC_DEFUN([AM_DISABLE_STATIC], [])
+
+
 
 # _LT_ENABLE_FAST_INSTALL([DEFAULT])
 # ----------------------------------
@@ -328,6 +348,10 @@ AC_DIAGNOSE([obsolete],
 the `disable-fast-install' option into LT_INIT's first parameter.])
 ])
 
+dnl aclocal-1.4 backwards compatibility:
+dnl AC_DEFUN([AC_ENABLE_FAST_INSTALL], [])
+dnl AC_DEFUN([AM_DISABLE_FAST_INSTALL], [])
+
 
 # _LT_WITH_PIC([MODE])
 # --------------------
@@ -356,3 +380,6 @@ AC_DIAGNOSE([obsolete],
 [$0: Remove this warning and the call to _LT_SET_OPTION when you
 put the `pic-only' option into LT_INIT's first parameter.])
 ])
+
+dnl aclocal-1.4 backwards compatibility:
+dnl AC_DEFUN([AC_LIBTOOL_PIC_MODE], [])
