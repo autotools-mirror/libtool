@@ -1,3 +1,9 @@
+1999-03-25  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
+
+	* ltmain.in ($PATH):  Expand any tildes in the users path to the
+	contents of $HOME to avoid problems with *_cmds splitting and
+	evaluation.
+	
 1999-03-24 Thomas Tanner  <tanner@gmx.de>
 
 	* TODO: support -dlopen for libraries

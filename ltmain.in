@@ -90,6 +90,13 @@ if test "$build_libtool_libs" != yes && test "$build_old_libs" != yes; then
   exit 1
 fi
 
+# A little paranoid perhaps...
+[ "${HOME+set}" ] || HOME=`cd && pwd`
+
+# Apparently some people optimistically hardcode `~' in their path, and
+# hope that their tools will interpret it correctly.  We mustn't disappoint!
+eval PATH=`echo "$PATH" | sed 's,^~/,$HOME/,;s,:~/,:$HOME/,g'`
+
 # Global variables.
 mode=$default_mode
 nonopt=
