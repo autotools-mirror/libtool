@@ -1,5 +1,27 @@
 2004-04-22  Gary V. Vaughan  <gary@gnu.org>
 
+	* libltdl/argz.h: Moved from here...
+	* libltdl/argz_.h: ...to here, so as not to shadow system
+	argz.h when we `#include <argz.h>' for example.
+	#include stdlib.h and sys/types.h to ensure we get a size_t
+	definition.
+	* libltdl/argz.c (HAVE_CONFIG_H): Set it up how ltdl likes it when
+	used by another client.
+	* m4/argz.m4: New file.
+	(gl_FUNC_ARGZ): Try to find an error_t definition, and a system
+	argz.h.
+	* m4/ltdl.m4: Use it.
+	(AC_LTDL_FUNC_ARGZ): Removed.
+	* libltdl/lt__glibc.h: #include <argz.h> to pick up either the
+	system argz.h or our libltdl/argz.h if necessary.
+	* libltdl/Makefile.am (libltdl_la_SOURCES): Move argz.h from
+	here...
+	(ltdldata_DATA): ...here. Along with argz.c.
+	(argz.h): Generate from argz_.h if the system file is missing.
+	Reported by Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
+2004-04-22  Gary V. Vaughan  <gary@gnu.org>
+
 	According to Howard Chu <hyc@highlandsun.com>:
 	Applications should assume that the native dlopen is NOT
 	thread-safe, and take care of locking themselves. All application

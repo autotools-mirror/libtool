@@ -27,8 +27,11 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 
 */
 
-#if !defined(ARGZ_H)
-#define ARGZ_H 1
+#if !defined(LT__ARGZ_H)
+#define LT__ARGZ_H 1
+
+#include <stdlib.h>
+#include <sys/types.h>
 
 #if defined(LTDL)
 #  include "lt__glibc.h"
@@ -51,4 +54,4 @@ void	argz_stringify	(char *argz, size_t argz_len, int sep);
 }
 #endif
 
-#endif /*!defined(ARGZ_H)*/
+#endif /*!defined(LT__ARGZ_H)*/

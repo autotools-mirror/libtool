@@ -34,40 +34,23 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 #  include HAVE_CONFIG_H
 #endif
 
-#include "lt_system.h"
+#if !defined(HAVE_ARGZ_H)
+/* Redefine any glibc symbols we reimplement to import the
+   implementations into our lt__ namespace so we don't ever
+   clash with the system library if our clients use argz_*
+   from there in addition to libltdl.  */
+#  undef  argz_append
+#  define argz_append		lt__argz_append
+#  undef  argz_create_sep
+#  define argz_create_sep	lt__argz_create_sep
+#  undef  argz_insert
+#  define argz_insert		lt__argz_insert
+#  undef  argz_next
+#  define argz_next		lt__argz_next
+#  undef  argz_stringify
+#  define argz_stringify	lt__argz_stringify
+#endif
 
-/* First redefine any glibc symbols we reimplement... */
-#undef  argz_append
-#define argz_append		lt__argz_append
-#undef  argz_create_sep
-#define argz_create_sep		lt__argz_create_sep
-#undef  argz_insert
-#define argz_insert		lt__argz_insert
-#undef  argz_next
-#define argz_next		lt__argz_next
-#undef  argz_stringify
-#define argz_stringify		lt__argz_stringify
-
-/* ...import our implementations into the lt__ namespace... */
-#include "argz.h"
-
-/* ...finally, we revert to the library implementations of any symbols
-   that are provided by the host since they may be more optimised (say
-   with inline assembler) than the generic versions we provide here.  */
-#if defined(HAVE_ARGZ_APPEND)
-#  undef argz_append
-#endif
-#if defined(HAVE_ARGZ_CREATE_SEP)
-#  undef argz_create_sep
-#endif
-#if defined(HAVE_ARGZ_INSERT)
-#  undef argz_insert
-#endif
-#if defined(HAVE_ARGZ_NEXT)
-#  undef argz_next
-#endif
-#if defined(HAVE_ARGZ_STRINGIFY)
-#  undef argz_stringify
-#endif
+#include <argz.h>
 
 #endif /*!defined(LT__GLIBC_H)*/

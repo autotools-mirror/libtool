@@ -27,7 +27,16 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 
 */
 
-#include "argz.h"
+/* Provide our wierdo HAVE_CONFIG_H rvalue for other clients.  */
+#if !defined(LTDL) && defined(HAVE_CONFIG_H)
+#  define HAVE_CONFIG_H <config.h>
+#endif
+
+#if defined(HAVE_CONFIG_H)
+#  include HAVE_CONFIG_H
+#endif
+
+#include <argz.h>
 
 #include <assert.h>
 #include <stddef.h>

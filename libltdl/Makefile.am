@@ -17,6 +17,10 @@
 ## the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 ## Boston, MA 02111-1307, USA.
 
+BUILT_SOURCES =
+MOSTLYCLEANFILES =
+EXTRA_DIST =
+
 AUTOMAKE_OPTIONS = foreign
 ACLOCAL_AMFLAGS  = -I ../m4
 AM_CPPFLAGS = -I$(top_builddir) -I$(top_srcdir)
@@ -42,7 +46,7 @@ libltdl_la_SOURCES  = ltdl.h ltdl.c \
 		      loader-preopen.c \
 		      lt_error.h lt_error.c \
 		      lt__private.h lt__alloc.h lt__alloc.c \
-		      lt__glibc.h argz.h lt__dirent.h \
+		      lt__glibc.h lt__dirent.h \
 		      lt_system.h
 libltdl_la_LDFLAGS  = -no-undefined -version-info 5:0:2
 libltdl_la_LIBADD   = $(LIBADD_DL) $(LTLIBOBJS)
@@ -53,4 +57,23 @@ libltdlc_la_LIBADD  = $(LIBADD_DL) $(LTLIBOBJS)
 ## These are installed as a subdirectory of pkgdatadir so that
 ## libtoolize --ltdl can find them later:
 ltdldatadir = $(pkgdatadir)/libltdl
-ltdldata_DATA = COPYING.LIB Makefile.am README $(libltdl_la_SOURCES)
+ltdldata_DATA = COPYING.LIB Makefile.am README $(libltdl_la_SOURCES) \
+		argz_.h argz.c
+
+
+## --------------------------- ##
+## Gnulib Makefile.am snippets ##
+## --------------------------- ##
+
+## ((( gnulib module argz
+BUILT_SOURCES += $(ARGZ_H)
+EXTRA_DIST += argz_.h
+
+# We need the following in order to create an <argz.h> when the system
+# doesn't have one that works with the given compiler.
+all-local $(lib_OBJECTS): $(ARGZ_H)
+argz.h: argz_.h
+	cp $(srcdir)/argz_.h $@-t
+	mv $@-t $@
+MOSTLYCLEANFILES += argz.h argz.h-t
+## ))) gnulib module argz
