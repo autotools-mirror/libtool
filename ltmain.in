@@ -2660,6 +2660,7 @@ EOF
       case $outputname in
       lib*)
 	name=`$echo "X$outputname" | $Xsed -e 's/\.la$//' -e 's/^lib//'`
+	eval shared_ext=\"$shrext\"
 	eval libname=\"$libname_spec\"
 	;;
       *)
@@ -2671,6 +2672,7 @@ EOF
 	if test "$need_lib_prefix" != no; then
 	  # Add the "lib" prefix for modules if required
 	  name=`$echo "X$outputname" | $Xsed -e 's/\.la$//'`
+	  eval shared_ext=\"$shrext\"
 	  eval libname=\"$libname_spec\"
 	else
 	  libname=`$echo "X$outputname" | $Xsed -e 's/\.la$//'`
@@ -3385,6 +3387,7 @@ EOF
 	fi
 
 	# Get the real and link names of the library.
+	eval shared_ext=\"$shrext\"
 	eval library_names=\"$library_names_spec\"
 	set dummy $library_names
 	realname="$2"

@@ -1,3 +1,13 @@
+2003-01-10  Robert Boehne  <rboehne@gnu.org>
+
+	* libtool.m4 (AC_LIBTOOL_SYS_DYNAMIC_LINKER): Modify the
+	"-shrext" option so that is works properly under Darwin.
+	Modify the processing of 'gcc -print-search-dirs' under
+	Darwin to make it behave like GNU gcc does.
+	(AC_LIBTOOL_CONFIG): Single quote $shrext.
+	* ltimain.in: Expand shared_ext just before it is used
+	so that it can be conditional on the value of $module.
+
 2002-12-31  Benjamin Reed  <ranger@befunk.com>
 
 	* ltmain.in [darwin]: disable lazy linking, needed
