@@ -33,7 +33,7 @@ AC_CACHE_SAVE
 AR="$AR" CC="$CC" CFLAGS="$CFLAGS" CPPFLAGS="$CPPFLAGS" \
 MAGIC="$MAGIC" LD="$LD" LDFLAGS="$LDFLAGS" LIBS="$LIBS" \
 LN_S="$LN_S" NM="$NM" RANLIB="$RANLIB" STRIP="$STRIP" \
-AS="$AS" DLLTOOL="$DLLTOOL" OBJDUMP="$OBJDUMP" \
+AS="$AS" DLLTOOL="$DLLTOOL" OBJDUMP="$OBJDUMP" ECHO="$ECHO" \
 objext="$OBJEXT" exeext="$EXEEXT" reload_flag="$reload_flag" \
 deplibs_check_method="$deplibs_check_method" file_magic_cmd="$file_magic_cmd" \
 ${CONFIG_SHELL-/bin/sh} $ac_aux_dir/ltconfig --no-reexec \
@@ -71,6 +71,8 @@ AC_REQUIRE([AC_DEPLIBS_CHECK_METHOD])dnl
 AC_REQUIRE([AC_OBJEXT])dnl
 AC_REQUIRE([AC_EXEEXT])dnl
 dnl
+
+_LT_AC_PROG_ECHO_BACKSLASH
 
 # Only perform the check for file, if the check method requires it
 case "$deplibs_check_method" in
@@ -175,6 +177,179 @@ ifdef([AC_PROVIDE_AC_LIBTOOL_WIN32_DLL],
   ])
 esac
 ])
+
+# _LT_AC_LIBTOOL_SYS_PATH_SEPARATOR
+# ---------------------------------
+AC_DEFUN([_LT_AC_LIBTOOL_SYS_PATH_SEPARATOR],
+[# Find the correct PATH separator.  Usually this is `:', but
+# DJGPP uses `;' like DOS.
+if test "X${PATH_SEPARATOR+set}" != Xset; then
+  UNAME=${UNAME-`uname 2>/dev/null`}
+  case X$UNAME in
+    *-DOS) lt_cv_sys_path_separator=';' ;;
+    *)     lt_cv_sys_path_separator=':' ;;
+  esac
+fi
+])# _LT_AC_LIBTOOL_SYS_PATH_SEPARATOR
+
+# _LT_AC_PROG_ECHO_BACKSLASH
+# --------------------------
+# Add some code to the start of the generated configure script which
+# will find an echo command which doesn;t interpret backslashes.
+AC_DEFUN([_LT_AC_PROG_ECHO_BACKSLASH],
+[ifdef([AC_DIVERSION_NOTICE], [AC_DIVERT_PUSH(AC_DIVERSION_NOTICE)],
+                              [AC_DIVERT_PUSH(NOTICE)])
+_LT_AC_LIBTOOL_SYS_PATH_SEPARATOR
+
+# Check that we are running under the correct shell.
+SHELL=${CONFIG_SHELL-/bin/sh}
+
+case "X$ECHO" in
+X*--fallback-echo)
+  # Remove one level of quotation (which was required for Make).
+  ECHO=`echo "$ECHO" | sed 's,\\\\\[$]\\[$]0,'[$]0','`
+  ;;
+esac
+
+lt_echo=${ECHO-echo}
+if test "X[$]1" = X--no-reexec; then
+  # Discard the --no-reexec flag, and continue.
+  shift
+elif test "X[$]1" = X--fallback-echo; then
+  # Avoid inline document here, it may be left over
+  :
+elif test "X`($lt_echo '\t') 2>/dev/null`" = 'X\t'; then
+  # Yippee, $lt_echo works!
+  :
+else
+  # Restart under the correct shell.
+  exec "$SHELL" "[$]0" --no-reexec ${1+"[$]@"}
+fi
+
+if test "X[$]1" = X--fallback-echo; then
+  # used as fallback echo
+  shift
+  cat <<EOF
+$*
+EOF
+  exit 0
+fi
+
+# The HP-UX ksh and POSIX shell print the target directory to stdout
+# if CDPATH is set.
+if test "X${CDPATH+set}" = Xset; then CDPATH=:; export CDPATH; fi
+
+if test -z "$ECHO"; then
+if test "X${lt_echo_test_string+set}" != Xset; then
+# find a string as large as possible, as long as the shell can cope with it
+  for cmd in 'sed 50q "[$]0"' 'sed 20q "[$]0"' 'sed 10q "[$]0"' 'sed 2q "[$]0"' 'echo test'; do
+    # expected sizes: less than 2Kb, 1Kb, 512 bytes, 16 bytes, ...
+    if (lt_echo_test_string="`eval $cmd`") 2>/dev/null &&
+       lt_echo_test_string="`eval $cmd`" &&
+       (test "X$lt_echo_test_string" = "X$lt_echo_test_string") 2>/dev/null
+    then
+      break
+    fi
+  done
+fi
+
+if test "X`($lt_echo '\t') 2>/dev/null`" = 'X\t' &&
+   lt_echo_testing_string=`($lt_echo "$lt_echo_test_string") 2>/dev/null` &&
+   test "X$lt_echo_testing_string" = "X$lt_echo_test_string"; then
+  :
+else
+  # The Solaris, AIX, and Digital Unix default echo programs unquote
+  # backslashes.  This makes it impossible to quote backslashes using
+  #   echo "$something" | sed 's/\\/\\\\/g'
+  #
+  # So, first we look for a working echo in the user's PATH.
+
+  IFS="${IFS= 	}"; save_ifs="$IFS"; IFS="${IFS}${PATH_SEPARATOR}"
+  for dir in $PATH /usr/ucb; do
+    if (test -f $dir/echo || test -f $dir/echo$ac_exeext) &&
+       test "X`($dir/echo '\t') 2>/dev/null`" = 'X\t' &&
+       lt_echo_testing_string=`($dir/echo "$lt_echo_test_string") 2>/dev/null` &&
+       test "X$lt_echo_testing_string" = "X$lt_echo_test_string"; then
+      lt_echo="$dir/echo"
+      break
+    fi
+  done
+  IFS="$save_ifs"
+
+  if test "X$lt_echo" = Xecho; then
+    # We didn't find a better echo, so look for alternatives.
+    if test "X`(print -r '\t') 2>/dev/null`" = 'X\t' &&
+       lt_echo_testing_string=`(print -r "$lt_echo_test_string") 2>/dev/null` &&
+       test "X$lt_echo_testing_string" = "X$lt_echo_test_string"; then
+      # This shell has a builtin print -r that does the trick.
+      lt_echo='print -r'
+    elif (test -f /bin/ksh || test -f /bin/ksh$ac_exeext) &&
+	 test "X$CONFIG_SHELL" != X/bin/ksh; then
+      # If we have ksh, try running ltconfig again with it.
+      ORIGINAL_CONFIG_SHELL="${CONFIG_SHELL-/bin/sh}"
+      export ORIGINAL_CONFIG_SHELL
+      CONFIG_SHELL=/bin/ksh
+      export CONFIG_SHELL
+      exec "$CONFIG_SHELL" "[$]0" --no-reexec ${1+"$@"}
+    else
+      # Try using printf.
+      lt_echo='printf %s\n'
+      if test "X`($lt_echo '\t') 2>/dev/null`" = 'X\t' &&
+	 lt_echo_testing_string=`($lt_echo "$lt_echo_test_string") 2>/dev/null` &&
+	 test "X$lt_echo_testing_string" = "X$lt_echo_test_string"; then
+	# Cool, printf works
+	:
+      elif lt_echo_testing_string=`("$ORIGINAL_CONFIG_SHELL" "[$]0" --fallback-echo '\t') 2>/dev/null` &&
+	   test "X$lt_echo_testing_string" = 'X\t' &&
+	   lt_echo_testing_string=`("$ORIGINAL_CONFIG_SHELL" "[$]0" --fallback-echo "$lt_echo_test_string") 2>/dev/null` &&
+	   test "X$lt_echo_testing_string" = "X$lt_echo_test_string"; then
+	CONFIG_SHELL="$ORIGINAL_CONFIG_SHELL"
+	export CONFIG_SHELL
+	SHELL="$CONFIG_SHELL"
+	export SHELL
+	lt_echo="$CONFIG_SHELL [$]0 --fallback-echo"
+      elif lt_echo_testing_string=`("$CONFIG_SHELL" "[$]0" --fallback-echo '\t') 2>/dev/null` &&
+	   test "X$lt_echo_testing_string" = 'X\t' &&
+	   lt_echo_testing_string=`("$CONFIG_SHELL" "[$]0" --fallback-echo "$lt_echo_test_string") 2>/dev/null` &&
+	   test "X$lt_echo_testing_string" = "X$lt_echo_test_string"; then
+	lt_echo="$CONFIG_SHELL [$]0 --fallback-echo"
+      else
+	# maybe with a smaller string...
+	prev=:
+
+	for cmd in 'echo test' 'sed 2q "[$]0"' 'sed 10q "[$]0"' 'sed 20q "[$]0"' 'sed 50q "[$]0"'; do
+	  if (test "X$lt_echo_test_string" = "X`eval $cmd`") 2>/dev/null
+	  then
+	    break
+	  fi
+	  prev="$cmd"
+	done
+
+	if test "$prev" != 'sed 50q "[$]0"'; then
+	  lt_echo_test_string=`eval $prev`
+	  export lt_echo_test_string
+	  exec "${ORIGINAL_CONFIG_SHELL-${CONFIG_SHELL-/bin/sh}}" "[$]0" ${1+"$@"}
+	else
+	  # Oops.  We lost completely, so just stick with echo.
+	  lt_echo=echo
+	fi
+      fi
+    fi
+  fi
+fi
+fi
+
+# Copy lt_echo and quote the copy suitably for passing to ltconfig from
+# the Makefile, instead of quoting the original, which is used later.
+ECHO=$lt_echo
+if test "X$ECHO" = "X$CONFIG_SHELL [$]0 --fallback-echo"; then
+   ECHO="$CONFIG_SHELL \\\$\[$]0 --fallback-echo"
+fi
+
+AC_SUBST(ECHO)
+AC_DIVERT_POP
+])# _LT_AC_PROG_ECHO_BACKSLASH
+
 
 # AC_LIBTOOL_DLOPEN - enable checks for dlopen support
 AC_DEFUN(AC_LIBTOOL_DLOPEN, [AC_BEFORE([$0],[AC_LIBTOOL_SETUP])])

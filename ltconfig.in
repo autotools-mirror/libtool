@@ -27,7 +27,15 @@
 
 # Check that we are running under the correct shell.
 SHELL=${CONFIG_SHELL-/bin/sh}
-echo=echo
+
+case "X$ECHO" in
+X*--fallback-echo)
+  # Remove one level of quotation (which was required for Make).
+  ECHO=`echo "$ECHO" | sed 's,\\\\\$\\$0,'$0',;s,\\$0,'$0','`
+  ;;
+esac
+
+echo=${ECHO-echo}
 if test "X$1" = X--no-reexec; then
   # Discard the --no-reexec flag, and continue.
   shift
@@ -65,6 +73,7 @@ fi
 # if CDPATH is set.
 if test "X${CDPATH+set}" = Xset; then CDPATH=:; export CDPATH; fi
 
+if test -z "$ECHO"; then
 if test "X${echo_test_string+set}" != Xset; then
   # find a string as large as possible, as long as the shell can cope with it
   for cmd in 'sed 50q "$0"' 'sed 20q "$0"' 'sed 10q "$0"' 'sed 2q "$0"' 'echo test'; do
@@ -160,6 +169,7 @@ else
     fi
   fi
 fi
+fi
 
 # Sed substitution that helps us do robust quoting.  It backslashifies
 # metacharacters that are still active within double-quoted strings.
@@ -233,6 +243,7 @@ old_DLLTOOL="$DLLTOOL"
 old_OBJDUMP="$OBJDUMP"
 old_OBJEXT="$OBJEXT"
 old_EXEEXT="$EXEEXT"
+old_echo="$echo"
 old_reload_flag="$reload_flag"
 old_deplibs_check_method="$deplibs_check_method"
 old_file_magic_cmd="$file_magic_cmd"
@@ -1897,7 +1908,6 @@ EOF
     # Now try to grab the symbols.
     nlist=conftest.nm
     if { echo "$progname:@LINENO@: eval \"$NM conftest.$objext | $global_symbol_pipe > $nlist\"" >&5; eval "$NM conftest.$objext | $global_symbol_pipe > $nlist 2>&5"; } && test -s "$nlist"; then
-
       # Try sorting and uniquifying the output.
       if sort "$nlist" | uniq > "$nlist"T; then
 	mv -f "$nlist"T "$nlist"
@@ -2547,7 +2557,7 @@ case "$ltmain" in
     old_MAGIC old_LD old_LDFLAGS old_LIBS \
     old_LN_S old_NM old_RANLIB old_STRIP \
     old_AS old_DLLTOOL old_OBJDUMP \
-    old_OBJEXT old_EXEEXT old_reload_flag \
+    old_OBJEXT old_EXEEXT old_echo old_reload_flag \
     old_deplibs_check_method old_file_magic_cmd \
     AR AR_FLAGS CC LD LN_S NM LTSHELL LTCONFIG_VERSION \
     reload_flag reload_cmds wl \
@@ -2636,7 +2646,7 @@ EOF
     old_MAGIC old_LD old_LDFLAGS old_LIBS \
     old_LN_S old_NM old_RANLIB old_STRIP \
     old_AS old_DLLTOOL old_OBJDUMP \
-    old_OBJEXT old_EXEEXT old_reload_flag \
+    old_OBJEXT old_EXEEXT old_echo old_reload_flag \
     old_deplibs_check_method old_file_magic_cmd; do
     eval "$var=\\\"\$var\\\""
   done
@@ -2660,8 +2670,8 @@ cat <<EOF >> "$cfgfile"
 # CPPFLAGS=$old_CPPFLAGS MAGIC=$old_MAGIC LD=$old_LD LDFLAGS=$old_LDFLAGS \\
 # LIBS=$old_LIBS LN_S=$old_LN_S NM=$old_NM RANLIB=$old_RANLIB \\
 # STRIP=$old_STRIP AS=$old_AS DLLTOOL=$old_DLLTOOL OBJDUMP=$old_OBJDUMP \\
-# objext=$old_OBJEXT exeext=$old_EXEEXT reload_flag=$old_reload_flag \\
-# deplibs_check_method=$old_deplibs_check_method file_magic_cmd=$old_file_magic_cmd \\
+# objext=$old_OBJEXT exeext=$old_EXEEXT echo=$old_echo \\
+# reload_flag=$old_reload_flag deplibs_check_method=$old_deplibs_check_method \# file_magic_cmd=$old_file_magic_cmd \\
 #   $0$ltconfig_args
 #
 # Compiler and other test output produced by $progname, useful for

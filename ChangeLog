@@ -1,3 +1,27 @@
+2000-08-31  Gary V. Vaughan  <gvv@techie.com>
+
+	Move the echo detection code to a macro in libtool.m4.  The code
+	at the top ofltconfig.in is ugly, but will go away when the rest
+	of ltconfig is migrated.
+
+	* Makefile.am (libtool):  Pass the value of $ECHO to ltconfig as
+	an environment variable. 
+	* libtool.m4 (_LT_AC_PROG_ECHO_BACKSLASH): Quote the ECHO value
+	correctly so that it inserts the correct code into configure.in 
+	suitably quoted for M4 expansion.  This code needs to be near
+	the top of configure.in as it calls itself recursively, so I
+	am using AC_DIVERSION_NOTICE (or simply NOTICE on CVS
+	Autoconf).  The value of ECHO is also substitued into the
+	Makefile to be used when Make calls ltconfig to generate
+	libtool, so another layer of quotation is required for the
+	Makefile. 
+	(AC_LIBTOOL_SETUP):  Use it.
+	* ltconfig.in: Accept a value for ECHO from the environment, and
+	carefully substitue for $0 if it is present in the ECHO value.
+	Because ECHO was quoted for Make, when ltconfig is called by
+	configure, it is overquoted, and one layer of quotes must be
+	stripped.
+
 2000-08-27  Gary V. Vaughan  <gvv@techie.com>
 
 	* ltconfig.in (with_gcc):  Make the value of this option

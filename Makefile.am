@@ -32,7 +32,7 @@ libtool: $(srcdir)/ltmain.sh $(srcdir)/ltconfig
 	AR="$(AR)" CC="$(CC)" CFLAGS="$(CFLAGS)" CPPFLAGS="$(CPPFLAGS)" \
 	MAGIC="$(MAGIC)" LD="$(LD)" LDFLAGS="$(LDFLAGS)" LIBS="$(LIBS)" \
 	LN_S="$(LN_S)" NM="$(NM)" RANLIB="$(RANLIB)" STRIP="$(STRIP)" \
-	AS="$(AS)" DLLTOOL="$(DLLTOOL)" OBJDUMP="$(OBJDUMP)" \
+	AS="$(AS)" DLLTOOL="$(DLLTOOL)" OBJDUMP="$(OBJDUMP)" ECHO="$(ECHO)" \
 	objext="$(OBJEXT)" exeext="$(EXEEXT)" reload_flag="$(reload_flag)" \
 	deplibs_check_method="$(deplibs_check_method)" file_magic_cmd="$(file_magic_cmd)" \
 	$(SHELL) $(srcdir)/ltconfig $(LIBTOOL_FLAGS) --srcdir=$(srcdir) \
@@ -43,7 +43,7 @@ clibtool: $(srcdir)/ltmain.c $(srcdir)/ltconfig
 	AR="$(AR)" CC="$(CC)" CFLAGS="$(CFLAGS)" CPPFLAGS="$(CPPFLAGS)" \
 	MAGIC="$(MAGIC)" LD="$(LD)" LDFLAGS="$(LDFLAGS)" LIBS="$(LIBS)" \
 	LN_S="$(LN_S)" NM="$(NM)" RANLIB="$(RANLIB)" STRIP="$(STRIP)" \
-	AS="$(AS)" DLLTOOL="$(DLLTOOL)" OBJDUMP="$(OBJDUMP)" \
+	AS="$(AS)" DLLTOOL="$(DLLTOOL)" OBJDUMP="$(OBJDUMP)" ECHO="$(ECHO)" \
 	objext="$(objext)" exeext="$(exeext)" reload_flag="$(reload_flag)" \
 	deplibs_check_method="$(deplibs_check_method)" file_magic_cmd="$(file_magic_cmd)" \
 	$(SHELL) $(srcdir)/ltconfig $(LIBTOOL_FLAGS) --srcdir=$(srcdir) \
