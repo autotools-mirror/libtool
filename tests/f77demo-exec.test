@@ -10,7 +10,7 @@ if test -z "$srcdir"; then
 fi
 . $srcdir/defs || exit 1
 
-if test -f ../f77demo/fprogram && test -f ../f77demo/cprogram; then :
+if test -f ../f77demo/fprogram$EXEEXT && test -f ../f77demo/cprogram$EXEEXT; then :
 else
   echo "You must run f77demo-make.test before running $0" 1>&2
   exit 77

@@ -1,3 +1,29 @@
+2003-03-28  Richard Dawe  <rich@phekda.freeserve.co.uk>
+
+	* Makefile.am: Define CONF_SUBDIRS.
+	* tests/defs: Set CONFIG_SITE to /nonexistent, except on DJGPP,
+	which requires its config.site, to work correctly.
+	* tests/cdemo-conf.test, tests/cdemo-shared.test,
+	tests/cdemo-static.test, tests/demo-conf.test,
+	tests/demo-nofast.test, tests/demo-nopic.test,
+	tests/demo-pic.test, tests/demo-shared.test,
+	tests/demo-static.test, tests/depdemo-conf.test,
+	tests/depdemo-nofast.test, tests/depdemo-shared.test,
+	tests/depdemo-static.test, tests/f77demo-conf.test,
+	tests/f77demo-shared.test, tests/f77demo-static.test,
+	tests/mdemo-conf.test, tests/mdemo-shared.test,
+	tests/mdemo-static.test, tests/pdemo-conf.test,
+	tests/tagdemo-conf.test, tests/tagdemo-shared.test,
+	tests/tagdemo-static.test: Don't set CONFIG_SITE, now that
+	tests/defs sets it.
+	* tests/cdemo-exec.test, tests/demo-exec.test,
+	tests/demo-inst.test, tests/depdemo-exec.test,
+	tests/depdemo-inst.test, tests/f77demo-exec.test,
+	tests/mdemo-exec.test, tests/mdemo-inst.test,
+	tests/pdemo-exec.test, tests/pdemo-inst.test,
+	tests/tagdemo-exec.test: When checking for the existence
+	of executables, use the executable file extension from $EXEEXT.
+
 2003-03-28  Peter O'Gorman  <peter@pogma.com>
 
 	* libltdl/ltdl.c (dyld): Remove some debug printf's, fix a bug.

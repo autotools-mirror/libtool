@@ -10,7 +10,7 @@ if test -z "$srcdir"; then
 fi
 . $srcdir/defs || exit 1
 
-if test -f ../pdemo/hell; then :
+if test -f ../pdemo/hell$EXEEXT; then :
 else
   echo "You must run pdemo-make.test before running $0" 1>&2
   exit 77

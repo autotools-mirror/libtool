@@ -25,7 +25,7 @@ rm -f config.cache
 
 # Configure the demonstration.
 echo "= Configuring in ../f77demo (prefix=$prefix)"
-CONFIG_SITE=/nonexistent ${CONFIG_SHELL-/bin/sh} $srcdir/../f77demo/configure --srcdir=$srcdir/../f77demo --prefix=$prefix || exit 1
+${CONFIG_SHELL-/bin/sh} $srcdir/../f77demo/configure --srcdir=$srcdir/../f77demo --prefix=$prefix || exit 1
 
 if $EGREP '^build_old_libs=yes' libtool > /dev/null &&
    $EGREP '^build_libtool_libs=yes' libtool > /dev/null; then :

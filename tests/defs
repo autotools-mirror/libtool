@@ -38,6 +38,12 @@ fi
 # Extract CC from the libtool configuration
 eval `$libtool --config | grep '^CC='`
 
+# Disable usage of config.site for autoconf, unless DJGPP is present.
+# The DJGPP port of autoconf requires config.site, to work correctly.
+if test -z $DJGPP; then
+    CONFIG_SITE=/nonexistent
+fi
+
 # See how redirections should work.
 case "$VERBOSE" in
 NO | no | 0 | "")

@@ -25,7 +25,7 @@ rm -f config.cache
 
 # Configure the demonstration.
 echo "= Configuring in ../cdemo (prefix=$prefix) with --disable-shared"
-CONFIG_SITE=/nonexistent ${CONFIG_SHELL-/bin/sh} $srcdir/../cdemo/configure --srcdir=$srcdir/../cdemo --prefix=$prefix --disable-shared || exit 1
+${CONFIG_SHELL-/bin/sh} $srcdir/../cdemo/configure --srcdir=$srcdir/../cdemo --prefix=$prefix --disable-shared || exit 1
 
 if grep '^build_old_libs=yes' libtool > /dev/null &&
    grep '^build_libtool_libs=no' libtool > /dev/null; then :
