@@ -7,6 +7,7 @@ New in 2.1b: 2005-??-??; CVS version 2.1a, Libtool team:
 * Support for linux-dietlibc (`diet' as well as `diet-dyn', separately).
 * Shell optimizations which break use of the stdin file descriptor in libtool.
 * `libtoolize --install' now also installs `install-sh'.
+* Support (mostly) for DragonFly BSD.
 
 New in 1.9h: 2004-??-??; CVS version 1.9g, Libtool team:
 * Libtool versions can now be parallel installed, except that only one
