@@ -1780,8 +1780,8 @@ func_mode_install ()
       destname="$func_basename_result"
 
       # Not a directory, so check to see that there is only one file specified.
-      set dummy $files
-      test "$#" -gt 2 && \
+      set dummy $files; shift
+      test "$#" -gt 1 && \
 	func_fatal_help "\`$dest' is not a directory"
     fi
     case $destdir in
@@ -1872,10 +1872,9 @@ func_mode_install ()
 	fi
 
 	# See the names of the shared library.
-	set dummy $library_names
-	if test -n "$2"; then
-	  realname="$2"
-	  shift
+	set dummy $library_names; shift
+	if test -n "$1"; then
+	  realname="$1"
 	  shift
 
 	  srcname="$realname"
@@ -3285,8 +3284,8 @@ func_mode_link ()
 	      valid_a_lib=no
 	      case $deplibs_check_method in
 		match_pattern*)
-		  set dummy $deplibs_check_method
-		  match_pattern_regex=`expr "$deplibs_check_method" : "$2 \(.*\)"`
+		  set dummy $deplibs_check_method; shift
+		  match_pattern_regex=`expr "$deplibs_check_method" : "$1 \(.*\)"`
 		  if eval $ECHO \"X$deplib\" 2>/dev/null | $Xsed -e 10q \
 		    | $EGREP "$match_pattern_regex" > /dev/null; then
 		    valid_a_lib=yes
@@ -3666,8 +3665,9 @@ func_mode_link ()
 	  if test -n "$old_archive_from_expsyms_cmds"; then
 	    # figure out the soname
 	    set dummy $library_names
-	    realname="$2"
-	    shift; shift
+	    shift
+	    realname="$1"
+	    shift
 	    libname=`eval \\$ECHO \"$libname_spec\"`
 	    # use dlname if we got it. it's perfectly good, no?
 	    if test -n "$dlname"; then
@@ -4180,10 +4180,11 @@ func_mode_link ()
 	func_warning "\`-dlopen self' is ignored for libtool libraries"
 
       set dummy $rpath
-      test "$#" -gt 2 && \
+      shift
+      test "$#" -gt 1 && \
 	func_warning "ignoring multiple \`-rpath's for a libtool library"
 
-      install_libdir="$2"
+      install_libdir="$1"
 
       oldlibs=
       if test -z "$rpath"; then
@@ -4207,9 +4208,10 @@ func_mode_link ()
 	# Parse the version information argument.
 	save_ifs="$IFS"; IFS=':'
 	set dummy $vinfo 0 0 0
+	shift
 	IFS="$save_ifs"
 
-	test -n "$8" && \
+	test -n "$7" && \
 	  func_fatal_help "too many parameters to \`-version-info'"
 
 	# convert absolute version numbers to libtool ages
@@ -4218,9 +4220,9 @@ func_mode_link ()
 
 	case $vinfo_number in
 	yes)
-	  number_major="$2"
-	  number_minor="$3"
-	  number_revision="$4"
+	  number_major="$1"
+	  number_minor="$2"
+	  number_revision="$3"
 	  #
 	  # There are really only two kinds -- those that
 	  # use the current revision as the major version
@@ -4247,9 +4249,9 @@ func_mode_link ()
 	  esac
 	  ;;
 	no)
-	  current="$2"
-	  revision="$3"
-	  age="$4"
+	  current="$1"
+	  revision="$2"
+	  age="$3"
 	  ;;
 	esac
 
@@ -4572,8 +4574,8 @@ EOF
 		if test -n "$i" ; then
 		  libname=`eval \\$ECHO \"$libname_spec\"`
 		  deplib_matches=`eval \\$ECHO \"$library_names_spec\"`
-		  set dummy $deplib_matches
-		  deplib_match=$2
+		  set dummy $deplib_matches; shift
+		  deplib_match=$1
 		  if test `expr "$ldd_output" : ".*$deplib_match"` -ne 0 ; then
 		    newdeplibs="$newdeplibs $i"
 		  else
@@ -4614,8 +4616,8 @@ EOF
 		  if test -n "$i" ; then
 		    libname=`eval \\$ECHO \"$libname_spec\"`
 		    deplib_matches=`eval \\$ECHO \"$library_names_spec\"`
-		    set dummy $deplib_matches
-		    deplib_match=$2
+		    set dummy $deplib_matches; shift
+		    deplib_match=$1
 		    if test `expr "$ldd_output" : ".*$deplib_match"` -ne 0 ; then
 		      newdeplibs="$newdeplibs $i"
 		    else
@@ -4644,8 +4646,8 @@ EOF
 	  fi
 	  ;;
 	file_magic*)
-	  set dummy $deplibs_check_method
-	  file_magic_regex=`expr "$deplibs_check_method" : "$2 \(.*\)"`
+	  set dummy $deplibs_check_method; shift
+	  file_magic_regex=`expr "$deplibs_check_method" : "$1 \(.*\)"`
 	  for a_deplib in $deplibs; do
 	    name="`expr $a_deplib : '-l\(.*\)'`"
 	    # If $name is empty we are operating on a -L argument.
@@ -4713,8 +4715,8 @@ EOF
 	  done # Gone through all deplibs.
 	  ;;
 	match_pattern*)
-	  set dummy $deplibs_check_method
-	  match_pattern_regex=`expr "$deplibs_check_method" : "$2 \(.*\)"`
+	  set dummy $deplibs_check_method; shift
+	  match_pattern_regex=`expr "$deplibs_check_method" : "$1 \(.*\)"`
 	  for a_deplib in $deplibs; do
 	    name="`expr $a_deplib : '-l\(.*\)'`"
 	    # If $name is empty we are operating on a -L argument.
@@ -4923,8 +4925,9 @@ EOF
 	eval shared_ext=\"$shrext_cmds\"
 	eval library_names=\"$library_names_spec\"
 	set dummy $library_names
-	realname="$2"
-	shift; shift
+	shift
+	realname="$1"
+	shift
 
 	if test -n "$soname_spec"; then
 	  eval soname=\"$soname_spec\"
