@@ -1282,6 +1282,42 @@ static struct lt_user_dlloader presym = {
 /* The type of a function used at each iteration of  foreach_dirinpath().  */
 typedef int	foreach_callback_func LT_PARAMS((char *filename, lt_ptr data1,
 						 lt_ptr data2));
+static	int	foreach_dirinpath     LT_PARAMS((const char *search_path,
+						 const char *base_name,
+						 foreach_callback_func *func,
+						 lt_ptr data1, lt_ptr data2));
+
+static	int	find_file_callback    LT_PARAMS((char *filename, lt_ptr data,
+						 lt_ptr ignored));
+static	int	find_handle_callback  LT_PARAMS((char *filename, lt_ptr data,
+						 lt_ptr ignored));
+static	int	foreachfile_callback  LT_PARAMS((char *filename, lt_ptr data1,
+						 lt_ptr data2));
+
+
+static	char    *canonicalize_path    LT_PARAMS((const char *path));
+static	FILE    *find_file	      LT_PARAMS((const char *search_path,
+						 const char *base_name,
+						 char **pdir));
+static	lt_dlhandle *find_handle      LT_PARAMS((const char *search_path,
+						 const char *base_name,
+						 lt_dlhandle *handle));
+static	int	find_module	      LT_PARAMS((lt_dlhandle *handle,
+						 const char *dir,
+						 const char *libdir,
+						 const char *dlname,
+						 const char *old_name,
+						 int installed));
+static	int	free_vars	      LT_PARAMS((char *dlname, char *oldname,
+						 char *libdir, char *deplibs));
+static	int	load_deplibs	      LT_PARAMS((lt_dlhandle handle,
+						 char *deplibs));
+static	int	trim		      LT_PARAMS((char **dest,
+						 const char *str));
+static	int	tryall_dlopen	      LT_PARAMS((lt_dlhandle *handle,
+						 const char *filename));
+static	int	unload_deplibs	      LT_PARAMS((lt_dlhandle handle));
+
 
 static	char	       *user_search_path= 0;
 static	lt_dlloader    *loaders		= 0;

@@ -1,5 +1,7 @@
 2001-06-26  Gary V. Vaughan  <gary@gnu.org>
 	
+	* libltdl/ltdl.c: Prototype all static functions.
+
 	* ltdl.m4: Bump serial number to 3.
 	(AC_LIB_LTDL): Require AC_HEADER_DIRENT for ltdl.c.
 	* libltdl/ltdl.h (lt_dlforeachfile): Prototype for new function.
