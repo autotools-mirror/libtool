@@ -1,7 +1,11 @@
 1999-01-27  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* configure.in (pkgdatadir): expand ${PACKAGE} at configure-time,
+	just like automake does
+
 	* configure.in (pkgdatadir): define pkgdatadir explicitly, and
  	comment that automake does not need it, but libtoolize does
+
 	* Makefile.am (aclocaldir): do not set it explicitly, automake
 	does already
 

@@ -24,7 +24,7 @@ changequote([,])
     ;;
 esac    
 
-pkgdatadir='${datadir}/${PACKAGE}'
+pkgdatadir='${datadir}'"/${PACKAGE}"
 AC_SUBST(pkgdatadir) dnl automake does not need this, but libtoolize does
 aclocaldir='${datadir}/aclocal'
 AC_SUBST(aclocaldir)
