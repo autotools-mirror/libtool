@@ -1,5 +1,9 @@
 2004-10-13  Gary V. Vaughan  <gary@gnu.org>
 
+	* config/ltmain.m4sh (func_mode_finish): Mention crle(1) on
+	solaris 2.7 and higher in the finalisation notes.
+	Reported by Kurt J. Lidl <lidl@pix.net>
+
 	* tests/cdemo-undef.test: New test for hosts that allow shared
 	libraries with undefined symbols, but have no C++ compiler
 	installed.
@@ -40,7 +44,7 @@
 
 2004-10-10  Charles Wilson  <spam.protected>
 
-	* config/ltmain.m4sh: Really don't require versions of GNU 
+	* config/ltmain.m4sh: Really don't require versions of GNU
 	sed newer than 3.02 for Cygwin and MinGW, and don't break
 	dryrun mode.
 
