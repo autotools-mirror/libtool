@@ -1,3 +1,8 @@
+2001-11-15  Guido Draheim <guidod@gmx.de>
+
+	* ltmain.in: Display better and different error messages when
+	library linkage fails in various ways.
+
 2001-10-28  Gary V. Vaughan  <gary@gnu.org>
 
 	From Tom Bates  <Tom.Bates@compaq.com>:
