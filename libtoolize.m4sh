@@ -5,7 +5,7 @@ m4_divert_push([SCRIPT])#! /bin/sh
 # libtoolize (GNU @PACKAGE@@TIMESTAMP@) @VERSION@
 # Written by Gary V. Vaughan <gary@gnu.org>, 2003
 
-# Copyright (C) 2003, 2004 Free Software Foundation, Inc.
+# Copyright (C) 2003, 2004, 2005 Free Software Foundation, Inc.
 # This is free software; see the source for copying conditions.  There is NO
 # warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
@@ -66,6 +66,8 @@ $as_unset CDPATH
 
 m4_include([getopt.m4sh])
 
+TAR=tar
+
 # Command line options:
 opt_force=false
 opt_install=false
@@ -117,6 +119,7 @@ configure_ac=configure.in
 			  test -n "$LN_S" && LN_S="$ECHO $LN_S"
 			  CP="$ECHO $CP"
 			  MKDIR="$ECHO $MKDIR"
+			  TAR="$ECHO $TAR"
 			fi
       			libtoolize_flags="${libtoolize_flags} --dry-run"
 			;;
@@ -185,40 +188,70 @@ configure_ac=configure.in
 
 
 # func_copy srcfile destfile
-# If option `--copy' was specified, or soft-linking SRCFILE to DESTFILE fails,
-# then try to copy SRCFILE to DESTFILE.
+# A wrapper for func_copy_cb that accepts arguments in the same order
+# as the cp(1) shell command.
 func_copy ()
 {
     $opt_debug
-    my_srcfile="$1"
-    my_destfile="$2"
-    my_return_status=1
 
-    func_mkdir_p `$ECHO "X$my_destfile" | $Xsed -e "$dirname"`
+    test -f "$1" || \
+      { func_error "\`$1' not copied:  not a regular file"; return 1; }
 
-    $RM "$my_destfile"
-    if $opt_link && $LN_S "$my_srcfile" "$my_destfile"; then
-      $opt_quiet || func_echo "copying file \`$my_destfile'"
-      my_return_status=0
-    elif $CP "$my_srcfile" "$my_destfile"; then
-      $opt_quiet || func_echo "copying file \`$my_destfile'"
-      my_return_status=0
+    my_f1=`$ECHO "X$1" | $Xsed -e "$basename"`
+
+    if test -d "$2"; then
+
+      func_copy_cb "$my_f1" `$ECHO "X$1" | $Xsed -e "$dirname"` "$2"
+
     else
-      func_error "can not copy \`$my_srcfile' to \`$my_destfile'"
-      exit_status=$EXIT_FAILURE
+
+      # Supporting this would mean changing the timestamp:
+      test "X$my_f1" = X`$ECHO "X$2" | $Xsed -e "$basename"` \
+        || func_fatal_error "func_copy() cannot change filename on copy"
+
+      func_copy_cb "$my_f1" \
+        `$ECHO "X$1" | $Xsed -e "$dirname"` \
+        `$ECHO "X$2" | $Xsed -e "$dirname"`
+
     fi
 
-    return $my_return_status
+    return $copy_return_status # set in func_copy_cb
 }
 
 
 # func_copy_cb filename srcdir destdir
-# A wrapper for func_copy that accepts arguments in the order
-# used by func_copy_all_files callbacks.
+# If option `--copy' was specified, or soft-linking SRCFILE to DESTFILE fails,
+# then try to copy SRCFILE to DESTFILE (without changing the timestamp if
+# possible).
 func_copy_cb ()
 {
     $opt_debug
-    func_copy "$2/$1" "$3/$1"
+    my_file="$1"
+    my_srcdir="$2"
+    my_destdir="$3"
+    copy_return_status=1
+
+    # Libtool is probably misinstalled if this happens:
+    test -f "$my_srcdir/$my_file" || \
+      { func_error "\`$my_file' not found in \`$my_srcdir'"; return; }
+
+    func_mkdir_p "$my_destdir"
+
+    $RM "$my_destdir/$my_file"
+    if $opt_link && $LN_S "$my_srcdir/$my_file" "$my_destdir/$my_file"; then
+      $opt_quiet || func_echo "copying file \`$my_destdir/$my_file'"
+      copy_return_status=0
+    elif { ( cd "$my_srcdir" && $TAR cf - "$my_file" > /dev/null 2>&1; ) \
+        | ( cd "$my_destdir" && "$TAR" xf - > /dev/null 2>&1; ) } ; then
+      $opt_quiet || func_echo "copying file \`$my_destdir/$my_file'"
+      copy_return_status=0
+    elif $CP -p "$my_srcdir/$my_file" "$my_destdir/$my_file"; then
+      $opt_quiet || func_echo "copying file \`$my_destdir/$my_file'"
+      copy_return_status=0
+    else
+      func_error "can not copy \`$my_srcdir/$my_file' to \`$my_destdir/'"
+      exit_status=$EXIT_FAILURE
+    fi
 }
 
 

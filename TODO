@@ -71,6 +71,13 @@ GNU Libtool
    Also report dlerror() for dlclose and dlsym if available
  - Make sure that the dependency_libs of a dlpreopened module won't be loaded.
 
+1.3. libtoolize
+---------------
+
+* Rewrite the func_copy_* functions so that instead of forking 2 tar
+  processes per copied file, a list of files to copy is built and all
+  files copied with a single pair of tar processes.
+
 
 2. In the future
 ================
@@ -237,7 +244,7 @@ GNU Libtool
   it easier to add new platforms.
 
 -- 
-Copyright (C) 2004 Free Software Foundation, Inc.
+Copyright (C) 2004, 2005 Free Software Foundation, Inc.
 
 The canonical source of this file is maintained with the
 GNU Libtool package.  Report bugs to bug-libtool@gnu.org.

@@ -1,3 +1,16 @@
+2005-02-21  Gary V. Vaughan  <gary@gnu.org>
+
+	Using `libtoolize --copy --ltdl' was not preserving timestamps, so
+	parts of the autoconf bootstrap would be rerun spuriously after
+	the files had been copied into the source tree:
+
+	* libtoolize.m4sh (TAR): New default tar command.
+	(func_copy_cb): Move the core copying internals to here, using
+	$TAR to transfer files if possible when --copy was specified.
+	(func_copy): Adjust to call func_copy_cb.
+	* TODO: Remember to refactor this fix in due course.
+	Reported by Jeff Squyres <jsquyres@lam-mpi.org>
+
 2005-02-21  Peter O'Gorman  <peter@pogma.com>
 
 	* config/ltmain.m4sh (func_extract_archives) [darwin]: This didn't
@@ -14,7 +27,7 @@
 2005-02-04  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* config/ltmain.m4sh (func_mode_link): Allow five digits in
-	version-info. 
+	version-info.
 
 	* NEWS: s/Linux/GNU &/.
 
@@ -40,7 +53,7 @@
 
 2005-02-03  Peter O'Gorman  <peter@pogma.com>
 
-	* config/ltmain.m4sh [darwin]: Don't add installed libs to 
+	* config/ltmain.m4sh [darwin]: Don't add installed libs to
 	temp_rpath when building executables on darwin, or other systems
 	which use hardcode_automatic. It may break our wrapper scripts.
 
@@ -153,16 +166,16 @@
 
 2005-01-16  Peter O'Gorman  <peter@pogma.com>
 
-	* config/ltmain.m4sh (func_mode_link): Don't pass through 
+	* config/ltmain.m4sh (func_mode_link): Don't pass through
 	compiler-like thread flags when using $LD to do the linking.
 	Use compiler_flags instead.
 	Reported by Mark_Andrews@isc.org.
 
 	* m4/libtool.m4 (LT_CMD_MAX_LEN) [osf]: On Tru64 there could
 	be a kernel panic when testing the maximum command line length
-	if exec_disable_arg_limit=1. Don't do the tests to figure it 
+	if exec_disable_arg_limit=1. Don't do the tests to figure it
 	out on *-osf*.
-	Reported by Dr. Hans Ekkehard Plesser 
+	Reported by Dr. Hans Ekkehard Plesser
 	<hans.ekkehard.plesser@umb.no>
 
 2005-01-14  Guido Draheim  <guidod-2003-@gmx.de>  (tiny change)
@@ -195,8 +208,8 @@
 	* config/ltmain.m4sh (func_mode_link): Fix
 	inherited_linker_flags so it puts it on the link line when
 	linking shared libraries as well as when linking executables.
-	* tests/inherited_flags.at: test inherited_linker_flags.  
-	* tests/Makefile.am: Add test.  
+	* tests/inherited_flags.at: test inherited_linker_flags.
+	* tests/Makefile.am: Add test.
 	* tests/testsuite.at: Add test.
 	Reported by: Albert Chin-A-Young <china@thewrittenword.com>
 
