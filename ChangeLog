@@ -1,5 +1,9 @@
 1999-03-30  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* ltconfig.in (aix4*, collect2name): make sure collect2 exists
+	before running string on it, to avoid errors on old gccs
+	Reported by Erez Zadok <ezk@cs.columbia.edu>
+
 	* ltconfig.in (aix4*, hardcode_libdir_flag_spec): unless we're
 	using gcc with old collect2, use -b libpath to hardcode the
 	library search path
