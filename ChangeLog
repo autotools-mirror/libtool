@@ -1,3 +1,8 @@
+2001-03-06  Alexandre Oliva  <oliva@lsd.ic.unicamp.br>
+
+	* ltmain.in: When dropping dependencies of a -no-undefined
+	library, give up on building a shared library.
+
 2001-03-03  Markus F.X.J. Oberhumer <markus@oberhumer.com>,
 	    Alexandre Oliva <oliva@lsd.ic.unicamp.br>
 
