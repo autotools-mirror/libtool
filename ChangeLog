@@ -1,7 +1,25 @@
+2003-08-05  Jim Pick <jim@kaffe.org>,
+	Ito Kazumitsu <kaz@maczuka.gcd.org>,
+	Gary V. Vaughan  <gary@gnu.org>
+
+	Much as we have tried not to make it the callers' responsibility
+	to maintain an lt_dlrealloc function pointer, it is too difficult
+	to implement realloc as malloc/memcpy/free without knowing the
+	size of the original block.  rpl_realloc has been deprecated since
+	2002-10-30, but kaffe has real failures with that so it's time to
+	bite the bullet.  Caller gets to maintain lt_dlrealloc:
+
+	* NEWS (1.5.1): Updated.
+	* libltdl/ltdl.c (LT_DLREALLOC): Use lt_dlrealloc so the user can
+	update the function pointer to match lt_dlmalloc.
+	(lt_emalloc): Use lt_dlrealloc rather than hardcoding realloc.
+	* doc/libtool.texi (Libltdl interface): Describe lt_dlrealloc now
+	that it too has become part of the exported interface to libltdl.
+
 2003-08-01  Peter O'Gorman  <peter@pogma.com>
 
 	* libtool.m4 (darwin): Use "-undefined dynamic_lookup" if the
-	user set MACOSX_DEPLOYMENT_TARGET to 10.3 or greater.  
+	user set MACOSX_DEPLOYMENT_TARGET to 10.3 or greater.
 	* libltdl/ltdl.c (dyld): Save the error from the first lookup
 	to report in lt_dlerror(). Otherwise the error is always
 	"Symbol _foo not in /usr/lib/libSystem.dylib".
@@ -86,7 +104,7 @@
 
 	* ltmain.in: search libraries in the order of preference, rather
 	than picking .la's even if they're in a less preferred directory.
- 
+
 2003-06-03  Robert Millan <rmh@debian.org>
 
 	* ltdl.m4: Add support for GNU/FreeBSD.
@@ -111,7 +129,7 @@
 2003-06-03  Peter O'Gorman  <peter@pogma.com>
 
 	* libtool.m4 (darwin): Remove checks for Apple-specific gcc.
-	* libltdl/ltdl.c (HAVE_MACH_O_DYLD_H): #define 
+	* libltdl/ltdl.c (HAVE_MACH_O_DYLD_H): #define
 	__private_extern__ for fsf gcc.
 	* ltmain.in (darwin): Only add new paths to newlib_search_path.
 
