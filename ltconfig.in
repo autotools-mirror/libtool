@@ -218,6 +218,8 @@ cache_file=
 ld_shlibs=yes
 
 ## Dependencies to place before and after the object being linked:
+predep_objects=
+postdep_objects=
 predeps=
 postdeps=
 
@@ -1915,7 +1917,7 @@ case "$ltmain" in
     RANLIB old_archive_cmds old_archive_from_new_cmds old_postinstall_cmds \
     old_postuninstall_cmds archive_cmds archive_expsym_cmds postinstall_cmds \
     postuninstall_cmds extract_expsyms_cmds old_archive_from_expsyms_cmds \
-    predeps postdeps \
+    predep_objects postdep_objects predeps postdeps \
     old_striplib striplib file_magic_cmd export_symbols_cmds \
     deplibs_check_method allow_undefined_flag no_undefined_flag \
     finish_cmds finish_eval global_symbol_pipe global_symbol_to_cdecl \
@@ -2179,10 +2181,20 @@ postuninstall_cmds=$postuninstall_cmds
 old_striplib=$old_striplib
 striplib=$striplib
 
-# Dependencies to place before the object being linked.
+# Dependencies to place before the objects being linked to create a
+# shared library.
+predep_objects=$predep_objects
+
+# Dependencies to place after the objects being linked to create a
+# shared library.
+postdep_objects=$postdep_objects
+
+# Dependencies to place before the objects being linked to create a
+# shared library.
 predeps=$predeps
 
-# Dependencies to place after the object being linked.
+# Dependencies to place after the objects being linked to create a
+# shared library.
 postdeps=$postdeps
 
 # Method to check whether dependent libraries are shared objects.

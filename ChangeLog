@@ -1,3 +1,40 @@
+2000-02-08  Ossama Othman  <ossama@debian.org>
+
+	* ltcf-cxx.sh (predeps, postdeps, predep_objects,
+	postdep_objects): Split {pre,post}deps into a variable that hold
+	library dependencies and another that holds objects needed during
+	shared library generation.  This was needed so that the objects
+	needed for shared library generation do not get analyzed by the
+	ILD mechanism.  The objects are only used during the initial
+	creation of the shared library, not during subsequent links to
+	that library.
+	(archive_cmds, archive_expsym_cmds): Added $predep_objects before
+	all objects and libraries, and $postdep_objects after them.  This
+	is necessary when linking C++ shared libraries.
+	(output_verbose_link_cmds): Added shared library generation
+	compiler flag.  The objects and libraries the compiler links when
+	creating shared libraries may be different than those used when
+	linking programs, particulary for object files.
+	* ltconfig.in (predep_objects, postdep_objects): Include these
+	variables in the generated libtool script.
+	* ltmain.in: Quote regular expression used for automatic tagged
+	configuration selection.  Also improved the regular expression
+	used for matching.
+	Updated clean mode to work properly with the new `.lo' files.
+	(libs): Only add $predeps and $postdeps to the list of dependency
+	libraries when linking a library.
+	* tagdemo/Makefile.am (noinst_LTLIBRARIES): Added another test
+	library that depends on the existing test library.  It was added
+	to exercise the ILD mechanism when using tagged configurations.
+	(tagdemo_LDADD): The tagdemo program now depends on the new test
+	library.  Since the new test library depends on the previous one,
+	the previous library should be linked to the program as well.
+	* Makefile.in: Regenerated from updated Makefile.am.
+	* tagdemo/baz.cpp, tagdemo/baz.h: Added these sources.  They are
+	new test library sources.
+	* tagdemo/main.cpp (main): Added call to method in new test
+	library.
+
 2000-02-05  Ossama Othman  <ossama@debian.org>
 
 	* ltmain.in: The "-R*" case in the loop that iterates through

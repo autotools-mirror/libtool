@@ -6,17 +6,21 @@ AUTOMAKE_OPTIONS = no-dependencies foreign
 
 EXTRA_DIST = acinclude.m4
 
-noinst_LTLIBRARIES = libfoo.la
+noinst_LTLIBRARIES = libfoo.la libbaz.la
 
 libfoo_la_SOURCES = foo.cpp
 libfoo_la_LIBADD = $(LIBM)
 
-noinst_HEADERS = foo.h
+# Test some of the ILD support when using tagged configurations.
+libbaz_la_SOURCES = baz.cpp
+libbaz_la_LIBADD = libfoo.la
+
+noinst_HEADERS = foo.h baz.h
 
 bin_PROGRAMS = tagdemo
 
 tagdemo_SOURCES = main.cpp
-tagdemo_LDADD = libfoo.la
+tagdemo_LDADD = libbaz.la
 
 $(OBJECTS): libtool
 libtool: $(LIBTOOL_DEPS)

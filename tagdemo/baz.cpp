@@ -1,5 +1,5 @@
 // -*- C++ -*-
-//    main.cpp -- tagdemo test program
+//    baz.cpp -- a slightly more complicated test library
 //    Copyright (C) 1998-2000 Free Software Foundation, Inc.
 //    Originally by Thomas Tanner <tanner@ffii.org>
 //    This file is part of GNU Libtool.
@@ -19,45 +19,17 @@
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307
 // USA.
 
-
 #include "foo.h"
 #include "baz.h"
-#include <stdio.h>
+
+// --------------------------------------------------------------------
+// Our C++ derived class methods.
 
 
 int
-main (int, char *[])
+barbaz_derived::baz(void)
 {
-  printf ("Welcome to GNU libtool tagdemo!\n");
-
   foobar_derived FB;
-  // Instantiate the derived class.
 
-  foobar *fb = &FB;
-  // Have some fun with polymorphism.
-
-  int value = fb->hello();
-
-  printf ("foobar::hello returned: %i\n", value);
-  if (value == HELLO_RET)
-    printf("foobar::hello is ok!\n");
-
-  if (fb->foo() == FOO_RET)
-    printf("foobar::foo is ok!\n");
-
-  // --------------
-
-  barbaz_derived BB;
-  // Instantiate the derived class.
-
-  barbaz *bb = &BB;
-  // Have some fun with polymorphism.
-
-
-  // barbaz_derived::baz() should return FOO_RET since it calls
-  // foobar_derived::foo(), which in turn calls ::foo().
-  if (bb->baz() == FOO_RET)
-    printf("barbaz::baz is ok!\n");
-
-  return 0;
+  return FB.foo();
 }
