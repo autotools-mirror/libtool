@@ -121,7 +121,7 @@ $(top_srcdir)/config/ltmain.sh: $(sh_files) config/ltmain.m4sh configure.ac \
 	cd $(top_srcdir); \
 	rm -f config/ltmain.in config/ltmain.tmp config/ltmain.sh; \
 	$(M4SH) -B ./config config/ltmain.m4sh > config/ltmain.in; \
-	input="ltmain.in"; \
+	input="ltmain.m4sh"; \
 	$(edit) -e "s,@TIMESTAMP\@,$$TIMESTAMP,g" \
 		-e "s,@package_revision\@,$$1,g" \
 		config/ltmain.in > config/ltmain.tmp; \
