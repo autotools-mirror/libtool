@@ -1,3 +1,10 @@
+2001-07-23  Robert Boehne  <rboehne@ricardo-us.com>
+
+	* libtool.m4 (AC_LIBTOOL_LANG_CXX_CONFIG, AC_LIBTOOL_PROG_LD_SHLIBS)
+	[aix4*, aix5*]: Fixed a mispelled binder option under AIX.
+	The option to throw errors for unresolved external references is
+	-bernotok, not -bnoerok.
+
 2001-07-23  Gary V. Vaughan  <gary@gnu.org>
 
 	* Makefile.am (EXTRA_DIST): Don't forget to distribute

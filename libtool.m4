@@ -2445,7 +2445,7 @@ case $host_os in
         _LT_AC_TAGVAR(hardcode_libdir_flag_spec, $1)='${wl}-blibpath:$libdir:'"$aix_libpath"
         # Warning - without using the other run time loading flags,
         # -berok will link without error, but may produce a broken library.
-        _LT_AC_TAGVAR(no_undefined_flag, $1)=' ${wl}-bnoerok'
+        _LT_AC_TAGVAR(no_undefined_flag, $1)=' ${wl}-bernotok'
         _LT_AC_TAGVAR(allow_undefined_flag, $1)=' ${wl}-berok'
         # -bexpall does not export symbols beginning with underscore (_)
         _LT_AC_TAGVAR(always_export_symbols, $1)=yes
@@ -4514,7 +4514,7 @@ EOF
          _LT_AC_TAGVAR(hardcode_libdir_flag_spec, $1)='${wl}-blibpath:$libdir:'"$aix_libpath"
           # Warning - without using the other run time loading flags,
           # -berok will link without error, but may produce a broken library.
-          _LT_AC_TAGVAR(no_undefined_flag, $1)=' ${wl}-bnoerok'
+          _LT_AC_TAGVAR(no_undefined_flag, $1)=' ${wl}-bernotok'
           _LT_AC_TAGVAR(allow_undefined_flag, $1)=' ${wl}-berok'
           # -bexpall does not export symbols beginning with underscore (_)
           _LT_AC_TAGVAR(always_export_symbols, $1)=yes
