@@ -1,14 +1,24 @@
 2000-12-01  Gary V. Vaughan  <gvv@techie.com>
 
+	* doc/libtool.texi (Libltdl interface):  Add documentation.
+	* libltdl/ltdl.h (lt_dlmakeresident, lt_dlisresident):  Add
+	prototypes.
+	(LT_DLERROR_CLOSE_RESIDENT_MODULE): New error status.
+	* libltdl/ltdl.c (lt_dlmakeresident, lt_dlisresident):  Allow
+	making and testing of resident module status, which prevents a
+	module from being lt_dlclosed.
+	(lt_dlopen):  If lt_dlopen()ing self, make the module resident.
+	(lt_dlclose):  Return an error if the module is resident.
+
 	* libtool.m4 (_LT_AC_LTCONFIG_HACK): Move the tests for dlopen
 	from here...
-	(AC_LTDL_DLOPEN_SELF): ...to here.
-	(_LTDL_AC_CHECK_DLFCN):  Factor out repeated code for dlfcn.h
+	(AC_LIBTOOL_DLOPEN_SELF): ...to here.
+	(_LT_AC_CHECK_DLFCN):  Factor out repeated code for dlfcn.h
 	(_LT_AC_TRY_DLOPEN_SELF): Factor out repeated code for
 	checking dlopen status.
-	* ltdl.m4 (AC_LIB_LTDL):  Use _LTDL_AC_CHECK_DLFCN.
-	dlopen compile time checking.  Use _LTDL_AC_CHECK_DLFCN.
-	(AC_LTDL_DLSYM_USCORE):  Use _LTDL_AC_TRY_DLOPEN_SELF.
+	* ltdl.m4 (AC_LIB_LTDL):  Use _LT_AC_CHECK_DLFCN.
+	dlopen compile time checking.  Use _LT_AC_CHECK_DLFCN.
+	(AC_LTDL_DLSYM_USCORE):  Use _LT_AC_TRY_DLOPEN_SELF.
 
 2000-11-29  Gary V. Vaughan  <gvv@techie.com>
 

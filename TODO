@@ -128,3 +128,10 @@ like libtool should be distributed as part of such a binary package.
 * Maybe implement full support for other orthogonal library types
 (libhello_g, libhello_p, 64 vs 32-bit ABI's, etc).  Make these types
 configurable.
+
+* Perhaps the iuse of libltdl could be made cleaner by allowing
+registration of hook functions to call at various points.  This would
+hopefully free the user from having to maintain a parallel module
+list with user data.  This would likely involve being able to carry
+additional per user module data in the lt_dlmodule structure -- perhaps
+in the form of an associative array keyed by user name?

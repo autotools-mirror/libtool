@@ -2846,6 +2846,23 @@ directories.  Return 0 on success.
 Return the current user-defined library search path.
 @end deftypefun
 
+@deftypefun int lt_dlmakeresident (lt_dlhandle @var{handle})
+Mark a module so that it cannot be @samp{lt_dlclose}d.  This can be
+useful if a module implements some core functionality in your project,
+which would cause your code to crash if removed.  Return 0 on success.
+
+If you use @samp{lt_dlopen (NULL)} to get a @var{handle} for the running
+binary, that handle will always be marked as resident, and consequently
+cannot be successfully @samp{lt_dlclose}d.
+@end deftypefun
+
+@deftypefun int lt_dlisresident (lt_dlhandle @var{handle})
+Check whether a particular module has be marked as resident, returning 1
+if it has or 0 otherwise.  If there is an error while executing this
+function, return -1 and set an error message for retrieval with
+@code{lt_dlerror}.
+@end deftypefun
+
 @deftypefun {const lt_dlinfo *}lt_dlgetinfo (lt_dlhandle @var{handle})
 Return a pointer to a struct that contains some information about
 the module @var{handle}.  The contents of the struct must not be modified.
