@@ -1,3 +1,8 @@
+2001-07-29  Albert Chin-A-Young  <china@thewrittenword.com>
+
+	* libtool.m4: Prefer shl_load to dlopen	on HP-UX because
+	dlopen won't work properly without a patch.
+
 2001-07-12  Dan McNichol  <mcnichol@austin.ibm.com>
 
 	From albert chin <china@thewrittenword.com>
