@@ -1558,9 +1558,14 @@ _LT_DECL([], [striplib], [1])
 # AC_LIBTOOL_SYS_DYNAMIC_LINKER
 # -----------------------------
 # PORTME Fill in your ld.so characteristics
-AC_DEFUN([AC_LIBTOOL_SYS_DYNAMIC_LINKER],
+m4_defun([AC_LIBTOOL_SYS_DYNAMIC_LINKER],
 [AC_REQUIRE([LT_AC_PROG_EGREP])
 AC_MSG_CHECKING([dynamic linker characteristics])
+m4_case([$1],
+	[C], [withGCC=$GCC],
+	[CXX], [withGCC=$GXX],
+	[F77], [withGCC=$G77],
+	[withGCC=$GCC])
 library_names_spec=
 libname_spec='lib$name'
 soname_spec=
@@ -1574,7 +1579,7 @@ shlibpath_overrides_runpath=unknown
 version_type=none
 dynamic_linker="$host_os ld.so"
 sys_lib_dlsearch_path_spec="/lib /usr/lib"
-if test "$GCC" = yes; then
+if test "$withGCC" = yes; then
   sys_lib_search_path_spec=`$CC -print-search-dirs | $GREP "^libraries:" | $SED -e "s/^libraries://" -e "s,=/,/,g"`
   if echo "$sys_lib_search_path_spec" | $GREP ';' >/dev/null ; then
     # if the path contains ";" then we assume it to be the separator
@@ -1685,7 +1690,7 @@ cygwin* | mingw* | pw32*)
   need_version=no
   need_lib_prefix=no
 
-  case $GCC,$host_os in
+  case $withGCC,$host_os in
   yes,cygwin* | yes,mingw* | yes,pw32*)
     library_names_spec='$libname.dll.a'
     # DLL is installed to $(libdir)/../bin by postinstall_cmds
@@ -1748,7 +1753,7 @@ darwin* | rhapsody*)
   shlibpath_var=DYLD_LIBRARY_PATH
   shrext_cmds='$(test .$module = .yes && echo .so || echo .dylib)'
   # Apple's gcc prints 'gcc -print-search-dirs' doesn't operate the same.
-  if test "$GCC" = yes; then
+  if test "$withGCC" = yes; then
     sys_lib_search_path_spec=`$CC -print-search-dirs | tr "\n" "$PATH_SEPARATOR" | sed -e 's/libraries:/@libraries:/' | tr "@" "\n" | $GREP "^libraries:" | sed -e "s/^libraries://" -e "s,=/,/,g" -e "s,$PATH_SEPARATOR, ,g" -e "s,.*,& /lib /usr/lib /usr/local/lib,g"`
   else
     sys_lib_search_path_spec='/lib /usr/lib /usr/local/lib'

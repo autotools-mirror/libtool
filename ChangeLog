@@ -1,3 +1,8 @@
+2004-05-18  Peter O'Gorman  <peter@pogma.com>
+
+	* m4/libtool.m4 (AC_LIBTOOL_SYS_DYNAMIC_LINKER): Make this an m4_defun,
+	test the tags compiler to see if it is GCC, not the CC compiler.
+
 2004-05-16  Alexandre Duret-Lutz  <adl@gnu.org>
 
 	* doc/libtool.texi (Invoking libtool): Mention --tag=TAG.
