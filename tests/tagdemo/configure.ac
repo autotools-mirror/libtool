@@ -1,5 +1,5 @@
 ## Process this file with autoconf to create configure. -*- autoconf -*-
-# Copyright (C) 2001, 2003 Free Software Foundation, Inc.
+# Copyright (C) 2001, 2003, 2004 Free Software Foundation, Inc.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -67,17 +67,16 @@ AC_LANG([C++])
 LT_INIT
 
 
-## ---------------------------- ##
-## C headers required by cdemo. ##
-## ---------------------------- ##
+## ------------------------------ ##
+## C headers required by tagdemo. ##
+## ------------------------------ ##
 AC_CHECK_HEADERS([math.h])
 
 
-## ---------------------------- ##
-## Libraries required by cdemo. ##
-## ---------------------------- ##
-AC_CHECK_LIBM
-AC_SUBST([LIBM])
+## ------------------------------ ##
+## Libraries required by tagdemo. ##
+## ------------------------------ ##
+LT_LIB_M
 
 
 ## -------- ##

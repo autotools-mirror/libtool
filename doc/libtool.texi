@@ -130,6 +130,7 @@ Invoking @code{libtool}
 
 Integrating libtool with your package
 
+* Autoconf macros::             Autoconf macros exported by libtool.
 * Makefile rules::              Writing @file{Makefile} rules for libtool.
 * Using Automake::              Automatically supporting libtool.
 * Configuring::                 Configuring libtool for a host system.
@@ -1578,12 +1579,123 @@ This chapter describes how to integrate libtool with your packages so
 that your users can install hassle-free shared libraries.
 
 @menu
+* Autoconf macros::             Autoconf macros exported by libtool.
 * Makefile rules::              Writing @file{Makefile} rules for libtool.
 * Using Automake::              Automatically supporting libtool.
 * Configuring::                 Configuring libtool for a host system.
 * Distributing::                What files to distribute with your package.
 * Static-only libraries::       Sometimes shared libraries are just a pain.
 @end menu
+
+@node Autoconf macros
+@section Autoconf macros exported by libtool
+
+Libtool uses a number of macros to interrogate the host system when it
+is being built, and you can use some of them yourself too.  Although
+there are a great many other macros in the libtool installed m4 files,
+these do not form part of the published interface, and are subject to
+change between releases.
+
+@noindent
+Macros in the @samp{LT_CMD_} namespace check for various shell
+commands:
+
+@defmac LT_CMD_MAX_LEN
+Finds the longest command line that can be safely passed to
+@samp{$SHELL} without being truncated, and store in the shell variable
+@samp{$max_cmd_len}.  It is only an approximate value, but command
+lines of this length or shorter are guaranteed not to be truncated.
+@end defmac
+
+@noindent
+Macros in the @samp{LT_FUNC_} namespace check characteristics of
+library functions:
+
+@defmac LT_FUNC_DLSYM_USCORE
+@samp{AC_DEFINE} the preprocessor symbol @samp{DLSYM_USCORE} if we
+have to add an underscore to symbol-names passed in to @samp{dlsym}.
+@end defmac
+
+@noindent
+Macros in the @samp{LT_LIB_} namespace check characteristics of system
+libraries:
+
+@defmac LT_LIB_M
+Set @samp{LIBM} to the math library or libraries required on this
+machine, if any.
+@end defmac
+
+@defmac LT_LIB_DLLOAD
+This is the macro used by @samp{libltdl} to determine which dlloaders
+to use on this machine, if any.  Several shell variables are set (and
+@samp{AC_SUBST}ed) depending which dlload interfaces are available on
+this machine.  @samp{LT_DLLOADERS} contains a list of libtool
+libraries that can be used, and if necessary also sets
+@samp{LIBADD_DLOPEN} if additional system libraries are required by
+the @samp{dlopen} loader, and @samp{LIBADD_SHL_LOAD} if additional
+system libraries are required by the @samp{shl_load} loader,
+respectively.  Finally some symbols are set in @file{config.h}
+depending on which loaders are found to work: @samp{HAVE_LIBDL},
+@samp{HAVE_SHL_LOAD}, @samp{HAVE_DYLD}, @samp{HAVE_DLD}.
+@end defmac
+
+@noindent
+Macros in the @samp{LT_PATH_} namespace search the system for the full
+path to particular system commands:
+
+@defmac LT_PATH_LD
+Add a @samp{--with-gnu-ld} option to @file{configure}.  Try to find
+the path to the linker used by @samp{$CC}, and whether it is the
+@sc{gnu} linker.  The result is stored in the shell variable
+@samp{$LD}, which is @code{AC_SUBST}ed.
+@end defmac
+
+@defmac LT_PATH_NM
+Try to find a @sc{bsd} compatible @command{nm} command on this
+machine.  The result is stored in the shell variable @samp{$NM}, which
+is @code{AC_SUBST}ed.
+@end defmac
+
+@noindent
+Macros in the @samp{LT_SYS_} namespace probe for system
+characteristics:
+
+@defmac LT_SYS_DLOPEN_SELF
+Tests whether a program can dlopen itself, and then also whether the
+same program can still dlopen itself when statically linked.  Results
+are stored in the shell variables @samp{$enable_dlopen_self} and
+@samp{enable_dlopen_self_static} respectively.
+@end defmac
+
+@defmac LT_SYS_DLOPEN_DEPLIBS
+Define the preprocessor symbol @samp{LTDL_DLOPEN_DEPLIBS} if the
+@sc{os} needs help to load dependent libraries for @samp{dlopen} (or
+equivalent).
+@end defmac
+
+@defmac LT_SYS_DLSEARCH_PATH
+Define the preprocessor symbol @samp{LT_DLSEARCH_PATH} to the system
+default library search path.
+@end defmac
+
+@defmac LT_SYS_MODULE_EXT
+Define the preprocessor symbol @samp{LT_MODULE_EXT} to the extension
+used for runtime loadable modules.  If you use libltdl to open
+modules, then you can simply use the libtool library extension,
+@samp{.la}.
+@end defmac
+
+@defmac LT_SYS_MODULE_PATH
+Define the preprocessor symbol @samp{LT_MODULE_PATH_VAR} to the name
+of the shell environment variable that determines the run-time module
+search path.
+@end defmac
+
+@defmac LT_SYS_SYMBOL_USCORE
+Set the shell variable @samp{sys_symbol_underscore} to @samp{no}
+unless the compiler prefixes global symbols with an underscore.
+@end defmac
+
 
 @node Makefile rules
 @section Writing @file{Makefile} rules for libtool
@@ -2067,8 +2179,8 @@ Display a help message and exit.
 Install libltdl in a the @var{TARGET-DIRECTORY-NAME} subdirectory of
 your package.  If you specify a subdirectory name, then you will need
 to be careful to pass the same directory name to the autoconf macros:
-@code{AC_WITH_LTDL}; @code{AC_LIBLTDL_CONVENIENCE};
-@code{AC_LIBLTDL_INSTALLABLE} (@pxref{Distributing libltdl}). Without
+@code{LT_WITH_LTDL}; @code{LTDL_CONVENIENCE};
+@code{LTDL_INSTALLABLE} (@pxref{Distributing libltdl}). Without
 an argument, @samp{libltdl} is used as the default target directory
 name.
 
@@ -3847,13 +3959,13 @@ forget to upgrade @file{acinclude.m4} if you move to a different
 release of libltdl.
 @c
 }.  Having made the macros available, you must add a call to the
-@samp{AC_WITH_LTDL} macro to your package's @file{configure.ac} to
+@samp{LT_WITH_LTDL} macro to your package's @file{configure.ac} to
 perform the configure time checks required to build the library
 correctly.  This method has problems if you then try to link the
 package binaries with an installed libltdl, or a library which depends
 on libltdl: you will have problems with duplicate symbol definitions.
 
-@defmac AC_WITH_LTDL (@var{DIRECTORY})
+@defmac LT_WITH_LTDL (@var{DIRECTORY})
 Add the @code{--with-included-ltdl} option to the @file{configure}
 script.  By default, this macro will try to build @code{libltdl} in
 a subdirectory named @file{libltdl}, which is where
@@ -3863,7 +3975,7 @@ Otherwise, use @var{DIRECTORY} to pass the location of the
 @code{libltdl} source files.
 @end defmac
 
-@defmac AC_LIBLTDL_INSTALLABLE (@var{DIRECTORY})
+@defmac LTDL_INSTALLABLE (@var{DIRECTORY})
 If there is an installed @code{libltdl}, then set @code{LIBLTDL} to the
 link flags needed to use it, and @code{LTDLINCL} to the preprocessor
 flags needed to find the installed headers.  Otherwise, set them to
@@ -3878,22 +3990,22 @@ you will need to define @code{top_builddir} and @code{top_srcdir} in
 your makefile so that @code{LIBLTDL} and @code{LTDLINCL} are expanded
 properly.
 
-If used in conjunction with @code{AC_WITH_LTDL}, this macro must
-appear @strong{before} the call to @code{AC_WITH_LTDL}.  If you are
-not using @code{AC_WITH_LTDL}, then you must add a call to
+If used in conjunction with @code{LT_WITH_LTDL}, this macro must
+appear @strong{before} the call to @code{LT_WITH_LTDL}.  If you are
+not using @code{LT_WITH_LTDL}, then you must add a call to
 @code{AC_CONFIG_SUBDIRS(@var{DIRECTORY})} to your @file{configure.ac}.
 @end defmac
 
-@defmac AC_LIBLTDL_CONVENIENCE (@var{DIRECTORY})
-Unless you call @code{AC_LIBLTDL_INSTALLABLE} before hand,
-@code{AC_WITH_LTDL} calls this macro automatically, so you should only
-ever need to use it yourself if @code{AC_WITH_LTDL} doesn't do what
+@defmac LTDL_CONVENIENCE (@var{DIRECTORY})
+Unless you call @code{LTDL_INSTALLABLE} before hand,
+@code{LT_WITH_LTDL} calls this macro automatically, so you should only
+ever need to use it yourself if @code{LT_WITH_LTDL} doesn't do what
 you want.
 
 By default, this macro will pass options to the @file{libltdl}
 subdirectory @file{configure} to cause it to be built as a convenience
 library.  If you put the @code{libltdl} sources in a different
-subdirectory, then you should tell @code{AC_LIBLTDL_CONVENIENCE} where
+subdirectory, then you should tell @code{LTDL_CONVENIENCE} where
 with the @var{DIRECTORY} parameter.
 @end defmac
 
@@ -3911,11 +4023,11 @@ single program with these libraries, because you may get duplicate
 symbols.  In general you can safely use the convenience library in
 programs which don't depend on other libraries that might use libltdl
 too.  In order to enable this flavor of libltdl, add a call to
-@samp{AC_LIBLTDL_CONVENIENCE} to your @file{configure.ac},
-@emph{before} @samp{LT_INIT}, or use @samp{AC_WITH_LTDL}.
+@samp{LTDL_CONVENIENCE} to your @file{configure.ac},
+@emph{before} @samp{LT_INIT}, or use @samp{LT_WITH_LTDL}.
 
 In order to select the installable version of libltdl, you should add a
-call of the macro @samp{AC_LIBLTDL_INSTALLABLE} to your
+call of the macro @samp{LTDL_INSTALLABLE} to your
 @file{configure.ac} @emph{before} @samp{LT_INIT}.  This macro
 will check whether libltdl is already installed and, if not, request the
 libltdl embedded in your package to be built and installed.  Note,
@@ -3926,7 +4038,7 @@ switch @samp{--enable-ltdl-install}.
 
 Whatever macro you use, it is up to you to ensure that your
 @file{configure.ac} will configure libltdl by using
-@samp{AC_WITH_LTDL}.  Both macros define the shell variables
+@samp{LT_WITH_LTDL}.  Both macros define the shell variables
 @var{LIBLTDL}, to the link flag that you should use to link with
 libltdl, and @var{LTDLINCL}, to the preprocessor flag that you should
 use to compile with programs that include @file{ltdl.h}.
@@ -3939,7 +4051,7 @@ with @samp{$@{top_builddir@}/} and @samp{$@{top_srcdir@}/} respectively.
 If you request an installed version of libltdl and one is
 found@footnote{@c
 @c
-Even if libltdl is installed, @samp{AC_LIBLTDL_INSTALLABLE} may fail
+Even if libltdl is installed, @samp{LTDL_INSTALLABLE} may fail
 to detect it, if libltdl depends on symbols provided by libraries
 other than the C library.  In this case, it will needlessly build and
 install libltdl.
@@ -3965,7 +4077,7 @@ for static linking.
 
 The following example shows you how to embed an installable libltdl in
 your package.  In order to use the convenience variant just replace
-@samp{AC_LIBLTDL_INSTALLABLE} with @samp{AC_LIBLTDL_CONVENIENCE}.  We
+@samp{LTDL_INSTALLABLE} with @samp{LTDL_CONVENIENCE}.  We
 assume that libltdl was embedded using @samp{libtoolize --ltdl}.
 
 configure.ac:
@@ -3974,11 +4086,11 @@ configure.ac:
 ## ------------------------------------------ ##
 ## Enable building of the installable library ##
 ## ------------------------------------------ ##
-AC_LIBLTDL_INSTALLABLE
+LTDL_INSTALLABLE
 
 # Configure libtool with dlopen support if possible
 LT_INIT([dlopen])
-AC_WITH_LTDL
+LT_WITH_LTDL
 ...
 @end example
 

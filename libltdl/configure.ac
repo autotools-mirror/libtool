@@ -18,7 +18,7 @@
 
 # This configure.ac is not used at all by the libtool bootstrap, but
 # is copied to the ltdl subdirectory if you libtoolize --ltdl your own
-# project.  Adding AC_WITH_LTDL to your project configure.ac will then
+# project.  Adding LT_WITH_LTDL to your project configure.ac will then
 # configure this directory if your user doesn't want to use the installed
 # libltdl.
 
@@ -65,24 +65,12 @@ AM_INIT_AUTOMAKE([gnits])
 pkgdatadir='${datadir}'"/${PACKAGE}"
 
 
-## ---------------- ##
-## compiler checks. ##
-## ---------------- ##
-
-# Use the specified CC and LD
-AC_PROG_CC
-AC_EXEEXT
-AC_PROG_LD
-AC_PROG_NM
-AC_PROG_LN_S
-
-
 ## ----------------------- ##
 ## Libtool initialisation. ##
 ## ----------------------- ##
 LT_INIT([dlopen win32-dll])
-AC_LIBLTDL_CONVENIENCE
-AC_LIB_LTDL
+LTDL_CONVENIENCE
+LTDL_INIT
 
 
 ## -------- ##

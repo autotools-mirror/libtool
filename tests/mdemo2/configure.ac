@@ -1,5 +1,5 @@
 ## Process this file with autoconf to create configure. -*- autoconf -*-
-# Copyright (C) 2001, 2003 Free Software Foundation, Inc.
+# Copyright (C) 2001, 2003, 2004 Free Software Foundation, Inc.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -51,14 +51,14 @@ test "X$enable_static" = Xyes && STATIC="-static"
 AC_SUBST([STATIC])
 
 
-## ---------------------------- ##
+## ----------------------------- ##
 ## C headers required by mdemo2. ##
-## ---------------------------- ##
+## ----------------------------- ##
 
 
-## ---------------------------- ##
-## Libraries required by cdemo. ##
-## ---------------------------- ##
+## ----------------------------- ##
+## Libraries required by mdemo2. ##
+## ----------------------------- ##
 
 
 ## -------- ##

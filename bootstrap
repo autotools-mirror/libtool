@@ -41,8 +41,8 @@ EOF
 
 rm -rf `find . -path './{arch}' -prune -o \( -name autom4te.cache -o -name libtool \) -print`
 
-# Delete stale acinclude.m4 from previous libtool versions.
-rm -f acinclude.m4
+# Delete stale files from previous libtool versions.
+rm -f acinclude.m4 libltdl/config.h
 
 if test -z "$reconfdirs"; then
   reconfdirs=". `ls -1d tests/*demo tests/*demo[0-9]`"

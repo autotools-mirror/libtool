@@ -466,6 +466,8 @@ func_scan_files ()
         };
 	/A[CM]_PROG_LIBTOOL/ { s,^.*$,seen_libtool=:,; p; };
 	/LT_INIT/	     { s,^.*$,seen_libtool=:,; p; };
+	/LTDL_INIT/          { s,^.*$,seen_ltdl=:,; p; };
+	/LT_WITH_LTDL/       { s,^.*$,seen_ltdl=:,; p; };
 	/AC_LIB_LTDL/        { s,^.*$,seen_ltdl=:,; p; };
 	/AC_WITH_LTDL/       { s,^.*$,seen_ltdl=:,; p; };
 	d;'
@@ -761,7 +763,7 @@ func_config_update ()
       LT_INIT 'A[CM]_PROG_LIBTOOL'
 
     if $seen_ltdl; then
-      func_serial_update "$ltdl_m4" "$m4dir/ltdl.m4" 'AC_LIB_LTDL'
+      func_serial_update "$ltdl_m4" "$m4dir/ltdl.m4" 'LTDL_INIT'
     else
       func_verbose "Not copying \`$ltdl_m4', libltdl not used."
     fi

@@ -1,3 +1,67 @@
+2004-08-22  Gary V. Vaughan  <gary@gnu.org>
+
+	The Grand Renaming.  In preparation for libtool-2.0, move all of
+	the many and varied m4 symbols accumulated by libtool over the
+	years, considering also that modern autoconf can detect unexpanded
+	macros even without AC in the macro name:
+
+	* bootstrap: Remove libltdl/config.h from previous releases.
+	* m4/libtool.m4, m4/ltdl.m4, doc/libtool.texi: Basically, run a
+	giant sed transformation like this:
+	s,AC_LIB_LTDL,LTDL_INIT,g
+	s,AC_LIBLTDL_CONVENIENCE,LTDL_CONVENIENCE,g
+	s,AC_LIBLTDL_INSTALLABLE,LTDL_INSTALLABLE,g
+	s,AC_WITH_LTDL,LT_WITH_LTDL,g
+	s,AC_LTDL_ENABLE_INSTALL,_LT_ENABLE_INSTALL,g
+	s,AC_DEPLIBS_CHECK_METHOD,_LT_CHECK_MAGIC_METHOD,g
+	s,AC_LIBTOOL_OBJDIR,_LT_CHECK_OBJDIR,g
+	s,AC_LTDL_OBJDIR,_LT_CHECK_OBJDIR,g
+	s,AC_LTDL_DLPREOPEN,_LT_CHECK_DLPREOPEN,g
+	s,AC_LIBTOOL_SYS_MAX_CMD_LEN,LT_CMD_MAX_LEN,g
+	s,AC_LIBTOOL_SYS_GLOBAL_SYMBOL_PIPE,_LT_CMD_GLOBAL_SYMBOLS,g
+	s,AC_LIBTOOL_SYS_OLD_ARCHIVE,_LT_CMD_OLD_ARCHIVE,g
+	s,AC_PROG_LD_RELOAD_FLAG,_LT_CMD_RELOAD,g
+	s,AC_LIBTOOL_SYS_LIB_STRIP,_LT_CMD_STRIPLIB,g
+	s,AC_CHECK_LIBM,LT_LIB_M,g
+	s,AC_LTDL_DLLIB,LT_LIB_DLLOAD,g
+	s,AC_LIBTOOL_COMPILER_OPTION,_LT_COMPILER_OPTION,g
+	s,AC_LIBTOOL_PROG_CC_C_O,_LT_COMPILER_C_O,g
+	s,AC_LIBTOOL_PROG_COMPILER_NO_RTTI,_LT_COMPILER_NO_RTTI,g
+	s,AC_LIBTOOL_PROG_COMPILER_PIC,_LT_COMPILER_PIC,g
+	s,AC_LIBTOOL_SYS_HARD_LINK_LOCKS,_LT_COMPILER_FILE_LOCKS,g
+	s,AC_LTDL_DLSYM_USCORE,LT_FUNC_DLSYM_USCORE,g
+	s,AC_LIBTOOL_LINKER_OPTION,_LT_LINKER_OPTION,g
+	s,AC_LIBTOOL_PROG_LD_SHLIBS,_LT_LINKER_SHLIBS,g
+	s,AC_LIBTOOL_PROG_LD_HARDCODE_LIBPATH,_LT_LINKER_HARDCODE_LIBPATH,g
+	s,AC_PATH_MAGIC,_LT_PATH_MAGIC,g
+	s,AC_PATH_TOOL_PREFIX,_LT_PATH_TOOL_PREFIX,g
+	s,AC_PROG_LD,LT_PATH_LD,g
+	s,AC_PROG_LD_GNU,_LT_PATH_LD_GNU,g
+	s,AC_PROG_NM,LT_PATH_NM,g
+	s,AC_LTDL_SYS_DLOPEN_DEPLIBS,LT_SYS_DLOPEN_DEPLIBS,g
+	s,AC_LIBTOOL_DLOPEN_SELF,LT_SYS_DLOPEN_SELF,g
+	s,AC_LIBTOOL_POSTDEP_PREDEP,_LT_SYS_HIDDEN_LIBDEPS,g
+	s,AC_LTDL_SYSSEARCHPATH,LT_SYS_DLSEARCH_PATH,g
+	s,AC_LTDL_SHLIBEXT,LT_SYS_MODULE_EXT,g
+	s,AC_LTDL_SHLIBPATH,LT_SYS_MODULE_PATH,g
+	s,AC_LTDL_SYMBOL_USCORE,LT_SYS_SYMBOL_USCORE,g
+	s,AC_LIBTOOL_SYS_DYNAMIC_LINKER,_LT_SYS_DYNAMIC_LINKER,g
+	s,_LT_AC_TAGVAR,_LT_TAGVAR,g
+	s,_LT_AC_SYS_COMPILER,_LT_TAG_COMPILER,g
+	s,_LT_AC_PROG_ECHO_BACKSLASH,_LT_PROG_ECHO_BACKSLASH,g
+	s,_LT_AC_SYS_LIBPATH_AIX,_LT_SYS_MODULE_PATH_AIX,g
+	s,_LT_AC_SHELL_INIT,_LT_SHELL_INIT,g
+	s,_LT_AC_LOCK,_LT_ENABLE_LOCK,g
+	s,_LT_AC_CHECK_DLFCN,_LT_HEADER_DLFCN,g
+	s,_LT_AC_TRY_DLOPEN_SELF,_LT_TRY_DLOPEN_SELF,g
+	s,LT_AC_PROG_EGREP,_LT_DECL_EGREP,g
+	s,LT_AC_PROG_SED,_LT_DECL_SED,g
+	* doc/libtool.texi (Autoconf macros): Document exported macros.
+	* libtoolize.in: Compare ltdl.m4 serial numbers for LTDL_INIT
+	instead of newly obsoleted AC_LIB_LTDL.
+	(func_scan_files): Also set seen_ltdl for LTDL_INIT and
+	LT_WITH_LTDL.
+
 2004-08-12  Peter O'Gorman  <peter@pogma.com>
 
 	* m4/libtool.m4 [GNU/linux] (AC_DEPLIBS_CHECK_METHOD): Cleanup,
@@ -7,10 +71,14 @@
 
 	* tests/demo-nopic.test: Do not run on x86_64 or s390*
 
-2004-08-05  Gary V. Vaughan  <gary@gnu.org>
+2004-08-06  Gary V. Vaughan  <gary@gnu.org>
+
+	* libltdl/ltdl.c (lt_dlforeachfile): LT_SYS_LIBSEARCH_PATH is not
+	an environment variable, it is an actual path.
 
 	* bootstrap: Remove `-f Makefile.am' now that we have an actual
 	Makefile to build ltmain.sh.
+	Reported by Noah Mish <noah@cs.caltech.edu>
 
 2004-08-05  Gary V. Vaughan  <gary@gnu.org>
 

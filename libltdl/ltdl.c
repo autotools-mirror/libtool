@@ -40,8 +40,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 #define LTDL_SEARCHPATH_VAR	"LTDL_LIBRARY_PATH"
 
 /* Standard libtool archive file extension.  */
-#undef  LTDL_ARCHIVE_EXT
-#define LTDL_ARCHIVE_EXT	".la"
+#undef  LT_ARCHIVE_EXT
+#define LT_ARCHIVE_EXT	".la"
 
 /* max. filename length */
 #if !defined(LT_FILENAME_MAX)
@@ -68,13 +68,13 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 #define LT_DLIS_RESIDENT(handle)    LT_DLGET_FLAG(handle, LT_DLRESIDENT_FLAG)
 
 
-static	const char	objdir[]		= LTDL_OBJDIR;
-static	const char	archive_ext[]		= LTDL_ARCHIVE_EXT;
-#if defined(LTDL_SHLIB_EXT)
-static	const char	shlib_ext[]		= LTDL_SHLIB_EXT;
+static	const char	objdir[]		= LT_OBJDIR;
+static	const char	archive_ext[]		= LT_ARCHIVE_EXT;
+#if defined(LT_MODULE_EXT)
+static	const char	shlib_ext[]		= LT_MODULE_EXT;
 #endif
-#if defined(LTDL_SYSSEARCHPATH)
-static	const char	sys_search_path[]	= LTDL_SYSSEARCHPATH;
+#if defined(LT_DLSEARCH_PATH)
+static	const char	sys_dlsearch_path[]	= LT_DLSEARCH_PATH;
 #endif
 
 
@@ -1055,18 +1055,18 @@ try_dlopen (lt_dlhandle *phandle, const char *filename)
 		file = find_file (search_path, base_name, &dir);
 	    }
 
-#if defined(LTDL_SHLIBPATH_VAR)
+#if defined(LT_MODULE_PATH_VAR)
 	  if (!file)
 	    {
-	      search_path = getenv (LTDL_SHLIBPATH_VAR);
+	      search_path = getenv (LT_MODULE_PATH_VAR);
 	      if (search_path)
 		file = find_file (search_path, base_name, &dir);
 	    }
 #endif
-#if defined(LTDL_SYSSEARCHPATH)
-	  if (!file && sys_search_path)
+#if defined(LT_SYS_DLSEARCH_PATH)
+	  if (!file && sys_dlsearch_path)
 	    {
-	      file = find_file (sys_search_path, base_name, &dir);
+	      file = find_file (sys_dlsearch_path, base_name, &dir);
 	    }
 #endif
 	}
@@ -1256,12 +1256,12 @@ try_dlopen (lt_dlhandle *phandle, const char *filename)
       if ((dir || (!find_handle (user_search_path, base_name, &newhandle)
 		   && !find_handle (getenv (LTDL_SEARCHPATH_VAR), base_name,
 				    &newhandle)
-#if defined(LTDL_SHLIBPATH_VAR)
-		   && !find_handle (getenv (LTDL_SHLIBPATH_VAR), base_name,
+#if defined(LT_MODULE_PATH_VAR)
+		   && !find_handle (getenv (LT_MODULE_PATH_VAR), base_name,
 				    &newhandle)
 #endif
-#if defined(LTDL_SYSSEARCHPATH)
-		   && !find_handle (sys_search_path, base_name, &newhandle)
+#if defined(LT_SYS_DLSEARCH_PATH)
+		   && !find_handle (sys_dlsearch_path, base_name, &newhandle)
 #endif
 		   )))
 	{
@@ -1328,9 +1328,9 @@ file_not_found (void)
   return 0;
 }
 
-/* If FILENAME has an ARCHIVE_EXT or SHLIB_EXT extension, try to
+/* If FILENAME has an ARCHIVE_EXT or MODULE_EXT extension, try to
    open the FILENAME as passed.  Otherwise try appending ARCHIVE_EXT,
-   and if a file is still not found try again with SHLIB_EXT appended
+   and if a file is still not found try again with MODULE_EXT appended
    instead.  */
 lt_dlhandle
 lt_dlopenext (const char *filename)
@@ -1354,7 +1354,7 @@ lt_dlopenext (const char *filename)
   /* If FILENAME already bears a suitable extension, there is no need
      to try appending additional extensions.  */
   if (ext && ((streq (ext, archive_ext))
-#if defined(LTDL_SHLIB_EXT)
+#if defined(LT_MODULE_EXT)
 	      || (streq (ext, shlib_ext))
 #endif
       ))
@@ -1382,8 +1382,8 @@ lt_dlopenext (const char *filename)
       return handle;
     }
 
-#if defined(LTDL_SHLIB_EXT)
-  /* Try appending SHLIB_EXT.   */
+#if defined(LT_MODULE_EXT)
+  /* Try appending MODULE_EXT.   */
   if (LT_STRLEN (shlib_ext) > LT_STRLEN (archive_ext))
     {
       FREE (tmp);
@@ -1616,21 +1616,21 @@ lt_dlforeachfile (const char *search_path,
 				   foreachfile_callback, func, data);
       if (!is_done)
 	{
-	  is_done = foreach_dirinpath (getenv("LTDL_LIBRARY_PATH"), 0,
+	  is_done = foreach_dirinpath (getenv(LTDL_SEARCHPATH_VAR), 0,
 				       foreachfile_callback, func, data);
 	}
 
-#if defined(LTDL_SHLIBPATH_VAR)
+#if defined(LT_MODULE_PATH_VAR)
       if (!is_done)
 	{
-	  is_done = foreach_dirinpath (getenv(LTDL_SHLIBPATH_VAR), 0,
+	  is_done = foreach_dirinpath (getenv(LT_MODULE_PATH_VAR), 0,
 				       foreachfile_callback, func, data);
 	}
 #endif
-#if defined(LTDL_SYSSEARCHPATH)
-      if (!is_done)
+#if defined(LT_SYS_DLSEARCH_PATH)
+      if (!is_done && sys_dlsearch_path)
 	{
-	  is_done = foreach_dirinpath (getenv(LTDL_SYSSEARCHPATH), 0,
+	  is_done = foreach_dirinpath (sys_dlsearch_path, 0,
 				       foreachfile_callback, func, data);
 	}
 #endif

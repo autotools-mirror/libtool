@@ -1,5 +1,5 @@
 ## Process this file with autoconf to create configure. -*- autoconf -*-
-# Copyright (C) 2001, 2003 Free Software Foundation, Inc.
+# Copyright (C) 2001, 2003, 2004 Free Software Foundation, Inc.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -57,17 +57,16 @@ esac
 AM_CONDITIONAL([BINARY_HELLDL], [test "X$binary_helldl" = Xyes])
 
 
-## ---------------------------- ##
-## C headers required by cdemo. ##
-## ---------------------------- ##
+## --------------------------- ##
+## C headers required by demo. ##
+## --------------------------- ##
 AC_CHECK_HEADERS([string.h math.h])
 
 
 ## --------------------------- ##
 ## Libraries required by demo. ##
 ## --------------------------- ##
-AC_CHECK_LIBM
-AC_SUBST([LIBM])
+LT_LIB_M
 
 
 ## -------- ##
