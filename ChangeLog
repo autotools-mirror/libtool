@@ -1,3 +1,8 @@
+2004-04-17  Peter O'Gorman  <peter@pogma.com>
+
+	* libltdl/loader-dyld.c: Fix compilation issues. Set Original author
+	to me.
+
 2004-04-17  Todd Vierling  <tv@duh.org>, 
 	Peter O'Gorman  <peter@pogma.com>
 

@@ -1,6 +1,6 @@
 /* loader-dyld.c -- dynamic linking on darwin and OS X
    Copyright (C) 1998, 1999, 2000, 2004 Free Software Foundation, Inc.
-   Originally by Thomas Tanner <tanner@ffii.org>
+   Originally by Peter O'Gorman <peter@pogma.com>
 
    NOTE: The canonical source of this file is maintained with the
    GNU Libtool package.  Report bugs to bug-libtool@gnu.org.
@@ -125,7 +125,7 @@ lt__dylderror (int errnum)
 
   if (! (errstr && *errstr))
     {
-      errstr = LT__STRERROR (errnum);
+      errstr = lt__error_strings[errnum] ;
     }
 
   return errstr;
@@ -317,7 +317,7 @@ sys_dyld_open (lt_user_data loader_data, const char *filename)
 
   if (!module)
     {
-      DYLD__MUTEX_SETERROR (CANNOT_OPEN);
+      DYLD__MUTEX_SETERROR (LT_ERROR_CANNOT_OPEN);
     }
 
   return module;
@@ -353,7 +353,7 @@ sys_dyld_close (lt_user_data loader_data, lt_module module)
 #endif
 	  if (!NSUnLinkModule (module, flags))
 	    {
-	      DYLD__MUTEX_SETERRORSTR (CANNOT_CLOSE);
+	      DYLD__MUTEX_SETERROR (LT_ERROR_CANNOT_CLOSE);
 	      ++errors;
 	    }
 	}
@@ -394,11 +394,11 @@ sys_dyld_sym (lt_user_data loader_data, lt_module module, const char *symbol)
 
   if (!nssym)
     {
-      strncpy (saveError, lt__dylderror (SYMBOL_NOT_FOUND), 255);
+      strncpy (saveError, lt__dylderror (LT_ERROR_SYMBOL_NOT_FOUND), 255);
       saveError[255] = 0;
       if (!mh)
 	{
-	  mh = lt__nsmodule_get_header (module);
+	  mh = (mach_header *)lt__nsmodule_get_header (module);
 	}
       nssym = lt__linkedlib_symbol (symbol, mh);
     }
