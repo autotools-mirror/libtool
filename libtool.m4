@@ -128,6 +128,29 @@ ifdef([AC_PROVIDE_AC_LIBTOOL_WIN32_DLL],
   AC_CHECK_TOOL(DLLTOOL, dlltool, false)
   AC_CHECK_TOOL(AS, as, false)
   AC_CHECK_TOOL(OBJDUMP, objdump, false)
+
+  # recent cygwin and mingw systems supply a stub DllMain which the user
+  # can override, but on older systems we have to supply one
+  AC_CACHE_CHECK([if libtool should supply DllMain function], lt_cv_need_dllmain,
+    [AC_TRY_LINK([DllMain (0, 0, 0);],
+      [extern int __attribute__((__stdcall__)) DllMain(void*, int, void*);],
+      [lt_cv_need_dllmain=yes],[lt_cv_need_dllmain=no])])
+
+  # old mingw systems require "-dll" to link a DLL, while more recent ones
+  # require "-mdll"
+  lt_nostartfiles=
+  case $host in
+  *-*-cygwin)
+    # on cygwin we must also not link crt.o, or else the dll will need
+    # a WinMain@16 definition.
+    lt_nostartfiles=" -nostartfiles" ;;
+  esac
+  SAVE_CFLAGS="$CFLAGS"
+  CFLAGS="$CFLAGS -mdll$lt_nostartfiles"
+  AC_CACHE_CHECK([how to link DLLs], lt_cv_cc_dll_switch,
+    [AC_TRY_LINK([], [], [lt_cv_cc_dll_switch=-mdll],[lt_cv_cc_dll_switch=-dll])])
+  lt_cv_cc_dll_switch="$lt_cv_cc_dll_switch$lt_nostartfiles"
+  CFLAGS="$SAVE_CFLAGS"
   ;;
 ])
 esac

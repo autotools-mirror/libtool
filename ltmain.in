@@ -705,6 +705,11 @@ compiler."
 #  #include <fcntl.h>		/* for O_RDONLY, O_BINARY */
 #  #include <string.h>		/* for strdup() */
 # 
+#  /* O_BINARY isn't required (or even defined sometimes) under Unix */
+#  #ifndef O_BINARY
+#  #define O_BINARY 0
+#  #endif
+#
 #  static unsigned int
 #  pe_get16 (fd, offset)
 #       int fd;

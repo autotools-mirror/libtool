@@ -1,6 +1,8 @@
 NEWS - list of user-visible changes between releases of GNU Libtool
 
 New in 1.3d: 1999-??-??; CVS version 1.3c, Libtool team:
+* Start of support code for cross-compiling to win32.
+* Improved support for mingw32.
 * New --with-pic flag to control the generation of PIC/non-PIC code.
 * New --build flag to ltconfig to help with build cross compilation
   environments is inherited from --build flag passed to configure.

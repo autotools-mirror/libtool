@@ -1,3 +1,17 @@
+1999-07-24  Olly Betts  <olly@muscat.co.uk>
+
+	* NEWS: Note new user visible changes.
+	* libtool.m4 (mingw32, AC_LIBTOOL_SETUP): probe for -mdll vs -dll
+	under cygwin/mingw.
+	probe whether the cygwin/mingw library supplies a stub DllMain
+	(but this information isn't yet used).
+	* ltconfig.in (mingw32, extract_expsyms_cmds): if HOST_CC is set,
+	use that to build impgen so we can use it when cross-compiling.
+	use correct entry points for mingw so static C++ constructors get
+	called for code in the DLL.
+	* ltmain.in (impgen.c): define O_BINARY to 0 if it is not in the
+	system headers.
+	
 1999-07-24  Bert Driehuis <bert_driehuis@compuware.com>
 
 	* ltconfig.in:  Updated bsdi4 soname specs to be more like
