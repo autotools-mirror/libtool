@@ -1161,6 +1161,7 @@ AC_CACHE_VAL([lt_cv_sys_max_cmd_len], [dnl
     fi
     # And add a safety zone
     lt_cv_sys_max_cmd_len=`expr $lt_cv_sys_max_cmd_len \/ 4`
+    lt_cv_sys_max_cmd_len=`expr $lt_cv_sys_max_cmd_len \* 3`
     ;;
   osf*)
     # Dr. Hans Ekkehard Plesser reports seeing a kernel panic running configure
