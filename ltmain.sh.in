@@ -319,8 +319,9 @@ if test -z "$show_help"; then
 
       -static)
 	build_libtool_libs=no
-	farg="$link_static_flag"
-	carg="$farg"
+	link_static="`eval echo \"$link_static_flag\"`"
+	carg="$link_static"
+	farg=
 	;;
 
       -version-file)
@@ -704,7 +705,7 @@ if test -z "$show_help"; then
 
       if test -n "$libobjs"; then
 	# Transform all the library objects into standard objects.
-	compile_command=`echo "$compile_command " | sed 's/\.lo /.o /g; s/ $//g'`
+	compile_command=`echo "$compile_command " | sed 's/\.lo /.o /g; s/ $//'`
       fi
 
       if test -z "$link_against_libtool_libs" || test "$build_libtool_libs" != yes; then
@@ -712,7 +713,17 @@ if test -z "$show_help"; then
 	compile_command=`echo "$compile_command" | sed "s%-o $objdir/%-o %"`
 	$show "$compile_command"
 	$run $compile_command
-	exit $?
+	status=$?
+
+	# If we failed to link statically, then try again.
+	if test $status -ne 0 && test -n "$link_static"; then
+	  echo "$progname: cannot link \`$output' statically; retrying semi-dynamically" 1>&2
+	  compile_command=`echo "$compile_command " | sed "s% $link_static % %;s/ $//"`
+	  $show "$compile_command"
+	  $run $compile_command
+	  status=$?
+	fi
+	exit $status
       fi
 
       # Create the binary in the object directory, then wrap it.

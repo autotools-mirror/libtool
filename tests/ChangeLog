@@ -1,3 +1,19 @@
+Sun Dec  8 14:43:15 1996  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* demo.test: Break up into demo-conf.test, demo-make.test,
+	demo-exec.test, demo-inst.test, and demo-unst.test, so that passes
+	and failures are reported more quickly.
+
+	* link-2.test: Test to make sure that .lo files don't get built
+	directly into programs.
+
+Sat Dec  7 15:44:49 1996  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* tlibtool: A typically-configured libtool script, that uses
+	../ltmain.sh.in for its backend.
+
+	* link.test: Make sure that it is legal to link against .a files.
+
 Mon Dec  2 16:31:10 1996  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* demo.test: Try compiling the ../demo subdirectory, with no

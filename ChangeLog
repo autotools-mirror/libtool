@@ -1,5 +1,29 @@
 Thu Jan 16 17:57:38 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
+	* demo/Makefile.am (hc-direct): Do better searching for the proper
+	name to do a direct link.
+	(hc-libpath): Make allowances if shlibpath_var cannot be used
+	to find libraries at link time, such as on AIX.
+
+	* Makefile.am (demo_distfiles): Remove ansi2knr.1 and ansi2knr.c.
+
+	* demo/foo.c, demo/hello.c, demo/main.c: Change ANSI prototypes to
+ 	KNR form, for better portability, and less ansi2knr hair.
+
+	* demo/configure.in: Remove AM_FUNC_PROTOTYPES.
+
+	* demo/Makefile.am: Remove ansi2knr from the AUTOMAKE_OPTIONS.
+
+	* demo/ansi2knr.1, demo/ansi2knr.c: Removed these files.
+
+	* ltmain.sh.in: Use 1>&2 consistently to direct errors and
+	warnings to stderr.
+	(compile): Fix missing single quote.
+
+	* ltconfig.in (hardcode_direct): On Solaris at least, using
+ 	DIR/libNAME.so does not hardcode DIR, so introduce a new hardcode
+ 	variable to reflect that.
+
 	* ltmain.sh.in (link): If linking with $link_static_flag fails,
  	then retry without it, but still use the .a versions of
  	uninstalled libtool archives.

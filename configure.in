@@ -1,5 +1,5 @@
 AC_INIT(ltmain.sh.in)
-AM_INIT_AUTOMAKE(libtool, 0.7a)
+AM_INIT_AUTOMAKE(libtool, 0.7b)
 
 pkgdatadir='${datadir}/libtool'
 AC_SUBST(pkgdatadir)

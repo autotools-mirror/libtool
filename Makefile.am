@@ -11,7 +11,6 @@ MAINTAINERCLEANFILES = ltconfig ltmain.sh
 
 # Files in the demo subdirectory that go in the distribution.
 demo_distfiles = Makefile.in Makefile.am README aclocal.m4 \
-	ansi2knr.1 ansi2knr.c \
 	configure configure.in foo.c foo.h hello.c main.c \
 	run.test
 

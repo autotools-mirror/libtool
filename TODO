@@ -1,13 +1,25 @@
-* Implement `ld -r' on all platforms.
+For 1.0:
 
-* Don't forget to find link_static_flag for native cc's on HP-UX and OSF/1.
+* Have people test libtool on AIX 3, OSF/1, HP-UX, and SunOS 4.
 
-* Write installcheck for the demo directory.
+* Don't forget to find link_static_flag for native cc's on HP-UX and
+OSF/1.
 
-* Implement fuller support for profiled libraries (libNAME_p), and
-resolve naming difficulties for debuggable libraries (libNAME_g on
-Linux at least), old system 5 shared libraries (libNAME_s), etc, maybe
-based on cflags.
+* Implement shared libraries and `-static' linking on platforms that
+support them.  Ones that stand out, which libtool doesn't support:
+IRIX.
+
+For 1.1:
+
+* Implement full support for other basic library types (libhello_g,
+libhello_p).  Make these types configurable.  Some thinking will have
+to be done about the defaults, and what libhello (standard type)
+should be.
+
+Sometime in the future (maybe):
+
+* Add support for windoze DLL's, and maybe old Linux jumptable
+libraries.  Check out Lesstif and Tcl configuration again.
 
 * What should be done about the difference between -fpic and -fPIC?
 

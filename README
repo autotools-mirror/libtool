@@ -9,7 +9,18 @@ details.
 Libtool supports building static libraries on all platforms.
 
 Shared library support has been implemented for these platforms:
+  AIX 4.x (*-*-aix4*)
+  FreeBSD 2.x (*-*-freebsd*)
   NetBSD 1.x (*-*-netbsd*)
+  Solaris 2.x (*-*-solaris2*)
+  Linux ELF targets (*-*-linux*, except *-*-linuxaout* and *-*-linuxoldld*)
+  All ELF targets that use both GCC and GNU ld
+
+Shared library support is implemented, but untested on:
+  AIX 3.x (*-*-aix3*)
+  Digital/UNIX 3.x, a.k.a. OSF/1 (*-*-osf3*)
+  HP-UX 10.x (*-*-hpux10*)
+  Solaris 1.x, a.k.a. SunOS 4.x (*-*-sunos4*)
 
 See the file NEWS for a description of recent changes to libtool.
 

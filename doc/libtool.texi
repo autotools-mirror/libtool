@@ -108,7 +108,7 @@ Introduction
 Using Libtool
 
 * Creating Object Files::       Compiling object files for libraries.
-* Linking Libraries::           
+* Linking Libraries::           Creating libraries from object files.
 * Linking Executables::         Linking object files against libtool libraries.
 * Installing Libraries::        Making libraries available to users.
 * Installing Executables::      Making programs available to users.
@@ -131,9 +131,9 @@ Integrating Libtool with Your Own Packages
 
 Configuring Libtool
 
-* Invoking ltconfig::           
-* ltconfig Example::            
-* AM_PROG_LIBTOOL::             
+* Invoking ltconfig::           @file{ltconfig} command line options.
+* ltconfig Example::            Manually configuring a @file{libtool}.
+* AM_PROG_LIBTOOL::             Configuring @file{libtool} in @file{configure.in}.
 
 Including Libtool with Your Package
 
@@ -426,22 +426,34 @@ simply invoke libtool with the standard compilation command as an
 argument:
 
 @example
-a23$ libtool gcc -g -O -c foo.c
-gcc -g -O -c foo.c -o foo.lo
-a23$ libtool gcc -g -O -c hello.c
-gcc -g -O -c hello.c -o hello.lo
+a23$ @kbd{libtool gcc -g -O -c foo.c}
+gcc -g -O -c foo.c
+ln -s foo.o foo.lo
+a23$ @kbd{libtool gcc -g -O -c hello.c}
+gcc -g -O -c hello.c
+ln -s hello.o hello.lo
 a23$
 @end example
 
+Note that libtool creates two object files for each invocation.  The
+`.lo' file is a library object, and the `.o' file is a standard object
+file.  On `a23', these files are identical, because only static
+libraries are supported.
+
 On shared library systems, libtool automatically inserts the PIC
-generation flags into the compilation command:
+generation flags into the compilation command, so that the library
+object and the standard object differ:
 
 @example
 burger$ @kbd{libtool gcc -g -O -c foo.c}
-gcc -g -O -c -fPIC -DPIC foo.c -o foo.lo
+gcc -g -O -c -fPIC -DPIC foo.c
+mv -f foo.o foo.lo
+gcc -g -O -c foo.c
 burger$ @kbd{libtool gcc -g -O -c hello.c}
-gcc -g -O -c -fPIC -DPIC hello.c -o hello.lo
-burger$
+gcc -g -O -c -fPIC -DPIC hello.c
+mv -f hello.o hello.lo
+gcc -g -O -c hello.c
+burger$ 
 @end example
 
 @node Linking Libraries, Linking Executables, Creating Object Files, Using Libtool
@@ -477,16 +489,15 @@ the same ones you would use to produce an executable named
 
 @example
 burger$ @kbd{libtool gcc -g -O -o libhello.la foo.o hello.o}
-libtool: cannot build libtool library `libhello.la' from non-libtool objects
+libtool: cannot build libtool library `libhello.la' from non-libtool \
+                objects
 burger$ 
 @end example
 
 Aha!  Libtool caught a common error@dots{} trying to build a library
-from standard objects instead of library objects.@footnote{The converse,
-however, is perfectly legal.  Library objects can do anything that
-standard objects can do@dots{} it makes sense to link them directly into
-programs.}  This doesn't matter much for static libraries, but on shared
-library systems, it is of great importance.
+from standard objects instead of library objects.  This doesn't matter
+for static libraries, but on shared library systems, it is of great
+importance.
 
 So, let's try again, this time with the library object files:
 
@@ -502,10 +513,11 @@ installed.  So, we try again, with an @code{rpath} setting of
 @file{/usr/local/lib}:
 
 @example
-a23$ @kbd{libtool gcc -g -O -o libhello.la foo.lo hello.lo -rpath /usr/local/lib}
-mkdir LIBS
-ar cru LIBS/libhello.a foo.lo hello.lo
-ranlib LIBS/libhello.a
+a23$ @kbd{libtool gcc -g -O -o libhello.la foo.lo hello.lo \
+                -rpath /usr/local/lib}
+mkdir .libs
+ar cru .libs/libhello.a foo.o hello.o
+ranlib .libs/libhello.a
 creating libhello.la
 a23$ 
 @end example
@@ -513,11 +525,13 @@ a23$
 Now, let's try the same trick on the shared library platform:
 
 @example
-burger$ @kbd{libtool gcc -g -O -o libhello.la foo.lo hello.lo -rpath /usr/local/lib}
-mkdir LIBS
-ld -Bshareable -o LIBS/libhello.so.0.0 foo.lo hello.lo
-ar cru LIBS/libhello.a foo.lo hello.lo
-ranlib LIBS/libhello.a
+burger$ @kbd{libtool gcc -g -O -o libhello.la foo.lo hello.lo \
+                -rpath /usr/local/lib}
+mkdir .libs
+rm -f .libs/libhello.*
+ld -Bshareable -o .libs/libhello.so.0.0 foo.lo hello.lo
+ar cru .libs/libhello.a foo.o hello.o
+ranlib .libs/libhello.a
 creating libhello.la
 burger$
 @end example
@@ -526,7 +540,7 @@ Now that's significantly cooler@dots{} libtool just ran an obscure
 @file{ld} command to create a shared library, as well as the static
 library.
 
-Note how libtool creates extra files in the @file{LIBS} subdirectory,
+Note how libtool creates extra files in the @file{.libs} subdirectory,
 rather than the current directory.  This feature is to make it easier to
 clean up the build directory, and to help ensure that other programs
 fail horribly if you accidentally forget to use libtool when you should.
@@ -560,35 +574,38 @@ burger$ @kbd{gcc -g -O -o hell.old main.o libhello.a}
 burger$ 
 @end example
 
-This is libtool's way:
+Libtool's way is almost the same@footnote{However, you should never use
+@samp{-L} or @samp{-l} flags to link against an uninstalled libtool
+library.  Just specify the relative path to the `.la' file, such as
+@file{../intl/libintl.la}.}:
 
 @example
 a23$ @kbd{libtool gcc -g -O -o hell main.o libhello.la}
-gcc -g -O -o hell main.o ./LIBS/libhello.a
+gcc -g -O -o hell main.o ./.libs/libhello.a
 a23$ 
 @end example
 
 That looks too simple to be true.  All libtool did was transform
-@file{libhello.la} to @file{./LIBS/libhello.a}, but remember that
+@file{libhello.la} to @file{./.libs/libhello.a}, but remember that
 `a23' has no shared libraries.
 
 On `burger' the situation is different:
 
 @example
 burger$ @kbd{libtool gcc -g -O -o hell main.o libhello.la}
-gcc -g -O -o LIBS/hell main.o -L./LIBS -R/usr/local/lib -lhello
+gcc -g -O -o .libs/hell main.o -L./.libs -R/usr/local/lib -lhello
 creating hell
 burger$
 @end example
 
 Notice that the executable, @file{hell} was actually created in the
-@file{LIBS} subdirectory.  Then, a wrapper script was created in the
+@file{.libs} subdirectory.  Then, a wrapper script was created in the
 current directory.
 
 On NetBSD 1.2, libtool encodes the installation directory of
 @file{libhello}, @file{/usr/local/lib}, by using the @code{-R} compiler
 flag.  Then, the wrapper script guarantees that the executable finds the
-correct shared library (the one in @file{./LIBS}) until it is properly
+correct shared library (the one in @file{./.libs}) until it is properly
 installed.
 
 Let's compare the two different programs:
@@ -616,10 +633,10 @@ to yield?
 burger$ @kbd{ls -l hell.old libhello.a}
 -rwxr-xr-x  1 gord  gord  15481 Nov 14 12:11 hell.old
 -rw-r--r--  1 gord  gord   4274 Nov 13 18:02 libhello.a
-burger$ @kbd{ls -l LIBS/hell LIBS/libhello.*}
--rwxr-xr-x  1 gord  gord  11602 Nov 14 12:10 LIBS/hell
--rw-r--r--  1 gord  gord   4352 Nov 13 18:44 LIBS/libhello.a
--rwxr-xr-x  1 gord  gord  12205 Nov 13 18:44 LIBS/libhello.so.0.0
+burger$ @kbd{ls -l .libs/hell .libs/libhello.*}
+-rwxr-xr-x  1 gord  gord  11647 Nov 14 12:10 .libs/hell
+-rw-r--r--  1 gord  gord   4274 Nov 13 18:44 .libs/libhello.a
+-rwxr-xr-x  1 gord  gord  12205 Nov 13 18:44 .libs/libhello.so.0.0
 burger$ 
 @end example
 
@@ -659,9 +676,9 @@ Libtool installation is quite simple, as well.  Just use the
 
 @example
 a23# @kbd{libtool cp libhello.la /usr/local/lib/libhello.la}
-cp libhello.la /local/lib/libhello.la
-cp LIBS/libhello.a /local/lib/libhello.a
-ranlib /local/lib/libhello.a
+cp libhello.la /usr/local/lib/libhello.la
+cp .libs/libhello.a /usr/local/lib/libhello.a
+ranlib /usr/local/lib/libhello.a
 a23# 
 @end example
 
@@ -671,10 +688,10 @@ informational purposes.
 Here is the shared library example:
 
 @example
-burger# libtool install -c libhello.la /usr/local/lib/libhello.la
-install -c LIBS/libhello.so.0.0 /usr/local/lib/libhello.so.0.0
+burger# @kbd{libtool install -c libhello.la /usr/local/lib/libhello.la}
+install -c .libs/libhello.so.0.0 /usr/local/lib/libhello.so.0.0
 install -c libhello.la /usr/local/lib/libhello.la
-install -c LIBS/libhello.a /usr/local/lib/libhello.a
+install -c .libs/libhello.a /usr/local/lib/libhello.a
 ranlib /usr/local/lib/libhello.a
 burger#
 @end example
@@ -727,7 +744,7 @@ installs the correct binary:
 
 @example
 burger# libtool install -c hell /usr/local/bin/hell
-install -c LIBS/hell /usr/local/bin/hell
+install -c .libs/hell /usr/local/bin/hell
 burger# 
 @end example
 
@@ -758,7 +775,7 @@ Link the files in the same way you would a libtool library, but use a
 @example
 burger$ @kbd{libtool gcc -o libfoo.a main.o foo.lo hello.lo}
 rm -f libfoo.a
-ar cru libfoo.a main.o foo.lo hello.lo
+ar cru libfoo.a main.o foo.o hello.o
 ranlib libfoo.a
 burger$ 
 @end example
@@ -897,13 +914,19 @@ If not specified, each of these variables defaults to 0
 @end table
 
 If the @var{output-file} ends in `.la', then a libtool library is
-created, which must be build only from library objects (`.lo' files).
-The @samp{-rpath} option is required.  In the current implementation,
-libtool libraries may not depend on other uninstalled libtool
-libraries.
+created, which must be built only from library objects (`.lo'
+files)@footnote{Object files with a `.l_o' suffix are also accepted, to
+help with Automake's @code{ansi2knr} support (@pxref{ANSI, , Automatic
+de-ANSI-fication, automake.info, The Automake Manual}).}  The
+@samp{-rpath} option is required.  In the current implementation,
+libtool libraries may not depend on other uninstalled libtool libraries.
 
 If the @var{output-file} ends in `.a', then a standard library is
 created using @file{ar} and possibly @file{ranlib}.
+
+If @var{output-file} ends in `.o' or `.lo', then a reloadable object
+file is created from the input files (generally using @samp{ld -r}).
+This method is called @dfn{incremental linking}.
 
 Otherwise, an executable program is created.
 
@@ -1184,9 +1207,13 @@ and @samp{--disable-shared} @file{configure} flags.
 
 When you invoke the @file{libtoolize} program (@pxref{Invoking
 libtoolize}), it will tell you where to find a definition of
-@file{AM_PROG_LIBTOOL}.  If you use Automake, the @file{aclocal} program
-will automatically add @file{AM_PROG_LIBTOOL} support to your
-@file{configure} script.
+@code{AM_PROG_LIBTOOL}.  If you use Automake, the @file{aclocal} program
+will automatically add @code{AM_PROG_LIBTOOL} support to your
+@file{configure} script.@footnote{@code{AM_PROG_LIBTOOL} requires that
+you define the Makefile variable @code{top_builddir} in your
+@file{Makefile.in}.  Automake does this automatically, but Autoconf
+users should set it to the relative path to the top of your build
+directory (@file{../..}, for example).}
 
 @node Distributing,  , Configuring, Integrating Libtool
 @comment  node-name,  next,  previous,  up

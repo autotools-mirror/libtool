@@ -3,7 +3,7 @@
 # ltconfig - Create a system-specific libtool.
 # When updating this script, search for LINENUM and fix line number refs.
 # @configure_input@
-# Copyright (C) 1996, Free Software Foundation, Inc.
+# Copyright (C) 1996, 1997, Free Software Foundation, Inc.
 # Gordon Matzigkeit <gord@gnu.ai.mit.edu>, 1996
 #
 # This file is free software; you can redistribute it and/or modify it
@@ -40,6 +40,7 @@ rm="rm -f"
 help="Try \`$progname --help' for more information."
 
 # Global variables:
+can_build_shared=yes
 enable_shared=yes
 # All known linkers require a `.a' archive for static linking.
 enable_static=yes
@@ -374,6 +375,7 @@ compiler="$2"
 echo $ac_n "checking for $compiler option to produce PIC... $ac_c" 1>&6
 pic_flag=
 profile_flag_pattern=
+special_shlib_compile_flags=
 wl=
 link_static_flag=
 
@@ -410,6 +412,12 @@ else
     link_static_flag='-non_shared'
     ;;
 
+  *-*-sco3.2v5*)
+    pic_flag='-Kpic'
+    link_static_flag='-dn'
+    special_shlib_compile_flags='-belf'
+    ;;
+
   *-*-solaris2*)
     pic_flag='-KPIC'
     link_static_flag='-Bstatic'
@@ -434,13 +442,21 @@ rs6000-*-* | powerpc-*-* | powerpcle-*-*)
   ;;
 esac
 
-# FIXME actually try compiling an object file with the pic flag?
-
 if test -n "$pic_flag"; then
   echo $ac_t "$pic_flag" 1>&6
   pic_flag=" $pic_flag"
 else
   echo $ac_t none 1>&6
+fi
+
+# Check for any special shared library compilation flags.
+if test -n "$special_shlib_compile_flags"; then
+  echo "$progname: warning: \`$CC' requires \`$special_shlib_compile_flags' to build shared libraries" 1>&2
+  if echo "$old_CC $old_CFLAGS " | egrep -e "[ 	]$special_shlib_compile_flags[ 	]" >/dev/null; then :
+  else
+    echo "$progname: add \`$special_shlib_compile_flags' to the CC or CFLAGS env variable and reconfigure" 1>&2
+    can_build_shared=no
+  fi
 fi
 
 echo $ac_n "checking for $compiler option to statically link programs... $ac_c" 1>&6
@@ -521,7 +537,7 @@ else
     ;;
 
   *-*-irix5* | *-*-irix6*)
-    archive_cmds='$LD -shared -o $lib -soname $install_libdir/$soname -set_version $verstring$libobjs -lc$deplibs'
+    archive_cmds='$LD -shared -o $lib -soname $soname -set_version $verstring$libobjs -lc$deplibs'
     link_rpath_flag='${wl}-rpath ${wl}$libdir'
     ;;
 
@@ -532,8 +548,12 @@ else
     ;;
 
   *-*-osf3*)
-    archive_cmds='$LD -shared -o $lib -soname $install_libdir/$soname -set_version $verstring$libobjs -lc$deplibs'
+    archive_cmds='$LD -shared -o $lib -soname $soname -set_version $verstring$libobjs -lc$deplibs'
     link_rpath_flag='${wl}-rpath ${wl}$libdir'
+    ;;
+
+  *-*-sco3.2v5*)
+    archive_cmds='$LD -G -o $lib$libobjs$deplibs'
     ;;
 
   *-*-solaris2*)
@@ -569,7 +589,6 @@ echo $ac_t "$reload_flag"
 test -n "$reload_flag" && reload_flag=" $reload_flag"
 
 # PORTME Fill in your ld.so characteristics
-can_build_shared=yes
 lib_names=
 soname_spec=
 postinstall_cmds=
@@ -617,10 +636,10 @@ case "$host" in
   postinstall_cmds='chmod 555 $lib'
   ;;
 
-*-*-irix5*)
+*-*-irix5* | *-*-irix6*)
   version_type=osf
-  soname_spec='$libname.so.$major'
-  lib_names='$libname.so.$versuffix $libname.so.$major $libname.so'
+  soname_spec='$libname.so'
+  lib_names='$libname.so.$versuffix $libname.so'
   shlibpath_var=LD_LIBRARY_PATH
   ;;
 
@@ -646,6 +665,13 @@ case "$host" in
   ;;
 
 *-*-osf3*)
+  version_type=osf
+  soname_spec='$libname.so'
+  lib_names='$libname.so.$versuffix $libname.so'
+  shlibpath_var=LD_LIBRARY_PATH
+  ;;
+
+*-*-sco3.2v5*)
   version_type=osf
   soname_spec='$libname.so.$major'
   lib_names='$libname.so.$versuffix $libname.so.$major $libname.so'

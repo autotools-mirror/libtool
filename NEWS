@@ -1,3 +1,9 @@
+New in 0.7a:
+* Bug fixes, and more documentation.
+* Basic support for other language compilers (C++, Fortran, and
+  preprocessed assembler).
+* Support for *-*-irix5 and *-*-irix6*.
+
 New in 0.7:
 * Total rewrite of libtool, along with a new model for library building.
 * Completely rewritten documentation for the new paradigm.
