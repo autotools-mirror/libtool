@@ -3840,7 +3840,7 @@ if test -f "$ltmain"; then
   # Now quote all the things that may contain metacharacters while being
   # careful not to overquote the AC_SUBSTed values.  We take copies of the
   # variables and quote the copies for generation of the libtool script.
-  for var in echo old_CC old_CFLAGS AR AR_FLAGS EGREP RANLIB LN_S LTCC NM SED SHELL \
+  for var in echo old_CC old_CFLAGS AR AR_FLAGS EGREP RANLIB LN_S LTCC NM SED SHELL STRIP \
     libname_spec library_names_spec soname_spec extract_expsyms_cmds \
     old_striplib striplib file_magic_cmd finish_cmds finish_eval \
     deplibs_check_method reload_flag reload_cmds need_locks \
@@ -4021,7 +4021,7 @@ LN_S=$lt_LN_S
 NM=$lt_NM
 
 # A symbol stripping program
-STRIP=$STRIP
+STRIP=$lt_STRIP
 
 # Used to examine libraries when file_magic_cmd begins "file"
 MAGIC_CMD=$MAGIC_CMD
