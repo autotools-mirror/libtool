@@ -7,7 +7,7 @@
 @c %**end of header
 
 @include version.texi
-@set BUGADDR the libtool mailing list @email{<bug-libtool@@gnu.org>}
+@set BUGADDR the libtool mailing list @email{bug-libtool@@gnu.org}
 @set objdir .libs
 
 @dircategory GNU programming tools
@@ -82,6 +82,7 @@ approved by the Free Software Foundation.
 @c Put everything in one index (arbitrarily chosen to be the concept index).
 @syncodeindex vr cp
 @syncodeindex fn cp
+@syncodeindex tp cp
 @synindex pg cp
 
 @ifinfo
@@ -2596,10 +2597,19 @@ porting libtool to new systems, or writing your own libtool.
 @node New ports
 @section Porting libtool to new systems
 
-To port libtool to a new system, you'll generally need the following
-information:
+Before you embark on porting libtool to an unsupported system, it is
+worthwhile to send e-mail to @value{BUGADDR}, to make sure that you are
+not duplicating existing work.
+
+Once it is clear that a new port is necessary, you'll generally need the
+following information:
 
 @table @asis
+@item canonical system name
+You need the output of @code{config.guess} for this system, so that you
+can make changes to the libtool configuration process without affecting
+other systems.
+
 @item man pages for @code{ld(1)} and @code{cc(1)}
 These generally describe what flags are used to generate PIC, to create
 shared libraries, and to link against only static libraries.  You may
@@ -2621,6 +2631,28 @@ including which names should be symbolic links.
 Some systems have special documentation on how to build and install
 shared libraries.
 @end table
+
+If you know how to program in shell script, then you can complete the
+port yourself; otherwise, you'll have to find somebody with the relevant
+skills who will do the work.  People on the libtool mailing list are
+usually willing to volunteer to help you with new ports, so you can send
+the information to them.
+
+To do the port yourself, you'll definitely need to modify the
+@code{ltconfig} script in order to make platform-specific changes to the
+configuration process.  You should search the script for the
+@code{PORTME} keyword, which will give you some hints on what you'll
+need to change.  In general, all that is involved is modifying the
+appropriate configuration variables (@pxref{libtool script contents}).
+
+Your best bet is to find an already-supported system that is similar to
+yours, and make your changes based on that.  In some cases, however,
+your system will differ significantly from every other supported system,
+and it may be necessary to add new configuration variables, and modify
+the @code{ltmain.sh} script accordingly.  Be sure to write to the
+mailing list before you make changes to @code{ltmain.sh}, since they may
+have advice on the most effective way of accomplishing what you want.
+
 
 @node Tested platforms
 @section Tested platforms
@@ -2990,7 +3022,7 @@ directly.
 The following steps describe how to create such a script, where
 @code{/home/src/libtool} is the directory containing the libtool source
 tree, and @code{/home/src/libtool/libtool} is a libtool script that has
-been configured for your platform, and :
+been configured for your platform:
 
 @example
 trick$ @kbd{sed '/^# ltmain\.sh/q' /usr/local/bin/libtool > ~/bin/libtool}

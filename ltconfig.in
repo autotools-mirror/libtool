@@ -30,7 +30,7 @@ SHELL=${CONFIG_SHELL-/bin/sh}
 if test "X$1" = "X--no-reexec"; then
   # Discard the --no-reexec flag, and continue.
   shift
-elif test "X$SHELL" != X/bin/sh; then
+else
   # Restart under the correct shell.
   exec "$SHELL" "$0" --no-reexec ${1+"$@"}
 fi

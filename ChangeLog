@@ -1,3 +1,8 @@
+1998-04-20  Gordon Matzigkeit  <gord@profitpress.com>
+
+	* ltmain.in: Maybe reexec under $SHELL, if $echo doesn't work.
+	Reported by Lars Hecking.
+
 1998-04-19  Gordon Matzigkeit  <gord@profitpress.com>
 
 	* Makefile.am (maintainer-rekey): New rule to force us to change
