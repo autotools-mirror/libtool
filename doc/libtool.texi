@@ -2249,6 +2249,15 @@ The fewer global functions your library has, the more flexibility you'll
 have in changing them.  Static functions and variables may change forms
 as often as you like@dots{} your users cannot access them, so they
 aren't interface changes.
+
+@item Be careful with array dimensions
+The number of elements in a global array is part of an interface, even
+if the header just declares @code{extern int foo[];}.  This is because
+on i386 and some other SVR4/ELF systems, when an application
+references data in a shared library the size of that data (whatever
+its type) is included in the application executable.  If you might
+want to change the size of an array or string then provide a pointer
+not the actual array.
 @end table
 
 @menu
