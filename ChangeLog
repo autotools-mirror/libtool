@@ -1,3 +1,10 @@
+2001-03-20  Alexandre Oliva  <oliva@lsd.ic.unicamp.br>
+
+	* configure.in (file_magic_cmd, reload_flag): Duplicate `$'s
+	before SUBSTin in the Makefile.
+	* ltconfig.in (reload_flag): Prepend a blank if it doesn't start
+	with one.
+	
 2001-03-16  Albert Chin  <china@thewrittenword.com>
 	
 	* ltcf-cxx.sh (archive_cmds) [HP-UX, GCC]: Link with -fPIC.

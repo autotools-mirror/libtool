@@ -950,6 +950,10 @@ else
   echo "${ac_t}no" 1>&6
 fi
 
+case $reload_flag in
+"" | " "*) ;;
+*) reload_flag=" $reload_flag" ;;
+esac
 reload_cmds='$LD$reload_flag -o $output$reload_objs'
 test -z "$deplibs_check_method" && deplibs_check_method=unknown
 

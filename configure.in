@@ -86,6 +86,13 @@ done
 AC_SUBST(ACINCLUDE_M4_LIST)
 AC_SUBST(DIST_MAKEFILE_LIST)
 
+dnl Quote these variables
+for var in file_magic_cmd reload_flag; do
+  eval val=\$$var
+[ val=`echo "X$val" | sed -e '1s,^X,,' -e 's,[$],$$,g'`]
+  eval $var=\$val
+done  
+
 AC_OUTPUT_COMMANDS([
   test -f ${saved_top_srcdir}/ltconfig || ${MAKE-make} ${saved_top_srcdir}/ltconfig
   test -f ${saved_top_srcdir}/ltmain.sh || ${MAKE-make} ${saved_top_srcdir}/ltmain.sh
