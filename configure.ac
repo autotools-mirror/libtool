@@ -134,7 +134,7 @@ AC_SUBST([CONFIG_STATUS_DEPENDENCIES], ['$(top_builddir)/stamp-vcl'])
 #   aren't the same.
 APIVERSION=`echo "$VERSION" | sed -e 's/^\([[0-9]]*\.[[0-9]]*[[a-z]]*\).*$/\1/'`
 AC_SUBST([APIVERSION])
-AC_SUBST([aclocaldir],   ["\${prefix}/aclocal"])
+AC_SUBST([aclocaldir],   ["\${datadir}/aclocal"])
 AC_SUBST([pkgvdatadir],  ["\${datadir}/$PACKAGE-$APIVERSION"])
 AC_SUBST([pkgvmacrodir], ["\${datadir}/$PACKAGE-$APIVERSION/m4"])
 

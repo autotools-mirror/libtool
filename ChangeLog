@@ -1,3 +1,8 @@
+2004-12-12  Patrick Welche <prlw1@newn.cam.ac.uk>
+
+	* configure.ac: Fix aclocaldir to use ${datadir}, not ${prefix}.
+	Necessary for removal of old libtool.m4 files.
+
 2004-12-10  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* config/ltmain.m4sh (func_extract_archive): Send stderr of $NM
