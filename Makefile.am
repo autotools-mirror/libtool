@@ -32,6 +32,7 @@ libtool: $(srcdir)/ltmain.sh $(srcdir)/ltconfig
 	CC="$(CC)" CFLAGS="$(CFLAGS)" CPPFLAGS="$(CPPFLAGS)" \
 	LD="$(LD)" LDFLAGS="$(LDFLAGS)" LIBS="$(LIBS)" \
 	LN_S="$(LN_S)" NM="$(NM)" RANLIB="$(RANLIB)" \
+	DLLTOOL="$(DLLTOOL)" OBJDUMP="$(OBJDUMP)" AS="$(AS)" \
 	$(SHELL) $(srcdir)/ltconfig $(LIBTOOL_FLAGS) --srcdir=$(srcdir) \
 	  --output=$@ $(srcdir)/ltmain.sh
 
@@ -40,6 +41,7 @@ clibtool: $(srcdir)/ltmain.c $(srcdir)/ltconfig
 	CC="$(CC)" CFLAGS="$(CFLAGS)" CPPFLAGS="$(CPPFLAGS)" \
 	LD="$(LD)" LDFLAGS="$(LDFLAGS)" LIBS="$(LIBS)" \
 	LN_S="$(LN_S)" NM="$(NM)" RANLIB="$(RANLIB)" \
+	DLLTOOL="$(DLLTOOL)" OBJDUMP="$(OBJDUMP)" AS="$(AS)" \
 	$(SHELL) $(srcdir)/ltconfig $(LIBTOOL_FLAGS) --srcdir=$(srcdir) \
 	  --output=$@ $(srcdir)/ltmain.c
 
