@@ -33,7 +33,9 @@ dnl Use the specified CC, RANLIB, and LD while running ltconfig.
 AC_PROG_CC
 AC_PROG_RANLIB
 AM_PROG_LD
+AC_SUBST(LD)
 AM_PROG_NM
+AC_SUBST(NM)
 AC_PROG_LN_S
 
 dnl For the `lineno' script (which puts line numbers into `ltconfig').
@@ -43,6 +45,7 @@ dnl Check for dlopen support
 AC_LIBTOOL_DLOPEN
 AC_LIBTOOL_SETUP
 AC_SUBST(DLLTOOL)
+AC_SUBST(FILE)
 AC_SUBST(OBJDUMP)
 AC_SUBST(AS)
 

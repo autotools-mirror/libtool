@@ -1,3 +1,24 @@
+1999-12-03  Alexandre Oliva  <oliva@lsd.ic.unicamp.br>
+
+	* ltconfig.in (ac_compile): Use $ac_ext instead of .c.
+	(ac_link): Likewise.
+	(dlfcn.h, ac_try): Do not add filename, it is already in
+	ac_compile.
+	Reported by Stephane Conversy <Stephane.Conversy@lri.fr>
+	
+	* ltconfig.in (linux-gnu*): Disable hardcode_into_libs until it
+	works together with fast_install.
+
+	* libtool.m4: Use host when --target is not specified.
+
+	* configure.in: AC_SUBST variables that are used by ltconfig to
+	build libtool.
+
+	* ltconfig.in (irix6*): Do not override deplibs_check_method
+	here.
+
+	* libtool.m4: Do not AC_SUBST anything other than LIBTOOL.
+	
 1999-11-29  Gary V. Vaughan  <gary@oranda.demon.co.uk>
 
 	* ltconfig.in:  Be friendlier to C++ compilers when testing
