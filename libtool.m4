@@ -872,7 +872,7 @@ AC_CACHE_VAL(lt_cv_prog_cc_pic,
 
     osf3* | osf4* | osf5*)
       # All OSF/1 code is PIC.
-      lt_cv_prog_cc_wl='-Wl,'
+      lt_cv_prog_cc_wl='-WL,'
       lt_cv_prog_cc_static='-non_shared'
       ;;
 
