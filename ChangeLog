@@ -1,3 +1,8 @@
+1999-10-16  Alexandre Oliva  <oliva@lsd.ic.unicamp.br>
+
+	* libltdl/ltdl.c (lt_dlopen): Do not search paths when the
+	specified library is not just a basename.
+
 1999-10-06  Gary V. Vaughan  <gary@oranda.demon.co.uk>
 
 	* ltconfig.in: Accept osf5.
