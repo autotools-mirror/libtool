@@ -1069,7 +1069,7 @@ EOF
     ;;
 
   sunos4*)
-    archive_cmds='$LD -assert pure-text -Bshareable -o $lib $libobjs $deplibs $linkopts'
+    archive_cmds='$LD -assert pure-text -Bstatic -o $lib $libobjs $deplibs $linkopts'
     wlarc=
     hardcode_direct=yes
     hardcode_shlibpath_var=no
@@ -1312,12 +1312,7 @@ else
     ;;
 
   sunos4*)
-    if test "$with_gcc" = yes; then
-      # Use -fPIC here because libgcc is multilibbed
-      archive_cmds='$CC -shared -fPIC -o $lib $libobjs $deplibs $linkopts'
-    else
-      archive_cmds='$LD -assert pure-text -Bshareable -o $lib $libobjs $deplibs $linkopts'
-    fi
+    archive_cmds='$LD -assert pure-text -Bstatic -o $lib $libobjs $deplibs $linkopts'
     hardcode_libdir_flag_spec='-L$libdir'
     hardcode_direct=yes
     hardcode_minus_L=yes
