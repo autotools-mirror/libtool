@@ -1,3 +1,8 @@
+2000-12-16   Wilfredo Sanchez  <wsanchez@apple.com>
+
+	* libtool.m4: (dyld/darwin*) Much improved port.
+	* ltmain.in: (dyld/darwin*) Much improved port.
+	
 2000-12-16  Sascha Schumann <sascha@schumann.cx>
 
 	* libtool.m4: Accept darwin as an alias for rhapsody.

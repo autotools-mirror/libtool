@@ -1434,6 +1434,18 @@ else
     fix_srcfile_path='`cygpath -w "$srcfile"`'
     ;;
 
+  darwin* | rhapsody*)
+    allow_undefined_flag='-undefined warning'
+    [archive_cmds='$CC `if [ "$module" = "yes" ]; then echo -bundle; else
+      echo -dynamiclib; fi` -o $lib $libobjs $deplibs $linkopts']
+    archive_expsym_cmds="$archive_cmds"' && strip -s $export_symbols'
+    ## What we need is to hardcode the path to the library, not the search path
+    #hardcode_direct=yes
+    #hardcode_libdir_flag_spec='-install_name $libdir/$lib'
+    hardcode_shlibpath_var=no
+    whole_archive_flag_spec='-all_load'
+    ;;
+    
   freebsd1*)
     ld_shlibs=no
     ;;
@@ -1548,12 +1560,6 @@ else
 #Both c and cxx compiler support -rpath directly 
     hardcode_libdir_flag_spec='-rpath $libdir'
     hardcode_libdir_separator=:
-    ;;
-  rhapsody*|darwin*)
-    archive_cmds='$CC -bundle -undefined suppress -o $lib $libobjs $deplibs $linker_flags'
-    hardcode_libdir_flags_spec='-L$libdir'
-    hardcode_direct=yes
-    hardcode_shlibpath_var=no
     ;;
 
   sco3.2v5*)
@@ -1799,6 +1805,15 @@ cygwin* | mingw* | pw32*)
   shlibpath_var=PATH
   ;;
 
+darwin*|rhapsody*)
+  need_lib_prefix=no
+  need_lib_prefix=no
+  library_names_spec='${libname}.`if [ "$module" = "yes"; then echo so; else echo dylib; fi`'
+  shlibpath_overrides_runpath=yes
+  shlibpath_var=DYLD_LIBRARY_PATH
+  postinstall_cmds='chmod +x $lib'
+  ;;
+
 freebsd1*)
   dynamic_linker=no
   ;;
@@ -1961,14 +1976,6 @@ osf3* | osf4* | osf5*)
   shlibpath_var=LD_LIBRARY_PATH
   sys_lib_search_path_spec="/usr/shlib /usr/ccs/lib /usr/lib/cmplrs/cc /usr/lib /usr/local/lib /var/shlib"
   sys_lib_dlsearch_path_spec="$sys_lib_search_path_spec"
-  ;;
-
-rhapsody*|darwin*)
-  version_type=sunos
-  library_names_spec='${libname}.so'
-  soname_spec='${libname}.so'
-  shlibpath_var=DYLD_LIBRARY_PATH
-  deplibs_check_method=pass_all
   ;;
 
 sco3.2v5*)
@@ -3012,6 +3019,12 @@ bsdi4*)
 cygwin* | mingw* | pw32*)
   lt_cv_deplibs_check_method='file_magic file format pei*-i386(.*architecture: i386)?'
   lt_cv_file_magic_cmd='$OBJDUMP -f'
+  ;;
+
+darwin*|rhapsody*)
+  lt_cv_deplibs_check_method='file_magic Mach-O dynamically linked shared library'
+  lt_cv_file_magiic_cmd=/usr/bin/file
+  lt_cv_file_magic_test_file=`echo /System/Library/Frameworks/System.framework/Versions/*/System | head -1`
   ;;
 
 freebsd*)
