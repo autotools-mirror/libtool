@@ -1,3 +1,8 @@
+1999-02-20  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* ltconfig.in (freebsd*, finish_cmds): expand objformat here
+	Reported by Vladimir Kushnir <kushn@mail.kar.net>
+
 1999-02-20  Vladimir Kushnir <kushn@mail.kar.net>
 
 	* ltconfig.in (freebsd-elf*, need_version, need_lib_prefix): no

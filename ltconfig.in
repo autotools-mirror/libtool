@@ -1674,7 +1674,7 @@ freebsd*)
       need_version=yes
       ;;
   esac
-  finish_cmds='PATH="$PATH:/sbin" OBJFORMAT="$objformat" ldconfig -m $libdir'
+  finish_cmds='PATH="$PATH:/sbin" OBJFORMAT="'"$objformat"'" ldconfig -m $libdir'
   shlibpath_var=LD_LIBRARY_PATH
   ;;
 
