@@ -12,7 +12,7 @@
 	if test -n "$finish_cmds"; then
 	  # Do each command in the finish commands.
 	  eval cmds=\"$finish_cmds\"
-	  IFS="${IFS= 	}"; save_ifs="$IFS"; IFS='~'
+	  save_ifs="$IFS"; IFS='~'
 	  for cmd in $cmds; do
 	    IFS="$save_ifs"
 	    $show "$cmd"
@@ -31,7 +31,7 @@
     fi
 
     # Exit here if they wanted silent mode.
-    test "$show" = ":" && exit 0
+    test "$show" = : && exit 0
 
     echo "----------------------------------------------------------------------"
     echo "Libraries have been installed in:"

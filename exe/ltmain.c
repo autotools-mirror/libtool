@@ -249,6 +249,7 @@ emitScript( argc, argv )
     tSCC zQuiet[]    = "run=\nshow=%s\n";
     tSCC zDynFmt[]   = "build_libtool_libs=%s\n";
     tSCC zStatic[]   = "build_old_libs=%s\n";
+    tSCC zDupDeps[]  = "duplicate_deps=%s\n";
     tSCC zModeName[] = "modename='%s: %s'\n";
     tSCC zMode[]     = "mode='%s'\n";
     tSCC zCmdName[]  = "nonopt='%s'\nset --";
@@ -298,6 +299,10 @@ else  echo='%s --echo --' ; fi\n";
         fprintf( fp, zDynFmt, ENABLED_OPT( DYNAMIC ) ? "yes" : "no" );
     if (HAVE_OPT( STATIC ))
         fprintf( fp, zStatic, ENABLED_OPT( STATIC )  ? "yes" : "no" );
+    if (HAVE_OPT( PRESERVE_DUP_DEPS ))
+		fprintf( fp, zDupDeps, "yes" );
+	else
+		fprintf( fp, zDupDeps, "no" );
 
     if (HAVE_OPT( DEBUG )) {
         fprintf( stderr, "%s: enabling shell trace mode\n",
@@ -359,10 +364,23 @@ else  echo='%s --echo --' ; fi\n";
     fputs( apz_mode_cmd[ OPT_VALUE_MODE ], fp );
     CLOSEOK;
 
-    fputc( '\n', fp );
-    CLOSEOK;
+	/*
+	 *  Now all the commands have run.  Sometimes, however, the operation
+	 *  is deferred by putting the command to run into an environment variable
+	 *  and eval-ing it at the end.  So, emit some code that verifies that
+	 *  if the shell is still interpreting text, then "exec_cmd" is not empty.
+	 */
+	{
+		tSCC z[] =
+			"if test -z \"${exec_cmd}\"\nthen\n"
+			"  $echo $modename: 'invalid operation mode:  `$mode'\\' 1>&2\n"
+			"  $echo 'Try `%s --help'\\' for more information 1>&2\nfi\n"
+			"eval exec $exec_cmd\nexit 1\n";
+		fprintf( fp, z, libtoolOptions.pzProgName );
+		CLOSEOK;
 
-    fflush( fp );
+		fflush( fp );
+	}
 
     if (fp != stdout)
         closeScript( fp );

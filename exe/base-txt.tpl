@@ -9,7 +9,7 @@ rm="rm -f"
 
 # Sed substitution that helps us do robust quoting.  It backslashifies
 # metacharacters that are still active within double-quoted strings.
-Xsed='sed -e 1s/^X//'
+Xsed="${SED}"' -e 1s/^X//'
 sed_quote_subst='s/\([\\`\\"$\\\\]\)/\\\1/g'
 SP2NL='tr \040 \012'
 NL2SP='tr \015\012 \040\040'
@@ -25,3 +25,6 @@ fi
 if test "${LANG+set}" = set; then
   save_LANG="$LANG"; LANG=C; export LANG
 fi
+
+# Make sure IFS has a sensible default
+: ${IFS=" 	"}

@@ -82,6 +82,13 @@ flag = {
 };
 
 flag = {
+    name      = "preserve_dup_deps";
+    descrip   = "normally, duplicate libs are removed";
+    doc       = "Sometimes in some circumstances it is necessary to search\n"
+                "a library multiple times.  By default, we do not.";
+};
+
+flag = {
     name      = "fallback_echo";
     flag_code = '    SET_OPT_MODE("echo");';
     descrip   = "set mode to `echo'";

@@ -1,8 +1,8 @@
-[= AutoGen5 Template in=ltmain.in =]
+[= AutoGen5 Template in=newltmain.in =]
 [=( dne "# " "# " )=]
 #
 # ltmain.sh - Provide generalized library-building support services.
-# NOTE: Changing this file will not affect anything until you rerun ltconfig.
+# NOTE: Changing this file will not affect anything until you rerun configure.
 #
 # Copyright (C) 1996, 1997, 1998, 1999, 2000, 2001
 # Free Software Foundation, Inc.
@@ -53,7 +53,7 @@ EOF
 fi
 
 # The name of this program.
-progname=`$echo "$0" | sed 's%^.*/%%'`
+progname=`$echo "$0" | ${SED} 's%^.*/%%'`
 modename="$progname"
 
 # Constants.
@@ -66,12 +66,6 @@ default_mode=
 help="Try \`$progname --help' for more information."
 
 [= INCLUDE "base-txt.tpl" =]
-
-if test "$LTCONFIG_VERSION" != "$VERSION"; then
-  echo "$modename: ltconfig version \`$LTCONFIG_VERSION' does not match $PROGRAM version \`$VERSION'" 1>&2
-  echo "Fatal configuration error.  See the $PACKAGE docs for more information." 1>&2
-  exit 1
-fi
 
 if test "$build_libtool_libs" != yes && test "$build_old_libs" != yes; then
   echo "$modename: not configured to build any kind of library" 1>&2
@@ -90,7 +84,7 @@ show_help=
 execute_dlfiles=
 
 # Parse our command line options once, thoroughly.
-while test $# -gt 0
+while test "$#" -gt 0
 do
   arg="$1"
   shift
@@ -114,7 +108,7 @@ do
       *[!-_A-Za-z0-9,/]*)
 	echo "$progname: invalid tag name: $tagname" 1>&2
 	exit 1
-        ;;
+	;;
       esac
 
       case $tagname in
@@ -123,14 +117,14 @@ do
 	# not specially marked.
 	;;
       *)
-        if grep "^### BEGIN LIBTOOL TAG CONFIG: $tagname$" < "$0" > /dev/null; then
-          taglist="$taglist $tagname"
+	if grep "^# ### BEGIN LIBTOOL TAG CONFIG: $tagname$" < "$0" > /dev/null; then
+	  taglist="$taglist $tagname"
 	  # Evaluate the configuration.
-	  eval "`sed -n -e '/^### BEGIN LIBTOOL TAG CONFIG: '$tagname'$/,/^### END LIBTOOL TAG CONFIG: '$tagname'$/p' < $0`"
-        else
+	  eval "`${SED} -n -e '/^# ### BEGIN LIBTOOL TAG CONFIG: '$tagname'$/,/^# ### END LIBTOOL TAG CONFIG: '$tagname'$/p' < $0`"
+	else
 	  echo "$progname: ignoring unknown tag $tagname" 1>&2
-        fi
-        ;;
+	fi
+	;;
       esac
       ;;
     *)
@@ -151,14 +145,19 @@ do
 
   --version)
     echo "$PROGRAM (GNU $PACKAGE) $VERSION$TIMESTAMP"
+    echo
+    echo "Copyright 1996, 1997, 1998, 1999, 2000, 2001"
+    echo "Free Software Foundation, Inc."
+    echo "This is free software; see the source for copying conditions.  There is NO"
+    echo "warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE."
     exit 0
     ;;
 
   --config)
-    sed -n -e '/^### BEGIN LIBTOOL CONFIG/,/^### END LIBTOOL CONFIG/p' < "$0"
+    ${SED} -e '1,/^# ### BEGIN LIBTOOL CONFIG/d' -e '/^# ### END LIBTOOL CONFIG/,$d' $0
     # Now print the configurations for the tags.
     for tagname in $taglist; do
-      sed -n -e "/^### BEGIN LIBTOOL TAG CONFIG: $tagname$/,/^### END LIBTOOL TAG CONFIG: $tagname$/p" < "$0"
+      ${SED} -n -e "/^# ### BEGIN LIBTOOL TAG CONFIG: $tagname$/,/^# ### END LIBTOOL TAG CONFIG: $tagname$/p" < "$0"
     done
     exit 0
     ;;
@@ -191,6 +190,8 @@ do
 
   --mode) prevopt="--mode" prev=mode ;;
   --mode=*) mode="$optarg" ;;
+
+  --preserve-dup-deps) duplicate_deps="yes" ;;
 
   --quiet | --silent)
     show=:
@@ -226,6 +227,11 @@ if test -n "$prevopt"; then
   $echo "$help" 1>&2
   exit 1
 fi
+
+# If this variable is set in any of the actions, the command in it
+# will be execed at the end.  This prevents here-documents from being
+# left over by shells.
+exec_cmd=
 
 if test -z "$show_help"; then
 
@@ -302,8 +308,6 @@ if test -z "$show_help"; then
     modename="$modename: install"
 
 [= INCLUDE "install-txt.tpl" =]
-
-    exit 0
     ;;
 
   # libtool finish mode
@@ -328,6 +332,7 @@ if test -z "$show_help"; then
   clean | uninstall)
     modename="$modename: $mode"
 [= INCLUDE "clean-txt.tpl" =]
+
     exit $exit_status
     ;;
 
@@ -338,10 +343,17 @@ if test -z "$show_help"; then
     ;;
   esac
 
-  $echo "$modename: invalid operation mode \`$mode'" 1>&2
-  $echo "$generic_help" 1>&2
-  exit 1
+  if test -z "$exec_cmd"; then
+    $echo "$modename: invalid operation mode \`$mode'" 1>&2
+    $echo "$generic_help" 1>&2
+    exit 1
+  fi
 fi # test -z "$show_help"
+
+if test -n "$exec_cmd"; then
+  eval exec $exec_cmd
+  exit 1
+fi
 
 # We need to display help for each of the modes.
 case $mode in
@@ -547,24 +559,16 @@ exit 0
 # If a disable-shared tag is given, we'll fallback to a static-only
 # configuration.  But we'll never go from static-only to shared-only.
 
-### BEGIN LIBTOOL TAG CONFIG: disable-shared
+# ### BEGIN LIBTOOL TAG CONFIG: disable-shared
 build_libtool_libs=no
 build_old_libs=yes
-### END LIBTOOL TAG CONFIG: disable-shared
+# ### END LIBTOOL TAG CONFIG: disable-shared
 
-### BEGIN LIBTOOL TAG CONFIG: disable-static
+# ### BEGIN LIBTOOL TAG CONFIG: disable-static
 build_old_libs=`case $build_libtool_libs in yes) echo no;; *) echo yes;; esac`
-### END LIBTOOL TAG CONFIG: disable-static
+# ### END LIBTOOL TAG CONFIG: disable-static
 
 # Local Variables:
 # mode:shell-script
 # sh-indentation:2
-# End:[=
-
- #
- * Local Variables:
- * mode:shell-script
- * sh-indentation:2
- * End:
- *
- * ltmain.tpl ends here =]
+# End:

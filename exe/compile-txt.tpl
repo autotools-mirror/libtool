@@ -66,7 +66,7 @@
       -Wc,*)
 	args=`$echo "X$arg" | $Xsed -e "s/^-Wc,//"`
 	lastarg=
-	IFS="${IFS= 	}"; save_ifs="$IFS"; IFS=','
+	save_ifs="$IFS"; IFS=','
 	for arg in $args; do
 	  IFS="$save_ifs"
 
@@ -150,7 +150,7 @@
 
     # Recognize several different file suffixes.
     # If the user specifies -o file.o, it is replaced with file.lo
-    xform='[cCFSfmso]'
+    xform='[cCFSifmso]'
     case $libobj in
     *.ada) xform=ada ;;
     *.adb) xform=adb ;;
@@ -158,6 +158,7 @@
     *.asm) xform=asm ;;
     *.c++) xform=c++ ;;
     *.cc) xform=cc ;;
+    *.ii) xform=ii ;;
     *.class) xform=class ;;
     *.cpp) xform=cpp ;;
     *.cxx) xform=cxx ;;
@@ -181,37 +182,37 @@
     # Only attempt this if the compiler in the base compile
     # command doesn't match the default compiler.
     if test -n "$available_tags" && test -z "$tagname"; then
-      case $base_compile in
+      case "$base_compile " in
       "$CC "*) ;;
       # Blanks in the command may have been stripped by the calling shell,
       # but not from the CC environment variable when ltconfig was run.
       "`$echo $CC` "*) ;;
       *)
-        for z in $available_tags; do
-          if grep "^### BEGIN LIBTOOL TAG CONFIG: $z$" < "$0" > /dev/null; then
+	for z in $available_tags; do
+	  if grep "^# ### BEGIN LIBTOOL TAG CONFIG: $z$" < "$0" > /dev/null; then
 	    # Evaluate the configuration.
-	    eval "`sed -n -e '/^### BEGIN LIBTOOL TAG CONFIG: '$z'$/,/^### END LIBTOOL TAG CONFIG: '$z'$/p' < $0`"
-            case $base_compile in
+	    eval "`${SED} -n -e '/^# ### BEGIN LIBTOOL TAG CONFIG: '$z'$/,/^# ### END LIBTOOL TAG CONFIG: '$z'$/p' < $0`"
+	    case "$base_compile " in
 	    "$CC "*)
-              # The compiler in the base compile command matches
-              # the one in the tagged configuration.
-              # Assume this is the tagged configuration we want.
-              tagname=$z
-              break
-              ;;
+	      # The compiler in the base compile command matches
+	      # the one in the tagged configuration.
+	      # Assume this is the tagged configuration we want.
+	      tagname=$z
+	      break
+	      ;;
 	    "`$echo $CC` "*)
 	      tagname=$z
 	      break
 	      ;;
 	    esac
-          fi
-        done
-        # If $tagname still isn't set, then no tagged configuration
-        # was found and let the user know that the "--tag" command
-        # line option must be used.[++
+	  fi
+	done
+	# If $tagname still isn't set, then no tagged configuration
+	# was found and let the user know that the "--tag" command
+	# line option must be used.[++
         test-or-exit test = 'test -z "$tagname"'  no_help = true
-msg = "unable to infer tagged configuration\n\tspecify a tag with \\`--tag'"++]
-#       echo "$modename: using $tagname tagged configuration"
+msg = "unable to infer tagged configuration\nspecify a tag with \\`--tag'"++]
+#        echo "$modename: using $tagname tagged configuration"
 	;;
       esac
     fi
@@ -243,7 +244,7 @@ msg = "unable to infer tagged configuration\n\tspecify a tag with \\`--tag'"++]
       pic_mode=default
       ;;
     esac
-    if test $pic_mode = no && test "$deplibs_check_method" != pass_all; then
+    if test "$pic_mode" = no && test "$deplibs_check_method" != pass_all; then
       # non-PIC code in shared libraries is not supported
       pic_mode=default
     fi
@@ -303,18 +304,18 @@ EOF
 	command="$base_compile $srcfile"
       fi
 
-      if test ! -d ${xdir}$objdir; then
+      if test ! -d "${xdir}$objdir"; then
 	$show "$mkdir ${xdir}$objdir"
 	$run $mkdir ${xdir}$objdir
 	status=$?
-	if test $status -ne 0 && test ! -d ${xdir}$objdir; then
+	if test "$status" -ne 0 && test ! -d "${xdir}$objdir"; then
 	  exit $status
-        fi
-      fi 
+	fi
+      fi
 
       if test -z "$output_obj"; then
-        # Place PIC objects in $objdir
-        command="$command -o $lobj"
+	# Place PIC objects in $objdir
+	command="$command -o $lobj"
       fi
 
       $run $rm "$lobj" "$output_obj"
@@ -327,12 +328,12 @@ EOF
       fi
 
       if test "$need_locks" = warn &&
-	 test x"`cat $lockfile 2>/dev/null`" != x"$srcfile"; then[++
+	 test "X`cat $lockfile 2>/dev/null`" != "X$srcfile"; then[++
 	 lock-conflict ++]
       fi
 
       # Just move the object if needed, then go on to compile the next one
-      if test -n "$output_obj" && test "x$output_obj" != "x$lobj"; then
+      if test -n "$output_obj" && test "X$output_obj" != "X$lobj"; then
 	$show "$mv $output_obj $lobj"
 	if $run $mv $output_obj $lobj; then :
 	else
@@ -382,12 +383,12 @@ EOF
       fi
 
       if test "$need_locks" = warn &&
-	 test x"`cat $lockfile 2>/dev/null`" != x"$srcfile"; then[++
+	 test "X`cat $lockfile 2>/dev/null`" != "X$srcfile"; then[++
 	 lock-conflict ++]
       fi
 
       # Just move the object if needed
-      if test -n "$output_obj" && test "x$output_obj" != "x$obj"; then
+      if test -n "$output_obj" && test "X$output_obj" != "X$obj"; then
 	$show "$mv $output_obj $obj"
 	if $run $mv $output_obj $obj; then :
 	else
