@@ -1,5 +1,11 @@
 NEWS - list of user-visible changes between releases of GNU Libtool
 
+New in 1.2b - 1998-07-01, Gordon Matzigkeit:
+* Libtool needs a new maintainer, since Gordon Matzigkeit has quit.
+If you think you can do the job, send mail to bug-libtool@gnu.org.
+* Bug fixes.
+* Support for libtool convenience archives.
+
 New in 1.2a - 1998-04-19, Gordon Matzigkeit:
 * Bug fixes.
 * ltconfig accepts an `--output' option to specify the name of the

@@ -302,7 +302,7 @@ if test "$verify_host" = yes; then
   ac_config_sub=$ac_aux_dir/config.sub
 
   # Make sure we can run config.sub.
-  if $ac_config_sub sun4 >/dev/null 2>&1; then :
+  if $SHELL $ac_config_sub sun4 >/dev/null 2>&1; then :
   else
     echo "$progname: cannot run $ac_config_sub" 1>&2
     echo "$help" 1>&2
@@ -314,14 +314,14 @@ if test "$verify_host" = yes; then
   host_alias=$host
   case "$host_alias" in
   "")
-    if host_alias=`$ac_config_guess`; then :
+    if host_alias=`$SHELL $ac_config_guess`; then :
     else
       echo "$progname: cannot guess host type; you must specify one" 1>&2
       echo "$help" 1>&2
       exit 1
     fi ;;
   esac
-  host=`$ac_config_sub $host_alias`
+  host=`$SHELL $ac_config_sub $host_alias`
   echo "$ac_t$host" 1>&6
 
   # Make sure the host verified.
@@ -663,7 +663,7 @@ if test -z "$LD"; then
     ac_prog=`($CC -print-prog-name=ld) 2>&5`
     case "$ac_prog" in
     # Accept absolute paths.
-    /* | [A-Za-z]:\\*)
+    /* | [A-Za-z]:[/\\]*)
       test -z "$LD" && LD="$ac_prog"
       ;;
     "")
@@ -732,6 +732,7 @@ no_undefined_flag=
 archive_cmds=
 old_archive_from_new_cmds=
 export_dynamic_flag_spec=
+whole_archive_flag_spec=
 hardcode_libdir_flag_spec=
 hardcode_libdir_separator=
 hardcode_direct=no
@@ -770,6 +771,7 @@ if test "$with_gnu_ld" = yes; then
     runpath_var=LD_RUN_PATH
     hardcode_libdir_flag_spec='${wl}--rpath ${wl}$libdir'
     export_dynamic_flag_spec='${wl}--export-dynamic'
+    whole_archive_flag_spec='${wl}--whole-archive$convenience ${wl}--no-whole-archive'
   fi
 else
   # PORTME fill in a description of your system's linker (not GNU ld)
@@ -930,7 +932,7 @@ echo "$ac_t$ld_shlibs" 1>&6
 if test -z "$NM"; then
   echo $ac_n "checking for BSD-compatible nm... $ac_c" 1>&6
   case "$NM" in
-  /* | [A-Za-z]:\\*) ;; # Let the user override the test with a path.
+  /* | [A-Za-z]:[/\\]*) ;; # Let the user override the test with a path.
   *)
     IFS="${IFS= 	}"; ac_save_ifs="$IFS"; IFS="${IFS}:"
     for ac_dir in /usr/ucb /usr/ccs/bin $PATH /bin; do
@@ -1247,6 +1249,8 @@ solaris2*)
   library_names_spec='${libname}${release}.so$versuffix ${libname}${release}.so$major $libname.so'
   soname_spec='${libname}${release}.so$major'
   shlibpath_var=LD_LIBRARY_PATH
+  # ldd complains unless libraries are executable
+  postinstall_cmds='chmod +x $lib'
   ;;
 
 sunos4*)
@@ -1322,7 +1326,7 @@ ltecho="$echo"
 for var in ltecho old_CC old_CFLAGS old_CPPFLAGS old_LD old_NM old_RANLIB \
   old_LN_S AR CC LD LN_S NM reload_flag reload_cmds wl pic_flag \
   link_static_flag no_builtin_flag export_dynamic_flag_spec \
-  libname_spec library_names_spec soname_spec RANLIB \
+  whole_archive_flag_spec libname_spec library_names_spec soname_spec RANLIB \
   old_archive_cmds old_archive_from_new_cmds old_postinstall_cmds \
   old_postuninstall_cmds archive_cmds postinstall_cmds postuninstall_cmds \
   allow_undefined_flag no_undefined_flag \
@@ -1446,6 +1450,9 @@ no_builtin_flag="$no_builtin_flag"
 
 # Compiler flag to allow reflexive dlopens.
 export_dynamic_flag_spec="$export_dynamic_flag_spec"
+
+# Compiler flag to generate shared objects directly from archives.
+whole_archive_flag_spec="$whole_archive_flag_spec"
 
 # Library versioning type.
 version_type=$version_type

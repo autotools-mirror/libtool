@@ -578,18 +578,13 @@ importance.
 So, let's try again, this time with the library object files.  Remember
 also that we need to add @kbd{-lm} to the link command line because
 @file{foo.c} uses the @code{cos} math library function (@pxref{Using
-libtool}):
+libtool}).
 
-@example
-a23$ @kbd{libtool gcc -g -O -o libhello.la foo.lo hello.lo -lm}
-libtool: you must specify an installation directory with `-rpath'
-a23$
-@end example
-
-Argh.  Another complication in building shared libraries is that we need
-to specify the path to the directory in which they (eventually) will be
-installed.  So, we try again, with an @code{rpath} setting of
-@file{/usr/local/lib}:
+Another complication in building shared libraries is that we need to
+specify the path to the directory in which they (eventually) will be
+installed (in this case, @file{/usr/local/lib})@footnote{If you don't
+specify an @code{rpath}, then libtool builds a libtool convenience
+archive, not a shared library (@pxref{Static libraries}).}:
 
 @example
 a23$ @kbd{libtool gcc -g -O -o libhello.la foo.lo hello.lo \
@@ -937,11 +932,17 @@ archive that can never be shared.  The most frequent case is when you
 have a ``convenience library'' that is a collection of related object
 files without a really nice interface.
 
-To do this, you should ignore libtool entirely, and just use the old
-@code{ar} and @code{ranlib} commands to create a static library.
+If you create a libtool library (@samp{.la} file) without using the
+@samp{-rpath} flag, then a libtool convenience library is generated.
+You can use these libraries just as if they were libtool object files:
+you can even use them to build other libtool libraries.
 
-If you want to install the library (but you probably don't), then you
-may use libtool:
+If you just want a static convenience library, then you should just
+ignore libtool entirely, and use the old @code{ar} and @code{ranlib}
+commands.
+
+If you want to install a convenience library (but you probably don't),
+then you may use libtool:
 
 @example
 burger$ @kbd{libtool ./install-sh -c libhello.a /local/lib/libhello.a}
@@ -1003,7 +1004,7 @@ displayed.
 
 @item --mode=@var{mode}
 Use @var{mode} as the operation mode.  By default, the operation mode is
-inferred from the contents of @var{mode-args}.
+inferred from the @var{mode-args}.
 
 If @var{mode} is specified, it must be one of the following:
 
@@ -1031,6 +1032,10 @@ Delete libraries or executables.
 @item --version
 Print libtool version information and exit.
 @end table
+
+The @var{mode-args} are a variable number of arguments, depending on the
+selected operation mode.  In general, each @var{mode-arg} is interpreted
+by programs libtool invokes, rather than libtool itself.
 
 @menu
 * Compile mode::                Creating library object files.
@@ -2980,6 +2985,10 @@ the file.
 @defvar version_type
 The library version numbering type.  One of @samp{libtool},
 @samp{linux}, @samp{osf}, @samp{sunos}, or @samp{none}.
+@end defvar
+
+@defvar whole_archive_flag_spec
+Compiler flag to generate shared objects from convenience archives.
 @end defvar
 
 @defvar wl

@@ -363,7 +363,7 @@ if test -z "$show_help"; then
 
       # Just move the object, then go on to compile the next one
       $show "$mv $obj $libobj"
-      $run $mv $obj $libobj || exit 1
+      $run $mv $obj $libobj || exit $?
 
       # Allow error messages only from the first compilation.
       suppress_output=' >/dev/null 2>&1'
@@ -400,10 +400,13 @@ if test -z "$show_help"; then
 
     compile_shlibpath=
     finalize_shlibpath=
+    convenience=
+    old_convenience=
     deplibs=
     dlfiles=
     dlprefiles=
     export_dynamic=no
+    generated=
     hardcode_libdirs=
     libobjs=
     link_against_libtool_libs=
@@ -436,8 +439,10 @@ if test -z "$show_help"; then
     test -n "$old_archive_from_new_cmds" && build_old_libs=yes
 
     # Go through the arguments, transforming them on the way.
-    for arg
-    do
+    while test $# -gt 0; do
+      arg="$1"
+      shift
+
       # If the previous option needs an argument, assign it.
       if test -n "$prev"; then
         case "$prev" in
@@ -521,7 +526,7 @@ if test -z "$show_help"; then
       -L*)
         dir=`$echo "X$arg" | $Xsed -e 's%^-L\(.*\)$%\1%'`
         case "$dir" in
-        /* | [A-Za-z]:\\*)
+        /* | [A-Za-z]:[/\\]*)
 	  # Add the corresponding hardcode_libdir_flag, if it is not identical.
           ;;
         *)
@@ -624,11 +629,6 @@ if test -z "$show_help"; then
         *) . ./$arg ;;
         esac
 
-        if test -z "$libdir"; then
-          $echo "$modename: \`$arg' contains no -rpath information" 1>&2
-          exit 1
-        fi
-
         # Get the name of the library we link against.
         linklib=
         for l in $old_library $library_names; do
@@ -648,6 +648,15 @@ if test -z "$show_help"; then
         else
           dir="$dir/$objdir"
         fi
+
+        if test -z "$libdir"; then
+	  # It is a libtool convenience library, so add in its objects.
+	  convenience="$convenience $dir/$old_library"l
+	  old_convenience="$old_convenience $dir/$old_library"
+	  compile_command="$compile_command $dir/$old_library"
+	  finalize_command="$finalize_command $dir/$old_library"
+	  continue
+	fi
 
         # This library was specified with -dlopen.
         if test "$prev" = dlfiles; then
@@ -740,7 +749,7 @@ if test -z "$show_help"; then
           relink)
             # We need an absolute path.
             case "$dir" in
-            /* | [A-Za-z]:\\*) ;;
+            /* | [A-Za-z]:[/\\]*) ;;
             *)
               absdir=`cd "$dir" && pwd`
               if test -z "$absdir"; then
@@ -837,8 +846,7 @@ if test -z "$show_help"; then
       exit 1
     fi
 
-    oldlib=
-    oldobjs=
+    oldlibs=
     case "$output" in
     "")
       $echo "$modename: you must specify an output file" 1>&2
@@ -848,16 +856,39 @@ if test -z "$show_help"; then
 
     */* | *\\*)
       $echo "$modename: output file \`$output' must have no directory components" 1>&2
+      $echo "$help" 1>&2
       exit 1
       ;;
 
     *.a)
+      if test -n "$link_against_libtool_libs"; then
+        $echo "$modename: error: cannot link libtool libraries into archives" 1>&2
+        exit 1
+      fi
+
+      if test -n "$deplibs"; then
+        $echo "$modename: warning: \`-l' and \`-L' are ignored for archives" 1>&2
+      fi
+
+      if test -n "$dlfiles$dlprefiles"; then
+        $echo "$modename: warning: \`-dlopen' is ignored for archives" 1>&2
+      fi
+
+      if test -n "$rpath"; then
+        $echo "$modename: warning: \`-rpath' is ignored for archives" 1>&2
+      fi
+
+      if test -n "$vinfo"; then
+        $echo "$modename: warning: \`-version-info' is ignored for archives" 1>&2
+      fi
+
+      if test -n "$release"; then
+        $echo "$modename: warning: \`-release' is ignored for archives" 1>&2
+      fi
+
       # Now set the variables for building old libraries.
       build_libtool_libs=no
-      build_old_libs=yes
-      oldlib="$output"
-      $show "$rm $oldlib"
-      $run $rm $oldlib
+      oldlibs="$output"
       ;;
 
     *.la)
@@ -865,7 +896,7 @@ if test -z "$show_help"; then
       case "$output" in
       lib*) ;;
       *)
-	$echo "$modename: libtool library \`$arg' must begin with \`lib'" 1>&2
+	$echo "$modename: libtool library \`$output' must begin with \`lib'" 1>&2
 	$echo "$help" 1>&2
 	exit 1
 	;;
@@ -886,21 +917,12 @@ if test -z "$show_help"; then
 
       # How the heck are we supposed to write a wrapper for a shared library?
       if test -n "$link_against_libtool_libs"; then
-        $echo "$modename: libtool library \`$output' may not depend on uninstalled libraries:$link_against_libtool_libs" 1>&2
+        $echo "$modename: error: cannot link shared libraries into libtool libraries" 1>&2
         exit 1
       fi
 
       if test -n "$dlfiles$dlprefiles"; then
-        $echo "$modename: warning: \`-dlopen' is ignored while creating libtool libraries" 1>&2
-        # Nullify the symbol file.
-        compile_command=`$echo "X$compile_command" | $Xsed -e "s% @SYMFILE@%%"`
-        finalize_command=`$echo "X$finalize_command" | $Xsed -e "s% @SYMFILE@%%"`
-      fi
-
-      if test -z "$rpath"; then
-        $echo "$modename: you must specify an installation directory with \`-rpath'" 1>&2
-	$echo "$help" 1>&2
-        exit 1
+        $echo "$modename: warning: \`-dlopen' is ignored for libtool libraries" 1>&2
       fi
 
       set dummy $rpath
@@ -909,210 +931,250 @@ if test -z "$show_help"; then
       fi
       install_libdir="$2"
 
-      # Parse the version information argument.
-      IFS="${IFS= 	}"; save_ifs="$IFS"; IFS=':'
-      set dummy $vinfo 0 0 0
-      IFS="$save_ifs"
+      # Now set the variables for building old libraries.
+      oldlibs="$objdir/$libname.a"
+      if test -z "$rpath"; then
+	# Building a libtool convenience library.
+	oldlibs="$objdir/$libname.al $oldlibs"
+	build_libtool_libs=convenience
 
-      if test -n "$8"; then
-	$echo "$modename: too many parameters to \`-version-info'" 1>&2
-	$echo "$help" 1>&2
-	exit 1
-      fi
+	if test -n "$vinfo"; then
+	  $echo "$modename: warning: \`-version-info' is ignored for convenience libraries" 1>&2
+	fi
 
-      current="$2"
-      revision="$3"
-      age="$4"
+	if test -n "$release"; then
+	  $echo "$modename: warning: \`-release' is ignored for convenience libraries" 1>&2
+	fi
+      else
 
-      # Check that each of the things are valid numbers.
-      case "$current" in
-      0 | [1-9] | [1-9][0-9]*) ;;
-      *)
-	$echo "$modename: CURRENT \`$current' is not a nonnegative integer" 1>&2
-	$echo "$modename: \`$vinfo' is not valid version information" 1>&2
-	exit 1
-	;;
-      esac
+	# Parse the version information argument.
+	IFS="${IFS= 	}"; save_ifs="$IFS"; IFS=':'
+	set dummy $vinfo 0 0 0
+	IFS="$save_ifs"
 
-      case "$revision" in
-      0 | [1-9] | [1-9][0-9]*) ;;
-      *)
-	$echo "$modename: REVISION \`$revision' is not a nonnegative integer" 1>&2
-	$echo "$modename: \`$vinfo' is not valid version information" 1>&2
-	exit 1
-	;;
-      esac
+	if test -n "$8"; then
+	  $echo "$modename: too many parameters to \`-version-info'" 1>&2
+	  $echo "$help" 1>&2
+	  exit 1
+	fi
 
-      case "$age" in
-      0 | [1-9] | [1-9][0-9]*) ;;
-      *)
-	$echo "$modename: AGE \`$age' is not a nonnegative integer" 1>&2
-	$echo "$modename: \`$vinfo' is not valid version information" 1>&2
-	exit 1
-	;;
-      esac
+	current="$2"
+	revision="$3"
+	age="$4"
 
-      if test $age -gt $current; then
-	$echo "$modename: AGE \`$age' is greater than the current interface number \`$current'" 1>&2
-	$echo "$modename: \`$vinfo' is not valid version information" 1>&2
-	exit 1
-      fi
+	# Check that each of the things are valid numbers.
+	case "$current" in
+	0 | [1-9] | [1-9][0-9]*) ;;
+	*)
+	  $echo "$modename: CURRENT \`$current' is not a nonnegative integer" 1>&2
+	  $echo "$modename: \`$vinfo' is not valid version information" 1>&2
+	  exit 1
+	  ;;
+	esac
 
-      # Calculate the version variables.
-      major=
-      versuffix=
-      verstring=
-      case "$version_type" in
-      none) ;;
+	case "$revision" in
+	0 | [1-9] | [1-9][0-9]*) ;;
+	*)
+	  $echo "$modename: REVISION \`$revision' is not a nonnegative integer" 1>&2
+	  $echo "$modename: \`$vinfo' is not valid version information" 1>&2
+	  exit 1
+	  ;;
+	esac
 
-      linux)
-	major=.`expr $current - $age`
-	versuffix="$major.$age.$revision"
-	;;
+	case "$age" in
+	0 | [1-9] | [1-9][0-9]*) ;;
+	*)
+	  $echo "$modename: AGE \`$age' is not a nonnegative integer" 1>&2
+	  $echo "$modename: \`$vinfo' is not valid version information" 1>&2
+	  exit 1
+	  ;;
+	esac
 
-      osf)
-	major=`expr $current - $age`
-	versuffix=".$current.$age.$revision"
-	verstring="$current.$age.$revision"
+	if test $age -gt $current; then
+	  $echo "$modename: AGE \`$age' is greater than the current interface number \`$current'" 1>&2
+	  $echo "$modename: \`$vinfo' is not valid version information" 1>&2
+	  exit 1
+	fi
 
-	# Add in all the interfaces that we are compatible with.
-	loop=$age
-	while test $loop != 0; do
-	  iface=`expr $current - $loop`
-	  loop=`expr $loop - 1`
-	  verstring="$verstring:${iface}.0"
-	done
-
-	# Make executables depend on our current version.
-	verstring="$verstring:${current}.0"
-	;;
-
-      sunos)
-	major=".$current"
-	versuffix=".$current.$revision"
-	;;
-
-      *)
-	$echo "$modename: unknown library version type \`$version_type'" 1>&2
-	echo "Fatal configuration error.  See the $PACKAGE docs for more information." 1>&2
-	exit 1
-	;;
-      esac
-
-      # Clear the version info if we defaulted, and they specified a release.
-      if test -z "$vinfo" && test -n "$release"; then
+	# Calculate the version variables.
 	major=
 	versuffix=
-	verstring="0.0"
+	verstring=
+	case "$version_type" in
+	none) ;;
+
+	linux)
+	  major=.`expr $current - $age`
+	  versuffix="$major.$age.$revision"
+	  ;;
+
+	osf)
+	  major=`expr $current - $age`
+	  versuffix=".$current.$age.$revision"
+	  verstring="$current.$age.$revision"
+
+	  # Add in all the interfaces that we are compatible with.
+	  loop=$age
+	  while test $loop != 0; do
+	    iface=`expr $current - $loop`
+	    loop=`expr $loop - 1`
+	    verstring="$verstring:${iface}.0"
+	  done
+
+	  # Make executables depend on our current version.
+	  verstring="$verstring:${current}.0"
+	  ;;
+
+	sunos)
+	  major=".$current"
+	  versuffix=".$current.$revision"
+	  ;;
+
+	*)
+	  $echo "$modename: unknown library version type \`$version_type'" 1>&2
+	  echo "Fatal configuration error.  See the $PACKAGE docs for more information." 1>&2
+	  exit 1
+	  ;;
+	esac
+
+	# Clear the version info if we defaulted, and they specified a release.
+	if test -z "$vinfo" && test -n "$release"; then
+	  major=
+	  versuffix=
+	  verstring="0.0"
+	fi
+
+	# Check to see if the archive will have undefined symbols.
+	if test "$allow_undefined" = yes; then
+	  if test "$allow_undefined_flag" = unsupported; then
+	    $echo "$modename: warning: undefined symbols not allowed in $host shared libraries" 1>&2
+	    build_libtool_libs=no
+	    build_old_libs=yes
+	  fi
+	else
+	  # Don't allow undefined symbols.
+	  allow_undefined_flag="$no_undefined_flag"
+	fi
+
+	# Add libc to deplibs on all systems.
+	dependency_libs="$deplibs"
+	deplibs="$deplibs -lc"
       fi
 
       # Create the output directory, or remove our outputs if we need to.
       if test -d $objdir; then
-        $show "$rm $objdir/$output $objdir/$libname.* $objdir/${libname}${release}.*"
-        $run $rm $objdir/$output $objdir/$libname.* $objdir/${libname}${release}.*
+        $show "${rm}r $objdir/$output $objdir/$libname.* $objdir/${libname}${release}.*"
+	$run ${rm}r $objdir/$output $objdir/$libname.* $objdir/${libname}${release}.*
       else
         $show "$mkdir $objdir"
         $run $mkdir $objdir
-	status=$?
-	if test $status -ne 0 && test ! -d $objdir; then
-	  exit $status
-	fi
-      fi
-
-      # Check to see if the archive will have undefined symbols.
-      if test "$allow_undefined" = yes; then
-        if test "$allow_undefined_flag" = unsupported; then
-          $echo "$modename: warning: undefined symbols not allowed in $host shared libraries" 1>&2
-          build_libtool_libs=no
-	  build_old_libs=yes
+        status=$?
+        if test $status -ne 0 && test ! -d $objdir; then
+          exit $status
         fi
-      else
-        # Don't allow undefined symbols.
-        allow_undefined_flag="$no_undefined_flag"
       fi
-
-      # Add libc to deplibs on all systems.
-      dependency_libs="$deplibs"
-      deplibs="$deplibs -lc"
 
       if test "$build_libtool_libs" = yes; then
-        # Get the real and link names of the library.
-        eval library_names=\"$library_names_spec\"
-        set dummy $library_names
-        realname="$2"
-        shift; shift
+	# Get the real and link names of the library.
+	eval library_names=\"$library_names_spec\"
+	set dummy $library_names
+	realname="$2"
+	shift; shift
 
-        if test -n "$soname_spec"; then
-          eval soname=\"$soname_spec\"
-        else
-          soname="$realname"
-        fi
+	if test -n "$soname_spec"; then
+	  eval soname=\"$soname_spec\"
+	else
+	  soname="$realname"
+	fi
 
-        lib="$objdir/$realname"
+	lib="$objdir/$realname"
 	for link
 	do
 	  linknames="$linknames $link"
 	done
 
-        # Use standard objects if they are PIC.
-        test -z "$pic_flag" && libobjs=`$echo "X$libobjs " | $Xsed -e 's/\.lo /.o /g' -e 's/ $//g'`
+	# Use standard objects if they are PIC.
+	test -z "$pic_flag" && libobjs=`$echo "X$libobjs " | $Xsed -e 's/\.lo /.o /g' -e 's/ $//g'`
 
-        # Do each of the archive commands.
-        eval cmds=\"$archive_cmds\"
-        IFS="${IFS= 	}"; save_ifs="$IFS"; IFS=';'
-        for cmd in $cmds; do
-          IFS="$save_ifs"
-          $show "$cmd"
-          $run eval "$cmd" || exit $?
-        done
-        IFS="$save_ifs"
+	# Transform .lo files to .o files.
+	test "$build_old_libs" = yes && oldobjs="$objs"`$echo "X$libobjs " | $Xsed -e 's/[^   ]*\.a //g' -e 's/\.lo /.o /g' -e 's/ $//g'`
 
-        # Create links to the real library.
-        for linkname in $linknames; do
+	if test -n "$whole_archive_flag_spec"; then
+	  if test -n "$convenience"; then
+	    eval libobjs=\"\$libobjs $whole_archive_flag_spec\"
+	  fi
+	else
+	  for xlib in $convenience; do
+	    # Extract the objects.
+	    xdir="$xlib"x
+	    generated="$generated $xdir"
+	    xlib=`echo "$xlib" | $Xsed -e 's%^.*/%%'`
+
+	    $show "${rm}r $xdir"
+	    $run ${rm}r "$xdir"
+	    $show "mkdir $xdir"
+	    $run mkdir "$xdir"
+	    status=$?
+	    if test $status -ne 0 && test ! -d "$xdir"; then
+	      exit $status
+	    fi
+	    $show "(cd $xdir && $AR x ../$xlib)"
+	    $run eval "(cd \$xdir && $AR x ../\$xlib)" || exit $?
+
+	    libobjs="$libobjs `echo $xdir/*`"
+	  done
+	fi
+
+	# Do each of the archive commands.
+	eval cmds=\"$archive_cmds\"
+	IFS="${IFS= 	}"; save_ifs="$IFS"; IFS=';'
+	for cmd in $cmds; do
+	  IFS="$save_ifs"
+	  $show "$cmd"
+	  $run eval "$cmd" || exit $?
+	done
+	IFS="$save_ifs"
+
+	# Create links to the real library.
+	for linkname in $linknames; do
 	  if test "$realname" != "$linkname"; then
 	    $show "(cd $objdir && $LN_S $realname $linkname)"
 	    $run eval '(cd $objdir && $LN_S $realname $linkname)' || exit $?
 	  fi
-        done
+	done
 
-        # If -export-dynamic was specified, set the dlname.
-        if test "$export_dynamic" = yes; then
-          # On all known operating systems, these are identical.
-          dlname="$soname"
-        fi
+	# If -export-dynamic was specified, set the dlname.
+	if test "$export_dynamic" = yes; then
+	  # On all known operating systems, these are identical.
+	  dlname="$soname"
+	fi
       fi
-
-      # Now set the variables for building old libraries.
-      oldlib="$objdir/$libname.a"
       ;;
 
     *.lo | *.o)
       if test -n "$link_against_libtool_libs"; then
-        $echo "$modename: error: cannot link libtool libraries into reloadable objects" 1>&2
+        $echo "$modename: error: cannot link libtool libraries into objects" 1>&2
         exit 1
       fi
 
       if test -n "$deplibs"; then
-        $echo "$modename: warning: \`-l' and \`-L' are ignored while creating objects" 1>&2
+        $echo "$modename: warning: \`-l' and \`-L' are ignored for objects" 1>&2
       fi
 
       if test -n "$dlfiles$dlprefiles"; then
-        $echo "$modename: warning: \`-dlopen' is ignored while creating objects" 1>&2
-        # Nullify the symbol file.
-        compile_command=`$echo "X$compile_command" | $Xsed -e "s% @SYMFILE@%%"`
-        finalize_command=`$echo "X$finalize_command" | $Xsed -e "s% @SYMFILE@%%"`
+        $echo "$modename: warning: \`-dlopen' is ignored for objects" 1>&2
       fi
 
       if test -n "$rpath"; then
-        $echo "$modename: warning: \`-rpath' is ignored while creating objects" 1>&2
+        $echo "$modename: warning: \`-rpath' is ignored for objects" 1>&2
       fi
 
       if test -n "$vinfo"; then
-        $echo "$modename: warning: \`-version-info' is ignored while creating objects" 1>&2
+        $echo "$modename: warning: \`-version-info' is ignored for objects" 1>&2
       fi
 
       if test -n "$release"; then
-        $echo "$modename: warning: \`-release' is ignored while creating objects" 1>&2
+        $echo "$modename: warning: \`-release' is ignored for objects" 1>&2
       fi
 
       case "$output" in
@@ -1172,7 +1234,7 @@ if test -z "$show_help"; then
       else
         # Just create a symlink.
         $show "$LN_S $obj $libobj"
-        $run $LN_S $obj $libobj || exit 1
+        $run $LN_S $obj $libobj || exit $?
       fi
 
       exit 0
@@ -1180,11 +1242,11 @@ if test -z "$show_help"; then
 
     *)
       if test -n "$vinfo"; then
-        $echo "$modename: warning: \`-version-info' is ignored while linking programs" 1>&2
+        $echo "$modename: warning: \`-version-info' is ignored for programs" 1>&2
       fi
 
       if test -n "$release"; then
-        $echo "$modename: warning: \`-release' is ignored while creating objects" 1>&2
+        $echo "$modename: warning: \`-release' is ignored for programs" 1>&2
       fi
 
       if test -n "$rpath"; then
@@ -1401,7 +1463,7 @@ dld_preloaded_symbols[] =
         rpath=
         for dir in $temp_rpath; do
           case "$dir" in
-          /* | [A-Za-z]:\\*)
+          /* | [A-Za-z]:[/\\]*)
             # Absolute path.
             rpath="$rpath$dir:"
             ;;
@@ -1515,7 +1577,7 @@ else
     # If there was a directory component, then change thisdir.
     if test \"x\$destdir\" != \"x\$file\"; then
       case \"\$destdir\" in
-      /* | [A-Za-z]:\\*) thisdir=\"\$destdir\" ;;
+      /* | [A-Za-z]:[/\\]*) thisdir=\"\$destdir\" ;;
       *) thisdir=\"\$thisdir/\$destdir\" ;;
       esac
     fi
@@ -1575,9 +1637,36 @@ fi\
     esac
 
     # See if we need to build an old-fashioned archive.
-    if test "$build_old_libs" = "yes"; then
-      # Transform .lo files to .o files.
-      oldobjs="$objs"`$echo "X$libobjs " | $Xsed -e 's/[^   ]*\.a //g' -e 's/\.lo /.o /g' -e 's/ $//g'`
+    for oldlib in $oldlibs; do
+
+      if test "$build_libtool_libs" = convenience; then
+	oldobjs="$libobjs"
+	addlibs="$convenience"
+	build_libtool_libs=no
+      else
+	addlibs="$old_convenience"
+      fi
+
+      # Add in members from convenience archives.
+      for xlib in $addlibs; do
+	# Extract the objects.
+	xdir="$xlib"x
+	generated="$generated $xdir"
+	xlib=`echo "$xlib" | $Xsed -e 's%^.*/%%'`
+
+	$show "${rm}r $xdir"
+	$run ${rm}r "$xdir"
+	$show "mkdir $xdir"
+	$run mkdir "$xdir"
+	status=$?
+	if test $status -ne 0 && test ! -d "$xdir"; then
+	  exit $status
+	fi
+	$show "(cd $xdir && $AR x ../$xlib)"
+	$run eval "(cd \$xdir && $AR x ../\$xlib)" || exit $?
+
+	oldobjs="$oldobjs `echo $xdir/*`"
+      done
 
       # Do each command in the archive commands.
       if test -n "$old_archive_from_new_cmds" && test "$build_libtool_libs" = yes; then
@@ -1592,6 +1681,11 @@ fi\
         $run eval "$cmd" || exit $?
       done
       IFS="$save_ifs"
+    done
+
+    if test -n "$generated"; then
+      $show "${rm}r$generated"
+      $run ${rm}r$generated
     fi
 
     # Now create the libtool archive.
@@ -1599,7 +1693,6 @@ fi\
     *.la)
       old_library=
       test "$build_old_libs" = yes && old_library="$libname.a"
-
       $show "creating $output"
 
       # Only create the output if not a dry run.
@@ -1633,7 +1726,7 @@ libdir='$install_libdir'\
       # Do a symbolic link so that the libtool archive can be found in
       # LD_LIBRARY_PATH before the program is installed.
       $show "(cd $objdir && $LN_S ../$output $output)"
-      $run eval "(cd $objdir && $LN_S ../$output $output)" || exit 1
+      $run eval "(cd $objdir && $LN_S ../$output $output)" || exit $?
       ;;
     esac
     exit 0
@@ -1764,7 +1857,7 @@ libdir='$install_libdir'\
       fi
     fi
     case "$destdir" in
-    /* | [A-Za-z]:\\*) ;;
+    /* | [A-Za-z]:[/\\]*) ;;
     *)
       for file in $files; do
         case "$file" in
@@ -1970,9 +2063,7 @@ libdir='$install_libdir'\
               esac
             fi
             libfile="$libdir/`$echo "X$lib" | $Xsed -e 's%^.*/%%g'`"
-            if test -z "$libdir"; then
-              $echo "$modename: warning: \`$lib' contains no -rpath information" 1>&2
-            elif test ! -f "$libfile"; then
+            if test -n "$libdir" && test ! -f "$libfile"; then
               $echo "$modename: warning: \`$lib' has not been installed in \`$libdir'" 1>&2
               finalize=no
             fi
