@@ -1723,7 +1723,7 @@ compiler."
 	      eval cmds=\"$extract_expsyms_cmds\"
 	      for cmd in $cmds; do
 		IFS="$save_ifs"
-		eval $show \""$cmd"\"
+		$show "$cmd"
 		$run eval "$cmd" || exit $?
 	      done
 	      IFS="$save_ifs"
@@ -1736,7 +1736,7 @@ compiler."
 	      eval cmds=\"$old_archive_from_expsyms_cmds\"
 	      for cmd in $cmds; do
 		IFS="$save_ifs"
-		eval $show \""$cmd"\"
+		$show "$cmd"
 		$run eval "$cmd" || exit $?
 	      done
 	      IFS="$save_ifs"
@@ -2256,7 +2256,7 @@ EOF
 	    IFS="${IFS= 	}"; save_ifs="$IFS"; IFS='~'
 	    for cmd in $cmds; do
 	      IFS="$save_ifs"
-	      eval $show \""$cmd"\"
+	      $show "$cmd"
 	      $run eval "$cmd" || exit $?
 	    done
 	    IFS="$save_ifs"
@@ -2287,7 +2287,7 @@ EOF
 	IFS="${IFS= 	}"; save_ifs="$IFS"; IFS='~'
 	for cmd in $cmds; do
 	  IFS="$save_ifs"
-	  eval $show \""$cmd"\"
+	  $show "$cmd"
 	  $run eval "$cmd" || exit $?
 	done
 	IFS="$save_ifs"
@@ -2365,7 +2365,7 @@ EOF
       IFS="${IFS= 	}"; save_ifs="$IFS"; IFS='~'
       for cmd in $cmds; do
 	IFS="$save_ifs"
-	eval $show \""$cmd"\"
+	$show "$cmd"
 	$run eval "$cmd" || exit $?
       done
       IFS="$save_ifs"
@@ -2389,7 +2389,7 @@ EOF
 	IFS="${IFS= 	}"; save_ifs="$IFS"; IFS='~'
 	for cmd in $cmds; do
 	  IFS="$save_ifs"
-	  eval $show \""$cmd"\"
+	  $show "$cmd"
 	  $run eval "$cmd" || exit $?
 	done
 	IFS="$save_ifs"
@@ -2725,7 +2725,7 @@ EOF
 	      eval cmds=\"$extract_expsyms_cmds\"
 	      for cmd in $cmds; do
 		IFS="$save_ifs"
-		eval $show \""$cmd"\"
+		$show "$cmd"
 		$run eval "$cmd" || exit $?
 	      done
 	      IFS="$save_ifs"
@@ -2738,7 +2738,7 @@ EOF
 	      eval cmds=\"$old_archive_from_expsyms_cmds\"
 	      for cmd in $cmds; do
 		IFS="$save_ifs"
-		eval $show \""$cmd"\"
+		$show "$cmd"
 		$run eval "$cmd" || exit $?
 	      done
 	      IFS="$save_ifs"
@@ -3493,7 +3493,7 @@ fi\
       IFS="${IFS= 	}"; save_ifs="$IFS"; IFS='~'
       for cmd in $cmds; do
 	IFS="$save_ifs"
-	eval $show \""$cmd"\"
+	$show "$cmd"
 	$run eval "$cmd" || exit $?
       done
       IFS="$save_ifs"
@@ -3866,7 +3866,7 @@ relink_command=\"$relink_command\""
 	  IFS="${IFS= 	}"; save_ifs="$IFS"; IFS='~'
 	  for cmd in $cmds; do
 	    IFS="$save_ifs"
-	    eval $show \""$cmd"\"
+	    $show "$cmd"
 	    $run eval "$cmd" || exit $?
 	  done
 	  IFS="$save_ifs"
@@ -4030,7 +4030,7 @@ relink_command=\"$relink_command\""
       IFS="${IFS= 	}"; save_ifs="$IFS"; IFS='~'
       for cmd in $cmds; do
 	IFS="$save_ifs"
-	eval $show \""$cmd"\"
+	$show "$cmd"
 	$run eval "$cmd" || exit $?
       done
       IFS="$save_ifs"
@@ -4069,7 +4069,7 @@ relink_command=\"$relink_command\""
 	  IFS="${IFS= 	}"; save_ifs="$IFS"; IFS='~'
 	  for cmd in $cmds; do
 	    IFS="$save_ifs"
-	    eval $show \""$cmd"\"
+	    $show "$cmd"
 	    $run eval "$cmd" || admincmds="$admincmds
        $cmd"
 	  done
@@ -4312,7 +4312,7 @@ relink_command=\"$relink_command\""
 	    IFS="${IFS= 	}"; save_ifs="$IFS"; IFS='~'
 	    for cmd in $cmds; do
 	      IFS="$save_ifs"
-	      eval $show \""$cmd"\"
+	      $show "$cmd"
 	      $run eval "$cmd"
 	    done
 	    IFS="$save_ifs"
@@ -4324,7 +4324,7 @@ relink_command=\"$relink_command\""
 	    IFS="${IFS= 	}"; save_ifs="$IFS"; IFS='~'
 	    for cmd in $cmds; do
 	      IFS="$save_ifs"
-	      eval $show \""$cmd"\"
+	      $show "$cmd"
 	      $run eval "$cmd"
 	    done
 	    IFS="$save_ifs"

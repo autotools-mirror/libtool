@@ -456,8 +456,8 @@ aix3*)
 esac
 
 # Determine commands to create old-style static archives.
-old_archive_cmds='\$AR cru \$oldlib\$oldobjs'
-old_postinstall_cmds='chmod 644 \$oldlib'
+old_archive_cmds='$AR cru $oldlib$oldobjs'
+old_postinstall_cmds='chmod 644 $oldlib'
 old_postuninstall_cmds=
 
 # Set a sane default for `AR'.
@@ -1009,7 +1009,7 @@ hardcode_minus_L=no
 hardcode_shlibpath_var=unsupported
 runpath_var=
 always_export_symbols=no
-export_symbols_cmds='\$NM \$libobjs | \$global_symbol_pipe | sed '\''s/.* //'\'' | sort | uniq > \$export_symbols'
+export_symbols_cmds='$NM $libobjs | $global_symbol_pipe | sed '\''s/.* //'\'' | sort | uniq > $export_symbols'
 # include_expsyms should be a list of space-separated symbols to be *always*
 # included in the symbol list
 include_expsyms=
@@ -1058,7 +1058,7 @@ EOF
     ;;
 
   amigaos*)
-    archive_cmds='\$rm \$objdir/a2ixlibrary.data~\$echo "#define NAME \$libname" > \$objdir/a2ixlibrary.data~\$echo "#define LIBRARY_ID 1" >> \$objdir/a2ixlibrary.data~\$echo "#define VERSION \$major" >> \$objdir/a2ixlibrary.data~\$echo "#define REVISION \$revision" >> \$objdir/a2ixlibrary.data~\$AR cru \$lib \$libobjs~\$RANLIB \$lib~(cd \$objdir && a2ixlibrary -32)'
+    archive_cmds='$rm $objdir/a2ixlibrary.data~$echo "#define NAME $libname" > $objdir/a2ixlibrary.data~$echo "#define LIBRARY_ID 1" >> $objdir/a2ixlibrary.data~$echo "#define VERSION $major" >> $objdir/a2ixlibrary.data~$echo "#define REVISION $revision" >> $objdir/a2ixlibrary.data~$AR cru $lib $libobjs~$RANLIB $lib~(cd $objdir && a2ixlibrary -32)'
     hardcode_libdir_flag_spec='-L$libdir'
     hardcode_minus_L=yes
 
@@ -1072,7 +1072,7 @@ EOF
     ;;
 
   sunos4*)
-    archive_cmds='\$LD -assert pure-text -Bstatic -o \$lib \$libobjs \$deplibs \$linkopts'
+    archive_cmds='$LD -assert pure-text -Bstatic -o $lib $libobjs $deplibs $linkopts'
     wlarc=
     hardcode_direct=yes
     hardcode_shlibpath_var=no
@@ -1080,7 +1080,7 @@ EOF
 
   beos*)
     if $LD --help 2>&1 | egrep ': supported targets:.* elf' > /dev/null; then
-      archive_cmds='\$CC -nostart \$libobjs \$deplibs \$linkopts \${wl}-soname \$wl\$soname -o \$lib'
+      archive_cmds='$CC -nostart $libobjs $deplibs $linkopts ${wl}-soname $wl$soname -o $lib'
     else
       ld_shlibs=no
     fi
@@ -1093,39 +1093,39 @@ EOF
     allow_undefined_flag=unsupported
     always_export_symbols=yes
 
-    extract_expsyms_cmds='test -f \$objdir/impgen.c || \
-      sed -e "/^# \/\* impgen\.c starts here \*\//,/^# \/\* impgen.c ends here \*\// { s/^# //; p; }" -e d < \$0 > \$objdir/impgen.c~
-      test -f \$objdir/impgen.exe || (cd \$objdir && \$CC -o impgen impgen.c)~
-      \$objdir/impgen \$dir/\$soname > \$objdir/\$soname-def'
+    extract_expsyms_cmds='test -f $objdir/impgen.c || \
+      sed -e "/^# \/\* impgen\.c starts here \*\//,/^# \/\* impgen.c ends here \*\// { s/^# //; p; }" -e d < $0 > $objdir/impgen.c~
+      test -f $objdir/impgen.exe || (cd $objdir && $CC -o impgen impgen.c)~
+      $objdir/impgen $dir/$soname > $objdir/$soname-def'
 
-    old_archive_from_expsyms_cmds='\$DLLTOOL --as=\$AS --dllname \$soname --def \$objdir/\$soname-def --output-lib \$objdir/\$newlib'
+    old_archive_from_expsyms_cmds='$DLLTOOL --as=$AS --dllname $soname --def $objdir/$soname-def --output-lib $objdir/$newlib'
 
     # Extract the symbol export list from an `--export-all' def file,
     # then regenerate the def file from the symbol export list, so that
     # the compiled dll only exports the symbol export list.
-    export_symbols_cmds='rm -f \$objdir/\$soname-ltdll.c~
-      sed -e "/^# \/\* ltdll\.c starts here \*\//,/^# \/\* ltdll.c ends here \*\// { s/^# //; p; }" -e d < \$0 > \$objdir/\$soname-ltdll.c~
-      (cd \$objdir && \$CC -c \$soname-ltdll.c)~
-      \$DLLTOOL --export-all --exclude-symbols DllMain@12,_cygwin_dll_entry@12,_cygwin_noncygwin_dll_entry@12 --output-def \$objdir/\$soname-def  \$objdir/\$soname-ltdll.\$objext \$libobjs~
-      sed -e "1,/EXPORTS/d" -e "s/ @ [0-9]* ; *//" < \$objdir/\$soname-def > \$export_symbols'
+    export_symbols_cmds='rm -f $objdir/$soname-ltdll.c~
+      sed -e "/^# \/\* ltdll\.c starts here \*\//,/^# \/\* ltdll.c ends here \*\// { s/^# //; p; }" -e d < $0 > $objdir/$soname-ltdll.c~
+      (cd $objdir && $CC -c $soname-ltdll.c)~
+      $DLLTOOL --export-all --exclude-symbols DllMain@12,_cygwin_dll_entry@12,_cygwin_noncygwin_dll_entry@12 --output-def $objdir/$soname-def  $objdir/$soname-ltdll.$objext $libobjs~
+      sed -e "1,/EXPORTS/d" -e "s/ @ [0-9]* ; *//" < $objdir/$soname-def > $export_symbols'
 
-    archive_expsym_cmds='echo EXPORTS > \$objdir/\$soname-def~
+    archive_expsym_cmds='echo EXPORTS > $objdir/$soname-def~
       _lt_hint=1;
-      for symbol in `cat \$export_symbols`; do
-	echo "	\$symbol @ \$_lt_hint ; " >> \$objdir/\$soname-def;
+      for symbol in `cat $export_symbols`; do
+	echo "	\$symbol @ \$_lt_hint ; " >> $objdir/$soname-def;
 	_lt_hint=`expr 1 + \$_lt_hint`;
       done~
-      \$CC -Wl,--base-file,\$objdir/\$soname-base -Wl,--dll -nostartfiles -Wl,-e,__cygwin_dll_entry@12 -o \$lib \$objdir/\$soname-ltdll.\$objext \$libobjs \$deplibs \$linkopts~
-      \$DLLTOOL --as=\$AS --dllname \$soname --exclude-symbols DllMain@12,_cygwin_dll_entry@12,_cygwin_noncygwin_dll_entry@12 --def \$objdir/\$soname-def --base-file \$objdir/\$soname-base --output-exp \$objdir/\$soname-exp~
-      \$CC -Wl,--base-file,\$objdir/\$soname-base \$objdir/\$soname-exp -Wl,--dll -nostartfiles -Wl,-e,__cygwin_dll_entry@12 -o \$lib \$objdir/\$soname-ltdll.\$objext \$libobjs \$deplibs \$linkopts~
-      \$DLLTOOL --as=\$AS --dllname \$soname --exclude-symbols DllMain@12,_cygwin_dll_entry@12,_cygwin_noncygwin_dll_entry@12 --def \$objdir/\$soname-def --base-file \$objdir/\$soname-base --output-exp \$objdir/\$soname-exp~
-      \$CC \$objdir/\$soname-exp -Wl,--dll -nostartfiles -Wl,-e,__cygwin_dll_entry@12 -o \$lib \$objdir/\$soname-ltdll.\$objext \$libobjs \$deplibs \$linkopts'
+      $CC -Wl,--base-file,$objdir/$soname-base -Wl,--dll -nostartfiles -Wl,-e,__cygwin_dll_entry@12 -o $lib $objdir/$soname-ltdll.$objext $libobjs $deplibs $linkopts~
+      $DLLTOOL --as=$AS --dllname $soname --exclude-symbols DllMain@12,_cygwin_dll_entry@12,_cygwin_noncygwin_dll_entry@12 --def $objdir/$soname-def --base-file $objdir/$soname-base --output-exp $objdir/$soname-exp~
+      $CC -Wl,--base-file,$objdir/$soname-base $objdir/$soname-exp -Wl,--dll -nostartfiles -Wl,-e,__cygwin_dll_entry@12 -o $lib $objdir/$soname-ltdll.$objext $libobjs $deplibs $linkopts~
+      $DLLTOOL --as=$AS --dllname $soname --exclude-symbols DllMain@12,_cygwin_dll_entry@12,_cygwin_noncygwin_dll_entry@12 --def $objdir/$soname-def --base-file $objdir/$soname-base --output-exp $objdir/$soname-exp~
+      $CC $objdir/$soname-exp -Wl,--dll -nostartfiles -Wl,-e,__cygwin_dll_entry@12 -o $lib $objdir/$soname-ltdll.$objext $libobjs $deplibs $linkopts'
     ;;
 
   *)
     if $LD --help 2>&1 | egrep ': supported targets:.* elf' > /dev/null; then
-      archive_cmds='\$CC -shared \$libobjs \$deplibs \$linkopts \${wl}-soname \$wl\$soname -o \$lib'
-      archive_expsym_cmds='\$CC -shared \$libobjs \$deplibs \$linkopts \${wl}-soname \$wl\$soname \${wl}-retain-symbols-file \$wl\$export_symbols -o \$lib'
+      archive_cmds='$CC -shared $libobjs $deplibs $linkopts ${wl}-soname $wl$soname -o $lib'
+      archive_expsym_cmds='$CC -shared $libobjs $deplibs $linkopts ${wl}-soname $wl$soname ${wl}-retain-symbols-file $wl$export_symbols -o $lib'
     else
       ld_shlibs=no
     fi
@@ -1144,7 +1144,7 @@ else
   aix3*)
     allow_undefined_flag=unsupported
     always_export_symbols=yes
-    archive_expsym_cmds='\$LD -o \$objdir/\$soname \$libobjs \$deplibs \$linkopts -bE:\$export_symbols -T512 -H512 -bM:SRE~\$AR cru \$lib \$objdir/\$soname'
+    archive_expsym_cmds='$LD -o $objdir/$soname $libobjs $deplibs $linkopts -bE:$export_symbols -T512 -H512 -bM:SRE~$AR cru $lib $objdir/$soname'
     # Note: this linker hardcodes the directories in LIBPATH if there
     # are no directories specified by -L.
     hardcode_minus_L=yes
@@ -1167,10 +1167,10 @@ else
 	# We have old collect2
 	hardcode_direct=unsupported
       fi
-      archive_cmds='\$CC -shared \${wl}-bnoentry -o \$objdir/\$soname \$libobjs \$deplibs \$linkopts'
+      archive_cmds='$CC -shared ${wl}-bnoentry -o $objdir/$soname $libobjs $deplibs $linkopts'
     else
       always_export_symbols=yes
-      archive_expsym_cmds='\$CC -o \$objdir/\$soname \$libobjs \$deplibs \$linkopts \${wl}-bE:\$export_symbols \${wl}-bM:SRE \${wl}-bnoentry'
+      archive_expsym_cmds='$CC -o $objdir/$soname $libobjs $deplibs $linkopts ${wl}-bE:$export_symbols ${wl}-bM:SRE ${wl}-bnoentry'
       hardcode_direct=yes
     fi
     hardcode_minus_L=yes
@@ -1181,7 +1181,7 @@ else
    ;;
 
   amigaos*)
-    archive_cmds='\$rm \$objdir/a2ixlibrary.data~\$echo "#define NAME \$libname" > \$objdir/a2ixlibrary.data~\$echo "#define LIBRARY_ID 1" >> \$objdir/a2ixlibrary.data~\$echo "#define VERSION \$major" >> \$objdir/a2ixlibrary.data~\$echo "#define REVISION \$revision" >> \$objdir/a2ixlibrary.data~\$AR cru \$lib \$libobjs~\$RANLIB \$lib~(cd \$objdir && a2ixlibrary -32)'
+    archive_cmds='$rm $objdir/a2ixlibrary.data~$echo "#define NAME $libname" > $objdir/a2ixlibrary.data~$echo "#define LIBRARY_ID 1" >> $objdir/a2ixlibrary.data~$echo "#define VERSION $major" >> $objdir/a2ixlibrary.data~$echo "#define REVISION $revision" >> $objdir/a2ixlibrary.data~$AR cru $lib $libobjs~$RANLIB $lib~(cd $objdir && a2ixlibrary -32)'
     hardcode_libdir_flag_spec='-L$libdir'
     hardcode_minus_L=yes
     ;;
@@ -1196,11 +1196,11 @@ else
     # Tell ltmain to make .lib files, not .a files.
     libext=lib
     # FIXME: Setting linknames here is a bad hack.
-    archive_cmds='\$CC -o \$lib \$libobjs \$linkopts `echo "\$deplibs" | sed -e '\''s/ -lc$//'\''` -link -dll~linknames='
+    archive_cmds='$CC -o $lib $libobjs $linkopts `echo "$deplibs" | sed -e '\''s/ -lc$//'\''` -link -dll~linknames='
     # The linker will automatically build a .lib file if we build a DLL.
     old_archive_from_new_cmds='true'
     # FIXME: Should let the user specify the lib program.
-    old_archive_cmds='lib /OUT:\$oldlib\$oldobjs'
+    old_archive_cmds='lib /OUT:$oldlib$oldobjs'
     fix_srcfile_path='`cygpath -w $srcfile`'
     ;;
 
@@ -1214,7 +1214,7 @@ else
   # does not break anything, and helps significantly (at the cost of a little
   # extra space).
   freebsd2.2*)
-    archive_cmds='\$LD -Bshareable -o \$lib \$libobjs \$deplibs \$linkopts /usr/lib/c++rt0.o'
+    archive_cmds='$LD -Bshareable -o $lib $libobjs $deplibs $linkopts /usr/lib/c++rt0.o'
     hardcode_libdir_flag_spec='-R$libdir'
     hardcode_direct=yes
     hardcode_shlibpath_var=no
@@ -1222,7 +1222,7 @@ else
 
   # Unfortunately, older versions of FreeBSD 2 do not have this feature.
   freebsd2*)
-    archive_cmds='\$LD -Bshareable -o \$lib \$libobjs \$deplibs \$linkopts'
+    archive_cmds='$LD -Bshareable -o $lib $libobjs $deplibs $linkopts'
     hardcode_direct=yes
     hardcode_minus_L=yes
     hardcode_shlibpath_var=no
@@ -1230,14 +1230,14 @@ else
 
   # FreeBSD 3 and greater uses gcc -shared to do shared libraries.
   freebsd*)
-    archive_cmds='\$CC -shared -o \$lib \$libobjs \$deplibs \$linkopts'
+    archive_cmds='$CC -shared -o $lib $libobjs $deplibs $linkopts'
     hardcode_libdir_flag_spec='-R$libdir'
     hardcode_direct=yes
     hardcode_shlibpath_var=no
     ;;
 
   hpux9*)
-    archive_cmds='\$rm \$objdir/\$soname~\$LD -b +b \$install_libdir -o \$objdir/\$soname \$libobjs \$deplibs \$linkopts~test \$objdir/\$soname = \$lib || mv \$objdir/\$soname \$lib'
+    archive_cmds='$rm $objdir/$soname~$LD -b +b $install_libdir -o $objdir/$soname $libobjs $deplibs $linkopts~test $objdir/$soname = $lib || mv $objdir/$soname $lib'
     hardcode_libdir_flag_spec='${wl}+s ${wl}+b ${wl}$libdir'
     hardcode_libdir_separator=:
     hardcode_direct=yes
@@ -1245,7 +1245,7 @@ else
     ;;
 
   hpux10* | hpux11*)
-    archive_cmds='\$LD -b +h \$soname +b \$install_libdir -o \$lib \$libobjs \$deplibs \$linkopts'
+    archive_cmds='$LD -b +h $soname +b $install_libdir -o $lib $libobjs $deplibs $linkopts'
     hardcode_libdir_flag_spec='${wl}+s ${wl}+b ${wl}$libdir'
     hardcode_libdir_separator=:
     hardcode_direct=yes
@@ -1254,9 +1254,9 @@ else
 
   irix5* | irix6*)
     if test "$with_gcc" = yes; then
-      archive_cmds='\$CC -shared \$libobjs \$deplibs \$linkopts \${wl}-soname \${wl}\$soname `test -n "\$verstring" && echo \${wl}-set_version \${wl}\$verstring` -o \$lib'
+      archive_cmds='$CC -shared $libobjs $deplibs $linkopts ${wl}-soname ${wl}$soname `test -n "$verstring" && echo ${wl}-set_version ${wl}$verstring` -o $lib'
     else
-      archive_cmds='\$LD -shared \$libobjs \$deplibs \$linkopts -soname \$soname `test -n "\$verstring" && echo -set_version \$verstring` -o \$lib'
+      archive_cmds='$LD -shared $libobjs $deplibs $linkopts -soname $soname `test -n "$verstring" && echo -set_version $verstring` -o $lib'
     fi
     hardcode_libdir_flag_spec='${wl}-rpath ${wl}$libdir'
     hardcode_libdir_separator=:
@@ -1264,9 +1264,9 @@ else
 
   netbsd*)
     if echo __ELF__ | $CC -E - | grep __ELF__ >/dev/null; then
-      archive_cmds='\$LD -Bshareable -o \$lib \$libobjs \$deplibs \$linkopts'  # a.out
+      archive_cmds='$LD -Bshareable -o $lib $libobjs $deplibs $linkopts'  # a.out
     else
-      archive_cmds='\$LD -shared -o \$lib \$libobjs \$deplibs \$linkopts'      # ELF
+      archive_cmds='$LD -shared -o $lib $libobjs $deplibs $linkopts'      # ELF
     fi
     hardcode_libdir_flag_spec='${wl}-R$libdir'
     hardcode_direct=yes
@@ -1274,7 +1274,7 @@ else
     ;;
 
   openbsd*)
-    archive_cmds='\$LD -Bshareable -o \$lib \$libobjs \$deplibs \$linkopts'
+    archive_cmds='$LD -Bshareable -o $lib $libobjs $deplibs $linkopts'
     hardcode_libdir_flag_spec='-R$libdir'
     hardcode_direct=yes
     hardcode_shlibpath_var=no
@@ -1284,24 +1284,24 @@ else
     hardcode_libdir_flag_spec='-L$libdir'
     hardcode_minus_L=yes
     allow_undefined_flag=unsupported
-    archive_cmds='\$echo "LIBRARY \$libname INITINSTANCE" > \$objdir/\$libname.def~\$echo "DESCRIPTION \"\$libname\"" >> \$objdir/\$libname.def~\$echo DATA >> \$objdir/\$libname.def~\$echo " SINGLE NONSHARED" >> \$objdir/\$libname.def~\$echo EXPORTS >> \$objdir/\$libname.def~emxexp \$libobjs >> \$objdir/\$libname.def~\$CC -Zdll -Zcrtdll -o \$lib \$libobjs \$deplibs \$linkopts \$objdir/\$libname.def'
-    old_archive_from_new_cmds='emximp -o \$objdir/\$libname.a \$objdir/\$libname.def'
+    archive_cmds='$echo "LIBRARY $libname INITINSTANCE" > $objdir/$libname.def~$echo "DESCRIPTION \"$libname\"" >> $objdir/$libname.def~$echo DATA >> $objdir/$libname.def~$echo " SINGLE NONSHARED" >> $objdir/$libname.def~$echo EXPORTS >> $objdir/$libname.def~emxexp $libobjs >> $objdir/$libname.def~$CC -Zdll -Zcrtdll -o $lib $libobjs $deplibs $linkopts $objdir/$libname.def'
+    old_archive_from_new_cmds='emximp -o $objdir/$libname.a $objdir/$libname.def'
     ;;
 
   osf3* | osf4*)
     if test "$with_gcc" = yes; then
       allow_undefined_flag=' ${wl}-expect_unresolved ${wl}\*'
-      archive_cmds='\$CC -shared${allow_undefined_flag} \$libobjs \$deplibs \$linkopts \${wl}-soname \${wl}\$soname `test -n "\$verstring" && echo \${wl}-set_version \${wl}\$verstring` -o \$lib'
+      archive_cmds='$CC -shared${allow_undefined_flag} $libobjs $deplibs $linkopts ${wl}-soname ${wl}$soname `test -n "$verstring" && echo ${wl}-set_version ${wl}$verstring` -o $lib'
     else
       allow_undefined_flag=' -expect_unresolved \*'
-      archive_cmds='\$LD -shared${allow_undefined_flag} \$libobjs \$deplibs \$linkopts -soname \$soname `test -n "\$verstring" && echo -set_version \$verstring` -o \$lib'
+      archive_cmds='$LD -shared${allow_undefined_flag} $libobjs $deplibs $linkopts -soname $soname `test -n "$verstring" && echo -set_version $verstring` -o $lib'
     fi
     hardcode_libdir_flag_spec='${wl}-rpath ${wl}$libdir'
     hardcode_libdir_separator=:
     ;;
 
   sco3.2v5*)
-    archive_cmds='\$LD -G -o \$lib \$libobjs \$deplibs \$linkopts'
+    archive_cmds='$LD -G -o $lib $libobjs $deplibs $linkopts'
     hardcode_direct=yes
     ;;
 
@@ -1309,9 +1309,9 @@ else
     no_undefined_flag=' -z text'
     # $CC -shared without GNU ld will not create a library from C++
     # object files and a static libstdc++, better avoid it by now
-    archive_cmds='\$LD -G${allow_undefined_flag} -h \$soname -o \$lib \$libobjs \$deplibs \$linkopts'
-    archive_expsym_cmds='\$echo "{ global:" > \$lib.exp~cat \$export_symbols | sed -e "s/\(.*\)/\1;/" >> \$lib.exp~\$echo "local: *; };" >> \$lib.exp~
-		\$LD -G${allow_undefined_flag} -M \$lib.exp -h \$soname -o \$lib \$libobjs \$deplibs \$linkopts~\$rm \$lib.exp'
+    archive_cmds='$LD -G${allow_undefined_flag} -h $soname -o $lib $libobjs $deplibs $linkopts'
+    archive_expsym_cmds='$echo "{ global:" > $lib.exp~cat $export_symbols | sed -e "s/\(.*\)/\1;/" >> $lib.exp~$echo "local: *; };" >> $lib.exp~
+		$LD -G${allow_undefined_flag} -M $lib.exp -h $soname -o $lib $libobjs $deplibs $linkopts~$rm $lib.exp'
     hardcode_libdir_flag_spec='-R$libdir'
     hardcode_shlibpath_var=no
     ;;
@@ -1320,9 +1320,9 @@ else
     # Why do we need -Bstatic?  To avoid inter-library dependencies, maybe...
     if test "$with_gcc" = yes; then
       # Use -fPIC here because libgcc is multilibbed
-      archive_cmds='\$CC -shared \${wl}-Bstatic -fPIC -o \$lib \$libobjs \$deplibs \$linkopts'
+      archive_cmds='$CC -shared ${wl}-Bstatic -fPIC -o $lib $libobjs $deplibs $linkopts'
     else
-      archive_cmds='\$LD -assert pure-text -Bstatic -o \$lib \$libobjs \$deplibs \$linkopts'
+      archive_cmds='$LD -assert pure-text -Bstatic -o $lib $libobjs $deplibs $linkopts'
     fi
     hardcode_libdir_flag_spec='-L$libdir'
     hardcode_direct=yes
@@ -1331,19 +1331,19 @@ else
     ;;
 
   sysv4.3*)
-    archive_cmds='\$LD -G -h \$soname -o \$lib \$libobjs \$deplibs \$linkopts'
+    archive_cmds='$LD -G -h $soname -o $lib $libobjs $deplibs $linkopts'
     hardcode_shlibpath_var=no
     export_dynamic_flag_spec='-Bexport'
     ;;
 
   uts4*)
-    archive_cmds='\$LD -G -h \$soname -o \$lib \$libobjs \$deplibs \$linkopts'
+    archive_cmds='$LD -G -h $soname -o $lib $libobjs $deplibs $linkopts'
     hardcode_libdir_flag_spec='-L$libdir'
     hardcode_shlibpath_var=no
     ;;
 
   dgux*)
-    archive_cmds='\$LD -G -h \$soname -o \$lib \$libobjs \$deplibs \$linkopts'
+    archive_cmds='$LD -G -h $soname -o $lib $libobjs $deplibs $linkopts'
     hardcode_libdir_flag_spec='-L$libdir'
     hardcode_shlibpath_var=no
     ;;
@@ -1569,7 +1569,7 @@ echo "$ac_t$hardcode_action" 1>&6
 
 
 reload_flag=
-reload_cmds='\$LD\$reload_flag -o \$output\$reload_objs'
+reload_cmds='$LD$reload_flag -o $output$reload_objs'
 echo $ac_n "checking for $LD option to reload object files... $ac_c" 1>&6
 # PORTME Some linkers may need a different reload flag.
 reload_flag='-r'
@@ -1645,7 +1645,7 @@ bsdi4*)
   version_type=linux
   library_names_spec='${libname}.so$major ${libname}.so'
   soname_spec='${libname}.so'
-  finish_cmds='PATH="\$PATH:/sbin" ldconfig \$libdir'
+  finish_cmds='PATH="\$PATH:/sbin" ldconfig $libdir'
   shlibpath_var=LD_LIBRARY_PATH
   deplibs_check_method='file_magic ELF 32-bit LSB shared object'
   file_magic_cmd=/usr/bin/file
@@ -1696,7 +1696,7 @@ freebsd*)
       need_version=yes
       ;;
   esac
-  finish_cmds='PATH="\$PATH:/sbin" OBJFORMAT="'"$objformat"'" ldconfig -m \$libdir'
+  finish_cmds='PATH="\$PATH:/sbin" OBJFORMAT="'"$objformat"'" ldconfig -m $libdir'
   shlibpath_var=LD_LIBRARY_PATH
   ;;
 
@@ -1718,7 +1718,7 @@ hpux9* | hpux10* | hpux11*)
   library_names_spec='${libname}${release}.sl$versuffix ${libname}${release}.sl$major $libname.sl'
   soname_spec='${libname}${release}.sl$major'
   # HP-UX runs *really* slowly unless shared libraries are mode 555.
-  postinstall_cmds='chmod 555 \$lib'
+  postinstall_cmds='chmod 555 $lib'
   ;;
 
 irix5*)
@@ -1726,8 +1726,10 @@ irix5*)
   soname_spec='${libname}${release}.so'
   library_names_spec='${libname}${release}.so$versuffix ${libname}${release}.so $libname.so'
   shlibpath_var=LD_LIBRARY_PATH
+  deplibs_check_method="file_magic ELF 32-bit MSB dynamic lib MIPS - version 1" # or should it be pass_all?
+  file_magic_cmd=/usr/bin/file
+  file_magic_test_file=`echo /lib/libc.so*`
   shlibpath_overrides_runpath=no
-  deplibs_check_method=pass_all
   ;;
 
 irix6*)
@@ -1750,7 +1752,9 @@ irix6*)
   # there either
   sys_lib_search_path_spec="/lib${libsuff} /usr/lib${libsuff} /usr/local/lib${libsuff}"
   sys_lib_dlsearch_path_spec="/lib${libsuff} /usr/lib${libsuff} /usr/local/lib${libsuff}"
-  deplibs_check_method=pass_all
+  deplibs_check_method="file_magic ELF ${libmagic} MSB mips-[1234] dynamic lib MIPS - version 1" # or should it be pass_all?
+  file_magic_cmd=/usr/bin/file
+  file_magic_test_file=`echo /lib${libsuff}/libc.so*`
   ;;
 
 # No shared lib support for Linux oldld, aout, or coff.
@@ -1765,7 +1769,7 @@ linux-gnu*)
   need_version=no
   library_names_spec='${libname}${release}.so$versuffix ${libname}${release}.so$major $libname.so'
   soname_spec='${libname}${release}.so$major'
-  finish_cmds='PATH="\$PATH:/sbin" ldconfig -n \$libdir'
+  finish_cmds='PATH="\$PATH:/sbin" ldconfig -n $libdir'
   shlibpath_var=LD_LIBRARY_PATH
   shlibpath_overrides_runpath=no
   deplibs_check_method='file_magic ELF [0-9][0-9]*-bit [LM]SB (shared object|dynamic lib )'
@@ -1787,7 +1791,7 @@ netbsd*)
   version_type=sunos
   if echo __ELF__ | $CC -E - | grep __ELF__ >/dev/null; then
     library_names_spec='${libname}${release}.so$versuffix ${libname}.so$versuffix'
-    finish_cmds='PATH="\$PATH:/sbin" ldconfig -m \$libdir'
+    finish_cmds='PATH="\$PATH:/sbin" ldconfig -m $libdir'
     dynamic_linker='NetBSD (a.out) ld.so'
   else
     library_names_spec='${libname}${release}.so$versuffix ${libname}${release}.so$major ${libname}${release}.so ${libname}.so'
@@ -1804,7 +1808,7 @@ openbsd*)
     need_version=no
   fi
   library_names_spec='${libname}${release}.so$versuffix ${libname}.so$versuffix'
-  finish_cmds='PATH="\$PATH:/sbin" ldconfig -m \$libdir'
+  finish_cmds='PATH="\$PATH:/sbin" ldconfig -m $libdir'
   shlibpath_var=LD_LIBRARY_PATH
   ;;
 
@@ -1849,7 +1853,7 @@ solaris*)
   shlibpath_var=LD_LIBRARY_PATH
   shlibpath_overrides_runpath=yes
   # ldd complains unless libraries are executable
-  postinstall_cmds='chmod +x \$lib'
+  postinstall_cmds='chmod +x $lib'
   deplibs_check_method="file_magic ELF [0-9][0-9]-bit [LM]SB dynamic lib"
   file_magic_cmd=/usr/bin/file
   file_magic_test_file=/lib/libc.so
@@ -1858,7 +1862,7 @@ solaris*)
 sunos4*)
   version_type=sunos
   library_names_spec='${libname}${release}.so$versuffix ${libname}.so$versuffix'
-  finish_cmds='PATH="\$PATH:/usr/etc" ldconfig \$libdir'
+  finish_cmds='PATH="\$PATH:/usr/etc" ldconfig $libdir'
   shlibpath_var=LD_LIBRARY_PATH
   shlibpath_overrides_runpath=yes
   if test "$with_gnu_ld" = yes; then
@@ -1939,7 +1943,7 @@ aix3*)
   test "$enable_shared" = yes && enable_static=no
   if test -n "$RANLIB"; then
     archive_cmds="$archive_cmds~\$RANLIB \$lib"
-    postinstall_cmds='\$RANLIB \$lib'
+    postinstall_cmds='$RANLIB $lib'
   fi
   ;;
 
