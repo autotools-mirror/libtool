@@ -1,3 +1,7 @@
+2000-07-24  Alexandre Oliva  <oliva@lsd.ic.unicamp.br>, Ralf S. Engelschall  <rse@engelschall.com>
+
+	* ltmain.in: Support GNU shtool's install.
+
 2000-07-10  Mo DeJong  <mdejong@redhat.com>
 
 	* libtool.m4 (AC_PROG_NM): Fix macro so that it
