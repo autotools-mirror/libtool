@@ -537,6 +537,7 @@ else
 
   *-*-aix4*)
     archive_cmds='/bin/nm -B$libobjs | egrep \" [BD] \" | sed \"s/^.* //\" > $lib.exp;$cc -o $objdir/$soname$libobjs ${wl}-bE:$lib.exp ${wl}-bM:SRE ${wl}-bnoentry$deplibs;$AR cru $lib $objdir/$soname'
+    hardcode_direct=yes
     hardcode_minus_L=yes
     ;;
 

@@ -2,6 +2,8 @@ Sat Apr 12 13:09:24 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltconfig.in (linker): Some GNU ld's don't accept `--version',
  	but do accept `-v'.  From Stephan Kulow.
+	(ld_shlibs): AIX lossage may be settling down.  AIX 3.2.5 ld does
+ 	*not* hardcode direct libraries, but AIX 4.1.[45] ld does.
 
 Mon Apr  7 09:39:02 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
