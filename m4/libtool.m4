@@ -362,7 +362,7 @@ m4_define([_lt_decl_all_varnames],
 # declaration there will have the same value as in `configure'.  VARNAME
 # must have a single quote delimited value for this to work.
 m4_define([_LT_CONFIG_STATUS_DECLARE],
-[$1='`echo "X$][$1" | $Xsed -e "$delay_single_quote_subst"`'])
+[$1='`$echo "X$][$1" | $Xsed -e "$delay_single_quote_subst"`'])
 
 
 # _LT_CONFIG_STATUS_DECLARATIONS
@@ -372,7 +372,7 @@ m4_define([_LT_CONFIG_STATUS_DECLARE],
 # embedded single quotes properly.  In configure, this macro expands
 # each variable declared with _LT_DECL (and _LT_TAGDECL) into:
 #
-#    <var>='`echo "X$<var>" | $Xsed -e "$delay_single_quote_subst"`'
+#    <var>='`$echo "X$<var>" | $Xsed -e "$delay_single_quote_subst"`'
 m4_define([_LT_CONFIG_STATUS_DECLARATIONS],
 [m4_foreach([_lt_var], m4_quote(lt_decl_all_varnames),
     [m4_n([_LT_CONFIG_STATUS_DECLARE(_lt_var)])])])

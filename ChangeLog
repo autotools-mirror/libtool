@@ -1,3 +1,9 @@
+2004-01-31  Peter O'Gorman  <peter@pogma.com>
+
+	* m4/libtool.m4 (_LT_CONFIG_STATUS_DECLARE): Change `echo to 
+	`$echo, causes problems when builtin echo is broken. Reported
+	by Ralf Wildenhues <Ralf.Wildenhues@gmx.de>.
+
 2004-01-27  Scott James Remnant  <scott@netsplit.com>
 
 	This fixes release procedure problems discovered whilst making
