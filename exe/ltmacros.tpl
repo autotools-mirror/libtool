@@ -40,8 +40,7 @@ ENDDEF                =][=
 
 DEFINE lock-conflict  =][=
 
-  (if (exist? "test")
-      (sprintf "\nif (%s) > /dev/null 2>&1 ; then" (get "test"))) =]
+  % test "\nif (%s) > /dev/null 2>&1 ; then" =]
   cat >&2 <<_EOF_
 *** ERROR, $lockfile exists and contains:
 `cat $lockfile 2>/dev/null`
