@@ -1658,7 +1658,26 @@ EOF
 		   # strict.  What do you think Gordon?
 		    potential_libs=`ls $i/$libname[.-]* 2>/dev/null`
 		    for potent_lib in $potential_libs; do
-		      file_output=`eval $file_magic_command $potent_lib \
+		      # Follow soft links.
+		      if ls -lLd "$potlib" 2>/dev/null \
+			 | grep " -> " >/dev/null; then
+			continue 
+		      fi
+		      # The statement above tries to avoid entering an
+		      # endless loop below, in case of cyclic links.
+		      # We might still enter an endless loop, since a link
+		      # loop can be closed while we follow links,
+		      # but so what?
+		      potlib="$potent_lib"
+		      while test -h "$potlib" 2>/dev/null; do
+		        potliblink=`ls -ld $potlib | sed 's/.* -> //'`
+			case "$potliblink" in
+			/*) potlib="$potliblink";;
+			*) potlib=`$echo "X$potlib" \
+				   | $Xsed -e 's,[^/]*$,,'`"$potliblink";;
+			esac
+		      done
+		      file_output=`eval $file_magic_command \"\$potlib\" \
 				   | sed '11,$d'`
 		      if test `expr "X$file_output" : "X.*$file_magic_regex"` -ne 0 ; then
 			newdeplibs="$newdeplibs $a_deplib"
@@ -1682,7 +1701,7 @@ EOF
 		  done
 		  ;;
 	      esac
-	      if test "$a_deplib" != "" ; then
+	      if test -n "$a_deplib" ; then
 		echo
 		echo "*** Warning: This library needs some functionality provided by $a_deplib."
 		echo "*** I have the capability to make that library automatically link in when"

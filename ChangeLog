@@ -1,5 +1,9 @@
 1999-01-20  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* ltmain.in (file_magic): follow soft-links before running `file'
+	on the candidate library; try to avoid entering endless loop
+	Suggested by Nix <nix@esperi.demon.co.uk>
+	
 	* ltconfig.in (linux*, solaris*, bsdi4*, sys_lib_search_path):
 	remove expansion of $LD_LIBRARY_PATH
 	* ltmain.in (lib_search_path): append the expansion of $shlibpath_var
