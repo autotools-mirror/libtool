@@ -279,6 +279,7 @@ if test -z "$show_help"; then
     # Go through the arguments, transforming them on the way.
     cc="$nonopt"
     args="$cc"
+    allow_undefined=no
     compile_command="$cc"
     finalize_command="$cc"
     compile_shlibpath=
@@ -325,6 +326,8 @@ if test -z "$show_help"; then
       prevarg="$arg"
 
       case "$arg" in
+      -allow-undefined) allow_undefined=yes ;;
+
       -export-dynamic)
 	export_dynamic=yes
 	compile_command="$compile_command $export_dynamic_flag"
@@ -714,6 +717,17 @@ if test -z "$show_help"; then
       else
         $show "$mkdir $objdir"
 	$run $mkdir $objdir || exit $?
+      fi
+
+      # Check to see if the archive will have undefined symbols.
+      if test "$allow_undefined" = yes; then
+	if "$allow_undefined_flag" = unsupported; then
+	  echo "$progname: warning: undefined symbols not allowed in $host shared libraries" 1>&2
+	  build_libtool_libs=no
+	fi
+      else
+	# Clear the flag.
+	allow_undefined_flag=
       fi
 
       if test "$build_libtool_libs" = yes; then
@@ -1644,6 +1658,7 @@ a program from several object files.
 
 The following components of LINK-COMMAND are treated specially:
 
+  -allow-undefined  allow a libtool library to reference undefined symbols
   -export-dynamic   allow symbols from OUTPUT-FILE to be resolved with dlsym(3)
   -LLIBDIR          search LIBDIR for required installed libraries
   -lNAME            OUTPUT-FILE requires the installed library libNAME

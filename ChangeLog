@@ -1,3 +1,19 @@
+Thu Jun  5 10:40:15 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltconfig.in (allow_undefined_flag): New variable that implements
+	`-allow-undefined'.
+
+	* ltmain.sh.in (link): Accept new `-allow-undefined' flag when
+ 	building libtool libraries.  This tells libtool to allow
+ 	unresolved symbols to exist in shared libraries.  Basically, this
+ 	turns off shared libraries on AIX.  Suggested by Ian Lance Taylor.
+
+Mon May 26 08:24:55 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* libtool.m4 (LD): On at least IRIX, many different flags need to
+	be propagated to the linker if they are part of the compiler
+	command line.  Reported by Anthony Green.
+
 Sat May 10 12:21:58 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltconfig.in: Trivial port to FreeBSD 3.  From David Nugent.
