@@ -1,5 +1,8 @@
 1999-02-12  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* ltmain.in: don't try to read objdir/libname.la before it is
+	created!
+
 	* ltmain.in: create libname.lai at link time, not at install time,
  	but still create it at install time if it is missing
 	Reported by Akim Demaille <demaille@inf.enst.fr>

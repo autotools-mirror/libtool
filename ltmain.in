@@ -2599,9 +2599,9 @@ installed=no
 libdir='$install_libdir'\
 "
 
-	$rm "$output_dir/$outputname"i
+	$rm "$output_objdir/$outputname"i
 	sed 's/^installed=no$/installed=yes/' \
-	  < "$output_dir/$outputname" > "$output_dir/$outputname"i
+	  < "$output" > "$output_objdir/$outputname"i || exit 1
       fi
 
       # Do a symbolic link so that the libtool archive can be found in
