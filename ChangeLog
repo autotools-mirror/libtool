@@ -1,3 +1,8 @@
+2004-08-01  Maciej W. Rozycki  <macro@linux-mips.org>
+
+	* libtool.m4 (LT_AC_PROG_SED): Set SED when running from cache as 
+	well.
+
 2004-07-30  Peter O'Gorman  <peter@pogma.com>
 
 	* libtool.m4, ltmain.in:  autoconf now says the best thing to do
