@@ -1,3 +1,10 @@
+1999-02-26  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
+
+	* ltconfig.in (sub_uncdrive): removed.  This won't work with
+	the next version of cygwin.
+	(sub_uncdir): removed. We use <drive>:/path/to/executable now.
+	* libtool.m4 (AC_PROG_LD): removed sub_uncdrive and sub_uncdir.
+
 1999-02-25  Thomas Tanner  <tanner@gmx.de>
 
 	* TODO: added items for next alpha release, ILD etc.
