@@ -51,6 +51,11 @@ GNU Libtool
 * Have libtoolize install `install-sh' if a newer version is available,
   and/or Automake is not used.
 
+* Allow to specify linking some dependent libraries statically and some
+  dynamically, where possible.
+
+* Improve support for C++ with templates.
+
 1.2. libtldl
 ------------
 
@@ -103,6 +108,7 @@ GNU Libtool
 * Test everything:
     - cross compile
     - dirs with ~
+    - multiple input files
 
 2.3. libtool
 ------------
@@ -134,6 +140,7 @@ GNU Libtool
 
 * Filenames containing shell meta-characters are not properly handled
   by libtool.  Compiling a file named "a;b.c", for example, fails.
+  Especially `$' would be necessary for java programs.
 
 * We could introduce a mechanism to allow for soname rewriting, to
   ease multi-libc support.  Installers could specify a prefix, suffix or
@@ -232,10 +239,6 @@ GNU Libtool
 
 * Figure out how to make pkg-config aware of the information libtool
   knows about libraries and their dependencies, and send a patch.
-
-* Support dlmopen dladdr1 and dlinfo in libltdl [I totally disagree with
-  this one Ralf, libltdl is a portability library, none of these functions
-  enhance portability in any way -- Peter]
 
 * Generate a libtool.m4 from a bunch of individual files, one per
   platform, to make the job of a "platform maintainer" easier and make
