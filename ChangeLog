@@ -1,3 +1,12 @@
+2004-08-05  Gary V. Vaughan  <gary@gnu.org>
+
+	* Makefile.am ($(top_srcdir)/m4/ltversion.m4): Since we already did
+	`cd $(top_srcdir)' for this rule, we can't mv ltversion.tmp to the
+	relative $(top_srcdir) again!  Also, run $(MKSTAMP) before changing
+	directories, or it won't be found.
+	($(top_srcdir)/config/ltmain.sh): Ditto.
+	(EXTRA_DIST): We should distribute ltversion.m4 too.
+
 2004-08-04  Peter O'Gorman  <peter@pogma.com>
 
 	* m4/libtool.m4 (AC_LIBTOOL_SYS_MAX_CMD_LEN): Since CONFIG_SHELL may

@@ -74,18 +74,18 @@ vcl-tmp:
 # a loop otherwise.
 # Use `$(top_srcdir)/m4' for the benefit of non-GNU makes: this is
 # how ltversion.m4 appears in our dependencies.
-EXTRA_DIST += m4/ltversion.in
+EXTRA_DIST += m4/ltversion.in m4/ltversion.m4
 $(top_srcdir)/m4/ltversion.m4: m4/ltversion.in configure.ac stamp-vcl
+	set -- `$(MKSTAMP) < $(top_srcdir)/ChangeLog`; \
 	cd $(top_srcdir); \
 	rm -f m4/ltversion.tmp; \
-	set -- `$(MKSTAMP) < ChangeLog`; \
 	serial=`echo $$1 | sed 's,^1[.],,g'`; \
 	input="ltversion.in"; \
 	$(edit) -e "s,@MACRO_REVISION\@,$$1,g" \
 		-e "s,@MACRO_SERIAL\@,$$serial,g" \
 		m4/ltversion.in > m4/ltversion.tmp; \
 	chmod a-w m4/ltversion.tmp; \
-	mv -f m4/ltversion.tmp $(top_srcdir)/m4/ltversion.m4
+	mv -f m4/ltversion.tmp m4/ltversion.m4
 
 ## And for similar reasons, ltmain.sh can't be built from config.status.
 EXTRA_DIST += config/ltmain.sh
@@ -98,7 +98,7 @@ $(top_srcdir)/config/ltmain.sh: config/ltmain.in configure.ac stamp-vcl
 		-e "s,@package_revision\@,$$1,g" \
 		config/ltmain.in > config/ltmain.tmp; \
 	chmod a-w config/ltmain.tmp; \
-	mv -f config/ltmain.tmp $(top_srcdir)/config/ltmain.sh
+	mv -f config/ltmain.tmp config/ltmain.sh
 
 # The libtool distributor and the standalone libtool script.
 bin_SCRIPTS = libtoolize libtool
