@@ -35,7 +35,9 @@ pkgincludedir		= $(includedir)/libltdl
 
 lib_LTLIBRARIES		= libdlloader.la
 libdlloader_la_SOURCES  = libltdl/lt_error.h lt_error.c \
-			  libltdl/lt__private.h libltdl/lt_system.h \
+			  libltdl/lt__private.h \
+                          lt__strl.c libltdl/lt__strl.h \
+                          libltdl/lt_system.h \
 			  libltdl/lt__alloc.h lt__alloc.c \
 			  libltdl/lt__glibc.h \
 			  libltdl/lt__dirent.h \

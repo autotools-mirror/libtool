@@ -1,3 +1,12 @@
+2004-12-13  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* libltdl/lt__strl.c, libltdl/libltdl/lt__strl.h: New files to
+	emulate strlcat and strlcpy, which support size-bounded string
+	copying and concatenation for improved security.
+	* libltdl/Makefile.am (libdlloader_la_SOURCES): Build source files
+	libltdl/lt__strl.c and libltdl/libltdl/lt__strl.h.
+	* m4/ltdl.m4 (LTDL_INIT): Add checks for strlcat and strlcpy.
+
 2004-12-09  Albert Chin-A-Young  <china@thewrittenword.com>
 
 	* config/ltmain.m4sh: Preserve -model [arg] option, used
