@@ -1,3 +1,7 @@
+2004-03-14  Peter O'Gorman  <peter@pogma.com>
+
+	* ltmain.in: Use $EGREP, $GREP is not set.
+
 2004-03-14  Scott James Remnant  <scott@netsplit.com>
 
 	* m4/ltmain.in: Only check precious_files_regex if it is not empty.
