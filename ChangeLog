@@ -1,3 +1,8 @@
+2004-09-06  Albert Chin-A-Young  <china@thewrittenword.com>
+
+	* Makefile.am (clean-ltmain-sh): Using '==' to test for equality
+	in a shell script is not portable. Use '=' instead.
+
 2004-09-05  Andreas Schwab  <schwab@suse.de>
 
 	* m4/ltdl.m4 (LT_WITH_LTDL): Remove excess quoting in argument of

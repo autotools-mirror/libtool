@@ -80,7 +80,7 @@ vcl-tmp:
 ## previous builds left behind in the build tree, that would override the
 ## source tree version in current builds.
 clean-ltmain-sh:
-	@-test "$(top_srcdir)" == "$(top_builddir)" || \
+	@-test "$(top_srcdir)" = "$(top_builddir)" || \
 	  rm -f "$(top_builddir)/config/ltmain.sh"
 
 # We build ltversion.m4 here, instead of from config.status,
