@@ -1171,6 +1171,27 @@ EOF
     fi
     ;;
 
+  solaris*)
+    if $LD -v 2>&1 | egrep 'BFD 2\.8' > /dev/null; then
+      ld_shlibs=no
+      cat <<EOF 1>&2
+
+*** Warning: The releases 2.8.* of the GNU linker cannot reliably
+*** created shared libraries on Solaris systems.  Therefore, libtool
+*** is disabling shared libraries support.  We urge you to upgrade GNU
+*** binutils to release 2.9.1 or newer.  Another option is to modify
+*** your PATH or compiler configuration so that the native linker is
+*** used, and then restart.
+
+EOF
+    elif $LD --help 2>&1 | egrep ': supported targets:.* elf' > /dev/null; then
+      archive_cmds='$CC -shared $libobjs $deplibs $linkopts ${wl}-soname $wl$soname -o $lib'
+      archive_expsym_cmds='$CC -shared $libobjs $deplibs $linkopts ${wl}-soname $wl$soname ${wl}-retain-symbols-file $wl$export_symbols -o $lib'
+    else
+      ld_shlibs=no
+    fi
+    ;;      
+
   sunos4*)
     archive_cmds='$LD -assert pure-text -Bshareable -o $lib $libobjs $deplibs $linker_flags'
     wlarc=
