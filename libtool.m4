@@ -319,7 +319,7 @@ fi
 
 # The HP-UX ksh and POSIX shell print the target directory to stdout
 # if CDPATH is set.
-if test "X${CDPATH+set}" = Xset; then CDPATH=:; export CDPATH; fi
+(unset CDPATH) >/dev/null 2>&1 && unset CDPATH
 
 if test -z "$ECHO"; then
 if test "X${echo_test_string+set}" != Xset; then
@@ -3980,7 +3980,7 @@ Xsed="$SED -e s/^X//"
 
 # The HP-UX ksh and POSIX shell print the target directory to stdout
 # if CDPATH is set.
-if test "X\${CDPATH+set}" = Xset; then CDPATH=:; export CDPATH; fi
+(unset CDPATH) >/dev/null 2>&1 && unset CDPATH
 
 # The names of the tagged configurations supported by this script.
 available_tags=

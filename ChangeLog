@@ -1,5 +1,9 @@
 2004-07-30  Peter O'Gorman  <peter@pogma.com>
 
+	* libtool.m4, ltmain.in:  autoconf now says the best thing to do
+	with CDPATH is to (unset CDPATH) >/dev/null 2>&1 && unset CDPATH,
+	so do it.
+
 	* libtool.m4 [darwin]: $GREP is not defined here, use $EGREP.
 	* ltmain.in (func_extract_archives): Backport func_extract_archives
 	from cvs HEAD to reduce code size and enable the darwin fat archive
