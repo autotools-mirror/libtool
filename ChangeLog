@@ -1,5 +1,8 @@
 2005-05-22  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* libtool.m4 (AC_LIBTOOL_PROG_LD_SHLIBS): Move linux entry to
+	correct position, re-indent.
+
 	* libtool.m4 (AC_LIBTOOL_PROG_LD_SHLIBS) [solaris]: Use ${wlarc}
 	and set to empty when using $LD for linking.  Fixes regression
 	introduced in 2004-12-20.
