@@ -1,3 +1,9 @@
+2000-07-10  Corinna Vinschen  <vinschen@cygnus.com>
+
+	* ltconfig.in: Check for host_os beeing one of `cygwin', `mingw'
+	or `os2'.  Force ac_cv_exeext to be ".exe" in that case, like
+	autoconf does.
+
 2000-07-10  Alexandre Oliva  <aoliva@lsd.ic.unicamp.br>
 
 	* ltconfig.in (dynamic_linker, linux, powerpc): Do not disable
