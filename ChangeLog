@@ -1,3 +1,18 @@
+1998-11-18  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* NEWS: -module and libtldl
+	* mdemo/Makefile.am: ../libltdl is within $(srcdir)
+
+1998-11-18  Thomas Tanner  <tanner@gmx.de>
+
+	* libltdl, Makefile.am: added libltdl (a system independent 
+	dlopen wrapper library extracted from mdemo)
+	* ltmain.in: added -module flag for compiling and linking of
+	modules. If enabled it compiles always both .o (with -DLT_RENAME)
+	and .lo files
+	* mdemo: modified mdemo to work with libltdl
+	* tests/ltdl*: added tests for libltdl
+
 1998-11-16  Steve Price  <sprice@hiwaay.net>
 
 	* ltconfig.in: when $host_os is freebsd[23]* determine whether

@@ -1,0 +1,35 @@
+#! /bin/sh
+# ltdl.test - try uninstalling in the ../libltdl subdirectory
+
+# Test script header.
+need_prefix=yes
+if test -z "$srcdir"; then
+  srcdir=`echo "$0" | sed 's%/[^/]*$%%'`
+  test "$srcdir" = "$0" && srcdir=.
+  test "${VERBOSE+set}" != "set" && VERBOSE=yes
+fi
+. $srcdir/defs || exit 1
+
+# Maybe we have a VPATH build, in which case, create a new subdir.
+if test "$prefix/bin/hell"; then :
+else
+  echo "You must run ltdl-inst.test before $0." 1>&2
+  exit 1
+fi
+
+# Change to our build directory.
+cd ../libltdl || exit 1
+
+echo "= Running $make uninstall in ../libltdl"
+$make uninstall || exit 1
+
+# See that there were no files leftover in $prefix.
+# Ignore dotfiles, so that .nfsXXX files don't screw up the test.
+leftovers=`find $prefix ! -type d ! -name '.*' -print`
+if test -n "$leftovers"; then
+  echo "= Leftover after make uninstall:"
+  ls -l $leftovers
+  exit 1
+fi
+
+exit 0

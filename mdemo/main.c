@@ -22,7 +22,8 @@ USA. */
 #include <stdio.h>
 #include <string.h>
 
-int testlib(char *lib)
+int
+test_dl (char *filename)
 {
   lt_dlhandle handle;	
   int (*pfoo1)() = 0;
@@ -30,9 +31,9 @@ int testlib(char *lib)
   int (*phello)() = 0;
   int *pnothing = 0;
 
-  handle = lt_dlopen(lib);
+  handle = lt_dlopen(filename);
   if (!handle) {
-    fprintf (stderr, "can't open library %s!\n", lib);
+    fprintf (stderr, "can't open the module %s!\n", filename);
     return 1;
   }
   phello = lt_dlsym(handle, "hello");  
@@ -83,11 +84,12 @@ main (int argc, char **argv)
   printf ("Welcome to *modular* GNU Hell!\n");
 
   if (argc < 2) {
-    fprintf (stderr, "usage: %s libname [libname...]\n", argv[0]);
+    fprintf (stderr, "usage: %s module [module...]\n", argv[0]);
   }
-  
+
+  lt_dlinit();
   for (i = 1; i < argc; i++)
-    if (testlib(argv[i]))
+    if (test_dl(argv[i]))
        return 1;
   return 0;
 }

@@ -1,6 +1,8 @@
 NEWS - list of user-visible changes between releases of GNU Libtool
 
 New in 1.2c - 1998-XX-XX:
+* New -module flag, to create loadable modules.
+# New libltdl, a small library for portable dynamic loading of modules.
 * Inter-library dependencies patch finally integrated, but there's
 still much porting to do.  See PORTING for details (some plans for the 
 future in mail/deplibs in the CVS tree).

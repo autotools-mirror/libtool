@@ -2,11 +2,11 @@
 
 AUTOMAKE_OPTIONS = gnits
 
-makesequence = demo-make.test demo-exec.test \
+TESTS = demo-conf.test demo-make.test demo-exec.test \
 	demo-inst.test demo-unst.test hardcode.test \
-	mdemo-make.test mdemo-exec.test \
-	mdemo-inst.test mdemo-unst.test
-TESTS =	demo-conf.test mdemo-conf.test $(makesequence) \
+	ltdl-conf.test ltdl-make.test ltdl-inst.test \
+	mdemo-conf.test mdemo-make.test mdemo-exec.test \
+	mdemo-inst.test mdemo-unst.test ltdl-unst.test \
 	link.test link-2.test nomode.test \
 	quote.test sh.test suffix.test
 
@@ -20,4 +20,5 @@ EXTRA_DIST = defs $(TESTS)
 clean-local:
 	-test -f ../demo/Makefile && cd ../demo && $(MAKE) distclean
 	-test -f ../mdemo/Makefile && cd ../mdemo && $(MAKE) distclean
+	-test -f ../libltdl/Makefile && cd ../libltdl && $(MAKE) distclean
 	rm -rf _inst

@@ -18,8 +18,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307
 USA. */
 
 /* Only include this header file once. */
-#ifndef _DL_H_
-#define _DL_H_ 1
+#ifndef _LTDL_H_
+#define _LTDL_H_ 1
 
 /* __BEGIN_DECLS should be used at the beginning of your declarations,
    so that C++ compilers don't mangle their names.  Use __END_DECLS at
@@ -47,9 +47,10 @@ USA. */
 typedef	void *lt_dlhandle;
 
 __BEGIN_DECLS
+void		lt_dlinit __P((void));
 lt_dlhandle	lt_dlopen __P((char *name));
 void		lt_dlclose __P((lt_dlhandle handle));
 void		*lt_dlsym __P((lt_dlhandle handle, char *name));
 __END_DECLS
 
-#endif /* !_DLL_H_ */
+#endif /* !_LTDL_H_ */

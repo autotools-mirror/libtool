@@ -17,24 +17,38 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307
 USA. */
 
-#define DLNAME	foo2
-
 #include "foo.h"
 #include <stdio.h>
 #include <math.h>
 
-/* Give a global variable definition. */
-int LTEXP(nothing);
+#ifndef PIC /* fixme */
+/*#ifdef LT_RENAME */
+#define nothing ltexp_foo2___nothing
+#define foo2	ltexp_foo2___foo2
+#define hello	ltexp_foo2___hello
+#endif
 
+/* Give a global variable definition. */
+int nothing;
+
+/* private function */
 int
-LTEXP(foo2)()
+_foo2_helper()
 {
-  printf ("sin (0.0) = %g\n", (double) sin ((double) 0.0));
   return FOO_RET;
 }
 
+/* exported functions */
+
 int
-LTEXP(hello) ()
+foo2()
+{
+  printf ("sin (0.0) = %g\n", (double) sin ((double) 0.0));
+  return _foo2_helper();
+}
+
+int
+hello()
 {
   printf ("** This is foolib 2 **\n");
   return HELLO_RET;

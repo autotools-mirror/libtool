@@ -262,6 +262,7 @@ if test -z "$show_help"; then
     lastarg=
     srcfile="$nonopt"
     suppress_output=
+    module=no
 
     user_target=no
     for arg
@@ -276,10 +277,15 @@ if test -z "$show_help"; then
         user_target=next
 	;;
 
+      -module)
+        module=yes
+        continue
+        ;;
+	
       -static)
-	build_old_libs=yes
-	continue
-	;;
+        build_old_libs=yes
+        continue
+        ;;
       esac
 
       case "$user_target" in
@@ -474,8 +480,9 @@ compiler."
 	fi
       fi
 
-      # If we have no pic_flag, then copy the object into place and finish.
-      if test -z "$pic_flag"; then
+      # If we have no pic_flag and do not compile a module, 
+      # then copy the object into place and finish.
+      if test -z "$pic_flag" && "$module" = no; then
         $show "$LN_S $libobj $obj"
         if $run $LN_S $libobj $obj; then
 	  exit 0
@@ -493,6 +500,7 @@ compiler."
     # Only build a position-dependent object if we build old libraries.
     if test "$build_old_libs" = yes; then
       command="$base_compile $srcfile"
+      test "$module" = yes && command="$command -DLT_RENAME"
       if test "$compiler_c_o" = yes; then
         command="$command -o $obj"
         output_obj="$obj"
@@ -580,6 +588,7 @@ compiler."
     libobjs=
     link_against_libtool_libs=
     ltlibs=
+    module=no
     objs=
     prev=
     prevarg=
@@ -741,6 +750,11 @@ compiler."
       -l*) deplibs="$deplibs $arg" ;;
       -El*) extradeplibs="$extradeplibs -`expr $arg : '-E\(.*\)'`" ;;
 
+      -module)
+        module=yes
+        continue
+        ;;
+	
       -no-undefined)
 	allow_undefined=no
 	continue
