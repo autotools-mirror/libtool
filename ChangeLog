@@ -1,3 +1,10 @@
+2002-10-25  Gary V. Vaughan  <gary@gnu.org>
+
+	* libtool.m4 (_LT_AC_FILE_IMPGEN_C): Removed.  No longer used.
+	(_LT_AC_FILE_LTDLL_C): Ditto.
+	(AC_LIBTOOL_CONFIG) [cygwin, mingw, pw32, os2]: Don't call
+	_LT_AC_FILE_LTDLL_C or _LT_AC_FILE_IMPGEN_C.
+
 2002-10-25  Albert Chin-A-Young  <china@thewrittenword.com>
 
 	* libtool.m4: When LDFLAGS="-Wl,-brtl,[other options]", the
