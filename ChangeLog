@@ -1,8 +1,14 @@
 1999-03-08  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* ltmain.in: extract symbols from program objects to nlist first,
+	then translate them to the export_symbols format.  Now it works,
+	but it appears to be needlessly extracting the symbol list from
+	dlpreopened libraries twice
+	
 	* ltmain.in: temporarily disable dlopen_self when linking with
 	-static or -all-static, until we figure out how to test whether it
 	works at configure time
+
 	* TODO: remember to fix this later
 
 	* tests/build-relink.test: when hell is expected to fail, run it

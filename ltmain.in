@@ -2328,8 +2328,7 @@ extern \"C\" {
 /* External symbol declarations for the compiler. */\
 "
 
-	  # Prepare the list of exported symbols
-	  if test "$dlself" = yes && test -z "$export_symbols"; then
+	  if test "$dlself" = yes; then
 	    $show "generating symbol list for \`$output'"
 	    export_symbols="$objdir/$output.exp"
 	    $run $rm $export_symbols
@@ -2338,24 +2337,28 @@ extern \"C\" {
 	    progfiles=`$echo "X$objs" | $SP2NL | $Xsed -e "$lo2o" | $NL2SP`
 	    for arg in $progfiles; do
 	      $show "extracting global C symbols from \`$arg'"
-	      $run eval "$NM $arg | $global_symbol_pipe >> '$export_symbols'"
+	      $run eval "$NM $arg | $global_symbol_pipe >> '$nlist'"
 	    done
-	      
-	    if test -n "$exclude_expsyms"; then
-	      $run eval 'egrep -v "^($exclude_expsyms)" "$export_symbols" > "${export_symbols}T"'
-	      $run eval '$mv ${export_symbols}T $export_symbols'
-	    fi
-	    
-	    if test -n "$export_symbols_regex"; then
-	      $show "egrep -e \"$export_symbols_regex\" \"$export_symbols\" > \"${export_symbols}T\""
-	      $run eval 'egrep -e "$export_symbols_regex" "$export_symbols" > "${export_symbols}T"'
-	      $show "$mv \"${export_symbols}T\" \"$export_symbols\""
-	      $run eval '$mv "${export_symbols}T" "$export_symbols"'
-	    fi
-	  fi
 
-	  if test "$dlself" = yes; then
-	    $run eval 'sed -e "s/^\(.*\)/\1 \1/" < "$export_symbols" > "$nlist"'
+	    # Prepare the list of exported symbols
+	    if test -z "$export_symbols"; then
+	      export_symbols="$objdir/$output.exp"
+	      $run $rm $export_symbols
+
+	      if test -n "$exclude_expsyms"; then
+		$run eval 'egrep -v "^($exclude_expsyms)" "$nlist" > "$nlist"T'
+		$run eval '$mv "$nlist"T "$nlist"'
+	      fi
+	    
+	      if test -n "$export_symbols_regex"; then
+		$show "egrep -e \"$export_symbols_regex\" \"$nlist\" > \"$nlist\"T"
+		$run eval 'egrep -e "$export_symbols_regex" "$nlist" > "$nlist"T'
+		$show "$mv \"$nlist\"T \"$nlist\""
+		$run eval '$mv "$nlist"T "$nlist"'
+	      fi
+
+	      sed -e 's/^.* \(.*\)$/\1/' < "$nlist" > "$export_symbols"
+	    fi
 	  fi
 
 	  for arg in $dlprefiles; do
