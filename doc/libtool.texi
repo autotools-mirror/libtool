@@ -173,7 +173,7 @@ Dlopened modules
 
 Using libltdl
 
-* Libltdl's interface::         How to use libltdl in your programs.
+* Libltdl interface::           How to use libltdl in your programs.
 * Modules for libltdl::         Creating modules that can be @code{dlopen}ed.
 * Distributing libltdl::        How to distribute libltdl with your package.
 
@@ -2557,16 +2557,16 @@ libtool's dlpreopen (see @pxref{Dlpreopening})
 @end itemize
 
 @menu
-* Libltdl's interface::         How to use libltdl in your programs.
+* Libltdl interface::           How to use libltdl in your programs.
 * Modules for libltdl::         Creating modules that can be @code{dlopen}ed.
 * Distributing libltdl::        How to distribute libltdl with your package.
 @end menu
 
-@node Libltdl's interface
+@node Libltdl interface
 @section How to use libltdl in your programs
 
 @noindent
-Libltdl's API is similar to the dlopen interface of Solaris and Linux,
+The libltdl API is similar to the dlopen interface of Solaris and Linux,
 which is very simple but powerful.
 
 @noindent

@@ -1,5 +1,8 @@
 1999-02-20  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* doc/libtool.texi: remove ticks from menu items; it breaks TeX
+	Reported by Erez Zadok <ezk@cs.columbia.edu>
+
 	* ltmain.in: fixes for export-symbols dry-run
 
 	* ltconfig.in (shlibpath_overrides_runpath): new variable;
