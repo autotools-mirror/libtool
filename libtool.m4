@@ -1316,6 +1316,7 @@ os2*)
 
 osf3* | osf4* | osf5*)
   version_type=osf
+  need_lib_prefix=no
   need_version=no
   soname_spec='${libname}${release}.so'
   library_names_spec='${libname}${release}.so$versuffix ${libname}${release}.so $libname.so'

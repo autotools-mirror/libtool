@@ -1,3 +1,8 @@
+2001-08-05  Tim Mooney <mooney@dogbert.cc.ndsu.NoDak.edu>
+
+	* libtool.m4 [osf3*, osf4*, osf5*]: Tru64 *can* build modules
+	without a `lib' prefix to the module name.
+
 2001-08-05  Gary V. Vuaghan  <gary@gnu.org>
 
 	From Guido Draheim <Guido.Draheim@tek.com>:
