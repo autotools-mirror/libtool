@@ -5,7 +5,7 @@ m4_divert_push([SCRIPT])#! /bin/sh
 # libtoolize (GNU @PACKAGE@@TIMESTAMP@) @VERSION@
 # Written by Gary V. Vaughan <gary@gnu.org>, 2003
 
-# Copyright (C) 2003, 2004 Free Software Foundation, Inc.
+# Copyright (C) 2003, 2004, 2005 Free Software Foundation, Inc.
 # This is free software; see the source for copying conditions.  There is NO
 # warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
@@ -65,6 +65,8 @@ $as_unset CDPATH
 
 m4_include([getopt.m4sh])
 
+TAR=tar
+
 # Command line options:
 opt_force=false
 opt_install=false
@@ -116,6 +118,7 @@ configure_ac=configure.in
 			  test -n "$LN_S" && LN_S="$ECHO $LN_S"
 			  CP="$ECHO $CP"
 			  MKDIR="$ECHO $MKDIR"
+			  TAR="$ECHO $TAR"
 			fi
       			libtoolize_flags="${libtoolize_flags} --dry-run"
 			;;
@@ -174,33 +177,73 @@ configure_ac=configure.in
 
 
 # func_copy srcfile destfile
-# If option `--copy' was specified, or soft-linking SRCFILE to DESTFILE fails,
-# then try to copy SRCFILE to DESTFILE.
+# A wrapper for func_copy_cb that accepts arguments in the same order
+# as the cp(1) shell command.
 func_copy ()
 {
     $opt_debug
-    my_srcfile="$1"
-    my_destfile="$2"
-    my_return_status=1
 
-    func_mkdir_p `$ECHO "X$my_destfile" | $Xsed -e "$dirname"`
+    test -f "$1" || \
+      { func_error "\`$1' not copied: not a regular file"; return 1; }
 
-    $RM "$my_destfile"
-    if $opt_link && $LN_S "$my_srcfile" "$my_destfile"; then
-      $opt_quiet || func_echo "copying file \`$my_destfile'"
-      my_return_status=0
-    elif $CP "$my_srcfile" "$my_destfile"; then
-      $opt_quiet || func_echo "copying file \`$my_destfile'"
-      my_return_status=0
+    my_f1=`$ECHO "X$1" | $Xsed -e "$basename"`
+
+    if test -d "$2"; then
+
+      func_copy_cb "$my_f1" `$ECHO "X$1" | $Xsed -e "$dirname"` "$2"
+
     else
-      func_error "can not copy \`$my_srcfile' to \`$my_destfile'"
-      exit_status=$EXIT_FAILURE
+
+      # Supporting this would mean changing the timestamp:
+      test "X$my_f1" = X`$ECHO "X$2" | $Xsed -e "$basename"` \
+        || func_fatal_error "func_copy() cannot change filename on copy"
+
+      func_copy_cb "$my_f1" \
+        `$ECHO "X$1" | $Xsed -e "$dirname"` \
+        `$ECHO "X$2" | $Xsed -e "$dirname"`
+
     fi
 
-    return $my_return_status
+    return $copy_return_status # set in func_copy_cb
 }
 
-# func_copy_all_files [-r] srcdir destdir [glob_exclude] [copy_cb=func_copy]
+# func_copy_cb filename srcdir destdir
+# If option `--copy' was specified, or soft-linking SRCFILE to DESTFILE fails,
+# then try to copy SRCFILE to DESTFILE (without changing the timestamp if
+# possible).
+func_copy_cb ()
+{
+    $opt_debug
+    my_file="$1"
+    my_srcdir="$2"
+    my_destdir="$3"
+    copy_return_status=1
+
+    # Libtool is probably misinstalled if this happens:
+    test -f "$my_srcdir/$my_file" || \
+      { func_error "\`$my_file' not found in \`$my_srcdir'"; return; }
+
+    func_mkdir_p "$my_destdir"
+
+    $RM "$my_destdir/$my_file"
+    if $opt_link && $LN_S "$my_srcdir/$my_file" "$my_destdir/$my_file"; then
+      $opt_quiet || func_echo "copying file \`$my_destdir/$my_file'"
+      copy_return_status=0
+    elif { ( cd "$my_srcdir" && $TAR cf - "$my_file" 2> /dev/null; ) \
+        | ( cd "$my_destdir" && "$TAR" xf - > /dev/null 2>&1; ) } ; then
+      $opt_quiet || func_echo "copying file \`$my_destdir/$my_file'"
+      copy_return_status=0
+    elif $CP -p "$my_srcdir/$my_file" "$my_destdir/$my_file"; then
+      $opt_quiet || func_echo "copying file \`$my_destdir/$my_file'"
+      copy_return_status=0
+    else
+      func_error "can not copy \`$my_srcdir/$my_file' to \`$my_destdir/'"
+      exit_status=$EXIT_FAILURE
+    fi
+}
+
+
+# func_copy_all_files [-r] srcdir destdir [glob_exclude] [copy_cb=func_copy_cb]
 # For each file in SRCDIR, then try to copy the file to DESTDIR by calling
 # COPY_CB with the src and dest files.  With the `-r' option, recurse into
 # subdirectories of srcdir too.  If GLOB_EXCLUDE is given, exclude any
@@ -220,7 +263,7 @@ func_copy_all_files ()
     my_srcdir="$1"
     my_destdir="$2"
     my_glob_exclude="$3"
-    my_copy_cb="${4-func_copy}"
+    my_copy_cb="${4-func_copy_cb}"
 
     my_srcfiles=
     my_basedir="$my_srcdir"
@@ -258,7 +301,7 @@ func_copy_all_files ()
 }
 
 
-# func_copy_some_files srcdir srcfile_spec destdir [copy_cb=func_copy]
+# func_copy_some_files srcdir srcfile_spec destdir [copy_cb=func_copy_cb]
 # Call COPY_CB for each regular file in SRCDIR named by the ':' delimited
 # names in SRCFILE_SPEC.  The odd calling convention is needed to allow
 # spaces in file and directory names.
@@ -268,7 +311,7 @@ func_copy_some_files ()
     my_srcdir="$1"
     my_srcfile_spec="$2"
     my_destdir="$3"
-    my_copy_cb="${4-func_copy}"
+    my_copy_cb="${4-func_copy_cb}"
 
     my_save_IFS="$IFS"
     IFS=:
@@ -276,7 +319,7 @@ func_copy_some_files ()
 
       IFS="$my_save_IFS"
       if test -f "$my_srcdir/$my_filename"; then
-        if test "X$my_copy_cb" = Xfunc_copy; then
+        if test "X$my_copy_cb" = Xfunc_copy_cb; then
 	  $opt_force || if test -f "$my_destdir/$my_filename"; then
   	    $opt_quiet \
 	      || func_error "\`$my_destdir/$my_filename' exists: use \`--force' to overwrite"
@@ -288,7 +331,7 @@ func_copy_some_files ()
         continue
       fi
 
-      $my_copy_cb "$my_srcdir/$my_filename" "$my_destdir/$my_filename"
+      $my_copy_cb "$my_filename" "$my_srcdir" "$my_destdir"
     done
     IFS="$my_save_IFS"
 }
@@ -454,7 +497,7 @@ func_serial ()
     $ECHO $my_serial
 }
 
-# func_serial_update srcfile destfile [macro_regex] [old_macro_regex]
+# func_serial_update filename srcdir destdir [macro_regex] [old_macro_regex]
 # Copy SRCFILE to DESTFILE provided SRCFILE has a newer serial number, or
 # DESTFILE does not yet exist, or the user specified `--force'.  If given,
 # MACRO_REGEX or OLD_MACRO_REGEX must match any text after "# serial N" in
@@ -462,13 +505,16 @@ func_serial ()
 func_serial_update ()
 {
     $opt_debug
-    my_srcfile="$1"
-    my_destfile="$2"
-    my_macro_regex="$3"
-    my_old_macro_regex="$4"
+    my_filename="$1"
+    my_srcdir="$2"
+    my_destdir="$3"
+    my_macro_regex="$4"
+    my_old_macro_regex="$5"
 
     my_return_status=1
     my_update_p=:
+    my_srcfile="$my_srcdir/$my_filename"
+    my_destfile="$my_destdir/$my_filename"
 
     if test -f "$my_destfile"; then
       my_src_serial=`func_serial "$my_srcfile" "$my_macro_regex"`
@@ -632,18 +678,15 @@ func_config_update ()
 
   # Copy libtool's m4 macros to the macro directory, if they are newer.
   if test -n "$m4dir"; then
-    libtool_m4="$aclocaldir/libtool.m4"
-    ltdl_m4="$aclocaldir/ltdl.m4"
-
     $opt_quiet || func_echo "putting macros in AC_CONFIG_MACRO_DIR, \`$m4dir'."
 
-    func_serial_update  "$libtool_m4" "$m4dir/libtool.m4" \
+    func_serial_update  libtool.m4 "$aclocaldir" "$m4dir" \
       LT_INIT 'A[[CM]]_PROG_LIBTOOL'
 
     if $seen_ltdl; then
-      func_serial_update "$ltdl_m4" "$m4dir/ltdl.m4" 'LTDL_INIT'
+      func_serial_update ltdl.m4 "$aclocaldir" "$m4dir" 'LTDL_INIT'
     else
-      func_verbose "Not copying \`$ltdl_m4', libltdl not used."
+      func_verbose "Not copying \`$m4dir/ltdl.m4', libltdl not used."
     fi
 
     func_copy_some_files "$aclocaldir" "$pkgmacro_files" \
