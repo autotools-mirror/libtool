@@ -1,3 +1,20 @@
+2001-07-19  Robert Boehne  <rboehne@ricardo-us.com>
+
+	* libtool.m4 (AC_LIBTOOL_PROG_LD_SHLIBS): Fix tag support
+	problems with CXX variables being overwritten by the individual
+	macros.
+	(AC_LIBTOOL_PROG_CC_C_O): Ditto.
+	(AC_LIBTOOL_PROG_COMPILER_PIC): Ditto.
+	(AC_LIBTOOL_LANG_CXX_CONFIG): Moved call to
+	AC_LIBTOOL_SYS_HARD_LINK_LOCKS after the call to
+	AC_LIBTOOL_PROG_CC_C_O as it depends on the result.
+	(AC_LIBTOOL_LANG_GCJ_CONFIG): Ditto.
+	(AC_LIBTOOL_LANG_C_CONFIG): Ditto.
+	(AC_LIBTOOL_PROG_LD_HARDCODE_LIBPATH): Used the macro
+	_LT_AC_TAGVAR to ensure the correct variable is being queried.
+	(AC_LIBTOOL_SYS_DYNAMIC_LINKER): Changed the naming of shared
+	objects under IRIX back to what it was in the MLB.
+
 2001-07-23  Mark Kettenis  <kettenis@gnu.org>
 
 	* libtool.m4 (AC_LIBTOOL_SYS_MAX_CMD_LEN) [gnu*]: Remove spurious
