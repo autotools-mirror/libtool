@@ -1,3 +1,7 @@
+2004-01-25  Peter O'Gorman  <peter@pogma.com>
+
+	* ltmain.in: Check for module_cmds if max_cmd_len is exceeded too.
+
 2004-01-23  Scott James Remnant  <scott@netsplit.com>
 
 	* libtool.m4 (AC_LIBTOOL_CONFIG): Don't attempt to
