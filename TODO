@@ -7,9 +7,9 @@ GNU Libtool
 1.1. libtool
 ------------
 
-* Factor common shell preamble and function definitions into a separate
-  file and substitute the contents into all of our shell scripts at
-  bootstrap, to avoid any synchronisation issues.
+* Rather than looking up the linker's hardcode characteristics in a
+  table of shell code, use objdump or equivalent to probe a test program
+  at configure time.
 
 * Eliminate the warnings from autoconf -Wobsolete.
 
