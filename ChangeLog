@@ -1,3 +1,7 @@
+2003-02-17  Charles Wilson  <cwilson@ece.gatech.edu>
+
+	* ltmain.in (win32_libid): Rewritten to improve speed.
+
 2003-02-11  Richard Dawe  <rich@phekda.freeserve.co.uk>
 
 	* libtoolize.in: Use the program found by AC_PROG_LN_S
