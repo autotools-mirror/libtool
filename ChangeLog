@@ -1,3 +1,7 @@
+2001-03-10  Peter Eisentraut  <peter_e@gmx.net>
+
+	* ltmain.in (clean):  Fix wrong variable use.
+
 2001-02-25  Peter Eisentraut  <peter_e@gmx.net>
 
 	* ltmain.in (clean): Automatically remove $objdir (usually '.libs').
