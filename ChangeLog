@@ -1,5 +1,7 @@
 2004-01-06  Gary V. Vaughan  <gary@gnu.org>
 
+	* NEWS: Note libtoolize changes.
+
 	* ChangeLog.2003: New file, containing all the ChangeLog entries
 	from 2003.  Trimmed ChangeLog accordingly.
 
