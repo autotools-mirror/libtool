@@ -1,3 +1,9 @@
+2003-07-14  Dalibor Topic  <robilad@yahoo.com>
+
+	* libtool.m4 (AC_LIBTOOL_SYS_MAX_CMD_LEN): For AmigaOS with pdksh,
+	set the maximum command line length to 8K since otherwise the test
+	takes over an hour to run.
+
 2003-06-25  Alexandre Oliva  <aoliva@redhat.com>, Tim Waugh  <twaugh@redhat.com>
 
 	* libtool.m4: Replace mis-uses of path with pathname.
