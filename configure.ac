@@ -93,15 +93,17 @@ AC_SUBST([LASTRELEASE])
 # This is a sanity check so we can see which version is used in bug reports.
 # It is assumed that we only want to see the date extension for cvs libtool
 # versions (i.e. "odd" letters) and not actual alpha releases.
-TIMESTAMP=
+TIMESTAMP=`${CONFIG_SHELL} ${ac_aux_dir}/mkstamp < ${srcdir}/ChangeLog`
+package_revision=`( set $TIMESTAMP; echo $1; )`
 case $lt_alpha in
-  [[acegikmoqsuwy]])
-    TIMESTAMP=`${CONFIG_SHELL} ${ac_aux_dir}/mkstamp < ${srcdir}/ChangeLog`
-    AS_BOX([Configuring AC_PACKAGE_TARNAME (Build:$TIMESTAMP) AC_PACKAGE_VERSION])
-    echo
+  [[bdfhjlnprtvxz]])
+    TIMESTAMP=
     ;;
 esac
+AS_BOX([Configuring AC_PACKAGE_TARNAME${TIMESTAMP:+" (Build:$TIMESTAMP)"} AC_PACKAGE_VERSION])
+echo
 AC_SUBST([TIMESTAMP])
+AC_SUBST([package_revision])
 
 
 ## ------------------------ ##
@@ -200,6 +202,6 @@ AM_CONDITIONAL(HAVE_RC, [test -n "[$]_LT_AC_TAGVAR(compiler, RC)"])
 ## -------- ##
 ## Outputs. ##
 ## -------- ##
-AC_CONFIG_FILES([Makefile libltdl/Makefile libltdl/loaders/Makefile 
+AC_CONFIG_FILES([Makefile libltdl/Makefile libltdl/loaders/Makefile
 		doc/Makefile tests/Makefile])
 AC_OUTPUT

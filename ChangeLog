@@ -1,5 +1,18 @@
 2004-07-28  Gary V. Vaughan  <gary@gnu.org>
 
+	Fix a long-standing bug where macro_version was always empty in
+	the generated m4/ltversion.m4.  Except for CVS revisions:
+
+	* ltmain.in (package_revision): Don't try to deduce it from
+	TIMESTAMP, since that is empty for release versions; simply
+	substitute it...
+	* configure.ac (package_revision): ...from here, having
+	precalculated it before resetting TIMESTAMP for release versions.
+	* bootstrap: Force regeneration of m4/ltversion.m4, but retain
+	timestamps if there is no change to the content.
+
+2004-07-28  Gary V. Vaughan  <gary@gnu.org>
+
 	To take full advantage of this, libtool must be bootstrapped with
 	CVS autoconf, otherwise pdksh chokes on some nested escaped quotes
 	from libtool.m4.  Using CVS autoconf protects configure from

@@ -59,6 +59,7 @@ PROGRAM=ltmain.sh
 PACKAGE=@PACKAGE@
 VERSION=@VERSION@
 TIMESTAMP="@TIMESTAMP@"
+package_revision=@package_revision@
 
 # Check that we have a working $echo.
 if test "X$1" = X--no-reexec; then
@@ -93,20 +94,19 @@ rm="rm -f"
 
 # Ensure that we are using m4 macros, and libtool script from the same
 # release of libtool.
-package_revision=`( set $TIMESTAMP; echo $1; )`
 if test "$package_revision" != "$macro_revision"; then
   if test "$VERSION" != "$macro_version"; then
     if test -z "$macro_version"; then
       cat >&2 <<_LT_EOF
 $progname: Version mismatch error.  This is $PACKAGE $VERSION, but the
-$progname: definition of this AC_PROG_LIBTOOL comes from an older release.
+$progname: definition of this LT_INIT comes from an older release.
 $progname: You should recreate aclocal.m4 with macros from $PACKAGE $VERSION
 $progname: and run autoconf again.
 _LT_EOF
     else
       cat >&2 <<_LT_EOF
 $progname: Version mismatch error.  This is $PACKAGE $VERSION, but the
-$progname: definition of this AC_PROG_LIBTOOL comes from $PACKAGE $macro_version.
+$progname: definition of this LT_INIT comes from $PACKAGE $macro_version.
 $progname: You should recreate aclocal.m4 with macros from $PACKAGE $VERSION
 $progname: and run autoconf again.
 _LT_EOF
@@ -114,8 +114,7 @@ _LT_EOF
   else
     cat >&2 <<_LT_EOF
 $progname: Version mismatch error.  This is $PACKAGE $VERSION, revision $package_revision,
-$progname: but the definition used by this AC_PROG_LIBTOOL comes from revision
-$progname: $macro_revision.
+$progname: but the definition of this LT_INIT comes from revision $macro_revision.
 $progname: You should recreate aclocal.m4 with macros from revision $package_revision
 $progname: of $PACKAGE $VERSION and run autoconf again.
 _LT_EOF
