@@ -20,7 +20,7 @@ USA. */
 
 #define _LIBFOO_COMPILATION_
 #include "foo.h"
-#undef _LIBFOO_COMPILATION
+#undef _LIBFOO_COMPILATION_
 
 #include <stdio.h>
 
