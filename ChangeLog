@@ -1,5 +1,23 @@
 1999-03-19  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* ltconfig.in (sunos4*, with_gnu_ld, hardcode_minus_L): remove,	we
+	have -rpath
+	(aix4*, without_gnu_ld, hardcode_shlibpath_var): unsupported is
+	default
+	(hpux9*, hpux10*, hpux11*, archive_cmds): drop +s, unneeded here
+	(hpux9*, hpux10*, hpux11*, hardcode_libdir_flag_spec): add +s
+	before +b
+	(hpux9*, hpux10*, hpux11*, shlibpath_overrides_runpath): since +s
+	appears before +b, set it to yes
+	(hardcode_shlibpath_var, hardcode_action): do not use
+	shlibpath_var to specify the compile-time search path; it loses,
+	and we may end up linking with pre-installed older versions of
+	libraries instead of yet-to-be-installed ones
+	(*, hardcode_direct, hardcode_minus_L): remove entries that set
+	them to no, that is default
+
+1999-03-19  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
 	* demo/Makefile.am (hc-direct, hc-libpath, hc-minusL): link with
 	$$hardcode_libdir_flag_spec, if available, with libdir=$(libdir),
 	to make sure the hardcode_* variables will produce the expected

@@ -1067,7 +1067,6 @@ EOF
     archive_cmds='$LD -assert pure-text -Bstatic -o $lib $libobjs $deplibs $linkopts'
     wlarc=
     hardcode_direct=yes
-    hardcode_minus_L=yes
     hardcode_shlibpath_var=no
     ;;
 
@@ -1170,7 +1169,6 @@ else
     # Though LIBPATH variable hardcodes shlibpath into executable,
     # it doesn't affect searching for -l* libraries; this confuses
     # tests in mdemo.
-    hardcode_shlibpath_var=unsupported
     hardcode_libdir_flag_spec='-L$libdir'
    ;;
 
@@ -1211,7 +1209,6 @@ else
     archive_cmds='$LD -Bshareable -o $lib $libobjs $deplibs $linkopts /usr/lib/c++rt0.o'
     hardcode_libdir_flag_spec='-R$libdir'
     hardcode_direct=yes
-    hardcode_minus_L=no # verified on 2.2.6
     hardcode_shlibpath_var=no
     ;;
 
@@ -1228,25 +1225,22 @@ else
     archive_cmds='$CC -shared -o $lib $libobjs $deplibs $linkopts'
     hardcode_libdir_flag_spec='-R$libdir'
     hardcode_direct=yes
-    hardcode_minus_L=no
     hardcode_shlibpath_var=no
     ;;
 
   hpux9*)
-    archive_cmds='$rm $objdir/$soname~$LD -b +s +b $install_libdir -o $objdir/$soname $libobjs $deplibs $linkopts~test $objdir/$soname = $lib || mv $objdir/$soname $lib'
-    hardcode_libdir_flag_spec='${wl}+b ${wl}$libdir'
+    archive_cmds='$rm $objdir/$soname~$LD -b +b $install_libdir -o $objdir/$soname $libobjs $deplibs $linkopts~test $objdir/$soname = $lib || mv $objdir/$soname $lib'
+    hardcode_libdir_flag_spec='${wl}+s ${wl}+b ${wl}$libdir'
     hardcode_libdir_separator=:
     hardcode_direct=yes
-    hardcode_minus_L=no
     export_dynamic_flag_spec='${wl}-E'
     ;;
 
   hpux10* | hpux11*)
-    archive_cmds='$LD -b +h $soname +s +b $install_libdir -o $lib $libobjs $deplibs $linkopts'
-    hardcode_libdir_flag_spec='${wl}+b ${wl}$libdir'
+    archive_cmds='$LD -b +h $soname +b $install_libdir -o $lib $libobjs $deplibs $linkopts'
+    hardcode_libdir_flag_spec='${wl}+s ${wl}+b ${wl}$libdir'
     hardcode_libdir_separator=:
     hardcode_direct=yes
-    hardcode_minus_L=no
     export_dynamic_flag_spec='${wl}-E'
     ;;
 
@@ -1330,8 +1324,6 @@ else
 
   sysv4.3*)
     archive_cmds='$LD -G -h $soname -o $lib $libobjs $deplibs $linkopts'
-    hardcode_direct=no
-    hardcode_minus_L=no
     hardcode_shlibpath_var=no
     export_dynamic_flag_spec='-Bexport'
     ;;
@@ -1339,16 +1331,12 @@ else
   uts4*)
     archive_cmds='$LD -G -h $soname -o $lib $libobjs $deplibs $linkopts'
     hardcode_libdir_flag_spec='-L$libdir'
-    hardcode_direct=no
-    hardcode_minus_L=no
     hardcode_shlibpath_var=no
     ;;
 
   dgux*)
     archive_cmds='$LD -G -h $soname -o $lib $libobjs $deplibs $linkopts'
     hardcode_libdir_flag_spec='-L$libdir'
-    hardcode_direct=no
-    hardcode_minus_L=no
     hardcode_shlibpath_var=no
     ;;
 
@@ -1552,10 +1540,12 @@ if test -n "$hardcode_libdir_flag_spec" || \
    test -n "$runpath_var"; then
 
   # We can hardcode non-existant directories.
-  if test "$hardcode_direct" != no && \
-     test "$hardcode_minus_L" != no && \
-     test "$hardcode_shlibpath_var" != no; then
-
+  if test "$hardcode_direct" != no &&
+     # If the only mechanism to avoid hardcoding is shlibpath_var, we
+     # have to relink, otherwise we might link with an installed library
+     # when we should be linking with a yet-to-be-installed one
+     ## test "$hardcode_shlibpath_var" != no &&
+     test "$hardcode_minus_L" != no; then
     # Linking always hardcodes the temporary library directory.
     hardcode_action=relink
   else
@@ -1711,6 +1701,7 @@ hpux9* | hpux10* | hpux11*)
   need_lib_prefix=no
   need_version=no
   shlibpath_var=SHLIB_PATH
+  shlibpath_overrides_runpath=yes # +s before +b in hardcode_libdir_flag_spec
   library_names_spec='${libname}${release}.sl$versuffix ${libname}${release}.sl$major $libname.sl'
   soname_spec='${libname}${release}.sl$major'
   # HP-UX runs *really* slowly unless shared libraries are mode 555.
