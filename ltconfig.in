@@ -117,7 +117,7 @@ else
       exec "$CONFIG_SHELL" "$0" --no-reexec ${1+"$@"}
     else
       # Try using printf.
-      echo='printf "%s\n"'
+      echo='printf %s\n'
       if test "X`($echo '\t') 2>/dev/null`" = 'X\t' &&
 	 echo_testing_string=`($echo "$echo_test_string") 2>/dev/null` &&
 	 test "X$echo_testing_string" = "X$echo_test_string"; then
