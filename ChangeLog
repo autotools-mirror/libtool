@@ -1,3 +1,11 @@
+2001-11-28  Robert Boehne  <rboehne@ricardo-us.com>
+
+	With help from Michael Matz <matz@kde.org>:
+	* ltmain.in:  Add a new command line argument
+	--preserve-dup-deps for preserving duplicate
+	dependent libraries.
+	* libtool.texi: Document it.
+
 2001-11-28  Gary V. Vaughan  <gary@gnu.org>
 
 	* libtoolize.in: The test for whether AC_PROG_LIBTOOL is defined
