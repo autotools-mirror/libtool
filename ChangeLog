@@ -1,5 +1,7 @@
 2003-11-14  Gary V. Vaughan  <gary@gnu.org>
 
+	* NEWS: Mention AC_LIBTOOL_TAGS.
+
 	* Makefile.am (EXTRA_DIST): List ChangeLog files correctly.
 
 	* tests/cdemo/configure.ac, tests/demo/configure.ac,
