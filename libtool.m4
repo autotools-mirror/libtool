@@ -3644,7 +3644,7 @@ $debug ||
     test ! -f ${_sed} && break
     cat /dev/null > "$tmp/sed.in"
     _count=0
-    echo $ac_n "0123456789$ac_c" >"$tmp/sed.in"
+    echo ${ECHO_N-$ac_n} "0123456789${ECHO_C-$ac_c}" >"$tmp/sed.in"
     # Check for GNU sed and select it if it is found.
     if "${_sed}" --version 2>&1 < /dev/null | egrep '(GNU)' > /dev/null; then
       lt_cv_path_SED=${_sed}

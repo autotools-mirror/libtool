@@ -1,3 +1,8 @@
+2002-03-07  Albert Chin-A-Young  <china@thewrittenword.com>
+
+	* libtool.m4: Allow LT_AC_PROG_SED to work under autoconf
+	2.13 and 2.5x with $ECHO_N/$ECHO_C and $ac_n/$ac_c.
+
 2002-02-25  Albert Chin-A-Young  <china@thewrittenword.com>
 
 	* ltmain.in: Quote $pic_mode.
