@@ -1,5 +1,11 @@
 2000-09-07  Gary V. Vaughan  <gvv@techie.com>
 
+	* NEWS:  Updated.
+	* TODO:  Add a reminder to get rid of ltconfig in mlb.
+	* README: Until things even out, I have added a note and a
+	patch to make the installed automake cooperate with the new
+	ltconfig free libtool.
+
 	* libtool.m4 (_LT_AC_LTCONFIG_HACK): with_gcc is only useful in
 	ltmain.sh as it has not yet been set in libtool.m4.  Use
 	$ac_cv_prog_gcc instead.
