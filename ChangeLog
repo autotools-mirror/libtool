@@ -1,5 +1,7 @@
 2004-12-09  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* config/ltmain.m4sh (func_mode_finish) [solaris]: Fix [] escaping bug.
+
 	* config/ltmain.m4sh (all over the map): Make use of func_basename and
 	func_dirname in most occasions.
 
