@@ -1,3 +1,9 @@
+2004-02-05  Peter O'Gorman  <peter@pogma.com>
+	
+	* ltmain.in (infer_tag, win32_libid): Style changes. Rename
+	infer_tag to func_infer_tag and win32_libid to func_win32_libid.
+	* m4/libtool.m4 (cygwin): rename win32_libid to func_win32_libid.
+	
 2004-02-04  Peter O'Gorman  <peter@pogma.com>
 
 	* ltmain.in (infer_tag): Move tag inferrence to a shell function.
