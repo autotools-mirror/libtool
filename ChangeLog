@@ -1,3 +1,8 @@
+1999-03-14  Erez Zadok  <ezk@cs.columbia.edu>
+
+	* config.guess: minor update for FreeBSD-elf, yet to be installed
+	at GNU
+
 1999-03-14  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* ltconfig.in (bsdi4*, sys_lib_search_path_spec,
