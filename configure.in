@@ -2,16 +2,12 @@ dnl Process this file with autoconf to create configure.
 
 AC_INIT(ltmain.in)
 
-AM_INIT_AUTOMAKE(libtool, 1.4a)
+AM_INIT_AUTOMAKE(libtool, 1.4mlb)
 
 # This is a sanity check so we can see which version is used in bug reports.
 # It is assumed that we only want to see the date extension for cvs libtool
 # versions (i.e. "odd" letters) and not actual alpha releases.
 TIMESTAMP=
-case "$VERSION" in
-changequote(,)
-  *[acegikmoqsuwy]) 
-changequote([,])
     TIMESTAMP=`${CONFIG_SHELL} ${srcdir}/mkstamp < ${srcdir}/ChangeLog`
     banner="Configuring $PACKAGE $VERSION$TIMESTAMP"
     dashes=`echo "$banner" | sed 's/./-/g'`
@@ -22,8 +18,14 @@ changequote([,])
     echo "$banner"
     echo $dashes
     echo
-    ;;
-esac    
+
+    # Make sure that users know the branch is dead!
+    banner="This branch is dead.  Please use the HEAD revisions."
+    dashes=`echo "$banner" | sed 's/./-/g'`
+    echo $dashes
+    echo "$banner"
+    echo $dashes
+    echo
 AC_SUBST(TIMESTAMP)
 
 pkgdatadir='${datadir}'"/${PACKAGE}"

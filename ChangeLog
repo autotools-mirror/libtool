@@ -1,3 +1,8 @@
+2001-05-24  Gary V. Vaughan  <gary@gnu.org>
+
+	* configure.in:  Display a banner to remind users that this is
+	an ex-branch.
+	
 2000-06-04  Mark Mitchell  <mark@codesourcery.com>
 
 	* ltcf-c.sh (archive_cmds, archive_expsym_cmds) [solaris,
@@ -82,7 +87,7 @@
 	newer config.guess in addition to older /unixware*/.  Use
 	compiler driver, not linker, for linking shared libraries.
 			
-2001-04-24  Gary V. Vaughan  <gvv@techie.com>
+2001-04-24  Gary V. Vaughan  <gary@gnu.org>
 
 	* ltdl.m4 (AC_C_INLINE): No longer required.
 	* libltdl/ltdl.c (strdup, strcmp, strchr, strrchr, memcpy, trim,
@@ -103,7 +108,7 @@
 	"output_verbose_link_cmd" to better conform to libtool naming
 	conventions.
 
-2001-04-24  Gary V. Vaughan  <gvv@techie.com>
+2001-04-24  Gary V. Vaughan  <gary@gnu.org>
 
 	From Tim Mooney <mooney@dogbert.cc.ndsu.NoDak.edu>
 	* tests/Makefile.am (TESTS_ENVIRONMENT): Make sure the *.test
@@ -115,7 +120,7 @@
 	* libltdl/ltdl.c (lt_dlexit): Quit loop if only resident modules
 	are left.
 	
-2001-04-23  Gary V. Vaughan  <gvv@techie.com>
+2001-04-23  Gary V. Vaughan  <gary@gnu.org>
 
 	From Albert Chin-A-Young <china@thewrittenword.com>
 	* ltmain.in:  `test -L' is not portable, and infact breaks uninstall
@@ -141,7 +146,7 @@
 	if the variable was not set with `=' earlier.  `+=' was not useful
 	here anyway.
 
-2001-04-22  Gary V. Vaughan  <gvv@techie.com>
+2001-04-22  Gary V. Vaughan  <gary@gnu.org>
 
 	* ltdl.m4 (AC_CHECK_HEADERS): UW7 has sys/dl.h, so we must
 	check for that here.
@@ -153,7 +158,7 @@
 	various releases of UnixWare and OpenServer that support it.
 	Reported by Matthew Schalit <mschalit@pacbell.net>
 
-2001-04-21  Gary V. Vaughan  <gvv@techie.com>
+2001-04-21  Gary V. Vaughan  <gary@gnu.org>
 
 	* TODO:  propose pkg-config merge.
 
@@ -217,7 +222,7 @@
 	* ltcf-cxx.sh (archive_expsym_cmds, osf4/osf5):  Added support
 	for cxx	under Compaq Tru64.
 
-2001-04-08  Gary V. Vaughan  <gvv@techie.com>
+2001-04-08  Gary V. Vaughan  <gary@gnu.org>
 
 	* ltcf-c.sh (hardcode_libdir_flag_spec, osf4/osf5): Use ${wl}
 	to pass -rpath when compiling with gcc.
@@ -239,7 +244,7 @@
 
 	* ltmain.in: Improve check for valid -version-info parameter.
 
-2001-04-08  Gary V. Vaughan  <gvv@techie.com>
+2001-04-08  Gary V. Vaughan  <gary@gnu.org>
 
 	From Nick Hudson  <skrll@netbsd.org>
 	* doc/Makefile.am (libtool_TEXINFOS): Add fdl.texi so that it
@@ -256,7 +261,7 @@
 	match_pattern that does pattern matching on filenames...
 	* libtool.m4: ...use it with NetBSD
 
-2001-04-05  Gary V. Vaughan  <gvv@techie.com>
+2001-04-05  Gary V. Vaughan  <gary@gnu.org>
 
 	* doc/libtool.texi (Multiple dependencies): A note about the
 	problems I've reintroduced by reverting the my patch of 2001-03-31.
@@ -309,7 +314,7 @@
 	Darwin. One of them was misplaced. Added version_type case for
 	Rhapsody and Darwin, named "darwin".
 
-2001-03-31  Gary V. Vaughan  <gvv@techie.com>
+2001-03-31  Gary V. Vaughan  <gary@gnu.org>
 
 	* ltmain.in: Remove the code for stripping duplicate deplibs
 	from libtool link lines -- duplicates are somtimes necessary
@@ -377,12 +382,12 @@
 
 	* ltmain.in (clean): Automatically remove $objdir (usually '.libs').
 
-2001-03-08  Gary V. Vaughan  <gvv@techie.com>
+2001-03-08  Gary V. Vaughan  <gary@gnu.org>
 
 	* ltconfig.in (library_names_spec): Undo latin-1 spaces I pasted
 	in yesterday by mistake.
 	
-2001-03-07  Gary V. Vaughan  <gvv@techie.com>
+2001-03-07  Gary V. Vaughan  <gary@gnu.org>
 	
 	From Tor Lillqvist <tml@iki.fi>
 	* ltcf-c.sh, ltcf-gcj.sh (export_symbols): On Windows, if the
@@ -404,13 +409,13 @@
 
 	* ltcf-cxx.sh (archive_cmds) [HP-UX, GCC]: Port.
 
-2001-03-06  Gary Vaughan  <gvv@techie.com>
+2001-03-06  Gary Vaughan  <gary@gnu.org>
 
 	From Albert Chin-A-Young <china@thewrittenword.com>
 	* libtool.m4: Apply missing m4 quotes that were originally applied to
 	HEAD branch only.
 	
-2001-03-05  Gary Vaughan  <gvv@techie.com>
+2001-03-05  Gary Vaughan  <gary@gnu.org>
 
 	* NEWS: Updated.
 	* doc/libtool.texi (Thread Safety in libltdl): New node describing
@@ -469,7 +474,7 @@
 	sentences to describe how piecewise linking is done
 	for shared objects by creating reloadable object files.
 
-2001-02-20  Gary Vaughan  <gvv@techie.com>
+2001-02-20  Gary Vaughan  <gary@gnu.org>
 
 	* libltdl/ltdl.c (lt_dlcaller_register): dont set an unsigned
 	type to a negative number.
@@ -522,14 +527,14 @@
 
 	* ltcf-cxx.sh: Eliminated setting LD to $CC
 
-2001-02-05  Gary V. Vaughan  <gvv@techie.com>
+2001-02-05  Gary V. Vaughan  <gary@gnu.org>
 
 	From Nick Hudson <skrll@netbsd.org>
 	* ltdl.m4 (AC_LTDL_SYS_DLOPEN_DEPLIBS): netbsd* is able to
 	automatically load module deplibs without assistance from
 	libltdl.
 
-2001-02-02  Gary V. Vaughan  <gvv@techie.com>
+2001-02-02  Gary V. Vaughan  <gary@gnu.org>
 
 	* libltdl/ltdl.c (load_deplibs): Make sure the depcount is reset,
 	even when deplibs are not used because of the patch below.
@@ -547,7 +552,7 @@
 
 	* AUTHORS: added myself to the list of maintainers.
 
-2001-01-31  Gary V. Vaughan  <gvv@techie.com>
+2001-01-31  Gary V. Vaughan  <gary@gnu.org>
 
 	* libltdl/ltdl.c (load_deplibs): If loading a deplib fails,
 	don't sweat -- it may be a lib that is already statically linked
@@ -592,14 +597,14 @@
 	* ltcf-gcj.sh (lt_simple_link_test_code): Remove stray `(0)'.
 	* libtool.m4 (_AC_LIBTOOL_GCJ): Pass $CPPFLAGS on.
 
-2001-01-07  Gary V. Vaughan  <gvv@techie.com>
+2001-01-07  Gary V. Vaughan  <gary@gnu.org>
 
 	* NEWS: Updated.
 	* doc/libtool.texi (User defined module data): Updated.
 	* libltdl/ltdl.c (lt_dlhandle_next): New function.
 	* libltdl/ltdl.h (lt_dlhandle_next): Prototypes.
 
-2001-01-05  Gary V. Vaughan  <gvv@techie.com>
+2001-01-05  Gary V. Vaughan  <gary@gnu.org>
 
 	* NEWS: Updated.
 	* doc/libtool.texi (User defined module data):  Document it all.
@@ -617,7 +622,7 @@
 	* ltdl.h (lt_dlcaller_register, lt_dlcaller_set_data,
 	lt_dlcaller_get_data): Prototyped.
 
-2000-12-23  Gary V. Vaughan  <gvv@techie.com>
+2000-12-23  Gary V. Vaughan  <gary@gnu.org>
 
 	From vvv@vsu.ru:
 	* doc/fdl.texi (GNU Free Documentation License): contained @bye
@@ -634,7 +639,7 @@
 
 	* libtool.m4 (OSF/1):  Revert my patch of 2000-12-16.
 
-2000-12-20  Gary V. Vaughan  <gvv@techie.com>
+2000-12-20  Gary V. Vaughan  <gary@gnu.org>
 
 	* libltdl/ltdl.c (lt_dlexit): Was checking for residency of the
 	wrong module.
@@ -651,7 +656,7 @@
 	compiler on a Tru64 machine.
 	* ltcf-cxx.sh (OSF/1): ditto.
 
-2000-12-16  Gary V. Vaughan  <gvv@techie.com>
+2000-12-16  Gary V. Vaughan  <gary@gnu.org>
 
 	* ltcf-c.sh (archive_cmds): And another one.  Use test instead of
 	`['.
@@ -673,7 +678,7 @@
 	* libtool.m4 (AC_DEPLIBS_CHECK_METHOD): Use the HPUX 10.20
 	methods to check for library dependencies on HPUX 11.
 
-2000-12-16  Gary V. Vaughan  <gvv@techie.com>
+2000-12-16  Gary V. Vaughan  <gary@gnu.org>
 
 	* ltconfig.in (deplibs_check_method, file_magic_cmd,
 	file_magic_test_file): Arghh!  I keep forgetting that this stuff
@@ -731,20 +736,20 @@
 	* libtool.m4:  Don't depend on Autoconf internals:
 	s/ac_cv_prog_gcc/GCC/.
 
-2000-11-29  Gary V. Vaughan  <gvv@techie.com>
+2000-11-29  Gary V. Vaughan  <gary@gnu.org>
 
 	* libltdl/ltdl.h (lt_dlhandle): Rename the wrapped structure
 	to prevent nameclash when used from C++.
 	* libltdl/ltdl.c: Fixed all references.
 
-2000-11-25  Gary V. Vaughan  <gvv@techie.com>
+2000-11-25  Gary V. Vaughan  <gary@gnu.org>
 
 	* libltdl/ltdl.c (lt_dlopen):  Change the default search order
 	for modules.  If the named module has no directory component,
 	always start the search with the user_search_path directories,
 	and then fall back on the current directory only if that fails.
 
-2000-11-20  Gary V. Vaughan  <gvv@techie.com>
+2000-11-20  Gary V. Vaughan  <gary@gnu.org>
 
 	* libltdl/Makefile.am (libltdl_la_LDFLAGS): increment the version
 	number to reflect the breakage of binary compatibility.
@@ -764,7 +769,7 @@
 	* ltmain.in: Some versions of expr respond with "0" if a
 	regexp fails to match.
 
-2000-11-19  Gary V. Vaughan  <gvv@techie.com>
+2000-11-19  Gary V. Vaughan  <gary@gnu.org>
 
 	* ltdl.c: Relegate non-POSIX-compliant symbols (e.g. those
 	ending in ``_t'') to deprecated #define compatibility macros.
@@ -772,12 +777,12 @@
 	and ``LT_'' prefixes are taken from the global namespace.
 	* ltdl.h: ditto.
 
-2000-11-17  Gary V. Vaughan  <gvv@techie.com>
+2000-11-17  Gary V. Vaughan  <gary@gnu.org>
 
 	* ltdl.c: Reformatted.
 	* ltdl.h: ditto.
 
-2000-11-11  Gary V. Vaughan  <gvv@techie.com>
+2000-11-11  Gary V. Vaughan  <gary@gnu.org>
 
 	* ltdl.m4, ltcf-c.sh, libtool.m4: Use $ac_ext and $ac_objext
 	respectively for conftest sources and objects.
@@ -801,7 +806,7 @@
 	(AM_DISABLE_SHARED, AM_DISABLE_STATIC, AM_PROG_LD, AM_PROG_NM):
 	Don't use indir when useless.  Don't add trailing `dnl' either.
 
-2000-10-30  Gary V. Vaughan  <gvv@techie.com>
+2000-10-30  Gary V. Vaughan  <gary@gnu.org>
 
 	* doc/libtool.texi:  Corrected another attack of CRLF line
 	endings.
@@ -827,7 +832,7 @@
 	* libtool.m4 (AC_LIBTOOL_CXX, AC_LIBTOOL_GCJ): Pass LD down to
 	ltconfig.
 
-2000-10-02  Gary V. Vaughan  <gvv@techie.com>
+2000-10-02  Gary V. Vaughan  <gary@gnu.org>
 
 	From Bruce Korb <bkorb@cruzio.com>
 	* ltmain.in (execute_dlfiles): Reduce obfuscation.
@@ -842,7 +847,7 @@
 	'${OBJDUMP}'; Solaris' /bin/sh loses with `}' in cache files.
 	(ac_cv_path_MAGIC_CMD): Renamed to lt_cv_path_MAGIC_CMD.
 
-2000-09-28  Gary V. Vaughan  <gvv@techie.com>
+2000-09-28  Gary V. Vaughan  <gary@gnu.org>
 
 	* libtool.m4 (MAGIC_CMD): Don't use MAGIC, since BSD versions of
 	the file command use this environment variable to hold the
@@ -863,13 +868,13 @@
 	* ltcf-cxx.sh (netbsd): Improved support.
 	* ltconfig.in (netbsd): ditto.
 
-2000-09-15  Gary V. Vaughan  <gvv@techie.com>
+2000-09-15  Gary V. Vaughan  <gary@gnu.org>
 
 	* ltmain.in (version_type): Use "-iface" as the windows
 	versioning scheme, where iface is the number of the oldest
 	interface supported.
 
-2000-09-14  Gary V. Vaughan  <gvv@techie.com>
+2000-09-14  Gary V. Vaughan  <gary@gnu.org>
 
 	From Paul Sokolovsky <Paul.Sokolovsky@technologist.com>
 	* libtool.m4 (pw32): Initial support for pw32, assuming that
@@ -1003,7 +1008,7 @@
 	* ltconfig.in: Add back ranlib calls for static libraries if there
 	is a ranlib.
 
-2000-08-31  Gary V. Vaughan  <gvv@techie.com>
+2000-08-31  Gary V. Vaughan  <gary@gnu.org>
 
 	sh.test was failing unnecessarily.
 
@@ -1017,7 +1022,7 @@
 	libtool in their own CVS repository.
 	Reported by Bob Friesenhahn <bfriesen@simple.dallas.tx.us>
 
-2000-08-27  Gary V. Vaughan  <gvv@techie.com>
+2000-08-27  Gary V. Vaughan  <gary@gnu.org>
 
 	* ltconfig.in (with_gcc):  Make the value of this option
 	available to the generated libtool script.
@@ -1192,7 +1197,7 @@
 	Reported by Stephan Kulow <coolo@kde.org> and Michael Matz
 	<matz@ifh.de>
 
-2000-05-30  Gary V. Vaughan  <gvv@techie.com>
+2000-05-30  Gary V. Vaughan  <gary@gnu.org>
 
 	* ltconfig.in (ORIGINAL_CONFIG_SHELL): Prevent lossage when
 	the echo probing code falls into this branch without setting
@@ -1203,7 +1208,7 @@
 	* ltcf-gcj.sh (netbsd*): ditto.
 	From Keisuke Inoue <keisuke@csl.sony.co.jp>
 
-2000-05-29  Gary V. Vaughan  <gvv@techie.com>
+2000-05-29  Gary V. Vaughan  <gary@gnu.org>
 
 	* libtool.m4 (netbsd*): Use -L option to file_magic_cmd as for
 	freebsd (below).
@@ -1217,7 +1222,7 @@
 	rather than regular files.  Adding -L tells the file program
 	to follow the symlink.
 
-2000-05-29  Gary V. Vaughan  <gvv@techie.com>
+2000-05-29  Gary V. Vaughan  <gary@gnu.org>
 
 	* libtool.m4 (i*86-*-freebsd*): Forgot to changequote(,).
 
@@ -1235,7 +1240,7 @@
 	* ltcf-c.sh: ditto.
 	* ltcf-gcj.sh: ditto.
 
-2000-05-29  Gary V. Vaughan  <gvv@techie.com>
+2000-05-29  Gary V. Vaughan  <gary@gnu.org>
 
 	* ltconfig.in (echo): The following code actually prints the
 	double quotes -- so I removed them:
@@ -1266,7 +1271,7 @@
 	* tests/suffix.test: Corrected typo in error message, and improved
 	the message.
 
-2000-05-27  Gary V. Vaughan  <gvv@techie.com>
+2000-05-27  Gary V. Vaughan  <gary@gnu.org>
 
 	* README-alpha: note new location of config.(guess|sub).
 

@@ -23,13 +23,13 @@
 
 	* ltconfig.in (linux-gnu*): Set hardcode_into_libs=yes.
 
-1999-11-29  Gary V. Vaughan  <gary@oranda.demon.co.uk>
+1999-11-29  Gary V. Vaughan  <gary@gnu.org>
 
 	* ltconfig.in:  Be friendlier to C++ compilers when testing
 	for dlopen support.
 	Reported by Stephan Kulow <coolo@itm.mu-luebeck.de>
 
-1999-11-26  Gary V. Vaughan  <gary@oranda.demon.co.uk>
+1999-11-26  Gary V. Vaughan  <gary@gnu.org>
 
 	* libtool.m4:  better use of $target instead of $host to support
 	cross compilation.
@@ -76,7 +76,7 @@
 
 	* ltconfig.in: add support for Unixware (sysv4.2uw2*)
 
-1999-10-29  Gary V. Vaughan  <gary@oranda.demon.co.uk>
+1999-10-29  Gary V. Vaughan  <gary@gnu.org>
 
 	* ltmain.in:  Damnit!  Cygwin cvs committed all the
 	dos line endings.
@@ -112,7 +112,7 @@
 	* libltdl/ltdl.c (lt_dlopen): Do not search paths when the
 	specified library is not just a basename.
 
-1999-10-10  Gary V. Vaughan  <gary@oranda.demon.co.uk>
+1999-10-10  Gary V. Vaughan  <gary@gnu.org>
 
 	* libtool.m4 (AC_PATH_FILE): new macro replaces
 	AC_PATH_TOOL_GREP_OUTPUT.
@@ -123,7 +123,7 @@
 	* ltconfig.in (reload_flag): moved to libtool.m4.
 	(deplbs_check_method): ditto.
 
-1999-10-07  Gary V. Vaughan  <gary@oranda.demon.co.uk>
+1999-10-07  Gary V. Vaughan  <gary@gnu.org>
 
 	* libtool.m4 (AC_PATH_PROG_VERSION_GREP): removed in favour of the 
 	more general AC_PATH_PROG_GREP_OUTPUT.
@@ -132,13 +132,13 @@
 	(AC_PROG_LIBTOOL):  Search for a working find program in the
 	user's PATH using the new macros.
 	
-1999-10-06  Gary V. Vaughan  <gary@oranda.demon.co.uk>
+1999-10-06  Gary V. Vaughan  <gary@gnu.org>
 
 	* NEWS: updtaed.
         * ltconfig.in: Accept osf5.
         Reported by Sascha Schumann <sascha@schumann.cx>
 
-1999-10-04  Gary V. Vaughan  <gary@oranda.demon.co.uk>
+1999-10-04  Gary V. Vaughan  <gary@gnu.org>
 
 	* ltmain.in (-no-install):  This doesn't work on win32 since
 	the search path for libraries is not encoded in the binary,
@@ -148,7 +148,7 @@
 	* ltmain.in (-no-fast-install):  Wrapper script used to add the
 	exeext on again when naming the wrapped executable.
 
-1999-10-03  Gary V. Vaughan  <gary@oranda.demon.co.uk>
+1999-10-03  Gary V. Vaughan  <gary@gnu.org>
 
 	* ltconfig.in:  Set $FILE to @FILE@ for substitution with
 	the value found in libtool.m4 at configure time.
@@ -182,7 +182,7 @@
 	* libltdl/Makefile.am: don't preserve file attributes when
 	  installing the libltdl sources
 
-1999-10-01  Gary V. Vaughan  <gary@oranda.demon.co.uk>
+1999-10-01  Gary V. Vaughan  <gary@gnu.org>
 
 	* configure.in (AC_OUTPUT_COMMANDS): generate ltmain.sh
 	* Makefile.am (ltmain.sh ltconfig): removed.  Automake inserts the 
@@ -200,7 +200,7 @@
 	* ltconfig.in (sco3.2v5): use pass_all deplibs_check_method
 	for SCO3.2.
 
-1999-09-29  Gary V. Vaughan  <gary@oranda.demon.co.uk>
+1999-09-29  Gary V. Vaughan  <gary@gnu.org>
 
 	* ltconfig.in (whole-archive-flag-spec):  I had been
 	wondering why my file system was filling up with empty
@@ -221,7 +221,7 @@
 	* ltconfig.in (sysv5): Added support required for shared
 	library linking on SCO UW7.
 
-1999-09-22  Gary V. Vaughan  <gary@oranda.demon.co.uk>
+1999-09-22  Gary V. Vaughan  <gary@gnu.org>
 
 	* ltconfig.in (whole-archive-flag-spec): test whether the
 	version of GNU ld being used understands --whole-archive
@@ -238,7 +238,7 @@
 	* ltmain.in (CDPATH): Likewise.
 	Reported by Greg McGary <gkm@eng.ascend.com>
 
-1999-08-24  Gary V. Vaughan  <gary@oranda.demon.co.uk>
+1999-08-24  Gary V. Vaughan  <gary@gnu.org>
 
 	* ltconfig.in (ltdll.c, impgen.c): Prevent the shell from
 	expanding variables & backslash escapes when writing these
@@ -279,7 +279,7 @@
 	* libltdl/COPYING.LIB: Update to version 2.1.
 	* libltdl/ltdl.h, libltdl/ltdl.c: Update FSF address.
 
-1999-08-03  Gary V. Vaughan  <gary@oranda.demon.co.uk>
+1999-08-03  Gary V. Vaughan  <gary@gnu.org>
 
 	* libtool.m4 (mingw*, AC_PROG_LD): use tr for carriage return
 	stripping.
@@ -353,7 +353,7 @@
 	* ltconfig.in:  Updated bsdi4 soname specs to be more like
 	linux as discussed on the bsdi mailing list.
 
-1999-07-20  Gary V. Vaughan  <gary@oranda.demon.co.uk>
+1999-07-20  Gary V. Vaughan  <gary@gnu.org>
 
 	* configure.in (AC_PROG_RANLIB):  No longer required as we now use
 	AC_CHECK_TOOL in AC_LIBTOOL_SETUP.
@@ -397,7 +397,7 @@
 
 	* doc/libtool.texi (C++ Libraries):  fixed a typo.
 
-1999-07-06  Gary V. Vaughan  <gary@oranda.demon.co.uk>
+1999-07-06  Gary V. Vaughan  <gary@gnu.org>
 
 	* README-alpha:  improved the release instructions to mention
 	actual list addresses for announcements, and urls for upload
@@ -412,7 +412,7 @@
 	* ltconfig.in: finish_cmds for FreeBSD removed
 	* depdemo/l3/Makefile.am: install libl3.la into an extra directory
 
-1999-07-02  Gary V. Vaughan  <gary@oranda.demon.co.uk>
+1999-07-02  Gary V. Vaughan  <gary@gnu.org>
 
 	* configure.in: bumped version to 1.3c.
 
@@ -493,7 +493,7 @@
 	* ltmain.in (ltdll.c): Support for crosscompiling from linux to
 	mingw32.
 
-1999-06-23  Gary V. Vaughan  <gary@oranda.demon.co.uk>
+1999-06-23  Gary V. Vaughan  <gary@gnu.org>
 
 	* ltconfig.in (cygwin, export_symbols_cmds): If there is already
 	an extracted and compiled ltdll.c, then don't delete, reextract
@@ -503,7 +503,7 @@
 	are paths through the code which run archive_expsym_cmds without
 	running export_symbols_cmds.
 
-1999-06-20  Gary V. Vaughan  <gary@oranda.demon.co.uk>
+1999-06-20  Gary V. Vaughan  <gary@gnu.org>
 
 	* ltconfig.in:  moved the test for NM after the test for
 	no_builtin_flag.
@@ -531,13 +531,13 @@
 	* ltconfig.in: CR/LF fix for broken DJGPP bash
 	* ltmain.in: CR/LF fix for DJGPP
 
-1999-06-18  Gary V. Vaughan  <gary@oranda.demon.co.uk>
+1999-06-18  Gary V. Vaughan  <gary@gnu.org>
 
 	* ltmain.in (outputname): When generating the executable wrapper
 	script, $outputname already has the $exeext suffix, so we needn't
 	add it again.
 
-1999-06-16  Gary V. Vaughan  <gary@oranda.demon.co.uk>
+1999-06-16  Gary V. Vaughan  <gary@gnu.org>
 
 	* libltdl/configure.in (ac_cv_lib_dl_dlopen): missing "x" in test
 	comparison corrected.
@@ -551,7 +551,7 @@
 	names passed without an extension, we now add a trailing `.' to
 	prevent this from happening.
 
-1999-06-15  Gary V. Vaughan  <gary@oranda.demon.co.uk>
+1999-06-15  Gary V. Vaughan  <gary@gnu.org>
 
 	* libltdl/ltdl.c (sys_wll_close): Strangely enough, Microsoft have
 	decided that LoadLibrary returns `0' for success, yet FreeLibrary
@@ -582,7 +582,7 @@
 	* NEWS: Note work-around.
 	Reported by Pavel Roskin <pavel_roskin@geocities.com>
 
-1999-06-09  Gary V. Vaughan  <gary@oranda.demon.co.uk>
+1999-06-09  Gary V. Vaughan  <gary@gnu.org>
 
 	* ltconfig.in (exeext): autoconf's AC_EXEEXT uses "no" to indicate
 	no extension, and we must do the same in order to share the cache
@@ -596,7 +596,7 @@
 	* ltconfig.in (exeext): Use quotes in the test, to prevent a 
 	failure in sh.test.
 
-1999-06-09  Gary V. Vaughan  <gary@oranda.demon.co.uk>
+1999-06-09  Gary V. Vaughan  <gary@gnu.org>
 
 	* ltconfig.in: Reordered tests to be more like configure.in's
 	recommended order (programs first, then libraries, etc.).
@@ -615,7 +615,7 @@
 	host.  Also test that the compiler accepts the flag, and cache
 	that result too.
 
-1999-06-08  Gary V. Vaughan  <gary@oranda.demon.co.uk>
+1999-06-08  Gary V. Vaughan  <gary@gnu.org>
 
 	* ltconfig.in (LN_S): Accept, in order of decreasing preference:
 	the cached value; an environment setting; ``ln -s'' if it works;
@@ -769,7 +769,7 @@
 	* ltconfig.in: linkopts -> compiler_flags for $CC and linker_flags
 	  for $LD, link_all_deplibs=yes on IRIX
 
-1999-05-22  Gary V. Vaughan  <gary@oranda.demon.co.uk>
+1999-05-22  Gary V. Vaughan  <gary@gnu.org>
 
 	* NEWS: insert todays date alongside 1.3.1 release.
 	* Makefile.in: use gnu not gnits rules
@@ -796,7 +796,7 @@
 	* doc/PLATFORMS: Updated to 1.3.1 for all platforms I've got.
 	Added sparc-unknown-linux-gnu.
 
-1999-05-21  Gary V. Vaughan  <gary@oranda.demon.co.uk>
+1999-05-21  Gary V. Vaughan  <gary@gnu.org>
 
 	* demo/foo.h: s/PARAMS/LTDL_PARAMS/g
 	* libltdl/ltdl.h: ditto.
@@ -830,19 +830,19 @@
 	* libtool.m4 (AC_LIBLTDL_*): set INCLTDL to the path of ltdl.h
 	* ltconfig.in: check for dlopen with -ldl first
 
-1999-05-19  Gary V. Vaughan  <gary@oranda.demon.co.uk>
+1999-05-19  Gary V. Vaughan  <gary@gnu.org>
 
 	* NEWS: Added 1.3.1 news items.
 	* doc/PLATFORMS: updated the boxes I have access to, to 1.3.1
 	in preparation for the next release.
 
-1999-05-18  Gary V. Vaughan  <gary@oranda.demon.co.uk>
+1999-05-18  Gary V. Vaughan  <gary@gnu.org>
 
 	* ltconfig.in (cygwin*, whole_archive_flag_spec): dlltool chokes
 	on this, so leave it unset in this case so that the ltmain code
 	knows it has to unpack convenience archives by itself.
 
-1999-05-17  Gary V. Vaughan  <gary@oranda.demon.co.uk>
+1999-05-17  Gary V. Vaughan  <gary@gnu.org>
 
 	* ltmain.in: Do not exit when an unknown library name is passed
 	passed in, simply warn and continue since some compilers require
@@ -854,7 +854,7 @@
 	* ltconfig.in: port to NEC UX/4800.
 	* NEWS: updated.
 	
-1999-05-17  Gary V. Vaughan  <gary@oranda.demon.co.uk>
+1999-05-17  Gary V. Vaughan  <gary@gnu.org>
 
 	* ltconfig.in (beos*, deplibs_check_method): set to pass_all.  BeOS
 	is PIC by default.
@@ -882,11 +882,11 @@
 	(instal-data-hook): Add srcdir/instutil to the beginning of the
 	PATH before installing libltdl's sources.
 
-1999-05-09  Gary V. Vaughan  <gary@oranda.demon.co.uk>
+1999-05-09  Gary V. Vaughan  <gary@gnu.org>
 
 	* TODO: updated.
 
-1999-05-06  Gary V. Vaughan  <gary@oranda.demon.co.uk>
+1999-05-06  Gary V. Vaughan  <gary@gnu.org>
 
 	* Makefile.am (install-data-hook):  make sure the install directory
 	is not left world writable.
@@ -906,7 +906,7 @@
 	* ltmain.in: Save exit status of link_command before removing
 	symbol table object file.
 
-1999-04-29  Gary V. Vaughan  <gary@oranda.demon.co.uk>
+1999-04-29  Gary V. Vaughan  <gary@gnu.org>
 
 	* doc/PLATFORMS: updated my hpux-10.20 and cygwin box entries.
 
@@ -931,7 +931,7 @@
 	* libltdl/acconfig.h: New file.  Add #undefs for defines that
 	would be duplicated.
 
-1999-04-29  Gary V. Vaughan  <gary@oranda.demon.co.uk>
+1999-04-29  Gary V. Vaughan  <gary@gnu.org>
 
 	* libtool.m4 (cygwin*|mingw*, DLLTOOL, OBJDUMP, AS): Only expand the
 	code that makes these configure time checks on hosts that need the
@@ -953,7 +953,7 @@
 	(AC_LIBLTDL_CONVENIENCE, AC_LIBLTDL_INSTALLABLE): Fix calls to
 	AC_BEFORE.
 
-1999-04-28  Gary V. Vaughan  <gary@oranda.demon.co.uk>
+1999-04-28  Gary V. Vaughan  <gary@gnu.org>
 
 	* libtool.m4 (ltconfig_enable_win32_dll): pass --enable-win32-dll to
 	ltconfig if this is set.
@@ -1005,7 +1005,7 @@
 	create temporaries in the current directory when output should go
 	elsewhere.  We must perform locking if it does.
 
-1999-04-27  Gary V. Vaughan  <gary@oranda.demon.co.uk>
+1999-04-27  Gary V. Vaughan  <gary@gnu.org>
 
 	* ltmain.in (old_archive_cmds): Ensure that there are always .o
 	objects available before running old_archive_cmds.
@@ -1422,7 +1422,7 @@
 	* ltconfig.in (*_cmds): quote $ so that they're not expanded by
 	the first eval
 
-1999-03-25  Gary V. Vaughan  <gary@oranda.demon.co.uk>
+1999-03-25  Gary V. Vaughan  <gary@gnu.org>
 
 	* ltmain.in ($PATH):  Expand any tildes in the users path to the
 	contents of $HOME to avoid problems with *_cmds splitting and
@@ -1446,7 +1446,7 @@
 
 	* ltconfig.in (ld_shlibs, amigaos*): disable shared libraries
 
-1999-03-23  Gary V. Vaughan  <gary@oranda.demon.co.uk>
+1999-03-23  Gary V. Vaughan  <gary@gnu.org>
 
 	* libltdl/configure.in: the sed expression for finding the shared
 	library extension used to think the . in [.] for the cygwin
@@ -1542,7 +1542,7 @@
 	* tests/Makefile.am (TESTS): added noinst-link.test
 	* doc/libtool.texi: document it
 
-1999-03-19  Gary V. Vaughan  <gary@oranda.demon.co.uk>
+1999-03-19  Gary V. Vaughan  <gary@gnu.org>
 
 	* ltmain.in (dependency_libs): There is no reason to infer that
 	the pseudo library is invalid if dependency_libs='' at
@@ -1599,7 +1599,7 @@
 	  libtool will break ILD, so we ignore it when generating
 	  dependencies.
 	  
-1999-03-17  Gary V. Vaughan  <gary@oranda.demon.co.uk>
+1999-03-17  Gary V. Vaughan  <gary@gnu.org>
 
 	* doc/PLATFORMS: Thanks to Alexandres changes below, both my
 	hp boxes pass the entire test suite.
