@@ -1,3 +1,7 @@
+2003-06-11  Gary V. Vaughan  <gary@gnu.org>
+
+	* NEWS: Sychronised from branch-1-4.
+
 2003-06-03 Benjamin Reed  <ranger@befunk.com>
 
 	* ltmain.in: search libraries in the order of preference, rather
