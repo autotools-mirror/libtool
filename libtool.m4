@@ -5372,8 +5372,7 @@ $debug ||
     _count=0
     echo $ECHO_N "0123456789$ECHO_C" >"$tmp/sed.in"
     # Check for GNU sed and select it if it is found.
-    if "${_sed}" --version 2>&1 < /dev/null | egrep '(GNU)' > /dev/null;
-then
+    if "${_sed}" --version 2>&1 < /dev/null | egrep '(GNU)' > /dev/null; then
       lt_cv_path_SED=${_sed}
       break;
     fi

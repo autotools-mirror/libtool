@@ -1,3 +1,7 @@
+2002-01-30  Robert Boehne  <rboehne@ricardo-us.com>
+
+	* libtool.m4 (LT_AC_PROG_SED): Removed a mysterious newline.
+
 2002-01-28  Robert Boehne  <rboehne@ricardo-us.com>
 
 	* libtool.m4 (LT_AC_PROG_SED): New macro tests sed for truncation of
