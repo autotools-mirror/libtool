@@ -1,4 +1,7 @@
-2004-02-23  Gary V. Vaughan  <gvaughan@eris.qinetiq.com>
+2004-02-23  Gary V. Vaughan  <gary@gnu.org>
+
+	* ltmain.in <install mode>: Add missing --help doc for
+	-inst-prefix option.
 
 	* ltmain.in <link mode>: Add missing --help doc for -shrext
 	option.
