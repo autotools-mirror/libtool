@@ -1,3 +1,8 @@
+2002-12-20  Robert Boehne  <rboehne@gnu.org>
+
+	* libtool.m4 (AC_LIBTOOL_COMPILER_OPTION,
+	AC_LIBTOOL_PROG_CC_C_O): Do not escape } or ? in sed argument.
+
 2002-12-19  Robert Boehne  <rboehne@gnu.org>
 
 	* ltmain.in: Use the sed program found by LT_AC_PROG_SED
