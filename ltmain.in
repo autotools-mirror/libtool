@@ -105,6 +105,9 @@ execute_dlfiles=
 lo2o="s/\\.lo\$/.${objext}/"
 o2lo="s/\\.${objext}\$/.lo/"
 
+# set the tag name so that it defaults to CC
+tagname="CC"
+
 # Parse our command line options once, thoroughly.
 while test "$#" -gt 0
 do
@@ -324,7 +327,8 @@ if test -z "$show_help"; then
     do
       case "$arg_mode" in
       arg  )
-	lastarg="$arg"  # do not "continue".  Instead, add this to base_compile
+	# do not "continue".  Instead, add this to base_compile
+	lastarg="$arg"
 	arg_mode=normal
 	;;
 
