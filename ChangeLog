@@ -1,3 +1,29 @@
+2004-08-29  Gary V. Vaughan  <gary@gnu.org>
+
+	We have had shell functions in ltmain.in for a few years without
+	complaint now, and recently a few more have crept in.  Make a
+	start at refactoring the code with shell functions, and
+	standardising on option parsing style:
+
+	* config/ltmain.in (func_echo, func_verbose, func_error)
+	(func_fatal_error, func_fatal_help, func_missing_arg)
+	(func_version, func_usage, func_help): Boiler plate shell
+	functions mostly copied from libtoolize.in.  Changed *lots* of
+	shell snippets to call these functions as appropriate, rather than
+	inlining the same code over and over.
+	(func_config, func_features, func_enable_tag, func_mode_help):
+	Factored out from the shared option parsing loop.  Write a new
+	shared option parser based on the one in libtoolize.in.
+	(func_check_version_match): Factored out from global scope.
+	(func_mode_compile, func_mode_execute, func_mode_finish)
+	(func_mode_install, func_mode_link, func_mode_uninstall): Break
+	each of the top level mode handlers out into a function.  Adjust
+	main loop.
+	(modename, prevopt, prev, optarg, show_help): Removed in the
+	course of cleaning up the shared option parser.
+	(opt_duplicate_deps): Use `:' and `false' instead of `yes' and `',
+	so we can run it directly, rather than calling test.
+
 2004-08-28  Gary V. Vaughan  <gary@gnu.org>
 
 	To help users submit better bug reports, improve the general
