@@ -1,5 +1,10 @@
 1999-04-27  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* ltmain.in (old_archive_cmds): Iterate on oldobjs to find out
+	which links to object files we must create.  Do not test for empty 
+	pic_flag to create such links.  Use objext when searching for
+	object files extracted from convenience library.
+
 	* ltconfig.in (compiler_c_o): Make sure the compiler does not
 	create temporaries in the current directory when output should go
 	elsewhere.  We must perform locking if it does.
