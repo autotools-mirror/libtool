@@ -1,5 +1,8 @@
 1999-03-14  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* doc/libtool.texi: notes on thread-safety problems of
+	libltdl/dlopen on GNU/Linux and FreeBSD
+
 	* ltconfig.in (aix3*, aix4*): GNU ld on AIX is very broken: it
 	cannot create working shared libraries.  Print a warning
 	suggesting the user not to use it and disable shared libraries.
