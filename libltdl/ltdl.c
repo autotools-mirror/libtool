@@ -798,7 +798,15 @@ sys_wll_open (loader_data, filename)
       strcat (searchname, ".");
     }
 
+#if __CYGWIN__
+  {
+    char wpath[MAX_PATH];
+    cygwin_conv_to_full_win32_path(searchname, wpath);
+    module = LoadLibrary(wpath);
+  }
+#else
   module = LoadLibrary (searchname);
+#endif
   LT_DLFREE (searchname);
 
   /* libltdl expects this function to fail if it is unable
