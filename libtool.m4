@@ -620,7 +620,15 @@ AC_CACHE_VAL([lt_cv_sys_max_cmd_len], [dnl
     lt_cv_sys_max_cmd_len=-1;
     ;;
 
-  *)
+  
+  mingw*)
+    # On msys 1.0 and win98, the maximum length was something like
+    # 200,000 and took around 45 minutes to get there... ouch!
+    # libtool calculates a length of 8192 for NT-based systems (including XP)
+    lt_cv_sys_max_cmd_len=8192;
+    ;;
+
+ *)
     # If test is not a shell built-in, we'll probably end up computing a
     # maximum length that is only half of the actual maximum length, but
     # we can't tell.
@@ -1119,35 +1127,45 @@ cygwin* | mingw* | pw32*)
   version_type=windows
   need_version=no
   need_lib_prefix=no
+
   case $GCC,$host_os in
-  yes,cygwin*)
+  yes,cygwin* | yes,mingw*)
     library_names_spec='$libname.dll.a'
-    sys_lib_search_path_spec="/lib /lib/w32api /usr/lib /usr/local/lib"
-    soname_spec='`echo ${libname} | sed -e 's/^lib/cyg/'``echo ${release} | sed -e 's/[[.]]/-/g'`${versuffix}.dll'
-    postinstall_cmds='dlpath=`bash 2>&1 -c '\''. $dir/${file}i;echo \$dlname'\''`~
+    # DLL is installed to $(libdir)/../bin by postinstall_cmds
+    postinstall_cmds='dlpath=`$SHELL 2>&1 -c '\''. $dir/${file}i;echo \$dlname'\''`~
       dldir=$destdir/`dirname \$dlpath`~
       test -d \$dldir || mkdir -p \$dldir~
       $install_prog .libs/$dlname \$dldir/$dlname'
-    postuninstall_cmds='dldll=`bash 2>&1 -c '\''. $file; echo \$dlname'\''`~
+    postuninstall_cmds='dldll=`$SHELL 2>&1 -c '\''. $file; echo \$dlname'\''`~
       dlpath=$dir/\$dldll~
        $rm \$dlpath'
     shlibpath_overrides_runpath=yes
+
+    case $host_os in
+    cygwin*)
+      # Cygwin DLLs use 'cyg' prefix rather than 'lib'
+      soname_spec='`echo ${libname} | sed -e 's/^lib/cyg/'``echo ${release} | sed -e 's/[[.]]/-/g'`${versuffix}.dll'
+      sys_lib_search_path_spec="/lib /lib/w32api /usr/lib /usr/local/lib"
+      ;;
+    mingw*)
+      # MinGW DLLs use traditional 'lib' prefix
+      soname_spec='${libname}`echo ${release} | sed -e 's/[[.]]/-/g'`${versuffix}.dll'
+      sys_lib_search_path_spec=`$CC -print-search-dirs | grep "^libraries:" | sed -e "s/^libraries://" -e "s,=/,/,g"`
+      if echo "$sys_lib_search_path_spec" | [egrep ';[c-zC-Z]:/' >/dev/null]; then
+        # It is most probably a Windows format PATH printed by
+        # mingw gcc, but we are running on Cygwin. Gcc prints its search
+        # path with ; separators, and with drive letters. We can handle the
+        # drive letters (cygwin fileutils understands them), so leave them,
+        # especially as we might pass files found there to a mingw objdump,
+        # which wouldn't understand a cygwinified path. Ahh.
+        sys_lib_search_path_spec=`echo "$sys_lib_search_path_spec" | sed -e 's/;/ /g'`
+      else
+        sys_lib_search_path_spec=`echo "$sys_lib_search_path_spec" | sed  -e "s/$PATH_SEPARATOR/ /g"`
+      fi
+      ;;
+    esac
     ;;
-  yes,mingw*)
-    library_names_spec='${libname}`echo ${release} | sed -e 's/[[.]]/-/g'`${versuffix}.dll'
-    sys_lib_search_path_spec=`$CC -print-search-dirs | grep "^libraries:" | sed -e "s/^libraries://" -e "s,=/,/,g"`
-    if echo "$sys_lib_search_path_spec" | [egrep ';[c-zC-Z]:/' >/dev/null]; then
-      # It is most probably a Windows format PATH printed by
-      # mingw gcc, but we are running on Cygwin. Gcc prints its search
-      # path with ; separators, and with drive letters. We can handle the
-      # drive letters (cygwin fileutils understands them), so leave them,
-      # especially as we might pass files found there to a mingw objdump,
-      # which wouldn't understand a cygwinified path. Ahh.
-      sys_lib_search_path_spec=`echo "$sys_lib_search_path_spec" | sed -e 's/;/ /g'`
-    else
-      sys_lib_search_path_spec=`echo "$sys_lib_search_path_spec" | sed  -e "s/$PATH_SEPARATOR/ /g"`
-    fi
-    ;;
+
   yes,pw32*)
     library_names_spec='`echo ${libname} | sed -e 's/^lib/pw/'``echo ${release} | sed -e 's/[.]/-/g'`${versuffix}.dll'
     ;;
@@ -2627,12 +2645,25 @@ case $host_os in
     else
       _LT_AC_TAGVAR(ld_shlibs, $1)=no
     fi
-	 ;;
+	;;
 
-  mingw* | pw32*)
-    # FIXME: insert proper C++ library support
-  	  _LT_AC_TAGVAR(ld_shlibs, $1)=no
-	 ;;
+  mingw* )
+    _LT_AC_TAGVAR(hardcode_libdir_flag_spec, $1)='-L$libdir'
+    _LT_AC_TAGVAR(always_export_symbols, $1)=no
+
+    if $LD --help 2>&1 | egrep 'auto-import' > /dev/null; then
+      _LT_AC_TAGVAR(archive_cmds, $1)='$CC '$lt_cv_cc_dll_switch' $libobjs $deplibs $compiler_flags -o $output_objdir/$soname ${wl}--out-implib,${lib}'
+      _LT_AC_TAGVAR(archive_expsym_cmds, $1)='$CC '$lt_cv_cc_dll_switch' $libobjs $deplibs $compiler_flags -o $output_objdir/$soname ${wl}-retain-symbols-file $wl$export_symbols ${wl}--out-implib,${lib}'
+    else
+      _LT_AC_TAGVAR(ld_shlibs, $1)=no
+    fi
+	;;
+
+
+  pw32* )
+     # FIXME: insert proper C++ library support
+    _LT_AC_TAGVAR(ld_shlibs, $1)=no
+	;;
 
   dgux*)
     case $cc_basename in
@@ -4520,7 +4551,7 @@ ifelse([$1],[CXX],[
       _LT_AC_TAGVAR(export_symbols_cmds, $1)='$NM -BCpg $libobjs $convenience | awk '\''{ if (((\[$]2 == "T") || (\[$]2 == "D") || (\[$]2 == "B")) && ([substr](\[$]3,1,1) != ".")) { print \[$]3 } }'\'' | sort -u > $export_symbols'
     fi
     ;;
-  mingw* | pw32*)
+  pw32*)
     _LT_AC_TAGVAR(export_symbols_cmds, $1)="$ltdll_cmds"
   ;;
   *)
@@ -4624,7 +4655,7 @@ EOF
       fi
       ;;
 
-    cygwin*)
+    cygwin* | mingw*)
       # _LT_AC_TAGVAR(hardcode_libdir_flag_spec, $1) is actually meaningless,
       # as there is no search path for DLLs.
       _LT_AC_TAGVAR(hardcode_libdir_flag_spec, $1)='-L$libdir'
@@ -4638,7 +4669,8 @@ EOF
       fi
       ;;
 
-    mingw* | pw32*)
+    # This pw32 section is mostly antique stuff preserved from Cygwin/MinGW.
+    pw32*)
       # _LT_AC_TAGVAR(hardcode_libdir_flag_spec, $1) is actually meaningless, as there is
       # no search path for DLLs.
       _LT_AC_TAGVAR(hardcode_libdir_flag_spec, $1)='-L$libdir'

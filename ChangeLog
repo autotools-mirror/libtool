@@ -1,3 +1,18 @@
+2002-10-15 Bob Friesenhahn <bfriesen@simple.dallas.tx.us>
+
+        * ltmain.in: MinGW works identically to Cygwin.
+
+        * libtool.m4: lt_cv_sys_max_cmd_len hard-coded to 8192
+        *  Model MinGW configuration after Cygwin configuration.
+           Some portions share implementation.
+
+2002-10-11 Elizabeth Barham <soggytrousers@yahoo.com>
+
+        * libtool.m4: Pattern MinGW library naming after that
+        used by Cygwin except use 'lib' prefix rather than 'cyg'.
+        * Transfer some configuration from Cygwin with adjustments
+          for MinGW.
+
 2002-10-15  Albert Chin-A-Young  <china@thewrittenword.com>
 
         * libtool.m4: When a module is built for AIX, the 'lib'
