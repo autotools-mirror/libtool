@@ -1,6 +1,17 @@
 NEWS - list of user-visible changes between releases of GNU Libtool
 
-New in 1.9f: 2004-??-??; CVS version 1.9e, Libtool team:
+New in 1.9f: 2004-10-23; CVS version 1.9e, Libtool team:
+* Calculate dllsearchpath correctly for wrapper scripts on cygwin.
+* Workarounds for bash bug when calling a function whose last command is
+  false.
+* Work properly with released Autoconf 2.59.
+* Shell quoting of meta-characters in libtool and it's variables much
+  improved.
+* Fix memleaks in libltdl.
+* Fix a linkscript problem on Windows.
+* Fix quote test for hosts that use $EXEEXT.
+* Fix expansion of ${wl} expressions in output of link commands on Mac OS X
+  (and others).
 * Fix a regression in 1.9d, where ECHO was always set to 'echo' and the
   backslash quoting tests were never run.
 * Fix a regression in 1.9d, where progpath was used for --no-reexec before it
