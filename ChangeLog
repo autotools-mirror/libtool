@@ -1,3 +1,9 @@
+2004-12-18  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
+	* libltdl/lt__dirent.c [mingw] (opendir): Fix write of constant
+	strings past end of buffer.
+	(opendir, readdir): Fix read past end of buffer.
+
 2004-12-17  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
 	* HACKING: Update list of non-Libtool-owned files.
