@@ -1,9 +1,14 @@
 NEWS - list of user-visible changes between releases of GNU Libtool
 
 New:
+* Bug fixes.
 * Inter-library dependencies are automatically handled when linking
   against a `.la' file.  This, along with `-no-undefined', should
   prevent many accidental libtool misuses.
+* New `-release' flag to encode release numbers into libtool
+  libraries.  This breaks binary compatibility, but is useful for
+  libraries whose interfaces change very frequently.  See
+  (libtool)Versioning.
 
 New in 1.0h - 1997-12-01, Gordon Matzigkeit:
 * A fix for an insidious bug in the quoting code, which broke

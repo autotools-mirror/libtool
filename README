@@ -13,7 +13,7 @@ Shared library support has been implemented for these platforms:
   AIX 4.x (*-*-aix4*)
   Digital/UNIX 3.x, 4.x, a.k.a. OSF/1 (*-*-osf3*, *-*-osf4*)
   FreeBSD 2.x, 3.x (*-*-freebsd2*, *-*-freebsd3*)
-  HP-UX 9.x, 10.x (*-*-hpux9*, *-*-hpux10*)
+  HP-UX 9.x, 10.x (*-*-hpux9*, *-*-hpux10*) [see note]
   IRIX 5.x, 6.x (*-*-irix5*, *-*-irix6*)
   Linux ELF (*-*-linux*, except aout, coff, and oldld)
   NetBSD 1.x (*-*-netbsd*)
@@ -24,6 +24,11 @@ Shared library support has been implemented for these platforms:
   SunOS 4.x, a.k.a. Solaris 1.x  (*-*-sunos4*)
   UTS 4.x (*-*-uts4*)
   All ELF targets that use both the GNU C compiler (gcc) and GNU ld
+
+NOTE: The vendor-distributed HP-UX sed(1) programs are horribly broken,
+and cannot handle libtool's requirements, so users may report unusual
+problems.  There is no workaround except to install a working sed
+(such as GNU sed) on these systems.
 
 See the file NEWS for a description of recent changes to libtool.
 

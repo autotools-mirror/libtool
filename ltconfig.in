@@ -53,8 +53,16 @@ else
   fi
 fi
 
+# Sed substitution that helps us do robust quoting.  It backslashifies
+# metacharacters that are still active within double-quoted strings.
+Xsed='sed -e s/^X//'
+sed_quote_subst='s/\([\\"\\`$\\\\]\)/\\\1/g'
+
+# Same as above, but don't quote variable references.
+double_quote_subst='s/\([\\"\\`\\\\]\)/\\\1/g'
+
 # The name of this program.
-progname=`$echo "$0" | sed 's%^.*/%%'`
+progname=`$echo "X$0" | $Xsed -e 's%^.*/%%'`
 
 # Constants:
 PROGRAM=ltconfig
@@ -65,13 +73,6 @@ ac_link='${CC-cc} -o conftest $CFLAGS $CPPFLAGS $LDFLAGS conftest.c $LIBS 1>&5'
 rm="rm -f"
 
 help="Try \`$progname --help' for more information."
-
-# Sed substitution that helps us do robust quoting.  It backslashifies
-# metacharacters that are still active within double-quoted strings.
-sed_quote_subst='s/\([\\"\\`$\\\\]\)/\\\1/g'
-
-# Same as above, but don't quote variable references.
-double_quote_subst='s/\([\\"\\`\\\\]\)/\\\1/g'
 
 # Global variables:
 can_build_shared=yes
@@ -239,7 +240,7 @@ fi
 
 if test -z "$srcdir"; then
   # Assume the source directory is the same one as the path to ltmain.sh.
-  srcdir=`echo "$ltmain" | sed 's%/[^/]*$%%'`
+  srcdir=`$echo "$ltmain" | $Xsed -e 's%/[^/]*$%%'`
   test "$srcdir" = "$ltmain" && srcdir=.
 fi
 
@@ -793,10 +794,11 @@ else
     export_dynamic_flag_spec='${wl}-E'
     ;;
 
-  irix5* | irix6*)
-    archive_cmds='$LD -shared -o $lib -soname $soname -set_version $verstring$libobjs'
-    hardcode_libdir_flag_spec='${wl}-rpath ${wl}$libdir'
-    ;;
+# FIXME: reimplement IRIX shared libraries.
+#  irix5* | irix6*)
+#    archive_cmds='$LD -shared -o $lib -soname $soname -set_version $verstring$libobjs'
+#    hardcode_libdir_flag_spec='${wl}-rpath ${wl}$libdir'
+#    ;;
 
   netbsd*)
     # Tested with NetBSD 1.2 ld
@@ -837,6 +839,13 @@ else
     archive_cmds='$LD -G -z text -h $soname -o $lib$libobjs'
     hardcode_libdir_flag_spec='-R$libdir'
     hardcode_shlibpath_var=no
+
+    # Solaris 2 before 2.5 hardcodes -L paths.
+    case "$host_os" in
+    solaris2.[0-4]*)
+      hardcode_minus_L=yes
+      ;;
+    esac
     ;;
 
   sunos4*)
@@ -855,13 +864,13 @@ else
     hardcode_shlibpath_var=no
     ;;
 
-   uts4*)
-     archive_cmds='$LD -G -h $soname -o $lib$libobjs'
-     hardcode_libdir_flag_spec='-L$libdir'
-     hardcode_direct=no
-     hardcode_minus_L=no
-     hardcode_shlibpath_var=no
-     ;;
+  uts4*)
+    archive_cmds='$LD -G -h $soname -o $lib$libobjs'
+    hardcode_libdir_flag_spec='-L$libdir'
+    hardcode_direct=no
+    hardcode_minus_L=no
+    hardcode_shlibpath_var=no
+    ;;
 
   *)
     ld_shlibs=no
@@ -962,7 +971,7 @@ if { (eval echo $progname:@LINENO@: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>
     if sort "$nlist" | uniq > "$nlist"T; then
       mv -f "$nlist"T "$nlist"
       wcout=`wc "$nlist" 2>/dev/null`
-      count=`echo "$wcout" | sed 's/^[ 	]*\([0-9][0-9]*\).*$/\1/'`
+      count=`$echo "X$wcout" | $Xsed -e 's/^[ 	]*\([0-9][0-9]*\).*$/\1/'`
       (test "$count" -ge 0) 2>/dev/null || count=-1
     else
       rm -f "$nlist"T
@@ -1094,17 +1103,17 @@ echo $ac_n "checking dynamic linker characteristics... $ac_c" 1>&6
 case "$host_os" in
 aix3* | aix4*)
   version_type=linux
-  library_names_spec='$libname.so.$versuffix $libname.a'
+  library_names_spec='${libname}${release}.so.$versuffix $libname.a'
   shlibpath_var=LIBPATH
 
   # AIX has no versioning support, so we append a major version to the name.
-  soname_spec='$libname.so.$major'
+  soname_spec='${libname}${release}.so.$major'
   ;;
 
 amigaos*)
   library_names_spec='$libname.ixlibrary $libname.a'
   # Create ${libname}_ixlibrary.a entries in /sys/libs.
-  finish_eval='for lib in `ls $libdir/*.ixlibrary 2>/dev/null`; do libname=`$echo "$lib" | sed '\''s%^.*/\([^/]*\)\.ixlibrary$%\1%'\''`; test $rm /sys/libs/${libname}_ixlibrary.a; $show "(cd /sys/libs && $LN_S $lib ${libname}_ixlibrary.a)"; (cd /sys/libs && $LN_S $lib ${libname}_ixlibrary.a) || exit 1; done'
+  finish_eval='for lib in `ls $libdir/*.ixlibrary 2>/dev/null`; do libname=`$echo "X$lib" | $Xsed -e '\''s%^.*/\([^/]*\)\.ixlibrary$%\1%'\''`; test $rm /sys/libs/${libname}_ixlibrary.a; $show "(cd /sys/libs && $LN_S $lib ${libname}_ixlibrary.a)"; (cd /sys/libs && $LN_S $lib ${libname}_ixlibrary.a) || exit 1; done'
   ;;
 
 freebsd2* | freebsd3*)
@@ -1126,16 +1135,16 @@ hpux9* | hpux10*)
   dynamic_linker="$host_os dld.sl"
   version_type=sunos
   shlibpath_var=SHLIB_PATH
-  library_names_spec='$libname.sl.$versuffix $libname.sl.$major $libname.sl'
-  soname_spec='$libname.sl.$major'
+  library_names_spec='${libname}${release}.sl.$versuffix ${libname}${release}.sl.$major $libname.sl'
+  soname_spec='${libname}${release}.sl.$major'
   # HP-UX runs *really* slowly unless shared libraries are mode 555.
   postinstall_cmds='chmod 555 $lib'
   ;;
 
 irix5* | irix6*)
   version_type=osf
-  soname_spec='$libname.so'
-  library_names_spec='$libname.so.$versuffix $libname.so'
+  soname_spec='${libname}${release}.so'
+  library_names_spec='${libname}${release}.so.$versuffix $libname.so'
   shlibpath_var=LD_LIBRARY_PATH
   ;;
 
@@ -1147,8 +1156,8 @@ linux-gnuoldld* | linux-gnuaout* | linux-gnucoff*)
 # This must be Linux ELF.
 linux-gnu*)
   version_type=linux
-  library_names_spec='$libname.so.$versuffix $libname.so.$major $libname.so'
-  soname_spec='$libname.so.$major'
+  library_names_spec='${libname}${release}.so.$versuffix ${libname}${release}.so.$major $libname.so'
+  soname_spec='${libname}${release}.so.$major'
   finish_cmds='PATH="\$PATH:/sbin" ldconfig -n $libdir'
   shlibpath_var=LD_LIBRARY_PATH
 
@@ -1179,22 +1188,22 @@ os2*)
 
 osf3* | osf4*)
   version_type=osf
-  soname_spec='$libname.so'
-  library_names_spec='$libname.so.$versuffix $libname.so'
+  soname_spec='${libname}${release}.so'
+  library_names_spec='${libname}${release}.so.$versuffix $libname.so'
   shlibpath_var=LD_LIBRARY_PATH
   ;;
 
 sco3.2v5*)
   version_type=osf
-  soname_spec='$libname.so.$major'
-  library_names_spec='$libname.so.$versuffix $libname.so.$major $libname.so'
+  soname_spec='${libname}${release}.so.$major'
+  library_names_spec='${libname}${release}.so.$versuffix ${libname}${release}.so.$major $libname.so'
   shlibpath_var=LD_LIBRARY_PATH
   ;;
 
 solaris2*)
   version_type=linux
-  library_names_spec='$libname.so.$versuffix $libname.so.$major $libname.so'
-  soname_spec='$libname.so.$major'
+  library_names_spec='${libname}${release}.so.$versuffix ${libname}${release}.so.$major $libname.so'
+  soname_spec='${libname}${release}.so.$major'
   shlibpath_var=LD_LIBRARY_PATH
   ;;
 
@@ -1207,8 +1216,8 @@ sunos4*)
 
 uts4*)
   version_type=linux
-  library_names_spec='$libname.so.$versuffix $libname.so.$major $libname.so'
-  soname_spec='$libname.so.$major'
+  library_names_spec='${libname}${release}.so.$versuffix ${libname}${release}.so.$major $libname.so'
+  soname_spec='${libname}${release}.so.$major'
   shlibpath_var=LD_LIBRARY_PATH
   ;;
 
@@ -1282,10 +1291,10 @@ for var in ltecho old_CC old_CFLAGS old_CPPFLAGS old_LD old_NM old_RANLIB \
   old_postinstall_cmds | old_postuninstall_cmds | archive_cmds | \
   postinstall_cmds | postuninstall_cmds | finish_cmds)
     # Double-quote double-evaled strings.
-    eval "$var=\`\$echo \"\$$var\" | sed -e \"\$double_quote_subst\" -e \"\$sed_quote_subst\"\`"
+    eval "$var=\`\$echo \"X\$$var\" | \$Xsed -e \"\$double_quote_subst\" -e \"\$sed_quote_subst\"\`"
     ;;
   *)
-    eval "$var=\`\$echo \"\$$var\" | sed \"\$sed_quote_subst\"\`"
+    eval "$var=\`\$echo \"X\$$var\" | \$Xsed -e \"\$sed_quote_subst\"\`"
     ;;
   esac
 done
@@ -1309,6 +1318,9 @@ cat <<EOF > $ofile
 #
 # Compiler and other test output produced by $progname, useful for
 # debugging $progname, is in ./config.log if it exists.
+
+# Sed that helps us avoid accidentally triggering echo(1) options like -n.
+Xsed="sed -e s/^X//"
 
 # The HP-UX ksh and POSIX shell print the target directory to stdout
 # if CDPATH is set.
@@ -1470,7 +1482,7 @@ EOF
   ;;
 *) cat <<EOF >> $ofile
 # Find the path to this script.
-thisdir=\`\$echo "\$0" | sed -e 's%/[^/]*\$%%'\`
+thisdir=\`\$echo "X\$0" | \$Xsed -e 's%/[^/]*\$%%'\`
 test "X\$0" = "X\$thisdir" && thisdir=.
 
 # Execute the libtool backend.

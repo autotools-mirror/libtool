@@ -5,87 +5,12 @@ For next public release:
 really should make our shared library support just depend on the
 compiler type.
 
-* Explain why we have the `-lm' in:
-libhello_la_LDFLAGS = -version-info 3:12:1 -lm
-
-* Explain why we don't allow `-o SOMEFILE' with compile mode.
-
 * Alexandre Oliva suggests that we hardcode paths into libraries, as
 well as binaries:  `... -Wl,-soname -Wl,/tmp/libtest.so.0 ...'.
 
-* Primoz Peterlin <peterlin@biofiz.mf.uni-lj.si> -Aicrit:
-
-> A very first impression after compiling the new recode on HP-UX 9.05
-> (with gcc and various other gnuities).  I encountered the following
-> problem [...]
-> ../libtool: /./ltmain.sh: not found
-
-This is a bug in HP-UX sed.  The correct solution is to obtain a sed
-update from your HP-UX vendor, or to install GNU sed.  The sed
-distributed with HP-UX is so horribly broken that it is impossible to
-change libtool so that it works by using it.
-
-* From Kenneth Albanowski:
-
-At the very least, this message should be tailored for the OS and
-libraries -- if Linux's ld requires explicit -rpath arguments (instead of
-treating all -L paths as -rpaths) then this message should mention it, as
-well as the full options. Something like this would seem ideal:
-
-  Libraries have been installed to /usr/lib, /usr/local/lib, /foo/bar
-  and /foo/baz. To link against libraries in /foo/bar and /foo/baz, users
-  may have to:
-	- Use the -L/foo/bar and -L/foo/baz linker flags, and
-        - Add /foo/bar:/foo/baz to their LD_LIBRARY_PATH environment
-          variable during execution, or
-        - Add /foo/bar:/foo/baz to their LD_RUN_PATH environment
-          variable during linking, or
-        - Use the -rpath /foo/bar and -rpath /foo/baz linker flags, or
-        - Have the system administrator add /foo/bar and /foo/bz to
-          /etc/ld.so.conf
-  [See the ld.so(8) manual page and any operating system documentation
-  about shared libraries for more information.]
-
-* Franc,ois Pinard about debugging:
-
-``Another thing I'm curious to experiment is how will `gdb' perform
-with shared libraries.  There are a few notes in the manual about
-generating a "more easy to debug" version of the program.  I tried the
-recipe, but it broke somewhere in Automake generated dependency code,
-so I got to remove it for now.  However, the manual does not explain
-what the debugging difficulty is, and so, I wonder what problems I
-will meet.''
-
-* Document the change from `-allow-undefined' to `-no-undefined'.
-
-* Document what to tell users about adding their libraries to their
-`ldconfig' directories at bootup.  Libtool doesn't do this
-automatically, because it can't.
-
-* Some packages, such as GIMP, choose to put a note about
-`--disable-shared' in their README:
-
-----------------------------------------------------------------------
-The GIMP uses GNU libtool in order to build shared libraries on a
-variety of systems. While this is very nice for making usable
-binaries, it can be a pain when trying to debug a program. For that
-reason, compilation of shared libraries can be turned off by
-specifying the "--disable-shared" option to "configure".
-----------------------------------------------------------------------
-Simply invoke configure in the top-level directory.  Besides the usual
-GNU configure options, there are the following SANE specific options:
-
- --disable-shared
-	Don't use shared libraries.  Useful for debugging or when there
-	is a problem building shared libraries.
-----------------------------------------------------------------------
-
-Perhaps a similar note could be added to ABOUT-NLS.
-
-I'll add a suggestion to the libtool documentation, so that other
-maintainers add this kind of note to their package documentation.  The
-biggest motivation, mentioned by Franc,ois Pinard, is to turn off
-double-compilation.
+* Implement full support for other orthogonal library types
+(libhello_g, libhello_p, 64 vs 32-bit ABI's, etc).  Make these types
+configurable.
 
 In the future:
 **************
@@ -139,16 +64,6 @@ notes.
 
 Things to think about:
 **********************
-
-* Implement full support for other orthogonal library types
-(libhello_g, libhello_p).  Make these types configurable.  Some
-thinking will have to be done about the defaults, and what libhello
-(standard type) should be.
-
-Maybe we should just add an autoconf macro and get creative with
-library_transform_name, or something.  These changes should be
-partially driven by the needs of packaging tools, such as RPM and
-dpkg.
 
 * Talk with RMS about his so-called `automatic package generation
 tool.'  This is probably what Thomas has been murmuring about for the

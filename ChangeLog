@@ -1,3 +1,42 @@
+Fri Feb  6 00:20:41 1998  Gordon Matzigkeit  <gord@profitpress.com>
+
+	* ltconfig.in, ltmain.in (Xsed): `arg=-n; echo "$arg" | sed ...'
+  	gives problems, because the `-n' is interpreted as an option to
+ 	echo(1).  So, use `echo "X$arg" | sed -e 's/^X//' ...' everywhere,
+	via the $Xsed convenience variable.  Suggested by H.J. Lu.
+
+Mon Feb  2 12:24:22 1998  Gordon Matzigkeit  <gord@profitpress.com>
+
+	* ltconfig.in: Turn off IRIX shared library support until 32-bit
+	and 64-bit ABI differences can be resolved.
+
+Wed Jan 28 14:33:04 1998  Gordon Matzigkeit  <gord@profitpress.com>
+
+	* libtool.m4 (LD): Reverse yesterday's change because `-old_ld'
+	isn't accepted by GCC.
+
+Tue Jan 27 09:59:19 1998  Gordon Matzigkeit  <gord@profitpress.com>
+
+	* ltconfig.in (soname_spec): Add in user-specified release numbers
+	for every host system that supports an soname that differs from
+	the linkname.
+
+	* libtool.m4 (LD): Add `-old_ld' to the list of flags that need to
+	be passed through on SGI.  Reported by Chris Lee.
+
+	* ltmain.in (release): Prepend a hyphen to the release number, and
+ 	fix a typo because `-version-info' takes only 3 args.  From
+ 	H.J. Lu.
+
+Sun Jan 25 12:44:50 1998  Gordon Matzigkeit  <gord@profitpress.com>
+
+	* ltconfig.in (library_names_spec): On Linux, use the
+ 	user-specified release.
+
+	* ltmain.in (link): Allow the user to specify a release number for
+ 	the library using the `-release' flag.  Suggested by H.J. Lu and
+ 	Ian Lance Taylor.
+
 Mon Jan 19 10:03:03 1998  Gordon Matzigkeit  <gord@profitpress.com>
 
 	* ltconfig.in (old_postuninstall_cmds): Reorder so that chmod
