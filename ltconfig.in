@@ -103,7 +103,7 @@ if test "X`($echo '\t') 2>/dev/null`" != 'X\t' ||
       # This shell has a builtin print -r that does the trick.
       echo='print -r'
     elif (test -f /bin/ksh || test -f /bin/ksh$ac_exeext) &&
-         test "X$CONFIG_SHELL" != X/bin/ksh; then
+	 test "X$CONFIG_SHELL" != X/bin/ksh; then
       # If we have ksh, try running ltconfig again with it.
       ORIGINAL_CONFIG_SHELL="${CONFIG_SHELL-/bin/sh}"
       export ORIGINAL_CONFIG_SHELL
@@ -1872,6 +1872,7 @@ os2*)
 
 osf3* | osf4*)
   version_type=osf
+  need_version=no
   soname_spec='${libname}${release}.so'
   library_names_spec='${libname}${release}.so$versuffix ${libname}${release}.so $libname.so'
   shlibpath_var=LD_LIBRARY_PATH

@@ -1,3 +1,15 @@
+1999-04-27 Thomas Tanner  <tanner@gmx.de>
+
+	* ltconfig.in: set need_version=no on OSF (reported by
+	  Marcus Sundberg <mackan@stacken.kth.se>)
+	* ltmain.in: allow absolute non-existant -L paths,
+	  always use output_objdir instead of objdir for temporary files
+	  and create the directory before generating symbol lists,
+	  delete generated temporary symbol lists,
+	  don't add .la twice in the pseudo-library header
+	* ltmain.in (help uninstall): added a missing backslash
+	  after echo (reported by Ossama Othman)
+	  
 1999-04-27  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* ltmain.in (old_archive_cmds): Iterate on oldobjs to find out
