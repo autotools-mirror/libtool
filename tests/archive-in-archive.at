@@ -50,8 +50,7 @@ AT_CHECK([$LIBTOOL --mode=link --tag=CC --tag=disable-shared $CC $CFLAGS $LDFLAG
 AT_CHECK([$LIBTOOL --mode=install cp libbar.la $thisdir], [], [ignore], [ignore])
 eval `$EGREP '^(old_library)=' < libbar.la`
 libbar=$old_library
-eval `$LIBTOOL --config | $EGREP '^(AR_TFLAGS|AR_SEP)='`
-AT_CHECK([$AR $AR_TFLAGS$AR_SEP$libbar | grep $libfoo],[1],[ignore],[ignore])
-archive_contents=`$AR $AR_TFLAGS$AR_SEP$libbar`
+AT_CHECK([$LT_AR t $libbar | grep $libfoo],[1],[ignore],[ignore])
+archive_contents=`$LT_AR t $libbar`
 AT_XFAIL_IF([case "$archive_contents" in *"$libfoo"*) : ;; esac])
 AT_CLEANUP

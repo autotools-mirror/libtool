@@ -1320,6 +1320,18 @@ lib)
   ;;
 esac
 
+if test -n "$AR_SEP" &&
+   test "X$AR_TFLAGS" = Xt &&
+   test "X$AR_XFLAGS" = Xx &&
+   test "$ar_extract_one_by_one" = no
+then
+  LT_AR='$(AR)'
+  LT_ARFLAGS='$(AR_FLAGS)'
+else
+  LT_AR='$(SHELL) $(abs_top_builddir)/libtool --quiet --mode=ar'
+  LT_ARFLAGS=cru
+fi
+
 _LT_DECL([], [ar_extract_one_by_one], [1],
   [Extract archive members one by one])
 _LT_DECL([], [archiver_list_spec], [1],
@@ -1329,10 +1341,10 @@ _LT_DECL([], [AR_FLAGS], [1], [Flags to create an archive])
 _LT_DECL([], [AR_TFLAGS], [1], [Flags to list archive content])
 _LT_DECL([], [AR_XFLAGS], [1], [Flags to extract an archive])
 _LT_DECL([], [AR_SEP], [1], [Separator between AR flags and AR files])
+AC_SUBST([LT_AR])
+AC_SUBST([LT_ARFLAGS])
 AC_SUBST([AR])
 AC_SUBST([AR_FLAGS])
-AC_SUBST([AR_TFLAGS])
-AC_SUBST([AR_SEP])
 ])# LT_PROG_AR
 
 

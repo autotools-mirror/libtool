@@ -129,6 +129,7 @@ Invoking @code{libtool}
 * Finish mode::                 Completing a library installation.
 * Uninstall mode::              Removing installed executables and libraries.
 * Clean mode::                  Removing uninstalled executables and libraries.
+* Archive mode::                Portably handle archives.
 
 Integrating libtool with your package
 
@@ -1262,6 +1263,7 @@ by programs libtool invokes, rather than libtool itself.
 * Finish mode::                 Completing a library installation.
 * Uninstall mode::              Removing installed executables and libraries.
 * Clean mode::                  Removing uninstalled executables and libraries.
+* Archive mode::                Portably handle archives.
 @end menu
 
 @node Compile mode
@@ -1661,6 +1663,64 @@ files (typically @command{/bin/rm}).
 
 The remaining @var{mode-args} are either flags for the deletion program
 (beginning with a @samp{-}), or the names of files to delete.
+
+@node Archive mode
+@section Archive mode
+@cindex archive mode
+@cindex mode, archive
+
+@dfn{Archive} mode lets you handle archives portably on systems where
+the archiver is weird. As an example, the Microsoft LIB.EXE archiver
+expects @command{lib -OUT:example.lib some.obj objects.obj}, which is
+impossible to fit into the variables @var{AR} and @var{AR_FLAGS} (note
+that there is no space between @samp{-OUT:} and @file{example.lib}).
+Also, many expect to be able to extract archives with @command{$AR x}
+and list archive content with @command{$AR t}. Again using Microsoft
+LIB.EXE as an example, archive extraction and listing do not always
+work like that (@command{lib -EXTRACT:example.lib} and
+@command{lib -LIST example.lib} respectively, note the absent colon
+in the listing command).
+
+Libtool presents the archiver with a limited but common interface
+
+@var{mode-args} consist of an archiver command, an archive to operate
+on and possibly a set of object files.
+
+The possible archiver command are
+
+@table @option
+@item cru @file{archive-file} @file{object-file}@dots{}
+Creates an archive.
+
+@example
+ms$ @kbd{libtool --mode=ar cru example.lib some.obj objects.obj}
+libtool: ar: lib -NOLOGO -OUT:example.lib  some.obj objects.obj
+ms$
+@end example
+
+@item x @file{archive-file}
+Extracts an archive.
+
+@example
+ms$ @kbd{libtool --mode=ar x example.lib}
+libtool: ar: (cd . && lib -NOLOGO -EXTRACT:some.obj "example.lib")
+libtool: ar: (cd . && lib -NOLOGO -EXTRACT:objects.obj "example.lib")
+ms$
+@end example
+
+@item t @file{archive-file}
+Lists the contents of an archive. The libtool option @option{--quiet} is
+useful here, to avoid the first disgnostic line.
+
+@example
+ms$ @kbd{libtool --mode=ar x example.lib}
+libtool: ar: lib -NOLOGO -LIST example.lib
+some.obj
+objects.obj
+ms$
+@end example
+
+@end table
 
 @node Integrating libtool
 @chapter Integrating libtool with your package
@@ -5529,7 +5589,7 @@ in cases where it is necessary.
 @node Archivers
 @subsection Archivers
 
-On all known systems, building a static library can be accomplished by
+On all sane systems, building a static library can be accomplished by
 running @kbd{ar cru lib@var{name}.a @var{obj1}.o @var{obj2}.o @dots{}},
 where the @samp{.a} file is the output library, and each @samp{.o} file is an
 object file.
@@ -5538,6 +5598,17 @@ On all known systems, if there is a program named @command{ranlib}, then it
 must be used to ``bless'' the created library before linking against it,
 with the @kbd{ranlib lib@var{name}.a} command.  Some systems, like Irix,
 use the @code{ar ts} command, instead.
+
+On some not so sane systems (e.g. Windows with MSYS but w/o MinGW @code{ar}
+and instead the Microsoft archiver LIB.EXE), @code{ar cru} obviously does
+not work. Because of those systems, it is more portable to use
+@code{libtool --mode=ar cru} instead. If you only want to go through the
+libtool script when it is needed, use @code{$(LT_AR) $(LT_ARFLAGS)} in
+Makefile.in, and configure will do the right thing.
+
+On some systems, it is required that you add more flags, e.g. 64-bit AIX
+which needs @code{ar -X64 cru}. Or everything might just be named
+differently, e.g some prefer @code{CC -ar -o} on Irix.
 
 @node libtool script contents
 @section @code{libtool} script contents

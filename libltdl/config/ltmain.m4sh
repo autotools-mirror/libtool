@@ -51,6 +51,7 @@ m4_divert_push([SCRIPT])# @configure_input@
 #
 # MODE must be one of the following:
 #
+#         ar                 handle archives
 #         clean              remove files from the build directory
 #         compile            compile a source file into a libtool object
 #         execute            automatically set library path, then run a program
@@ -249,6 +250,9 @@ func_enable_tag ()
 
   # Shorthand for --mode=foo, only valid as the first argument
   case $1 in
+  ar|a)
+    shift; set dummy --mode ar ${1+"$@"}; shift
+    ;;
   clean|clea|cle|cl)
     shift; set dummy --mode clean ${1+"$@"}; shift
     ;;
@@ -298,6 +302,7 @@ func_enable_tag ()
       --mode)		test "$#" -eq 0 && func_missing_arg "$opt" && break
 			case $1 in
 			  # Valid mode arguments:
+			  ar)		;;
 			  clean)	;;
 			  compile)	;;
 			  execute)	;;
@@ -1059,6 +1064,22 @@ func_mode_help ()
         # Generic help is extracted from the usage comments
         # at the start of this file.
         func_help
+        ;;
+
+      ar)
+        $ECHO \
+"Usage: $progname [OPTION]... --mode=ar COMMAND ARCHIVE [OBJECT...]
+
+Create and extract files from archives.
+
+This mode accepts the following archiver COMMANDs:
+
+  cru               create the ARCHIVE, consisting of the given OBJECTs.
+  x                 extract the ARCHIVE
+  t                 list the ARCHIVE content
+
+Note that this mode is not for creating static libtool libraries, it is
+a compatibility layer for \"weird\" archivers."
         ;;
 
       clean)
@@ -8222,6 +8243,54 @@ func_mode_uninstall ()
 
 { test "$mode" = uninstall || test "$mode" = clean; } &&
     func_mode_uninstall ${1+"$@"}
+
+
+# func_mode_ar arg...
+func_mode_ar ()
+{
+    $opt_debug
+    ar_action="$nonopt"
+    archive=
+    files=
+
+    for arg
+    do
+      if test -z "$archive"; then
+        archive=$arg
+      else
+        files="$files $arg"
+      fi
+    done
+
+    test -z "$archive" && \
+      func_fatal_help "you must specify an archive"
+
+    case "$ar_action" in
+    cru)
+      test -z "$files" && \
+	func_fatal_help "you must specify some objects"
+      func_show_eval "$AR $AR_FLAGS$AR_SEP$archive $files" 'exit $?'
+      ;;
+    x)
+      if test "x$ar_extract_one_by_one" = xyes; then
+	func_extract_an_archive . "$archive"
+	exit $?
+      else
+	func_show_eval "$AR $AR_XFLAGS$AR_SEP$archive" 'exit $?'
+      fi
+      ;;
+    t)
+      func_show_eval "$AR $AR_TFLAGS$AR_SEP$archive" 'exit $?'
+      ;;
+    *)
+      func_fatal_help "bad archive action, either cru, x or t"
+      ;;
+    esac
+
+    exit $EXIT_SUCCESS
+}
+
+test "$mode" = ar && func_mode_ar ${1+"$@"}
 
 test -z "$mode" && {
   help="$generic_help"
