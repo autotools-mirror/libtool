@@ -1,3 +1,9 @@
+1999-06-25  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* ltconfig.in (linux-gnu*, deplibs_check_method): Use pass_all on
+	alpha, x86 and sparc architectures by now, reverting to file_magic 
+	at least on ARM, where it breaks.
+
 1999-06-23  Thomas Tanner  <tanner@ffii.org>
 
 	* NEWS: updated
