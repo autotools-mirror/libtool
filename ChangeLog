@@ -1,9 +1,17 @@
+2004-04-19  Gary V. Vaughan  <gary@gnu.org>
+
+	* m4/libtool.m4 (_LT_LANG_CXX_CONFIG): Intel C++ compiler 8.0 and
+	newer adds predep_objects and postdep_objects itself, so don't
+	duplicate them in $archive_cmds and $archive_expsym_cmds.
+	* NEWS: Updated.
+	Reported by Roberto Bagnare <bagnara@cs.unipr.it>
+
 2004-04-17  Peter O'Gorman  <peter@pogma.com>
 
 	* libltdl/loader-dyld.c: Fix compilation issues. Set Original author
 	to me.
 
-2004-04-17  Todd Vierling  <tv@duh.org>, 
+2004-04-17  Todd Vierling  <tv@duh.org>,
 	Peter O'Gorman  <peter@pogma.com>
 
 	* m4/libtool.m4 (AC_LIBTOOL_SYS_MAX_CMD_LEN): Use sysctl to get the
@@ -20,7 +28,7 @@
 	* configure.ac: Invoke LT_LANG for each desired supported language.
 	* doc/libtool.texi: Remove documentation for the LT_INIT options,
 	rewrite LT_LANG documentation.
-	
+
 2004-04-14  Alexandre Duret-Lutz  <adl@gnu.org>
 
 	* bootstrap: Delete acinclude.m4.

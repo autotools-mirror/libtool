@@ -49,6 +49,7 @@ New in 1.5b: 2004-??-??; CVS version 1.5a, Libtool team:
   latest files.
 * Extracting symbols from an import library on cygwin and win32 now works.
 * Initial support for amigaos-ppc.
+* Support for Intel C++ version 8.0.
 * New support for IBM's xlc and xlc++ on Mac OS X.
 * Bug fixes.
 
