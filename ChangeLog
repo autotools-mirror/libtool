@@ -1,3 +1,14 @@
+2004-07-27  Gary V. Vaughan  <gary@gnu.org>
+
+	This change fixes another VPATH build bug, where the vcl.tmp
+	target forced a rebuild of stamp-vcl in the build tree (and
+	hence regeneration of m4/ltversion.m4, thus an automake driven
+	rebootstrap that doesn't know about $fakes) requiring a fresh
+	./bootstrap after every cvs/tla update:
+
+	* Makefile.am (vcl.tmp): Removed.
+	(stamp-vcl): Adopt former vcl.tmp target rules.
+
 2004-07-25  Gary V. Vaughan  <gary@gnu.org>
 
 	* ltmain.in: Make sure that dependency libraries of -dlpreopened

@@ -67,8 +67,7 @@ bin_SCRIPTS = libtool libtoolize
 ## at the top of this rule takes care of prefering the right one on
 ## subsequent runs.
 MKSTAMP = $(SHELL) $(top_srcdir)/config/mkstamp
-stamp-vcl: vcl.tmp $(top_srcdir)/ChangeLog
-vcl.tmp:
+stamp-vcl: $(top_srcdir)/ChangeLog
 	@dir=.; test -f $$dir/stamp-vcl || dir=$(srcdir); \
 	set `$(MKSTAMP) < $(top_srcdir)/ChangeLog`; \
 	echo "$$1" > vcl.tmp; \
