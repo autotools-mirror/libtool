@@ -1,6 +1,6 @@
 2002-12-11  Robert Boehne  <rboehne@gnu.org>
 
-	ltmain.in: Revert the version +1 change for IRIX, it could
+	* ltmain.in: Revert the version +1 change for IRIX, it could
 	cause compatibility problems.
 
 2002-11-22  Christian Cornelssen  <ccorn@cs.tu-berlin.de>
