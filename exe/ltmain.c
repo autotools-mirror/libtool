@@ -75,14 +75,14 @@ closeScript( FILE* fp )
 
     if (scriptStatus == -1) {
         fprintf( stderr, "%s EXIT FAILURE:  pclose returned %d (%s)\n",
-                 ltmainOptions.pzProgName, errno, strerror( errno ));
+                 libtoolOptions.pzProgName, errno, strerror( errno ));
         scriptStatus = EXIT_FAILURE;
         return;
     }
 
     if (! WIFEXITED( scriptStatus )) {
         fprintf( stderr, "%s EXIT FAILURE:  %s did not exit - code %x\n",
-                 ltmainOptions.pzProgName, pz_cmd_name, scriptStatus );
+                 libtoolOptions.pzProgName, pz_cmd_name, scriptStatus );
         scriptStatus = EXIT_FAILURE;
         return;
     }
@@ -90,7 +90,7 @@ closeScript( FILE* fp )
     scriptStatus = WEXITSTATUS(scriptStatus);
     if (scriptStatus != 0) {
         fprintf( stderr, "%s BAD EXIT:  %s exited %d\n",
-                 ltmainOptions.pzProgName, pz_cmd_name, scriptStatus );
+                 libtoolOptions.pzProgName, pz_cmd_name, scriptStatus );
         return;
     }
 
@@ -106,7 +106,7 @@ closeScript( FILE* fp )
 
     default:
         fprintf( stderr, "%s WRONG SIGNAL:  %d\n",
-                 ltmainOptions.pzProgName, signalReceived );
+                 libtoolOptions.pzProgName, signalReceived );
         scriptStatus = EXIT_FAILURE;
     }
 }
@@ -265,7 +265,7 @@ else  echo='%s --echo --' ; fi\n";
     FILE* fp = HAVE_OPT( DRY_RUN ) ? stdout : popen( pz_shell, "w" );
     if (fp == (FILE*)NULL) {
         tSCC zErr[] = "%s error:  fs error %d (%s) on popen( \"%s\",\"w\")\n";
-        fprintf( stderr, zErr, ltmainOptions.pzProgPath, errno,
+        fprintf( stderr, zErr, libtoolOptions.pzProgPath, errno,
                  strerror( errno ), pz_shell );
         exit( EXIT_FAILURE );
     }
@@ -283,7 +283,7 @@ else  echo='%s --echo --' ; fi\n";
     CKSERV;
     fputs( apz_mode_cmd[ 0 ], fp );
     CKSERV;
-    fprintf( fp, zChkEcho, ltmainOptions.pzProgPath );
+    fprintf( fp, zChkEcho, libtoolOptions.pzProgPath );
     CKSERV;
 
     fprintf( fp, zQuiet,  HAVE_OPT( QUIET )      ? ":"   : "\"$echo\"" );
@@ -300,7 +300,7 @@ else  echo='%s --echo --' ; fi\n";
 
     if (HAVE_OPT( DEBUG )) {
         fprintf( stderr, "%s: enabling shell trace mode\n",
-                 ltmainOptions.pzProgName );
+                 libtoolOptions.pzProgName );
         fputs( zDbgFmt, fp );
     }
     CKSERV;
@@ -323,10 +323,10 @@ else  echo='%s --echo --' ; fi\n";
      *  Insert our modal stuff and one shell option processing dinkleberry
      *  that one of the command scripts depends upon.
      */
-    fprintf( fp, zModeName, ltmainOptions.pzProgName,
-            ltmainOptions.pOptDesc[ WHICH_OPT_COMPILE ].pz_Name );
+    fprintf( fp, zModeName, libtoolOptions.pzProgName,
+            libtoolOptions.pOptDesc[ OPT_VALUE_MODE ].pz_Name );
     CKSERV;
-    fprintf( fp, zMode, ltmainOptions.pzProgName );
+    fprintf( fp, zMode, libtoolOptions.pzProgName );
     CKSERV;
 
     /*
@@ -355,7 +355,7 @@ else  echo='%s --echo --' ; fi\n";
      *  macro will detect that, call closeScript() and return so as to
      *  avoid segfaults and more SIGPIPEs.
      */
-    fputs( apz_mode_cmd[ WHICH_OPT_COMPILE ], fp );
+    fputs( apz_mode_cmd[ OPT_VALUE_MODE ], fp );
     CLOSEOK;
 
     fputc( '\n', fp );
@@ -382,7 +382,7 @@ main( argc, argv )
      *  Make sure the resulting state is sane.
      */
     {
-        int ct = optionProcess( &ltmainOptions, argc, argv );
+        int ct = optionProcess( &libtoolOptions, argc, argv );
         argc -= ct;
         argv += ct;
         if (! HAVE_OPT( MODE ))
@@ -399,17 +399,17 @@ main( argc, argv )
          *  Options prohibited for all states except link & compile
          */
         if (HAVE_OPT( OUTPUT_FILE )) {
-            fprintf( stderr, zBadOpt, ltmainOptions.pzProgName, "output-file" );
+            fprintf( stderr, zBadOpt, libtoolOptions.pzProgName, "output-file" );
             USAGE( EXIT_FAILURE );
             /* NOTREACHED */
         }
         if (HAVE_OPT( STATIC )) {
-            fprintf( stderr, zBadOpt, ltmainOptions.pzProgName, "static" );
+            fprintf( stderr, zBadOpt, libtoolOptions.pzProgName, "static" );
             USAGE( EXIT_FAILURE );
             /* NOTREACHED */
         }
         if (HAVE_OPT( DYNAMIC )) {
-            fprintf( stderr, zBadOpt, ltmainOptions.pzProgName, "dynamic" );
+            fprintf( stderr, zBadOpt, libtoolOptions.pzProgName, "dynamic" );
             USAGE( EXIT_FAILURE );
             /* NOTREACHED */
         }
@@ -425,7 +425,7 @@ main( argc, argv )
     case MODE_LINK:
     case MODE_COMPILE:
         if (HAVE_OPT( DLOPEN )) {
-            fprintf( stderr, zBadOpt, ltmainOptions.pzProgName, "dlopen" );
+            fprintf( stderr, zBadOpt, libtoolOptions.pzProgName, "dlopen" );
             USAGE( EXIT_FAILURE );
             /* NOTREACHED */
         }
@@ -446,7 +446,7 @@ main( argc, argv )
         return EXIT_SUCCESS;
 
     default:
-        fprintf( stderr, zBadMode, ltmainOptions.pzProgName );
+        fprintf( stderr, zBadMode, libtoolOptions.pzProgName );
         USAGE( EXIT_FAILURE );
         /* NOTREACHED */
     }

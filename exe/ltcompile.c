@@ -61,7 +61,7 @@ else  echo='%s --echo --' ; fi\n";
     FILE* fp = HAVE_OPT( DRY_RUN ) ? stdout : popen( pz_shell, "w" );
     if (fp == (FILE*)NULL) {
         tSCC zErr[] = "%s error:  fs error %d (%s) on popen( \"%s\",\"w\")\n";
-        fprintf( stderr, zErr, ltmainOptions.pzProgPath, errno,
+        fprintf( stderr, zErr, libtoolOptions.pzProgPath, errno,
                  strerror( errno ), pz_shell );
         exit( EXIT_FAILURE );
     }
@@ -79,7 +79,7 @@ else  echo='%s --echo --' ; fi\n";
     CKSERV;
     fputs( apz_mode_cmd[ 0 ], fp );
     CKSERV;
-    fprintf( fp, zChkEcho, ltmainOptions.pzProgPath );
+    fprintf( fp, zChkEcho, libtoolOptions.pzProgPath );
     CKSERV;
 
     fprintf( fp, zQuiet,  HAVE_OPT( QUIET )      ? ":"   : "\"$echo\"" );
@@ -96,7 +96,7 @@ else  echo='%s --echo --' ; fi\n";
 
     if (HAVE_OPT( DEBUG )) {
         fprintf( stderr, "%s: enabling shell trace mode\n",
-                 ltmainOptions.pzProgName );
+                 libtoolOptions.pzProgName );
         fputs( zDbgFmt, fp );
     }
     CKSERV;
@@ -119,10 +119,10 @@ else  echo='%s --echo --' ; fi\n";
      *  Insert our modal stuff and one shell option processing dinkleberry
      *  that one of the command scripts depends upon.
      */
-    fprintf( fp, zModeName, ltmainOptions.pzProgName,
-            ltmainOptions.pOptDesc[ WHICH_OPT_COMPILE ].pz_Name );
+    fprintf( fp, zModeName, libtoolOptions.pzProgName,
+            libtoolOptions.pOptDesc[ OPT_VALUE_MODE ].pz_Name );
     CKSERV;
-    fprintf( fp, zMode, ltmainOptions.pzProgName );
+    fprintf( fp, zMode, libtoolOptions.pzProgName );
     CKSERV;
 
     /*
@@ -151,7 +151,7 @@ else  echo='%s --echo --' ; fi\n";
      *  macro will detect that, call closeScript() and return so as to
      *  avoid segfaults and more SIGPIPEs.
      */
-    fputs( apz_mode_cmd[ WHICH_OPT_COMPILE ], fp );
+    fputs( apz_mode_cmd[ OPT_VALUE_MODE ], fp );
     CLOSEOK;
 
     fputc( '\n', fp );
