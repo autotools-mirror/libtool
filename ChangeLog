@@ -1,5 +1,13 @@
 1998-12-23  Thomas Tanner  <tanner@gmx.de>
 
+	* ltconfig.in: fixed file-magic for Linux shared libraries
+	* ltmain.in: removed the unused -force-static flag
+	* libltdl/ltdl.c: added strchr, search modules in LTDL_LIBRARY_PATH,
+	  check whether actual module was already dlopened, 
+	  read in preload_libs rather than dependency_libs
+
+1998-12-23  Thomas Tanner  <tanner@gmx.de>
+
 	* libltdl/Makefile.am: build two versions of libltdl: 
 	  libltdl (support native dlopen if available, otherwise dlpreopen), 
 	  libltdls (like libltdl, but always support for dlpreopen)

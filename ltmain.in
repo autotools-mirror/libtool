@@ -262,7 +262,6 @@ if test -z "$show_help"; then
     lastarg=
     srcfile="$nonopt"
     suppress_output=
-    force_static=no
 
     user_target=no
     for arg
@@ -277,11 +276,6 @@ if test -z "$show_help"; then
 	user_target=next
 	;;
 
-      -force-static)
-	force_static=yes
-	continue
-	;;
-	
       -static)
 	build_old_libs=yes
 	continue
@@ -480,9 +474,8 @@ compiler."
 	fi
       fi
 
-      # If we have no pic_flag and do not have -force-static, 
-      # then copy the object into place and finish.
-      if test -z "$pic_flag" && test "$force_static" = no; then
+      # If we have no pic_flag, then copy the object into place and finish.
+      if test -z "$pic_flag"; then
 	$show "$LN_S $libobj $obj"
 	if $run $LN_S $libobj $obj; then
 	  exit 0
@@ -500,9 +493,6 @@ compiler."
     # Only build a position-dependent object if we build old libraries.
     if test "$build_old_libs" = yes; then
       command="$base_compile $srcfile"
-      if test "$force_static" = yes; then
-	command="$command -DLIBTOOL_STATIC"
-      fi
       if test "$compiler_c_o" = yes; then
 	command="$command -o $obj"
 	output_obj="$obj"

@@ -95,6 +95,33 @@ strdup(str)
 
 #endif
 
+#if ! HAVE_STRCHR
+
+# if HAVE_INDEX
+
+#  define strchr index
+
+# else
+
+#  define strchr xstrchr
+
+static const char*
+strchr(str, ch)
+	const char *str;
+	int ch;
+{
+	const char *p;
+
+	for (p = str; *p != (char)ch && p != '\0'; p++)
+		/*NOWORK*/;
+
+	return (*p == (char)ch) ? p : NULL;
+}
+
+# endif
+
+#endif
+
 #if ! HAVE_STRRCHR
 
 # if HAVE_RINDEX
@@ -478,7 +505,7 @@ lt_dlexit ()
 {
 	/* shut down libltdl */
 	lt_dltype type = types;
-	int	error;
+	int	errors;
 	
 	if (!initialized)
 		return 1;	/* already deinitialized */	
@@ -487,17 +514,18 @@ lt_dlexit ()
 		return 0;
 	}
 	/* close all modules */
-	error = 0;
+	errors = 0;
 	while (handles)
-		if (lt_dlclose(handles))
-			error = 1;
+		/* FIXME: what if a module depends on another one? */
+		if (lt_dlclose(handles))  
+			errors++;
 	initialized = 0;
 	while (type) {
 		if (type->mod_exit())
-			error++;
+			errors++;
 		type = type->next;
 	}
-	return error;
+	return errors;
 }
 
 static void
@@ -516,27 +544,40 @@ trim (dest, s)
 }
 
 static int
-tryall_dlopen (handle, fullname)
-	lt_dlhandle handle;
-	const char *fullname;
+tryall_dlopen (handle, filename)
+	lt_dlhandle *handle;
+	const char *filename;
 {
+	lt_dlhandle cur;
 	lt_dltype type = types;
+	
+	/* check whether the module was already opened */
+	cur = handles;
+	while (cur && strcmp(cur->filename, filename))
+		cur = cur->next;
+	if (cur) {
+		cur->usage++;
+		free(*handle);
+		*handle = cur;
+		return 0;
+	}
+	
 	while (type) {
-		if (type->lib_open(handle, fullname) == 0)
+		if (type->lib_open(*handle, filename) == 0)
 			break;
 		type = type->next;
 	}
-	handle->type = type;
-	return !type;
+	(*handle)->type = type;
+	(*handle)->filename = strdup(filename);
+	return !(type);
 }
 
 #undef	MAX_FILENAME
 #define MAX_FILENAME 1024
 
 static int
-find_module (handle, search_path, dir, libdir, dlname, old_name)
-	lt_dlhandle handle; 
-	const char *search_path; 
+find_module (handle, dir, libdir, dlname, old_name)
+	lt_dlhandle *handle; 
 	const char *dir; 
 	const char *libdir;
 	const char *dlname;
@@ -564,7 +605,7 @@ find_module (handle, search_path, dir, libdir, dlname, old_name)
 			return 0;
 	}
 	if (*old_name && tryall_dlopen(handle, old_name) == 0)
-		return 0;  
+		return 0;
 	return 1;
 }
 
@@ -580,20 +621,12 @@ lt_dlhandle
 lt_dlopen (filename)
 	const char *filename;
 {
-	lt_dlhandle handle, cur;
+	lt_dlhandle handle;
 	FILE	*file;
 	char	dir[MAX_FILENAME]; /* FIXME: unchecked buffer */
+	char	tmp[MAX_FILENAME];
 	const char *basename, *ext, *search_path;
 	
-	/* check whether the module was already opened */
-	cur = handles;
-	while (cur && strcmp(cur->filename, filename))
-		cur = cur->next;
-	if (cur) {
-		cur->usage++;
-		return cur;
-	}
-
 	handle = (lt_dlhandle) malloc(sizeof(lt_dlhandle_t));
 	if (!handle)
 		return 0;
@@ -608,14 +641,36 @@ lt_dlopen (filename)
 	/* check whether we open a libtool module (.la extension) */
 	ext = strrchr(basename, '.');
 	if (ext && strcmp(ext, ".la") == 0) {
-		char	tmp[MAX_FILENAME]; /* FIXME: unchecked */
 		char	dlname[MAX_FILENAME], old_name[MAX_FILENAME];
-		char	libdir[MAX_FILENAME], deps[MAX_FILENAME];
+		char	libdir[MAX_FILENAME], preload[MAX_FILENAME];
 		int	i;
 
-		dlname[0] = libdir[0] = deps[0] = old_name[0] = '\0';
-	
+		dlname[0] = old_name[0] = libdir[0] = preload[0] = '\0';
+
 		file = fopen(filename, READTEXT_MODE);
+		if (!file && !*dir && search_path) {
+			/* try other directories */
+			const char *p, *next;
+			
+			p = search_path;
+			while (!file && p) {
+				next = strchr(p, ':');
+				if (next) {
+					strncpy(dir, p, next - p);
+					dir[next - p] = '\0';
+					p = next+1;
+				} else {
+					strcpy(dir, p);
+					p = 0;
+				}
+				if (!*dir)
+					continue;
+				strcat(dir, "/");
+				strcpy(tmp, dir);
+				strcat(tmp, basename);
+				file = fopen(tmp, READTEXT_MODE);
+			}
+		}
 		if (!file) {
 			free(handle);
 			return 0;
@@ -623,25 +678,25 @@ lt_dlopen (filename)
 		while (!feof(file)) {
 			if (!fgets(tmp, MAX_FILENAME, file))
 				break;
-			if (strncmp(tmp, "libdir=", 7) == 0)
-				trim(libdir, &tmp[7]);
-			else
-			if (strncmp(tmp, "dependency_libs=", 16) == 0)
-				trim(deps, &tmp[16]);
-			else
 			if (strncmp(tmp, "dlname=", 7) == 0)
 				trim(dlname, &tmp[7]);
 			else
 			if (strncmp(tmp, "old_library=", 12) == 0)
 				trim(old_name, &tmp[12]);
+			else
+			if (strncmp(tmp, "libdir=", 7) == 0)
+				trim(libdir, &tmp[7]);
+			else
+			if (strncmp(tmp, "preload_libs=", 13) == 0)
+				trim(preload, &tmp[13]);
 		}
 		fclose(file);
-		if (find_module(handle, search_path, 
-			dir, libdir, dlname, old_name)) {
+		/* TODO: preload required libraries */
+		
+		if (find_module(&handle, dir, libdir, dlname, old_name)) {
 			free(handle);
 			return 0;
 		}
-		handle->filename = strdup(filename);
 		/* extract the module name from the file name */
 		strcpy(tmp, basename);
 		tmp[ext - basename] = '\0';
@@ -652,11 +707,37 @@ lt_dlopen (filename)
 		handle->name = strdup(tmp);
 	} else {
 		/* not a libtool module */
-		if (tryall_dlopen(handle, filename)) {
-			free(handle);
-			return 0;
+		if (tryall_dlopen(*handle, filename)) {
+			int	error = 1;
+			
+			if (!*dir && search_path) {
+				/* try other directories */
+				const char *p, *next;
+			
+				p = search_path;
+				while (error && p) {
+					next = strchr(p, ':');
+					if (next) {
+						strncpy(dir, p, next - p);
+						dir[next - p] = '\0';
+						p = next+1;
+					} else {
+						strcpy(dir, p);
+						p = 0;
+					}
+					if (!*dir)
+						continue;
+					strcat(dir, "/");
+					strcpy(tmp, dir);
+					strcat(tmp, basename);
+					error = tryall_dlopen(*handle, tmp);
+				}
+			}
+			if (error) {
+				free(handle);
+				return 0;
+			}
 		}
-		handle->filename = strdup(filename);
 		handle->name = 0;
 	}
 	handle->usage = 1;
