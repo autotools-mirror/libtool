@@ -12,7 +12,7 @@ fi
 
 # Check all the "portable" shell scripts.
 status=0
-scripts="$srcdir/../ltconfig $srcdir/../ltmain.sh"
+scripts="$srcdir/../ltmain.sh"
 
 # Check for bad binary operators.
 if egrep -n -e "if[ 	]+[\"']?\\$.*(=|-[lg][te]|-eq|-ne)" $scripts; then
@@ -32,14 +32,25 @@ if egrep -n -e 'if[ 	]+\[' $scripts; then
   status=1
 fi
 
+if egrep -n -e 'test[ 	]+(![ 	])?(-.[ 	]+)?"?[.,_x]' $scripts; then
+  echo "use \`test \"X...\"' instead of \`test \"x...\"'"
+  status=1
+fi
+
 # Check for using test X... instead of test "X...
-if egrep -n -e 'test[ 	]+X' $scripts; then
+if egrep -n -e 'test[ 	]+(![ 	])?(-.[ 	]+)?X' $scripts; then
   echo "use \`test \"X...\"' instead of \`test X'"
   status=1
 fi
 
+# Check for using test $... instead of test "$...
+if egrep -n -e 'test[ 	]+(![ 	])?(-.[ 	]+)?X?\$' $scripts; then
+  echo "use \`test \"\$...\"' instead of \`test \$'"
+  status=1
+fi
+
 # Never use test -e.
-if egrep -n -e 'test[ 	]+-e' $scripts; then
+if egrep -n -e 'test[ 	]+(![ 	])?-e' $scripts; then
   echo "use \`test -f' instead of \`test -e'"
   status=1
 fi

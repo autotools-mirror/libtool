@@ -1,5 +1,5 @@
 /* main.c -- mdemo test program
-   Copyright (C) 1998-1999 Free Software Foundation, Inc.
+   Copyright (C) 1998-2000 Free Software Foundation, Inc.
    Originally by Thomas Tanner <tanner@ffii.org>
    This file is part of GNU Libtool.
 
@@ -27,6 +27,7 @@ test_dl (filename)
   char *filename;
 {
   lt_dlhandle handle;	
+  const lt_dlinfo *info;
   int (*pfoo1)() = 0;
   int (*pfoo2)() = 0;
   int (*phello)() = 0;
@@ -39,11 +40,21 @@ test_dl (filename)
     fprintf (stderr, "error was: %s\n", lt_dlerror());
     return 1;
   }
-  phello = (int(*)())lt_dlsym(handle, "hello");  
-  pfoo1 = (int(*)())lt_dlsym(handle, "foo1");  
-  pfoo2 = (int(*)())lt_dlsym(handle, "foo2");  
-  pnothing = (int*)lt_dlsym(handle, "nothing");  
 
+  info = lt_dlgetinfo(handle);
+  if (!info) {
+    fprintf (stderr, "can't get module info: %s\n", lt_dlerror());
+    return 1;
+  }
+  if (info->name) {
+    printf ("module name: %s\n", info->name);
+  } else {
+    printf ("module is not a libtool module\n");
+  }
+  printf ("module filename: %s\n", info->filename);
+  printf ("module reference count: %i\n", info->ref_count);
+  
+  phello = (int(*)())lt_dlsym(handle, "hello");  
   if (phello)
     {
       int value = (*phello) ();
@@ -55,18 +66,22 @@ test_dl (filename)
   else
     {
       fprintf (stderr, "did not find the `hello' function\n");
+      fprintf (stderr, "error was: %s\n", lt_dlerror());
       ret = 1;
     }
 
+  pnothing = (int*)lt_dlsym(handle, "nothing");  
   /* Try assigning to the nothing variable. */
   if (pnothing)
     *pnothing = 1;
   else
     {
       fprintf (stderr, "did not find the `nothing' variable\n");
+      fprintf (stderr, "error was: %s\n", lt_dlerror());
       ret = 1;
     }
 
+  pfoo1 = (int(*)())lt_dlsym(handle, "foo1");  
   /* Just call the functions and check return values. */
   if (pfoo1)
     {
@@ -75,18 +90,21 @@ test_dl (filename)
       else
 	ret = 1;
     }
-  else if (pfoo2)
-    {
-      if ((*pfoo2) () == FOO_RET)
-        printf("foo2 is ok!\n");
-      else ret = 1;
-    }
-  else
-    {
-      fprintf (stderr, "did not find the `foo' function\n");
-      ret = 1;
-    }
-
+  else {
+    pfoo2 = (int(*)())lt_dlsym(handle, "foo2");  
+    if (pfoo2)
+      {
+        if ((*pfoo2) () == FOO_RET)
+          printf("foo2 is ok!\n");
+        else ret = 1;
+      }
+    else
+      {
+        fprintf (stderr, "did not find any of the `foo' functions\n");
+        fprintf (stderr, "error was: %s\n", lt_dlerror());
+        ret = 1;
+      }
+  }
   lt_dlclose(handle);
   return ret;
 }
@@ -113,9 +131,8 @@ test_dlself ()
     fprintf (stderr, "error was: %s\n", lt_dlerror());
     return 1;
   }
-  pmyfunc = (int(*)())lt_dlsym(handle, "myfunc");  
-  pmyvar  = (int*)lt_dlsym(handle, "myvar");  
 
+  pmyfunc = (int(*)())lt_dlsym(handle, "myfunc");  
   if (pmyfunc)
     {
       int value = (*pmyfunc) ();
@@ -127,15 +144,18 @@ test_dlself ()
   else
     {
       fprintf (stderr, "did not find the `myfunc' function\n");
+      fprintf (stderr, "error was: %s\n", lt_dlerror());
       ret = 1;
     }
 
+  pmyvar = (int*)lt_dlsym(handle, "myvar");  
   /* Try assigning to the variable. */
   if (pmyvar)
     *pmyvar = 1;
   else
     {
       fprintf (stderr, "did not find the `myvar' variable\n");
+      fprintf (stderr, "error was: %s\n", lt_dlerror());
       ret = 1;
     }
 

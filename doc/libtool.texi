@@ -1,7 +1,4 @@
 \input texinfo   @c -*-texinfo-*-
-
-@c $Id$
-
 @c %**start of header
 @setfilename libtool.info
 @settitle Libtool
@@ -139,9 +136,7 @@ Integrating libtool with your package
 
 Configuring libtool
 
-* Invoking ltconfig::           @code{ltconfig} command line options.
-* ltconfig example::            Manually configuring a @code{libtool}.
-* AM_PROG_LIBTOOL::             Configuring @code{libtool} in @file{configure.in}.
+* AC_PROG_LIBTOOL::             Configuring @code{libtool} in @file{configure.in}.
 
 Including libtool in your package
 
@@ -1068,6 +1063,15 @@ be executed by libtool.
 Display basic configuration options.  This provides a way for packages
 to determine whether shared or static libraries will be built.
 
+@item --preserve-dup-deps
+Do not remove duplicate dependencies in libraries.  When building packages
+with static libraries, the libraries may depend circularly on each other
+(shared libs can too, but for those it doesn't matter), so there are
+situations, where -la -lb -la is required, and the second -la may not be
+stripped or the link will fail.  In cases where these duplications are
+required, this option will preserve them, only stripping the libraries
+that libtool knows it can safely.
+
 @item --finish
 Same as @samp{--mode=finish}.
 
@@ -1075,16 +1079,6 @@ Same as @samp{--mode=finish}.
 Display a help message and exit.  If @samp{--mode=@var{mode}} is
 specified, then detailed help for @var{mode} is
 displayed.
-
-@item --tag=@var{tag}
-Select configuration tag @var{tag}.  Additional configuration tags can
-be created with @code{ltconfig --add-tag}.  Multiple @samp{--tag} flags
-can be specified.  In general, one tag will completely replace the
-configuration of the other, but the two pre-defined configuration tags,
-@samp{disable-shared} and @samp{disable-static}, if used @emph{after}
-any other, cause libtool not to create shared or static libraries,
-respectively, regardless of the corresponding flags used for
-@code{ltconfig}.
 
 @item --mode=@var{mode}
 Use @var{mode} as the operation mode.  By default, the operation mode is
@@ -1239,17 +1233,6 @@ Same as @samp{-export-symbols}, except that only symbols matching
 the regular expression @var{regex} are exported.
 By default all symbols are exported.
 
-@item -objectlist @var{input-file}
-Tells libtool to read a text file to determine the object files
-to be linked.  The @var{input-file} is a text file containing a list
-of libtool objects (@samp{.lo} files), one per line.  This option is
-used to build arbitrarily large libraries when the libtool command
-becomes too large for the system to execute.  Creating this file can
-be automated with a command like the following:
-@example
-@kbd{find ./ -name \*.lo -print | sed 's/.\///g' > inputfile.txt}
-@end example
-
 @item -L@var{libdir}
 Search @var{libdir} for required libraries that have already been
 installed.
@@ -1267,15 +1250,13 @@ In order to prevent name clashes, however, 'libname' and 'name'
 must not be used at the same time in your package.
 
 @item -no-fast-install
-Disable fast-install mode for the executable @var{output-file}
-(@pxref{Invoking ltconfig}).  Useful if the program won't be necessarly
-installed.
+Disable fast-install mode for the executable @var{output-file}.  Useful
+if the program won't be necessarily installed.
 
 @item -no-install
-Link an executable @var{output-file} (@pxref{Invoking ltconfig}) that
-can't be installed and therefore doesn't need a wrapper script.
-Useful if the program is only used in the build tree, e.g.,
-for testing or generating other files.
+Link an executable @var{output-file} that can't be installed and
+therefore doesn't need a wrapper script.  Useful if the program is only
+used in the build tree, e.g., for testing or generating other files.
 
 @item -no-undefined
 Declare that @var{output-file} does not depend on any other libraries.
@@ -1555,254 +1536,31 @@ system features, then generates the @file{Makefiles} (and possibly a
 @file{config.h} header file), after which you can run @code{make} and
 build the package.
 
-Libtool has its own equivalent to the @code{configure} script,
-@code{ltconfig}.
+Libtool adds its own tests to your @code{configure} script in order to
+generate a libtool script for the installer's host machine.
 
 @menu
-* Invoking ltconfig::           @code{ltconfig} command line options.
-* ltconfig example::            Manually configuring a @code{libtool}.
-* AM_PROG_LIBTOOL::             Configuring @code{libtool} in @file{configure.in}.
+* AC_PROG_LIBTOOL::             Configuring @code{libtool} in @file{configure.in}.
 @end menu
 
-@node Invoking ltconfig
-@subsection Invoking @code{ltconfig}
-@pindex ltconfig
-@cindex ltconfig command options
-@cindex options, ltconfig command
-@cindex command options, ltconfig
-
-@code{ltconfig} runs a series of configuration tests, then creates a
-system-specific @code{libtool} in the current directory.  The
-@code{ltconfig} program has the following synopsis:
-
-@example
-ltconfig [@var{option}]@dots{} @var{ltmain} [@var{host}]
-@end example
-
-@noindent
-and accepts the following options:
-
-@table @samp
-@item --build=@var{build}
-Set the build system to be different to the host system.  This creates a
-libtool which prefers build tools which are prefixed by the host alias over
-the standard tools.  For example, specifying @code{--build=i486-pc-linux-gnu}
-on a host described by i486-pc-cygwin would create a libtool which used
-@code{i486-pc-cygwin-ranlib} in preference to @code{ranlib} if present.  This
-is useful for cross build environments.
-
-@item --debug
-Dump a trace of shell script execution to standard output.  This
-produces a lot of output, so you may wish to pipe it to @code{less} (or
-@code{more}) or redirect to a file.
-
-@item --disable-shared
-Create a @code{libtool} that only builds static libraries.
-
-@item --disable-static
-Create a @code{libtool} that builds only shared libraries if they are
-available.  If only static libraries can be built, then this flag has
-no effect.
-
-@item --disable-fast-install
-On platforms in which installable executables, that are created by
-default, are not suitable for execution in the build directory, create a
-@code{libtool} that links executables that search for uninstalled
-libraries by default, and relinks them at install time.  It is ignored
-on platforms in which a single executable is enough.
-
-@item --enable-dlopen
-Test whether some dlopening mechanism is supported.  If this flag is not
-given, or no working dlopening mechanism is found, create a
-@code{libtool} that performs dlpreopening of all dlopened modules.
-
-@item --help
-Display a help message and exit.
-
-@item --no-verify
-Do not use @code{config.sub} to verify that @var{host} is a valid
-canonical host system name.
-
-@item --output=@var{file}
-@item -o @var{file}
-Instead of creating a libtool script called @code{libtool}, create one
-called @var{file}.  This can be useful if you want to create libtool
-scripts for cross-compilers, or you want to have more than one libtool
-in the same directory.
-
-@item --quiet
-@itemx --silent
-Do not print informational messages when running configuration tests.
-
-@item --srcdir=@var{dir}
-Look for @code{config.guess} and @code{config.sub} in @var{dir}.
-
-@item --version
-Print @code{ltconfig} version information and exit.
-
-@item --add-tag=@var{tag}
-Instead of overwriting @code{libtool}, append a new configuration
-section to it, with the given @var{tag}.
-
-@item --with-gcc
-Assume that the GNU C compiler will be used when invoking the created
-@code{libtool} to compile and link object files.
-
-@item --with-gnu-ld
-Assume that the C compiler uses the GNU linker.
-
-@item --disable-lock
-Create a @code{libtool} that does not perform locking to ensure proper
-parallel compilation if the C compiler does not support @samp{-c} and
-@samp{-o} together.
-
-@item --cache-file=@var{file}
-Use this @var{file} as a cache for results of a few tests.  This is
-usually @file{config.cache} used by @code{configure}.  By default, no
-cache file is used.
-@end table
-
-@var{ltmain} is the @code{ltmain.sh} shell script fragment that provides
-the basic libtool functionality (@pxref{Distributing}).
-
-@var{host} is the canonical host system name, which by default is
-guessed by running @code{config.guess}.
-
-@code{ltconfig} also recognizes the following environment variables:
-
-@defvar CC
-The compiler that will be used by the generated @code{libtool}.  If
-this is not set, @code{ltconfig} will look for @code{gcc} or @code{cc}.
-@end defvar
-
-@defvar LTCC
-A C compiler, in case @var{CC} is not one.  If this is not set,
-@code{ltconfig} will use @var{CC} or extract @var{LTCC} from an existing
-@code{libtool}, if running in @samp{--add-tag} mode.
-@end defvar
-
-@defvar CFLAGS
-Compiler flags used to generate standard object files.  If this is not
-set, @code{ltconfig} will not use any such flags.  It affects only the
-way @code{ltconfig} runs tests, not the produced @code{libtool}.
-@end defvar
-
-@defvar CPPFLAGS
-C preprocessor flags.  If this is not set, @code{ltconfig} will not use
-any such flags.  It affects only the way @code{ltconfig} runs tests, not
-the produced @code{libtool}.
-@end defvar
-
-@defvar LD
-The system linker to use (if the generated @code{libtool} requires one).
-If this is not set, @code{ltconfig} will try to find out what is the
-linker used by @var{CC}.
-@end defvar
-
-@defvar LDFLAGS
-The flags to be used by @code{ltconfig} when it links a program.  If
-this is not set, @code{ltconfig} will not use any such flags.  It
-affects only the way @code{ltconfig} runs tests, not the produced
-@code{libtool}.
-@end defvar
-
-@defvar LIBS
-The libraries to be used by @code{ltconfig} when it links a program.  If
-this is not set, @code{ltconfig} will not use any such flags.  It
-affects only the way @code{ltconfig} runs tests, not the produced
-@code{libtool}.
-@end defvar
-
-@defvar NM
-Program to use rather than checking for @code{nm}.
-@end defvar
-
-@defvar RANLIB
-Program to use rather than checking for @code{ranlib}.
-@end defvar
-
-@defvar LN_S
-A command that creates a link of a program, a soft-link if possible, a
-hard-link otherwise.
-@end defvar
-
-@defvar DLLTOOL
-Program to use rather than checking for @code{dlltool}.  Only meaningful
-for Cygwin/MS-Windows.
-@end defvar
-
-@defvar OBJDUMP
-Program to use rather than checking for @code{objdump}.  Only meaningful
-for Cygwin/MS-Windows.
-@end defvar
-
-@defvar AS
-Program to use rather than checking for @code{as}.  Only meaningful for
-Cygwin/MS-Windows.
-@end defvar
-
-@node ltconfig example
-@subsection Using @code{ltconfig}
-
-Here is a simple example of using @code{ltconfig} to configure libtool
-on a NetBSD/i386 1.2 system:
-
-@example
-burger$ @kbd{./ltconfig ltmain.sh}
-checking host system type... i386-unknown-netbsd1.2
-checking for ranlib... ranlib
-checking for gcc... gcc
-checking whether we are using GNU C... yes
-checking for gcc option to produce PIC... -fPIC -DPIC
-checking for gcc option to statically link programs... -static
-checking if ld is GNU ld... no
-checking if ld supports shared libraries... yes
-checking dynamic linker characteristics... netbsd1.2 ld.so
-checking if libtool supports shared libraries... yes
-checking whether to build shared libraries... yes
-creating libtool
-burger$
-@end example
-
-This example shows how to configure @code{libtool} for cross-compiling
-to a i486 GNU/Hurd 0.1 system (assuming compiler tools reside in
-@file{/local/i486-gnu/bin}):
-
-@example
-burger$ export PATH=/local/i486-gnu/bin:$PATH
-burger$ ./ltconfig ltmain.sh i486-gnu0.1
-checking host system type... i486-unknown-gnu0.1
-checking for ranlib... ranlib
-checking for gcc... gcc
-checking whether we are using GNU C... yes
-checking for gcc option to produce PIC... -fPIC -DPIC
-checking for gcc option to statically link programs... -static
-checking if ld is GNU ld... yes
-checking if GNU ld supports shared libraries... yes
-checking dynamic linker characteristics... gnu0.1 ld.so
-checking if libtool supports shared libraries... yes
-checking whether to build shared libraries... yes
-creating libtool
-burger$
-@end example
-
-@node AM_PROG_LIBTOOL
-@subsection The @code{AM_PROG_LIBTOOL} macro
+@node AC_PROG_LIBTOOL
+@subsection The @code{AC_PROG_LIBTOOL} macro
 
 If you are using GNU Autoconf (or Automake), you should add a call to
-@code{AM_PROG_LIBTOOL} to your @file{configure.in} file.  This macro
-offers seamless integration between the @code{configure} script and
-@code{ltconfig}:
+@code{AC_PROG_LIBTOOL} to your @file{configure.in} file.  This macro
+adds many new tests to the @code{configure} script so that the generated
+libtool script will understand the characteristics of the host:
 
-@defmac AM_PROG_LIBTOOL
+@defmac AC_PROG_LIBTOOL
+@defmacx AM_PROG_LIBTOOL
 Add support for the @samp{--enable-shared} and @samp{--disable-shared}
-@code{configure} flags.  Invoke @code{ltconfig} with the correct
-arguments to configure the package (@pxref{Invoking
-ltconfig}).@footnote{@code{AM_PROG_LIBTOOL} requires that you define the
-@file{Makefile} variable @code{top_builddir} in your @file{Makefile.in}.
-Automake does this automatically, but Autoconf users should set it to
-the relative path to the top of your build directory (@file{../..}, for
-example).}
+@code{configure} flags.@footnote{@code{AC_PROG_LIBTOOL} requires that
+you define the @file{Makefile} variable @code{top_builddir} in your
+@file{Makefile.in}.  Automake does this automatically, but Autoconf
+users should set it to the relative path to the top of your build
+directory (@file{../..}, for example).}  @code{AM_PROG_LIBTOOL} was the
+old name for this macro, and although supported at the moment is
+deprecated.
 
 By default, this macro turns on shared libraries if they are available,
 and also enables static libraries if they don't conflict with the shared
@@ -1813,7 +1571,7 @@ libraries.  You can modify these defaults by calling either the
 # Turn off shared libraries during beta-testing, since they
 # make the build process take too long.
 AC_DISABLE_SHARED
-AM_PROG_LIBTOOL
+AC_PROG_LIBTOOL
 @end example
 
 The user may specify modified forms of the configure flags
@@ -1844,7 +1602,7 @@ use to automatically update the libtool script if it becomes
 out-of-date.  In order to do that, add to your @file{configure.in}:
 
 @example
-AM_PROG_LIBTOOL
+AC_PROG_LIBTOOL
 AC_SUBST(LIBTOOL_DEPS)
 @end example
 
@@ -1862,32 +1620,11 @@ on @file{libtool}.
 
 @end defmac
 
-@defmac AC_LIBTOOL_CXX
-Enable C++ shared library support.  This macro should be used if libtool
-will be used to generate C++ shared libraries.  It causes a C++-specific
-configuration to be appended to the @file{libtool} script.  The C++
-support can coexist with other configurations, including the default C
-shared library configuration.  It is not necessary to invoke this macro
-explicitly, as long as @code{AC_PROG_CXX} is called within the configure
-script.
-@end defmac
-
-@defmac AC_LIBTOOL_GCJ
-Enable GCJ shared library support.  This macro should be used if libtool
-will be used to generate GCJ shared libraries.  It causes a GCJ-specific
-configuration to be appended to the @file{libtool} script.  The GCJ
-support can coexist with other configurations, including the default C
-shared library configuration.  It is not necessary to invoke this macro
-explicitly, as long as @code{AM_PROG_GCJ} (or @code{AC_PROG_GCJ},
-whenever it is implemented in autoconf) is called within the configure
-script.
-@end defmac
-
 @defmac AC_LIBTOOL_DLOPEN
 Enable checking for dlopen support. This macro should be used if
 the package makes use of the @samp{-dlopen} and @samp{-dlpreopen} flags,
 otherwise libtool will assume that the system does not support dlopening.
-The macro must be called @strong{before} @code{AM_PROG_LIBTOOL}.
+The macro must be called @strong{before} @code{AC_PROG_LIBTOOL}.
 @end defmac
 
 @defmac AC_LIBTOOL_WIN32_DLL
@@ -1898,15 +1635,15 @@ are exported with @code{__declspec(dllexport)} and imported with
 assume that the package libraries are not dll clean and will build only
 static libraries on win32 hosts.
 
-@code{AM_PROG_LIBTOOL} must be called @strong{after} this macro, and
+This macro must be called @strong{before} @code{AC_PROG_LIBTOOL}, and
 provision must be made to pass @samp{-no-undefined} to @code{libtool}
-in link mode from the package @code{Makefile}.  Naturally, passing
-@samp{-no-undefined} means that all the library symbols @strong{really are}
-defined at link time!
+in link mode from the package @code{Makefile}.  Naturally, if you pass
+@samp{-no-undefined}, you must ensure that all the library symbols
+@strong{really are} defined at link time!
 @end defmac
 
 @defmac AC_DISABLE_FAST_INSTALL
-Change the default behaviour for @code{AM_PROG_LIBTOOL} to disable
+Change the default behaviour for @code{AC_PROG_LIBTOOL} to disable
 optimization for fast installation.  The user may still override this
 default, depending on platform support, by specifying
 @samp{--enable-fast-install}.
@@ -1914,23 +1651,94 @@ default, depending on platform support, by specifying
 
 @defmac AC_DISABLE_SHARED
 @defmacx AM_DISABLE_SHARED
-Change the default behaviour for @code{AM_PROG_LIBTOOL} to disable
+Change the default behaviour for @code{AC_PROG_LIBTOOL} to disable
 shared libraries.  The user may still override this default by
 specifying @samp{--enable-shared}.
 @end defmac
 
 @defmac AC_DISABLE_STATIC
 @defmacx AM_DISABLE_STATIC
-Change the default behaviour for @code{AM_PROG_LIBTOOL} to disable
+Change the default behaviour for @code{AC_PROG_LIBTOOL} to disable
 static libraries.  The user may still override this default by
 specifying @samp{--enable-static}.
 @end defmac
 
+The tests in @code{AC_PROG_LIBTOOL} also recognize the following
+environment variables:
+
+@defvar CC
+The C compiler that will be used by the generated @code{libtool}.  If
+this is not set, @code{AC_PROG_LIBTOOL} will look for @code{gcc} or
+@code{cc}.
+@end defvar
+
+@defvar CFLAGS
+Compiler flags used to generate standard object files.  If this is not
+set, @code{AC_PROG_LIBTOOL} will not use any such flags.  It affects
+only the way @code{AC_PROG_LIBTOOL} runs tests, not the produced
+@code{libtool}.
+@end defvar
+
+@defvar CPPFLAGS
+C preprocessor flags.  If this is not set, @code{AC_PROG_LIBTOOL} will
+not use any such flags.  It affects only the way @code{AC_PROG_LIBTOOL}
+runs tests, not the produced @code{libtool}.
+@end defvar
+
+@defvar LD
+The system linker to use (if the generated @code{libtool} requires one).
+If this is not set, @code{AC_PROG_LIBTOOL} will try to find out what is
+the linker used by @var{CC}.
+@end defvar
+
+@defvar LDFLAGS
+The flags to be used by @code{libtool} when it links a program.  If
+this is not set, @code{AC_PROG_LIBTOOL} will not use any such flags.  It
+affects only the way @code{AC_PROG_LIBTOOL} runs tests, not the produced
+@code{libtool}.
+@end defvar
+
+@defvar LIBS
+The libraries to be used by @code{AC_PROG_LIBTOOL} when it links a
+program.  If this is not set, @code{AC_PROG_LIBTOOL} will not use any
+such flags.  It affects only the way @code{AC_PROG_LIBTOOL} runs tests,
+not the produced @code{libtool}.
+@end defvar
+
+@defvar NM
+Program to use rather than checking for @code{nm}.
+@end defvar
+
+@defvar RANLIB
+Program to use rather than checking for @code{ranlib}.
+@end defvar
+
+@defvar LN_S
+A command that creates a link of a program, a soft-link if possible, a
+hard-link otherwise.  @code{AC_PROG_LIBTOOL} will check for a suitable
+program if this variable is not set.
+@end defvar
+
+@defvar DLLTOOL
+Program to use rather than checking for @code{dlltool}.  Only meaningful
+for Cygwin/MS-Windows.
+@end defvar
+
+@defvar OBJDUMP
+Program to use rather than checking for @code{objdump}.  Only meaningful
+for Cygwin/MS-Windows.
+@end defvar
+
+@defvar AS
+Program to use rather than checking for @code{as}.  Only used on
+Cygwin/MS-Windows at the moment.
+@end defvar
+
 @pindex aclocal
 When you invoke the @code{libtoolize} program (@pxref{Invoking
 libtoolize}), it will tell you where to find a definition of
-@code{AM_PROG_LIBTOOL}.  If you use Automake, the @code{aclocal} program
-will automatically add @code{AM_PROG_LIBTOOL} support to your
+@code{AC_PROG_LIBTOOL}.  If you use Automake, the @code{aclocal} program
+will automatically add @code{AC_PROG_LIBTOOL} support to your
 @code{configure} script.
 
 Nevertheless, it is advisable to include a copy of @file{libtool.m4} in
@@ -1955,9 +1763,6 @@ Attempt to guess a canonical system name.
 @item config.sub
 @pindex config.sub
 Canonical system name validation subroutine script.
-
-@item ltconfig
-Generate a libtool script for a given system.
 
 @item ltmain.sh
 @pindex ltmain.sh
@@ -2000,7 +1805,7 @@ and accepts the following options:
 Work silently, and assume that Automake libtool support is used.
 
 @samp{libtoolize --automake} is used by Automake to add libtool files to
-your package, when @code{AM_PROG_LIBTOOL} appears in your
+your package, when @code{AC_PROG_LIBTOOL} appears in your
 @file{configure.in}.
 
 @item --copy
@@ -2068,16 +1873,16 @@ Function Checks, The Autoconf Manual, autoconf, The Autoconf
 Manual}), and a few other functions.
 @end defvar
 
-Unfortunately, the most recent version of Autoconf (2.12, at the time of
+Unfortunately, the stable release of Autoconf (2.13, at the time of
 this writing) does not have any way for libtool to provide support for
 these variables.  So, if you depend on them, use the following code
 immediately before the call to @code{AC_OUTPUT} in your
 @file{configure.in}:
 
 @example
-LTLIBOBJS=`echo "$LIBOBJS" | sed 's/\.o/.lo/g'`
+LTLIBOBJS=`echo "$LIBOBJS" | sed 's/\.[^.]* /.lo /g;s/\.[^.]*$/.lo/'`
 AC_SUBST(LTLIBOBJS)
-LTALLOCA=`echo "$ALLOCA" | sed 's/\.o/.lo/g'`
+LTALLOCA=`echo "$ALLOCA" | sed 's/\.[^.]* /.lo /g;s/\.[^.]*$/.lo/'`
 AC_SUBST(LTALLOCA)
 AC_OUTPUT(@dots{})
 @end example
@@ -2096,9 +1901,9 @@ AC_OUTPUT(@dots{})
 
 When you are developing a package, it is often worthwhile to configure
 your package with the @samp{--disable-shared} flag, or to override the
-defaults for @code{AM_PROG_LIBTOOL} by using the
-@code{AM_DISABLE_SHARED} Autoconf macro (@pxref{AM_PROG_LIBTOOL, , The
-@code{AM_PROG_LIBTOOL} macro}).  This prevents libtool from building
+defaults for @code{AC_PROG_LIBTOOL} by using the
+@code{AC_DISABLE_SHARED} Autoconf macro (@pxref{AC_PROG_LIBTOOL, , The
+@code{AC_PROG_LIBTOOL} macro}).  This prevents libtool from building
 shared libraries, which has several advantages:
 
 @itemize @bullet
@@ -2439,56 +2244,67 @@ safely installed in a system directory.
 Here are the relevant portions of that file:
 
 @example
-/* __BEGIN_DECLS should be used at the beginning of your declarations,
-   so that C++ compilers don't mangle their names.  Use __END_DECLS at
+/* BEGIN_C_DECLS should be used at the beginning of your declarations,
+   so that C++ compilers don't mangle their names.  Use END_C_DECLS at
    the end of C declarations. */
-#undef __BEGIN_DECLS
-#undef __END_DECLS
+#undef BEGIN_C_DECLS
+#undef END_C_DECLS
 #ifdef __cplusplus
-# define __BEGIN_DECLS extern "C" @{
-# define __END_DECLS @}
+# define BEGIN_C_DECLS extern "C" @{
+# define END_C_DECLS @}
 #else
-# define __BEGIN_DECLS /* empty */
-# define __END_DECLS /* empty */
+# define BEGIN_C_DECLS /* empty */
+# define END_C_DECLS /* empty */
 #endif
 
-/* __P is a macro used to wrap function prototypes, so that compilers
-   that don't understand ANSI C prototypes still work, and ANSI C
-   compilers can issue warnings about type mismatches. */
-#undef __P
+/* PARAMS is a macro used to wrap function prototypes, so that
+   compilers that don't understand ANSI C prototypes still work,
+   and ANSI C compilers can issue warnings about type mismatches. */
+#undef PARAMS
 #if defined (__STDC__) || defined (_AIX) \
         || (defined (__mips) && defined (_SYSTYPE_SVR4)) \
         || defined(WIN32) || defined(__cplusplus)
-# define __P(protos) protos
+# define PARAMS(protos) protos
 #else
-# define __P(protos) ()
+# define PARAMS(protos) ()
 #endif
 @end example
 
 These macros are used in @file{foo.h} as follows:
 
 @example
-#ifndef _FOO_H_
-#define _FOO_H_ 1
+#ifndef FOO_H
+#define FOO_H 1
 
 /* The above macro definitions. */
-@dots{}
+#include "@dots{}"
 
-__BEGIN_DECLS
-int foo __P((void));
-int hello __P((void));
-__END_DECLS
+BEGIN_C_DECLS
 
-#endif /* !_FOO_H_ */
+int foo PARAMS((void));
+int hello PARAMS((void));
+
+END_C_DECLS
+
+#endif /* !FOO_H */
 @end example
 
-Note that the @file{#ifndef _FOO_H_} prevents the body of @file{foo.h}
+Note that the @file{#ifndef FOO_H} prevents the body of @file{foo.h}
 from being read more than once in a given compilation.
 
-Feel free to copy the definitions of @code{__P}, @code{__BEGIN_DECLS},
-and @code{__END_DECLS} into your own headers.  Then, you may use them to
+Also the only thing that must go outside the
+@code{BEGIN_C_DECLS}/@code{END_C_DECLS} pair are @code{#include} lines.
+Strictly speaking it is only C symbol names that need to be protected,
+but your header files will be more maintainable if you have a single
+pair of of these macros around the majority of the header contents.
+
+You should use these definitions of @code{PARAMS}, @code{BEGIN_C_DECLS},
+and @code{END_C_DECLS} into your own headers.  Then, you may use them to
 create header files that are valid for C++, ANSI, and non-ANSI
-compilers.
+compilers@footnote{We used to recommend @code{__P},
+@code{__BEGIN_DECLS} and @code{__END_DECLS}.  This was bad advice since
+symbols (even preprocessor macro names) that begin with an underscore
+are reserved for the use of the compiler.}.
 
 Do not be naive about writing portable code.  Following the tips given
 above will help you miss the most obvious problems, but there are
@@ -2501,8 +2317,8 @@ Pre-ANSI compilers do not always support the @code{void *} generic
 pointer type, and so need to use @code{char *} in its place.
 
 @item
-The @code{const} and @code{signed} keywords are not supported by some
-compilers, especially pre-ANSI compilers.
+The @code{const}, @code{inline} and @code{signed} keywords are not
+supported by some compilers, especially pre-ANSI compilers.
 
 @item
 The @code{long double} type is not supported by many compilers.
@@ -2606,7 +2422,7 @@ As of version @value{VERSION}, libtool provides support for dlopened
 modules.  However, you should indicate that your package is willing to
 use such support, by using the macro @samp{AC_LIBTOOL_DLOPEN} in
 @file{configure.in}.  If this macro is not used (or it is used
-@emph{after} @samp{AM_PROG_LIBTOOL}), libtool will assume no dlopening
+@emph{after} @samp{AC_PROG_LIBTOOL}), libtool will assume no dlopening
 mechanism is available, and will try to simulate it.
 
 This chapter discusses how you as a dlopen application developer might
@@ -2821,9 +2637,9 @@ libltdl is licensed under the terms of the GNU Library General Public License,
 with the following exception:
 
 @quotation
-As a special exception to the GNU Library General Public License,
-if you distribute this file as part of a program that uses GNU libtool
-to create libraries and programs, you may include it under the same
+As a special exception to the GNU Lesser General Public License,
+if you distribute this file as part of a program or library that
+is built using GNU libtool, you may include it under the same
 distribution terms that you use for the rest of that program.
 @end quotation
 
@@ -2928,8 +2744,9 @@ following search paths for the module (in the order as follows):
 
 @enumerate 1
 @item user-defined search path:
-This search path can be set by the program using the
-functions @code{lt_dlsetsearchpath} and @code{lt_dladdsearchdir}.
+This search path can be changed by the program using the
+functions @code{lt_dlsetsearchpath}, @code{lt_dladdsearchdir} and
+@code{lt_dlinsertsearchdir}.
 
 @item libltdl's search path:
 This search path is the value of the environment variable
@@ -2972,9 +2789,9 @@ then the module is unloaded.
 Return 0 on success.
 @end deftypefun
 
-@deftypefun lt_ptr_t lt_dlsym (lt_dlhandle @var{handle}, const char *@var{name})
+@deftypefun lt_ptr lt_dlsym (lt_dlhandle @var{handle}, const char *@var{name})
 Return the address in the module @var{handle}, where the symbol given
-by the null terminated string @var{name} is loaded.
+by the null-terminated string @var{name} is loaded.
 If the symbol cannot be found, @code{NULL} is returned.
 @end deftypefun
 
@@ -3003,7 +2820,7 @@ macro @code{LTDL_SET_PRELOADED_SYMBOLS}.
 Return 0 on success.
 @end deftypefun
 
-@defmac LTDL_SET_PRELOADED_SYMBOLS()
+@defmac LTDL_SET_PRELOADED_SYMBOLS
 Set the default list of preloaded symbols.
 Should be used in your program to initialize libltdl's
 list of preloaded modules.
@@ -3020,8 +2837,15 @@ int main() @{
 @end defmac
 
 @deftypefun int lt_dladdsearchdir (const char *@var{search_dir})
-Add the search directory @var{search_dir} to the user-defined library
-search path. Return 0 on success.
+Append the search directory @var{search_dir} to the current user-defined
+library search path. Return 0 on success.
+@end deftypefun
+
+@deftypefun int lt_dlinsertsearchdir (@w{const char *@var{before}}, @w{const char *@var{search_dir}})
+Insert the search directory @var{search_dir} into the user-defined library
+search path, immediately before the element starting at address
+@var{before}.  If @var{before} is @samp{NULL}, then @var{search_dir} is
+appending as if @code{lt_dladdsearchdir} had been called.  Return 0 on success.
 @end deftypefun
 
 @deftypefun int lt_dlsetsearchpath (const char *@var{search_path})
@@ -3032,6 +2856,25 @@ directories.  Return 0 on success.
 
 @deftypefun {const char *}lt_dlgetsearchpath (void)
 Return the current user-defined library search path.
+@end deftypefun
+
+@deftypefun int lt_dlforeachfile (@w{const char *@var{search_path}}, @w{int (*@var{func}) (const char *@var{filename}, lt_ptr @var{data})}, @w{lt_ptr @var{data}})
+In some applications you may not want to load individual modules with
+known names, but rather find all of the modules in a set of
+directories and load them all during initialisation.  With this function
+you can have libltdl scan the colon delimited directory list in
+@var{search_path} for candidates, and pass them, along with @var{data}
+to your own callback function, @var{func}.  If @var{seach_path} is
+@samp{NULL}, then search all of the standard locations that
+@code{lt_dlopen} would examine.  This function will continue to make
+calls to @var{func} for each file that it discovers in @var{search_path}
+until one of these calls returns non-zero, or until the files are
+exhausted.  @samp{lt_dlforeachfile} returns value returned by the last
+call made to @var{func}.
+
+For example you could define @var{func} to build an ordered
+@dfn{argv}-like vector of files using @var{data} to hold the address of
+the start of the vector.
 @end deftypefun
 
 @deftypefun int lt_dlmakeresident (lt_dlhandle @var{handle})
@@ -3109,7 +2952,7 @@ int _foo1_helper() @{
 
 /* an exported function */
 int foo() @{
-  return _foo_helper();
+  return _foo1_helper();
 @}
 @end example
 
@@ -3178,11 +3021,11 @@ must be valid non-@code{NULL} function addresses, or else all
 
 @node User defined module data
 @section Data associated with loaded modules
-  
+
 Some of the internal information about each loaded module that is
 maintained by libltdl is available to the user, in the form of this
 structure:
-  
+
 @deftypefn {Type} {struct} lt_dlinfo @{ @w{char *@var{filename};} @w{char *@var{name};} @w{int @var{ref_count};} @}
 @code{lt_dlinfo} is used to store information about a module.
 The @var{filename} attribute is a null-terminated character string of
@@ -3192,20 +3035,20 @@ the real module file name.  If the module is a libtool module then
 @var{ref_count} attribute is a reference counter that describes how
 often the same module is currently loaded.
 @end deftypefn
-  
+
 The following function will return a pointer to libltdl's internal copy
 of this structure for the given @var{handle}:
-  
+
 @deftypefun {const lt_dlinfo *} lt_dlgetinfo (@w{lt_dlhandle @var{handle}})
 Return a pointer to a struct that contains some information about
 the module @var{handle}.  The contents of the struct must not be modified.
 Return @code{NULL} on failure.
 @end deftypefun
-  
+
 Furthermore, in order to save you from having to keep a list of the
 handles of all the modules you have loaded, these functions allow you to
 iterate over libltdl's list of loaded modules:
-  
+
 @deftypefun int lt_dlforeach (@w{int (*@var{func}) (lt_dlhandle @var{handle}, lt_ptr @var{data})}, @w{lt_ptr @var{data}})
 For each loaded module call the function @var{func}.  The argument
 @var{handle} is the handle of one of the loaded modules, @var{data} is
@@ -3221,7 +3064,7 @@ list if @var{place} is @code{NULL}, and the next one on subsequent calls.
 If @var{place} is the last element in the list of loaded modules, this
 function returns @code{NULL}.
 @end deftypefun
-  
+
 Of course, you would still need to maintain your own list of loaded
 module handles to parallel the list maintained by libltdl if there are
 any other data that you need to associate with each handle for the
@@ -3232,25 +3075,25 @@ must first obtain a unique caller id from libltdl which you subsequently
 use to retrieve the data you stored earlier.  This allows for different
 libraries that each wish to store their own data against loaded modules
 to do so without interfering with one another's data.
-  
+
 @deftp {Type} lt_dlcaller_id
 The opaque type used to hold individual data set keys.
 @end deftp
-  
+
 @deftypefun lt_dlcaller_id lt_dlcaller_register (void)
 Use this to obtain a unique key to store and retrieve individual sets of
 per module data.
 @end deftypefun
-  
+
 @deftypefun lt_ptr lt_dlcaller_set_data (@w{lt_dlcaller_id @var{key}}, @w{lt_dlhandle @var{handle}}, @w{lt_ptr @var{data}})
 Set @var{data} as the set of data uniquely associated with @var{key} and
 @var{handle} for later retrieval.  This function returns the @var{data}
 previously associated with @var{key} and @var{handle} if any.  A result of
 0, may indicate that a diagnostic for the last error (if any) is available
 from @code{lt_dlerror()}.
-  
+
 For example, to correctly remove some associated data:
-  
+
 @example
     lt_ptr stale = lt_dlcaller_set_data (key, handle, 0);
     if (stale == NULL)
@@ -3269,7 +3112,7 @@ For example, to correctly remove some associated data:
       @}
 @end example
 @end deftypefun
-  
+
 @deftypefun lt_ptr lt_dlcaller_get_data (@w{lt_dlcaller_id @var{key}}, @w{lt_dlhandle @var{handle}})
 Return the address of the data associated with @var{key} and
 @var{handle}, or else @code{NULL} if there is none.
@@ -3284,9 +3127,9 @@ int
 my_dlcaller_callback (lt_dlhandle handle, lt_ptr key_ptr)
 @{
   struct my_module_data *my_data;
-  
+
   my_data = lt_dlcaller_get_data (handle, (lt_dlcaller_id) *key_ptr);
-  
+
   return process (my_data);
 @}
 
@@ -3296,6 +3139,7 @@ my_dlcaller_foreach (lt_dlcaller_id key)
   lt_dlforeach (my_dlcaller_callback, (lt_ptr) &key);
 @}
 @end example
+
 
 @node Module loaders for libltdl
 @section How to create and register new module loaders
@@ -3315,15 +3159,15 @@ which they can be allocated to an instance of @code{lt_user_dlloader}
 and registered.
 
 Registering the loader requires that you choose a name for it, so that it
-can be recognised by @code{lt_find_dlloader} and removed with
-@code{lt_remove_dlloader}.  The name you choose must be unique, and not
+can be recognised by @code{lt_dlloader_find} and removed with
+@code{lt_dlloader_remove}.  The name you choose must be unique, and not
 already in use by libltdl's builtin loaders:
 
 @table @asis
 @item "dlopen"
 The system dynamic library loader, if one exists.
 @item "dld"
-The @sc{gnu} dld loader, if @file{libdld} wasinstalled when libltdl was
+The @sc{gnu} dld loader, if @file{libdld} was installed when libltdl was
 built.
 @item "dlpreload"
 The loader for @code{lt_dlopen}ing of preloaded static modules.
@@ -3335,32 +3179,41 @@ libltdl, so you should not use that for your own loader names.
 @noindent
 The following types are defined in @file{ltdl.h}:
 
-@deftp {Type} lt_module_t
-@code{lt_module_t} is a dlloader dependent module.
+@deftp {Type} lt_module
+@code{lt_module} is a dlloader dependent module.
 The dynamic module loader extensions communicate using these low
 level types.
 @end deftp
 
-@deftp {Type} lt_dlloader_t
-@code{lt_dlloader_t} is a handle for module loader types.
+@deftp {Type} lt_dlloader
+@code{lt_dlloader} is a handle for module loader types.
 @end deftp
 
-@deftypefn {Type} {struct} lt_user_dlloader @{@w{const char *@var{sym_prefix};} @w{lt_module_open_t *@var{module_open};} @w{lt_module_close_t *@var{module_close};} @w{lt_find_sym_t *@var{find_sym};} @w{lt_dlloader_exit_t *@var{dlloader_exit};} @}
+@deftp {Type} lt_user_data
+@code{lt_user_data} is used for specifying loader instance data.
+@end deftp
+
+@deftypefn {Type} {struct} lt_user_dlloader @{@w{const char *@var{sym_prefix};} @w{lt_module_open *@var{module_open};} @w{lt_module_close *@var{module_close};} @w{lt_find_sym *@var{find_sym};} @w{lt_dlloader_exit *@var{dlloader_exit};} @}
 If you want to define a new way to open dynamic modules, and have the
 @code{lt_dlopen} @sc{api} use it, you need to instantiate one of these
-structures and pass it to @code{lt_add_dlloader}.
+structures and pass it to @code{lt_dlloader_add}.  You can pass whatever
+you like in the @var{dlloader_data} field, and it will be passed back as
+the value of the first parameter to each of the functions specified in
+the function pointer fields.
 @end deftypefn
 
-@deftypefn {Type} lt_module_t lt_module_open_t (@w{const char *@var{filename}})
-The type of the loader function for an @code{lt_dlloader_t} module
-loader.  Implementation of such a function should attempt to load the
-named module, and return an @code{lt_module_t} suitable for passing in
-to the associated @code{lt_module_close_t} and @code{lt_sym_find_t}
-function pointers.  If the function fails it should return NULL, and set
-the error message with @code{lt_dlseterror}.
+@deftypefn {Type} lt_module lt_module_open (@w{const char *@var{filename}})
+The type of the loader function for an @code{lt_dlloader} module
+loader.  The value set in the dlloader_data field of the @code{struct
+lt_user_dlloader} structure will be passed into this function in the
+@var{loader_data} parameter.  Implementation of such a function should
+attempt to load the named module, and return an @code{lt_module}
+suitable for passing in to the associated @code{lt_module_close} and
+@code{lt_sym_find} function pointers.  If the function fails it should
+return @code{NULL}, and set the error message with @code{lt_dlseterror}.
 @end deftypefn
 
-@deftypefn {Type} int lt_module_close_t (@w{lt_module_t @var{module}})
+@deftypefn {Type} int lt_module_close (@w{lt_user_data @var{loader_data},} @w{lt_module @var{module}})
 The type of the unloader function for a user defined module loader.
 Implementatation of such a function should attempt to release
 any resources tied up by the @var{module} module, and then unload it
@@ -3368,18 +3221,20 @@ from memory.  If the function fails for some reason, set the error
 message with @code{lt_dlseterror} and return non-zero.
 @end deftypefn
 
-@deftypefn {Type} lt_ptr_t lt_find_sym_t (@w{lt_module_t @var{module},} @w{const char *@var{symbol}})
+@deftypefn {Type} lt_ptr lt_find_sym (@w{lt_module @var{module},} @w{const char *@var{symbol}})
 The type of the symbol lookup function for a user defined module loader.
 Implementation of such a function should return the address of the named
 @var{symbol} in the module @var{module}, or else set the error message
-with @code{lt_dlseterror} and return NULL if lookup fails.
+with @code{lt_dlseterror} and return @code{NULL} if lookup fails.
 @end deftypefn
 
-@deftypefn {Type} int lt_dlloader_exit_t (void)
+@deftypefn {Type} int lt_dlloader_exit (@w{lt_user_data @var{loader_data}})
 The type of the finalisation function for a user defined module loader.
 Implementation of such a function should free any resources associated
-with the loader.  If non-NULL, the function will be called by
-@code{lt_dlexit}.
+with the loader, including any user specified data in the
+@code{dlloader_data} field of the @code{lt_user_dlloader}.  If non-@code{NULL},
+the function will be called by @code{lt_dlexit}, and
+@code{lt_dlloader_remove}.
 @end deftypefn
 
 For example:
@@ -3399,9 +3254,10 @@ register_myloader (void)
   dlloader.module_close  = myloader_close;
   dlloader.find_sym      = myloader_find_sym.
   dlloader.dlloader_exit = myloader_exit;
+  dlloader.dlloader_data = (lt_user_data)myloader_function;
 
   /* Add my loader as the default module loader. */
-  if (lt_add_dlloader (lt_next_dlloader (NULL), &dlloader, "myloader") != 0)
+  if (lt_dlloader_add (lt_dlloader_next (NULL), &dlloader, "myloader") != 0)
     return ERROR;
 
   return OK;
@@ -3421,25 +3277,25 @@ during the initialisation phase.
 libltdl provides the following functions for writing your own module
 loaders:
 
-@deftypefun int lt_add_dlloader (@w{lt_dlloader_t *@var{place},} @w{lt_user_dlloader *@var{dlloader},} @w{const char *@var{loader_name}})
+@deftypefun int lt_dlloader_add (@w{lt_dlloader *@var{place},} @w{lt_user_dlloader *@var{dlloader},} @w{const char *@var{loader_name}})
 Add a new module loader to the list of all loaders, either as the
 last loader (if @var{place} is @code{NULL}), else immediately before the
 loader passed as @var{place}.  @var{loader_name} will be returned by
 @code{lt_dlloader_name} if it is subsequently passed a newly
 registered loader.  These @var{loader_name}s must be unique, or
-@code{lt_remove_dlloader} and @code{lt_find_dlloader} cannot
+@code{lt_dlloader_remove} and @code{lt_dlloader_find} cannot
 work. Returns 0 for success.
 
 @example
 @{
   /* Make myloader be the last one. */
-  if (lt_add_dlloader (NULL, myloader) != 0)
+  if (lt_dlloader_add (NULL, myloader) != 0)
     perror (lt_dlerror ());
 @}
 @end example
 @end deftypefun
 
-@deftypefun int lt_remove_dlloader (@w{const char *@var{loader_name}})
+@deftypefun int lt_dlloader_remove (@w{const char *@var{loader_name}})
 Remove the loader identified by the unique name, @var{loader_name}.
 Before this can succeed, all modules opened by the named loader must
 have been closed.  Returns 0 for success, otherwise an error message can
@@ -3448,31 +3304,31 @@ be obtained from @code{lt_dlerror}.
 @example
 @{
   /* Remove myloader. */
-  if (lt_remove_dlloader ("myloader") != 0)
+  if (lt_dlloader_remove ("myloader") != 0)
     perror (lt_dlerror ());
 @}
 @end example
 @end deftypefun
 
-@deftypefun lt_dlloader_t *lt_next_dlloader (@w{lt_dlloader_t *@var{place}})
+@deftypefun {lt_dlloader *}lt_dlloader_next (@w{lt_dlloader *@var{place}})
 Iterate over the module loaders, returning the first loader if @var{place} is
 @code{NULL}, and the next one on subsequent calls. The handle is for use with
-@code{lt_add_dlloader}.
+@code{lt_dlloader_add}.
 
 @example
 @{
   /* Make myloader be the first one. */
-  if (lt_add_dlloader (lt_next_dlloader (NULL), myloader) != 0)
+  if (lt_dlloader_add (lt_dlloader_next (NULL), myloader) != 0)
     return ERROR;
 @}
 @end example
 @end deftypefun
 
-@deftypefun lt_dlloader_t *lt_find_dlloader (@w{const char *@var{loader_name}})
+@deftypefun {lt_dlloader *}lt_dlloader_find (@w{const char *@var{loader_name}})
 Return the first loader with a matching @var{loader_name} identifier, or else
 @code{NULL}, if the identifier is not found.
 
-The identifiers which may be used by ltdl itself, if the host
+The identifiers which may be used by libltdl itself, if the host
 architecture supports them are @dfn{dlopen}@footnote{This is used for
 the host dependent module loading @sc{api} -- @code{shl_load} and
 @code{LoadLibrary} for example}, @dfn{dld} and @dfn{dlpreload}.
@@ -3481,17 +3337,24 @@ the host dependent module loading @sc{api} -- @code{shl_load} and
 @{
   /* Add a user loader as the next module loader to be tried if
      the standard dlopen loader were to fail when lt_dlopening. */
-  if (lt_add_dlloader (lt_find_dlloader ("dlopen"), myloader) != 0)
+  if (lt_dlloader_add (lt_dlloader_find ("dlopen"), myloader) != 0)
     return ERROR;
 @}
 @end example
 @end deftypefun
 
-@deftypefun char *lt_dlloader_name (@w{lt_dlloader_t *@var{place}})
+@deftypefun {const char *}lt_dlloader_name (@w{lt_dlloader *@var{place}})
 Return the identifying name of @var{PLACE}, as obtained from
-@code{lt_next_dlloader} or @code{lt_find_dlloader}.  If this function fails,
+@code{lt_dlloader_next} or @code{lt_dlloader_find}.  If this function fails,
 it will return @code{NULL} and set an error for retrieval with
 @code{lt_dlerror}.
+@end deftypefun
+
+@deftypefun {lt_user_data *}lt_dlloader_data (@w{lt_dlloader *@var{place}})
+Return the address of the @code{dlloader_data} of @var{PLACE}, as
+obtained from @code{lt_dlloader_next} or @code{lt_dlloader_find}.  If
+this function fails, it will return @code{NULL} and set an error for
+retrieval with @code{lt_dlerror}.
 @end deftypefun
 
 @subsection Error handling within user module loaders
@@ -3534,7 +3397,7 @@ In this case, you must decide whether to manually add the @code{ltdl}
 objects to your package, or else which flavor of libltdl you want to use:
 a convenience library or an installable libtool library.
 
-The most simplistic way to add @code{ltdl} to your package is to copy
+The most simplistic way to add @code{libltdl} to your package is to copy
 the source files, @file{ltdl.c} and @file{ltdl.h}, to a source directory
 withing your package and to build and link them along with the rest of
 your sources.  To help you do this, the m4 macros for autoconf are
@@ -3564,11 +3427,11 @@ symbols. In general you can safely use the convenience library in programs
 which don't depend on other libraries that might use libltdl too.
 In order to enable this flavor of libltdl, you should add the
 line @samp{AC_LIBLTDL_CONVENIENCE} to your @file{configure.in},
-@emph{before} @samp{AM_PROG_LIBTOOL}.
+@emph{before} @samp{AC_PROG_LIBTOOL}.
 
 In order to select the installable version of libltdl, you should add a
 call of the macro @samp{AC_LIBLTDL_INSTALLABLE} to your
-@file{configure.in} @emph{before} @samp{AM_PROG_LIBTOOL}.  This macro
+@file{configure.in} @emph{before} @samp{AC_PROG_LIBTOOL}.  This macro
 will check whether libltdl is already installed and, if not, request the
 libltdl embedded in your package to be built and installed.  Note,
 however, that no version checking is performed.  The user may override
@@ -3581,7 +3444,7 @@ the @code{libtoolize} command line. It will copy the libltdl sources
 to a subdirectory @samp{libltdl} in your package.
 Both macros accept an optional argument to specify the location
 of the @samp{libltdl} directory. By the default both macros assume that it
-is @samp{$@{top_builddir@}/libltdl}.
+is @samp{$@{top_srcdir@}/libltdl}.
 
 Whatever macro you use, it is up to you to ensure that your
 @file{configure.in} will configure libltdl, using
@@ -3589,35 +3452,35 @@ Whatever macro you use, it is up to you to ensure that your
 sub-makes within libltdl's directory, using automake's @var{SUBDIRS},
 for example.  Both macros define the shell variables @var{LIBLTDL}, to
 the link flag that you should use to link with libltdl, and
-@var{INCLTDL}, to the preprocessor flag that you should use to compile
+@var{LTDLINCL}, to the preprocessor flag that you should use to compile
 with programs that include @file{ltdl.h}.  It is up to you to use
 @samp{AC_SUBST} to ensure that this variable will be available in
 @file{Makefile}s, or add them to variables that are @samp{AC_SUBST}ed by
 default, such as @var{LIBS} and @var{CPPFLAGS}.
 
 If you're using the convenience libltdl, @var{LIBLTDL} will be the
-pathname for the convenience version of libltdl and @var{INCLTDL} will be
+pathname for the convenience version of libltdl and @var{LTDLINCL} will be
 @samp{-I} followed by the directory that contains libltdl, both starting
-with @samp{$@{top_builddir@}/}.
+with @samp{$@{top_builddir@}/} or @samp{$@{top_srcdir@}/}, respectively.
 
 If you request an installed version of libltdl and one is
 found@footnote{Even if libltdl is installed,
 @samp{AC_LIBLTDL_INSTALLABLE} may fail to detect it, if libltdl depends
 on symbols provided by libraries other than the C library.  In this
 case, it will needlessly build and install libltdl.}, @var{LIBLTDL} will
-be set to @samp{-lltdl} and @var{INCLTDL} will be empty (which is just a
+be set to @samp{-lltdl} and @var{LTDLINCL} will be empty (which is just a
 blind assumption that @file{ltdl.h} is somewhere in the include path if
 libltdl is in the library path).  If an installable version of libltdl
 must be built, its pathname, starting with @samp{$@{top_builddir@}/},
-will be stored in @var{LIBLTDL}, and @var{INCLTDL} will be set just like
+will be stored in @var{LIBLTDL}, and @var{LTDLINCL} will be set just like
 in the case of convenience library.
 
 So, when you want to link a program with libltdl, be it a convenience,
-installed or installable library, just compile with @samp{$(INCLTDL)}
+installed or installable library, just compile with @samp{$(LTDLINCL)}
 and link it with @samp{$(LIBLTDL)}, using libtool.
 
 You should probably also add @samp{AC_LIBTOOL_DLOPEN} to your
-@file{configure.in} @emph{before} @samp{AM_PROG_LIBTOOL}, otherwise
+@file{configure.in} @emph{before} @samp{AC_PROG_LIBTOOL}, otherwise
 libtool will assume no dlopening mechanism is supported, and revert to
 dlpreopening, which is probably not what you want.
 
@@ -3636,13 +3499,13 @@ configure.in:
 dnl Enable building of the convenience library
 dnl and set LIBLTDL accordingly
 AC_LIBLTDL_CONVENIENCE
-dnl Substitute INCLTDL and LIBLTDL in the Makefiles
-AC_SUBST(INCLTDL)
+dnl Substitute LTDLINCL and LIBLTDL in the Makefiles
+AC_SUBST(LTDLINCL)
 AC_SUBST(LIBLTDL)
 dnl Check for dlopen support
 AC_LIBTOOL_DLOPEN
 dnl Configure libtool
-AM_PROG_LIBTOOL
+AC_PROG_LIBTOOL
 dnl Configure libltdl
 AC_CONFIG_SUBDIRS(libltdl)
 ...
@@ -3653,12 +3516,12 @@ Makefile.am:
 ...
 SUBDIRS = libltdl
 
-INCLUDES = $(INCLTDL)
+INCLUDES = $(LTDLINCL)
 
 myprog_LDFLAGS = -export-dynamic
-# The quotes around -dlopen below fool automake into accepting it
-myprog_LDADD = $(LIBLTDL) "-dlopen" self "-dlopen" libfoo.la
-myprog_DEPENDENCIES = $(LIBLTDL) libfoo.la
+# The quotes around -dlopen below fool automake <= 1.4 into accepting it
+myprog_LDADD = $(LIBLTDL) "-dlopen" self "-dlopen" foo1.la
+myprog_DEPENDENCIES = $(LIBLTDL) foo1.la
 ...
 @end example
 
@@ -3677,100 +3540,8 @@ This chapter describes how libtool interacts with other languages,
 and what special considerations you need to make if you do not use C.
 
 @menu
-* Configuration tags::
 * C++ libraries::
 @end menu
-
-@node Configuration tags
-@section Configuration tags
-@cindex Configuration tags
-@cindex tags
-
-A single libtool script may support multiple configurations.  By
-default, it will only support C compilation, but additional
-configuration tags can be created, using @samp{ltconfig --add-tag}, so
-that libtool can support other compilers.  Such configuration tags can
-be used to select native compilers instead of cross ones, or compilers
-of other languages.
-
-For example, in order to create a tag for a C++ compiler @samp{CC}, you
-could run:
-
-@example
-$ @kbd{LTCC=gcc CC=c++ CFLAGS=-g CPPFLAGS=-Dfoo \}
-> @kbd{./ltconfig -o libtool --add-tag=CXX ltcf-cxx.sh}
-@end example
-
-@samp{ltcf-cxx.sh} is a shell script fragment that configures C++
-specific variables that get placed within the appended configuration
-tag.  Another shell script called @samp{ltcf-c.sh} that contains C
-compiler configurations also exists but it should not be used by the
-user.  It is used internally by the ltconfig script.
-
-Note that you should set @var{LTCC} to a valid C compiler, because
-libtool may need to compile additional C sources internally.  Note also
-that, although @samp{CC} is not a C compiler, you should use variables
-such as @var{CC}, @var{CFLAGS} and @var{CPPFLAGS} to tell libtool which
-flags to use when compiling test programs.
-
-You can use existing compiler/language specific shell script fragments,
-such as @samp{ltcf-cxx.sh}, as a reference for other compilers/languages
-you would like libtool to support.
-
-A potential problem may occur if you use variables when setting
-@var{LTCC} and @var{CC}.  For example, a problem will occur if you do
-the following:
-
-@example
-$ @kbd{LTCC=$CC CC=$CXX ./ltconfig -o libtool --add-tag=CXX ltcf-cxx.sh}
-@end example
-
-In this example, @var{CC} is set to the C++ compiler and LTCC is set to
-the compiler pointed to by @var{$CC}.  However, @var{CC} was previously
-set to the C++ compiler @var{$CXX}, which causes LTCC to be set to the
-C++ compiler @var{$CXX}, too.  This is a problem because LTCC must be a
-valid C compiler, not a C++ compiler for example.
-
-If @samp{ltconfig} is unable to determine the host type then you must
-explicitly provide a host when invoking @samp{ltconfig}.  This is
-typically necessary for new very platforms and many cross-compiled
-platforms.  For example, assuming that your host is @samp{i386-nto} then
-@samp{ltconfig} could be invoked as follows:
-
-@example
-$ @kbd{LTCC=$CC CC=$CXX ./ltconfig -o libtool \}
-> @kbd{--add-tag=CXX ltcf-cxx.sh i386-nto}
-@end example
-
-After a configuration tag has been added using the @samp{--add-tag}
-option, whenever you want to compile or link a library using
-@samp{c++}, you should run:
-
-@example
-$ @kbd{./libtool --mode=compile c++ -c test.cc}
-@end example
-
-Libtool will automatically detect the appropriate tagged configuration
-to use by matching the compiler used in the above command with the one
-the tagged configuration was configured with.
-
-The tagged configuration that libtool uses can be explicitly specified
-by using the @samp{--tag} option as follows:
-
-@example
-$ @kbd{./libtool --tag=CXX --mode=compile c++ -c test.cc}
-@end example
-
-Conceptually, tags are cumulative, i.e., they could only set a couple of
-configuration variables, leaving others untouched.  In practice, any tag
-created with ltconfig will override all libtool configuration variables.
-Only the two pre-defined tags, @samp{disable-shared} and
-@samp{disable-static}, override a single variable, and can be used
-cumulatively, after other tags.
-
-@emph{NOTE}: C++ support may be automatically added to your package by
-adding the @code{AC_LIBTOOL_CXX} macro to your package
-@file{configure.in} file.
 
 @node C++ libraries
 @section Writing libraries for C++
@@ -3778,11 +3549,6 @@ adding the @code{AC_LIBTOOL_CXX} macro to your package
 @cindex trouble with C++
 @cindex pitfalls using C++
 @cindex C++, pitfalls
-
-@emph{NOTE}: The problems described in this section may no longer
-relevant due to the @samp{libtool} multi-language support.  To enable
-C++ support in libtool, use the @code{AC_LIBTOOL_CXX} macro in your
-@file{configure.in} file.
 
 Creating libraries of C++ code should be a fairly straightforward
 process, because its object files differ from C ones in only three ways:
@@ -4023,33 +3789,6 @@ static and shared libraries, @file{mdemo-static.test} builds only static
 libraries (@samp{--disable-shared}), and @file{mdemo-shared.test} builds
 only shared libraries (@samp{--disable-static}).
 
-@item tagdemo-conf.test
-@itemx tagdemo-exec.test
-@itemx tagdemo-make.test
-@itemx tagdemo-static.test
-@itemx tagdemo-shared.test
-@pindex tagdemo-conf.test
-@pindex tagdemo-exec.test
-@pindex tagdemo-make.test
-@pindex tagdemo-static.test
-@pindex tagdemo-shared.test
-These programs check to see that the @file{tagdemo} subdirectory of the
-libtool distribution can be configured and built correctly.
-
-The @file{tagdemo} subdirectory contains a demonstration of a package
-that uses libtool and its tagged configuration support
-(@pxref{Configuration tags}) build a C++ library.  C++ shared library
-support is enabled by using the @code{AC_LIBTOOL_CXX} macro in
-@file{tagdemo/configure.in}.
-
-The tests @file{tagdemo-make.test}, and @file{tagdemo-exec.test}, are
-executed three times, under three different libtool configurations:
-@file{tagdemo-conf.test} configures @file{tagdemo/libtool} to build both
-static and shared libraries, @file{tagdemo-static.test} builds only
-static libraries (@samp{--disable-shared}), and
-@file{tagdemo-shared.test} builds only shared libraries
-(@samp{--disable-static}).
-
 @item dryrun.test
 @pindex dryrun.test
 This test checks whether libtool's @code{--dry-run} mode works properly.
@@ -4143,7 +3882,7 @@ Finally, send a bug report to @value{BUGADDR} with any appropriate
 the details needed to reproduce the bug, and a brief description of why
 you think the behaviour is a bug.  Be sure to include the word
 ``libtool'' in the subject line, as well as the version number you are
-using (which can be found by typing @kbd{ltconfig --version}).
+using (which can be found by typing @kbd{libtool --version}).
 
 @node Maintaining
 @chapter Maintenance notes for libtool
@@ -4217,8 +3956,8 @@ usually willing to volunteer to help you with new ports, so you can send
 the information to them.
 
 To do the port yourself, you'll definitely need to modify the
-@code{ltconfig} script in order to make platform-specific changes to the
-configuration process.  You should search the script for the
+@code{libtool.m4} macros in order to make platform-specific changes to
+the configuration process.  You should search that file for the
 @code{PORTME} keyword, which will give you some hints on what you'll
 need to change.  In general, all that is involved is modifying the
 appropriate configuration variables (@pxref{libtool script contents}).
@@ -4227,8 +3966,8 @@ Your best bet is to find an already-supported system that is similar to
 yours, and make your changes based on that.  In some cases, however,
 your system will differ significantly from every other supported system,
 and it may be necessary to add new configuration variables, and modify
-the @code{ltmain.sh} script accordingly.  Be sure to write to the
-mailing list before you make changes to @code{ltmain.sh}, since they may
+the @code{ltmain.in} script accordingly.  Be sure to write to the
+mailing list before you make changes to @code{ltmain.in}, since they may
 have advice on the most effective way of accomplishing what you want.
 
 @node Porting inter-library dependencies
@@ -4241,7 +3980,7 @@ inter-library dependency on some platforms, thanks to a patch by Toshio
 Kuratomi @email{badger@@prtr-13.ucsc.edu}.  Here's a shortened version
 of the message that contained his patch:
 
-The basic architecture is this: in @file{ltconfig.in}, the person who
+The basic architecture is this: in @file{libtool.m4}, the person who
 writes libtool makes sure @samp{$deplibs} is included in
 @samp{$archive_cmds} somewhere and also sets the variable
 @samp{$deplibs_check_method}, and maybe @samp{$file_magic_cmd} when
@@ -4255,8 +3994,8 @@ writes libtool makes sure @samp{$deplibs} is included in
 @vindex file_magic_test_file
 looks in the library link path for libraries that have the right
 libname.  Then it runs @samp{$file_magic_cmd} on the library and checks
-for a match against @samp{regex} using @code{egrep}.  When
-@var{file_magic_test_file} is set in @file{ltconfig}, it is used as an
+for a match against @var{regex} using @code{egrep}.  When
+@var{file_magic_test_file} is set by @file{libtool.m4}, it is used as an
 argument to @samp{$file_magic_cmd} in order to verify whether the
 regular expression matches its output, and warn the user otherwise.
 
@@ -4282,7 +4021,7 @@ deplibs used unless needed.
 
 @item unknown
 @vindex unknown
-is the default for all systems unless overridden in @file{ltconfig.in}.
+is the default for all systems unless overridden in @file{libtool.m4}.
 It is the same as @samp{none}, but it documents that we really don't
 know what the correct value should be, and we welcome patches that
 improve it.
@@ -4403,10 +4142,10 @@ they are bundled with:
 @table @code
 @item aix3*
 @itemx aix4*
-AIX compilers have no PIC flags, since AIX has been ported only to
-PowerPC and RS/6000 chips. @footnote{All code compiled for the PowerPC
-and RS/6000 chips (@code{powerpc-*-*}, @code{powerpcle-*-*}, and
-@code{rs6000-*-*}) is position-independent, regardless of the operating
+Most AIX compilers have no PIC flags, since AIX (with the exception of
+AIX for IA-64) runs on PowerPC and RS/6000 chips. @footnote{All code compiled
+for the PowerPC and RS/6000 chips (@code{powerpc-*-*}, @code{powerpcle-*-*},
+and @code{rs6000-*-*}) is position-independent, regardless of the operating
 system or compiler suite.  So, ``regular objects'' can be used to build
 shared libraries on these systems and no special PIC compiler flags are
 required.}
@@ -4431,11 +4170,7 @@ Use @samp{-PIC} to generate PIC.
 On all known systems, a reloadable object can be created by running
 @kbd{ld -r -o @var{output}.o @var{input1}.o @var{input2}.o}.  This
 reloadable object may be treated as exactly equivalent to other
-objects.  This is the piecewise method that libtool uses to get around
-shell limitations when building large libraries.  The object files
-created by libtool are linked together in as few steps as necessary
-into a single reloadable object file.  This temporary object file
-is then used to generate a shared library.
+objects.
 
 @node Multiple dependencies
 @subsection Multiple dependencies
@@ -4449,15 +4184,9 @@ Particularly, if a pair of static archives each resolve some of the
 other's symbols, it might be necessary to list one of those archives
 both before and after the other one.  Libtool does not currently cope
 with this situation well, since dupicate libraries are removed from
-thr link line.
-
-If you find yourself developing on a host that requires you to list
-libraries multiple times in order for it to generate correctly linked
-objects, you can defeat libtool's removal algorithm like this:
-
-@example
-$ libtool ... -lfoo -lbar -Wl,-lfoo
-@end example
+the link line by default.  Libtool provides the command line option
+@samp{--preserve-dup-deps} to preserve all duplicate dependencies
+in cases where it is necessary.
 
 @node Archivers
 @subsection Archivers
@@ -4477,12 +4206,19 @@ use the @code{ar ts} command, instead.
 @cindex implementation of libtool
 @cindex libtool implementation
 
-The @code{libtool} script is generated by @code{ltconfig}
-(@pxref{Configuring}).  From libtool version 0.7 to 1.0, this script
+Since version 1.4, the @code{libtool} script is generated by
+@code{configure} (@pxref{Configuring}).  In earlier versions,
+@code{configure} achieved this by calling a helper script called
+@file{ltconfig}.  From libtool version 0.7 to 1.0, this script
 simply set shell variables, then sourced the libtool backend,
-@code{ltmain.sh}.  @code{ltconfig} from libtool version 1.1 and later
-inlines the contents of @code{ltmain.sh} into the generated
-@code{libtool}, which improves performance on many systems.
+@code{ltmain.sh}.  @code{ltconfig} from libtool version 1.1 through 1.3
+inlined the contents of @code{ltmain.sh} into the generated
+@code{libtool}, which improved performance on many systems.  The tests
+that @file{ltconfig} used to perform are now kept in @file{libtool.m4}
+where thay can be written using Autoconf.  This has the runtime
+performance benefits of inlined @code{ltmain.sh}, @emph{and} improves
+the build time a little while considerably easing the amount of raw
+shell code that used to need maintaining.
 
 The convention used for naming variables which hold shell commands for
 delayed evaluation, is to use the suffix @code{_cmd} where a single
@@ -4492,7 +4228,7 @@ evaluation.  By convention, @code{_cmds} variables delimit the
 evaluation units with the @code{~} character where necessary.
 
 Here is a listing of each of the configuration variables, and how they
-are used within @code{ltmain.sh}:
+are used within @code{ltmain.sh} (@pxref{Configuring}):
 
 @defvar AR
 The name of the system library archiver.
@@ -4505,12 +4241,6 @@ The name of the C compiler used to configure libtool.
 @defvar LD
 The name of the linker that libtool should use internally for reloadable
 linking and possibly shared libraries.
-@end defvar
-
-@defvar LTCONFIG_VERSION
-This is set to the version number of the @code{ltconfig} script, to
-prevent mismatches between the configuration information in
-@code{libtool}, and how that information is used in @code{ltmain.sh}.
 @end defvar
 
 @defvar NM
@@ -4882,7 +4612,8 @@ libraries.
 
 @defvar version_type
 The library version numbering type.  One of @samp{libtool},
-@samp{linux}, @samp{osf}, @samp{sunos}, or @samp{none}.
+@samp{freebsd-aout}, @samp{freebsd-elf}, @samp{irix}, @samp{linux},
+@samp{osf}, @samp{sunos}, @samp{windows}, or @samp{none}.
 @end defvar
 
 @defvar whole_archive_flag_spec
@@ -4895,7 +4626,7 @@ linker.  Used as: @code{$@{wl@}@var{some-flag}}.
 @end defvar
 
 Variables ending in @samp{_cmds} or @samp{_eval} contain a
-semicolon-separated list of commands that are @code{eval}ed one after
+@samp{~}-separated list of commands that are @code{eval}ed one after
 another.  If any of the commands return a nonzero exit status, libtool
 generally exits with an error message.
 
@@ -4917,9 +4648,8 @@ than having to trust second-hand observation.
 
 @item
 Rather than reconfiguring libtool every time I make a change to
-@code{ltconfig.in} or @code{ltmain.in}, I keep a permanent
-@code{libtool} script in my @var{PATH}, which sources @code{ltmain.in}
-directly.
+@code{ltmain.in}, I keep a permanent @code{libtool} script in my
+@var{PATH}, which sources @code{ltmain.in} directly.
 
 The following steps describe how to create such a script, where
 @code{/home/src/libtool} is the directory containing the libtool source
@@ -4928,15 +4658,12 @@ configured for your platform, and @code{~/bin} is a directory in your
 @var{PATH}:
 
 @example
-trick$ @kbd{cd ~/bin}
-trick$ @kbd{sed '/^# ltmain\.sh/q' /home/src/libtool/libtool > libtool}
-trick$ @kbd{cat >> libtool
-LTCONFIG_VERSION="@@VERSION@@"
-. /home/src/libtool/ltmain.in
-^D}
-trick$ @kbd{chmod +x libtool}
-trick$ @kbd{libtool --version}
-ltmain.sh (GNU @@PACKAGE@@) @@VERSION@@
+trick$ cd ~/bin
+trick$ sed '/^# ltmain\.sh/q' /home/src/libtool/libtool > libtool
+trick$ echo '. /home/src/libtool/ltmain.in' >> libtool
+trick$ chmod +x libtool
+trick$ libtool --version
+ltmain.sh (GNU @@PACKAGE@@) @@VERSION@@@@TIMESTAMP@@
 trick$
 @end example
 @end itemize
@@ -4944,7 +4671,7 @@ trick$
 The output of the final @samp{libtool --version} command shows that the
 @code{ltmain.in} script is being used directly.  Now, modify
 @code{~/bin/libtool} or @code{/home/src/libtool/ltmain.in} directly in
-order to test new changes without having to rerun @code{ltconfig}.
+order to test new changes without having to rerun @code{configure}.
 
 @include fdl.texi
 

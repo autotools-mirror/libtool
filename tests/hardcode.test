@@ -40,7 +40,7 @@ fi
 echo "= Running $make hardcode in ../demo"
 $make hardcode || exit 1
 
-echo "= Finding ltconfig's guesses at hardcoding values"
+echo "= Finding libtool.m4's guesses at hardcoding values"
 status=0
 hardcode_direct=NONE
 hardcode_minus_L=NONE

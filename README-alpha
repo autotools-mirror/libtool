@@ -53,11 +53,12 @@ using (by typing `ltconfig --version').
 
 * Fetch new versions of the files that are maintained by the FSF.
   config.guess and config.sub are available via ftp from
-  ftp://ftp.gnu.org/gnu/config/
+  ftp://ftp.gnu.org/gnu/config/, and texinfo.tex is available from
+  ftp://ftp.gnu.org/gnu/GNUinfo/.
 
 * Update NEWS.
 
-* Update the version number in configure.in.
+* Update the version number in configure.ac.
   (The idea is that every other alpha number will be a net release.
   The repository will always have its own "odd" number so we can easily
   distinguish net and repo versions.)
@@ -79,13 +80,13 @@ using (by typing `ltconfig --version').
     libtool-<prev>-<version>.tar.xdp.gz'
 
 * Upload release tarball, diff file and xdelta file 
-  ftp://melange.gnu.org/~ftp/gnu/libtool and send announcement to
+  ftp://fencepost.gnu.org/~ftp/gnu/libtool and send announcement to
   libtool@gnu.org.
 
 * If not an alpha, announcement must also go to info-gnu@gnu.org, and an
   upload request be sent to ftp-upload@gnu.org requesting files be transferred
   from ftp://alpha.gnu.org/gnu/libtool to ftp://ftp.gnu.org/gnu/libtool.
 
-* Update version number in configure.in to next alpha number.
+* Update version number in configure.ac to next alpha number.
 
 * Commit.

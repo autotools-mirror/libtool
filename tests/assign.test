@@ -12,7 +12,7 @@ fi
 . $srcdir/defs || exit 1
 
 # Check that test -e isn't used in our portable shell scripts.
-if egrep -n '[^	 ]=[^	 ].*(break|continue)' $srcdir/../ltconfig $srcdir/../ltmain.sh; then
+if egrep -n '[^	 ]=[^	 ].*(break|continue)' $srcdir/../ltmain.sh; then
   echo "cannot use \`break' or \`continue' on the same line as an assignment"
   exit 1
 fi

@@ -6,16 +6,21 @@ BUILD_SUBDIRS = . libltdl doc tests
 SUBDIRS = $(BUILD_SUBDIRS)
 DIST_SUBDIRS = $(BUILD_SUBDIRS) $(CONF_SUBDIRS)
 
+# We need to export these variables
+CFLAGS = @CFLAGS@
+CPPLAGS = @CPPFLAGS@
+LDFLAGS = @LDFLAGS@
+LIBS= @LIBS@
+
 aclocal_macros = libtool.m4 ltdl.m4
 
-EXTRA_DIST = $(aclocal_macros) bootstrap libtoolize.in ltconfig.in \
-	ltmain.in ltcf-c.sh ltcf-cxx.sh ltcf-gcj.sh \
+EXTRA_DIST = $(aclocal_macros) bootstrap libtoolize.in ltmain.in \
 	mkstamp ChangeLog.0 ChangeLog.1
-CLEANFILES = libtool libtoolize ltconfig.T ltmain.shT
+CLEANFILES = libtool libtoolize ltmain.shT
 
 # These are required by libtoolize.
-pkgdata_SCRIPTS = config.guess config.sub ltconfig
-pkgdata_DATA = ltmain.sh ltcf-c.sh ltcf-cxx.sh ltcf-gcj.sh
+pkgdata_SCRIPTS = config.guess config.sub
+pkgdata_DATA = ltmain.sh
 
 # This macro file should be visible to Automake's aclocal.
 aclocal_DATA = $(aclocal_macros)
@@ -23,74 +28,21 @@ aclocal_DATA = $(aclocal_macros)
 # The standalone libtool script, and the libtool distributor.
 bin_SCRIPTS = libtool libtoolize
 
-# We have to define these explicitly because we do not use the
-# libtool macros that would define them.
-if HAVE_CXX
-LIBTOOL_CXX_DEPS = $(srcdir)/ltcf-cxx.sh
-endif
-if HAVE_GCJ
-LIBTOOL_GCJ_DEPS = $(srcdir)/ltcf-gcj.sh
-endif
-LIBTOOL_DEPS = $(srcdir)/ltmain.sh $(srcdir)/ltconfig \
-  $(srcdir)/ltcf-c.sh $(LIBTOOL_CXX_DEPS) $(LIBTOOL_GCJ_DEPS)
-
-libtool: $(LIBTOOL_DEPS)
-	-rm -f $@T
-	AR="$(AR)" CC="$(CC)" CFLAGS="$(CFLAGS)" CPPFLAGS="$(CPPFLAGS)" \
-	LTCC="$(CC)" FILE="$(FILE)" LD="$(LD)" LDFLAGS="$(LDFLAGS)" \
-	LIBS="$(LIBS)" LN_S="$(LN_S)" NM="$(NM)" RANLIB="$(RANLIB)" \
-	STRIP="$(STRIP)" AS="$(AS)" DLLTOOL="$(DLLTOOL)" \
-	OBJDUMP="$(OBJDUMP)" \
-	objext="$(OBJEXT)" exeext="$(EXEEXT)" \
-	reload_flag="$(reload_flag)" \
-	deplibs_check_method="$(deplibs_check_method)" \
-	file_magic_cmd="$(file_magic_cmd)" \
-	$(SHELL) $(srcdir)/ltconfig $(LIBTOOL_FLAGS) --srcdir=$(srcdir) \
-	  --output=$@T $(srcdir)/ltmain.sh $(host_triplet)
-if HAVE_CXX
-	AR="$(AR)" CC="$(CXX)" CFLAGS="$(CXXFLAGS)" CPPFLAGS="$(CPPFLAGS)" \
-	LTCC="$(CC)" FILE="$(FILE)" LD="$(LD)" LDFLAGS="$(LDFLAGS)" \
-	LIBS="$(LIBS)" LN_S="$(LN_S)" NM="$(NM)" RANLIB="$(RANLIB)" \
-	STRIP="$(STRIP)" AS="$(AS)" DLLTOOL="$(DLLTOOL)" \
-	OBJDUMP="$(OBJDUMP)" \
-	objext="$(OBJEXT)" exeext="$(EXEEXT)" \
-	reload_flag="$(reload_flag)" \
-	deplibs_check_method="$(deplibs_check_method)" \
-	file_magic_cmd="$(file_magic_cmd)" \
-	$(SHELL) $(srcdir)/ltconfig $(LIBTOOL_FLAGS) --srcdir=$(srcdir) \
-	  --add-tag=CXX --output=$@T $(srcdir)/ltcf-cxx.sh $(host_triplet)
-endif
-if HAVE_GCJ
-	AR="$(AR)" CC="$(GCJ)" CFLAGS="$(GCJFLAGS)" CPPFLAGS="$(CPPFLAGS)" \
-	LTCC="$(CC)" FILE="$(FILE)" LD="$(LD)" LDFLAGS="$(LDFLAGS)" \
-	LIBS="$(LIBS)" LN_S="$(LN_S)" NM="$(NM)" RANLIB="$(RANLIB)" \
-	STRIP="$(STRIP)" AS="$(AS)" DLLTOOL="$(DLLTOOL)" \
-	OBJDUMP="$(OBJDUMP)" \
-	objext="$(OBJEXT)" exeext="$(EXEEXT)" \
-	reload_flag="$(reload_flag)" \
-	deplibs_check_method="$(deplibs_check_method)" \
-	file_magic_cmd="$(file_magic_cmd)" \
-	$(SHELL) $(srcdir)/ltconfig $(LIBTOOL_FLAGS) --srcdir=$(srcdir) \
-	  --add-tag=GCJ --output=$@T $(srcdir)/ltcf-gcj.sh $(host_triplet)
-endif
-	-rm -f $@
-	mv $@T $@
-
-# Experimental C version of libtool.
-clibtool: $(srcdir)/ltmain.c $(srcdir)/ltconfig
-	AR="$(AR)" CC="$(CC)" CFLAGS="$(CFLAGS)" CPPFLAGS="$(CPPFLAGS)" \
-	LTCC="$(CC)" FILE="$(FILE)" LD="$(LD)" LDFLAGS="$(LDFLAGS)" \
-	LIBS="$(LIBS)" LN_S="$(LN_S)" NM="$(NM)" RANLIB="$(RANLIB)" \
-	STRIP="$(STRIP)" AS="$(AS)" DLLTOOL="$(DLLTOOL)" \
-	OBJDUMP="$(OBJDUMP)" \
-	objext="$(objext)" exeext="$(exeext)" reload_flag="$(reload_flag)" \
-	deplibs_check_method="$(deplibs_check_method)" file_magic_cmd="$(file_magic_cmd)" \
-	$(SHELL) $(srcdir)/ltconfig $(LIBTOOL_FLAGS) --srcdir=$(srcdir) \
-	  --output=$@ $(srcdir)/ltmain.c $(host_triplet)
+libtool: $(srcdir)/ltmain.sh $(top_builddir)/configure.ac
+	$(SHELL) $(top_builddir)/config.status --recheck
+	chmod +x $@
 
 libtoolize: $(srcdir)/libtoolize.in $(top_builddir)/config.status
-	CONFIG_FILES=libtoolize CONFIG_HEADERS= $(top_builddir)/config.status
-	chmod +x libtoolize
+	CONFIG_FILES=$@ CONFIG_HEADERS= $(SHELL) $(top_builddir)/config.status
+	chmod +x $@
+
+$(srcdir)/ltmain.sh: $(srcdir)/ltmain.in $(TSDEPS)
+	-rm -f ltmain.shT
+	date=`$(SHELL) $(srcdir)/mkstamp < $(srcdir)/ChangeLog` && \
+	sed -e 's/@''PACKAGE@/@PACKAGE@/' -e 's/@''VERSION@/@VERSION@/' \
+	    -e "s%@""TIMESTAMP@%$$date%" $(srcdir)/ltmain.in > ltmain.shT
+	mv -f ltmain.shT $@ || \
+	(rm -f $@ && cp ltmain.shT $@ && rm -f ltmain.shT)
 
 # TSDEPS will be defined to TSDEPS_DIST at `make dist' time
 TSDEPS =
@@ -103,29 +55,6 @@ update-timestamps:
 	@if (cd $(srcdir) && test -d CVS && \
 	    $(CVS) -n update $(TSDEPS_DIST) | grep '^M'); then \
 		echo "Cannot make dist before commit"; exit 1; else :; fi
-	$(MAKE) TSDEPS="$(TSDEPS_DIST)" $(srcdir)/ltconfig $(srcdir)/ltmain.sh
-
-# Do line number substitution, as well as PACKAGE, VERSION and TIMESTAMP.
-# Line numbering transliterated from a section in autoconf (Autoconf 2.12).
-@srcdir@/ltconfig: $(srcdir)/ltconfig.in $(top_srcdir)/configure.in $(TSDEPS)
-	rm -f ltconfig.T
-	date=`$(SHELL) $(srcdir)/mkstamp < $(srcdir)/ChangeLog` && \
-	$(AWK) '/@LINENO@/ { printf "%d:", NR } { print }' $(srcdir)/ltconfig.in | \
-	  sed -e 's/@''PACKAGE@/@PACKAGE@/' -e 's/@''VERSION@/@VERSION@/' \
-	      -e "s%@""TIMESTAMP@%$$date%" \
-	      -e '/@LINENO@/s/^\([0-9][0-9]*\):\(.*\)@LINENO@/\2\1/' \
-		> ltconfig.T
-	chmod +x ltconfig.T
-	mv -f ltconfig.T $@ || \
-	(rm -f $@ && cp ltconfig.T $@ && rm -f ltconfig.T)
-
-@srcdir@/ltmain.sh: $(srcdir)/ltmain.in $(top_srcdir)/configure.in $(TSDEPS)
-	-rm -f ltmain.shT
-	date=`$(SHELL) $(srcdir)/mkstamp < $(srcdir)/ChangeLog` && \
-	sed -e 's/@''PACKAGE@/@PACKAGE@/' -e 's/@''VERSION@/@VERSION@/' \
-	    -e "s%@""TIMESTAMP@%$$date%" $(srcdir)/ltmain.in > ltmain.shT
-	mv -f ltmain.shT $@ || \
-	(rm -f $@ && cp ltmain.shT $@ && rm -f ltmain.shT)
 
 # All our rules should depend on these demo files.
 all-recursive: $(srcdir)/libltdl/acinclude.m4 $(ACINCLUDE_M4_LIST)

@@ -2,19 +2,22 @@
 
 AUTOMAKE_OPTIONS = no-dependencies foreign
 
-INCLUDES = -I$(srcdir)/../libltdl
+INCLUDES = $(INCLTDL)
 
 EXTRA_DIST = acinclude.m4
 
-lib_LTLIBRARIES = foo1.la libfoo2.la
+lib_LTLIBRARIES = libsub.la foo1.la libfoo2.la
 
 foo1_la_SOURCES = foo1.c
-foo1_la_LIBADD = $(LIBM)
+foo1_la_LIBADD = $(LIBM) libsub.la
 foo1_la_LDFLAGS = -module -avoid-version
 
 libfoo2_la_SOURCES = foo2.c
-libfoo2_la_LIBADD = $(LIBM)
+libfoo2_la_LIBADD = $(LIBM) libsub.la
 libfoo2_la_LDFLAGS = -no-undefined -module -export-symbols-regex "libfoo2.*"
+
+libsub_la_SOURCES = sub.c
+libsub_la_LDFLAGS = -no-undefined
 
 noinst_HEADERS = foo.h
 
@@ -33,9 +36,9 @@ bin_PROGRAMS = mdemo mdemo.static
 mdemo_SOURCES = main.c
 mdemo_LDFLAGS = -export-dynamic
 ## The quotes around -dlopen below fool automake into accepting it
-mdemo_LDADD = @LIBLTDL@ "-dlopen" self \
+mdemo_LDADD = @LIBLTDL@ libsub.la "-dlopen" self \
 		"-dlopen" foo1.la "-dlopen" libfoo2.la
-mdemo_DEPENDENCIES = @LIBLTDL@ foo1.la libfoo2.la
+mdemo_DEPENDENCIES = @LIBLTDL@ libsub.la foo1.la libfoo2.la
 
 # Create a statically linked version of mdemo.
 mdemo_static_SOURCES = $(mdemo_SOURCES)

@@ -40,7 +40,6 @@ COMMON_TESTS = \
 	quote.test sh.test suffix.test pdemo-conf.test \
 	pdemo-make.test pdemo-exec.test pdemo-inst.test
 
-
 if HAVE_CXX
 TESTS = $(COMMON_TESTS) $(CXX_TESTS)
 else
@@ -52,16 +51,17 @@ demo-conf.test: $(top_builddir)/libtool
 $(top_builddir)/libtool:
 	cd $(top_builddir) && $(MAKE) all
 
-# We should export these variables when we run ltconfig.
+# We should export these variables when we build the libtool script.
 CFLAGS = @CFLAGS@
-CPPLAGS = @CPPFLAGS@
+CPPFLAGS = @CPPFLAGS@
 LDFLAGS = @LDFLAGS@
 LIBS = @LIBS@
 
 # Be sure to reexport important environment variables.
 TESTS_ENVIRONMENT = MAKE="$(MAKE)" CC="$(CC)" CFLAGS="$(CFLAGS)" \
 	CPPFLAGS="$(CPPFLAGS)" LD="$(LD)" LDFLAGS="$(LDFLAGS)" \
-	LIBS="$(LIBS)" LN_S="$(LN_S)" NM="$(NM)" RANLIB="$(RANLIB)"
+	LIBS="$(LIBS)" LN_S="$(LN_S)" NM="$(NM)" RANLIB="$(RANLIB)" \
+	OBJEXT="$(OBJEXT)" EXEEXT="$(EXEEXT)"
 
 EXTRA_DIST = defs $(COMMON_TESTS) $(CXX_TESTS)
 
@@ -74,4 +74,3 @@ clean-local:
 	-test -f ../mdemo/Makefile && cd ../mdemo && $(MAKE) distclean
 	-test -f ../tagdemo/Makefile && cd ../tagdemo && $(MAKE) distclean
 	rm -rf _inst
-

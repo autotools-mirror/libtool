@@ -1,6 +1,13 @@
 In the near future:
 ********************
 
+* Figure out why zsh echo builtin's removal of \ escapes is not detected
+  by libtool's echo selector.
+
+* Port the migration of all code from ltconfig into libtool.m4 to the
+multi-language-branch, so that CVS automake can remove its references
+to ltconfig.
+
 * Fix the following bugs in libltdl:
  - error reporting of tryall_dlopen():
    if the file actually doesn't exist (stat() fails or it wasn't dlpreopened)
@@ -50,6 +57,13 @@ files that get installed.
 In the future:
 **************
 
+* The definitions for AC_LTDL_SHLIBEXT, AC_LTDL_SHLIBPATH and
+AC_LTDL_SYSSEARCHPATH  should not rely on the _LT_AC_LTCONFIG_HACK
+macro.  This involves moving the code which sets the variables
+library_names_spec, shlibpath_var and sys_lib_dlsearch_path_spec from
+into a separate macro, and AC_REQUIRING the newly extracted macro in the
+respective ltdl.m4 macros.
+
 * Godmar Back writes:
   libltdl uses such stdio functions as fopen, fgets, feof, fclose, and others.
   These functions are not async-signal-safe. While this does not make 
@@ -65,11 +79,6 @@ In the future:
   I believe relying on async-signal-safe functions to the greatest extent
   possible would greatly improve libltdl's ability to be embedded in and 
   used by other systems.
-
-* Support -dlopen/dlpreopen for libraries.
-  This requires adding two new variables (dlopen/dlpreopen) to
-  the pseudo-library and later dlopening them when a program is linked
-  against such a library.
 
 * Arrange that EXEEXT suffixes are stripped from wrapper script names
 only when needed, and that a timestamp file or a wrapper program is
@@ -142,6 +151,9 @@ the same version number, but depending on different versions of libc,
 for example.  In the future, we might even have an option to encode
 the sonames of all dependencies of a library into its soname.
 
+* The current implementation of libltdl in a subdirectory doesn't work
+properly with AC_CONFIG_AUX_DIR using projects.
+
 Things to think about:
 **********************
 
@@ -155,3 +167,10 @@ like libtool should be distributed as part of such a binary package.
 * Maybe implement full support for other orthogonal library types
 (libhello_g, libhello_p, 64 vs 32-bit ABI's, etc).  Make these types
 configurable.
+
+* Perhaps the iuse of libltdl could be made cleaner by allowing
+registration of hook functions to call at various points.  This would
+hopefully free the user from having to maintain a parallel module
+list with user data.  This would likely involve being able to carry
+additional per user module data in the lt_dlmodule structure -- perhaps
+in the form of an associative array keyed by user name?

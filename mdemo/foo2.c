@@ -36,6 +36,7 @@ int nothing;
 int
 _foo2_helper()
 {
+  sub();
   return FOO_RET;
 }
 
