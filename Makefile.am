@@ -149,7 +149,8 @@ FETCHFILES = \
 ./config.guess \
 libltdl/config.guess \
 ./config.sub \
-libltdl/config.sub
+libltdl/config.sub \
+doc/texinfo.tex
 
 ## Fetch the latest versions of files we care about.
 .PHONY: fetch
