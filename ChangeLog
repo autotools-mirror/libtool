@@ -1,5 +1,14 @@
 1999-01-25  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* ltmain.in (file_magic): use egrep instead of expr to support
+	more general regular expressions
+	(file_regex): remove it; the name is misleading, it's not used
+ 	anywhere, and probably will never be
+	* ltconfig.in, doc/libtool.texi: ditto
+	* ltconfig.in (linux-gnu*, deplibs_check_method): extend regex to 
+	support `LSB dynamic lib' in the output of `file'
+	Reported by Scott D. Heavner <sdh@po.cwru.edu>
+	
 	* ltmain.in (dependency_libs, xrpath): add -R switches to
 	dependency_libs only just before creating the .la file; they
 	should not be passed to the C compiler or linker at

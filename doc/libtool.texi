@@ -3141,31 +3141,21 @@ are included in @samp{$archive_cmds} somewhere and also sets the
 @vindex file_magic
 @vindex file_magic_command
 looks in the library link path for libraries that have the right
-libname.  Then it runs @samp{$file_magic_command} on the library and checks
-for a match against [regex] using expr.  I currently have linux-elf looking
-for the string: "ELF [0-9][0-9]*-bit [LM]SB shared object" on the output of
-@samp{file}.  This is option that works best I think.
-
-@item file_regex
-@vindex file_regex
-will look for a filename in the link path.  It doesn't take an argument
-because I use the @samp{libname_spec} and @samp{library_names_spec}
-variables to create the string to look for.  I don't like it because
-symlinks and random files can make it give false positives.
+libname.  Then it runs @samp{$file_magic_command} on the library and
+checks for a match against @samp{regex} using @code{egrep}.
 
 @item test_compile 
 @vindex test_compile
-handles @samp{-L} correctly, I hope.  It also takes the names of it's
-libraries from libname_spec instead of a hardcoded lib`expr $a_deplib :
-'-l/(.*/)'`.so line.
+handles @samp{-L} correctly, I hope.  It also takes the names of its
+libraries from @samp{libname_spec} instead of a hardcoded @code{lib`expr
+$a_deplib : '-l/(.*/)'`.so} line.
 
 @item pass_all
 @vindex pass_all
-will pass everything without any checking.  I put it in because osf3&4
-appear to be treated that way right now...  It might be wise to perform
-checks here to see if the libraries exist on the system, but I don't
-know how osf3&4 handle that, so I thought it would be better just to do
-it the way the current code does.
+will pass everything without any checking.  This may work on platforms
+in which code is position-independent by default and inter-library
+dependencies are properly supported by the dynamic linker, for example,
+on DEC OSF/1 3 and 4.
 
 @item none
 @vindex none

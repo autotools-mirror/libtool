@@ -1599,16 +1599,13 @@ deplibs_check_method='unknown'
 # Need to set the preceding variable on all platforms that support
 # interlibrary dependencies.
 # 'none' -- dependencies not supported.
-# `unknown' -- same as none, but documents that we really don't known.
+# `unknown' -- same as none, but documents that we really don't know.
 # 'pass_all' -- all dependencies passed with no checks.
 # 'test_compile' -- check by making test program.
-# 'file_regex' -- check by looking for filenames that look like the shared
-# library in the library path.
-# 'file_magic [regex]' -- check by looking for files in library path which
-# responds to the $file_magic_command with a given regex.  This is actually a
-# superset of the file_regex command.  If you have `file' or equivalent on
-# your system, you'll want to use this instead.
-# Notes: regexs are run through expr.
+# 'file_magic [regex]' -- check by looking for files in library path
+# which responds to the $file_magic_command with a given egrep regex.
+# If you have `file' or equivalent on your system and you're not sure
+# whether `pass_all' will *always* work, you probably want this one.
 echo $ac_n "checking dynamic linker characteristics... $ac_c" 1>&6
 case "$host_os" in
 aix3*)
@@ -1737,7 +1734,7 @@ linux-gnu*)
   soname_spec='${libname}${release}.so$major'
   finish_cmds='PATH="$PATH:/sbin" ldconfig -n $libdir'
   shlibpath_var=LD_LIBRARY_PATH
-  deplibs_check_method='file_magic ELF [0-9][0-9]*-bit [LM]SB shared object'
+  deplibs_check_method='file_magic ELF [0-9][0-9]*-bit [LM]SB (shared object|dynamic lib )'
   file_magic_command=file
 
   if test -f /lib/ld.so.1; then
