@@ -1,3 +1,8 @@
+2002-01-14  Robert Boehne  <rboehne@ricardo-us.com>
+
+	* libtool.m4 (AC_DEPLIBS_CHECK_METHOD): Add mips/mipsel to list of
+	architectures for linux.
+
 2002-01-10  Volker Christian  <voc@soft.uni-linz.ac.at>
 
 	* libltdl/ltdl.c (find_handle_callback): treat the result of a call
