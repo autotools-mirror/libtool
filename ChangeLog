@@ -1,5 +1,9 @@
 2004-12-20  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
+	* m4/libtool.m4 [solaris] (_LT_LINKER_SHLIBS): Add '${wl}-z ${wl}text'
+	to archive_cmds and archive_expsyms_cmds.  I.e., do not allow nopic in
+	shared libraries.
+
 	* m4/libtool.m4 [solaris] (_LT_LINKER_SHLIBS): Change no_undefined_flag
 	back to ' -z defs'.  Problems with linking against libgcc.a will have
 	to be resolved differently.
