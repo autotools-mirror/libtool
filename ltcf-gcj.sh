@@ -220,8 +220,8 @@ EOF
 
   if test "$ld_shlibs" = yes; then
     runpath_var=LD_RUN_PATH
-    hardcode_libdir_flag_spec="$wlarc"'--rpath '"$wlarc"'$libdir'
-    export_dynamic_flag_spec="$wlarc"'--export-dynamic'
+    hardcode_libdir_flag_spec='${wl}--rpath ${wl}$libdir'
+    export_dynamic_flag_spec='${wl}--export-dynamic'
     case $host_os in
     cygwin* | mingw*)
       # dlltool doesn't understand --whole-archive et. al.

@@ -1,5 +1,8 @@
 2000-09-04  Alexandre Oliva  <aoliva@redhat.com>
 
+	* ltcf-c.sh, ltcf-gcj.sh (hardcode_libdir_flag_spec,
+	export_dynamic_flag_spec): Use ${wl}, not ${wlarc}.
+
 	* ltmain.in (compile, need_lock): Don't create nor remove lock
 	files in dry runs.
 	
