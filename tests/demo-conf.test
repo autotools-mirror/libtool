@@ -18,8 +18,8 @@ cd ../demo || exit 1
 
 # Possibly clean up the distribution.
 if test -f config.cache; then
-  echo "= Running make distclean in ../demo"
-  make distclean || rm -f config.cache
+  echo "= Running $make distclean in ../demo"
+  $make distclean || rm -f config.cache
 fi
 
 # Configure the demonstration.

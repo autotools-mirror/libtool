@@ -1,5 +1,13 @@
 NEWS - list of user-visible changes between releases of GNU libtool.
 
+New in 0.9c:
+* Bug fixes.
+* New Autoconf macros, AM_REPLACE_FUNCS, AM_FUNC_ALLOCA, AM_FUNC_MEMCMP,
+  AM_STRUCT_ST_BLOCKS that set and substitute LTLIBOBJS and LTALLOCA.
+* Automake support for Libtool now uses the LTLIBRARIES primary.  See
+  the Automake documentation for more information.
+* Support *-*-linux-gnu* as an alias for *-*-linux*.
+
 New in 0.9:
 * Bug fixes.
 * The libtool demo now uses the libm cos(3) function, to demonstrate

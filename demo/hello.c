@@ -21,7 +21,7 @@ Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.  */
 #include <stdio.h>
 
 int
-hello ()
+hello (void)
 {
   printf ("** This is not GNU Hello.  There is no built-in mail reader. **\n");
   return HELLO_RET;

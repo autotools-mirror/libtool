@@ -28,9 +28,8 @@ See the file INSTALL for instructions on how to build and install libtool.
 
 See the file README-automake for details on Automake support for libtool.
 
-See the file PLATFORMS for a list of platforms that libtool shared
-library support was tested on.  This information is also in
-(libtool)Tested Platforms.
+See the info node (libtool)Tested Platforms. (or the file doc/platforms.texi)
+for a list of platforms that libtool shared library support was tested on.
 
 If you have any suggestions or bug reports, or you wish to port libtool
 to a new platform, please send electronic mail to Gord Matzigkeit

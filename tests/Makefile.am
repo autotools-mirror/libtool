@@ -2,9 +2,10 @@
 
 AUTOMAKE_OPTIONS = gnits
 
-TESTS = demo-conf.test demo-make.test demo-exec.test demo-inst.test \
-	demo-unst.test hardcode.test link.test link-2.test suffix.test \
-	test-e.test
+makesequence = demo-make.test demo-exec.test \
+	demo-inst.test demo-unst.test hardcode.test
+TESTS =	demo-conf.test $(makesequence) \
+	link.test link-2.test suffix.test test-e.test
 
 EXTRA_DIST = defs tlibtool $(TESTS)
 

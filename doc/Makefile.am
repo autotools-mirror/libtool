@@ -7,5 +7,4 @@
 ## Written by Gordon Matzigkeit <gord@gnu.ai.mit.edu>
 AUTOMAKE_OPTIONS = gnits
 info_TEXINFOS = libtool.texi
-
-libtool.info: ../PLATFORMS
+libtool_TEXINFOS = platforms.texi

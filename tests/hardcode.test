@@ -20,6 +20,18 @@ fi
 # Change to our build directory.
 cd ../demo || exit 1
 
+# Check to make sure we have a dynamic library.
+library_names=NONE
+eval `egrep -e '^library_names=' ./libhello.la 2>/dev/null`
+
+if test "$library_names" = NONE; then
+  echo "library_names not set in ../demo/libhello.la" 1>&2
+  exit 1
+elif test -z "$library_names"; then
+  echo "= Exiting: ../demo/libhello.la is not a shared library"
+  exit 0
+fi
+
 echo "= Running $make hardcode in ../demo"
 $make hardcode || exit 1
 
@@ -56,33 +68,50 @@ for file in hc-*; do
   hc-libpath) expected="$hardcode_shlibpath_var" ;;
   hc-minusL) expected="$hardcode_minus_L" ;;
   *)
-    echo "unknown file \`$file'" 1>&2
     continue
     ;;
   esac
 
+  # Discover whether the .libs directory really was hardcoded.
+  hardcoded=no
   if fgrep '.libs' $file > /dev/null; then
+    hardcoded=yes
+  elif strings -a $file 2>/dev/null | fgrep '.libs' > /dev/null; then
+    # At least AIX fgrep doesn't work for binary files, so we need strings.
+    hardcoded=yes
+  elif egrep 'unsupported' $file > /dev/null; then
+    hardcoded=unsupported
+  fi
+
+  # Check the result.
+  case "$hardcoded" in
+  yes)
     if test $expected = yes; then
       echo ".libs was hardcoded in \`$file', as libtool expected"
     else
       echo ".libs was hardcoded in \`$file', which fooled libtool" 1>&2
       status=1
     fi
-  elif egrep 'unsupported' $file > /dev/null; then
-    if test $expected = unsupported; then
-      echo "\`$file' was not linked properly, as libtool expected"
-    else
-      echo "\`$file' was not linked properly, which fooled libtool" 1>&2
-      status=1
-    fi
-  else
+    ;;
+
+  no)
     if test $expected = no; then
       echo ".libs was not hardcoded in \`$file', as libtool expected"
     else
       echo ".libs was not hardcoded in \`$file', which fooled libtool" 1>&2
       status=1
     fi
-  fi
+    ;;
+
+  unsupported)
+    if test $expected = unsupported; then
+      echo "\`$file' was not linked properly, as libtool expected"
+    else
+      echo "\`$file' was not linked properly, which fooled libtool" 1>&2
+      status=1
+    fi
+    ;;
+  esac
 done
 
 exit $status

@@ -1,7 +1,50 @@
+Tue Apr  1 10:01:20 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* libtool.scm: Initial Guile implementation of libtool.
+
+	* ltmain.sh.in: An unexpected inconsistency in my whole approach
+ 	to shared libraries has proven that libtool needs to be completely
+ 	rewritten if I'm going to give full shared library support for
+ 	platforms that don't use the GNU C library version 2 (which to my
+ 	knowledge currently only works on GNU Hurd and Linux/GNU systems).
+  	Porting the GNU C library should not be difficult, though.
+
+	Platforms that don't have the dlopen(3) family of functions will
+ 	need to install GNU DLD version 4 in order to build any kind of
+ 	libraries at all.  Unfortunately, DLD 4 won't be released for a
+ 	while, because I maintain it, and I'm too busy working on libtool.
+
+	I'll keep the old ltconfig/ltmain.sh implementation around for as
+ 	long as I can, and continue applying bug fixes, so that I'll have
+ 	a reasonable starting point for this new libtool implementation.
+
+	It looks like this implementation will be even more complex than
+ 	the original (pre-0.7) libtool.  Initial estimates show that it
+ 	may be up to 3 times slower, and 5 times larger than libtool-0.9.
+  	I'll probably have to rewrite it in Guile to get reasonable
+ 	performance, which will severely limit its portability for a
+ 	while.
+
+	That will also introduce a bootstrapping issue, since the next
+ 	release of Guile will use libtool to build shared libraries.  So,
+ 	if users want to have shared Guile libraries, they will have to
+ 	configure Guile with `--disable-shared', compile it, install it,
+ 	then reconfigure Guile with `--enable-shared' and repeat.
+
+	I was hoping to get libtool 1.0 out the door by early April, but
+ 	now it looks like it will take at least another year before it'll
+ 	be usable by the public at large.  April fools.
+
+	* ltconfig.in (verify_host): Remove redundant `Transform *-*-linux*
+	to *-*-linux-gnu*'.  From Bruno Haible.
+
 Mon Mar 31 16:15:03 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* Makefile.am: Use the new AUTOMAKE and ACLOCAL variables.
 
 	* ltmain.sh.in (link): Only fail if a convenience library doesn't
 	exist, and the user specified -whole-archive.
+	Fix shell quoting that was breaking @OUTPUT@ substitution.
 
 Fri Mar 28 19:09:08 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 

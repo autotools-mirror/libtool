@@ -18,9 +18,12 @@ Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.  */
 
 /* Written by Gordon Matzigkeit <gord@gnu.ai.mit.edu> */
 #include "foo.h"
+#include <stdio.h>
+#include <math.h>
 
 int
 foo ()
 {
+  printf ("cos (0.0) = %g\n", (double) cos ((double) 0.0));
   return FOO_RET;
 }

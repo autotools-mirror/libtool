@@ -54,11 +54,14 @@ nonopt=NONE
 verify_host=yes
 with_gcc=no
 
+old_AR="$AR"
 old_CC="$CC"
 old_CFLAGS="$CFLAGS"
 old_CPPFLAGS="$CPPFLAGS"
 old_LD="$LD"
 old_RANLIB="$RANLIB"
+
+test -z "$AR" && AR=ar
 
 # Parse the command line options.
 args=
@@ -265,7 +268,7 @@ host_vendor=`echo $host | sed 's/^\(.*\)-\(.*\)-\(.*\)$/\2/'`
 host_os=`echo $host | sed 's/^\(.*\)-\(.*\)-\(.*\)$/\3/'`
 
 # Determine commands to create old-style static archives.
-old_archive_cmds='ar cru $oldlib$oldobjs'
+old_archive_cmds='$AR cru $oldlib$oldobjs'
 old_postinstall_cmds='chmod 644 $oldlib'
 
 # If RANLIB is not set, then run the test.
@@ -496,7 +499,9 @@ echo $ac_t "$with_gnu_ld" 1>&6
 echo $ac_n "checking if $linker supports shared libraries... $ac_c" 1>&6
 
 archive_cmds=
+export_dynamic_flag=
 hardcode_libdir_flag_spec=
+hardcode_libdir_separator=
 hardcode_direct=no
 hardcode_minus_L=no
 hardcode_shlibpath_var=unsupported
@@ -524,19 +529,20 @@ if test "$with_gnu_ld" = yes; then
   if test "$ld_shlibs" = yes; then
     archive_cmds='$cc -shared ${wl}-soname $wl$soname -o $lib$libobjs$deplibs'
     hardcode_libdir_flag_spec='${wl}-rpath $wl$libdir'
+    export_dynamic_flag='${wl}-export-dynamic'
   fi
 else
   # PORTME fill in a description of your system's linker (not GNU ld)
   case "$host" in
   *-*-aix3*)
-    archive_cmds='/usr/ucb/nm$libobjs | egrep \" D \" | sed \"s/^.* //\" > $lib.exp;$LD -o $objdir/$soname$libobjs -bE:$lib.exp -T512 -H512 -bM:SRE -lc$deplibs;ar cru $lib $objdir/$soname'
+    archive_cmds='/usr/ucb/nm$libobjs | egrep \" [BD] \" | sed \"s/^.* //\" > $lib.exp;$LD -o $objdir/$soname$libobjs -bE:$lib.exp -T512 -H512 -bM:SRE -lc$deplibs;$AR cru $lib $objdir/$soname'
     # Note: this linker hardcodes the directories in LIBPATH if there
     # are no directories specified by -L.
     hardcode_minus_L=yes
     ;;
 
   *-*-aix4*)
-    archive_cmds='/bin/nm -B$libobjs | egrep \" D \" | sed \"s/^.* //\" > $lib.exp;$cc -o $objdir/$soname$libobjs ${wl}-bE:$lib.exp ${wl}-bM:SRE ${wl}-bnoentry$deplibs;ar cru $lib $objdir/$soname'
+    archive_cmds='/bin/nm -B$libobjs | egrep \" [BD] \" | sed \"s/^.* //\" > $lib.exp;$cc -o $objdir/$soname$libobjs ${wl}-bE:$lib.exp ${wl}-bM:SRE ${wl}-bnoentry$deplibs;$AR cru $lib $objdir/$soname'
     hardcode_minus_L=yes
     ;;
 
@@ -577,6 +583,7 @@ else
   *-*-osf3* | *-*-osf4*)
     archive_cmds='$LD -shared -o $lib -soname $soname -set_version $verstring$libobjs -lc$deplibs'
     hardcode_libdir_flag_spec='${wl}-rpath ${wl}$libdir'
+    hardcode_libdir_separator=:
     ;;
 
   *-*-sco3.2v5*)
@@ -669,11 +676,7 @@ case "$host" in
   shlibpath_var=LD_LIBRARY_PATH
   ;;
 
-*-*-gnu*)
-  version_type=sunos
-  library_names_spec='$libname.so.$versuffix'
-  shlibpath_var=LD_LIBRARY_PATH
-  ;;
+# *-*-gnu* needs to come after *-*-linux-gnu*.
 
 *-*-hpux9* | *-*-hpux10*)
   # Give a soname corresponding to the major version so that dld.sl refuses to
@@ -706,6 +709,12 @@ case "$host" in
   library_names_spec='$libname.so.$versuffix $libname.so.$major $libname.so'
   soname_spec='$libname.so.$major'
   finish_cmds='ldconfig -n $libdir'
+  shlibpath_var=LD_LIBRARY_PATH
+  ;;
+
+*-*-gnu*)
+  version_type=sunos
+  library_names_spec='$libname.so.$versuffix'
   shlibpath_var=LD_LIBRARY_PATH
   ;;
 
@@ -829,6 +838,9 @@ build_old_libs=$enable_static
 host_alias="$host_alias"
 host="$host"
 
+# The archiver.
+AR='$AR'
+
 # The linker used to build libraries.
 LD='$LD'
 
@@ -844,6 +856,9 @@ pic_flag='$pic_flag'
 
 # Compiler flag to prevent dynamic linking.
 link_static_flag='$link_static_flag'
+
+# Compiler flag to allow reflexive dlopens.
+export_dynamic_flag='$export_dynamic_flag'
 
 # Pattern to match compiler flags for creating libNAME_p libraries:
 profile_flag_pattern='$profile_flag_pattern'
@@ -883,6 +898,9 @@ hardcode_action=$hardcode_action
 # Flag to hardcode \$libdir into a binary during linking.
 # This must work even if \$libdir does not exist.
 hardcode_libdir_flag_spec='$hardcode_libdir_flag_spec'
+
+# Whether we need a single -rpath flag with a separated argument.
+hardcode_libdir_separator='$hardcode_libdir_separator'
 
 # Set to yes if using DIR/libNAME.so during linking hardcodes DIR into the
 # resulting binary.

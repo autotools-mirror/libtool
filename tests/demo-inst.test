@@ -20,8 +20,8 @@ fi
 # Change to our build directory.
 cd ../demo || exit 1
 
-echo "= Running make install in ../demo"
-make install || exit 1
+echo "= Running $make install in ../demo"
+$make install || exit 1
 
 echo "= Executing installed programs"
 if $prefix/bin/hell.static | grep 'GNU Hell'; then :

@@ -10,7 +10,11 @@ bugs) at:
 Once Automake 1.2 is released, you should get it from your closest GNU
 mirror.
 
-** If you get automake-1.1k, you'll need to apply the following patch
+Thanks,
+
+--Gord
+
+** If you have automake-1.1k, you'll need to apply the following patch
 before installing it:
 
 diff -u automake-1.1k/automake.in.orig automake-1.1k/automake.in

@@ -4,22 +4,22 @@
 @settitle libtool
 @setchapternewpage off
 @c %**end of header
-@syncodeindex vr cp
-@synindex pg cp
 
 @include version.texi
 @set BUGADDR Gord Matzigkeit <gord@@gnu.ai.mit.edu>
 
-@ifinfo
-@format
-START-INFO-DIR-ENTRY
-* Libtool: (libtool).   Generic shared library support script.
-END-INFO-DIR-ENTRY
-@end format
-@end ifinfo
+@dircategory GNU programming tools
+@direntry
+* Libtool: (libtool).           Generic shared library support script.
+@end direntry
+
+@dircategory Individual utilities
+@direntry
+* libtoolize: (libtool)Invoking libtoolize.     Adding libtool support.
+@end direntry
 
 @ifinfo
-This file documents the Libtool library support script.
+This file documents GNU libtool @value{VERSION}
 
 Copyright (C) 1996, 1997 Free Software Foundation, Inc.
 
@@ -49,12 +49,13 @@ approved by the Foundation.
 @titlepage
 @title GNU Libtool
 @subtitle For version @value{VERSION}, @value{UPDATED}
-@c copyright page
+@author Gordon Matzigkeit
+
 @page
 @vskip 0pt plus 1filll
 Copyright @copyright{} 1996, 1997 Free Software Foundation, Inc.
 @sp 2
-This is the second edition of the GNU Libtool documentation,@*
+This is the first edition of the GNU Libtool documentation,@*
 and is consistent with GNU Libtool @value{VERSION}.@*
 @sp 2
 Published by the Free Software Foundation @*
@@ -76,6 +77,10 @@ except that this permission notice may be stated in a translation
 approved by the Free Software Foundation.
 @end titlepage
 
+@c Put everything in one index (arbitrarily chosen to be the concept index).
+@syncodeindex vr cp
+@synindex pg cp
+
 @ifinfo
 @node Top, Introduction, (dir), (dir)
 @comment  node-name,  next,  previous,  up
@@ -94,10 +99,11 @@ version @value{VERSION}.
 * Versioning::                  Using library interface versions.
 * Library Tips::                Tips for library interface design.
 * Other Languages::             Using libtool without a C compiler.
-* Maintaining::                 Information used by the libtool maintainer.
 * Troubleshooting::             When libtool doesn't work as advertised.
+* Maintaining::                 Information used by the libtool maintainer.
 * Index::                       Index of concepts, variables, and programs.
 
+@detailmenu
  --- The Detailed Node Listing ---
 
 Introduction
@@ -155,6 +161,16 @@ Using Libtool with Other Languages
 
 * C++ Libraries::               Using libtool with C++.
 
+Troubleshooting
+
+* Libtool Test Suite::          Libtool's self-tests.
+* Reporting Bugs::              How to report problems with libtool.
+
+The Libtool Test Suite
+
+* Test Descriptions::           The contents of the test suite.
+* When Tests Fail::             What to do when a test fails.
+
 Maintainance Notes for Libtool
 
 * New Ports::                   How to port libtool to new systems.
@@ -168,22 +184,12 @@ Platform Quirks
 * Reloadable Objects::          Binding object files together.
 * Archivers::                   Programs that create static archives.
 * Strip::                       Removing unnecessary linkage information.
-
-Troubleshooting
-
-* Libtool Test Suite::          Libtool's self-tests.
-* Reporting Bugs::              How to report problems with libtool.
-
-The Libtool Test Suite
-
-* Test Descriptions::           The contents of the test suite.
-* When Tests Fail::             What to do when a test fails.
+@end detailmenu
 @end menu
 
 @end ifinfo
 
-@node Introduction, Libtool Paradigm, Top, Top
-@comment  node-name,  next,  previous,  up
+@node Introduction
 @chapter Introduction
 
 In the past, if a source code package developer wanted to take advantage
@@ -223,8 +229,7 @@ or want to write code to extend libtool in a consistent way.
 * Postmortem::                  Learning from past difficulties.
 @end menu
 
-@node Motivation, Issues, Introduction, Introduction
-@comment  node-name,  next,  previous,  up
+@node Motivation
 @section Motivation for Writing Libtool
 
 @cindex Motivation for writing libtool
@@ -262,8 +267,7 @@ non-GNU packages.
 Portability to other (non-GNU) architectures and tools is desirable.
 @end enumerate
 
-@node Issues, Other Implementations, Motivation, Introduction
-@comment  node-name,  next,  previous,  up
+@node Issues
 @section Implementation Issues
 
 @cindex Tricky design issues
@@ -306,8 +310,7 @@ The install Makefile target should warn the user to set
 required.
 @end enumerate
 
-@node Other Implementations, Postmortem, Issues, Introduction
-@comment  node-name,  next,  previous,  up
+@node Other Implementations
 @section Other Implementations
 
 I have investigated several different implementations of building shared
@@ -318,8 +321,7 @@ Now it is clear that none of these packages have documented the details
 of shared library systems that libtool requires.  So, other packages
 have been more or less abandoned as influences.
 
-@node Postmortem,  , Other Implementations, Introduction
-@comment  node-name,  next,  previous,  up
+@node Postmortem
 @section A Postmortem Analysis of Other Implementations
 
 @cindex Other implementations, flaws in
@@ -354,8 +356,7 @@ I hope that libtool will be useful to and used by the GNU community, and
 that the lessons I've learned in writing it will be taken up and
 implemented by designers of library systems.
 
-@node Libtool Paradigm, Using Libtool, Introduction, Top
-@comment  node-name,  next,  previous,  up
+@node Libtool Paradigm
 @chapter The Libtool Paradigm
 
 At first, libtool was designed to support an arbitrary number of library
@@ -377,8 +378,7 @@ the paradigm of existing library systems, with examples from each.  It
 is a new way of thinking, so it may take a little time to absorb, but
 when you understand it the world gets simpler.
 
-@node Using Libtool, Invoking libtool, Libtool Paradigm, Top
-@comment  node-name,  next,  previous,  up
+@node Using Libtool
 @chapter Using Libtool
 
 @cindex Examples of using libtool
@@ -406,6 +406,17 @@ subdirectory of the libtool distribution.  Assume that we are building a
 library, @file{libhello}, out of the files @file{foo.c} and
 @file{hello.c}.
 
+Note that the @file{foo.c} source file uses the cos(3) math library
+function, which is usually found in the standalone math library, and not
+the C library.  So, whenever we link an executable or a library against
+@file{foo.o} or @file{foo.lo}, we need to add @kbd{-lm} to the end of
+the link line.
+
+The same rule applies whenever you use functions that don't appear in
+the standard C library@dots{} you need to add the appropriate
+@kbd{-l@var{name}} flag to the end of the link line when you link
+against those objects.
+
 After we have built that library, we want to create a program by linking
 @file{main.o} against @file{libhello}.
 
@@ -418,8 +429,7 @@ After we have built that library, we want to create a program by linking
 * Static Libraries::            When shared libraries are not wanted.
 @end menu
 
-@node Creating Object Files, Linking Libraries, Using Libtool, Using Libtool
-@comment  node-name,  next,  previous,  up
+@node Creating Object Files
 @section Creating Object Files
 
 @cindex Compiling object files
@@ -496,8 +506,7 @@ gcc -g -O -c hello.c
 burger$
 @end example
 
-@node Linking Libraries, Linking Executables, Creating Object Files, Using Libtool
-@comment  node-name,  next,  previous,  up
+@node Linking Libraries
 @section Linking Libraries
 
 @pindex ar
@@ -543,10 +552,13 @@ from standard objects instead of library objects.  This doesn't matter
 for static libraries, but on shared library systems, it is of great
 importance.
 
-So, let's try again, this time with the library object files:
+So, let's try again, this time with the library object
+files:@footnote{Remember that we need to add @kbd{-lm} to the link
+command line because @file{foo.c} uses the cos(3) math library
+function.  @xref{Using Libtool}.}
 
 @example
-a23$ @kbd{libtool gcc -g -O -o libhello.la foo.lo hello.lo}
+a23$ @kbd{libtool gcc -g -O -o libhello.la foo.lo hello.lo -lm}
 libtool: you must specify an installation directory with `-rpath'
 a23$
 @end example
@@ -558,7 +570,7 @@ installed.  So, we try again, with an @code{rpath} setting of
 
 @example
 a23$ @kbd{libtool gcc -g -O -o libhello.la foo.lo hello.lo \
-                -rpath /usr/local/lib}
+                -rpath /usr/local/lib -lm}
 mkdir .libs
 ar cru .libs/libhello.a foo.o hello.o
 ranlib .libs/libhello.a
@@ -570,10 +582,9 @@ Now, let's try the same trick on the shared library platform:
 
 @example
 burger$ @kbd{libtool gcc -g -O -o libhello.la foo.lo hello.lo \
-                -rpath /usr/local/lib}
+                -rpath /usr/local/lib -lm}
 mkdir .libs
-rm -f .libs/libhello.*
-ld -Bshareable -o .libs/libhello.so.0.0 foo.lo hello.lo
+ld -Bshareable -o .libs/libhello.so.0.0 foo.lo hello.lo -lm
 ar cru .libs/libhello.a foo.o hello.o
 ranlib .libs/libhello.a
 creating libhello.la
@@ -590,8 +601,7 @@ rather than the current directory.  This feature is to make it easier to
 clean up the build directory, and to help ensure that other programs
 fail horribly if you accidentally forget to use libtool when you should.
 
-@node Linking Executables, Installing Libraries, Linking Libraries, Using Libtool
-@comment  node-name,  next,  previous,  up
+@node Linking Executables
 @section Linking Executables
 
 @cindex Linking against installed libraries
@@ -621,7 +631,7 @@ it, you must use libtool to do the linking.
 Here's the old way of linking against an uninstalled library:
 
 @example
-burger$ @kbd{gcc -g -O -o hell.old main.o libhello.a}
+burger$ @kbd{gcc -g -O -o hell.old main.o libhello.a -lm}
 burger$
 @end example
 
@@ -632,8 +642,8 @@ library.  Just specify the relative path to the `.la' file, such as
 any ambiguity when linking against uninstalled shared libraries.}:
 
 @example
-a23$ @kbd{libtool gcc -g -O -o hell main.o libhello.la}
-gcc -g -O -o hell main.o ./.libs/libhello.a
+a23$ @kbd{libtool gcc -g -O -o hell main.o libhello.la -lm}
+gcc -g -O -o hell main.o ./.libs/libhello.a -lm
 a23$
 @end example
 
@@ -644,8 +654,8 @@ That looks too simple to be true.  All libtool did was transform
 On `burger' the situation is different:
 
 @example
-burger$ @kbd{libtool gcc -g -O -o hell main.o libhello.la}
-gcc -g -O -o .libs/hell main.o -L./.libs -R/usr/local/lib -lhello
+burger$ @kbd{libtool gcc -g -O -o hell main.o libhello.la -lm}
+gcc -g -O -o .libs/hell main.o -L./.libs -R/usr/local/lib -lhello -lm
 creating hell
 burger$
 @end example
@@ -703,8 +713,7 @@ price of being dynamic is eight kilobytes, and the payoff is about four
 kilobytes.  So, having a shared @file{libhello} won't be an advantage
 until we link it against at least a few more programs.
 
-@node Installing Libraries, Installing Executables, Linking Executables, Using Libtool
-@comment  node-name,  next,  previous,  up
+@node Installing Libraries
 @section Installing Libraries
 
 @pindex strip
@@ -785,8 +794,7 @@ After you have completed these steps, you can go on to begin using the
 installed libraries.  You may also install any executables that depend
 on libraries you created.
 
-@node Installing Executables, Static Libraries, Installing Libraries, Using Libtool
-@comment  node-name,  next,  previous,  up
+@node Installing Executables
 @section Installing Executables
 
 If you used libtool to link any executables against uninstalled libtool
@@ -811,8 +819,7 @@ install -c .libs/hell /usr/local/bin/hell
 burger#
 @end example
 
-@node Static Libraries,  , Installing Executables, Using Libtool
-@comment  node-name,  next,  previous,  up
+@node Static Libraries
 @section Linking Static Libraries
 
 @cindex Static linking
@@ -838,7 +845,7 @@ Link the files in the same way you would a libtool library, but use a
 `.a' suffix (instead of `.la'):
 
 @example
-burger$ @kbd{libtool gcc -o libhello.a main.o foo.lo hello.lo}
+burger$ @kbd{libtool gcc -o libhello.a main.o foo.lo hello.lo -lm}
 rm -f libhello.a
 ar cru libhello.a main.o foo.o hello.o
 ranlib libhello.a
@@ -862,8 +869,7 @@ Another common situation where static linking is desirable is in
 creating a standalone binary.  Use libtool to do the linking and add the
 @samp{-static} flag.
 
-@node Invoking libtool, Integrating Libtool, Using Libtool, Top
-@comment  node-name,  next,  previous,  up
+@node Invoking libtool
 @chapter Invoking @file{libtool}
 
 @c FIXME this is where I got sick of writing index entries
@@ -925,8 +931,7 @@ Print libtool version information and exit.
 * Uninstall Mode::              Removing executables and libraries.
 @end menu
 
-@node Compile Mode, Link Mode, Invoking libtool, Invoking libtool
-@comment  node-name,  next,  previous,  up
+@node Compile Mode
 @section Compile Mode
 
 For @samp{compile} mode, @var{mode-args} is a compiler command to be
@@ -941,8 +946,7 @@ suffix `.c' with the library object suffix, `.lo'.
 If shared libraries are being built, any necessary PIC generation flags
 are substituted into the compilation command.
 
-@node Link Mode, Install Mode, Compile Mode, Invoking libtool
-@comment  node-name,  next,  previous,  up
+@node Link Mode
 @section Link Mode
 
 @samp{link} mode links together object files (including library
@@ -960,6 +964,8 @@ installed.
 
 @item -l@var{name}
 @var{output-file} requires the installed library @file{lib@var{name}}.
+This option is required even when @var{output-file} is not an
+executable.
 
 @item -o @var{output-file}
 Create @var{output-file} from the specified objects and libraries.
@@ -994,8 +1000,7 @@ This method is called @dfn{incremental linking}.
 
 Otherwise, an executable program is created.
 
-@node Install Mode, Finish Mode, Link Mode, Invoking libtool
-@comment  node-name,  next,  previous,  up
+@node Install Mode
 @section Install Mode
 
 In @samp{install} mode, libtool interprets @var{mode-args} as an
@@ -1008,8 +1013,7 @@ command.
 The command is run, and any necessary unprivileged post-installation
 commands are also completed.
 
-@node Finish Mode, Uninstall Mode, Install Mode, Invoking libtool
-@comment  node-name,  next,  previous,  up
+@node Finish Mode
 @section Finish Mode
 
 @samp{finish} mode helps system administrators install libtool
@@ -1019,8 +1023,7 @@ Each @var{mode-arg} is interpreted as the name of a library directory.
 Running this command may require superuser privileges, so the
 @samp{--dry-run} option may be useful.
 
-@node Uninstall Mode,  , Finish Mode, Invoking libtool
-@comment  node-name,  next,  previous,  up
+@node Uninstall Mode
 @section Uninstall Mode
 
 This mode deletes installed libraries (and other files).
@@ -1031,8 +1034,7 @@ files (typically @file{/bin/rm}).
 The remaning @var{mode-args} are either flags for the deletion program
 (beginning with a `-'), or the names of files to delete.
 
-@node Integrating Libtool, Versioning, Invoking libtool, Top
-@comment  node-name,  next,  previous,  up
+@node Integrating Libtool
 @chapter Integrating Libtool with Your Own Packages
 
 This chapter describes how to integrate libtool with your packages so
@@ -1045,8 +1047,7 @@ that your users can install hassle-free shared libraries.
 * Distributing::                What files to distribute with your package.
 @end menu
 
-@node Makefile Rules, Using Automake, Integrating Libtool, Integrating Libtool
-@comment  node-name,  next,  previous,  up
+@node Makefile Rules
 @section Writing Makefile Rules for Libtool
 
 Libtool is fully integrated with Automake (@pxref{Top, , The Automake
@@ -1072,8 +1073,7 @@ subdirectory of the libtool distribution@dots{} note especially that it
 was generated automatically from the @file{Makefile.am} by Automake).
 @end enumerate
 
-@node Using Automake, Configuring, Makefile Rules, Integrating Libtool
-@comment  node-name,  next,  previous,  up
+@node Using Automake
 @section Using Automake with Libtool
 
 Libtool library support fits conveniently into Automake's understanding
@@ -1113,8 +1113,7 @@ libhello_la_SOURCES = hello.c foo.c
 libhello_la_LDFLAGS = -version-info 3:12:1 -rpath $(libdir)
 @end example
 
-@node Configuring, Distributing, Using Automake, Integrating Libtool
-@comment  node-name,  next,  previous,  up
+@node Configuring
 @section Configuring Libtool
 
 Libtool requires intimate knowledge of your compiler suite and operating
@@ -1142,8 +1141,7 @@ Libtool has its own equivalent to the @file{configure} script,
 * AM_PROG_LIBTOOL::             Configuring @file{libtool} in @file{configure.in}.
 @end menu
 
-@node Invoking ltconfig, ltconfig Example, Configuring, Configuring
-@comment  node-name,  next,  previous,  up
+@node Invoking ltconfig
 @subsection Invoking @file{ltconfig}
 
 @file{ltconfig} runs a series of configuration tests, then creates a
@@ -1208,8 +1206,7 @@ The system linker to use (if the generated @file{libtool} requires one).
 Program to use rather than checking for @file{ranlib}.
 @end table
 
-@node ltconfig Example, AM_PROG_LIBTOOL, Invoking ltconfig, Configuring
-@comment  node-name,  next,  previous,  up
+@node ltconfig Example
 @subsection Using @file{ltconfig}
 
 Here is a simple example of using @file{ltconfig} to configure libtool
@@ -1254,8 +1251,7 @@ creating libtool
 burger$
 @end example
 
-@node AM_PROG_LIBTOOL,  , ltconfig Example, Configuring
-@comment  node-name,  next,  previous,  up
+@node AM_PROG_LIBTOOL
 @subsection The @code{AM_PROG_LIBTOOL} macro
 
 If you are using GNU Autoconf (or Automake), you should add a call to
@@ -1276,8 +1272,7 @@ you define the Makefile variable @code{top_builddir} in your
 users should set it to the relative path to the top of your build
 directory (@file{../..}, for example).}
 
-@node Distributing,  , Configuring, Integrating Libtool
-@comment  node-name,  next,  previous,  up
+@node Distributing
 @section Including Libtool with Your Package
 
 In order to use libtool, you need to include the following files with
@@ -1307,8 +1302,7 @@ use the @file{libtoolize} program.
 * Invoking libtoolize::         @file{libtoolize} command line options.
 @end menu
 
-@node Invoking libtoolize,  , Distributing, Distributing
-@comment  node-name,  next,  previous,  up
+@node Invoking libtoolize
 @subsection Invoking @file{libtoolize}
 
 The @file{libtoolize} program provides a standard way to add libtool
@@ -1362,8 +1356,7 @@ will put the files in the specified directory.
 @file{libtoolize} displays hints for adding libtool support to your
 package, as well.
 
-@node Versioning, Library Tips, Integrating Libtool, Top
-@comment  node-name,  next,  previous,  up
+@node Versioning
 @chapter Library Interface Versions
 
 The most difficult issue introduced by shared libraries is that of
@@ -1392,8 +1385,7 @@ require.
 * Updating Version Info::       Changing version information before releases.
 @end menu
 
-@node Interfaces, Libtool Versioning, Versioning, Versioning
-@comment  node-name,  next,  previous,  up
+@node Interfaces
 @section What Are Library Interfaces?
 
 Interfaces for libraries may be any of the following (and more):
@@ -1415,8 +1407,7 @@ sockets, pipes, and other inter-process communication protocols
 Note that static functions do not count as interfaces, because they are
 not directly available to the user of the library.
 
-@node Libtool Versioning, Updating Version Info, Interfaces, Versioning
-@comment  node-name,  next,  previous,  up
+@node Libtool Versioning
 @section Libtool's Versioning System
 
 Libtool has its own formal versioning system.  It is not as flexible as
@@ -1472,8 +1463,7 @@ If two libraries have identical @var{current} and @var{age} numbers,
 then the dynamic linker chooses the library with the greater
 @var{revision} number.
 
-@node Updating Version Info,  , Libtool Versioning, Versioning
-@comment  node-name,  next,  previous,  up
+@node Updating Version Info
 @section Updating the Library Version Information
 
 If you want to use libtool's versioning system, then you must specify
@@ -1523,8 +1513,7 @@ set @var{age} to 0.
 to the release of the package that you are making.  This is an abuse
 that only fosters misunderstanding of the purpose of library versions.
 
-@node Library Tips, Other Languages, Versioning, Top
-@comment  node-name,  next,  previous,  up
+@node Library Tips
 @chapter Tips for Interface Design
 
 Writing a good library interface takes a lot of practice and thorough
@@ -1577,8 +1566,7 @@ aren't interface changes.
 * C Header Files::              How to write portable include files.
 @end menu
 
-@node C Header Files,  , Library Tips, Library Tips
-@comment  node-name,  next,  previous,  up
+@node C Header Files
 @section Writing C Header Files
 
 Writing portable C header files can be difficult, since they may be read
@@ -1681,8 +1669,7 @@ compilers, especially pre-ANSI compilers.
 The @code{long double} type is not supported by many compilers.
 @end itemize
 
-@node Other Languages, Maintaining, Library Tips, Top
-@comment  node-name,  next,  previous,  up
+@node Other Languages
 @chapter Using Libtool with Other Languages
 
 Libtool was first implemented in order to add support for writing shared
@@ -1697,8 +1684,7 @@ and what special considerations you need to make if you do not use C.
 * C++ Libraries::               Using libtool with C++.
 @end menu
 
-@node C++ Libraries,  , Other Languages, Other Languages
-@comment  node-name,  next,  previous,  up
+@node C++ Libraries
 @section Writing Libraries for C++
 
 Creating libraries of C++ code is a fairly straightforward process, and
@@ -1725,8 +1711,7 @@ compiler.
 There are ways of working around this problem, but they are beyond the
 scope of this manual.
 
-@node Troubleshooting, Index, Maintaining, Top
-@comment  node-name,  next,  previous,  up
+@node Troubleshooting
 @chapter Troubleshooting
 
 Libtool is under constant development, changing to keep up-to-date with
@@ -1739,8 +1724,7 @@ what the problem is, and how to resolve it.
 * Reporting Bugs::              How to report problems with libtool.
 @end menu
 
-@node Libtool Test Suite, Reporting Bugs, Troubleshooting, Troubleshooting
-@comment  node-name,  next,  previous,  up
+@node Libtool Test Suite
 @section The Libtool Test Suite
 
 Libtool comes with its own set of programs that test its capabilities,
@@ -1758,8 +1742,7 @@ programs.
 * When Tests Fail::             What to do when a test fails.
 @end menu
 
-@node Test Descriptions, When Tests Fail, Libtool Test Suite, Libtool Test Suite
-@comment  node-name,  next,  previous,  up
+@node Test Descriptions
 @subsection Description of Test Suite
 
 Here is a list of the current programs in the test suite, and what they
@@ -1805,8 +1788,7 @@ the libtool scripts.  Checking for the existence of a file can only be
 done in a portable way by using @code{test -f}.
 @end table
 
-@node When Tests Fail,  , Test Descriptions, Libtool Test Suite
-@comment  node-name,  next,  previous,  up
+@node When Tests Fail
 @subsection When Tests Fail
 
 Each of the above tests are designed to produce no output when they are
@@ -1825,8 +1807,7 @@ Another way to have the test programs produce output is to set the
 For example, @kbd{env VERBOSE=yes make check} runs all the tests, and
 has each of them display debugging information.
 
-@node Reporting Bugs,  , Libtool Test Suite, Troubleshooting
-@comment  node-name,  next,  previous,  up
+@node Reporting Bugs
 @section Reporting Bugs
 
 If you think you have discovered a bug in libtool, you should think
@@ -1859,8 +1840,7 @@ the details needed to reproduce the bug, and a brief description of why
 you think the behaviour is a bug.  Be sure to include the word
 ``libtool'' in the subject line.
 
-@node Maintaining, Troubleshooting, Other Languages, Top
-@comment  node-name,  next,  previous,  up
+@node Maintaining
 @chapter Maintainance Notes for Libtool
 
 This chapter contains information that the libtool maintainer finds
@@ -1874,8 +1854,7 @@ porting libtool to new systems, or writing your own libtool.
 * libtool Script Contents::     Configuration information that libtool uses.
 @end menu
 
-@node New Ports, Tested Platforms, Maintaining, Maintaining
-@comment  node-name,  next,  previous,  up
+@node New Ports
 @section Porting libtool to New Systems
 
 To port libtool to a new system, you'll generally need the following
@@ -1904,24 +1883,21 @@ Some systems have special documentation on how to build and install
 shared libraries.
 @end table
 
-@node Tested Platforms, Platform Quirks, New Ports, Maintaining
-@comment  node-name,  next,  previous,  up
+@node Tested Platforms
 @section Tested Platforms
 
-This table (the @file{PLATFORMS} file in the libtool distribution)
-describes when libtool was last known to be tested on platforms where it
-claims to support shared libraries:
+This table describes when libtool was last known to be tested on
+platforms where it claims to support shared libraries:
 
 @example
-@include ../PLATFORMS
+@include platforms.texi
 @end example
 
 Libtool versions ending in a single letter (such as @samp{0.7a})
 designate beta releases.  So, @samp{0.7a} comes after public release
 @samp{0.7}, but before @samp{0.8}.
 
-@node Platform Quirks, libtool Script Contents, Tested Platforms, Maintaining
-@comment  node-name,  next,  previous,  up
+@node Platform Quirks
 @section Platform Quirks
 
 This section is dedicated to the sanity of the libtool maintainer.  It
@@ -1941,8 +1917,7 @@ improve libtool, or write your own.
 * Strip::                       Removing unnecessary linkage information.
 @end menu
 
-@node Compilers, Reloadable Objects, Platform Quirks, Platform Quirks
-@comment  node-name,  next,  previous,  up
+@node Compilers
 @subsection Compilers
 
 The only compiler characteristics that affect libtool are the flags
@@ -2000,8 +1975,7 @@ Use @samp{-KPIC} to generate PIC.
 Use @samp{-PIC} to generate PIC.
 @end table
 
-@node Reloadable Objects, Archivers, Compilers, Platform Quirks
-@comment  node-name,  next,  previous,  up
+@node Reloadable Objects
 @subsection Reloadable Objects
 
 On all known systems, a reloadable object can be created by running
@@ -2009,8 +1983,7 @@ On all known systems, a reloadable object can be created by running
 reloadable object may be treated as exactly equivalent to other
 objects.
 
-@node Archivers, Strip, Reloadable Objects, Platform Quirks
-@comment  node-name,  next,  previous,  up
+@node Archivers
 @subsection Archivers
 
 On all known systems, building a static library can be accomplished by
@@ -2022,8 +1995,7 @@ On all known systems, if there is a program named @file{ranlib}, then it
 must be used to ``bless'' the created library before linking against it,
 with the @kbd{ranlib lib@var{name}.a} command.
 
-@node Strip,  , Archivers, Platform Quirks
-@comment  node-name,  next,  previous,  up
+@node Strip
 @subsection The @file{strip} Program
 
 Stripping a library is essentially the same problem as stripping an
@@ -2049,8 +2021,7 @@ HP-UX @file{strip} requires that @samp{-r} and @samp{-x} flags in order
 to strip libraries.
 @end table
 
-@node libtool Script Contents,  , Platform Quirks, Maintaining
-@comment  node-name,  next,  previous,  up
+@node libtool Script Contents
 @section @file{libtool} Script Contents
 
 The @file{libtool} script is generated by @file{ltconfig}
@@ -2157,8 +2128,7 @@ of commands that are evaluated one after another.  If any of the
 commands return a nonzero exit status, libtool generally exits with an
 error message.
 
-@node Index,  , Troubleshooting, Top
-@comment  node-name,  next,  previous,  up
+@node Index
 @unnumbered Index
 
 @printindex cp

@@ -4,7 +4,8 @@
 # Test script header.
 need_prefix=yes
 if test -z "$srcdir"; then
-  srcdir=.
+  srcdir=`echo "$0" | sed 's%/[^/]*$%%'`
+  test "$srcdir" = "$0" && srcdir=.
   test "${VERBOSE+set}" != "set" && VERBOSE=yes
 fi
 . $srcdir/defs || exit 1
@@ -23,7 +24,8 @@ echo "= Running make uninstall in ../demo"
 make uninstall || exit 1
 
 # See that there were no files leftover in $prefix.
-leftovers=`find $prefix ! -type d -print`
+# Ignore dotfiles, so that .nfsXXX files don't screw up the test.
+leftovers=`find $prefix ! -type d -print | egrep -v '^\.'`
 if test -n "$leftovers"; then
   echo "= Leftover after make uninstall:"
   ls -l $leftovers

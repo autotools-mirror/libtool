@@ -34,11 +34,8 @@ bin_SCRIPTS = libtool libtoolize
 
 libtool: ltconfig
 	@echo 'WARNING: Warnings from ltconfig can be ignored. :-)'
-	CC="${CC}" \
-	CFLAGS="${CFLAGS}" \
-	CPPFLAGS="${CPPFLAGS}" \
-	LD="${LD}" \
-	RANLIB="${RANLIB}" \
+	CC="${CC}" CFLAGS="${CFLAGS}" CPPFLAGS="${CPPFLAGS}" \
+	LD="${LD}" RANLIB="${RANLIB}" \
 	$(srcdir)/ltconfig --srcdir=$(srcdir) $(pkgdatadir)/ltmain.sh
 
 # These depend on config.status for version numbers.
@@ -59,7 +56,7 @@ dist-hook: $(demo_distfiles)
 	-chmod 755 $(distdir)/demo
 	here=`pwd`; distdir=`cd $(distdir) && pwd` \
 	  && cd $(srcdir)/demo \
-	  && automake --include-deps --build-dir=$$here/demo --srcdir-name=$(srcdir)/demo --output-dir=$$distdir/demo
+	  && $(AUTOMAKE) --include-deps --build-dir=$$here/demo --srcdir-name=$(srcdir)/demo --output-dir=$$distdir/demo
 	@for file in $(demo_distfiles); do \
 	  d=$(srcdir); \
 	  test -f $(distdir)/$$file \
@@ -72,13 +69,13 @@ all: demo/Makefile.in demo/configure
 
 # Rules for rebuilding some of the demo source files.
 $(srcdir)/demo/Makefile.in: demo/Makefile.am demo/configure.in demo/aclocal.m4
-	cd $(srcdir)/demo && automake
+	cd $(srcdir)/demo && $(AUTOMAKE)
 
 $(srcdir)/demo/configure: demo/configure.in demo/aclocal.m4
-	cd $(srcdir)/demo && autoconf
+	cd $(srcdir)/demo && $(AUTOMAKE)
 
 $(srcdir)/demo/aclocal.m4: demo/configure.in demo/acinclude.m4
-	cd $(srcdir)/demo && aclocal
+	cd $(srcdir)/demo && $(ACLOCAL)
 
 $(srcdir)/demo/acinclude.m4:
 	rm -f $(srcdir)/demo/acinclude.m4

@@ -8,15 +8,17 @@ case "$srcdir" in
 *) srcdir=`cd $srcdir && pwd` ;;
 esac
 
+# tlibtool needs to know what srcdir is.
+export srcdir
+libtool="$srcdir/tlibtool"
+
 prefix="./=inst"
-if test -d $prefix; then
-  rm -rf $prefix
-fi
 if test "$need_prefix" = yes; then
   # An absolute path to a test installation directory.
-  mkdir $prefix
+  test -d $prefix || mkdir $prefix
   prefix=`cd $prefix && pwd`
 else
+  test -d $prefix && rm -rf $prefix
   prefix=NONE
 fi
 

@@ -7,9 +7,9 @@ hardcode_tests = hc-direct hc-minusL hc-libpath
 CLEANFILES = $(hardcode_tests)
 
 # Build a libtool library, libhello.la for installation in libdir.
-lib_PROGRAMS = libhello.la
+lib_LTLIBRARIES = libhello.la
 libhello_la_SOURCES = hello.c foo.c
-libhello_la_LDFLAGS = -version-info 3:12:1 -rpath $(libdir)
+libhello_la_LDFLAGS = -version-info 3:12:1
 
 include_HEADERS = foo.h
 

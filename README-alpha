@@ -10,7 +10,7 @@ working closely with Tom Tromey to integrate libtool patches into
 Automake.
 
 In the meantime, just ignore these references, or use Gord's
-modified version of automake-1.1g that supports all the features
+modified version of automake-1.1i that supports all the features
 described in the libtool manual:
 
-<URL:http://www.enci.ucalgary.ca/~gord/src/automake-1.1g-libtool.tar.gz>
+<URL:http://www.enci.ucalgary.ca/~gord/src/automake-1.1j.tar.gz>
