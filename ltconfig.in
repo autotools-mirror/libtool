@@ -2523,7 +2523,8 @@ EOF
   ;;
 esac
 
-test -n "$cache_file" || exit 0
+# Don't cache tagged configuration!
+test -n "$cache_file" && test -z "$tagname" || exit 0
 
 # AC_CACHE_SAVE
 trap '' 1 2 15
