@@ -1,3 +1,8 @@
+2003-03-25  Robert Boehne  <rboehne@gnu.org>
+
+	* bootstrap: Add f77demo to the directories that AUTOHEADER
+	is run in.
+
 2003-03-21  Wesley W. Terpstra <terpstra@ito.tu-darmstadt.de>
 
 	* ltmain.in: Don't accumulate directory information in clean mode.

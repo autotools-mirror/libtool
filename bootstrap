@@ -42,6 +42,7 @@ for sub in . libltdl cdemo demo depdemo mdemo pdemo tagdemo f77demo; do
 
   $ACLOCAL
   test $sub = libltdl && $AUTOHEADER
+  test $sub = f77demo && $AUTOHEADER
   eval $AUTOMAKE $AUTOMAKE_FLAGS
   $AUTOCONF
   cd $top_srcdir
