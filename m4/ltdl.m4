@@ -105,8 +105,7 @@ m4_ifset([AC_LIST_HEADERS],
   [CONFIG_H=config.h;AC_CONFIG_HEADERS([config.h])])
 AC_SUBST([CONFIG_H])
 
-AC_CHECK_HEADERS([assert.h ctype.h errno.h malloc.h memory.h stdlib.h \
-		  stdio.h unistd.h dl.h sys/dl.h dld.h mach-o/dyld.h],
+AC_CHECK_HEADERS([memory.h unistd.h dl.h sys/dl.h dld.h mach-o/dyld.h],
 	[], [], [AC_INCLUDES_DEFAULT])
 AC_CHECK_HEADERS([string.h strings.h], [break], [], [AC_INCLUDES_DEFAULT])
 
@@ -126,8 +125,9 @@ AC_CHECK_FUNC([memcpy], [AC_DEFINE([HAVE_MEMCPY])],
     [AC_CHECK_FUNC([bcopy],  [AC_DEFINE([HAVE_BCOPY])],
 	[AC_LIBOBJ([memcpy])])])
 
+AC_CHECK_FUNCS([closedir opendir readdir], [], [AC_LIBOBJ([lt__dirent])])
+
 AC_REPLACE_FUNCS([memmove strcmp])
-AC_CHECK_FUNCS([closedir opendir readdir])
 ])# AC_LIB_LTDL
 
 

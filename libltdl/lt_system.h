@@ -41,6 +41,9 @@ Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 # define EXIT_FAILURE 1
 #endif
 
+/* Just pick a big number... */
+#define LT_FILENAME_MAX 2048
+
 
 /* Saves on those hard to debug '\0' typos....  */
 #define LT_EOS_CHAR	'\0'

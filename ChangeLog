@@ -1,5 +1,25 @@
 2004-04-08  Gary V. Vaughan  <gary@gnu.org>
 
+	* libltdl/ltdl.c: Move standard headers and preprocessor guards
+	from here...
+	* libltdl/lt__private.h: ...to here.  New file to declare ltdl's
+	internal interfaces.
+	* libltdl/ltdl.c: Include lt__private.h.
+	* m4/ltdl.m4 (AC_LIB_LTDL): Add lt_dirent to AC_LIBOBJ if all of
+	opendir, readdir and closedir are missing.
+	(AC_CHECK_HEADERS): Remove assert.h, ctype.h, errno.h, malloc.h,
+	stdio.h and stdlib.h; these headers are all available in standard
+	c89 environments and newer.
+	* libltdl/lt__private.h: Include them here unconditionally.
+	* libltdl/lt__dirent.c (opendir, readdir, closedir): New file.
+	Windows dirent emulation functions moved to here...
+	* libltdl/ltdl.c (opendir, readdir, closedir): ...from here.
+	* libltdl/lt__dirent.h: New file.  Rename the global symbols from
+	lt__dirent.c into the lt__ namespace so they don't clash with
+	other libraries.
+
+2004-04-08  Gary V. Vaughan  <gary@gnu.org>
+
 	Factor out the bottom portability layer from ltdl.  Code in this
 	layer has global symbols renamed by lt__pre89.h, and may not
 	refer to any symbols except those provided by the system libraries

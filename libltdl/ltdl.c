@@ -27,95 +27,9 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 
 */
 
-#ifdef HAVE_CONFIG_H
-#  include HAVE_CONFIG_H
-#endif
-
-#if HAVE_UNISTD_H
-#  include <unistd.h>
-#endif
-
-#if HAVE_STDIO_H
-#  include <stdio.h>
-#endif
-
-#if HAVE_STRING_H
-#  include <string.h>
-#else
-#  if HAVE_STRINGS_H
-#    include <strings.h>
-#  endif
-#endif
-
-#if HAVE_CTYPE_H
-#  include <ctype.h>
-#endif
-
-#if HAVE_MEMORY_H
-#  include <memory.h>
-#endif
-
-#if HAVE_ERRNO_H
-#  include <errno.h>
-#endif
-
-#if HAVE_ARGZ_H
-#  include <argz.h>
-#endif
-
-#if HAVE_ASSERT_H
-#  include <assert.h>
-#else
-#  define assert(arg)	((void) 0)
-#endif
-
-#include "ltdl.h"
-#include "lt__alloc.h"
-#include "lt__pre89.h"
-
-#if defined(HAVE_CLOSEDIR) && defined(HAVE_OPENDIR) && defined(HAVE_READDIR) && defined(HAVE_DIRENT_H)
-/* We have a fully operational dirent subsystem.  */
-# include <dirent.h>
-# define LT_D_NAMLEN(dirent) (strlen((dirent)->d_name))
-
-#elif !defined(__WINDOWS__)
-/* We are not on windows, so we can get the same functionality from the
-   `direct' API.  */
-# define dirent direct
-# define LT_D_NAMLEN(dirent) ((dirent)->d_namlen)
-# if HAVE_SYS_NDIR_H
-#   include <sys/ndir.h>
-# endif
-# if HAVE_SYS_DIR_H
-#   include <sys/dir.h>
-# endif
-# if HAVE_NDIR_H
-#   include <ndir.h>
-# endif
-
-#else  /* __WINDOWS__ */
-/* Use some wrapper code to emulate dirent on windows..  */
-# define LT_USE_WINDOWS_DIRENT_EMULATION
-#endif
-
-#if WITH_DMALLOC
-#  include <dmalloc.h>
-#endif
+#include "lt__private.h"
 
 
-
-
-/* --- WINDOWS SUPPORT --- */
-
-
-#ifdef DLL_EXPORT
-#  define LT_GLOBAL_DATA	__declspec(dllexport)
-#else
-#  define LT_GLOBAL_DATA
-#endif
-
-
-
 /* --- MANIFEST CONSTANTS --- */
 
 
@@ -139,97 +53,6 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 /* This accounts for the _LTX_ separator */
 #undef	LT_SYMBOL_OVERHEAD
 #define LT_SYMBOL_OVERHEAD	5
-
-
-
-
-# if LT_USE_WINDOWS_DIRENT_EMULATION
-
-# include <windows.h>
-
-# define LT_D_NAMLEN(dirent) (strlen((dirent)->d_name))
-# define dirent lt_dirent
-# define DIR lt_DIR
-
-struct dirent
-{
-  char d_name[2048];
-  int  d_namlen;
-};
-
-typedef struct _DIR
-{
-  HANDLE hSearch;
-  WIN32_FIND_DATA Win32FindData;
-  BOOL firsttime;
-  struct dirent file_info;
-} DIR;
-
-static void
-closedir (DIR *entry)
-{
-  assert (entry != (DIR *) NULL);
-  FindClose (entry->hSearch);
-  free ((void *) entry);
-}
-
-
-static DIR *
-opendir (const char *path)
-{
-  char file_specification[LT_FILENAME_MAX];
-  DIR *entry;
-
-  assert (path != (char *) NULL);
-  (void) strncpy (file_specification, path, LT_FILENAME_MAX-1);
-  (void) strcat (file_specification, "\\");
-  entry = (DIR *) malloc (sizeof(DIR));
-  if (entry != (DIR *) 0)
-    {
-      entry->firsttime = TRUE;
-      entry->hSearch = FindFirstFile (file_specification,
-				      &entry->Win32FindData);
-
-      if (entry->hSearch == INVALID_HANDLE_VALUE)
-	{
-	  (void) strcat (file_specification, "\\*.*");
-	  entry->hSearch = FindFirstFile (file_specification,
-					  &entry->Win32FindData);
-	  if (entry->hSearch == INVALID_HANDLE_VALUE)
-	    {
-	      entry = (free (entry), (DIR *) 0);
-	    }
-	}
-    }
-
-  return entry;
-}
-
-
-static struct dirent *
-readdir (DIR *entry)
-{
-  int status;
-
-  if (entry == (DIR *) 0)
-    return (struct dirent *) 0;
-
-  if (!entry->firsttime)
-    {
-      status = FindNextFile (entry->hSearch, &entry->Win32FindData);
-      if (status == 0)
-        return (struct dirent *) 0;
-    }
-
-  entry->firsttime = FALSE;
-  (void) strncpy (entry->file_info.d_name, entry->Win32FindData.cFileName,
-		  LT_FILENAME_MAX - 1);
-  entry->file_info.d_namlen = strlen (entry->file_info.d_name);
-
-  return &entry->file_info;
-}
-#endif /* !LT_USE_WINDOWS_DIRENT_EMULATION */
-
 
 
 #if ! HAVE_ARGZ_APPEND
@@ -3074,7 +2897,7 @@ lt_argz_insertdir (char **pargz, size_t *pargz_len, const char *dirnam,
   assert (dp);
 
   dir_len = LT_STRLEN (dirnam);
-  end     = dp->d_name + LT_D_NAMLEN(dp);
+  end     = dp->d_name + D_NAMLEN(dp);
 
   /* Ignore version numbers.  */
   {
