@@ -28,8 +28,8 @@ fi
 . $srcdir/defs || exit 1
 
 case "$host" in
-hppa*)
-	func_skip "HPPA doesn't like non-PIC shared libs"
+hppa*|x86_64*|s390*)
+	func_skip "$host doesn't like non-PIC shared libs"
 	;;
 esac
 

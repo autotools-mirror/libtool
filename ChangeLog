@@ -1,3 +1,7 @@
+2004-08-11  Daniel Reed  <djr@redhat.com>
+
+	* tests/demo-nopic.test: Do not run on x86_64 or s390*
+
 2004-08-05  Gary V. Vaughan  <gary@gnu.org>
 
 	* bootstrap: Remove `-f Makefile.am' now that we have an actual
