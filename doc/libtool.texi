@@ -1132,8 +1132,9 @@ the name of the C compiler, and contain the @samp{-c} compiler flag so
 that only an object file is created.
 
 Libtool determines the name of the output file by removing the directory
-component from the source file name, then substituting the C source code
-suffix @samp{.c} with the library object suffix, @samp{.lo}.
+component from the source file name, then substituting the source code
+suffix (e.g. @samp{.c} for C soure code) with the library object suffix,
+@samp{.lo}.
 
 If shared libraries are being built, any necessary PIC generation flags
 are substituted into the compilation command.
@@ -1203,6 +1204,9 @@ Link @var{file} into the output program, and add its symbols to
 @var{lt_preloaded_symbols} (@pxref{Dlpreopening}).  If @var{file} is
 @code{self}, the symbols of the program itself will be added to
 @var{lt_preloaded_symbols}.
+If @var{file} is @code{dummy} libtool will make sure that
+@var{lt_preloaded_symbols} is always @emph{defined}, regardless of whether
+it's empty or not.
 
 @item -export-dynamic
 Allow symbols from @var{output-file} to be resolved with @code{dlsym}

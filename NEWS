@@ -1,10 +1,15 @@
 NEWS - list of user-visible changes between releases of GNU Libtool
 
-New in CVS version 1.3.2a, Libtool team:
+New in 1.3.3: 1999-06-2?, CVS version 1.3.2a, Libtool team:
+* New `-dlpreopen dummy' flag to ensure that
+  lt_preloaded_symbols is always defined.
 * Work around self-dlclose bug in FreeBSD 3.1.
 * Expand convenience libraries when creating reloadable objects.
+* Do not forget to import -L flags of convenience libraries.
 * Do not pass -whole-archive or equivalent to symbol extractor.
 * Create directory to expand convenience libraries only when needed.
+* Improved support for Cygwin, DJGPP and NetBSD
+* Various bugfixes
 
 New in 1.3.2: 1999-05-26, CVS version 1.3.1a, Libtool team:
 * Avoid circular links of objects and libraries.
