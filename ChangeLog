@@ -1,5 +1,7 @@
 2004-07-30  Peter O'Gorman  <peter@pogma.com>
 
+	* m4/libtool.m4, ltmain.in: readd the comments that I erased.
+
 	* ltmain.in [darwin]: We already had a module var, there can be
 	only one.
 
