@@ -1,3 +1,7 @@
+1999-04-29  Gary V. Vaughan  <gary@oranda.demon.co.uk>
+
+	* doc/PLATFORMS: updated my hpux-10.20 and cygwin box entries.
+
 1999-04-29  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* NEWS: Improved support for DU and IRIX too.
