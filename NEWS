@@ -1,5 +1,7 @@
 NEWS - list of user-visible changes between releases of GNU Libtool
 
+New in 1.9h: 2004-??-??; CVS version 1.9g, Libtool team:
+
 New in 1.9f: 2004-10-23; CVS version 1.9e, Libtool team:
 * Calculate dllsearchpath correctly for wrapper scripts on cygwin.
 * Workarounds for bash bug when calling a function whose last command is
