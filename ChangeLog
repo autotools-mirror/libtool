@@ -1,3 +1,8 @@
+2004-09-22  Charles Wilson  <cwilson@spam.protected>
+
+	* libtool.m4 (_LT_SYS_DYNAMIC_LINKER): Revert changeset from
+	`2004-09-22  Charles Wilson  <cwilson@spam.protected>'.
+
 2004-09-24  Gary V. Vaughan  <gary@gnu.org>
 
 	* config/general.m4sh (Xsed): Set a default when not used from
