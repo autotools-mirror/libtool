@@ -23,26 +23,26 @@ m4_divert_push([PREPARE_TESTS])dnl
 export LIBTOOLIZE
 m4_divert_pop([PREPARE_TESTS])dnl
 
-# AT_LIBTOOLIZE([ARGS])
-# ---------------------
-m4_define([AT_LIBTOOLIZE],
+# LT_AT_LIBTOOLIZE([ARGS])
+# ------------------------
+m4_define([LT_AT_LIBTOOLIZE],
 ["$LIBTOOLIZE" -I "$abs_top_srcdir" -I "$abs_top_srcdir/config" $1
 ])
 
 
-# AT_CHECK_LIBTOOLIZE(ARGS, [EXIT-STATUS = 0], [STDOUT = `'], [STDERR = `'])
-# --------------------------------------------------------------------------
-m4_define([AT_CHECK_LIBTOOLIZE],
-[AT_CHECK([AT_LIBTOOLIZE([$1])],
+# LT_AT_CHECK_LIBTOOLIZE(ARGS, [EXIT-STATUS = 0], [STDOUT = `'], [STDERR = `'])
+# -----------------------------------------------------------------------------
+m4_define([LT_AT_CHECK_LIBTOOLIZE],
+[AT_CHECK([LT_AT_LIBTOOLIZE([$1])],
   [$2], [$3], [$4])
 ])
 
 
-# AT_BOOTSTRAP
-# ------------
-m4_define([AT_BOOTSTRAP],
+# LT_AT_BOOTSTRAP
+# ---------------
+m4_define([LT_AT_BOOTSTRAP],
 [
-test -f ./ltmain.sh || AT_LIBTOOLIZE([--copy])
+test -f ./ltmain.sh || LT_AT_LIBTOOLIZE([--copy])
 test -f ./configure || autoreconf --force --verbose --install
 test -f ./configure || exit 1
 ./configure

@@ -72,7 +72,7 @@ AT_DATA(expout,
 ** This is libsub **
 ]])
 
-AT_BOOTSTRAP
+LT_AT_BOOTSTRAP
 "${MAKE-make}"
 AT_CHECK([subdir/subdemo], 0, expout)
 
@@ -155,7 +155,7 @@ AT_DATA(expout,
 ** This is libsub::sub **
 ]])
 
-AT_BOOTSTRAP
+LT_AT_BOOTSTRAP
 "${MAKE-make}"
 AT_CHECK([subdir/subdemo], 0, expout)
 

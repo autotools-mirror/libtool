@@ -1,3 +1,10 @@
+2005-01-03  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* tests/am-subdir.at tests/testsuite.at (AT_BOOTSTRAP,
+	AT_LIBTOOLIZE, AT_CHECK_LIBTOOLIZE) Rename to ..
+	(LT_AT_BOOTSTRAP, LT_AT_LIBTOOLIZE, LT_AT_CHECK_LIBTOOLIZE)
+	and make use of new names.
+
 2004-12-30  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* config/getopt.m4sh (func_version, func_usage, func_help):
