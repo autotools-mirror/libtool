@@ -88,7 +88,7 @@ exit_status=$EXIT_SUCCESS
 prefix=@prefix@
 datadir=@datadir@
 pkgdatadir=@pkgdatadir@
-pkgmacrodir="$pkgdatadir/m4"
+aclocaldir=@aclocaldir@
 auxdir=
 m4dir=
 configure_ac=configure.in
@@ -284,8 +284,9 @@ func_copy_all_files ()
     my_srcdir="$1"
     my_destdir="$2"
     my_glob_exclude="$3"
-    my_copy_cb=${4-func_copy}
+    my_copy_cb="${4-func_copy}"
 
+    my_srcfiles=
     for my_filename in `cd "$my_srcdir" && ls`; do
 
       # ignore excluded filenames
@@ -293,6 +294,31 @@ func_copy_all_files ()
         eval 'case $my_filename in '$my_glob_exclude') continue ;; esac'
       fi
 
+      my_srcfiles="$my_srcfiles${my_srcfiles:+:}$my_filename"
+
+    done
+
+    func_copy_some_files "$my_srcdir" "$my_srcfiles" \
+      "$my_destdir" "$my_copy_cb"
+}
+
+
+# func_copy_some_files srcdir srcfile_spec destdir [copy_cb=func_copy]
+# Call COPY_CB for each regular file in SRCDIR named by the ':' delimited
+# names in SRCFILE_SPEC.  The odd calling convention is needed to allow
+# spaces in file and directory names.
+func_copy_some_files ()
+{
+    my_srcdir="$1"
+    my_srcfile_spec="$2"
+    my_destdir="$3"
+    my_copy_cb="${4-func_copy}"
+
+    my_save_IFS="$IFS"
+    IFS=:
+    for my_filename in $my_srcfile_spec; do
+
+      IFS="$my_save_IFS"
       if test -f "$my_srcdir/$my_filename"; then
         if test "X$my_copy_cb" = Xfunc_copy; then
 	  $opt_force || if test -f "$my_destdir/$my_filename"; then
@@ -308,6 +334,7 @@ func_copy_all_files ()
 
       $my_copy_cb "$my_srcdir/$my_filename" "$my_destdir/$my_filename"
     done
+    IFS="$my_save_IFS"
 }
 
 # func_grep expression filename
@@ -613,8 +640,12 @@ func_config_update ()
 {
   rerun_aclocal=false
 
-  re_pkgaux_files='config\.guess|config\.sub|ltmain\.sh'
-  re_pkgmacro_files='libtool\.m4|ltdl\.m4'
+  # NOTE: PKGMACRO_FILES must be kept in synch with aclocal_DATA in the
+  #       libtool top_srcdir/Makefile.am (libtool.m4 and ltdl.m4 are handled
+  #       specially below though, so don't add them here):
+  pkgmacro_files='argz.m4:ltoptions.m4:ltsugar.m4:ltversion.m4'
+
+  glob_exclude_pkgaux_files='config.guess|config.sub|ltmain.sh'
 
   func_scan_files
   $opt_quiet || func_check_macros
@@ -629,7 +660,7 @@ func_config_update ()
     func_echo "putting files in AC_CONFIG_AUX_DIR, \`$auxdir'."
   fi
   if $opt_install || $opt_force; then
-    func_copy_all_files "$pkgdatadir" "$auxdir" "$re_pkgaux_files"
+    func_copy_all_files "$pkgdatadir" "$auxdir" "$glob_exclude_pkgaux_files"
     func_config_update "$pkgdatadir/config.guess" "$auxdir/config.guess"
     test -f "$pkgdatadir/config.sub" \
       && func_config_update "$pkgdatadir/config.sub" "$auxdir/config.sub"
@@ -641,11 +672,10 @@ func_config_update ()
     func_echo "putting macros in AC_CONFIG_MACRO_DIR, \`$m4dir'."
   fi
 
-  libtool_m4="$pkgmacrodir/libtool.m4"
-  ltdl_m4="$pkgmacrodir/ltdl.m4"
+  libtool_m4="$aclocaldir/libtool.m4"
+  ltdl_m4="$aclocaldir/ltdl.m4"
 
-  func_copy_all_files "$pkgmacrodir" "$m4dir" \
-      "$re_pkgmacro_files" func_serial_update
+  func_copy_some_files "$aclocaldir" "$pkgmacro_files" "$m4dir" func_serial_update
   func_serial_update  "$libtool_m4" "$m4dir/libtool.m4" LT_INIT 'A[CM]_PROG_LIBTOOL'
 
   if $seen_ltdl; then

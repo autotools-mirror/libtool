@@ -1,3 +1,26 @@
+2004-06-16  Gary V. Vaughan  <gary@gnu.org>
+
+	Automake 1.9 won't have the AC_PROG_EGREP bug (aclocal used to
+	pull an old installed libtool.m4 as well as the bootstrap
+	m4/libtool.m4 if an AC_DEFUN was removed), and we have
+	lt~obsolete.m4 to work around it in the mean time.  libtoolize
+	can install macro files from $prefix/share/aclocal perfectly well
+	without us needing to move to a whole other directory:
+
+	* Makefile.am (pkgmacro_DATA): Renamed to aclocal_DATA, so m4
+	files are installed to $prefix/share/aclocal again.
+	(install-data-local): Don't remove just installed macros!
+	* libtoolize.in (pkgmacrodir): Renamed to aclocaldir.
+	(func_copy_some_files): New function factored out of...
+	(func_copy_all_files): ...here.  Adjust to use func_copy_some_files.
+	(re_pkgaux_files): Renamed to glob_pkgaux_files, since it is not
+	a regular expression.
+	(re_pkgmagro_files): Replaced with...
+	(pkgmacro_files): ...a colon delimited list of libtool installed
+	m4 files from aclocaldir.
+	(Main): Copy macro files from aclocaldir again.
+	* NEWS: Updated.
+
 2004-05-21  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
 
 	* ltmain.sh (check_executable): The WIN32 API and MinGW do not support

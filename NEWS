@@ -31,7 +31,8 @@ New in 1.5b: 2004-??-??; CVS version 1.5a, Libtool team:
 * If you configure libtool with --disable-shared (or if libtool does not
   support shared libraries on your platform) trying to build a library using
   `-shared' is a fatal error.
-* libtoolize installs libtool.m4 (and ltdl.m4 if used) to AC_CONFIG_MACRO_DIR.
+* libtoolize installs libtool.m4, (ltdl.m4 if used,) and various supporting
+  m4 definitions to AC_CONFIG_MACRO_DIR.
 * Mode inferrence removed, shorthand for choosing modes added.
 * Specifying -allow-undefined is now an error.
 * Speed up max_cmd_len check.

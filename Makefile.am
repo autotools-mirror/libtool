@@ -35,14 +35,15 @@ dist_pkgdata_DATA = config/config.guess config/config.sub config/ltmain.sh
 
 # Everything that gets picked up by aclocal is automatically distributed,
 # this is the list of macro files we install on the user's system.
-pkgmacrodir = $(pkgdatadir)/m4
-pkgmacro_DATA = m4/argz.m4 m4/libtool.m4 m4/ltdl.m4 \
+# NOTE: Ensure that PKGMACRO_FILES in libtoolize.in is updated if you
+#       change the contents of aclocal_DATA:
+aclocal_DATA = m4/argz.m4 m4/libtool.m4 m4/ltdl.m4 \
 	m4/ltoptions.m4 m4/ltsugar.m4 m4/ltversion.m4
 
 # We build ltversion.m4 here, instead of from config.status,
-# because config.status is rerun each time one og configure's
+# because config.status is rerun each time one of configure's
 # dependencies change and ltversion.m4 happens to be a configure
-# dependency.  configure and ltversion.m4 vould be rebuilt in
+# dependency.  configure and ltversion.m4 would be rebuilt in
 # a loop otherwise.
 # Use `$(top_srcdir)/m4' for the benefit of non-GNU makes: this is
 # how ltversion.m4 appears in our dependencies.
@@ -86,9 +87,6 @@ configure-subdirs distdir: $(DIST_MAKEFILE_LIST)
 install-data-local:
 ## Don't install over the top of an old pkgdatadir
 	-rm -rf $(DESTDIR)$(pkgdatadir)
-## Remove old macro definitions
-	-rm -rf $(DESTDIR)$(aclocaldir)/ltdl.m4
-	-rm -rf $(DESTDIR)$(aclocaldir)/libtool.m4
 
 install-data-hook:
 	chmod +x $(DESTDIR)$(pkgdatadir)/config.guess
