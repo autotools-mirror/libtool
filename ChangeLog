@@ -1,7 +1,7 @@
 2004-01-03  Stefan Nordhausen  <nordhaus@informatik.hu-berlin.de>
 	Scott James Remnant  <scott@netsplit.com>
 
-	* m4/ltmain.in: Don't use the mkdir -p option when creating a
+	* ltmain.in: Don't use the mkdir -p option when creating a
 	temporary output directory so a symlink attack can't be used to
 	arbitrarily chmod other directories on the system if libtool
 	gets run as root.
@@ -14,12 +14,12 @@
 	allows for zsh differences, as noted in the autoconf manual's
 	Portable Shell - Special Shell Variables section.
 
-2004-01-02  Scott James Remnant <scott@netsplit.com>
+2004-01-02  Scott James Remnant  <scott@netsplit.com>
 
 	* .cvsignore: Ignore stamp-vcl created by the Makefile.
 
-2004-01-02  Bob Friesenhahn <bfriesen@simple.dallas.tx.us>
-	Joe Orton <joe@manyfish.co.uk>
+2004-01-02  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+	Joe Orton  <joe@manyfish.co.uk>
 
 	* m4/libtool.m4 (AC_LIBTOOL_CONFIG): Add extra blackslash
 	in front of all the inner double-quotes as this is removed
@@ -27,8 +27,6 @@
 	in config.status.
 
 2004-01-02  Scott James Remnant  <scott@netsplit.com>
-
-	Updated all copyright notices to include 2004.
 
 	* NEWS: Next release will be in 2004.
 
