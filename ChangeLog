@@ -1,3 +1,7 @@
+2000-05-26  Alexandre Oliva  <oliva@lsd.ic.unicamp.br>
+
+	* THANKS: Added Art Pope.
+
 2000-05-26  Art Pope  <apope@sarnoff.com>
 
 	* ltcf-cxx.sh: Examine $CC when recognizing the C++ compiler
