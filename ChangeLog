@@ -1,5 +1,8 @@
 2000-05-29  Gary V. Vaughan  <gvv@techie.com>
 
+	* libtool.m4 (i*86-*-freebsd*): Forgot to changequote(,).
+
+	* NEWS: Updated.
 	* libtool.m4 (i*86-*-freebsd*): Support a.out shared libs.
 	From <suzukis@file.phys.tohoku.ac.jp>
 
