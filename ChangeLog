@@ -1,5 +1,14 @@
 1999-03-19  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* demo/Makefile.am (hc-direct, hc-libpath, hc-minusL): link with
+	$$hardcode_libdir_flag_spec, if available, with libdir=$(libdir),
+	to make sure the hardcode_* variables will produce the expected
+	results even in the presence of a hardcoding flag; depend on
+	libhello.la having been installed already
+	(hc-libflag): link with the installed library, but try to
+	hard-code the uninstalled one
+	* doc/libtool.texi: document the changes
+
 	* tests/*.test: when a test fails, skip tests that depend on it.
 	If a certain configuration is not supported, skip all its tests.
 

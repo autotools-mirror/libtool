@@ -3731,12 +3731,16 @@ or if they need to be relinked.
 @defvar hardcode_direct
 Set to @samp{yes} or @samp{no}, depending on whether the linker
 hardcodes directories if a library is directly specified on the command
-line (such as @samp{@var{dir}/lib@var{name}.a}).
+line (such as @samp{@var{dir}/lib@var{name}.a}) when
+@var{hardcode_libdir_flag_spec} is specified.
 @end defvar
 
 @defvar hardcode_libdir_flag_spec
 Flag to hardcode a @var{libdir} variable into a binary, so that the
 dynamic linker searches @var{libdir} for shared libraries at runtime.
+If it is empty, libtool will try to use some other hardcoding mechanism.
+If everything else fails, it will fallback to
+@samp{hardcode_action=relink}.
 @end defvar
 
 @defvar hardcode_libdir_separator
@@ -3748,15 +3752,15 @@ arguments to that flag.
 @defvar hardcode_minus_L
 Set to @samp{yes} or @samp{no}, depending on whether the linker
 hardcodes directories specified by @samp{-L} flags into the resulting
-executable.
+executable when @var{hardcode_libdir_flag_spec} is specified.
 @end defvar
 
 @defvar hardcode_shlibpath_var
 Set to @samp{yes} or @samp{no}, depending on whether the linker
 hardcodes directories by writing the contents of @samp{$shlibpath_var}
-into the resulting executable.  Set to @samp{unsupported} if directories
-specified by @samp{$shlibpath_var} are searched at run time, but not at
-link time.
+into the resulting executable when @var{hardcode_libdir_flag_spec} is
+specified.  Set to @samp{unsupported} if directories specified by
+@samp{$shlibpath_var} are searched at run time, but not at link time.
 @end defvar
 
 @defvar host
