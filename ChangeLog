@@ -1,3 +1,10 @@
+2001-08-14  Gary V. Vaughan  <gary@gnu.org>
+
+	* ltmain.in (exec_cmd): Fix quoting in execute mode so that the
+	double quotes added by libtool (to prevent lossage with embedded
+	spaces in filenames etc.) are not interpreted as literals by the
+	shell.
+
 2001-08-13  Gary V. Vaughan  <gary@gnu.org>
 
 	* libltdl/ltdl.c (find_file_callback): Fix a multiple free()
