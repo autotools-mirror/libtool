@@ -1,3 +1,14 @@
+2003-02-17  Ralph Schleicher  <rs@nunatak.allgaeu.org>
+
+	* libtool.m4 (AC_LIBTOOL_SYS_DYNAMIC_LINKER): Prepend a dot to
+	the value of the shrext (aka shared_ext) variable and delete it
+	from the library_names_spec and soname_spec definitions.  That
+	way the user can omit the shared library suffix by setting it
+	to the empty string.
+	(AC_LIBTOOL_LANG_CXX_CONFIG): Strengthen renaming commands for
+	the KCC compiler.
+	* doc/libtool.texi (Link mode): Update the manual.
+
 2003-02-17  Charles Wilson  <cwilson@ece.gatech.edu>
 
 	* ltmain.in (win32_libid): Rewritten to improve speed.
