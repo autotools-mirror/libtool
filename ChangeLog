@@ -1,5 +1,10 @@
 2004-02-12  Scott James Remnant  <scott@netsplit.com>
 
+	* config/mailnotify (func_sendmail): Look for sendmail in a
+	couple of common non-PATH locations as well.
+
+2004-02-12  Scott James Remnant  <scott@netsplit.com>
+
 	* ltmain.in: Fix typo: macro's -> macros.
 
 2004-02-12  Scott James Remnant  <scott@netsplit.com>
