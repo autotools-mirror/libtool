@@ -1,3 +1,7 @@
+2001-01-31  Robert Boehne  <rboehne@ricardo-us.com>
+
+	* AUTHORS: added myself to the list of maintainers.
+
 2001-01-31  Gary V. Vaughan  <gvv@techie.com>
 
 	* libltdl/ltdl.c (load_deplibs): If loading a deplib fails,
