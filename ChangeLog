@@ -1,3 +1,8 @@
+1001-04-10  Aneesh Kumar K.V  <kvaneesh@hotmail.com>
+
+	* ltcf-cxx.sh (archive_expsym_cmds, osf4/osf5):  Added support
+	for cxx	under Compaq Tru64.
+
 2001-04-08  Gary V. Vaughan  <gvv@techie.com>
 
 	* ltcf-c.sh (hardcode_libdir_flag_spec, osf4/osf5): Use ${wl}

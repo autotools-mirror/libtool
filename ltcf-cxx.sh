@@ -474,6 +474,10 @@ case $host_os in
       cxx)
         allow_undefined_flag=' -expect_unresolved \*'
         archive_cmds='$CC -shared${allow_undefined_flag} $predep_objects $libobjs $deplibs $postdep_objects $compiler_flags -msym -soname $soname `test -n "$verstring" && echo -set_version $verstring` -update_registry ${objdir}/so_locations -o $lib'
+	archive_expsym_cmds='for i in `cat $export_symbols`; do printf "-exported_symbol " >> $lib.exp; echo "\$i" >> $lib.exp; done~
+	  echo "-hidden">> $lib.exp~
+	  $CC -shared$allow_undefined_flag $predep_objects $libobjs $deplibs $postdep_objects $compiler_flags -msym -soname $soname -Wl,-input -Wl,$lib.exp  `test -n "$verstring" && echo -set_version	$verstring` -update_registry $objdir/so_locations -o $lib~
+	  $rm $lib.exp'
 
         hardcode_libdir_flag_spec='-rpath $libdir'
         hardcode_libdir_separator=:
