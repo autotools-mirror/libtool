@@ -1,7 +1,7 @@
 # ltmain.sh - Provide generalized library-building support services.
 # NOTE: Changing this file will not affect anything until you rerun configure.
 #
-# Copyright (C) 1996, 1997, 1998, 1999, 2000, 2001
+# Copyright (C) 1996, 1997, 1998, 1999, 2000, 2001, 2003
 # Free Software Foundation, Inc.
 # Originally by Gordon Matzigkeit <gord@gnu.ai.mit.edu>, 1996
 #
@@ -221,8 +221,7 @@ do
   --version)
     echo "$PROGRAM (GNU $PACKAGE) $VERSION$TIMESTAMP"
     echo
-    echo "Copyright 1996, 1997, 1998, 1999, 2000, 2001"
-    echo "Free Software Foundation, Inc."
+    echo "Copyright (C) 2003  Free Software Foundation, Inc."
     echo "This is free software; see the source for copying conditions.  There is NO"
     echo "warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE."
     exit 0
@@ -5960,7 +5959,9 @@ MODE must be one of the following:
       uninstall       remove libraries from an installed directory
 
 MODE-ARGS vary depending on the MODE.  Try \`$modename --help --mode=MODE' for
-a more detailed description of MODE."
+a more detailed description of MODE.
+
+Report bugs to <bug-libtool@gnu.org>."
   exit 0
   ;;
 

@@ -1,3 +1,10 @@
+2003-02-23  Alexandre Duret-Lutz  <adl@gnu.org>
+
+	* ltmain.in (--help): Show mailing-address for bug reports.
+	(--version): Mention only the most recent copyright year.
+	* libtoolize.in (--help): Show mailing-address for bug reports.
+	(--version): Mention only the most recent copyright year.
+
 2003-02-19  Alexandre Oliva  <aoliva@redhat.com>
 
 	* libtool.m4: Replace $linker_flags with $compiler_flags wherever
