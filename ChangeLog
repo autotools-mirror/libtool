@@ -1,3 +1,7 @@
+2004-04-14  Alexandre Duret-Lutz  <adl@gnu.org>
+
+	* bootstrap: Delete acinclude.m4.
+
 2004-04-13  Scott James Remnant  <scott@netsplit.com>
 
 	* Makefile.am (XDELTA_OPTIONS): Remove --pristine as that
@@ -9,40 +13,40 @@
 	* NEWS: updated.
 
 	Released 1.5.6
-	
+
 	* configure.ac: Bumped version to 1.5.6.
 	* NEWS: updated.
 
 2004-04-10  Peter Breitenlohner <peb@mppmu.mpg.de>
-	
+
 	* libltdl/Makefile.am (local-install-files): remove $srcdir from
 	file names, they may have been placed there by automake-1.8.
-	
+
 2004-04-08  Fredrik Estreen  <estreen@algonet.se>
 
 	* ltdl.m4: Rename shrext to shrext_cmds here too.
-	
+
 2004-04-04  Peter O'Gorman  <peter@pogma.com>
 
 	* Makefile.am: One install-data-hook target is better than two.
-	
+
 2004-04-03  Peter O'Gorman  <peter@pogma.com>
 
 	* configure.ac: Bumped version to 1.5.5a.
 	* NEWS: updated.
 
 	Released 1.5.4
-	
+
 	* configure.ac: Bumped version to 1.5.4.
 	* NEWS: updated.
 	* config.guess, config.sub, texinfo.tex:  Synchronized from
 	ftp.gnu.org.
-	
+
 2004-04-01  Peter O'Gorman  <peter@pogma.com>
 
 	* ltmain.in: Remove an extra eval concat_cmds that some idiot added.
 	Fixes double eval on AIX, reported by Albert Chin and Uwe Moeller.
-	
+
 2004-03-24  Scott James Remnant  <scott@netsplit.com>
 
 	* ltmain.in <prog linkmode>: Always add -L options to
