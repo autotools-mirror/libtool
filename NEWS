@@ -1,5 +1,8 @@
 NEWS - list of user-visible changes between releases of GNU Libtool
 
+New in 1.5.13a: 2005-??-??; CVS version 1.5.13a, Libtool team:
+* Bug Fixes.
+
 New in 1.5.12: 2004-02-05; CVS version 1.5.11a, Libtool team:
 * Support for Portland Group compiler on GNU/Linux.
 * Support (mostly) for DragonFly BSD.

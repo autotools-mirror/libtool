@@ -1,5 +1,8 @@
 2005-02-05  Peter O'Gorman  <peter@pogma.com>
 
+	* configure.ac: Bump version to 1.5.13a
+	* NEWS: Updated
+
 	Libtool-1.5.12 release
 
 	* libltdl/Makefile.am: Bump library revision (I remembered!).
