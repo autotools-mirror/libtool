@@ -1,3 +1,11 @@
+1998-11-16  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* ltmain.in (C_compiler): copy $CC before it is overwritten with
+ 	command-line compiler, so that we can use it to compile C sources
+ 	generated during the build.  This fixes the problem that showed up 
+	with -export-dynamic of C++ programs in egcs 1.1.
+	* NEWS: ditto
+
 1998-11-12  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* PORTING: Porting instructions are in the libtool manual already

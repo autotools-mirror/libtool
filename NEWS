@@ -6,7 +6,8 @@ still much porting to do.  See PORTING for details (some plans for the
 future in mail/deplibs in the CVS tree).
 * Initial support for portable dlopen()ing of modules (see mdemo).
 * New option -export-symbols to control symbol exporting when possible.
-* New dlpreopen mechanism.
+* Fixed -export-dynamic problem with C++ programs in egcs 1.1.
+* New dlpreopen structure.
 * libtool now supports `-c -o' and subdirectories in sources and
 target object names even in platforms whose compilers do not support
 this.  In this case, file locking occurs to avoid problems with

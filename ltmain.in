@@ -557,6 +557,7 @@ compiler."
   # libtool link mode
   link)
     modename="$modename: link"
+    C_compiler="$CC" # save it, to compile generated C sources
     CC="$nonopt"
     allow_undefined=yes
     compile_command="$CC"
@@ -1337,7 +1338,7 @@ compiler."
            int main() { return 0; }
 EOF
            $rm a.out
-           $CC conftest.c $deplibs $extradeplibs
+           $C_compiler conftest.c $deplibs $extradeplibs
            if test $? -eq 0 ; then
              ldd_output=`ldd a.out`
              for i in $deplibs; do
@@ -1365,7 +1366,7 @@ EOF
            # Error occured in the first compile.  Let's try to salvage the situation:
              # 1) Is the error in the extradeplibs?
              $rm a.out
-             $CC conftest.c $extradeplibs
+             $C_compiler conftest.c $extradeplibs
              if test $? -ne 0 ; then
                echo
                echo "*** Warning! Not all libraries necessary to the dependent libraries are"
@@ -1387,7 +1388,7 @@ EOF
               # If $name is empty we are operating on a -L argument.
                if test "$name" != "" ; then
                  $rm a.out
-                 $CC conftest.c $i $extradeplibs
+                 $C_compiler conftest.c $i $extradeplibs
                  # Did it work?
                  if test $? -eq 0 ; then
                    ldd_output=`ldd a.out`
@@ -1838,8 +1839,8 @@ dld_preloaded_symbols[] =
           fi
 
           # Now compile the dynamic symbol file.
-          $show "(cd $objdir && $CC -c$no_builtin_flag \"$dlsyms\")"
-          $run eval '(cd $objdir && $CC -c$no_builtin_flag "$dlsyms")' || exit $?
+          $show "(cd $objdir && $C_compiler -c$no_builtin_flag \"$dlsyms\")"
+          $run eval '(cd $objdir && $C_compiler -c$no_builtin_flag "$dlsyms")' || exit $?
 
           # Transform the symbol file into the correct name.
           compile_command=`$echo "X$compile_command" | $Xsed -e "s%@SYMFILE@%$objdir/${output}S.${objext}%"`
