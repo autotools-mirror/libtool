@@ -16,7 +16,6 @@ rm -f acinclude.m4
 ln -s libtool.m4 acinclude.m4
 # fake the libtool scripts
 touch ltmain.sh
-touch ltconfig
 touch libtoolize
 $ACLOCAL
 $AUTOMAKE --gnu --add-missing --copy
@@ -34,6 +33,6 @@ for sub in libltdl demo depdemo mdemo cdemo; do
   cd ..
 done
 
-rm -f ltmain.sh ltconfig libtoolize Makefile
+rm -f ltmain.sh libtoolize Makefile
 
 exit 0

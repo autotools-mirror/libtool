@@ -8,5 +8,4 @@ configure
 config.*
 libtool
 ltmain.sh
-ltconfig
 libtoolize

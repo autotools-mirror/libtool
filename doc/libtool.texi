@@ -1683,7 +1683,7 @@ the linker used by @var{CC}.
 @end defvar
 
 @defvar LDFLAGS
-The flags to be used by @code{ltconfig} when it links a program.  If
+The flags to be used by @code{libtool} when it links a program.  If
 this is not set, @code{AC_PROG_LIBTOOL} will not use any such flags.  It
 affects only the way @code{AC_PROG_LIBTOOL} runs tests, not the produced
 @code{libtool}.
@@ -3846,7 +3846,7 @@ Finally, send a bug report to @value{BUGADDR} with any appropriate
 the details needed to reproduce the bug, and a brief description of why
 you think the behaviour is a bug.  Be sure to include the word
 ``libtool'' in the subject line, as well as the version number you are
-using (which can be found by typing @kbd{ltconfig --version}).
+using (which can be found by typing @kbd{libtool --version}).
 
 @node Maintaining
 @chapter Maintenance notes for libtool
