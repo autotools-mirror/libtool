@@ -1,3 +1,8 @@
+2003-02-11  Richard Dawe  <rich@phekda.freeserve.co.uk>
+
+	* libtoolize.in: Use the program found by AC_PROG_LN_S
+	to create symlinks.
+
 2003-02-08  Jan Kratochvil  <project-libtool@jankratochvil.net>
 
 	* ltmain.in: Handle duplicate object file names when performing

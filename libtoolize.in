@@ -43,7 +43,7 @@ ltdl_m4="$aclocaldir/ltdl.m4"
 dry_run=no
 help="Try \`$progname --help' for more information."
 rm="rm -f"
-ln_s="ln -s"
+ln_s="@LN_S@"
 cp="cp -f"
 mkdir="mkdir"
 
