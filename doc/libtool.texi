@@ -709,7 +709,8 @@ Thing (TM) for you:
 
 @example
 burger$ @kbd{libtool gcc -g -O -o test test.o /usr/local/lib/libhello.la}
-gcc -g -O -o @value{objdir}/test test.o -Wl,--rpath -Wl,/usr/local/lib /usr/local/lib/libhello.la -lm
+gcc -g -O -o @value{objdir}/test test.o -Wl,--rpath
+-Wl,/usr/local/lib /usr/local/lib/libhello.a -lm
 creating test
 burger$
 @end example
@@ -1149,12 +1150,18 @@ If the platform requires versioning, this option has no effect.
 
 @item -dlopen @var{file}
 Same as @samp{-dlpreopen @var{file}}, if native dlopening is not
-supported on the host platform (@pxref{Dlopened modules}).  Otherwise,
-no effect.
+supported on the host platform (@pxref{Dlopened modules}) or, if
+@var{file} is @code{self} and @var{dlopen_self} is set to @samp{no}.
+Otherwise, no effect.  If the program is linked with @samp{-static} or
+@samp{-all-static}, the variable tested is @var{dlopen_self_static}, not
+@var{dlopen_self}, as long as the @samp{-dlopen self} switch appears
+@emph{after} the static-linking switch.
 
 @item -dlpreopen @var{file}
 Link @var{file} into the output program, and add its symbols to
-@var{lt_preloaded_symbols} (@pxref{Dlpreopening}).
+@var{lt_preloaded_symbols} (@pxref{Dlpreopening}).  If @var{file} is
+@code{self}, the symbols of the program itself will be added to
+@var{lt_preloaded_symbols}.
 
 @item -export-dynamic
 Allow symbols from @var{output-file} to be resolved with @code{dlsym}
@@ -1384,7 +1391,7 @@ automake, up to release 1.4, doesn't accept these flags in a
 
 @itemize @bullet
 @item
-add them to @var{program_LDFLAGS}, and optionally list the libraries in
+add them to @var{program_LDFLAGS}, and list the libraries in
 @var{program_DEPENDENCIES}, then wait for a release of GNU automake that
 accepts these flags where they belong;
 
@@ -1400,11 +1407,11 @@ program_DEPENDENCIES = libfoo.la
 @item
 set and @samp{AC_SUBST} variables @var{DLOPEN} and @var{DLPREOPEN} in
 @file{configure.in} and use @samp{@@DLOPEN@@} and @samp{@@DLPREOPEN@@}
-instead of @samp{-dlopen} and @samp{-dlpreopen} in
-@samp{program_LDADD}.  Automake will discard @samp{AC_SUBST}ed variables 
-from dependencies, so it will behave exactly as we expect it to behave
-when it accepts these flags in @samp{program_LDADD}.  But hey!, this is
-ugly!
+as replacements for the explicit flags @samp{-dlopen} and
+@samp{-dlpreopen} in @samp{program_LDADD}.  Automake will discard
+@samp{AC_SUBST}ed variables from dependencies, so it will behave exactly
+as we expect it to behave when it accepts these flags in
+@samp{program_LDADD}.  But hey!, this is ugly!
 @end itemize
 
 You may use the @samp{program_LDFLAGS} variable to stuff in any flags
@@ -1621,22 +1628,22 @@ AM_DISABLE_SHARED
 AM_PROG_LIBTOOL
 @end example
 
-The user may specify modified forms of both the @samp{--enable-shared}
-and @samp{--enable-static} flags to choose whether shared or static
-libraries are built based on the name of the package.  For example, to
-have shared @samp{bfd} and @samp{gdb} libraries built, but not shared
-@samp{libg++}, you can run all three @code{configure} scripts as
-follows:
+The user may specify modified forms of the configure flags
+@samp{--enable-shared} and @samp{--enable-static} to choose whether
+shared or static libraries are built based on the name of the package.
+For example, to have shared @samp{bfd} and @samp{gdb} libraries built,
+but not shared @samp{libg++}, you can run all three @code{configure}
+scripts as follows:
 
 @example
 trick$ ./configure --enable-shared=bfd,gdb
 @end example
 
 In general, specifying @samp{--enable-shared=@var{pkgs}} is the same as
-specifying @samp{--enable-shared} to every package named in the
-comma-separated @var{pkgs} list, and @samp{--disable-shared} to every
-other package.  The @samp{--enable-static=@var{pkgs}} flag behaves
-similarly, but it uses @samp{--enable-static} and
+configuring with @samp{--enable-shared} every package named in the
+comma-separated @var{pkgs} list, and every other package with
+@samp{--disable-shared}.  The @samp{--enable-static=@var{pkgs}} flag
+behaves similarly, but it uses @samp{--enable-static} and
 @samp{--disable-static}.
 
 The package name @samp{default} matches any packages which have not set
@@ -2347,8 +2354,12 @@ interpreted language.  In fact, dlopen calls are frequently used in
 language interpreters to provide an efficient way to extend the
 language.
 
-As of version @value{VERSION}, libtool provides support for
-dlopened modules.
+As of version @value{VERSION}, libtool provides support for dlopened
+modules.  However, you should indicate that your package is willing to
+use such support, by using the macro @samp{AC_LIBTOOL_DLOPEN} in
+@file{configure.in}.  If this macro is not used (or it is used
+@emph{after} @samp{AM_PROG_LIBTOOL}), libtool will assume no dlopening
+mechanism is available, and will try to simulate it.
 
 This chapter discusses how you as a dlopen application developer might 
 use libtool to generate dlopen-accessible modules.
@@ -2517,9 +2528,6 @@ The application developer must write a custom search function in order
 to discover the correct module filename to supply to @code{dlopen}.
 @end itemize
 
-Libtool provides a small library, called @file{libltdl}, that aims at
-hiding the various difficulties of dlopening libraries from programmers.
-
 @node Using libltdl
 @chapter Using libltdl
 @findex libltdl
@@ -2536,9 +2544,10 @@ hiding the various difficulties of dlopening libraries from programmers.
 Libtool provides a small library, called @file{libltdl}, that aims at
 hiding the various difficulties of dlopening libraries from programmers.
 It consists of a header-file and a small C source file that can be
-distributed with applications that need dlopening functionality.
-On some platforms, whose dynamic linkers are too limited for a simple 
-implementation of @file{libltdl} services, it requires GNU DLD.
+distributed with applications that need dlopening functionality.  On
+some platforms, whose dynamic linkers are too limited for a simple
+implementation of @file{libltdl} services, it requires GNU DLD, or it
+will only emulate dynamic linking with libtool's dlpreopening mechanism.
 
 @noindent
 Libltdl supports currently the following dynamic linking mechanims:
@@ -2578,7 +2587,13 @@ To use libltdl in your program you have include the header file @file{ltdl.h}:
 
 @noindent
 Note that libltdl is not threadsafe, i.e. a multithreaded application
-has to use a mutex for libltdl.
+has to use a mutex for libltdl.  It was reported that GNU/Linux's glibc
+2.0's @code{dlopen} with @samp{RTLD_LAZY} (which libltdl uses by
+default) is not thread-safe, but this problem is supposed to be fixed in
+glibc 2.1.  On the other hand, @samp{RTLD_NOW} was reported to introduce
+problems in multi-threaded applications on FreeBSD.  Working around
+these problems is left as an exercise for the reader; contributions are
+certainly welcome.
 
 @noindent
 The following types are defined in @file{ltdl.h}:
@@ -2620,14 +2635,15 @@ modules, preloaded static modules, the program itself and
 native dynamic libraries.  
 
 Unresolved symbols in the module are resolved using its dependency
-libraries and previously dlopened modules.  If the executable using this
-module was linked with the @code{-export-dynamic} flag, then the global
-symbols in the executable will also be used to resolve references in the
-module.
+libraries (not implemented yet) and previously dlopened modules.  If the
+executable using this module was linked with the @code{-export-dynamic}
+flag, then the global symbols in the executable will also be used to
+resolve references in the module.
  
-If @var{filename} is NULL @code{lt_dlopen} will return a handle
-for the program itself, which can be used to access its symbols 
-if it was linked with @code{-export-dynamic}.
+If @var{filename} is NULL and the program was linked with
+@code{-export-dynamic} and @code{-dlopen self}, @code{lt_dlopen} will
+return a handle for the program itself, which can be used to access its
+symbols.
 
 If libltdl cannot find the library and the file name @var{filename} does
 not have a directory component it will additionally search in the
@@ -2648,7 +2664,7 @@ The system dependent library search path
 @end enumerate
 
 Each search path must be a colon-separated list of absolute directories,
-e.g. "/usr/lib/mypkg:/lib/foo".
+for example, @code{"/usr/lib/mypkg:/lib/foo"}.
  
 If the same module is loaded several times, the same handle is returned.
 If @code{lt_dlopen} fails for any reason, it returns NULL.
@@ -2740,15 +2756,182 @@ Replace the current user-defined library search path with
 Return the current user-defined library search path.
 @end deftypefun
 
+@defvar lt_ptr_t (*lt_dlmalloc) (size_t size)
+@defvarx void (*lt_dlfree) (lt_ptr_t ptr)
+These variables are set to @code{malloc} and @code{free}, by default,
+but you can set them to any other functions that provides equivalent
+functionality.  However, you must not modify their values after calling
+any libltdl function other than @code{lt_dlpreopen_default} or the macro
+@code{LTDL_SET_PRELOADED_SYMBOLS}.
+@end defvar
+
 @node Modules for libltdl
 @section Creating modules that can be @code{dlopen}ed
 
-empty
+Libtool modules are like normal libtool libraries with a few exceptions:
+
+You have to link the module with libtool's @samp{-module} switch,
+and you should link any program that is intended to dlopen the module with
+@samp{-dlopen modulename.la} so that libtool can dlpreopen the module
+on platforms which don't support dlopening.  If the module depends on any
+other libraries, make sure you specify them either when you link the module
+or when you link programs that dlopen it.
+If you want to disable @pxref{Versioning} for a specific module
+you should link it with the @samp{-avoid-version} switch.
+Note that libtool modules don't need to have a "lib" prefix.
+However, automake 1.4 or higher is required to build such modules.
+
+Usually a set of modules provide the same interface, i.e, exports the same
+symbols, so that a program can dlopen them without having to know more 
+about their internals.
+In order to avoid symbol conflicts all exported symbols must be prefixed
+with "modulename_LTX_" (@samp{modulename} is the name of the module).
+Internal symbols must be named in such a way that they won't conflict
+with other modules, for example, by prefixing them with "_modulename_".
+Although some platforms support having the same symbols defined more than
+once it is generally not portable and it makes it impossible to dlpreopen 
+such modules.  libltdl will automatically cut the prefix off to get 
+the real name of the symbol.  Additionally, it supports modules which
+don't use a prefix so that you can also dlopen non-libtool modules.
+
+@file{foo1.c} gives an example of a portable libtool module.
+Exported symbols are prefixed with "foo1_LTX_", internal symbols 
+with "_foo1_". Aliases are defined at the beginning so that the code 
+is more readable. 
+
+@example
+/* aliases for the exported symbols */
+#define foo	foo1_LTX_foo
+#define bar	foo1_LTX_bar
+
+/* a global variable definition */
+int bar = 1;
+
+/* a private function */
+int _foo1_helper() @{
+  return bar;
+@}
+
+/* an exported function */
+int foo() @{
+  return _foo_helper();
+@}
+@end example
+
+@noindent
+The @file{Makefile.am} contains the necessary rules to build the 
+module @file{foo1.la}:
+
+@example
+...
+lib_LTLIBRARIES = foo1.la
+
+foo1_la_SOURCES = foo1.c
+foo1_la_LDFLAGS = -module
+...
+@end example
 
 @node Distributing libltdl
 @section How to distribute libltdl with your package
 
-empty
+Even though libltdl is installed together with libtool, you may wish to
+include libltdl in the distribution of your package, for the convenience 
+of users of your package that don't have libtool or libltdl installed.
+In this case, you may decide which flavor of libltdl you want to use: a
+convenience library or an installable libtool library.
+
+One advantage of the convenience library is that it is not installed, so
+the fact that you use libltdl will not be apparent to the user, and it
+will not overwrite a pre-installed version of libltdl a user might have.
+On the other hand, if you want to upgrade libltdl for any reason 
+(e.g. a bugfix) you'll have to recompile your package instead of just 
+replacing an installed version of libltdl.
+However, if your programs or libraries are linked with other libraries
+that use such a pre-installed version of libltdl, you may get linker
+errors or run-time crashes.  Another problem is that you cannot link the
+convenience library into more than one libtool library, then link a
+single program with these libraries, because you may get duplicate
+symbols. In general you can safely use the convenience library in programs
+which don't depend on other libraries that might use libltdl too.
+In order to enable this flavor of libltdl, you should add the
+line @samp{AC_LIBLTDL_CONVENIENCE} to your @file{configure.in},
+@emph{after} @samp{AM_PROG_LIBTOOL}.
+
+In order to select the installable version of libltdl, you should add a
+call of the macro @samp{AC_LIBLTDL_INSTALLABLE} to your
+@file{configure.in} @emph{after} @samp{AM_PROG_LIBTOOL}.  This macro
+will check whether libltdl is already installed and, if not, request the
+libltdl embedded in your package to be built and installed.  Note,
+however, that no version checking is performed.  The user may override
+the test and determine that the libltdl embedded must be installed,
+regardless of the existence of another version, using the configure
+switch @samp{--enable-ltdl-install}.
+
+In order to embed libltdl into your package, just add @samp{--ltdl} to
+the @code{libtoolize} command line. It will copy the libltdl sources
+to a subdirectory @samp{libltdl} in your package.
+Both macros accept an optional argument to specify the location
+of the @samp{libltdl} directory. By the default both macros assume that it
+is @samp{$@{top_builddir@}/libltdl}.
+
+Whatever macro you use, it is up to you to ensure that your
+@file{configure.in} will configure libltdl, using
+@samp{AC_CONFIG_SUBDIRS}, and that your @file{Makefile}s will start
+sub-makes within libltdl's directory, using automake's @var{SUBDIRS},
+for example.  Both macros define the shell variable @var{LIBLTDL} to
+the link flag that you should use to link with libltdl.  It is up to you
+to use @samp{AC_SUBST} to ensure that this variable will be available in
+@file{Makefile}s.
+
+If you're using the convenience libltdl, it will be the pathname for the
+convenience version of libltdl, starting with @samp{$@{top_builddir@}/}.
+Otherwise, if an installed version of libltdl is found, @var{LIBLTDL}
+will be set to @samp{-lltdl}.  If an installable version of libltdl must
+be built, its pathname, starting with @samp{$@{top_builddir@}/}, will be
+stored in @var{LIBLTDL}.  So, when you want to link a program with
+libltdl, just link it with @samp{$(LIBLTDL)}.
+
+You should probably also add @samp{AC_LIBTOOL_DLOPEN} to your
+@file{configure.in} @emph{before} @samp{AM_PROG_LIBTOOL}, otherwise
+libtool will assume no dlopening mechanism is supported, and revert to
+dlpreopening, which is probably not what you want.
+
+Avoid using the @code{-all-static} switch when linking programs with
+libltdl; this will not work on all plaforms, because the dlopening
+functions may not be available for static linking.
+
+The following example shows you how to embed the convenience libltdl
+in your package. In order to use the installable variant just replace
+AC_LIBLTDL_CONVENIENCE with AC_LIBLTDL_INSTALLABLE. We assume that
+libltdl was embedded using @samp{libtoolize --ltdl}.
+
+configure.in:
+@example
+...
+dnl Check for dlopen support
+AC_LIBTOOL_DLOPEN
+dnl Configure libtool
+AM_PROG_LIBTOOL
+dnl Enable building of the convenience library and set LIBLTDL accordingly
+AC_LIBLTDL_CONVENIENCE
+dnl Substitute LIBLTDL in the Makefiles
+AC_SUBST(LIBLTDL)
+dnl Configure libltdl
+AC_CONFIG_SUBDIRS(libltdl)
+...
+@end example
+
+Makefile.am:
+@example
+...
+SUBDIRS = libltdl
+
+myprog_LDFLAGS = -export-dynamic
+# The quotes around -dlopen below fool automake into accepting it
+myprog_LDADD = $(LIBLTDL) "-dlopen" self "-dlopen" libfoo.la
+myprog_DEPENDENCIES = $(LIBLTDL) libfoo.la
+...
+@end example
 
 @node Other languages
 @chapter Using libtool with other languages
@@ -2914,9 +3097,9 @@ uninstalled correctly.
 
 The @file{mdemo} subdirectory contains a demonstration of a package that
 uses libtool and the system independent dlopen wrapper @file{libltdl} to
-load modules.  The library @file{libltdl} provides an experimental
-dlopen wrapper for various platforms (Linux, Solaris, HP/UX etc.) 
-including support for dlpreopened modules (@pxref{Dlpreopening}).
+load modules.  The library @file{libltdl} provides a dlopen wrapper for
+various platforms (Linux, Solaris, HP/UX etc.) including support for
+dlpreopened modules (@pxref{Dlpreopening}).
 
 The tests @file{mdemo-make.test}, @file{mdemo-exec.test},
 @file{mdemo-inst.test} and @file{mdemo-unst.test} are executed
@@ -2947,9 +3130,10 @@ linked into programs or other libraries, even shared ones.
 The tests @file{cdemo-make.test} and @file{cdemo-exec.test} are executed
 three times, under three different libtool configurations:
 @file{cdemo-conf.test} configures @file{cdemo/libtool} to build both
-static and shared libraries, @file{cdemo-static.test} builds only static
-libraries (@samp{--disable-shared}), and @file{cdemo-shared.test} builds
-only shared libraries (@samp{--disable-static}).
+static and shared libraries (the default for platforms that support
+both), @file{cdemo-static.test} builds only static libraries
+(@samp{--disable-shared}), and @file{cdemo-shared.test} builds only
+shared libraries (@samp{--disable-static}).
 
 @item build-relink.test
 @pindex build-relink.test
@@ -3158,15 +3342,20 @@ are included in @samp{$archive_cmds} somewhere and also sets the
 @item file_magic [@var{regex}]
 @vindex file_magic
 @vindex file_magic_cmd
+@vindex file_magic_test_file
 looks in the library link path for libraries that have the right
-libname.  Then it runs @samp{$file_magic_cmd} on the library and
-checks for a match against @samp{regex} using @code{egrep}.
+libname.  Then it runs @samp{$file_magic_cmd} on the library and checks
+for a match against @samp{regex} using @code{egrep}.  When
+@var{file_magic_test_file} is set in @file{ltconfig}, it is used as an
+argument to @samp{$file_magic_cmd} in order to verify whether the
+regular expression matches its output, and warn the user otherwise.
 
 @item test_compile 
 @vindex test_compile
-handles @samp{-L} correctly, I hope.  It also takes the names of its
-libraries from @samp{libname_spec} instead of a hardcoded @code{lib`expr
-$a_deplib : '-l/(.*/)'`.so} line.
+just checks whether it is possible to link a program out of a list of
+libraries, and checks which of those are listed in the output of
+@code{ldd}.  It is currently unused, and will probably be dropped in the
+future.
 
 @item pass_all
 @vindex pass_all
@@ -3405,8 +3594,8 @@ Set to @samp{yes} or @samp{no}.  Default is @samp{no}
 @defvar archive_cmds
 @defvarx archive_expsym_cmds
 @defvarx old_archive_cmds
-Commands used to create shared and static libraries, respectively.
-@samp{archive_expsym_cmds} is used when -export-symbols was defined.
+Commands used to create shared libraries, shared libraries with
+@samp{-export-symbols} and static libraries, respectively.
 @end defvar
 
 @defvar old_archive_from_new_cmds
@@ -3456,6 +3645,12 @@ Set to @samp{yes} or @samp{no}.
 @defvar dlopen_self
 Whether it is possible to @code{dlopen} the executable itself.
 Set to @samp{yes} or @samp{no}.
+@end defvar
+
+@defvar dlopen_self_static
+Whether it is possible to @code{dlopen} the executable itself, when it
+is linked statically (@samp{-all-static}).  Set to @samp{yes} or
+@samp{no}.
 @end defvar
 
 @defvar echo
@@ -3693,10 +3888,19 @@ The name coded into shared libraries, if different from the real name of
 the file.
 @end defvar
 
+@defvar sys_lib_dlsearch_path_spec
+Expression to get the run-time system library search path.  Directories
+that appear in this list are never hard-coded into executables.
+@end defvar
+
 @defvar sys_lib_search_path_spec
-Expression to get the system library search path.  The directories
-listed in @var{shlibpath_var} are automatically appended to this list,
-every time libtool runs (i.e., not at configuration time).
+Expression to get the compile-time system library search path.  This
+variable is used by libtool when it has to test whether a certain
+library is shared or static.  The directories listed in
+@var{shlibpath_var} are automatically appended to this list, every time
+libtool runs (i.e., not at configuration time), because some linkers use
+this variable to extend the library search path.  Linker switches such
+as @code{-L} also augment the search path.
 @end defvar
 
 @defvar version_type

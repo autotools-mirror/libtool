@@ -50,4 +50,10 @@ if egrep -n -e '[^	 ]=[^	 ].*(break|continue)' $scripts; then
   status=1
 fi
 
+# Check for uses of Xsed without corresponding echo "X
+if egrep -n -e '\$Xsed' $scripts | egrep -v -n -e '\$echo \\*"X'; then
+  echo "occurrences of \`\$Xsed\' without \`echo \"X\' on the same line"
+  status=1
+fi
+
 exit $status

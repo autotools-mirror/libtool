@@ -1,6 +1,7 @@
 .*.prcs_aux
 Makefile
 Makefile.in
+acinclude.m4
 aclocal.m4
 clibtool.cfg
 configure

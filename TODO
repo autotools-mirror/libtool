@@ -4,8 +4,6 @@ For next public release:
 * check whether the version of libtool.m4 is compatible
 with ltconfig/ltmain.sh
 
-* check whether the "file" command is available
-
 * Inter-library dependencies should be fully tracked by libtool
 and need to work for ltlibraries too. This requires looking up 
 installed libtool libraries for transparent support.
@@ -19,8 +17,6 @@ paths into libraries, as well as binaries: `... -Wl,-soname
 so that the size of lt_preloaded_symbols can be reduced.
 
 * Documentation:
-
-- libltdl documentation needs to be completed.
 
 - AC_PROG_LIBTOOL, AC_ENABLE/DISABLE_SHARED/STATIC/FAST_INSTALL,
   AC_LIBTOOL_DLOPEN, AC_LIBLTDL_CONVENIENCE/INSTALLABLE are not documented
