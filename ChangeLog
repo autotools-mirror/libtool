@@ -1,5 +1,11 @@
 2004-09-17  Gary V. Vaughan  <gary@gnu.org>
 
+	* config/ltmain.in (func_echo): Except for multi-line warnings and
+	errors, always use func_echo.  $show is for command output, and
+	$echo is for internal use in backtick expressions and similar.
+
+2004-09-17  Gary V. Vaughan  <gary@gnu.org>
+
 	Missed a couple of MKDIR_P references in ltmain.in in my last
 	patch; fix them carefully.  Introduce an opt_dry_run to ltmain.in
 	so that the implementations of func_mkdir_p can converge, and a

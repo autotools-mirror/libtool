@@ -979,7 +979,7 @@ func_generate_dlsyms () {
 	$run $RM "$nlist" "${nlist}S" "${nlist}T"
 
 	# Parse the name list into a source file.
-	$show "creating $output_objdir/$my_dlsyms"
+	func_echo "creating $output_objdir/$my_dlsyms"
 
 	test -z "$run" && $echo > "$output_objdir/$my_dlsyms" "\
 /* $my_dlsyms - symbol resolution table for \`$my_outputname' dlsym emulation. */
@@ -993,14 +993,14 @@ extern \"C\" {
 "
 
 	if test "$dlself" = yes; then
-	  $show "generating symbol list for \`$output'"
+	  func_echo "generating symbol list for \`$output'"
 
 	  test -z "$run" && $echo ': @PROGRAM@ ' > "$nlist"
 
 	  # Add our own program objects to the symbol list.
 	  progfiles=`$echo "X$objs$old_deplibs" | $SP2NL | $Xsed -e "$lo2o" | $NL2SP`
 	  for progfile in $progfiles; do
-	    $show "extracting global C symbols from \`$progfile'"
+	    func_echo "extracting global C symbols from \`$progfile'"
 	    $run eval "$NM $progfile | $global_symbol_pipe >> '$nlist'"
 	  done
 
@@ -1027,7 +1027,7 @@ extern \"C\" {
 	fi
 
 	for dlprefile in $dlprefiles; do
-	  $show "extracting global C symbols from \`$dlprefile'"
+	  func_echo "extracting global C symbols from \`$dlprefile'"
 	  name=`$echo "$dlprefile" | ${SED} -e 's%^.*/%%'`
 	  $run eval '$echo ": $name " >> "$nlist"'
 	  $run eval "$NM $dlprefile | $global_symbol_pipe >> '$nlist'"
@@ -1165,7 +1165,7 @@ func_extract_archives () {
 
       case $host in
       *-darwin*)
-	$show "Extracting $my_xabs"
+	func_echo "Extracting $my_xabs"
 	# Do not bother doing anything if just a dry run
 	if test -z "$run"; then
 	  darwin_orig_dir=`pwd`
@@ -1177,7 +1177,7 @@ func_extract_archives () {
 	  if test -n "$darwin_arches"; then
 	    darwin_arches=`echo "$darwin_arches" | $SED -e 's/.*are://'`
 	    darwin_arch=
-	    $show "$darwin_base_archive has multiple architectures $darwin_arches"
+	    func_echo "$darwin_base_archive has multiple architectures $darwin_arches"
 	    for darwin_arch in  $darwin_arches ; do
 	      func_mkdir_p "unfat-$$/${darwin_base_archive}-${darwin_arch}"
 	      lipo -thin $darwin_arch -output "unfat-$$/${darwin_base_archive}-${darwin_arch}/${darwin_base_archive}" "${darwin_archive}"
@@ -1449,7 +1449,7 @@ func_mode_compile ()
     # We use this script file to make the link, it avoids creating a new file
     if test "$need_locks" = yes; then
       until $run ln "$progpath" "$lockfile" 2>/dev/null; do
-	$show "Waiting for $lockfile to be removed"
+	func_echo "Waiting for $lockfile to be removed"
 	sleep 2
       done
     elif test "$need_locks" = warn; then
@@ -3846,7 +3846,7 @@ func_mode_link ()
 	    # If the library has no export list, then create one now
 	    if test -f "$output_objdir/$soname-def"; then :
 	    else
-	      $show "extracting exported symbol list from \`$soname'"
+	      func_echo "extracting exported symbol list from \`$soname'"
 	      save_ifs="$IFS"; IFS='~'
 	      cmds=$extract_expsyms_cmds
 	      for cmd in $cmds; do
@@ -3860,7 +3860,7 @@ func_mode_link ()
 
 	    # Create $newlib
 	    if test -f "$output_objdir/$newlib"; then :; else
-	      $show "generating import library for \`$soname'"
+	      func_echo "generating import library for \`$soname'"
 	      save_ifs="$IFS"; IFS='~'
 	      cmds=$old_archive_from_expsyms_cmds
 	      for cmd in $cmds; do
@@ -5103,7 +5103,7 @@ EOF
 	# Prepare the list of exported symbols
 	if test -z "$export_symbols"; then
 	  if test "$always_export_symbols" = yes || test -n "$export_symbols_regex"; then
-	    $show "generating symbol list for \`$libname.la'"
+	    func_echo "generating symbol list for \`$libname.la'"
 	    export_symbols="$output_objdir/$libname.exp"
 	    $run $RM $export_symbols
 	    cmds=$export_symbols_cmds
@@ -5118,7 +5118,7 @@ EOF
 		skipped_export=false
 	      else
 		# The command line is too long to execute in one step.
-		$show "using reloadable object file for export list..."
+		func_echo "using reloadable object file for export list..."
 		skipped_export=:
 	      fi
 	    done
@@ -5196,7 +5196,7 @@ EOF
 	  # The command line is too long to link in one step, link piecewise
 	  # or, if using GNU ld and skipped_export is not :, use a linker
 	  # script.
-	  $echo "creating reloadable object files..."
+	  func_echo "creating reloadable object files..."
 
 	  # Save the value of $output and $libobjs because we want to
 	  # use them later.  If we have whole_archive_flag_spec, we
@@ -5223,7 +5223,7 @@ EOF
 
 	  if test "X$skipped_export" != "X:" && test "$with_gnu_ld" = yes; then
 	    output=${output_objdir}/${output_la}.lnk
-	    $echo "creating GNU ld script: $output"
+	    func_echo "creating GNU ld script: $output"
 	    $echo 'INPUT (' > $output
 	    for obj in $save_libobjs
 	    do
@@ -5231,7 +5231,7 @@ EOF
 	    done
 	    $echo ')' >> $output
 	  else
-	    $echo "creating reloadable object files..."
+	    func_echo "creating reloadable object files..."
 	    output=$output_objdir/$output_la-${k}.$objext
 	    # Loop over the list of objects to be linked.
 	    for obj in $save_libobjs
@@ -5266,7 +5266,7 @@ EOF
 	    eval concat_cmds=\"\${concat_cmds}$reload_cmds $objlist $last_robj\"
 
 	    if ${skipped_export-false}; then
-	      $show "generating symbol list for \`$libname.la'"
+	      func_echo "generating symbol list for \`$libname.la'"
 	      export_symbols="$output_objdir/$libname.exp"
 	      $run $RM $export_symbols
 	      libobjs=$output
@@ -5283,7 +5283,7 @@ EOF
 	      delfiles="$delfiles $output_objdir/$output_la-${i}.$objext"
 	    done
 
-	    $echo "creating a temporary reloadable object file: $output"
+	    func_echo "creating a temporary reloadable object file: $output"
 
 	    # Loop through the commands generated above and execute them.
 	    save_ifs="$IFS"; IFS='~'
@@ -5765,7 +5765,7 @@ EOF
       $run eval "$link_command" || exit $?
 
       # Now create the wrapper script.
-      $show "creating $output"
+      func_echo "creating $output"
 
       # Quote the relink command for shipping.
       if test -n "$relink_command"; then
@@ -6382,7 +6382,7 @@ fi\
 	  cmds=$old_archive_cmds
 	else
 	  # the command line is too long to link in one step, link in parts
-	  $echo "using piecewise archive linking..."
+	  func_echo "using piecewise archive linking..."
 	  save_RANLIB=$RANLIB
 	  RANLIB=:
 	  objlist=
@@ -6455,7 +6455,7 @@ fi\
     *.la)
       old_library=
       test "$build_old_libs" = yes && old_library="$libname.$libext"
-      $show "creating $output"
+      func_echo "creating $output"
 
       # Preserve any variables that may affect compiler behavior
       for var in $variables_saved_for_relink; do
