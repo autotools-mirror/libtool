@@ -8,6 +8,7 @@ New in 0.9g:
   libraries on platforms that have shared libs.
 * New `-allow-undefined' link flag to build shared libs that contain
   references to unresolved symbols.
+* Removed all support for creating static-only libraries.
 * Basic support for dynamically loaded modules: new `-export-dynamic'
   linking flag and corresponding `dlname' mode.
 * New `--features' flag to display configured libtool attributes.

@@ -44,9 +44,11 @@ libtoolize: libtoolize.in $(top_builddir)/config.status
 $(srcdir)/ltconfig: ltconfig.in $(top_builddir)/config.status
 	CONFIG_FILES=ltconfig CONFIG_HEADERS= $(top_builddir)/config.status
 	chmod +x ltconfig
+	mv ltconfig $(srcdir)/ltconfig
 
 $(srcdir)/ltmain.sh: ltmain.sh.in $(top_builddir)/config.status
 	CONFIG_FILES=ltmain.sh CONFIG_HEADERS= $(top_builddir)/config.status
+	mv ltmain.sh $(srcdir)/ltmain.sh
 
 # Distribute the demo subdirectory.
 dist-hook: $(demo_distfiles)

@@ -229,9 +229,14 @@ if test -z "$show_help"; then
       exit 1
     fi
 
-    # Delete any old library objects.
-    $run $rm $obj $libobj
-    trap "$run $rm $obj $libobj; exit 1" 1 2 15
+    # Delete any leftover library objects.
+    if test "$build_old_libs" = yes; then
+      $run $rm $obj $libobj
+      trap "$run $rm $obj $libobj; exit 1" 1 2 15
+    else
+      $run $rm $libobj
+      trap "$run $rm $libobj; exit 1" 1 2 15
+    fi
 
     # Only build a PIC object if we are building libtool libraries.
     if test "$build_libtool_libs" = yes; then
@@ -239,7 +244,7 @@ if test -z "$show_help"; then
       $show "$base_compile$pic_flag -DPIC $srcfile"
       if eval "$run $base_compile$pic_flag -DPIC $srcfile"; then :
       else
-	$run $rm $obj
+	test -n "$obj" && $run $rm $obj
 	exit 1
       fi
 
@@ -255,16 +260,18 @@ if test -z "$show_help"; then
       $run $mv $obj $libobj || exit 1
     fi
 
-    # Compile the position-dependent object.
-    $show "$base_compile $srcfile"
-    if eval "$run $base_compile $srcfile"; then :
-    else
-      $run $rm $obj $libobj
-      exit 1
+    # Only build a position-dependent object if we build old libraries.
+    if test "$build_old_libs" = yes; then
+      $show "$base_compile $srcfile"
+      if eval "$run $base_compile $srcfile"; then :
+      else
+        $run $rm $obj $libobj
+        exit 1
+      fi
     fi
 
-    # Create an invalid object file if no PIC, so that we don't accidentally
-    # link it.
+    # Create an invalid libtool object if no PIC, so that we don't accidentally
+    # link it into a program.
     if test "$build_libtool_libs" != yes; then
       $show "echo timestamp > $libobj"
       eval "$run echo timestamp > $libobj" || exit $?
@@ -534,7 +541,11 @@ if test -z "$show_help"; then
 	  fi
         else
           # Transform directly to old archives if we don't build new libraries.
-	  test -z "$old_library" || linklib="$old_library"
+          if test -n "$pic_flag" && test -z "$old_library"; then
+            echo "$progname: cannot find static library for \`$arg'" 1>&2
+	    exit 1
+	  fi
+	  test -n "$old_library" && linklib="$old_library"
           compile_command="$compile_command $dir/$linklib"
 	  finalize_command="$finalize_command $dir/$linklib"
         fi
@@ -576,20 +587,6 @@ if test -z "$show_help"; then
     */*)
       echo "$progname: output file \`$output' must have no directory components" 1>&2
       exit 1
-      ;;
-
-    *.a)
-      # Old archive.
-      libname=`echo "$output" | sed 's/\.a$//'`
-      build_old_libs=yes
-
-      if test -n "$install_libdir"; then
-        echo "$progname: warning: \`-rpath' is ignored while linking old-style libraries" 1>&2
-      fi
-
-      if test -n "$vinfo"; then
-	echo "$progname: warning: \`-version-info' is ignored while linking old-style libraries" 1>&2
-      fi
       ;;
 
     *.la)
@@ -1032,10 +1029,7 @@ EOF
     # See if we need to build an old-fashioned archive.
     if test "$build_old_libs" = "yes"; then
       # Now set the variables for building old libraries.
-      case "$output" in
-      *.a) oldlib="$output" ;;
-      *) oldlib="$objdir/$libname.a" ;;
-      esac
+      oldlib="$objdir/$libname.a"
 
       # Transform .lo files to .o files.
       oldobjs="$objs"`echo "$libobjs " | sed 's/[^ 	]*\.a //g; s/\.lo /.o /g; s/ $//g'`

@@ -321,8 +321,8 @@ compatibility.
 
 @item
 The install @file{Makefile} target should warn the package installer to set
-@var{LD_LIBRARY_PATH} (or equivalent) or run @code{ldconfig(8)}, if
-required.
+the proper environment variables (@var{LD_LIBRARY_PATH} or equivalent),
+or run @code{ldconfig(8)}.
 @end enumerate
 
 @node Other implementations
@@ -341,11 +341,11 @@ have been more or less abandoned as influences.
 @section A postmortem analysis of other implementations
 
 @cindex Other implementations, flaws in
-@cindex Reuseability of library systems
+@cindex Reusability of library systems
 In all fairness, each of the implementations that I examined do the job
 that they were intended to do, for a number of different host systems.
 However, none of these solutions seem to function well as a generalized,
-reuseable component.
+reusable component.
 
 @cindex Complexity of library systems
 Most were too complex for me to use (much less modify) without
@@ -414,7 +414,7 @@ A NetBSD/i386 1.2 platform with shared libraries.
 @end table
 
 You can follow these examples on your own platform, using the
-pre-configured libtool script that was installed with libtool
+preconfigured libtool script that was installed with libtool
 (@pxref{Configuring}).
 
 Source files for the following examples are taken from the @file{demo}
@@ -476,7 +476,7 @@ burger$
 Shared libraries, however, may only be built from
 @dfn{position-independent code} (PIC).  So, special flags must be passed
 to the compiler to tell it to generate PIC rather than the standard
-position-dependant code.
+position-dependent code.
 
 @cindex Library object file
 @cindex @samp{.lo} files
@@ -840,38 +840,17 @@ burger#
 
 @cindex Static linking
 @cindex Convenience libraries
-Sometimes it is desirable to create a static archive that can never be
-shared.  The most frequent case is when you have a ``convenience
-library'' that is a collection of related object files without a really
-nice interface.
-
-@c FIXME: we should update this section
 Why return to @code{ar} and @code{ranlib} silliness when you've had a
-taste of libtool?  libtool works consistently with standard object
-files, static libraries, and programs created without libtool's help.
+taste of libtool?  Well, sometimes it is desirable to create a static
+archive that can never be shared.  The most frequent case is when you
+have a ``convenience library'' that is a collection of related object
+files without a really nice interface.
 
-So, to create a static library:
+To do this, you should ignore libtool entirely, and just use the old
+@code{ar} and @code{ranlib} commands to create a static library.
 
-@enumerate 1
-@item
-Compile the object files with or without libtool.  It doesn't matter
-whether these objects are PIC (end with the @samp{.lo} suffix) or not.
-
-@item
-Link the files in the same way you would a libtool library, but use a
-@samp{.a} suffix (instead of @samp{.la}):
-
-@example
-burger$ @kbd{libtool gcc -o libhello.a main.o foo.lo hello.lo -lm}
-rm -f libhello.a
-ar cru libhello.a main.o foo.o hello.o
-ranlib libhello.a
-burger$
-@end example
-
-@item
 If you want to install the library (but you probably don't), then you
-can use libtool to do it, too:
+may use libtool if you want:
 
 @example
 burger$ @kbd{libtool ./install-sh -c libhello.a /local/lib/libhello.a}
@@ -879,7 +858,10 @@ burger$ @kbd{libtool ./install-sh -c libhello.a /local/lib/libhello.a}
 ranlib /local/lib/libhello.a
 burger$
 @end example
-@end enumerate
+
+Using libtool for static library installation protects your library from
+being accidentally stripped (if the installer used the @samp{-s} flag),
+as well as automatically running the correct @code{ranlib} command.
 
 @cindex Standalone binaries
 Another common situation where static linking is desirable is in
@@ -1098,7 +1080,7 @@ This mode deletes installed libraries (and other files).
 The first @var{mode-arg} is the name of the program to use to delete
 files (typically @file{/bin/rm}).
 
-The remaning @var{mode-args} are either flags for the deletion program
+The remaining @var{mode-args} are either flags for the deletion program
 (beginning with a `-'), or the names of files to delete.
 
 @node Integrating libtool
@@ -1120,8 +1102,8 @@ that your users can install hassle-free shared libraries.
 @cindex Makefile.am
 @cindex Makefile.in
 
-Libtool is fully integrated with Automake (@pxref{Top,,, automake, The
-Automake Manual}), starting with Automake version 1.2.
+Libtool is fully integrated with Automake (@pxref{Top,, Introduction,
+automake, The Automake Manual}), starting with Automake version 1.2.
 
 If you want to use libtool in a regular @file{Makefile} (or
 @file{Makefile.in}), you are on your own.  If you're not using Automake
@@ -1892,7 +1874,7 @@ the term is used to refer to two different concepts:
 @item
 Compiling and linking a program against a shared library, which is
 resolved automatically at run time by the dynamic linker.  In this
-process, dynamic linking is transparant to the application.
+process, dynamic linking is transparent to the application.
 
 @item
 The application calling functions such as
@@ -1915,8 +1897,8 @@ On most operating systems, dlopened modules must be compiled as PIC.
 This restriction simplifies the implementation of the @code{dlopen(3)}
 family of functions by avoiding symbol relocation.  ``True'' dlopen
 implementations, such as the unportable GNU DLD 3 implementation
-(@pxref{Top,,, dld, The DLD Manual}), don't have this restriction, as
-they can perform relocation at runtime.
+(@pxref{Top,, Introduction, dld, The DLD Manual}), don't have this
+restriction, as they can perform relocation at runtime.
 
 As of version @value{VERSION}, libtool provides only minimal support for
 dlopened modules, and this support is guaranteed to change and be
@@ -2234,7 +2216,7 @@ behaviour you think is a problem is not already mentioned as a feature.
 
 Then, you should read the Emacs guide to reporting bugs (@pxref{Bugs, ,
 Reporting Bugs, emacs, The Emacs Manual}).  Some of the details
-listed there are specific to Emacs, but the priciple behind them is a
+listed there are specific to Emacs, but the principle behind them is a
 general one.
 
 Finally, send a bug report to @value{BUGADDR} with any appropriate

@@ -1,3 +1,18 @@
+Wed Jun 11 11:04:59 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* Makefile.am (ltconfig, ltmain.sh): Only move if $(srcdir) is not
+	the current directory.  Reported by Tom Tromey.
+
+Tue Jun 10 12:26:00 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* Makefile.am (ltconfig, ltmain.sh): Be sure to move these files
+	into $(srcdir) once they are created.
+
+	* ltmain.sh.in (link): Disable building static libraries.
+	People should use their favourite AR and RANLIB commands.
+	Disable building old-style objects if `--disable-static' is
+	given.  Suggested by Tom Lees and Stephen Kulow.
+
 Sun Jun  8 12:10:14 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltconfig.in (host_cpu, host_vendor, host_os): Patch up
