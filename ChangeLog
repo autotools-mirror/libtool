@@ -1,3 +1,9 @@
+Sat Dec  4 18:59:57 1999  Ossama Othman  <othman@cs.wustl.edu>
+
+	* ltconfig.in:
+
+	Made "appending to libtool" message more descriptive.
+
 Sat Dec  4 18:26:02 1999  Ossama Othman  <othman@cs.wustl.edu>
 
 	With this latest set of updates I was able to build a C++ shared
