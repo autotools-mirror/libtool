@@ -1,3 +1,21 @@
+2002-11-22  Christian Cornelssen  <ccorn@cs.tu-berlin.de>
+
+	* libtool.m4 (AC_LIBTOOL_COMPILER_OPTION,
+	AC_LIBTOOL_PROG_CC_C_O): Changed method for compilation with
+	custom flags to be language-independent.  Thereby removed
+	CFLAGS/GCJFLAGS mixup bug.  Imitate Autoconf-style logging.
+	Log entries no longer discarded by compilation failures.
+	(_LT_AC_LANG_C_CONFIG, _LT_AC_LANG_CXX_CONFIG,
+	_LT_AC_LANG_GCJ_CONFIG): Tuned settings of
+	lt_simple_compile_test_code and lt_simple_link_test_code
+	to avoid warnings that could break some option detections.
+	(AC_LIBTOOL_PROG_COMPILER_NO_RTTI): Removed
+	redundant "-c conftest.$ac_ext" in the argument to
+	AC_LIBTOOL_COMPILER_OPTION.
+	(AC_LIBTOOL_PROG_LD_SHLIBS): Replaced C-specific conftest
+	source code with $lt_simple_compile_test_code, to support
+	the "-lc" test with other languages.
+
 2002-11-19  Paul Eggert  <eggert@twinsun.com>
 
 	Don't assume that egrep and fgrep exist.  POSIX 1003.1-2001 no

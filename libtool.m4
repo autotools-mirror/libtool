@@ -554,21 +554,30 @@ AC_DEFUN([AC_LIBTOOL_COMPILER_OPTION],
 [AC_CACHE_CHECK([$1], [$2],
   [$2=no
   ifelse([$4], , [ac_outfile=conftest.$ac_objext], [ac_outfile=$4])
-   save_CFLAGS="$CFLAGS"
-   CFLAGS="$CFLAGS $3"
    printf "$lt_simple_compile_test_code" > conftest.$ac_ext
-   if (eval $ac_compile 2>conftest.err) && test -s $ac_outfile; then
+   lt_compiler_flag="$3"
+   # Insert the option either (1) after the last *FLAGS variable, or
+   # (2) before a word containing "conftest.", or (3) at the end.
+   # Note that $ac_compile itself does not contain backslashes and begins
+   # with a dollar sign (not a hyphen), so the echo should work correctly.
+   # The option is referenced via a variable to avoid confusing sed.
+   lt_compile=`echo "$ac_compile" | sed \
+   -e 's:.*FLAGS\}\? :&$lt_compiler_flag :; t' \
+   -e 's: [[^ ]]*conftest\.: $lt_compiler_flag&:; t' \
+   -e 's:$: $lt_compiler_flag:'`
+   (eval echo "\"\$as_me:__oline__: $lt_compile\"" >&AS_MESSAGE_LOG_FD)
+   (eval "$lt_compile" 2>conftest.err)
+   ac_status=$?
+   cat conftest.err >&AS_MESSAGE_LOG_FD
+   echo "$as_me:__oline__: \$? = $ac_status" >&AS_MESSAGE_LOG_FD
+   if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings
-     if test -s conftest.err; then
-       # Append any errors to the config.log.
-       cat conftest.err 1>&AS_MESSAGE_LOG_FD
-     else
+     if test ! -s conftest.err; then
        $2=yes
      fi
    fi
    $rm conftest*
-   CFLAGS="$save_CFLAGS"
 ])
 
 if test x"[$]$2" = xyes; then
@@ -887,14 +896,6 @@ AC_CACHE_CHECK([if $compiler supports -c -o file.$ac_objext],
    mkdir conftest
    cd conftest
    mkdir out
-   ifelse([$1],[],[save_CFLAGS="$CFLAGS"
-		   CFLAGS="$CFLAGS -o out/conftest2.$ac_objext"],
-	  [$1],[CXX],[save_CXXFLAGS="$CXXFLAGS"
-		   CXXFLAGS="$CXXFLAGS -o out/conftest2.$ac_objext"],
-	  [$1],[F77],[save_FFLAGS="$FFLAGS"
-		   FFLAGS="$FFLAGS -o out/conftest2.$ac_objext"],
-	  [$1],[GCJ],[save_GCJFLAGS="$CFLAGS"
-		   CFLAGS="$GCJFLAGS -o out/conftest2.$ac_objext"])
    printf "$lt_simple_compile_test_code" > conftest.$ac_ext
 
    # According to Tom Tromey, Ian Lance Taylor reported there are C compilers
@@ -904,21 +905,28 @@ AC_CACHE_CHECK([if $compiler supports -c -o file.$ac_objext],
    # builds.
    chmod -w .
 
-   if (eval $ac_compile 2>out/conftest.err) && test -s out/conftest2.$ac_objext
+   lt_compiler_flag="-o out/conftest2.$ac_objext"
+   # Insert the option either (1) after the last *FLAGS variable, or
+   # (2) before a word containing "conftest.", or (3) at the end.
+   # Note that $ac_compile itself does not contain backslashes and begins
+   # with a dollar sign (not a hyphen), so the echo should work correctly.
+   lt_compile=`echo "$ac_compile" | sed \
+   -e 's:.*FLAGS\}\? :&$lt_compiler_flag :; t' \
+   -e 's: [[^ ]]*conftest\.: $lt_compiler_flag&:; t' \
+   -e 's:$: $lt_compiler_flag:'`
+   (eval echo "\"\$as_me:__oline__: $lt_compile\"" >&AS_MESSAGE_LOG_FD)
+   (eval "$lt_compile" 2>out/conftest.err)
+   ac_status=$?
+   cat out/conftest.err >&AS_MESSAGE_LOG_FD
+   echo "$as_me:__oline__: \$? = $ac_status" >&AS_MESSAGE_LOG_FD
+   if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings
-     if test -s out/conftest.err; then
-       # Append any errors to the config.log.
-       cat out/conftest.err 1>&AS_MESSAGE_LOG_FD
-     else
+     if test ! -s out/conftest.err; then
        _LT_AC_TAGVAR(lt_cv_prog_compiler_c_o, $1)=yes
      fi
    fi
-   ifelse([$1],[],[CFLAGS="$save_CFLAGS"],
-	  [$1],[CXX],[CXXFLAGS="$save_CXXFLAGS"],
-	  [$1],[F77],[FFLAGS="$save_FFLAGS"],
-	  [$1],[GCJ],[CFLAGS="$save_CFLAGS"])
    chmod u+w .
    $rm conftest* out/*
    rmdir out
@@ -2360,7 +2368,7 @@ _LT_AC_TAGVAR(objext, $1)=$objext
 lt_simple_compile_test_code="int some_variable = 0;\n"
 
 # Code to be used in simple link tests
-lt_simple_link_test_code='main(){return(0);}\n'
+lt_simple_link_test_code='int main(){return(0);}\n'
 
 _LT_AC_SYS_COMPILER
 
@@ -2491,7 +2499,7 @@ _LT_AC_TAGVAR(objext, $1)=$objext
 lt_simple_compile_test_code="int some_variable = 0;\n"
 
 # Code to be used in simple link tests
-lt_simple_link_test_code='int main(int char *[]) { return(0); }\n'
+lt_simple_link_test_code='int main(int, char *[]) { return(0); }\n'
 
 # ltmain only uses $CC for tagged configurations so make sure $CC is set.
 _LT_AC_SYS_COMPILER
@@ -3450,10 +3458,10 @@ objext=o
 _LT_AC_TAGVAR(objext, $1)=$objext
 
 # Code to be used in simple compile tests
-lt_simple_compile_test_code="class foo {};"
+lt_simple_compile_test_code="class foo {}\n"
 
 # Code to be used in simple link tests
-lt_simple_link_test_code='public class conftest { public static void main(String[] argv) {}; }'
+lt_simple_link_test_code='public class conftest { public static void main(String[] argv) {}; }\n'
 
 # ltmain only uses $CC for tagged configurations so make sure $CC is set.
 _LT_AC_SYS_COMPILER
@@ -3995,7 +4003,7 @@ if test "$GCC" = yes; then
 
   AC_LIBTOOL_COMPILER_OPTION([if $compiler supports -fno-rtti -fno-exceptions],
     lt_cv_prog_compiler_rtti_exceptions,
-    [-fno-rtti -fno-exceptions -c conftest.$ac_ext], [],
+    [-fno-rtti -fno-exceptions], [],
     [_LT_AC_TAGVAR(lt_prog_compiler_no_builtin_flag, $1)="$_LT_AC_TAGVAR(lt_prog_compiler_no_builtin_flag, $1) -fno-rtti -fno-exceptions"])
 fi
 ])# AC_LIBTOOL_PROG_COMPILER_NO_RTTI
@@ -5302,7 +5310,7 @@ if test "$enable_shared" = yes && test "$GCC" = yes; then
     # to ld, don't add -lc before -lgcc.
     AC_MSG_CHECKING([whether -lc should be explicitly linked in])
     $rm conftest*
-    echo 'static int dummy;' > conftest.$ac_ext
+    printf "$lt_simple_compile_test_code" > conftest.$ac_ext
 
     if AC_TRY_EVAL(ac_compile) 2>conftest.err; then
       soname=conftest
