@@ -1,8 +1,6 @@
 In the near future:
 ********************
 
-* Look into Andreas Schwab's report about security.
-
 * check whether the version of libtool.m4 is compatible
 with ltconfig/ltmain.sh
 
@@ -33,6 +31,13 @@ In the future:
   I believe relying on async-signal-safe functions to the greatest extent
   possible would greatly improve libltdl's ability to be embedded in and 
   used by other systems.
+
+* Pavel Roskin writes about --enable-pic-static:
+  Is it true that the objects which are suitable for building shared
+  libraries are always suitable for building static libraries?  If yes,
+  would it be a good idea to have an option which would enable building
+  shared and static libraries from the same object files.  50% speedup is
+   worth considering IMHO.
 
 * Support -dlopen/dlpreopen for libraries.
   This requires adding two new variables (dlopen/dlpreopen) to
