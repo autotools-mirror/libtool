@@ -12,15 +12,14 @@ TESTS = demo-static.test demo-make.test demo-exec.test \
 	mdemo-conf.test mdemo-make.test mdemo-exec.test \
 	mdemo-inst.test mdemo-unst.test \
 	cdemo-conf.test cdemo-make.test cdemo-exec.test \
-	demo-shared.test demo-make.test demo-exec.test \
-	demo-inst.test \
+	demo-nofast.test demo-make.test demo-exec.test \
+	demo-inst.test demo-unst.test \
+	demo-shared.test demo-make.test demo-exec.test demo-inst.test \
 	hardcode.test build-relink.test \
 	demo-unst.test \
 	mdemo-shared.test mdemo-make.test mdemo-exec.test \
 	mdemo-inst.test mdemo-unst.test \
 	cdemo-shared.test cdemo-make.test cdemo-exec.test \
-	demo-nofast.test demo-make.test demo-exec.test \
-	demo-inst.test demo-unst.test \
 	link.test link-2.test nomode.test \
 	quote.test sh.test suffix.test
 

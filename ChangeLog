@@ -1,5 +1,7 @@
 1999-03-10  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* tests/Makefile.am (TESTS): run demo-nofast before demo-shared
+
 	* configure.in: create ltconfig and ltmain.sh at the end of
 	config.status, if they do not exist.  This fixes the bootstrap
 	problem reported by Erez Zadok <ezk@cs.columbia.edu>
