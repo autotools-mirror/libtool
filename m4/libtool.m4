@@ -3690,7 +3690,7 @@ _LT_EOF
 	  ;;
 	pgf77* | pgf90* )		# Portland Group f77 and f90 compilers
 	  _LT_TAGVAR(whole_archive_flag_spec, $1)=
-	  tmp_addflag=' -fpic' ;;
+	  tmp_addflag=' -fpic -Mnomain' ;;
 	ecc*,ia64* | icc*,ia64*)	# Intel C compiler on ia64
 	  tmp_addflag=' -i_dynamic' ;;
 	efc*,ia64* | ifort*,ia64*)	# Intel Fortran compiler on ia64
@@ -3703,8 +3703,6 @@ _LT_EOF
 
         if test "x$supports_anon_versioning" = xyes; then
           _LT_TAGVAR(archive_expsym_cmds, $1)='$ECHO "{ global:" > $output_objdir/$libname.ver~cat $export_symbols | sed -e "s/\(.*\)/\1;/" >> $output_objdir/$libname.ver~$ECHO "local: *; };" >> $output_objdir/$libname.ver~$CC -shared'"$tmp_addflag"' $libobjs $deplibs $compiler_flags ${wl}-soname $wl$soname ${wl}-version-script ${wl}$output_objdir/$libname.ver -o $lib'
-        else
-          _LT_TAGVAR(archive_expsym_cmds, $1)=$_LT_TAGVAR(archive_cmds, $1)
         fi
       else
         _LT_TAGVAR(ld_shlibs, $1)=no
