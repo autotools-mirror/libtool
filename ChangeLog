@@ -1,3 +1,10 @@
+1999-06-09  Gary V. Vaughan  <gary@oranda.demon.co.uk>
+
+	* ltconfig.in (pic_flag): Accept, in order of decreasing
+	preference:  the cached value; the default value for the current
+	host.  Also test that the compiler accepts the flag, and cache
+	that result too.
+
 1999-06-08  Gary V. Vaughan  <gary@oranda.demon.co.uk>
 
 	* ltconfig.in (LN_S): Accept, in order of decreasing preference:

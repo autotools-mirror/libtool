@@ -605,7 +605,7 @@ compiler="$2"
 
 echo $ac_n "checking for object suffix... $ac_c" 1>&6
 echo "$progname:@LINENO@: checking for object suffix" 1>&5
-if test X`echo ${ac_cv_objext+set}` = Xset; then
+if test "${ac_cv_objext+set}" = set; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
   ac_cv_objext="none"
@@ -628,14 +628,14 @@ else
   fi
   $rm conftest*
 fi
-if test X$ac_cv_objext != Xnone; then
+if test "X$ac_cv_objext" != Xnone; then
   objext="$ac_cv_objext"
 fi
 echo "$ac_t$ac_cv_objext" 1>&6
 
 echo $ac_n "checking for executable suffix... $ac_c" 1>&6
 echo "$progname:@LINENO@: checking for executable suffix" 1>&5
-if test X`echo ${ac_cv_exeext+set}` = Xset; then
+if test "X${ac_cv_exeext+set}" = Xset; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
   ac_cv_exeext="none"
@@ -658,175 +658,202 @@ else
   fi
   $rm conftest*
 fi
-if test X$ac_cv_exeext != Xnone; then
+if test "X$ac_cv_exeext" != Xnone; then
   exeext="$ac_cv_exeext"
 fi
 echo "$ac_t$ac_cv_exeext" 1>&6
 
+# We assume here that the value for ac_cv_prog_cc_pic will not be cached
+# in isolation, and that seeing it set (from the cache) indicates that
+#the associated values are set (in the cache) correctly too.
 echo $ac_n "checking for $compiler option to produce PIC... $ac_c" 1>&6
-pic_flag=
-special_shlib_compile_flags=
-wl=
-link_static_flag=
-no_builtin_flag=
-
-if test "$with_gcc" = yes; then
-  wl='-Wl,'
-  link_static_flag='-static'
-
-  case "$host_os" in
-  beos* | irix5* | irix6* | osf3* | osf4*)
-    # PIC is the default for these OSes.
-    ;;
-  aix*)
-    # Below there is a dirty hack to force normal static linking with -ldl
-    # The problem is because libdl dynamically linked with both libc and
-    # libC (AIX C++ library), which obviously doesn't included in libraries
-    # list by gcc. This cause undefined symbols with -static flags.
-    # This hack allows C programs to be linked with "-static -ldl", but
-    # we not sure about C++ programs.
-    link_static_flag="$link_static_flag ${wl}-lC"
-    ;;
-  cygwin* | mingw* | os2*)
-    # This hack is so that the source file can tell whether it is being
-    # built for inclusion in a dll (and should export symbols for example).
-    pic_flag='-DDLL_EXPORT'
-    ;;
-  amigaos*)
-    # FIXME: we need at least 68020 code to build shared libraries, but
-    # adding the `-m68020' flag to GCC prevents building anything better,
-    # like `-m68040'.
-    pic_flag='-m68020 -resident32 -malways-restore-a4'
-    ;;
-  sysv4*MP*)
-    if test -d /usr/nec; then
-       pic_flag=-Kconform_pic
-    fi
-    ;;
-  *)
-    pic_flag='-fPIC'
-    ;;
-  esac
+echo "$progname:@LINENO@:checking for $compiler option to produce PIC" 1>&5
+if test "${ac_cv_prog_cc_pic+set}" = "set"; then
+  echo $ac_n "(cached) $ac_c" 1>&6
 else
-  # PORTME Check for PIC flags for the system compiler.
-  case "$host_os" in
-  aix3* | aix4*)
-    # All AIX code is PIC.
-    link_static_flag='-bnso -bI:/lib/syscalls.exp'
-    ;;
+  ac_cv_prog_cc_pic=
+  ac_cv_prog_cc_shlib=
+  ac_cv_prog_cc_wl=
+  ac_cv_prog_cc_static=
+  ac_cv_prog_cc_no_builtin=
+  ac_cv_prog_cc_can_build_shared=$can_build_shared
 
-  hpux9* | hpux10* | hpux11*)
-    # Is there a better link_static_flag that works with the bundled CC?
-    wl='-Wl,'
-    link_static_flag="${wl}-a ${wl}archive"
-    pic_flag='+Z'
-    ;;
+  if test "$with_gcc" = yes; then
+    ac_cv_prog_cc_wl='-Wl,'
+    ac_cv_prog_cc_static='-static'
 
-  irix5* | irix6*)
-    wl='-Wl,'
-    link_static_flag='-non_shared'
-    # PIC (with -KPIC) is the default.
-    ;;
-
-  cygwin* | mingw* | os2*)
-    # This hack is so that the source file can tell whether it is being
-    # built for inclusion in a dll (and should export symbols for example).
-    pic_flag='-DDLL_EXPORT'
-    ;;
-
-  osf3* | osf4*)
-    # All OSF/1 code is PIC.
-    wl='-Wl,'
-    link_static_flag='-non_shared'
-    ;;
-
-  sco3.2v5*)
-    pic_flag='-Kpic'
-    link_static_flag='-dn'
-    special_shlib_compile_flags='-belf'
-    ;;
-
-  solaris*)
-    pic_flag='-KPIC'
-    link_static_flag='-Bstatic'
-    wl='-Wl,'
-    ;;
-
-  sunos4*)
-    pic_flag='-PIC'
-    link_static_flag='-Bstatic'
-    wl='-Qoption ld '
-    ;;
-
-  sysv4 | sysv4.2uw2* | sysv4.3* | sysv5*)
-    pic_flag='-KPIC'
-    link_static_flag='-Bstatic'
-    wl='-Wl,'
-    ;;
-
-  uts4*)
-    pic_flag='-pic'
-    link_static_flag='-Bstatic'
-    ;;
-
-  sysv4*MP*)
-    if test -d /usr/nec ;then
-      pic_flag='-Kconform_pic'
-      link_static_flag='-Bstatic'
-    fi
-    ;;
-
-  *)
-    can_build_shared=no
-    ;;
-  esac
-fi
-
-if test -n "$pic_flag"; then
-  echo "$ac_t$pic_flag" 1>&6
-
-  # Check to make sure the pic_flag actually works.
-  echo $ac_n "checking if $compiler PIC flag $pic_flag works... $ac_c" 1>&6
-  $rm conftest*
-  echo "int some_variable = 0;" > conftest.c
-  save_CFLAGS="$CFLAGS"
-  CFLAGS="$CFLAGS $pic_flag -DPIC"
-  echo "$progname:@LINENO@: checking if $compiler PIC flag $pic_flag works" >&5
-  if { (eval echo $progname:@LINENO@: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>conftest.err; } && test -s conftest.$objext; then
-    # Append any warnings to the config.log.
-    cat conftest.err 1>&5
-    
     case "$host_os" in
-    hpux9* | hpux10* | hpux11*)
-      # On HP-UX, both CC and GCC only warn that PIC is supported... then they
-      # create non-PIC objects.  So, if there were any warnings, we assume that
-      # PIC is not supported.
-      if test -s conftest.err; then
-	echo "$ac_t"no 1>&6
-	can_build_shared=no
-	pic_flag=
-      else
-	echo "$ac_t"yes 1>&6
-	pic_flag=" $pic_flag"
+    beos* | irix5* | irix6* | osf3* | osf4*)
+      # PIC is the default for these OSes.
+      ;;
+    aix*)
+      # Below there is a dirty hack to force normal static linking with -ldl
+      # The problem is because libdl dynamically linked with both libc and
+      # libC (AIX C++ library), which obviously doesn't included in libraries
+      # list by gcc. This cause undefined symbols with -static flags.
+      # This hack allows C programs to be linked with "-static -ldl", but
+      # we not sure about C++ programs.
+      ac_cv_prog_cc_static="$ac_cv_prog_cc_static ${ac_cv_prog_cc_wl}-lC"
+      ;;
+    cygwin* | mingw* | os2*)
+      # This hack is so that the source file can tell whether it is being
+      # built for inclusion in a dll (and should export symbols for example).
+      ac_cv_prog_cc_pic='-DDLL_EXPORT'
+      ;;
+    amigaos*)
+      # FIXME: we need at least 68020 code to build shared libraries, but
+      # adding the `-m68020' flag to GCC prevents building anything better,
+      # like `-m68040'.
+      ac_cv_prog_cc_pic='-m68020 -resident32 -malways-restore-a4'
+      ;;
+    sysv4*MP*)
+      if test -d /usr/nec; then
+         ac_cv_prog_cc_pic=-Kconform_pic
       fi
       ;;
     *)
-      echo "$ac_t"yes 1>&6
-      pic_flag=" $pic_flag"
+      ac_cv_prog_cc_pic='-fPIC'
       ;;
     esac
   else
-    # Append any errors to the config.log.
-    cat conftest.err 1>&5
-    can_build_shared=no
-    pic_flag=
-    echo "$ac_t"no 1>&6
+    # PORTME Check for PIC flags for the system compiler.
+    case "$host_os" in
+    aix3* | aix4*)
+     # All AIX code is PIC.
+      ac_cv_prog_cc_static='-bnso -bI:/lib/syscalls.exp'
+      ;;
+
+    hpux9* | hpux10* | hpux11*)
+      # Is there a better ac_cv_prog_cc_static that works with the bundled CC?
+      ac_cv_prog_cc_wl='-Wl,'
+      ac_cv_prog_cc_static="${ac_cv_prog_cc_wl}-a ${ac_cv_prog_cc_wl}archive"
+      ac_cv_prog_cc_pic='+Z'
+      ;;
+
+    irix5* | irix6*)
+      ac_cv_prog_cc_wl='-Wl,'
+      ac_cv_prog_cc_static='-non_shared'
+      # PIC (with -KPIC) is the default.
+      ;;
+
+    cygwin* | mingw* | os2*)
+      # This hack is so that the source file can tell whether it is being
+      # built for inclusion in a dll (and should export symbols for example).
+      ac_cv_prog_cc_pic='-DDLL_EXPORT'
+      ;;
+
+    osf3* | osf4*)
+      # All OSF/1 code is PIC.
+      ac_cv_prog_cc_wl='-Wl,'
+      ac_cv_prog_cc_static='-non_shared'
+      ;;
+
+    sco3.2v5*)
+      ac_cv_prog_cc_pic='-Kpic'
+      ac_cv_prog_cc_static='-dn'
+      ac_cv_prog_cc_shlib='-belf'
+      ;;
+
+    solaris*)
+      ac_cv_prog_cc_pic='-KPIC'
+      ac_cv_prog_cc_static='-Bstatic'
+      ac_cv_prog_cc_wl='-Wl,'
+      ;;
+
+    sunos4*)
+      ac_cv_prog_cc_pic='-PIC'
+      ac_cv_prog_cc_static='-Bstatic'
+      ac_cv_prog_cc_wl='-Qoption ld '
+      ;;
+
+    sysv4 | sysv4.2uw2* | sysv4.3* | sysv5*)
+      ac_cv_prog_cc_pic='-KPIC'
+      ac_cv_prog_cc_static='-Bstatic'
+      ac_cv_prog_cc_wl='-Wl,'
+      ;;
+
+    uts4*)
+      ac_cv_prog_cc_pic='-pic'
+      ac_cv_prog_cc_static='-Bstatic'
+      ;;
+
+    sysv4*MP*)
+      if test -d /usr/nec ;then
+        ac_cv_prog_cc_pic='-Kconform_pic'
+        ac_cv_prog_cc_static='-Bstatic'
+      fi
+      ;;
+
+    *)
+      ac_cv_prog_cc_can_build_shared=no
+      ;;
+    esac
   fi
-  CFLAGS="$save_CFLAGS"
-  $rm conftest*
-else
-  echo "$ac_t"none 1>&6
 fi
+if test -z "$ac_cv_prog_cc_pic"; then
+  echo "$ac_t"none 1>&6
+else  
+  echo "$ac_t""$ac_cv_prog_cc_pic" 1>&6
+
+  # Check to make sure the pic_flag actually works.
+  echo $ac_n "checking if $compiler PIC flag $ac_cv_prog_cc_pic works... $ac_c" 1>&6
+  echo "$progname:@LINENO@:checking that $compiler PIC flag $ac_cv_prog_cc_pic works." 1>&5
+  if test "${ac_cv_prog_cc_pic_works+set}" = "set"; then
+    echo $ac_n "(cached) $ac_c" 1>&6
+  else
+    ac_cv_prog_cc_pic_works=yes
+    $rm conftest*
+    echo "int some_variable = 0;" > conftest.c
+    save_CFLAGS="$CFLAGS"
+    CFLAGS="$CFLAGS $ac_cv_prog_cc_pic -DPIC"
+    if { (eval echo $progname:@LINENO@: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>conftest.err; } && test -s conftest.$objext; then
+      # Append any warnings to the config.log.
+      cat conftest.err 1>&5
+    
+      case "$host_os" in
+      hpux9* | hpux10* | hpux11*)
+        # On HP-UX, both CC and GCC only warn that PIC is supported... then
+	# they create non-PIC objects.  So, if there were any warnings, we
+	# assume that PIC is not supported.
+        if test -s conftest.err; then
+	  echo "$ac_t"no 1>&6
+	  ac_cv_prog_cc_pic_works=no
+	  ac_cv_prog_cc_can_build_shared=no
+	  ac_cv_prog_cc_pic=
+        else
+	  echo "$ac_t"yes 1>&6
+	  ac_cv_prog_cc_pic=" $ac_cv_prog_cc_pic"
+        fi
+        ;;
+      *)
+        echo "$ac_t"yes 1>&6
+        ac_cv_prog_cc_pic=" $ac_cv_prog_cc_pic"
+        ;;
+      esac
+    else
+      # Append any errors to the config.log.
+      cat conftest.err 1>&5
+      ac_cv_prog_cc_pic_works=no
+      ac_cv_prog_cc_can_build_shared=no
+      ac_cv_prog_cc_pic=
+      echo "$ac_t"no 1>&6
+    fi
+    CFLAGS="$save_CFLAGS"
+    $rm conftest*
+  fi
+  # Belt *and* braces to stop my trousers falling down:
+  if test X$ac_cv_prog_cc_pic_works = Xno; then
+    ac_cv_prog_cc_pic=
+    ac_cv_prog_cc_can_build_shared=no
+  fi
+  echo "$ac_t""$ac_cv_prog_cc_pic_works" 1>&6
+fi
+pic_flag="$ac_cv_prog_cc_pic"
+special_shlib_compile_flags="$ac_cv_prog_cc_shlib"
+wl="$ac_cv_prog_cc_wl"
+link_static_flag="$ac_cv_prog_cc_static"
+no_builtin_flag="$ac_cv_prog_cc_no_builtin"
+can_build_shared="$ac_cv_prog_cc_can_build_shared"
 
 # Check to see if options -o and -c are simultaneously supported by compiler
 echo $ac_n "checking if $compiler supports -c -o file.o... $ac_c" 1>&6
