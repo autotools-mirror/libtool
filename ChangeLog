@@ -1,4 +1,29 @@
-2200-02-01  Ossama Othman  <ossama@uci.edu>
+2000-02-03  Ossama Othman  <ossama@debian.org>
+
+	* ltconfig.in (available_tags): The name of each newly added
+	tagged configuration is appended to this list.  This is done at
+	ltconfig time so that the generated `libtool' script need not
+	determine which tags it supports everytime it is used.  The
+	available_tags variable is used by `ltmain.in' to iterate over
+	each of the tagged configurations when attempting to automatically
+	choose which one to use for the supplied compile/link command.
+	* ltmain.in: Added ability to automatically determine which tagged
+	configuration to use based on the compiler found in the supplied
+	base compile command.
+	(available_tags): This new variable contains a list of available
+	tagged configurations.  This gets generated at ltconfig time.
+	(object_name, old_object): Renamed these to pic_object and
+	non_pic_object, respectively.
+	* doc/libtool.texi (Configuration tags): Updated documentation.
+	Libtool now has the ability to infer which tagged configuration to
+	use based on the compiler found in the supplied base compile
+	command.
+	* tagdemo/configure.in, tagdemo/configure: Removed explicit
+	substitution of "--tag=CXX" in $LIBTOOL.  The newly added
+	automatic selection of tagged configurations obviates the need to
+	explicitly specify which tag to use.
+
+2000-02-01  Ossama Othman  <ossama@uci.edu>
 
 	* ltcf-cxx.sh: Added some untested HPUX aCC support.
 	* ltmain.in: Inadvertently removed some of the tags patch.

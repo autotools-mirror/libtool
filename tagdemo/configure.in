@@ -52,12 +52,8 @@ AM_PROG_LIBTOOL
 
 dnl Enable C++ support in libtool
 dnl This causes a C++ configuration tag to be appended to the libtool
-dnl script generated during the above AC_PROG_LIBTOOL macro execution.
+dnl script generated during the above AM_PROG_LIBTOOL macro execution.
 AC_LIBTOOL_CXX
-
-dnl FIXME:  We need a better place to add the libtool "tag" flag.
-dnl         This is a really ugly hack.
-LIBTOOL="$LIBTOOL --tag=CXX"
 
 AC_CHECK_HEADERS(math.h)
 

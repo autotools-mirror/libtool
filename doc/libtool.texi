@@ -3269,11 +3269,19 @@ option, whenever you want to compile or link a library using
 @samp{c++}, you should run:
 
 @example
-$ @kbd{./libtool --tag=CXX --mode=compile c++ -c test.cc}
+$ @kbd{./libtool --mode=compile c++ -c test.cc}
 @end example
 
-If you do not use the proper tag name, it is possible that libtool ends
-up using incorrect commands.
+Libtool will automatically detect the appropriate tagged configuration
+to use by matching the compiler used in the above command with the one
+the tagged configuration was configured with.
+
+The tagged configuration that libtool uses can be explicitly specified
+by using the @samp{--tag} option as follows:
+
+@example
+$ @kbd{./libtool --tag=CXX --mode=compile c++ -c test.cc}
+@end example
 
 Conceptually, tags are cumulative, i.e., they could only set a couple of
 configuration variables, leaving others untouched.  In practice, any tag

@@ -1985,6 +1985,9 @@ Xsed="sed -e s/^X//"
 # if CDPATH is set.
 if test "X\${CDPATH+set}" = Xset; then CDPATH=:; export CDPATH; fi
 
+# The names of the tagged configurations supported by this script.
+available_tags=
+
 ### BEGIN LIBTOOL CONFIG
 EOF
   else
@@ -2490,6 +2493,26 @@ EOF
   echo "FIXME: would compile $ltmain"
   ;;
 esac
+
+# Update the list of available tags.
+if test -n "$tagname"; then
+
+  # Extract list of available tagged configurations in $ofile.
+  # Note that this assumes the entire list is on one line.
+  available_tags=`grep "^available_tags=" $ofile | sed -e 's/available_tags=\(.*$\)/\1/' -e 's/\"//g'`
+
+  # Append the new tag name to the list of available tags.
+  available_tags="$available_tags $tagname"
+
+  # Now substitute the updated of available tags.
+  if eval "sed -e 's/^available_tags=.*\$/available_tags=\"$available_tags\"/' ${ofile} > ${ofile}.new"; then
+    mv ${ofile}.new ${ofile}
+  else
+    rm -f ${ofile}.new
+    echo "$progname: unable to update list of available tagged configurations."
+    exit 1
+  fi
+fi
 
 # Don't cache tagged configuration!
 test -n "$cache_file" && test -z "$tagname" || exit 0
