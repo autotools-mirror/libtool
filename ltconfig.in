@@ -181,7 +181,8 @@ help="Try \`$progname --help' for more information."
 default_ofile=libtool
 can_build_shared=yes
 enable_shared=yes
-# All known linkers require a `.a' archive for static linking.
+# All known linkers require a `.a' archive for static linking (except M$VC,
+# which needs '.lib').
 enable_static=yes
 enable_fast_install=yes
 enable_dlopen=unknown
@@ -201,6 +202,7 @@ need_locks=yes
 ac_ext=c
 objext=o
 libext=a
+exeext=
 cache_file=
 
 old_AR="$AR"
@@ -616,6 +618,36 @@ else
 fi
 $rm conftest*
 echo "$ac_t$objext" 1>&6
+
+echo $ac_n "checking for executable suffix... $ac_c" 1>&6
+if eval "test \"`echo '$''{'ac_cv_exeext'+set}'`\" = set"; then
+  echo $ac_n "(cached) $ac_c" 1>&6
+else
+  ac_cv_exeext="none"
+  $rm conftest*
+  echo 'main () { return 0; }' > conftest.c
+  echo "$progname:@LINENO@: checking for executable suffix" >& 5
+  if { (eval echo $progname:@LINENO@: \"$ac_link\") 1>&5; (eval $ac_link) 2>conftest.err; }; then
+    # Append any warnings to the config.log.
+    cat conftest.err 1>&5
+
+    for ac_file in conftest.*; do
+      case $ac_file in
+      *.c | *.$objext ) ;;
+      *) ac_cv_exeext=.`echo $ac_file | sed -e s/conftest.//` ;;
+      esac
+    done
+  else
+    cat conftest.err 1>&5
+    echo "$progname: failed program was:" >&5
+    cat conftest.c >&5
+  fi
+  $rm conftest*
+fi
+if test X$ac_cv_exeext != Xnone; then
+  exeext="$ac_cv_exeext"
+fi
+echo "$ac_t$ac_cv_exeext" 1>&6
 
 echo $ac_n "checking for $compiler option to produce PIC... $ac_c" 1>&6
 pic_flag=
@@ -2732,6 +2764,9 @@ objext="$objext"
 
 # Old archive suffix (normally "a").
 libext="$libext"
+
+# Executable file suffix (normally "").
+exeext="$exeext"
 
 # Additional compiler flags for building library objects.
 pic_flag=$pic_flag
