@@ -2395,7 +2395,7 @@ burger$
 
 If symbols from your @emph{executable} are needed to satisfy unresolved
 references in a library you want to dlopen you will have to use the flag
-@samp{-export-dynamic}.  
+@samp{-export-dynamic}.
 You should use @samp{-export-dynamic} while linking the executable that calls
 dlopen:
 
@@ -2440,9 +2440,9 @@ module, or the module is not found, then the application can recover
 without crashing.
 @end enumerate
 
-Libtool emulates @samp{-export-dynamic} and @samp{-dlopen} 
-on static platforms by linking objects into the program at compile time, 
-and creating data structures that represent the program's symbol table.
+Libtool emulates @samp{-dlopen} on static platforms by linking objects
+into the program at compile time, and creating data structures that
+represent the program's symbol table.
 
 In order to use this feature, you must declare the objects you want your
 application to dlopen by using the @samp{-dlopen} or @samp{-dlpreopen}
@@ -2459,6 +2459,7 @@ An array of @var{lt_symbol} structures, representing all the preloaded
 symbols linked into the program. For each @samp{-dlpreloaded} file 
 there is an element with the @var{name} of the file and a @var{address} 
 of @code{0}, followed by all symbols exported from this file.
+For the executable itself the special name @@PROGRAM@@ is used.
 The last element has a @var{name} and @var{address} of @code{0}.
 @end deftypevar
 

@@ -1012,7 +1012,7 @@ export_symbols_cmds='$NM $libobjs | $global_symbol_pipe | sed '\''s/.* //'\'' | 
 # included in the symbol list
 include_expsyms=
 # exclude_expsyms can be an egrep regular expression of symbols to exclude
-# it will be wrapped by `^(' and `) ', so one must not match beginning or
+# it will be wrapped by ` (' and `)$', so one must not match beginning or
 # end of line.  Example: `a|bc|.*d.*' will exclude the symbols `a' and `bc',
 # as well as any symbol that contains `d'.
 exclude_expsyms=
