@@ -3611,8 +3611,16 @@ _LT_EOF
       ;;
 
     linux*|tpf*)
-      if $LD --help 2>&1 | $EGREP ': supported targets:.* elf' > /dev/null; then
-        tmp_archive_cmds='$CC -shared $libobjs $deplibs $compiler_flags ${wl}-soname $wl$soname -o $lib'
+      tmp_diet=no
+      if test "$host_os" = linux-dietlibc; then
+	case "$cc_basename" in
+	  diet\ *) tmp_diet=yes;;	# linux-dietlibc with static linking (!diet-dyn)
+	esac
+      fi
+      if $LD --help 2>&1 | $EGREP ': supported targets:.* elf' > /dev/null \
+	 && test "$tmp_diet" = no
+      then
+	tmp_archive_cmds='$CC -shared $libobjs $deplibs $compiler_flags ${wl}-soname $wl$soname -o $lib'
 	# Portland Group f77 and f90 compilers require an additonal -fpic
 	if test "$CC" = "pgf77" -o "$CC" = "pgf90"; then
 	   tmp_archive_cmds="$tmp_archive_cmds -fpic"

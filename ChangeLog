@@ -1,5 +1,10 @@
 2004-11-29  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* m4/libtool.m4 (_LT_LINKER_SHLIBS): Treat linux-dietlibc with
+	the `diet' compiler wrapper (as opposed to the `diet-dyn'
+	wrapper) as a static-only platform.
+	* NEWS: Updated.
+
 	* libltdl/ltdl.c (trim): Use memcpy instead of strncpy here, to
 	avoid problems with non-conforming strncpy.  This is safe here.
 
