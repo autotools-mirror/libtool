@@ -528,9 +528,9 @@ else
     for dir in $PATH; do
       test -z "$dir" && dir=.
       if test -f $dir/ranlib || test -f $dir/ranlib$ac_exeext; then
-        result="ranlib"
-        ac_cv_prog_RANLIB="$result"
-        break
+	result="ranlib"
+	ac_cv_prog_RANLIB="$result"
+	break
       fi
     done
     IFS="$save_ifs"
@@ -944,7 +944,7 @@ else
       ;;
     sysv4*MP*)
       if test -d /usr/nec; then
-         ac_cv_prog_cc_pic=-Kconform_pic
+	 ac_cv_prog_cc_pic=-Kconform_pic
       fi
       ;;
     *)
@@ -1015,8 +1015,8 @@ else
 
     sysv4*MP*)
       if test -d /usr/nec ;then
-        ac_cv_prog_cc_pic='-Kconform_pic'
-        ac_cv_prog_cc_static='-Bstatic'
+	ac_cv_prog_cc_pic='-Kconform_pic'
+	ac_cv_prog_cc_static='-Bstatic'
       fi
       ;;
 
@@ -1048,22 +1048,22 @@ else
     
       case "$host_os" in
       hpux9* | hpux10* | hpux11*)
-        # On HP-UX, both CC and GCC only warn that PIC is supported... then
+	# On HP-UX, both CC and GCC only warn that PIC is supported... then
 	# they create non-PIC objects.  So, if there were any warnings, we
 	# assume that PIC is not supported.
-        if test -s conftest.err; then
+	if test -s conftest.err; then
 	  ac_cv_prog_cc_pic_works=no
 	  ac_cv_prog_cc_can_build_shared=no
 	  ac_cv_prog_cc_pic=
-        else
+	else
 	  ac_cv_prog_cc_pic_works=yes
 	  ac_cv_prog_cc_pic=" $ac_cv_prog_cc_pic"
-        fi
-        ;;
+	fi
+	;;
       *)
 	ac_cv_prog_cc_pic_works=yes
-        ac_cv_prog_cc_pic=" $ac_cv_prog_cc_pic"
-        ;;
+	ac_cv_prog_cc_pic=" $ac_cv_prog_cc_pic"
+	;;
       esac
     else
       # Append any errors to the config.log.
@@ -2468,13 +2468,13 @@ ac_try="$ac_compile conftest.$ac_ext >/dev/null 2>conftest.out"
 ac_err=`grep -v '^ *+' conftest.out | grep -v "^conftest.${ac_ext}\$"`
 if test -z "$ac_err"; then
   rm -rf conftest*
-  ac_cv_header_$ac_safe=yes
+  eval "ac_cv_header_$ac_safe=yes"
 else
   echo "$ac_err" >&5
   echo "$progname: failed program was:" >&5
   cat conftest.$ac_ext >&5
   rm -rf conftest*
-  ac_cv_header_$ac_safe=no
+  eval "ac_cv_header_$ac_safe=no"
 fi
 rm -f conftest*
 fi

@@ -1,3 +1,7 @@
+1999-06-14 Thomas Tanner  <tanner@ffii.org>
+
+	* ltconfig.in: use eval when setting have_dlfcn_h, reformatting
+
 1999-06-12 Thomas Tanner  <tanner@ffii.org>
 
 	* ltmain.in: store old archives in deplibs and old_deplibs, 
