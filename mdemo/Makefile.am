@@ -18,7 +18,7 @@ noinst_HEADERS = foo.h
 
 bin_PROGRAMS = mdemo mdemo.debug
 
-../libltdl/libltdlc.la: ../libltdl/libtool \
+../libltdl/libltdlc.la: ../libtool ../libltdl/libtool \
     $(srcdir)/../libltdl/ltdl.c $(srcdir)/../libltdl/ltdl.h
 	(cd ../libltdl; $(MAKE) libltdlc.la)
 
@@ -26,14 +26,12 @@ bin_PROGRAMS = mdemo mdemo.debug
 mdemo_SOURCES = main.c
 mdemo_LDADD = ../libltdl/libltdlc.la
 mdemo_LDFLAGS = -dlopen foo1.la -dlopen libfoo2.la \
-	-export-dynamic # FIXME: remove this when libtool and libltdl \
-			# handle dependencies of modules
+	-export-dynamic ## FIXME: remove this when libtool and libltdl
+## handle dependencies of modules
 mdemo_DEPENDENCIES = ../libltdl/libltdlc.la foo1.la libfoo2.la
 
 # Create an easier-to-debug version of mdemo.
-mdemo_debug_SOURCES = main.c
-mdemo_debug_LDADD = ../libltdl/libltdlc.la
-mdemo_debug_LDFLAGS = -static -dlopen foo1.la -dlopen libfoo2.la \
-	-export-dynamic # FIXME: remove this when libtool and libltdl \
-			# handle dependencies of modules
-mdemo_debug_DEPENDENCIES = ../libltdl/libltdlc.la foo1.la libfoo2.la
+mdemo_debug_SOURCES = $(mdemo_SOURCES)
+mdemo_debug_LDADD = $(mdemo_LDADD)
+mdemo_debug_LDFLAGS = -static $(mdemo_LDFLAGS)
+mdemo_debug_DEPENDENCIES = $(mdemo_DEPENDENCIES)
