@@ -1,5 +1,7 @@
 2000-09-07  Gary V. Vaughan  <gvv@techie.com>
 
+	* doc/PLATFORMS: Updated.
+
 	* configure.in (AC_PROG_AWK): Removed -- no longer required by
 	the build process.
 	* lineno: ditto.
