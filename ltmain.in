@@ -1738,7 +1738,7 @@ EOF
 
     case $host in
     *cygwin* | *mingw* | *pw32*)
-      # don't eliminate duplcations in $postdeps and $predeps
+      # don't eliminate duplications in $postdeps and $predeps
       duplicate_compiler_generated_deps=yes
       ;;
     *)
@@ -2090,7 +2090,9 @@ EOF
 	    $echo "$modename: cannot -dlopen a convenience library: \`$lib'" 1>&2
 	    exit 1
 	  fi
-	  if test -z "$dlname" || test "$dlopen_support" != yes || test "$build_libtool_libs" = no; then
+	  if test -z "$dlname" ||
+	     test "$dlopen_support" != yes ||
+	     test "$build_libtool_libs" = no; then
 	    # If there is no dlname, no dlopen support or we're linking
 	    # statically, we need to preload.  We also need to preload any
 	    # dependent libraries so libltdl's deplib preloader doesn't
@@ -2254,8 +2256,9 @@ EOF
 	  fi
 	  # This is a shared library
 	
-      # Warn about portability, can't link against -module's on some systems (darwin)
-      if test "$shouldnotlink" = yes && test "$pass" = link ; then
+	  # Warn about portability, can't link against -module's on
+	  # some systems (darwin)
+	  if test "$shouldnotlink" = yes && test "$pass" = link ; then
 	    $echo
 	    if test "$linkmode" = prog; then
 	      $echo "*** Warning: Linking the executable $output against the loadable module"
@@ -2263,7 +2266,7 @@ EOF
 	      $echo "*** Warning: Linking the shared library $output against the loadable module"
 	    fi
 	    $echo "*** $linklib is not portable!"    
-      fi	  
+	  fi
 	  if test "$linkmode" = lib &&
 	     test "$hardcode_into_libs" = yes; then
 	    # Hardcode the library path.
@@ -2361,9 +2364,9 @@ EOF
 		case $host in
 		  *-*-sco3.2v5* ) add_dir="-L$dir" ;;
 		  *-*-darwin* )
-		    # if the lib is a module then we can not link against it, someone
-		    # is ignoring the new warnings I added
-		    if /usr/bin/file -L $add 2> /dev/null | grep "bundle" >/dev/null ; then
+		    # if the lib is a module then we can not link against
+		    # it, someone is ignoring the new warnings I added
+		    if /usr/bin/file -L $add 2> /dev/null | $GREP "bundle" >/dev/null ; then
 		      $echo "** Warning, lib $linklib is a module, not a shared library"
 		      if test -z "$old_library" ; then
 		        $echo
@@ -2456,7 +2459,8 @@ EOF
 	      esac
 	      add="-l$name"
 	    elif test "$hardcode_automatic" = yes; then
-	      if test -n "$inst_prefix_dir" && test -f "$inst_prefix_dir$libdir/$linklib" ; then
+	      if test -n "$inst_prefix_dir" &&
+		 test -f "$inst_prefix_dir$libdir/$linklib" ; then
 	        add="$inst_prefix_dir$libdir/$linklib"
 	      else
 	        add="$libdir/$linklib"
@@ -2536,7 +2540,8 @@ EOF
 
 	if test "$linkmode" = lib; then
 	  if test -n "$dependency_libs" &&
-	     { test "$hardcode_into_libs" != yes || test "$build_old_libs" = yes ||
+	     { test "$hardcode_into_libs" != yes ||
+	       test "$build_old_libs" = yes ||
 	       test "$link_static" = yes; }; then
 	    # Extract -R from dependency_libs
 	    temp_deplibs=
@@ -2603,7 +2608,8 @@ EOF
 		depdepl=
 		case $host in
 		*-*-darwin*)
-		  # we do not want to link against static libs, but need to link against shared
+		  # we do not want to link against static libs,
+		  # but need to link against shared
 		  eval deplibrary_names=`${SED} -n -e 's/^library_names=\(.*\)$/\1/p' $deplib`
 		  if test -n "$deplibrary_names" ; then
 		    for tmp in $deplibrary_names ; do
@@ -2611,7 +2617,7 @@ EOF
 		    done
 		    if test -f "$path/$depdepl" ; then
 		      depdepl="$path/$depdepl"
-		   fi
+		    fi
 		    # do not add paths which are already there
 		    case " $newlib_search_path " in
 		    *" $path "*) ;;
@@ -2621,23 +2627,22 @@ EOF
 		  path=""
 		  ;;
 		*)
-		path="-L$path"
-		;;
+		  path="-L$path"
+		  ;;
 		esac 
-		
 		;;
-		  -l*)
+	      -l*)
 		case $host in
 		*-*-darwin*)
-		 # Again, we only want to link against shared libraries
-		 eval tmp_libs=`$echo "X$deplib" | $Xsed -e "s,^\-l,,"`
-		 for tmp in $newlib_search_path ; do
-		     if test -f "$tmp/lib$tmp_libs.dylib" ; then
-		       eval depdepl="$tmp/lib$tmp_libs.dylib"
-		       break
-		     fi  
-         done
-         path=""
+		  # Again, we only want to link against shared libraries
+		  eval tmp_libs=`$echo "X$deplib" | $Xsed -e "s,^\-l,,"`
+		  for tmp in $newlib_search_path ; do
+		    if test -f "$tmp/lib$tmp_libs.dylib" ; then
+		      eval depdepl="$tmp/lib$tmp_libs.dylib"
+		      break
+		    fi  
+		  done
+		  path=""
 		  ;;
 		*) continue ;;
 		esac  		  
@@ -2737,7 +2742,8 @@ EOF
 	  eval $var=\"$tmp_libs\"
 	done # for var
       fi
-      # Last step: remove runtime libs from dependency_libs (they stay in deplibs)
+      # Last step: remove runtime libs from dependency_libs
+      # (they stay in deplibs)
       tmp_libs=
       for i in $dependency_libs ; do
 	case " $predeps $postdeps $compiler_lib_search_path " in
@@ -5122,8 +5128,10 @@ fi\
       relink_command="(cd `pwd`; $SHELL $0 $preserve_args --mode=relink $libtool_args @inst_prefix_dir@)"
       relink_command=`$echo "X$relink_command" | $Xsed -e "$sed_quote_subst"`
       if test "$hardcode_automatic" = yes ; then
-        relink_command=
+	relink_command=
       fi  
+
+
       # Only create the output if not a dry run.
       if test -z "$run"; then
 	for installed in no yes; do
