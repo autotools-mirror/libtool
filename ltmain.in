@@ -27,6 +27,13 @@
 if test "X$1" = X--no-reexec; then
   # Discard the --no-reexec flag, and continue.
   shift
+elif test "X$1" = X--fallback-echo; then
+  # used as fallback echo
+  shift
+  cat <<EOF
+$*
+EOF
+  exit 0
 elif test "X`($echo '\t') 2>/dev/null`" = 'X\t'; then
   # Yippee, $echo works!
   :
@@ -1750,7 +1757,15 @@ dld_preloaded_symbols[] =
       finalize_command=`$echo "X$finalize_command" | $Xsed -e "$sed_quote_subst"`
 
       # Quote $echo for shipping.
-      qecho=`$echo "X$echo" | $Xsed -e "$sed_quote_subst"`
+      if test "X$echo" = "X$SHELL $0 --fallback-echo"; then
+	case "$0" in
+	/* | [A-Za-z]:[/\\]*) qecho="$SHELL $0 --fallback-echo";;
+	*) qecho="$SHELL `pwd`/$0 --fallback-echo";;
+	esac
+	qecho=`$echo "X$qecho" | $Xsed -e "$sed_quote_subst"`
+      else
+        qecho=`$echo "X$echo" | $Xsed -e "$sed_quote_subst"`
+      fi
 
       # Only actually do things if our run command is non-null.
       if test -z "$run"; then

@@ -31,6 +31,13 @@ echo=echo
 if test "X$1" = X--no-reexec; then
   # Discard the --no-reexec flag, and continue.
   shift
+elif test "X$1" = X--fallback-echo; then
+  # used as fallback echo
+  shift
+  cat <<EOF
+$*
+EOF
+  exit 0
 elif test "X`($echo '\t') 2>/dev/null`" = 'X\t'; then
   # Yippee, $echo works!
   :
@@ -43,15 +50,25 @@ fi
 # if CDPATH is set.
 if test "${CDPATH+set}" = set; then CDPATH=; export CDPATH; fi
 
-if test "X`($echo '\t') 2>/dev/null`" != 'X\t'; then
+echo_test_string=${echo_test_string-`cat "$0"`} || {
+  # some shells may not be able to cope with such a large variable
+  # I just hope they do not crash
+  echo ok, just ignore the message above >&2
+  echo_test_string=""
+}
+if test "X`($echo '\t') 2>/dev/null`" != 'X\t' ||
+   test "X`($echo "$echo_test_string")`" != X"$echo_test_string"; then
   # The Solaris, AIX, and Digital Unix default echo programs unquote
   # backslashes.  This makes it impossible to quote backslashes using
   #   echo "$something" | sed 's/\\/\\\\/g'
   #
   # So, first we look for a working echo in the user's PATH.
+
   IFS="${IFS= 	}"; save_ifs="$IFS"; IFS="${IFS}:"
   for dir in $PATH /usr/ucb; do
-    if test -f $dir/echo && test "X`($dir/echo '\t') 2>/dev/null`" = 'X\t'; then
+    if test -f $dir/echo &&
+       test "X`($dir/echo '\t') 2>/dev/null`" = 'X\t' &&
+       test "X`($dir/echo "$echo_test_string") 2>/dev/null`" = X"$echo_test_string"; then
       echo="$dir/echo"
       break
     fi
@@ -60,18 +77,49 @@ if test "X`($echo '\t') 2>/dev/null`" != 'X\t'; then
 
   if test "X$echo" = Xecho; then
     # We didn't find a better echo, so look for alternatives.
-    if test "X`(print -r '\t') 2>/dev/null`" = 'X\t'; then
+    if test "X`(print -r '\t') 2>/dev/null`" = 'X\t' &&
+       test "X`(print -r "$echo_test_string") 2>/dev/null`" = X"$echo_test_string"; then
       # This shell has a builtin print -r that does the trick.
       echo='print -r'
     elif test -f /bin/ksh && test "X$CONFIG_SHELL" != X/bin/ksh; then
       # If we have ksh, try running ltconfig again with it.
+      ORIGINAL_CONFIG_SHELL="${CONFIG_SHELL-/bin/sh}"
+      export ORIGINAL_CONFIG_SHELL
       CONFIG_SHELL=/bin/ksh
       export CONFIG_SHELL
       exec "$CONFIG_SHELL" "$0" --no-reexec ${1+"$@"}
     else
       # Try using printf.
       echo='printf %s\n'
-      if test "X`($echo '\t') 2>/dev/null`" != 'X\t'; then
+      if test "X`($echo '\t') 2>/dev/null`" = 'X\t' &&
+         test "X`($echo "$echo_test_string") 2>/dev/null`" = X"$echo_test_string"; then
+        # Cool, printf works
+	:
+      elif test "X`("$ORIGINAL_CONFIG_SHELL" "$0" --fallback-echo '\t') 2>/dev/null`" = 'X\t' &&
+	   test "X`("$ORIGINAL_CONFIG_SHELL" "$0" --fallback-echo "$echo_test_string") 2>/dev/null`" = X"$echo_test_string"; then
+	CONFIG_SHELL="$ORIGINAL_CONFIG_SHELL"
+	export CONFIG_SHELL
+	SHELL="$CONFIG_SHELL"
+	export SHELL
+	echo="$CONFIG_SHELL $0 --fallback-echo"
+      elif test "X`("$CONFIG_SHELL" "$0" --fallback-echo '\t') 2>/dev/null`" = 'X\t' &&
+	   test "X`("$CONFIG_SHELL" "$0" --fallback-echo "$echo_test_string") 2>/dev/null`" = X"$echo_test_string"; then
+        echo="$CONFIG_SHELL $0 --fallback-echo"
+      elif test "X$echo_test_string" != "Xsmaller" &&
+	   test "X$echo_test_string" != "X"; then
+        # maybe if we try with a smaller string...
+	if test "X$echo_test_string" != "X`sed 15q "$0"`"; then
+	  if test "X$echo_test_string" != "X`sed 50q "$0"`"; then
+	    echo_test_string="`sed 50q "$0"`" # about 2Kb
+	  else
+	    echo_test_string="`sed 15q "$0"`" # less than 1Kb
+	  fi
+	else
+	  echo_test_string="smaller" # really small
+	fi
+	export echo_test_string
+	exec "${ORIGINAL_CONFIG_SHELL}" "$0" ${1+"$@"}
+      else
         # Oops.  We lost completely, so just stick with echo.
         echo=echo
       fi
@@ -1584,6 +1632,9 @@ echo "$ac_t$objdir" 1>&6
 # Copy echo and quote the copy, instead of the original, because it is
 # used later.
 ltecho="$echo"
+if test "X$ltecho" = "X$CONFIG_SHELL $0 --fallback-echo"; then
+   ltecho="$CONFIG_SHELL \$0 --fallback-echo"
+fi
 LTSHELL="$SHELL"
 
 # Only quote variables if we're using ltmain.sh.
@@ -1614,6 +1665,13 @@ case "$ltmain" in
       ;;
     esac
   done
+
+  case "$ltecho" in
+  *'\$0 --fallback-echo"')
+    ltecho=`$echo "X$ltecho" |
+	    $Xsed -e 's/\\\\\\\$0 --fallback-echo"$/$0 --fallback-echo"/'`
+    ;;
+  esac
 
   trap "$rm \"$ofile\"; exit 1" 1 2 15
   echo "creating $ofile"
