@@ -1,3 +1,10 @@
+2004-02-10  Gary V. Vaughan  <gary@gnu.org>
+
+	* config/mailnotify: New file for mailing commit notifications,
+	imported from cvs-utils.
+	* commit: Updated from cvs-utils and tweaked for libtool.
+	* Makefile.am (EXTRA_DIST): Add config/mailnotify.
+
 2004-02-06  Gary V. Vaughan  <gary@gnu.org>
 
 	* bootstrap: Remove vcl.tmp, otherwise it can interfere with make.

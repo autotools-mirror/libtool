@@ -16,7 +16,7 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 # 02111-1307  USA
 
-AC_PREREQ(2.54)
+AC_PREREQ(2.59a)
 
 ## ------------------------ ##
 ## Autoconf initialisation. ##
@@ -42,7 +42,7 @@ AC_PROG_CC
 ## Libtool initialisation. ##
 ## ----------------------- ##
 AC_LIBTOOL_TAGS([])
-AC_PROG_LIBTOOL
+LT_INIT
 AC_SUBST([LIBTOOL_DEPS])
 
 

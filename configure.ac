@@ -181,9 +181,7 @@ AM_CONDITIONAL(HAVE_RC, [test "x$RC" != xno])
 ## ----------------------- ##
 AC_CONFIG_FILES([config/ltmain.sh:./ltmain.in])
 AC_CONFIG_FILES([libtoolize], [chmod a+x libtoolize])
-AC_LIBTOOL_DLOPEN
-AC_LIBTOOL_WIN32_DLL
-AC_PROG_LIBTOOL
+LT_INIT([dlopen win32-dll])
 AC_LIB_LTDL
 
 
