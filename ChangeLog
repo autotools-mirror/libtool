@@ -1,3 +1,9 @@
+2001-05-20  Alexandre Oliva  <aoliva@redhat.com>
+
+	* configure.in: Reverted to 1.4, to avoid confusion with MLB.
+	Mainline is the release snapshot, except for the ChangeLog version
+	number, until the multi-language branch is merged into it.
+
 2001-04-25  Gary V. Vaughan  <gvv@techie.com>
 
 	* configure.in: bumped version to 1.4a.
