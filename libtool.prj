@@ -1,16 +1,18 @@
 ;; -*- Lisp -*-
 (Created-By-Prcs-Version 1 2 1)
 (Project-Description "GNU libtool library support script")
-(Project-Version libtool 0.9i 3)
-(Parent-Version libtool 0.9i 2)
+(Project-Version libtool 0.9i 4)
+(Parent-Version libtool 0.9i 3)
 
-(Version-Log "Ported to MkLinux, and fixed robustness.")
+(Version-Log "")
 (New-Version-Log "")
-(Checkin-Time "Sun, 22 Jun 1997 14:00:03 -0600")
+(Checkin-Time "Mon, 30 Jun 1997 06:20:49 -0600")
 (Checkin-Login gord)
 (Populate-Ignore ("~$" "Makefile$" "Makefile\\.in$" "aclocal\\.m4$"
 		  "configure$" "config\\.status$" "config\\.cache$"
 		  "\\.log" "\\.dvi$" "\\.ps$"
+		  "\\.cps$" "\\.pg$" "\\.ky$" "\\.tp$" "\\.vr$"
+		  "\\.fn$" "\\.cp$" "\\.toc$" "\\.aux$"
 		  "\\.o$" "\\.a$" "\\.lo$" "\\.la$" "\\.tar\\.gz$"
 		  "\\.deps/" "\\.libs/"
 		  "stamp-" "^doc/libtool\\.info" "^doc/version\\.texi$"
@@ -20,27 +22,27 @@
 (Files
 ;; Administrivia.
   (AUTHORS (libtool/21_AUTHORS 1.1 664))
-  (ChangeLog (libtool/20_ChangeLog 1.4.1.28 664))
+  (ChangeLog (libtool/20_ChangeLog 1.4.1.29 664))
   (NEWS (libtool/19_NEWS 1.4.1.20 664))
-  (PACKAGES (libtool/42_PACKAGES 1.4 664))
+  (PACKAGES (libtool/42_PACKAGES 1.5 664))
   (README (libtool/17_README 1.12 664))
   (README-alpha (libtool/16_README-alp 1.5 664))
   (README-automake (libtool/37_README-aut 1.4 664))
-  (TODO (libtool/14_TODO 1.3.1.15 664))
+  (TODO (libtool/14_TODO 1.3.1.16 664))
   (THANKS (libtool/15_THANKS 1.7 664))
 
 ;; Top directory.
   (Makefile.am (libtool/18_Makefile.a 1.20 664))
   (configure.in (libtool/13_configure. 1.4.1.14 664))
-  (ltmain.sh.in (libtool/2_ltmain.sh. 1.4.1.21 664))
-  (ltconfig.in (libtool/3_ltconfig.i 1.4.1.21 775))
+  (ltmain.sh.in (libtool/2_ltmain.sh. 1.4.1.22 664))
+  (ltconfig.in (libtool/3_ltconfig.i 1.4.1.22 775))
   (libtoolize.in (libtool/4_libtoolize 1.6 664))
 
 ;; aclocal additions.
-  (libtool.m4 (libtool/12_libtool.m4 1.7 664))
+  (libtool.m4 (libtool/12_libtool.m4 1.8 664))
 
 ;; Documentation subdirectory.
-  (doc/libtool.texi (libtool/0_libtool.te 1.3.1.17 664))
+  (doc/libtool.texi (libtool/0_libtool.te 1.3.1.18 664))
   (doc/platforms.texi (libtool/41_platforms. 1.8 664))
   (doc/Makefile.am (libtool/1_Makefile.a 1.5 664))
 
