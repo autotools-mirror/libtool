@@ -119,7 +119,7 @@ libtool_flags="--cache-file=$cache_file"
 test "$enable_shared" = no && libtool_flags="$libtool_flags --disable-shared"
 test "$enable_static" = no && libtool_flags="$libtool_flags --disable-static"
 test "$enable_fast_install" = no && libtool_flags="$libtool_flags --disable-fast-install"
-test "$ac_cv_prog_gcc" = yes && libtool_flags="$libtool_flags --with-gcc"
+test "$GCC" = yes && libtool_flags="$libtool_flags --with-gcc"
 test "$ac_cv_prog_gnu_ld" = yes && libtool_flags="$libtool_flags --with-gnu-ld"
 ifdef([AC_PROVIDE_AC_LIBTOOL_DLOPEN],
 [libtool_flags="$libtool_flags --enable-dlopen"])
@@ -408,7 +408,7 @@ AC_REQUIRE([AC_PROG_CC])dnl
 AC_REQUIRE([AC_CANONICAL_HOST])dnl
 AC_REQUIRE([AC_CANONICAL_BUILD])dnl
 ac_prog=ld
-if test "$ac_cv_prog_gcc" = yes; then
+if test "$GCC" = yes; then
   # Check if gcc -print-prog-name=ld gives a path.
   AC_MSG_CHECKING([for ld used by GCC])
   case $host in
