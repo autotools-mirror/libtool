@@ -1,5 +1,9 @@
 Thu Nov 27 08:53:05 1997  Gordon Matzigkeit  <gord@gnu.org>
 
+	* Makefile.am (maintainer-checkin, maintainer-release): New
+	commands to reap the full benefit of using PRCS to maintain
+	libtool version numbers.
+
 	* ltconfig.in, ltmain.in (global_symbol_pipe): Explicitly cast all
 	addresses to __ptr_t.  This fixes a bug due to a strict IRIX
 	compiler.  Suggested by Kaveh R. Ghazi.

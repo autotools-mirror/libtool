@@ -96,26 +96,29 @@ $(srcdir)/demo/aclocal.m4: demo/configure.in demo/acinclude.m4
 # maintainer-checkin whenever I feel like it, then I run a maintainer-release
 # after changing the project major version number in my project file.
 #
-# This works because of the special `$Format ...$' string I have in my
+# This works because of the special `$Format: ...$' string I have in my
 # `configure.in'.
 PRCS = prcs
 
+.PHONY: maintainer-checkin maintainer-check-versions maintainer-release
 maintainer-checkin:
 	cd $(top_srcdir) && $(PRCS) checkin $(PACKAGE)
 
-maintainer-release: distcheck
-	cd $(top_srcdir) && $(PRCS) checkin $(PACKAGE)
-	@newver=`grep '^(Parent-Version[ 	]' $(srcdir)/$(PACKAGE).prj | \
+maintainer-check-versions:
+	@newver=`grep '^(Project-Version[ 	]' $(srcdir)/$(PACKAGE).prj | \
 	   sed 's/^.*[ 	]\+\([^ 	]\+\)[ 	]\+[0-9]\+).*$$/\1/'`; \
 	  if test "X$$newver" = "X$(VERSION)"; then \
-	    echo "Parent-Version \`$$newver' is the same as the released version." 1>&2; \
-	    echo "You must change the Project-Version major number in $(top_srcdir)/$(PACKAGE).prj before releasing." 1>&2; \
+	    echo "Project-Version major \`$$newver' is the same as the released version." 1>&2; \
+	    echo "You must change Project-Version in $(top_srcdir)/$(PACKAGE).prj before releasing." 1>&2; \
 	    exit 1; \
-	  fi; \
-	  echo "============================="; \
+	  fi
+
+maintainer-release: maintainer-check-versions distcheck
+	cd $(top_srcdir) && $(PRCS) checkin $(PACKAGE)
+	cd $(top_srcdir) && $(PRCS) rekey $(PACKAGE) configure.in
+	echo "============================="; \
 	  echo "Congratulations!  $(PACKAGE)-$(VERSION) is now complete."; \
 	  echo; \
 	  echo "Distribute \`$(PACKAGE)-$(VERSION).tar.gz' to the masses, and start thinking about"; \
-	  echo "how you're going to tackle $(PACKAGE)-$$newver!"; \
+	  echo "the next development cycle."; \
 	  echo "============================="
-	cd $(top_srcdir) && $(PRCS) rekey $(PACKAGE) configure.in

@@ -24,6 +24,8 @@ so I got to remove it for now.  However, the manual does not explain
 what the debugging difficulty is, and so, I wonder what problems I
 will meet.''
 
+* Document the change from `-allow-undefined' to `-no-undefined'.
+
 * Some packages, such as GIMP, choose to put a note about
 `--disable-shared' in their README:
 
@@ -58,6 +60,10 @@ underscore; not starting with a digit) are exported."
 
 In the future:
 **************
+
+* Inter-library dependencies should be automatically tracked by
+libtool.  Reminded by Alexandre Oliva.  This also would require
+looking up installed libtool libraries for transparent support.
 
 * Implement full multi-language support.  Currently, this is only for
 C++, but there are beginnings of this in the manual (Other Languages).

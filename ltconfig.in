@@ -26,8 +26,34 @@
 
 # A lot of this script is taken from autoconf-2.10.
 
+echo=echo
+if test "X`$echo '\t'`" = 'X\t'; then :
+else
+  # The Solaris and AIX default echo program unquotes backslashes.
+  # This makes it impossible to quote backslashes using
+  #   echo "$something" | sed 's/\\/\\\\/g'
+  # So, we emulate echo with printf '%s\n'
+  echo='printf %s\n'
+  if test "X`$echo '\t'`" = 'X\t'; then :
+  else
+    # Oops.  We have no working printf.  Try to find a not-so-buggy echo.
+    echo=echo
+    IFS="${IFS= 	}"; save_ifs="$IFS"; IFS="${IFS}:"
+    save_PATH="$PATH"
+    PATH="$PATH":/usr/ucb
+    for dir in $PATH; do
+      if test -f $dir/echo && test "X`$dir/echo '\t'`" = 'X\t'; then
+        echo="$dir/echo"
+        break
+      fi
+    done
+    IFS="$save_ifs"
+    PATH="$save_PATH"
+  fi
+fi
+
 # The name of this program.
-progname=`echo "$0" | sed 's%^.*/%%'`
+progname=`$echo "$0" | sed 's%^.*/%%'`
 
 # Constants:
 PROGRAM=ltconfig
@@ -668,12 +694,14 @@ if test "$with_gnu_ld" = yes; then
   case "$host_os" in
   sunos4*)
     ld_shlibs=yes
+    archive_cmds='$CC -shared ${wl}-soname $wl$soname -o $lib$libobjs'
     hardcode_direct=yes
     hardcode_shlibpath_var=no
     ;;
 
   *)
     if $LD --help 2>&1 | egrep ': supported targets:.* elf' > /dev/null; then
+      archive_cmds='$CC -shared ${wl}-soname $wl$soname -o $lib$libobjs'
       runpath_var=LD_RUN_PATH
       hardcode_runpath_var=yes
       ld_shlibs=yes
@@ -684,7 +712,6 @@ if test "$with_gnu_ld" = yes; then
   esac
 
   if test "$ld_shlibs" = yes; then
-    archive_cmds='$CC -shared ${wl}-soname $wl$soname -o $lib$libobjs$deplibs'
     hardcode_libdir_flag_spec='${wl}-rpath $wl$libdir'
     export_dynamic_flag_spec='${wl}-export-dynamic'
   fi
@@ -693,7 +720,7 @@ else
   case "$host_os" in
   aix3*)
     allow_undefined_flag=unsupported
-    archive_cmds='$NM$libobjs | $global_symbol_pipe | sed '\''s/.* //'\'' > $lib.exp;$LD -o $objdir/$soname$libobjs -bE:$lib.exp -T512 -H512 -bM:SRE$deplibs;$AR cru $lib $objdir/$soname'
+    archive_cmds='$NM$libobjs | $global_symbol_pipe | sed '\''s/.* //'\'' > $lib.exp;$LD -o $objdir/$soname$libobjs -bE:$lib.exp -T512 -H512 -bM:SRE;$AR cru $lib $objdir/$soname'
     # Note: this linker hardcodes the directories in LIBPATH if there
     # are no directories specified by -L.
     hardcode_minus_L=yes
@@ -706,7 +733,7 @@ else
 
   aix4*)
     allow_undefined_flag=unsupported
-    archive_cmds='$NM$libobjs | $global_symbol_pipe | sed '\''s/.* //'\'' > $lib.exp;$CC -o $objdir/$soname$libobjs ${wl}-bE:$lib.exp ${wl}-bM:SRE ${wl}-bnoentry$deplibs;$AR cru $lib $objdir/$soname'
+    archive_cmds='$NM$libobjs | $global_symbol_pipe | sed '\''s/.* //'\'' > $lib.exp;$CC -o $objdir/$soname$libobjs ${wl}-bE:$lib.exp ${wl}-bM:SRE ${wl}-bnoentry;$AR cru $lib $objdir/$soname'
     hardcode_direct=yes
     hardcode_minus_L=yes
     ;;
@@ -716,7 +743,7 @@ else
   # doesn't break anything, and helps significantly (at the cost of a little
   # extra space).
   freebsd2.2*)
-    archive_cmds='$LD -Bshareable -o $lib$libobjs$deplibs /usr/lib/c++rt0.o'
+    archive_cmds='$LD -Bshareable -o $lib$libobjs /usr/lib/c++rt0.o'
     hardcode_libdir_flag_spec='-R$libdir'
     hardcode_direct=yes
     hardcode_minus_L=yes
@@ -725,7 +752,7 @@ else
 
   # Unfortunately, older versions of FreeBSD 2 don't have this feature.
   freebsd2*)
-    archive_cmds='$LD -Bshareable -o $lib$libobjs$deplibs'
+    archive_cmds='$LD -Bshareable -o $lib$libobjs'
     hardcode_direct=yes
     hardcode_minus_L=yes
     hardcode_shlibpath_var=no
@@ -733,7 +760,7 @@ else
 
   # FreeBSD 3, at last, uses gcc -shared to do shared libraries.
   freebsd3*)
-    archive_cmds='$CC -shared -o $lib$libobjs$deplibs'
+    archive_cmds='$CC -shared -o $lib$libobjs'
     hardcode_libdir_flag_spec='-R$libdir'
     hardcode_direct=yes
     hardcode_minus_L=yes
@@ -741,21 +768,23 @@ else
     ;;
 
   hpux9*)
-    archive_cmds='$rm $objdir/$soname;$LD -b +s +b $install_libdir -o $objdir/$soname$libobjs$deplibs;mv $objdir/$soname $lib'
+    archive_cmds='$rm $objdir/$soname;$LD -b +s +b $install_libdir -o $objdir/$soname$libobjs;mv $objdir/$soname $lib'
     hardcode_libdir_flag_spec='${wl}+b ${wl}$libdir'
     hardcode_direct=yes
     hardcode_minus_L=yes
+    export_dynamic_flag_spec='${wl}-E'
     ;;
 
   hpux10*)
-    archive_cmds='$LD -b +h $soname +s +b $install_libdir -o $lib$libobjs$deplibs'
+    archive_cmds='$LD -b +h $soname +s +b $install_libdir -o $lib$libobjs'
     hardcode_libdir_flag_spec='${wl}+b ${wl}$libdir'
     hardcode_direct=yes
     hardcode_minus_L=yes
+    export_dynamic_flag_spec='${wl}-E'
     ;;
 
   irix5* | irix6*)
-    archive_cmds='$LD -shared -o $lib -soname $soname -set_version $verstring$libobjs$deplibs'
+    archive_cmds='$LD -shared -o $lib -soname $soname -set_version $verstring$libobjs'
     hardcode_libdir_flag_spec='${wl}-rpath ${wl}$libdir'
     ;;
 
@@ -768,7 +797,7 @@ else
     ;;
 
   openbsd*)
-    archive_cmds='$LD -Bshareable -o $lib$libobjs$deplibs'
+    archive_cmds='$LD -Bshareable -o $lib$libobjs'
     hardcode_libdir_flag_spec='-R$libdir'
     hardcode_direct=yes
     hardcode_shlibpath_var=no
@@ -778,7 +807,7 @@ else
     hardcode_libdir_flag_spec='-L$libdir'
     hardcode_minus_L=yes
     allow_undefined_flag=unsupported
-    archive_cmds='echo "LIBRARY $libname INITINSTANCE" > $objdir/$libname.def;echo "DESCRIPTION \"$libname\"" >> $objdir/$libname.def;echo DATA >> $objdir/$libname.def;echo " SINGLE NONSHARED" >> $objdir/$libname.def;echo EXPORTS >> $objdir/$libname.def;emxexp$libobjs >> $objdir/$libname.def;$CC -Zdll -Zcrtdll -o $lib$libobjs $objdir/$libname.def'
+    archive_cmds='$echo "LIBRARY $libname INITINSTANCE" > $objdir/$libname.def;$echo "DESCRIPTION \"$libname\"" >> $objdir/$libname.def;$echo DATA >> $objdir/$libname.def;$echo " SINGLE NONSHARED" >> $objdir/$libname.def;$echo EXPORTS >> $objdir/$libname.def;emxexp$libobjs >> $objdir/$libname.def;$CC -Zdll -Zcrtdll -o $lib$libobjs $objdir/$libname.def'
     old_archive_from_new_cmds='emximp -o $objdir/$libname.a $objdir/$libname.def'
     ;;
 
@@ -790,12 +819,12 @@ else
     ;;
 
   sco3.2v5*)
-    archive_cmds='$LD -G -o $lib$libobjs$deplibs'
+    archive_cmds='$LD -G -o $lib$libobjs'
     hardcode_direct=yes
     ;;
 
   solaris2*)
-    archive_cmds='$LD -G -z text -h $soname -o $lib$libobjs$deplibs'
+    archive_cmds='$LD -G -z text -h $soname -o $lib$libobjs'
     hardcode_libdir_flag_spec='-R$libdir'
     hardcode_shlibpath_var=no
     ;;
@@ -809,7 +838,7 @@ else
     ;;
 
    uts4*)
-     archive_cmds='$LD -G -h $soname -o $lib$libobjs$deplibs'
+     archive_cmds='$LD -G -h $soname -o $lib$libobjs'
      hardcode_libdir_flag_spec='-L$libdir'
      hardcode_direct=no
      hardcode_minus_L=no
@@ -950,7 +979,7 @@ struct {
 dld_preloaded_symbols[] =
 {
 EOF
-        sed 's/^\(.*\) \(.*\)$/  {"\1", \&\2},/' < "$nlist" >> conftest.c
+        sed 's/^\(.*\) \(.*\)$/  {"\1", (__ptr_t) \&\2},/' < "$nlist" >> conftest.c
         cat <<\EOF >> conftest.c
   {0},
 };
@@ -1223,10 +1252,10 @@ for var in old_CC old_CFLAGS old_CPPFLAGS old_LD old_NM old_RANLIB \
   old_postinstall_cmds | old_postuninstall_cmds | archive_cmds | \
   postinstall_cmds | postuninstall_cmds | finish_cmds)
     # Double-quote double-evaled strings.
-    eval "$var=\`echo \"\$$var\" | sed -e \"\$double_quote_subst\" -e \"\$sed_quote_subst\"\`"
+    eval "$var=\`$echo \"\$$var\" | sed -e \"\$double_quote_subst\" -e \"\$sed_quote_subst\"\`"
     ;;
   *)
-    eval "$var=\`echo \"\$$var\" | sed \"\$sed_quote_subst\"\`"
+    eval "$var=\`$echo \"\$$var\" | sed \"\$sed_quote_subst\"\`"
     ;;
   esac
 done
@@ -1405,7 +1434,7 @@ EOF
   ;;
 *) cat <<EOF >> $ofile
 # Find the path to this script.
-thisdir=\`echo "\$0" | sed -e 's%/[^/]*\$%%'\`
+thisdir=\`$echo "\$0" | sed -e 's%/[^/]*\$%%'\`
 test "X\$0" = "X\$thisdir" && thisdir=.
 
 # Execute the libtool backend.
