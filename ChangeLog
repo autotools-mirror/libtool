@@ -1,3 +1,8 @@
+2000-12-14  Akim Demaille  <akim@epita.fr>
+
+	* libtool.m4:  Don't depend on Autoconf internals:
+	s/ac_cv_prog_gcc/GCC/.
+
 2000-12-14  Gary V. Vaughan  <gvv@techie.com>
 
 	* libtool.m4 (AC_LIBTOOL_SYS_GLOBAL_SYMBOL_PIPE): Don't empty

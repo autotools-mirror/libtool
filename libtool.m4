@@ -801,7 +801,7 @@ AC_CACHE_VAL(ac_cv_prog_cc_pic,
   ac_cv_prog_cc_no_builtin=
   ac_cv_prog_cc_can_build_shared=$can_build_shared
 
-  if test "$ac_cv_prog_gcc" = yes; then
+  if test "$GCC" = yes; then
     ac_cv_prog_cc_wl='-Wl,'
     ac_cv_prog_cc_static='-static'
 
@@ -1081,7 +1081,7 @@ fi
 
 ## FIXME: this should be a separate macro
 ##
-if test "$ac_cv_prog_gcc" = yes; then
+if test "$GCC" = yes; then
   # Check to see if options -fno-rtti -fno-exceptions are supported by compiler
   AC_MSG_CHECKING([if $compiler supports -fno-rtti -fno-exceptions])
   echo "int some_variable = 0;" > conftest.$ac_ext
@@ -1157,7 +1157,7 @@ cygwin* | mingw* | pw32* )
   # FIXME: the MSVC++ port hasn't been tested in a loooong time
   # When not using gcc, we currently assume that we are using
   # Microsoft Visual C++.
-  if test "$ac_cv_prog_gcc" != yes; then
+  if test "$GCC" != yes; then
     with_gnu_ld=no
   fi
   ;;
@@ -1358,7 +1358,7 @@ else
     # Note: this linker hardcodes the directories in LIBPATH if there
     # are no directories specified by -L.
     hardcode_minus_L=yes
-    if test "$ac_cv_prog_gcc" = yes && test -z "$link_static_flag"; then
+    if test "$GCC" = yes && test -z "$link_static_flag"; then
       # Neither direct hardcoding nor static linking is supported with a
       # broken collect2.
       hardcode_direct=unsupported
@@ -1368,7 +1368,7 @@ else
   aix4*)
     hardcode_libdir_flag_spec='${wl}-b ${wl}nolibpath ${wl}-b ${wl}libpath:$libdir:/usr/lib:/lib'
     hardcode_libdir_separator=':'
-    if test "$ac_cv_prog_gcc" = yes; then
+    if test "$GCC" = yes; then
       collect2name=`${CC} -print-prog-name=collect2`
       if test -f "$collect2name" && \
 	 strings "$collect2name" | grep resolve_lib_name >/dev/null
@@ -1470,7 +1470,7 @@ else
     ;;
 
   irix5* | irix6*)
-    if test "$ac_cv_prog_gcc" = yes; then
+    if test "$GCC" = yes; then
       archive_cmds='$CC -shared $libobjs $deplibs $compiler_flags ${wl}-soname ${wl}$soname `test -n "$verstring" && echo ${wl}-set_version ${wl}$verstring` ${wl}-update_registry ${wl}${output_objdir}/so_locations -o $lib'
     else
       archive_cmds='$LD -shared $libobjs $deplibs $linker_flags -soname $soname `test -n "$verstring" && echo -set_version $verstring` -update_registry ${output_objdir}/so_locations -o $lib'
@@ -1507,7 +1507,7 @@ else
     ;;
 
   osf3*)
-    if test "$ac_cv_prog_gcc" = yes; then
+    if test "$GCC" = yes; then
       allow_undefined_flag=' ${wl}-expect_unresolved ${wl}\*'
       archive_cmds='$CC -shared${allow_undefined_flag} $libobjs $deplibs $compiler_flags ${wl}-soname ${wl}$soname `test -n "$verstring" && echo ${wl}-set_version ${wl}$verstring` ${wl}-update_registry ${wl}${output_objdir}/so_locations -o $lib'
     else
@@ -1519,7 +1519,7 @@ else
     ;;
 
   osf4* | osf5*)	# as osf3* with the addition of -msym flag
-    if test "$ac_cv_prog_gcc" = yes; then
+    if test "$GCC" = yes; then
       allow_undefined_flag=' ${wl}-expect_unresolved ${wl}\*'
       archive_cmds='$CC -shared${allow_undefined_flag} $libobjs $deplibs $compiler_flags ${wl}-msym ${wl}-soname ${wl}$soname `test -n "$verstring" && echo ${wl}-set_version ${wl}$verstring` ${wl}-update_registry ${wl}${output_objdir}/so_locations -o $lib'
     else
@@ -1767,7 +1767,7 @@ cygwin* | mingw* | pw32*)
   version_type=windows
   need_version=no
   need_lib_prefix=no
-  if test "$ac_cv_prog_gcc" = yes; then
+  if test "$GCC" = yes; then
     library_names_spec='${libname}`echo ${release} | [sed -e 's/[.]/-/g']`${versuffix}.dll'
   else
     library_names_spec='${libname}`echo ${release} | [sed -e 's/[.]/-/g']`${versuffix}.dll $libname.lib'
@@ -2042,7 +2042,7 @@ elif test "$shlibpath_overrides_runpath" = yes ||
 fi
 
 variables_saved_for_relink="PATH $shlibpath_var $runpath_var"
-if test "$ac_cv_prog_gcc" = yes; then
+if test "$GCC" = yes; then
   variables_saved_for_relink="$variables_saved_for_relink GCC_EXEC_PREFIX COMPILER_PATH LIBRARY_PATH"
 fi
 
@@ -2050,7 +2050,7 @@ AC_LIBTOOL_DLOPEN_SELF
 
 ## FIXME: this should be a separate macro
 ##
-if test "$enable_shared" = yes && test "$ac_cv_prog_gcc" = yes; then
+if test "$enable_shared" = yes && test "$GCC" = yes; then
   case "$archive_cmds" in
   *'~'*)
     # FIXME: we may have to deal with multi-command sequences.
@@ -2221,7 +2221,7 @@ AR_FLAGS=$lt_AR_FLAGS
 CC=$lt_CC
 
 # Is the compiler the GNU C compiler?
-with_gcc=$ac_cv_prog_gcc
+with_gcc=$GCC
 
 # The linker used to build libraries.
 LD=$lt_LD
@@ -2850,7 +2850,7 @@ AC_REQUIRE([AC_PROG_CC])dnl
 AC_REQUIRE([AC_CANONICAL_HOST])dnl
 AC_REQUIRE([AC_CANONICAL_BUILD])dnl
 ac_prog=ld
-if test "$ac_cv_prog_gcc" = yes; then
+if test "$GCC" = yes; then
   # Check if gcc -print-prog-name=ld gives a path.
   AC_MSG_CHECKING([for ld used by GCC])
   case $host in
