@@ -527,7 +527,7 @@ func_extract_archives () {
 	  darwin_base_archive=`basename $darwin_archive`
 	  darwin_arches=`lipo -info "$darwin_archive" 2>/dev/null | $GREP Architectures 2>/dev/null`
 	  if test -n "$darwin_arches"; then 
-	    darwin_arches=`echo "$darwin_arches" | sed -e 's/.*are://'`
+	    darwin_arches=`echo "$darwin_arches" | $SED -e 's/.*are://'`
 	    darwin_arch=
 	    $show "$darwin_base_archive has multiple architectures $darwin_arches"
 	    for darwin_arch in  $darwin_arches ; do

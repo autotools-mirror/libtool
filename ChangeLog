@@ -1,5 +1,7 @@
 2004-07-22  Peter O'Gorman  <peter@pogma.com>
 
+	* ltmain.in [darwin](func_extract_archives): $SED not sed.
+	
 	* ltmain.in [darwin](func_extract_archives): Clean up last commit
 	a little, some suggestions are from Albert Chin, those that are
 	broken are mine.
