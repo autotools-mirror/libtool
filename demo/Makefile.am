@@ -2,7 +2,7 @@
 
 AUTOMAKE_OPTIONS = no-dependencies foreign
 
-EXTRA_DIST = $(TESTS) acinclude.m4
+EXTRA_DIST = acinclude.m4
 
 # Build a libtool library, libhello.la for installation in libdir.
 lib_LTLIBRARIES = libhello.la
@@ -61,8 +61,6 @@ CLEANFILES = $(hardcode_tests)
 # Unfortunately, in order to test libtool thoroughly, we need access
 # to its private directory.
 objdir = `sed -n -e 's/^objdir=\(.*\)$$/\1/p' ../libtool`
-
-TESTS = run.test
 
 # The following rules are only for the libtool demo and tests.
 # Regenerate our acinclude.m4 only if it doesn't exist.

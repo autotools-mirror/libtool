@@ -794,6 +794,7 @@ compiler."
     old_convenience=
     deplibs=
     linkopts=
+    dllsearchpath=
     lib_search_path=`pwd`
 
     avoid_version=no
@@ -1017,6 +1018,14 @@ compiler."
 	*)
 	  deplibs="$deplibs -L$dir"
 	  lib_search_path="$lib_search_path $dir"
+	  ;;
+	esac
+	case "$host" in
+	*-*-cygwin* | *-*-mingw* | *-*-os2*)
+	  case ":$dllsearchpath:" in
+	  *":$dir:"*) ;;
+	  *) dllsearchpath="$dllsearchpath:$dir";;
+	  esac
 	  ;;
 	esac
 	continue
@@ -2918,6 +2927,14 @@ EOF
 	  *) perm_rpath="$perm_rpath $libdir" ;;
 	  esac
 	fi
+	case "$host" in
+	*-*-cygwin* | *-*-mingw* | *-*-os2*)
+	  case ":$dllsearchpath:" in
+	  *":$libdir:"*) ;;
+	  *) dllsearchpath="$dllsearchpath:$libdir";;
+	  esac
+	  ;;
+	esac
       done
       # Substitute the hardcoded libdirs into the rpath.
       if test -n "$hardcode_libdir_separator" &&
@@ -3417,6 +3434,14 @@ else
     $shlibpath_var=\`\$echo \"X\$$shlibpath_var\" | \$Xsed -e 's/::*\$//'\`
 
     export $shlibpath_var
+"
+	fi
+
+	# fixup the dll searchpath if we need to.
+	if test -n "$dllsearchpath"; then
+	  $echo >> $output "\
+    # Add the dll search path components to the executable PATH
+    PATH=$dllsearchpath:\$PATH
 "
 	fi
 

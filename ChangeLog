@@ -1,3 +1,9 @@
+1999-04-05 Thomas Tanner  <tanner@gmx.de>
+
+	* demo/run.test: removed the unnecessary test
+	* demo/Makefile.am: ditto
+	* ltmain.in: set the DLL search path on cygwin,mingw and os2
+
 1999-04-04  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* ltconfig.in (sunos4*, GNU ld): -Bstatic is not enough for
