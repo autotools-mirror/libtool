@@ -1,5 +1,8 @@
 2004-12-18  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
+	* ltmain.in: Fix typo `--mode' instead of `-mode' in warning.
+	Reported by Georg Schwarz <georg.schwarz@freenet.de>.
+
 	* libtool.m4 [linux] (AC_LIBTOOL_PROG_COMPILER_PIC): match
 	$cc_basename, not $CC against icc.  Also, for symmetry match
 	icpc* and ecpc* (ia64 version of icpc).

@@ -528,7 +528,7 @@ if test -z "$show_help"; then
   # Infer the operation mode.
   if test -z "$mode"; then
     $echo "*** Warning: inferring the mode of operation is deprecated." 1>&2
-    $echo "*** Future versions of Libtool will require -mode=MODE be specified." 1>&2
+    $echo "*** Future versions of Libtool will require --mode=MODE be specified." 1>&2
     case $nonopt in
     *cc | cc* | *++ | gcc* | *-gcc* | g++* | xlc*)
       mode=link
