@@ -1,3 +1,7 @@
+2002-03-11  Bruce Korb  <bkorb@gnu.org>
+
+	* ltmain.in(compile): bring a touch of order to the option processing
+
 2002-02-09  Gary V. Vaughan  <gary@gnu.org>
 
 	* NEWS: Updated.
