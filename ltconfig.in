@@ -1352,6 +1352,11 @@ else
     hardcode_direct=yes
     hardcode_minus_L=yes
     hardcode_shlibpath_var=no
+    case "$host_os" in
+    solaris2.[0-5] | solaris2.[0-5].*) ;;
+    *) # Supported since Solaris 2.6 (maybe 2.5.1?)
+      whole_archive_flag_spec='${wl}-z ${wl}allextract$convenience ${wl}-z ${wl}defaultextract' ;;
+    esac
     ;;
 
   sysv4)
