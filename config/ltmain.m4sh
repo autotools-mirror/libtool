@@ -1195,6 +1195,9 @@ func_mode_compile ()
       esac
     done
 
+    func_quote_for_eval "$libobj"
+    test "X$libobj" != "X$func_quote_for_eval_result" \
+      && func_fatal_error "libobj name \`$libobj' may not contain shell special characters."
     objname=`$ECHO "X$obj" | $Xsed -e 's%^.*/%%'`
     xdir=`$ECHO "X$obj" | $Xsed -e 's%/[[^/]]*$%%'`
     if test "X$xdir" = "X$obj"; then
@@ -1264,12 +1267,14 @@ compiler."
 	$run $RM $removelist
 	exit $EXIT_FAILURE
       fi
-      $ECHO $srcfile > "$lockfile"
+      $ECHO "$srcfile" > "$lockfile"
     fi
 
     if test -n "$fix_srcfile_path"; then
       eval srcfile=\"$fix_srcfile_path\"
     fi
+    func_quote_for_eval "$srcfile"
+    qsrcfile=$func_quote_for_eval_result
 
     $run $RM "$libobj" "${libobj}T"
 
@@ -1291,10 +1296,10 @@ EOF
       fbsd_hideous_sh_bug=$base_compile
 
       if test "$pic_mode" != no; then
-	command="$base_compile $srcfile $pic_flag"
+	command="$base_compile $qsrcfile $pic_flag"
       else
 	# Don't build PIC code
-	command="$base_compile $srcfile"
+	command="$base_compile $qsrcfile"
       fi
 
       func_mkdir_p "$xdir$objdir"
@@ -1367,9 +1372,9 @@ EOF
     if test "$build_old_libs" = yes; then
       if test "$pic_mode" != yes; then
 	# Don't build PIC code
-	command="$base_compile $srcfile"
+	command="$base_compile $qsrcfile"
       else
-	command="$base_compile $srcfile $pic_flag"
+	command="$base_compile $qsrcfile $pic_flag"
       fi
       if test "$compiler_c_o" = yes; then
 	command="$command -o $obj"
