@@ -122,7 +122,7 @@ func_get_config "CC" "$LIBTOOL --config" ": fatal"
 # Extract host from the libtool configuration
 func_get_config "host" "$LIBTOOL --config" ": fatal"
 
-# Extract host from the libtool configuration
+# Extract build from the libtool configuration
 func_get_config "build" "$LIBTOOL --config" ": fatal"
 
 # func_mkprefixdir
