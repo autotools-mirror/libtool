@@ -405,7 +405,6 @@ else
   case "$host_os" in
   aix3* | aix4*)
     # FIXME All rs/6000 code is PIC, but is there any non-rs/6000 AIX platform?
-    pic_flag=
     link_static_flag='-bnso -bI:/lib/syscalls.exp'
     ;;
 
@@ -454,8 +453,9 @@ else
 fi
 
 case "$host_cpu" in
-rs6000 | powerpc | powerpcle)
+alpha | rs6000 | powerpc | powerpcle)
   # Yippee! All RS/6000 and PowerPC code is position-independent.
+  # Apparently, so is DEC alpha!
   pic_flag=
   ;;
 esac
@@ -742,21 +742,21 @@ echo $ac_n "checking command to parse $NM output... $ac_c" 1>&6
 
 # This is a sane default that works on at least a few old systems.
 # [It comes from Ultrix.  What could be older than Ultrix?!! ;)]
-global_symbol_pipe="sed '/^.* [BCDEGRSTU] /!d; s/^.* [BCDEGRSTU] \(.*\)$/\1 \1/'"
+global_symbol_pipe="sed -e '/^.* [BCDEGRSTU] /!d' -e 's/^.* [BCDEGRSTU] \(.*\)$/\1 \1/'"
 
 # Take a first stab at what the pipe should be.
 if $NM -V 2>&1 | egrep '(GNU|with BFD)' > /dev/null; then
   # We're using GNU nm.
-  global_symbol_pipe="sed '/^.* [ABCDGISTU] /!d; s/^.* [ABCDGISTU] \(.*\)$/\1 \1/'"
+  global_symbol_pipe="sed -e '/^.* [ABCDGISTU] /!d' -e 's/^.* [ABCDGISTU] \(.*\)$/\1 \1/'"
 else
   # It's the system nm.
   case "$host_os" in
   aix*)
     # Delete symbols that begin with a dot.
-    global_symbol_pipe="sed '/^.* [BCDTU] [^.]/!d; s/^.* [BCDTU] \(.*\)$/\1 \1/'"
+    global_symbol_pipe="sed -e '/^.* [BCDTU] [^.]/!d' -e 's/^.* [BCDTU] \(.*\)$/\1 \1/'"
     ;;
   solaris2*)
-    global_symbol_pipe="sed '/^.* [BDTU] /!d; s/^.* [BDTU] \(.*\)$/\1 \1/'"
+    global_symbol_pipe="sed -e '/^.* [BDTU] /!d' -e 's/^.* [BDTU] \(.*\)$/\1 \1/'"
     ;;
   esac
 fi

@@ -31,7 +31,7 @@ sparc-sun-sunos4.1.4         gcc       1.0       ok
 sparc-sun-solaris2.4         cc        0.9       ok
 sparc-sun-solaris2.4         gcc       0.9       ok
 sparc-sun-solaris2.5         cc        0.9       ok
-sparc-sun-solaris2.5         gcc       1.0       ok
+sparc-sun-solaris2.5         gcc       1.0a      ok
 --------------------------------------------------------
 
 * Libtool will not build shared libraries because of a bug in

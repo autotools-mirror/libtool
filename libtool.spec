@@ -4,12 +4,12 @@ Version: 1.1
 Release: 1
 Copyright: GPL
 Group: Development/Build
-Source: ftp://prep.ai.mit.edu/pub/gnu/libtool-1.0.tar.gz
+Source: ftp://prep.ai.mit.edu/pub/gnu/libtool-1.1.tar.gz
 BuildRoot: /tmp/libtool.root
 
 %description
 This is GNU libtool, a generic library support script.  Libtool hides
-the complexity of using shared libraries behind a consistent
+the complexity of using shared libraries behind a consistent, portable
 interface.
 
 To use libtool, add the new generic library building commands to your

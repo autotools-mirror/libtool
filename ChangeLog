@@ -1,13 +1,27 @@
+Wed Jul 23 08:18:19 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltconfig.in (pic_flag): According to the libg++ 2.7.2 configure
+ 	script, DEC alpha CPUs are PIC-only, as well.  Reported by Kevin
+ 	Jacobs.
+
 Mon Jul 21 09:46:02 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltconfig.in, ltmain.sh.in: Replace all occurances of "sed 'X;
+ 	Y'" with "sed -e 'X' -e 'Y'".
 
 	* ltmain.sh.in (link): Finish full integration for `-dlopen' and
  	`-dlpreopen'.
+
 	Fix two silly typos where I used a compile_command in place of a
 	finalize_command, and vice versa.
+
 	Change the wrapper script to check a hardcoded path only if the
 	argv[0] method fails.  This is a compromise for the previous two
 	patches, and should solve the majority of problems with wrapper
 	scripts.  From Kenneth Albanowski.
+
+	(link): Change a reference to hardcode_libdir_colon_separated to
+	use the new hardcode_libdir_separator variable.
 
 	* demo/Makefile.am (helldl_LDFLAGS): Add `-export-dynamic' and
 	`-dlpreopen' for building helldl.

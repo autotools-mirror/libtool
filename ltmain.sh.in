@@ -478,7 +478,7 @@ if test -z "$show_help"; then
 	fi
 
 	# Find the relevant object directory and library name.
-	name=`echo "$arg" | sed 's%^.*/%%; s/\.la$//; s/^lib//'`
+	name=`echo "$arg" | sed -e 's%^.*/%%' -e 's/\.la$//' -e 's/^lib//'`
 	dir=`echo "$arg" | sed 's%/[^/]*$%%'`
 	if test "$dir" = "$arg"; then
 	  dir="$objdir"
@@ -633,7 +633,7 @@ if test -z "$show_help"; then
     fi
 
     # Substitute the hardcoded libdirs into the compile commands.
-    if test "$hardcode_libdir_colon_separated" = yes; then
+    if test -n "$hardcode_libdir_separator"; then
       compile_command=`echo "$compile_command" | sed "s%@HARDCODE_LIBDIRS@%$hardcode_libdirs%g"`
       finalize_command=`echo "$finalize_command" | sed "s%@HARDCODE_LIBDIRS@%$hardcode_libdirs%g"`
     fi
@@ -818,7 +818,7 @@ if test -z "$show_help"; then
 	done
 
 	# Use standard objects if they are PIC.
-	test -z "$pic_flag" && libobjs=`echo "$libobjs " | sed 's/\.lo /.o /g; s/ $//g'`
+	test -z "$pic_flag" && libobjs=`echo "$libobjs " | sed -e 's/\.lo /.o /g' -e 's/ $//g'`
 
 	# Do each of the archive commands.
 	cmds=`eval echo \"$archive_cmds\"`
@@ -888,7 +888,7 @@ if test -z "$show_help"; then
       $run $rm $obj $libobj
 
       # Create the old-style object.
-      reload_objs="$objs"`echo "$libobjs " | sed 's/[^ 	]*\.a //g; s/\.lo /.o /g; s/ $//g'`
+      reload_objs="$objs"`echo "$libobjs " | sed -e 's/[^ 	]*\.a //g' -e 's/\.lo /.o /g' -e 's/ $//g'`
 
       output="$obj"
       cmds=`eval echo \"$reload_cmds\"`
@@ -943,13 +943,13 @@ if test -z "$show_help"; then
 
       if test -n "$libobjs"; then
 	# Transform all the library objects into standard objects.
-	compile_command=`echo "$compile_command " | sed 's/\.lo /.o /g; s/ $//'`
-	finalize_command=`echo "$finalize_command " | sed 's/\.lo /.o /g; s/ $//'`
+	compile_command=`echo "$compile_command " | sed -e 's/\.lo /.o /g' -e 's/ $//'`
+	finalize_command=`echo "$finalize_command " | sed -e 's/\.lo /.o /g' -e 's/ $//'`
       fi
 
       if test "$export_dynamic" = yes && test -n "$global_symbol_pipe" && test -n "$NM"; then
 	# Add our own program objects to the preloaded list.
-	dlprefiles=`echo "$objs$libobjs$dlprefiles " | sed 's/\.lo /.o/g; s/ $//'`
+	dlprefiles=`echo "$objs$libobjs$dlprefiles " | sed -e 's/\.lo /.o/g' -e 's/ $//'`
 
         # Discover the nlist of each of the dlfiles.
 	dlsyms="$objdir/${output}S.c"
@@ -975,7 +975,7 @@ if test -z "$show_help"; then
 EOF
 	  if test -f "$nlist"; then
 	    # Prevent the only kind of circular reference mistake we can make.
-	    sed '/ dld_preloaded_symbols$/d; s/^.* \(.*\)$/extern char \1;/' < "$nlist" >> "$dlsyms"
+	    sed -e '/ dld_preloaded_symbols$/d' -e 's/^.* \(.*\)$/extern char \1;/' < "$nlist" >> "$dlsyms"
 	  else
 	    echo "/* NONE */" >> "$dlsyms"
 	  fi
@@ -1018,6 +1018,9 @@ EOF
       elif test "$export_dynamic" != yes; then
         test -n "$dlfiles$dlprefiles" && echo "$progname: warning: \`-dlopen' and \`-dlpreopen' are ignored without \`-export-dynamic'" 1>&2
       else
+	# We keep going just in case the user didn't refer to
+	# dld_preloaded_symbols.  The linker will fail if global_symbol_pipe
+	# really was required.
 	echo "$progname: not configured to extract global symbols from dlpreopened files" 1>&2
 
 	# Nullify the symbol file.
@@ -1038,7 +1041,7 @@ EOF
 	# If we failed to link statically, then try again.
 	if test $status -ne 0 && test -n "$link_static"; then
 	  echo "$progname: cannot link \`$output' statically; retrying semi-dynamically" 1>&2
-	  compile_command=`echo "$compile_command " | sed "s% $link_static % %;s/ $//"`
+	  compile_command=`echo "$compile_command " | sed -e "s% $link_static % %" -e 's/ $//'`
 	  $show "$compile_command"
 	  $run $compile_command
 	  status=$?
@@ -1202,7 +1205,7 @@ EOF
       oldlib="$objdir/$libname.a"
 
       # Transform .lo files to .o files.
-      oldobjs="$objs"`echo "$libobjs " | sed 's/[^ 	]*\.a //g; s/\.lo /.o /g; s/ $//g'`
+      oldobjs="$objs"`echo "$libobjs " | sed -e 's/[^ 	]*\.a //g' -e 's/\.lo /.o /g' -e 's/ $//g'`
 
       if test -d "$objdir"; then
 	$show "$rm $oldlib"
@@ -1494,14 +1497,14 @@ EOF
         if test -n "$destname"; then
 	  destfile="$destdir/$destname"
 	else
-	  destfile=`echo "$file" | sed 's%^.*/%%;'`
+	  destfile=`echo "$file" | sed 's%^.*/%%'`
 	  destfile="$destdir/$destfile"
         fi
 
 	# Deduce the name of the destination old-style object file.
 	case "$destfile" in
 	*.lo)
-	  staticdest=`echo "$destfile" | sed 's/\.lo$/\.o/;'`
+	  staticdest=`echo "$destfile" | sed 's/\.lo$/\.o/'`
 	  ;;
 	*.o)
 	  staticdest="$destfile"
@@ -1523,7 +1526,7 @@ EOF
 	# Install the old object if enabled.
 	if test "$build_old_libs" = yes; then
 	  # Deduce the name of the old-style object file.
-	  staticobj=`echo "$file" | sed 's/\.lo$/\.o/;'`
+	  staticobj=`echo "$file" | sed 's/\.lo$/\.o/'`
 
 	  $show "$install_prog $staticobj $staticdest"
 	  $run $install_prog $staticobj $staticdest || exit $?
