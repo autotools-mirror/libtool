@@ -1,3 +1,8 @@
+2000-05-26  Alexandre Oliva  <oliva@lsd.ic.unicamp.br>
+
+	* ltmain.in (compile): When output object is in subdir, create
+	the pic_object in subdir/objdir, not objdir/subdir.
+
 2000-05-24  Ossama Othman  <ossama@debian.org>
 
 	* libtool.m4 (AC_LIBTOOL_PICMODE): Merged this macro from the HEAD
