@@ -1,5 +1,8 @@
 2004-09-19  Peter O'Gorman  <peter@pogma.com>
 
+	* configure.ac: Bump version to 1.5.11a.
+	* NEWS: ditto
+
 	GNU libtool 1.5.10 is released.
 
 	* configure.ac: Bump version.
