@@ -1,3 +1,9 @@
+2004-11-04  Bernhard Fischer  <spam.protected>,
+	    Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
+	* m4/ltdl.m4 (LT_SYS_DLOPEN_DEPLIBS), m4/ltoptions.m4
+	(_LT_SET_OPTIONS), README, README.alpha: Typos.
+
 2004-11-03  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
 	* libtldl/ltdl.c (parse_dotla_file): Fix memleak.

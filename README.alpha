@@ -54,7 +54,7 @@ take note of the name of the first test in the group if you want to
 rerun the group with FAILures to get verbose output.
 
 To run a test group in isolation (say, you think you have fixed a bug,
-but don't want to rerun the entire suit), you can do it like this:
+but don't want to rerun the entire suite), you can do it like this:
 
   make check TESTS='cdemo-static.test cdemo-make.test cdemo-exec.test'
 

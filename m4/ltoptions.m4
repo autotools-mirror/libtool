@@ -57,9 +57,9 @@ m4_ifdef([$0_found], [m4_undefine([$0_found])], [$2
 
 # _LT_SET_OPTIONS(OPTIONS)
 # ------------------------
-# OPTIONS is a space-separated list of Automake options.
+# OPTIONS is a space-separated list of Libtool options.
 # If any OPTION has a handler macro declared with LT_OPTION_DEFINE,
-# despatch to that macro; otherwise complain about the unknown option
+# dispatch to that macro; otherwise complain about the unknown option
 # and exit.
 m4_define([_LT_SET_OPTIONS],
 [AC_FOREACH([_LT_Option], [$1],
