@@ -2840,6 +2840,13 @@ platforms where it claims to support shared libraries:
 @include PLATFORMS
 @end example
 
+Note: The vendor-distributed HP-UX @code{sed}(1) programs are horribly
+broken, and cannot handle libtool's requirements, so users may report
+unusual problems. The Solaris @code{sed} program is not suitable either,
+if more than 255 object files are to be linked together. There is no
+workaround except to install a working sed (such as GNU sed) on these
+systems.
+
 @node Platform quirks
 @section Platform quirks
 

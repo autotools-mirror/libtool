@@ -1,3 +1,7 @@
+1998-12-16  Bruno Haible  <haible@ilog.fr>
+
+	* doc/libtool.texi (Tested platforms): broken `sed' programs
+
 1998-12-16  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* THANKS: added Stephan Kulow; removed Gary V. Vaughan and Thomas
