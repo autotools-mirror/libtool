@@ -5404,18 +5404,19 @@ if test "$_lt_caught_CXX_error" != yes; then
 
     _LT_CONFIG($1)
   fi # test -n "$compiler"
+
+  CC=$lt_save_CC
+  LDCXX=$LD
+  LD=$lt_save_LD
+  GCC=$lt_save_GCC
+  with_gnu_ld=$lt_save_with_gnu_ld
+  lt_cv_path_LDCXX=$lt_cv_path_LD
+  lt_cv_path_LD=$lt_save_path_LD
+  lt_cv_prog_gnu_ldcxx=$lt_cv_prog_gnu_ld
+  lt_cv_prog_gnu_ld=$lt_save_with_gnu_ld
 fi # test "$_lt_caught_CXX_error" != yes
 
 AC_LANG_POP
-CC=$lt_save_CC
-LDCXX=$LD
-LD=$lt_save_LD
-GCC=$lt_save_GCC
-with_gnu_ld=$lt_save_with_gnu_ld
-lt_cv_path_LDCXX=$lt_cv_path_LD
-lt_cv_path_LD=$lt_save_path_LD
-lt_cv_prog_gnu_ldcxx=$lt_cv_prog_gnu_ld
-lt_cv_prog_gnu_ld=$lt_save_with_gnu_ld
 ])# _LT_LANG_CXX_CONFIG
 
 
@@ -5690,10 +5691,11 @@ if test "$_lt_caught_F77_error" != yes; then
 
     _LT_CONFIG($1)
   fi # test -n "$compiler"
+
+  CC="$lt_save_CC"
 fi # test "$_lt_caught_F77_error" != yes
 
 AC_LANG_POP
-CC="$lt_save_CC"
 ])# _LT_LANG_F77_CONFIG
 
 
