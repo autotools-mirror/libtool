@@ -1,5 +1,7 @@
 1999-03-08  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* tests/build-relink.test: hellT was renamed to lt-hell
+
 	* libltdl/Makefile.am (@TOINST@/libltdl.la): do not hide the
 	command that creates the TOINST directory; remove `-o $@' from the 
 	LINK command, $(LINK) already contains it.
