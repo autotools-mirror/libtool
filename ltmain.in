@@ -1777,9 +1777,11 @@ EOF
 	    exit 1
 	  fi
 	  if test -z "$dlname" || test "$dlopen_support" != yes || test "$build_libtool_libs" = no; then
-	    # If there is no dlname, no dlopen support or we're linking statically,
-	    # we need to preload.
-	    dlprefiles="$dlprefiles $lib"
+	    # If there is no dlname, no dlopen support or we're linking
+	    # statically, we need to preload.  We also need to preload any
+	    # dependent libraries so libltdl's deplib preloader doesn't
+	    # bomb out in the load deplibs phase.
+	    dlprefiles="$dlprefiles $lib $dependency_libs"
 	  else
 	    newdlfiles="$newdlfiles $lib"
 	  fi

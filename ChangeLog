@@ -1,3 +1,10 @@
+2000-12-20  Gary V. Vaughan  <gvv@techie.com>
+
+	* ltmain.in (dlprefiles): Now that `2000-12-15 Utz-Uwe Haus' patch
+	below can detect preopened library deplibs correctly in libltdl,
+	we need to ensure that libtool library deplibs are also preloaded
+	into the binary for that phase to work.
+
 2000-12-16  Aneesh Kumar K.V  <kvaneesh@hotmail.com>
 
 	* ltcf-c.sh (OSF/1): Change  the way to pass linker flags through
