@@ -42,18 +42,3 @@ EXTRA_LTLIBRARIES	= dlopen.la dld_link.la dyld.la load_add_on.la \
 dlopen_la_LIBADD 	= $(LIBADD_DLOPEN)
 shl_load_la_LIBADD	= $(LIBADD_SHL_LOAD)
 dld_link_la_LIBADD	= -ldld
-
-
-## These are installed as a subdirectory of pkgdatadir so that
-## libtoolize --ltdl can find them later:
-ltdldatadir		= $(pkgvdatadir)/libltdl/loaders
-ltdldatafiles		= Makefile.am Makefile.in \
-			  dld_link.c dlopen.c dyld.c \
-			  load_add_on.c loadlibrary.c shl_load.c
-
-## To avoid spurious reconfiguration when the user installs these files
-## with libtoolize, we have to preserve their timestamps carefully:
-install-data-local:
-	$(mkinstalldirs) $(DESTDIR)$(ltdldatadir)
-	( cd $(srcdir) && $(AMTAR) chf - $(ltdldatafiles); ) \
-	  | ( umask 0 && cd $(DESTDIR)$(ltdldatadir) && $(AMTAR) xf -; )

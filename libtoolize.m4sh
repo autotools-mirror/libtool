@@ -84,6 +84,7 @@ libtoolize_flags=
 prefix=@prefix@
 datadir=@datadir@
 pkgvdatadirs=@pkgvdatadir@
+pkgvltdldirs=@pkgvdatadir@/libltdl
 pkgvmacrodirs=@pkgvmacrodir@
 auxdir=
 m4dir=
@@ -143,7 +144,10 @@ configure_ac=configure.in
 
       -I)		test "$#" = 0 && func_missing_arg $opt && break
 	    		test -d "$1" \
-			  && pkgvdatadirs="`cd $1 && pwd`:$pkgvdatadirs"
+			  && pkgvdatadirs="`cd $1 && pwd`:$pkgvltdldirs"
+	    		test -d "$1" \
+			  && pkgvltdldirs="`cd $1/libltdl \
+			  		      && pwd`:$pkgvltdldirs"
 			test -d "$1/m4" \
 			  && pkgvmacrodirs="`cd $1/m4 && pwd`:$pkgvmacrodirs"
 			func_quote_for_eval "$1"
@@ -396,8 +400,8 @@ func_scan_files ()
         || func_fatal_help "\`$configure_ac' does not exist"
 
     # TODO: check that existing directories from the list can be ls'ed
-    #test -n "`{ cd $pkgvdatadir && ls; } 2>dev/null`" \
-    #    || func_fatal_error "can not list files in \`$pkgvdatadir'"
+    #test -n "`{ cd $pkgvdatadirs && ls; } 2>dev/null`" \
+    #    || func_fatal_error "can not list files in \`$pkgvdatadirs'"
 
     # Set local variables to reflect contents of configure.ac
     my_uses_autoconf=false
@@ -834,7 +838,7 @@ func_massage_pkgvmacro_DATA ()
     for my_filename in @pkgvmacro_DATA@; do
       my_filename=`$ECHO "X$my_filename" | $Xsed -e "$basename"`
 
-       # ignore excluded filenames
+      # ignore excluded filenames
       if test -n "$my_glob_exclude"; then
         eval 'case $my_filename in '$my_glob_exclude') continue ;; esac'
       fi
@@ -847,12 +851,43 @@ func_massage_pkgvmacro_DATA ()
 }
 
 
+# func_massage_pkgvltdl_files [glob_exclude]
+# @pkgvltdl_files\@ is substituted as per its value in Makefile.am; this
+# function massages it into a suitable format for func_copy_some_files.
+func_massage_pkgvltdl_files ()
+{
+    pkgvltdl_files=	# GLOBAL VAR
+
+    my_glob_exclude="$1"
+
+    # Massage a value for pkgvltdl_files from the value used in Makefile.am
+    for my_filename in @pkgvltdl_files@; do
+
+      # ignore excluded filenames
+      if test -n "$my_glob_exclude"; then
+        eval 'case $my_filename in '$my_glob_exclude') continue ;; esac'
+      fi
+
+      # ignore duplicates
+      case :$pkgvltdl_files: in
+        *:$my_filename:*) ;;
+	*) pkgvltdl_files="$pkgvltdl_files:$my_filename" ;;
+      esac
+    done
+
+    # strip spurious leading `:'
+    pkgvltdl_files=`$ECHO "X$pkgvltdl_files" | $Xsed -e 's,^:*,,'`
+}
+
+
 ## ----------- ##
 ##    Main.    ##
 ## ----------- ##
 
 {
   rerun_aclocal=false
+
+  func_massage_pkgvltdl_files
 
   # libtool.m4 and ltdl.m4 are handled specially below
   func_massage_pkgvmacro_DATA 'libtool.m4|ltdl.m4'
@@ -865,7 +900,7 @@ func_massage_pkgvmacro_DATA ()
   # Copy all the files from installed (or specified, if `-I' was used)
   # libltdl to this project, if the user specified `--ltdl'.
   if test -n "$ltdldir"; then
-    func_copy_all_from_path -r libltdl "$pkgvdatadirs" "$ltdldir"
+    func_copy_some_files "$pkgvltdl_files" "$pkgvltdldirs" "$ltdldir"
 
     # libtoolize the newly copied libltdl tree
     ( cd "$ltdldir" && eval "$progpath" $libtoolize_flags ) \

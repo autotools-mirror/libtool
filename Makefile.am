@@ -43,7 +43,6 @@ edit = sed \
 	-e 's,@host_triplet\@,$(host_triplet),g' \
 	-e 's,@pkgvdatadir\@,$(pkgvdatadir),g' \
 	-e 's,@pkgvmacrodir\@,$(pkgvmacrodir),g' \
-	-e 's,@pkgvmacro_DATA\@,$(pkgvmacro_DATA),g' \
 	-e 's,@prefix\@,$(prefix),g' \
 	-e "s,@configure_input\@,Generated from $$input; do not edit by hand,g"
 
@@ -163,7 +162,10 @@ libtoolize: $(top_srcdir)/libtoolize.in
 	rm -f libtoolize.tmp libtoolize
 	$(timestamp); \
 	input="libtoolize.m4sh"; \
+	ltdldatafiles=`cd libltdl; make show-ltdldatafiles`; \
 	$(edit) -e "s,@TIMESTAMP\@,$$TIMESTAMP,g" \
+		-e 's,@pkgvmacro_DATA\@,$(pkgvmacro_DATA),g' \
+		-e "s,@pkgvltdl_files\@,`echo $$ltdldatafiles`,g" \
 		$(top_srcdir)/libtoolize.in > libtoolize.tmp
 	chmod a+x libtoolize.tmp
 	chmod a-w libtoolize.tmp
