@@ -94,12 +94,14 @@ sed_quote_subst='s/\([[`"$\\]]\)/\\\1/g'
 # Same as above, but do not quote variable references.
 double_quote_subst='s/\([["`\\]]\)/\\\1/g'
 
-# Save mangling of backslash escaped dollars by the above.  Running this
-# substitution after double_quote_subst notices and corrects expansion
-# of already escaped meta-chars.  \$x -> double_quote_subst -> \\$x,
-# which doesn't protect $x from expansion.  To correct this we do:
-# \\$x -> sed_double_backslash -> \\\$x, properly protecting $x.
-sed_double_backslash='s/\([[^\\]]\)\\\\$/\1\\\\\\$/g'
+# Re-`\' parameter expansions in output of double_quote_subst that were
+# `\'-ed in input to the same.  If an odd number of `\' preceded a '$'
+# in input to double_quote_subst, that '$' was protected from expansion.
+# Since each input `\' is now two `\'s, look for any number of runs of
+# four `\'s followed by two `\'s and then a '$'.  `\' that '$'.  Note
+# that the embedded single quotes serve only to enhance readability.
+sed_double_backslash='s/^\(\(''\\\\''\\\\''\)*''\\\\''\$\)/\\\1/;
+                s/\([[^\\]]\(''\\\\''\\\\''\)*''\\\\''\$\)/\\\1/g'
 
 # test EBCDIC or ASCII
 case `$ECHO A|tr A '\301'` in
