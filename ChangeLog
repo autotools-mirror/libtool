@@ -1,5 +1,10 @@
 1998-12-16  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* demo/configure.in (BINARY_HELLDL): test whether dlopen is
+	supported at configure time
+	* demo/Makefile.am (helldl): use automake conditionals to build
+	helldl as a script or as a binary program
+
 	* tests/Makefile.am (EXTRA_DIST): remove ltdl-*.test
 	(clean-local): don't clean libltdl any more
 	* tests/ltdl-conf.test: removed

@@ -17,7 +17,13 @@ libhello_la_LDFLAGS = -version-info 3:12:1 -lm
 
 include_HEADERS = foo.h
 
-bin_PROGRAMS = hell hell.debug helldl
+if BINARY_HELLDL
+BUILD_helldl = helldl
+else
+BUILD_helldl = 
+endif
+
+bin_PROGRAMS = hell hell.debug $(BUILD_helldl)
 
 # Build hell from main.c and libhello.la
 hell_SOURCES = main.c
@@ -28,10 +34,23 @@ hell_debug_SOURCES = main.c
 hell_debug_LDADD = libhello.la
 hell_debug_LDFLAGS = -static
 
+if BINARY_HELLDL
+
 # Create a version of hell that does a preloaded dlopen.
 helldl_SOURCES = dlmain.c
 helldl_LDFLAGS = -export-dynamic -dlpreopen libhello.la
-helldl: libhello.la
+helldl_DEPENDENCIES = libhello.la
+
+else
+
+bin_SCRIPTS = helldl
+# create a script that says that -dlopen is not supported
+helldl:
+	rm -f $@
+	echo '#! /bin/sh' > $@
+	echo '-dlopen is unsupported' >> $@
+	chmod +x $@
+endif
 
 # Unfortunately, in order to test libtool thoroughly, we need access
 # to its private directory.
@@ -45,20 +64,6 @@ $(srcdir)/acinclude.m4:
 	rm -f $(srcdir)/acinclude.m4
 	cd $(srcdir) && $(LN_S) ../libtool.m4 acinclude.m4
 
-# Don't build helldl on unsupported platforms.
-helldl: $(helldl_OBJECTS) $(helldl_DEPENDENCIES)
-	@rm -f helldl helldlT
-	@eval "`egrep '^global_symbol_pipe=' ../libtool`"; \
-	if test -z "$$global_symbol_pipe"; then \
-	  echo 'creating helldl (-dlopen is unsupported)'; \
-	  echo "#! /bin/sh" > helldlT; \
-	  echo "echo '-dlopen is unsupported'" >> helldlT; \
-	  chmod +x helldlT; \
-	  mv -f helldlT helldl; \
-	else \
-	  echo '$(LINK) $(helldl_LDFLAGS) $(helldl_OBJECTS) $(helldl_LDADD)'; \
-	  $(LINK) $(helldl_LDFLAGS) $(helldl_OBJECTS) $(helldl_LDADD); \
-	fi
 
 # Test programs to see what gets hardcoded.
 .PHONY: hardcode

@@ -6,5 +6,8 @@ AC_PROG_CC
 AC_EXEEXT
 AM_PROG_LIBTOOL
 
+AM_CONDITIONAL(BINARY_HELLDL, [dnl
+grep '^global_symbol_pipe=..*$' ./libtool >/dev/null])
+
 dnl Output the makefile
 AC_OUTPUT(Makefile)
