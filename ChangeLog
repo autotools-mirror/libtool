@@ -1,3 +1,8 @@
+1999-01-06  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
+
+	* TODO: Added details of a Linux wrapper script bug.
+	Reported by Jeff Garzik <jgarzik@pobox.com>.
+
 1999-01-05  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* ltmain.in (libobjs_save, oldobjs): when building an

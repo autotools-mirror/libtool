@@ -45,6 +45,12 @@ AIX 4), distinguishes between global function and global variable
 references.  This means that we cannot declare every symbol as `extern
 char'.  Find a workaround.
 
+* Jeff Garzik <jgarzik@pobox.com> noticed that libtool wrapper scripts do
+not always work on Linux.  When running tests in a newly built package, the
+script is prone to picking up a similarly sonamed library in /usr/lib in
+preference to the newly built library in the distribution.  The scripts *do*
+work under Solaris however.
+
 * Documentation:
 
 - libltdl needs to be documented
