@@ -2547,14 +2547,15 @@ static const void *lt_preloaded_setup() {
 	# We have no uninstalled library dependencies, so finalize right now.
 	$show "$link_command"
 	$run eval "$link_command"
+	status=$?
 	
 	# Delete the generated files.
 	if test -n "$dlsyms"; then
-	  $show "$rm $output_objdir/${output}S.${objext}"
-	  $run $rm "$output_objdir/${output}S.${objext}"
+	  $show "$rm $output_objdir/${outputname}S.${objext}"
+	  $run $rm "$output_objdir/${outputname}S.${objext}"
 	fi
 
-	exit $?
+	exit $status
       fi
 
       if test -n "$shlibpath_var"; then

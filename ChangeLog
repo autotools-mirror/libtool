@@ -1,3 +1,8 @@
+1999-04-29  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* ltmain.in: Save exit status of link_command before removing
+	symbol table object file.
+
 1999-04-29  Gary V. Vaughan  <gary@oranda.demon.co.uk>
 
 	* doc/PLATFORMS: updated my hpux-10.20 and cygwin box entries.
