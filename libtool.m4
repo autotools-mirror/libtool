@@ -360,7 +360,7 @@ fi
 # will find an echo command which doesn;t interpret backslashes.
 AC_DEFUN([_LT_AC_PROG_ECHO_BACKSLASH],
 [ifdef([AC_DIVERSION_NOTICE], [AC_DIVERT_PUSH(AC_DIVERSION_NOTICE)],
-                              [AC_DIVERT_PUSH(NOTICE)])
+			      [AC_DIVERT_PUSH(NOTICE)])
 _LT_AC_LIBTOOL_SYS_PATH_SEPARATOR
 
 # Check that we are running under the correct shell.
@@ -626,15 +626,15 @@ else
   *)
     AC_CHECK_FUNC(shl_load, lt_cv_dlopen="shl_load",
       [AC_CHECK_LIB(dld, shl_load,
-        [lt_cv_dlopen="dld_link" lt_cv_dlopen_libs="-dld"],
-        [AC_CHECK_LIB(dl, dlopen,
-          [lt_cv_dlopen="dlopen" lt_cv_dlopen_libs="-ldl"],
-          [AC_CHECK_FUNC(dlopen, lt_cv_dlopen="dlopen",
-            [AC_CHECK_LIB(svld, dlopen,
-              [lt_cv_dlopen="dlopen" lt_cv_dlopen_libs="-lsvld"])
-            ])
-          ])
-        ])
+	[lt_cv_dlopen="dld_link" lt_cv_dlopen_libs="-dld"],
+	[AC_CHECK_LIB(dl, dlopen,
+	  [lt_cv_dlopen="dlopen" lt_cv_dlopen_libs="-ldl"],
+	  [AC_CHECK_FUNC(dlopen, lt_cv_dlopen="dlopen",
+	    [AC_CHECK_LIB(svld, dlopen,
+	      [lt_cv_dlopen="dlopen" lt_cv_dlopen_libs="-lsvld"])
+	    ])
+	  ])
+	])
       ])
     ;;
   esac
@@ -796,7 +796,7 @@ AC_MSG_RESULT($objdir)
 
 ## FIXME: this should be a separate macro
 ##
-AC_ARG_WITH(pic, 
+AC_ARG_WITH(pic,
 [  --with-pic              try to use only PIC/non-PIC objects [default=use both]],
 pic_mode="$withval", pic_mode=default)
 test -z "$pic_mode" && pic_mode=default
@@ -862,10 +862,10 @@ AC_CACHE_VAL(lt_cv_prog_cc_pic,
       lt_cv_prog_cc_wl='-Wl,'
       # All AIX code is PIC.
       if test "$host_cpu" = ia64; then
-        # AIX 5 now supports IA64 processor
-        lt_cv_prog_cc_static='-Bstatic'
+	# AIX 5 now supports IA64 processor
+	lt_cv_prog_cc_static='-Bstatic'
       else
-        lt_cv_prog_cc_static='-bnso -bI:/lib/syscalls.exp'
+	lt_cv_prog_cc_static='-bnso -bI:/lib/syscalls.exp'
       fi
       ;;
 
@@ -921,9 +921,9 @@ AC_CACHE_VAL(lt_cv_prog_cc_pic,
       lt_cv_prog_cc_pic='-KPIC'
       lt_cv_prog_cc_static='-Bstatic'
       if test "x$host_vendor" = xsni; then
-        lt_cv_prog_cc_wl='-LD'
+	lt_cv_prog_cc_wl='-LD'
       else
-        lt_cv_prog_cc_wl='-Wl,'
+	lt_cv_prog_cc_wl='-Wl,'
       fi
       ;;
 
@@ -1310,18 +1310,18 @@ EOF
     # is EXPORTS), use it as is.
     # If DATA tags from a recent dlltool are present, honour them!
     archive_expsym_cmds='if test "x`head -1 $export_symbols`" = xEXPORTS; then
-        cp $export_symbols $output_objdir/$soname-def;
+	cp $export_symbols $output_objdir/$soname-def;
       else
-        echo EXPORTS > $output_objdir/$soname-def;
-        _lt_hint=1;
-        cat $export_symbols | while read symbol; do
-         set dummy \$symbol;
-         case \[$]# in
-           2) echo "   \[$]2 @ \$_lt_hint ; " >> $output_objdir/$soname-def;;
-           *) echo "     \[$]2 @ \$_lt_hint \[$]3 ; " >> $output_objdir/$soname-def;;
-         esac;
-         _lt_hint=`expr 1 + \$_lt_hint`;
-        done;
+	echo EXPORTS > $output_objdir/$soname-def;
+	_lt_hint=1;
+	cat $export_symbols | while read symbol; do
+	 set dummy \$symbol;
+	 case \[$]# in
+	   2) echo "   \[$]2 @ \$_lt_hint ; " >> $output_objdir/$soname-def;;
+	   *) echo "     \[$]2 @ \$_lt_hint \[$]3 ; " >> $output_objdir/$soname-def;;
+	 esac;
+	 _lt_hint=`expr 1 + \$_lt_hint`;
+	done;
       fi~
       '"$ltdll_cmds"'
       $CC -Wl,--base-file,$output_objdir/$soname-base '$lt_cv_cc_dll_switch' -Wl,-e,'$dll_entry' -o $output_objdir/$soname '$ltdll_obj'$libobjs $deplibs $compiler_flags~
@@ -1429,12 +1429,12 @@ else
       # AIX style linking. If -brtl is somewhere in LDFLAGS, we
       # need to do runtime linking.
       case $host_os in aix4.[[23]]|aix4.[[23]].*|aix5*)
-        for ld_flag in $LDFLAGS; do
+	for ld_flag in $LDFLAGS; do
 	  if (test $ld_flag = "-brtl" || test $ld_flag = "-Wl,-brtl"); then
 	    aix_use_runtimelinking=yes
 	    break
 	  fi
-        done
+	done
       esac
 
       exp_sym_flag='-bexport'
@@ -1452,35 +1452,35 @@ else
     hardcode_libdir_separator=':'
     if test "$GCC" = yes; then
       case $host_os in aix4.[[012]]|aix4.[[012]].*)
-        collect2name=`${CC} -print-prog-name=collect2`
-        if test -f "$collect2name" && \
-          strings "$collect2name" | grep resolve_lib_name >/dev/null
-        then
-          # We have reworked collect2
-          hardcode_direct=yes
-        else
-          # We have old collect2
-          hardcode_direct=unsupported
-          # It fails to find uninstalled libraries when the uninstalled
-          # path is not listed in the libpath.  Setting hardcode_minus_L
-          # to unsupported forces relinking
-          hardcode_minus_L=yes
-          hardcode_libdir_flag_spec='-L$libdir'
-          hardcode_libdir_separator=
-        fi
+	collect2name=`${CC} -print-prog-name=collect2`
+	if test -f "$collect2name" && \
+	  strings "$collect2name" | grep resolve_lib_name >/dev/null
+	then
+	  # We have reworked collect2
+	  hardcode_direct=yes
+	else
+	  # We have old collect2
+	  hardcode_direct=unsupported
+	  # It fails to find uninstalled libraries when the uninstalled
+	  # path is not listed in the libpath.  Setting hardcode_minus_L
+	  # to unsupported forces relinking
+	  hardcode_minus_L=yes
+	  hardcode_libdir_flag_spec='-L$libdir'
+	  hardcode_libdir_separator=
+	fi
       esac
 
       shared_flag='-shared'
     else
       # not using gcc
       if test "$host_cpu" = ia64; then
-        shared_flag='${wl}-G'
+	shared_flag='${wl}-G'
       else
-        if test "$aix_use_runtimelinking" = yes; then
-          shared_flag='${wl}-G'
-        else
-          shared_flag='${wl}-bM:SRE'
-        fi
+	if test "$aix_use_runtimelinking" = yes; then
+	  shared_flag='${wl}-G'
+	else
+	  shared_flag='${wl}-bM:SRE'
+	fi
       fi
     fi
 
@@ -1495,17 +1495,17 @@ else
       archive_expsym_cmds="\$CC"' -o $output_objdir/$soname $libobjs $deplibs $compiler_flags `if test "x${allow_undefined_flag}" != "x"; then echo "${wl}${allow_undefined_flag}"; else :; fi` '"\${wl}$no_entry_flag \${wl}$exp_sym_flag:\$export_symbols $shared_flag"
     else
       if test "$host_cpu" = ia64; then
-        hardcode_libdir_flag_spec='${wl}-R $libdir:/usr/lib:/lib'
-        allow_undefined_flag="-z nodefs"
-        archive_expsym_cmds="\$CC $shared_flag"' -o $output_objdir/$soname ${wl}-h$soname $libobjs $deplibs $compiler_flags ${wl}${allow_undefined_flag} '"\${wl}$no_entry_flag \${wl}$exp_sym_flag:\$export_symbols"
+	hardcode_libdir_flag_spec='${wl}-R $libdir:/usr/lib:/lib'
+	allow_undefined_flag="-z nodefs"
+	archive_expsym_cmds="\$CC $shared_flag"' -o $output_objdir/$soname ${wl}-h$soname $libobjs $deplibs $compiler_flags ${wl}${allow_undefined_flag} '"\${wl}$no_entry_flag \${wl}$exp_sym_flag:\$export_symbols"
       else
-        hardcode_libdir_flag_spec='${wl}-bnolibpath ${wl}-blibpath:$libdir:/usr/lib:/lib'
-        # Warning - without using the other run time loading flags,
-        # -berok will link without error, but may produce a broken library.
-        allow_undefined_flag='${wl}-berok'
-        # This is a bit strange, but is similar to how AIX traditionally builds
-        # it's shared libraries.
-        archive_expsym_cmds="\$CC $shared_flag"' -o $output_objdir/$soname $libobjs $deplibs $compiler_flags ${allow_undefined_flag} '"\${wl}$no_entry_flag \${wl}$exp_sym_flag:\$export_symbols"' ~$AR -crlo $objdir/$libname$release.a $objdir/$soname'
+	hardcode_libdir_flag_spec='${wl}-bnolibpath ${wl}-blibpath:$libdir:/usr/lib:/lib'
+	# Warning - without using the other run time loading flags,
+	# -berok will link without error, but may produce a broken library.
+	allow_undefined_flag='${wl}-berok'
+	# This is a bit strange, but is similar to how AIX traditionally builds
+	# it's shared libraries.
+	archive_expsym_cmds="\$CC $shared_flag"' -o $output_objdir/$soname $libobjs $deplibs $compiler_flags ${allow_undefined_flag} '"\${wl}$no_entry_flag \${wl}$exp_sym_flag:\$export_symbols"' ~$AR -crlo $objdir/$libname$release.a $objdir/$soname'
       fi
     fi
     ;;
@@ -1537,11 +1537,18 @@ else
     ;;
 
   darwin* | rhapsody*)
-    allow_undefined_flag='-undefined suppress'
+    case "$host_os" in
+    rhapsody* | darwin1.[[012]])
+      allow_undefined_flag='-undefined suppress'
+      ;;
+    *) # Darwin 1.3 on
+      allow_undefined_flag='-flat_namespace -undefined suppress'
+      ;;
+    esac
     # FIXME: Relying on posixy $() will cause problems for
     #        cross-compilation, but unfortunately the echo tests do not
     #        yet detect zsh echo's removal of \ escapes.
-    archive_cmds='$nonopt $(test .$module = .yes && echo -bundle || echo -dynamiclib) $allow_undefined_flag -o $lib $libobjs $deplibs$linker_flags -install_name $rpath/$soname $(test -n "$verstring" -a x$verstring != x0.0 && echo $verstring)'
+    archive_cmds='$nonopt $(test "x$module" = xyes && echo -bundle || echo -dynamiclib) $allow_undefined_flag -o $lib $libobjs $deplibs$linker_flags -install_name $rpath/$soname $verstring'
     # We need to add '_' to the symbols in $export_symbols first
     #archive_expsym_cmds="$archive_cmds"' && strip -s $export_symbols'
     hardcode_direct=yes
@@ -1628,15 +1635,15 @@ else
     hardcode_shlibpath_var=no
     case "$host_os" in
       openbsd[[01]].* | openbsd2.[[0-7]] | openbsd2.[[0-7]].*)
-        archive_cmds='$LD -Bshareable -o $lib $libobjs $deplibs $linker_flags'
-        hardcode_libdir_flag_spec='-R$libdir'
+	archive_cmds='$LD -Bshareable -o $lib $libobjs $deplibs $linker_flags'
+	hardcode_libdir_flag_spec='-R$libdir'
       ;;
       *)
-        archive_cmds='$CC -shared $pic_flag -o $lib $libobjs $deplibs $linker_flags'
-        hardcode_libdir_flag_spec='${wl}-rpath,$libdir'
-        if test "`echo __ELF__ | $CC -E - | grep __ELF__`" = "" || test "$host_os-$host_cpu" = "openbsd2.8-powerpc"; then
-         export_dynamic_flag_spec='${wl}-E'
-        fi
+	archive_cmds='$CC -shared $pic_flag -o $lib $libobjs $deplibs $linker_flags'
+	hardcode_libdir_flag_spec='${wl}-rpath,$libdir'
+	if test "`echo __ELF__ | $CC -E - | grep __ELF__`" = "" || test "$host_os-$host_cpu" = "openbsd2.8-powerpc"; then
+	 export_dynamic_flag_spec='${wl}-E'
+	fi
       ;;
     esac
     ;;
@@ -1890,11 +1897,11 @@ aix4* | aix5*)
     case $host_os in
       [ aix4 | aix4.[01] | aix4.[01].*)]
       if { echo '#if __GNUC__ > 2 || (__GNUC__ == 2 && __GNUC_MINOR__ >= 97)'
-           echo ' yes '
-           echo '#endif'; } | ${CC} -E - | grep yes > /dev/null; then
-        :
+	   echo ' yes '
+	   echo '#endif'; } | ${CC} -E - | grep yes > /dev/null; then
+	:
       else
-        can_build_shared=no
+	can_build_shared=no
       fi
       ;;
     esac
@@ -2748,9 +2755,9 @@ EOF
 #   return TRUE;
 # }
 # /* ltdll.c ends here */
-        # This is a source program that is used to create import libraries
-        # on Windows for dlls which lack them. Don't remove nor modify the
-        # starting and closing comments
+	# This is a source program that is used to create import libraries
+	# on Windows for dlls which lack them. Don't remove nor modify the
+	# starting and closing comments
 # /* impgen.c starts here */
 # /*   Copyright (C) 1999-2000 Free Software Foundation, Inc.
 #

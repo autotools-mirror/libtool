@@ -1,3 +1,8 @@
+2001-09-02  Christopher Pfisterer <cp@chrisp.de>
+
+	* libtool.m4, ltmain.in: Linker flag and version numbering fixes
+	for darwin.
+
 2001-09-02  Gary V. Vaughan  <gary@gnu.org>
 
 	Backported the following patches from the development branch:
@@ -142,7 +147,7 @@
 	* libtool.m4:  undefine the m4 builtin `symbols', so that the
 	string `symbols' can be used in the rest of the code without
 	causing errors with autoconf-2.13.
-	
+
 	From "Golubev I. N." <gin@mo.msk.ru>
 	* tests/Makefile.am (CPPLAGS): Typo. s/CPPLAGS/CPPFLAGS.
 
@@ -166,7 +171,7 @@
 	set to `lo' when testing for compiler output to *.lo filenames.
 
 2001-06-28  Gary V. Vaughan  <gary@gnu.org>
-	
+
 	From  Alexander Bluhm  <Alexander.Bluhm@WiredMinds.de>
 	* libltdl/ltdl.c (lt_dlopen): Fix bad memory initialisation
 	assumptions.
@@ -220,7 +225,7 @@
 	* libtool.m4: Support $host_os as /sysv5uw7*/ from newer
 	config.guess in addition to older /unixware*/.  Use compiler
 	driver, not linker, for linking shared libraries.
-			
+
 2001-04-24  Gary V. Vaughan  <gvv@techie.com>
 
 	* libtool.m4, ltmain.in, libltdl/configure.in,
@@ -257,7 +262,7 @@
 	* ltmain.in (argument parsing): support dl[pre]open
 	  for both .o and .lo files
 	* ltmain.in (deplibs_check): use portable test syntax
-	* ltmain.in (help): document -prefer-[non-]pic flags 
+	* ltmain.in (help): document -prefer-[non-]pic flags
 	* ltmain.in: improve readablity by adding some comments,
 	  rename uninst_* to notinst_* (more adequate name)
 
@@ -282,7 +287,7 @@
 	suite.
 	* libltdl/ltdl.c (lt_dlexit): Quit loop if only resident modules
 	are left.
-	
+
 2001-04-23  Gary V. Vaughan  <gvv@techie.com>
 
 	* doc/PLATFORMS:  With this patch, my Solaris boxes now pass the
@@ -341,7 +346,7 @@
 
 	* libtool.m4: Improve NetBSD support.
 	* ltmain.in: ditto.
-	
+
 2001-04-19  Dan McNichol <mcnichol@austin.ibm.com>
 
 	* libtool.m4: Build standard shared libraries on AIX POWER
@@ -354,7 +359,7 @@
 	uses a SYSV type linker.  Add a comment telling what to do if the
 	TOC starts getting too large on AIX.
 	* NEWS: mention aix5 support.
-		
+
 2001-04-18  Alexandre Oliva  <aoliva@redhat.com>
 
 	* TODO: Add -L- flag.
@@ -425,7 +430,7 @@
 	* libltdl/ltdl.c (sys_shl_open):  Return a NULL module handle
 	for self opening.
 	(sys_shl_close):  Be careful not to close a NULL module handle.
-	(sys_shl_sym):  Allow shl_findsym() to open NULL modules, but 
+	(sys_shl_sym):  Allow shl_findsym() to open NULL modules, but
 	discard the modified module address it returns.
 
 	* libltdl/ltdl.c (lt_dlopen):  When reading the .la file,
@@ -472,20 +477,20 @@
 
 	* libtoolize.in: Check configure.ac and prefer configure.ac to
 	configure.in.
-	
+
 	* libtoolize.in: change recommendation from AM_PROG_LIBTOOL to
 	AC_PROG_LIBTOOL.
 
 	* libtool.m4: Generate dll/import libraries for cygwin according
 	to the following: libFOO.a (static lib), libFOO.dll.a (import
-	lib), cygFOO-version.dll (dll).  Update postinstall_cmds and 
+	lib), cygFOO-version.dll (dll).  Update postinstall_cmds and
 	postuninstall_cmds to reflect this.
-	* ltmain.in: Generate installed .la files with dlnames set to 
+	* ltmain.in: Generate installed .la files with dlnames set to
 	../bin/cygFOO-version.dll for normal dlls. dlls for modules
 	remain with the .la file.
 
 	* libltdl/ltdl.c:  Use windows paths while calling LoadLibrary.
-	
+
 2001-03-16  Albert Chin  <china@thewrittenword.com>
 
 	* libtool.m4 (save_CPPFLAGS): Fix typo.
@@ -509,11 +514,11 @@
 	From Tor Lillqvist <tml@iki.fi>
 	* libtool.m4 (export_symbols): On Windows, if the export_symbols
 	file (which has been passed to libtool with the -export-symbols
-	command line switch) already is a .def file, use it as is. 
+	command line switch) already is a .def file, use it as is.
 
 	* libtool.m4 (library_names_spec): Using m4 quotes correctly this
 	time around!
-	
+
 	From Tor Lillqvist <tml@iki.fi>
 	* libtool.m4 (library_names_spec): Use an appropriate filename
 	prefix for dlls -- lib for mingw; cyg for cygwin; pw for pw32.
