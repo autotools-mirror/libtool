@@ -1,3 +1,8 @@
+Fri Jul 11 19:31:43 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* nomode.test: New test to make sure there is correct behaviour
+ 	when we don't specify a mode.
+
 Mon Jun 30 06:49:13 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* if.test: New test to make sure that we haven't forgotten to

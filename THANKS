@@ -2,8 +2,7 @@ Libtool would not be what it is today without the invaluable help of
 these people:
 
 Everybody who was kind enough to spend time testing libtool, use it in
-their packages, and report bugs to me before the libtool 1.0 was
-released.
+their packages, and report bugs to me before libtool 1.0 was released.
 
 Akim Demaille <demaille@inf.enst.fr>
 Bruno Haible <haible@ilog.fr>

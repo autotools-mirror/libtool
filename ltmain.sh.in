@@ -1642,7 +1642,7 @@ EOF
     exit 0
     ;;
 
-  NONE)
+  "")
     echo "$progname: you must specify a MODE" 1>&2
     echo "$generic_help" 1>&2
     exit 1
@@ -1656,7 +1656,7 @@ fi # test -z "$show_help"
 
 # We need to display help for each of the modes.
 case "$mode" in
-NONE) cat <<EOF
+"") cat <<EOF
 Usage: $progname [OPTION]... [MODE-ARG]...
 
 Provide generalized library-building support services.

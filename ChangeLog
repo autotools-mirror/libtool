@@ -1,3 +1,12 @@
+Fri Jul 11 19:33:02 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* libtool.spec: New Red Hat Package Manager specification file in
+	order to help people prepare distributions of libtool for Linux.
+
+	* ltmain.sh.in: Eliminate two accidental uses of the NONE magic
+ 	value.  These were breaking libtool's behaviour when no mode is
+ 	specified.
+
 Tue Jul  8 11:01:27 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* Release 1.0.
