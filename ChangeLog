@@ -1,5 +1,9 @@
 2005-01-31  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* libtool.m4 (AC_LIBTOOL_SYS_GLOBAL_SYMBOL_PIPE): Unicos 9 sed rejects
+	empty parentheses as in 's/x\(\)/\1/'.
+	(AC_LIBTOOL_PROG_COMPILER_PIC) [unicos*]: wl=-Wl,.
+
 	* tests/quote.test: Match link quoting against `"$wl"', not `-Wl,'.
 
 2005-01-29  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
