@@ -49,6 +49,9 @@ AC_SUBST(DLLTOOL)
 AC_SUBST(FILE)
 AC_SUBST(OBJDUMP)
 AC_SUBST(AS)
+AC_SUBST(reload_flag)
+AC_SUBST(file_magic_cmd)
+AC_SUBST(deplibs_check_method)
 
 LIBTOOL_FLAGS="$libtool_flags"
 AC_SUBST(LIBTOOL_FLAGS)

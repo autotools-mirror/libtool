@@ -1,3 +1,8 @@
+2000-09-02  Nick Hudson  <nick@nthcliff.demon.co.uk>
+
+	* configure.in: AC_SUBST reload_flag, deplibs_check_method
+	and file_magic_cmd.
+
 2000-09-02  Tom Kacvinsky  <tjk@ams.org>, Tim Mooney <mooney@dogbert.cc.ndsu.NoDak.edu>
 
 	* libtool.m4: Ignore Tru64's nm's complaint.
