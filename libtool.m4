@@ -112,7 +112,7 @@ case "$host" in
   ;;
 
 ifdef([AC_PROVIDE_AC_LIBTOOL_WIN32_DLL],
-[*-*-cygwin* | *-*-mingw*)
+[*-*-cygwin* | *-*-mingw* | *-*-pw32*)
   AC_CHECK_TOOL(DLLTOOL, dlltool, false)
   AC_CHECK_TOOL(AS, as, false)
   AC_CHECK_TOOL(OBJDUMP, objdump, false)
@@ -134,7 +134,7 @@ ifdef([AC_PROVIDE_AC_LIBTOOL_WIN32_DLL],
     AC_CACHE_CHECK([how to link DLLs], lt_cv_cc_dll_switch,
       [AC_TRY_LINK([], [], [lt_cv_cc_dll_switch=-mdll],[lt_cv_cc_dll_switch=-dll])])
     CFLAGS="$SAVE_CFLAGS" ;;
-  *-*-cygwin*)
+  *-*-cygwin* | *-*-pw32*)
     # cygwin systems need to pass --dll to the linker, and not link
     # crt.o which will require a WinMain@16 definition.
     lt_cv_cc_dll_switch="-Wl,--dll -nostartfiles" ;;
@@ -455,7 +455,7 @@ AC_CACHE_VAL(ac_cv_prog_cc_pic,
       # we not sure about C++ programs.
       ac_cv_prog_cc_static="$ac_cv_prog_cc_static ${ac_cv_prog_cc_wl}-lC"
       ;;
-    cygwin* | mingw* | os2*)
+    cygwin* | mingw* | pw32* | os2*)
       # This hack is so that the source file can tell whether it is being
       # built for inclusion in a dll (and should export symbols for example).
       ac_cv_prog_cc_pic='-DDLL_EXPORT'
@@ -496,7 +496,7 @@ AC_CACHE_VAL(ac_cv_prog_cc_pic,
       # PIC (with -KPIC) is the default.
       ;;
 
-    cygwin* | mingw* | os2*)
+    cygwin* | mingw* | pw32* | os2*)
       # This hack is so that the source file can tell whether it is being
       # built for inclusion in a dll (and should export symbols for example).
       ac_cv_prog_cc_pic='-DDLL_EXPORT'
@@ -790,7 +790,7 @@ exclude_expsyms="_GLOBAL_OFFSET_TABLE_"
 extract_expsyms_cmds=
 
 case "$host_os" in
-cygwin* | mingw*)
+cygwin* | mingw* | pw32* )
   # FIXME: the MSVC++ port hasn't been tested in a loooong time
   # When not using gcc, we currently assume that we are using
   # Microsoft Visual C++.
@@ -847,7 +847,7 @@ EOF
     fi
     ;;
 
-  cygwin* | mingw*)
+  cygwin* | mingw* | pw32*)
     # hardcode_libdir_flag_spec is actually meaningless, as there is
     # no search path for DLLs.
     hardcode_libdir_flag_spec='-L$libdir'
@@ -971,7 +971,7 @@ EOF
     hardcode_libdir_flag_spec='${wl}--rpath ${wl}$libdir'
     export_dynamic_flag_spec='${wl}--export-dynamic'
     case $host_os in
-    cygwin* | mingw*)
+    cygwin* | mingw* | pw32*)
       # dlltool doesn't understand --whole-archive et. al.
       whole_archive_flag_spec=
       ;;
@@ -1044,7 +1044,7 @@ else
     ld_shlibs=no
     ;;
 
-  cygwin* | mingw*)
+  cygwin* | mingw* | pw32*)
     # When not using gcc, we currently assume that we are using
     # Microsoft Visual C++.
     # hardcode_libdir_flag_spec is actually meaningless, as there is
@@ -1400,7 +1400,7 @@ bsdi4*)
   # libtool to hard-code these into programs
   ;;
 
-cygwin* | mingw*)
+cygwin* | mingw* | pw32*)
   version_type=windows
   need_version=no
   need_lib_prefix=no
@@ -1690,7 +1690,7 @@ case "$host_os" in
 aix*)
   [symcode='[BCDT]']
   ;;
-cygwin* | mingw*)
+cygwin* | mingw* | pw32*)
   [symcode='[ABCDGISTW]']
   ;;
 hpux*) # Its linker distinguishes data from code symbols
@@ -2398,7 +2398,7 @@ EOF
 esac
 
 case "$host_os" in
-cygwin* | mingw* | os2*)
+cygwin* | mingw* | pw32* | os2*)
   cat <<'EOF' >> "$ofile"
     # This is a source program that is used to create dlls on Windows
     # Don't remove nor modify the starting and closing comments
@@ -2928,7 +2928,7 @@ bsdi4*)
   lt_cv_file_magic_test_file=/shlib/libc.so
   ;;
 
-cygwin* | mingw*)
+cygwin* | mingw* | pw32*)
   lt_cv_deplibs_check_method='file_magic file format pei*-i386(.*architecture: i386)?'
   lt_cv_file_magic_cmd='${OBJDUMP} -f'
   ;;
@@ -3077,7 +3077,7 @@ AC_DEFUN(AC_CHECK_LIBM,
 [AC_REQUIRE([AC_CANONICAL_HOST])dnl
 LIBM=
 case "$host" in
-*-*-beos* | *-*-cygwin*)
+*-*-beos* | *-*-cygwin* | *-*-pw32*)
   # These system don't have libm
   ;;
 *-ncr-sysv4.3*)
