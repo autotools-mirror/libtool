@@ -1,5 +1,7 @@
-# -*- sh -*-
-# Defines for Libtool testing environment.
+m4_define([_m4_divert(SCRIPT)], 100)
+m4_divert_push([SCRIPT])# @configure_input@
+
+# defs -- Defines for Libtool testing environment.
 # Gord Matzigkeit <gord@gnu.ai.mit.edu>, 1996
 # Gary V. Vaughan <gary@gnu.org>, 2003
 
@@ -23,76 +25,15 @@
 # Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
 # MA 02111-1307, USA.
 
-# Be Bourne compatible
-if test -n "${ZSH_VERSION+set}" && (emulate sh) >/dev/null 2>&1; then
-  emulate sh
-  NULLCMD=:
-  # Zsh 3.x and 4.x performs word splitting on ${1+"$@"}, which
-  # is contrary to our usage.  Disable this feature.
-  alias -g '${1+"$@"}'='"$@"'
-  setopt NO_GLOB_SUBST
-elif test -n "${BASH_VERSION+set}${KSH_VERSION+set}" && (set -o posix) >/dev/null 2>&1; then
-  set -o posix
-fi
-DUALCASE=1; export DUALCASE # for MKS sh
+AS_SHELL_SANITIZE
+$as_unset CDPATH
 
-# The HP-UX ksh and POSIX shell print the target directory to stdout
-# if CDPATH is set.
-(unset CDPATH) >/dev/null 2>&1 && unset CDPATH
+m4_include([general.m4sh])
 
 : ${AUTOCONF="autoconf"}
-: ${ECHO="echo"}
-: ${GREP="grep"}
 : ${LIBTOOL="../libtool"}
-: ${MAKE="make"}
-: ${MKDIR="mkdir"}
-: ${SED="sed"}
 : ${SHELL="${CONFIG_SHELL-/bin/sh}"}
 
-# FIXME: Substitute @EGREP@ and @FGREP@ from the Makefile too
-if $ECHO a | ($GREP -E '(a|b)') >/dev/null 2>&1; then
-  EGREP="$GREP -E"
-else
-  EGREP='egrep'
-fi
-if $ECHO 'ab*c' | ($GREP -F 'ab*c') >/dev/null 2>&1; then
-  FGREP="$GREP -F"
-else
-  FGREP='fgrep'
-fi
-
-basename='s,^.*/,,g'
-dirname='s,/[^/]*$,,'
-
-# Work around backward compatibility issue on IRIX 6.5. On IRIX 6.4+, sh
-# is ksh but when the shell is invoked as "sh" and the current value of
-# the _XPG environment variable is not equal to 1 (one), the special
-# positional parameter $0, within a function call, is the name of the
-# function.
-progpath="$0"
-
-# The name of this program:
-progname=`$ECHO "$progpath" | $SED "$basename"`
-
-# Make sure we have an absolute path for reexecution:
-case $progpath in
-  [\\/]*|[A-Za-z]:\\*) ;;
-  *) progdir=`$ECHO "$progpath" | $SED "$dirname"`
-     progdir=`cd "$progdir" && pwd`
-     progpath="$progdir/$progname"
-     ;;
-esac
-
-# Check that srcdir is set to an absolute path.
-case "$srcdir" in
-/* | [A-Za-z]:\\*) ;;
-*) srcdir=`cd $srcdir && pwd` ;;
-esac
-
-# Global variables:
-EXIT_SUCCESS=0
-EXIT_FAILURE=1
-EXIT_SKIP=77  # $? = 77 is used to indicate a skipped test to automake
 
 # Disable usage of config.site for autoconf, unless DJGPP is present.
 # The DJGPP port of autoconf requires config.site, to work correctly.
@@ -113,14 +54,7 @@ esac
 # Echo message with prefix.
 func_msg ()
 {
-    $ECHO "=" ${1+"$@"}
-}
-
-# func_error arg...
-# Echo message to standard error.
-func_error ()
-{
-    $ECHO ${1+"$@"} 1>&2
+    func_echo "=== " ${1+"$@"}
 }
 
 # func_skip arg...
@@ -135,8 +69,7 @@ func_skip ()
 # Echo message to standard error, and fail this test.
 func_fail ()
 {
-    func_error ${1+"$@"}
-    exit $EXIT_FAILURE
+    func_fatal_error ${1+"$@"}
 }
 
 # func_get_config varname_list src [failp] [regex]
@@ -177,57 +110,6 @@ func_get_config "CC" "$LIBTOOL --config" ": fatal"
 func_get_config "host" "$LIBTOOL --config" ": fatal"
 
 
-# func_grep expression filename
-# Check whether EXPRESSION matches any line of FILENAME, without output.
-func_grep ()
-{
-    $GREP "$1" "$2" >/dev/null 2>&1
-}
-
-# func_mkdir_p directory-path
-# Make sure the entire path to DIRECTORY-PATH is available.
-func_mkdir_p ()
-{
-    my_directory_path="$1"
-    my_dir_list=
-
-    if test -n "$my_directory_path" && test "$opt_dry_run" != ":"; then
-
-      # Protect directory names starting with `-'
-      case $my_directory_path in
-        -*) my_directory_path="./$my_directory_path" ;;
-      esac
-
-      # While some portion of DIR does not yet exist...
-      while test ! -d "$my_directory_path"; do
-        # ...make a list in topmost first order.  Use a colon delimited
-	# list incase some portion of path contains whitespace.
-        my_dir_list="$my_directory_path:$my_dir_list"
-
-        # If the last portion added has no slash in it, the list is done
-        case $my_directory_path in */*) ;; *) break ;; esac
-
-        # ...otherwise throw away the child directory and loop
-        my_directory_path=`$ECHO "$my_directory_path" | $SED "$dirname"`
-      done
-      my_dir_list=`$ECHO $my_dir_list | $SED 's,:*$,,'`
-
-      save_mkdir_p_IFS="$IFS"; IFS=':'
-      for my_dir in $my_dir_list; do
-	IFS="$save_mkdir_p_IFS"
-        # mkdir can fail with a `File exist' error if two processes
-        # try to create one of the directories concurrently.  Don't
-        # stop in that case!
-        $MKDIR "$my_dir" 2>/dev/null || :
-      done
-      IFS="$save_mkdir_p_IFS"
-
-      # Bail out if we (or some other process) failed to create a directory.
-      test -d "$my_directory_path" || \
-        func_fatal_error "Failed to create \`$1'"
-    fi
-}
-
 # func_mkprefixdir
 func_mkprefixdir ()
 {
@@ -253,7 +135,7 @@ func_cd ()
     func_mkdir_p "$my_dir"
 
     # Change to our build directory.
-    cd "$my_dir" || exit 1
+    cd "$my_dir" || func_fatal_error "couldn't cd to \`$my_dir'"
 }
 
 
@@ -405,6 +287,12 @@ func_exec ()
 
 # Shared global variables for test scripts
 prefix="./_inst"
-scripts="$srcdir/../config/ltmain.sh ../libtoolize"
+srcdir=`cd $srcdir && pwd`
+scripts="$srcdir/config/ltmain.sh ../libtoolize"
 
-$ECHO "=== Running $progname"
+func_msg "Running $progname"
+
+# Local Variables:
+# mode:shell-script
+# sh-indentation:2
+# End:

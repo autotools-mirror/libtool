@@ -1,5 +1,23 @@
 2004-09-23  Gary V. Vaughan  <gary@gnu.org>
 
+	* configure.ac (M4SH): AC_SUBST m4sh expander.
+	* config/general.m4sh, config/getopt.m4sh: New files with factored
+	out functionality from...
+	* config/ltmain.in, libtoolize.in: ...here.  m4_include the shared
+	code, and call AS_SHELL_SANITIZE.  Also quote all `[' and `]' to
+	survive m4 run.
+	(func_serial): No need to double up m4sh quotes after a `#'.
+	(func_check_macros): Escape `dnl' to stop m4sh interpreting it as
+	a macro.
+	* tests/defs.in: New file expanded into tests/defs by autom4te.
+	* m4/libtool.m4 (_LT_DECL_EGREP): Also require fgrep for the tests
+	that use it.
+	* Makefile.am ($(top_srcdir)/config/ltmain.sh): Now built with
+	M4SH.
+	(libtoolize): Ditto.
+	* bootstrap: Set M4SH for call to make.
+	* HACKING: No need to sync to AS_SHELL_SANITIZE by hand any more.
+
 	* m4/libtool.m4: _LT_DECL uppercase ECHO.
 	* config/ltmain.in: Use it throughout.
 	(func_mkdir_p): Now matches the other implementations in

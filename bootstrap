@@ -59,7 +59,7 @@ set -- `sed '/AC_INIT/{s/[][,()]/ /g; p;};d' configure.ac`
 rm -f ./config/ltmain.sh ./m4/ltversion.m4
 test -f Makefile || { makefile=Makefile; cp Makefile.am $makefile; }
 make ./config/ltmain.sh ./m4/ltversion.m4 \
-    top_srcdir=. PACKAGE="$2" VERSION="$3"
+    top_srcdir=. PACKAGE="$2" VERSION="$3" M4SH="autom4te -l m4sh"
 test -z "$makefile" || rm -f "$makefile"
 
 # Make a dummy libtoolize script for autoreconf:

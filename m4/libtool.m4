@@ -5773,9 +5773,11 @@ AU_DEFUN([LT_AC_PROG_RC], [LT_PROG_RC])
 # available, choose the one first in the user's PATH.
 m4_defun([_LT_DECL_EGREP],
 [AC_REQUIRE([AC_PROG_EGREP])dnl
+AC_REQUIRE([AC_PROG_FGREP])dnl
 test -z "$GREP" && GREP=grep
 _LT_DECL([], [GREP], [1], [A grep program that handles long line])
 _LT_DECL([], [EGREP], [1], [An ERE matcher])
+_LT_DECL([], [FGREP], [1], [A literal string matcher])
 ])
 
 

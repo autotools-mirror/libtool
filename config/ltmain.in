@@ -1,4 +1,5 @@
-# @configure_input@
+m4_define([_m4_divert(SCRIPT)], 100)
+m4_divert_push([SCRIPT])# @configure_input@
 
 # ltmain.sh (GNU @PACKAGE@@TIMESTAMP@) @VERSION@
 # Written by Gordon Matzigkeit <gord@gnu.ai.mit.edu>, 1996
@@ -68,62 +69,14 @@
 #
 # Report bugs to <bug-libtool@gnu.org>.
 
-# Be Bourne compatible
-if test -n "${ZSH_VERSION+set}" && (emulate sh) >/dev/null 2>&1; then
-  emulate sh
-  NULLCMD=:
-  # Zsh 3.x and 4.x performs word splitting on ${1+"$@"}, which
-  # is contrary to our usage.  Disable this feature.
-  alias -g '${1+"$@"}'='"$@"'
-  setopt NO_GLOB_SUBST
-elif test -n "${BASH_VERSION+set}${KSH_VERSION+set}" && (set -o posix) >/dev/null 2>&1; then
-  set -o posix
-fi
-DUALCASE=1; export DUALCASE # for MKS sh
-
-# The HP-UX ksh and POSIX shell print the target directory to stdout
-# if CDPATH is set.
-(unset CDPATH) >/dev/null 2>&1 && unset CDPATH
-
-
-: ${ECHO="echo"}
-: ${MKDIR="mkdir"}
-: ${MV="mv -f"}
-: ${RM="rm -f"}
-
-dirname="s,/[^/]*$,,"
-basename="s,^.*/,,g"
-
-# Work around backward compatibility issue on IRIX 6.5. On IRIX 6.4+, sh
-# is ksh but when the shell is invoked as "sh" and the current value of
-# the _XPG environment variable is not equal to 1 (one), the special
-# positional parameter $0, within a function call, is the name of the
-# function.
-progpath="$0"
-
-# The name of this program:
-PROGRAM=ltmain.sh
-progname=`$ECHO "$progpath" | $SED "$basename"`
-
-# Make sure we have an absolute path for reexecution:
-case $progpath in
-  [\\/]*|[A-Za-z]:\\*) ;;
-  *) progdir=`$ECHO "$progpath" | $SED "$dirname"`
-     progdir=`cd "$progdir" && pwd`
-     progpath="$progdir/$progname"
-     ;;
-esac
-
-# Global variables:
-EXIT_SUCCESS=0
-EXIT_FAILURE=1
-EXIT_MISMATCH=63  # $? = 63 is used to indicate version mismatch to missing.
-
 PROGRAM=ltmain.sh
 PACKAGE=@PACKAGE@
 VERSION=@VERSION@
 TIMESTAMP="@TIMESTAMP@"
 package_revision=@package_revision@
+
+AS_SHELL_SANITIZE
+$as_unset CDPATH
 
 # Check that we have a working $ECHO.
 if test "X$1" = X--no-reexec; then
@@ -149,41 +102,11 @@ EOF
   exit $EXIT_SUCCESS
 fi
 
+m4_include([getopt.m4sh])
+
 default_mode=
-help="Try \`$progname --help' for more information."
 magic="%%%MAGIC variable%%%"
 
-# Sed substitution that helps us do robust quoting.  It backslashifies
-# metacharacters that are still active within double-quoted strings.
-Xsed="${SED}"' -e 1s/^X//'
-sed_quote_subst='s/\([\\`\\"$\\\\]\)/\\\1/g'
-# test EBCDIC or ASCII
-case `$ECHO A|tr A '\301'` in
- A) # EBCDIC based system
-  SP2NL="tr '\100' '\n'"
-  NL2SP="tr '\r\n' '\100\100'"
-  ;;
- *) # Assume ASCII based system
-  SP2NL="tr '\040' '\012'"
-  NL2SP="tr '\015\012' '\040\040'"
-  ;;
-esac
-
-# NLS nuisances.
-# Only set LANG and LC_ALL to C if already set.
-# These must not be set unconditionally because not all systems understand
-# e.g. LANG=C (notably SCO).
-# We save the old values to restore during execute mode.
-if test "${LC_ALL+set}" = set; then
-  save_LC_ALL="$LC_ALL"; LC_ALL=C; export LC_ALL
-fi
-if test "${LANG+set}" = set; then
-  save_LANG="$LANG"; LANG=C; export LANG
-fi
-
-# Make sure IFS has a sensible default
-: ${IFS="
- 	"}
 
 # Global variables.
 mode=$default_mode
@@ -196,49 +119,11 @@ o2lo="s/\\.${objext}\$/.lo/"
 
 opt_dry_run=${run-false}  ## inherit $run when mdemo-dryrun.test sets it above
 opt_duplicate_deps=false
-opt_help=false
 
 # If this variable is set in any of the actions, the command in it
 # will be execed at the end.  This prevents here-documents from being
 # left over by shells.
 exec_cmd=
-
-# func_echo arg...
-# Echo program name prefixed message, along with the current mode
-# name if it has been set yet.
-func_echo ()
-{
-    $ECHO $progname${mode+: }$mode: ${1+"$@"}
-}
-
-# func_verbose arg...
-# Echo program name prefixed message in verbose mode only.
-func_verbose ()
-{
-    $opt_verbose && func_echo ${1+"$@"}
-}
-
-# func_error arg...
-# Echo program name prefixed message to standard error.
-func_error ()
-{
-    $ECHO $progname${mode+: }$mode: ${1+"$@"} 1>&2
-}
-
-# func_warning arg...
-# Echo program name prefixed warning message to standard error.
-func_warning ()
-{
-    $ECHO $progname${mode+: }$mode: warning: ${1+"$@"} 1>&2
-}
-
-# func_fatal_error arg...
-# Echo program name prefixed message to standard error, and exit.
-func_fatal_error ()
-{
-    func_error ${1+"$@"}
-    exit $EXIT_FAILURE
-}
 
 # func_fatal_configuration arg...
 # Echo program name prefixed message to standard error, followed by
@@ -250,68 +135,6 @@ func_fatal_configuration ()
     func_fatal_error "Fatal configuration error."
 }
 
-# func_fatal_help arg...
-# Echo program name prefixed message to standard error, followed by
-# a help hint, and exit.
-func_fatal_help ()
-{
-    func_error ${1+"$@"}
-    func_fatal_error "$help"
-}
-
-# func_missing_arg argname
-# Echo program name prefixed message to standard error and set global
-# exit_cmd.
-func_missing_arg ()
-{
-    func_error "missing argument for $1"
-    exit_cmd=exit
-}
-
-# func_version
-# Echo version message to standard output and exit.
-func_version ()
-{
-    $SED '/^# '$PROGRAM' (GNU /,/# warranty; / {
-        s/^# //; s/^# *$//;
-        s/\((C)\)[ 0-9,-]*\( [1-9][0-9]*\)/\1\2/;
-        p;
-     }; d' < "$progpath"
-     exit $EXIT_SUCCESS
-}
-
-# func_usage
-# Echo short help message to standard output and exit.
-func_usage ()
-{
-    $SED '/^# Usage:/,/# -h/ {
-        s/^# //; s/^# *$//;
-	s/\$progname/'$progname'/;
-	p;
-    }; d' < "$progpath"
-    $ECHO
-    $ECHO "run \`$progname --help | more' for full usage"
-    exit $EXIT_SUCCESS
-}
-
-# func_help
-# Echo long help message to standard output and exit.
-func_help ()
-{
-    $SED '/^# Usage:/,/# Report bugs to/ {
-        s/^# //; s/^# *$//;
-	s:\$progname:'$progname':;
-	s:\$SHELL:'"$SHELL"':;
-	s:\$LTCC:'"$LTCC"':;
-	s:\$LTCFLAGS:'"$LTCFLAGS"':;
-	s:\$LD:'"$LD"':;
-	s/\$with_gnu_ld/'"$with_gnu_ld"'/;
-	s/\$automake_version/'"`automake --version 2>/dev/null |$SED 1q`"'/;
-	s/\$autoconf_version/'"`autoconf --version 2>/dev/null |$SED 1q`"'/;
-	p;
-     }; d' < "$progpath"
-    exit $EXIT_SUCCESS
-}
 
 # func_config
 # Display the configuration for all the tags in this script.
@@ -365,7 +188,7 @@ func_enable_tag ()
 
   # Validate tagname.
   case $tagname in
-    *[!-_A-Za-z0-9,/]*)
+    *[[!-_A-Za-z0-9,/]]*)
       func_fatal_error "invalid tag name: $tagname"
       ;;
   esac
@@ -404,7 +227,7 @@ func_mode_help ()
 
       clean)
         $ECHO \
-"Usage: $progname [OPTION]... --mode=clean RM [RM-OPTION]... FILE...
+"Usage: $progname [[OPTION]]... --mode=clean RM [[RM-OPTION]]... FILE...
 
 Remove files from the build directory.
 
@@ -418,7 +241,7 @@ with it are deleted. Otherwise, only FILE itself is deleted using RM."
 
       compile)
       $ECHO \
-"Usage: $progname [OPTION]... --mode=compile COMPILE-COMMAND... SOURCEFILE
+"Usage: $progname [[OPTION]]... --mode=compile COMPILE-COMMAND... SOURCEFILE
 
 Compile a source file into a libtool library object.
 
@@ -441,7 +264,7 @@ library object suffix, \`.lo'."
 
       execute)
         $ECHO \
-"Usage: $progname [OPTION]... --mode=execute COMMAND [ARGS]...
+"Usage: $progname [[OPTION]]... --mode=execute COMMAND [[ARGS]]...
 
 Automatically set library path, then run a program.
 
@@ -461,7 +284,7 @@ Then, COMMAND is executed, with ARGS as arguments."
 
       finish)
         $ECHO \
-"Usage: $progname [OPTION]... --mode=finish [LIBDIR]...
+"Usage: $progname [[OPTION]]... --mode=finish [[LIBDIR]]...
 
 Complete the installation of libtool libraries.
 
@@ -473,7 +296,7 @@ the \`--dry-run' option if you just want to see what would be executed."
 
       install)
         $ECHO \
-"Usage: $progname [OPTION]... --mode=install INSTALL-COMMAND...
+"Usage: $progname [[OPTION]]... --mode=install INSTALL-COMMAND...
 
 Install executables or libraries.
 
@@ -490,7 +313,7 @@ BSD-compatible install options are recognized)."
 
       link)
         $ECHO \
-"Usage: $progname [OPTION]... --mode=link LINK-COMMAND...
+"Usage: $progname [[OPTION]]... --mode=link LINK-COMMAND...
 
 Link object files or libraries together to form another library, or to
 create an executable program.
@@ -521,12 +344,12 @@ The following components of LINK-COMMAND are treated specially:
                     don't remove output files matching REGEX
   -release RELEASE  specify package release information
   -rpath LIBDIR     the created library will eventually be installed in LIBDIR
-  -R[ ]LIBDIR       add LIBDIR to the runtime path of programs and libraries
+  -R[[ ]]LIBDIR       add LIBDIR to the runtime path of programs and libraries
   -shared           only do dynamic linking of libtool libraries
   -shrext SUFFIX    override the standard shared library file extension
   -static           do not do any dynamic linking of libtool libraries
-  -version-info CURRENT[:REVISION[:AGE]]
-		    specify library version info [each variable defaults to 0]
+  -version-info CURRENT[[:REVISION[:AGE]]]
+		    specify library version info [[each variable defaults to 0]]
   -weak LIBNAME     declare that the target provides the LIBNAME interface
 
 All other options (arguments beginning with \`-') are ignored.
@@ -548,7 +371,7 @@ is created, otherwise an executable program is created."
 
       uninstall)
         $ECHO \
-"Usage: $progname [OPTION]... --mode=uninstall RM [RM-OPTION]... FILE...
+"Usage: $progname [[OPTION]]... --mode=uninstall RM [[RM-OPTION]]... FILE...
 
 Remove libraries from an installation directory.
 
@@ -577,10 +400,8 @@ Otherwise, only FILE itself is deleted using RM."
   # sed scripts:
   my_sed_single_opt='1s/^\(..\).*$/\1/;q'
   my_sed_single_rest='1s/^..\(.*\)$/\1/;q'
-  my_sed_long_opt='1s/^\(--[^=]*\)=.*/\1/;q'
-  my_sed_long_arg='1s/^--[^=]*=//'
-
-  exit_cmd=:
+  my_sed_long_opt='1s/^\(--[[^=]]*\)=.*/\1/;q'
+  my_sed_long_arg='1s/^--[[^=]]*=//'
 
   # Shorthand for --mode=foo, only valid as the first argument
   case $1 in
@@ -717,104 +538,6 @@ Otherwise, only FILE itself is deleted using RM."
   # Having warned about all mis-specified options, bail out if
   # anything was wrong.
   $exit_cmd $EXIT_FAILURE
-}
-
-
-# func_mkdir_p directory-path
-# Make sure the entire path to DIRECTORY-PATH is available.
-func_mkdir_p ()
-{
-    my_directory_path="$1"
-    my_dir_list=
-
-    if test -n "$my_directory_path" && test "$opt_dry_run" != ":"; then
-
-      # Protect directory names starting with `-'
-      case $my_directory_path in
-        -*) my_directory_path="./$my_directory_path" ;;
-      esac
-
-      # While some portion of DIR does not yet exist...
-      while test ! -d "$my_directory_path"; do
-        # ...make a list in topmost first order.  Use a colon delimited
-	# list incase some portion of path contains whitespace.
-        my_dir_list="$my_directory_path:$my_dir_list"
-
-        # If the last portion added has no slash in it, the list is done
-        case $my_directory_path in */*) ;; *) break ;; esac
-
-        # ...otherwise throw away the child directory and loop
-        my_directory_path=`$ECHO "$my_directory_path" | $SED "$dirname"`
-      done
-      my_dir_list=`$ECHO $my_dir_list | $SED 's,:*$,,'`
-
-      save_mkdir_p_IFS="$IFS"; IFS=':'
-      for my_dir in $my_dir_list; do
-	IFS="$save_mkdir_p_IFS"
-        # mkdir can fail with a `File exist' error if two processes
-        # try to create one of the directories concurrently.  Don't
-        # stop in that case!
-        $MKDIR "$my_dir" 2>/dev/null || :
-      done
-      IFS="$save_mkdir_p_IFS"
-
-      # Bail out if we (or some other process) failed to create a directory.
-      test -d "$my_directory_path" || \
-        func_fatal_error "Failed to create \`$1'"
-    fi
-}
-
-
-# func_mktempdir
-# Make a temporary directory that won't clash with other running
-# libtool processes, and avoids race conditions if possible
-func_mktempdir ()
-{
-    my_template="${TMPDIR-/tmp}/libtool"
-
-    if test "$opt_dry_run" = ":"; then
-      # Return a directory name, but don't create it in dry-run mode
-      my_tmpdir="${my_template}-$$"
-    else
-
-      # If mktemp works, use that first and foremost
-      my_tmpdir=`mktemp -d "${my_template}-XXXXXXXX" 2>/dev/null`
-
-      if test ! -d "$my_tmpdir"; then
-        # Failing that, at least try and use $RANDOM to avoid a race
-        my_tmpdir="${my_template}-${RANDOM-0}$$"
-
-        save_mktempdir_umask=`umask`
-        umask 0077
-        $MKDIR "$my_tmpdir"
-        umask $save_mktempdir_umask
-      fi
-
-      # If we're not in dry-run mode, bomb out on failure
-      test -d "$my_tmpdir" || \
-        func_fatal_error "cannot create temporary directory \`$my_tmpdir'"
-    fi
-
-    $ECHO "$my_tmpdir"
-}
-
-
-# func_quote_for_eval arg
-# Aesthetically quote ARG to be evaled later.
-func_quote_for_eval ()
-{
-  my_arg="$1"
-
-  case $my_arg in
-    # Double-quote args containing other shell metacharacters.
-    # Many Bourne shells cannot handle close brackets correctly
-    # in scan sets, so we specify it separately.
-    *[\[\~\#\^\&\*\(\)\{\}\|\;\<\>\?\'\ \	]*|*]*|"")
-      my_arg="\"$my_arg\""
-      ;;
-  esac
-
-  func_quote_for_eval_result="$my_arg"
 }
 
 
@@ -958,7 +681,7 @@ func_generate_dlsyms () {
     my_outputname="$1"
     my_originator="$2"
     my_pic_p="${3-no}"
-    my_prefix=`$ECHO "$my_originator" | sed 's%[^a-zA-Z0-9]%_%g'`
+    my_prefix=`$ECHO "$my_originator" | sed 's%[[^a-zA-Z0-9]]%_%g'`
     my_dlsyms=
 
     if test -n "$dlfiles$dlprefiles" || test "$dlself" != no; then
@@ -1026,7 +749,7 @@ extern \"C\" {
 	      ;;
 	    esac
 	  else
-	    $run eval "${SED} -e 's/\([][.*^$]\)/\\\1/g' -e 's/^/ /' -e 's/$/$/'"' < "$export_symbols" > "$output_objdir/$output.exp"'
+	    $run eval "${SED} -e 's/\([[]][[.*^$]]\)/\\\1/g' -e 's/^/ /' -e 's/$/$/'"' < "$export_symbols" > "$output_objdir/$output.exp"'
 	    case $host in
 	    *cygwin | *mingw* )
 	      $run eval "${SED} -e '1iEXPORTS'"' < "$output_objdir/$output.exp" > "$output_objdir/$output.def"'
@@ -1096,7 +819,7 @@ const struct {
    const char *name;
    void *address;
 }
-lt_${my_prefix}_LTX_preloaded_symbols[] =
+lt_${my_prefix}_LTX_preloaded_symbols[[]] =
 {\
   { \"$my_originator\", (void *) 0 },
 "
@@ -1196,7 +919,7 @@ func_extract_archives () {
     for my_xlib in $my_oldlibs; do
       # Extract the objects.
       case $my_xlib in
-	[\\/]* | [A-Za-z]:[\\/]*) my_xabs="$my_xlib" ;;
+	[[\\/]]* | [[A-Za-z]]:[[\\/]]*) my_xabs="$my_xlib" ;;
 	*) my_xabs=`pwd`"/$my_xlib" ;;
       esac
       my_xlib=`$ECHO "X$my_xlib" | $Xsed -e 's%^.*/%%'`
@@ -1267,7 +990,7 @@ func_extract_archives () {
 	      name_to="$name"
 	      while test "X$name_to" = "X$name" || test -f "$my_xdir/$name_to"
 	      do
-		name_to=`$ECHO "X$name_to" | $Xsed -e "s/\([^.]*\)/\1-$i/"`
+		name_to=`$ECHO "X$name_to" | $Xsed -e "s/\([[^.]]*\)/\1-$i/"`
 	      done
 	      $show "(cd $my_xdir && $AR xN $i $my_xabs '$name' && $MV '$name' '$name_to')"
 	      $run eval "(cd \$my_xdir && $AR xN $i \$my_xabs '$name' && $MV '$name' '$name_to')" || exit $?
@@ -1385,7 +1108,7 @@ func_mode_compile ()
 
     # Recognize several different file suffixes.
     # If the user specifies -o file.o, it is replaced with file.lo
-    xform='[cCFSifmso]'
+    xform='[[cCFSifmso]]'
     case $libobj in
     *.ada) xform=ada ;;
     *.adb) xform=adb ;;
@@ -1441,7 +1164,7 @@ func_mode_compile ()
     done
 
     objname=`$ECHO "X$obj" | $Xsed -e 's%^.*/%%'`
-    xdir=`$ECHO "X$obj" | $Xsed -e 's%/[^/]*$%%'`
+    xdir=`$ECHO "X$obj" | $Xsed -e 's%/[[^/]]*$%%'`
     if test "X$xdir" = "X$obj"; then
       xdir=
     else
@@ -1476,7 +1199,7 @@ func_mode_compile ()
     # Calculate the filename of the output object if compiler does
     # not support -o with -c
     if test "$compiler_c_o" = no; then
-      output_obj=`$ECHO "X$srcfile" | $Xsed -e 's%^.*/%%' -e 's%\.[^.]*$%%'`.${objext}
+      output_obj=`$ECHO "X$srcfile" | $Xsed -e 's%^.*/%%' -e 's%\.[[^.]]*$%%'`.${objext}
       lockfile="$output_obj.lock"
       removelist="$removelist $output_obj $lockfile"
       trap "$run $RM $removelist; exit $EXIT_FAILURE" 1 2 15
@@ -1727,7 +1450,7 @@ func_mode_execute ()
 	  continue
 	fi
 
-	dir=`$ECHO "X$file" | $Xsed -e 's%/[^/]*$%%'`
+	dir=`$ECHO "X$file" | $Xsed -e 's%/[[^/]]*$%%'`
 	test "X$dir" = "X$file" && dir=.
 
 	if test -f "$dir/$objdir/$dlname"; then
@@ -1739,7 +1462,7 @@ func_mode_execute ()
 
       *.lo)
 	# Just add the directory containing the .lo file.
-	dir=`$ECHO "X$file" | $Xsed -e 's%/[^/]*$%%'`
+	dir=`$ECHO "X$file" | $Xsed -e 's%/[[^/]]*$%%'`
 	test "X$dir" = "X$file" && dir=.
 	;;
 
@@ -1987,7 +1710,7 @@ func_mode_install ()
       destdir="$dest"
       destname=
     else
-      destdir=`$ECHO "X$dest" | $Xsed -e 's%/[^/]*$%%'`
+      destdir=`$ECHO "X$dest" | $Xsed -e 's%/[[^/]]*$%%'`
       test "X$destdir" = "X$dest" && destdir=.
       destname=`$ECHO "X$dest" | $Xsed -e 's%^.*/%%'`
 
@@ -1997,7 +1720,7 @@ func_mode_install ()
 	func_fatal_help "\`$dest' is not a directory"
     fi
     case $destdir in
-    [\\/]* | [A-Za-z]:[\\/]*) ;;
+    [[\\/]]* | [[A-Za-z]]:[[\\/]]*) ;;
     *)
       for file in $files; do
 	case $file in
@@ -2054,7 +1777,7 @@ func_mode_install ()
 	  esac
 	fi
 
-	dir=`$ECHO "X$file" | $Xsed -e 's%/[^/]*$%%'`/
+	dir=`$ECHO "X$file" | $Xsed -e 's%/[[^/]]*$%%'`/
 	test "X$dir" = "X$file/" && dir=
 	dir="$dir$objdir"
 
@@ -2284,7 +2007,7 @@ func_mode_install ()
 	    fi
 	  else
 	    # Install the binary that we compiled earlier.
-	    file=`$ECHO "X$file$stripped_ext" | $Xsed -e "s%\([^/]*\)$%$objdir/\1%"`
+	    file=`$ECHO "X$file$stripped_ext" | $Xsed -e "s%\([[^/]]*\)$%$objdir/\1%"`
 	  fi
 	fi
 
@@ -2577,7 +2300,7 @@ func_mode_link ()
 		fi
 
 		# Extract subdirectory from the argument.
-		xdir=`$ECHO "X$arg" | $Xsed -e 's%/[^/]*$%%'`
+		xdir=`$ECHO "X$arg" | $Xsed -e 's%/[[^/]]*$%%'`
 		if test "X$xdir" = "X$arg"; then
 		  xdir=
 		else
@@ -2635,7 +2358,7 @@ func_mode_link ()
 		  # Dry-run case.
 
 		  # Extract subdirectory from the argument.
-		  xdir=`$ECHO "X$arg" | $Xsed -e 's%/[^/]*$%%'`
+		  xdir=`$ECHO "X$arg" | $Xsed -e 's%/[[^/]]*$%%'`
 		  if test "X$xdir" = "X$arg"; then
 		    xdir=
 		  else
@@ -2669,7 +2392,7 @@ func_mode_link ()
 	rpath | xrpath)
 	  # We need an absolute path.
 	  case $arg in
-	  [\\/]* | [A-Za-z]:[\\/]*) ;;
+	  [[\\/]]* | [[A-Za-z]]:[[\\/]]*) ;;
 	  *)
 	    func_fatal_error "only absolute run-paths are allowed"
 	    ;;
@@ -2786,7 +2509,7 @@ func_mode_link ()
 
       # The native IRIX linker understands -LANG:*, -LIST:* and -LNO:*
       # so, if we see these flags be careful not to treat them like -L
-      -L[A-Z][A-Z]*:*)
+      -L[[A-Z]][[A-Z]]*:*)
 	case $with_gcc/$host in
 	no/*-*-irix* | /*-*-irix*)
 	  compile_command="$compile_command $arg"
@@ -2800,7 +2523,7 @@ func_mode_link ()
 	dir=`$ECHO "X$arg" | $Xsed -e 's/^-L//'`
 	# We need an absolute path.
 	case $dir in
-	[\\/]* | [A-Za-z]:[\\/]*) ;;
+	[[\\/]]* | [[A-Za-z]]:[[\\/]]*) ;;
 	*)
 	  absdir=`cd "$dir" && pwd`
 	  test -z "$absdir" && \
@@ -2841,7 +2564,7 @@ func_mode_link ()
 	    # Do not include libc due to us having libc/libc_r.
 	    test "X$arg" = "X-lc" && continue
 	    ;;
-	  *-*-rhapsody* | *-*-darwin1.[012])
+	  *-*-rhapsody* | *-*-darwin1.[[012]])
 	    # Rhapsody C and math libraries are in the System framework
 	    deplibs="$deplibs System.ltframework"
 	    continue
@@ -2923,7 +2646,7 @@ func_mode_link ()
 	dir=`$ECHO "X$arg" | $Xsed -e 's/^-R//'`
 	# We need an absolute path.
 	case $dir in
-	[\\/]* | [A-Za-z]:[\\/]*) ;;
+	[[\\/]]* | [[A-Za-z]]:[[\\/]]*) ;;
 	*)
 	  func_fatal_error "only absolute run-paths are allowed"
 	  ;;
@@ -3024,7 +2747,7 @@ func_mode_link ()
       # +DA*, +DD* enable 64-bit mode on the HP compiler
       # -q* pass through compiler args for the IBM compiler
       # -m* pass through architecture-specific compiler args for GCC
-      -64|-mips[0-9]|-xarch=*|-xtarget=*|+DA*|+DD*|-q*|-m*)
+      -64|-mips[[0-9]]|-xarch=*|-xtarget=*|+DA*|+DD*|-q*|-m*)
         arg=`$ECHO "X$arg" | $Xsed -e "$sed_quote_subst"`
         func_quote_for_eval "$arg"
 	arg="$func_quote_for_eval_result"
@@ -3069,7 +2792,7 @@ func_mode_link ()
 	  fi
 
 	  # Extract subdirectory from the argument.
-	  xdir=`$ECHO "X$arg" | $Xsed -e 's%/[^/]*$%%'`
+	  xdir=`$ECHO "X$arg" | $Xsed -e 's%/[[^/]]*$%%'`
 	  if test "X$xdir" = "X$arg"; then
 	    xdir=
  	  else
@@ -3127,7 +2850,7 @@ func_mode_link ()
 	    # Dry-run case.
 
 	    # Extract subdirectory from the argument.
-	    xdir=`$ECHO "X$arg" | $Xsed -e 's%/[^/]*$%%'`
+	    xdir=`$ECHO "X$arg" | $Xsed -e 's%/[[^/]]*$%%'`
 	    if test "X$xdir" = "X$arg"; then
 	      xdir=
 	    else
@@ -3206,7 +2929,7 @@ func_mode_link ()
     eval sys_lib_search_path=\"$sys_lib_search_path_spec\"
     eval sys_lib_dlsearch_path=\"$sys_lib_dlsearch_path_spec\"
 
-    output_objdir=`$ECHO "X$output" | $Xsed -e 's%/[^/]*$%%'`
+    output_objdir=`$ECHO "X$output" | $Xsed -e 's%/[[^/]]*$%%'`
     if test "X$output_objdir" = "X$output"; then
       output_objdir="$objdir"
     else
@@ -3320,7 +3043,7 @@ func_mode_link ()
 	  # Ignore non-libtool-libs
 	  dependency_libs=
 	  case $lib in
-	  *[\\/]*.la) . $lib   ;;
+	  *[[\\/]]*.la) . $lib   ;;
 	  *.la)	      . ./$lib ;;
 	  esac
 
@@ -3408,7 +3131,7 @@ func_mode_link ()
 		  done
 		  if test "X$ll" = "X$old_library" ; then # only static version available
 		    found=no
-		    ladir=`$ECHO "X$lib" | $Xsed -e 's%/[^/]*$%%'`
+		    ladir=`$ECHO "X$lib" | $Xsed -e 's%/[[^/]]*$%%'`
 		    test "X$ladir" = "X$lib" && ladir="."
 		    lib=$ladir/$old_library
 		    if test "$linkmode,$pass" = "prog,link"; then
@@ -3571,7 +3294,7 @@ func_mode_link ()
 	  func_fatal_error "\`$lib' is not a valid libtool archive"
 	fi
 
-	ladir=`$ECHO "X$lib" | $Xsed -e 's%/[^/]*$%%'`
+	ladir=`$ECHO "X$lib" | $Xsed -e 's%/[[^/]]*$%%'`
 	test "X$ladir" = "X$lib" && ladir="."
 
 	dlname=
@@ -3596,9 +3319,9 @@ func_mode_link ()
 	*-*-darwin*)
 	  # Convert "-framework foo" to "foo.ltframework"
 	  if test -n "$inherited_linker_flags"; then
-	    inherited_linker_flags=`$ECHO "X$inherited_linker_flags" | $Xsed -e 's/-framework \([^ $]*\)/\1.ltframework/g'`
+	    inherited_linker_flags=`$ECHO "X$inherited_linker_flags" | $Xsed -e 's/-framework \([[^ $]]*\)/\1.ltframework/g'`
 	  fi
-	  dependency_libs=`$ECHO "X $dependency_libs" | $Xsed -e 's% \([^ $]*\).ltframework% -framework \1%g'`
+	  dependency_libs=`$ECHO "X $dependency_libs" | $Xsed -e 's% \([[^ $]]*\).ltframework% -framework \1%g'`
 	  ;;
 	esac
 
@@ -3666,7 +3389,7 @@ func_mode_link ()
 
 	# We need an absolute path.
 	case $ladir in
-	[\\/]* | [A-Za-z]:[\\/]*) abs_ladir="$ladir" ;;
+	[[\\/]]* | [[A-Za-z]]:[[\\/]]*) abs_ladir="$ladir" ;;
 	*)
 	  abs_ladir=`cd "$ladir" && pwd`
 	  if test -z "$abs_ladir"; then
@@ -3980,7 +3703,7 @@ func_mode_link ()
 		# Try looking first in the location we're being installed to.
 		if test -n "$inst_prefix_dir"; then
 		  case "$libdir" in
-		    [\\/]*)
+		    [[\\/]]*)
 		      add_dir="$add_dir -L$inst_prefix_dir$libdir"
 		      ;;
 		  esac
@@ -4052,7 +3775,7 @@ func_mode_link ()
 	      # Try looking first in the location we're being installed to.
 	      if test -n "$inst_prefix_dir"; then
 		case "$libdir" in
-		  [\\/]*)
+		  [[\\/]]*)
 		    add_dir="$add_dir -L$inst_prefix_dir$libdir"
 		    ;;
 		esac
@@ -4160,11 +3883,11 @@ func_mode_link ()
 	      case $deplib in
 	      -L*) path="$deplib" ;;
 	      *.la)
-		dir=`$ECHO "X$deplib" | $Xsed -e 's%/[^/]*$%%'`
+		dir=`$ECHO "X$deplib" | $Xsed -e 's%/[[^/]]*$%%'`
 		test "X$dir" = "X$deplib" && dir="."
 		# We need an absolute path.
 		case $dir in
-		[\\/]* | [A-Za-z]:[\\/]*) absdir="$dir" ;;
+		[[\\/]]* | [[A-Za-z]]:[[\\/]]*) absdir="$dir" ;;
 		*)
 		  absdir=`cd "$dir" && pwd`
 		  if test -z "$absdir"; then
@@ -4461,7 +4184,7 @@ func_mode_link ()
 
 	# Check that each of the things are valid numbers.
 	case $current in
-	0 | [1-9] | [1-9][0-9] | [1-9][0-9][0-9]) ;;
+	0 | [[1-9]] | [[1-9]][[0-9]] | [[1-9]][[0-9]][[0-9]]) ;;
 	*)
 	  func_error "CURRENT \`$current' is not a nonnegative integer"
 	  func_fatal_error "\`$vinfo' is not valid version information"
@@ -4469,7 +4192,7 @@ func_mode_link ()
 	esac
 
 	case $revision in
-	0 | [1-9] | [1-9][0-9] | [1-9][0-9][0-9]) ;;
+	0 | [[1-9]] | [[1-9]][[0-9]] | [[1-9]][[0-9]][[0-9]]) ;;
 	*)
 	  func_error "REVISION \`$revision' is not a nonnegative integer"
 	  func_fatal_error "\`$vinfo' is not valid version information"
@@ -4477,7 +4200,7 @@ func_mode_link ()
 	esac
 
 	case $age in
-	0 | [1-9] | [1-9][0-9] | [1-9][0-9][0-9]) ;;
+	0 | [[1-9]] | [[1-9]][[0-9]] | [[1-9]][[0-9]][[0-9]]) ;;
 	*)
 	  func_error "AGE \`$age' is not a nonnegative integer"
 	  func_fatal_error "\`$vinfo' is not valid version information"
@@ -4709,7 +4432,7 @@ func_mode_link ()
 	  *-*-cygwin* | *-*-mingw* | *-*-pw32* | *-*-os2* | *-*-beos*)
 	    # these systems don't actually have a c library (as such)!
 	    ;;
-	  *-*-rhapsody* | *-*-darwin1.[012])
+	  *-*-rhapsody* | *-*-darwin1.[[012]])
 	    # Rhapsody C library is in the System framework
 	    deplibs="$deplibs System.ltframework"
 	    ;;
@@ -4869,7 +4592,7 @@ EOF
 	      if test -n "$a_deplib" ; then
 		libname=`eval \\$ECHO \"$libname_spec\"`
 		for i in $lib_search_path $sys_lib_search_path $shlib_search_path; do
-		  potential_libs=`ls $i/$libname[.-]* 2>/dev/null`
+		  potential_libs=`ls $i/$libname[[.-]]* 2>/dev/null`
 		  for potent_lib in $potential_libs; do
 		      # Follow soft links.
 		      if ls -lLd "$potent_lib" 2>/dev/null |
@@ -4885,8 +4608,8 @@ EOF
 		      while test -h "$potlib" 2>/dev/null; do
 			potliblink=`ls -ld $potlib | ${SED} 's/.* -> //'`
 			case $potliblink in
-			[\\/]* | [A-Za-z]:[\\/]*) potlib="$potliblink";;
-			*) potlib=`$ECHO "X$potlib" | $Xsed -e 's,[^/]*$,,'`"$potliblink";;
+			[[\\/]]* | [[A-Za-z]]:[[\\/]]*) potlib="$potliblink";;
+			*) potlib=`$ECHO "X$potlib" | $Xsed -e 's,[[^/]]*$,,'`"$potliblink";;
 			esac
 		      done
 		      if eval $file_magic_cmd \"\$potlib\" 2>/dev/null |
@@ -4938,7 +4661,7 @@ EOF
 	      if test -n "$a_deplib" ; then
 		libname=`eval \\$ECHO \"$libname_spec\"`
 		for i in $lib_search_path $sys_lib_search_path $shlib_search_path; do
-		  potential_libs=`ls $i/$libname[.-]* 2>/dev/null`
+		  potential_libs=`ls $i/$libname[[.-]]* 2>/dev/null`
 		  for potent_lib in $potential_libs; do
 		    potlib="$potent_lib" # see symlink-check above in file_magic test
 		    if eval $ECHO \"$potent_lib\" 2>/dev/null |
@@ -4975,14 +4698,14 @@ EOF
 	none | unknown | *)
 	  newdeplibs=""
 	  tmp_deplibs=`$ECHO "X $deplibs" | $Xsed \
-	      -e 's/ -lc$//' -e 's/ -[LR][^ ]*//g'`
+	      -e 's/ -lc$//' -e 's/ -[[LR]][[^ ]]*//g'`
 	  if test "X$allow_libtool_libs_with_static_runtimes" = "Xyes" ; then
 	    for i in $predeps $postdeps ; do
 	      # can't use Xsed below, because $i might contain '/'
 	      tmp_deplibs=`$ECHO "X $tmp_deplibs" | ${SED} -e "1s,^X,," -e "s,$i,,"`
 	    done
 	  fi
-	  if $ECHO "X $tmp_deplibs" | $Xsed -e 's/[ 	]//g' |
+	  if $ECHO "X $tmp_deplibs" | $Xsed -e 's/[[ 	]]//g' |
 	     $GREP . >/dev/null; then
 	    $ECHO
 	    if test "X$deplibs_check_method" = "Xnone"; then
@@ -5002,7 +4725,7 @@ EOF
 	name=$name_save
 
 	case $host in
-	*-*-rhapsody* | *-*-darwin1.[012])
+	*-*-rhapsody* | *-*-darwin1.[[012]])
 	  # On Rhapsody replace the C library with the System framework
 	  newdeplibs=`$ECHO "X $newdeplibs" | $Xsed -e 's/ -lc / System.ltframework /'`
 	  ;;
@@ -5056,9 +4779,9 @@ EOF
       # Time to change all our "foo.ltframework" stuff back to "-framework foo"
       case $host in
 	*-*-darwin*)
-	  newdeplibs=`$ECHO "X $newdeplibs" | $Xsed -e 's% \([^ $]*\).ltframework% -framework \1%g'`
-	  inherited_linker_flags=`$ECHO "X $inherited_linker_flags" | $Xsed -e 's% \([^ $]*\).ltframework% -framework \1%g'`
-	  deplibs=`$ECHO "X $deplibs" | $Xsed -e 's% \([^ $]*\).ltframework% -framework \1%g'`
+	  newdeplibs=`$ECHO "X $newdeplibs" | $Xsed -e 's% \([[^ $]]*\).ltframework% -framework \1%g'`
+	  inherited_linker_flags=`$ECHO "X $inherited_linker_flags" | $Xsed -e 's% \([[^ $]]*\).ltframework% -framework \1%g'`
+	  deplibs=`$ECHO "X $deplibs" | $Xsed -e 's% \([[^ $]]*\).ltframework% -framework \1%g'`
 	  ;;
       esac
 
@@ -5577,10 +5300,10 @@ EOF
         && test "$dlopen_support" = unknown \
 	&& test "$dlopen_self" = unknown \
 	&& test "$dlopen_self_static" = unknown && \
-	  func_warning "\`LT_INIT([dlopen])' not used. Assuming no dlopen support."
+	  func_warning "\`LT_INIT([[dlopen]])' not used. Assuming no dlopen support."
 
       case $host in
-      *-*-rhapsody* | *-*-darwin1.[012])
+      *-*-rhapsody* | *-*-darwin1.[[012]])
 	# On Rhapsody replace the C library is the System framework
 	compile_deplibs=`$ECHO "X $compile_deplibs" | $Xsed -e 's/ -lc / System.ltframework /'`
 	finalize_deplibs=`$ECHO "X $finalize_deplibs" | $Xsed -e 's/ -lc / System.ltframework /'`
@@ -5593,15 +5316,15 @@ EOF
 	# But is supposedly fixed on 10.4 or later (yay!).
 	if test "$tagname" = CXX ; then
 	  case ${MACOSX_DEPLOYMENT_TARGET-10.0} in
-	    10.[0123])
+	    10.[[0123]])
 	      compile_command="$compile_command ${wl}-bind_at_load"
 	      finalize_command="$finalize_command ${wl}-bind_at_load"
 	    ;;
 	  esac
 	fi
 	# Time to change all our "foo.ltframework" stuff back to "-framework foo"
-	compile_deplibs=`$ECHO "X $compile_deplibs" | $Xsed -e 's% \([^ $]*\).ltframework% -framework \1%g'`
-	finalize_deplibs=`$ECHO "X $finalize_deplibs" | $Xsed -e 's% \([^ $]*\).ltframework% -framework \1%g'`
+	compile_deplibs=`$ECHO "X $compile_deplibs" | $Xsed -e 's% \([[^ $]]*\).ltframework% -framework \1%g'`
+	finalize_deplibs=`$ECHO "X $finalize_deplibs" | $Xsed -e 's% \([[^ $]]*\).ltframework% -framework \1%g'`
 	;;
       esac
 
@@ -5732,7 +5455,7 @@ EOF
 	rpath=
 	for dir in $temp_rpath; do
 	  case $dir in
-	  [\\/]* | [A-Za-z]:[\\/]*)
+	  [[\\/]]* | [[A-Za-z]]:[[\\/]]*)
 	    # Absolute path.
 	    rpath="$rpath$dir:"
 	    ;;
@@ -5840,7 +5563,7 @@ EOF
       # Quote $ECHO for shipping.
       if test "X$ECHO" = "X$SHELL $progpath --fallback-echo"; then
 	case $progpath in
-	[\\/]* | [A-Za-z]:[\\/]*) qecho="$SHELL $progpath --fallback-echo";;
+	[[\\/]]* | [[A-Za-z]]:[[\\/]]*) qecho="$SHELL $progpath --fallback-echo";;
 	*) qecho="$SHELL `pwd`/$progpath --fallback-echo";;
 	esac
 	qecho=`$ECHO "X$qecho" | $Xsed -e "$sed_quote_subst"`
@@ -5955,36 +5678,36 @@ char * strendzap(char *str, const char *pat);
 void lt_fatal (const char *message, ...);
 
 int
-main (int argc, char *argv[])
+main (int argc, char *argv[[]])
 {
   char **newargz;
   int i;
 
-  program_name = (char *) xstrdup ((char *) basename (argv[0]));
-  DEBUG("(main) argv[0]      : %s\n",argv[0]);
+  program_name = (char *) xstrdup ((char *) basename (argv[[0]]));
+  DEBUG("(main) argv[[0]]      : %s\n",argv[[0]]);
   DEBUG("(main) program_name : %s\n",program_name);
   newargz = XMALLOC(char *, argc+2);
 EOF
 
 	    cat >> $cwrappersource <<EOF
-  newargz[0] = "$SHELL";
+  newargz[[0]] = "$SHELL";
 EOF
 
 	    cat >> $cwrappersource <<"EOF"
-  newargz[1] = find_executable(argv[0]);
-  if (newargz[1] == NULL)
-    lt_fatal("Couldn't find %s", argv[0]);
-  DEBUG("(main) found exe at : %s\n",newargz[1]);
+  newargz[[1]] = find_executable(argv[[0]]);
+  if (newargz[[1]] == NULL)
+    lt_fatal("Couldn't find %s", argv[[0]]);
+  DEBUG("(main) found exe at : %s\n",newargz[[1]]);
   /* we know the script has the same name, without the .exe */
-  /* so make sure newargz[1] doesn't end in .exe */
-  strendzap(newargz[1],".exe");
+  /* so make sure newargz[[1]] doesn't end in .exe */
+  strendzap(newargz[[1]],".exe");
   for (i = 1; i < argc; i++)
-    newargz[i+1] = xstrdup(argv[i]);
-  newargz[argc+1] = NULL;
+    newargz[[i+1]] = xstrdup(argv[[i]]);
+  newargz[[argc+1]] = NULL;
 
   for (i=0; i<argc+1; i++)
   {
-    DEBUG("(main) newargz[%d]   : %s\n",i,newargz[i]);
+    DEBUG("(main) newargz[[%d]]   : %s\n",i,newargz[[i]]);
     ;
   }
 
@@ -6021,7 +5744,7 @@ basename (const char *name)
 
 #if defined (HAVE_DOS_BASED_FILE_SYSTEM)
   /* Skip over the disk name in MSDOS pathnames. */
-  if (isalpha (name[0]) && name[1] == ':')
+  if (isalpha (name[[0]]) && name[[1]] == ':')
     name += 2;
 #endif
 
@@ -6066,7 +5789,7 @@ find_executable (const char* wrapper)
   const char* p_next;
   struct stat st;
   /* static buffer for getcwd */
-  char tmp[LT_PATHMAX + 1];
+  char tmp[[LT_PATHMAX + 1]];
   int tmp_len;
   char* concat_name;
 
@@ -6077,7 +5800,7 @@ find_executable (const char* wrapper)
 
   /* Absolute path? */
 #if defined (HAVE_DOS_BASED_FILE_SYSTEM)
-  if (isalpha (wrapper[0]) && wrapper[1] == ':')
+  if (isalpha (wrapper[[0]]) && wrapper[[1]] == ':')
   {
     concat_name = xstrdup (wrapper);
     if (check_executable(concat_name))
@@ -6087,7 +5810,7 @@ find_executable (const char* wrapper)
   else
   {
 #endif
-    if (IS_DIR_SEPARATOR (wrapper[0]))
+    if (IS_DIR_SEPARATOR (wrapper[[0]]))
     {
       concat_name = xstrdup (wrapper);
       if (check_executable(concat_name))
@@ -6127,14 +5850,14 @@ find_executable (const char* wrapper)
 	  tmp_len = strlen(tmp);
 	  concat_name = XMALLOC(char, tmp_len + 1 + strlen(wrapper) + 1);
 	  memcpy (concat_name, tmp, tmp_len);
-	  concat_name[tmp_len] = '/';
+	  concat_name[[tmp_len]] = '/';
 	  strcpy (concat_name + tmp_len + 1, wrapper);
 	}
 	else
 	{
 	  concat_name = XMALLOC(char, p_len + 1 + strlen(wrapper) + 1);
 	  memcpy (concat_name, p, p_len);
-	  concat_name[p_len] = '/';
+	  concat_name[[p_len]] = '/';
 	  strcpy (concat_name + p_len + 1, wrapper);
 	}
 	if (check_executable(concat_name))
@@ -6150,7 +5873,7 @@ find_executable (const char* wrapper)
   tmp_len = strlen(tmp);
   concat_name = XMALLOC(char, tmp_len + 1 + strlen(wrapper) + 1);
   memcpy (concat_name, tmp, tmp_len);
-  concat_name[tmp_len] = '/';
+  concat_name[[tmp_len]] = '/';
   strcpy (concat_name + tmp_len + 1, wrapper);
 
   if (check_executable(concat_name))
@@ -6259,18 +5982,18 @@ else
 	$ECHO >> $output "\
 
   # Find the directory that this script lives in.
-  thisdir=\`\$ECHO \"X\$file\" | \$Xsed -e 's%/[^/]*$%%'\`
+  thisdir=\`\$ECHO \"X\$file\" | \$Xsed -e 's%/[[^/]]*$%%'\`
   test \"x\$thisdir\" = \"x\$file\" && thisdir=.
 
   # Follow symbolic links until we get to the real thisdir.
   file=\`ls -ld \"\$file\" | ${SED} -n 's/.*-> //p'\`
   while test -n \"\$file\"; do
-    destdir=\`\$ECHO \"X\$file\" | \$Xsed -e 's%/[^/]*\$%%'\`
+    destdir=\`\$ECHO \"X\$file\" | \$Xsed -e 's%/[[^/]]*\$%%'\`
 
     # If there was a directory component, then change thisdir.
     if test \"x\$destdir\" != \"x\$file\"; then
       case \"\$destdir\" in
-      [\\\\/]* | [A-Za-z]:[\\\\/]*) thisdir=\"\$destdir\" ;;
+      [[\\\\/]]* | [[A-Za-z]]:[[\\\\/]]*) thisdir=\"\$destdir\" ;;
       *) thisdir=\"\$thisdir/\$destdir\" ;;
       esac
     fi
@@ -6589,7 +6312,7 @@ fi\
 	    newdlfiles=
 	    for lib in $dlfiles; do
 	      case $lib in
-		[\\/]* | [A-Za-z]:[\\/]*) abs="$lib" ;;
+		[[\\/]]* | [[A-Za-z]]:[[\\/]]*) abs="$lib" ;;
 		*) abs=`pwd`"/$lib" ;;
 	      esac
 	      newdlfiles="$newdlfiles $abs"
@@ -6598,7 +6321,7 @@ fi\
 	    newdlprefiles=
 	    for lib in $dlprefiles; do
 	      case $lib in
-		[\\/]* | [A-Za-z]:[\\/]*) abs="$lib" ;;
+		[[\\/]]* | [[A-Za-z]]:[[\\/]]*) abs="$lib" ;;
 		*) abs=`pwd`"/$lib" ;;
 	      esac
 	      newdlprefiles="$newdlprefiles $abs"
@@ -6698,7 +6421,7 @@ func_mode_uninstall ()
 
     origobjdir="$objdir"
     for file in $files; do
-      dir=`$ECHO "X$file" | $Xsed -e 's%/[^/]*$%%'`
+      dir=`$ECHO "X$file" | $Xsed -e 's%/[[^/]]*$%%'`
       if test "X$dir" = "X$file"; then
 	dir=.
 	objdir="$origobjdir"
@@ -6901,7 +6624,7 @@ func_mode_uninstall ()
   fi
 }
 
-exit $EXIT_SUCCESS
+exit $exit_status
 
 
 # The TAGs below are defined such that we never get into a situation

@@ -1,4 +1,5 @@
-#! /bin/sh
+m4_define([_m4_divert(SCRIPT)], 100)
+m4_divert_push([SCRIPT])#! /bin/sh
 # @configure_input@
 
 # libtoolize (GNU @PACKAGE@@TIMESTAMP@) @VERSION@
@@ -57,71 +58,23 @@
 #
 # Report bugs to <bug-libtool@gnu.org>.
 
-# Be Bourne compatible
-if test -n "${ZSH_VERSION+set}" && (emulate sh) >/dev/null 2>&1; then
-  emulate sh
-  NULLCMD=:
-  # Zsh 3.x and 4.x performs word splitting on ${1+"$@"}, which
-  # is contrary to our usage.  Disable this feature.
-  alias -g '${1+"$@"}'='"$@"'
-  setopt NO_GLOB_SUBST
-elif test -n "${BASH_VERSION+set}${KSH_VERSION+set}" && (set -o posix) >/dev/null 2>&1; then
-  set -o posix
-fi
-DUALCASE=1; export DUALCASE # for MKS sh
-
-# The HP-UX ksh and POSIX shell print the target directory to stdout
-# if CDPATH is set.
-(unset CDPATH) >/dev/null 2>&1 && unset CDPATH
-
-: ${CP="cp -f"}
-: ${ECHO="echo"}
-: ${LN_S="@LN_S@"}
-: ${MKDIR="mkdir"}
-: ${RM="rm -f"}
-: ${SED="@SED@"}
-
-dirname="s,/[^/]*$,,"
-basename="s,^.*/,,g"
-
-# Work around backward compatibility issue on IRIX 6.5. On IRIX 6.4+, sh
-# is ksh but when the shell is invoked as "sh" and the current value of
-# the _XPG environment variable is not equal to 1 (one), the special
-# positional parameter $0, within a function call, is the name of the
-# function.
-progpath="$0"
-
-# The name of this program:
-progname=`$ECHO "$progpath" | $SED "$basename"`
 PROGRAM=libtoolize
 
-# Make sure we have an absolute path for reexecution:
-case $progpath in
-  [\\/]*|[A-Za-z]:\\*) ;;
-  *) progdir=`$ECHO "$progpath" | $SED "$dirname"`
-     progdir=`cd "$progdir" && pwd`
-     progpath="$progdir/$progname"
-     ;;
-esac
+AS_SHELL_SANITIZE
+$as_unset CDPATH
 
-# Global variables:
-EXIT_SUCCESS=0
-EXIT_FAILURE=1
+m4_include([getopt.m4sh])
 
-opt_dry_run=false
+# Command line options:
 opt_force=false
 opt_install=false
 opt_link=:
-opt_quiet=false
-opt_verbose=false
 
 seen_libtool=false
 seen_ltdl=false
 
 # Collect flags to pass into libltdl libtoolize
 libtoolize_flags=
-
-exit_status=$EXIT_SUCCESS
 
 # Locations for important files:
 prefix=@prefix@
@@ -134,106 +87,14 @@ ltdldir=
 configure_ac=configure.in
 
 
-# func_echo arg...
-# Echo program name prefixed message.
-func_echo ()
-{
-    $ECHO $progname: ${1+"$@"}
-}
-
-# func_verbose arg...
-# Echo program name prefixed message in verbose mode only.
-func_verbose ()
-{
-    $opt_verbose && func_echo ${1+"$@"}
-}
-
-# func_error arg...
-# Echo program name prefixed message to standard error.
-func_error ()
-{
-    $ECHO $progname: ${1+"$@"} 1>&2
-}
-
-# func_fatal_error arg...
-# Echo program name prefixed message to standard error, and exit.
-func_fatal_error ()
-{
-    func_error ${1+"$@"}
-    exit $EXIT_FAILURE
-}
-
-# func_fatal_help arg...
-# Echo program name prefixed message to standard error, followed by
-# a help hint, and exit.
-func_fatal_help ()
-{
-    func_error ${1+"$@"}
-    func_fatal_error "Try \`$progname --help' for more information."
-}
-
-# func_missing_arg argname
-# Echo program name prefixed message to standard error and set global
-# exit_cmd.
-func_missing_arg ()
-{
-    func_error "missing argument for $1"
-    exit_cmd=exit
-}
-
-# func_usage
-# Echo short help message to standard output and exit.
-func_usage ()
-{
-    $SED '/^# Usage:/,/# -h/ {
-        s/^# //; s/^# *$//;
-	s/\$progname/'$progname'/;
-	p;
-    }; d' < "$progpath"
-    $ECHO
-    $ECHO "run \`$progname --help | more' for full usage"
-    exit $EXIT_SUCCESS
-}
-
-# func_help
-# Echo long help message to standard output and exit.
-func_help ()
-{
-    $SED '/^# Usage:/,/# Report bugs to/ {
-        s/^# //; s/^# *$//;
-	s:\$progname:'$progname':;
-	s:\$SHELL:'"$SHELL"':;
-	s:\$LTCC:'"$LTCC"':;
-	s:\$LD:'"$LD"':;
-	s/\$with_gnu_ld/'"$with_gnu_ld"'/;
-	s/\$automake_version/'"`automake --version 2>/dev/null |$SED 1q`"'/;
-	s/\$autoconf_version/'"`autoconf --version 2>/dev/null |$SED 1q`"'/;
-	p;
-     }; d' < "$progpath"
-    exit $EXIT_SUCCESS
-}
-
-# func_version
-# Echo version message to standard output and exit.
-func_version ()
-{
-    $SED '/^# '$PROGRAM' (GNU /,/# warranty; / {
-        s/^# //; s/^# *$//;
-        s/\((C)\)[ 0-9,-]*\( [1-9][0-9]*\)/\1\2/;
-        p;
-     }; d' < "$progpath"
-     exit $EXIT_SUCCESS
-}
-
-
 # Parse options once, thoroughly.  This comes as soon as possible in
 # the script to make things like `libtoolize --version' happen quickly.
 {
   # sed scripts:
   my_sed_single_opt='1s/^\(..\).*$/\1/;q'
   my_sed_single_rest='1s/^..\(.*\)$/\1/;q'
-  my_sed_long_opt='1s/^\(--[^=]*\)=.*/\1/;q'
-  my_sed_long_arg='1s/^--[^=]*=//'
+  my_sed_long_opt='1s/^\(--[[^=]]*\)=.*/\1/;q'
+  my_sed_long_arg='1s/^--[[^=]]*=//'
 
   while test "$#" -gt 0; do
     opt="$1"
@@ -308,51 +169,6 @@ func_version ()
 }
 
 
-# func_mkdir_p directory-path
-# Make sure the entire path to DIRECTORY-PATH is available.
-func_mkdir_p ()
-{
-    my_directory_path="$1"
-    my_dir_list=
-
-    if test -n "$my_directory_path" && test "$opt_dry_run" != ":"; then
-
-      # Protect directory names starting with `-'
-      case $my_directory_path in
-        -*) my_directory_path="./$my_directory_path" ;;
-      esac
-
-      # While some portion of DIR does not yet exist...
-      while test ! -d "$my_directory_path"; do
-        # ...make a list in topmost first order.  Use a colon delimited
-	# list incase some portion of path contains whitespace.
-        my_dir_list="$my_directory_path:$my_dir_list"
-
-        # If the last portion added has no slash in it, the list is done
-        case $my_directory_path in */*) ;; *) break ;; esac
-
-        # ...otherwise throw away the child directory and loop
-        my_directory_path=`$ECHO "$my_directory_path" | $SED "$dirname"`
-      done
-      my_dir_list=`$ECHO $my_dir_list | $SED 's,:*$,,'`
-
-      save_mkdir_p_IFS="$IFS"; IFS=':'
-      for my_dir in $my_dir_list; do
-	IFS="$save_mkdir_p_IFS"
-        # mkdir can fail with a `File exist' error if two processes
-        # try to create one of the directories concurrently.  Don't
-        # stop in that case!
-        $MKDIR "$my_dir" 2>/dev/null || :
-      done
-      IFS="$save_mkdir_p_IFS"
-
-      # Bail out if we (or some other process) failed to create a directory.
-      test -d "$my_directory_path" || \
-        func_fatal_error "Failed to create \`$1'"
-    fi
-}
-
-
 # func_copy srcfile destfile
 # If option `--copy' was specified, or soft-linking SRCFILE to DESTFILE fails,
 # then try to copy SRCFILE to DESTFILE.
@@ -409,7 +225,7 @@ func_copy_all_files ()
 
       IFS="$my_save_IFS"
       my_srcdir=`$ECHO "$my_srcdirs" | sed 's,:.*,,g'`
-      my_srcdirs=`$ECHO "$my_srcdirs" | sed 's,:*[^:][^:]*:*,,'`
+      my_srcdirs=`$ECHO "$my_srcdirs" | sed 's,:*[[^:]][[^:]]*:*,,'`
 
       for my_filename in `cd "$my_srcdir" && ls`; do
 
@@ -469,13 +285,6 @@ func_copy_some_files ()
     IFS="$my_save_IFS"
 }
 
-# func_grep expression filename
-# Check whether EXPRESSION matches any line of FILENAME, without output.
-func_grep ()
-{
-    grep "$1" "$2" >/dev/null 2>&1
-}
-
 # func_scan_files
 # Scan configure.(ac|in) and aclocal.m4 (if present) for use of libltdl
 # and libtool.  Possibly running some of these tools if necessary.
@@ -510,13 +319,13 @@ func_scan_files ()
     # ---------------------------------------------------- #
 
     my_sed_traces='s,#.*$,,; s,^dnl .*$,,; s, dnl .*$,,;
-    	/AC_CONFIG_AUX_DIR[^_]/  {
-	    s,^.*AC_CONFIG_AUX_DIR([[ 	]*\([^])]*\).*$,auxdir=\1,; p;
+    	/AC_CONFIG_AUX_DIR[[^_]]/  {
+	    s,^.*AC_CONFIG_AUX_DIR([[[ 	]*\([^])]]*\).*$,auxdir=\1,; p;
         };
     	/AC_CONFIG_MACRO_DIR/   {
-	    s,^.*AC_CONFIG_MACRO_DIR([[ 	]*\([^])]*\).*$,m4dir=\1,; p;
+	    s,^.*AC_CONFIG_MACRO_DIR([[[ 	]*\([^])]]*\).*$,m4dir=\1,; p;
         };
-	/A[CM]_PROG_LIBTOOL/ { s,^.*$,seen_libtool=:,; p; };
+	/A[[CM]]_PROG_LIBTOOL/ { s,^.*$,seen_libtool=:,; p; };
 	/LT_INIT/	     { s,^.*$,seen_libtool=:,; p; };
 	/LTDL_INIT/          { s,^.*$,seen_ltdl=:,; p; };
 	/LT_WITH_LTDL/       { s,^.*$,seen_ltdl=:,; p; };
@@ -564,8 +373,8 @@ func_scan_files ()
     # If AC_CONFIG_MACRO_DIR turned nothing up, we hunt for ACLOCAL_AMFLAGS
     # in `Makefile.am' for a `-I' argument.
 
-    my_sed_aclocal_flags='/^[ 	]*ACLOCAL_[A-Z_]*FLAGS[ 	]*=/ {
-	s,^[^=]*=[ 	]*\(.*\), \1,; q; }; d'
+    my_sed_aclocal_flags='/^[[ 	]]*ACLOCAL_[[A-Z_]]*FLAGS[[ 	]]*=/ {
+	s,^[[^=]]*=[[ 	]]*\(.*\), \1,; q; }; d'
     if test ! -n "$m4dir" && test -f Makefile.am; then
       my_m4dir_is_next=false
       for arg in `$SED "$my_sed_aclocal_flags" Makefile.am`; do
@@ -591,7 +400,7 @@ func_included_files ()
 
     my_include_regex=
     my_sed_include='
-        /^m4_include(\[.*\])$/ { s,^m4_include(\[\(.*\)\])$,\1,; p; };
+        /^[m4]_include(\[[.*\]])$/ { s,^[m4]_include(\[[\(.*\)\]])$,\1,; p; };
         d'
 
     test -f "$my_searchfile" && $ECHO "$my_searchfile"
@@ -619,7 +428,7 @@ func_serial ()
     my_serial=
     for my_file in `func_included_files "$my_filename"`; do
       if test -z "$my_macro_regex" ||
-         func_grep '^AC_DEFUN(\['"$my_macro_regex" "$my_file"
+         func_grep '^AC_DEFUN(\@<:@'"$my_macro_regex" "$my_file"
       then
         my_serial=`$SED -e "$my_sed_serial" "$my_file"`
 	break
@@ -701,7 +510,7 @@ func_check_macros ()
 {
     # Don't trace for this, we're just checking the user didn't invoke it
     # directly from configure.ac.
-    $SED 's,dnl .*$,,; s,# .*$,,' "$configure_ac" | grep AC_PROG_RANLIB \
+    $SED 's,[d]nl .*$,,; s,# .*$,,' "$configure_ac" | grep AC_PROG_RANLIB \
       && func_echo "\`AC_PROG_RANLIB' is rendered obsolete by \`LT_INIT'"
 
     $seen_libtool \
@@ -718,8 +527,8 @@ func_ltmain_update ()
     my_srcfile="$1"
     my_destfile="$2"
     my_sed_ltmain='
-	s,^VERSION=[^0-9]*\(.*\)[ 	]*$,\1,; t
-	s,^TIMESTAMP=[^0-9]*\([.0-9]*\) .*$,\1,; t
+	s,^VERSION=[[^0-9]]*\(.*\)[[ 	]]*$,\1,; t
+	s,^TIMESTAMP=[[^0-9]]*\([[.0-9]]*\) .*$,\1,; t
 	d'
 
     if test -f "$my_srcfile"; then :
@@ -745,7 +554,7 @@ func_config_update ()
 {
     my_srcfile="$1"
     my_destfile="$2"
-    my_sed_config='s,^timestamp=[^0-9]*\([.0-9-]*\)[^0-9].*$,\1,; t; d'
+    my_sed_config='s,^timestamp=[[^0-9]]*\([[.0-9-]]*\)[[^0-9]].*$,\1,; t; d'
 
     if test -f "$my_srcfile"; then :
     else
@@ -812,7 +621,7 @@ func_config_update ()
     $opt_quiet || func_echo "putting macros in AC_CONFIG_MACRO_DIR, \`$m4dir'."
 
     func_serial_update  "$libtool_m4" "$m4dir/libtool.m4" \
-      LT_INIT 'A[CM]_PROG_LIBTOOL'
+      LT_INIT 'A[[CM]]_PROG_LIBTOOL'
 
     if $seen_ltdl; then
       func_serial_update "$ltdl_m4" "$m4dir/ltdl.m4" 'LTDL_INIT'

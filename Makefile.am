@@ -20,11 +20,14 @@
 ACLOCAL_AMFLAGS  = -I m4
 
 edit = sed \
-	-e 's,@PACKAGE\@,$(PACKAGE),g' \
-	-e 's,@VERSION\@,$(VERSION),g' \
-	-e 's,@MACRO_VERSION\@,$(VERSION),g' \
+	-e 's,@EGREP\@,$(EGREP),g' \
+	-e 's,@FGREP\@,$(FGREP),g' \
+	-e 's,@GREP\@,$(GREP),g' \
 	-e 's,@LN_S\@,$(LN_S),g' \
+	-e 's,@MACRO_VERSION\@,$(VERSION),g' \
+	-e 's,@PACKAGE\@,$(PACKAGE),g' \
 	-e 's,@SED\@,$(SED),g' \
+	-e 's,@VERSION\@,$(VERSION),g' \
 	-e 's,@prefix\@,$(prefix),g' \
 	-e 's,@datadir\@,$(datadir),g' \
 	-e 's,@pkgdatadir\@,$(pkgdatadir),g' \
@@ -42,9 +45,11 @@ BUILD_SUBDIRS = . libltdl doc tests
 SUBDIRS = $(BUILD_SUBDIRS)
 DIST_SUBDIRS = $(BUILD_SUBDIRS)
 
+sh_files = config/general.m4sh config/getopt.m4sh
 EXTRA_DIST = bootstrap libtoolize.in config/ltmain.in config/mkstamp \
-	stamp-vcl ChangeLog.1996 ChangeLog.1997 ChangeLog.1998 ChangeLog.1999 \
-	ChangeLog.2000 ChangeLog.2001 ChangeLog.2002 ChangeLog.2003
+	$(sh_files) stamp-vcl ChangeLog.1996 ChangeLog.1997 ChangeLog.1998 \
+	ChangeLog.1999 ChangeLog.2000 ChangeLog.2001 ChangeLog.2002 \
+	ChangeLog.2003
 CLEANFILES = libtool libtoolize \
 	libtoolize.tmp config/ltmain.tmp m4/ltversion.tmp
 
@@ -110,29 +115,45 @@ $(top_srcdir)/m4/ltversion.m4: m4/ltversion.in configure.ac stamp-vcl
 ##          distcheck (at least) by rebuilding ltmain.sh in the source
 ##          tree whenever config.status regenerates the Makefile.
 EXTRA_DIST += config/ltmain.sh
-$(top_srcdir)/config/ltmain.sh: config/ltmain.in configure.ac stamp-vcl
+$(top_srcdir)/config/ltmain.sh: $(sh_files) config/ltmain.in configure.ac stamp-vcl
 	$(timestamp); \
 	cd $(top_srcdir); \
-	rm -f config/ltmain.tmp; \
+	rm -f config/ltmain.m4sh config/ltmain.tmp config/ltmain.sh; \
+	$(M4SH) -B ./config config/ltmain.in > config/ltmain.m4sh; \
 	input="ltmain.in"; \
 	$(edit) -e "s,@TIMESTAMP\@,$$TIMESTAMP,g" \
 		-e "s,@package_revision\@,$$1,g" \
-		config/ltmain.in > config/ltmain.tmp; \
+		config/ltmain.m4sh > config/ltmain.tmp; \
+	rm -f config/ltmain.m4sh; \
 	chmod a-w config/ltmain.tmp; \
 	mv -f config/ltmain.tmp config/ltmain.sh
 
 # The libtool distributor and the standalone libtool script.
 bin_SCRIPTS = libtoolize libtool
 
-libtoolize: libtoolize.in Makefile
-	rm -f libtoolize.tmp libtoolize
+libtoolize: $(sh_files) libtoolize.in Makefile
+	rm -f libtoolize.m4sh libtoolize.tmp libtoolize
+	$(M4SH) -B $(top_srcdir)/config \
+		$(srcdir)/libtoolize.in > libtoolize.m4sh
 	$(timestamp); \
 	input="libtoolize.in"; \
 	$(edit) -e "s,@TIMESTAMP\@,$$TIMESTAMP,g" \
-		$(srcdir)/libtoolize.in > libtoolize.tmp
+		libtoolize.m4sh > libtoolize.tmp
+	rm -f libtoolize.m4sh
 	chmod a+x libtoolize.tmp
 	chmod a-w libtoolize.tmp
 	mv -f libtoolize.tmp libtoolize
+
+check-recursive: tests/defs
+tests/defs: tests/defs.in Makefile
+	cd $(top_srcdir); \
+	rm -f tests/defs.m4sh tests/defs.tmp tests/defs; \
+	$(M4SH) -B ./config tests/defs.in > tests/defs.m4sh; \
+	input="defs.in"; \
+	$(edit) tests/defs.m4sh > tests/defs.tmp; \
+	rm -f tests/defs.m4sh; \
+	mv -f tests/defs.tmp tests/defs
+
 
 # Automake doesn't want us to generate distributed files from config.status,
 # but the alternative (see libtool-1.4.3) was even uglier!
