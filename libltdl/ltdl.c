@@ -808,10 +808,10 @@ find_module (handle, dir, libdir, dlname, old_name, installed)
 	/* try to open the old library first; if it was dlpreopened, 
 	   we want the preopened version of it, even if a dlopenable
 	   module is available */
-	if (*old_name && tryall_dlopen(handle, old_name) == 0)
+	if (old_name && tryall_dlopen(handle, old_name) == 0)
 		return 0;
 	/* try to open the dynamic library */
-	if (*dlname) {
+	if (dlname) {
 		/* try to open the installed module */
 		if (installed && 
 		    strlen(libdir)+1+strlen(dlname) < LTDL_FILENAME_MAX) {

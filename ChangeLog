@@ -1,5 +1,8 @@
 1999-01-25  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* libltdl/ltdl.c (find_module): test old_name and dlname for NULL, 
+	not len==0
+
 	* libltdl/configure.in (libltdl_cv_objdir): yes, appending the "/" 
 	in configure.in was much simpler
 	* libltdl/ltdl.c (objdir): ditto
