@@ -1,5 +1,10 @@
 2004-12-28  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* config/general.m4sh: New variable quote_scanset..
+	(func_quote_for_eval, func_quote_for_expand)  ..use it to work around
+	SunOS ksh `case' backslash-escaping bug: protect character class by
+	variable expansion.  Reported by Alexander Kurz <alexander.kurz@qsc.de>.
+
 	* tests/quote.test: Restart under the correct shell (the one
 	$ECHO was computed for).
 
