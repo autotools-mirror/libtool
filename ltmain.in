@@ -2151,7 +2151,8 @@ EOF
       fi
 
       if test "$preload" = yes; then
-	if test "$dlopen" = unknown || test "$dlopen_self" = unknown; then
+	if test "$dlopen" = unknown && test "$dlopen_self" = unknown &&
+	   test "$dlopen_self_static" = unknown; then
 	  $echo "$modename: warning: \`AC_LIBTOOL_DLOPEN' not used. Assuming no dlopen support."
 	fi 
       fi
