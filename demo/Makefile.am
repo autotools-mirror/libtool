@@ -35,7 +35,7 @@ helldl: libhello.la
 
 # Unfortunately, in order to test libtool thoroughly, we need access
 # to its private directory.
-objdir = `sed -n -e 's/^objdir=\(.*\)$$/\1/p' ./libtool`
+objdir = `sed -n -e 's/^objdir=\(.*\)$$/\1/p' ../libtool`
 
 TESTS = run.test
 
@@ -48,7 +48,7 @@ $(srcdir)/acinclude.m4:
 # Don't build helldl on unsupported platforms.
 helldl: $(helldl_OBJECTS) $(helldl_DEPENDENCIES)
 	@rm -f helldl helldlT
-	@eval "`egrep '^global_symbol_pipe=' libtool`"; \
+	@eval "`egrep '^global_symbol_pipe=' ../libtool`"; \
 	if test -z "$$global_symbol_pipe"; then \
 	  echo 'creating helldl (-dlopen is unsupported)'; \
 	  echo "#! /bin/sh" > helldlT; \
@@ -82,7 +82,7 @@ hc-libflag: $(hell_OBJECTS) $(hell_DEPENDENCIES)
 	objdir=$(objdir); cd _hclibs && for lib in ../$$objdir/libhello*; do \
 	  $(LN_S) $$lib `echo "$$lib" | sed 's%^.*/%%'` || exit 1; \
 	done
-	@eval `egrep -e '^(hardcode_.*|wl)=' ./libtool`; \
+	@eval `egrep -e '^(hardcode_.*|wl)=' ../libtool`; \
 	  libdir=`pwd`/$(objdir); \
 	  flag=`eval echo \"$$hardcode_libdir_flag_spec\"`; \
 	  if test -z "$$flag"; then \
@@ -99,7 +99,7 @@ hc-libflag: $(hell_OBJECTS) $(hell_DEPENDENCIES)
 hc-libpath: $(hell_OBJECTS) $(hell_DEPENDENCIES)
 	@rm -f hc-libpath
 	@echo "You may ignore any linking errors from the following command:"
-	@eval `egrep -e '^shlibpath_var=' ./libtool`; \
+	@eval `egrep -e '^shlibpath_var=' ../libtool`; \
 	  echo "$$shlibpath_var=./$(objdir) $(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) -lhello -lm || echo unsupported > $@"; \
 	  eval "$$shlibpath_var=./$(objdir) $(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) -lhello -lm || echo unsupported > $@"
 

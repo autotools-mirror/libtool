@@ -1,3 +1,9 @@
+1998-10-31  Gordon Matzigkeit  <gord@trick.fig.org>
+
+	* demo/Makefile.am (hc-libpath): Use parameters from the libtool
+	in the top build directory, since the one in the demo directory is
+	not guaranteed to exist.
+
 1998-10-27  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* demo/Makefile.am (objdir): there are no longer quotes around
