@@ -14,6 +14,8 @@
 	../bin/cygFOO-version.dll for normal dlls. dlls for modules
 	remain with the .la file.
 
+	* libltdl/ltdl.c:  Use windows paths while calling LoadLibrary.
+	
 2001-03-16  Albert Chin  <china@thewrittenword.com>
 
 	* libtool.m4 (save_CPPFLAGS): Fix typo.
