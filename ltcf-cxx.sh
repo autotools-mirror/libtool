@@ -197,7 +197,7 @@ case $host_os in
         # Warning - without using the other run time loading flags, -berok will
         #           link without error, but may produce a broken library.
         no_undefined_flag='${wl}-bnoerok'
-        allow_undefined_flag='${wl}-berok"
+        allow_undefined_flag='${wl}-berok'
         # -bexpall does not export symbols beginning with underscore (_)
         always_export_symbols=yes
         # Exported symbols can be pulled into shared objects from archives
