@@ -6,7 +6,7 @@ dnl `Makefile.am.'  It uses PRCS, which is like CVS, except better... get
 dnl `prcs.README' from your nearest GNU mirror.
 
 dnl $Format: "AM_INIT_AUTOMAKE($Project$,$ProjectMajorVersion$)"$
-AM_INIT_AUTOMAKE(libtool,1.0j)
+AM_INIT_AUTOMAKE(libtool,1.1)
 
 pkgdatadir='${datadir}/libtool'
 AC_SUBST(pkgdatadir)
