@@ -1,5 +1,10 @@
 2004-09-02  Gary V. Vaughan  <gary@gnu.org>,
 
+	* Makefile.am (clean-ltmain-sh): Quote $(top_builddir) for the
+	shell, incase it is not set when running maintainer rules with
+	`make -fMakefile.maint'.
+	Don't show the shell commands.
+
 	* AUTHORS: Fix my email address.
 
 2004-09-02  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
