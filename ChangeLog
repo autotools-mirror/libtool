@@ -1,5 +1,9 @@
 2005-03-15  Gary V. Vaughan  <gary@gnu.org>
 
+	* libtoolize.m4sh (func_massage_pkgvmacro_DATA): New function
+	to calculate the macro filenames to be copied by libtoolize.
+	* Makefile.am (edit): Substitute pkgvmacro_DATA.
+
 	* bootstrap: Need to generate tests/package.m4 from Makefile.am
 	before generating tests/testsuite from tests/Makefile.am, or
 	else bootstrap of a fresh checkout fails.
