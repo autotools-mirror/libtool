@@ -1,3 +1,11 @@
+2004-12-30  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* config/getopt.m4sh (func_version, func_usage, func_help):
+	Use `$SED -n' instead of `$SED RANGE {..}; d' as AIX sed cannot
+	handle the latter.  
+	(func_help): start autoconf and automake in subshells to avoid
+	error messages from ash or Bourne shell if not available.
+
 2004-12-28  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* config/general.m4sh (func_quote_for_eval): Move backslash to

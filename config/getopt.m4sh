@@ -31,11 +31,11 @@ m4_include([general.m4sh])
 # Echo version message to standard output and exit.
 func_version ()
 {
-    $SED '/^# '$PROGRAM' (GNU /,/# warranty; / {
+    $SED -n '/^# '$PROGRAM' (GNU /,/# warranty; / {
         s/^# //; s/^# *$//;
         s/\((C)\)[[ 0-9,-]]*\( [[1-9]][[0-9]]*\)/\1\2/;
         p;
-     }; d' < "$progpath"
+     }' < "$progpath"
      exit $EXIT_SUCCESS
 }
 
@@ -43,11 +43,11 @@ func_version ()
 # Echo short help message to standard output and exit.
 func_usage ()
 {
-    $SED '/^# Usage:/,/# -h/ {
+    $SED -n '/^# Usage:/,/# -h/ {
         s/^# //; s/^# *$//;
 	s/\$progname/'$progname'/;
 	p;
-    }; d' < "$progpath"
+    }' < "$progpath"
     $ECHO
     $ECHO "run \`$progname --help | more' for full usage"
     exit $EXIT_SUCCESS
@@ -57,7 +57,7 @@ func_usage ()
 # Echo long help message to standard output and exit.
 func_help ()
 {
-    $SED '/^# Usage:/,/# Report bugs to/ {
+    $SED -n '/^# Usage:/,/# Report bugs to/ {
         s/^# //; s/^# *$//;
 	s*\$progname*'$progname'*;
 	s*\$SHELL*'"$SHELL"'*;
@@ -65,10 +65,10 @@ func_help ()
 	s*\$LTCFLAGS*'"$LTCFLAGS"'*;
 	s*\$LD*'"$LD"'*;
 	s/\$with_gnu_ld/'"$with_gnu_ld"'/;
-	s/\$automake_version/'"`automake --version 2>/dev/null |$SED 1q`"'/;
-	s/\$autoconf_version/'"`autoconf --version 2>/dev/null |$SED 1q`"'/;
+	s/\$automake_version/'"`(automake --version) 2>/dev/null |$SED 1q`"'/;
+	s/\$autoconf_version/'"`(autoconf --version) 2>/dev/null |$SED 1q`"'/;
 	p;
-     }; d' < "$progpath"
+     }' < "$progpath"
     exit $EXIT_SUCCESS
 }
 
