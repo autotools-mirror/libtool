@@ -1,3 +1,7 @@
+2004-12-17  Akim Demaille <akim@epita.fr>
+
+	* libtoolize.m4sh (func_copy_all_from_path): Remove spurious eval.
+
 2004-12-16  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
 	* libltdl/ltdl.c (trim): Return error rather than do bogus

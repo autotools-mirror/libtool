@@ -237,7 +237,7 @@ func_copy_all_from_path ()
       IFS="$save_IFS"
       test "X$my_dirname" = X. || myvdir="$myvdir/$my_dirname"
       if test -d "$myvdir"; then
-        eval func_copy_all_files $my_args "$myvdir" "$my_destdir" "$my_globexc"
+        func_copy_all_files $my_args "$myvdir" "$my_destdir" "$my_globexc"
         break
       fi
     done
