@@ -30,7 +30,8 @@ mdemo_SOURCES = main.c
 mdemo_LDFLAGS = -export-dynamic ## FIXME: remove this when libtool and libltdl
 ## handle dependencies of modules
 ## The quotes around -dlopen below fool automake into accepting it
-mdemo_LDADD = ../libltdl/libltdl.la "-dlopen" foo1.la "-dlopen" libfoo2.la
+mdemo_LDADD = ../libltdl/libltdl.la "-dlopen" self \
+		"-dlopen" foo1.la "-dlopen" libfoo2.la
 mdemo_DEPENDENCIES = ../libltdl/libltdl.la foo1.la libfoo2.la
 
 # Create a statically linked version of mdemo.

@@ -1,3 +1,10 @@
+1999-02-22  Thomas Tanner  <tanner@gmx.de>
+
+	* ltconfig.in (dlopen, dlopen_self): default is unknown
+	* ltmain.in: fixed -dlopen self, print a warning
+	  if -dlopen is used without AC_LIBTOOL_DLOPEN 
+	* mdemo/Makefile.am: use -dlopen self
+
 1999-02-22  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* ltmain.in: added missing mkdir $progdir for on-demand executable

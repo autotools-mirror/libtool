@@ -177,8 +177,8 @@ can_build_shared=yes
 enable_shared=yes
 # All known linkers require a `.a' archive for static linking.
 enable_static=yes
-enable_dlopen=no
-enable_dlopen_self=no
+enable_dlopen=unknown
+enable_dlopen_self=unknown
 ltmain=
 silent=
 srcdir=

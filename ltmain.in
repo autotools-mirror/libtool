@@ -869,9 +869,11 @@ compiler."
 	  self)
 	    if test "$prev" = dlprefiles; then
 	      dlself=yes
-	    elif test "$prev" = dlfiles && test "$dlopen_self" = no; then
+	    elif test "$prev" = dlfiles && test "$dlopen_self" != yes; then
 	      dlself=yes
 	    fi
+	    prev=
+	    continue
 	    ;;
 	  *)
 	    dlprefiles="$dlprefiles $arg"
@@ -1186,7 +1188,7 @@ compiler."
 	# This library was specified with -dlopen.
 	if test "$prev" = dlfiles; then
 	  dlfiles="$dlfiles $arg"
-	  if test -z "$dlname" || test "$dlopen" = no || test "$build_libtool_libs" = no; then
+	  if test -z "$dlname" || test "$dlopen" != yes || test "$build_libtool_libs" = no; then
 	    # If there is no dlname, no dlopen support or we're linking statically,
 	    # we need to preload.
 	    prev=dlprefiles
@@ -2166,6 +2168,12 @@ EOF
 	$echo "$modename: warning: \`-release' is ignored for programs" 1>&2
       fi
 
+      if test "$preload" = yes; then
+	if test "$dlopen" = unknown || test "$dlopen_self" = unknown; then
+	  $echo "$modename: warning: \`AC_LIBTOOL_DLOPEN' not used. Assuming no dlopen support."
+	fi 
+      fi
+    
       if test "$dlself" = yes && test "$export_dynamic" = no; then
 	$echo "$modename: error: \`-dlopen self' requires \`-export-dynamic'" 1>&2
 	exit 1
