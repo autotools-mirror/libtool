@@ -317,7 +317,7 @@ if test -z "$show_help"; then
   execute)
     modename="$modename: execute"
 
-[=string[EXECUTE_STRING].text=]
+[= include "lt_exe.tpl" =]
     ;;
 
   # libtool clean and uninstall mode
