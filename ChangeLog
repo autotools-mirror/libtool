@@ -1,3 +1,7 @@
+2000-02-21  Gary V. Vaughan  <gary@oranda.demon.co.uk>
+
+	* libltdl/ltdl.c (lt_dlinit): removed unused variable, `loader'.
+
 2000-02-03  Gary V. Vaughan  <gary@oranda.demon.co.uk>
 
 	* libltdl/ltdl.h (lt_dlloader_data_t):  New type for loader

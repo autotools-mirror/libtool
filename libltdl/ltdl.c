@@ -914,16 +914,7 @@ tryall_dlopen (handle, filename)
 	const char *saved_error = last_error;
 	
 	/* check whether the module was already opened */
-	cur = handles;
-	while (cur) {
-		/* try to dlopen the program itself? */
-		if (!cur->info.filename && !filename)
-			break;
-		if (cur->info.filename && filename && 
-		    strcmp(cur->info.filename, filename) == 0)
-			break;
-		cur = cur->next;
-	}
+	cur = lt_find_dlhandle (filename);
 	if (cur) {
 		cur->info.ref_count++;
 		*handle = cur;
@@ -1601,6 +1592,26 @@ lt_dlopenext (filename)
 	last_error = LT_DLSTRERROR(FILE_NOT_FOUND);
 	lt_dlfree(tmp);
 	return 0;
+}
+
+lt_dlhandle
+lt_find_dlhandle (filename)
+	const char *filename;
+{
+	lt_dlhandle cur = handles;
+	
+	/* check whether the module was already opened */
+	while (cur) {
+		/* try to dlopen the program itself? */
+		if (!cur->info.filename && !filename)
+			break;
+		if (cur->info.filename && filename && 
+		    strcmp(cur->info.filename, filename) == 0)
+			break;
+		cur = cur->next;
+	}
+
+	return cur;
 }
 
 int
