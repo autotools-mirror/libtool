@@ -1,5 +1,14 @@
 1999-03-10  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* libltdl/configure.in (libltdl_cv_need_uscore): do not assume
+	dlfcn.h and LTDL_LAZY exist; use LTDL_GLOBAL and LTDL_LAZY_OR_NOW.
+	This test is likely to fail if self-dlopening does not work,
+	especially because we do not link the program with
+	-export-dynamic.  Let's just hope that platforms whose symbol
+	names start with underscores will also accept underscores for
+	dlopen.  We should probably use libtool to compile and link this
+	test, so that we can use -export-dynamic.
+
 	* mdemo/Makefile.am (@LIBLTDL@): depend on ../libltdl/config.h
 
 	* configure.in: fix AC_OUTPUT_COMMANDS for ltconfig and ltmain.sh
