@@ -51,7 +51,7 @@ typedef struct slist {
 } SList;
 
 typedef void *	SListCompare	(const SList *node, const void *userdata);
-typedef int	SListCallback	(const SList *node, const *userdata);
+typedef int	SListCallback	(const SList *node, const void *userdata);
 
 LT_SCOPE SList *slist_new	(const void *userdata);
 LT_SCOPE SList *slist_delete	(SList *head, void (*delete) (void *data));

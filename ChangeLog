@@ -1,5 +1,7 @@
 2004-08-30  Andreas Schwab  <schwab@suse.de>
 
+	* libltdl/slist.h (SListCallback): Fix missing type.
+
 	* config/ltmain.in: Accept --mode=relink.
 
 2004-08-29  Gary V. Vaughan  <gary@gnu.org>
