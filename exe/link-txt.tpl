@@ -834,7 +834,30 @@
     *) linkmode=prog ;; # Anything else should be a program.
     esac
 
-    specialdeplibs=
+    case $host in
+    *cygwin*)
+      # This is a hack, but we run into problems on cygwin.
+      # libgcc.a depends on libcygwin, but gcc puts -lgcc onto
+      # the link line twice: once before the "normal" libs
+      # (-lcygwin -luser32 -lkernel32 -ladvapi32 -lshell32) and
+      # once AFTER those.  However, the "eliminate dup deps"
+      # proceedure keeps only the LAST duplicate -- thus
+      # messing up the order, since after dup elimination
+      # -lgcc comes AFTER -lcygwin.  In normal C operation,
+      # you don't notice the problem, because -lgcc isn't
+      # really used.  However, now that C++ libraries are
+      # libtool-able, you DO see the problem.  So, it must
+      # be fixed.  We could always force "--preserve-dup-deps"
+      # but that could lead to other problems.  So, on cygwin,
+      # always preserve dups of -lgcc...but only -lgcc. That
+      # way, the dependency order won't get corrupted.
+      specialdeplibs="-lgcc"
+      ;;
+    *)
+      specialdeplibs=
+      ;;
+    esac
+
     libs=
     # Find all interdependent deplibs by searching for libraries
     # that are linked more than once (e.g. -la -lb -la)
@@ -3224,7 +3247,9 @@ static const void *lt_preloaded_setup() {
 	esac
 	# test for cygwin because mv fails w/o .exe extensions
 	case $host in
-	  *cygwin*) exeext=.exe ;;
+	  *cygwin*)
+	    exeext=.exe
+	    outputname=`echo $outputname|${SED} 's,.exe$,,'` ;;
 	  *) exeext= ;;
 	esac
 	$rm $output

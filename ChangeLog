@@ -1,3 +1,44 @@
+2002-02-09  Gary V. Vaughan  <gary@gnu.org>
+
+	* NEWS: Updated.
+	* THANKS: Added Rob Collins and Chuck Wilson for their cygwin
+	work.
+
+	From Robert Collins  <robert.collins@itdomain.com.au>:
+	* configure.ac (AC_EXEEXT): Needed for DOSish systems.
+	* libtool.m4 (shlibpath_overrides_runpath) [cygwin]: Set to yes
+	when compiling with gcc.
+	(lt_prog_compiler_pic) [cygwin]: No longer needs the -DDLL_EXPORT
+	hack, so we just say the pic is the default.
+	(AC_LIBTOOL_PROG_LD_SHLIBS) [cygwin]: Extract symbols from a
+	library normally.
+	[cygwin]: Declare C++ compiler characterisics for g++, taking into
+	account the new auto-import support in cygwin ld.
+	* ltmain.in (specialdeplibs) [cygwin]: Be careful about
+	eliminating duplicate -lgcc's from the link line.
+	[cygwin]: Be smarter about .exe suffixes.
+	* demo/configure.ac (AC_EXEEXT, AC_LIBTOOL_WIN32_DLL):  Support
+	DOSish systems properly.
+	* depdemo/configure.ac (AC_EXEEXT, AC_LIBTOOL_WIN32_DLL):  Ditto.
+	* demo/Makefile.am (deplibs-check): Allow for .exe suffix.  Use
+	hell_static instead of hell.static for multi-`.' inhibited OSes.
+	* tests/demo-exec.test: Ditto.
+	* tests/demo-inst.test: Ditto.
+	* demo/foo.h [cygwin]: Sanitize cygwin dll support.
+	* demo/foo.c (_LIBFOO_COMPILATION_): No longer required.
+	* demo/hello.c (_LIBFOO_COMPILATION_): Ditto.
+	* depdemo/Makefile.am (bin_PROGRAMS): Use depdemo_static instead
+	of depdemo.static for multi-`.' inhibited OSes.
+	* tests/depdemo-exec.test: Ditto.
+	* tests/depdemo-inst.test: Ditto.
+	* mdemo/Makefile.am (bin_PROGRAMS):  Ditto for mdemo.static.
+	* tests/dryrun.test: Ditto.
+	* tests/mdemo-exec.test: Ditto.
+	* tests/mdemo-inst.test: Ditto.
+	* tests/build-relink.test:  Be careful about possible .exe
+	suffixes.
+	* tests/noinst-link.test: Allow for .exe suffix.
+
 2002-02-07  Alexandre Oliva  <aoliva@redhat.com>
 
 	Reverted incorrect patch:

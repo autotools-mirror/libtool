@@ -1085,6 +1085,7 @@ cygwin* | mingw* | pw32*)
     postuninstall_cmds='dldll=`bash 2>&1 -c '\''. $file; echo \$dlname'\''`~
       dlpath=$dir/\$dldll~
        $rm \$dlpath'
+    shlibpath_overrides_runpath=yes
     ;;
   yes,mingw*)
     library_names_spec='${libname}`echo ${release} | sed -e 's/[[.]]/-/g'`${versuffix}.dll'
@@ -2547,6 +2548,27 @@ case $host_os in
 	;;
     esac
     ;;
+
+  cygwin*)
+    # _LT_AC_TAGVAR(hardcode_libdir_flag_spec, $1) is actually meaningless,
+    # as there is no search path for DLLs.
+    _LT_AC_TAGVAR(hardcode_libdir_flag_spec, $1)='-L$libdir'
+    _LT_AC_TAGVAR(allow_undefined_flag, $1)=unsupported
+    _LT_AC_TAGVAR(always_export_symbols, $1)=yes
+
+    if $LD --help 2>&1 | egrep 'auto-import' > /dev/null; then
+      _LT_AC_TAGVAR(archive_cmds, $1)='$CC -shared -nostdlib $predep_objects $libobjs $deplibs $postdep_objects $compiler_flags -o $output_objdir/$soname ${wl}--image-base=0x10000000 ${wl}--out-implib,$lib'
+      _LT_AC_TAGVAR(archive_expsym_cmds, $1)='$CC -shared -nostdlib $predep_objects $libobjs $deplibs $postdep_objects $compiler_flags -o $output_objdir/$soname ${wl}-retain-symbols-file $wl$export_symbols ${wl}--out-implib,$lib'
+    else
+      _LT_AC_TAGVAR(ld_shlibs, $1)=no
+    fi
+	 ;;
+
+  mingw* | pw32*)
+    # FIXME: insert proper C++ library support
+  	  _LT_AC_TAGVAR(ld_shlibs, $1)=no
+	 ;;
+
   dgux*)
     case $cc_basename in
       ec++)
@@ -3921,10 +3943,10 @@ AC_MSG_CHECKING([for $compiler option to produce PIC])
       # like `-m68040'.
       _LT_AC_TAGVAR(lt_prog_compiler_pic, $1)='-m68020 -resident32 -malways-restore-a4'
       ;;
-    beos* | irix5* | irix6* | nonstopux* | osf3* | osf4* | osf5*)
+    beos* | cygwin* | irix5* | irix6* | nonstopux* | osf3* | osf4* | osf5*)
       # PIC is the default for these OSes.
       ;;
-    cygwin* | mingw* | os2*)
+    mingw* | os2*)
       # This hack is so that the source file can tell whether it is being
       # built for inclusion in a dll (and should export symbols for example).
       _LT_AC_TAGVAR(lt_prog_compiler_pic, $1)='-DDLL_EXPORT'
@@ -4156,11 +4178,11 @@ AC_MSG_CHECKING([for $compiler option to produce PIC])
       _LT_AC_TAGVAR(lt_prog_compiler_pic, $1)='-m68020 -resident32 -malways-restore-a4'
       ;;
 
-    beos* | irix5* | irix6* | nonstopux* | osf3* | osf4* | osf5*)
+    beos* | cygwin* | irix5* | irix6* | nonstopux* | osf3* | osf4* | osf5*)
       # PIC is the default for these OSes.
       ;;
 
-    cygwin* | mingw* | pw32* | os2*)
+    mingw* | pw32* | os2*)
       # This hack is so that the source file can tell whether it is being
       # built for inclusion in a dll (and should export symbols for example).
       _LT_AC_TAGVAR(lt_prog_compiler_pic, $1)='-DDLL_EXPORT'
@@ -4209,7 +4231,7 @@ AC_MSG_CHECKING([for $compiler option to produce PIC])
       fi
       ;;
 
-    cygwin* | mingw* | pw32* | os2*)
+    mingw* | pw32* | os2*)
       # This hack is so that the source file can tell whether it is being
       # built for inclusion in a dll (and should export symbols for example).
       _LT_AC_TAGVAR(lt_prog_compiler_pic, $1)='-DDLL_EXPORT'
@@ -4331,7 +4353,7 @@ ifelse([$1],[CXX],[
       _LT_AC_TAGVAR(export_symbols_cmds, $1)='$NM -BCpg $libobjs $convenience | awk '\''{ if (((\[$]2 == "T") || (\[$]2 == "D") || (\[$]2 == "B")) && ([substr](\[$]3,1,1) != ".")) { print \[$]3 } }'\'' | sort -u > $export_symbols'
     fi
     ;;
-  cygwin* | mingw* | pw32*)
+  mingw* | pw32*)
     _LT_AC_TAGVAR(export_symbols_cmds, $1)="$ltdll_cmds"
   ;;
   *)
@@ -4435,7 +4457,22 @@ EOF
       fi
       ;;
 
-    cygwin* | mingw* | pw32*)
+    cygwin*)
+      # _LT_AC_TAGVAR(hardcode_libdir_flag_spec, $1) is actually meaningless,
+      # as there is no search path for DLLs.
+      _LT_AC_TAGVAR(hardcode_libdir_flag_spec, $1)='-L$libdir'
+      _LT_AC_TAGVAR(allow_undefined_flag, $1)=unsupported
+      _LT_AC_TAGVAR(always_export_symbols, $1)=yes
+
+      if $LD --help 2>&1 | egrep 'auto-import' > /dev/null; then
+        _LT_AC_TAGVAR(archive_cmds, $1)='$CC -shared $libobjs $deplibs $compiler_flags -o $output_objdir/$soname ${wl}--image-base=0x10000000 ${wl}--out-implib,$lib'
+	_LT_AC_TAGVAR(archive_expsym_cmds, $1)='$CC -shared $libobjs $deplibs $compiler_flags -o $output_objdir/$soname ${wl}-retain-symbols-file $wl$export_symbols ${wl}--out-implib,$lib'
+      else
+	ld_shlibs=no
+      fi
+      ;;
+
+    mingw* | pw32*)
       # _LT_AC_TAGVAR(hardcode_libdir_flag_spec, $1) is actually meaningless, as there is
       # no search path for DLLs.
       _LT_AC_TAGVAR(hardcode_libdir_flag_spec, $1)='-L$libdir'
@@ -4451,21 +4488,15 @@ EOF
 
       _LT_AC_TAGVAR(old_archive_from_expsyms_cmds, $1)='$DLLTOOL --as=$AS --dllname $soname --def $output_objdir/$soname-def --output-lib $output_objdir/$newlib'
 
-      # cygwin and mingw dlls have different entry points and sets of symbols
-      # to exclude.
       # FIXME: what about values for MSVC?
       dll_entry=__cygwin_dll_entry@12
-      dll_exclude_symbols=DllMain@12,_cygwin_dll_entry@12,_cygwin_noncygwin_dll_entry@12~
       case $host_os in
       mingw*)
 	# mingw values
 	dll_entry=_DllMainCRTStartup@12
-	dll_exclude_symbols=DllMain@12,DllMainCRTStartup@12,DllEntryPoint@12~
 	;;
       esac
 
-      # mingw and cygwin differ, and it's simplest to just exclude the union
-      # of the two symbol sets.
       dll_exclude_symbols=DllMain@12,_cygwin_dll_entry@12,_cygwin_noncygwin_dll_entry@12,DllMainCRTStartup@12,DllEntryPoint@12
 
       # recent cygwin and mingw systems supply a stub DllMain which the user

@@ -22,14 +22,14 @@ fi
 cd ../demo || exit 77
 
 echo "removing libhello.la and hell from ../demo"
-rm -f libhello.la hell
+rm -f libhello.la hell$EXEEXT
 
 echo "linking hell with a broken ../demo/libhello.la"
-if $make hell libhello_la_OBJECTS=hello.lo; then
+if $make hell$EXEEXT libhello_la_OBJECTS=hello.lo; then
   echo "= Succeeded: this means the installed library was used, which is wrong"
   status=1
 fi
 
-rm -f libhello.la hell
+rm -f libhello.la hell$EXEEXT
 
 exit $status

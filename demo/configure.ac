@@ -37,12 +37,14 @@ AM_INIT_AUTOMAKE(AC_PACKAGE_TARNAME, AC_PACKAGE_VERSION)
 ## ---------------- ##
 AC_PROG_CC
 AC_C_CONST
+AC_EXEEXT
 
 
 ## ----------------------- ##
 ## Libtool initialisation. ##
 ## ----------------------- ##
 AC_LIBTOOL_DLOPEN
+AC_LIBTOOL_WIN32_DLL
 AM_PROG_LIBTOOL
 AC_SUBST([LIBTOOL_DEPS])
 

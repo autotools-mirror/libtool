@@ -1,5 +1,10 @@
 NEWS - list of user-visible changes between releases of GNU Libtool
 
+New in 1.4f: 2002-??-??; CVS version 1.4e, Libtool team:
+* Support auto-import patch to binutils on cygwin for much improved dll
+  support.
+* Bug fixes.
+
 New in 1.4d: 2002-01-07; CVS version 1.4c, Libtool team:
 * Help strings display correctly again.
 * Better error messages when library linking fails.
@@ -148,7 +153,7 @@ New in 1.3: 1999-04-29, Libtool team:
 
 New in CVS version 1.2g, Libtool team:
 * AM_PROG_LIBTOOL is smaller and faster
-* AC_LIBTOOL_WIN32_DLL is required in configure.in for libtool to
+* AC_LIBTL_L_WIN32_DLL is required in configure.in for libtool to
   attempt to build dlls on win32 hosts
 * Shared libraries on AmigaOS up to version 4 are now disabled
   since they don't meet libtool's requirements for shared libraries
@@ -255,7 +260,7 @@ New in 1.2a - 1998-04-19, Gordon Matzigkeit:
 
 New in 1.2 - 1998-03-20, Gordon Matzigkeit:
 * Minor bug fixes to provide a stable public release.
-* Libtool no longer causes Solaris printf to barf due to silly
+* Libtool no longer cseses Solaris printf to barf due to silly
   2110-byte static buffers.
 
 New in 1.1 - 1998-03-08, Gordon Matzigkeit:

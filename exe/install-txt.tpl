@@ -303,6 +303,19 @@
 	  destfile="$destdir/$destfile"
 	fi
 
+	# If the file is missing, and there is a .exe on the end, strip it
+	# because it is most likely a libtool script we actually want to
+	# install
+	stripped_ext=""
+	case $file in
+	  *.exe)
+	    if test ! -f "$file"; then
+	      file=`echo $file|${SED} 's,.exe$,,'`
+	      stripped_ext=".exe"
+	    fi
+	    ;;
+	esac
+
 	# Do a test to see if this is really a libtool program.
 	case $host in
 	*cygwin*|*mingw*)
@@ -364,7 +377,7 @@
 		$echo "$modename: error: cannot create temporary directory \`$tmpdir'" 1>&2
 		continue
 	      fi
-	      file=`$echo "X$file" | $Xsed -e 's%^.*/%%'`
+	      file=`$echo "X$file$stripped_ext" | $Xsed -e 's%^.*/%%'`
 	      outputname="$tmpdir/$file"
 	      # Replace the output file specification.
 	      relink_command=`$echo "X$relink_command" | $Xsed -e 's%@OUTPUT@%'"$outputname"'%g'`
@@ -382,7 +395,7 @@
 	    fi
 	  else
 	    # Install the binary that we compiled earlier.
-	    file=`$echo "X$file" | $Xsed -e "s%\([^/]*\)$%$objdir/\1%"`
+	    file=`$echo "X$file$stripped_ext" | $Xsed -e "s%\([^/]*\)$%$objdir/\1%"`
 	  fi
 	fi
 

@@ -6,6 +6,6 @@ INCLUDES = -I$(top_srcdir)
 
 extradir = $(libdir)/extra
 
-extra_LTLIBRARIES = libl3.la
+lib_LTLIBRARIES = libl3.la
 libl3_la_SOURCES = l3.c l3.h
 libl3_la_LIBADD = $(top_builddir)/l1/libl1.la $(top_builddir)/l2/libl2.la

@@ -21,7 +21,7 @@ libsub_la_LDFLAGS = -no-undefined
 
 noinst_HEADERS = foo.h
 
-bin_PROGRAMS = mdemo mdemo.static
+bin_PROGRAMS = mdemo mdemo_static
 
 ## use @LIBLTDL@ because some broken makes do not accept macros in targets
 ## we can only do this because our LIBLTDL does not contain ${top_builddir}

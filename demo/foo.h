@@ -24,11 +24,12 @@ USA. */
 
 /* At some point, cygwin will stop defining __CYGWIN32__, but b19 and
  * earlier do not define __CYGWIN__.  This snippit allows us to check
- * for __CYGWIN32__ reliably for both old and (probable) future releases.
+ * for __CYGWIN__ reliably for both current, old, and (probable) future 
+ * releases.
  */
-#ifdef __CYGWIN__
-#  ifndef __CYGWIN32__
-#    define __CYGWIN32__
+#ifdef __CYGWIN32__
+#  ifndef __CYGWIN__
+#    define __CYGWIN__
 #  endif
 #endif
 
@@ -49,30 +50,12 @@ USA. */
    that don't understand ANSI C prototypes still work, and ANSI C
    compilers can issue warnings about type mismatches. */
 #undef LTDL_PARAMS
-#if defined (__STDC__) || defined (_AIX) || (defined (__mips) && defined (_SYSTYPE_SVR4)) || defined(__CYGWIN32__) || defined(__cplusplus)
+#if defined (__STDC__) || defined (_AIX) || (defined (__mips) && defined (_SYSTYPE_SVR4)) || defined(__CYGWIN__) || defined(__cplusplus)
 # define LT_PARAMS(protos) protos
 # define lt_ptr_t     void*
 #else
 # define LT_PARAMS(protos) ()
 # define lt_ptr_t     char*
-#endif
-
-#ifdef __CYGWIN32__
-#  ifdef LIBFOO_DLL
-     /* need some (as yet non-existant) automake magic to tell
-      * the object whether the libfoo it will be linked with is
-      * a dll or not, ie whether LIBFOO_DLL is defined or not.
-      */
-#    ifdef _LIBFOO_COMPILATION_
-#      define EXTERN __declspec(dllexport)
-#    else
-#      define EXTERN extern __declspec(dllimport)
-#    endif
-#  else
-#    define EXTERN extern
-#  endif
-#else
-#  define EXTERN extern
 #endif
 
 /* Silly constants that the functions return. */
@@ -84,7 +67,7 @@ USA. */
 __BEGIN_DECLS
 int foo LT_PARAMS((void));
 int hello LT_PARAMS((void));
-EXTERN int nothing;
+extern int nothing;
 __END_DECLS
 
 #endif /* !_FOO_H_ */
