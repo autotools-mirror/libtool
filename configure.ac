@@ -23,7 +23,7 @@ case "$VERSION" in
     echo $dashes
     echo
     ;;
-esac    
+esac
 AC_SUBST(TIMESTAMP)
 
 pkgdatadir='${datadir}'"/${PACKAGE}"
@@ -47,6 +47,10 @@ AM_CONDITIONAL(HAVE_CXX, [test "x$CXX" != xno])
 
 LT_AC_PROG_GCJ
 AM_CONDITIONAL(HAVE_GCJ, [test "x$GCJ" != xno])
+
+LT_AC_PROG_RC
+AM_CONDITIONAL(HAVE_RC, [test "x$RC" != xno])
+
 
 # Declare win32 dll support
 AC_LIBTOOL_WIN32_DLL

@@ -7,6 +7,9 @@ New in 1.4d: 2001-??-??; CVS version 1.4c, Libtool team:
 * Better search path management in libltdl with `lt_dlinsertsearchdir' call.
 * Support /lib/w32api in recent cygwin releases.
 * Support cross compilation to mingw.
+* Support for .rc files (Windows resource compiler).
+* Improved handling of mingw gcc.
+* Improved handling of $PATH with entries containing spaces.
 * Improved support for linking with gcc on aix4* and aix5*.
 * Improved support for GCC 3.0.
 * Initial support for QNX RTOS, UnixWare 7 and OpenUNIX 8.

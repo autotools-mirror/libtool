@@ -1086,7 +1086,18 @@ cygwin* | mingw* | pw32*)
     ;;
   yes,mingw*)
     library_names_spec='${libname}`echo ${release} | sed -e 's/[[.]]/-/g'`${versuffix}.dll'
-    sys_lib_search_path_spec=`$CC -print-search-dirs | grep "^libraries:" | sed -e "s/^libraries://" -e "s/$PATH_SEPARATOR/ /g"`
+    sys_lib_search_path_spec=`$CC -print-search-dirs | grep "^libraries:" | sed -e "s/^libraries://"`
+    if echo "$sys_lib_search_path_spec" | [egrep ';[C-Z]:/' >/dev/null]; then
+      # It is most probably a Windows format PATH printed by
+      # mingw gcc, but we are running on Cygwin. Gcc prints its search
+      # path with ; separators, and with drive letters. We can handle the
+      # drive letters (cygwin fileutils understands them), so leave them,
+      # especially as we might pass files found there to a mingw objdump,
+      # which wouldn't understand a cygwinified path. Ahh.
+      sys_lib_search_path_spec=`echo "$sys_lib_search_path_spec" | sed -e 's/;/ /g'`
+    else
+      sys_lib_search_path_spec=`echo "$sys_lib_search_path_spec" | sed  -e "s/$PATH_SEPARATOR/ /g"`
+    fi
     ;;
   yes,pw32*)
     library_names_spec='`echo ${libname} | sed -e 's/^lib/pw/'``echo ${release} | sed -e 's/[.]/-/g'`${versuffix}.dll'
@@ -1408,7 +1419,10 @@ AC_DEFUN([_LT_AC_TAGCONFIG],
     [AC_HELP_STRING([--with-tags=TAGS],
 	[include additional configurations @<:@CXX,GCJ@:>@])],
     [tagnames="$withval"],
-    [tagnames="CXX,GCJ"])
+    [tagnames="CXX,GCJ"
+    case $host_os in
+      mingw*|cygwin*) tagnames="$tagnames,RC" ;;
+    esac])
 
 if test -f "$ltmain" && test -n "$tagnames"; then
   if test ! -f "${ofile}"; then
@@ -1454,6 +1468,10 @@ if test -f "$ltmain" && test -n "$tagnames"; then
 
       GCJ)
 	AC_LIBTOOL_LANG_GCJ_CONFIG
+	;;
+
+      RC)
+	AC_LIBTOOL_LANG_RC_CONFIG
 	;;
 
       *)
@@ -2018,16 +2036,16 @@ else
   for ac_dir in $PATH /usr/ccs/bin /usr/ucb /bin; do
     IFS="$lt_save_ifs"
     test -z "$ac_dir" && ac_dir=.
-    tmp_nm=$ac_dir/${ac_tool_prefix}nm
-    if test -f $tmp_nm || test -f $tmp_nm$ac_exeext ; then
+    tmp_nm="$ac_dir/${ac_tool_prefix}nm"
+    if test -f "$tmp_nm" || test -f "$tmp_nm$ac_exeext" ; then
       # Check to see if the nm accepts a BSD-compat flag.
       # Adding the `sed 1q' prevents false positives on HP-UX, which says:
       #   nm: unknown option "B" ignored
       # Tru64's nm complains that /dev/null is an invalid object file
-      if ($tmp_nm -B /dev/null 2>&1 | sed '1q'; exit 0) | egrep '(/dev/null|Invalid file or object type)' >/dev/null; then
+      if ("$tmp_nm" -B /dev/null 2>&1 | sed '1q'; exit 0) | egrep '(/dev/null|Invalid file or object type)' >/dev/null; then
 	lt_cv_path_NM="$tmp_nm -B"
 	break
-      elif ($tmp_nm -p /dev/null 2>&1 | sed '1q'; exit 0) | egrep /dev/null >/dev/null; then
+      elif ("$tmp_nm" -p /dev/null 2>&1 | sed '1q'; exit 0) | egrep /dev/null >/dev/null; then
 	lt_cv_path_NM="$tmp_nm -p"
 	break
       else
@@ -2163,6 +2181,14 @@ AC_DEFUN([_LT_AC_LANG_GCJ],
 	 [ifdef([A][M_PROG_GCJ],[AC_REQUIRE([A][M_PROG_GCJ])],
 	   [AC_REQUIRE([A][C_PROG_GCJ_OR_A][M_PROG_GCJ])])])])])])
 ])# _LT_AC_LANG_GCJ
+
+
+# AC_LIBTOOL_RC
+# --------------
+# enable support for Windows resource files
+AC_DEFUN([AC_LIBTOOL_RC],
+[AC_REQUIRE([AC_PROG_RC])
+])# AC_LIBTOOL_RC
 
 
 # AC_LIBTOOL_LANG_C_CONFIG
@@ -3157,6 +3183,46 @@ AC_LIBTOOL_CONFIG($1)
 AC_LANG_RESTORE
 CC="$lt_save_CC"
 ])# AC_LIBTOOL_LANG_GCJ_CONFIG
+
+
+# AC_LIBTOOL_LANG_RC_CONFIG
+# --------------------------
+# Ensure that the configuration vars for the Windows resource compiler are
+# suitably defined.  Those variables are subsequently used by
+# AC_LIBTOOL_CONFIG to write the compiler configuration to `libtool'.
+AC_DEFUN([AC_LIBTOOL_LANG_RC_CONFIG], [_LT_AC_LANG_RC_CONFIG(RC)])
+AC_DEFUN([_LT_AC_LANG_RC_CONFIG],
+[AC_LANG_SAVE
+
+# Source file extension for RC test sources.
+ac_ext=rc
+
+# Object file extension for compiled RC test sources.
+objext=o
+_LT_AC_TAGVAR(objext, $1)=$objext
+
+# Code to be used in simple compile tests
+lt_simple_compile_test_code='sample MENU { MENUITEM "&Soup", 100, CHECKED }'
+
+# Code to be used in simple link tests
+lt_simple_link_test_code="$lt_simple_compile_test_code"
+
+# ltmain only uses $CC for tagged configurations so make sure $CC is set.
+_LT_AC_SYS_COMPILER
+
+# Allow CC to be a program name with arguments.
+lt_save_CC="$CC"
+CC=${RC-"windres"}
+set dummy $CC
+compiler="[$]2"
+_LT_AC_TAGVAR(compiler, $1)=$CC
+_LT_AC_TAGVAR(lt_cv_prog_compiler_c_o, $1)=yes
+
+AC_LIBTOOL_CONFIG($1)
+
+AC_LANG_RESTORE
+CC="$lt_save_CC"
+])# AC_LIBTOOL_LANG_RC_CONFIG
 
 
 # AC_LIBTOOL_CONFIG([TAGNAME])
@@ -5225,4 +5291,8 @@ AC_DEFUN([LT_AC_PROG_GCJ],
 [AC_CHECK_TOOL(GCJ, gcj, no)
   test "x${GCJFLAGS+set}" = xset || GCJFLAGS="-g -O2"
   AC_SUBST(GCJFLAGS)
+])
+
+AC_DEFUN([LT_AC_PROG_RC],
+[AC_CHECK_TOOL(RC, windres, no)
 ])

@@ -1,5 +1,18 @@
 2001-09-22  Tor Lillqvist  <tml@iki.fi>
 
+	* libtool.m4 [mingw* cygwin*]: Small improvement for mingw-hosted
+	tool support (while still running libtool on cygwin). In that case
+	PATH_SEPARATOR is ':', but gcc -print-search-dirs still prints its
+	search path with ';' as separator.
+	(AC_LIBTOOL_RC, AC_LIBTOOL_LANG_RC_CONFIG): Add support for .rc
+	files (Windows resource files), compiled by the resource compiler
+	(windres in mingw) to .o files.
+	(AC_PROG_NM): Minor bug fix for $PATH elements with spaces in
+	them.
+	* configure.ac: Use LT_AC_PROG_RC.
+	* ltmain.in: Check for .rc files.
+	* NEWS: Updated.
+
 	* ltmain.in: Add a space to $base_compile in the case statement,
 	as the case labels checks for trailing spaces, but there aren't
 	necessarily in $base_compile.
