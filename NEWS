@@ -2,7 +2,7 @@ NEWS - list of user-visible changes between releases of GNU Libtool
 
 New in 2.1b: 2005-??-??; CVS version 2.1a, Libtool team:
 * New tests for support of Automake subdir-objects.
-* Support for Portland Group compiler on Linux.
+* Support for Portland Group compiler on GNU/Linux.
 * Fix libltdl on static platforms.
 * Support for linux-dietlibc (`diet' as well as `diet-dyn', separately).
 * Shell optimizations which break use of the stdin file descriptor in libtool.
@@ -144,7 +144,7 @@ New in 1.5.2: 2004-01-25; CVS version 1.5.0a, Libtool team:
 * New link mode option `-precious-files-regex' to prevent accidental removal
   of files you want to keep, such as test coverage data, from the temporary
   output directory.
-* Directories specified in /etc/ld.so.conf are no longer hardcoded on Linux.
+* Directories specified in /etc/ld.so.conf are no longer hardcoded on GNU/Linux.
 * Recognises the 'R' symbol type on Solaris so read-only symbols can be
   exported.
 * Bug fixes.

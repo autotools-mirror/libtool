@@ -1,3 +1,7 @@
+2005-02-04  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* NEWS: s/Linux/GNU &/.
+
 2005-02-03  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* tests/Makefile.am, tests/testsuite.at, tests/stresstest.at:
