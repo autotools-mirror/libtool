@@ -1,3 +1,14 @@
+1999-06-16  Gary V. Vaughan  <gary@oranda.demon.co.uk>
+
+	* libltdl/ltdl.c (sys_wll_open): libltdl expects this function to
+	fail if it is unable to physically load the library.  Sadly,
+	LoadLibrary will search the loaded libraries for a match and
+	return one of them if the path search load fails.  Simulate a
+	failure in this case for compatibility with the other APIs.
+	Also, LoadLibrary takes the liberty of adding `.dll' to library
+	names passed without an extension, we now add a trailing `.' to
+	prevent this from happening.
+
 1999-06-15  Gary V. Vaughan  <gary@oranda.demon.co.uk>
 
 	* libltdl/ltdl.c (sys_wll_close): Strangely enough, Microsoft have
