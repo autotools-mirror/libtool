@@ -1,12 +1,12 @@
 ;; -*- Lisp -*-
 (Created-By-Prcs-Version 1 2 1)
 (Project-Description "GNU libtool library support script")
-(Project-Version libtool 0.9g 1)
-(Parent-Version libtool 0.9g 0)
+(Project-Version libtool 0.9g 2)
+(Parent-Version libtool 0.9g 1)
 
-(Version-Log "Bug fixes for David, and more docs.")
+(Version-Log "Many documentation fixes.")
 (New-Version-Log "")
-(Checkin-Time "Tue, 10 Jun 1997 12:21:04 -0600")
+(Checkin-Time "Wed, 11 Jun 1997 11:13:23 -0600")
 (Checkin-Login gord)
 (Populate-Ignore ("~$" "Makefile$" "Makefile\\.in$" "aclocal\\.m4$"
 		  "configure$" "config\\.status$" "config\\.cache$"
@@ -20,19 +20,19 @@
 (Files
 ;; Administrivia.
   (AUTHORS (libtool/21_AUTHORS 1.1 664))
-  (ChangeLog (libtool/20_ChangeLog 1.4.1.20 664))
-  (NEWS (libtool/19_NEWS 1.4.1.15 664))
+  (ChangeLog (libtool/20_ChangeLog 1.4.1.21 664))
+  (NEWS (libtool/19_NEWS 1.4.1.16 664))
   (PACKAGES (libtool/42_PACKAGES 1.3 664))
   (README (libtool/17_README 1.12 664))
   (README-alpha (libtool/16_README-alp 1.5 664))
   (README-automake (libtool/37_README-aut 1.4 664))
-  (TODO (libtool/14_TODO 1.3.1.13 664))
+  (TODO (libtool/14_TODO 1.3.1.14 664))
   (THANKS (libtool/15_THANKS 1.7 664))
 
 ;; Top directory.
-  (Makefile.am (libtool/18_Makefile.a 1.16 664))
+  (Makefile.am (libtool/18_Makefile.a 1.17 664))
   (configure.in (libtool/13_configure. 1.4.1.11 664))
-  (ltmain.sh.in (libtool/2_ltmain.sh. 1.4.1.15 664))
+  (ltmain.sh.in (libtool/2_ltmain.sh. 1.4.1.16 664))
   (ltconfig.in (libtool/3_ltconfig.i 1.4.1.18 775))
   (libtoolize.in (libtool/4_libtoolize 1.6 664))
 
@@ -40,8 +40,8 @@
   (libtool.m4 (libtool/12_libtool.m4 1.6 664))
 
 ;; Documentation subdirectory.
-  (doc/libtool.texi (libtool/0_libtool.te 1.3.1.14 664))
-  (doc/platforms.texi (libtool/41_platforms. 1.6 664))
+  (doc/libtool.texi (libtool/0_libtool.te 1.3.1.15 664))
+  (doc/platforms.texi (libtool/41_platforms. 1.7 664))
   (doc/Makefile.am (libtool/1_Makefile.a 1.5 664))
 
 ;; Demonstration subdirectory.
