@@ -1,3 +1,11 @@
+2005-05-22  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* libtool.m4 (AC_LIBTOOL_PROG_LD_SHLIBS) [solaris]: Use ${wlarc}
+	and set to empty when using $LD for linking.  Fixes regression
+	introduced in 2004-12-20.
+	Reported by Ralf Menzel <menzel@ls6.cs.uni-dortmund.de> and
+	Пухальский Юрий Андреевич <pooh@cryptopro.ru>.
+
 2005-05-21  Gary V. Vaughan  <gary@gnu.org>,
 	    Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
@@ -27,7 +35,8 @@
 	-Qoption between allextract/defaultextract.  The Sun C++ compiler
 	bundles -Qoption arguments so convenience libraries are linked with
 	defaultextract otherwise.
-	Backport of branch-2-0 patch dated 2004-03-14.
+	Backport of branch-2-0 patch dated 2004-03-14.  Reported by
+	Пухальский Юрий Андреевич <pooh@cryptopro.ru>.
 
 2005-03-16  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
@@ -2044,7 +2053,7 @@
 
 	* libltdl/ltdl.c (foreach_dirinpath): Ensure that filename is '\0'
 	terminated by all code paths.
-	Reported by Lutz M�ller <lutz@users.sourceforge.net>
+	Reported by Lutz Müller <lutz@users.sourceforge.net>
 
 2002-06-20  Gary V. Vaughan  <gary@gnu.org>
 
