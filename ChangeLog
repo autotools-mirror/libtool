@@ -1,5 +1,8 @@
 2004-07-08  Peter O'Gorman  <peter@pogma.com>
 
+	* libtool.m4 [darwin](AC_PROG_LD_RELOAD_FLAG): Use $CC -nostdlib -r
+	on darwin so that ld will not thin fat files.
+
 	* libtool.m4 [darwin]: Clean up darwin bits. Looks more normal now.
 
 2004-07-07  Brad <brad@comstyle.com>
