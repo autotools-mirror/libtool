@@ -105,15 +105,17 @@ bin_SCRIPTS = libtoolize libtool
 
 libtoolize: libtoolize.in Makefile
 	rm -f libtoolize.tmp libtoolize
+	set -- `$(MKSTAMP) < $(top_srcdir)/ChangeLog`; \
 	input="libtoolize.in"; \
-	$(edit) $(srcdir)/libtoolize.in > libtoolize.tmp
+	$(edit) -e "s,@TIMESTAMP\@,$$1 $$2 $$3,g" \
+		$(srcdir)/libtoolize.in > libtoolize.tmp
 	chmod a+x libtoolize.tmp
 	chmod a-w libtoolize.tmp
 	mv -f libtoolize.tmp libtoolize
 
 # Automake doesn't want us to generate distributed files from config.status,
 # but the alternative (see libtool-1.4.3) was even uglier!
-libtool: $(top_builddir)/config.status
+libtool: $(top_builddir)/config.status $(top_srcdir)/config/ltmain.sh
 	cd $(top_builddir) && $(SHELL) ./config.status $@
 
 .PHONY: configure-subdirs

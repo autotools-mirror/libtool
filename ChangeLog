@@ -1,5 +1,8 @@
 2004-08-05  Gary V. Vaughan  <gary@gnu.org>
 
+	* Makefile.am (libtool): Depends on ltmain.sh.
+	(libtoolize): Set and substitute TIMESTAMP.
+
 	* Makefile.am ($(top_srcdir)/config/ltmain.sh): Actually run
 	$(MKSTAMP) before changing directories, or it won't be found.
 	Forgot to save before my last commit :-(
