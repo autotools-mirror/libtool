@@ -72,6 +72,11 @@ main( argc, argv )
     if (pzHost == (char*)NULL)
         pzHost = zUnkn;
 
+    signal( SIGPIPE, handleSignal );
+    signal( SIGBUS,  handleSignal );
+    signal( SIGSEGV, handleSignal );
+    signal( SIGCHLD, SIG_DFL ); /* BOGUS SETTINGS CAN BE INHERITED */
+
     /*
      *  Process the options, removing them from the arg list.
      *  Make sure the resulting state is sane.
@@ -147,11 +152,7 @@ main( argc, argv )
     }
 
     pz_cmd_name = argv[0];
-    signal( SIGPIPE, handleSignal );
-    signal( SIGBUS,  handleSignal );
-    signal( SIGSEGV, handleSignal );
 
-    assert( OPT_VALUE_MODE < MODE_CT );
     {
         emitScriptProc* pEP = ap_emitProc[ OPT_VALUE_MODE ];
         if (pEP == NULL) {
@@ -243,7 +244,7 @@ validateMode( argct, argvec )
     /*
      *  IF we don't even have two letters in our command,
      *  THEN we won't try to figure out what the command is supposed to be.
-     *  Tandem's C compiler fails this test, however.
+     *  Tandem->Compaq->HP's C compiler fails this test, however.
      */
     if ((pzEnd - pzCmd) < 2)
         return;
@@ -284,8 +285,45 @@ validateMode( argct, argvec )
 }
 
 
+/*
+ *  This routine assumes that it is emitting text contained within
+ *  double quotes for collection by the shell.  Therefore, the only
+ *  characters to worry about are $ ` \ and ".
+ */
 EXPORT void
-emitShellQuoted( pzArg, outFp )
+emitDoubleQuoted( pzArg, outFp )
+    tCC*   pzArg;
+    FILE*  outFp;    /*end-decl*/
+{
+    for (;;) {
+        char ch = *(pzArg++);
+        switch (ch) {
+        case NUL:
+            return;
+
+        case '$':
+        case '\\':
+        case '`':
+        case '"':
+            fputc( '\\', outFp );
+            /* FALLTHROUGH */
+
+        default:
+            fputc( ch, outFp );
+        }
+    }
+}
+
+
+/*
+ *  This routine assumes that it is emitting text contained within
+ *  single quotes for collection by the shell.  Therefore, the only
+ *  character to worry about is the single quote (apostrophe).  We
+ *  close the current string, emit an escaped apostrophe and then
+ *  return to single quote mode.
+ */
+EXPORT void
+emitRawQuoted( pzArg, outFp )
     tCC*   pzArg;
     FILE*  outFp;    /*end-decl*/
 {
@@ -311,25 +349,63 @@ emitShellQuoted( pzArg, outFp )
 
 
 EXPORT void
-emitShellArg( pzArg, outFp )
+emitShellArg( pzArg, outFp, qChar )
     tCC*   pzArg;
-    FILE*  outFp;    /*end-decl*/
+    FILE*  outFp;
+    char   qChar;    /*end-decl*/
 {
     tSCC  zMetas[] = "<>{}()[]|&^#~*;?$`'\"\\ \t\v\f\r\n";
+    tSCC  zSpec[]  = "$`\\\"";
 
+    /*
+     *  Force a quoted string for the empty string
+     */
+    if (*pzArg == NUL) {
+        if (qChar == NUL)
+            qChar = '\'';
+        fputc( qChar, outFp );
+        fputc( qChar, outFp );
+        return;
+    }
+
+    /*
+     *  IF there are no special characters in the string,
+     *  THEN just emit it raw
+     */
     if (strpbrk( pzArg, zMetas ) == (char*)NULL) {
         fputs( pzArg, outFp );
         return;
     }
 
-    if (strchr( pzArg, '\'' ) == (char*)NULL) {
-        fprintf( outFp, "'%s'", pzArg );
-        return;
-    }
+    switch (qChar) {
+    case NUL:
+        /*
+         *  We are free to quote with either " or '
+         *  Try for a simple double quoted string, then fall back
+         *  to a raw quoted string.
+         */
+        if (strpbrk( pzArg, zSpec ) == (char*)NULL) {
+            fprintf( outFp, "\"%s\"", pzArg );
+            break;
+        }
+        /* FALLTHROUGH -- try for a ' quoted string */
 
-    fputc( '\'', outFp );
-    emitShellQuoted( pzArg, outFp );
-    fputc( '\'', outFp );
+    case '\'':
+        if (strchr( pzArg, '\'' ) == (char*)NULL) {
+            fprintf( outFp, "'%s'", pzArg );
+        }
+        else {
+            fputc( '\'', outFp );
+            emitRawQuoted( pzArg, outFp );
+            fputc( '\'', outFp );
+        }
+        break;
+
+    case '"':
+        fputc( '"', outFp );
+        emitDoubleQuoted( pzArg, outFp );
+        fputc( '"', outFp );
+    }
 }
 
 
@@ -346,7 +422,6 @@ emitScript( argc, argv )
     tSCC zModeName[] = "modename='%s: %s'\n";
     tSCC zMode[]     = "mode='%s'\n";
     tSCC zCmdName[]  = "nonopt='%s'\nset --";
-    tSCC zDlOpt[]    = "execute_dlfiles='";
 
     /*
      *  When we emit our script, we want the interpreter to invoke *US*
@@ -405,18 +480,9 @@ else  echo='%s --echo --' ; fi\n";
     CKSERV;
 
     if (HAVE_OPT( DLOPEN )) {
-        int    ct = STACKCT_OPT(  DLOPEN );
-        char** al = STACKLST_OPT( DLOPEN );
-        fputs( zDlOpt, fp );
-        for (;;) {
-            emitShellQuoted( *(al++), fp );
-            if (--ct <= 0)
-                break;
-            fputc( ' ', fp ); /* between each value only */
-        }
-        fputs( "'\n", fp );
+        emitDlopenOption( fp );
+        CKSERV;
     }
-    CKSERV;
 
     /*
      *  Insert our modal stuff and one shell option processing dinkleberry
@@ -439,11 +505,30 @@ else  echo='%s --echo --' ; fi\n";
 
     while (--argc > 0) {
         fputc( ' ', fp );
-        emitShellArg( *(++argv), fp );
+        emitShellArg( *(++argv), fp, NUL ); /* either single or double quotes */
         CKSERV;
     }
 
-	emitCommands( fp, apz_mode_cmd[ OPT_VALUE_MODE ]);
+    emitCommands( fp, apz_mode_cmd[ OPT_VALUE_MODE ]);
+}
+
+
+EXPORT void
+emitDlopenOption( fp )
+    FILE*  fp;    /*end-decl*/
+{
+    tSCC zDlOpt[]    = "execute_dlfiles='";
+
+    int    ct = STACKCT_OPT(  DLOPEN );
+    char** al = STACKLST_OPT( DLOPEN );
+    fputs( zDlOpt, fp );
+    for (;;) {
+        emitRawQuoted( *(al++), fp );
+        if (--ct <= 0)
+            break;
+        fputc( ' ', fp ); /* between each value only */
+    }
+    fputs( "'\n", fp );
 }
 
 
@@ -473,5 +558,6 @@ emitCommands( fp, pzCmds )
  * Local Variables:
  * c-file-style: "stroustrup"
  * indent-tabs-mode: nil
+ * tab-width: 4
  * End:
  * end of ltmain.c */
