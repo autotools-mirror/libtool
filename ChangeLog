@@ -1,3 +1,13 @@
+2004-06-21  Peter O'Gorman  <peter@pogma.com>
+
+	* ltmain.in (dependency_libs) [darwin]: Remove -framework stuff from
+	dependency_libs. Instead, invent a new .la var "inherited_linker_flags"
+	to keep any linker flags which should be used when linking the library,
+	but are outside the usual -L -l, -R etc that can be used in
+	dependency_libs. Any unusual flags in dependency_libs cause recent
+	versions of libtool to die with "cannot find the library `'", so
+	it is required to move frameworks out of there. :(
+	
 2004-06-21  Gary V. Vaughan  <gary@gnu.org>
 
 	From Ralf Wildenhues <Ralf.Wildenhues@gmx.de>:

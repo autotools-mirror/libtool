@@ -1904,7 +1904,7 @@ EOF
 	case $pass in
 	dlopen) libs="$dlfiles" ;;
 	dlpreopen) libs="$dlprefiles" ;;
-	link) libs="$deplibs %DEPLIBS% $dependency_libs" ;;
+	link) libs="$deplibs %DEPLIBS% $dependency_libs $inherited_linker_flags" ;;
 	esac
       fi
       if test "$pass" = dlopen; then
@@ -2004,7 +2004,10 @@ EOF
 	  else
 	    deplibs="$deplib $deplibs"
 	    if test "$linkmode" = lib ; then
-	      newdependency_libs="$deplib $newdependency_libs"
+		case "$inherited_linker_flags " in
+		    *" $deplib "*) ;;
+		    * ) inherited_linker_flags="$inherited_linker_flags $deplib" ;;
+	        esac
 	    fi
 	  fi
 	  continue
@@ -2126,6 +2129,7 @@ EOF
 	libdir=
 	library_names=
 	old_library=
+	inherited_linker_flags=
 	# If the library was installed with an old release of libtool,
 	# it will not redefine variables installed, or shouldnotlink
 	installed=yes
@@ -2139,8 +2143,11 @@ EOF
 
 	case $host in
 	*-*-darwin*)
-	  # Convert "-framework foo" to "foo.ltframework" in dependency_libs
-	  test -n "$dependency_libs" && dependency_libs=`$echo "X$dependency_libs" | $Xsed -e 's/-framework \([^ $]*\)/\1.ltframework/g'`
+	  # Convert "-framework foo" to "foo.ltframework"
+	  if test -n "$inherited_linker_flags"; then
+	    inherited_linker_flags=`$echo "X$inherited_linker_flags" | $Xsed -e 's/-framework \([^ $]*\)/\1.ltframework/g'`
+	  fi
+	  dependency_libs=`$echo "X $dependency_libs" | $Xsed -e 's% \([^ $]*\).ltframework% -framework \1%g'`
 	  ;;
 	esac
 
@@ -2689,7 +2696,7 @@ EOF
 
 	  if test "$link_all_deplibs" != no; then
 	    # Add the search paths of all dependency libraries
-	    for deplib in $dependency_libs; do
+	    for deplib in $dependency_libs $inherited_linker_flags; do
 	      case $deplib in
 	      -L*) path="$deplib" ;;
 	      *.la)
@@ -2760,14 +2767,6 @@ EOF
 		  path=""
 		  ;;
 		*) continue ;;
-		esac
-		;;
-
-	      *.ltframework)
-		case $host in
-		  *-*-darwin*)
-		    depdepl="$deplib"
-		    ;;
 		esac
 		;;
 
@@ -3635,16 +3634,17 @@ EOF
 	    fi
 	  fi
 	fi
-	# Time to change all our "foo.ltframework" stuff back to "-framework foo"
-	case $host in
-	  *-*-darwin*)
-	    newdeplibs=`$echo "X $newdeplibs" | $Xsed -e 's% \([^ $]*\).ltframework% -framework \1%g'`
-	    dependency_libs=`$echo "X $dependency_libs" | $Xsed -e 's% \([^ $]*\).ltframework% -framework \1%g'`
-	    ;;
-	esac
 	# Done checking deplibs!
 	deplibs=$newdeplibs
       fi
+      # Time to change all our "foo.ltframework" stuff back to "-framework foo"
+      case $host in
+	*-*-darwin*)
+	  newdeplibs=`$echo "X $newdeplibs" | $Xsed -e 's% \([^ $]*\).ltframework% -framework \1%g'`
+	  inherited_linker_flags=`$echo "X $inherited_linker_flags" | $Xsed -e 's% \([^ $]*\).ltframework% -framework \1%g'`
+	  deplibs=`$echo "X $deplibs" | $Xsed -e 's% \([^ $]*\).ltframework% -framework \1%g'`
+	  ;;
+      esac
 
       # All the library-specific variables (install_libdir is set above).
       library_names=
@@ -5517,6 +5517,9 @@ library_names='$library_names'
 
 # The name of the static archive.
 old_library='$old_library'
+
+# Linker flags that can not go in dependency_libs.
+inherited_linker_flags='$inherited_linker_flags'
 
 # Libraries that this one depends upon.
 dependency_libs='$dependency_libs'
