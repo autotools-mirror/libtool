@@ -3257,7 +3257,7 @@ EOF
 	fi
 
         if len=`expr "X$cmds" : ".*"` &&
-           test $len -le $max_cmd_len; then
+           test $len -le $max_cmd_len || test $max_cmd_len -le -1; then
           :
         else
 	  # The command line is too long to link in one step, link piecewise.
@@ -4256,7 +4256,7 @@ fi\
 	eval cmds=\"$old_archive_cmds\"
 
         if len=`expr "X$cmds" : ".*"` &&
-             test $len -le $max_cmd_len; then
+             test $len -le $max_cmd_len || test $max_cmd_len -le -1; then
           :
         else
           # the command line is too long to link in one step, link in parts

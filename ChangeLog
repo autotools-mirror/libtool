@@ -1,3 +1,10 @@
+2001-07-09  Robert Boehne  <rboehne@ricardo-us.com>
+
+	* libtool.m4 (AC_LIBTOOL_SYS_MAX_CMD_LEN):  Set max_cmd_len
+	to -1 on hurd, it has no command line argument limits.
+	* ltmain.in Handle max_cmd_len=-1 for systems that don't have
+	command line argument limits.
+
 2001-07-05  Gary V. Vaughan  <gary@gnu.org>
 
 	* libtool.m4 (_LT_AC_LANG_C_CONFIG):  Revert to 1.3.x
