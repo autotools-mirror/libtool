@@ -1,3 +1,12 @@
+2001-08-15  Gary V. Vaughan  <gary@gnu.org>
+
+	* libltdl/ltdl.c (N_ELEMENTS):  Deleted.  How come nobody noticed
+	there was no way this could have ever worked?
+	(lt_dlcaller_set_data): Now that valid caller_ids must be
+	non-zero, allocate an addition entry in the caller_data vector and
+	use a zero valued key as the end marker.
+	(lt_dlcaller_get_data): Iterate up to the end marker in one pass.
+
 2001-08-14  Gary V. Vaughan  <gary@gnu.org>
 
 	* libltdl/ltdl.c (lt_dlcaller_register): Caller ids are allocated
