@@ -3,6 +3,7 @@ NEWS - list of user-visible changes between releases of GNU Libtool
 New in 1.4b: 2001-??-??; CVS version 1.4a, Libtool team:
 * Full support for C++ compiler.
 * Support for GNU gcj compiler.
+* Improved support for OpenBSD.
 * internal mutex handling no longer has namespace clashes on NCR MP-RAS.
 
 New in 1.4.1: 2001-??-??; CVS version 1.4.0a, Libtool team:

@@ -1216,12 +1216,24 @@ EOF
 	    # These systems don't actually have a C library (as such)
 	    test "X$arg" = "X-lc" && continue
 	    ;;
+	  *-*-openbsd*)
+	    # OpenBSD uses either libc or libc_r.
+	    continue
+	    ;;
 	  *-*-rhapsody* | *-*-darwin1.[012])
 	    # Rhapsody C and math libraries are in the System framework
 	    deplibs="$deplibs -framework System"
 	    continue
 	  esac
 	fi
+        if test "X$arg" = "X-lc_r"; then
+         case $host in
+         *-*-openbsd*)
+           # Do not include libc_r directly, use -pthread flag.
+           continue
+           ;;
+         esac
+        fi
 	deplibs="$deplibs $arg"
 	continue
 	;;
@@ -2797,7 +2809,10 @@ EOF
 	  *-*-netbsd*)
 	    # Don't link with libc until the a.out ld.so is fixed.
 	    ;;
-	  *)
+          *-*-openbsd*)
+	    # OpenBSD uses either libc or libc_r.
+            ;;
+ 	  *)
 	    # Add libc to deplibs on all other systems if necessary.
 	    if test $build_libtool_need_lc = "yes"; then
 	      deplibs="$deplibs -lc"

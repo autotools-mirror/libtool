@@ -1,3 +1,11 @@
+2001-06-27  Gary V. Vaughan  <gary@gnu.org>
+
+	* NEWS: Updated.
+	* libtool.m4 (AC_LIBTOOL_SYS_DYNAMIC_LINKER) [openbsd]: Improved
+	support for various openbsd platforms.
+	(AC_LIBTOOL_PROG_LD_SHLIBS): Ditto.
+	* ltmain.in: Ditto,
+
 2001-06-26  Gary V. Vaughan  <gary@gnu.org>
 	
 	* NEWS: Updated.

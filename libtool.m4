@@ -1213,13 +1213,16 @@ newsos6)
 
 openbsd*)
   version_type=sunos
-  if test "$with_gnu_ld" = yes; then
-    need_lib_prefix=no
-    need_version=no
-  fi
   library_names_spec='${libname}${release}.so$versuffix ${libname}.so$versuffix'
   finish_cmds='PATH="\$PATH:/sbin" ldconfig -m $libdir'
   shlibpath_var=LD_LIBRARY_PATH
+  file_magic_cmd=/usr/bin/file
+  file_magic_test_file=`echo /usr/lib/libc.so.*`
+  if [ "`echo __ELF__ | $CC -E - | grep __ELF__`" = "" -o "$host_os-$host_cpu" = "openbsd2.8-powerpc" ]; then
+    deplibs_check_method='file_magic ELF [0-9][0-9]*-bit [LM]SB shared object'
+  else
+    deplibs_check_method='file_magic OpenBSD.* shared library'
+  fi
   ;;
 
 os2*)
@@ -3867,7 +3870,7 @@ _LT_AC_TAGVAR(exclude_expsyms, $1)="_GLOBAL_OFFSET_TABLE_"
 extract_expsyms_cmds=
 
 case $host_os in
-cygwin* | mingw* | pw32* )
+cygwin* | mingw* | pw32*)
   # FIXME: the MSVC++ port hasn't been tested in a loooong time
   # When not using gcc, we currently assume that we are using
   # Microsoft Visual C++.
@@ -3875,7 +3878,9 @@ cygwin* | mingw* | pw32* )
     with_gnu_ld=no
   fi
   ;;
-
+openbsd*)
+  with_gnu_ld=no
+  ;;
 esac
 
 _LT_AC_TAGVAR(ld_shlibs, $1)=yes
@@ -4307,10 +4312,22 @@ else
     ;;
 
   openbsd*)
-    _LT_AC_TAGVAR(archive_cmds, $1)='$LD -Bshareable -o $lib $libobjs $deplibs $linker_flags'
-    _LT_AC_TAGVAR(hardcode_libdir_flag_spec, $1)='-R$libdir'
     _LT_AC_TAGVAR(hardcode_direct, $1)=yes
     _LT_AC_TAGVAR(hardcode_shlibpath_var, $1)=no
+  
+    case "$host_os" in
+      openbsd[01].* | openbsd2.[0-7] | openbsd2.[0-7].*)
+        _LT_AC_TAGVAR(archive_cmds, $1)='$LD -Bshareable -o $lib $libobjs $deplibs $linker_flags'
+        _LT_AC_TAGVAR(hardcode_libdir_flag_spec, $1)='-R$libdir'
+      ;;
+      *)
+        _LT_AC_TAGVAR(archive_cmds, $1)='$CC -shared $pic_flag -o $lib $libobjs $deplibs $linker_flags'
+        _LT_AC_TAGVAR(hardcode_libdir_flag_spec, $1)='${wl}-rpath,$libdir'
+        if [ "`echo __ELF__ | $CC -E - | grep __ELF__`" = "" -o "$host_os-$host_cpu" = "openbsd2.8-powerpc" ]; then
+         _LT_AC_TAGVAR(export_dynamic_flag_spec, $1)='${wl}-E'
+        fi
+      ;;
+    esac
     ;;
 
   os2*)
