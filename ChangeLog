@@ -1,3 +1,11 @@
+1998-12-23  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* libltdl/Makefile.am: install libltdl conditionally...
+	* libltdl/configure.in: ... if --enable-ltdl-install is issued
+	* libltdl/ltdl.c: removed #ifdef DEBUG
+	* mdemo/Makefile.am (mdemo_debug_LDADD, mdemo_debug_DEPENDENCIES): 
+	use libltdl.la
+
 1998-12-23  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
 
 	* doc/PLATFORMS: added my cygwin32 box (i686-pc-cygwin32).

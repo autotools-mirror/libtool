@@ -27,7 +27,7 @@ mdemo_DEPENDENCIES = ../libltdl/libltdl.la libfoo1.la libfoo2.la
 
 # Create an easier-to-debug version of mdemo.
 mdemo_debug_SOURCES = main.c
-mdemo_debug_LDADD = ../libltdl/libltdls.la
+mdemo_debug_LDADD = ../libltdl/libltdl.la
 mdemo_debug_LDFLAGS = -static -export-dynamic \
 	-dlopen libfoo1.la -dlopen libfoo2.la
-mdemo_debug_DEPENDENCIES = ../libltdl/libltdls.la libfoo1.la libfoo2.la
+mdemo_debug_DEPENDENCIES = ../libltdl/libltdl.la libfoo1.la libfoo2.la

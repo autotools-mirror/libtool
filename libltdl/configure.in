@@ -3,6 +3,19 @@ dnl Initialize the ltdl package.
 AC_INIT(ltdl.c)
 AM_INIT_AUTOMAKE(libltdl,1.0)
 
+AC_ARG_ENABLE(ltdl-install,
+  [--enable-ltdl-install    install libltdl (breaks check before install)])
+AM_CONDITIONAL(INSTALL_LTDL, test x$enable_ltdl_install = xyes)
+if test x$enable_ltdl_install = xyes; then
+  LIBLIBS=libltdl.la
+  NOINSTLIBS=
+else
+  LIBLIBS=
+  NOINSTLIBS=libltdl.la
+fi
+AC_SUBST(LIBLIBS)
+AC_SUBST(NOINSTLIBS)
+
 AC_PROG_CC
 AM_PROG_LIBTOOL
 
@@ -10,10 +23,6 @@ AC_HEADER_STDC
 AC_CHECK_HEADERS(malloc.h memory.h stdlib.h unistd.h stdio.h ctype.h dlfcn.h dl.h)
 AC_CHECK_HEADERS(string.h strings.h, break)
 AC_CHECK_FUNCS(strdup strrchr rindex)
-
-AC_ARG_ENABLE(ltdl-install,
-  [--enable-ltdl-install    install libltdl (breaks check before install)])
-AM_CONDITIONAL(INSTALL_LTDL, test x$enable_ltdl_install = xyes)
 
 AC_CACHE_CHECK([whether libtool supports -dlopen/-dlpreopen],
 	libltdl_cv_dlpreopen, [dnl
