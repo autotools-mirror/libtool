@@ -1,3 +1,8 @@
+1999-06-20  Gary V. Vaughan  <gary@oranda.demon.co.uk>
+
+	* ltconfig.in:  moved the test for NM after the test for
+	no_builtin_flag.
+
 1999-06-20  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* ltconfig.in: Use sed '$q' instead of sed "" for copying ltmain,

@@ -574,167 +574,6 @@ if test -z "$NM"; then
   echo "$ac_t$NM" 1>&6
 fi
 
-# Check for command to grab the raw symbol name followed by C symbol from nm.
-echo $ac_n "checking command to parse $NM output... $ac_c" 1>&6
-
-# These are sane defaults that work on at least a few old systems.
-# [They come from Ultrix.  What could be older than Ultrix?!! ;)]
-
-# Character class describing NM global symbol codes.
-symcode='[BCDEGRST]'
-
-# Regexp to match symbols that can be accessed directly from C.
-sympat='\([_A-Za-z][_A-Za-z0-9]*\)'
-
-# Transform the above into a raw symbol and a C symbol.
-symxfrm='\1 \2\3 \3'
-
-# Transform an extracted symbol line into a proper C declaration
-global_symbol_to_cdecl="sed -n -e 's/^. .* \(.*\)$/extern char \1;/p'"
-
-# Define system-specific variables.
-case "$host_os" in
-aix*)
-  symcode='[BCDT]'
-  ;;
-cygwin* | mingw*)
-  symcode='[ABCDGISTW]'
-  ;;
-hpux*) # Its linker distinguishes data from code symbols
-  global_symbol_to_cdecl="sed -n -e 's/^T .* \(.*\)$/extern char \1();/p' -e 's/^. .* \(.*\)$/extern char \1;/p'"
-  ;;
-irix*)
-  symcode='[BCDEGRST]'
-  ;;
-solaris*)
-  symcode='[BDT]'
-  ;;
-sysv4)
-  symcode='[DFNSTU]'
-  ;;
-esac
-
-# If we're using GNU nm, then use its standard symbol codes.
-if $NM -V 2>&1 | egrep '(GNU|with BFD)' > /dev/null; then
-  symcode='[ABCDGISTW]'
-fi
-
-# Try without a prefix undercore, then with it.
-for ac_symprfx in "" "_"; do
-
-  # Write the raw and C identifiers.
-  global_symbol_pipe="sed -n -e 's/^.*[ 	]\($symcode\)[ 	][ 	]*\($ac_symprfx\)$sympat$/$symxfrm/p'"
-
-  # Check to see that the pipe works correctly.
-  pipe_works=no
-  $rm conftest*
-  cat > conftest.c <<EOF
-#ifdef __cplusplus
-extern "C" {
-#endif
-char nm_test_var;
-void nm_test_func(){}
-#ifdef __cplusplus
-}
-#endif
-main(){nm_test_var='a';nm_test_func();return(0);}
-EOF
-
-  echo "$progname:@LINENO@: checking if global_symbol_pipe works" >&5
-  if { (eval echo $progname:@LINENO@: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>&5; } && test -s conftest.$objext; then
-    # Now try to grab the symbols.
-    nlist=conftest.nm
-    if { echo "$progname:@LINENO@: eval \"$NM conftest.$objext | $global_symbol_pipe > $nlist\"" >&5; eval "$NM conftest.$objext | $global_symbol_pipe > $nlist 2>&5"; } && test -s "$nlist"; then
-
-      # Try sorting and uniquifying the output.
-      if sort "$nlist" | uniq > "$nlist"T; then
-	mv -f "$nlist"T "$nlist"
-      else
-	rm -f "$nlist"T
-      fi
-
-      # Make sure that we snagged all the symbols we need.
-      if egrep ' nm_test_var$' "$nlist" >/dev/null; then
-	if egrep ' nm_test_func$' "$nlist" >/dev/null; then
-	  cat <<EOF > conftest.c
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-EOF
-	  # Now generate the symbol file.
-	  eval "$global_symbol_to_cdecl"' < "$nlist" >> conftest.c'
-
-	  cat <<EOF >> conftest.c
-#if defined (__STDC__) && __STDC__
-# define lt_ptr_t void *
-#else
-# define lt_ptr_t char *
-# define const
-#endif
-
-/* The mapping between symbol names and symbols. */
-const struct {
-  const char *name;
-  lt_ptr_t address;
-}
-lt_preloaded_symbols[] =
-{
-EOF
-	  sed 's/^. \(.*\) \(.*\)$/  {"\2", (lt_ptr_t) \&\2},/' < "$nlist" >> conftest.c
-	  cat <<\EOF >> conftest.c
-  {0, (lt_ptr_t) 0}
-};
-
-#ifdef __cplusplus
-}
-#endif
-EOF
-	  # Now try linking the two files.
-	  mv conftest.$objext conftstm.$objext
-	  save_LIBS="$LIBS"
-	  save_CFLAGS="$CFLAGS"
-	  LIBS="conftstm.$objext"
-	  CFLAGS="$CFLAGS$no_builtin_flag"
-	  if { (eval echo $progname:@LINENO@: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest; then
-	    pipe_works=yes
-	  else
-	    echo "$progname: failed program was:" >&5
-	    cat conftest.c >&5
-	  fi
-	  LIBS="$save_LIBS"
-	else
-	  echo "cannot find nm_test_func in $nlist" >&5
-	fi
-      else
-	echo "cannot find nm_test_var in $nlist" >&5
-      fi
-    else
-      echo "cannot run $global_symbol_pipe" >&5
-    fi
-  else
-    echo "$progname: failed program was:" >&5
-    cat conftest.c >&5
-  fi
-  $rm conftest* conftst*
-
-  # Do not use the global_symbol_pipe unless it works.
-  if test "$pipe_works" = yes; then
-    break
-  else
-    global_symbol_pipe=
-  fi
-done
-if test "$pipe_works" = yes; then
-  echo "${ac_t}ok" 1>&6
-else
-  echo "${ac_t}failed" 1>&6
-fi
-
-if test -z "$global_symbol_pipe"; then
-  global_symbol_to_cdecl=
-fi
-
 # Check to see if we are using GCC.
 if test "$with_gcc" != yes || test -z "$CC"; then
   # If CC is not set, then try to find GCC or a usable CC.
@@ -2150,6 +1989,167 @@ sysv4*MP*)
 esac
 echo "$ac_t$dynamic_linker" 1>&6
 test "$dynamic_linker" = no && can_build_shared=no
+
+# Check for command to grab the raw symbol name followed by C symbol from nm.
+echo $ac_n "checking command to parse $NM output... $ac_c" 1>&6
+
+# These are sane defaults that work on at least a few old systems.
+# [They come from Ultrix.  What could be older than Ultrix?!! ;)]
+
+# Character class describing NM global symbol codes.
+symcode='[BCDEGRST]'
+
+# Regexp to match symbols that can be accessed directly from C.
+sympat='\([_A-Za-z][_A-Za-z0-9]*\)'
+
+# Transform the above into a raw symbol and a C symbol.
+symxfrm='\1 \2\3 \3'
+
+# Transform an extracted symbol line into a proper C declaration
+global_symbol_to_cdecl="sed -n -e 's/^. .* \(.*\)$/extern char \1;/p'"
+
+# Define system-specific variables.
+case "$host_os" in
+aix*)
+  symcode='[BCDT]'
+  ;;
+cygwin* | mingw*)
+  symcode='[ABCDGISTW]'
+  ;;
+hpux*) # Its linker distinguishes data from code symbols
+  global_symbol_to_cdecl="sed -n -e 's/^T .* \(.*\)$/extern char \1();/p' -e 's/^. .* \(.*\)$/extern char \1;/p'"
+  ;;
+irix*)
+  symcode='[BCDEGRST]'
+  ;;
+solaris*)
+  symcode='[BDT]'
+  ;;
+sysv4)
+  symcode='[DFNSTU]'
+  ;;
+esac
+
+# If we're using GNU nm, then use its standard symbol codes.
+if $NM -V 2>&1 | egrep '(GNU|with BFD)' > /dev/null; then
+  symcode='[ABCDGISTW]'
+fi
+
+# Try without a prefix undercore, then with it.
+for ac_symprfx in "" "_"; do
+
+  # Write the raw and C identifiers.
+  global_symbol_pipe="sed -n -e 's/^.*[ 	]\($symcode\)[ 	][ 	]*\($ac_symprfx\)$sympat$/$symxfrm/p'"
+
+  # Check to see that the pipe works correctly.
+  pipe_works=no
+  $rm conftest*
+  cat > conftest.c <<EOF
+#ifdef __cplusplus
+extern "C" {
+#endif
+char nm_test_var;
+void nm_test_func(){}
+#ifdef __cplusplus
+}
+#endif
+main(){nm_test_var='a';nm_test_func();return(0);}
+EOF
+
+  echo "$progname:@LINENO@: checking if global_symbol_pipe works" >&5
+  if { (eval echo $progname:@LINENO@: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>&5; } && test -s conftest.$objext; then
+    # Now try to grab the symbols.
+    nlist=conftest.nm
+    if { echo "$progname:@LINENO@: eval \"$NM conftest.$objext | $global_symbol_pipe > $nlist\"" >&5; eval "$NM conftest.$objext | $global_symbol_pipe > $nlist 2>&5"; } && test -s "$nlist"; then
+
+      # Try sorting and uniquifying the output.
+      if sort "$nlist" | uniq > "$nlist"T; then
+	mv -f "$nlist"T "$nlist"
+      else
+	rm -f "$nlist"T
+      fi
+
+      # Make sure that we snagged all the symbols we need.
+      if egrep ' nm_test_var$' "$nlist" >/dev/null; then
+	if egrep ' nm_test_func$' "$nlist" >/dev/null; then
+	  cat <<EOF > conftest.c
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+EOF
+	  # Now generate the symbol file.
+	  eval "$global_symbol_to_cdecl"' < "$nlist" >> conftest.c'
+
+	  cat <<EOF >> conftest.c
+#if defined (__STDC__) && __STDC__
+# define lt_ptr_t void *
+#else
+# define lt_ptr_t char *
+# define const
+#endif
+
+/* The mapping between symbol names and symbols. */
+const struct {
+  const char *name;
+  lt_ptr_t address;
+}
+lt_preloaded_symbols[] =
+{
+EOF
+	  sed 's/^. \(.*\) \(.*\)$/  {"\2", (lt_ptr_t) \&\2},/' < "$nlist" >> conftest.c
+	  cat <<\EOF >> conftest.c
+  {0, (lt_ptr_t) 0}
+};
+
+#ifdef __cplusplus
+}
+#endif
+EOF
+	  # Now try linking the two files.
+	  mv conftest.$objext conftstm.$objext
+	  save_LIBS="$LIBS"
+	  save_CFLAGS="$CFLAGS"
+	  LIBS="conftstm.$objext"
+	  CFLAGS="$CFLAGS$no_builtin_flag"
+	  if { (eval echo $progname:@LINENO@: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest; then
+	    pipe_works=yes
+	  else
+	    echo "$progname: failed program was:" >&5
+	    cat conftest.c >&5
+	  fi
+	  LIBS="$save_LIBS"
+	else
+	  echo "cannot find nm_test_func in $nlist" >&5
+	fi
+      else
+	echo "cannot find nm_test_var in $nlist" >&5
+      fi
+    else
+      echo "cannot run $global_symbol_pipe" >&5
+    fi
+  else
+    echo "$progname: failed program was:" >&5
+    cat conftest.c >&5
+  fi
+  $rm conftest* conftst*
+
+  # Do not use the global_symbol_pipe unless it works.
+  if test "$pipe_works" = yes; then
+    break
+  else
+    global_symbol_pipe=
+  fi
+done
+if test "$pipe_works" = yes; then
+  echo "${ac_t}ok" 1>&6
+else
+  echo "${ac_t}failed" 1>&6
+fi
+
+if test -z "$global_symbol_pipe"; then
+  global_symbol_to_cdecl=
+fi
 
 # Report the final consequences.
 echo "checking if libtool supports shared libraries... $can_build_shared" 1>&6
