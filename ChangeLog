@@ -1,3 +1,7 @@
+2004-04-08  Fredrik Estreen  <estreen@algonet.se>
+
+	* ltdl.m4: Rename shrext to shrext_cmds here too.
+	
 2004-04-04  Peter O'Gorman  <peter@pogma.com>
 
 	* Makefile.am: One install-data-hook target is better than two.
