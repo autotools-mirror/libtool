@@ -1,3 +1,10 @@
+2000-03-21  Alexandre Oliva  <oliva@lsd.ic.unicamp.br>
+
+	* ltconfig.in (variables_saved_for_relink): Set to `PATH
+	$shlibpath_var $runpath_var'.  If with_gcc, add gcc-related
+	environment variables.  Add it to the configuration section.
+	* ltmain.in (relink_command): Expand those variables.
+
 2000-03-14  Christopher A. Knight  <chriskn@crt.com>
 
 	* ltconfig.in: added main() definition in compile

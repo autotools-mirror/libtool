@@ -2008,6 +2008,11 @@ elif test "$shlibpath_overrides_runpath" = yes ||
   enable_fast_install=needless
 fi
 
+variables_saved_for_relink="PATH $shlibpath_var $runpath_var"
+if test "$with_gcc" = yes; then
+  variables_saved_for_relink="$variables_saved_for_relink GCC_EXEC_PREFIX COMPILER_PATH LIBRARY_PATH"
+fi
+
 # Check whether we must set pic_mode to default
 test -z "$pic_flag" && pic_mode=default
 # On Cygwin there's no "real" PIC flag so we must build both object types
@@ -2805,6 +2810,10 @@ hardcode_minus_L=$hardcode_minus_L
 # Set to yes if using SHLIBPATH_VAR=DIR during linking hardcodes DIR into
 # the resulting binary.
 hardcode_shlibpath_var=$hardcode_shlibpath_var
+
+# Variables whose values should be saved in libtool wrapper scripts and
+# restored at relink time.
+variables_saved_for_relink="$variables_saved_for_relink"
 
 # Whether libtool must link a program against all its dependency libraries.
 link_all_deplibs=$link_all_deplibs

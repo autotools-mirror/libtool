@@ -3327,6 +3327,12 @@ static const void *lt_preloaded_setup() {
 
       # Quote the relink command for shipping.
       if test -n "$relink_command"; then
+        # Preserve any variables that may affect compiler behavior
+	for var in $variables_saved_for_relink; do
+	  eval var_value=\$$var
+	  var_value=`\$echo \"X$var_value\" | $Xsed -e "$sed_quote_subst"`
+	  relink_command="$var=\"$var_value\"; export $var; $relink_command"
+	done
 	relink_command="cd `pwd`; $relink_command"
 	relink_command=`$echo "X$relink_command" | $Xsed -e "$sed_quote_subst"`
       fi
@@ -3631,6 +3637,12 @@ fi\
       test "$build_old_libs" = yes && old_library="$libname.$libext"
       $show "creating $output"
 
+      # Preserve any variables that may affect compiler behavior
+      for var in $variables_saved_for_relink; do
+	eval var_value=\$$var
+	var_value=`\$echo \"X$var_value\" | $Xsed -e "$sed_quote_subst"`
+	relink_command="$var=\"$var_value\"; export $var; $relink_command"
+      done
       # Quote the link command for shipping.
       relink_command="cd `pwd`; $SHELL $0 --mode=relink $libtool_args"
       relink_command=`$echo "X$relink_command" | $Xsed -e "$sed_quote_subst"`
