@@ -1,3 +1,8 @@
+2004-10-30  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
+	* tests/defs.m4sh (func_exec): `shift'ing when there is nothing
+	to shift is non-portable.
+
 2004-10-28  Patrick Welche <prlw1@newn.cam.ac.uk>,
 	    Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
