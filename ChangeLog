@@ -1,5 +1,7 @@
 2005-03-24  Gary V. Vaughan  <gary@gnu.org>
 
+	* libtoolize.m4sh: Propogate --debug flag to sub-libtoolizes.
+
 	* libtoolize.m4sh: For verbose mode, explain why macro files are
 	not installed without an AC_CONFIG_MACRO_DIR declaration.
 

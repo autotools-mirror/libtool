@@ -109,6 +109,7 @@ configure_ac=configure.in
 	    		;;
 
       --debug)		func_echo "enabling shell trace mode"
+      			libtoolize_flags="$libtoolize_flags --debug"
 			opt_debug='set -x'
 			$opt_debug
 			;;
