@@ -1,5 +1,8 @@
 2000-12-16  Gary V. Vaughan  <gvv@techie.com>
 
+	* ltcf-c.sh (archive_cmds): And another one.  Use test instead of
+	`['.
+
 	* ltconfig.in (sys_lib_search_path_spec): Use test instead of
 	`['.
 

@@ -169,7 +169,7 @@ EOF
 
   darwin*|rhapsody*)
     allow_undefined_flag='-undefined warning'
-    archive_cmds='$CC $(if [ "$module" = "yes" ]; then echo -bundle; else
+    archive_cmds='$CC $(if test "$module" = "yes"; then echo -bundle; else
       echo -dynamiclib; fi) -o $lib $libobjs $deplibs $linkopts'
     archive_expsym_cmds="$archive_cmds"' && strip -s $export_symbols'
     ## What we need is to hardcode the path to the library, not the search path
