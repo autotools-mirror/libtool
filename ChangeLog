@@ -1,3 +1,9 @@
+Mon Sep 15 07:08:35 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* demo/Makefile.am, ltmain.in, tests/hardcode.test (objdir):
+ 	Changed objdir variable .libs to _libs.  This is another MS-DOS
+ 	portability fix.  Suggested by Robert Hoehne.
+
 Sat Sep 13 11:41:44 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltconfig.in, ltmain.in (hardcode_minusL): Fix typo by renaming

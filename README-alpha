@@ -4,6 +4,40 @@ Please do not send any bug reports or questions about it to public
 forums (such as GNU newsgroups), send them directly to the libtool
 mailing list <bug-libtool@gnu.ai.mit.edu>.
 
+
+Automake
+********
+
+Between beta release 1.0b and 1.0c, libtool changed its private
+directory name from `.libs' to `_libs' in order to be compatible with
+MS-DOS filenames.  This change allows libtool to run under the DJGPP
+build environment.  Unfortunately, it also introduces a minor bug into
+Automake's `clean' rules for releases < 1.2a.
+
+This should not affect anybody else's programs unless you depend on
+libtool internals.  If you do, and it isn't just for deleting
+unnecessary directories, then let me know so libtool can support the
+functionality you require.
+
+To fix Automake, edit libtool.am, and change the following lines:
+i.e.
+
+clean-libtool:
+	rm -rf .libs
+
+to:
+
+clean-libtool:
+	rm -rf _libs
+
+and reinstall Automake.  If you've already installed Automake, you can
+make the same change in /usr/local/share/automake/libtool.am, to avoid
+having to reinstall.
+
+
+global_symbol_pipe
+******************
+
 CALL FOR HELP: In order to implement dlopening even on archictectures
 that don't have shared libraries, I am collecting `NM' and
 `global_symbol_pipe' values for every known operating system.

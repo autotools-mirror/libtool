@@ -1,3 +1,8 @@
+Mon Sep 15 07:14:37 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* hardcode.test (objdir): New variable to simplify change from
+	.libs to _libs (MS-DOS portability fix).
+
 Fri Sep  5 13:36:24 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* demo-exec.test, demo-inst.test: Change references from

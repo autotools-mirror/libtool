@@ -20,6 +20,9 @@ fi
 # Change to our build directory.
 cd ../demo || exit 1
 
+# Unfortunately, we need access to libtool internals for this test.
+objdir=_libs
+
 # Check to make sure we have a dynamic library.
 library_names=NONE
 eval `egrep -e '^library_names=' ./libhello.la 2>/dev/null`
@@ -72,13 +75,13 @@ for file in hc-*; do
     ;;
   esac
 
-  # Discover whether the .libs directory really was hardcoded.
+  # Discover whether the objdir really was hardcoded.
   hardcoded=no
-  if fgrep '.libs' $file > /dev/null; then
+  if fgrep "$objdir" $file > /dev/null; then
     hardcoded=yes
   elif cat $file | tr '\200-\277' '\100-\177' | tr '\300-\377' '\100-\177' \
                  | tr '\000-\037' '\040-\077' | tr '\040' '\012' \
-		 | fgrep '.libs' > /dev/null 2>&1; then
+		 | fgrep "$objdir" > /dev/null 2>&1; then
     # At least AIX fgrep doesn't work for binary files, and AIX also
     # doesn't have strings(1), so we need this strange conversion.
     # AIX fgrep also has a limited line length, that's why we finally
@@ -92,18 +95,18 @@ for file in hc-*; do
   case "$hardcoded" in
   yes)
     if test $expected = yes; then
-      echo ".libs was hardcoded in \`$file', as libtool expected"
+      echo "$objdir was hardcoded in \`$file', as libtool expected"
     else
-      echo ".libs was hardcoded in \`$file', which fooled libtool" 1>&2
+      echo "$objdir was hardcoded in \`$file', which fooled libtool" 1>&2
       status=1
     fi
     ;;
 
   no)
     if test $expected = no; then
-      echo ".libs was not hardcoded in \`$file', as libtool expected"
+      echo "$objdir was not hardcoded in \`$file', as libtool expected"
     else
-      echo ".libs was not hardcoded in \`$file', which fooled libtool" 1>&2
+      echo "$objdir was not hardcoded in \`$file', which fooled libtool" 1>&2
       status=1
     fi
     ;;

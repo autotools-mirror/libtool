@@ -32,6 +32,10 @@ hell_debug_LDFLAGS = -static
 helldl_SOURCES = dlmain.c
 helldl_LDFLAGS = -export-dynamic -dlpreopen libhello.la
 
+# Unfortunately, in order to test libtool thoroughly, we need access
+# to its private directory.
+objdir = _libs
+
 TESTS = run.test
 
 # The following rules are only for the libtool demo and tests.
@@ -61,21 +65,21 @@ hardcode: $(hardcode_tests)
 hc-direct: $(hell_OBJECTS) $(hell_DEPENDENCIES)
 	@rm -f hc-direct
 	@echo "You may ignore any linking errors from the following command:"
-	@shlib=./.libs/libhello.a; \
+	@shlib=./$(objdir)/libhello.a; \
 	  eval "`egrep '^library_names' libhello.la`"; \
 	  for lib in $$library_names; do \
-	    shlib="./.libs/$$lib"; \
+	    shlib="./$(objdir)/$$lib"; \
 	  done; \
 	  echo "$(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) $$shlib $(LIBS) || echo unsupported > $@"; \
 	  eval "$(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) $$shlib $(LIBS) || echo unsupported > $@"
 
 hc-minusL: $(hell_OBJECTS) $(hell_DEPENDENCIES)
 	@rm -f hc-minusL
-	$(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) -L./.libs -lhello $(LIBS)
+	$(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) -L./$(objdir) -lhello $(LIBS)
 
 hc-libpath: $(hell_OBJECTS) $(hell_DEPENDENCIES)
 	@rm -f hc-libpath
 	@echo "You may ignore any linking errors from the following command:"
 	@eval `egrep -e '^shlibpath_var=' ./libtool`; \
-	  echo "$$shlibpath_var=./.libs $(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) -lhello $(LIBS) || echo unsupported > $@"; \
-	  eval "$$shlibpath_var=./.libs $(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) -lhello $(LIBS) || echo unsupported > $@"
+	  echo "$$shlibpath_var=./$(objdir) $(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) -lhello $(LIBS) || echo unsupported > $@"; \
+	  eval "$$shlibpath_var=./$(objdir) $(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) -lhello $(LIBS) || echo unsupported > $@"

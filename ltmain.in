@@ -62,7 +62,7 @@ help="Try \`$progname --help' for more information."
 magic="%%%MAGIC variable%%%"
 mkdir="mkdir"
 mv="mv -f"
-objdir=.libs
+objdir=_libs
 rm="rm -f"
 
 # Sed substitution that helps us do robust quoting.  It backslashifies

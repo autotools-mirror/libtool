@@ -2,6 +2,8 @@ NEWS - list of user-visible changes between releases of GNU libtool.
 
 New in 1.0c:
 * Bug fixes.
+* Change the libtool temporary directory from `.libs' to `_libs' in
+  order to cope with MS-DOS filenames.  See README-alpha.
 * New `-all-static' flag to prevent any dynamic linking.  The regular
   `-static' flag just prevents dynamic linking of libtool libraries.
 * The `-rpath' flag can be used to hardcode absolute directories when
