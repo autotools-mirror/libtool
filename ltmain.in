@@ -2006,6 +2006,11 @@ lt_preloaded_symbols[] =
   {0, (lt_ptr_t) 0}
 };
 
+/* This works around a problem in FreeBSD linker */
+static const void *lt_preloaded_setup() {
+  return lt_preloaded_symbols;
+}
+
 #ifdef __cplusplus
 }
 #endif\
@@ -2013,8 +2018,9 @@ lt_preloaded_symbols[] =
 	  fi
 
 	  # Now compile the dynamic symbol file.
-	  $show "(cd $objdir && $C_compiler -c$no_builtin_flag \"$dlsyms\")"
-	  $run eval '(cd $objdir && $C_compiler -c$no_builtin_flag "$dlsyms")' || exit $?
+	  # pic_flag works around a bug in FreeBSD linker
+	  $show "(cd $objdir && $C_compiler -c$no_builtin_flag $pic_flag -DPIC \"$dlsyms\")"
+	  $run eval '(cd $objdir && $C_compiler -c$no_builtin_flag $pic_flag -DPIC "$dlsyms")' || exit $?
 
 	  # Transform the symbol file into the correct name.
 	  compile_command=`$echo "X$compile_command" | $Xsed -e "s%@SYMFILE@%$objdir/${output}S.${objext}%"`
