@@ -1651,7 +1651,7 @@ bsdi4*)
   finish_cmds='PATH="$PATH:/sbin" ldconfig $libdir'
   shlibpath_var=LD_LIBRARY_PATH
   check_shared_deplibs_method='file_magic ELF 32-bit LSB shared object'
-  sys_lib_search_path="/shlib /usr/lib /usr/local/lib `echo $LD_LIBRARY_PATH | sed -e 's/:/ /g'`"
+  sys_lib_search_path="/shlib /usr/lib /usr/local/lib"
   ;;
 
 cygwin32* | mingw32*)
@@ -1735,7 +1735,6 @@ linux-gnu*)
   shlibpath_var=LD_LIBRARY_PATH
   deplibs_check_method='file_magic ELF [0-9][0-9]*-bit [LM]SB shared object'
   file_magic_command=file
-  sys_lib_search_path_spec="/lib /usr/lib /usr/local/lib `echo $LD_LIBRARY_PATH | sed -e 's/:/ /g'`"
 
   if test -f /lib/ld.so.1; then
     dynamic_linker='GNU ld.so'
@@ -1803,7 +1802,6 @@ solaris*)
   postinstall_cmds='chmod +x $lib'
   deplibs_check_method="file_magic ELF [0-9][0-9]-bit [LM]SB dynamic lib"
   file_magic_command="file"
-  sys_lib_search_path_spec="/lib /usr/lib /usr/local/lib `echo $LD_LIBRARY_PATH | sed -e 's/:/ /g'`"
   ;;
 
 sunos4*)

@@ -3547,7 +3547,9 @@ the file.
 @end defvar
 
 @defvar sys_lib_search_path_spec
-Expression to get the system library search path.
+Expression to get the system library search path.  The directories
+listed in @var{shlibpath_var} are automatically appended to this list,
+every time libtool runs (i.e., not at configuration time).
 @end defvar
 
 @defvar version_type

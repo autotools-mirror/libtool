@@ -655,7 +655,15 @@ compiler."
     convenience=
     old_convenience=
     deplibs=
-    eval lib_search_path=\"$sys_lib_search_path_spec\"
+
+    if test -n "$shlibpath_var"; then
+      # get the directories listed in $shlibpath_var
+      eval lib_search_path=\`\$echo \"X \${$shlibpath_var}\" \| \$Xsed -e \'s/:/ /g\'\`
+    else
+      libsearch_path=
+    fi
+    # now prepend the system-specific ones
+    eval lib_search_path=\"$sys_lib_search_path_spec\$lib_search_path\"
     
     avoid_version=no
     dlfiles=

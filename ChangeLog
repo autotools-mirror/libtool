@@ -1,5 +1,10 @@
 1999-01-20  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* ltconfig.in (linux*, solaris*, bsdi4*, sys_lib_search_path):
+	remove expansion of $LD_LIBRARY_PATH
+	* ltmain.in (lib_search_path): append the expansion of $shlibpath_var
+	* doc/libtool.texi: document it
+
 	* THANKS: Added Steven Schultz
 
 1999-01-20  Steven M. Schultz <sms@wlv.iipo.gtegsc.com>
