@@ -86,8 +86,8 @@ case "$host" in
   fi
   ;;
 
-*-*-cygwin32*)
-  AC_SYS_LIBTOOL_CYGWIN32
+*-*-cygwin*)
+  AC_SYS_LIBTOOL_CYGWIN
   ;;
 
 esac
@@ -401,7 +401,7 @@ case "$host_os" in
 aix*)
   ac_symcode='[BCDT]'
   ;;
-cygwin32* | mingw32*)
+cygwin* | mingw*)
   ac_symcode='[ABCDGISTW]'
   ;;
 irix*)
@@ -543,8 +543,8 @@ fi
 AC_MSG_RESULT($ac_result)
 ])
 
-# AC_SYS_LIBTOOL_CYGWIN32 - find tools needed on cygwin32
-AC_DEFUN(AC_SYS_LIBTOOL_CYGWIN32,
+# AC_SYS_LIBTOOL_CYGWIN - find tools needed on cygwin
+AC_DEFUN(AC_SYS_LIBTOOL_CYGWIN,
 [AC_CHECK_TOOL(DLLTOOL, dlltool, false)
 AC_CHECK_TOOL(AS, as, false)
 ])
@@ -605,4 +605,4 @@ AC_DEFUN(AM_PROG_LD, [indir([AC_PROG_LD])])dnl
 AC_DEFUN(AM_PROG_NM, [indir([AC_PROG_NM])])dnl
 AC_DEFUN(AM_SYS_NM_PARSE, [indir([AC_SYS_NM_PARSE])])dnl
 AC_DEFUN(AM_SYS_SYMBOL_UNDERSCORE, [indir([AC_SYS_SYMBOL_UNDERSCORE])])dnl
-AC_DEFUN(AM_SYS_LIBTOOL_CYGWIN32, [indir([AC_SYS_LIBTOOL_CYGWIN32])])dnl
+AC_DEFUN(AM_SYS_LIBTOOL_CYGWIN, [indir([AC_SYS_LIBTOOL_CYGWIN])])dnl
