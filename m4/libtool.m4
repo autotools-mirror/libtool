@@ -5892,46 +5892,6 @@ esac
 ])# AC_LIBTOOL_PROG_LD_SHLIBS
 
 
-# _LT_AC_FILE_LTDLL_C
-# -------------------
-# Be careful that the start marker always follows a newline.
-AC_DEFUN([_LT_AC_FILE_LTDLL_C], [
-# /* ltdll.c starts here */
-# #define WIN32_LEAN_AND_MEAN
-# #include <windows.h>
-# #undef WIN32_LEAN_AND_MEAN
-# #include <stdio.h>
-#
-# #ifndef __CYGWIN__
-# #  ifdef __CYGWIN32__
-# #    define __CYGWIN__ __CYGWIN32__
-# #  endif
-# #endif
-#
-# #ifdef __cplusplus
-# extern "C" {
-# #endif
-# BOOL APIENTRY DllMain (HINSTANCE hInst, DWORD reason, LPVOID reserved);
-# #ifdef __cplusplus
-# }
-# #endif
-#
-# #ifdef __CYGWIN__
-# #include <cygwin/cygwin_dll.h>
-# DECLARE_CYGWIN_DLL( DllMain );
-# #endif
-# HINSTANCE __hDllInstance_base;
-#
-# BOOL APIENTRY
-# DllMain (HINSTANCE hInst, DWORD reason, LPVOID reserved)
-# {
-#   __hDllInstance_base = hInst;
-#   return TRUE;
-# }
-# /* ltdll.c ends here */
-])# _LT_AC_FILE_LTDLL_C
-
-
 # _LT_AC_TAGVAR(VARNAME, [TAGNAME])
 # ---------------------------------
 m4_define([_LT_AC_TAGVAR], [m4_if([$2], [], [$1], [$1_$2])])
