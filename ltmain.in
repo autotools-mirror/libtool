@@ -1558,6 +1558,7 @@ compiler."
 	versuffix=""
 	major=""
 	newdeplibs=
+	droppeddeps=no
 	case "$deplibs_check_method" in
 	pass_all)
 	  newdeplibs=$deplibs
@@ -1590,6 +1591,7 @@ EOF
 		if test `expr "$ldd_output" : ".*$deplib_match"` -ne 0 ; then
 		  newdeplibs="$newdeplibs $i"
 		else
+		  droppeddeps=yes
 		  echo
 		  echo "*** Warning: This library needs some functionality provided by $i."
 		  echo "*** I have the capability to make that library automatically link in when"
@@ -1619,6 +1621,7 @@ EOF
 		    if test `expr "$ldd_output" : ".*$deplib_match"` -ne 0 ; then
 		      newdeplibs="$newdeplibs $i"
 		    else
+		      droppeddeps=yes
 		      echo
 		      echo "*** Warning: This library needs some functionality provided by $i."
 		      echo "*** I have the capability to make that library automatically link in when"
@@ -1626,6 +1629,7 @@ EOF
 		      echo "*** shared version of the library, which you do not appear to have."
 		    fi
 		else
+		  droppeddeps=yes
 		  echo
 		  echo "*** Warning!  Library $i is needed by this library but I was not able to"
 		  echo "***  make it link in!  You will probably need to install it or some"
@@ -1702,6 +1706,7 @@ EOF
 		  ;;
 	      esac
 	      if test -n "$a_deplib" ; then
+		droppeddeps=yes
 		echo
 		echo "*** Warning: This library needs some functionality provided by $a_deplib."
 		echo "*** I have the capability to make that library automatically link in when"
@@ -1714,13 +1719,40 @@ EOF
 	    fi
 	  done # Gone through all deplibs.
 	  ;;
-	none | unknown | *)  deplibs="" ;;
+	none | unknown | *) newdeplibs=""; droppeddeps=yes ;;
 	esac
 	versuffix=$versuffix_save
 	major=$major_save
 	release=$release_save
 	libname=$libname_save
 	name=$name_save
+
+	if test "$module,$droppeddeps" = "yes,yes"; then
+	  echo
+	  echo "*** Warning: libtool could not satisfy all dependencies of module $libname"
+	  echo "*** Therefore, instead of creating a dynamic module that would not run, "
+	  echo "*** libtool will create a static module.  As long as the dlopening"
+	  echo "*** application is linked with the -dlopen flag, this should be enough."
+	  if test -z "$global_symbol_pipe"; then
+	    echo
+	    echo "*** However, this would only work if libtool was able to extract symbol"
+	    echo "*** lists from a program, using \`nm' or equivalent, but libtool could"
+	    echo "*** not find such a program.  So, this module is mostly useless."
+	  fi
+	  if test "$build_old_libs" = no; then
+	    oldlibs="$output_objdir/$libname.$libext"
+	    build_libtool_libs=module
+	    build_old_libs=yes
+	  else
+	    build_libtool_libs=no
+	  fi
+	  dlname=
+	  library_names=
+	fi
+      fi
+
+      # test again, we may have decided not to build it any more
+      if test "$build_libtool_libs" = yes; then
 	deplibs=$newdeplibs
 	# Done checking deplibs!
  
@@ -2362,7 +2394,12 @@ fi\
 	addlibs="$convenience"
 	build_libtool_libs=no
       else
-	oldobjs="$objs "`$echo "X$libobjs_save" | $SP2NL | $Xsed -e '/\.'${libext}'$/d' -e '/\.lib$/d' -e "$lo2o" | $NL2SP`
+	if test "$build_libtool_libs" = module; then
+	  oldobjs="$libobjs_save"
+	  build_libtool_libs=no
+	else
+	  oldobjs="$objs "`$echo "X$libobjs_save" | $SP2NL | $Xsed -e '/\.'${libext}'$/d' -e '/\.lib$/d' -e "$lo2o" | $NL2SP`
+	fi
 	addlibs="$old_convenience"
       fi
 

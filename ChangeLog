@@ -1,3 +1,9 @@
+1999-01-20  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* ltmain.in (module, droppeddeps): if libtool could not satisfy
+	all dependencies of a module, it will only build a static version
+	of it, and display a warning message
+
 1999-01-20  Erez Zadok <ezk@shekel.mcl.cs.columbia.edu>
 
 	* ltconfig.in (aix4*, with_gcc, archive_cmds): fix typo in Andrey
