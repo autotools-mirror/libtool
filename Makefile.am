@@ -14,8 +14,8 @@ CPPLAGS = @CPPFLAGS@
 aclocal_macros = libtool.m4
 
 EXTRA_DIST = $(aclocal_macros) libtoolize.in ltconfig.in ltmain.in \
-	libtool.spec
-CLEANFILES = libtool libtoolize ltconfig ltmain.sh
+	libtool.spec ltconfig ltmain.sh
+CLEANFILES = libtool libtoolize ltconfig.T ltmain.shT
 
 # These are required by libtoolize.
 pkgdata_SCRIPTS = config.guess config.sub ltconfig
@@ -33,16 +33,18 @@ libltdl.tar.gz: libltdl/Makefile
 	rm -f libltdl.tar.gz
 	ln -s libltdl/libltdl-0.1.tar.gz libltdl.tar.gz
 
-libtool: ltmain.sh ltconfig
+libtool: $(srcdir)/ltmain.sh $(srcdir)/ltconfig
 	CC="$(CC)" CFLAGS="$(CFLAGS)" CPPFLAGS="$(CPPFLAGS)" \
 	LD="$(LD)" LN_S="$(LN_S)" NM="$(NM)" RANLIB="$(RANLIB)" \
-	$(SHELL) ltconfig --srcdir=$(srcdir) --output=$@ ltmain.sh
+	$(SHELL) $(srcdir)/ltconfig --srcdir=$(srcdir) 	--output=$@ \
+	  $(srcdir)/ltmain.sh
 
 # Experimental C version of libtool.
-clibtool: $(srcdir)/ltmain.c ltconfig
+clibtool: $(srcdir)/ltmain.c $(srcdir)/ltconfig
 	CC="$(CC)" CFLAGS="$(CFLAGS)" CPPFLAGS="$(CPPFLAGS)" \
 	LD="$(LD)" LN_S="$(LN_S)" NM="$(NM)" RANLIB="$(RANLIB)" \
-	$(SHELL) ltconfig --srcdir=$(srcdir) --output=$@ $(srcdir)/ltmain.c
+	$(SHELL) $(srcdir)/ltconfig --srcdir=$(srcdir) 	--output=$@ \
+	  $(srcdir)/ltmain.c
 
 libtoolize: $(srcdir)/libtoolize.in $(top_builddir)/config.status
 	CONFIG_FILES=libtoolize CONFIG_HEADERS= $(top_builddir)/config.status
@@ -50,32 +52,35 @@ libtoolize: $(srcdir)/libtoolize.in $(top_builddir)/config.status
 
 # Do line number substitution, as well as PACKAGE and VERSION.
 # Line numbering transliterated from a section in autoconf (Autoconf 2.12).
-ltconfig: $(srcdir)/ltconfig.in $(top_srcdir)/configure.in
+$(srcdir)/ltconfig: $(srcdir)/ltconfig.in $(top_srcdir)/configure.in
+	rm -f ltconfig.T
 	$(AWK) '/@LINENO@/ { printf "%d:", NR } { print }' $(srcdir)/ltconfig.in | \
 	  sed -e 's/@''PACKAGE@/@PACKAGE@/' -e 's/@''VERSION@/@VERSION@/' \
 	      -e '/@LINENO@/s/^\([0-9][0-9]*\):\(.*\)@LINENO@/\2\1/' > ltconfig.T
 	chmod +x ltconfig.T
-	mv -f ltconfig.T $@
+	mv -f ltconfig.T $@ || \
+	(rm -f $@ && cp ltconfig.T $@ && rm -f ltconfig.T)
 
-ltmain.sh: $(srcdir)/ltmain.in $(top_srcdir)/configure.in
+$(srcdir)/ltmain.sh: $(srcdir)/ltmain.in $(top_srcdir)/configure.in
+	rm -f ltmain.shT
 	sed -e 's/@''PACKAGE@/@PACKAGE@/' -e 's/@''VERSION@/@VERSION@/' $(srcdir)/ltmain.in > ltmain.shT
-	mv -f ltmain.shT $@
+	mv -f ltmain.shT $@ || \
+	(rm -f $@ && cp ltmain.shT $@ && rm -f ltmain.shT)
 
 # All our rules should depend on these demo files.
 all-local check-local: $(ACINCLUDE_M4_LIST) libtool
 
 @ACINCLUDE_M4_LIST@: $(srcdir)/libtool.m4
 	rm -f $@
-	cd `echo $@ | sed 's,/[^/]*$$,,'` && \
-	cp $(srcdir)/libtool.m4 acinclude.m4
+	cp $(srcdir)/libtool.m4 $@
 
 .PHONY: configure-subdirs
 configure-subdirs distdir: $(DIST_MAKEFILE_LIST)
 @DIST_MAKEFILE_LIST@:
 	dir=`echo $@ | sed 's,^[^/]*$$,.,;s,/[^/]*$$,,'`; \
 	test -d $$dir || mkdir $$dir || exit 1; \
-	save=`pwd` && cd $(top_srcdir) && abs_srcdir=`pwd` && cd $$save; \
-	(cd $$dir && $$abs_srcdir/$$dir/configure) || exit 1
+	abs_srcdir=`cd $(top_srcdir) >/dev/null && pwd`; \
+	(cd $$dir && $abs_srcdir/$$dir/configure) || exit 1
 
 ################################################################
 ##

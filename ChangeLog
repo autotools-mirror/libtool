@@ -1,3 +1,10 @@
+1999-01-14  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* Makefile.am: Moved ltconfig and ltmain.sh back into srcdir, and
+ 	add them to the distribution.  Added work-around if `mv -f' fails.
+	fix @AINCLUDE_M4_LIST@ and @DIST_MAKEFILE_LIST@ for relative and
+	absolute specifications of srcdir
+
 1999-01-14  Thomas Tanner  <tanner@gmx.de>
 
 	* libltdl/ltdl.c: added variable symbol prefix, added user-defined
