@@ -45,7 +45,7 @@ LT_BEGIN_C_DECLS
 /* --- DYNAMIC MODULE LOADING API --- */
 
 
-typedef	struct lt_dlhandle_struct *lt_dlhandle;	/* A loaded module.  */
+typedef	void * lt_dlhandle;	/* A loaded module.  */
 
 /* Initialisation and finalisation functions for libltdl. */
 LT_SCOPE int	    lt_dlinit		(void);
@@ -110,6 +110,17 @@ LT_SCOPE int	lt_dlpreload_open    (const char *originator,
 /* --- MODULE INFORMATION --- */
 
 
+/* Associating user data with loaded modules. */
+typedef void * lt_dlcaller_id;
+typedef int lt_dlhandle_interface (lt_dlhandle handle, const char *id_string);
+
+LT_SCOPE lt_dlcaller_id	lt_dlcaller_register  (const char *id_string,
+					       lt_dlhandle_interface *iface);
+LT_SCOPE void *		lt_dlcaller_set_data  (lt_dlcaller_id key,
+					       lt_dlhandle handle, void *data);
+LT_SCOPE void *		lt_dlcaller_get_data  (lt_dlcaller_id key,
+					       lt_dlhandle handle);
+
 /* Read only information pertaining to a loaded module. */
 typedef	struct {
   char *	filename;	/* file name */
@@ -119,20 +130,12 @@ typedef	struct {
 } lt_dlinfo;
 
 LT_SCOPE const lt_dlinfo *lt_dlgetinfo	    (lt_dlhandle handle);
+LT_SCOPE lt_dlhandle	lt_dlhandle_first   (lt_dlcaller_id key);
 LT_SCOPE lt_dlhandle	lt_dlhandle_next    (lt_dlhandle place);
 LT_SCOPE lt_dlhandle	lt_dlhandle_find    (const char *module_name);
 LT_SCOPE int		lt_dlforeach	    (
 				int (*func) (lt_dlhandle handle, void *data),
 				void *data);
-
-/* Associating user data with loaded modules. */
-typedef unsigned lt_dlcaller_id;
-
-LT_SCOPE lt_dlcaller_id	lt_dlcaller_register  (void);
-LT_SCOPE void *		lt_dlcaller_set_data  (lt_dlcaller_id key,
-					       lt_dlhandle handle, void *data);
-LT_SCOPE void *		lt_dlcaller_get_data  (lt_dlcaller_id key,
-					       lt_dlhandle handle);
 
 
 

@@ -45,6 +45,8 @@ New in 1.5b: 2004-??-??; CVS version 1.5a, Libtool team:
 * libltdl no longer loads shared libraries with global symbol resolution,
   this caused problems when the symbols were intended to be overriden further
   up the stack; it is also not recommended practice.
+* New function in libltdl: lt_dlhandle_first, primes handle iterations (using
+  lt_dlhandle_next) to filter by module interface.
 * libltdl no longer tries to support multi-threaded programming with
   lt_dlmutex_register(), which was unusable with POSIX threads anyway.
   The symbols are deprecated but exported for backwards compatibility.

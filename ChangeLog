@@ -1,5 +1,35 @@
 2004-07-15  Gary V. Vaughan  <gary@gnu.org>
 
+	* libltdl/lt__private.h (lt_dlhandle_struct): Renamed to
+	lt__handle to better reflect the naming scheme.
+	* libltdl/ltdl.h (lt_dlhandle): Be truly opaque with a void *.
+	* libltdl/lt_dlloader.c (lt_dlloader_remove): Party to
+	lt__private.h, so use internal lt__handle instead of opaque
+	lt_dlhandle.
+	* libltdl/ltdl.c (LT_DLGET_FLAG, LT_DLSET_FLAG): Add a cast to
+	internal lt__handle type.
+	(try_dlopen, tryall_dlopen, load_deplibs, unload_deplibs): Ditto.
+	(lt_dlexit, lt_dlclose, lt_dlsym): Use lt__handle to iterate
+	throught the handle list.
+	(try_dlopen): Use lt__zalloc instead of MALLOC and memset.
+	* libltdl/ltdl.h (lt_dlcaller_id): Be truly opaque with a void *.
+	(lt_dlhandle_interface): New callback type for filtering handles
+	according to the interface they present.
+	* libltdl/ltdl.c (lt_dlcaller_register): Take an id and an
+	interface check callback, and generate a caller_id.
+	(iterator): New static variable for the use of...
+	(lt_dlhandle_first): New function.  Set the iterator for
+	subsequent calls to lt_dlhandle_next.
+	(lt_dlhandle_next): Either work as before when iterator is unset,
+	or else skip handles that fail the interface check in iterator set
+	by lt_dlhandle_first.
+	* libltdl/ltdl.h (lt_dlhandle_first): Declaration.
+	* doc/libtool.texi (User defined module data): Document the new
+	APIs.
+	* NEWS: Updated.
+
+2004-07-15  Gary V. Vaughan  <gary@gnu.org>
+
 	Split lt_dlloader management into a separate file, and factor
 	`loaders' list management into a new SList ADT.  In the process,
 	the API for writing loaders is a little cleaner, so all the

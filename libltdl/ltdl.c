@@ -59,8 +59,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 
 /* Various boolean flags can be stored in the flags field of an
    lt_dlhandle... */
-#define LT_DLGET_FLAG(handle, flag) (((handle)->flags & (flag)) == (flag))
-#define LT_DLSET_FLAG(handle, flag) ((handle)->flags |= (flag))
+#define LT_DLGET_FLAG(handle, flag) ((((lt__handle *) handle)->flags & (flag)) == (flag))
+#define LT_DLSET_FLAG(handle, flag) (((lt__handle *)handle)->flags |= (flag))
 
 #define LT_DLRESIDENT_FLAG	    (0x01 << 0)
 /* ...add more flags here... */
@@ -240,6 +240,7 @@ lt_dlexit (void)
 {
   /* shut down libltdl */
   lt_dlloader *loader   = 0;
+  lt__handle  *handle   = (lt__handle *) handles;
   int	       errors   = 0;
 
   if (!initialized)
@@ -256,26 +257,28 @@ lt_dlexit (void)
 
       while (handles && LT_DLIS_RESIDENT (handles))
 	{
-	  handles = handles->next;
+	  handles = ((lt__handle *) handles)->next;
 	}
 
       /* close all modules */
-      for (level = 1; handles; ++level)
+      for (level = 1; handle; ++level)
 	{
-	  lt_dlhandle cur = handles;
+	  lt__handle *cur = (lt__handle *) handles;
 	  int saw_nonresident = 0;
 
 	  while (cur)
 	    {
-	      lt_dlhandle tmp = cur;
+	      lt__handle *tmp = cur;
 	      cur = cur->next;
 	      if (!LT_DLIS_RESIDENT (tmp))
-		saw_nonresident = 1;
-	      if (!LT_DLIS_RESIDENT (tmp) && tmp->info.ref_count <= level)
 		{
-		  if (lt_dlclose (tmp))
+		  saw_nonresident = 1;
+		  if (tmp->info.ref_count <= level)
 		    {
-		      ++errors;
+		      if (lt_dlclose (tmp))
+			{
+			  ++errors;
+			}
 		    }
 		}
 	    }
@@ -307,14 +310,14 @@ lt_dlexit (void)
 static int
 tryall_dlopen (lt_dlhandle *phandle, const char *filename)
 {
-  lt_dlhandle	handle		= 0;
+  lt__handle *	handle		= (lt__handle *) handles;
   const char *	saved_error	= 0;
   int		errors		= 0;
 
   LT__GETERROR (saved_error);
 
   /* check whether the module was already opened */
-  while (handle = lt_dlhandle_next (handle))
+  for (;handle; handle = handle->next)
     {
       if ((handle->info.filename == filename) /* dlopen self: 0 == 0 */
 	  || (handle->info.filename && filename
@@ -720,7 +723,7 @@ load_deplibs (lt_dlhandle handle, char *deplibs)
 #endif
   int	errors = 0;
 
-  handle->depcount = 0;
+  ((lt__handle *) handle)->depcount = 0;
 
 #if defined(LTDL_DLOPEN_DEPLIBS)
   if (!deplibs)
@@ -833,22 +836,23 @@ load_deplibs (lt_dlhandle handle, char *deplibs)
      later on if the loaded module cannot resolve all of its symbols.  */
   if (depcount)
     {
+      lt__handle *cur = (lt__handle *) handle;
       int	j = 0;
 
-      handle->deplibs = (lt_dlhandle*) MALLOC (lt_dlhandle *, depcount);
-      if (!handle->deplibs)
+      cur->deplibs = (lt_dlhandle *) MALLOC (lt__handle, depcount);
+      if (!cur->deplibs)
 	goto cleanup;
 
       for (i = 0; i < depcount; ++i)
 	{
-	  handle->deplibs[j] = lt_dlopenext(names[depcount-1-i]);
-	  if (handle->deplibs[j])
+	  cur->deplibs[j] = lt_dlopenext(names[depcount-1-i]);
+	  if (cur->deplibs[j])
 	    {
 	      ++j;
 	    }
 	}
 
-      handle->depcount	= j;	/* Number of successfully loaded deplibs */
+      cur->depcount	= j;	/* Number of successfully loaded deplibs */
       errors		= 0;
     }
 
@@ -870,14 +874,15 @@ unload_deplibs (lt_dlhandle handle)
 {
   int i;
   int errors = 0;
+  lt__handle *cur = (lt__handle *) handle;
 
-  if (handle->depcount)
+  if (cur->depcount)
     {
-      for (i = 0; i < handle->depcount; ++i)
+      for (i = 0; i < cur->depcount; ++i)
 	{
-	  if (!LT_DLIS_RESIDENT (handle->deplibs[i]))
+	  if (!LT_DLIS_RESIDENT (cur->deplibs[i]))
 	    {
-	      errors += lt_dlclose (handle->deplibs[i]);
+	      errors += lt_dlclose (cur->deplibs[i]);
 	    }
 	}
     }
@@ -934,11 +939,10 @@ try_dlopen (lt_dlhandle *phandle, const char *filename)
   /* dlopen self? */
   if (!filename)
     {
-      *phandle = (lt_dlhandle) MALLOC (struct lt_dlhandle_struct, 1);
+      *phandle = (lt_dlhandle) lt__zalloc (sizeof (lt__handle));
       if (*phandle == 0)
 	return 1;
 
-      memset (*phandle, 0, sizeof(struct lt_dlhandle_struct));
       newhandle	= *phandle;
 
       /* lt_dlclose()ing yourself is very bad!  Disallow it.  */
@@ -1186,7 +1190,7 @@ try_dlopen (lt_dlhandle *phandle, const char *filename)
       FREE (line);
 
       /* allocate the handle */
-      *phandle = (lt_dlhandle) malloc (sizeof (struct lt_dlhandle_struct));
+      *phandle = (lt_dlhandle) lt__zalloc (sizeof (lt__handle));
       if (*phandle == 0)
 	++errors;
 
@@ -1202,7 +1206,6 @@ try_dlopen (lt_dlhandle *phandle, const char *filename)
 
       assert (*phandle);
 
-      memset (*phandle, 0, sizeof(struct lt_dlhandle_struct));
       if (load_deplibs (*phandle, deplibs) == 0)
 	{
 	  newhandle = *phandle;
@@ -1237,14 +1240,13 @@ try_dlopen (lt_dlhandle *phandle, const char *filename)
   else
     {
       /* not a libtool module */
-      *phandle = (lt_dlhandle) MALLOC (struct lt_dlhandle_struct, 1);
+      *phandle = (lt_dlhandle) lt__zalloc (sizeof (lt__handle));
       if (*phandle == 0)
 	{
 	  ++errors;
 	  goto cleanup;
 	}
 
-      memset (*phandle, 0, sizeof (struct lt_dlhandle_struct));
       newhandle = *phandle;
 
       /* If the module has no directory name component, try to find it
@@ -1280,13 +1282,13 @@ try_dlopen (lt_dlhandle *phandle, const char *filename)
  register_handle:
   MEMREASSIGN (*phandle, newhandle);
 
-  if ((*phandle)->info.ref_count == 0)
+  if (((lt__handle *) *phandle)->info.ref_count == 0)
     {
-      (*phandle)->info.ref_count	= 1;
-      MEMREASSIGN ((*phandle)->info.name, name);
+      ((lt__handle *) *phandle)->info.ref_count	= 1;
+      MEMREASSIGN (((lt__handle *) *phandle)->info.name, name);
 
-      (*phandle)->next		= handles;
-      handles			= *phandle;
+      ((lt__handle *) *phandle)->next	= handles;
+      handles				= *phandle;
     }
 
   LT__SETERRORSTR (saved_error);
@@ -1640,11 +1642,11 @@ lt_dlforeachfile (const char *search_path,
 int
 lt_dlclose (lt_dlhandle handle)
 {
-  lt_dlhandle cur, last;
+  lt__handle *cur, *last;
   int errors = 0;
 
   /* check whether the handle is valid */
-  last = cur = handles;
+  last = cur = (lt__handle *) handles;
   while (cur && handle != cur)
     {
       last = cur;
@@ -1658,34 +1660,35 @@ lt_dlclose (lt_dlhandle handle)
       goto done;
     }
 
-  handle->info.ref_count--;
+  cur = (lt__handle *) handle;
+  cur->info.ref_count--;
 
   /* Note that even with resident modules, we must track the ref_count
      correctly incase the user decides to reset the residency flag
      later (even though the API makes no provision for that at the
      moment).  */
-  if (handle->info.ref_count <= 0 && !LT_DLIS_RESIDENT (handle))
+  if (cur->info.ref_count <= 0 && !LT_DLIS_RESIDENT (cur))
     {
-      lt_user_data data = handle->vtable->dlloader_data;
+      lt_user_data data = cur->vtable->dlloader_data;
 
-      if (handle != handles)
+      if (cur != handles)
 	{
-	  last->next = handle->next;
+	  last->next = cur->next;
 	}
       else
 	{
-	  handles = handle->next;
+	  handles = cur->next;
 	}
 
-      errors += handle->vtable->module_close (data, handle->module);
-      errors += unload_deplibs(handle);
+      errors += cur->vtable->module_close (data, cur->module);
+      errors += unload_deplibs (handle);
 
       /* It is up to the callers to free the data itself.  */
-      FREE (handle->caller_data);
+      FREE (cur->caller_data);
 
-      FREE (handle->info.filename);
-      FREE (handle->info.name);
-      FREE (handle);
+      FREE (cur->info.filename);
+      FREE (cur->info.name);
+      FREE (cur);
 
       goto done;
     }
@@ -1701,19 +1704,22 @@ lt_dlclose (lt_dlhandle handle)
 }
 
 void *
-lt_dlsym (lt_dlhandle handle, const char *symbol)
+lt_dlsym (lt_dlhandle place, const char *symbol)
 {
   size_t lensym;
   char	lsym[LT_SYMBOL_LENGTH];
   char	*sym;
   void *address;
   lt_user_data data;
+  lt__handle *handle;
 
-  if (!handle)
+  if (!place)
     {
       LT__SETERROR (INVALID_HANDLE);
       return 0;
     }
+
+  handle = (lt__handle *) place;
 
   if (!symbol)
     {
@@ -1976,6 +1982,91 @@ lt_dlisresident	(lt_dlhandle handle)
 
 /* --- MODULE INFORMATION --- */
 
+typedef struct {
+  const char *id_string;
+  lt_dlhandle_interface *iface;
+} lt__caller_id;
+
+lt_dlcaller_id
+lt_dlcaller_register (const char *id_string, lt_dlhandle_interface *iface)
+{
+  lt__caller_id *caller_id = lt__malloc (sizeof *caller_id);
+
+  caller_id->id_string = lt__strdup (id_string);
+  caller_id->iface = iface;
+
+  return (lt_dlcaller_id) caller_id;
+}
+
+void *
+lt_dlcaller_set_data (lt_dlcaller_id key, lt_dlhandle handle, void *data)
+{
+  int n_elements = 0;
+  void *stale = (void *) 0;
+  lt__handle *cur = (lt__handle *) handle;
+  int i;
+
+  if (cur->caller_data)
+    while (cur->caller_data[n_elements].key)
+      ++n_elements;
+
+  for (i = 0; i < n_elements; ++i)
+    {
+      if (cur->caller_data[i].key == key)
+	{
+	  stale = cur->caller_data[i].data;
+	  break;
+	}
+    }
+
+  /* Ensure that there is enough room in this handle's caller_data
+     array to accept a new element (and an empty end marker).  */
+  if (i == n_elements)
+    {
+      lt_caller_data *temp
+	= REALLOC (lt_caller_data, cur->caller_data, 2+ n_elements);
+
+      if (!temp)
+	{
+	  stale = 0;
+	  goto done;
+	}
+
+      cur->caller_data = temp;
+
+      /* We only need this if we needed to allocate a new caller_data.  */
+      cur->caller_data[i].key  = key;
+      cur->caller_data[1+ i].key = 0;
+    }
+
+  cur->caller_data[i].data = data;
+
+ done:
+  return stale;
+}
+
+void *
+lt_dlcaller_get_data  (lt_dlcaller_id key, lt_dlhandle handle)
+{
+  void *result = (void *) 0;
+  lt__handle *cur = (lt__handle *) handle;
+
+  /* Locate the index of the element with a matching KEY.  */
+  {
+    int i;
+    for (i = 0; cur->caller_data[i].key; ++i)
+      {
+	if (cur->caller_data[i].key == key)
+	  {
+	    result = cur->caller_data[i].data;
+	    break;
+	  }
+      }
+  }
+
+  return result;
+}
+
 const lt_dlinfo *
 lt_dlgetinfo (lt_dlhandle handle)
 {
@@ -1985,21 +2076,64 @@ lt_dlgetinfo (lt_dlhandle handle)
       return 0;
     }
 
-  return &(handle->info);
+  return &(((lt__handle *) handle)->info);
+}
+
+
+/* Nasty semantics, necessary for reasonable backwards compatibility:
+   Either iterate over the whole handle list starting with lt_dlhandle_next(0),
+   or else iterate over just the handles of modules that satisfy a given
+   interface by getting the first element using lt_dlhandle_first(iface).  */
+
+static lt__caller_id *iterator = 0;
+
+lt_dlhandle
+lt_dlhandle_first (lt_dlcaller_id caller)
+{
+  iterator = caller;
+
+  return handles;
 }
 
 
 lt_dlhandle
 lt_dlhandle_next (lt_dlhandle place)
 {
-  return place ? place->next : handles;
+  lt__handle *handle = (lt__handle *) place;
+
+  if (!handle)
+    {
+      /* old style iteration across all handles */
+      iterator = 0;
+      handle = (lt__handle *) handles;
+    }
+  else
+    {
+      /* otherwise start at the next handle after the passed one */
+      handle = handle->next;
+    }
+
+  /* advance until the interface check (if we have one) succeeds */
+  while (handle && iterator && iterator->iface
+	 && (iterator->iface (handle, iterator->id_string) != 0))
+    {
+      handle = handle->next;
+    }
+
+  if (!handle)
+    {
+      /* clear the iterator after the last handle */
+      iterator = 0;
+    }
+
+  return (lt_dlhandle) handle;
 }
 
 
 lt_dlhandle
 lt_dlhandle_find (const char *module_name)
 {
-  lt_dlhandle cur = handles;
+  lt__handle *cur = (lt__handle *) handles;
 
   if (cur)
     {
@@ -2018,12 +2152,12 @@ int
 lt_dlforeach (int (*func) (lt_dlhandle handle, void *data), void *data)
 {
   int errors = 0;
-  lt_dlhandle cur;
+  lt__handle *cur;
 
-  cur = handles;
+  cur = (lt__handle *) handles;
   while (cur)
     {
-      lt_dlhandle tmp = cur;
+      lt__handle *tmp = cur;
 
       cur = cur->next;
       if ((*func) (tmp, data))
@@ -2034,80 +2168,6 @@ lt_dlforeach (int (*func) (lt_dlhandle handle, void *data), void *data)
     }
 
   return errors;
-}
-
-lt_dlcaller_id
-lt_dlcaller_register (void)
-{
-  static lt_dlcaller_id last_caller_id = 0;
-  return ++last_caller_id;
-}
-
-void *
-lt_dlcaller_set_data (lt_dlcaller_id key, lt_dlhandle handle, void *data)
-{
-  int n_elements = 0;
-  void *stale = (void *) 0;
-  int i;
-
-  if (handle->caller_data)
-    while (handle->caller_data[n_elements].key)
-      ++n_elements;
-
-  for (i = 0; i < n_elements; ++i)
-    {
-      if (handle->caller_data[i].key == key)
-	{
-	  stale = handle->caller_data[i].data;
-	  break;
-	}
-    }
-
-  /* Ensure that there is enough room in this handle's caller_data
-     array to accept a new element (and an empty end marker).  */
-  if (i == n_elements)
-    {
-      lt_caller_data *temp
-	= REALLOC (lt_caller_data, handle->caller_data, 2+ n_elements);
-
-      if (!temp)
-	{
-	  stale = 0;
-	  goto done;
-	}
-
-      handle->caller_data = temp;
-
-      /* We only need this if we needed to allocate a new caller_data.  */
-      handle->caller_data[i].key  = key;
-      handle->caller_data[1+ i].key = 0;
-    }
-
-  handle->caller_data[i].data = data;
-
- done:
-  return stale;
-}
-
-void *
-lt_dlcaller_get_data  (lt_dlcaller_id key, lt_dlhandle handle)
-{
-  void *result = (void *) 0;
-
-  /* Locate the index of the element with a matching KEY.  */
-  {
-    int i;
-    for (i = 0; handle->caller_data[i].key; ++i)
-      {
-	if (handle->caller_data[i].key == key)
-	  {
-	    result = handle->caller_data[i].data;
-	    break;
-	  }
-      }
-  }
-
-  return result;
 }
 
 

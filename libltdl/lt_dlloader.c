@@ -113,7 +113,7 @@ const lt_dlvtable *
 lt_dlloader_remove (const char *name)
 {
   const lt_dlvtable *	vtable	= lt_dlloader_find (name);
-  lt_dlhandle		handle	= 0;
+  lt__handle *		handle	= 0;
   int			errors	= 0;
 
   if (!vtable)
@@ -123,7 +123,7 @@ lt_dlloader_remove (const char *name)
     }
 
   /* Fail if there are any open modules which use this loader.  */
-  while  (handle = lt_dlhandle_next (handle))
+  for  (handle = 0; handle; handle = handle->next)
     {
       if (handle->vtable == vtable)
 	{

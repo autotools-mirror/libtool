@@ -97,8 +97,10 @@ typedef struct {
   void *		data;
 } lt_caller_data;
 
-struct lt_dlhandle_struct {
-  struct lt_dlhandle_struct   *next;
+typedef struct lt__handle lt__handle;
+
+struct lt__handle {
+  lt__handle *		next;
   const lt_dlvtable *	vtable;		/* dlopening interface */
   lt_dlinfo		info;		/* user visible fields */
   int			depcount;	/* number of dependencies */

@@ -3430,6 +3430,15 @@ Iterate over the loaded module handles, returning the first handle in the
 list if @var{place} is @code{NULL}, and the next one on subsequent calls.
 If @var{place} is the last element in the list of loaded modules, this
 function returns @code{NULL}.
+
+@example
+  lt_dlhandle handle = 0;
+
+  while ((handle = lt_dlhandle_next (handle)))
+    @{
+      @dots{}
+    @}
+@end example
 @end deftypefun
 
 @deftypefun lt_dlhandle lt_dlhandle_find (@w{const char *@var{module_name}})
@@ -3451,8 +3460,17 @@ own data against loaded modules, without interfering with one another.
 The opaque type used to hold individual data set keys.
 @end deftp
 
-@deftypefun lt_dlcaller_id lt_dlcaller_register (void)
-Use this to obtain a unique key to store and retrieve per module data.
+@deftp {Type} int lt_dlhandle_interface (@w{lt_dlhandle @var{handle},} @w{const char *@var{id_string}})
+Functions of this type are called to check that a handle conforms to a
+library's expected module interface when iterating over the global
+handle list.
+@end deftp
+
+@deftypefun lt_dlcaller_id lt_dlcaller_register (@w{const char *@var{id_string},} @w{lt_dlhandle_interface *@var{iface}})
+Use this to obtain a unique key to store and retrieve per module data,
+if you supply an @var{id_string} and @var{iface}, then the resulting
+@code{lt_dlcaller_id} can be used to filter the module handles
+returned by @samp{lt_dlhandle_next}.
 @end deftypefun
 
 @deftypefun lt_ptr lt_dlcaller_set_data (@w{lt_dlcaller_id @var{key}}, @w{lt_dlhandle @var{handle}}, @w{lt_ptr @var{data}})
@@ -3509,6 +3527,53 @@ my_dlcaller_foreach (lt_dlcaller_id key)
   lt_dlforeach (my_dlcaller_callback, (lt_ptr) &key);
 @}
 @end example
+
+@deftypefun lt_dlhandle lt_dlhandle_first (@w{lt_dlcaller_id @var{key}})
+Normally, you can fetch each of the loaded module handles in turn with
+successive calls to @samp{lt_dlhandle_next} as shown in the example
+above.  In that example, the loop iterates over every libltdl loaded
+module in your application, including the modules used by libltdl
+itself!  This is useful from within a module loader for example.
+
+@noindent
+Often, your application doesn't want to concern itself with modules
+loaded by the libraries it uses, or for libltdl's internal use.  In
+order to do that, you need to specify an interface validator callback:
+
+@example
+/* @r{Return non-zero if} @var{handle} @r{doesn't conform to my iface.}  */
+int
+iface_validator_callback (lt_dlhandle handle, const char *id_string)
+@{
+    return (lt_sym (handle, "module_entry_point") != 0)
+@}
+@end example
+
+@noindent
+When you register for a caller identification with
+@samp{lt_dlcaller_register}, you log the interface validator.  But
+this time, when you start the iterator loop over the loaded module
+handles, if you fetch the first handle with @samp{lt_dlhandle_first},
+then that and all subsequent calls to @samp{lt_dlhandle_next} will
+skip any loaded module handles that fail the registered interface
+validator callback function:
+
+@example
+  /* @r{Register for a} caller_id @r{to identify ourselves to} libltdl.  */
+  caller_id = lt_dlcaller_register ("example", iface_validator_callback);
+
+@dots{}
+  /* @r{Iterate over the modules related to my} caller_id.  */
+  @{
+    lt_dlhandle handle = lt_dlhandle_first (caller_id);
+
+    while ((handle = lt_dlhandle_next (handle)))
+      @{
+        @dots{}
+      @}
+  @}
+@end example
+@end deftypefun
 
 
 @node Module loaders for libltdl
