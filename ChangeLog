@@ -1,3 +1,7 @@
+1999-12-13  Gary V. Vaughan  <gary@oranda.demon.co.uk>
+
+	* ltconfig.in (ltdll_obj): fixed typo: objdir -> $objdir
+
 1999-12-12  Gary V. Vaughan  <gary@oranda.demon.co.uk>
 
 	* ltconfig.in (cygwin*, mingw*, export_symbols_cmds): keep any
