@@ -1,3 +1,7 @@
+2000-09-02  Alexandre Oliva  <oliva@lsd.ic.unicamp.br>
+
+	* ltmain.in (shtool): Actually check in 2000-08-01's patch.
+
 2000-09-02  Tom Kacvinsky  <tjk@ams.org>, Tim Mooney <mooney@dogbert.cc.ndsu.NoDak.edu>
 
 	* libtool.m4: Ignore Tru64's nm's complaint.
