@@ -908,12 +908,21 @@ tryall_dlopen (handle, filename)
 	lt_dlhandle *handle;
 	const char *filename;
 {
-	lt_dlhandle cur;
+	lt_dlhandle cur = handles;
 	lt_dlloader_t *loader = loaders;
 	const char *saved_error = last_error;
 	
 	/* check whether the module was already opened */
-	cur = lt_find_dlhandle (filename);
+	while (cur) {
+		/* try to dlopen the program itself? */
+		if (!cur->info.filename && !filename)
+			break;
+		if (cur->info.filename && filename && 
+		    strcmp(cur->info.filename, filename) == 0)
+			break;
+		cur = cur->next;
+	}
+
 	if (cur) {
 		cur->info.ref_count++;
 		*handle = cur;
@@ -1594,18 +1603,18 @@ lt_dlopenext (filename)
 }
 
 lt_dlhandle
-lt_find_dlhandle (filename)
-	const char *filename;
+lt_find_dlhandle (name)
+	const char *name;
 {
 	lt_dlhandle cur = handles;
 	
 	/* check whether the module was already opened */
 	while (cur) {
 		/* try to dlopen the program itself? */
-		if (!cur->info.filename && !filename)
+		if (!cur->info.name && !name)
 			break;
-		if (cur->info.filename && filename && 
-		    strcmp(cur->info.filename, filename) == 0)
+		if (cur->info.name && name && 
+		    strcmp(cur->info.name, name) == 0)
 			break;
 		cur = cur->next;
 	}
