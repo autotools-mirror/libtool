@@ -1,23 +1,16 @@
-New in 0.6a:
+New in 0.6b:
 * Total rewrite of libtool, along with a new model for library building.
-* Updated documentation for the new paradigm.
-* Proper handling of broken system linkers, such as the ones on AIX
+* Completely rewritten documentation for the new paradigm.
+* Sane handling of broken system linkers, such as the ones on AIX
   and HP-UX.
 * configure mode is now a separate program, `ltconfig'
-* Libtool only supports `compile', `link', and `install' modes, via
-  the `--mode' command line option.
+* The libinfo helper script has been incorporated into the main
+  libtool program.
 * Automatic mode guessing, based on the command line.
+* Support for new `-static' linking flag.
+* Quote metacharacters in arguments to compile mode.
 
-New in 0.6: (never released)
-* Optimization to cut `libtool archive' execution time by a factor of 5.
-* New AM_REPLACE_FUNCS macro to generate LTLIBOBJS as well as LIBOBJS.
-  From Karl Berry.
-* Renamed ABOUT-LIBS to ABOUT-LIBTOOL.  From Karl Berry.
-* Include the generated libtool script in the distribution.
-* Quote metacharacters in arguments to `libtool compile'.
-* Bug fixes.
-* Removed `link' and `install-progs' modes because they cannot be 
-  correctly implemented.  See (libtool)Linking Against Pseudo-Libraries.
+Version 0.6 was never released.
 
 New in 0.5:
 * Disabled install-progs until next version, when it will be correctly

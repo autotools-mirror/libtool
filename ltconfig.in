@@ -105,7 +105,7 @@ EOM
 
   --no-verify) verify_host=no ;;
 
-  --version) echo "$PROGRAM - GNU $PACKAGE $VERSION"; exit 0 ;;
+  --version) echo "$PROGRAM (GNU $PACKAGE) $VERSION"; exit 0 ;;
 
   --with-gcc) with_gcc=yes ;;
 
@@ -252,7 +252,7 @@ old_archive_cmds='ar cru $oldlib$oldobjs'
 old_postinstall_cmds='chmod 644 $oldlib'
 
 # If RANLIB is not set, then run the test.
-if test -z "$RANLIB"; then
+if test "${RANLIB+set}" != "set"; then
   result=no
 
   echo $ac_n "checking for ranlib... $ac_c" 1>&6
@@ -376,7 +376,11 @@ EOF
   echo $ac_t "$with_gcc" 1>&6
 fi
 
-echo $ac_n "checking PIC compiler flags... $ac_c" 1>&6
+# Allow CC to be a program name with arguments.
+set dummy $CC
+compiler="$2"
+
+echo $ac_n "checking for $compiler option to produce PIC... $ac_c" 1>&6
 compile_flags=
 profile_flag_pattern=
 wl=
@@ -415,6 +419,11 @@ else
     wl='-Qoption ld '
     ;;
 
+  *-*-ultrix4*)
+    wl='-Wl'
+    can_build_shared=no
+    ;;
+
   *)
     can_build_shared=no
     ;;
@@ -435,7 +444,7 @@ else
   echo $ac_t none 1>&6
 fi
 
-echo $ac_n "checking static linking compiler flag... $ac_c" 1>&6
+echo $ac_n "checking for $compiler option to statically link programs... $ac_c" 1>&6
 if test -n "$link_static_flag"; then
   echo $ac_t "$link_static_flag" 1>&6
 else
@@ -445,7 +454,9 @@ fi
 # See if we're really using GNU ld.
 test -z "$LD" && LD="ld"
 with_gnu_ld=no
-linker="$LD"
+# Allow LD to be a program name with arguments.
+set dummy $LD
+linker="$2"
 echo $ac_n "checking if $LD is GNU ld... $ac_c" 1>&6
 if $LD --version 2>&1 | egrep 'with BFD' > /dev/null; then
   with_gnu_ld=yes

@@ -1,4 +1,11 @@
+Tue Dec  3 10:43:22 1996  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltconfig.in (old_striplib): Do a configuration test to determine
+	if old-style libraries actually can be stripped or not.
+
 Mon Dec  2 13:57:28 1996  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltconfig.in: Delete reference to ABOUT-LIBS.
 
 	* tests: Added new subdirectory.
 

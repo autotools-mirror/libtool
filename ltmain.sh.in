@@ -79,7 +79,7 @@ do
     ;;
 
   --version)
-    echo "$PROGRAM - GNU $PACKAGE $VERSION"
+    echo "$PROGRAM (GNU $PACKAGE) $VERSION"
     exit 0
     ;;
 
@@ -144,6 +144,10 @@ if test -z "$show_help"; then
     esac
   fi
 
+  # Change the help message to a mode-specific one.
+  generic_help="$help"
+  help="Try \`$progname --help --mode=$mode' for more information."
+
   # These modes are in order of execution frequency so that they run quickly.
   case "$mode" in
   # libtool compile mode
@@ -206,7 +210,7 @@ if test -z "$show_help"; then
     compile_command="$cc"
     finalize_command="$cc"
     deplibs=
-    libdir=
+    install_libdir=
     libobjs=
     link_against_libtool_libs=
     link_static=
@@ -216,7 +220,7 @@ if test -z "$show_help"; then
     prev=
     prevarg=
     temp_rpath=
-    vfile=
+    vinfo=
 
 
     # Maybe set the library names to libNAME_p.a if we are doing profiling.
@@ -266,7 +270,7 @@ if test -z "$show_help"; then
 
       -o) prev=output ;;
 
-      -rpath) prev=libdir ;;
+      -rpath) prev=install_libdir carg= farg= ;;
 
       -static)
 	build_libtool_libs=no
@@ -274,16 +278,24 @@ if test -z "$show_help"; then
 	carg="$farg"
 	;;
 
-      -version-file) prev=vfile ;;
+      -version-file)
+	echo "$progname: \`-version-file' has been replaced by \`-version-info'" 1>&2
+	echo "$help" 1>&2
+	exit 1
+	;;
+
+      -version-info) prev=vinfo carg= farg= ;;
 
       -*) cc="$cc $arg" ;; # Some other compiler flag.
 
-      *.o)
+      # Automake's ansi2knr support code uses the "._o" and ".l_o" object
+      # suffixes.
+      *.o | *._o)
 	# A standard object.
 	objs="$objs $arg"
 	;;
 
-      *.lo)
+      *.lo | *.l_o)
 	# A library object.
 	libobjs="$libobjs $arg"
 	;;
@@ -362,6 +374,12 @@ if test -z "$show_help"; then
 	  ;;
 	esac
 	;;
+
+      *)
+        echo "$progname: unknown file suffix for \`$arg'" 1>&2
+	echo "$help"
+	exit 1
+	;;
       esac
 
       args="$args $arg"
@@ -394,6 +412,14 @@ if test -z "$show_help"; then
     *.a)
       # Old archive.
       build_old_libs=yes
+
+      if test -n "$install_libdir"; then
+        echo "$progname: warning: \`-rpath' is ignored while linking old-style libraries" 1>&2
+      fi
+
+      if test -n "$vinfo"; then
+	echo "$progname: warning: \`-version-info' is ignored while linking old-style libraries" 1>&2
+      fi
       ;;
 
     lib?*.la)
@@ -404,52 +430,68 @@ if test -z "$show_help"; then
 	exit 1
       fi
 
-      # How the heck do we write a wrapper for a shared library?
+      # How the heck are we supposed to write a wrapper for a shared library?
       if test -n "$link_against_libtool_libs"; then
         echo "$progname: libtool libraries may not depend on uninstalled libraries" 1>&2
 	exit 1
       fi
 
-      # FIXME - screen out invalid options (such as link_static)
-
-      if test -z "$libdir"; then
+      if test -z "$install_libdir"; then
 	echo "$progname: you must specify an installation directory with \`-rpath'" 1>&2
 	exit 1
       fi
 
-      if test -z "$vfile"; then
-	# Default version line: 0 0 0
-	current=0
-	age=0
-	revision=0
+      current=0
+      revision=0
+      age=0
 
-      elif test -r "$vfile"; then
-	# Get version information
-	line=`egrep "^$libname[ 	]" "$vfile"`
-	set dummy $line
+      # Parse the version information argument.
+      IFS="${IFS= 	}"; save_ifs="$IFS"; IFS=':'
+      set dummy $vinfo
+      IFS="$save_ifs"
 
-	if test -z "$2"; then
-	  echo "$progname: no version information for \`$libname' in \`$vfile'" 1>&2
-	  exit 1
-	fi
-
-	current="$3"
-	age="$4"
-	revision="$5"
-
-	if test -z "$revision"; then
-	  echo "$progname: \`$vfile' must specify a CURRENT, AGE, and REVISION for \`$libname'" 1>&2
-	  exit 1
-	fi
-
-	if test "$age" -gt "$current"; then
-	  echo "$progname: AGE \`$age' is greater than the current interface number \`$current'" 1>&2
-	  echo "\`$vfile' contains invalid version information for \`$libname'" 1>&2
-	  exit 1
-	fi
-      else
-	echo "$progname: version file \`$vfile' is not readable" 1>&2
+      if test -n "$5"; then
+        echo "$progname: too many parameters to \`-version-info'" 1>&2
+	echo "$help" 1>&2
 	exit 1
+      fi
+
+      test -n "$2" && current="$2"
+      test -n "$3" && revision="$3"
+      test -n "$4" && age="$4"
+
+      # Check that each of the things are valid numbers.
+      case "$current" in
+      0 | [1-9] | [1-9][0-9]*) ;;
+      *)
+	echo "$progname: CURRENT \`$current' is not a nonnegative integer" 1>&2
+        echo "$progname: \`$vinfo' is not valid version information" 1>&2
+        exit 1
+	;;
+      esac
+
+      case "$revision" in
+      0 | [1-9] | [1-9][0-9]*) ;;
+      *)
+	echo "$progname: REVISION \`$revision' is not a nonnegative integer" 1>&2
+        echo "$progname: \`$vinfo' is not valid version information" 1>&2
+        exit 1
+	;;
+      esac
+
+      case "$age" in
+      0 | [1-9] | [1-9][0-9]*) ;;
+      *)
+	echo "$progname: AGE \`$age' is not a nonnegative integer" 1>&2
+        echo "$progname: \`$vinfo' is not valid version information" 1>&2
+        exit 1
+	;;
+      esac
+
+      if test $age -gt $current; then
+        echo "$progname: AGE \`$age' is greater than the current interface number \`$current'" 1>&2
+        echo "$progname: \`$vinfo' is not valid version information" 1>&2
+        exit 1
       fi
 
       # Calculate the version variables.
@@ -555,6 +597,14 @@ if test -z "$show_help"; then
       ;;
 
     *)
+      if test -n "$install_libdir"; then
+        echo "$progname: warning: \`-rpath' is ignored while linking programs" 1>&2
+      fi
+
+      if test -n "$vinfo"; then
+	echo "$progname: warning: \`-version-info' is ignored while linking programs" 1>&2
+      fi
+
       if test -z "$link_against_libtool_libs" || test "$build_libtool_libs" != yes; then
 	# We have no uninstalled library dependencies, so finalize right now.
 	compile_command=`echo "$compile_command" | sed "s%-o $objdir/%-o %"`
@@ -745,7 +795,7 @@ age=$age
 revision=$revision
 
 # Directory that this library needs to be installed in:
-libdir='$libdir'
+libdir='$install_libdir'
 EOF
       fi
       ;;
@@ -973,7 +1023,7 @@ EOF
 	    fi
 	    libfile="$libdir/`echo "$lib" | sed 's%^.*/%%g'`"
 	    if test -z "$libdir"; then
-	      echo "$progname: warning: \`$lib' contains no libdir information"
+	      echo "$progname: warning: \`$lib' contains no -rpath information"
 	    elif test -f "$libfile"; then :	      
 	    else
 	      echo "$progname: warning: \`$lib' has not been installed in \`$libdir'" 1>&2
@@ -1154,7 +1204,7 @@ EOF
   esac
 
   echo "$progname: invalid operation mode \`$mode'" 1>&2
-  echo "$help" 1>&2
+  echo "$generic_help" 1>&2
   exit 1
 fi # test -z "$show_help"
 
@@ -1243,8 +1293,8 @@ The following components of LINK-COMMAND are treated specially:
   -o OUTPUT-FILE  create OUTPUT-FILE from the specified objects
   -rpath LIBDIR   the created library will eventually be installed in LIBDIR
   -static         do not do any dynamic linking or shared library creation
-  -version-file VERFILE
-		  find library version information in VERFILE
+  -version-info CURRENT[:REVISION[:AGE]]
+		  specify library version info [each variable defaults to 0]
 
 All other options (arguments beginning with \`-') are ignored.
 
@@ -1253,8 +1303,8 @@ treated as uninstalled libtool libraries, other files are standard or library
 object files.
 
 If the OUTPUT-FILE ends in \`.la', then a libtool library is created, only
-library objects (\`.lo' files) may be specified, and the \`-rpath' option is
-required.
+library objects (\`.lo' or \`.l_o' files) may be specified, and the \`-rpath'
+option is required.
 
 If OUTPUT-FILE ends in \`.a', then a standard library is created using \`ar'
 and \`ranlib'.  Otherwise, an executable program is created.

@@ -3,8 +3,10 @@
 AUTOMAKE_OPTIONS = gnits
 SUBDIRS = doc
 
-EXTRA_DIST = libtool.m4 libtoolize.in ltconfig.in ltmain.sh.in
-CLEANFILES = libtool libtoolize ltconfig ltmain.sh
+# Distribute ltconfig and ltmain.sh so that the demo directory works.
+EXTRA_DIST = libtool.m4 libtoolize.in ltconfig ltconfig.in \
+	ltmain.sh ltmain.sh.in
+CLEANFILES = libtool libtoolize
 
 # Files in the demo subdirectory that go in the distribution.
 demo_distfiles = Makefile.in Makefile.am aclocal.m4 configure configure.in \
@@ -22,17 +24,17 @@ aclocal_DATA = libtool.m4
 bin_SCRIPTS = libtool libtoolize
 
 libtool: ltconfig
-	./ltconfig --srcdir=$(srcdir) $(pkgdatadir)/ltmain.sh
+	$(srcdir)/ltconfig --srcdir=$(srcdir) $(pkgdatadir)/ltmain.sh
 
 libtoolize: libtoolize.in
 	CONFIG_FILES=libtoolize CONFIG_HEADERS= $(top_builddir)/config.status
 	chmod +x libtoolize
 
-ltconfig: ltconfig.in
+$(srcdir)/ltconfig: ltconfig.in
 	CONFIG_FILES=ltconfig CONFIG_HEADERS= $(top_builddir)/config.status
 	chmod +x ltconfig
 
-ltmain.sh: ltmain.sh.in
+$(srcdir)/ltmain.sh: ltmain.sh.in
 	CONFIG_FILES=ltmain.sh CONFIG_HEADERS= $(top_builddir)/config.status
 
 # Distribute the demo subdirectory.
