@@ -1,5 +1,9 @@
 2004-10-01  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* config/ltmain.in (func_mode_link): Fix quoting bug.  Fixes
+	e.g. the quoting of the -export-symbols-regex argument in .la
+	files' relink_command.
+
 	* libltdl/lt__alloc.c (lt__memdup): Allocation can fail, so we
 	need to guard against null pointer dereference here.
 	* libltdl/ltdl.c (lt_dlcaller_register): Ditto.

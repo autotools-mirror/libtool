@@ -2188,7 +2188,8 @@ func_mode_link ()
       arg="$1"
       shift
       qarg=`$ECHO "X$arg" | $Xsed -e "$sed_quote_subst"`
-      libtool_args="$libtool_args $qarg"
+      func_quote_for_eval "$qarg"
+      libtool_args="$libtool_args $func_quote_for_eval_result"
 
       # If the previous option needs an argument, assign it.
       if test -n "$prev"; then
