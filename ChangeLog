@@ -1,3 +1,8 @@
+2002-10-20  Alexandre Duret-Lutz  <adl@gnu.org>
+
+	* libtool.m4 (AC_LIBTOOL_SYS_GLOBAL_SYMBOL_PIPE): Honor
+	ac_exeext.
+
 2002-10-14  Albert Chin-A-Young  <china@thewrittenword.com>
 
 	* libtool.m4: If ld is being used on IRIX to embed the
