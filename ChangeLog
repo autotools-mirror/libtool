@@ -1,3 +1,11 @@
+2001-08-16  Gary V. Vaughan  <gary@gnu.org>
+
+	* libltdl/ltdl.c (argz_create_sep): Don't forget to include the
+	terminating '\0' when counting argz_len.
+	(argz_create_sep): When canonicalizing argz, don't forget to copy
+	the terminating '\0', incase canonicalization has shortened argz.
+	(argz_stringify): Don't covert the final '\0' to a separator.
+
 2001-08-15  Gary V. Vaughan  <gary@gnu.org>
 
 	* libltdl/ltdl.c (lt_dlhandle_next): Now we can loop through all

@@ -451,13 +451,13 @@ argz_create_sep (str, delim, pargz, pargz_len)
 
   /* Make a copy of STR, but replacing each occurence of
      DELIM with '\0'.  */
-  argz_len = LT_STRLEN (str);
+  argz_len = 1+ LT_STRLEN (str);
   if (argz_len)
     {
       const char *p;
       char *q;
 
-      argz = LT_DLMALLOC (char, 1+ argz_len);
+      argz = LT_DLMALLOC (char, argz_len);
       if (!argz)
 	return ENOMEM;
 
@@ -475,6 +475,8 @@ argz_create_sep (str, delim, pargz, pargz_len)
 	  else
 	    *q++ = *p;
 	}
+      /* Copy terminating LT_EOS_CHAR.  */
+      *q = *p;
     }
 
   /* If ARGZ_LEN has shrunk to nothing, release ARGZ's memory.  */
@@ -613,7 +615,8 @@ argz_stringify (argz, argz_len, sep)
 
   if (sep)
     {
-      while (--argz_len >= 0)
+      --argz_len;		/* don't stringify the terminating EOS */
+      while (--argz_len > 0)
 	{
 	  if (argz[argz_len] == LT_EOS_CHAR)
 	    argz[argz_len] = sep;
