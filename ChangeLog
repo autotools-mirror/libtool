@@ -1,3 +1,7 @@
+2000-09-05  Alexandre Oliva  <aoliva@redhat.com>
+
+	* libtool.m4 (LT_AC_PROG_GCJ): Remove excess closing brackets.
+
 2000-09-04  Alexandre Oliva  <aoliva@redhat.com>
 
 	* mdemo/Makefile.am: Mark only libfoo2 as -no-undefined.
