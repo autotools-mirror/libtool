@@ -1,3 +1,8 @@
+2000-06-17  Syd Polk  <spolk@redhat.com>
+
+	* libtool.m4 (AC_LIBTOOL_SETUP): Do not generate a libtool based
+	on target; use host instead.
+
 2000-05-30  Gary V. Vaughan  <gvv@techie.com>
 
 	* ltconfig.in (ORIGINAL_CONFIG_SHELL): Prevent lossage when
