@@ -1,5 +1,8 @@
 1999-07-26  Olly Betts  <olly@muscat.co.uk>
 
+	* libtool.m4(cygwin mingw32, AC_LIBTOOL_SETUP): Oops.  Fix some
+	typos made by Evil Gary while (mis)applying my patch :-).
+
 	* libtool.m4(cygwin mingw32, AC_LIBTOOL_SETUP):  On second
 	thoughts, only probe for -mdll vs -dll on mingw, and revert to
 	the old `-Wl,--dll -nostartfiles' on cygwin.

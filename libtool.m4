@@ -138,14 +138,14 @@ ifdef([AC_PROVIDE_AC_LIBTOOL_WIN32_DLL],
 
   case $host in
   *-*-cygwin*)
-    # cygwin systems need to tell pass --dll to the linker, and not link
+    # cygwin systems need to pass --dll to the linker, and not link
     # crt.o which will require a WinMain@16 definition.
-    lt_cv_cc_ddll_switch="-Wl,-dll -nostartfiles" ;;
+    lt_cv_cc_dll_switch="-Wl,--dll -nostartfiles" ;;
   *-*-mingw*)
     # old mingw systems require "-dll" to link a DLL, while more recent ones
     # require "-mdll"
     SAVE_CFLAGS="$CFLAGS"
-    CFLAGS="$CFLAGS -mdll$lt_nostartfiles"
+    CFLAGS="$CFLAGS -mdll"
     AC_CACHE_CHECK([how to link DLLs], lt_cv_cc_dll_switch,
       [AC_TRY_LINK([], [], [lt_cv_cc_dll_switch=-mdll],[lt_cv_cc_dll_switch=-dll])])
     CFLAGS="$SAVE_CFLAGS" ;;
