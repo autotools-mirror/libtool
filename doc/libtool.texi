@@ -3098,10 +3098,31 @@ test for:
 
 @table @file
 
-@item assign.test
-@pindex assign.test
-Checks whether we don't put break or continue on the same 
-line as an assignment in the libtool script.
+@item cdemo-conf.test
+@itemx cdemo-exec.test
+@itemx cdemo-make.test
+@itemx cdemo-static.test
+@itemx cdemo-shared.test
+@pindex cdemo-conf.test
+@pindex cdemo-exec.test
+@pindex cdemo-make.test
+@pindex cdemo-static.test
+@pindex cdemo-shared.test
+These programs check to see that the @file{cdemo} subdirectory of the
+libtool distribution can be configured and built correctly.
+
+The @file{cdemo} subdirectory contains a demonstration of libtool
+convenience libraries, a mechanism that allows build-time static
+libraries to be created, in a way that their components can be later
+linked into programs or other libraries, even shared ones.
+
+The tests @file{cdemo-make.test} and @file{cdemo-exec.test} are executed
+three times, under three different libtool configurations:
+@file{cdemo-conf.test} configures @file{cdemo/libtool} to build both
+static and shared libraries (the default for platforms that support
+both), @file{cdemo-static.test} builds only static libraries
+(@samp{--disable-shared}), and @file{cdemo-shared.test} builds only
+shared libraries (@samp{--disable-static}).
 
 @item demo-conf.test
 @itemx demo-exec.test
@@ -3142,6 +3163,25 @@ libtool uses a @code{deplibs_check_method} to prevent such cases.
 This tests checks whether libtool's @code{deplibs_check_method}
 works properly.
 
+@item hardcode.test
+@pindex hardcode.test
+On all systems with shared libraries, the location of the library can be
+encoded in executables that are linked against it @pxref{Linking
+executables}.  This test checks the conditions under which your system
+linker hardcodes the library location, and guarantees that they
+correspond to libtool's own notion of how your linker behaves.
+
+@item build-relink.test
+@pindex build-relink.test
+Checks whether variable @var{shlibpath_overrides_runpath} is properly
+set.  If the test fails and @var{VERBOSE} is set, it will indicate what
+the variable should have been set to.
+
+@item noinst-link.test
+@pindex noinst-link.test
+Checks whether libtool will not try to link with a previously installed
+version of a library when it should be linking with a just-built one.
+
 @item mdemo-conf.test
 @itemx mdemo-exec.test
 @itemx mdemo-inst.test
@@ -3174,50 +3214,14 @@ static and shared libraries, @file{mdemo-static.test} builds only static
 libraries (@samp{--disable-shared}), and @file{mdemo-shared.test} builds
 only shared libraries (@samp{--disable-static}).
 
-@item cdemo-conf.test
-@itemx cdemo-exec.test
-@itemx cdemo-make.test
-@itemx cdemo-static.test
-@itemx cdemo-shared.test
-@pindex cdemo-conf.test
-@pindex cdemo-exec.test
-@pindex cdemo-make.test
-@pindex cdemo-static.test
-@pindex cdemo-shared.test
-These programs check to see that the @file{cdemo} subdirectory of the
-libtool distribution can be configured and built correctly.
+@item dryrun.test
+@pindex dryrun.test
+This test checks whether libtool's @code{--dry-run} mode works properly.
 
-The @file{cdemo} subdirectory contains a demonstration of libtool
-convenience libraries, a mechanism that allows build-time static
-libraries to be created, in a way that their components can be later
-linked into programs or other libraries, even shared ones.
-
-The tests @file{cdemo-make.test} and @file{cdemo-exec.test} are executed
-three times, under three different libtool configurations:
-@file{cdemo-conf.test} configures @file{cdemo/libtool} to build both
-static and shared libraries (the default for platforms that support
-both), @file{cdemo-static.test} builds only static libraries
-(@samp{--disable-shared}), and @file{cdemo-shared.test} builds only
-shared libraries (@samp{--disable-static}).
-
-@item hardcode.test
-@pindex hardcode.test
-On all systems with shared libraries, the location of the library can be
-encoded in executables that are linked against it @pxref{Linking
-executables}.  This test checks the conditions under which your system
-linker hardcodes the library location, and guarantees that they
-correspond to libtool's own notion of how your linker behaves.
-
-@item build-relink.test
-@pindex build-relink.test
-Checks whether variable @var{shlibpath_overrides_runpath} is properly
-set.  If the test fails and @var{VERBOSE} is set, it will indicate what
-the variable should have been set to.
-
-@item noinst-link.test
-@pindex noinst-link.test
-Checks whether libtool will not try to link with a previously installed
-version of a library when it should be linking with a just-built one.
+@item assign.test
+@pindex assign.test
+Checks whether we don't put break or continue on the same 
+line as an assignment in the libtool script.
 
 @item link.test
 @pindex link.test

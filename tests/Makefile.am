@@ -11,7 +11,7 @@ TESTS = cdemo-static.test cdemo-make.test cdemo-exec.test \
 	demo-conf.test demo-make.test demo-exec.test \
 	demo-inst.test demo-unst.test deplibs.test \
 	mdemo-conf.test mdemo-make.test mdemo-exec.test \
-	mdemo-inst.test mdemo-unst.test \
+	mdemo-inst.test mdemo-unst.test dryrun.test \
 	demo-nofast.test demo-make.test demo-exec.test \
 	demo-inst.test demo-unst.test \
 	cdemo-shared.test cdemo-make.test cdemo-exec.test \

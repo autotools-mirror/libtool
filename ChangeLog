@@ -1,5 +1,11 @@
 1999-04-05 Thomas Tanner  <tanner@gmx.de>
 
+	* doc/libtool.texi: reorder tests to reflect execution order,
+	  documented dryrun.test
+	* ltmain.in (lt_preloaded_symbols): dry-run mode bugfix
+	* tests/dryrun.test: new test to check whether the dry-run
+	  mode works properly
+
 	* demo/run.test: removed the unnecessary test
 	* demo/Makefile.am: ditto
 
