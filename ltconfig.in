@@ -524,6 +524,7 @@ test -z "$RANLIB" && RANLIB=@RANLIB@
 # Commands probed in libtool.m4
 #   -- let the user override the result from configure
 test -z "$CC" && CC=@CC@
+test -z "$FILE" && FILE=@FILE@
 test -z "$LD" && LD=@LD@
 test -z "$STRIP" && STRIP=@STRIP@
 

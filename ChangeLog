@@ -1,3 +1,16 @@
+1999-10-03  Gary V. Vaughan  <gary@oranda.demon.co.uk>
+
+	* ltconfig.in:  Set $FILE to @FILE@ for substitution with
+	the value found in libtool.m4 at configure time.
+	* libtool.m4 (AC_PATH_TOOL_GREP_VERSION):  New macro, combines
+	AC_PATH_PROG and AC_CHECK_TOOL with a test which greps the
+	output of $ac_dir/${ac_prefix}<tool> --version for a
+	given regex.
+	(AC_PATH_PROG_GREP_VERSION):  New macro used by the above.
+	(AC_LIBTOOL_SETUP): Use the new macros to search the PATH
+	[starting at /usr/bin] for a file program which accepts
+	--version and has "file" in its --version output.
+
 1999-10-03  Thomas Tanner  <tanner@ffii.org>
 
 	* NEWS: new -no-install flag
