@@ -1,5 +1,31 @@
 2004-01-07  Gary V. Vaughan  <gary@gnu.org>
 
+	* Makefile.am (aclocal_macros, aclocal_DATA): Removed.
+	(EXTRA_DIST): Remove m4 macro files; they are automatically
+	added by automake.
+	(pkgmacrodir): Where to install libtool macro files.
+	(pkgmacro_DATA): List installable libtool macro files.
+	(install-data-local): Remove previous versions of ltdl.m4 and
+	libtool.m4 from their old location.
+	* libtoolize.in: Use new pkgmacrodir installed macros when
+	libtoolizing a project.  Treat libtool.m4 and ltdl.m4 specially,
+	and func_serial_update() any other files from pkgmacrodir.
+	(pkgmacrodir): Where to find installed libtool macro files.
+	(aclocaldir): Removed.
+	(func_copy_all_files): Add an optional callback parameter to
+	control how files are copied.  If the callback is passed, don't
+	tell it whether it can copy or not.
+	(func_serial): Exchange parameters and make macro_regex optional,
+	so that this function can be used to extract serial numbers from
+	files with the traditional /^# serial [1-9][0-9]*$/ syntax.
+	Changed all callers.
+	(func_serial_update): Make macro_regex optional last parameter, so
+	that this function can be used as a callback for
+	func_copy_all_files().  Changed all callers.
+	* m4/ltsugar.m4: Add a serial number.
+
+2004-01-07  Gary V. Vaughan  <gary@gnu.org>
+
 	A complete rewrite of the m4 code involved in the generation of
 	libtool via config.status.  The old way involved manually
 	synchronising disparate bits of shell code in several macros, to

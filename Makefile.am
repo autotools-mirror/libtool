@@ -23,20 +23,18 @@ BUILD_SUBDIRS = . libltdl doc tests
 SUBDIRS = $(BUILD_SUBDIRS)
 DIST_SUBDIRS = $(BUILD_SUBDIRS)
 
-aclocal_macros = m4/ltsugar.m4 m4/libtool.m4 m4/ltdl.m4
-
-EXTRA_DIST = $(aclocal_macros) bootstrap libtoolize.in ltmain.in \
-	config/mkstamp stamp-vcl ChangeLog.1996 ChangeLog.1997 \
-	ChangeLog.1998 ChangeLog.1999 ChangeLog.2000 ChangeLog.2001 \
-	ChangeLog.2002
+EXTRA_DIST = bootstrap libtoolize.in ltmain.in config/mkstamp stamp-vcl \
+	ChangeLog.1996 ChangeLog.1997 ChangeLog.1998 ChangeLog.1999 \
+	ChangeLog.2000 ChangeLog.2001 ChangeLog.2002 ChangeLog.2003
 CLEANFILES = libtool libtoolize ltmain.shT
 
 # These are required by libtoolize.
 pkgdata_SCRIPTS = config/config.guess config/config.sub
 pkgdata_DATA = config/ltmain.sh
 
-# This macro file should be visible to Automake's aclocal.
-aclocal_DATA = $(aclocal_macros)
+# Me maintain our own macros to provent problems with ancient definitions.
+pkgmacrodir = $(pkgdatadir)/m4
+pkgmacro_DATA = m4/libtool.m4 m4/ltdl.m4 m4/ltsugar.m4
 
 # The standalone libtool script, and the libtool distributor.
 bin_SCRIPTS = libtool libtoolize
@@ -75,9 +73,12 @@ configure-subdirs distdir: $(DIST_MAKEFILE_LIST)
 	abs_srcdir=`cd $(top_srcdir) && pwd`; \
 	(cd $$dir && $$abs_srcdir/$$dir/configure) || exit 1
 
-# Don't install over the top of an old pkgdatadir
 install-data-local:
+## Don't install over the top of an old pkgdatadir
 	-rm -rf $(DESTDIR)$(pkgdatadir)
+## Remove old macro definitions
+	-rm -rf $(DESTDIR)$(aclocaldir)/ltdl.m4
+	-rm -rf $(DESTDIR)$(aclocaldir)/libtool.m4
 
 # Create and install libltdl
 install-data-hook:

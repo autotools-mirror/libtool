@@ -2,7 +2,7 @@
 # libtoolize (GNU @PACKAGE@@TIMESTAMP@) @VERSION@
 # Written by Gary V. Vaughan <gary@gnu.org>
 
-# Copyright (C) 2003 Free Software Foundation, Inc.
+# Copyright (C) 2003, 2004 Free Software Foundation, Inc.
 # This is free software; see the source for copying conditions.  There is NO
 # warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
@@ -76,12 +76,10 @@ exit_status=0
 prefix=@prefix@
 datadir=@datadir@
 pkgdatadir=@pkgdatadir@
-aclocaldir=@aclocaldir@
+pkgmacrodir="$pkgdatadir/m4"
 auxdir=
 m4dir=
 configure_ac=configure.in
-libtool_m4="$aclocaldir/libtool.m4"
-ltdl_m4="$aclocaldir/ltdl.m4"
 
 sed_dirname='s,/[^/]*$,,'
 
@@ -226,15 +224,19 @@ func_copy ()
     return $my_return_status
 }
 
-# func_copy_all_files srcdir destdir [glob_exclude]
-# For each file in SRCDIR, if option `--copy' was specified, or soft-linking
-# the file to DESTDIR fails, then try to copy the file to DESTDIR.  If
-# GLOB_EXCLUDE is given, exclude any matching filenames from the copy.
+# func_copy_all_files srcdir destdir [glob_exclude] [copy_cb=func_copy]
+# For each file in SRCDIR, then try to copy the file to DESTDIR by calling
+# COPY_CB with the src and dest files.  If GLOB_EXCLUDE is given, exclude
+# any matching filenames from the copy.  If COPY_CB is passed, then the
+# check for overwriting without force_opt is the callbacks responsibility:
+# This allows using callbacks like func_serial_update, which perform their
+# own checks to decide whether to overwrite the dest file.
 func_copy_all_files ()
 {
     my_srcdir="$1"
     my_destdir="$2"
     my_glob_exclude="$3"
+    my_copy_cb=${4-func_copy}
 
     for my_filename in `cd "$my_srcdir" && ls`; do
 
@@ -244,17 +246,19 @@ func_copy_all_files ()
       fi
 
       if test -f "$my_srcdir/$my_filename"; then
-	$force_opt || if test -f "$my_destdir/$my_filename"; then
-          $quiet_opt \
-	    || func_error "\`$my_destdir/$my_filename' exists: use \`--force' to overwrite"
-	  continue
+        if test "x$my_copy_cb" = xfunc_copy; then
+	  $force_opt || if test -f "$my_destdir/$my_filename"; then
+  	    $quiet_opt \
+	      || func_error "\`$my_destdir/$my_filename' exists: use \`--force' to overwrite"
+	    continue
+	  fi
         fi
       else
         # Not a regular file
         continue
       fi
 
-      func_copy "$my_srcdir/$my_filename" "$my_destdir/$my_filename"
+      $my_copy_cb "$my_srcdir/$my_filename" "$my_destdir/$my_filename"
     done
 }
 
@@ -391,15 +395,15 @@ func_included_files ()
     done
 }
 
-# func_serial macro_regex filename
+# func_serial filename [macro_regex]
 # Output the value of the serial number comment in FILENAME, where the
-# comment line must also match MACRO_REGEX.
+# comment line must also match MACRO_REGEX, if given.
 func_serial ()
 {
-    my_macro_regex="$1"
-    my_filename="$2"
-    my_sed_serial='/^# serial [1-9][0-9]* '"$my_macro_regex"'[ 	]*$/ {
-	  s,^# serial \([1-9][0-9]*\) .*$,\1,; q;
+    my_filename="$1"
+    my_macro_regex="$2"
+    my_sed_serial='/^# serial [1-9][0-9]*[ 	]*'"$my_macro_regex"'[ 	]*$/ {
+	  s,^# serial \([1-9][0-9]*\).*$,\1,; q;
 	}; d'
 
     # Search FILENAME and all the files it m4_includes for a serial number
@@ -418,21 +422,22 @@ func_serial ()
     echo $my_serial
 }
 
-# func_serial_update macro_regex srcfile destfile
+# func_serial_update srcfile destfile [macro_regex]
 # Copy SRCFILE to DESTFILE provided SRCFILE has a newer serial number, or
-# DESTFILE does not yet exist, or the user specified `--force'.
+# DESTFILE does not yet exist, or the user specified `--force'.  If given,
+# MACRO_REGEX must match any text after "# serial N" in the both files.
 func_serial_update ()
 {
-    my_macro_regex="$1"
-    my_srcfile="$2"
-    my_destfile="$3"
+    my_srcfile="$1"
+    my_destfile="$2"
+    my_macro_regex="$3"
 
     my_return_status=1
     my_update_p=:
 
     if test -f "$my_destfile"; then
-      my_src_serial=`func_serial "$my_macro_regex" "$my_srcfile"`
-      my_dest_serial=`func_serial "$my_macro_regex" "$my_destfile"`
+      my_src_serial=`func_serial "$my_srcfile" "$my_macro_regex"`
+      my_dest_serial=`func_serial "$my_destfile" "$my_macro_regex"`
 
       test "$my_src_serial" -eq 0 && {
         func_error "warning: no serial number on \`$my_srcfile', not copying."
@@ -464,7 +469,7 @@ func_serial_update ()
     # it has `m4_include([DESTFILE])', so the copy effectively already
     # updated `aclocal.m4'.
     $use_aclocal || if test -f aclocal.m4; then
-      test "$my_src_serial" -gt `func_serial "$my_macro_regex" aclocal.m4` \
+      test "$my_src_serial" -gt `func_serial aclocal.m4 "$my_macro_regex"` \
 	  && func_echo "You should add the contents of \'$my_destfile' to \`aclocal.m4'."
     fi
 
@@ -548,6 +553,9 @@ func_config_update ()
 {
   rerun_aclocal=false
 
+  re_pkgaux_files='config\.guess|config\.sub|ltmain\.sh'
+  re_pkgmacro_files='libtool\.m4|ltdl\.m4'
+
   func_scan_files
   $quiet_opt || func_check_macros
 
@@ -576,7 +584,7 @@ func_config_update ()
     func_echo "putting files in AC_CONFIG_AUX_DIR, \`$auxdir'."
   fi
   if $install_opt || $force_opt; then
-    func_copy_all_files "$pkgdatadir" "$auxdir" 'config.guess|config.sub|ltmain.sh'
+    func_copy_all_files "$pkgdatadir" "$auxdir" "$re_pkgaux_files"
     func_config_update "$pkgdatadir/config.guess" "$auxdir/config.guess"
     test -f "$pkgdatadir/config.sub" \
       && func_config_update "$pkgdatadir/config.sub" "$auxdir/config.sub"
@@ -587,12 +595,18 @@ func_config_update ()
   $quiet_opt || if test "$m4dir" != .; then
     func_echo "putting macros in AC_CONFIG_MACRO_DIR, \`$m4dir'."
   fi
-  func_serial_update 'A[CM]_PROG_LIBTOOL' "$aclocaldir/libtool.m4" "$m4dir/libtool.m4"
+
+  libtool_m4="$pkgmacrodir/libtool.m4"
+  ltdl_m4="$pkgmacrodir/ltdl.m4"
+
+  func_copy_all_files "$pkgmacrodir" "$m4dir" \
+      "$re_pkgmacro_files" func_serial_update
+  func_serial_update  "$libtool_m4" "$m4dir/libtool.m4" 'A[CM]_PROG_LIBTOOL'
 
   if $seen_ltdl; then
-    func_serial_update 'AC_LIB_LTDL' "$aclocaldir/ltdl.m4" "$m4dir/ltdl.m4"
+    func_serial_update "$ltdl_m4" "$m4dir/ltdl.m4" 'AC_LIB_LTDL'
   else
-    func_verbose "Not copying \`$aclocaldir/ltdl.m4', AC_LIB_LTDL not used."
+    func_verbose "Not copying \`$ltdl_m4', AC_LIB_LTDL not used."
   fi
 }
 
