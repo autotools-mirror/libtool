@@ -54,6 +54,10 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 #include <stdlib.h>
 #endif
 
+#if HAVE_UNISTD_H
+#include <unistd.h>
+#endif
+
 #if HAVE_STDIO_H
 #include <stdio.h>
 #endif
@@ -940,6 +944,10 @@ tryall_dlopen (handle, filename)
 		}
 	} else
 		cur->info.filename = 0;
+	if (access (filename, F_OK) < 0) {
+		last_error = file_not_found_error;
+		return 1;
+	}
 	while (type) {
 		if (type->lib_open(cur, filename) == 0)
 			break;

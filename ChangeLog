@@ -1,3 +1,10 @@
+2000-01-17  Gary V. Vaughan  <gary@oranda.demon.co.uk>
+
+	* libltdl/ltdl.c (tryall_dlopen): Abort with
+	file_not_found_error before trying all lib_open() methods
+	if the file to be dlopened doesn't exist.
+	* ltdl.m4 (AC_HAVE_HEADERS): add unistd.h.
+
 2000-01-16  Gary V. Vaughan  <gary@oranda.demon.co.uk>
 
 	* libltdl/ltdl.c (find_file): memory error fixed.
