@@ -1276,7 +1276,7 @@ EOF
 
       $run $RM "$lobj" "$output_obj"
 
-      $show "$command"
+      eval $show "$command"
       if $run eval "$command"; then :
       else
 	test -n "$output_obj" && $run $RM $removelist
@@ -1348,7 +1348,7 @@ EOF
       # Suppress compiler output if we already did a PIC compilation.
       command="$command$suppress_output"
       $run $RM "$obj" "$output_obj"
-      $show "$command"
+      eval $show "$command"
       if $run eval "$command"; then :
       else
 	$run $RM $removelist
@@ -1563,7 +1563,7 @@ func_mode_finish ()
 	  for cmd in $cmds; do
 	    IFS="$save_ifs"
 	    eval cmd=\"$cmd\"
-	    $show "$cmd"
+	    eval $show "$cmd"
 	    $run eval "$cmd" || admincmds="$admincmds
        $cmd"
 	  done
@@ -1804,7 +1804,7 @@ func_mode_install ()
 	  fi
 
 	  func_warning "relinking \`$file'"
-	  $show "$relink_command"
+	  eval $show "$relink_command"
 	  $run eval "$relink_command" || \
 	    func_fatal_error "error: relink \`$file' with the above command before installing it"
 	fi
@@ -1820,10 +1820,10 @@ func_mode_install ()
 	  test -n "$relink_command" && srcname="$realname"T
 
 	  # Install the shared library and build the symlinks.
-	  $show "$install_prog $dir/$srcname $destdir/$realname"
+	  eval $show "$install_prog $dir/$srcname $destdir/$realname"
 	  $run eval "$install_prog $dir/$srcname $destdir/$realname" || exit $?
 	  if test -n "$stripme" && test -n "$striplib"; then
-	    $show "$striplib $destdir/$realname"
+	    eval $show "$striplib $destdir/$realname"
 	    $run eval "$striplib $destdir/$realname" || exit $?
 	  fi
 
@@ -1832,7 +1832,7 @@ func_mode_install ()
 	    for linkname
 	    do
 	      if test "$linkname" != "$realname"; then
-		$show "(cd $destdir && $RM $linkname && $LN_S $realname $linkname)"
+		eval $show "(cd $destdir && $RM $linkname && $LN_S $realname $linkname)"
 		$run eval "(cd $destdir && $RM $linkname && $LN_S $realname $linkname)"
 	      fi
 	    done
@@ -1845,7 +1845,7 @@ func_mode_install ()
 	  for cmd in $cmds; do
 	    IFS="$save_ifs"
 	    eval cmd=\"$cmd\"
-	    $show "$cmd"
+	    eval $show "$cmd"
 	    $run eval "$cmd" || exit $?
 	  done
 	  IFS="$save_ifs"
@@ -1854,7 +1854,7 @@ func_mode_install ()
 	# Install the pseudo-library for information purposes.
 	name=`$ECHO "X$file" | $Xsed -e 's%^.*/%%'`
 	instname="$dir/$name"i
-	$show "$install_prog $instname $destdir/$name"
+	eval $show "$install_prog $instname $destdir/$name"
 	$run eval "$install_prog $instname $destdir/$name" || exit $?
 
 	# Maybe install the static library, too.
@@ -1888,7 +1888,7 @@ func_mode_install ()
 
 	# Install the libtool object if requested.
 	if test -n "$destfile"; then
-	  $show "$install_prog $file $destfile"
+	  eval $show "$install_prog $file $destfile"
 	  $run eval "$install_prog $file $destfile" || exit $?
 	fi
 
@@ -1897,7 +1897,7 @@ func_mode_install ()
 	  # Deduce the name of the old-style object file.
 	  staticobj=`$ECHO "X$file" | $Xsed -e "$lo2o"`
 
-	  $show "$install_prog $staticobj $staticdest"
+	  eval $show "$install_prog $staticobj $staticdest"
 	  $run eval "$install_prog \$staticobj \$staticdest" || exit $?
 	fi
 	exit $EXIT_SUCCESS
@@ -1996,7 +1996,7 @@ func_mode_install ()
 	      # Replace the output file specification.
 	      relink_command=`$ECHO "X$relink_command" | $Xsed -e 's%@OUTPUT@%'"$outputname"'%g'`
 
-	      $show "$relink_command"
+	      eval $show "$relink_command"
 	      if $run eval "$relink_command"; then :
 	      else
 		func_error "error: relink \`$file' with the above command before installing it"
@@ -2030,7 +2030,7 @@ func_mode_install ()
 	  esac
 	  ;;
 	esac
-	$show "$install_prog$stripme $file $destfile"
+	eval $show "$install_prog$stripme $file $destfile"
 	$run eval "$install_prog\$stripme \$file \$destfile" || exit $?
 	test -n "$outputname" && ${RM}r "$tmpdir"
 	;;
@@ -2043,11 +2043,11 @@ func_mode_install ()
       # Set up the ranlib parameters.
       oldlib="$destdir/$name"
 
-      $show "$install_prog $file $oldlib"
+      eval $show "$install_prog $file $oldlib"
       $run eval "$install_prog \$file \$oldlib" || exit $?
 
       if test -n "$stripme" && test -n "$old_striplib"; then
-	$show "$old_striplib $oldlib"
+	eval $show "$old_striplib $oldlib"
 	$run eval "$old_striplib $oldlib" || exit $?
       fi
 
@@ -2057,7 +2057,7 @@ func_mode_install ()
       for cmd in $cmds; do
 	IFS="$save_ifs"
 	eval cmd=\"$cmd\"
-	$show "$cmd"
+	eval $show "$cmd"
 	$run eval "$cmd" || exit $?
       done
       IFS="$save_ifs"
@@ -3640,7 +3640,7 @@ func_mode_link ()
 	      for cmd in $cmds; do
 		IFS="$save_ifs"
 		eval cmd=\"$cmd\"
-		$show "$cmd"
+		eval $show "$cmd"
 		$run eval "$cmd" || exit $?
 	      done
 	      IFS="$save_ifs"
@@ -3654,7 +3654,7 @@ func_mode_link ()
 	      for cmd in $cmds; do
 		IFS="$save_ifs"
 		eval cmd=\"$cmd\"
-		$show "$cmd"
+		eval $show "$cmd"
 		$run eval "$cmd" || exit $?
 	      done
 	      IFS="$save_ifs"
@@ -4901,7 +4901,7 @@ EOF
 	      eval cmd=\"$cmd\"
 	      if len=`expr "X$cmd" : ".*"` &&
 	       test "$len" -le "$max_cmd_len" || test "$max_cmd_len" -le -1; then
-		$show "$cmd"
+		eval $show "$cmd"
 		$run eval "$cmd" || exit $?
 		skipped_export=false
 	      else
@@ -5077,7 +5077,7 @@ EOF
 	    save_ifs="$IFS"; IFS='~'
 	    for cmd in $concat_cmds; do
 	      IFS="$save_ifs"
-	      $show "$cmd"
+	      eval $show "$cmd"
 	      $run eval "$cmd" || {
 		lt_exit=$?
 
@@ -5135,7 +5135,7 @@ EOF
 	for cmd in $cmds; do
 	  IFS="$save_ifs"
 	  eval cmd=\"$cmd\"
-	  $show "$cmd"
+	  eval $show "$cmd"
 	  $run eval "$cmd" || {
 	    lt_exit=$?
 
@@ -5247,7 +5247,7 @@ EOF
       for cmd in $cmds; do
 	IFS="$save_ifs"
 	eval cmd=\"$cmd\"
-	$show "$cmd"
+	eval $show "$cmd"
 	$run eval "$cmd" || exit $?
       done
       IFS="$save_ifs"
@@ -5284,7 +5284,7 @@ EOF
 	for cmd in $cmds; do
 	  IFS="$save_ifs"
 	  eval cmd=\"$cmd\"
-	  $show "$cmd"
+	  eval $show "$cmd"
 	  $run eval "$cmd" || exit $?
 	done
 	IFS="$save_ifs"
@@ -5468,7 +5468,7 @@ EOF
 	link_command="$compile_command$compile_rpath"
 
 	# We have no uninstalled library dependencies, so finalize right now.
-	$show "$link_command"
+	eval $show "$link_command"
 	$run eval "$link_command"
 	status=$?
 
@@ -5535,7 +5535,7 @@ EOF
 	# Delete the old output file.
 	$run $RM $output
 	# Link the executable and exit
-	$show "$link_command"
+	eval $show "$link_command"
 	$run eval "$link_command" || exit $?
 	exit $EXIT_SUCCESS
       fi
@@ -5568,7 +5568,7 @@ EOF
       # Delete the old output files.
       $run $RM $output $output_objdir/$outputname $output_objdir/lt-$outputname
 
-      $show "$link_command"
+      eval $show "$link_command"
       $run eval "$link_command" || exit $?
 
       # Now create the wrapper script.
@@ -6248,7 +6248,7 @@ fi\
       for cmd in $cmds; do
 	eval cmd=\"$cmd\"
 	IFS="$save_ifs"
-	$show "$cmd"
+	eval $show "$cmd"
 	$run eval "$cmd" || exit $?
       done
       IFS="$save_ifs"
@@ -6505,7 +6505,7 @@ func_mode_uninstall ()
 	      for cmd in $cmds; do
 		IFS="$save_ifs"
 		eval cmd=\"$cmd\"
-		$show "$cmd"
+		eval $show "$cmd"
 		$run eval "$cmd"
 		if test "$?" -ne 0 && test "$rmforce" != yes; then
 		  exit_status=1
@@ -6521,7 +6521,7 @@ func_mode_uninstall ()
 	      for cmd in $cmds; do
 		IFS="$save_ifs"
 		eval cmd=\"$cmd\"
-		$show "$cmd"
+		eval $show "$cmd"
 		$run eval "$cmd"
 		if test "$?" -ne 0 && test "$rmforce" != yes; then
 		  exit_status=1
