@@ -1,3 +1,8 @@
+1999-03-11  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* ltmain.in: FreeBSD bug that needs symbol table compiled with
+	-fPIC is fixed in release 3.1; use it only for 2.* and 3.0
+
 1999-03-11  Thomas Tanner  <tanner@gmx.de>
 
 	* ltmain.in: when building a library it doesn't make 
