@@ -171,7 +171,7 @@ $repeat && break
 
 $update && \
 if echo "$name: checking for conflicts..." >&2
-   (cvs $cvsopt -n update $updateopt ${1+"$@"} 2>/dev/null\
+   (cvs $cvsopt -q -n update $updateopt ${1+"$@"} 2>/dev/null \
     | while read line; do
 	echo "$line"
 	echo "$line" >&3
