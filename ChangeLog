@@ -1,3 +1,7 @@
+2005-01-13  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* libtoolize.in: Add datarootdir.
+
 2005-01-12  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* libtool.m4 (AC_LIBTOOL_SYS_DYNAMIC_LINKER) [linux]: While "parsing"
