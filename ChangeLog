@@ -1,6 +1,15 @@
 2000-09-16  Gary V. Vaughan  <gvv@techie.com>
 
-	* ltdl.m4 (AC_LTDL_DLPREOPEN): require the libtool.m4 symbol_pipe
+	* TODO: Removed the item describing the change below, and added a
+	similar item to remind us to change the ltdl.m4 macros again when
+	_LT_AC_LTCONFIG_HACK is divided into proper macros.
+	* ltdl.m4 (AC_LTDL_SNARF_CONFIG):  Removed.  No longet required
+	now that ltconfig has migrated to libtool.m4.
+	(AC_LTDL_SHLIBEXT): Require _LT_AC_LTCONFIG_HACK.
+	(AC_LTDL_SHLIBPATH): ditto.
+	(AC_LTDL_SYSSEARCHPATH): ditto.
+	
+	* ltdl.m4 (AC_LTDL_DLPREOPEN): Require the libtool.m4 symbol_pipe
 	macro.
 	(AC_LTDL_SYMBOL_USCORE): ditto.
 	(AC_LTDL_GLOBAL_SYMBOL_PIPE): Removed, since it is a duplicate
