@@ -1,5 +1,11 @@
 1999-12-03  Alexandre Oliva  <oliva@lsd.ic.unicamp.br>
 
+	* ltconfig.in (ac_compile): Use $ac_ext instead of .c.
+	(ac_link): Likewise.
+	(dlfcn.h, ac_try): Do not add filename, it is already in
+	ac_compile.
+	Reported by Stephane Conversy <Stephane.Conversy@lri.fr>
+	
 	* ltconfig.in (linux-gnu*): Disable hardcode_into_libs until it
 	works together with fast_install.
 

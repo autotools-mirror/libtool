@@ -181,8 +181,8 @@ PROGRAM=ltconfig
 PACKAGE=@PACKAGE@
 VERSION=@VERSION@
 TIMESTAMP="@TIMESTAMP@"
-ac_compile='${CC-cc} -c $CFLAGS $CPPFLAGS conftest.c 1>&5'
-ac_link='${CC-cc} -o conftest $CFLAGS $CPPFLAGS $LDFLAGS conftest.c $LIBS 1>&5'
+ac_compile='${CC-cc} -c $CFLAGS $CPPFLAGS conftest.$ac_ext 1>&5'
+ac_link='${CC-cc} -o conftest $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS 1>&5'
 rm="rm -f"
 
 help="Try \`$progname --help' for more information."
@@ -2248,7 +2248,7 @@ else
 #include <$ac_hdr>
 int fnord = 0;
 EOF
-ac_try="$ac_compile conftest.$ac_ext >/dev/null 2>conftest.out"
+ac_try="$ac_compile >/dev/null 2>conftest.out"
 { (eval echo $progname:@LINENO@: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }
 ac_err=`grep -v '^ *+' conftest.out | grep -v "^conftest.${ac_ext}\$"`
 if test -z "$ac_err"; then
