@@ -1,5 +1,7 @@
 1999-01-20  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* ltmain.in (dlsyms): #define const to nothing if not __STDC__
+
 	* ltconfig.in (global_symbol_pipe): #define const to nothing if
 	not __STDC__
 
