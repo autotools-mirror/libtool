@@ -681,7 +681,7 @@ compiler."
       fi
 
       # Just move the object if needed, then go on to compile the next one
-      if test -n "$output_obj" && test "x$output_obj" != "x$lobj"; then
+      if test -n "$output_obj" && test "X$output_obj" != "X$lobj"; then
 	$show "$mv $output_obj $lobj"
 	if $run $mv $output_obj $lobj; then :
 	else
@@ -751,7 +751,7 @@ compiler."
       fi
 
       # Just move the object if needed
-      if test -n "$output_obj" && test "x$output_obj" != "x$obj"; then
+      if test -n "$output_obj" && test "X$output_obj" != "X$obj"; then
 	$show "$mv $output_obj $obj"
 	if $run $mv $output_obj $obj; then :
 	else
