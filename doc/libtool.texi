@@ -709,7 +709,8 @@ Thing (TM) for you:
 
 @example
 burger$ @kbd{libtool gcc -g -O -o test test.o /usr/local/lib/libhello.la}
-gcc -g -O -o @value{objdir}/test test.o -Wl,--rpath -Wl,/usr/local/lib /usr/local/lib/libhello.la -lm
+gcc -g -O -o @value{objdir}/test test.o -Wl,--rpath
+-Wl,/usr/local/lib /usr/local/lib/libhello.la -lm
 creating test
 burger$
 @end example
@@ -1390,7 +1391,7 @@ automake, up to release 1.4, doesn't accept these flags in a
 
 @itemize @bullet
 @item
-add them to @var{program_LDFLAGS}, and optionally list the libraries in
+add them to @var{program_LDFLAGS}, and list the libraries in
 @var{program_DEPENDENCIES}, then wait for a release of GNU automake that
 accepts these flags where they belong;
 
@@ -1406,11 +1407,11 @@ program_DEPENDENCIES = libfoo.la
 @item
 set and @samp{AC_SUBST} variables @var{DLOPEN} and @var{DLPREOPEN} in
 @file{configure.in} and use @samp{@@DLOPEN@@} and @samp{@@DLPREOPEN@@}
-instead of @samp{-dlopen} and @samp{-dlpreopen} in
-@samp{program_LDADD}.  Automake will discard @samp{AC_SUBST}ed variables 
-from dependencies, so it will behave exactly as we expect it to behave
-when it accepts these flags in @samp{program_LDADD}.  But hey!, this is
-ugly!
+as replacements for the explicit flags @samp{-dlopen} and
+@samp{-dlpreopen} in @samp{program_LDADD}.  Automake will discard
+@samp{AC_SUBST}ed variables from dependencies, so it will behave exactly
+as we expect it to behave when it accepts these flags in
+@samp{program_LDADD}.  But hey!, this is ugly!
 @end itemize
 
 You may use the @samp{program_LDFLAGS} variable to stuff in any flags
@@ -1627,22 +1628,22 @@ AM_DISABLE_SHARED
 AM_PROG_LIBTOOL
 @end example
 
-The user may specify modified forms of both the @samp{--enable-shared}
-and @samp{--enable-static} flags to choose whether shared or static
-libraries are built based on the name of the package.  For example, to
-have shared @samp{bfd} and @samp{gdb} libraries built, but not shared
-@samp{libg++}, you can run all three @code{configure} scripts as
-follows:
+The user may specify modified forms of the configure flags
+@samp{--enable-shared} and @samp{--enable-static} to choose whether
+shared or static libraries are built based on the name of the package.
+For example, to have shared @samp{bfd} and @samp{gdb} libraries built,
+but not shared @samp{libg++}, you can run all three @code{configure}
+scripts as follows:
 
 @example
 trick$ ./configure --enable-shared=bfd,gdb
 @end example
 
 In general, specifying @samp{--enable-shared=@var{pkgs}} is the same as
-specifying @samp{--enable-shared} to every package named in the
-comma-separated @var{pkgs} list, and @samp{--disable-shared} to every
-other package.  The @samp{--enable-static=@var{pkgs}} flag behaves
-similarly, but it uses @samp{--enable-static} and
+configuring with @samp{--enable-shared} every package named in the
+comma-separated @var{pkgs} list, and every other package with
+@samp{--disable-shared}.  The @samp{--enable-static=@var{pkgs}} flag
+behaves similarly, but it uses @samp{--enable-static} and
 @samp{--disable-static}.
 
 The package name @samp{default} matches any packages which have not set
@@ -2354,10 +2355,11 @@ language interpreters to provide an efficient way to extend the
 language.
 
 As of version @value{VERSION}, libtool provides support for dlopened
-modules, as long as @file{configure.in} requests for such support, with
-the macro @samp{AC_LIBTOOL_DLOPEN}.  If this macro is not used (or it is
-used @emph{after} @samp{AM_PROG_LIBTOOL}), libtool will assume no
-dlopening mechanism is available, and will try to simulate it.
+modules.  However, you should indicate that your package is willing to
+use such support, by using the macro @samp{AC_LIBTOOL_DLOPEN} in
+@file{configure.in}.  If this macro is not used (or it is used
+@emph{after} @samp{AM_PROG_LIBTOOL}), libtool will assume no dlopening
+mechanism is available, and will try to simulate it.
 
 This chapter discusses how you as a dlopen application developer might 
 use libtool to generate dlopen-accessible modules.
@@ -2656,7 +2658,7 @@ The system dependent library search path
 @end enumerate
 
 Each search path must be a colon-separated list of absolute directories,
-e.g. "/usr/lib/mypkg:/lib/foo".
+for example, @code{"/usr/lib/mypkg:/lib/foo"}.
  
 If the same module is loaded several times, the same handle is returned.
 If @code{lt_dlopen} fails for any reason, it returns NULL.
@@ -2749,18 +2751,11 @@ Return the current user-defined library search path.
 @end deftypefun
 
 @defvar lt_ptr_t (*lt_dlmalloc) (size_t size)
-This variable is set to @code{malloc} by default, but you can replace it
-with any other function that provides equivalent functionality.  You
-must not modify the value of this variable after calling any libltdl
-function other than @code{lt_dlpreopen_default} or the macro
-@code{LTDL_SET_PRELOADED_SYMBOLS}.
-@end defvar
-
-@defvar void (*lt_dlfree) (lt_ptr_t ptr)
-This variable is set to @code{free} by default, but you can replace it
-with any other function that complements @var{lt_dlmalloc}.  You must
-not modify the value of this variable after calling any libltdl function
-other than @code{lt_dlpreopen_default} or the macro
+@defvarx void (*lt_dlfree) (lt_ptr_t ptr)
+These variables are set to @code{malloc} and @code{free}, by default,
+but you can set them to any other functions that provides equivalent
+functionality.  However, you must not modify their values after calling
+any libltdl function other than @code{lt_dlpreopen_default} or the macro
 @code{LTDL_SET_PRELOADED_SYMBOLS}.
 @end defvar
 
@@ -2791,18 +2786,18 @@ errors or run-time crashes.  Another problem is that you cannot link the
 convenience library into more than one libtool library, then link a
 single program with these libraries, because you may get duplicate
 symbols.  In order to enable this flavor of libltdl, you should add the
-line @samp{AC_LIBLTDL_CONVENIENCE} to your @file{configure.in}, after
-@samp{AM_PROG_LIBTOOL}.
+line @samp{AC_LIBLTDL_CONVENIENCE} to your @file{configure.in},
+@emph{after} @samp{AM_PROG_LIBTOOL}.
 
-In order to select the installable version of libltdl, you should add
-@samp{AC_LIBLTDL_INSTALLABLE} to your @file{configure.in}, also after
-@samp{AM_PROG_LIBTOOL}.  This macro will check whether libltdl is
-already installed and, if not, request the libltdl embedded in your
-package to be built and installed.  Note, however, that no version
-checking is performed.  The user may override the test and determine
-that the libltdl embedded must be installed, regardless of the existence
-of another version, using the configure switch
-@samp{--enable-ltdl-install}.
+In order to select the installable version of libltdl, you should add a
+call of the macro @samp{AC_LIBLTDL_INSTALLABLE} to your
+@file{configure.in} @emph{after} @samp{AM_PROG_LIBTOOL}.  This macro
+will check whether libltdl is already installed and, if not, request the
+libltdl embedded in your package to be built and installed.  Note,
+however, that no version checking is performed.  The user may override
+the test and determine that the libltdl embedded must be installed,
+regardless of the existence of another version, using the configure
+switch @samp{--enable-ltdl-install}.
 
 Whatever macro you use, it is up to you to ensure that your
 @file{configure.in} will configure libltdl, using
@@ -3030,9 +3025,10 @@ linked into programs or other libraries, even shared ones.
 The tests @file{cdemo-make.test} and @file{cdemo-exec.test} are executed
 three times, under three different libtool configurations:
 @file{cdemo-conf.test} configures @file{cdemo/libtool} to build both
-static and shared libraries, @file{cdemo-static.test} builds only static
-libraries (@samp{--disable-shared}), and @file{cdemo-shared.test} builds
-only shared libraries (@samp{--disable-static}).
+static and shared libraries (the default for platforms that support
+both), @file{cdemo-static.test} builds only static libraries
+(@samp{--disable-shared}), and @file{cdemo-shared.test} builds only
+shared libraries (@samp{--disable-static}).
 
 @item build-relink.test
 @pindex build-relink.test
@@ -3241,15 +3237,20 @@ are included in @samp{$archive_cmds} somewhere and also sets the
 @item file_magic [@var{regex}]
 @vindex file_magic
 @vindex file_magic_cmd
+@vindex file_magic_test_file
 looks in the library link path for libraries that have the right
-libname.  Then it runs @samp{$file_magic_cmd} on the library and
-checks for a match against @samp{regex} using @code{egrep}.
+libname.  Then it runs @samp{$file_magic_cmd} on the library and checks
+for a match against @samp{regex} using @code{egrep}.  When
+@var{file_magic_test_file} is set in @file{ltconfig}, it is used as an
+argument to @samp{$file_magic_cmd} in order to verify whether the
+regular expression matches its output, and warn the user otherwise.
 
 @item test_compile 
 @vindex test_compile
-handles @samp{-L} correctly, I hope.  It also takes the names of its
-libraries from @samp{libname_spec} instead of a hardcoded @code{lib`expr
-$a_deplib : '-l/(.*/)'`.so} line.
+just checks whether it is possible to link a program out of a list of
+libraries, and checks which of those are listed in the output of
+@code{ldd}.  It is currently unused, and will probably be dropped in the
+future.
 
 @item pass_all
 @vindex pass_all
@@ -3488,8 +3489,8 @@ Set to @samp{yes} or @samp{no}.  Default is @samp{no}
 @defvar archive_cmds
 @defvarx archive_expsym_cmds
 @defvarx old_archive_cmds
-Commands used to create shared and static libraries, respectively.
-@samp{archive_expsym_cmds} is used when -export-symbols was defined.
+Commands used to create shared libraries, shared libraries with
+@samp{-export-symbols} and static libraries, respectively.
 @end defvar
 
 @defvar old_archive_from_new_cmds

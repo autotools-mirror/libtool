@@ -1,5 +1,7 @@
 1999-03-13  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* doc/libtool.texi (AM_PROG_LIBTOOL): eliminate overfull boxes
+	
 	* doc/libtool.texi: complete dlopening/libltdl documentation
 
 	* ltconfig.in (osf3*, osf4*, deplibs_check_method): pass_all does
