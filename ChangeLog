@@ -1,3 +1,11 @@
+2004-08-25  Paolo Bonzini  <bonzini@gnu.org>
+
+	* config/ltmain.in (piecewise linking): Use a GNU ld script if
+	possible.
+	* m4/libtool.m4 (_LT_LINKER_SHLIBS): Add per-tag variable
+	with_gnu_ld.
+	(_LT_LANG_CXX_CONFIG): Don't set unused variable with_gnu_ldcxx.
+
 2004-08-22  Gary V. Vaughan  <gary@gnu.org>
 
 	The Grand Renaming.  In preparation for libtool-2.0, move all of

@@ -4218,6 +4218,8 @@ _LT_EOF
 AC_MSG_RESULT([$_LT_TAGVAR(ld_shlibs, $1)])
 test "$_LT_TAGVAR(ld_shlibs, $1)" = no && can_build_shared=no
 
+_LT_TAGVAR(with_gnu_ld, $1)=$with_gnu_ld
+
 _LT_DECL([], [libext], [0], [Old archive suffix (normally "a")])dnl
 _LT_DECL([], [shrext_cmds], [1], [Shared library suffix (normally ".so")])dnl
 _LT_DECL([], [extract_expsyms_cmds], [2],
@@ -4302,6 +4304,8 @@ _LT_TAGDECL([], [module_cmds], [2],
     [Commands used to build a loadable module if different from building
     a shared archive.])
 _LT_TAGDECL([], [module_expsym_cmds], [2])
+_LT_TAGDECL([], [with_gnu_ld], [1],
+    [Whether we are building with GNU ld or not])
 _LT_TAGDECL([], [allow_undefined_flag], [1],
     [Flag that allows shared libraries with undefined symbols to be built])
 _LT_TAGDECL([], [no_undefined_flag], [1],
@@ -5377,7 +5381,6 @@ CC=$lt_save_CC
 LDCXX=$LD
 LD=$lt_save_LD
 GCC=$lt_save_GCC
-with_gnu_ldcxx=$with_gnu_ld
 with_gnu_ld=$lt_save_with_gnu_ld
 lt_cv_path_LDCXX=$lt_cv_path_LD
 lt_cv_path_LD=$lt_save_path_LD
