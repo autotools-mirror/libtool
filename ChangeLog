@@ -1,5 +1,10 @@
 1999-03-21  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* doc/libtool.texi: documented convenience libraries
+	* TODO: removed entry about it
+
+1999-03-21  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
 	* tests/*-unst.test: if directory is not configured, skip it
 	* tests/demo.test, tests/mdemo.test: unused, removed
 	* tests/depdemo.test: ditto
