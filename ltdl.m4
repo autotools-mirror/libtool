@@ -33,7 +33,7 @@ dnl of the ltdl objects -- including compiler checks (above) and header
 dnl checks (below).
 AC_REQUIRE([AC_HEADER_STDC])dnl
 
-AC_CHECK_HEADERS(malloc.h memory.h stdlib.h stdio.h ctype.h dlfcn.h dl.h dld.h)
+AC_CHECK_HEADERS(malloc.h memory.h stdlib.h stdio.h ctype.h dlfcn.h dl.h sys/dl.h dld.h)
 AC_CHECK_HEADERS(string.h strings.h, break)
 AC_CHECK_FUNCS(strchr index, break)
 AC_CHECK_FUNCS(strrchr rindex, break)

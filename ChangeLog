@@ -1,5 +1,11 @@
 2001-04-22  Gary V. Vaughan  <gvv@techie.com>
 
+	* ltdl.m4 (AC_CHECK_HEADERS): UW7 has sys/dl.h, so we must
+	check for that here.
+	* libltdl/ltdl.c (HAVE_SYS_DL_H):  Include it if necessary for
+	the dlopen loader.
+	Reported by Matthew Schalit <mschalit@pacbell.net>
+
 	* libtool.m4 (AC_DEPLIBS_CHECK_METHOD):  Use pass_all for
 	various releases of UnixWare and OpenServer that support it.
 	Reported by Matthew Schalit <mschalit@pacbell.net>
