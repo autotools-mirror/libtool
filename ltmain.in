@@ -2515,7 +2515,7 @@ EOF
 	    ;;
 	  esac
 	  
-	  if test "$link_all_deplibs" = yes || \
+	  if test "$link_all_deplibs" != no || \
 	     test "$fast_install" = yes || \
 	     test "$build_libtool_libs" = no || \
 	     test -z "$library_names"; then

@@ -3874,7 +3874,8 @@ the file name that the linker finds when given @samp{-l@var{name}}.
 
 @defvar link_all_deplibs
 Whether libtool must link a program against all its dependency libraries.
-Set to @samp{yes} or @samp{no}.  Default is @samp{no}.
+Set to @samp{yes} or @samp{no}.  Default is @samp{unknown}, which is
+a synonym for @samp{yes}.
 @end defvar
 
 @defvar link_static_flag
