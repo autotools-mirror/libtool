@@ -4138,7 +4138,7 @@ max_cmd_len=$lt_cv_sys_max_cmd_len
 # Does compiler simultaneously support -c and -o options?
 compiler_c_o=$lt_[]_LT_AC_TAGVAR(lt_cv_prog_compiler_c_o, $1)
 
-# Must we lock files when doing compilation ?
+# Must we lock files when doing compilation?
 need_locks=$lt_need_locks
 
 # Do we need the lib prefix for modules?
