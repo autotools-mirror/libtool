@@ -1,3 +1,9 @@
+2004-10-09  Gary V. Vaughan  <gary@gnu.org>
+
+	* m4/libtool.m4 (_LT_LANG_F77_CONFIG): Make sure the save and
+	restore code for CC is nested at the same depth.
+	(_LT_LANG_CXX_CONFIG): Ditto, but for several variables.
+
 2004-10-08  Gary V. Vaughan  <gary@gnu.org>
 
 	Update to the latest commit and mailnotify scripts from

@@ -4472,11 +4472,11 @@ m4_defun([_LT_PROG_CXX],
 pushdef([AC_MSG_ERROR], [_lt_caught_CXX_error=yes])
 AC_PROG_CXX
 if test -n "$CXX" && ( test "X$CXX" != "Xno" &&
-    ( (test "X$CXX" = "Xg++" && `g++ -v >/dev/null 2>&1` ) || 
+    ( (test "X$CXX" = "Xg++" && `g++ -v >/dev/null 2>&1` ) ||
     (test "X$CXX" != "Xg++"))) ; then
   AC_PROG_CXXCPP
-else  
-  _lt_caught_CXX_error=yes 
+else
+  _lt_caught_CXX_error=yes
 fi
 popdef([AC_MSG_ERROR])
 ])# _LT_PROG_CXX
@@ -5404,18 +5404,19 @@ if test "$_lt_caught_CXX_error" != yes; then
 
     _LT_CONFIG($1)
   fi # test -n "$compiler"
+
+  CC=$lt_save_CC
+  LDCXX=$LD
+  LD=$lt_save_LD
+  GCC=$lt_save_GCC
+  with_gnu_ld=$lt_save_with_gnu_ld
+  lt_cv_path_LDCXX=$lt_cv_path_LD
+  lt_cv_path_LD=$lt_save_path_LD
+  lt_cv_prog_gnu_ldcxx=$lt_cv_prog_gnu_ld
+  lt_cv_prog_gnu_ld=$lt_save_with_gnu_ld
 fi # test "$_lt_caught_CXX_error" != yes
 
 AC_LANG_POP
-CC=$lt_save_CC
-LDCXX=$LD
-LD=$lt_save_LD
-GCC=$lt_save_GCC
-with_gnu_ld=$lt_save_with_gnu_ld
-lt_cv_path_LDCXX=$lt_cv_path_LD
-lt_cv_path_LD=$lt_save_path_LD
-lt_cv_prog_gnu_ldcxx=$lt_cv_prog_gnu_ld
-lt_cv_prog_gnu_ld=$lt_save_with_gnu_ld
 ])# _LT_LANG_CXX_CONFIG
 
 
@@ -5580,7 +5581,7 @@ m4_defun([_LT_PROG_F77],
 pushdef([AC_MSG_ERROR], [_lt_caught_F77_error=yes])
 AC_PROG_F77
 if test -z "$F77"; then
-  _lt_caught_F77_error=yes 
+  _lt_caught_F77_error=yes
 fi
 popdef([AC_MSG_ERROR])
 ])# _LT_PROG_F77
@@ -5690,10 +5691,11 @@ if test "$_lt_caught_F77_error" != yes; then
 
     _LT_CONFIG($1)
   fi # test -n "$compiler"
+
+  CC="$lt_save_CC"
 fi # test "$_lt_caught_F77_error" != yes
 
 AC_LANG_POP
-CC="$lt_save_CC"
 ])# _LT_LANG_F77_CONFIG
 
 
