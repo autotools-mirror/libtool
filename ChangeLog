@@ -1,3 +1,12 @@
+2005-02-24  Peter O'Gorman  <peter@pogma.com>
+
+	* m4/libtool.m4 (_LT_LINKER_SHLIBS): The Portland group's 
+	compiler does not pass --whole-archive. Move gnu ld check for 
+	the flag to the top so it can be overridden.
+	(_LT_LANG_CXX_CONFIG, _LT_COMPILER_PIC): Unset 
+	whole_archive_flag_spec for the portland group's c++ compiler too.
+	Reported by Jeff Squyres <jsquyres@lam-mpi.org>
+
 2005-02-23  Gary V. Vaughan  <gary@gnu.org>
 
 	* libltdl/Makefile.am (install-data-local): Don't forget about
