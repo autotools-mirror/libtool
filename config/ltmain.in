@@ -370,8 +370,8 @@ func_enable_tag ()
 
 	# Evaluate the configuration.  Be careful to quote the path
 	# and the sed script, to avoid splitting on whitespace, but
-	# also don't use non-portable "`\"foo\"`", so we have to do
-	# it in 2 steps:
+	# also don't use non-portable quotes within backquotes within
+	# quotes we have to do it in 2 steps:
 	extractedcf=`$SED -n -e "$sed_extractcf" < "$progpath"`
 	eval "$extractedcf"
       else
@@ -610,7 +610,7 @@ Otherwise, only FILE itself is deleted using RM."
 	    		set -x
 			;;
 
-      --dlopen)		test $# -eq 0 && func_missing_arg "$opt" && break
+      --dlopen)		test "$#" -eq 0 && func_missing_arg "$opt" && break
 			execute_dlfiles="$execute_dlfiles $1"
 			;;
 
@@ -618,7 +618,7 @@ Otherwise, only FILE itself is deleted using RM."
       --features)       func_features					;;
       --finish)		mode="finish"					;;
 
-      --mode)		test $# -eq 0 && func_missing_arg "$opt" && break
+      --mode)		test "$#" -eq 0 && func_missing_arg "$opt" && break
 	    		case $1 in
 			  # Valid mode arguments:
 			  clean)	;;
@@ -648,7 +648,7 @@ Otherwise, only FILE itself is deleted using RM."
     			show=:
 			;;
 
-      --tag)		test $# -eq 0 && func_missing_arg "$opt" && break
+      --tag)		test "$#" -eq 0 && func_missing_arg "$opt" && break
 			preserve_args="$preserve_args $opt $1"
 			func_enable_tag "$1"	# tagname is set here
 			shift

@@ -1,5 +1,9 @@
 2004-08-30  Gary V. Vaughan  <gary@gnu.org>
 
+	* config/ltmain.in: Double quote even $# for the sake of sh.test.
+	(exec_cmd): Be careful about "`\"foo\"`" quoting, even in comments
+	to avoid triggering the tests in sh.test.
+
 	* configure.ac:  Because of the way the autoconf C++ testing
 	works, we need to call the C test first to work in an environment
 	that has no C++ compiler.
