@@ -1,5 +1,14 @@
 1999-01-20  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* THANKS: Added Steven Schultz
+
+1999-01-20  Steven M. Schultz <sms@wlv.iipo.gtegsc.com>
+
+	* ltconfig.in (bsdi4*, check_shared_deplibs_method): file_magic
+	(bsdi4*, sys_lib_search_path): add /shlib and other dirs
+
+1999-01-20  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
 	* cdemo/main.c (main): use K&R definition syntax
 	* mdemo/main.c (test_dl, main): ditto
 	(test_dl): casts return value of lt_dlsym to appropriate types
