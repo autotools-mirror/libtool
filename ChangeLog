@@ -1,3 +1,10 @@
+2000-07-10  Alexandre Oliva  <aoliva@lsd.ic.unicamp.br>
+
+	* libtool.m4 (AM_PROG_GCJ): Quote it so that aclocal won't bring
+	it in if it only appears in libtool.m4.
+	(AC_PROG_LIBTOOL): Move AC_PROG_CXX, AC_PROG_GCJ and AM_PROG_GCJ
+	hooks here, so that they can be far simpler!
+
 2000-06-17  Syd Polk  <spolk@redhat.com>
 
 	* libtool.m4 (AC_LIBTOOL_SETUP): Do not generate a libtool based

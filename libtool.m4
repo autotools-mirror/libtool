@@ -22,7 +22,28 @@
 ## the same distribution terms that you use for the rest of that program.
 
 # serial 45 AC_PROG_LIBTOOL
-AC_DEFUN(AC_PROG_LIBTOOL,[AC_REQUIRE([_AC_PROG_LIBTOOL])])
+AC_DEFUN(AC_PROG_LIBTOOL,[AC_REQUIRE([_AC_PROG_LIBTOOL])
+# If AC_PROG_CXX has already been expanded, run AC_LIBTOOL_CXX
+# immediately, otherwise, hook it in at the end of AC_PROG_CXX.
+  AC_PROVIDE_IFELSE([AC_PROG_CXX],
+    [AC_LIBTOOL_CXX],
+    [define([AC_PROG_CXX], defn([AC_PROG_CXX])[AC_LIBTOOL_CXX
+])])
+#
+# Quote A][M_PROG_GCJ so that aclocal doesn't bring it in needlessly.
+# If either AC_PROG_GCJ or A][M_PROG_GCJ have already been expanded, run
+# AC_LIBTOOL_GCJ immediately, otherwise, hook it in at the end of both.
+  AC_PROVIDE_IFELSE([AC_PROG_GCJ],
+    [AC_LIBTOOL_GCJ],
+    [AC_PROVIDE_IFELSE([A][M_PROG_GCJ],
+        [AC_LIBTOOL_GCJ],
+	[ifdef([AC_PROG_GCJ],
+	       [define([AC_PROG_GCJ], defn([AC_PROG_GCJ])[AC_LIBTOOL_GCJ
+])])#
+	 ifdef([A][M_PROG_GCJ],
+	       [define([A][M_PROG_GCJ], defn([A][M_PROG_GCJ])[AC_LIBTOOL_GCJ
+])])])])])
+
 AC_DEFUN(_AC_PROG_LIBTOOL,
 [AC_REQUIRE([AC_LIBTOOL_SETUP])dnl
 AC_BEFORE([$0],[AC_LIBTOOL_CXX])dnl
@@ -787,50 +808,6 @@ CFLAGS="$lt_save_CFLAGS"
 # clobbered by the next message.
 exec 5>>./config.log
 ])
-
-# If both AC_PROG_CXX and AC_PROG_LIBTOOL have already been expanded,
-# run AC_LIBTOOL_CXX immediately, otherwise, only expand it after the
-# latter of them.
-AC_PROVIDE_IFELSE([AC_PROG_CXX],
-    [AC_PROVIDE_IFELSE([AC_PROG_LIBTOOL],
-	[AC_LIBTOOL_CXX],
-	[define([AC_PROG_LIBTOOL],
-		defn([AC_PROG_LIBTOOL])[AC_LIBTOOL_CXX
-])])],
-    [define([AC_PROG_CXX],
-	    defn([AC_PROG_CXX])[AC_PROVIDE_IFELSE([AC_PROG_LIBTOOL],
-	[AC_LIBTOOL_CXX],
-	[define([AC_PROG_LIBTOOL],
-		defn([AC_PROG_LIBTOOL])[AC_LIBTOOL_CXX
-])])])])
-
-# If both A[CM]_PROG_CXX and AC_PROG_LIBTOOL have already been
-# expanded, run AC_LIBTOOL_GCJ immediately, otherwise, only expand it
-# after the latter of them.
-AC_PROVIDE_IFELSE([AC_PROG_GCJ],
-    [AC_PROVIDE_IFELSE([AC_PROG_LIBTOOL],
-	[AC_LIBTOOL_GCJ],
-	[define([AC_PROG_LIBTOOL],
-		defn([AC_PROG_LIBTOOL])[AC_LIBTOOL_GCJ
-])])],
-    [define([AC_PROG_GCJ],
-	    defn([AC_PROG_GCJ])[AC_PROVIDE_IFELSE([AC_PROG_LIBTOOL],
-	[AC_LIBTOOL_GCJ],
-	[define([AC_PROG_LIBTOOL],
-		defn([AC_PROG_LIBTOOL])[AC_LIBTOOL_GCJ
-])])])])
-AC_PROVIDE_IFELSE([AM_PROG_GCJ],
-    [AC_PROVIDE_IFELSE([AC_PROG_LIBTOOL],
-	[AC_LIBTOOL_GCJ],
-	[define([AC_PROG_LIBTOOL],
-		defn([AC_PROG_LIBTOOL])[AC_LIBTOOL_GCJ
-])])],
-    [define([AM_PROG_GCJ],
-	    defn([AM_PROG_GCJ])[AC_PROVIDE_IFELSE([AC_PROG_LIBTOOL],
-	[AC_LIBTOOL_GCJ],
-	[define([AC_PROG_LIBTOOL],
-		defn([AC_PROG_LIBTOOL])[AC_LIBTOOL_GCJ
-])])])])
 
 dnl old names
 AC_DEFUN(AM_PROG_LIBTOOL, [indir([AC_PROG_LIBTOOL])])dnl
