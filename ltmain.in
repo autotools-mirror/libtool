@@ -2821,9 +2821,11 @@ lt_preloaded_symbols[] =
 };
 
 /* This works around a problem in FreeBSD linker */
+#ifdef FREEBSD_WORKAROUND
 static const void *lt_preloaded_setup() {
   return lt_preloaded_symbols;
 }
+#endif
 
 #ifdef __cplusplus
 }
@@ -2831,10 +2833,22 @@ static const void *lt_preloaded_setup() {
 "
 	  fi
 
+	  pic_flag_for_symtable=
+          case "$host" in
+	  # compiling the symbol table file with pic_flag works around a 
+	  # FreeBSD bug that causes programs to crash when -lm is linked
+	  # before any other PIC object.  But we must not use pic_flag
+	  # when linking with -static.
+	  *-*-freebsd*)
+	    case "$compile_command " in
+	    *" -static "*) ;;
+	    *) pic_flag_for_symtable=" $pic_flag -DPIC -DFREEBSD_WORKAROUND";;
+	    esac
+	  esac
+
 	  # Now compile the dynamic symbol file.
-	  # pic_flag works around a bug in FreeBSD linker
-	  $show "(cd $objdir && $C_compiler -c$no_builtin_flag $pic_flag -DPIC \"$dlsyms\")"
-	  $run eval '(cd $objdir && $C_compiler -c$no_builtin_flag $pic_flag -DPIC "$dlsyms")' || exit $?
+	  $show "(cd $objdir && $C_compiler -c$no_builtin_flag$pic_flag_for_symtable \"$dlsyms\")"
+	  $run eval '(cd $objdir && $C_compiler -c$no_builtin_flag$pic_flag_for_symtable "$dlsyms")' || exit $?
 
 	  # Transform the symbol file into the correct name.
 	  compile_command=`$echo "X$compile_command" | $Xsed -e "s%@SYMFILE@%$objdir/${output}S.${objext}%"`
