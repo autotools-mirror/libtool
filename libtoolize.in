@@ -62,6 +62,7 @@ Prepare a package to use libtool.
 
     --automake        work silently, and assume that Automake is in use
 -c, --copy            copy files rather than symlinking them
+    --debug           enable verbose shell tracing
 -n, --dry-run         print commands rather than running them
 -f, --force           replace existing files
     --help            display this message and exit
@@ -84,6 +85,11 @@ EOF
 
   -c | --copy)
     ln_s=
+    ;;
+
+  --debug)
+    echo "$progname: enabling shell trace mode"
+    set -x
     ;;
 
   -n | --dry-run)

@@ -262,13 +262,12 @@ reuse of code (both conceptually and physically) in GNU programs.
 
 Such a demand means that the way libraries are built in GNU packages
 needs to be general, to allow for any library type the package installer
-might want.
-The problem is compounded by the absence of a standard procedure for
-creating shared libraries on different platforms.
+might want.  The problem is compounded by the absence of a standard
+procedure for creating shared libraries on different platforms.
 
 The following sections outline the major issues facing shared library
-support in GNU, and how I propose that shared library support could be
-standardized with libtool.
+support in GNU, and how shared library support could be standardized
+with libtool.
 
 @cindex Specifications for libtool
 @cindex Libtool specifications
@@ -336,10 +335,9 @@ or run @code{ldconfig(8)}.
 @node Other implementations
 @section Other implementations
 
-I have investigated several different implementations of systems that
-build shared libraries as part of a free software package.  At first, I
-made notes on the features of each of these packages for comparison
-purposes.
+Even before libtool was developed, many free software packages built and
+installed their own shared libraries.  At first, these packages were
+examined to avoid reinventing existing features.
 
 Now it is clear that none of these packages have documented the details
 of shared library systems that libtool requires.  So, other packages
@@ -350,43 +348,44 @@ have been more or less abandoned as influences.
 
 @cindex Other implementations, flaws in
 @cindex Reusability of library systems
-In all fairness, each of the implementations that I examined do the job
-that they were intended to do, for a number of different host systems.
-However, none of these solutions seem to function well as a generalized,
-reusable component.
+In all fairness, each of the implementations that were examined do the
+job that they were intended to do, for a number of different host
+systems.  However, none of these solutions seem to function well as a
+generalized, reusable component.
 
 @cindex Complexity of library systems
-Most were too complex for me to use (much less modify) without
-understanding exactly what the implementation does, and they were
-generally not documented.
+Most were too complex to use (much less modify) without understanding
+exactly what the implementation does, and they were generally not
+documented.
 
-I think the main problem is that different vendors have different views
-of what libraries are, and none of the packages I examined seemed to be
-confident enough to settle on a single paradigm that just @emph{works}.
+The main difficulty is that different vendors have different views of
+what libraries are, and none of the packages which were examined seemed
+to be confident enough to settle on a single paradigm that just
+@emph{works}.
 
 Ideally, libtool would be a standard that would be implemented as series
 of extensions and modifications to existing library systems to make them
-work consistently.  However, I don't have the time or power to convince
-operating system developers to mend their evil ways, and I want to build
-shared libraries right now, even on buggy, broken, confused operating
-systems.
+work consistently.  However, it is not an easy task to convince
+operating system developers to mend their evil ways, and people want to
+build shared libraries right now, even on buggy, broken, confused
+operating systems.
 
-For this reason, I have designed libtool as an independent shell script.
+For this reason, libtool was designed as an independent shell script.
 It isolates the problems and inconsistencies in library building that
-plague @file{Makefile} writers by wrapping the compiler suite on different
-platforms with a consistent, powerful interface.
+plague @file{Makefile} writers by wrapping the compiler suite on
+different platforms with a consistent, powerful interface.
 
-I hope that libtool will be useful to and used by the GNU community, and
-that the lessons I've learned in writing it will be taken up and
-implemented by designers of library systems.
+With luck, libtool will be useful to and used by the GNU community, and
+that the lessons that were learned in writing it will be taken up by
+designers of future library systems.
 
 @node Libtool paradigm
 @chapter The libtool paradigm
 
 At first, libtool was designed to support an arbitrary number of library
-object types.  After porting libtool to more platforms, I discovered a
-new paradigm for describing the relationship between libraries and
-programs.
+object types.  After libtool was ported to more platforms, a new
+paradigm gradually developed for describing the relationship between
+libraries and programs.
 
 @cindex Definition of libraries
 @cindex Libraries, definition of
@@ -696,10 +695,10 @@ Notice that the executable, @code{hell}, was actually created in the
 in the current directory.
 
 On NetBSD 1.2, libtool encodes the installation directory of
-@file{libhello}, by using the @samp{-R/usr/local/lib} compiler
-flag.  Then, the wrapper script guarantees that the executable finds the
-correct shared library (the one in @file{./@value{objdir}}) until it is properly
-installed.
+@file{libhello}, by using the @samp{-R/usr/local/lib} compiler flag.
+Then, the wrapper script guarantees that the executable finds the
+correct shared library (the one in @file{./@value{objdir}}) until it is
+properly installed.
 
 Let's compare the two different programs:
 
@@ -747,7 +746,7 @@ until we link it against at least a few more programs.
 
 If @file{hell} was a complicated program, you would certainly want to
 test and debug it before installing it on your system.  In the above
-section, you saw how it the libtool wrapper script makes it possible to
+section, you saw how the libtool wrapper script makes it possible to
 run the program directly, but unfortunately, it interferes with the
 debugger:
 
@@ -764,9 +763,8 @@ GDB 4.16 (i386-unknown-netbsd), Copyright 1996 Free Software Foundation, Inc...
 burger$
 @end example
 
-Sad.  It doesn't work because GDB isn't doesn't know where the
-executable lives.  So, let's try again, by invoking GDB directly on the
-executable:
+Sad.  It doesn't work because GDB doesn't know where the executable
+lives.  So, let's try again, by invoking GDB directly on the executable:
 
 @example
 burger$ @kbd{gdb @value{objdir}/hell}
@@ -967,6 +965,11 @@ libtool [@var{option}]@dots{} [@var{mode-arg}]...
 and accepts the following options:
 
 @table @samp
+@item --debug
+Dump a trace of shell script execution to standard output.  This
+produces a lot of output, so you may wish to pipe it to @code{more(1)}
+or redirect to a file.
+
 @item -n
 @itemx --dry-run
 Don't create, modify, or delete any files, just show what commands would
@@ -1340,6 +1343,11 @@ ltconfig [@var{option}]@dots{} @var{ltmain} [@var{host}]
 and accepts the following options:
 
 @table @samp
+@item --debug
+Dump a trace of shell script execution to standard output.  This
+produces a lot of output, so you may wish to pipe it to @code{more(1)}
+or redirect to a file.
+
 @item --disable-shared
 Create a @code{libtool} that only builds static libraries.
 
@@ -1402,7 +1410,7 @@ Program to use rather than checking for @code{ranlib}.
 @subsection Using @code{ltconfig}
 
 Here is a simple example of using @code{ltconfig} to configure libtool
-on my NetBSD/i386 1.2 system:
+on a NetBSD/i386 1.2 system:
 
 @example
 burger$ @kbd{./ltconfig ltmain.sh}
@@ -1463,7 +1471,7 @@ example).}
 
 By default, this macro turns on shared libraries if they are available,
 and also enables static libraries if they don't conflict with the shared
-libraries.  You can modify these defaults by setting calling either the
+libraries.  You can modify these defaults by calling either the
 @code{AM_DISABLE_SHARED} or @code{AM_DISABLE_STATIC} macros:
 
 @example
@@ -1578,6 +1586,11 @@ your package, when @code{AM_PROG_LIBTOOL} appears in your
 @itemx -c
 Copy files from the libtool data directory rather than creating
 symlinks.
+
+@item --debug
+Dump a trace of shell script execution to standard output.  This
+produces a lot of output, so you may wish to pipe it to @code{more(1)}
+or redirect to a file.
 
 @item --dry-run
 @itemx -n
@@ -1695,8 +1708,8 @@ specifying the @samp{--disable-shared} option to @file{configure}.
 The most difficult issue introduced by shared libraries is that of
 creating and resolving runtime dependencies.  Dependencies on programs
 and libraries are often described in terms of a single name, such as
-@code{sed}.  So, I may say ``libtool depends on sed,'' and that is good
-enough for most purposes.
+@code{sed}.  So, one may say ``libtool depends on sed,'' and that is
+good enough for most purposes.
 
 However, when an interface changes regularly, we need to be more
 specific: ``Gnus 5.1 requires Emacs 19.28 or above.''  Here, the
@@ -1896,7 +1909,7 @@ user is dealing with @samp{binutils-2.9.0}, without compromising
 libtool's idea of interface versions.
 
 Note that this option actually causes a modification of the library
-name, so do not use it if unless you want to break binary compatibility
+name, so do not use it unless you want to break binary compatibility
 with any past library releases.  In general, you should only use
 @samp{-release} for libraries whose interfaces change very frequently.
 
@@ -2515,7 +2528,7 @@ known deficiencies in shared library implementations, so, in a way, most
 of the bugs in libtool are actually bugs in other operating systems.
 However, the libtool maintainer would definitely be happy to add support
 for somebody else's buggy operating system.  [I wish there was a good
-way to do winking smiley-faces in texinfo.]
+way to do winking smiley-faces in Texinfo.]
 
 Genuine bugs in libtool include problems with shell script portability,
 documentation errors, and failures in the test suite (@pxref{Libtool
@@ -2535,9 +2548,6 @@ the details needed to reproduce the bug, and a brief description of why
 you think the behaviour is a bug.  Be sure to include the word
 ``libtool'' in the subject line, as well as the version number you are
 using (which can be found by typing @kbd{ltconfig --version}).
-
-Please include the generated @code{libtool} script with your bug report,
-so that I can see what values @code{ltconfig} guessed for your system.
 
 @node Maintaining
 @chapter Maintenance notes for libtool
@@ -2702,7 +2712,8 @@ object file.
 
 On all known systems, if there is a program named @code{ranlib}, then it
 must be used to ``bless'' the created library before linking against it,
-with the @kbd{ranlib lib@var{name}.a} command.
+with the @kbd{ranlib lib@var{name}.a} command.  Some systems, like Irix,
+use the @code{ar ts} command, instead.
 
 @node libtool script contents
 @section @code{libtool} script contents

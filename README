@@ -15,7 +15,7 @@ Shared library support has been implemented for these platforms:
   Digital/UNIX 3.x, 4.x, a.k.a. OSF/1 (*-*-osf3*, *-*-osf4*)
   FreeBSD 2.x, 3.x (*-*-freebsd2*, *-*-freebsd3*)
   GNU/Linux ELF (*-*-linux-gnu*, except aout, coff, and oldld)
-  HP-UX 9.x, 10.x (*-*-hpux9*, *-*-hpux10*) [see note]
+  HP-UX 9.x, 10.x, 11.x (*-*-hpux9*, *-*-hpux10*, *-*-hpux11*) [see note]
   IRIX 5.x, 6.x (*-*-irix5*, *-*-irix6*)
   NetBSD 1.x (*-*-netbsd*)
   OpenBSD 2.x (*-*-openbsd*)

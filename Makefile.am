@@ -34,7 +34,7 @@ bin_SCRIPTS = libtool libtoolize
 libtool: ltconfig ltmain.sh
 	CC="$(CC)" CFLAGS="$(CFLAGS)" CPPFLAGS="$(CPPFLAGS)" \
 	LD="$(LD)" LN_S="$(LN_S)" NM="$(NM)" RANLIB="$(RANLIB)" \
-	$(srcdir)/ltconfig --srcdir=$(srcdir) $(srcdir)/ltmain.sh
+	$(SHELL) $(srcdir)/ltconfig --srcdir=$(srcdir) $(srcdir)/ltmain.sh
 
 libtoolize: libtoolize.in $(top_builddir)/config.status
 	CONFIG_FILES=libtoolize CONFIG_HEADERS= $(top_builddir)/config.status

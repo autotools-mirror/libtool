@@ -1,6 +1,9 @@
 For next public release:
 ************************
 
+* Try expr "..." : '^\(.*\)$' as a replacement for long echos on
+Solaris.  Or awk.  Or perl?
+
 * Remove references to `ltmain.sh' in generated files, because it's
 name really is an internal implementation detail.
 

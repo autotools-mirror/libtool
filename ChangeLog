@@ -1,3 +1,61 @@
+1998-04-14  Gordon Matzigkeit  <gord@profitpress.com>
+
+	* Makefile.am (libtool): Use $(SHELL) when invoking ltconfig.
+
+	* ltconfig.in (echo): Rewrite the test for a working echo so that
+	we win on Solaris by avoiding printf(1), if possible.
+
+1998-04-13  Gordon Matzigkeit  <gord@profitpress.com>
+
+	* ltmain.in: Make the `--features' flag print out all configured
+	variables.
+
+	* libtool.m4: Pass ltconfig the undocumented --no-reexec flag,
+	since we call it explicitly with CONFIG_SHELL.
+
+	* ltconfig.in: Restart the script under a different shell if
+	CONFIG_SHELL is not /bin/sh.  This way, people can use Bash if
+	they don't have a working echo program.
+
+	* ltmain.in, ltconfig.in: Use $SHELL instead of /bin/sh when
+	generating executable scripts.
+
+	* libtoolize.in, ltconfig.in, ltmain.in: Implement the `--debug'
+	flag to begin shell tracing.
+
+	* ltconfig.in (archive_cmds): Don't use `gcc -shared', even if we
+	have GNU ld.  Reported by Robert S. Maier.
+
+1998-04-06  Gordon Matzigkeit  <gord@profitpress.com>
+
+	* ltconfig.in (pic_flag): Create more than just a null C file, so
+	that the SunPRO 4.2 cc doesn't complain.  From Bob Friesenhahn.
+	(gnu_ld_acts_native): Delete this variable.  There is just too
+	much version skew to try to pretend GNU ld is the same as the
+	system ld.  Reported by Ian Lance Taylor.
+	(hardcode_action): Don't bother relinking or aborting on systems
+	that are too dynamic to have a consistent hardcode method.
+	Reported by Doug Winterburn.
+
+1998-03-24  Gordon Matzigkeit  <gord@profitpress.com>
+
+	* doc/libtool.texi: A little proofreading.  From Albert
+	Chin-A-Young.
+
+1998-03-23  Gordon Matzigkeit  <gord@profitpress.com>
+
+	* ltconfig.in: Treat HP-UX 11 just like HP-UX 10.  From Jeff Law.
+
+1998-03-21  Gordon Matzigkeit  <gord@profitpress.com>
+
+	* ltconfig.in (reload_flag): Correct a tiny bug where `--silent'
+	would still print out the reload flag.  From Stephan Kulow.
+
+1998-03-20  Ian Lance Taylor  <ian@cygnus.com>
+
+	* libtool.m4: Use changequote to avoid problems with square
+	bracket patterns.
+
 1998-03-20  Gordon Matzigkeit  <gord@profitpress.com>
 
 	* Release 1.2.
@@ -312,7 +370,7 @@
 	* ltconfig.in (gnu_ld_acts_native): Treat GNU ld like the native
 	linker on SunOS 4.x.  Suggested by Alexandre Oliva.
 	(deplibs): Change the defaults all over, since most systems cannot
-	handle inter-library depdencies.
+	handle inter-library dependencies.
 
 	* libtool.m4, ltconfig.in (NM): Only look at the first line of the
  	output from NM when determining whether it supports a command line
