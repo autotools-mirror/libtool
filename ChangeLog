@@ -1,5 +1,9 @@
 2000-09-07  Gary V. Vaughan  <gvv@techie.com>
 
+	* configure.in (AC_PROG_AWK): Removed -- no longer required by
+	the build process.
+	* lineno: ditto.
+
 	* libtoolize.in (files): Don't try to install ltconfig -- it
 	doesn't exist!!
 	* bootstrap: Fake an ltconfig incase the installed automake

@@ -39,9 +39,6 @@ AM_PROG_NM
 AC_SUBST(NM)
 AC_PROG_LN_S
 
-dnl For the `lineno' script (which puts line numbers into `ltmain.sh').
-AC_PROG_AWK
-
 dnl Check for win32 dll support
 AC_LIBTOOL_WIN32_DLL
 
