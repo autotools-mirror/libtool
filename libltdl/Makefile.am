@@ -24,3 +24,6 @@ libltdl_la_LIBADD = $(LIBADD_DL)
 libltdlc_la_SOURCES = $(libltdl_la_SOURCES)
 libltdlc_la_LDFLAGS =
 libltdlc_la_LIBADD = $(libltdl_la_LIBADD)
+
+libtool: $(LIBTOOL_DEPS)
+	./config.status --recheck

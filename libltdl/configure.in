@@ -20,6 +20,7 @@ AC_SUBST(NOINSTLIBS)
 
 AC_PROG_CC
 AM_PROG_LIBTOOL
+AC_SUBST(LIBTOOL_DEPS)
 
 AC_CACHE_CHECK([which variable specifies run-time library path],
   libltdl_cv_shlibpath_var, [dnl

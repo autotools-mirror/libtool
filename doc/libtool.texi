@@ -1607,6 +1607,27 @@ similarly, but it uses @samp{--enable-static} and
 
 The package name @samp{default} matches any packages which have not set
 their name in the @code{PACKAGE} environment variable.
+
+This macro also sets the shell variable @var{LIBTOOL_DEPS}, that you can 
+use to automatically update the libtool script if it becomes
+out-of-date.  In order to do that, add to your @file{configure.in}:
+
+@example
+AM_PROG_LIBTOOL
+AC_SUBST(LIBTOOL_DEPS)
+@end example
+
+and, to @file{Makefile.in} or @file{Makefile.am}:
+
+@example
+LIBTOOL_DEPS = @@LIBTOOL_DEPS@@
+libtool: $(LIBTOOL_DEPS)
+        ./config.status --recheck
+@end example
+
+If you are using GNU automake, you can omit the assignment, as automake
+will take care of it.
+
 @end defmac
 
 @defmac AM_DISABLE_SHARED

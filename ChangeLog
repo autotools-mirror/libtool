@@ -1,5 +1,10 @@
 1999-01-18  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* libtool.m4 (LIBTOOL_DEPS): set it
+	* libltdl/configure.in (LIBTOOL_DEPS): AC_SUBST it
+	* libltdl/Makefile.am (libtool): use it
+	* doc/libtool.texi (AM_PROG_LIBTOOL): document it
+
 	* Makefile.am (libltdl.tar.gz): don't create it as part of the
 	build, since it is likely to become stale if we do
 	(install-data-hook): create and install libltdl.tar.gz, without

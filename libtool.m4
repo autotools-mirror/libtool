@@ -108,6 +108,9 @@ ${CONFIG_SHELL-/bin/sh} $ac_aux_dir/ltconfig --no-reexec \
 $libtool_flags --no-verify $ac_aux_dir/ltmain.sh $host \
 || AC_MSG_ERROR([libtool configure failed])
 
+# This can be used to rebuild libtool when needed
+LIBTOOL_DEPS="$ac_aux_dir/ltconfig $ac_aux_dir/ltmain.sh"
+
 # Redirect the config.log output again, so that the ltconfig log is not
 # clobbered by the next message.
 exec 5>>./config.log
