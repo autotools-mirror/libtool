@@ -1,5 +1,10 @@
 1999-01-27  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* configure.in (pkgdatadir): define pkgdatadir explicitly, and
+ 	comment that automake does not need it, but libtoolize does
+	* Makefile.am (aclocaldir): do not set it explicitly, automake
+	does already
+
 	* configure.in (TIMESTAMP): use mkstamp here too
 
 1999-01-27  Thomas Tanner  <tanner@gmx.de>

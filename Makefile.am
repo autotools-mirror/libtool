@@ -22,7 +22,6 @@ pkgdata_SCRIPTS = config.guess config.sub ltconfig
 pkgdata_DATA = ltmain.sh
 
 # This macro file should be visible to Automake's aclocal.
-aclocaldir = @aclocaldir@
 aclocal_DATA = $(aclocal_macros)
 
 # The standalone libtool script, and the libtool distributor.
