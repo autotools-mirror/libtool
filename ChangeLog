@@ -1,3 +1,11 @@
+2001-06-27  Gary V. Vaughan  <gary@gnu.org>
+
+	From brad@openbsd.org:
+	* NEWS: Updated.
+	* libtool.m4 (_LT_AC_LTCONFIG_HACK) [openbsd]: Improved support
+	for various openbsd platforms.
+	* ltmain.in: Ditto,
+
 2001-05-20  Peter Eisentraut  <peter_e@gmx.net>
 
 	* libtool.m4 (_LT_AC_LTCONFIG_HACK): Fix typo in variable name.
