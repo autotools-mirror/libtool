@@ -2543,9 +2543,14 @@ func_mode_link ()
 	esac
 	case $host in
 	*-*-cygwin* | *-*-mingw* | *-*-pw32* | *-*-os2*)
+	  testbindir=`${ECHO} "$dir" | ${SED} -e 's*/lib$*/bin*'`
 	  case :$dllsearchpath: in
 	  *":$dir:"*) ;;
 	  *) dllsearchpath="$dllsearchpath:$dir";;
+	  esac
+	  case :$dllsearchpath: in
+	  *":$testbindir:"*) ;;
+	  *) dllsearchpath="$dllsearchpath:$testbindir";;
 	  esac
 	  ;;
 	esac
@@ -3541,10 +3546,19 @@ func_mode_link ()
 	link_static=no # Whether the deplib will be linked statically
 	if test -n "$library_names" &&
 	   { test "$prefer_static_libs" = no || test -z "$old_library"; }; then
-	  if test "$installed" = no; then
-	    notinst_deplibs="$notinst_deplibs $lib"
-	    need_relink=yes
-	  fi
+	  case $host in
+	  *cygwin* | *mingw*)
+	      # No point in relinking DLLs because paths are not encoded
+	      notinst_deplibs="$notinst_deplibs $lib"
+	      need_relink=no
+	    ;;
+	  *)
+	    if test "$installed" = no; then
+	      notinst_deplibs="$notinst_deplibs $lib"
+	      need_relink=yes
+	    fi
+	    ;;
+	  esac
 	  # This is a shared library
 
 	  # Warn about portability, can't link against -module's on some
@@ -5370,9 +5384,14 @@ EOF
 	fi
 	case $host in
 	*-*-cygwin* | *-*-mingw* | *-*-pw32* | *-*-os2*)
+	  testbindir=`${ECHO} "$libdir" | ${SED} -e 's*/lib$*/bin*'`
 	  case :$dllsearchpath: in
 	  *":$libdir:"*) ;;
 	  *) dllsearchpath="$dllsearchpath:$libdir";;
+	  esac
+	  case :$dllsearchpath: in
+	  *":$testbindir:"*) ;;
+	  *) dllsearchpath="$dllsearchpath:$testbindir";;
 	  esac
 	  ;;
 	esac
@@ -5429,7 +5448,21 @@ EOF
 
       func_generate_dlsyms "$outputname" "@PROGRAM@" "no"
 
-      if test "$need_relink" = no || test "$build_libtool_libs" != yes; then
+
+      wrappers_required=yes
+      case $host in
+      *cygwin* | *mingw* )
+        if test "$build_libtool_libs" != yes; then
+          wrappers_required=no
+        fi
+        ;;
+      *)
+        if test "$need_relink" = no || test "$build_libtool_libs" != yes; then
+          wrappers_required=no
+        fi
+        ;;
+      esac
+      if test "$wrappers_required" = no; then
 	# Replace the output file specification.
 	compile_command=`$ECHO "X$compile_command" | $Xsed -e 's%@OUTPUT@%'"$output"'%g'`
 	link_command="$compile_command$compile_rpath"
