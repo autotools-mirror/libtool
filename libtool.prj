@@ -1,11 +1,11 @@
 ;; -*- Lisp -*-
 (Created-By-Prcs-Version 1 2 1)
 (Project-Description "GNU Libtool library support script")
-(Project-Version libtool 1.2 1)
+(Project-Version libtool 1.2a 1)
 (Parent-Version libtool 1.0j 4)
-(Version-Log "More little bug fixes.")
+(Version-Log "Release 1.2.")
 (New-Version-Log "")
-(Checkin-Time "Fri, 20 Mar 1998 00:58:42 -0700")
+(Checkin-Time "Fri, 20 Mar 1998 01:04:11 -0700")
 (Checkin-Login gord)
 (Populate-Ignore ("~$" "Makefile$" "Makefile\\.in$" "aclocal\\.m4$"
 		  "configure$" "config\\.status$" "config\\.cache$"
