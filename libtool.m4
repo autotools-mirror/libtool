@@ -1769,6 +1769,22 @@ aix4*)
   # and later linker supports .so
   library_names_spec='${libname}${release}.so$versuffix ${libname}${release}.so$major $libname.a'
   shlibpath_var=LIBPATH
+  case $host_os in
+[  aix4 | aix4.[01] | aix4.[01].*)]
+    if { echo '#if __GNUC__ > 2 || (__GNUC__ == 2 && __GNUC_MINOR__ >= 97)'
+	 echo ' yes '
+	 echo '#endif'; } | ${CC} -E - | grep yes > /dev/null; then
+      :
+    else
+      # With GCC up to 2.95.x, collect2 would create an import file
+      # for dependence libraries.  The import file would start with
+      # the line `#! .'.  This would cause the generated library to
+      # depend on `.', always an invalid library.  This was fixed in
+      # development snapshots of GCC prior to 3.0.
+      can_build_shared=no
+    fi
+    ;;
+  esac
   ;;
 
 amigaos*)
