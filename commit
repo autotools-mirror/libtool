@@ -381,8 +381,8 @@ if test -n "$sendmail_to"; then
   {
     test -f CVS/Root &&
         echo "CVSROOT:	`sed -e 's,.*:,,g' CVS/Root`"
-    test -f ./mkstamp &&
-        echo "TIMESTAMP:	`$SHELL ./mkstamp < ./ChangeLog`"
+    test -f ./config/mkstamp &&
+        echo "TIMESTAMP:	`$SHELL ./config/mkstamp < ./ChangeLog`"
     test -f CVS/Repository &&
         echo "Module name:	`cat CVS/Repository`"
     test -f CVS/Tag &&
