@@ -1,3 +1,8 @@
+1999-07-24  Erez Zadok  <ezk@cs.columbia.edu>
+
+	* doc/PLATFORMS (i*86-*openbsd2.5):  New platform.
+	Slight reordering of other bsd entries.
+
 1999-07-24  Olly Betts  <olly@muscat.co.uk>
 
 	* NEWS: Note new user visible changes.
