@@ -8,10 +8,11 @@ dnl Process this file with autoconf to produce a configure script.
 dnl
 
 
-AC_INIT(foo.cpp)dnl
+AC_INIT
+AC_CONFIG_SRCDIR([foo.cpp])dnl
 
 dnl Check what platform we are running on.
-AC_CANONICAL_SYSTEM
+AC_CANONICAL_TARGET([])
 
 dnl Cause GNU Automake to initialize the state of things and run
 dnl some sanity checks
@@ -30,7 +31,7 @@ AC_PROG_CXX
 AC_PROG_CXXCPP
 
 dnl Set the test language to C++.
-AC_LANG_CPLUSPLUS
+AC_LANG([C++])
 
 # As of the writing of this demo, GNU Autoconf's AC_OBJEXT and
 # AC_EXEEXT macros only works for C compilers!
@@ -39,11 +40,13 @@ AC_LANG_CPLUSPLUS
 # called so that the proper values are cached beforehand.  We also do
 # it before any linker flags (LDFLAGS) are set so that C++ specific
 # ones don't break the tests.
-AC_LANG_SAVE
-AC_LANG_C
+AC_DIAGNOSE([obsolete],[instead of using `AC_LANG', `AC_LANG_SAVE',
+and `AC_LANG_RESTORE', you should use `AC_LANG_PUSH' and `AC_LANG_POP'.])
+
+AC_LANG_PUSH([C])
 AC_OBJEXT
 AC_EXEEXT
-AC_LANG_RESTORE
+AC_LANG_POP
 
 dnl Setup Libtool
 
@@ -55,9 +58,10 @@ AC_CHECK_HEADERS(math.h)
 AC_CHECK_LIBM
 AC_SUBST(LIBM)
 
-AC_OUTPUT([
+AC_CONFIG_FILES([
   Makefile
- ],
- [
-  echo "Done configuring package $PACKAGE"
  ])
+AC_CONFIG_COMMANDS([default],[[
+  echo "Done configuring package $PACKAGE"
+ ]],[[]])
+AC_OUTPUT

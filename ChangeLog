@@ -12,6 +12,7 @@
 	* libltdl/configure.ac, libltdl/configure.in: Ditto.
 	* mdemo/configure.ac, mdemo/configure.in: Ditto.
 	* pdemo/configure.ac, pdemo/configure.in: Ditto.
+	* tagdemo/configure.ac, tagdemo/configure.in: Ditto.
 	* libltdl/acconfig.h:  Deleted.
 	* Makefile.am (libtool): libtool now depends on configure.ac.
 	* libtool.m4 (_LT_AC_LOCK):  Use 2.50's AC_LANG_PUSH/AC_LANG_POP
@@ -23,7 +24,7 @@
 
 2001-06-28  Tim Van Holder  <tim.van.holder@pandora.be>
 
-	* pdemo/Makefile.am:  Use '=' isntead of '+=' to shut up
+	* pdemo/Makefile.am:  Use '=' instead of '+=' to shut up
 	automake.
 	
 2001-06-27  Gary V. Vaughan  <gary@gnu.org>
