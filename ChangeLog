@@ -1,3 +1,8 @@
+2004-09-15  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* tests/Makefile.am: Use the same CPP, F77, CXX and CXXFLAGS
+	for the test suite.
+
 2004-09-15  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
 	* m4/libtool.m4 (_LT_ENABLE_LOCK):Replace AC_TRY_LINK with
