@@ -1,10 +1,52 @@
 For next public release:
 ************************
 
-* Document `execute' mode, and the experimental nature of -dlopen and
--dlpreopen.
+* Get rid of the sections that try to change behaviour for GNU ld.  We
+really should make our shared library support just depend on the
+compiler type.
 
-Franc,ois Pinard about debugging:
+* Explain why we have the `-lm' in:
+libhello_la_LDFLAGS = -version-info 3:12:1 -lm
+
+* Explain why we don't allow `-o SOMEFILE' with compile mode.
+
+* Alexandre Oliva suggests that we hardcode paths into libraries, as
+well as binaries:  `... -Wl,-soname -Wl,/tmp/libtest.so.0 ...'.
+
+* Primoz Peterlin <peterlin@biofiz.mf.uni-lj.si> -Aicrit:
+
+> A very first impression after compiling the new recode on HP-UX 9.05
+> (with gcc and various other gnuities).  I encountered the following
+> problem [...]
+> ../libtool: /./ltmain.sh: not found
+
+This is a bug in HP-UX sed.  The correct solution is to obtain a sed
+update from your HP-UX vendor, or to install GNU sed.  The sed
+distributed with HP-UX is so horribly broken that it is impossible to
+change libtool so that it works by using it.
+
+* From Kenneth Albanowski:
+
+At the very least, this message should be tailored for the OS and
+libraries -- if Linux's ld requires explicit -rpath arguments (instead of
+treating all -L paths as -rpaths) then this message should mention it, as
+well as the full options. Something like this would seem ideal:
+
+  Libraries have been installed to /usr/lib, /usr/local/lib, /foo/bar
+  and /foo/baz. To link against libraries in /foo/bar and /foo/baz, users
+  may have to:
+	- Use the -L/foo/bar and -L/foo/baz linker flags, and
+        - Add /foo/bar:/foo/baz to their LD_LIBRARY_PATH environment
+          variable during execution, or
+        - Add /foo/bar:/foo/baz to their LD_RUN_PATH environment
+          variable during linking, or
+        - Use the -rpath /foo/bar and -rpath /foo/baz linker flags, or
+        - Have the system administrator add /foo/bar and /foo/bz to
+          /etc/ld.so.conf
+  [See the ld.so(8) manual page and any operating system documentation
+  about shared libraries for more information.]
+
+* Franc,ois Pinard about debugging:
 
 ``Another thing I'm curious to experiment is how will `gdb' perform
 with shared libraries.  There are a few notes in the manual about
@@ -45,13 +87,6 @@ maintainers add this kind of note to their package documentation.  The
 biggest motivation, mentioned by Franc,ois Pinard, is to turn off
 double-compilation.
 
-* Bengt Martensson says:
-
-"Some compilers may allow identifiers which are not legal in ANSI C,
-for example dollar signs. Such symbols will not be exported. Only
-symbols which are legal in ANSI C (ASCII letters, digits, and
-underscore; not starting with a digit) are exported."
-
 In the future:
 **************
 
@@ -87,7 +122,8 @@ is to have undocumented utility libraries, where only the shared
 version is installed.
 
 * We could use libtool object convenience libraries that resolve
-symbols to be included in a libtool archive.
+symbols to be included in a libtool archive.  This would require some
+sort of -whole-archive option, as well.
 
 * Somehow we need to make sure that static libraries never appear in
 $deplibs.  This, will probably require that libtool discover exactly

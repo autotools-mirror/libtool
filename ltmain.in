@@ -166,7 +166,7 @@ if test -z "$show_help"; then
   # Infer the operation mode.
   if test -z "$mode"; then
     case "$nonopt" in
-    *cc | *++)
+    *cc | *++ | gcc* | *-gcc*)
       mode=link
       for arg
       do
@@ -181,7 +181,7 @@ if test -z "$show_help"; then
     *db | *dbx)
       mode=execute
       ;;
-    *install*|cp)
+    *install*|cp|mv)
       mode=install
       ;;
     *rm)
@@ -266,8 +266,9 @@ if test -z "$show_help"; then
     libobj=`$echo "$srcfile" | sed -e 's%^.*/%%'`
 
     # Recognize several different file suffixes.
-    xform='[cCFSfm]'
+    xform='[cCFSfms]'
     case "$libobj" in
+    *.asm) xform=asm ;;
     *.c++) xform=c++ ;;
     *.cc) xform=cc ;;
     *.cpp) xform=cpp ;;
@@ -605,7 +606,10 @@ if test -z "$show_help"; then
             # If there is no dlname, we need to preload.
             prev=dlprefiles
           else
-            # We should not create a dependency on this library.
+            # We should not create a dependency on this library, but we
+	    # may need any libraries it requires.
+	    compile_command="$compile_command$dependency_libs"
+	    finalize_command="$finalize_command$dependency_libs"
             prev=
             continue
           fi
@@ -659,7 +663,7 @@ if test -z "$show_help"; then
               compile_command="$compile_command $flag"
               finalize_command="$finalize_command $flag"
             fi
-          elif test "$hardcode_runpath_var" = yes; then
+          elif test -n "$runpath_var"; then
             # Do the same for the permanent run path.
             case "$perm_rpath " in
             *" $libdir "*) ;;
@@ -741,6 +745,10 @@ if test -z "$show_help"; then
 	    finalize_command="$finalize_command -L$dir -l$name"
 	  fi
         fi
+
+	# Add in any libraries that this one depends upon.
+	compile_command="$compile_command$dependency_libs"
+	finalize_command="$finalize_command$dependency_libs"
 	continue
         ;;
 
@@ -784,6 +792,15 @@ if test -z "$show_help"; then
       exit 1
       ;;
 
+    *.a)
+      # Now set the variables for building old libraries.
+      build_libtool_libs=no
+      build_old_libs=yes
+      oldlib="$output"
+      $show "$rm $oldlib"
+      $run $rm $oldlib
+      ;;
+
     *.la)
       # Make sure we only generate libraries of the form `libNAME.la'.
       case "$output" in
@@ -818,6 +835,7 @@ if test -z "$show_help"; then
       fi
 
       # Add libc to deplibs on all systems.
+      dependency_libs="$deplibs"
       deplibs="$deplibs -lc"
 
       if test -n "$dlfiles$dlprefiles"; then
@@ -1000,6 +1018,9 @@ if test -z "$show_help"; then
           dlname="$soname"
         fi
       fi
+
+      # Now set the variables for building old libraries.
+      oldlib="$objdir/$libname.a"
       ;;
 
     *.lo | *.o)
@@ -1123,7 +1144,7 @@ if test -z "$show_help"; then
               compile_command="$compile_command $flag"
               finalize_command="$finalize_command $flag"
             fi
-          elif test "$hardcode_runpath_var" = yes; then
+          elif test -n "$runpath_var"; then
             case "$perm_rpath " in
             *" $libdir "*) ;;
             *) perm_rpath="$perm_rpath $libdir" ;;
@@ -1244,7 +1265,7 @@ EOF
 	    fi
 
 	    cat <<\EOF >> "$objdir/$dlsyms"
-  {0},
+  {0, (__ptr_t) 0}
 };
 
 #ifdef __cplusplus
@@ -1330,7 +1351,7 @@ EOF
         finalize_command="$shlibpath_var=\"$finalize_shlibpath\$$shlibpath_var\" $finalize_command"
       fi
 
-      if test -n "$perm_rpath"; then
+      if test -n "$runpath_var"; then
         # We should set the runpath_var.
         rpath=
         for dir in $perm_rpath; do
@@ -1357,6 +1378,9 @@ EOF
       # Quote the finalize command for shipping.
       finalize_command=`$echo "$finalize_command" | sed "$sed_quote_subst"`
 
+      # Quote $echo for shipping.
+      qecho=`$echo "$echo" | sed "$sed_quote_subst"`
+
       # Only actually do things if our run command is non-null.
       if test -z "$run"; then
         $rm $output
@@ -1374,6 +1398,10 @@ EOF
 # This wrapper script should never be moved out of \``pwd`'.
 # If it is, it will not operate correctly.
 
+# The HP-UX ksh and POSIX shell print the target directory to stdout
+# if CDPATH is set.
+if test "\${CDPATH+set}" = set; then CDPATH=; export CDPATH; fi
+
 # This environment variable determines our operation mode.
 if test "\$libtool_install_magic" = "$magic"; then
   # install mode needs the following variables:
@@ -1383,7 +1411,7 @@ else
   # When we are sourced in execute mode, \$file and \$echo are already set.
   if test "\$libtool_execute_magic" = "$magic"; then :
   else
-    echo='$echo'
+    echo="$qecho"
     file="\$0"
   fi
 
@@ -1468,22 +1496,10 @@ EOF
       ;;
     esac
 
-
     # See if we need to build an old-fashioned archive.
     if test "$build_old_libs" = "yes"; then
-      # Now set the variables for building old libraries.
-      oldlib="$objdir/$libname.a"
-
       # Transform .lo files to .o files.
       oldobjs="$objs"`$echo "$libobjs " | sed -e 's/[^   ]*\.a //g' -e 's/\.lo /.o /g' -e 's/ $//g'`
-
-      if test -d "$objdir"; then
-        $show "$rm $oldlib"
-        $run $rm $oldlib
-      else
-        $show "$mkdir $objdir"
-        $run $mkdir $objdir
-      fi
 
       # Do each command in the archive commands.
       if test -n "$old_archive_from_new_cmds" && test "$build_libtool_libs" = yes; then
@@ -1522,6 +1538,9 @@ library_names='$library_names'
 
 # The name of the static archive.
 old_library='$old_library'
+
+# Libraries that this one depends upon.
+dependency_libs='$dependency_libs'
 
 # Version information for $libname.
 current=$current
@@ -1746,13 +1765,9 @@ EOF
           test "X$dlname" = "X$realname" && dlname=
 
           # Support stripping libraries.
-          if test -n "$stripme"; then
-            if test -n "$striplib"; then
-              $show "$striplib $destdir/$realname"
-              $run $striplib $destdir/$realname || exit $?
-            else
-              $echo "$modename: warning: no library stripping program" 1>&2
-            fi
+          if test -n "$stripme" && test -n "$striplib"; then
+            $show "$striplib $destdir/$realname"
+            $run $striplib $destdir/$realname || exit $?
           fi
 
           if test $# -gt 0; then
@@ -1919,13 +1934,9 @@ EOF
       $run eval "$install_prog \$file \$oldlib" || exit $?
 
       # Support stripping libraries.
-      if test -n "$stripme"; then
-        if test -n "$old_striplib"; then
-          $show "$old_striplib $oldlib"
-          $run $old_striplib $oldlib || exit $?
-        else
-          $echo "$modename: warning: no static library stripping program" 1>&2
-        fi
+      if test -n "$stripme" && test -n "$old_striplib"; then
+        $show "$old_striplib $oldlib"
+        $run $old_striplib $oldlib || exit $?
       fi
 
       # Do each command in the postinstall commands.
@@ -1984,11 +1995,37 @@ EOF
       done
     fi
 
-    echo "To link against installed libraries in LIBDIR, users may have to:"
+    echo "------------------------------------------------------------------------------"
+    echo "Libraries have been installed in:"
+    for libdir in $libdirs; do
+      echo "   $libdir"
+    done
+    echo
+    echo "To link against installed libraries in a given directory, LIBDIR,"
+    echo "you must use the \`-LLIBDIR' flag during linking."
+    echo
+    echo " You will also need to do one of the following:"
     if test -n "$shlibpath_var"; then
-      echo "   - add LIBDIR to their \`$shlibpath_var' environment variable"
+      echo "   - add LIBDIR to the \`$shlibpath_var' environment variable"
+      echo "     during execution"
     fi
-    echo "   - use the \`-LLIBDIR' linker flag"
+    if test -n "$runpath_var"; then
+      echo "   - add LIBDIR to the \`$runpath_var' environment variable"
+      echo "     during linking"
+    fi
+    if test -n "$hardcode_libdir_flag_spec"; then
+      libdir=LIBDIR
+      flag=`eval \\$echo \"$hardcode_libdir_flag_spec\"`
+
+      echo "   - use the \`$flag' linker flag"
+    fi
+    if test -f /etc/ld.so.conf; then
+      echo "   - have your system administrator add LIBDIR to \`/etc/ld.so.conf'"
+    fi
+    echo
+    echo "See any operating system documentation about shared libraries for"
+    echo "more information, such as the ld(1) and ld.so(8) manual pages."
+    echo "------------------------------------------------------------------------------"
     exit 0
     ;;
 
@@ -2252,6 +2289,7 @@ MODE must be one of the following:
 MODE-ARGS vary depending on the MODE.  Try \`$modename --help --mode=MODE' for
 a more detailed description of MODE.
 EOF
+  exit 0
   ;;
 
 compile)

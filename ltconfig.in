@@ -26,6 +26,10 @@
 
 # A lot of this script is taken from autoconf-2.10.
 
+# The HP-UX ksh and POSIX shell print the target directory to stdout
+# if CDPATH is set.
+if test "${CDPATH+set}" = set; then CDPATH=; export CDPATH; fi
+
 echo=echo
 if test "X`($echo '\t') 2>/dev/null`" = 'X\t'; then :
 else
@@ -342,7 +346,7 @@ fi
 
 if test -n "$RANLIB"; then
   old_archive_cmds="$old_archive_cmds;\$RANLIB \$oldlib"
-  old_postinstall_cmds="$old_postinstall_cmds;\$RANLIB \$oldlib"
+  old_postinstall_cmds="\$RANLIB \$oldlib;$old_postinstall_cmds"
 fi
 
 # Check to see if we are using GCC.
@@ -476,7 +480,7 @@ else
   hpux9* | hpux10*)
     # Is there a better link_static_flag that works with the bundled CC?
     wl='-Wl,'
-    link_static_flag='${wl}-a ${wl}archive'
+    link_static_flag="${wl}-a ${wl}archive"
     pic_flag='+Z'
     ;;
 
@@ -686,7 +690,6 @@ hardcode_libdir_flag_spec=
 hardcode_libdir_separator=
 hardcode_direct=no
 hardcode_minus_L=no
-hardcode_runpath_var=no
 hardcode_shlibpath_var=unsupported
 runpath_var=
 
@@ -707,15 +710,14 @@ if test "$with_gnu_ld" = yes && test "$gnu_ld_acts_native" != yes; then
   if $LD --help 2>&1 | egrep ': supported targets:.* elf' > /dev/null; then
     archive_cmds='$CC -shared ${wl}-soname $wl$soname -o $lib$libobjs'
     runpath_var=LD_RUN_PATH
-    hardcode_runpath_var=yes
     ld_shlibs=yes
   else
     ld_shlibs=no
   fi
 
   if test "$ld_shlibs" = yes; then
-    hardcode_libdir_flag_spec='${wl}-rpath $wl$libdir'
-    export_dynamic_flag_spec='${wl}-export-dynamic'
+    hardcode_libdir_flag_spec='${wl}--rpath ${wl}$libdir'
+    export_dynamic_flag_spec='${wl}--export-dynamic'
   fi
 else
   # PORTME fill in a description of your system's linker (not GNU ld)
@@ -999,7 +1001,7 @@ dld_preloaded_symbols[] =
 EOF
         sed 's/^\(.*\) \(.*\)$/  {"\1", (__ptr_t) \&\2},/' < "$nlist" >> conftest.c
         cat <<\EOF >> conftest.c
-  {0},
+  {0, (__ptr_t) 0}
 };
 
 #ifdef __cplusplus
@@ -1042,7 +1044,7 @@ test "$pipe_works" = yes || global_symbol_pipe=
 echo $ac_n "checking how to hardcode library paths into programs... $ac_c" 1>&6
 hardcode_action=
 if test -n "$hardcode_libdir_flag_spec" || \
-   test "$hardcode_runpath_var" = yes; then
+   test -n "$runpath_var"; then
 
   # We can hardcode non-existant directories.
   if test "$hardcode_direct" != no && \
@@ -1308,6 +1310,10 @@ cat <<EOF > $ofile
 # Compiler and other test output produced by $progname, useful for
 # debugging $progname, is in ./config.log if it exists.
 
+# The HP-UX ksh and POSIX shell print the target directory to stdout
+# if CDPATH is set.
+if test "\${CDPATH+set}" = set; then CDPATH=; export CDPATH; fi
+
 # An echo program that doesn't interpret backslashes.
 echo="$ltecho"
 
@@ -1434,10 +1440,6 @@ hardcode_direct=$hardcode_direct
 # resulting binary.
 hardcode_minus_L=$hardcode_minus_L
 
-# Set to yes if using RUNPATH_VAR=DIR during linking hardcodes DIR into the
-# resulting binary.
-hardcode_runpath_var=$hardcode_runpath_var
-
 # Set to yes if using SHLIBPATH_VAR=DIR during linking hardcodes DIR into
 # the resulting binary.
 hardcode_shlibpath_var=$hardcode_shlibpath_var
@@ -1445,7 +1447,7 @@ hardcode_shlibpath_var=$hardcode_shlibpath_var
 EOF
 
 case "$host_os" in
-aix*)
+aix3*)
   cat <<\EOF >> $ofile
 # AIX sometimes has problems with the GCC collect2 program.  For some
 # reason, if we set the COLLECT_NAMES environment variable, the problems
@@ -1468,7 +1470,7 @@ EOF
   ;;
 *) cat <<EOF >> $ofile
 # Find the path to this script.
-thisdir=\`$echo "\$0" | sed -e 's%/[^/]*\$%%'\`
+thisdir=\`\$echo "\$0" | sed -e 's%/[^/]*\$%%'\`
 test "X\$0" = "X\$thisdir" && thisdir=.
 
 # Execute the libtool backend.

@@ -13,7 +13,7 @@ CLEANFILES = $(hardcode_tests)
 # Build a libtool library, libhello.la for installation in libdir.
 lib_LTLIBRARIES = libhello.la
 libhello_la_SOURCES = hello.c foo.c
-libhello_la_LDFLAGS = -version-info 3:12:1
+libhello_la_LDFLAGS = -version-info 3:12:1 -lm
 
 include_HEADERS = foo.h
 
@@ -31,6 +31,7 @@ hell_debug_LDFLAGS = -static
 # Create a version of hell that does a preloaded dlopen.
 helldl_SOURCES = dlmain.c
 helldl_LDFLAGS = -export-dynamic -dlpreopen libhello.la
+helldl: libhello.la
 
 # Unfortunately, in order to test libtool thoroughly, we need access
 # to its private directory.
@@ -55,8 +56,8 @@ helldl: $(helldl_OBJECTS) $(helldl_DEPENDENCIES)
 	  chmod +x helldlT; \
 	  mv -f helldlT helldl; \
 	else \
-	  echo '$(LINK) $(helldl_LDFLAGS) $(helldl_OBJECTS) $(helldl_LDADD) $(LIBS)'; \
-	  $(LINK) $(helldl_LDFLAGS) $(helldl_OBJECTS) $(helldl_LDADD) $(LIBS); \
+	  echo '$(LINK) $(helldl_LDFLAGS) $(helldl_OBJECTS) $(helldl_LDADD) -lm'; \
+	  $(LINK) $(helldl_LDFLAGS) $(helldl_OBJECTS) $(helldl_LDADD) -lm; \
 	fi
 
 # Test programs to see what gets hardcoded.
@@ -70,8 +71,8 @@ hc-direct: $(hell_OBJECTS) $(hell_DEPENDENCIES)
 	  for lib in $$library_names; do \
 	    shlib="./$(objdir)/$$lib"; \
 	  done; \
-	  echo "$(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) $$shlib $(LIBS) || echo unsupported > $@"; \
-	  eval "$(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) $$shlib $(LIBS) || echo unsupported > $@"
+	  echo "$(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) $$shlib -lm || echo unsupported > $@"; \
+	  eval "$(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) $$shlib -lm || echo unsupported > $@"
 
 # We need to create an alias for $(objdir) so that this test works regardless
 # of $hardcode_minus_L
@@ -88,8 +89,8 @@ hc-libflag: $(hell_OBJECTS) $(hell_DEPENDENCIES)
 	    echo "echo unsupported > $@"; \
 	    echo unsupported > $@ || status="$$?"; \
 	  else \
-	    echo "$(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) $$flag -L./_hclibs -lhello $(LIBS)"; \
-	    $(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) $$flag -L./_hclibs -lhello $(LIBS) || status="$$?"; \
+	    echo "$(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) $$flag -L./_hclibs -lhello -lm"; \
+	    $(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) $$flag -L./_hclibs -lhello -lm || status="$$?"; \
 	  fi; \
 	  echo "rm -rf _hclibs"; \
 	  rm -rf _hclibs; \
@@ -99,9 +100,9 @@ hc-libpath: $(hell_OBJECTS) $(hell_DEPENDENCIES)
 	@rm -f hc-libpath
 	@echo "You may ignore any linking errors from the following command:"
 	@eval `egrep -e '^shlibpath_var=' ./libtool`; \
-	  echo "$$shlibpath_var=./$(objdir) $(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) -lhello $(LIBS) || echo unsupported > $@"; \
-	  eval "$$shlibpath_var=./$(objdir) $(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) -lhello $(LIBS) || echo unsupported > $@"
+	  echo "$$shlibpath_var=./$(objdir) $(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) -lhello -lm || echo unsupported > $@"; \
+	  eval "$$shlibpath_var=./$(objdir) $(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) -lhello -lm || echo unsupported > $@"
 
 hc-minusL: $(hell_OBJECTS) $(hell_DEPENDENCIES)
 	@rm -f hc-minusL
-	$(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) -L./$(objdir) -lhello $(LIBS)
+	$(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) -L./$(objdir) -lhello -lm

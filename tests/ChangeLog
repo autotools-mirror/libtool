@@ -1,3 +1,18 @@
+Fri Jan 23 01:28:06 1998  Gordon Matzigkeit  <gord@profitpress.com>
+
+	* Makefile.am (TESTS_ENVIRONMENT): Export some important
+	environment variables.  Reported by Ian Haggard.
+
+Sun Jan 18 15:23:04 1998  Gordon Matzigkeit  <gord@profitpress.com>
+
+	* suffix.test (extensions): Recognize `.asm'.  From Markus
+	F.X.J. Oberhumer.
+
+Fri Dec  5 00:26:13 1997  Gordon Matzigkeit  <gord@gnu.org>
+
+	* suffix.test (extensions): Recognize `.s'.  From Markus
+	F.X.J. Oberhumer.
+
 Tue Nov 11 15:08:12 1997  Gordon Matzigkeit  <gord@gnu.org>
 
 	* quote.test: Add backticks to the backslashify test.

@@ -5,8 +5,5 @@ AM_INIT_AUTOMAKE(hell,1.0)
 AC_PROG_CC
 AM_PROG_LIBTOOL
 
-dnl Check for the math library.
-AC_CHECK_LIB(m, cos)
-
 dnl Output the makefile
 AC_OUTPUT(Makefile)

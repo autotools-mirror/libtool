@@ -1,4 +1,87 @@
+Mon Jan 19 10:03:03 1998  Gordon Matzigkeit  <gord@profitpress.com>
+
+	* ltconfig.in (old_postuninstall_cmds): Reorder so that chmod
+	happens after ranlib.  From Markus F.X.J. Oberhumer.
+
+	* ltmain.in (mode): Added `gcc*' and `*-gcc*' to the patterns that
+	recognize compilers.  From Pieter Schoenmakers.
+	(link): Recognize `.a' files again.  Suggested by Pieter
+	Schoenmakers.
+
+Sun Jan 18 15:16:34 1998  Gordon Matzigkeit  <gord@profitpress.com>
+
+	* ltmain.in (compile): Recognize `.asm' extension, for use with
+	the nasm assembler.  From Markus F.X.J. Oberhumer.
+
+Mon Jan 12 14:01:06 1998  Gordon Matzigkeit  <gord@profitpress.com>
+
+	* ltconfig.in (runpath_var): Use instead of
+	`hardcode_runpath_var'.
+
+Sun Jan 11 11:55:32 1998  Gordon Matzigkeit  <gord@profitpress.com>
+
+	* ltmain.in (finish): Add a better --finish message.  Suggested by
+	Kenneth Albanowski.
+
+	* ltconfig.in, ltmain.in: Fix a few typos.
+
+Sat Jan  3 10:03:41 1998  Gordon Matzigkeit  <gord@profitpress.com>
+
+	* ltmain.in (link): Quote the definition of $echo in the wrapper
+	script.
+
+	* ltconfig.in (export_dynamic_flag_spec): Use `--export-dynamic'
+	instead of `-export-dynamic', which is not accepted by all GNU
+	ld's.  From Eiichi Takamori.
+
+	* ltmain.in (install): Don't print silly `library stripping'
+	warnings.  Reported by François Pinard.
+
+Fri Dec 19 08:24:32 1997  Gordon Matzigkeit  <gord@profitpress.com>
+
+	* ltmain.in: Don't forget to quote the CDPATH substitution.  From
+ 	Tor Lillqvist.
+
+Thu Dec 18 07:10:27 1997  Gordon Matzigkeit  <gord@profitpress.com>
+
+	* ltconfig.in, ltmain.in (CDPATH): Unset this environment variable
+ 	so that HP-UX shells, at least, don't print out the directory name
+ 	after a `cd' command.  From Tor Lillqvist.
+
+Wed Dec 10 23:00:12 1997  Gordon Matzigkeit  <gord@gnu.org>
+
+	* demo/Makefile.am (hardcode): Change a bunch of references to
+	`$(LIBS)' to `-lm', since we no longer put -lm in LIBS.
+
+	* demo/configure.in: Delete the test for libm, since it is
+	standard on every system.
+
+	* demo/Makefile.am (libhello_la_LDFLAGS): Change to include -lm,
+	in accordance with new inter-library dependency code.
+
+	* ltmain.in (dependency_libs): Added to help people link programs
+	without having to explicitly specify inter-library dependencies.
+
+	* ltconfig.in (COLLECT_NAMES): Oops... I forgot to apply the AIX 3
+ 	restriction to the generated libtool script.  Reported by Stefan
+ 	Westerfeld.
+
+Fri Dec  5 00:21:07 1997  Gordon Matzigkeit  <gord@gnu.org>
+
+	* ltconfig.in (thisdir): Quote $echo in the generated libtool
+	script for HP-UX.  From Markus F.X.J. Oberhumer.
+
+	* ltmain.in (link): Recognize the `.s' suffix.  From Markus
+	F.X.J. Oberhumer.
+
+	* ltconfig.in (link_static_flag): Don't quote ${wl} on HP-UX
+ 	because link_static_flag is never evaled.  From Eric Backus.
+
 Mon Dec  1 00:50:37 1997  Gordon Matzigkeit  <gord@gnu.org>
+
+	* demo/Makefile.am (helldl_DEPENDENCIES): Add `libhello.la' to our
+	dependencies so that parallel builds work correctly.  From Jim
+	Meyering.
 
 	* Makefile.am ($(srcdir)/ltconfig, $(srcdir)/ltmain.sh): Rewrite
 	these rules so that they are parallelizable.  Reported by Jim

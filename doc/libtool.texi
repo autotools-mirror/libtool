@@ -93,6 +93,9 @@ This file documents GNU Libtool, a script that allows package developers
 to provide generic shared library support.  This edition documents
 version @value{VERSION}.
 
+@xref{Reporting bugs}, for information on how to report problems with
+libtool.
+
 @menu
 * Introduction::                What the heck is libtool?
 * Libtool paradigm::            How libtool's view of libraries is different.
@@ -123,6 +126,7 @@ Using libtool
 * Creating object files::       Compiling object files for libraries.
 * Linking libraries::           Creating libraries from object files.
 * Linking executables::         Linking object files against libtool libraries.
+* Debugging executables::       Running GDB on libtool-generated programs.
 * Installing libraries::        Making libraries available to users.
 * Installing executables::      Making programs available to users.
 * Static libraries::            When shared libraries are not wanted.
@@ -131,6 +135,7 @@ Invoking @code{libtool}
 
 * Compile mode::                Creating library object files.
 * Link mode::                   Generating executables and libraries.
+* Execute mode::                Debugging libtool-generated programs.
 * Install mode::                Making libraries and executables public.
 * Finish mode::                 Completing a library installation.
 * Uninstall mode::              Removing executables and libraries.
@@ -166,13 +171,13 @@ Tips for interface design
 Dlopened modules
 
 * Building modules::            Creating dlopenable objects and libraries.
-* Dlpreopening::
+* Dlpreopening::                Dlopening that works on static platforms.
 * Finding the dlname::          Choosing the right file to @code{dlopen(3)}.
 * Dlopen issues::               Unresolved problems that need your attention.
 
 Using libtool with other languages
 
-* C++ libraries::
+* C++ libraries::               Building libraries for C++.
 
 Troubleshooting
 
@@ -441,6 +446,7 @@ After we have built that library, we want to create a program by linking
 * Creating object files::       Compiling object files for libraries.
 * Linking libraries::           Creating libraries from object files.
 * Linking executables::         Linking object files against libtool libraries.
+* Debugging executables::       Running GDB on libtool-generated programs.
 * Installing libraries::        Making libraries available to users.
 * Installing executables::      Making programs available to users.
 * Static libraries::            When shared libraries are not wanted.
@@ -490,7 +496,7 @@ files are identical to ``standard'' object files.
 
 To create library object files for @file{foo.c} and @file{hello.c},
 simply invoke libtool with the standard compilation command as
-arguments:
+arguments (@pxref{Compile mode}):
 
 @example
 a23$ @kbd{libtool gcc -g -O -c foo.c}
@@ -503,9 +509,9 @@ a23$
 @end example
 
 Note that libtool creates two object files for each invocation.  The
-@samp{.lo} file is a library object, and the @samp{.o} file is a standard object
-file.  On @samp{a23}, these files are identical, because only static
-libraries are supported.
+@samp{.lo} file is a library object, and the @samp{.o} file is a
+standard object file.  On @samp{a23}, these files are identical, because
+only static libraries are supported.
 
 On shared library systems, libtool automatically inserts the PIC
 generation flags into the compilation command, so that the library
@@ -555,7 +561,7 @@ shared libraries, libtool simply acts as a wrapper for the system
 Again, the libtool library name differs from the standard name (it has a
 @samp{.la} suffix instead of a @samp{.a} suffix).  The arguments to libtool are
 the same ones you would use to produce an executable named
-@file{libhello.la} with your compiler:
+@file{libhello.la} with your compiler (@pxref{Link mode}):
 
 @example
 burger$ @kbd{libtool gcc -g -O -o libhello.la foo.o hello.o}
@@ -658,8 +664,9 @@ burger$
 Libtool's way is almost the same@footnote{However, you should never use
 @samp{-L} or @samp{-l} flags to link against an uninstalled libtool
 library.  Just specify the relative path to the @samp{.la} file, such as
-@file{../intl/libintl.la}.  This is a design decision to eliminate
-any ambiguity when linking against uninstalled shared libraries.}:
+@file{../intl/libintl.la}.  This is a design decision to eliminate any
+ambiguity when linking against uninstalled shared libraries.}
+(@pxref{Link mode}):
 
 @example
 a23$ @kbd{libtool gcc -g -O -o hell main.o libhello.la -lm}
@@ -733,6 +740,74 @@ price of being dynamic is eight kilobytes, and the payoff is about four
 kilobytes.  So, having a shared @file{libhello} won't be an advantage
 until we link it against at least a few more programs.
 
+@node Debugging executables
+@section Debugging executables
+
+If @file{hell} was a complicated program, you would certainly want to
+test and debug it before installing it on your system.  In the above
+section, you saw how it the libtool wrapper script makes it possible to
+run the program directly, but unfortunately, it interferes with the
+debugger:
+
+@example
+burger$ @kbd{gdb hell}
+GDB is free software and you are welcome to distribute copies of it
+ under certain conditions; type "show copying" to see the conditions.
+There is absolutely no warranty for GDB; type "show warranty" for details.
+GDB 4.16 (i386-unknown-netbsd), Copyright 1996 Free Software Foundation, Inc...
+
+"hell": not in executable format: File format not recognized
+
+(gdb) @kbd{quit}
+burger$
+@end example
+
+Sad.  It doesn't work because GDB isn't doesn't know where the
+executable lives.  So, let's try again, by invoking GDB directly on the
+executable:
+
+@example
+burger$ @kbd{gdb @value{objdir}/hell}
+trick:/home/src/libtool/demo$ gdb .libs/hell
+GDB is free software and you are welcome to distribute copies of it
+ under certain conditions; type "show copying" to see the conditions.
+There is absolutely no warranty for GDB; type "show warranty" for details.
+GDB 4.16 (i386-unknown-netbsd), Copyright 1996 Free Software Foundation, Inc...
+(gdb) @kbd{break main}
+Breakpoint 1 at 0x8048547: file main.c, line 29.
+(gdb) @kbd{run}
+Starting program: /home/src/libtool/demo/.libs/hell
+/home/src/libtool/demo/.libs/hell: can't load library 'libhello.so.2'
+
+Program exited with code 020.
+(gdb) @kbd{quit}
+burger$
+@end example
+
+Argh.  Now GDB complains because it cannot find the shared library that
+@file{hell} is linked against.  So, we must use libtool in order to
+properly set the library path and run the debugger.  Fortunately, we can
+forget all about the @file{@value{objdir}} directory, and just run it on
+the executable wrapper (@pxref{Execute mode}):
+
+@example
+burger$ @kbd{libtool gdb hell}
+GDB is free software and you are welcome to distribute copies of it
+ under certain conditions; type "show copying" to see the conditions.
+There is absolutely no warranty for GDB; type "show warranty" for details.
+GDB 4.16 (i386-unknown-netbsd), Copyright 1996 Free Software Foundation, Inc...
+(gdb) @kbd{break main}
+Breakpoint 1 at 0x8048547: file main.c, line 29.
+(gdb) @kbd{run}
+Starting program: /home/src/libtool/demo/.libs/hell
+
+Breakpoint 1, main (argc=1, argv=0xbffffc40) at main.c:29
+29	  printf ("Welcome to GNU Hell!\n");
+(gdb) @kbd{quit}
+The program is running.  Quit anyway (and kill it)? (y or n) @kbd{y}
+burger$
+@end example
+
 @node Installing libraries
 @section Installing libraries
 
@@ -758,7 +833,8 @@ burger#
 
 @pindex install
 Libtool installation is quite simple, as well.  Just use the
-@code{install} or @code{cp} command that you normally would:
+@code{install} or @code{cp} command that you normally would
+(@pxref{Install mode}):
 
 @example
 a23# @kbd{libtool cp libhello.la /usr/local/lib/libhello.la}
@@ -799,7 +875,7 @@ make sure that where the library is installed actually agrees with the
 @cindex Installation, finishing
 @cindex Libraries, finishing installation
 Then, running @samp{libtool -n --finish @var{libdir}} can give you
-further hints on what to do:
+further hints on what to do (@pxref{Finish mode}):
 
 @example
 burger# @kbd{libtool -n --finish /usr/local/lib}
@@ -917,8 +993,9 @@ If @var{mode} is specified, it must be one of the following:
 @item compile
 Compile a source file into a libtool object.
 
-@item dlname
-Find the correct name that programs should @code{dlopen(3)}.
+@item execute
+Automatically set the library path so that another program can use
+uninstalled libtool-generated programs or libraries.
 
 @item finish
 Complete the installation of libtool libraries on the system.
@@ -940,6 +1017,7 @@ Print libtool version information and exit.
 @menu
 * Compile mode::                Creating library object files.
 * Link mode::                   Generating executables and libraries.
+* Execute mode::                Debugging libtool-generated programs.
 * Install mode::                Making libraries and executables public.
 * Finish mode::                 Completing a library installation.
 * Uninstall mode::              Removing executables and libraries.
@@ -983,10 +1061,14 @@ If @var{output-file} is a program, then do not link it against any
 shared libraries at all.  If @var{output-file} is a library, then only
 create a static library.
 
-@item -allow-undefined
-If @var{output-file} is a libtool library, allow it to contain
-references to symbols that aren't defined in that library or its
-dependencies (@pxref{Inter-library dependencies}).
+@item -dlopen @var{file}
+Same as @samp{-dlpreopen @var{file}}, if native dlopening is not
+supported on the host platform (@pxref{Dlopened modules}).  Otherwise,
+no effect.
+
+@item -dlpreopen @var{file}
+Link @var{file} into the output program, and add its symbols to
+@var{dld_preloaded_symbols} (@pxref{Dlpreopening}).
 
 @item -export-dynamic
 Allow symbols from @var{output-file} to be resolved with @code{dlsym(3)}
@@ -1000,6 +1082,11 @@ installed.
 @var{output-file} requires the installed library @file{lib@var{name}}.
 This option is required even when @var{output-file} is not an
 executable.
+
+@item -no-undefined
+Declare that @var{output-file} does not depend on any other libraries.
+Some platforms cannot create shared libraries that depend on other
+libraries (@pxref{Inter-library dependencies}).
 
 @item -o @var{output-file}
 Create @var{output-file} from the specified objects and libraries.
@@ -1036,6 +1123,31 @@ file is created from the input files (generally using @samp{ld -r}).
 This method is often called @dfn{partial linking}.
 
 Otherwise, an executable program is created.
+
+@node Execute mode
+@section Execute mode
+@cindex Execute mode
+@cindex Mode, execute
+
+For @samp{execute} mode, the library path is automatically set, then a
+program is executed.
+
+The first of the @var{mode-args} is treated as a program name, with the
+rest as arguments to that program.
+
+The following components of @var{mode-args} are treated specially:
+
+@table @samp
+@item -dlopen @var{file}
+Add the directory containing @var{file} to the library path.
+@end table
+
+This mode sets the library path environment variable according to any
+@samp{-dlopen} flags.
+
+If any of the @var{args} are libtool executable wrappers, then they are
+translated into the name of their corresponding uninstalled binary, and
+any of their required library directories are added to the library path.
 
 @node Install mode
 @section Install mode
@@ -1544,10 +1656,9 @@ Libtool's description of the interfaces that a program uses is very
 simple: it encodes the least and the greatest interface numbers in the
 resulting binary (@var{first-interface}, @var{last-interface}).
 
-Then, the dynamic linker is guaranteed that if a library supports
-@emph{every} interface number between @var{first-interface} and
-@var{last-interface}, then the program can be relinked against that
-library.
+The dynamic linker is guaranteed that if a library supports @emph{every}
+interface number between @var{first-interface} and @var{last-interface},
+then the program can be relinked against that library.
 
 Note that this can cause problems because libtool's compatibility
 requirements are actually stricter than is necessary.
@@ -1575,7 +1686,7 @@ The most recent interface number that this library implements.
 The implementation number of the @var{current} interface.
 
 @item age
-The difference between the oldest and newest interfaces that this
+The difference between the newest and oldest interfaces that this
 library implements.  In other words, the library implements all the
 interface numbers in the range from number @code{@var{current} -
 @var{age}} to @code{@var{current}}.
@@ -1597,7 +1708,7 @@ This flag accepts an argument of the form
 @samp{-version-info 3:12:1} sets @var{current} to 3, @var{revision} to
 12, and @var{age} to 1.
 
-If either @var{age} or @var{revision} are omitted, they default to 0.
+If either @var{revision} or @var{age} are omitted, they default to 0.
 Also note that @var{age} must be less than or equal to the @var{current}
 interface number.
 
@@ -1845,12 +1956,12 @@ libraries are found.  This restriction is only necessary to preserve
 compatibility with static library systems and simple dynamic library
 systems.
 
-If your library depends on symbols that are defined in executables or
-static libraries, then you cannot express the dependency with a
-@samp{-l@var{name}} flag,@footnote{For static libraries, you
-@emph{could} use a @samp{-l} flag, but it would cause conflicts
-on systems which have non-PIC objects.} so you need to use the
-@samp{-allow-undefined} link flag (@pxref{Link mode}).
+Some platforms, such as AIX, do not even allow you this flexibility.  In
+order to build a shared library, it must be entirely self-contained
+(i.e. have no references to external symbols), and you need to specify
+the @var{-no-undefined} flag to allow a shared library to be built.  By
+default, libtool builds only static libraries on these kinds of
+platforms.
 
 @node Dlopened modules
 @chapter Dlopened modules
@@ -1902,7 +2013,7 @@ problems associated with dlopened modules.
 
 @menu
 * Building modules::            Creating dlopenable objects and libraries.
-* Dlpreopening::
+* Dlpreopening::                Dlopening that works on static platforms.
 * Finding the dlname::          Choosing the right file to @code{dlopen(3)}.
 * Dlopen issues::               Unresolved problems that need your attention.
 @end menu
@@ -1975,6 +2086,40 @@ dynamically-computed references.  If there is an error opening the
 module, or the module is not found, then the application can recover
 without crashing.
 @end enumerate
+
+Libtool emulates @samp{-export-dynamic} on static platforms by linking
+objects into the program at compile time, and creating data structures
+that represent the program's symbol table.
+
+In order to use this feature, you must declare the objects you want your
+application to dlopen by using the @samp{-dlopen} or @samp{-dlpreopen}
+flags when you link your program (@pxref{Link mode}).
+
+@deftp {Structure} dld_symbol name address
+The @var{name} attribute is a 0-terminated character string of the
+symbol name, such as @code{"fprintf"}.  The @var{address} attribute is a
+generic pointer to the appropriate object, which is @code{&fprintf} in
+this example.
+@end deftp
+
+@deftypevr {Variable} {dld_symbol *} dld_preloaded_symbols
+An array of @var{dld_symbol} structures, representing all the preloaded
+symbols linked into the program.  The last element has a @var{name} of
+@code{0}.
+@end deftypevr
+
+@deftypevr {Variable} int dld_preloaded_symbol_count
+The number of elements in @var{dld_preloaded_symbols}, if it is sorted
+in ascending order by @var{name}.  Otherwise, @code{-1}, to indicate
+that the application needs to sort and count @var{dld_preloaded_symbols}
+itself, or search it linearly.
+@end deftypevr
+
+Some compilers may allow identifiers which are not valid in ANSI C, such
+as dollar signs.  Libtool only recognizes valid ANSI C symbols (an
+initial ASCII letter or underscore, followed by zero or more ASCII
+letters, digits, and underscores), so non-ANSI symbols will not appear
+in @var{dld_preloaded_symbols}.
 
 @node Finding the dlname
 @section Finding the correct name to dlopen
@@ -2056,7 +2201,7 @@ This chapter describes how libtool interacts with other languages,
 and what special considerations you need to make if you do not use C.
 
 @menu
-* C++ libraries::
+* C++ libraries::               Building libraries for C++.
 @end menu
 
 @node C++ libraries
