@@ -59,7 +59,7 @@ int ab = 1;
 ]])
 
 AT_DATA(main.c,
-[[int v1;
+[[extern int v1;
 extern int v3, v4;
 extern const int v5, v6;
 extern const char* v7;
@@ -82,7 +82,7 @@ int main(void)
 ]])
 
 AT_DATA(dlself.c,
-[[int v1;
+[[extern int v1;
 extern int v3, v4;
 extern const int v5, v6;
 extern const char* v7;
@@ -95,7 +95,7 @@ extern int (*const v12) (void);
 typedef struct { int arr[1000]; } large;
 extern large v13, v14, v15;
 
-int w1;
+extern int w1;
 extern int w3, w4;
 extern const int w5, w6;
 extern const char* w7;

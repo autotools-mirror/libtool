@@ -1,5 +1,7 @@
 2005-03-08  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* tests/stresstest.at: Remove multiple variable definition.
+
 	* TODO: Update.
 
 	* THANKS: Update.
