@@ -1,3 +1,8 @@
+2001-11-28  Robert Boehne  <rboehne@ricardo-us.com>
+
+	* libtool.m4 (AC_LIBTOOL_SYS_MAX_CMD_LEN): Change the
+	factor of saftey as 3/4 of the result was not low enough.
+
 2001-11-28  Gary V. Vaughan  <gary@gnu.org>
 
 	* libtoolize.in: The test for whether AC_PROG_LIBTOOL is defined
