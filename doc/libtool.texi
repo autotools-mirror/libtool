@@ -1203,15 +1203,15 @@ the program is linked with @samp{-static} or @samp{-all-static}.
 Otherwise, no effect.  If @var{file} is @code{self} libtool will make
 sure that the program can @code{dlopen} itself, either by enabling
 @code{-export-dynamic} or by falling back to @samp{-dlpreopen self}.
-If @var{file} is @code{dummy} libtool will make sure that
-@var{lt_preloaded_symbols} is always @emph{defined}, regardless of whether
-it's empty or not.
 
 @item -dlpreopen @var{file}
 Link @var{file} into the output program, and add its symbols to
 @var{lt_preloaded_symbols} (@pxref{Dlpreopening}).  If @var{file} is
 @code{self}, the symbols of the program itself will be added to
 @var{lt_preloaded_symbols}.
+If @var{file} is @code{dummy} libtool will make sure that
+@var{lt_preloaded_symbols} is always @emph{defined}, regardless of whether
+it's empty or not.
 
 @item -export-dynamic
 Allow symbols from @var{output-file} to be resolved with @code{dlsym}

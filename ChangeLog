@@ -1,3 +1,16 @@
+1999-06-23  Thomas Tanner  <tanner@ffii.org>
+
+	* NEWS: updated
+	* README: added GNU Hurd to the supported platforms
+	* doc/libtool.texi: document `-dlpreopen dummy'
+	  instead of `-dlopen dummy'
+	* libltdl/ltdl.c (strchr): fixed typo (missing star)
+	
+1999-06-23  Stephan Kulow <coolo@itm.mu-luebeck.de>
+
+	* libltdl/ltdl.c (strrchr): fixed typo (missing star)
+	* libltdl/ltdl.c (trim): use `const' to silence -Wwrite-strings
+
 1999-06-23  Olly Betts  <olly@muscat.co.uk>
 	
 	* ltmain.in (ltdll.c): Support for crosscompiling from linux to
@@ -30,7 +43,7 @@
 
 	* ltconfig.in (bsdi4, deplibs_check_method): use a less restrictive
 	  regex (reported by Chris P. Ross <cross@eng.us.uu.net>)
-	* ltmain.in: support `-dlopen self', define lt_preloaded_symbols
+	* ltmain.in: support `-dlopen dummy', define lt_preloaded_symbols
 	  if dlself != no
 	* doc/libtool.texi (Compile and Link mode): document it,
 	  documented the -Wc, -Wl flags, libtool does also support non C

@@ -165,7 +165,7 @@ strchr(str, ch)
 {
 	const char *p;
 
-	for (p = str; *p != (char)ch && p != '\0'; p++)
+	for (p = str; *p != (char)ch && *p != '\0'; p++)
 		/*NOWORK*/;
 
 	return (*p == (char)ch) ? p : 0;
@@ -192,7 +192,7 @@ strrchr(str, ch)
 {
 	const char *p;
 
-	for (p = str; p != '\0'; p++)
+	for (p = str; *p != '\0'; p++)
 		/*NOWORK*/;
 
 	while (*p != (char)ch && p >= str)
@@ -1135,7 +1135,7 @@ trim (dest, str)
 	/* remove the leading and trailing "'" from str 
 	   and store the result in dest */
 	char *tmp;
-	char *end = strrchr(str, '\'');
+	const char *end = strrchr(str, '\'');
 	int len = strlen(str);
 
 	if (*dest)
