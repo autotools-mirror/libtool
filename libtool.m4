@@ -1933,11 +1933,14 @@ AC_DEFUN([AC_PROG_LD_GNU],
 [AC_REQUIRE([AC_PROG_EGREP])dnl
 AC_CACHE_CHECK([if the linker ($LD) is GNU ld], lt_cv_prog_gnu_ld,
 [# I'd rather use --version here, but apparently some GNU ld's only accept -v.
-if $LD -v 2>&1 </dev/null | $EGREP '(GNU|with BFD)' 1>&5; then
+case `"$LD" -v 2>&1 </dev/null` in
+*GNU* | *'with BFD'*)
   lt_cv_prog_gnu_ld=yes
-else
+  ;;
+*)
   lt_cv_prog_gnu_ld=no
-fi])
+  ;;
+esac])
 with_gnu_ld=$lt_cv_prog_gnu_ld
 ])# AC_PROG_LD_GNU
 

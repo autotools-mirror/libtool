@@ -1,3 +1,7 @@
+2002-12-30  Albert Chin-A-Young <china@thewrittenword.com>
+
+	* libtool.m4: Sync methods used to detect GNU ld.
+
 2002-12-20  Robert Boehne  <rboehne@gnu.org>
 
 	* libtool.m4 (AC_LIBTOOL_COMPILER_OPTION,
