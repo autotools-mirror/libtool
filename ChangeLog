@@ -1,5 +1,12 @@
 2004-08-29  Gary V. Vaughan  <gary@gnu.org>
 
+	* configure.ac: Bumped version to 1.9b.
+	* NEWS: Updated.
+	* INSTALL, config/config.guess, config/config.sub,
+	config/texinfo.tex: Updated from canonical source.
+	* Makefile.maint, HACKING: Update instructions for releasing in a
+	VPATH build.
+
 	* Makefile.am (dist-hook): Only run if README-alpha exists.
 	* README.alpha: Renamed from README-alpha to stop automake from
 	automatically adding it to DIST_COMMON.

@@ -1,6 +1,6 @@
 NEWS - list of user-visible changes between releases of GNU Libtool
 
-New in 1.9b: 2004-??-??; CVS version 1.5a, Libtool team:
+New in 1.9b: 2004-08-29; CVS version 1.5a, Libtool team:
 * The /^_?LT_[A-Z_]+$/ namespace is now reserved for Libtool's own macros.
   If you have any shell variables in this namespace they will need to be
   renamed.  If you have any macros in this namespace please rename them to

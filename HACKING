@@ -45,7 +45,9 @@ and is not part of a release distribution.
 	    + install-sh
 	    + missing
   The ones that are important for a release can be udated with,
-  `make -fMakefile.maint fetch'.
+  `make -fMakefile.maint fetch' (or `make -f../Makefile.maint fetch'
+  if you are running from a VPATH build directory, where `../' is the
+  relative path to the directory with `configure' in it).
 
 * Changes other than bug fixes must be mentioned in NEWS
 
@@ -117,6 +119,8 @@ and is not part of a release distribution.
   keys will be registered on ftp-upload.gnu.org and only then will you be
   authorized to upload files to the FSF ftp machines.
 
+* Make sure you have wget installed.
+
 * Make sure you have a copy of xdelta installed, and a copy of the previous
   release tarball in the build directory.
 
@@ -136,21 +140,30 @@ and is not part of a release distribution.
 * Have some tea.  If you are running on less than 3.6GHz CPU, order
   a pizza too ;-)
 
-* Run ./configure and then make.
+* Run ./configure (or create a build directory first and run configure
+  from there, if you want to keep the build tree separate).
 
-* Run `make -fMakefile.maint fetch', which will fetch new versions of the
-  files that are maintained outside of libtool.
+* Run `make -fMakefile.maint fetch' (or `make -f../Makefile.maint fetch'
+  if you are running from a VPATH build directory, where `../' is the
+  relative path to the directory with `configure' in it), which will
+  fetch new versions of the files that are maintained outside of
+  libtool.
 
-* Run ./commit.
+* Run `make distcheck'.  If there are any problems, fix them and start
+  again.
 
-* Run `make -fMakefile.maint cvs-dist' which will build a release tarball
-  (with `make distcheck'), tag the tree with release-$(VERSION) and generate
-  the gpg signature files.
+* Run ./commit from the source tree.
 
-* Run 'make -fMakefile.maint deltas' (pass LASTRELEASE=min.maj[.mic[alpha]]
-  if needed) to create both diff and xdelta files between the previous
-  release tarball and the new with detached gpg signature files and clear
-  signed directive files.
+* Run `make -fMakefile.maint cvs-dist' (or `make -f../Makefile.maint
+  cvs-dist' if you are running from a VPATH build directory, where `../'
+  is the relative path to the directory with `configure' in it), which
+  will build a release tarball (with `make distcheck'), tag the tree
+  with release-$(VERSION) and generate the gpg signature files.
+
+* Run 'make -f[../]Makefile.maint deltas' (pass
+  LASTRELEASE=min.maj[.mic[alpha]] if needed) to create both diff and
+  xdelta files between the previous release tarball and the new with
+  detached gpg signature files and clear signed directive files.
 
 * Upload release tarball, diff file and xdelta file, plus their associated
   detached gpg signature files and clear signed directive files to
@@ -175,7 +188,7 @@ and is not part of a release distribution.
   release announcement.
 
 * If not an alpha, replace manual.html with the new one
-  (generate with `make -f Makefile.maint web-manual').
+  (generate with `make -f[../]Makefile.maint web-manual').
 
 
 
