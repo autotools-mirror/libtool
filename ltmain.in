@@ -2800,7 +2800,7 @@ EOF
 	  ;;
 
 	irix | nonstopux)
-	  major=`expr $current - $age +1`
+	  major=`expr $current - $age + 1`
 
 	  case $version_type in
 	    nonstopux) verstring_prefix=nonstopux ;;
@@ -3367,7 +3367,11 @@ EOF
 	  if test -n "$hardcode_libdir_separator" &&
 	     test -n "$hardcode_libdirs"; then
 	    libdir="$hardcode_libdirs"
-	    eval dep_rpath=\"$hardcode_libdir_flag_spec\"
+	    if test -n "$hardcode_libdir_flag_spec_ld"; then
+	      eval dep_rpath=\"$hardcode_libdir_flag_spec_ld\"
+	    else
+	      eval dep_rpath=\"$hardcode_libdir_flag_spec\"
+	    fi
 	  fi
 	  if test -n "$runpath_var" && test -n "$perm_rpath"; then
 	    # We should set the runpath_var.

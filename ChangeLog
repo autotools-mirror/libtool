@@ -1,3 +1,13 @@
+2003-01-13  Albert Chin-A-Young  <china@thewrittenword.com>
+
+	* libtool.m4, ltmain.in: Add support for hppa*64* based on
+	a patch by Ross Alexander <ross.alexander@uk.neceur.com>.
+	Credit to Ross! Use +b to hardcode library runtime path.
+	Add new variable, $hardcode_libdir_flag_spec_ld, that
+	is equivalent to $hardcode_libdir_flag_spec but is used
+	when ld is used for linking. This works around having to
+	set wl=''.
+
 2003-01-12  Robert Boehne  <rboehne@gnu.org>
 
 	* libtool.m4 (AC_LIBTOOL_SYS_DYNAMIC_LINKER): Revert an
