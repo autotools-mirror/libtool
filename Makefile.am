@@ -1,8 +1,11 @@
 ## Process Makefile.am with automake to create Makefile.in. -*-Makefile-*-
 ## Gordon Matzigkeit <gord@gnu.ai.mit.edu>, 1996
-AUTOMAKE_OPTIONS = gnits
-SUBDIRS = . doc tests $(BUILD_LTDL)
-DIST_SUBDIRS = . doc tests libltdl demo mdemo cdemo # depdemo
+
+AUTOMAKE_OPTIONS = 1.3e gnits readme-alpha
+
+BUILD_SUBDIRS = . doc tests
+SUBDIRS = $(BUILD_SUBDIRS) $(BUILD_LTDL)
+DIST_SUBDIRS = $(BUILD_SUBDIRS) $(CONF_SUBDIRS)
 
 # We need to export these variables when we run ltconfig.
 CFLAGS = @CFLAGS@
@@ -11,7 +14,7 @@ CPPLAGS = @CPPFLAGS@
 aclocal_macros = libtool.m4
 
 EXTRA_DIST = $(aclocal_macros) libtoolize.in ltconfig.in ltmain.in \
-	libtool.spec README-alpha # remove this for a non-alpha release
+	libtool.spec
 CLEANFILES = libtool libtoolize
 MAINTAINERCLEANFILES = ltconfig ltmain.sh
 
@@ -58,22 +61,20 @@ $(srcdir)/ltmain.sh: $(srcdir)/ltmain.in $(top_srcdir)/configure.in
 	sed -e 's/@''PACKAGE@/@PACKAGE@/' -e 's/@''VERSION@/@VERSION@/' $(srcdir)/ltmain.in > ltmain.shT
 	mv -f ltmain.shT $@
 
-# We use our own libtool.m4 for these.
-ACINCLUDE_M4_LIST = \
-	$(srcdir)/acinclude.m4 \
-	$(srcdir)/libltdl/acinclude.m4 \
-	$(srcdir)/demo/acinclude.m4 \
-	$(srcdir)/mdemo/acinclude.m4 \
-	$(srcdir)/cdemo/acinclude.m4 # \ #
-#	$(srcdir)/depdemo/acinclude.m4
-
 # All our rules should depend on these demo files.
-all check: $(ACINCLUDE_M4_LIST) $(LIBTOOL_DEPS)
+all-local check-local: $(ACINCLUDE_M4_LIST) libtool
 
-$(ACINCLUDE_M4_LIST): $(srcdir)/libtool.m4
+@ACINCLUDE_M4_LIST@: $(srcdir)/libtool.m4
 	rm -f $@
 	cd `echo $@ | sed 's,/[^/]*$$,,'` && \
 	  $(LN_S) `echo $@ | sed -e 's|^$(srcdir)/||' -e 's,[^/]*$$,,' -e 's,[^/][^/]*,..,g'`libtool.m4 acinclude.m4
+
+.PHONY: configure-subdirs
+configure-subdirs distdir: $(DIST_MAKEFILE_LIST)
+@DIST_MAKEFILE_LIST@:
+	dir=`echo $@ | sed 's,^[^/]*$,.,;s,/[^/]*$,,'`; \
+	test -d $$dir || mkdir $$dir || exit 1; \
+	(cd $$dir && $(srcdir)/$$dir/configure) || exit 1
 
 ################################################################
 ##

@@ -1,5 +1,26 @@
 1999-01-13  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* configure.in (AC_CONFIG_DIRS): configure only libltdl, and then,
+ 	only if --enable-ltdl-install
+	(CONF_SUBDIRS): list directories that are configured on demand,
+	but that must be included in the distribution
+	(ACINCLUDE_M4_LIST, DIST_MAKEFILE_LIST): generated from CONF_SUBDIRS
+	* Makefile.am (AUTOMAKE_OPTIONS): added version 1.3e and
+	readme-alpha, to handle README-alpha automatically
+	(EXTRA_DIST): removed README-alpha
+	(BUILD_SUBDIRS): subdirectories that are always built
+	(SUBDIRS): BUILD_SUBDIRS plus BUILD_LTDL
+	(DIST_SUBDIRS): BUILD_SUBDIRS plus CONF_SUBDIRS, from configure
+	(all-local, check-local): depend on $(ACINCLUDE_M4_LIST), from
+	configure, and libtool, so that it is built before subdirs
+	(configure-subdirs): new target
+	(configure-subdirs, distdir): depend on $(DIST_MAKEFILE_LIST),
+	from configure
+	(@DIST_MAKEFILE_LIST@): create subdir if needed, then run
+	configure.
+	On-demand configuration of subdirs at distribution time was
+	suggested by Gary V. Vaughan <gvaughan@oranda.demon.co.uk>
+	
 	* libtool.m4, ltconfig.in (NM): search for NM in PATH before
 	/usr/ccs/bin, /usr/ucb and /bin.  However, if the found one isn't
 	BSD-compat keep searching.  If no BSD-compat is found, use the

@@ -28,7 +28,21 @@ AC_PROG_LN_S
 dnl For the `lineno' script (which puts line numbers into `ltconfig').
 AC_PROG_AWK
 
-AC_CONFIG_SUBDIRS(libltdl demo mdemo cdemo) dnl #depdemo
+dnl all subdirectories that are configured on demand, but that must be
+dnl included in the distribution
+CONF_SUBDIRS="libltdl demo mdemo cdemo" # depdemo
+AC_SUBST(CONF_SUBDIRS)
+
+ACINCLUDE_M4_LIST="\$(srcdir)/acinclude.m4 "
+DIST_MAKEFILE_LIST=
+for dir in $CONF_SUBDIRS; do
+  ACINCLUDE_M4_LIST="$ACINCLUDE_M4_LIST\$(srcdir)/$dir/acinclude.m4 "
+  DIST_MAKEFILE_LIST="$DIST_MAKEFILE_LIST$dir/Makefile "
+done
+AC_SUBST(ACINCLUDE_M4_LIST)
+AC_SUBST(DIST_MAKEFILE_LIST)
+
+AC_CONFIG_SUBDIRS($BUILD_LTDL)
 AC_OUTPUT([Makefile doc/Makefile tests/Makefile])
 
 # Local Variables:
