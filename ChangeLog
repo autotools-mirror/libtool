@@ -1,5 +1,8 @@
 2004-11-09  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
+	* doc/libtool.texi (User defined module data, References):
+	indentation and word-wrap cleanup.
+
 	* doc/libtool.texi (all over): White space cleanup:
 	two spaces at start of sentence, no TABs.
 
