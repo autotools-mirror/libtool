@@ -1,3 +1,10 @@
+2004-12-13  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* libltdl/Makefile.am (libdlloader_la_SOURCES): Remove lt__strl.c
+	from default build files.
+	* m4/ltdl.m4 (LTDL_INIT): Arrange to build lt__strl.c only when
+	needed.
+
 2004-12-13  Albert Chin-A-Young  <china@thewrittenword.com>
 
 	* libtool.m4 (_LT_LINKER_SHLIBS, _LT_LANG_CXX_CONFIG):

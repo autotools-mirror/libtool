@@ -36,7 +36,7 @@ pkgincludedir		= $(includedir)/libltdl
 lib_LTLIBRARIES		= libdlloader.la
 libdlloader_la_SOURCES  = libltdl/lt_error.h lt_error.c \
 			  libltdl/lt__private.h \
-                          lt__strl.c libltdl/lt__strl.h \
+                          libltdl/lt__strl.h \
                           libltdl/lt_system.h \
 			  libltdl/lt__alloc.h lt__alloc.c \
 			  libltdl/lt__glibc.h \
@@ -74,6 +74,7 @@ ltdldatadir		= $(pkgdatadir)/libltdl
 nobase_ltdldata_DATA	= COPYING.LIB Makefile.am README configure.ac \
 			  $(libltdl_la_SOURCES) $(libdlloader_la_SOURCES) \
 			  lt__dirent.c libltdl/lt__dirent.h \
+                          lt__strl.c libltdl/lt__strl.h \
 			  argz_.h argz.c
 
 ## Make sure these will be cleaned even when they're not built by default:
