@@ -1,3 +1,87 @@
+1999-01-26  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
+	
+	* configure.in:  It seems Alexandre accidentally removed the
+	AC_SUBST(pkgdatadir) line recently which breaks libtoolize.
+	Reverted that small change.
+
+1999-01-25  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* libltdl/ltdl.c (find_module): test old_name and dlname for NULL, 
+	not len==0
+
+	* libltdl/configure.in (libltdl_cv_objdir): yes, appending the "/" 
+	in configure.in was much simpler
+	* libltdl/ltdl.c (objdir): ditto
+
+	* libltdl/ltdl.c (objdir): string collation isn't portable; strcat 
+	"/" explicitly.  Or should this be moved to configure.in?
+
+1999-01-25  Thomas Tanner  <tanner@gmx.de>
+
+	* libltdl/ltdl.c: allocate the variables in lt_dlopen() dynamically
+	  
+1999-01-25  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* ltmain.in (file_magic): use egrep instead of expr to support
+	more general regular expressions
+	(file_regex): remove it; the name is misleading, it's not used
+ 	anywhere, and probably will never be
+	* ltconfig.in, doc/libtool.texi: ditto
+	* ltconfig.in (linux-gnu*, deplibs_check_method): extend regex to 
+	support `LSB dynamic lib' in the output of `file'
+	Reported by Scott D. Heavner <sdh@po.cwru.edu>
+	
+	* ltmain.in (dependency_libs, xrpath): add -R switches to
+	dependency_libs only just before creating the .la file; they
+	should not be passed to the C compiler or linker at
+	library-creation time, since we don't know whether it is supported
+
+	* ltconfig.in (freebsd2.2*, hardcode_minus_L): for FreeBSD 2.2.6,
+	this must be `no'
+
+	* mkstamp: move the sed script to extract revision and date
+	information into a separate shell-script, so that we can break
+	lines between commands; FreeBSD's sed doesn't like `;' after `t'
+	Reported by Axel Thimm <Axel.Thimm@physik.fu-berlin.de>
+	* Makefile.am: use mkstamp
+	* THANKS: added Axel Thimm
+	
+	* ltmain.in: don't try to use .o instead of .lo just because
+	there's no PIC flag.  It loses if --disable-static, and there's
+	not much point if we're referring to the same file anyway...
+
+	* ltmain.in (pass_all=none, droppeddeps): set only if deplibs was
+	non-empty
+
+1999-01-24  Thomas Tanner  <tanner@gmx.de>
+
+	* libltdl/ltdl.c: minor bugfixes, append a "/" the search 
+	  directory only if necessary
+	* ltconfig.in: added support for FreeBSD >= 3.0
+	  (patch from Kurt D. Zeilenga)
+	* THANKS: added Kurt D. Zeilenga
+
+1999-01-24  Thomas Tanner  <tanner@gmx.de>
+
+	* doc/libtool.texi (libltdl): list supported dlopen mechanisms,
+	  added function lt_dlopenext(), removed reference to 
+	  LTDL_PRELOADED_SYMBOLS in LTDL_SET_PRELOADED_SYMBOLS
+	* libltdl/ltdl.c: partially reverted Alexandre's dynamic string
+	  allocation change (it was not necessary and the code was unreadable),
+	  cleanups, removed usr_search_path_size, renamed usr_search_path
+	  to user_search_path, in find_module() also check for moved
+	  modules, merged find_file() and find_library(),
+	  added lt_dlopenext(), in lt_dladdsearchdir() no longer reset
+	  the search path if 'search_dir' == NULL and don't use realloc()
+	  (might not be available on all platforms),
+	  removed __P((void)) in the declaration of lt_dlgetsearchpath()
+	* libltdl/ltdl.h: added lt_dlopenext()
+	* ltconfig.in: AIX archive commands were broken,
+	  fixed a MAJOR bug in global_symbol_pipe which caused
+	  "demo-shared.test;demo-make.test" to fail (libtool must not extract
+	  undefined symbols of libraries, i.e. symcode must not contain 'U')
+	* tests/Makefile.am (clean-local): "make distclean" in cdemo, too
+
 1999-01-22  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* Makefile.am (ltconfig, ltmain.sh): add ChangeLog Revision to

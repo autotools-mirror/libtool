@@ -75,7 +75,7 @@ libltdl_cv_objdir=`cat conftest`
 rm -f conftest
 ])
 test -z "$libltdl_cv_objdir" && libltdl_cv_objdir=".libs"
-AC_DEFINE_UNQUOTED(LTDL_OBJDIR, "$libltdl_cv_objdir")
+AC_DEFINE_UNQUOTED(LTDL_OBJDIR, "$libltdl_cv_objdir/")
 
 AC_HEADER_STDC
 AC_CHECK_HEADERS(malloc.h memory.h stdlib.h stdio.h ctype.h dlfcn.h dl.h)

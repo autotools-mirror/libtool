@@ -1201,14 +1201,6 @@ compiler."
 	;;
       esac
 
-      if test -n "$xrpath"; then
-	temp_xrpath=
-	for libdir in $xrpath; do
-	  temp_xrpath="$temp_xrpath -R$libdir"
-	done
-	deplibs="$temp_xrpath $deplibs"
-      fi
-
       output_objdir=`$echo "X$output" | $Xsed -e 's%/[^/]*$%%'`
       if test "X$output_objdir" = "X$output"; then
 	output_objdir="$objdir"
@@ -1636,10 +1628,6 @@ compiler."
 
       if test "$build_libtool_libs" = yes; then
 	# Transform deplibs into only deplibs that can be linked in shared.
-	## Gordon: Do you check for the existence of the libraries in deplibs
-	## on the system?  That should maybe be merged in here someplace....
-	## Actually: I think test_compile and file_magic do this... file_regex
-	## sorta does this. Only pass_all needs to be changed.  -Toshio
 	name_save=$name
 	libname_save=$libname
 	release_save=$release
@@ -1737,7 +1725,7 @@ EOF
 	  fi
 	  deplibs=$newdeplibs
 	  ;;
-	file_magic* | file_regex)
+	file_magic*)
 	  set dummy $deplibs_check_method
 	  file_magic_regex="`expr \"$deplibs_check_method\" : \"$2 \(.*\)\"`"
 	  for a_deplib in $deplibs; do
@@ -1745,15 +1733,7 @@ EOF
 	    # If $name is empty we are operating on a -L argument.
 	    if test "$name" != "" ; then
 	      libname=`eval \\$echo \"$libname_spec\"`
-	      case "$deplibs_check_method" in
-		file_magic*)
-		  for i in $lib_search_path; do
-		   # This needs to be more general than file_regex in order to
-		   # catch things like glibc on linux.  Maybe file_regex
-		   # should be more general as well, but maybe not.  Since
-		   # library names are supposed to conform to
-		   # library_name_spec, I think file_regex should remain
-		   # strict.  What do you think Gordon?
+	      for i in $lib_search_path; do
 		    potential_libs=`ls $i/$libname[.-]* 2>/dev/null`
 		    for potent_lib in $potential_libs; do
 		      # Follow soft links.
@@ -1775,30 +1755,15 @@ EOF
 				   | $Xsed -e 's,[^/]*$,,'`"$potliblink";;
 			esac
 		      done
-		      file_output=`eval $file_magic_command \"\$potlib\" \
-				   | sed '11,$d'`
-		      if test `expr "X$file_output" : "X.*$file_magic_regex"` -ne 0 ; then
+		      if eval $file_magic_command \"\$potlib\" \
+			 | sed '11,$d' \
+			 | egrep "$file_magic_regex" > /dev/null; then
 			newdeplibs="$newdeplibs $a_deplib"
 			a_deplib=""
 			break 2
 		      fi
 		    done
-		  done
-		  ;;
-		file_regex)
-		  deplib_matches=`eval \\$echo \"$library_names_spec\"`
-		  set dummy $deplib_matches
-		  deplib_match=$2
-		  for i in $lib_search_path; do
-		    potential_libs=`ls $i/$deplib_match* 2>/dev/null`
-		    if test "$potential_libs" != "" ; then
-		      newdeplibs="$newdeplibs $a_deplib"
-		      a_deplib=""
-		      break
-		    fi
-		  done
-		  ;;
-	      esac
+	      done
 	      if test -n "$a_deplib" ; then
 		droppeddeps=yes
 		echo
@@ -1813,7 +1778,12 @@ EOF
 	    fi
 	  done # Gone through all deplibs.
 	  ;;
-	none | unknown | *) newdeplibs=""; droppeddeps=yes ;;
+	none | unknown | *) newdeplibs=""
+	  if $echo "X$deplibs" | $Xsed -e 's/ -lc$//' -e 's/[ 	]//g' \
+	     | grep . >/dev/null; then
+	    droppeddeps=yes
+	  fi
+	  ;;
 	esac
 	versuffix=$versuffix_save
 	major=$major_save
@@ -1867,9 +1837,6 @@ EOF
 	do
 	  linknames="$linknames $link"
 	done
-
-	# Use standard objects if they are PIC.
-	test -z "$pic_flag" && libobjs=`$echo "X$libobjs" | $SP2NL | $Xsed -e "$lo2o" | $NL2SP`
 
 	if test -n "$whole_archive_flag_spec"; then
 	  if test -n "$convenience"; then
@@ -2870,6 +2837,14 @@ fi\
       old_library=
       test "$build_old_libs" = yes && old_library="$libname.$libext"
       $show "creating $output"
+
+      if test -n "$xrpath"; then
+	temp_xrpath=
+	for libdir in $xrpath; do
+	  temp_xrpath="$temp_xrpath -R$libdir"
+	done
+	dependency_libs="$temp_xrpath $dependency_libs"
+      fi
 
       # Only create the output if not a dry run.
       if test -z "$run"; then
