@@ -60,12 +60,16 @@ AC_REQUIRE([AC_ENABLE_FAST_INSTALL])dnl
 AC_REQUIRE([AC_CANONICAL_HOST])dnl
 AC_REQUIRE([AC_CANONICAL_BUILD])dnl
 AC_REQUIRE([AC_PROG_CC])dnl
+with_gcc="$GCC"; AC_SUBST([with_gcc])
 AC_REQUIRE([AC_PROG_LD])dnl
 AC_REQUIRE([AC_PROG_NM])dnl
 AC_REQUIRE([AC_PROG_LN_S])dnl
+AC_REQUIRE([AC_OBJEXT])dnl
+AC_REQUIRE([AC_EXEEXT])dnl
 dnl
 
 AC_CHECK_TOOL(RANLIB, ranlib, :)
+AC_CHECK_TOOL(STRIP, strip, :)
 
 # Check for any special flags to pass to ltconfig.
 libtool_flags="--cache-file=$cache_file"
@@ -347,6 +351,8 @@ if $LD -v 2>&1 </dev/null | egrep '(GNU|with BFD)' 1>&5; then
 else
   ac_cv_prog_gnu_ld=no
 fi])
+with_gnu_ld=$ac_cv_prog_gnu_ld
+AC_SUBST(with_gnu_ld)
 ])
 
 # AC_PROG_NM - find the path to a BSD-compatible name lister

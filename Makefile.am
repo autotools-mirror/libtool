@@ -65,16 +65,18 @@ update-timestamps:
 # Do line number substitution, as well as PACKAGE, VERSION and TIMESTAMP.
 # Line numbering transliterated from a section in autoconf (Autoconf 2.12).
 @srcdir@/ltconfig: $(srcdir)/ltconfig.in $(top_srcdir)/configure.in $(TSDEPS)
-	rm -f ltconfig.T
 	date=`$(SHELL) $(srcdir)/mkstamp < $(srcdir)/ChangeLog` && \
-	$(AWK) '/@LINENO@/ { printf "%d:", NR } { print }' $(srcdir)/ltconfig.in | \
-	  sed -e 's/@''PACKAGE@/@PACKAGE@/' -e 's/@''VERSION@/@VERSION@/' \
-	      -e "s%@""TIMESTAMP@%$$date%" \
+	rm -f $(srcdir)/ltconfig.T && \
+	cd $(top_srcdir) && \
+	CONFIG_FILES= CONFIG_HEADERS= CONFIG_OTHER=$(subdir)/$@ \
+	&& ./config.status && \
+	$(AWK) '/@LINENO@/ { printf "%d:", NR } { print }' $(srcdir)/ltconfig | \
+	  sed -e "s%@""TIMESTAMP@%$$date%" \
 	      -e '/@LINENO@/s/^\([0-9][0-9]*\):\(.*\)@LINENO@/\2\1/' \
-		> ltconfig.T
+		> $(srcdir)/ltconfig.T
 	chmod +x ltconfig.T
 	mv -f ltconfig.T $@ || \
-	(rm -f $@ && cp ltconfig.T $@ && rm -f ltconfig.T)
+	(rm -f $@ && cp $ltconfig.T $@ && rm -f ltconfig.T)
 
 @srcdir@/ltmain.sh: $(srcdir)/ltmain.in $(top_srcdir)/configure.in $(TSDEPS)
 	rm -f ltmain.shT

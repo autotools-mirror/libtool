@@ -1,3 +1,12 @@
+1999-10-01  Gary V. Vaughan  <gary@oranda.demon.co.uk>
+
+	* libtool.m4: be sure to AC_SUBST values no longer tested in
+	ltconfig.in.
+	* ltconfig.in: replaced several of the simple feature tests with
+	substitutions from config.status.
+	* Makefile.am (ltconfig): generate ltconfig with config.status.
+	* configure.in (AC_OUTPUT): generate ltconfig with config.status.
+	
 1999-09-30  Donald Anderson  <dda@world.std.com>
 
 	* ltconfig.in (sco3.2v5): use pass_all deplibs_check_method
