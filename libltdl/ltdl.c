@@ -542,11 +542,6 @@ argz_insert (pargz, pargz_len, before, entry)
   assert (pargz_len);
   assert (entry && *entry);
 
-  /* Either PARGZ/PARGZ_LEN is empty and BEFORE is NULL,
-     or BEFORE points into an address within the ARGZ vector.  */
-  assert ((!*pargz && !*pargz_len && !before)
-	  || ((*pargz <= before) && (before < (*pargz + *pargz_len))));
-
   /* No BEFORE address indicates ENTRY should be inserted after the
      current last element.  */
   if (!before)
@@ -2199,7 +2194,7 @@ foreach_dirinpath (search_path, base_name, func, data1, data2)
 	    goto cleanup;
 	}
 
-	assert (filenamesize > lendir); 
+	assert (filenamesize > lendir);
 	strcpy (filename, dir_name);
 
 	if (base_name && *base_name)
