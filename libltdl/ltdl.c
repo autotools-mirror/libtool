@@ -27,6 +27,10 @@ Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 #include <strings.h>
 #endif
 
+#if HAVE_CTYPE_H
+#include <ctype.h>
+#endif
+
 #if HAVE_MALLOC_H
 #include <malloc.h>
 #endif
@@ -55,7 +59,7 @@ typedef struct lt_dltype_t {
 	int (*mod_exit) __P((void));
 	int (*lib_open) __P((lt_dlhandle handle, const char *filename));
 	int (*lib_close) __P((lt_dlhandle handle));
-	__ptr_t (*find_sym) __P((lt_dlhandle handle, const char *symbol));
+	lt_ptr_t (*find_sym) __P((lt_dlhandle handle, const char *symbol));
 } lt_dltype_t, *lt_dltype;
 
 #define LT_DLTYPE_TOP NULL
@@ -66,8 +70,8 @@ typedef	struct lt_dlhandle_t {
 	char	*filename;	/* file name */
 	char	*name;		/* module name */
 	int	usage;		/* usage */
-	__ptr_t handle;		/* system handle */
-	__ptr_t	sys;		/* system specific data */
+	lt_ptr_t handle;	/* system handle */
+	lt_ptr_t system;	/* system specific data */
 } lt_dlhandle_t;
 
 #if ! HAVE_STRDUP
@@ -166,7 +170,7 @@ dl_close (handle)  lt_dlhandle handle;
 	return dlclose(handle->handle);
 }
 
-static __ptr_t
+static lt_ptr_t
 dl_sym (handle, symbol)  lt_dlhandle handle; const char *symbol;
 {
 	return dlsym(handle->handle, symbol);
@@ -218,7 +222,7 @@ shl_close (handle)  lt_dlhandle handle;
 	return 0;
 }
 
-static __ptr_t
+static lt_ptr_t
 shl_sym (handle, symbol)  lt_dlhandle handle; const char *symbol;
 {
 	int status, i;
@@ -263,7 +267,7 @@ dld_open (handle, filename)  lt_dlhandle handle; const char *filename;
 {
 	if (dld_link(filename))
 		return 1;
-	handle->handle = filename;
+	handle->handle = strdup(filename);
 	return 0;
 }
 
@@ -271,10 +275,11 @@ static int
 dld_close (handle)  lt_dlhandle handle;
 {
 	dld_unlink_by_file((char*)(handle->handle), 1);
+	free(handle->filename);
 	return 0;
 }
 
-static __ptr_t
+static lt_ptr_t
 dld_sym (handle, symbol)  lt_dlhandle handle; const char *symbol;
 {
 	return dld_get_func(symbol);
@@ -322,7 +327,7 @@ wll_close (handle)  lt_dlhandle handle;
 	return 0;
 }
 
-static __ptr_t
+static lt_ptr_t
 wll_sym (handle, symbol)  lt_dlhandle handle; const char *symbol;
 {
 	return GetProcAddress(handle->handle, symbol);
@@ -345,7 +350,7 @@ wll = { LT_DLTYPE_TOP, wll_init, wll_exit,
 struct dld_symlist
 {
   char *name;
-  __ptr_t address;
+  lt_ptr_t address;
 };
 
 extern struct dld_symlist dld_preloaded_symbols[];
@@ -384,7 +389,7 @@ dldpre_close (handle)  lt_dlhandle handle;
 	return 0;
 }
 
-static __ptr_t
+static lt_ptr_t
 dldpre_sym (handle, symbol)  lt_dlhandle handle; const char *symbol;
 {
 	struct dld_symlist *s = (struct dld_symlist*)(handle->handle);
@@ -527,6 +532,7 @@ lt_dlopen (filename)  const char *filename;
 	if (ext && strcmp(ext, ".la") == 0) {
 		char	dlname[1024], libdir[1024], deps[1024];
 		char	fullname[1024], old_name[1024]; /* FIXME: unchecked */
+		int	i;
 		lt_dltype type;
 
 		dlname[0] = libdir[0] = deps[0] = old_name[0] = '\0';
@@ -577,10 +583,14 @@ lt_dlopen (filename)  const char *filename;
 				}
 			}
 		}	
-		handle->filename = strdup(fullname);
+		handle->filename = strdup(filename);
 		/* extract the module name from the file name */
 		strcpy(tmp, basename);
 		tmp[ext - basename] = '\0';
+		/* canonicalize the modul name */		
+		for (i = 0; i < ext - basename; i++)
+			if (!isalnum(tmp[i]))
+				tmp[i] = '_';
 		handle->name = strdup(tmp);
 	} else {
 		/* not a libtool module */
@@ -628,11 +638,11 @@ lt_dlclose (handle)  lt_dlhandle handle;
 	return 0;
 }
 
-__ptr_t
+lt_ptr_t
 lt_dlsym (handle, symbol)  lt_dlhandle handle; const char *symbol;
 {
 	char	sym[128];
-	__ptr_t address;
+	lt_ptr_t address;
 
 	if (handle->name) {	/* libtool module */
 #ifdef NEED_USCORE

@@ -9,7 +9,7 @@ noinst_LTLIBRARIES = libltdl.la
 libltdl_la_SOURCES = ltdl.c
 libltdl_la_LDFLAGS = $(LIBADD_DL) 
 
-noinst_HEADERS = ltdl.h
+include_HEADERS = ltdl.h
 
 # rebuild the libtool script if needed
 ltdl.lo: libtool

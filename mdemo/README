@@ -1,10 +1,9 @@
-This is GNU modular hell, an example package that uses GNU libtool with an
+This is mdemo, an example package that uses GNU libtool with an
 Automake-generated environment to build two simple libraries and programs.
 
 It demonstrates how to build both dynamic and static libraries
 that can be dlopened. You'll need a wrapper (libltdl)
-for your dlopen functions. For static libraries we prefix all
-non-static symbols with libname___ using the LTEXP(symbol) macro.
+for your dlopen functions. We prefix all exported symbols with "libname_LTX_".
 When dlopening these static libraries, we cut the prefix off to
 get the real name.
 

@@ -38,19 +38,19 @@ Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
    that don't understand ANSI C prototypes still work, and ANSI C
    compilers can issue warnings about type mismatches. */
 #undef __P
-#undef __ptr_t
+#undef lt_ptr_t
 #if defined (__STDC__) || defined (_AIX) || (defined (__mips) && defined (_SYSTYPE_SVR4)) || defined(WIN32) || defined(__cplusplus)
 # define __P(protos) protos
-# define __ptr_t     void*
+# define lt_ptr_t     void*
 #else
 # define __P(protos) ()
-# define __ptr_t     char*
+# define lt_ptr_t     char*
 #endif
 
 #ifdef _LTDL_COMPILE_
 typedef	struct lt_dlhandle_t *lt_dlhandle;
 #else
-typedef	__ptr_t lt_dlhandle;
+typedef	lt_ptr_t lt_dlhandle;
 #endif
 
 __BEGIN_DECLS
@@ -58,7 +58,7 @@ int		lt_dlinit __P((void));
 int		lt_dlexit __P((void));
 lt_dlhandle	lt_dlopen __P((const char *filename));
 int		lt_dlclose __P((lt_dlhandle handle));
-__ptr_t		lt_dlsym __P((lt_dlhandle handle, const char *name));
+lt_ptr_t	lt_dlsym __P((lt_dlhandle handle, const char *name));
 __END_DECLS
 
 #endif /* !_LTDL_H_ */

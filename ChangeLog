@@ -1,3 +1,24 @@
+1998-12-18  Thomas Tanner  <tanner@gmx.de>
+
+	* ltconfig.in: added need_lib_prefix and need_version,
+	  which determine whether we must prefix modules with 'lib'
+	  and whether versioning is required for libraries.
+	* ltmain.in: allow modules names without 'lib' prefix, 
+	  new -avoid-versioning option
+	* doc/libtool.texi (link flags): updated documentation for -module,
+	  added -avoid-versioning
+	* doc/libtool.texi (libtool script contents): 
+	  documented the two new flags and archive_sym_cmds
+	* doc/libtool.texi (tests): 
+	  added (partially very short) documentation for assign.test, 
+	  nomode.test, quote.test, sh.test
+	* libltdl/ltdl.c: canonicalize module names, 
+	  some cleanups and bugfixes,  __ptr_t is predefined on 
+	  some systems - use lt_ptr_t instead
+	* mdemo/: renamed hell* to mdemo* (hell is already used in
+	  demo), updated the documentation, import sin and cos in main
+	  program rather than linking libfoo1 statically
+
 1998-12-17  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
 
 	* libtool.m4 (AM_PROG_LIBTOOL): Added AC_PREREQ(2.12) to prevent

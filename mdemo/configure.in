@@ -1,6 +1,6 @@
-dnl Initialize the hell package.
+dnl Initialize the mdemo package.
 AC_INIT(main.c)
-AM_INIT_AUTOMAKE(module,0.1)
+AM_INIT_AUTOMAKE(mdemo,0.1)
 
 AC_PROG_CC
 AC_EXEEXT

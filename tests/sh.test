@@ -1,5 +1,5 @@
 #! /bin/sh
-# if.test - check that we haven't forgotten a `test' command
+# sh.test - check that we haven't forgotten a `test' command
 
 # Test script header.
 need_prefix=no

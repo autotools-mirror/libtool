@@ -580,6 +580,7 @@ compiler."
     deplibs=
     eval lib_search_path=\"$sys_lib_search_path\"
     
+    avoid_versioning=no
     dlfiles=
     dlprefiles=
     export_dynamic=no
@@ -682,6 +683,11 @@ compiler."
       -allow-undefined)
 	# FIXME: remove this flag sometime in the future.
 	$echo "$modename: \`-allow-undefined' is deprecated because it is the default" 1>&2
+	continue
+	;;
+
+      -avoid-versioning)
+	avoid_versioning=yes
 	continue
 	;;
 
@@ -1124,16 +1130,25 @@ compiler."
     *.la)
       # Make sure we only generate libraries of the form `libNAME.la'.
       case "$outputname" in
-      lib*) ;;
+      lib*) 
+        name=`$echo "X$outputname" | $Xsed -e 's/\.la$//' -e 's/^lib//'`
+        eval libname=\"$libname_spec\"
+        ;;
       *)
-	$echo "$modename: libtool library \`$output' must begin with \`lib'" 1>&2
-	$echo "$help" 1>&2
-	exit 1
-	;;
+        if test "$module" = no; then
+          $echo "$modename: libtool library \`$output' must begin with \`lib'" 1>&2
+          $echo "$help" 1>&2
+          exit 1
+        fi
+        if test "$need_lib_prefix" = yes; then
+          # Add the "lib" prefix for modules if required
+          name=`$echo "X$outputname" | $Xsed -e 's/\.la$//'`
+          eval libname=\"$libname_spec\"
+        else
+          libname=`$echo "X$outputname" | $Xsed -e 's/\.la$//'`
+        fi
+        ;;
       esac
-
-      name=`$echo "X$outputname" | $Xsed -e 's/\.la$//' -e 's/^lib//'`
-      eval libname=\"$libname_spec\"
 
       output_objdir=`$echo "X$output" | $Xsed -e 's%/[^/]*$%%'`
       if test "X$output_objdir" = "X$output"; then
@@ -1304,6 +1319,13 @@ compiler."
 	  esac
 	fi
 
+	# Remove version info from name if versioning should be avoided
+	if test "$avoid_versioning" = yes && test "$need_version" = no; then
+	  major=
+	  versuffix=
+	  verstring=""
+ 	fi
+	
 	# Check to see if the archive will have undefined symbols.
 	if test "$allow_undefined" = yes; then
 	  if test "$allow_undefined_flag" = unsupported; then

@@ -1,4 +1,4 @@
-/* main.c -- hello test program
+/* main.c -- mdemo test program
    Copyright (C) 1996 Free Software Foundation, Inc.
    This file is part of GNU Libtool.
 
@@ -21,6 +21,11 @@ USA. */
 #include "ltdl.h"
 #include <stdio.h>
 #include <string.h>
+#include <math.h>
+
+/* import sin and cos (used by the modules) */
+extern double sin (double x);
+extern double cos (double x);
 
 int
 test_dl (char *filename)
@@ -81,7 +86,7 @@ main (int argc, char **argv)
 {
   int i;
 
-  printf ("Welcome to *modular* GNU Hell!\n");
+  printf ("Welcome GNU libtool mdemo!\n");
 
   if (argc < 2) {
     fprintf (stderr, "usage: %s module [module...]\n", argv[0]);

@@ -969,6 +969,8 @@ echo $ac_n "checking whether the linker ($LD) supports shared libraries... $ac_c
 
 allow_undefined_flag=
 no_undefined_flag=
+need_lib_prefix=yes
+need_version=yes
 archive_cmds=
 archive_sym_cmds=
 old_archive_from_new_cmds=
@@ -1603,6 +1605,7 @@ cygwin32* | mingw32*)
   fi
   dynamic_linker='Win32 ld.exe'
   libname_spec='$name'
+  need_lib_prefix=no
   shlibpath_var=PATH
   ;;
 
@@ -1654,6 +1657,8 @@ linux-gnuoldld* | linux-gnuaout* | linux-gnucoff*)
 # This must be Linux ELF.
 linux-gnu*)
   version_type=linux
+  need_lib_prefix=no
+  need_version=no
   library_names_spec='${libname}${release}.so$versuffix ${libname}${release}.so$major $libname.so'
   soname_spec='${libname}${release}.so$major'
   finish_cmds='PATH="\$PATH:/sbin" ldconfig -n $libdir'
@@ -1681,6 +1686,7 @@ netbsd* | openbsd*)
 
 os2*)
   libname_spec='$name'
+  need_lib_prefix=no
   library_names_spec='$libname.dll $libname.a'
   dynamic_linker='OS/2 ld.exe'
   shlibpath_var=LIBPATH
@@ -1969,6 +1975,12 @@ compiler_o_lo=$compiler_o_lo
 
 # Must we lock files when doing compilation ?
 need_locks=$need_locks
+
+# Do we need the lib prefix for modules?
+need_lib_prefix=$need_lib_prefix
+
+# Do we need a version for libraries?
+need_version=$need_version
 
 # Compiler flag to prevent dynamic linking.
 link_static_flag=$link_static_flag

@@ -1135,6 +1135,11 @@ If @var{output-file} is a program, then do not link it against any
 shared libraries at all.  If @var{output-file} is a library, then only
 create a static library.
 
+@item -avoid-versioning
+Tries to avoid versioning (@pxref{Versioning}) for libraries and modules,
+i.e. no version information is stored and no symbolic links are created.
+If the platform requires versioning, this option has no effect.
+
 @item -dlopen @var{file}
 Same as @samp{-dlpreopen @var{file}}, if native dlopening is not
 supported on the host platform (@pxref{Dlopened modules}).  Otherwise,
@@ -1168,6 +1173,9 @@ Creates a library that can be dlopenend (@pxref{Dlopened modules}).
 This option doesn't work for programs and must not be used 
 together with @samp{-export-symbols}.
 It implies the option @samp{-export-dynamic}.
+Module names don't need to be prefixed with 'lib'.
+In order to prevent name clashes, however, 'libname' and 'name' 
+must not be used at the same time.
 
 @item -no-undefined
 Declare that @var{output-file} does not depend on any other libraries.
@@ -2551,6 +2559,12 @@ Here is a list of the current programs in the test suite, and what they
 test for:
 
 @table @file
+
+@item assign.test
+@pindex assign.test
+Checks whether we don't put break or continue on the same 
+line as an assignment in the libtool script.
+
 @item demo-conf.test
 @itemx demo-exec.test
 @itemx demo-inst.test
@@ -2609,6 +2623,18 @@ library works properly.
 This test makes sure that files ending in @samp{.lo} are never linked
 directly into a program file.
 
+@item nomode.test
+@pindex nomode.test
+Check whether we can actually get help for libtool.
+
+@item quote.test
+@pindex quote.test
+This program checks libtool's metacharacter quoting.
+
+@item sh.test
+@pindex sh.test
+Checks whether a `test' command was forgotton in libtool.
+
 @item suffix.test
 @pindex suffix.test
 When other programming languages are used with libtool (@pxref{Other
@@ -2616,11 +2642,6 @@ languages}), the source files may end in suffixes other than @samp{.c}.
 This test validates that libtool can handle suffixes for all the file
 types that it supports, and that it fails when the suffix is invalid.
 
-@item test-e.test
-@pindex test-e.test
-This program checks that the @code{test -e} construct is @emph{never}
-used in the libtool scripts.  Checking for the existence of a file can
-only be done in a portable way by using @code{test -f}.
 @end table
 
 @node When tests fail
@@ -3018,8 +3039,10 @@ aren't defined in that library.
 @end defvar
 
 @defvar archive_cmds
+@defvarx archive_sym_cmds
 @defvarx old_archive_cmds
 Commands used to create shared and static libraries, respectively.
+archive_sym_cmds is used when -export-symbols was defined.
 @end defvar
 
 @defvar build_libtool_libs
@@ -3123,6 +3146,16 @@ the file name that the linker finds when given @samp{-l@var{name}}.
 @defvar link_static_flag
 Linker flag (passed through the C compiler) used to prevent dynamic
 linking.
+@end defvar
+
+@defvar need_lib_prefix
+Whether libtool should automatically prefix module names with 'lib'.
+Set to @samp{yes} or @samp{no}.
+@end defvar
+
+@defvar need_version
+Whether versioning is required for libraries.
+Set to @samp{yes} or @samp{no}.
 @end defvar
 
 @defvar no_builtin_flag
