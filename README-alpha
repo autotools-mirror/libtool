@@ -1,9 +1,8 @@
 This is an alpha testing release of GNU Libtool.  To get the latest
 CVS version of this package, do:
 
-  cvs -d :pserver:anoncvs@subversions.gnu.org:/home/cvs login
-  [Hit return when prompted for the password]
-  cvs -d :pserver:anoncvs@subversions.gnu.org:/home/cvs checkout libtool
+  export CVS_RSH=ssh
+  cvs -z3 -d :ext:anoncvs@savannah.gnu.org:/cvsroot/libtool co libtool
   cd libtool
   ./bootstrap
 
@@ -83,56 +82,62 @@ using (by typing `libtool --version').
   keys will be registered on ftp-upload.gnu.org and only then will you be
   authorized to upload files to the FSF ftp machines.
 
-* Update NEWS, ChangeLog.
-
 * Update the version number in configure.ac.
   See http://www.gnu.org/software/libtool/contribute.html for details of
   the numbering scheme.
 
+* Update NEWS, ChangeLog.
+
 * Run ./bootstrap.
+
+* Run ./configure and then make.
 
 * Run `make fetch', which will fetch new versions of the files that are
   maintained outside of libtool.
 
-* Run ./configure and then make.
+* Run ./commit.
 
 * Run `make cvs-dist' which will build a release tarball (with `make
-  distcheck'), commit the last NEWS, ChangeLog and configure.ac changes,
-  tag the tree with release-$(VERSION), and generate gpg signature files.
-
-* Run `make cvs-diff' which will create a diff file against the previous
-  release tag (set OLDVERSION=min.maj[.mic[alpha]] in the environment
-  beforehand if necessary), and generate gpg signature files.
+  distcheck'), tag the tree with release-$(VERSION) and generate the
+  gpg signature files.
 
 * Make sure you have a copy of xdelta installed, and a copy of the previous
-  release tarball in the build directory, then run `make xdelta', which will
-  create an xdelta file between this and the previous release tarballs (set
-  OLDVERSION=min.maj[.mic[alpha]] in the environment beforehand if necessary),
-  and generate gpg signature files.
+  release tarball in the build directory.
+
+* Run 'make LASTRELEASE=min.maj[.mic[alpha]] deltas' to create both diff
+  and xdelta files between the previous release tarball and the new with
+  detached gpg signature files and clear signed directive files.
 
 * Upload release tarball, diff file and xdelta file, plus their associated
   detached gpg signature files and clear signed directive files to
-  ftp-upload.gnu.org. If the upload is destined for ftp.gnu.org, then the
+  ftp-upload.gnu.org.  If the upload is destined for ftp.gnu.org, then the
   files should be placed in the /incoming/ftp directory.  If the upload is
   an alpha release destined for alpha.gnu.org, then the files should be
-  placed in the /incoming/alpha directory.incoming/ftp/gnu/libtool.  Then send
-  announcement to libtool@gnu.org and autotools-announce@gnu.org.
+  placed in the /incoming/alpha directory.
 
-* If not an alpha, announcement must also go to info-gnu@gnu.org, and an
-  upload request be sent to ftp-upload@gnu.org requesting files be transferred
-  from ftp://alpha.gnu.org/gnu/libtool to ftp://ftp.gnu.org/gnu/libtool.
-
+* Send announcement to libtool@gnu.org and autotools-announce@gnu.org,
+  if not an alpha send to info-gnu@gnu.org as well.
+  
 * Update version number in configure.ac to next alpha number.
+  See http://www.gnu.org/software/libtool/contribute.html for details of
+  the numbering scheme.
 
-* Commit.
+* Update NEWS, ChangeLog.
 
-* Update the front libtool webpage to indicate the latest release
-  number, and the news page to reflect the latest release note.
+* Run ./commit.
+
+* Update the webpages, libtool.html will need to indicate the latest
+  release number and the news page should get a HTMLified copy of your
+  release announcement.
+
+* If not an alpha, replace manual.html with the new one
+  (generate with cd doc && texi2html libtool.texi)
 
 ================================================================
 = Alpha release note template
 
 To: libtool@gnu.org, autotools-announce@gnu.org
+Subject: GNU Libtool @VERSION@ released (alpha release).
 
 The Libtool Team is pleased to announce alpha release @VERSION@ of GNU
 Libtool.
@@ -145,7 +150,6 @@ which hides the complexity of loading dynamic runtime libraries
 Here are the compressed sources:
 
   ftp://alpha.gnu.org/gnu/libtool/libtool-@VERSION@.tar.gz
-  ftp://alpha.gnu.org/gnu/libtool/libtool-@VERSION@.tar.bz2
 
 Here are the xdeltas and diffs against libtool-@PREV_RELEASE_VERSION_ON_THIS_BRANCH@:
 
@@ -155,18 +159,15 @@ Here are the xdeltas and diffs against libtool-@PREV_RELEASE_VERSION_ON_THIS_BRA
 Here are the gpg detached signatures:
 
   ftp://alpha.gnu.org/gnu/libtool/libtool-@VERSION@.tar.gz.sig
-  ftp://alpha.gnu.org/gnu/libtool/libtool-@VERSION@.tar.bz2.sig
   ftp://alpha.gnu.org/gnu/libtool/libtool-@PREV_RELEASE_VERSION_ON_THIS_BRANCH@-@VERSION@.diff.gz.sig
   ftp://alpha.gnu.org/gnu/libtool/libtool-@PREV_RELEASE_VERSION_ON_THIS_BRANCH@-@VERSION@.xdelta.sig
 
 Here are the MD5 and SHA1 checksums:
 
   @MD5SUM@ libtool-@VERSION@.tar.gz
-  @MD5SUM@ libtool-@VERSION@.tar.bz2
   @MD5SUM@ libtool-@PREV_RELEASE_VERSION_ON_THIS_BRANCH@-@VERSION@.diff.gz
   @MD5SUM@ libtool-@PREV_RELEASE_VERSION_ON_THIS_BRANCH@-@VERSION@.xdelta
   @SHA1SUM@ libtool-@VERSION@.tar.gz
-  @SHA1SUM@ libtool-@VERSION@.tar.bz2
   @SHA1SUM@ libtool-@PREV_RELEASE_VERSION_ON_THIS_BRANCH@-@VERSION@.diff.gz
   @SHA1SUM@ libtool-@PREV_RELEASE_VERSION_ON_THIS_BRANCH@-@VERSION@.xdelta
 
@@ -177,12 +178,10 @@ but is useable with @COMPATIBLE_AUTOTOOL_VERSIONS@ in your own
 projects.
 
 Alternatively, you can fetch the unbootstrapped sourcecode from
-anonymous cvs by using the following commands (just hit return when
-you are prompted for the password):
-
-  $ cvs -z3 -d :pserver:anoncvs@subversions.gnu.org:/cvsroot/libtool login
-  Password:
-  $ cvs -z3 -d :pserver:anoncvs@subversions.gnu.org:/cvsroot/libtool \
+anonymous cvs by using the following commands:
+ 
+  $ export CVS_RSH=ssh
+  $ cvs -z3 -d :ext:anoncvs@savannah.gnu.org:/cvsroot/libtool \
   co -r @CVS_RELEASE_TAG@ libtool
 
 You will then need to have recent (possibly as yet unreleased) versions
@@ -200,6 +199,7 @@ Please report bugs to <bug-libtool@gnu.org>.
 
 To: info-gnu@gnu.org
 Cc: libtool@gnu.org, autotools-announce@gnu.org
+Subject: GNU Libtool @VERSION@ released.
 
 The Libtool Team is pleased to announce the release of GNU Libtool
 @VERSION@.
@@ -225,7 +225,6 @@ use a mirror to reduce stress on the main gnu machine:
 Here are the compressed sources:
 
   ftp://ftp.gnu.org/gnu/libtool/libtool-@VERSION@.tar.gz
-  ftp://ftp.gnu.org/gnu/libtool/libtool-@VERSION@.tar.bz2
 
 Here are the xdeltas and diffs against libtool-@PREV_RELEASE_VERSION_ON_THIS_BRANCH@:
 
@@ -235,18 +234,15 @@ Here are the xdeltas and diffs against libtool-@PREV_RELEASE_VERSION_ON_THIS_BRA
 Here are the gpg detached signatures:
 
   ftp://ftp.gnu.org/gnu/libtool/libtool-@VERSION@.tar.gz.sig
-  ftp://ftp.gnu.org/gnu/libtool/libtool-@VERSION@.tar.bz2.sig
   ftp://ftp.gnu.org/gnu/libtool/libtool-@PREV_RELEASE_VERSION_ON_THIS_BRANCH@-@VERSION@.diff.gz.sig
   ftp://ftp.gnu.org/gnu/libtool/libtool-@PREV_RELEASE_VERSION_ON_THIS_BRANCH@-@VERSION@.xdelta.sig
 
 Here are the MD5 and SHA1 checksums:
 
   @MD5SUM@ libtool-@VERSION@.tar.gz
-  @MD5SUM@ libtool-@VERSION@.tar.bz2
   @MD5SUM@ libtool-@PREV_RELEASE_VERSION_ON_THIS_BRANCH@-@VERSION@.diff.gz
   @MD5SUM@ libtool-@PREV_RELEASE_VERSION_ON_THIS_BRANCH@-@VERSION@.xdelta
   @SHA1SUM@ libtool-@VERSION@.tar.gz
-  @SHA1SUM@ libtool-@VERSION@.tar.bz2
   @SHA1SUM@ libtool-@PREV_RELEASE_VERSION_ON_THIS_BRANCH@-@VERSION@.diff.gz
   @SHA1SUM@ libtool-@PREV_RELEASE_VERSION_ON_THIS_BRANCH@-@VERSION@.xdelta
 
@@ -258,9 +254,8 @@ Alternatively, you can fetch the unbootstrapped sourcecode from
 anonymous cvs by using the following commands (just hit return when
 you are prompted for the password):
 
-  $ cvs -z3 -d :pserver:anoncvs@subversions.gnu.org:/cvsroot/libtool login
-  Password:
-  $ cvs -z3 -d :pserver:anoncvs@subversions.gnu.org:/cvsroot/libtool \
+  $ export CVS_RSH=ssh
+  $ cvs -z3 -d :ext:anoncvs@savannah.gnu.org:/cvsroot/libtool \
   co -r @CVS_RELEASE_TAG@ libtool
 
 You will then need to have the latest release versions of Automake

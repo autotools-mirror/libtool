@@ -1,3 +1,46 @@
+2004-01-27  Scott James Remnant  <scott@netsplit.com>
+
+	This fixes release procedure problems discovered whilst making
+	the 1.5.2 release.
+
+	* Makefile.am (cvs-dist): Because we check whether ChangeLog
+	has been committed, this rule can't be run with uncommitted
+	source so we can't run 'commit' and don't need to run
+	'make dist' a second time.  Fix CVS tag as it should be
+	"release-X" not "Release-X".
+	(cvs_commit): New rule for the cvs-release chain that runs
+	'commit'
+	(cvs-release): Depend on cvs-commit, depend on deltas instead of
+	cvs-diff and xdelta.
+	(cvs-diff): Removed, replaced with delta-diff.
+	(delta-diff): Unpack and diff the old and new tarballs rather
+	than using CVS, so we get a genuinely complete diff.
+	(xdelta): Removed, replaced with delta-xdelta.
+	(got-xdelta): New rule for improved reading.
+	(delta-xdiff): Copied and cleaned up version of old xdelta rule.
+	(deltas): Depends on delta-diff and delta-xdelta (make deltas).
+	(cvs-news): Don't depend on timestamps, cvs-dist itself does now.
+	(prev-tarball): This is the only place we need a LASTRELEASE check
+	so copy the code here and remove the CHECK_RELEASE variable.
+	(new-tarball): Check there's a new tarball (did cvs-dist work?)
+	* README-alpha: Update CVS instructions as everything's changed
+	on Savannah, remove references to bz2 as we don't generate those
+	on branch-1-5.
+	(Release procedure): Update NEWS and ChangeLog after changing
+	the version number (both times); Run 'make fetch' after running
+	'configure' (difficult to do it beforehand); Require 'commit'
+	before 'make cvs-dist' as that checks ChangeLog is committed;
+	'make deltas' instead of 'cvs-diff' and 'xdelta', pass LASTRELEASE
+	to make instead of OLDVERSION (and it's mandatory); Clean up
+	uploading paragraph; Clearer announcement sending instruction;
+	Removed ftp-upload@gnu.org mail as that's not necessary now;
+	Make web page updating instructions a bit clearer; Add an instruction
+	to update the manual for non-alphas.
+	(Alpha release note template): Add a Subject; update CVS instructions.
+	(Full release note template): Add a Subject; update CVS instructions.
+	* configure.ac: Add dist-bzip2 to AM_INIT_AUTOMAKE as we talk
+	about bz2 files in our release announcements.
+
 2004-01-25  Scott James Remnant  <scott@netsplit.com>
 
 	* NEWS: updated.
