@@ -6,7 +6,7 @@ INCLUDES = $(INCLTDL)
 
 EXTRA_DIST = acinclude.m4
 
-lib_LTLIBRARIES = foo1.la libfoo2.la libsub.la
+lib_LTLIBRARIES = libsub.la foo1.la libfoo2.la
 
 foo1_la_SOURCES = foo1.c
 foo1_la_LIBADD = $(LIBM)
