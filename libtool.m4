@@ -513,7 +513,7 @@ delay_variable_subst='s/\\\\\\\\\\\$/\\\\\\$/g'
 rm="rm -f"
 
 # Global variables:
-default_ofile=libtool
+default_ofile=ltconfig
 can_build_shared=yes
 
 # All known linkers require a `.a' archive for static linking (except M$VC,
@@ -2070,6 +2070,7 @@ need_lc=${ac_cv_archive_cmds_need_lc-yes}
 # Now quote all the things that may contain metacharacters while being
 # careful not to overquote the AC_SUBSTed values, take copies of the
 # variables and quote the copies for generation of the libtool script.
+
 for var in echo old_CC old_CFLAGS \
   AR AR_FLAGS CC LD LN_S NM SHELL \
   reload_flag reload_cmds wl \
@@ -2103,8 +2104,9 @@ for var in echo old_CC old_CFLAGS \
 done
 
 trap "$rm \"$ofile\"; exit 1" 1 2 15
-$rm "$ofile"
+$rm -f "$ofile"
 
+echo creating $ofile
 cat <<__EOF__ > "$ofile"
 #! $SHELL
 
@@ -2586,31 +2588,43 @@ EOF
   ;;
 esac
 
-# Set this here so that when configure calls config.status, the
-# libtool script is generated. The CONFIG_OTHER requirement is to
-# prevent automake rules (for the generation of libtoolize etc.)
-# from appending another copy of ltmain.sh to libtool.
-CONFIG_OTHER=${CONFIG_OTHER-libtool}
+# This is necessary.
+CONFIG_OTHER=libtool
 export CONFIG_OTHER
 
 AC_OUTPUT_COMMANDS([
-  case "$CONFIG_OTHER" in
-  *libtool*)
-    trap "$rm \"$ofile\"; exit 1" 1 2 15
-    echo "creating $ofile"
+  case " $CONFIG_OTHER " in
+  *" $libtool "*)
+    if test -f Makefile; then
 
-    # Append the ltmain.sh script.
-    sed '$q' "$ltmain" >> "$ofile" || (rm -f "$ofile"; exit 1)
-    # We use sed instead of cat because bash on DJGPP gets confused if
-    # if finds mixed CR/LF and LF-only lines.  Since sed operates in
-    # text mode, it properly converts lines to CR/LF.  This bash problem
-    # is reportedly fixed, but why not run on old versions too?
+      # The second clause should only fire when bootstrapping the
+      # libtool distribution, otherwise you forgot to ship ltmain.sh
+      # with your package, and you will get complaints that there are
+      # no rules to generate ltmain.sh.
+      test -f "$ltmain" || make "$ltmain"
 
-    chmod +x "$ofile"
+      trap "$rm \"$libtool\"; exit 1" 1 2 15
+      rm -f "$libtool"
+      echo "creating $libtool"
+
+      # Copy the configuration from ltconfig
+      sed '$q' "$ofile" > "$libtool" || (rm -f "$libtool"; exit 1)
+
+      # Append the ltmain.sh script.
+      sed '$q' "$ltmain" >> libtool || (rm -f "$libtool"; exit 1)
+
+      # We use sed instead of cat because bash on DJGPP gets confused if
+      # if finds mixed CR/LF and LF-only lines.  Since sed operates in
+      # text mode, it properly converts lines to CR/LF.  This bash problem
+      # is reportedly fixed, but why not run on old versions too?
+
+      chmod +x "$libtool"
+    fi
     ;;
   esac
 ], [
 ofile="$ofile"
+libtool=libtool
 ltmain="$ltmain"
 ])
 ##

@@ -10,7 +10,7 @@ AC_LIBTOOL_DLOPEN
 AM_PROG_LIBTOOL
 AC_SUBST(LIBTOOL_DEPS)
 
-if ${CONFIG_SHELL} ./libtool --features | grep "enable static" >/dev/null; then
+if grep '^build_old_libs=yes$' ./ltconfig > /dev/null 2>&1; then
   STATIC=-static
 else
   STATIC=
@@ -18,7 +18,7 @@ fi
 AC_SUBST(STATIC)
 
 AM_CONDITIONAL(BINARY_HELLDL, [dnl
-grep '^global_symbol_pipe=..*$' ./libtool >/dev/null])
+grep '^global_symbol_pipe=..*$' ./ltconfig >/dev/null])
 
 AC_CHECK_HEADERS(string.h math.h)
 

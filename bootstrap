@@ -13,7 +13,6 @@ touch ltconfig
 touch libtoolize
 aclocal
 automake --gnu --add-missing --copy
-sed 's/ ltconfig//' < $file > ${file}T && mv ${file}T $file || rm -f ${file}T
 autoconf
 
 for sub in libltdl demo depdemo mdemo cdemo; do
@@ -24,7 +23,6 @@ for sub in libltdl demo depdemo mdemo cdemo; do
   aclocal
   test "$sub" = libltdl && autoheader
   automake --gnits --add-missing
-  sed 's/ ltconfig//' < $file > ${file}T && mv ${file}T $file || rm -f ${file}T
   autoconf
   cd ..
 done

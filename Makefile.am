@@ -28,14 +28,25 @@ aclocal_DATA = $(aclocal_macros)
 # The standalone libtool script, and the libtool distributor.
 bin_SCRIPTS = libtool libtoolize
 
+libtool: ltconfig ltmain.sh $(top_builddir)/configure
+	CONFIG_OTHER=$@ CONFIG_FILES= CONFIG_HEADERS= \
+	  $(SHELL) $(top_builddir)/config.status
+	chmod +x $@
+
 libtoolize: $(srcdir)/libtoolize.in $(top_builddir)/config.status
-	CONFIG_FILES=libtoolize CONFIG_HEADERS= $(top_builddir)/config.status
-	chmod +x libtoolize
+	CONFIG_FILES=$@ CONFIG_HEADERS= $(SHELL) $(top_builddir)/config.status
+	chmod +x $@
 
-libtool: $(srcdir)/ltmain.sh $(top_builddir)/configure
-	$(top_builddir)/configure --no-recursion
+ltconfig: $(top_srcdir)/configure.in
+	$(top_builddir)/config.status --recheck
 
-@srcdir@/ltmain.sh: $(TSDEPS)
+$(srcdir)/ltmain.sh: $(TSDEPS)
+	-rm -f ltmain.shT
+	date=`$(SHELL) $(srcdir)/mkstamp < $(srcdir)/ChangeLog` && \
+	sed -e 's/@''PACKAGE@/@PACKAGE@/' -e 's/@''VERSION@/@VERSION@/' \
+	    -e "s%@""TIMESTAMP@%$$date%" $(srcdir)/ltmain.in > ltmain.shT
+	mv -f ltmain.shT $@ || \
+	(rm -f $@ && cp ltmain.shT $@ && rm -f ltmain.shT)
 
 # TSDEPS will be defined to TSDEPS_DIST at `make dist' time
 TSDEPS =
