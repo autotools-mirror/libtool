@@ -29,8 +29,8 @@ AC_DEFUN(AC_PROG_LIBTOOL,
 AC_CACHE_SAVE
 
 # Actually configure libtool.  ac_aux_dir is where install-sh is found.
-AR="$AR" CC="$CC" CFLAGS="$CFLAGS" CPPFLAGS="$CPPFLAGS" \
-FILE="$FILE" LTCC="$CC" LD="$LD" LDFLAGS="$LDFLAGS" LIBS="$LIBS" \
+AR="$AR" LTCC="$CC" CC="$CC" CFLAGS="$CFLAGS" CPPFLAGS="$CPPFLAGS" \
+FILE="$FILE" LD="$LD" LDFLAGS="$LDFLAGS" LIBS="$LIBS" \
 LN_S="$LN_S" NM="$NM" RANLIB="$RANLIB" STRIP="$STRIP" \
 AS="$AS" DLLTOOL="$DLLTOOL" OBJDUMP="$OBJDUMP" \
 objext="$OBJEXT" exeext="$EXEEXT" reload_flag="$reload_flag" \
@@ -56,6 +56,13 @@ exec 5>>./config.log
 
 AC_DEFUN(AC_LIBTOOL_SETUP,
 [AC_PREREQ(2.13)dnl
+# Autoconf's AC_EXEEXT macro only works for C compilers.  AC_EXEEXT
+# gets confused and thinks that an extension such as the C++ source
+# file extenstion ".C" is an executable file extension, which screws
+# up the libtool configuration.
+AC_BEFORE([AC_LIBTOOL_SETUP],[AC_LANG_CPLUSPLUS])
+AC_BEFORE([AC_LIBTOOL_SETUP],[AC_LANG_FORTRAN77])
+#
 AC_REQUIRE([AC_ENABLE_SHARED])dnl
 AC_REQUIRE([AC_ENABLE_STATIC])dnl
 AC_REQUIRE([AC_ENABLE_FAST_INSTALL])dnl
@@ -678,9 +685,13 @@ lt_save_CC="$CC"
 lt_save_CFLAGS="$CFLAGS"
 dnl Make sure LTCC is set to the C compiler, i.e. set LTCC before CC
 dnl is set to the C++ compiler.
+AR="$AR" LTCC="$CC" CC="$CXX" CFLAGS="$CXXFLAGS" CPPFLAGS="$CPPFLAGS" \
+FILE="$FILE" LIBS="$LIBS" \
+LN_S="$LN_S" NM="$NM" RANLIB="$RANLIB" STRIP="$STRIP" \
+AS="$AS" DLLTOOL="$DLLTOOL" OBJDUMP="$OBJDUMP" \
+objext="$OBJEXT" exeext="$EXEEXT" \
 deplibs_check_method="$deplibs_check_method" \
 file_magic_cmd="$file_magic_cmd" \
-LTCC="$CC" CC="$CXX" CFLAGS="$CXXFLAGS" \
 ${CONFIG_SHELL-/bin/sh} $ac_aux_dir/ltconfig -o libtool $libtool_flags \
 --build="$build" --add-tag=CXX $ac_aux_dir/ltcf-cxx.sh \
 || AC_MSG_ERROR([libtool tag configuration failed])
