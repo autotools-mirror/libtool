@@ -2,6 +2,8 @@
 
 	* ltmain.in: Remove an extra eval concat_cmds that some idiot added.
 	Fixes double eval on AIX, reported by Albert Chin and Uwe Moeller.
+
+	* NEWS: Add a news item about xlc support that I forgot yesterday.
 	
 2004-03-31  Peter O'Gorman  <peter@pogma.com>
 
