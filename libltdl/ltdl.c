@@ -687,13 +687,22 @@ sys_shl_open (loader_data, filename)
      lt_user_data loader_data;
      const char *filename;
 {
+  static shl_t self = (shl_t) 0;
   lt_module module = shl_load (filename, LT_BIND_FLAGS, 0L);
-
+  
+  /* Since searching for a symbol against a NULL module handle will also
+     look in everything else that was already loaded and exported with 
+     the -E compiler flag, we always cache a handle saved before any
+     modules are loaded.  */
+  if (!self)
+    {
+      lt_ptr address;
+      shl_findsym (&self, "main", TYPE_UNDEFINED, &address);
+    }
+  
   if (!filename)
     {
-      /* A NULL handle is used to get symbols from self and everything
-         else already loaded that was exported with -E compiler flag.  */
-      module = (lt_module) 0;
+      module = self;
     }
   else
     {
@@ -730,14 +739,14 @@ sys_shl_sym (loader_data, module, symbol)
      lt_module module;
      const char *symbol;
 {
-  int    is_module_self = (module == (lt_module) 0);
-  lt_ptr address        = 0;
+  lt_ptr address = 0;
 
-  /* shl_findsym considers zero valued MODULE as an indicator to saerch
-     for a symbol among all loaded (and exported) symbols including those
-     in the main executable.  However, it sets MODULE to a valid module
-     address which breaks the semantics of libltdl's module management.  */
-  if (shl_findsym ((shl_t*) &module, symbol, TYPE_UNDEFINED, &address) == 0)
+  /* sys_shl_open should never return a NULL module handle */
+  if (module == (lt_module) 0)
+  {
+    MUTEX_SETERROR (LT_DLSTRERROR (INVALID_HANDLE));
+  }
+  else if (!shl_findsym((shl_t*) &module, symbol, TYPE_UNDEFINED, &address))
     {
       if (!address)
 	{
@@ -745,9 +754,6 @@ sys_shl_sym (loader_data, module, symbol)
 	}
     }
   
-  if (is_module_self)
-    module = (lt_module) 0;
-
   return address;
 }
 
