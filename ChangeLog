@@ -1,3 +1,19 @@
+2005-02-24  Gary V. Vaughan  <gary@gnu.org>
+
+	Using `libtoolize --copy --ltdl' was not preserving timestamps, so
+	parts of the autoconf bootstrap would be rerun spuriously after
+	the files had been copied into the source tree:
+
+	* libtoolize.in: Use $tar to copy files to preserve timestamps.
+	(tar): New default tar command.
+	(cp): Use -p to try and preserve timestamps.
+	* libltdl/Makefile.am (ltdldatadir): Installation destination for
+	libltdl sources.
+	(install-data-local): New rule to install libltdl tree with tar to
+	preserve timestamps.
+	(local-install-files): Removed.
+	Reported by Jeff Squyres <jsquyres@lam-mpi.org>
+
 2005-02-12  Alexandre Duret-Lutz  <adl@gnu.org>,
 	    Peter O'Gorman  <peter@pogma.com>
 
@@ -45,7 +61,7 @@
 
 2005-02-04  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
-	* ltmain.in (link mode): Allow five digits in version-info 
+	* ltmain.in (link mode): Allow five digits in version-info
 
 	* NEWS: s/Linux/GNU &/.
 
@@ -173,21 +189,21 @@
 	symmetry.
 
 2005-01-21  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>  (tiny change)
-	
+
 	* libltdl.c (try_dlopen): Fix memleak.
 	Savannah BTS patch #3670 by Lennart Poettering.
 
 2005-01-16  Peter O'Gorman  <peter@pogma.com>
 
 	* ltmain.in: Don't pass through compiler-like thread flags when
-	using $LD to do the linking. Use compiler_flags instead. 
+	using $LD to do the linking. Use compiler_flags instead.
 	Reported by Mark_Andrews@isc.org.
 
 	* libtool.m4 (LT_CMD_MAX_LEN) [osf]: On Tru64 there could
 	be a kernel panic when testing the maximum command line length
-	if exec_disable_arg_limit=1. Don't do the tests to figure it 
+	if exec_disable_arg_limit=1. Don't do the tests to figure it
 	out on *-osf*.
-	Reported by Dr. Hans Ekkehard Plesser 
+	Reported by Dr. Hans Ekkehard Plesser
 	<hans.ekkehard.plesser@umb.no>
 
 2005-01-14  Guido Draheim  <guidod-2003-@gmx.de>  (tiny change)

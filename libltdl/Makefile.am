@@ -31,21 +31,11 @@ $(libltdl_la_OBJECTS) $(libltdlc_la_OBJECTS): libtool
 libtool: $(LIBTOOL_DEPS)
 	$(SHELL) ./config.status --recheck
 
-## This allows us to install libltdl without using ln and without creating
-## a world writeable directory.
-## FIXME:  Remove this rule once automake can do this properly by itself.
-local-install-files: $(DISTFILES)
-	-rm -rf $(DESTDIR)$(datadir)/libtool/libltdl
-	$(mkinstalldirs) $(DESTDIR)$(datadir)/libtool/libltdl
-	@for file in $(DISTFILES); do \
-	  case $$file in \
-	    $(srcdir)/*) file=`echo "$$file" | sed "s|^$(srcdir)/||"`;; \
-	  esac; \
-	  d=$(srcdir); \
-	  if test -d $$d/$$file; then \
-	    cp -r $$d/$$file $(DESTDIR)$(datadir)/libtool/libltdl/$$file; \
-	  else \
-	    test -f $(DESTDIR)$(datadir)/libtool/libltdl/$$file \
-	    || cp $$d/$$file $(DESTDIR)$(datadir)/libtool/libltdl/$$file || :; \
-	  fi; \
-	done
+## To avoid spurious reconfiguration when the user installs these files
+## with libtoolize, we have to preserve their timestamps carefully:
+ltdldatadir = $(datadir)/libtool/libltdl
+install-data-local:
+	-rm -rf $(DESTDIR)$(ltdldatadir)
+	$(mkinstalldirs) $(DESTDIR)$(ltdldatadir)
+	$(AMTAR) cf - $(DISTFILES) \
+	  | ( cd $(DESTDIR)$(ltdldatadir) && $(AMTAR) xf -; )
