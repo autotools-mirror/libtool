@@ -202,6 +202,7 @@ Platform quirks
 * References::                  Finding more information.
 * Compilers::                   Creating object files from source files.
 * Reloadable objects::          Binding object files together.
+* Multiple dependencies::	Removing duplicate dependant libraries.
 * Archivers::                   Programs that create static archives.
 
 @end detailmenu
@@ -4037,6 +4038,7 @@ write your own.
 * References::                  Finding more information.
 * Compilers::                   Creating object files from source files.
 * Reloadable objects::          Binding object files together.
+* Multiple dependencies::	Removing duplicate dependant libraries.
 * Archivers::                   Programs that create static archives.
 @end menu
 
@@ -4133,6 +4135,28 @@ On all known systems, a reloadable object can be created by running
 @kbd{ld -r -o @var{output}.o @var{input1}.o @var{input2}.o}.  This
 reloadable object may be treated as exactly equivalent to other
 objects.
+
+@node Multiple dependencies
+@subsection Multiple dependencies
+
+On most modern platforms the order that dependent libraries are listed
+has no effect on object generation.  In theory, there are platforms
+which require libraries which provide missing symbols to other libraries
+to listed after those libraries whose symbols they provide.
+
+Particularly, if a pair of static archives each resolve some of the
+other's symbols, it might be necessary to list one of those archives
+both before and after the other one.  Libtool does not currently cope
+with this situation well, since dupicate libraries are removed from
+thr link line.
+
+If you find yourself developing on a host that requires you to list
+libraries multiple times in order for it to generate correctly linked
+objects, you can defeat libtool's removal algorithm like this:
+
+@example
+$ libtool ... -lfoo -lbar -Wl,-lfoo
+@end example
 
 @node Archivers
 @subsection Archivers

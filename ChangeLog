@@ -1,5 +1,8 @@
 2001-04-05  Gary V. Vaughan  <gvv@techie.com>
 
+	* doc/libtool.texi (Multiple dependencies): A note about the
+	problems I've reintroduced by reverting the my patch of 2001-03-31.
+
 	From Edward Lee <tailbert@yahoo.com>
 	* libtool.m4: Typos.
 
