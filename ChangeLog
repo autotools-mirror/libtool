@@ -1,3 +1,7 @@
+2000-07-24  Alexandre Oliva  <oliva@lsd.ic.unicamp.br>, Ralf S. Engelschall  <rse@engelschall.com>
+
+	* ltmain.in: Support GNU shtool's install.
+
 2000-07-24  Alexandre Oliva  <oliva@lsd.ic.unicamp.br>
 
 	* ltconfig.in (linkopts): Don't set for test.
