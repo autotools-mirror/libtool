@@ -823,11 +823,10 @@ find_module (handle, dir, libdir, dlname, old_name, installed)
 		}
 		/* try to open the not-installed module */
 		if (!installed &&
-		    strlen(dir)+strlen(objdir)+1+strlen(dlname)
+		    strlen(dir)+strlen(objdir)+strlen(dlname)
 		    		< LTDL_FILENAME_MAX) {
 			strcpy(filename, dir);
 			strcat(filename, objdir);
-			strcat(filename, "/");
 			strcat(filename, dlname);
 			if (tryall_dlopen(handle, filename) == 0)
 				return 0;

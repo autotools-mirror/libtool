@@ -1,5 +1,9 @@
 1999-01-25  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* libltdl/configure.in (libltdl_cv_objdir): yes, appending the "/" 
+	in configure.in was much simpler
+	* libltdl/ltdl.c (objdir): ditto
+
 	* libltdl/ltdl.c (objdir): string collation isn't portable; strcat 
 	"/" explicitly.  Or should this be moved to configure.in?
 
