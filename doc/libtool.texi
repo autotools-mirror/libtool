@@ -984,9 +984,11 @@ have a set of object files that you use to build several different
 programs.  You can create a ``convenience library'' out of those
 objects, and link programs with the library, instead of listing all
 object files for every program.  This technique is often used to
-overcome GNU automake's lack of support for linking object files from
-other directories, because it supports linking with libraries from other
-directories.
+overcome GNU automake's lack of support for linking object files built
+from sources in other directories, because it supports linking with
+libraries from other directories.  This limitation applies to GNU
+automake up to release 1.4; newer releases should support sources in
+other directories.
 
 If you just want to link this convenience library into programs, then
 you could just ignore libtool entirely, and use the old @code{ar} and
@@ -1466,7 +1468,8 @@ libhello_la_SOURCES = hello.c foo.c
 libhello_la_LDFLAGS = -version-info 3:12:1
 @end example
 
-The @samp{-rpath} option is passed automatically by Automake, so you
+The @samp{-rpath} option is passed automatically by Automake (except for
+libraries listed as @code{noinst_LTLIBRARIES}), so you
 should not specify it.
 
 @xref{A Shared Library, Building a Shared Library, The Automake Manual,
@@ -1830,6 +1833,14 @@ libtoolize}), it will tell you where to find a definition of
 @code{AM_PROG_LIBTOOL}.  If you use Automake, the @code{aclocal} program
 will automatically add @code{AM_PROG_LIBTOOL} support to your
 @code{configure} script.
+
+Nevertheless, it is advisable to include a copy of @file{libtool.m4} in
+@file{acinclude.m4}, so that, even if @file{aclocal.m4} and
+@file{configure} are rebuilt for any reason, the appropriate libtool
+macros will be used.  The alternative is to hope the user will have a
+compatible version of @file{libtool.m4} installed and accessible for
+@code{aclocal}.  This may lead to wierd errors when versions don't
+match.
 
 @node Distributing
 @section Including libtool in your package
@@ -3036,18 +3047,34 @@ Whatever macro you use, it is up to you to ensure that your
 @file{configure.in} will configure libltdl, using
 @samp{AC_CONFIG_SUBDIRS}, and that your @file{Makefile}s will start
 sub-makes within libltdl's directory, using automake's @var{SUBDIRS},
-for example.  Both macros define the shell variable @var{LIBLTDL} to
-the link flag that you should use to link with libltdl.  It is up to you
-to use @samp{AC_SUBST} to ensure that this variable will be available in
-@file{Makefile}s.
+for example.  Both macros define the shell variables @var{LIBLTDL}, to
+the link flag that you should use to link with libltdl, and
+@var{INCLTDL}, to the preprocessor flag that you should use to compile
+with programs that include @file{ltdl.h}.  It is up to you to use
+@samp{AC_SUBST} to ensure that this variable will be available in
+@file{Makefile}s, or add them to variables that are @samp{AC_SUBST}ed by
+default, such as @var{LIBS} and @var{CPPFLAGS}.
 
-If you're using the convenience libltdl, it will be the pathname for the
-convenience version of libltdl, starting with @samp{$@{top_builddir@}/}.
-Otherwise, if an installed version of libltdl is found, @var{LIBLTDL}
-will be set to @samp{-lltdl}.  If an installable version of libltdl must
-be built, its pathname, starting with @samp{$@{top_builddir@}/}, will be
-stored in @var{LIBLTDL}.  So, when you want to link a program with
-libltdl, just link it with @samp{$(LIBLTDL)}.
+If you're using the convenience libltdl, @var{LIBLTDL} will be the
+pathname for the convenience version of libltdland @var{INCLTDL} will be
+@samp{-I} followed by the directory that contains libltdl, both starting
+with @samp{$@{top_builddir@}/}.
+
+If you request an installed version of libltdl and one is
+found@footnote{Even if libltdl is installed,
+@samp{AC_LIBLTDL_INSTALLABLE} may fail to detect it, if libltdl depends
+on symbols provided by libraries other than the C library.  In this
+case, it will needlessly build and install libltdl.}, @var{LIBLTDL} will
+be set to @samp{-lltdl} and @var{INCLTDL} will be empty (which is just a
+blind assumption that @file{ltdl.h} is somewhere in the include path if
+libltdl is in the library path).  If an installable version of libltdl
+must be built, its pathname, starting with @samp{$@{top_builddir@}/},
+will be stored in @var{LIBLTDL}, and @var{INCLTDL} will be set just like
+in the case of convenience library.
+
+So, when you want to link a program with libltdl, be it a convenience,
+installed or installable library, just compile with @samp{$(INCLTDL)}
+and link it with @samp{$(LIBLTDL)}, using libtool.
 
 You should probably also add @samp{AC_LIBTOOL_DLOPEN} to your
 @file{configure.in} @emph{before} @samp{AM_PROG_LIBTOOL}, otherwise
@@ -3058,10 +3085,10 @@ Avoid using the @code{-static} or @code{-all-static} switches when
 linking programs with libltdl.  This will not work on all plaforms,
 because the dlopening functions may not be available for static linking.
 
-The following example shows you how to embed the convenience libltdl
-in your package. In order to use the installable variant just replace
-AC_LIBLTDL_CONVENIENCE with AC_LIBLTDL_INSTALLABLE. We assume that
-libltdl was embedded using @samp{libtoolize --ltdl}.
+The following example shows you how to embed the convenience libltdl in
+your package.  In order to use the installable variant just replace
+@samp{AC_LIBLTDL_CONVENIENCE} with @samp{AC_LIBLTDL_INSTALLABLE}.  We
+assume that libltdl was embedded using @samp{libtoolize --ltdl}.
 
 configure.in:
 @example
@@ -3075,6 +3102,8 @@ dnl and set LIBLTDL accordingly
 AC_LIBLTDL_CONVENIENCE
 dnl Substitute LIBLTDL in the Makefiles
 AC_SUBST(LIBLTDL)
+dnl Add INCLTDL to the include path
+CPPFLAGS="$CPPFLAGS $INCLTDL"
 dnl Configure libltdl
 AC_CONFIG_SUBDIRS(libltdl)
 ...
