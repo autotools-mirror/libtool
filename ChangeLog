@@ -1,5 +1,39 @@
 2000-01-27  Gary V. Vaughan  <gary@oranda.demon.co.uk>
 
+	* NEWS: Updated.
+	* doc/libtool.texi (Libltdl interface): Document new entry
+	points.
+	* libltdl/ltdl.c (lt_dltype_t):  Use new type definitions for
+	existing fields.
+	(lt_dladdtype): New function to add a new ltdl dynamic loader
+	type to the end of the list of valid types..
+	(lt_dlgettypes): New function to return the complete list of ltdl
+	dynamic loader types.
+	(lt_dlsettypes): New function to replace the list of ltdl dynamic
+	loader types entirely -- e.g. to prepend a new type to the
+	existing list.
+	(sys_dl_open, sys_dl_close, sys_dl_sym): Work with lt_syshandle..
+	(sys_shl_open, sys_shl_close, sys_shl_sym): ditto.
+	(sys_dld_open, sys_dld_close, sys_dld_sym): ditto.
+	(sys_wll_open, sys_wll_close, sys_wll_sym): ditto.
+	(sys_bedl_open, sys_bedl_close, sys_bedl_sym): ditto.
+	(presym_open, presym_close, presym_sym): ditto.
+	(tryall_dlopen): Call lt_lib_open_t functions lt_syshandle
+	compatibly.
+	(lt_dlclose): Call lt_lib_close_t functions lt_syshandle
+	compatibly.
+	(lt_dlsym): Call lt_find_sym_t functions lt_syshandle compatibly.
+	(lt_dltype_t): moved type declaration from here...
+	* libltdl/ltdl.h (lt_dltype_t): ...to here.
+	(lt_syshandle): new type for low level system handles passed by
+	loader functions
+	(lt_mod_init_t):  New type for functions implementing the
+	initialisation for an ltdl dynamic loader.
+	(lt_mod_exit_t): Type of exit functions for the same.
+	(lt_lib_open_t): Type of loader functions for the same.
+	(lt_lib_close_t): Type of unloader functions for the same.
+	(lt_find_sym_t): Type of symbol resolver functions for the same.
+
 	* libltdl/ltdl.c (sys_dl_init, sys_dl_exit, sys_dl_open,
 	sys_dl_close, sys_dl_sym):  Preprocess these away on cygwin to
 	avoid spurious error messages.

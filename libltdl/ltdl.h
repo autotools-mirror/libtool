@@ -120,6 +120,8 @@ typedef	struct lt_dlhandle_t *lt_dlhandle;
 typedef	lt_ptr_t lt_dlhandle;
 #endif
 
+typedef lt_ptr_t lt_syshandle;
+
 typedef struct {
 	const char *name;
 	lt_ptr_t address;
@@ -131,8 +133,27 @@ typedef	struct {
 	int	ref_count;	/* reference count */
 } lt_dlinfo;
 
+typedef int lt_mod_init_t LTDL_PARAMS((void));
+typedef int lt_mod_exit_t LTDL_PARAMS((void));
+typedef lt_syshandle lt_lib_open_t LTDL_PARAMS((const char *filename));
+typedef int lt_lib_close_t LTDL_PARAMS((lt_syshandle handle));
+typedef lt_ptr_t lt_find_sym_t LTDL_PARAMS((lt_syshandle handle, const char *symbol));
+
+typedef struct lt_dltype_t {
+	struct lt_dltype_t *next;
+	const char *sym_prefix;	/* prefix for symbols */
+	lt_mod_init_t *mod_init;
+	lt_mod_exit_t *mod_exit;
+	lt_lib_open_t *lib_open;
+	lt_lib_close_t *lib_close;
+	lt_find_sym_t *find_sym;
+} lt_dltype_t;
+
 __BEGIN_DECLS
 extern int lt_dlinit LTDL_PARAMS((void));
+extern int lt_dladdtype LTDL_PARAMS((lt_dltype_t *dltype));
+extern lt_dltype_t *lt_dlgettypes LTDL_PARAMS((void));
+extern int lt_dlsettypes LTDL_PARAMS((lt_dltype_t *dltypes));
 extern int lt_dlpreload LTDL_PARAMS((const lt_dlsymlist *preloaded));
 extern int lt_dlpreload_default LTDL_PARAMS((const lt_dlsymlist *preloaded));
 extern int lt_dlexit LTDL_PARAMS((void));

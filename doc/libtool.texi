@@ -2820,7 +2820,13 @@ The following types are defined in @file{ltdl.h}:
 
 @deftp {Type} lt_dlhandle
 @code{lt_dlhandle} is a module "handle". 
-Every dlopened module has a handle associated with it.
+Every lt_dlopened module has a handle associated with it.
+@end deftp
+
+@deftp {Type} lt_syshandle
+@code{lt_syshandle} is a generic system module "handle".
+The dynamic module loader type extensions communicate using these low level
+handles.
 @end deftp
 
 @deftypefn {Type} {struct} lt_dlinfo @{ @w{char *@var{filename};} @w{char *@var{name};} @w{int @var{ref_count};} @}
@@ -2831,6 +2837,51 @@ is its module name (e.g. @code{"libfoo"} for @code{"dir/libfoo.la"}),
 otherwise it is set to @code{NULL}.
 The @var{ref_count} attribute is a reference counter that describes how often
 the same module is currently loaded.
+@end deftypefn
+
+@deftypefn {Type} {struct} lt_dltype_t @{ @w{struct lt_dltype_t *@var{next};} @w{const char *@var{sym_prefix};} @w{lt_mod_init_t *@var{mod_init};} @w{lt_mod_exit_t *@var{mod_exit};} @w{lt_lib_open_t *@var{lib_open};} @w{lt_lib_close_t *@var{lib_close};} @w{lt_find_sym_t *@var{find_sym};} @}
+@code{lt_dltype_t} is used to store the functions used to access a dynamic
+module loader type.  If you want to define a new way to open dynamic modules,
+and have the @code{lt_dlopen} @sc{api} use it, you need to instantiate one of 
+these structures and pass it to @code{lt_dladdtype()}.
+@end deftypefn
+
+@deftypefn {Type} int lt_mod_init_t (void)
+The type of an initialisation function for an @code{lt_dltype_t} module
+loader.  Implementation of such a function should perform any initialisation
+required by the loader, and return non-zero if an error is encountered.  When
+used as part of an @code{lt_dltype_t} registration, if non-NULL, the function
+will be called by @code{lt_dlinit}, or if it is registered after the call to
+@code{lt_dlinit}, the function will be called immediately upon registration.
+@end deftypefn
+
+@deftypefn {Type} int lt_mod_exit_t (void)
+The type of the finalisation function for an @code{lt_dltype_t} module
+loader.  Implementation of such a function should free any resources
+associated with the loader.  If non-NULL, the function will be called by
+@code{lt_dlexit}.
+@end deftypefn
+
+@deftypefn {Type} lt_syshandle lt_lib_open_t (@w{const char *@var{filename}})
+The type of the loader function for an @code{lt_dltype_t} module loader.
+Implementation of such a function should attempt to load the named module, and 
+return an @code{lt_syshandle} suitable for passing in to the associated
+@code{lt_lib_close_t} and @code{lt_sym_find_t} function pointers.  If the
+function fails it should return NULL.
+@end deftypefn
+
+@deftypefn {Type} int lt_lib_close_t (@w{lt_syshandle @var{handle}})
+The type of the unloader function for an @code{lt_dltype_t} module loader.
+Implementatation of such a function should attempt to release any resources
+tied up by the @var{handle} module, and then unload it from memory.  If the
+function fails for some reason, return non-zero.
+@end deftypefn
+
+@deftypefn {Type} lt_ptr_t lt_find_sym_t (@w{lt_syshandle @var{handle},} @w{const char *@var{symbol}}) 
+The type of the symbol lookup function for an @code{lt_dltype_t} module
+loader.  Implementation of such a function should return the address of the
+named @var{symbol} in the module @var{handle}, or NULL if there is no such
+symbol.
 @end deftypefn
 
 @deftp {Type} lt_dlsymlist
@@ -2847,6 +2898,32 @@ Initialize libltdl.
 This function must be called before using libltdl
 and may be called several times.
 Return 0 on success, otherwise the number of errors.
+@end deftypefun
+
+@deftypefun int lt_dladdtype (@w{lt_dltype_t *@var{dltype}})
+Append a new module loader type to the list of all types.
+@var{dltype} should have its @code{next} field set to NULL.  If the
+@code{sym_prefix} field is set to NULL, then it will be replaced with a single 
+underscore if that is what the platform requires normally (use the empty
+string if you want an unconditional empty prefix).  The new type will be added 
+to the end of the module loader types list, and hence will be used only if all 
+of the preceding methods fail.
+
+If this function is used to add a type after calling @code{lt_dlinit}, then
+the @var{mod_init} function (if any) will be called immediately, otherwise
+it will be called at the same time as the other type initialisation function
+by @code{lt_dlinit}.
+@end deftypefun
+
+@deftypefun lt_dltype_t *lt_dlgettypes (void)
+Return the list of module loader types.
+@end deftypefun
+
+@deftypefun int lt_dlsettypes (@w{lt_dltype_t *@var{dltypes}})
+Change the list of module loader types to be @var{dltypes}.
+This completely replaces the default module loader types determined by libtool 
+with the new linked list of types -- which should probably be a superset of
+the original list.
 @end deftypefun
 
 @deftypefun int lt_dlexit (void)
