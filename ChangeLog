@@ -1,5 +1,10 @@
 2005-01-13  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* libtoolize.in: Back out copying `install-sh' by libtoolize.
+	* doc/libtool.texi (Distributing): Mention that we distribute
+	`install-sh', but that non-Automake users will have to copy
+	it by themselves.
+
 	* libtoolize.in: Add datarootdir.
 
 2005-01-12  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
