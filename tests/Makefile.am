@@ -5,24 +5,32 @@ AUTOMAKE_OPTIONS = gnits
 TESTS = cdemo-static.test cdemo-make.test cdemo-exec.test \
 	demo-static.test demo-make.test demo-exec.test \
 	demo-inst.test demo-unst.test \
+	depdemo-static.test depdemo-make.test depdemo-exec.test \
+	depdemo-inst.test depdemo-unst.test \
 	mdemo-static.test mdemo-make.test mdemo-exec.test \
 	mdemo-inst.test mdemo-unst.test \
 	cdemo-conf.test cdemo-make.test cdemo-exec.test \
 	demo-conf.test demo-make.test demo-exec.test \
 	demo-inst.test demo-unst.test \
+	depdemo-conf.test depdemo-make.test depdemo-exec.test \
+	depdemo-inst.test depdemo-unst.test \
 	mdemo-conf.test mdemo-make.test mdemo-exec.test \
 	mdemo-inst.test mdemo-unst.test \
 	demo-nofast.test demo-make.test demo-exec.test \
 	demo-inst.test demo-unst.test \
+	depdemo-nofast.test depdemo-make.test depdemo-exec.test \
+	depdemo-inst.test depdemo-unst.test \
 	cdemo-shared.test cdemo-make.test cdemo-exec.test \
 	demo-shared.test demo-make.test demo-exec.test demo-inst.test \
 	hardcode.test build-relink.test demo-unst.test \
+	depdemo-shared.test depdemo-make.test depdemo-exec.test \
+	depdemo-inst.test depdemo-unst.test \
 	mdemo-shared.test mdemo-make.test mdemo-exec.test \
 	mdemo-inst.test mdemo-unst.test \
 	assign.test link.test link-2.test nomode.test \
 	quote.test sh.test suffix.test
 
-cdemo-static.test: $(top_builddir)/libtool
+demo-conf.test: $(top_builddir)/libtool
 
 $(top_builddir)/libtool:
 	cd $(top_builddir) && $(MAKE) all
@@ -37,5 +45,6 @@ EXTRA_DIST = defs $(TESTS)
 clean-local:
 	-test -f ../cdemo/Makefile && cd ../cdemo && $(MAKE) distclean
 	-test -f ../demo/Makefile && cd ../demo && $(MAKE) distclean
+	-test -f ../depdemo/Makefile && cd ../depdemo && $(MAKE) distclean
 	-test -f ../mdemo/Makefile && cd ../mdemo && $(MAKE) distclean
 	rm -rf _inst

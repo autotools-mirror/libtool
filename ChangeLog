@@ -1,3 +1,54 @@
+1999-03-18  Thomas Tanner  <tanner@gmx.de>
+
+	* merged my inter-library dependencies code from the ILD branch:
+	* NEWS: inter-library dependencies are now supported
+	* configure.in: add the depdemo subdirectory
+	* depdemo/*: new demo to demonstrate inter-library dependencies
+	* tests/depdemo*: new tests for depdemo
+	* ltconfig.in: added hardcode_into_libs (whether library paths
+	  should be hardcoded into the libraries),
+	  it currently defaults to 'no'
+	* ltmain.in: new internal 'relink' mode to relink libraries
+	  on platforms with hardcode_into_libs=yes, save command line
+	  arguments in libtool_args, accept relative -L directories,
+	  ignore -lm on BeOS and Cygwin, always ignore -lc,
+	  handle -l, -L and .la arguments later, always make the library
+	  installation directory (-rpath) absolute, in relink mode don't 
+	  delete the not-relinked library and exit immediately after relinking,
+	  try to find already-installed libtool libraries that were specified
+	  using -l, support hardcoding of library paths into libraries too,
+	  export shlibpath before linking libraries, and a lot of other
+	  big changes that I don't want to describe here... please read
+	  the source.
+	  
+	* merged Gary's Win32 code from the ILD branch:
+	* NEWS: Win32 DLLs are now supported
+	* TODO: removed .a library namespace clash for win32.  It is
+	  now resolved.
+	* ltconfig.in (cygwin, library_names_spec):  removed $libname.a.
+	  Creating a dll with libtool no longer creates an import library.
+	* ltconfig.in (extract_expsyms_cmds): Create $objdir if it does
+	  not exist -- i.e. we need to generate import an import library
+	  in a directory which has no libs of its own.
+	* doc/libtool.texi (old_archive_from_expsyms_cmds,
+	  extract_expsyms_cmds): documented these new variables.
+	* ltconfig.in (extract_expsyms_cmds): New variable.  Commands to
+	  extract the exported symbol list from a dll.
+	  (old_archive_from_expsyms_cmds): New variable.  Commands to build
+	  an old archive from the extracted expsyms list.
+	* ltmain.in: run the cmds in extract_expsyms_cmds and
+	  old_archive_from_expsyms_cmds as necessary.
+	* ltconfig.in (cygwin, old_archive_from_new_cmds): no longer
+	  required.
+	* ltconfig.in (cygwin, shlibpath_overrides_runpath): I'm not even
+	  sure whether win32 honours the runpath at all when searching for
+	  a dll to load!  Anyway, when set to yes this prevents a gratuitous
+	  warning.
+	* ltmain.in (deplib): The cygwin environment doesn't actually have
+	  -lm, and although the linker fakes having one, specifiying it to
+	  libtool will break ILD, so we ignore it when generating
+	  dependencies.
+	  
 1999-03-17  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
 
 	* doc/PLATFORMS: Thanks to Alexandres changes below, both my
