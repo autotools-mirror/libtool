@@ -1,3 +1,8 @@
+1999-05-22  Doug Evans  <devans@casey.cygnus.com>
+
+	* libltdl/configure.in (dlerror): Fix typo in dlopen found in -ldl
+	test.
+
 1999-05-21  Pavel Roskin  <pavel_roskin@geocities.com> 
 
 	* Makefile.am (EXTRA_DIST): Don't distribute instutils.
