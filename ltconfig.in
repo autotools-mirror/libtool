@@ -1244,7 +1244,12 @@ EOF
       whole_archive_flag_spec=
       ;;
     *)
-      whole_archive_flag_spec="$wlarc"'--whole-archive$convenience '"$wlarc"'--no-whole-archive'
+      # ancient GNU ld didn't support --whole-archive et. al.
+      if $LD --help 2>71 | egrep 'no-whole-archive' > /dev/null; then
+        whole_archive_flag_spec="$wlarc"'--whole-archive$convenience '"$wlarc"'--no-whole-archive'
+      else
+        whole_archive_flag_spec=
+      fi
       ;;
     esac
   fi
