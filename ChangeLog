@@ -1,3 +1,8 @@
+2004-09-14  Gary V. Vaughan  <gary@gnu.org>
+
+	* config/ltmain.in (func_quote_for_eval): Factor out the ugly
+	shell meta-character quoting.  Changed all callers.
+
 2004-09-14  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
 	* m4/libtool.m4 (_LT_CMD_GLOBAL_SYMBOLS): Simplification:
