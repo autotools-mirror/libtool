@@ -124,8 +124,6 @@ typedef	struct lt_dlhandle_t {
 	int	depcount;	/* number of dependencies */
 	lt_dlhandle *deplibs;	/* dependencies */
 	lt_syshandle handle;	/* system handle */
-	lt_ptr_t system;	/* system specific data */
-	lt_ptr_t app_private;	/* application private data */
 } lt_dlhandle_t;
 
 #undef strdup
@@ -519,7 +517,7 @@ sys_wll_open (filename)
 {
 	lt_dlhandle cur;
 	lt_syshandle handle;
-	char *searchname = NULL;
+	char *searchname = 0;
 	char *ext = strrchr(filename, '.');
 
 	if (ext) {
@@ -737,16 +735,8 @@ presym_add_symlist (preloaded)
 		return 1;
 	}
 	tmp->syms = preloaded;
-	tmp->next = 0;
-	if (!preloaded_symbols)
-		preloaded_symbols = tmp;
-	else {
-		/* append to the end */
-		lists = preloaded_symbols;
-		while (lists->next)
-			lists = lists->next;
-		lists->next = tmp;
-	}
+	tmp->next = preloaded_symbols;
+	preloaded_symbols = tmp;
 	return 0;
 }
 
@@ -1094,7 +1084,7 @@ static char*
 canonicalize_path (path)
 	const char *path;
 {
-	char *canonical = NULL;
+	char *canonical = 0;
 	
 	if (path && *path) {
 		char *ptr = strdup (path);
@@ -1181,7 +1171,7 @@ find_file (basename, search_path, pdir, handle)
 					   memory overhead. */
 					*pdir = filename;
 				} else
-					filename = NULL;
+					filename = 0;
 				result = (lt_ptr_t) file;
 				goto cleanup;
 			}
@@ -1590,7 +1580,6 @@ register_handle:
 	}
 	if (!handle->info.ref_count) {
 		handle->info.ref_count = 1;
-		handle->app_private = 0;
 		handle->info.name = name;
 		handle->next = handles;
 		handles = handle;
@@ -1821,30 +1810,6 @@ const char *
 lt_dlgetsearchpath LTDL_PARAMS((void))
 {
 	return user_search_path;
-}
-
-int
-lt_dlsetdata (handle, data)
-	lt_dlhandle handle;
-	lt_ptr_t data;
-{
-	if (!handle) {
-		last_error = LT_DLSTRERROR(INVALID_HANDLE);
-		return 1;
-	}
-	handle->app_private = data;
-	return 0;
-}
-
-lt_ptr_t
-lt_dlgetdata (handle)
-	lt_dlhandle handle;
-{
-	if (!handle) {
-		last_error = LT_DLSTRERROR(INVALID_HANDLE);
-		return 0;
-	}
-	return handle->app_private;
 }
 
 const lt_dlinfo *

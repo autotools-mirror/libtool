@@ -193,8 +193,6 @@ extern const char *lt_dlerror LTDL_PARAMS((void));
 extern int lt_dladdsearchdir LTDL_PARAMS((const char *search_dir));
 extern int lt_dlsetsearchpath LTDL_PARAMS((const char *search_path));
 extern const char *lt_dlgetsearchpath LTDL_PARAMS((void));
-extern int lt_dlsetdata LTDL_PARAMS((lt_dlhandle handle, lt_ptr_t data));
-extern lt_ptr_t lt_dlgetdata LTDL_PARAMS((lt_dlhandle handle));
 extern const lt_dlinfo *lt_dlgetinfo LTDL_PARAMS((lt_dlhandle handle));
 extern int lt_dlforeach LTDL_PARAMS((
 		int (*func)(lt_dlhandle handle, lt_ptr_t data), lt_ptr_t data));

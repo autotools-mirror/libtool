@@ -3090,16 +3090,6 @@ directories.  Return 0 on success.
 Return the current user-defined library search path.
 @end deftypefun
 
-@deftypefun int lt_dlsetdata (lt_dlhandle @var{handle}, lt_ptr_t @var{data})
-Set the application private data for the module @var{handle} to @var{data}.
-Return 0 on success.
-@end deftypefun
-
-@deftypefun lt_ptr_t lt_dlgetdata (lt_dlhandle @var{handle})
-Return the application private data for the module @var{handle}.
-If the handle @var{handle} is invalid or no data was set, it returns @code{NULL}.
-@end deftypefun
-
 @deftypefun {const lt_dlinfo *} lt_dlgetinfo (lt_dlhandle @var{handle})
 Return a pointer to a struct that contains some information about
 the module @var{handle}.  The contents of the struct must not be modified.
