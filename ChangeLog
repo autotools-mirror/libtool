@@ -1,3 +1,10 @@
+2001-04-23  Gary V. Vaughan  <gvv@techie.com>
+
+	* TODO: Make a note to undo this later.
+	From Christoph Pfisterer <cp@chrisp.de>
+	* libtool.m4: Use $() execution substitution quotation to work
+	around zsh builtin echo \ escape removal.
+
 2001-04-22  Peter Eisentraut  <peter_e@gmx.net>
 
 	* bootstrap: Allow overriding the location aclocal, automake,

@@ -1,6 +1,9 @@
 In the near future:
 ********************
 
+* Figure out why zsh echo builtin's removal of \ escapes is not detected
+  by libtool's echo selector.
+
 * Port the migration of all code from ltconfig into libtool.m4 to the
 multi-language-branch, so that CVS automake can remove its references
 to ltconfig.

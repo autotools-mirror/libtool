@@ -1506,7 +1506,10 @@ else
 
   darwin* | rhapsody*)
     allow_undefined_flag='-undefined suppress'
-    archive_cmds='$CC `test .$module = .yes && echo -bundle || echo -dynamiclib` $allow_undefined_flag -o $lib $libobjs $deplibs$linkopts -install_name $rpath/$soname `test -n "$verstring" -a x$verstring != x0.0 && echo $verstring`'
+    # FIXME: Relying on posixy $() will cause problems for
+    #        cross-compilation, but unfortunately the echo tests do not
+    #        yet detect zsh echo's removal of \ escapes.
+    archive_cmds='$CC $(test .$module = .yes && echo -bundle || echo -dynamiclib) $allow_undefined_flag -o $lib $libobjs $deplibs$linkopts -install_name $rpath/$soname $(test -n "$verstring" -a x$verstring != x0.0 && echo $verstring)'
     # We need to add '_' to the symbols in $export_symbols first
     #archive_expsym_cmds="$archive_cmds"' && strip -s $export_symbols'
     hardcode_direct=yes
@@ -1928,8 +1931,11 @@ darwin* | rhapsody*)
   version_type=darwin
   need_lib_prefix=no
   need_version=no
-  library_names_spec='${libname}${release}${versuffix}.`test .$module = .yes && echo so || echo dylib` ${libname}${release}${major}.`test .$module = .yes && echo so || echo dylib` ${libname}.`test .$module = .yes && echo so || echo dylib`'
-  soname_spec='${libname}${release}${major}.`test .$module = .yes && echo so || echo dylib`'
+  # FIXME: Relying on posixy $() will cause problems for
+  #        cross-compilation, but unfortunately the echo tests do not
+  #        yet detect zsh echo's removal of \ escapes.
+  library_names_spec='${libname}${release}${versuffix}.$(test .$module = .yes && echo so || echo dylib) ${libname}${release}${major}.$(test .$module = .yes && echo so || echo dylib) ${libname}.$(test .$module = .yes && echo so || echo dylib)'
+  soname_spec='${libname}${release}${major}.$(test .$module = .yes && echo so || echo dylib)'
   shlibpath_overrides_runpath=yes
   shlibpath_var=DYLD_LIBRARY_PATH
   ;;
