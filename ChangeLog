@@ -1,5 +1,8 @@
 1999-04-04  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* ltconfig.in (ld_shlibs, amigaos*): Disable shared libs with
+	native ld too.
+
 	* ltconfig.in (sunos4*, GNU ld): Reordered.
 
 	* ltconfig.in (archive_cmds, sunos4*): Revert to -Bstatic; the
