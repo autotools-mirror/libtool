@@ -1,3 +1,10 @@
+2002-11-18  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* tests/Makefile.am: Conditional assignment of FFLAGS = @FFLAGS@
+	does not appear to be necessary given that Automake makes this
+	assignment by default.  The condition is removed since Automake
+	1.7.1 complains about it.
+
 2002-11-18  Jakub Jelinek  <jakub@redhat.com>
 
 	* libtool.m4: Support linking of 64-bit libraries on

@@ -69,9 +69,7 @@ CFLAGS = @CFLAGS@
 CPPFLAGS = @CPPFLAGS@
 LDFLAGS = @LDFLAGS@
 LIBS = @LIBS@
-if HAVE_F77
-  FFLAGS = @FFLAGS@
-endif
+FFLAGS = @FFLAGS@
 
 # Be sure to reexport important environment variables.
 TESTS_ENVIRONMENT = MAKE="$(MAKE)" CC="$(CC)" CFLAGS="$(CFLAGS)" \
