@@ -1,5 +1,7 @@
 2000-09-03  Alexandre Oliva  <aoliva@redhat.com>
 
+	* ltconfig.in (enable_dlopen): Set to no when lt_cv_dlopen is no.
+
 	* ltmain.in (variables_saved_for_relink): Attempt to unset them
 	instead of setting them to an empty string.
 
