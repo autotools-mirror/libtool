@@ -22,7 +22,8 @@ DISTCLEANFILES =
 CXX_TESTS = \
 	tagdemo-static.test tagdemo-make.test tagdemo-exec.test \
 	tagdemo-conf.test tagdemo-make.test tagdemo-exec.test \
-	tagdemo-shared.test tagdemo-make.test tagdemo-exec.test
+	tagdemo-shared.test tagdemo-make.test tagdemo-exec.test \
+	tagdemo-undef.test tagdemo-make.test tagdemo-exec.test
 
 F77_TESTS = \
 	f77demo-static.test f77demo-make.test f77demo-exec.test \
