@@ -4395,14 +4395,6 @@ else
       # Run the actual program with our arguments.
 "
 	case $host in
-	# win32 systems need to use the prog path for dll
-	# lookup to work
-	*-*-cygwin* | *-*-pw32*)
-	  $echo >> $output "\
-      exec \$progdir/\$program \${1+\"\$@\"}
-"
-	  ;;
-
 	# Backslashes separate directories on plain windows
 	*-*-mingw | *-*-os2*)
 	  $echo >> $output "\
@@ -4412,11 +4404,7 @@ else
 
 	*)
 	  $echo >> $output "\
-      # Export the path to the program.
-      PATH=\"\$progdir:\$PATH\"
-      export PATH
-
-      exec \$program \${1+\"\$@\"}
+      exec \$progdir/\$program \${1+\"\$@\"}
 "
 	  ;;
 	esac

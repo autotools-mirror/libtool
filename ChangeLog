@@ -1,3 +1,8 @@
+2002-11-18  Akim Demaille  <akim@epita.fr>
+
+	* ltmain.in: Do not change the PATH in the wrappers: let them
+	launch the real binary using its path.
+
 2002-11-18  Kevin Ryde  <user42@zip.com.au>
 
 	* doc/libtool.texi (Library tips): Note array dimensions.
