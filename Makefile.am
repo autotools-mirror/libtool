@@ -91,6 +91,7 @@ $(srcdir)/demo/configure: demo/configure.in demo/aclocal.m4
 $(srcdir)/demo/aclocal.m4: demo/configure.in demo/acinclude.m4
 	cd $(srcdir)/demo && $(ACLOCAL)
 
+######################################################################
 # These commands really help my life as a maintainer who uses PRCS.
 # Feel free to copy them to your own project.  I just run a
 # maintainer-checkin whenever I feel like it, then I run a maintainer-release
@@ -115,10 +116,10 @@ maintainer-check-versions:
 
 maintainer-release: maintainer-check-versions distcheck
 	cd $(top_srcdir) && $(PRCS) checkin $(PACKAGE)
-	cd $(top_srcdir) && $(PRCS) rekey $(PACKAGE) configure.in
+	cd $(top_srcdir) && $(PRCS) rekey $(PACKAGE) configure.in libtool.spec
 	echo "============================="; \
 	  echo "Congratulations!  $(PACKAGE)-$(VERSION) is now complete."; \
 	  echo; \
-	  echo "Distribute \`$(PACKAGE)-$(VERSION).tar.gz' to the masses, and start thinking about"; \
-	  echo "the next development cycle."; \
+	  echo "Distribute \`$(PACKAGE)-$(VERSION).tar.gz' to the masses, and don't forget"; \
+	  echo "any other details you need to complete this release."; \
 	  echo "============================="

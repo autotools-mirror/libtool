@@ -1,4 +1,38 @@
+Fri Nov 28 09:28:02 1997  Gordon Matzigkeit  <gord@gnu.org>
+
+	* ltconfig.in, libtool.m4 (NM): Add /usr/ccs/bin to the PATH
+	before checking.  From Kaveh R. Ghazi.
+	(NM): Delete an extraneous egrep from ltconfig.
+
+	* ltconfig.in (finish_cmds): Change back to using `ldconfig -n'.
+	This makes Linux behave like other systems, which is more in line
+	with what libtool needs.
+
 Thu Nov 27 08:53:05 1997  Gordon Matzigkeit  <gord@gnu.org>
+
+	* ltmain.in: Change a whole bunch of `progname' variables to
+	`modename'.  This is for clarity, and to fix a tiny typo in finish
+	mode.
+
+	* libtool.spec (Name, Version): Ditto.
+
+	* configure.in (AM_INIT_AUTOMAKE): Use PRCS to automatically generate
+	the proper package name and version number.
+
+	* ltconfig.in (gnu_ld_acts_native): Treat GNU ld like the native
+	linker on SunOS 4.x.  Suggested by Alexandre Oliva.
+	(deplibs): Change the defaults all over, since most systems cannot
+	handle inter-library depdencies.
+
+	* libtool.m4, ltconfig.in (NM): Only look at the first line of the
+ 	output from NM when determining whether it supports a command line
+ 	option.  This prevents false positives on OSes which ignore
+ 	invalid flags, like HP-UX, which prints `nm: unknown option "B"
+ 	ignored'.  Reported by Kaveh R. Ghazi.
+
+	* ltconfig.in (finish_cmds): On Linux, update ld.so.cache by
+ 	removing the `-n' flag from ldconfig.  Suggested by Kenneth
+ 	Albanowski.
 
 	* Makefile.am (maintainer-checkin, maintainer-release): New
 	commands to reap the full benefit of using PRCS to maintain

@@ -1,15 +1,7 @@
 For next public release:
 ************************
 
-* For every `-L' flag, hardcode a corresponding directory.  For
-aesthetics and least redundancy, this should only be done once for
-each dir (i.e. no duplicates).  So, if the expansion is the same as
-`-Llibdir', then don't add anything.  Also, check that directories
-added by this feature do not duplicate flags added with `-rpath'.
-
-The question is: should this only be done for programs?  The answer
-is, I think, YES!  Libtool libraries and inter-library dependencies
-are tricky enough without trying to factor in this complexity.
+* Integrate the AmigaOS patches found in lt-amiga.diff.
 
 * Document `execute' mode, and the experimental nature of -dlopen and
 -dlpreopen.
@@ -25,6 +17,10 @@ what the debugging difficulty is, and so, I wonder what problems I
 will meet.''
 
 * Document the change from `-allow-undefined' to `-no-undefined'.
+
+* Document what to tell users about adding their libraries to their
+`ldconfig' directories at bootup.  Libtool doesn't do this
+automatically, because it can't.
 
 * Some packages, such as GIMP, choose to put a note about
 `--disable-shared' in their README:

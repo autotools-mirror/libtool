@@ -2,7 +2,7 @@ Summary: GNU libtool - shared library support for source packages
 # $Format: "Name: $Project$"$
 Name: libtool
 # $Format: "Version: $ProjectMajorVersion$"$
-Version: 1.0i
+Version: 1.0j
 Release: 1
 Copyright: GPL
 Group: Development/Build
