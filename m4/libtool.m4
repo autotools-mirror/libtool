@@ -3031,7 +3031,7 @@ m4_if([$1], [CXX], [
 	;;
       chorus*)
 	case $cc_basename in
-	cxch68)
+	cxch68*)
 	  # Green Hills C++ Compiler
 	  # _LT_TAGVAR(lt_prog_compiler_static, $1)="--no_auto_instantiation -u __main -u __premain -u _abort -r $COOL_DIR/lib/libOrb.a $MVME_DIR/lib/CC/libC.a $MVME_DIR/lib/classix/libcx.s.a"
 	  ;;
@@ -3040,7 +3040,7 @@ m4_if([$1], [CXX], [
        darwin*)
          # PIC is the default on this platform
          # Common symbols not allowed in MH_DYLIB files
-         case "$cc_basename" in
+         case $cc_basename in
            xlc*)
            _LT_TAGVAR(lt_prog_compiler_pic, $1)='-qnocommon'
            _LT_TAGVAR(lt_prog_compiler_wl, $1)='-Wl,'
@@ -3049,10 +3049,10 @@ m4_if([$1], [CXX], [
        ;;
       dgux*)
 	case $cc_basename in
-	  ec++)
+	  ec++*)
 	    _LT_TAGVAR(lt_prog_compiler_pic, $1)='-KPIC'
 	    ;;
-	  ghcx)
+	  ghcx*)
 	    # Green Hills C++ Compiler
 	    _LT_TAGVAR(lt_prog_compiler_pic, $1)='-pic'
 	    ;;
@@ -3065,14 +3065,14 @@ m4_if([$1], [CXX], [
 	;;
       hpux9* | hpux10* | hpux11*)
 	case $cc_basename in
-	  CC)
+	  CC*)
 	    _LT_TAGVAR(lt_prog_compiler_wl, $1)='-Wl,'
 	    _LT_TAGVAR(lt_prog_compiler_static, $1)="${ac_cv_prog_cc_wl}-a ${ac_cv_prog_cc_wl}archive"
 	    if test "$host_cpu" != ia64; then
 	      _LT_TAGVAR(lt_prog_compiler_pic, $1)='+Z'
 	    fi
 	    ;;
-	  aCC)
+	  aCC*)
 	    _LT_TAGVAR(lt_prog_compiler_wl, $1)='-Wl,'
 	    _LT_TAGVAR(lt_prog_compiler_static, $1)="${ac_cv_prog_cc_wl}-a ${ac_cv_prog_cc_wl}archive"
 	    case "$host_cpu" in
@@ -3090,7 +3090,7 @@ m4_if([$1], [CXX], [
 	;;
       irix5* | irix6* | nonstopux*)
 	case $cc_basename in
-	  CC)
+	  CC*)
 	    _LT_TAGVAR(lt_prog_compiler_wl, $1)='-Wl,'
 	    _LT_TAGVAR(lt_prog_compiler_static, $1)='-non_shared'
 	    # CC pic flag -KPIC is the default.
@@ -3101,7 +3101,7 @@ m4_if([$1], [CXX], [
 	;;
       linux*)
 	case $cc_basename in
-	  KCC)
+	  KCC*)
 	    # KAI C++ Compiler
 	    _LT_TAGVAR(lt_prog_compiler_wl, $1)='--backend -Wl,'
 	    _LT_TAGVAR(lt_prog_compiler_pic, $1)='-fPIC'
@@ -3112,14 +3112,14 @@ m4_if([$1], [CXX], [
 	    _LT_TAGVAR(lt_prog_compiler_pic, $1)='-KPIC'
 	    _LT_TAGVAR(lt_prog_compiler_static, $1)='-static'
 	    ;;
-	  pgCC)
+	  pgCC*)
 	    # Portland Group C++ compiler
 	    _LT_TAGVAR(lt_prog_compiler_wl, $1)='-Wl,'
 	    _LT_TAGVAR(lt_prog_compiler_pic, $1)='-fpic'
 	    _LT_TAGVAR(lt_prog_compiler_static, $1)='-static'
 	    _LT_TAGVAR(whole_archive_flag_spec, $1)=''
 	    ;;
-	  cxx)
+	  cxx*)
 	    # Compaq C++
 	    # Make sure the PIC flag is empty.  It appears that all Alpha
 	    # Linux and Compaq Tru64 Unix objects are PIC.
@@ -3136,7 +3136,7 @@ m4_if([$1], [CXX], [
 	;;
       mvs*)
 	case $cc_basename in
-	  cxx)
+	  cxx*)
 	    _LT_TAGVAR(lt_prog_compiler_pic, $1)='-W c,exportall'
 	    ;;
 	  *)
@@ -3152,14 +3152,14 @@ m4_if([$1], [CXX], [
         ;;
       osf3* | osf4* | osf5*)
 	case $cc_basename in
-	  KCC)
+	  KCC*)
 	    _LT_TAGVAR(lt_prog_compiler_wl, $1)='--backend -Wl,'
 	    ;;
-	  RCC)
+	  RCC*)
 	    # Rational C++ 2.4.1
 	    _LT_TAGVAR(lt_prog_compiler_pic, $1)='-pic'
 	    ;;
-	  cxx)
+	  cxx*)
 	    # Digital/Compaq C++
 	    _LT_TAGVAR(lt_prog_compiler_wl, $1)='-Wl,'
 	    # Make sure the PIC flag is empty.  It appears that all Alpha
@@ -3175,7 +3175,7 @@ m4_if([$1], [CXX], [
 	;;
       sco*)
 	case $cc_basename in
-	  CC)
+	  CC*)
 	    _LT_TAGVAR(lt_prog_compiler_pic, $1)='-fPIC'
 	    ;;
 	  *)
@@ -3184,13 +3184,13 @@ m4_if([$1], [CXX], [
 	;;
       solaris*)
 	case $cc_basename in
-	  CC)
+	  CC*)
 	    # Sun C++ 4.2, 5.x and Centerline C++
 	    _LT_TAGVAR(lt_prog_compiler_pic, $1)='-KPIC'
 	    _LT_TAGVAR(lt_prog_compiler_static, $1)='-Bstatic'
 	    _LT_TAGVAR(lt_prog_compiler_wl, $1)='-Qoption ld '
 	    ;;
-	  gcx)
+	  gcx*)
 	    # Green Hills C++ Compiler
 	    _LT_TAGVAR(lt_prog_compiler_pic, $1)='-PIC'
 	    ;;
@@ -3200,12 +3200,12 @@ m4_if([$1], [CXX], [
 	;;
       sunos4*)
 	case $cc_basename in
-	  CC)
+	  CC*)
 	    # Sun C++ 4.x
 	    _LT_TAGVAR(lt_prog_compiler_pic, $1)='-pic'
 	    _LT_TAGVAR(lt_prog_compiler_static, $1)='-Bstatic'
 	    ;;
-	  lcc)
+	  lcc*)
 	    # Lucid
 	    _LT_TAGVAR(lt_prog_compiler_pic, $1)='-pic'
 	    ;;
@@ -3215,7 +3215,7 @@ m4_if([$1], [CXX], [
 	;;
       tandem*)
 	case $cc_basename in
-	  NCC)
+	  NCC*)
 	    # NonStop-UX NCC 3.20
 	    _LT_TAGVAR(lt_prog_compiler_pic, $1)='-KPIC'
 	    ;;
@@ -3323,7 +3323,7 @@ m4_if([$1], [CXX], [
       darwin*)
         # PIC is the default on this platform
         # Common symbols not allowed in MH_DYLIB files
-       case "$cc_basename" in
+       case $cc_basename in
          xlc*)
          _LT_TAGVAR(lt_prog_compiler_pic, $1)='-qnocommon'
          _LT_TAGVAR(lt_prog_compiler_wl, $1)='-Wl,'
@@ -3360,13 +3360,13 @@ m4_if([$1], [CXX], [
       ;;
 
     linux*)
-      case "$cc_basename" in
+      case $cc_basename in
       icc* | ecc*)
 	_LT_TAGVAR(lt_prog_compiler_wl, $1)='-Wl,'
 	_LT_TAGVAR(lt_prog_compiler_pic, $1)='-KPIC'
 	_LT_TAGVAR(lt_prog_compiler_static, $1)='-static'
         ;;
-      pgcc | pgf77 | pgf90)
+      pgcc* | pgf77* | pgf90*)
         # Portland Group compilers (*not* the Pentium gcc compiler,
 	# which looks to be a dead project)
 	_LT_TAGVAR(lt_prog_compiler_wl, $1)='-Wl,'
@@ -3670,7 +3670,7 @@ _LT_EOF
     linux*|tpf*)
       tmp_diet=no
       if test "$host_os" = linux-dietlibc; then
-	case "$cc_basename" in
+	case $cc_basename in
 	  diet\ *) tmp_diet=yes;;	# linux-dietlibc with static linking (!diet-dyn)
 	esac
       fi
@@ -3679,7 +3679,7 @@ _LT_EOF
       then
 	tmp_addflag=
 	case $cc_basename,$host_cpu in
-          pgcc*)			# Portland Group C compiler
+        pgcc*)				# Portland Group C compiler
           _LT_TAGVAR(whole_archive_flag_spec, $1)=
 	  ;;
 	pgf77* | pgf90* )		# Portland Group f77 and f90 compilers
@@ -3960,7 +3960,7 @@ _LT_EOF
       _LT_TAGVAR(archive_expsym_cmds, $1)='sed -e "s,#.*,," -e "s,^[    ]*,," -e "s,^\(..*\),_&," < $export_symbols > $output_objdir/${libname}-symbols.expsym~$CC -dynamiclib $allow_undefined_flag -o $lib $libobjs $deplibs $compiler_flags -install_name $rpath/$soname $verstring~nmedit -s $output_objdir/${libname}-symbols.expsym ${lib}'
       _LT_TAGVAR(module_expsym_cmds, $1)='sed -e "s,#.*,," -e "s,^[    ]*,," -e "s,^\(..*\),_&," < $export_symbols > $output_objdir/${libname}-symbols.expsym~$CC $allow_undefined_flag  -o $lib -bundle $libobjs $deplibs$compiler_flags~nmedit -s $output_objdir/${libname}-symbols.expsym ${lib}'
     else
-      case "$cc_basename" in
+      case $cc_basename in
         xlc*)
          output_verbose_link_cmd=echo
           _LT_TAGVAR(archive_cmds, $1)='$CC -qmkshrobj $allow_undefined_flag -o $lib $libobjs $deplibs $compiler_flags ${wl}-install_name ${wl}`$ECHO $rpath/$soname` $verstring'
@@ -4939,7 +4939,7 @@ if test "$_lt_caught_CXX_error" != yes; then
           fi
           _LT_TAGVAR(module_expsym_cmds, $1)='sed -e "s,#.*,," -e "s,^[    ]*,," -e "s,^\(..*\),_&," < $export_symbols > $output_objdir/${libname}-symbols.expsym~$CC $allow_undefined_flag  -o $lib -bundle $libobjs $deplibs$compiler_flags~nmedit -s $output_objdir/${libname}-symbols.expsym ${lib}'
         else
-          case "$cc_basename" in
+          case $cc_basename in
             xlc*)
               output_verbose_link_cmd=echo
               _LT_TAGVAR(archive_cmds, $1)='$CC -qmkshrobj ${wl}-single_module $allow_undefined_flag -o $lib $libobjs $deplibs $compiler_flags ${wl}-install_name ${wl}`$ECHO $rpath/$soname` $verstring'
@@ -4958,11 +4958,11 @@ if test "$_lt_caught_CXX_error" != yes; then
 
       dgux*)
         case $cc_basename in
-          ec++)
+          ec++*)
   	    # FIXME: insert proper C++ library support
   	    _LT_TAGVAR(ld_shlibs, $1)=no
   	    ;;
-          ghcx)
+          ghcx*)
   	    # Green Hills C++ Compiler
   	    # FIXME: insert proper C++ library support
   	    _LT_TAGVAR(ld_shlibs, $1)=no
@@ -5003,11 +5003,11 @@ if test "$_lt_caught_CXX_error" != yes; then
   				             # location of the library.
 
         case $cc_basename in
-          CC)
+          CC*)
             # FIXME: insert proper C++ library support
             _LT_TAGVAR(ld_shlibs, $1)=no
             ;;
-          aCC)
+          aCC*)
             _LT_TAGVAR(archive_cmds, $1)='$RM $output_objdir/$soname~$CC -b ${wl}+b ${wl}$install_libdir -o $output_objdir/$soname $predep_objects $libobjs $deplibs $postdep_objects $compiler_flags~test $output_objdir/$soname = $lib || mv $output_objdir/$soname $lib'
             # Commands to make compiler produce verbose output that lists
             # what "hidden" libraries, object files and flags are used when
@@ -5068,11 +5068,11 @@ if test "$_lt_caught_CXX_error" != yes; then
         esac
 
         case $cc_basename in
-          CC)
+          CC*)
   	    # FIXME: insert proper C++ library support
   	    _LT_TAGVAR(ld_shlibs, $1)=no
   	    ;;
-          aCC)
+          aCC*)
   	    case "$host_cpu" in
   	      hppa*64*|ia64*)
   	        _LT_TAGVAR(archive_cmds, $1)='$LD -b +h $soname -o $lib $linker_flags $libobjs $deplibs'
@@ -5113,7 +5113,7 @@ if test "$_lt_caught_CXX_error" != yes; then
 
       irix5* | irix6*)
         case $cc_basename in
-          CC)
+          CC*)
   	    # SGI C++
   	    _LT_TAGVAR(archive_cmds, $1)='$CC -shared -all -multigot $predep_objects $libobjs $deplibs $postdep_objects $compiler_flags -soname $soname `test -n "$verstring" && $ECHO -set_version $verstring` -update_registry ${output_objdir}/so_locations -o $lib'
 
@@ -5141,7 +5141,7 @@ if test "$_lt_caught_CXX_error" != yes; then
 
       linux*)
         case $cc_basename in
-          KCC)
+          KCC*)
   	    # Kuck and Associates, Inc. (KAI) C++ Compiler
 
   	    # KCC will only create a shared library if the output file
@@ -5191,7 +5191,7 @@ if test "$_lt_caught_CXX_error" != yes; then
 	    _LT_TAGVAR(export_dynamic_flag_spec, $1)='${wl}--export-dynamic'
 	    _LT_TAGVAR(whole_archive_flag_spec, $1)='${wl}--whole-archive$convenience ${wl}--no-whole-archive'
 	    ;;
-          pgCC)
+          pgCC*)
             # Portland Group C++ compiler
             _LT_TAGVAR(archive_cmds, $1)='$CC -shared $predep_objects $libobjs $deplibs $postdep_objects $compiler_flags ${wl}-soname ${wl}$soname -o $lib'
             _LT_TAGVAR(archive_expsym_cmds, $1)='$CC -shared $predep_objects $libobjs $deplibs $postdep_objects $compiler_flags ${wl}-soname ${wl}$soname ${wl}-retain-symbols-file ${wl}$export_symbols -o $lib'
@@ -5200,7 +5200,7 @@ if test "$_lt_caught_CXX_error" != yes; then
 	    _LT_TAGVAR(export_dynamic_flag_spec, $1)='${wl}--export-dynamic'
 	    _LT_TAGVAR(whole_archive_flag_spec, $1)=''
             ;;
-	  cxx)
+	  cxx*)
 	    # Compaq C++
 	    _LT_TAGVAR(archive_cmds, $1)='$CC -shared $predep_objects $libobjs $deplibs $postdep_objects $compiler_flags ${wl}-soname $wl$soname -o $lib'
 	    _LT_TAGVAR(archive_expsym_cmds, $1)='$CC -shared $predep_objects $libobjs $deplibs $postdep_objects $compiler_flags ${wl}-soname $wl$soname  -o $lib ${wl}-retain-symbols-file $wl$export_symbols'
@@ -5234,7 +5234,7 @@ if test "$_lt_caught_CXX_error" != yes; then
 
       mvs*)
         case $cc_basename in
-          cxx)
+          cxx*)
   	    # FIXME: insert proper C++ library support
 	    _LT_TAGVAR(ld_shlibs, $1)=no
 	    ;;
@@ -5281,7 +5281,7 @@ if test "$_lt_caught_CXX_error" != yes; then
 
       osf3* | osf4* | osf5*)
         case $cc_basename in
-          KCC)
+          KCC*)
   	    # Kuck and Associates, Inc. (KAI) C++ Compiler
 
 	    # KCC will only create a shared library if the output file
@@ -5299,12 +5299,12 @@ if test "$_lt_caught_CXX_error" != yes; then
 	      *) _LT_TAGVAR(old_archive_cmds, $1)='$CC -o $oldlib $oldobjs' ;;
 	    esac
 	    ;;
-          RCC)
+          RCC*)
   	    # Rational C++ 2.4.1
 	    # FIXME: insert proper C++ library support
 	    _LT_TAGVAR(ld_shlibs, $1)=no
 	    ;;
-          cxx)
+          cxx*)
 	    case $host in
 	      osf3*)
 	        _LT_TAGVAR(allow_undefined_flag, $1)=' ${wl}-expect_unresolved ${wl}\*'
@@ -5370,7 +5370,7 @@ if test "$_lt_caught_CXX_error" != yes; then
       sco*)
         _LT_TAGVAR(archive_cmds_need_lc, $1)=no
         case $cc_basename in
-          CC)
+          CC*)
   	    # FIXME: insert proper C++ library support
   	    _LT_TAGVAR(ld_shlibs, $1)=no
   	    ;;
@@ -5383,12 +5383,12 @@ if test "$_lt_caught_CXX_error" != yes; then
 
       sunos4*)
         case $cc_basename in
-          CC)
+          CC*)
   	    # Sun C++ 4.x
   	    # FIXME: insert proper C++ library support
   	    _LT_TAGVAR(ld_shlibs, $1)=no
   	    ;;
-          lcc)
+          lcc*)
   	    # Lucid
   	    # FIXME: insert proper C++ library support
   	    _LT_TAGVAR(ld_shlibs, $1)=no
@@ -5402,7 +5402,7 @@ if test "$_lt_caught_CXX_error" != yes; then
 
       solaris*)
         case $cc_basename in
-          CC)
+          CC*)
   	    # Sun C++ 4.2, 5.x and Centerline C++
   	    _LT_TAGVAR(no_undefined_flag, $1)=' -zdefs'
   	    _LT_TAGVAR(archive_cmds, $1)='$CC -G${allow_undefined_flag} -nolib -h$soname -o $lib $predep_objects $libobjs $deplibs $postdep_objects $compiler_flags'
@@ -5443,7 +5443,7 @@ if test "$_lt_caught_CXX_error" != yes; then
   	    # in the archive.
   	    _LT_TAGVAR(old_archive_cmds, $1)='$CC -xar -o $oldlib $oldobjs'
   	    ;;
-          gcx)
+          gcx*)
   	    # Green Hills C++ Compiler
   	    _LT_TAGVAR(archive_cmds, $1)='$CC -shared $predep_objects $libobjs $deplibs $postdep_objects $compiler_flags ${wl}-h $wl$soname -o $lib'
 
@@ -5488,7 +5488,7 @@ if test "$_lt_caught_CXX_error" != yes; then
 
       tandem*)
         case $cc_basename in
-          NCC)
+          NCC*)
   	    # NonStop-UX NCC 3.20
   	    # FIXME: insert proper C++ library support
   	    _LT_TAGVAR(ld_shlibs, $1)=no

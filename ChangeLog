@@ -1,3 +1,10 @@
+2005-03-18  Peter O'Gorman  <peter@pogma.com>,
+	    Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* m4/libtool.m4: The compiler can be a program name with args, so
+	always check cc_basename against compiler name and a wildcard.
+	Also, drop unnecessary quotes in `case' argument.
+
 2005-03-16  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* Makefile.am: tests/defs.in depends on config/general.m4sh.
