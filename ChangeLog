@@ -1,3 +1,7 @@
+1999-01-27  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* configure.in (TIMESTAMP): use mkstamp here too
+
 1999-01-27  Thomas Tanner  <tanner@gmx.de>
 
 	* cdemo/configure.in: renamed AM_PROG_LIBTOOL to AC_PROG_LIBTOOL

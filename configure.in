@@ -10,8 +10,8 @@ AM_INIT_AUTOMAKE(libtool, 1.2e)
 case "$VERSION" in
 changequote(,)
   *[acegikmoqsuwy]) 
-    TIMESTAMP=`sed 's%.*\$''Revision: \([^$]*\) \$ \$''Date: \([^$]*\) \$.*% (\1 \2)%;t end;d;: end' < ${srcdir}/ChangeLog`
 changequote([,])
+    TIMESTAMP=`${CONFIG_SHELL} ${srcdir}/mkstamp < ${srcdir}/ChangeLog`
     banner="Configuring $PACKAGE $VERSION$TIMESTAMP"
     dashes=`echo "$banner" | sed 's/./-/g'`
 
