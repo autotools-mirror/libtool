@@ -6,11 +6,14 @@ AM_CONFIG_HEADER(config.h)
 
 AM_MAINTAINER_MODE
 
+TOINST=toinst
+AC_SUBST(TOINST)
+
 AC_ARG_ENABLE(ltdl-install,
   [--enable-ltdl-install     install libltdl])
 AM_CONDITIONAL(INSTALL_LTDL, test x$enable_ltdl_install = xyes)
 if test x$enable_ltdl_install = xyes; then
-  LIBLIBS=libltdl.la
+  LIBLIBS=$TOINST/libltdl.la
 else
   LIBLIBS=
 fi

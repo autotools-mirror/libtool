@@ -1,5 +1,10 @@
 1999-03-08  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* libltdl/Makefile.am, libltdl/configure.in, mdemo/Makefile.am:
+	libltdl must not be renamed; if there's a problem with the install 
+	option, let's fix it, not just work around it by breaking code of 
+	users of the convenience library
+
 	* tests/build-relink.test: link broken libhello.la with at least
 	one libtool object
 
