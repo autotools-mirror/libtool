@@ -31,26 +31,22 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 #define LT_DLLOADER_H 1
 
 #include <libltdl/lt_system.h>
-#include <libltdl/lt_error.h>
 
 LT_BEGIN_C_DECLS
 
-typedef	struct lt_dlloader	lt_dlloader;
-typedef void *			lt_user_data;
-typedef void *			lt_module;
-
-/* Type of a function to get a loader's vtable:  */
-typedef lt_dlloader *lt_get_vtable	(lt_user_data loader_data);
+typedef	void *	lt_dlloader;
+typedef void *	lt_module;
+typedef void *	lt_user_data;
 
 /* Function pointer types for module loader vtable entries:  */
-typedef int	    lt_dlloader_init	(lt_user_data loader_data);
-typedef int	    lt_dlloader_exit	(lt_user_data loader_data);
-typedef lt_module   lt_module_open	(lt_user_data loader_data,
+typedef lt_module   lt_module_open	(lt_user_data data,
 					 const char *filename);
-typedef int	    lt_module_close	(lt_user_data loader_data,
-					 lt_module handle);
-typedef void *	    lt_find_sym		(lt_user_data loader_data,
-					 lt_module handle, const char *symbol);
+typedef int	    lt_module_close	(lt_user_data data,
+					 lt_module module);
+typedef void *	    lt_find_sym		(lt_user_data data, lt_module module,
+					 const char *symbolname);
+typedef int	    lt_dlloader_init	(lt_user_data data);
+typedef int	    lt_dlloader_exit	(lt_user_data data);
 
 /* Default priority is LT_DLLOADER_PREPEND if none is explicitly given.  */
 typedef enum {
@@ -59,8 +55,7 @@ typedef enum {
 
 /* This structure defines a module loader, as populated by the get_vtable
    entry point of each loader.  */
-struct lt_dlloader {
-  lt_dlloader *		next;
+typedef struct {
   const char *		name;
   const char *		sym_prefix;
   lt_module_open *	module_open;
@@ -70,22 +65,18 @@ struct lt_dlloader {
   lt_dlloader_exit *	dlloader_exit;
   lt_user_data		dlloader_data;
   lt_dlloader_priority	priority;
-};
+} lt_dlvtable;
 
-LT_SCOPE lt_dlloader *	lt_dlloader_next   (lt_dlloader *place);
-LT_SCOPE lt_dlloader *	lt_dlloader_find   (const char *name);
-LT_SCOPE const char *	lt_dlloader_name   (lt_dlloader *place);
-LT_SCOPE lt_user_data *	lt_dlloader_data   (lt_dlloader *place);
-LT_SCOPE int		lt_dlloader_add	   (lt_dlloader *dlloader,
-					    lt_user_data data);
-LT_SCOPE int		lt_dlloader_remove  (const char *name);
+LT_SCOPE int		lt_dlloader_add	   (const lt_dlvtable *vtable);
+LT_SCOPE lt_dlloader	lt_dlloader_next   (const lt_dlloader loader);
 
+LT_SCOPE const lt_dlvtable *lt_dlloader_remove	(const char *name);
+LT_SCOPE const lt_dlvtable *lt_dlloader_find	(const char *name);
+LT_SCOPE const lt_dlvtable *lt_dlloader_get	(lt_dlloader loader);
 
 
-/* --- Backwards source compatibility ---  */
-
-#define lt_user_dlloader lt_dlloader
-
+/* Type of a function to get a loader's vtable:  */
+typedef  const lt_dlvtable *lt_get_vtable	(lt_user_data data);
 
 LT_END_C_DECLS
 

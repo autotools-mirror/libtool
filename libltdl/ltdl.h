@@ -153,7 +153,7 @@ LT_SCOPE int	lt_dlmutex_register	(lt_dlmutex_lock *lock,
 					 lt_dlmutex_seterror *seterror,
 					 lt_dlmutex_geterror *geterror);
 
-# define lt_ptr		void *
+# define lt_ptr			void *
 
 
 

@@ -1,5 +1,42 @@
 2004-07-15  Gary V. Vaughan  <gary@gnu.org>
 
+	Split lt_dlloader management into a separate file, and factor
+	`loaders' list management into a new SList ADT.  In the process,
+	the API for writing loaders is a little cleaner, so all the
+	existing loaders were tweaked to take advantage of that:
+
+	* libltdl/slist.h, libltdl/slist.c: New files implementing a
+	generic singly linked list container ADT.  The ADT is purely
+	internal, and none of its API's are visible from an installed
+	libltdl.
+	* libltdl/lt_dlloader.h (lt_dlloader): Removed next field again
+	:-) Renamed to lt_dlvtable for API.  Changed all callers.
+	(lt_dlloader_get): New function to turn an lt_dlloader into its
+	associated lt_dlvtable.
+	(lt_dlloader_add): Removed unused data parameter.  The caller
+	data belongs to (and is set by) the loader itself, not the
+	loader's client.  Changed all callers.
+	(lt_dlloader_name, lt_dlloader_data): Removed.  Use
+	lt_dlloader_get instead!
+	* libltdl/lt__private.h: Include slist.h.
+	(lt__alloc_die_callback): Add missing LT_SCOPE to declaration.
+	(lt_dlhandle_struct): Use lt_dlvtable instead of opaque
+	lt_dlloader.
+	* libltdl/ltdl.c (lt_dlexit): Rewritten for the new loader API.
+	(loaders, lt_dlloader_add, lt_dlloader_remove, lt_dlloader_next,
+	lt_dlloader_find): Moved from here...
+	* libltdl/lt_dlloader.c ((loaders, lt_dlloader_add,
+	lt_dlloader_remove, lt_dlloader_next, lt_dlloader_find): ...to
+	here.  And rewritten in terms of new SList interface.
+	* libltdl/ltdl.c (lt_dlexit, tryall_dlopen): Rewritten in terms of
+	new lt_dlloader interface.
+	* libltdl/Makefile.am (libdlloader_la_SOURCES): Add slist.h and
+	slist.c.  Move lt_dlloader.h from here...
+	(pkginclude_HEADERS): ...to here.
+	(libltdl_la_SOURCES): Add lt_dlloader.c and lt_dlloader.h.
+
+2004-07-15  Gary V. Vaughan  <gary@gnu.org>
+
 	Collapse two almost identical structures into one:
 
 	* libltdl/lt_dlloader.h (lt_dlloader): Add next field.

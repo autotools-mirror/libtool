@@ -58,7 +58,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 
 
 /* Various boolean flags can be stored in the flags field of an
-   lt_dlhandle_struct... */
+   lt_dlhandle... */
 #define LT_DLGET_FLAG(handle, flag) (((handle)->flags & (flag)) == (flag))
 #define LT_DLSET_FLAG(handle, flag) ((handle)->flags |= (flag))
 
@@ -135,7 +135,6 @@ static	int	loader_init	      (lt_get_vtable *vtable_func,
 				       lt_user_data data);
 
 static	char	       *user_search_path= 0;
-static	lt_dlloader    *loaders		= 0;
 static	lt_dlhandle	handles 	= 0;
 static	int		initialized 	= 0;
 
@@ -160,7 +159,7 @@ loader_init_callback (lt_dlhandle handle)
 static int
 loader_init (lt_get_vtable *vtable_func, lt_user_data data)
 {
-  lt_dlloader *vtable = 0;
+  const lt_dlvtable *vtable = 0;
   int errors = 0;
 
   if (vtable_func)
@@ -176,7 +175,7 @@ loader_init (lt_get_vtable *vtable_func, lt_user_data data)
 
   if (!errors)
     {
-      if (lt_dlloader_add (vtable, data))
+      if (lt_dlloader_add (vtable))
 	{
 	  LT__SETERROR (DLOPEN_NOT_SUPPORTED);
 	  ++errors;
@@ -199,14 +198,14 @@ loader_init (lt_get_vtable *vtable_func, lt_user_data data)
 #define get_vtable  		preopen_LTX_get_vtable
 #define preloaded_symbols	LT_CONC3(lt_, LTDLOPEN, _LTX_preloaded_symbols)
 
-extern lt_dlloader *	get_vtable (lt_user_data data);
-extern lt_dlsymlist		preloaded_symbols;
+LT_SCOPE const lt_dlvtable *	get_vtable (lt_user_data data);
+LT_SCOPE lt_dlsymlist		preloaded_symbols;
 
 /* Initialize libltdl. */
 int
 lt_dlinit (void)
 {
-  int	      errors   = 0;
+  int	errors	= 0;
 
   /* Initialize only at first call. */
   if (++initialized == 1)
@@ -221,11 +220,12 @@ lt_dlinit (void)
       errors += loader_init (get_vtable, 0);
 
       /* Now open all the preloaded module loaders, so the application
-	 can use them to lt_dlopen their own modules.  */
+	 can use _them_ to lt_dlopen its own modules.  */
       if (!errors)
 	{
 	  errors += lt_dlpreload (&preloaded_symbols);
 	}
+
       if (!errors)
 	{
 	  errors += lt_dlpreload_open (LT_STR(LTDLOPEN), loader_init_callback);
@@ -239,10 +239,8 @@ int
 lt_dlexit (void)
 {
   /* shut down libltdl */
-  lt_dlloader *loader;
+  lt_dlloader *loader   = 0;
   int	       errors   = 0;
-
-  loader = loaders;
 
   if (!initialized)
     {
@@ -287,18 +285,19 @@ lt_dlexit (void)
 	}
 
       /* close all loaders */
-      while (loader)
+      while (loader = lt_dlloader_next (loader))
 	{
-	  lt_dlloader *next = loader->next;
-	  lt_user_data data = loader->dlloader_data;
-	  if (loader->dlloader_exit && loader->dlloader_exit (data))
+	  const lt_dlvtable *vtable = lt_dlloader_get (loader);
+
+	  if ((vtable = lt_dlloader_remove (vtable->name)))
+	    {
+	      FREE ((void *) vtable);
+	    }
+	  else
 	    {
 	      ++errors;
 	    }
-
-	  MEMREASSIGN (loader, next);
 	}
-      loaders = 0;
     }
 
  done:
@@ -306,44 +305,33 @@ lt_dlexit (void)
 }
 
 static int
-tryall_dlopen (lt_dlhandle *handle, const char *filename)
+tryall_dlopen (lt_dlhandle *phandle, const char *filename)
 {
-  lt_dlhandle	 cur;
-  lt_dlloader   *loader;
-  const char	*saved_error;
-  int		 errors		= 0;
+  lt_dlhandle	handle		= 0;
+  const char *	saved_error	= 0;
+  int		errors		= 0;
 
   LT__GETERROR (saved_error);
 
-  cur	 = handles;
-  loader = loaders;
-
   /* check whether the module was already opened */
-  while (cur)
+  while (handle = lt_dlhandle_next (handle))
     {
-      /* try to dlopen the program itself? */
-      if (!cur->info.filename && !filename)
+      if ((handle->info.filename == filename) /* dlopen self: 0 == 0 */
+	  || (handle->info.filename && filename
+	      && streq (handle->info.filename, filename)))
 	{
 	  break;
 	}
-
-      if (cur->info.filename && filename
-	  && streq (cur->info.filename, filename))
-	{
-	  break;
-	}
-
-      cur = cur->next;
     }
 
-  if (cur)
+  if (handle)
     {
-      ++cur->info.ref_count;
-      *handle = cur;
+      ++handle->info.ref_count;
+      *phandle = handle;
       goto done;
     }
 
-  cur = *handle;
+  handle = *phandle;
   if (filename)
     {
       /* Comment out the check of file permissions using access.
@@ -358,8 +346,8 @@ tryall_dlopen (lt_dlhandle *handle, const char *filename)
 	  goto done;
 	} */
 
-      cur->info.filename = lt__strdup (filename);
-      if (!cur->info.filename)
+      handle->info.filename = lt__strdup (filename);
+      if (!handle->info.filename)
 	{
 	  ++errors;
 	  goto done;
@@ -367,35 +355,40 @@ tryall_dlopen (lt_dlhandle *handle, const char *filename)
     }
   else
     {
-      cur->info.filename = 0;
+      handle->info.filename = 0;
     }
 
-  while (loader)
-    {
-      lt_user_data data = loader->dlloader_data;
+  {
+    const lt_dlvtable *vtable = 0;
+    lt_dlloader *loader = 0;
 
-      cur->module = loader->module_open (data, filename);
+    while (loader = lt_dlloader_next (loader))
+      {
+	vtable = lt_dlloader_get (loader);
+	handle->module = vtable->module_open (vtable->dlloader_data, filename);
 
-      if (cur->module != 0)
-	{
-	  break;
-	}
-      loader = loader->next;
-    }
+	if (handle->module != 0)
+	  {
+	    break;
+	  }
+      }
 
-  if (!loader)
-    {
-      FREE (cur->info.filename);
-      ++errors;
-      goto done;
-    }
+    if (!loader)
+      {
+	FREE (handle->info.filename);
+	++errors;
+	goto done;
+      }
 
-  cur->loader	= loader;
+    handle->vtable = vtable;
+  }
+
   LT__SETERRORSTR (saved_error);
 
  done:
   return errors;
 }
+
 
 static int
 tryall_dlopen_module (lt_dlhandle *handle, const char *prefix,
@@ -1673,7 +1666,7 @@ lt_dlclose (lt_dlhandle handle)
      moment).  */
   if (handle->info.ref_count <= 0 && !LT_DLIS_RESIDENT (handle))
     {
-      lt_user_data data = handle->loader->dlloader_data;
+      lt_user_data data = handle->vtable->dlloader_data;
 
       if (handle != handles)
 	{
@@ -1684,7 +1677,7 @@ lt_dlclose (lt_dlhandle handle)
 	  handles = handle->next;
 	}
 
-      errors += handle->loader->module_close (data, handle->module);
+      errors += handle->vtable->module_close (data, handle->module);
       errors += unload_deplibs(handle);
 
       /* It is up to the callers to free the data itself.  */
@@ -1728,7 +1721,7 @@ lt_dlsym (lt_dlhandle handle, const char *symbol)
       return 0;
     }
 
-  lensym = LT_STRLEN (symbol) + LT_STRLEN (handle->loader->sym_prefix)
+  lensym = LT_STRLEN (symbol) + LT_STRLEN (handle->vtable->sym_prefix)
 					+ LT_STRLEN (handle->info.name);
 
   if (lensym + LT_SYMBOL_OVERHEAD < LT_SYMBOL_LENGTH)
@@ -1745,7 +1738,7 @@ lt_dlsym (lt_dlhandle handle, const char *symbol)
 	}
     }
 
-  data = handle->loader->dlloader_data;
+  data = handle->vtable->dlloader_data;
   if (handle->info.name)
     {
       const char *saved_error;
@@ -1753,9 +1746,9 @@ lt_dlsym (lt_dlhandle handle, const char *symbol)
       LT__GETERROR (saved_error);
 
       /* this is a libtool module */
-      if (handle->loader->sym_prefix)
+      if (handle->vtable->sym_prefix)
 	{
-	  strcpy(sym, handle->loader->sym_prefix);
+	  strcpy(sym, handle->vtable->sym_prefix);
 	  strcat(sym, handle->info.name);
 	}
       else
@@ -1767,7 +1760,7 @@ lt_dlsym (lt_dlhandle handle, const char *symbol)
       strcat(sym, symbol);
 
       /* try "modulename_LTX_symbol" */
-      address = handle->loader->find_sym (data, handle->module, sym);
+      address = handle->vtable->find_sym (data, handle->module, sym);
       if (address)
 	{
 	  if (sym != lsym)
@@ -1780,9 +1773,9 @@ lt_dlsym (lt_dlhandle handle, const char *symbol)
     }
 
   /* otherwise try "symbol" */
-  if (handle->loader->sym_prefix)
+  if (handle->vtable->sym_prefix)
     {
-      strcpy(sym, handle->loader->sym_prefix);
+      strcpy(sym, handle->vtable->sym_prefix);
       strcat(sym, symbol);
     }
   else
@@ -1790,7 +1783,7 @@ lt_dlsym (lt_dlhandle handle, const char *symbol)
       strcpy(sym, symbol);
     }
 
-  address = handle->loader->find_sym (data, handle->module, sym);
+  address = handle->vtable->find_sym (data, handle->module, sym);
   if (sym != lsym)
     {
       FREE (sym);
@@ -1995,11 +1988,13 @@ lt_dlgetinfo (lt_dlhandle handle)
   return &(handle->info);
 }
 
+
 lt_dlhandle
 lt_dlhandle_next (lt_dlhandle place)
 {
   return place ? place->next : handles;
 }
+
 
 lt_dlhandle
 lt_dlhandle_find (const char *module_name)
@@ -2114,161 +2109,6 @@ lt_dlcaller_get_data  (lt_dlcaller_id key, lt_dlhandle handle)
 
   return result;
 }
-
-
-
-/* --- USER MODULE LOADER API --- */
-
-
-int
-lt_dlloader_add (lt_dlloader *dlloader, lt_user_data data)
-{
-  int errors = 0;
-  lt_dlloader *ptr = 0;
-
-  if ((dlloader == 0)	/* diagnose null parameters */
-      || (dlloader->module_open == 0)
-      || (dlloader->module_close == 0)
-      || (dlloader->find_sym == 0))
-    {
-      LT__SETERROR (INVALID_LOADER);
-      return 1;
-    }
-
-  switch (dlloader->priority)
-    {
-    case LT_DLLOADER_PREPEND:
-      /* Tack NODE on the front of the LOADERS list.  */
-      dlloader->next = loaders;
-      loaders = dlloader;
-      break;
-
-    case LT_DLLOADER_APPEND:
-      /* Add NODE to the end of the LOADERS list.  */
-      for (ptr = loaders; ptr->next; ptr = ptr->next)
-	/*NOWORK*/;
-      ptr->next = dlloader;
-      break;
-
-    default:
-      LT__SETERROR (INVALID_LOADER);
-      ++errors;
-      break;
-    }
-
-  return errors;
-}
-
-int
-lt_dlloader_remove (const char *name)
-{
-  lt_dlloader *place = lt_dlloader_find (name);
-  lt_dlhandle handle;
-  int errors = 0;
-
-  if (!place)
-    {
-      LT__SETERROR (INVALID_LOADER);
-      return 1;
-    }
-
-  /* Fail if there are any open modules which use this loader. */
-  for  (handle = handles; handle; handle = handle->next)
-    {
-      if (handle->loader == place)
-	{
-	  LT__SETERROR (REMOVE_LOADER);
-	  return ++errors;
-	}
-    }
-
-  if (place == loaders)
-    {
-      /* PLACE is the first loader in the list. */
-      loaders = loaders->next;
-    }
-  else
-    {
-      /* Find the loader before the one being removed. */
-      lt_dlloader *prev;
-      for (prev = loaders; prev->next; prev = prev->next)
-	{
-	  if (streq (prev->next->name, name))
-	    {
-	      break;
-	    }
-	}
-
-      place = prev->next;
-      prev->next = prev->next->next;
-    }
-
-  if (place->dlloader_exit)
-    {
-      errors = place->dlloader_exit (place->dlloader_data);
-    }
-
-  FREE (place);
-
-  return errors;
-}
-
-lt_dlloader *
-lt_dlloader_next (lt_dlloader *place)
-{
-  return place ? place->next : loaders;
-}
-
-const char *
-lt_dlloader_name (lt_dlloader *place)
-{
-  const char *name = 0;
-
-  if (place)
-    {
-      name = place ? place->name : 0;
-    }
-  else
-    {
-      LT__SETERROR (INVALID_LOADER);
-    }
-
-  return name;
-}
-
-lt_user_data *
-lt_dlloader_data (lt_dlloader *place)
-{
-  lt_user_data *data = 0;
-
-  if (place)
-    {
-      data = place ? &(place->dlloader_data) : 0;
-    }
-  else
-    {
-      LT__SETERROR (INVALID_LOADER);
-    }
-
-  return data;
-}
-
-lt_dlloader *
-lt_dlloader_find (const char *name)
-{
-  lt_dlloader *place = 0;
-
-  for (place = loaders; place; place = place->next)
-    {
-      if (streq (place->name, name))
-	{
-	  break;
-	}
-    }
-
-  return place;
-}
-
 
 
 
