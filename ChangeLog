@@ -1,3 +1,12 @@
+2001-04-01  Christoph Pfisterer  <cp@chrisp.de>
+
+	* libtool.m4, ltconfig.in, ltcf-c.sh, ltcf-cxx.sh: Fixed
+	support for Darwin and Rhapsody. Now correctly hardcodes the
+	library path and adds versioning. Other small fixes.
+	* ltmain.in: Fixed special cases for libc and libm on Rhapsody and
+	Darwin. One of them was misplaced. Added version_type case for
+	Rhapsody and Darwin, named "darwin".
+
 2001-03-31  Gary V. Vaughan  <gvv@techie.com>
 
 	* ltmain.in: Remove the code for stripping duplicate deplibs

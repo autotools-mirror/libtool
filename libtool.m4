@@ -536,8 +536,15 @@ cygwin* | mingw* |pw32*)
 
 darwin* | rhapsody*)
   lt_cv_deplibs_check_method='file_magic Mach-O dynamically linked shared library'
-  lt_cv_file_magic_cmd=/usr/bin/file
-  lt_cv_file_magic_test_file=`echo /System/Library/Frameworks/System.framework/Versions/*/System | head -1`
+  lt_cv_file_magic_cmd='/usr/bin/file -L'
+  case "$host_os" in
+  rhapsody* | darwin1.[012])
+    lt_cv_file_magic_test_file='/System/Library/Frameworks/System.framework/System'
+    ;;
+  *) # Darwin 1.3 on
+    lt_cv_file_magic_test_file='/usr/lib/libSystem.dylib'
+    ;;
+  esac
   ;;
 
 freebsd* )

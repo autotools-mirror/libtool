@@ -651,9 +651,6 @@ if test "$with_gcc" = yes; then
   ac_cv_prog_cc_static='-static'
 
   case $host_os in
-  beos* | irix5* | irix6* | osf3* | osf4* | osf5*)
-    # PIC is the default for these OSes.
-    ;;
   aix*)
     # All AIX code is PIC.
     if test "$host_cpu" = ia64; then
@@ -663,20 +660,28 @@ if test "$with_gcc" = yes; then
       lt_cv_prog_cc_static='-bnso -bI:/lib/syscalls.exp'
     fi
     ;;
-  *djgpp*)
-    # DJGPP does not support shared libraries at all
-    ac_cv_prog_cc_pic=
+  amigaos*)
+    # FIXME: we need at least 68020 code to build shared libraries, but
+    # adding the `-m68020' flag to GCC prevents building anything better,
+    # like `-m68040'.
+    ac_cv_prog_cc_pic='-m68020 -resident32 -malways-restore-a4'
+    ;;
+  beos* | irix5* | irix6* | osf3* | osf4* | osf5*)
+    # PIC is the default for these OSes.
     ;;
   cygwin* | mingw* | os2*)
     # This hack is so that the source file can tell whether it is being
     # built for inclusion in a dll (and should export symbols for example).
     ac_cv_prog_cc_pic='-DDLL_EXPORT'
     ;;
-  amigaos*)
-    # FIXME: we need at least 68020 code to build shared libraries, but
-    # adding the `-m68020' flag to GCC prevents building anything better,
-    # like `-m68040'.
-    ac_cv_prog_cc_pic='-m68020 -resident32 -malways-restore-a4'
+  darwin* | rhapsody*)
+    # PIC is the default on this platform
+    # Common symbols not allowed in MH_DYLIB files
+    lt_cv_prog_cc_pic='-fno-common'
+    ;;
+  *djgpp*)
+    # DJGPP does not support shared libraries at all
+    ac_cv_prog_cc_pic=
     ;;
   sysv4*MP*)
     if test -d /usr/nec; then

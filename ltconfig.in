@@ -1096,10 +1096,12 @@ cygwin* | mingw* | pw32*)
   ;;
 
 darwin* | rhapsody*)
-  library_names_spec='${libname}.`if test "$module" = "yes"; then echo so; else echo dylib; fi`'
+  dynamic_linker="$host_os dyld"
+  version_type=darwin
   need_lib_prefix=no
   need_version=no
-  postinstall_cmds='chmod +x $lib'
+  library_names_spec='${libname}${release}${versuffix}.`test .$module = .yes && echo so || echo dylib` ${libname}${release}${major}.$`test .$module = .yes && echo so || echo dylib` ${libname}.`test .$module = .yes && echo so || echo dylib`'
+  soname_spec='${libname}${release}${major}.`test .$module = .yes && echo so || echo dylib`'
   shlibpath_overrides_runpath=yes
   shlibpath_var=DYLD_LIBRARY_PATH
   ;;
