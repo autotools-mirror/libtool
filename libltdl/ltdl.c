@@ -2085,204 +2085,204 @@ lt_dlopen (filename)
 	  MUTEX_SETERROR (LT_DLSTRERROR (NO_MEMORY));
 	  handle = 0;
 	  goto cleanup;
-      }
+	}
 
-    /* canonicalize the module name */
-    for (i = 0; i < ext - basename; ++i)
-      {
-	if (isalnum ((int)(basename[i])))
-	  {
-	    name[i] = basename[i];
-	  }
-	else
-	  {
-	    name[i] = '_';
-	  }
-      }
+      /* canonicalize the module name */
+      for (i = 0; i < ext - basename; ++i)
+	{
+	  if (isalnum ((int)(basename[i])))
+	    {
+	      name[i] = basename[i];
+	    }
+	  else
+	    {
+	      name[i] = '_';
+	    }
+	}
 
-    name[ext - basename] = '\0';
+      name[ext - basename] = '\0';
 
     /* Now try to open the .la file.  If there is no directory name
        component, try to find it first in user_search_path and then other
        prescribed paths.  Otherwise (or in any case if the module was not
        yet found) try opening just the module name as passed.  */
-    if (!dir)
-      {
-	file = (FILE*) find_file(basename, user_search_path, &dir, 0);
-	if (!file)
-	  {
-	    file = (FILE*) find_file(basename, getenv("LTDL_LIBRARY_PATH"),
-				     &dir, 0);
-	  }
+      if (!dir)
+	{
+	  file = (FILE*) find_file(basename, user_search_path, &dir, 0);
+	  if (!file)
+	    {
+	      file = (FILE*) find_file(basename, getenv("LTDL_LIBRARY_PATH"),
+				       &dir, 0);
+	    }
 
 #ifdef LTDL_SHLIBPATH_VAR
-	if (!file)
-	  {
-	    file = (FILE*) find_file(basename, getenv(LTDL_SHLIBPATH_VAR),
-				     &dir, 0);
-	  }
+	  if (!file)
+	    {
+	      file = (FILE*) find_file(basename, getenv(LTDL_SHLIBPATH_VAR),
+				       &dir, 0);
+	    }
 #endif
 #ifdef LTDL_SYSSEARCHPATH
-	if (!file)
-	  {
-	    file = (FILE*) find_file(basename, sys_search_path, &dir, 0);
-	  }
+	  if (!file)
+	    {
+	      file = (FILE*) find_file(basename, sys_search_path, &dir, 0);
+	    }
 #endif
-      }
-    if (!file)
-      {
-	file = fopen (filename, LT_READTEXT_MODE);
-      }
-    if (!file)
-      {
-	MUTEX_SETERROR (LT_DLSTRERROR (FILE_NOT_FOUND));
-      }
+	}
+      if (!file)
+	{
+	  file = fopen (filename, LT_READTEXT_MODE);
+	}
+      if (!file)
+	{
+	  MUTEX_SETERROR (LT_DLSTRERROR (FILE_NOT_FOUND));
+	}
 
-    if (!file)
-      {
-	handle = 0;
-	goto cleanup;
-      }
+      if (!file)
+	{
+	  handle = 0;
+	  goto cleanup;
+	}
 
-    line_len = LT_FILENAME_MAX;
-    line = LT_DLMALLOC (char, line_len);
-    if (!line)
-      {
-	fclose (file);
-	MUTEX_SETERROR (LT_DLSTRERROR (NO_MEMORY));
-	handle = 0;
-	goto cleanup;
-      }
+      line_len = LT_FILENAME_MAX;
+      line = LT_DLMALLOC (char, line_len);
+      if (!line)
+	{
+	  fclose (file);
+	  MUTEX_SETERROR (LT_DLSTRERROR (NO_MEMORY));
+	  handle = 0;
+	  goto cleanup;
+	}
 
-    /* read the .la file */
-    while (!feof(file))
-      {
-	if (!fgets (line, line_len, file))
-	  {
-	    break;
-	  }
+      /* read the .la file */
+      while (!feof(file))
+	{
+	  if (!fgets (line, line_len, file))
+	    {
+	      break;
+	    }
 
 
-	/* Handle the case where we occasionally need to read a line 
-	   that is longer than the initial buffer size.  */
-	while (line[strlen(line) -1] != '\n')
-	  {
-	    line = LT_DLREALLOC (char, line, line_len *2);
-	    if (!fgets (&line[line_len -1], line_len +1, file))
-	      {
-		break;
-	      }
-	    line_len *= 2;
-	  }
+	  /* Handle the case where we occasionally need to read a line 
+	     that is longer than the initial buffer size.  */
+	  while (line[strlen(line) -1] != '\n')
+	    {
+	      line = LT_DLREALLOC (char, line, line_len *2);
+	      if (!fgets (&line[line_len -1], line_len +1, file))
+		{
+		  break;
+		}
+	      line_len *= 2;
+	    }
 
-	if (line[0] == '\n' || line[0] == '#')
-	  {
-	    continue;
-	  }
+	  if (line[0] == '\n' || line[0] == '#')
+	    {
+	      continue;
+	    }
 
 #undef  STR_DLNAME
 #define STR_DLNAME	"dlname="
-	if (strncmp (line, STR_DLNAME, sizeof (STR_DLNAME) - 1) == 0)
-	  {
-	    error = trim (&dlname, &line[sizeof (STR_DLNAME) - 1]);
-	  }
+	  if (strncmp (line, STR_DLNAME, sizeof (STR_DLNAME) - 1) == 0)
+	    {
+	      error = trim (&dlname, &line[sizeof (STR_DLNAME) - 1]);
+	    }
 
 #undef  STR_OLD_LIBRARY
 #define STR_OLD_LIBRARY	"old_library="
-	else if (strncmp (line, STR_OLD_LIBRARY,
-			  sizeof (STR_OLD_LIBRARY) - 1) == 0)
-	  {
-	    error = trim (&old_name, &line[sizeof (STR_OLD_LIBRARY) - 1]);
-	  }
+	  else if (strncmp (line, STR_OLD_LIBRARY,
+			    sizeof (STR_OLD_LIBRARY) - 1) == 0)
+	    {
+	      error = trim (&old_name, &line[sizeof (STR_OLD_LIBRARY) - 1]);
+	    }
 #undef  STR_LIBDIR
 #define STR_LIBDIR	"libdir="
-	else if (strncmp (line, STR_LIBDIR, sizeof (STR_LIBDIR) - 1) == 0)
-	  {
-	    error = trim (&libdir, &line[sizeof(STR_LIBDIR) - 1]);
-	  }
+	  else if (strncmp (line, STR_LIBDIR, sizeof (STR_LIBDIR) - 1) == 0)
+	    {
+	      error = trim (&libdir, &line[sizeof(STR_LIBDIR) - 1]);
+	    }
 
 #undef  STR_DL_DEPLIBS
 #define STR_DL_DEPLIBS	"dependency_libs="
-	else if (strncmp (line, STR_DL_DEPLIBS,
-			  sizeof (STR_DL_DEPLIBS) - 1) == 0)
-	  {
-	    error = trim (&deplibs, &line[sizeof (STR_DL_DEPLIBS) - 1]);
-	  }
-	else if (strcmp (line, "installed=yes\n") == 0)
-	  {
-	    installed = 1;
-	  }
-	else if (strcmp (line, "installed=no\n") == 0)
-	  {
-	    installed = 0;
-	  }
+	  else if (strncmp (line, STR_DL_DEPLIBS,
+			    sizeof (STR_DL_DEPLIBS) - 1) == 0)
+	    {
+	      error = trim (&deplibs, &line[sizeof (STR_DL_DEPLIBS) - 1]);
+	    }
+	  else if (strcmp (line, "installed=yes\n") == 0)
+	    {
+	      installed = 1;
+	    }
+	  else if (strcmp (line, "installed=no\n") == 0)
+	    {
+	      installed = 0;
+	    }
 
 #undef  STR_LIBRARY_NAMES
 #define STR_LIBRARY_NAMES "library_names="
-	else if (! dlname && strncmp (line, STR_LIBRARY_NAMES,
-				      sizeof (STR_LIBRARY_NAMES) - 1) == 0)
-	  {
-	    char *last_libname;
-	    error = trim (&dlname, &line[sizeof (STR_LIBRARY_NAMES) - 1]);
-	    if (! error && dlname &&
-		(last_libname = strrchr (dlname, ' ')) != NULL)
-	      {
-		last_libname = strdup (last_libname + 1);
-		LT_DLMEM_REASSIGN (dlname, last_libname);
-	      }
-	  }
+	  else if (! dlname && strncmp (line, STR_LIBRARY_NAMES,
+					sizeof (STR_LIBRARY_NAMES) - 1) == 0)
+	    {
+	      char *last_libname;
+	      error = trim (&dlname, &line[sizeof (STR_LIBRARY_NAMES) - 1]);
+	      if (! error && dlname &&
+		  (last_libname = strrchr (dlname, ' ')) != NULL)
+		{
+		  last_libname = strdup (last_libname + 1);
+		  LT_DLMEM_REASSIGN (dlname, last_libname);
+		}
+	    }
 
-	if (error)
-	  {
-	    break;
-	  }
-      }
+	  if (error)
+	    {
+	      break;
+	    }
+	}
 
-    fclose (file);
-    LT_DLFREE (line);
+      fclose (file);
+      LT_DLFREE (line);
 
-    /* allocate the handle */
-    handle = (lt_dlhandle) LT_DLMALLOC (struct lt_dlhandle_struct, 1);
-    if (!handle || error)
-      {
-	LT_DLFREE (handle);
-	if (!error)
-	  {
-	    MUTEX_SETERROR (LT_DLSTRERROR (NO_MEMORY));
-	  }
+      /* allocate the handle */
+      handle = (lt_dlhandle) LT_DLMALLOC (struct lt_dlhandle_struct, 1);
+      if (!handle || error)
+	{
+	  LT_DLFREE (handle);
+	  if (!error)
+	    {
+	      MUTEX_SETERROR (LT_DLSTRERROR (NO_MEMORY));
+	    }
 
-	free_vars (dlname, old_name, libdir, deplibs);
-	/* handle is already set to 0 */
-	goto cleanup;
-      }
+	  free_vars (dlname, old_name, libdir, deplibs);
+	  /* handle is already set to 0 */
+	  goto cleanup;
+	}
 
-    handle->info.ref_count = 0;
-    if (load_deplibs (handle, deplibs) == 0)
-      {
-	newhandle = handle;
-	/* find_module may replace newhandle */
-	if (find_module (&newhandle, dir, libdir, dlname, old_name, installed))
-	  {
-	    unload_deplibs (handle);
-	    error = 1;
-	  }
-      }
-    else
-      {
-	error = 1;
-      }
+      handle->info.ref_count = 0;
+      if (load_deplibs (handle, deplibs) == 0)
+	{
+	  newhandle = handle;
+	  /* find_module may replace newhandle */
+	  if (find_module (&newhandle, dir, libdir, dlname, old_name, installed))
+	    {
+	      unload_deplibs (handle);
+	      error = 1;
+	    }
+	}
+      else
+	{
+	  error = 1;
+	}
 
-    free_vars (dlname, old_name, libdir, deplibs);
-    if (error)
-      {
-	LT_DLFREE (handle);
-	goto cleanup;
-      }
+      free_vars (dlname, old_name, libdir, deplibs);
+      if (error)
+	{
+	  LT_DLFREE (handle);
+	  goto cleanup;
+	}
 
-    if (handle != newhandle)
-      {
-	unload_deplibs (handle);
-      }
+      if (handle != newhandle)
+	{
+	  unload_deplibs (handle);
+	}
     }
   else
     {
@@ -2305,14 +2305,14 @@ lt_dlopen (filename)
 	 Otherwise (or in any case if the module was not yet found) try
 	 opening just the module name as passed.  */
       if ((dir || (!find_file (basename, user_search_path, 0, &newhandle)
-		      && !find_file (basename, getenv ("LTDL_LIBRARY_PATH"),
-				     0, &newhandle)
+		   && !find_file (basename, getenv ("LTDL_LIBRARY_PATH"),
+				  0, &newhandle)
 #ifdef LTDL_SHLIBPATH_VAR
-		      && !find_file (basename, getenv (LTDL_SHLIBPATH_VAR),
-				     0, &newhandle)
+		   && !find_file (basename, getenv (LTDL_SHLIBPATH_VAR),
+				  0, &newhandle)
 #endif
 #ifdef LTDL_SYSSEARCHPATH
-		      && !find_file (basename, sys_search_path, 0, &newhandle)
+		   && !find_file (basename, sys_search_path, 0, &newhandle)
 #endif
 		   )) && tryall_dlopen (&newhandle, filename))
 	{
