@@ -1,3 +1,10 @@
+2002-10-11  Christoph Egger  <Christoph_Egger@gmx.de>
+
+	* libtool.m4 (AC_LIBTOOL_PROG_LD_SHLIBS, darwin): Add
+	-install_name to the link line only when -dynamiclib is
+	specified for a module.  Use -bind_at_load when linking C++
+	shared libraries.
+
 2002-10-04  Elizabeth Barham  <soggytrousers@yahoo.com>
 
 	* libtool.m4 (AC_LIBTOOL_SETUP): GCC now checks -shared to
