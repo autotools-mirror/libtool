@@ -1,5 +1,8 @@
 2004-10-01  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* config/ltmain.in (func_mode_install): Need to set $tmpdir before
+	using it.
+
 	* config/ltmain.in (func_mode_link): Fix quoting bug.  Fixes
 	e.g. the quoting of the -export-symbols-regex argument in .la
 	files' relink_command.

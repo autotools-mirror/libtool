@@ -1988,7 +1988,7 @@ func_mode_install ()
 	  outputname=
 	  if test "$fast_install" = no && test -n "$relink_command"; then
 	    if test "$finalize" = yes && test -z "$run"; then
-	      func_mktempdir "${TMPDIR-/tmp}/libtool-XXXXXXXX"
+	      tmpdir=`func_mktempdir "${TMPDIR-/tmp}/libtool-XXXXXXXX"`
 	      file=`$ECHO "X$file$stripped_ext" | $Xsed -e 's%^.*/%%'`
 	      outputname="$tmpdir/$file"
 	      # Replace the output file specification.
