@@ -1,3 +1,9 @@
+1999-03-10  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* configure.in: create ltconfig and ltmain.sh at the end of
+	config.status, if they do not exist.  This fixes the bootstrap
+	problem reported by Erez Zadok <ezk@cs.columbia.edu>
+
 1999-03-10  Thomas Tanner  <tanner@gmx.de>
 
 	* NEWS: sorted by importance

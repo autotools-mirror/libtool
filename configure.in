@@ -68,6 +68,8 @@ done
 AC_SUBST(ACINCLUDE_M4_LIST)
 AC_SUBST(DIST_MAKEFILE_LIST)
 
+AC_OUTPUT_COMMANDS([test -f ${top_srcdir}/ltconfig || ${MAKE-make} ${top_srcdir}/ltconfig])
+AC_OUTPUT_COMMANDS([test -f ${top_srcdir}/ltmain.sh || ${MAKE-make} ${top_srcdir}/ltmain.sh])
 AC_OUTPUT([Makefile doc/Makefile tests/Makefile])
 
 # Local Variables:
