@@ -53,6 +53,7 @@ copy=
 force=
 ltdl=
 ltdl_tar=
+configure_ac=
 status=0
 
 for arg
@@ -134,8 +135,12 @@ EOF
   esac
 done
 
-if test ! -f configure.in; then
-  echo "$progname: \`configure.in' does not exist" 1>&2
+if test -f configure.ac; then
+  configure_ac=configure.ac
+elif test -f configure.in; then
+  configure_ac=configure.in
+else
+  echo "$progname: \`configure.ac' does not exist" 1>&2
   echo "$help" 1>&2
   exit 1
 fi
@@ -148,18 +153,18 @@ if test -z "$files"; then
 fi
 files='config.guess config.sub ltconfig ltmain.sh ltcf-c.sh'
 
-#Add C++ support if configure.in uses AC_LIBTOOL_CXX or AC_PROG_CXX.
-if egrep '^[ ]*AC_(PROG|LIBTOOL)_CXX' configure.in > /dev/null 2>&1; then
+#Add C++ support if $configure_ac uses AC_LIBTOOL_CXX or AC_PROG_CXX.
+if egrep '^[ ]*AC_(PROG|LIBTOOL)_CXX' $configure_ac > /dev/null 2>&1; then
   files="$files ltcf-cxx.sh"
 fi
 
-#Add GCJ support if configure.in uses AC_LIBTOOL_GCJ or A[CM]_PROG_GCJ.
-if egrep '^[ ]*A([CM]_PROG|C_LIBTOOL)_GCJ' configure.in > /dev/null 2>&1; then
+#Add GCJ support if $configure_ac uses AC_LIBTOOL_GCJ or A[CM]_PROG_GCJ.
+if egrep '^[ ]*A([CM]_PROG|C_LIBTOOL)_GCJ' $configure_ac > /dev/null 2>&1; then
   files="$files ltcf-gcj.sh"
 fi
 
 auxdir=.
-auxdirline=`egrep '^AC_CONFIG_AUX_DIR' configure.in 2>/dev/null`
+auxdirline=`egrep '^AC_CONFIG_AUX_DIR' $configure_ac 2>/dev/null`
 if test -n "$auxdirline"; then
   # Handle explicit AC_CONFIG_AUX_DIR settings.
   auxdir=`echo "$auxdirline" | sed 's/^AC_CONFIG_AUX_DIR(\([^)]*\)).*$/\1/'`
@@ -194,12 +199,12 @@ else
 fi
 
 if test -z "$automake"; then
-  if egrep '^A[MC]_PROG_LIBTOOL' configure.in >/dev/null 2>&1; then :
+  if egrep '^A[MC]_PROG_LIBTOOL' $configure_ac >/dev/null 2>&1; then :
   else
-    echo "Remember to add \`AM_PROG_LIBTOOL' to \`configure.in'."
+    echo "Remember to add \`AM_PROG_LIBTOOL' to \`$configure_ac'."
   fi
 
-  if egrep '^AC_PROG_RANLIB' configure.in >/dev/null 2>&1; then
+  if egrep '^AC_PROG_RANLIB' $configure_ac >/dev/null 2>&1; then
     echo "Using \`AC_PROG_RANLIB' is rendered obsolete by \`AM_PROG_LIBTOOL'"
   fi
 
@@ -236,7 +241,7 @@ if test -z "$automake"; then
     echo "You should $updatemsg."
   fi
 
-  if grep '^AC_LIB_LTDL' configure.in >/dev/null 2>&1; then
+  if grep '^AC_LIB_LTDL' $configure_ac >/dev/null 2>&1; then
     if grep 'generated automatically by aclocal' aclocal.m4 >/dev/null 2>&1; then
       updatemsg="update your \`aclocal.m4' by running aclocal"
     else
