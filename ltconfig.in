@@ -1624,6 +1624,7 @@ cygwin* | mingw*)
   deplibs_check_method='file_magic file format pei*-i386.*architecture: i386'
   file_magic_cmd='objdump -f'
   need_lib_prefix=no
+  shlibpath_overrides_runpath=yes
   # FIXME: first we should search . and the directory the executable is in
   shlibpath_var=PATH
   ;;

@@ -1,5 +1,10 @@
 1999-02-26  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
 
+	* ltconfig.in (cygwin, shlibpath_overrides_runpath): I'm not even
+	sure whether win32 honours the runpath at all when searching for
+	a dll to load!  Anyway, when set to yes this prevents a gratuitous
+	warning.
+
 	* depdemo/l4/Makefile.am (LIBADD_M): removed.  ILD takes care of
 	this for us.
 	
