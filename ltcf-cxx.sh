@@ -7,6 +7,11 @@
 # Copyright (C) 1996-1999 Free Software Foundation, Inc.
 # Originally by Gordon Matzigkeit <gord@gnu.ai.mit.edu>, 1996
 #
+# Orignal C++ support by:
+#    Alexandre Oliva <oliva@lsd.ic.unicamp.br>
+#    Ossama Othman <ossama@debian.org>
+#    Thomas Thanner <tanner@gmx.de>
+#
 # This file is free software; you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 2 of the License, or
@@ -67,6 +72,7 @@ fi
 # In general, the C++ compiler should always link C++ objects.
 case $target in
 *aix3* | *aix4*)
+  # AIX just has to be different, doesn't it? :-\
   LD=makeC++SharedLib_r
   LDFLAGS="$LDFLAGS -p 0"
   ;;
@@ -80,36 +86,56 @@ esac
 # PORTME: fill in a description of your system's C++ link characteristics
 case "$host_os" in
   aix3*)
+    # FIXME: insert proper C++ library support
+    ld_shlibs=no
     ;;
   aix4*)
+    # FIXME: insert proper C++ library support
+    ld_shlibs=no
     ;;
   chorus*)
     case "$CXX" in
       *)
+        # FIXME: insert proper C++ library support
+        ld_shlibs=no
         ;;
     esac 
     ;;
   dgux*)
     case "$CXX" in
       ec++)
+        # FIXME: insert proper C++ library support
+        ld_shlibs=no
         ;;
       ghcx)
         # Green Hills C++ Compiler
+        # FIXME: insert proper C++ library support
+        ld_shlibs=no
         ;;
       *)
+        # FIXME: insert proper C++ library support
+        ld_shlibs=no
         ;;
     esac
     ;;
   freebsd*)
     # FreeBSD uses GNU C++ and GNU ld
+    # FIXME: insert proper C++ library support
+    ld_shlibs=no
     ;;
   hpux*)
     case "$CXX" in
       CC)
+        # FIXME: insert proper C++ library support
+        ld_shlibs=no
         ;;
       aCC)
+        # FIXME: insert proper C++ library support
+        ld_shlibs=no
         ;;
       *)
+        # FIXME: insert proper C++ library support
+        ld_shlibs=no
         ;;
     esac
     ;;
@@ -117,11 +143,11 @@ case "$host_os" in
     case "$CXX" in
       CC)
         # SGI C++
-        archive_cmds='$LD -shared -all -multigot $libobjs $deplibs $linkopts -soname $soname `test -n "$verstring" && echo -set_version $verstring` -o $lib'
+        archive_cmds='$CC -shared -all -multigot $libobjs $deplibs $compiler_flags -soname $soname `test -n "$verstring" && echo -set_version $verstring` -update_registry ${objdir}/so_locations -o $lib'
         ;;
       *)
         if test "$with_gcc" = yes; then
-          archive_cmds='$CC -shared $libobjs $deplibs $linkopts ${wl}-soname ${wl}$soname `test -n "$verstring" && echo ${wl}-set_version ${wl}$verstring` -o $lib'
+          archive_cmds='$CC -shared $libobjs $deplibs $linker_flags ${wl}-soname ${wl}$soname `test -n "$verstring" && echo ${wl}-set_version ${wl}$verstring` -update_registry ${objdir}/so_locations -o $lib'
         else
           archive_cmds='$LD -shared $libobjs $deplibs $linkopts -soname $soname `test -n "$verstring" && echo -set_version $verstring` -o $lib'
         fi
@@ -135,12 +161,14 @@ case "$host_os" in
     case "$CXX" in
       KCC)
         # KAI C++ Compiler
+        # FIXME: insert proper C++ library support
+        ld_shlibs=no
         ;;
       *)
         # GNU C++ compiler
         if test "$with_gcc" = yes; then
-          archive_cmds='$CC -shared -nostdlib $LDFLAGS $predeps $libobjs $deplibs $postdeps $linkopts ${wl}-soname $wl$soname -o $lib'
-          archive_expsym_cmds='$CC -shared -nostdlib $LDFLAGS $predeps $libobjs $deplibs $postdeps $linkopts ${wl}-retain-symbols-file $wl$export_symbols -o $lib'
+          archive_cmds='$CC -shared -nostdlib $predeps $libobjs $deplibs $postdeps $compiler_flags ${wl}-soname $wl$soname -o $lib'
+          archive_expsym_cmds='$CC -shared -nostdlib $predeps $libobjs $deplibs $postdeps $compiler_flags ${wl}-retain-symbols-file $wl$export_symbols -o $lib'
 
           runpath_var=LD_RUN_PATH
           hardcode_libdir_flag_spec='${wl}--rpath ${wl}$libdir'
@@ -162,42 +190,68 @@ case "$host_os" in
     esac
     ;;
   lynxos*)
+    # FIXME: insert proper C++ library support
+    ld_shlibs=no
     ;;
   m88k*)
+    # FIXME: insert proper C++ library support
+    ld_shlibs=no
     ;;
   mvs*)
     case "$CXX" in
       cxx)
+        # FIXME: insert proper C++ library support
+        ld_shlibs=no
         ;;
       *)
+        # FIXME: insert proper C++ library support
+        ld_shlibs=no
         ;;
     esac   
     ;;
   netbsd*)
+    # FIXME: insert proper C++ library support
+    ld_shlibs=no
     ;;
   osf3*)
+    # FIXME: insert proper C++ library support
+    ld_shlibs=no
     ;;
-  osf4*)
+  osf4* | osf5*)
     case "$CXX" in
       KCC)
         # KAI C++ Compiler 3.3f
+        # FIXME: insert proper C++ library support
+        ld_shlibs=no
         ;;
       RCC)
         # Rational C++ 2.4.1
+        # FIXME: insert proper C++ library support
+        ld_shlibs=no
         ;;
       cxx)
+        # FIXME: insert proper C++ library support
+        ld_shlibs=no
         ;;
       *)
+        # FIXME: insert proper C++ library support
+        ld_shlibs=no
         ;;
     esac
     ;;
   psos*)
+    # FIXME: insert proper C++ library support
+    ld_shlibs=no
     ;;
   sco*)
     case "$CXX" in
       CC)
+        # FIXME: insert proper C++ library support
+        ld_shlibs=no
         ;;
       *)
+        # FIXME: insert proper C++ library support
+        ld_shlibs=no
         ;;
     esac
     ;;
@@ -205,25 +259,37 @@ case "$host_os" in
     case "$CXX" in
       CC)
         # Sun C++ 4.x
+        # FIXME: insert proper C++ library support
+        ld_shlibs=no
         ;;
       lcc)
         # Lucid
+        # FIXME: insert proper C++ library support
+        ld_shlibs=no
         ;;
       *)
-      ;;
+        # FIXME: insert proper C++ library support
+        ld_shlibs=no
+        ;;
     esac
     ;;
-  solaris* | sunos5*)
-    hardcode_shlibpath_var=no
-    link_all_deplibs=yes
-
+  solaris*)
     case "$CXX" in
       CC)
 	# Sun C++ 4.2, 5.x and Centerline C++
         no_undefined_flag=' -ztext'
-        archive_cmds='$CC -G${allow_undefined_flag} -nolib $LDFLAGS -h$soname -o $lib $predeps $libobjs $deplibs $postdeps $linkopts'
+        archive_cmds='$CC -G${allow_undefined_flag} -nolib -h$soname -o $lib $predeps $libobjs $deplibs $postdeps $linker_flags'
         archive_expsym_cmds='$echo "{ global:" > $lib.exp~cat $export_symbols | sed -e "s/\(.*\)/\1;/" >> $lib.exp~$echo "local: *; };" >> $lib.exp~
-        $CC -G${allow_undefined_flag} -nolib $LDFLAGS -Qoption ld -M,$lib.exp -h$soname -o $lib $predeps $libobjs $deplibs $postdeps $linkopts~$rm $lib.exp'
+        $CC -G${allow_undefined_flag} -nolib -Qoption ld -M,$lib.exp -h$soname -o $lib $predeps $libobjs $deplibs $postdeps $linker_flags~$rm $lib.exp'
+
+        hardcode_libdir_flag_spec='-R$libdir'
+        hardcode_shlibpath_var=no
+        case "$host_os" in
+          solaris2.[0-5] | solaris2.[0-5].*) ;;
+          *) # Supported since Solaris 2.6 (maybe 2.5.1?)
+            whole_archive_flag_spec='-z allextract$convenience -z defaultextract' ;;
+        esac
+        link_all_deplibs=yes
 
         # Commands to make compiler produce verbose output that lists
         # what "hidden" libraries, object files and flags are used when
@@ -240,7 +306,7 @@ case "$host_os" in
         ;;
       gcx)
         # Green Hills C++ Compiler
-        archive_cmds='$CC -shared $libobjs $deplibs $linkopts ${wl}-h $wl$soname -o $lib'
+        archive_cmds='$CC -shared $libobjs $deplibs $linker_flags ${wl}-h $wl$soname -o $lib'
 
         AR="$CXX $LDFLAGS"
         old_archive_cmds='$AR -archive -o $oldlib $oldobjs'
@@ -274,16 +340,26 @@ case "$host_os" in
     case "$CXX" in
       NCC)
         # NonStop-UX NCC 3.20
+        # FIXME: insert proper C++ library support
+        ld_shlibs=no
         ;;
       *)
+        # FIXME: insert proper C++ library support
+        ld_shlibs=no
         ;;
     esac   
     ;;
   unixware*)
+    # FIXME: insert proper C++ library support
+    ld_shlibs=no
     ;;
   vxworks*)
+    # FIXME: insert proper C++ library support
+    ld_shlibs=no
     ;;
   *)
+    # FIXME: insert proper C++ library support
+    ld_shlibs=no
     ;;
 esac
 
@@ -497,7 +573,7 @@ else
           ;;
       esac
       ;;
-    solaris* | sunos5*)
+    solaris*)
       case "$CXX" in
         CC)
           # Sun C++ 4.2, 5.x and Centerline C++
