@@ -1,3 +1,7 @@
+2004-12-17  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
+	* HACKING: Update list of non-Libtool-owned files.
+
 2004-12-17  Akim Demaille <akim@epita.fr>
 
 	* libtoolize.m4sh (func_copy_all_from_path): Remove spurious eval.
