@@ -1,5 +1,7 @@
 2005-01-12  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* TODO: Update.
+
 	* libtoolize.m4sh: Back out copying `install-sh' by libtoolize.
 	* doc/libtool.texi (Distributing): Mention that we distribute
 	`install-sh', but that non-Automake users will have to copy
