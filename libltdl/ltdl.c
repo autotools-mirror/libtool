@@ -19,17 +19,31 @@ Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 #define _LTDL_COMPILE_
 
-#include "ltdl.h"
-
-#ifdef HAVE_STRING_H
+#if HAVE_STRING_H
 #include <string.h>
 #endif
 
-#ifdef HAVE_STRINGS_H
+#if HAVE_STRINGS_H
 #include <strings.h>
 #endif
 
+#if HAVE_MALLOC_H
+#include <malloc.h>
+#endif
+
+#if HAVE_STDLIB_H
+#include <stdlib.h>
+#endif
+
+#if HAVE_UNISTD_H
+#include <unistd.h>
+#endif
+
+#if HAVE_STDIO_H
 #include <stdio.h>
+#endif
+
+#include "ltdl.h"
 
 typedef	struct lt_dlhandle_t {
 	struct lt_dlhandle_t *next;
@@ -87,7 +101,7 @@ strrchr(str, ch)
 
 #endif
 
-#ifdef STATIC
+#ifdef LIBTOOL_STATIC
 
 /* emulate dynamic linking using dld_preloaded_symbols */
 

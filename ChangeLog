@@ -1,5 +1,8 @@
 1998-12-16  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* libltdl/configure.in (stdlib.h, unistd.h, stdio.h): check
+	* libltdl/ltdl.c: include them
+
 	* demo/configure.in (BINARY_HELLDL): test whether dlopen is
 	supported at configure time
 	* demo/Makefile.am (helldl): use automake conditionals to build
