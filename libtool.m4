@@ -1083,9 +1083,9 @@ EOF
       _lt_hint=1;
       cat $export_symbols | while read symbol; do
 	set dummy \$symbol;
-	case \$# in
-	  2) echo "	\$2 @ \$_lt_hint ; " >> $output_objdir/$soname-def;;
-	  *) echo "     \$2 @ \$_lt_hint \$3 ; " >> $output_objdir/$soname-def;;
+	case \[$]# in
+	  2) echo "	\[$]2 @ \$_lt_hint ; " >> $output_objdir/$soname-def;;
+	  *) echo "     \[$]2 @ \$_lt_hint \[$]3 ; " >> $output_objdir/$soname-def;;
 	esac;
 	_lt_hint=`expr 1 + \$_lt_hint`;
       done~

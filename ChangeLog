@@ -1,3 +1,8 @@
+2000-11-19  Paul Berrevoets  <paul@swi.com>       
+       
+	* libtool.m4 (_LT_AC_LTCONFIG_HACK): Quote the $ in $#, $2 and
+	$3 in variable 'archive_expsym_cmds' for cygwin.
+
 2000-11-19  Gary V. Vaughan  <gvv@techie.com>
 
 	* ltdl.c: Relegate non-POSIX-compliant symbols (e.g. those
