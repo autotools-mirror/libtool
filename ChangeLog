@@ -1,3 +1,11 @@
+2001-04-25  Gary V. Vaughan  <gvv@techie.com>
+
+	GNU libtool 1.4 was released.
+
+	* configure.in: Bumped version to 1.4.
+	* config.sub, config.guess:  Synchronised from ftp.gnu.org.
+	* NEWS: updated.
+
 2001-04-24  Peter Eisentraut  <peter_e@gmx.net>
 
 	* libtool.m4: Support $host_os as /sysv5uw7*/ from newer

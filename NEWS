@@ -1,8 +1,9 @@
 NEWS - list of user-visible changes between releases of GNU Libtool
 
-New in 1.4: 2001-04-??; CVS version 1.3e, Libtool team:
+New in 1.4: 2001-04-25; CVS version 1.3e, Libtool team:
 * Support for aix5*.
-
+* Bugfixes.
+
 New in 1.3d: 2001-04-02; CVS version 1.3c, Libtool team:
 * ltconfig is no more.  Generation of libtool happens directly from
   the configure file.
