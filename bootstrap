@@ -1,7 +1,9 @@
 #! /bin/sh
 
 # helps bootstrapping libtool, when checked out from CVS
-# requires at least GNU autoconf 2.50 and GNU automake1.4-p4
+# requires at least GNU autoconf 2.50 and GNU automake1.4-p5
+
+find . \( -name autom4te.cache -o -name libtool \) -print | xargs rm -r
 
 : ${ACLOCAL=aclocal}
 : ${AUTOMAKE=automake}
