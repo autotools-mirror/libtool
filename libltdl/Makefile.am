@@ -1,6 +1,7 @@
 ## Process this file with automake to produce Makefile.in
 ##
-## Copyright (C) 1998, 1999, 2000, 2001, 2003, 2004, 2005 Free Software Foundation
+## Copyright (C) 1998, 1999, 2000, 2001, 2003, 2004, 2005
+## Free Software Foundation, Inc.
 ##
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -33,46 +34,41 @@ VERSION_INFO		= -version-info 6:0:0
 
 pkgincludedir		= $(includedir)/libltdl
 
-lib_LTLIBRARIES		= libdlloader.la
-libdlloader_la_SOURCES  = libltdl/lt_error.h lt_error.c \
-			  libltdl/lt__private.h \
-                          libltdl/lt__strl.h \
-                          libltdl/lt_system.h \
-			  libltdl/lt__alloc.h lt__alloc.c \
-			  libltdl/lt__glibc.h \
-			  libltdl/lt__dirent.h \
-			  libltdl/slist.h slist.c
-libdlloader_la_LDFLAGS	= $(AM_LDFLAGS) $(VERSION_INFO)
-libdlloader_la_LIBADD	= $(LTLIBOBJS)
-
-## Libltdl brings it all together:
 if INSTALL_LTDL
 include_HEADERS		= ltdl.h
 pkginclude_HEADERS	= libltdl/lt_system.h libltdl/lt_error.h \
 			  libltdl/lt_dlloader.h
-lib_LTLIBRARIES		+= libltdl.la
+lib_LTLIBRARIES		= libltdl.la
 endif
 
 if CONVENIENCE_LTDL
 noinst_LTLIBRARIES	= libltdlc.la
 endif
 
-libltdl_la_SOURCES	= ltdl.h ltdl.c \
-			  libltdl/lt_dlloader.h lt_dlloader.c loaders/preopen.c
+libltdl_la_SOURCES	= ltdl.c ltdl.h \
+			  lt_error.c libltdl/lt_error.h \
+			  libltdl/lt__private.h \
+                          libltdl/lt__strl.h \
+                          libltdl/lt_system.h \
+			  lt__alloc.c libltdl/lt__alloc.h \
+			  libltdl/lt__glibc.h \
+			  libltdl/lt__dirent.h \
+			  slist.c libltdl/slist.h \
+			  lt_dlloader.c libltdl/lt_dlloader.h loaders/preopen.c
 libltdl_la_CPPFLAGS	= -DLTDLOPEN=libltdl $(AM_CPPFLAGS)
 libltdl_la_LDFLAGS	= $(AM_LDFLAGS) $(VERSION_INFO) $(LT_DLPREOPEN)
-libltdl_la_LIBADD	= libdlloader.la
+libltdl_la_LIBADD	= $(LTLIBOBJS)
 
-libltdlc_la_SOURCES	= $(libltdl_la_SOURCES) $(libdlloader_la_SOURCES)
+libltdlc_la_SOURCES	= $(libltdl_la_SOURCES)
 libltdlc_la_CPPFLAGS	= -DLTDLOPEN=libltdlc $(AM_CPPFLAGS)
-libltdlc_la_LDFLAGS	= $(AM_LDFLAGS) -weak libdlloader.la $(LT_DLPREOPEN)
-libltdlc_la_LIBADD	= $(libdlloader_la_LIBADD)
+libltdlc_la_LDFLAGS	= $(AM_LDFLAGS) $(LT_DLPREOPEN)
+libltdlc_la_LIBADD	= $(libltdl_la_LIBADD)
 
 ## These are installed as a subdirectory of pkgdatadir so that
 ## libtoolize --ltdl can find them later:
 ltdldatadir		= $(pkgvdatadir)/libltdl
 ltdldatafiles		= COPYING.LIB Makefile.am README configure.ac \
-			  $(libltdl_la_SOURCES) $(libdlloader_la_SOURCES) \
+			  $(libltdl_la_SOURCES) \
 			  lt__dirent.c libltdl/lt__dirent.h \
                           lt__strl.c libltdl/lt__strl.h \
 			  argz_.h argz.c

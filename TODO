@@ -54,8 +54,6 @@ GNU Libtool
 1.2. libtldl
 ------------
 
-* Get rid of the shared libddloader.
-
 * Change libltdl interface: add separate functions for function
   pointers.  This will allow porting to systems where function pointers
   are incompatible with data pointer C-wise.
