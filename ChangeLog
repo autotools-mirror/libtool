@@ -1,3 +1,13 @@
+1998-11-04  Eric Estievenart  <eric@via.ecp.fr>
+
+	* doc/libtool.texi (Compile mode): Document that -o is fully
+	supported.
+
+	* libtool.m4 (libtool-lock): new ARG_ENABLE; sets (need_locks)
+	* ltconfig.in (disable-lock): control need_locks
+	(hard_links): check whether hard-links can be used for locking
+	* ltmain.in (need_locks): use $output_obj.lock for locking
+	
 1998-11-03  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* ltmain.in: correctly create libraries and programs with

@@ -1066,10 +1066,14 @@ are substituted into the compilation command.
 If the @samp{-static} option is given, then a @samp{.o} file is built,
 even if libtool was configured with @samp{--disable-static}.
 
-Note that the @samp{-o} option is not supported for compile mode,
-because it cannot be implemented properly for all platforms.  It is far
-easier just to change your Makefiles to create all the output files in
-the current working directory.
+Note that the @samp{-o} option is now fully supported.  It is emulated
+for the platforms that don't support it (by locking and moving the
+objects), so it is really easy to use libtool, just with minor
+modifications to your Makefiles. Typing for example
+@example
+libtool gcc -c foo/x.c -o foo/x.lo
+@end example
+will do what you expect.
 
 @node Link mode
 @section Link mode

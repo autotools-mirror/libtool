@@ -375,6 +375,16 @@ if test -z "$show_help"; then
       output_obj=`$echo "X$srcfile" | $Xsed -e 's%^.*/%%' -e 's%\..*$%%'`.o
     fi
 
+    # Lock this critical section if it is needed
+    # We use this script file to make the link, it avoids creating a new file
+    if test "$need_locks" = yes; then
+      until ln "$0" "$output_obj.lock" 2>/dev/null; do
+        $show "Waiting for lock on $output_obj to be removed"
+        sleep 2
+      done
+      trap "rm $output_obj.lock; exit 1" 1 2 15
+    fi
+ 
     # Only build a PIC object if we are building libtool libraries.
     if test "$build_libtool_libs" = yes; then
       # Without this assignment, base_compile gets emptied.
@@ -433,6 +443,11 @@ if test -z "$show_help"; then
         $show "$mv $output_obj $obj"
         $run $mv $output_obj $obj || exit $?
       fi
+    fi
+
+    # Unlock the critical section if it was locked
+    if test "$need_locks" = yes; then
+      rm "$output_obj.lock"
     fi
 
     # Create an invalid libtool object if no PIC, so that we do not

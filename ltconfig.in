@@ -117,6 +117,7 @@ ofile="$default_ofile"
 verify_host=yes
 with_gcc=no
 with_gnu_ld=no
+need_locks=yes
 
 old_AR="$AR"
 old_CC="$CC"
@@ -162,6 +163,7 @@ Generate a system-specific libtool script.
     --version              output version information and exit
     --with-gcc             assume that the GNU C compiler will be used
     --with-gnu-ld          assume that the C compiler uses the GNU linker
+    --disable-lock         disable file locking
 
 LTMAIN is the \`ltmain.sh' shell script fragment or \`ltmain.c' program
 that provides basic libtool functionality.
@@ -194,6 +196,8 @@ EOM
 
   --with-gcc) with_gcc=yes ;;
   --with-gnu-ld) with_gnu_ld=yes ;;
+
+  --disable-lock) need_locks=no ;;
 
   -*)
     echo "$progname: unrecognized option \`$option'" 1>&2
@@ -637,6 +641,36 @@ else
 fi
 CFLAGS="$save_CFLAGS"
 $rm conftest*
+
+# Check to see if we can do hard links to lock some files if needed
+hard_links="nottested"
+if test "$compiler_c_o" = no && test "$need_locks" != no; then
+  # do not overwrite the value of need_locks provided by the user
+  echo $ac_n "checking if we can lock with hard links... $ac_c" 1>&6
+  hard_links=yes
+  $rm conftest*
+  ln conftest.a conftest.b 2>/dev/null && hard_links=no
+  touch conftest.a
+  ln conftest.a conftest.b 2>&5 || hard_links=no
+  ln conftest.a conftest.b 2>/dev/null && hard_links=no
+  echo "$ac_t$hard_links" 1>&6
+  $rm conftest*
+else
+  need_locks=no
+fi
+
+# Abort if we need locks and they don't work and the user didn't disable them
+
+if test "$hard_links" = no; then
+  echo "*** Warning, your platform support neither -c and -o with your compiler"
+  echo "*** and doesn't provide working hard links to do file locking."
+  echo "*** You can use ltconfig --disable-lock or configure --disable-libtool-lock"
+  echo "*** but you should never try to do parallel compilation (make -j n)"
+  echo "*** unless the package maintainer told you that you could."
+  echo "***             You should report this bug to <bug-libtool@gnu.org>"
+  exit 1
+fi
+
 
 # Check for any special shared library compilation flags.
 if test -n "$special_shlib_compile_flags"; then
@@ -1362,7 +1396,7 @@ case "$ltmain" in
     old_postuninstall_cmds archive_cmds postinstall_cmds postuninstall_cmds \
     allow_undefined_flag no_undefined_flag \
     finish_cmds finish_eval global_symbol_pipe \
-    hardcode_libdir_flag_spec hardcode_libdir_separator compiler_c_o; do
+    hardcode_libdir_flag_spec hardcode_libdir_separator compiler_c_o need_locks; do
 
     case "$var" in
     reload_cmds | old_archive_cmds | old_archive_from_new_cmds | \
@@ -1380,13 +1414,6 @@ case "$ltmain" in
   trap "$rm \"$ofile\"; exit 1" 1 2 15
   echo "creating $ofile"
   $rm "$ofile"
-  if test "$compiler_c_o" = no; then
-    $echo "**** Warning ! Your compiler doesn't support -c and -o options"
-    $echo "**** If you use a single makefile, with relative directories and"
-    $echo "**** use the -o option of libtool gcc, we strongly discourage"
-    $echo "**** to make parallel builds (make -j n) if there are source"
-    $echo "**** files with the same name in different subdirectories"
-  fi
   cat <<EOF > "$ofile"
 #! $SHELL
 
@@ -1506,6 +1533,9 @@ pic_flag=$pic_flag
 
 # Does compiler simultaneously support -c and -o options
 compiler_c_o=$compiler_c_o
+
+# Must we lock files when doing compilation ?
+need_locks=$need_locks
 
 # Compiler flag to prevent dynamic linking.
 link_static_flag=$link_static_flag
