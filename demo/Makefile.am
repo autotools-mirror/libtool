@@ -10,6 +10,7 @@ CLEANFILES = $(hardcode_tests)
 # Build a libtool library, libhello.la for installation in libdir.
 lib_LTLIBRARIES = libhello.la
 libhello_la_SOURCES = hello.c foo.c
+libhello_la_LIBADD = $(LIBM)
 libhello_la_LDFLAGS = -version-info 3:12:1
 
 include_HEADERS = foo.h
@@ -60,7 +61,7 @@ libhell1_la_LIBADD = -L. -lhell0 # libtool rejects libhell0.la
 libhell2_la_LIBADD = -L. -lhell0 # we have to use -L/-l.  Why?
 bin_PROGRAMS += hell0
 hell0_SOURCES = main.c
-hell0_LDADD = libhell1.la libhell2.la
+hell0_LDADD = libhell1.la libhell2.la $(LIBM)
 
 # Unfortunately, in order to test libtool thoroughly, we need access
 # to its private directory.
@@ -89,8 +90,8 @@ hc-direct: $(hell_OBJECTS) $(hell_DEPENDENCIES) $(libdir)/libhello.la
 	  eval `egrep -e '^(hardcode_.*|wl)=' libtool`; \
 	  libdir=$(libdir); \
 	  flag=`eval echo \"$$hardcode_libdir_flag_spec\"`; \
-	  echo "$(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) $$shlib $(LIBS) $$flag || echo unsupported > $@"; \
-	  eval "$(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) $$shlib $(LIBS) $$flag || echo unsupported > $@"
+	  echo "$(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) $$shlib $(LIBS) $(LIBM) $$flag || echo unsupported > $@"; \
+	  eval "$(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) $$shlib $(LIBS) $(LIBM) $$flag || echo unsupported > $@"
 
 hc-libflag: $(hell_OBJECTS) $(hell_DEPENDENCIES) $(libdir)/libhello.la
 	@eval `egrep -e '^(hardcode_.*|wl)=' libtool`; \
@@ -100,8 +101,8 @@ hc-libflag: $(hell_OBJECTS) $(hell_DEPENDENCIES) $(libdir)/libhello.la
 	    echo "echo unsupported > $@"; \
 	    echo unsupported > $@ || status="$$?"; \
 	  else \
-	    echo "$(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) $$flag -L$(libdir) -lhello $(LIBS)"; \
-	    $(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) $$flag -L$(libdir) -lhello $(LIBS) || status="$$?"; \
+	    echo "$(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) $$flag -L$(libdir) -lhello $(LIBS) $(LIBM)"; \
+	    $(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) $$flag -L$(libdir) -lhello $(LIBS) $(LIBM) || status="$$?"; \
 	  fi; \
 	  exit $$status
 
@@ -111,16 +112,16 @@ hc-libpath: $(hell_OBJECTS) $(hell_DEPENDENCIES) $(libdir)/libhello.la
 	@eval `egrep -e '^(shlibpath_var|hardcode_.*|wl)=' libtool`; \
 	  libdir=$(libdir); \
 	  flag=`eval echo \"$$hardcode_libdir_flag_spec\"`; \
-	  echo "$$shlibpath_var=./$(objdir) $(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) -lhello $(LIBS) $$flag || echo unsupported > $@"; \
-	  eval "$$shlibpath_var=./$(objdir) $(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) -lhello $(LIBS) $$flag || echo unsupported > $@"
+	  echo "$$shlibpath_var=./$(objdir) $(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) -lhello $(LIBS) $(LIBM) $$flag || echo unsupported > $@"; \
+	  eval "$$shlibpath_var=./$(objdir) $(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) -lhello $(LIBS) $(LIBM) $$flag || echo unsupported > $@"
 
 hc-minusL: $(hell_OBJECTS) $(hell_DEPENDENCIES)
 	@rm -f hc-minusL
 	@eval `egrep -e '^(hardcode_.*|wl)=' libtool`; \
 	  libdir=$(libdir); \
 	  flag=`eval echo \"$$hardcode_libdir_flag_spec\"`; \
-	  echo "$(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) -L./$(objdir) -lhello $(LIBS) $$flag || echo unsupported > $@"; \
-	  eval "$(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) -L./$(objdir) -lhello $(LIBS) $$flag || echo unsupported > $@"
+	  echo "$(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) -L./$(objdir) -lhello $(LIBS) $(LIBM) $$flag || echo unsupported > $@"; \
+	  eval "$(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) -L./$(objdir) -lhello $(LIBS) $(LIBM) $$flag || echo unsupported > $@"
 
 $(OBJECTS): libtool
 libtool: $(LIBTOOL_DEPS)

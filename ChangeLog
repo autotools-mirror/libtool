@@ -1,3 +1,15 @@
+1999-03-30 Thomas Tanner  <tanner@gmx.de>
+
+	* doc/libtool.texi: fixed a typo
+	* libtoolize.in: add the libtool scripts to libltdl.tar.gz
+	* libtool.m4: don't AC_SUBST(USE_SYMBOL_UNDERSCORE),
+	  AC_CHECK_LIBM sets LIBM, AC_LIBLTDL_INSTALLABLE doesn't work
+	  when libltdl is already installed
+	* *demo/Makefile.am: use LIBM
+	* *demo/configure.in: AC_SUBST LIBM
+	* libltdl/configure.in: use ac_cv_sys_symbol_underscore instead of
+	  USE_SYMBOL_UNDERSCORE
+
 1999-03-30  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* ltconfig.in (aix4*, collect2name): make sure collect2 exists

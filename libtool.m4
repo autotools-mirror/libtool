@@ -563,23 +563,22 @@ fi
 rm -rf conftest*
 ])
 AC_MSG_RESULT($ac_cv_sys_symbol_underscore)
-USE_SYMBOL_UNDERSCORE=${ac_cv_sys_symbol_underscore=no}
-AC_SUBST(USE_SYMBOL_UNDERSCORE)dnl
 ])
 
 # AC_CHECK_LIBM - check for math library
 AC_DEFUN(AC_CHECK_LIBM,
 [AC_REQUIRE([AC_CANONICAL_HOST])dnl
+LIBM=
 case "$host" in
 *-*-beos* | *-*-cygwin*)
   # These system don't have libm
   ;;
 *-ncr-sysv4.3*)
-  AC_CHECK_LIB(mw, _mwvalidcheckl)
-  AC_CHECK_LIB(m, cos)
+  AC_CHECK_LIB(mw, _mwvalidcheckl, LIBM="-lmw")
+  AC_CHECK_LIB(m, cos, LIBM="$LIBM -lm")
   ;;
 *)
-  AC_CHECK_LIB(m, cos)
+  AC_CHECK_LIB(m, cos, LIBM="-lm")
   ;;
 esac
 ])
@@ -611,15 +610,20 @@ AC_DEFUN(AC_LIBLTDL_CONVENIENCE, [
 # appropriate in the Makefiles.
 # In the future, this macro may have to be called after AC_PROG_LIBTOOL.
 AC_DEFUN(AC_LIBLTDL_INSTALLABLE, [
-  AC_CHECK_LIB(ltdl, main, LIBLTDL="-lltdl", [
-    case "$enable_ltdl_install" in
-    no) AC_MSG_WARN([libltdl not installed, but installation disabled]) ;;
-    "") enable_ltdl_install=yes
-        ac_configure_args="$ac_configure_args --enable-ltdl-install" ;;
-    esac
+  AC_CHECK_LIB(ltdl, main,
+  [test x"$enable_ltdl_install" != xyes && enable_ltdl_install=no],
+  [if test x"$enable_ltdl_install" = xno; then
+     AC_MSG_WARN([libltdl not installed, but installation disabled])
+   else
+     enable_ltdl_install=yes
+   fi
   ])
-  if test x"$enable_ltdl_install" != x"no"; then
+  if test x"$enable_ltdl_install" = x"yes"; then
+    ac_configure_args="$ac_configure_args --enable-ltdl-install"
     LIBLTDL=ifelse($#,1,$1,['${top_builddir}/libltdl'])/libltdl.la
+  else
+    ac_configure_args="$ac_configure_args --enable-ltdl-install=no"
+    LIBLTDL="-lltdl"
   fi
 ])
 

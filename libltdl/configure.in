@@ -137,7 +137,7 @@ if test "$test_dlerror" = yes; then
 fi
 
 AC_SYS_SYMBOL_UNDERSCORE
-if test x"$USE_SYMBOL_UNDERSCORE" = xyes; then
+if test x"$ac_cv_sys_symbol_underscore" = xyes; then
   if test x"$ac_cv_func_dlopen" = xyes ||
      test x"$ac_cv_lib_dl_dlopen" = xyes ; then
 	AC_CACHE_CHECK([whether we have to add an underscore for dlsym],

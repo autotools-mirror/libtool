@@ -7,6 +7,7 @@ EXTRA_DIST = acinclude.m4
 noinst_LTLIBRARIES = libfoo.la
 
 libfoo_la_SOURCES = foo.c
+libfoo_la_LIBADD = $(LIBM)
 
 noinst_HEADERS = foo.h
 

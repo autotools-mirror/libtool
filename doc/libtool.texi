@@ -2592,7 +2592,7 @@ implementation of @file{libltdl} services, it requires GNU DLD, or it
 will only emulate dynamic linking with libtool's dlpreopening mechanism.
 
 @noindent
-libltdl supports currently the following dynamic linking mechanims:
+libltdl supports currently the following dynamic linking mechanisms:
 
 @itemize @bullet
 @item
