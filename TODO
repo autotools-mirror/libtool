@@ -30,11 +30,6 @@ maintainers add this kind of note to their package documentation.
 In the future:
 **************
 
-* Eliminate broken handling of single-quotes in arguments to
-ltmain.sh.  I've decided that we should backslashify `"', `$' and `\'.
-Then, if there are any other metacharacters in the argument, surround
-it with double quotes.
-
 * Implement full multi-language support.  Currently, this is only for
 C++, but there are beginnings of this in the manual (Other Languages).
 This includes writing libtool not to be so dependent on the compiler
@@ -44,6 +39,15 @@ We especially need this for C++ linking, for which libtool currently
 does not handle static constructors properly, even on operating
 systems that support them.  ``Don't use static constructors'' is no
 longer a satisfactory answer.
+
+* Writing libtool as a shell script means that proper variable quoting
+is a real problem.  Be careful when `eval'ing a string that the
+arguments are properly quoted.  Note that arguments with embedded
+whitespace probably will cause problems (because of IFS).
+
+I don't have good ideas on to fix the problems with whitespace, other
+than subverting IFS entirely, perhaps always using an `eval "set
+$quoted_args"' sequence.
 
 * Another form of convenience library, suggested by Alexandre Oliva,
 is to have undocumented utility libraries, where only the shared

@@ -1,3 +1,23 @@
+Wed Aug 27 09:54:21 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltmain.sh.in (link): Make sure that compile_command and
+ 	finalize_command are always evaled.  Quote any unknown linker
+ 	flags we need to pass through.
+
+	* ltconfig.in: Quote all variable values that may contain
+	metacharacters creating the libtool script.  This provides
+	complete protection, so that even single-quotes may appear inside
+	a libtool variable value.
+
+	* ltmain.sh.in (link): Quote finalize_command before putting it in
+ 	the wrapper script.
+
+Tue Aug 26 13:32:19 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltmain.sh.in (sed_quote_subst): Change the quoting procedure
+ 	again.  I think that the new one is robust for *all* characters,
+ 	including whitespace and metacharacters.
+
 Mon Aug 25 10:54:14 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltmain.sh.in: Change quoting procedure because some shells

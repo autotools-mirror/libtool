@@ -39,6 +39,10 @@ rm="rm -f"
 
 help="Try \`$progname --help' for more information."
 
+# Sed substitution that helps us do robust quoting.  It backslashifies
+# metacharacters that are still active within double-quoted strings.
+sed_quote_subst='s/\([\\"$]\)/\\\1/g'
+
 # Global variables:
 can_build_shared=yes
 enable_shared=yes
@@ -652,7 +656,7 @@ else
   case "$host_os" in
   aix3*)
     allow_undefined_flag=unsupported
-    archive_cmds='$NM$libobjs | $global_symbol_pipe | sed \"s/.* //\" > $lib.exp;$LD -o $objdir/$soname$libobjs -bE:$lib.exp -T512 -H512 -bM:SRE -lc$deplibs;$AR cru $lib $objdir/$soname'
+    archive_cmds='$NM$libobjs | $global_symbol_pipe | sed '"'s/.* //'"' > $lib.exp;$LD -o $objdir/$soname$libobjs -bE:$lib.exp -T512 -H512 -bM:SRE -lc$deplibs;$AR cru $lib $objdir/$soname'
     # Note: this linker hardcodes the directories in LIBPATH if there
     # are no directories specified by -L.
     hardcode_minus_L=yes
@@ -665,7 +669,7 @@ else
 
   aix4*)
     allow_undefined_flag=unsupported
-    archive_cmds='$NM$libobjs | $global_symbol_pipe | sed \"s/.* //\" > $lib.exp;$CC -o $objdir/$soname$libobjs ${wl}-bE:$lib.exp ${wl}-bM:SRE ${wl}-bnoentry$deplibs;$AR cru $lib $objdir/$soname'
+    archive_cmds='$NM$libobjs | $global_symbol_pipe | sed '"'s/.* //'"' > $lib.exp;$CC -o $objdir/$soname$libobjs ${wl}-bE:$lib.exp ${wl}-bM:SRE ${wl}-bnoentry$deplibs;$AR cru $lib $objdir/$soname'
     hardcode_direct=yes
     hardcode_minus_L=yes
     ;;
@@ -1097,6 +1101,18 @@ test "$enable_shared" = yes || enable_static=yes
 
 echo "checking whether to build static libraries... $enable_static" 1>&6
 
+# Now quote all the things that may contain metacharacters.
+for var in old_CC old_CFLAGS old_CPPFLAGS old_LD old_NM old_RANLIB \
+  old_LN_S AR CC LD LN_S NM reload_flag reload_cmds wl pic_flag \
+  link_static_flag no_builtin_flag export_dynamic_flag_spec \
+  profile_flag_pattern library_names_spec soname_spec RANLIB \
+  old_archive_cmds old_postinstall_cmds archive_cmds postinstall_cmds \
+  allow_undefined_flag finish_cmds global_symbol_pipe striplib old_striplib \
+  hardcode_libdir_flag_spec hardcode_libdir_separator; do
+
+  eval "$var=\`echo \"\$$var\" | sed \"\$sed_quote_subst\"\`"
+done
+
 ofile=libtool
 trap "$rm $ofile; exit 1" 1 2 15
 echo creating $ofile
@@ -1131,73 +1147,73 @@ host_alias="$host_alias"
 host="$host"
 
 # The archiver.
-AR='$AR'
+AR="$AR"
 
 # The default C compiler.
-CC='$CC'
+CC="$CC"
 
 # The linker used to build libraries.
-LD='$LD'
+LD="$LD"
 
 # Whether we need hard or soft links.
-LN_S='$LN_S'
+LN_S="$LN_S"
 
 # A BSD-compatible nm program.
-NM='$NM'
+NM="$NM"
 
 # How to create reloadable object files.
-reload_flag='$reload_flag'
-reload_cmds='$reload_cmds'
+reload_flag="$reload_flag"
+reload_cmds="$reload_cmds"
 
 # How to pass a linker flag through the compiler.
-wl='$wl'
+wl="$wl"
 
 # Additional compiler flags for building library objects.
-pic_flag='$pic_flag'
+pic_flag="$pic_flag"
 
 # Compiler flag to prevent dynamic linking.
-link_static_flag='$link_static_flag'
+link_static_flag="$link_static_flag"
 
 # Compiler flag to turn off builtin functions.
-no_builtin_flag='$no_builtin_flag'
+no_builtin_flag="$no_builtin_flag"
 
 # Compiler flag to allow reflexive dlopens.
-export_dynamic_flag_spec='$export_dynamic_flag_spec'
+export_dynamic_flag_spec="$export_dynamic_flag_spec"
 
 # Pattern to match compiler flags for creating libNAME_p libraries:
-profile_flag_pattern='$profile_flag_pattern'
+profile_flag_pattern="$profile_flag_pattern"
 
 # Library versioning type.
 version_type=$version_type
 
 # List of archive names.  First name is the real one, the rest are links.
 # The last name is the one that the linker finds with -lNAME.
-library_names_spec='$library_names_spec'
+library_names_spec="$library_names_spec"
 
 # The coded name of the library, if different from the real name.
-soname_spec='$soname_spec'
+soname_spec="$soname_spec"
 
 # Commands used to build and install an old-style archive.
-RANLIB='$RANLIB'
-old_archive_cmds='$old_archive_cmds'
-old_postinstall_cmds='$old_postinstall_cmds'
+RANLIB="$RANLIB"
+old_archive_cmds="$old_archive_cmds"
+old_postinstall_cmds="$old_postinstall_cmds"
 
 # Commands used to build and install a shared archive.
-archive_cmds='$archive_cmds'
-postinstall_cmds='$postinstall_cmds'
+archive_cmds="$archive_cmds"
+postinstall_cmds="$postinstall_cmds"
 
 # Flag that allows shared libraries with undefined symbols to be built.
-allow_undefined_flag='$allow_undefined_flag'
+allow_undefined_flag="$allow_undefined_flag"
 
 # Commands used to finish a libtool library installation in a directory.
-finish_cmds='$finish_cmds'
+finish_cmds="$finish_cmds"
 
 # Take the output of nm and produce a listing of raw symbols and C names
 global_symbol_pipe="$global_symbol_pipe"
 
 # How to strip a library file.
-striplib='$striplib'
-old_striplib='$old_striplib'
+striplib="$striplib"
+old_striplib="$old_striplib"
 
 # This is the shared library runtime path variable.
 runpath_var=$runpath_var
@@ -1210,10 +1226,10 @@ hardcode_action=$hardcode_action
 
 # Flag to hardcode \$libdir into a binary during linking.
 # This must work even if \$libdir does not exist.
-hardcode_libdir_flag_spec='$hardcode_libdir_flag_spec'
+hardcode_libdir_flag_spec="$hardcode_libdir_flag_spec"
 
 # Whether we need a single -rpath flag with a separated argument.
-hardcode_libdir_separator='$hardcode_libdir_separator'
+hardcode_libdir_separator="$hardcode_libdir_separator"
 
 # Set to yes if using DIR/libNAME.so during linking hardcodes DIR into the
 # resulting binary.
