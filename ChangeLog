@@ -1,5 +1,7 @@
 2005-03-15  Gary V. Vaughan  <gary@gnu.org>
 
+	* bootstrap (reconfdirs): Revert accidental partial commit.
+
 	* libtoolize.m4sh (func_massage_pkgvmacro_DATA): New function
 	to calculate the macro filenames to be copied by libtoolize.
 	* Makefile.am (edit): Substitute pkgvmacro_DATA.

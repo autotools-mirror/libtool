@@ -45,7 +45,7 @@ rm -rf `find . -path './{arch}' -prune -o \( -name autom4te.cache -o -name libto
 rm -f acinclude.m4 config/ltmain.sh libltdl/config.h
 
 if test -z "$reconfdirs"; then
-  reconfdirs=". libltdl `ls -1d tests/*demo tests/*demo[0-9]`"
+  reconfdirs=". `ls -1d tests/*demo tests/*demo[0-9]`"
 fi
 
 # Extract the package name and version number from configure.ac:
