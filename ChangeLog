@@ -1,3 +1,9 @@
+2003-05-29  Gary V. Vaughan  <gary@gnu.org>
+
+	* libltdl/ltdl.c (lt_int_dyld_lib_install_name): Removed unused
+	variable mh1.
+	(sys_dyld_close): Removed unused variable size.
+
 2003-05-21  Bruno Haible  <bruno@clisp.org>
 
 	* libtool.m4 (AC_LIBTOOL_SYS_DYNAMIC_LINKER): Add support for
@@ -134,7 +140,7 @@
 	* f77demo/configure.ac: Add config.h which was misapplied previously.
 
 2003-03-20  Peter O'Gorman  <peter@pogma.com>
-	
+
 	* ltmain.in: Always use $echo not echo for consistency.
 	Changes for darwin building. Warn if linking against libs linked
 	with -module. Use module_cmds if available and building a module,
@@ -229,7 +235,7 @@
 	(_LT_AC_LANG_CXX_CONFIG): Preserve variables used by AC_PROG_LD,
 	and reset them for a C++ environment.  Use the with_gnu_ld setting
 	from AC_PROG_LD.
-	
+
 	* libtool.m4: Replace $linker_flags with $compiler_flags wherever
 	it is used as argument to $CC.
 
@@ -307,8 +313,8 @@
 	* ltmain.in: add code for a binary wrapper
 	to use with uninstalled executables on cygwin/mingw.
 	Make sure that --mode=clean gets shell wrapper and
-	binary wrapper.  When sourcing the shell wrapper, 
-	invoke using a terminal `.' on cygwin/mingw to 
+	binary wrapper.  When sourcing the shell wrapper,
+	invoke using a terminal `.' on cygwin/mingw to
 	avoid the automatic append-.exe behavior.
 
 2003-01-28  Albert Chin-A-Young  <china@thewrittenword.com>
@@ -378,7 +384,7 @@
 	Call that instead.
 
 2002-12-30  Robert Boehne  <rboehne@gnu.org>
- 
+
 	* libtool.m4 (AC_LIBTOOL_LANG_CXX_CONFIG): Copy the section
 	for Darwin from AC_LIBTOOL_PROG_LD_SHLIBS so that the CXX
 	tag doesn't use the g++ defaults for the OS X compiler.
