@@ -1,3 +1,10 @@
+2001-02-05  Gary V. Vaughan  <gvv@techie.com>
+
+	From Nick Hudson <skrll@netbsd.org>
+	* ltdl.m4 (AC_LTDL_SYS_DLOPEN_DEPLIBS): netbsd* is able to
+	automatically load module deplibs without assistance from
+	libltdl.
+
 2001-02-02  Gary V. Vaughan  <gvv@techie.com>
 
 	* libltdl/ltdl.c (load_deplibs): Make sure the depcount is reset,
