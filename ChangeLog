@@ -1,5 +1,13 @@
 2001-09-03  Gary V. Vaughan  <gary@gnu.org>
 
+	GNU libtool 1.4.1 was released.
+
+	* configure.in: Bumped version to 1.4.1.
+	* config.sub, config.guess:  Synchronised from ftp.gnu.org.
+	* doc/texinfo.tex: Ditto.
+	* NEWS: Updated.
+	* TODO: Remove fixed bugs.
+
 	* ltdl.m4 (AC_CHECK_TYPES):  This macro was introduced in Autoconf
 	2.5x.  Backported a fallback implementation (directly to ltdl.m4)
 	from Autoconf 2.50, so that we can still bootstrap with Autoconf

@@ -4,19 +4,8 @@ In the near future:
 * Figure out why zsh echo builtin's removal of \ escapes is not detected
   by libtool's echo selector.
 
-* Port the migration of all code from ltconfig into libtool.m4 to the
-multi-language-branch, so that CVS automake can remove its references
-to ltconfig.
-
 * Fix the following bugs in libltdl:
- - error reporting of tryall_dlopen():
-   if the file actually doesn't exist (stat() fails or it wasn't dlpreopened)
-   -> report `file not found'
-   if it cannot be loaded (e.g. due to missing dependencies)
-   -> report dlerror
-    open question: which error should be reported if all dlloaders fail
-    or if a specific module type can only be loaded by one of them, how report its dlerror?
-   Also report dlerror() for dlclose and dlsym if available
+ - Report dlerror() for dlclose and dlsym if available
  - Make sure that the dependency_libs of a dlpreopened module won't be loaded.
  
 * Check whether the version of libtool.m4 is compatible with
