@@ -2628,8 +2628,8 @@ EOF
 		    *" $path "*) ;;
 		    *) newlib_search_path="$newlib_search_path $path";;
 		    esac
-		    path=""
 		  fi
+		  path=""
 		  ;;
 		*)
 		path="-L$path"

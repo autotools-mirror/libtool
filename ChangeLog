@@ -5,7 +5,11 @@
 	* ltmain.in: Test $old_striplib before using it, not $striplib.
 
 	* ltmain.in: Move eval to after command separation to allow ~ in paths.
-	
+
+	* ltmain.in (linkalldeplibs,darwin): Fix a bug reported by Idar 
+	Tollefsen where a dir could be added to the link line with no '-L'
+	on darwin.
+
 2004-01-23  Scott James Remnant  <scott@netsplit.com>
 
 	* libtool.m4 (AC_LIBTOOL_CONFIG): Don't attempt to
