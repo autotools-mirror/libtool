@@ -1,3 +1,7 @@
+2005-03-15  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* libltdl/configure.ac: Update version; require Autoconf >= 2.59.
+
 2005-03-15  Gary V. Vaughan  <gary@gnu.org>
 
 	* bootstrap (reconfdirs): Revert accidental partial commit.

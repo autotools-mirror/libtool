@@ -22,13 +22,13 @@
 # configure this directory if your user doesn't want to use the installed
 # libltdl.
 
-AC_PREREQ(2.57)
+AC_PREREQ(2.59) ## We use AS_HELP_STRING
 
 
 ## ------------------------ ##
 ## Autoconf initialisation. ##
 ## ------------------------ ##
-AC_INIT([libltdl], [1.5a], [bug-libtool@gnu.org])
+AC_INIT([libltdl], [1.9g], [bug-libtool@gnu.org])
 AC_CONFIG_HEADERS([config.h:config-h.in])
 AC_CONFIG_SRCDIR([ltdl.c])
 AC_CONFIG_AUX_DIR([config])
