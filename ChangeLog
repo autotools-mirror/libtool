@@ -1,4 +1,10 @@
-2004-09-18  Alexandre Duret-Lutz  <adl@gnu.org>,
+2004-09-19  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
+	* libtool.m4 (AC_LIBTOOL_SYS_GLOBAL_SYMBOL_PIPE): The linker
+	distinguishes data and code symbols on linux-gnu/ia64.  Fixes
+	multiple testsuite failures.  Backport from 1.9c.
+
+2004-09-19  Alexandre Duret-Lutz  <adl@gnu.org>,
 	    Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 	* demo/Makefile.am, pdemo/Makefile.am: Use per-target CFLAGS
 	only for the Libtool-built objects, so that automake won't
