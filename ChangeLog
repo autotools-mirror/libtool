@@ -1,3 +1,9 @@
+1999-07-26  Olly Betts  <olly@muscat.co.uk>
+
+	* libtool.m4(cygwin mingw32, AC_LIBTOOL_SETUP):  On second
+	thoughts, only probe for -mdll vs -dll on mingw, and revert to
+	the old `-Wl,--dll -nostartfiles' on cygwin.
+
 1999-07-24  Erez Zadok  <ezk@cs.columbia.edu>
 
 	* doc/PLATFORMS (i*86-*openbsd2.5):  New platform.

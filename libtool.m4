@@ -136,23 +136,22 @@ ifdef([AC_PROVIDE_AC_LIBTOOL_WIN32_DLL],
       [extern int __attribute__((__stdcall__)) DllMain(void*, int, void*);],
       [lt_cv_need_dllmain=yes],[lt_cv_need_dllmain=no])])
 
-  # old mingw systems require "-dll" to link a DLL, while more recent ones
-  # require "-mdll"
-  lt_nostartfiles=
   case $host in
-  *-*-cygwin)
-    # on cygwin we must also not link crt.o, or else the dll will need
-    # a WinMain@16 definition.
-    lt_nostartfiles=" -nostartfiles" ;;
+  *-*-cygwin*)
+    # cygwin systems need to tell pass --dll to the linker, and not link
+    # crt.o which will require a WinMain@16 definition.
+    lt_cv_cc_ddll_switch="-Wl,-dll -nostartfiles" ;;
+  *-*-mingw*)
+    # old mingw systems require "-dll" to link a DLL, while more recent ones
+    # require "-mdll"
+    SAVE_CFLAGS="$CFLAGS"
+    CFLAGS="$CFLAGS -mdll$lt_nostartfiles"
+    AC_CACHE_CHECK([how to link DLLs], lt_cv_cc_dll_switch,
+      [AC_TRY_LINK([], [], [lt_cv_cc_dll_switch=-mdll],[lt_cv_cc_dll_switch=-dll])])
+    CFLAGS="$SAVE_CFLAGS" ;;
   esac
-  SAVE_CFLAGS="$CFLAGS"
-  CFLAGS="$CFLAGS -mdll$lt_nostartfiles"
-  AC_CACHE_CHECK([how to link DLLs], lt_cv_cc_dll_switch,
-    [AC_TRY_LINK([], [], [lt_cv_cc_dll_switch=-mdll],[lt_cv_cc_dll_switch=-dll])])
-  lt_cv_cc_dll_switch="$lt_cv_cc_dll_switch$lt_nostartfiles"
-  CFLAGS="$SAVE_CFLAGS"
   ;;
-])
+  ])
 esac
 ])
 
