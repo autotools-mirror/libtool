@@ -88,7 +88,15 @@ using (by typing `libtool --version').
 
 * Update NEWS, ChangeLog.
 
+* Make sure the 'Be Bourne compatible' shell snippet near the top of
+  ./libtoolize.in, ./ltmain.in matches the latest autoconf wisdom by
+  updating to match CVS autoconf AS_SHELL_SANITIZE in autoconf's
+  lib/m4sugar/m4sh.m4.
+
 * Run ./bootstrap.
+
+* Have some tea.  If you are running on less than 3.6GHz CPU, order
+  a pizza too ;-)
 
 * Run ./configure and then make.
 

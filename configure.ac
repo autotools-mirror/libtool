@@ -26,7 +26,7 @@ AC_PREREQ(2.58) ## We use AS_HELP_STRING
 ## ------------------------ ##
 AC_INIT([libtool], [1.5a], [bug-libtool@gnu.org])
 AC_CONFIG_HEADERS([config.h:config-h.in])
-AC_CONFIG_SRCDIR([ltmain.in])
+AC_CONFIG_SRCDIR([libtoolize.in])
 AC_CONFIG_AUX_DIR([config])
 
 
@@ -174,8 +174,6 @@ popdef([AC_MSG_ERROR])
 ## ----------------------- ##
 ## Libtool initialisation. ##
 ## ----------------------- ##
-AC_CONFIG_FILES([config/ltmain.sh:./ltmain.in])
-AC_CONFIG_FILES([libtoolize], [chmod a+x libtoolize])
 LT_INIT([dlopen win32-dll])
 AC_LIB_LTDL
 

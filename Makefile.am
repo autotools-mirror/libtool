@@ -19,14 +19,27 @@
 
 ACLOCAL_AMFLAGS  = -I m4
 
+edit = 	sed \
+	-e 's,@PACKAGE\@,$(PACKAGE),g' \
+	-e 's,@VERSION\@,$(VERSION),g' \
+	-e 's,@MACRO_VERSION\@,$(VERSION),g' \
+	-e 's,@LN_S\@,$(LN_S),g' \
+	-e 's,@SED\@,$(SED),g' \
+	-e 's,@prefix\@,$(prefix),g' \
+	-e 's,@datadir\@,$(datadir),g' \
+	-e 's,@pkgdatadir\@,$(pkgdatadir),g' \
+	-e 's,@aclocaldir\@,$(aclocaldir),g' \
+	-e "s,@configure_input\@,Generated from $$input; do not edit by hand,g"
+
 BUILD_SUBDIRS = . libltdl doc tests
 SUBDIRS = $(BUILD_SUBDIRS)
 DIST_SUBDIRS = $(BUILD_SUBDIRS)
 
-EXTRA_DIST = bootstrap libtoolize.in ltmain.in config/mkstamp stamp-vcl \
-	ChangeLog.1996 ChangeLog.1997 ChangeLog.1998 ChangeLog.1999 \
+EXTRA_DIST = bootstrap libtoolize.in config/ltmain.in config/mkstamp \
+	stamp-vcl ChangeLog.1996 ChangeLog.1997 ChangeLog.1998 ChangeLog.1999 \
 	ChangeLog.2000 ChangeLog.2001 ChangeLog.2002 ChangeLog.2003
-CLEANFILES = libtool libtoolize ltmain.shT
+CLEANFILES = libtool libtoolize \
+	libtoolize.tmp config/ltmain.tmp m4/ltversion.tmp
 
 # These are required by libtoolize and must be executable when installed.
 # Since _SCRIPTS gets the program transform applied we make them
@@ -40,6 +53,20 @@ dist_pkgdata_DATA = config/config.guess config/config.sub config/ltmain.sh
 aclocal_DATA = m4/argz.m4 m4/libtool.m4 m4/ltdl.m4 \
 	m4/ltoptions.m4 m4/ltsugar.m4 m4/ltversion.m4
 
+## If mkstamp does not match $(srcdir)/stamp-vcl, we still put the new one
+## in the current dir, incase $(srcdir) is not writable.  The dir selection
+## at the top of this rule takes care of prefering the right one on
+## subsequent runs.
+MKSTAMP = $(SHELL) $(top_srcdir)/config/mkstamp
+stamp-vcl: vcl-tmp ChangeLog
+vcl-tmp:
+	@dir=.; test -f $$dir/stamp-vcl || dir=$(srcdir); \
+	set -- `$(MKSTAMP) < $(top_srcdir)/ChangeLog`; \
+	echo "$$1" > vcl.tmp; \
+	cmp -s vcl.tmp $$dir/stamp-vcl \
+	  || (echo "Updating stamp-vcl"; cp vcl.tmp ./stamp-vcl)
+	-@rm -f vcl.tmp
+
 # We build ltversion.m4 here, instead of from config.status,
 # because config.status is rerun each time one of configure's
 # dependencies change and ltversion.m4 happens to be a configure
@@ -48,32 +75,46 @@ aclocal_DATA = m4/argz.m4 m4/libtool.m4 m4/ltdl.m4 \
 # Use `$(top_srcdir)/m4' for the benefit of non-GNU makes: this is
 # how ltversion.m4 appears in our dependencies.
 EXTRA_DIST += m4/ltversion.in
-$(top_srcdir)/m4/ltversion.m4: $(top_srcdir)/m4/ltversion.in stamp-vcl
-	set `$(MKSTAMP) < $(top_srcdir)/ChangeLog`; \
+$(top_srcdir)/m4/ltversion.m4: m4/ltversion.in configure.ac stamp-vcl
+	cd $(top_srcdir); \
+	rm -f m4/ltversion.tmp; \
+	set -- `$(MKSTAMP) < ChangeLog`; \
 	serial=`echo $$1 | sed 's,^1[.],,g'`; \
-	sed -e "s,[@]MACRO_VERSION[@],$(VERSION),g" \
-	    -e "s,[@]MACRO_REVISION[@],$$1,g" \
-	    -e "s,[@]MACRO_SERIAL[@],$$serial,g" \
-	    -e "s,[@]configure_input[@],Generated from ltversion.in; do not edit by hand.,g" \
-	$(top_srcdir)/m4/ltversion.in > $@t
-	chmod a-w $@t
-	mv -f $@t $@
+	input="ltversion.in"; \
+	$(edit) -e "s,@MACRO_REVISION\@,$$1,g" \
+		-e "s,@MACRO_SERIAL\@,$$serial,g" \
+		m4/ltversion.in > m4/ltversion.tmp; \
+	chmod a-w m4/ltversion.tmp; \
+	mv -f m4/ltversion.tmp $(top_srcdir)/m4/ltversion.m4
 
-# The standalone libtool script, and the libtool distributor.
-bin_SCRIPTS = libtool libtoolize
+## And for similar reasons, ltmain.sh can't be built from config.status.
+EXTRA_DIST += config/ltmain.sh
+$(top_srcdir)/config/ltmain.sh: config/ltmain.in configure.ac stamp-vcl
+	cd $(top_srcdir); \
+	rm -f config/ltmain.tmp; \
+	set -- `$(MKSTAMP) < $(top_srcdir)/ChangeLog`; \
+	input="ltmain.in"; \
+	$(edit) -e "s,@TIMESTAMP\@,$$1 $$2 $$3,g" \
+		-e "s,@package_revision\@,$$1,g" \
+		config/ltmain.in > config/ltmain.tmp; \
+	chmod a-w config/ltmain.tmp; \
+	mv -f config/ltmain.tmp $(top_srcdir)/config/ltmain.sh
 
-## If mkstamp does not match $(srcdir)/stamp-vcl, we still put the new one
-## in the current dir, incase $(srcdir) is not writable.  The dir selection
-## at the top of this rule takes care of prefering the right one on
-## subsequent runs.
-MKSTAMP = $(SHELL) $(top_srcdir)/config/mkstamp
-stamp-vcl: $(top_srcdir)/ChangeLog
-	@dir=.; test -f $$dir/stamp-vcl || dir=$(srcdir); \
-	set `$(MKSTAMP) < $(top_srcdir)/ChangeLog`; \
-	echo "$$1" > vcl.tmp; \
-	cmp -s vcl.tmp $$dir/stamp-vcl \
-	  || (echo "Updating stamp-vcl"; cp vcl.tmp ./stamp-vcl)
-	-@rm -f vcl.tmp
+# The libtool distributor and the standalone libtool script.
+bin_SCRIPTS = libtoolize libtool
+
+libtoolize: libtoolize.in Makefile
+	rm -f libtoolize.tmp libtoolize
+	input="libtoolize.in"; \
+	$(edit) $(srcdir)/libtoolize.in > libtoolize.tmp
+	chmod a+x libtoolize.tmp
+	chmod a-w libtoolize.tmp
+	mv -f libtoolize.tmp libtoolize
+
+# Automake doesn't want us to generate distributed files from config.status,
+# but the alternative (see libtool-1.4.3) was even uglier!
+libtool: $(top_builddir)/config.status
+	cd $(top_builddir) && $(SHELL) ./config.status $@
 
 .PHONY: configure-subdirs
 configure-subdirs distdir: $(DIST_MAKEFILE_LIST)
@@ -90,25 +131,3 @@ install-data-local:
 install-data-hook:
 	chmod +x $(DESTDIR)$(pkgdatadir)/config.guess
 	chmod +x $(DESTDIR)$(pkgdatadir)/config.sub
-
-## Unlike any other project, libtool builds its own ltmain.sh, so
-## some of the rules generated by automake need to be frobbed in
-## VPATH builds because ltmain.sh ends up in the build tree rather
-## than the source tree:
-$(top_srcdir)/config/ltmain.sh: config/ltmain.sh
-	-dir=$(top_srcdir)/config; \
-	touch $$dir/fnord$$$$ 2>/dev/null || chmod a+w $$dir; \
-	rm -f $$dir/ltmain.sh; \
-	cp config/ltmain.sh $$dir/ltmain.sh; \
-	test -f $$dir/fnord$$$$ && \
-	  { rm -f $$dir/fnord$$$$; chmod a-w $$dir $$dir/ltmain.sh; }
-
-## Put it in so that automake doesn't choke on reconf.  We don't
-## really want to distribute this file, but putting it here gives
-## the automake dist rules something to see during `make distcheck':
-EXTRA_DIST += $(top_srcdir)/config/ltmain.sh
-
-## Take it away again so that we don't distribute it by mistake
-## (it is supposed to be generated on the installers machine).
-dist-hook: $(top_srcdir)/config/ltmain.sh
-	-rm -f $(top_distdir)/config/ltmain.sh

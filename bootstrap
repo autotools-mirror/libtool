@@ -24,6 +24,11 @@
 # better features, and configure.ac documents oldest version of each
 # required for bootstrap (AC_PREREQ, and AM_INIT_AUTOMAKE).
 
+test -f ./configure.ac || {
+  echo "bootstrap: can't find ./configure.ac, please rerun from top_srcdir"
+  exit 1
+}
+
 # Upgrade caveat:
 cat <<'EOF'
 WARNING: If bootstrapping with this script fails, it may be due to an
@@ -39,33 +44,27 @@ rm -rf `find . -path './{arch}' -prune -o \( -name autom4te.cache -o -name libto
 # Delete stale acinclude.m4 from previous libtool versions.
 rm -f acinclude.m4
 
-fakes="config/ltmain.sh config/libtoolize"
 if test -z "$reconfdirs"; then
   reconfdirs=". `ls -1d tests/*demo tests/*demo[0-9]`"
 fi
 
-# Extract the version number from the configure.ac file, and make
-# sure that ltversion.m4 is up to date (preserving the timestamp
-# if possible).
-mv ./m4/ltversion.m4 .ltversion.m4T
-set -- `sed '/AC_INIT/{s/[][,]//g; p;};d' configure.ac`
-make top_srcdir=. VERSION="$2" -f Makefile.am ./m4/ltversion.m4
-if cmp -s ./m4/ltversion.m4 .ltversion.m4T; then
-  rm -f ./m4/ltversion.m4
-  mv .ltversion.m4T ./m4/ltversion.m4
-else
-  rm -f .ltversion.m4T
-fi
+# Extract the package name and version number from configure.ac:
+set -- `sed '/AC_INIT/{s/[][,()]/ /g; p;};d' configure.ac`
 
-for file in $fakes; do
-  cat > $file <<'EOF'
+# Building distributed files from configure is bad for automake, so we
+# generate them here, and have Makefile rules to keep them up to date:
+rm -f ./config/ltmain.sh ./m4/ltversion.m4
+make -f Makefile.am ./config/ltmain.sh ./m4/ltversion.m4 \
+    top_srcdir=. PACKAGE="$2" VERSION="$3"
+
+# Make a dummy libtoolize script for autoreconf:
+cat > ./config/libtoolize <<'EOF'
 #! /bin/sh
 # This is a dummy file for bootstrapping CVS libtool.
 echo "$0: Bootstrap detected, no files installed." | sed 's,^.*/,,g'
 exit 0
 EOF
-  chmod 755 $file
-done
+chmod 755 ./config/libtoolize
 
 # Running the installed `libtoolize' will trash the local (newer) libtool.m4
 # among others.  Call the dummy script we made earlier.
@@ -76,11 +75,10 @@ for sub in $reconfdirs; do
   autoreconf --force --verbose --install $sub
 done
 
-for file in $fakes; do
-  rm -f $file
-done
+# Remove our dummy libtoolize
+rm -f ./config/libtoolize
 
-# These files con cause an infinite configure loop if left behind.
+# These files can cause an infinite configure loop if left behind.
 rm -f Makefile libltdl/Makefile libtool vcl.tmp
 
 exit 0
