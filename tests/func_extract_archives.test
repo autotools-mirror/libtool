@@ -78,5 +78,5 @@ do
   $EGREP -v "foo-$anum" ".libs/libfoo/libfoo.a/foo-$anum.o" || exit 1
   rm -f ".libs/libfoo/libfoo.a/foo-$anum.o"
 done
-rm -rf ".libs/libfoo"
+rm -rf ".libs/libfoo" libfoo.a bar.o foo.o
 exit 0

@@ -1,3 +1,7 @@
+2005-02-01  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* tests/func_extract_archives.test: Clean up afterwards.
+
 2005-02-01  Peter O'Gorman  <peter@pogma.com>
 
 	* libtoolize.in, libltdl/ltdl.c: Nothing significant changed in 2005,
