@@ -1,5 +1,8 @@
 1999-03-13  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* tests/sh.test: look for `$Xsed' without `$echo "X...' 
+	* ltconfig.in, ltmain.in: fixed a few such occurrences
+
 	* ltmain.in (-static, -all-static): revert March 11's patch, I was 
 	barking up the wrong tree
 

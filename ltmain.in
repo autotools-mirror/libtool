@@ -1046,7 +1046,7 @@ compiler."
 	;;
 
       -R*)
-	xrpath="$xrpath "`echo "X$arg" | $Xsed -e 's/^-R//'`
+	xrpath="$xrpath "`$echo "X$arg" | $Xsed -e 's/^-R//'`
 	continue
 	;;
 
@@ -1163,7 +1163,7 @@ compiler."
 	  temp_deplibs=
 	  for deplib in $dependency_libs; do
 	    case "$deplib" in
-	    -R*) temp_xrpath=`echo "X$deplib" | $Xsed -e 's/^-R//'`
+	    -R*) temp_xrpath=`$echo "X$deplib" | $Xsed -e 's/^-R//'`
 		 case " $rpath $xrpath " in
 		 *" $temp_xrpath "*) ;;
 		 *) xrpath="$xrpath $temp_xrpath";;
@@ -1841,8 +1841,7 @@ EOF
 			potliblink=`ls -ld $potlib | sed 's/.* -> //'`
 			case "$potliblink" in
 			/*) potlib="$potliblink";;
-			*) potlib=`$echo "X$potlib" \
-				   | $Xsed -e 's,[^/]*$,,'`"$potliblink";;
+			*) potlib=`$echo "X$potlib" | $Xsed -e 's,[^/]*$,,'`"$potliblink";;
 			esac
 		      done
 		      if eval $file_magic_cmd \"\$potlib\" \
@@ -1945,7 +1944,7 @@ EOF
 	# Ensure that we have .o objects for linkers which dislike .lo
 	# (e.g. aix) incase we are running --disable-static
 	for obj in $libobjs; do
-	  oldobj=`echo $obj | $Xsed -e "$lo2o"`
+	  oldobj=`$echo "X$obj" | $Xsed -e "$lo2o"`
 	  test -f $oldobj || ${LN_S} $obj $oldobj
 	done
 
@@ -1961,7 +1960,7 @@ EOF
 	    # Extract the objects.
 	    xdir="$xlib"x
 	    generated="$generated $xdir"
-	    xlib=`echo "$xlib" | $Xsed -e 's%^.*/%%'`
+	    xlib=`$echo "X$xlib" | $Xsed -e 's%^.*/%%'`
 
 	    $show "${rm}r $xdir"
 	    $run ${rm}r "$xdir"
@@ -2530,7 +2529,7 @@ static const void *lt_preloaded_setup() {
 	if test "$fast_install" != no; then
 	  link_command="$finalize_var$compile_command$finalize_rpath"
 	  if test "$fast_install" = yes; then
-	    relink_command=`echo "X$compile_var$compile_command$compile_rpath" | $Xsed -e 's%@OUTPUT@%\$progdir/\$file%g'`
+	    relink_command=`$echo "X$compile_var$compile_command$compile_rpath" | $Xsed -e 's%@OUTPUT@%\$progdir/\$file%g'`
 	  else
 	    # fast_install is set to needless
 	    relink_command=
@@ -2791,7 +2790,7 @@ fi\
 	# Extract the objects.
 	xdir="$xlib"x
 	generated="$generated $xdir"
-	xlib=`echo "$xlib" | $Xsed -e 's%^.*/%%'`
+	xlib=`$echo "X$xlib" | $Xsed -e 's%^.*/%%'`
 
 	$show "${rm}r $xdir"
 	$run ${rm}r "$xdir"

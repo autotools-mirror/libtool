@@ -377,7 +377,7 @@ fi
 
 if test -z "$srcdir"; then
   # Assume the source directory is the same one as the path to LTMAIN.
-  srcdir=`$echo "$ltmain" | $Xsed -e 's%/[^/]*$%%'`
+  srcdir=`$echo "X$ltmain" | $Xsed -e 's%/[^/]*$%%'`
   test "$srcdir" = "$ltmain" && srcdir=.
 fi
 
@@ -2384,8 +2384,7 @@ case "$ltmain" in
 
   case "$ltecho" in
   *'\$0 --fallback-echo"')
-    ltecho=`$echo "X$ltecho" |
-	    $Xsed -e 's/\\\\\\\$0 --fallback-echo"$/$0 --fallback-echo"/'`
+    ltecho=`$echo "X$ltecho" | $Xsed -e 's/\\\\\\\$0 --fallback-echo"$/$0 --fallback-echo"/'`
     ;;
   esac
 
