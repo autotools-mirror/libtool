@@ -1,3 +1,8 @@
+2002-12-18  Robert Boehne  <rboehne@gnu.org>
+
+	* libtool.m4: Move AC_REQUIRE([LT_AC_PROG_SED]) to AC_PROG_LD
+	so it is invoked earlier.
+
 2002-12-11  Allan Sandfeld Jensen  <snowwolf@one2one-networks.com>
 
 	* libtool.m4: Add support for Intel icc compiler for Linux.
