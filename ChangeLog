@@ -1,3 +1,9 @@
+2001-09-03  Gary V. Vaughan  <gary@gnu.org>
+
+	* demo/Makefile.am (helldl):  Automake 1.4 can't find the target
+	if we use helldl$(EXEEXT), and Automake 1.5 barfs unless we do.
+	Using both targets to the left of the colon seems to work though!
+
 2001-09-03  Brad  <brad@comstyle.com>
 
 	* ltdl.m4 [AC_LTDL_SYS_DLOPEN_DEPLIBS]: Teach ltdl about the
