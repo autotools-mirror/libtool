@@ -1,8 +1,8 @@
 #! /bin/sh
 # suffix.test - check that libtool knows how to transform source suffices.
 
-# Extensions taken from the ones that Automake recognizes.
-extensions="C F S c c++ cc cpp cxx f f90 for"
+# Extensions taken from the ones that Automake recognizes, plus Objective C.
+extensions="C F S c c++ cc cpp cxx f f90 for m"
 bad_names="foo."
 
 # Test script header.

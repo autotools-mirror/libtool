@@ -474,13 +474,16 @@ alpha | rs6000 | powerpc | powerpcle)
 esac
 
 if test -n "$pic_flag"; then
+  echo $ac_t "$pic_flag" 1>&6
+
   # Check to make sure the pic_flag actually works.
+  echo $ac_n "checking if $compiler PIC flag $pic_flag works... $ac_c" 1>&6
   $rm conftest*
   echo > conftest.c
   save_CFLAGS="$CFLAGS"
   CFLAGS="$CFLAGS $pic_flag -DPIC"
   # LINENO
-  echo "$progname:483:checking whether $compiler PIC flag $pic_flag works" >&5
+  echo "$progname:483: checking if $compiler PIC flag $pic_flag works" >&5
   if { (eval echo $progname:484: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>conftest.err; } && test -s conftest.o; then
     # Append any errors to the config.log.
     cat conftest.err 1>&5
@@ -488,10 +491,11 @@ if test -n "$pic_flag"; then
     # On HP-UX, the stripped-down bundled CC doesn't accept +Z, but also
     # reports no error.  So, we need to grep stderr for (Bundled).
     if grep '(Bundled)' conftest.err >/dev/null; then
-      echo $ac_t none 1>&6
+      echo $ac_t no 1>&6
+      can_build_shared=no
       pic_flag=
     else
-      echo $ac_t "$pic_flag" 1>&6
+      echo $ac_t yes 1>&6
       pic_flag=" $pic_flag"
     fi
   else
@@ -499,7 +503,7 @@ if test -n "$pic_flag"; then
     cat conftest.err 1>&5
     can_build_shared=no
     pic_flag=
-    echo $ac_t none 1>&6
+    echo $ac_t no 1>&6
   fi
   CFLAGS="$save_CFLAGS"
   $rm conftest*
@@ -517,13 +521,13 @@ if test -n "$special_shlib_compile_flags"; then
   fi
 fi
 
-echo $ac_n "checking for $compiler option to statically link programs... $ac_c" 1>&6
+echo $ac_n "checking if $compiler static flag $link_static_flag works... $ac_c" 1>&6
 $rm conftest*
 echo 'main(){return(0);}' > conftest.c
 save_LDFLAGS="$LDFLAGS"
 LDFLAGS="$LDFLAGS $link_static_flag"
 # LINENO
-echo "$progname:526:checking if $compiler static flag $link_static_flag works" >&5
+echo "$progname:526: checking if $compiler static flag $link_static_flag works" >&5
 if { (eval echo $progname:527: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest; then
   echo $ac_t "$link_static_flag" 1>&6
 else
@@ -808,7 +812,7 @@ main(){nm_test_var='a';nm_test_func();return(0);}
 EOF
 
 # LINENO
-echo "$progname:811:checking if global_symbol_pipe works" >&5
+echo "$progname:811: checking if global_symbol_pipe works" >&5
 if { (eval echo $progname:812: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>&5; } && test -s conftest.o; then
   # Now try to grab the symbols. LINENO
   nlist=conftest.nm

@@ -121,6 +121,10 @@ do
   --mode) prevopt="--mode" prev=mode ;;
   --mode=*) mode="$optarg" ;;
 
+  --quiet | --silent)
+    show=:
+    ;;
+
   -*)
     echo "$progname: unrecognized option \`$arg'" 1>&2
     echo "$help" 1>&2
@@ -191,6 +195,7 @@ if test -z "$show_help"; then
     base_compile="$nonopt"
     lastarg=
     srcfile=
+    suppress_output=
 
     for arg
     do
@@ -210,14 +215,14 @@ if test -z "$show_help"; then
     libobj=`echo "$srcfile" | sed -e 's%^.*/%%'`
 
     # Recognize several different file suffixes.
-    xform='[cCFSf]'
+    xform='[cCFSfm]'
     case "$libobj" in
-    *.c++) xform='c++' ;;
+    *.c++) xform=c++ ;;
     *.cc) xform=cc ;;
     *.cpp) xform=cpp ;;
     *.cxx) xform=cxx ;;
     *.f90) xform=f90 ;;
-    *.for) xform='for' ;;
+    *.for) xform=for ;;
     esac
 
     libobj=`echo "$libobj" | sed -e "s/\.$xform$/.lo/"`
@@ -265,12 +270,16 @@ if test -z "$show_help"; then
       # Just move the object, then go on to compile the next one
       $show "$mv $obj $libobj"
       $run $mv $obj $libobj || exit 1
+
+      # Allow error messages only from the first compilation.
+      suppress_output=' >/dev/null 2>&1'
     fi
 
     # Only build a position-dependent object if we build old libraries.
     if test "$build_old_libs" = yes; then
-      $show "$base_compile $srcfile"
-      if $run eval "$base_compile $srcfile"; then :
+      # Suppress compiler output if we already did a PIC compilation.
+      $show "$base_compile $srcfile$suppress_output"
+      if $run eval "$base_compile $srcfile$suppress_output"; then :
       else
         $run $rm $obj $libobj
         exit 1
@@ -1808,6 +1817,8 @@ Provide generalized library-building support services.
     --finish          same as \`--mode=finish'
     --help            display this help message and exit
     --mode=MODE       use operation mode MODE [default=inferred from MODE-ARGS]
+    --quiet           same as \`--silent'
+    --silent          don't print informational messages
     --version         print version information
 
 MODE must be one of the following:

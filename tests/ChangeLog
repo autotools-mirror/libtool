@@ -1,3 +1,7 @@
+Thu Aug 14 09:30:29 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* suffix.test (extensions): Added Objective C extension, `.m'.
+
 Thu Jul 24 11:04:22 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* demo-exec.test (status): Use status variables so that we try to

@@ -1,3 +1,15 @@
+Thu Aug 14 09:30:47 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltmain.sh.in: Accept `--quiet' and `--silent' flags to turn off
+ 	command echoing.  From Juergen A. Erhard.
+
+	(compile): Recognize the Objective C `.m' extension.  From Juergen
+ 	A. Erhard.
+
+	(compile): Suppress error output from the second compilation (if
+ 	any) so that we don't get those frustrating duplicate error
+ 	messages.
+
 Tue Aug 12 09:36:59 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltconfig.in: Added messages to config.log to describe what sort
