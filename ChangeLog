@@ -1,5 +1,8 @@
 2003-06-11  Gary V. Vaughan  <gary@gnu.org>
 
+	* libtool.m4 (AC_LIBTOOL_COMPILER_OPTION): Require LT_AC_PROG_SED to
+	ensure $SED is set by the time it is used.
+
 	* ChangeLog: Restore missing entries from 2003-04-22.
 
 	* NEWS: Sychronised from branch-1-5.
