@@ -1,5 +1,8 @@
 1999-04-29  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* mdemo/configure.in: Move AC_LIBLTDL_CONVENIENCE before
+	AM_PROG_LIBTOOL, as suggested by autoconf.
+
 	* doc/libtool.texi (Distributing libltdl): Document that -static
 	may cause the same problems on libltdl as -all-static.
 	* TODO: We might want to fix this in the future.
