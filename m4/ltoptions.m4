@@ -153,7 +153,7 @@ put the `win32-dll' option into LT_LIBTOOL_INIT's first parameter.])
 m4_define([_LT_ENABLE_SHARED],
 [m4_define([_LT_ENABLE_SHARED_DEFAULT], [m4_if($1, no, no, yes)])dnl
 AC_ARG_ENABLE([shared],
-    [AC_HELP_STRING([--enable-shared@<:@=PKGS@:>@],
+    [AS_HELP_STRING([--enable-shared@<:@=PKGS@:>@],
 	[build shared libraries @<:@default=]_LT_ENABLE_SHARED_DEFAULT[@:>@])],
     [p=${PACKAGE-default}
     case $enableval in
@@ -219,7 +219,7 @@ the `disable-shared' option into LT_LIBTOOL_INIT's first parameter.])
 m4_define([_LT_ENABLE_STATIC],
 [m4_define([_LT_ENABLE_STATIC_DEFAULT], [m4_if($1, no, no, yes)])dnl
 AC_ARG_ENABLE([static],
-    [AC_HELP_STRING([--enable-static@<:@=PKGS@:>@],
+    [AS_HELP_STRING([--enable-static@<:@=PKGS@:>@],
 	[build static libraries @<:@default=]_LT_ENABLE_STATIC_DEFAULT[@:>@])],
     [p=${PACKAGE-default}
     case $enableval in
@@ -285,7 +285,7 @@ the `disable-static' option into LT_LIBTOOL_INIT's first parameter.])
 m4_define([_LT_ENABLE_FAST_INSTALL],
 [m4_define([_LT_ENABLE_FAST_INSTALL_DEFAULT], [m4_if($1, no, no, yes)])dnl
 AC_ARG_ENABLE([fast-install],
-    [AC_HELP_STRING([--enable-fast-install@<:@=PKGS@:>@],
+    [AS_HELP_STRING([--enable-fast-install@<:@=PKGS@:>@],
     [optimize for fast installation @<:@default=]_LT_ENABLE_FAST_INSTALL_DEFAULT[@:>@])],
     [p=${PACKAGE-default}
     case $enableval in
@@ -336,7 +336,7 @@ the `disable-fast-install' option into LT_LIBTOOL_INIT's first parameter.])
 # MODE is either `yes' or `no'.  If omitted, it defaults to `both'.
 m4_define([_LT_WITH_PIC],
 [AC_ARG_WITH([pic],
-    [AC_HELP_STRING([--with-pic],
+    [AS_HELP_STRING([--with-pic],
 	[try to use only PIC/non-PIC objects @<:@default=use both@:>@])],
     [pic_mode="$withval"],
     [pic_mode=default])

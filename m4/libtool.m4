@@ -186,7 +186,7 @@ file_magic*)
 esac
 
 AC_ARG_ENABLE([libtool-lock],
-    [AC_HELP_STRING([--disable-libtool-lock],
+    [AS_HELP_STRING([--disable-libtool-lock],
 	[avoid locking (might break parallel builds)])])
 test "x$enable_libtool_lock" != xno && enable_libtool_lock=yes
 
@@ -834,7 +834,7 @@ _LT_DECL([], [echo], [1],
 m4_defun([_LT_ENABLE_LOCK],
 [AC_REQUIRE([AC_OBJEXT])dnl
 AC_ARG_ENABLE([libtool-lock],
-  [AC_HELP_STRING([--disable-libtool-lock],
+  [AS_HELP_STRING([--disable-libtool-lock],
     [avoid locking (might break parallel builds)])])
 test "x$enable_libtool_lock" != xno && enable_libtool_lock=yes
 
@@ -2250,7 +2250,7 @@ m4_require([_LT_DECL_SED])dnl
 m4_require([_LT_DECL_EGREP])dnl
 
 AC_ARG_WITH([gnu-ld],
-    [AC_HELP_STRING([--with-gnu-ld],
+    [AS_HELP_STRING([--with-gnu-ld],
 	[assume the C compiler uses GNU ld @<:@default=no@:>@])],
     [test "$withval" = no || with_gnu_ld=yes],
     [with_gnu_ld=no])dnl

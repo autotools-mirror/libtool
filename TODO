@@ -11,6 +11,11 @@ GNU Libtool
   file and substitute the contents into all of our shell scripts at
   bootstrap, to avoid any synchronisation issues.
 
+* Eliminate the warnings from autoconf -Wobsolete.
+
+* Hook the various language dependencies into the autoconf _AC_LANG
+  framework.
+
 * We could have an option to hardcode paths into libraries, as well as
   binaries: `... -Wl,-soname -Wl,/tmp/libtest.so.0 ...'.  This is not
   possible on all platforms, and is in part obviated by the ability of

@@ -29,7 +29,7 @@
 # version of the library.
 AC_DEFUN([LT_WITH_LTDL],
 [AC_ARG_WITH([included_ltdl],
-    [AC_HELP_STRING([--with-included-ltdl],
+    [AS_HELP_STRING([--with-included-ltdl],
                     [use the GNU ltdl sources included here])])
 
 if test "x$with_included_ltdl" != xyes; then
@@ -192,7 +192,7 @@ AU_DEFUN([AC_LIB_LTDL], [LTDL_INIT])
 # ------------------
 m4_defun([_LT_ENABLE_INSTALL],
 [AC_ARG_ENABLE([ltdl-install],
-    [AC_HELP_STRING([--enable-ltdl-install], [install libltdl])])
+    [AS_HELP_STRING([--enable-ltdl-install], [install libltdl])])
 
 AM_CONDITIONAL(INSTALL_LTDL, test x"${enable_ltdl_install-no}" != xno)
 AM_CONDITIONAL(CONVENIENCE_LTDL, test x"${enable_ltdl_convenience-no}" != xno)
