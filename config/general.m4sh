@@ -109,6 +109,11 @@ func_echo ()
 func_verbose ()
 {
     $opt_verbose && func_echo ${1+"$@"}
+
+    # A bug in bash halts the script if the last line of a function
+    # fails when set -e is in force, so we need another command to
+    # work around that:
+    :
 }
 
 # func_error arg...

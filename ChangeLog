@@ -1,4 +1,9 @@
-2004-10-07  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+2004-10-08  Gary V. Vaughan  <gary@gnu.org>
+
+	* config/general.m4sh (func_verbose): Work around a bash bug in
+	shell functions.
+
+2004-10-07  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* tests/sh.test: Remove tests which fail on AS_SHELL_SANITIZE
 	from autoconf >= 2.59.
