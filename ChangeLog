@@ -1,6 +1,7 @@
-2001-09-10  Gary V. Vaughan  <gary@gnu.org>
+2001-09-10   Brad  <brad@comstyle.com>
 
-	From Brad <brad@comstyle.com>:
+	* ltmain.in (-lc_r): Style improvement.
+
 	* doc/libtool.texi: Remove obsolete references to ltconfig.
 	* tests/quote.test: s/ltconfig/\$0/
 

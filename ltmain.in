@@ -1231,8 +1231,7 @@ EOF
 	    deplibs="$deplibs -framework System"
 	    continue
 	  esac
-	fi
-	if test "X$arg" = "X-lc_r"; then
+	elif test "X$arg" = "X-lc_r"; then
 	 case $host in
 	 *-*-openbsd*)
 	   # Do not include libc_r directly, use -pthread flag.
