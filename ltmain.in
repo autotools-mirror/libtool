@@ -2392,7 +2392,7 @@ EOF
 		if test -n "$inst_prefix_dir"; then
 		  case "$libdir" in
 		    [\\/]*)
-		      add_dir="-L$inst_prefix_dir$libdir $add_dir"
+		      add_dir="$add_dir -L$inst_prefix_dir$libdir"
 		      ;;
 		  esac
 		fi
@@ -2464,7 +2464,7 @@ EOF
 	      if test -n "$inst_prefix_dir"; then
 		case "$libdir" in
 		  [\\/]*)
-		    add_dir="-L$inst_prefix_dir$libdir $add_dir"
+		    add_dir="$add_dir -L$inst_prefix_dir$libdir"
 		    ;;
 		esac
 	      fi

@@ -1,4 +1,10 @@
 2004-01-23  Scott James Remnant  <scott@netsplit.com>
+	                                                                        
+	* ltmain.in: When relinking, place the -L parameter containing
+	the installation prefix directory after the intended destination,
+	so we don't accidentally link against an older installed library.
+
+2004-01-23  Scott James Remnant  <scott@netsplit.com>
 
 	* tests/demo-nopic.test: Skip test on hppa, which don't like
 	non-PIC shared libraries.
