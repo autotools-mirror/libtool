@@ -182,16 +182,12 @@ AC_CACHE_CHECK([for the default library search path],
   [libltdl_cv_sys_search_path],
   [libltdl_cv_sys_search_path="$sys_lib_dlsearch_path_spec"])
 if test -n "$libltdl_cv_sys_search_path"; then
-  case "$host" in
-  *-*-mingw*) pathsep=";" ;;
-  *) pathsep=":" ;;
-  esac
   sys_search_path=
   for dir in $libltdl_cv_sys_search_path; do
     if test -z "$sys_search_path"; then
       sys_search_path="$dir"
     else
-      sys_search_path="$sys_search_path$pathsep$dir"
+      sys_search_path="$sys_search_path$ac_path_separator$dir"
     fi
   done
   AC_DEFINE_UNQUOTED(LTDL_SYSSEARCHPATH, "$sys_search_path",

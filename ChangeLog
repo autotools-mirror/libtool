@@ -1,3 +1,19 @@
+2001-08-05  Tim Van Holder  <tim.van.holder@pandora.be>
+
+	* libtool.m4 (_LT_AC_LIBTOOL_SYS_PATH_SEPARATOR): Remove.
+	(_LT_AC_PROG_ECHO_BACKSLASH): Use $ac_path_separator
+	instead of $PATH_SEPARATOR.
+	(AC_LIBTOOL_SYS_DYNAMIC_LINKER): Ditto.
+	(_LT_AC_TAGCONFIG): Ditto.
+	(AC_ENABLE_SHARED): Ditto.
+	(AC_ENABLE_STATIC): Ditto.
+	(AC_ENABLE_FAST_INSTALL): Ditto.
+	(AC_PATH_TOOL_PREFIX): Ditto.
+	(AC_PATH_MAGIC): Ditto.
+	(AC_PROG_LD): Ditto.
+	(AC_PROG_NM): Ditto.
+	* ltdl.m4 (AC_LTDL_SYSSEARCHPATH): Ditto.
+
 2001-08-05  Gary V. Vaughan  <gary@gnu.org>
 
 	From Brad <brad@comstyle.com>:

@@ -240,21 +240,6 @@ if test -z "$aix_libpath"; then aix_libpath="/usr/lib:/lib"; fi
 ])# _LT_AC_SYS_LIBPATH_AIX
 
 
-# _LT_AC_LIBTOOL_SYS_PATH_SEPARATOR
-# ---------------------------------
-AC_DEFUN([_LT_AC_LIBTOOL_SYS_PATH_SEPARATOR],
-[# Find the correct PATH separator.  Usually this is `:', but
-# DJGPP uses `;' like DOS.
-if test "X${PATH_SEPARATOR+set}" != Xset; then
-  UNAME=${UNAME-`uname 2>/dev/null`}
-  case X$UNAME in
-    *-DOS) PATH_SEPARATOR=';' ;;
-    *)     PATH_SEPARATOR=':' ;;
-  esac
-fi
-])# _LT_AC_LIBTOOL_SYS_PATH_SEPARATOR
-
-
 # _LT_AC_PROG_ECHO_BACKSLASH
 # --------------------------
 # Add some code to the start of the generated configure script which
@@ -262,7 +247,6 @@ fi
 AC_DEFUN([_LT_AC_PROG_ECHO_BACKSLASH],
 [ifdef([AC_DIVERSION_NOTICE], [AC_DIVERT_PUSH(AC_DIVERSION_NOTICE)],
                               [AC_DIVERT_PUSH(NOTICE)])
-_LT_AC_LIBTOOL_SYS_PATH_SEPARATOR
 
 # Check that we are running under the correct shell.
 SHELL=${CONFIG_SHELL-/bin/sh}
@@ -327,7 +311,7 @@ else
   #
   # So, first we look for a working echo in the user's PATH.
 
-  IFS="${IFS= 	}"; lt_save_ifs="$IFS"; IFS="${IFS}${PATH_SEPARATOR}"
+  IFS="${IFS= 	}"; lt_save_ifs="$IFS"; IFS="${IFS}$ac_path_separator"
   for dir in $PATH /usr/ucb; do
     IFS="$lt_save_ifs"
     if (test -f $dir/echo || test -f $dir/echo$ac_exeext) &&
@@ -1092,7 +1076,7 @@ cygwin* | mingw* | pw32*)
     ;;
   yes,mingw*)
     library_names_spec='${libname}`echo ${release} | [sed -e 's/[.]/-/g']`${versuffix}.dll'
-    sys_lib_search_path_spec=`$CC -print-search-dirs | grep "^libraries:" | sed -e "s/^libraries://" -e "s/$PATH_SEPARATOR/ /g"`
+    sys_lib_search_path_spec=`$CC -print-search-dirs | grep "^libraries:" | sed -e "s/^libraries://" -e "s/$ac_path_separator/ /g"`
     ;;
   yes,pw32*)
     library_names_spec='`echo ${libname} | sed -e 's/^lib/pw/'``echo ${release} | sed -e 's/[.]/-/g'`${versuffix}.dll'
@@ -1403,8 +1387,7 @@ test "$dynamic_linker" = no && can_build_shared=no
 # _LT_AC_TAGCONFIG
 # ----------------
 AC_DEFUN([_LT_AC_TAGCONFIG],
-[AC_REQUIRE([_LT_AC_LIBTOOL_SYS_PATH_SEPARATOR])dnl
-AC_ARG_WITH([tags], 
+[AC_ARG_WITH([tags], 
     [AC_HELP_STRING([--with-tags=TAGS],
         [include additional configurations @<:@CXX,GCJ@:>@])],
     [tagnames="$withval"],
@@ -1428,7 +1411,7 @@ if test -f "$ltmain" && test -n "$tagnames"; then
   # Note that this assumes the entire list is on one line.
   available_tags=`grep "^available_tags=" "${ofile}" | sed -e 's/available_tags=\(.*$\)/\1/' -e 's/\"//g'`
 
-  IFS="${IFS= 	}"; lt_save_ifs="$IFS"; IFS="${IFS}${PATH_SEPARATOR-:},"
+  IFS="${IFS= 	}"; lt_save_ifs="$IFS"; IFS="${IFS}$ac_path_separator,"
   for tagname in $tagnames; do
     IFS="$lt_save_ifs"
     # Check whether tagname contains only valid characters
@@ -1500,8 +1483,7 @@ AC_DEFUN([AC_LIBTOOL_WIN32_DLL],
 # implement the --enable-shared flag
 # DEFAULT is either `yes' or `no'.  If omitted, it defaults to `yes'.
 AC_DEFUN([AC_ENABLE_SHARED],
-[AC_REQUIRE([_LT_AC_LIBTOOL_SYS_PATH_SEPARATOR])dnl
-define([AC_ENABLE_SHARED_DEFAULT], ifelse($1, no, no, yes))dnl
+[define([AC_ENABLE_SHARED_DEFAULT], ifelse($1, no, no, yes))dnl
 AC_ARG_ENABLE([shared],
     [AC_HELP_STRING([--enable-shared@<:@=PKGS@:>@],
         [build shared libraries @<:@default=]AC_ENABLE_SHARED_DEFAULT[@:>@])],
@@ -1512,7 +1494,7 @@ AC_ARG_ENABLE([shared],
     *)
       enable_shared=no
       # Look at the argument we got.  We use all the common list separators.
-      IFS="${IFS= 	}"; lt_save_ifs="$IFS"; IFS="${IFS}${PATH_SEPARATOR-:},"
+      IFS="${IFS= 	}"; lt_save_ifs="$IFS"; IFS="${IFS}$ac_path_separator,"
       for pkg in $enableval; do
         IFS="$lt_save_ifs"
         if test "X$pkg" = "X$p"; then
@@ -1540,8 +1522,7 @@ AC_ENABLE_SHARED(no)
 # implement the --enable-static flag
 # DEFAULT is either `yes' or `no'.  If omitted, it defaults to `yes'.
 AC_DEFUN([AC_ENABLE_STATIC],
-[AC_REQUIRE([_LT_AC_LIBTOOL_SYS_PATH_SEPARATOR])dnl
-define([AC_ENABLE_STATIC_DEFAULT], ifelse($1, no, no, yes))dnl
+[define([AC_ENABLE_STATIC_DEFAULT], ifelse($1, no, no, yes))dnl
 AC_ARG_ENABLE([static],
     [AC_HELP_STRING([--enable-static@<:@=PKGS@:>@],
         [build static libraries @<:@default=]AC_ENABLE_STATIC_DEFAULT[@:>@])],
@@ -1552,7 +1533,7 @@ AC_ARG_ENABLE([static],
     *)
      enable_static=no
       # Look at the argument we got.  We use all the common list separators.
-      IFS="${IFS= 	}"; lt_save_ifs="$IFS"; IFS="${IFS}${PATH_SEPARATOR-:},"
+      IFS="${IFS= 	}"; lt_save_ifs="$IFS"; IFS="${IFS}$ac_path_separator,"
       for pkg in $enableval; do
         IFS="$lt_save_ifs"
         if test "X$pkg" = "X$p"; then
@@ -1580,8 +1561,7 @@ AC_ENABLE_STATIC(no)
 # implement the --enable-fast-install flag
 # DEFAULT is either `yes' or `no'.  If omitted, it defaults to `yes'.
 AC_DEFUN([AC_ENABLE_FAST_INSTALL],
-[AC_REQUIRE([_LT_AC_LIBTOOL_SYS_PATH_SEPARATOR])dnl
-define([AC_ENABLE_FAST_INSTALL_DEFAULT], ifelse($1, no, no, yes))dnl
+[define([AC_ENABLE_FAST_INSTALL_DEFAULT], ifelse($1, no, no, yes))dnl
 AC_ARG_ENABLE([fast-install],
     [AC_HELP_STRING([--enable-fast-install@<:@=PKGS@:>@],
     [optimize for fast installation @<:@default=]AC_ENABLE_FAST_INSTALL_DEFAULT[@:>@])],
@@ -1592,7 +1572,7 @@ AC_ARG_ENABLE([fast-install],
     *)
       enable_fast_install=no
       # Look at the argument we got.  We use all the common list separators.
-      IFS="${IFS= 	}"; lt_save_ifs="$IFS"; IFS="${IFS}${PATH_SEPARATOR-:},"
+      IFS="${IFS= 	}"; lt_save_ifs="$IFS"; IFS="${IFS}$ac_path_separator,"
       for pkg in $enableval; do
         IFS="$lt_save_ifs"
         if test "X$pkg" = "X$p"; then
@@ -1629,16 +1609,15 @@ pic_mode=ifelse($#,1,$1,default)
 # -------------------
 # find a file program which can recognise shared library
 AC_DEFUN([AC_PATH_TOOL_PREFIX],
-[AC_REQUIRE([_LT_AC_LIBTOOL_SYS_PATH_SEPARATOR])dnl
-AC_MSG_CHECKING([for $1])
+[AC_MSG_CHECKING([for $1])
 AC_CACHE_VAL(lt_cv_path_MAGIC_CMD,
 [case $MAGIC_CMD in
-[\\/*] |  ?:[\\/]*)
+[[\\/*] |  ?:[\\/]*])
   lt_cv_path_MAGIC_CMD="$MAGIC_CMD" # Let the user override the test with a path.
   ;;
 *)
   lt_save_MAGIC_CMD="$MAGIC_CMD"
-  IFS="${IFS=   }"; lt_save_ifs="$IFS"; IFS="${PATH_SEPARATOR-:}"
+  IFS="${IFS=   }"; lt_save_ifs="$IFS"; IFS="$ac_path_separator"
 dnl $ac_dummy forces splitting on constant user-supplied paths.
 dnl POSIX.2 word splitting is done only on the output of word expansions,
 dnl not every word.  This closes a longstanding sh security hole.
@@ -1692,11 +1671,10 @@ fi
 # -------------
 # find a file program which can recognise a shared library
 AC_DEFUN([AC_PATH_MAGIC],
-[AC_REQUIRE([_LT_AC_LIBTOOL_SYS_PATH_SEPARATOR])dnl
-AC_PATH_TOOL_PREFIX(${ac_tool_prefix}file, /usr/bin${PATH_SEPARATOR-:}$PATH)
+[AC_PATH_TOOL_PREFIX(${ac_tool_prefix}file, /usr/bin$ac_path_separator$PATH)
 if test -z "$lt_cv_path_MAGIC_CMD"; then
   if test -n "$ac_tool_prefix"; then
-    AC_PATH_TOOL_PREFIX(file, /usr/bin${PATH_SEPARATOR-:}$PATH)
+    AC_PATH_TOOL_PREFIX(file, /usr/bin$ac_path_separator$PATH)
   else
     MAGIC_CMD=:
   fi
@@ -1716,7 +1694,6 @@ AC_DEFUN([AC_PROG_LD],
 AC_REQUIRE([AC_PROG_CC])dnl
 AC_REQUIRE([AC_CANONICAL_HOST])dnl
 AC_REQUIRE([AC_CANONICAL_BUILD])dnl
-AC_REQUIRE([_LT_AC_LIBTOOL_SYS_PATH_SEPARATOR])dnl
 ac_prog=ld
 if test "$GCC" = yes; then
   # Check if gcc -print-prog-name=ld gives a path.
@@ -1755,7 +1732,7 @@ else
 fi
 AC_CACHE_VAL(lt_cv_path_LD,
 [if test -z "$LD"; then
-  IFS="${IFS= 	}"; lt_save_ifs="$IFS"; IFS="${IFS}${PATH_SEPARATOR-:}"
+  IFS="${IFS= 	}"; lt_save_ifs="$IFS"; IFS="${IFS}$ac_path_separator"
   for ac_dir in $PATH; do
     IFS="$lt_save_ifs"
     test -z "$ac_dir" && ac_dir=.
@@ -2016,12 +1993,11 @@ test -z "$deplibs_check_method" && deplibs_check_method=unknown
 # find the path to a BSD-compatible name lister
 AC_DEFUN([AC_PROG_NM],
 [AC_CACHE_CHECK([for BSD-compatible nm], lt_cv_path_NM,
-[AC_REQUIRE([_LT_AC_LIBTOOL_SYS_PATH_SEPARATOR])dnl
-if test -n "$NM"; then
+[if test -n "$NM"; then
   # Let the user override the test.
   lt_cv_path_NM="$NM"
 else
-  IFS="${IFS= 	}"; lt_save_ifs="$IFS"; IFS="${IFS}${PATH_SEPARATOR-:}"
+  IFS="${IFS= 	}"; lt_save_ifs="$IFS"; IFS="${IFS}$ac_path_separator"
   for ac_dir in $PATH /usr/ccs/bin /usr/ucb /bin; do
     IFS="$lt_save_ifs"
     test -z "$ac_dir" && ac_dir=.
