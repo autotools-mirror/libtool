@@ -154,7 +154,7 @@ ifdef([AC_PROVIDE_AC_LIBTOOL_WIN32_DLL],
 
   case $host in
   case "$host/$CC" in
-  *-*-cygwin*/gcc*-mno-cygwin|*-*-mingw*)
+  *-*-cygwin*/gcc*-mno-cygwin*|*-*-mingw*)
     # old mingw systems require "-dll" to link a DLL, while more recent ones
     # require "-mdll"
     SAVE_CFLAGS="$CFLAGS"

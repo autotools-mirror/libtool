@@ -1041,7 +1041,7 @@ EOF
     # recent cygwin and mingw systems supply a stub DllMain which the user
     # can override, but on older systems we have to supply one (in ltdll.c)
     if test "x$lt_cv_need_dllmain" = "xyes"; then
-      ltdll_obj="objdir/$soname-ltdll.$objext "
+      ltdll_obj='objdir/$soname-ltdll.'"$objext "
       ltdll_cmds='test -f $objdir/$soname-ltdll.c || sed -e "/^# \/\* ltdll\.c starts here \*\//,/^# \/\* ltdll.c ends here \*\// { s/^# //; p; }" -e d < $0 > $objdir/$soname-ltdll.c~
         test -f $objdir/$soname-ltdll.$objext || (cd $objdir && $CC -c $soname-ltdll.c)~'
     else
@@ -1053,7 +1053,8 @@ EOF
     # then regenerate the def file from the symbol export list, so that
     # the compiled dll only exports the symbol export list.
     export_symbols_cmds="$ltdll_cmds"'
-      $DLLTOOL --export-all --exclude-symbols '$dll_exclude_symbols' --output-def $objdir/$soname-def '$ltdll_obj'$libobjs $convenience~      sed -e "1,/EXPORTS/d" -e "s/ @ [0-9]* ;.*//" < $objdir/$soname-def > $export_symbols'
+      $DLLTOOL --export-all --exclude-symbols '$dll_exclude_symbols' --output-def $objdir/$soname-def '$ltdll_obj'$libobjs $convenience~
+      sed -e "1,/EXPORTS/d" -e "s/ @ [0-9]* ;.*//" < $objdir/$soname-def > $export_symbols'
   
     archive_expsym_cmds='echo EXPORTS > $objdir/$soname-def~
       _lt_hint=1;

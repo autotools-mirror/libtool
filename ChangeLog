@@ -1,3 +1,10 @@
+1999-10-19  Tor Lillqvist  <tml@iki.fi>
+
+	* libtool.m4:  these was a missing `*' in the -mno-cygwin
+	match.
+	* ltconfig.in (cygwin, ltdll_obj): fixed a quoting error.
+	(export_symbols_cmds): added missing cosmetic newline.
+
 1999-10-18  Tor Lillqvist  <tml@iki.fi>
 
 	* libtool.m4: test command used == which should be =.
