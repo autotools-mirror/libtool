@@ -1,3 +1,11 @@
+2001-04-08  Gary V. Vaughan  <gvv@techie.com>
+
+	From Peter Eisentraut  <peter_e@gmx.net>
+	* ltmain.in (clean,uninstall): test -e is not portable.  Well,
+	neither is -L, but I'm hoping that redirecting error messages
+	to /dev/null and relying on non-zero exit status will work okay
+	on the few hosts that don't support -L.
+
 2001-04-08  Nick Hudson  <skrll@netbsd.org>
 
 	* ltmain.in: Improve check for valid -version-info parameter.
