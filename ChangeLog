@@ -1,3 +1,7 @@
+2004-04-04  Peter O'Gorman  <peter@pogma.com>
+
+	* Makefile.am: One install-data-hook target is better than two.
+	
 2004-04-03  Peter O'Gorman  <peter@pogma.com>
 
 	* configure.ac: Bumped version to 1.5.5a.

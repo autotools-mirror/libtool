@@ -73,14 +73,12 @@ configure-subdirs distdir: $(DIST_MAKEFILE_LIST)
 # Create and install libltdl
 install-data-hook:
 	cd libltdl && $(MAKE) local-install-files
+	chmod +x $(DESTDIR)$(pkgdatadir)/config.guess
+	chmod +x $(DESTDIR)$(pkgdatadir)/config.sub
 
 # Uninstall libltdl
 uninstall-local:
 	-rm -rf $(DESTDIR)$(pkgdatadir)/libltdl
-
-install-data-hook:
-	chmod +x $(DESTDIR)$(pkgdatadir)/config.guess
-	chmod +x $(DESTDIR)$(pkgdatadir)/config.sub
 
 
 ## ---------------------------------------------------------------- ##
