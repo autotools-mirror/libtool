@@ -23,7 +23,7 @@
 # the same distribution terms that you use for the rest of that program.
 
 echo=echo
-if test X`$echo '\t'` = 'X\t'; then :
+if test "X`$echo '\t'`" = 'X\t'; then :
 else
   # The Solaris and AIX default echo program unquotes backslashes.
   # This makes it impossible to quote backslashes using
@@ -392,7 +392,6 @@ if test -z "$show_help"; then
     install_libdir=
     libobjs=
     link_against_libtool_libs=
-    link_static=
     ltlibs=
     objs=
     prev=
@@ -405,14 +404,11 @@ if test -z "$show_help"; then
     for arg
     do
       case "$arg" in
-      -static)
-        if test "$build_libtool_libs" = yes; then
-	  if test "$hardcode_direct" = unsupported && test -z "$link_static_flag"; then
-	    $echo "$progname: warning: static linking is impossible in this configuration" 1>&2
-	  else
-            build_libtool_libs=no
-	  fi
+      -all-static | -static)
+        if test "X$arg" = "X-all-static" && test "$build_libtool_libs" = yes && test -z "$link_static_flag"; then
+	    $echo "$progname: warning: complete static linking is impossible in this configuration" 1>&2
         fi
+        build_libtool_libs=no
 	build_old_libs=yes
         break
         ;;
@@ -453,6 +449,14 @@ if test -z "$show_help"; then
       prevarg="$arg"
 
       case "$arg" in
+      -all-static)
+	if test -n "$link_static_flag"; then
+          compile_command="$compile_command $link_static_flag"
+	  finalize_command="$finalize_command $link_static_flag"
+        fi
+        continue
+	;;
+
       -allow-undefined)
 	allow_undefined=yes
 	continue
@@ -471,7 +475,7 @@ if test -z "$show_help"; then
       -export-dynamic)
         if test "$export_dynamic" != yes; then
           export_dynamic=yes
-	  arg=`eval \$echo "$export_dynamic_flag_spec"`
+	  arg=`eval \\$echo "$export_dynamic_flag_spec"`
 
           # Add the symbol object into the linking commands.
 	  compile_command="$compile_command @SYMFILE@"
@@ -502,11 +506,9 @@ if test -z "$show_help"; then
         ;;
 
       -static)
-        link_static="$link_static_flag"
-	compile_command="$compile_command $link_static"
-	finalize_command="$finalize_command $link_static"
+	# We already handled this flag above.
 	continue
-        ;;
+	;;
 
       -version-info)
         prev=vinfo
@@ -647,7 +649,7 @@ if test -z "$show_help"; then
             fi
 
             if test -n "$libdir"; then
-              flag=`eval \$echo \"$hardcode_libdir_flag_spec\"`
+              flag=`eval \\$echo \"$hardcode_libdir_flag_spec\"`
 
               compile_command="$compile_command $flag"
               finalize_command="$finalize_command $flag"
@@ -922,13 +924,13 @@ if test -z "$show_help"; then
 
       if test "$build_libtool_libs" = yes; then
         # Get the real and link names of the library.
-        library_names=`eval \$echo \"$library_names_spec\"`
+        library_names=`eval \\$echo \"$library_names_spec\"`
         set dummy $library_names
         realname="$2"
         shift; shift
 
         if test -n "$soname_spec"; then
-          soname=`eval \$echo \"$soname_spec\"`
+          soname=`eval \\$echo \"$soname_spec\"`
         else
           soname="$realname"
         fi
@@ -944,7 +946,7 @@ if test -z "$show_help"; then
         test -z "$pic_flag" && libobjs=`$echo "$libobjs " | sed -e 's/\.lo /.o /g' -e 's/ $//g'`
 
         # Do each of the archive commands.
-        cmds=`eval \$echo \"$archive_cmds\"`
+        cmds=`eval \\$echo \"$archive_cmds\"`
         IFS="${IFS= 	}"; save_ifs="$IFS"; IFS=';'
         for cmd in $cmds; do
           IFS="$save_ifs"
@@ -1014,7 +1016,7 @@ if test -z "$show_help"; then
       reload_objs="$objs"`$echo "$libobjs " | sed -e 's/[^       ]*\.a //g' -e 's/\.lo /.o /g' -e 's/ $//g'`
 
       output="$obj"
-      cmds=`eval \$echo \"$reload_cmds\"`
+      cmds=`eval \\$echo \"$reload_cmds\"`
       IFS="${IFS= 	}"; save_ifs="$IFS"; IFS=';'
       for cmd in $cmds; do
         IFS="$save_ifs"
@@ -1038,7 +1040,7 @@ if test -z "$show_help"; then
         # Only do commands if we really have different PIC objects.
         reload_objs="$libobjs"
         output="$libobj"
-        cmds=`eval \$echo \"$reload_cmds\"`
+        cmds=`eval \\$echo \"$reload_cmds\"`
         IFS="${IFS= 	}"; save_ifs="$IFS"; IFS=';'
         for cmd in $cmds; do
           IFS="$save_ifs"
@@ -1176,17 +1178,7 @@ EOF
         # We have no uninstalled library dependencies, so finalize right now.
         $show "$compile_command"
         $run eval "$compile_command"
-        status=$?
-
-        # If we failed to link statically, then try again.
-        if test $status -ne 0 && test -n "$link_static"; then
-          $echo "$progname: cannot link \`$output' statically; retrying semi-dynamically" 1>&2
-          compile_command=`$echo "$compile_command " | sed -e "s% $link_static % %" -e 's/ $//'`
-          $show "$compile_command"
-          $run eval "$compile_command"
-          status=$?
-        fi
-        exit $status
+        exit $?
       fi
 
       # Replace the output file specification.
@@ -1371,7 +1363,7 @@ EOF
       fi
 
       # Do each command in the archive commands.
-      cmds=`eval \$echo \"$old_archive_cmds\"`
+      cmds=`eval \\$echo \"$old_archive_cmds\"`
       IFS="${IFS= 	}"; save_ifs="$IFS"; IFS=';'
       for cmd in $cmds; do
         IFS="$save_ifs"
@@ -1645,7 +1637,7 @@ EOF
 
           # Do each command in the postinstall commands.
           lib="$destdir/$realname"
-          cmds=`eval \$echo \"$postinstall_cmds\"`
+          cmds=`eval \\$echo \"$postinstall_cmds\"`
           IFS="${IFS= 	}"; save_ifs="$IFS"; IFS=';'
           for cmd in $cmds; do
             IFS="$save_ifs"
@@ -1792,7 +1784,7 @@ EOF
       fi
 
       # Do each command in the postinstall commands.
-      cmds=`eval \$echo \"$old_postinstall_cmds\"`
+      cmds=`eval \\$echo \"$old_postinstall_cmds\"`
       IFS="${IFS= 	}"; save_ifs="$IFS"; IFS=';'
       for cmd in $cmds; do
         IFS="$save_ifs"
@@ -1829,7 +1821,7 @@ EOF
 
       for libdir in $libdirs; do
         # Do each command in the postinstall commands.
-        cmds=`eval \$echo \"$finish_cmds\"`
+        cmds=`eval \\$echo \"$finish_cmds\"`
         IFS="${IFS= 	}"; save_ifs="$IFS"; IFS=';'
         for cmd in $cmds; do
           IFS="$save_ifs"
@@ -2154,6 +2146,7 @@ a program from several object files.
 
 The following components of LINK-COMMAND are treated specially:
 
+  -all-static       do not do any dynamic linking at all
   -allow-undefined  allow a libtool library to reference undefined symbols
   -dlopen FILE      \`-dlpreopen' FILE if it cannot be dlopened at runtime
   -dlpreopen FILE   link in FILE and add its symbols to dld_preloaded_symbols
@@ -2162,7 +2155,7 @@ The following components of LINK-COMMAND are treated specially:
   -lNAME            OUTPUT-FILE requires the installed library libNAME
   -o OUTPUT-FILE    create OUTPUT-FILE from the specified objects
   -rpath LIBDIR     the created library will eventually be installed in LIBDIR
-  -static           do not do any dynamic linking or shared library creation
+  -static           do not do any dynamic linking of libtool libraries
   -version-info CURRENT[:REVISION[:AGE]]
                     specify library version info [each variable defaults to 0]
 

@@ -1,13 +1,25 @@
 Fri Sep  5 13:11:38 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
+	* demo/Makefile.am (hell_debug_LDFLAGS): Change hell.static to
+	hell.debug in order to reflect the new static linking semantics.
+
+	* ltmain.sh.in (link): Add new `-all-static' flag to prevent all
+	dynamic linking.  The old `-static' flag just prevents dynamic
+	linking against libtool libraries.  Suggested by Bengt
+	Martensson.
+
 	* ltconfig.in (with_gnu_ld): Add a test to make sure that we are
 	actually using GNU ld.  This fixes an inconsistency when running
 	ltconfig without using libtool.m4.  Reported by Ulrich Drepper.
+	(global_symbol_pipe): Delete symbols that are not valid C
+	identifiers.  Reported by Johan Danielsson and Bengt Martensson.
 
 Thu Sep  4 21:53:08 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltmain.sh.in (echo): Quote all the uses of `echo' in all eval
-	statements.
+	statements.  Reported by Bengt Martensson and Alexandre Oliva.
+	(echo): Need to surround test args with double quotes, or the echo
+	test fails on Digital Unix 4.0.  From Todd Kover.
 
 Thu Aug 28 20:58:56 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 

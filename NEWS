@@ -1,7 +1,9 @@
 NEWS - list of user-visible changes between releases of GNU libtool.
 
-New in 1.0b:
+New in 1.0c:
 * Bug fixes.
+* New `-all-static' flag to prevent any dynamic linking.  The regular
+  `-static' flag just prevents dynamic linking of libtool libraries.
 * Suppress duplicate compiler output during `compile' mode.
 * New `execute' mode to support debugging uninstalled libtool
   libraries and executables.

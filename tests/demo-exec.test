@@ -20,9 +20,9 @@ fi
 echo "Executing uninstalled programs in ../demo"
 
 status=0
-if ../demo/hell.static | grep 'Welcome to GNU Hell'; then :
+if ../demo/hell.debug| grep 'Welcome to GNU Hell'; then :
 else
-  echo "$0: cannot execute ../demo/hell.static" 1>&2
+  echo "$0: cannot execute ../demo/hell.debug" 1>&2
   status=1
 fi
 

@@ -1,3 +1,16 @@
+Fri Sep  5 13:36:24 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* demo-exec.test, demo-inst.test: Change references from
+	hell.static to hell.debug.
+
+	* quote.test (echo): Add the same Digital Unix echo test fixes as
+	the ones to ltmain.sh.in from Todd Kover.
+
+	* if.test, test-e.test (scripts): Add ../lineno to the scripts we
+	check.
+	* if.test: Check for accidental use of test X$something rather
+	than test "X$something".
+
 Thu Aug 28 20:58:30 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* quote.test (echo): Change test to version that uses printf.

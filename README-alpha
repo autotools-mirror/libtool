@@ -11,7 +11,7 @@ that don't have shared libraries, I am collecting `NM' and
 If ltconfig on your system says that it found the command to parse NM
 output, then you don't need to look any further:
 
-checking command to parse NM output... yes
+checking command to parse /usr/bin/nm output... yes
 
 Otherwise, I would very much appreciate hearing about the combination
 of `NM' and `global_symbol_pipe' that ltconfig needs to use in order
@@ -40,7 +40,8 @@ program.
 
 So, on most OSes, this will be a command like:
 $ nm assert-perr.o | \
-  sed -e '/^.* [BCDEGRSTU] /!d' -e 's/^.* [BCDEGRSTU] \(.*\)$/\1 \1/'
+  sed -e '/^.* [BCDEGRSTU] \([_A-Za-z][_A-Za-z0-9]*\)$/!d'
+      -e 's/^.* [BCDEGRSTU] \([_A-Za-z][_A-Za-z0-9]*\)$/\1 \1/'
 _IO_stderr_ _IO_stderr_
 __assert_perror_fail __assert_perror_fail
 __assert_program_name __assert_program_name
@@ -51,6 +52,9 @@ strerror strerror
 
 On some OSes, the C symbols will need to strip a leading underscore:
 
+$ nm assert-perr.o | \
+  sed -e '/^.* [BCDEGRSTU] _\([_A-Za-z][_A-Za-z0-9]*\)$/!d'
+      -e 's/^.* [BCDEGRSTU] _\([_A-Za-z][_A-Za-z0-9]*\)$/_\1 \1/'
 __IO_stderr_ _IO_stderr_
 ___assert_perror_fail __assert_perror_fail
 ___assert_program_name __assert_program_name

@@ -802,26 +802,38 @@ fi
 # Check for command to grab the raw symbol name followed by C symbol from nm.
 echo $ac_n "checking command to parse $NM output... $ac_c" 1>&6
 
-# This is a sane default that works on at least a few old systems.
-# [It comes from Ultrix.  What could be older than Ultrix?!! ;)]
-global_symbol_pipe="sed -e '/^.* [BCDEGRSTU] /!d' -e 's/^.* [BCDEGRSTU] \(.*\)$/\1 \1/'"
+# These are sane defaults that work on at least a few old systems.
+# [They come from Ultrix.  What could be older than Ultrix?!! ;)]
 
-# Take a first stab at what the pipe should be.
+# Character class describing NM global symbol codes.
+symcode='[BCDEGRSTU]'
+
+# Regexp to match symbols that can be accessed directly from C.
+sympat='\([_A-Za-z][_A-Za-z0-9]*\)'
+
+# Transform the above into a raw symbol and a C symbol.
+symxfrm='\1 \1'
+
+# Define system-specific variables.
+case "$host_os" in
+aix*)
+  symcode='[BCDTU]'
+  ;;
+solaris2*)
+  symcode='[BDTU]'
+  ;;
+esac
+
+# If we're using GNU nm, then use its standard symbol codes.
 if $NM -V 2>&1 | egrep '(GNU|with BFD)' > /dev/null; then
-  # We're using GNU nm.
-  global_symbol_pipe="sed -e '/^.* [ABCDGISTU] /!d' -e 's/^.* [ABCDGISTU] \(.*\)$/\1 \1/'"
-else
-  # It's the system nm.
-  case "$host_os" in
-  aix*)
-    # Delete symbols that begin with a dot.
-    global_symbol_pipe="sed -e '/^.* [BCDTU] [^.]/!d' -e 's/^.* [BCDTU] \(.*\)$/\1 \1/'"
-    ;;
-  solaris2*)
-    global_symbol_pipe="sed -e '/^.* [BDTU] /!d' -e 's/^.* [BDTU] \(.*\)$/\1 \1/'"
-    ;;
-  esac
+  symcode='[ABCDGISTU]'
 fi
+
+# Delete symbols that are not valid C identifiers.
+global_symbol_pipe="sed -e '/^.* $symcode $sympat$/!d'"
+
+# Write the raw and C identifiers.
+global_symbol_pipe="$global_symbol_pipe -e 's/^.* $symcode $sympat$/$symxfrm/'"
 
 # Check to see that the pipe works correctly.
 pipe_works=no

@@ -866,7 +866,7 @@ as well as automatically running the correct @code{ranlib} command.
 @cindex Standalone binaries
 Another common situation where static linking is desirable is in
 creating a standalone binary.  Use libtool to do the linking and add the
-@samp{-static} flag.
+@samp{-all-static} flag.
 
 @node Invoking libtool
 @chapter Invoking @code{libtool}
@@ -974,6 +974,11 @@ The following components of @var{mode-args} are treated specially:
 @table @samp
 @cindex Undefined symbols, allowing
 @cindex Unresolved symbols, allowing
+@item -all-static
+If @var{output-file} is a program, then do not link it against any
+shared libraries at all.  If @var{output-file} is a library, then only
+create a static library.
+
 @item -allow-undefined
 If @var{output-file} is a libtool library, allow it to contain
 references to symbols that aren't defined in that library or its
@@ -1001,8 +1006,8 @@ If @var{output-file} is a library, it will eventually be installed in
 
 @item -static
 If @var{output-file} is a program, then do not link it against any
-shared libraries.  If @var{output-file} is a library, then only create a
-static library.
+uninstalled shared libtool libraries.  If @var{output-file} is a
+library, then only create a static library.
 
 @item -version-info @var{current}[:@var{revision}[:@var{age}]]
 If @var{output-file} is a libtool library, use library version
@@ -1123,21 +1128,21 @@ First, to link a program against a libtool library, just use the
 @samp{program_LDADD} variable:
 
 @example
-bin_PROGRAMS = hell hell.static
+bin_PROGRAMS = hell hell.debug
 
 # Build hell from main.c and libhello.la
 hell_SOURCES = main.c
 hell_LDADD = libhello.la
 
-# Create a statically-linked version of hell.
-hell_static_SOURCES = main.c
-hell_static_LDADD = libhello.la
-hell_static_LDFLAGS = -static
+# Create an easier-to-debug version of hell.
+hell_debug_SOURCES = main.c
+hell_debug_LDADD = libhello.la
+hell_debug_LDFLAGS = -static
 @end example
 
 You may use the @samp{program_LDFLAGS} variable to stuff in any flags
 you want to pass to libtool while linking @samp{program} (such as
-@samp{-static} to create a statically-linked executable).
+@samp{-static} to avoid linking uninstalled shared libtool libraries).
 
 Building a libtool library is almost as trivial@dots{} note the use of
 @samp{libhello_la_LDFLAGS} to pass the @samp{-version-info}

@@ -11,7 +11,8 @@ fi
 . $srcdir/defs || exit 1
 
 # Check that test -e isn't used in our portable shell scripts.
-if egrep -n -e 'test[ 	]+-e' $srcdir/../ltconfig $srcdir/../ltmain.sh; then
+scripts="$srcdir/../ltconfig $srcdir/../ltmain.sh $srcdir/../lineno"
+if egrep -n -e 'test[ 	]+-e' $scripts; then
   echo "use test -f, not test -e to check for file existence"
   exit 1
 fi
