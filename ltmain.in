@@ -2544,7 +2544,7 @@ static const void *lt_preloaded_setup() {
 	  if test "$fast_install" = yes; then
 	    relink_command=`echo "X$compile_var$compile_command$compile_rpath" | $Xsed -e 's%@OUTPUT@%\$progdir/\$file%g'`
 	  else
-	    # needless
+	    # fast_install is set to needless
 	    relink_command=
 	  fi
 	else
@@ -2577,7 +2577,6 @@ static const void *lt_preloaded_setup() {
 
       # Quote the relink command for shipping.
       if test -n "$relink_command"; then
-	relink_command="cd `pwd`; $relink_command"
 	relink_command=`$echo "X$relink_command" | $Xsed -e "$sed_quote_subst"`
       fi
 
