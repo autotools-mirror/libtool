@@ -1,3 +1,7 @@
+2001-08-18  Brad  <brad@comstyle.com>
+
+	* ltmain.in: Do not remove -lm from deplibs for OpenBSD.
+
 2001-08-05  Gary V. Vaughan  <gary@gnu.org>
 
 	From Brad <brad@comstyle.com>:

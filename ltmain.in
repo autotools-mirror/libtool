@@ -1042,7 +1042,7 @@ compiler."
 	    ;;
           *-*-openbsd*)
             # Do not include libc due to us having libc/libc_r.
-            continue
+            test "X$arg" = "X-lc" && continue
             ;;
           esac
          fi
