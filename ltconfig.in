@@ -1442,9 +1442,7 @@ test "$enable_shared" = yes || enable_static=yes
 
 echo "checking whether to build static libraries... $enable_static" 1>&6
 
-if test "$hardcode_action" = relink ||
-   { test "$hardcode_into_libs" = yes &&
-     test "$shlibpath_overrides_runpath" != yes; }; then
+if test "$hardcode_action" = relink; then
   # Fast installation is not supported
   enable_fast_install=no
 elif test "$shlibpath_overrides_runpath" = yes ||

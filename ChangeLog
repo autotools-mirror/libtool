@@ -1,5 +1,10 @@
 2000-09-05  Alexandre Oliva  <aoliva@redhat.com>
 
+	* ltconfig.in: Removed all references to what used to be
+	hardcode_into_libs=all.  2000-09-03's patch was wrong.
+	* ltmain.in: Likewise.
+	* tests/build-relink.test, tests/build-relink2.test: Adjust.
+
 	* libtool.m4 (LT_AC_PROG_GCJ): Remove excess closing brackets.
 
 2000-09-04  Alexandre Oliva  <aoliva@redhat.com>
