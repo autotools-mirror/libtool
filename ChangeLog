@@ -1,3 +1,7 @@
+2003-03-16  Charles Wilson  <cwilson@ece.gatech.edu>
+
+	* ltmain.in (win32_libid): use $SED, not head.
+
 2003-03-02  Alexandre Oliva  <aoliva@redhat.com>
 
 	* libtool.m4 (AC_PROG_LD): Use $CC instead of GCC.
