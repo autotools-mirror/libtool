@@ -1,3 +1,8 @@
+2001-09-09  Gary V. Vaughan  <gary@gnu.org>
+
+	* libtool.m4: Use Autoconf square bracket quoting style
+	consistently throughout.
+
 2001-09-08  Gary V. Vaughan  <gary@gnu.org>
 
 	* bootstrap: Cleanup `autom4te' and `libtool' so that we don't
