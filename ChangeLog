@@ -1,3 +1,9 @@
+2001-04-08  Gary V. Vaughan  <gvv@techie.com>
+
+	From Nick Hudson  <skrll@netbsd.org>
+	* doc/Makefile.am (libtool_TEXINFOS): Add fdl.texi so that it
+	is included in the distribution.
+
 2001-04-07  Peter Eisentraut  <peter_e@gmx.net>
 
 	* ltmain.in (clean,uninstall): Do not error if the file doesn't
