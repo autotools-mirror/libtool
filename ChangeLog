@@ -1,3 +1,8 @@
+2004-08-05  Alexandre Duret-Lutz  <adl@gnu.org>
+
+	* m4/libtool.m4 (_LT_PROG_LTMAIN): Require ltmain.sh using
+	using Autoconf's new AC_REQUIRE_AUX_FILE.
+
 2004-08-05  Gary V. Vaughan  <gary@gnu.org>
 
 	* Makefile.am ($(top_srcdir)/config/ltmain.sh): Depends on

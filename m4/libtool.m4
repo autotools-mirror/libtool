@@ -209,7 +209,8 @@ _LT_CONFIG_COMMANDS
 # `config.status' has no value for ac_aux_dir unless we are using Automake,
 # so we pass a copy along to make sure it has a sensible value anyway.
 AC_DEFUN([_LT_PROG_LTMAIN],
-[_LT_CONFIG_LIBTOOL_INIT([ac_aux_dir='$ac_aux_dir'])
+[m4_ifdef([AC_REQUIRE_AUX_FILE], [AC_REQUIRE_AUX_FILE([ltmain.sh])])dnl
+_LT_CONFIG_LIBTOOL_INIT([ac_aux_dir='$ac_aux_dir'])
 case $ac_aux_dir in
   $srcdir)   ltmain=./ltmain.sh ;;
   $srcdir/*) ltmain=`expr "$ac_aux_dir" : "$srcdir/\(.*\)"`/ltmain.sh ;;
