@@ -1,3 +1,10 @@
+1999-01-20  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* Makefile.am (@DIST_MAKEFILE_LIST@): work around Ultrix /bin/sh bug
+	* tests/nomode.test (must specify a MODE): ditto
+	Reported by Rainer Orth <ro@TechFak.Uni-Bielefeld.DE>
+	* THANKS: Added Rainer Orth
+
 1999-01-20  Rainer Orth  <ro@TechFak.Uni-Bielefeld.DE>
 
 	* ltconfig.in: No known version of Solaris 2 hardcoded -L paths.

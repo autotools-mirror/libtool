@@ -75,7 +75,7 @@ configure-subdirs distdir: $(DIST_MAKEFILE_LIST)
 @DIST_MAKEFILE_LIST@:
 	dir=`echo $@ | sed 's,^[^/]*$$,.,;s,/[^/]*$$,,'`; \
 	test -d $$dir || mkdir $$dir || exit 1; \
-	abs_srcdir=`cd $(top_srcdir) >/dev/null && pwd`; \
+	abs_srcdir=`cd $(top_srcdir) && pwd`; \
 	(cd $$dir && $$abs_srcdir/$$dir/configure) || exit 1
 
 # Create and install libltdl.tar.gz

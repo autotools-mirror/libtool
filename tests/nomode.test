@@ -17,7 +17,8 @@ else
   status=1
 fi
 
-if $libtool 2>&1 | grep 'you must specify a MODE' >/dev/null; then :
+# The emoticon below works around a nasty bug in Ultrix /bin/sh
+if ($libtool 2>&1; :) | grep 'you must specify a MODE' >/dev/null; then :
 else
   echo "invalid error when no mode is specified"
   status=1
