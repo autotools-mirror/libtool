@@ -1,3 +1,31 @@
+1999-01-05  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* ltmain.in (libobjs_save, oldobjs): when building an
+ 	old-fashioned archive, use a copy of libobjs saved before
+ 	convenience libraries are appended
+
+	* libltdl/ltdl.h (_LTDLL_EXPORT, _LTDLL_IMPORT): use cygwin or
+	unix library import/export primitives; this may be convenient for
+	people willing to create DLLs
+	(_LTDLL_EXTERN): select _LTDLL_EXPORT or _LTDLL_IMPORT depending
+	on _LTDL_COMPILE_
+	* libltdl/ltdl.h, libltdl/ltdl.c (lt_dlpreopen): new function,
+ 	that replaces the current preloaded_symbols list with its
+ 	argument, and returns the old value, initially NULL
+	(dldpre_init): don't refer to dld_preloaded_symbols any more
+	(dldpre_open, dldpre_sym): search preloaded_symbols
+	(lt_dlpreopen_default): call lt_dlpreopen with
+	dld_preloaded_symbols, that is declared as extern; it should be
+	called from the main program or from some static library without
+	-no-undefined
+	(lt_dlerror): new function, that returns the error message for the 
+	last error occurred; the error message is kept in the static
+	variable last_error
+	* libltdl/configure.in (enable-ltdl-install): moved back from
+	enable-install; other packages might use enable-install already,
+	better have fine grained control over this.
+	* libltdl/Makefile.am (libltdls.la): discarded
+
 1999-01-05  Thomas Tanner  <tanner@gmx.de>
 
 	* configure.in: do not configure libltdl by default

@@ -1133,6 +1133,7 @@ compiler."
     oldlibs=
     # calculate the name of the file, without its directory
     outputname=`$echo "X$output" | $Xsed -e 's%^.*/%%'`
+    libobjs_save="$libobjs"
 
     case "$output" in
     "")
@@ -2211,11 +2212,11 @@ fi\
     for oldlib in $oldlibs; do
 
       if test "$build_libtool_libs" = convenience; then
-	oldobjs="$libobjs"
+	oldobjs="$libobjs_save"
 	addlibs="$convenience"
 	build_libtool_libs=no
       else
-	oldobjs="$objs "`$echo "X$libobjs" | $SP2NL | $Xsed -e '/\.'${libext}'$/d' -e '/\.lib$/d' -e "$lo2o" | $NL2SP`
+	oldobjs="$objs "`$echo "X$libobjs_save" | $SP2NL | $Xsed -e '/\.'${libext}'$/d' -e '/\.lib$/d' -e "$lo2o" | $NL2SP`
 	addlibs="$old_convenience"
       fi
 

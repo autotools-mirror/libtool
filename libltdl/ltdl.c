@@ -53,6 +53,8 @@ Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 #include "ltdl.h"
 
+static const char *last_error = "unknown error";
+
 typedef struct lt_dltype_t {
 	struct lt_dltype_t *next;
 	int (*mod_init) __P((void));
@@ -142,7 +144,7 @@ strrchr(str, ch)
 	for (p = str; p != '\0'; p++)
 		/*NOWORK*/;
 
-	while (*p != (char)ch && p >= str) 
+	while (*p != (char)ch && p >= str)
 		p--;
 
 	return (*p == (char)ch) ? p : 0;
@@ -171,13 +173,13 @@ strrchr(str, ch)
 #endif
 
 static int
-dl_init ()       
+dl_init ()
 {
 	return 0;
 }
 
 static int
-dl_exit ()       
+dl_exit ()
 {
 	return 0;
 }
@@ -261,13 +263,13 @@ dl = { LT_DLTYPE_TOP, dl_init, dl_exit,
 #define	OPT_BIND_FLAGS	(BIND_IMMEDIATE | BIND_NONFATAL | BIND_VERBOSE | DYNAMIC_PATH)
 
 static int
-shl_init ()       
+shl_init ()
 {
 	return 0;
 }
 
 static int
-shl_exit ()       
+shl_exit ()
 {
 	return 0;
 }
@@ -297,7 +299,7 @@ shl_sym (handle, symbol)
 {
 	lt_ptr_t *sym;
 
-	if (shl_findsym ((shl_t) (handle->handle), symbol, 
+	if (shl_findsym ((shl_t) (handle->handle), symbol,
 			TYPE_UNDEFINED, &sym) || !(handle->handle) || !sym)
 		return 0;
 	return sym;
@@ -318,13 +320,13 @@ shl = { LT_DLTYPE_TOP, shl_init, shl_exit,
 /* dynamic linking with dld */
 
 static int
-dld_init ()       
+dld_init ()
 {
 	return 0;
 }
 
 static int
-dld_exit ()       
+dld_exit ()
 {
 	return 0;
 }
@@ -371,16 +373,16 @@ dld = { LT_DLTYPE_TOP, dld_init, dld_exit,
 
 /* dynamic linking for Win32 */
 
-#include <windows.h> 
+#include <windows.h>
 
 static int
-wll_init ()       
+wll_init ()
 {
 	return 0;
 }
 
 static int
-wll_exit ()       
+wll_exit ()
 {
 	return 0;
 }
@@ -421,26 +423,25 @@ wll = { LT_DLTYPE_TOP, wll_init, wll_exit,
 #endif
 
 #if HAVE_DLPREOPEN
-#if USE_DLPREOPEN
 
 /* emulate dynamic linking using dld_preloaded_symbols */
 
-struct dld_symlist
+struct lt_dlsymlist
 {
   char *name;
   lt_ptr_t address;
 };
 
-extern struct dld_symlist dld_preloaded_symbols[];
+static struct lt_dlsymlist *preloaded_symbols;
 
 static int
-dldpre_init ()       
+dldpre_init ()
 {
 	return 0;
 }
 
 static int
-dldpre_exit ()       
+dldpre_exit ()
 {
 	return 0;
 }
@@ -450,7 +451,10 @@ dldpre_open (handle, filename)
 	lt_dlhandle handle;
 	const char *filename;
 {
-	struct dld_symlist *s = dld_preloaded_symbols;
+	struct lt_dlsymlist *s = preloaded_symbols;
+
+	if (!s)
+		return 1;
 
 	while (s->name) {
 		if (!s->address && !strcmp(s->name, filename))
@@ -475,10 +479,15 @@ dldpre_sym (handle, symbol)
 	lt_dlhandle handle;
 	const char *symbol;
 {
-	struct dld_symlist *s = (struct dld_symlist*)(handle->handle);
+	struct lt_dlsymlist *s = (struct lt_dlsymlist*)(handle->handle);
 
 	if (!s)
 		return 0;
+
+#if NEED_USCORE
+	/* lt_dlsym will have prepended a `_', but we don't need it */
+	++symbol;
+#endif
 	s++;
 	while (s->address) {
 		if (strcmp(s->name, symbol) == 0)
@@ -488,7 +497,7 @@ dldpre_sym (handle, symbol)
 	return 0;
 }
 
-static 
+static
 lt_dltype_t
 dldpre = { LT_DLTYPE_TOP, dldpre_init, dldpre_exit,
 	   dldpre_open, dldpre_close, dldpre_sym };
@@ -496,7 +505,6 @@ dldpre = { LT_DLTYPE_TOP, dldpre_init, dldpre_exit,
 #undef LT_DLTYPE_TOP
 #define LT_DLTYPE_TOP &dldpre
 
-#endif
 #endif
 
 static lt_dlhandle handles;
@@ -506,7 +514,7 @@ static lt_dltype types = LT_DLTYPE_TOP;
 #undef LT_DLTYPE_TOP
 
 int
-lt_dlinit ()       
+lt_dlinit ()
 {
 	/* initialize libltdl */
 	lt_dltype *type = &types;
@@ -532,8 +540,21 @@ lt_dlinit ()
 	return 0;
 }
 
+struct lt_dlsymlist *
+lt_dlpreopen (preloaded)
+	struct lt_dlsymlist *preloaded;
+{
+#if HAVE_DLPREOPEN
+	struct lt_dlsymlist *prev = preloaded_symbols;
+	preloaded_symbols = preloaded;
+	return prev;
+#else
+	return 0;
+#endif
+}
+
 int
-lt_dlexit ()       
+lt_dlexit ()
 {
 	/* shut down libltdl */
 	lt_dltype type = types;
@@ -547,10 +568,11 @@ lt_dlexit ()
 	}
 	/* close all modules */
 	errors = 0;
-	while (handles)
+	while (handles) {
 		/* FIXME: what if a module depends on another one? */
-		if (lt_dlclose(handles))  
+		if (lt_dlclose(handles))
 			errors++;
+	}
 	initialized = 0;
 	while (type) {
 		if (type->mod_exit())
@@ -609,13 +631,13 @@ tryall_dlopen (handle, filename)
 
 static int
 find_module (handle, dir, libdir, dlname, old_name)
-	lt_dlhandle *handle; 
-	const char *dir; 
+	lt_dlhandle *handle;
+	const char *dir;
 	const char *libdir;
 	const char *dlname;
 	const char *old_name;
 {
-	char	fullname[MAX_FILENAME]; /* FIXME: unchecked */
+	char	fullname[MAX_FILENAME]; /* FIXME: unchecked buffer */
 	
 	/* search a module */
 	if (*dlname) {
@@ -656,7 +678,7 @@ lt_dlopen (filename)
 	lt_dlhandle handle;
 	FILE	*file;
 	char	dir[MAX_FILENAME]; /* FIXME: unchecked buffer */
-	char	tmp[MAX_FILENAME];
+	char	tmp[MAX_FILENAME]; /* FIXME: unchecked buffer */
 	const char *basename, *ext, *search_path;
 	
 	handle = (lt_dlhandle) malloc(sizeof(lt_dlhandle_t));
@@ -673,6 +695,7 @@ lt_dlopen (filename)
 	/* check whether we open a libtool module (.la extension) */
 	ext = strrchr(basename, '.');
 	if (ext && strcmp(ext, ".la") == 0) {
+		/* FIXME: unchecked buffers */
 		char	dlname[MAX_FILENAME], old_name[MAX_FILENAME];
 		char	libdir[MAX_FILENAME], preload[MAX_FILENAME];
 		int	i;
@@ -815,7 +838,7 @@ lt_dlsym (handle, symbol)
 	lt_dlhandle handle;
 	const char *symbol;
 {
-	char	sym[128]; /* FIXME: unchecked */
+	char	sym[128]; /* FIXME: unchecked buffer */
 	lt_ptr_t address;
 
 	if (handle->name) { /* this is a libtool module */
@@ -842,4 +865,10 @@ lt_dlsym (handle, symbol)
 #else
 	return handle->type->find_sym(handle, symbol);
 #endif
+}
+
+const char *
+lt_dlerror ()
+{
+	return last_error;
 }

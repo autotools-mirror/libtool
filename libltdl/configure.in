@@ -3,21 +3,12 @@ dnl Initialize the libltdl package.
 AC_INIT(ltdl.c)
 AM_INIT_AUTOMAKE(libltdl,0.1)
 
-AC_ARG_ENABLE(install,
-  [  --enable-install        build installable version])
-AM_CONDITIONAL(INSTALL_LTDL, test x$enable_install = xyes)
-
-AC_ARG_ENABLE(dlpreopen,
-  [  --enable-dlpreopen      build installable version with dlpreopen support])
-
-dnl Always use dld_preloaded_symbols?
-always_dlpreopen=yes
-
-if test x$enable_install = xyes; then
+AC_ARG_ENABLE(ltdl-install,
+  [--enable-ltdl-install     install libltdl (breaks check before install)])
+AM_CONDITIONAL(INSTALL_LTDL, test x$enable_ltdl_install = xyes)
+if test x$enable_ltdl_install = xyes; then
   LIBLIBS=libltdl.la
-  test x$enable_dlpreopen = xyes && LIBLIBS="$LIBLIBS libltdls.la"
   NOINSTLIBS=
-  always_dlpreopen=no
 else
   LIBLIBS=
   NOINSTLIBS=libltdl.la
@@ -50,20 +41,11 @@ LIBADD_DL=
 AC_CHECK_FUNCS(dlopen, AC_DEFINE(HAVE_LIBDL),
 [AC_CHECK_LIB(dl, dlopen, [AC_DEFINE(HAVE_LIBDL) LIBADD_DL="-ldl"],
  [AC_CHECK_LIB(dld, dld_link, [AC_DEFINE(HAVE_DLD) LIBADD_DL="-ldld"],
-   [AC_CHECK_FUNCS(shl_load, AC_DEFINE(HAVE_SHL_LOAD), supported=no )]
+   [AC_CHECK_FUNCS(shl_load, AC_DEFINE(HAVE_SHL_LOAD))]
   )]
  )]
 )
 AC_SUBST(LIBADD_DL)
-
-if test "$supported" = no; then
-  AC_MSG_WARN(Can't find dlopen support: Please make sure that your programs use -dlopen/-dlpreopen.)
-  always_dlpreopen=yes
-fi
-
-if test "$always_dlpreopen" = yes; then
-  AC_DEFINE(USE_DLPREOPEN)
-fi
 
 AM_SYS_SYMBOL_UNDERSCORE
 if test x"$USE_SYMBOL_UNDERSCORE" = xyes; then
