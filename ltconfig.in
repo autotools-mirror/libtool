@@ -1779,12 +1779,8 @@ irix5* | irix6*)
   esac
   shlibpath_var=LD_LIBRARY${shlibsuff}_PATH
   shlibpath_overrides_runpath=no
-  # even though /usr/local/lib is always searched, the man-page says
-  # shared libraries should not be installed there if they use an ABI
-  # different from -32, so we'd better not search for shared libraries
-  # there either
-  sys_lib_search_path_spec="/lib${libsuff} /usr/lib${libsuff} /usr/local/lib${libsuff}"
-  sys_lib_dlsearch_path_spec="/lib${libsuff} /usr/lib${libsuff} /usr/local/lib${libsuff}"
+  sys_lib_search_path_spec="/usr/lib${libsuff} /lib${libsuff} /usr/local/lib${libsuff}"
+  sys_lib_dlsearch_path_spec="/usr/lib${libsuff} /lib${libsuff}"
   file_magic_cmd=/usr/bin/file
   file_magic_test_file=`echo /lib${libsuff}/libc.so*`
   deplibs_check_method='pass_all'
