@@ -1,3 +1,11 @@
+2005-05-22  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* m4/libtool.m4 (_LT_LINKER_SHLIBS) [solaris]: Use ${wlarc}
+	and set to empty when using $LD for linking.  Fixes regression
+	introduced in 2004-11-17.
+	Reported by Ralf Menzel <menzel@ls6.cs.uni-dortmund.de> and
+	Пухальский Юрий Андреевич <pooh@cryptopro.ru>.
+
 2005-05-21  Gary V. Vaughan  <gary@gnu.org>,
 	    Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
