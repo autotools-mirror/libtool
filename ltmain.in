@@ -4654,7 +4654,12 @@ relink_command=\"$relink_command\""
       fi
 
       # Don't error if the file doesn't exist and rm -f was used.
-      if test ! -e "$file" && test "$rmforce" = yes; then
+      if test -L "$file" >/dev/null 2>&1 || test -f "$file"; then
+        :
+      elif test -d "$file"; then
+        exit_status=1
+	continue
+      elif test "$rmforce" = yes; then
         continue
       fi
 
