@@ -2,6 +2,8 @@
 
 	* ltdl.m4 (AC_LTDL_SYS_DLOPEN_DEPLIBS): Need to quote [ and ] for
 	Autoconf.
+	* ltdl.m4 (AC_LTDL_SYS_DLOPEN_DEPLIBS): HP/UX needs
+	libltdl_cv_sys_dlopen_deplibs set to yes.
 
 2002-06-23  Kevin Ryde  <user42@zip.com.au>
 
