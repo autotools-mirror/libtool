@@ -1,12 +1,16 @@
 Summary: GNU libtool - shared library support for source packages
+# $Format: "Name: $Project$"$
 Name: libtool
-Version: 1.1
+# $Format: "Version: $ProjectMajorVersion$"$
+Version: 1.0g
 Release: 1
 Copyright: GPL
 Group: Development/Build
+# FIXME: add an `Icon:' entry when we have one.
 Source: ftp://prep.ai.mit.edu/pub/gnu/libtool-%{PACKAGE_VERSION}.tar.gz
 BuildRoot: /tmp/libtool.root
 
+# FIXME: add information to the description when we have an URL.
 %description
 This is GNU libtool, a generic library support script.  Libtool hides
 the complexity of using shared libraries behind a consistent, portable
