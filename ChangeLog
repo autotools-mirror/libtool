@@ -1,3 +1,7 @@
+2004-11-05  Peter Ekberg  <spam.protected>
+
+	* ltmain.m4sh (cwrappersource): clean up other warning on MinGW.
+
 2004-11-04  Bernhard Fischer  <spam.protected>,
 	    Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 

@@ -5761,9 +5761,18 @@ EOF
 
 EOF
 
-	    cat >> $cwrappersource <<EOF
+	    case $host_os in
+	      mingw*)
+		cat >> $cwrappersource <<EOF
+  execv("$SHELL",(char const **)newargz);
+EOF
+	      ;;
+	      *)
+		cat >> $cwrappersource <<EOF
   execv("$SHELL",newargz);
 EOF
+	      ;;
+	    esac
 
 	    cat >> $cwrappersource <<"EOF"
   return 0;
