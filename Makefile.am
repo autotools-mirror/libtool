@@ -90,9 +90,9 @@ $(top_srcdir)/m4/ltversion.m4: m4/ltversion.in configure.ac stamp-vcl
 ## And for similar reasons, ltmain.sh can't be built from config.status.
 EXTRA_DIST += config/ltmain.sh
 $(top_srcdir)/config/ltmain.sh: config/ltmain.in configure.ac stamp-vcl
+	set -- `$(MKSTAMP) < $(top_srcdir)/ChangeLog`; \
 	cd $(top_srcdir); \
 	rm -f config/ltmain.tmp; \
-	set -- `$(MKSTAMP) < $(top_srcdir)/ChangeLog`; \
 	input="ltmain.in"; \
 	$(edit) -e "s,@TIMESTAMP\@,$$1 $$2 $$3,g" \
 		-e "s,@package_revision\@,$$1,g" \

@@ -1,5 +1,9 @@
 2004-08-05  Gary V. Vaughan  <gary@gnu.org>
 
+	* Makefile.am ($(top_srcdir)/config/ltmain.sh): Actually run
+	$(MKSTAMP) before changing directories, or it won't be found.
+	Forgot to save before my last commit :-(
+
 	* Makefile.am ($(top_srcdir)/m4/ltversion.m4): Since we already did
 	`cd $(top_srcdir)' for this rule, we can't mv ltversion.tmp to the
 	relative $(top_srcdir) again!  Also, run $(MKSTAMP) before changing
