@@ -1,3 +1,12 @@
+Wed Apr 16 19:21:00 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* hardcode.test: AIX also has arbitrary limits on the line length
+	of input to fgrep(1), so we need to translate NUL characters to
+	newlines in order to properly detect embedded `.libs'.  From Bruno
+	Haible.
+	Also redirect stderr to /dev/null, so that AIX users don't get
+	worried by `fgrep: Maximum line length of 2048 exceeded.'.
+
 Tue Apr  1 12:48:32 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* hardcode.test: AIX 3 doesn't have strings(1) so we need to do a

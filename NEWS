@@ -5,10 +5,12 @@ New in 0.9e:
 * Automake support for Libtool now uses the LTLIBRARIES primary.  See
   the Automake documentation for more information.
 * Basic support for dynamically loaded modules: new `-export-dynamic'
-  link flag and corresponding `dlname' mode.
+  linking flag and corresponding `dlname' mode.
+* New `--features' flag to display configured libtool attributes.
 * Basic support for convenience libraries made of libtool objects: new
   `-whole-archive' and `-no-whole-archive' linking flags.
 * Support *-*-linux-gnu* as an alias for *-*-linux*.
+* Support for *-*-openbsd*.
 
 New in 0.9:
 * Bug fixes.

@@ -1,18 +1,7 @@
-* Sanity check to detect broken collect2 on AIX:
+* Sanity check to detect broken collect2 on AIX (see collect2bug).
 
-checking if libraries in .libs can be linked... no
-configure: error: basic sanity check failed; look at config.log
-If you are using GCC versions before 2.8 on AIX, try configuring with
-the native C compiler instead (set the CC environment variable to `xlc').
-
-mkdir .libs
-echo > conftest.c
-$CC -c conftest.c
-$AR cru .libs/libct.a conftest.o
-$RANLIB .libs/libct.a # if necessary
-echo 'int main () { return 0; }' > conftest.c
-$CC -c conftest.c
-$CC -o conftest conftest.o .libs/libct.a
+* Document inter-library dependencies, and allowing undefined
+symbols (`-allow-undefined').
 
 * Document convenience libraries, -whole-archive, and
 -no-whole-archive.

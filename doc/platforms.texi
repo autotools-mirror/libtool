@@ -22,7 +22,7 @@ mips-sgi-irix6.2             cc -n32   0.9       ok
 powerpc-ibm-aix4.1.4.0       xlc       0.9d      ok
 powerpc-ibm-aix4.1.4.0       gcc       0.9a      ok
 rs6000-ibm-aix3.2.5          xlc       0.9e      ok
-rs6000-ibm-aix3.2.5          gcc       0.9d      fail
+rs6000-ibm-aix3.2.5          gcc       0.9e      ok*
 rs6000-ibm-aix4.1.4.0        xlc       0.9e      ok
 rs6000-ibm-aix4.1.4.0        gcc       0.9e      ok
 sparc-sun-linux2.1.23        gcc       0.9       ok
@@ -33,3 +33,6 @@ sparc-sun-solaris2.4         gcc       0.9       ok
 sparc-sun-solaris2.5         cc        0.9       ok
 sparc-sun-solaris2.5         gcc       0.9e      ok
 --------------------------------------------------------
+
+* Libtool will not build shared libraries because of a bug in
+GCC 2.7.2.2's collect2 linker program.

@@ -17,6 +17,7 @@ Shared library support has been implemented for these platforms:
   IRIX 5.x, 6.x (*-*-irix5*, *-*-irix6*)
   Linux ELF targets (*-*-linux*, except *-*-linuxaout* and *-*-linuxoldld*)
   NetBSD 1.x (*-*-netbsd*)
+  OpenBSD 2.x (*-*-openbsd*)
   SCO OpenServer 5.x (*-*-sco3.2v5*)
   Solaris 1.x, a.k.a. SunOS 4.x (*-*-sunos4*)
   Solaris 2.x (*-*-solaris2*)

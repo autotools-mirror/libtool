@@ -76,9 +76,13 @@ for file in hc-*; do
   hardcoded=no
   if fgrep '.libs' $file > /dev/null; then
     hardcoded=yes
-  elif cat $file | tr '\200-\277' '\100-\177' | tr '\300-\377' '\100-\177' | tr '\000-\037' '\040-\077' | fgrep '.libs' > /dev/null; then
+  elif cat $file | tr '\200-\277' '\100-\177' | tr '\300-\377' '\100-\177' \
+                 | tr '\000-\037' '\040-\077' | tr '\040' '\012' \
+		 | fgrep '.libs' > /dev/null 2>&1; then
     # At least AIX fgrep doesn't work for binary files, and AIX also
     # doesn't have strings(1), so we need this strange conversion.
+    # AIX fgrep also has a limited line length, that's why we finally
+    # turn the NUL characters into newlines.
     hardcoded=yes
   elif egrep 'unsupported' $file > /dev/null; then
     hardcoded=unsupported

@@ -894,6 +894,11 @@ and accepts the following options:
 Don't create, modify, or delete any files, just show what commands would
 be executed by libtool.
 
+@item --features
+Display libtool configuration information and exit.  This provides a way
+for packages to determine whether shared or static libraries will be
+built.
+
 @item --finish
 Same as @samp{--mode=finish}.
 
@@ -1759,16 +1764,17 @@ features such as constructors, exception handling, and RTTI.
 @item
 On some systems, notably SunOS 4, the dynamic linker does not call
 non-constant initializers.  This can lead to hard-to-pinpoint bugs in
-your library.
+your library.  GCC 2.7 and later versions work around this problem, but
+previous versions and other compilers do not.
 @end enumerate
 
 This second issue is very complex.  Basically, avoid any global or
 static variable initializations that would cause an ``initializer
-element is not constant'' error if you compiled themwith a standard C
+element is not constant'' error if you compiled them with a standard C
 compiler.
 
-There are ways of working around this problem, but they are beyond the
-scope of this manual.
+There are other ways of working around this problem, but they are beyond
+the scope of this manual.
 
 @node Troubleshooting
 @chapter Troubleshooting
@@ -1842,9 +1848,9 @@ This test validates that libtool can handle suffixes for all the file
 types that it supports, and that it fails when the suffix is invalid.
 
 @item test-e.test
-This program checks that the @code{test -e} construct is @emph{never} in
-the libtool scripts.  Checking for the existence of a file can only be
-done in a portable way by using @code{test -f}.
+This program checks that the @code{test -e} construct is @emph{never}
+used in the libtool scripts.  Checking for the existence of a file can
+only be done in a portable way by using @code{test -f}.
 @end table
 
 @node When Tests Fail
@@ -1928,8 +1934,8 @@ need to follow some cross references to find the information that is
 required.
 
 @item man pages for ld.so(8), rtld(8), or equivalent
-These are a valuable resource for understanding how libraries are loaded
-on the system.
+These are a valuable resource for understanding how shared libraries are
+loaded on the system.
 
 @item man page for ldconfig(8), or equivalent
 This page usually describes how to install shared libraries.
@@ -2073,7 +2079,7 @@ The @samp{-x} flag works for shared libraries, but fails with
 ``Inappropriate file type or format'' when used on static libraries.
 
 @item hpux10*
-HP-UX @file{strip} requires that @samp{-r} and @samp{-x} flags in order
+HP-UX @file{strip} requires the @samp{-r} and @samp{-x} flags in order
 to strip libraries.
 @end table
 
@@ -2119,12 +2125,12 @@ Whether libtool should build static libraries on this system.  Set to
 @end defvar
 
 @defvar finish_cmds
-Commands to tell the dynamic linker to find shared libraries a
-directory.
+Commands to tell the dynamic linker how to find shared libraries a
+specific directory.
 @end defvar
 
 @defvar hardcode_action
-Either @samp{immediately} or @samp{relink}, depending on whether shared
+Either @samp{immediate} or @samp{relink}, depending on whether shared
 library paths can be hardcoded into executables before they are installed,
 or if they need to be relinked.
 @end defvar
@@ -2140,16 +2146,30 @@ Flag to hardcode a @var{libdir} variable into a binary, so that the
 dynamic linker searches @var{libdir} for shared libraries at runtime.
 @end defvar
 
+@defvar hardcode_libdir_separator
+If the compiler only accepts a single @var{hardcode_libdir_flag}, then
+this variable contains the string that should separate multiple
+arguments to that flag.
+@end defvar
+
 @defvar hardcode_minus_L
 Set to @samp{yes} or @samp{no}, depending on whether the linker
 hardcodes directories specified by @samp{-L} flags into the resulting
 executable.
 @end defvar
 
+@defvar hardcode_runpath_var
+Set to @samp{yes} or @samp{no}, depending on whether the linker
+hardcodes directories specified by setting @samp{$runpath_var} into the
+resulting executable.
+@end defvar
+
 @defvar hardcode_shlibpath_var
 Set to @samp{yes} or @samp{no}, depending on whether the linker
 hardcodes directories specified by setting @samp{$shlibpath_var} into
-the resulting executable.
+the resulting executable.  Set to @samp{unsupported} if directories
+specified by @samp{$shlibpath_var} are searched at run time, but not at
+link time.
 @end defvar
 
 @defvar host
@@ -2181,6 +2201,11 @@ Commands run after installing a shared or static librar, respectively.
 @defvar reload_cmds
 @defvarx reload_flag
 Commands to create a reloadable object.
+@end defvar
+
+@defvar runpath_var
+The environment variable that tells the linker which directories to
+hardcode in the resulting executable.
 @end defvar
 
 @defvar shlibpath_var

@@ -1,3 +1,28 @@
+Tue Apr 22 12:41:34 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltmain.sh.in (hardcode_runpath_var, runpath_var): Use them, if
+	the linker has no -rpath flag.
+	Quote the values we use to set runpath_var and shlibpath_var.
+	(link): Use libobjlibs for libtool convenience libraries.
+
+	* ltconfig.in (hardcode_runpath_var, runpath_var): Add new
+	variables to describe linkers that honour `LD_RUN_PATH'.
+	(host_cpu, host_os): Use these more specific variables, rather
+	than the full canonical host system name.
+
+	* ltmain.sh.in (dlname): Distinguish between missing
+ 	`-export-dynamic' and when the library is only statically linked.
+
+Mon Apr 21 09:52:51 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltconfig.in: Trivial port to OpenBSD by making it an alias for
+	NetBSD.  From Tim Pierce.
+
+Wed Apr 16 19:32:05 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltconfig.in: Temporary measures to check for a broken collect2
+	program.  Right now, we just see if we're using GCC on AIX 3.
+
 Sun Apr 13 19:40:58 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltmain.sh.in (mode): Use `egrep -e' when inferring the operation
@@ -6,7 +31,7 @@ Sun Apr 13 19:40:58 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 Sat Apr 12 13:09:24 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltconfig.in (linker): Some GNU ld's don't accept `--version',
- 	but do accept `-v'.  From Stephan Kulow.
+	but do accept `-v'.  From Jukka Honkela.
 	(ld_shlibs): AIX lossage may be settling down.  AIX 3.2.5 ld does
  	*not* hardcode direct libraries, but AIX 4.1.[45] ld does.
 
