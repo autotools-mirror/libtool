@@ -1904,7 +1904,7 @@ AC_REQUIRE([AC_CANONICAL_BUILD])dnl
 ac_prog=ld
 if test "$GCC" = yes; then
   # Check if gcc -print-prog-name=ld gives a path.
-  AC_MSG_CHECKING([for ld used by GCC])
+  AC_MSG_CHECKING([for ld used by $CC])
   case $host in
   *-*-mingw*)
     # gcc leaves a trailing carriage return which upsets mingw
@@ -2590,7 +2590,23 @@ lt_simple_link_test_code='int main(int, char *[]) { return(0); }\n'
 _LT_AC_SYS_COMPILER
 
 # Allow CC to be a program name with arguments.
-lt_save_CC="$CC"
+lt_save_CC=$CC
+lt_save_LD=$LD
+lt_save_GCC=$GCC
+GCC=$GXX
+lt_save_with_gnu_ld=$with_gnu_ld
+lt_save_path_LD=$lt_cv_path_LD
+if test -n "${lt_cv_prog_gnu_ldcxx+set}"; then
+  lt_cv_prog_gnu_ld=$lt_cv_prog_gnu_ldcxx
+else
+  unset lt_cv_prog_gnu_ld
+fi
+if test -n "${lt_cv_path_LDCXX+set}"; then
+  lt_cv_path_LD=$lt_cv_path_LDCXX
+else
+  unset lt_cv_path_LD
+fi
+test -z "${LDCXX+set}" || LD=$LDCXX
 CC=${CXX-"c++"}
 compiler=$CC
 _LT_AC_TAGVAR(compiler, $1)=$CC
@@ -2607,12 +2623,11 @@ fi
 if test "$GXX" = yes; then
   # Set up default GNU C++ configuration
 
+  AC_PROG_LD
+
   # Check if GNU C++ uses GNU ld as the underlying linker, since the
   # archiving commands below assume that GNU ld is being used.
-  if eval "`$CC -print-prog-name=ld` --version 2>&1" | \
-      grep 'GNU ld' > /dev/null; then
-    with_gnu_ld=yes
-
+  if test "$with_gnu_ld" = yes; then
     _LT_AC_TAGVAR(archive_cmds, $1)='$CC -shared -nostdlib $predep_objects $libobjs $deplibs $postdep_objects $compiler_flags ${wl}-soname $wl$soname -o $lib'
     _LT_AC_TAGVAR(archive_expsym_cmds, $1)='$CC -shared -nostdlib $predep_objects $libobjs $deplibs $postdep_objects $compiler_flags ${wl}-soname $wl$soname ${wl}-retain-symbols-file $wl$export_symbols -o $lib'
 
@@ -3381,7 +3396,16 @@ AC_LIBTOOL_DLOPEN_SELF($1)
 AC_LIBTOOL_CONFIG($1)
 
 AC_LANG_POP
-CC="$lt_save_CC"
+CC=$lt_save_CC
+LDCXX=$LD
+LD=$lt_save_LD
+GCC=$lt_save_GCC
+with_gnu_ldcxx=$with_gnu_ld
+with_gnu_ld=$lt_save_with_gnu_ld
+lt_cv_path_LDCXX=$lt_cv_path_LD
+lt_cv_path_LD=$lt_save_path_LD
+lt_cv_prog_gnu_ldcxx=$lt_cv_prog_gnu_ld
+lt_cv_prog_gnu_ld=$lt_save_with_gnu_ld
 ])# AC_LIBTOOL_LANG_CXX_CONFIG
 
 # AC_LIBTOOL_POSTDEP_PREDEP([TAGNAME])
