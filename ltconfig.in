@@ -1192,7 +1192,15 @@ EOF
     runpath_var=LD_RUN_PATH
     hardcode_libdir_flag_spec='${wl}--rpath ${wl}$libdir'
     export_dynamic_flag_spec='${wl}--export-dynamic'
+    case $host_os in
+    cygwin* | mingw*)
+      # dlltool doesn't understand --whole-archive et. al.
+      whole_archive_flag_spec=
+      ;;
+    *)
     whole_archive_flag_spec="$wlarc"'--whole-archive$convenience '"$wlarc"'--no-whole-archive'
+      ;;
+    esac
   fi
 else
   # PORTME fill in a description of your system's linker (not GNU ld)
