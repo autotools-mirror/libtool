@@ -32,12 +32,7 @@ AC_CONFIG_SRCDIR([ltdl.c])
 ## Libltdl specific configuration. ##
 ## ------------------------------- ##
 
-# We shouldn't be using these internal macros of autoconf,
-# but CONFIG_AUX_DIR($with_auxdir) breaks automake.
-AC_ARG_WITH([auxdir],
-    [AC_HELP_STRING([--with-auxdir=DIR], [path to autoconf auxiliary files])],
-    [AC_CONFIG_AUX_DIRS($with_auxdir)],
-    [AC_CONFIG_AUX_DIR_DEFAULT])
+AC_CONFIG_AUX_DIR([.])
 
 if test -z "$enable_ltdl_install$enable_ltdl_convenience"; then
   if test -f ${srcdir}/ltmain.sh; then

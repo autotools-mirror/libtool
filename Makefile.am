@@ -45,6 +45,7 @@ $(srcdir)/ltmain.sh: $(srcdir)/ltmain.in $(TSDEPS)
 	    -e "s%@""TIMESTAMP@%$$date%" $(srcdir)/ltmain.in > ltmain.shT
 	mv -f ltmain.shT $@ || \
 	(rm -f $@ && cp ltmain.shT $@ && rm -f ltmain.shT)
+	cp $@ $(srcdir)/libltdl/
 
 # TSDEPS will be defined to TSDEPS_DIST at `make dist' time
 TSDEPS =
