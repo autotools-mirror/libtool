@@ -5873,8 +5873,12 @@ relink_command=\"$relink_command\""
 	      tmpdir="/tmp"
 	      test -n "$TMPDIR" && tmpdir="$TMPDIR"
 	      tmpdir="$tmpdir/libtool-$$"
-	      if $mkdir "$tmpdir" && chmod 700 "$tmpdir"; then :
+	      save_umask=`umask`
+	      umask 0077
+	      if $mkdir "$tmpdir"; then
+	      	umask $save_umask
 	      else
+	      	umask $save_umask
 		$echo "$modename: error: cannot create temporary directory \`$tmpdir'" 1>&2
 		continue
 	      fi
