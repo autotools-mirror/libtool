@@ -1,3 +1,9 @@
+2005-01-26  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* tests/Makefile.am: also re-export CPP, F77, FFLAGS, CXX,
+	CXXFLAGS, CXXCPP, and the value of SHELL as CONFIG_SHELL.
+	Reported by Heinz Salzmann <heinz.salzmann@micronas.com>.
+
 2005-01-26  Craig Dooley  <xlnxminusx@gmail.com>,
 	    Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
