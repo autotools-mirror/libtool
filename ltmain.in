@@ -549,7 +549,7 @@ compiler."
 
     # Unlock the critical section if it was locked
     if test "$need_locks" != no; then
-      rm -f "$lockfile"
+      $rm "$lockfile"
     fi
 
     # Create an invalid libtool object if no PIC, so that we do not
@@ -839,6 +839,10 @@ compiler."
           exit 1
         fi
 
+	# If the library was installed with an old release of libtool,
+	# it will not redefine variable installed.
+	installed=yes
+
         # If there is no directory component, then add one.
         case "$arg" in
         */* | *\\*) . $arg ;;
@@ -858,12 +862,17 @@ compiler."
 
         # Find the relevant object directory and library name.
         name=`$echo "X$arg" | $Xsed -e 's%^.*/%%' -e 's/\.la$//' -e 's/^lib//'`
-        dir=`$echo "X$arg" | $Xsed -e 's%/[^/]*$%%'`
-        if test "X$dir" = "X$arg"; then
-          dir="$objdir"
-        else
-          dir="$dir/$objdir"
-        fi
+
+	if test "X$installed" = Xyes; then
+	  dir="$libdir"
+	else
+	  dir=`$echo "X$arg" | $Xsed -e 's%/[^/]*$%%'`
+	  if test "X$dir" = "X$arg"; then
+	    dir="$objdir"
+	  else
+	    dir="$dir/$objdir"
+	  fi
+	fi
 
         if test -z "$libdir"; then
 	  # It is a libtool convenience library, so add in its objects.
@@ -2182,6 +2191,9 @@ current=$current
 age=$age
 revision=$revision
 
+# Is this an already installed library?
+installed=no
+
 # Directory that this library needs to be installed in:
 libdir='$install_libdir'\
 "
@@ -2431,8 +2443,14 @@ libdir='$install_libdir'\
 
         # Install the pseudo-library for information purposes.
         name=`$echo "X$file" | $Xsed -e 's%^.*/%%'`
-        $show "$install_prog $file $destdir/$name"
-        $run eval "$install_prog $file $destdir/$name" || exit $?
+	instname="$dir/$name"i
+	$show "Creating $instname"
+	$rm "$instname"
+	sed 's/^installed=no$/installed=yes/' "$file" > "$instname"
+        $show "$install_prog $instname $destdir/$name"
+        $run eval "$install_prog $instname $destdir/$name" || exit $?
+	$show "$rm $instname"
+	$rm "$instname"
 
         # Maybe install the static library, too.
         test -n "$old_library" && staticlibs="$staticlibs $dir/$old_library"

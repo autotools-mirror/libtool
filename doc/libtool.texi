@@ -680,6 +680,39 @@ creating hell
 burger$
 @end example
 
+@cindex linking with installed libtool libraries
+
+Now assume @file{libhello.la} had already been installed, and you want
+to link a new program with it.  You could figure out where it lives by
+yourself, then run:
+
+@example
+burger$ @kbd{gcc -g -O -o test test.o -L/usr/local/lib -lhello}
+@end example
+
+However, unless @file{/usr/local/lib} is in the standard library search
+path, you won't be able to run @code{test}.  However, if you use libtool
+to link the already-installed libtool library, it will do The Right
+Thing (TM) for you:
+
+@example
+burger$ @kbd{libtool gcc -g -O -o test test.o /usr/local/lib/libhello.la}
+gcc -g -O -o @value{objdir}/test test.o -Wl,--rpath -Wl,/usr/local/lib /usr/local/lib/libhello.la -lm
+creating test
+burger$
+@end example
+
+Note that libtool added the necessary run-time path flag, as well as
+@samp{-lm}, the library libhello.la depended upon.  Nice, huh?
+
+Since libtool created a wrapper script, you should use libtool to
+install it and debug it too.  However, since the program does not depend 
+on any uninstalled libtool library, it is probably usable even without
+the wrapper script.  Libtool could probably be made smarter to avoid the 
+creation of the wrapper script in this case, but this is left as an
+exercise for the reader.
+
+
 @cindex wrapper scripts for programs
 @cindex program wrapper scripts
 Notice that the executable, @code{hell}, was actually created in the
@@ -837,8 +870,9 @@ a23#
 @end example
 
 Note that the libtool library @file{libhello.la} is also installed, to
-help libtool with uninstallation (@pxref{Uninstall mode}) and to help
-programs with dlopening (@pxref{Dlopened modules}).
+help libtool with uninstallation (@pxref{Uninstall mode}) and linking
+(@pxref{Linking executables}) and to help programs with dlopening
+(@pxref{Dlopened modules}).
 
 Here is the shared library example:
 
