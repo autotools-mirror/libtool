@@ -1,3 +1,8 @@
+1999-05-27  David Jones  <jones@mosaid.com>
+
+	* libltdl/ltdl.c (LTDL_BIND_FLAGS): Remove BIND_VERBOSE, to avoid
+	printing error messages.
+
 1999-05-27  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* configure.in: Bumped to 1.3.2a.

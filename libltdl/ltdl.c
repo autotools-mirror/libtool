@@ -361,7 +361,7 @@ sys_dl = { LTDL_TYPE_TOP, 0, sys_dl_init, sys_dl_exit,
 #define	BIND_RESTRICTED	0
 #endif	/* BIND_RESTRICTED */
 
-#define	LTDL_BIND_FLAGS	(BIND_IMMEDIATE | BIND_NONFATAL | BIND_VERBOSE | DYNAMIC_PATH)
+#define	LTDL_BIND_FLAGS	(BIND_IMMEDIATE | BIND_NONFATAL | DYNAMIC_PATH)
 
 static int
 sys_shl_init LTDL_PARAMS((void))
