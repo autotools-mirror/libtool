@@ -1370,26 +1370,35 @@ EOF
     # of the two symbol sets.
     dll_exclude_symbols=DllMain@12,_cygwin_dll_entry@12,_cygwin_noncygwin_dll_entry@12,DllMainCRTStartup@12,DllEntryPoint@12
 
+    # recent cygwin and mingw systems supply a stub DllMain which the user
+    # can override, but on older systems we have to supply one (in ltdll.c)
+    if test "x$lt_cv_need_dllmain" = "xyes"; then
+      ltdll_obj="objdir/$soname-ltdll.$objext "
+      ltdll_cmds='test -f $objdir/$soname-ltdll.c || sed -e "/^# \/\* ltdll\.c starts here \*\//,/^# \/\* ltdll.c ends here \*\// { s/^# //; p; }" -e d < $0 > $objdir/$soname-ltdll.c~
+        test -f $objdir/$soname-ltdll.$objext || (cd $objdir && $CC -c $soname-ltdll.c)~'
+    else
+      ltdll_obj=
+      ltdll_cmds=
+    fi
+
     # Extract the symbol export list from an `--export-all' def file,
     # then regenerate the def file from the symbol export list, so that
     # the compiled dll only exports the symbol export list.
-    export_symbols_cmds='test -f $objdir/$soname-ltdll.c || sed -e "/^# \/\* ltdll\.c starts here \*\//,/^# \/\* ltdll.c ends here \*\// { s/^# //; p; }" -e d < $0 > $objdir/$soname-ltdll.c~
-      test -f $objdir/$soname-ltdll.$objext || (cd $objdir && $CC -c $soname-ltdll.c)~
-     $DLLTOOL --export-all --exclude-symbols '$dll_exclude_symbols' --output-def $objdir/$soname-def  $objdir/$soname-ltdll.$objext $libobjs $convenience~      sed -e "1,/EXPORTS/d" -e "s/ @ [0-9]* ;.*//" < $objdir/$soname-def > $export_symbols'
-
+    export_symbols_cmds="$ltdll_cmds"'
+      $DLLTOOL --export-all --exclude-symbols '$dll_exclude_symbols' --output-def $objdir/$soname-def '$ltdll_obj'$libobjs $convenience~      sed -e "1,/EXPORTS/d" -e "s/ @ [0-9]* ;.*//" < $objdir/$soname-def > $export_symbols'
+  
     archive_expsym_cmds='echo EXPORTS > $objdir/$soname-def~
       _lt_hint=1;
       for symbol in `cat $export_symbols`; do
 	echo "	\$symbol @ \$_lt_hint ; " >> $objdir/$soname-def;
 	_lt_hint=`expr 1 + \$_lt_hint`;
       done~
-      test -f $objdir/$soname-ltdll.c || sed -e "/^# \/\* ltdll\.c starts here \*\//,/^# \/\* ltdll.c ends here \*\// { s/^# //; p; }" -e d < $0 > $objdir/$soname-ltdll.c~
-      test -f $objdir/$soname-ltdll.$objext || (cd $objdir && $CC -c $soname-ltdll.c)~
-     $CC -Wl,--base-file,$objdir/$soname-base '$lt_cv_cc_dll_switch' -Wl,-e,'$dll_entry' -o $lib $objdir/$soname-ltdll.$objext $libobjs $deplibs $compiler_flags~
+      '"$ltdll_cmds"'
+      $CC -Wl,--base-file,$objdir/$soname-base '$lt_cv_cc_dll_switch' -Wl,-e,'$dll_entry' -o $lib '$ltdll_obj'$libobjs $deplibs $compiler_flags~ 
       $DLLTOOL --as=$AS --dllname $soname --exclude-symbols '$dll_exclude_symbols' --def $objdir/$soname-def --base-file $objdir/$soname-base --output-exp $objdir/$soname-exp~
-      $CC -Wl,--base-file,$objdir/$soname-base $objdir/$soname-exp '$lt_cv_cc_dll_switch' -Wl,-e,'$dll_entry' -o $lib $objdir/$soname-ltdll.$objext $libobjs $deplibs $compiler_flags~
+      $CC -Wl,--base-file,$objdir/$soname-base $objdir/$soname-exp '$lt_cv_cc_dll_switch' -Wl,-e,'$dll_entry' -o $lib '$ltdll_obj'$libobjs $deplibs $compiler_flags~
       $DLLTOOL --as=$AS --dllname $soname --exclude-symbols '$dll_exclude_symbols' --def $objdir/$soname-def --base-file $objdir/$soname-base --output-exp $objdir/$soname-exp~
-      $CC $objdir/$soname-exp '$lt_cv_cc_dll_switch' -Wl,-e,'$dll_entry' -o $lib $objdir/$soname-ltdll.$objext $libobjs $deplibs $compiler_flags'
+      $CC $objdir/$soname-exp '$lt_cv_cc_dll_switch' -Wl,-e,'$dll_entry' -o $lib '$ltdll_obj'$libobjs $deplibs $compiler_flags' 
     ;;
 
   netbsd*)

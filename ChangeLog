@@ -1,3 +1,9 @@
+1999-07-29  Olly Betts  <olly@muscat.co.uk>
+
+	* ltconfig.in(cygwin mingw32, archive_expsym_cmds): Only compile
+	and link ltdll.c if the libtool.m4 macros discovered that it is
+	required.
+
 1999-07-26  Olly Betts  <olly@muscat.co.uk>
 
 	* libtool.m4(cygwin mingw32, AC_LIBTOOL_SETUP): Oops.  Fix some
