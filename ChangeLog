@@ -1,3 +1,8 @@
+2000-07-24  Mocha  <netbsd_alpha@yahoo.com>
+
+	* ltconfig.in (NetBSD, deplibs_check_method): Use file_magic.
+	(NetBSD, file_magic_cmd, file_magic_test_file): Set.
+
 2000-07-24  Michael Matz  <matz@ifh.de>
 
 	* ltcf-cxx.sh: Allow CC to have arguments.
