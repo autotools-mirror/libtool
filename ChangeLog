@@ -1,3 +1,7 @@
+1998-11-10  Gordon Matzigkeit  <gord@trick.fig.org>
+
+	* ltmain.in (link): Make the relink warning less harsh.
+
 1998-11-07  William M. Perry  <wmperry@aventail.com>
 
 	* ltconfig.in (aix3, aix4): uniquify symbol names in archive_cmds
@@ -9,8 +13,8 @@
  	strings, because some echo commands would just core dump (e.g.,
  	Solaris' printf).  If too large strings fail, smaller ones are
  	tested.
-	(ltecho): arrange that, if the --fallback-echo method is selected, 
-	echo will be defined in the libtool script so as to re-run itself, 
+	(ltecho): arrange that, if the --fallback-echo method is selected,
+	echo will be defined in the libtool script so as to re-run itself,
 	not ltconfig
 	* ltmain.in: add --fallback-echo
 	(qecho) ensure that, if --falback-echo is being used, qecho is
@@ -19,7 +23,7 @@
 1998-11-07  Thomas Tanner  <tanner@gmx.de>
 
 	* mdemo/main.c: removed hardcoded library names; link against -lm
-	* tests/mdemo-exec, tests/mdemo-inst: pass the library names 
+	* tests/mdemo-exec, tests/mdemo-inst: pass the library names
 	to the program
 
 1998-11-07  Marc J. Fraioli  <fraioli@dg-rtp.dg.com>
@@ -39,7 +43,7 @@
 
 1998-11-04  Thomas Tanner  <tanner@gmx.de>
 
-	* mdemo/*: added new demo to demonstrate building of dlopenend 
+	* mdemo/*: added new demo to demonstrate building of dlopenend
 	modules
 	* tests/Makefile.am, tests/mdemo*: added some tests for mdemo
 
@@ -107,8 +111,8 @@
 	* ltconfig.in (hardcode_minus_L): Revert Ian's patch for
 	ltconfig.in.  Although -L hardcoding is not used with GNU ld, it
 	does happen, so hardcode_minus_L must be set to yes.
-	
-	* ltconfig.in (compiler_o_lo): check whether we can write directly 
+
+	* ltconfig.in (compiler_o_lo): check whether we can write directly
 	to a .lo
 
 	* ltmain.in (compiler_o_lo): if not, write to .o and rename it
@@ -147,7 +151,7 @@
 	* ltconfig.in (disable-lock): control need_locks
 	(hard_links): check whether hard-links can be used for locking
 	* ltmain.in (need_locks): use $output_obj.lock for locking
-	
+
 1998-11-03  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* ltmain.in: correctly create libraries and programs with
