@@ -45,57 +45,58 @@ mv $objdir/libtool.new libtool
 # sure it is up-to-date
 $make main.o || exit 1
 
-echo "= Making object files in ../mdemo"
+echo "= Making object files in ../mdemo (dry run)"
 ls -l . $objdir > $before
 force_dry_run=yes $make foo1.lo foo2.lo || exit $?
 ls -l . $objdir > $after
 cmp $before $after > /dev/null || exit 1
 # Now really make them
+echo "= Making object files in ../mdemo"
 $make foo1.lo foo2.lo || exit 1
 
-echo "= Making libraries in ../mdemo"
+echo "= Making libraries in ../mdemo (dry run)"
 ls -l . $objdir > $before
 force_dry_run=yes $make foo1.la libfoo2.la || exit $?
 ls -l . $objdir > $after
 cmp $before $after > /dev/null || exit 1
 # Now really make them
+echo "= Making libraries in ../mdemo"
 $make foo1.la libfoo2.la || exit 1
 
-echo "= Making programs in ../mdemo"
+echo "= Making programs in ../mdemo (dry run)"
 ls -l . $objdir > $before
-force_dry_run=yes $make mdemo mdemo.static || exit $?
+force_dry_run=yes $make mdemo mdemo.static 1>&2 || exit $?
 ls -l . $objdir > $after
 cmp $before $after > /dev/null || exit 1
 # Now really make them
+echo "= Making programs in ../mdemo"
 $make mdemo mdemo.static || exit 1
 
-echo "= Running $make install in ../mdemo"
+echo "= Running $make install in ../mdemo (dry run)"
 # Libtool does not create these directories
 mkdir $prefix/bin
 mkdir $prefix/lib
 ls -l . $objdir > $before
 ls -lR $prefix >> $before
-force_dry_run=yes $make install || exit 1
+force_dry_run=yes $make install 1>&2 || exit 1
 ls -l . $objdir > $after
 ls -lR $prefix >> $after
 cmp $before $after > /dev/null || exit 1
 # Now really run it
+echo "= Running $make install in ../mdemo"
 $make install || exit 1
 
-echo "= Running $make uninstall in ../mdemo"
+echo "= Running $make uninstall in ../mdemo (dry run)"
+# Libtool does not uninstall the programs, remove them first
+rm -f $prefix/bin/mdemo $prefix/bin/mdemo.static
 ls -l . $objdir > $before
 ls -lR $prefix >> $before
-# Libtool does not uninstall the programs, save them
-cp $prefix/bin/mdemo mdemo.sav
-cp $prefix/bin/mdemo.static mdemo.static.sav
-force_dry_run=yes $make uninstall || exit $?
-# Restore them
-mv mdemo.sav $prefix/bin/mdemo
-mv mdemo.static.sav $prefix/bin/mdemo.static
+force_dry_run=yes $make uninstall 1>&2 || exit $?
 ls -l . $objdir > $after
 ls -lR $prefix >> $after
 cmp $before $after > /dev/null || exit 1
 # Now really run it
+echo "= Running $make uninstall in ../mdemo"
 $make uninstall || exit 1
 
 rm -f $before $after libtool
