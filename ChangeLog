@@ -1,3 +1,20 @@
+2001-02-22  Gary Vaughan  <gvv@techie.com>
+
+	* NEWS: Updated.
+	* doc/libtool.texi (Thread Safety in libltdl): New node describing
+	the  application the new MT API.
+	* libltdl/ltdl.h: Prototypes.
+	* libltdl/ltdl.c: Use these functions throughout the rest of
+	the file to provide thread locking.
+	(lt_dlmutex_register): New function to set callbacks for
+	multi-threaded calls into libltdl.
+	(lt_dl_mutex_lock): Type of a locking callback function.
+	(lt_dl_mutex_lock): Type of an unlocking callback function.
+	(lt_dl_mutex_seterror): Type of a callback function to save the
+	last libltdl error message in thread local storage.
+	(lt_dl_mutex_geterror): Type of a callback function to retrieve
+	the last saved error message from thread local storage.
+
 2001-02-20  Gary Vaughan  <gvv@techie.com>
 
 	* libltdl/ltdl.c (lt_dlcaller_register): dont set an unsigned

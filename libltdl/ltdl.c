@@ -116,6 +116,18 @@ typedef struct {
 /* --- OPAQUE STRUCTURES DECLARED IN LTDL.H --- */
 
 
+/* Extract the diagnostic strings from the error table macro in the same
+   order as the enumberated indices in ltdl.h. */
+
+static const char *lt_dlerror_strings[] =
+  {
+#define LT_ERROR(name, diagnostic)	(diagnostic),
+    lt_dlerror_table
+#undef LT_ERROR
+
+    0
+  };
+
 /* This structure is used for the list of registered loaders. */
 struct lt_dlloader {
   struct lt_dlloader   *next;
@@ -151,6 +163,8 @@ struct lt_dlhandle_struct {
 #define LT_DLIS_RESIDENT(handle)    LT_DLGET_FLAG(handle, LT_DLRESIDENT_FLAG)
 
 
+#define LT_DLSTRERROR(name)	lt_dlerror_strings[LT_CONC(LT_ERROR_,name)]
+
 static	const char	objdir[]		= LTDL_OBJDIR;
 #ifdef	LTDL_SHLIB_EXT
 static	const char	shlib_ext[]		= LTDL_SHLIB_EXT;
@@ -158,6 +172,77 @@ static	const char	shlib_ext[]		= LTDL_SHLIB_EXT;
 #ifdef	LTDL_SYSSEARCHPATH
 static	const char	sys_search_path[]	= LTDL_SYSSEARCHPATH;
 #endif
+
+
+
+
+/* --- MUTEX LOCKING --- */
+
+
+/* Macros to make it easier to run the lock functions only if they have 
+   been registered.  The reason for the complicated lock macro is to
+   ensure that the stored error message from the last error is not 
+   accidentally erased if the current function doesn't generate an
+   error of its own.  */
+#define MUTEX_LOCK()				LT_STMT_START {	\
+	if (mutex_lock) (*mutex_lock)();	} LT_STMT_END
+#define MUTEX_UNLOCK()				LT_STMT_START { \
+	if (mutex_unlock) (*mutex_unlock)();	} LT_STMT_END
+#define MUTEX_SETERROR(errormsg)		LT_STMT_START {	\
+	if (mutex_seterror) (*mutex_seterror) (errormsg);	\
+	else last_error = (errormsg);		} LT_STMT_END
+#define MUTEX_GETERROR(errormsg)		LT_STMT_START {	\
+	if (mutex_seterror) errormsg = (*mutex_geterror)();	\
+	else (errormsg) = last_error;		} LT_STMT_END
+
+/* The mutex functions stored here are global, and are necessarily the
+   same for all threads that wish to share access to libltdl.  */
+static	lt_dlmutex_lock	    *mutex_lock	    = 0;
+static	lt_dlmutex_unlock   *mutex_unlock   = 0;
+static	lt_dlmutex_seterror *mutex_seterror = 0;
+static	lt_dlmutex_geterror *mutex_geterror = 0;
+static	const char	    *last_error	    = 0;
+
+
+/* Either set or reset the mutex functions.  Either all the arguments must
+   be valid functions, or else all can be NULL to turn off locking entirely.
+   The registered functions should be manipulating a static global lock
+   from the lock() and unlock() callbacks, which needs to be reentrant.  */
+int
+lt_dlmutex_register (lock, unlock, seterror, geterror)
+     lt_dlmutex_lock *lock;
+     lt_dlmutex_unlock *unlock;
+     lt_dlmutex_seterror *seterror;
+     lt_dlmutex_geterror *geterror;
+{
+  lt_dlmutex_unlock *old_unlock = unlock;
+  int		     errors	= 0;
+
+  /* Lock using the old lock() callback, if any.  */
+  MUTEX_LOCK ();
+
+  if ((lock && unlock && seterror && geterror) 
+      || !(lock || unlock || seterror || geterror))
+    {
+      mutex_lock     = lock;
+      mutex_unlock   = unlock;
+      mutex_geterror = geterror;
+    }
+  else
+    {
+      MUTEX_SETERROR (LT_DLSTRERROR (INVALID_MUTEX_ARGS));
+      ++errors;
+    }
+
+  /* Use the old unlock() callback we saved earlier, if any.  Otherwise
+     record any errors using internal storage.  */
+  if (old_unlock)
+    (*old_unlock) ();
+
+  /* Return the number of errors encountered during the execution of
+     this function.  */
+  return errors;
+}
 
 
 
@@ -187,67 +272,65 @@ static		  lt_ptr	rpl_realloc	LT_PARAMS((lt_ptr ptr,
 /* --- ERROR MESSAGES --- */
 
 
-/* Extract the diagnostic strings from the error table macro in the same
-   order as the enumberated indices in ltdl.h. */
-
-static const char *lt_dlerror_strings[] =
-  {
-#define LT_ERROR(name, diagnostic)	(diagnostic),
-    lt_dlerror_table
-#undef LT_ERROR
-
-    0
-  };
-
-#define LT_DLSTRERROR(name)	lt_dlerror_strings[LT_CONC(LT_ERROR_,name)]
-
-static	const char     *last_error		= 0;
 static	const char    **user_error_strings	= 0;
-static	int		errorcode		= LT_ERROR_MAX;
+static	int		errorcount		= LT_ERROR_MAX;
 
 int
 lt_dladderror (diagnostic)
      const char *diagnostic;
 {
-  int		index	= errorcode - LT_ERROR_MAX;
-  const char  **temp    = 0;
+  int		index	 = 0;
+  int		result	 = -1;
+  const char  **temp     = (const char **) 0;
 
+  MUTEX_LOCK ();
+
+  index	 = errorcount - LT_ERROR_MAX;
   temp = LT_DLREALLOC (const char *, user_error_strings, 1 + index);
   if (temp == 0)
     {
-      last_error = LT_DLSTRERROR (NO_MEMORY);
-      return -1;
+      MUTEX_SETERROR (LT_DLSTRERROR (NO_MEMORY));
     }
   else
     {
-      user_error_strings = temp;
+      user_error_strings	= temp;
+      user_error_strings[index] = diagnostic;
+      result			= errorcount++;
     }
 
-  user_error_strings[index] = diagnostic;
+  MUTEX_UNLOCK ();
 
-  return errorcode++;
+  return result;
 }
 
 int
 lt_dlseterror (index)
      int index;
 {
-  if (index >= errorcode || index < 0)
-    {
-      last_error = LT_DLSTRERROR (INVALID_ERRORCODE);
-      return 1;
-    }
+  int		errors	 = 0;
 
-  if (index < LT_ERROR_MAX)
+  MUTEX_LOCK ();
+
+  if (index >= errorcount || index < 0)
     {
-      last_error = lt_dlerror_strings[errorcode];
+      /* Ack!  Error setting the error message! */
+      MUTEX_SETERROR (LT_DLSTRERROR (INVALID_ERRORCODE));
+      ++errors;
+    }
+  else if (index < LT_ERROR_MAX)
+    {
+      /* No error setting the error message! */
+      MUTEX_SETERROR (lt_dlerror_strings[errorcount]);
     }
   else
     {
-      last_error = user_error_strings[errorcode - LT_ERROR_MAX];
+      /* No error setting the error message! */
+      MUTEX_SETERROR (user_error_strings[errorcount - LT_ERROR_MAX]);
     }
 
-  return 0;
+  MUTEX_UNLOCK ();
+
+  return errors;
 }
 
 
@@ -493,11 +576,11 @@ sys_dl_open (loader_data, filename)
      lt_user_data loader_data;
      const char *filename;
 {
-  lt_module module = dlopen (filename, LT_GLOBAL | LT_LAZY_OR_NOW);
+  lt_module   module   = dlopen (filename, LT_GLOBAL | LT_LAZY_OR_NOW);
 
   if (!module)
     {
-      last_error = DLERROR (CANNOT_OPEN);
+      MUTEX_SETERROR (DLERROR (CANNOT_OPEN));
     }
 
   return module;
@@ -508,12 +591,15 @@ sys_dl_close (loader_data, module)
      lt_user_data loader_data;
      lt_module module;
 {
+  int errors = 0;
+
   if (dlclose (module) != 0)
     {
-      last_error = DLERROR (CANNOT_CLOSE);
+      MUTEX_SETERROR (DLERROR (CANNOT_CLOSE));
+      ++errors;
     }
 
-  return 0;
+  return errors;
 }
 
 static lt_ptr
@@ -526,7 +612,7 @@ sys_dl_sym (loader_data, module, symbol)
 
   if (!address)
     {
-      last_error = DLERROR (SYMBOL_NOT_FOUND);
+      MUTEX_SETERROR (DLERROR (SYMBOL_NOT_FOUND));
     }
 
   return address;
@@ -605,7 +691,7 @@ sys_shl_open (loader_data, filename)
 
   if (!module)
     {
-      last_error = LT_DLSTRERROR (CANNOT_OPEN);
+      MUTEX_SETERROR (LT_DLSTRERROR (CANNOT_OPEN));
     }
 
   return module;
@@ -616,13 +702,15 @@ sys_shl_close (loader_data, module)
      lt_user_data loader_data;
      lt_module module;
 {
+  int errors = 0;
+
   if (shl_unload ((shl_t) (module)) != 0)
     {
-      last_error = LT_DLSTRERROR (CANNOT_CLOSE);
-      return 1;
+      MUTEX_SETERROR (LT_DLSTRERROR (CANNOT_CLOSE));
+      ++errors;
     }
 
-  return 0;
+  return errors;
 }
 
 static lt_ptr
@@ -641,7 +729,7 @@ sys_shl_sym (loader_data, module, symbol)
 	  return address;
 	}
 
-      last_error = LT_DLSTRERROR (SYMBOL_NOT_FOUND);
+      MUTEX_SETERROR (LT_DLSTRERROR (SYMBOL_NOT_FOUND));
     }
 
   return 0;
@@ -673,7 +761,8 @@ sys_wll_open (loader_data, filename)
      const char *filename;
 {
   lt_dlhandle	cur;
-  lt_module	module;
+  lt_module	module	   = 0;
+  const char   *errormsg   = 0;
   char	       *searchname = 0;
   char	       *ext;
   char		self_name_buf[MAX_PATH];
@@ -702,7 +791,7 @@ sys_wll_open (loader_data, filename)
       searchname = LT_DLMALLOC (char, 2+ strlen (filename));
       if (!searchname)
 	{
-	  last_error = LT_DLSTRERROR (NO_MEMORY);
+	  MUTEX_SETERROR (LT_DLSTRERROR (NO_MEMORY));
 	  return 0;
 	}
       strcpy (searchname, filename);
@@ -720,6 +809,7 @@ sys_wll_open (loader_data, filename)
      We check whether LoadLibrary is returning a handle to
      an already loaded module, and simulate failure if we
      find one. */
+  MUTEX_LOCK ();
   cur = handles;
   while (cur)
     {
@@ -736,11 +826,12 @@ sys_wll_open (loader_data, filename)
 
       cur = cur->next;
   }
+  MUTEX_UNLOCK ();
 
   if (cur || !module)
     {
-      last_error = LT_DLSTRERROR (CANNOT_OPEN);
-      return 0;
+      MUTEX_SETERROR (LT_DLSTRERROR (CANNOT_OPEN));
+      module = 0;
     }
 
   return module;
@@ -751,13 +842,15 @@ sys_wll_close (loader_data, module)
      lt_user_data loader_data;
      lt_module module;
 {
+  int	      errors   = 0;
+
   if (FreeLibrary(module) == 0)
     {
-      last_error = LT_DLSTRERROR (CANNOT_CLOSE);
-      return 1;
+      MUTEX_SETERROR (LT_DLSTRERROR (CANNOT_CLOSE));
+      ++errors;
     }
 
-  return 0;
+  return errors;
 }
 
 static lt_ptr
@@ -766,11 +859,11 @@ sys_wll_sym (loader_data, module, symbol)
      lt_module module;
      const char *symbol;
 {
-  lt_ptr address = GetProcAddress (module, symbol);
+  lt_ptr      address  = GetProcAddress (module, symbol);
 
   if (!address)
     {
-      last_error = LT_DLSTRERROR (SYMBOL_NOT_FOUND);
+      MUTEX_SETERROR (LT_DLSTRERROR (SYMBOL_NOT_FOUND));
     }
 
   return address;
@@ -815,8 +908,8 @@ sys_bedl_open (loader_data, filename)
 
   if (image <= 0)
     {
-      last_error = LT_DLSTRERROR (CANNOT_OPEN);
-      return 0;
+      MUTEX_SETERROR (LT_DLSTRERROR (CANNOT_OPEN));
+      image = 0;
     }
 
   return (lt_module) image;
@@ -827,13 +920,15 @@ sys_bedl_close (loader_data, module)
      lt_user_data loader_data;
      lt_module module;
 {
+  int errors = 0;
+
   if (unload_add_on ((image_id) module) != B_OK)
     {
-      last_error = LT_DLSTRERROR (CANNOT_CLOSE);
-      return 1;
+      MUTEX_SETERROR (LT_DLSTRERROR (CANNOT_CLOSE));
+      ++errors;
     }
 
-  return 0;
+  return errors;
 }
 
 static lt_ptr
@@ -847,8 +942,8 @@ sys_bedl_sym (loader_data, module, symbol)
 
   if (get_image_symbol (image, symbol, B_SYMBOL_TYPE_ANY, address) != B_OK)
     {
-      last_error = LT_DLSTRERROR (SYMBOL_NOT_FOUND);
-      return 0;
+      MUTEX_SETERROR (LT_DLSTRERROR (SYMBOL_NOT_FOUND));
+      address = 0;
     }
 
   return address;
@@ -883,15 +978,14 @@ sys_dld_open (loader_data, filename)
 
   if (!module)
     {
-      last_error = LT_DLSTRERROR (NO_MEMORY);
-      return 0;
+      MUTEX_SETERROR (LT_DLSTRERROR (NO_MEMORY));
+      module = 0;
     }
-
-  if (dld_link (filename) != 0)
+  else if (dld_link (filename) != 0)
     {
-      last_error = LT_DLSTRERROR (CANNOT_OPEN);
+      MUTEX_SETERROR (LT_DLSTRERROR (CANNOT_OPEN));
       LT_DLFREE (module);
-      return 0;
+      module = 0;
     }
 
   return module;
@@ -902,14 +996,19 @@ sys_dld_close (loader_data, module)
      lt_user_data loader_data;
      lt_module module;
 {
+  int errors = 0;
+
   if (dld_unlink_by_file ((char*)(module), 1) != 0)
     {
-      last_error = LT_DLSTRERROR (CANNOT_CLOSE);
-      return 1;
+      MUTEX_SETERROR (LT_DLSTRERROR (CANNOT_CLOSE));
+      ++errors;
     }
-  LT_DLFREE (module);
+  else
+    {
+      LT_DLFREE (module);
+    }
 
-  return 0;
+  return errors;
 }
 
 static lt_ptr
@@ -922,7 +1021,7 @@ sys_dld_sym (loader_data, module, symbol)
 
   if (!address)
     {
-      last_error = LT_DLSTRERROR (SYMBOL_NOT_FOUND);
+      MUTEX_SETERROR (LT_DLSTRERROR (SYMBOL_NOT_FOUND));
     }
 
   return address;
@@ -955,21 +1054,29 @@ static int
 presym_init (loader_data)
      lt_user_data loader_data;
 {
-  preloaded_symbols = 0;
+  int errors = 0;
 
+  MUTEX_LOCK ();
+
+  preloaded_symbols = 0;
   if (default_preloaded_symbols)
     {
-      return lt_dlpreload (default_preloaded_symbols);
+      errors = lt_dlpreload (default_preloaded_symbols);
     }
 
-  return 0;
+  MUTEX_UNLOCK ();
+
+  return errors;
 }
 
 static int
 presym_free_symlists ()
 {
-  lt_dlsymlists_t	*lists = preloaded_symbols;
+  lt_dlsymlists_t *lists;
 
+  MUTEX_LOCK ();
+
+  lists = preloaded_symbols;
   while (lists)
     {
       lt_dlsymlists_t	*tmp = lists;
@@ -978,6 +1085,8 @@ presym_free_symlists ()
       LT_DLFREE (tmp);
     }
   preloaded_symbols = 0;
+
+  MUTEX_UNLOCK ();
 
   return 0;
 }
@@ -995,28 +1104,37 @@ presym_add_symlist (preloaded)
      const lt_dlsymlist *preloaded;
 {
   lt_dlsymlists_t *tmp;
-  lt_dlsymlists_t *lists = preloaded_symbols;
+  lt_dlsymlists_t *lists;
+  int		   errors   = 0;
 
+  MUTEX_LOCK ();
+
+  lists = preloaded_symbols;
   while (lists)
     {
       if (lists->syms == preloaded)
 	{
-	  return 0;
+	  goto done;
 	}
       lists = lists->next;
     }
 
   tmp = LT_DLMALLOC (lt_dlsymlists_t, 1);
-  if (!tmp)
+  if (tmp)
     {
-      last_error = LT_DLSTRERROR (NO_MEMORY);
-      return 1;
+      tmp->syms = preloaded;
+      tmp->next = preloaded_symbols;
+      preloaded_symbols = tmp;
     }
-  tmp->syms = preloaded;
-  tmp->next = preloaded_symbols;
-  preloaded_symbols = tmp;
+  else
+    {
+      MUTEX_SETERROR (LT_DLSTRERROR (NO_MEMORY));
+      ++errors;
+    }
 
-  return 0;
+ done:
+  MUTEX_UNLOCK ();
+  return errors;
 }
 
 static lt_module
@@ -1024,12 +1142,16 @@ presym_open (loader_data, filename)
      lt_user_data loader_data;
      const char *filename;
 {
-  lt_dlsymlists_t *lists = preloaded_symbols;
+  lt_dlsymlists_t *lists;
+  lt_module	   module = (lt_module) 0;
+
+  MUTEX_LOCK ();
+  lists = preloaded_symbols;
 
   if (!lists)
     {
-      last_error = LT_DLSTRERROR (NO_SYMBOLS);
-      return 0;
+      MUTEX_SETERROR (LT_DLSTRERROR (NO_SYMBOLS));
+      goto done;
     }
 
   if (!filename)
@@ -1045,7 +1167,8 @@ presym_open (loader_data, filename)
 	{
 	  if (!syms->address && strcmp(syms->name, filename) == 0)
 	    {
-	      return (lt_module) syms;
+	      module = (lt_module) syms;
+	      goto done;
 	    }
 	  ++syms;
 	}
@@ -1053,9 +1176,11 @@ presym_open (loader_data, filename)
       lists = lists->next;
     }
 
-  last_error = LT_DLSTRERROR (FILE_NOT_FOUND);
+  MUTEX_SETERROR (LT_DLSTRERROR (FILE_NOT_FOUND));
 
-  return 0;
+ done:
+  MUTEX_UNLOCK ();
+  return module;
 }
 
 static int
@@ -1087,7 +1212,7 @@ presym_sym (loader_data, module, symbol)
     ++syms;
   }
 
-  last_error = LT_DLSTRERROR (SYMBOL_NOT_FOUND);
+  MUTEX_SETERROR (LT_DLSTRERROR (SYMBOL_NOT_FOUND));
 
   return 0;
 }
@@ -1108,11 +1233,13 @@ static	lt_dlloader    *loaders		= 0;
 static	lt_dlhandle	handles 	= 0;
 static	int		initialized 	= 0;
 
+/* Initialize libltdl. */
 int
 lt_dlinit ()
 {
-  /* initialize libltdl */
-  int errors = 0;
+  int	      errors   = 0;
+
+  MUTEX_LOCK ();
 
   /* Initialize only at first call. */
   if (++initialized == 1)
@@ -1139,19 +1266,17 @@ lt_dlinit ()
 
       if (presym_init (presym.dlloader_data))
 	{
-	  last_error = LT_DLSTRERROR (INIT_LOADER);
+	  MUTEX_SETERROR (LT_DLSTRERROR (INIT_LOADER));
 	  ++errors;
 	}
       else if (errors != 0)
 	{
-	  last_error = LT_DLSTRERROR (DLOPEN_NOT_SUPPORTED);
+	  MUTEX_SETERROR (LT_DLSTRERROR (DLOPEN_NOT_SUPPORTED));
 	  ++errors;
 	}
-      else
-	{
-	  last_error = 0;
-	}
     }
+
+  MUTEX_UNLOCK ();
 
   return errors;
 }
@@ -1160,25 +1285,36 @@ int
 lt_dlpreload (preloaded)
      const lt_dlsymlist *preloaded;
 {
+  int errors = 0;
+
   if (preloaded)
     {
-      return presym_add_symlist (preloaded);
+      errors = presym_add_symlist (preloaded);
     }
-
-  presym_free_symlists();
-  if (default_preloaded_symbols)
+  else
     {
-      return lt_dlpreload (default_preloaded_symbols);
+      const char *errormsg = 0;
+
+      presym_free_symlists();
+  
+      MUTEX_LOCK ();
+      if (default_preloaded_symbols)
+	{
+	  errors = lt_dlpreload (default_preloaded_symbols);
+	}
+      MUTEX_UNLOCK ();
     }
 
-  return 0;
+  return errors;
 }
 
 int
 lt_dlpreload_default (preloaded)
      const lt_dlsymlist *preloaded;
 {
+  MUTEX_LOCK ();
   default_preloaded_symbols = preloaded;
+  MUTEX_UNLOCK ();
   return 0;
 }
 
@@ -1186,13 +1322,18 @@ int
 lt_dlexit ()
 {
   /* shut down libltdl */
-  lt_dlloader *loader = loaders;
-  int	errors = 0;
+  lt_dlloader *loader;
+  const char  *errormsg;
+  int	       errors   = 0;
+
+  MUTEX_LOCK ();
+  loader = loaders;
 
   if (!initialized)
     {
-      last_error = LT_DLSTRERROR (SHUTDOWN);
-      return 1;
+      MUTEX_SETERROR (LT_DLSTRERROR (SHUTDOWN));
+      ++errors;
+      goto done;
     }
 
   /* shut down only at last call. */
@@ -1239,6 +1380,8 @@ lt_dlexit ()
       loaders = 0;
     }
 
+ done:
+  MUTEX_UNLOCK ();
   return errors;
 }
 
@@ -1247,9 +1390,16 @@ tryall_dlopen (handle, filename)
      lt_dlhandle *handle;
      const char *filename;
 {
-  lt_dlhandle	 cur		= handles;
-  lt_dlloader   *loader		= loaders;
-  const char	*saved_error	= last_error;
+  lt_dlhandle	 cur;
+  lt_dlloader   *loader;
+  const char	*saved_error;
+  int		 errors		= 0;
+
+  MUTEX_GETERROR (saved_error);
+  MUTEX_LOCK ();
+
+  cur	 = handles;
+  loader = loaders;
 
   /* check whether the module was already opened */
   while (cur)
@@ -1273,7 +1423,7 @@ tryall_dlopen (handle, filename)
     {
       ++cur->info.ref_count;
       *handle = cur;
-      return 0;
+      goto done;
     }
 
   cur = *handle;
@@ -1282,8 +1432,9 @@ tryall_dlopen (handle, filename)
       cur->info.filename = strdup (filename);
       if (!cur->info.filename)
 	{
-	  last_error = LT_DLSTRERROR (NO_MEMORY);
-	  return 1;
+	  MUTEX_SETERROR (LT_DLSTRERROR (NO_MEMORY));
+	  ++errors;
+	  goto done;
 	}
     }
   else
@@ -1307,13 +1458,17 @@ tryall_dlopen (handle, filename)
   if (!loader)
     {
       LT_DLFREE (cur->info.filename);
-      return 1;
+      ++errors;
+      goto done;
     }
 
   cur->loader	= loader;
   last_error	= saved_error;
+  
+ done:
+  MUTEX_UNLOCK ();
 
-  return 0;
+  return errors;
 }
 
 static int
@@ -1349,7 +1504,7 @@ find_module (handle, dir, libdir, dlname, old_name, installed)
 
 	  if (!filename)
 	    {
-	      last_error = LT_DLSTRERROR (NO_MEMORY);
+	      MUTEX_SETERROR (LT_DLSTRERROR (NO_MEMORY));
 	      return 1;
 	    }
 
@@ -1371,7 +1526,7 @@ find_module (handle, dir, libdir, dlname, old_name, installed)
 
 	  if (!filename)
 	    {
-	      last_error = LT_DLSTRERROR (NO_MEMORY);
+	      MUTEX_SETERROR (LT_DLSTRERROR (NO_MEMORY));
 	      return 1;
 	    }
 
@@ -1451,8 +1606,8 @@ find_file (basename, search_path, pdir, handle)
      char **pdir;
      lt_dlhandle *handle;
 {
-  /* when handle != NULL search a library, otherwise a file */
-  /* return NULL on failure, otherwise the file/handle */
+  /* When handle != NULL search a library, otherwise a file
+     return NULL on failure, otherwise the file/handle.  */
 
   lt_ptr    result	= 0;
   char	   *filename	= 0;
@@ -1461,16 +1616,18 @@ find_file (basename, search_path, pdir, handle)
   char	   *canonical	= 0;
   char	   *next	= 0;
 
+  MUTEX_LOCK ();
+
   if (!search_path || !*search_path)
     {
-      last_error = LT_DLSTRERROR (FILE_NOT_FOUND);
-      return 0;
+      MUTEX_SETERROR (LT_DLSTRERROR (FILE_NOT_FOUND));
+      goto cleanup;
     }
 
   canonical = canonicalize_path (search_path);
   if (!canonical)
     {
-      last_error = LT_DLSTRERROR (NO_MEMORY);
+      MUTEX_SETERROR (LT_DLSTRERROR (NO_MEMORY));
       goto cleanup;
     }
 
@@ -1509,7 +1666,7 @@ find_file (basename, search_path, pdir, handle)
 
 	  if (!filename)
 	    {
-	      last_error = LT_DLSTRERROR (NO_MEMORY);
+	      MUTEX_SETERROR (LT_DLSTRERROR (NO_MEMORY));
 	      goto cleanup;
 	    }
 	}
@@ -1551,11 +1708,13 @@ find_file (basename, search_path, pdir, handle)
 	}
     }
 
-  last_error = LT_DLSTRERROR (FILE_NOT_FOUND);
+  MUTEX_SETERROR (LT_DLSTRERROR (FILE_NOT_FOUND));
 
  cleanup:
   LT_DLFREE (filename);
   LT_DLFREE (canonical);
+
+  MUTEX_UNLOCK ();
 
   return result;
 }
@@ -1571,22 +1730,23 @@ load_deplibs(handle, deplibs)
   int	i;
   char	**names = 0;
 #endif
-  int	ret = 0;
+  int	errors = 0;
 
   handle->depcount = 0;
 
 #if LTDL_DLOPEN_DEPLIBS
-  ret = 1;
   if (!deplibs)
     {
-      return 0;
+      return errors;
     }
+  ++errors;
 
+  MUTEX_LOCK ();
   save_search_path = strdup (user_search_path);
   if (user_search_path && !save_search_path)
     {
-      last_error = LT_DLSTRERROR (NO_MEMORY);
-      return 1;
+      MUTEX_SETERROR (LT_DLSTRERROR (NO_MEMORY));
+      goto cleanup;
     }
 
   /* extract search paths and count deplibs */
@@ -1624,9 +1784,15 @@ load_deplibs(handle, deplibs)
 	}
     }
 
+  /* restore the old search path */
+  LT_DLFREE (user_search_path);
+  user_search_path = save_search_path;
+
+  MUTEX_UNLOCK ();
+
   if (!depcount)
     {
-      ret = 0;
+      errors = 0;
       goto cleanup;
     }
 
@@ -1710,7 +1876,7 @@ load_deplibs(handle, deplibs)
 	}
 
       handle->depcount	= j;	/* Number of successfully loaded deplibs */
-      ret		= 0;
+      errors		= 0;
     }
 
  cleanup_names:
@@ -1721,13 +1887,9 @@ load_deplibs(handle, deplibs)
 
  cleanup:
   LT_DLFREE (names);
-
-  /* restore the old search path */
-  LT_DLFREE (user_search_path);
-  user_search_path = save_search_path;
 #endif
 
-  return ret;
+  return errors;
 }
 
 static int
@@ -1806,8 +1968,10 @@ lt_dlopen (filename)
 {
   lt_dlhandle handle = 0, newhandle;
   const char *ext;
-  const char *saved_error = last_error;
+  const char *saved_error;
   char	*canonical = 0, *basename = 0, *dir = 0, *name = 0;
+
+  MUTEX_GETERROR (saved_error);
 
   /* dlopen self? */
   if (!filename)
@@ -1815,7 +1979,7 @@ lt_dlopen (filename)
       handle = (lt_dlhandle) LT_DLMALLOC (struct lt_dlhandle_struct, 1);
       if (!handle)
 	{
-	  last_error = LT_DLSTRERROR (NO_MEMORY);
+	  MUTEX_SETERROR (LT_DLSTRERROR (NO_MEMORY));
 	  return 0;
 	}
 
@@ -1839,7 +2003,7 @@ lt_dlopen (filename)
   canonical = canonicalize_path (filename);
   if (!canonical)
     {
-      last_error = LT_DLSTRERROR (NO_MEMORY);
+      MUTEX_SETERROR (LT_DLSTRERROR (NO_MEMORY));
       LT_DLFREE (handle);
       return 0;
     }
@@ -1853,7 +2017,7 @@ lt_dlopen (filename)
       dir = LT_DLMALLOC (char, basename - canonical + 1);
       if (!dir)
 	{
-	  last_error = LT_DLSTRERROR (NO_MEMORY);
+	  MUTEX_SETERROR (LT_DLSTRERROR (NO_MEMORY));
 	  handle = 0;
 	  goto cleanup;
 	}
@@ -1866,7 +2030,7 @@ lt_dlopen (filename)
       basename = canonical;
     }
 
-  /* check whether we open a libtool module (.la extension) */
+  /* Check whether we are opening a libtool module (.la extension).  */
   ext = strrchr(basename, '.');
   if (ext && strcmp(ext, ".la") == 0)
     {
@@ -1883,13 +2047,13 @@ lt_dlopen (filename)
 	 of libtool */
       int	installed = 1;
 
-    /* extract the module name from the file name */
-    name = LT_DLMALLOC (char, ext - basename + 1);
-    if (!name)
-      {
-	last_error = LT_DLSTRERROR (NO_MEMORY);
-	handle = 0;
-	goto cleanup;
+      /* extract the module name from the file name */
+      name = LT_DLMALLOC (char, ext - basename + 1);
+      if (!name)
+	{
+	  MUTEX_SETERROR (LT_DLSTRERROR (NO_MEMORY));
+	  handle = 0;
+	  goto cleanup;
       }
 
     /* canonicalize the module name */
@@ -1940,7 +2104,7 @@ lt_dlopen (filename)
       }
     if (!file)
       {
-	last_error = LT_DLSTRERROR (FILE_NOT_FOUND);
+	MUTEX_SETERROR (LT_DLSTRERROR (FILE_NOT_FOUND));
       }
 
     if (!file)
@@ -1953,7 +2117,7 @@ lt_dlopen (filename)
     if (!line)
       {
 	fclose (file);
-	last_error = LT_DLSTRERROR (NO_MEMORY);
+	MUTEX_SETERROR (LT_DLSTRERROR (NO_MEMORY));
 	handle = 0;
 	goto cleanup;
       }
@@ -2039,7 +2203,7 @@ lt_dlopen (filename)
 	LT_DLFREE (handle);
 	if (!error)
 	  {
-	    last_error = LT_DLSTRERROR (NO_MEMORY);
+	    MUTEX_SETERROR (LT_DLSTRERROR (NO_MEMORY));
 	  }
 
 	free_vars (dlname, old_name, libdir, deplibs);
@@ -2081,7 +2245,7 @@ lt_dlopen (filename)
       handle = (lt_dlhandle) LT_DLMALLOC (struct lt_dlhandle_struct, 1);
       if (!handle)
 	{
-	  last_error = LT_DLSTRERROR (NO_MEMORY);
+	  MUTEX_SETERROR (LT_DLSTRERROR (NO_MEMORY));
 	  /* handle is already set to 0 */
 	  goto cleanup;
 	}
@@ -2120,11 +2284,15 @@ lt_dlopen (filename)
       handle->info.ref_count	= 1;
       handle->info.name		= name;
       handle->next		= handles;
+
+      MUTEX_LOCK ();
       handles			= handle;
+      MUTEX_UNLOCK ();
 
       name = 0;	/* don't free this during `cleanup' */
     }
-  last_error = saved_error;
+
+  MUTEX_SETERROR (saved_error);
 
  cleanup:
   LT_DLFREE (dir);
@@ -2141,7 +2309,9 @@ lt_dlopenext (filename)
   lt_dlhandle handle;
   char	*tmp;
   int	len;
-  const char *saved_error = last_error;
+  const char *saved_error;
+
+  MUTEX_GETERROR (saved_error);
 
   if (!filename)
     {
@@ -2151,7 +2321,7 @@ lt_dlopenext (filename)
   len = strlen (filename);
   if (!len)
     {
-      last_error = LT_DLSTRERROR (FILE_NOT_FOUND);
+      MUTEX_SETERROR (LT_DLSTRERROR (FILE_NOT_FOUND));
       return 0;
     }
 
@@ -2159,7 +2329,7 @@ lt_dlopenext (filename)
   tmp = LT_DLMALLOC (char, len+4);
   if (!tmp)
     {
-      last_error = LT_DLSTRERROR (NO_MEMORY);
+      MUTEX_SETERROR (LT_DLSTRERROR (NO_MEMORY));
       return 0;
     }
   strcpy (tmp, filename);
@@ -2167,7 +2337,7 @@ lt_dlopenext (filename)
   handle = lt_dlopen (tmp);
   if (handle)
     {
-      last_error = saved_error;
+      MUTEX_SETERROR (saved_error);
       LT_DLFREE (tmp);
       return handle;
     }
@@ -2180,7 +2350,7 @@ lt_dlopenext (filename)
       tmp = LT_DLMALLOC (char, len + strlen (shlib_ext) + 1);
       if (!tmp)
 	{
-	  last_error = LT_DLSTRERROR (NO_MEMORY);
+	  MUTEX_SETERROR (LT_DLSTRERROR (NO_MEMORY));
 	  return 0;
 	}
       strcpy (tmp, filename);
@@ -2194,7 +2364,7 @@ lt_dlopenext (filename)
   handle = lt_dlopen (tmp);
   if (handle)
     {
-      last_error = saved_error;
+      MUTEX_SETERROR (saved_error);
       LT_DLFREE (tmp);
       return handle;
     }
@@ -2207,7 +2377,7 @@ lt_dlopenext (filename)
       return handle;
     }
 
-  last_error = LT_DLSTRERROR (FILE_NOT_FOUND);
+  MUTEX_SETERROR (LT_DLSTRERROR (FILE_NOT_FOUND));
   LT_DLFREE (tmp);
   return 0;
 }
@@ -2217,6 +2387,9 @@ lt_dlclose (handle)
      lt_dlhandle handle;
 {
   lt_dlhandle cur, last;
+  int errors = 0;
+
+  MUTEX_LOCK ();
 
   /* check whether the handle is valid */
   last = cur = handles;
@@ -2228,8 +2401,9 @@ lt_dlclose (handle)
 
   if (!cur)
     {
-      last_error = LT_DLSTRERROR (INVALID_HANDLE);
-      return 1;
+      MUTEX_SETERROR (LT_DLSTRERROR (INVALID_HANDLE));
+      ++errors;
+      goto done;
     }
 
   handle->info.ref_count--;
@@ -2240,7 +2414,6 @@ lt_dlclose (handle)
      moment).  */
   if (handle->info.ref_count <= 0 && !LT_DLIS_RESIDENT (handle))
     {
-      int	error;
       lt_user_data data = handle->loader->dlloader_data;
 
       if (handle != handles)
@@ -2252,24 +2425,26 @@ lt_dlclose (handle)
 	  handles = handle->next;
 	}
 
-      error = handle->loader->module_close (data, handle->module);
-      error += unload_deplibs(handle);
+      errors += handle->loader->module_close (data, handle->module);
+      errors += unload_deplibs(handle);
 
       LT_DLFREE (handle->info.filename);
       LT_DLFREE (handle->info.name);
-
       LT_DLFREE (handle);
 
-      return error;
+      goto done;
     }
 
   if (LT_DLIS_RESIDENT (handle))
     {
-      last_error = LT_DLSTRERROR (CLOSE_RESIDENT_MODULE);
-      return 1;
+      MUTEX_SETERROR (LT_DLSTRERROR (CLOSE_RESIDENT_MODULE));
+      ++errors;
     }
 
-  return 0;
+ done:
+  MUTEX_UNLOCK ();
+
+  return errors;
 }
 
 lt_ptr
@@ -2285,13 +2460,13 @@ lt_dlsym (handle, symbol)
 
   if (!handle)
     {
-      last_error = LT_DLSTRERROR (INVALID_HANDLE);
+      MUTEX_SETERROR (LT_DLSTRERROR (INVALID_HANDLE));
       return 0;
     }
 
   if (!symbol)
     {
-      last_error = LT_DLSTRERROR (SYMBOL_NOT_FOUND);
+      MUTEX_SETERROR (LT_DLSTRERROR (SYMBOL_NOT_FOUND));
       return 0;
     }
 
@@ -2317,14 +2492,16 @@ lt_dlsym (handle, symbol)
 
   if (!sym)
     {
-      last_error = LT_DLSTRERROR (BUFFER_OVERFLOW);
+      MUTEX_SETERROR (LT_DLSTRERROR (BUFFER_OVERFLOW));
       return 0;
     }
 
   data = handle->loader->dlloader_data;
   if (handle->info.name)
     {
-      const char *saved_error = last_error;
+      const char *saved_error;
+
+      MUTEX_GETERROR (saved_error);
 
       /* this is a libtool module */
       if (handle->loader->sym_prefix)
@@ -2350,7 +2527,7 @@ lt_dlsym (handle, symbol)
 	    }
 	  return address;
 	}
-      last_error = saved_error;
+      MUTEX_SETERROR (saved_error);
     }
 
   /* otherwise try "symbol" */
@@ -2376,9 +2553,11 @@ lt_dlsym (handle, symbol)
 const char *
 lt_dlerror ()
 {
-  const char *error = last_error;
+  const char *error;
 
-  last_error = 0;
+  MUTEX_GETERROR (error);
+  MUTEX_SETERROR (0);
+
   return error;
 }
 
@@ -2386,18 +2565,21 @@ int
 lt_dladdsearchdir (search_dir)
      const char *search_dir;
 {
+  int errors = 0;
+
   if (!search_dir || !strlen(search_dir))
     {
-      return 0;
+      return errors;
     }
 
+  MUTEX_LOCK ();
   if (!user_search_path)
     {
       user_search_path = strdup (search_dir);
       if (!user_search_path)
 	{
 	  last_error = LT_DLSTRERROR (NO_MEMORY);
-	  return 1;
+	  ++errors;
 	}
     }
   else
@@ -2407,58 +2589,77 @@ lt_dladdsearchdir (search_dir)
 
       if (!new_search_path)
 	{
-	  last_error = LT_DLSTRERROR (NO_MEMORY);
-	  return 1;
+	  MUTEX_SETERROR (LT_DLSTRERROR (NO_MEMORY));
+	  ++errors;
 	}
+      else
+	{
+	  sprintf (new_search_path, "%s%c%s", user_search_path,
+		   LT_PATHSEP_CHAR, search_dir);
 
-      sprintf (new_search_path, "%s%c%s", user_search_path,
-	       LT_PATHSEP_CHAR, search_dir);
-
-      LT_DLMEM_REASSIGN (user_search_path, new_search_path);
+	  LT_DLMEM_REASSIGN (user_search_path, new_search_path);
+	}
     }
+  MUTEX_UNLOCK ();
 
-  return 0;
+  return errors;
 }
 
 int
 lt_dlsetsearchpath (search_path)
      const char *search_path;
 {
+  int errors = 0;
+
+  MUTEX_LOCK ();
   LT_DLFREE (user_search_path);
+  MUTEX_UNLOCK ();
 
   if (!search_path || !strlen (search_path))
     {
-      return 0;
+      return errors;
     }
 
+  MUTEX_LOCK ();
   user_search_path = strdup (search_path);
   if (!user_search_path)
     {
-      return 1;
+      ++errors;
     }
+  MUTEX_UNLOCK ();
 
-  return 0;
+  return errors;
 }
 
 const char *
 lt_dlgetsearchpath ()
 {
-  return user_search_path;
+  const char *saved_path;
+
+  MUTEX_LOCK ();
+  saved_path = user_search_path;
+  MUTEX_UNLOCK ();
+
+  return saved_path;
 }
 
 int
 lt_dlmakeresident (handle)
      lt_dlhandle handle;
 {
+  int errors = 0;
+
   if (!handle)
     {
-      last_error = LT_DLSTRERROR (INVALID_HANDLE);
-      return -1;
+      MUTEX_SETERROR (LT_DLSTRERROR (INVALID_HANDLE));
+      ++errors;
+    }
+  else
+    {
+      LT_DLSET_FLAG (handle, LT_DLRESIDENT_FLAG);
     }
 
-  LT_DLSET_FLAG (handle, LT_DLRESIDENT_FLAG);
-
-  return 0;
+  return errors;
 }
 
 int
@@ -2467,7 +2668,7 @@ lt_dlisresident	(handle)
 {
   if (!handle)
     {
-      last_error = LT_DLSTRERROR (INVALID_HANDLE);
+      MUTEX_SETERROR (LT_DLSTRERROR (INVALID_HANDLE));
       return -1;
     }
 
@@ -2485,7 +2686,7 @@ lt_dlgetinfo (handle)
 {
   if (!handle)
     {
-      last_error = LT_DLSTRERROR (INVALID_HANDLE);
+      MUTEX_SETERROR (LT_DLSTRERROR (INVALID_HANDLE));
       return 0;
     }
 
@@ -2504,8 +2705,12 @@ lt_dlforeach (func, data)
      int (*func) LT_PARAMS((lt_dlhandle handle, lt_ptr data));
      lt_ptr data;
 {
-  lt_dlhandle cur = handles;
+  int errors = 0;
+  lt_dlhandle cur;
 
+  MUTEX_LOCK ();
+
+  cur = handles;
   while (cur)
     {
       lt_dlhandle tmp = cur;
@@ -2513,19 +2718,27 @@ lt_dlforeach (func, data)
       cur = cur->next;
       if ((*func) (tmp, data))
 	{
-	  return 1;
+	  ++errors;
+	  break;
 	}
     }
 
-  return 0;
+  MUTEX_UNLOCK ();
+
+  return errors;
 }
 
 lt_dlcaller_id
 lt_dlcaller_register ()
 {
   static int last_caller_id = -1;
+  int result;
 
-  return ++last_caller_id;
+  MUTEX_LOCK ();
+  result = ++last_caller_id;
+  MUTEX_UNLOCK ();
+
+  return result;
 }
 
 #define N_ELEMENTS(a)	(sizeof(a) / sizeof(*(a)))
@@ -2539,6 +2752,10 @@ lt_dlcaller_set_data (key, handle, data)
   int n_elements = 0;
   lt_ptr stale = (lt_ptr) 0;
   int i;
+
+  /* This needs to be locked so that the caller data can be updated
+     simultaneously by different threads.  */
+  MUTEX_LOCK ();
 
   if (handle->caller_data)
     n_elements = N_ELEMENTS (handle->caller_data);
@@ -2561,8 +2778,9 @@ lt_dlcaller_set_data (key, handle, data)
 
       if (temp == 0)
 	{
-	  last_error = LT_DLSTRERROR (NO_MEMORY);
-	  return (lt_ptr) 0;
+	  MUTEX_SETERROR (LT_DLSTRERROR (NO_MEMORY));
+	  stale =  (lt_ptr) 0;
+	  goto done;
 	}
       else
 	{
@@ -2575,6 +2793,9 @@ lt_dlcaller_set_data (key, handle, data)
 
   handle->caller_data[i].data = data;
 
+ done:
+  MUTEX_UNLOCK ();
+
   return stale;
 }
 
@@ -2585,6 +2806,10 @@ lt_dlcaller_get_data  (key, handle)
 {
   lt_ptr result = (lt_ptr) 0;
   int n_elements = 0;
+
+  /* This needs to be locked so that the caller data isn't updated by
+     another thread part way through this function.  */
+  MUTEX_LOCK ();
 
   if (handle->caller_data)
     n_elements = N_ELEMENTS (handle->caller_data);
@@ -2602,6 +2827,8 @@ lt_dlcaller_get_data  (key, handle)
       }
   }
 
+  MUTEX_UNLOCK ();
+
   return result;
 }
 
@@ -2616,6 +2843,7 @@ lt_dlloader_add (place, dlloader, loader_name)
      const struct lt_user_dlloader *dlloader;
      const char *loader_name;
 {
+  int errors = 0;
   lt_dlloader *node = 0, *ptr = 0;
 
   if ((dlloader == 0)	/* diagnose null parameters */
@@ -2623,7 +2851,7 @@ lt_dlloader_add (place, dlloader, loader_name)
       || (dlloader->module_close == 0)
       || (dlloader->find_sym == 0))
     {
-      last_error = LT_DLSTRERROR (INVALID_LOADER);
+      MUTEX_SETERROR (LT_DLSTRERROR (INVALID_LOADER));
       return 1;
     }
 
@@ -2631,9 +2859,10 @@ lt_dlloader_add (place, dlloader, loader_name)
   node = LT_DLMALLOC (lt_dlloader, 1);
   if (node == 0)
     {
-      last_error = LT_DLSTRERROR (NO_MEMORY);
+      MUTEX_SETERROR (LT_DLSTRERROR (NO_MEMORY));
       return 1;
     }
+
   node->next		= 0;
   node->loader_name	= loader_name;
   node->sym_prefix	= dlloader->sym_prefix;
@@ -2643,6 +2872,7 @@ lt_dlloader_add (place, dlloader, loader_name)
   node->find_sym	= dlloader->find_sym;
   node->dlloader_data	= dlloader->dlloader_data;
 
+  MUTEX_LOCK ();
   if (!loaders)
     {
       /* If there are no loaders, NODE becomes the list! */
@@ -2676,15 +2906,19 @@ lt_dlloader_add (place, dlloader, loader_name)
       if (ptr->next != place)
 	{
 	  last_error = LT_DLSTRERROR (INVALID_LOADER);
-	  return 1;
+	  ++errors;
 	}
-
-      /* Insert NODE between PTR and PLACE. */
-      node->next = place;
-      ptr->next  = node;
+      else
+	{
+	  /* Insert NODE between PTR and PLACE. */
+	  node->next = place;
+	  ptr->next  = node;
+	}
     }
 
-  return 0;
+  MUTEX_UNLOCK ();
+
+  return errors;
 }
 
 int
@@ -2693,21 +2927,24 @@ lt_dlloader_remove (loader_name)
 {
   lt_dlloader *place = lt_dlloader_find (loader_name);
   lt_dlhandle handle;
-  int result = 0;
+  int errors = 0;
 
   if (!place)
     {
-      last_error = LT_DLSTRERROR (INVALID_LOADER);
+      MUTEX_SETERROR (LT_DLSTRERROR (INVALID_LOADER));
       return 1;
     }
+
+  MUTEX_LOCK ();
 
   /* Fail if there are any open modules which use this loader. */
   for  (handle = handles; handle; handle = handle->next)
     {
       if (handle->loader == place)
 	{
-	  last_error = LT_DLSTRERROR (REMOVE_LOADER);
-	  return 1;
+	  MUTEX_SETERROR (LT_DLSTRERROR (REMOVE_LOADER));
+	  ++errors;
+	  goto done;
 	}
     }
 
@@ -2734,43 +2971,68 @@ lt_dlloader_remove (loader_name)
 
   if (place->dlloader_exit)
     {
-      result = place->dlloader_exit (place->dlloader_data);
+      errors = place->dlloader_exit (place->dlloader_data);
     }
 
   LT_DLFREE (place);
 
-  return result;
+ done:
+  MUTEX_UNLOCK ();
+
+  return errors;
 }
 
 lt_dlloader *
 lt_dlloader_next (place)
      lt_dlloader *place;
 {
-  return place ? place->next : loaders;
+  lt_dlloader *next;
+
+  MUTEX_LOCK ();
+  next = place ? place->next : loaders;
+  MUTEX_UNLOCK ();
+
+  return next;
 }
 
 const char *
 lt_dlloader_name (place)
      lt_dlloader *place;
 {
-  if (!place)
+  const char *name = 0;
+
+  if (place)
     {
-      last_error =  LT_DLSTRERROR (INVALID_LOADER);
+      MUTEX_LOCK ();
+      name = place ? place->loader_name : 0;
+      MUTEX_UNLOCK ();
+    }
+  else
+    {
+      MUTEX_SETERROR (LT_DLSTRERROR (INVALID_LOADER));
     }
 
-  return place ? place->loader_name : 0;
+  return name;
 }
 
 lt_user_data *
 lt_dlloader_data (place)
      lt_dlloader *place;
 {
-  if (!place)
+  lt_user_data *data = 0;
+
+  if (place)
     {
-      last_error =  LT_DLSTRERROR (INVALID_LOADER);
+      MUTEX_LOCK ();
+      data = place ? &(place->dlloader_data) : 0;
+      MUTEX_UNLOCK ();
+    }
+  else
+    {
+      MUTEX_SETERROR (LT_DLSTRERROR (INVALID_LOADER));
     }
 
-  return place ? &(place->dlloader_data) : 0;
+  return data;
 }
 
 lt_dlloader *
@@ -2779,6 +3041,7 @@ lt_dlloader_find (loader_name)
 {
   lt_dlloader *place = 0;
 
+  MUTEX_LOCK ();
   for (place = loaders; place; place = place->next)
     {
       if (strcmp (place->loader_name, loader_name) == 0)
@@ -2786,6 +3049,7 @@ lt_dlloader_find (loader_name)
 	  break;
 	}
     }
+  MUTEX_UNLOCK ();
 
   return place;
 }
