@@ -1,3 +1,10 @@
+2000-07-18  H.J. Lu  <hjl@gnu.org>
+
+	* ltconfig.in: Check if -lc is necessary for building shared
+	libary. Set build_libtool_need_lc to indicate it.
+	* ltmain.in: Add -lc when building shared libary only if
+	necessary.
+
 2000-07-10  Mo DeJong  <mdejong@redhat.com>
 
 	* libtool.m4 (AC_PROG_NM): Fix macro so that it

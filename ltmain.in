@@ -2384,8 +2384,10 @@ compiler."
 	    # these systems don't actually have a c library (as such)!
 	    ;;
 	  *)
-	    # Add libc to deplibs on all other systems.
-	    deplibs="$deplibs -lc"
+ 	    # Add libc to deplibs on all other systems if necessary.
+ 	    if test $build_libtool_need_lc = "yes"; then
+ 	      deplibs="$deplibs -lc"
+ 	    fi
 	    ;;
 	  esac
 	fi
