@@ -51,7 +51,7 @@ sys_dlopen (char *filename)
 		s++;
 	}
 	if (!s->name)
-		return NULL;
+		return 0;
 	return (void*)s;
 }
 
@@ -66,7 +66,7 @@ sys_dlsym (lt_dlhandle handle, char *symbol)
 	struct dld_symlist *s = (struct dld_symlist*)handle;
 
 	if (!s)
-		return NULL;
+		return 0;
 	s++;
 	while (s->address) {
 		if (!strncmp(s->name, "ltexp_", 6)) {
@@ -76,7 +76,7 @@ sys_dlsym (lt_dlhandle handle, char *symbol)
 		}
 		s++;
 	}
-	return NULL;
+	return 0;
 }
 
 #else
@@ -168,7 +168,7 @@ sys_dlsym (lt_dlhandle handle, char *symbol)
 	for (i = 0; i < status; i++)
 		if (strcmp(symbol, sym[i].name) == 0)
 			return sym[i].value;
-	return NULL;
+	return 0;
 }
 
 #else
@@ -185,7 +185,7 @@ static lt_dlhandle
 sys_dlopen (char *filename)
 {
 	if (dld_link (filename))
-		return NULL;
+		return 0;
 	return filename;
 }
 
@@ -243,7 +243,7 @@ sys_dlinit (void)
 static lt_dlhandle
 sys_dlopen (char *filename)
 {
-	return NULL;
+	return 0;
 }
 
 static void
@@ -254,7 +254,7 @@ sys_dlclose (lt_dlhandle handle)
 static void *
 sys_dlsym (lt_dlhandle handle, char *symbol)
 {
-	return NULL;
+	return 0;
 }
 
 #endif

@@ -1,5 +1,8 @@
 1998-11-21  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* libltdl/ltdl.c: replace NULL with 0, so that we don't depend on
+	header files defining it.
+
 	* ltconfig.in (archive_cmds, osf3, osf4, solaris, sunos4): create
 	libraries with gcc -shared if using gcc without GNU ld.
 
