@@ -1,3 +1,12 @@
+2004-02-03  Paul Eggert  <eggert@twinsun.com>
+	Scott James Remnant  <scott@netsplit.com>
+
+	* libtool.m4 (_LT_AC_LANG_CXX_CONFIG, AC_LIBTOOL_PROG_LD_SHLIBS):
+	Replace needless uses of egrep with grep as egrep may not exist,
+	POSIX no longer mandates it.
+	* ltmain.in: Replace use of 'grep -E' with '$EGREP -e' in case
+	egrep is the only thing that exists.
+
 2004-01-27  Scott James Remnant  <scott@netsplit.com>
 
 	This fixes release procedure problems discovered whilst making
