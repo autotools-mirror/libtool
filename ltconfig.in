@@ -1167,7 +1167,7 @@ EOF
       cat <<EOF 1>&2
 
 *** Warning: The releases 2.8.* of the GNU linker cannot reliably
-*** created shared libraries on Solaris systems.  Therefore, libtool
+*** create shared libraries on Solaris systems.  Therefore, libtool
 *** is disabling shared libraries support.  We urge you to upgrade GNU
 *** binutils to release 2.9.1 or newer.  Another option is to modify
 *** your PATH or compiler configuration so that the native linker is
