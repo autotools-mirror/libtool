@@ -48,7 +48,7 @@ hardcode_shlibpath_var=NONE
 hardcode_libdir_flag_spec=NONE
 
 # Suck in all the hardcode_* variable settings.
-eval `egrep -e '^hardcode_' ./libtool 2>/dev/null`
+eval `./libtool --config | egrep -e '^hardcode_' 2>/dev/null`
 
 if test "$hardcode_direct" = NONE; then
   echo "hardcode_direct not set in ../demo/libtool" 1>&2

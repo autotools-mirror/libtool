@@ -1,5 +1,11 @@
 2002-05-30  Gary V. Vaughan  <gary@gnu.org>
 
+	* tests/hardcode.test: Use libtool --config to collect the
+	variable values for the test, otherwise the tag values interfere
+	with a straight grep.
+
+2002-05-30  Gary V. Vaughan  <gary@gnu.org>
+
 	Finally fix the annoying bug which always adds all tags to the
 	libtool script built by your project configure.  Now we set the
 	default tags depending on whether AC_PROG_CXX et. al. are actually
