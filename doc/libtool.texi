@@ -1745,6 +1745,17 @@ static libraries.  The user may still override this default by
 specifying @samp{--enable-static}.
 @end defmac
 
+@defmac AC_LIBTOOL_TAGS ([tag1 tag2 ...])
+Change the default behaviour for @code{AC_PROG_LIBTOOL} to limit
+configuration to a specified set of language tags. This is valuable in
+case libtool is embedded in a package which only uses a subset of the
+languages libtool supports. Configuring a subset of the supported
+languages results in a smaller configure script, and faster libtool
+configuration. Tag names accepted are "CXX", "F77", "GCJ", and
+"RC". Support for the C language is integeral to libtool and can not be
+disabled.
+@end defmac
+
 The tests in @code{AC_PROG_LIBTOOL} also recognize the following
 environment variables:
 

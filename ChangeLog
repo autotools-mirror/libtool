@@ -1,3 +1,15 @@
+2003-10-15  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* doc/libtool.texi (AC_LIBTOOL_TAGS): Incorporate documentation
+	for AC_LIBTOOL_TAGS macro to specifify libtool tags. The now
+	defunct --with-tags option was never documented.
+
+2003-10-15  Albert Chin-A-Young  <china@thewrittenword.com>
+
+	* m4/libtool.m4: Restrict the list of tags that can be created
+	with a new AC_LIBTOOL_TAGS([tag1 tag2 ...]) macro. Deprecate
+	--with-tags.
+
 2003-10-15  Gary V. Vaughan  <gary@gnu.org>
 
 	* libtoolize.in: Typo when copying config.sub.

@@ -39,35 +39,7 @@ m4_ifdef([AC_PROVIDE_IFELSE],
 # ---------------
 AC_DEFUN([AC_PROG_LIBTOOL],
 [AC_REQUIRE([_AC_PROG_LIBTOOL])dnl
-dnl If AC_PROG_CXX has already been expanded, run AC_LIBTOOL_CXX
-dnl immediately, otherwise, hook it in at the end of AC_PROG_CXX.
-  AC_PROVIDE_IFELSE([AC_PROG_CXX],
-    [AC_LIBTOOL_CXX],
-    [define([AC_PROG_CXX], defn([AC_PROG_CXX])[AC_LIBTOOL_CXX
-  ])])
-dnl And a similar setup for Fortran 77 support
-  AC_PROVIDE_IFELSE([AC_PROG_F77],
-    [AC_LIBTOOL_F77],
-    [define([AC_PROG_F77], defn([AC_PROG_F77])[AC_LIBTOOL_F77
-])])
-
-dnl Quote A][M_PROG_GCJ so that aclocal doesn't bring it in needlessly.
-dnl If either AC_PROG_GCJ or A][M_PROG_GCJ have already been expanded, run
-dnl AC_LIBTOOL_GCJ immediately, otherwise, hook it in at the end of both.
-  AC_PROVIDE_IFELSE([AC_PROG_GCJ],
-    [AC_LIBTOOL_GCJ],
-    [AC_PROVIDE_IFELSE([A][M_PROG_GCJ],
-      [AC_LIBTOOL_GCJ],
-      [AC_PROVIDE_IFELSE([LT_AC_PROG_GCJ],
-	[AC_LIBTOOL_GCJ],
-      [ifdef([AC_PROG_GCJ],
-	     [define([AC_PROG_GCJ], defn([AC_PROG_GCJ])[AC_LIBTOOL_GCJ])])
-       ifdef([A][M_PROG_GCJ],
-	     [define([A][M_PROG_GCJ], defn([A][M_PROG_GCJ])[AC_LIBTOOL_GCJ])])
-       ifdef([LT_AC_PROG_GCJ],
-	     [define([LT_AC_PROG_GCJ],
-		defn([LT_AC_PROG_GCJ])[AC_LIBTOOL_GCJ])])])])
-])])# AC_PROG_LIBTOOL
+]) # AC_PROG_LIBTOOL
 
 
 # _AC_PROG_LIBTOOL
@@ -226,9 +198,8 @@ AC_ARG_WITH([pic],
 test -z "$pic_mode" && pic_mode=default
 
 # Use C for the default configuration in the libtool script
-tagname=
 AC_LIBTOOL_LANG_C_CONFIG
-_LT_AC_TAGCONFIG
+_LT_AC_TAG_CONFIG
 ])# AC_LIBTOOL_SETUP
 
 
@@ -1635,15 +1606,29 @@ test "$dynamic_linker" = no && can_build_shared=no
 ])# AC_LIBTOOL_SYS_DYNAMIC_LINKER
 
 
-# _LT_AC_TAGCONFIG
-# ----------------
-AC_DEFUN([_LT_AC_TAGCONFIG],
-[AC_ARG_WITH([tags],
-    [AC_HELP_STRING([--with-tags@<:@=TAGS@:>@],
-        [include additional configurations @<:@automatic@:>@])],
-    [tagnames="$withval"])
+# AC_LIBTOOL_TAGS
+# ---------------
+# tags to enable
+AC_DEFUN([AC_LIBTOOL_TAGS],
+[m4_define([_LT_TAGS],[$1])
+]) # AC_LIBTOOL_TAGS
 
-if test -f "$ltmain" && test -n "$tagnames"; then
+# _LT_AC_TAG_CHECK
+# ----------------
+AC_DEFUN([_LT_AC_TAG_CHECK],
+[m4_ifdef([_LT_TAG_]$1,
+  [m4_errprintn(m4_location[: error: duplicate tag: ]"$1")
+  m4_exit(1)],
+  [m4_define([_LT_TAG_]$1, [])])
+]) # _LT_AC_TAG_CHECK
+
+# _LT_AC_TAG_CONFIG
+# -----------------
+AC_DEFUN([_LT_AC_TAG_CONFIG],
+[AC_PROVIDE_IFELSE([AC_LIBTOOL_TAGS],,
+  [AC_LIBTOOL_TAGS([CXX F77 GCJ RC])])
+
+if test -f "$ltmain"; then
   if test ! -f "${ofile}"; then
     AC_MSG_WARN([output file `$ofile' does not exist])
   fi
@@ -1661,66 +1646,33 @@ if test -f "$ltmain" && test -n "$tagnames"; then
   # Note that this assumes the entire list is on one line.
   available_tags=`grep "^available_tags=" "${ofile}" | $SED -e 's/available_tags=\(.*$\)/\1/' -e 's/\"//g'`
 
-  lt_save_ifs="$IFS"; IFS="${IFS}$PATH_SEPARATOR,"
-  for tagname in $tagnames; do
-    IFS="$lt_save_ifs"
-    # Check whether tagname contains only valid characters
-    case `$echo "X$tagname" | $Xsed -e 's:[[-_ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890,/]]::g'` in
-    "") ;;
-    *)  AC_MSG_ERROR([invalid tag name: $tagname])
-	;;
-    esac
-
-    if grep "^# ### BEGIN LIBTOOL TAG CONFIG: $tagname$" < "${ofile}" > /dev/null
-    then
-      AC_MSG_ERROR([tag name \"$tagname\" already exists])
-    fi
-
-    # Update the list of available tags.
-    if test -n "$tagname"; then
-      echo appending configuration tag \"$tagname\" to $ofile
-
-      case $tagname in
-      CXX)
-	if test -n "$CXX" && test "X$CXX" != "Xno"; then
-	  AC_LIBTOOL_LANG_CXX_CONFIG
-	else
-	  tagname=""
-	fi
-	;;
-
-      F77)
-	if test -n "$F77" && test "X$F77" != "Xno"; then
-	  AC_LIBTOOL_LANG_F77_CONFIG
-	else
-	  tagname=""
-	fi
-	;;
-
-      GCJ)
-	if test -n "$GCJ" && test "X$GCJ" != "Xno"; then
-	  AC_LIBTOOL_LANG_GCJ_CONFIG
-	else
-	  tagname=""
-	fi
-	;;
-
-      RC)
-	AC_LIBTOOL_LANG_RC_CONFIG
-	;;
-
-      *)
-	AC_MSG_ERROR([Unsupported tag name: $tagname])
-	;;
-      esac
-
-      # Append the new tag name to the list of available tags.
-      if test -n "$tagname" ; then
-      available_tags="$available_tags $tagname"
-    fi
-    fi
-  done
-  IFS="$lt_save_ifs"
+  AC_FOREACH([_LT_TAG], _LT_TAGS,
+      [m4_case(_LT_TAG,
+      [CXX], [_LT_AC_TAG_CHECK([CXX])
+  echo appending configuration tag \"CXX\" to $ofile
+  if test -n "$CXX" && test "X$CXX" != "Xno"; then
+      AC_LIBTOOL_LANG_CXX_CONFIG
+      available_tags="$available_tags _LT_TAG"
+  fi],
+      [F77], [_LT_AC_TAG_CHECK(_LT_TAG)
+  echo appending configuration tag \"_LT_TAG\" to $ofile
+  if test -n "$F77" && test "X$F77" != "Xno"; then
+      AC_LIBTOOL_LANG_F77_CONFIG
+      available_tags="$available_tags _LT_TAG"
+  fi],
+      [GCJ], [_LT_AC_TAG_CHECK(_LT_TAG)
+  echo appending configuration tag \"_LT_TAG\" to $ofile
+  if test -n "$GCJ" && test "X$GCJ" != "Xno"; then
+      AC_LIBTOOL_LANG_GCJ_CONFIG
+      available_tags="$available_tags _LT_TAG"
+  fi],
+      [RC], [_LT_AC_TAG_CHECK(_LT_TAG)
+  echo appending configuration tag \"_LT_TAG\" to $ofile
+  AC_LIBTOOL_LANG_RC_CONFIG
+  available_tags="$available_tags _LT_TAG"],
+      [m4_errprintn(m4_location[: error: invalid tag name: ]"_LT_TAG")
+      m4_exit(1)])
+  ])
 
   # Now substitute the updated list of available tags.
   if eval "sed -e 's/^available_tags=.*\$/available_tags=\"$available_tags\"/' \"$ofile\" > \"${ofile}T\""; then
@@ -1731,7 +1683,7 @@ if test -f "$ltmain" && test -n "$tagnames"; then
     AC_MSG_ERROR([unable to update list of available tagged configurations.])
   fi
 fi
-])# _LT_AC_TAGCONFIG
+])# _LT_AC_TAG_CONFIG
 
 
 # AC_LIBTOOL_DLOPEN
@@ -3963,7 +3915,7 @@ if test "X\${CDPATH+set}" = Xset; then CDPATH=:; export CDPATH; fi
 available_tags=
 
 # ### BEGIN LIBTOOL CONFIG],
-[# ### BEGIN LIBTOOL TAG CONFIG: $tagname])
+[# ### BEGIN LIBTOOL TAG CONFIG: $1])
 
 # Libtool was configured on host `(hostname || uname -n) 2>/dev/null | sed 1q`:
 
@@ -4259,7 +4211,7 @@ include_expsyms=$lt_[]_LT_AC_TAGVAR(include_expsyms, $1)
 
 ifelse([$1],[],
 [# ### END LIBTOOL CONFIG],
-[# ### END LIBTOOL TAG CONFIG: $tagname])
+[# ### END LIBTOOL TAG CONFIG: $1])
 
 __EOF__
 
