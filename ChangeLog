@@ -1,5 +1,8 @@
 1999-02-18  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
 
+	* ltmain.in (version_type):  Oops.  Irix versioning implies that
+	major version numbers are 1 based (not zero based).  Fixed.
+	
 	* ltmain.in (version_type): Implement irix versioning.
 	* ltconfig.in (irix{5,6}*): Use new irix shared object versioning.
 	* TODO: remove irix versioning from TODO list.
