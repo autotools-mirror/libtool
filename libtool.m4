@@ -3726,9 +3726,9 @@ else
   # PORTME Check for flag to pass linker flags through the system compiler.
   case $host_os in
   aix*)
+    _LT_AC_TAGVAR(lt_prog_compiler_wl, $1)='-Wl,'
     if test "$host_cpu" = ia64; then
       # AIX 5 now supports IA64 processor
-      _LT_AC_TAGVAR(lt_prog_compiler_wl, $1)='-Wl,'
       _LT_AC_TAGVAR(lt_prog_compiler_static, $1)='-Bstatic'
     else
       _LT_AC_TAGVAR(lt_prog_compiler_static, $1)='-bnso -bI:/lib/syscalls.exp'
