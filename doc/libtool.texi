@@ -2841,6 +2841,25 @@ directories.  Return 0 on success.
 Return the current user-defined library search path.
 @end deftypefun
 
+@deftypefun int lt_dlforeachfile (@w{const char *@var{search_path}}, @w{int (*@var{func}) (const char *@var{filename}, lt_ptr @var{data})}, @w{lt_ptr @var{data}})
+In some applications you may not want to load individual modules with
+known names, but rather find all of the modules in a set of
+directories and load them all during initialisation.  With this function
+you can have libltdl scan the colon delimited directory list in
+@var{search_path} for candidates, and pass them, along with @var{data}
+to your own callback function, @var{func}.  If @var{seach_path} is
+@samp{NULL}, then search all of the standard locations that
+@code{lt_dlopen} would examine.  This function will continue to make
+calls to @var{func} for each file that it discovers in @var{search_path}
+until one of these calls returns non-zero, or until the files are
+exhausted.  @samp{lt_dlforeachfile} returns value returned by the last
+call made to @var{func}.
+
+For example you could define @var{func} to build an ordered
+@dfn{argv}-like vector of files using @var{data} to hold the address of
+the start of the vector.
+@end deftypefun
+
 @deftypefun int lt_dlmakeresident (lt_dlhandle @var{handle})
 Mark a module so that it cannot be @samp{lt_dlclose}d.  This can be
 useful if a module implements some core functionality in your project,

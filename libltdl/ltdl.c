@@ -57,6 +57,23 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 #  include <memory.h>
 #endif
 
+#if HAVE_DIRENT_H
+#  include <dirent.h>
+#  define LT_D_NAMLEN(dirent) (strlen((dirent)->d_name))
+#else
+#  define dirent direct
+#  define LT_D_NAMLEN(dirent) ((dirent)->d_namlen)
+#  if HAVE_SYS_NDIR_H
+#    include <sys/ndir.h>
+#  endif
+#  if HAVE_SYS_DIR_H
+#    include <sys/dir.h>
+#  endif
+#  if HAVE_NDIR_H
+#    include <ndir.h>
+#  endif
+#endif
+
 #include "ltdl.h"
 
 
@@ -1262,6 +1279,10 @@ static struct lt_user_dlloader presym = {
 /* --- DYNAMIC MODULE LOADING --- */
 
 
+/* The type of a function used at each iteration of  foreach_dirinpath().  */
+typedef int	foreach_callback_func LT_PARAMS((char *filename, lt_ptr data1,
+						 lt_ptr data2));
+
 static	char	       *user_search_path= 0;
 static	lt_dlloader    *loaders		= 0;
 static	lt_dlhandle	handles 	= 0;
@@ -1616,7 +1637,7 @@ find_module (handle, dir, libdir, dlname, old_name, installed)
   return 1;
 }
 
-static char*
+static char *
 canonicalize_path (path)
      const char *path;
 {
@@ -1639,22 +1660,23 @@ canonicalize_path (path)
   return canonical;
 }
 
-static lt_ptr
-find_file (basename, search_path, pdir, handle)
-     const char *basename;
+/* Repeatedly call FUNC with each LT_PATHSEP_CHAR delimited element
+   of SEARCH_PATH and a copy of DATA, until FUNC returns non-zero or
+   all elements are exhausted.  If BASE_NAME is non-NULL, it is appended
+   to each SEARCH_PATH element (with a separating '/' added if
+   necessary) before FUNC is called.  */
+static int
+foreach_dirinpath (search_path, base_name, func, data1, data2)
      const char *search_path;
-     char **pdir;
-     lt_dlhandle *handle;
+     const char *base_name;
+     foreach_callback_func *func;
+     lt_ptr data1;
+     lt_ptr data2;
 {
-  /* When handle != NULL search a library, otherwise a file
-     return NULL on failure, otherwise the file/handle.  */
-
-  lt_ptr    result	= 0;
-  char	   *filename	= 0;
-  int	    filenamesize= 0;
-  int	    lenbase	= strlen (basename);
-  char	   *canonical	= 0;
-  char	   *next	= 0;
+  int	result		= 0;
+  int	filenamesize	= 0;
+  int	lenbase		= base_name ? strlen (base_name) : 0;
+  char *filename, *canonical, *next;
 
   MUTEX_LOCK ();
 
@@ -1674,35 +1696,27 @@ find_file (basename, search_path, pdir, handle)
   next = canonical;
   while (next)
     {
-      int lendir;
-      char *cur = next;
+      char *cur	    = next;
+      int   lendir;
 
       next = strchr (cur, LT_PATHSEP_CHAR);
       if (!next)
-	{
-	  next = cur + strlen (cur);
-	}
+	next = cur + strlen (cur);
 
       lendir = next - cur;
       if (*next == LT_PATHSEP_CHAR)
-	{
-	  ++next;
-	}
+	++next;
       else
-	{
-	  next = 0;
-	}
+	next = 0;
 
       if (lendir == 0)
-	{
-	  continue;
-	}
+	continue;
 
-      if (lendir + 1 + lenbase >= filenamesize)
+      if (lendir +1 +lenbase >= filenamesize)
 	{
 	  LT_DLFREE (filename);
-	  filenamesize = lendir + 1 + lenbase + 1;
-	  filename = LT_DLMALLOC (char, filenamesize);
+	  filenamesize	= lendir +1 +lenbase +1; /* "/d" + '/' + "f" + '\0' */
+	  filename	= LT_DLMALLOC (char, filenamesize);
 
 	  if (!filename)
 	    {
@@ -1711,56 +1725,108 @@ find_file (basename, search_path, pdir, handle)
 	    }
 	}
 
-      strncpy(filename, cur, lendir);
-      if (filename[lendir-1] != '/')
-	{
-	  filename[lendir++] = '/';
-	}
-      strcpy(filename+lendir, basename);
-      if (handle)
-	{
-	  if (tryall_dlopen (handle, filename) == 0)
-	    {
-	      result = (lt_ptr) handle;
-	      goto cleanup;
-	    }
-	}
-      else
-	{
-	  FILE *file = fopen (filename, LT_READTEXT_MODE);
-	  if (file)
-	    {
-	      LT_DLFREE (*pdir);
+      strncpy (filename, cur, lendir);
+      if (filename[lendir -1] != '/')
+	filename[lendir++] = '/';
+      if (base_name && *base_name)
+	strcpy (filename +lendir, base_name);
 
-	      filename[lendir] = '\0';
-	      *pdir = strdup(filename);
-	      if (!*pdir)
-		{
-		  /* We could have even avoided the strdup,
-		     but there would be some memory overhead. */
-		  *pdir = filename;
-		  filename = 0;
-		}
-
-	      result = (lt_ptr) file;
-	      goto cleanup;
-	    }
+      if ((result = (*func) (filename, data1, data2)))
+	{
+	  break;
 	}
     }
 
-  MUTEX_SETERROR (LT_DLSTRERROR (FILE_NOT_FOUND));
-
  cleanup:
-  LT_DLFREE (filename);
   LT_DLFREE (canonical);
+  LT_DLFREE (filename);
 
   MUTEX_UNLOCK ();
-
+  
   return result;
 }
 
+/* If FILEPATH can be opened, store the name of the directory component
+   in DATA1, and the opened FILE* structure address in DATA2.  Otherwise
+   DATA1 is unchanged, but DATA2 is set to a pointer to NULL.  */
 static int
-load_deplibs(handle, deplibs)
+find_file_callback (filename, data1, data2)
+     char *filename;
+     lt_ptr data1;
+     lt_ptr data2;
+{
+  char	      **pdir	= (char **) data1;
+  FILE	      **pfile	= (FILE **) data2;
+  int		is_done	= 0;
+
+  *pfile = fopen (filename, LT_READTEXT_MODE);
+
+  if (*pfile)
+    {
+      char *dirend = strrchr (filename, '/');
+
+      LT_DLFREE (*pdir);
+      *dirend = '\0';
+      *pdir = strdup (filename);
+      if (!*pdir)
+	{
+	  /* We could have even avoided the strdup,
+	     but there would be some memory overhead. */
+	  *pdir = filename;
+	  filename = 0;	/* prevent the foreach function from freeing */
+	}
+      is_done = 1;
+    }
+  else
+    {
+      MUTEX_SETERROR (LT_DLSTRERROR (FILE_NOT_FOUND));
+    }
+
+  return is_done;
+}
+
+static FILE *
+find_file (search_path, base_name, pdir)
+     const char *search_path;
+     const char *base_name;
+     char **pdir;
+{
+  FILE *file = 0;
+
+  foreach_dirinpath (search_path, base_name, find_file_callback, pdir, &file);
+
+  return file;
+}
+
+static int
+find_handle_callback (filename, data, ignored)
+     char *filename;
+     lt_ptr data;
+     lt_ptr ignored;
+{
+  lt_dlhandle  *handle	= (lt_dlhandle *) data;
+  int		is_done	= 0;
+
+  if (tryall_dlopen (handle, filename) == 0)
+    {
+      is_done = 1;
+    }
+
+  return is_done;
+}
+
+static lt_dlhandle *
+find_handle (search_path, base_name, handle)
+     const char *search_path;
+     const char *base_name;
+     lt_dlhandle *handle;
+{
+  foreach_dirinpath (search_path, base_name, find_handle_callback, handle, 0);
+  return handle;
+}
+
+static int
+load_deplibs (handle, deplibs)
      lt_dlhandle handle;
      char *deplibs;
 {
@@ -1933,7 +1999,7 @@ load_deplibs(handle, deplibs)
 }
 
 static int
-unload_deplibs(handle)
+unload_deplibs (handle)
      lt_dlhandle handle;
 {
   int i;
@@ -2009,7 +2075,7 @@ lt_dlopen (filename)
   lt_dlhandle handle = 0, newhandle;
   const char *ext;
   const char *saved_error;
-  char	*canonical = 0, *basename = 0, *dir = 0, *name = 0;
+  char	*canonical = 0, *base_name = 0, *dir = 0, *name = 0;
 
   MUTEX_GETERROR (saved_error);
 
@@ -2050,11 +2116,11 @@ lt_dlopen (filename)
 
   /* If the canonical module name is a path (relative or absolute)
      then split it into a directory part and a name part.  */
-  basename = strrchr (canonical, '/');
-  if (basename)
+  base_name = strrchr (canonical, '/');
+  if (base_name)
     {
-      ++basename;
-      dir = LT_DLMALLOC (char, basename - canonical + 1);
+      ++base_name;
+      dir = LT_DLMALLOC (char, base_name - canonical + 1);
       if (!dir)
 	{
 	  MUTEX_SETERROR (LT_DLSTRERROR (NO_MEMORY));
@@ -2062,16 +2128,16 @@ lt_dlopen (filename)
 	  goto cleanup;
 	}
 
-      strncpy (dir, canonical, basename - canonical);
-      dir[basename - canonical] = '\0';
+      strncpy (dir, canonical, base_name - canonical);
+      dir[base_name - canonical] = '\0';
     }
   else
     {
-      basename = canonical;
+      base_name = canonical;
     }
 
   /* Check whether we are opening a libtool module (.la extension).  */
-  ext = strrchr(basename, '.');
+  ext = strrchr(base_name, '.');
   if (ext && strcmp(ext, ".la") == 0)
     {
       /* this seems to be a libtool module */
@@ -2089,7 +2155,7 @@ lt_dlopen (filename)
       int	installed = 1;
 
       /* extract the module name from the file name */
-      name = LT_DLMALLOC (char, ext - basename + 1);
+      name = LT_DLMALLOC (char, ext - base_name + 1);
       if (!name)
 	{
 	  MUTEX_SETERROR (LT_DLSTRERROR (NO_MEMORY));
@@ -2098,11 +2164,11 @@ lt_dlopen (filename)
 	}
 
       /* canonicalize the module name */
-      for (i = 0; i < ext - basename; ++i)
+      for (i = 0; i < ext - base_name; ++i)
 	{
-	  if (isalnum ((int)(basename[i])))
+	  if (isalnum ((int)(base_name[i])))
 	    {
-	      name[i] = basename[i];
+	      name[i] = base_name[i];
 	    }
 	  else
 	    {
@@ -2110,7 +2176,7 @@ lt_dlopen (filename)
 	    }
 	}
 
-      name[ext - basename] = '\0';
+      name[ext - base_name] = '\0';
 
     /* Now try to open the .la file.  If there is no directory name
        component, try to find it first in user_search_path and then other
@@ -2118,24 +2184,22 @@ lt_dlopen (filename)
        yet found) try opening just the module name as passed.  */
       if (!dir)
 	{
-	  file = (FILE*) find_file(basename, user_search_path, &dir, 0);
+	  file = find_file (user_search_path, base_name, &dir);
 	  if (!file)
 	    {
-	      file = (FILE*) find_file(basename, getenv("LTDL_LIBRARY_PATH"),
-				       &dir, 0);
+	      file = find_file (getenv("LTDL_LIBRARY_PATH"), base_name, &dir);
 	    }
 
 #ifdef LTDL_SHLIBPATH_VAR
 	  if (!file)
 	    {
-	      file = (FILE*) find_file(basename, getenv(LTDL_SHLIBPATH_VAR),
-				       &dir, 0);
+	      file = find_file (getenv(LTDL_SHLIBPATH_VAR), base_name, &dir);
 	    }
 #endif
 #ifdef LTDL_SYSSEARCHPATH
 	  if (!file)
 	    {
-	      file = (FILE*) find_file(basename, sys_search_path, &dir, 0);
+	      file = find_file (sys_search_path, base_name, &dir);
 	    }
 #endif
 	}
@@ -2314,15 +2378,15 @@ lt_dlopen (filename)
 	 first in user_search_path and then other prescribed paths.
 	 Otherwise (or in any case if the module was not yet found) try
 	 opening just the module name as passed.  */
-      if ((dir || (!find_file (basename, user_search_path, 0, &newhandle)
-		   && !find_file (basename, getenv ("LTDL_LIBRARY_PATH"),
-				  0, &newhandle)
+      if ((dir || (!find_handle (user_search_path, base_name, &newhandle)
+		   && !find_handle (getenv ("LTDL_LIBRARY_PATH"), base_name, 
+				    &newhandle)
 #ifdef LTDL_SHLIBPATH_VAR
-		   && !find_file (basename, getenv (LTDL_SHLIBPATH_VAR),
-				  0, &newhandle)
+		   && !find_handle (getenv (LTDL_SHLIBPATH_VAR), base_name,
+				    &newhandle)
 #endif
 #ifdef LTDL_SYSSEARCHPATH
-		   && !find_file (basename, sys_search_path, 0, &newhandle)
+		   && !find_handle (sys_search_path, base_name, &newhandle)
 #endif
 		   )) && tryall_dlopen (&newhandle, filename))
 	{
@@ -2435,6 +2499,120 @@ lt_dlopenext (filename)
   MUTEX_SETERROR (LT_DLSTRERROR (FILE_NOT_FOUND));
   LT_DLFREE (tmp);
   return 0;
+}
+
+/* If there are any files in DIRNAME, try to load them as modules, and if
+   successful call the verify function passed as DATA1 (with the loaded
+   module handle and DATA2 as arguments).  If that function returns
+   non-zero, then unload that module, otherwise leave it loaded.  */
+static int
+foreachfile_callback (dirname, data1, data2)
+     char *dirname;
+     lt_ptr data1;
+     lt_ptr data2;
+{
+  int (*func) LT_PARAMS((const char *filename, lt_ptr data2))
+	= (int (*) LT_PARAMS((const char *filename, lt_ptr data2))) data1;
+
+  char *filename	= 0;
+  int	filenamesize	= 0;
+  int	lendir		= strlen (dirname);
+  DIR  *dirp		= opendir (dirname);
+  struct dirent *direntp;
+
+  if (!dirp)
+    return 0;
+
+  MUTEX_LOCK ();
+
+  rewinddir (dirp);
+  while ((direntp = readdir (dirp)))
+    {
+      /* Don't try to use `.' or `..' as useful filenames.  */
+      if ((direntp->d_name[0] == '.')
+	  && (((direntp->d_name[1] == '.') && (direntp->d_name[2] == '\0'))
+	      || (direntp->d_name[1] == '\0')))
+	{
+	  continue;
+	}
+
+      if (lendir +1 +LT_D_NAMLEN(direntp) >= filenamesize)
+	{
+	  LT_DLFREE (filename);
+	  filenamesize	= lendir +1 + LT_D_NAMLEN(direntp) +1;
+	  filename	= LT_DLMALLOC (char, filenamesize);
+
+	  if (!filename)
+	    {
+	      MUTEX_SETERROR (LT_DLSTRERROR (NO_MEMORY));
+	      goto cleanup;
+	    }
+	}
+
+      strcpy (filename, dirname);
+      if (filename[lendir -1] != '/')
+	filename[lendir++] = '/';
+      strcpy (filename +lendir, direntp->d_name);
+
+      /* Call the user function for this FILENAME.  */
+      if ((*func) (filename, data2))
+	{
+	  break;
+	}
+    }
+
+ cleanup:
+  LT_DLFREE (filename);
+  closedir (dirp);
+  
+  MUTEX_UNLOCK ();
+
+  return 0;
+}
+
+int
+lt_dlforeachfile (search_path, func, data)
+     const char *search_path;
+     int (*func) LT_PARAMS ((const char *filename, lt_ptr data));
+     lt_ptr data;
+{
+  int is_done = 0;
+
+  if (search_path)
+    {
+      /* If a specific path was passed, search only the directories
+	 listed in it.  */
+      is_done = foreach_dirinpath (search_path, 0,
+				   foreachfile_callback, func, data);
+    }
+  else
+    {
+      /* Otherwise search the default paths.  */
+      is_done = foreach_dirinpath (user_search_path, 0,
+				   foreachfile_callback, func, data);
+      if (!is_done)
+	{
+	  is_done = foreach_dirinpath (getenv("LTDL_LIBRARY_PATH"), 0,
+				       foreachfile_callback, func, data);
+	}
+
+#ifdef LTDL_SHLIBPATH_VAR
+      if (!is_done)
+	{
+	  is_done = foreach_dirinpath (getenv(LTDL_SHLIBPATH_VAR), 0,
+				       foreachfile_callback, func, data);
+	}
+#endif
+#ifdef LTDL_SYSSEARCHPATH
+      if (!is_done)
+	{
+	  is_done = foreach_dirinpath (getenv(LTDL_SYSSEARCHPATH), 0,
+				       foreachfile_callback, func, data);
+	}
+#endif
+    }
+
+  return is_done;
 }
 
 int

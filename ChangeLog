@@ -1,3 +1,20 @@
+2001-06-26  Gary V. Vaughan  <gary@gnu.org>
+	
+	* ltdl.m4: Bump serial number to 3.
+	(AC_LIB_LTDL): Require AC_HEADER_DIRENT for ltdl.c.
+	* libltdl/ltdl.h (lt_dlforeachfile): Prototype for new function.
+	* libltdl/ltdl.c: Include an appropriate header for the
+	opendir/dirent api.
+	(foreach_dirinpath): Visit each file in a list of directories.
+	(find_file_callback): Factor out the core of find_file() to make
+	use of foreach_dirinpath().
+	(find_file): Use it!
+	(find_handle_callback, find_handle): Ditto.
+	(lt_dlforeachfile):  New function to find files in a searchpath.,,
+	(foreachfile_callback): ...using this callback.
+	* doc/libtool.texi (Libltdl interface): Document new
+	lt_dlforeachfile api call.
+	
 2001-06-25  Gary V. Vaughan  <gary@gnu.org>
 
 	* THANKS:  Aded Albert Chin-A-Young.
