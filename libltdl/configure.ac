@@ -1,7 +1,7 @@
 dnl Process this file with autoconf to create configure. -*- autoconf -*-
 
 AC_PREREQ(2.50)
-AC_INIT(libltdl, 1.1)
+AC_INIT(libltdl, 1.2)
 AC_CONFIG_SRCDIR(ltdl.c)
 
 dnl We shouldn't be using these internal macros of autoconf,
