@@ -1,5 +1,7 @@
 1999-04-05  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* ltconfig.in (netbsd*, GNU ld): Support a.out shared libraries
+
 	* Makefile.am (CVS): allow command-line overriding of cvs
 
 	* ltconfig.in (exclude_expsyms): Exclude _GLOBAL_OFFSET_TABLE_ by
