@@ -547,11 +547,9 @@ AC_SUBST(USE_SYMBOL_UNDERSCORE)dnl
 ])
 
 # AC_CHECK_LIBM - check for math library
-AC_DEFUN(AC_CHECK_LIBM,
-[
-AC_CHECK_LIB(mw, _mwvalidcheckl, MATHLIB="-lmw", MATHLIB=)
-AC_CHECK_LIB(m, cos, MATHLIB="-lm $MATHLIB", )
-AC_SUBST(MATHLIB)dnl
+AC_DEFUN(AC_CHECK_LIBM, [
+AC_CHECK_LIB(mw, _mwvalidcheckl)
+AC_CHECK_LIB(m, cos)
 ])
 
 dnl old names

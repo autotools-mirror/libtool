@@ -9,7 +9,7 @@ libl2_la_LIBADD = libl1.la
 libl3_la_SOURCES = l3.c l3.h sysdep.h
 libl3_la_LIBADD = libl1.la libl2.la
 libl4_la_SOURCES = l4.c l4.h sysdep.h
-libl4_la_LIBADD = libl3.la $(MATHLIB)
+libl4_la_LIBADD = libl3.la
 
 bin_PROGRAMS = depdemo depdemo.static
 

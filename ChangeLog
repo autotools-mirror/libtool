@@ -1,4 +1,10 @@
-1999-02-12  Alexandre Oliva  <oliva@dcc.unicamp.br>
+1999-02-14  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* libtool.m4 (AC_CHECK_LIBM): do not set MATHLIB or AC_SUBST it,
+	this has a negative side-effect of causing automake to add MATHLIB 
+	to every single Makefile.  Let's use plain AC_CHECK_LIB, so that
+	LIBS get set, until we find a better alternative
+	* *demo/Makefile.am: remove $(MATHLIB)
 
 	* libltdl/configure.in: add a DESCRIPTION argument to AC_DEFINEs
 	where appropriate, so as to get rid of acconfig.h
