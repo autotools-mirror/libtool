@@ -59,7 +59,7 @@ i*86-*-netbsd1.3I               gcc      1.2e     ok
 i*86-*-netbsd1.2                gcc      0.9g     ok
 i*86-*-linux-gnu		gcc	 1.3e	  ok (1.901)
   (Red Hat 7.0, gcc "2.96")
-i*86-*-linux-gnu		gcc	 1.3e	  ok (1.911)
+i*86-*-linux-gnu		gcc	 1.4.2	  ok
   (SuSE 7.0, gcc 2.95.2)
 i*86-*-linux-gnulibc1           gcc      1.2f     ok
 i*86-*-openbsd2.5               gcc      1.3c     ok
@@ -128,13 +128,16 @@ rs6000-ibm-aix4.1.4.0           gcc      1.2f     ok
   (gcc-2.7.2)
 rs6000-ibm-aix3.2.5             gcc      1.0i     ok
 rs6000-ibm-aix3.2.5             xlc      1.0i     ok
-sparc-sun-solaris2.8		gcc	 1.3e	  ok (1.913)
-  (gcc-2.95.3 & native ld)
+sparc-sun-solaris2.8		gcc	 1.4.2	  ok
+  (gcc-2.95.2 & native ld)
+sparc-sun-solaris2.8		gcc	 1.4.2	  ok
+  (gcc-3.0.1 & GNU ld 2.11.2)
 sparc-sun-solaris2.7            gcc      1.3e     ok (1.913)
   (gcc-2.95.3 & native ld)
 sparc-sun-solaris2.6            gcc      1.3e     ok (1.913)
   (gcc-2.95.3 & native ld)
-sparc-sun-solaris2.5.1          gcc      1.3e     ok (1.911)
+sparc-sun-solaris2.5.1          gcc      1.4.2    ok
+  (gcc-2.95.1 & GNU ld 2.9.1)
 sparc-sun-solaris2.5            gcc      1.3b     ok
   (egcs-1.1.2, GNU ld 2.9.1 & native ld)
 sparc-sun-solaris2.5            cc       1.3b     ok

@@ -149,6 +149,27 @@ _LT_AC_LTCONFIG_HACK
 
 ])
 
+# AC_LIBTOOL_HEADER_ASSERT
+# ------------------------
+AC_DEFUN([AC_LIBTOOL_HEADER_ASSERT],
+[AC_CACHE_CHECK([whether $CC supports assert without backlinking],
+    [lt_cv_func_assert_works],
+    [case $host in
+    *-*-solaris*)
+      if test "$GCC" = yes && test "$with_gnu_ld" != yes; then
+        case `$CC --version 2>/dev/null` in
+        [[12]].*) lt_cv_func_assert_works=no ;;
+        *)        lt_cv_func_assert_works=yes ;;
+        esac
+      fi
+      ;;
+    esac])
+
+if test "x$lt_cv_func_assert_works" = xyes; then
+  AC_CHECK_HEADERS(assert.h)
+fi
+])# AC_LIBTOOL_HEADER_ASSERT
+
 # _LT_AC_CHECK_DLFCN
 # --------------------
 AC_DEFUN([_LT_AC_CHECK_DLFCN],
@@ -1708,7 +1729,35 @@ else
     ;;
 
   solaris*)
-    no_undefined_flag=' -z text'
+    # gcc --version < 3.0 without binutils cannot create self contained
+    # shared libraries reliably, requiring libgcc.a to resolve some of
+    # the object symbols generated in some cases.  Libraries that use
+    # assert need libgcc.a to resolve __eprintf, for example.  Linking
+    # a copy of libgcc.a into every shared library to guarantee resolving
+    # such symbols causes other problems:  According to Tim Van Holder
+    # <tim.van.holder@pandora.be>, C++ libraries end up with a separate
+    # (to the application) exception stack for one thing.
+    no_undefined_flag=' -z defs'
+    if test "$GCC" = yes; then
+      case `$CC --version 2>/dev/null` in
+      [[12]].*)
+	cat <<EOF 1>&2
+
+*** Warning: Releases of GCC earlier than version 3.0 cannot reliably
+*** create self contained shared libraries on Solaris systems, without
+*** introducing a dependency on libgcc.a.  Therefore, libtool is disabling
+*** -no-undefined support, which will at least allow you to build shared
+*** libraries.  However, you may find that when you link such libraries
+*** into an application without using GCC, you have to manually add
+*** \`gcc --print-libgcc-file-name\` to the link command.  We urge you to
+*** upgrade to a newer version of GCC.  Another option is to rebuild your
+*** current GCC to use the GNU linker from GNU binutils 2.9.1 or newer.
+
+EOF
+        no_undefined_flag=
+	;;
+      esac
+    fi
     # $CC -shared without GNU ld will not create a library from C++
     # object files and a static libstdc++, better avoid it by now
     archive_cmds='$LD -G${allow_undefined_flag} -h $soname -o $lib $libobjs $deplibs $linker_flags'

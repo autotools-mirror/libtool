@@ -1,3 +1,21 @@
+2001-09-11  Gary V. Vaughan  <gary@gnu.org>,  Albert Chin <china@thewrittenword.com>.  Tim Van Holder  <tim.van.holder@pandora.be>
+
+	* libtool.m4 (no_undefine_flag) [solaris*]:  Don't set this flag
+	if GCC < 3.0 with native ld, which introduces a dependency on
+	libgcc.a under certain circumstances, which in turn violates
+	-no-undefined.  Also display a prominent configure time warning if
+	the buggy combination of GCC and ld is detected.
+	(AC_LIBTOOL_HEADER_ASSERT):  libltdl falls foul of this bug
+	because assert requires __eprintf from libgcc.a.  This macro
+	detects the combination of GCC and ld that produce this problem,
+	and pretends that assert.h does not exist...
+	* libltdl/ltdl.c (HAVE_ASSERT_H):  ...so that assertions can be
+	disabled in libltdl.  Otherwise the library would only be useable
+	when linking using gcc, or by manually adding libgcc.a to the link
+	line of the application that uses libltdl.
+	* ltdl.m4 (AC_LIB_LTDL):  Require AC_LIBTOOL_HEADER_ASSERT.
+	* doc/PLATFORMS:  Updated.
+
 2001-06-25  Daniel Harvey <daniel@amristar.com.au>
 
 	* libtool.m4 (ltdll_cmds): [$]0 doesn't appear to translate through

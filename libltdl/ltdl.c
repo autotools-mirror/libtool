@@ -86,8 +86,11 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 #  include <argz.h>
 #endif
 
-/* I have never seen a system without this:  */
-#include <assert.h>
+#if HAVE_ASSERT_H
+#  include <assert.h>
+#else
+#  define assert(arg)	((void) 0)
+#endif
 
 #include "ltdl.h"
 
