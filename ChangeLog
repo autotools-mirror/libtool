@@ -1,7 +1,11 @@
-2005-02-25  Gary V. Vaughan  <gary@gnu.org>
+2005-02-24  Peter O'Gorman  <peter@pogma.com>
 
-	* Makefile.am (install-data-hook):  Remove call to
-	local-install-files, which is no longer required.
+	* libtool.m4 (AC_LIBTOOL_PROG_LD_SHLIBS): The Portland group's 
+	compiler does not pass --whole-archive. Move gnu ld check for 
+	the flag to the top so it can be overridden.
+	(AC_LIBTOOL_LANG_CXX_CONFIG): Unset whole_archive_flag_spec for
+	the portland group's c++ compiler too.
+	Reported by Jeff Squyres <jsquyres@lam-mpi.org>
 
 2005-02-24  Gary V. Vaughan  <gary@gnu.org>
 
