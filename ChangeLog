@@ -1,5 +1,10 @@
 1999-01-25  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* ltmain.in (dependency_libs, xrpath): add -R switches to
+	dependency_libs only just before creating the .la file; they
+	should not be passed to the C compiler or linker at
+	library-creation time, since we don't know whether it is supported
+
 	* ltconfig.in (freebsd2.2*, hardcode_minus_L): for FreeBSD 2.2.6,
 	this must be `no'
 

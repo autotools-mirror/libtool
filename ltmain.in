@@ -1364,14 +1364,6 @@ compiler."
 	;;
       esac
 
-      if test -n "$xrpath"; then
-	temp_xrpath=
-	for libdir in $xrpath; do
-	  temp_xrpath="$temp_xrpath -R$libdir"
-	done
-	deplibs="$temp_xrpath $deplibs"
-      fi
-
       output_objdir=`$echo "X$output" | $Xsed -e 's%/[^/]*$%%'`
       if test "X$output_objdir" = "X$output"; then
 	output_objdir="$objdir"
@@ -2545,6 +2537,14 @@ fi\
       old_library=
       test "$build_old_libs" = yes && old_library="$libname.$libext"
       $show "creating $output"
+
+      if test -n "$xrpath"; then
+	temp_xrpath=
+	for libdir in $xrpath; do
+	  temp_xrpath="$temp_xrpath -R$libdir"
+	done
+	dependency_libs="$temp_xrpath $dependency_libs"
+      fi
 
       # Only create the output if not a dry run.
       if test -z "$run"; then
