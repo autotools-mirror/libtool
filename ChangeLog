@@ -1,5 +1,8 @@
 2004-10-07  Gary V. Vaughan  <gary@gnu.org>
 
+	* tests/defs.m4sh (scripts): Actually scan the generated ltmain.sh
+	for shell portability problems.
+
 	* m4/libtool.m4 (_LT_FORMAT_COMMENT): Shell meta-characters in
 	_LT_DECL descriptions were not being escaped before injection into
 	TAG CONFIG here documents in config.status.
