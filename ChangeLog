@@ -1,3 +1,8 @@
+1999-10-04  Gary V. Vaughan  <gary@oranda.demon.co.uk>
+
+	* ltmain.in (-no-fast-install):  Wrapper script used to add the
+	exeext on again when naming the wrapped executable.
+
 1999-09-28  Albert Cheng  <acheng@ncsa.uiuc.edu>
 
 	* ltmain.in (shlibpath_var): ensure the variable is non-empty before
