@@ -72,7 +72,7 @@ EOF
     ;;
 
   --version)
-    echo "$PROGRAM - GNU $PACKAGE $VERSION"
+    echo "$PROGRAM (GNU $PACKAGE) $VERSION"
     exit 0
     ;;
 

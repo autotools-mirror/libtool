@@ -1,4 +1,4 @@
-New in 0.7b:
+New in 0.7c:
 * Bug fixes, and more documentation.
 * Basic support for other language compilers (C++, Fortran, and
   preprocessed assembler).
@@ -7,6 +7,8 @@ New in 0.7b:
 * New test for hardcoding system linkers, to verify that libtool
   neither creates incorrect binaries, nor takes unnecessary
   precautions while linking against uninstalled shared libraries.
+* For clarity, the demo subdirectory no longer uses ansi2knr, and has
+  been rewritten to avoid ANSI-only constructs.
 * Support for *-*-irix5, *-*-irix6*, and *-*-sco3.2v5*.
 
 New in 0.7:

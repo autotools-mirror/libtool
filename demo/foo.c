@@ -23,7 +23,7 @@ static char *package = PACKAGE;
 static char *version = VERSION;
 
 int
-foo ()
+foo (void)
 {
   return FOO_RET;
 }

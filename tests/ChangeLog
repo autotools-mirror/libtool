@@ -1,3 +1,20 @@
+Tue Jan 14 09:17:27 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* demo-conf.test, demo-inst.test, demo-make.test, demo-unst.test,
+	hardcode.test: Use $make instead of make.
+
+	* defs (make): Add definition of $make that uses the $MAKE
+	environment variable, if set.  Suggested by Bruno Haible.
+
+	* demo-unst.test (leftovers): Change the find command to ignore
+	files beginning with a dot, as egrep -v doesn't seem to do the
+	trick.  Reported by Bruno Haible.
+
+Mon Jan 13 14:01:17 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* hardcode.test: Added a test to make sure that libtool's idea of
+	hardcoding system linkers is correct.
+
 Fri Jan  3 23:15:22 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* Makefile.am (distclean-local): Remove all files that the tests

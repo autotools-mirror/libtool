@@ -3,6 +3,9 @@ AUTOMAKE_OPTIONS = ansi2knr foreign
 
 EXTRA_DIST = $(TESTS) acinclude.m4
 
+hardcode_tests = hc-direct hc-minusL hc-libpath
+CLEANFILES = $(hardcode_tests)
+
 # Build a libtool library, libhello.la for installation in libdir.
 lib_PROGRAMS = libhello.la
 libhello_la_SOURCES = hello.c foo.c
@@ -23,7 +26,32 @@ hell_static_LDFLAGS = -static
 
 TESTS = run.test
 
-# Only for libtool demo: Regenerate our acinclude.m4 only if it doesn't exist.
+# The following rules are only for the libtool demo and tests.
+# Regenerate our acinclude.m4 only if it doesn't exist.
 $(srcdir)/acinclude.m4:
 	rm -f $(srcdir)/acinclude.m4
 	ln -s ../libtool.m4 $(srcdir)/acinclude.m4
+
+# Test programs to see what gets hardcoded.
+.PHONY: hardcode
+hardcode: $(hardcode_tests)
+hc-direct: $(hell_OBJECTS) $(hell_DEPENDENCIES)
+	@shlib=./.libs/libhello.a; \
+	  libs=`ls ./.libs/libhello.*`; \
+	  for lib in $$libs; do \
+	    case "$$lib" in \
+	    *.a) ;; \
+	    *) shlib="$$lib"; \
+	       break ;; \
+	    esac; \
+	  done; \
+	  echo "$(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) $$shlib $(LIBS)"; \
+	  eval "$(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) $$shlib $(LIBS)"
+
+hc-minusL: $(hell_OBJECTS) $(hell_DEPENDENCIES)
+	$(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) -L./.libs -lhello $(LIBS)
+
+hc-libpath: $(hell_OBJECTS) $(hell_DEPENDENCIES)
+	@eval `egrep -e '^shlibpath_var=' ./libtool`; \
+	  echo "$$shlibpath_var=./.libs $(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) -lhello $(LIBS)"; \
+	  eval "$$shlibpath_var=./.libs $(CC) $(LDFLAGS) -o $@ $(hell_OBJECTS) -lhello $(LIBS)"

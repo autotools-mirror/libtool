@@ -409,6 +409,7 @@ else
 
   *-*-osf3*)
     # FIXME - pic_flag is probably required for hppa*-osf* and i860-osf*
+    wl='-Wl,'
     link_static_flag='-non_shared'
     ;;
 
@@ -484,9 +485,9 @@ echo $ac_n "checking if $linker supports shared libraries... $ac_c" 1>&6
 
 archive_cmds=
 link_rpath_flag=
-hardcode_minus_L=no
-hardcode_shlibpath_var=no
 hardcode_direct=no
+hardcode_minus_L=no
+hardcode_shlibpath_var=unsupported
 
 ld_shlibs=yes
 if test "$with_gnu_ld" = yes; then
@@ -496,12 +497,11 @@ if test "$with_gnu_ld" = yes; then
   *-*-sunos4*)
     ld_shlibs=yes
     hardcode_direct=yes
+    hardcode_shlibpath_var=no
     ;;
 
   *)
     if $LD --help 2>&1 | egrep ': supported targets:.* elf' > /dev/null; then
-      # GNU ld on ELF does not support linking via the shlibpath_var.
-      hardcode_shlibpath_var=yes
       ld_shlibs=yes
     else
       ld_shlibs=no
@@ -520,38 +520,38 @@ else
     archive_cmds='$rm $lib.exp;/usr/ucb/nm$libobjs | egrep \" D \" | sed \"s/^.* //\" > $lib.exp;$LD -o $objdir/$soname$libobjs -bE:$lib.exp -T512 -H512 -bM:SRE -lc$deplibs;ar cru $lib $objdir/$soname'
     hardcode_direct=yes
     hardcode_minus_L=yes
-
-    # AIX ld does not support linking via the shlibpath_var.
-    hardcode_shlibpath_var=yes
     ;;
 
   *-*-aix4*)
     archive_cmds='$rm $lib.exp;/bin/nm -B$libobjs | egrep \" D \" | sed \"s/^.* //\" > $lib.exp;$cc -o $objdir/$soname$libobjs ${wl}-bE:$lib.exp ${wl}-bM:SRE ${wl}-bnoentry$deplibs;ar cru $lib $objdir/$soname'
     hardcode_direct=yes
     hardcode_minus_L=yes
-
-    # AIX ld does not support linking via the shlibpath_var.
-    hardcode_shlibpath_var=yes
     ;;
 
   *-*-freebsd*)
     archive_cmds='$LD -Bshareable -o $lib$libobjs$deplibs'
     hardcode_direct=yes
     hardcode_minus_L=yes
+    hardcode_shlibpath_var=no
     ;;
 
-  *-*-hpux9* | *-*-hpux10*)
+  *-*-hpux9*)
+    archive_cmds='$rm $objdir/$soname;$LD -b +s +b $install_libdir -o $objdir/$soname$libobjs$deplibs;mv $objdir/$soname $lib'
+    link_rpath_flag='${wl}+b ${wl}$libdir'
+    hardcode_direct=yes
+    hardcode_minus_L=yes
+    ;;
+
+  *-*-hpux10*)
     archive_cmds='$LD -b +h $soname +s +b $install_libdir -o $lib$libobjs$deplibs'
     link_rpath_flag='${wl}+b ${wl}$libdir'
     hardcode_direct=yes
     hardcode_minus_L=yes
-    hardcode_shlibpath_var=yes
     ;;
 
   *-*-irix5* | *-*-irix6*)
     archive_cmds='$LD -shared -o $lib -soname $soname -set_version $verstring$libobjs -lc$deplibs'
     link_rpath_flag='${wl}-rpath ${wl}$libdir'
-    hardcode_direct=yes
     ;;
 
   *-*-netbsd*)
@@ -559,12 +559,12 @@ else
     archive_cmds='$LD -Bshareable -o $lib$libobjs$deplibs'
     link_rpath_flag='-R$libdir'
     hardcode_direct=yes
+    hardcode_shlibpath_var=no
     ;;
 
   *-*-osf3*)
     archive_cmds='$LD -shared -o $lib -soname $soname -set_version $verstring$libobjs -lc$deplibs'
     link_rpath_flag='${wl}-rpath ${wl}$libdir'
-    hardcode_direct=yes
     ;;
 
   *-*-sco3.2v5*)
@@ -575,6 +575,7 @@ else
   *-*-solaris2*)
     archive_cmds='$LD -G -z text -h $soname -o $lib$libobjs$deplibs'
     link_rpath_flag='-R$libdir'
+    hardcode_shlibpath_var=no
     ;;
 
   *-*-sunos4*)
@@ -582,6 +583,7 @@ else
     link_rpath_flag='-L$libdir'
     hardcode_direct=yes
     hardcode_minus_L=yes
+    hardcode_shlibpath_var=no
     ;;
 
   *)
@@ -592,7 +594,7 @@ else
 fi
 echo $ac_t "$ld_shlibs" 1>&6
 
-if test "$hardcode_shlibpath_var" = yes && test "$hardcode_minus_L" = yes; then
+if test "$hardcode_shlibpath_var" != no && test "$hardcode_minus_L" = yes; then
   echo "$progname: warning: $LD needlessly hardcodes library paths into binaries" 1>&2
   echo "$PACKAGE will compensate by relinking binaries at install time." 1>&2
 fi

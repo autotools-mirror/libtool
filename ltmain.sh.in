@@ -89,6 +89,21 @@ do
     run=:
     ;;
 
+  --features)
+    echo "host: $host"
+    if test "$build_libtool_libs" = yes; then
+      echo "enable shared libraries"
+    else
+      echo "disable shared libraries"
+    fi
+    if test "$build_old_libs" = yes; then
+      echo "enable static libraries"
+    else
+      echo "disable static libraries"
+    fi
+    exit 0
+    ;;
+
   --finish) mode="finish" ;;
 
   --mode) prevopt="--mode" prev=mode ;;
@@ -388,7 +403,7 @@ if test -z "$show_help"; then
 	    # Just give the right -L directory flag.
 	    carg="-L$dir/$objdir $carg"
 
-	  elif test "$hardcode_shlibpath_var" = yes; then
+	  elif test "$hardcode_shlibpath_var" != no; then
 	    # Give an absolute path to the library.
 	    case "$dir" in
 	    /*) absdir="$dir" ;;
@@ -763,7 +778,7 @@ if test -z "$show_help"; then
 	# Things are fine, the world is a beautiful place.
 	$show "$compile_command"
 
-      elif test "$hardcode_shlibpath_var" = yes; then
+      elif test "$hardcode_shlibpath_var" = no; then
 	# We just need to export the shlibpath for the link command.
 	$show "$shlibpath_var=$linkrpath $compile_command"
 	eval "$shlibpath_var=$linkrpath"
@@ -1153,7 +1168,7 @@ EOF
 	    fi
 	  done
 
-	  if test "$hardcode_minus_L" = yes && test "$hardcode_shlibpath_var" = yes; then
+	  if test "$hardcode_minus_L" = yes && test "$hardcode_shlibpath_var" != no; then
 	    if test "$finalize" = no; then
 	      echo "$progname: warning: cannot relink \`$file' on behalf of your buggy system linker" 1>&2
 	    else
@@ -1338,6 +1353,7 @@ Usage: $progname [OPTION]... [MODE-ARG]...
 Provide generalized library-building support services.
 
 -n, --dry-run         display commands without modifying any files
+    --features        display configuration information and exit
     --finish          same as \`--mode=finish'
     --help            display this help message and exit
     --mode=MODE       use operation mode MODE [default=inferred from MODE-ARGS]

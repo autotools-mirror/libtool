@@ -21,7 +21,7 @@ END-INFO-DIR-ENTRY
 @ifinfo
 This file documents the Libtool library support script.
 
-Copyright (C) 1996 Free Software Foundation, Inc.
+Copyright (C) 1996, 1997 Free Software Foundation, Inc.
 
 Permission is granted to make and distribute verbatim copies of this
 manual provided the copyright notice and this permission notice are
@@ -52,7 +52,7 @@ approved by the Foundation.
 @c copyright page
 @page
 @vskip 0pt plus 1filll
-Copyright @copyright{} 1996 Free Software Foundation, Inc.
+Copyright @copyright{} 1996, 1997 Free Software Foundation, Inc.
 @sp 2
 This is the second edition of the GNU Libtool documentation,@*
 and is consistent with GNU Libtool @value{VERSION}.@*
@@ -93,6 +93,8 @@ version @value{VERSION}.
 * Integrating Libtool::         Using libtool in your own packages.
 * Versioning::                  Using library interface versions.
 * Library Tips::                Tips for library interface design.
+* Other Languages::             Using libtool without a C compiler.
+* Maintaining::                 Information used by the libtool maintainer.
 * Index::                       Index of concepts, variables, and programs.
 
  --- The Detailed Node Listing ---
@@ -147,6 +149,25 @@ Library Interface Versions
 Tips for Interface Design
 
 * C Header Files::              How to write portable include files.
+
+Using Libtool with Other Languages
+
+* C++ Libraries::               Using libtool with C++.
+* Unsupported Languages::       Using libtool with arbitrary languages.
+
+Maintainance Notes for Libtool
+
+* New Ports::                   How to port libtool to new systems.
+* Platform Quirks::             Information about different library systems.
+* libtool Script Contents::     Configuration information that libtool uses.
+
+Platform Quirks
+
+* Compilers::                   Creating object files from source files.
+* Reloadable Objects::          Binding object files together.
+* Shared Libraries::            Shared library implementations.
+* Archivers::                   Programs that create static archives.
+* Strip::                       Removing unnecessary linkage information.
 @end menu
 
 @end ifinfo
@@ -398,7 +419,7 @@ with the `-c' flag (and any other desired flags):
 
 @example
 burger$ @kbd{gcc -g -O -c main.c}
-burger$ 
+burger$
 @end example
 
 The above compiler command produces an object file, @file{main.o}, from
@@ -411,13 +432,13 @@ form an executable:
 @example
 burger$ @kbd{gcc -g -O -c foo.c}
 burger$ @kbd{gcc -g -O -c hello.c}
-burger$ 
+burger$
 @end example
 
-@cindex Position-independant code
-@cindex PIC (position-independant code)
+@cindex Position-independent code
+@cindex PIC (position-independent code)
 Shared libraries, however, may only be built from
-@dfn{position-independant code} (PIC).  So, special flags must be passed
+@dfn{position-independent code} (PIC).  So, special flags must be passed
 to the compiler to tell it to generate PIC rather than the standard
 position-dependant code.
 
@@ -462,7 +483,7 @@ burger$ @kbd{libtool gcc -g -O -c hello.c}
 gcc -g -O -c -fPIC -DPIC hello.c
 mv -f hello.o hello.lo
 gcc -g -O -c hello.c
-burger$ 
+burger$
 @end example
 
 @node Linking Libraries, Linking Executables, Creating Object Files, Using Libtool
@@ -475,7 +496,7 @@ create a static library:
 
 @example
 burger$ @kbd{ar cru libhello.a hello.o foo.o}
-burger$ 
+burger$
 @end example
 
 @pindex ranlib
@@ -504,7 +525,7 @@ the same ones you would use to produce an executable named
 burger$ @kbd{libtool gcc -g -O -o libhello.la foo.o hello.o}
 libtool: cannot build libtool library `libhello.la' from non-libtool \
                 objects
-burger$ 
+burger$
 @end example
 
 Aha!  Libtool caught a common error@dots{} trying to build a library
@@ -517,7 +538,7 @@ So, let's try again, this time with the library object files:
 @example
 a23$ @kbd{libtool gcc -g -O -o libhello.la foo.lo hello.lo}
 libtool: you must specify an installation directory with `-rpath'
-a23$ 
+a23$
 @end example
 
 Argh.  Another complication in building shared libraries is that we need
@@ -532,7 +553,7 @@ mkdir .libs
 ar cru .libs/libhello.a foo.o hello.o
 ranlib .libs/libhello.a
 creating libhello.la
-a23$ 
+a23$
 @end example
 
 Now, let's try the same trick on the shared library platform:
@@ -591,18 +612,19 @@ Here's the old way of linking against an uninstalled library:
 
 @example
 burger$ @kbd{gcc -g -O -o hell.old main.o libhello.a}
-burger$ 
+burger$
 @end example
 
 Libtool's way is almost the same@footnote{However, you should never use
 @samp{-L} or @samp{-l} flags to link against an uninstalled libtool
 library.  Just specify the relative path to the `.la' file, such as
-@file{../intl/libintl.la}.}:
+@file{../intl/libintl.la}.  This is a design decision to help eliminate
+any ambiguity when linking against uninstalled shared libraries.}:
 
 @example
 a23$ @kbd{libtool gcc -g -O -o hell main.o libhello.la}
 gcc -g -O -o hell main.o ./.libs/libhello.a
-a23$ 
+a23$
 @end example
 
 That looks too simple to be true.  All libtool did was transform
@@ -641,7 +663,7 @@ burger$ @kbd{time ./hell}
 Welcome to GNU Hell!
 ** This is not GNU Hello.  There is no built-in mail reader. **
         0.63 real         0.09 user         0.59 sys
-burger$ 
+burger$
 @end example
 
 The wrapper script takes significantly longer to execute, but at least
@@ -659,7 +681,7 @@ burger$ @kbd{ls -l .libs/hell .libs/libhello.*}
 -rwxr-xr-x  1 gord  gord  11647 Nov 14 12:10 .libs/hell
 -rw-r--r--  1 gord  gord   4274 Nov 13 18:44 .libs/libhello.a
 -rwxr-xr-x  1 gord  gord  12205 Nov 13 18:44 .libs/libhello.so.0.0
-burger$ 
+burger$
 @end example
 
 Well, that sucks.  Maybe I should just scrap this project and take up
@@ -704,7 +726,7 @@ a23# @kbd{libtool cp libhello.la /usr/local/lib/libhello.la}
 cp libhello.la /usr/local/lib/libhello.la
 cp .libs/libhello.a /usr/local/lib/libhello.a
 ranlib /usr/local/lib/libhello.a
-a23# 
+a23#
 @end example
 
 Note that the libtool library @file{libhello.la} is also installed, for
@@ -746,7 +768,7 @@ ldconfig -m /usr/local/lib
 To link against installed libraries in LIBDIR, users may have to:
    - add LIBDIR to their `LD_LIBRARY_PATH' environment variable
    - use the `-LLIBDIR' linker flag
-burger# 
+burger#
 @end example
 
 After you have completed these steps, you can go on to begin using the
@@ -776,7 +798,7 @@ installs the correct binary:
 @example
 burger# libtool install -c hell /usr/local/bin/hell
 install -c .libs/hell /usr/local/bin/hell
-burger# 
+burger#
 @end example
 
 @node Static Libraries,  , Installing Executables, Using Libtool
@@ -810,7 +832,7 @@ burger$ @kbd{libtool gcc -o libhello.a main.o foo.lo hello.lo}
 rm -f libhello.a
 ar cru libhello.a main.o foo.o hello.o
 ranlib libhello.a
-burger$ 
+burger$
 @end example
 
 @item
@@ -949,11 +971,8 @@ If not specified, each of these variables defaults to 0
 @end table
 
 If the @var{output-file} ends in `.la', then a libtool library is
-created, which must be built only from library objects (`.lo'
-files)@footnote{Object files with a `.l_o' suffix are also accepted, to
-help with Automake's @code{ansi2knr} support (@pxref{ANSI, , Automatic
-de-ANSI-fication, automake.info, The Automake Manual}).}  The
-@samp{-rpath} option is required.  In the current implementation,
+created, which must be built only from library objects (`.lo' files).
+The @samp{-rpath} option is required.  In the current implementation,
 libtool libraries may not depend on other uninstalled libtool libraries.
 
 If the @var{output-file} ends in `.a', then a standard library is
@@ -1037,11 +1056,10 @@ install it, and start using it.
 @item
 Learn how to write Makefile rules by hand.  They're sometimes complex,
 but if you're clever enough to write rules for compiling your old
-libraries, then you should be able to easily figure out new rules for
-libtool libraries (hint: examine the @file{Makefile.in} in the
-@file{demo} subdirectory of the libtool distribution@dots{} note
-especially that it was generated automatically from the
-@file{Makefile.am} by Automake).
+libraries, then you should be able to figure out new rules for libtool
+libraries (hint: examine the @file{Makefile.in} in the @file{demo}
+subdirectory of the libtool distribution@dots{} note especially that it
+was generated automatically from the @file{Makefile.am} by Automake).
 @end enumerate
 
 @node Using Automake, Configuring, Makefile Rules, Integrating Libtool
@@ -1191,7 +1209,6 @@ on my NetBSD/i386 1.2 system:
 burger$ @kbd{./ltconfig ltmain.sh}
 checking host system type... i386-unknown-netbsd1.2
 checking for ranlib... ranlib
-checking for library strip program... strip -x
 checking for gcc... gcc
 checking whether we are using GNU C... yes
 checking for gcc option to produce PIC... -fPIC -DPIC
@@ -1214,7 +1231,6 @@ burger$ export PATH=/local/i486-gnu/bin:$PATH
 burger$ ./ltconfig ltmain.sh i486-gnu0.1
 checking host system type... i486-unknown-gnu0.1
 checking for ranlib... ranlib
-checking for library strip program... strip -x
 checking for gcc... gcc
 checking whether we are using GNU C... yes
 checking for gcc option to produce PIC... -fPIC -DPIC
@@ -1274,7 +1290,7 @@ A generic script implementing basic libtool functionality.
 Note that the libtool script itself should @emph{not} be included with
 your package.  @xref{Configuring}.
 
-Rather than coping these files into your package manually, you should
+Rather than copying these files into your package manually, you should
 use the @file{libtoolize} program.
 
 @menu
@@ -1310,6 +1326,11 @@ your package, when @samp{AM_PROG_LIBTOOL} appears in your
 @itemx -c
 Copy files from the libtool data directory rather than creating
 symlinks.
+
+@item --dry-run
+@itemx -n
+Don't run any commands that modify the file system, just print them
+out.
 
 @item --force
 @itemx -f
@@ -1487,7 +1508,7 @@ set @var{age} to 0.
 to the release of the package that you are making.  This is an abuse
 that only fosters misunderstanding of the purpose of library versions.
 
-@node Library Tips, Index, Versioning, Top
+@node Library Tips, Other Languages, Versioning, Top
 @comment  node-name,  next,  previous,  up
 @chapter Tips for Interface Design
 
@@ -1511,7 +1532,7 @@ Some people love redesigning and changing entry points just for the heck
 of it (note: @emph{renaming} a function is considered changing an entry
 point).  Don't be one of those people.  If you must redesign an
 interface, then leave compatibility functions behind so that users don't
-need to rewrite their code.
+need to rewrite their existing code.
 
 @item Use opaque data types
 The fewer data type definitions a library user has access to, the
@@ -1530,7 +1551,7 @@ and variables in header files, and include them in your source files,
 then the compiler will let you know if you make any interface changes by
 accident (@pxref{C Header Files}).
 
-@item Use the @code{static} keyword whenever possible
+@item Use the @code{static} keyword (or equivalent) whenever possible
 The fewer global functions your library has, the more flexibility you'll
 have in changing them.  Static functions and variables may change forms
 as often as you like@dots{} your users cannot access them, so they
@@ -1553,7 +1574,8 @@ by different types of compilers:
 C++ compilers require that functions be declared with full prototypes,
 since C++ is more strongly typed than C.  C functions and variables also
 need to be declared with the @code{extern "C"} directive, so that the
-names aren't mangled.
+names aren't mangled.  @xref{C++ Libraries}, for other issues relevant
+to using C++ with libtool.
 
 @item ANSI C compilers
 ANSI C compilers are not as strict as C++ compilers, but functions
@@ -1576,41 +1598,36 @@ Here are the relevant portions of that file:
 
 @example
 /* __BEGIN_DECLS should be used at the beginning of your C declarations,
-   so that C++ compilers don't mangle their names. */
-#ifndef __BEGIN_DECLS
-# ifdef __cplusplus
-#  define __BEGIN_DECLS extern "C" @{
-# else
-#  define __BEGIN_DECLS
-# endif
-#endif
-#ifndef __END_DECLS
-# ifdef __cplusplus
-#  define __END_DECLS @};
-# else
-#  define __END_DECLS
-# endif
+   so that C++ compilers don't mangle their names.  __END_DECLS is used
+   at the end of C declarations. */
+#undef __BEGIN_DECLS
+#undef __END_DECLS
+#ifdef __cplusplus
+# define __BEGIN_DECLS extern "C" @{
+# define __END_DECLS @}
+#else
+# define __BEGIN_DECLS /* empty */
+# define __END_DECLS /* empty */
 #endif
 
 /* __P is a macro used to wrap function prototypes, so that compilers that
    don't understand ANSI C prototypes still work, and ANSI C compilers can
    issue warnings about type mismatches. */
-#ifndef __P
-# if defined (__STDC__) || defined (_AIX) \
+#undef __P
+#if defined (__STDC__) || defined (_AIX) \
         || (defined (__mips) && defined (_SYSTYPE_SVR4)) \
         || defined(WIN32) || defined(__cplusplus)
-#  define __P(protos) protos
-# else
-#  define __P(protos) ()
-# endif
+# define __P(protos) protos
+#else
+# define __P(protos) ()
 #endif
 @end example
 
 These macros are used in @file{foo.h} as follows:
 
 @example
-#ifdef _FOO_H_
-#define _FOO_H_
+#ifndef _FOO_H_
+#define _FOO_H_ 1
 
 /* The above macro definitions. */
 @dots{}
@@ -1623,24 +1640,373 @@ __END_DECLS
 #endif /* !_FOO_H_ */
 @end example
 
-Note that the @file{#ifdef _FOO_H_} prevents the body of @file{foo.h}
-from being read more than once in a given compilation, which prevents
-multiple definition errors.
+Note that the @file{#ifndef _FOO_H_} prevents the body of @file{foo.h}
+from being read more than once in a given compilation.
 
 Feel free to copy the definitions of @code{__P}, @code{__BEGIN_DECLS},
 and @code{__END_DECLS} into your own headers.  Then, you may use them to
 create header files that are valid for C++, ANSI, and non-ANSI
 compilers.
 
-@c @node Modifying, Index, Library Tips, Top
-@c @comment  node-name,  next,  previous,  up
-@c @chapter Modifying Libtool
-@c
-@c FIXME
-@c Description of libtool script contents, the interface between
-@c ltconfig and libtool
+Do not be naive about writing portable code.  Following the tips given
+above will help you miss the most obvious problems, but there are
+definitely other subtle portability issues.  You may need to cope with
+any of the following issues:
 
-@node Index,  , Library Tips, Top
+@itemize @bullet
+@item
+Pre-ANSI compilers do not always support the @code{void *} generic
+pointer type, and so need to use @code{char *} in its place.
+@end itemize
+
+@node Other Languages, Maintaining, Library Tips, Top
+@comment  node-name,  next,  previous,  up
+@chapter Using Libtool with Other Languages
+
+Libtool was first implemented in order to add support for writing shared
+libraries in the C language.  However, over time, libtool is being
+integrated with other languages, so that programmers are free to reap
+the benefits of shared libraries in their favorite programming language.
+
+This chapter describes how libtool interacts with other languages,
+and what special considerations you need to make if you do not use C.
+
+@menu
+* C++ Libraries::               Using libtool with C++.
+* Unsupported Languages::       Using libtool with arbitrary languages.
+@end menu
+
+@node C++ Libraries, Unsupported Languages, Other Languages, Other Languages
+@comment  node-name,  next,  previous,  up
+@section Writing Libraries for C++
+
+There are ways to use libraries with C++:
+
+@enumerate 1
+@item
+Libraries written in C, which define only normal C functions, but are
+linked into C++ programs.  @xref{C Header Files} for additional
+information.
+
+@item
+Libraries written in C++, which define C++ classes and methods.
+@end enumerate
+
+This section deals only with the second possibility.
+
+FIXME include Bruno's notes here
+
+@node Unsupported Languages,  , C++ Libraries, Other Languages
+@comment  node-name,  next,  previous,  up
+@section Unsupported Languages
+
+Even if your favourite programming language is not directly supported by
+libtool, you may still be able to use it with libtool.
+
+FIXME tell how to skip the libtool --mode=compile stage and keep going
+
+If all else fails, send electronic mail to @value{MAINT}, and ask for
+help in adding support for your language.
+
+@node Maintaining, Index, Other Languages, Top
+@comment  node-name,  next,  previous,  up
+@chapter Maintainance Notes for Libtool
+
+This chapter contains information that the libtool maintainer finds
+important.  It will be of no use to you unless you are considering
+porting libtool to new systems, or writing your own libtool.
+
+@menu
+* New Ports::                   How to port libtool to new systems.
+* Platform Quirks::             Information about different library systems.
+* libtool Script Contents::     Configuration information that libtool uses.
+@end menu
+
+@node New Ports, Platform Quirks, Maintaining, Maintaining
+@comment  node-name,  next,  previous,  up
+@section Porting libtool to New Systems
+
+To port libtool to a new system, you'll generally need the following
+information:
+
+@table @asis
+@item man pages for ld(1) and cc(1)
+These generally describe what flags are used to generate PIC, to create
+shared libraries, and to link against only static libraries.  You may
+need to follow some cross references to find the information that is
+required.
+
+@item man pages for ld.so(8), rtld(8), or equivalent
+These are a valuable resource for understanding how libraries are loaded
+on the system.
+
+@item man page for ldconfig(8), or equivalent
+This page usually describes how to install shared libraries.
+
+@item output of @kbd{ls -l /lib /usr/lib}
+This shows the naming convention for shared libraries on the system,
+including which names should be symbolic links.
+
+@item any additional documentation
+Some systems have special documentation on how to build and install
+shared libraries.
+@end table
+
+@node Platform Quirks, libtool Script Contents, New Ports, Maintaining
+@comment  node-name,  next,  previous,  up
+@section Platform Quirks
+
+This section is dedicated to the sanity of the libtool maintainer.  It
+describes the programs that libtool uses, how they vary from system to
+system, and how to test for them.
+
+Because libtool is a shell script, it is @emph{very} difficult to
+understand just by reading it from top to bottom.  This section helps
+show why libtool does things a certain way.  After reading it, then
+reading the scripts themselves, you should have a better sense of how to
+improve libtool, or write your own.
+
+@menu
+* Compilers::                   Creating object files from source files.
+* Reloadable Objects::          Binding object files together.
+* Shared Libraries::            Shared library implementations.
+* Archivers::                   Programs that create static archives.
+* Strip::                       Removing unnecessary linkage information.
+@end menu
+
+@node Compilers, Reloadable Objects, Platform Quirks, Platform Quirks
+@comment  node-name,  next,  previous,  up
+@subsection Compilers
+
+The only compiler characteristics that affect libtool are the flags
+needed (if any) to generate PIC objects.  In general, if a C compiler
+supports certain PIC flags, then other compilers written by the same
+author support the same flags.
+
+Until there are some noteworthy exceptions to this rule, this section
+will document only C compilers.
+
+The following C compilers have standard command line options, regardless
+of the platform:
+
+@table @file
+@item gcc
+
+This is the GNU C compiler, which is also the system compiler for many
+free operating systems (FreeBSD, GNU/Hurd, GNU/Linux, Lites, NetBSD, and
+OpenBSD, to name a few).
+
+The @samp{-fpic} or @samp{-fPIC} flags can be used to generate
+position-independent code.  @samp{-fPIC} is guaranteed to generate
+working code, but the code is slower on m68k, m88k, and Sparc chips.
+However, using @samp{-fpic} on those chips imposes arbitrary size limits
+on the shared libraries.
+@end table
+
+The rest of this subsection lists compilers by the operating system that
+they are bundled with:
+
+@c FIXME these should all be better-documented
+
+@table @code
+@item aix3*
+@item aix4*
+AIX compilers have no PIC flags, since AIX has been ported only to
+PowerPC and RS/6000 chips. @footnote{All code compiled for the PowerPC
+and RS/6000 chips (@code{powerpc-*-*}, @code{powerpcle-*-*}, and
+@code{rs6000-*-*}) is position-independent, regardless of the operating
+system or compiler suite.  So, ``regular objects'' can be used to build
+shared libraries on these systems and no special PIC compiler flags are
+required.}
+
+@item hpux10*
+Use @samp{+Z} to generate PIC.
+
+@item osf3*
+Digital/UNIX 3.x does not have PIC flags, at least not on the PowerPC
+platform.
+
+@item solaris2*
+Use @samp{-KPIC} to generate PIC.
+
+@item sunos4*
+Use @samp{-PIC} to generate PIC.
+@end table
+
+@node Reloadable Objects, Shared Libraries, Compilers, Platform Quirks
+@comment  node-name,  next,  previous,  up
+@subsection Reloadable Objects
+
+On all known systems, a reloadable object can be created by running
+@kbd{ld -r -o @var{output}.o @var{input1}.o @var{input2}.o}.  This
+reloadable object may be treated as exactly equivalent to other
+objects.
+
+@node Shared Libraries, Archivers, Reloadable Objects, Platform Quirks
+@comment  node-name,  next,  previous,  up
+@subsection Shared Libraries
+
+The basic motivation for writing libtool was the different approaches to
+creating shared libraries (@pxref{Issues}).  This subsection documents
+some of the basic shared library paradigms, and how to build shared
+libraries on each system.
+
+FIXME we really should paraphrase a bunch of the system docs here, in
+more detail than just what libtool requires right now.  Organization of
+this section is up for grabs, as well.
+
+We need to cover versioning (including soname), actual linker commands,
+and path information.  AIX deserves its own section, as usual.
+
+@node Archivers, Strip, Shared Libraries, Platform Quirks
+@comment  node-name,  next,  previous,  up
+@subsection Archivers
+
+On all known systems, building a static library can be accomplished by
+running @kbd{ar cru lib@var{name}.a @var{obj1}.o @var{obj2}.o @dots{}},
+where the `.a' file is the output library, and each `.o' file is an
+object file.
+
+On all known systems, if there is a program named @file{ranlib}, then it
+must be used to ``bless'' the created library before linking against it,
+with the @kbd{ranlib lib@var{name}.a} command.
+
+@node Strip,  , Archivers, Platform Quirks
+@comment  node-name,  next,  previous,  up
+@subsection The @file{strip} Program
+
+Stripping a library is essentially the same problem as stripping an
+object file.  Only local and debugging symbols must be removed, or else
+linking against a stripped library will fail.
+
+With GNU @file{strip}, the @samp{--discard-all} (or equivalent
+@samp{-x}) flag will do the appropriate stripping, for both shared and
+static libraries.
+
+Here is a list of some other operating systems, and what their bundled
+@file{strip} programs will do:
+
+@c FIXME complete this section
+
+@table @code
+@item netbsd*
+The @samp{-x} flag works for shared libraries, but fails with
+``Inappropriate file type or format'' when used on static libraries.
+
+@item hpux10*
+HP-UX @file{strip} requires that @samp{-r} and @samp{-x} flags in order
+to strip libraries.
+@end table
+
+@node libtool Script Contents,  , Platform Quirks, Maintaining
+@comment  node-name,  next,  previous,  up
+@section @file{libtool} Script Contents
+
+The @file{libtool} script is generated by @file{ltconfig}
+(@pxref{Configuring}).  Ever since libtool version 0.7, this script
+simply sets shell variables, then sources the libtool backend,
+@file{ltmain.sh}.
+
+Here is a listing of each of these variable, and how it is used within
+@file{ltmain.sh}:
+
+@table @samp
+@item LD
+The name of the linker that libtool should use internally for reloadable
+linking and possibly shared libraries.
+
+@item LTCONFIG_VERSION
+This is set to the version number of the @file{ltconfig} script, to
+prevent mismatches between the configuration information in
+@file{libtool}, and how that information is used in @file{ltmain.sh}.
+
+@item RANLIB
+Set to the name of the ranlib program, if any.
+
+@item archive_cmds
+@itemx old_archive_cmds
+Commands used to create shared and static libraries, respectively.
+
+@item build_libtool_libs
+Whether libtool should build shared libraries on this system.  Set to
+@samp{yes} or @samp{no}.
+
+@item build_old_libs
+Whether libtool should build static libraries on this system.  Set to
+@samp{yes} or @samp{no}.
+
+@item finish_cmds
+Commands to tell the dynamic linker to find shared libraries a
+directory.
+
+@item hardcode_shlibpath_var
+Set to @samp{yes} or @samp{no}, depending on whether the linker
+hardcodes directories specified by setting @samp{$shlibpath_var} into
+the resulting executable.
+
+@item hardcode_minus_L
+Set to @samp{yes} or @samp{no}, depending on whether the linker
+hardcodes directories specified by @samp{-L} flags into the resulting
+executable.
+
+@item host
+@itemx host_alias
+For information purposes, set to the specified and canonical names of
+the system that libtool was configured for.
+
+@item lib_names
+A list of shared library names.  The first name is the name of the file,
+the rest are symbolic links to the file.
+
+@item link_rpath_flag
+Linker flag to specify a runtime search path for the dynamic linker.
+
+@item link_static_flag
+Linker flag (passed through the C compiler) used to prevent dynamic
+linking.
+
+@item pic_flag
+Any additional compiler flags for building library object files.
+
+@item postinstall_cmds
+@item old_postinstall_cmds
+Commands run after installing a shared or static librar, respectively.
+
+@item reload_cmds
+@itemx reload_flag
+Commands to create a reloadable object.
+
+@item shlibpath_var
+The environment variable that tells the dynamic linker where to find
+shared libraries.
+
+@item striplib
+@itemx old_striplib
+Programs to strip shared and static libraries, respectively.@footnote{In
+the current implementation, libtool does not use any programs to strip
+libraries.  Support will be added after it is clear how to write a
+portable test for library stripping programs.}
+
+@item soname_spec
+The name coded into shared libraries, if different from the real name of
+the file.
+
+@item version_type
+The library version numbering type.  One of @samp{libtool},
+@samp{linux}, @samp{osf}, @samp{sunos}, or @samp{none}.
+
+@item wl
+The C compiler flag that allows libtool to pass a flag directly to the
+linker.  Used as: @samp{$@{wl@}@var{some-flag}}.
+
+@end table
+
+Variables ending in @samp{_cmds} may contain a semicolon-separated list
+of commands that are evaluated one after another.  If any of the
+commands return a nonzero exit status, libtool generally exits with an
+error message.
+
+@node Index,  , Maintaining, Top
 @comment  node-name,  next,  previous,  up
 @unnumbered Index
 

@@ -1,3 +1,41 @@
+Mon Feb  3 11:15:01 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* Release 0.9.
+
+	* PLATFORMS, doc/platforms.texi, Makefile.am, doc/Makefile.am:
+	Move PLATFORMS to doc/platforms.texi.
+
+	* ltmain.sh.in (link): Use hardcode_libdir_flag to get a library
+	directory into the resulting binary.
+	Use hardcode_action, and make many simplifying changes to have
+	compilation and finalization be consistent with each other.
+
+	* ltconfig.in: Not so amazing!  It's AIX cc that hardcodes direct
+	libraries... gcc doesn't, though.
+	(link_rpath_flag): Change link_rpath_flag to be
+	hardcode_libdir_flag.
+	(hardcode_action): New variable to simplify ltmain.sh.
+
+Wed Jan 29 12:58:00 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltmain.sh.in: Change to take advantage of linkers that don't
+	hardcode direct libraries.
+
+	* ltconfig.in: Amazing!  AIX 3 linker doesn't hardcode direct
+	libraries, which makes it less buggy than AIX 4.  Reported by Mark
+	Kettenis.
+
+	* demo/configure.in: Check for the math library.
+
+	* demo/foo.c (foo): Change to use the `cos' function, so that we
+	need to link against another library.
+
+Tue Jan 28 20:32:19 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* ltmain.sh.in (link): Export the PATH variable in order to find
+	the program, rather than giving a full path.  This helps give the
+	program a less confusing value for argv[0].
+
 Sun Jan 26 15:50:07 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* Release 0.8.
