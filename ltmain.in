@@ -372,7 +372,7 @@ if test -z "$show_help"; then
     # Calculate the filename of the output object if compiler does
     # not support -o with -c
     if test "$compiler_c_o" = no; then
-      output_obj=`$echo "$Xsrcfile" | $Xsed -e 's%^.*/%%' -e 's%\..*$%%'`.o
+      output_obj=`$echo "X$srcfile" | $Xsed -e 's%^.*/%%' -e 's%\..*$%%'`.o
     fi
 
     # Only build a PIC object if we are building libtool libraries.

@@ -1,3 +1,7 @@
+1998-11-03  Eric Estievenart <eric@via.ecp.fr>
+
+	* ltmain.in (output_obj): typo
+
 1998-11-02  Ian Lance Taylor  <ian@cygnus.com>
 
 	* ltconfig.in: For sunos4, add ${libname}.so$versuffix to
