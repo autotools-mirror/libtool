@@ -75,7 +75,7 @@ Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 /* This accounts for the _LTX_ separator */
 #define LTDL_SYMBOL_OVERHEAD	5
 
-static const char *objdir = LTDL_OBJDIR "/";
+static const char *objdir = LTDL_OBJDIR;
 static const char *shlib_ext = LTDL_SHLIB_EXT;
 
 static const char *unknown_error = "unknown error";
@@ -823,10 +823,11 @@ find_module (handle, dir, libdir, dlname, old_name, installed)
 		}
 		/* try to open the not-installed module */
 		if (!installed &&
-		    strlen(dir)+strlen(objdir)+strlen(dlname)
+		    strlen(dir)+strlen(objdir)+1+strlen(dlname)
 		    		< LTDL_FILENAME_MAX) {
 			strcpy(filename, dir);
 			strcat(filename, objdir);
+			strcat(filename, "/");
 			strcat(filename, dlname);
 			if (tryall_dlopen(handle, filename) == 0)
 				return 0;

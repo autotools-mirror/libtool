@@ -1,3 +1,8 @@
+1999-01-25  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* libltdl/ltdl.c (objdir): string collation isn't portable; strcat 
+	"/" explicitly.  Or should this be moved to configure.in?
+
 1999-01-25  Thomas Tanner  <tanner@gmx.de>
 
 	* libltdl/ltdl.c: allocate the variables in lt_dlopen() dynamically
