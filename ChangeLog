@@ -1,3 +1,10 @@
+2004-10-21  Gary V. Vaughan  <gary@gnu.org>
+
+	* AUTHORS: Reformatted to better reflect the current state of
+	Libtool maintainership.
+	* THANKS: Reformatted to give maintainers a quick way to look
+	up who has supplied FSF paperwork.
+
 2004-10-21  Noah Misch  <noah@cs.caltech.edu>,
 	    Gary V. Vaughan  <gary@gnu.org>
 
