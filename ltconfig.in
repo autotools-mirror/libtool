@@ -1018,7 +1018,12 @@ include_expsyms=
 # it will be wrapped by ` (' and `)$', so one must not match beginning or
 # end of line.  Example: `a|bc|.*d.*' will exclude the symbols `a' and `bc',
 # as well as any symbol that contains `d'.
-exclude_expsyms=
+exclude_expsyms="_GLOBAL_OFFSET_TABLE_"
+# Although _GLOBAL_OFFSET_TABLE_ is a valid symbol C name, most a.out
+# platforms (ab)use it in PIC code, but their linkers get confused if
+# the symbol is explicitly referenced.  Since portable code cannot
+# rely on this symbol name, it's probably fine to never include it in
+# preloaded symbol tables.
 extract_expsyms_cmds=
 
 case "$host_os" in
@@ -1029,10 +1034,6 @@ cygwin* | mingw*)
   if test "$with_gcc" != yes; then
     with_gnu_ld=no
   fi
-  ;;
-
-freebsd2* | sunos4*)
-  exclude_expsyms="_GLOBAL_OFFSET_TABLE_"
   ;;
 
 esac
