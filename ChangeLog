@@ -1,3 +1,8 @@
+2000-05-03  John Wehle  (john@feith.com)
+
+	* libtool.m4 (hpux10.20*): use file_magic for
+	inter-library dependency tracking.
+
 2000-05-02  Gary V. Vaughan  <gvv@techie.com>
 
 	* AUTHORS:  Update my email address.
