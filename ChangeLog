@@ -1,5 +1,7 @@
 2001-06-24  Gary V. Vaughan  <gary@gnu.org>
 
+	* configure.in (AM_INIT_AUTOMAKE): Bumped version to 1.4a.
+
 	Complete the new configure time tags creation facility based on
 	the ltcf-*.sh and ltconfig.in files from multi-language-branch:
 	* libtool.m4:  More refactoring and reformatting.
