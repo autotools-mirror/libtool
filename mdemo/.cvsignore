@@ -7,5 +7,7 @@ configure
 config.*
 conftest*
 libtool
-hell
-hell.debug
+*.lo
+*.la
+mdemo
+mdemo.debug

@@ -98,8 +98,8 @@ if test "X`($echo '\t') 2>/dev/null`" != 'X\t' ||
       # Try using printf.
       echo='printf %s\n'
       if test "X`($echo '\t') 2>/dev/null`" = 'X\t' &&
-         test "X`($echo "$echo_test_string") 2>/dev/null`" = X"$echo_test_string"; then
-        # Cool, printf works
+	 test "X`($echo "$echo_test_string") 2>/dev/null`" = X"$echo_test_string"; then
+	# Cool, printf works
 	:
       elif test "X`("$ORIGINAL_CONFIG_SHELL" "$0" --fallback-echo '\t') 2>/dev/null`" = 'X\t' &&
 	   test "X`("$ORIGINAL_CONFIG_SHELL" "$0" --fallback-echo "$echo_test_string") 2>/dev/null`" = X"$echo_test_string"; then
@@ -110,9 +110,9 @@ if test "X`($echo '\t') 2>/dev/null`" != 'X\t' ||
 	echo="$CONFIG_SHELL $0 --fallback-echo"
       elif test "X`("$CONFIG_SHELL" "$0" --fallback-echo '\t') 2>/dev/null`" = 'X\t' &&
 	   test "X`("$CONFIG_SHELL" "$0" --fallback-echo "$echo_test_string") 2>/dev/null`" = X"$echo_test_string"; then
-        echo="$CONFIG_SHELL $0 --fallback-echo"
+	echo="$CONFIG_SHELL $0 --fallback-echo"
       else
-        # maybe with a smaller string...
+	# maybe with a smaller string...
 	prev=:
 
 	for cmd in 'echo test' 'sed 2q "$0"' 'sed 10q "$0"' 'sed 20q "$0"' 'sed 50q "$0"'; do
@@ -743,8 +743,8 @@ if { (eval echo $progname:@LINENO@: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>
 	echo "$ac_t"no 1>&6
 	compiler_o_lo=no
       else
-        echo "$ac_t"yes 1>&6
-        compiler_o_lo=yes
+	echo "$ac_t"yes 1>&6
+	compiler_o_lo=yes
       fi
   else
     # Append any errors to the config.log.
@@ -792,11 +792,11 @@ if test "$with_gcc" = yes; then
     # The compiler can only warn and ignore the option if not recognized
     # So say no if there are warnings
       if test -s conftest.err; then
-        echo "$ac_t"no 1>&6
-        compiler_rtti_exceptions=no
+	echo "$ac_t"no 1>&6
+	compiler_rtti_exceptions=no
       else
-        echo "$ac_t"yes 1>&6
-        compiler_rtti_exceptions=yes
+	echo "$ac_t"yes 1>&6
+	compiler_rtti_exceptions=yes
       fi
   else
     # Append any errors to the config.log.
@@ -872,15 +872,15 @@ if test -z "$LD"; then
       sub_uncdrive='s%^\([A-Za-z]\):/%//\1/%'
       # Canonicalize the path of ld
       while echo $ac_prog | grep "$re_direlt" > /dev/null 2>&1; do
-        ac_prog=`echo $ac_prog| sed "s%$re_direlt%/%"`
+	ac_prog=`echo $ac_prog| sed "s%$re_direlt%/%"`
       done
       case "$host_os" in
       cygwin*)
-        # Convert to a UNC path for cygwin
-        test -z "$LD" && LD=`echo X$ac_prog | $Xsed -e "$sub_uncdrive"`
+	# Convert to a UNC path for cygwin
+	test -z "$LD" && LD=`echo X$ac_prog | $Xsed -e "$sub_uncdrive"`
 	;;
       *)
-        test -z "$LD" && LD="$ac_prog"
+	test -z "$LD" && LD="$ac_prog"
 	;;
       esac
       ;;
@@ -894,15 +894,15 @@ if test -z "$LD"; then
       sub_uncdir='s%\\%/%g'
       # Canonicalize the path of ld
       while echo $ac_prog | grep "$re_direlt" > /dev/null 2>&1; do
-        ac_prog=`echo $ac_prog| sed "s%$re_direlt%\1%"`
+	ac_prog=`echo $ac_prog| sed "s%$re_direlt%\1%"`
       done
       case "$host_os" in
       cygwin*)
-        # Convert to a UNC path for cygwin
-        test -z "$LD" && LD=`echo X$ac_prog | $Xsed -e "$sub_uncdrive" -e "$sub_uncdir"`
+	# Convert to a UNC path for cygwin
+	test -z "$LD" && LD=`echo X$ac_prog | $Xsed -e "$sub_uncdrive" -e "$sub_uncdir"`
 	;;
       *)
-        test -z "$LD" && LD="$ac_prog"
+	test -z "$LD" && LD="$ac_prog"
 	;;
       esac
       ;;
@@ -1093,7 +1093,7 @@ else
   aix3*)
     allow_undefined_flag=unsupported
     archive_cmds='$NM$libobjs | $global_symbol_pipe | sed '\''s/.* //'\' | sort | uniq' > $lib.exp~
-        $LD -o $objdir/$soname$libobjs$deplibs -bE:$lib.exp -T512 -H512 -bM:SRE~$AR cru $lib $objdir/$soname'
+	$LD -o $objdir/$soname$libobjs$deplibs -bE:$lib.exp -T512 -H512 -bM:SRE~$AR cru $lib $objdir/$soname'
     archive_sym_cmds='$LD -o $objdir/$soname$libobjs$deplibs -bE:$export_symbols -T512 -H512 -bM:SRE~$AR cru $lib $objdir/$soname'
     # Note: this linker hardcodes the directories in LIBPATH if there
     # are no directories specified by -L.
@@ -1108,7 +1108,7 @@ else
   aix4*)
     allow_undefined_flag=unsupported
     archive_cmds='$NM$libobjs | $global_symbol_pipe | sed '\''s/.* //'\' | sort | uniq' > $lib.exp        else cat $export_symbols > $lib.exp~
-    	$CC -o $objdir/$soname$libobjs$deplibs ${wl}-bE:$lib.exp ${wl}-bM:SRE ${wl}-bnoentry~$AR cru $lib $objdir/$soname'
+	$CC -o $objdir/$soname$libobjs$deplibs ${wl}-bE:$lib.exp ${wl}-bM:SRE ${wl}-bnoentry~$AR cru $lib $objdir/$soname'
     archive_sym_cmds='$CC -o $objdir/$soname$libobjs$deplibs ${wl}-bE:$export_symbols ${wl}-bM:SRE ${wl}-bnoentry~$AR cru $lib $objdir/$soname'
     hardcode_direct=yes
     hardcode_minus_L=yes
@@ -1340,17 +1340,17 @@ if test -z "$NM"; then
     for ac_dir in /usr/ucb /usr/ccs/bin $PATH /bin; do
       test -z "$ac_dir" && ac_dir=.
       if test -f $ac_dir/nm; then
-        # Check to see if the nm accepts a BSD-compat flag.
-        # Adding the `sed 1q' prevents false positives on HP-UX, which says:
-        #   nm: unknown option "B" ignored
-        if ($ac_dir/nm -B /dev/null 2>&1 | sed '1q'; exit 0) | egrep /dev/null >/dev/null; then
-          NM="$ac_dir/nm -B"
-        elif ($ac_dir/nm -p /dev/null 2>&1 | sed '1q'; exit 0) | egrep /dev/null >/dev/null; then
-          NM="$ac_dir/nm -p"
+	# Check to see if the nm accepts a BSD-compat flag.
+	# Adding the `sed 1q' prevents false positives on HP-UX, which says:
+	#   nm: unknown option "B" ignored
+	if ($ac_dir/nm -B /dev/null 2>&1 | sed '1q'; exit 0) | egrep /dev/null >/dev/null; then
+	  NM="$ac_dir/nm -B"
+	elif ($ac_dir/nm -p /dev/null 2>&1 | sed '1q'; exit 0) | egrep /dev/null >/dev/null; then
+	  NM="$ac_dir/nm -p"
 	else
-          NM="$ac_dir/nm"
+	  NM="$ac_dir/nm"
 	fi
-        break
+	break
       fi
     done
     IFS="$ac_save_ifs"
@@ -1449,8 +1449,8 @@ extern "C" {
 #endif
 
 EOF
-        # Now generate the symbol file.
-        sed 's/^.* \(.*\)$/extern char \1;/' < "$nlist" >> conftest.c
+	# Now generate the symbol file.
+	sed 's/^.* \(.*\)$/extern char \1;/' < "$nlist" >> conftest.c
 
 	cat <<EOF >> conftest.c
 #if defined (__STDC__) && __STDC__
@@ -1470,8 +1470,8 @@ struct {
 dld_preloaded_symbols[] =
 {
 EOF
-        sed 's/^\(.*\) \(.*\)$/  {"\1", (lt_ptr_t) \&\2},/' < "$nlist" >> conftest.c
-        cat <<\EOF >> conftest.c
+	sed 's/^\(.*\) \(.*\)$/  {"\1", (lt_ptr_t) \&\2},/' < "$nlist" >> conftest.c
+	cat <<\EOF >> conftest.c
   {0, (lt_ptr_t) 0}
 };
 
@@ -1479,21 +1479,21 @@ EOF
 }
 #endif
 EOF
-        # Now try linking the two files.
-        mv conftest.$objext conftestm.$objext
+	# Now try linking the two files.
+	mv conftest.$objext conftestm.$objext
 	save_LIBS="$LIBS"
 	save_CFLAGS="$CFLAGS"
-        LIBS="conftestm.$objext"
+	LIBS="conftestm.$objext"
 	CFLAGS="$CFLAGS$no_builtin_flag"
-        if { (eval echo $progname:@LINENO@: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest; then
-          pipe_works=yes
-        else
-          echo "$progname: failed program was:" >&5
-          cat conftest.c >&5
-        fi
-        LIBS="$save_LIBS"
+	if { (eval echo $progname:@LINENO@: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest; then
+	  pipe_works=yes
+	else
+	  echo "$progname: failed program was:" >&5
+	  cat conftest.c >&5
+	fi
+	LIBS="$save_LIBS"
       else
-        echo "cannot find nm_test_func in $nlist" >&5
+	echo "cannot find nm_test_func in $nlist" >&5
       fi
     else
       echo "cannot find nm_test_var in $nlist" >&5
@@ -1556,7 +1556,7 @@ shlibpath_var=
 version_type=none
 dynamic_linker="$host_os ld.so"
 sys_lib_search_path="/lib /usr/lib /usr/local/lib"
-check_shared_deplibs_method='none'
+deplibs_check_method='none'
 # Need to set the preceding variable on all platforms that support
 # interlibrary dependencies.
 # 'none' -- dependencies not supported.
@@ -1663,7 +1663,7 @@ linux-gnu*)
   soname_spec='${libname}${release}.so$major'
   finish_cmds='PATH="\$PATH:/sbin" ldconfig -n $libdir'
   shlibpath_var=LD_LIBRARY_PATH
-  check_shared_deplibs_method='file_magic ELF 32-bit LSB shared object'
+  deplibs_check_method='file_magic ELF 32-bit LSB shared object'
   sys_lib_search_path="/lib /usr/lib /usr/local/lib `echo $LD_LIBRARY_PATH | sed -e 's/:/ /g'`"
 
   if test -f /lib/ld.so.1; then
@@ -1697,7 +1697,7 @@ osf3* | osf4*)
   soname_spec='${libname}${release}.so'
   library_names_spec='${libname}${release}.so$versuffix $libname.so'
   shlibpath_var=LD_LIBRARY_PATH
-  check_shared_deplibs_method='pass_all'
+  deplibs_check_method='pass_all'
   ;;
 
 sco3.2v5*)
@@ -1807,7 +1807,7 @@ case "$ltmain" in
     whole_archive_flag_spec libname_spec library_names_spec soname_spec \
     RANLIB old_archive_cmds old_archive_from_new_cmds old_postinstall_cmds \
     old_postuninstall_cmds archive_cmds archive_sym_cmds postinstall_cmds postuninstall_cmds \
-    check_shared_deplibs_method allow_undefined_flag no_undefined_flag \
+    deplibs_check_method allow_undefined_flag no_undefined_flag \
     finish_cmds finish_eval global_symbol_pipe \
     hardcode_libdir_flag_spec hardcode_libdir_separator sys_lib_search_path \
     compiler_c_o compiler_o_lo need_locks; do
@@ -2023,7 +2023,7 @@ postinstall_cmds=$postinstall_cmds
 postuninstall_cmds=$postuninstall_cmds
 
 # Method to check whether dependent libraries are shared objects.
-check_shared_deplibs_method=$check_shared_deplibs_method
+deplibs_check_method=$deplibs_check_method
 
 # Flag that allows shared libraries with undefined symbols to be built.
 allow_undefined_flag=$allow_undefined_flag

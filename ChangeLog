@@ -1,3 +1,14 @@
+1998-12-21  Thomas Tanner  <tanner@gmx.de>
+
+	* ltconfig.in: indentation is now 8 character wide tabs 
+	* ltmain.in: ditto
+	* ChangeLog: ditto
+	* ltmain.in: renamed check_shared_deplibs_method to 
+	  deplibs_check_method (we_dont_want_too_long_variable_names :)
+	* doc/libtool.texi (Porting inter-library dependencies): ditto
+	* depdemo/.cvsignore: renamed hell* to depdemo*, added *.lo,*.la
+	* mdemo/.cvsignore: ditto
+	
 1998-12-21  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
 
 	* libtool.m4 (AM_SYS_NM_PARSE): apparently  __ptr_t is predefined
@@ -208,7 +219,7 @@
 1998-12-09  Akim Demaille  <demaille@inf.enst.fr>
 
 	* doc/libtool.texi: converted inter-library dependencies
- 	instructions from PORTING
+	instructions from PORTING
 
 1998-12-09  Alexandre Oliva  <oliva@dcc.unicamp.br>
 	
@@ -242,7 +253,7 @@
 1998-12-04  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* libtool.m4 (ac_cv_sys_symbol_underscore): `test a == b' doesn't
- 	work, use `test a = b' instead
+	work, use `test a = b' instead
 
 	* Makefile.am (mdemo_distfiles): libfoo[12].sym no longer exist
 
@@ -403,7 +414,7 @@
 	too much for DU4.0's ksh, but the first 50 lines will be enough.
 
 	* ltmain.in (installed): new variable defined within a .la file,
- 	so that libtool can now link already-installed libraries into a
+	so that libtool can now link already-installed libraries into a
 	program.
 	* NEWS: ditto
 	* doc/libtool.texi (Linking executables): document it
@@ -441,8 +452,8 @@
 1998-11-16  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* ltmain.in (C_compiler): copy $CC before it is overwritten with
- 	command-line compiler, so that we can use it to compile C sources
- 	generated during the build.  This fixes the problem that showed up 
+	command-line compiler, so that we can use it to compile C sources
+	generated during the build.  This fixes the problem that showed up 
 	with -export-dynamic of C++ programs in egcs 1.1.
 	* NEWS: ditto
 
@@ -455,7 +466,7 @@
 1998-11-11  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* ltmain.in (IFS): revert Gary's patch when parsing version
- 	information; we still use `:' here :-)
+	information; we still use `:' here :-)
 
 	* NEWS: updated
 	* PORTING: new file, with general instructions and inter-library
@@ -987,7 +998,7 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 	Rewrite these rules not to use config.status or lineno.  This
 	makes things simpler, and reduces dependencies, so that the
 	scripts are rebuilt and installed in srcdir only when necessary.
- 	Reported by Stephan Kulow.
+	Reported by Stephan Kulow.
 
 1998-02-16  Gordon Matzigkeit  <gord@profitpress.com>
 
@@ -1037,7 +1048,7 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 	on IRIX, and propagate the correct linker flag.  From Jim Wilson.
 
 	* ltconfig.in, ltmain.in (Xsed): `arg=-n; echo "$arg" | sed ...'
- 	gives problems, because the `-n' is interpreted as an option to
+	gives problems, because the `-n' is interpreted as an option to
 	echo(1).  So, use `echo "X$arg" | sed -e 's/^X//' ...' everywhere,
 	via the $Xsed convenience variable.  Suggested by H.J. Lu.
 
@@ -1369,7 +1380,7 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 
 	* ltconfig.in (objdir): Use the .libs directory on all systems for
 	which that name is valid, and _libs on the others (like MS-DOS).
- 	Suggested by Juergen Erhard.
+	Suggested by Juergen Erhard.
 
 1997-10-14  Gordon Matzigkeit  <gord@gnu.org>
 
@@ -1762,7 +1773,7 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 	* ltmain.sh.in (link): In the executable wrapper, strip trailing
 	colons from the shlibpath_var because some ld.so's, notably
 	OpenBSD 2.0's (!), don't parse colon-terminated values correctly.
- 	From Tim Pierce.
+	From Tim Pierce.
 
 1997-07-01  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
@@ -1997,7 +2008,7 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 	rewritten if I'm going to give full shared library support for
 	platforms that don't use the GNU C library version 2 (which to my
 	knowledge currently only works on GNU Hurd and Linux/GNU systems).
- 	Porting the GNU C library should not be difficult, though.
+	Porting the GNU C library should not be difficult, though.
 
 	Platforms that don't have the dlopen(3) family of functions will
 	need to install GNU DLD version 4 in order to build any kind of
@@ -2011,7 +2022,7 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 	It looks like this implementation will be even more complex than
 	the original (pre-0.7) libtool.  Initial estimates show that it
 	may be up to 3 times slower, and 5 times larger than libtool-0.9.
- 	I'll probably have to rewrite it in Guile to get reasonable
+	I'll probably have to rewrite it in Guile to get reasonable
 	performance, which will severely limit its portability for a
 	while.
 
@@ -2046,7 +2057,7 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 	* ltconfig.in (hardcode_libdir_separator): Added in case the
 	linker only honours the last of the -rpath flags (but it can
 	contain multiple colon-separated directories), such as on OSF/1.
- 	Reported by Carl D. Roth.
+	Reported by Carl D. Roth.
 
 	* ltmain.sh.in (link): Set the dlname if -export-dynamic is given.
 	(install, uninstall): Handle the dlname file separately.
@@ -2205,7 +2216,7 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 	by Bruno Haible.
 
 	* ltconfig.in: IRIX ld does not hardcode direct libraries.
- 	Reported by Bruno Haible.
+	Reported by Bruno Haible.
 
 1997-01-18  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 

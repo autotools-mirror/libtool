@@ -2788,7 +2788,7 @@ have advice on the most effective way of accomplishing what you want.
 @node Porting inter-library dependencies
 @subsection Porting inter-library dependencies support
 @cindex inter-library dependency
-@vindex check_shared_deplibs_method
+@vindex deplibs_check_method
 
 Since version 1.2c, libtool has re-introduced the ability to do
 inter-library dependency on some platforms, thanks to a patch by Toshio
@@ -2798,7 +2798,7 @@ of the message that contained his patch:
 The basic architecture is this: in @file{ltconfig.in}, the person who
 writes libtool makes sure @samp{$deplibs} is included in
 @samp{$archive_cmds} somewhere and also sets the
-@samp{$check_shared_deplibs_method}.  @samp{check_shared_deplibs_method}
+@samp{$deplibs_check_method}.  @samp{deplibs_check_method}
 can be any of five things:
 @table @samp
 @item file_magic [@var{regex}]
