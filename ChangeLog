@@ -1,5 +1,6 @@
 2001-06-27  Gary V. Vaughan  <gary@gnu.org>
 
+	From brad@openbsd.org:
 	* NEWS: Updated.
 	* libtool.m4 (AC_LIBTOOL_SYS_DYNAMIC_LINKER) [openbsd]: Improved
 	support for various openbsd platforms.
@@ -17,7 +18,7 @@
 	namespace clash of NCR MP-RAS.
 	(lt_dlmutex_unlock_func, lt_dlmutex_seterror_func,
 	lt_dlmutex_geterror_func): Ditto.
-	Reported by Edouard G. Parmelan <Edouard.Parmelan@France.NCR.COM>
+	Reported by Edouard G. Parmelan <egp@free.fr>
 
 	* libltdl/ltdl.c (LT_DLSTRLEN): Call strlen only if the argument
 	is non-NULL and non-zero in length.  Changed all calls to strlen
