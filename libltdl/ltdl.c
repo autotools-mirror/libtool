@@ -153,7 +153,7 @@ lt__alloc_die_callback (void)
 static int
 loader_init_callback (lt_dlhandle handle)
 {
-  return loader_init (lt_dlsym (handle, "get_vtable"), 0);
+  return loader_init ((lt_get_vtable *) lt_dlsym (handle, "get_vtable"), 0);
 }
 
 static int
@@ -283,7 +283,7 @@ lt_dlexit (void)
 	  lt_dlloader *next   = lt_dlloader_next (loader);
 	  lt_dlvtable *vtable = (lt_dlvtable *) lt_dlloader_get (loader);
 
-	  if ((vtable = lt_dlloader_remove (vtable->name)))
+	  if ((vtable = lt_dlloader_remove ((char *) vtable->name)))
 	    {
 	      FREE (vtable);
 	    }

@@ -1,5 +1,8 @@
 2004-10-30  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
+	* libltdl/ltdl.c (loader_init_callback, lt_dlexit): Add casts to
+	target type.
+
 	* tests/defs.m4sh (func_exec): `shift'ing when there is nothing
 	to shift is non-portable.
 
