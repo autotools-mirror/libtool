@@ -1,5 +1,7 @@
 2001-09-11  Gary V. Vaughan  <gary@gnu.org>
 
+	* libtool.m4: Add missing M4 quotation to $1 of AC_DEFUN calls.
+
 	* libltdl/configure.in (AM_INIT_AUTOMAKE): Bump libltdl version to
 	1.2.
 	* libltdl/Makefile.am (libltdl_la_LDFLAGS):  Bump libtool library

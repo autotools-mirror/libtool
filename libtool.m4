@@ -151,7 +151,7 @@ _LT_AC_LTCONFIG_HACK
 
 # _LT_AC_CHECK_DLFCN
 # --------------------
-AC_DEFUN(_LT_AC_CHECK_DLFCN,
+AC_DEFUN([_LT_AC_CHECK_DLFCN],
 [AC_CHECK_HEADERS(dlfcn.h)
 ])# _LT_AC_CHECK_DLFCN
 
@@ -514,7 +514,7 @@ AC_DIVERT_POP
 # _LT_AC_TRY_DLOPEN_SELF (ACTION-IF-TRUE, ACTION-IF-TRUE-W-USCORE,
 #                           ACTION-IF-FALSE, ACTION-IF-CROSS-COMPILING)
 # ------------------------------------------------------------------
-AC_DEFUN(_LT_AC_TRY_DLOPEN_SELF,
+AC_DEFUN([_LT_AC_TRY_DLOPEN_SELF],
 [if test "$cross_compiling" = yes; then :
   [$4]
 else
@@ -601,7 +601,7 @@ rm -fr conftest*
 
 # AC_LIBTOOL_DLOPEN_SELF
 # -------------------
-AC_DEFUN(AC_LIBTOOL_DLOPEN_SELF,
+AC_DEFUN([AC_LIBTOOL_DLOPEN_SELF],
 [if test "x$enable_dlopen" != xyes; then
   enable_dlopen=unknown
   enable_dlopen_self=unknown
