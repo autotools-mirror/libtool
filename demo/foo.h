@@ -51,8 +51,10 @@ USA. */
 #undef __P
 #if defined (__STDC__) || defined (_AIX) || (defined (__mips) && defined (_SYSTYPE_SVR4)) || defined(__CYGWIN32__) || defined(__cplusplus)
 # define __P(protos) protos
+# define lt_ptr_t     void*
 #else
 # define __P(protos) ()
+# define lt_ptr_t     char*
 #endif
 
 #ifdef __CYGWIN32__

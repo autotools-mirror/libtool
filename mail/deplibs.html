@@ -1,0 +1,213 @@
+<html>
+<head>
+<title>Libtool Inter-library Dependencies</title>
+<body bgcolor="#ffffff">
+<center><h1><img src="/graphics/libtool.gif" width=477 height=192
+ alt="Libtool"></h1></center>
+
+<h1>Inter-library Dependencies</h1>
+
+<p>About twice a week, for the last five weeks, I've been receiving
+bug reports which tell me that libtool's inter-library dependency
+handling is broken.
+
+<p>I know.  I broke it intentionally, until I have the time to fix it
+myself, or somebody else takes the time to help me with it.
+
+<p>These same people often give me a simple one-line patch which
+re-enables my old, simplistic inter-library dependencies, but nobody
+seems to want to test things thoroughly and come up with a real
+solution.
+
+<p>If you don't care about the history, and you just want to help me
+out, jump to <a href="#solution">the bottom of this document</a>.
+
+<h2>Background</h2>
+
+<p>Libtool's basic premise is to make static and shared libraries
+behave the same way from a programmer's point of view.  This allows
+users to build a libtoolized package with or without shared libraries,
+determined at configuration time.  It does this by using a
+<dfn>libtool object</dfn> (<samp>.lo</samp>) and <dfn>libtool
+archive</dfn> (<samp>.la</samp>) abstraction, so that the package
+maintainer can use libtool to operate on these files without making
+any assumptions about their underlying representation.
+
+<p>For the most part, this abstraction works well, and has made
+libtool as popular as it is today.  Without this abstraction, it would
+be significantly harder to port libtool to new platforms.
+
+<p>Unfortunately, what this abstraction has also done is reveal some
+fundamental inconsistencies with most shared library implementations.
+Every shared library implementation works well for `hello world'-type
+examples, but very few are robust and well-designed so that libtool
+doesn't need special tricks in order to build correct, featureful
+shared libraries.
+
+<p>Providing inter-library dependencies is one feature that has
+revealed these kinds of inconsistencies.
+
+<h2>The problem</h2>
+
+<p>My orginal inter-library dependency code received rigourous testing
+in beta releases of <a href="http://www.red-bean.com/guile/">GNU
+Guile</a>.  As soon as the Guile people started using my code, I
+received a flood of bug reports.  People were reporting that
+<samp>libguile</samp> (Guile's main shared library) was failing to
+link, or that programs linked against <samp>libguile</samp> were
+dumping core.
+
+<p>Not good.
+
+<p>The Guile people chased this bug down to the following scenario:
+
+<ol>
+<li>The user's system has a static regexp library installed,
+<samp>librx.a</samp>.
+
+<li>Guile's <samp>configure</samp> script detects that the
+<samp>-lrx</samp> linker option can be used to link in
+<samp>librx</samp>.
+
+<li>When <samp>libguile</samp> is built, the <samp>-lrx</samp> linker
+option is used.
+
+<li>Some linkers fail at this point, because they don't allow shared
+libraries to contain or depend on static libraries.
+
+<li>If the linker didn't fail, then a few programs are linked against
+<samp>libguile</samp>.
+
+<li>On some systems, these programs core dump because
+<samp>libguile</samp> is a shared library that contains non-PIC code
+(from <samp>librx</samp>).
+</ol>
+
+<h2>The interim solution</h2>
+
+<p>I needed some way to respond to these reports.  I saw my options (in
+order of my preference) as:
+
+<ol>
+<li>Write code in <samp>ltmain.sh</samp> to prevent static libraries
+from appearing in inter-library dependencies.  This would take some
+work, but obviously is the best solution.
+
+<li>Find the systems that fail, and turn off inter-library
+dependencies on only those systems.
+
+<li>Force the package maintainer to guarantee that static libraries
+never appear in inter-library dependencies.
+</ol>
+
+<p>I immediately vetoed the last solution, because that would violate
+the whole point of using libtool, and would cause a lot of people to
+waste time solving a problem that really should be fixed by libtool.
+
+<p>I preferred the first solution, but at the time of the reports, I
+didn't see an obviously simple mechanism for detecting the difference
+between shared and static libraries.
+
+<p>So, in the meantime, I tried turning off inter-library dependencies
+on the systems that failed.
+
+<p>I quickly discovered, to my chagrin, that many systems fail.  So,
+it was be simpler for me to turn off <em>all</em> inter-library
+dependencies, then find out which systems work, rather than vice
+versa.
+
+<h2>The current situation</h2>
+
+<p>I've been busy trying to avoid bankruptcy.  It's been over three
+months since I first turned off inter-library dependencies, and I
+still haven't completed the solution I want.
+
+<p>I've been gearing up for the 1.1 release of libtool, because there
+is a high demand for a stable public release.  So, I'm not going to
+introduce any destabilizing changes to the inter-library dependency
+code until after 1.1 is released.
+
+<h2><a name="solution">The solution</a></h2>
+
+<p>So, I want to tell you how you can help me solve the various
+dilemmas surrounding this issue:
+
+<ol>
+<li>I need to find out more about the nature of the problems I ran
+into with Guile.  Unfortunately, I cannot reproduce them in simple
+tests on my own platform (i586-pc-linux-gnulibc1), even though I think
+they were reported here.  I need to find out which platforms already
+have perfect inter-library dependency support, how to work around the
+problem on other platforms, and, more importantly, exactly
+<em>why</em> some systems give me problems and others don't.
+
+<p>On correct platforms, you can link <em>any</em> static library
+against a shared library via the <samp>-lNAME</samp> option without
+the linker complaining, then link a program against this library and
+run it without dumping core.  I know that this scenario will always
+work fine on the following systems:
+
+ <ul>
+ <li>None reported yet.
+ </ul>
+
+<p>I also know that on some systems, you can create a shared library
+linked against a static one, but running programs linked against such
+a library will dump core:
+
+ <ul>
+ <li>None reported yet.
+ </ul>
+
+<p>Finally, there are some systems which won't even allow you to link
+a shared library against a static one:
+
+ <ul>
+ <li>Solaris 2.x
+ </ul>
+
+<li>Help me figure out a good, portable way to detect if a given
+<samp>-lNAME</samp> option refers to a shared library or not, since
+that is needed as a workaround to the problem.  Some suggestions so
+far have been:
+
+ <ul>
+ <li>Link the library against a tiny test program, and:
+
+  <ul>
+  <li>run <samp>ldd(1)</samp> on the test program and search for
+  <samp>libNAME</samp> in the ldd output.
+  <li>use the <samp>-verbose</samp> flag for GNU ld in order to see
+  which library is actually linked.
+  <li>run some sort of other program to determine if the library was
+  dynamic.
+  </ul>
+
+ <li>Track the <samp>-LDIR</samp> flags, do a search for the library,
+ and then check whether it is shared by:
+
+  <ul>
+  <li>using the <samp>file(1)</samp> program.
+  <li>looking at its suffix.
+  </ul>
+ </ul>
+
+<li>Contact any people you know who might be interested, get them to
+read this page, so that they can help me solve the problem.
+
+<li>Send me money, so that I can devote more of my time to solving the
+problem.
+</ol>
+
+<p>Thank you for your help, and have fun.
+
+<hr>
+<a href="http://www.gimp.org/"><img src="/graphics/gfx_by_gimp.gif"
+align="right" border=0></a>
+
+<p><a href="libtool.html">Back to the libtool home page.</a>
+
+<address>
+Gordon Matzigkeit <a href="mailto:gord@profitpress.com">&lt;gord@profitpress.com&gt;</a>
+</address>
+</html>

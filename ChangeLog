@@ -1,3 +1,28 @@
+1999-01-13  Thomas Tanner  <tanner@gmx.de>
+
+	* demo/dlmain.c, libltdl/ltdl.c, ltconfig.in, ltmain.in, 
+	  doc/libtool.texi: renamed dld_preloaded_symbols to 
+	  lt_preloaded_symbols, symbol lists are 'const'
+	* cdemo/configure.in: don't check for string.h
+	* demo/dlmain.c: renamed dld_symlist to lt_symlist,
+	  preloaded symbols are 'const', use lt_ptr_t instead of void*
+	* demo/foo.h: define lt_ptr_t
+	* doc/libtool.texi: document lt_preloaded_symbols correctly
+	* libltdl/Makefile.am, mdemo/Makefile.am: renamed libtest to libltdlc
+	* libltdl/ltdl.c: fixed some minor typos, renamed dldpre to presym,
+	  bugfix: search in search_path only if we have no directory 
+	  and a search_path, in lt_dlsym() check whether symbol != 0
+	* libltdl/ltdl.h: removed lt_dlpreopen_default()
+	* ltconfig.in (dlpreopen): removed dld_preloaded_symbol_count
+	* ltmain.in: added help for -avoid-versioning, -export-symbols,
+	  -module, add @SYMFILE@ if one of -export-dynamic, -dlopen or
+	  -dlpreopen is used
+	* mail/deplibs.html: added Gordon Matzigkeit's inter-library
+	  dependencies article
+	* mdemo/Makefile.am: removed -export-dynamic from LDFLAGS
+	  (no longer necessary, since libtool defines lt_preloaded_symbols
+	  when -dlopen is used), initialize with lt_preloaded_symbols
+	
 1999-01-13  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* doc/libtool.texi (Test descriptions): cdemo-static works, thanks 
@@ -21,7 +46,7 @@
 	* ltconfig.in (NM): PATH search was not updated like in
 	libtool.m4, in last Alexandre Oliva's change to it
 	(sysv4*, ncr): pass all library dependencies
-	* ltmain.in (dependency_libs, -R): use `dep' instead of `arg' to
+	* ltmain.in (dependency_libs, -R): use `deplib' instead of `arg' to
  	iterate, otherwise we'd overwrite `arg'
 	(convenience, old_libs): if --disable-shared, convenience
 	libraries are just old archives, as .lo's are of no use

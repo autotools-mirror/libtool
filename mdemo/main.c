@@ -92,6 +92,10 @@ main (int argc, char **argv)
     fprintf (stderr, "error during initialization: %s\n", lt_dlerror());
     return 1;
   }
+  if (lt_dlpreopen(lt_preloaded_symbols) != 0) {
+    fprintf (stderr, "error during initialization: %s\n", lt_dlerror());
+    return 1;
+  }
 
   for (i = 1; i < argc; i++)
     if (test_dl(argv[i]))

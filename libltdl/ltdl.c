@@ -63,7 +63,7 @@ static const char *symbol_error = "symbol not found";
 static const char *memory_error = "not enough memory";
 static const char *invalid_handle_error = "invalid handle";
 static const char *buffer_overflow_error = "internal buffer overflow";
-static const char *shutdown_error = "libraries already shutdown";
+static const char *shutdown_error = "library already shutdown";
 
 static const char *last_error;
 
@@ -299,7 +299,7 @@ dl = { LT_DLTYPE_TOP, dl_init, dl_exit,
 #define	BIND_RESTRICTED	0
 #endif	/* BIND_RESTRICTED */
 
-#define	OPT_BIND_FLAGS	(BIND_IMMEDIATE | BIND_NONFATAL | BIND_VERBOSE | DYNAMIC_PATH)
+#define	LTDL_BIND_FLAGS	(BIND_IMMEDIATE | BIND_NONFATAL | BIND_VERBOSE | DYNAMIC_PATH)
 
 static int
 shl_init ()
@@ -318,8 +318,7 @@ shl_open (handle, filename)
 	lt_dlhandle handle;
 	const char *filename;
 {
-	handle->handle = shl_load (filename, OPT_BIND_FLAGS, 0L);
-	/* the hp-docs say we should better abort() if errno==ENOSYM ;( */
+	handle->handle = shl_load(filename, LTDL_BIND_FLAGS, 0L);
 	if (!handle->handle) {
 		last_error = unknown_error;
 		return 1;
@@ -345,7 +344,7 @@ shl_sym (handle, symbol)
 {
 	lt_ptr_t address;
 
-	if (shl_findsym ((shl_t) (handle->handle), symbol, TYPE_UNDEFINED, 
+	if (shl_findsym((shl_t) (handle->handle), symbol, TYPE_UNDEFINED, 
 	    &address) != 0 || !(handle->handle) || !address) {
 		last_error = unknown_error;
 		return 0;
@@ -497,17 +496,17 @@ wll = { LT_DLTYPE_TOP, wll_init, wll_exit,
 
 #if HAVE_DLPREOPEN
 
-/* emulate dynamic linking using dld_preloaded_symbols */
+/* emulate dynamic linking using preloaded_symbols */
 
 typedef struct lt_dlsymlists_t {
 	struct lt_dlsymlists_t *next;
-	lt_dlsymlist	*syms;
+	const lt_dlsymlist *syms;
 } lt_dlsymlists_t;
 
 static lt_dlsymlists_t *preloaded_symbols = 0;
 
 static int
-dldpre_init ()
+presym_init ()
 {
 	/* Don't nullify preloaded_symbols here, it would prevent one
 	   from calling lt_dlpreload_default() before lt_dlinit() */
@@ -515,7 +514,7 @@ dldpre_init ()
 }
 
 static void
-dldpre_free_symlists ()
+presym_free_symlists ()
 {
 	lt_dlsymlists_t	*lists = preloaded_symbols;
 	
@@ -529,7 +528,7 @@ dldpre_free_symlists ()
 }
 
 static int
-dldpre_exit ()
+presym_exit ()
 {
 	/* Don't reset preloaded_symbols here; adding/removing symbols
            should be unrelated with init/exit */
@@ -537,8 +536,8 @@ dldpre_exit ()
 }
 
 static int
-dldpre_add_symlist (preloaded)
-	lt_dlsymlist *preloaded;
+presym_add_symlist (preloaded)
+	const lt_dlsymlist *preloaded;
 {
 	lt_dlsymlists_t *tmp;
 	lt_dlsymlists_t *lists = preloaded_symbols;
@@ -569,7 +568,7 @@ dldpre_add_symlist (preloaded)
 }
 
 static int
-dldpre_open (handle, filename)
+presym_open (handle, filename)
 	lt_dlhandle handle;
 	const char *filename;
 {
@@ -584,12 +583,12 @@ dldpre_open (handle, filename)
 		return 1;
 	}
 	while (lists) {
-		lt_dlsymlist *syms = lists->syms;
+		const lt_dlsymlist *syms = lists->syms;
 	
 		while (syms->name) {
 			if (!syms->address &&
 			    strcmp(syms->name, filename) == 0) {
-				handle->handle = syms;
+				handle->handle = (lt_ptr_t) syms;
 				return 0;
 			}
 			syms++;
@@ -601,14 +600,14 @@ dldpre_open (handle, filename)
 }
 
 static int
-dldpre_close (handle)
+presym_close (handle)
 	lt_dlhandle handle;
 {
 	return 0;
 }
 
 static lt_ptr_t
-dldpre_sym (handle, symbol)
+presym_sym (handle, symbol)
 	lt_dlhandle handle;
 	const char *symbol;
 {
@@ -630,11 +629,11 @@ dldpre_sym (handle, symbol)
 
 static
 lt_dltype_t
-dldpre = { LT_DLTYPE_TOP, dldpre_init, dldpre_exit,
-	   dldpre_open, dldpre_close, dldpre_sym };
+presym = { LT_DLTYPE_TOP, presym_init, presym_exit,
+	   presym_open, presym_close, presym_sym };
 
 #undef LT_DLTYPE_TOP
-#define LT_DLTYPE_TOP &dldpre
+#define LT_DLTYPE_TOP &presym
 
 #endif
 
@@ -676,13 +675,13 @@ lt_dlinit ()
 
 int
 lt_dlpreopen (preloaded)
-	lt_dlsymlist *preloaded;
+	const lt_dlsymlist *preloaded;
 {
 #if HAVE_DLPREOPEN
 	if (preloaded)
-		return dldpre_add_symlist(preloaded);
+		return presym_add_symlist(preloaded);
 	else {
-		dldpre_free_symlists();
+		presym_free_symlists();
 		return 0;
 	}
 #else
@@ -835,7 +834,7 @@ find_library (handle, filename, have_dir, basename, search_path)
 	if (tryall_dlopen(handle, filename) == 0)
 		return 0; 
 			
-	if (have_dir && !search_path) {
+	if (have_dir || !search_path) {
 		last_error = file_not_found_error;
 		return 1;
 	}
@@ -899,7 +898,7 @@ find_file (filename, basename, have_dir, search_path)
 	if (file)
 		return file;
 			
-	if (have_dir && !search_path) {
+	if (have_dir || !search_path) {
 		last_error = file_not_found_error;
 		return 0;
 	}
@@ -1155,6 +1154,10 @@ lt_dlsym (handle, symbol)
 
 	if (!handle) {
 		last_error = invalid_handle_error;
+		return 0;
+	}
+	if (!symbol) {
+		last_error = symbol_error;
 		return 0;
 	}
 	lensym = strlen(symbol);

@@ -24,21 +24,21 @@ USA. */
 #include <string.h>
 #endif
 
-struct dld_symlist
+struct lt_symlist
 {
-  char *name;
-  void *address;
+  const char *name;
+  lt_ptr_t address;
 };
 
-extern struct dld_symlist dld_preloaded_symbols[];
+extern const struct lt_symlist lt_preloaded_symbols[];
 
 #ifdef __CYGWIN32__
 int
 win32_force_data_import_address __P((void))
 {
-  struct dld_symlist *s;
+  const struct lt_symlist *s;
   
-  s = dld_preloaded_symbols;
+  s = lt_preloaded_symbols;
   while (s->name)
     {
       if (!strcmp ("nothing", s->name))
@@ -56,7 +56,7 @@ main (argc, argv)
      int argc;
      char **argv;
 {
-  struct dld_symlist *s;
+  const struct lt_symlist *s;
   int (*pfoo)() = 0;
   int (*phello)() = 0;
   int *pnothing = 0;
@@ -69,7 +69,7 @@ main (argc, argv)
 #endif
 
   /* Look up the symbols we require for this demonstration. */
-  s = dld_preloaded_symbols;
+  s = lt_preloaded_symbols;
   while (s->name)
     {
       if (s->address) {

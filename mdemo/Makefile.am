@@ -18,19 +18,18 @@ noinst_HEADERS = foo.h
 
 bin_PROGRAMS = mdemo mdemo.debug
 
-../libltdl/libtest.la: ../libltdl/libtool \
+../libltdl/libltdlc.la: ../libltdl/libtool \
     $(srcdir)/../libltdl/ltdl.c $(srcdir)/../libltdl/ltdl.h
-	(cd ../libltdl; $(MAKE) libtest.la)
+	(cd ../libltdl; $(MAKE) libltdlc.la)
 
 # Create a version of mdemo that does dlopen.
 mdemo_SOURCES = main.c
-mdemo_LDADD = ../libltdl/libtest.la
-mdemo_LDFLAGS = -export-dynamic -dlopen foo1.la -dlopen libfoo2.la
-mdemo_DEPENDENCIES = ../libltdl/libtest.la foo1.la libfoo2.la
+mdemo_LDADD = ../libltdl/libltdlc.la
+mdemo_LDFLAGS = -dlopen foo1.la -dlopen libfoo2.la
+mdemo_DEPENDENCIES = ../libltdl/libltdlc.la foo1.la libfoo2.la
 
 # Create an easier-to-debug version of mdemo.
 mdemo_debug_SOURCES = main.c
-mdemo_debug_LDADD = ../libltdl/libtest.la
-mdemo_debug_LDFLAGS = -static -export-dynamic \
-	-dlopen foo1.la -dlopen libfoo2.la
-mdemo_debug_DEPENDENCIES = ../libltdl/libtest.la foo1.la libfoo2.la
+mdemo_debug_LDADD = ../libltdl/libltdlc.la
+mdemo_debug_LDFLAGS = -static -dlopen foo1.la -dlopen libfoo2.la
+mdemo_debug_DEPENDENCIES = ../libltdl/libltdlc.la foo1.la libfoo2.la

@@ -1147,7 +1147,7 @@ no effect.
 
 @item -dlpreopen @var{file}
 Link @var{file} into the output program, and add its symbols to
-@var{dld_preloaded_symbols} (@pxref{Dlpreopening}).
+@var{lt_preloaded_symbols} (@pxref{Dlpreopening}).
 
 @item -export-dynamic
 Allow symbols from @var{output-file} to be resolved with @code{dlsym}
@@ -2373,14 +2373,16 @@ In order to use this feature, you must declare the objects you want your
 application to dlopen by using the @samp{-dlopen} or @samp{-dlpreopen}
 flags when you link your program (@pxref{Link mode}).
 
-@deftypefn {Structure} {typedef struct} dld_symbol @{ @w{char *@var{name};} @w{ptr_t @var{address};} @}
+@deftypefn {Structure} {typedef struct}
+lt_symbol @{ @w{const char *@var{name};} @w{lt_ptr_t @var{address};} @}
+
 The @var{name} attribute is a zero-terminated character string of the
 symbol name, such as @code{"fprintf"}.  The @var{address} attribute is a
 generic pointer to the appropriate object, such as @code{&fprintf}.
 @end deftypefn
 
-@deftypevar {dld_symbol *} dld_preloaded_symbols
-An array of @var{dld_symbol} structures, representing all the preloaded
+@deftypevar {const lt_symbol *} lt_preloaded_symbols
+An array of @var{lt_symbol} structures, representing all the preloaded
 symbols linked into the program. For each @samp{-dlpreloaded} file 
 there is an element with the @var{name} of the file and a @var{address} 
 of @code{0}, followed by all symbols exported from this file.
@@ -2391,7 +2393,7 @@ Some compilers may allow identifiers which are not valid in ANSI C, such
 as dollar signs.  Libtool only recognizes valid ANSI C symbols (an
 initial ASCII letter or underscore, followed by zero or more ASCII
 letters, digits, and underscores), so non-ANSI symbols will not appear
-in @var{dld_preloaded_symbols}.
+in @var{lt_preloaded_symbols}.
 
 @node Finding the dlname
 @section Finding the correct name to dlopen
