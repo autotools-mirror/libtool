@@ -21,6 +21,7 @@ source file name in the <cmd-arg> list and then substituting the C source
 code suffix `.c' with the library object suffix, `.lo'.\n";
 
   text = << _END_COMPILE_STRING_
+[++ AutoGen5 Template ++]
     # Get the compilation command and the source file.
     base_compile=
     prev=

@@ -1,9 +1,10 @@
 [= AutoGen5 Template in=ltmain.in =]
 [=( dne "# " "# " )=][=
 
-DEFINE test-or-exit =]
-if ([=test=]) > /dev/null 2>&1 ; then
-[=    invert "  :\nelse"=]
+DEFINE test-or-exit
+
+=]if ([=test=]) > /dev/null 2>&1 ; then[=
+  invert "  :\nelse"=]
   $echo "$modename: [=msg=]" 1>&2
   $echo "$help" 1>&2
   exit 1
@@ -75,7 +76,11 @@ TIMESTAMP="@TIMESTAMP@"
 default_mode=
 help="Try \`$progname --help' for more information."
 
-[=string[BASE_STRING].text=]
+[= (out-push-new ".lt.tmp")    =][=
+   string[BASE_STRING].text    =][=
+   (out-pop)                   =][=
+   INCLUDE ".lt.tmp"           =][=
+   `rm -f .lt.tmp`             =]
 
 if test "$LTCONFIG_VERSION" != "$VERSION"; then
   echo "$modename: ltconfig version \`$LTCONFIG_VERSION' does not match $PROGRAM version \`$VERSION'" 1>&2
@@ -295,7 +300,10 @@ if test -z "$show_help"; then
   # libtool compile mode
   compile)
     modename="$modename: compile"
-[=string[COMPILE_STRING].text=]
+[= (out-push-new ".lt.tmp")    =][=
+   string[COMPILE_STRING].text =][=
+   (out-pop)                   =][=
+   INCLUDE ".lt.tmp"           =]
 
     exit 0
     ;;
@@ -303,7 +311,10 @@ if test -z "$show_help"; then
   # libtool link mode
   link | relink)
     modename="$modename: link"
-[=string[LINK_STRING].text=]
+[= (out-push-new ".lt.tmp")    =][=
+   string[LINK_STRING].text    =][=
+   (out-pop)                   =][=
+   INCLUDE ".lt.tmp"           =]
     exit 0
     ;;
 
@@ -311,7 +322,10 @@ if test -z "$show_help"; then
   install)
     modename="$modename: install"
 
-[=string[INSTALL_STRING].text=]
+[= (out-push-new ".lt.tmp")    =][=
+   string[INSTALL_STRING].text =][=
+   (out-pop)                   =][=
+   INCLUDE ".lt.tmp"           =]
 
     exit 0
     ;;
@@ -319,17 +333,35 @@ if test -z "$show_help"; then
   # libtool finish mode
   finish)
     modename="$modename: finish"
-[=string[FINISH_STRING].text=]
+[= (out-push-new ".lt.tmp")    =][=
+   string[FINISH_STRING].text  =][=
+   (out-pop)                   =][=
+   INCLUDE ".lt.tmp"           =]
     exit 0
     ;;
 
   # libtool execute mode
-[= include "lt_exe.tpl" =]
+  execute)
+    modename="$modename: execute"
+
+    # The first argument is the command name.
+    cmd="$nonopt"
+    [= test-or-exit test = 'test -z "$cmd"'
+       msg  = "you must specify a COMMAND" =]
+[= (out-push-new ".lt.tmp")    =][=
+   string[EXECUTE_STRING].text =][=
+   (out-pop)                   =][=
+   INCLUDE ".lt.tmp"           =]
+    ;;
 
   # libtool clean and uninstall mode
   clean | uninstall)
     modename="$modename: $mode"
-[=string[CLEAN_STRING].text=]
+[= (out-push-new ".lt.tmp")    =][=
+   string[CLEAN_STRING].text   =][=
+   (out-pop)                   =][=
+   INCLUDE ".lt.tmp"           =][=
+   `rm -f .lt.tmp`             =]
     exit $exit_status
     ;;
 

@@ -7,6 +7,7 @@ string[0] = {
   str-name = base;
 
   text = <<_END_OF_BASE_TEXT_
+[++ AutoGen5 Template ++]
 # Global variables.
 lo2o="s/\\.lo\$/.${objext}/"
 o2lo="s/\\.${objext}\$/.lo/"

@@ -47,6 +47,7 @@ If OUTPUT-FILE ends in `.lo' or `.${objext}', then a reloadable object file
 is created, otherwise an executable program is created.\n";
 
   text = << _END_LINK_STRING_
+[++ AutoGen5 Template ++]
     case $host in
     *-*-cygwin* | *-*-mingw* | *-*-pw32* | *-*-os2*)
       # It is impossible to link a dll without this setting, and

@@ -13,6 +13,7 @@ It should be either the `install' or `cp' program.\n
 (only BSD-compatible install options are recognized).\n";
 
   text = << _END_INSTALL_STRING_
+[++ AutoGen5 Template ++]
     # There may be an optional sh(1) argument at the beginning of
     # install_prog (especially on Windows NT).
     if test "$nonopt" = "$SHELL" || test "$nonopt" = /bin/sh ||

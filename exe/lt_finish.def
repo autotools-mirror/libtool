@@ -13,6 +13,7 @@ The commands that this mode executes may require superuser privileges.  Use
 the `--dry-run' option if you just want to see what would be executed.\n";
 
   text = << _END_FINISH_STRING_
+[++ AutoGen5 Template ++]
     libdirs="$nonopt"
     admincmds=
 

@@ -24,6 +24,7 @@ or program, all the files associated with it are deleted. Otherwise, only
 the file itself is deleted using <command>.\n";
 
   text = << _END_EXECUTE_STRING_
+[++ AutoGen5 Template ++]
     rm="$nonopt"
     files=
     rmforce=

@@ -7,6 +7,17 @@
 
 IF (== (suffix) "h") =][=
 
+DEFINE test-or-exit
+
+=]if ([=test=]) > /dev/null 2>&1 ; then[=
+  invert "  :\nelse"=]
+  $echo "$modename: [=msg=]" 1>&2
+  $echo "$help" 1>&2
+  exit 1
+fi[=
+
+ENDDEF  =][=
+
   (define guard (string-append "HDRGRD_" (string-upcase!
                 (string->c-name! (out-name)) )))
   (define hdr-name (out-name)) =]
@@ -77,20 +88,17 @@ tSCC zExplain[=(string-capitalize! (get "str_name"))=][ [=
   IF (exist? "text")
 
 =][=
-    IF (== (suffix) "h") =]
-#define [=(string-upcase! (get "str_name"))=]_CMD_SIZE [=(+ 1 (len "text"))=]
-extern [=
-    ELSE =]
-[=  ENDIF
-=]tCC z[=(string-capitalize! (get "str_name"))
-             =]Cmd[ [=(string-upcase! (get "str_name"))=]_CMD_SIZE ][=
-    IF (== (suffix) "c") =] =
-[=(kr-string (get "text"))=][=
-    ENDIF =];[=
+    IF (== (suffix) "c") =]
+tSCC z[= (string-capitalize! (get "str_name")) =]Cmd[] =
+[= (out-push-new ".lt.tpl") =][=
+   text                     =][=
+   (out-pop)
+   (out-push-new ".lt.xxx") =][=
+   INCLUDE ".lt.tpl"        =][=
+   (out-pop)
+   (kr-string (shell "cat .lt.xxx ; rm -f .lt.*")) =][=
+    ENDIF =];
 
-  ENDIF =]
-[=
-  IF (== (suffix) "c") =]
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */[=
   ENDIF =][=
 
