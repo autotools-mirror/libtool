@@ -1,5 +1,10 @@
 NEWS - list of user-visible changes between releases of GNU Libtool
 
+New in 1.3.2: 1999-05-26, CVS version 1.3.1a, Libtool team:
+* Avoid circular links of objects and libraries.
+* Look for dlerror when dlopen was found in -ldl (typo).
+* Disable shared libraries with broken GNU ld on Solaris.
+
 New in 1.3.1: 1999-05-21, CVS version 1.3.0a, Libtool team:
 * Documentation improvements; recommend automake users to insert libtool.m4
   in acinclude.m4
