@@ -1,5 +1,8 @@
 1999-03-10  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* libltdl/ltdl.c (strdup): always use our own, because the
+	standard strdup won't use lt_dlmalloc
+
 	* ltconfig.in (dlfcn.h): function definition may cause warnings;
 	define variable instead
 

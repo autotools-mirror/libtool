@@ -126,8 +126,6 @@ typedef	struct lt_dlhandle_t {
 	lt_ptr_t system;	/* system specific data */
 } lt_dlhandle_t;
 
-#if ! HAVE_STRDUP
-
 #undef strdup
 #define strdup xstrdup
 
@@ -144,8 +142,6 @@ strdup(str)
 		strcpy(tmp, str);
 	return tmp;
 }
-
-#endif
 
 #if ! HAVE_STRCHR
 
