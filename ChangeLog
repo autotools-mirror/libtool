@@ -1,3 +1,7 @@
+2003-02-17  Allan Sandfeld Jensen  <snowwolf@one2one-networks.com>
+
+	* libtool.m4: Intel icc fixups for version 7.0.
+
 2003-02-17  Ralph Schleicher  <rs@nunatak.allgaeu.org>
 
 	* libtool.m4 (AC_LIBTOOL_SYS_DYNAMIC_LINKER): Prepend a dot to

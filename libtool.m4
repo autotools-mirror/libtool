@@ -2982,8 +2982,8 @@ case $host_os in
 	# Intel C++
 	with_gnu_ld=yes
 	_LT_AC_TAGVAR(archive_cmds_need_lc, $1)=no
-	_LT_AC_TAGVAR(archive_cmds, $1)='$CC -shared -nostdlib $predep_objects $libobjs $deplibs $postdep_objects $compiler_flags ${wl}-soname $wl$soname -o $lib'
-	_LT_AC_TAGVAR(archive_expsym_cmds, $1)='$CC -shared -nostdlib $predep_objects $libobjs $deplibs $postdep_objects $compiler_flags ${wl}-soname $wl$soname ${wl}-retain-symbols-file $wl$export_symbols -o $lib'
+	_LT_AC_TAGVAR(archive_cmds, $1)='$CC -shared $predep_objects $libobjs $deplibs $postdep_objects $compiler_flags ${wl}-soname $wl$soname -o $lib'
+	_LT_AC_TAGVAR(archive_expsym_cmds, $1)='$CC -shared $predep_objects $libobjs $deplibs $postdep_objects $compiler_flags ${wl}-soname $wl$soname ${wl}-retain-symbols-file $wl$export_symbols -o $lib'
 	_LT_AC_TAGVAR(hardcode_libdir_flag_spec, $1)='${wl}-rpath,$libdir'
 	_LT_AC_TAGVAR(export_dynamic_flag_spec, $1)='${wl}--export-dynamic'
 	_LT_AC_TAGVAR(whole_archive_flag_spec, $1)='${wl}--whole-archive$convenience ${wl}--no-whole-archive'
@@ -4464,7 +4464,7 @@ AC_MSG_CHECKING([for $compiler option to produce PIC])
 	    ;;
 	  icpc)
 	    # Intel C++
-	    _LT_AC_TAGVAR(lt_prog_compiler_wl, $1)='-Qoption,ld,'
+	    _LT_AC_TAGVAR(lt_prog_compiler_wl, $1)='-Wl,'
 	    _LT_AC_TAGVAR(lt_prog_compiler_pic, $1)='-KPIC'
 	    _LT_AC_TAGVAR(lt_prog_compiler_static, $1)='-static'
 	    ;; 
@@ -4692,7 +4692,7 @@ AC_MSG_CHECKING([for $compiler option to produce PIC])
 
     linux*)
       if test "$CC" = "icc"; then
-	_LT_AC_TAGVAR(lt_prog_compiler_wl, $1)='-Qoption,ld,'
+	_LT_AC_TAGVAR(lt_prog_compiler_wl, $1)='-Wl,'
 	_LT_AC_TAGVAR(lt_prog_compiler_pic, $1)='-KPIC'
 	_LT_AC_TAGVAR(lt_prog_compiler_static, $1)='-static'
       fi
