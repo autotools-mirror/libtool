@@ -2156,6 +2156,7 @@ func_mode_link ()
     dllsearchpath=
     lib_search_path=`pwd`
     inst_prefix_dir=
+    new_inherited_linker_flags=
 
     avoid_version=no
     dlfiles=
@@ -3089,7 +3090,7 @@ func_mode_link ()
 	case $pass in
 	dlopen) libs="$dlfiles" ;;
 	dlpreopen) libs="$dlprefiles" ;;
-	link) libs="$deplibs %DEPLIBS% $dependency_libs $inherited_linker_flags" ;;
+	link) libs="$deplibs %DEPLIBS% $dependency_libs" ;;
 	esac
       fi
       if test "$linkmode,$pass" = "lib,dlpreopen"; then
@@ -3208,9 +3209,9 @@ func_mode_link ()
 	  else
 	    deplibs="$deplib $deplibs"
 	    if test "$linkmode" = lib ; then
-		case "$inherited_linker_flags " in
+		case "$new_inherited_linker_flags " in
 		    *" $deplib "*) ;;
-		    * ) inherited_linker_flags="$inherited_linker_flags $deplib" ;;
+		    * ) new_inherited_linker_flags="$new_inherited_linker_flags $deplib" ;;
 		esac
 	    fi
 	  fi
@@ -3369,12 +3370,18 @@ func_mode_link ()
 	*-*-darwin*)
 	  # Convert "-framework foo" to "foo.ltframework"
 	  if test -n "$inherited_linker_flags"; then
-	    inherited_linker_flags=`$ECHO "X$inherited_linker_flags" | $Xsed -e 's/-framework \([[^ $]]*\)/\1.ltframework/g'`
+	    tmp_inherited_linker_flags=`$ECHO "X$inherited_linker_flags" | $Xsed -e 's/-framework \([[^ $]]*\)/\1.ltframework/g'`
+	    new_inherited_linker_flags="$new_inherited_linker_flags $tmp_inherited_linker_flags"
 	  fi
 	  dependency_libs=`$ECHO "X $dependency_libs" | $Xsed -e 's% \([[^ $]]*\).ltframework% -framework \1%g'`
 	  ;;
 	esac
-
+	if test "$linkmode,$pass" = "prog,link"; then
+	  compile_deplibs="$inherited_linker_flags $compile_deplibs"
+	  finalize_deplibs="$inherited_linker_flags $finalize_deplibs"
+	else
+	  compiler_flags="$compiler_flags $inherited_linker_flags"
+	fi
 	if test "$linkmode,$pass" = "lib,link" ||
 	   test "$linkmode,$pass" = "prog,scan" ||
 	   { test "$linkmode" != prog && test "$linkmode" != lib; }; then
@@ -3938,7 +3945,7 @@ func_mode_link ()
 
 	  if test "$link_all_deplibs" != no; then
 	    # Add the search paths of all dependency libraries
-	    for deplib in $dependency_libs $inherited_linker_flags; do
+	    for deplib in $dependency_libs; do
 	      case $deplib in
 	      -L*) path="$deplib" ;;
 	      *.la)
@@ -4841,7 +4848,7 @@ EOF
       case $host in
 	*-*-darwin*)
 	  newdeplibs=`$ECHO "X $newdeplibs" | $Xsed -e 's% \([[^ $]]*\).ltframework% -framework \1%g'`
-	  inherited_linker_flags=`$ECHO "X $inherited_linker_flags" | $Xsed -e 's% \([[^ $]]*\).ltframework% -framework \1%g'`
+	  new_inherited_linker_flags=`$ECHO "X $new_inherited_linker_flags" | $Xsed -e 's% \([[^ $]]*\).ltframework% -framework \1%g'`
 	  deplibs=`$ECHO "X $deplibs" | $Xsed -e 's% \([[^ $]]*\).ltframework% -framework \1%g'`
 	  ;;
       esac
@@ -6429,7 +6436,7 @@ library_names='$library_names'
 old_library='$old_library'
 
 # Linker flags that can not go in dependency_libs.
-inherited_linker_flags='$inherited_linker_flags'
+inherited_linker_flags='$new_inherited_linker_flags'
 
 # Libraries that this one depends upon.
 dependency_libs='$dependency_libs'
