@@ -1,3 +1,14 @@
+1999-04-27  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* ltconfig.in (compiler_c_o): Make sure the compiler does not
+	create temporaries in the current directory when output should go
+	elsewhere.  We must perform locking if it does.
+
+1999-04-27  Gary V. Vaughan  <gary@oranda.demon.co.uk>
+
+	* ltmain.in (old_archive_cmds): Ensure that there are always .o
+	objects available before running old_archive_cmds.
+
 1999-04-26  Erez Zadok  <ezk@cs.columbia.edu>
 
 	* doc/PLATFORMS: Updates for netbsd 1.3.3 and 1.4.
@@ -7,11 +18,6 @@
 	* ltconfig.in (aix4.[01], always_export_symbols): The case pattern 
 	would never match; fixed.
 	Reported by Stephan Kulow <coolo@itm.mu-luebeck.de>
-
-1999-04-26  Gary V. Vaughan  <gary@oranda.demon.co.uk>
-
-	* ltmain.in (old_archive_cmds): Ensure that there are always .o
-	objects available before running old_archive_cmds.
 
 1999-04-25  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
