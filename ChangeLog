@@ -1,3 +1,8 @@
+2004-10-08  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
+	* libltdl/ltdl.c (lt_dlexit, lt_dlpath_insertdir): Fix memleaks,
+	free user_search_path on lt_dlexit.
+
 2004-10-08  Gary V. Vaughan  <gary@gnu.org>
 
 	* config/general.m4sh (func_verbose): Work around a bash bug in
