@@ -1,3 +1,10 @@
+2003-02-05  Robert Boehne  <rboehne@gnu.org>
+
+	* libtool.m4 (AC_CHECK_LIBM): Search for a real symbol in
+	the math library rather than 'main', it causes problems for
+	C++ compilers with certain Auto* tools.
+	(AC_LIBLTDL_INSTALLABLE): ditto.
+
 2003-02-05  Christian Cornelssen  <ccorn@cs.tu-berlin.de>
 
 	* libtool.m4 (_LT_AC_LANG_CXX_CONFIG)

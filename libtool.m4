@@ -2246,10 +2246,10 @@ case $host in
   ;;
 *-ncr-sysv4.3*)
   AC_CHECK_LIB(mw, _mwvalidcheckl, LIBM="-lmw")
-  AC_CHECK_LIB(m, main, LIBM="$LIBM -lm")
+  AC_CHECK_LIB(m, cos, LIBM="$LIBM -lm")
   ;;
 *)
-  AC_CHECK_LIB(m, main, LIBM="-lm")
+  AC_CHECK_LIB(m, cos, LIBM="-lm")
   ;;
 esac
 ])# AC_CHECK_LIBM
@@ -2294,7 +2294,7 @@ AC_DEFUN([AC_LIBLTDL_CONVENIENCE],
 # In the future, this macro may have to be called after AC_PROG_LIBTOOL.
 AC_DEFUN([AC_LIBLTDL_INSTALLABLE],
 [AC_BEFORE([$0],[AC_LIBTOOL_SETUP])dnl
-  AC_CHECK_LIB(ltdl, main,
+  AC_CHECK_LIB(ltdl, lt_dlinit,
   [test x"$enable_ltdl_install" != xyes && enable_ltdl_install=no],
   [if test x"$enable_ltdl_install" = xno; then
      AC_MSG_WARN([libltdl not installed, but installation disabled])
