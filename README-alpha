@@ -92,22 +92,22 @@ using (by typing `libtool --version').
 
 * Run ./configure and then make.
 
-* Run `make fetch', which will fetch new versions of the files that are
-  maintained outside of libtool.
+* Run `make -fMakefile.maint fetch', which will fetch new versions of the
+  files that are maintained outside of libtool.
 
 * Run ./commit.
 
-* Run `make cvs-dist' which will build a release tarball (with `make
-  distcheck'), tag the tree with release-$(VERSION) and generate the
-  gpg signature files.
+* Run `make -fMakefile.maint cvs-dist' which will build a release tarball
+  (with `make distcheck'), tag the tree with release-$(VERSION) and generate
+  the gpg signature files.
 
 * Make sure you have a copy of xdelta installed, and a copy of the previous
   release tarball in the build directory.
 
-* Run 'make deltas' (pass LASTRELEASE=min.maj[.mic[alpha]] if needed) to
-  create both diff and xdelta files between the previous release tarball
-  and the new with detached gpg signature files and clear signed directive
-  files.
+* Run 'make -fMakefile.maint deltas' (pass LASTRELEASE=min.maj[.mic[alpha]]
+  if needed) to create both diff and xdelta files between the previous
+  release tarball and the new with detached gpg signature files and clear
+  signed directive files.
 
 * Upload release tarball, diff file and xdelta file, plus their associated
   detached gpg signature files and clear signed directive files to

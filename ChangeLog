@@ -1,3 +1,11 @@
+2004-02-12  Scott James Remnant  <scott@netsplit.com>
+
+	* Makefile.maint, Makefile: Move rules intended for Libtool
+	maintainers only out of the Makefile we distribute and into one
+	that we only need keep in CVS.
+	* README-alpha: Add -fMakefile.maint to the instructions where
+	needed.
+	
 2004-02-12  Albert Chin-A-Young  <china@thewrittenword.com>
 	Scott James Remnant  <scott@netsplit.com>
 
