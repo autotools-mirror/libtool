@@ -1574,11 +1574,10 @@ compiler."
 	  ;;
 	-l*)
 	  name=`$echo "X$deplib" | $Xsed -e 's/^-l//'`
-	  libname=`eval \\$echo \"$libname_spec\"`
 	  found=no
 	  for searchdir in $lib_search_path; do
 	    # Search the libtool library
-	    lib="$searchdir/$libname.la"
+	    lib="$searchdir/lib${name}.la"
 	    if test -f "$lib"; then
 	      found=yes
 	      break
@@ -1825,21 +1824,15 @@ compiler."
 	  fi
 	  test "$add_name" = yes && deplibs="$deplibs -l$name"
 	elif test "$build_libtool_libs" = yes && test "$deplibs_check_method" != pass_all; then
+	  # We're trying link a shared library against a static one
+	  # but the system doesn't support it.
+	  # Just print a warning and add the library to dependency_libs so
+	  # that the program can be linked against the static library.
 	  echo
 	  echo "*** Warning: This library needs some functionality provided by $libname."
 	  echo "*** I have the capability to make that library automatically link in when"
 	  echo "*** you link to this library.  But I can only do this if you have a"
 	  echo "*** shared version of the library, which you do not appear to have."
-	  continue
-	else
-	  # Check for old archives if we don't build new libraries.
-	  if test -n "$pic_flag" && test -z "$old_library"; then
-	    $echo "$modename: cannot find static library for \`$lib'" 1>&2
-	    exit 1
-	  fi
-	  convenience="$convenience $dir/$old_library"
-	  old_convenience="$old_convenience $dir/$old_library"
-	  deplibs="$deplibs $dir/$old_library"
 	fi
 
 	if test -n "$dependency_libs"; then
@@ -2127,7 +2120,7 @@ EOF
 	    ;;
 	  *)
 	    # Add libc to deplibs on all other systems.
-	    deplibs="$deplibs -lc"
+	    deplibs="-lc $deplibs"
 	    ;;
 	  esac
 	fi
@@ -2421,9 +2414,10 @@ EOF
 	fi 
       fi
     
-      # Find libtool libraries and add their dependencies/rpaths
+      # Find libtool libraries and add their dependencies
       old_deplibs="$deplibs"
       deplibs=
+      absdeplibs=
       newdependency_libs=
       new_lib_search_path=
       for deplib in $old_deplibs; do
@@ -2431,16 +2425,16 @@ EOF
 	case "$deplib" in
 	-L*)
 	  deplibs="$deplibs $deplib"
+	  absdeplibs="$absdeplibs $deplib"
 	  new_lib_search_path="$new_lib_search_path "`$echo "X$deplib" | $Xsed -e 's/^-L//'`
 	  continue
 	  ;;
 	-l*)
 	  name=`$echo "X$deplib" | $Xsed -e 's/^-l//'`
-	  libname=`eval \\$echo \"$libname_spec\"`
 	  found=no
 	  for searchdir in $lib_search_path; do
 	    # Search the libtool library
-	    lib="$searchdir/$libname.la"
+	    lib="$searchdir/lib${name}.la"
 	    if test -f "$lib"; then
 	      found=yes
 	      break
@@ -2448,6 +2442,7 @@ EOF
 	  done
 	  if test "$found" != yes; then
 	    deplibs="$deplibs $deplib"
+	    absdeplibs="$absdeplibs $deplib"
 	    continue
 	  fi
 	  ;;
@@ -2494,22 +2489,64 @@ EOF
 	fi
 
 	new_lib_search_path="$new_lib_search_path `$echo "X$lib" | $Xsed -e 's%/[^/]*$%%'`"
-	deplibs="$deplibs $lib"
-	
+
 	for deplib in $dependency_libs; do
 	  case "$deplib" in
-	  -L*) new_lib_search_path="$new_lib_search_path `expr $deplib : '-L\(.*\)'`" ;;
-	  *) ;;
+	  -L*)
+	    new_lib_search_path="$new_lib_search_path `$echo "X$deplib" | $Xsed -e 's/^-L//'`"
+	    ;;
 	  esac
-	  # Make sure dependency_libs contains only unique 
-	  # libraries and directories.
-	  case "$newdependency_libs " in
-	  *" $deplib "*) ;;
-	  *) newdependency_libs="$newdependency_libs $deplib" ;;
-	  esac
+	  
+	  if test "$link_all_deplibs" = yes || \
+	     test "$fast_install" = yes || \
+	     test "$build_libtool_libs" = no || \
+	     test -z "$library_names"; then
+	    # Need to link against all dependency_libs
+	    case "$absdeplibs " in
+	    *" $deplib "*) ;;
+	    *)
+	      deplibs="$deplibs $deplib"
+	      absdeplibs="$absdeplibs $deplib"
+	      ;;
+	    esac
+	  elif test "$hardcode_into_libs" = no; then
+	    # Need to hardcode shared library paths
+	    # or/and link against static libraries
+	    case "$newdependency_libs " in
+	    *" $deplib "*) ;;
+	    *) newdependency_libs="$newdependency_libs $deplib" ;;
+	    esac
+	  fi
 	done
+
+	ladir=`$echo "X$lib" | $Xsed -e 's%/[^/]*$%%'`
+	test "X$ladir" = "X$lib" && ladir="."
+	# We need an absolute path.
+	case "$ladir" in
+	/* | [A-Za-z]:[/\\]*) ;;
+	*)
+	  abs_ladir=`cd "$ladir" && pwd`
+	  if test -z "$abs_ladir"; then
+	    $echo "$modename: cannot determine absolute directory name of \`$ladir'" 1>&2
+	    exit 1
+	  fi
+	  ladir="$abs_ladir"
+	  ;;
+	esac
+	laname=`$echo "X$lib" | $Xsed -e 's%^.*/%%'`
+
+	deplibs="$deplibs $lib"
+	absdeplibs="$absdeplibs $ladir/$laname"
       done
-      dependency_libs="$newdependency_libs"
+      
+      # Eliminate all dependency_libs that are already contained in deplibs
+      dependency_libs=
+      for deplib in $newdependency_libs; do
+	case "$deplibs " in
+	*" $deplib "*) ;;
+	*) dependency_libs="$dependency_libs $deplib" ;;
+	esac
+      done
 
       # Make sure lib_search_path contains only unique directories.
       lib_search_path=
@@ -2523,25 +2560,14 @@ EOF
       
       # Find libtool libraries and add their directories
       alldeplibs=no
-      linkalldeplibs=no
-      if test "$fast_install" = yes || test "$build_libtool_libs" = no || \
-	 test "$deplibs_check_method" = none; then
-	linkalldeplibs=yes
-      fi
       link_against_libtool_libs=
       
       for deplib in $deplibs @DEPLIBS@ $dependency_libs; do
 	lib=
 	case "$deplib" in
 	-L*)
-	  case "$compile_command " in
-	  *" $deplib "*) ;;
-	  *) compile_command="$compile_command $deplib";;
-	  esac
-	  case "$finalize_command " in
-	  *" $deplib "*) ;;
-	  *) finalize_command="$finalize_command $deplib";;
-	  esac
+	  compile_command="$compile_command $deplib"
+	  finalize_command="$finalize_command $deplib"
 	  continue
 	  ;;
 	-R*)
@@ -2554,19 +2580,15 @@ EOF
 	  continue
 	  ;;
 	@DEPLIBS@)
-	  if test "$hardcode_into_libs" = yes; then
-	    break
-	  fi
 	  alldeplibs=yes
 	  continue
 	  ;;
 	-l*)
 	  name=`$echo "X$deplib" | $Xsed -e 's/^-l//'`
-	  libname=`eval \\$echo \"$libname_spec\"`
 	  found=no
 	  for searchdir in $lib_search_path; do
 	    # Search the libtool library
-	    lib="$searchdir/$libname.la"
+	    lib="$searchdir/lib${name}.la"
 	    if test -f "$lib"; then
 	      found=yes
 	      break
@@ -2652,7 +2674,22 @@ EOF
 	fi
 	name=`$echo "X$laname" | $Xsed -e 's/\.la$//' -e 's/^lib//'`
 	
-	if test "$build_libtool_libs" = yes && test -n "$library_names"; then
+	if test -z "$libdir"; then
+	  # It is a libtool convenience library, so add in its objects.
+	  convenience="$convenience $dir/$old_library"
+	  old_convenience="$old_convenience $dir/$old_library"
+	  compile_command="$compile_command $dir/$old_library"
+	  finalize_command="$finalize_command $dir/$old_library"
+	  continue
+	fi
+
+	hardcode=yes
+	test "$hardcode_into_libs" = yes && test "$alldeplibs" = yes && hardcode=no
+	
+	if test "$hardcode" = yes && \
+	   test "$build_libtool_libs" = yes && \
+	   test -n "$library_names"; then
+	  # We need to hardcode the library path
 	  if test -n "$shlibpath_var"; then
 	    # Make sure the rpath contains only unique directories.
 	    case "$temp_rpath " in
@@ -2686,19 +2723,13 @@ EOF
 	  esac
 	fi
 
-	if test "$alldeplibs" = yes && test "$linkalldeplibs" = no; then
+	if test "$alldeplibs" = yes && \
+	   test "$build_libtool_libs" = yes && \
+	   test -n "$library_names"; then
+	  # Do we only need to link against static libraries?
 	  continue
 	fi
 	
-	if test -z "$libdir"; then
-	  # It is a libtool convenience library, so add in its objects.
-	  convenience="$convenience $dir/$old_library"
-	  old_convenience="$old_convenience $dir/$old_library"
-	  compile_command="$compile_command $dir/$old_library"
-	  finalize_command="$finalize_command $dir/$old_library"
-	  continue
-	fi
-
 	if test "$build_libtool_libs" = yes && test -n "$library_names"; then
 	  link_against_libtool_libs="$link_against_libtool_libs $lib"
 

@@ -2590,7 +2590,7 @@ implementation of @file{libltdl} services, it requires GNU DLD, or it
 will only emulate dynamic linking with libtool's dlpreopening mechanism.
 
 @noindent
-libltdl supports currently the following dynamic linking mechanims:
+libltdl supports currently the following dynamic linking mechanisms:
 
 @itemize @bullet
 @item
@@ -3863,6 +3863,11 @@ as OS/2 or MS-DOS), the library is just called @samp{@var{name}.a}.
 A list of shared library names.  The first is the name of the file,
 the rest are symbolic links to the file.  The name in the list is
 the file name that the linker finds when given @samp{-l@var{name}}.
+@end defvar
+
+@defvar link_all_deplibs
+Whether libtool must link a program against all its dependency libraries.
+Set to @samp{yes} or @samp{no}.  Default is @samp{no}.
 @end defvar
 
 @defvar link_static_flag

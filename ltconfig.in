@@ -1008,6 +1008,7 @@ hardcode_direct=no
 hardcode_minus_L=no
 hardcode_shlibpath_var=unsupported
 runpath_var=
+link_all_deplibs=no
 always_export_symbols=no
 export_symbols_cmds='$NM $libobjs | $global_symbol_pipe | sed '\''s/.* //'\'' | sort | uniq > $export_symbols'
 # include_expsyms should be a list of space-separated symbols to be *always*
@@ -1318,6 +1319,7 @@ else
 		$LD -G${allow_undefined_flag} -M $lib.exp -h $soname -o $lib $libobjs $deplibs $linkopts~$rm $lib.exp'
     hardcode_libdir_flag_spec='-R$libdir'
     hardcode_shlibpath_var=no
+    link_all_deplibs=yes
     ;;
 
   sunos4*)
@@ -2686,6 +2688,9 @@ hardcode_minus_L=$hardcode_minus_L
 # Set to yes if using SHLIBPATH_VAR=DIR during linking hardcodes DIR into
 # the resulting binary.
 hardcode_shlibpath_var=$hardcode_shlibpath_var
+
+# Whether libtool must link a program against all its dependency libraries.
+link_all_deplibs=$link_all_deplibs
 
 # Compile-time system search path for libraries
 sys_lib_search_path_spec=$sys_lib_search_path_spec

@@ -251,11 +251,31 @@ done
 
 if test "x$ltdl_tar" = x"yes"; then
   if test "x$dry_run" = x"yes"; then
-    echo "(cd $pkgdatadir > /dev/null && tar -cf - libltdl | gzip --best) > libltdl.tar.gz"
+    echo "tar -cf - libltdl | gzip --best > libltdl.tar.gz"
   elif test -f libltdl.tar.gz && test -z "$force"; then
     test -z "$automake" && echo "$progname: \`libltdl.tar.gz' exists: use \`--force' to overwrite" 1>&2
   else
-    (cd $pkgdatadir > /dev/null && tar -cf - libltdl | gzip --best) > libltdl.tar.gz
+    test -d libltdl && ${rm}r libltdl
+    $mkdir libltdl
+    ltdlfiles=`cd $pkgdatadir && ls libltdl/*`
+    for file in $ltdlfiles; do
+      if $cp $pkgdatadir/$file $file; then :
+      else
+	echo "$progname: cannot copy \`$pkgdatadir/$file' to \`$file'" 1>&2
+	status=1
+	break
+      fi
+    done
+    for file in $files; do
+      if $cp $pkgdatadir/$file libltdl/$file; then :
+      else
+	echo "$progname: cannot copy \`$pkgdatadir/$file' to \`libltdl/$file'" 1>&2
+	status=1
+	break
+      fi
+    done
+    tar -cf - libltdl | gzip --best > libltdl.tar.gz
+    ${rm}r libltdl
   fi
 fi
 

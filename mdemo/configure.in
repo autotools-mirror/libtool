@@ -27,6 +27,7 @@ AC_SUBST(STATIC)
 AC_CHECK_HEADERS(math.h)
 
 AC_CHECK_LIBM
+AC_SUBST(LIBM)
 
 dnl Output the makefile
 AC_OUTPUT(Makefile)
