@@ -1,3 +1,8 @@
+2003-02-28  Ralph Schleicher  <rs@nunatak.allgaeu.org>
+
+	* ltmain.in: Only append a dot to the wrapper script when
+	building on cygwin/MSYS (check for $build, not $host).
+
 2003-02-27  Samuel Meder  <meder@mcs.anl.gov>
 
 	* libtool.m4 (ia64): Add support for Intel compiler (ecc) on IA64
