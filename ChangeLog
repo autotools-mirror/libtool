@@ -1,3 +1,8 @@
+2000-10-30  Gary V. Vaughan  <gvv@techie.com>
+
+	* doc/libtool.texi:  Corrected nother attack of CRLF line
+	endings.
+
 2000-10-30  Aneesh Kumar K.V <kvaneesh@hotmail.com>
 
 	* ltcf-c.sh (archive_expsym_cmds):  Support for -export-symbol
