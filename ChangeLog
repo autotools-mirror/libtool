@@ -1,8 +1,11 @@
 1999-12-18  Alexandre Oliva  <oliva@lsd.ic.unicamp.br>
 
+	* ltmain.in (-Wc, -Xcompiler): Implemented in compile mode.
+	
 	* ltmain.in (-Xcompiler, -Xlinker): Add to compile_command and
 	finalize_command.
 	(-Wc, -Wl): Likewise.
+
 	* tests/quote.test: Adjust quoting style of -Wl.
 	
 	* ltmain.in: Oops, `echo' -> `$echo'.

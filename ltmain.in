@@ -267,6 +267,7 @@ if test -z "$show_help"; then
     modename="$modename: compile"
     # Get the compilation command and the source file.
     base_compile=
+    prev=
     lastarg=
     srcfile="$nonopt"
     suppress_output=
@@ -274,6 +275,32 @@ if test -z "$show_help"; then
     user_target=no
     for arg
     do
+      case "$prev" in
+      "") ;;
+      xcompiler)
+	# Aesthetically quote the previous argument.
+	prev=
+	lastarg=`$echo "X$arg" | $Xsed -e "$sed_quote_subst"`
+
+	case "$arg" in
+	# Double-quote args containing other shell metacharacters.
+	# Many Bourne shells cannot handle close brackets correctly
+	# in scan sets, so we specify it separately.
+	*[\[\~\#\^\&\*\(\)\{\}\|\;\<\>\?\'\ \	]*|*]*|"")
+          arg="\"$arg\""
+	  ;;
+	esac
+
+        # Add the previous argument to base_compile.
+        if test -z "$base_compile"; then
+	  base_compile="$lastarg"
+        else
+	  base_compile="$base_compile $lastarg"
+        fi
+	continue
+	;;
+      esac
+
       # Accept any command-line options.
       case "$arg" in
       -o)
@@ -286,6 +313,40 @@ if test -z "$show_help"; then
 
       -static)
 	build_old_libs=yes
+	continue
+	;;
+
+      -Xcompiler)
+        prev=xcompiler
+        continue
+	;;
+
+      -Wc,*)
+        args=`$echo "X$arg" | $Xsed -e "s/^-Wc,//"`
+        lastarg=
+	IFS="${IFS= 	}"; save_ifs="$IFS"; IFS=','
+	for arg in $args; do
+	  IFS="$save_ifs"
+
+	  # Double-quote args containing other shell metacharacters.
+	  # Many Bourne shells cannot handle close brackets correctly
+	  # in scan sets, so we specify it separately.
+	  case "$arg" in
+	    *[\[\~\#\^\&\*\(\)\{\}\|\;\<\>\?\'\ \	]*|*]*|"")
+	    arg="\"$arg\""
+	    ;;
+	  esac
+	  lastarg="$lastarg $arg"
+	done
+	IFS="$save_ifs"
+	lastarg=`$echo "X$lastarg" | $Xsed -e "s/^ //"`
+
+        # Add the arguments to base_compile.
+	if test -z "$base_compile"; then
+	  base_compile="$lastarg"
+	else
+	  base_compile="$base_compile $lastarg"
+	fi
 	continue
 	;;
       esac
@@ -316,11 +377,11 @@ if test -z "$show_help"; then
       lastarg=`$echo "X$lastarg" | $Xsed -e "$sed_quote_subst"`
 
       # Double-quote args containing other shell metacharacters.
-      # Many Bourne shells cannot handle close brackets correctly in scan
-      # sets, so we specify it separately.
+      # Many Bourne shells cannot handle close brackets correctly
+      # in scan sets, so we specify it separately.
       case "$lastarg" in
-      *[\[\~\#\^\&\*\(\)\{\}\|\;\<\>\?\'\ \	]*|*]*)
-	lastarg="\"$lastarg\""
+      *[\[\~\#\^\&\*\(\)\{\}\|\;\<\>\?\'\ \	]*|*]*|"")
+        lastarg="\"$largarg\""
 	;;
       esac
 
