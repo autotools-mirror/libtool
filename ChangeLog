@@ -1,15 +1,21 @@
+1998-11-11  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* NEWS: updated
+	* PORTING: new file, with general instructions and inter-library
+	dependencies tips
+
 1998-11-11  Gary V, Vaughan <gvaughan@oranda.demon.co.uk>
 
-        * ltconfig.in: make use of '~' field separator in reload_cmds,
- 	old_archive_from_new_cmds, old_archive_cmds, archive_cmds,
- 	old_postinstall_cmds, postinstall_cmds, old_postuninstall_cmds,
- 	postuninstall_cmds and finish_cmds, so that the semi-colons inside
- 	if/then/else/fi and for/do/done etc. do not break the eval loop in
- 	ltmain.in (below).
-        * ltmain.in: changed all of the eval loops to use an IFS of `~',
- 	to allow differentiation between the end-of-statement-;
+	* ltconfig.in: make use of '~' field separator in reload_cmds,
+	old_archive_from_new_cmds, old_archive_cmds, archive_cmds,
+	old_postinstall_cmds, postinstall_cmds, old_postuninstall_cmds,
+	postuninstall_cmds and finish_cmds, so that the semi-colons inside
+	if/then/else/fi and for/do/done etc. do not break the eval loop in
+	ltmain.in (below).
+	* ltmain.in: changed all of the eval loops to use an IFS of `~',
+	to allow differentiation between the end-of-statement-;
 	(now `~' is used) and end-of-substatement-; (still `;').  This
- 	fixes AIX and win32 at least.
+	fixes AIX and win32 at least.
 
 1998-11-11  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
@@ -33,10 +39,10 @@
 1998-11-07  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* ltconfig.in: add --falback-echo, to be used if everything else
- 	fails.  The tests now check the behavior of $echo for very large
- 	strings, because some echo commands would just core dump (e.g.,
- 	Solaris' printf).  If too large strings fail, smaller ones are
- 	tested.
+	fails.  The tests now check the behavior of $echo for very large
+	strings, because some echo commands would just core dump (e.g.,
+	Solaris' printf).  If too large strings fail, smaller ones are
+	tested.
 	(ltecho): arrange that, if the --fallback-echo method is selected,
 	echo will be defined in the libtool script so as to re-run itself,
 	not ltconfig
@@ -74,8 +80,8 @@
 1998-11-04  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
 
 	* demo/configure.in: added AC_EXEEXT macro so that the tests can
- 	work on cywin32/mingw32 hosts.  This requires the current CVS
- 	autoconf
+	work on cywin32/mingw32 hosts.  This requires the current CVS
+	autoconf
 
 1998-11-04  Thomas Tanner  <tanner@gmx.de>
 
@@ -159,7 +165,7 @@
 1998-11-04  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* ltconfig.in (need_locks): if neither `-c -o' nor hard links are
- 	available, fallback to not so safe mechanism, by setting
+	available, fallback to not so safe mechanism, by setting
 	need_locks to warn
 	* ltmain.in (need_locks): when need_locks is set to warn, use the
 	lockfile to try to fail in case of incorrect concurrent builds
@@ -179,7 +185,7 @@
 1998-11-03  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* ltmain.in: correctly create libraries and programs with
- 	directory components in their names
+	directory components in their names
 
 1998-11-03  Eric Estievenart <eric@via.ecp.fr>
 
@@ -195,7 +201,7 @@
 1998-11-02  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* ltmain.in (libobj): default value must not contain directory
- 	components
+	components
 
 1998-11-02  Eric Estievenart <eric@via.ecp.fr>
 
@@ -436,45 +442,45 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 1998-03-18  Gordon Matzigkeit  <gord@profitpress.com>
 
 	* ltmain.in: Rearrange some of the echos to make them more
- 	consistent.
+	consistent.
 
 1998-03-14  Gordon Matzigkeit  <gord@profitpress.com>
 
 	* ltmain.in: Break up an echo command that causes Solaris printf
- 	to dump core.  Apparently the Solaris people hardcoded a 2110-byte
- 	buffer into their printf(1).  Feh.  From John Judge.
+	to dump core.  Apparently the Solaris people hardcoded a 2110-byte
+	buffer into their printf(1).  Feh.  From John Judge.
 
 1998-03-11  Gordon Matzigkeit  <gord@profitpress.com>
 
 	* ltconfig.in: Change the test for the PIC compiler flag so that
- 	we assume it doesn't work if there are any warning messages.  This
- 	fixes a bug using old GCC's on HP-UX.  Reported by Akim Demaille.
+	we assume it doesn't work if there are any warning messages.  This
+	fixes a bug using old GCC's on HP-UX.  Reported by Akim Demaille.
 
 1998-03-10  Andreas Schwab  <schwab@issan.informatik.uni-dortmund.de>
 
-        * Makefile.am ($(srcdir)/ltconfig): Remove bogus command to create
-        a file ltconfig in the build directory.
+	* Makefile.am ($(srcdir)/ltconfig): Remove bogus command to create
+	a file ltconfig in the build directory.
 
 1998-03-09  Andreas Schwab  <schwab@issan.informatik.uni-dortmund.de>
 
-        * ltmain.in: Avoid unnecessary use of command substitution,
- 	replacing foo=`eval \\$echo \"$mumble\"` by eval foo=\"$mumble\".
+	* ltmain.in: Avoid unnecessary use of command substitution,
+	replacing foo=`eval \\$echo \"$mumble\"` by eval foo=\"$mumble\".
 
 	(link): Use ${1+"$@"} in wrapper scripts in order to pass
 	arguments safely to a program.
 
-        * ltconfig.in: Use -fpic instead of -fPIC if $host_cpu matches
-        m68*.
+	* ltconfig.in: Use -fpic instead of -fPIC if $host_cpu matches
+	m68*.
 
 1998-03-08  Gordon Matzigkeit  <gord@profitpress.com>
 
 	* Release 1.1.
 
 	* ltmain.in: <sigh> I like `here documents' a lot, but apparently
- 	they are so badly handled by old and buggy /bin/sh's, that
- 	replacing `cat <<EOF ... EOF' by `$echo "..."' improves libtool's
- 	speed by a factor of 5.  So, I've eliminated here docs from the
- 	all-important ltmain.in.  From Tom Lane.
+	they are so badly handled by old and buggy /bin/sh's, that
+	replacing `cat <<EOF ... EOF' by `$echo "..."' improves libtool's
+	speed by a factor of 5.  So, I've eliminated here docs from the
+	all-important ltmain.in.  From Tom Lane.
 
 1998-03-07  Gordon Matzigkeit  <gord@profitpress.com>
 
@@ -486,8 +492,8 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 1998-03-05  Gordon Matzigkeit  <gord@profitpress.com>
 
 	* libtool.m4 (AM_ENABLE_SHARED, AM_ENABLE_STATIC): Add support for
- 	the `default' package, so that people can control unnamed
- 	packages.
+	the `default' package, so that people can control unnamed
+	packages.
 	(LD): Only add an ABI flag under IRIX 6.x, since IRIX 5.x doesn't
 	support them.  From Alexandre Oliva.
 
@@ -498,18 +504,18 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 1998-02-25  Gordon Matzigkeit  <gord@profitpress.com>
 
 	* ltmain.in (compile): For consistency, honour the `-static' flag
- 	during compilation.
+	during compilation.
 
 1998-02-23  Brendan Kehoe  <brendan@cygnus.com>
 
 	* libtool.m4 (AM_ENABLE_SHARED, AM_ENABLE_STATIC): For
- 	--enable-shared, heed the value of $PACKAGE from AM_INIT_AUTOMAKE
- 	if given as the argument for the library to be built shared.
+	--enable-shared, heed the value of $PACKAGE from AM_INIT_AUTOMAKE
+	if given as the argument for the library to be built shared.
 
 1998-02-20  Gordon Matzigkeit  <gord@profitpress.com>
 
 	* libtool.m4, ltconfig.in (NM): Fix up a typo confusion between
- 	$ac_dir and $dir.  Reported by Akim Demaille.
+	$ac_dir and $dir.  Reported by Akim Demaille.
 
 	* ltmain.in (link): Don't allow both `-version-info' and
 	`-release'.  Reported by Danny Backx.
@@ -521,23 +527,23 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 	* lineno: Remove from distribution, as it is no longer needed.
 
 	* Makefile.am ($(srcdir)/ltconfig.in, $(srcdir)/ltmain.sh):
- 	Rewrite these rules not to use config.status or lineno.  This
- 	makes things simpler, and reduces dependencies, so that the
- 	scripts are rebuilt and installed in srcdir only when necessary.
-  	Reported by Stephan Kulow.
+	Rewrite these rules not to use config.status or lineno.  This
+	makes things simpler, and reduces dependencies, so that the
+	scripts are rebuilt and installed in srcdir only when necessary.
+ 	Reported by Stephan Kulow.
 
 1998-02-16  Gordon Matzigkeit  <gord@profitpress.com>
 
 	* libtool.m4, ltmain.in, ltconfig.in: Correctly identify absolute
- 	directory names on MS-DOS.  Suggested by Bob Friesenhahn.
+	directory names on MS-DOS.  Suggested by Bob Friesenhahn.
 
 	* ltconfig.in, ltmain.in, libtool.m4: Change a bunch of `sed N!d'
- 	commands to `sed Nq', for efficiency.
+	commands to `sed Nq', for efficiency.
 
 	* ltmain.in: Only egrep the first few lines of files in order to
- 	determine if they were libtool-generated.  This prevents egrep(1)
- 	from taking forever to look at a 10MB binary on Solaris.  From
- 	Stephan Kulow.
+	determine if they were libtool-generated.  This prevents egrep(1)
+	from taking forever to look at a 10MB binary on Solaris.  From
+	Stephan Kulow.
 
 1998-02-11  Gordon Matzigkeit  <gord@profitpress.com>
 
@@ -556,10 +562,10 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 1998-02-07  Gordon Matzigkeit  <gord@profitpress.com>
 
 	* libtool.m4 (AM_ENABLE_SHARED, AM_ENABLE_STATIC): New macros to
- 	modify the `--enable-shared' and `--enable-static' defaults in the
- 	configure script.  This works a lot better than the old
- 	`enable_shared' and `enable_static' variables did.  Reported by
- 	Bob Friesenhahn.
+	modify the `--enable-shared' and `--enable-static' defaults in the
+	configure script.  This works a lot better than the old
+	`enable_shared' and `enable_static' variables did.  Reported by
+	Bob Friesenhahn.
 
 1998-02-07  Samuel Tardieu  <sam@inf.enst.fr>
 
@@ -571,11 +577,11 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 	* ltconfig.in: Turn on IRIX shared libraries again!
 
 	* libtool.m4 (LD): Use file(1) to discover which ABI we're using
- 	on IRIX, and propagate the correct linker flag.  From Jim Wilson.
+	on IRIX, and propagate the correct linker flag.  From Jim Wilson.
 
 	* ltconfig.in, ltmain.in (Xsed): `arg=-n; echo "$arg" | sed ...'
-  	gives problems, because the `-n' is interpreted as an option to
- 	echo(1).  So, use `echo "X$arg" | sed -e 's/^X//' ...' everywhere,
+ 	gives problems, because the `-n' is interpreted as an option to
+	echo(1).  So, use `echo "X$arg" | sed -e 's/^X//' ...' everywhere,
 	via the $Xsed convenience variable.  Suggested by H.J. Lu.
 
 1998-02-02  Gordon Matzigkeit  <gord@profitpress.com>
@@ -598,17 +604,17 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 	be passed through on SGI.  Reported by Chris Lee.
 
 	* ltmain.in (release): Prepend a hyphen to the release number, and
- 	fix a typo because `-version-info' takes only 3 args.  From
- 	H.J. Lu.
+	fix a typo because `-version-info' takes only 3 args.  From
+	H.J. Lu.
 
 1998-01-25  Gordon Matzigkeit  <gord@profitpress.com>
 
 	* ltconfig.in (library_names_spec): On Linux, use the
- 	user-specified release.
+	user-specified release.
 
 	* ltmain.in (link): Allow the user to specify a release number for
- 	the library using the `-release' flag.  Suggested by H.J. Lu and
- 	Ian Lance Taylor.
+	the library using the `-release' flag.  Suggested by H.J. Lu and
+	Ian Lance Taylor.
 
 1998-01-19  Gordon Matzigkeit  <gord@profitpress.com>
 
@@ -652,13 +658,13 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 1997-12-19  Gordon Matzigkeit  <gord@profitpress.com>
 
 	* ltmain.in: Don't forget to quote the CDPATH substitution.  From
- 	Tor Lillqvist.
+	Tor Lillqvist.
 
 1997-12-18  Gordon Matzigkeit  <gord@profitpress.com>
 
 	* ltconfig.in, ltmain.in (CDPATH): Unset this environment variable
- 	so that HP-UX shells, at least, don't print out the directory name
- 	after a `cd' command.  From Tor Lillqvist.
+	so that HP-UX shells, at least, don't print out the directory name
+	after a `cd' command.  From Tor Lillqvist.
 
 1997-12-10  Gordon Matzigkeit  <gord@gnu.org>
 
@@ -675,8 +681,8 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 	without having to explicitly specify inter-library dependencies.
 
 	* ltconfig.in (COLLECT_NAMES): Oops... I forgot to apply the AIX 3
- 	restriction to the generated libtool script.  Reported by Stefan
- 	Westerfeld.
+	restriction to the generated libtool script.  Reported by Stefan
+	Westerfeld.
 
 1997-12-05  Gordon Matzigkeit  <gord@gnu.org>
 
@@ -687,7 +693,7 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 	F.X.J. Oberhumer.
 
 	* ltconfig.in (link_static_flag): Don't quote ${wl} on HP-UX
- 	because link_static_flag is never evaled.  From Eric Backus.
+	because link_static_flag is never evaled.  From Eric Backus.
 
 1997-12-01  Gordon Matzigkeit  <gord@gnu.org>
 
@@ -705,8 +711,8 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 1997-11-29  Gordon Matzigkeit  <gord@gnu.org>
 
 	* ltconfig.in (COLLECT_NAMES): Enable this workaround for a broken
- 	collect2 only on AIX 3.  This avoids problems on other AIX
- 	versions.  Reported by Stefan Westerfeld.
+	collect2 only on AIX 3.  This avoids problems on other AIX
+	versions.  Reported by Stefan Westerfeld.
 
 	* ltmain.in, ltconfig.in (finish_eval): Variable like finish_cmds,
 	except it is a single command which is evaled, and not shown.
@@ -714,7 +720,7 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 	* ltconfig.in: Port to AmigaOS.  From Joop van de Wege.
 
 	* ltmain.in (echo): Delete preamble to check for a working echo,
- 	since we just use the one included in the generated libtool.
+	since we just use the one included in the generated libtool.
 
 	* ltconfig.in (echo): Include this definition in the generated
 	libtool script.
@@ -746,14 +752,14 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 	handle inter-library dependencies.
 
 	* libtool.m4, ltconfig.in (NM): Only look at the first line of the
- 	output from NM when determining whether it supports a command line
- 	option.  This prevents false positives on OSes which ignore
- 	invalid flags, like HP-UX, which prints `nm: unknown option "B"
- 	ignored'.  Reported by Kaveh R. Ghazi.
+	output from NM when determining whether it supports a command line
+	option.  This prevents false positives on OSes which ignore
+	invalid flags, like HP-UX, which prints `nm: unknown option "B"
+	ignored'.  Reported by Kaveh R. Ghazi.
 
 	* ltconfig.in (finish_cmds): On Linux, update ld.so.cache by
- 	removing the `-n' flag from ldconfig.  Suggested by Kenneth
- 	Albanowski.
+	removing the `-n' flag from ldconfig.  Suggested by Kenneth
+	Albanowski.
 
 	* Makefile.am (maintainer-checkin, maintainer-release): New
 	commands to reap the full benefit of using PRCS to maintain
@@ -766,14 +772,14 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 1997-11-23  Gordon Matzigkeit  <gord@gnu.org>
 
 	* ltmain.in (echo): For aesthetics, avoid using `$echo' when
- 	`echo' will do *exactly* the same thing.  This prevents ugly
- 	`printf %s\n timestamp > some.lo' commands from appearing in the
- 	libtool output.
+	`echo' will do *exactly* the same thing.  This prevents ugly
+	`printf %s\n timestamp > some.lo' commands from appearing in the
+	libtool output.
 	(link): Delete the `-allow-undefined' flag because it is now the
- 	default.  Make `-no-undefined' in order for people to declare that
- 	a library is entirely self-contained.  This prevents maintainers
- 	from accidentally creating shared libraries that won't work on
- 	AIX.  Reported by Stefan Westerfeld and Danny Backx.
+	default.  Make `-no-undefined' in order for people to declare that
+	a library is entirely self-contained.  This prevents maintainers
+	from accidentally creating shared libraries that won't work on
+	AIX.  Reported by Stefan Westerfeld and Danny Backx.
 
 	* ltconfig.in (echo): Use an echo variable, just as in ltmain.in,
 	because we need it for quoting substitutions.  For most of the
@@ -788,9 +794,9 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 1997-11-14  Gordon Matzigkeit  <gord@gnu.org>
 
 	* ltconfig.in (hardcode_libdir_flag_spec): Set to `-R' for FreeBSD
- 	2.2.  From Sean Kelly.
+	2.2.  From Sean Kelly.
 	(postuninstall_cmds, old_postuninstall_cmds): Commands to run
- 	after uninstall mode deletes the libraries.  Suggested by Joop van
+	after uninstall mode deletes the libraries.  Suggested by Joop van
 	de Wege.
 	(export_dynamic_flag_spec): On HP-UX, add the `${wl}-E'
 	export_dynamic_flag_spec.  Reported by Matthias Hoelzer.
@@ -798,7 +804,7 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 1997-11-11  Gordon Matzigkeit  <gord@gnu.org>
 
 	* ltconfig.in, ltmain.in (sed_quote_subst): Oops.  We forgot to
- 	quote backticks.  Reported by Joop van de Wege.
+	quote backticks.  Reported by Joop van de Wege.
 
 1997-11-09  Gordon Matzigkeit  <gord@gnu.org>
 
@@ -816,8 +822,8 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 1997-11-07  Gordon Matzigkeit  <gord@gnu.org>
 
 	* libtool.m4 (LD): Add a more sophisticated test to determine the
- 	ABI flag on IRIX 6.  Suggested by Lars Hecking and Ian Lance
- 	Taylor.
+	ABI flag on IRIX 6.  Suggested by Lars Hecking and Ian Lance
+	Taylor.
 
 	* ltconfig.in, ltmain.in (COLLECT_NAMES): Only export this
 	variable if we are running under AIX.  Otherwise, we tickle a g++
@@ -826,14 +832,14 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 	* Change bug reporting address to <bug-libtool@gnu.org>.
 
 	* ltconfig.in (allow_undefined_flag): OSF/1 3.x also requires a
- 	wildcard argument to `-expect_unresolved'.  From Stephan Kulow.
+	wildcard argument to `-expect_unresolved'.  From Stephan Kulow.
 
 1997-11-06  Gordon Matzigkeit  <gord@gnu.org>
 
 	* ltmain.in (link): Use libname_spec.
 
 	* ltconfig.in (pic_flag): Somehow, the HP-UX pic_flag (`+Z') was
- 	dropped between libtool-1.0 and now.  Add it back in.  Reported by
+	dropped between libtool-1.0 and now.  Add it back in.  Reported by
 	Akim Demaille.
 	Integrated more patches for OS/2.  From Jeff Freedman.
 	(libname_spec): New variable for OSes that don't require their
@@ -853,11 +859,11 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 	From Dieter Baron.
 
 	* ltmain.in (mkdir): Check that the directory doesn't exist before
- 	we exit with error, so that we don't get races during parallel
- 	builds.  From H.J. Lu.
+	we exit with error, so that we don't get races during parallel
+	builds.  From H.J. Lu.
 	(fbsd_hideous_sh_bug): Apparently, some FreeBSD /bin/sh's have a
- 	bug that will empty base_compile unless we do this dummy
- 	assignment.  From Marc van Kempen.
+	bug that will empty base_compile unless we do this dummy
+	assignment.  From Marc van Kempen.
 
 1997-10-22  Gordon Matzigkeit  <gord@gnu.org>
 
@@ -867,7 +873,7 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 	Tromey and Stephan Kulow.
 
 	* ltmain.in (link): Add explicit support for compiler options that
- 	begin with `+'.  Reported by Aubert Pierre.
+	begin with `+'.  Reported by Aubert Pierre.
 
 1997-10-20  Gordon Matzigkeit  <gord@gnu.org>
 
@@ -881,16 +887,16 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 	Kettenis.
 
 	* ltconfig.in (global_symbol_pipe): This variable is not
- 	double-evaled, so it should not be double quoted.  From Mark
- 	Kettenis.
+	double-evaled, so it should not be double quoted.  From Mark
+	Kettenis.
 
 1997-10-19  Gordon Matzigkeit  <gord@gnu.org>
 
 	* ltconfig.in (LD): Same as below.
 
 	* libtool.m4 (LD): Set LD if we discover an absolute path to GNU
- 	ld.  This prevents breakage when `$CC -print-prog-name=ld' returns
- 	an absolute directory name.  Reported by Ulrich Drepper.
+	ld.  This prevents breakage when `$CC -print-prog-name=ld' returns
+	an absolute directory name.  Reported by Ulrich Drepper.
 
 	* ltconfig.in: Port to OS/2 using EMX.  From Jeff Freedman.
 
@@ -905,13 +911,13 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 1997-10-18  Gordon Matzigkeit  <gord@gnu.org>
 
 	* ltconfig.in (objdir): Use the .libs directory on all systems for
- 	which that name is valid, and _libs on the others (like MS-DOS).
-  	Suggested by Juergen Erhard.
+	which that name is valid, and _libs on the others (like MS-DOS).
+ 	Suggested by Juergen Erhard.
 
 1997-10-14  Gordon Matzigkeit  <gord@gnu.org>
 
 	* ltmain.in (link): Added a bit more inter-language support to the
- 	symbol file generation process.
+	symbol file generation process.
 	Instead of complaining about unrecognized argument suffices, pass
 	them to the linker.  This prevents libtool from barfing on
 	mandatory arguments to linker flags.  Reported by Michael
@@ -929,7 +935,7 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 	--silent mode behave as advertised.
 
 	* ltconfig.in (allow_undefined_flag): On OSF/1 4.x, use
- 	`-expect_unresolved \*'.  From Christian Mondrup.
+	`-expect_unresolved \*'.  From Christian Mondrup.
 
 	* ltmain.in (install): Change install mode to allow a specified
 	/bin/sh argument at the beginning of the install_prog.  Also,
@@ -972,14 +978,14 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 	Mark Kettenis.
 
 	* demo/Makefile.am, ltmain.in, tests/hardcode.test (objdir):
- 	Changed objdir variable .libs to _libs.  This is another MS-DOS
- 	portability fix.  Suggested by Robert Hoehne.
+	Changed objdir variable .libs to _libs.  This is another MS-DOS
+	portability fix.  Suggested by Robert Hoehne.
 
 1997-09-13  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltconfig.in, ltmain.in (hardcode_minusL): Fix typo by renaming
- 	hardcode_minusL to hardcode_minus_L.  Also add FreeBSD
- 	hardcode_libdir_flag_spec. From Paul Traina.
+	hardcode_minusL to hardcode_minus_L.  Also add FreeBSD
+	hardcode_libdir_flag_spec. From Paul Traina.
 
 	* ltmain.in (link): Honour multiple `-rpath' flags when linking
 	programs.  Suggested by Bengt Martensson.
@@ -987,7 +993,7 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 	Oliva.
 
 	* Makefile.am, configure.in, tests/tlibtool: Use ltmain.in instead
- 	of ltmain.sh.in.
+	of ltmain.sh.in.
 
 	* ltmain.in: Rename ltmain.sh.in to ltmain.in.  This fixes a
 	portability problem (on MS-DOS, of all places!).  From Robert
@@ -1030,15 +1036,15 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 1997-08-27  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltmain.sh.in (link): Make sure that compile_command and
- 	finalize_command are always evaled.  Quote any unknown linker
- 	flags we need to pass through.
+	finalize_command are always evaled.  Quote any unknown linker
+	flags we need to pass through.
 	(compile): Use quoting for flags we pass.
 	(echo): I hate Sun!  The /usr/bin/echo on Solaris handles
 	backslash sequences, which makes it impossible to do backslash
 	quoting using echo and sed.  So, we search for an echo that obeys
 	the `echo '\t'` = '\t' equality.  Then we use `$echo' everywhere
 	in ltmain.sh.
-	Put tabs back into the ${IFS= 	} sequences.  Emacs untabify is
+	Put tabs back into the ${IFS=	} sequences.  Emacs untabify is
 	libtool bane.
 
 	* ltconfig.in: Quote all variable values that may contain
@@ -1047,18 +1053,18 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 	a libtool variable value.
 
 	* ltmain.sh.in (link): Quote finalize_command before putting it in
- 	the wrapper script.
+	the wrapper script.
 
 1997-08-26  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltmain.sh.in (sed_quote_subst): Change the quoting procedure
- 	again.  I think that the new one is robust for *all* characters,
- 	including whitespace and metacharacters.
+	again.  I think that the new one is robust for *all* characters,
+	including whitespace and metacharacters.
 
 1997-08-25  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltmain.sh.in: Change quoting procedure because some shells
- 	cannot handle `]' in scan sets.  From Ian Dall.
+	cannot handle `]' in scan sets.  From Ian Dall.
 
 1997-08-22  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
@@ -1073,8 +1079,8 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 	execute mode.
 
 	* ltmain.sh.in (execute): New mode to automatically set
- 	shlibpath_var, which allows easy debugging of uninstalled
- 	executables and libraries.  Suggested by Kenneth Albanowski.
+	shlibpath_var, which allows easy debugging of uninstalled
+	executables and libraries.  Suggested by Kenneth Albanowski.
 
 1997-08-20  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
@@ -1092,22 +1098,22 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 1997-08-14  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltmain.sh.in: Accept `--quiet' and `--silent' flags to turn off
- 	command echoing.  From Juergen A. Erhard.
+	command echoing.  From Juergen A. Erhard.
 
 	(compile): Recognize the Objective C `.m' extension.  From Juergen
- 	A. Erhard.
+	A. Erhard.
 
 	(compile): Suppress error output from the second compilation (if
- 	any) so that we don't get those frustrating duplicate error
- 	messages.
+	any) so that we don't get those frustrating duplicate error
+	messages.
 
 1997-08-12  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltconfig.in: Added messages to config.log to describe what sort
- 	of test we are running.
+	of test we are running.
 	(pic_flag): Added a sanity check for pic_flag.  This should fix
- 	bugs reported using the cc bundled with HP-UX 10.  Suggested by
- 	Bruno Haible and Akim Demaille.
+	bugs reported using the cc bundled with HP-UX 10.  Suggested by
+	Bruno Haible and Akim Demaille.
 
 1997-08-01  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
@@ -1124,9 +1130,9 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 1997-07-30  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* libtool.m4 (AM_PROG_LIBTOOL): Explicitly check enable_shared and
- 	enable_static rather than just enableval.  This allows
- 	configure.in scripts to set their own defaults.  Suggested by
- 	Tommy Reilly.
+	enable_static rather than just enableval.  This allows
+	configure.in scripts to set their own defaults.  Suggested by
+	Tommy Reilly.
 
 1997-07-29  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
@@ -1139,22 +1145,22 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 	a message about the sortedness of the symbol table.
 
 	* ltconfig.in (nlist): Use an nlist convenience variable, so that
- 	code can be shared directly with ltmain.sh.in.
+	code can be shared directly with ltmain.sh.in.
 
 	* ltconfig.in, ltmain.sh.in (dld_preloaded_symbol_count): Count up
- 	the number of symbols in the dld_preloaded_symbols.  Set to `-1'
- 	if the list wasn't both sorted and counted.  This allows
- 	applications to do a quick binary search, if they are so inclined.
+	the number of symbols in the dld_preloaded_symbols.  Set to `-1'
+	if the list wasn't both sorted and counted.  This allows
+	applications to do a quick binary search, if they are so inclined.
 
 1997-07-25  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltmain.sh.in (link): Remove code for `-version-file', since it
- 	has been long-deprecated.
+	has been long-deprecated.
 
 	Disable static linking if hardcode_direct is unsupported and there
- 	is no working link_static_flag.  This provides correct behaviour
- 	for all cases on AIX 3, regardless of whether collect2 is broken
- 	or not.  Reported by Mark Kettenis.
+	is no working link_static_flag.  This provides correct behaviour
+	for all cases on AIX 3, regardless of whether collect2 is broken
+	or not.  Reported by Mark Kettenis.
 
 	* ltconfig.in: Fix typo in test polarity.  From Mark Kettenis.
 
@@ -1167,12 +1173,12 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 	with a trivial binary.
 
 	* ltmain.sh.in, ltconfig.in (export_dynamic_flag_spec): Renamed
- 	from export_dynamic_flag because we eval it in ltmain.sh.
+	from export_dynamic_flag because we eval it in ltmain.sh.
 
 	* ltmain.sh.in (link_static): Don't eval link_static_flag.
 
 	* demo/dlmain.c (main): Change function prototype to be KNR
- 	compatible.  From Kaveh R. Ghazi.
+	compatible.  From Kaveh R. Ghazi.
 
 	* ltmain.sh.in (link): Use no_builtin_flag.  This works around
 	conflicting definitions of builtin functions with at least GCC.
@@ -1185,16 +1191,16 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 1997-07-23  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltconfig.in (pic_flag): According to the libg++ 2.7.2 configure
- 	script, DEC alpha CPUs are PIC-only, as well.  Reported by Kevin
- 	Jacobs.
+	script, DEC alpha CPUs are PIC-only, as well.  Reported by Kevin
+	Jacobs.
 
 1997-07-21  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltconfig.in, ltmain.sh.in: Replace all occurances of "sed 'X;
- 	Y'" with "sed -e 'X' -e 'Y'".
+	Y'" with "sed -e 'X' -e 'Y'".
 
 	* ltmain.sh.in (link): Finish full integration for `-dlopen' and
- 	`-dlpreopen'.
+	`-dlpreopen'.
 
 	Fix two silly typos where I used a compile_command in place of a
 	finalize_command, and vice versa.
@@ -1216,8 +1222,8 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 1997-07-20  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltconfig.in (global_symbol_pipe): Add `U' to the accepted global
- 	symbol types.  This means that we will get duplicate symbols, but
- 	we'll also be sure to get all global symbols used by the program.
+	symbol types.  This means that we will get duplicate symbols, but
+	we'll also be sure to get all global symbols used by the program.
 
 	* ltconfig.in (pipe_works), ltmain.sh.in (link): Sort and make
 	symbol output unique.
@@ -1228,19 +1234,19 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 	global_symbol_pipe actually works.
 
 	* ltmain.sh.in (link): Revert change from Kenneth Albanowski.  The
- 	wrapper scripts are more reliable when they just use the argv[0]
- 	value.  Generally, when the argv[0] method doesn't work, the user
- 	is trying to do something weird with an uninstalled binary, and
- 	should try a different approach.
+	wrapper scripts are more reliable when they just use the argv[0]
+	value.  Generally, when the argv[0] method doesn't work, the user
+	is trying to do something weird with an uninstalled binary, and
+	should try a different approach.
 
 	* ltconfig.in, ltmain.sh.in (CC): Always use `$CC' instead of
- 	`$cc'.  This fixes a FreeBSD bug.  Reported by Chuck Robey, and
- 	others.
+	`$cc'.  This fixes a FreeBSD bug.  Reported by Chuck Robey, and
+	others.
 
 1997-07-14  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltmain.sh.in (link): In wrapper scripts, hardcode the current
- 	directory to prevent phony argv[0] values from screwing up our
+	directory to prevent phony argv[0] values from screwing up our
 	program.  From Kenneth Albanowski.
 
 1997-07-13  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
@@ -1256,7 +1262,7 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 	* demo/dlmain.c: New file to demonstrate preloaded modules.
 
 	* ltmain.sh.in (link): Add `-dlopen' flag to preload dynamic
- 	modules, even on static platforms.  Use `$NM' and
+	modules, even on static platforms.  Use `$NM' and
 	`$global_symbol_cmd' to extract symbols from required files.
 	(dlname): Delete dlname mode entirely.  It is rendered obsolete
 	because the `.la' file format is now a public interface.
@@ -1266,9 +1272,9 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 	nm output.
 
 	* ltmain.sh.in: The .la file header should depend on `ltmain.sh',
- 	not `$PROGRAM'.
+	not `$PROGRAM'.
 	(link): Make sure $export_dynamic_flag is eval'ed before it is
- 	used.
+	used.
 
 1997-07-11  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
@@ -1276,16 +1282,16 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 	order to help people prepare distributions of libtool for Linux.
 
 	* ltmain.sh.in: Eliminate two accidental uses of the NONE magic
- 	value.  These were breaking libtool's behaviour when no mode is
- 	specified.
+	value.  These were breaking libtool's behaviour when no mode is
+	specified.
 
 1997-07-08  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* Release 1.0.
 
 	* ltconfig.in: On SunOS, append /usr/etc to the PATH before
- 	running ldconfig; on *BSD, append /sbin.  This was done in line
- 	with the Linux change suggested by Kenneth Albanowski.
+	running ldconfig; on *BSD, append /sbin.  This was done in line
+	with the Linux change suggested by Kenneth Albanowski.
 
 	* demo/Makefile.am (hardcode_tests): Aesthetic change to
 	alphabetize order of compiling the hardcode tests.
@@ -1297,9 +1303,9 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 1997-07-02  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltmain.sh.in (link): In the executable wrapper, strip trailing
- 	colons from the shlibpath_var because some ld.so's, notably
- 	OpenBSD 2.0's (!), don't parse colon-terminated values correctly.
-  	From Tim Pierce.
+	colons from the shlibpath_var because some ld.so's, notably
+	OpenBSD 2.0's (!), don't parse colon-terminated values correctly.
+ 	From Tim Pierce.
 
 1997-07-01  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
@@ -1323,13 +1329,13 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 1997-06-30  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltconfig.in: Append /sbin to the path before running ldconfig on
- 	Linux.  This helps superusers who haven't set their PATH
- 	correctly.  Suggested by Kenneth Albanowski.
+	Linux.  This helps superusers who haven't set their PATH
+	correctly.  Suggested by Kenneth Albanowski.
 
 1997-06-29  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltmain.sh.in: Change all the `eval "$run ..."' sequences to
- 	`$run "eval ..."'.
+	`$run "eval ..."'.
 
 	Change all `$ln_s ...' sequences to use `(cd /dir && $LN_S ...)'.
 	This is the sequence recommended by the Autoconf manual, and
@@ -1355,10 +1361,10 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 1997-06-20  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltmain.sh.in: Redo two robustness fixes.  Alexandre had the
- 	correct approach, but I botched them.
+	correct approach, but I botched them.
 
 	* ltconfig.in (dynamic_linker): Disable shared libraries on
- 	MkLinux unless GNU libc is in use.  Reported by Akim Demaille.
+	MkLinux unless GNU libc is in use.  Reported by Akim Demaille.
 
 1997-06-19  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
@@ -1408,8 +1414,8 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 1997-06-08  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltconfig.in (host_cpu, host_vendor, host_os): Patch up
- 	definitions, to allow for the fact that the host_os may contain
- 	hyphens (as in linux-gnu).  From Scott Goehring.
+	definitions, to allow for the fact that the host_os may contain
+	hyphens (as in linux-gnu).  From Scott Goehring.
 
 	* ltmain.sh.in (link): Move the `dlname' setting closer to the top
 	of the file.  Suggested by David Mosberger-Tang.
@@ -1430,9 +1436,9 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 	David Nugent.
 
 	* ltmain.sh.in (link): Accept new `-allow-undefined' flag when
- 	building libtool libraries.  This tells libtool to allow
- 	unresolved symbols to exist in shared libraries.  Basically, this
- 	turns off shared libraries on AIX.  Suggested by Ian Lance Taylor.
+	building libtool libraries.  This tells libtool to allow
+	unresolved symbols to exist in shared libraries.  Basically, this
+	turns off shared libraries on AIX.  Suggested by Ian Lance Taylor.
 
 1997-05-26  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
@@ -1468,7 +1474,7 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 	than the full canonical host system name.
 
 	* ltmain.sh.in (dlname): Distinguish between missing
- 	`-export-dynamic' and when the library is only statically linked.
+	`-export-dynamic' and when the library is only statically linked.
 
 1997-04-21  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
@@ -1490,7 +1496,7 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 	* ltconfig.in (linker): Some GNU ld's don't accept `--version',
 	but do accept `-v'.  From Jukka Honkela.
 	(ld_shlibs): AIX lossage may be settling down.  AIX 3.2.5 ld does
- 	*not* hardcode direct libraries, but AIX 4.1.[45] ld does.
+	*not* hardcode direct libraries, but AIX 4.1.[45] ld does.
 
 1997-04-07  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
@@ -1504,9 +1510,9 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 	hardcode variables.
 
 	* ltconfig.in (hardcode_action): Set to `relink', not `immediate',
- 	if we can only hardcode existing directories.  Rearrange
- 	conditionals to make the intent clearer, otherwise this can be one
- 	hellish piece of code for the already-dizzy libtool maintainer.
+	if we can only hardcode existing directories.  Rearrange
+	conditionals to make the intent clearer, otherwise this can be one
+	hellish piece of code for the already-dizzy libtool maintainer.
 
 1997-04-02  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
@@ -1530,37 +1536,37 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 	* libtool.scm: Initial Guile implementation of libtool.
 
 	* ltmain.sh.in: An unexpected inconsistency in my whole approach
- 	to shared libraries has proven that libtool needs to be completely
- 	rewritten if I'm going to give full shared library support for
- 	platforms that don't use the GNU C library version 2 (which to my
- 	knowledge currently only works on GNU Hurd and Linux/GNU systems).
-  	Porting the GNU C library should not be difficult, though.
+	to shared libraries has proven that libtool needs to be completely
+	rewritten if I'm going to give full shared library support for
+	platforms that don't use the GNU C library version 2 (which to my
+	knowledge currently only works on GNU Hurd and Linux/GNU systems).
+ 	Porting the GNU C library should not be difficult, though.
 
 	Platforms that don't have the dlopen(3) family of functions will
- 	need to install GNU DLD version 4 in order to build any kind of
- 	libraries at all.  Unfortunately, DLD 4 won't be released for a
- 	while, because I maintain it, and I'm too busy working on libtool.
+	need to install GNU DLD version 4 in order to build any kind of
+	libraries at all.  Unfortunately, DLD 4 won't be released for a
+	while, because I maintain it, and I'm too busy working on libtool.
 
 	I'll keep the old ltconfig/ltmain.sh implementation around for as
- 	long as I can, and continue applying bug fixes, so that I'll have
- 	a reasonable starting point for this new libtool implementation.
+	long as I can, and continue applying bug fixes, so that I'll have
+	a reasonable starting point for this new libtool implementation.
 
 	It looks like this implementation will be even more complex than
- 	the original (pre-0.7) libtool.  Initial estimates show that it
- 	may be up to 3 times slower, and 5 times larger than libtool-0.9.
-  	I'll probably have to rewrite it in Guile to get reasonable
- 	performance, which will severely limit its portability for a
- 	while.
+	the original (pre-0.7) libtool.  Initial estimates show that it
+	may be up to 3 times slower, and 5 times larger than libtool-0.9.
+ 	I'll probably have to rewrite it in Guile to get reasonable
+	performance, which will severely limit its portability for a
+	while.
 
 	That will also introduce a bootstrapping issue, since the next
- 	release of Guile will use libtool to build shared libraries.  So,
- 	if users want to have shared Guile libraries, they will have to
- 	configure Guile with `--disable-shared', compile it, install it,
- 	then reconfigure Guile with `--enable-shared' and repeat.
+	release of Guile will use libtool to build shared libraries.  So,
+	if users want to have shared Guile libraries, they will have to
+	configure Guile with `--disable-shared', compile it, install it,
+	then reconfigure Guile with `--enable-shared' and repeat.
 
 	I was hoping to get libtool 1.0 out the door by early April, but
- 	now it looks like it will take at least another year before it'll
- 	be usable by the public at large.  April fools.  libtool.scm
+	now it looks like it will take at least another year before it'll
+	be usable by the public at large.  April fools.  libtool.scm
 	doesn't exist yet, either.
 
 	* ltconfig.in (verify_host): Remove redundant `Transform *-*-linux*
@@ -1581,9 +1587,9 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 	libtool libs.
 
 	* ltconfig.in (hardcode_libdir_separator): Added in case the
- 	linker only honours the last of the -rpath flags (but it can
- 	contain multiple colon-separated directories), such as on OSF/1.
-  	Reported by Carl D. Roth.
+	linker only honours the last of the -rpath flags (but it can
+	contain multiple colon-separated directories), such as on OSF/1.
+ 	Reported by Carl D. Roth.
 
 	* ltmain.sh.in (link): Set the dlname if -export-dynamic is given.
 	(install, uninstall): Handle the dlname file separately.
@@ -1610,13 +1616,13 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 1997-03-25  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltconfig.in: On AIX, libtool also needs to look for `B' symbols
- 	in nm output.  These are global variable definitions.
+	in nm output.  These are global variable definitions.
 
 	* ltmain.sh.in: Linking with -static should link against the
 	linklib if old_library is empty (like it is on AIX).
 
 	* ltconfig.in: Change the order of OS detection, so that
- 	linux-gnu* is detected before gnu*.
+	linux-gnu* is detected before gnu*.
 
 	* Makefile.am (libtool): Use the correct CC, RANLIB, LD, when
 	generating libtool.  From Carl D. Roth.
@@ -1650,14 +1656,14 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 1997-02-22  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltconfig.in, ltmain.sh.in (hardcode_libdir_flag_spec): Renamed
- 	from `hardcode_libdir_flag'.
+	from `hardcode_libdir_flag'.
 	(library_names_spec): Renamed from `lib_names'.
 
 	* ltconfig.in, ltmain.sh.in (hardcode_action): Change value from
- 	`rpath' to `immediate'.
+	`rpath' to `immediate'.
 
 	* replfunc.m4: Add AM_FUNC_ALLOCA, AM_FUNC_MEMCMP, and
- 	AM_STRUCT_ST_BLOCKS.
+	AM_STRUCT_ST_BLOCKS.
 
 1997-02-18  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
@@ -1682,7 +1688,7 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 1997-02-10  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltconfig.in: AIX 3 and 4 ld only hardcodes LIBPATH if -L is not
- 	specified.  This behaviour is the same with both xlc and gcc.
+	specified.  This behaviour is the same with both xlc and gcc.
 
 1997-02-07  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
@@ -1734,7 +1740,7 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 1997-01-24  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* Makefile.am (demo_distfiles): Add demo/acinclude.m4 to the
- 	distribution.
+	distribution.
 
 1997-01-22  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
@@ -1742,7 +1748,7 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 	by Bruno Haible.
 
 	* ltconfig.in: IRIX ld does not hardcode direct libraries.
-  	Reported by Bruno Haible.
+ 	Reported by Bruno Haible.
 
 1997-01-18  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
@@ -1761,7 +1767,7 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 	Suggested by Akim Demaille.
 
 	* libtool.m4: Change ltconfig line to use $CONFIG_SHELL when it is
- 	specified.  Reported by Bruno Haible.
+	specified.  Reported by Bruno Haible.
 
 1997-01-16  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
@@ -1773,7 +1779,7 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 	* Makefile.am (demo_distfiles): Remove ansi2knr.1 and ansi2knr.c.
 
 	* demo/foo.c, demo/hello.c, demo/main.c: Change ANSI prototypes to
- 	KNR form, for better portability, and less ansi2knr hair.
+	KNR form, for better portability, and less ansi2knr hair.
 
 	* demo/configure.in: Remove AM_FUNC_PROTOTYPES.
 
@@ -1786,12 +1792,12 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 	(compile): Fix missing single quote.
 
 	* ltconfig.in (hardcode_direct): On Solaris at least, using
- 	DIR/libNAME.so does not hardcode DIR, so introduce a new hardcode
- 	variable to reflect that.
+	DIR/libNAME.so does not hardcode DIR, so introduce a new hardcode
+	variable to reflect that.
 
 	* ltmain.sh.in (link): If linking with $link_static_flag fails,
- 	then retry without it, but still use the .a versions of
- 	uninstalled libtool archives.
+	then retry without it, but still use the .a versions of
+	uninstalled libtool archives.
 
 1997-01-15  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
@@ -1806,13 +1812,13 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 	Christopher Olsen.
 
 	(can_build_shared): Initialize at the top of the file, so that
- 	shared libraries aren't built on platforms that don't support
- 	them.
+	shared libraries aren't built on platforms that don't support
+	them.
 
 1997-01-11  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltmain.sh.in, ltconfig.in, libtoolize.in, doc/libtool.texi:
- 	Update the copyright completion years.
+	Update the copyright completion years.
 
 1997-01-08  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
@@ -1838,8 +1844,8 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 1996-12-17  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltmain.sh.in (link): Don't allow *._o and *.l_o to be valid
- 	object type suffixes, in spite of Automake's current ansi2knr
- 	implementation.  Not all compilers allow non-`.o' suffixes.
+	object type suffixes, in spite of Automake's current ansi2knr
+	implementation.  Not all compilers allow non-`.o' suffixes.
 
 1996-12-16  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
@@ -1898,21 +1904,21 @@ Thu May 28 18:59:08 1998  Ian Lance Taylor  <ian@cygnus.com>
 1996-12-05  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltmain.sh.in (compile): Support `.S' (preprocessed assembler)
- 	files.  Reported by Anthony Green.
+	files.  Reported by Anthony Green.
 
 	* libtoolize.in: Give clearer instrutions for how to update
 	aclocal.m4.
 
 	* ltconfig.in, ltmain.sh.in (link): Add support for creating
- 	reloadable objects.
+	reloadable objects.
 
 1996-12-04  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltmain.sh.in (install): Fix passing -n flag to `libtool
- 	--finish'.
+	--finish'.
 	(compile): Compile `.lo' and `.o' objects at the same time so that
- 	non-PIC objects (if they are available) can be used for linking
- 	into programs and creating static archives.  Suggested by Ulrich
+	non-PIC objects (if they are available) can be used for linking
+	into programs and creating static archives.  Suggested by Ulrich
 	Drepper.
 
 1996-12-03  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
