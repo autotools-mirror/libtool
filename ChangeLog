@@ -1,5 +1,13 @@
 2000-05-26  Alexandre Oliva  <oliva@lsd.ic.unicamp.br>
 
+	* configure.in (GCJ): Check.
+	* Makefile.am (CFLAGS, CPPFLAGS, CXXFLAGS, LDFLAGS, LIBS): Let
+	automake define them implicitly.
+	(EXTRA_DIST, pkgdata_DATA): Added ltcf-gcj.sh.
+	(LIBTOOL_DEPS, LIBTOOL_CXX_DEPS, LIBTOOL_GCJ_DEPS): Define.
+	(libtool): Depend on LIBTOOL_DEPS.  Add GCJ tag.
+	(libtool, clibtool): Pass host_triplet to ltconfig.
+
 	* libtool.m4 (_AC_PROG_LIBTOOL): Run before AC_LIBTOOL_GCJ.
 	Add ltcf-c.sh to LIBTOOL_DEPS.  Run AC_LIBTOOL_CXX and
 	AC_LIBTOOL_GCJ on demand.
