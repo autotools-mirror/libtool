@@ -22,6 +22,10 @@ bin_PROGRAMS = mdemo mdemo.debug
     $(srcdir)/../libltdl/ltdl.c $(srcdir)/../libltdl/ltdl.h
 	(cd ../libltdl; $(MAKE) libltdlc.la)
 
+../libltdl/libtool:
+	test -d ../libltdl || mkdir ../libltdl
+	(cd ../libltdl && $(srcdir)/../libltdl/configure)
+
 # Create a version of mdemo that does dlopen.
 mdemo_SOURCES = main.c
 mdemo_LDADD = ../libltdl/libltdlc.la

@@ -1,3 +1,8 @@
+1999-01-13  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* mdemo/Makefile.am (../libltdl/libtool): mkdir and configure
+	../libltdl
+
 1999-01-13  Thomas Tanner  <tanner@gmx.de>
 
 	* demo/dlmain.c, libltdl/ltdl.c, ltconfig.in, ltmain.in, 
