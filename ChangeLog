@@ -1,5 +1,10 @@
 1999-05-27  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* ltmain.in: Only create directory into which to extract
+	convenience libraries when $convenience is not empty.  It would
+	always be created on systems that did not support
+	whole_archive_flag_spec.
+
 	* ltconfig.in (export_symbols_cmds): Add $convenience.
 	(cygwin, export_symbols_cmds): Ditto.
 	* ltmain.in: Generate export symbol list before expanding
