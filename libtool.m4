@@ -4038,6 +4038,12 @@ fast_install=$enable_fast_install
 # The host system.
 host_alias=$host_alias
 host=$host
+host_os=$host_os
+
+# The build system.
+build_alias=$build_alias
+build=$build
+build_os=$build_os
 
 # An echo program that does not interpret backslashes.
 echo=$lt_echo
