@@ -66,4 +66,5 @@ done
 AC_SUBST(ACINCLUDE_M4_LIST)
 AC_SUBST(DIST_MAKEFILE_LIST)
 
-AC_OUTPUT([Makefile doc/Makefile tests/Makefile ltmain.sh:ltmain.in])
+AC_OUTPUT([Makefile doc/Makefile tests/Makefile \
+           $ac_aux_dir/ltmain.sh:ltmain.in])

@@ -1,5 +1,9 @@
 2000-09-16  Gary V. Vaughan  <gvv@techie.com>
 
+	* configure.in (AC_OUTPUT): ltmain.sh must be generated in the
+	source tree since this is where it would be found in a freshly
+	unrolled tarball.
+
 	* configure.in: Replace `dnl' comments with `#' comments for
 	more conformity with cvs autoconf.
 	Removed emacs hack-local-variables, since there is now a
