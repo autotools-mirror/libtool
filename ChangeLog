@@ -1,3 +1,18 @@
+2004-12-20  Peter O'Gorman  <peter@pogma.com>
+
+	* config/ltmain.m4sh (func_extract_archives,func_extract_an_archive): 
+	On darwin, uniq can not take the flags -cd together, thanks to Ralf
+	for the fix, also ar does not accept N, so we use the fact that
+	ar x libfoo.a foo.o will always extract the first foo.o in the
+	archive and we then delete foo.o from the archive, which will also
+	delete only the first foo.o, then rinse and repeat. Also add markers
+	for the testuite.
+	* m4/libtool.m4 (_LT_CONFIG): Add a marker so that we can use a sed
+	expression to find the shell functions in libtool.
+	* tests/functests.at: Test this feature.
+	* tests/testsuite.at: Add the test.
+	* tests/Makefile.am: Add the test.
+
 2004-12-20  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
 	* libtoolize.m4sh: Install `install-sh' as well, needed for configure ..

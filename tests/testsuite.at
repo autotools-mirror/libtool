@@ -62,3 +62,4 @@ AT_INIT
 
 # Torturing subdir-objects builds
 m4_include([am-subdir.at])
+m4_include([functests.at])

@@ -495,7 +495,7 @@ m4_defun([_LT_CONFIG],
 # NOTE: Changes made to this file will be lost: look at ltmain.sh.
 #
 _LT_COPYING
-
+# TEST SUITE MARKER ## BEGIN SOURCABLE
 _LT_LIBTOOL_TAGS
 
 # ### BEGIN LIBTOOL CONFIG

@@ -23,7 +23,8 @@
 
 TESTSUITE	= testsuite
 TESTSUITE_AT	= testsuite.at \
-		  am-subdir.at
+		  am-subdir.at \
+		  functests.at
 
 EXTRA_DIST	= $(TESTSUITE) $(TESTSUITE_AT) package.m4
 
