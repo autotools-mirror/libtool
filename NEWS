@@ -3,7 +3,8 @@ NEWS - list of user-visible changes between releases of GNU Libtool
 New in 1.3b: 1999-??-??; CVS version 1.3a, Libtool team:
 * Complete inter-library dependencies support. It's now possible
   to link libtool libraries against other libtool libraries.
-* Libtool is able to find already-installed libtool libraries.
+* Libtool is able to find already-installed libtool libraries,
+  even if they were moved out of their installation directory.
 * Support for linking DLLs on Win32
 * New demos and tests
 * Various bugfixes
