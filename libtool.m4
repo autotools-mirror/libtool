@@ -1006,6 +1006,7 @@ can_build_shared="$lt_cv_prog_cc_can_build_shared"
 ##
 # Check to see if options -o and -c are simultaneously supported by compiler
 AC_MSG_CHECKING([if $compiler supports -c -o file.$ac_objext])
+AC_CACHE_VAL([lt_cv_compiler_c_o], [
 $rm -r conftest 2>/dev/null
 mkdir conftest
 cd conftest
@@ -1024,16 +1025,15 @@ if { (eval echo configure:__oline__: \"$ac_compile\") 1>&5; (eval $ac_compile) 2
   # The compiler can only warn and ignore the option if not recognized
   # So say no if there are warnings
   if test -s out/conftest.err; then
-    compiler_c_o=no
+    lt_cv_compiler_c_o=no
   else
-    compiler_c_o=yes
+    lt_cv_compiler_c_o=yes
   fi
 else
   # Append any errors to the config.log.
   cat out/conftest.err 1>&AC_FD_CC
-  compiler_c_o=no
+  lt_cv_compiler_c_o=no
 fi
-AC_MSG_RESULT([$compiler_c_o])
 CFLAGS="$save_CFLAGS"
 chmod u+w .
 $rm conftest* out/*
@@ -1041,24 +1041,30 @@ rmdir out
 cd ..
 rmdir conftest
 $rm -r conftest 2>/dev/null
+])
+compiler_c_o=$lt_cv_compiler_c_o
+AC_MSG_RESULT([$compiler_c_o])
 
 if test x"$compiler_c_o" = x"yes"; then
   # Check to see if we can write to a .lo
   AC_MSG_CHECKING([if $compiler supports -c -o file.lo])
-  compiler_o_lo=no
+  AC_CACHE_VAL([lt_cv_compiler_o_lo], [
+  lt_cv_compiler_o_lo=no
   save_CFLAGS="$CFLAGS"
   CFLAGS="$CFLAGS -c -o conftest.lo"
   AC_TRY_COMPILE([], [int some_variable = 0;], [dnl
     # The compiler can only warn and ignore the option if not recognized
     # So say no if there are warnings
     if test -s conftest.err; then
-      compiler_o_lo=no
+      lt_cv_compiler_o_lo=no
     else
-      compiler_o_lo=yes
+      lt_cv_compiler_o_lo=yes
     fi
   ])
-  AC_MSG_RESULT([$compiler_c_o])
   CFLAGS="$save_CFLAGS"
+  ])
+  compiler_o_lo=$lt_cv_compiler_o_lo
+  AC_MSG_RESULT([$compiler_c_lo])
 else
   compiler_o_lo=no
 fi

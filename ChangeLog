@@ -1,3 +1,8 @@
+2001-03-13  Alexandre Oliva  <aoliva@redhat.com>
+
+	* libtool.m4 (lt_cv_compiler_c_o): Cache it.
+	(lt_cv_compiler_o_lo): Likewise.
+
 2001-03-09  Peter Eisentraut  <peter_e@gmx.net>
 
 	* ltmain.in (clean): Automatically remove $objdir (usually '.libs').
