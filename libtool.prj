@@ -1,11 +1,11 @@
 ;; -*- Lisp -*-
 (Created-By-Prcs-Version 1 2 1)
 (Project-Description "GNU libtool library support script")
-(Project-Version libtool 1.0g 3)
-(Parent-Version libtool 1.0g 2)
-(Version-Log "Added maintainer-checkin and maintainer-dist.")
+(Project-Version libtool 1.0g 4)
+(Parent-Version libtool 1.0g 3)
+(Version-Log "Trial of my PRCS checkin commands.")
 (New-Version-Log "")
-(Checkin-Time "Thu, 27 Nov 1997 09:36:45 -0700")
+(Checkin-Time "Thu, 27 Nov 1997 09:57:00 -0700")
 (Checkin-Login gord)
 (Populate-Ignore ("~$" "Makefile$" "Makefile\\.in$" "aclocal\\.m4$"
 		  "configure$" "config\\.status$" "config\\.cache$"
@@ -24,7 +24,7 @@
 ;; Administrivia.
   (AUTHORS (libtool/21_AUTHORS 1.1 664))
   (ChangeLog (libtool/20_ChangeLog 1.4.1.63 664))
-  (NEWS (libtool/19_NEWS 1.4.1.42 664))
+  (NEWS (libtool/19_NEWS 1.4.1.43 664))
   (PACKAGES (libtool/42_PACKAGES 1.8 664))
   (README (libtool/17_README 1.18 664))
   (README-alpha (libtool/16_README-alp 1.10 664))
@@ -33,8 +33,8 @@
   (libtool.spec (libtool/46_libtool.sp 1.4 664))
 
 ;; Top directory.
-  (Makefile.am (libtool/18_Makefile.a 1.30 664))
-  (configure.in (libtool/13_configure. 1.4.1.28 664))
+  (Makefile.am (libtool/18_Makefile.a 1.31 664))
+  (configure.in (libtool/13_configure. 1.4.1.29 664))
   (lineno (libtool/49_lineno 1.1 775))
   (ltmain.in (libtool/2_ltmain.sh. 1.4.1.49 664))
   (ltconfig.in (libtool/3_ltconfig.i 1.4.1.50 775))
