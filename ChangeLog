@@ -1,5 +1,12 @@
 2004-01-23  Scott James Remnant  <scott@netsplit.com>
 
+	* libtool.m4 (AC_LIBTOOL_CONFIG): Don't attempt to
+	make ltmain.sh unless there's an ltmain.in to do it with.
+	This prevents make/configure loops caused by Automake's
+	dependency rules.
+
+2004-01-23  Scott James Remnant  <scott@netsplit.com>
+
 	* libtoolize.in: Fix libtoolize so the cd command run when
 	AC_CONFIG_AUX_DIR is used is shown when --dry-run is given.
 	(Debian Bug #153699)
