@@ -1,3 +1,8 @@
+2002-04-14  Robert Boehne  <rboehne@gnu.org>
+
+	* doc/libtool.texi (C++ libraries): Finally updated to reflect
+	Libtool's support for C++.
+
 2002-04-14  Jean-Frederic Clere  <jfrederic.clere@fujitsu-siemens.com>
 
 	* libtool.m4: Update support for Fujistu-Siemens Computers (FSC).
