@@ -611,8 +611,6 @@ compiler."
   # libtool link mode
   link)
     modename="$modename: link"
-    C_compiler="$CC" # save it, to compile generated C sources
-    CC="$nonopt"
     case "$host" in
     *-*-cygwin* | *-*-mingw* | *-*-os2*)
       # It is impossible to link a dll without this setting, and
@@ -1984,7 +1982,7 @@ compiler."
 	  int main() { return 0; }
 EOF
 	  $rm conftest
-	  $C_compiler -o conftest conftest.c $deplibs
+	  $CC -o conftest conftest.c $deplibs
 	  if test $? -eq 0 ; then
 	    ldd_output=`ldd conftest`
 	    for i in $deplibs; do
@@ -2017,7 +2015,7 @@ EOF
 	     # If $name is empty we are operating on a -L argument.
 	      if test "$name" != "" ; then
 		$rm conftest
-		$C_compiler -o conftest conftest.c $i
+		$CC -o conftest conftest.c $i
 		# Did it work?
 		if test $? -eq 0 ; then
 		  ldd_output=`ldd conftest`
@@ -3119,8 +3117,8 @@ static const void *lt_preloaded_setup() {
 	  esac
 
 	  # Now compile the dynamic symbol file.
-	  $show "(cd $output_objdir && $C_compiler -c$no_builtin_flag$pic_flag_for_symtable \"$dlsyms\")"
-	  $run eval '(cd $output_objdir && $C_compiler -c$no_builtin_flag$pic_flag_for_symtable "$dlsyms")' || exit $?
+	  $show "(cd $output_objdir && $CC -c$no_builtin_flag$pic_flag_for_symtable \"$dlsyms\")"
+	  $run eval '(cd $output_objdir && $CC -c$no_builtin_flag$pic_flag_for_symtable "$dlsyms")' || exit $?
 
 	  # Clean up the generated files.
 	  $show "$rm $output_objdir/$dlsyms $nlist ${nlist}S ${nlist}T"
@@ -3655,6 +3653,7 @@ libdir='$install_libdir'\
     install_type=
     isdir=no
     stripme=
+    gnustrip=no
     for arg
     do
       if test -n "$dest"; then
@@ -3671,6 +3670,7 @@ libdir='$install_libdir'\
       -o) prev="-o" ;;
       -s)
 	stripme=" -s"
+	strip -V | grep "GNU strip" >/dev/null && gnustrip=yes
 	continue
 	;;
       -*) ;;
@@ -3817,6 +3817,10 @@ libdir='$install_libdir'\
 	  $show "$install_prog $dir/$realname $destdir/$realname"
 	  $run eval "$install_prog $dir/$realname $destdir/$realname" || exit $?
 	  test "X$dlname" = "X$realname" && dlname=
+	  if test $gnustrip = yes; then
+	    $show "strip --strip-unneeded $destdir/$realname"
+	    $run eval "strip --strip-unneeded $destdir/$realname" || exit $?
+	  fi
 
 	  if test $# -gt 0; then
 	    # Delete the old symlinks, and create new ones.
@@ -3994,6 +3998,11 @@ libdir='$install_libdir'\
       $show "$install_prog $file $oldlib"
       $run eval "$install_prog \$file \$oldlib" || exit $?
 
+      if test $gnustrip = yes; then
+	$show "strip --strip-debug $oldlib"
+	$run eval "strip --strip-debug $oldlib" || exit $?
+      fi
+      
       # Do each command in the postinstall commands.
       eval cmds=\"$old_postinstall_cmds\"
       IFS="${IFS= 	}"; save_ifs="$IFS"; IFS='~'
