@@ -1,3 +1,8 @@
+2005-02-23  Christoph Egger  <Christoph_Egger@gmx.de> (tiny change)
+
+	* config/ltmain.m4sh (func_mode_link): Add -pthread like flags to
+	inherited_linker_flags.
+
 2005-02-22  Gary V. Vaughan  <gary@gnu.org>
 
 	* libtoolize.m4sh (func_copy_cb): self.leg->shoot_off() :-/

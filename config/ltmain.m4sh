@@ -2686,6 +2686,10 @@ func_mode_link ()
 	compiler_flags="$compiler_flags $arg"
 	compile_command="$compile_command $arg"
 	finalize_command="$finalize_command $arg"
+	case "$new_inherited_linker_flags " in
+	    *" $arg "*) ;;
+	    * ) new_inherited_linker_flags="$new_inherited_linker_flags $arg" ;;
+	esac
 	continue
 	;;
 
