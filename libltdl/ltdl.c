@@ -1179,6 +1179,7 @@ presym_add_symlist (preloaded)
   tmp = LT_DLMALLOC (lt_dlsymlists_t, 1);
   if (tmp)
     {
+      memset (tmp, 0, 1*sizeof(lt_dlsymlists_t));
       tmp->syms = preloaded;
       tmp->next = preloaded_symbols;
       preloaded_symbols = tmp;
@@ -2132,10 +2133,7 @@ lt_dlopen (filename)
 	  return 0;
 	}
 
-      handle->info.ref_count	= 0;
-      handle->depcount		= 0;
-      handle->deplibs		= 0;
-      handle->caller_data	= 0;
+      memset (handle, 0, 1*sizeof(struct lt_dlhandle_struct));
       newhandle			= handle;
 
       /* lt_dlclose()ing yourself is very bad!  Disallow it.  */
@@ -2373,7 +2371,7 @@ lt_dlopen (filename)
 	  goto cleanup;
 	}
 
-      handle->info.ref_count = 0;
+      memset (handle, 0, 1*sizeof(struct lt_dlhandle_struct));
       if (load_deplibs (handle, deplibs) == 0)
 	{
 	  newhandle = handle;
