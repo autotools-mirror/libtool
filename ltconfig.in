@@ -2304,7 +2304,7 @@ EOF
 if test -z "$tagname"; then
   echo '### END LIBTOOL CONFIG' >> "$ofile"
 else
-  echo "### END LIBTOOL TAG CONFIG: $tag" >> "$ofile"
+  echo "### END LIBTOOL TAG CONFIG: $tagname" >> "$ofile"
 fi
 
 case "$ltmain" in
