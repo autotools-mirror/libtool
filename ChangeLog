@@ -1,5 +1,10 @@
 2001-09-03  Gary V. Vaughan  <gary@gnu.org>
 
+	* ltdl.m4 (AC_CHECK_TYPES):  This macro was introduced in Autoconf
+	2.5x.  Backported a fallback implementation (directly to ltdl.m4)
+	from Autoconf 2.50, so that we can still bootstrap with Autoconf
+	2.13.
+
 	From Marius Vollmer <mvo@zagadka.ping.de>:
 	* libltdl/ltdl.c (tryall_dlopen_module): Don't forget to propogate
 	errors over recurse levels.

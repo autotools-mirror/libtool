@@ -285,6 +285,28 @@ fi
 ])# AC_LTDL_DLSYM_USCORE
 
 
+# AC_CHECK_TYPES(TYPES, [ACTION-IF-FOUND], [ACTION-IF-NOT-FOUND],
+#                [INCLUDES])
+# ---------------------------------------------------------------
+# This macro did not exist in Autoconf 2.13, which we do still support
+ifdef([AC_CHECK_TYPES], [],
+[define([AC_CHECK_TYPES],
+  [AC_CACHE_CHECK([for $1], ac_Type,
+    [AC_TRY_LINK([$4],
+	[if (($1 *) 0)
+	  return 0;
+	if (sizeof ($1))
+	  return 0;],
+	[ac_Type=yes],
+	[ac_Type=no])])
+  if test "x$ac_Type" = xyes; then
+    ifelse([$2], [], [:], [$2])
+  else
+    ifelse([$3], [], [:], [$3])
+  fi])
+])# AC_CHECK_TYPES
+
+
 # AC_LTDL_FUNC_ARGZ
 # -----------------
 AC_DEFUN([AC_LTDL_FUNC_ARGZ],
@@ -293,7 +315,7 @@ AC_DEFUN([AC_LTDL_FUNC_ARGZ],
 AC_CHECK_TYPES([error_t],
   [],
   [AC_DEFINE([error_t], [int],
-    [Define to a type to use for `error_t' if it is not otherwise available.])],
+    [Define to a type to use for \`error_t' if it is not otherwise available.])],
   [#if HAVE_ARGZ_H
 #  include <argz.h>
 #endif])
