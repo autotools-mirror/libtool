@@ -373,7 +373,7 @@ if test "$with_gcc" = no; then
 #endif
 EOF
   # LINENUM
-  if { ac_try='${CC-cc} -E conftest.c'; { (eval echo $progname:364: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }; } | egrep yes >/dev/null 2>&1; then
+  if { ac_try='${CC-cc} -E conftest.c'; { (eval echo $progname:376: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }; } | egrep yes >/dev/null 2>&1; then
     with_gcc=yes
   fi
   $rm conftest.c

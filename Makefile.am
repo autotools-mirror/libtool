@@ -9,11 +9,9 @@ CPPLAGS = @CPPFLAGS@
 
 aclocal_macros = libtool.m4
 
-# Distribute ltconfig and ltmain.sh so that the demo directory works.
-EXTRA_DIST = $(aclocal_macros) libtoolize.in ltconfig ltconfig.in \
-	ltmain.sh ltmain.sh.in README-automake libtool.prj
-CLEANFILES = libtool libtoolize
-MAINTAINERCLEANFILES = ltconfig ltmain.sh
+EXTRA_DIST = $(aclocal_macros) libtoolize.in ltconfig.in ltmain.sh.in \
+	README-automake libtool.prj
+CLEANFILES = libtool libtoolize ltconfig ltmain.sh
 
 # Files in the demo subdirectory that go in the distribution.
 demo_distfiles = demo/Makefile.in demo/Makefile.am demo/README \

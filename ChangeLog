@@ -1,3 +1,8 @@
+Fri Jun  6 15:52:28 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
+
+	* Tell people to report bugs to the new libtool mailing list,
+	<bug-libtool@gnu.ai.mit.edu>.
+
 Thu Jun  5 10:40:15 1997  Gordon Matzigkeit  <gord@gnu.ai.mit.edu>
 
 	* ltconfig.in (allow_undefined_flag): New variable that implements

@@ -34,9 +34,9 @@ Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.  */
 # define __END_DECLS /* empty */
 #endif
 
-/* __P is a macro used to wrap function prototypes, so that compilers that
-   don't understand ANSI C prototypes still work, and ANSI C compilers can
-   issue warnings about type mismatches. */
+/* __P is a macro used to wrap function prototypes, so that compilers
+   that don't understand ANSI C prototypes still work, and ANSI C
+   compilers can issue warnings about type mismatches. */
 #undef __P
 #if defined (__STDC__) || defined (_AIX) || (defined (__mips) && defined (_SYSTYPE_SVR4)) || defined(WIN32) || defined(__cplusplus)
 # define __P(protos) protos

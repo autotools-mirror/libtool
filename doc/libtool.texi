@@ -6,7 +6,7 @@
 @c %**end of header
 
 @include version.texi
-@set BUGADDR Gordon Matzigkeit <gord@@gnu.ai.mit.edu>
+@set BUGADDR the libtool mailing list <bug-libtool@@gnu.ai.mit.edu>
 
 @dircategory GNU programming tools
 @direntry
@@ -475,7 +475,7 @@ to the compiler to tell it to generate PIC rather than the standard
 position-dependant code.
 
 @cindex Library object file
-@cindex `.lo' files
+@cindex .lo files
 @cindex Object files, library
 Since this is a library implementation detail, libtool hides the
 complexity of PIC compiler flags by using separate library object files
@@ -679,7 +679,7 @@ Notice that the executable, @file{hell} was actually created in the
 current directory.
 
 On NetBSD 1.2, libtool encodes the installation directory of
-@file{libhello}, @file{/usr/local/lib}, by using the @code{-R} compiler
+@file{libhello}, by using the @samp{-R/usr/local/lib} compiler
 flag.  Then, the wrapper script guarantees that the executable finds the
 correct shared library (the one in @file{./.libs}) until it is properly
 installed.
@@ -1046,7 +1046,7 @@ The @samp{dlname} mode simply prints the name of a libtool library that
 can be passed to the @code{dlopen(3)} function call (@pxref{Dlopened
 modules}).
 
-Each of the @var{mode-args} specifies a libtool library that was linked
+Each of the @var{mode-args} specifies a libtool library linked
 using the @samp{-export-dynamic} option (@pxref{Link mode}).  The names
 of the modules to load are printed to standard output, one per line.
 
@@ -1383,8 +1383,8 @@ A generic script implementing basic libtool functionality.
 Note that the libtool script itself should @emph{not} be included with
 your package.  @xref{Configuring}.
 
-Rather than copying these files into your package manually, you should
-use the @file{libtoolize} program.
+You should use the @file{libtoolize} program, rather than manually
+copying these files into your package.
 
 @menu
 * Invoking libtoolize::         @file{libtoolize} command line options.
@@ -1761,9 +1761,9 @@ Here are the relevant portions of that file:
 # define __END_DECLS /* empty */
 #endif
 
-/* __P is a macro used to wrap function prototypes, so that compilers that
-   don't understand ANSI C prototypes still work, and ANSI C compilers can
-   issue warnings about type mismatches. */
+/* __P is a macro used to wrap function prototypes, so that compilers
+   that don't understand ANSI C prototypes still work, and ANSI C
+   compilers can issue warnings about type mismatches. */
 #undef __P
 #if defined (__STDC__) || defined (_AIX) \
         || (defined (__mips) && defined (_SYSTYPE_SVR4)) \
@@ -1990,8 +1990,8 @@ dlname='@var{dlname}'
 If @var{dlname} is empty, then the library cannot be dlopened.
 Otherwise, it gives the dlname of the library.  So, if the library was
 installed as @file{/usr/local/lib/libhello.la}, and the @var{dlname} was
-@file{libhello.so.3}, then the file to @code{dlopen(3)} is
-@file{/usr/local/lib/libhello.so.3}.
+@file{libhello.so.3}, then @file{/usr/local/lib/libhello.so.3} should be
+dlopened.
 
 @node Dlopen issues
 @section Unresolved dlopen issues
