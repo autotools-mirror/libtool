@@ -135,7 +135,7 @@ AC_CACHE_CHECK([whether deplibs are loaded by dlopen],
   ])
 if test "$libltdl_cv_sys_dlopen_deplibs" != yes; then
  AC_DEFINE([LTDL_DLOPEN_DEPLIBS], [1],
-    [Define if the OS needs help to load dependent libraries for dlopen()])
+    [Define if the OS needs help to load dependent libraries for dlopen().])
 fi
 ])# AC_LTDL_SYS_DLOPEN_DEPLIBS
 
@@ -156,7 +156,7 @@ AC_CACHE_CHECK([which extension is used for shared libraries],
   ])
 if test -n "$libltdl_cv_shlibext"; then
   AC_DEFINE_UNQUOTED(LTDL_SHLIB_EXT, "$libltdl_cv_shlibext",
-    [Define to the extension used for shared libraries, say, ".so". ])
+    [Define to the extension used for shared libraries, say, ".so".])
 fi
 ])# AC_LTDL_SHLIBEXT
 
@@ -169,7 +169,7 @@ AC_CACHE_CHECK([which variable specifies run-time library path],
   [libltdl_cv_shlibpath_var], [libltdl_cv_shlibpath_var="$shlibpath_var"])
 if test -n "$libltdl_cv_shlibpath_var"; then
   AC_DEFINE_UNQUOTED(LTDL_SHLIBPATH_VAR, "$libltdl_cv_shlibpath_var",
-    [Define to the name of the environment variable that determines the dynamic library search path. ])
+    [Define to the name of the environment variable that determines the dynamic library search path.])
 fi
 ])# AC_LTDL_SHLIBPATH
 
@@ -191,7 +191,7 @@ if test -n "$libltdl_cv_sys_search_path"; then
     fi
   done
   AC_DEFINE_UNQUOTED(LTDL_SYSSEARCHPATH, "$sys_search_path",
-    [Define to the system default library search path. ])
+    [Define to the system default library search path.])
 fi
 ])# AC_LTDL_SYSSEARCHPATH
 
@@ -217,7 +217,7 @@ AC_DEFUN([AC_LTDL_OBJDIR],
   fi
   ])
 AC_DEFINE_UNQUOTED(LTDL_OBJDIR, "$libltdl_cv_objdir/",
-  [Define to the sub-directory in which libtool stores uninstalled libraries. ])
+  [Define to the sub-directory in which libtool stores uninstalled libraries.])
 ])# AC_LTDL_OBJDIR
 
 
@@ -235,7 +235,7 @@ AC_CACHE_CHECK([whether libtool supports -dlopen/-dlpreopen],
   ])
 if test x"$libltdl_cv_preloaded_symbols" = xyes; then
   AC_DEFINE(HAVE_PRELOADED_SYMBOLS, 1,
-    [Define if libtool can extract symbol lists from object files. ])
+    [Define if libtool can extract symbol lists from object files.])
 fi
 ])# AC_LTDL_DLPREOPEN
 
@@ -248,7 +248,7 @@ AC_SUBST(LIBADD_DL)
 AC_LANG_PUSH([C])
 AC_CHECK_LIB([dl], [dlopen], 
   [AC_DEFINE([HAVE_LIBDL], [1],
-     [Define if you have the libdl library or equivalent. ])
+     [Define if you have the libdl library or equivalent.])
    LIBADD_DL="-ldl"],
   [AC_TRY_LINK([#if HAVE_DLFCN_H
 #  include <dlfcn.h>
@@ -256,10 +256,10 @@ AC_CHECK_LIB([dl], [dlopen],
     ],
     [dlopen();], 
     [AC_DEFINE(HAVE_LIBDL, 1,
-      [Define if you have the libdl library or equivalent. ])],
+      [Define if you have the libdl library or equivalent.])],
     [AC_CHECK_LIB(svld, dlopen, 
       [AC_DEFINE(HAVE_LIBDL, 1,
-        [Define if you have the libdl library or equivalent. ])
+        [Define if you have the libdl library or equivalent.])
       LIBADD_DL="-lsvld"
       ])
     ])
@@ -267,10 +267,10 @@ AC_CHECK_LIB([dl], [dlopen],
 
 AC_CHECK_FUNC(shl_load,
   [AC_DEFINE([HAVE_SHL_LOAD], [1],
-    [Define if you have the shl_load function. ])],
+    [Define if you have the shl_load function.])],
   [AC_CHECK_LIB([dld], [shl_load],
     [AC_DEFINE([HAVE_SHL_LOAD], [1],
-      [Define if you have the shl_load function. ])
+      [Define if you have the shl_load function.])
     LIBADD_DL="$LIBADD_DL -ldld"
     ])
   ])
@@ -352,7 +352,7 @@ fi
 
 if test x"$libltdl_cv_need_uscore" = xyes; then
   AC_DEFINE(NEED_USCORE, 1,
-    [Define if dlsym() requires a leading underscode in symbol names. ])
+    [Define if dlsym() requires a leading underscode in symbol names.])
 fi
 ])# AC_LTDL_DLSYM_USCORE
 
@@ -364,7 +364,7 @@ AC_DEFUN([AC_LTDL_FUNC_ARGZ],
 AC_CHECK_TYPES([error_t],
   [],
   [AC_DEFINE([error_t], [int],
-    [Define to a type to use for `error_t' if it is not otherwise available])],
+    [Define to a type to use for `error_t' if it is not otherwise available.])],
   [#if HAVE_ARGZ_H
 #  include <argz.h>
 #endif])

@@ -1,5 +1,8 @@
 2001-08-05  Tim Van Holder  <tim.van.holder@pandora.be>
 
+	* ltdl.m4: Canonicalize descriptive text used with
+	AC_DEFINE.
+
 	* libtool.m4 (_LT_AC_LIBTOOL_SYS_PATH_SEPARATOR): Remove.
 	(_LT_AC_PROG_ECHO_BACKSLASH): Use $ac_path_separator
 	instead of $PATH_SEPARATOR.
