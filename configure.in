@@ -1,5 +1,6 @@
 dnl Process this file with autoconf to create configure.
 AC_INIT(ltmain.in)
+dnl $Format "AM_INIT_AUTOMAKE($ProjectName$,$ProjectMajorVersion: 1.0g $"$
 AM_INIT_AUTOMAKE(libtool,1.0g)
 
 pkgdatadir='${datadir}/libtool'
