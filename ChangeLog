@@ -1,3 +1,10 @@
+2004-09-18  Alexandre Duret-Lutz  <adl@gnu.org>,
+	    Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+	* demo/Makefile.am, pdemo/Makefile.am: Use per-target CFLAGS
+	only for the Libtool-built objects, so that automake won't
+	complain about missing AM_PROG_CC_C_O but still compile Libtool-
+	and non-Libtool objects into different names.
+
 2004-09-13  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* ltdl.c (memcpy, memmove): Fix pre-ANSI replacement functions

@@ -7,6 +7,7 @@ EXTRA_DIST = acinclude.m4
 # Build a libtool library, libhello.la for installation in libdir.
 lib_LTLIBRARIES = libhello.la
 libhello_la_SOURCES = longer_file_name_hello.c longer_file_name_foo.c longer_file_name_foo2.c
+libhello_la_CFLAGS = $(AM_CFLAGS)
 libhello_la_LIBADD = $(LIBM)
 libhello_la_LDFLAGS = -no-undefined -version-info 3:12:1
 
@@ -123,7 +124,6 @@ hc-minusL: $(hell_OBJECTS) $(hell_DEPENDENCIES)
 # If this one passes with pass_all, it is likely that pass_all works
 EXTRA_LIBRARIES = libhell0.a
 libhell0_a_SOURCES = longer_file_name_hello.c longer_file_name_foo.c
-libhell0_a_CFLAGS = $(AM_CFLAGS)
 EXTRA_LTLIBRARIES = libhell1.la libhell2.la
 libhell1_la_SOURCES = longer_file_name_hell1.c
 libhell1_la_LIBADD = -L. -lhell0
