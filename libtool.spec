@@ -2,7 +2,7 @@ Summary: GNU Libtool - shared library support for source packages
 # $Format: "Name: $Project$"$
 Name: libtool
 # $Format: "Version: $ProjectMajorVersion$"$
-Version: 1.1
+Version: 1.1a
 Release: 1
 Copyright: GPL
 Group: Development/Build
@@ -35,7 +35,8 @@ gzip -9nf $RPM_BUILD_ROOT/usr/info/libtool.info*
 rm -rf $RPM_BUILD_ROOT
 
 %files
-%attr(0644, root, root) %doc AUTHORS COPYING ChangeLog NEWS README THANKS TODO
+%attr(0644, root, root) %doc AUTHORS COPYING ChangeLog NEWS README
+%attr(0644, root, root) %doc THANKS TODO doc/PLATFORMS
 
 %attr(0755, root, root) /usr/bin/libtool
 %attr(0755, root, root) /usr/bin/libtoolize
