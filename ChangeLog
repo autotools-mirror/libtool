@@ -1,5 +1,12 @@
 1999-06-09  Gary V. Vaughan  <gary@oranda.demon.co.uk>
 
+	* ltconfig.in: Reordered tests to be more like configure.in's
+	recommended order (programs first, then libraries, etc.).
+	Performed a manual ``constant folding pass'' (eg: s/eval "test
+	\"echo '$''{'lt_cv_dlopen'+set}'`\" != set/test
+	"${lt_cv_dlopen+set}" != set/).
+	s/test "${foo+set}" = "set"/test "X${foo+set}" = Xset/g
+
 	* ltconfig.in (link_static_flag): Accept, in order of decreasing
 	preference: the cached value; the default value for the current
 	host.  Also test that the compiler accepts the flag, and cache
