@@ -52,9 +52,9 @@ LT_SCOPE int	    lt_dlinit		(void);
 LT_SCOPE int	    lt_dlexit		(void);
 
 /* Module search path manipulation.  */
-LT_SCOPE int	    lt_dladdsearchdir	 (const char *search_dir);
+LT_SCOPE int	    lt_dladdsearchdir	 (const char *search_path);
 LT_SCOPE int	    lt_dlinsertsearchdir (const char *before,
-						  const char *search_dir);
+						  const char *search_path);
 LT_SCOPE int 	    lt_dlsetsearchpath	 (const char *search_path);
 LT_SCOPE const char *lt_dlgetsearchpath	 (void);
 LT_SCOPE int	    lt_dlforeachfile	 (

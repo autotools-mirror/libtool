@@ -25,7 +25,7 @@ Makefile:
 	@echo " *** \`make -f../Makefile.maint' for example, where"
 	@echo " *** \`../' is the relative path back to the directory"
 	@echo " *** that contains the \`Makefile.maint'.  Alternatively,"
-	@echo " *** run `./configure' in the source tree for an in"
+	@echo " *** run \`./configure' in the source tree for an in"
 	@echo " *** tree build."
 	@exit 1
 
