@@ -1,3 +1,9 @@
+2000-09-12  Michael Matz <matz@ifh.de>
+
+	* ltmain.in:  Be careful about filenames with multiple `.'s in
+	them when calculating file extensions.
+	Reported by Joel Reed <jreed@support.ddiworld.com>
+
 2000-09-12  Gary V. Vaughan <gvv@techie.com>
 
 	libtool.m4 (AC_PROG_LIBTOOL):  Removed, as it was triggering a
