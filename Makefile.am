@@ -137,7 +137,7 @@ libtoolize: libtoolize.in Makefile
 
 # Automake doesn't want us to generate distributed files from config.status,
 # but the alternative (see libtool-1.4.3) was even uglier!
-libtool: $(top_builddir)/config.status config/ltmain.sh
+libtool: $(top_builddir)/config.status config/ltmain.sh stamp-vcl
 	cd $(top_builddir) && $(SHELL) ./config.status $@
 
 .PHONY: configure-subdirs
