@@ -136,7 +136,8 @@ Invoking @code{libtool}
 * Execute mode::                Debugging libtool-generated programs.
 * Install mode::                Making libraries and executables public.
 * Finish mode::                 Completing a library installation.
-* Uninstall mode::              Removing executables and libraries.
+* Uninstall mode::              Removing installed executables and libraries.
+* Clean mode::                  Removing uninstalled executables and libraries.
 
 Integrating libtool with your package
 
@@ -1116,7 +1117,8 @@ by programs libtool invokes, rather than libtool itself.
 * Execute mode::                Debugging libtool-generated programs.
 * Install mode::                Making libraries and executables public.
 * Finish mode::                 Completing a library installation.
-* Uninstall mode::              Removing executables and libraries.
+* Uninstall mode::              Removing installed executables and libraries.
+* Clean mode::                  Removing uninstalled executables and libraries.
 @end menu
 
 @node Compile mode
@@ -1346,6 +1348,19 @@ Running this command may require superuser privileges, so the
 @cindex mode, uninstall
 
 @dfn{Uninstall} mode deletes installed libraries (and other files).
+
+The first @var{mode-arg} is the name of the program to use to delete
+files (typically @file{/bin/rm}).
+
+The remaining @var{mode-args} are either flags for the deletion program
+(beginning with a `-'), or the names of files to delete.
+
+@node Clean mode
+@section Clean mode
+@cindex clean mode
+@cindex mode, clean
+
+@dfn{Clean} mode deletes uninstalled libraries (and other files).
 
 The first @var{mode-arg} is the name of the program to use to delete
 files (typically @file{/bin/rm}).

@@ -1,3 +1,22 @@
+1999-04-27 Thomas Tanner  <tanner@gmx.de>
+
+	* NEWS: new clean mode
+	* THANKS: added Ossama Othman
+	* doc/libtool.texi: documented the new `clean' mode
+	* ltconfig.in: set need_version=no on OSF (reported by
+	  Marcus Sundberg <mackan@stacken.kth.se>)
+	* ltmain.in: allow absolute non-existant -L paths,
+	  always use output_objdir instead of objdir for temporary files,
+	  delete generated temporary symbol lists,
+	  don't add .la twice in the pseudo-library header,
+	  implemented and documented clean mode (deletes libraries,
+	  programs and object files and the files associated with them),
+	  if build_libtool_libs=no and no static library is available,
+	  try to link the program against the shared library,
+	  don't add a statically linked library to the dependency_libs
+	* ltmain.in (help uninstall): added a missing backslash
+	  after echo (reported by Ossama Othman)
+	  
 1999-04-27  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* ltmain.in (old_archive_cmds): Iterate on oldobjs to find out
