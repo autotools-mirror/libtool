@@ -231,7 +231,7 @@ func_copy_cb ()
       $opt_quiet || func_echo "copying file \`$my_destdir/$my_file'"
       copy_return_status=0
     elif { ( cd "$my_srcdir" 2>/dev/null && $TAR chf - "$my_file" 2> /dev/null; ) \
-        | ( umask 0; cd "$my_destdir" 2>/dev/null && "$TAR" xf - > /dev/null 2>&1; ) }
+        | ( umask 0 && cd "$my_destdir" 2>/dev/null && "$TAR" xf - > /dev/null 2>&1; ) }
     then
       $opt_quiet || func_echo "copying file \`$my_destdir/$my_file'"
       copy_return_status=0

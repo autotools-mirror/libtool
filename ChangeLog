@@ -1,5 +1,10 @@
 2005-03-10  Gary V. Vaughan  <gary@gnu.org>
 
+	* libltdl/Makefile.am (install-data-local): Use `&&' to separate
+	commands so that stdin reaches the untar pracess.
+	* libltdl/loaders/Makefile.am (install-data-local): Ditto.
+	* libtoolize.m4sh (func_copy_cb): Ditto.
+
 	* libltdl/Makefile.am (install-data-local): Don't force v7 tar
 	format with the `o' flag in create mode.
 	Set the umask to 0 when untarring to avoid copied files taking

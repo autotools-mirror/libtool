@@ -80,7 +80,7 @@ ltdldatafiles		= COPYING.LIB README \
 install-data-local:
 	$(mkinstalldirs) $(DESTDIR)$(ltdldatadir)
 	( cd $(srcdir) && $(AMTAR) chf - $(ltdldatafiles); ) \
-	  | ( umask 0; cd $(DESTDIR)$(ltdldatadir) && $(AMTAR) xf -; )
+	  | ( umask 0 && cd $(DESTDIR)$(ltdldatadir) && $(AMTAR) xf -; )
 
 ## Make sure these will be cleaned even when they're not built by default:
 CLEANFILES		= libltdl.la libltdlc.la libdlloader.la

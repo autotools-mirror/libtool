@@ -56,5 +56,5 @@ ltdldatafiles		= Makefile.am Makefile.in \
 install-data-local:
 	$(mkinstalldirs) $(DESTDIR)$(ltdldatadir)
 	( cd $(srcdir) && $(AMTAR) chf - $(ltdldatafiles); ) \
-	  | ( umask 0; cd $(DESTDIR)$(ltdldatadir) && $(AMTAR) xf -; )
+	  | ( umask 0 && cd $(DESTDIR)$(ltdldatadir) && $(AMTAR) xf -; )
 
