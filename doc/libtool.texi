@@ -3044,7 +3044,14 @@ aren't defined in that library.
 @defvarx archive_sym_cmds
 @defvarx old_archive_cmds
 Commands used to create shared and static libraries, respectively.
-archive_sym_cmds is used when -export-symbols was defined.
+@samp{archive_sym_cmds} is used when -export-symbols was defined.
+@end defvar
+
+@defvar old_archive_from_new_cmds
+If the shared library depends on a static library,
+@samp{old_archive_from_new_cmds} contains the commands used to create that
+static library.  If this variable is not empty, @samp{old_archive_cmds} is
+not used.
 @end defvar
 
 @defvar build_libtool_libs
