@@ -1302,6 +1302,9 @@ compiler."
 	  # are required to link).
 	  if test -n "$old_library"; then
 	    dlprefiles="$dlprefiles $dir/$old_library"
+	  # Otherwise, use the dlname, so that lt_dlopen finds it.
+	  elif test -n "$dlname"; then
+	    dlprefiles="$dlprefiles $dir/$dlname"
 	  else
 	    dlprefiles="$dlprefiles $dir/$linklib"
 	  fi
