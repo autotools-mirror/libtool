@@ -1,3 +1,9 @@
+2004-02-11  Gary V. Vaughan  <gary@gnu.org>
+
+	* config/mailnotify: New file for mailing commit notifications,
+	imported from cvs-utils.
+	* commit: Updated from cvs-utils and tweaked for libtool.
+
 2004-02-09  Albert Chin-A-Young  <china@thewrittenword.com>
 
 	* m4/libtool.m4: Fix typo: testring -> teststring.
@@ -9,13 +15,13 @@
 	distribute these.
 
 2004-02-05  Peter O'Gorman  <peter@pogma.com>
-	
+
 	* ltmain.in (infer_tag, win32_libid): Style changes. Rename
 	infer_tag to func_infer_tag and win32_libid to func_win32_libid.
 	* libtool.m4 (cygwin): rename win32_libid to func_win32_libid.
-	
+
 2004-02-04  Peter O'Gorman  <peter@pogma.com>
-	
+
 	* ltmain.in (infer_tag): Move tag inferrence to a shell function.
 	Also test $base_compile against $CC with escaped arguments. Bug
 	reported by Geoff Keating <geoffk@apple.com>.
@@ -116,7 +122,7 @@
 
 	* ltmain.in: Move eval to after command separation to allow ~ in paths.
 
-	* ltmain.in (linkalldeplibs,darwin): Fix a bug reported by Idar 
+	* ltmain.in (linkalldeplibs,darwin): Fix a bug reported by Idar
 	Tollefsen where a dir could be added to the link line with no '-L'
 	on darwin.
 
@@ -148,7 +154,7 @@
 	for platforms that have been using pass_all for some time now.
 
 2004-01-23  Gary V. Vaughan  <gary@gnu.org>
-	                                                                        
+
 	* ltmain.in: Don't suppress output of PIC mode compile if
 	-no-suppress option is given.
 	* doc/libtool.texi (Invoking libtool): Document it.
@@ -162,7 +168,7 @@
 
 2004-01-23  Kevin P. Fleming  <kpfleming@backtobasicsmgmt.com>
 	Charles Wilson <cygwin@cwilson.fastmail.fm>
-	                                                                        
+
 	* ltmain.in: include --tag options, if specified, in the
 	relink_command in uninstalled .la files.  Also, preserve --silent,
 	--debug options when libtool re-execs itself.
@@ -175,13 +181,13 @@
 	-export-symbols and -export-symbols-regex options.
 
 2004-01-23  Owen Taylor  <otaylor@redhat.com>
-	                                                                        
+
 	* m4/libtool.m4 (AC_LIBTOOL_SYS_GLOBAL_SYMBOL_PIPE): Recognise the
 	'R' symbol type so read-only symbols can be exported when combining
 	GCC and Solaris LD.
 
 2004-01-23  Scott James Remnant  <scott@netsplit.com>
-	                                                                        
+
 	* ltmain.in: When relinking, place the -L parameter containing
 	the installation prefix directory after the intended destination,
 	so we don't accidentally link against an older installed library.

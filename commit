@@ -1,17 +1,51 @@
 #! /bin/sh
 
-# commit version 0.9.2
+# commit (GNU cvs-utils) version 0.10
+# Originally by Gary V. Vaughan <gary@gnu.org>
+# Pretty much rewritten by Alexandre Oliva <aoliva@redhat.com>
 
-# Copyright (C) 1999, Free Software Foundation
+# Copyright (C) 1999, 2000, 2004 Free Software Foundation, Inc.
+# This is free software; see the source for copying conditions.  There is NO
+# warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
-# This script is Free Software, and it can be copied, distributed and
-# modified as defined in the GNU General Public License.  A copy of
-# its license can be downloaded from http://www.gnu.org/copyleft/gpl.html
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, a copy can be downloaded from
+# http://www.gnu.org/copyleft/gpl.html, or by writing to the Free
+# Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
+# MA 02111-1307, USA.
 
-# Originally by Gary V. Vaughan <gvv@techie.com>
-# Heavily modified by Alexandre Oliva <oliva@dcc.unicamp.br>
+# Usage: commit [-v] [-h] [-f] [-l] [-n] [-q] [-z N] [-C ChangeLog_file]
+#          [-m msg|-F msg_file|-1] [-s addr [--from addr]] [--] [file|dir ...]
 
-# This scripts eases checking in changes to CVS-maintained projects
+# -C file --changelog=file   extract commit message from specified ChangeLog
+# -zN     --compress=N       set compression level (0-9, 0=none, 9=max)
+# -n      --dry-run          don't commit anything
+#         --fast             same as --force --first
+# -F file --file=file        read commit message from file
+# -1      --first            extract first entry from ChangeLog, no cvs diff
+# -f      --force            don't check (unless *followed* by -n), and just
+#                            display commit message instead of running $PAGER
+#         --from=addr        override default from address in commit email
+# -l      --local            don't descend into subdirectories
+# -m msg  --message=msg      set commit message
+#         --msg=msg          same as -m
+# -q      --quiet            run cvs in quiet mode
+# -s addr --sendmail=addr    send a commit email of the differences to ADDR
+#         --signature[=file] add FILE to the end of the email (~/.signature)
+# -v      --version          print version information
+# -h,-?   --help             print short or long help message
+
+# This script eases checking in changes to CVS-maintained projects
 # with ChangeLog files.  It will check that there have been no
 # conflicting commits in the CVS repository and print which files it
 # is going to commit to stderr.  A list of files to compare and to
@@ -19,32 +53,23 @@
 # files in the current directory (and below, unless `-l' is given) are
 # considered for check in.
 
-# The commit message will be extracted from the differences between
-# the local ChangeLog and the one in the repository (unless a message
-# was specified with `-m' or `-F').  An empty message is not accepted
-# (but a blank line is).  If the message is acceptable, it will be
-# presented for verification (and possible edition) using the $PAGER
-# environment variable (or `more', if it is not set, or `cat', if the
-# `-f' switch is given).  If $PAGER exits successfully, the modified
-# files (at that moment) are checked in, unless `-n' was specified, in
-# which case nothing is checked in.
+# The commit message will be extracted from the differences between a
+# file named ChangeLog* in the commit list, or named after -C, and the
+# one in the repository (unless a message was specified with `-m' or
+# `-F').  An empty message is not accepted (but a blank line is).  If
+# the message is acceptable, it will be presented for verification
+# (and possible edition) using the $PAGER environment variable (or
+# `more', if it is not set, or `cat', if the `-f' switch is given).
+# If $PAGER exits successfully, the modified files (at that moment)
+# are checked in, unless `-n' was specified, in which case nothing is
+# checked in.
 
-# usage: commit [-v] [-h] [-f] [-l] [-n] [-q] [-z N]
-#               [-m msg|-F msg_file] [--] [file|dir ...]
-
-# -f      --fast        don't check (unless *followed* by -n), and just 
-#         --force       display commit message instead of running $PAGER
-# -l      --local       don't descend into subdirectories
-# -m msg  --message=msg set commit message
-#         --msg=msg     same as -m
-# -F file --file=file   read commit message from file
-# -n      --dry-run     don't commit anything
-# -q      --quiet       run cvs in quiet mode
-# -zN     --compress=N  set compression level (0-9, 0=none, 9=max)
-# -v      --version     print version information
-# -h,-?   --help        print short or long help message
+# Report bugs to <gary@gnu.org>
 
 name=commit
+: ${CVS=cvs}
+: ${SHELL=/bin/sh}
+: ${MAILNOTIFY=./mailnotify}
 cvsopt=
 updateopt=
 commitopt=
@@ -52,9 +77,26 @@ dry_run=false
 commit=:
 update=:
 log_file="${TMPDIR-/tmp}/commitlog.$$"
+signature_file=
+first=false
+sendmail_to='Libtool Commit <libtool-commit@gnu.org>'
+sendmail_from=
 
-rm -f "$log_file"
-trap 'rm -f "$log_file"; exit 1' 1 2 15
+my_sed_help='/^# Usage:/,/# Report bugs to/ {
+                s/^# //; s/^# *$//;
+		s/\$progname/'$progname'/;
+		p;
+	     }; d'
+my_sed_version='/^# '$name' (GNU /,/# warranty; / {
+	        s/^# //; s/^# *$//;
+	        s/\((C)\)[ 0-9,-]*\( [1-9][0-9]*\)/\1\2/;
+	        p;
+	     }; d'
+
+rm -f "${log_file}*"
+trap 'rm -f "${log_file}*"; exit 1' 1 2 15
+
+set -e
 
 # this just eases exit handling
 main_repeat=":"
@@ -63,9 +105,23 @@ while $main_repeat; do
 repeat="test $# -gt 0"
 while $repeat; do
     case "$1" in
-    -f|--force|--fast)
+    --fast)
+        shift
+	set fnord --force --first ${1+"$@"}
+	shift
+	;;
+    -f|--force)
 	update=false
 	PAGER=cat
+	shift
+	;;
+    --from)
+	if test $# = 1; then
+	    echo "$name: missing argument for $1" >&2
+	    break
+	fi
+	shift
+	sendmail_from="$1"
 	shift
 	;;
     -l|--local)
@@ -78,8 +134,8 @@ while $repeat; do
 	    echo "$name: missing argument for $1" >&2
 	    break
 	fi
-	if test -f "$log_file"; then
-	    echo "$name: you can have at most one of -m and -F" >&2
+	if $first || test -f "$log_file"; then
+	    echo "$name: you can have at most one of -m, -F and -1" >&2
 	    break
 	fi
 	shift
@@ -87,8 +143,8 @@ while $repeat; do
 	shift
 	;;
     -F|--file)
-	if test -f "$log_file"; then
-	    echo "$name: you can have at most one of -m and -F" >&2
+	if $first || test -f "$log_file"; then
+	    echo "$name: you can have at most one of -m, -F and -1" >&2
 	    break
 	fi
 	if test $# = 1; then
@@ -101,6 +157,27 @@ while $repeat; do
 	fi
 	shift
 	;;
+    -1|--first)
+        if test -f "$log_File"; then
+	    echo "$name: you can have at most one of -m, -F and -1" >&2
+	    break
+	fi
+	first=:
+	shift
+	;;
+    -C|--[cC]hange[lL]og)
+        if test $# = 1; then
+	    echo "$name: missing argument for $1" >&2
+	    break
+	fi
+	shift
+	if test ! -f "$1"; then
+	    echo "$name: ChangeLog file \`$1' does not exist" >&2
+	    break
+	fi
+	ChangeLog="$1"
+	shift
+	;;
     -n|--dry-run)
 	commit=false
 	update=true
@@ -109,6 +186,32 @@ while $repeat; do
     -q|--quiet)
 	cvsopt="$cvsopt -q"
 	shift
+	;;
+    -s|--sendmail)
+	if test $# = 1; then
+	    echo "$name: missing argument for $1" >&2
+	    break
+	fi
+	shift
+        sendmail_to="$1"
+	shift
+	;;
+    --signature)
+	if test $# = 1; then
+	    echo "$name: missing argument for $1" >&2
+	    break
+	fi
+	shift
+	signature_file="$HOME/.signature"
+	case $1 in
+	  -*) ;;
+	  *)  signature_file="$1"; shift ;;
+	esac
+	if test -f "$signature_file"; then :
+	else
+	    echo "$name: \`$signature_file': file not found"
+	    break
+	fi
 	;;
     -z|--compress)
 	if test $# = 1; then
@@ -126,13 +229,13 @@ while $repeat; do
 	shift
 	;;
 
-    -m*|-F*|-z*)
+    -m*|-F*|-C*|-s*|-z*)
 	opt=`echo "$1" | sed '1s/^\(..\).*$/\1/;q'`
 	arg=`echo "$1" | sed '1s/^-[a-zA-Z0-9]//'`
 	shift
 	set -- "$opt" "$arg" ${1+"$@"}
 	;;
-    --message=*|--msg=*|--file=*|--compress=*)
+    --message=*|--msg=*|--from=*|--file=*|--[Cc]hange[Ll]og=*|--compress=*|--sendmail=*|--signature=*)
 	opt=`echo "$1" | sed '1s/^\(--[^=]*\)=.*/\1/;q'`
     	arg=`echo "$1" | sed '1s/^--[^=]*=//'`
 	shift
@@ -140,7 +243,7 @@ while $repeat; do
 	;;
 
     -v|--version)
-	sed '/^# '$name' version /,/^# Heavily modified by/ { s/^# //; p; }; d' < $0
+	sed "$my_sed_version" < $0
 	exit 0
 	;;
     -\?|-h)
@@ -150,7 +253,7 @@ while $repeat; do
 	exit 0
 	;;
     --help)
-	sed '/^# '$name' version /,/^[^#]/ { /^[^#]/ d; s/^# //; p; }; d' < $0
+	sed "$my_sed_help" < $0
 	exit 0
 	;;
     --)
@@ -166,12 +269,22 @@ while $repeat; do
 	;;
     esac
 done
+
+if test -z "$sendmail_to"; then
+    # can't have a from address without a destination address
+    test -n "$sendmail_from" &&
+        echo "$name: can't use --from without --sendmail." >&2 && exit 1
+    # can't use a signature file without a destination address
+    test -n "$signature_file" &&
+        echo "$name: can't use --signature without --sendmail," >&2 && exit 1
+fi
+
 # might have used break 2 within the previous loop, but so what
 $repeat && break
 
 $update && \
 if echo "$name: checking for conflicts..." >&2
-   (cvs $cvsopt -q -n update $updateopt ${1+"$@"} 2>/dev/null \
+   ($CVS $cvsopt -q -n update $updateopt ${1+"$@"} \
     | while read line; do
 	echo "$line"
 	echo "$line" >&3
@@ -181,11 +294,41 @@ if echo "$name: checking for conflicts..." >&2
 fi
 
 if test ! -f "$log_file"; then
+  if test -z "$ChangeLog"; then
+    for f in ${1+"$@"}; do
+      case "$f" in
+      ChangeLog* | */ChangeLog*)
+        if test -z "$ChangeLog"; then
+	    ChangeLog="$f"
+	else
+	    echo "$name: multiple ChangeLog files: $ChangeLog and $f" >&2
+	    break
+	fi
+	;;
+      esac
+    done
+  fi
+
   echo "$name: checking commit message..." >&2
-  cvs $cvsopt diff -u ChangeLog \
-  | while read line; do
+  if $first; then
+    skipping=:
+    sed 's,^,+,' < ${ChangeLog-ChangeLog} |
+    while read line; do
       case "$line" in
-      "--- ChangeLog"*) :;;
+      "+") if $skipping; then skipping=false; else break; fi;;
+      "+ "*)
+	echo "$name: *** Warning: lines should start with tabs, not spaces; ignoring line:" >&2
+	echo "$line" | sed 's/^.//' >&2;;
+      "+	"*)
+        $skipping || echo "$line" ;;
+      esac
+    done |
+    sed 's,^\+	,,' > "$log_file" || break
+  else
+    $CVS $cvsopt diff -u ${ChangeLog-ChangeLog} |
+    while read line; do
+      case $line in
+      "--- "*) :;;
       "-"*)
 	echo "$name: *** Warning: the following line in ChangeLog diff is suspicious:" >&2
 	echo "$line" | sed 's/^.//' >&2;;
@@ -195,9 +338,10 @@ if test ! -f "$log_file"; then
       "+") echo;;
       "+	"*) echo "$line";;
       esac
-    done \
-  | sed -e 's,\+	,,' -e '/./p' -e '/./d' -e '1d' -e '$d' > "$log_file" \
-  || break
+    done |
+    sed -e 's,\+	,,' -e '/./p' -e '/./d' -e '1d' -e '$d' > "$log_file" \
+    || break
+  fi
 # The sed script above removes "+TAB" from the beginning of a line, then
 # deletes the first and/or the last line, when they happen to be empty
 fi
@@ -208,7 +352,7 @@ if grep '[^ 	]' < "$log_file" > /dev/null; then :; else
 fi
 
 if grep '^$' < "$log_file" > /dev/null; then
-  echo "$name: *** Warning: blank lines should not appear within a commit messages." >&2
+  echo "$name: *** Warning: blank lines should not appear within commit messages." >&2
   echo "$name: *** They should be used to separate distinct commits." >&2
 fi
 
@@ -216,17 +360,49 @@ ${PAGER-more} "$log_file" || break
 
 sleep 1 # give the user some time for a ^C
 
+filelist=`cvs -nq up 2>/dev/null | grep '^[MAD] ' | sed 's/^. //'`
+
 # Do not check for empty $log_file again, even though the user might have
 # zeroed it out.  If s/he did, it was probably intentional.
 
 if $commit; then
-  cvs $cvsopt commit $commitopt -F $log_file ${1+"$@"} || break
+  $CVS $cvsopt commit $commitopt -F $log_file ${1+"$@"} || break
 fi
 
 main_repeat=false
 done
 
-rm -f "$log_file"
+# Send a copy of the log_file if sendmail_to was set:
+if test -n "$sendmail_to"; then
+  notify_file="${log_file}.2"
+  echo "$name: Mailing commit notification to $sendmail_to" >&2
+  test $# -gt 0 && filelist="$@"
+
+  {
+    test -f CVS/Root &&
+        echo "CVSROOT:		`sed -e 's,.*:,,g' CVS/Root`"
+    test -f ./mkstamp &&
+        echo "TIMESTAMP: 	`$SHELL ./mkstamp < ./ChangeLog`"
+    test -f CVS/Repository &&
+        echo "Module name:	`cat CVS/Repository`"
+    test -f CVS/Tag &&
+        echo "Branch:		`sed -e 's,^T,,;1q' CVS/Tag`"
+    test -f CVS/Root &&
+        echo "Changes by:	`sed -e 's,^.*:\(.*\):.*$,\1,' CVS/Root`"
+    echo ""
+    echo "Log Message:"
+    sed -e 's,^,	,' "$log_file"
+    test -f "$signature_file" && cat "$signature_file"
+  } >> "$notify_file"
+
+  if test -n "$sendmail_from"; then
+    $SHELL $MAILNOTIFY -F "$sendmail_from" -s "`echo $filelist`" -f "$notify_file" -m "text/plain" "$sendmail_to"
+  else
+    $SHELL $MAILNOTIFY -s "`echo $filelist`" -f "$notify_file" -m "text/plain" "$sendmail_to"
+  fi
+fi
+
+rm -f "${log_file}*"
 
 # if main_repeat was not set to `false', we failed
 $main_repeat && exit 1
