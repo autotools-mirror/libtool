@@ -1,3 +1,8 @@
+2004-10-08  Gary V. Vaughan  <gary@gnu.org>
+
+	* config/general.m4sh (func_verbose): Work around a bash bug in
+	shell functions.
+
 2004-10-08  Charles Wilson  <cygwin@cwilson.fastmail.fm>
 
 	* tests/pdemo-inst.test: pdemo-inst should depend on pdemo-make.
@@ -6,12 +11,12 @@
 	rather than ".lnk" for the piecewise linking ld script in order to
 	avoid the conflict.
 
-2004-10-07  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+2004-10-07  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* libltdl/ltdl.c (lt_dlexit, lt_dlpath_insertdir): Fix memleaks,
 	free user_search_path on lt_dlexit.
 
-2004-10-07  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+2004-10-07  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* tests/sh.test: Remove tests which fail on AS_SHELL_SANITIZE
 	from autoconf >= 2.59.
@@ -34,7 +39,7 @@
 	* configure.ac: Cleaned up, having moved the checks for compilers
 	which do not exist to libtool.m4.
 
-2004-10-05  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+2004-10-05  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* libltdl/ltdl.c (try_dlopen): Move .la file parsing
 	part.. (parse_dotla_file): ..here.  Adjust.
@@ -49,7 +54,6 @@
 	* config/ltmain.m4sh [darwin]: Make the -dylib_file flag work on
 	older darwins too. Reported by Christoph Egger.
 
->>>>>>> 1.1681
 2004-10-05  Gary V. Vaughan  <gary@gnu.org>
 
 	* configure.ac: Bumped version to 2.1a.
