@@ -27,7 +27,7 @@ Fri Dec  3 19:21:39 1999  Ossama Othman  <ossama@debian.org>
 
 	Added this file.  It contains all of the C compiler related
 	configuration code that was previously in ltconfig.in.  This
-	script is meant to be source by the ltconfig script alone.  It is
+	script is meant to be sourced by the ltconfig script alone.  It is
 	not meant for use by the user.  Eventually, the contents of this
 	file will be moved to `libtool.m4'.
 
