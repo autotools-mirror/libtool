@@ -258,7 +258,7 @@ AC_CHECK_LIB([dl], [dlopen],
 #  include <dlfcn.h>
 #endif
     ],
-    [dlopen();],
+    [dlopen(0, 0);],
     [AC_DEFINE(HAVE_LIBDL, 1,
       [Define if you have the libdl library or equivalent.])],
     [AC_CHECK_LIB(svld, dlopen,
