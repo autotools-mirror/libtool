@@ -65,10 +65,12 @@ information from the end of `$(top_builddir)/libtool --help' to the
 bug report mailing list, <bug-libtool@gnu.org>.  From a bourne
 compatible shell, you can generate verbose test output like this:
 
-  VERBOSE=1 make check \
+  VERBOSE=yes make check \
   TESTS='cdemo-static.test cdemo-make.test cdemo-exec.test' \
   | tee cdemo-static-group.log
 
+In order to enable debug shell tracing, use VERBOSE=debug
+instead of VERBOSE=yes.
 
 4. Version Numbering
 ====================

@@ -1,5 +1,10 @@
 2004-10-03  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
 
+	* README, README.alpha: Update notes regarding available VERBOSE
+	settings.
+
+2004-10-03  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
 	* config/ltmain.in: Change $XSED to $Xsed to fix hang noticed
 	under MinGW.
 	* tests/defs.in: Support VERBOSE=debug to enable shell tracing
