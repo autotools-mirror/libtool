@@ -45,8 +45,10 @@ In the future:
   the pseudo-library and later dlopening them when a program is linked
   against such a library.
 
-* Fix */demo on win32.
-This may simply require resolving the item below.
+* Arrange that EXEEXT suffixes are stripped from wrapper script names
+only when needed, and that a timestamp file or a wrapper program is
+created with the EXEEXT suffix, so that `make' doesn't build it every
+time.
 
 * Figure out how to use data items in dlls with win32.
 The difficult part is compiling each object which will be linked with an
@@ -77,9 +79,8 @@ People who need it:
   Jean Daniel Fekete <Jean-Daniel.Fekete@emn.fr>
   Thomas Hiller <hiller@tu-harburg.d400.de>
 
-* Another form of convenience library, suggested by Alexandre Oliva,
-is to have undocumented utility libraries, where only the shared
-version is installed.
+* Another form of convenience library is to have undocumented utility
+libraries, where only the shared version is installed.
 
 * We could use libtool object convenience libraries that resolve
 symbols to be included in a libtool archive.  This would require some
@@ -88,9 +89,11 @@ sort of -whole-archive option, as well.
 * Currently, convenience libraries (.al) are built from .lo objects,
 except when --disable-shared.  When we can build both shared and
 static libraries, we should probably create a .al out of .lo objects
-and also a .a out of .o objects.  The .al would only be used to
-create shared libraries, whereas the .a would be used for creating
-static libraries and programs.
+and also a .a out of .o objects.  The .al would only be used to create
+shared libraries, whereas the .a would be used for creating static
+libraries and programs.  We could also explicitly support `empty'
+convenience libraries, that behave as macros that expand to a set of
+-Rs, -Ls and -ls switches.
 
 * We should include tests with convenience libraries and reloadable
 objects in the testsuite.
