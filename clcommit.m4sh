@@ -2,7 +2,7 @@ m4_define([_m4_divert(SCRIPT)], 100)
 m4_divert_push([SCRIPT])#!/bin/sh
 # @configure_input@
 
-# clcommit (GNU @PACKAGE@) version 0.14
+# clcommit (GNU @PACKAGE@) version 0.15
 # Written by Gary V. Vaughan <gary@gnu.org>
 # and Alexandre Oliva <aoliva@redhat.com>
 
@@ -44,7 +44,7 @@ m4_divert_push([SCRIPT])#!/bin/sh
 # -q      --quiet            run cvs in quiet mode
 # -s addr --sendmail=addr    send a commit email of the differences to ADDR
 #         --signature[=file] add FILE to the end of the email (~/.signature)
-# -S TEXT --summary=TEXT     specify a TEXT summary for the commit (tla only)
+# -S TEXT --summary=TEXT     specify a TEXT subject line for the commit email
 # -t      --tla              use tla as the scm (instead of cvs)
 # -v      --verbose          run in verbose mode
 #         --version          print version information
@@ -391,6 +391,8 @@ func_commit ()
     # Need to do the tla commit *after* cvs commit to make sure the
     # ChangeLog timestamps stay in synch.
     $opt_tla && $TLA commit
+
+    :
 }
 
 
@@ -417,7 +419,10 @@ func_mailnotify ()
       echo ""
       echo "Log Message:"
       $SED -e 's,^,	,' "$log_file"
-      test -f "$signature_file" && cat "$signature_file"
+      test -f "$signature_file" && {
+        echo '-- '
+	cat "$signature_file"
+      }
     } > "$notify_file"
 
     ${PAGER-more} "$notify_file" || break
@@ -456,7 +461,7 @@ func_mailnotify ()
   # Do not check for empty $log_file again, even though the user might have
   # zeroed it out.  If s/he did, it was probably intentional.
   if $opt_commit; then
-    func_commit
+    func_commit ${1+"$@"}
   fi
 
   # Need to set the subject line *after* tla commit, or the
