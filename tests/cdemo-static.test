@@ -24,7 +24,7 @@ fi
 rm -f config.cache
 
 # Configure the demonstration.
-echo "= Configuring in ../cdemo (prefix=$prefix) with --disable-static"
+echo "= Configuring in ../cdemo (prefix=$prefix) with --disable-shared"
 CONFIG_SITE=/dev/null ${CONFIG_SHELL-/bin/sh} $srcdir/../cdemo/configure --srcdir=$srcdir/../cdemo --prefix=$prefix --disable-shared || exit 1
 
 exit 0

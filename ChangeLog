@@ -1,7 +1,13 @@
 1999-01-13  Edouard G. Parmelan  <Edouard.Parmelan@France.NCR.COM>
 
+	* ltconfig.in (NM): PATH search was not updated like in
+	libtool.m4, in last Alexandre Oliva's change to it
+	(sysv4*, ncr): pass all library dependencies
 	* ltmain.in (dependency_libs, -R): use `dep' instead of `arg' to
  	iterate, otherwise we'd overwrite `arg'
+	(convenience, old_libs): if --disable-shared, convenience
+	libraries are just old archives, as .lo's are of no use
+	* tests/cdemo-static.test: print --disable-shared here
 
 1999-01-13  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
