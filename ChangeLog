@@ -1,3 +1,7 @@
+1999-07-02  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* doc/PLATFORMS: Tested on as many platforms as possible for me.
+
 1999-07-01  Thomas Tanner  <tanner@ffii.org>
 
 	* NEWS: updated
