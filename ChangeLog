@@ -1,3 +1,9 @@
+2005-01-29  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* m4/libtool.m4 (_LT_LINKER_SHLIBS, _LT_LANG_CXX_CONFIG) [linux]:
+	Update for Intel Compiler icc/icpc/ifort: add -i_dynamic and
+	-nofor_main, if necessary.  Simplify logic somewhat.
+
 2005-01-26  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* tests/Makefile.am: also re-export CPP, CXXCPP, and the value of

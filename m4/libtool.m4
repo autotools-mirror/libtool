@@ -3657,12 +3657,19 @@ _LT_EOF
       if $LD --help 2>&1 | $EGREP ': supported targets:.* elf' > /dev/null \
 	 && test "$tmp_diet" = no
       then
-	tmp_archive_cmds='$CC -shared $libobjs $deplibs $compiler_flags ${wl}-soname $wl$soname -o $lib'
-	# Portland Group f77 and f90 compilers require an additonal -fpic
-	if test "$CC" = "pgf77" -o "$CC" = "pgf90"; then
-	   tmp_archive_cmds="$tmp_archive_cmds -fpic"
-	 fi
-	_LT_TAGVAR(archive_cmds, $1)="$tmp_archive_cmds"
+	tmp_addflag=
+	case $CC,$host_cpu in
+	pgf77* | pgf90* )		# Portland Group f77 and f90 compilers
+	  tmp_addflag=' -fpic' ;;
+	ecc*,ia64* | icc*,ia64*)	# Intel C compiler on ia64
+	  tmp_addflag=' -i_dynamic' ;;
+	efc*,ia64* | ifort*,ia64*)	# Intel Fortran compiler on ia64
+	  tmp_addflag=' -i_dynamic -nofor_main' ;;
+	ifc* | ifort*)			# Intel Fortran compiler
+	  tmp_addflag=' -nofor_main' ;;
+	esac
+
+	_LT_TAGVAR(archive_cmds, $1)='$CC -shared'"$tmp_addflag"' $libobjs $deplibs $compiler_flags ${wl}-soname $wl$soname -o $lib'
         case `$LD -v 2>&1` in
           *\ [01].* | *\ 2.[[0-9]].* | *\ 2.10.*) ;; # catch versions < 2.11
           *\ 2.11.93.0.2\ *) supports_anon_versioning=yes ;; # RH7.3 ...
@@ -3671,7 +3678,7 @@ _LT_EOF
           *) supports_anon_versioning=yes ;;
         esac
         if test "x$supports_anon_versioning" = xyes; then
-          _LT_TAGVAR(archive_expsym_cmds, $1)='$ECHO "{ global:" > $output_objdir/$libname.ver~cat $export_symbols | sed -e "s/\(.*\)/\1;/" >> $output_objdir/$libname.ver~$ECHO "local: *; };" >> $output_objdir/$libname.ver~$CC -shared $libobjs $deplibs $compiler_flags ${wl}-soname $wl$soname ${wl}-version-script ${wl}$output_objdir/$libname.ver -o $lib'
+          _LT_TAGVAR(archive_expsym_cmds, $1)='$ECHO "{ global:" > $output_objdir/$libname.ver~cat $export_symbols | sed -e "s/\(.*\)/\1;/" >> $output_objdir/$libname.ver~$ECHO "local: *; };" >> $output_objdir/$libname.ver~$CC -shared'"$tmp_addflag"' $libobjs $deplibs $compiler_flags ${wl}-soname $wl$soname ${wl}-version-script ${wl}$output_objdir/$libname.ver -o $lib'
         else
           _LT_TAGVAR(archive_expsym_cmds, $1)=$_LT_TAGVAR(archive_cmds, $1)
         fi
@@ -5160,8 +5167,12 @@ if test "$_lt_caught_CXX_error" != yes; then
 		_LT_TAGVAR(archive_expsym_cmds, $1)='$CC -shared $predep_objects $libobjs $deplibs $postdep_objects $compiler_flags ${wl}-soname $wl$soname ${wl}-retain-symbols-file $wl$export_symbols -o $lib'
 		;;
 	      *)  # Version 8.0 or newer
-	        _LT_TAGVAR(archive_cmds, $1)='$CC -shared $libobjs $deplibs $compiler_flags ${wl}-soname $wl$soname -o $lib'
-		_LT_TAGVAR(archive_expsym_cmds, $1)='$CC -shared $libobjs $deplibs $compiler_flags ${wl}-soname $wl$soname ${wl}-retain-symbols-file $wl$export_symbols -o $lib'
+	        tmp_idyn=
+	        case $host_cpu in
+		  ia64*) tmp_idyn=' -i_dynamic';;
+		esac
+	        _LT_TAGVAR(archive_cmds, $1)='$CC -shared'"$tmp_idyn"' $libobjs $deplibs $compiler_flags ${wl}-soname $wl$soname -o $lib'
+		_LT_TAGVAR(archive_expsym_cmds, $1)='$CC -shared'"$tmp_idyn"' $libobjs $deplibs $compiler_flags ${wl}-soname $wl$soname ${wl}-retain-symbols-file $wl$export_symbols -o $lib'
 		;;
 	    esac
 	    _LT_TAGVAR(archive_cmds_need_lc, $1)=no
