@@ -3407,6 +3407,16 @@ static library.  If this variable is not empty, @samp{old_archive_cmds} is
 not used.
 @end defvar
 
+@defvar old_archive_from_expsyms_cmds
+If a static library must be created from the export symbol list in order to
+correctly link with a shared library, @samp{old_archive_from_expsyms_cmds}
+contains the commands needed to create that static library.  When these
+commands are executed, the variable @var{soname} contains the name of the
+shared library in question, and the @var{$objdir/$newlib} contains the
+path of the static library these commands should build.  After executing
+these commands, libtool will proceed to link against @var{$objdir/$newlib}
+instead of @var{soname}.
+
 @defvar build_libtool_libs
 Whether libtool should build shared libraries on this system.  Set to
 @samp{yes} or @samp{no}.
@@ -3456,6 +3466,12 @@ symbols that are defined in the program.
 Commands to extract exported symbols from @var{libobjs} to the
 file @var{export_symbols}.
 @end defvar
+
+@defvar extract_expsyms_cmds
+Commands to extract the exported symbols list from a shared library.
+These commands are executed if there is no file @var{$objdir/$soname-def},
+and should write the names of the exported symbols to that file, for
+the use of @samp{old_archive_from_expsyms_cmds}.
 
 @defvar finish_cmds
 Commands to tell the dynamic linker how to find shared libraries in a

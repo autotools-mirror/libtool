@@ -1,3 +1,8 @@
+1999-03-08  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
+
+	* doc/libtool.texi (old_archive_from_expsyms_cmds,
+	extract_expsyms_cmds): documented these new variables.
+
 1999-03-06  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* libltdl/ltdl.c (LTDL_LAZY_OR_NOW): renamed from LTDL_NOW; prefer 
