@@ -1,3 +1,9 @@
+2002-12-30  Robert Boehne  <rboehne@gnu.org>
+ 
+	* libtool.m4 (AC_LIBTOOL_LANG_CXX_CONFIG): Copy the section
+	for Darwin from AC_LIBTOOL_PROG_LD_SHLIBS so that the CXX
+	tag doesn't use the g++ defaults for the OS X compiler.
+
 2002-12-30  Albert Chin-A-Young <china@thewrittenword.com>
 
 	* libtool.m4: Sync methods used to detect GNU ld.

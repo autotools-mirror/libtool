@@ -2717,6 +2717,28 @@ case $host_os in
     fi
 	;;
 
+  darwin* | rhapsody*)
+    case "$host_os" in
+      rhapsody* | darwin1.[[012]])
+      _LT_AC_TAGVAR(allow_undefined_flag, $1)='-undefined suppress'
+      ;;
+    *) # Darwin 1.3 on
+      _LT_AC_TAGVAR(allow_undefined_flag, $1)='-flat_namespace -undefined suppress'
+      ;;
+    esac
+
+    # FIXME: Relying on posixy $() will cause problems for
+    #        cross-compilation, but unfortunately the echo tests do not
+    #        yet detect zsh echo's removal of \ escapes.  Also zsh mangles
+    #	       `"' quotes if we put them in here... so don't!
+    _LT_AC_TAGVAR(archive_cmds, $1)='$CC -r ${wl}-bind_at_load -keep_private_externs -nostdlib -o ${lib}-master.o $libobjs && $CC $(test .$module = .yes && echo -bundle || echo -dynamiclib) $allow_undefined_flag -o $lib ${lib}-master.o $deplibs$linker_flags $(test .$module != .yes && echo -install_name $rpath/$soname $verstring)'
+    # We need to add '_' to the symbols in $export_symbols first
+    #_LT_AC_TAGVAR(archive_expsym_cmds, $1)="$_LT_AC_TAGVAR(archive_cmds, $1)"' && strip -s $export_symbols'
+    _LT_AC_TAGVAR(hardcode_direct, $1)=yes
+    _LT_AC_TAGVAR(hardcode_shlibpath_var, $1)=no
+    _LT_AC_TAGVAR(whole_archive_flag_spec, $1)='-all_load $convenience'
+    ;;
+
   dgux*)
     case $cc_basename in
       ec++)
