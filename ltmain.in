@@ -6441,17 +6441,18 @@ case $mode in
 
 Provide generalized library-building support services.
 
-    --config          show all configuration variables
-    --debug           enable verbose shell tracing
--n, --dry-run         display commands without modifying any files
-    --features        display basic configuration information and exit
-    --finish          same as \`--mode=finish'
-    --help            display this help message and exit
-    --mode=MODE       use operation mode MODE
-    --quiet           same as \`--silent'
-    --silent          don't print informational messages
-    --tag=TAG         use configuration variables from tag TAG
-    --version         print version information
+    --config             show all configuration variables
+    --debug              enable verbose shell tracing
+-n, --dry-run            display commands without modifying any files
+    --features           display basic configuration information and exit
+    --finish             same as \`--mode=finish'
+    --help               display this help message and exit
+    --mode=MODE          use operation mode MODE
+    --preserve-dup-deps  don't remove duplicate dependency libraries
+    --quiet              same as \`--silent'
+    --silent             don't print informational messages
+    --tag=TAG            use configuration variables from tag TAG
+    --version            print version information
 
 MODE must be one of the following:
 
