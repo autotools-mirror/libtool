@@ -1,3 +1,8 @@
+2005-03-19  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* tests/demo-nopic.test: Enhance status output
+	noted by Tom Burger <tvburger@few.vu.nl>.
+
 2005-03-18  Peter O'Gorman  <peter@pogma.com>,
 	    Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 

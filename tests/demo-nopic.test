@@ -17,7 +17,7 @@ hppa*|x86_64*|s390*)
         exit 77
 	;;
 *-solaris*|*-sunos*)
-	echo "libtool does not build non-PIC shared libs on $host_os" 2>&1
+	echo "libtool does not build non-PIC shared libs on $host" 2>&1
 	exit 77
 	;;
 esac
