@@ -62,14 +62,6 @@ test -f Makefile || { makefile=Makefile; cp Makefile.am $makefile; }
 make ./config/ltmain.sh ./m4/ltversion.m4 ./libtoolize.in ./tests/defs.in \
     top_srcdir=. PACKAGE="$2" VERSION="$3" M4SH="autom4te -l m4sh"
 
-# Create libltdl auxdirs:
-auxdirs="m4 config"
-for dir in $auxdirs; do
-  rm -rf ./libltdl/$dir
-  mkdir ./libltdl/$dir
-done
-cp ./config/ltmain.sh libltdl/config/
-
 test -f clcommit.m4sh && make -f Makefile.maint commit \
     top_srcdir=. PACKAGE="$2" VERSION="$3" M4SH="autom4te -l m4sh" \
     SED=sed GREP=grep FGREP=fgrep EGREP=egrep LN_S="ln -s"
@@ -94,8 +86,8 @@ for sub in $reconfdirs; do
   autoreconf --force --verbose --install $sub
 done
 
-# Remove our dummy libtoolize and copied dummy ltmain.sh
-rm -f ./config/libtoolize ./libltdl/config/ltmain.sh
+# Remove our dummy libtoolize
+rm -f ./config/libtoolize
 
 # These files can cause an infinite configure loop if left behind.
 rm -f Makefile libltdl/Makefile libtool vcl.tmp
