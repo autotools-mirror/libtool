@@ -1,3 +1,9 @@
+2002-06-24  Robert Boehne  <rboehne@gnu.org>
+
+	* ltmain.in (Piecewise linking): Add a clause to skip creating
+	the export file until the reloadable object file(s) have been
+	created, then use them as input for $export_symbols_cmds.
+
 2002-06-23  Albert Chin-A-Young  <china@thewrittenword.com>
 
 	* ltdl.m4 (AC_LTDL_SYS_DLOPEN_DEPLIBS): Need to quote [ and ] for

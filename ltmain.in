@@ -3231,8 +3231,16 @@ EOF
 	    save_ifs="$IFS"; IFS='~'
 	    for cmd in $cmds; do
 	      IFS="$save_ifs"
-	      $show "$cmd"
-	      $run eval "$cmd" || exit $?
+	      if len=`expr "X$cmd" : ".*"` &&
+	       test "$len" -le "$max_cmd_len" || test "$max_cmd_len" -le -1; then
+	        $show "$cmd"
+	        $run eval "$cmd" || exit $?
+	        skipped_export=false
+	      else
+	        # The command line is too long to execute in one step.
+	        $show "using reloadable object file for export list..."
+	        skipped_export=:
+	      fi
 	    done
 	    IFS="$save_ifs"
 	    if test -n "$export_symbols_regex"; then
@@ -3317,7 +3325,7 @@ EOF
 	  deplibs="$save_deplibs"
 	fi
 
-	if len=`expr "X$cmds" : ".*"` &&
+	if test "X$skipped_export" != "X:" && len=`expr "X$cmds" : ".*"` &&
 	   test "$len" -le "$max_cmd_len" || test "$max_cmd_len" -le -1; then
 	  :
 	else
@@ -3377,6 +3385,15 @@ EOF
 	  # files will link in the last one created.
 	  test -z "$concat_cmds" || concat_cmds=$concat_cmds~
 	  eval concat_cmds=\"\${concat_cmds}$reload_cmds $objlist $last_robj\"
+
+	  if ${skipped_export-false}; then
+	    $show "generating symbol list for \`$libname.la'"
+	    export_symbols="$output_objdir/$libname.exp"
+	    $run $rm $export_symbols
+	    libobjs=$output
+	    # Append the command to create the export file.
+	    eval concat_cmds=\"\$concat_cmds~$export_symbols_cmds\"
+          fi
 
 	  # Set up a command to remove the reloadale object files
 	  # after they are used.
