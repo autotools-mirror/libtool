@@ -6,7 +6,7 @@
 	the former.
 	Reported by Bob Friesenhahn <bfriesen@simple.dallas.tx.us>
 
-2000-09-15  Nick Hudson  <nick@nthcliff.demon.co.uk>
+2000-09-15  Nick Hudson  <skrll@netbsd.org>
 
 	* ltcf-cxx.sh (netbsd): Improved support.
 	* ltconfig.in (netbsd): ditto.
@@ -103,7 +103,7 @@
 	(LT_AC_PROG_GCJ): Use AC_CHECK_TOOL.  Set GCJ to `no' if not
 	found.
 	* configure.in: Use LT_AC_PROG_GCJ.
-	Reported by Nick Hudson <nick@nthcliff.demon.co.uk>
+	Reported by Nick Hudson <skrll@netbsd.org>
 
 	* tests/quote.test: Move the match test out of case statements, to
 	work around bug in /bin/sh of several OSs.
@@ -133,7 +133,7 @@
 	* libtool.m4 (lt_cv_deplibs_check_method, freebsd): Fix typo,
 	add support for compact format library.
 
-2000-09-02  Nick Hudson  <nick@nthcliff.demon.co.uk>
+2000-09-02  Nick Hudson  <skrll@netbsd.org>
 
 	* configure.in: AC_SUBST reload_flag, deplibs_check_method
 	and file_magic_cmd.
