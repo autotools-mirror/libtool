@@ -95,23 +95,116 @@ uninstall-local:
 ## to anybody else (snarfed from automake/Makefile.am).
 ##
 
-# Tag before making distribution.  Also, don't make a distribution if
-# checks fail.  Also, make sure the NEWS file is up-to-date.
-cvs-dist: distcheck
-	@if sed '1,2d;3q' $(srcdir)/NEWS | grep -e "$(VERSION)" > /dev/null; then :; else \
+XDELTA = xdelta
+XDELTA_OPTIONS = --pristine -9
+
+GPG = gpg # set it to `:' to avoid gpg operations
+
+.PHONY: cvs-dist cvs-diff xdelta cvs-release
+cvs-dist:
+## Make sure the NEWS file is up-to-date:
+	@if sed '1,2d;3q' $(srcdir)/NEWS | grep -e "$(VERSION)" >/dev/null; \
+	then :; \
+	else \
 	  echo "NEWS not updated; not releasing" 1>&2; \
-	  exit 1;				\
+	  exit 1; \
 	fi
-	cd $(srcdir) && \
-	 $(CVS) -q tag `echo "release-$(VERSION)" | sed 's/\./-/g'`
-	$(MAKE) dist
+## Build the distribution:
+	$(MAKE) distcheck
+## Finally, if everything was successful, commit the last changes and tag
+## the release in the repository:
+	cd $(srcdir) \
+	  && $(SHELL) ./commit \
+	  && $(CVS) -q tag -c `echo "Release-$(VERSION)" | sed 's/\./-/g'`
+## We do want the timestamped version numbers from the CVS keywords in
+## ChangeLog to be correct, so we must rebuild the release tarball after
+## a successfull commit, and then generate the signatures needed for
+## FSF ftp-upload:
+	ofile="$(PACKAGE)-$(VERSION).tar.gz"; \
+	$(MAKE) dist \
+	  && $(GPG) --detach-sign $$ofile \
+	  && echo "directory: libtool" > $$ofile.directive \
+	  && $(GPG) --clearsign $$ofile.directive \
+	  && rm -f $$ofile.directive
 
 cvs-diff:
+## Figure out which cvs tags we are diffing, and if the diff works we
+## compress it and then generate the signatures needed for FSF ftp-upload:
 	thisver=`echo "release-$(VERSION)" | sed 's/\./-/g'`; \
 	if test -z "$$OLDVERSION"; then \
 	  prevno=`echo "$(VERSION)" - 0.01 | bc | sed 's/^\./0./'`; \
 	else prevno="$$OLDVERSION"; fi; \
 	prevver=release-`echo $$prevno | sed 's/\./-/g'`; \
+	ofile="$(PACKAGE)-$$prevno-$(VERSION).diff.gz"; \
 	$(CVS) -f rdiff -c -r $$prevver -r $$thisver $(PACKAGE) \
-	    | GZIP=$(GZIP_ENV) gzip -c \
-	    > $(PACKAGE)-$$prevno-$(VERSION).diff.gz
+	    | GZIP=$(GZIP_ENV) gzip -c > $$ofile; \
+	  && $(GPG) --detach-sign $$ofile \
+	  && echo "directory: libtool" > $$ofile.directive \
+	  && $(GPG) --clearsign $$ofile.directive \
+	  && rm -f $$ofile.directive
+
+xdelta:
+## Make sure xdelta exists;
+	@if ($(XDELTA) --version 2>&1 | grep version)>/dev/null 2>/dev/null; \
+	then :;\
+	else \
+	  echo "Get xdelta from http://sourceforge.net/projects/xdelta."; \
+	  exit 1; \
+	fi
+## Generate the delta file (xdelta has wierd exit statuses, so we need to
+## add some shell code to keep make happy), and then generate the signatures
+## for FSF ftp-upload:
+	if test -z "$$OLDVERSION"; then \
+	  prevno=`echo "$(VERSION)" - 0.01 | bc | sed 's/^\./0./'`; \
+	else prevno="$$OLDVERSION"; fi; \
+	ofile="$(PACKAGE)-$$prevno-$(VERSION).xdelta"; \
+	( test -z `$(XDELTA) delta $(XDELTA_OPTIONS) \
+	    $(PACKAGE)-$$prevno.tar.gz $(PACKAGE)-$(VERSION).tar.gz \
+	    $$ofile 2>&1` \
+	  && : ) \
+	&& $(GPG) --detach-sign $$ofile \
+	&& echo "directory: libtool" > $$ofile.directive \
+	&& $(GPG) --clearsign $$ofile.directive \
+	&& rm -f $$ofile.directive
+
+cvs-release: cvs-dist cvs-diff xdelta
+
+## Program to use to fetch files.
+WGET = wget
+WGETSGO = $(WGET) http://savannah.gnu.org/cgi-bin/viewcvs/~checkout~
+
+## Files that we fetch and which we compare against.
+## FIXME should be a lot more here
+FETCHFILES = \
+./INSTALL \
+./config.guess \
+libltdl/config.guess \
+./config.sub \
+libltdl/config.sub \
+doc/texinfo.tex
+
+## Fetch the latest versions of files we care about.
+fetch:
+	rm -rf Fetchdir > /dev/null 2>&1
+	mkdir Fetchdir
+## If a get fails then that is a problem.
+	(cd Fetchdir && \
+	$(WGETSGO)/autoconf/autoconf/INSTALL; \
+	$(WGETSGO)/config/config/config.guess; \
+	$(WGETSGO)/config/config/config.sub; \
+	$(WGETSGO)/texinfo/texinfo/doc/texinfo.tex )
+## Don't exit after test because we want to give as many errors as
+## possible.
+	@stat=0; for file in $(FETCHFILES); do \
+	  fetchedfile=Fetchdir/`echo $$file | sed 's,.*/,,g'`; \
+	  if diff -u $(srcdir)/$$file $$fetchedfile \
+	    >>Fetchdir/update.patch 2>/dev/null; then :; \
+	  else \
+	    stat=1; \
+	    echo "Updating $(srcdir)/$$file..."; \
+	    cp $$fetchedfile $(srcdir)/$$file; \
+	  fi; \
+	done; \
+	test $$stat = 1 && \
+	  echo "See Fetchdir/update.patch for a log of the changes."; \
+	exit $$stat

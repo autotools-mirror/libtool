@@ -1,3 +1,26 @@
+2003-11-12  Gary V. Vaughan  <gary@gnu.org>
+
+	The rules for uploading releases to gnu.org have been updated, and
+	are in fact now rather complicated.  This delta updates the
+	release instructions to the describe the new process, and updates
+	the maintainer rules to help automate many of the steps:
+
+	* README-alpha: Updated release instructions.
+	* Makefile.am (GPG): Name of the program for generating signatures
+	for files to be uploaded.
+	(XDELTA, XDELTA_OPTIONS): Invocation of xdelta.
+	(cvs-dist): Run distcheck before tagging the cvs tree incase
+	distcheck fails, and then generate the gpg signature files.
+	(cvs-diff): Generate the gpg signature files for the diff.
+	(xdelta): New rule for generating the xdelta diffs and associated
+	gpg signature files.
+	(cvs-release): New rule to do all of the above, if you don't mind
+	typing your gpg passphrase over and over again. :-)
+	(fetch): New rule inspired by automakes similar rule for updating
+	files maintained outside the project.
+	* config.guess, config.sub, doc/texinfo.tex: Updated with the new
+	fetch rule.
+
 2003-10-16  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
 
 	* libtool.m4 (AC_DEPLIBS_CHECK_METHOD): For MinGW, reverted DLL
