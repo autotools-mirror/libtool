@@ -1094,14 +1094,14 @@ if test -n "$ac_cv_prog_cc_shlib"; then
 fi
 
 echo $ac_n "checking if $compiler static flag $ac_cv_prog_cc_static works... $ac_c" 1>&6
-echo "$progname:@LINENO@: checking if $compiler static flag $link_static_flag works" >&5
+echo "$progname:@LINENO@: checking if $compiler static flag $ac_cv_prog_cc_static works" >&5
 if test "X${ac_cv_prog_cc_static_works+set}" = Xset; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
   $rm conftest*
   echo 'main(){return(0);}' > conftest.c
   save_LDFLAGS="$LDFLAGS"
-  LDFLAGS="$LDFLAGS $link_static_flag"
+  LDFLAGS="$LDFLAGS $ac_cv_prog_cc_static"
   if { (eval echo $progname:@LINENO@: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest; then
     ac_cv_prog_cc_static_works=yes
   else
