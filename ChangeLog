@@ -1,3 +1,8 @@
+2000-10-31  Morten Eriksen  <mortene@sim.no>
+
+	* libtool.m4 (_LT_AC_LTCONFIG_HACK): Quote argument to avoid error      
+	output from cygpath when $srcdir is empty.       
+
 2000-10-31  Gary V. Vaughan  <gvv@techie.com>
 
 	* bootstrap:  rm Makefiles to prevent infinite loop during
