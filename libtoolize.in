@@ -88,7 +88,7 @@ EOF
   --version)
     echo "$PROGRAM (GNU $PACKAGE) $VERSION"
     echo
-    echo "Copyright (C) 2003 Free Software Foundation, Inc."
+    echo "Copyright (C) 2005 Free Software Foundation, Inc."
     echo "This is free software; see the source for copying conditions.  There is NO"
     echo "warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE."
     exit $?

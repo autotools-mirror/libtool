@@ -1,3 +1,8 @@
+2005-02-10  Peter O'Gorman  <peter@pogma.com>
+
+	* ltmain.in, libtoolize.in: --version should show "(C) 2005".
+	Reported by Paul Eggert <eggert@CS.UCLA.EDU>
+
 2005-02-07  Peter O'Gorman  <peter@pogma.com>
 
 	* ltmain.in: Add -pthread like flags when linking executables too.
