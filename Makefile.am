@@ -96,7 +96,12 @@ install-data-hook:
 ## VPATH builds because ltmain.sh ends up in the build tree rather
 ## than the source tree:
 $(top_srcdir)/config/ltmain.sh: config/ltmain.sh
-	cp config/ltmain.sh $(top_srcdir)/config/ltmain.sh
+	-dir=$(top_srcdir)/config; \
+	touch $$dir/fnord$$$$ 2>/dev/null || chmod a+w $$dir; \
+	rm -f $$dir/ltmain.sh; \
+	cp config/ltmain.sh $$dir/ltmain.sh; \
+	test -f $$dir/fnord$$$$ && \
+	  { rm -f $$dir/fnord$$$$; chmod a-w $$dir $$dir/ltmain.sh; }
 
 ## Put it in so that automake doesn't choke on reconf.  We don't
 ## really want to distribute this file, but putting it here gives

@@ -1,5 +1,11 @@
 2004-07-29  Gary V. Vaughan  <gary@gnu.org>
 
+	* Makefile.am ($(top_srcdir)/config/ltmain.sh): Ugh. More hair to
+	help `make distcheck'; not only do we have to make a copy of
+	ltmain.sh available in the source tree, but we have to be really
+	careful about permission bit twiddling when we copy it across into
+	the possible read-only $(top_srcdir)/config directory!
+
 	* tests/tagtrace.test: Skip this test when running a VPATH build
 	against a read-only source tree (as in distcheck for example),
 	since autoconf wants to write temporary files in $top_srcdir
