@@ -1,5 +1,8 @@
 1999-03-14  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* Makefile.am (all-recursive): depend on ACINCLUDE_M4_LIST
+	(all-local, check-local): remove, unused
+
 	* doc/PLATFORMS: updated platforms tested on 1.2f-pre; clean up;
 	reorder; untabify
 

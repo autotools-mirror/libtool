@@ -79,7 +79,7 @@ update-timestamps:
 	(rm -f $@ && cp ltmain.shT $@ && rm -f ltmain.shT)
 
 # All our rules should depend on these demo files.
-all-local check-local: $(ACINCLUDE_M4_LIST) libtool
+all-recursive: $(ACINCLUDE_M4_LIST)
 
 @ACINCLUDE_M4_LIST@: $(srcdir)/libtool.m4
 	rm -f $@
