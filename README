@@ -19,6 +19,7 @@ Shared library support has been implemented for these platforms:
   GNU/Linux ELF (*-*-linux-gnu*, except aout, coff, and oldld)
   HP-UX 9.x, 10.x, 11.x (*-*-hpux9*, *-*-hpux10*, *-*-hpux11*) [see note]
   IRIX 5.x, 6.x (*-*-irix5*, *-*-irix6*)
+  NCR MP-RAS 3.x (*-ncr-sysv4.3*) [see note]
   NetBSD 1.x (*-*-netbsd*)
   OpenBSD 2.x (*-*-openbsd*)
   OS/2 using EMX (*-*-os2*)
@@ -34,6 +35,10 @@ NOTE: Some HP-UX sed programs are horribly broken, and cannot handle
 libtool's requirements, so users may report unusual problems.  There
 is no workaround except to install a working sed (such as GNU sed) on
 these systems.
+
+NOTE: The vendor-distributed NCR MP-RAS cc programs emits copyright
+on standard error that confuse tests on size of conftest.err.  The
+workaround is to specify CC when run configure with CC='cc -Hnocopyr'.
 
 NOTE: Any earlier DG/UX system with ELF executables, such as R3.10 or
 R4.10, is also likely to work, but hasn't been explicitly tested.

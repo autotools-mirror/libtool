@@ -2610,8 +2610,39 @@ load modules.  The library @file{libltdl} provides an experimental
 dlopen wrapper for various platforms (Linux, Solaris, HP/UX, Win32 etc.) 
 including support for dlpreopened modules (@pxref{Dlpreopening}).
 
-NOTE: The tests @file{mdemo-exec.test} and @file{mdemo-inst.test} are known 
-to fail on platforms that do not fully support inter-library dependencies.
+NOTE: The tests @file{mdemo-exec.test} and @file{mdemo-inst.test} are
+known to fail on platforms that do not fully support inter-library
+dependencies.  We'd appreciate your help in porting the recently
+introduced inter-library dependencies code to various platforms, even
+some very common platforms haven't been updated yet (@pxref{Porting
+inter-library dependencies}).
+
+@item cdemo-conf.test
+@itemx cdemo-exec.test
+@itemx cdemo-make.test
+@itemx cdemo-static.test
+@itemx cdemo-shared.test
+@pindex cdemo-conf.test
+@pindex cdemo-exec.test
+@pindex cdemo-make.test
+@pindex cdemo-static.test
+These programs check to see that the @file{cdemo} subdirectory of the
+libtool distribution can be configured and built correctly.
+
+The @file{cdemo} subdirectory contains a demonstration of libtool
+convenience libraries, a mechanism that allows build-time static
+libraries to be created, in a way that their components can be later
+linked into programs or other libraries, even shared ones.
+
+The tests @file{cdemo-make.test} and @file{cdemo-exec.test} are executed
+three times, under three different libtool configurations:
+@file{cdemo-conf.test} configures @file{cdemo/libtool} to build both
+static and shared libraries, @file{cdemo-static.test} builds only static
+libraries (@samp{--disable-shared}), and @file{cdemo-shared.test} builds
+only shared libraries (@samp{--disable-static}).
+
+NOTE: The tests after @file{cdemo-static.test} are known to fail on all
+platforms.  A fix is underway.
 
 @item hardcode.test
 @pindex hardcode.test
@@ -2876,6 +2907,11 @@ Note: The vendor-distributed HP-UX @code{sed}(1) programs are horribly
 broken, and cannot handle libtool's requirements, so users may report
 unusual problems.  There is no workaround except to install a working
 @code{sed} (such as GNU @code{sed}) on these systems.
+
+Note: The vendor-distributed NCR MP-RAS @code{cc} programs emits
+copyright on standard error that confuse tests on size of
+@file{conftest.err}.  The workaround is to specify @code{CC}
+when run @code{configure} with @kbd{CC='cc -Hnocopyr'}.
 
 @node Platform quirks
 @section Platform quirks

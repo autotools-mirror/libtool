@@ -1,0 +1,15 @@
+dnl Initialize the cdemo package.
+AC_INIT(main.c)
+AM_INIT_AUTOMAKE(cdemo,0.1)
+
+AC_PROG_CC
+AC_EXEEXT
+AM_PROG_LIBTOOL
+
+AC_CHECK_HEADERS(string.h math.h)
+
+AC_CHECK_LIB(m, cos, LIBADD_M="-lm", LIBADD_M=)
+AC_SUBST(LIBADD_M)
+
+dnl Output the makefile
+AC_OUTPUT(Makefile)

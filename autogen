@@ -10,7 +10,7 @@ aclocal
 automake --gnits --add-missing
 autoconf
 
-for sub in demo depdemo libltdl mdemo; do
+for sub in demo depdemo libltdl mdemo cdemo; do
   cd $sub
   rm -f acinclude.m4
   ln -s ../libtool.m4 acinclude.m4

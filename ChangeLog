@@ -1,3 +1,28 @@
+1999-01-13  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* configure.in (AC_CONFIG_SUBDIRS): added cdemo
+	* Makefile.am (DIST_SUBDIRS): ditto
+	(ACINCLUDE_M4_LIST): ditto
+	* tests/Makefile.am (TESTS): added cdemo-shared.test
+	* tests/cdemo-static.test: disable shared libraries here
+	* tests/cdemo-shared.test: disable static libraries here
+	* doc/libtool.texi (Test descriptions): added cdemo tests
+	* THANKS: added Edouard G. Parmelan
+
+1999-01-13  Edouard G. Parmelan  <Edouard.Parmelan@France.NCR.COM>
+
+	* ltmain.in: fix convenience libraries when static libraries
+	are disables.
+	* cdemo/README, cdemo/Makefile.am, cdemo/configure.in, cdemo/foo.h,
+	cdemo/foo1.c, cdemo/main.c, cdemo/.cvsignore, test/cdemo-conf.test,
+	test/cdemo-make.test, test/cdemo-exec.test, test/cdemo-static.test:
+	new tests for convenience libraries.
+	* autogen, Makefile.am, test/Makefile.am: ditto.
+
+	* ltconfig.in, doc/PLATFORMS: Added support for NCR MP-RAS
+	(i586-ncr-sysv4.3*) with native compiler.
+	* README, doc/libtool.texi: Added note for NCR MP-RAS compiler.
+
 1999-01-12  Thomas Tanner  <tanner@gmx.de>
 
 	* ltmain.in: before using LN_S remove the symlink

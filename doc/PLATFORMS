@@ -36,6 +36,7 @@ i386-unknown-netbsd1.3I		egcs	1.2e	ok
 i386-unknown-netbsd1.3.3	gcc	1.2e	ok	gcc/g++ 2.7.2.2, gas 1.92.3
 i386-unknown-openbsd2.4		gcc	1.2e	ok
 i486-ncr-sysv4.3.03		gcc	1.2e	ok
+i586-ncr-sysv4.3.03		cc	1.2e	ok	cc -Hnocopyr
 i586-pc-gnu0.3			gcc	1.2b	ok
 i586-dg-dguxR4.20MU01		gcc	1.2	ok
 i486-pc-linux-gnulibc1		gcc	1.2e	ok

@@ -1292,6 +1292,7 @@ compiler."
 	libext=al
 	oldlibs="$output_objdir/$libname.$libext $oldlibs"
 	build_libtool_libs=convenience
+	build_old_libs=yes
 	dependency_libs="$deplibs"
 
 	if test -n "$vinfo"; then

@@ -6,6 +6,9 @@ TESTS = demo-conf.test demo-make.test demo-exec.test \
 	demo-inst.test demo-unst.test hardcode.test \
 	mdemo-conf.test mdemo-make.test mdemo-exec.test \
 	mdemo-inst.test mdemo-unst.test \
+	cdemo-conf.test cdemo-make.test cdemo-exec.test \
+	cdemo-static.test cdemo-make.test cdemo-exec.test \
+	cdemo-shared.test cdemo-make.test cdemo-exec.test \
 	link.test link-2.test nomode.test \
 	quote.test sh.test suffix.test
 
