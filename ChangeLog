@@ -1,5 +1,13 @@
 2004-03-30  Gary V. Vaughan  <gary@gnu.org>
 
+	* m4/libtool.m4 (LT_INIT): aclocal can't see AC_DEFUN_ONCE, so use
+	AC_DEFUN and m4_define.
+	* libtoolize.in (func_serial): No longer accept AC_DEFUN_ONCE...
+	(func_grep): ...so mere grep is sufficient again...
+	(EGREP): ...and this is no longer required.
+
+2004-03-29  Gary V. Vaughan  <gary@gnu.org>
+
 	* m4/libtool.m4: Use LT_INIT as #serial tag.
 	* libtoolize.in: Grok LT_INIT!  Pass A[CM]_PROG_LIBTOOL to...
 	(func_serial_update): ...here, we now take an additional parameter

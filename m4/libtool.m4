@@ -43,7 +43,7 @@ m4_define([LT_PREREQ],
 
 # LT_INIT([OPTIONS])
 # --------------------------
-AC_DEFUN_ONCE([LT_INIT],
+AC_DEFUN([LT_INIT],
 [AC_PREREQ([2.58])dnl We use AC_INCLUDES_DEFAULT
 dnl Autoconf doesn't catch unexpanded LT_ macros by default:
 m4_pattern_forbid([^_?LT_[A-Z_]+$])dnl
@@ -67,6 +67,9 @@ AC_SUBST(LIBTOOL)dnl
 _LT_SET_OPTIONS([$1])dnl
 
 _LT_SETUP
+
+# Only expand once:
+m4_define([LT_INIT])
 ])# _LT_INIT
 
 # Old names:

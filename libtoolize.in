@@ -49,7 +49,6 @@
 
 : ${CP="cp -f"}
 : ${LN_S="@LN_S@"}
-: ${EGREP="@EGREP@"}
 : ${MKDIR="mkdir"}
 : ${RM="rm -f"}
 : ${SED="@SED@"}
@@ -315,7 +314,7 @@ func_copy_all_files ()
 # Check whether EXPRESSION matches any line of FILENAME, without output.
 func_grep ()
 {
-    $EGREP "$1" "$2" >/dev/null 2>&1
+    grep "$1" "$2" >/dev/null 2>&1
 }
 
 # func_scan_files
@@ -461,7 +460,7 @@ func_serial ()
     # in the file that AC_DEFUNs MACRO_REGEX.
     my_serial=
     for my_file in `func_included_files "$my_filename"`; do
-      if func_grep '^AC_DEFUN(_ONCE)?\(\['"$my_macro_regex" "$my_file"; then
+      if func_grep '^AC_DEFUN\(\['"$my_macro_regex" "$my_file"; then
         my_serial=`$SED -e "$my_sed_serial" "$my_file"`
 	break
       fi
