@@ -1,5 +1,8 @@
 1999-02-22  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* TODO: removed ILD, soon to be merged, and added convenience
+	libraries docs
+
 	* ltconfig.in (irix5*, irix6*, shlibpath_overides_runpath): yes
 
 	* ltmain.in: remove on-demand executable in the proper place, and

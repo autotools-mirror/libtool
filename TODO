@@ -1,29 +1,14 @@
 For next public release:
 ************************
 
-* Inter-library dependencies should be fully tracked by libtool.
-Reminded by Alexandre Oliva.  This requires looking up installed
-libtool libraries for transparent support.
-Thomas Tanner has a patch for this.
-
-* Inter-library dependencies need to work for ltlibraries too.
-Thomas Tanner has a patch for this.
-
-* Alexandre Oliva suggests that we hardcode paths into libraries, as
-well as binaries:  `... -Wl,-soname -Wl,/tmp/libtest.so.0 ...'.  Tim
-Mooney wants the same thing.
-Thomas Tanner has a patch for this.
+* Alexandre Oliva suggests that we should have an option to hardcode
+paths into libraries, as well as binaries: `... -Wl,-soname
+-Wl,/tmp/libtest.so.0 ...'.  Tim Mooney wants the same thing.
 
 * Tom Lane adds that HP-UX's linker, at least (I've also found this on
 AIX 4), distinguishes between global function and global variable
 references.  This means that we cannot declare every symbol as `extern
 char'.  Find a workaround.
-
-* Jeff Garzik <jgarzik@pobox.com> noticed that libtool wrapper scripts do
-not always work on Linux.  When running tests in a newly built package, the
-script is prone to picking up a similarly sonamed library in /usr/lib in
-preference to the newly built library in the distribution.  The scripts *do*
-work under Solaris however.
 
 * Documentation:
 
@@ -31,6 +16,8 @@ work under Solaris however.
 
 - AC_PROG_LIBTOOL, AC_ENABLE/DISABLE_SHARED/STATIC, AC_LIBTOOL_DLOPEN
   are not documented.
+
+- Purpose and usage of convenience libraries must be better documented
 
 In the future:
 **************
