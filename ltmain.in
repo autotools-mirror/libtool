@@ -3455,6 +3455,19 @@ fi\
       if test -n "$old_archive_from_new_cmds" && test "$build_libtool_libs" = yes; then
 	eval cmds=\"$old_archive_from_new_cmds\"
       else
+        # Ensure that we have .o objects in place incase we decided
+        # not to build a shared library, and have fallen back to building
+        # static libs even though --disable-static was passed!
+        if test "X$pic_flag" = X; then
+          for obj in $libobjs; do
+            oldobj=`$echo "X$obj" | $Xsed -e "$lo2o"`
+            if test ! -f $oldobj; then
+              $show "${LN_S} $obj $oldobj"
+              $run ${LN_S} $obj $oldobj || exit $?
+            fi
+          done
+	fi
+
 	eval cmds=\"$old_archive_cmds\"
       fi
       IFS="${IFS= 	}"; save_ifs="$IFS"; IFS='~'

@@ -8,6 +8,11 @@
 	would never match; fixed.
 	Reported by Stephan Kulow <coolo@itm.mu-luebeck.de>
 
+1999-04-26  Gary V. Vaughan  <gary@oranda.demon.co.uk>
+
+	* ltmain.in (old_archive_cmds): Ensure that there are always .o
+	objects available before running old_archive_cmds.
+
 1999-04-25  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* libtool.m4 (OBJDUMP): Pass it to ltconfig.
