@@ -1,5 +1,23 @@
 2004-08-27  Gary V. Vaughan  <gary@gnu.org>
 
+	Two things to stop `make distcheck' from trying to rebuild
+	distributed files (m4/ltversion.m4 and config/ltmain.in) in the
+	readonly source tree:
+
+	* Makefile.am (stamp-vcl): Keep only one copy of stamp-vcl; in
+	$(top_srcdir), so that an up-to-date version is rolled into the
+	dist tarball even from a VPATH build.
+	($(top_srcdir)/config/ltmain.sh): Don't depend on Makefile,
+	otherwise ltmain.sh needs to be rebuilt after every config.status
+	run, and then configure needs to be rebuilt, and it all goes
+	horribly wrong :-/  Unfortunately, we can't depend on Makefile.am
+	either, because that is a circular dependency.  The downside of
+	this change is that it is now possible to edit Makefile.am to
+	change the way ltmain.sh is generated, and the dependency
+	information can't tell that ltmain.sh needs regenerating.
+
+2004-08-27  Gary V. Vaughan  <gary@gnu.org>
+
 	* doc/libtool.texi (Cheap tricks): Escape the `@' for texinfo.
 
 	* doc/libtool.texi (Cheap tricks): Fix the instructions for making

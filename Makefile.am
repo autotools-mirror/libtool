@@ -59,18 +59,18 @@ dist_pkgdata_DATA = config/config.guess config/config.sub config/ltmain.sh
 aclocal_DATA = m4/argz.m4 m4/libtool.m4 m4/ltdl.m4 \
 	m4/ltoptions.m4 m4/ltsugar.m4 m4/ltversion.m4
 
-## If mkstamp does not match $(srcdir)/stamp-vcl, we still put the new one
-## in the current dir, incase $(srcdir) is not writable.  The dir selection
-## at the top of this rule takes care of prefering the right one on
-## subsequent runs.
+## We know that $(top_srcdir)/ChangeLog has been edited if stamp-vcl
+## needs updating, so we assume we have write access to $(top_srcdir).
+## If we try to maintain ./stamp-vcl to avoid writing to a possibly
+## read-only $(top_srcdir), then when the two stamp-vcls differ, distcheck
+## will try to update the one in the read-only source tree it makes.
 MKSTAMP = $(SHELL) $(top_srcdir)/config/mkstamp
-stamp-vcl: vcl-tmp ChangeLog
+$(top_srcdir)/stamp-vcl: vcl-tmp ChangeLog
 vcl-tmp:
-	@dir=.; test -f $$dir/stamp-vcl || dir=$(srcdir); \
-	set -- `$(MKSTAMP) < $(top_srcdir)/ChangeLog`; \
+	@set -- `$(MKSTAMP) < $(top_srcdir)/ChangeLog`; \
 	echo "$$1" > vcl.tmp; \
-	cmp -s vcl.tmp $$dir/stamp-vcl \
-	  || (echo "Updating stamp-vcl"; cp vcl.tmp ./stamp-vcl)
+	cmp -s vcl.tmp $(top_srcdir)/stamp-vcl \
+	  || (echo "Updating stamp-vcl"; cp vcl.tmp $(top_srcdir)/stamp-vcl)
 	-@rm -f vcl.tmp
 
 # We build ltversion.m4 here, instead of from config.status,
@@ -94,8 +94,14 @@ $(top_srcdir)/m4/ltversion.m4: m4/ltversion.in configure.ac stamp-vcl
 	mv -f m4/ltversion.tmp m4/ltversion.m4
 
 ## And for similar reasons, ltmain.sh can't be built from config.status.
+## WARNING: If you edit this rule to change the contents of ltmain.sh,
+##          you must `touch $(top_srcdir)/config/ltmain.in' from the
+##          shell if you need ltmain.sh to be regenerated.  Ideally, we
+##          should make this rule depend on Makefile but that will break
+##          distcheck (at least) by rebuilding ltmain.sh in the source
+##          tree whenever config.status regenerates the Makefile.
 EXTRA_DIST += config/ltmain.sh
-$(top_srcdir)/config/ltmain.sh: config/ltmain.in configure.ac stamp-vcl Makefile
+$(top_srcdir)/config/ltmain.sh: config/ltmain.in configure.ac stamp-vcl
 	$(timestamp); \
 	cd $(top_srcdir); \
 	rm -f config/ltmain.tmp; \
