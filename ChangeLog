@@ -1,3 +1,9 @@
+2004-01-23  Scott James Remnant  <scott@netsplit.com>
+
+	* libltdl/ltdl.c (lt_dlerror): change return value when
+	no error has occured to NULL to match documentation.
+	(Debian Bug #157229)
+
 2004-01-23  Kevin P. Fleming  <kpfleming@backtobasicsmgmt.com>
 	Charles Wilson <cygwin@cwilson.fastmail.fm>
 	                                                                        
