@@ -1,5 +1,7 @@
 1999-05-25  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* config.guess: Synch with GNU common.
+
 	* ltmain.in: Revert to stripping .exe on all platforms.
 	* TODO: Note about this problem.  Demo is fixed on win32.  -Wl and 
 	-Wc are implemented for release 1.4.  Support `empty' convenience
