@@ -2660,14 +2660,10 @@ static const void *lt_preloaded_setup() {
 
       # Only actually do things if our run command is non-null.
       if test -z "$run"; then
-	case "$host" in
-	*-*-cygwin* | *-*-mingw* | *-*-os2*)
-	  # win32 will think the script is a binary if it has
-	  # a .exe suffix, so we strip it off here.
-	  case $output in
-	    *.exe) output=`echo $output|sed 's,.exe$,,'` ;;
-	  esac
-	  ;;
+	# win32 will think the script is a binary if it has
+	# a .exe suffix, so we strip it off here.
+	case $output in
+	  *.exe) output=`echo $output|sed 's,.exe$,,'` ;;
 	esac
 	$rm $output
 	trap "$rm $output; exit 1" 1 2 15
