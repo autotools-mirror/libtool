@@ -851,11 +851,11 @@ AC_CACHE_VAL(lt_cv_prog_cc_pic,
     # PORTME Check for PIC flags for the system compiler.
     case $host_os in
     aix3* | aix4* | aix5*)
+      lt_cv_prog_cc_wl='-Wl,'
       # All AIX code is PIC.
       if test "$host_cpu" = ia64; then
         # AIX 5 now supports IA64 processor
         lt_cv_prog_cc_static='-Bstatic'
-        lt_cv_prog_cc_wl='-Wl,'
       else
         lt_cv_prog_cc_static='-bnso -bI:/lib/syscalls.exp'
       fi

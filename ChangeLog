@@ -1,3 +1,9 @@
+2001-06-30  Gary V. Vaughan  <gary@gnu.org>
+
+	* libtool.m4 (_LT_AC_LTCONFIG_HACK) [aix*]: Always set
+	lt_prog_compiler_wl to `-Wl'.
+	Reported by Albert Chin-A-Young  <china@thewrittenword.com>
+
 2001-06-29  Gary V. Vaughan  <gary@gnu.org>
 
 	From Tim Van Holder <tim.van.holder@pandora.be>
