@@ -18,13 +18,14 @@ FLIBS = @FLIBS@
 aclocal_macros = libtool.m4 ltdl.m4
 
 EXTRA_DIST = $(aclocal_macros) bootstrap libtoolize.in ltmain.in \
-	mkstamp ChangeLog.0 ChangeLog.1
+	mkstamp ChangeLog.0 ChangeLog.1 config.guess config.sub
 CLEANFILES = libtool libtoolize ltmain.shT
 
-# These are required by libtoolize.
-pkgdata_SCRIPTS = config.guess config.sub
-pkgdata_DATA = ltmain.sh
-
+# These are required by libtoolize and must be executable when installed.
+# Since _SCRIPTS gets the program transform applied we make them
+# executable by hand
+pkgdata_DATA = config.guess config.sub ltmain.sh
+ 
 # This macro file should be visible to Automake's aclocal.
 aclocal_DATA = $(aclocal_macros)
 
@@ -76,6 +77,10 @@ install-data-hook:
 # Uninstall libltdl
 uninstall-local:
 	-rm -rf $(DESTDIR)$(pkgdatadir)/libltdl
+
+install-data-hook:
+	chmod +x $(DESTDIR)$(pkgdatadir)/config.guess
+	chmod +x $(DESTDIR)$(pkgdatadir)/config.sub
 
 
 ## ---------------------------------------------------------------- ##
