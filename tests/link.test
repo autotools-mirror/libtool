@@ -28,10 +28,8 @@ linkresult=`$LIBTOOL -n --mode=link $CC -o gettext ../lib/libnlsut.a`
 test $? -eq 0 || exit $EXIT_FAILURE
 
 echo "$linkresult"
-case "$linkresult" in
-*../lib/libnlsut.a) ;;
-*)
+echo "$linkresult" | ${EGREP} "../lib/libnlsut.a" >/dev/null 2>&1 || {
   func_fail "$progname: ../lib/libnlsut.a was not used as expected in linking"
-  ;;
-esac
+}
+
 exit $EXIT_SUCCESS
