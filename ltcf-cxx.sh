@@ -45,16 +45,16 @@ lt_simple_compile_test_code="int some_variable = 0;"
 lt_simple_link_test_code='int main(int, char *[]) { return (0); }'
 
 # C++ compiler
-# Allow CXX to be a program name with arguments.
-set dummy $CXX
-compiler=$2
 CXX=${CXX-c++}
 
 # ltmain only uses $CC for tagged configurations so make sure $CC is set.
-set dummy $CC
 CC=${CC-"$CXX"}
 CFLAGS=${CFLAGS-"$CXXFLAGS"}
-cc_basename=`$echo X"$CC" | $Xsed -e 's%^.*/%%'`
+
+# Allow CC to be a program name with arguments.
+set dummy $CC
+compiler=$2
+cc_basename=`$echo X"$compiler" | $Xsed -e 's%^.*/%%'`
 
 # Check if we are using GNU gcc  (taken/adapted from configure script)
 # We need to check here since "--with-gcc" is set at configure time,
