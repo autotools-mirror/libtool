@@ -8,8 +8,8 @@ DIST_SUBDIRS = $(BUILD_SUBDIRS) $(CONF_SUBDIRS)
 
 aclocal_macros = libtool.m4 ltdl.m4
 
-EXTRA_DIST = $(aclocal_macros) libtoolize.in ltconfig.in ltmain.in \
-        ltcf-c.sh ltcf-cxx.sh ltcf-gcj.sh \
+EXTRA_DIST = $(aclocal_macros) bootstrap libtoolize.in ltconfig.in \
+	ltmain.in ltcf-c.sh ltcf-cxx.sh ltcf-gcj.sh \
 	mkstamp ChangeLog.0 ChangeLog.1
 CLEANFILES = libtool libtoolize ltconfig.T ltmain.shT
 
