@@ -1,5 +1,7 @@
 1999-03-10  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* mdemo/Makefile.am (@LIBLTDL@): depend on ../libltdl/config.h
+
 	* configure.in: fix AC_OUTPUT_COMMANDS for ltconfig and ltmain.sh
 	so that they work if srcdir is relative too
 	
