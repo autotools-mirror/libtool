@@ -899,7 +899,6 @@ if test "$enable_shared" = yes && test "$with_gcc" = yes; then
 	lib=conftest
 	libobjs=conftest.o
 	deplibs=
-	linkopts=-v
 	compiler_flags=-v
 	linker_flags=-v
 	verstring=
