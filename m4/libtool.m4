@@ -97,6 +97,11 @@ m4_defun([_LT_SETUP],
 AC_REQUIRE([AC_CANONICAL_BUILD])dnl
 _LT_DECL([], [host_alias], [0], [The host system])dnl
 _LT_DECL([], [host], [0])dnl
+_LT_DECL([], [host_os], [0])dnl
+dnl
+_LT_DECL([], [build_alias], [0], [The build system])dnl
+_LT_DECL([], [build], [0])dnl
+_LT_DECL([], [build_os], [0])dnl
 dnl
 AC_REQUIRE([AC_PROG_CC])dnl
 AC_REQUIRE([LT_PATH_LD])dnl
