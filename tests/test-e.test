@@ -1,0 +1,19 @@
+#! /bin/sh
+# test-e.test - check that we haven't accidentally used test -e
+
+# Test script header.
+need_prefix=no
+if test -z "$srcdir"; then
+  srcdir=.
+  test "${VERBOSE+set}" != "set" && VERBOSE=yes
+fi
+. $srcdir/defs || exit 1
+
+# Check that test -e isn't used in our portable shell scripts.
+if grep -n 'test -e' $srcdir/../ltconfig $srcdir/../ltmain.sh; then
+  echo "use test -f, not test -e to check for file existence"
+  exit 1
+fi
+
+exit 0
+

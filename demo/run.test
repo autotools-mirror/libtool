@@ -1,0 +1,21 @@
+#! /bin/sh
+# run.test - Check that hell is viable.
+
+if test -z "$srcdir"; then
+  srcdir=.
+  test "${VERBOSE+set}" != "set" && VERBOSE=yes
+fi
+
+# See how redirections should work.
+if test -z "$VERBOSE"; then
+   exec > /dev/null 2>&1
+fi
+
+echo "=== Running test $0"
+
+# Attempt to execute the program we built.
+if ./hell | grep 'GNU Hell' > /dev/null; then
+  exit 0
+else
+  exit 1
+fi

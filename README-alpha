@@ -1,0 +1,14 @@
+This is an alpha testing release of GNU libtool.
+
+Please do not send any bug reports or questions about it to public
+forums (such as GNU newsgroups and mailing lists), send them directly
+to Gordon Matzigkeit <gord@gnu.ai.mit.edu>.
+
+There are several references to a future release of Automake in
+libtool, that may not work with your own copy of Automake.  Gordon is
+working closely with Tom Tromey to integrate libtool patches into
+Automake.
+
+In the meantime, just ignore these references, or ask Gord for his
+modified version of automake-1.1g that supports all the features
+described in the libtool manual.

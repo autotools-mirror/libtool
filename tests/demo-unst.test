@@ -1,0 +1,33 @@
+#! /bin/sh
+# demo.test - try uninstalling in the ../demo subdirectory
+
+# Test script header.
+need_prefix=yes
+if test -z "$srcdir"; then
+  srcdir=.
+  test "${VERBOSE+set}" != "set" && VERBOSE=yes
+fi
+. $srcdir/defs || exit 1
+
+# Maybe we have a VPATH build, in which case, create a new subdir.
+if test "$prefix/bin/hell"; then :
+else
+  echo "You must run demo-inst.test before $0." 1>&2
+  exit 1
+fi
+
+# Change to our build directory.
+cd ../demo || exit 1
+
+echo "= Running make uninstall in ../demo"
+make uninstall || exit 1
+
+# See that there were no files leftover in $prefix.
+leftovers=`find $prefix ! -type d -print`
+if test -n "$leftovers"; then
+  echo "= Leftover after make uninstall:"
+  ls -l $leftovers
+  exit 1
+fi
+
+exit 0

@@ -1,0 +1,29 @@
+#! /bin/sh
+# link.test - check that .lo files and .l_o files aren't made into programs.
+
+# Test script header.
+need_prefix=no
+if test -z "$srcdir"; then
+  srcdir=.
+  test "${VERBOSE+set}" != "set" && VERBOSE=yes
+fi
+. $srcdir/defs || exit 1
+
+# Try a sample link command.
+linkresult=`$libtool -n --mode=link gcc -o something foo.o hello.l_o hell.lo`
+
+test $? = 0 || exit 1
+
+echo "$linkresult"
+case "$linkresult" in
+*".lo "*)
+  echo "$0: .lo files should not be linked into programs"
+  exit 1
+  ;;
+
+*".l_o "*)
+  echo "$0: .l_o files should not be linked into programs"
+  exit 1
+  ;;
+esac
+exit 0

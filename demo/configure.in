@@ -1,0 +1,9 @@
+dnl Initialize the hell package.
+AC_INIT(hello.c)
+AM_INIT_AUTOMAKE(hell,0.0)
+
+AC_PROG_CC
+AM_PROG_LIBTOOL
+
+dnl Output the makefile
+AC_OUTPUT(Makefile)

@@ -1,0 +1,81 @@
+#! /bin/sh
+# hardcode.test - check to see what the system linker hardcodes
+
+# Test script header.
+need_prefix=no
+if test -z "$srcdir"; then
+  srcdir=`echo "$0" | sed 's%/[^/]*$%%'`
+  test "$srcdir" = "$0" && srcdir=.
+  test "${VERBOSE+set}" != "set" && VERBOSE=yes
+fi
+. $srcdir/defs || exit 1
+
+# Check that things are built.
+if test -f ../demo/hell; then :
+else
+  echo "You must run demo-make.test before $0" 1>&2
+  exit 1
+fi
+
+# Change to our build directory.
+cd ../demo || exit 1
+
+echo "= Running $make hardcode in ../demo"
+$make hardcode || exit 1
+
+echo "= Finding ltconfig's guesses at hardcoding values"
+status=0
+hardcode_direct=NONE
+hardcode_minus_L=NONE
+hardcode_shlibpath_var=NONE
+
+# Suck in all the hardcode_* variable settings.
+eval `egrep -e '^hardcode_' ./libtool 2>/dev/null`
+
+if test "$hardcode_direct" = NONE; then
+  echo "hardcode_direct not set in ../demo/libtool" 1>&2
+  status=1
+fi
+
+if test "$hardcode_minus_L" = NONE; then
+  echo "hardcode_minus_L not set in ../demo/libtool" 1>&2
+  status=1
+fi
+
+if test "$hardcode_shlibpath_var" = NONE; then
+  echo "hardcode_shlibpath_var not set in ../demo/libtool" 1>&2
+  status=1
+fi
+
+test $status -eq 0 || exit $status
+
+echo "= Searching for hardcoded library directories in each program"
+for file in hc-*; do
+  case "$file" in
+  hc-direct) expected="$hardcode_direct" ;;
+  hc-libpath) expected="$hardcode_shlibpath_var" ;;
+  hc-minusL) expected="$hardcode_minus_L" ;;
+  *)
+    echo "unknown file \`$file'" 1>&2
+    continue
+    ;;
+  esac
+
+  if grep '.libs' $file > /dev/null; then
+    if test $expected = yes; then
+      echo ".libs was hardcoded in \`$file', as libtool expected"
+    else
+      echo ".libs was hardcoded in \`$file', which fooled libtool" 1>&2
+      status=1
+    fi
+  else
+    if test $expected = yes; then
+      echo ".libs was not hardcoded in \`$file', which fooled libtool" 1>&2
+      status=1
+    else
+      echo ".libs was not hardcoded in \`$file', as libtool expected"
+    fi
+  fi
+done
+
+exit $status

@@ -1,0 +1,28 @@
+# -*- sh -*-
+# Defines for Libtool testing environment.
+# Gord Matzigkeit <gord@gnu.ai.mit.edu>, 1996
+
+# Check that srcdir is set to an absolute path.
+case "$srcdir" in
+/*) ;;
+*) srcdir=`cd $srcdir && pwd` ;;
+esac
+
+prefix="./=inst"
+if test -d $prefix; then
+  rm -rf $prefix
+fi
+if test "$need_prefix" = yes; then
+  # An absolute path to a test installation directory.
+  mkdir $prefix
+  prefix=`cd $prefix && pwd`
+else
+  prefix=NONE
+fi
+
+# See how redirections should work.
+if test -z "$VERBOSE"; then
+   exec > /dev/null 2>&1
+fi
+
+echo "=== Running test $0"

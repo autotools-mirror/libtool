@@ -1,0 +1,51 @@
+#! /bin/sh
+# demo.test - try building in the ../demo subdirectory
+
+# Test script header.
+need_prefix=yes
+if test -z "$srcdir"; then
+  srcdir=.
+  test "${VERBOSE+set}" != "set" && VERBOSE=yes
+fi
+. $srcdir/defs || exit 1
+
+# Maybe we have a VPATH build, in which case, create a new subdir.
+test -d ../demo || mkdir ../demo
+
+# Change to our build directory.
+cd ../demo || exit 1
+
+# Possibly clean up the distribution.
+if test -f config.cache; then
+  echo "= Running make distclean in ../demo"
+  make distclean || rm -f config.cache
+fi
+
+# Configure the demonstration.
+echo "= Configuring in ../demo (prefix=$prefix)"
+$srcdir/../demo/configure --srcdir=$srcdir/../demo --prefix=$prefix || exit 1
+
+# Do the actual build.
+echo "= Running make in ../demo"
+make || exit 1
+
+echo "= Running make check in ../demo"
+make check || exit 1
+
+echo "= Running make install in ../demo"
+make install || exit 1
+
+# FIXME - only fail with installcheck if we are superuser.
+echo "= Running make installcheck in ../demo"
+make installcheck || exit 1
+
+echo "= Running make uninstall in ../demo"
+make uninstall || exit 1
+
+# Clean up the distribution.
+make distclean
+
+# Delete the directory tree we created.
+rm -rf $prefix
+
+exit 0

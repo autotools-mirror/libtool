@@ -1,0 +1,82 @@
+#! /bin/sh
+
+# tlibtool - A little test version of libtool.
+if test -z "$srcdir"; then
+  echo "tlibtool: you must set \`\$srcdir' before running this test program" 1>&2
+  exit 1
+fi
+
+# Use @VERSION@ so that we can use ../ltmain.sh.in directly.
+LTCONFIG_VERSION="@VERSION@"
+
+# Whether or not to build libtool libraries.
+build_libtool_libs=yes
+
+# Whether or not to build old-style libraries.
+build_old_libs=yes
+
+# The host system.
+host_alias="i386-unknown-netbsd1.2"
+host="i386-unknown-netbsd1.2"
+
+# The linker used to build libraries.
+LD='ld'
+
+# How to create reloadable object files.
+reload_flag=' -r'
+reload_cmds='$LD$reload_flag -o $output$reload_objs'
+
+# How to pass a linker flag through the compiler.
+wl='-Wl,'
+
+# Additional compiler flags for building library objects.
+pic_flag=' -fPIC'
+
+# Compiler flag to prevent dynamic linking.
+link_static_flag='-static'
+
+# Pattern to match compiler flags for creating libNAME_p libraries:
+profile_flag_pattern='-pg?'
+
+# Library versioning type.
+version_type=sunos
+
+# List of archive names.  First name is the real one, the rest are links.
+lib_names='$libname.so.$versuffix'
+
+# The coded name of the library, if different from the real name.
+soname_spec=''
+
+# Commands used to build and install an old-style archive.
+RANLIB='ranlib'
+old_archive_cmds='ar cru $oldlib$oldobjs;$RANLIB $oldlib'
+old_postinstall_cmds='chmod 644 $oldlib;$RANLIB $oldlib'
+
+# Commands used to build and install a shared archive.
+archive_cmds='$LD -Bshareable -o $lib$libobjs$deplibs'
+postinstall_cmds=''
+
+# Commands used to finish a libtool library installation in a directory.
+finish_cmds='ldconfig -m $libdir'
+
+# The flag that specifies a runtime search path when linking.
+link_rpath_flag='-R$libdir'
+
+# How to strip a library file.
+striplib='strip -x'
+old_striplib=''
+
+# This is the shared library path variable.
+shlibpath_var=LD_LIBRARY_PATH
+
+# Set to yes if using SHLIBPATH_VAR=DIR during linking hardcodes DIR into the
+# the resulting binary.
+hardcode_shlibpath_var=no
+
+# Set to yes if using the -LDIR flag during linking hardcodes DIR into the
+# resulting binary.
+hardcode_minus_L=no
+
+# Execute the libtool backend.
+. $srcdir/../ltmain.sh.in
+exit 1

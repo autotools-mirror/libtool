@@ -1,0 +1,7 @@
+# libinfo - used by libtool for library version information
+#
+# Comments begin with a hash sign.
+#
+# Each non-comment line has the following format:
+#   libNAME CURRENT AGE REVISION
+libhell 3 1 12

@@ -1,0 +1,14 @@
+#! /bin/sh
+# link.test - make sure that linking against libraries is legal.
+
+# Test script header.
+need_prefix=no
+if test -z "$srcdir"; then
+  srcdir=.
+  test "${VERBOSE+set}" != "set" && VERBOSE=yes
+fi
+. $srcdir/defs || exit 1
+
+# Try a sample link command.
+$libtool -n --mode=link gcc -o gettext ../lib/libnlsut.a
+exit $?
