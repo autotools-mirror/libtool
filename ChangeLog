@@ -1,5 +1,7 @@
 1999-12-07  Gary V. Vaughan  <gary@oranda.demon.co.uk>
 
+	GNU libtool 1.3.4 was released.
+
 	* config.guess: updated from autoconf cvs.
 	* config.sub: ditto.
 	* NEWS: inserted todays date.
