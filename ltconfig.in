@@ -1072,13 +1072,6 @@ EOF
     ld_shlibs=no
     ;;
 
-  sunos4*)
-    archive_cmds='$LD -assert pure-text -Bstatic -o $lib $libobjs $deplibs $linkopts'
-    wlarc=
-    hardcode_direct=yes
-    hardcode_shlibpath_var=no
-    ;;
-
   beos*)
     if $LD --help 2>&1 | egrep ': supported targets:.* elf' > /dev/null; then
       archive_cmds='$CC -nostart $libobjs $deplibs $linkopts ${wl}-soname $wl$soname -o $lib'
@@ -1121,6 +1114,13 @@ EOF
       $CC -Wl,--base-file,$objdir/$soname-base $objdir/$soname-exp -Wl,--dll -nostartfiles -Wl,-e,__cygwin_dll_entry@12 -o $lib $objdir/$soname-ltdll.$objext $libobjs $deplibs $linkopts~
       $DLLTOOL --as=$AS --dllname $soname --exclude-symbols DllMain@12,_cygwin_dll_entry@12,_cygwin_noncygwin_dll_entry@12 --def $objdir/$soname-def --base-file $objdir/$soname-base --output-exp $objdir/$soname-exp~
       $CC $objdir/$soname-exp -Wl,--dll -nostartfiles -Wl,-e,__cygwin_dll_entry@12 -o $lib $objdir/$soname-ltdll.$objext $libobjs $deplibs $linkopts'
+    ;;
+
+  sunos4*)
+    archive_cmds='$LD -assert pure-text -Bstatic -o $lib $libobjs $deplibs $linkopts'
+    wlarc=
+    hardcode_direct=yes
+    hardcode_shlibpath_var=no
     ;;
 
   *)
