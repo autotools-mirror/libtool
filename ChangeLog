@@ -1,10 +1,19 @@
+2004-10-20  Gary V. Vaughan  <gary@gnu.org>
+
+	* config/general.m4sh (sed_double_backslash): New sed expression
+	to escape \$ properly in combination with double_quote_subst.
+	(func_quote_for_eval): Four space indent margin for functions!
+	(func_quote_for_expand): Use $sed_double_backslash.
+	(func_show_eval): New function that echos an escaped but variable
+	expanded command, and then evaluates it.
+
 2004-10-20  Noah Misch  <noah@cs.caltech.edu>,
 	    Gary V. Vaughan  <gary@gnu.org>
 
 	* m4/libtool.m4 (sed_quote_subst): Remove superfluous backslashes
 	from the match character set.
 	(double_quote_subst): Ditto.
-	* lib/general.m4sh (sed_quote_subst): Ditto.
+	* config/general.m4sh (sed_quote_subst): Ditto.
 	(double_quote_subst): New variable, copied from
 	m4/libtool.m4. Much the same as sed_quote_subst, but variable
 	references are not quoted.

@@ -94,6 +94,13 @@ sed_quote_subst='s/\([[`"$\\]]\)/\\\1/g'
 # Same as above, but do not quote variable references.
 double_quote_subst='s/\([["`\\]]\)/\\\1/g'
 
+# Save mangling of backslash escaped dollars by the above.  Running this
+# substitution after double_quote_subst notices and corrects expansion
+# of already escaped meta-chars.  \$x -> double_quote_subst -> \\$x,
+# which doesn't protect $x from expansion.  To correct this we do:
+# \\$x -> sed_double_backslash -> \\\$x, properly protecting $x.
+sed_double_backslash='s/\([[^\\]]\)\\\\$/\1\\\\\\$/g'
+
 # test EBCDIC or ASCII
 case `$ECHO A|tr A '\301'` in
  A) # EBCDIC based system
@@ -256,20 +263,20 @@ func_mktempdir ()
 # Aesthetically quote ARG to be evaled later.
 func_quote_for_eval ()
 {
-  my_arg=`$ECHO "X$1" | $Xsed -e "$sed_quote_subst"`
+    my_arg=`$ECHO "X$1" | $Xsed -e "$sed_quote_subst"`
 
-  case $my_arg in
-    # Double-quote args containing shell metacharacters to delay
-    # word splitting, command substitution and and variable
-    # expansion for a subsequent eval.
-    # Many Bourne shells cannot handle close brackets correctly
-    # in scan sets, so we specify it separately.
-    *[[\@<:@\~\#\^\&\*\(\)\{\}\|\;\<\>\?\'\ \	]]*|*@:>@*|"")
-      my_arg="\"$my_arg\""
-      ;;
-  esac
+    case $my_arg in
+      # Double-quote args containing shell metacharacters to delay
+      # word splitting, command substitution and and variable
+      # expansion for a subsequent eval.
+      # Many Bourne shells cannot handle close brackets correctly
+      # in scan sets, so we specify it separately.
+      *[[\@<:@\~\#\^\&\*\(\)\{\}\|\;\<\>\?\'\ \	]]*|*@:>@*|"")
+        my_arg="\"$my_arg\""
+        ;;
+    esac
 
-  func_quote_for_eval_result="$my_arg"
+    func_quote_for_eval_result="$my_arg"
 }
 
 
@@ -278,17 +285,36 @@ func_quote_for_eval ()
 # but do not quote variable references.
 func_quote_for_expand ()
 {
-  my_arg=`$ECHO "X$1" | $Xsed -e "$double_quote_subst"`
+    my_arg=`$ECHO "X$1" | $Xsed \
+        -e "$double_quote_subst" -e "$sed_double_backslash"`
 
-  case $my_arg in
-    # Double-quote args containing shell metacharacters to delay
-    # word splitting and command substitution for a subsequent eval.
-    # Many Bourne shells cannot handle close brackets correctly
-    # in scan sets, so we specify it separately.
-    *[[\@<:@\~\#\^\&\*\(\)\{\}\|\;\<\>\?\'\ \	]]*|*@:>@*|"")
-      my_arg="\"$my_arg\""
-      ;;
-  esac
+    case $my_arg in
+      # Double-quote args containing shell metacharacters to delay
+      # word splitting and command substitution for a subsequent eval.
+      # Many Bourne shells cannot handle close brackets correctly
+      # in scan sets, so we specify it separately.
+      *[[\@<:@\~\#\^\&\*\(\)\{\}\|\;\<\>\?\'\ \	]]*|*@:>@*|"")
+        my_arg="\"$my_arg\""
+        ;;
+    esac
 
-  func_quote_for_expand_result="$my_arg"
+    func_quote_for_expand_result="$my_arg"
+}
+
+
+# func_show_eval cmd [fail_exp]
+# Unless opt_silent is true, then output CMD.  Then, if opt_dryrun is
+# not true, evaluate CMD.  If the evaluation of CMD fails, and FAIL_EXP
+# is given, then evaluate it.
+func_show_eval ()
+{
+    my_cmd="$1"
+    my_fail_exp="${2-:}"
+
+    ${opt_silent-false} || {
+      func_quote_for_expand "$my_cmd"
+      eval "func_echo $func_quote_for_expand_result"
+    }
+
+    ${opt_dry_run-false} || eval "$my_cmd" || eval "$my_fail_exp"
 }
