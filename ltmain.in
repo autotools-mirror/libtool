@@ -1231,8 +1231,8 @@ EOF
 	  case $host in
 	    *-*-darwin*)
 	      case "$deplibs " in
-	        *" $qarg.framework "*) ;;
-		*) deplibs="$deplibs $qarg.framework" # this is fixed later
+	        *" $qarg.ltframework "*) ;;
+		*) deplibs="$deplibs $qarg.ltframework" # this is fixed later
 		   ;;
               esac
               ;;
@@ -1361,7 +1361,7 @@ EOF
 	    ;;
 	  *-*-rhapsody* | *-*-darwin1.[012])
 	    # Rhapsody C and math libraries are in the System framework
-	    deplibs="$deplibs System.framework"
+	    deplibs="$deplibs System.ltframework"
 	    continue
 	  esac
 	elif test "X$arg" = "X-lc_r"; then
@@ -1890,7 +1890,8 @@ EOF
 	  fi
 	  name=`$echo "X$deplib" | $Xsed -e 's/^-l//'`
 	  for searchdir in $newlib_search_path $lib_search_path $sys_lib_search_path $shlib_search_path; do
-	    for search_ext in .la $shrext .so .a; do
+	    eval shared_ext=\"$shrext\"
+	    for search_ext in .la $shared_ext .so .a; do
 	      # Search the libtool library
 	      lib="$searchdir/lib${name}${search_ext}"
 	      if test -f "$lib"; then
@@ -1951,7 +1952,7 @@ EOF
 	    fi
 	  fi
 	  ;; # -l
-	*.framework)
+	*.ltframework)
 	  if test "$linkmode,$pass" = "prog,link"; then
 	    compile_deplibs="$deplib $compile_deplibs"
 	    finalize_deplibs="$deplib $finalize_deplibs"
@@ -2093,8 +2094,8 @@ EOF
 
 	case $host in
 	*-*-darwin*)
-	  # Convert "-framework foo" to "foo.framework" in dependency_libs
-	  test -n "$dependency_libs" && dependency_libs=`$echo "X$dependency_libs" | $Xsed -e 's/-framework \([^ $]*\)/\1.framework/g'`
+	  # Convert "-framework foo" to "foo.ltframework" in dependency_libs
+	  test -n "$dependency_libs" && dependency_libs=`$echo "X$dependency_libs" | $Xsed -e 's/-framework \([^ $]*\)/\1.ltframework/g'`
 	  ;;
 	esac
 
@@ -2710,7 +2711,7 @@ EOF
 		esac
 		;;
 
-	      *.framework)
+	      *.ltframework)
 		case $host in
 		  *-*-darwin*)
 		    depdepl="$deplib"
@@ -3235,7 +3236,7 @@ EOF
 	    ;;
 	  *-*-rhapsody* | *-*-darwin1.[012])
 	    # Rhapsody C library is in the System framework
-	    deplibs="$deplibs System.framework"
+	    deplibs="$deplibs System.ltframework"
 	    ;;
 	  *-*-netbsd*)
 	    # Don't link with libc until the a.out ld.so is fixed.
@@ -3528,7 +3529,7 @@ EOF
 	case $host in
 	*-*-rhapsody* | *-*-darwin1.[012])
 	  # On Rhapsody replace the C library is the System framework
-	  newdeplibs=`$echo "X $newdeplibs" | $Xsed -e 's/ -lc / System.framework /'`
+	  newdeplibs=`$echo "X $newdeplibs" | $Xsed -e 's/ -lc / System.ltframework /'`
 	  ;;
 	esac
 
@@ -3574,11 +3575,11 @@ EOF
 	    fi
 	  fi
 	fi
-	# Time to change all our "foo.framework" stuff back to "-framework foo"
+	# Time to change all our "foo.ltframework" stuff back to "-framework foo"
 	case $host in
 	  *-*-darwin*)
-	    newdeplibs=`$echo "X $newdeplibs" | $Xsed -e 's% \([^ $]*\).framework% -framework \1%g'`
-	    dependency_libs=`$echo "X $dependency_libs" | $Xsed -e 's% \([^ $]*\).framework% -framework \1%g'`
+	    newdeplibs=`$echo "X $newdeplibs" | $Xsed -e 's% \([^ $]*\).ltframework% -framework \1%g'`
+	    dependency_libs=`$echo "X $dependency_libs" | $Xsed -e 's% \([^ $]*\).ltframework% -framework \1%g'`
 	    ;;
 	esac
 	# Done checking deplibs!
@@ -4171,8 +4172,8 @@ EOF
       case $host in
       *-*-rhapsody* | *-*-darwin1.[012])
 	# On Rhapsody replace the C library is the System framework
-	compile_deplibs=`$echo "X $compile_deplibs" | $Xsed -e 's/ -lc / System.framework /'`
-	finalize_deplibs=`$echo "X $finalize_deplibs" | $Xsed -e 's/ -lc / System.framework /'`
+	compile_deplibs=`$echo "X $compile_deplibs" | $Xsed -e 's/ -lc / System.ltframework /'`
+	finalize_deplibs=`$echo "X $finalize_deplibs" | $Xsed -e 's/ -lc / System.ltframework /'`
 	;;
       esac
 
@@ -4183,9 +4184,9 @@ EOF
         compile_command="$compile_command ${wl}-bind_at_load"
         finalize_command="$finalize_command ${wl}-bind_at_load"
         fi
-	# Time to change all our "foo.framework" stuff back to "-framework foo"
-	compile_deplibs=`$echo "X $compile_deplibs" | $Xsed -e 's% \([^ $]*\).framework% -framework \1%g'`
-	finalize_deplibs=`$echo "X $finalize_deplibs" | $Xsed -e 's% \([^ $]*\).framework% -framework \1%g'`
+	# Time to change all our "foo.ltframework" stuff back to "-framework foo"
+	compile_deplibs=`$echo "X $compile_deplibs" | $Xsed -e 's% \([^ $]*\).ltframework% -framework \1%g'`
+	finalize_deplibs=`$echo "X $finalize_deplibs" | $Xsed -e 's% \([^ $]*\).ltframework% -framework \1%g'`
         ;;
       esac
 
