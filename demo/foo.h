@@ -45,15 +45,15 @@ USA. */
 # define __END_DECLS /* empty */
 #endif
 
-/* __P is a macro used to wrap function prototypes, so that compilers
+/* PARAMS is a macro used to wrap function prototypes, so that compilers
    that don't understand ANSI C prototypes still work, and ANSI C
    compilers can issue warnings about type mismatches. */
-#undef __P
+#undef PARAMS
 #if defined (__STDC__) || defined (_AIX) || (defined (__mips) && defined (_SYSTYPE_SVR4)) || defined(__CYGWIN32__) || defined(__cplusplus)
-# define __P(protos) protos
+# define PARAMS(protos) protos
 # define lt_ptr_t     void*
 #else
-# define __P(protos) ()
+# define PARAMS(protos) ()
 # define lt_ptr_t     char*
 #endif
 
@@ -82,8 +82,8 @@ USA. */
 
 /* Declarations.  Note the wonderful use of the above macros. */
 __BEGIN_DECLS
-int foo __P((void));
-int hello __P((void));
+int foo PARAMS((void));
+int hello PARAMS((void));
 EXTERN int nothing;
 __END_DECLS
 
