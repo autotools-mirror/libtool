@@ -1,3 +1,8 @@
+2003-07-30  Albert Chin-A-Young  <china@thewrittenword.com>
+
+	* libtool.m4 (AC_LIBTOOL_PROG_CC_C_O): Correctly remove IRIX C++
+	template files.
+
 2003-07-30  Christiaan Welvaart  <cjw@daneel.dyndns.org>
 
 	* tests/dryrun.test: Ignore any 'total' line from "ls -l" output.
