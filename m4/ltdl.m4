@@ -68,6 +68,8 @@ AC_CONFIG_SUBDIRS(m4_if($#, 1, [$1], [libltdl]))
 
 # Old name:
 AU_DEFUN([AC_WITH_LTDL], [LT_WITH_LTDL])
+dnl aclocal-1.4 backwards compatibility:
+dnl AC_DEFUN([AC_WITH_LTDL], [])
 
 
 # LTDL_CONVENIENCE([DIRECTORY])
@@ -100,6 +102,8 @@ AC_SUBST([INCLTDL])
 
 # Old name:
 AU_DEFUN([AC_LIBLTDL_CONVENIENCE], [LTDL_CONVENIENCE])
+dnl aclocal-1.4 backwards compatibility:
+dnl AC_DEFUN([AC_LIBLTDL_CONVENIENCE], [])
 
 
 # LTDL_INSTALLABLE([DIRECTORY])
@@ -143,6 +147,8 @@ AC_SUBST([INCLTDL])
 
 # Old name:
 AU_DEFUN([AC_LIBLTDL_INSTALLABLE], [LTDL_INSTALLABLE])
+dnl aclocal-1.4 backwards compatibility:
+dnl AC_DEFUN([AC_LIBLTDL_INSTALLABLE], [])
 
 
 # LTDL_INIT
@@ -186,6 +192,8 @@ AC_CHECK_FUNCS([closedir opendir readdir], [], [AC_LIBOBJ([lt__dirent])])
 
 # Old name:
 AU_DEFUN([AC_LIB_LTDL], [LTDL_INIT])
+dnl aclocal-1.4 backwards compatibility:
+dnl AC_DEFUN([AC_LIB_LTDL], [])
 
 
 # _LT_ENABLE_INSTALL
@@ -285,6 +293,8 @@ fi
 
 # Old name:
 AU_DEFUN([AC_LTDL_SYS_DLOPEN_DEPLIBS], [LT_SYS_DLOPEN_DEPLIBS])
+dnl aclocal-1.4 backwards compatibility:
+dnl AC_DEFUN([AC_LTDL_SYS_DLOPEN_DEPLIBS], [])
 
 
 # LT_SYS_MODULE_EXT
@@ -306,6 +316,8 @@ fi
 
 # Old name:
 AU_DEFUN([AC_LTDL_SHLIBEXT], [LT_SYS_MODULE_EXT])
+dnl aclocal-1.4 backwards compatibility:
+dnl AC_DEFUN([AC_LTDL_SHLIBEXT], [])
 
 
 # LT_SYS_MODULE_PATH
@@ -323,6 +335,8 @@ fi
 
 # Old name:
 AU_DEFUN([AC_LTDL_SHLIBPATH], [LT_SYS_MODULE_PATH])
+dnl aclocal-1.4 backwards compatibility:
+dnl AC_DEFUN([AC_LTDL_SHLIBPATH], [])
 
 
 # LT_SYS_DLSEARCH_PATH
@@ -349,6 +363,8 @@ fi
 
 # Old name:
 AU_DEFUN([AC_LTDL_SYSSEARCHPATH], [LT_SYS_DLSEARCH_PATH])
+dnl aclocal-1.4 backwards compatibility:
+dnl AC_DEFUN([AC_LTDL_SYSSEARCHPATH], [])
 
 
 # _LT_CHECK_DLPREOPEN
@@ -457,6 +473,8 @@ AC_LANG_POP
 
 # Old name:
 AU_DEFUN([AC_LTDL_DLLIB], [LT_LIB_DLLOAD])
+dnl aclocal-1.4 backwards compatibility:
+dnl AC_DEFUN([AC_LTDL_DLLIB], [])
 
 
 # LT_SYS_SYMBOL_USCORE
@@ -500,6 +518,8 @@ EOF
 
 # Old name:
 AU_DEFUN([AC_LTDL_SYMBOL_USCORE], [LT_SYS_SYMBOL_USCORE])
+dnl aclocal-1.4 backwards compatibility:
+dnl AC_DEFUN([AC_LTDL_SYMBOL_USCORE], [])
 
 
 # LT_FUNC_DLSYM_USCORE
@@ -530,3 +550,5 @@ fi
 
 # Old name:
 AU_DEFUN([AC_LTDL_DLSYM_USCORE], [LT_FUNC_DLSYM_USCORE])
+dnl aclocal-1.4 backwards compatibility:
+dnl AC_DEFUN([AC_LTDL_DLSYM_USCORE], [])
