@@ -1,3 +1,8 @@
+2004-04-13  Scott James Remnant  <scott@netsplit.com>
+
+	* Makefile.am (XDELTA_OPTIONS): Remove --pristine as that
+	generates huge xdeltas.
+
 2004-04-08  Gary V. Vaughan  <gary@gnu.org>
 
 	* libltdl/ltdl.c (argz_append, argz_create_sep, argz_insert)
