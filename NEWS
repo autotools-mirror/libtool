@@ -5,7 +5,7 @@ New in 1.0j - 1998-03-05, Gordon Matzigkeit:
 * Use the `AM_DISABLE_SHARED' or `AM_DISABLE_STATIC'
   macros instead of the `enable_shared' or `enable_static' variables
   if you wish to modify the default behaviour of `AM_PROG_LIBTOOL'.
-* libtool.m4 now supports turning shared or static libraries off with
+* libtool.m4 supports turning shared or static libraries off with
   the `--enable-shared=PKGS' and `--enable-static=PKGS' configure
   flags.  See (libtool)AM_PROG_LIBTOOL.
 * `compile' mode honours the `-static' flag to prevent libtool
