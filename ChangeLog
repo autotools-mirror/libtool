@@ -1,3 +1,9 @@
+2002-01-10  Volker Christian  <voc@soft.uni-linz.ac.at>
+
+	* libltdl/ltdl.c (find_handle_callback): treat the result of a call
+	to access(2) correctly when deciding whether a library can be found
+	in a directory from user_search_path.
+
 2002-01-07  Robert Boehne  <rboehne@ricardo-us.com>
 
 	* NEWS: Fixed wrong path for texinfo.tex.
