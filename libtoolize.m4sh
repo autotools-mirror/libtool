@@ -678,24 +678,23 @@ func_serial_update ()
 }
 
 
-# func_ltmain_update filename srcdir destdir
+# func_keyword_update filename srcdir destdir sed_script
 # Copy the FILENAME from a SRCDIR to DESTDIR provided that either FILENAME
-# has a newer revision, or DESTFILE does not yet exist, or the user
-# specified `--force' at the command line.
-func_ltmain_update ()
+# has a newer revision according to the serial number extracted by
+# SED_SCRIPT, or DESTFILE does not yet exist, or the user specified
+# `--force' at the command line.
+func_keyword_update ()
 {
     $opt_debug
     my_filename="$1"
     my_srcdir="$2"
     my_destdir="$3"
+    my_sed_script="$4"
 
     my_srcfile="$my_srcdir/$my_filename"
     my_destfile="$my_destdir/$my_filename"
 
-    my_update_p=:
-    my_sed_ltmain=['/^package_revision=[0-9][1-9.]*/ {
-      s,^package_revision=\([0-9.]*\)[ 	]*$,\1,; p;
-    }; d']
+    my_keyword_update_p=:
 
     test -f "$my_srcfile" || {
       func_error "\`$my_srcfile' does not exist."
@@ -703,26 +702,43 @@ func_ltmain_update ()
     }
 
     if test -f "$my_destfile"; then
-      my_src_serial=`$SED -e "$my_sed_ltmain" "$my_srcfile"`
+      my_src_serial=`$SED -e "$my_sed_script" "$my_srcfile"`
       test -z "$my_src_serial" && {
         func_error "warning: no serial number in \`$my_srcfile', not copying."
 	return
       }
 
-      my_dest_serial=`$SED -e "$my_sed_ltmain" "$my_destfile"`
+      my_dest_serial=`$SED -e "$my_sed_script" "$my_destfile"`
       test -n "$my_dest_serial" || my_dest_serial=0
 
       func_serial_update_check \
          "$my_srcfile" "$my_src_serial" "$my_destfile" "$my_dest_serial"
-      my_update_p="$func_serial_update_check_result"
+      my_keyword_update_p="$func_serial_update_check_result"
     fi
 
-    if $my_update_p || $opt_force; then
+    if $my_keyword_update_p || $opt_force; then
       func_copy "$my_srcfile" "$my_destfile"
     elif test "X$my_dest_serial" = "X$my_src_serial"; then
       $opt_quiet \
         || func_echo "\`$my_destfile' is already up to date."
     fi
+}
+
+
+# func_ltmain_update filename srcdir destdir
+# Copy the FILENAME from a SRCDIR to DESTDIR provided that either FILENAME
+# has a newer revision, or DESTFILE does not yet exist, or the user
+# specified `--force' at the command line.
+func_ltmain_update ()
+{
+    $opt_debug
+    my_sed_ltmain=['/^package_revision='\''*[0-9][1-9.]*'\''*/ {
+      s,^package_revision='\''*\([0-9.]*\)'\''*[ 	]*$,\1,; p;
+    }; d']
+
+    func_keyword_update "$1" "$2" "$3" "$my_sed_ltmain"
+
+    return $my_return_status
 }
 
 
@@ -733,44 +749,30 @@ func_ltmain_update ()
 func_config_update ()
 {
     $opt_debug
-    my_filename="$1"
-    my_srcdir="$2"
-    my_destdir="$3"
-
-    my_srcfile="$my_srcdir/$my_filename"
-    my_destfile="$my_destdir/$my_filename"
-
-    my_update_p=:
-    my_sed_config=['/^timestamp='\''\?[0-9][1-9-]*'\''\?/ {
-      s,^timestamp='\''\?\([0-9-]*\)'\''\?,\1,; s/-/./g; p;
+    my_sed_config=['/^timestamp='\''*[0-9][1-9-]*'\''*/ {
+      s,^timestamp='\''*\([0-9-]*\)'\''*,\1,; s/-/./g; p;
     }; d']
 
-    test -f "$my_srcfile" || {
-      func_error "\`$my_srcfile' does not exist."
-      return
-    }
+    func_keyword_update "$1" "$2" "$3" "$my_sed_config"
 
-    if test -f "$my_destfile"; then
-      my_src_serial=`$SED -e "$my_sed_config" "$my_srcfile"`
-      test -z "$my_src_serial" && {
-        func_error "warning: no serial number in \`$my_srcfile', not copying."
-	return
-      }
+    return $my_return_status
+}
 
-      my_dest_serial=`$SED -e "$my_sed_config" "$my_destfile"`
-      test -n "$my_dest_serial" || my_dest_serial=0
 
-      func_serial_update_check \
-         "$my_srcfile" "$my_src_serial" "$my_destfile" "$my_dest_serial"
-      my_update_p="$func_serial_update_check_result"
-    fi
+# func_install_update filename srcdir destdir
+# Copy the FILENAME from a SRCDIR to DESTDIR provided that either FILENAME
+# has a newer timestamp, or DESTFILE does not yet exist, or the user
+# specified `--force' at the command line.
+func_install_update ()
+{
+    $opt_debug
+    my_sed_install=['/^scriptversion='\''*[0-9][1-9.-]*'\''*/ {
+      s,^scriptversion='\''*\([0-9.-]*\)'\''*,\1,; s/-/./g; p;
+    }; d']
 
-    if $my_update_p || $opt_force; then
-      func_copy "$my_srcfile" "$my_destfile"
-    elif test "X$my_dest_serial" = "X$my_src_serial"; then
-      $opt_quiet \
-        || func_echo "\`$my_destfile' is already up to date."
-    fi
+    func_keyword_update "$1" "$2" "$3" "$my_sed_install"
+
+    return $my_return_status
 }
 
 
@@ -881,7 +883,7 @@ func_massage_pkgvltdl_files ()
   if $opt_install; then
     func_config_update config.guess "$pkgvdatadir/config" "$auxdir"
     func_config_update config.sub   "$pkgvdatadir/config" "$auxdir"
-    func_config_update install-sh   "$pkgvdatadir/config" "$auxdir"
+    func_install_update install-sh  "$pkgvdatadir/config" "$auxdir"
   fi
   func_ltmain_update ltmain.sh "$pkgvdatadir/config" "$auxdir"
 

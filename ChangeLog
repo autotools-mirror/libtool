@@ -1,5 +1,17 @@
 2005-04-01  Gary V. Vaughan  <gary@gnu.org>
 
+	Fix problems with serial comparison sed scripts, and factor out
+	common code from similar serial comparison functions:
+
+	* libtoolize.m4sh (func_keyword_update): Common code factored out
+	of func_ltmain_update and func_config_update.
+	(func_ltmain_update, func_config_update): Adjust, and fix sed
+	expressions to not use unportable ? modifier.
+	(func_install_update): New serial number based file updater keyed
+	off 'scriptversion' variable in install-sh.  Adjust all callers.
+
+2005-04-01  Gary V. Vaughan  <gary@gnu.org>
+
 	Most of the hair introduced ostensibly to enable testing of
 	uninstalled libtoolize isn't necessary if we allow overriding of
 	the libtool master copy directory:
