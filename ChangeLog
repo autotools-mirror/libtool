@@ -1,5 +1,20 @@
 2003-11-26  Gary V. Vaughan  <gary@gnu.org>
 
+	Okay, the problem I am trying to solve is that when a change (say,
+	bumping the version to 1.6 for the next release) is committed, the
+	timestamp in ChangeLog is updated, but ltmain.sh and libtoolize
+	inherit the pre-commit build number from config.status.  This
+	delta notes the change in build number in the unstamped ChangeLog
+	and forces a rerun of configure etc. to roll a new ltmain.sh with
+	the correct TIMESTAMP:
+
+	* Makefile.am (stamp-vcl): We actually need a new config.status to
+	force the correct timestamp into libtoolize and ltmain.sh,
+	rerunning autoconf has no effect at all if configure.ac hasn't
+	changed.
+
+2003-11-26  Gary V. Vaughan  <gary@gnu.org>
+
 	* Makefile.am (stamp-vcl): New rules to force libtool and
 	libtoolize scripts to update when the TIMESTAMP changes in
 	ChangeLog, but the file modification time doesn't (e.g in cvs

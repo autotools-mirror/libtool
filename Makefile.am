@@ -50,9 +50,9 @@ libtoolize: $(srcdir)/libtoolize.in $(top_builddir)/config.status
 	CONFIG_FILES=$@ CONFIG_HEADERS= CONFIG_COMMANDS= $(SHELL) $(config_status)
 	chmod +x $@
 
-# Make sure configure is regenerated when the version timestamp changes
-$(top_builddir)/config.status: stamp-vcl $(top_srcdir)/ChangeLog
-stamp-vcl: vcl.tmp
+# Make sure config.status is regenerated when the version timestamp changes
+$(config_status): stamp-vcl
+stamp-vcl: vcl.tmp $(top_srcdir)/ChangeLog
 vcl.tmp:
 	@set `$(SHELL) config/mkstamp < $(top_srcdir)/ChangeLog`; \
 	echo "$$1" > vcl.tmp
