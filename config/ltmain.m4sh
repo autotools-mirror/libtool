@@ -745,7 +745,8 @@ extern \"C\" {
 	    $run eval "${SED} -n -e '/^: @PROGRAM@$/d' -e 's/^.* \(.*\)$/\1/p' "'< "$nlist" > "$export_symbols"'
 	    case $host in
 	    *cygwin* | *mingw* )
-	      $run eval "${SED} -e '1iEXPORTS'"' < "$export_symbols" > "$output_objdir/$output.def"'
+              $run ${ECHO} EXPORTS > "$output_objdir/$output.def"
+              $run cat "$export_symbols" >> "$output_objdir/$output.def"
 	      ;;
 	    esac
 	  else
