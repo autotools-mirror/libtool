@@ -1,5 +1,7 @@
 1999-03-09  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
 
+	* doc/libtool.texi: added missing "@end defvar" statements.
+
 	* NEWS: merged from trunk and updated.
 
 1999-03-08  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>

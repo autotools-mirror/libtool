@@ -3416,6 +3416,7 @@ shared library in question, and the @var{$objdir/$newlib} contains the
 path of the static library these commands should build.  After executing
 these commands, libtool will proceed to link against @var{$objdir/$newlib}
 instead of @var{soname}.
+@end defvar
 
 @defvar build_libtool_libs
 Whether libtool should build shared libraries on this system.  Set to
@@ -3472,6 +3473,7 @@ Commands to extract the exported symbols list from a shared library.
 These commands are executed if there is no file @var{$objdir/$soname-def},
 and should write the names of the exported symbols to that file, for
 the use of @samp{old_archive_from_expsyms_cmds}.
+@end defvar
 
 @defvar finish_cmds
 Commands to tell the dynamic linker how to find shared libraries in a
