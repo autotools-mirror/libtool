@@ -1,3 +1,8 @@
+1999-05-16  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* ltconfig.in (solaris2.6, whole_archive_flag_spec): Do not use
+	-Wl for allextract.
+
 1999-05-14  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* instutil/chmod: New script to avoid chmod'ing files while
