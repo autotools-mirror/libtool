@@ -1,3 +1,7 @@
+1999-03-16  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* Makefile.am (EXTRA_DIST): add ChangeLog.0
+
 1999-03-16  Thomas Tanner  <tanner@gmx.de>
 
 	* doc/libtool.texi: some minor corrections to the "-dlopen self"
@@ -7,5 +11,7 @@
 
 	* ltconfig.in: some cosmetical changes
 	* ltmain.in: ditto
+
+Continued in ChangeLog.0
 
 	$Revision$ $Date$
