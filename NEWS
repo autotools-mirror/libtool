@@ -3,6 +3,8 @@ NEWS - list of user-visible changes between releases of GNU Libtool
 New in 1.4.1: 2001-??-??; CVS version 1.4.0a, Libtool team:
 * Don't leave here-doc files behind.
 * Improved support for OpenBSD.
+* Libtool will build with autoconf-2.50.
+* Plug memory management bugs in libltdl.
 
 New in 1.4: 2001-04-25; CVS version 1.3e, Libtool team:
 * Support for aix5*.

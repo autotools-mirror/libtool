@@ -1063,6 +1063,8 @@ if test x"$compiler_c_o" = x"yes"; then
   lt_cv_compiler_o_lo=no
   save_CFLAGS="$CFLAGS"
   CFLAGS="$CFLAGS -c -o conftest.lo"
+  save_objext="$ac_objext"
+  ac_objext=lo
   AC_TRY_COMPILE([], [int some_variable = 0;], [dnl
     # The compiler can only warn and ignore the option if not recognized
     # So say no if there are warnings
@@ -1072,6 +1074,7 @@ if test x"$compiler_c_o" = x"yes"; then
       lt_cv_compiler_o_lo=yes
     fi
   ])
+  ac_objext="$save_objext"
   CFLAGS="$save_CFLAGS"
   ])
   compiler_o_lo=$lt_cv_compiler_o_lo

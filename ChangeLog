@@ -1,5 +1,12 @@
-2001-06-28  Gary V. Vaughan  <gary@gnu.org>
+2001-06-29  Gary V. Vaughan  <gary@gnu.org>
 
+	From Bruno Haible  <haible@ilog.fr>
+	* NEWS: Updated.
+	* libtool.m4 (_LT_AC_LTCONFIG_HACK):  Make sure ac_objext is
+	set to `lo' when testing for compiler output to *.lo filenames.
+
+2001-06-28  Gary V. Vaughan  <gary@gnu.org>
+	
 	From  Alexander Bluhm  <Alexander.Bluhm@WiredMinds.de>
 	* libltdl/ltdl.c (lt_dlopen): Fix bad memory initialisation
 	assumptions.
