@@ -1,5 +1,8 @@
 2004-12-18  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
+	* libtool.m4 [linux] (_LT_COMPILER_PIC, _LT_LANG_CXX_CONFIG):
+	Match icpc* and ecpc* (ia64 version of icpc) instead of only icpc.
+
 	* libltdl/lt__dirent.c [mingw] (opendir): Fix write of constant
 	strings past end of buffer.
 	(opendir, readdir): Fix read past end of buffer.

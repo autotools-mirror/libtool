@@ -3083,7 +3083,7 @@ m4_if([$1], [CXX], [
 	    _LT_TAGVAR(lt_prog_compiler_wl, $1)='--backend -Wl,'
 	    _LT_TAGVAR(lt_prog_compiler_pic, $1)='-fPIC'
 	    ;;
-	  icpc)
+	  icpc* | ecpc* )
 	    # Intel C++
 	    _LT_TAGVAR(lt_prog_compiler_wl, $1)='-Wl,'
 	    _LT_TAGVAR(lt_prog_compiler_pic, $1)='-KPIC'
@@ -5118,7 +5118,7 @@ if test "$_lt_caught_CXX_error" != yes; then
 	    # "CC -Bstatic", where "CC" is the KAI C++ compiler.
 	    _LT_TAGVAR(old_archive_cmds, $1)='$CC -Bstatic -o $oldlib $oldobjs'
 	    ;;
-	  icpc)
+	  icpc* | ecpc* )
 	    # Intel C++
 	    with_gnu_ld=yes
 	    # version 8.0 and above of icpc choke on multiply defined symbols
