@@ -1705,6 +1705,7 @@ irix5*)
   shlibpath_var=LD_LIBRARY_PATH
   deplibs_check_method="file_magic ELF 32-bit MSB dynamic lib MIPS - version 1" # or should it be pass_all?
   file_magic_cmd=file
+  shlibpath_overrides_runpath=no
   ;;
 
 irix6*)
@@ -1720,6 +1721,7 @@ irix6*)
   *) libsuff= shlibsuff= libmagic=never-match;;
   esac
   shlibpath_var=LD_LIBRARY${shlibsuff}_PATH
+  shlibpath_overrides_runpath=no
   sys_lib_search_path_spec="/lib${libsuff} /usr/lib${libsuff} /usr/local/lib${libsuff}"
   deplibs_check_method="file_magic ELF ${libmagic} MSB mips-[1234] dynamic lib MIPS - version 1" # or should it be pass_all?
   file_magic_cmd=file
