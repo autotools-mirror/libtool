@@ -1,5 +1,7 @@
 1999-03-14  Erez Zadok  <ezk@cs.columbia.edu>
 
+	* config.sub: recognize hppa2.0w, yet to be installed at GNU
+
 	* config.guess: minor update for FreeBSD-elf, yet to be installed
 	at GNU
 
