@@ -1,3 +1,10 @@
+2005-02-21  Peter O'Gorman  <peter@pogma.com>
+
+	* config/ltmain.m4sh (func_extract_archives) [darwin]: This didn't
+	actually work on a real fat archive, should do now.
+	* tests/functests.at [darwin]: remove darwin fat tests which
+	did not actually work.
+
 2005-02-07  Peter O'Gorman  <peter@pogma.com>
 
 	* config/ltmain.m4sh: Add -pthread like flags when linking

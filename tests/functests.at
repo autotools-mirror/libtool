@@ -31,45 +31,6 @@ SED=${SED-sed}
 Xsed="$SED -e s/^X//"
 progname=libtool
 mode=testing
-case $host in 
-*darwin*)
-  for afile in baz foobar foobaz
-  do
-    echo "ppc $afile" > $afile.ppc.o
-    echo "m68k $afile" > $afile.m68k.o
-    echo "i386 $afile" > $afile.i386.o
-    lipo -create -output $afile.o -arch ppc $afile.ppc.o -arch m68k \
-      $afile.m68k.o -arch i386 $afile.i386.o
-    rm -f $afile.*.o
-    ar -q libfoo.a $afile.o
-    rm -f $afile.o
-  done
-  for anum in 1 2 3 4 5 6 7 8 9 10 11 12
-  do
-    echo "ppc foo $anum" > foo.ppc.o
-    echo "m68k foo $anum" > foo.m68k.o
-    echo "i386 foo $anum" > foo.i386.o
-    lipo -create -output foo.o -arch ppc foo.ppc.o -arch m68k foo.m68k.o \
-      -arch i386 foo.i386.o
-    ar -q libfoo.a foo.o
-    rm -f foo.o foo.*.o
-    echo "ppc bar $anum" > bar.ppc.o
-    echo "m68k bar $anum" > bar.m68k.o
-    echo "i386 bar $anum" > bar.i386.o
-    lipo -create -output bar.o -arch ppc bar.ppc.o -arch m68k bar.m68k.o \
-      -arch i386 bar.i386.o
-    ar -q libfoo.a bar.o
-  done
-  test -d .libs || mkdir .libs
-  func_extract_archives ".libs/libfoo" "libfoo.a"
-  for anum in 1 2 3 4 5 6 7 8 9 10 11 12
-  do
-    test -f ".libs/libfoo/libfoo.a/foo-$anum.o" || exit 1
-    $EGREP -v "foo-$anum" ".libs/libfoo/libfoo.a/foo-$anum.o" || exit 1
-    rm -f ".libs/libfoo/libfoo.a/foo-$anum.o"
-  done
-esac
-rm -f foo.o bar.o libfoo.a
 
 for afile in baz foobar foobaz
 do
@@ -77,6 +38,7 @@ do
     ar -q libfoo.a $afile.o
     rm -f $afile.o
 done
+
 for anum in 1 2 3 4 5 6 7 8 9 10 11 12
 do
     echo "foo $anum" > foo.o
