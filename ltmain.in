@@ -4490,8 +4490,10 @@ relink_command=\"$relink_command\""
     done
 
     if test -z "$run"; then
-      # Export the shlibpath_var.
-      eval "export $shlibpath_var"
+      if test -n "$shlibpath_var"; then
+        # Export the shlibpath_var.
+        eval "export $shlibpath_var"
+      fi
 
       # Restore saved enviroment variables
       if test "${save_LC_ALL+set}" = set; then
@@ -4508,8 +4510,10 @@ relink_command=\"$relink_command\""
       exit 1
     else
       # Display what would be done.
-      eval "\$echo \"\$shlibpath_var=\$$shlibpath_var\""
-      $echo "export $shlibpath_var"
+      if test -n "$shlibpath_var"; then
+        eval "\$echo \"\$shlibpath_var=\$$shlibpath_var\""
+        $echo "export $shlibpath_var"
+      fi
       $echo "$cmd$args"
       exit 0
     fi

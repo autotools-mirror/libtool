@@ -1,3 +1,8 @@
+1999-09-28  Albert Cheng  <acheng@ncsa.uiuc.edu>
+
+	* ltmain.in (shlibpath_var): ensure the variable is non-empty before
+	exporting it.
+
 1999-09-27  Manfred Weichel  <weichel@global.nacamar.de>
 
 	* ltconfig.in (sysv5): Added support required for shared
