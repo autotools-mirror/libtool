@@ -1,3 +1,11 @@
+1998-12-11  Thomas Tanner  <tanner@gmx.de>
+
+	* ltmain.in: -module implies now -export-dynamic,
+	  dlpreopen files if we're linking statically
+	* doc/libtool.texi (link flags): added documentation for -module
+	  and the tests for mdemo and libltdl
+	* mdemo/Makefile.am: replaced -dlpreopen with -dlopen
+
 1998-12-09  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* PORTING: removed the text Akim Demaille converted to .texi

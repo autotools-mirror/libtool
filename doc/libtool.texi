@@ -1163,6 +1163,12 @@ installed.
 This option is required even when @var{output-file} is not an
 executable.
 
+@item -module
+Creates a library that can be dlopenend (@pxref{Dlopened modules}). 
+This option doesn't work for programs and must not be used 
+together with @samp{-export-symbols}.
+It implies the option @samp{-export-dynamic}.
+
 @item -no-undefined
 Declare that @var{output-file} does not depend on any other libraries.
 Some platforms cannot create shared libraries that depend on other
@@ -2376,7 +2382,7 @@ in @var{dld_preloaded_symbols}.
 @cindex names of dynamic modules
 @cindex dynamic modules, names
 
-After a library has been linked with @samp{-export-dynamic}, it can be dlopened.  
+After a library has been linked with @samp{-module}, it can be dlopened.  
 Unfortunately, because of the variation in library names,
 your package needs to determine the correct file to dlopen.
 
@@ -2561,6 +2567,44 @@ uninstalled correctly.
 
 The @file{demo} subdirectory contains a demonstration of a trivial
 package that uses libtool.
+
+@item libltdl-conf.test
+@itemx libltdl-inst.test
+@itemx libltdl-make.test
+@itemx libltdl-unst.test
+@pindex libltdl-conf.test
+@pindex libltdl-inst.test
+@pindex libltdl-make.test
+@pindex libltdl-unst.test
+These programs check to see that the @file{libltdl} subdirectory of the
+libtool distribution can be configured, built, installed, and
+uninstalled correctly.
+
+The @file{libltdl} subdirectory contains the library 'libltdl',
+which provides a dlopen wrapper for various platforms 
+(Linux, Solaris, HP/UX, Win32 etc.) including support for dlpreopened modules
+(@pxref{Dlpreopening}).
+
+@item mdemo-conf.test
+@itemx mdemo-exec.test
+@itemx mdemo-inst.test
+@itemx mdemo-make.test
+@itemx mdemo-unst.test
+@pindex mdemo-conf.test
+@pindex mdemo-exec.test
+@pindex mdemo-inst.test
+@pindex mdemo-make.test
+@pindex mdemo-unst.test
+These programs check to see that the @file{mdemo} subdirectory of the
+libtool distribution can be configured, built, installed, and
+uninstalled correctly.
+
+The @file{mdemo} subdirectory contains a demonstration of a package that 
+uses libtool and the system independent dlopen wrapper 'libltdl' to load
+modules.
+
+NOTE: The tests @file{mdemo-exec.test} and @file{mdemo-inst.test} are known 
+to fail on platforms that do not support inter-library dependencies.
 
 @item hardcode.test
 @pindex hardcode.test

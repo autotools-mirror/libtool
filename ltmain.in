@@ -734,8 +734,14 @@ compiler."
       -l*) deplibs="$deplibs $arg" ;;
 
       -module)
-        module=yes
-        continue
+        if test "$module" != yes; then
+          module=yes
+	  if test -n "$export_dynamic_flag_spec"; then
+	    eval arg=\"$export_dynamic_flag_spec\"
+	  else
+	    arg=
+	  fi
+	fi
         ;;
 	
       -no-undefined)
@@ -870,8 +876,9 @@ compiler."
         # This library was specified with -dlopen.
         if test "$prev" = dlfiles; then
           dlfiles="$dlfiles $arg"
-          if test -z "$dlname"; then
-            # If there is no dlname, we need to preload.
+          if test -z "$dlname" || test "$build_libtool_libs" = no; then
+            # If there is no dlname or we're linking statically,
+            # we need to preload.
             prev=dlprefiles
           else
             # We should not create a dependency on this library, but we
@@ -1565,8 +1572,8 @@ EOF
 	  fi
 	done
 
-	# If -export-dynamic was specified, set the dlname.
-	if test "$export_dynamic" = yes; then
+	# If -module or -export-dynamic was specified, set the dlname.
+	if test "$module" = yes || test "$export_dynamic" = yes; then
 	  # On all known operating systems, these are identical.
 	  dlname="$soname"
 	fi

@@ -24,5 +24,4 @@ hell_DEPENDENCIES = modules/libfoo1.la modules/libfoo2.la
 hell_debug_SOURCES = main.c
 hell_debug_LDADD = ../libltdl/libltdl.la
 hell_debug_LDFLAGS = -static -export-dynamic \
-	-dlpreopen modules/libfoo1.la -dlpreopen modules/libfoo2.la
-# Shouldn't this be the same as -dlopen, since we're linking statically?
+	-dlopen modules/libfoo1.la -dlopen modules/libfoo2.la
