@@ -1,3 +1,8 @@
+2000-07-10  Ken Block <block@zk3.dec.com>
+
+	* libltdl/ltdl.h: Also check for __cplusplus, __STDC__ is not
+	by Compaq C++ compiler
+
 2000-07-10  Alexandre Oliva  <aoliva@lsd.ic.unicamp.br>
 
 	* ltconfig.in (wlarc, netbsd, aout): Set to empty.

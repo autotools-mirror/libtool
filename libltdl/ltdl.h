@@ -136,7 +136,7 @@ Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 	LTDL_ERROR(SHUTDOWN, "library already shutdown")
 
 /* Enumerate the symbolic error names. */
-#ifdef __STDC__ 
+#if defined(__STDC__) || defined(__cplusplus)
 #  define LTDL_ERROR(name, diagnostic)	LTDL_ERROR_##name,
 #else
 #  define LTDL_ERROR(name, diagnostic)	LTDL_ERROR_/**/name,
