@@ -1,3 +1,11 @@
+2003-11-18  Gary V. Vaughan  <gary@gnu.org>
+
+	* libltdl/ltdl.c (lt_dlhandle_find): New function to find a handle
+	by module name.
+	* libltdl/ltdl.h (lt_dlhandle_find): Declare it.
+	* doc/libtool.texi (User defined module data): Document it.
+	* NEWS: Updated.
+
 2003-11-17  Gary V. Vaughan  <gary@gnu.org>
 
 	* m4/libtool.m4 (AC_LIBTOOL_SETUP): Uncomment call to

@@ -3199,6 +3199,12 @@ If @var{place} is the last element in the list of loaded modules, this
 function returns @code{NULL}.
 @end deftypefun
 
+@deftypefun lt_dlhandle lt_dlhandle_find (@w{const char *@var{module_name}})
+Search through the loaded module handles for a module named
+@var{module_name}, returning its handle if found or else @code{NULL}
+if no such named module has been loaded.
+@end deftypefun
+
 Of course, you would still need to maintain your own list of loaded
 module handles to parallel the list maintained by libltdl if there are
 any other data that you need to associate with each handle for the

@@ -242,6 +242,8 @@ typedef	struct {
 
 LT_SCOPE	const lt_dlinfo	*lt_dlgetinfo	    LT_PARAMS((lt_dlhandle handle));
 LT_SCOPE	lt_dlhandle	lt_dlhandle_next    LT_PARAMS((lt_dlhandle place));
+LT_SCOPE	lt_dlhandle	lt_dlhandle_find    LT_PARAMS((
+							const char *module_name));
 LT_SCOPE	int		lt_dlforeach	    LT_PARAMS((
 				int (*func) (lt_dlhandle handle, lt_ptr data),
 				lt_ptr data));

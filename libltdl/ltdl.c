@@ -4130,6 +4130,25 @@ lt_dlhandle_next (place)
   return place ? place->next : handles;
 }
 
+lt_dlhandle
+lt_dlhandle_find (module_name)
+     const char *module_name;
+{
+  lt_dlhandle cur = handles;
+
+  if (cur)
+    {
+      do
+	{
+	  if (cur->info.name && strcmp (cur->info.name, module_name) == 0)
+	    break;
+	}
+      while ((cur = cur->next));
+    }
+
+  return cur;
+}
+
 int
 lt_dlforeach (func, data)
      int (*func) LT_PARAMS((lt_dlhandle handle, lt_ptr data));
