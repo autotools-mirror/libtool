@@ -3356,15 +3356,15 @@ welcome.
 @noindent
 The following macros are defined by including @file{ltdl.h}:
 
-@defmac {Macro} LT_PATHSEP_CHAR
+@defmac LT_PATHSEP_CHAR
 @code{LT_PATHSEP_CHAR} is the system-dependent path separator,
-that is, @code{;} on Windows and @code{:} everywhere else.
+that is, @samp{;} on Windows and @samp{:} everywhere else.
 @end defmac
 
-@defmac {Macro} LT_DIRSEP_CHAR
+@defmac LT_DIRSEP_CHAR
 If @code{LT_DIRSEP_CHAR} is defined, it can be used as directory
-separator in addition to @code{/}.  On Windows, this contains
-@code{\}.
+separator in addition to @samp{/}.  On Windows, this contains
+@samp{\}.
 @end defmac
 
 
