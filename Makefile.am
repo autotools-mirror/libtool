@@ -2,7 +2,7 @@
 ## Gordon Matzigkeit <gord@gnu.ai.mit.edu>, 1996
 AUTOMAKE_OPTIONS = gnits
 SUBDIRS = doc tests libltdl
-DIST_SUBDIRS = $(SUBDIRS) demo depdemo mdemo
+DIST_SUBDIRS = $(SUBDIRS) demo mdemo
 
 # We need to export these variables when we run ltconfig.
 CFLAGS = @CFLAGS@
@@ -63,7 +63,6 @@ ACINCLUDE_M4_LIST = \
 	$(srcdir)/acinclude.m4 \
 	$(srcdir)/libltdl/acinclude.m4 \
 	$(srcdir)/demo/acinclude.m4 \
-	$(srcdir)/depdemo/acinclude.m4 \
 	$(srcdir)/mdemo/acinclude.m4
 
 # All our rules should depend on these demo files.

@@ -3,7 +3,6 @@
 	* Makefile.am (cvs-dist): our release tags are in lower case
 	(cvs-diff): ditto
 	(EXTRA_DIST): added README-alpha
-	(DIST_SUBDIRS): added depdemo
 	* README-alpha: minor adaptations
 	* demo/Makefile.am, mdemo/Makefile.am, depdemo/Makefile.am:
 	removed comment about special needs for distribution
