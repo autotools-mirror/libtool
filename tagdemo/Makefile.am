@@ -6,7 +6,8 @@ AUTOMAKE_OPTIONS = no-dependencies foreign
 
 EXTRA_DIST = acinclude.m4
 
-noinst_LTLIBRARIES = libfoo.la libbaz.la
+noinst_LTLIBRARIES = libfoo.la
+lib_LTLIBRARIES = libbaz.la
 
 libfoo_la_SOURCES = foo.cpp
 libfoo_la_LIBADD = $(LIBM)

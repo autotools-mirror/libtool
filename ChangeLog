@@ -1,5 +1,8 @@
 2000-05-14  Alexandre Oliva  <oliva@lsd.ic.unicamp.br>
 
+	* tagdemo/Makefile.am (lib_LTLIBRARIES): Moved libbaz.la from
+	noinst_LTLIBRARIES.
+
 	* configure.in: Bump version number to 1.4a, since this will
 	eventually become libtool 1.5.
 
