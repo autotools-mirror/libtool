@@ -1,5 +1,9 @@
 2004-08-29  Gary V. Vaughan  <gary@gnu.org>
 
+	* Makefile.am (dist-hook): Only run if README-alpha exists.
+	* README.alpha: Renamed from README-alpha to stop automake from
+	automatically adding it to DIST_COMMON.
+
 	* NEWS: Merge changes from branch-1-5.
 
 	* Makefile.am (dist-hook): Always distribute just a README file,
