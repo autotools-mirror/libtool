@@ -2133,13 +2133,13 @@ foreach_dirinpath (search_path, base_name, func, data1, data2)
      lt_ptr data1;
      lt_ptr data2;
 {
-  int	result		= 0;
-  int	filenamesize	= 0;
-  int	lenbase		= LT_STRLEN (base_name);
-  int	argz_len	= 0;
-  char *argz		= 0;
-  char *filename	= 0;
-  char *canonical	= 0;
+  int	 result		= 0;
+  int	 filenamesize	= 0;
+  int	 lenbase	= LT_STRLEN (base_name);
+  size_t argz_len	= 0;
+  char * argz		= 0;
+  char * filename	= 0;
+  char * canonical	= 0;
 
   LT_DLMUTEX_LOCK ();
 
