@@ -2140,7 +2140,10 @@ Note that the libtool script itself should @emph{not} be included with
 your package.  @xref{Configuring}.
 
 You should use the @command{libtoolize} program, rather than manually
-copying these files into your package.
+copying these files into your package.  Note however, that @file{install-sh}
+is not copied by @code{libtoolize}; if you use Automake, it will take care
+of that, otherwise you may obtain a copy from the package data directory
+of the installed Libtool.  This may change in a future Libtool version.
 
 @menu
 * Invoking libtoolize::         @code{libtoolize} command line options.

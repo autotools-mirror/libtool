@@ -627,8 +627,6 @@ func_config_update ()
     func_config_update "$pkgdatadir/config.guess" "$auxdir/config.guess"
     test -f "$pkgdatadir/config.sub" \
       && func_config_update "$pkgdatadir/config.sub" "$auxdir/config.sub"
-    test -f "$pkgdatadir/install-sh" \
-      && func_config_update "$pkgdatadir/install-sh" "$auxdir/install-sh"
   fi
   func_ltmain_update "$pkgdatadir/ltmain.sh" "$auxdir/ltmain.sh"
 

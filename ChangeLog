@@ -1,5 +1,10 @@
 2005-01-12  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* libtoolize.m4sh: Back out copying `install-sh' by libtoolize.
+	* doc/libtool.texi (Distributing): Mention that we distribute
+	`install-sh', but that non-Automake users will have to copy
+	it by themselves.
+
 	* config/ltmain.m4sh: New option `--verbose'/`-v' to enable
 	override of `--silent'.  Verbose is the default behavior.
 	* doc/libtool.texi (Invoking libtool): Document it.
