@@ -1,3 +1,9 @@
+2000-03-29  Alexandre Oliva  <oliva@lsd.ic.unicamp.br>
+
+	* ltmain.in (tmpdir): Do not accept an existing directory, and
+	force its mode to 700, for security reasons.
+	Reported by Joseph S. Myers <jsm28@cam.ac.uk>
+
 2000-03-27  Thomas Tanner  <tanner@ffii.org>
 
 	* NEWS: reformatting
