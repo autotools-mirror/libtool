@@ -3,7 +3,7 @@
 
 AUTOMAKE_OPTIONS = 1.3e gnits readme-alpha
 
-BUILD_SUBDIRS = . doc tests
+BUILD_SUBDIRS = . libltdl doc tests
 SUBDIRS = $(BUILD_SUBDIRS)
 DIST_SUBDIRS = $(BUILD_SUBDIRS) $(CONF_SUBDIRS)
 
@@ -80,7 +80,6 @@ update-timestamps:
 
 # All our rules should depend on these demo files.
 all-local check-local: $(ACINCLUDE_M4_LIST) libtool
-check-local: libltdl/Makefile
 
 @ACINCLUDE_M4_LIST@: $(srcdir)/libtool.m4
 	rm -f $@

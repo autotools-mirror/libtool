@@ -1,5 +1,7 @@
 1999-03-09  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* configure.in, Makefile.am, NEWS: install libltdl by default
+
 	* libtool.m4 (AC_LIBLTDL_INSTALLABLE, AC_LIBLTDL_CONVENIENCE):
 	new macros
 	* NEWS: ditto

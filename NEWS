@@ -1,6 +1,7 @@
 NEWS - list of user-visible changes between releases of GNU Libtool
 
 New in 1.2e: CVS version; 1.2f: 1999-?-?, Libtool team:
+* libltdl is now built and installed unless --disable-ltdl-install
 * New AC_LIBLTDL_CONVENIENCE and AC_LIBLTDL_INSTALLABLE macros, to select
   convenience and/or installable versions of libltdl.
 * In order for libtool to attempt to link a shared library (dll) on win32
