@@ -1,3 +1,8 @@
+2001-09-02  Christopher Pfisterer <cp@chrisp.de>
+
+	* libtool.m4, ltmain.in: Linker flag and version numbering fixes
+	for darwin.
+
 2001-09-02  Gary V. Vaughan  <gary@gnu.org>
 
 	Based on a patch from Marius Vollmer <mvo@zagadka.ping.de>:
