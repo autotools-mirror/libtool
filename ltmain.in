@@ -1774,7 +1774,12 @@ EOF
 	    fi
 	  done # Gone through all deplibs.
 	  ;;
-	none | unknown | *) newdeplibs=""; droppeddeps=yes ;;
+	none | unknown | *) newdeplibs="";
+	  if $echo "X$deplibs" | $Xsed -e 's/ -lc$//' -e 's/[ 	]//g' \
+	     | grep . >/dev/null; then
+	    droppeddeps=yes
+	  fi
+	  ;;
 	esac
 	versuffix=$versuffix_save
 	major=$major_save

@@ -1,3 +1,8 @@
+1999-01-25  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* ltmain.in (pass_all=none, droppeddeps): set only if deplibs was
+	non-empty
+
 1999-01-24  Thomas Tanner  <tanner@gmx.de>
 
 	* libltdl/ltdl.c: minor bugfixes, append a "/" the search 
