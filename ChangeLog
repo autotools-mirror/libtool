@@ -1,5 +1,7 @@
 1999-01-21  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* ltconfig.in (linux-gnu*, finish_cmds): remove erroneous backslash
+
 	* demo/configure.in: set DLPREOPEN to -dlopen if we don't have
 	shared libraries
 	* demo/Makefile.am (DLPREOPEN): use instead of -dlpreopen
