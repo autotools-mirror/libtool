@@ -1,3 +1,11 @@
+1999-03-25  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* ltmain.in ($PATH): instead of modifying the PATH, better prevent 
+	its expansion the first time *_cmds variables are eval'ed.  Modify 
+	$show within loops that eval them so as to expand variables
+	* ltconfig.in (*_cmds): quote $ so that they're not expanded by
+	the first eval
+
 1999-03-25  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
 
 	* ltmain.in ($PATH):  Expand any tildes in the users path to the

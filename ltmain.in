@@ -90,13 +90,6 @@ if test "$build_libtool_libs" != yes && test "$build_old_libs" != yes; then
   exit 1
 fi
 
-# A little paranoid perhaps...
-[ "${HOME+set}" ] || HOME=`cd && pwd`
-
-# Apparently some people optimistically hardcode `~' in their path, and
-# hope that their tools will interpret it correctly.  We mustn't disappoint!
-eval PATH=`echo "$PATH" | sed 's,^~/,$HOME/,;s,:~/,:$HOME/,g'`
-
 # Global variables.
 mode=$default_mode
 nonopt=
@@ -1730,7 +1723,7 @@ compiler."
 	      eval cmds=\"$extract_expsyms_cmds\"
 	      for cmd in $cmds; do
 		IFS="$save_ifs"
-		$show "$cmd"
+		eval $show \""$cmd"\"
 		$run eval "$cmd" || exit $?
 	      done
 	      IFS="$save_ifs"
@@ -1743,7 +1736,7 @@ compiler."
 	      eval cmds=\"$old_archive_from_expsyms_cmds\"
 	      for cmd in $cmds; do
 		IFS="$save_ifs"
-		$show "$cmd"
+		eval $show \""$cmd"\"
 		$run eval "$cmd" || exit $?
 	      done
 	      IFS="$save_ifs"
@@ -2263,7 +2256,7 @@ EOF
 	    IFS="${IFS= 	}"; save_ifs="$IFS"; IFS='~'
 	    for cmd in $cmds; do
 	      IFS="$save_ifs"
-	      $show "$cmd"
+	      eval $show \""$cmd"\"
 	      $run eval "$cmd" || exit $?
 	    done
 	    IFS="$save_ifs"
@@ -2294,7 +2287,7 @@ EOF
 	IFS="${IFS= 	}"; save_ifs="$IFS"; IFS='~'
 	for cmd in $cmds; do
 	  IFS="$save_ifs"
-	  $show "$cmd"
+	  eval $show \""$cmd"\"
 	  $run eval "$cmd" || exit $?
 	done
 	IFS="$save_ifs"
@@ -2372,7 +2365,7 @@ EOF
       IFS="${IFS= 	}"; save_ifs="$IFS"; IFS='~'
       for cmd in $cmds; do
 	IFS="$save_ifs"
-	$show "$cmd"
+	eval $show \""$cmd"\"
 	$run eval "$cmd" || exit $?
       done
       IFS="$save_ifs"
@@ -2396,7 +2389,7 @@ EOF
 	IFS="${IFS= 	}"; save_ifs="$IFS"; IFS='~'
 	for cmd in $cmds; do
 	  IFS="$save_ifs"
-	  $show "$cmd"
+	  eval $show \""$cmd"\"
 	  $run eval "$cmd" || exit $?
 	done
 	IFS="$save_ifs"
@@ -2732,7 +2725,7 @@ EOF
 	      eval cmds=\"$extract_expsyms_cmds\"
 	      for cmd in $cmds; do
 		IFS="$save_ifs"
-		$show "$cmd"
+		eval $show \""$cmd"\"
 		$run eval "$cmd" || exit $?
 	      done
 	      IFS="$save_ifs"
@@ -2745,7 +2738,7 @@ EOF
 	      eval cmds=\"$old_archive_from_expsyms_cmds\"
 	      for cmd in $cmds; do
 		IFS="$save_ifs"
-		$show "$cmd"
+		eval $show \""$cmd"\"
 		$run eval "$cmd" || exit $?
 	      done
 	      IFS="$save_ifs"
@@ -3500,7 +3493,7 @@ fi\
       IFS="${IFS= 	}"; save_ifs="$IFS"; IFS='~'
       for cmd in $cmds; do
 	IFS="$save_ifs"
-	$show "$cmd"
+	eval $show \""$cmd"\"
 	$run eval "$cmd" || exit $?
       done
       IFS="$save_ifs"
@@ -3873,7 +3866,7 @@ relink_command=\"$relink_command\""
 	  IFS="${IFS= 	}"; save_ifs="$IFS"; IFS='~'
 	  for cmd in $cmds; do
 	    IFS="$save_ifs"
-	    $show "$cmd"
+	    eval $show \""$cmd"\"
 	    $run eval "$cmd" || exit $?
 	  done
 	  IFS="$save_ifs"
@@ -4028,7 +4021,7 @@ relink_command=\"$relink_command\""
       IFS="${IFS= 	}"; save_ifs="$IFS"; IFS='~'
       for cmd in $cmds; do
 	IFS="$save_ifs"
-	$show "$cmd"
+	eval $show \""$cmd"\"
 	$run eval "$cmd" || exit $?
       done
       IFS="$save_ifs"
@@ -4067,7 +4060,7 @@ relink_command=\"$relink_command\""
 	  IFS="${IFS= 	}"; save_ifs="$IFS"; IFS='~'
 	  for cmd in $cmds; do
 	    IFS="$save_ifs"
-	    $show "$cmd"
+	    eval $show \""$cmd"\"
 	    $run eval "$cmd" || admincmds="$admincmds
        $cmd"
 	  done
@@ -4310,7 +4303,7 @@ relink_command=\"$relink_command\""
 	    IFS="${IFS= 	}"; save_ifs="$IFS"; IFS='~'
 	    for cmd in $cmds; do
 	      IFS="$save_ifs"
-	      $show "$cmd"
+	      eval $show \""$cmd"\"
 	      $run eval "$cmd"
 	    done
 	    IFS="$save_ifs"
@@ -4322,7 +4315,7 @@ relink_command=\"$relink_command\""
 	    IFS="${IFS= 	}"; save_ifs="$IFS"; IFS='~'
 	    for cmd in $cmds; do
 	      IFS="$save_ifs"
-	      $show "$cmd"
+	      eval $show \""$cmd"\"
 	      $run eval "$cmd"
 	    done
 	    IFS="$save_ifs"
