@@ -1,3 +1,10 @@
+1999-10-18  Tor Lillqvist  <tml@iki.fi>
+
+	* libtool.m4: test command used == which should be =.
+	Support -mno-cygwin flag for building mingw32 dlls.
+	* ltconfig.in (file_magic_cmd): add missing quotes.
+	(deplibs_check_method): and here.
+	 
 1999-10-16  Alexandre Oliva  <oliva@lsd.ic.unicamp.br>
 
 	* libltdl/ltdl.c (lt_dlopen): Do not search paths when the

@@ -73,7 +73,7 @@ dnl
 # Only perform the check for file, if the check method requires it
 case "$deplibs_check_method" in
 file_magic*)
-  if test "$file_magic_cmd" == '$FILE'; then
+  if test "$file_magic_cmd" = '$FILE'; then
     AC_PATH_FILE
   fi
   ;;
@@ -147,16 +147,14 @@ ifdef([AC_PROVIDE_AC_LIBTOOL_WIN32_DLL],
   # recent cygwin and mingw systems supply a stub DllMain which the user
   # can override, but on older systems we have to supply one
   AC_CACHE_CHECK([if libtool should supply DllMain function], lt_cv_need_dllmain,
-    [AC_TRY_LINK([DllMain (0, 0, 0);],
-      [extern int __attribute__((__stdcall__)) DllMain(void*, int, void*);],
+    [AC_TRY_LINK([],
+      [extern int __attribute__((__stdcall__)) DllMain(void*, int, void*);
+      DllMain (0, 0, 0);],
       [lt_cv_need_dllmain=yes],[lt_cv_need_dllmain=no])])
 
   case $host in
-  *-*-cygwin*)
-    # cygwin systems need to pass --dll to the linker, and not link
-    # crt.o which will require a WinMain@16 definition.
-    lt_cv_cc_dll_switch="-Wl,--dll -nostartfiles" ;;
-  *-*-mingw*)
+  case "$host/$CC" in
+  *-*-cygwin*/gcc*-mno-cygwin|*-*-mingw*)
     # old mingw systems require "-dll" to link a DLL, while more recent ones
     # require "-mdll"
     SAVE_CFLAGS="$CFLAGS"
@@ -164,6 +162,10 @@ ifdef([AC_PROVIDE_AC_LIBTOOL_WIN32_DLL],
     AC_CACHE_CHECK([how to link DLLs], lt_cv_cc_dll_switch,
       [AC_TRY_LINK([], [], [lt_cv_cc_dll_switch=-mdll],[lt_cv_cc_dll_switch=-dll])])
     CFLAGS="$SAVE_CFLAGS" ;;
+  *-*-cygwin*)
+    # cygwin systems need to pass --dll to the linker, and not link
+    # crt.o which will require a WinMain@16 definition.
+    lt_cv_cc_dll_switch="-Wl,--dll -nostartfiles" ;;
   esac
   ;;
   ])

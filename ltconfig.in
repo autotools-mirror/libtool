@@ -1437,8 +1437,8 @@ fi
 reload_flag=@reload_flag@
 reload_cmds='$LD$reload_flag -o $output$reload_objs'
 
-file_magic_cmd=@file_magic_cmd@
-deplibs_check_method=@deplibs_check_method@
+file_magic_cmd="@file_magic_cmd@"
+deplibs_check_method="@deplibs_check_method@"
 
 # PORTME Fill in your ld.so characteristics
 library_names_spec=
