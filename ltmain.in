@@ -25,7 +25,7 @@
 # the same distribution terms that you use for the rest of that program.
 
 
-basename="$SED s,^.*/,,g"
+basename="s,^.*/,,g"
 
 # Work around backward compatibility issue on IRIX 6.5. On IRIX 6.4+, sh
 # is ksh but when the shell is invoked as "sh" and the current value of
@@ -35,7 +35,7 @@ basename="$SED s,^.*/,,g"
 progpath="$0"
 
 # The name of this program:
-progname=`echo "$progpath" | $basename`
+progname=`echo "$progpath" | $SED $basename`
 modename="$progname"
 
 # Global variables:

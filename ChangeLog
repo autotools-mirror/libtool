@@ -1,5 +1,12 @@
 2004-02-12  Scott James Remnant  <scott@netsplit.com>
 
+	* ltmain.in, libtoolize.in, commit, config/mailnotify: Remove
+	$SED from definitions of $dirname and $basename and prefix each
+	use with it instead.  Some shells (zsh) treat the expansion as
+	a single command instead of a command with arguments.
+
+2004-02-12  Scott James Remnant  <scott@netsplit.com>
+
 	* config/mailnotify (func_sendmail): Look for sendmail in a
 	couple of common non-PATH locations as well.
 
