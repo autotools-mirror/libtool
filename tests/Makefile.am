@@ -137,7 +137,7 @@ TESTSUITE = testsuite
 
 #EXTRA_DIST = $(TESTSUITE_AT) local.at atlocal.in package.m4
 
-#check-local: atconfig $(TESTSUITE)
+#check-local: atconfig $(srcdir)/$(TESTSUITE)
 #	$(SHELL) $(srcdir)/$(TESTSUITE)
 
 #clean-local:

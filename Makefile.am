@@ -95,7 +95,7 @@ clean-ltmain-sh:
 # Use `$(top_srcdir)/m4' for the benefit of non-GNU makes: this is
 # how ltversion.m4 appears in our dependencies.
 EXTRA_DIST += m4/ltversion.in m4/ltversion.m4
-$(top_srcdir)/m4/ltversion.m4: m4/ltversion.in configure.ac stamp-vcl
+$(top_srcdir)/m4/ltversion.m4: m4/ltversion.in configure.ac $(top_srcdir)/stamp-vcl
 	set -- `$(MKSTAMP) < $(top_srcdir)/ChangeLog`; \
 	cd $(top_srcdir); \
 	rm -f m4/ltversion.tmp; \
@@ -115,7 +115,8 @@ $(top_srcdir)/m4/ltversion.m4: m4/ltversion.in configure.ac stamp-vcl
 ##          distcheck (at least) by rebuilding ltmain.sh in the source
 ##          tree whenever config.status regenerates the Makefile.
 EXTRA_DIST += config/ltmain.sh
-$(top_srcdir)/config/ltmain.sh: $(sh_files) config/ltmain.m4sh configure.ac stamp-vcl
+$(top_srcdir)/config/ltmain.sh: $(sh_files) config/ltmain.m4sh configure.ac \
+				$(top_srcdir)/stamp-vcl
 	$(timestamp); \
 	cd $(top_srcdir); \
 	rm -f config/ltmain.in config/ltmain.tmp config/ltmain.sh; \
@@ -131,7 +132,7 @@ $(top_srcdir)/config/ltmain.sh: $(sh_files) config/ltmain.m4sh configure.ac stam
 # The libtool distributor and the standalone libtool script.
 bin_SCRIPTS = libtoolize libtool
 
-libtoolize: libtoolize.in
+libtoolize: $(top_srcdir)/libtoolize.in
 	rm -f libtoolize.tmp libtoolize
 	$(timestamp); \
 	input="libtoolize.m4sh"; \
@@ -152,7 +153,7 @@ $(top_srcdir)/libtoolize.in: $(sh_files) libtoolize.m4sh Makefile.am
 # The defs script shouldn't be recreated whenever the Makefile is
 # regenerated since the source tree can be read-only.
 check-recursive: tests/defs
-tests/defs: tests/defs.in
+tests/defs: $(top_srcdir)/tests/defs.in
 	rm -f tests/defs.tmp tests/defs; \
 	input="defs.m4sh"; \
 	$(edit) $(top_srcdir)/tests/defs.in > tests/defs.tmp; \
@@ -168,7 +169,8 @@ $(top_srcdir)/tests/defs.in: tests/defs.m4sh Makefile.am
 
 # Automake doesn't want us to generate distributed files from config.status,
 # but the alternative (see libtool-1.4.3) was even uglier!
-libtool: $(top_builddir)/config.status config/ltmain.sh stamp-vcl
+libtool: $(top_builddir)/config.status $(top_srcdir)/config/ltmain.sh \
+	 $(top_srcdir)/stamp-vcl
 	cd $(top_builddir) && $(SHELL) ./config.status $@
 
 .PHONY: configure-subdirs
