@@ -1,5 +1,10 @@
 1998-04-19  Gordon Matzigkeit  <gord@profitpress.com>
 
+	* Makefile.am (maintainer-rekey): New rule to force us to change
+	Project-Version after we make a release.  This keeps all version
+	numbers in sync, rather than branching just before the release.
+	(maintainer-release, maintainer-checkin): Use maintainer-rekey.
+
 	* ltmain.in (finish): Notice when a finish command fails, so that
 	we can add it to the list of recommendations.
 

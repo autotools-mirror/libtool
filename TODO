@@ -1,19 +1,40 @@
 For next public release:
 ************************
 
-* Try expr "..." : '^\(.*\)$' as a replacement for long echos on
-Solaris.  Or awk.  Or perl?
+* Create a new library version_type, `irix'.  Janos Farkas writes:
 
-* Remove references to `ltmain.sh' in generated files, because it's
-name really is an internal implementation detail.
+I just realized I also have mortal access to an SGI system, and found
+this in the dso.5 page, this looks more informative :)
+
+   Versioning of Shared Objects.
+
+   QUICK OVERVIEW
+
+   For a shared object to be versioned the following needs to be done:
+
+   * Version strings consist of 3 parts and a dot: The string "sgi",
+     a decimal number (the major number), a dot, and a decimal number
+     (the minor number).
+
+   * Add the command -set_version sgi1.0 to the command to build
+     the shared object (cc -shared, ld -shared, etc.).
+
+   * Whenever you make a COMPATIBLE change update the minor version
+     number (the one after the dot), and add the latest version string
+     to colon-separated list of version strings, e.g., -set_version
+     sgi1.0:sgi1.1:sgi1.3
+
+   * Whenever you make an INCOMPATIBLE change, update the
+     major version number.  Pass this as the version list, e.g.,
+     -set_version sgi2.0.  Change the filename of the OLD shared object
+     by adding a dot followed by the previous major number to the filename
+     of the shared object.  DO NOT CHANGE the soname of the object.
+     No change to the file contents are necessary or desirable.  Simply
+     rename the file.
 
 * Inter-library dependencies should be fully tracked by libtool.
 Reminded by Alexandre Oliva.  This requires looking up installed
 libtool libraries for transparent support.
-
-* Get rid of the sections that try to change behaviour for GNU ld.  We
-really should make our shared library support just depend on the
-compiler type.
 
 * Alexandre Oliva suggests that we hardcode paths into libraries, as
 well as binaries:  `... -Wl,-soname -Wl,/tmp/libtest.so.0 ...'.
@@ -22,8 +43,6 @@ well as binaries:  `... -Wl,-soname -Wl,/tmp/libtest.so.0 ...'.
 AIX 4), distinguishes between global function and global variable
 references.  This means that we cannot declare every symbol as `extern
 char'.  Find a workaround.
-
-* Maybe show other maintainers my nasty ~/bin/libtool trick.
 
 In the future:
 **************
@@ -68,6 +87,11 @@ notes.
 Things to think about:
 **********************
 
+* For OSes with symbol export lists, we should add some flags to allow
+packages to specify explicit lists, or to bypass them entirely.
+Automatic-generation using nm must be the default, since that is
+simplest.
+
 * Talk with RMS about his so-called `automatic package generation
 tool.'  This is probably what Thomas has been murmuring about for the
 Hurd.  We'll need to integrate package-supplied programs such as
@@ -78,8 +102,3 @@ like libtool should be distributed as part of such a binary package.
 * Maybe implement full support for other orthogonal library types
 (libhello_g, libhello_p, 64 vs 32-bit ABI's, etc).  Make these types
 configurable.
-
-* Add support for windoze DLL's, and maybe other jumptable libs.
-Check out Lesstif and Tcl configuration again (maybe they would be
-interested in libtool by now?).  The Cygnus win32 project may also be
-of value, though it still seems pretty rudimentary right now.

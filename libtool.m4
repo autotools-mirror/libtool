@@ -78,6 +78,10 @@ LD="$LD" NM="$NM" RANLIB="$RANLIB" LN_S="$LN_S" \
 ${CONFIG_SHELL-/bin/sh} $ac_aux_dir/ltconfig --no-reexec \
 $libtool_flags --no-verify $ac_aux_dir/ltmain.sh $host \
 || AC_MSG_ERROR([libtool configure failed])
+
+# Redirect the config.log output again, so that the ltconfig log is not
+# clobbered by the next message.
+exec 5>>./config.log
 ])
 
 # AM_ENABLE_SHARED - implement the --enable-shared flag
@@ -225,13 +229,10 @@ fi])
 AC_DEFUN(AM_PROG_NM,
 [AC_MSG_CHECKING([for BSD-compatible nm])
 AC_CACHE_VAL(ac_cv_path_NM,
-[case "$NM" in
-changequote(,)dnl
-/* | [A-Za-z]:\\*)
-changequote([,])dnl
-  ac_cv_path_NM="$NM" # Let the user override the test with a path.
-  ;;
-*)
+[if test -n "$NM"; then
+  # Let the user override the test.
+  ac_cv_path_NM="$NM"
+else
   IFS="${IFS= 	}"; ac_save_ifs="$IFS"; IFS="${IFS}:"
   for ac_dir in /usr/ucb /usr/ccs/bin $PATH /bin; do
     test -z "$ac_dir" && ac_dir=.
@@ -251,8 +252,7 @@ changequote([,])dnl
   done
   IFS="$ac_save_ifs"
   test -z "$ac_cv_path_NM" && ac_cv_path_NM=nm
-  ;;
-esac])
+fi])
 NM="$ac_cv_path_NM"
 AC_MSG_RESULT([$NM])
 AC_SUBST(NM)

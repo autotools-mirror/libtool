@@ -1,17 +1,19 @@
 NEWS - list of user-visible changes between releases of GNU Libtool
 
-New:
+New in 1.2a - 1998-04-19, Gordon Matzigkeit:
 * Bug fixes.
+* ltconfig accepts an `--output' option to specify the name of the
+  generated libtool.
 * New `--debug' flag to turn on shell script tracing for libtool,
   libtoolize, and ltconfig.
-* Changed `libtool --features' to print out all configuration variables.
+* Added `libtool --config' to print out all configuration variables.
 * Support for *-*-hpux11*.
-
+
 New in 1.2 - 1998-03-20, Gordon Matzigkeit:
 * Minor bug fixes to provide a stable public release.
 * Libtool no longer causes Solaris printf to barf due to silly
   2110-byte static buffers.
-
+
 New in 1.1 - 1998-03-08, Gordon Matzigkeit:
 * Bug fixes.
 * http://www.profitpress.com/libtool/ is libtool's homepage.

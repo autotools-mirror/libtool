@@ -111,8 +111,7 @@ libtool.
 * Maintaining::                 Information used by the libtool maintainer.
 * Index::                       Full index.
 
-@detailmenu
- --- The Detailed Node Listing ---
+@detailmenu --- The Detailed Node Listing ---
 
 Introduction
 
@@ -197,6 +196,7 @@ Maintenance notes for libtool
 * Tested platforms::            When libtool was last tested.
 * Platform quirks::             Information about different library systems.
 * libtool script contents::     Configuration information that libtool uses.
+* Cheap tricks::                Making libtool maintainership easier.
 
 Platform quirks
 
@@ -502,17 +502,18 @@ arguments (@pxref{Compile mode}):
 @example
 a23$ @kbd{libtool gcc -g -O -c foo.c}
 gcc -g -O -c foo.c
-ln -s foo.o foo.lo
+echo timestamp > foo.lo
 a23$ @kbd{libtool gcc -g -O -c hello.c}
 gcc -g -O -c hello.c
-ln -s hello.o hello.lo
+echo timestamp > hello.lo
 a23$
 @end example
 
-Note that libtool creates two object files for each invocation.  The
-@samp{.lo} file is a library object, and the @samp{.o} file is a
-standard object file.  On @samp{a23}, these files are identical, because
-only static libraries are supported.
+Note that libtool creates two files for each invocation.  The @samp{.lo}
+file is a library object, which may be built into a shared library, and
+the @samp{.o} file is a standard object file.  On @samp{a23}, the
+library objects are just timestamps, because only static libraries are
+supported.
 
 On shared library systems, libtool automatically inserts the PIC
 generation flags into the compilation command, so that the library
@@ -522,13 +523,16 @@ object and the standard object differ:
 burger$ @kbd{libtool gcc -g -O -c foo.c}
 gcc -g -O -c -fPIC -DPIC foo.c
 mv -f foo.o foo.lo
-gcc -g -O -c foo.c
+gcc -g -O -c foo.c >/dev/null 2>&1
 burger$ @kbd{libtool gcc -g -O -c hello.c}
 gcc -g -O -c -fPIC -DPIC hello.c
 mv -f hello.o hello.lo
-gcc -g -O -c hello.c
+gcc -g -O -c hello.c >/dev/null 2>&1
 burger$
 @end example
+
+Notice that the second run of GCC has its output discarded.  This is
+done so that compiler warnings aren't annoyingly duplicated.
 
 @node Linking libraries
 @section Linking libraries
@@ -565,10 +569,10 @@ the same ones you would use to produce an executable named
 @file{libhello.la} with your compiler (@pxref{Link mode}):
 
 @example
-burger$ @kbd{libtool gcc -g -O -o libhello.la foo.o hello.o}
+a23$ @kbd{libtool gcc -g -O -o libhello.la foo.o hello.o}
 libtool: cannot build libtool library `libhello.la' from non-libtool \
                 objects
-burger$
+a23$
 @end example
 
 Aha!  Libtool caught a common error@dots{} trying to build a library
@@ -576,10 +580,10 @@ from standard objects instead of library objects.  This doesn't matter
 for static libraries, but on shared library systems, it is of great
 importance.
 
-So, let's try again, this time with the library object
-files:@footnote{Remember that we need to add @kbd{-lm} to the link
-command line because @file{foo.c} uses the @code{cos(3)} math library
-function.  @xref{Using libtool}.}
+So, let's try again, this time with the library object files.  Remember
+also that we need to add @kbd{-lm} to the link command line because
+@file{foo.c} uses the @code{cos(3)} math library function (@pxref{Using
+libtool}):
 
 @example
 a23$ @kbd{libtool gcc -g -O -o libhello.la foo.lo hello.lo -lm}
@@ -746,16 +750,16 @@ until we link it against at least a few more programs.
 
 If @file{hell} was a complicated program, you would certainly want to
 test and debug it before installing it on your system.  In the above
-section, you saw how the libtool wrapper script makes it possible to
-run the program directly, but unfortunately, it interferes with the
-debugger:
+section, you saw how the libtool wrapper script makes it possible to run
+the program directly, but unfortunately, this mechanism interferes with
+the debugger:
 
 @example
 burger$ @kbd{gdb hell}
 GDB is free software and you are welcome to distribute copies of it
  under certain conditions; type "show copying" to see the conditions.
-There is absolutely no warranty for GDB; type "show warranty" for details.
-GDB 4.16 (i386-unknown-netbsd), Copyright 1996 Free Software Foundation, Inc...
+There is no warranty for GDB; type "show warranty" for details.
+GDB 4.16 (i386-unknown-netbsd), (C) 1996 Free Software Foundation, Inc.
 
 "hell": not in executable format: File format not recognized
 
@@ -771,8 +775,8 @@ burger$ @kbd{gdb @value{objdir}/hell}
 trick:/home/src/libtool/demo$ gdb .libs/hell
 GDB is free software and you are welcome to distribute copies of it
  under certain conditions; type "show copying" to see the conditions.
-There is absolutely no warranty for GDB; type "show warranty" for details.
-GDB 4.16 (i386-unknown-netbsd), Copyright 1996 Free Software Foundation, Inc...
+There is no warranty for GDB; type "show warranty" for details.
+GDB 4.16 (i386-unknown-netbsd), (C) 1996 Free Software Foundation, Inc.
 (gdb) @kbd{break main}
 Breakpoint 1 at 0x8048547: file main.c, line 29.
 (gdb) @kbd{run}
@@ -794,8 +798,8 @@ the executable wrapper (@pxref{Execute mode}):
 burger$ @kbd{libtool gdb hell}
 GDB is free software and you are welcome to distribute copies of it
  under certain conditions; type "show copying" to see the conditions.
-There is absolutely no warranty for GDB; type "show warranty" for details.
-GDB 4.16 (i386-unknown-netbsd), Copyright 1996 Free Software Foundation, Inc...
+There is no warranty for GDB; type "show warranty" for details.
+GDB 4.16 (i386-unknown-netbsd), (C) 1996 Free Software Foundation, Inc.
 (gdb) @kbd{break main}
 Breakpoint 1 at 0x8048547: file main.c, line 29.
 (gdb) @kbd{run}
@@ -844,9 +848,9 @@ ranlib /usr/local/lib/libhello.a
 a23#
 @end example
 
-Note that the libtool library @file{libhello.la} is also installed, for
-informational purposes, and to help libtool with uninstallation
-(@pxref{Uninstall mode}).
+Note that the libtool library @file{libhello.la} is also installed, to
+help libtool with uninstallation (@pxref{Uninstall mode}) and to help
+programs with dlopening (@pxref{Dlopened modules}).
 
 Here is the shared library example:
 
@@ -879,10 +883,24 @@ further hints on what to do (@pxref{Finish mode}):
 
 @example
 burger# @kbd{libtool -n --finish /usr/local/lib}
-ldconfig -m /usr/local/lib
-To link against installed libraries in LIBDIR, users may have to:
-   - add LIBDIR to their `LD_LIBRARY_PATH' environment variable
-   - use the `-LLIBDIR' linker flag
+PATH="$PATH:/sbin" ldconfig -m /usr/local/lib
+----------------------------------------------------------------------
+Libraries have been installed in:
+   /usr/local/lib
+
+To link against installed libraries in a given directory, LIBDIR,
+you must use the `-LLIBDIR' flag during linking.
+
+ You will also need to do one of the following:
+   - add LIBDIR to the `LD_LIBRARY_PATH' environment variable
+     during execution
+   - add LIBDIR to the `LD_RUN_PATH' environment variable
+     during linking
+   - use the `-RLIBDIR' linker flag
+
+See any operating system documentation about shared libraries for
+more information, such as the ld(1) and ld.so(8) manual pages.
+----------------------------------------------------------------------
 burger#
 @end example
 
@@ -930,7 +948,7 @@ To do this, you should ignore libtool entirely, and just use the old
 @code{ar} and @code{ranlib} commands to create a static library.
 
 If you want to install the library (but you probably don't), then you
-may use libtool if you want:
+may use libtool:
 
 @example
 burger$ @kbd{libtool ./install-sh -c libhello.a /local/lib/libhello.a}
@@ -958,13 +976,16 @@ creating a standalone binary.  Use libtool to do the linking and add the
 The @code{libtool} program has the following synopsis:
 
 @example
-libtool [@var{option}]@dots{} [@var{mode-arg}]...
+libtool [@var{option}]@dots{} [@var{mode-arg}]@dots{}
 @end example
 
 @noindent
 and accepts the following options:
 
 @table @samp
+@item --config
+Display libtool configuration variables and exit.
+
 @item --debug
 Dump a trace of shell script execution to standard output.  This
 produces a lot of output, so you may wish to pipe it to @code{more(1)}
@@ -976,9 +997,8 @@ Don't create, modify, or delete any files, just show what commands would
 be executed by libtool.
 
 @item --features
-Display libtool configuration information and exit.  This provides a way
-for packages to determine whether shared or static libraries will be
-built.
+Display basic configuration options.  This provides a way for packages
+to determine whether shared or static libraries will be built.
 
 @item --finish
 Same as @samp{--mode=finish}.
@@ -1363,6 +1383,13 @@ Display a help message and exit.
 Do not use @code{config.sub} to verify that @var{host} is a valid
 canonical host system name.
 
+@item --output=@var{file}
+@item -o @var{file}
+Instead of creating a libtool script called @code{libtool}, create one
+called @var{file}.  This can be useful if you want to create libtool
+scripts for cross-compilers, or you want to have more than one libtool
+in the same directory.
+
 @item --quiet
 @itemx --silent
 Do not print informational messages when running configuration tests.
@@ -1475,17 +1502,18 @@ libraries.  You can modify these defaults by calling either the
 @code{AM_DISABLE_SHARED} or @code{AM_DISABLE_STATIC} macros:
 
 @example
-# Turn off shared libraries during beta-testing, since they make the
-# build process take too long.
+# Turn off shared libraries during beta-testing, since they
+# make the build process take too long.
 AM_DISABLE_SHARED
 AM_PROG_LIBTOOL
 @end example
 
-The user may specify a modified form of @samp{--enable-shared} and
-@samp{--enable-static} to choose whether shared or static libraries are
-built based on the name of the package.  For example, to have shared
-@samp{bfd} and @samp{gdb} libraries built, but not shared @samp{libg++},
-you can run all three @code{configure} scripts as follows:
+The user may specify modified forms of both the @samp{--enable-shared}
+and @samp{--enable-static} flags to choose whether shared or static
+libraries are built based on the name of the package.  For example, to
+have shared @samp{bfd} and @samp{gdb} libraries built, but not shared
+@samp{libg++}, you can run all three @code{configure} scripts as
+follows:
 
 @example
 trick$ ./configure --enable-shared=bfd,gdb
@@ -1493,9 +1521,10 @@ trick$ ./configure --enable-shared=bfd,gdb
 
 In general, specifying @samp{--enable-shared=@var{pkgs}} is the same as
 specifying @samp{--enable-shared} to every package named in the
-@var{pkgs} list, and @samp{--disable-shared} to every other package.
-The @samp{--enable-static=@var{pkgs}} flag behaves similarly, except it
-translates into @samp{--enable-static} and @samp{--disable-static}.
+comma-separated @var{pkgs} list, and @samp{--disable-shared} to every
+other package.  The @samp{--enable-static=@var{pkgs}} flag behaves
+similarly, but it uses @samp{--enable-static} and
+@samp{--disable-static}.
 
 The package name @samp{default} matches any packages which have not set
 their name in the @code{PACKAGE} environment variable.
@@ -1881,8 +1910,8 @@ trick$ @kbd{ls /usr/lib/libbfd*}
 trick$
 @end example
 
-On @samp{trick}, @file{/usr/lib/libbfd.so} is just a symbolic link to
-@file{/usr/lib/libbfd.so.2.7.0.2}, which was distributed as a part of
+On @samp{trick}, @file{/usr/lib/libbfd.so} is a symbolic link to
+@file{libbfd.so.2.7.0.2}, which was distributed as a part of
 @samp{binutils-2.7.0.2}.
 
 Unfortunately, this convention conflicts directly with libtool's idea of
@@ -1904,9 +1933,9 @@ trick$
 @end example
 
 In this case, @file{/usr/lib/libbfd.so} is a symbolic link to
-@file{/usr/lib/libbfd-2.9.0.so.0.0.0}.  This makes it obvious that the
-user is dealing with @samp{binutils-2.9.0}, without compromising
-libtool's idea of interface versions.
+@file{libbfd-2.9.0.so.0.0.0}.  This makes it obvious that the user is
+dealing with @samp{binutils-2.9.0}, without compromising libtool's idea
+of interface versions.
 
 Note that this option actually causes a modification of the library
 name, so do not use it unless you want to break binary compatibility
@@ -2123,12 +2152,12 @@ libraries are found.  This restriction is only necessary to preserve
 compatibility with static library systems and simple dynamic library
 systems.
 
-Some platforms, such as AIX, do not even allow you this flexibility.  In
-order to build a shared library, it must be entirely self-contained
-(that is, have no references to external symbols), and you need to
-specify the @var{-no-undefined} flag to allow a shared library to be
-built.  By default, libtool builds only static libraries on these kinds
-of platforms.
+Some platforms, such as AIX and Windows 95, do not even allow you this
+flexibility.  In order to build a shared library, it must be entirely
+self-contained (that is, have references only to symbols that are found
+in the @samp{.lo} files or the specified @samp{-l} libraries), and you
+need to specify the @var{-no-undefined} flag.  By default, libtool
+builds only static libraries on these kinds of platforms.
 
 @node Dlopened modules
 @chapter Dlopened modules
@@ -2561,6 +2590,7 @@ porting libtool to new systems, or writing your own libtool.
 * Tested platforms::            When libtool was last tested.
 * Platform quirks::             Information about different library systems.
 * libtool script contents::     Configuration information that libtool uses.
+* Cheap tricks::                Making libtool maintainership easier.
 @end menu
 
 @node New ports
@@ -2629,7 +2659,7 @@ The following is a list of valuable documentation references:
 
 @itemize @bullet
 @item
-SGI's IRIX Manual Pages,
+SGI's IRIX Manual Pages, which can be found at
 @url{http://techpubs.sgi.com/cgi-bin/infosrch.cgi?cmd=browse&db=man}.
 
 @item
@@ -2721,12 +2751,14 @@ use the @code{ar ts} command, instead.
 @cindex libtool implementation
 
 The @code{libtool} script is generated by @code{ltconfig}
-(@pxref{Configuring}).  Ever since libtool version 0.7, this script
-simply sets shell variables, then sources the libtool backend,
-@code{ltmain.sh}.
+(@pxref{Configuring}).  From libtool version 0.7 to 1.0, this script
+simply set shell variables, then sourced the libtool backend,
+@code{ltmain.sh}.  @code{ltconfig} from libtool version 1.1 and later
+inlines the contents of @code{ltmain.sh} into the generated
+@code{libtool}, which improves performance on many systems.
 
-Here is a listing of each of these variables, and how they are used
-within @code{ltmain.sh}:
+Here is a listing of each of the configuration variables, and how they
+are used within @code{ltmain.sh}:
 
 @defvar AR
 The name of the system library archiver.
@@ -2935,6 +2967,40 @@ generally exits with an error message.
 
 Variables ending in @samp{_spec} are @code{eval}ed before being used by
 libtool.
+
+@node Cheap tricks
+@section Cheap tricks
+
+Here are a few tricks that you can use in order to make maintainership
+easier:
+
+@itemize @bullet
+@item
+When people report bugs, ask them to use the @samp{--config},
+@samp{--debug}, or @samp{--features} flags, if you think they will help
+you.  These flags are there to help you get information directly, rather
+than having to trust second-hand observation.
+
+@item
+Rather than reconfiguring libtool every time I make a change to
+@code{ltconfig.in} or @code{ltmain.in}, I keep a permanent
+@code{libtool} script in my @var{PATH}, which sources @code{ltmain.in}
+directly.
+
+The following steps describe how to create such a script, where
+@code{/home/src/libtool} is the directory containing the libtool source
+tree, and @code{/home/src/libtool/libtool} is a libtool script that has
+been configured for your platform, and :
+
+@example
+trick$ @kbd{sed '/^# ltmain\.sh/q' /usr/local/bin/libtool > ~/bin/libtool}
+trick$ @kbd{cat >> ~/bin/libtool
+LTCONFIG_VERSION="@@VERSION@@"
+. /home/src/libtool/ltmain.in}
+trick$ @kbd{chmod +x ~/bin/libtool}
+trick$
+@end example
+@end itemize
 
 @page
 @node Index

@@ -112,6 +112,7 @@ maintainer-rekey:
 	  if test "X$$newver" = "X$(VERSION)"; then \
 	    if test -f "$(released)"; then \
 	      echo "New development cycle: change Project-Version in $(top_srcdir)/$(PACKAGE).prj."; \
+	      exit 1; \
 	    else \
 	      echo "No need to rekey any files"; \
 	    fi; \
@@ -121,7 +122,7 @@ maintainer-rekey:
 	    cd $(top_srcdir) && $(PRCS) rekey -f $(PACKAGE) $(rekey_files); \
 	  fi
 
-maintainer-release: distcheck
+maintainer-release: maintainer-rekey distcheck
 	cd $(top_srcdir) && $(PRCS) checkin -f $(PACKAGE)
 	echo timestamp > "$(released)"
 	@echo "============================="; \
