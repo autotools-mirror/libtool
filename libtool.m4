@@ -1320,8 +1320,8 @@ EOF
       archive_cmds='$LD -Bshareable $libobjs $deplibs $linker_flags -o $lib'
       wlarc=
     else
-      archive_cmds='$CC -shared $libobjs $deplibs $compiler_flags ${wl}-soname $wl$soname -o $lib'
-      archive_expsym_cmds='$CC -shared $libobjs $deplibs $compiler_flags ${wl}-soname $wl$soname ${wl}-retain-symbols-file $wl$export_symbols -o $lib'
+      archive_cmds='$CC -shared -nodefaultlibs $libobjs $deplibs $compiler_flags ${wl}-soname $wl$soname -o $lib'
+      archive_expsym_cmds='$CC -shared -nodefaultlibs $libobjs $deplibs $compiler_flags ${wl}-soname $wl$soname ${wl}-retain-symbols-file $wl$export_symbols -o $lib'
     fi
     ;;
 
@@ -2045,6 +2045,8 @@ linux-gnu*)
 
 netbsd*)
   version_type=sunos
+  need_lib_prefix=no
+  need_version=no
   if echo __ELF__ | $CC -E - | grep __ELF__ >/dev/null; then
     library_names_spec='${libname}${release}.so$versuffix ${libname}.so$versuffix'
     finish_cmds='PATH="\$PATH:/sbin" ldconfig -m $libdir'

@@ -1,3 +1,8 @@
+2001-04-20  Nick Hudson  <skrll@netbsd.org>
+
+	* libtool.m4: Improve NetBSD support.
+	* ltmain.in: ditto.
+	
 2001-04-19  Dan McNichol <mcnichol@austin.ibm.com>
 
 	* libtool.m4: Build standard shared libraries on AIX POWER
