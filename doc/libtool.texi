@@ -8,6 +8,7 @@
 
 @include version.texi
 @set BUGADDR the libtool mailing list @code{<bug-libtool@@gnu.ai.mit.edu>}
+@set objdir _libs
 
 @dircategory GNU programming tools
 @direntry
@@ -587,9 +588,9 @@ installed.  So, we try again, with an @code{rpath} setting of
 @example
 a23$ @kbd{libtool gcc -g -O -o libhello.la foo.lo hello.lo \
                 -rpath /usr/local/lib -lm}
-mkdir .libs
-ar cru .libs/libhello.a foo.o hello.o
-ranlib .libs/libhello.a
+mkdir @value{objdir}
+ar cru @value{objdir}/libhello.a foo.o hello.o
+ranlib @value{objdir}/libhello.a
 creating libhello.la
 a23$
 @end example
@@ -599,10 +600,10 @@ Now, let's try the same trick on the shared library platform:
 @example
 burger$ @kbd{libtool gcc -g -O -o libhello.la foo.lo hello.lo \
                 -rpath /usr/local/lib -lm}
-mkdir .libs
-ld -Bshareable -o .libs/libhello.so.0.0 foo.lo hello.lo -lm
-ar cru .libs/libhello.a foo.o hello.o
-ranlib .libs/libhello.a
+mkdir @value{objdir}
+ld -Bshareable -o @value{objdir}/libhello.so.0.0 foo.lo hello.lo -lm
+ar cru @value{objdir}/libhello.a foo.o hello.o
+ranlib @value{objdir}/libhello.a
 creating libhello.la
 burger$
 @end example
@@ -611,11 +612,12 @@ Now that's significantly cooler@dots{} libtool just ran an obscure
 @code{ld} command to create a shared library, as well as the static
 library.
 
-@cindex @file{.libs} subdirectory
-Note how libtool creates extra files in the @file{.libs} subdirectory,
-rather than the current directory.  This feature is to make it easier to
-clean up the build directory, and to help ensure that other programs
-fail horribly if you accidentally forget to use libtool when you should.
+@cindex @file{@value{objdir}} subdirectory
+Note how libtool creates extra files in the @file{@value{objdir}}
+subdirectory, rather than the current directory.  This feature is to
+make it easier to clean up the build directory, and to help ensure that
+other programs fail horribly if you accidentally forget to use libtool
+when you should.
 
 @node Linking executables
 @section Linking executables
@@ -659,19 +661,19 @@ any ambiguity when linking against uninstalled shared libraries.}:
 
 @example
 a23$ @kbd{libtool gcc -g -O -o hell main.o libhello.la -lm}
-gcc -g -O -o hell main.o ./.libs/libhello.a -lm
+gcc -g -O -o hell main.o ./@value{objdir}/libhello.a -lm
 a23$
 @end example
 
 That looks too simple to be true.  All libtool did was transform
-@file{libhello.la} to @file{./.libs/libhello.a}, but remember that
-@samp{a23} has no shared libraries.
+@file{libhello.la} to @file{./@value{objdir}/libhello.a}, but remember
+that @samp{a23} has no shared libraries.
 
 On @samp{burger} the situation is different:
 
 @example
 burger$ @kbd{libtool gcc -g -O -o hell main.o libhello.la -lm}
-gcc -g -O -o .libs/hell main.o -L./.libs -R/usr/local/lib -lhello -lm
+gcc -g -O -o @value{objdir}/hell main.o -L./@value{objdir} -R/usr/local/lib -lhello -lm
 creating hell
 burger$
 @end example
@@ -679,13 +681,13 @@ burger$
 @cindex Wrapper scripts for programs
 @cindex Program wrapper scripts
 Notice that the executable, @code{hell}, was actually created in the
-@file{.libs} subdirectory.  Then, a wrapper script was created in the
-current directory.
+@file{@value{objdir}} subdirectory.  Then, a wrapper script was created
+in the current directory.
 
 On NetBSD 1.2, libtool encodes the installation directory of
 @file{libhello}, by using the @samp{-R/usr/local/lib} compiler
 flag.  Then, the wrapper script guarantees that the executable finds the
-correct shared library (the one in @file{./.libs}) until it is properly
+correct shared library (the one in @file{./@value{objdir}}) until it is properly
 installed.
 
 Let's compare the two different programs:
@@ -713,10 +715,10 @@ to yield?
 burger$ @kbd{ls -l hell.old libhello.a}
 -rwxr-xr-x  1 gord  gord  15481 Nov 14 12:11 hell.old
 -rw-r--r--  1 gord  gord   4274 Nov 13 18:02 libhello.a
-burger$ @kbd{ls -l .libs/hell .libs/libhello.*}
--rwxr-xr-x  1 gord  gord  11647 Nov 14 12:10 .libs/hell
--rw-r--r--  1 gord  gord   4274 Nov 13 18:44 .libs/libhello.a
--rwxr-xr-x  1 gord  gord  12205 Nov 13 18:44 .libs/libhello.so.0.0
+burger$ @kbd{ls -l @value{objdir}/hell @value{objdir}/libhello.*}
+-rwxr-xr-x  1 gord  gord  11647 Nov 14 12:10 @value{objdir}/hell
+-rw-r--r--  1 gord  gord   4274 Nov 13 18:44 @value{objdir}/libhello.a
+-rwxr-xr-x  1 gord  gord  12205 Nov 13 18:44 @value{objdir}/libhello.so.0.0
 burger$
 @end example
 
@@ -759,7 +761,7 @@ Libtool installation is quite simple, as well.  Just use the
 @example
 a23# @kbd{libtool cp libhello.la /usr/local/lib/libhello.la}
 cp libhello.la /usr/local/lib/libhello.la
-cp .libs/libhello.a /usr/local/lib/libhello.a
+cp @value{objdir}/libhello.a /usr/local/lib/libhello.a
 ranlib /usr/local/lib/libhello.a
 a23#
 @end example
@@ -772,9 +774,9 @@ Here is the shared library example:
 
 @example
 burger# @kbd{libtool install -c libhello.la /usr/local/lib/libhello.la}
-install -c .libs/libhello.so.0.0 /usr/local/lib/libhello.so.0.0
+install -c @value{objdir}/libhello.so.0.0 /usr/local/lib/libhello.so.0.0
 install -c libhello.la /usr/local/lib/libhello.la
-install -c .libs/libhello.a /usr/local/lib/libhello.a
+install -c @value{objdir}/libhello.a /usr/local/lib/libhello.a
 ranlib /usr/local/lib/libhello.a
 burger#
 @end example
@@ -831,7 +833,7 @@ installs the correct binary:
 
 @example
 burger# libtool install -c hell /usr/local/bin/hell
-install -c .libs/hell /usr/local/bin/hell
+install -c @value{objdir}/hell /usr/local/bin/hell
 burger#
 @end example
 
