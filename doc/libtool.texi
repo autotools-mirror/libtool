@@ -3135,6 +3135,13 @@ shared libraries (@samp{--disable-static}).
 @file{demo-nofast.test} configures @file{demo/libtool} to
 disable the fast-install mode (@samp{--enable-fast-install=no}.
 
+@item deplibs.test
+@pindex deplibs.test
+Many systems cannot link static libraries into shared libraries.
+libtool uses a @code{deplibs_check_method} to prevent such cases.
+This tests checks whether libtool's @code{deplibs_check_method}
+works properly.
+
 @item mdemo-conf.test
 @itemx mdemo-exec.test
 @itemx mdemo-inst.test

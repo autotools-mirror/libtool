@@ -1,5 +1,7 @@
 1999-04-01 Thomas Tanner  <tanner@gmx.de>
 
+	* doc/libtool.texi: documented deplibs.test
+
 	* demo/Makefile.am: moved testsuite specific declarations to the end,
 	  the deplibs check is now optional
 	* libltdl/configure.in: read libtool --config only once,
