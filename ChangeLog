@@ -1,3 +1,7 @@
+2000-01-16  Gary V. Vaughan  <gary@oranda.demon.co.uk>
+
+	* libltdl/ltdl.c (find_file): memory error fixed.
+
 2000-01-14  Gary V. Vaughan  <gary@oranda.demon.co.uk>
 
 	* ltconfig.in (Usage): Now it matches the code!

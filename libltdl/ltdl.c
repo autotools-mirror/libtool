@@ -1061,17 +1061,18 @@ find_file (basename, search_path, pdir, handle)
 	char	*filename = 0;
 	int     filenamesize = 0;
 	int	lenbase = strlen(basename);
-	char	*next = 0;
+	char	*canonical = 0, *next = 0;
 	
 	if (!search_path || !*search_path) {
 		last_error = file_not_found_error;
 		return 0;
 	}
-	next = canonicalize_path (search_path);
-	if (!next) {
+	canonical = canonicalize_path (search_path);
+	if (!canonical) {
 		last_error = memory_error;
 		goto cleanup;
 	}
+	next = canonical;
 	while (next) {
 		int lendir;
 		char *cur = next;
@@ -1128,7 +1129,8 @@ find_file (basename, search_path, pdir, handle)
 cleanup:
 	if (filename)
 		lt_dlfree(filename);
-	lt_dlfree(next);
+	if (canonical)
+		lt_dlfree(canonical);
 	return result;
 }
 
