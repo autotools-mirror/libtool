@@ -99,3 +99,82 @@ certainly add it to the libtool TODO if you are also busy.
 Cheers,
 	Gary.
 
+From - Thu Jan 21 11:56:34 1999
+Return-Path: <bug-libtool-request@gnu.org>
+Received: from punt-2.mail.demon.net by mailstore
+          for gvaughan@oranda.demon.co.uk id 916919003:20:12487:14;
+          Thu, 21 Jan 99 11:43:23 GMT
+Received: from mescaline.gnu.org ([158.121.106.21]) by punt-2.mail.demon.net
+           id aa2122944; 21 Jan 99 11:43 GMT
+Received: (from slist@localhost)
+	by mescaline.gnu.org (8.9.1a/8.9.1) id GAA23386
+	for gvaughan@oranda.demon.co.uk; Thu, 21 Jan 1999 06:48:04 -0500
+Resent-Date: Thu, 21 Jan 1999 06:48:04 -0500
+Received: from ulysse.enst.fr (IDENT:1JXdBQbWjss9NS0/0RdVLAS9IgzJi29E@inf.enst.fr [137.194.2.81])
+	by mescaline.gnu.org (8.9.1a/8.9.1) with ESMTP id GAA23306;
+	Thu, 21 Jan 1999 06:46:02 -0500
+Received: from quasimodo.enst.fr (quasimodo.enst.fr [137.194.160.2])
+	by ulysse.enst.fr (8.8.8/8.8.8) with ESMTP id MAA06955;
+	Thu, 21 Jan 1999 12:40:28 +0100 (MET)
+Received: (from demaille@localhost)
+	by quasimodo.enst.fr (8.8.8/8.8.8) id MAA29306;
+	Thu, 21 Jan 1999 12:40:26 +0100 (MET)
+Sender: demaille@inf.enst.fr
+To: "Gary V. Vaughan" <gvaughan@oranda.demon.co.uk>
+Cc: Alexandre Oliva <oliva@dcc.unicamp.br>, Erez Zadok <ezk@cs.columbia.edu>,
+        bug-libtool@gnu.org, automake@gnu.org, autoconf@gnu.org
+Subject: Re: lazy question
+References: <199901202104.QAA04372@shekel.mcl.cs.columbia.edu> <or1zkpr5tq.fsf@araguaia.dcc.unicamp.br> <qylu2xkq5l6.fsf@quasimodo.enst.fr> <36A70897.32F60E81@oranda.demon.co.uk>
+Content-Type: text/plain; charset=US-ASCII
+MIME-Version: 1.0
+From: Akim Demaille <demaille@inf.enst.fr>
+Date: 21 Jan 1999 12:40:25 +0100
+In-Reply-To: "Gary V. Vaughan"'s message of "Thu, 21 Jan 1999 10:59:35 +0000"
+Message-ID: <qylk8ygq2fq.fsf@quasimodo.enst.fr>
+Lines: 34
+User-Agent: Gnus/5.070069 (Pterodactyl Gnus v0.69) XEmacs/21.2(beta8) (Artemis)
+Resent-Message-ID: <"uGwfO1.0.gi5.2Enfs"@mescaline.gnu.org>
+Resent-From: bug-libtool@gnu.org
+X-Mailing-List: <bug-libtool@gnu.org> archive/latest/414
+X-Loop: bug-libtool@gnu.org
+Precedence: list
+Resent-Sender: bug-libtool-request@gnu.org
+X-Mozilla-Status: 8011
+X-Mozilla-Status2: 00000000
+X-UIDL: oranda.916919003:20:12487:14
+
+>>>>> "Gary" == Gary V Vaughan <gvaughan@oranda.demon.co.uk> writes:
+
+>> What is the real status of this?  Since Automake reads these
+>> LIBOBJS extensions, if one solution is to be chosen, couldn't it
+>> issue warnings for non complying additions?
+
+Gary> In my experience, Tom is very good about applying patches he
+Gary> receives.  =)O| Hopefully, I am too. =)O|
+
+:)
+
+Gary> This probably needs to be fixed in all of auto{make,conf} and
+Gary> libtool simultaneously.  I don't have time to look at it right
+Gary> now, but I can certainly add it to the libtool TODO if you are
+Gary> also busy.
+
+I might have a look, but it is sure safer to write it down somewhere :)
+
+Also, since this is getting more and more tricky, and since I don't
+find it's real fun to write down
+
+	LIBOBJS="$LIBOBJS blah.${ac_objext}"
+
+we could introduce in Autoconf a macro taking care of this, no?
+Something like
+
+AC_LIBOBJS(blah)
+
+Akim
+
+-- 
+P-mail: Akim Demaille, 107 rue Bobillot, F-75013 Paris, France
+E-mail: demaille@inf.enst.fr
+V-mail: +33 1 45 81 78 81
+
