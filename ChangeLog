@@ -1,5 +1,10 @@
 2005-01-16  Peter O'Gorman  <peter@pogma.com>
 
+	* config/ltmain.m4sh (func_mode_link): Don't pass through 
+	compiler-like thread flags when using $LD to do the linking.
+	Use compiler_flags instead.
+	Reported by Mark_Andrews@isc.org.
+
 	* m4/libtool.m4 (LT_CMD_MAX_LEN) [osf]: On Tru64 there could
 	be a kernel panic when testing the maximum command line length
 	if exec_disable_arg_limit=1. Don't do the tests to figure it 
