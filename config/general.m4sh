@@ -100,8 +100,8 @@ double_quote_subst='s/\([["`\\]]\)/\\\1/g'
 # Since each input `\' is now two `\'s, look for any number of runs of
 # four `\'s followed by two `\'s and then a '$'.  `\' that '$'.  Note
 # that the embedded single quotes serve only to enhance readability.
-sed_double_backslash='s/^\(\(''\\\\''\\\\''\)*''\\\\''\$\)/\\\1/;
-                s/\([[^\\]]\(''\\\\''\\\\''\)*''\\\\''\$\)/\\\1/g'
+sed_double_backslash='s/^\(\(''\\\\''\\\\''\)*''\\\\''\)\$/\1\\$/;
+                s/\([[^\\]]\(''\\\\''\\\\''\)*''\\\\''\)\$/\1\\$/g'
 
 # test EBCDIC or ASCII
 case `$ECHO A|tr A '\301'` in
