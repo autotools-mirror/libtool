@@ -1,5 +1,8 @@
 2000-05-26  Alexandre Oliva  <oliva@lsd.ic.unicamp.br>
 
+	* ltmain.in: Output libobj file in a temporary file, then
+	rename it.
+
 	* ltconfig.in: Make the output script executable after updating
 	available_tags.
 
