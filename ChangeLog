@@ -1,3 +1,8 @@
+2005-02-25  Gary V. Vaughan  <gary@gnu.org>
+
+	* Makefile.am (install-data-hook):  Remove call to
+	local-install-files, which is no longer required.
+
 2005-02-24  Gary V. Vaughan  <gary@gnu.org>
 
 	Using `libtoolize --copy --ltdl' was not preserving timestamps, so
