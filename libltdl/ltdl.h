@@ -116,7 +116,6 @@ typedef	struct {
   char *	name;		/* module name */
   int		ref_count;	/* number of times lt_dlopened minus
 				   number of times lt_dlclosed. */
-  lt_module	module;		/* system module handle */
 } lt_dlinfo;
 
 LT_SCOPE const lt_dlinfo *lt_dlgetinfo	    (lt_dlhandle handle);

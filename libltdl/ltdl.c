@@ -59,18 +59,6 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
 
 
 
-/* --- TYPE DEFINITIONS -- */
-
-
-/* This type is used for the array of caller data sets in each handler. */
-typedef struct {
-  lt_dlcaller_id	key;
-  void *		data;
-} lt_caller_data;
-
-
-
-
 /* --- OPAQUE STRUCTURES DECLARED IN LTDL.H --- */
 
 
@@ -84,17 +72,6 @@ struct lt_dlloader {
   lt_find_sym	       *find_sym;
   lt_dlloader_exit     *dlloader_exit;
   lt_user_data		dlloader_data;
-};
-
-struct lt_dlhandle_struct {
-  struct lt_dlhandle_struct   *next;
-  lt_dlloader	       *loader;		/* dlopening interface */
-  lt_dlinfo		info;
-  int			depcount;	/* number of dependencies */
-  lt_dlhandle	       *deplibs;	/* dependencies */
-  void *		system;		/* system specific data */
-  lt_caller_data       *caller_data;	/* per caller associated data */
-  int			flags;		/* various boolean stats */
 };
 
 /* Various boolean flags can be stored in the flags field of an
@@ -414,9 +391,9 @@ tryall_dlopen (lt_dlhandle *handle, const char *filename)
     {
       lt_user_data data = loader->dlloader_data;
 
-      cur->info.module = loader->module_open (data, filename);
+      cur->module = loader->module_open (data, filename);
 
-      if (cur->info.module != 0)
+      if (cur->module != 0)
 	{
 	  break;
 	}
@@ -1724,7 +1701,7 @@ lt_dlclose (lt_dlhandle handle)
 	  handles = handle->next;
 	}
 
-      errors += handle->loader->module_close (data, handle->info.module);
+      errors += handle->loader->module_close (data, handle->module);
       errors += unload_deplibs(handle);
 
       /* It is up to the callers to free the data itself.  */
@@ -1807,7 +1784,7 @@ lt_dlsym (lt_dlhandle handle, const char *symbol)
       strcat(sym, symbol);
 
       /* try "modulename_LTX_symbol" */
-      address = handle->loader->find_sym (data, handle->info.module, sym);
+      address = handle->loader->find_sym (data, handle->module, sym);
       if (address)
 	{
 	  if (sym != lsym)
@@ -1830,7 +1807,7 @@ lt_dlsym (lt_dlhandle handle, const char *symbol)
       strcpy(sym, symbol);
     }
 
-  address = handle->loader->find_sym (data, handle->info.module, sym);
+  address = handle->loader->find_sym (data, handle->module, sym);
   if (sym != lsym)
     {
       FREE (sym);

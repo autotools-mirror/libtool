@@ -88,6 +88,28 @@ void lt__alloc_die_callback (void);
 
 
 
+/* --- OPAQUE STRUCTURES DECLARED IN LTDL.H --- */
+
+/* This type is used for the array of caller data sets in each handler. */
+typedef struct {
+  lt_dlcaller_id	key;
+  void *		data;
+} lt_caller_data;
+
+struct lt_dlhandle_struct {
+  struct lt_dlhandle_struct   *next;
+  lt_dlloader	       *loader;		/* dlopening interface */
+  lt_dlinfo		info;		/* user visible fields */
+  int			depcount;	/* number of dependencies */
+  lt_dlhandle	       *deplibs;	/* dependencies */
+  lt_module		module;		/* system module handle */
+  void *		system;		/* system specific data */
+  lt_caller_data       *caller_data;	/* per caller associated data */
+  int			flags;		/* various boolean stats */
+};
+
+
+
 /* --- ERROR HANDLING --- */
 
 /* Extract the diagnostic strings from the error table macro in the same

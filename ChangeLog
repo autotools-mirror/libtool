@@ -1,5 +1,17 @@
 2004-07-15  Gary V. Vaughan  <gary@gnu.org>
 
+	A cleaner way to access the private fields of an lt_dlhandle
+	than my move of the module field into lt_dlinfo:
+
+	* libltdl/ltdl.c (lt_caller_data, lt_dlhandle_struct): Move from
+	here...
+	* libltdl/lt__private.h (lt_caller_data, lt_dlhandle_struct):
+	...to here.  And put the module field back here...
+	* libltdl/ltdl.h (lt_dlinfo): ...instead of here.
+	* libltdl/loaders/loadlibrary.c (vm_open): Adjust.
+
+2004-07-15  Gary V. Vaughan  <gary@gnu.org>
+
 	* libltdl/lt__private.h (streq, strneq): New macros to make strcmp
 	calls as used for simple comparison easier to read.
 	* libltdl/loaders/dyld.c, libltdl/loaders/preopen.c,

@@ -151,14 +151,13 @@ vm_open (lt_user_data loader_data, const char *filename)
      find one. */
   while (cur = lt_dlhandle_next (cur))
     {
-      const lt_dlinfo *info = lt_dlgetinfo (cur);
-      if (!info->module)
+      if (!cur->module)
 	{
 	  cur = 0;
 	  break;
 	}
 
-      if (info->module == module)
+      if (cur->module == module)
 	{
 	  break;
 	}
