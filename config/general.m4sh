@@ -271,7 +271,12 @@ func_mktempdir ()
 # which are still active within double quotes backslashified.
 func_quote_for_eval ()
 {
-    func_quote_for_eval_unquoted_result=`$ECHO "X$1" | $Xsed -e "$sed_quote_subst"`
+    case $1 in
+      *[[\`\"\\\$]]*)
+	func_quote_for_eval_unquoted_result=`$ECHO "X$1" | $Xsed -e "$sed_quote_subst"` ;;
+      *)
+        func_quote_for_eval_unquoted_result="$1" ;;
+    esac
 
     case $func_quote_for_eval_unquoted_result in
       # Double-quote args containing shell metacharacters to delay

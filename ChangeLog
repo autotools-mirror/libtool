@@ -1,3 +1,8 @@
+2004-12-09  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* config/general.m4sh (func_quote_for_eval): Only fork if the
+	substitution matches.
+
 2004-12-03  Gary V. Vaughan  <gary@gnu.org>
 
 	* TODO: Paste Peter's summary of the TODO thread starting at
