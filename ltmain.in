@@ -2099,7 +2099,22 @@ EOF
 	  fi
 	  case $linkmode in
 	  lib)
-	    if test "$deplibs_check_method" != pass_all; then
+	    valid_a_lib=no
+	    case $deplibs_check_method in
+	      match_pattern*)
+		set dummy $deplibs_check_method
+	        match_pattern_regex=`expr "$deplibs_check_method" : "$2 \(.*\)"`
+		if eval $echo \"$deplib\" 2>/dev/null \
+		    | $SED 10q \
+		    | $EGREP "$match_pattern_regex" > /dev/null; then
+		  valid_a_lib=yes
+		fi
+		;;
+	      pass_all)
+		valid_a_lib=yes
+		;;
+            esac
+	    if test "$valid_a_lib" != yes; then
 	      $echo
 	      $echo "*** Warning: Trying to link with static lib archive $deplib."
 	      $echo "*** I have the capability to make that library automatically link in when"
