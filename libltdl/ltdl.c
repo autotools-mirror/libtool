@@ -1207,12 +1207,6 @@ lt_dlopen (filename)
 				file = (FILE*) find_file(basename,
 						 getenv("LTDL_LIBRARY_PATH"),
 						 &dir, 0);
-#ifdef __BEOS__
-			if (!file)
-				file = (FILE*) find_file(basename,
-						 getenv("ADDON_PATH"),
-						 &dir, 0);
-#endif
 #ifdef LTDL_SHLIBPATH_VAR
 			if (!file)
 				file = (FILE*) find_file(basename,

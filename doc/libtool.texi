@@ -2599,6 +2599,8 @@ shl_load (HP-UX)
 @item
 LoadLibrary (Win16 and Win32)
 @item
+load_add_on (BeOS)
+@item
 GNU DLD (emulates dynamic linking for static libraries)
 @item
 libtool's dlpreopen (see @pxref{Dlpreopening})

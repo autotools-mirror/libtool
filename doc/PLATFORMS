@@ -19,6 +19,7 @@ hppa1.1-hp-hpux9.07             cc       1.0f     ok
 hppa1.1-hp-hpux9.05             gcc      1.2f     ok
 hppa1.1-hp-hpux9.01             gcc      1.2f     ok
 i*86-*-bsdi4.0                  gcc      1.2f     ok
+i*86-*-bsdi4.0.1                gcc      1.2f     ok
 i*86-*-bsdi3.1                  gcc      1.2e     NS
 i*86-*-bsdi3.0                  gcc      1.2e     NS
 i*86-*-bsdi2.1                  gcc      1.2e     NS
