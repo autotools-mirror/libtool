@@ -1,3 +1,9 @@
+2001-08-05  Gary V. Vaughan  <gary@gnu.org>
+
+	From Brad <brad@comstyle.com>:
+	* libtool.m4 [openbsd]:  OpenBSD can build modules without a `lib'
+	prefix and version number.
+
 2001-08-04  Gary V. Vaughan  <gary@gnu.org>
 
 	From Edouard G. Parmelan <egp@free.fr>
