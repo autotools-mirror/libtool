@@ -1,3 +1,11 @@
+1999-01-13  Alexandre Oliva  <oliva@dcc.unicamp.br>
+
+	* THANKS: added Raffaele Sena
+
+1999-01-13  Raffaele Sena  <raff@aromatic.com>
+
+	* libltdl/ltdl.c: replaced RTDL with RTLD
+
 1999-01-13  Manish Singh  <yosh@gimp.org>
 
 	* ltconfig.in (osf3*, osf4*, irix6*): include

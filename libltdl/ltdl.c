@@ -180,8 +180,8 @@ strrchr(str, ch)
 #define	dlerror()	unknown_error
 #endif
 
-#if RTDL_GLOBAL
-# define LTDL_GLOBAL	RTDL_GLOBAL
+#if RTLD_GLOBAL
+# define LTDL_GLOBAL	RTLD_GLOBAL
 #else
 # if DL_GLOBAL
 #  define LTDL_GLOBAL	DL_GLOBAL
@@ -190,8 +190,8 @@ strrchr(str, ch)
 # endif
 #endif
 
-#if RTDL_NOW
-# define LTDL_NOW	RTDL_NOW
+#if RTLD_NOW
+# define LTDL_NOW	RTLD_NOW
 #else
 # if DL_NOW
 #  define LTDL_NOW	DL_NOW
