@@ -25,6 +25,21 @@ libraries in sibling subdirectories within a project, using the -L
 notation, without getting builddir pathnames ever mentioned in .la
 files that get installed.
 
+* Eric Lemings <elemings@cyberia.lemings.com> writes:
+  Because of a growing number of config scripts for packages in GNOME 1.2
+  (e.g. glib-config, xml-config, orbit-config. etc), development of GNOME
+  2.0 spawned a separate tool called pkg-config that allows all packages
+  to use one tool rather than several different scripts to query compile
+  flags, link flags, and other configuration data.
+
+  The functionality of pkg-config seems to me to have a lot of overlap
+  with the goals of libtool.  I was wondering if anyone had considered
+  adding an eighth mode to libtool that just queries the installed
+  library for the same information that pkg-config provides.  Since
+  most packages that use pkg-config also use libtool, I think this
+  would be a good way to reduce maintainer and developer dependencies.
+
+
 In the future:
 **************
 
