@@ -1843,7 +1843,14 @@ freebsd*)
   esac
   finish_cmds='PATH="\$PATH:/sbin" OBJFORMAT="'"$objformat"'" ldconfig -m $libdir'
   shlibpath_var=LD_LIBRARY_PATH
-  shlibpath_overrides_runpath=yes
+  case "$host_os" in
+  freebsd2* | freebsd3.[01]*)
+    shlibpath_overrides_runpath=yes
+    ;;
+  *) # from 3.2 on
+    shlibpath_overrides_runpath=no
+    ;;
+  esac
   ;;
 
 gnu*)
