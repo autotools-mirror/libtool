@@ -1,5 +1,11 @@
 2004-09-22  Charles Wilson  <cwilson@spam.protected>
 
+	* ltmain.in (func_generate_dlsyms) [cygwin, mingw]: when creating
+	a .exp file for an executable, also create a .def file, and add
+	that file to the link command via SYMFILES.  This causes binutils
+	to generate an .edata section, and allows self dlopening to work.
+	* NEWS: Updated.
+
 	* m4/libtool.m4 (_LT_SYS_DYNAMIC_LINKER): better quoting for
 	postinstall_cmds and postuninstall_cmds to allow spaces in install
 	paths.
