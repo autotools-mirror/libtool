@@ -1,5 +1,9 @@
 2004-12-28  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* m4/libtool.m4 (_LT_LINKER_SHLIBS)
+	[cygwin, mingw, pw32 ]: _LT_TAGVAR missing for `fix_srcfile_path'.
+	[ sysv4, sysv5 ]: _LT_TAGVAR missing for `export_dynamic_flag_spec'.
+
 	* doc/libtool.texi (all over): Use @option and @command.
 	Some more minor formatting updates, typos.
 

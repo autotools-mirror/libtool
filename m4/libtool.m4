@@ -3871,7 +3871,7 @@ _LT_EOF
       _LT_TAGVAR(old_archive_from_new_cmds, $1)='true'
       # FIXME: Should let the user specify the lib program.
       _LT_TAGVAR(old_archive_cmds, $1)='lib /OUT:$oldlib$oldobjs$old_deplibs'
-      fix_srcfile_path='`cygpath -w "$srcfile"`'
+      _LT_TAGVAR(fix_srcfile_path, $1)='`cygpath -w "$srcfile"`'
       _LT_TAGVAR(enable_shared_with_static_runtimes, $1)=yes
       ;;
 
@@ -4276,7 +4276,7 @@ _LT_EOF
     if test x$host_vendor = xsni; then
       case $host in
       sysv4 | sysv4.2uw2* | sysv4.3* | sysv5*)
-	export_dynamic_flag_spec='${wl}-Blargedynsym'
+	_LT_TAGVAR(export_dynamic_flag_spec, $1)='${wl}-Blargedynsym'
 	;;
       esac
     fi
