@@ -1,5 +1,9 @@
 2004-09-30  Gary V. Vaughan  <gary@gnu.org>
 
+	* m4/libtool.m4 (echo): Use ECHO throughout for consistency with
+	config/ltmain.in.
+	Reported by Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
 	* m4/libtool.m4 (rm): Use RM throughout for consistency with
 	config/ltmain.in.
 	Reported by Charles Wilson <cwilson@spam.protected>
@@ -134,7 +138,7 @@
 	tests/tagtrace.test: Removed srcdir discovery boilerplate...
 	* tests/defs.in: ...and put it here.
 
-2004-09-23  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+2004-09-23  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* m4/libtool.m4 (_LT_CMD_GLOBAL_SYMBOLS): move symcode calculation
 	to correct place.
@@ -292,7 +296,7 @@
 	* tests/Makefile.am: Use the same CPP, F77, CXX and CXXFLAGS
 	for the test suite.
 
-2004-09-15  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+2004-09-15  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* m4/libtool.m4 (_LT_ENABLE_LOCK):Replace AC_TRY_LINK with
 	AC_LINK_IFELSE to get rid of `autoconf -Wobsolete' warning.
@@ -310,7 +314,7 @@
 	* config/ltmain.in (func_quote_for_eval): Factor out the ugly
 	shell meta-character quoting.  Changed all callers.
 
-2004-09-14  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+2004-09-14  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* m4/libtool.m4 (_LT_CMD_GLOBAL_SYMBOLS): Simplification:
 	distinguish between data and code symbols on every system.
@@ -332,7 +336,7 @@
 	* m4/libtool.m4 (_LT_CMD_GLOBALS_SYMBOLS): Fix a typo I made when
 	applying 2004-09-11 Ralf Wildenhues.
 
-2004-09-12  Brad <brad@comstyle.com>
+2004-09-12  Brad  <brad@comstyle.com>
 
 	* libtool.m4: Fixes for the OpenBSD support
 
@@ -877,7 +881,7 @@
 	that SHELL is set to something. Bug from Willem Jan Palenstijn
 	<wpalenst@math.leidenuniv.nl>.
 
-2004-08-03  Jacob Meuser <jakemsr@jakemsr.com>
+2004-08-03  Jacob Meuser  <jakemsr@jakemsr.com>
 
 	* ltmain.in: Allow some static libraries to be used in generating a
 	shared library on NetBSD and OpenBSD. match-pattern_regex decides
@@ -1275,7 +1279,7 @@
 	* NEWS: Updated.
 	Reported by Chuck Wilson <cwilson@ece.gatech.edu>
 
-2004-07-07  Brad <brad@comstyle.com>
+2004-07-07  Brad  <brad@comstyle.com>
 
 	* m4/libtool.m4: Fixes for the OpenBSD support
 
