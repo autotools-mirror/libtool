@@ -1,3 +1,20 @@
+1999-02-21  Thomas Tanner  <tanner@gmx.de>
+
+	* depdemo: moved each library into a subdirectory
+	  to test hardcoding
+	* ltconfig.in: added hardcode_into_libs (whether library paths
+	  should be hardcoded into the libraries instead of the program),
+	  shlibpath_overrides_runpath, must_relink
+	* ltmain.in: renamed link-install mode to relink,
+	  save the command line arguments properly, simplified hardcoding,
+	  use relative/absolute paths where appropriate,
+	  take care of shlibpath_overrides_runpath,
+	  relinking works now (for programs as well as for libraries)
+	  hardcode all (even dependency_libs) library paths into a program,
+	  don't add shlibpath/runpath to compile_command,
+	  thousands of bugfixes...
+	* inter-library dependencies are now _fully_ functional !
+
 1999-02-18  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
 
 	* ltconfig.in (archive{,_sym}_commands): Be careful not to

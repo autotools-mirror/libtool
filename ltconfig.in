@@ -1007,6 +1007,7 @@ old_archive_from_new_cmds=
 export_dynamic_flag_spec=
 whole_archive_flag_spec=
 thread_safe_flag_spec=
+hardcode_into_libs=no
 hardcode_libdir_flag_spec=
 hardcode_libdir_separator=
 hardcode_direct=no
@@ -1532,6 +1533,13 @@ else
 fi
 echo "$ac_t$hardcode_action" 1>&6
 
+# Check relinking.
+echo $ac_n "checking whether relinking is necessary... $ac_c" 1>&6
+must_relink=no
+if test "$hardcode_action" = relink || test "$shlibpath_overrides_runpath" != yes; then
+  must_relink=yes
+fi
+echo "$ac_t$must_relink" 1>&6
 
 reload_flag=
 reload_cmds='$LD$reload_flag -o $output$reload_objs'
@@ -1550,6 +1558,7 @@ postuninstall_cmds=
 finish_cmds=
 finish_eval=
 shlibpath_var=
+shlibpath_overrides_runpath=unknown
 version_type=none
 dynamic_linker="$host_os ld.so"
 sys_lib_search_path_spec="/lib /usr/lib /usr/local/lib"
@@ -1708,6 +1717,7 @@ linux-gnu*)
   soname_spec='${libname}${release}.so$major'
   finish_cmds='PATH="$PATH:/sbin" ldconfig -n $libdir'
   shlibpath_var=LD_LIBRARY_PATH
+  shlibpath_overrides_runpath=no
   deplibs_check_method='file_magic ELF [0-9][0-9]*-bit [LM]SB (shared object|dynamic lib )'
   file_magic_command=file
 
@@ -1777,6 +1787,7 @@ solaris*)
   library_names_spec='${libname}${release}.so$versuffix ${libname}${release}.so$major $libname.so'
   soname_spec='${libname}${release}.so$major'
   shlibpath_var=LD_LIBRARY_PATH
+  shlibpath_overrides_runpath=yes
   # ldd complains unless libraries are executable
   postinstall_cmds='chmod +x $lib'
   deplibs_check_method="file_magic ELF [0-9][0-9]-bit [LM]SB dynamic lib"
@@ -1788,6 +1799,7 @@ sunos4*)
   library_names_spec='${libname}${release}.so$versuffix ${libname}.so$versuffix'
   finish_cmds='PATH="\$PATH:/usr/etc" ldconfig $libdir'
   shlibpath_var=LD_LIBRARY_PATH
+  shlibpath_overrides_runpath=yes
   if test "$with_gnu_ld" = yes; then
     need_lib_prefix=no
   fi
@@ -2137,8 +2149,14 @@ runpath_var=$runpath_var
 # This is the shared library path variable.
 shlibpath_var=$shlibpath_var
 
+# Is shlibpath searched before the hard-coded library search path?
+shlibpath_overrides_runpath=$shlibpath_overrides_runpath
+
 # How to hardcode a shared library path into an executable.
 hardcode_action=$hardcode_action
+
+# Whether we should hardcode library paths into libraries.
+hardcode_into_libs=$hardcode_into_libs
 
 # Flag to hardcode \$libdir into a binary during linking.
 # This must work even if \$libdir does not exist.
@@ -2158,6 +2176,9 @@ hardcode_minus_L=$hardcode_minus_L
 # Set to yes if using SHLIBPATH_VAR=DIR during linking hardcodes DIR into
 # the resulting binary.
 hardcode_shlibpath_var=$hardcode_shlibpath_var
+
+# Whether we must relink
+must_relink=$must_relink
 
 # System search path for libraries
 sys_lib_search_path_spec=$sys_lib_search_path_spec

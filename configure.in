@@ -41,7 +41,7 @@ AC_PROG_AWK
 
 dnl all subdirectories that are configured on demand, but that must be
 dnl included in the distribution
-CONF_SUBDIRS="libltdl demo mdemo depdemo cdemo"
+CONF_SUBDIRS="libltdl demo mdemo cdemo depdemo"
 AC_SUBST(CONF_SUBDIRS)
 
 ACINCLUDE_M4_LIST="${srcdir}/acinclude.m4 "

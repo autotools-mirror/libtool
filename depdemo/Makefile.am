@@ -2,20 +2,17 @@
 #
 AUTOMAKE_OPTIONS = no-dependencies foreign
 
-lib_LTLIBRARIES = libl1.la libl2.la libl3.la libl4.la
-libl1_la_SOURCES = l1.c l1.h sysdep.h
-libl2_la_SOURCES = l2.c l2.h sysdep.h
-libl2_la_LIBADD = libl1.la
-libl3_la_SOURCES = l3.c l3.h sysdep.h
-libl3_la_LIBADD = libl1.la libl2.la
-libl4_la_SOURCES = l4.c l4.h sysdep.h
-libl4_la_LIBADD = libl3.la $(LIBADD_M)
+SUBDIRS = l1 l2 l3 l4
 
+EXTRA_DIST = sysdep.h
+  
 bin_PROGRAMS = depdemo depdemo.static
 
 depdemo_SOURCES = main.c
-depdemo_LDADD = libl1.la libl2.la libl4.la
-depdemo_DEPENDENCIES = libl1.la libl2.la libl4.la
+depdemo_LDADD = $(top_builddir)/l1/libl1.la $(top_builddir)/l2/libl2.la \
+		$(top_builddir)/l4/libl4.la
+depdemo_DEPENDENCIES = $(top_builddir)/l1/libl1.la \
+		$(top_builddir)/l2/libl2.la $(top_builddir)/l4/libl4.la
 
 depdemo_static_SOURCES = $(depdemo_SOURCES)
 depdemo_static_LDADD = $(depdemo_LDADD)
