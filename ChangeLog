@@ -1,5 +1,16 @@
 1999-03-10  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* libtool.m4 (AC_LIBTOOL_DLOPEN): just set lt_dlopen=yes
+	(AC_LIBTOOL_SETUP): if lt_dlopen=yes, add --enable-dlopen to
+	libtool_flags; drop --enable-dlopen-self
+	* ltconfig.in: perform all the dirty work of testing for dlopening 
+	support, because we need platform-dependent equivalents for
+	-export-dynamic, for self dlopening, and -static, for static self
+	dlopening
+	(dlopen_self_static): new configuration variable that is set to
+	yes only if static programs can dlopen themselves
+	* ltmain.in (-static, -all-static): dlopen_self=dlopen_self_static
+
 	* libltdl/configure.in (libltdl_cv_need_uscore): do not assume
 	dlfcn.h and LTDL_LAZY exist; use LTDL_GLOBAL and LTDL_LAZY_OR_NOW.
 	This test is likely to fail if self-dlopening does not work,

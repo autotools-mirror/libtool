@@ -72,8 +72,7 @@ libtool_flags="--cache-file=$cache_file"
 test "$enable_shared" = no && libtool_flags="$libtool_flags --disable-shared"
 test "$enable_static" = no && libtool_flags="$libtool_flags --disable-static"
 test "$enable_fast_install" = no && libtool_flags="$libtool_flags --disable-fast-install"
-test "x$lt_cv_dlopen" != xno && libtool_flags="$libtool_flags --enable-dlopen"
-test "x$lt_cv_dlopen_self" = xyes && libtool_flags="$libtool_flags --enable-dlopen-self"
+test "$lt_dlopen" = yes && libtool_flags="$libtool_flags --enable-dlopen"
 test "$silent" = yes && libtool_flags="$libtool_flags --silent"
 test "$ac_cv_prog_gcc" = yes && libtool_flags="$libtool_flags --with-gcc"
 test "$ac_cv_prog_gnu_ld" = yes && libtool_flags="$libtool_flags --with-gnu-ld"
@@ -131,47 +130,7 @@ fi
 ])
 
 # AC_LIBTOOL_DLOPEN - check for dlopen support
-AC_DEFUN(AC_LIBTOOL_DLOPEN,
-[AC_CACHE_VAL(lt_cv_dlopen,
-[lt_cv_dlopen=no lt_cv_dlopen_libs=
-AC_CHECK_FUNC(dlopen, [lt_cv_dlopen="dlopen"],
-  [AC_CHECK_LIB(dl, dlopen, [lt_cv_dlopen="dlopen" lt_cv_dlopen_libs="-ldl"],
-    [AC_CHECK_LIB(dld, dld_link, [lt_cv_dlopen="dld_link" lt_cv_dlopen_libs="-ldld"],
-      [AC_CHECK_FUNC(shl_load, [lt_cv_dlopen="shl_load"],
-        [AC_CHECK_FUNC(LoadLibrary, [lt_cv_dlopen="LoadLibrary"])]
-      )]
-    )]
-  )]
-)])
-
-case "$lt_cv_dlopen" in
-dlopen)
-  LT_SAVE_LIBS="$LIBS"
-  LT_SAVE_CPPFLAGS="$CPPFLAGS"
-  LIBS="$lt_cv_dlopen_libs $LIBS"
-  AC_CHECK_HEADER(dlfcn.h, [CPPFLAGS="-DHAVE_DLFCN_H $CPPFLAGS"])
-  AC_CACHE_CHECK([whether a program can dlopen itself], lt_cv_dlopen_self,
-    [AC_TRY_RUN([
-#if HAVE_DLFCN_H
-#include <dlfcn.h>
-#endif
-
-#include <stdio.h>
-fnord() { int i=42;}
-main() { void *self, *ptr1, *ptr2; self=dlopen(0,0);
-    if(self) { ptr1=dlsym(self,"fnord"); ptr2=dlsym(self,"_fnord");
-    if(ptr1 || ptr2) exit(0); } exit(1); } 
-], lt_cv_dlopen_self=no, lt_cv_dlopen_self=yes, lt_cv_dlopen_self=cross)])
-  LIBS="$LT_SAVE_LIBS"
-  CPPFLAGS="$LT_SAVE_CPPFLAGS"
-  ;;
-# We should probably test other for NULL support in other dlopening
-# mechanisms too.
-*)
-  lt_cv_dlopen_self=no
-  ;;
-esac
-])
+AC_DEFUN(AC_LIBTOOL_DLOPEN, [lt_dlopen=yes])
 
 # AC_ENABLE_SHARED - implement the --enable-shared flag
 # Usage: AC_ENABLE_SHARED[(DEFAULT)]
