@@ -623,7 +623,7 @@ echo $ac_n "checking for executable suffix... $ac_c" 1>&6
 if eval "test \"`echo '$''{'ac_cv_exeext'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
-  ac_cv_exeext="none"
+  ac_cv_exeext="no"
   $rm conftest*
   echo 'main () { return 0; }' > conftest.c
   echo "$progname:@LINENO@: checking for executable suffix" >& 5
@@ -633,7 +633,7 @@ else
 
     for ac_file in conftest.*; do
       case $ac_file in
-      *.c | *.$objext ) ;;
+      *.c | *.err | *.$objext ) ;;
       *) ac_cv_exeext=.`echo $ac_file | sed -e s/conftest.//` ;;
       esac
     done
@@ -644,7 +644,9 @@ else
   fi
   $rm conftest*
 fi
-if test "X$ac_cv_exeext" != Xnone; then
+if test "X$ac_cv_exeext" = Xno; then
+  exeext=""
+else
   exeext="$ac_cv_exeext"
 fi
 echo "$ac_t$ac_cv_exeext" 1>&6

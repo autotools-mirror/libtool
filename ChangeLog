@@ -1,3 +1,11 @@
+1999-06-09  Gary V. Vaughan  <gary@oranda.demon.co.uk>
+
+	* ltconfig.in (exeext): autoconf's AC_EXEEXT uses "no" to indicate
+	no extension, and we must do the same in order to share the cache
+	value. Also we must ignore conftest.err which HPsUX (at least)
+	fills with gratuitous warnings.
+	Reported by Pavel Roskin <pavel_roskin@geocities.com>
+
 1999-06-09  Pavel Roskin  <pavel_roskin@geocities.com>
 
 	* ltconfig.in (exeext): Use quotes in the test, to prevent a 
