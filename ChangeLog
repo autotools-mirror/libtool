@@ -1,3 +1,8 @@
+1999-06-02 Nick Rasmussen <nick@jive.org>
+
+	* ltmain.in (link): use "$nonopt" as the compiler for
+	  compile/finalize_command
+
 1999-05-27  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
 	* TODO: Remove the short list of people interested in C++
