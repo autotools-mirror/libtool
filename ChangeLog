@@ -1,3 +1,12 @@
+2000-02-25  Ossama Othman  <ossama@debian.org>
+
+	* libtool.m4, ltconfig.in: Merged in changes from most recent HEAD
+	branch version.
+	* ltmain.in: Merged in changes from most recent HEAD branch
+	version (ILD updates), and fixed parallel build error.
+	* tagdemo/acinclude.m4, tagdemo/aclocal.m4, tagdemo/configure:
+	regenerated these files against updated libtool.m4.
+
 2000-02-22  Ossama Othman  <ossama@debian.org>
 
 	* libtool.m4 (AC_LIBTOOL_CXX): Added missing "$lt_target" command
