@@ -1,5 +1,10 @@
 1999-01-20  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* libltdl/ltdl.c (find_module): remove the libdir argument, and
+	try to  open library only as old_name and dir/dlname
+	(lt_dlopen): use `installed' variable in .la file to decide
+	whether to use libdir or objdir
+	
 	* demo/configure.in (AC_C_CONST): added, for portability
 	* mdemo/configure.in (AC_C_CONST): ditto
 	* libltdl/configure.in (AC_C_CONST, AC_C_INLINE): ditto

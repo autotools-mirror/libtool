@@ -810,15 +810,14 @@ tryall_dlopen (handle, filename)
 }
 
 static int
-find_module (handle, dir, libdir, dlname, old_name)
+find_module (handle, dir, dlname, old_name)
 	lt_dlhandle *handle;
 	const char *dir;
-	const char *libdir;
 	const char *dlname;
 	const char *old_name;
 {
 	char	filename[LTDL_FILENAME_MAX];
-	
+
 	/* search for old library first; if it was dlpreopened, we
            want the preopened version of it, even if a dlopenable
            module is available */
@@ -827,26 +826,10 @@ find_module (handle, dir, libdir, dlname, old_name)
 
 	/* search a module */
 	if (*dlname) {
-		/* try to open the not-installed module */
-		if (strlen(dir)+strlen(dlname)+6 < LTDL_FILENAME_MAX) {
-		/* FIXME: we assume that LTDL_OBJDIR is 6 character long */
-			strcpy(filename, dir);
-			strcat(filename, LTDL_OBJDIR "/");
-			strcat(filename, dlname);
- 			if (tryall_dlopen(handle, filename) == 0)
-				return 0;
-		}
-		/* try to open the installed module */
-		if (strlen(libdir)+strlen(dlname)+1 < LTDL_FILENAME_MAX) {
-			strcpy(filename, libdir);
-			strcat(filename, "/");
-			strcat(filename, dlname);
-			if (tryall_dlopen(handle, filename) == 0)
-				return 0;
-		}
 		/* hmm, maybe it was moved to another directory */
-		if (strlen(dir)+strlen(dlname) < LTDL_FILENAME_MAX) {
+		if (strlen(dir)+1+strlen(dlname) < LTDL_FILENAME_MAX) {
 			strcpy(filename, dir);
+			strcat(filename, "/");
 			strcat(filename, dlname);
 			if (tryall_dlopen(handle, filename) == 0)
 				return 0;
@@ -1002,6 +985,10 @@ lt_dlopen (filename)
 		char	*name;
 		FILE	*file;
 		int	i;
+		/* if we can't find the installed flag, it is probably an
+		   installed libtool archive, produced with an old version
+		   of libtool */
+		int     installed=1; 
 
 		dlname[0] = old_name[0] = libdir[0] = deplibs[0] = '\0';
 
@@ -1050,6 +1037,12 @@ lt_dlopen (filename)
 			else
 			if (strncmp(tmp, "dl_dependency_libs=", 20) == 0)
 				trim(deplibs, &tmp[20]);
+			else
+			if (strcmp(tmp, "installed=yes\n") == 0)
+				installed = 1;
+			else
+			if (strcmp(tmp, "installed=no\n") == 0)
+				installed = 0;
 		}
 		fclose(file);
 		
@@ -1064,11 +1057,29 @@ lt_dlopen (filename)
 			free(name);
 			return 0;
 		}
-		if (find_module(&handle, dir, libdir, dlname, old_name)) {
-			unload_deplibs(handle);
-			free(handle);
-			free(name);
-			return 0;
+		if (installed) {
+			if (find_module(&handle, libdir, dlname, old_name)) {
+				unload_deplibs(handle);
+				free(handle);
+				free(name);
+				return 0;
+			}
+		} else {
+			if (strlen(dir) + strlen(LTDL_OBJDIR)
+			    >= LTDL_FILENAME_MAX) {
+				last_error = buffer_overflow_error;
+				unload_deplibs(handle);
+				free(handle);
+				free(name);
+				return 0;
+			}
+			strcat(dir, LTDL_OBJDIR);
+			if (find_module(&handle, dir, dlname, old_name)) {
+				unload_deplibs(handle);
+				free(handle);
+				free(name);
+				return 0;
+			}
 		}
 		handle->name = name;
 	} else {
