@@ -1,37 +1,6 @@
 For next public release:
 ************************
 
-* Create a new library version_type, `irix'.  Janos Farkas writes:
-
-I just realized I also have mortal access to an SGI system, and found
-this in the dso.5 page, this looks more informative :)
-
-   Versioning of Shared Objects.
-
-   QUICK OVERVIEW
-
-   For a shared object to be versioned the following needs to be done:
-
-   * Version strings consist of 3 parts and a dot: The string "sgi",
-     a decimal number (the major number), a dot, and a decimal number
-     (the minor number).
-
-   * Add the command -set_version sgi1.0 to the command to build
-     the shared object (cc -shared, ld -shared, etc.).
-
-   * Whenever you make a COMPATIBLE change update the minor version
-     number (the one after the dot), and add the latest version string
-     to colon-separated list of version strings, e.g., -set_version
-     sgi1.0:sgi1.1:sgi1.3
-
-   * Whenever you make an INCOMPATIBLE change, update the
-     major version number.  Pass this as the version list, e.g.,
-     -set_version sgi2.0.  Change the filename of the OLD shared object
-     by adding a dot followed by the previous major number to the filename
-     of the shared object.  DO NOT CHANGE the soname of the object.
-     No change to the file contents are necessary or desirable.  Simply
-     rename the file.
-
 * Inter-library dependencies should be fully tracked by libtool.
 Reminded by Alexandre Oliva.  This requires looking up installed
 libtool libraries for transparent support.

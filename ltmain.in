@@ -1618,6 +1618,20 @@ compiler."
 	case "$version_type" in
 	none) ;;
 
+	irix)
+	  major=`expr $current - $age`
+	  versuffix="$major.$revision"
+	  verstring="sgi$major.$revision"
+
+	  # Add in all the interfaces that we are compatible with.
+	  loop=$revision
+	  while test $loop != 0; do
+	    iface=`expr $revision - $loop`
+	    loop=`expr $loop - 1`
+	    verstring="sgi$major.$iface:$verstring"
+	  done
+	  ;;
+
 	linux)
 	  major=.`expr $current - $age`
 	  versuffix="$major.$age.$revision"
