@@ -1,7 +1,15 @@
+2004-04-08  Gary V. Vaughan  <gary@gnu.org>
+
+	* libltdl/ltdl.h (LT_PARAMS): Removed.  Changed all users to
+	ANSI prototypes.
+	(lt_ptr): Keep backwards compatibility stub.
+	* libtldl/ltdl.c, libltdl/ltdl.h: Use ANSI function declarations
+	throughout.  s/lt_ptr/void */g.
+
 2004-04-08  Fredrik Estreen  <estreen@algonet.se>
 
 	* m4/ltdl.m4: Rename shrext to shrext_cmds here too.
-	
+
 2004-04-06  Gary V. Vaughan  <gary@gnu.org>
 
 	There was no clean separation of abstraction layers in libltdl.

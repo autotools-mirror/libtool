@@ -52,16 +52,6 @@ LT_BEGIN_C_DECLS
 #endif
 
 
-/* LT_PARAMS is a macro used to wrap function prototypes, so that compilers
-   that don't understand ANSI C prototypes still work, and ANSI C
-   compilers can issue warnings about type mismatches.  */
-#if defined (__STDC__) || defined (_AIX) || (defined (__mips) && defined (_SYSTYPE_SVR4)) || defined(__WINDOWS__) || defined(__cplusplus)
-# define LT_PARAMS(protos)	protos
-# define lt_ptr		void*
-#else
-# define LT_PARAMS(protos)	()
-# define lt_ptr		char*
-#endif
 
 
 /* LT_STRLEN can be used safely on NULL pointers.  */
@@ -75,31 +65,30 @@ LT_BEGIN_C_DECLS
 typedef	struct lt_dlhandle_struct *lt_dlhandle;	/* A loaded module.  */
 
 /* Initialisation and finalisation functions for libltdl. */
-LT_SCOPE	int	    lt_dlinit		LT_PARAMS((void));
-LT_SCOPE	int	    lt_dlexit		LT_PARAMS((void));
+LT_SCOPE int	    lt_dlinit		(void);
+LT_SCOPE int	    lt_dlexit		(void);
 
 /* Module search path manipulation.  */
-LT_SCOPE	int	    lt_dladdsearchdir	 LT_PARAMS((const char *search_dir));
-LT_SCOPE	int	    lt_dlinsertsearchdir LT_PARAMS((const char *before,
-						    const char *search_dir));
-LT_SCOPE	int 	    lt_dlsetsearchpath	 LT_PARAMS((const char *search_path));
-LT_SCOPE	const char *lt_dlgetsearchpath	 LT_PARAMS((void));
-LT_SCOPE	int	    lt_dlforeachfile	 LT_PARAMS((
+LT_SCOPE int	    lt_dladdsearchdir	 (const char *search_dir);
+LT_SCOPE int	    lt_dlinsertsearchdir (const char *before,
+						  const char *search_dir);
+LT_SCOPE int 	    lt_dlsetsearchpath	 (const char *search_path);
+LT_SCOPE const char *lt_dlgetsearchpath	 (void);
+LT_SCOPE int	    lt_dlforeachfile	 (
 			const char *search_path,
-			int (*func) (const char *filename, lt_ptr data),
-			lt_ptr data));
+			int (*func) (const char *filename, void *data),
+			void *data);
 
 /* Portable libltdl versions of the system dlopen() API. */
-LT_SCOPE	lt_dlhandle lt_dlopen		LT_PARAMS((const char *filename));
-LT_SCOPE	lt_dlhandle lt_dlopenext	LT_PARAMS((const char *filename));
-LT_SCOPE	lt_ptr	    lt_dlsym		LT_PARAMS((lt_dlhandle handle,
-						     const char *name));
-LT_SCOPE	const char *lt_dlerror		LT_PARAMS((void));
-LT_SCOPE	int	    lt_dlclose		LT_PARAMS((lt_dlhandle handle));
+LT_SCOPE lt_dlhandle lt_dlopen		(const char *filename);
+LT_SCOPE lt_dlhandle lt_dlopenext	(const char *filename);
+LT_SCOPE void *	    lt_dlsym		(lt_dlhandle handle, const char *name);
+LT_SCOPE const char *lt_dlerror		(void);
+LT_SCOPE int	    lt_dlclose		(lt_dlhandle handle);
 
 /* Module residency management. */
-LT_SCOPE	int	    lt_dlmakeresident	LT_PARAMS((lt_dlhandle handle));
-LT_SCOPE	int	    lt_dlisresident	LT_PARAMS((lt_dlhandle handle));
+LT_SCOPE int	    lt_dlmakeresident	(lt_dlhandle handle);
+LT_SCOPE int	    lt_dlisresident	(lt_dlhandle handle);
 
 
 
@@ -107,15 +96,15 @@ LT_SCOPE	int	    lt_dlisresident	LT_PARAMS((lt_dlhandle handle));
 /* --- MUTEX LOCKING --- */
 
 
-typedef void	lt_dlmutex_lock		LT_PARAMS((void));
-typedef void	lt_dlmutex_unlock	LT_PARAMS((void));
-typedef void	lt_dlmutex_seterror	LT_PARAMS((const char *errmsg));
-typedef const char *lt_dlmutex_geterror	LT_PARAMS((void));
+typedef void	lt_dlmutex_lock		(void);
+typedef void	lt_dlmutex_unlock	(void);
+typedef void	lt_dlmutex_seterror	(const char *errmsg);
+typedef const char *lt_dlmutex_geterror	(void);
 
-LT_SCOPE	int	lt_dlmutex_register	LT_PARAMS((lt_dlmutex_lock *lock,
-					    lt_dlmutex_unlock *unlock,
-					    lt_dlmutex_seterror *seterror,
-					    lt_dlmutex_geterror *geterror));
+LT_SCOPE int	lt_dlmutex_register	(lt_dlmutex_lock *lock,
+					 lt_dlmutex_unlock *unlock,
+					 lt_dlmutex_seterror *seterror,
+					 lt_dlmutex_geterror *geterror);
 
 
 
@@ -127,17 +116,16 @@ LT_SCOPE	int	lt_dlmutex_register	LT_PARAMS((lt_dlmutex_lock *lock,
    symbols for a dlpreopened module. */
 typedef struct {
   const char *name;
-  lt_ptr      address;
+  void *     address;
 } lt_dlsymlist;
 
-LT_SCOPE	int	lt_dlpreload	LT_PARAMS((const lt_dlsymlist *preloaded));
-LT_SCOPE	int	lt_dlpreload_default
-				LT_PARAMS((const lt_dlsymlist *preloaded));
+LT_SCOPE int	lt_dlpreload	     (const lt_dlsymlist *preloaded);
+LT_SCOPE int	lt_dlpreload_default (const lt_dlsymlist *preloaded);
 
-#define LTDL_SET_PRELOADED_SYMBOLS() 		LT_STMT_START{	\
+#define LTDL_SET_PRELOADED_SYMBOLS() 			LT_STMT_START{	\
 	extern const lt_dlsymlist lt_preloaded_symbols[];		\
 	lt_dlpreload_default(lt_preloaded_symbols);			\
-						}LT_STMT_END
+							}LT_STMT_END
 
 
 
@@ -153,23 +141,21 @@ typedef	struct {
 				   number of times lt_dlclosed. */
 } lt_dlinfo;
 
-LT_SCOPE	const lt_dlinfo	*lt_dlgetinfo	    LT_PARAMS((lt_dlhandle handle));
-LT_SCOPE	lt_dlhandle	lt_dlhandle_next    LT_PARAMS((lt_dlhandle place));
-LT_SCOPE	lt_dlhandle	lt_dlhandle_find    LT_PARAMS((
-							const char *module_name));
-LT_SCOPE	int		lt_dlforeach	    LT_PARAMS((
-				int (*func) (lt_dlhandle handle, lt_ptr data),
-				lt_ptr data));
+LT_SCOPE const lt_dlinfo *lt_dlgetinfo	    (lt_dlhandle handle);
+LT_SCOPE lt_dlhandle	lt_dlhandle_next    (lt_dlhandle place);
+LT_SCOPE lt_dlhandle	lt_dlhandle_find    (const char *module_name);
+LT_SCOPE int		lt_dlforeach	    (
+				int (*func) (lt_dlhandle handle, void *data),
+				void *data);
 
 /* Associating user data with loaded modules. */
 typedef unsigned lt_dlcaller_id;
 
-LT_SCOPE	lt_dlcaller_id	lt_dlcaller_register  LT_PARAMS((void));
-LT_SCOPE	lt_ptr		lt_dlcaller_set_data  LT_PARAMS((lt_dlcaller_id key,
-						lt_dlhandle handle,
-						lt_ptr data));
-LT_SCOPE	lt_ptr		lt_dlcaller_get_data  LT_PARAMS((lt_dlcaller_id key,
-						lt_dlhandle handle));
+LT_SCOPE lt_dlcaller_id	lt_dlcaller_register  (void);
+LT_SCOPE void *		lt_dlcaller_set_data  (lt_dlcaller_id key,
+					       lt_dlhandle handle, void *data);
+LT_SCOPE void *		lt_dlcaller_get_data  (lt_dlcaller_id key,
+					       lt_dlhandle handle);
 
 
 
@@ -177,18 +163,17 @@ LT_SCOPE	lt_ptr		lt_dlcaller_get_data  LT_PARAMS((lt_dlcaller_id key,
 
 
 typedef	struct lt_dlloader	lt_dlloader;
-typedef lt_ptr			lt_user_data;
-typedef lt_ptr			lt_module;
+typedef void *			lt_user_data;
+typedef void *			lt_module;
 
 /* Function pointer types for creating user defined module loaders. */
-typedef lt_module   lt_module_open	LT_PARAMS((lt_user_data loader_data,
-					    const char *filename));
-typedef int	    lt_module_close	LT_PARAMS((lt_user_data loader_data,
-					    lt_module handle));
-typedef lt_ptr	    lt_find_sym		LT_PARAMS((lt_user_data loader_data,
-					    lt_module handle,
-					    const char *symbol));
-typedef int	    lt_dlloader_exit	LT_PARAMS((lt_user_data loader_data));
+typedef lt_module   lt_module_open	(lt_user_data loader_data,
+					 const char *filename);
+typedef int	    lt_module_close	(lt_user_data loader_data,
+					 lt_module handle);
+typedef void *	    lt_find_sym		(lt_user_data loader_data,
+					 lt_module handle, const char *symbol);
+typedef int	    lt_dlloader_exit	(lt_user_data loader_data);
 
 struct lt_user_dlloader {
   const char	       *sym_prefix;
@@ -199,16 +184,14 @@ struct lt_user_dlloader {
   lt_user_data		dlloader_data;
 };
 
-LT_SCOPE	lt_dlloader    *lt_dlloader_next    LT_PARAMS((lt_dlloader *place));
-LT_SCOPE	lt_dlloader    *lt_dlloader_find    LT_PARAMS((
-						const char *loader_name));
-LT_SCOPE	const char     *lt_dlloader_name    LT_PARAMS((lt_dlloader *place));
-LT_SCOPE	lt_user_data   *lt_dlloader_data    LT_PARAMS((lt_dlloader *place));
-LT_SCOPE	int		lt_dlloader_add     LT_PARAMS((lt_dlloader *place,
+LT_SCOPE lt_dlloader    *lt_dlloader_next    (lt_dlloader *place);
+LT_SCOPE lt_dlloader    *lt_dlloader_find    (const char *loader_name);
+LT_SCOPE const char     *lt_dlloader_name    (lt_dlloader *place);
+LT_SCOPE lt_user_data   *lt_dlloader_data    (lt_dlloader *place);
+LT_SCOPE int		lt_dlloader_add     (lt_dlloader *place,
 				const struct lt_user_dlloader *dlloader,
-				const char *loader_name));
-LT_SCOPE	int		lt_dlloader_remove  LT_PARAMS((
-						const char *loader_name));
+				const char *loader_name);
+LT_SCOPE int		lt_dlloader_remove  (const char *loader_name);
 
 
 
@@ -250,16 +233,18 @@ enum {
 };
 
 /* These functions are only useful from inside custom module loaders. */
-LT_SCOPE	int	lt_dladderror	LT_PARAMS((const char *diagnostic));
-LT_SCOPE	int	lt_dlseterror	LT_PARAMS((int errorcode));
+LT_SCOPE int	lt_dladderror	(const char *diagnostic);
+LT_SCOPE int	lt_dlseterror	(int errorcode);
 
 
 
 /* --- BINARY COMPATIBILITY WITH OLD LIBLTDL --- */
 
-LT_SCOPE  lt_ptr   (*lt_dlmalloc)	LT_PARAMS((size_t size));
-LT_SCOPE  lt_ptr   (*lt_dlrealloc)	LT_PARAMS((lt_ptr ptr, size_t size));
-LT_SCOPE  void	   (*lt_dlfree)		LT_PARAMS((lt_ptr ptr));
+LT_SCOPE void * (*lt_dlmalloc)	(size_t size);
+LT_SCOPE void * (*lt_dlrealloc)	(void *ptr, size_t size);
+LT_SCOPE void	(*lt_dlfree)	(void *ptr);
+
+# define lt_ptr		void *
 
 
 
@@ -267,7 +252,7 @@ LT_SCOPE  void	   (*lt_dlfree)		LT_PARAMS((lt_ptr ptr));
 
 
 #ifdef LT_NON_POSIX_NAMESPACE
-#  define lt_ptr_t		lt_ptr
+#  define lt_ptr_t		void *
 #  define lt_module_t		lt_module
 #  define lt_module_open_t	lt_module_open
 #  define lt_module_close_t	lt_module_close
