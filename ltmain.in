@@ -35,7 +35,7 @@ basename="s,^.*/,,g"
 progpath="$0"
 
 # The name of this program:
-progname=`echo "$progpath" | $SED $basename`
+progname=`echo "$progpath" | $SED "$basename"`
 modename="$progname"
 
 # Global variables:

@@ -1,5 +1,9 @@
 2004-02-13  Scott James Remnant  <scott@netsplit.com>
 
+	* ltmain.in, libtoolize.in, commit, config/mailnotify: Correctly
+	quote usage of $basename and $dirname to avoid (unlikely) path
+	expansion.
+
 	* tests/sh.test: Test the config/ltmain.sh and libtoolize in the
 	build directory not the source directory, where they won't exist
 	during 'make distcheck'.

@@ -65,7 +65,7 @@ basename="s,^.*/,,g"
 progpath="$0"
 
 # The name of this program:
-progname=`echo "$progpath" | $SED $basename`
+progname=`echo "$progpath" | $SED "$basename"`
 PROGRAM=libtoolize
 
 # Global variables:
@@ -244,7 +244,7 @@ func_mkdir_p ()
     while test ! -d "$my_dir"; do
       my_dirs="$my_dir $my_dirs"
       case $my_dir in */*) ;; *) break ;; esac
-      my_dir=`echo "$my_dir" | $SED $dirname`
+      my_dir=`echo "$my_dir" | $SED "$dirname"`
     done
    test ! -n "$my_dirs" || $MKDIR $my_dirs
 }
@@ -258,7 +258,7 @@ func_copy ()
     my_destfile="$2"
     my_return_status=1
 
-    func_mkdir_p `echo "$my_destfile" | $SED $dirname`
+    func_mkdir_p `echo "$my_destfile" | $SED "$dirname"`
 
     $RM "$my_destfile"
     if $opt_link && $LN_S "$my_srcfile" "$my_destfile"; then
