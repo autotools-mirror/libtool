@@ -1,4 +1,12 @@
+
 1999-08-02  Olly Betts  <olly@muscat.co.uk>
+
+	* doc/libtool.texi (Compile mode): typo correction.
+	(Link mode): and another.
+	(Release numbers):  and another.
+	(Distributing libltdl): and another.
+	(Test descriptions): and another.
+	(libtool script contents): and one more.
 
 	* libtool.m4 (AC_PROG_LD): strip carriage returns from the
 	output of gcc -print-prog-name=ld.

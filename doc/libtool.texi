@@ -1138,7 +1138,7 @@ that only an object file is created.
 
 Libtool determines the name of the output file by removing the directory
 component from the source file name, then substituting the source code
-suffix (e.g. @samp{.c} for C soure code) with the library object suffix,
+suffix (e.g. @samp{.c} for C source code) with the library object suffix,
 @samp{.lo}.
 
 If shared libraries are being built, any necessary PIC generation flags
@@ -1241,7 +1241,7 @@ This option is required even when @var{output-file} is not an
 executable.
 
 @item -module
-Creates a library that can be dlopenend (@pxref{Dlopened modules}). 
+Creates a library that can be dlopened (@pxref{Dlopened modules}). 
 This option doesn't work for programs.
 Module names don't need to be prefixed with 'lib'.
 In order to prevent name clashes, however, 'libname' and 'name' 
@@ -2262,7 +2262,7 @@ library interface versions, because the library interface rarely changes
 at the same time that the release number does, and the library suffix is
 never the same across all platforms.
 
-So, in order to accomodate both views, you can use the @samp{-release}
+So, in order to accommodate both views, you can use the @samp{-release}
 flag in order to set release information for libraries which you do not
 want to use @samp{-version-info}.  For the @file{libbfd} example, the
 next release which uses libtool should be built with @samp{-release
@@ -3122,7 +3122,7 @@ libtool will assume no dlopening mechanism is supported, and revert to
 dlpreopening, which is probably not what you want.
 
 Avoid using the @code{-static} or @code{-all-static} switches when
-linking programs with libltdl.  This will not work on all plaforms,
+linking programs with libltdl.  This will not work on all platforms,
 because the dlopening functions may not be available for static linking.
 
 The following example shows you how to embed the convenience libltdl in
@@ -3455,7 +3455,7 @@ This program checks libtool's metacharacter quoting.
 
 @item sh.test
 @pindex sh.test
-Checks whether a `test' command was forgotton in libtool.
+Checks whether a `test' command was forgotten in libtool.
 
 @item suffix.test
 @pindex suffix.test
@@ -4108,7 +4108,7 @@ Set to @samp{yes} or @samp{no}.  By default, it is @samp{unknown}, which
 means the same as @samp{yes}, but documents that we are not really sure
 about it.
 @samp{yes} means that it is possible both to @code{dlopen} and to
-link against a library wihthout 'lib' prefix,
+link against a library without 'lib' prefix,
 i.e. it requires @var{hardcode_direct} to be @samp{yes}.
 @end defvar
 
