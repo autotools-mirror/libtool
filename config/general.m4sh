@@ -275,7 +275,7 @@ func_mktempdir ()
 func_quote_for_eval ()
 {
     case $1 in
-      *[[\`\"\\\$]]*)
+      *[[\\\`\"\$]]*)
 	func_quote_for_eval_unquoted_result=`$ECHO "X$1" | $Xsed -e "$sed_quote_subst"` ;;
       *)
         func_quote_for_eval_unquoted_result="$1" ;;
@@ -303,8 +303,13 @@ func_quote_for_eval ()
 # but do not quote variable references.
 func_quote_for_expand ()
 {
-    my_arg=`$ECHO "X$1" | $Xsed \
-        -e "$double_quote_subst" -e "$sed_double_backslash"`
+    case $1 in
+      *[[\\\`\"]]*)
+	my_arg=`$ECHO "X$1" | $Xsed \
+	    -e "$double_quote_subst" -e "$sed_double_backslash"` ;;
+      *)
+        my_arg="$1" ;;
+    esac
 
     case $my_arg in
       # Double-quote args containing shell metacharacters to delay

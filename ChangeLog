@@ -1,3 +1,9 @@
+2004-12-28  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* config/general.m4sh (func_quote_for_eval): Move backslash to
+	beginning of character class, to work around old Bash bug.
+	(func_quote_for_expand): Also test to avoid unnecessary fork.
+
 2004-12-28  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>,
 	    Gary V. Vaughan <gary@gnu.org>
 
