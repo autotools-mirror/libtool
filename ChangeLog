@@ -1,3 +1,12 @@
+1999-07-03  Thomas Tanner  <tanner@ffii.org>
+
+	* doc/PLATFORMS: 1.3b passes all tests on cygwin
+
+1999-07-03  Pavel Roskin <pavel_roskin@geocities.com>
+
+	* ltconfig.in: finish_cmds for FreeBSD removed
+	* depdemo/l3/Makefile.am: install libl3.la into an extra directory
+
 1999-07-02  Gary V. Vaughan  <gary@oranda.demon.co.uk>
 
 	* configure.in: bumped version to 1.3c.
