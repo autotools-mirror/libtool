@@ -1,3 +1,19 @@
+2004-07-28  Gary V. Vaughan  <gary@gnu.org>
+
+	To take full advantage of this, libtool must be bootstrapped with
+	CVS autoconf, otherwise pdksh chokes on some nested escaped quotes
+	from libtool.m4.  Using CVS autoconf protects configure from
+	non-bourne compatible shells in the same way this changeset
+	protects libtool and libtoolize:
+
+	* libtoolize.in: Include latest CVS autoconf AS_SHELL_SANITIZE
+	expansion to make various shells fully bourne compatible.
+	* ltmain.in: Ditto.
+	* m4/libtool.m4 (AC_PATH_TOOL_PREFIX): Remove spurious quotes, the
+	RHS of = assignment is not IFS split.
+	(_LT_LANG_CXX_CONFIG): Ditto.
+	(AC_LIBTOOL_POSTDEP_PREDEP): Ditto.
+
 2004-07-27  Gary V. Vaughan  <gary@gnu.org>
 
 	This change fixes another VPATH build bug, where the vcl.tmp

@@ -2169,7 +2169,7 @@ dnl not every word.  This closes a longstanding sh security hole.
       if test -n "$file_magic_test_file"; then
 	case $deplibs_check_method in
 	"file_magic "*)
-	  file_magic_regex="`expr \"$deplibs_check_method\" : \"file_magic \(.*\)\"`"
+	  file_magic_regex=`expr "$deplibs_check_method" : "file_magic \(.*\)"`
 	  MAGIC_CMD="$lt_cv_path_MAGIC_CMD"
 	  if eval $file_magic_cmd \$file_magic_test_file 2> /dev/null |
 	    $EGREP "$file_magic_regex" > /dev/null; then
@@ -5284,7 +5284,7 @@ if test -n "$compiler"; then
   	    # Commands to make compiler produce verbose output that lists
   	    # what "hidden" libraries, object files and flags are used when
   	    # linking a shared library.
-  	    output_verbose_link_cmd="$CC -shared $CFLAGS -v conftest.$objext 2>&1 | $GREP \"\-L\""
+  	    output_verbose_link_cmd='$CC -shared $CFLAGS -v conftest.$objext 2>&1 | $GREP "\-L"'
   	  else
   	    # g++ 2.7 appears to require `-G' NOT `-shared' on this
   	    # platform.
@@ -5295,7 +5295,7 @@ if test -n "$compiler"; then
   	    # Commands to make compiler produce verbose output that lists
   	    # what "hidden" libraries, object files and flags are used when
   	    # linking a shared library.
-  	    output_verbose_link_cmd="$CC -G $CFLAGS -v conftest.$objext 2>&1 | $GREP \"\-L\""
+  	    output_verbose_link_cmd='$CC -G $CFLAGS -v conftest.$objext 2>&1 | $GREP "\-L"'
   	  fi
 
   	  _LT_AC_TAGVAR(hardcode_libdir_flag_spec, $1)='${wl}-R $wl$libdir'
@@ -5427,7 +5427,7 @@ if AC_TRY_EVAL(ac_compile); then
   # The `*' in the case matches for architectures that use `case' in
   # $output_verbose_cmd can trigger glob expansion during the loop
   # eval without this substitution.
-  output_verbose_link_cmd="`$echo \"X$output_verbose_link_cmd\" | $Xsed -e \"$no_glob_subst\"`"
+  output_verbose_link_cmd=`$echo "X$output_verbose_link_cmd" | $Xsed -e "$no_glob_subst"`
 
   for p in `eval $output_verbose_link_cmd`; do
     case $p in
