@@ -18,13 +18,15 @@ TESTS = cdemo-static.test cdemo-make.test cdemo-exec.test \
 	mdemo-inst.test mdemo-unst.test dryrun.test \
 	demo-nofast.test demo-make.test demo-exec.test \
 	demo-inst.test demo-unst.test \
+	demo-pic.test demo-make.test demo-exec.test \
+	demo-nopic.test demo-make.test demo-exec.test \
 	depdemo-nofast.test depdemo-make.test depdemo-exec.test \
 	depdemo-inst.test depdemo-unst.test \
 	cdemo-shared.test cdemo-make.test cdemo-exec.test \
 	demo-shared.test demo-make.test demo-exec.test demo-inst.test \
 	hardcode.test build-relink.test noinst-link.test demo-unst.test \
 	depdemo-shared.test depdemo-make.test depdemo-exec.test \
-	depdemo-inst.test depdemo-unst.test \
+	depdemo-inst.test build-relink2.test depdemo-unst.test \
 	mdemo-shared.test mdemo-make.test mdemo-exec.test \
 	mdemo-inst.test mdemo-unst.test \
 	assign.test link.test link-2.test nomode.test \

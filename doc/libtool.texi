@@ -3295,6 +3295,8 @@ shared libraries (@samp{--disable-static}).
 @itemx demo-static.test
 @itemx demo-shared.test
 @itemx demo-nofast.test
+@itemx demo-pic.test
+@itemx demo-nopic.test
 @pindex demo-conf.test
 @pindex demo-exec.test
 @pindex demo-inst.test
@@ -3303,6 +3305,8 @@ shared libraries (@samp{--disable-static}).
 @pindex demo-static.test
 @pindex demo-shared.test
 @pindex demo-nofast.test
+@pindex demo-pic.test
+@pindex demo-nopic.test
 These programs check to see that the @file{demo} subdirectory of the
 libtool distribution can be configured, built, installed, and
 uninstalled correctly.
@@ -3317,7 +3321,10 @@ libtool configurations: @file{demo-conf.test} configures
 (@samp{--disable-shared}), and @file{demo-shared.test} builds only
 shared libraries (@samp{--disable-static}).
 @file{demo-nofast.test} configures @file{demo/libtool} to
-disable the fast-install mode (@samp{--enable-fast-install=no}.
+disable the fast-install mode (@samp{--enable-fast-install=no}).
+@file{demo-pic.test} configures @file{demo/libtool} to
+prefer building PIC code (@samp{--with-pic}), @file{demo-nopic.test}
+to prefer non-PIC code (@samp{--without-pic}).
 
 @item deplibs.test
 @pindex deplibs.test

@@ -1,3 +1,19 @@
+1999-07-17  Thomas Tanner  <tanner@ffii.org>
+
+	* NEWS, TODO: updated (pic flags)
+	* libtool.m4 (AC_PROG_LIBTOOL): added --with-pic flag
+	* ltconfig.in: new pic_mode variable and --prefer[-non]-pic flags,
+	  fixed the strip check (reported by Keith Bostic <bostic@bostic.com>)
+	* ltmain.in (compile mode): build only PIC/non-PIC code depending
+	  on pic_mode  
+	* libltdl/README: document the supported dlopen interfaces
+	* doc/libtool.texi (tests): documented new tests
+	* tests/Makefile.am: added new tests
+	* tests/demo-pic.test: new test to test --with-pic
+	* tests/demo-nopic.test: new test to test --without-pic
+	* tests/build-relink2.test: variant of build-relink.test that
+	  uses depdemo
+
 1999-07-09  Olly Betts  <olly@muscat.co.uk>
 
 	* doc/libtool.texi (C++ Libraries):  fixed a typo.

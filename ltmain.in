@@ -434,8 +434,13 @@ compiler."
       # Without this assignment, base_compile gets emptied.
       fbsd_hideous_sh_bug=$base_compile
 
-      # All platforms use -DPIC, to notify preprocessed assembler code.
-      command="$base_compile $pic_flag -DPIC $srcfile"
+      if test "$pic_mode" != no; then
+	# All platforms use -DPIC, to notify preprocessed assembler code.
+	command="$base_compile $pic_flag -DPIC $srcfile"
+      else
+	# Don't build PIC code
+	command="$base_compile $srcfile"
+      fi
       if test "$build_old_libs" = yes; then
 	lo_libobj="$libobj"
 	dir=`$echo "X$libobj" | $Xsed -e 's%/[^/]*$%%'`
@@ -506,7 +511,8 @@ compiler."
       fi
 
       # If we have no pic_flag, then copy the object into place and finish.
-      if test -z "$pic_flag" && test "$build_old_libs" = yes; then
+      if (test -z "$pic_flag" || test "$pic_mode" != default) &&
+         test "$build_old_libs" = yes; then
 	# Rename the .lo from within objdir to obj
 	if test -f $obj; then
 	  $show $rm $obj
@@ -538,7 +544,13 @@ compiler."
 
     # Only build a position-dependent object if we build old libraries.
     if test "$build_old_libs" = yes; then
-      command="$base_compile $srcfile"
+      if test "$pic_mode" != yes; then
+	# Don't build PIC code
+	command="$base_compile $srcfile"
+      else
+	# All platforms use -DPIC, to notify preprocessed assembler code.
+	command="$base_compile $pic_flag -DPIC $srcfile"
+      fi
       if test "$compiler_c_o" = yes; then
 	command="$command -o $obj"
 	output_obj="$obj"
@@ -2613,7 +2625,7 @@ EOF
 	exit 0
       fi
 
-      if test -n "$pic_flag"; then
+      if test -n "$pic_flag" || test "$pic_mode" != default; then
 	# Only do commands if we really have different PIC objects.
 	reload_objs="$libobjs $reload_conv_objs"
 	output="$libobj"

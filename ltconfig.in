@@ -187,6 +187,7 @@ enable_static=yes
 enable_fast_install=yes
 enable_dlopen=unknown
 enable_win32_dll=no
+pic_mode=default
 ltmain=
 silent=
 srcdir=
@@ -257,6 +258,8 @@ Generate a system-specific libtool script.
     --version              output version information and exit
     --with-gcc             assume that the GNU C compiler will be used
     --with-gnu-ld          assume that the C compiler uses the GNU linker
+    --prefer-pic           try to use only PIC objects
+    --prefer-non-pic       try to use only non-PIC objects
     --disable-lock         disable file locking
     --cache-file=FILE      configure cache file
 
@@ -297,6 +300,9 @@ EOM
 
   --with-gcc) with_gcc=yes ;;
   --with-gnu-ld) with_gnu_ld=yes ;;
+
+  --prefer-pic) pic_mode=yes ;;
+  --prefer-non-pic) pic_mode=no ;;
 
   --disable-lock) need_locks=no ;;
 
@@ -1669,7 +1675,7 @@ fi
 echo "$ac_t$hardcode_action" 1>&6
 
 echo $ac_n "checking whether stripping libraries is possible... $ac_c" 1>&6
-if test -n "$STRIP" && $STRIP -V | grep "GNU strip" >/dev/null; then
+if test -n "$STRIP" && $STRIP -V 2>&1 | grep "GNU strip" >/dev/null; then
   test -z "$old_striplib" && old_striplib="$STRIP --strip-debug"
   test -z "$striplib" && striplib="$STRIP --strip-unneeded"
   echo "${ac_t}yes" 1>&6
@@ -2278,6 +2284,19 @@ elif test "$shlibpath_overrides_runpath" = yes ||
      test "$enable_shared" = no; then
   # Fast installation is not necessary
   enable_fast_install=needless
+fi
+
+# Check whether we must set pic_mode to default
+test -z "$pic_flag" && pic_mode=default
+# On Cygwin there's no "real" PIC flag so we must build both object types
+case "$host_os" in
+cygwin* | mingw* | os2*)
+  pic_mode=default
+  ;;
+esac
+if test $pic_mode = no && test "$deplibs_check_method" != pass_all; then
+  # non-PIC code in shared libraries is not supported
+  pic_mode=default
 fi
 
 if test "x$enable_dlopen" != xyes; then
@@ -2902,6 +2921,7 @@ exeext="$exeext"
 
 # Additional compiler flags for building library objects.
 pic_flag=$pic_flag
+pic_mode=$pic_mode
 
 # Does compiler simultaneously support -c and -o options?
 compiler_c_o=$compiler_c_o
