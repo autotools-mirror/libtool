@@ -1,3 +1,9 @@
+2004-12-13  Albert Chin-A-Young  <china@thewrittenword.com>
+
+	* libtool.m4 (_LT_LINKER_SHLIBS, _LT_LANG_CXX_CONFIG):
+	Append -G to link command-line on AIX to honor -brtl on command-line
+	(runtime linking). Already done for IBM C/C++ compilers.
+
 2004-12-12  Patrick Welche <prlw1@newn.cam.ac.uk>
 
 	* configure.ac: Fix aclocaldir to use ${datadir}, not ${prefix}.
