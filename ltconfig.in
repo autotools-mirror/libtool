@@ -644,7 +644,7 @@ else
   fi
   $rm conftest*
 fi
-if test X$ac_cv_exeext != Xnone; then
+if test "X$ac_cv_exeext" != Xnone; then
   exeext="$ac_cv_exeext"
 fi
 echo "$ac_t$ac_cv_exeext" 1>&6
