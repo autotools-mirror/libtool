@@ -530,6 +530,10 @@ rpl_realloc (ptr, size)
 #  include <dlfcn.h>
 #endif
 
+#if HAVE_SYS_DL_H
+#  include <sys/dl.h>
+#endif
+
 #ifdef RTLD_GLOBAL
 #  define LT_GLOBAL		RTLD_GLOBAL
 #else

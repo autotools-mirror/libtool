@@ -35,7 +35,7 @@ AC_REQUIRE([AC_C_INLINE])dnl
 AC_REQUIRE([AC_HEADER_STDC])dnl
 AC_REQUIRE([_LT_AC_CHECK_DLFCN])dnl
 
-AC_CHECK_HEADERS(malloc.h memory.h stdlib.h stdio.h ctype.h dl.h dld.h)
+AC_CHECK_HEADERS(malloc.h memory.h stdlib.h stdio.h ctype.h dl.h sys/dl.h dld.h)
 AC_CHECK_HEADERS(string.h strings.h, break)
 AC_CHECK_FUNCS(strchr index, break)
 AC_CHECK_FUNCS(strrchr rindex, break)
