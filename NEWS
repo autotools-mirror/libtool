@@ -1,6 +1,6 @@
 NEWS - list of user-visible changes between releases of GNU Libtool
 
-New:
+New in 1.0i - 1998-02-06, Gordon Matzigkeit:
 * Bug fixes.
 * Inter-library dependencies are automatically handled when linking
   against a `.la' file.  This, along with `-no-undefined', should

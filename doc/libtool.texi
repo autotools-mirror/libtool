@@ -23,7 +23,7 @@
 @ifinfo
 This file documents GNU Libtool @value{VERSION}
 
-Copyright (C) 1996, 1997 Free Software Foundation, Inc.
+Copyright (C) 1996--1998 Free Software Foundation, Inc.
 
 Permission is granted to make and distribute verbatim copies of this
 manual provided the copyright notice and this permission notice are
@@ -55,7 +55,7 @@ approved by the Foundation.
 
 @page
 @vskip 0pt plus 1filll
-Copyright @copyright{} 1996, 1997 Free Software Foundation, Inc.
+Copyright @copyright{} 1996--1998 Free Software Foundation, Inc.
 @sp 2
 This is the first edition of the GNU Libtool documentation,@*
 and is consistent with GNU Libtool @value{VERSION}.@*

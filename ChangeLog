@@ -1,5 +1,8 @@
 Fri Feb  6 00:20:41 1998  Gordon Matzigkeit  <gord@profitpress.com>
 
+	* libtool.m4 (LD): Use file(1) to discover which ABI we're using
+ 	on IRIX, and propagate the correct linker flag.  From Jim Wilson.
+
 	* ltconfig.in, ltmain.in (Xsed): `arg=-n; echo "$arg" | sed ...'
   	gives problems, because the `-n' is interpreted as an option to
  	echo(1).  So, use `echo "X$arg" | sed -e 's/^X//' ...' everywhere,
