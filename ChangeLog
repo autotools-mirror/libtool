@@ -1,5 +1,7 @@
 1999-04-05  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* Makefile.am (CVS): allow command-line overriding of cvs
+
 	* ltconfig.in (exclude_expsyms): Exclude _GLOBAL_OFFSET_TABLE_ by
 	default, as most a.out platforms use it, and end up in trouble if
 	we preload it, so it's safer to rule it out by default, and

@@ -50,12 +50,13 @@ libtoolize: $(srcdir)/libtoolize.in $(top_builddir)/config.status
 # TSDEPS will be defined to TSDEPS_DIST at `make dist' time
 TSDEPS =
 TSDEPS_DIST = ChangeLog libtool.m4
+CVS = cvs # set it to `:' to avoid CVS operations
 
 .PHONY: timestamps update-timestamps
 timestamps distdir: update-timestamps
 update-timestamps:
 	@if (cd $(srcdir) && test -d CVS && \
-	    cvs -n update $(TSDEPS_DIST) | grep '^M'); then \
+	    $(CVS) -n update $(TSDEPS_DIST) | grep '^M'); then \
 		echo "Cannot make dist before commit"; exit 1; else :; fi
 	$(MAKE) TSDEPS="$(TSDEPS_DIST)" $(srcdir)/ltconfig $(srcdir)/ltmain.sh
 
@@ -113,7 +114,8 @@ cvs-dist: distcheck
 	  echo "NEWS not updated; not releasing" 1>&2; \
 	  exit 1;				\
 	fi
-	cd $(srcdir) && cvs -q tag `echo "release-$(VERSION)" | sed 's/\./-/g'`
+	cd $(srcdir) && \
+	 $(CVS) -q tag `echo "release-$(VERSION)" | sed 's/\./-/g'`
 	$(MAKE) dist
 
 cvs-diff:
@@ -122,5 +124,5 @@ cvs-diff:
 	  prevno=`echo "$(VERSION)" - 0.01 | bc | sed 's/^\./0./'`; \
 	else prevno="$$OLDVERSION"; fi; \
 	prevver=release-`echo $$prevno | sed 's/\./-/g'`; \
-	cvs -f rdiff -c -r $$prevver -r $$thisver $(PACKAGE) \
+	$(CVS) -f rdiff -c -r $$prevver -r $$thisver $(PACKAGE) \
 	    > $(PACKAGE)-$$prevno-$(VERSION).diff
