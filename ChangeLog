@@ -1,4 +1,7 @@
-2001-03-06  Alexandre Oliva  <oliva@lsd.ic.unicamp.br>
+2001-03-06  Alexandre Oliva  <aoliva@redhat.com>
+
+	* ltconfig.in (can_build_shared) [AIX 4.[01], GCC]: GCC up to
+	2.96 can't build shared libraries reliably.  Disable them.
 
 	* ltmain.in: When dropping dependencies of a -no-undefined
 	library, give up on building a shared library.
