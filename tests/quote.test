@@ -36,6 +36,7 @@ case $1 in
 esac
 
 func_get_config "ECHO" "../libtool --config"
+func_get_config "wl" "../libtool --config"
 
 for mode in compile link install; do
   $ECHO "== $mode mode"
@@ -49,6 +50,7 @@ for mode in compile link install; do
   compile)
     preargs="$CC -c"
     preflag=
+    match_preflag=
     flag="-DVAR="
     postargs="foo.c"
     ;;
@@ -56,6 +58,7 @@ for mode in compile link install; do
   link)
     preargs="$CC -o hell -g -O"
     preflag=-Wl,
+    match_preflag="$wl"
     flag="-someflag="
     postargs="foo.o"
     ;;
@@ -63,6 +66,7 @@ for mode in compile link install; do
   install)
     preargs="install -c"
     preflag=
+    match_preflag=
     flag="--something="
     postargs="hell /usr/local/bin/hell"
     ;;
@@ -77,7 +81,7 @@ for mode in compile link install; do
   # We must not attempt to match $preargs in the output, because libtool
   # may modify them.  For example, on Cygwin, ``libtool --mode=link gcc -o
   # foo foo.o''  becomes ``gcc -o foo.exe foo.o''.
-  match="${preflag}${flag}test "
+  match="${match_preflag}${flag}test "
   case "$result" in
   *"$match"*)
     $ECHO "= passed: $result"
@@ -92,7 +96,7 @@ for mode in compile link install; do
   for mchar in \\ \" \` \$; do
     $ECHO "= trying: \\$mchar quoting"
     result=`$LIBTOOL -n --mode=$mode $preargs ${preflag}"${flag}${mchar}test${mchar}" $postargs` || status=$EXIT_FAILURE
-    match="${preflag}${flag}\\${mchar}test\\${mchar} "
+    match="${match_preflag}${flag}\\${mchar}test\\${mchar} "
     case "$result" in
     *"$match"*)
       $ECHO "= passed: $result"
@@ -110,7 +114,7 @@ for mode in compile link install; do
 
     $ECHO "= trying: \"$mchar\" quoting"
     result=`$LIBTOOL -n --mode=$mode $preargs ${preflag}"${flag}${mchar}test${mchar}" $postargs` || status=$EXIT_FAILURE
-    match="${preflag}\"${flag}${mchar}test${mchar}\" "
+    match="${match_preflag}\"${flag}${mchar}test${mchar}\" "
     case "$result" in
     *"$match"*)
       $ECHO "= passed: $result"
