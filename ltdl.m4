@@ -24,7 +24,7 @@
 
 # AC_LIB_LTDL
 # -----------
-AC_DEFUN(AC_LIB_LTDL,
+AC_DEFUN([AC_LIB_LTDL],
 [AC_PREREQ(2.13)dnl
 AC_REQUIRE([AC_PROG_CC])dnl
 AC_REQUIRE([AC_C_CONST])dnl
@@ -56,7 +56,7 @@ AC_REQUIRE([AC_LTDL_SYS_DLOPEN_DEPLIBS])dnl
 
 # AC_LTDL_ENABLE_INSTALL
 # ----------------------
-AC_DEFUN(AC_LTDL_ENABLE_INSTALL,
+AC_DEFUN([AC_LTDL_ENABLE_INSTALL],
 [AC_ARG_ENABLE(ltdl-install,
 [  --enable-ltdl-install   install libltdl])
 
@@ -66,7 +66,7 @@ AM_CONDITIONAL(CONVENIENCE_LTDL, test x"${enable_ltdl_convenience-no}" != xno)
 
 # AC_LTDL_SYS_DLOPEN_DEPLIBS
 # --------------------------
-AC_DEFUN(AC_LTDL_SYS_DLOPEN_DEPLIBS,
+AC_DEFUN([AC_LTDL_SYS_DLOPEN_DEPLIBS],
 [AC_REQUIRE([AC_CANONICAL_HOST])
 AC_CACHE_CHECK([whether deplibs are loaded by dlopen],
 	libltdl_cv_sys_dlopen_deplibs, [dnl
@@ -92,8 +92,8 @@ fi
 
 # AC_LTDL_SHLIBEXT
 # ----------------
-AC_DEFUN(AC_LTDL_SHLIBEXT,
-[AC_REQUIRE([_LT_AC_LTCONFIG_HACK])
+AC_DEFUN([AC_LTDL_SHLIBEXT],
+[AC_REQUIRE([AC_LIBTOOL_SYS_DYNAMIC_LINKER])
 AC_CACHE_CHECK([which extension is used for shared libraries],
   libltdl_cv_shlibext,
 [ac_last=
@@ -112,8 +112,8 @@ fi
 
 # AC_LTDL_SHLIBPATH
 # -----------------
-AC_DEFUN(AC_LTDL_SHLIBPATH,
-[AC_REQUIRE([_LT_AC_LTCONFIG_HACK])
+AC_DEFUN([AC_LTDL_SHLIBPATH],
+[AC_REQUIRE([AC_LIBTOOL_SYS_DYNAMIC_LINKER])
 AC_CACHE_CHECK([which variable specifies run-time library path],
   libltdl_cv_shlibpath_var, [libltdl_cv_shlibpath_var="$shlibpath_var"])
 if test -n "$libltdl_cv_shlibpath_var"; then
@@ -124,8 +124,8 @@ fi
 
 # AC_LTDL_SYSSEARCHPATH
 # ---------------------
-AC_DEFUN(AC_LTDL_SYSSEARCHPATH,
-[AC_REQUIRE([_LT_AC_LTCONFIG_HACK])
+AC_DEFUN([AC_LTDL_SYSSEARCHPATH],
+[AC_REQUIRE([AC_LIBTOOL_SYS_DYNAMIC_LINKER])
 AC_CACHE_CHECK([for the default library search path],
   libltdl_cv_sys_search_path, [libltdl_cv_sys_search_path="$sys_lib_dlsearch_path_spec"])
 if test -n "$libltdl_cv_sys_search_path"; then
@@ -148,7 +148,7 @@ fi
 
 # AC_LTDL_OBJDIR
 # --------------
-AC_DEFUN(AC_LTDL_OBJDIR,
+AC_DEFUN([AC_LTDL_OBJDIR],
 [AC_CACHE_CHECK([for objdir],
   libltdl_cv_objdir, [libltdl_cv_objdir="$objdir"
 if test -n "$objdir"; then
@@ -170,7 +170,7 @@ AC_DEFINE_UNQUOTED(LTDL_OBJDIR, "$libltdl_cv_objdir/",
 
 # AC_LTDL_DLPREOPEN
 # -----------------
-AC_DEFUN(AC_LTDL_DLPREOPEN,
+AC_DEFUN([AC_LTDL_DLPREOPEN],
 [AC_REQUIRE([AC_LIBTOOL_SYS_GLOBAL_SYMBOL_PIPE])dnl
 AC_CACHE_CHECK([whether libtool supports -dlopen/-dlpreopen],
        libltdl_cv_preloaded_symbols, [dnl
@@ -188,7 +188,7 @@ fi
 
 # AC_LTDL_DLLIB
 # -------------
-AC_DEFUN(AC_LTDL_DLLIB,
+AC_DEFUN([AC_LTDL_DLLIB],
 [LIBADD_DL=
 AC_SUBST(LIBADD_DL)
 AC_LANG_PUSH([C])
@@ -230,7 +230,7 @@ AC_LANG_POP
 
 # AC_LTDL_SYMBOL_USCORE
 # ---------------------
-AC_DEFUN(AC_LTDL_SYMBOL_USCORE,
+AC_DEFUN([AC_LTDL_SYMBOL_USCORE],
 [dnl does the compiler prefix global symbols with an underscore?
 AC_REQUIRE([AC_LIBTOOL_SYS_GLOBAL_SYMBOL_PIPE])dnl
 AC_MSG_CHECKING([for _ prefix in compiled symbols])
@@ -269,7 +269,7 @@ AC_MSG_RESULT($ac_cv_sys_symbol_underscore)
 
 # AC_LTDL_DLSYM_USCORE
 # --------------------
-AC_DEFUN(AC_LTDL_DLSYM_USCORE,
+AC_DEFUN([AC_LTDL_DLSYM_USCORE],
 [AC_REQUIRE([AC_LTDL_SYMBOL_USCORE])dnl
 if test x"$ac_cv_sys_symbol_underscore" = xyes; then
   if test x"$ac_cv_func_dlopen" = xyes ||

@@ -1,3 +1,10 @@
+2001-07-05  Gary V. Vaughan  <gary@gnu.org>
+
+	* libtool.m4 (_LT_AC_LANG_C_CONFIG):  Revert to 1.3.x
+	sematics, and always build static libs when the host machine
+	cannot build shared libs.  Even if static libs were explicitly
+	disabled.
+
 2001-07-02  Gary V. Vaughan  <gary@gnu.org>
 
 	Cleanup of libltdl:

@@ -473,7 +473,7 @@ need_locks="$enable_libtool_lock"
 #		[OUTPUT-FILE], [ACTION-SUCCESS], [ACTION-FAILURE])
 # ----------------------------------------------------------------
 # Check whether the given compiler option works
-AC_DEFUN(AC_LIBTOOL_COMPILER_OPTION,
+AC_DEFUN([AC_LIBTOOL_COMPILER_OPTION],
 [AC_CACHE_CHECK([$1], [$2],
   [$2=no
   ifelse([$4], , [ac_outfile=conftest.$ac_objext], [ac_outfile=$4])
@@ -506,7 +506,7 @@ fi
 #                          [ACTION-SUCCESS], [ACTION-FAILURE])
 # ------------------------------------------------------------
 # Check whether the given compiler option works
-AC_DEFUN(AC_LIBTOOL_LINKER_OPTION,
+AC_DEFUN([AC_LIBTOOL_LINKER_OPTION],
 [AC_CACHE_CHECK([$1], [$2],
   [$2=no
    save_LDFLAGS="$LDFLAGS"
@@ -584,7 +584,7 @@ fi
 
 # _LT_AC_CHECK_DLFCN
 # --------------------
-AC_DEFUN(_LT_AC_CHECK_DLFCN,
+AC_DEFUN([_LT_AC_CHECK_DLFCN],
 [AC_CHECK_HEADERS(dlfcn.h)dnl
 ])# _LT_AC_CHECK_DLFCN
 
@@ -592,7 +592,7 @@ AC_DEFUN(_LT_AC_CHECK_DLFCN,
 # _LT_AC_TRY_DLOPEN_SELF (ACTION-IF-TRUE, ACTION-IF-TRUE-W-USCORE,
 #                           ACTION-IF-FALSE, ACTION-IF-CROSS-COMPILING)
 # ------------------------------------------------------------------
-AC_DEFUN(_LT_AC_TRY_DLOPEN_SELF,
+AC_DEFUN([_LT_AC_TRY_DLOPEN_SELF],
 [AC_REQUIRE([_LT_AC_CHECK_DLFCN])dnl
 if test "$cross_compiling" = yes; then :
   [$4]
@@ -680,7 +680,7 @@ rm -fr conftest*
 
 # AC_LIBTOOL_DLOPEN_SELF
 # -------------------
-AC_DEFUN(AC_LIBTOOL_DLOPEN_SELF,
+AC_DEFUN([AC_LIBTOOL_DLOPEN_SELF],
 [AC_REQUIRE([_LT_AC_CHECK_DLFCN])dnl
 if test "x$enable_dlopen" != xyes; then
   enable_dlopen=unknown
@@ -1397,20 +1397,6 @@ if test -f "$ltmain" && test -n "$tagnames"; then
   fi
 fi
 ])# _LT_AC_TAGCONFIG
-
-
-# _LT_AC_LTCONFIG_HACK([TAGNAME])
-# -------------------------------
-# If TAGNAME is not passed, then create an initial libtool configuration
-# for the default language.  Otherwise make the configuration named by
-# TAGNAME.
-AC_DEFUN([_LT_AC_LTCONFIG_HACK],
-[
-## CAVEAT EMPTOR:
-## There is no encapsulation within the following macros, do not change
-## the running order or otherwise move them around unless you know exactly
-## what you are doing...
-])# _LT_AC_LTCONFIG_HACK
 
 
 # AC_LIBTOOL_DLOPEN
@@ -2158,9 +2144,34 @@ AC_LIBTOOL_SYS_LIB_STRIP
 AC_LIBTOOL_SYS_DYNAMIC_LINKER($1)
 AC_LIBTOOL_DLOPEN_SELF($1)
 
-# Report the final consequences.
+# Report which librarie types wil actually be built
 AC_MSG_CHECKING([if libtool supports shared libraries])
 AC_MSG_RESULT([$can_build_shared])
+
+AC_MSG_CHECKING([whether to build shared libraries])
+test "$can_build_shared" = "no" && enable_shared=no
+
+# On AIX, shared libraries and static libraries use the same namespace, and
+# are all built from PIC.
+case "$host_os" in
+aix3*)
+  test "$enable_shared" = yes && enable_static=no
+  if test -n "$RANLIB"; then
+    archive_cmds="$archive_cmds~\$RANLIB \$lib"
+    postinstall_cmds='$RANLIB $lib'
+  fi
+  ;;
+
+aix4*)
+  test "$enable_shared" = yes && enable_static=no
+  ;;
+esac
+AC_MSG_RESULT([$enable_shared])
+
+AC_MSG_CHECKING([whether to build static libraries])
+# Make sure either enable_shared or enable_static is yes.
+test "$enable_shared" = yes || enable_static=yes
+AC_MSG_RESULT([$enable_static])
 
 AC_LIBTOOL_CONFIG($1)
 
@@ -2939,10 +2950,6 @@ AC_LIBTOOL_SYS_LIB_STRIP
 AC_LIBTOOL_SYS_DYNAMIC_LINKER($1)
 AC_LIBTOOL_DLOPEN_SELF($1)
 
-# Report the final consequences.
-AC_MSG_CHECKING([if libtool supports shared libraries])
-AC_MSG_RESULT([$can_build_shared])
-
 AC_LIBTOOL_CONFIG($1)
 
 AC_LANG_POP
@@ -3147,11 +3154,11 @@ SHELL=$lt_SHELL
 # Whether or not to build shared libraries.
 build_libtool_libs=$enable_shared
 
-# Whether or not to add -lc for building shared libraries.
-build_libtool_need_lc=$_LT_AC_TAGVAR(archive_cmds_need_lc, $1)
-
 # Whether or not to build static libraries.
 build_old_libs=$enable_static
+
+# Whether or not to add -lc for building shared libraries.
+build_libtool_need_lc=$_LT_AC_TAGVAR(archive_cmds_need_lc, $1)
 
 # Whether or not to optimize for fast installation.
 fast_install=$enable_fast_install
