@@ -1,0 +1,50 @@
+
+index of the source files:
+
+README         This file.
+LT.diff        A patch for libtool.m4
+
+ltstr.def      The `glue' definition file that sources the following:
+lt_base.def    Global variables used for all operation modes
+lt_clean.def   `clean' mode script
+lt_compile.def `compile' mode script
+lt_execute.def `execute' mode script
+lt_finish.def  `finish' mode script
+lt_install.def `install' mode script
+lt_link.def    `link' mode script
+
+ltopts.def     The definitions for the ltmain options
+ltmain.c       The main routine for the new ltmain (aka libtool).
+ltmain.mk      The make file for all this
+
+ltmain.tpl     The template for the shell script (ltmain.in) variation
+ltstr.tpl      The template for producing the compiled versions of
+               the scriptlets defined in the lt_*.def files.
+
+================
+
+These are the generated files:
+
+ltconfig.x     Generated for a particular configuration via the
+               LT.diff patch, above.
+
+ltmain.in      Generated version of the traditional file
+ltopts.c       Generated option definition structure
+ltopts.h       Option interface file
+ltstr.c        The strings for emitting the shell commands
+ltstr.h        The interface file for same
+
+================
+
+The executable requires -lopts to be able to link.
+The latest autogen archive ought to have a K&R friendly version
+of the option processing library that can be compiled and linked
+into the executable.  Of course, AutoGen-5 is required to be able
+to create the last five generated files, so you should
+have it available.  :-)
+
+================
+
+I have not done any timing tests, but at this point any savings
+ought to be quite marginal.  About all that is saved is interpretation
+time, very few forks and execs.  That all comes later.  :-)
