@@ -261,7 +261,8 @@ _LT_CONFIG_LIBTOOL_INIT([$2])
 # full-stop to the whole comment if one is not present already.
 m4_define([_LT_FORMAT_COMMENT],
 [m4_ifval([$1], [
-m4_bpatsubst([$1], [^ *], [# ])]m4_bmatch([$1], [[!?.]$], [], [.])
+m4_bpatsubst([m4_bpatsubst([$1], [^ *], [# ])],
+              [['`$\]], [\\\&])]m4_bmatch([$1], [[!?.]$], [], [.])
 )])
 
 
@@ -4471,11 +4472,11 @@ m4_defun([_LT_PROG_CXX],
 pushdef([AC_MSG_ERROR], [_lt_caught_CXX_error=yes])
 AC_PROG_CXX
 if test -n "$CXX" && ( test "X$CXX" != "Xno" &&
-    ( (test "X$CXX" = "Xg++" && `g++ -v >/dev/null 2>&1` ) || 
+    ( (test "X$CXX" = "Xg++" && `g++ -v >/dev/null 2>&1` ) ||
     (test "X$CXX" != "Xg++"))) ; then
   AC_PROG_CXXCPP
-else  
-  _lt_caught_CXX_error=yes 
+else
+  _lt_caught_CXX_error=yes
 fi
 popdef([AC_MSG_ERROR])
 ])# _LT_PROG_CXX
@@ -5579,7 +5580,7 @@ m4_defun([_LT_PROG_F77],
 pushdef([AC_MSG_ERROR], [_lt_caught_F77_error=yes])
 AC_PROG_F77
 if test -z "$F77"; then
-  _lt_caught_F77_error=yes 
+  _lt_caught_F77_error=yes
 fi
 popdef([AC_MSG_ERROR])
 ])# _LT_PROG_F77
