@@ -18,8 +18,9 @@ New in 1.5b: 2003-??-??; CVS version 1.5a, Libtool team:
 * libtoolize installs libtool.m4 (and ltdl.m4 if used) to AC_CONFIG_MACRO_DIR.
 * Mode inferrence removed, shorthand for choosing modes added.
 * Specifying -allow-undefined is now an error.
-* Initial support for amigaos-ppc.
 * Speed up max_cmd_len check.
+* Extracting symbols from an import library on cygwin and win32 now works.
+* Initial support for amigaos-ppc.
 * Bug fixes.
 
 New in 1.5.1: 2003-??-??; CVS version 1.5.0a, Libtool team:

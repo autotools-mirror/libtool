@@ -7,6 +7,7 @@
 	static library (the default case). Add extra filters to
 	$export_symbols_cmds to process this sort of output in addition to
 	'normal' static-lib output.
+	* NEWS: Updated.
 
 2003-11-06  Charles Wilson  <cwilson@ece.gatech.edu>,
 	Gary V. Vaughan  <gary@gnu.org>
