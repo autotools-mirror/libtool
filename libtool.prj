@@ -1,12 +1,12 @@
 ;; -*- Lisp -*-
 (Created-By-Prcs-Version 1 2 1)
 (Project-Description "GNU libtool library support script")
-(Project-Version libtool 0.9f 5)
-(Parent-Version libtool 0.9f 4)
+(Project-Version libtool 0.9f 6)
+(Parent-Version libtool 0.9f 5)
 
-(Version-Log "Added more docs, and FreeBSD bugfixes.")
+(Version-Log "Major documentation update effort.")
 (New-Version-Log "")
-(Checkin-Time "Thu, 05 Jun 1997 12:00:56 -0600")
+(Checkin-Time "Thu, 05 Jun 1997 15:43:58 -0600")
 (Checkin-Login gord)
 (Populate-Ignore ("~$" "Makefile$" "Makefile\\.in$" "aclocal\\.m4$"
 		  "configure$" "config\\.status$" "config\\.cache$"
@@ -26,7 +26,7 @@
   (README (libtool/17_README 1.11 664))
   (README-alpha (libtool/16_README-alp 1.4 664))
   (README-automake (libtool/37_README-aut 1.4 664))
-  (TODO (libtool/14_TODO 1.3.1.11 664))
+  (TODO (libtool/14_TODO 1.3.1.12 664))
   (THANKS (libtool/15_THANKS 1.7 664))
 
 ;; Top directory.
@@ -40,7 +40,7 @@
   (libtool.m4 (libtool/12_libtool.m4 1.6 664))
 
 ;; Documentation subdirectory.
-  (doc/libtool.texi (libtool/0_libtool.te 1.3.1.11 664))
+  (doc/libtool.texi (libtool/0_libtool.te 1.3.1.12 664))
   (doc/platforms.texi (libtool/41_platforms. 1.5 664))
   (doc/Makefile.am (libtool/1_Makefile.a 1.5 664))
 
