@@ -18,3 +18,7 @@ depdemo_static_SOURCES = $(depdemo_SOURCES)
 depdemo_static_LDADD = $(depdemo_LDADD)
 depdemo_static_DEPENDENCIES = $(depdemo_DEPENDENCIES)
 depdemo_static_LDFLAGS = $(STATIC)
+
+$(OBJECTS): libtool
+libtool: $(LIBTOOL_DEPS)
+	$(SHELL) ./config.status --recheck

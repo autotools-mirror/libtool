@@ -2623,8 +2623,7 @@ Unresolved symbols in the module are resolved using its dependency
 libraries and previously dlopened modules.  If the executable using this
 module was linked with the @code{-export-dynamic} flag, then the global
 symbols in the executable will also be used to resolve references in the
-module.  Libltdl tries to resolve the symbols immediately and returns
-@code{NULL} if that fails.
+module.
  
 If @var{filename} is NULL @code{lt_dlopen} will return a handle
 for the program itself, which can be used to access its symbols 
@@ -2870,6 +2869,7 @@ line as an assignment in the libtool script.
 @itemx demo-unst.test
 @itemx demo-static.test
 @itemx demo-shared.test
+@itemx demo-nofast.test
 @pindex demo-conf.test
 @pindex demo-exec.test
 @pindex demo-inst.test
@@ -2877,19 +2877,22 @@ line as an assignment in the libtool script.
 @pindex demo-unst.test
 @pindex demo-static.test
 @pindex demo-shared.test
+@pindex demo-nofast.test
 These programs check to see that the @file{demo} subdirectory of the
 libtool distribution can be configured, built, installed, and
 uninstalled correctly.
 
 The @file{demo} subdirectory contains a demonstration of a trivial
-package that uses libtool.  The tests @file{cdemo-make.test},
-@file{cdemo-exec.test}, @file{cdemo-inst.test} and
-@file{cdemo-unst.test} are executed three times, under three different
-libtool configurations: @file{cdemo-conf.test} configures
-@file{cdemo/libtool} to build both static and shared libraries,
-@file{cdemo-static.test} builds only static libraries
-(@samp{--disable-shared}), and @file{cdemo-shared.test} builds only
+package that uses libtool.  The tests @file{demo-make.test},
+@file{demo-exec.test}, @file{demo-inst.test} and
+@file{demo-unst.test} are executed four times, under four different
+libtool configurations: @file{demo-conf.test} configures
+@file{demo/libtool} to build both static and shared libraries,
+@file{demo-static.test} builds only static libraries
+(@samp{--disable-shared}), and @file{demo-shared.test} builds only
 shared libraries (@samp{--disable-static}).
+@file{demo-nofast.test} configures @file{demo/libtool} to
+disable the fast-install mode (@samp{--enable-fast-install=no}.
 
 @item mdemo-conf.test
 @itemx mdemo-exec.test
@@ -2947,6 +2950,12 @@ three times, under three different libtool configurations:
 static and shared libraries, @file{cdemo-static.test} builds only static
 libraries (@samp{--disable-shared}), and @file{cdemo-shared.test} builds
 only shared libraries (@samp{--disable-static}).
+
+@item build-relink.test
+@pindex build-relink.test
+Checks whether variable @var{shlibpath_overrides_runpath} is properly
+set.  If the test fails and @var{VERBOSE} is set, it will indicate what
+the variable should have been set to.
 
 @item hardcode.test
 @pindex hardcode.test
@@ -3475,6 +3484,23 @@ and should write the names of the exported symbols to that file, for
 the use of @samp{old_archive_from_expsyms_cmds}.
 @end defvar
 
+@defvar fast_install
+Determines whether libtool will privilege the installer or the
+developer.  The assumption is that installers will seldom run programs
+in the build tree, and the developer will seldom install.  This is only
+meaningful on platforms in which @var{shlibpath_overrides_runpath} is
+not @samp{yes}, so @var{fast_install} will be set to @samp{needless} in
+this case.  If @var{fast_install} set to @samp{yes}, libtool will create
+programs that search for installed libraries, and, if a program is run
+in the build tree, a new copy will be linked on-demand to use the
+yet-to-be-installed libraries.  If set to @samp{no}, libtool will create
+programs that use the yet-to-be-installed libraries, and will link
+a new copy of the program at install time.  The default value is
+@samp{yes} or @samp{needless}, depending on platform and configuration
+flags, and it can be turned from @samp{yes} to @samp{no} with the
+configure flag @samp{--disable-fast-install}.
+@end defvar
+
 @defvar finish_cmds
 Commands to tell the dynamic linker how to find shared libraries in a
 specific directory.
@@ -3493,13 +3519,24 @@ A pipeline that takes the output of @var{NM}, and produces a listing of
 raw symbols followed by their C names.  For example:
 
 @example
-$ @kbd{$NM | $global_symbol_pipe}
-@var{symbol1} @var{C-symbol1}
-@var{symbol2} @var{C-symbol2}
-@var{symbol3} @var{C-symbol3}
+$ @kbd{eval "$NM progname | $global_symbol_pipe"}
+D @var{symbol1} @var{C-symbol1}
+T @var{symbol2} @var{C-symbol2}
+C @var{symbol3} @var{C-symbol3}
 @dots{}
 $
 @end example
+
+The first column contains the symbol type (used to tell data from code
+on some platforms), but its meaning is system dependent.
+@end defvar
+
+@defvar global_symbol_to_cdecl
+A pipeline that translates the output of @var{global_symbol_pipe} into
+proper C declarations.  On platforms whose linkers differentiate code
+from data, such as HP/UX, data symbols will be declared as such, and
+code symbols will be declared as functions.  On platforms that don't
+care, everything is assumed to be data.
 @end defvar
 
 @defvar hardcode_action
@@ -3640,11 +3677,10 @@ hardcode in the resulting executable.
 Indicates whether it is possible to override the hard-coded library
 search path of a program with an environment variable.  If this is set
 to no, libtool may have to create two copies of a program in the build
-tree, one to be installed and one to be run in the build tree only.  The 
-latter will be created on-demand, only if the program is actually run in
-the build tree.  If this is set to yes, libtool will set
-@code{shlibpath_var} in the wrapper script before starting the program.
-The default value is unknown, which is equivalent to no.
+tree, one to be installed and one to be run in the build tree only.
+When each of these copies is created depends on the value of
+@code{fast_install}.  The default value is @samp{unknown}, which is
+equivalent to @samp{no}.
 @end defvar
 
 @defvar shlibpath_var

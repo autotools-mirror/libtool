@@ -39,12 +39,27 @@ AC_PROG_LN_S
 dnl For the `lineno' script (which puts line numbers into `ltconfig').
 AC_PROG_AWK
 
+dnl Check for dlopen support
+AC_LIBTOOL_DLOPEN
+AC_LIBTOOL_SETUP
+
+LIBTOOL_FLAGS="$libtool_flags"
+AC_SUBST(LIBTOOL_FLAGS)
+
+AC_ARG_ENABLE(ltdl-install,
+[  --disable-ltdl-install  do not install libltdl])
+if test x"${enable_ltdl_install+set}" != xset; then
+  enable_ltdl_install=yes
+  ac_configure_args="$ac_configure_args --enable-ltdl-install"
+fi
+AC_CONFIG_SUBDIRS(libltdl)
+
 dnl all subdirectories that are configured on demand, but that must be
 dnl included in the distribution
-CONF_SUBDIRS="libltdl demo mdemo cdemo depdemo"
+CONF_SUBDIRS="cdemo demo depdemo mdemo"
 AC_SUBST(CONF_SUBDIRS)
 
-ACINCLUDE_M4_LIST="${srcdir}/acinclude.m4 "
+ACINCLUDE_M4_LIST="${srcdir}/acinclude.m4 ${srcdir}/libltdl/acinclude.m4 "
 DIST_MAKEFILE_LIST=
 for dir in $CONF_SUBDIRS; do
   ACINCLUDE_M4_LIST="$ACINCLUDE_M4_LIST${srcdir}/$dir/acinclude.m4 "
@@ -53,6 +68,10 @@ done
 AC_SUBST(ACINCLUDE_M4_LIST)
 AC_SUBST(DIST_MAKEFILE_LIST)
 
+AC_OUTPUT_COMMANDS([
+  test -f ${saved_top_srcdir}/ltconfig || ${MAKE-make} ${saved_top_srcdir}/ltconfig
+  test -f ${saved_top_srcdir}/ltmain.sh || ${MAKE-make} ${saved_top_srcdir}/ltmain.sh
+], [saved_top_srcdir=${srcdir}])
 AC_OUTPUT([Makefile doc/Makefile tests/Makefile])
 
 # Local Variables:

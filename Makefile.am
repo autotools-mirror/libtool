@@ -3,7 +3,7 @@
 
 AUTOMAKE_OPTIONS = 1.3e gnits readme-alpha
 
-BUILD_SUBDIRS = . doc tests
+BUILD_SUBDIRS = . libltdl doc tests
 SUBDIRS = $(BUILD_SUBDIRS)
 DIST_SUBDIRS = $(BUILD_SUBDIRS) $(CONF_SUBDIRS)
 
@@ -15,7 +15,7 @@ aclocal_macros = libtool.m4
 
 EXTRA_DIST = $(aclocal_macros) libtoolize.in ltconfig.in ltmain.in \
 	libtool.spec
-CLEANFILES = libtool libtoolize ltconfig.T ltmain.shT libltdl.tar.gz
+CLEANFILES = libtool libtoolize ltconfig.T ltmain.shT
 
 # These are required by libtoolize.
 pkgdata_SCRIPTS = config.guess config.sub ltconfig
@@ -30,15 +30,15 @@ bin_SCRIPTS = libtool libtoolize
 libtool: $(srcdir)/ltmain.sh $(srcdir)/ltconfig
 	CC="$(CC)" CFLAGS="$(CFLAGS)" CPPFLAGS="$(CPPFLAGS)" \
 	LD="$(LD)" LN_S="$(LN_S)" NM="$(NM)" RANLIB="$(RANLIB)" \
-	$(SHELL) $(srcdir)/ltconfig --srcdir=$(srcdir) 	--output=$@ \
-	  $(srcdir)/ltmain.sh
+	$(SHELL) $(srcdir)/ltconfig $(LIBTOOL_FLAGS) --srcdir=$(srcdir) \
+	  --output=$@ $(srcdir)/ltmain.sh
 
 # Experimental C version of libtool.
 clibtool: $(srcdir)/ltmain.c $(srcdir)/ltconfig
 	CC="$(CC)" CFLAGS="$(CFLAGS)" CPPFLAGS="$(CPPFLAGS)" \
 	LD="$(LD)" LN_S="$(LN_S)" NM="$(NM)" RANLIB="$(RANLIB)" \
-	$(SHELL) $(srcdir)/ltconfig --srcdir=$(srcdir) 	--output=$@ \
-	  $(srcdir)/ltmain.c
+	$(SHELL) $(srcdir)/ltconfig $(LIBTOOL_FLAGS) --srcdir=$(srcdir) \
+	  --output=$@ $(srcdir)/ltmain.c
 
 libtoolize: $(srcdir)/libtoolize.in $(top_builddir)/config.status
 	CONFIG_FILES=libtoolize CONFIG_HEADERS= $(top_builddir)/config.status
@@ -80,7 +80,6 @@ update-timestamps:
 
 # All our rules should depend on these demo files.
 all-local check-local: $(ACINCLUDE_M4_LIST) libtool
-check-local: libltdl/Makefile
 
 @ACINCLUDE_M4_LIST@: $(srcdir)/libtool.m4
 	rm -f $@
@@ -94,18 +93,9 @@ configure-subdirs distdir: $(DIST_MAKEFILE_LIST)
 	abs_srcdir=`cd $(top_srcdir) && pwd`; \
 	(cd $$dir && $$abs_srcdir/$$dir/configure) || exit 1
 
-# Create and install libltdl.tar.gz
-install-data-hook: libltdl/Makefile
-	@echo 'cd libltdl && $(MAKE) distdir distdir=libltdl && tar -cf libltdl.tar libltdl && gzip $(GZIP_ENV) libltdl.tar'
-	@if (cd libltdl && $(MAKE) distdir distdir=libltdl && \
-	 tar -cf libltdl.tar libltdl && \
-	 gzip $(GZIP_ENV) libltdl.tar); then \
-	  echo "$(INSTALL_DATA) libltdl/libltdl.tar.gz $(pkgdatadir)/libltdl.tar.gz"; \
-	  $(INSTALL_DATA) libltdl/libltdl.tar.gz $(pkgdatadir)/libltdl.tar.gz; \
-	else \
-	  echo "Warning: without gzip, libtool cannot install libltdl.tar.gz"; \
-	fi; \
-	rm -rf libltdl/libltdl libltdl/libltdl.tar libltdl/libltdl.tar.gz
+# Create and install libltdl
+install-data-hook:
+	cd libltdl && $(MAKE) distdir distdir=$(DESTDIR)$(pkgdatadir)/libltdl
 
 ################################################################
 ##

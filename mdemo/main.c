@@ -31,6 +31,7 @@ test_dl (filename)
   int (*pfoo2)() = 0;
   int (*phello)() = 0;
   int *pnothing = 0;
+  int ret = 0;
 
   handle = lt_dlopen(filename);
   if (!handle) {
@@ -52,30 +53,42 @@ test_dl (filename)
         printf("hello is ok!\n");
     }
   else
-    fprintf (stderr, "did not find the `hello' function\n");
+    {
+      fprintf (stderr, "did not find the `hello' function\n");
+      ret = 1;
+    }
 
   /* Try assigning to the nothing variable. */
   if (pnothing)
     *pnothing = 1;
   else
-    fprintf (stderr, "did not find the `nothing' variable\n");
+    {
+      fprintf (stderr, "did not find the `nothing' variable\n");
+      ret = 1;
+    }
 
   /* Just call the functions and check return values. */
   if (pfoo1)
     {
       if ((*pfoo1) () == FOO_RET)
         printf("foo1 is ok!\n");
+      else
+	ret = 1;
     }
   else if (pfoo2)
     {
       if ((*pfoo2) () == FOO_RET)
         printf("foo2 is ok!\n");
+      else ret = 1;
     }
   else
-    fprintf (stderr, "did not find the `foo' function\n");
+    {
+      fprintf (stderr, "did not find the `foo' function\n");
+      ret = 1;
+    }
 
   lt_dlclose(handle);
-  return 0;
+  return ret;
 }
 
 int
@@ -92,6 +105,7 @@ test_dlself ()
   lt_dlhandle handle;	
   int (*pmyfunc)() = 0;
   int *pmyvar = 0;
+  int ret = 0;
 
   handle = lt_dlopen(0);
   if (!handle) {
@@ -111,16 +125,22 @@ test_dlself ()
         printf("myfunc is ok!\n");
     }
   else
-    fprintf (stderr, "did not find the `myfunc' function\n");
+    {
+      fprintf (stderr, "did not find the `myfunc' function\n");
+      ret = 1;
+    }
 
   /* Try assigning to the variable. */
   if (pmyvar)
     *pmyvar = 1;
   else
-    fprintf (stderr, "did not find the `myvar' variable\n");
+    {
+      fprintf (stderr, "did not find the `myvar' variable\n");
+      ret = 1;
+    }
 
   lt_dlclose(handle);
-  return 0;
+  return ret;
 }
 
 int
@@ -129,6 +149,7 @@ main (argc, argv)
   char **argv;
 {
   int i;
+  int ret = 0;
 
   printf ("Welcome GNU libtool mdemo!\n");
 
@@ -144,11 +165,11 @@ main (argc, argv)
 
   for (i = 1; i < argc; i++)
     if (test_dl(argv[i]))
-       return 1;
+       ret = 1;
 
   if (test_dlself())
-    return 1;
+    ret = 1;
 
   lt_dlexit();
-  return 0;
+  return ret;
 }

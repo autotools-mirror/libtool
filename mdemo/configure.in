@@ -7,6 +7,14 @@ AC_C_CONST
 AC_EXEEXT
 AC_LIBTOOL_DLOPEN
 AM_PROG_LIBTOOL
+AC_SUBST(LIBTOOL_DEPS)
+
+dnl AC_LIBLTDL_CONVENIENCE(['${top_builddir}/../libltdl'])
+dnl Since the package is flat, we need not use the line above,
+dnl and not having macros in LIBLTDL allows us to build LIBLTDL
+dnl on demand even with broken makes
+AC_LIBLTDL_CONVENIENCE(../libltdl)
+AC_SUBST(LIBLTDL)
 
 if ${CONFIG_SHELL} ./libtool --features | grep "enable static" >/dev/null; then
   STATIC=-static

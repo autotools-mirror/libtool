@@ -1,3 +1,10 @@
+1999-03-13  Thomas Tanner  <tanner@gmx.de>
+
+	* updated
+	* NEWS: next version is 1.3pre
+	* ltconfig.in: removed "must_relink" flag
+	* ltmain.in: implemented fast-install mode, fixed many bugs
+
 1999-03-09  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
 
 	* ltmain.in: fixed a bug that causes archive link to fail when

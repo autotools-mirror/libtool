@@ -18,24 +18,29 @@ noinst_HEADERS = foo.h
 
 bin_PROGRAMS = mdemo mdemo.static
 
-../libltdl/libltdl.la: ../libtool ../libltdl/libtool \
+## use @LIBLTDL@ because some broken makes do not accept macros in targets
+## we can only do this because our LIBLTDL does not contain ${top_builddir}
+@LIBLTDL@: ../libtool ../libltdl/libtool ../libltdl/config.h \
     $(srcdir)/../libltdl/ltdl.c $(srcdir)/../libltdl/ltdl.h
-	(cd ../libltdl; $(MAKE) libltdl.la)
+	(cd ../libltdl; $(MAKE) `echo $(LIBLTDL) | sed 's,.*\.\./libltdl/,,g'`)
 # Without the following line, the check may fail if libltdl/libtool is
 # removed after libltdl is configured
-../libltdl/libtool:
+../libltdl/libtool ../libltdl/config.h:
 
 # Create a version of mdemo that does dlopen.
 mdemo_SOURCES = main.c
-mdemo_LDFLAGS = -export-dynamic ## FIXME: remove this when libtool and libltdl
-## handle dependencies of modules
+mdemo_LDFLAGS = -export-dynamic
 ## The quotes around -dlopen below fool automake into accepting it
-mdemo_LDADD = ../libltdl/libltdl.la "-dlopen" self \
+mdemo_LDADD = @LIBLTDL@ "-dlopen" self \
 		"-dlopen" foo1.la "-dlopen" libfoo2.la
-mdemo_DEPENDENCIES = ../libltdl/libltdl.la foo1.la libfoo2.la
+mdemo_DEPENDENCIES = @LIBLTDL@ foo1.la libfoo2.la
 
 # Create a statically linked version of mdemo.
 mdemo_static_SOURCES = $(mdemo_SOURCES)
 mdemo_static_LDFLAGS = $(STATIC) $(mdemo_LDFLAGS)
 mdemo_static_LDADD = $(mdemo_LDADD)
 mdemo_static_DEPENDENCIES = $(mdemo_DEPENDENCIES)
+
+$(OBJECTS): libtool
+libtool: $(LIBTOOL_DEPS)
+	$(SHELL) ./config.status --recheck
