@@ -1,5 +1,8 @@
 2001-09-07  Gary V. Vaughan  <gary@gnu.org>
 
+	* libltdl/acconfig.h:  Removed.  Obsoleted with modern Automake
+	(i.e. 1.4 or better).
+
 	* libltdl/ltdl.c (foreach_dirinpath): argz_len should be a size_t.
 	Reported by Albert Chin <china@thewrittenword.com>
 
