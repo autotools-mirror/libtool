@@ -1,5 +1,8 @@
 1999-03-08  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* libtool.m4 (AC_LIBTOOL_DLOPEN): do not depend on the existence
+	of dlfcn.h nor on the definition of RTLD_LAZY
+
 	* tests/build-relink.test: hellT was renamed to lt-hell
 
 	* libltdl/Makefile.am (@TOINST@/libltdl.la): do not hide the
