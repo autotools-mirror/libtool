@@ -1,3 +1,8 @@
+2003-10-21  Gary V. Vaughan  <gary@gnu.org>
+
+	* bootstrap (reconfdirs): Same as yesterday, only with portable
+	bourne shell syntax.  :-/
+
 2003-10-20  Gary V. Vaughan  <gary@gnu.org>
 
 	* bootstrap (reconfdirs): Overridable top dirs for bootstrap, for

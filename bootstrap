@@ -17,7 +17,9 @@ EOF
 rm -rf `find . \( -name autom4te.cache -o -name libtool \) -print`
 
 fakes="config/ltmain.sh config/libtoolize libltdl/ltmain.sh"
-reconfdirs=${reconfdirs-. tests/*demo tests/*demo[0-9]}
+if test -z "$reconfdirs"; then
+  reconfdirs=". `ls -1d tests/*demo tests/*demo[0-9]`"
+fi
 
 for file in $fakes; do
   cat > $file <<'EOF'
