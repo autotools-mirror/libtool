@@ -1,5 +1,8 @@
 1999-01-27  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
+	* libltdl/ltdl.c (find_file): fix endless loop condition
+	(find_module): filename allocation was off by 1
+
 	* libltdl/Makefile.am (distclean-local): renamed from
 	distclean-hook, that didn't work
 

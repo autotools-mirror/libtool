@@ -813,7 +813,7 @@ find_module (handle, dir, libdir, dlname, old_name, installed)
 		if (installed && libdir) {
 			int ret;
 			char *filename = (char*)
-				malloc(strlen(libdir)+1+strlen(dlname));
+				malloc(strlen(libdir)+1+strlen(dlname)+1);
 
 			if (!filename) {
 				last_error = memory_error;
@@ -832,7 +832,7 @@ find_module (handle, dir, libdir, dlname, old_name, installed)
 			int ret;
 			char *filename = (char*)
 				malloc((dir ? strlen(dir) : 0)
-				       + strlen(objdir)	+ strlen(dlname));
+				       + strlen(objdir)	+ strlen(dlname) + 1);
 			
 			if (!filename) {
 				last_error = memory_error;
@@ -854,7 +854,7 @@ find_module (handle, dir, libdir, dlname, old_name, installed)
 			int ret;
 			char *filename = (char*)
 				malloc((dir ? strlen(dir) : 0)
-				       + strlen(dlname));
+				       + strlen(dlname) + 1);
 			if (dir)
 				strcpy(filename, dir);
 			strcat(filename, dlname);
@@ -880,21 +880,21 @@ find_file (basename, search_path, pdir, handle)
 
 	char	*filename = 0;
 	int     filenamesize = 0;
-	const char *cur, *next;
+	const char *next = search_path;
 	int	lenbase = strlen(basename);
 	
-	if (!search_path || !strlen(search_path)) {
+	if (!next || !*next) {
 		last_error = file_not_found_error;
 		return 0;
 	}
-	cur = search_path;
-	while (cur) {
+	while (next) {
 		int lendir;
-		
+		const char *cur = next;
+
 		next = strchr(cur, ':');
 		if (!next)
 			next = cur + strlen(cur);
-		lendir = next - cur + 1;
+		lendir = next - cur;
 		if (*next == ':')
 			++next;
 		else
