@@ -1,5 +1,9 @@
 2004-02-06  Gary V. Vaughan  <gary@gnu.org>
 
+	* bootstrap: Remove vcl.tmp, otherwise it can interfere with make.
+	* Makefile.am (vcl.tmp): Move comment out of multi-line command,
+	as this rule is called from bootstrap as if it were a Makefile.
+
 	* m4/ltversion.in: New file to capture what version number macros
 	are being used.
 	* Makefile.am (m4/ltversion.m4): New rule to create it from

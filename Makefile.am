@@ -59,6 +59,10 @@ $(top_srcdir)/m4/ltversion.m4: $(top_srcdir)/m4/ltversion.in stamp-vcl
 # The standalone libtool script, and the libtool distributor.
 bin_SCRIPTS = libtool libtoolize
 
+## If mkstamp does not match $(srcdir)/stamp-vcl, we still put the new one
+## in the current dir, incase $(srcdir) is not writable.  The dir selection
+## at the top of this rule takes care of prefering the right one on
+## subsequent runs.
 MKSTAMP = $(SHELL) $(top_srcdir)/config/mkstamp
 stamp-vcl: vcl.tmp $(top_srcdir)/ChangeLog
 vcl.tmp:
@@ -66,10 +70,6 @@ vcl.tmp:
 	set `$(MKSTAMP) < $(top_srcdir)/ChangeLog`; \
 	echo "$$1" > vcl.tmp; \
 	cmp -s vcl.tmp $$dir/stamp-vcl \
-## If mkstamp does not match $(srcdir)/stamp-vcl, we still put the new one
-## in the current dir, incase $(srcdir) is not writable.  The dir selection
-## at the top of this rule takes care of prefering the right one on
-## subsequent runs.
 	  || (echo "Updating stamp-vcl"; cp vcl.tmp ./stamp-vcl)
 	-@rm -f vcl.tmp
 
