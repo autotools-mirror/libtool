@@ -1,4 +1,10 @@
-2000-11-12  Gary V. Vaughan  <gvv@techie.com>
+2000-11-11  Gary V. Vaughan  <gvv@techie.com>
+
+	* ltdl.m4 (AC_LTDL_SYMBOL_USCORE): Use $ac_ext for conftest
+	sourcefile.
+	* libtool.m4: Use $ac_ext and $ac_objext respectively for conftest
+	sources and objects.
+	Reported by Carlo Wood <carlo@alinoe.com>
 
 	* doc/fdl.texi: New file.  The license for distributing the
 	libtool manual.

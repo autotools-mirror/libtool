@@ -81,7 +81,7 @@ case "$host" in
   # Find out which ABI we are using.
   echo '[#]line __oline__ "configure"' > conftest.$ac_ext
   if AC_TRY_EVAL(ac_compile); then
-    case "`/usr/bin/file conftest.o`" in
+    case "`/usr/bin/file conftest.$ac_objext`" in
     *32-bit*)
       LD="${LD-ld} -32"
       ;;
@@ -216,7 +216,7 @@ for ac_symprfx in "" "_"; do
   # Check to see that the pipe works correctly.
   pipe_works=no
   rm -f conftest*
-  cat > conftest.c <<EOF
+  cat > conftest.$ac_ext <<EOF
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -242,16 +242,16 @@ EOF
       # Make sure that we snagged all the symbols we need.
       if egrep ' nm_test_var$' "$nlist" >/dev/null; then
 	if egrep ' nm_test_func$' "$nlist" >/dev/null; then
-	  cat <<EOF > conftest.c
+	  cat <<EOF > conftest.$ac_ext
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 EOF
 	  # Now generate the symbol file.
-	  eval "$ac_cv_global_symbol_to_cdecl"' < "$nlist" >> conftest.c'
+	  eval "$ac_cv_global_symbol_to_cdecl"' < "$nlist" >> conftest.$ac_ext'
 
-	  cat <<EOF >> conftest.c
+	  cat <<EOF >> conftest.$ac_ext
 #if defined (__STDC__) && __STDC__
 # define lt_ptr_t void *
 #else
@@ -267,8 +267,8 @@ const struct {
 [lt_preloaded_symbols[] =]
 {
 EOF
-	  sed 's/^. \(.*\) \(.*\)$/  {"\2", (lt_ptr_t) \&\2},/' < "$nlist" >> conftest.c
-	  cat <<\EOF >> conftest.c
+	  sed 's/^. \(.*\) \(.*\)$/  {"\2", (lt_ptr_t) \&\2},/' < "$nlist" >> conftest.$ac_ext
+	  cat <<\EOF >> conftest.$ac_ext
   {0, (lt_ptr_t) 0}
 };
 
@@ -298,7 +298,7 @@ EOF
     fi
   else
     echo "$progname: failed program was:" >&AC_FD_CC
-    cat conftest.c >&5
+    cat conftest.$ac_ext >&5
   fi
   rm -f conftest* conftst*
 
@@ -811,7 +811,7 @@ can_build_shared="$ac_cv_prog_cc_can_build_shared"
 ## FIXME: this should be a separate macro
 ##
 # Check to see if options -o and -c are simultaneously supported by compiler
-AC_MSG_CHECKING([if $compiler supports -c -o file.o])
+AC_MSG_CHECKING([if $compiler supports -c -o file.$ac_objext])
 $rm -r conftest 2>/dev/null
 mkdir conftest
 cd conftest
@@ -824,9 +824,9 @@ mkdir out
 # builds.
 chmod -w .
 save_CFLAGS="$CFLAGS"
-CFLAGS="$CFLAGS -o out/conftest2.o"
+CFLAGS="$CFLAGS -o out/conftest2.$ac_objext"
 compiler_c_o=no
-if { (eval echo configure:__oline__: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>out/conftest.err; } && test -s out/conftest2.o; then
+if { (eval echo configure:__oline__: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>out/conftest.err; } && test -s out/conftest2.$ac_objext; then
   # The compiler can only warn and ignore the option if not recognized
   # So say no if there are warnings
   if test -s out/conftest.err; then
@@ -900,9 +900,9 @@ fi
 if test "$ac_cv_prog_gcc" = yes; then
   # Check to see if options -fno-rtti -fno-exceptions are supported by compiler
   AC_MSG_CHECKING([if $compiler supports -fno-rtti -fno-exceptions])
-  echo "int some_variable = 0;" > conftest.c
+  echo "int some_variable = 0;" > conftest.$ac_ext
   save_CFLAGS="$CFLAGS"
-  CFLAGS="$CFLAGS -fno-rtti -fno-exceptions -c conftest.c"
+  CFLAGS="$CFLAGS -fno-rtti -fno-exceptions -c conftest.$ac_ext"
   compiler_rtti_exceptions=no
   AC_TRY_COMPILE([], [int some_variable = 0;], [dnl
     # The compiler can only warn and ignore the option if not recognized
@@ -2033,7 +2033,7 @@ if test "$enable_shared" = yes && test "$ac_cv_prog_gcc" = yes; then
     AC_MSG_CHECKING([whether -lc should be explicitly linked in])
     AC_CACHE_VAL([ac_cv_archive_cmds_need_lc],
     [$rm conftest*
-    echo 'static int dummy;' > conftest.c
+    echo 'static int dummy;' > conftest.$ac_ext
 
     if AC_TRY_EVAL(ac_compile); then
       soname=conftest

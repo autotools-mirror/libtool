@@ -218,7 +218,7 @@ if AC_TRY_EVAL(ac_compile); then
   fi
 else
   echo "configure: failed program was:" >&AC_FD_CC
-  cat conftest.c >&AC_FD_CC
+  cat conftest.$ac_ext >&AC_FD_CC
 fi
 rm -rf conftest*
 ])
