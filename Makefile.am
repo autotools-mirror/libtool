@@ -58,7 +58,7 @@ update-timestamps:
 
 # Do line number substitution, as well as PACKAGE, VERSION and TIMESTAMP.
 # Line numbering transliterated from a section in autoconf (Autoconf 2.12).
-$(srcdir)/ltconfig: $(srcdir)/ltconfig.in $(top_srcdir)/configure.in $(TSDEPS)
+@srcdir@/ltconfig: $(srcdir)/ltconfig.in $(top_srcdir)/configure.in $(TSDEPS)
 	rm -f ltconfig.T
 	date=`$(SHELL) $(srcdir)/mkstamp < $(srcdir)/ChangeLog` && \
 	$(AWK) '/@LINENO@/ { printf "%d:", NR } { print }' $(srcdir)/ltconfig.in | \
@@ -70,7 +70,7 @@ $(srcdir)/ltconfig: $(srcdir)/ltconfig.in $(top_srcdir)/configure.in $(TSDEPS)
 	mv -f ltconfig.T $@ || \
 	(rm -f $@ && cp ltconfig.T $@ && rm -f ltconfig.T)
 
-$(srcdir)/ltmain.sh: $(srcdir)/ltmain.in $(top_srcdir)/configure.in $(TSDEPS)
+@srcdir@/ltmain.sh: $(srcdir)/ltmain.in $(top_srcdir)/configure.in $(TSDEPS)
 	rm -f ltmain.shT
 	date=`$(SHELL) $(srcdir)/mkstamp < $(srcdir)/ChangeLog` && \
 	sed -e 's/@''PACKAGE@/@PACKAGE@/' -e 's/@''VERSION@/@VERSION@/' \
@@ -96,12 +96,14 @@ configure-subdirs distdir: $(DIST_MAKEFILE_LIST)
 
 # Create and install libltdl.tar.gz
 install-data-hook: libltdl/Makefile
-	if (cd libltdl && $(MAKE) distdir distdir=libltdl && \
+	@echo 'cd libltdl && $(MAKE) distdir distdir=libltdl && tar -cf libltdl.tar libltdl && gzip $(GZIP_ENV) libltdl.tar'
+	@if (cd libltdl && $(MAKE) distdir distdir=libltdl && \
 	 tar -cf libltdl.tar libltdl && \
 	 gzip $(GZIP_ENV) libltdl.tar); then \
+	  echo "$(INSTALL_DATA) libltdl/libltdl.tar.gz $(pkgdatadir)/libltdl.tar.gz"; \
 	  $(INSTALL_DATA) libltdl/libltdl.tar.gz $(pkgdatadir)/libltdl.tar.gz; \
 	else \
-	  echo Warning: without gzip, libtool cannot install libltdl.tar.gz; \
+	  echo "Warning: without gzip, libtool cannot install libltdl.tar.gz"; \
 	fi; \
 	rm -rf libltdl/libltdl libltdl/libltdl.tar libltdl/libltdl.tar.gz
 

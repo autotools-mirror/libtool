@@ -46,7 +46,6 @@ i586-pc-linux-gnulibc1		gcc	1.2e	ok
 i686-pc-linux-gnu		gcc	1.2e	ok
 i686-pc-linux-gnu		egcs	1.2e	ok	egcs 1.1.1
 i686-pc-linux-gnulibc1		gcc	1.2e	ok
-i686-pc-cygwin32		egcs	1.2e	ok
 m68k-next-nextstep3		gcc	1.2e	ok	static
 m68k-sun-sunos4.1.1		gcc	1.2e	NS
 m88k-dg-dguxR4.12TMU01**	gcc	1.2	ok

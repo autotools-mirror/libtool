@@ -31,15 +31,15 @@ make || exit 1
 
 # Try running the program.
 echo "= Executing uninstalled programs"
-if ./hell.debug | grep 'GNU Hell'; then :
+if ./mdemo.static foo1.la libfoo2.la; then :
 else
-  echo "$0: cannot execute ./hell.debug" 1>&2
+  echo "$0: cannot execute ./mdemo.static" 1>&2
   exit 1
 fi
 
-if ./hell | grep 'GNU Hell'; then :
+if ./mdemo foo1.la libfoo2.la; then :
 else
-  echo "$0: cannot execute ./hell" 1>&2
+  echo "$0: cannot execute ./mdemo" 1>&2
   exit 1
 fi
 
@@ -47,15 +47,16 @@ echo "= Running make install in ../mdemo"
 make install || exit 1
 
 echo "= Executing installed programs"
-if $prefix/bin/hell.debug | grep 'GNU Hell'; then :
+if $prefix/bin/mdemo.static $prefix/lib/foo1.la $prefix/lib/libfoo2.la; then :
 else
-  echo "$0: cannot execute $prefix/bin/hell.debug" 1>&2
+  echo "$0: cannot execute $prefix/bin/mdemo.static" 1>&2
   exit 1
 fi
 
-if $prefix/bin/hell | grep 'GNU Hell'; then :
+if $prefix/bin/mdemo $prefix/lib/foo1.la $prefix/lib/libfoo2.la; then :
 else
-  echo "$0: warning: cannot execute $prefix/bin/hell" 1>&2
+  echo "$0: cannot execute $prefix/bin/mdemo" 1>&2
+  exit 1
 fi
 
 echo "= Running make uninstall in ../mdemo"

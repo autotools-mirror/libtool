@@ -1,6 +1,6 @@
 #! /bin/sh
 
-# commit version 0.9.1
+# commit version 0.9.2
 
 # Copyright (C) 1999, Free Software Foundation
 
@@ -171,7 +171,7 @@ $repeat && break
 
 $update && \
 if echo "$name: checking for conflicts..." >&2
-   (cvs $cvsopt -n update $updateopt ${1+"$@"} 2>/dev/null\
+   (cvs $cvsopt -q -n update $updateopt ${1+"$@"} 2>/dev/null \
     | while read line; do
 	echo "$line"
 	echo "$line" >&3
@@ -187,10 +187,10 @@ if test ! -f "$log_file"; then
       case "$line" in
       "--- ChangeLog"*) :;;
       "-"*)
-	echo "$name: the following line in ChangeLog diff is suspicious:" >&2
+	echo "$name: *** Warning: the following line in ChangeLog diff is suspicious:" >&2
 	echo "$line" | sed 's/^.//' >&2;;
       "+ "*)
-	echo "$name: lines should start with tabs, not spaces; ignoring line:" >&2
+	echo "$name: *** Warning: lines should start with tabs, not spaces; ignoring line:" >&2
 	echo "$line" | sed 's/^.//' >&2;;
       "+") echo;;
       "+	"*) echo "$line";;
@@ -208,8 +208,8 @@ if grep '[^ 	]' < "$log_file" > /dev/null; then :; else
 fi
 
 if grep '^$' < "$log_file" > /dev/null; then
-  echo "$name: blank lines should not appear within a commit messages" >&2
-  echo "$name: they should be used to separate distinct commits" >&2
+  echo "$name: *** Warning: blank lines should not appear within a commit messages." >&2
+  echo "$name: *** They should be used to separate distinct commits." >&2
 fi
 
 ${PAGER-more} "$log_file" || break

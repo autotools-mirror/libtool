@@ -2291,7 +2291,7 @@ in order to guarantee that all the required libraries are found.  This
 restriction is only necessary to preserve compatibility with static
 library systems and simple dynamic library systems.
 
-Some platforms, such as AIX and Windows 95, do not even allow you this
+Some platforms, such as AIX, do not even allow you this
 flexibility.  In order to build a shared library, it must be entirely
 self-contained (that is, have references only to symbols that are found
 in the @samp{.lo} files or the specified @samp{-l} libraries), and you
@@ -2612,7 +2612,8 @@ Return 0 on success, otherwise the number of errors.
 @deftypefun lt_dlhandle lt_dlopen (const char *@var{filename})
 Open the module with the file name @var{filename} and return a
 handle for it.  @code{lt_dlopen} is able to open libtool dynamic
-modules, preloaded static modules and native dynamic libraries.  
+modules, preloaded static modules, the program itself and 
+native dynamic libraries.  
 
 Unresolved symbols in the module are resolved using its dependency
 libraries and previously dlopened modules.  If the executable using this
@@ -2621,6 +2622,10 @@ symbols in the executable will also be used to resolve references in the
 module.  Libltdl tries to resolve the symbols immediately and returns
 @code{NULL} if that fails.
  
+If @var{filename} is NULL @code{lt_dlopen} will return a handle
+for the program itself, which can be used to access its symbols 
+if it was linked with @code{-export-dynamic}.
+
 If libltdl cannot find the library and the file name @var{filename} does
 not have a directory component it will additionally search in the
 following search paths for the module (in the order as follows):
@@ -2903,7 +2908,7 @@ uninstalled correctly.
 The @file{mdemo} subdirectory contains a demonstration of a package that
 uses libtool and the system independent dlopen wrapper @file{libltdl} to
 load modules.  The library @file{libltdl} provides an experimental
-dlopen wrapper for various platforms (Linux, Solaris, HP/UX, Win32 etc.) 
+dlopen wrapper for various platforms (Linux, Solaris, HP/UX etc.) 
 including support for dlpreopened modules (@pxref{Dlpreopening}).
 
 The tests @file{mdemo-make.test}, @file{mdemo-exec.test},

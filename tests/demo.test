@@ -55,7 +55,8 @@ fi
 
 if $prefix/bin/hell | grep 'GNU Hell'; then :
 else
-  echo "$0: warning: cannot execute $prefix/bin/hell" 1>&2
+  echo "$0: cannot execute $prefix/bin/hell" 1>&2
+  exit 1
 fi
 
 echo "= Running make uninstall in ../demo"

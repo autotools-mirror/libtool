@@ -3,7 +3,7 @@ NEWS - list of user-visible changes between releases of GNU Libtool
 New in 1.2e: CVS version:
 * Support -R for specifying run-time path of programs and library dependencies
 * Support for BeOS
-* Improved support for Win32, aix3, aix4, SysV 4.3, BSD/OS 4.x and NetBSD
+* Improved support for aix3, aix4, SysV 4.3, BSD/OS 4.x and NetBSD
 * New -avoid-version option to avoid versioning for libraries
 * Various bugfixes
 

@@ -1,3 +1,10 @@
+1999-02-13  Thomas Tanner  <tanner@gmx.de>
+
+	* syncronized with HEAD
+	* depdemo/Makefile.am: merged rest of my ILD patch
+	* ltmain.in: export shlibpath before linking libraries,
+	  create the .lai file in link mode
+	  
 1999-02-12  Gary V. Vaughan  <gvaughan@oranda.demon.co.uk>
 	
 	* ltmain.in (deplib): The cygwin environment doesn't actually have

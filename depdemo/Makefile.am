@@ -11,7 +11,7 @@ libl3_la_LIBADD = libl1.la libl2.la
 libl4_la_SOURCES = l4.c l4.h sysdep.h
 libl4_la_LIBADD = libl3.la $(LIBADD_M)
 
-bin_PROGRAMS = depdemo.static depdemo
+bin_PROGRAMS = depdemo depdemo.static
 
 depdemo_SOURCES = main.c
 depdemo_LDADD = libl1.la libl2.la libl4.la
@@ -20,5 +20,4 @@ depdemo_DEPENDENCIES = libl1.la libl2.la libl4.la
 depdemo_static_SOURCES = $(depdemo_SOURCES)
 depdemo_static_LDADD = $(depdemo_LDADD)
 depdemo_static_DEPENDENCIES = $(depdemo_DEPENDENCIES)
-depdemo_static_LDFLAGS = -static
-
+depdemo_static_LDFLAGS = $(STATIC)

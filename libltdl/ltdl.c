@@ -20,6 +20,10 @@ Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 #define _LTDL_COMPILE_
 
+#if HAVE_CONFIG_H
+#include <config.h>
+#endif
+
 #if HAVE_STRING_H
 #include <string.h>
 #endif
@@ -75,18 +79,18 @@ Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 /* This accounts for the _LTX_ separator */
 #define LTDL_SYMBOL_OVERHEAD	5
 
-static const char *objdir = LTDL_OBJDIR;
-static const char *shlib_ext = LTDL_SHLIB_EXT;
+static const char objdir[] = LTDL_OBJDIR;
+static const char shlib_ext[] = LTDL_SHLIB_EXT;
 
-static const char *unknown_error = "unknown error";
-static const char *dlopen_not_supported_error = "dlopen support not available";
-static const char *file_not_found_error = "file not found";
-static const char *no_symbols_error = "no symbols defined";
-static const char *symbol_error = "symbol not found";
-static const char *memory_error = "not enough memory";
-static const char *invalid_handle_error = "invalid handle";
-static const char *buffer_overflow_error = "internal buffer overflow";
-static const char *shutdown_error = "library already shutdown";
+static const char unknown_error[] = "unknown error";
+static const char dlopen_not_supported_error[] = "dlopen support not available";
+static const char file_not_found_error[] = "file not found";
+static const char no_symbols_error[] = "no symbols defined";
+static const char symbol_error[] = "symbol not found";
+static const char memory_error[] = "not enough memory";
+static const char invalid_handle_error[] = "invalid handle";
+static const char buffer_overflow_error[] = "internal buffer overflow";
+static const char shutdown_error[] = "library already shutdown";
 
 #ifndef HAVE_PRELOADED_SYMBOLS
 /* If libtool won't define it, we'd better do */
@@ -114,7 +118,7 @@ typedef	struct lt_dlhandle_t {
 	char	*name;		/* module name */
 	int	usage;		/* usage */
 	int	depcount;	/* number of dependencies */
-	lt_dlhandle *deps;	/* dependencies */
+	lt_dlhandle *deplibs;	/* dependencies */
 	lt_ptr_t handle;	/* system handle */
 	lt_ptr_t system;	/* system specific data */
 } lt_dlhandle_t;
@@ -124,7 +128,7 @@ typedef	struct lt_dlhandle_t {
 #undef strdup
 #define strdup xstrdup
 
-static char *
+static inline char *
 strdup(str)
 	const char *str;
 {
@@ -132,7 +136,7 @@ strdup(str)
 
 	if (!str)
 		return str;
-	tmp = malloc(strlen(str)+1);
+	tmp = (char*) malloc(strlen(str)+1);
 	if (tmp)
 		strcpy(tmp, str);
 	return tmp;
@@ -150,7 +154,7 @@ strdup(str)
 
 #  define strchr xstrchr
 
-static const char*
+static inline const char*
 strchr(str, ch)
 	const char *str;
 	int ch;
@@ -177,7 +181,7 @@ strchr(str, ch)
 
 #  define strrchr xstrrchr
 
-static const char*
+static inline const char*
 strrchr(str, ch)
 	const char *str;
 	int ch;
@@ -608,13 +612,18 @@ presym_open (handle, filename)
 {
 	lt_dlsymlists_t *lists = preloaded_symbols;
 
-	if (!filename) {
-		last_error = file_not_found_error;
-		return 1;
-	}
 	if (!lists) {
 		last_error = no_symbols_error;
 		return 1;
+	}
+	if (!filename) {
+		if (!default_preloaded_symbols) {
+			last_error = file_not_found_error;
+			return 1;
+		} else {
+			handle->handle = (lt_ptr_t) default_preloaded_symbols;
+			return 0;
+		}
 	}
 	while (lists) {
 		const lt_dlsymlist *syms = lists->syms;
@@ -765,28 +774,37 @@ tryall_dlopen (handle, filename)
 	
 	/* check whether the module was already opened */
 	cur = handles;
-	while (cur && strcmp(cur->filename, filename))
+	while (cur) {
+		if (!cur->filename && !filename)
+			break;
+		if (cur->filename && filename && 
+		    strcmp(cur->filename, filename) == 0)
+			break;
 		cur = cur->next;
+	}
 	if (cur) {
 		cur->usage++;
-		free(*handle);
 		*handle = cur;
 		return 0;
 	}
 	
 	cur = *handle;
-	cur->filename = strdup(filename);
-	if (!cur->filename) {
-		last_error = memory_error;
-		return 1;
-	}
+	if (filename) {
+		cur->filename = strdup(filename);
+		if (!cur->filename) {
+			last_error = memory_error;
+			return 1;
+		}
+	} else
+		cur->filename = 0;
 	while (type) {
 		if (type->lib_open(cur, filename) == 0)
 			break;
 		type = type->next;
 	}
 	if (!type) {
-		free(cur->filename);
+		if (cur->filename)
+			free(cur->filename);
 		return 1;
 	}
 	cur->type = type;
@@ -803,8 +821,6 @@ find_module (handle, dir, libdir, dlname, old_name, installed)
 	const char *old_name;
 	int installed;
 {
-	char	filename[LTDL_FILENAME_MAX];
-	
 	/* try to open the old library first; if it was dlpreopened, 
 	   we want the preopened version of it, even if a dlopenable
 	   module is available */
@@ -813,29 +829,61 @@ find_module (handle, dir, libdir, dlname, old_name, installed)
 	/* try to open the dynamic library */
 	if (dlname) {
 		/* try to open the installed module */
-		if (installed && 
-		    strlen(libdir)+1+strlen(dlname) < LTDL_FILENAME_MAX) {
+		if (installed && libdir) {
+			int ret;
+			char *filename = (char*)
+				malloc(strlen(libdir)+1+strlen(dlname)+1);
+
+			if (!filename) {
+				last_error = memory_error;
+				return 1;
+			}
 			strcpy(filename, libdir);
 			strcat(filename, "/");
 			strcat(filename, dlname);
-			if (tryall_dlopen(handle, filename) == 0)
+			ret = tryall_dlopen(handle, filename) == 0;
+			free(filename);
+			if (ret)
 				return 0;
 		}
 		/* try to open the not-installed module */
-		if (!installed &&
-		    strlen(dir)+strlen(objdir)+strlen(dlname)
-		    		< LTDL_FILENAME_MAX) {
-			strcpy(filename, dir);
+		if (!installed) {
+			int ret;
+			char *filename = (char*)
+				malloc((dir ? strlen(dir) : 0)
+				       + strlen(objdir)	+ strlen(dlname) + 1);
+			
+			if (!filename) {
+				last_error = memory_error;
+				return 1;
+			}
+			if (dir)
+				strcpy(filename, dir);
+			else
+				*filename = 0;
 			strcat(filename, objdir);
 			strcat(filename, dlname);
-			if (tryall_dlopen(handle, filename) == 0)
+
+			ret = tryall_dlopen(handle, filename) == 0;
+			free(filename);
+			if (ret)
 				return 0;
 		}
-		/* hmm, maybe it was moved to another directory */
-		if (strlen(dir)+strlen(dlname) < LTDL_FILENAME_MAX) {
-			strcpy(filename, dir);
+		/* hmm, maybe it was moved to another directory.
+                   Should we really support this? */
+		{
+			int ret;
+			char *filename = (char*)
+				malloc((dir ? strlen(dir) : 0)
+				       + strlen(dlname) + 1);
+			if (dir)
+				strcpy(filename, dir);
+			else
+				*filename = 0;
 			strcat(filename, dlname);
-			if (tryall_dlopen(handle, filename) == 0)
+			ret = tryall_dlopen(handle, filename) == 0;
+			free(filename);
+			if (ret)
 				return 0;
 		}
 	}
@@ -847,62 +895,74 @@ static lt_ptr_t
 find_file (basename, search_path, pdir, handle)
 	const char *basename;
 	const char *search_path;
-	char *pdir;
+	char **pdir;
 	lt_dlhandle *handle;
 {
 	/* when handle != NULL search a library, otherwise a file */
 	/* return NULL on failure, otherwise the file/handle */
 
-	char	filename[LTDL_FILENAME_MAX];
-	const char *cur, *next;
-	FILE	*file;
-	int	lendir;
+	char	*filename = 0;
+	int     filenamesize = 0;
+	const char *next = search_path;
+	int	lenbase = strlen(basename);
 	
-	if (!search_path || !strlen(search_path)) {
+	if (!next || !*next) {
 		last_error = file_not_found_error;
 		return 0;
 	}
-	cur = search_path;
-	while (cur) {
+	while (next) {
+		int lendir;
+		const char *cur = next;
+
 		next = strchr(cur, ':');
-		if (next) {
-			if (next - cur + 1 >= LTDL_FILENAME_MAX) {
-				last_error = buffer_overflow_error;
-				return 0;
-			}
-			strncpy(filename, cur, next - cur);
-			filename[next - cur] = '\0';
-			cur = next+1;
-		} else {
-			if (strlen(cur)+1 >= LTDL_FILENAME_MAX) {
-				last_error = buffer_overflow_error;
-				return 0;
-			}
-			strcpy(filename, cur);
-			cur = 0;
-		}
-		if (!*filename)
+		if (!next)
+			next = cur + strlen(cur);
+		lendir = next - cur;
+		if (*next == ':')
+			++next;
+		else
+			next = 0;
+		if (lendir == 0)
 			continue;
-		lendir = strlen(filename);
-		if (filename[lendir-1] != '/') {
-			strcat(filename, "/");
-			lendir++;
+		if (lendir + 1 + lenbase >= filenamesize) {
+			if (filename)
+				free(filename);
+			filenamesize = lendir + 1 + lenbase + 1;
+			filename = (char*) malloc(filenamesize);
+			if (!filename) {
+				last_error = memory_error;
+				return 0;
+			}
 		}
-		if (lendir+strlen(basename) < LTDL_FILENAME_MAX) {
-			strcat(filename, basename);
-			if (handle) {
-				if (tryall_dlopen(handle, filename) == 0)
-					return (lt_ptr_t) handle;
-			} else {
-				file = fopen(filename, LTDL_READTEXT_MODE);
-				if (file) {
-					filename[lendir] = '\0';
-					strcpy(pdir, filename);
-					return (lt_ptr_t) file;
-				}
+		strncpy(filename, cur, lendir);
+		if (filename[lendir-1] != '/')
+			filename[lendir++] = '/';
+		strcpy(filename+lendir, basename);
+		if (handle) {
+			if (tryall_dlopen(handle, filename) == 0) {
+				free(filename);
+				return (lt_ptr_t) handle;
+			}
+		} else {
+			FILE *file = fopen(filename, LTDL_READTEXT_MODE);
+			if (file) {
+				if (*pdir)
+					free(*pdir);
+				filename[lendir] = '\0';
+				*pdir = strdup(filename);
+				if (!*pdir) {
+					/* We could have even avoided the
+					   strdup, but there would be some
+					   memory overhead. */
+					*pdir = filename;
+				} else
+					free(filename);
+				return (lt_ptr_t) file;
 			}
 		}
 	}
+	if (filename)
+		free(filename);
 	last_error = file_not_found_error;
 	return 0;
 }
@@ -914,7 +974,7 @@ load_deplibs(handle, deplibs)
 {
 	/* FIXME: load deplibs */
 	handle->depcount = 0;
-	handle->deps = 0;
+	handle->deplibs = 0;
 	return 0;
 }
 
@@ -926,7 +986,7 @@ unload_deplibs(handle)
 	return 0;
 }
 
-static int
+static inline int
 trim (dest, s)
 	char **dest;
 	const char *s;
@@ -938,7 +998,7 @@ trim (dest, s)
 	if (*dest)
 		free(*dest);
 	if (len > 3 && s[0] == '\'') {
-		tmp = malloc(i - s);
+		tmp = (char*) malloc(i - s);
 		if (!tmp) {
 			last_error = memory_error;
 			return 1;
@@ -951,13 +1011,19 @@ trim (dest, s)
 	return 0;
 }
 
-static int
-free_vars(dlname, oldname, libdir, deplibs)
+static inline int
+free_vars(dir, name, dlname, oldname, libdir, deplibs)
+	char *dir;
+	char *name;
 	char *dlname;
 	char *oldname;
 	char *libdir;
 	char *deplibs;
 {
+	if (dir)
+		free(dir);
+	if (name)
+		free(name);
 	if (dlname)
 		free(dlname);
 	if (oldname)
@@ -969,37 +1035,47 @@ free_vars(dlname, oldname, libdir, deplibs)
 	return 0;
 }
 
-
 lt_dlhandle
 lt_dlopen (filename)
 	const char *filename;
 {
-	lt_dlhandle handle;
-	char	dir[LTDL_FILENAME_MAX];
+	lt_dlhandle handle, newhandle;
 	const char *basename, *ext;
 	const char *saved_error = last_error;
-	char	*name = 0;
+	char	*dir = 0, *name = 0;
 	
 	if (!filename) {
-		last_error = file_not_found_error;
-		return 0;
+		handle = (lt_dlhandle) malloc(sizeof(lt_dlhandle_t));
+		if (!handle) {
+			last_error = memory_error;
+			return 0;
+		}
+		handle->usage = 0;
+		newhandle = handle;
+		if (tryall_dlopen(handle, 0) != 0) {
+			free(newhandle);
+			return 0;
+		}
+		if (newhandle != handle)
+			free(newhandle);
+		return handle;
 	}
 	basename = strrchr(filename, '/');
-	if (basename)
+	if (basename) {
 		basename++;
-	else
+		dir = (char*) malloc(basename - filename + 1);
+		if (!dir) {
+			last_error = memory_error;
+			return 0;
+		}
+		strncpy(dir, filename, basename - filename);
+		dir[basename - filename] = '\0';
+	} else
 		basename = filename;
-	if (basename - filename >= LTDL_FILENAME_MAX) {
-		last_error = buffer_overflow_error;
-		return 0;
-	}
-	strncpy(dir, filename, basename - filename);
-	dir[basename - filename] = '\0';
 	/* check whether we open a libtool module (.la extension) */
 	ext = strrchr(basename, '.');
 	if (ext && strcmp(ext, ".la") == 0) {
 		/* this seems to be a libtool module */
-		char	tmp[LTDL_FILENAME_MAX];
 		FILE	*file;
 		int	i;
 		char	*dlname = 0, *old_name = 0;
@@ -1011,68 +1087,71 @@ lt_dlopen (filename)
 		int     installed = 1; 
 
 		/* extract the module name from the file name */
-		if (strlen(basename) >= sizeof(tmp)) {
-			last_error = buffer_overflow_error;
+		name = (char*) malloc(ext - basename + 1);
+		if (!name) {
+			last_error = memory_error;
+			if (dir)
+				free(dir);
 			return 0;
 		}
 		/* canonicalize the module name */
 		for (i = 0; i < ext - basename; i++)
 			if (isalnum(basename[i]))
-				tmp[i] = basename[i];
+				name[i] = basename[i];
 			else
-				tmp[i] = '_';
-		tmp[ext - basename] = '\0';
-		name = strdup(tmp);
-		if (!name) {
-			last_error = memory_error;
-			return 0;
-		}
+				name[i] = '_';
+		name[ext - basename] = '\0';
 		/* now try to open the .la file */
 		file = fopen(filename, LTDL_READTEXT_MODE);
 		if (!file)
 			last_error = file_not_found_error;
-		if (!file && !*dir) {
+		if (!file && !dir) {
 			/* try other directories */
 			file = (FILE*) find_file(basename, 
 						 user_search_path,
-						 dir, 0);
+						 &dir, 0);
 			if (!file)
 				file = (FILE*) find_file(basename,
 						 getenv("LTDL_LIBRARY_PATH"),
-						 dir, 0);
+						 &dir, 0);
 #ifdef LTDL_SHLIBPATH_VAR
 			if (!file)
 				file = (FILE*) find_file(basename,
 						 getenv(LTDL_SHLIBPATH_VAR),
-						 dir, 0);
+						 &dir, 0);
 #endif
 		}
 		if (!file) {
-			free(name);
+			if (name)
+				free(name);
+			if (dir)
+				free(dir);
 			return 0;
 		}
 		/* read the .la file */
 		while (!feof(file)) {
-			if (!fgets(tmp, sizeof(tmp), file))
+			char	line[LTDL_FILENAME_MAX];
+			
+			if (!fgets(line, sizeof(line), file))
 				break;
-			if (tmp[0] == '\n' || tmp[0] == '#')
+			if (line[0] == '\n' || line[0] == '#')
 				continue;
-			if (strncmp(tmp, "dlname=", 7) == 0)
-				error = trim(&dlname, &tmp[7]);
+			if (strncmp(line, "dlname=", 7) == 0)
+				error = trim(&dlname, &line[7]);
 			else
-			if (strncmp(tmp, "old_library=", 12) == 0)
-				error = trim(&old_name, &tmp[12]);
+			if (strncmp(line, "old_library=", 12) == 0)
+				error = trim(&old_name, &line[12]);
 			else
-			if (strncmp(tmp, "libdir=", 7) == 0)
-				error = trim(&libdir, &tmp[7]);
+			if (strncmp(line, "libdir=", 7) == 0)
+				error = trim(&libdir, &line[7]);
 			else
-			if (strncmp(tmp, "dl_dependency_libs=", 20) == 0)
-				error = trim(&deplibs, &tmp[20]);
+			if (strncmp(line, "dl_dependency_libs=", 20) == 0)
+				error = trim(&deplibs, &line[20]);
 			else
-			if (strcmp(tmp, "installed=yes\n") == 0)
+			if (strcmp(line, "installed=yes\n") == 0)
 				installed = 1;
 			else
-			if (strcmp(tmp, "installed=no\n") == 0)
+			if (strcmp(line, "installed=no\n") == 0)
 				installed = 0;
 			if (error)
 				break;
@@ -1085,13 +1164,14 @@ lt_dlopen (filename)
 				free(handle);
 			if (!error)
 				last_error = memory_error;
-			free_vars(dlname, old_name, libdir, deplibs);
-			free(name);
+			free_vars(name, dir, dlname, old_name, libdir, deplibs);
 			return 0;
 		}
 		handle->usage = 0;
 		if (load_deplibs(handle, deplibs) == 0) {
-			if (find_module(&handle, dir, libdir, 
+			newhandle = handle;
+			/* find_module may replace newhandle */
+			if (find_module(&newhandle, dir, libdir, 
 					dlname, old_name, installed)) {
 				unload_deplibs(handle);
 				error = 1;
@@ -1100,37 +1180,57 @@ lt_dlopen (filename)
 			error = 1;
 		if (error) {
 			free(handle);
-			free_vars(dlname, old_name, libdir, deplibs);
-			free(name);
+			free_vars(name, dir, dlname, old_name, libdir, deplibs);
 			return 0;
+		}
+		if (handle != newhandle) {
+			unload_deplibs(handle);
 		}
 	} else {
 		/* not a libtool module */
 		handle = (lt_dlhandle) malloc(sizeof(lt_dlhandle_t));
 		if (!handle) {
 			last_error = memory_error;
+			if (dir)
+				free(dir);
 			return 0;
 		}
 		handle->usage = 0;
-		if (tryall_dlopen(&handle, filename) && (!*dir
-		    || (find_file(basename, user_search_path, 0, &handle)
-		     && find_file(basename, getenv("LTDL_LIBRARY_PATH"),
-				  0, &handle)
+		/* non-libtool modules don't have dependencies */
+		handle->depcount = 0;
+		handle->deplibs = 0;
+		newhandle = handle;
+		if (tryall_dlopen(&handle, filename)
+		    && (!dir
+			|| (!find_file(basename, user_search_path, 0, &handle)
+			    && !find_file(basename,
+					  getenv("LTDL_LIBRARY_PATH"),
+					  0, &handle)
 #ifdef LTDL_SHLIBPATH_VAR
-		     && find_file(basename, getenv(LTDL_SHLIBPATH_VAR),
-				  0, &handle)
+			    && !find_file(basename,
+					  getenv(LTDL_SHLIBPATH_VAR),
+					  0, &handle)
 #endif
-		    ))) {
+				))) {
 			free(handle);
+			if (dir)
+				free(dir);
 			return 0;
 		}
+	}
+	if (newhandle != handle) {
+		free(handle);
+		handle = newhandle;
 	}
 	if (!handle->usage) {
 		handle->usage = 1;
 		handle->name = name;
 		handle->next = handles;
 		handles = handle;
-	}
+	} else if (name)
+		free(name);
+	if (dir)
+		free(dir);
 	last_error = saved_error;
 	return handle;
 }
@@ -1140,7 +1240,7 @@ lt_dlopenext (filename)
 	const char *filename;
 {
 	lt_dlhandle handle;
-	char	tmp[LTDL_FILENAME_MAX];
+	char	*tmp;
 	int	len;
 	const char *saved_error = last_error;
 	
@@ -1158,8 +1258,9 @@ lt_dlopenext (filename)
 	if (handle)
 		return handle;
 	/* try "filename.la" */
-	if (len+3 >= sizeof(tmp)) {
-		last_error = buffer_overflow_error;
+	tmp = (char*) malloc(len+4);
+	if (!tmp) {
+		last_error = memory_error;
 		return 0;
 	}
 	strcpy(tmp, filename);
@@ -1167,23 +1268,31 @@ lt_dlopenext (filename)
 	handle = lt_dlopen(tmp);
 	if (handle) {
 		last_error = saved_error;
+		free(tmp);
 		return handle;
 	}
 #ifdef LTDL_SHLIB_EXT
 	/* try "filename.EXT" */
-	tmp[len] = '\0';
-	if (len+strlen(shlib_ext) >= sizeof(tmp)) {
-		last_error = buffer_overflow_error;
-		return 0;
-	}
+	if (strlen(shlib_ext) > 3) {
+		free(tmp);
+		tmp = (char*) malloc(len + strlen(shlib_ext) + 1);
+		if (!tmp) {
+			last_error = memory_error;
+			return 0;
+		}
+		strcpy(tmp, filename);
+	} else
+		tmp[len] = '\0';
 	strcat(tmp, shlib_ext);
 	handle = lt_dlopen(tmp);
 	if (handle) {
 		last_error = saved_error;
+		free(tmp);
 		return handle;
 	}
 #endif	
 	last_error = file_not_found_error;
+	free(tmp);
 	return 0;
 }
 
@@ -1248,7 +1357,7 @@ lt_dlsym (handle, symbol)
 	if (lensym + LTDL_SYMBOL_OVERHEAD < LTDL_SYMBOL_LENGTH)
 		sym = lsym;
 	else
-		sym = malloc(lensym + LTDL_SYMBOL_OVERHEAD + 1);
+		sym = (char*) malloc(lensym + LTDL_SYMBOL_OVERHEAD + 1);
 	if (!sym) {
 		last_error = buffer_overflow_error;
 		return 0;
