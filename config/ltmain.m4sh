@@ -5563,6 +5563,17 @@ EOF
 
       func_generate_dlsyms "$outputname" "@PROGRAM@" "no"
 
+      # template prelinking step
+      if test -n "$prelink_cmds"; then
+	cmds=$prelink_cmds
+	save_ifs="$IFS"; IFS='~'
+	for cmd in $cmds; do
+	  eval cmd=\"$cmd\"
+	  IFS="$save_ifs"
+	  func_show_eval "$cmd" 'exit $?'
+	done
+	IFS="$save_ifs"
+      fi
 
       wrappers_required=yes
       case $host in

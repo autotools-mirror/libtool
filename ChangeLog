@@ -1,5 +1,14 @@
 2005-04-07  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	Improved Portland support: prelinking of C++ templates and whole_archive.
+
+	* m4/libtool.m4 (_LT_COMPILER_PIC, _LT_LINKER_SHLIBS) [ linux ]:
+	Reinstate formatted whole_archive_flag_spec for PGI compilers.
+	* config/ltmain.m4sh (func_mode_link), m4/libtool.m4 (_LT_LINKER_SHLIBS):
+	New tag prelink_cmds, to be executed before linking a program.
+	(_LT_LANG_CXX_CONFIG) [ linux ]: Use for pgCC.
+	(_LT_COMPILER_C_O): conftest might be nonempty, clean up more thoroughly.
+
 	* tests/testsuite.at (LT_AT_BOOTSTRAP): Temporary fix for testing
 	in-tree libtoolize.
 
