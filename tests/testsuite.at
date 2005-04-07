@@ -43,7 +43,7 @@ m4_define([LT_AT_CHECK_LIBTOOLIZE],
 m4_define([LT_AT_BOOTSTRAP],
 [
 test -f ./ltmain.sh || LT_AT_LIBTOOLIZE([--copy])
-test -f ./configure || autoreconf --force --verbose --install
+test -f ./configure || _lt_pkgvdatadir="$abs_top_srcdir" autoreconf --force --verbose --install
 test -f ./configure || exit 1
 ./configure
 ])

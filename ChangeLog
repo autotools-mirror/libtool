@@ -1,5 +1,8 @@
 2005-04-07  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* tests/testsuite.at (LT_AT_BOOTSTRAP): Temporary fix for testing
+	in-tree libtoolize.
+
 	* m4/libtool.m4 (_LT_CONFIG_COMMANDS): Only call sed if
 	necessary while quoting all libtool variables.
 	Reported by Robert Ögren <lists@roboros.com>.
