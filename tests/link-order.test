@@ -1,5 +1,5 @@
 #! /bin/sh
-# linkorder.test - make sure that library linking order matches
+# link-order.test - make sure that library linking order matches
 
 # Test script header.
 need_prefix=no
