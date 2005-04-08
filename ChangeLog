@@ -1,3 +1,13 @@
+2005-04-08  Alexandre Oliva  <aoliva@redhat.com>,
+	    Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Fix the order of -L flags added for libtool dep libs.
+
+	* ltmain.in (link mode): Add to tmp_libs paths for libtool dep
+	libs in reverse order as well.
+	* tests/defs: Set $build to allow to detect cross-compiles.
+	* tests/Makefile.am, tests/linkorder.test: New test.
+
 2005-04-01  Mike Stump  <mrs@apple.com>
 
 	* libtool.m4 (AC_LIBTOOL_SYS_MAX_CMD_LEN) [ netbsd, freebsd, openbsd,
