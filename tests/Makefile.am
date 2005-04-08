@@ -46,8 +46,7 @@ COMMON_TESTS = \
 	pdemo-make.test pdemo-exec.test pdemo-inst.test \
 	mdemo-conf.test mdemo-make.test mdemo2-conf.test \
 	mdemo2-make.test mdemo2-exec.test \
-	func_extract_archives.test linkorder.test
-
+	duplicate_members.test  linkorder.test
 
 if HAVE_CXX
 if HAVE_F77

@@ -1,4 +1,15 @@
 2005-04-08  Alexandre Oliva  <aoliva@redhat.com>,
+	    Peter O'Gorman  <peter@pogma.com>
+
+	* ltmain.in: Don't add files with the same base name to an
+	archive; rename duplicates instead.
+	(func_extract_an_archive): Remove section to deal with duplicate
+	base names in an archive.
+	* tests/func_extract_archives.test: remove.
+	* tests/duplicate_members.test: new test.
+	* tests/Makefile.am: Add new test, remove old.
+
+2005-04-08  Alexandre Oliva  <aoliva@redhat.com>,
 	    Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	Fix the order of -L flags added for libtool dep libs.
