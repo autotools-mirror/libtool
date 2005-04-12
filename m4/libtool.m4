@@ -5997,7 +5997,7 @@ m4_defun([_LT_DECL_SED],
 [AC_PROG_SED
 test -z "$SED" && SED=sed
 _LT_DECL([], [SED], [1], [A sed program that does not truncate output])
-_LT_DECL([], [Xsed], ["\$SED -e s/^X//"],
+_LT_DECL([], [Xsed], ["\$SED -e 1s/^X//"],
     [Sed that helps us avoid accidentally triggering echo(1) options like -n])
 ])# _LT_DECL_SED
 
