@@ -152,7 +152,7 @@ esac
 
 # Sed substitution that helps us do robust quoting.  It backslashifies
 # metacharacters that are still active within double-quoted strings.
-Xsed='sed -e s/^X//'
+Xsed='sed -e 1s/^X//'
 sed_quote_subst='s/\([["`$\\]]\)/\\\1/g'
 
 # Same as above, but do not quote variable references.

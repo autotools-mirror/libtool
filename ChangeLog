@@ -1,3 +1,8 @@
+2005-04-12  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* config/general.m4sh, libtool.m4 (_LT_SETUP), tests/defs.m4sh:
+	Fix definition of $Xsed.
+
 2005-04-04  Gary V. Vaughan  <gary@gnu.org>
 
 	Under certain circumstances, not all of the macro files were
