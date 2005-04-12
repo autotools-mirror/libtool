@@ -117,7 +117,7 @@ esac
 
 # Sed substitution that helps us do robust quoting.  It backslashifies
 # metacharacters that are still active within double-quoted strings.
-Xsed='sed -e s/^X//'
+Xsed='sed -e 1s/^X//'
 [sed_quote_subst='s/\([\\"\\`$\\\\]\)/\\\1/g']
 
 # Same as above, but do not quote variable references.
@@ -4022,7 +4022,7 @@ ifelse([$1], [],
 SED=$lt_SED
 
 # Sed that helps us avoid accidentally triggering echo(1) options like -n.
-Xsed="$SED -e s/^X//"
+Xsed="$SED -e 1s/^X//"
 
 # The HP-UX ksh and POSIX shell print the target directory to stdout
 # if CDPATH is set.

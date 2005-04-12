@@ -1,3 +1,8 @@
+2005-04-12  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* libtool.m4 (AC_LIBTOOL_SETUP, AC_LIBTOOL_CONFIG): Fix
+	definition of $Xsed.
+
 2005-04-08  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* tests/linkorder.test: Move to
