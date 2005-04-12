@@ -28,7 +28,7 @@ AT_DATA(func_extract_archives,
 # func_extract_archives
 . ./ltdefs
 SED=${SED-sed}
-Xsed="$SED -e s/^X//"
+Xsed="$SED -e 1s/^X//"
 progname=libtool
 mode=testing
 

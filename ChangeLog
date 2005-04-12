@@ -1,3 +1,8 @@
+2005-04-12  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* config/general.m4sh, libtool.m4 (_LT_SETUP), tests/defs.m4sh,
+	tests/functests.at: Fix definition of $Xsed.
+
 2005-04-07  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	Improved Portland support: prelinking of C++ templates and whole_archive.
