@@ -21,13 +21,13 @@
 # Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
 # MA 02111-1307, USA.
 
-. ./defs || exit 1
+. tests/defs || exit 1
 
-func_require "mdemo2-conf" "mdemo2/Makefile"
-func_require "mdemo-make" "mdemo/libmlib.la"
+func_require "mdemo2-conf" "tests/mdemo2/Makefile"
+func_require "mdemo-make" "tests/mdemo/libmlib.la"
 
 func_rmprefixdir
-func_cd "mdemo2"
+func_cd "tests/mdemo2"
 func_make
 
 exit 0

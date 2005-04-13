@@ -1,3 +1,59 @@
+2005-04-13  Gary V. Vaughan  <gary@gnu.org>
+
+	Since the bootstrap process requires that several of the rules for
+	files generated in doc and tests already lived in
+	$top_srcdir/Makefile.am, along with proxy rules in sub-Makefiles,
+	this changeset consolidates almost everything into the top
+	Makefile.am, simplifying things considerably:
+
+	* doc/Makefile.am, tests/Makefile.am: Removed.  All rules moved...
+	* Makefile.am: ...to here and adjusted to run from $top_builddir.
+	Some reformatting to group rules and declarations by purpose, and
+	simplify with respect to removing much of the make recursion.
+	Add `doc/PLATFORMS', `doc/fdl.texi' and `doc/notes.texi'.
+	`defs.in' and `defs.m4sh' are in directory `tests'.
+	(uninstall-hook): Don't forget to uninstall libtoolize's libltdl
+	source tree.
+	* bootstrap: Simplified dirty makefile management, and bootstrap
+	file creation in light of having only a single pertinent
+	Makefile.
+	* configure.ac (CONF_SUBDIRS): Add tests/ prefix to each subdir to
+	compensate.
+	(DIST_MAKEFILE_LIST): Adjust.
+	(AC_CONFIG_FILES): Remove doc/Makefile and tests/Makefile.
+	* tests/defs.m4sh (LIBTOOL, scripts): Adjust paths.
+	* tests/cdemo-conf.test, tests/cdemo-exec.test,
+	tests/cdemo-make.test, tests/cdemo-shared.test,
+	tests/cdemo-static.test, tests/cdemo-undef.test,
+	tests/demo-conf.test, tests/demo-deplibs.test,
+	tests/demo-exec.test, tests/demo-hardcode.test,
+	tests/demo-inst.test, tests/demo-make.test,
+	tests/demo-nofast.test, tests/demo-noinst-link.test,
+	tests/demo-nopic.test, tests/demo-pic.test,
+	tests/demo-relink.test, tests/demo-shared.test,
+	tests/demo-static.test, tests/demo-unst.test,
+	tests/depdemo-conf.test, tests/depdemo-exec.test,
+	tests/depdemo-inst.test, tests/depdemo-make.test,
+	tests/depdemo-nofast.test, tests/depdemo-relink.test,
+	tests/depdemo-shared.test, tests/depdemo-static.test,
+	tests/depdemo-unst.test, tests/f77demo-conf.test,
+	tests/f77demo-exec.test, tests/f77demo-make.test,
+	tests/f77demo-shared.test, tests/f77demo-static.test,
+	tests/link-2.test, tests/link.test, tests/mdemo-conf.test,
+	tests/mdemo-dryrun.test, tests/mdemo-exec.test,
+	tests/mdemo-inst.test, tests/mdemo-make.test,
+	tests/mdemo-shared.test, tests/mdemo-static.test,
+	tests/mdemo-unst.test, tests/mdemo2-conf.test,
+	tests/mdemo2-exec.test, tests/mdemo2-make.test, tests/nomode.test,
+	tests/objectlist.test, tests/pdemo-conf.test,
+	tests/pdemo-exec.test, tests/pdemo-inst.test,
+	tests/pdemo-make.test, tests/quote.test, tests/sh.test,
+	tests/suffix.test, tests/tagdemo-conf.test,
+	tests/tagdemo-exec.test, tests/tagdemo-make.test,
+	tests/tagdemo-shared.test, tests/tagdemo-static.test,
+	tests/tagdemo-undef.test, tests/tagtrace.test (func_cd,
+	func_require): Adjust paths..
+
 2005-04-12  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* config/general.m4sh, libtool.m4 (_LT_SETUP), tests/defs.m4sh,
@@ -5,14 +61,17 @@
 
 2005-04-07  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
-	Improved Portland support: prelinking of C++ templates and whole_archive.
+	Improved Portland support: prelinking of C++ templates and
+	whole_archive.
 
 	* m4/libtool.m4 (_LT_COMPILER_PIC, _LT_LINKER_SHLIBS) [ linux ]:
 	Reinstate formatted whole_archive_flag_spec for PGI compilers.
-	* config/ltmain.m4sh (func_mode_link), m4/libtool.m4 (_LT_LINKER_SHLIBS):
-	New tag prelink_cmds, to be executed before linking a program.
+	* config/ltmain.m4sh (func_mode_link), m4/libtool.m4
+	(_LT_LINKER_SHLIBS): New tag prelink_cmds, to be executed before
+	linking a program.
 	(_LT_LANG_CXX_CONFIG) [ linux ]: Use for pgCC.
-	(_LT_COMPILER_C_O): conftest might be nonempty, clean up more thoroughly.
+	(_LT_COMPILER_C_O): conftest might be nonempty, clean up more
+	thoroughly.
 
 	* tests/testsuite.at (LT_AT_BOOTSTRAP): Temporary fix for testing
 	in-tree libtoolize.
@@ -29,7 +88,8 @@
 
 	* notes.texi: Platform-specific configuration notes.
 	* doc/libtool.texi: Include as section.
-	* bootstrap, doc/Makefile.am: build also as notes.txt and distribute.
+	* bootstrap, doc/Makefile.am: build also as notes.txt and
+	distribute.
 
 2005-04-04  Gary V. Vaughan  <gary@gnu.org>
 

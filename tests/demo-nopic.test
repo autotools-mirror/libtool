@@ -21,7 +21,7 @@
 # Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
 # MA 02111-1307, USA.
 
-. ./defs || exit 1
+. tests/defs || exit 1
 
 case "$host" in
 hppa*|x86_64*|s390*)
@@ -33,7 +33,7 @@ hppa*|x86_64*|s390*)
 esac
 
 func_rmprefixdir
-func_cd "demo"
+func_cd "tests/demo"
 func_make_distclean
 func_configure "--with-pic=no"
 

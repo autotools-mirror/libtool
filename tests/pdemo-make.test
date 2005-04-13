@@ -21,12 +21,12 @@
 # Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
 # MA 02111-1307, USA.
 
-. ./defs || exit 1
+. tests/defs || exit 1
 
-func_require "pdemo-conf" "pdemo/Makefile"
+func_require "pdemo-conf" "tests/pdemo/Makefile"
 
 func_rmprefixdir
-func_cd "pdemo"
+func_cd "tests/pdemo"
 func_make
 
 exit 0

@@ -21,12 +21,12 @@
 # Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
 # MA 02111-1307, USA.
 
-. ./defs || exit 1
+. tests/defs || exit 1
 
-func_require "mdemo-make" "mdemo/mdemo$EXEEXT"
+func_require "mdemo-make" "tests/mdemo/mdemo$EXEEXT"
 
 func_mkprefixdir
-func_cd "mdemo"
+func_cd "tests/mdemo"
 func_make "install"
 func_exec_init "installed"
 func_exec "$prefix/bin/mdemo_static $prefix/lib/foo1.la $prefix/lib/libfoo2.la"

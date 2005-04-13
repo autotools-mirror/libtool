@@ -5,7 +5,7 @@ m4_divert_push([SCRIPT])# @configure_input@
 # Gord Matzigkeit <gord@gnu.ai.mit.edu>, 1996
 # Gary V. Vaughan <gary@gnu.org>, 2003
 
-# Copyright (C) 2003, 2004 Free Software Foundation, Inc.
+# Copyright (C) 2003, 2004, 2005 Free Software Foundation, Inc.
 # This is free software; see the source for copying conditions.  There is NO
 # warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
@@ -31,7 +31,7 @@ $as_unset CDPATH
 m4_include([general.m4sh])
 
 : ${AUTOCONF="autoconf"}
-: ${LIBTOOL="../libtool"}
+: ${LIBTOOL="./libtool"}
 
 # Sed that helps us avoid accidentally triggering echo(1) options like -n.
 Xsed="$SED -e 1s/^X//"
@@ -178,7 +178,7 @@ func_configure ()
     $opt_debug
     my_args=${1+"$@"}
     my_dir=`pwd | $SED "$basename"`
-    my_testdir="$srcdir/$my_dir"
+    my_testdir="$srcdir/tests/$my_dir"
 
     test -n "$my_args" && my_args=" $my_args"
     my_args="--srcdir="\""$my_testdir"\"" --prefix="\""$prefix"\""$my_args"
@@ -322,7 +322,7 @@ func_exec ()
 # Shared global variables for test scripts
 prefix="./_inst"
 srcdir=`cd $srcdir && pwd`
-scripts="$srcdir/../config/ltmain.sh ../libtoolize"
+scripts="$srcdir/config/ltmain.sh ./libtoolize"
 
 func_msg "Running $progname"
 

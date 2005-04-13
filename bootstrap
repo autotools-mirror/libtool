@@ -62,15 +62,9 @@ fi
 set dummy `$SED '/AC_INIT/{s/[][,()]/ /g; p;};d' configure.ac`
 shift
 
-# Whip up some dirty Makefiles:
-makefiles=
-for dirty in ./Makefile ./tests/Makefile ./doc/Makefile
-do
-  test -f $dirty || {
-    makefiles="$makefiles $dirty"
-    $SED '/^if /,/^endif$/d;/^else$/,/^endif$/d' $dirty.am > $dirty
-  }
-done
+# Whip up a dirty Makefile:
+test -f Makefile \
+  || $SED '/^if /,/^endif$/d;/^else$/,/^endif$/d' Makefile.am > Makefile
 
 # Building distributed files from configure is bad for automake, so we
 # generate them here, and have Makefile rules to keep them up to date.
@@ -79,28 +73,17 @@ done
 # configure, and ltversion.m4 to generate configure in the first place:
 rm -f ./config/ltmain.sh ./m4/ltversion.m4
 
-
-$MAKE ./config/ltmain.sh ./m4/ltversion.m4 ./libtoolize.in ./tests/defs.in \
+$MAKE ./config/ltmain.sh ./doc/notes.txt ./m4/ltversion.m4 ./libtoolize.in \
+    ./tests/defs.in ./tests/package.m4 ./tests/testsuite \
     srcdir=. top_srcdir=. PACKAGE="$2" VERSION="$3" \
-    M4SH="$AUTOM4TE --language=m4sh"
-
-{
-  $MAKE update-package-m4 srcdir=. top_srcdir=. \
-    PACKAGE="$2" VERSION="$3" PACKAGE_BUGREPORT="bug-$2@gnu.org"
-  cd tests
-  $MAKE ./testsuite AUTOTEST="$AUTOM4TE --language=autotest" \
-    srcdir=. top_srcdir=.. PACKAGE="$2" VERSION="$3"
-  cd ..
-  cd doc
-  $MAKE notes.txt srcdir=. top_srcdir=.. MAKEINFO="${MAKEINFO}"
-  cd ..
-}
+    PACKAGE_BUGREPORT="bug-$2@gnu.org" M4SH="$AUTOM4TE --language=m4sh" \
+    AUTOTEST="$AUTOM4TE --language=autotest" MAKEINFO="$MAKEINFO"
 
 test -f clcommit.m4sh && $MAKE -f Makefile.maint commit \
     top_srcdir=. PACKAGE="$2" VERSION="$3" M4SH="$AUTOM4TE -l m4sh" \
-    SED="$SED" GREP="$GREP" FGREP="$FGREP" EGREP="${EGREP}" LN_S="$LN_S"
+    SED="$SED" GREP="$GREP" FGREP="$FGREP" EGREP="$EGREP" LN_S="$LN_S"
 
-test -z "$makefiles" || rm -f $makefiles
+rm -f Makefile
 
 # Make a dummy libtoolize script for autoreconf:
 test -f clcommit.m4sh && cat > ./config/libtoolize <<'EOF'

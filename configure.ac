@@ -144,14 +144,14 @@ if test x"${enable_ltdl_install+set}" != xset; then
 fi
 
 # All subdirectories that are configured on demand, but that must be
-# included in the distribution.  This substitution is for tests/Makefile.am,
-# so the directory names are relative to that directory.
-CONF_SUBDIRS="cdemo demo depdemo f77demo mdemo mdemo2 pdemo tagdemo"
+# included in the distribution.
+CONF_SUBDIRS="tests/cdemo tests/demo tests/depdemo tests/f77demo tests/mdemo \
+	tests/mdemo2 tests/pdemo tests/tagdemo"
 AC_SUBST([CONF_SUBDIRS])
 
 DIST_MAKEFILE_LIST=
 for dir in $CONF_SUBDIRS; do
-  DIST_MAKEFILE_LIST="${DIST_MAKEFILE_LIST}tests/$dir/Makefile "
+  DIST_MAKEFILE_LIST="${DIST_MAKEFILE_LIST}$dir/Makefile "
 done
 AC_SUBST([DIST_MAKEFILE_LIST])
 
@@ -208,5 +208,5 @@ AM_CONDITIONAL(HAVE_RC, [test -n "[$]_LT_TAGVAR(compiler, RC)"])
 ## -------- ##
 ## Outputs. ##
 ## -------- ##
-AC_CONFIG_FILES([Makefile libltdl/Makefile doc/Makefile tests/Makefile])
+AC_CONFIG_FILES([Makefile libltdl/Makefile])
 AC_OUTPUT

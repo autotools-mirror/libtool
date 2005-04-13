@@ -21,7 +21,7 @@
 # Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
 # MA 02111-1307, USA.
 
-. ./defs || exit 1
+. tests/defs || exit 1
 
 func_restore_files ()
 {
@@ -48,10 +48,10 @@ func_save_files ()
     trap "func_restore_files" 0 1 2 13 15
 }
 
-func_require "depdemo-inst" "$prefix/lib/libl3.la"  "depdemo/l3/libl3.la"
+func_require "depdemo-inst" "$prefix/lib/libl3.la"  "tests/depdemo/l3/libl3.la"
 
 func_mkprefixdir
-func_cd "depdemo"
+func_cd "tests/depdemo"
 
 # Check to make sure we have a dynamic library.
 func_get_config "library_names" "cat l3/libl3.la"

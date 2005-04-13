@@ -21,10 +21,10 @@
 # Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
 # MA 02111-1307, USA.
 
-. ./defs || exit 1
+. tests/defs || exit 1
 
 func_mkprefixdir
-func_cd "f77demo"
+func_cd "tests/f77demo"
 func_make_distclean
 func_configure "--disable-static"
 func_check_static_shared "no" "yes"

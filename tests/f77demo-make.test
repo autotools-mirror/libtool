@@ -21,12 +21,12 @@
 # Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
 # MA 02111-1307, USA.
 
-. ./defs || exit 1
+. tests/defs || exit 1
 
-func_require "f77demo-conf" "f77demo/Makefile"
+func_require "f77demo-conf" "tests/f77demo/Makefile"
 
 func_rmprefixdir
-func_cd "f77demo"
+func_cd "tests/f77demo"
 # May fail make on some platforms, simply "skip" in that case
 #func_make
 eval $MAKE || func_skip "The improved fortran tests catch a known failure mode"

@@ -21,12 +21,12 @@
 # Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
 # MA 02111-1307, USA.
 
-. ./defs || exit 1
+. tests/defs || exit 1
 
-func_require "cdemo-make" "cdemo/cdemo$EXEEXT"
+func_require "cdemo-make" "tests/cdemo/cdemo$EXEEXT"
 
 func_rmprefixdir
 func_exec_init "uninstalled"
-func_exec "cdemo/cdemo"
+func_exec "tests/cdemo/cdemo"
 
 exit $exec_status
