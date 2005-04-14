@@ -64,7 +64,8 @@ COMMON_TESTS = \
 	depdemo-inst.test depdemo-relink.test depdemo-unst.test \
 	mdemo-shared.test mdemo-make.test mdemo-exec.test \
 	mdemo-inst.test mdemo-unst.test \
-	cdemo-undef.test cdemo-make.test cdemo-exec.test
+	cdemo-undef.test cdemo-make.test cdemo-exec.test \
+	link-order.test
 
 if HAVE_CXX
 if HAVE_F77

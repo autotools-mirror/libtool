@@ -1,3 +1,10 @@
+2005-04-14  Alexandre Oliva  <aoliva@redhat.com>,
+	    Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* config/ltmain.m4sh (link mode): Add to tmp_libs paths for libtool dep
+	libs in reverse order as well.
+	* tests/Makefile.am, tests/link-order.test: New test.
+
 2005-04-12  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* config/general.m4sh, libtool.m4 (_LT_SETUP), tests/defs.m4sh:

@@ -1,0 +1,105 @@
+#! /bin/sh
+# link-order.test - make sure that library linking order matches
+
+# Copyright (C) 2005 Free Software Foundation, Inc.
+# This is free software; see the source for copying conditions.  There is NO
+# warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, a copy can be downloaded from
+# http://www.gnu.org/copyleft/gpl.html, or by writing to the Free
+# Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
+# MA 02111-1307, USA.
+
+. ./defs || exit 1
+
+retcode=0
+
+rm -rf linkorder.dir
+mkdir linkorder.dir
+top_dir=`pwd`/linkorder.dir
+prefix_old=$top_dir/old
+prefix_new=$top_dir/new
+srcdir=linkorder.dir/src
+mkdir $srcdir $prefix_old $prefix_new $prefix_old/lib $prefix_new/lib
+
+cat >$srcdir/c.c <<EOF
+int c = 1;
+EOF
+
+$LIBTOOL --mode=compile $CC $CFLAGS -c $srcdir/c.c -o $srcdir/c.lo
+$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o $srcdir/libcee.la $srcdir/c.lo \
+    -rpath $prefix_old/lib
+$LIBTOOL --mode=install cp $srcdir/libcee.la $prefix_old/lib/libcee.la
+
+for i in old new; do
+  rm -rf $srcdir
+  mkdir $srcdir
+
+  cat >$srcdir/a_$i.c <<EOF
+extern int c;
+extern int b_$i();
+int a_$i() { return c + b_$i(); }
+EOF
+
+  cat >$srcdir/b_$i.c <<EOF
+extern int c;
+int b_$i() { return 1 + c; }
+EOF
+
+  prefix=`eval echo \\$prefix_$i`
+  $LIBTOOL --mode=compile $CC $CFLAGS -c $srcdir/a_$i.c -o $srcdir/a.lo
+  $LIBTOOL --mode=compile $CC $CFLAGS -c $srcdir/b_$i.c -o $srcdir/b.lo
+  $LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o $srcdir/libb.la $srcdir/b.lo \
+      -L$prefix_old/lib -lcee -rpath $prefix/lib
+  $LIBTOOL --mode=link $CC $CFLAGS -o $srcdir/liba.la $srcdir/a.lo \
+      $srcdir/libb.la -L$prefix_old/lib -lcee -rpath $prefix/lib
+  $LIBTOOL --mode=install cp $srcdir/libb.la $prefix/lib/libb.la
+  $LIBTOOL --mode=install cp $srcdir/liba.la $prefix/lib/liba.la \
+      >$srcdir/stdout 2>$srcdir/stderr || retcode=1
+  cat $srcdir/stdout
+  cat $srcdir/stderr >&2
+done
+
+# Do not error if we do not relink (e.g. static-only systems)
+if $EGREP relinking $srcdir/stderr; then
+  if $EGREP ' -L.*\/new\/lib -lb -L.*\/old\/lib -lcee' $srcdir/stdout; then :; else
+    echo "$0: wrong link order" 1>&2
+    retcode=1
+  fi
+fi
+
+for i in old new; do
+  cat >$srcdir/main_$i.c <<EOF
+extern int a_$i();
+int main(void) { return a_$i() != 3; }
+EOF
+
+  prefix=`eval echo \\$prefix_$i`
+  $LIBTOOL --mode=compile $CC $CFLAGS -c $srcdir/main_$i.c -o $srcdir/main_$i.lo
+  $LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o $srcdir/main_$i $srcdir/main_$i.lo \
+      -L$prefix/lib -la || retcode=1
+  if $srcdir/main_$i; then :
+  else
+    echo "$0: cannot execute $srcdir/main_$i" 1>&2
+    if test "X$host" != "X$build"; then
+      echo "This may be ok since you seem to be cross-compiling." 1>&2
+      retcode=77
+    else
+      retcode=1
+    fi
+  fi
+done
+
+rm -rf $top_dir
+exit $retcode

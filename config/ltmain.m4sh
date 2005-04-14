@@ -4022,7 +4022,7 @@ func_mode_link ()
 	      esac
 	      case " $deplibs " in
 	      *" $path "*) ;;
-	      *) deplibs="$deplibs $path" ;;
+	      *) deplibs="$path $deplibs" ;;
 	      esac
 	    done
 	  fi # link_all_deplibs != no
