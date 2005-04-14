@@ -1,3 +1,10 @@
+2005-04-14  Alexandre Oliva  <aoliva@redhat.com>,
+	    Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* config/ltmain.m4sh (link mode): Add to tmp_libs paths for libtool dep
+	libs in reverse order as well.
+	* Makefile.am, tests/testsuite.at, tests/link-order.at: New test.
+
 2005-04-13  Gary V. Vaughan  <gary@gnu.org>
 
 	Since the bootstrap process requires that several of the rules for

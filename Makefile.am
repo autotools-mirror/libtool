@@ -305,6 +305,7 @@ TESTSUITE_AT	= tests/testsuite.at \
 		  tests/inherited_flags.at \
 		  tests/libtoolize.at \
 		  tests/stresstest.at \
+		  tests/link-order.at \
 		  tests/template.at
 
 EXTRA_DIST     += $(TESTSUITE) $(TESTSUITE_AT) tests/package.m4

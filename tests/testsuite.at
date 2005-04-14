@@ -72,4 +72,6 @@ m4_include([stresstest.at])
 m4_include([template.at])
 # libtoolize tests
 m4_include([libtoolize.at])
+# link order test
+m4_include([link-order.at])
 
