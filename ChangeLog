@@ -1,3 +1,7 @@
+2005-04-14  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>  (tiny change)
+
+	* bootstrap: Define srcdir for making `commit'.
+
 2005-04-14  Alexandre Oliva  <aoliva@redhat.com>,
 	    Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 

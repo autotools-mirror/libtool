@@ -80,7 +80,7 @@ $MAKE ./config/ltmain.sh ./doc/notes.txt ./m4/ltversion.m4 ./libtoolize.in \
     AUTOTEST="$AUTOM4TE --language=autotest" MAKEINFO="$MAKEINFO"
 
 test -f clcommit.m4sh && $MAKE -f Makefile.maint commit \
-    top_srcdir=. PACKAGE="$2" VERSION="$3" M4SH="$AUTOM4TE -l m4sh" \
+    srcdir=. top_srcdir=. PACKAGE="$2" VERSION="$3" M4SH="$AUTOM4TE -l m4sh" \
     SED="$SED" GREP="$GREP" FGREP="$FGREP" EGREP="$EGREP" LN_S="$LN_S"
 
 rm -f Makefile
