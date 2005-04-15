@@ -1,3 +1,8 @@
+2004-04-15  Maciej W. Rozycki  <macro@linux-mips.org>
+
+	* libtool.m4 (AC_LIBTOOL_LANG_GCJ_CONFIG): Add old_archive_cmds
+	definition.
+
 2005-04-15  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* libtool.m4 (_LT_CC_BASENAME): New macro to figure out $cc_basename.
