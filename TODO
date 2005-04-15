@@ -118,8 +118,6 @@ GNU Libtool
     - cross compile
     - dirs with ~
     - multiple input files
-    - look at the wrapper-in-wrapper problem: `libtool' vs.
-        distcc, ccache, mpicc.
 
 2.3. libtool
 ------------

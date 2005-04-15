@@ -1,3 +1,11 @@
+2005-04-15  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* m4/libtool.m4 (_LT_CC_BASENAME): New macro to figure out $cc_basename.
+	Skip ccache, distcc, purify, cmdline options, `$host_alias-' prefix.
+	(_LT_SETUP, _LT_LANG_CXX_CONFIG, _LT_LANG_F77_CONFIG,
+	_LT_LANG_GCJ_CONFIG, _LT_LANG_RC_CONFIG): Use.
+	* NEWS, TODO: Update.
+
 2005-04-15  Gary V. Vaughan  <gary@gnu.org>
 
 	* libltdl/configure.ac (AC_OUTPUT): loaders/Makefile is no longer
