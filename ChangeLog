@@ -1,5 +1,8 @@
 2005-04-15  Gary V. Vaughan  <gary@gnu.org>
 
+	* libltdl/configure.ac (AC_OUTPUT): loaders/Makefile is no longer
+	used.
+
 	* Makefile.am (lt__cd, CD_TESTDIR): New make macros to work around
 	problems with CDPATH in some shells.
 	(check-local, installcheck-local, clean-local): Use them.
