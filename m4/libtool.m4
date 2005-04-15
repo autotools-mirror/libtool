@@ -5889,6 +5889,8 @@ _LT_CC_BASENAME([$compiler])
 # GCJ did not exist at the time GCC didn't implicitly link libc in.
 _LT_TAGVAR(archive_cmds_need_lc, $1)=no
 
+_LT_TAGVAR(old_archive_cmds, $1)=$old_archive_cmds
+
 ## CAVEAT EMPTOR:
 ## There is no encapsulation within the following macros, do not change
 ## the running order or otherwise move them around unless you know exactly
