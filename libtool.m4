@@ -185,8 +185,7 @@ if test -n "$RANLIB"; then
   old_archive_cmds="$old_archive_cmds~\$RANLIB \$oldlib"
 fi
 
-cc_basename=`$echo "X$compiler" \
-     | $Xsed -e 's%.*/%%;s%^[ 	]*\([^ 	]*\).*$%\1%'`
+_LT_CC_BASENAME([$compiler])
 
 # Only perform the check for file, if the check method requires it
 case $deplibs_check_method in
@@ -231,6 +230,20 @@ LTCC=${LTCC-"$CC"}
 # Allow CC to be a program name with arguments.
 compiler=$CC
 ])# _LT_AC_SYS_COMPILER
+
+
+# _LT_CC_BASENAME(CC)
+# -------------------
+# Calculate cc_basename.  Skip known compiler wrappers and cross-prefix.
+AC_DEFUN([_LT_CC_BASENAME],
+[for cc_temp in $1""; do
+  case $cc_temp in
+    ccache | *[[\\/]]ccache | distcc | *[[\\/]]distcc | purify | *[[\\/]]purify | \-*) ;;
+    *) break;;
+  esac
+done
+cc_basename=`$ECHO "X$cc_temp" | $Xsed -e 's%.*/%%' -e "s%^$host_alias-%%"`
+])
 
 
 # _LT_AC_SYS_LIBPATH_AIX
@@ -2670,8 +2683,7 @@ test -z "${LDCXX+set}" || LD=$LDCXX
 CC=${CXX-"c++"}
 compiler=$CC
 _LT_AC_TAGVAR(compiler, $1)=$CC
-cc_basename=`$echo "X$compiler" \
-     | $Xsed -e 's%.*/%%;s%^[ 	]*\([^ 	]*\).*$%\1%'`
+_LT_CC_BASENAME([$compiler])
 
 # We don't want -fno-exception wen compiling C++ code, so set the
 # no_builtin_flag separately
@@ -3736,8 +3748,7 @@ lt_save_CC="$CC"
 CC=${F77-"f77"}
 compiler=$CC
 _LT_AC_TAGVAR(compiler, $1)=$CC
-cc_basename=`$echo "X$compiler" \
-     | $Xsed -e 's%.*/%%;s%^[ 	]*\([^ 	]*\).*$%\1%'`
+_LT_CC_BASENAME([$compiler])
 
 AC_MSG_CHECKING([if libtool supports shared libraries])
 AC_MSG_RESULT([$can_build_shared])
@@ -3817,8 +3828,7 @@ lt_save_CC="$CC"
 CC=${GCJ-"gcj"}
 compiler=$CC
 _LT_AC_TAGVAR(compiler, $1)=$CC
-cc_basename=`$echo "X$compiler" \
-     | $Xsed -e 's%.*/%%;s%^[ 	]*\([^ 	]*\).*$%\1%'`
+_LT_CC_BASENAME([$compiler])
 
 # GCJ did not exist at the time GCC didn't implicitly link libc in.
 _LT_AC_TAGVAR(archive_cmds_need_lc, $1)=no
@@ -3874,8 +3884,7 @@ lt_save_CC="$CC"
 CC=${RC-"windres"}
 compiler=$CC
 _LT_AC_TAGVAR(compiler, $1)=$CC
-cc_basename=`$echo "X$compiler" \
-     | $Xsed -e 's%.*/%%;s%^[ 	]*\([^ 	]*\).*$%\1%'`
+_LT_CC_BASENAME([$compiler])
 _LT_AC_TAGVAR(lt_cv_prog_compiler_c_o, $1)=yes
 
 AC_LIBTOOL_CONFIG($1)
@@ -5151,8 +5160,7 @@ ifelse([$1],[CXX],[
   # preloaded symbol tables.
   extract_expsyms_cmds=
   # Just being paranoid about ensuring that cc_basename is set.
-  cc_basename=`$echo "X$compiler" \
-      | $Xsed -e 's%.*/%%;s%^[ 	]*\([^ 	]*\).*$%\1%'`
+  _LT_CC_BASENAME([$compiler])
   case $host_os in
   cygwin* | mingw* | pw32*)
     # FIXME: the MSVC++ port hasn't been tested in a loooong time

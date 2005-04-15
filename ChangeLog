@@ -1,3 +1,12 @@
+2005-04-15  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* libtool.m4 (_LT_CC_BASENAME): New macro to figure out $cc_basename.
+	Skip ccache, distcc, purify, cmdline options, `$host_alias-' prefix.
+	(AC_LIBTOOL_SETUP, AC_LIBTOOL_LANG_CXX_CONFIG,
+	AC_LIBTOOL_LANG_F77_CONFIG,  AC_LIBTOOL_LANG_GCJ_CONFIG,
+	AC_LIBTOOL_LANG_RC_CONFIG, AC_LIBTOOL_PROG_LD_SHLIBS): Use.
+	* NEWS: Update.
+
 2005-04-12  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* libtool.m4 (AC_LIBTOOL_SETUP, AC_LIBTOOL_CONFIG): Fix
