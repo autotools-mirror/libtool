@@ -340,22 +340,22 @@ tests/atconfig: config.status
 	$(SHELL) ./config.status tests/atconfig
 DISTCLEANFILES += tests/atconfig
 
+lt__cd		= CDPATH="$${ZSH_VERSION+.}$(PATH_SEPARATOR)" && cd
+CD_TESTDIR	= abs_srcdir=`$(lt__cd) $(srcdir) && pwd`; cd tests
+
 # Hook the test suite into the check rule
 check-local: tests/atconfig $(srcdir)/$(TESTSUITE)
-	abs_srcdir=`cd $(srcdir); pwd`; \
-	cd tests; \
+	$(CD_TESTDIR); \
 	$(TESTS_ENVIRONMENT) $(SHELL) $$abs_srcdir/$(TESTSUITE) $(TESTSUITE_FLAGS)
 
 # Run the test suite on the *installed* tree.
 installcheck-local:
-	abs_srcdir=`cd $(srcdir); pwd`; \
-	cd tests; \
+	$(CD_TESTDIR); \
 	$(TESTS_ENVIRONMENT) $(SHELL) $$abs_srcdir/$(TESTSUITE) $(TESTSUITE_FLAGS) AUTOTEST_PATH=$(exec_prefix)/bin
 
 # We need to remove any file droppings left behind by testsuite
 clean-local: clean-local-legacy
-	-abs_srcdir=`cd $(srcdir); pwd`; \
-	cd tests; \
+	-$(CD_TESTDIR); \
 	test -f $$abs_srcdir/$(TESTSUITE) && \
 	    $(SHELL) $$abs_srcdir/$(TESTSUITE) --clean
 

@@ -1,3 +1,9 @@
+2005-04-15  Gary V. Vaughan  <gary@gnu.org>
+
+	* Makefile.am (lt__cd, CD_TESTDIR): New make macros to work around
+	problems with CDPATH in some shells.
+	(check-local, installcheck-local, clean-local): Use them.
+
 2005-04-14  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>  (tiny change)
 
 	* bootstrap: Define srcdir for making `commit'.
