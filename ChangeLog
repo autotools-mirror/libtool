@@ -1,4 +1,4 @@
-2004-04-15  Maciej W. Rozycki  <macro@linux-mips.org>
+2005-04-15  Maciej W. Rozycki  <macro@linux-mips.org>
 
 	* m4/libtool.m4 (_LT_LANG_GCJ_CONFIG): Add old_archive_cmds
 	definition.
