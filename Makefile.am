@@ -301,7 +301,7 @@ dist-hook:
 TESTSUITE	= tests/testsuite
 TESTSUITE_AT	= tests/testsuite.at \
 		  tests/am-subdir.at \
-		  tests/functests.at \
+		  tests/duplicate_members.at \
 		  tests/inherited_flags.at \
 		  tests/libtoolize.at \
 		  tests/stresstest.at \

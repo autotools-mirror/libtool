@@ -987,30 +987,7 @@ func_extract_an_archive ()
     if ($AR t "$f_ex_an_ar_oldlib" | sort | sort -uc >/dev/null 2>&1); then
      :
     else
-      func_basename "$f_ex_an_ar_oldlib"
-      f_ex_an_ar_lib="$func_basename_result"
-      func_warning "$modename: warning: object name conflicts; renaming object files" 1>&2
-      func_warning "$modename: warning: to ensure that they will not overwrite" 1>&2
-      func_show_eval "cp \$f_ex_an_ar_oldlib \$f_ex_an_ar_dir/\$f_ex_an_ar_lib"
-      $AR t "$f_ex_an_ar_oldlib" | sort | uniq -c | while read count name
-      do
-	# We don't want to do anything to objects with unique names
-        test "$count" -eq 1 && continue
-	i=1
-	while test "$i" -le "$count"
-	  do
-	  # Put our $i before any first dot (extension)
-	  # Never overwrite any file
-	  name_to="$name"
-	  while test "X$name_to" = "X$name" || test -f "$f_ex_an_ar_dir/$name_to"
-	    do
-	    name_to=`$ECHO "X$name_to" | $Xsed -e "s/\([[^.]]*\)/\1-$i/"`
-	  done
-	  func_show_eval "(cd \$f_ex_an_ar_dir && $AR x \$f_ex_an_ar_lib '$name' && $MV '$name' '$name_to' && $AR d \$f_ex_an_ar_lib '$name')" || exit $?
-	  i=`expr $i + 1`
-	done
-      done
-      func_show_eval "$RM \$f_ex_an_ar_dir/\$f_ex_an_ar_lib"
+      func_fatal_error "object name conflicts in archive: $f_ex_an_ar_dir/$f_ex_an_ar_oldlib"
     fi
 }
 
@@ -6304,6 +6281,50 @@ fi\
 	  oldobjs="$oldobjs $func_extract_archives_result"
 	fi
 
+	# POSIX demands no paths to be encoded in archives.  We have
+	# to avoid creating archives with duplicate basenames if we
+	# might have to extract them afterwards, e.g., when creating a
+	# static archive out of a convenience library, or when linking
+	# the entirety of a libtool archive into another (currently
+	# not supported by libtool).
+	if (for obj in $oldobjs
+	    do
+	      func_basename "$obj"
+	      $ECHO "$func_basename_result"
+	    done | sort | sort -uc >/dev/null 2>&1); then
+	  :
+	else
+	  $ECHO "copying selected object files to avoid basename conflicts..."
+	  gentop="$output_objdir/${outputname}x"
+	  generated="$generated $gentop"
+	  func_mkdir_p "$gentop"
+	  save_oldobjs=$oldobjs
+	  oldobjs=
+	  counter=1
+	  for obj in $save_oldobjs
+	  do
+	    func_basename "$obj"
+	    objbase="$func_basename_result"
+	    case " $oldobjs " in
+	    " ") oldobjs=$obj ;;
+	    *[[\ /]]"$objbase "*)
+	      while :; do
+		# Make sure we don't pick an alternate name that also
+		# overlaps.
+		newobj=lt$counter-$objbase
+		counter=`expr $counter + 1`
+		case " $oldobjs " in
+		*[[\ /]]"$newobj "*) ;;
+		*) if test ! -f "$gentop/$newobj"; then break; fi ;;
+		esac
+	      done
+	      func_show_eval "ln $obj $gentop/$newobj || cp $obj $gentop/$newobj"
+	      oldobjs="$oldobjs $gentop/$newobj"
+	      ;;
+	    *) oldobjs="$oldobjs $obj" ;;
+	    esac
+	  done
+	fi
 	eval cmds=\"$old_archive_cmds\"
 
 	if len=`expr "X$cmds" : ".*"` &&
@@ -6317,21 +6338,6 @@ fi\
 	  objlist=
 	  concat_cmds=
 	  save_oldobjs=$oldobjs
-	  # GNU ar 2.10+ was changed to match POSIX; thus no paths are
-	  # encoded into archives.  This makes 'ar r' malfunction in
-	  # this piecewise linking case whenever conflicting object
-	  # names appear in distinct ar calls; check, warn and compensate.
-	    if (for obj in $save_oldobjs
-	    do
-	      func_basename "$obj"
-	      $ECHO "$func_basename_result"
-	    done | sort | sort -uc >/dev/null 2>&1); then
-	    :
-	  else
-	    func_warning "object name conflicts; overriding AR_FLAGS to 'cq'"
-	    func_warning "to ensure that POSIX-compatible ar will work"
-	    AR_FLAGS=cq
-	  fi
 	  # Is there a better way of finding the last object in the list?
 	  for obj in $save_oldobjs
 	  do

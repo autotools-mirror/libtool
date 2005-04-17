@@ -1,3 +1,15 @@
+2005-04-17 Alexandre Oliva  <aoliva@redhat.com>,
+	   Peter O'Gorman  <peter@pogma.com>
+
+	* config/ltmain.m4sh: Don't add files with the same base name to an 
+	archive; rename duplicates instead.
+	(func_extract_an_archive): Remove section to deal with duplicate
+	base names in an archive.
+	* tests/functests.at: remove.
+	* tests/duplicate_members.at: new test.
+	* tests/testsuite.at: Add new test, remove old.
+	* Makefile.am: Add new test, remove old.
+
 2005-04-17  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* tests/demo-hardcode.test [solaris]:  Use dumpstabs if available,

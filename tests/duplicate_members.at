@@ -1,0 +1,75 @@
+# Hand crafted tests for GNU Libtool.                         -*- Autotest -*-
+# Copyright 2005 Free Software Foundation, Inc.
+
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2, or (at your option)
+# any later version.
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
+# 02111-1307, USA.
+
+AT_BANNER([Testing libtool functions])
+AT_SETUP([duplicate members in archive tests])
+
+
+LIBTOOL=${abs_top_builddir}/libtool
+
+# we don't want to use whole_archive_flag_spec, even if available
+sed -e 's|^whole_archive_flag_spec=.*|whole_archive_flag_spec=|g' < $LIBTOOL > libtool
+
+chmod +x ./libtool
+LIBTOOL=./libtool
+
+eval `$LIBTOOL --config | grep ^EGREP=`
+eval `$LIBTOOL --config | $EGREP '(host|build)='`
+
+AT_DATA(bar.c,
+[[int bar() {
+    int result=foo1() +foo2() +foo3() +foo4() +foo5() +foo6();
+    return result;
+}
+]])
+
+AT_DATA(main.c,
+[[int bar();
+int main()
+{
+if (bar() == 21) return 0;
+return 1;
+}
+]])
+
+
+for a in 1 2 3 4 5 6
+do
+  mkdir $a
+  echo "int foo$a() {return $a;}" > $a/a.c
+done
+
+
+for a in 1 2 3 4 5 6
+do
+  $LIBTOOL --mode=compile --tag=CC $CC -c $CFLAGS -o $a/a.lo $a/a.c
+done
+$LIBTOOL --mode=link --tag=CC $CC $CFLAGS $LDFLAGS -o libc0.la 6/a.lo
+$LIBTOOL --mode=link --tag=CC $CC $CFLAGS $LDFLAGS -o libconv.la 1/a.lo 2/a.lo 3/a.lo 4/a.lo 5/a.lo libc0.la
+
+$LIBTOOL --mode=compile --tag=CC $CC -c $CFLAGS -o bar.lo bar.c
+$LIBTOOL --mode=link --tag=CC $CC $CFLAGS $LDFLAGS -o libbar.la bar.lo libconv.la -rpath /notexist
+
+$LIBTOOL --mode=compile --tag=CC $CC -c $CFLAGS -o main.lo main.c
+$LIBTOOL --mode=link --tag=CC $CC $CFLAGS $LDFLAGS -o main main.lo ./libbar.la
+
+AT_CHECK([./main],[0],[ignore],[ignore],[AT_CHECK(if 
+	((test "X$host" != "X$build") &&
+	( test -x ./main)); then exit 77; fi)])
+
+AT_CLEANUP
