@@ -1,3 +1,9 @@
+2005-04-17  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* tests/hardcode.test [solaris]:  Use dumpstabs if available,
+	to avoid false failure caused by debug section which contains
+	command line (Solaris cc).
+
 2005-04-17  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>  (tiny change)
 
 	* libtoolize.in: Fix syntax typos.
