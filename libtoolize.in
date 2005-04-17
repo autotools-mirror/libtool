@@ -294,7 +294,7 @@ for file in $ltdlfiles; do
   $rm $file
   if test -n "$ln_s" && $ln_s $pkgdatadir/$file $file; then :
   elif { ( cd $pkgdatadir 2>/dev/null && $tar chf - $file 2> /dev/null; ) \
-      | ( umask 0 && $tar xf - > /dev/null 2>&1; ) } ; then :
+      | ( umask 0 && $tar xf - > /dev/null 2>&1; ); } ; then :
   elif $cp $pkgdatadir/$file $file; then :
   else
     echo "$progname: cannot copy \`$pkgdatadir/$file' to \`$file'" 1>&2
@@ -313,7 +313,7 @@ if test "x$ltdl_tar" = x"yes"; then
     ltdlfiles=`cd $pkgdatadir && ls libltdl/*`
     for file in $ltdlfiles; do
       if { ( cd $pkgdatadir 2>/dev/null && $tar chf - $file 2> /dev/null; ) \
-          | ( umask 0 && $tar xf - > /dev/null 2>&1; ) } ; then :
+          | ( umask 0 && $tar xf - > /dev/null 2>&1; ); } ; then :
       elif $cp $pkgdatadir/$file $file; then :
       else
 	echo "$progname: cannot copy \`$pkgdatadir/$file' to \`$file'" 1>&2
@@ -323,7 +323,7 @@ if test "x$ltdl_tar" = x"yes"; then
     done
     for file in $files; do
       if { ( cd $pkgdatadir 2>/dev/null && $tar chf - $file 2> /dev/null; ) \
-          | ( umask 0 && cd libltdl 2>/dev/null && $tar xf - > /dev/null 2>&1; ) } ; then :
+          | ( umask 0 && cd libltdl 2>/dev/null && $tar xf - > /dev/null 2>&1; ); } ; then :
       elif $cp $pkgdatadir/$file libltdl/$file; then :
       else
 	echo "$progname: cannot copy \`$pkgdatadir/$file' to \`libltdl/$file'" 1>&2
@@ -352,7 +352,7 @@ for file in $files; do
   $rm $file
   if test -n "$ln_s" && $ln_s $pkgdatadir/$file $file; then :
   elif { ( cd $pkgdatadir 2>/dev/null && $tar chf - $file 2> /dev/null; ) \
-      | ( umask 0 && $tar xf - > /dev/null 2>&1; ) } ; then :
+      | ( umask 0 && $tar xf - > /dev/null 2>&1; ); } ; then :
   elif $cp $pkgdatadir/$file $file; then :
   else
     echo "$progname: cannot copy \`$pkgdatadir/$file' to \`$file'" 1>&2

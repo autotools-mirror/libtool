@@ -1,4 +1,8 @@
-2004-04-15  Maciej W. Rozycki  <macro@linux-mips.org>
+2005-04-17  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>  (tiny change)
+
+	* libtoolize.in: Fix syntax typos.
+
+2005-04-15  Maciej W. Rozycki  <macro@linux-mips.org>
 
 	* libtool.m4 (AC_LIBTOOL_LANG_GCJ_CONFIG): Add old_archive_cmds
 	definition.
