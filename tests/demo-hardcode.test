@@ -35,6 +35,9 @@ test -z "$library_names" \
 
 func_make "hardcode"
 
+# Extra tools we might need
+: ${DUMPSTABS=dumpstabs}
+
 # Suck in all the hardcode_* variable settings.
 func_msg "Finding libtool.m4's guesses at hardcoding values"
 func_get_config 'hardcode_direct
@@ -65,6 +68,16 @@ for file in hc-*; do
   # Discover whether the objdir really was hardcoded.
   hardcoded=no
 
+  # Solaris cc may store the command line in a debugging section,
+  # which leads to false positives.  Unfortunately, Solaris strip
+  # is not capable to remove the section (unlike GNU binutils strip).
+  # So we use dumpstabs if it seems to work.
+  if { $DUMPSTABS -d $file; } >/dev/null 2>&1; then
+    if $DUMPSTABS -d $file 2>/dev/null | $FGREP "$objdir" >/dev/null 2>&1; then
+      hardcoded=yes
+    else
+      hardcoded=no
+    fi
   # At least AIX fgrep doesn't work for binary files, and AIX also
   # doesn't have strings(1), so we need this strange conversion
   # (which only works on ASCII).
