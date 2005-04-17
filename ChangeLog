@@ -1,3 +1,7 @@
+2005-04-17  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>  (tiny change)
+
+	* libtoolize.m4sh (func_copy_cb): Fix syntax typo.
+
 2005-04-15  Maciej W. Rozycki  <macro@linux-mips.org>
 
 	* m4/libtool.m4 (_LT_LANG_GCJ_CONFIG): Add old_archive_cmds
