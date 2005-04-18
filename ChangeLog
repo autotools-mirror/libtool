@@ -8,6 +8,7 @@
 	(AC_LIBTOOL_COMPILER_OPTION, AC_LIBTOOL_LINKER_OPTION, AC_LIBTOOL_PROG_CC_C_O):
 	Fail only if nonempty warnings different from default compile/link.
 	* NEWS: Update.
+	Reported Josselin Mouette <joss@debian.org> and by Marcin Siennicki.
 
 2005-04-17  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
