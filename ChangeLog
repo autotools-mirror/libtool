@@ -1,3 +1,7 @@
+2005-04-18  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* tests/demo-hardcode.test: Fix typo.
+
 2005-04-17 Alexandre Oliva  <aoliva@redhat.com>,
 	   Peter O'Gorman  <peter@pogma.com>
 
@@ -15,6 +19,7 @@
 	* tests/demo-hardcode.test [solaris]:  Use dumpstabs if available,
 	to avoid false failure caused by debug section which contains
 	command line (Solaris cc).
+	Reported by Ralf Menzel <menzel@ls6.cs.uni-dortmund.de>.
 
 2005-04-17  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>  (tiny change)
 

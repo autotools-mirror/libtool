@@ -83,8 +83,8 @@ for file in hc-*; do
   # (which only works on ASCII).
   # AIX fgrep also has a limited line length, so we turn unprintable
   # characters into newlines.
-  if cat $file | (tr '\000-\037\200-\377' '\n' || cat) 2>/dev/null \
-	       | $FGREP "$objdir" > /dev/null 2>&1; then
+  elif cat $file | (tr '\000-\037\200-\377' '\n' || cat) 2>/dev/null \
+	         | $FGREP "$objdir" > /dev/null 2>&1; then
     hardcoded=yes
   elif $FGREP "$objdir" $file > /dev/null 2>&1; then
     # We retry fgrep without tr, in case the above lead to a false negative.
