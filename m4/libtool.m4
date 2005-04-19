@@ -3851,6 +3851,7 @@ _LT_EOF
       _LT_TAGVAR(hardcode_direct, $1)=yes
       _LT_TAGVAR(hardcode_libdir_separator, $1)=':'
       _LT_TAGVAR(link_all_deplibs, $1)=yes
+      _LT_TAGVAR(file_list_spec, $1)='${wl}-f,'
 
       if test "$GCC" = yes; then
 	case $host_os in aix4.[[012]]|aix4.[[012]].*)
@@ -4820,6 +4821,7 @@ if test "$_lt_caught_CXX_error" != yes; then
         _LT_TAGVAR(hardcode_direct, $1)=yes
         _LT_TAGVAR(hardcode_libdir_separator, $1)=':'
         _LT_TAGVAR(link_all_deplibs, $1)=yes
+        _LT_TAGVAR(file_list_spec, $1)='${wl}-f,'
 
         if test "$GXX" = yes; then
           case $host_os in aix4.[[012]]|aix4.[[012]].*)

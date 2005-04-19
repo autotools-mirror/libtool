@@ -1,3 +1,11 @@
+2005-04-19  David Edelsohn  <dje@watson.ibm.com>
+
+	* config/ltmain.m4sh (func_mode_link): If command exceeds
+	max_cmd_len and file_list_spec exists, write list of input files
+	to temporary file.
+	* m4/libtool.m4 (_LT_LINKER_SHLIBS, aix[45]): Define file_list_spec.
+	(_LT_LANG_CXX_CONFIG, aix[45]): Define file_list_spec.
+
 2005-04-18  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* tests/demo-hardcode.test: Fix typo.
