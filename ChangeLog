@@ -1,3 +1,8 @@
+2005-04-19  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* libtoolize.m4sh (func_scan_files, func_serial, func_ltmain_update,
+	func_config_update, func_install_update): Placate AIX sed.
+
 2005-04-18  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* tests/demo-hardcode.test: Fix typo.

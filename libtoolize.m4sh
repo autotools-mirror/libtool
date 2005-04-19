@@ -429,7 +429,8 @@ func_scan_files ()
     # in `Makefile.am' for a `-I' argument.
 
     my_sed_aclocal_flags='/^[[ 	]]*ACLOCAL_[[A-Z_]]*FLAGS[[ 	]]*=/ {
-	s,^[[^=]]*=[[ 	]]*\(.*\), \1,; q; }; d'
+	s,^[[^=]]*=[[ 	]]*\(.*\), \1,; q; };
+	d'
     if test ! -n "$m4dir" && test -f Makefile.am; then
       my_m4dir_is_next=false
       for arg in `$SED "$my_sed_aclocal_flags" Makefile.am`; do
@@ -480,7 +481,8 @@ func_serial ()
     my_macro_regex="$2"
     my_sed_serial=['/^# serial [1-9][0-9.]*[ 	]*'"$my_macro_regex"'[ 	]*$/ {
 	  s,^# serial \([1-9][0-9.]*\).*$,\1,; q;
-	}; d']
+	};
+	d']
 
     # Search FILENAME and all the files it m4_includes for a serial number
     # in the file that AC_DEFUNs MACRO_REGEX.
@@ -698,7 +700,8 @@ func_ltmain_update ()
     $opt_debug
     my_sed_ltmain=['/^package_revision='\''*[0-9][1-9.]*'\''*/ {
       s,^package_revision='\''*\([0-9.]*\)'\''[ 	]*$,\1,; p;
-    }; d']
+    };
+    d']
 
     func_keyword_update "$1" "$2" "$my_sed_ltmain"
 }
@@ -714,7 +717,8 @@ func_config_update ()
 
     my_sed_config=['/^timestamp='\''*[0-9][1-9-]*'\''*/ {
       s,^timestamp='\''*\([0-9-]*\)'\''*,\1,; s/-/./g; p;
-    }; d']
+    };
+    d']
 
     func_keyword_update "$1" "$2" "$my_sed_config"
 }
@@ -728,7 +732,8 @@ func_install_update ()
     $opt_debug
     my_sed_install=['/^scriptversion='\''*[0-9][1-9.-]*'\''*/ {
       s,^scriptversion='\''*\([0-9.-]*\)'\''*,\1,; s/-/./g; p;
-    }; d']
+    };
+    d']
 
     func_keyword_update "$1" "$2" "$my_sed_install"
 }
