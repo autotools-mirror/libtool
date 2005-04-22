@@ -1,3 +1,7 @@
+2005-04-22  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>  (tiny change)
+
+	* libtool.m4 (_LT_CC_BASENAME): Use $echo, not $ECHO, for consistency.
+
 2005-04-22  Gary V. Vaughan  <gary@gnu.org>
 
 	The FSF are moving offices today.  Changed their contact address
@@ -14,7 +18,7 @@
 	(AC_LIBTOOL_COMPILER_OPTION, AC_LIBTOOL_LINKER_OPTION, AC_LIBTOOL_PROG_CC_C_O):
 	Fail only if nonempty warnings different from default compile/link.
 	* NEWS: Update.
-	Reported Josselin Mouette <joss@debian.org> and by Marcin Siennicki.
+	Reported by Josselin Mouette <joss@debian.org> and Marcin Siennicki.
 
 2005-04-17  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
