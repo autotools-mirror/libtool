@@ -1,3 +1,9 @@
+2005-04-22  Gary V. Vaughan  <gary@gnu.org>
+
+	The FSF are moving offices today.  Changed their contact address
+	in all files from `59 Temple Place, Suite 330, MA 02111-1307' to
+	`51 Franklin Street, Fifth Floor, MA 02110-1301'.
+
 2005-04-19  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* libtoolize.m4sh (func_scan_files, func_serial, func_ltmain_update,
