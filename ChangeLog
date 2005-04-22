@@ -1,3 +1,7 @@
+2005-04-22  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>  (tiny change)
+
+	* Makefile.am, HACKING: Use lt__cd throughout.
+
 2005-04-22  Gary V. Vaughan  <gary@gnu.org>
 
 	The FSF are moving offices today.  Changed their contact address

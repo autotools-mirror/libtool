@@ -29,6 +29,9 @@ SUBDIRS		= $(BUILD_SUBDIRS)
 DIST_SUBDIRS	= $(BUILD_SUBDIRS)
 EXTRA_DIST	=
 
+# Using `cd' in backquotes may print the directory name, use this instead:
+lt__cd		= CDPATH="$${ZSH_VERSION+.}$(PATH_SEPARATOR)" && cd
+
 
 ## ---------------- ##
 ## Libtool scripts. ##
@@ -66,7 +69,7 @@ configure-subdirs distdir: $(DIST_MAKEFILE_LIST)
 @DIST_MAKEFILE_LIST@:
 	dir=`echo $@ | sed 's,^[^/]*$$,.,;s,/[^/]*$$,,'`; \
 	test -d $$dir || mkdir $$dir || exit 1; \
-	abs_srcdir=`cd $(srcdir) && pwd`; \
+	abs_srcdir=`$(lt__cd) $(srcdir) && pwd`; \
 	(cd $$dir && $$abs_srcdir/$$dir/configure) || exit 1
 
 
@@ -340,7 +343,6 @@ tests/atconfig: config.status
 	$(SHELL) ./config.status tests/atconfig
 DISTCLEANFILES += tests/atconfig
 
-lt__cd		= CDPATH="$${ZSH_VERSION+.}$(PATH_SEPARATOR)" && cd
 CD_TESTDIR	= abs_srcdir=`$(lt__cd) $(srcdir) && pwd`; cd tests
 
 # Hook the test suite into the check rule

@@ -186,7 +186,7 @@ yyyy-mm-dd  Name of Author  <email@address>  (tiny change)
 
 * Never use basename or dirname.  Instead use sed.
 
-* Do not use `cd' within back-quotes, use `$(am__cd)' instead.
+* Do not use `cd' within back-quotes, use `$(lt__cd)' instead.
   Otherwise the directory name may be printed, depending on CDPATH.
 
 * In general, if a loop is required, it should be silent.  Then the body
