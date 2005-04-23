@@ -1,5 +1,9 @@
 2005-04-23  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* m4/libtool.m4 (_LT_COMPILER_PIC, _LT_LINKER_SHLIBS) [solaris]:
+	Update wl for Sun Studio f77/f90/f95.  Fix whole_archive_flag_spec
+	for cc and f77/f90/f95 to prevent reordering in case we link with $CC.
+
 	* m4/libtool.m4: Audit use of echo vs $ECHO.
 	Reported by Robert Ögren <lists@roboros.com> and others.
 
