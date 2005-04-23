@@ -1,3 +1,9 @@
+2005-04-23  Gary Kumfert <kumfert@llnl.gov>
+
+	* m4/libtool.m4 (_LT_LANG_F77_CONFIG) [ aix4, aix5 ]:
+	Adjust logic to match the C case: Only disable static if not
+	on ia64 nor runtimelinking.
+
 2005-04-22  Gary V. Vaughan  <gary@gnu.org>
 
 	The FSF are moving offices today.  Changed their contact address
