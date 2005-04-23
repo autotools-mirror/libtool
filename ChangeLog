@@ -1,3 +1,8 @@
+2005-04-23  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* m4/libtool.m4: Audit use of echo vs $ECHO.
+	Reported by Robert Ögren <lists@roboros.com> and others.
+
 2005-04-23  Gary Kumfert <kumfert@llnl.gov>
 
 	* m4/libtool.m4 (_LT_LANG_F77_CONFIG) [ aix4, aix5 ]:
