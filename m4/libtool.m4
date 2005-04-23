@@ -3438,9 +3438,14 @@ m4_if([$1], [CXX], [
       ;;
 
     solaris*)
-      _LT_TAGVAR(lt_prog_compiler_wl, $1)='-Wl,'
       _LT_TAGVAR(lt_prog_compiler_pic, $1)='-KPIC'
       _LT_TAGVAR(lt_prog_compiler_static, $1)='-Bstatic'
+      case $cc_basename in
+      f77* | f90* | f95*)
+	_LT_TAGVAR(lt_prog_compiler_wl, $1)='-Qoption ld ';;
+      *)
+	_LT_TAGVAR(lt_prog_compiler_wl, $1)='-Wl,';;
+      esac
       ;;
 
     sunos4*)
@@ -4273,8 +4278,18 @@ _LT_EOF
       _LT_TAGVAR(hardcode_shlibpath_var, $1)=no
       case $host_os in
       solaris2.[[0-5]] | solaris2.[[0-5]].*) ;;
-      *) # Supported since Solaris 2.6 (maybe 2.5.1?)
-	_LT_TAGVAR(whole_archive_flag_spec, $1)="${wlarc}-z ${wlarc}allextract\$convenience ${wlarc}-z ${wlarc}defaultextract" ;;
+      *)
+	# The compiler driver will combine linker options so we
+	# cannot just pass the convience library names through
+	# without $wl, iff we do not link with $LD.
+	# Luckily, gcc supports the same syntax we need for Sun Studio.
+	# Supported since Solaris 2.6 (maybe 2.5.1?)
+	case $wlarc in
+	'')
+	  _LT_TAGVAR(whole_archive_flag_spec, $1)='-z allextract$convenience -z defaultextract' ;;
+	*)
+	  _LT_TAGVAR(whole_archive_flag_spec, $1)='${wl}-z ${wl}allextract`for conv in $convenience\"\"; do test -n \"$conv\" && new_convenience=\"$new_convenience,$conv\"; done; $ECHO \"$new_convenience\"` ${wl}-z ${wl}defaultextract' ;;
+	esac ;;
       esac
       _LT_TAGVAR(link_all_deplibs, $1)=yes
       ;;
