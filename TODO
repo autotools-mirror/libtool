@@ -56,7 +56,7 @@ GNU Libtool
 
 * Improve support for C++ with templates.
 
-* Audit use of $ECHO in libtool.m4.
+* Audit file listing in libtool.m4.
 
 * Fix deplibs_check_method=pass_all (which is wrong!) on linux.
 
