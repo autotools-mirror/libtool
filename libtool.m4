@@ -3814,7 +3814,9 @@ aix3*)
   fi
   ;;
 aix4* | aix5*)
-  test "$enable_shared" = yes && enable_static=no
+  if test "$host_cpu" != ia64 && test "$aix_use_runtimelinking" = no ; then
+    test "$enable_shared" = yes && enable_static=no
+  fi
   ;;
 esac
 AC_MSG_RESULT([$enable_shared])

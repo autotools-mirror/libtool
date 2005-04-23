@@ -1,3 +1,9 @@
+2005-04-23  Gary Kumfert <kumfert@llnl.gov>
+
+	* libtool.m4 (AC_LIBTOOL_LANG_F77_CONFIG) [ aix4, aix5 ]:
+	Adjust logic to match the C case: Only disable static if not
+	on ia64 nor runtimelinking.
+
 2005-04-23  Jonathan Ryshpan <jonrysh@pacbell.net>
 
 	* doc/libtool.texi: Get rid of overfull hboxes.
