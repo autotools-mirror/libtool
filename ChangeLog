@@ -1,3 +1,7 @@
+2005-04-24  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* libtool.m4 (_LT_CC_BASENAME): Ignore `compile'.
+
 2005-04-23  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* libtool.m4 (AC_LIBTOOL_PROG_COMPILER_PIC, AC_LIBTOOL_PROG_LD_SHLIBS)

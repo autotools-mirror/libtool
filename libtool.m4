@@ -238,7 +238,9 @@ compiler=$CC
 AC_DEFUN([_LT_CC_BASENAME],
 [for cc_temp in $1""; do
   case $cc_temp in
-    ccache | *[[\\/]]ccache | distcc | *[[\\/]]distcc | purify | *[[\\/]]purify | \-*) ;;
+    compile | *[[\\/]]compile | ccache | *[[\\/]]ccache ) ;;
+    distcc | *[[\\/]]distcc | purify | *[[\\/]]purify ) ;;
+    \-*) ;;
     *) break;;
   esac
 done
