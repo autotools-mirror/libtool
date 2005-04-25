@@ -1,3 +1,7 @@
+2005-04-25  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* configure.ac, NEWS: Updated to 1.5.17a.
+
 2005-04-24  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	GNU libtool 1.5.16 is released.

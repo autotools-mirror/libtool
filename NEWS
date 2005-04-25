@@ -1,5 +1,8 @@
 NEWS - list of user-visible changes between releases of GNU Libtool
 
+New in 1.5.17a: 2005-??-??; CVS version 1.5.17a, Libtool team:
+* Bug Fixes.
+
 New in 1.5.16: 2005-04-24; CVS version 1.5.15a, Libtool team:
 * Allow shell special characters like `$' in source file names, but not
   in object names, to enhance GCJ support.
