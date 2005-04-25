@@ -76,5 +76,5 @@ LTDL_INIT
 ## -------- ##
 ## Outputs. ##
 ## -------- ##
-AC_CONFIG_FILES([Makefile loaders/Makefile])
+AC_CONFIG_FILES([Makefile])
 AC_OUTPUT
