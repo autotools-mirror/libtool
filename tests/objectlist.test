@@ -2,7 +2,7 @@
 # objectlist.test - make sure that a nonexisting objectlist file is
 # properly mentioned and that the argument may contain spaces.
 
-# Copyright (C) 2003, 2004 Free Software Foundation, Inc.
+# Copyright (C) 2003, 2004, 2005 Free Software Foundation, Inc.
 # This is free software; see the source for copying conditions.  There is NO
 # warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
@@ -22,7 +22,7 @@
 # Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 # MA 02110-1301, USA.
 
-. ./defs || exit 1
+. tests/defs || exit 1
 
 # Try a sample link command.
 linkresult=`$LIBTOOL -n --mode=link $CC -objectlist nonexistant 2>&1`
@@ -41,6 +41,6 @@ rm -f "$objlist"
 echo "$linkresult" | ${EGREP} "spaces" >/dev/null 2>&1 && {
   func_msg "$progname: -objectlist with spaces in filename not recognized."
   exit $EXIT_FAILURE
-} 
+}
 
 exit $EXIT_SUCCESS

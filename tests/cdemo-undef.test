@@ -21,10 +21,10 @@
 # Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 # MA 02110-1301, USA.
 
-. ./defs || exit 1
+. tests/defs || exit 1
 
 func_mkprefixdir
-func_cd "cdemo"
+func_cd "tests/cdemo"
 func_make_distclean
 func_configure "--disable-static"
 

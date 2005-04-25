@@ -21,12 +21,12 @@
 # Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 # MA 02110-1301, USA.
 
-. ./defs || exit 1
+. tests/defs || exit 1
 
-func_require "tagdemo-conf" "tagdemo/Makefile"
+func_require "tagdemo-conf" "tests/tagdemo/Makefile"
 
 func_rmprefixdir
-func_cd "tagdemo"
+func_cd "tests/tagdemo"
 func_make
 
 exit 0

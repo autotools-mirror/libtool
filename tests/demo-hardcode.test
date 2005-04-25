@@ -21,12 +21,12 @@
 # Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 # MA 02110-1301, USA.
 
-. ./defs || exit 1
+. tests/defs || exit 1
 
 func_require "demo-inst" "$prefix/lib/libhello.la"
 
 func_mkprefixdir
-func_cd "demo"
+func_cd "tests/demo"
 
 # Check to make sure we have a dynamic library.
 func_get_config "library_names" "cat ./libhello.la"

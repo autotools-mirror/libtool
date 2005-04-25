@@ -21,12 +21,12 @@
 # Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 # MA 02110-1301, USA.
 
-. ./defs || exit 1
+. tests/defs || exit 1
 
-func_require "pdemo-make" "pdemo/hell$EXEEXT"
+func_require "pdemo-make" "tests/pdemo/hell$EXEEXT"
 
 func_mkprefixdir
-func_cd "pdemo"
+func_cd "tests/pdemo"
 func_make "install"
 func_exec_init "installed"
 func_exec "$prefix/bin/hell_static" 'Welcome to GNU Hell'

@@ -21,7 +21,7 @@
 # Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 # MA 02110-1301, USA.
 
-. ./defs || exit 1
+. tests/defs || exit 1
 
 func_restore_files ()
 {
@@ -38,10 +38,10 @@ func_save_files ()
     trap "func_restore_files" 0 1 2 13 15
 }
 
-func_require "demo-inst" "$prefix/lib/libhello.la"  "demo/libhello.la"
+func_require "demo-inst" "$prefix/lib/libhello.la"  "tests/demo/libhello.la"
 
 func_mkprefixdir
-func_cd "demo"
+func_cd "tests/demo"
 
 # Check to make sure we have a dynamic library.
 func_get_config "library_names" "cat libhello.la"

@@ -21,12 +21,12 @@
 # Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 # MA 02110-1301, USA.
 
-. ./defs || exit 1
+. tests/defs || exit 1
 
-func_require "depdemo-inst" "$prefix/bin/depdemo$EXEEXT" "depdemo/Makefile"
+func_require "depdemo-inst" "$prefix/bin/depdemo$EXEEXT" "tests/depdemo/Makefile"
 
 func_mkprefixdir
-func_cd "depdemo"
+func_cd "tests/depdemo"
 func_make_uninstall
 
 exit 0

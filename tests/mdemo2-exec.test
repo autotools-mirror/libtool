@@ -21,13 +21,13 @@
 # Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 # MA 02110-1301, USA.
 
-. ./defs || exit 1
+. tests/defs || exit 1
 
-func_require "mdemo2-make" "mdemo2/mdemo2$EXEEXT"
+func_require "mdemo2-make" "tests/mdemo2/mdemo2$EXEEXT"
 
 func_rmprefixdir
 func_exec_init "uninstalled"
-func_exec "mdemo2/mdemo2_static mdemo/foo1.la mdemo/libfoo2.la"
-func_exec "mdemo2/mdemo2 mdemo/foo1.la mdemo/libfoo2.la"
+func_exec "tests/mdemo2/mdemo2_static tests/mdemo/foo1.la tests/mdemo/libfoo2.la"
+func_exec "tests/mdemo2/mdemo2 tests/mdemo/foo1.la tests/mdemo/libfoo2.la"
 
 exit $exec_status

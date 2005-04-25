@@ -22,7 +22,7 @@
 # Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 # MA 02110-1301, USA.
 
-. ./defs || exit 1
+. tests/defs || exit 1
 
 func_restore_files ()
 {
@@ -42,7 +42,7 @@ func_save_files ()
 func_require "demo-inst" "$prefix/lib/libhello.la"
 
 func_mkprefixdir
-func_cd "demo"
+func_cd "tests/demo"
 func_save_files
 
 func_msg "removing \`libhello.la' and \`hell' from demo"

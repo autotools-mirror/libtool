@@ -21,12 +21,12 @@
 # Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 # MA 02110-1301, USA.
 
-. ./defs || exit 1
+. tests/defs || exit 1
 
-func_require "cdemo-conf" "cdemo/Makefile"
+func_require "cdemo-conf" "tests/cdemo/Makefile"
 
 func_rmprefixdir
-func_cd "cdemo"
+func_cd "tests/cdemo"
 func_make
 
 exit 0
