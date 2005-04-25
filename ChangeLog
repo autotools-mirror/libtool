@@ -1,5 +1,12 @@
 2005-04-24  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	GNU libtool 1.5.16 is released.
+
+	* configure.ac: Bump version.
+	* NEWS, README: Updated.
+	* config.guess, config.sub: Updated.
+	* THANKS: Updated.
+
 	* libtool.m4 (_LT_CC_BASENAME): Ignore `compile'.
 
 2005-04-23  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>

@@ -1,11 +1,12 @@
 NEWS - list of user-visible changes between releases of GNU Libtool
 
-New in 1.5.15a: 2005-??-??; CVS version 1.5.15a, Libtool team:
+New in 1.5.16: 2005-04-24; CVS version 1.5.15a, Libtool team:
 * Allow shell special characters like `$' in source file names, but not
   in object names, to enhance GCJ support.
 * Detection of compiler wrappers like distcc/ccache and $host_alias prefix.
 * More robust tests for PIC flag, `-c -o', in presence of warnings.
-* Bug Fixes.
+* Bug Fixes, among others for convenience archives regression on Solaris
+  and timestamp-preserving `libtoolize --copy --ltdl'.
 
 New in 1.5.14: 2005-02-12; CVS version 1.5.13a, Libtool team:
 * Make -pthread work when building executabless too.

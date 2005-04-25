@@ -108,3 +108,17 @@ all recent releases of XEmacs.
 6)  The default shell on UNICOS 9, a ksh 88e variant, is too buggy to
 correctly execute the libtool script.  Users are advised to install a
 modern shell such as GNU bash.
+
+7)  Note in some cases you might need to put ABI-changing compiler flags
+into the compiler name.  For example, use of
+  configure CC='gcc -m32'
+rather than
+  configure CC=gcc CFLAGS=-m32 LDFLAGS=-m32
+might help with this Libtool release.  This will be fixed in Libtool-2.0.
+
+8)  Note that use of libltdl and a native dlopening mechanism for the
+same module within one program is not supported.  This includes modules
+loaded through inter-module dependencies.
+
+9)  Note that newer Sun Studio Fortran compilers might need Autoconf macros
+not yet present in 2.59 but only in CVS Autoconf.
