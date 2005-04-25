@@ -5116,7 +5116,7 @@ EOF
 	      $ECHO "$obj" >> $output
 	    done
 	    delfiles="$delfiles $output"
-	    output=\"$file_list_spec$filelist\"
+	    output=\"$file_list_spec$output\"
 	  else
 	    func_echo "creating reloadable object files..."
 	    output=$output_objdir/$output_la-${k}.$objext

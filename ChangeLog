@@ -1,3 +1,8 @@
+2005-04-25  David Edelsohn  <dje@watson.ibm.com>
+
+	* m4/libtool.m4 (_LT_LINKER_SHLIBS): _LT_TAGDECL(file_list_spec).
+	* config/ltmain.m4sh (func_mode_link): Change $filelist to $output.
+
 2005-04-24  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* m4/libtool.m4 (_LT_CC_BASENAME): Ignore `compile'.
