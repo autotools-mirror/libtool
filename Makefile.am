@@ -199,7 +199,7 @@ EXTRA_DIST	       += $(libtool_TEXINFOS)
 
 ## These are installed as a subdirectory of pkgdatadir so that
 ## libtoolize --ltdl can find them later:
-ltdldatadir		= $(pkgvdatadir)/libltdl
+ltdldatadir		= $(pkgdatadir)/libltdl
 ltdldatafiles		= COPYING.LIB README \
 			  Makefile.am Makefile.in \
 			  argz_.h argz.c \
