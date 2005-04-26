@@ -1,3 +1,8 @@
+2005-04-26  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>,
+	    Gary V. Vaughan  <gary@gnu.org>
+
+	* HACKING, THANKS: Updated.
+	
 2005-04-25  Eric Blake  <ebb9@byu.net>  (tiny change)
 
 	* libltdl/configure.ac (AC_OUTPUT): loaders/Makefile.am is no
