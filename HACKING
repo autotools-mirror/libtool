@@ -350,6 +350,16 @@ yyyy-mm-dd  Name of Author  <email@address>  (tiny change)
 * Make sure you have a copy of xdelta installed, and a copy of the previous
   release tarball in the build directory.
 
+* Make sure your locale is sane, e.g. by exporting LC_ALL=C.
+
+* Double check that serial number updates in public m4 files weren't forgotten
+  since last release (they should be updated in CVS along with commits that
+  require it so that users can work with CVS snapshots).
+
+* Double check that libltdl version number updates weren't forgotten since last
+  release (they should be updated in CVS along with commits that require it so
+  that users can work with CVS snapshots).
+
 * Update the version number in configure.ac.
   See http://www.gnu.org/software/libtool/contribute.html for details of
   the numbering scheme.
@@ -382,7 +392,7 @@ yyyy-mm-dd  Name of Author  <email@address>  (tiny change)
   with release-$(VERSION) and generate the gpg signature files.
 
 * Run 'make -f[../]Makefile.maint deltas' (pass
-  LASTRELEASE=min.maj[.mic[alpha]] if needed) to create both diff and
+  LASTRELEASE=maj.min[.mic[alpha]] if needed) to create both diff and
   xdelta files between the previous release tarball and the new with
   detached gpg signature files and clear signed directive files.
 
@@ -498,7 +508,7 @@ The Libtool Team is pleased to announce the release of GNU Libtool
 
 GNU Libtool hides the complexity of using shared libraries behind a
 consistent, portable interface. GNU Libtool ships with GNU libltdl,
-which hides the comlexity of loading dynamic runtime libraries
+which hides the complexity of loading dynamic runtime libraries
 (modules) behind a consistent, portable interface.
 
 This release has @SUMMARY_OF_IMPROVEMENTS_SINCE_LAST_RELEASE_ON_THIS_BRANCH@.

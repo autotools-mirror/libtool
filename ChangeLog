@@ -1,3 +1,8 @@
+2005-04-26  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>,
+	    Gary V. Vaughan  <gary@gnu.org>
+
+	* HACKING, THANKS: Updated.
+	
 2005-04-25  David Edelsohn  <dje@watson.ibm.com>
 
 	* m4/libtool.m4 (_LT_LINKER_SHLIBS): _LT_TAGDECL(file_list_spec).
