@@ -1,5 +1,9 @@
 2005-04-27  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* m4/libtool.m4 (_LT_SYS_DYNAMIC_LINKER) [ linux ]: sed 3.02 does
+	not understand \t in regex.
+	Reported by Tim Van Holder <tim.vanholder@gmail.com>.
+
 	* tests/defs.m4sh (func_configure): Don't run the whole configure
 	script with -x.
 
