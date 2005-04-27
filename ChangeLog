@@ -1,3 +1,9 @@
+2005-04-27  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* libtool.m4 (AC_LIBTOOL_SYS_DYNAMIC_LINKER) [ linux ]: sed 3.02 does
+	not understand \t in regex.
+	Reported by Tim Van Holder <tim.vanholder@gmail.com>.
+
 2005-04-25  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* configure.ac, NEWS: Updated to 1.5.17a.
