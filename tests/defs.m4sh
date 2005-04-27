@@ -193,7 +193,6 @@ func_configure ()
     eval $SHELL "$my_testdir/configure" $my_args || \
       { func_msg "FAILED: Configuring in $my_testdir"
         ls -ltr $my_testdir
-        eval $SHELL -vx "$my_testdir/configure" $my_args;
 	exit $EXIT_FAILURE;
       }
 }
