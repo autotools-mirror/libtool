@@ -83,6 +83,7 @@ USA. */
 /* Declarations.  Note the wonderful use of the above macros. */
 __BEGIN_DECLS
 int foo LT_PARAMS((void));
+int foo2 LT_PARAMS((void));
 int hello LT_PARAMS((void));
 EXTERN int nothing;
 __END_DECLS
