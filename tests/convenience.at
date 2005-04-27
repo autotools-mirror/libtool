@@ -1,0 +1,158 @@
+# Hand crafted tests for GNU Libtool.                         -*- Autotest -*-
+# Copyright 2005 Free Software Foundation, Inc.
+
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2, or (at your option)
+# any later version.
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
+# 02111-1307, USA.
+
+# Test that convenience archives work.
+
+AT_SETUP([C convenience archives])
+
+echo 'int a(void) { return 1; }' > a.c
+echo 'int b(void) { return 2; }' > b.c
+echo 'int c(void) { return 3; }' > c.c
+AT_DATA(main.c,
+[[extern int a(void), b(void), c(void);
+int main(void) { return a() + b() + c() != 6; }
+]])
+
+$LIBTOOL --mode=compile $CC $CFLAGS -c a.c
+$LIBTOOL --mode=compile $CC $CFLAGS -c b.c
+$LIBTOOL --mode=compile $CC $CFLAGS -c c.c
+$LIBTOOL --mode=compile $CC $CFLAGS -c main.c
+$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o liba.la a.lo
+$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o libb.la b.lo
+$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o libcee.la c.lo liba.la libb.la -rpath /notexist
+AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -static -o main_static main.lo libcee.la],
+	 [0],[ignore],[ignore])
+AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o main main.lo libcee.la],
+	 [0],[ignore],[ignore])
+LT_AT_EXEC_CHECK([./main_static])
+LT_AT_EXEC_CHECK([./main])
+AT_CLEANUP
+
+
+AT_SETUP([C++ convenience archives])
+LT_AT_TAG([CXX])
+
+echo 'int a(void) { return 1; }' > a.cc
+echo 'int b(void) { return 2; }' > b.cc
+echo 'int c(void) { return 3; }' > c.cc
+AT_DATA(main.cc,
+[[extern int a(void), b(void), c(void);
+int main(void) { return a() + b() + c() != 6; }
+]])
+
+$LIBTOOL --tag=CXX --mode=compile $CXX $CXXFLAGS -c a.cc
+$LIBTOOL --tag=CXX --mode=compile $CXX $CXXFLAGS -c b.cc
+$LIBTOOL --tag=CXX --mode=compile $CXX $CXXFLAGS -c c.cc
+$LIBTOOL --tag=CXX --mode=compile $CXX $CXXFLAGS -c main.cc
+$LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS $LDFLAGS -o liba.la a.lo
+$LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS $LDFLAGS -o libb.la b.lo
+$LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS $LDFLAGS -o libcee.la c.lo liba.la libb.la -rpath /notexist
+AT_CHECK([$LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS $LDFLAGS -static -o main_static main.lo libcee.la],
+	 [0],[ignore],[ignore])
+AT_CHECK([$LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS $LDFLAGS -o main main.lo libcee.la],
+	 [0],[ignore],[ignore])
+LT_AT_EXEC_CHECK([./main_static])
+LT_AT_EXEC_CHECK([./main])
+AT_CLEANUP
+
+
+AT_SETUP([F77 convenience archives])
+LT_AT_TAG([F77])
+
+AT_DATA([a.f],
+[[      subroutine a
+      return
+      end
+]])
+AT_DATA([b.f],
+[[      subroutine b
+      return
+      end
+]])
+AT_DATA([c.f],
+[[      subroutine c
+      return
+      end
+]])
+AT_DATA(main.f,
+[[      program main
+      call a
+      call b
+      call c
+      end
+]])
+
+$LIBTOOL --tag=F77 --mode=compile $F77 $FFLAGS -c a.f
+$LIBTOOL --tag=F77 --mode=compile $F77 $FFLAGS -c b.f
+$LIBTOOL --tag=F77 --mode=compile $F77 $FFLAGS -c c.f
+$LIBTOOL --tag=F77 --mode=compile $F77 $FFLAGS -c main.f
+$LIBTOOL --tag=F77 --mode=link $F77 $FFLAGS $LDFLAGS -o liba.la a.lo
+$LIBTOOL --tag=F77 --mode=link $F77 $FFLAGS $LDFLAGS -o libb.la b.lo
+$LIBTOOL --tag=F77 --mode=link $F77 $FFLAGS $LDFLAGS -o libcee.la c.lo liba.la libb.la -rpath /notexist
+AT_CHECK([$LIBTOOL --tag=F77 --mode=link $F77 $FFLAGS $LDFLAGS -static -o main_static main.lo libcee.la],
+	 [0],[ignore],[ignore])
+AT_CHECK([$LIBTOOL --tag=F77 --mode=link $F77 $FFLAGS $LDFLAGS -o main main.lo libcee.la],
+	 [0],[ignore],[ignore])
+LT_AT_EXEC_CHECK([./main_static])
+LT_AT_EXEC_CHECK([./main])
+AT_CLEANUP
+
+
+AT_SETUP([Java convenience archives])
+LT_AT_TAG([GCJ])
+
+AT_DATA([A.java],
+[[public class A {
+  private int a;
+  public void A () { a = 0; }
+};
+]])
+AT_DATA([B.java],
+[[public class B {
+  private int b;
+  public void B () { b = 0; }
+};
+]])
+AT_DATA([C.java],
+[[public class C {
+  private int c;
+  public void C () { c = 0; }
+};
+]])
+AT_DATA(foo.java,
+[[public class foo {
+  public static void main(String[] argv) {
+    A a = new A(); B b = new B(); C c = new C();
+  }
+}
+]])
+
+$LIBTOOL --tag=GCJ --mode=compile $GCJ $GCJFLAGS -c A.java
+$LIBTOOL --tag=GCJ --mode=compile $GCJ $GCJFLAGS -c B.java
+$LIBTOOL --tag=GCJ --mode=compile $GCJ $GCJFLAGS -c C.java
+$LIBTOOL --tag=GCJ --mode=compile $GCJ $GCJFLAGS -c foo.java
+$LIBTOOL --tag=GCJ --mode=link $GCJ $GCJFLAGS $LDFLAGS -o liba.la A.lo
+$LIBTOOL --tag=GCJ --mode=link $GCJ $GCJFLAGS $LDFLAGS -o libb.la B.lo
+$LIBTOOL --tag=GCJ --mode=link $GCJ $GCJFLAGS $LDFLAGS -o libcee.la C.lo liba.la libb.la -rpath /notexist
+AT_CHECK([$LIBTOOL --tag=GCJ --mode=link $GCJ $GCJFLAGS $LDFLAGS -static --main=foo -o main_static foo.lo libcee.la],
+	 [0],[ignore],[ignore])
+AT_CHECK([$LIBTOOL --tag=GCJ --mode=link $GCJ $GCJFLAGS $LDFLAGS --main=foo -o main foo.lo libcee.la],
+	 [0],[ignore],[ignore])
+LT_AT_EXEC_CHECK([./main_static])
+LT_AT_EXEC_CHECK([./main])
+AT_CLEANUP

@@ -1,5 +1,7 @@
 2005-04-27  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* tests/convenience.at: Actually add.
+
 	* tests/convenience.at: New.  Test convenience archives.
 	* Makefile.am, tests/testsuite.at: Adjust.
 	* tests/testsuite.at: Reorder tests.  Suspend AT_TESTED.
