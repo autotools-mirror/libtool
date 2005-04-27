@@ -747,7 +747,7 @@
 	newer adds predep_objects and postdep_objects itself, so don't
 	duplicate them in $archive_cmds and $archive_expsym_cmds.
 	* NEWS: Updated.
-	Reported by Roberto Bagnare <bagnara@cs.unipr.it>
+	Reported by Roberto Bagnara <bagnara@cs.unipr.it>
 
 2004-04-14  Alexandre Duret-Lutz  <adl@gnu.org>
 
