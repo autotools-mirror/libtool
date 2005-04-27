@@ -1,5 +1,22 @@
 2005-04-27  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* tests/convenience.at: New.  Test convenience archives.
+	* Makefile.am, tests/testsuite.at: Adjust.
+	* tests/testsuite.at: Reorder tests.  Suspend AT_TESTED.
+	(PREPARE_TESTS): Define EGREP, host, build, LIBTOOL.
+	(LT_AT_BOOTSTRAP): Fail if autoreconf fails.
+	(LT_AT_EXEC_CHECK): New macro for execution of $build binaries.
+	(LT_AT_TAG): New macro to test tag availability or skip test.
+	* tests/am-subdir.at, tests/duplicate_members.at, tests/inherited_flags.at,
+	tests/link-order.at, tests/stresstest.at, tests/template.at:
+	Adjust.  Use LT_AT_TAG, LT_AT_EXEC_CHECK, AT_KEYWORDS.
+	Use compiler/linker flags consistently.
+	* tests/link-order.at: Fix use of AT_DATA, bogus redirection
+	inside AT_CHECK.
+	* tests/stresstest.at: Do not use wildcards/regex in symbol files,
+	they are not portable.  Use -no-undefined on win32.  Fix to ignore
+	compile/link warnings.
+
 	* tests/f77demo/foo.h, tests/f77demo/fooc.c, tests/f77demo/cprogram.c,
 	tests/mdemo2/main.c, tests/pdemo/foo.h: Make declarations available.
 

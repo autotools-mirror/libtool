@@ -22,12 +22,8 @@
 # Note: This test is experimental, and might be too strict for some systems.
 
 AT_BANNER([Libtool stress test.])
-
 AT_SETUP([Link option thorough search test])
-
-: ${LIBTOOL=${abs_top_builddir}/libtool}
-
-eval `$LIBTOOL --config | grep ^CC=`
+eval `$LIBTOOL --config | $EGREP '^(CC|objdir)='`
 
 mkdir sub sub2 sub3 2>/dev/null
 
@@ -50,6 +46,23 @@ typedef struct { int arr[1000]; } large;
 large v13;
 large v14 = { { 0 } };
 large v15 = { { 1 } };
+]])
+
+AT_DATA(asyms,
+[[v1
+v3
+v4
+v5
+v6
+v7
+v8
+v9
+v10
+v11
+v12
+v13
+v14
+v15
 ]])
 
 AT_DATA(b.c,
@@ -142,38 +155,47 @@ w5
 w6
 w7
 w8$
-^w9*
-w1*
-b.*
+w9
+w10
+w11
+w12
+w13
+w14
+w15
 ]])
 
 
-AT_CHECK([$LIBTOOL --mode=compile $CC -c a.c -o sub/a.lo],[0],[ignore],[])
-AT_CHECK([$LIBTOOL --mode=compile $CC -c b.c -o sub/b.o],[0],[ignore],[])
-AT_CHECK([$LIBTOOL --mode=compile $CC -c main.c],[0],[ignore],[])
-AT_CHECK([$LIBTOOL --mode=compile $CC -c dlself.c -o sub3/dlself.lo],[0],[ignore],[])
+AT_CHECK([$LIBTOOL --mode=compile $CC $CFLAGS -c a.c -o sub/a.lo],[0],[ignore],[ignore])
+AT_CHECK([$LIBTOOL --mode=compile $CC $CFLAGS -c b.c -o sub/b.lo],[0],[ignore],[ignore])
+AT_CHECK([$LIBTOOL --mode=compile $CC $CFLAGS -c main.c],[0],[ignore],[ignore])
+AT_CHECK([$LIBTOOL --mode=compile $CC $CFLAGS -c dlself.c -o sub3/dlself.lo],[0],[ignore],[ignore])
 
-for l1 in '' '-no-undefined'
+case $host in
+  cygwin* | mingw* | pw32*) undef_opts=-no-undefined ;;
+  *)                        undef_opts='"" -no-undefined' ;;
+esac
+
+for l1 in $undef_opts
 do
-  for l2 in '' '-export-symbols-regex v.*'
+  for l2 in '' '-export-symbols-regex v.*' '-export-symbols asyms'
   do
     for l3 in '' '-rpath /nonexistent'
     do
       linkargs="$l1 $l2 $l3"
       for rel in '' ./ `pwd`/
       do
-	AT_CHECK([$LIBTOOL --mode=link $CC -o "$rel"sub2/liba.la "$rel"sub/a.lo $linkargs],
-	         [0],[ignore],[])
+	AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o "$rel"sub2/liba.la "$rel"sub/a.lo $linkargs],
+	         [0],[ignore],[ignore])
 	for st in '' '-static'
 	do
-	  AT_CHECK([$LIBTOOL --mode=link $CC $st -o "$rel"main "$rel"main.lo "$rel"sub2/liba.la],
-	  	   [0],[ignore],[])
-	  AT_CHECK([./main],[0])
+	  AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS $st -o "$rel"main "$rel"main.lo "$rel"sub2/liba.la],
+	  	   [0],[ignore],[ignore])
+	  LT_AT_EXEC_CHECK([./main],[0])
 	  for l10 in '' '-export-symbols dlselfsyms'
 	  do
-	    AT_CHECK([$LIBTOOL --mode=link $CC $st -o "$rel"sub3/dlself "$rel"sub3/dlself.lo "$rel"sub2/liba.la sub/b.o -dlopen self $l10],
-	    	     [0],[ignore],[])
-	    AT_CHECK([./sub3/dlself],[0])
+	    AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS $st -o "$rel"sub3/dlself "$rel"sub3/dlself.lo "$rel"sub2/liba.la sub/b.lo -dlopen self $l10],
+	    	     [0],[ignore],[ignore])
+	    LT_AT_EXEC_CHECK([./sub3/dlself],[0])
 	  done
 	done
       done

@@ -25,6 +25,7 @@ AT_BANNER([Libtool's subdir-objects support.])
 ## ----------- ##
 
 AT_SETUP([C subdir-objects])
+AT_KEYWORDS([autoconf automake])
 
 AT_DATA([[configure.ac]],
 [[AC_INIT([subdir-demo], ]]AT_PACKAGE_VERSION[[, ]]AT_PACKAGE_BUGREPORT[[)
@@ -74,7 +75,7 @@ AT_DATA(expout,
 
 LT_AT_BOOTSTRAP
 "${MAKE-make}"
-AT_CHECK([subdir/subdemo], 0, expout)
+LT_AT_EXEC_CHECK([subdir/subdemo], 0, expout)
 
 AT_CLEANUP
 
@@ -84,6 +85,8 @@ AT_CLEANUP
 ## ------------- ##
 
 AT_SETUP([C++ subdir-objects])
+AT_KEYWORDS([autoconf automake])
+LT_AT_TAG([CXX])
 
 AT_DATA([[configure.ac]],
 [[AC_INIT([subdir-demo], ]]AT_PACKAGE_VERSION[[, ]]AT_PACKAGE_BUGREPORT[[)
@@ -157,6 +160,6 @@ AT_DATA(expout,
 
 LT_AT_BOOTSTRAP
 "${MAKE-make}"
-AT_CHECK([subdir/subdemo], 0, expout)
+LT_AT_EXEC_CHECK([subdir/subdemo], 0, expout)
 
 AT_CLEANUP

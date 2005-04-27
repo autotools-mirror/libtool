@@ -20,7 +20,10 @@
 
 m4_divert_push([PREPARE_TESTS])dnl
 : ${LIBTOOLIZE="${abs_top_builddir}/libtoolize"}
-export LIBTOOLIZE
+: ${LIBTOOL="${abs_top_builddir}/libtool"}
+export LIBTOOLIZE LIBTOOL
+eval `$LIBTOOL --config | grep ^EGREP=`
+eval `$LIBTOOL --config | $EGREP '(host|build)='`
 m4_divert_pop([PREPARE_TESTS])dnl
 
 # LT_AT_LIBTOOLIZE([ARGS])
@@ -43,16 +46,36 @@ m4_define([LT_AT_CHECK_LIBTOOLIZE],
 m4_define([LT_AT_BOOTSTRAP],
 [
 test -f ./ltmain.sh || LT_AT_LIBTOOLIZE([--copy])
-test -f ./configure || _lt_pkgvdatadir="$abs_top_srcdir" autoreconf --force --verbose --install
+test -f ./configure || _lt_pkgvdatadir="$abs_top_srcdir" autoreconf --force --verbose --install || exit 1
 test -f ./configure || exit 1
 ./configure
 ])
+
+
+# LT_AT_EXEC_CHECK(EXECUTABLE, [STATUS = 0], [STDOUT], [STDERR])
+# --------------------------------------------------------------
+m4_define([LT_AT_EXEC_CHECK],
+[AT_CHECK([if $1; then :;
+	   elif test "X$host" != "X$build" && \
+	        { test -x "$1" || test -x "$1"$EXEEXT; }
+	   then (exit 77); fi],[$2],[$3],[$4])
+])
+
+
+# LT_AT_TAG(TAG)
+# --------------
+m4_define([LT_AT_TAG],
+[AT_KEYWORDS([$1])
+eval `$LIBTOOL --tag=$1 --config | sed -n '/^CC=/ { s/CC/$1/; p;}'`
+AT_CHECK([test -n "[$]$1" || (exit 77)])
+])
+
 
 # We use `dnl' in zillions of places...
 m4_pattern_allow([^dnl$])
 
 # We exercise these tools.
-AT_TESTED([grep autoreconf autom4te automake])
+dnl AT_TESTED([grep autoreconf autom4te automake])
 
 ## ----------- ##
 ## The suite.  ##
@@ -60,18 +83,19 @@ AT_TESTED([grep autoreconf autom4te automake])
 
 AT_INIT
 
-# Torturing subdir-objects builds
-m4_include([am-subdir.at])
+# libtoolize tests
+m4_include([libtoolize.at])
 # Testing func_extract_archives
 m4_include([duplicate_members.at])
 # Test that inherited_linker_flags in the .la actually gets used.
 m4_include([inherited_flags.at])
-# stress test
-m4_include([stresstest.at])
-# C++ templates tests
-m4_include([template.at])
-# libtoolize tests
-m4_include([libtoolize.at])
+# convenience archives test
+m4_include([convenience.at])
 # link order test
 m4_include([link-order.at])
-
+# Torturing subdir-objects builds
+m4_include([am-subdir.at])
+# C++ templates tests
+m4_include([template.at])
+# stress test
+m4_include([stresstest.at])

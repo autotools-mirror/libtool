@@ -21,10 +21,7 @@
 AT_BANNER([C++ template tests.])
 
 AT_SETUP([simple template test])
-
-: ${LIBTOOL=${abs_top_builddir}/libtool}
-eval `$LIBTOOL --tag=CXX --config | grep ^CC=`
-CXX=$CC
+LT_AT_TAG([CXX])
 
 AT_DATA(aclib.h,
 [[int cf(int);
@@ -80,7 +77,6 @@ int main()
 }
 ]])
 
-
 AT_CHECK($LIBTOOL --tag=CXX --mode=compile $CXX -I. $CPPFLAGS $CXXFLAGS -c -o alib.lo alib.cc, [0], [ignore], [ignore])
 AT_CHECK($LIBTOOL --tag=CXX --mode=compile $CXX -I. $CPPFLAGS $CXXFLAGS -c -o aclib.lo aclib.cc, [0], [ignore], [ignore])
 AT_CHECK($LIBTOOL --tag=CXX --mode=link $CXX $CPPFLAGS $CXXFLAGS -o libaclib.la aclib.lo, [0], [ignore], [ignore])
@@ -88,7 +84,7 @@ AT_CHECK($LIBTOOL --tag=CXX --mode=link $CXX $CPPFLAGS $CXXFLAGS -o libalib.la -
 AT_CHECK($CXX -I. $CPPFLAGS $CXXFLAGS -c -o prog.o prog.cc, [0], [ignore], [ignore])
 AT_CHECK($LIBTOOL --tag=CXX --mode=link $CXX $CPPFLAGS $CXXFLAGS -o prog prog.o libalib.la, [0], [ignore], [ignore])
 
-AT_CHECK([./prog$EXEEXT], [0], [a sample prog
+LT_AT_EXEC_CHECK([./prog], [0], [a sample prog
 f(3) = 6
 cf(3) = 9
 ], [ignore])
@@ -98,6 +94,7 @@ dnl with autoreconf, use:
 
 dnl AT_DATA(configure.ac,
 dnl [[AC_INIT([template_1], ]]AT_PACKAGE_VERSION[[, ]]AT_PACKAGE_BUGREPORT[[)
+dnl AC_CONFIG_HEADERS([config.h:config-h.in])
 dnl AC_CONFIG_MACRO_DIR([m4])
 dnl AC_CONFIG_AUX_DIR([config])
 dnl AM_INIT_AUTOMAKE([foreign])
@@ -124,13 +121,9 @@ dnl ]])
 AT_CLEANUP
 
 
-
 AT_SETUP([template test with subdirs])
-
-: ${LIBTOOL=${abs_top_builddir}/libtool}
-eval `$LIBTOOL --tag=CXX --config | grep ^CC=`
-CXX=$CC
-CPPFLAGS="-I../src/lib -I../src/lib2"
+LT_AT_TAG([CXX])
+CPPFLAGS="$CPPFLAGS -I../src/lib -I../src/lib2"
 
 mkdir src obj
 ( cd src; mkdir lib lib2 sub )
@@ -213,30 +206,30 @@ AT_CHECK($CXX $CPPFLAGS $CXXFLAGS -c -o sub/main.o ../src/sub/main.cc, [0], [ign
 AT_CHECK($LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS -o lib/liba.la lib/a.lo, [0], [ignore], [ignore])
 AT_CHECK($LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS -o lib2/libb.la lib2/b.lo, [0], [ignore], [ignore])
 AT_CHECK($LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS -o sub/main sub/main.o lib2/libb.la lib/liba.la, [0], [ignore], [ignore])
-AT_CHECK([./sub/main$EXEEXT], [ignore])
+LT_AT_EXEC_CHECK([./sub/main], [ignore])
 # lib convenience
 AT_CHECK($LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS -o lib2/libb.la lib2/b.lo -rpath /foo, [0], [ignore], [ignore])
 AT_CHECK($LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS -o sub/main sub/main.o lib2/libb.la lib/liba.la, [0], [ignore], [ignore])
-AT_CHECK([./sub/main$EXEEXT])
+LT_AT_EXEC_CHECK([./sub/main])
 # both installed
 AT_CHECK($LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS -o lib/liba.la lib/a.lo -rpath /foo, [0], [ignore], [ignore])
 AT_CHECK($LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS -o lib2/libb.la lib2/b.lo -rpath /bar, [0], [ignore], [ignore])
 AT_CHECK($LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS -o sub/main sub/main.o lib2/libb.la lib/liba.la, [0], [ignore], [ignore])
-AT_CHECK([./sub/main$EXEEXT])
+LT_AT_EXEC_CHECK([./sub/main])
 # both convenience, libb depending on liba
 AT_CHECK($LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS -o lib/liba.la lib/a.lo, [0], [ignore], [ignore])
 AT_CHECK($LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS -o lib2/libb.la lib2/b.lo lib/liba.la, [0], [ignore], [ignore])
 AT_CHECK($LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS -o sub/main sub/main.o lib2/libb.la, [0], [ignore], [ignore])
-AT_CHECK([./sub/main$EXEEXT])
+LT_AT_EXEC_CHECK([./sub/main])
 # lib convenience
 AT_CHECK($LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS -o lib2/libb.la lib2/b.lo lib/liba.la -rpath /foo, [0], [ignore], [ignore])
 AT_CHECK($LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS -o sub/main sub/main.o lib2/libb.la, [0], [ignore], [ignore])
-AT_CHECK([./sub/main$EXEEXT])
+LT_AT_EXEC_CHECK([./sub/main])
 # both installed
 AT_CHECK($LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS -o lib/liba.la lib/a.lo -rpath /foo, [0], [ignore], [ignore])
 AT_CHECK($LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS -o lib2/libb.la lib2/b.lo lib/liba.la -rpath /bar, [0], [ignore], [ignore])
 AT_CHECK($LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS -o sub/main sub/main.o lib2/libb.la, [0], [ignore], [ignore])
-AT_CHECK([./sub/main$EXEEXT])
+LT_AT_EXEC_CHECK([./sub/main])
 
 cd ..
 
@@ -244,6 +237,7 @@ dnl with autoreconf use:
 dnl
 dnl AT_DATA(src/configure.ac,
 dnl [[AC_INIT([template_2], ]]AT_PACKAGE_VERSION[[, ]]AT_PACKAGE_BUGREPORT[[)
+dnl AC_CONFIG_HEADERS([config.h:config-h.in])
 dnl AC_CONFIG_MACRO_DIR([m4])
 dnl AC_CONFIG_AUX_DIR([config])
 dnl AM_INIT_AUTOMAKE([foreign subdir-objects])

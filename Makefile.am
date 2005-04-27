@@ -309,6 +309,7 @@ TESTSUITE_AT	= tests/testsuite.at \
 		  tests/libtoolize.at \
 		  tests/stresstest.at \
 		  tests/link-order.at \
+		  tests/convenience.at \
 		  tests/template.at
 
 EXTRA_DIST     += $(TESTSUITE) $(TESTSUITE_AT) tests/package.m4
@@ -319,7 +320,8 @@ TESTS_ENVIRONMENT = MAKE="$(MAKE)" CC="$(CC)" CFLAGS="$(CFLAGS)" \
 	LIBS="$(LIBS)" LN_S="$(LN_S)" NM="$(NM)" RANLIB="$(RANLIB)" \
 	OBJEXT="$(OBJEXT)" EXEEXT="$(EXEEXT)" CONFIG_SHELL="$(SHELL)" \
 	CXX="$(CXX)" CXXFLAGS="$(CXXFLAGS)" CXXCPP="$(CXXCPP)" \
-	F77="$(F77)" FFLAGS="$(FFLAGS)"
+	F77="$(F77)" FFLAGS="$(FFLAGS)" \
+	GCJ="$(GCJ)" GCJFLAGS="$(GCJFLAGS)"
 
 check-recursive: $(srcdir)/$(TESTSUITE)
 

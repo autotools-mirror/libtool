@@ -19,8 +19,6 @@
 
 AT_SETUP([inherited_linker_flags])
 
-: ${LIBTOOL=$abs_top_builddir/libtool}
-
 AT_DATA([foo.c],
 [
 int foo() { return 1;}
@@ -41,14 +39,12 @@ AT_DATA([main.c],
 int main() { return 0;}
 ])
 
-eval `$LIBTOOL --config | grep ^CC`
-
-${LIBTOOL} --mode=compile --tag=CC $CC -c -o foo.lo foo.c
-${LIBTOOL} --mode=compile --tag=CC $CC -c -o bar.lo bar.c
-${LIBTOOL} --mode=compile --tag=CC $CC -c -o baz.lo baz.c
-${LIBTOOL} --mode=compile --tag=CC $CC -c -o main.lo main.c
-${LIBTOOL} --mode=link --tag=CC $CC -o libfoo.la foo.lo -rpath /usr/local/lib
-${LIBTOOL} --mode=link --tag=CC $CC -o libbar.la bar.lo -rpath /usr/local/lib
+${LIBTOOL} --mode=compile --tag=CC $CC $CFLAGS -c -o foo.lo foo.c
+${LIBTOOL} --mode=compile --tag=CC $CC $CFLAGS -c -o bar.lo bar.c
+${LIBTOOL} --mode=compile --tag=CC $CC $CFLAGS -c -o baz.lo baz.c
+${LIBTOOL} --mode=compile --tag=CC $CC $CFLAGS -c -o main.lo main.c
+${LIBTOOL} --mode=link --tag=CC $CC $CFLAGS $LDFLAGS -o libfoo.la foo.lo -rpath /usr/local/lib
+${LIBTOOL} --mode=link --tag=CC $CC $CFLAGS $LDFLAGS -o libbar.la bar.lo -rpath /usr/local/lib
 
 
 mv libfoo.la libfoo.la.bak
@@ -59,7 +55,7 @@ mv libbar.la libbar.la.bak
 sed -e 's/^inherited_linker_flags.*/inherited_linker_flags=-llt_unlikely_existing_lib/g' < libbar.la.bak > libbar.la
 rm libbar.la.bak
 
-AT_CHECK([${LIBTOOL} --mode=link --tag=CC $CC -o libbaz.la baz.lo -rpath /usr/local/lib ./libfoo.la ./libbar.la | grep 'llt_[[ui]]nlikely_existing_lib.*llt_[[ui]]nlikely_existing_lib'],[0],[ignore],[ignore])
-AT_CHECK([${LIBTOOL} --mode=link --tag=CC $CC -o main main.lo -rpath /usr/local/lib  ./libfoo.la ./libbar.la | grep 'llt_[[ui]]nlikely_existing_lib.*llt_[[ui]]nlikely_existing_lib'],[0],[ignore],[ignore])
+AT_CHECK([${LIBTOOL} --mode=link --tag=CC $CC $CFLAGS $LDFLAGS -o libbaz.la baz.lo -rpath /usr/local/lib ./libfoo.la ./libbar.la | grep 'llt_[[ui]]nlikely_existing_lib.*llt_[[ui]]nlikely_existing_lib'],[0],[ignore],[ignore])
+AT_CHECK([${LIBTOOL} --mode=link --tag=CC $CC $CFLAGS $LDFLAGS -o main main.lo -rpath /usr/local/lib  ./libfoo.la ./libbar.la | grep 'llt_[[ui]]nlikely_existing_lib.*llt_[[ui]]nlikely_existing_lib'],[0],[ignore],[ignore])
 
 AT_CLEANUP

@@ -19,17 +19,11 @@
 AT_BANNER([Testing libtool functions])
 AT_SETUP([duplicate members in archive tests])
 
-
-LIBTOOL=${abs_top_builddir}/libtool
-
 # we don't want to use whole_archive_flag_spec, even if available
 sed -e 's|^whole_archive_flag_spec=.*|whole_archive_flag_spec=|g' < $LIBTOOL > libtool
 
 chmod +x ./libtool
 LIBTOOL=./libtool
-
-eval `$LIBTOOL --config | grep ^EGREP=`
-eval `$LIBTOOL --config | $EGREP '(host|build)='`
 
 AT_DATA(bar.c,
 [[int bar() {
@@ -68,8 +62,6 @@ $LIBTOOL --mode=link --tag=CC $CC $CFLAGS $LDFLAGS -o libbar.la bar.lo libconv.l
 $LIBTOOL --mode=compile --tag=CC $CC -c $CFLAGS -o main.lo main.c
 $LIBTOOL --mode=link --tag=CC $CC $CFLAGS $LDFLAGS -o main main.lo ./libbar.la
 
-AT_CHECK([./main],[0],[ignore],[ignore],[AT_CHECK(if 
-	((test "X$host" != "X$build") &&
-	( test -x ./main)); then exit 77; fi)])
+LT_AT_EXEC_CHECK([./main],[0],[ignore],[ignore])
 
 AT_CLEANUP
