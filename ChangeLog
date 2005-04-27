@@ -1,5 +1,8 @@
 2005-04-27  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* tests/defs.m4sh (func_configure): Don't run the whole configure
+	script with -x.
+
 	* config/ltmain.m4sh: Audit use of echo vs $ECHO.
 	Reported by Robert Ögren <lists@roboros.com> and others.
 
