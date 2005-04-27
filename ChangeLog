@@ -1,5 +1,8 @@
 2005-04-27  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* tests/f77demo/foo.h, tests/f77demo/fooc.c, tests/f77demo/cprogram.c,
+	tests/mdemo2/main.c, tests/pdemo/foo.h: Make declarations available.
+
 	* m4/libtool.m4 (_LT_SYS_DYNAMIC_LINKER) [ linux ]: sed 3.02 does
 	not understand \t in regex.
 	Reported by Tim Van Holder <tim.vanholder@gmail.com>.

@@ -21,6 +21,8 @@ USA. */
 #include <stdio.h>
 #include "ltdl.h"
 
+extern int mlib_func();
+
 int
 main (argc, argv)
   int argc;
