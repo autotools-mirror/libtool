@@ -60,6 +60,26 @@ GNU Libtool
 
 * Fix deplibs_check_method=pass_all (which is wrong!) on linux.
 
+* Fix -dlopen "self" on AIX.  Reported by Gary Kumfert <kumfert@llnl.gov>.
+
+* Audit AU_DEFUNs whether they need to be AU_ALIASes.
+  Reported by Akim Demaille <akim.demaille@free.fr>
+
+* Fix wrong $ECHO after `config.status --recheck'.
+  Reported by Ralf Menzel <menzel@ls6.cs.uni-dortmund.de> and
+  Jeff Squyres <jsquyres@lam-mpi.org>.
+
+* Fix denial of service if using installed `libtool' on a different mount point
+  together with a compiler which does not understand `-c -o'.
+  Reported by Marcin Siennicki.
+
+* Fix -no-undefined with Solaris CC,f77.  Maybe look at implementing something
+  along the idea of [support #103719] for CC.
+  Reported by Ralf Menzel <menzel@ls6.cs.uni-dortmund.de>,
+  Пухальский Юрий Андреевич <pooh@cryptopro.ru>,
+  Albert Chin <libtool-patches@mlists.thewrittenword.com> and others.
+
+
 1.2. libtldl
 ------------
 
@@ -77,6 +97,14 @@ GNU Libtool
     or if a specific module type can only be loaded by one of them, how report its dlerror?
    Also report dlerror() for dlclose and dlsym if available
  - Make sure that the dependency_libs of a dlpreopened module won't be loaded.
+
+ - Fix mdemo failures on mingw.
+
+ - Fix the last memleak.  Reported by Jeff Squyres <jsquyres@lam-mpi.org>.
+
+ - Fix LTDL_CONVENIENCE.  Reported by Bob Friesenhahn
+   and Patrick Welche <prlw1@newn.cam.ac.uk>.
+
 
 1.3. libtoolize
 ---------------
@@ -147,9 +175,8 @@ GNU Libtool
   convenience libraries, that behave as macros that expand to a set of
   -Rs, -Ls and -ls switches.
 
-* Filenames containing shell meta-characters are not properly handled
-  by libtool.  Compiling a file named "a;b.c", for example, fails.
-  Especially `$' would be necessary for java programs.
+* Audit use of object names so we can allow `$' not only within
+  source file names.  Necessary especially for java.
 
 * We could introduce a mechanism to allow for soname rewriting, to
   ease multi-libc support.  Installers could specify a prefix, suffix or
@@ -169,6 +196,13 @@ GNU Libtool
   too?
 
 * Look at position-independent executables.
+
+* Add support for a FC tag.
+
+* Audit the GCJ tag section in libtool.m4.
+
+* Add caching mechanism.  Look at `libtool-cache' from Robert Ögren.
+
 
 2.4. libtool autoconf macros
 ----------------------------
@@ -210,6 +244,9 @@ GNU Libtool
   creating an additional static library to provide dummy implementations
   of the functions that can't be linked statically.  This could hardly
   be made completely transparent, though.
+
+* In conjunction with above, fix the failures on *BSD when linked to
+  static libc.  Reported by Guilhem Lavaux <guilhem@kaffe.org>.
 
 * Add i18n strings to libltdl, ensuring that package developers can
   ignore any i18n when they libtoolize.
