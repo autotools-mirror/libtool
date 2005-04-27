@@ -1,8 +1,13 @@
+2005-04-27  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* config/ltmain.m4sh: Audit use of echo vs $ECHO.
+	Reported by Robert Ögren <lists@roboros.com> and others.
+
 2005-04-26  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>,
 	    Gary V. Vaughan  <gary@gnu.org>
 
 	* HACKING, THANKS: Updated.
-	
+
 2005-04-25  Eric Blake  <ebb9@byu.net>  (tiny change)
 
 	* libltdl/configure.ac (AC_OUTPUT): loaders/Makefile.am is no
@@ -21,7 +26,7 @@
 
 	* doc/Makefile.am, tests/Makefile.am: Removed.  All rules moved...
 	* Makefile.am: ...to here and adjusted to run from $top_builddir.
- 	Some reformatting to group rules and declarations by purpose, and
+	Some reformatting to group rules and declarations by purpose, and
 	simplify with respect to removing much of the make recursion.
 	Add `doc/PLATFORMS', `doc/fdl.texi' and `doc/notes.texi'.
 	`defs.in' and `defs.m4sh' are in directory `tests'.
@@ -57,7 +62,7 @@
 	tests/link-2.test, tests/link.test, tests/mdemo-conf.test,
 	tests/mdemo-dryrun.test, tests/mdemo-exec.test,
 	tests/mdemo-inst.test, tests/mdemo-make.test,
- 	tests/mdemo-shared.test, tests/mdemo-static.test,
+	tests/mdemo-shared.test, tests/mdemo-static.test,
 	tests/mdemo-unst.test, tests/mdemo2-conf.test,
 	tests/mdemo2-exec.test, tests/mdemo2-make.test, tests/nomode.test,
 	tests/objectlist.test, tests/pdemo-conf.test,
@@ -65,7 +70,7 @@
 	tests/pdemo-make.test, tests/quote.test, tests/sh.test,
 	tests/suffix.test, tests/tagdemo-conf.test,
 	tests/tagdemo-exec.test, tests/tagdemo-make.test,
- 	tests/tagdemo-shared.test, tests/tagdemo-static.test,
+	tests/tagdemo-shared.test, tests/tagdemo-static.test,
 	tests/tagdemo-undef.test, tests/tagtrace.test (func_cd,
 	func_require): Adjust paths..
 	* HACKING: Use lt__cd throughout.

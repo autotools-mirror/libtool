@@ -624,7 +624,7 @@ func_win32_libid ()
     esac
     ;;
   esac
-  $ECHO $win32_libid_type
+  $ECHO "$win32_libid_type"
 }
 
 
@@ -735,7 +735,7 @@ extern \"C\" {
 	if test "$dlself" = yes; then
 	  func_echo "generating symbol list for \`$output'"
 
-	  test -z "$run" && $ECHO ': @PROGRAM@ ' > "$nlist"
+	  test -z "$run" && echo ': @PROGRAM@ ' > "$nlist"
 
 	  # Add our own program objects to the symbol list.
 	  progfiles=`$ECHO "X$objs$old_deplibs" | $SP2NL | $Xsed -e "$lo2o" | $NL2SP`
@@ -761,7 +761,7 @@ extern \"C\" {
 	    $run eval "${SED} -n -e '/^: @PROGRAM@$/d' -e 's/^.* \(.*\)$/\1/p' "'< "$nlist" > "$export_symbols"'
 	    case $host in
 	    *cygwin* | *mingw* )
-              $run eval "${ECHO} EXPORTS "'> "$output_objdir/$outputname.def"'
+              $run eval "echo EXPORTS "'> "$output_objdir/$outputname.def"'
               $run eval 'cat "$export_symbols" >> "$output_objdir/$outputname.def"'
 	      ;;
 	    esac
@@ -769,7 +769,7 @@ extern \"C\" {
 	    $run eval "${SED} -e 's/\([[ ]][[.*^$]]\)/\\\1/g' -e 's/^/ /' -e 's/$/$/'"' < "$export_symbols" > "$output_objdir/$outputname.exp"'
 	    case $host in
 	    *cygwin | *mingw* )
-	      $run eval "${ECHO} EXPORTS "'> "$output_objdir/$outputname.def"'
+	      $run eval "echo EXPORTS "'> "$output_objdir/$outputname.def"'
 	      $run eval 'cat "$output_objdir/$outputname.exp" >> "$output_objdir/$outputname.def"'
 	      ;;
 	    esac
@@ -1842,9 +1842,9 @@ func_mode_install ()
 
 	  if test -n "$inst_prefix_dir"; then
 	    # Stick the inst_prefix_dir data into the link command.
-	    relink_command=`$ECHO "$relink_command" | $SED "s%@inst_prefix_dir@%-inst-prefix-dir $inst_prefix_dir%"`
+	    relink_command=`$ECHO "X$relink_command" | $Xsed -e "s%@inst_prefix_dir@%-inst-prefix-dir $inst_prefix_dir%"`
 	  else
-	    relink_command=`$ECHO "$relink_command" | $SED "s%@inst_prefix_dir@%%"`
+	    relink_command=`$ECHO "X$relink_command" | $Xsed -e "s%@inst_prefix_dir@%%"`
 	  fi
 
 	  func_warning "relinking \`$file'"
@@ -2598,7 +2598,7 @@ func_mode_link ()
 	esac
 	case $host in
 	*-*-cygwin* | *-*-mingw* | *-*-pw32* | *-*-os2*)
-	  testbindir=`${ECHO} "$dir" | ${SED} -e 's*/lib$*/bin*'`
+	  testbindir=`$ECHO "X$dir" | $Xsed -e 's*/lib$*/bin*'`
 	  case :$dllsearchpath: in
 	  *":$dir:"*) ;;
 	  *) dllsearchpath="$dllsearchpath:$dir";;
@@ -3295,7 +3295,7 @@ func_mode_link ()
 		match_pattern*)
 		  set dummy $deplibs_check_method; shift
 		  match_pattern_regex=`expr "$deplibs_check_method" : "$1 \(.*\)"`
-		  if eval $ECHO \"X$deplib\" 2>/dev/null | $Xsed -e 10q \
+		  if eval "\$ECHO \"X$deplib\"" 2>/dev/null | $Xsed -e 10q \
 		    | $EGREP "$match_pattern_regex" > /dev/null; then
 		    valid_a_lib=yes
 		  fi
@@ -3687,7 +3687,7 @@ func_mode_link ()
 	    shift
 	    realname="$1"
 	    shift
-	    libname=`eval \\$ECHO \"$libname_spec\"`
+	    libname=`eval "\\$ECHO \"$libname_spec\""`
 	    # use dlname if we got it. it's perfectly good, no?
 	    if test -n "$dlname"; then
 	      soname="$dlname"
@@ -4453,7 +4453,7 @@ func_mode_link ()
 	       ;;
 	    $output_objdir/$outputname | $output_objdir/$libname.* | $output_objdir/${libname}${release}.*)
 	       if test "X$precious_files_regex" != "X"; then
-		 if $ECHO $p | $EGREP -e "$precious_files_regex" >/dev/null 2>&1
+		 if $ECHO "$p" | $EGREP -e "$precious_files_regex" >/dev/null 2>&1
 		 then
 		   continue
 		 fi
@@ -4480,7 +4480,7 @@ func_mode_link ()
       # Eliminate all temporary directories.
       for path in $notinst_path; do
 	lib_search_path=`$ECHO "X$lib_search_path " | $Xsed -e 's% $path % %g'`
-	deplibs=`$ECHO "$deplibs " | ${SED} -e 's% -L$path % %g'`
+	deplibs=`$ECHO "X$deplibs " | $Xsed -e 's% -L$path % %g'`
 	dependency_libs=`$ECHO "X$dependency_libs " | $Xsed -e 's% -L$path % %g'`
       done
 
@@ -4594,8 +4594,8 @@ EOF
 		  esac
 		fi
 		if test -n "$i" ; then
-		  libname=`eval \\$ECHO \"$libname_spec\"`
-		  deplib_matches=`eval \\$ECHO \"$library_names_spec\"`
+		  libname=`eval "\\$ECHO \"$libname_spec\""`
+		  deplib_matches=`eval "\\$ECHO \"$library_names_spec\""`
 		  set dummy $deplib_matches; shift
 		  deplib_match=$1
 		  if test `expr "$ldd_output" : ".*$deplib_match"` -ne 0 ; then
@@ -4636,8 +4636,8 @@ EOF
 		    esac
 		  fi
 		  if test -n "$i" ; then
-		    libname=`eval \\$ECHO \"$libname_spec\"`
-		    deplib_matches=`eval \\$ECHO \"$library_names_spec\"`
+		    libname=`eval "\\$ECHO \"$libname_spec\""`
+		    deplib_matches=`eval "\\$ECHO \"$library_names_spec\""`
 		    set dummy $deplib_matches; shift
 		    deplib_match=$1
 		    if test `expr "$ldd_output" : ".*$deplib_match"` -ne 0 ; then
@@ -4683,7 +4683,7 @@ EOF
 		esac
 	      fi
 	      if test -n "$a_deplib" ; then
-		libname=`eval \\$ECHO \"$libname_spec\"`
+		libname=`eval "\\$ECHO \"$libname_spec\""`
 		for i in $lib_search_path $sys_lib_search_path $shlib_search_path; do
 		  potential_libs=`ls $i/$libname[[.-]]* 2>/dev/null`
 		  for potent_lib in $potential_libs; do
@@ -4752,12 +4752,12 @@ EOF
 		esac
 	      fi
 	      if test -n "$a_deplib" ; then
-		libname=`eval \\$ECHO \"$libname_spec\"`
+		libname=`eval "\\$ECHO \"$libname_spec\""`
 		for i in $lib_search_path $sys_lib_search_path $shlib_search_path; do
 		  potential_libs=`ls $i/$libname[[.-]]* 2>/dev/null`
 		  for potent_lib in $potential_libs; do
 		    potlib="$potent_lib" # see symlink-check above in file_magic test
-		    if eval $ECHO \"X$potent_lib\" 2>/dev/null | $Xsed -e 10q | \
+		    if eval "\$ECHO \"X$potent_lib\"" 2>/dev/null | $Xsed -e 10q | \
 		       $EGREP "$match_pattern_regex" > /dev/null; then
 		      newdeplibs="$newdeplibs $a_deplib"
 		      a_deplib=""
@@ -5002,7 +5002,7 @@ EOF
 	fi
 
 	if test -n "$export_symbols" && test -n "$include_expsyms"; then
-	  $run eval '$ECHO "X$include_expsyms" | $SP2NL >> "$export_symbols"'
+	  $run eval '$ECHO "X$include_expsyms" | $Xsed | $SP2NL >> "$export_symbols"'
 	fi
 
 	tmp_deplibs=
@@ -5352,8 +5352,8 @@ EOF
 
 	# Create an invalid libtool object if no PIC, so that we don't
 	# accidentally link it into a program.
-	# $show "$ECHO timestamp > $libobj"
-	# $run eval "$ECHO timestamp > $libobj" || exit $?
+	# $show "echo timestamp > $libobj"
+	# $run eval "echo timestamp > $libobj" || exit $?
 	exit $EXIT_SUCCESS
       fi
 
@@ -6754,7 +6754,7 @@ build_old_libs=yes
 # ### END LIBTOOL TAG CONFIG: disable-shared
 
 # ### BEGIN LIBTOOL TAG CONFIG: disable-static
-build_old_libs=`case $build_libtool_libs in yes) $ECHO no;; *) $ECHO yes;; esac`
+build_old_libs=`case $build_libtool_libs in yes) echo no;; *) echo yes;; esac`
 # ### END LIBTOOL TAG CONFIG: disable-static
 
 # Local Variables:
