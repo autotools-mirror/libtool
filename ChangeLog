@@ -1,3 +1,9 @@
+2005-04-28  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* libtool.m4 (AC_LIBTOOL_SYS_DYNAMIC_LINKER) [openbsd3.3]: Set
+	need_version to yes or no depending on the os release.
+	Missing backport reported by Dalibor Topic <robilad@kaffe.org>.
+
 2005-04-27  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* libtool.m4 (AC_LIBTOOL_SYS_DYNAMIC_LINKER) [ linux ]: sed 3.02 does
