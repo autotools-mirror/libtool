@@ -39,7 +39,7 @@ fi
 if test "x$with_included_ltdl" = xno; then
   # If the included ltdl is not to be used. then Use the
   # preinstalled libltdl we found.
-  AC_DEFINE([HAVE_LTDL], 1,
+  AC_DEFINE([HAVE_LTDL], [1],
     [Define this if a modern libltdl is already installed])
   LIBLTDL=-lltdl
 fi
@@ -295,7 +295,7 @@ eval libltdl_cv_shlibext=$shrext_cmds
   ])
 if test -n "$libltdl_cv_shlibext"; then
   m4_pattern_allow([LT_MODULE_EXT])dnl
-  AC_DEFINE_UNQUOTED(LT_MODULE_EXT, "$libltdl_cv_shlibext",
+  AC_DEFINE_UNQUOTED([LT_MODULE_EXT], ["$libltdl_cv_shlibext"],
     [Define to the extension used for runtime loadable modules, say, ".so".])
 fi
 ])# LT_SYS_MODULE_EXT
@@ -314,7 +314,7 @@ AC_CACHE_CHECK([which variable specifies run-time module search path],
   [lt_cv_module_path_var], [lt_cv_module_path_var="$shlibpath_var"])
 if test -n "$lt_cv_module_path_var"; then
   m4_pattern_allow([LT_MODULE_PATH_VAR])dnl
-  AC_DEFINE_UNQUOTED(LT_MODULE_PATH_VAR, "$lt_cv_module_path_var",
+  AC_DEFINE_UNQUOTED([LT_MODULE_PATH_VAR], ["$lt_cv_module_path_var"],
     [Define to the name of the environment variable that determines the run-time module search path.])
 fi
 ])# LT_SYS_MODULE_PATH
@@ -342,7 +342,7 @@ if test -n "$lt_cv_sys_dlsearch_path"; then
     fi
   done
   m4_pattern_allow([LT_DLSEARCH_PATH])dnl
-  AC_DEFINE_UNQUOTED(LT_DLSEARCH_PATH, "$sys_dlsearch_path",
+  AC_DEFINE_UNQUOTED([LT_DLSEARCH_PATH], ["$sys_dlsearch_path"],
     [Define to the system default library search path.])
 fi
 ])# LT_SYS_DLSEARCH_PATH
@@ -366,7 +366,7 @@ AC_CACHE_CHECK([whether libtool supports -dlopen/-dlpreopen],
   fi
   ])
 if test x"$libltdl_cv_preloaded_symbols" = xyes; then
-  AC_DEFINE(HAVE_PRELOADED_SYMBOLS, 1,
+  AC_DEFINE([HAVE_PRELOADED_SYMBOLS], [1],
     [Define if libtool can extract symbol lists from object files.])
 fi
 ])# _LT_CHECK_DLPREOPEN
@@ -534,7 +534,7 @@ if test x"$lt_cv_sys_symbol_underscore" = xyes; then
 fi
 
 if test x"$libltdl_cv_need_uscore" = xyes; then
-  AC_DEFINE(NEED_USCORE, 1,
+  AC_DEFINE([NEED_USCORE], [1],
     [Define if dlsym() requires a leading underscore in symbol names.])
 fi
 ])# LT_FUNC_DLSYM_USCORE
