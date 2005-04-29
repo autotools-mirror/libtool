@@ -1,5 +1,10 @@
 2005-04-29  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* m4/ltdl.m4 (all over): Quote all arguments to AC_DEFINE and
+	AC_DEFINE_UNQUOTED consistently.  Reported by
+	Michael Koch  <konqueror@gmx.de>, Riccardo Mottola <zuse@libero.it>,
+	and Dalibor Topic <robilad@kaffe.org>.
+
 	* HACKING: Updated.
 
 2005-04-27  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
