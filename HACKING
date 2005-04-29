@@ -380,8 +380,9 @@ yyyy-mm-dd  Name of Author  <email@address>  (tiny change)
   fetch new versions of the files that are maintained outside of
   libtool.
 
-* Run `make distcheck'.  If there are any problems, fix them and start
-  again.
+* Run `make distcheck' and `make distcheck
+  DISTCHECK_CONFIGURE_FLAGS=--disable-ltdl-install'.  If there are any
+  problems, fix them and start again.
 
 * Run ./commit from the source tree.
 
