@@ -1,3 +1,10 @@
+2005-04-29  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* ltdl.m4 (all over): Quote all arguments to AC_DEFINE and
+	AC_DEFINE_UNQUOTED consistently.  Reported by
+	Michael Koch  <konqueror@gmx.de>, Riccardo Mottola <zuse@libero.it>,
+	and Dalibor Topic <robilad@kaffe.org>.
+
 2005-04-28  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* libtool.m4 (AC_LIBTOOL_SYS_DYNAMIC_LINKER) [openbsd3.3]: Set
