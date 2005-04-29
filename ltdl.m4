@@ -42,7 +42,7 @@ fi
 if test "x$with_included_ltdl" = xno; then
   # If the included ltdl is not to be used. then Use the
   # preinstalled libltdl we found.
-  AC_DEFINE([HAVE_LTDL], 1,
+  AC_DEFINE([HAVE_LTDL], [1],
     [Define this if a modern libltdl is already installed])
   LIBLTDL=-lltdl
 fi
@@ -195,7 +195,7 @@ module=yes
 eval libltdl_cv_shlibext=$shrext_cmds
   ])
 if test -n "$libltdl_cv_shlibext"; then
-  AC_DEFINE_UNQUOTED(LTDL_SHLIB_EXT, "$libltdl_cv_shlibext",
+  AC_DEFINE_UNQUOTED([LTDL_SHLIB_EXT], ["$libltdl_cv_shlibext"],
     [Define to the extension used for shared libraries, say, ".so".])
 fi
 ])# AC_LTDL_SHLIBEXT
@@ -208,7 +208,7 @@ AC_DEFUN([AC_LTDL_SHLIBPATH],
 AC_CACHE_CHECK([which variable specifies run-time library path],
   [libltdl_cv_shlibpath_var], [libltdl_cv_shlibpath_var="$shlibpath_var"])
 if test -n "$libltdl_cv_shlibpath_var"; then
-  AC_DEFINE_UNQUOTED(LTDL_SHLIBPATH_VAR, "$libltdl_cv_shlibpath_var",
+  AC_DEFINE_UNQUOTED([LTDL_SHLIBPATH_VAR], ["$libltdl_cv_shlibpath_var"],
     [Define to the name of the environment variable that determines the dynamic library search path.])
 fi
 ])# AC_LTDL_SHLIBPATH
@@ -230,7 +230,7 @@ if test -n "$libltdl_cv_sys_search_path"; then
       sys_search_path="$sys_search_path$PATH_SEPARATOR$dir"
     fi
   done
-  AC_DEFINE_UNQUOTED(LTDL_SYSSEARCHPATH, "$sys_search_path",
+  AC_DEFINE_UNQUOTED([LTDL_SYSSEARCHPATH], ["$sys_search_path"],
     [Define to the system default library search path.])
 fi
 ])# AC_LTDL_SYSSEARCHPATH
@@ -256,7 +256,7 @@ AC_DEFUN([AC_LTDL_OBJDIR],
   rmdir .libs 2>/dev/null
   fi
   ])
-AC_DEFINE_UNQUOTED(LTDL_OBJDIR, "$libltdl_cv_objdir/",
+AC_DEFINE_UNQUOTED([LTDL_OBJDIR], ["$libltdl_cv_objdir/"],
   [Define to the sub-directory in which libtool stores uninstalled libraries.])
 ])# AC_LTDL_OBJDIR
 
@@ -274,7 +274,7 @@ AC_CACHE_CHECK([whether libtool supports -dlopen/-dlpreopen],
   fi
   ])
 if test x"$libltdl_cv_preloaded_symbols" = xyes; then
-  AC_DEFINE(HAVE_PRELOADED_SYMBOLS, 1,
+  AC_DEFINE([HAVE_PRELOADED_SYMBOLS], [1],
     [Define if libtool can extract symbol lists from object files.])
 fi
 ])# AC_LTDL_DLPREOPEN
@@ -393,7 +393,7 @@ if test x"$ac_cv_sys_symbol_underscore" = xyes; then
 fi
 
 if test x"$libltdl_cv_need_uscore" = xyes; then
-  AC_DEFINE(NEED_USCORE, 1,
+  AC_DEFINE([NEED_USCORE], [1],
     [Define if dlsym() requires a leading underscore in symbol names.])
 fi
 ])# AC_LTDL_DLSYM_USCORE
