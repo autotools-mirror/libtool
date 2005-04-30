@@ -2113,16 +2113,6 @@ project, a copy of the relevant macro definitions will be placed in
 your @code{AC_CONFIG_MACRO_DIR}, where @command{aclocal} can reference
 them directly from @file{aclocal.m4}.
 
-Alternatively, if you want to keep all of your macros in a single
-@file{aclocal.m4}, or if you are using an older Automake that doesn't
-support in-tree m4_include, you need to arrange for @command{aclocal}
-to look in the versioned Libtool directory.  One way of doing this is
-to use @code{ACLOCAL_AMFLAGS} in your @file{Makefile.am}:
-
-@example
-ACLOCAL_AMFLAGS += -I $(prefix)/share/libtool-2.0/m4
-@end example
-
 
 @node Configure notes
 @subsection Platform-specific configuration notes

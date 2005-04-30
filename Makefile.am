@@ -45,8 +45,8 @@ libtoolize: $(srcdir)/libtoolize.in
 	$(timestamp); \
 	input="libtoolize.m4sh"; \
 	$(edit) -e "s,@TIMESTAMP\@,$$TIMESTAMP,g" \
-		-e 's,@nobase_pkgvdata_DATA\@,$(nobase_pkgvdata_DATA),g' \
-		-e "s,@pkgvltdl_files\@,`echo $(ltdldatafiles)`,g" \
+		-e 's,@aclocal_DATA\@,$(aclocalfiles),g' \
+		-e "s,@pkgltdl_files\@,$(ltdldatafiles),g" \
 		$(srcdir)/libtoolize.in > libtoolize.tmp
 	chmod a+x libtoolize.tmp
 	chmod a-w libtoolize.tmp
@@ -93,8 +93,8 @@ edit = sed \
 	-e 's,@VERSION\@,$(VERSION),g' \
 	-e 's,@aclocaldir\@,$(aclocaldir),g' \
 	-e 's,@datadir\@,$(datadir),g' \
+	-e 's,@pkgdatadir\@,$(pkgdatadir),g' \
 	-e 's,@host_triplet\@,$(host_triplet),g' \
-	-e 's,@pkgvdatadir\@,$(pkgvdatadir),g' \
 	-e 's,@prefix\@,$(prefix),g' \
 	-e "s,@configure_input\@,Generated from $$input; do not edit by hand,g"
 
@@ -116,12 +116,12 @@ DISTCLEANFILES =
 # These are required by libtoolize and must be executable when installed.
 # Since _SCRIPTS gets the program transform applied we make them
 # executable by hand
-nobase_dist_pkgvdata_DATA = config/config.guess config/config.sub \
+nobase_dist_pkgdata_DATA = config/config.guess config/config.sub \
 	config/ltmain.sh config/install-sh
 
 # Everything that gets picked up by aclocal is automatically distributed,
 # this is the list of macro files we install on the user's system.
-nobase_pkgvdata_DATA = m4/argz.m4 m4/libtool.m4 m4/ltdl.m4 \
+aclocalfiles = m4/argz.m4 m4/libtool.m4 m4/ltdl.m4 \
 	m4/ltoptions.m4 m4/ltsugar.m4 m4/ltversion.m4
 
 ## We know that $(srcdir)/ChangeLog has been edited if stamp-vcl
@@ -210,7 +210,7 @@ $(srcdir)/doc/notes.txt: $(srcdir)/doc/notes.texi
 
 ## These are installed as a subdirectory of pkgdatadir so that
 ## libtoolize --ltdl can find them later:
-ltdldatadir		= $(pkgvdatadir)/libltdl
+ltdldatadir		= $(pkgdatadir)/libltdl
 ltdldatafiles		= COPYING.LIB README \
 			  Makefile.am Makefile.in \
 			  argz_.h argz.c \
@@ -240,52 +240,41 @@ ltdldatafiles		= COPYING.LIB README \
 			  slist.c
 
 install-data-local:
-## Don't install over the top of an old pkgvdatadir
-	-rm -rf $(DESTDIR)$(pkgvdatadir)
-## Remove old pkgdatadir
+## Don't install over the top of an old pkgdatadir
 	-rm -rf $(DESTDIR)$(pkgdatadir)
-## Remove old macro definitions
-	-rm -rf $(DESTDIR)$(aclocaldir)/ltdl.m4
-	-rm -rf $(DESTDIR)$(aclocaldir)/libtool.m4
 ## To avoid spurious reconfiguration when the user installs these files
 ## with libtoolize, we have to preserve their timestamps carefully:
 	$(mkinstalldirs) $(DESTDIR)$(ltdldatadir)
 	( cd $(srcdir)/libltdl && $(AMTAR) chf - $(ltdldatafiles); ) \
 	  | ( umask 0 && cd $(DESTDIR)$(ltdldatadir) && $(AMTAR) xf -; )
+	$(mkinstalldirs) $(DESTDIR)$(aclocaldir)
+	@for p in $(aclocalfiles); do \
+	  f=`echo "$$p" | sed 's|^.*/||'`; \
+	  aclocalfiles="$$aclocalfiles $$f"; \
+	done; \
+	( cd $(srcdir)/m4 && $(AMTAR) chf - $$aclocalfiles; ) \
+	  | ( umask 0 && cd $(DESTDIR)$(aclocaldir) && $(AMTAR) xf -; )
 
 install-data-hook:
-	chmod +x $(DESTDIR)$(pkgvdatadir)/config/config.guess
-	chmod +x $(DESTDIR)$(pkgvdatadir)/config/config.sub
-	chmod +x $(DESTDIR)$(pkgvdatadir)/config/install-sh
+	chmod +x $(DESTDIR)$(pkgdatadir)/config/config.guess
+	chmod +x $(DESTDIR)$(pkgdatadir)/config/config.sub
+	chmod +x $(DESTDIR)$(pkgdatadir)/config/install-sh
 
 
 ## ------------- ##
 ## Distribution. ##
 ## ------------- ##
 
-## Make versioned links.  We only run the transform on the root name;
-## then we make a versioned link with the transformed base name.  This
-## seemed like the most reasonable approach.
-install-exec-hook:
-	@$(POST_INSTALL)
-	@for p in $(bin_SCRIPTS); do \
-	  f="`echo $$p|sed '$(transform)'`"; \
-	  fv="$$f-$(APIVERSION)"; \
-	  rm -f $(DESTDIR)$(bindir)/$$fv; \
-	  echo " $(LN) $(DESTDIR)$(bindir)/$$f $(DESTDIR)$(bindir)/$$fv"; \
-	  $(LN) $(DESTDIR)$(bindir)/$$f $(DESTDIR)$(bindir)/$$fv; \
-	done
-
 uninstall-hook:
-	@for p in $(bin_SCRIPTS); do \
-	  f="`echo $$p|sed '$(transform)'`"; \
-	  fv="$$f-$(APIVERSION)"; \
-	  rm -f $(DESTDIR)$(bindir)/$$fv; \
-	done
 	@for f in $(ltdldatafiles); do \
 	  echo " rm -rf '$(DESTDIR)$(ltdldatadir)/$$f'"; \
 	  rm -f "$(DESTDIR)$(ltdldatadir)/$$f"; \
 	done
+	@for p in $(aclocalfiles); do \
+	  f=`echo "$$p" | sed 's|^.*/||'`; \
+	  echo " rm -rf '$(DESTDIR)$(aclocaldir)/$$f'"; \
+	  rm -f "$(DESTDIR)$(aclocaldir)/$$f"; \
+	done;
 
 
 ## Ship README.alpha only in alpha release, but renamed to README

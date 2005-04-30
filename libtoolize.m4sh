@@ -80,9 +80,10 @@ seen_ltdl=false
 libtoolize_flags=
 
 # Locations for important files:
-: ${_lt_pkgvdatadir="@pkgvdatadir@"}
 prefix=@prefix@
 datadir=@datadir@
+pkgdatadir=@pkgdatadir@
+aclocaldir=@aclocaldir@
 auxdir=
 m4dir=
 ltdldir=
@@ -232,7 +233,7 @@ func_copy_cb ()
       $opt_quiet || func_echo "copying file \`$my_destdir/$my_file'"
       copy_return_status=0
     elif { ( cd "$my_srcdir" 2>/dev/null && $TAR chf - "$my_file" 2>/dev/null; ) \
-        | ( umask 0 && cd "$my_destdir" 2>/dev/null && "$TAR" xf - > /dev/null 2>&1; ); } ; then
+        | ( umask 0 && cd "$my_destdir" 2>/dev/null && "$TAR" xf - >/dev/null 2>&1; ); } ; then
       $opt_quiet || func_echo "copying file \`$my_destdir/$my_file'"
       copy_return_status=0
     elif $CP -p "$my_srcdir/$my_file" "$my_destdir/$my_file"; then
@@ -242,36 +243,6 @@ func_copy_cb ()
       func_error "can not copy \`$my_srcdir/$my_file' to \`$my_destdir/'"
       exit_status=$EXIT_FAILURE
     fi
-}
-
-
-# func_copy_all_from_path [-r] dirname srcpath destdir [glob_exclude]
-# Search each : delimited directory in SRCPATH for a directory named
-# DIRNAME.  Recursively copy the contents of the first match found
-# to DESTDIR.
-func_copy_all_from_path ()
-{
-    $opt_debug
-    if test "X$1" = X-r; then
-      my_args=-r
-      shift
-    fi
-
-    my_dirname="$1"
-    my_srcpath="$2"
-    my_destdir="$3"
-    my_globexc="$4"
-
-    save_IFS="$IFS"; IFS=:
-    for myvdir in $my_srcpath; do
-      IFS="$save_IFS"
-      test "X$my_dirname" = X. || myvdir="$myvdir/$my_dirname"
-      if test -d "$myvdir"; then
-        func_copy_all_files $my_args "$myvdir" "$my_destdir" "$my_globexc"
-        break
-      fi
-    done
-    IFS="$save_IFS"
 }
 
 
@@ -310,7 +281,7 @@ func_copy_all_files ()
 
       for my_filename in `cd "$my_srcdir" && ls`; do
 
-         # ignore excluded filenames
+        # ignore excluded filenames
         if test -n "$my_glob_exclude"; then
           eval 'case $my_filename in '$my_glob_exclude') continue ;; esac'
         fi
@@ -333,41 +304,36 @@ func_copy_all_files ()
 }
 
 
-# func_copy_some_files srcfile_spec srcdirs destdir [copy_cb=func_copy_cb]
-# Call COPY_CB for each regular file named by the ':' delimited names in
-# SRCFILE_SPEC first found in a directory from SRCDIRS.  The odd calling
-# convention is needed to allow spaces in file and directory names.
+# func_copy_some_files srcfile_spec srcdir destdir [copy_cb=func_copy_cb]
+# Call COPY_CB for each regular file in SRCDIR named by the ':' delimited
+# names in SRCFILE_SPEC.  The odd calling convention is needed to allow
+# spaces in file and directory names.
 func_copy_some_files ()
 {
     $opt_debug
     my_srcfile_spec="$1"
-    my_srcdirs="$2"
+    my_srcdir="$2"
     my_destdir="$3"
     my_copy_cb="${4-func_copy_cb}"
 
     my_save_IFS="$IFS"
     IFS=:
     for my_filename in $my_srcfile_spec; do
-      IFS=:
-      for my_srcdir in $my_srcdirs; do
-        IFS="$my_save_IFS"
-        if test -f "$my_srcdir/$my_filename"; then
-          if test "X$my_copy_cb" = Xfunc_copy_cb; then
-	    $opt_force || if test -f "$my_destdir/$my_filename"; then
-  	      $opt_quiet \
-	        || func_error "\`$my_destdir/$my_filename' exists: use \`--force' to overwrite"
-	      continue
-	    fi
-          fi
-        else
-          # Not a regular file
-          continue
-        fi
-
-        $my_copy_cb "$my_filename" "$my_srcdir" "$my_destdir"
-	break
-      done
       IFS="$my_save_IFS"
+      if test -f "$my_srcdir/$my_filename"; then
+        if test "X$my_copy_cb" = Xfunc_copy_cb; then
+	  $opt_force || if test -f "$my_destdir/$my_filename"; then
+  	    $opt_quiet \
+	      || func_error "\`$my_destdir/$my_filename' exists: use \`--force' to overwrite"
+	    continue
+	  fi
+        fi
+      else
+        # Not a regular file
+        continue
+      fi
+
+      $my_copy_cb "$my_filename" "$my_srcdir" "$my_destdir"
     done
     IFS="$my_save_IFS"
 }
@@ -385,10 +351,6 @@ func_scan_files ()
     test -f configure.ac && configure_ac=configure.ac
     test -f "$configure_ac" \
         || func_fatal_help "\`$configure_ac' does not exist"
-
-    # check that existing directories from the list can be ls'ed
-    test -n "`{ cd $_lt_pkgvdatadir && ls; } 2>/dev/null`" \
-        || func_fatal_error "can not list files in \`$_lt_pkgvdatadir'"
 
     # Set local variables to reflect contents of configure.ac
     my_uses_autoconf=false
@@ -801,17 +763,17 @@ func_check_macros ()
 }
 
 
-# func_massage_nobase_pkgvdata_DATA [glob_exclude]
-# @nobase_pkgvdata_DATA\@ is substituted as per its value in Makefile.am;
+# func_massage_aclocal_DATA [glob_exclude]
+# @aclocal_DATA\@ is substituted as per its value in Makefile.am;
 # this function massages it into a suitable format for func_copy_some_files.
-func_massage_nobase_pkgvdata_DATA ()
+func_massage_aclocal_DATA ()
 {
-    pkgvmacro_files=     # GLOBAL VAR
+    pkgmacro_files=     # GLOBAL VAR
 
     my_glob_exclude="$1"
 
-    # Massage a value for pkgvmacro_files from the value used in Makefile.am.
-    for my_filename in @nobase_pkgvdata_DATA@; do
+    # Massage a value for pkgmacro_files from the value used in Makefile.am.
+    for my_filename in @aclocal_DATA@; do
       my_filename=`$ECHO "X$my_filename" | $Xsed -e "$basename"`
 
       # ignore excluded filenames
@@ -819,25 +781,25 @@ func_massage_nobase_pkgvdata_DATA ()
         eval 'case $my_filename in '$my_glob_exclude') continue ;; esac'
       fi
 
-      pkgvmacro_files="$pkgvmacro_files:$my_filename"
+      pkgmacro_files="$pkgmacro_files:$my_filename"
     done
 
     # strip spurious leading `:'
-    pkgvmacro_files=`$ECHO "X$pkgvmacro_files" | $Xsed -e 's,^:*,,'`
+    pkgmacro_files=`$ECHO "X$pkgmacro_files" | $Xsed -e 's,^:*,,'`
 }
 
 
-# func_massage_pkgvltdl_files [glob_exclude]
-# @pkgvltdl_files\@ is substituted as per its value in Makefile.am; this
+# func_massage_pkgltdl_files [glob_exclude]
+# @pkgltdl_files\@ is substituted as per its value in Makefile.am; this
 # function massages it into a suitable format for func_copy_some_files.
-func_massage_pkgvltdl_files ()
+func_massage_pkgltdl_files ()
 {
-    pkgvltdl_files=	# GLOBAL VAR
+    pkgltdl_files=	# GLOBAL VAR
 
     my_glob_exclude="$1"
 
-    # Massage a value for pkgvltdl_files from the value used in Makefile.am
-    for my_filename in @pkgvltdl_files@; do
+    # Massage a value for pkgltdl_files from the value used in Makefile.am
+    for my_filename in @pkgltdl_files@; do
 
       # ignore excluded filenames
       if test -n "$my_glob_exclude"; then
@@ -845,14 +807,33 @@ func_massage_pkgvltdl_files ()
       fi
 
       # ignore duplicates
-      case :$pkgvltdl_files: in
+      case :$pkgltdl_files: in
         *:$my_filename:*) ;;
-	*) pkgvltdl_files="$pkgvltdl_files:$my_filename" ;;
+	*) pkgltdl_files="$pkgltdl_files:$my_filename" ;;
       esac
     done
 
     # strip spurious leading `:'
-    pkgvltdl_files=`$ECHO "X$pkgvltdl_files" | $Xsed -e 's,^:*,,'`
+    pkgltdl_files=`$ECHO "X$pkgltdl_files" | $Xsed -e 's,^:*,,'`
+}
+
+
+# func_nonemptydir_p dirvar
+# DIRVAR is the name of a variable to evaluate.  Unless DIRVAR names
+# a directory that exists and is non-empty abort with a diagnostic.
+func_nonemptydir_p ()
+{
+    $opt_debug
+    my_dirvar="$1"
+    my_dir=`eval echo "\\\$$my_dirvar"`
+
+    # Is it a directory at all?
+    test -d "$my_dir" \
+      || func_fatal_error "\$$my_dirvar not a directory: \`$my_dir'"
+
+    # check that the directories contents can be ls'ed
+    test -n "`{ cd $my_dir && ls; } 2>/dev/null`" \
+        || func_fatal_error "can not list files: \`$my_dir'"
 }
 
 
@@ -863,20 +844,28 @@ func_massage_pkgvltdl_files ()
 {
   rerun_aclocal=false
 
-  func_massage_pkgvltdl_files
+  # Allow the user to override the master libtoolize repository:
+  if test -n "$_lt_pkgdatadir"; then
+    pkgdatadir="$_lt_pkgdatadir"
+    aclocaldir="$_lt_pkgdatadir/m4"
+  fi
+  func_nonemptydir_p pkgdatadir
+  func_nonemptydir_p aclocaldir
+
+  func_massage_pkgltdl_files
 
   # libtool.m4 and ltdl.m4 are handled specially below
-  func_massage_nobase_pkgvdata_DATA 'libtool.m4|ltdl.m4'
+  func_massage_aclocal_DATA 'libtool.m4|ltdl.m4'
 
   glob_exclude_pkgaux_files='config.guess|config.sub|install-sh|ltmain.sh'
 
   func_scan_files
   $opt_quiet || func_check_macros
 
-  # Copy all the files from installed (or specified, if `-I' was used)
-  # libltdl to this project, if the user specified `--ltdl'.
+  # Copy all the files from installed libltdl to this project, if the
+  # user specified `--ltdl'.
   if test -n "$ltdldir"; then
-    func_copy_some_files "$pkgvltdl_files" "$_lt_pkgvdatadir/libltdl" "$ltdldir"
+    func_copy_some_files "$pkgltdl_files" "$pkgdatadir/libltdl" "$ltdldir"
 
     # libtoolize the newly copied libltdl tree
     ( cd "$ltdldir" && eval "$progpath" $libtoolize_flags ) \
@@ -889,26 +878,26 @@ func_massage_pkgvltdl_files ()
     func_echo "putting files in AC_CONFIG_AUX_DIR, \`$auxdir'."
   fi
   if $opt_install; then
-    func_config_update config.guess "$_lt_pkgvdatadir/config" "$auxdir"
-    func_config_update config.sub   "$_lt_pkgvdatadir/config" "$auxdir"
-    func_install_update install-sh  "$_lt_pkgvdatadir/config" "$auxdir"
+    func_config_update config.guess "$pkgdatadir/config" "$auxdir"
+    func_config_update config.sub   "$pkgdatadir/config" "$auxdir"
+    func_install_update install-sh  "$pkgdatadir/config" "$auxdir"
   fi
-  func_ltmain_update ltmain.sh "$_lt_pkgvdatadir/config" "$auxdir"
+  func_ltmain_update ltmain.sh "$pkgdatadir/config" "$auxdir"
 
   # Copy libtool's m4 macros to the macro directory, if they are newer.
   if test -n "$m4dir"; then
     $opt_quiet || func_echo "putting macros in AC_CONFIG_MACRO_DIR, \`$m4dir'."
 
-    func_serial_update  libtool.m4 "$_lt_pkgvdatadir/m4" "$m4dir" \
+    func_serial_update  libtool.m4 "$aclocaldir" "$m4dir" \
       LT_INIT 'A[[CM]]_PROG_LIBTOOL'
 
     if $seen_ltdl; then
-      func_serial_update ltdl.m4 "$_lt_pkgvdatadir/m4" "$m4dir" 'LTDL_INIT'
+      func_serial_update ltdl.m4 "$aclocaldir" "$m4dir" 'LTDL_INIT'
     else
       func_verbose "Not copying \`$m4dir/ltdl.m4', libltdl not used."
     fi
 
-    func_copy_some_files "$pkgvmacro_files" "$_lt_pkgvdatadir/m4" \
+    func_copy_some_files "$pkgmacro_files" "$aclocaldir" \
       "$m4dir" func_serial_update
   else
     func_verbose "AC_CONFIG_MACRO_DIR not defined, not copying libtool macro files."

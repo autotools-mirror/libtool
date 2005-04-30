@@ -1,3 +1,34 @@
+2005-04-30  Gary V. Vaughan  <gary@gnu.org>
+
+	Revert the parallel installation changes from November last year:
+
+	* libtoolize.m4sh (pkgdatadir, aclocaldir): Substituted from
+	configure.
+	(func_copy_all_from_path): Removed.  No longer used.
+	(func_copy_some_files): Simplify now that nothing is copied from a
+	list of possible directories now.
+	(func_scan_files): Remove directory readability check...
+	(func_nonemptydir_p): ...in favour of a dedicated sanity check
+	function called from the main body.
+	(_lt_pkgvdatadir): Set pkgdatadir and aclocaldir appropriately if
+	this is in the environment.
+	* configure.ac: Tests for `ln' removed.
+	(APIVERSION): Removed.
+	* Makefile.am (pkgvdatadir, nobase_dist_pkgvdata_DATA)
+	(nobase_pkgvdata_DATA): Renamed to...
+	(pkgdatadir, nobase_dist_pkgdata_DATA, aclocalfiles): ...these
+	respectively.
+	(edit): Adjust for new variable names.
+	(install-data-local): Don't bother to remove old macro files that
+	will be overwritten by the installation, and perform a manual
+	installation of $(aclocalfiles) to preserve timestamps.
+	(install-exec-hook): Removed.  No need to make versioned links.
+	(uninstall-hook): No need to remove versioned links, but now we
+	need to manually remove the manually installed $(aclocalfiles).
+	* doc/libtool.texi: Remove bogus notes about setting
+	ACLOCAL_AMFLAGS for versioned libtool installations.
+	* NEWS: Remove parallel installation item.
+
 2005-04-29  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* m4/ltdl.m4 (all over): Quote all arguments to AC_DEFINE and
