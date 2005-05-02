@@ -1,3 +1,11 @@
+2005-05-02  Andreas Schwab  <schwab@suse.de>
+
+	* libltdl/Makefile.am (local-install-files): Rename back from
+	install-data-local.
+	* Makefile.am (install-data-hook):  Readd call to local-install-files.
+	* NEWS: Updated.
+	Fixes libltdl install regression introduced in 1.5.16.
+
 2005-04-29  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* ltdl.m4 (all over): Quote all arguments to AC_DEFINE and
