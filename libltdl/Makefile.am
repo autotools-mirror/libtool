@@ -42,7 +42,7 @@ ltdldatafiles = COPYING.LIB README acinclude.m4 aclocal.m4 \
 
 ## To avoid spurious reconfiguration when the user installs these files
 ## with libtoolize, we have to preserve their timestamps carefully:
-install-data-local:
+local-install-files: $(ltdldatafiles)
 	-rm -rf $(DESTDIR)$(ltdldatadir)
 	$(mkinstalldirs) $(DESTDIR)$(ltdldatadir)
 	( cd $(srcdir) && $(AMTAR) chf - $(ltdldatafiles); ) \
