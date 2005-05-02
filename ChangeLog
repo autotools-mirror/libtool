@@ -1,3 +1,7 @@
+2005-05-02  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* Makefile.am (stamp-vcl): Use `diff' instead of `cmp'.
+
 2005-04-30  Gary V. Vaughan  <gary@gnu.org>
 
 	Revert the parallel installation changes from November last year:
