@@ -129,7 +129,7 @@ $(srcdir)/stamp-vcl: vcl-tmp clean-ltmain-sh ChangeLog
 vcl-tmp:
 	@set dummy `$(MKSTAMP) < $(srcdir)/ChangeLog`; shift; \
 	echo "$$1" > vcl.tmp; \
-	cmp -s vcl.tmp $(srcdir)/stamp-vcl \
+	diff vcl.tmp $(srcdir)/stamp-vcl >/dev/null \
 	  || (echo "Updating stamp-vcl"; cp vcl.tmp $(srcdir)/stamp-vcl)
 	-@rm -f vcl.tmp
 
