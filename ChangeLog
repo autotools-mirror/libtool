@@ -1,3 +1,7 @@
+2005-05-06  Gary V. Vaughan  <gary@gnu.org>
+
+	* libltdl/m4/ltdl.m4 (LT_WITH_LTDL): Propogate ltdl directory.
+
 2005-05-02  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* Makefile.am (stamp-vcl): Use `diff' instead of `cmp'.

@@ -33,7 +33,7 @@ fi
 if test "x$enable_ltdl_install" != xyes; then
   # If the user did not specify an installable libltdl, then default
   # to a convenience lib.
-  LTDL_CONVENIENCE
+  LTDL_CONVENIENCE([$1])
 fi
 
 if test "x$with_included_ltdl" = xno; then
