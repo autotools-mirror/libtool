@@ -1,3 +1,7 @@
+2005-05-13  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* THANKS: Updated.
+
 2005-05-06  Gary V. Vaughan  <gary@gnu.org>
 
 	* libltdl/m4/ltdl.m4 (LT_WITH_LTDL): Propogate ltdl directory.
