@@ -1,3 +1,7 @@
+2005-05-13  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* THANKS: Updated.
+
 2005-05-04  Peter O'Gorman  <peter@pogma.com>
 
 	* ltmain.in [darwin]: Pass -framework for executables too.
