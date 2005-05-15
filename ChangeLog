@@ -1,3 +1,10 @@
+2005-05-15  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* m4/libtool.m4 (_LT_COMPILER_PIC, _LT_LINKER_SHLIBS,
+	_LT_LANG_CXX_CONFIG) [ linux ]: PGI: Backport whole_archive changes
+	from HEAD.  Add $pic_flag to archive_cmds and archive_expsyms_cmds.
+	Bug reported against LAM by Troy Telford <ttelford@lnxi.com>.
+
 2005-05-13  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* THANKS: Updated.
