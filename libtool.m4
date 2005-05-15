@@ -3237,12 +3237,12 @@ case $host_os in
 	;;
       pgCC*)
         # Portland Group C++ compiler
-	_LT_AC_TAGVAR(archive_cmds, $1)='$CC -shared $predep_objects $libobjs $deplibs $postdep_objects $compiler_flags ${wl}-soname ${wl}$soname -o $lib'
-  	_LT_AC_TAGVAR(archive_expsym_cmds, $1)='$CC -shared $predep_objects $libobjs $deplibs $postdep_objects $compiler_flags ${wl}-soname ${wl}$soname ${wl}-retain-symbols-file ${wl}$export_symbols -o $lib'
+	_LT_AC_TAGVAR(archive_cmds, $1)='$CC -shared $pic_flag $predep_objects $libobjs $deplibs $postdep_objects $compiler_flags ${wl}-soname ${wl}$soname -o $lib'
+  	_LT_AC_TAGVAR(archive_expsym_cmds, $1)='$CC -shared $pic_flag $predep_objects $libobjs $deplibs $postdep_objects $compiler_flags ${wl}-soname ${wl}$soname ${wl}-retain-symbols-file ${wl}$export_symbols -o $lib'
 
 	_LT_AC_TAGVAR(hardcode_libdir_flag_spec, $1)='${wl}--rpath ${wl}$libdir'
 	_LT_AC_TAGVAR(export_dynamic_flag_spec, $1)='${wl}--export-dynamic'
-	_LT_AC_TAGVAR(whole_archive_flag_spec, $1)=''
+	_LT_AC_TAGVAR(whole_archive_flag_spec, $1)='${wl}--whole-archive,`for conv in $convenience\"\"; do test  -n \"$conv\" && new_convenience=\"$new_convenience,$conv\"; done; $echo \"$new_convenience\"` ${wl}--no-whole-archive'
         ;;
       cxx*)
 	# Compaq C++
@@ -5344,11 +5344,12 @@ EOF
 	tmp_addflag=
 	case $cc_basename,$host_cpu in
 	pgcc*)				# Portland Group C compiler
-	  _LT_AC_TAGVAR(whole_archive_flag_spec, $1)=
+	  _LT_AC_TAGVAR(whole_archive_flag_spec, $1)='${wl}--whole-archive,`for conv in $convenience\"\"; do test  -n \"$conv\" && new_convenience=\"$new_convenience,$conv\"; done; $echo \"$new_convenience\"` ${wl}--no-whole-archive'
+	  tmp_addflag=' $pic_flag'
 	  ;;
 	pgf77* | pgf90* )			# Portland Group f77 and f90 compilers
-	  _LT_AC_TAGVAR(whole_archive_flag_spec, $1)=
-	  tmp_addflag=' -fpic -Mnomain' ;;
+	  _LT_AC_TAGVAR(whole_archive_flag_spec, $1)='${wl}--whole-archive,`for conv in $convenience\"\"; do test  -n \"$conv\" && new_convenience=\"$new_convenience,$conv\"; done; $echo \"$new_convenience\"` ${wl}--no-whole-archive'
+	  tmp_addflag=' $pic_flag -Mnomain' ;;
 	ecc*,ia64* | icc*,ia64*)		# Intel C compiler on ia64
 	  tmp_addflag=' -i_dynamic' ;;
 	efc*,ia64* | ifort*,ia64*)	# Intel Fortran compiler on ia64
