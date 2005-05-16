@@ -3558,7 +3558,10 @@ the link flag that you should use to link with libltdl, and
 with programs that include @file{ltdl.h}.  It is up to you to use
 @samp{AC_SUBST} to ensure that this variable will be available in
 @file{Makefile}s, or add them to variables that are @samp{AC_SUBST}ed by
-default, such as @var{LIBS} and @var{CPPFLAGS}.
+default, such as @var{LIBS} and @var{CPPFLAGS}.  Also note that you should
+not include @file{libltdl/Makefile} in the list of files to be configured
+from your toplevel @file{configure.in}; this is done by
+@file{libltdl/configure.ac}.
 
 If you're using the convenience libltdl, @var{LIBLTDL} will be the
 pathname for the convenience version of libltdl and @var{LTDLINCL} will be

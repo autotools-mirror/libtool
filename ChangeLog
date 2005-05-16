@@ -1,3 +1,9 @@
+2005-05-16  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* doc/libtool.texi (Distributing libltdl): Add note that
+	`libltdl/Makefile' should not be configured by toplevel `configure.ac'.
+	Reported by Gideon Go <gideon.go@gmail.com>.
+
 2005-05-15  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* libtool.m4 (AC_LIBTOOL_LANG_CXX_CONFIG, AC_LIBTOOL_PROG_LD_SHLIBS)
