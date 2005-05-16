@@ -1,3 +1,7 @@
+2005-05-16  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* THANKS: Updated.
+
 2005-05-15  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* m4/libtool.m4 (_LT_LINKER_SHLIBS, _LT_LANG_CXX_CONFIG) [ aix ]: 
