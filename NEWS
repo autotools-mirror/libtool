@@ -1,7 +1,7 @@
 NEWS - list of user-visible changes between releases of GNU Libtool
 
-New in 1.5.17a: 2005-??-??; CVS version 1.5.17a, Libtool team:
-* Fix 1.5.16 regression not to install libtldl files from
+New in 1.5.18: 2005-05-16; CVS version 1.5.17a, Libtool team:
+* Fix regression in 1.5.16 to not install libtldl data files from
   `libtoolize --ltdl'ed software packages.
 * Bug Fixes.
 

@@ -55,6 +55,7 @@
   Nick Hudson			skrll@netbsd.org		  2004-03-29
   Paolo Bonzini			bonzini@gnu.org			  2003-03-01
   Noah Jeffrey Misch		noah@cs.caltech.edu		  2004-07-05
+  Peter Ekberg			peda@lysator.liu.se		  2005-04-12
 
 
 * The following additional people made especially gracious contributions of
@@ -90,7 +91,6 @@
   Patrick Welche		prlw1@newn.cam.ac.uk
   Paul Eggert			eggert@twinsun.com
   Peter Eisentraut		peter_e@gmx.net
-  Peter Ekberg			peda@lysator.liu.se
   Rainer Orth			ro@TechFak.Uni-Bielefeld.DE
   Ralf Menzel			menzel@ls6.cs.uni-dortmund.de
   Robert Ögren			lists@roboros.com

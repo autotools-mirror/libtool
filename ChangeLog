@@ -1,5 +1,12 @@
 2005-05-16  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	GNU libtool 1.5.18 is released.
+
+	* configure.ac: Bump version.
+	* NEWS: Updated.
+	* config.guess, config.sub, install-sh, doc/texinfo.tex: Updated.
+	* THANKS: Updated.
+
 	* doc/libtool.texi (Distributing libltdl): Add note that
 	`libltdl/Makefile' should not be configured by toplevel `configure.ac'.
 	Reported by Gideon Go <gideon.go@gmail.com>.
