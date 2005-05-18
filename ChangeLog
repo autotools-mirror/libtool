@@ -1,3 +1,8 @@
+2005-05-18  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* doc/libtool.texi (Link mode): Document -objectlist.
+	Noted by Richard Kreckel <Richard.Kreckel@ginac.de>.
+
 2005-05-16  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* configure.ac: Bump version.

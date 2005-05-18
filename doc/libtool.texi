@@ -1279,6 +1279,9 @@ libraries (@pxref{Inter-library dependencies}).
 @item -o @var{output-file}
 Create @var{output-file} from the specified objects and libraries.
 
+@item -objectlist @var{file}
+Use a list of object files found in @var{file} to specify objects.
+
 @item -precious-files-regex @var{regex}
 Prevents removal of files from the temporary output directory whose
 names match this regular expression.  You might specify @samp{\.bbg?$}
