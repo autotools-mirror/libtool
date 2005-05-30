@@ -1,3 +1,13 @@
+2005-05-30  Alexandre Oliva  <aoliva@redhat.com>,
+	Peter O'Gorman  <peter@pogma.com>
+
+	* config/ltmain.m4sh: Don't add files with the same base name to an
+	archive; rename duplicates instead.
+	(func_extract_an_archive): Remove section to deal with duplicate
+	base names in an archive.
+	* tests/duplicate_members.test: new test.
+	* Makefile.am: Add new test.
+
 2005-05-16  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* THANKS: Updated.

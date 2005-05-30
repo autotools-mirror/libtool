@@ -322,7 +322,8 @@ COMMON_TESTS = \
 	tests/depdemo-relink.test tests/depdemo-unst.test \
 	tests/mdemo-shared.test tests/mdemo-make.test tests/mdemo-exec.test \
 	tests/mdemo-inst.test tests/mdemo-unst.test \
-	tests/cdemo-undef.test tests/cdemo-make.test tests/cdemo-exec.test
+	tests/cdemo-undef.test tests/cdemo-make.test tests/cdemo-exec.test \
+	tests/duplicate_members.test
 
 if HAVE_CXX
 if HAVE_F77
