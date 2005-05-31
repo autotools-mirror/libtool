@@ -3933,8 +3933,6 @@ func_mode_link ()
 	      fi
 	    fi
 	  else
-	    convenience="$convenience $dir/$old_library"
-	    old_convenience="$old_convenience $dir/$old_library"
 	    deplibs="$dir/$old_library $deplibs"
 	    link_static=yes
 	  fi
