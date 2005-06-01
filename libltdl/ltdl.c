@@ -625,7 +625,7 @@ argz_create_sep (str, delim, pargz, pargz_len)
   assert (pargz);
   assert (pargz_len);
 
-  /* Make a copy of STR, but replacing each occurence of
+  /* Make a copy of STR, but replacing each occurrence of
      DELIM with '\0'.  */
   argz_len = 1+ LT_STRLEN (str);
   if (argz_len)

@@ -1,4 +1,10 @@
-2004-05-31  Peter O'Gorman  <peter@pogma.com>
+2005-06-01  Olly Betts <olly@survex.com>  (tiny change),
+	    Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
+	* doc/libtool.texi (Thread Safety in libltdl),
+	libltdl/ltdl.c (argz_create_sep): Fix some typos.
+
+2005-05-31  Peter O'Gorman  <peter@pogma.com>
 
 	* ltmain.in: Do not add installed static litool libraries to
 	convenience, they are not convenience libraries.

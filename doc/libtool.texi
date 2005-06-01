@@ -165,7 +165,7 @@ Using libltdl
 
 * Libltdl interface::           How to use libltdl in your programs.
 * Modules for libltdl::         Creating modules that can be @code{dlopen}ed.
-* Thread Saftey in libltdl::	Registering callbacks for multi-thread safety.
+* Thread Safety in libltdl::	Registering callbacks for multi-thread safety.
 * User defined module data::    Associating data with loaded modules.
 * Module loaders for libltdl::  Creating user defined module loaders.
 * Distributing libltdl::        How to distribute libltdl with your package.
@@ -2743,7 +2743,7 @@ distribution terms that you use for the rest of that program.
 @menu
 * Libltdl interface::           How to use libltdl in your programs.
 * Modules for libltdl::         Creating modules that can be @code{dlopen}ed.
-* Thread Saftey in libltdl::	Registering callbacks for multi-thread safety.
+* Thread Safety in libltdl::	Registering callbacks for multi-thread safety.
 * User defined module data::    Associating data with loaded modules.
 * Module loaders for libltdl::  Creating user defined module loaders.
 * Distributing libltdl::        How to distribute libltdl with your package.
@@ -3074,7 +3074,7 @@ foo1_la_LDFLAGS = -module
 @end example
 
 
-@node Thread Saftey in libltdl
+@node Thread Safety in libltdl
 @section Using libtldl in a multi threaded environment
 
 Using the @code{lt_dlmutex_register()} function, and by providing some
@@ -3097,7 +3097,7 @@ The type of a matching unlock function.
 
 @deftypefn {Type} void lt_dlmutex_seterror @w{(const char *@var{error});}
 Many of the functions in the libltdl @sc{api} have a special return
-value to indicate to the client that an error has occured.  Normally (in
+value to indicate to the client that an error has occurred.  Normally (in
 single threaded applications) a string describing that error can be
 retrieved from internal storage with @code{lt_dlerror()}.
 
