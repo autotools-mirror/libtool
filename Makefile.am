@@ -267,6 +267,15 @@ dist-hook:
 ## Test suite. ##
 ## ----------- ##
 
+# Be sure to reexport important environment variables:
+TESTS_ENVIRONMENT = MAKE="$(MAKE)" CC="$(CC)" CFLAGS="$(CFLAGS)" \
+	CPP="$(CPP)" CPPFLAGS="$(CPPFLAGS)" LD="$(LD)" LDFLAGS="$(LDFLAGS)" \
+	LIBS="$(LIBS)" LN_S="$(LN_S)" NM="$(NM)" RANLIB="$(RANLIB)" \
+	OBJEXT="$(OBJEXT)" EXEEXT="$(EXEEXT)" CONFIG_SHELL="$(SHELL)" \
+	CXX="$(CXX)" CXXFLAGS="$(CXXFLAGS)" CXXCPP="$(CXXCPP)" \
+	F77="$(F77)" FFLAGS="$(FFLAGS)" \
+	GCJ="$(GCJ)" GCJFLAGS="$(GCJFLAGS)"
+
 
 CXX_TESTS = \
 	tests/tagdemo-static.test tests/tagdemo-make.test \

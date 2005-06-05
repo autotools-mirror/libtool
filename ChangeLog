@@ -1,5 +1,7 @@
 2005-06-05  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* Makefile.am: Restore TESTS_ENVIRONMENT.
+
 	* config/ltmain.m4sh (func_mode_compile): In order to find out
 	about forbidden characters in output, check with grep after checking
 	func_quote_for_eval result.  Also, warn instead of fail.
