@@ -1,3 +1,14 @@
+2005-06-05  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* ltmain.in (compile mode): In order to find out
+	about forbidden characters in output, check with grep after checking
+	func_quote_for_eval result.  Also, warn instead of fail.
+	(func_infer_tag, compile mode, link mode, install mode):
+	Revert SunOS sh bug workaround patch from 2004-12-28 as it
+	triggers bugs in the Tru64 5.1B shell.
+	Reported by Albert Chin <libtool@mlists.thewrittenword.com> and
+	Nicolas Joly <njoly@pasteur.fr>.
+
 2005-06-01  Olly Betts <olly@survex.com>  (tiny change),
 	    Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
