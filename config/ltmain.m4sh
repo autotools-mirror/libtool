@@ -1228,7 +1228,8 @@ func_mode_compile ()
 
     func_quote_for_eval "$libobj"
     test "X$libobj" != "X$func_quote_for_eval_result" \
-      && func_fatal_error "libobj name \`$libobj' may not contain shell special characters."
+      && $ECHO "X$libobj" | $GREP ['[@:>@~#^*{};<>?"'"'"' 	&()|`$@<:@]'] \
+      && func_warning "libobj name \`$libobj' may not contain shell special characters."
     func_basename "$obj"
     objname="$func_basename_result"
     func_dirname "$obj" "/" ""
