@@ -1,3 +1,4 @@
 Makefile
 Makefile.in
 defs.in
+package.m4
