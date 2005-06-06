@@ -1,3 +1,9 @@
+2005-06-06  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* m4/libtool.m4 (_LT_COMPILER_PIC, _LT_LINKER_SHLIBS,
+	_LT_LANG_CXX_CONFIG): PGI also has pgf95.  PGI static flag is
+	`-Bstatic'.  Remove harmless extra comma from whole_archive output.
+
 2005-06-05  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* config/ltmain.m4sh (func_mode_compile): In order to find out
