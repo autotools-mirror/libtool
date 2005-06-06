@@ -1,3 +1,9 @@
+2005-06-06  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* libtool.m4 (AC_LIBTOOL_PROG_COMPILER_PIC, AC_LIBTOOL_PROG_LD_SHLIBS,
+	AC_LIBTOOL_LANG_CXX_CONFIG): PGI also has pgf95.  PGI static flag is
+	`-Bstatic'.  Remove harmless extra comma from whole_archive output.
+
 2005-06-05  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* ltmain.in (compile mode): In order to find out
