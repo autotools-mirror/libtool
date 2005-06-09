@@ -475,12 +475,14 @@ LTCFLAGS='$LTCFLAGS'
 compiler='$compiler_DEFAULT'
 
 # Quote evaled strings.
-for var in lt_decl_all_varnames([[ ]], lt_decl_quote_varnames); do
+for var in lt_decl_all_varnames([[ \
+]], lt_decl_quote_varnames); do
     eval "lt_\$var=\\\\\\"\\\`\\\$ECHO \\"X\\\$\$var\\" | \\\$Xsed -e \\"\\\$sed_quote_subst\\"\\\`\\\\\\""
 done
 
 # Double-quote double-evaled strings.
-for var in lt_decl_all_varnames([[ ]], lt_decl_dquote_varnames); do
+for var in lt_decl_all_varnames([[ \
+]], lt_decl_dquote_varnames); do
     eval "lt_\$var=\\\\\\"\\\`\\\$ECHO \\"X\\\$\$var\\" | \\\$Xsed -e \\"\\\$double_quote_subst\\" -e \\"\\\$sed_quote_subst\\" -e \\"\\\$delay_variable_subst\\"\\\`\\\\\\""
 done
 
