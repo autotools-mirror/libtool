@@ -1,3 +1,8 @@
+2005-06-11  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* libtool.m4 (AC_LIBTOOL_COMPILER_OPTION, AC_LIBTOOL_PROG_CC_C_O):
+	Fix sed script syntax to be portable.
+
 2005-06-06  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* libtool.m4 (AC_LIBTOOL_PROG_COMPILER_PIC, AC_LIBTOOL_PROG_LD_SHLIBS,
