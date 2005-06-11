@@ -1,3 +1,11 @@
+2005-06-11  Ralf Menzel  <menzel@ls6.cs.uni-dortmund.de>,
+	    Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* m4/ltoptions.m4 (_LT_SET_OPTIONS): Loop options only if
+	nonempty.
+	* m4/ltsugar.m4 (lt_combine): Don't test against empty quotes,
+	test against empty arg.  Fixes infinite m4 loop with CVS Autoconf.
+
 2005-06-11  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* m4/libtool.m4 (_LT_COMPILER_OPTION, _LT_LINKER_OPTION): No

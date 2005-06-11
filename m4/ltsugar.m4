@@ -38,7 +38,7 @@ m4_define([lt_join],
 # PREFIX-LIST with SUFFIX1 through SUFFIXn.  Each element of the list
 # has the form PREFIXmINFIXSUFFIXn.
 m4_define([lt_combine],
-[m4_if([$2], [[]], [],
+[m4_if([$2], [], [],
        [lt_join(m4_quote(m4_default([$1], [, ])),
 		_$0([$1], m4_car($2)[$3], m4_shiftn(3, $@)),
 		$0([$1], m4_cdr($2), m4_shiftn(2, $@)))])])
