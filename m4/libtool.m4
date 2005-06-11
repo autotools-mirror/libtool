@@ -1055,8 +1055,8 @@ AC_CACHE_CHECK([$1], [$2],
    # Note that $ac_compile itself does not contain backslashes and begins
    # with a dollar sign (not a hyphen), so the echo should work correctly.
    # The option is referenced via a variable to avoid confusing sed.
-   lt_compile=`$ECHO "$ac_compile" | $SED \
-   -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
+   lt_compile=`echo "$ac_compile" | $SED \
+   -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [[^ ]]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
    (eval echo "\"\$as_me:__oline__: $lt_compile\"" >&AS_MESSAGE_LOG_FD)
@@ -1477,8 +1477,8 @@ AC_CACHE_CHECK([if $compiler supports -c -o file.$ac_objext],
    # (2) before a word containing "conftest.", or (3) at the end.
    # Note that $ac_compile itself does not contain backslashes and begins
    # with a dollar sign (not a hyphen), so the echo should work correctly.
-   lt_compile=`$ECHO "$ac_compile" | $SED \
-   -e 's:.*FLAGS}? :&$lt_compiler_flag :; t' \
+   lt_compile=`echo "$ac_compile" | $SED \
+   -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [[^ ]]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
    (eval echo "\"\$as_me:__oline__: $lt_compile\"" >&AS_MESSAGE_LOG_FD)
