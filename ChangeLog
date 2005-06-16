@@ -1,3 +1,9 @@
+2005-06-16  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* ltmain.in: Add fully-qualified paths to temp_rpath
+	rather than unqualified paths in order to avoid possible errors
+	when computing the fully-qualified path later.
+
 2005-06-11  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* libtool.m4 (AC_LIBTOOL_COMPILER_OPTION, AC_LIBTOOL_PROG_CC_C_O):
