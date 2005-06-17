@@ -1,3 +1,9 @@
+2005-06-17  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* m4/ltsugar.m4 (lt_car, lt_cdr): New macros, clones of m4_car/m4_cdr
+	with the fixed semantics of Autoconf-59c CVS, in order to work with
+	2.59.  (lt_combine): Use it.
+
 2005-06-11  Ralf Menzel  <menzel@ls6.cs.uni-dortmund.de>,
 	    Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
