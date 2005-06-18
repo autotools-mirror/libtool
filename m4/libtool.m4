@@ -707,6 +707,32 @@ compiler=$CC
 ])# _LT_TAG_COMPILER
 
 
+# _LT_COMPILER_BOILERPLATE
+# ------------------------
+# Check for compiler boilerplate output or warnings with
+# the simple compiler test code.
+m4_defun([_LT_COMPILER_BOILERPLATE],
+[ac_outfile=conftest.$ac_objext
+printf "$lt_simple_compile_test_code" >conftest.$ac_ext
+eval "$ac_compile" 2>&1 >/dev/null | $SED '/^$/d' >conftest.err
+_lt_compiler_boilerplate=`cat conftest.err`
+$RM conftest*
+])# _LT_COMPILER_BOILERPLATE
+
+
+# _LT_LINKER_BOILERPLATE
+# ----------------------
+# Check for linker boilerplate output or warnings with
+# the simple link test code.
+m4_defun([_LT_LINKER_BOILERPLATE],
+[ac_outfile=conftest.$ac_objext
+printf "$lt_simple_link_test_code" >conftest.$ac_ext
+eval "$ac_link" 2>&1 >/dev/null | $SED '/^$/d' >conftest.err
+_lt_linker_boilerplate=`cat conftest.err`
+$RM conftest*
+])# _LT_LINKER_BOILERPLATE
+
+
 # _LT_SYS_MODULE_PATH_AIX
 # -----------------------
 # Links a minimal program and checks the executable
@@ -1086,8 +1112,10 @@ AC_CACHE_CHECK([$1], [$2],
    echo "$as_me:__oline__: \$? = $ac_status" >&AS_MESSAGE_LOG_FD
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
-     # So say no if there are warnings
-     if test ! -s conftest.err; then
+     # So say no if there are warnings other than the usual output.
+     $ECHO "X$_lt_compiler_boilerplate" | $Xsed >conftest.exp
+     $SED '/^$/d' conftest.err >conftest.er2
+     if test ! -s conftest.err || diff conftest.exp conftest.er2 >/dev/null; then
        $2=yes
      fi
    fi
@@ -1123,6 +1151,11 @@ AC_DEFUN([_LT_LINKER_OPTION],
      if test -s conftest.err; then
        # Append any errors to the config.log.
        cat conftest.err 1>&AS_MESSAGE_LOG_FD
+       $ECHO "X$_lt_linker_boilerplate" | $Xsed > conftest.exp
+       $SED '/^$/d' conftest.err >conftest.er2
+       if diff conftest.exp conftest.er2 >/dev/null; then
+         $2=yes
+       fi
      else
        $2=yes
      fi
@@ -1510,7 +1543,9 @@ AC_CACHE_CHECK([if $compiler supports -c -o file.$ac_objext],
    then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings
-     if test ! -s out/conftest.err; then
+     $ECHO "X$_lt_compiler_boilerplate" | $Xsed > out/conftest.exp
+     $SED '/^$/d' out/conftest.err >out/conftest.er2
+     if test ! -s out/conftest.err || diff out/conftest.exp out/conftest.er2 >/dev/null; then
        _LT_TAGVAR(lt_cv_prog_compiler_c_o, $1)=yes
      fi
    fi
@@ -4573,6 +4608,10 @@ _LT_TAG_COMPILER
 # tags are being tested, and _LT_TAGVAR(compiler, []) is a NOP.
 compiler_DEFAULT=$CC
 
+# save warnings/boilerplate of simple test code
+_LT_COMPILER_BOILERPLATE
+_LT_LINKER_BOILERPLATE
+
 #
 # Check for any special shared library compilation flags.
 #
@@ -4715,6 +4754,10 @@ if test "$_lt_caught_CXX_error" != yes; then
 
   # ltmain only uses $CC for tagged configurations so make sure $CC is set.
   _LT_TAG_COMPILER
+
+  # save warnings/boilerplate of simple test code
+  _LT_COMPILER_BOILERPLATE
+  _LT_LINKER_BOILERPLATE
 
   # Allow CC to be a program name with arguments.
   lt_save_CC=$CC
@@ -5859,6 +5902,10 @@ if test "$_lt_caught_F77_error" != yes; then
   # ltmain only uses $CC for tagged configurations so make sure $CC is set.
   _LT_TAG_COMPILER
 
+  # save warnings/boilerplate of simple test code
+  _LT_COMPILER_BOILERPLATE
+  _LT_LINKER_BOILERPLATE
+
   # Allow CC to be a program name with arguments.
   lt_save_CC="$CC"
   CC=${F77-"f77"}
@@ -5949,6 +5996,10 @@ lt_simple_link_test_code='public class conftest { public static void main(String
 # ltmain only uses $CC for tagged configurations so make sure $CC is set.
 _LT_TAG_COMPILER
 
+# save warnings/boilerplate of simple test code
+_LT_COMPILER_BOILERPLATE
+_LT_LINKER_BOILERPLATE
+
 # Allow CC to be a program name with arguments.
 lt_save_CC="$CC"
 CC=${GCJ-"gcj"}
@@ -6007,6 +6058,10 @@ lt_simple_link_test_code="$lt_simple_compile_test_code"
 
 # ltmain only uses $CC for tagged configurations so make sure $CC is set.
 _LT_TAG_COMPILER
+
+# save warnings/boilerplate of simple test code
+_LT_COMPILER_BOILERPLATE
+_LT_LINKER_BOILERPLATE
 
 # Allow CC to be a program name with arguments.
 lt_save_CC="$CC"

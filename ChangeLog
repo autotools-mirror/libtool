@@ -1,3 +1,12 @@
+2005-06-18  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* m4/libtool.m4 (_LT_COMPILER_BOILERPLATE, _LT_LINKER_BOILERPLATE):
+	New macros: save warnings and boilerplate of simple compile/link tests.
+	(_LT_LANG_C_CONFIG, _LT_LANG_CXX_CONFIG, _LT_LANG_F77_CONFIG,
+	_LT_LANG_GCJ_CONFIG, _LT_LANG_RC_CONFIG): Call.
+	(_LT_COMPILER_OPTION, _LT_LINKER_OPTION, _LT_COMPILER_C_O, ):
+	Fail only if nonempty warnings different from default compile/link.
+
 2005-06-17  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* m4/ltsugar.m4 (lt_car, lt_cdr): New macros, clones of m4_car/m4_cdr
