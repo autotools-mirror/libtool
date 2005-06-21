@@ -1418,7 +1418,7 @@ EOF
 	continue
 	;;
 
-      -framework)
+      -framework|-arch)
         prev=darwin_framework
         compiler_flags="$compiler_flags $arg"
 	compile_command="$compile_command $arg"
