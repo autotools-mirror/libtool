@@ -1,5 +1,7 @@
 2005-06-27  Stepan Kasal  <kasal@ucw.cz>
 
+	* m4/ltsugar.m4 (lt_combine, _lt_combine): Fix default separator.
+
 	* m4/ltoptions.m4 (_LT_UNLESS_OPTIONS, _LT_SET_OPTIONS): Replace
 	AC_FOREACH by a combination of m4_foreach/m4_split/m4_normalize.
 
