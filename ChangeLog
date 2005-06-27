@@ -1,7 +1,8 @@
 2005-06-27  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
-	* m4/ltoptions.m4 (_LT_SET_OPTIONS): Remove unnecessary workaround for
-	CVS Automake bug (fixed).  Reported by Stepan Kasal <kasal@ucw.cz>.
+	* m4/ltoptions.m4 (_LT_SET_OPTIONS): Remove unnecessary workaround
+	for CVS Automake bug (fixed).
+	Reported by Stepan Kasal <kasal@ucw.cz>.
 
 2005-06-21  Peter O'Gorman  <peter@pogma.com>
 
@@ -9,18 +10,21 @@
 
 2005-06-18  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
-	* m4/libtool.m4 (_LT_COMPILER_BOILERPLATE, _LT_LINKER_BOILERPLATE):
-	New macros: save warnings and boilerplate of simple compile/link tests.
-	(_LT_LANG_C_CONFIG, _LT_LANG_CXX_CONFIG, _LT_LANG_F77_CONFIG,
-	_LT_LANG_GCJ_CONFIG, _LT_LANG_RC_CONFIG): Call.
-	(_LT_COMPILER_OPTION, _LT_LINKER_OPTION, _LT_COMPILER_C_O, ):
-	Fail only if nonempty warnings different from default compile/link.
+	* m4/libtool.m4 (_LT_COMPILER_BOILERPLATE)
+	(_LT_LINKER_BOILERPLATE): New macros -- save warnings and
+	boilerplate of simple compile/link tests.
+	(_LT_LANG_C_CONFIG, _LT_LANG_CXX_CONFIG, _LT_LANG_F77_CONFIG)
+	(_LT_LANG_GCJ_CONFIG, _LT_LANG_RC_CONFIG): Call.
+	(_LT_COMPILER_OPTION, _LT_LINKER_OPTION, _LT_COMPILER_C_O):
+	Fail only if nonempty warnings different from default
+	compile/link.
 
 2005-06-17  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
-	* m4/ltsugar.m4 (lt_car, lt_cdr): New macros, clones of m4_car/m4_cdr
-	with the fixed semantics of Autoconf-59c CVS, in order to work with
-	2.59.  (lt_combine): Use it.
+	* m4/ltsugar.m4 (lt_car, lt_cdr): New macros, clones of
+	m4_car/m4_cdr with the fixed semantics of Autoconf-2.59c CVS, in
+	order to work with 2.59.
+	(lt_combine): Use it.
 	Reported by Christoph Egger <Christoph_Egger@gmx.de>.
 
 2005-06-11  Ralf Menzel  <menzel@ls6.cs.uni-dortmund.de>,
@@ -29,7 +33,8 @@
 	* m4/ltoptions.m4 (_LT_SET_OPTIONS): Loop options only if
 	nonempty.
 	* m4/ltsugar.m4 (lt_combine): Don't test against empty quotes,
-	test against empty arg.  Fixes infinite m4 loop with CVS Autoconf.
+	test against empty arg.  Fixes infinite m4 loop with CVS
+	Autoconf.
 
 2005-06-11  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
@@ -44,22 +49,23 @@
 
 2005-06-06  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
-	* m4/libtool.m4 (_LT_COMPILER_PIC, _LT_LINKER_SHLIBS,
-	_LT_LANG_CXX_CONFIG): PGI also has pgf95.  PGI static flag is
-	`-Bstatic'.  Remove harmless extra comma from whole_archive output.
+	* m4/libtool.m4 (_LT_COMPILER_PIC, _LT_LINKER_SHLIBS)
+	(_LT_LANG_CXX_CONFIG): PGI also has pgf95.  PGI static flag is
+	`-Bstatic'.  Remove harmless extra comma from whole_archive
+	output.
 
 2005-06-05  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* Makefile.am: Restore TESTS_ENVIRONMENT.
 
 	* config/ltmain.m4sh (func_mode_compile): In order to find out
-	about forbidden characters in output, check with grep after checking
-	func_quote_for_eval result.  Also, warn instead of fail.
-	* config/general.m4sh (func_quote_for_eval, func_quote_for_expand):
-	Revert SunOS sh bug workaround patch from 2004-12-28 as it
-	triggers bugs in the Tru64 5.1B shell.
-	Reported by Albert Chin <libtool@mlists.thewrittenword.com> and
-	Nicolas Joly <njoly@pasteur.fr>.
+	about forbidden characters in output, check with grep after
+	checking func_quote_for_eval result.  Also, warn instead of fail.
+	* config/general.m4sh (func_quote_for_eval)
+	(func_quote_for_expand): Revert SunOS sh bug workaround patch from
+	2004-12-28 as it triggers bugs in the Tru64 5.1B shell.
+	Reported by Albert Chin <libtool@mlists.thewrittenword.com>,
+		    Nicolas Joly <njoly@pasteur.fr>.
 
 2005-06-01  Olly Betts <olly@survex.com>  (tiny change)
 
@@ -74,8 +80,8 @@
 2005-05-30  Alexandre Oliva  <aoliva@redhat.com>,
 	Peter O'Gorman  <peter@pogma.com>
 
-	* config/ltmain.m4sh: Don't add files with the same base name to an
-	archive; rename duplicates instead.
+	* config/ltmain.m4sh: Don't add files with the same base name to
+	an archive; rename duplicates instead.
 	(func_extract_an_archive): Remove section to deal with duplicate
 	base names in an archive.
 	* tests/duplicate_members.test: new test.
@@ -87,11 +93,11 @@
 
 2005-05-15  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
-	* m4/libtool.m4 (_LT_LINKER_SHLIBS, _LT_LANG_CXX_CONFIG) [ aix ]: 
+	* m4/libtool.m4 (_LT_LINKER_SHLIBS, _LT_LANG_CXX_CONFIG) [aix]: 
 	Fix wrong $ECHO use overlooked in 2005-04-27.  Simplify slightly.
 
-	* m4/libtool.m4 (_LT_COMPILER_PIC, _LT_LINKER_SHLIBS,
-	_LT_LANG_CXX_CONFIG) [ linux ]: PGI: Backport whole_archive changes
+	* m4/libtool.m4 (_LT_COMPILER_PIC, _LT_LINKER_SHLIBS)
+	(_LT_LANG_CXX_CONFIG) [linux]: PGI: Backport whole_archive changes
 	from HEAD.  Add $pic_flag to archive_cmds and archive_expsyms_cmds.
 	Bug reported against LAM by Troy Telford <ttelford@lnxi.com>.
 
@@ -110,18 +116,20 @@
 2005-04-29  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* m4/ltdl.m4 (all over): Quote all arguments to AC_DEFINE and
-	AC_DEFINE_UNQUOTED consistently.  Reported by
-	Michael Koch  <konqueror@gmx.de>, Riccardo Mottola <zuse@libero.it>,
-	and Dalibor Topic <robilad@kaffe.org>.
+	AC_DEFINE_UNQUOTED consistently.
+	Reported by Michael Koch  <konqueror@gmx.de>,
+		    Riccardo Mottola <zuse@libero.it>,
+		    Dalibor Topic <robilad@kaffe.org>.
 
 	* HACKING: Updated.
 
 2005-04-27  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
-	* tests/f77demo/foo.h, tests/f77demo/fooc.c, tests/f77demo/cprogram.c,
-	tests/mdemo2/main.c, tests/pdemo/foo.h: Make declarations available.
+	* tests/f77demo/foo.h, tests/f77demo/fooc.c,
+	tests/f77demo/cprogram.c, tests/mdemo2/main.c, tests/pdemo/foo.h:
+	Make declarations available.
 
-	* m4/libtool.m4 (_LT_SYS_DYNAMIC_LINKER) [ linux ]: sed 3.02 does
+	* m4/libtool.m4 (_LT_SYS_DYNAMIC_LINKER) [linux]: sed 3.02 does
 	not understand \t in regex.
 	Reported by Tim Van Holder <tim.vanholder@gmail.com>.
 
@@ -211,7 +219,8 @@
 
 	* m4/libtool.m4 (_LT_COMPILER_PIC, _LT_LINKER_SHLIBS) [solaris]:
 	Update wl for Sun Studio f77/f90/f95.  Fix whole_archive_flag_spec
-	for cc and f77/f90/f95 to prevent reordering in case we link with $CC.
+	for cc and f77/f90/f95 to prevent reordering in case we link with
+	$CC.
 
 	* m4/libtool.m4: Audit use of echo vs $ECHO.
 	Reported by Robert Ögren <lists@roboros.com> and others.
@@ -230,8 +239,9 @@
 
 2005-04-19  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
-	* libtoolize.m4sh (func_scan_files, func_serial, func_ltmain_update,
-	func_config_update, func_install_update): Placate AIX sed.
+	* libtoolize.m4sh (func_scan_files, func_serial)
+	(func_ltmain_update, func_config_update, func_install_update):
+	Placate AIX sed.
 
 2005-04-18  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
@@ -255,17 +265,18 @@
 
 2005-04-15  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
-	* m4/libtool.m4 (_LT_CC_BASENAME): New macro to figure out $cc_basename.
-	Skip ccache, distcc, purify, cmdline options, `$host_alias-' prefix.
-	(_LT_SETUP, _LT_LANG_CXX_CONFIG, _LT_LANG_F77_CONFIG,
-	_LT_LANG_GCJ_CONFIG, _LT_LANG_RC_CONFIG): Use.
+	* m4/libtool.m4 (_LT_CC_BASENAME): New macro to figure out
+	$cc_basename.  Skip ccache, distcc, purify, cmdline options,
+	`$host_alias-' prefix.
+	(_LT_SETUP, _LT_LANG_CXX_CONFIG, _LT_LANG_F77_CONFIG)
+	(_LT_LANG_GCJ_CONFIG, _LT_LANG_RC_CONFIG): Use.
 	* NEWS: Update.
 
 2005-04-14  Alexandre Oliva  <aoliva@redhat.com>,
 	    Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
-	* config/ltmain.m4sh (link mode): Add to tmp_libs paths for libtool dep
-	libs in reverse order as well.
+	* config/ltmain.m4sh (link mode): Add to tmp_libs paths for
+	libtool dep libs in reverse order as well.
 	* tests/Makefile.am, tests/link-order.test: New test.
 
 2005-04-12  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
@@ -325,8 +336,9 @@
 
 2005-04-01  Mike Stump  <mrs@apple.com>
 
-	* m4/libtool.m4 (LT_CMD_MAX_LEN) [ netbsd, freebsd, openbsd,
-	darwin, dragonfly]: Use 3/4 of argmax, instead of 1/4.
+	* m4/libtool.m4 (LT_CMD_MAX_LEN) 
+	[netbsd, freebsd, openbsd, darwin, dragonfly]: Use 3/4 of argmax,
+	instead of 1/4.
 
 2005-03-28  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
@@ -385,14 +397,14 @@
 2005-03-21  Gary V. Vaughan  <gary@gnu.org>,
 	    Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
-	* m4/libtool.m4 (_LT_SETUP, _LT_LANG_CXX_CONFIG, * _LT_LANG_F77_CONFIG):
-	For matching compiler names: Pick only first word, allow leading white
-	space..
-	* tests/sh.test: ..and test for missing `*' at end of patterns.
+	* m4/libtool.m4 (_LT_SETUP, _LT_LANG_CXX_CONFIG)
+	(_LT_LANG_F77_CONFIG): For matching compiler names: Pick only
+	first word, allow leading white space...
+	* tests/sh.test: ...and test for missing `*' at end of patterns.
 
 2005-03-20  Peter Ekberg  <peda@lysator.liu.se>
 
-	* m4/libtool.m4 (_LT_LINKER_SHLIBS) [ irix5, irix6, nonstopux ]:
+	* m4/libtool.m4 (_LT_LINKER_SHLIBS) [irix5, irix6, nonstopux]:
 	Test if it is possible to use the -exports_file linker option on
 	irix with gcc, as the gcc specs file may include a -hidden_symbol
 	option that is clashing with the -exports_file option.
@@ -422,7 +434,8 @@
 
 	* config/general.m4sh: unconditionally set IFS, and set it
 	to the one true right sequence: space, tab, newline.
-	* m4/libtool.m4: remove IFS setting and as_* namespace infringement.
+	* m4/libtool.m4: remove IFS setting and as_* namespace
+	infringement.
 
 	* m4/libtool.m4 (_LT_CONFIG): Reset IFS to fix failure with ash.
 
@@ -461,18 +474,20 @@
 	    Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	Allow special characters in source file names.  Will break unless
-	`-o target' is also given, which must not contain special characters.
-	En passant, fix source file quoting broken for cygwin/MSVC.
+	`-o target' is also given, which must not contain special
+	characters.  En passant, fix source file quoting broken for
+	cygwin/MSVC:
 
-	* config/ltmain.m4sh (func_mode_compile): Use new variable qsrcfile
-	for quoted source file name for compile $command.  Fix missing
-	quotes for _c_o lockfile.
+	* config/ltmain.m4sh (func_mode_compile): Use new variable
+	qsrcfile for quoted source file name for compile $command.  Fix
+	missing quotes for _c_o lockfile.
 	* NEWS: Update.
 
 2005-03-12  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* config/ltmain.m4sh (func_mode_link): Reword double negation in
-	error message.  Reported by Jesper Louis Andersen <jlouis@mongers.org>.
+	error message.
+	Reported by Jesper Louis Andersen <jlouis@mongers.org>.
 
 	* doc/libtool.texi: Replace wicked whiches by thats or other
 	better-sounding constructs.
@@ -493,7 +508,7 @@
 	Ignore errors from failed `cd' in the tar processes, since we
 	may be running in dryrun mode.
 	Reported by Noah Misch <noah@cs.caltech.edu>,
-		Bob Friesenhahn <bfriesen@simple.dallas.tx.us>
+		    Bob Friesenhahn <bfriesen@simple.dallas.tx.us>
 
 2005-03-10  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
@@ -674,20 +689,23 @@
 2005-02-01  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* m4/libtool.m4 (_LT_SYS_DYNAMIC_LINKER)
-	[ pw32, freebsd3.[01], freebsdelf3.[01] ]
-	(_LT_LINKER_SHLIBS) [ linux with GNU ld < 2.11, aix4.[012]* ]
-	(_LT_LANG_CXX_CONFIG) [ aix4.[012]*, freebsd[12], solaris2.[0-5] ]
-	(_LT_LANG_GCJ_CONFIG): Fix [] quoting.  Should fix various spurious
-	failures.
+	[pw32, freebsd3.[01], freebsdelf3.[01]]: Fix [] quoting.  Should
+	fix various spurious failures.
+	(_LT_LINKER_SHLIBS) [linux with GNU ld < 2.11, aix4.[012]*]:
+	Ditto.
+	(_LT_LANG_CXX_CONFIG) [aix4.[012]*, freebsd[12], solaris2.[0-5]]:
+	Ditto.
+	(_LT_LANG_GCJ_CONFIG): Ditto.
 
-	* clcommit.m4sh: Test whether the shell understands `read -r'.  Use as
-	`$read_r' if available, so `\' is preserved in commit notices.
+	* clcommit.m4sh: Test whether the shell understands `read -r'.
+	Use as `$read_r' if available, so `\' is preserved in commit
+	notices.
 
 	* HACKING (Editing `.m4sh' Files): Document preferred function
 	header layout.
 	* config/ltmain.m4sh (func_win32_libid, func_infer_tag)
-	(func_generate_dlsyms, func_extract_an_archive, func_extract_archives):
-	adjust to fit.
+	(func_generate_dlsyms, func_extract_an_archive)
+	(func_extract_archives): Adjust to fit.
 
 2005-01-31  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
@@ -697,9 +715,11 @@
 	* tests/sh.test: Not all sed's like '/.*\n.*/' (Unicos 9 sed
 	loops endlessly).
 
-	* tests/quote.test: Match link quoting against `"$wl"', not `-Wl,'.
+	* tests/quote.test: Match link quoting against `"$wl"', not
+	`-Wl,'.
 
-	* tests/quote.test: Check for `--no-reexec' in $1 to avoid one reexec.
+	* tests/quote.test: Check for `--no-reexec' in $1 to avoid one
+	reexec.
 
 	* m4/libtool.m4 (_LT_COMPILER_C_O): _LT_TAGDECL(lt_compiler_c_o),
 	not _LT_DECL, since this is tag-dependent.
@@ -735,8 +755,8 @@
 
 	* tests/defs.m4sh: Extract $build from $LIBTOOL.
 	(func_configure): Pass --host if $host != $build.
-	(func_exec): Try executing cross-compiled binaries (e.g. i686 -> i386),
-	but SKIP rather than FAIL.
+	(func_exec): Try executing cross-compiled binaries (e.g. i686 ->
+	i386), but SKIP rather than FAIL.
 	* tests/depdemo-relink.test: Do not try to access possibly non-
 	existent files.  SKIP rather than FAIL or PASS falsely when
 	cross-compiling.
@@ -792,7 +812,7 @@
 	* config/ltmain.m4sh (func_mode_link): Fix
 	inherited_linker_flags so it puts it on the link line when
 	linking shared libraries as well as when linking executables.
-	Reported by: Albert Chin-A-Young <china@thewrittenword.com>
+	Reported by Albert Chin-A-Young <china@thewrittenword.com>.
 
 2005-01-10  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
