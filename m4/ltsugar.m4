@@ -52,12 +52,12 @@ m4_define([lt_cdr],
 # has the form PREFIXmINFIXSUFFIXn.
 m4_define([lt_combine],
 [m4_if([$2], [], [],
-       [lt_join(m4_quote(m4_default([$1], [, ])),
+       [lt_join(m4_quote(m4_default([$1], [[, ]])),
 		_$0([$1], lt_car($2)[$3], m4_shiftn(3, $@)),
 		$0([$1], lt_cdr($2), m4_shiftn(2, $@)))])])
 m4_define([_lt_combine],
 [m4_if([$3], [], [],
-       [lt_join(m4_quote(m4_default([$1], [, ])),
+       [lt_join(m4_quote(m4_default([$1], [[, ]])),
 		[$2$3],
 		$0([$1], [$2], m4_shiftn(3, $@)))])[]dnl
 ])
