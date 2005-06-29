@@ -1,3 +1,9 @@
+2005-06-28  Stepan Kasal  <kasal@ucw.cz>
+
+	* clcommit.m4sh: "grep|sed" can be replaced by mere "sed".
+	* m4/libtool.m4 (_LT_LIBTOOL_TAGS): Remove unnnecessary "[]".
+	* m4/lt~obsolete.m4: Use m4_ifndef.
+
 2005-06-27  Stepan Kasal  <kasal@ucw.cz>
 
 	* m4/ltsugar.m4 (lt_combine, _lt_combine): Fix default separator.

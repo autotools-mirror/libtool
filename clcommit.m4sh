@@ -409,7 +409,7 @@ func_commit ()
 
       sleep 1 # give the user some time for a ^C
 
-      subject=`cvs -nq up 2>/dev/null | grep '^[[MAD]] ' | $SED 's/^. //'`
+      subject=`cvs -nq up 2>/dev/null | $SED -n 's/^[[MAD]] //p'`
       test $# -gt 0 && subject="$@"
     fi
 
