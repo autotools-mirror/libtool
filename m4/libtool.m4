@@ -406,7 +406,7 @@ m4_defun([_LT_CONFIG_STATUS_DECLARATIONS],
 # Output comment and list of tags supported by the script
 m4_defun([_LT_LIBTOOL_TAGS],
 [_LT_FORMAT_COMMENT([The names of the tagged configurations supported by this script])dnl
-available_tags="[]_LT_TAGS[]"dnl
+available_tags="_LT_TAGS"dnl
 ])
 
 # _LT_LIBTOOL_DECLARE(VARNAME, [TAG])
