@@ -6166,13 +6166,13 @@ else
 	# Backslashes separate directories on plain windows
 	*-*-mingw | *-*-os2*)
 	  $ECHO >> $output "\
-      exec \$progdir\\\\\$program \${1+\"\$@\"}
+      exec \"\$progdir\\\\\$program\" \${1+\"\$@\"}
 "
 	  ;;
 
 	*)
 	  $ECHO >> $output "\
-      exec \$progdir/\$program \${1+\"\$@\"}
+      exec \"\$progdir/\$program\" \${1+\"\$@\"}
 "
 	  ;;
 	esac
@@ -6182,7 +6182,7 @@ else
     fi
   else
     # The program doesn't exist.
-    \$ECHO \"\$0: error: \$progdir/\$program does not exist\" 1>&2
+    \$ECHO \"\$0: error: \\\`\$progdir/\$program' does not exist\" 1>&2
     \$ECHO \"This script is just a wrapper for \$program.\" 1>&2
     $ECHO \"See the $PACKAGE documentation for more information.\" 1>&2
     exit 1

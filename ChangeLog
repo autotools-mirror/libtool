@@ -1,3 +1,8 @@
+2005-07-01  Derek R. Price  <derek@ximbiot.com>
+
+	* config/ltmain.m4sh (func_mode_link) <shell wrapper>: Handle
+	spaces in paths to executed programs.  Quote path in error message.
+
 2005-06-29  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* THANKS: Updated.
