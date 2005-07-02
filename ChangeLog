@@ -1,3 +1,8 @@
+2005-07-02  Peter O'Gorman  <peter@pogma.com>
+
+	* tests/inherited_flags.at: Use -no-undefined.
+	Reported by Chris Oxenreider <oxenreid@state.net>
+
 2005-07-02  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* config/ltmain.m4sh (func_mode_compile, func_mode_link),
