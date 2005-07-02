@@ -119,19 +119,19 @@ LT_AT_TAG([GCJ])
 AT_DATA([A.java],
 [[public class A {
   private int a;
-  public void A () { a = 0; }
+  public A () { a = 0; }
 };
 ]])
 AT_DATA([B.java],
 [[public class B {
   private int b;
-  public void B () { b = 0; }
+  public B () { b = 0; }
 };
 ]])
 AT_DATA([C.java],
 [[public class C {
   private int c;
-  public void C () { c = 0; }
+  public C () { c = 0; }
 };
 ]])
 AT_DATA(foo.java,

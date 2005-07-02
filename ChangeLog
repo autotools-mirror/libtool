@@ -1,3 +1,8 @@
+2005-07-02  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* tests/convenience.at <GCJ>: Fix java test.
+	Reported by Eric Blake <ericblake@comcast.net>.
+
 2005-07-01  Derek R. Price  <derek@ximbiot.com>
 
 	* config/ltmain.m4sh (func_mode_link) <shell wrapper>: Handle
