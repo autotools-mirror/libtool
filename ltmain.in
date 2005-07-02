@@ -575,7 +575,7 @@ if test -z "$show_help"; then
 
     for arg
     do
-      case "$arg_mode" in
+      case $arg_mode in
       arg  )
 	# do not "continue".  Instead, add this to base_compile
 	lastarg="$arg"
@@ -2593,7 +2593,7 @@ EOF
 		add_dir="-L$dir"
 		# Try looking first in the location we're being installed to.
 		if test -n "$inst_prefix_dir"; then
-		  case "$libdir" in
+		  case $libdir in
 		    [\\/]*)
 		      add_dir="$add_dir -L$inst_prefix_dir$libdir"
 		      ;;
@@ -2666,7 +2666,7 @@ EOF
 	      add_dir="-L$libdir"
 	      # Try looking first in the location we're being installed to.
 	      if test -n "$inst_prefix_dir"; then
-		case "$libdir" in
+		case $libdir in
 		  [\\/]*)
 		    add_dir="$add_dir -L$inst_prefix_dir$libdir"
 		    ;;
@@ -3416,7 +3416,7 @@ EOF
 	  if test "$?" -eq 0 ; then
 	    ldd_output=`ldd conftest`
 	    for i in $deplibs; do
-	      name="`expr $i : '-l\(.*\)'`"
+	      name=`expr $i : '-l\(.*\)'`
 	      # If $name is empty we are operating on a -L argument.
               if test "$name" != "" && test "$name" -ne "0"; then
 		if test "X$allow_libtool_libs_with_static_runtimes" = "Xyes" ; then
@@ -3453,7 +3453,7 @@ EOF
 	    # Error occurred in the first compile.  Let's try to salvage
 	    # the situation: Compile a separate program for each library.
 	    for i in $deplibs; do
-	      name="`expr $i : '-l\(.*\)'`"
+	      name=`expr $i : '-l\(.*\)'`
 	      # If $name is empty we are operating on a -L argument.
               if test "$name" != "" && test "$name" != "0"; then
 		$rm conftest
@@ -3505,7 +3505,7 @@ EOF
 	  set dummy $deplibs_check_method
 	  file_magic_regex=`expr "$deplibs_check_method" : "$2 \(.*\)"`
 	  for a_deplib in $deplibs; do
-	    name="`expr $a_deplib : '-l\(.*\)'`"
+	    name=`expr $a_deplib : '-l\(.*\)'`
 	    # If $name is empty we are operating on a -L argument.
             if test "$name" != "" && test  "$name" != "0"; then
 	      if test "X$allow_libtool_libs_with_static_runtimes" = "Xyes" ; then
@@ -3574,7 +3574,7 @@ EOF
 	  set dummy $deplibs_check_method
 	  match_pattern_regex=`expr "$deplibs_check_method" : "$2 \(.*\)"`
 	  for a_deplib in $deplibs; do
-	    name="`expr $a_deplib : '-l\(.*\)'`"
+	    name=`expr $a_deplib : '-l\(.*\)'`
 	    # If $name is empty we are operating on a -L argument.
 	    if test -n "$name" && test "$name" != "0"; then
 	      if test "X$allow_libtool_libs_with_static_runtimes" = "Xyes" ; then
