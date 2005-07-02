@@ -812,7 +812,7 @@ if test -z "$lt_ECHO"; then
     # find a string as large as possible, as long as the shell can cope with it
     for cmd in 'sed 50q "[$]0"' 'sed 20q "[$]0"' 'sed 10q "[$]0"' 'sed 2q "[$]0"' 'echo test'; do
       # expected sizes: less than 2Kb, 1Kb, 512 bytes, 16 bytes, ...
-      if { echo_test_string="`eval $cmd`"; } 2>/dev/null &&
+      if { echo_test_string=`eval $cmd`; } 2>/dev/null &&
 	 { test "X$echo_test_string" = "X$echo_test_string"; } 2>/dev/null
       then
         break
@@ -986,7 +986,7 @@ x86_64-*linux*|ppc*-*linux*|powerpc*-*linux*|s390*-*linux*|s390*-*tpf*|sparc*-*l
   # Find out which ABI we are using.
   echo 'int i;' > conftest.$ac_ext
   if AC_TRY_EVAL(ac_compile); then
-    case "`/usr/bin/file conftest.o`" in
+    case `/usr/bin/file conftest.o` in
       *32-bit*)
 	case $host in
 	  x86_64-*linux*)
