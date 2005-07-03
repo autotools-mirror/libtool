@@ -1,3 +1,11 @@
+2005-07-03  Thorsten Glaser  <tg@66h.42h.de>
+
+	* config/ltmain.m4sh (func_extract_archives, func_mode_install),
+	m4/libtool.m4 (_LT_SETUP, _LT_SYS_DYNAMIC_LINKER, LT_PATH_LD)
+	(_LT_PATH_LD_GNU, _LT_LINKER_SHLIBS, _LT_LANG_CXX_CONFIG):
+	Comment language, indentation, and backquote cleanup.
+	* THANKS: Updated.
+
 2005-07-02  Peter O'Gorman  <peter@pogma.com>
 
 	* tests/inherited_flags.at: Use -no-undefined.
