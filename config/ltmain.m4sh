@@ -1002,7 +1002,7 @@ func_extract_archives ()
 	    func_extract_an_archive "$my_xdir" "$my_xabs"
 	  fi # $darwin_arches
 	fi # $run
-      ;;
+	;;
       *)
         func_extract_an_archive "$my_xdir" "$my_xabs"
 	;;
@@ -2043,7 +2043,7 @@ func_mode_install ()
 	fi
 
 	# remove .exe since cygwin /usr/bin/install will append another
-	# one anyways
+	# one anyway
 	case $install_prog,$host in
 	*/usr/bin/install*,*cygwin*)
 	  case $file:$destfile in
