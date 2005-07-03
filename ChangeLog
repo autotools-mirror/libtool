@@ -1,3 +1,12 @@
+2005-07-03  Thorsten Glaser  <tg@66h.42h.de>
+
+	* config/ltmain.m4sh (func_extract_archives, func_mode_install),
+	m4/libtool.m4 (AC_LIBTOOL_SETUP, AC_LIBTOOL_SYS_DYNAMIC_LINKER)
+	(AC_LIBTOOL_WIN32_DLL, AC_PROG_LD, AC_PROG_LD_GNU)
+	(AC_LIBTOOL_LANG_CXX_CONFIG, AC_LIBTOOL_PROG_LD_SHLIBS):
+	Comment language, indentation, and backquote cleanup.
+	* THANKS: Updated.
+
 2005-06-29  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>  (tiny change)
 
 	* ltmain.in (compile mode, link mode),
