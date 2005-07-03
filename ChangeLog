@@ -1,5 +1,9 @@
 2005-07-03  Thorsten Glaser  <tg@66h.42h.de>
 
+	* m4/libtool.m4 (_LT_TRY_DLOPEN_SELF): Quieten configure
+	output for corner cases on some BSDs.
+	(LT_CMD_MAX_LEN): Another comment cleanup.
+
 	* config/ltmain.m4sh (func_extract_archives, func_mode_install),
 	m4/libtool.m4 (_LT_SETUP, _LT_SYS_DYNAMIC_LINKER, LT_PATH_LD)
 	(_LT_PATH_LD_GNU, _LT_LINKER_SHLIBS, _LT_LANG_CXX_CONFIG):
