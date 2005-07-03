@@ -1,5 +1,9 @@
 2005-07-03  Thorsten Glaser  <tg@66h.42h.de>
 
+	* libtool.m4 (_LT_AC_TRY_DLOPEN_SELF): Quieten configure output
+	for corner cases on some BSDs.
+	(AC_LIBTOOL_SYS_MAX_CMD_LEN): Another comment cleanup.
+
 	* config/ltmain.m4sh (func_extract_archives, func_mode_install),
 	m4/libtool.m4 (AC_LIBTOOL_SETUP, AC_LIBTOOL_SYS_DYNAMIC_LINKER)
 	(AC_LIBTOOL_WIN32_DLL, AC_PROG_LD, AC_PROG_LD_GNU)
