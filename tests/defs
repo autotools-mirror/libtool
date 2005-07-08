@@ -17,8 +17,9 @@ esac
 progname=`echo "$0" | sed 's%^.*/%%'`
 
 libtool="../libtool"
-make="${MAKE-make}"
 SHELL="${CONFIG_SHELL-/bin/sh}"
+: ${MAKE=make}
+: ${SED=sed}
 
 if echo a | (grep -E '(a|b)') >/dev/null 2>&1; then
   EGREP='grep -E'

@@ -1,3 +1,8 @@
+2005-07-08  Derek R. Price  <derek@ximbiot.com>
+
+	* tests/defs (SED): Default variable contents to `sed'.
+	Fixes false PASS of sh.test.
+
 2005-07-08  Albert Chin-A-Young  <china@thewrittenword.com>
 
 	* ltmain.in: When a library is installed, dependent on a
