@@ -1,3 +1,8 @@
+2005-07-08  Bruno Haible  <bruno@clisp.org>
+
+	* libtool.m4 (postinstall_cmds) [cygwin,mingw,pw32]: Make DLL
+	executable after installing it.
+
 2005-07-08  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* ltmain.in (install mode): Do not assume `-f' needs an argument if
