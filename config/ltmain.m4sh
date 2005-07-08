@@ -1649,15 +1649,15 @@ func_mode_install ()
     # install_prog (especially on Windows NT).
     if test "$nonopt" = "$SHELL" || test "$nonopt" = /bin/sh ||
        # Allow the use of GNU shtool's install command.
-       $ECHO "X$nonopt" | $Xsed | $GREP shtool > /dev/null; then
+       $ECHO "X$nonopt" | $GREP shtool >/dev/null; then
       # Aesthetically quote it.
       func_quote_for_eval "$nonopt"
       install_prog="$func_quote_for_eval_result "
-      arg="$1"
+      arg=$1
       shift
     else
       install_prog=
-      arg="$nonopt"
+      arg=$nonopt
     fi
 
     # The real first argument should be the name of the installation program.
@@ -1677,28 +1677,33 @@ func_mode_install ()
     do
       if test -n "$dest"; then
 	files="$files $dest"
-	dest="$arg"
+	dest=$arg
 	continue
       fi
 
       case $arg in
       -d) isdir=yes ;;
-      -f) prev="-f" ;;
-      -g) prev="-g" ;;
-      -m) prev="-m" ;;
-      -o) prev="-o" ;;
+      -f)
+      	case " $install_prog " in
+	*[[\\\ /]]cp\ *) ;;
+	*) prev=$arg ;;
+	esac
+	;;
+      -g | -m | -o)
+	prev=$arg
+	;;
       -s)
 	stripme=" -s"
 	continue
 	;;
-      -*) ;;
-
+      -*)
+	;;
       *)
 	# If the previous option needed an argument, then skip it.
 	if test -n "$prev"; then
 	  prev=
 	else
-	  dest="$arg"
+	  dest=$arg
 	  continue
 	fi
 	;;

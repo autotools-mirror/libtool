@@ -1,3 +1,10 @@
+2005-07-08  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* config/ltmain.m4sh (func_mode_install): Do not assume `-f'
+	needs an argument if the install program is `cp'.  Cleanup
+	install mode somewhat.
+	Reported by Juergen Leising <juergen.leising@gmx.de>.
+
 2005-07-03  Thorsten Glaser  <tg@66h.42h.de>
 
 	* m4/libtool.m4 (_LT_TRY_DLOPEN_SELF): Quieten configure
