@@ -1,3 +1,15 @@
+2005-07-08  Albert Chin-A-Young  <china@thewrittenword.com>
+
+	* ltmain.in: When a library is installed, dependent on a
+	convenience library, and it involves relinking, the object
+	files extracted from the convenience library are not removed
+	after the relink. This is a problem if you build as non-root,
+	install as root, then try to remove the build directory as
+	non-root; Clean up properly if relink fails; Change
+	"$realname"U to ${realname}T to be consistent.
+	Missing backport of 2004-03-24 patch reported against MirLibtool
+	by Marc Matteo <marcm@lectroid.net>.
+
 2005-07-08  Bruno Haible  <bruno@clisp.org>
 
 	* libtool.m4 (postinstall_cmds) [cygwin,mingw,pw32]: Make DLL
