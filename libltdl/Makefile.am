@@ -47,3 +47,5 @@ local-install-files: $(ltdldatafiles)
 	$(mkinstalldirs) $(DESTDIR)$(ltdldatadir)
 	( cd $(srcdir) && $(AMTAR) chf - $(ltdldatafiles); ) \
 	  | ( umask 0 && cd $(DESTDIR)$(ltdldatadir) && $(AMTAR) xf -; )
+	chown -R root $(DESTDIR)$(ltdldatadir) && \
+	chgrp -R root $(DESTDIR)$(ltdldatadir) || :

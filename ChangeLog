@@ -1,3 +1,8 @@
+2005-07-08  Peter Breitenlohner  <peb@mppmu.mpg.de>
+
+	* libltdl/Makefile.am (local-install-files): Have root own of
+	installed files (but do not fail, for user installs).
+
 2005-07-08  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* tests/defs (make): Undo bogus change I did, and also 
