@@ -1,3 +1,8 @@
+2005-07-08  Bruno Haible  <bruno@clisp.org>
+
+	* m4/libtool.m4 (_LT_SYS_DYNAMIC_LINKER) <postinstall_cmds>
+	[cygwin,mingw,pw32]: Make DLL executable after installing it.
+
 2005-07-08  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* config/ltmain.m4sh (func_mode_install): Do not assume `-f'
