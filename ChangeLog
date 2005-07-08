@@ -1,3 +1,8 @@
+2005-07-08  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* tests/defs (make): Undo bogus change I did, and also 
+	wrongly attributed to Derek R. Price.
+
 2005-07-08  Derek R. Price  <derek@ximbiot.com>
 
 	* tests/defs (SED): Default variable contents to `sed'.
