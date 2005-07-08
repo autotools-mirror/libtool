@@ -1,3 +1,8 @@
+2005-07-08  Peter Breitenlohner  <peb@mppmu.mpg.de>
+
+	* Makefile.am (install-data-local): Have root own of installed
+	files (but do not fail, for user installs).
+
 2005-07-08  Bruno Haible  <bruno@clisp.org>
 
 	* m4/libtool.m4 (_LT_SYS_DYNAMIC_LINKER) <postinstall_cmds>

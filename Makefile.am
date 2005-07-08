@@ -254,6 +254,8 @@ install-data-local:
 	done; \
 	( cd $(srcdir)/m4 && $(AMTAR) chf - $$aclocalfiles; ) \
 	  | ( umask 0 && cd $(DESTDIR)$(aclocaldir) && $(AMTAR) xf -; )
+	chown -R root $(DESTDIR)$(ltdldatadir) && \
+	chgrp -R root $(DESTDIR)$(ltdldatadir) || :
 
 install-data-hook:
 	chmod +x $(DESTDIR)$(pkgdatadir)/config/config.guess
