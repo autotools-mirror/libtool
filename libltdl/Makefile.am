@@ -63,7 +63,7 @@ libltdl_la_SOURCES	= libltdl/lt__alloc.h \
 libltdl_la_CPPFLAGS	= -DLTDLOPEN=libltdl $(AM_CPPFLAGS)
 libltdl_la_LDFLAGS	= $(AM_LDFLAGS) $(VERSION_INFO) $(LT_DLPREOPEN)
 libltdl_la_LIBADD	= $(LTLIBOBJS)
-libltdl_la_DEPENDENCIES	= $(LT_DLLOADERS) $(LTLIBOBJS)
+libltdl_la_DEPENDENCIES	= $(LT_DLLOADERS) $(LTLIBOBJS) $(BUILT_SOURCES)
 
 libltdlc_la_SOURCES	= $(libltdl_la_SOURCES)
 libltdlc_la_CPPFLAGS	= -DLTDLOPEN=libltdlc $(AM_CPPFLAGS)

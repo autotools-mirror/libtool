@@ -1,3 +1,10 @@
+2005-07-08  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* libltdl/Makefile.am (libltdl_la_DEPENDENCIES): Depend on
+	$(BUILT_SOURCES) as well, so that argz.h gets created through
+	`make libltdlc.la'.
+	Reported by Sven Verdoolaege <skimo@liacs.nl>.
+
 2005-07-08  Peter Breitenlohner  <peb@mppmu.mpg.de>
 
 	* Makefile.am (install-data-local): Have root own of installed
