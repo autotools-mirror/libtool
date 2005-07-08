@@ -236,6 +236,8 @@ install-data-local:
 	$(mkinstalldirs) $(DESTDIR)$(ltdldatadir)
 	( cd $(srcdir)/libltdl && $(AMTAR) chf - $(ltdldatafiles); ) \
 	  | ( umask 0 && cd $(DESTDIR)$(ltdldatadir) && $(AMTAR) xf -; )
+	chown -R root $(DESTDIR)$(ltdldatadir) && \
+	chgrp -R root $(DESTDIR)$(ltdldatadir) || :
 
 install-data-hook:
 	chmod +x $(DESTDIR)$(pkgdatadir)/config.guess
