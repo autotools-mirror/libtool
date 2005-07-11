@@ -6213,8 +6213,6 @@ xsi_shell=no
       = c,a/b,, ) >/dev/null 2>&1 \
   && xsi_shell=yes
 AC_MSG_RESULT([$xsi_shell])
-])
-fi
 _LT_CONFIG_LIBTOOL_INIT([xsi_shell='$xsi_shell'])
 ])# _LT_CHECK_XSI_SHELL
 
