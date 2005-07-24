@@ -1,3 +1,9 @@
+2005-07-24  Peter O'Gorman  <peter@pogma.com>
+
+	* libtool.m4 (CXX, archive_cmds) [sun]: Add -lCstd, -lCrun
+	and -lc for c++ builds with Sun C++ and Centerline C++..
+	Reported by Albert Chin-A-Young <china@hewrittenword.com>
+
 2005-07-08  Peter Breitenlohner  <peb@mppmu.mpg.de>
 
 	* libltdl/Makefile.am (local-install-files): Have root own of
