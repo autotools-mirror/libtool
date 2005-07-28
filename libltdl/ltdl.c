@@ -190,7 +190,7 @@ loader_init (lt_get_vtable *vtable_func, lt_user_data data)
 
 LT_SCOPE const lt_dlvtable *	get_vtable (lt_user_data data);
 #ifdef HAVE_LIBDLLOADER
-LT_SCOPE lt_dlsymlist		preloaded_symbols;
+extern lt_dlsymlist		preloaded_symbols;
 #endif
 
 /* Initialize libltdl. */

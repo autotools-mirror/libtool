@@ -1,5 +1,13 @@
 2005-07-28  Peter Ekberg  <peda@lysator.liu.se>
 
+	* libltdl/ltdl.c: The linker is confused by having one
+	definition of lt_libltdlc_LTX_preloaded_symbols tagged with
+	__declspec(dllexport) in ltdl.c and one definition with an
+	initial value in libltdlcS.c. So, just say extern in ltdl.c.
+	Fixes the mdemo-exec.test for MinGW.
+
+2005-07-28  Peter Ekberg  <peda@lysator.liu.se>
+
 	* config/ltmain.m4sh (func_mode_link) <lib>: Zap duplicate
 	message "creating reloadable object files..."
 
