@@ -1,3 +1,8 @@
+2005-07-28  Peter Ekberg  <peda@lysator.liu.se>
+
+	* config/ltmain.m4sh (func_mode_link) <lib>: Zap duplicate
+	message "creating reloadable object files..."
+
 2005-07-23 Peter O'Gorman  <peter@pogma.com>
 
 	* m4/libtool.m4 (CXX, archive_cmds) [sun]: Add -lCstd, -lCrun
