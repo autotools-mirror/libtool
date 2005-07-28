@@ -806,7 +806,7 @@ extern \"C\" {
 	    export_symbols="$output_objdir/$outputname.exp"
 	    $opt_dry_run || {
 	      $RM $export_symbols
-	      eval "${SED} -n -e '/^: @PROGRAM@$/d' -e 's/^.* \(.*\)$/\1/p' "'< "$nlist" > "$export_symbols"'
+	      eval "${SED} -n -e '/^: @PROGRAM@ $/d' -e 's/^.* \(.*\)$/\1/p' "'< "$nlist" > "$export_symbols"'
 	      case $host in
 	      *cygwin* | *mingw* )
                 eval "echo EXPORTS "'> "$output_objdir/$outputname.def"'
