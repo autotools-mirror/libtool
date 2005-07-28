@@ -5003,6 +5003,9 @@ EOF
 		# The command line is too long to execute in one step.
 		func_echo "using reloadable object file for export list..."
 		skipped_export=:
+		# Break out early, otherwise skipped_export may be
+		# set to false by a later but shorter cmd.
+		break
 	      fi
 	    done
 	    IFS="$save_ifs"
