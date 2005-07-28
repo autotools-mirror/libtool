@@ -5077,7 +5077,6 @@ EOF
 	  # The command line is too long to link in one step, link piecewise
 	  # or, if using GNU ld and skipped_export is not :, use a linker
 	  # script.
-	  func_echo "creating reloadable object files..."
 
 	  # Save the value of $output and $libobjs because we want to
 	  # use them later.  If we have whole_archive_flag_spec, we
