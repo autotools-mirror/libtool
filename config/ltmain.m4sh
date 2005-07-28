@@ -758,7 +758,7 @@ extern \"C\" {
 	  if test -z "$export_symbols"; then
 	    export_symbols="$output_objdir/$outputname.exp"
 	    $run $RM $export_symbols
-	    $run eval "${SED} -n -e '/^: @PROGRAM@$/d' -e 's/^.* \(.*\)$/\1/p' "'< "$nlist" > "$export_symbols"'
+	    $run eval "${SED} -n -e '/^: @PROGRAM@ $/d' -e 's/^.* \(.*\)$/\1/p' "'< "$nlist" > "$export_symbols"'
 	    case $host in
 	    *cygwin* | *mingw* )
               $run eval "echo EXPORTS "'> "$output_objdir/$outputname.def"'
