@@ -1,5 +1,10 @@
 2005-07-28  Peter Ekberg  <peda@lysator.liu.se>
 
+	* m4/libtool.m4 (_LT_LINKER_OPTION): Fix copy-paste bug, it is
+	the linker that is tested.
+
+2005-07-28  Peter Ekberg  <peda@lysator.liu.se>
+
 	* tests/demo-noinst-link.test: $make is empty on MSYS, replace
 	with $MAKE. Makes the test pass for MinGW.
 
