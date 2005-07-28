@@ -1,5 +1,11 @@
 2005-07-28  Peter Ekberg  <peda@lysator.liu.se>
 
+	* tests/mdemo-dryrun.test: ls -l in MSYS sometimes shows year,
+	not time, for really fresh files. Add sleep 1 calls at
+	strategic places. Makes the test pass for MinGW.
+
+2005-07-28  Peter Ekberg  <peda@lysator.liu.se>
+
 	* m4/libtool.m4 (_LT_LINKER_OPTION): Fix copy-paste bug, it is
 	the linker that is tested.
 

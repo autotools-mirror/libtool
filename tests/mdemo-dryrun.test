@@ -50,6 +50,8 @@ mv $objdir/libtool.new libtool
 func_make main.$objext
 
 func_msg "Making object files in mdemo (dry run)"
+# ls -l in MSYS sometimes shows year, not time, for really fresh files.
+sleep 1
 ls -l . $objdir | grep -v total > $before
 force_dry_run=yes $MAKE foo1.lo foo2.lo sub.lo || exit $?
 ls -l . $objdir | grep -v total > $after
@@ -58,6 +60,8 @@ cmp $before $after > /dev/null || exit 1
 func_make foo1.lo foo2.lo libsub.la
 
 func_msg "Making libraries in mdemo (dry run)"
+# ls -l in MSYS sometimes shows year, not time, for really fresh files.
+sleep 1
 ls -l . $objdir | grep -v total > $before
 force_dry_run=yes $MAKE foo1.la libfoo2.la || exit $?
 ls -l . $objdir | grep -v total > $after
@@ -66,6 +70,8 @@ cmp $before $after > /dev/null || exit 1
 func_make foo1.la libfoo2.la
 
 func_msg "Making programs in ../mdemo (dry run)"
+# ls -l in MSYS sometimes shows year, not time, for really fresh files.
+sleep 1
 ls -l . $objdir | grep -v total > $before
 force_dry_run=yes $MAKE mdemo$EXEEXT mdemo_static$EXEEXT 1>&2 || exit $?
 ls -l . $objdir | grep -v total > $after
@@ -77,6 +83,8 @@ func_msg "Running $MAKE install in ../mdemo (dry run)"
 # Libtool does not create these directories
 func_mkdir_p "$prefix/bin"
 func_mkdir_p "$prefix/lib"
+# ls -l in MSYS sometimes shows year, not time, for really fresh files.
+sleep 1
 ls -l . $objdir | grep -v total > $before
 ls -lR $prefix | grep -v total >> $before
 force_dry_run=yes $MAKE install 1>&2 || exit 1
@@ -89,6 +97,8 @@ func_make install
 func_msg "Running $MAKE uninstall in ../mdemo (dry run)"
 # Libtool does not uninstall the programs, remove them first
 rm -f "$prefix/bin/mdemo$EXEEXT" "$prefix/bin/mdemo_static$EXEEXT"
+# ls -l in MSYS sometimes shows year, not time, for really fresh files.
+sleep 1
 ls -l . $objdir | grep -v total > $before
 ls -lR $prefix | grep -v total >> $before
 force_dry_run=yes $MAKE uninstall 1>&2 || exit $?
