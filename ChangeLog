@@ -1,5 +1,12 @@
 2005-07-28  Peter Ekberg  <peda@lysator.liu.se>
 
+	* libltdl/Makefile.am: Make the LTDLOPEN define controllable
+	from the configure script.
+	* m4/ltdl.m4 (LTDL_INIT): Set the LTDLOPEN define according
+	to libname_spec.
+
+2005-07-28  Peter Ekberg  <peda@lysator.liu.se>
+
 	* tests/mdemo-dryrun.test: ls -l in MSYS sometimes shows year,
 	not time, for really fresh files. Add sleep 1 calls at
 	strategic places. Makes the test pass for MinGW.

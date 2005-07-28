@@ -174,6 +174,10 @@ AC_CHECK_HEADERS([string.h strings.h], [break], [], [AC_INCLUDES_DEFAULT])
 
 AC_CHECK_FUNCS([closedir opendir readdir], [], [AC_LIBOBJ([lt__dirent])])
 AC_CHECK_FUNCS([strlcat strlcpy], [], [AC_LIBOBJ([lt__strl])])
+
+name=ltdl
+LTDLOPEN=`eval "\\$ECHO \"$libname_spec\""`
+AC_SUBST([LTDLOPEN])
 ])# LTDL_INIT
 
 # Old name:
