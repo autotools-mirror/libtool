@@ -60,13 +60,13 @@ libltdl_la_SOURCES	= libltdl/lt__alloc.h \
 			  lt_error.c \
 			  ltdl.c ltdl.h \
 			  slist.c
-libltdl_la_CPPFLAGS	= -DLTDLOPEN=libltdl $(AM_CPPFLAGS)
+libltdl_la_CPPFLAGS	= -DLTDLOPEN=$(LTDLOPEN) $(AM_CPPFLAGS)
 libltdl_la_LDFLAGS	= $(AM_LDFLAGS) $(VERSION_INFO) $(LT_DLPREOPEN)
 libltdl_la_LIBADD	= $(LTLIBOBJS)
 libltdl_la_DEPENDENCIES	= $(LT_DLLOADERS) $(LTLIBOBJS) $(BUILT_SOURCES)
 
 libltdlc_la_SOURCES	= $(libltdl_la_SOURCES)
-libltdlc_la_CPPFLAGS	= -DLTDLOPEN=libltdlc $(AM_CPPFLAGS)
+libltdlc_la_CPPFLAGS	= -DLTDLOPEN=$(LTDLOPEN)c $(AM_CPPFLAGS)
 libltdlc_la_LDFLAGS	= $(AM_LDFLAGS) $(LT_DLPREOPEN)
 libltdlc_la_LIBADD	= $(libltdl_la_LIBADD)
 libltdlc_la_DEPENDENCIES= $(libltdl_la_DEPENDENCIES)
