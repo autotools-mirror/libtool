@@ -1,5 +1,10 @@
 2005-07-28  Peter Ekberg  <peda@lysator.liu.se>
 
+	* tests/demo-noinst-link.test: $make is empty on MSYS, replace
+	with $MAKE. Makes the test pass for MinGW.
+
+2005-07-28  Peter Ekberg  <peda@lysator.liu.se>
+
 	* config/ltmain.m4sh (func_generate_dlsyms): Properly remove
 	the fake symbol line ": @PROGRAM@ " from the list of exported
 	symbols.

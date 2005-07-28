@@ -50,7 +50,7 @@ rm -f libhello.la "hell$EXEEXT"
 
 status=$EXIT_SUCCESS
 func_msg "linking \`hell' with a broken \`demo/libhello.la'"
-if $make "hell$EXEEXT" libhello_la_OBJECTS=hello.lo; then
+if $MAKE "hell$EXEEXT" libhello_la_OBJECTS=hello.lo; then
   func_msg "Succeeded: this means the installed library was used, which is wrong"
   status=$EXIT_FAILURE
 fi
