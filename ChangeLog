@@ -1,5 +1,11 @@
 2005-07-28  Peter Ekberg  <peda@lysator.liu.se>
 
+	* libltdl/loaders/loadlibrary.c (vm_open): Set the error mode so
+	that no dialog is popped up in case the file given to
+	LoadLibrary is not a dll.
+
+2005-07-28  Peter Ekberg  <peda@lysator.liu.se>
+
 	* config/ltmain.m4sh (func_mode_link) <lib>: Make sure
 	skipped_export is set to colon if _some_ cmd of
 	export_symbols_cmds is too long.
