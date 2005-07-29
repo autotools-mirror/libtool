@@ -1,3 +1,8 @@
+2005-07-29  Richard Moseley  <dickie.moseley@virgin.net>
+
+	* m4/ltdl.m4 (LTDL_INIT): Handle in addition the new name for 
+	AC_LIST_HEADERS which is _AC_LIST_TAGS.
+
 2005-07-28  Peter Ekberg  <peda@lysator.liu.se>
 
 	* libltdl/Makefile.am: Make the LTDLOPEN define controllable
