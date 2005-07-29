@@ -163,9 +163,11 @@ m4_require([_LT_CHECK_DLPREOPEN])dnl
 # if they did not call it themself.  This is so that ltdl.h can pick up
 # the parent projects config.h file, The first file in AC_CONFIG_HEADERS
 # must contain the definitions required by ltdl.c.
-m4_ifset([AC_LIST_HEADERS],
+m4_ifset([_AC_LIST_TAGS],
+    [CONFIG_H=`echo "_AC_LIST_TAGS" | $GREP HEADERS | $SED 's,^[[ 	]]*,,;s,[[ :)]].*$,,'`],
+  [m4_ifset([AC_LIST_HEADERS],
     [CONFIG_H=`echo "AC_LIST_HEADERS" | $SED 's,^[[ 	]]*,,;s,[[ :]].*$,,'`],
-  [CONFIG_H=config.h;AC_CONFIG_HEADERS([config.h])])
+  [CONFIG_H=config.h;AC_CONFIG_HEADERS([config.h])]])
 AC_SUBST([CONFIG_H])
 
 AC_CHECK_HEADERS([memory.h unistd.h dl.h sys/dl.h dld.h mach-o/dyld.h],
