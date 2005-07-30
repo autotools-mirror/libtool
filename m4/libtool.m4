@@ -5789,10 +5789,10 @@ _LT_TAGDECL([], [compiler_lib_search_path], [1],
 # if there is no fortran compiler, we have our own version here.
 m4_defun([_LT_PROG_F77],
 [
-pushdef([AC_MSG_ERROR], [_lt_caught_F77_error=yes])
+pushdef([AC_MSG_ERROR], [_lt_disable_F77=yes])
 AC_PROG_F77
-if test -z "$F77"; then
-  _lt_caught_F77_error=yes
+if test -z "$F77" || test "X$F77" = "Xno"; then
+  _lt_disable_F77=yes
 fi
 popdef([AC_MSG_ERROR])
 ])# _LT_PROG_F77
@@ -5838,7 +5838,7 @@ _LT_TAGVAR(objext, $1)=$objext
 # the F77 compiler isn't working.  Some variables (like enable_shared)
 # are currently assumed to apply to all compilers on this platform,
 # and will be corrupted by setting them based on a non-working compiler.
-if test "$_lt_caught_F77_error" != yes; then
+if test "$_lt_disable_F77" != yes; then
   # Code to be used in simple compile tests
   lt_simple_compile_test_code="      subroutine t\n      return\n      end\n"
 
@@ -5910,7 +5910,7 @@ if test "$_lt_caught_F77_error" != yes; then
   fi # test -n "$compiler"
 
   CC="$lt_save_CC"
-fi # test "$_lt_caught_F77_error" != yes
+fi # test "$_lt_disable_F77" != yes
 
 AC_LANG_POP
 ])# _LT_LANG_F77_CONFIG

@@ -1,3 +1,8 @@
+2005-07-30  Peter Ekberg  <peda@lysator.liu.se>
+
+	* m4/libtool.m4 (_LT_PROG_F77): Set it up so that saying F77=no
+	to configure disables the fortran tests in the testsuite.
+
 2005-07-29  Richard Moseley  <dickie.moseley@virgin.net>
 
 	* m4/ltdl.m4 (LTDL_INIT): Handle in addition the new name for 
