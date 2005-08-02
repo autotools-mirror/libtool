@@ -1,5 +1,8 @@
 2005-08-02  Peter Ekberg  <peda@lysator.liu.se>
 
+	* libtool.m4 (AC_LIBTOOL_LINKER_OPTION): Fix copy-paste bug, it
+	is the linker that is tested.
+
 	* libltdl/ltdl.c (sys_wll_open): Revert commit mistake.
 
 	* ltmain.in (link mode) <lib>: Make sure skipped_export is
