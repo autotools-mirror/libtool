@@ -1348,26 +1348,15 @@ sys_wll_open (loader_data, filename)
   if (!searchname)
     return 0;
 
-  {
-    /* Silence dialog from LoadLibrary on some failures.
-       No way to get the error mode, but to set it,
-       so set it twice to preserve any previous flags. */
-    UINT errormode = SetErrorMode (SEM_FAILCRITICALERRORS);
-    SetErrorMode (errormode | SEM_FAILCRITICALERRORS);
-
 #if __CYGWIN__
-    {
-      char wpath[MAX_PATH];
-      cygwin_conv_to_full_win32_path (searchname, wpath);
-      module = LoadLibrary (wpath);
-    }
-#else
-    module = LoadLibrary (searchname);
-#endif
-
-    /* Restore the error mode. */
-    SetErrorMode (errormode);
+  {
+    char wpath[MAX_PATH];
+    cygwin_conv_to_full_win32_path(searchname, wpath);
+    module = LoadLibrary(wpath);
   }
+#else
+  module = LoadLibrary (searchname);
+#endif
   LT_DLFREE (searchname);
 
   /* libltdl expects this function to fail if it is unable

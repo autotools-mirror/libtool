@@ -1,5 +1,7 @@
 2005-08-02  Peter Ekberg  <peda@lysator.liu.se>
 
+	* libltdl/ltdl.c (sys_wll_open): Revert commit mistake.
+
 	* ltmain.in (link mode) <lib>: Make sure skipped_export is
 	set to colon if _some_ cmd of export_symbols_cmds is too long.
 
