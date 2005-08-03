@@ -1,3 +1,8 @@
+2005-08-03  Peter Ekberg  <peda@lysator.liu.se>
+
+	* ltmain.in (link mode): Properly remove the fake symbol line
+	": @PROGRAM " from the list of exported symbols.
+
 2005-08-02  Peter Ekberg  <peda@lysator.liu.se>
 
 	* libtool.m4 (AC_LIBTOOL_LINKER_OPTION): Fix copy-paste bug, it
