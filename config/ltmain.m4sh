@@ -5807,7 +5807,7 @@ const char *program_name = NULL;
 
 void * xmalloc (size_t num);
 char * xstrdup (const char *string);
-char * basename (const char *name);
+const char * base_name (const char *name);
 char * find_executable(const char *wrapper);
 int    check_executable(const char *path);
 char * strendzap(char *str, const char *pat);
@@ -5819,14 +5819,14 @@ main (int argc, char *argv[[]])
   char **newargz;
   int i;
 
-  program_name = (char *) xstrdup ((char *) basename (argv[[0]]));
+  program_name = (char *) xstrdup (base_name (argv[[0]]));
   DEBUG("(main) argv[[0]]      : %s\n",argv[[0]]);
   DEBUG("(main) program_name : %s\n",program_name);
   newargz = XMALLOC(char *, argc+2);
 EOF
 
 	    cat >> $cwrappersource <<EOF
-  newargz[[0]] = "$SHELL";
+  newargz[[0]] = (char *) xstrdup("$SHELL");
 EOF
 
 	    cat >> $cwrappersource <<"EOF"
@@ -5883,8 +5883,8 @@ xstrdup (const char *string)
 ;
 }
 
-char *
-basename (const char *name)
+const char *
+base_name (const char *name)
 {
   const char *base;
 
