@@ -5842,7 +5842,7 @@ base_name (const char *name)
   for (base = name; *name; name++)
     if (IS_DIR_SEPARATOR (*name))
       base = name + 1;
-  return (char *) base;
+  return base;
 }
 
 int
