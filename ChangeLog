@@ -1,3 +1,8 @@
+2005-08-04  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* m4/libtool.m4 (_LT_LINKER_HARDCODE_LIBPATH, _LT_LINKER_SHLIBS,
+	_LT_LANG_CXX_CONFIG): Comment typos.
+
 2005-08-04  Christoph Egger  <Christoph_Egger@gmx.de>
 
 	* config/ltmain.m4sh (func_mode_link) <cwrappersource>: Change
