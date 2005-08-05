@@ -1,3 +1,8 @@
+2005-08-05  Albert Chin-A-Young  <china@thewrittenword.com>
+
+	* config/ltmain.m4sh (func_mode_link): Ignore errors from expr
+	when determining if piece-wise linking should be done.
+
 2005-08-04  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* config/ltmain.m4sh (func_mode_link) <cwrappersource>: Add

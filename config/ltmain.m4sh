@@ -5041,8 +5041,9 @@ EOF
 	  fi
 	fi
 
-	if test "X$skipped_export" != "X:" && len=`expr "X$test_cmds" : ".*"` &&
-	   test "$len" -le "$max_cmd_len" || test "$max_cmd_len" -le -1; then
+	if test "X$skipped_export" != "X:" &&
+	   len=`expr "X$test_cmds" : ".*" 2>/dev/null` &&
+	  test "$len" -le "$max_cmd_len" || test "$max_cmd_len" -le -1; then
 	  :
 	else
 	  # The command line is too long to link in one step, link piecewise
@@ -5089,7 +5090,7 @@ EOF
 	    do
 	      eval test_cmds=\"$reload_cmds $objlist $last_robj\"
 	      if test "X$objlist" = X ||
-		 { len=`expr "X$test_cmds" : ".*"` &&
+		 { len=`expr "X$test_cmds" : ".*" 2>/dev/null` &&
 		   test "$len" -le "$max_cmd_len"; }; then
 		objlist="$objlist $obj"
 	      else
@@ -6292,8 +6293,8 @@ fi\
 	fi
 	eval cmds=\"$old_archive_cmds\"
 
-	if len=`expr "X$cmds" : ".*"` &&
-	     test "$len" -le "$max_cmd_len" || test "$max_cmd_len" -le -1; then
+	if len=`expr "X$cmds" : ".*" 2>/dev/null` &&
+	   test "$len" -le "$max_cmd_len" || test "$max_cmd_len" -le -1; then
 	  cmds=$old_archive_cmds
 	else
 	  # the command line is too long to link in one step, link in parts
@@ -6313,7 +6314,7 @@ fi\
 	    oldobjs="$objlist $obj"
 	    objlist="$objlist $obj"
 	    eval test_cmds=\"$old_archive_cmds\"
-	    if len=`expr "X$test_cmds" : ".*"` &&
+	    if len=`expr "X$test_cmds" : ".*" 2>/dev/null` &&
 	       test "$len" -le "$max_cmd_len"; then
 	      :
 	    else
