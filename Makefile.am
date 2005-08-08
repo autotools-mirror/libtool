@@ -276,8 +276,8 @@ TESTS_ENVIRONMENT = MAKE="$(MAKE)" CC="$(CC)" CFLAGS="$(CFLAGS)" \
 	OBJEXT="$(OBJEXT)" EXEEXT="$(EXEEXT)" CONFIG_SHELL="$(SHELL)" \
 	CXX="$(CXX)" CXXFLAGS="$(CXXFLAGS)" CXXCPP="$(CXXCPP)" \
 	F77="$(F77)" FFLAGS="$(FFLAGS)" \
+	FC="$(FC)" FCFLAGS="$(FCFLAGS)" \
 	GCJ="$(GCJ)" GCJFLAGS="$(GCJFLAGS)"
-
 
 CXX_TESTS = \
 	tests/tagdemo-static.test tests/tagdemo-make.test \
@@ -293,6 +293,13 @@ F77_TESTS = \
 	tests/f77demo-make.test tests/f77demo-exec.test \
 	tests/f77demo-shared.test tests/f77demo-make.test \
 	tests/f77demo-exec.test
+
+FC_TESTS = \
+	tests/fcdemo-static.test tests/fcdemo-make.test \
+	tests/fcdemo-exec.test tests/fcdemo-conf.test \
+	tests/fcdemo-make.test tests/fcdemo-exec.test \
+	tests/fcdemo-shared.test tests/fcdemo-make.test \
+	tests/fcdemo-exec.test
 
 COMMON_TESTS = \
 	tests/link.test tests/link-2.test tests/nomode.test \
@@ -336,24 +343,21 @@ COMMON_TESTS = \
 	tests/cdemo-undef.test tests/cdemo-make.test tests/cdemo-exec.test \
 	tests/duplicate_members.test
 
-if HAVE_CXX
-if HAVE_F77
-TESTS = $(COMMON_TESTS) $(CXX_TESTS) $(F77_TESTS)
-else
-TESTS = $(COMMON_TESTS) $(CXX_TESTS)
-endif
-else
-if HAVE_F77
-TESTS = $(COMMON_TESTS) $(F77_TESTS)
-else
 TESTS = $(COMMON_TESTS)
+if HAVE_CXX
+TESTS += $(CXX_TESTS)
 endif
+if HAVE_F77
+TESTS += $(F77_TESTS)
+endif
+if HAVE_FC
+TESTS += $(FC_TESTS)
 endif
 
 tests/demo-conf.test: libtool
 
 EXTRA_DIST     += tests/defs.in tests/defs.m4sh \
-		  $(COMMON_TESTS) $(CXX_TESTS) $(F77_TESTS)
+		  $(COMMON_TESTS) $(CXX_TESTS) $(F77_TESTS) $(FC_TESTS)
 DIST_SUBDIRS   += $(CONF_SUBDIRS)
 
 # The defs script shouldn't be recreated whenever the Makefile is
@@ -376,7 +380,7 @@ $(srcdir)/tests/defs.in: config/general.m4sh tests/defs.m4sh Makefile.am
 # We need to remove any files that the above tests created.
 clean-local:
 	-cd tests; \
-	for dir in cdemo demo depdemo f77demo mdemo mdemo2 pdemo tagdemo; \
+	for dir in cdemo demo depdemo f77demo fcdemo mdemo mdemo2 pdemo tagdemo; \
 	do \
 	    test -f $$dir/Makefile && ( cd $$dir && $(MAKE) distclean; ); \
 	done
