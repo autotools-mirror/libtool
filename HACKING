@@ -345,6 +345,11 @@ yyyy-mm-dd  Name of Author  <email@address>  (tiny change)
   keys will be registered on ftp-upload.gnu.org and only then will you be
   authorized to upload files to the FSF ftp machines.
 
+* If you do not have access to the mailing list administrative interface,
+  approach the list owners for the password.  Be sure to check the lists
+  (esp. bug-libtool) for outstanding bug reports also in the list of
+  pending moderation requests.
+
 * Make sure you have wget installed.
 
 * Make sure you have a copy of xdelta installed, and a copy of the previous
