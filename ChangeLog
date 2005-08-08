@@ -1,3 +1,7 @@
+2005-08-08  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* AUTHORS: Updated.
+
 2005-08-05  Albert Chin-A-Young  <china@thewrittenword.com>
 
 	* ltmain.in (link mode): Ignore errors from expr when
