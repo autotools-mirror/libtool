@@ -1,3 +1,7 @@
+2005-08-08  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* AUTHORS, HACKING: Updated.
+
 2005-08-05  Albert Chin-A-Young  <china@thewrittenword.com>
 
 	* config/ltmain.m4sh (func_mode_link): Ignore errors from expr
