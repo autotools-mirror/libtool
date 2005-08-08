@@ -113,6 +113,48 @@ LT_AT_EXEC_CHECK([./main])
 AT_CLEANUP
 
 
+AT_SETUP([FC convenience archives])
+LT_AT_TAG([FC])
+
+AT_DATA([a.f],
+[[      subroutine a
+      return
+      end
+]])
+AT_DATA([b.f],
+[[      subroutine b
+      return
+      end
+]])
+AT_DATA([c.f],
+[[      subroutine c
+      return
+      end
+]])
+AT_DATA(main.f,
+[[      program main
+      call a
+      call b
+      call c
+      end
+]])
+
+$LIBTOOL --tag=FC --mode=compile $FC -c $FCFLAGS $FCFLAGS_f a.f
+$LIBTOOL --tag=FC --mode=compile $FC -c $FCFLAGS $FCFLAGS_f b.f
+$LIBTOOL --tag=FC --mode=compile $FC -c $FCFLAGS $FCFLAGS_f c.f
+$LIBTOOL --tag=FC --mode=compile $FC -c $FCFLAGS $FCFLAGS_f main.f
+$LIBTOOL --tag=FC --mode=link $FC $FCFLAGS $LDFLAGS -o liba.la a.lo
+$LIBTOOL --tag=FC --mode=link $FC $FCFLAGS $LDFLAGS -o libb.la b.lo
+$LIBTOOL --tag=FC --mode=link $FC $FCFLAGS $LDFLAGS -o libcee.la c.lo liba.la libb.la -rpath /notexist
+AT_CHECK([$LIBTOOL --tag=FC --mode=link $FC $FCFLAGS $LDFLAGS -static -o main_static main.lo libcee.la],
+	 [0],[ignore],[ignore])
+AT_CHECK([$LIBTOOL --tag=FC --mode=link $FC $FCFLAGS $LDFLAGS -o main main.lo libcee.la],
+	 [0],[ignore],[ignore])
+LT_AT_EXEC_CHECK([./main_static])
+LT_AT_EXEC_CHECK([./main])
+AT_CLEANUP
+
+
 AT_SETUP([Java convenience archives])
 LT_AT_TAG([GCJ])
 

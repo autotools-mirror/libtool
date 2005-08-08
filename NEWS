@@ -11,6 +11,7 @@ New in 2.1b: 2005-??-??; CVS version 2.1a, Libtool team:
 * Allow shell special characters like `$' in source file names, but not
   in object names, to enhance GCJ support.
 * Detection of compiler wrappers like distcc/ccache and $host_alias prefix.
+* Initial Support for FC (modern Fortran).
 
 New in 1.9h: 2004-??-??; CVS version 1.9g, Libtool team:
 * Bug fixes.

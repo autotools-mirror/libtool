@@ -1,5 +1,19 @@
 2005-08-08  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* m4/libtool.m4 (_LT_PROG_FC, _LT_LANG_FC_CONFIG): New macros
+	for modern Fortran.
+	(LT_LANG, _LT_LANG_DEFAULT_CONFIG, _LT_SYS_DYNAMIC_LINKER,
+	_LT_SYS_HIDDEN_LIBDEPS): Adjusted.
+	* tests/fcdemo-conf.test, tests/fcdemo-exec.test,
+	tests/fcdemo-make.test, tests/fcdemo-shared.test,
+	tests/fcdemo-static.test, tests/fcdemo/Makefile.am, tests/fcdemo/README,
+	tests/fcdemo/configure.ac, tests/fcdemo/cprogram.c, tests/fcdemo/foo.h,
+	tests/fcdemo/fooc.c, tests/fcdemo/foof.f90, tests/fcdemo/foof2.f90,
+	tests/fcdemo/foof3.f90, tests/fcdemo/fprogram.f90: New tests for Fortran.
+	* tests/convenience.at: Extended.
+	* Makefile.am, configure.ac: Adjusted.
+	* NEWS: Updated.
+
 	* AUTHORS, HACKING: Updated.
 
 2005-08-05  Albert Chin-A-Young  <china@thewrittenword.com>

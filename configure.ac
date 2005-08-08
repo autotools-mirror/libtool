@@ -136,8 +136,8 @@ fi
 
 # All subdirectories that are configured on demand, but that must be
 # included in the distribution.
-CONF_SUBDIRS="tests/cdemo tests/demo tests/depdemo tests/f77demo tests/mdemo \
-	tests/mdemo2 tests/pdemo tests/tagdemo"
+CONF_SUBDIRS="tests/cdemo tests/demo tests/depdemo tests/f77demo tests/fcdemo \
+	tests/mdemo tests/mdemo2 tests/pdemo tests/tagdemo"
 AC_SUBST([CONF_SUBDIRS])
 
 DIST_MAKEFILE_LIST=
@@ -166,6 +166,7 @@ LTDL_INIT
 # Enable all the language support we can
 LT_LANG(C++)
 LT_LANG(Fortran 77)
+LT_LANG(Fortran)
 LT_LANG(Java)
 LT_LANG(Windows Resource)
 
@@ -175,6 +176,7 @@ LT_LANG(Windows Resource)
 ## --------------------------- ##
 AM_CONDITIONAL(HAVE_CXX,[test -n "[$]_LT_TAGVAR(compiler, CXX)"])
 AM_CONDITIONAL(HAVE_F77,[test -n "[$]_LT_TAGVAR(compiler, F77)"])
+AM_CONDITIONAL(HAVE_FC,[test -n "[$]_LT_TAGVAR(compiler, FC)"])
 AM_CONDITIONAL(HAVE_GCJ, [test -n "[$]_LT_TAGVAR(compiler, GCJ)"])
 AM_CONDITIONAL(HAVE_RC, [test -n "[$]_LT_TAGVAR(compiler, RC)"])
 
