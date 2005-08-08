@@ -3376,14 +3376,19 @@ func_mode_link ()
 	  # Convert "-framework foo" to "foo.ltframework"
 	  if test -n "$inherited_linker_flags"; then
 	    tmp_inherited_linker_flags=`$ECHO "X$inherited_linker_flags" | $Xsed -e 's/-framework \([[^ $]]*\)/\1.ltframework/g'`
-	    new_inherited_linker_flags="$new_inherited_linker_flags $tmp_inherited_linker_flags"
+		for tmp_inherited_linker_flag in $tmp_inherited_linker_flags; do
+		  case " $new_inherited_linker_flags " in
+		    *" tmp_inherited_linker_flag "*) ;;
+		    *) new_inherited_linker_flags="$new_inherited_linker_flags $tmp_inherited_linker_flags";;
+		  esac
+		done
 	  fi
 	  dependency_libs=`$ECHO "X $dependency_libs" | $Xsed -e 's% \([[^ $]]*\).ltframework% -framework \1%g'`
 	  ;;
 	esac
 	if test "$linkmode,$pass" = "prog,link"; then
-	  compile_deplibs="$inherited_linker_flags $compile_deplibs"
-	  finalize_deplibs="$inherited_linker_flags $finalize_deplibs"
+	  compile_deplibs="$new_inherited_linker_flags $compile_deplibs"
+	  finalize_deplibs="$new_inherited_linker_flags $finalize_deplibs"
 	else
 	  compiler_flags="$compiler_flags $inherited_linker_flags"
 	fi
