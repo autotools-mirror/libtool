@@ -30,22 +30,3 @@ ltdl.lo: ltdl.h config.h
 $(libltdl_la_OBJECTS) $(libltdlc_la_OBJECTS): libtool
 libtool: $(LIBTOOL_DEPS)
 	$(SHELL) ./config.status --recheck
-
-## These are installed as a subdirectory of pkgdatadir so that
-## libtoolize --ltdl can find them later:
-ltdldatadir = $(datadir)/libtool/libltdl
-ltdldatafiles = COPYING.LIB README acinclude.m4 aclocal.m4 \
-		Makefile.am Makefile.in configure.ac configure \
-		config-h.in config.guess config.sub \
-		install-sh missing ltmain.sh \
-		ltdl.c ltdl.h
-
-## To avoid spurious reconfiguration when the user installs these files
-## with libtoolize, we have to preserve their timestamps carefully:
-local-install-files: $(ltdldatafiles)
-	-rm -rf $(DESTDIR)$(ltdldatadir)
-	$(mkinstalldirs) $(DESTDIR)$(ltdldatadir)
-	( cd $(srcdir) && $(AMTAR) chf - $(ltdldatafiles); ) \
-	  | ( umask 0 && cd $(DESTDIR)$(ltdldatadir) && $(AMTAR) xf -; )
-	chown -R root $(DESTDIR)$(ltdldatadir) && \
-	chgrp -R root $(DESTDIR)$(ltdldatadir) || :

@@ -1,3 +1,11 @@
+2005-08-10  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* Makefile.am, libltdl/Makefile.am: Install libltdl data files
+	in correct order, by Automake rules.  Really fixes ownership and
+	timestamp problems.
+	Reported by Peter Breitenlohner <peb@mppmu.mpg.de> and
+	Charles Wilson <cygwin@cwilson.fastmail.fm>.
+
 2005-08-10  Peter Ekberg  <peda@lysator.liu.se>
 
 	* libtool.m4 (AC_LIBTOOL_LANG_CXX_CONFIG): Set ac_ext to cpp,

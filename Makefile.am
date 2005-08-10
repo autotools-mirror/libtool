@@ -32,6 +32,29 @@ aclocal_DATA = $(aclocal_macros)
 # The standalone libtool script, and the libtool distributor.
 bin_SCRIPTS = libtool libtoolize
 
+## These are installed as a subdirectory of pkgdatadir so that
+## libtoolize --ltdl can find them later:
+## Preserve order here so that generated files remain newer than
+## their dependencies.
+ltdldatadir = $(pkgdatadir)/libltdl
+ltdldata_DATA = \
+	libltdl/COPYING.LIB \
+	libltdl/README \
+	libltdl/configure.ac \
+	libltdl/Makefile.am \
+	libltdl/ltdl.c \
+	libltdl/ltdl.h \
+	libltdl/config.guess \
+	libltdl/config.sub \
+	libltdl/install-sh \
+	libltdl/missing \
+	libltdl/ltmain.sh \
+	libltdl/acinclude.m4 \
+	libltdl/aclocal.m4 \
+	libltdl/Makefile.in \
+	libltdl/configure \
+	libltdl/config-h.in
+
 libtool: $(srcdir)/ltmain.sh $(top_builddir)/configure.ac
 	$(SHELL) $(top_builddir)/config.status --recheck
 	chmod +x $@
@@ -72,10 +95,14 @@ configure-subdirs distdir: $(DIST_MAKEFILE_LIST)
 
 # Create and install libltdl
 install-data-hook:
-	cd libltdl && $(MAKE) local-install-files
 	chmod +x $(DESTDIR)$(pkgdatadir)/config.guess
 	chmod +x $(DESTDIR)$(pkgdatadir)/config.sub
 	chmod +x $(DESTDIR)$(pkgdatadir)/install-sh
+	chmod +x $(DESTDIR)$(pkgdatadir)/libltdl/config.guess
+	chmod +x $(DESTDIR)$(pkgdatadir)/libltdl/config.sub
+	chmod +x $(DESTDIR)$(pkgdatadir)/libltdl/install-sh
+	chmod +x $(DESTDIR)$(pkgdatadir)/libltdl/configure
+	chmod +x $(DESTDIR)$(pkgdatadir)/libltdl/missing
 
 # Uninstall libltdl
 uninstall-local:
