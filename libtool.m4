@@ -2693,7 +2693,7 @@ _LT_AC_TAGVAR(postdeps, $1)=
 _LT_AC_TAGVAR(compiler_lib_search_path, $1)=
 
 # Source file extension for C++ test sources.
-ac_ext=cc
+ac_ext=cpp
 
 # Object file extension for compiled C++ test sources.
 objext=o

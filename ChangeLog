@@ -1,3 +1,8 @@
+2005-08-10  Peter Ekberg  <peda@lysator.liu.se>
+
+	* libtool.m4 (AC_LIBTOOL_LANG_CXX_CONFIG): Set ac_ext to cpp,
+	not cc.
+
 2005-08-08  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* AUTHORS: Updated.
