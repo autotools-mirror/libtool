@@ -1,5 +1,11 @@
 2005-08-12  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* config/ltmain.m4sh (func_source): New function.
+	(func_mode_execute, func_mode_install, func_mode_link): Use it.
+	Do not append a dot to a file name to source, it breaks on
+	cygwin managed mounts and is not necessary anywhere.
+	Reported by Eric Blake <ebb9@byu.net>.
+
 	* config/ltmain.m4sh (func_execute_cmds): New function.
 	(func_mode_finish, func_mode_install, func_mode_link)
 	(func_mode_uninstall): Use it.
