@@ -105,12 +105,11 @@ EOF
   exit $EXIT_SUCCESS
 fi
 
-default_mode=
 magic="%%%MAGIC variable%%%"
 
 
 # Global variables.
-mode=$default_mode
+# $mode is unset
 nonopt=
 run=
 show="$ECHO"
