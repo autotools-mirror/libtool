@@ -5742,17 +5742,15 @@ relink_command=\"$relink_command\""
 	  notinst_deplibs=
 	  relink_command=
 
-	  # To insure that "foo" is sourced, and not "foo.exe",
-	  # finese the cygwin/MSYS system by explicitly sourcing "foo."
-	  # which disallows the automatic-append-.exe behavior.
-	  case $build in
-	  *cygwin* | *mingw*) wrapperdot=${wrapper}. ;;
-	  *) wrapperdot=${wrapper} ;;
-	  esac
+	  # Note that it is not necessary on cygwin/mingw to append a dot to
+	  # foo even if both foo and FILE.exe exist: automatic-append-.exe
+	  # behavior happens only for exec(3), not for open(2)!  Also, sourcing
+	  # `FILE.' does not work on cygwin managed mounts.
+	  #
 	  # If there is no directory component, then add one.
-	  case $file in
-	  */* | *\\*) . ${wrapperdot} ;;
-	  *) . ./${wrapperdot} ;;
+	  case $wrapper in
+	  */* | *\\*) . ${wrapper} ;;
+	  *) . ./${wrapper} ;;
 	  esac
 
 	  # Check the variables that should have been set.
@@ -5780,17 +5778,15 @@ relink_command=\"$relink_command\""
 	  done
 
 	  relink_command=
-	  # To insure that "foo" is sourced, and not "foo.exe",
-	  # finese the cygwin/MSYS system by explicitly sourcing "foo."
-	  # which disallows the automatic-append-.exe behavior.
-	  case $build in
-	  *cygwin* | *mingw*) wrapperdot=${wrapper}. ;;
-	  *) wrapperdot=${wrapper} ;;
-	  esac
+	  # Note that it is not necessary on cygwin/mingw to append a dot to
+	  # foo even if both foo and FILE.exe exist: automatic-append-.exe
+	  # behavior happens only for exec(3), not for open(2)!  Also, sourcing
+	  # `FILE.' does not work on cygwin managed mounts.
+	  #
 	  # If there is no directory component, then add one.
-	  case $file in
-	  */* | *\\*) . ${wrapperdot} ;;
-	  *) . ./${wrapperdot} ;;
+	  case $wrapper in
+	  */* | *\\*) . ${wrapper} ;;
+	  *) . ./${wrapper} ;;
 	  esac
 
 	  outputname=

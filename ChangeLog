@@ -1,5 +1,10 @@
 2005-08-10  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* ltmain.in (install mode) [ cygwin, mingw ]: Do not append a dot
+	to a file name to source it, it breaks on cygwin managed mounts
+	and is not necessary anywhere.
+	Reported by Eric Blake <ebb9@byu.net>.
+
 	* Makefile.am, libltdl/Makefile.am: Install libltdl data files
 	in correct order, by Automake rules.  Really fixes ownership and
 	timestamp problems.
