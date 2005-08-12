@@ -1,5 +1,12 @@
 2005-08-12  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* tests/defs.m4sh (func_configure): Rename to ..
+	(func_configure_nofail): this, call from old.
+	* tests/fcdemo-conf.test, tests/fcdemo-shared.test,
+	tests/fcdemo-static.test: Use.  Do not fail gratuitously but
+	SKIP on compilers that look like they could be Fortran 77-only.
+	Reported by Patrick Welche <prlw1@newn.cam.ac.uk>.
+
 	* config/ltmain.m4sh (mode): Do not initialize, for nicer error
 	messages.
 

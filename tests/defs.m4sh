@@ -171,14 +171,15 @@ func_require ()
     done
 }
 
-# func_configure [args ...]
+# func_configure_nofail [args ...]
 # Configure the demonstration.
-func_configure ()
+func_configure_nofail ()
 {
     $opt_debug
     my_args=${1+"$@"}
     my_dir=`pwd | $SED "$basename"`
     my_testdir="$srcdir/tests/$my_dir"
+    conf_status=$EXIT_FAILURE
 
     test -n "$my_args" && my_args=" $my_args"
     my_args="--srcdir="\""$my_testdir"\"" --prefix="\""$prefix"\""$my_args"
@@ -187,14 +188,26 @@ func_configure ()
     func_msg "Configuring in $my_dir"
 
     test -f "$my_testdir/configure" || autoreconf --force --install $my_testdir
-    test -f "$my_testdir/configure" || exit $EXIT_FAILURE
+    if test -f "$my_testdir/configure"; then
 
-    eval func_msg $SHELL "$my_testdir/configure" $my_args
-    eval $SHELL "$my_testdir/configure" $my_args || \
-      { func_msg "FAILED: Configuring in $my_testdir"
-        ls -ltr $my_testdir
-	exit $EXIT_FAILURE;
-      }
+      eval func_msg $SHELL "$my_testdir/configure" $my_args
+      if eval $SHELL "$my_testdir/configure" $my_args; then
+	conf_status=$EXIT_SUCCESS
+      else
+	func_msg "FAILED: Configuring in $my_testdir"
+	ls -ltr $my_testdir
+      fi
+    fi
+}
+
+# func_configure [args ...]
+# Configure the demonstration, fail on error.
+func_configure ()
+{
+    func_configure_nofail
+    if test "$conf_status" -eq "$EXIT_FAILURE"; then
+      exit $EXIT_FAILURE
+    fi
 }
 
 # func_check_static_shared staticp sharedp
