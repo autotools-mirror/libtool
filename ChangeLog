@@ -1,3 +1,11 @@
+2005-08-12  Jeremie LE HEN <tataz@sitadelle.com>,
+	    Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* doc/libtool.texi (Creating object files, Linking libraries):
+	Update description of library object (.lo) and libtoo library
+	(.la) files.
+	(all over): Replace MODE with --mode=MODE in examples.
+
 2005-08-12  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* config/ltmain.m4sh (func_source): New function.
