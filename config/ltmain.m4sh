@@ -626,6 +626,23 @@ func_ltwrapper_p ()
 }
 
 
+# func_execute_cmds commands fail_cmd
+# Execute tilde-delimited COMMANDS.
+# If FAIL_CMD is given, eval that upon failure.
+# FAIL_CMD may read-access the current command in variable CMD!
+func_execute_cmds ()
+{
+    $opt_debug
+    save_ifs=$IFS; IFS='~'
+    for cmd in $1; do
+      IFS=$save_ifs
+      eval cmd=\"$cmd\"
+      func_show_eval "$cmd" "${2-:}"
+    done
+    IFS=$save_ifs
+}
+
+
 # Generated shell functions inserted here.
 
 
@@ -1607,15 +1624,8 @@ func_mode_finish ()
       for libdir in $libdirs; do
 	if test -n "$finish_cmds"; then
 	  # Do each command in the finish commands.
-	  cmds=$finish_cmds
-	  save_ifs="$IFS"; IFS='~'
-	  for cmd in $cmds; do
-	    IFS="$save_ifs"
-	    eval cmd=\"$cmd\"
-	    func_show_eval "$cmd" 'admincmds="$admincmds
+	  func_execute_cmds "$finish_cmds" 'admincmds="$admincmds
 '"$cmd"'"'
-	  done
-	  IFS="$save_ifs"
 	fi
 	if test -n "$finish_eval"; then
 	  # Do the single finish_eval.
@@ -1907,14 +1917,7 @@ func_mode_install ()
 
 	  # Do each command in the postinstall commands.
 	  lib="$destdir/$realname"
-	  cmds=$postinstall_cmds
-	  save_ifs="$IFS"; IFS='~'
-	  for cmd in $cmds; do
-	    IFS="$save_ifs"
-	    eval cmd=\"$cmd\"
-	    func_show_eval "$cmd" 'exit $?'
-	  done
-	  IFS="$save_ifs"
+	  func_execute_cmds "$postinstall_cmds" 'exit $?'
 	fi
 
 	# Install the pseudo-library for information purposes.
@@ -2125,14 +2128,7 @@ func_mode_install ()
       fi
 
       # Do each command in the postinstall commands.
-      cmds=$old_postinstall_cmds
-      save_ifs="$IFS"; IFS='~'
-      for cmd in $cmds; do
-	IFS="$save_ifs"
-	eval cmd=\"$cmd\"
-	func_show_eval "$cmd" 'exit $?'
-      done
-      IFS="$save_ifs"
+      func_execute_cmds "$old_postinstall_cmds" 'exit $?'
     done
 
     test -n "$future_libdirs" && \
@@ -3729,27 +3725,13 @@ func_mode_link ()
 	    if test -f "$output_objdir/$soname-def"; then :
 	    else
 	      func_echo "extracting exported symbol list from \`$soname'"
-	      save_ifs="$IFS"; IFS='~'
-	      cmds=$extract_expsyms_cmds
-	      for cmd in $cmds; do
-		IFS="$save_ifs"
-		eval cmd=\"$cmd\"
-		func_show_eval "$cmd" 'exit $?'
-	      done
-	      IFS="$save_ifs"
+	      func_execute_cmds "$extract_expsyms_cmds" 'exit $?'
 	    fi
 
 	    # Create $newlib
 	    if test -f "$output_objdir/$newlib"; then :; else
 	      func_echo "generating import library for \`$soname'"
-	      save_ifs="$IFS"; IFS='~'
-	      cmds=$old_archive_from_expsyms_cmds
-	      for cmd in $cmds; do
-		IFS="$save_ifs"
-		eval cmd=\"$cmd\"
-		func_show_eval "$cmd" 'exit $?'
-	      done
-	      IFS="$save_ifs"
+	      func_execute_cmds "$old_archive_from_expsyms_cmds" 'exit $?'
 	    fi
 	    # make sure the library variables are pointing to the new library
 	    dir=$output_objdir
@@ -5356,14 +5338,7 @@ EOF
       reload_objs="$objs$old_deplibs "`$ECHO "X$libobjs" | $SP2NL | $Xsed -e '/\.'${libext}$'/d' -e '/\.lib$/d' -e "$lo2o" | $NL2SP`" $reload_conv_objs" ### testsuite: skip nested quoting test
 
       output="$obj"
-      cmds=$reload_cmds
-      save_ifs="$IFS"; IFS='~'
-      for cmd in $cmds; do
-	IFS="$save_ifs"
-	eval cmd=\"$cmd\"
-	func_show_eval "$cmd" 'exit $?'
-      done
-      IFS="$save_ifs"
+      func_execute_cmds "$reload_cmds" 'exit $?'
 
       # Exit if we aren't doing a library object file.
       if test -z "$libobj"; then
@@ -5390,14 +5365,7 @@ EOF
 	# Only do commands if we really have different PIC objects.
 	reload_objs="$libobjs $reload_conv_objs"
 	output="$libobj"
-	cmds=$reload_cmds
-	save_ifs="$IFS"; IFS='~'
-	for cmd in $cmds; do
-	  IFS="$save_ifs"
-	  eval cmd=\"$cmd\"
-	  func_show_eval "$cmd" 'exit $?'
-	done
-	IFS="$save_ifs"
+	func_execute_cmds "$reload_cmds" 'exit $?'
       fi
 
       if test -n "$gentop"; then
@@ -5560,14 +5528,7 @@ EOF
 
       # template prelinking step
       if test -n "$prelink_cmds"; then
-	cmds=$prelink_cmds
-	save_ifs="$IFS"; IFS='~'
-	for cmd in $cmds; do
-	  eval cmd=\"$cmd\"
-	  IFS="$save_ifs"
-	  func_show_eval "$cmd" 'exit $?'
-	done
-	IFS="$save_ifs"
+	func_execute_cmds "$prelink_cmds" 'exit $?'
       fi
 
       wrappers_required=yes
@@ -6389,13 +6350,7 @@ fi\
 	  fi
 	fi
       fi
-      save_ifs="$IFS"; IFS='~'
-      for cmd in $cmds; do
-	eval cmd=\"$cmd\"
-	IFS="$save_ifs"
-	func_show_eval "$cmd" 'exit $?'
-      done
-      IFS="$save_ifs"
+      func_execute_cmds "$cmds" 'exit $?'
     done
 
     test -n "$generated" && \
@@ -6646,32 +6601,12 @@ func_mode_uninstall ()
 	  if test "$mode" = uninstall; then
 	    if test -n "$library_names"; then
 	      # Do each command in the postuninstall commands.
-	      cmds=$postuninstall_cmds
-	      save_ifs="$IFS"; IFS='~'
-	      for cmd in $cmds; do
-		IFS="$save_ifs"
-		eval cmd=\"$cmd\"
-		func_show_eval "$cmd"
-		if test "$?" -ne 0 && test "$rmforce" != yes; then
-		  exit_status=1
-		fi
-	      done
-	      IFS="$save_ifs"
+	      func_execute_cmds "$postuninstall_cmds" 'test "$rmforce" = yes || exit_status=1'
 	    fi
 
 	    if test -n "$old_library"; then
 	      # Do each command in the old_postuninstall commands.
-	      cmds=$old_postuninstall_cmds
-	      save_ifs="$IFS"; IFS='~'
-	      for cmd in $cmds; do
-		IFS="$save_ifs"
-		eval cmd=\"$cmd\"
-		func_show_eval "$cmd"
-		if test "$?" -ne 0 && test "$rmforce" != yes; then
-		  exit_status=1
-		fi
-	      done
-	      IFS="$save_ifs"
+	      func_execute_cmds "$old_postuninstall_cmds" 'test "$rmforce" = yes || exit_status=1'
 	    fi
 	    # FIXME: should reinstall the best remaining shared library.
 	  fi

@@ -1,5 +1,9 @@
 2005-08-12  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* config/ltmain.m4sh (func_execute_cmds): New function.
+	(func_mode_finish, func_mode_install, func_mode_link)
+	(func_mode_uninstall): Use it.
+
 	* tests/defs.m4sh (func_configure): Rename to ..
 	(func_configure_nofail): this, call from old.
 	* tests/fcdemo-conf.test, tests/fcdemo-shared.test,
