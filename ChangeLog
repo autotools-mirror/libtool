@@ -1,5 +1,8 @@
 2005-08-13  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* tests/inherited_flags.at: Store intermediate libtool output
+	for better debugging.
+
 	* tests/link-order.at: Add -no-undefined to LDFLAGS.
 
 	* tests/convenience.at, tests/template.at: Change suffix of C++
