@@ -1,5 +1,7 @@
 2005-08-13  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* tests/link-order.at: Add -no-undefined to LDFLAGS.
+
 	* tests/convenience.at, tests/template.at: Change suffix of C++
 	files to .cpp, for compatibility with MSVC.
 	Reported by Peter Ekberg <peda@axentia.se>.

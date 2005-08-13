@@ -20,6 +20,7 @@
 
 AT_SETUP([Link order test.])
 eval `$LIBTOOL --config | grep ECHO=`
+LDFLAGS="$LDFLAGS -no-undefined"
 
 prefix_old=`pwd`/old
 prefix_new=`pwd`/new
@@ -53,7 +54,7 @@ EOF
   $LIBTOOL --mode=compile $CC $CFLAGS -c src/b_$i.c -o src/b.lo
   $LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o src/libb.la src/b.lo \
       -L$prefix_old/lib -lcee -rpath $prefix/lib
-  $LIBTOOL --mode=link $CC $CFLAGS -o src/liba.la src/a.lo \
+  $LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o src/liba.la src/a.lo \
       src/libb.la -L$prefix_old/lib -lcee -rpath $prefix/lib
   $LIBTOOL --mode=install cp src/libb.la $prefix/lib/libb.la
   AT_CHECK([$LIBTOOL --mode=install cp src/liba.la $prefix/lib/liba.la],
