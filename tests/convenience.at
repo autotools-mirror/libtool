@@ -47,18 +47,18 @@ AT_CLEANUP
 AT_SETUP([C++ convenience archives])
 LT_AT_TAG([CXX])
 
-echo 'int a(void) { return 1; }' > a.cc
-echo 'int b(void) { return 2; }' > b.cc
-echo 'int c(void) { return 3; }' > c.cc
-AT_DATA(main.cc,
+echo 'int a(void) { return 1; }' > a.cpp
+echo 'int b(void) { return 2; }' > b.cpp
+echo 'int c(void) { return 3; }' > c.cpp
+AT_DATA(main.cpp,
 [[extern int a(void), b(void), c(void);
 int main(void) { return a() + b() + c() != 6; }
 ]])
 
-$LIBTOOL --tag=CXX --mode=compile $CXX $CXXFLAGS -c a.cc
-$LIBTOOL --tag=CXX --mode=compile $CXX $CXXFLAGS -c b.cc
-$LIBTOOL --tag=CXX --mode=compile $CXX $CXXFLAGS -c c.cc
-$LIBTOOL --tag=CXX --mode=compile $CXX $CXXFLAGS -c main.cc
+$LIBTOOL --tag=CXX --mode=compile $CXX $CXXFLAGS -c a.cpp
+$LIBTOOL --tag=CXX --mode=compile $CXX $CXXFLAGS -c b.cpp
+$LIBTOOL --tag=CXX --mode=compile $CXX $CXXFLAGS -c c.cpp
+$LIBTOOL --tag=CXX --mode=compile $CXX $CXXFLAGS -c main.cpp
 $LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS $LDFLAGS -o liba.la a.lo
 $LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS $LDFLAGS -o libb.la b.lo
 $LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS $LDFLAGS -o libcee.la c.lo liba.la libb.la -rpath /notexist

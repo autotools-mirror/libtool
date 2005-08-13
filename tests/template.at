@@ -27,7 +27,7 @@ AT_DATA(aclib.h,
 [[int cf(int);
 ]])
 
-AT_DATA(aclib.cc,
+AT_DATA(aclib.cpp,
 [[#include "aclib.h"
 template<typename T>
 
@@ -46,7 +46,7 @@ AT_DATA(alib.h,
 [[int f(int);
 ]])
 
-AT_DATA(alib.cc,
+AT_DATA(alib.cpp,
 [[#include "alib.h"
 
 template<typename T>
@@ -61,7 +61,7 @@ int f(int i)
 }
 ]])
 
-AT_DATA(prog.cc,
+AT_DATA(prog.cpp,
 [[#include <iostream>
 #include "alib.h"
 #include "aclib.h"
@@ -77,11 +77,11 @@ int main()
 }
 ]])
 
-AT_CHECK($LIBTOOL --tag=CXX --mode=compile $CXX -I. $CPPFLAGS $CXXFLAGS -c -o alib.lo alib.cc, [0], [ignore], [ignore])
-AT_CHECK($LIBTOOL --tag=CXX --mode=compile $CXX -I. $CPPFLAGS $CXXFLAGS -c -o aclib.lo aclib.cc, [0], [ignore], [ignore])
+AT_CHECK($LIBTOOL --tag=CXX --mode=compile $CXX -I. $CPPFLAGS $CXXFLAGS -c -o alib.lo alib.cpp, [0], [ignore], [ignore])
+AT_CHECK($LIBTOOL --tag=CXX --mode=compile $CXX -I. $CPPFLAGS $CXXFLAGS -c -o aclib.lo aclib.cpp, [0], [ignore], [ignore])
 AT_CHECK($LIBTOOL --tag=CXX --mode=link $CXX $CPPFLAGS $CXXFLAGS -o libaclib.la aclib.lo, [0], [ignore], [ignore])
 AT_CHECK($LIBTOOL --tag=CXX --mode=link $CXX $CPPFLAGS $CXXFLAGS -o libalib.la -rpath /usr/local/lib alib.lo libaclib.la, [0], [ignore], [ignore])
-AT_CHECK($CXX -I. $CPPFLAGS $CXXFLAGS -c -o prog.o prog.cc, [0], [ignore], [ignore])
+AT_CHECK($CXX -I. $CPPFLAGS $CXXFLAGS -c -o prog.o prog.cpp, [0], [ignore], [ignore])
 AT_CHECK($LIBTOOL --tag=CXX --mode=link $CXX $CPPFLAGS $CXXFLAGS -o prog prog.o libalib.la, [0], [ignore], [ignore])
 
 LT_AT_EXEC_CHECK([./prog], [0], [a sample prog
@@ -108,13 +108,13 @@ dnl ]])
 dnl AT_DATA(Makefile.am,
 dnl [[ACLOCAL_AMFLAGS = -I m4
 dnl noinst_LTLIBRARIES = libaclib.la
-dnl libaclib_la_SOURCES = aclib.cc aclib.h
+dnl libaclib_la_SOURCES = aclib.cpp aclib.h
 dnl lib_LTLIBRARIES = libalib.la
 dnl include_HEADERS = alib.h
-dnl libalib_la_SOURCES = alib.cc
+dnl libalib_la_SOURCES = alib.cpp
 dnl libalib_la_LIBADD = libaclib.la
 dnl bin_PROGRAMS = prog
-dnl prog_SOURCES = prog.cc
+dnl prog_SOURCES = prog.cpp
 dnl LDADD = libalib.la
 dnl ]])
 
@@ -147,7 +147,7 @@ inline int a3(const double* t)
 }
 ]])
 
-AT_DATA(src/lib/a.cc,
+AT_DATA(src/lib/a.cpp,
 [[#include "a.hh"
 
 int a2(char t)
@@ -169,7 +169,7 @@ struct bs { int bi; };
 extern int b3(bs t);
 ]])
 
-AT_DATA(src/lib2/b.cc,
+AT_DATA(src/lib2/b.cpp,
 [[#include "b.hh"
 
 int b2(char* t)
@@ -183,7 +183,7 @@ int b3(bs t)
 }
 ]])
 
-AT_DATA(src/sub/main.cc,
+AT_DATA(src/sub/main.cpp,
 [[#include "b.hh"
 
 int main()
@@ -199,9 +199,9 @@ int main()
 
 cd obj
 
-AT_CHECK($LIBTOOL --tag=CXX --mode=compile $CXX $CPPFLAGS $CXXFLAGS -c -o lib/a.lo ../src/lib/a.cc, [0], [ignore], [ignore])
-AT_CHECK($LIBTOOL --tag=CXX --mode=compile $CXX $CPPFLAGS $CXXFLAGS -c -o lib2/b.lo ../src/lib2/b.cc, [0], [ignore], [ignore])
-AT_CHECK($CXX $CPPFLAGS $CXXFLAGS -c -o sub/main.o ../src/sub/main.cc, [0], [ignore], [ignore])
+AT_CHECK($LIBTOOL --tag=CXX --mode=compile $CXX $CPPFLAGS $CXXFLAGS -c -o lib/a.lo ../src/lib/a.cpp, [0], [ignore], [ignore])
+AT_CHECK($LIBTOOL --tag=CXX --mode=compile $CXX $CPPFLAGS $CXXFLAGS -c -o lib2/b.lo ../src/lib2/b.cpp, [0], [ignore], [ignore])
+AT_CHECK($CXX $CPPFLAGS $CXXFLAGS -c -o sub/main.o ../src/sub/main.cpp, [0], [ignore], [ignore])
 # both convenience
 AT_CHECK($LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS -o lib/liba.la lib/a.lo, [0], [ignore], [ignore])
 AT_CHECK($LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS -o lib2/libb.la lib2/b.lo, [0], [ignore], [ignore])
@@ -253,10 +253,10 @@ dnl [[ACLOCAL_AMFLAGS = -I m4
 dnl INCLUDES = -I$(srcdir)/lib -I$(srcdir)/lib2
 dnl bin_PROGRAMS = sub/main
 dnl noinst_LTLIBRARIES = lib/liba.la lib2/libb.la
-dnl lib_liba_la_SOURCES = lib/a.cc lib/a.hh
-dnl lib2_libb_la_SOURCES = lib2/b.cc lib2/b.hh
+dnl lib_liba_la_SOURCES = lib/a.cpp lib/a.hh
+dnl lib2_libb_la_SOURCES = lib2/b.cpp lib2/b.hh
 dnl #lib2_libb_la_LIBADD = lib/liba.la
-dnl sub_main_SOURCES = sub/main.cc
+dnl sub_main_SOURCES = sub/main.cpp
 dnl sub_main_LDADD = lib2/libb.la lib/liba.la
 dnl ]])
 
