@@ -1,3 +1,7 @@
+2005-08-17  Gary V. Vaughan  <gary@gnu.org>
+
+	* m4/ltdl.m4 (LTDL_INIT): Fix mismatched parens.
+
 2005-08-13  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* tests/inherited_flags.at: Store intermediate libtool output
@@ -9,7 +13,7 @@
 	files to .cpp, for compatibility with MSVC.
 	Reported by Peter Ekberg <peda@axentia.se>.
 
-2005-08-12  Jeremie LE HEN <tataz@sitadelle.com>,
+2005-08-12  Jeremie LE HEN  <tataz@sitadelle.com>,
 	    Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* doc/libtool.texi (Creating object files, Linking libraries):
@@ -108,49 +112,33 @@
 	* m4/ltdl.m4 (LTDL_INIT): Set the LTDLOPEN define according
 	to libname_spec.
 
-2005-07-28  Peter Ekberg  <peda@lysator.liu.se>
-
 	* tests/mdemo-dryrun.test: ls -l in MSYS sometimes shows year,
 	not time, for really fresh files. Add sleep 1 calls at
 	strategic places. Makes the test pass for MinGW.
 
-2005-07-28  Peter Ekberg  <peda@lysator.liu.se>
-
 	* m4/libtool.m4 (_LT_LINKER_OPTION): Fix copy-paste bug, it is
 	the linker that is tested.
 
-2005-07-28  Peter Ekberg  <peda@lysator.liu.se>
-
 	* tests/demo-noinst-link.test: $make is empty on MSYS, replace
 	with $MAKE. Makes the test pass for MinGW.
-
-2005-07-28  Peter Ekberg  <peda@lysator.liu.se>
 
 	* config/ltmain.m4sh (func_generate_dlsyms): Properly remove
 	the fake symbol line ": @PROGRAM@ " from the list of exported
 	symbols.
 
-2005-07-28  Peter Ekberg  <peda@lysator.liu.se>
-
 	* libltdl/loaders/loadlibrary.c (vm_open): Set the error mode so
 	that no dialog is popped up in case the file given to
 	LoadLibrary is not a dll.
 
-2005-07-28  Peter Ekberg  <peda@lysator.liu.se>
-
 	* config/ltmain.m4sh (func_mode_link) <lib>: Make sure
 	skipped_export is set to colon if _some_ cmd of
 	export_symbols_cmds is too long.
-
-2005-07-28  Peter Ekberg  <peda@lysator.liu.se>
 
 	* libltdl/ltdl.c: The linker is confused by having one
 	definition of lt_libltdlc_LTX_preloaded_symbols tagged with
 	__declspec(dllexport) in ltdl.c and one definition with an
 	initial value in libltdlcS.c. So, just say extern in ltdl.c.
 	Fixes the mdemo-exec.test for MinGW.
-
-2005-07-28  Peter Ekberg  <peda@lysator.liu.se>
 
 	* config/ltmain.m4sh (func_mode_link) <lib>: Zap duplicate
 	message "creating reloadable object files..."
