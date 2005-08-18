@@ -5502,7 +5502,6 @@ if test "$_lt_caught_CXX_error" != yes; then
           CC*)
   	    # Sun C++ 4.2, 5.x and Centerline C++
             _LT_TAGVAR(archive_cmds_need_lc,$1)=yes
-            _LT_TAGVAR(postdeps,$1)='-lCstd -lCrun'
   	    _LT_TAGVAR(no_undefined_flag, $1)=' -zdefs'
   	    _LT_TAGVAR(archive_cmds, $1)='$CC -G${allow_undefined_flag}  -h$soname -o $lib $predep_objects $libobjs $deplibs $postdep_objects $compiler_flags'
   	    _LT_TAGVAR(archive_expsym_cmds, $1)='echo "{ global:" > $lib.exp~cat $export_symbols | $SED -e "s/\(.*\)/\1;/" >> $lib.exp~echo "local: *; };" >> $lib.exp~
@@ -5784,6 +5783,18 @@ else
 fi
 
 $RM -f confest.$objext
+
+# PORTME: override above test on systems where it is broken
+m4_if([$1], [CXX],
+[case $host_os in
+solaris*)
+  case $cc_basename in
+  CC*)
+    _LT_TAGVAR(postdeps,$1)='-lCstd -lCrun'
+    ;;
+  esac
+esac
+])
 
 case " $_LT_TAGVAR(postdeps, $1) " in
 *" -lc "*) _LT_TAGVAR(archive_cmds_need_lc, $1)=no ;;
