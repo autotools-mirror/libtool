@@ -1,5 +1,7 @@
 2005-08-18  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* TODO: Actually updated now.
+
 	* m4/libtool.m4 (_LT_SYS_DYNAMIC_LINKER) [ freebsd ]: Do not
 	assume `aout' for modern FreeBSD by absence of deprecated
 	`objformat'.

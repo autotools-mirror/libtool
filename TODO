@@ -73,11 +73,8 @@ GNU Libtool
   together with a compiler which does not understand `-c -o'.
   Reported by Marcin Siennicki.
 
-* Fix -no-undefined with Solaris CC,f77.  Maybe look at implementing something
-  along the idea of [support #103719] for CC.
-  Reported by Ralf Menzel <menzel@ls6.cs.uni-dortmund.de>,
-  Пухальский Юрий Андреевич <pooh@cryptopro.ru>,
-  Albert Chin <libtool-patches@mlists.thewrittenword.com> and others.
+* Look at better -no-undefined support, maybe along the idea of
+  [support #103719] for CC.
 
 
 1.2. libtldl
