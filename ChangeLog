@@ -1,3 +1,9 @@
+2005-08-18  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* libtool.m4 [sun, CC] (AC_LIBTOOL_LANG_CXX_CONFIG): Move
+	postdeps override ..
+	(AC_LIBTOOL_POSTDEP_PREDEP): ..here, so they actually override.
+
 2005-08-18  Stepan Kasal  <kasal@ucw.cz>
 
 	* ltmain.in (SP2NL, NL2SP): Simplify.
