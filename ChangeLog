@@ -1,3 +1,7 @@
+2005-08-18  Stepan Kasal  <kasal@ucw.cz>
+
+	* ltmain.in (SP2NL, NL2SP): Simplify.
+
 2005-08-10  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* ltmain.in (install mode) [ cygwin, mingw ]: Do not append a dot

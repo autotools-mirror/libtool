@@ -88,14 +88,15 @@ rm="rm -f"
 Xsed="${SED}"' -e 1s/^X//'
 sed_quote_subst='s/\([\\`\\"$\\\\]\)/\\\1/g'
 # test EBCDIC or ASCII
-case `echo A|tr A '\301'` in
- A) # EBCDIC based system
-  SP2NL="tr '\100' '\n'"
-  NL2SP="tr '\r\n' '\100\100'"
+case `echo X|tr X '\101'` in
+ A) # ASCII based system
+    # \n is not interpreted correctly by Solaris 8 /usr/ucb/tr
+  SP2NL='tr \040 \012'
+  NL2SP='tr \015\012 \040\040'
   ;;
- *) # Assume ASCII based system
-  SP2NL="tr '\040' '\012'"
-  NL2SP="tr '\015\012' '\040\040'"
+ *) # EBCDIC based system
+  SP2NL='tr \100 \n'
+  NL2SP='tr \r\n \100\100'
   ;;
 esac
 
