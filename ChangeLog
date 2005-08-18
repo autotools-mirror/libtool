@@ -1,5 +1,9 @@
 2005-08-18  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* libtool.m4 (AC_LIBTOOL_SYS_DYNAMIC_LINKER) [ freebsd ]: Do not
+	assume `aout' for modern FreeBSD by absence of deprecated
+	`objformat'.
+
 	* libtool.m4 [sun, CC] (AC_LIBTOOL_LANG_CXX_CONFIG): Move
 	postdeps override ..
 	(AC_LIBTOOL_POSTDEP_PREDEP): ..here, so they actually override.
