@@ -1,3 +1,10 @@
+2005-08-18  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* m4/libtool.m4 [sun, CC] (_LT_LANG_CXX_CONFIG): Move postdeps
+	override ..
+	(_LT_SYS_HIDDEN_LIBDEPS): ..here.
+	* TODO: Updated.
+
 2005-08-18  Stepan Kasal  <kasal@ucw.cz>
 
 	* config/general.m4sh (SP2NL, NL2SP): Simplify.
