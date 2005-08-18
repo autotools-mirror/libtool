@@ -21,7 +21,9 @@
 m4_divert_push([PREPARE_TESTS])dnl
 : ${LIBTOOLIZE="${abs_top_builddir}/libtoolize"}
 : ${LIBTOOL="${abs_top_builddir}/libtool"}
-export LIBTOOLIZE LIBTOOL
+: ${ACLOCAL=aclocal}
+: ${AUTOCONF=autoconf}
+export LIBTOOLIZE LIBTOOL ACLOCAL AUTOCONF
 eval `$LIBTOOL --config | grep ^EGREP=`
 eval `$LIBTOOL --config | $EGREP '(host|build)='`
 m4_divert_pop([PREPARE_TESTS])dnl
@@ -97,5 +99,7 @@ m4_include([link-order.at])
 m4_include([am-subdir.at])
 # C++ templates tests
 m4_include([template.at])
+# Behaviour of LT_OUTPUT
+m4_include([early-libtool.at])
 # stress test
 m4_include([stresstest.at])

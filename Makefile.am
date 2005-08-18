@@ -301,6 +301,7 @@ TESTSUITE_AT	= tests/testsuite.at \
 		  tests/stresstest.at \
 		  tests/link-order.at \
 		  tests/convenience.at \
+		  tests/early-libtool.at \
 		  tests/template.at
 
 EXTRA_DIST     += $(TESTSUITE) $(TESTSUITE_AT) tests/package.m4

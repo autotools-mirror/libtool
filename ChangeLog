@@ -1,3 +1,17 @@
+2005-08-18  Gary V. Vaughan  <gary@gnu.org>,
+	    Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* m4/libtool.m4 (LT_OUTPUT): New macro to generate
+	libtool before config.status.
+	(_LT_CONFIG_COMMANDS): If LT_OUTPUT has been invoked, then
+	generate code in config.status to call config.lt instead of
+	generating libtool directly.
+	* doc/libtool.texi (LT_INIT): Document LT_OUTPUT.
+	* tests/early-libtool.at: New test.
+	* Makefile.am (TESTSUITE_AT): Updated.
+	* tests/testsuite.at: Updated.  Define defaults for $ACLOCAL,
+	$AUTOCONF.
+
 2005-08-18  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* TODO: Actually updated now.
