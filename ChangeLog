@@ -1,5 +1,7 @@
 2005-08-21  Gary V. Vaughan  <gary@gnu.org>
 
+	* libltdl/Makefile.am: revert mistaken commit.
+
 	* tests/template.at [darwin]: Some of these tests result in
 	unresolved symbols on darwin, so don't run those test on that
 	host!
