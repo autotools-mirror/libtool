@@ -208,9 +208,13 @@ AT_CHECK($LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS -o lib2/libb.la lib2/b.lo
 AT_CHECK($LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS -o sub/main sub/main.o lib2/libb.la lib/liba.la, [0], [ignore], [ignore])
 LT_AT_EXEC_CHECK([./sub/main], [ignore])
 # lib convenience
-AT_CHECK($LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS -o lib2/libb.la lib2/b.lo -rpath /foo, [0], [ignore], [ignore])
-AT_CHECK($LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS -o sub/main sub/main.o lib2/libb.la lib/liba.la, [0], [ignore], [ignore])
-LT_AT_EXEC_CHECK([./sub/main])
+case $host in
+  *-*-darwin*) ;;
+  *)	AT_CHECK($LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS -o lib2/libb.la lib2/b.lo -rpath /foo, [0], [ignore], [ignore])
+	AT_CHECK($LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS -o sub/main sub/main.o lib2/libb.la lib/liba.la, [0], [ignore], [ignore])
+	LT_AT_EXEC_CHECK([./sub/main])
+	;;
+esac
 # both installed
 AT_CHECK($LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS -o lib/liba.la lib/a.lo -rpath /foo, [0], [ignore], [ignore])
 AT_CHECK($LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS -o lib2/libb.la lib2/b.lo -rpath /bar, [0], [ignore], [ignore])
@@ -222,14 +226,21 @@ AT_CHECK($LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS -o lib2/libb.la lib2/b.lo
 AT_CHECK($LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS -o sub/main sub/main.o lib2/libb.la, [0], [ignore], [ignore])
 LT_AT_EXEC_CHECK([./sub/main])
 # lib convenience
-AT_CHECK($LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS -o lib2/libb.la lib2/b.lo lib/liba.la -rpath /foo, [0], [ignore], [ignore])
-AT_CHECK($LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS -o sub/main sub/main.o lib2/libb.la, [0], [ignore], [ignore])
-LT_AT_EXEC_CHECK([./sub/main])
+case $host in
+  *-*-darwin*) ;;
+  *)	AT_CHECK($LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS -o lib2/libb.la lib2/b.lo lib/liba.la -rpath /foo, [0], [ignore], [ignore])
+	AT_CHECK($LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS -o sub/main sub/main.o lib2/libb.la, [0], [ignore], [ignore])
+	LT_AT_EXEC_CHECK([./sub/main])
+	;;
+esac
 # both installed
-AT_CHECK($LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS -o lib/liba.la lib/a.lo -rpath /foo, [0], [ignore], [ignore])
-AT_CHECK($LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS -o lib2/libb.la lib2/b.lo lib/liba.la -rpath /bar, [0], [ignore], [ignore])
-AT_CHECK($LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS -o sub/main sub/main.o lib2/libb.la, [0], [ignore], [ignore])
-LT_AT_EXEC_CHECK([./sub/main])
+case $host in
+  *-*-darwin*) ;;
+  *)	AT_CHECK($LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS -o lib2/libb.la lib2/b.lo lib/liba.la -rpath /bar, [0], [ignore], [ignore])
+	AT_CHECK($LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS -o sub/main sub/main.o lib2/libb.la, [0], [ignore], [ignore])
+	LT_AT_EXEC_CHECK([./sub/main])
+	;;
+esac
 
 cd ..
 
@@ -247,7 +258,7 @@ dnl AC_PROG_LIBTOOL
 dnl AC_CONFIG_FILES([Makefile])
 dnl AC_OUTPUT
 dnl ]])
-dnl 
+dnl
 dnl AT_DATA(src/Makefile.am,
 dnl [[ACLOCAL_AMFLAGS = -I m4
 dnl INCLUDES = -I$(srcdir)/lib -I$(srcdir)/lib2

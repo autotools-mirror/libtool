@@ -1,3 +1,9 @@
+2005-08-21  Gary V. Vaughan  <gary@gnu.org>
+
+	* tests/template.at [darwin]: Some of these tests result in
+	unresolved symbols on darwin, so don't run those test on that
+	host!
+
 2005-08-18  Gary V. Vaughan  <gary@gnu.org>,
 	    Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
@@ -133,7 +139,7 @@
 
 2005-07-29  Richard Moseley  <dickie.moseley@virgin.net>
 
-	* m4/ltdl.m4 (LTDL_INIT): Handle in addition the new name for 
+	* m4/ltdl.m4 (LTDL_INIT): Handle in addition the new name for
 	AC_LIST_HEADERS which is _AC_LIST_TAGS.
 
 2005-07-28  Peter Ekberg  <peda@lysator.liu.se>
@@ -340,7 +346,7 @@
 
 2005-05-15  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
-	* m4/libtool.m4 (_LT_LINKER_SHLIBS, _LT_LANG_CXX_CONFIG) [aix]: 
+	* m4/libtool.m4 (_LT_LINKER_SHLIBS, _LT_LANG_CXX_CONFIG) [aix]:
 	Fix wrong $ECHO use overlooked in 2005-04-27.  Simplify slightly.
 
 	* m4/libtool.m4 (_LT_COMPILER_PIC, _LT_LINKER_SHLIBS,
@@ -491,7 +497,7 @@
 	* config/ltmain.m4sh (func_mode_link): If command exceeds
 	max_cmd_len and file_list_spec exists, write list of input files
 	to temporary file.
-	* m4/libtool.m4 (_LT_LINKER_SHLIBS, _LT_LANG_CXX_CONFIG) 
+	* m4/libtool.m4 (_LT_LINKER_SHLIBS, _LT_LANG_CXX_CONFIG)
 	[aix4,aix5]: Define file_list_spec.
 
 2005-04-18  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
@@ -675,7 +681,7 @@
 2005-04-04  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* tests/template.at: New Autotest tests for C++ with templates.
-	First test provided by 
+	First test provided by
 	Markus Christen	<markus@igc.phys.chem.ethz.ch>.
 	* tests/Makefile.am, tests/testsuite.at: Use and distribute.
 
