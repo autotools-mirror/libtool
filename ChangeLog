@@ -1,5 +1,8 @@
 2005-08-22  Peter Ekberg  <peda@lysator.liu.se>
 
+	* doc/libtool.texi: Shorten the lines describing the
+	output from MS dumpbin, and align the columns.
+
 	* m4/libtool.m4: Bump serial number.
 	(LT_PATH_NM): If nm is not found on the path, look for
 	dumpbin. Then check if $NM responds as dumpbin would

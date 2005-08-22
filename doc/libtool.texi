@@ -5011,9 +5011,9 @@ For MS @command{dumpbin}, the symbols should be in one of the following
 formats:
 
 @example
-@var{counter} @var{size}    UNDEF          notype       External     | @var{global-variable-name}
-@var{counter} @var{address} @var{section}  notype       External     | @var{global-variable-name}
-@var{counter} @var{address} @var{section}  notype ()    External     | @var{global-function-name}
+@var{counter} @var{size}    UNDEF    notype       External     | @var{global-var}
+@var{counter} @var{address} @var{section}  notype       External     | @var{global-var}
+@var{counter} @var{address} @var{section}  notype ()    External     | @var{global-func}
 @end example
 
 The @var{size} of the global variables are not zero and the @var{section}
