@@ -37,7 +37,7 @@ m4_define([_LT_COPYING], [dnl
 # the same distribution terms that you use for the rest of that program.
 ])
 
-# serial 50 LT_INIT
+# serial 51 LT_INIT
 
 
 # LT_PREREQ(VERSION)
@@ -2858,9 +2858,11 @@ _LT_DECL([], [file_magic_cmd], [1],
 
 # LT_PATH_NM
 # ----------
-# find the pathname to a BSD-compatible name lister
+# find the pathname to a BSD- or MS-compatible name lister
 AC_DEFUN([LT_PATH_NM],
-[AC_CACHE_CHECK([for BSD-compatible nm], lt_cv_path_NM,
+[AC_REQUIRE([AC_PROG_CC])dnl
+AC_REQUIRE([AC_OBJEXT])dnl
+AC_CACHE_CHECK([for BSD- or MS-compatible name lister (nm)], lt_cv_path_NM,
 [if test -n "$NM"; then
   # Let the user override the test.
   lt_cv_path_NM="$NM"
@@ -2897,10 +2899,35 @@ else
   IFS="$lt_save_ifs"
   test -z "$lt_cv_path_NM" && lt_cv_path_NM=nm
 fi])
-NM="$lt_cv_path_NM"
+if test "$lt_cv_path_NM" != "no"; then
+  NM="$lt_cv_path_NM"
+else
+  # Didn't find any BSD compatible name lister, look for dumpbin.
+  AC_CHECK_TOOL(DUMPBIN, [dumpbin -symbols], :)
+  AC_SUBST([DUMPBIN])
+  if test "$DUMPBIN" != ":"; then
+    NM="$DUMPBIN"
+  fi
+fi
 test -z "$NM" && NM=nm
 AC_SUBST([NM])
-_LT_DECL([], [NM], [1], [A BSD-compatible nm program])dnl
+_LT_DECL([], [NM], [1], [A BSD- or MS-compatible name lister])dnl
+
+AC_CACHE_CHECK([the name lister ($NM) interface], [lt_cv_nm_interface],
+  [lt_cv_nm_interface="BSD nm"
+  printf "int some_variable = 0;" > conftest.$ac_ext
+  (eval echo "\"\$as_me:__oline__: $ac_compile\"" >&AS_MESSAGE_LOG_FD)
+  (eval "$ac_compile" 2>conftest.err)
+  cat conftest.err >&AS_MESSAGE_LOG_FD
+  (eval echo "\"\$as_me:__oline__: $NM \\\"conftest.$ac_objext\\\"\"" >&AS_MESSAGE_LOG_FD)
+  (eval "$NM \"conftest.$ac_objext\"" 2>conftest.err > conftest.out)
+  cat conftest.err >&AS_MESSAGE_LOG_FD
+  (eval echo "\"\$as_me:__oline__: output\"" >&AS_MESSAGE_LOG_FD)
+  cat conftest.out >&AS_MESSAGE_LOG_FD
+  if $GREP 'External.*some_variable' conftest.out > /dev/null; then
+    lt_cv_nm_interface="MS dumpbin"
+  fi
+  rm -f conftest*])
 ])# LT_PATH_NM
 
 # Old names:
@@ -3037,7 +3064,19 @@ for ac_symprfx in "" "_"; do
   symxfrm="\\1 $ac_symprfx\\2 \\2"
 
   # Write the raw and C identifiers.
-  lt_cv_sys_global_symbol_pipe="sed -n -e 's/^.*[[ 	]]\($symcode$symcode*\)[[ 	]][[ 	]]*$ac_symprfx$sympat$opt_cr$/$symxfrm/p'"
+  if test "$lt_cv_nm_interface" = "MS dumpbin"; then
+    # Fake it for dumpbin and say T for any non-static function
+    # and D for any global variable.
+    # Also find C++ and __fastcall symbols from MSVC++,
+    # which start with @ or ?.
+    lt_cv_sys_global_symbol_pipe="$SED -n -e ['/ UNDEF [^|]*()/d; / 00* UNDEF /d;
+	s/.*().*External *| *$ac_symprfx$sympat.*/T $ac_symprfx\1 \1/p;
+	s/.*External *| *$ac_symprfx$sympat.*/D $ac_symprfx\1 \1/p;
+	s/.*().*External *| *\([@?][_A-Za-z0-9@?]*\).*/T \1 \1/p;
+	s/.*External *| *\([@?][_A-Za-z0-9@?]*\).*/D \1 \1/p'"
+  else
+    lt_cv_sys_global_symbol_pipe="sed -n -e 's/^.*[[ 	]]\($symcode$symcode*\)[[ 	]][[ 	]]*$ac_symprfx$sympat$opt_cr$/$symxfrm/p'"
+  fi
 
   # Check to see that the pipe works correctly.
   pipe_works=no

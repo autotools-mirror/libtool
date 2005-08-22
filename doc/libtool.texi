@@ -1685,9 +1685,9 @@ the path to the linker used by @samp{$CC}, and whether it is the
 @end defmac
 
 @defmac LT_PATH_NM
-Try to find a @sc{bsd} compatible @command{nm} command on this
-machine.  The result is stored in the shell variable @samp{$NM}, which
-is @code{AC_SUBST}ed.
+Try to find a @sc{bsd} compatible @command{nm} or a @sc{ms} compatible
+@command{dumpbin} command on this machine.  The result is stored in the
+shell variable @samp{$NM}, which is @code{AC_SUBST}ed.
 @end defmac
 
 @noindent
@@ -4997,14 +4997,27 @@ linking and possibly shared libraries.
 @end defvar
 
 @defvar NM
-The name of a BSD-compatible @command{nm} program that produces listings
-of global symbols in one the following formats:
+The name of a BSD- or MS-compatible program that produces listings of
+global symbols.
+For BSD @command{nm}, the symbols should be in one the following formats:
 
 @example
 @var{address} C @var{global-variable-name}
 @var{address} D @var{global-variable-name}
 @var{address} T @var{global-function-name}
 @end example
+
+For MS @command{dumpbin}, the symbols should be in one of the following
+formats:
+
+@example
+@var{counter} @var{size}    UNDEF          notype       External     | @var{global-variable-name}
+@var{counter} @var{address} @var{section}  notype       External     | @var{global-variable-name}
+@var{counter} @var{address} @var{section}  notype ()    External     | @var{global-function-name}
+@end example
+
+The @var{size} of the global variables are not zero and the @var{section}
+of the global functions are not "UNDEF".
 @end defvar
 
 @defvar RANLIB
