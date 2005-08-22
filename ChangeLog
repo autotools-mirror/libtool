@@ -1,5 +1,8 @@
 2005-08-22  Peter Ekberg  <peda@lysator.liu.se>
 
+	* m4/libtool.m4 (_LT_CMD_GLOBAL_SYMBOLS) [dumpbin]: Add
+	forgotten end bracket.
+
 	* doc/libtool.texi: Shorten the lines describing the
 	output from MS dumpbin, and align the columns.
 

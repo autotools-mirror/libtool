@@ -3073,7 +3073,7 @@ for ac_symprfx in "" "_"; do
 	s/.*().*External *| *$ac_symprfx$sympat.*/T $ac_symprfx\1 \1/p;
 	s/.*External *| *$ac_symprfx$sympat.*/D $ac_symprfx\1 \1/p;
 	s/.*().*External *| *\([@?][_A-Za-z0-9@?]*\).*/T \1 \1/p;
-	s/.*External *| *\([@?][_A-Za-z0-9@?]*\).*/D \1 \1/p'"
+	s/.*External *| *\([@?][_A-Za-z0-9@?]*\).*/D \1 \1/p']"
   else
     lt_cv_sys_global_symbol_pipe="sed -n -e 's/^.*[[ 	]]\($symcode$symcode*\)[[ 	]][[ 	]]*$ac_symprfx$sympat$opt_cr$/$symxfrm/p'"
   fi
