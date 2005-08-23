@@ -1,0 +1,157 @@
+# Hand crafted tests for GNU Libtool.                         -*- Autotest -*-
+# Copyright 2005 Free Software Foundation, Inc.
+
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2, or (at your option)
+# any later version.
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
+# 02111-1307, USA.
+
+
+AT_BANNER([Standalone Libltdl.])
+
+## ------------------------ ##
+## Softlinked libltdl tree. ##
+## ------------------------ ##
+
+AT_SETUP([compiling softlinked libltdl])
+
+LT_AT_LIBTOOLIZE([--ltdl=.])
+./configure
+${MAKE-make}
+
+AT_CHECK([test -f libltdlc.la])
+
+AT_CLEANUP
+
+
+## -------------------- ##
+## Copied libltdl tree. ##
+## -------------------- ##
+
+AT_SETUP([compiling copied libltdl])
+
+LT_AT_LIBTOOLIZE([--copy --ltdl=.])
+./configure
+${MAKE-make}
+
+AT_CHECK([test -f libltdlc.la])
+
+AT_CLEANUP
+
+
+## ------------------------- ##
+## Installable libltdl tree. ##
+## ------------------------- ##
+
+AT_SETUP([installable libltdl])
+
+prefix=`pwd`/_inst
+
+LT_AT_LIBTOOLIZE([--copy --ltdl=.])
+./configure --enable-ltdl-install --prefix=$prefix
+${MAKE-make} all install
+
+AT_CHECK([test -f $prefix/lib/libltdl.la])
+AT_CHECK([test -f $prefix/include/ltdl.h])
+
+AT_CLEANUP
+
+
+## ----------------------------------------------- ##
+## libltdl is usable without Autoconf or Automake. ##
+## ----------------------------------------------- ##
+
+AT_SETUP([linking libltdl without autotools])
+
+AT_DATA([module.c],
+[[char *
+hello (void)
+{
+  return "Hello!";
+}
+]])
+
+AT_DATA([main.c],
+[[#include <stdio.h>
+#include "ltdl.h"
+
+int
+main (int argc, char **argv)
+{
+  lt_dlhandle handle;
+  char *(*func) (void) = 0;
+  int status = 1;
+
+  LTDL_SET_PRELOADED_SYMBOLS();
+  if (lt_dlinit() != 0) {
+    fprintf (stderr, "error during initialisation: %s\n", lt_dlerror());
+    return 1;
+  }
+
+  handle = lt_dlopen("module.la");
+  if (!handle) {
+    fprintf (stderr, "error dlopening module.la: %s\n", lt_dlerror());
+    goto finish;
+  }
+
+  func = (char *(*)(void)) lt_dlsym (handle, "hello");
+  if (!func) {
+    fprintf (stderr, "error fetching func: %s\n", lt_dlerror());
+    goto finish;
+  }
+
+  printf ("%s\n", (*func) ());
+  status = 0;
+
+finish:
+  lt_dlexit();
+
+  return status;
+}
+]])
+
+AT_DATA([Makefile],
+[[LIBTOOL	= ./libltdl/libtool
+INCLUDES	= -I./libltdl
+MODFLAGS	= -module -avoid-version
+
+LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(CPPFLAGS) $(INCLUDES)
+LTLINK	  = $(LIBTOOL) --mode=link $(CC) $(CPPFLAGS) $(INCLUDES) $(LDFLAGS)
+
+TARGETS		= libltdl/libltdlc.la module.la ltdldemo
+
+all: $(TARGETS)
+
+$(LIBTOOL) libltdl/libltdlc.la:
+	cd libltdl && ./configure && $(MAKE)
+
+ltdldemo: $(LIBTOOL) module.la libltdl/libltdlc.la main.c
+	$(LTLINK) -o ltdldemo main.c -dlopen module.la ./libltdl/libltdlc.la
+
+module.la: $(LIBTOOL) module.lo
+	$(LTLINK) -o module.la module.lo $(MODFLAGS) -rpath /dev/null
+
+module.lo: $(LIBTOOL) module.c
+	$(LTCOMPILE) -c module.c
+]])
+
+LT_AT_LIBTOOLIZE([--copy --ltdl])
+${MAKE-make} CC="$CC" CPPFLAGS="$CPPFLAGS" CFLAGS="$CFLAGS" LDFLAGS="$LDFLAGS"
+
+AT_DATA([expout],
+[[Hello!
+]])
+
+AT_CHECK([./ltdldemo], 0, expout)
+
+AT_CLEANUP
