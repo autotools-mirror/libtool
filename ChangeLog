@@ -1,3 +1,8 @@
+2005-08-23  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* bootstrap: Fix missing replace config -> $auxdir.  ltmain.m4sh
+	is prerequisite to ltmain.sh.  Improve warning message.
+
 2005-08-22  Gary V. Vaughan  <gary@gnu.org>
 
 	Reorganise the libtool tree to create a bootstrapped libltdl for
