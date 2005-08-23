@@ -1,3 +1,10 @@
+2005-08-23  Stepan Kasal  <kasal@ucw.cz>,
+	    Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* libltdl/m4/ltdl.m4 (LTDL_INIT): Use AH_HEADER if defined.
+	Compute CONFIG_H only before creating config.status.
+	Reported by Peter Ekberg <peda@axentia.se>.
+
 2005-08-23  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* Makefile.maint (web-manual): Fix $(LN_S) to use absolute path.
