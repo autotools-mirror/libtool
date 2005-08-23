@@ -73,16 +73,15 @@ opt_install=false
 opt_link=:
 opt_debug=:
 
+seen_autoconf=false
 seen_libtool=false
 seen_ltdl=false
-
-# Collect flags to pass into libltdl libtoolize
-libtoolize_flags=
 
 # Locations for important files:
 prefix=@prefix@
 datadir=@datadir@
 pkgdatadir=@pkgdatadir@
+pkgltdldir=@pkgdatadir@
 aclocaldir=@aclocaldir@
 auxdir=
 m4dir=
@@ -103,12 +102,9 @@ configure_ac=configure.in
     opt="$1"
     shift
     case $opt in
-      --copy|-c)	opt_link=false
-      			libtoolize_flags="$libtoolize_flags --copy"
-	    		;;
+      --copy|-c)	opt_link=false ;;
 
       --debug)		func_echo "enabling shell trace mode"
-      			libtoolize_flags="$libtoolize_flags --debug"
 			opt_debug='set -x'
 			$opt_debug
 			;;
@@ -121,16 +117,11 @@ configure_ac=configure.in
 			  MKDIR="$ECHO $MKDIR"
 			  TAR="$ECHO $TAR"
 			fi
-      			libtoolize_flags="${libtoolize_flags} --dry-run"
 			;;
 
-      --force|-f)	opt_force=:
-      			libtoolize_flags="${libtoolize_flags} --force"
-			;;
+      --force|-f)	opt_force=: ;;
 
-      --install|-i)	opt_install=:
-      			libtoolize_flags="${libtoolize_flags} --install"
-			;;
+      --install|-i)	opt_install=: ;;
 
       --ltdl)		ltdldir=libltdl
       			if test "$#" -gt 0; then
@@ -143,12 +134,9 @@ configure_ac=configure.in
 
       --quiet|--automake|-q) # --automake is for 1.5 compatibility
 			opt_quiet=:
-      			libtoolize_flags="${libtoolize_flags} --quiet"
 			;;
 
-      --verbose|-v)	opt_verbose=:
-      			libtoolize_flags="${libtoolize_flags} --verbose"
-			;;
+      --verbose|-v)	opt_verbose=: ;;
 
       # Separate optargs to long options:
       --*=*)
@@ -226,18 +214,22 @@ func_copy_cb ()
     test -f "$my_srcdir/$my_file" || \
       { func_error "\`$my_file' not found in \`$my_srcdir'"; return; }
 
-    func_mkdir_p "$my_destdir"
+    case $opt_verbose in
+      false) my_copy_msg="file \`$my_destdir/$my_file'"     ;;
+      *)     my_copy_msg="file from \`$my_srcdir/$my_file'" ;;
+    esac
+    func_mkdir_p `$ECHO "X$my_destdir/$my_file" | $Xsed -e "$dirname"`
 
     $RM "$my_destdir/$my_file"
     if $opt_link && $LN_S "$my_srcdir/$my_file" "$my_destdir/$my_file"; then
-      $opt_quiet || func_echo "copying file \`$my_destdir/$my_file'"
+      $opt_quiet || func_echo "linking $my_copy_msg"
       copy_return_status=0
     elif { ( cd "$my_srcdir" 2>/dev/null && $TAR chf - "$my_file" 2>/dev/null; ) \
         | ( umask 0 && cd "$my_destdir" 2>/dev/null && "$TAR" xf - >/dev/null 2>&1; ); } ; then
-      $opt_quiet || func_echo "copying file \`$my_destdir/$my_file'"
+      $opt_quiet || func_echo "copying $my_copy_msg"
       copy_return_status=0
     elif $CP -p "$my_srcdir/$my_file" "$my_destdir/$my_file"; then
-      $opt_quiet || func_echo "copying file \`$my_destdir/$my_file'"
+      $opt_quiet || func_echo "copying $my_copy_msg"
       copy_return_status=0
     else
       func_error "can not copy \`$my_srcdir/$my_file' to \`$my_destdir/'"
@@ -349,18 +341,19 @@ func_scan_files ()
     $opt_debug
     # Prefer configure.ac to configure.in
     test -f configure.ac && configure_ac=configure.ac
-    test -f "$configure_ac" \
-        || func_fatal_help "\`$configure_ac' does not exist"
+    test -f "$configure_ac" || configure_ac=
 
     # Set local variables to reflect contents of configure.ac
-    my_uses_autoconf=false
     my_sed_scan_configure_ac='s,#.*$,,; s,^dnl .*$,,; s, dnl .*$,,;
-	/AC_INIT/ { s,^.*$,my_uses_autoconf=:,; p; };
+	/AC_INIT/ { s,^.*$,seen_autoconf=:,; p; };
 	d'
-    eval `$SED "$my_sed_scan_configure_ac" "$configure_ac"`
+    test -z "$configure_ac" \
+        || eval `$SED "$my_sed_scan_configure_ac" "$configure_ac"`
 
-    $my_uses_autoconf || {
-        func_verbose "$configure_ac: not using Autoconf"
+    $seen_autoconf || {
+	my_configure_ac=
+	test -n "$configure_ac" && my_configure_ac="$configure_ac: "
+        func_verbose "${my_configure_ac}not using Autoconf"
 	return
     }
 
@@ -751,6 +744,10 @@ func_install_update ()
 func_check_macros ()
 {
     $opt_debug
+
+    $seen_autoconf \
+      || return
+
     # Don't trace for this, we're just checking the user didn't invoke it
     # directly from configure.ac.
     $SED 's,[d]nl .*$,,; s,# .*$,,' "$configure_ac" | grep AC_PROG_RANLIB \
@@ -801,6 +798,9 @@ func_massage_pkgltdl_files ()
     # Massage a value for pkgltdl_files from the value used in Makefile.am
     for my_filename in @pkgltdl_files@; do
 
+      # Strip surplus leading 'libltdl/':
+      my_filename=`expr "X$my_filename" : 'Xlibltdl/\(.*\)'`
+
       # ignore excluded filenames
       if test -n "$my_glob_exclude"; then
         eval 'case $my_filename in '$my_glob_exclude') continue ;; esac'
@@ -815,6 +815,35 @@ func_massage_pkgltdl_files ()
 
     # strip spurious leading `:'
     pkgltdl_files=`$ECHO "X$pkgltdl_files" | $Xsed -e 's,^:*,,'`
+}
+
+
+# func_massage_pkgconfig_files [glob_exclude]
+# @pkgconfig_files\@ is substituted as per its value in Makefile.am; this
+# function massages it into a suitable format for func_copy_some_files.
+func_massage_pkgconfig_files ()
+{
+    pkgconfig_files=	# GLOBAL VAR
+
+    my_glob_exclude="$1"
+
+    # Massage a value for pkgconfig_files from the value used in Makefile.am
+    for my_filename in @pkgconfig_files@; do
+
+      # ignore excluded filenames
+      if test -n "$my_glob_exclude"; then
+        eval 'case $my_filename in '$my_glob_exclude') continue ;; esac'
+      fi
+
+      # ignore duplicates
+      case :$pkgconfig_files: in
+        *:$my_filename:*) ;;
+	*) pkgconfig_files="$pkgconfig_files:$my_filename" ;;
+      esac
+    done
+
+    # strip spurious leading `:'
+    pkgconfig_files=`$ECHO "X$pkgconfig_files" | $Xsed -e 's,^:*,,'`
 }
 
 
@@ -846,13 +875,16 @@ func_nonemptydir_p ()
 
   # Allow the user to override the master libtoolize repository:
   if test -n "$_lt_pkgdatadir"; then
-    pkgdatadir="$_lt_pkgdatadir"
-    aclocaldir="$_lt_pkgdatadir/m4"
+    pkgltdldir="$_lt_pkgdatadir"
+    pkgdatadir="$_lt_pkgdatadir/libltdl"
+    aclocaldir="$_lt_pkgdatadir/libltdl/m4"
   fi
+  func_nonemptydir_p pkgltdldir
   func_nonemptydir_p pkgdatadir
   func_nonemptydir_p aclocaldir
 
   func_massage_pkgltdl_files
+  func_massage_pkgconfig_files
 
   # libtool.m4 and ltdl.m4 are handled specially below
   func_massage_aclocal_DATA 'libtool.m4|ltdl.m4'
@@ -865,24 +897,38 @@ func_nonemptydir_p ()
   # Copy all the files from installed libltdl to this project, if the
   # user specified `--ltdl'.
   if test -n "$ltdldir"; then
-    func_copy_some_files "$pkgltdl_files" "$pkgdatadir/libltdl" "$ltdldir"
+    func_copy_some_files "$pkgltdl_files" "$pkgltdldir/libltdl" "$ltdldir"
 
-    # libtoolize the newly copied libltdl tree
-    ( cd "$ltdldir" && eval "$progpath" $libtoolize_flags ) \
-      || exit $EXIT_FAILURE
+    # Unless we share CONFIG_MACRO_DIR with our parent project,
+    # copy macros here.
+    if test "$ltdldir/m4" != "$m4dir"; then
+      func_copy_some_files "$pkgmacro_files:libtool.m4:ltdl.m4" \
+        "$aclocaldir" "$ltdldir/m4"
+    fi
+
+    # Unless we share CONFIG_AUX_DIR with our parent project,
+    # copy config aux files into libltdl.
+    if test "$ltdldir/config" != "$auxdir"; then
+      func_copy_some_files "$pkgconfig_files" "$pkgdatadir" "$ltdldir"
+    fi
   fi
 
-  # Copy all the installed utility files to the auxiliary directory if
-  # `--install' was passed, or else copy just ltmain.sh.
-  $opt_quiet || if test "$auxdir" != .; then
-    func_echo "putting files in AC_CONFIG_AUX_DIR, \`$auxdir'."
+  # If they are newer, copy all the installed utility files to the
+  # auxiliary directory if `--install' was passed, or else copy just
+  # ltmain.sh.
+  if test -n "$auxdir"; then
+    $opt_quiet || if test "$auxdir" != .; then
+      func_echo "putting files in AC_CONFIG_AUX_DIR, \`$auxdir'."
+    fi
+    if $opt_install; then
+      func_config_update config.guess "$pkgdatadir/config" "$auxdir"
+      func_config_update config.sub   "$pkgdatadir/config" "$auxdir"
+      func_install_update install-sh  "$pkgdatadir/config" "$auxdir"
+    fi
+    func_ltmain_update ltmain.sh "$pkgdatadir/config" "$auxdir"
+  else
+    func_verbose "AC_CONFIG_AUX_DIR not defined, not copying libtool auxilliary files."
   fi
-  if $opt_install; then
-    func_config_update config.guess "$pkgdatadir/config" "$auxdir"
-    func_config_update config.sub   "$pkgdatadir/config" "$auxdir"
-    func_install_update install-sh  "$pkgdatadir/config" "$auxdir"
-  fi
-  func_ltmain_update ltmain.sh "$pkgdatadir/config" "$auxdir"
 
   # Copy libtool's m4 macros to the macro directory, if they are newer.
   if test -n "$m4dir"; then
@@ -901,6 +947,15 @@ func_nonemptydir_p ()
       "$m4dir" func_serial_update
   else
     func_verbose "AC_CONFIG_MACRO_DIR not defined, not copying libtool macro files."
+  fi
+
+  # Offer some suggestions for avoiding duplicate files in a project
+  # that uses libltdl:
+  if test -n "$ltdldir" && $seen_autoconf; then
+    $opt_quiet || test "$ltdldir/config" = "$auxdir" || \
+      func_echo "consider using \`AC_CONFIG_AUX_DIR([[$ltdldir/config]])' in $configure_ac"
+    $opt_quiet || test "$ltdldir/m4" = "$m4dir" || \
+      func_echo "consider using \`AC_CONFIG_MACRO_DIR([[$ltdldir/m4]])' in $configure_ac"
   fi
 }
 

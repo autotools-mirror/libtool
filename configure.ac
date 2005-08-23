@@ -27,7 +27,9 @@ dnl Oldest automake required for bootstrap is below in AM_INIT_AUTOMAKE.
 AC_INIT([libtool], [2.1a], [bug-libtool@gnu.org])
 AC_CONFIG_HEADERS([config.h:config-h.in])
 AC_CONFIG_SRCDIR([libtoolize.in])
-AC_CONFIG_AUX_DIR([config])
+AC_CONFIG_AUX_DIR([libltdl/config])
+AC_CONFIG_MACRO_DIR([libltdl/m4])
+AC_CONFIG_LIBOBJ_DIR([libltdl])
 
 
 ## ------------------------ ##
@@ -113,7 +115,7 @@ AC_SUBST([package_revision])
 
 dnl These are bootstrap requirements, once built, libtool may work with
 dnl much older releases of autoconf and automake.  See release notes.
-AM_INIT_AUTOMAKE([1.8 gnits dist-bzip2])dnl We use auto-m4_including
+AM_INIT_AUTOMAKE([1.9 gnits subdir-objects dist-bzip2])
 
 dnl We use m4sh to generate libtool's portable shell scripts
 AC_SUBST([M4SH], ['$(AUTOM4TE) --language=m4sh'])
@@ -155,13 +157,14 @@ AC_SUBST([DIST_MAKEFILE_LIST])
 # a good C compiler: if the following C++ tests fail, the whole libtool
 # build fails!
 AC_PROG_CC
+AM_PROG_CC_C_O
 AC_PROG_CPP
 
 ## ----------------------- ##
 ## Libtool initialisation. ##
 ## ----------------------- ##
 LT_INIT([dlopen win32-dll])
-LTDL_INIT
+LTDL_INIT([libltdl])
 
 # Enable all the language support we can
 LT_LANG(C++)
@@ -184,5 +187,5 @@ AM_CONDITIONAL(HAVE_RC, [test -n "[$]_LT_TAGVAR(compiler, RC)"])
 ## -------- ##
 ## Outputs. ##
 ## -------- ##
-AC_CONFIG_FILES([Makefile libltdl/Makefile])
+AC_CONFIG_FILES([Makefile])
 AC_OUTPUT

@@ -39,6 +39,19 @@ test -f ./configure.ac || {
   exit 1
 }
 
+
+# Extract auxdir and m4dir from configure.ac:
+my_sed_traces='s,#.*$,,; s,^dnl .*$,,; s, dnl .*$,,;
+    	/AC_CONFIG_AUX_DIR[^_]/  {
+	    s,^.*AC_CONFIG_AUX_DIR([[ 	]*\([^])]*\).*$,auxdir=\1,; p;
+        };
+    	/AC_CONFIG_MACRO_DIR/   {
+	    s,^.*AC_CONFIG_MACRO_DIR([[ 	]*\([^])]*\).*$,m4dir=\1,; p;
+        };
+	d;'
+eval `cat configure.ac 2>/dev/null | $SED "$my_sed_traces"`
+
+
 # Upgrade caveat:
 cat <<'EOF'
 WARNING: If bootstrapping with this script fails, it may be due to an
@@ -52,10 +65,10 @@ EOF
 rm -rf `find . -path './{arch}' -prune -o \( -name autom4te.cache -o -name libtool \) -print`
 
 # Delete stale files from previous libtool versions.
-rm -f acinclude.m4 config/ltmain.sh libltdl/config.h
+rm -f acinclude.m4 libltdl/config.h
 
 if test -z "$reconfdirs"; then
-  reconfdirs=". `ls -1d tests/*demo tests/*demo[0-9]`"
+  reconfdirs=". libltdl `ls -1d tests/*demo tests/*demo[0-9]`"
 fi
 
 # Extract the package name and version number from configure.ac:
@@ -71,13 +84,14 @@ test -f Makefile \
 # We don't have all the substitution values to build ltmain.sh from this
 # script yet, but we need config/ltmain.sh for the libtool commands in
 # configure, and ltversion.m4 to generate configure in the first place:
-rm -f ./config/ltmain.sh ./m4/ltversion.m4
+rm -f $auxdir/ltmain.sh $m4dir/ltversion.m4
 
-$MAKE ./config/ltmain.sh ./doc/notes.txt ./m4/ltversion.m4 ./libtoolize.in \
-    ./tests/defs.in ./tests/package.m4 ./tests/testsuite \
+$MAKE $auxdir/ltmain.sh $m4dir/ltversion.m4 ./doc/notes.txt \
+    ./libtoolize.in ./tests/defs.in ./tests/package.m4 \
+    ./tests/testsuite ./libltdl/Makefile.am \
     srcdir=. top_srcdir=. PACKAGE="$2" VERSION="$3" \
     PACKAGE_BUGREPORT="bug-$2@gnu.org" M4SH="$AUTOM4TE --language=m4sh" \
-    AUTOTEST="$AUTOM4TE --language=autotest" MAKEINFO="$MAKEINFO"
+    AUTOTEST="$AUTOM4TE --language=autotest" SED="$SED" MAKEINFO="$MAKEINFO"
 
 test -f clcommit.m4sh && $MAKE -f Makefile.maint commit \
     srcdir=. top_srcdir=. PACKAGE="$2" VERSION="$3" M4SH="$AUTOM4TE -l m4sh" \
@@ -86,25 +100,33 @@ test -f clcommit.m4sh && $MAKE -f Makefile.maint commit \
 rm -f Makefile
 
 # Make a dummy libtoolize script for autoreconf:
-test -f clcommit.m4sh && cat > ./config/libtoolize <<'EOF'
+test -f clcommit.m4sh && cat > $auxdir/libtoolize <<'EOF'
 #! /bin/sh
 # This is a dummy file for bootstrapping CVS libtool.
 echo "$0: Bootstrap detected, no files installed." | sed 's,^.*/,,g'
 exit 0
 EOF
-chmod 755 ./config/libtoolize
+chmod 755 $auxdir/libtoolize
 
 # Running the installed `libtoolize' will trash the local (newer) libtool.m4
 # among others.  Call the dummy script we made earlier.
-LIBTOOLIZE=`pwd`/config/libtoolize
+LIBTOOLIZE=`pwd`/$auxdir/libtoolize
 export LIBTOOLIZE
 
 for sub in $reconfdirs; do
   $AUTORECONF --force --verbose --install $sub
 done
 
+# Autoheader valiantly tries to prevent needless reconfigurations by
+# not changing the timestamp of config-h.in unless the file contents
+# are updated.  Unfortunately config-h.in depends on aclocal.m4 which
+# *is* updated, so running 'libtoolize --ltdl=. && configure && make'
+# causes autoheader to be called... undesireable for users that do not
+# have it!  Fudge the timestamp to prevent that:
+sleep 2 && touch libltdl/config-h.in
+
 # Remove our dummy libtoolize
-rm -f ./config/libtoolize
+rm -f $auxdir/libtoolize
 
 # These files can cause an infinite configure loop if left behind.
 rm -f Makefile libltdl/Makefile libtool vcl.tmp
@@ -112,7 +134,7 @@ rm -f Makefile libltdl/Makefile libtool vcl.tmp
 # This file is misgenerated earlier in bootstrap to satisfy automake 1.9.1
 # and earlier, but has a new enough timestamp to not be updated.  Force it
 # to be regenerated at make-time with proper substitutions in place:
-touch config/ltmain.in
+touch $auxdir/ltmain.in
 
 # Commit script caveat:
 cat <<'EOF'
@@ -120,7 +142,7 @@ WARNING: You might want to regenerate `commit' and `config/mailnotify'
 WARNING: after you have run `configure' to discover the real whereabouts
 WARNING: of `sed', `grep' etc. like this:
 WARNING:
-WARNING:      rm -f config/mailnotify; make -f Makefile.maint commit
+WARNING:      rm -f $auxdir/mailnotify; make -f Makefile.maint commit
 EOF
 
 exit 0

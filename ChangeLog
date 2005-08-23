@@ -1,3 +1,74 @@
+2005-08-22  Gary V. Vaughan  <gary@gnu.org>
+
+	Reorganise the libtool tree to create a bootstrapped libltdl for
+	installation to the libtoolize master tree, so that libltdl is
+	useable even in the extreme case of when automake and autoconf are
+	not installed on the developers machine.  Part of this change
+	requires some duplication of rules between Makefile.am (which
+	builds libltdl for this distribution) and libltdl/Makefile.am
+	(which is used by projects that libltoolize --ltdl --copy), so
+	libtool now really does use a single toplevel Makefile.am, and we
+	generate libltdl/Makefile.am from that:
+
+	* m4, config: Moved from here...
+	* libltdl/m4, libltdl/config: ...to here, to reduce the amount of
+	kludging needed in bootstrap for autoreconf to run.
+	* tests/cdemo/Makefile.am, tests/demo/Makefile.am,
+	tests/depdemo/Makefile.am, tests/f77demo/Makefile.am,
+	tests/fcdemo/Makefile.am, tests/mdemo/Makefile.am,
+	tests/mdemo2/Makefile.am, tests/pdemo/Makefile.am,
+	tests/tagdemo/Makefile.am (ACLOCAL_AMFLAGS): Adjust to
+	compensate.
+	* tests/cdemo/configure.ac, tests/demo/configure.ac,
+	tests/depdemo/configure.ac, tests/f77demo/configure.ac,
+	tests/fcdemo/configure.ac, tests/mdemo/configure.ac,
+	tests/mdemo2/configure.ac, tests/pdemo/configure.ac,
+	tests/tagdemo/configure.ac (AC_CONFIG_AUX_DIR): Ditto.
+	* libltdl/m4/ltdl.m4: Increment serial number.
+	(LTDL_INIT): Accept an optional directory argument to prefix each
+	of the LD_DLLOADERS locations.  Default to empty for backwards
+	compatibility.
+	* Makefile.maint: Adjust to compensate.
+	* configure.ac (AC_CONFIG_AUX_DIR, AC_CONFIG_MACRO_DIR): Adjust.
+	(AC_CONFIG_LIBOBJ_DIR): Set here so that we can build LTLIBOBJS
+	from in a subdirectory from the amalgamated Makefile.am.
+	(AM_PROG_CC_C_O, AM_INIT_AUTOMAKE): Use subdir-objects.
+	(AC_CONFIG_FILES): Remove libltdl/Makefile.am.
+	* libltdl/Makefile.am: Removed from repository, and merged into
+	Makefile.am as we now generate it...
+	* Makefile.am (libltdl/Makefile.am): ...from here, by extracting
+	the merged rules, and tweaking paths to accomodate the difference
+	in directory from Makefile.am to libltdl/Makefile.am.
+	(nobase_dist_pkgdata_DATA): Automake generated installation rules
+	change timestamps of installed files, so renamed this...
+	(configauxfiles): ...to this...
+	(libtoolize): ...substitute it...
+	(install-data-local): ...install manually, preserving
+	timestamps...
+	(install-data-hook): ...and set execute bit as appropriate.
+	(uninstall-hook): Not forgetting to remove them at uninstall.
+	(libltdl/Makefile.in): New rule.  Called from...
+	* bootstrap: ...here to avoid relying on config.status at
+	bootstrap time.
+	(auxdir, m4dir): Extract from configure.ac for ease of future
+	maintenance.  Adjust all references.
+	(reconfdirs): Call autoreconf for libltdl too -- even
+	though we don't use it for the build, libltdl/configure and
+	friends are installed with `libtoolize --ltdl --copy'.
+	* libtoolize.m4sh: Add files from the installed config master tree
+	to libtoolize --ltdl project subdirectory.
+	Diagnose duplicated files when --ltdl is used in an autotooled
+	project.
+	It's perfectly fine to run `libtoolize --ltdl --copy' in a tree
+	that has no configure.ac or configure.in; we want libltdl to be
+	useful even to projects that don't use autotools themselves.
+	(libtoolize_flags): Removed.  Changed all callers.
+	(func_massage_pkgconfig_files): New function.
+	* tests/standalone.at: New tests for using libltdl without
+	supporting configury in the parent project.
+	* tests/testsuite.at: Run them!
+	* NEWS: Updated.
+
 2005-08-22  Peter Ekberg  <peda@lysator.liu.se>
 
 	* m4/libtool.m4 (_LT_CMD_GLOBAL_SYMBOLS) [dumpbin]: Add
@@ -124,10 +195,12 @@
 	_LT_SYS_HIDDEN_LIBDEPS): Adjusted.
 	* tests/fcdemo-conf.test, tests/fcdemo-exec.test,
 	tests/fcdemo-make.test, tests/fcdemo-shared.test,
-	tests/fcdemo-static.test, tests/fcdemo/Makefile.am, tests/fcdemo/README,
-	tests/fcdemo/configure.ac, tests/fcdemo/cprogram.c, tests/fcdemo/foo.h,
-	tests/fcdemo/fooc.c, tests/fcdemo/foof.f90, tests/fcdemo/foof2.f90,
-	tests/fcdemo/foof3.f90, tests/fcdemo/fprogram.f90: New tests for Fortran.
+	tests/fcdemo-static.test, tests/fcdemo/Makefile.am,
+	tests/fcdemo/README, tests/fcdemo/configure.ac,
+	tests/fcdemo/cprogram.c, tests/fcdemo/foo.h, tests/fcdemo/fooc.c,
+	tests/fcdemo/foof.f90, tests/fcdemo/foof2.f90,
+	tests/fcdemo/foof3.f90, tests/fcdemo/fprogram.f90: New tests for
+	Fortran.
 	* tests/convenience.at: Extended.
 	* Makefile.am, configure.ac: Adjusted.
 	* NEWS: Updated.
@@ -144,8 +217,8 @@
 	* config/ltmain.m4sh (func_mode_link) <cwrappersource>: Add
 	missing bit from Christoph's patch.
 
-	* m4/libtool.m4 (_LT_LINKER_HARDCODE_LIBPATH, _LT_LINKER_SHLIBS,
-	_LT_LANG_CXX_CONFIG): Comment typos.
+	* m4/libtool.m4 (_LT_LINKER_HARDCODE_LIBPATH, _LT_LINKER_SHLIBS)
+	(_LT_LANG_CXX_CONFIG): Comment typos.
 
 2005-08-04  Christoph Egger  <Christoph_Egger@gmx.de>
 

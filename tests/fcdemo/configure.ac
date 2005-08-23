@@ -24,7 +24,7 @@ AC_PREREQ(2.54)
 AC_INIT([fcdemo], [1.0], [bug-libtool@gnu.org])
 AC_CONFIG_HEADERS([config.h:config-h.in])
 AC_CONFIG_SRCDIR([foof.f90])
-AC_CONFIG_AUX_DIR([../../config])
+AC_CONFIG_AUX_DIR([../../libltdl/config])
 
 ## ------------------------ ##
 ## Automake Initialisation. ##

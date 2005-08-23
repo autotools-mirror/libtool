@@ -1,6 +1,6 @@
 ## Makefile.maint -- Makefile rules for libtool maintainers -*-Makefile-*-
 ##
-## Copyright (C) 2004 Free Software Foundation
+## Copyright (C) 2004, 2005 Free Software Foundation
 ##
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -31,11 +31,11 @@ Makefile:
 
 TEXI2HTML = texi2html
 
-$(top_srcdir)/commit: $(top_srcdir)/config/mailnotify clcommit.m4sh
+$(srcdir)/commit: $(srcdir)/$(auxdir)/mailnotify clcommit.m4sh
 	$(timestamp); \
-	cd $(top_srcdir); \
+	cd $(srcdir); \
 	rm -f commit commit.in commit.tmp; \
-	$(M4SH) -B ./config clcommit.m4sh > commit.in; \
+	$(M4SH) -B $(auxdir) clcommit.m4sh > commit.in; \
 	input="clcommit.m4sh"; \
 	$(edit) -e "s,@TIMESTAMP\@,$$TIMESTAMP,g" commit.in > commit.tmp; \
 	chmod a+x commit.tmp; \
@@ -43,9 +43,9 @@ $(top_srcdir)/commit: $(top_srcdir)/config/mailnotify clcommit.m4sh
 	mv -f commit.tmp commit; \
 	rm -f commit.in
 
-$(top_srcdir)/config/mailnotify: config/mailnotify.m4sh
+$(srcdir)/$(auxdir)/mailnotify: $(auxdir)/mailnotify.m4sh
 	$(timestamp); \
-	cd $(top_srcdir)/config; \
+	cd $(srcdir)/$(auxdir); \
 	rm -f mailnotify mailnotify.in mailnotify.tmp; \
 	$(M4SH) -B . mailnotify.m4sh > mailnotify.in; \
 	input="mailnotify.m4sh"; \
@@ -119,10 +119,10 @@ WGETSGO = $(WGET) http://savannah.gnu.org/cgi-bin/viewcvs/~checkout~
 ## FIXME should be a lot more here
 FETCHFILES = \
 ./INSTALL \
-config/install-sh \
-config/config.guess \
-config/config.sub \
-config/texinfo.tex
+$(auxdir)/install-sh \
+$(auxdir)/config.guess \
+$(auxdir)/config.sub \
+$(auxdir)/texinfo.tex
 
 ## Fetch the latest versions of files we care about.
 .PHONY: fetch
@@ -238,7 +238,7 @@ delta-xdelta: prev-tarball new-tarball got-xdelta
 
 .PHONY: web-manual
 web-manual:
-	@$(LN_S) $(top_srcdir)/doc/libtool.texi doc/manual.texi
+	@$(LN_S) $(srcdir)/doc/libtool.texi doc/manual.texi
 	$(TEXI2HTML) -I doc -monolithic -number -verbose doc/manual.texi
 	@mv doc/manual.html manual.html
 	@rm -f doc/manual.texi

@@ -1,5 +1,5 @@
 ## Process this file with autoconf to create configure. -*- autoconf -*-
-# Copyright (C) 2001, 2003, 2004 Free Software Foundation, Inc.
+# Copyright (C) 2001, 2003, 2004, 2005 Free Software Foundation, Inc.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -24,7 +24,7 @@ AC_PREREQ(2.54)
 ## ------------------------ ##
 AC_INIT([demo], [1.0], [bug-libtool@gnu.org])
 AC_CONFIG_SRCDIR([hello.c])
-AC_CONFIG_AUX_DIR([../../config])
+AC_CONFIG_AUX_DIR([../../libltdl/config])
 
 
 ## ------------------------ ##

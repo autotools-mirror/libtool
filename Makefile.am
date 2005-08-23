@@ -22,12 +22,28 @@
 ## the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
 ## Boston, MA 02110-1301, USA.
 
-ACLOCAL_AMFLAGS  = -I m4
+ACLOCAL_AMFLAGS  	= -I libltdl/m4
 
-BUILD_SUBDIRS	= . libltdl
-SUBDIRS		= $(BUILD_SUBDIRS)
-DIST_SUBDIRS	= $(BUILD_SUBDIRS)
-EXTRA_DIST	=
+DIST_SUBDIRS		= .
+
+BUILT_SOURCES		= libtool
+
+CLEANFILES		=
+MOSTLYCLEANFILES	=
+DISTCLEANFILES		=
+
+EXTRA_DIST		= libltdl/COPYING.LIB \
+			  libltdl/Makefile.am \
+			  libltdl/Makefile.in \
+			  libltdl/README \
+			  libltdl/config-h.in \
+			  libltdl/configure \
+			  libltdl/configure.ac \
+			  libltdl/aclocal.m4 \
+			  libltdl/m4/lt~obsolete.m4
+
+auxdir			= libltdl/config
+m4dir			= libltdl/m4
 
 # Using `cd' in backquotes may print the directory name, use this instead:
 lt__cd		= CDPATH="$${ZSH_VERSION+.}$(PATH_SEPARATOR)" && cd
@@ -47,6 +63,7 @@ libtoolize: $(srcdir)/libtoolize.in
 	$(edit) -e "s,@TIMESTAMP\@,$$TIMESTAMP,g" \
 		-e 's,@aclocal_DATA\@,$(aclocalfiles),g' \
 		-e "s,@pkgltdl_files\@,$(ltdldatafiles),g" \
+		-e "s,@pkgconfig_files\@,$(auxfiles),g" \
 		$(srcdir)/libtoolize.in > libtoolize.tmp
 	chmod a+x libtoolize.tmp
 	chmod a-w libtoolize.tmp
@@ -58,9 +75,9 @@ EXTRA_DIST += libtoolize.m4sh
 $(srcdir)/libtoolize.in: $(sh_files) libtoolize.m4sh Makefile.am
 	cd $(srcdir); \
 	rm -f libtoolize.in; \
-	$(M4SH) -B ./config libtoolize.m4sh > libtoolize.in
+	$(M4SH) -B $(auxdir) libtoolize.m4sh > libtoolize.in
 
-libtool: $(top_builddir)/config.status $(srcdir)/config/ltmain.sh \
+libtool: $(top_builddir)/config.status $(srcdir)/$(auxdir)/ltmain.sh \
 	 $(srcdir)/stamp-vcl
 	cd $(top_builddir) && $(SHELL) ./config.status $@
 
@@ -104,32 +121,21 @@ timestamp = set dummy `$(MKSTAMP) < $(srcdir)/ChangeLog`; shift; \
 	  *) TIMESTAMP="" ;; \
 	esac
 
-sh_files	= config/general.m4sh config/getopt.m4sh
-EXTRA_DIST     += bootstrap libtoolize.in config/ltmain.m4sh config/mkstamp \
-		  $(sh_files) stamp-vcl ChangeLog.1996 ChangeLog.1997 \
-		  ChangeLog.1998 ChangeLog.1999 ChangeLog.2000 ChangeLog.2001 \
-		  ChangeLog.2002 ChangeLog.2003
-CLEANFILES 	= libtool libtoolize \
-		  libtoolize.tmp config/ltmain.tmp m4/ltversion.tmp
-DISTCLEANFILES =
-
-# These are required by libtoolize and must be executable when installed.
-# Since _SCRIPTS gets the program transform applied we make them
-# executable by hand
-nobase_dist_pkgdata_DATA = config/config.guess config/config.sub \
-	config/ltmain.sh config/install-sh
-
-# Everything that gets picked up by aclocal is automatically distributed,
-# this is the list of macro files we install on the user's system.
-aclocalfiles = m4/argz.m4 m4/libtool.m4 m4/ltdl.m4 \
-	m4/ltoptions.m4 m4/ltsugar.m4 m4/ltversion.m4
+sh_files	= $(auxdir)/general.m4sh $(auxdir)/getopt.m4sh
+EXTRA_DIST     += bootstrap libtoolize.in $(auxdir)/ltmain.m4sh \
+		  $(auxdir)/mkstamp $(sh_files) stamp-vcl \
+		  ChangeLog.1996 ChangeLog.1997 ChangeLog.1998 \
+		  ChangeLog.1999 ChangeLog.2000 ChangeLog.2001 \
+		  ChangeLog.2002 ChangeLog.2003 ChangeLog.2004
+CLEANFILES     += libtool libtoolize libtoolize.tmp \
+		  $(auxdir)/ltmain.tmp $(m4dir)/ltversion.tmp
 
 ## We know that $(srcdir)/ChangeLog has been edited if stamp-vcl
 ## needs updating, so we assume we have write access to $(srcdir).
 ## If we try to maintain ./stamp-vcl to avoid writing to a possibly
 ## read-only $(srcdir), then when the two stamp-vcls differ, distcheck
 ## will try to update the one in the read-only source tree it makes.
-MKSTAMP = $(SHELL) $(srcdir)/config/mkstamp
+MKSTAMP = $(SHELL) $(srcdir)/$(auxdir)/mkstamp
 $(srcdir)/stamp-vcl: vcl-tmp clean-ltmain-sh ChangeLog
 vcl-tmp:
 	@set dummy `$(MKSTAMP) < $(srcdir)/ChangeLog`; shift; \
@@ -144,7 +150,7 @@ vcl-tmp:
 ## source tree version in current builds.
 clean-ltmain-sh:
 	@-test "$(srcdir)" = "$(top_builddir)" || \
-	  rm -f "$(top_builddir)/config/ltmain.sh"
+	  rm -f "$(top_builddir)/$(auxdir)/ltmain.sh"
 
 # We build ltversion.m4 here, instead of from config.status,
 # because config.status is rerun each time one of configure's
@@ -153,40 +159,181 @@ clean-ltmain-sh:
 # a loop otherwise.
 # Use `$(srcdir)/m4' for the benefit of non-GNU makes: this is
 # how ltversion.m4 appears in our dependencies.
-EXTRA_DIST += m4/ltversion.in m4/ltversion.m4
-$(srcdir)/m4/ltversion.m4: m4/ltversion.in configure.ac $(srcdir)/stamp-vcl
+EXTRA_DIST += $(m4dir)/ltversion.in $(m4dir)/ltversion.m4
+$(srcdir)/$(m4dir)/ltversion.m4: $(m4dir)/ltversion.in configure.ac $(srcdir)/stamp-vcl
 	set dummy `$(MKSTAMP) < $(srcdir)/ChangeLog`; shift; \
 	cd $(srcdir); \
-	rm -f m4/ltversion.tmp; \
+	rm -f $(m4dir)/ltversion.tmp; \
 	serial=`echo $$1 | sed 's,^1[.],,g'`; \
 	input="ltversion.in"; \
 	$(edit) -e "s,@MACRO_REVISION\@,$$1,g" \
 		-e "s,@MACRO_SERIAL\@,$$serial,g" \
-		m4/ltversion.in > m4/ltversion.tmp; \
-	chmod a-w m4/ltversion.tmp; \
-	mv -f m4/ltversion.tmp m4/ltversion.m4
+		$(m4dir)/ltversion.in > $(m4dir)/ltversion.tmp; \
+	chmod a-w $(m4dir)/ltversion.tmp; \
+	mv -f $(m4dir)/ltversion.tmp $(m4dir)/ltversion.m4
 
 ## And for similar reasons, ltmain.sh can't be built from config.status.
 ## !WARNING! If you edit this rule to change the contents of ltmain.sh,
-##           you must `touch $(srcdir)/config/ltmain.in' from the
+##           you must `touch $(srcdir)/$(auxdir)/ltmain.in' from the
 ##           shell if you need ltmain.sh to be regenerated.  Ideally, we
 ##           should make this rule depend on Makefile but that will break
 ##           distcheck (at least) by rebuilding ltmain.sh in the source
 ##           tree whenever config.status regenerates the Makefile.
-EXTRA_DIST += config/ltmain.sh
-$(srcdir)/config/ltmain.sh: $(sh_files) config/ltmain.m4sh configure.ac \
+EXTRA_DIST += $(auxdir)/ltmain.sh
+$(srcdir)/$(auxdir)/ltmain.sh: $(sh_files) $(auxdir)/ltmain.m4sh configure.ac \
 				$(srcdir)/stamp-vcl
 	$(timestamp); \
 	cd $(srcdir); \
-	rm -f config/ltmain.in config/ltmain.tmp config/ltmain.sh; \
-	$(M4SH) -B ./config config/ltmain.m4sh > config/ltmain.in; \
+	rm -f $(auxdir)/ltmain.in $(auxdir)/ltmain.tmp \
+	    $(auxdir)/ltmain.sh; \
+	$(M4SH) -B $(auxdir) $(auxdir)/ltmain.m4sh \
+	    > $(auxdir)/ltmain.in; \
 	input="ltmain.m4sh"; \
 	$(edit) -e "s,@TIMESTAMP\@,$$TIMESTAMP,g" \
 		-e "s,@package_revision\@,$$1,g" \
-		config/ltmain.in > config/ltmain.tmp; \
-	rm -f config/ltmain.in; \
-	chmod a-w config/ltmain.tmp; \
-	mv -f config/ltmain.tmp config/ltmain.sh
+		$(auxdir)/ltmain.in > $(auxdir)/ltmain.tmp; \
+	rm -f $(auxdir)/ltmain.in; \
+	chmod a-w $(auxdir)/ltmain.tmp; \
+	mv -f $(auxdir)/ltmain.tmp $(auxdir)/ltmain.sh
+
+$(srcdir)/libltdl/Makefile.am: Makefile.am
+	cd $(srcdir); \
+	in=Makefile.am; out=libltdl/Makefile.am; \
+	rm -f $$out; \
+	$(SED) -n '/^.. Makefile.am -- /,/^.. Boston, MA/p' $$in > $$out; \
+	{ echo 'ACLOCAL_AMFLAGS = -I m4'; \
+	  echo 'AUTOMAKE_OPTIONS = foreign'; \
+	  echo 'BUILT_SOURCES ='; \
+	  echo 'EXTRA_DIST ='; \
+	  echo 'CLEANFILES ='; \
+	  echo 'MOSTLYCLEANFILES ='; \
+	} >> $$out; \
+	$(SED) -n '/^. %%% BEGIN /,/^. %%% END / \
+	    { s,libltdl_,,; s,libltdl/,,; s,: libltdl/,: ,; \
+	      s,\$$(libltdl_,$$(,; p; }' $$in >> $$out;
+	chmod a-w $(srcdir)/libltdl/Makefile.am
+
+$(srcdir)/libltdl/Makefile.in: libltdl/Makefile.am
+	cd $(srcdir)/libltdl && $(AUTOMAKE) Makefile
+
+
+## -------- ##
+## Libltdl. ##
+## -------- ##
+
+# %%% BEGIN libltdl/Makefile.am
+
+DEFS			= -DHAVE_CONFIG_H="<$(CONFIG_H)>" -DLTDL
+
+# -I$(srcdir) is needed for user that built libltdl with a sub-Automake
+# (not as a sub-package!) using 'nostdinc':
+AM_CPPFLAGS		= -I. -I$(srcdir) -Ilibltdl -I$(srcdir)/libltdl \
+			  -I$(srcdir)/libltdl/libltdl
+AM_LDFLAGS		= -no-undefined
+VERSION_INFO		= -version-info 6:0:0
+
+noinst_LTLIBRARIES	= $(LT_DLLOADERS)
+
+if INSTALL_LTDL
+ltdlincludedir		= $(includedir)/libltdl
+ltdlinclude_HEADERS	= libltdl/libltdl/lt_system.h \
+			  libltdl/libltdl/lt_error.h \
+			  libltdl/libltdl/lt_dlloader.h
+include_HEADERS		= libltdl/ltdl.h
+lib_LTLIBRARIES		= libltdl/libltdl.la
+endif
+
+if CONVENIENCE_LTDL
+noinst_LTLIBRARIES     += libltdl/libltdlc.la
+endif
+
+libltdl_libltdl_la_SOURCES = libltdl/libltdl/lt__alloc.h \
+			  libltdl/libltdl/lt__dirent.h \
+			  libltdl/libltdl/lt__glibc.h \
+			  libltdl/libltdl/lt__private.h \
+			  libltdl/libltdl/lt__strl.h \
+			  libltdl/libltdl/lt_dlloader.h \
+			  libltdl/libltdl/lt_error.h \
+	                  libltdl/libltdl/lt_system.h \
+			  libltdl/libltdl/slist.h \
+			  libltdl/loaders/preopen.c \
+			  libltdl/lt__alloc.c \
+			  libltdl/lt_dlloader.c \
+			  libltdl/lt_error.c \
+			  libltdl/ltdl.c \
+			  libltdl/ltdl.h \
+			  libltdl/slist.c
+
+libltdl_libltdl_la_CPPFLAGS	= -DLTDLOPEN=$(LTDLOPEN) $(AM_CPPFLAGS)
+libltdl_libltdl_la_LDFLAGS	= $(AM_LDFLAGS) $(VERSION_INFO) $(LT_DLPREOPEN)
+libltdl_libltdl_la_LIBADD	= $(LTLIBOBJS)
+libltdl_libltdl_la_DEPENDENCIES	= $(LT_DLLOADERS) $(LTLIBOBJS)
+
+libltdl_libltdlc_la_SOURCES	= $(libltdl_libltdl_la_SOURCES)
+libltdl_libltdlc_la_CPPFLAGS	= -DLTDLOPEN=$(LTDLOPEN)c $(AM_CPPFLAGS)
+libltdl_libltdlc_la_LDFLAGS	= $(AM_LDFLAGS) $(LT_DLPREOPEN)
+libltdl_libltdlc_la_LIBADD	= $(libltdl_libltdl_la_LIBADD)
+libltdl_libltdlc_la_DEPENDENCIES= $(libltdl_libltdl_la_DEPENDENCIES)
+
+## The loaders are preopened by libltdl, itself always built from
+## pic-objects (either as a shared library, or a convenience library),
+## so the loaders themselves must be made from pic-objects too.  We
+## use convenience libraries for that purpose:
+EXTRA_LTLIBRARIES		= libltdl/dlopen.la \
+				  libltdl/dld_link.la \
+				  libltdl/dyld.la \
+				  libltdl/load_add_on.la \
+				  libltdl/loadlibrary.la \
+				  libltdl/shl_load.la
+
+libltdl_dlopen_la_SOURCES	= libltdl/loaders/dlopen.c
+libltdl_dlopen_la_LDFLAGS	= -module -avoid-version
+libltdl_dlopen_la_LIBADD 	= $(LIBADD_DLOPEN)
+
+libltdl_dld_link_la_SOURCES	= libltdl/loaders/dld_link.c
+libltdl_dld_link_la_LDFLAGS	= -module -avoid-version
+libltdl_dld_link_la_LIBADD	= -ldld
+
+libltdl_dyld_la_SOURCES		= libltdl/loaders/dyld.c
+libltdl_dyld_la_LDFLAGS		= -module -avoid-version
+
+libltdl_load_add_on_la_SOURCES	= libltdl/loaders/load_add_on.c
+libltdl_load_add_on_la_LDFLAGS	= -module -avoid-version
+
+libltdl_loadlibrary_la_SOURCES	= libltdl/loaders/loadlibrary.c
+libltdl_loadlibrary_la_LDFLAGS	= -module -avoid-version
+
+libltdl_shl_load_la_SOURCES	= libltdl/loaders/shl_load.c
+libltdl_shl_load_la_LDFLAGS	= -module -avoid-version
+libltdl_shl_load_la_LIBADD	= $(LIBADD_SHL_LOAD)
+
+## Make sure these will be cleaned even when they're not built by default:
+CLEANFILES		       += libltdl/libltdl.la \
+				  libltdl/libltdlc.la \
+				  libltdl/libdlloader.la
+
+## Automake-1.9.6 doesn't clean subdir AC_LIBOBJ compiled objects
+## automatically:
+CLEANFILES		       += $(LIBOBJS) $(LTLIBOBJS)
+
+
+## --------------------------- ##
+## Gnulib Makefile.am snippets ##
+## --------------------------- ##
+
+BUILT_SOURCES	+= libltdl/$(ARGZ_H)
+EXTRA_DIST	+= libltdl/argz_.h
+
+# We need the following in order to create an <argz.h> when the system
+# doesn't have one that works with the given compiler.
+all-local $(lib_OBJECTS): libltdl/$(ARGZ_H)
+libltdl/argz.h: libltdl/argz_.h
+	cp $(srcdir)/libltdl/argz_.h $@-t
+	mv $@-t $@
+MOSTLYCLEANFILES += libltdl/argz.h \
+		    libltdl/argz.h-t
+
+# %%% END libltdl/Makefile.am
 
 
 ## -------------- ##
@@ -208,59 +355,66 @@ $(srcdir)/doc/notes.txt: $(srcdir)/doc/notes.texi
 ## Installation. ##
 ## ------------- ##
 
+# These are required by libtoolize and must be executable when installed.
+# The timestamps on these files must be preserved carefully so we install,
+# uninstall and set executable with custom rules here.
+auxexefiles	= config/compile config/config.guess config/config.sub \
+		  config/depcomp config/install-sh config/missing
+auxfiles	= $(auxexefiles) config/ltmain.sh
+
+# Everything that gets picked up by aclocal is automatically distributed,
+# this is the list of macro files we install on the user's system.
+aclocalfiles	= m4/argz.m4 m4/libtool.m4 m4/ltdl.m4 m4/ltoptions.m4 \
+		  m4/ltsugar.m4 m4/ltversion.m4
+
 ## These are installed as a subdirectory of pkgdatadir so that
 ## libtoolize --ltdl can find them later:
-ltdldatadir		= $(pkgdatadir)/libltdl
-ltdldatafiles		= COPYING.LIB README \
-			  Makefile.am Makefile.in \
-			  argz_.h argz.c \
-			  configure.ac configure \
-			  libltdl/lt__alloc.h \
-			  libltdl/lt__dirent.h \
-			  libltdl/lt__glibc.h \
-			  libltdl/lt__private.h \
-                          libltdl/lt__strl.h \
-			  libltdl/lt_dlloader.h \
-			  libltdl/lt_error.h \
-                          libltdl/lt_system.h \
-			  libltdl/slist.h \
-			  loaders/dld_link.c \
-			  loaders/dlopen.c \
-			  loaders/dyld.c \
-			  loaders/load_add_on.c \
-			  loaders/loadlibrary.c \
-			  loaders/preopen.c \
-			  loaders/shl_load.c \
-			  lt__alloc.c \
-			  lt__dirent.c \
-			  lt__strl.c \
-			  lt_dlloader.c \
-			  lt_error.c \
-			  ltdl.c ltdl.h \
-			  slist.c
+ltdldatafiles	= libltdl/COPYING.LIB \
+		  libltdl/README \
+		  libltdl/Makefile.am \
+		  libltdl/Makefile.in \
+		  libltdl/aclocal.m4 \
+		  libltdl/config-h.in \
+		  libltdl/configure.ac \
+		  libltdl/configure \
+		  libltdl/argz_.h \
+		  libltdl/argz.c \
+		  libltdl/loaders/dld_link.c \
+		  libltdl/loaders/dlopen.c \
+		  libltdl/loaders/dyld.c \
+		  libltdl/loaders/load_add_on.c \
+		  libltdl/loaders/loadlibrary.c \
+		  libltdl/loaders/shl_load.c \
+		  libltdl/lt__dirent.c \
+		  libltdl/lt__strl.c \
+		  $(libltdl_libltdl_la_SOURCES)
 
-install-data-local:
+install-data-local: libltdl/Makefile.in
 ## Don't install over the top of an old pkgdatadir
 	-rm -rf $(DESTDIR)$(pkgdatadir)
 ## To avoid spurious reconfiguration when the user installs these files
 ## with libtoolize, we have to preserve their timestamps carefully:
-	$(mkinstalldirs) $(DESTDIR)$(ltdldatadir)
-	( cd $(srcdir)/libltdl && $(AMTAR) chf - $(ltdldatafiles); ) \
-	  | ( umask 0 && cd $(DESTDIR)$(ltdldatadir) && $(AMTAR) xf -; )
+	$(mkinstalldirs) $(DESTDIR)$(pkgdatadir)
+	( cd $(srcdir) && $(AMTAR) chf - $(ltdldatafiles); ) \
+	  | ( umask 0 && cd $(DESTDIR)$(pkgdatadir) && $(AMTAR) xf -; )
+## And similarly copy the config auxilliary files into the master tree
+	( cd $(srcdir)/libltdl && $(AMTAR) chf - $(auxfiles); ) \
+	  | ( umask 0 && cd $(DESTDIR)$(pkgdatadir) && $(AMTAR) xf -; )
+	@for f in : $(auxexefiles); do \
+	  test "X$$f" = X: && continue; \
+	  echo "chmod +x '$(DESTDIR)$(pkgdatadir)/$$f'"; \
+	  chmod +x "$(DESTDIR)$(pkgdatadir)/$$f"; \
+	done
+## Put a copy of the libtool m4 macros in the aclocal dir
 	$(mkinstalldirs) $(DESTDIR)$(aclocaldir)
 	@for p in $(aclocalfiles); do \
 	  f=`echo "$$p" | sed 's|^.*/||'`; \
 	  aclocalfiles="$$aclocalfiles $$f"; \
 	done; \
-	( cd $(srcdir)/m4 && $(AMTAR) chf - $$aclocalfiles; ) \
+	( cd $(srcdir)/$(m4dir) && $(AMTAR) chf - $$aclocalfiles; ) \
 	  | ( umask 0 && cd $(DESTDIR)$(aclocaldir) && $(AMTAR) xf -; )
-	chown -R root $(DESTDIR)$(ltdldatadir) && \
-	chgrp -R root $(DESTDIR)$(ltdldatadir) || :
-
-install-data-hook:
-	chmod +x $(DESTDIR)$(pkgdatadir)/config/config.guess
-	chmod +x $(DESTDIR)$(pkgdatadir)/config/config.sub
-	chmod +x $(DESTDIR)$(pkgdatadir)/config/install-sh
+	chown -R root $(DESTDIR)$(pkgdatadir) && \
+	chgrp -R root $(DESTDIR)$(pkgdatadir) || :
 
 
 ## ------------- ##
@@ -276,11 +430,17 @@ uninstall-hook:
 	  f=`echo "$$p" | sed 's|^.*/||'`; \
 	  echo " rm -rf '$(DESTDIR)$(aclocaldir)/$$f'"; \
 	  rm -f "$(DESTDIR)$(aclocaldir)/$$f"; \
-	done;
+	done
+## Uninstall files from install-data-local rule above:
+	@for f in $(ltdldatafiles) $(auxfiles); do \
+	  test -f $(DESTDIR)$(pkgdatadir)/$$f || continue; \
+	  echo "rm -f $(DESTDIR)$(pkgdatadir)/$$f"; \
+	  rm -f $(DESTDIR)$(pkgdatadir)/$$f; \
+	done
 
 
-## Ship README.alpha only in alpha release, but renamed to README
 dist-hook:
+## Ship README.alpha only in alpha release, but renamed to README
 	-@test -f $(distdir)/README.alpha && \
 	case $(VERSION) in \
 	  *[a-z]) mv $(distdir)/README.alpha $(distdir)/README ;; \
@@ -298,6 +458,7 @@ TESTSUITE_AT	= tests/testsuite.at \
 		  tests/duplicate_members.at \
 		  tests/inherited_flags.at \
 		  tests/libtoolize.at \
+		  tests/standalone.at \
 		  tests/stresstest.at \
 		  tests/link-order.at \
 		  tests/convenience.at \
@@ -336,6 +497,7 @@ $(srcdir)/tests/package.m4: $(srcdir)/configure.ac
 
 tests/atconfig: config.status
 	$(SHELL) ./config.status tests/atconfig
+
 DISTCLEANFILES += tests/atconfig
 
 CD_TESTDIR	= abs_srcdir=`$(lt__cd) $(srcdir) && pwd`; cd tests
@@ -457,10 +619,10 @@ tests/defs: $(srcdir)/tests/defs.in
 
 # Use `$(srcdir)/tests' for the benefit of non-GNU makes: this is
 # how defs.in appears in our dependencies.
-$(srcdir)/tests/defs.in: config/general.m4sh tests/defs.m4sh Makefile.am
+$(srcdir)/tests/defs.in: $(auxdir)/general.m4sh tests/defs.m4sh Makefile.am
 	cd $(srcdir); \
 	rm -f tests/defs.in; \
-	$(M4SH) -B ./config tests/defs.m4sh > tests/defs.in
+	$(M4SH) -B $(auxdir) tests/defs.m4sh > tests/defs.in
 
 # We need to remove any files that the above tests created.
 clean-local-legacy:

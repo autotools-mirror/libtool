@@ -12,6 +12,7 @@ New in 2.1b: 2005-??-??; CVS version 2.1a, Libtool team:
   in object names, to enhance GCJ support.
 * Detection of compiler wrappers like distcc/ccache and $host_alias prefix.
 * Initial Support for FC (modern Fortran).
+* Fixed a regression that prevented use of libltdl without autotools.
 
 New in 1.9h: 2004-??-??; CVS version 1.9g, Libtool team:
 * Bug fixes.

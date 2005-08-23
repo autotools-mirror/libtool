@@ -97,6 +97,8 @@ m4_include([convenience.at])
 m4_include([link-order.at])
 # Torturing subdir-objects builds
 m4_include([am-subdir.at])
+# standalone libltdl compilation
+m4_include([standalone.at])
 # C++ templates tests
 m4_include([template.at])
 # Behaviour of LT_OUTPUT

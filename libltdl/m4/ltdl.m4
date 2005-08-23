@@ -5,7 +5,7 @@
 # unlimited permission to copy and/or distribute it, with or without
 # modifications, as long as this notice is preserved.
 
-# serial 7 LTDL_INIT
+# serial 8 LTDL_INIT
 
 # LT_WITH_LTDL([DIRECTORY])
 # -------------------------
@@ -136,12 +136,17 @@ dnl aclocal-1.4 backwards compatibility:
 dnl AC_DEFUN([AC_LIBLTDL_INSTALLABLE], [])
 
 
-# LTDL_INIT
-# ---------
+# LTDL_INIT([DIRECTORY])
+# ----------------------
 # Perform all the checks necessary for compilation of the ltdl objects
 #  -- including compiler checks and header checks.
 AC_DEFUN([LTDL_INIT],
-[AC_REQUIRE([AC_PROG_CC])dnl
+[m4_if([$#], 1, [m4_divert_push([DEFAULTS])dnl
+# libltdl will be built in the named DIRECTORY, relative to $top_builddir.
+lt_ltdl_dir='$1'
+m4_divert_pop([DEFAULTS])])dnl
+
+AC_REQUIRE([AC_PROG_CC])dnl
 AC_REQUIRE([AC_C_CONST])dnl
 AC_REQUIRE([AC_HEADER_STDC])dnl
 AC_REQUIRE([AC_HEADER_DIRENT])dnl
@@ -385,6 +390,9 @@ AC_DEFUN([LT_LIB_DLLOAD],
 LT_DLLOADERS=
 AC_SUBST([LT_DLLOADERS])
 
+test "X${lt_ltdl_dir-.}" != X. &&
+    lt_ltdl_dir=`echo "$lt_ltdl_dir/" | sed 's,/*$,/,'`
+
 AC_LANG_PUSH([C])
 
 LIBADD_DLOPEN=
@@ -392,7 +400,7 @@ AC_CHECK_LIB([dl], [dlopen],
 	[AC_DEFINE([HAVE_LIBDL], [1],
 		   [Define if you have the libdl library or equivalent.])
 	LIBADD_DLOPEN="-ldl" libltdl_cv_lib_dl_dlopen="yes"
-	LT_DLLOADERS="$LT_DLLOADERS dlopen.la"],
+	LT_DLLOADERS="$LT_DLLOADERS ${lt_ltdl_dir}dlopen.la"],
     [AC_LINK_IFELSE([AC_LANG_PROGRAM([[#if HAVE_DLFCN_H
 #  include <dlfcn.h>
 #endif
@@ -400,12 +408,12 @@ AC_CHECK_LIB([dl], [dlopen],
 	    [AC_DEFINE([HAVE_LIBDL], [1],
 		       [Define if you have the libdl library or equivalent.])
 	    libltdl_cv_func_dlopen="yes"
-	    LT_DLLOADERS="$LT_DLLOADERS dlopen.la"],
+	    LT_DLLOADERS="$LT_DLLOADERS ${lt_ltdl_dir}dlopen.la"],
 	[AC_CHECK_LIB([svld], [dlopen],
 		[AC_DEFINE([HAVE_LIBDL], [1],
 			 [Define if you have the libdl library or equivalent.])
 	        LIBADD_DLOPEN="-lsvld" libltdl_cv_func_dlopen="yes"
-		LT_DLLOADERS="$LT_DLLOADERS dlopen.la"])])])
+		LT_DLLOADERS="$LT_DLLOADERS ${lt_ltdl_dir}dlopen.la"])])])
 if test x"$libltdl_cv_func_dlopen" = xyes || test x"$libltdl_cv_lib_dl_dlopen" = xyes
 then
   lt_save_LIBS="$LIBS"
@@ -419,11 +427,11 @@ LIBADD_SHL_LOAD=
 AC_CHECK_FUNC([shl_load],
 	[AC_DEFINE([HAVE_SHL_LOAD], [1],
 		   [Define if you have the shl_load function.])
-	LT_DLLOADERS="$LT_DLLOADERS shl_load.la"],
+	LT_DLLOADERS="$LT_DLLOADERS ${lt_ltdl_dir}shl_load.la"],
     [AC_CHECK_LIB([dld], [shl_load],
 	    [AC_DEFINE([HAVE_SHL_LOAD], [1],
 		       [Define if you have the shl_load function.])
-	    LT_DLLOADERS="$LT_DLLOADERS shl_load.la"
+	    LT_DLLOADERS="$LT_DLLOADERS ${lt_ltdl_dir}shl_load.la"
 	    LIBADD_SHL_LOAD="-ldld"])])
 AC_SUBST([LIBADD_SHL_LOAD])
 
@@ -433,20 +441,20 @@ darwin[[1567]].*)
   AC_CHECK_FUNC([_dyld_func_lookup],
 	[AC_DEFINE([HAVE_DYLD], [1],
 		   [Define if you have the _dyld_func_lookup function.])
-	LT_DLLOADERS="$LT_DLLOADERS dyld.la"])
+	LT_DLLOADERS="$LT_DLLOADERS ${lt_ltdl_dir}dyld.la"])
   ;;
 beos*)
-  LT_DLLOADERS="$LT_DLLOADERS load_add_on.la"
+  LT_DLLOADERS="$LT_DLLOADERS ${lt_ltdl_dir}load_add_on.la"
   ;;
 cygwin* | mingw* | os2* | pw32*)
-  LT_DLLOADERS="$LT_DLLOADERS loadlibrary.la"
+  LT_DLLOADERS="$LT_DLLOADERS ${lt_ltdl_dir}loadlibrary.la"
   ;;
 esac
 
 AC_CHECK_LIB([dld], [dld_link],
 	[AC_DEFINE([HAVE_DLD], [1],
 		   [Define if you have the GNU dld library.])
-		LT_DLLOADERS="$LT_DLLOADERS dld_link.la"])
+		LT_DLLOADERS="$LT_DLLOADERS ${lt_ltdl_dir}dld_link.la"])
 AC_SUBST([LIBADD_DLD_LINK])
 
 m4_pattern_allow([^LT_DLPREOPEN$])
