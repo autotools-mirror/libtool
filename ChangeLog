@@ -1,5 +1,8 @@
 2005-08-23  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* Makefile.maint (web-manual): Fix $(LN_S) to use absolute path.
+	Fix creating the manual for VPATH build.
+
 	* bootstrap: Fix missing replace config -> $auxdir.  ltmain.m4sh
 	is prerequisite to ltmain.sh.  Improve warning message.
 
