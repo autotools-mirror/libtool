@@ -38,6 +38,8 @@ test -f ./configure.ac || {
   exit 1
 }
 
+: ${auxdir=config}
+
 # Upgrade caveat:
 cat <<'EOF'
 WARNING: If bootstrapping with this script fails, it may be due to an
@@ -109,15 +111,16 @@ rm -f Makefile libltdl/Makefile libtool vcl.tmp
 # This file is misgenerated earlier in bootstrap to satisfy automake 1.9.1
 # and earlier, but has a new enough timestamp to not be updated.  Force it
 # to be regenerated at make-time with proper substitutions in place:
-touch config/ltmain.in
+touch $auxdir/ltmain.m4sh
 
 # Commit script caveat:
-cat <<'EOF'
-WARNING: You might want to regenerate `commit' and `config/mailnotify'
-WARNING: after you have run `configure' to discover the real whereabouts
-WARNING: of `sed', `grep' etc. like this:
+cat <<EOF
+WARNING: You might want to regenerate \`commit' and \`$auxdir/mailnotify'
+WARNING: after you have run \`configure' to discover the real whereabouts
+WARNING: of \`sed', \`grep' etc. like this:
 WARNING:
-WARNING:      rm -f config/mailnotify; make -f Makefile.maint commit
+WARNING:      rm -f commit $auxdir/mailnotify
+WARNING:      make -f Makefile.maint commit $auxdir/mailnotify
 EOF
 
 exit 0
