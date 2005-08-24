@@ -1,5 +1,8 @@
 2005-08-24  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* libltdl/m4/ltdl.m4 (LT_SYS_SYMBOL_USCORE): Use _LT_EOF, not
+	EOF.
+
 	* tests/fcdemo/Makefile.am (suffix rules): Explicitly add
 	$(FCFLAGS_f90) so the tests can pass on AIX.
 

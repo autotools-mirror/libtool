@@ -492,10 +492,10 @@ AC_DEFUN([LT_SYS_SYMBOL_USCORE],
 AC_CACHE_CHECK([for _ prefix in compiled symbols],
   [lt_cv_sys_symbol_underscore],
   [lt_cv_sys_symbol_underscore=no
-  cat > conftest.$ac_ext <<EOF
+  cat > conftest.$ac_ext <<_LT_EOF
 void nm_test_func(){}
 int main(){nm_test_func;return 0;}
-EOF
+_LT_EOF
   if AC_TRY_EVAL(ac_compile); then
     # Now try to grab the symbols.
     ac_nlist=conftest.nm
