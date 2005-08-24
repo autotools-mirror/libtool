@@ -1,3 +1,7 @@
+2005-08-24  Bruno Haible  <bruno@clisp.org>
+
+	* ltmain.in (cwrappersource): return 127 if exec failed.
+
 2005-08-24  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* libtool.m4 (AC_LIBTOOL_PROG_CC_C_O): Send chmod warning to log.
