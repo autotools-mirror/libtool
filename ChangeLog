@@ -1,5 +1,11 @@
 2005-08-24  Bruno Haible  <bruno@clisp.org>
 
+	* config/ltmain.sh (func_mode_install): Try "ln -s -f"
+	and "rm -f && ln -s" to make a symlink for a shared library: the
+	former is needed for libraries `ln' depends on, the latter for
+	Solaris /bin/ln.
+	Reported by Nelson H. F. Beebe <beebe@math.utah.edu>.
+
 	* config/ltmain.sh (cwrappersource): return 127 if exec failed.
 
 2005-08-24  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>

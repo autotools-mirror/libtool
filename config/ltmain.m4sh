@@ -1867,11 +1867,14 @@ func_mode_install ()
 
 	  if test "$#" -gt 0; then
 	    # Delete the old symlinks, and create new ones.
+	    # Try `ln -sf' first, because the `ln' binary might depend on
+	    # the symlink we replace!  Solaris /bin/ln does not understand -f,
+	    # so we also need to try rm && ln -s.
 	    for linkname
 	    do
 	      if test "$linkname" != "$realname"; then
-		$show "(cd $destdir && $RM $linkname && $LN_S $realname $linkname)"
-		$run eval "(cd $destdir && $RM $linkname && $LN_S $realname $linkname)"
+		$show "(cd $destdir && { $LN_S -f $realname $linkname || { $RM $linkname && $LN_S $realname $linkname; }; })"
+		$run eval "(cd $destdir && { $LN_S -f $realname $linkname || { $RM $linkname && $LN_S $realname $linkname; }; })"
 	      fi
 	    done
 	  fi
