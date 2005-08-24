@@ -1,3 +1,7 @@
+2005-08-24  Bruno Haible  <bruno@clisp.org>
+
+	* config/ltmain.sh (cwrappersource): return 127 if exec failed.
+
 2005-08-24  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* m4/libtool.m4 (_LT_COMPILER_C_O): Send chmod warning to log.
