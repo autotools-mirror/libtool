@@ -49,3 +49,13 @@ cprogram_LDADD = libmix.la $(FCLIBS)
 $(OBJECTS): libtool
 libtool: $(LIBTOOL_DEPS)
 	$(SHELL) ./config.status --recheck
+
+# work around Automake bug not providing FCFLAGS_f90:
+.f90.o:
+	$(FCCOMPILE) -c -o $@ $(FCFLAGS_f90) $<
+
+.f90.obj:
+	$(FCCOMPILE) -c -o $@ $(FCFLAGS_f90) `$(CYGPATH_W) '$<'`
+
+.f90.lo:
+	$(LTFCCOMPILE) -c -o $@ $(FCFLAGS_f90) $<
