@@ -1,5 +1,10 @@
 2005-08-24  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* tests/defs.m4sh (m4dir, auxdir, scripts): Fix for source tree
+	reorganization.
+	* tests/sh.test: Adjust.  Also barf on sed diagnostics so this
+	test will not fail again silently.
+
 	* libltdl/m4/ltdl.m4 (LT_SYS_SYMBOL_USCORE): Use _LT_EOF, not
 	EOF.
 
