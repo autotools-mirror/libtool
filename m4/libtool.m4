@@ -1658,7 +1658,7 @@ AC_CACHE_CHECK([if $compiler supports -c -o file.$ac_objext],
        _LT_TAGVAR(lt_cv_prog_compiler_c_o, $1)=yes
      fi
    fi
-   chmod u+w .
+   chmod u+w . 2>&AS_MESSAGE_LOG_FD
    $RM conftest*
    # SGI C++ compiler will create directory out/ii_files/ for
    # template instantiation
