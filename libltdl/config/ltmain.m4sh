@@ -5787,7 +5787,7 @@ EOF
 	    esac
 
 	    cat >> $cwrappersource <<"EOF"
-  return 0;
+  return 127;
 }
 
 void *
