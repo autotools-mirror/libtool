@@ -123,20 +123,25 @@ finish:
 AT_DATA([Makefile],
 [[LIBTOOL	= ./libltdl/libtool
 INCLUDES	= -I./libltdl
-MODFLAGS	= -module -avoid-version
+MODFLAGS	= -module -avoid-version -no-undefined
 
-LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(CPPFLAGS) $(INCLUDES)
-LTLINK	  = $(LIBTOOL) --mode=link $(CC) $(CPPFLAGS) $(INCLUDES) $(LDFLAGS)
+LTCOMPILE = $(LIBTOOL) --tag=CC $(LIBTOOLFLAGS) --mode=compile \
+        $(CC) $(INCLUDES) $(CPPFLAGS) $(CFLAGS)
+LTLINK    = $(LIBTOOL) --tag=CC $(LIBTOOLFLAGS) --mode=link \
+        $(CC) $(CFLAGS) $(LDFLAGS)
 
-TARGETS		= libltdl/libltdlc.la module.la ltdldemo
+TARGETS		= libltdl/libltdlc.la module.la ltdldemo$(EXEEXT)
 
 all: $(TARGETS)
 
 $(LIBTOOL) libltdl/libltdlc.la:
 	cd libltdl && ./configure && $(MAKE)
 
-ltdldemo: $(LIBTOOL) module.la libltdl/libltdlc.la main.c
-	$(LTLINK) -o ltdldemo main.c -dlopen module.la ./libltdl/libltdlc.la
+ltdldemo$(EXEEXT): $(LIBTOOL) module.la libltdl/libltdlc.la main.lo
+	$(LTLINK) -o ltdldemo main.lo -dlopen module.la ./libltdl/libltdlc.la
+
+main.lo: $(LIBTOOL) main.c
+	$(LTCOMPILE) -c main.c
 
 module.la: $(LIBTOOL) module.lo
 	$(LTLINK) -o module.la module.lo $(MODFLAGS) -rpath /dev/null
@@ -146,7 +151,8 @@ module.lo: $(LIBTOOL) module.c
 ]])
 
 LT_AT_LIBTOOLIZE([--copy --ltdl])
-${MAKE-make} CC="$CC" CPPFLAGS="$CPPFLAGS" CFLAGS="$CFLAGS" LDFLAGS="$LDFLAGS"
+${MAKE-make} CC="$CC" LIBTOOLFLAGS="$LIBTOOLFLAGS" CPPFLAGS="$CPPFLAGS" \
+        CFLAGS="$CFLAGS" LDFLAGS="$LDFLAGS"
 
 AT_DATA([expout],
 [[Hello!
