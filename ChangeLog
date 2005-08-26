@@ -1,5 +1,10 @@
 2005-08-26  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* tests/standalone.at, tests/template.at: Do not compare
+	output because of EOL issues.  Resolve warnings, make cross-
+	compilation aware.
+	Reported by Peter Ekberg <peda@axentia.se>.
+
 	* libltdl/m4/libtool.m4 (_LT_SYS_DYNAMIC_LINKER)
 	(_LT_LINKER_SHLIBS): Double-quote unsafe tag variable
 	descriptions: they are literals.

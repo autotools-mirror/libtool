@@ -74,7 +74,7 @@ AT_CLEANUP
 AT_SETUP([linking libltdl without autotools])
 
 AT_DATA([module.c],
-[[char *
+[[const char *
 hello (void)
 {
   return "Hello!";
@@ -89,7 +89,7 @@ int
 main (int argc, char **argv)
 {
   lt_dlhandle handle;
-  char *(*func) (void) = 0;
+  const char *(*func) (void) = 0;
   int status = 1;
 
   LTDL_SET_PRELOADED_SYMBOLS();
@@ -104,7 +104,7 @@ main (int argc, char **argv)
     goto finish;
   }
 
-  func = (char *(*)(void)) lt_dlsym (handle, "hello");
+  func = (const char *(*)(void)) lt_dlsym (handle, "hello");
   if (!func) {
     fprintf (stderr, "error fetching func: %s\n", lt_dlerror());
     goto finish;
@@ -154,10 +154,6 @@ LT_AT_LIBTOOLIZE([--copy --ltdl])
 ${MAKE-make} CC="$CC" LIBTOOLFLAGS="$LIBTOOLFLAGS" CPPFLAGS="$CPPFLAGS" \
         CFLAGS="$CFLAGS" LDFLAGS="$LDFLAGS"
 
-AT_DATA([expout],
-[[Hello!
-]])
-
-AT_CHECK([./ltdldemo], 0, expout)
+LT_AT_EXEC_CHECK([./ltdldemo], 0, [ignore])
 
 AT_CLEANUP

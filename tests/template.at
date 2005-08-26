@@ -73,7 +73,7 @@ int main()
   cout << "a sample prog" << endl;
   cout << "f(3) = " << f(3) << endl;
   cout << "cf(3) = " << cf(3) << endl;
-  return 0;
+  return (f(3) + 3 - cf(3) != 0);
 }
 ]])
 
@@ -84,10 +84,7 @@ AT_CHECK($LIBTOOL --tag=CXX --mode=link $CXX $CPPFLAGS $CXXFLAGS -o libalib.la -
 AT_CHECK($CXX -I. $CPPFLAGS $CXXFLAGS -c -o prog.o prog.cpp, [0], [ignore], [ignore])
 AT_CHECK($LIBTOOL --tag=CXX --mode=link $CXX $CPPFLAGS $CXXFLAGS -o prog prog.o libalib.la, [0], [ignore], [ignore])
 
-LT_AT_EXEC_CHECK([./prog], [0], [a sample prog
-f(3) = 6
-cf(3) = 9
-], [ignore])
+LT_AT_EXEC_CHECK([./prog], [0], [ignore], [ignore])
 
 
 dnl with autoreconf, use:
