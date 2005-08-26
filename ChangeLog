@@ -1,6 +1,9 @@
 2005-08-26  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 	    Peter Ekberg  <peda@lysator.liu.se>
 
+	* tests/early-libtool.at: Fix goofed up make rules in
+	previous commit.
+
 	* tests/inherited_flags.at: Weaken for MSVC.
 	* tests/early-libtool.at, tests/template.at: Fix for compiler
 	that do not understand '-c -o'.

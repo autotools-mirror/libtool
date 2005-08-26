@@ -59,7 +59,7 @@ hell$(EXEEXT): main.$(OBJEXT) libhello.la
 .SUFFIXES: .c .$(OBJEXT) .lo
 
 .c.$(OBJEXT):
-	$(COMPILE) -c $@ $<
+	$(COMPILE) -c $<
 .c.lo:
 	$(LTCOMPILE) -c -o $@ $<
 ]])
@@ -164,7 +164,7 @@ hell$(EXEEXT): main.$(OBJEXT) libhello.la
 .SUFFIXES: .c .$(OBJEXT)
 
 .c.$(OBJEXT):
-	$(COMPILE) -c $@ $<
+	$(COMPILE) -c $<
 ]])
 
 AT_DATA([hello.c],
