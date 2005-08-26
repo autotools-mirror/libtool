@@ -42,6 +42,7 @@ top_builddir = .
 DEFAULT_INCLUDES = -I. -I@srcdir@
 EXEEXT = @EXEEXT@
 LIBTOOL = @LIBTOOL@
+OBJEXT = @OBJEXT@
 
 COMPILE = $(CC) $(DEFAULT_INCLUDES)
 LTCOMPILE = $(LIBTOOL) --mode=compile --tag=CC $(CC) $(DEFAULT_INCLUDES)
@@ -51,14 +52,14 @@ all: hell
 
 libhello.la: hello.lo
 	$(LINK) -rpath $(libdir) hello.lo
-hell$(EXEEXT): main.o libhello.la
-	$(LINK) main.o libhello.la
+hell$(EXEEXT): main.$(OBJEXT) libhello.la
+	$(LINK) main.$(OBJEXT) libhello.la
 
 .SUFFIXES:
-.SUFFIXES: .c .o .lo
+.SUFFIXES: .c .$(OBJEXT) .lo
 
-.c.o:
-	$(COMPILE) -c -o $@ $<
+.c.$(OBJEXT):
+	$(COMPILE) -c $@ $<
 .c.lo:
 	$(LTCOMPILE) -c -o $@ $<
 ]])
@@ -151,18 +152,19 @@ top_builddir = .
 DEFAULT_INCLUDES = -I. -I@srcdir@
 EXEEXT = @EXEEXT@
 LIBTOOL = @LIBTOOL@
+OBJEXT = @OBJEXT@
 
 COMPILE = $(CC) $(DEFAULT_INCLUDES)
 LINK = $(LIBTOOL) --mode=link --tag=CC $(CC) -o $@
 
-hell$(EXEEXT): main.o libhello.la
-	$(LINK) main.o libhello.la
+hell$(EXEEXT): main.$(OBJEXT) libhello.la
+	$(LINK) main.$(OBJEXT) libhello.la
 
 .SUFFIXES:
-.SUFFIXES: .c .o
+.SUFFIXES: .c .$(OBJEXT)
 
-.c.o:
-	$(COMPILE) -c -o $@ $<
+.c.$(OBJEXT):
+	$(COMPILE) -c $@ $<
 ]])
 
 AT_DATA([hello.c],

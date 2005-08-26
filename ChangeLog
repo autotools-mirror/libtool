@@ -1,4 +1,11 @@
 2005-08-26  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+	    Peter Ekberg  <peda@lysator.liu.se>
+
+	* tests/inherited_flags.at: Weaken for MSVC.
+	* tests/early-libtool.at, tests/template.at: Fix for compiler
+	that do not understand '-c -o'.
+
+2005-08-26  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* tests/standalone.at, tests/template.at: Do not compare
 	output because of EOL issues.  Resolve warnings, make cross-

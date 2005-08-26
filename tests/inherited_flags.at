@@ -57,11 +57,15 @@ rm libbar.la.bak
 
 AT_CHECK([${LIBTOOL} --mode=link --tag=CC $CC $CFLAGS $LDFLAGS -o libbaz.la baz.lo -no-undefined -rpath /usr/local/lib ./libfoo.la ./libbar.la],
 	 [ignore],[stdout],[ignore])
-AT_CHECK([grep 'llt_[[ui]]nlikely_existing_lib.*llt_[[ui]]nlikely_existing_lib' stdout],
+# We used to grep for
+# 'llt_[[ui]]nlikely_existing_lib.*llt_[[ui]]nlikely_existing_lib'
+# here.  This fails on win32/MSVC because the generated command lines have a
+# different syntax.  So drop the first `l'.
+AT_CHECK([grep 'lt_[[ui]]nlikely_existing_lib.*lt_[[ui]]nlikely_existing_lib' stdout],
 	 [0],[ignore],[ignore])
 AT_CHECK([${LIBTOOL} --mode=link --tag=CC $CC $CFLAGS $LDFLAGS -o main main.lo -no-undefined -rpath /usr/local/lib  ./libfoo.la ./libbar.la],
 	[ignore],[stdout],[ignore])
-AT_CHECK([grep 'llt_[[ui]]nlikely_existing_lib.*llt_[[ui]]nlikely_existing_lib' stdout],
+AT_CHECK([grep 'lt_[[ui]]nlikely_existing_lib.*lt_[[ui]]nlikely_existing_lib' stdout],
 	 [0],[ignore],[ignore])
 
 AT_CLEANUP
