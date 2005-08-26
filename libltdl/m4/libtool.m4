@@ -2417,10 +2417,10 @@ _LT_DECL([], [shlibpath_overrides_runpath], [0],
     [Is shibpath searched before the hard-coded library search path?])
 _LT_DECL([], [libname_spec], [1], [Format of library name prefix])
 _LT_DECL([], [library_names_spec], [1],
-    [List of archive names.  First name is the real one, the rest are links.
-    The last name is the one that the linker finds with -lNAME])
+    [[List of archive names.  First name is the real one, the rest are links.
+    The last name is the one that the linker finds with -lNAME]])
 _LT_DECL([], [soname_spec], [1],
-    [The coded name of the library, if different from the real name])
+    [[The coded name of the library, if different from the real name]])
 _LT_DECL([], [postinstall_cmds], [2],
     [Command to use after installation of a shared archive])
 _LT_DECL([], [postuninstall_cmds], [2],
@@ -2428,8 +2428,8 @@ _LT_DECL([], [postuninstall_cmds], [2],
 _LT_DECL([], [finish_cmds], [2],
     [Commands used to finish a libtool library installation in a directory])
 _LT_DECL([], [finish_eval], [1],
-    [As "finish_cmds", except a single script fragment to be evaled but
-    not shown])
+    [[As "finish_cmds", except a single script fragment to be evaled but
+    not shown]])
 _LT_DECL([], [hardcode_into_libs], [0],
     [Whether we should hardcode library paths into libraries])
 _LT_DECL([], [sys_lib_search_path_spec], [2],
@@ -4714,8 +4714,8 @@ _LT_TAGDECL([], [hardcode_libdir_flag_spec], [1],
     [Flag to hardcode $libdir into a binary during linking.
     This must work even if $libdir does not exist])
 _LT_TAGDECL([], [hardcode_libdir_flag_spec_ld], [1],
-    [If ld is used when linking, flag to hardcode $libdir into a binary
-    during linking.  This must work even if $libdir does not exist])
+    [[If ld is used when linking, flag to hardcode $libdir into a binary
+    during linking.  This must work even if $libdir does not exist]])
 _LT_TAGDECL([], [hardcode_libdir_separator], [1],
     [Whether we need a single "-rpath" flag with a separated argument])
 _LT_TAGDECL([], [hardcode_direct], [0],
