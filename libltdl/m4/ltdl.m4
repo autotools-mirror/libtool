@@ -52,7 +52,7 @@ AC_CONFIG_SUBDIRS(m4_if($#, 1, [$1], [libltdl]))
 ])# LT_WITH_LTDL
 
 # Old name:
-AU_DEFUN([AC_WITH_LTDL], [LT_WITH_LTDL])
+AU_ALIAS([AC_WITH_LTDL], [LT_WITH_LTDL])
 dnl aclocal-1.4 backwards compatibility:
 dnl AC_DEFUN([AC_WITH_LTDL], [])
 
@@ -86,7 +86,7 @@ AC_SUBST([INCLTDL])
 ])# LTDL_CONVENIENCE
 
 # Old name:
-AU_DEFUN([AC_LIBLTDL_CONVENIENCE], [LTDL_CONVENIENCE])
+AU_ALIAS([AC_LIBLTDL_CONVENIENCE], [LTDL_CONVENIENCE])
 dnl aclocal-1.4 backwards compatibility:
 dnl AC_DEFUN([AC_LIBLTDL_CONVENIENCE], [])
 
@@ -131,7 +131,7 @@ AC_SUBST([INCLTDL])
 ])# LTDL_INSTALLABLE
 
 # Old name:
-AU_DEFUN([AC_LIBLTDL_INSTALLABLE], [LTDL_INSTALLABLE])
+AU_ALIAS([AC_LIBLTDL_INSTALLABLE], [LTDL_INSTALLABLE])
 dnl aclocal-1.4 backwards compatibility:
 dnl AC_DEFUN([AC_LIBLTDL_INSTALLABLE], [])
 
@@ -190,7 +190,7 @@ AC_SUBST([LTDLOPEN])
 ])# LTDL_INIT
 
 # Old name:
-AU_DEFUN([AC_LIB_LTDL], [LTDL_INIT])
+AU_ALIAS([AC_LIB_LTDL], [LTDL_INIT])
 dnl aclocal-1.4 backwards compatibility:
 dnl AC_DEFUN([AC_LIB_LTDL], [])
 
@@ -291,7 +291,7 @@ fi
 ])# LT_SYS_DLOPEN_DEPLIBS
 
 # Old name:
-AU_DEFUN([AC_LTDL_SYS_DLOPEN_DEPLIBS], [LT_SYS_DLOPEN_DEPLIBS])
+AU_ALIAS([AC_LTDL_SYS_DLOPEN_DEPLIBS], [LT_SYS_DLOPEN_DEPLIBS])
 dnl aclocal-1.4 backwards compatibility:
 dnl AC_DEFUN([AC_LTDL_SYS_DLOPEN_DEPLIBS], [])
 
@@ -314,7 +314,7 @@ fi
 ])# LT_SYS_MODULE_EXT
 
 # Old name:
-AU_DEFUN([AC_LTDL_SHLIBEXT], [LT_SYS_MODULE_EXT])
+AU_ALIAS([AC_LTDL_SHLIBEXT], [LT_SYS_MODULE_EXT])
 dnl aclocal-1.4 backwards compatibility:
 dnl AC_DEFUN([AC_LTDL_SHLIBEXT], [])
 
@@ -333,7 +333,7 @@ fi
 ])# LT_SYS_MODULE_PATH
 
 # Old name:
-AU_DEFUN([AC_LTDL_SHLIBPATH], [LT_SYS_MODULE_PATH])
+AU_ALIAS([AC_LTDL_SHLIBPATH], [LT_SYS_MODULE_PATH])
 dnl aclocal-1.4 backwards compatibility:
 dnl AC_DEFUN([AC_LTDL_SHLIBPATH], [])
 
@@ -361,7 +361,7 @@ fi
 ])# LT_SYS_DLSEARCH_PATH
 
 # Old name:
-AU_DEFUN([AC_LTDL_SYSSEARCHPATH], [LT_SYS_DLSEARCH_PATH])
+AU_ALIAS([AC_LTDL_SYSSEARCHPATH], [LT_SYS_DLSEARCH_PATH])
 dnl aclocal-1.4 backwards compatibility:
 dnl AC_DEFUN([AC_LTDL_SYSSEARCHPATH], [])
 
@@ -479,7 +479,7 @@ AC_LANG_POP
 ])# LT_LIB_DLLOAD
 
 # Old name:
-AU_DEFUN([AC_LTDL_DLLIB], [LT_LIB_DLLOAD])
+AU_ALIAS([AC_LTDL_DLLIB], [LT_LIB_DLLOAD])
 dnl aclocal-1.4 backwards compatibility:
 dnl AC_DEFUN([AC_LTDL_DLLIB], [])
 
@@ -524,7 +524,7 @@ _LT_EOF
 ])# LT_SYS_SYMBOL_USCORE
 
 # Old name:
-AU_DEFUN([AC_LTDL_SYMBOL_USCORE], [LT_SYS_SYMBOL_USCORE])
+AU_ALIAS([AC_LTDL_SYMBOL_USCORE], [LT_SYS_SYMBOL_USCORE])
 dnl aclocal-1.4 backwards compatibility:
 dnl AC_DEFUN([AC_LTDL_SYMBOL_USCORE], [])
 
@@ -556,6 +556,6 @@ fi
 ])# LT_FUNC_DLSYM_USCORE
 
 # Old name:
-AU_DEFUN([AC_LTDL_DLSYM_USCORE], [LT_FUNC_DLSYM_USCORE])
+AU_ALIAS([AC_LTDL_DLSYM_USCORE], [LT_FUNC_DLSYM_USCORE])
 dnl aclocal-1.4 backwards compatibility:
 dnl AC_DEFUN([AC_LTDL_DLSYM_USCORE], [])

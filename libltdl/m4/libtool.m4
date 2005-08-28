@@ -83,8 +83,8 @@ m4_define([LT_INIT])
 ])# _LT_INIT
 
 # Old names:
-AU_DEFUN([AC_PROG_LIBTOOL], [LT_INIT])
-AU_DEFUN([AM_PROG_LIBTOOL], [LT_INIT])
+AU_ALIAS([AC_PROG_LIBTOOL], [LT_INIT])
+AU_ALIAS([AM_PROG_LIBTOOL], [LT_INIT])
 dnl aclocal-1.4 backwards compatibility:
 dnl AC_DEFUN([AC_PROG_LIBTOOL], [])
 dnl AC_DEFUN([AM_PROG_LIBTOOL], [])
@@ -1259,7 +1259,7 @@ fi
 ])# _LT_COMPILER_OPTION
 
 # Old name:
-AU_DEFUN([AC_LIBTOOL_COMPILER_OPTION], [_LT_COMPILER_OPTION])
+AU_ALIAS([AC_LIBTOOL_COMPILER_OPTION], [_LT_COMPILER_OPTION])
 dnl aclocal-1.4 backwards compatibility:
 dnl AC_DEFUN([AC_LIBTOOL_COMPILER_OPTION], [])
 
@@ -1301,7 +1301,7 @@ fi
 ])# _LT_LINKER_OPTION
 
 # Old name:
-AU_DEFUN([AC_LIBTOOL_LINKER_OPTION], [_LT_LINKER_OPTION])
+AU_ALIAS([AC_LIBTOOL_LINKER_OPTION], [_LT_LINKER_OPTION])
 dnl aclocal-1.4 backwards compatibility:
 dnl AC_DEFUN([AC_LIBTOOL_LINKER_OPTION], [])
 
@@ -1413,7 +1413,7 @@ _LT_DECL([], [max_cmd_len], [0],
 ])# LT_CMD_MAX_LEN
 
 # Old name:
-AU_DEFUN([AC_LIBTOOL_SYS_MAX_CMD_LEN], [LT_CMD_MAX_LEN])
+AU_ALIAS([AC_LIBTOOL_SYS_MAX_CMD_LEN], [LT_CMD_MAX_LEN])
 dnl aclocal-1.4 backwards compatibility:
 dnl AC_DEFUN([AC_LIBTOOL_SYS_MAX_CMD_LEN], [])
 
@@ -1633,7 +1633,7 @@ _LT_DECL([dlopen_self_static], [enable_dlopen_self_static], [0],
 ])# LT_SYS_DLOPEN_SELF
 
 # Old name:
-AU_DEFUN([AC_LIBTOOL_DLOPEN_SELF], [LT_SYS_DLOPEN_SELF])
+AU_ALIAS([AC_LIBTOOL_DLOPEN_SELF], [LT_SYS_DLOPEN_SELF])
 dnl aclocal-1.4 backwards compatibility:
 dnl AC_DEFUN([AC_LIBTOOL_DLOPEN_SELF], [])
 
@@ -2504,7 +2504,7 @@ _LT_DECL([], [MAGIC_CMD], [0],
 ])# _LT_PATH_TOOL_PREFIX
 
 # Old name:
-AU_DEFUN([AC_PATH_TOOL_PREFIX], [_LT_PATH_TOOL_PREFIX])
+AU_ALIAS([AC_PATH_TOOL_PREFIX], [_LT_PATH_TOOL_PREFIX])
 dnl aclocal-1.4 backwards compatibility:
 dnl AC_DEFUN([AC_PATH_TOOL_PREFIX], [])
 
@@ -2615,8 +2615,8 @@ _LT_TAGDECL([], [LD], [1], [The linker used to build libraries])
 ])# LT_PATH_LD
 
 # Old names:
-AU_DEFUN([AM_PROG_LD], [LT_PATH_LD])
-AU_DEFUN([AC_PROG_LD], [LT_PATH_LD])
+AU_ALIAS([AM_PROG_LD], [LT_PATH_LD])
+AU_ALIAS([AC_PROG_LD], [LT_PATH_LD])
 dnl aclocal-1.4 backwards compatibility:
 dnl AC_DEFUN([AM_PROG_LD], [])
 dnl AC_DEFUN([AC_PROG_LD], [])
@@ -2931,8 +2931,8 @@ AC_CACHE_CHECK([the name lister ($NM) interface], [lt_cv_nm_interface],
 ])# LT_PATH_NM
 
 # Old names:
-AU_DEFUN([AM_PROG_NM], [LT_PATH_NM])
-AU_DEFUN([AC_PROG_NM], [LT_PATH_NM])
+AU_ALIAS([AM_PROG_NM], [LT_PATH_NM])
+AU_ALIAS([AC_PROG_NM], [LT_PATH_NM])
 dnl aclocal-1.4 backwards compatibility:
 dnl AC_DEFUN([AM_PROG_NM], [])
 dnl AC_DEFUN([AC_PROG_NM], [])
@@ -2960,7 +2960,7 @@ AC_SUBST([LIBM])
 ])# LT_LIB_M
 
 # Old name:
-AU_DEFUN([AC_CHECK_LIBM], [LT_LIB_M])
+AU_ALIAS([AC_CHECK_LIBM], [LT_LIB_M])
 dnl aclocal-1.4 backwards compatibility:
 dnl AC_DEFUN([AC_CHECK_LIBM], [])
 
@@ -6416,7 +6416,7 @@ AC_DEFUN([LT_PROG_GCJ],
 ])
 
 # Old name:
-AU_DEFUN([LT_AC_PROG_GCJ], [LT_PROG_GCJ])
+AU_ALIAS([LT_AC_PROG_GCJ], [LT_PROG_GCJ])
 dnl aclocal-1.4 backwards compatibility:
 dnl AC_DEFUN([LT_AC_PROG_GCJ], [])
 
@@ -6428,7 +6428,7 @@ AC_DEFUN([LT_PROG_RC],
 ])
 
 # Old name:
-AU_DEFUN([LT_AC_PROG_RC], [LT_PROG_RC])
+AU_ALIAS([LT_AC_PROG_RC], [LT_PROG_RC])
 dnl aclocal-1.4 backwards compatibility:
 dnl AC_DEFUN([LT_AC_PROG_RC], [])
 

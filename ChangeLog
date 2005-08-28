@@ -1,3 +1,8 @@
+2005-08-28  Gary V. Vaughan  <gary@gnu.org>
+
+	* libltdl/m4/libtool.m4, libltdl/m4/ltdl.m4: AU_DEFUN doesn't pass
+	arguments.  Use AU_ALIAS instead!
+
 2005-08-28  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>,
 	    Gary V. Vaughan <gary@gnu.org>
 
