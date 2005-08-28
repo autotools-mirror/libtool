@@ -106,6 +106,17 @@ cc_basename=`$ECHO "X$cc_temp" | $Xsed -e 's%.*/%%' -e "s%^$host_alias-%%"`
 ])
 
 
+# _LT_FILEUTILS_DEFAULTS
+# ----------------------
+# It is okay to use these file commands and assume they have been set
+# sensibly after `m4_require([_LT_FILEUTILS_DEFAULTS])'.
+m4_defun([_LT_FILEUTILS_DEFAULTS],
+[: ${CP="cp -f"}
+: ${MV="mv -f"}
+: ${RM="rm -f"}
+])# _LT_FILEUTILS_DEFAULTS
+
+
 # _LT_SETUP
 # ---------
 m4_defun([_LT_SETUP],
@@ -133,6 +144,7 @@ _LT_DECL([objext], [ac_objext], [0], [Object file suffix (normally "o")])dnl
 AC_REQUIRE([AC_EXEEXT])dnl
 _LT_DECL([], [exeext], [0], [Executable file suffix (normally "")])dnl
 dnl
+m4_require([_LT_FILEUTILS_DEFAULTS])dnl
 m4_require([_LT_CHECK_XSI_SHELL])dnl
 m4_require([_LT_CMD_RELOAD])dnl
 m4_require([_LT_CHECK_MAGIC_METHOD])dnl
@@ -184,9 +196,6 @@ delay_single_quote_subst='s/'\''/'\'\\\\\\\'\''/g'
 
 # Sed substitution to avoid accidental globbing in evaled expressions
 no_glob_subst='s/\*/\\\*/g'
-
-# Constants:
-RM="rm -f"
 
 # Global variables:
 ofile=libtool
@@ -244,7 +253,6 @@ m4_defun([_LT_PROG_LTMAIN],
 _LT_CONFIG_LIBTOOL_INIT([ac_aux_dir='$ac_aux_dir'])
 ltmain="$ac_aux_dir/ltmain.sh"
 ])# _LT_PROG_LTMAIN
-
 
 
 ## ------------------------------------- ##
@@ -642,7 +650,8 @@ fi
 # to config.status for appending the configuration named by TAG from the
 # matching tagged config vars.
 m4_defun([_LT_CONFIG],
-[_LT_CONFIG_SAVE_COMMANDS([
+[m4_require([_LT_FILEUTILS_DEFAULTS])dnl
+_LT_CONFIG_SAVE_COMMANDS([
   m4_define([_LT_TAG], m4_if([$1], [], [C], [$1]))dnl
   m4_if(_LT_TAG, [C], [
     # See if we are running on zsh, and set the options which allow our
@@ -1219,6 +1228,7 @@ _LT_TAGDECL([], [old_archive_cmds], [2],
 # Check whether the given compiler option works
 AC_DEFUN([_LT_COMPILER_OPTION],
 [AC_REQUIRE([AC_OBJEXT])dnl
+m4_require([_LT_FILEUTILS_DEFAULTS])dnl
 m4_require([_LT_DECL_SED])dnl
 AC_CACHE_CHECK([$1], [$2],
   [$2=no
@@ -1269,7 +1279,8 @@ dnl AC_DEFUN([AC_LIBTOOL_COMPILER_OPTION], [])
 # ----------------------------------------------------
 # Check whether the given linker option works
 AC_DEFUN([_LT_LINKER_OPTION],
-[AC_CACHE_CHECK([$1], [$2],
+[m4_require([_LT_FILEUTILS_DEFAULTS])dnl
+AC_CACHE_CHECK([$1], [$2],
   [$2=no
    save_LDFLAGS="$LDFLAGS"
    LDFLAGS="$LDFLAGS $3"
@@ -1644,6 +1655,7 @@ dnl AC_DEFUN([AC_LIBTOOL_DLOPEN_SELF], [])
 # This macro does not hard code the compiler like AC_PROG_CC_C_O.
 m4_defun([_LT_COMPILER_C_O],
 [AC_REQUIRE([AC_OBJEXT])dnl
+m4_require([_LT_FILEUTILS_DEFAULTS])dnl
 m4_require([_LT_TAG_COMPILER])dnl
 AC_CACHE_CHECK([if $compiler supports -c -o file.$ac_objext],
   [_LT_TAGVAR(lt_cv_prog_compiler_c_o, $1)],
@@ -1698,7 +1710,7 @@ _LT_TAGDECL([compiler_c_o], [lt_cv_prog_compiler_c_o], [1],
 # Check to see if we can do hard links to lock some files if needed
 m4_defun([_LT_COMPILER_FILE_LOCKS],
 [m4_require([_LT_ENABLE_LOCK])dnl
-
+m4_require([_LT_FILEUTILS_DEFAULTS])dnl
 _LT_COMPILER_C_O([$1])
 
 hard_links="nottested"
@@ -1826,7 +1838,8 @@ _LT_DECL([], [striplib], [1])
 # -----------------------------
 # PORTME Fill in your ld.so characteristics
 m4_defun([_LT_SYS_DYNAMIC_LINKER],
-[m4_require([_LT_DECL_EGREP])
+[m4_require([_LT_DECL_EGREP])dnl
+m4_require([_LT_FILEUTILS_DEFAULTS])dnl
 AC_MSG_CHECKING([dynamic linker characteristics])
 m4_case([$1],
 	[C], [withGCC=$GCC],
@@ -3748,6 +3761,7 @@ _LT_TAGDECL([link_static_flag], [lt_prog_compiler_static], [1],
 m4_defun([_LT_LINKER_SHLIBS],
 [AC_REQUIRE([LT_PATH_LD])dnl
 AC_REQUIRE([LT_PATH_NM])dnl
+m4_require([_LT_FILEUTILS_DEFAULTS])dnl
 m4_require([_LT_DECL_EGREP])dnl
 m4_require([_LT_CMD_GLOBAL_SYMBOLS])dnl
 AC_MSG_CHECKING([whether the $compiler linker ($LD) supports shared libraries])
@@ -4888,6 +4902,7 @@ popdef([AC_MSG_ERROR])
 m4_defun([_LT_LANG_CXX_CONFIG],
 [AC_REQUIRE([_LT_PROG_CXX])dnl
 AC_REQUIRE([LT_SYS_DLOPEN_SELF])dnl
+m4_require([_LT_FILEUTILS_DEFAULTS])dnl
 m4_require([_LT_DECL_EGREP])dnl
 
 AC_LANG_PUSH(C++)
@@ -5862,7 +5877,8 @@ AC_LANG_POP
 # Parse the compiler output and extract the necessary
 # objects, libraries and library flags.
 m4_defun([_LT_SYS_HIDDEN_LIBDEPS],
-[# Dependencies to place before and after the object being linked:
+[m4_require([_LT_FILEUTILS_DEFAULTS])dnl
+# Dependencies to place before and after the object being linked:
 _LT_TAGVAR(predep_objects, $1)=
 _LT_TAGVAR(postdep_objects, $1)=
 _LT_TAGVAR(predeps, $1)=

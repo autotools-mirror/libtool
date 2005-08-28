@@ -1,3 +1,17 @@
+2005-08-29  Gary V. Vaughan  <gary@gnu.org>
+
+	Some macros had relied on accidentally correct ordering in order
+	for $MV to be defined before use.  Factor out setting of some
+	common file commands and m4_require it before use:
+
+	* libltdl/m4/libtool.m4 (_LT_FILEUTILS_DEFAULTS): Allow user to
+	override some common file commands at configure time.
+	(_LT_SETUP, _LT_CONFIG, _LT_COMPILER_OPTION, _LT_LINKER_OPTION)
+	(_LT_COMPILER_C_O, _LT_COMPILER_FILE_LOCKS)
+	(_LT_SYS_DYNAMIC_LINKER, _LT_LINKER_SHLIBS, _LT_LANG_CXX_CONFIG)
+	(_LT_SYS_HIDDEN_DEPLIBS): m4_require it to ensure the commands are
+	defined before they are called.
+
 2005-08-28  Gary V. Vaughan  <gary@gnu.org>
 
 	* libltdl/m4/libtool.m4, libltdl/m4/ltdl.m4: AU_DEFUN doesn't pass
