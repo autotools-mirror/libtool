@@ -603,7 +603,7 @@ func_lalib_p ()
 func_lalib_unsafe_p ()
 {
     lalib_p=no
-    if test -r "$1" && exec <"$1"; then
+    if test -r "$1" && exec 5<&1 <"$1"; then
 	for lalib_p_l in 1 2 3 4
 	do
 	    read lalib_p_line
@@ -611,7 +611,7 @@ func_lalib_unsafe_p ()
 		\#\ Generated\ by\ *$PACKAGE* ) lalib_p=yes; break;;
 	    esac
 	done
-	exec <&-
+	exec 1<&5 5<&-
     fi
     test "$lalib_p" = yes
 }

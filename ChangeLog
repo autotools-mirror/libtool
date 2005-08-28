@@ -1,4 +1,12 @@
-2005-08-26  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+2005-08-28  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>,
+	    Gary V. Vaughan <gary@gnu.org>
+
+	* libltdl/config/ltmain.m4sh (func_lalib_unsafe_p) [osf]:
+	Save file descriptor to original STDIN, and restore after
+	redirection.  Fixes memory corruption with Tru64 and OSF sh.
+	Reported by Nicolas Joly <njoly@pasteur.fr>.
+
+2005-08-26  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>,
 	    Peter Ekberg  <peda@lysator.liu.se>
 
 	* tests/early-libtool.at: Fix goofed up make rules in
