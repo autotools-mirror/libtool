@@ -382,9 +382,9 @@ ltdldatafiles	= libltdl/COPYING.LIB \
 		  libltdl/README \
 		  libltdl/Makefile.am \
 		  libltdl/Makefile.in \
+		  libltdl/configure.ac \
 		  libltdl/aclocal.m4 \
 		  libltdl/config-h.in \
-		  libltdl/configure.ac \
 		  libltdl/configure \
 		  libltdl/argz_.h \
 		  libltdl/argz.c \
@@ -399,31 +399,37 @@ ltdldatafiles	= libltdl/COPYING.LIB \
 		  $(libltdl_libltdl_la_SOURCES)
 
 install-data-local: libltdl/Makefile.in
+	@$(NORMAL_INSTALL)
 ## Don't install over the top of an old pkgdatadir
-	-rm -rf $(DESTDIR)$(pkgdatadir)
+	-rm -rf $(DESTDIR)$(pkgdatadir)/*
 ## To avoid spurious reconfiguration when the user installs these files
-## with libtoolize, we have to preserve their timestamps carefully:
-	$(mkinstalldirs) $(DESTDIR)$(pkgdatadir)
-	( cd $(srcdir) && $(AMTAR) chf - $(ltdldatafiles); ) \
-	  | ( umask 0 && cd $(DESTDIR)$(pkgdatadir) && $(AMTAR) xf -; )
-## And similarly copy the config auxilliary files into the master tree
-	( cd $(srcdir)/libltdl && $(AMTAR) chf - $(auxfiles); ) \
-	  | ( umask 0 && cd $(DESTDIR)$(pkgdatadir) && $(AMTAR) xf -; )
-	@for f in : $(auxexefiles); do \
-	  test "X$$f" = X: && continue; \
-	  echo "chmod +x '$(DESTDIR)$(pkgdatadir)/$$f'"; \
-	  chmod +x "$(DESTDIR)$(pkgdatadir)/$$f"; \
-	done
-## Put a copy of the libtool m4 macros in the aclocal dir
+## with libtoolize, we have to install them in the correct order:
+## First, put a copy of the libtool m4 macros in the aclocal dir
 	$(mkinstalldirs) $(DESTDIR)$(aclocaldir)
-	@for p in $(aclocalfiles); do \
+	@cd $(srcdir)/$(m4dir) && \
+	list='$(aclocalfiles)'; for p in $$list; do \
 	  f=`echo "$$p" | sed 's|^.*/||'`; \
-	  aclocalfiles="$$aclocalfiles $$f"; \
+	  echo " $(INSTALL_DATA) '$$f' '$(DESTDIR)$(aclocaldir)/$$f'"; \
+	  $(INSTALL_DATA) "$$f" "$(DESTDIR)$(aclocaldir)/$$f"; \
 	done; \
-	( cd $(srcdir)/$(m4dir) && $(AMTAR) chf - $$aclocalfiles; ) \
-	  | ( umask 0 && cd $(DESTDIR)$(aclocaldir) && $(AMTAR) xf -; )
-	chown -R root $(DESTDIR)$(pkgdatadir) && \
-	chgrp -R root $(DESTDIR)$(pkgdatadir) || :
+## install the helper scripts
+	$(mkinstalldirs) $(DESTDIR)$(pkgdatadir)
+	$(mkinstalldirs) $(DESTDIR)$(pkgdatadir)/config
+	@cd $(srcdir)/libltdl && \
+	list='$(auxfiles)' && for p in $$list; do \
+	  echo " $(INSTALL_SCRIPT) '$$p' '$(DESTDIR)$(pkgdatadir)/$$p'"; \
+	  $(INSTALL_SCRIPT) "$$p" "$(DESTDIR)$(pkgdatadir)/$$p"; \
+	done
+## install the libltdl files
+	$(mkinstalldirs) $(DESTDIR)$(pkgdatadir)/libltdl
+	$(mkinstalldirs) $(DESTDIR)$(pkgdatadir)/libltdl/libltdl
+	$(mkinstalldirs) $(DESTDIR)$(pkgdatadir)/libltdl/loaders
+	@cd $(srcdir) && \
+	list='$(ltdldatafiles)' && for p in $$list; do \
+	  echo " $(INSTALL_DATA) '$$p' '$(DESTDIR)$(pkgdatadir)/$$p'"; \
+	  $(INSTALL_DATA) "$$p" "$(DESTDIR)$(pkgdatadir)/$$p"; \
+	done
+	-chmod a+x $(DESTDIR)$(pkgdatadir)/libltdl/configure
 
 
 ## ------------- ##
@@ -431,22 +437,16 @@ install-data-local: libltdl/Makefile.in
 ## ------------- ##
 
 uninstall-hook:
-	@for f in $(ltdldatafiles); do \
-	  echo " rm -rf '$(DESTDIR)$(ltdldatadir)/$$f'"; \
-	  rm -f "$(DESTDIR)$(ltdldatadir)/$$f"; \
+	@$(NORMAL_UNINSTALL)
+	@list='$(ltdldatafiles) $(auxfiles)'; for f in $$list; do \
+	  echo " rm -f '$(DESTDIR)$(pkgdatadir)/$$f'"; \
+	  rm -f "$(DESTDIR)$(pkgdatadir)/$$f"; \
 	done
 	@for p in $(aclocalfiles); do \
 	  f=`echo "$$p" | sed 's|^.*/||'`; \
-	  echo " rm -rf '$(DESTDIR)$(aclocaldir)/$$f'"; \
+	  echo " rm -f '$(DESTDIR)$(aclocaldir)/$$f'"; \
 	  rm -f "$(DESTDIR)$(aclocaldir)/$$f"; \
 	done
-## Uninstall files from install-data-local rule above:
-	@for f in $(ltdldatafiles) $(auxfiles); do \
-	  test -f $(DESTDIR)$(pkgdatadir)/$$f || continue; \
-	  echo "rm -f $(DESTDIR)$(pkgdatadir)/$$f"; \
-	  rm -f $(DESTDIR)$(pkgdatadir)/$$f; \
-	done
-
 
 dist-hook:
 ## Ship README.alpha only in alpha release, but renamed to README
