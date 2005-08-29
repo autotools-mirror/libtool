@@ -1,5 +1,10 @@
 2005-08-29  Gary V. Vaughan  <gary@gnu.org>
 
+	* libltdl/m4/ltdl.m4 (LTDL_CONVENIENCE): Fix the comment to not
+	pretend that LIBLTDL and LTDLINCL are not AC_SUBSTed here.
+
+2005-08-29  Gary V. Vaughan  <gary@gnu.org>
+
 	Some macros had relied on accidentally correct ordering in order
 	for $MV to be defined before use.  Factor out setting of some
 	common file commands and m4_require it before use:
