@@ -24,7 +24,7 @@
 @ifnottex
 This file documents GNU Libtool @value{VERSION}
 
-Copyright (C) 1996-2003 Free Software Foundation, Inc.
+Copyright (C) 1996-2003, 2005 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.1
@@ -3504,10 +3504,10 @@ a convenience library or an installable libtool library.
 
 The most simplistic way to add @code{libltdl} to your package is to copy
 the source files, @file{ltdl.c} and @file{ltdl.h}, to a source directory
-withing your package and to build and link them along with the rest of
+within your package and to build and link them along with the rest of
 your sources.  To help you do this, the m4 macros for autoconf are
 available in @file{ltdl.m4}.  You must ensure that they are available in
-@file{aclocal.m4} before you run autoconf -- by appending the contents
+@file{aclocal.m4} before you run Autoconf -- by appending the contents
 of @file{ltdl.m4} to @file{acinclude.m4}, if you are using automake, or
 to @file{aclocal.m4} if you are not.  Having made the macros available,
 you must add a call to the @samp{AC_LIB_LTDL} macro to your package's
@@ -3607,9 +3607,6 @@ configure.in:
 dnl Enable building of the convenience library
 dnl and set LIBLTDL accordingly
 AC_LIBLTDL_CONVENIENCE
-dnl Substitute LTDLINCL and LIBLTDL in the Makefiles
-AC_SUBST(LTDLINCL)
-AC_SUBST(LIBLTDL)
 dnl Check for dlopen support
 AC_LIBTOOL_DLOPEN
 dnl Configure libtool
