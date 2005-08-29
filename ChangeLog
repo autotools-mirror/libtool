@@ -1,5 +1,9 @@
 2005-08-29  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
+	* libltdl/m4/libtool.m4 (_LT_SYS_DYNAMIC_LINKER)
+	(_LT_PATH_TOOL_PREFIX, _LT_SYS_HIDDEN_LIBDEPS, _LT_DECL_EGREP):
+	Fix typos.
+
 	* Makefile.am: Install libltdl data files in correct order.
 	Use pre-defined programs for installation; use NORMAL_INSTALL
 	and NORMAL_UNINSTALL.  Really fix ownership and timestamp

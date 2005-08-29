@@ -2427,7 +2427,7 @@ _LT_DECL([], [version_type], [0], [Library versioning type])
 _LT_DECL([], [runpath_var], [0],  [Shared library runtime path variable])
 _LT_DECL([], [shlibpath_var], [0],[Shared library path variable])
 _LT_DECL([], [shlibpath_overrides_runpath], [0],
-    [Is shibpath searched before the hard-coded library search path?])
+    [Is shlibpath searched before the hard-coded library search path?])
 _LT_DECL([], [libname_spec], [1], [Format of library name prefix])
 _LT_DECL([], [library_names_spec], [1],
     [[List of archive names.  First name is the real one, the rest are links.
@@ -2513,7 +2513,7 @@ else
   AC_MSG_RESULT(no)
 fi
 _LT_DECL([], [MAGIC_CMD], [0],
-	 [Used to examine libraries when file_magic_cmd begins "file"])dnl
+	 [Used to examine libraries when file_magic_cmd begins with "file"])dnl
 ])# _LT_PATH_TOOL_PREFIX
 
 # Old name:
@@ -6033,7 +6033,7 @@ case " $_LT_TAGVAR(postdeps, $1) " in
 *" -lc "*) _LT_TAGVAR(archive_cmds_need_lc, $1)=no ;;
 esac
 _LT_TAGDECL([], [predep_objects], [1],
-    [Dependencies to place before and after  the objects being linked to
+    [Dependencies to place before and after the objects being linked to
     create a shared library])
 _LT_TAGDECL([], [postdep_objects], [1])
 _LT_TAGDECL([], [predeps], [1])
@@ -6457,7 +6457,7 @@ m4_defun([_LT_DECL_EGREP],
 [AC_REQUIRE([AC_PROG_EGREP])dnl
 AC_REQUIRE([AC_PROG_FGREP])dnl
 test -z "$GREP" && GREP=grep
-_LT_DECL([], [GREP], [1], [A grep program that handles long line])
+_LT_DECL([], [GREP], [1], [A grep program that handles long lines])
 _LT_DECL([], [EGREP], [1], [An ERE matcher])
 _LT_DECL([], [FGREP], [1], [A literal string matcher])
 dnl Non-bleeding-edge autoconf doesn't subst GREP, so do it here too
