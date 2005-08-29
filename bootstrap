@@ -33,6 +33,7 @@
 : ${SED=sed}
 : ${LN_S='ln -s'}
 : ${MAKEINFO=makeinfo}
+: ${WORKING_LIBOBJ_SUPPORT=false}
 
 test -f ./configure.ac || {
   echo "bootstrap: can't find ./configure.ac, please rerun from top_srcdir"
@@ -66,6 +67,14 @@ rm -rf `find . -path './{arch}' -prune -o \( -name autom4te.cache -o -name libto
 
 # Delete stale files from previous libtool versions.
 rm -f acinclude.m4 libltdl/config.h
+
+# Workaround for missing LIBOBJDIR support in Autoconf 2.59, Automake 1.9.6:
+# Have symlinks of the libobj files in top source dir.
+# Set WORKING_LIBOBJ_SUPPORT=: when calling bootstrap if you have fixed tools.
+for file in argz.c lt__dirent.c lt__strl.c; do
+  rm -f $file
+  $WORKING_LIBOBJ_SUPPORT || $LN_S libltdl/$file $file
+done
 
 if test -z "$reconfdirs"; then
   reconfdirs=". libltdl `ls -1d tests/*demo tests/*demo[0-9]`"

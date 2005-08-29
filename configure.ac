@@ -123,6 +123,13 @@ AC_SUBST([M4SH], ['$(AUTOM4TE) --language=m4sh'])
 dnl Make sure config.status is regenerated when the version timestamp changes
 AC_SUBST([CONFIG_STATUS_DEPENDENCIES], ['$(top_srcdir)/stamp-vcl'])
 
+dnl automake-1.9.x or autoconf-2.59 don't support subdir libobjs
+AC_MSG_CHECKING([whether subdir libobjs are useable])
+test -f $srcdir/argz.c || sublibobjs_supported=yes
+AM_CONDITIONAL([SUBDIR_LIBOBJS], test x"${sublibobjs_supported-no}" != xno)
+AC_MSG_RESULT([${sublibobjs_supported-no}])
+
+
 ## ------------------------------- ##
 ## Libtool specific configuration. ##
 ## ------------------------------- ##

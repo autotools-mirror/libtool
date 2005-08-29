@@ -1,3 +1,20 @@
+2005-08-29  Gary V. Vaughan <gary@gnu.org>,
+	    Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
+	Allow for portability with Autoconf 2.59, Automake 1.9.6,
+	which lack AC_CONFIG_LIBOBJ_DIR support.
+
+	* bootstrap: Unless environment variable WORKING_LIBOBJS_SUPPORT
+	is set to true aka `:', symlink ..
+	* argz.c lt__dirent.c lt__strl.c: .. these from the copies in
+	libltdl.
+	* configure.ac (SUBDIR_LIBOBJS): Automake conditional, set if
+	bootstrap didn't make the extra copies of libobj sources in
+	top srcdir...
+	* Makefile.am: Add these to EXTRA_DIST if SUBDIR_OBJS is not set,
+	as well as the originals in libltdl/, in order to work when
+	bootstrapped both with old and newer Automake/Autoconf.
+
 2005-08-29  Gary V. Vaughan  <gary@gnu.org>
 
 	* libltdl/m4/ltdl.m4 (LTDL_CONVENIENCE): Fix the comment to not
