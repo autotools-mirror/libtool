@@ -363,7 +363,7 @@ LT_OPTION_DEFINE([pic-only], [_LT_WITH_PIC([yes])])
 LT_OPTION_DEFINE([no-pic], [_LT_WITH_PIC([no])])
 
 # Old name:
-AU_DEFUN([AC_LIBTOOL_PIC_MODE],
+AU_DEFUN([AC_LIBTOOL_PICMODE],
 [_LT_SET_OPTION([pic-only])
 AC_DIAGNOSE([obsolete],
 [$0: Remove this warning and the call to _LT_SET_OPTION when you
@@ -371,4 +371,4 @@ put the `pic-only' option into LT_INIT's first parameter.])
 ])
 
 dnl aclocal-1.4 backwards compatibility:
-dnl AC_DEFUN([AC_LIBTOOL_PIC_MODE], [])
+dnl AC_DEFUN([AC_LIBTOOL_PICMODE], [])

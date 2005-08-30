@@ -1,5 +1,9 @@
 2005-08-30  Gary V. Vaughan  <gary@gnu.org>
 
+	* libltdl/m4/ltoptions.m4 (AC_LIBTOOL_PIC_MODE): Renamed...
+	(AC_LIBTOOL_PICMODE): ...this in the backwards compatibility
+	code.  There never was an AC_LIBTOOL_PIC_MODE macro.
+
 	* libltdl/m4/libtool.m4 (_LT_SETUP): Remove duplicate
 	--enable-libtool-lock declaration.
 
