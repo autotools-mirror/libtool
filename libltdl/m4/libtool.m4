@@ -229,11 +229,6 @@ file_magic*)
   ;;
 esac
 
-AC_ARG_ENABLE([libtool-lock],
-    [AS_HELP_STRING([--disable-libtool-lock],
-	[avoid locking (might break parallel builds)])])
-test "x$enable_libtool_lock" != xno && enable_libtool_lock=yes
-
 # Use C for the default configuration in the libtool script
 LT_SUPPORTED_TAG([CC])
 _LT_LANG_C_CONFIG
