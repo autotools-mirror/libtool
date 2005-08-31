@@ -1,3 +1,8 @@
+2005-08-31  Gary V. Vaughan  <gary@gnu.org>
+
+	* libltdl/m4/libtool.m4 (AC_LIBLTDL_INSTALLABLE): Fix the comment
+	to not pretend that LIBLTDL and LTDLINCL are not AC_SUBSTed here.
+
 2005-08-31  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* README, libtool.m4 [ solaris CC ]: Document issue with C++
@@ -5,8 +10,8 @@
 
 2005-08-29  Gary V. Vaughan  <gary@gnu.org>
 
-	* libltdl/m4/ltdl.m4 (LTDL_CONVENIENCE): Fix the comment to not
-	pretend that LIBLTDL and LTDLINCL are not AC_SUBSTed here.
+	* libltdl/m4/libtool.m4 (AC_LIBLTDL_CONVENIENCE): Fix the comment
+	to not pretend that LIBLTDL and LTDLINCL are not AC_SUBSTed here.
 	* doc/libtool.texi (Distributing libltdl):  Update the
 	documentation to match the advice given in HEAD.  Don't tell
 	the user they have to AC_SUBST again.
