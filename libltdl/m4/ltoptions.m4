@@ -20,9 +20,15 @@ m4_define([_LT_MANGLE_OPTION],
 
 
 # _LT_SET_OPTION(NAME)
-# ------------------------------
-# Set option NAME.  Other NAMEs are saved as a flag.
-m4_define([_LT_SET_OPTION], [m4_define(_LT_MANGLE_OPTION([$1]))])
+# --------------------
+# Set option NAME, and if there is a matching handler defined,
+# dispatch to it.  Other NAMEs are saved as a flag.
+m4_define([_LT_SET_OPTION],
+[m4_define(_LT_MANGLE_OPTION([$1]))dnl
+m4_ifdef(_LT_MANGLE_DEFUN([$1]),
+        _LT_MANGLE_DEFUN([$1]),
+    [m4_warn([Unknown Libtool option `$1'])])[]dnl
+])
 
 
 # _LT_IF_OPTION(OPTION, IF-SET, [IF-NOT-SET])
@@ -52,16 +58,14 @@ m4_ifdef([$0_found], [m4_undefine([$0_found])], [$2
 # and exit.
 m4_define([_LT_SET_OPTIONS],
 [m4_foreach([_LT_Option], m4_split(m4_normalize([$1])),
-    [_LT_SET_OPTION(_LT_Option)
-    m4_ifdef(_LT_MANGLE_DEFUN(_LT_Option),
-	     _LT_MANGLE_DEFUN(_LT_Option),
-	[m4_fatal([Unknown option `]_LT_Option[' to LT][_INIT_LIBTOOL])])
-    ])dnl
+    [_LT_SET_OPTION(_LT_Option)])
 dnl
 dnl Simply set some default values (i.e off) if boolean options were not
 dnl specified:
-_LT_UNLESS_OPTIONS([dlopen], enable_dlopen=no)
-_LT_UNLESS_OPTIONS([win32-dll], enable_win32_dll=no)
+_LT_UNLESS_OPTIONS([dlopen], [enable_dlopen=no
+])
+_LT_UNLESS_OPTIONS([win32-dll], [enable_win32_dll=no
+])
 dnl
 dnl If no reference was made to various pairs of opposing options, then
 dnl we run the default mode handler for the pair.  For example, if neither
@@ -92,7 +96,8 @@ m4_define([LT_OPTION_DEFINE],
 
 # dlopen
 # ------
-LT_OPTION_DEFINE([dlopen], [enable_dlopen=yes])
+LT_OPTION_DEFINE([dlopen], [enable_dlopen=yes
+])
 
 AU_DEFUN([AC_LIBTOOL_DLOPEN],
 [_LT_SET_OPTION([dlopen])
