@@ -1,3 +1,13 @@
+2005-08-31  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	GNU libtool 1.5.20 is released.
+
+	* configure.ac: Bump version.
+	* NEWS: Updated.
+	* INSTALL, config.guess, config.sub, install-sh,
+	doc/texinfo.tex: Updated from external sources.
+	* libltdl/Makefile.am: Bump library revision.
+
 2005-08-31  Gary V. Vaughan  <gary@gnu.org>
 
 	* libltdl/m4/libtool.m4 (AC_LIBLTDL_INSTALLABLE): Fix the comment
