@@ -1,5 +1,8 @@
 2005-08-31  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* configure.ac: Bump version.
+	* NEWS: Updated.
+
 	GNU libtool 1.5.20 is released.
 
 	* configure.ac: Bump version.

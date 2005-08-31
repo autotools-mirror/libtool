@@ -1,5 +1,8 @@
 NEWS - list of user-visible changes between releases of GNU Libtool
 
+New in 1.5.21a: 2005-??-??; CVS version 1.5.21a, Libtool team:
+* Bug Fixes.
+
 New in 1.5.20: 2005-08-31; CVS version 1.5.19a, Libtool team:
 * Fix long-standing Solaris CC limitation failing with -no-undefined.
 * Fix yet another regression with ownership of libltdl data files.
