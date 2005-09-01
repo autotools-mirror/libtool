@@ -1,3 +1,9 @@
+2005-09-01  Gary V. Vaughan  <gary@gnu.org>
+
+	* libtoolize.m4sh (func_scan_files): When searching for evidence
+	of Autotools in aclocal.m4, be careful not to trip over requires
+	and defuns.
+
 2005-08-31  Gary V. Vaughan <gary@gnu.org>,
 	    Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 

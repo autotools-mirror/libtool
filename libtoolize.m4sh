@@ -362,10 +362,12 @@ func_scan_files ()
     # ---------------------------------------------------- #
 
     my_sed_traces='s,#.*$,,; s,^dnl .*$,,; s, dnl .*$,,;
-    	/AC_CONFIG_AUX_DIR[[^_]]/  {
+        s,^.*AC_REQUIRE(.*$,,; s,^.*m4[]_require(.*$,,; s,^.*m4[]_define(.*$,,;
+	s,^.*A[[CU]]_DEFUN(.*$,,; s,^.*m4[]_defun(.*$,,;
+    	/AC_CONFIG_AUX_DIR(/ {
 	    s,^.*AC_CONFIG_AUX_DIR([[[ 	]*\([^])]]*\).*$,auxdir=\1,; p;
         };
-    	/AC_CONFIG_MACRO_DIR/   {
+    	/AC_CONFIG_MACRO_DIR(/ {
 	    s,^.*AC_CONFIG_MACRO_DIR([[[ 	]*\([^])]]*\).*$,m4dir=\1,; p;
         };
 	/A[[CM]]_PROG_LIBTOOL/ { s,^.*$,seen_libtool=:,; p; };
@@ -374,7 +376,7 @@ func_scan_files ()
 	/LT_WITH_LTDL/       { s,^.*$,seen_ltdl=:,; p; };
 	/AC_LIB_LTDL/        { s,^.*$,seen_ltdl=:,; p; };
 	/AC_WITH_LTDL/       { s,^.*$,seen_ltdl=:,; p; };
-	d;'
+	d'
     eval `cat aclocal.m4 "$configure_ac" 2>/dev/null | $SED "$my_sed_traces"`
 
 
