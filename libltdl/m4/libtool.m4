@@ -4886,6 +4886,8 @@ fi
 popdef([AC_MSG_ERROR])
 ])# _LT_PROG_CXX
 
+dnl aclocal-1.4 backwards compatibility:
+dnl AC_DEFUN([_LT_PROG_CXX], [])
 
 # _LT_LANG_CXX_CONFIG([TAG])
 # --------------------------
@@ -6053,6 +6055,8 @@ fi
 popdef([AC_MSG_ERROR])
 ])# _LT_PROG_F77
 
+dnl aclocal-1.4 backwards compatibility:
+dnl AC_DEFUN([_LT_PROG_F77], [])
 
 # _LT_LANG_F77_CONFIG([TAG])
 # --------------------------
@@ -6186,6 +6190,8 @@ fi
 popdef([AC_MSG_ERROR])
 ])# _LT_PROG_FC
 
+dnl aclocal-1.4 backwards compatibility:
+dnl AC_DEFUN([_LT_PROG_FC], [])
 
 # _LT_LANG_FC_CONFIG([TAG])
 # --------------------------

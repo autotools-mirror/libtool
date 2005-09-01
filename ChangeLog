@@ -1,5 +1,8 @@
 2005-09-01  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
+	* libltdl/m4/libtool.m4 (_LT_PROG_CXX, _LT_PROG_F77)
+	(_LT_PROG_FC): aclocal-1.4 compatibility workaround.
+
 	* bootstrap: Do not use nonportable -path.
 	Reported by Ralf Menzel <menzel@ls6.cs.uni-dortmund.de>.
 
