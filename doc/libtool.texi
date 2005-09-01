@@ -622,7 +622,7 @@ libtool are the same ones you would use to produce an executable named
 a23$ @kbd{libtool --mode=link gcc -g -O -o libhello.la foo.o hello.o}
 *** Warning: Linking the shared library libhello.la against the non-libtool
 *** objects  foo.o hello.o is not portable!
-ar cru .libs/libhello.a 
+ar cru .libs/libhello.a
 ranlib .libs/libhello.a
 creating libhello.la
 (cd .libs && rm -f libhello.la && ln -s ../libhello.la libhello.la)
@@ -1982,12 +1982,12 @@ specifying @option{--enable-static} to @command{configure}.
 @item pic-only
 Change the default behaviour for @command{libtool} to try to use only
 @sc{pic} objects.  The user may still override this default by specifying
-@option{--with-pic} to @command{configure}.
+@option{--without-pic} to @command{configure}.
 
 @item no-pic
 Change the default behaviour of @command{libtool} to try to use only
 non-@sc{pic} objects.  The user may still override this default by
-specifying @option{--without-pic} to @command{configure}.
+specifying @option{--with-pic} to @command{configure}.
 
 @end table
 
