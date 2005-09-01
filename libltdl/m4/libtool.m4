@@ -65,6 +65,7 @@ AC_REQUIRE([LTOPTIONS_VERSION])dnl
 AC_REQUIRE([LTSUGAR_VERSION])dnl
 AC_REQUIRE([LTVERSION_VERSION])dnl
 m4_require([_LT_PROG_LTMAIN])dnl
+m4_require([_LT_SET_OPTIONS], [_LT_SET_OPTIONS([$1])])dnl
 
 # This can be used to rebuild libtool when needed
 LIBTOOL_DEPS="$ltmain"
@@ -72,9 +73,6 @@ LIBTOOL_DEPS="$ltmain"
 # Always use our own libtool.
 LIBTOOL='$(SHELL) $(top_builddir)/libtool'
 AC_SUBST(LIBTOOL)dnl
-
-# Set options
-_LT_SET_OPTIONS([$1])dnl
 
 _LT_SETUP
 

@@ -56,8 +56,9 @@ m4_ifdef([$0_found], [m4_undefine([$0_found])], [$2
 # If any OPTION has a handler macro declared with LT_OPTION_DEFINE,
 # dispatch to that macro; otherwise complain about the unknown option
 # and exit.
-m4_define([_LT_SET_OPTIONS],
-[m4_foreach([_LT_Option], m4_split(m4_normalize([$1])),
+m4_defun([_LT_SET_OPTIONS],
+[# Set options
+m4_foreach([_LT_Option], m4_split(m4_normalize([$1])),
     [_LT_SET_OPTION(_LT_Option)])
 dnl
 dnl Simply set some default values (i.e off) if boolean options were not
