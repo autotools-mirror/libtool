@@ -1,3 +1,8 @@
+2005-09-01  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
+	* bootstrap: Do not use nonportable -path.
+	Reported by Ralf Menzel <menzel@ls6.cs.uni-dortmund.de>.
+
 2005-09-01  Gary V. Vaughan  <gary@gnu.org>
 
 	* doc/libtool.texi (LT_INIT): Fix a logical error with
