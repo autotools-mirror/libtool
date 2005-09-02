@@ -56,6 +56,8 @@ m4_defun([LT_PREREQ],
 AC_DEFUN([LT_INIT],
 [AC_PREREQ([2.58])dnl We use AC_INCLUDES_DEFAULT
 AC_BEFORE([$0], [LT_LANG])dnl
+AC_BEFORE([$0], [LT_OUTPUT])dnl
+
 dnl Autoconf doesn't catch unexpanded LT_ macros by default:
 m4_pattern_forbid([^_?LT_[A-Z_]+$])dnl
 m4_pattern_allow([^(_LT_EOF|LT_DLGLOBAL|LT_DLLAZY_OR_NOW)$])dnl
@@ -534,11 +536,7 @@ _LT_OUTPUT_LIBTOOL_INIT
 # AC_OUTPUT is called), incase it is used in configure for compilation
 # tests.
 AC_DEFUN([LT_OUTPUT],
-[dnl This macro can only work once all the language testing is completed
-AC_BEFORE([LT_INIT], [LT_OUTPUT])
-AC_BEFORE([LT_LANG], [LT_OUTPUT])
-
-: ${CONFIG_LT=./config.lt}
+[: ${CONFIG_LT=./config.lt}
 AC_MSG_NOTICE([creating $CONFIG_LT])
 cat >"$CONFIG_LT" <<_LTEOF
 #! $SHELL
@@ -748,7 +746,8 @@ m4_define([_LT_TAGS], [])
 # -------------
 # Enable libtool support for the given language if not already enabled.
 AC_DEFUN([LT_LANG],
-[m4_case([$1],
+[AC_BEFORE([$0], [LT_OUTPUT])dnl
+m4_case([$1],
   [C],			[_LT_LANG(C)],
   [C++],		[_LT_LANG(CXX)],
   [Java],		[_LT_LANG(GCJ)],

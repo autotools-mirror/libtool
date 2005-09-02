@@ -1,3 +1,11 @@
+2005-09-02  Gary V. Vaughan  <gary@gnu.org>
+
+	AC_BEFORE only works if declarations are made inside the macro
+	cited as the first argument:
+
+	* libltdl/m4/libtool.m4 (LT_OUTPUT): Move AC_BEFORE decls...
+	(LT_INIT, LT_LANG): ...to the macro that has to come first.
+
 2005-09-01  Peter O'Gorman  <peter@pogma.com>
 
 	* libltdl/m4/libtool.m4 (old_postintall_cmds): chmod 644 before
