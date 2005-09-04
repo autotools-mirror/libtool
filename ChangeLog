@@ -1,3 +1,10 @@
+2005-09-04  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
+	* libltdl/m4/libtool.m4 (_LT_LINKER_SHLIBS) [ aix ]
+	<export_symbols_cmds>: Work around shell expansion issue in
+	func_show_eval by separating `$' and field number; drop then
+	unnecessary m4 quoting.
+
 2005-09-02  Gary V. Vaughan  <gary@gnu.org>
 
 	AC_BEFORE only works if declarations are made inside the macro
