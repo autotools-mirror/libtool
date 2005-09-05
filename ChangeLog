@@ -1,5 +1,11 @@
 2005-09-05  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
+	* Makefile.am (TESTS_ENVIRONMENT): Export SHELL.
+	* bootstrap (SHELL): Set to $CONFIG_SHELL or /bin/sh.
+	Name `make' targets in portable fashion.  Work around `rm'
+	warnings.  Unconditionally create fake `libtoolize'.
+	Reported by Patrick Welche <prlw1@newn.cam.ac.uk>.
+
 	* Makefile.am (doc/notes.txt): Use --no-headers instead of
 	--plaintext for makeinfo.
 	Reported by Peter O'Gorman <peter@pogma.com>.

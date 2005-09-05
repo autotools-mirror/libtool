@@ -24,6 +24,8 @@
 # better features, and configure.ac documents oldest version of each
 # required for bootstrap (AC_PREREQ, and AM_INIT_AUTOMAKE).
 
+SHELL=${CONFIG_SHELL-/bin/sh}
+export SHELL
 : ${AUTORECONF=autoreconf}
 : ${AUTOM4TE=autom4te}
 : ${MAKE=make}
@@ -63,7 +65,8 @@ WARNING: them with all m4 file as shipped with this distribution (except
 WARNING: `lt~obsolete.m4').  After that, retry this bootstrap.
 EOF
 
-rm -rf `find . -name '{arch}' -prune -o \( -name autom4te.cache -o -name libtool \) -print`
+find . -name '{arch}' -prune -o \( -name autom4te.cache -o -name libtool \) \
+       -depth -exec rm -rf \{\} \;
 
 # Delete stale files from previous libtool versions.
 rm -f acinclude.m4 libltdl/config.h
@@ -95,21 +98,21 @@ test -f Makefile \
 # configure, and ltversion.m4 to generate configure in the first place:
 rm -f $auxdir/ltmain.sh $m4dir/ltversion.m4
 
-$MAKE $auxdir/ltmain.sh $m4dir/ltversion.m4 ./doc/notes.txt \
+$MAKE ./$auxdir/ltmain.sh ./$m4dir/ltversion.m4 ./doc/notes.txt \
     ./libtoolize.in ./tests/defs.in ./tests/package.m4 \
     ./tests/testsuite ./libltdl/Makefile.am \
     srcdir=. top_srcdir=. PACKAGE="$2" VERSION="$3" \
     PACKAGE_BUGREPORT="bug-$2@gnu.org" M4SH="$AUTOM4TE --language=m4sh" \
     AUTOTEST="$AUTOM4TE --language=autotest" SED="$SED" MAKEINFO="$MAKEINFO"
 
-test -f clcommit.m4sh && $MAKE -f Makefile.maint commit \
+test -f clcommit.m4sh && $MAKE -f Makefile.maint ./commit \
     srcdir=. top_srcdir=. PACKAGE="$2" VERSION="$3" M4SH="$AUTOM4TE -l m4sh" \
     SED="$SED" GREP="$GREP" FGREP="$FGREP" EGREP="$EGREP" LN_S="$LN_S"
 
 rm -f Makefile
 
 # Make a dummy libtoolize script for autoreconf:
-test -f clcommit.m4sh && cat > $auxdir/libtoolize <<'EOF'
+cat > $auxdir/libtoolize <<'EOF'
 #! /bin/sh
 # This is a dummy file for bootstrapping CVS libtool.
 echo "$0: Bootstrap detected, no files installed." | sed 's,^.*/,,g'
@@ -152,7 +155,7 @@ WARNING: after you have run \`configure' to discover the real whereabouts
 WARNING: of \`sed', \`grep' etc. like this:
 WARNING:
 WARNING:      rm -f commit $auxdir/mailnotify
-WARNING:      make -f Makefile.maint commit $auxdir/mailnotify
+WARNING:      make -f Makefile.maint ./commit ./$auxdir/mailnotify
 EOF
 
 exit 0
