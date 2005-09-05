@@ -357,7 +357,7 @@ all-local: $(srcdir)/doc/notes.txt
 
 $(srcdir)/doc/notes.txt: $(srcdir)/doc/notes.texi
 	cd $(srcdir)/doc && \
-	  $(MAKEINFO) --plaintext $(MAKEINFOFLAGS) -o notes.txt notes.texi
+	  $(MAKEINFO) --no-headers $(MAKEINFOFLAGS) -o notes.txt notes.texi
 
 
 ## ------------- ##

@@ -1,3 +1,9 @@
+2005-09-05  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
+	* Makefile.am (doc/notes.txt): Use --no-headers instead of
+	--plaintext for makeinfo.
+	Reported by Peter O'Gorman <peter@pogma.com>.
+
 2005-09-04  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
 	* libltdl/m4/libtool.m4 (_LT_LINKER_SHLIBS) [ aix ]
