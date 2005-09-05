@@ -1,5 +1,7 @@
 2005-09-05  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
+	* bootstrap: another AIX sed fix.
+
 	* Makefile.am (TESTS_ENVIRONMENT): Export SHELL.
 	* bootstrap (SHELL): Set to $CONFIG_SHELL or /bin/sh.
 	Name `make' targets in portable fashion.  Work around `rm'
