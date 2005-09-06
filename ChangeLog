@@ -1,3 +1,10 @@
+2005-09-06  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
+	* libtool.m4 (AC_DEPLIBS_CHECK_METHOD) [ sysv4*uw2*,
+	sysv4.2uw2* ]: Fix my last checkin to really match the more special
+	case before the general case.
+	Reported by Stepan Kasal <kasal@ucw.cz>.
+
 2005-09-06  Roger Cornelius  <rac@tenzing.org>
 
 	* libtool.m4 (AC_DEPLIBS_CHECK_METHOD) [ sysv5OpenUNIX8,
