@@ -1,6 +1,13 @@
+2005-09-06  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
+	* libltdl/m4/libtool.m4 (_LT_CHECK_MAGIC_METHOD) [ sysv4*uw2*,
+	sysv4.2uw2* ]: Fix my last checkin to really match the more special
+	case before the general case.
+	Reported by Stepan Kasal <kasal@ucw.cz>.
+
 2005-09-06  Roger Cornelius  <rac@tenzing.org>
 
-	* libltdl/m4/libtool.m4 (AC_DEPLIBS_CHECK_METHOD)
+	* libltdl/m4/libtool.m4 (_LT_CHECK_MAGIC_METHOD)
 	[ sysv5OpenUNIX8, sysv5UnixWare7, sysv5uw[78], unixware7,
 	sysv4*uw2* ]: Match special cases before general case.
 
