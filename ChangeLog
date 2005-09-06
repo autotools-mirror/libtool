@@ -1,3 +1,9 @@
+2005-09-06  Roger Cornelius  <rac@tenzing.org>
+
+	* libtool.m4 (AC_DEPLIBS_CHECK_METHOD) [ sysv5OpenUNIX8,
+	sysv5UnixWare7, sysv5uw[78], unixware7, sysv4*uw2* ]:
+	Match special cases before general case.
+
 2005-09-01  Peter O'Gorman  <peter@pogma.com>
 
 	* libtool.m4 (old_postintall_cmds): chmod 644 before running
