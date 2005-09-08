@@ -1,3 +1,9 @@
+2005-09-08  Charles Wilson  <cygwin@cwilson.fastmail.fm>
+
+	* libtool.m4 (AC_LIBTOOL_LANG_CXX_CONFIG)
+	(AC_LIBTOOL_PROG_LD_SHLIBS) [ cygwin, mingw, pw32 ]: Use
+	--enable-auto-image-base instead of a fixed image base address.
+
 2005-09-06  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
 	* libtool.m4 (AC_DEPLIBS_CHECK_METHOD) [ sysv4*uw2*,
