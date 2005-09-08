@@ -5017,7 +5017,8 @@ formats:
 @end example
 
 The @var{size} of the global variables are not zero and the @var{section}
-of the global functions are not "UNDEF".
+of the global functions are not "UNDEF". Symbols in "pick any" sections
+("pick any" appears in the section header) are not global either.
 @end defvar
 
 @defvar RANLIB
