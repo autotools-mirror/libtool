@@ -1,3 +1,9 @@
+2005-09-08  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
+	* tests/early-libtool.at (config.status): Use EXEEXT
+	consistently.
+	Reported by Charles Wilson <cygwin@cwilson.fastmail.fm>.
+
 2005-09-08  Charles Wilson  <cygwin@cwilson.fastmail.fm>
 
 	* libltdl/m4/libtool.m4 (_LT_LINKER_SHLIBS, _LT_LANG_CXX_CONFIG)

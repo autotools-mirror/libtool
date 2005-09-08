@@ -48,7 +48,7 @@ COMPILE = $(CC) $(DEFAULT_INCLUDES)
 LTCOMPILE = $(LIBTOOL) --mode=compile --tag=CC $(CC) $(DEFAULT_INCLUDES)
 LINK = $(LIBTOOL) --mode=link --tag=CC $(CC) -o $@
 
-all: hell
+all: hell$(EXEEXT)
 
 libhello.la: hello.lo
 	$(LINK) -rpath $(libdir) hello.lo
