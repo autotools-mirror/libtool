@@ -3333,7 +3333,7 @@ func_mode_link ()
 
 	if test "$found" = yes || test -f "$lib"; then :
 	else
-	  func_fatal_error "cannot find the library \`$lib'"
+	  func_fatal_error "cannot find the library \`$lib' or unhandled argument \`$deplib'"
 	fi
 
 	# Check to see that this really is a libtool archive.

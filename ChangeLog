@@ -1,3 +1,10 @@
+2005-09-09  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
+	* libltdl/config/ltmain.m4sh (func_mode_link): Actually provide
+	a useful error message.  Fixes long-standing shameful user
+	neglection.
+	Reported by Martin Paljak <martin.paljak@gmail.com>.
+
 2005-09-08  Peter Ekberg  <peda@axentia.se>
 
 	* libltdl/m4/libtool.m4 (_LT_CMD_GLOBAL_SYMBOLS) [dumpbin]:
