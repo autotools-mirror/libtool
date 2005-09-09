@@ -255,7 +255,7 @@ cc_basename=`$echo "X$cc_temp" | $Xsed -e 's%.*/%%' -e "s%^$host_alias-%%"`
 AC_DEFUN([_LT_COMPILER_BOILERPLATE],
 [ac_outfile=conftest.$ac_objext
 printf "$lt_simple_compile_test_code" >conftest.$ac_ext
-eval "$ac_compile" 2>&1 >/dev/null | $SED '/^$/d' >conftest.err
+eval "$ac_compile" 2>&1 >/dev/null | $SED '/^$/d; /^ *+/d' >conftest.err
 _lt_compiler_boilerplate=`cat conftest.err`
 $rm conftest*
 ])# _LT_COMPILER_BOILERPLATE
@@ -268,7 +268,7 @@ $rm conftest*
 AC_DEFUN([_LT_LINKER_BOILERPLATE],
 [ac_outfile=conftest.$ac_objext
 printf "$lt_simple_link_test_code" >conftest.$ac_ext
-eval "$ac_link" 2>&1 >/dev/null | $SED '/^$/d' >conftest.err
+eval "$ac_link" 2>&1 >/dev/null | $SED '/^$/d; /^ *+/d' >conftest.err
 _lt_linker_boilerplate=`cat conftest.err`
 $rm conftest*
 ])# _LT_LINKER_BOILERPLATE
@@ -616,9 +616,9 @@ AC_CACHE_CHECK([$1], [$2],
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings other than the usual output.
-     $echo "X$_lt_compiler_boilerplate" | $Xsed >conftest.exp
-     $SED '/^$/d' conftest.err >conftest.er2
-     if test ! -s conftest.err || diff conftest.exp conftest.er2 >/dev/null; then
+     $echo "X$_lt_compiler_boilerplate" | $Xsed -e '/^$/d' >conftest.exp
+     $SED '/^$/d; /^ *+/d' conftest.err >conftest.er2
+     if test ! -s conftest.er2 || diff conftest.exp conftest.er2 >/dev/null; then
        $2=yes
      fi
    fi
@@ -649,8 +649,8 @@ AC_DEFUN([AC_LIBTOOL_LINKER_OPTION],
      if test -s conftest.err; then
        # Append any errors to the config.log.
        cat conftest.err 1>&AS_MESSAGE_LOG_FD
-       $echo "X$_lt_linker_boilerplate" | $Xsed > conftest.exp
-       $SED '/^$/d' conftest.err >conftest.er2
+       $echo "X$_lt_linker_boilerplate" | $Xsed -e '/^$/d' > conftest.exp
+       $SED '/^$/d; /^ *+/d' conftest.err >conftest.er2
        if diff conftest.exp conftest.er2 >/dev/null; then
          $2=yes
        fi
@@ -1009,9 +1009,9 @@ AC_CACHE_CHECK([if $compiler supports -c -o file.$ac_objext],
    then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings
-     $echo "X$_lt_compiler_boilerplate" | $Xsed > out/conftest.exp
-     $SED '/^$/d' out/conftest.err >out/conftest.er2
-     if test ! -s out/conftest.err || diff out/conftest.exp out/conftest.er2 >/dev/null; then
+     $echo "X$_lt_compiler_boilerplate" | $Xsed -e '/^$/d' > out/conftest.exp
+     $SED '/^$/d; /^ *+/d' out/conftest.err >out/conftest.er2
+     if test ! -s out/conftest.er2 || diff out/conftest.exp out/conftest.er2 >/dev/null; then
        _LT_AC_TAGVAR(lt_cv_prog_compiler_c_o, $1)=yes
      fi
    fi

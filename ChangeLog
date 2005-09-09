@@ -1,5 +1,13 @@
 2005-09-09  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
+	* libtool.m4 (_LT_COMPILER_BOILERPLATE, _LT_LINKER_BOILERPLATE)
+	(AC_LIBTOOL_COMPILER_OPTION, AC_LIBTOOL_LINKER_OPTION)
+	(AC_LIBTOOL_PROG_CC_C_O): When comparing expected and actual
+	compiler/linker output for warnings, weed out both empty lines
+	as well as lines starting with possibly indented `+', to allow
+	for shell debugging with `set -x'.
+	Check the weeded instead of unweeded contents for emptiness.
+
 	* ltmain.in (link mode): Actually provide a useful error
 	message.  Fixes long-standing shameful user neglection.
 	Reported by Martin Paljak <martin.paljak@gmail.com>.
