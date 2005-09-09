@@ -1,5 +1,13 @@
 2005-09-09  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
+	* libltdl/m4/libtool.m4 (_LT_COMPILER_BOILERPLATE)
+	(_LT_LINKER_BOILERPLATE, _LT_COMPILER_OPTION, _LT_LINKER_OPTION)
+	(_LT_COMPILER_C_O): When comparing expected and actual compiler/
+	linker output for warnings, weed out both empty lines as well as
+	lines starting with possibly indented `+', to allow for shell
+	debugging with `set -x'.
+	Check the weeded instead of unweeded contents for emptiness.
+
 	* libltdl/config/ltmain.m4sh (func_mode_link): Actually provide
 	a useful error message.  Fixes long-standing shameful user
 	neglection.
