@@ -58,14 +58,14 @@ m4_divert_push([SCRIPT])#! /bin/sh
 #
 # Report bugs to <bug-libtool@gnu.org>.
 
+: ${TAR=tar}
+
 PROGRAM=libtoolize
 
 AS_SHELL_SANITIZE
 $as_unset CDPATH
 
 m4_include([getopt.m4sh])
-
-TAR=tar
 
 # Command line options:
 opt_force=false
