@@ -1,3 +1,13 @@
+2005-09-12  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
+	* libltdl/m4/ltdl.m4 (LT_WITH_LTDL, LTDL_CONVENIENCE)
+	(LTDL_INSTALLABLE): Use less quoting for expanded LIBLTDL,
+	LTDLINCL.  Use m4_default instead of m4_if, to work
+	around AU_ALIAS bug with empty macro arguments.
+	(LTDL_INIT): Likewise.
+	* libltdl/m4/ltoptions.m4 (_LT_WITH_PIC): Likewise.
+	* TODO, HACKING: Updated.
+
 2005-09-10  Gary V. Vaughan  <gary@gnu.org>
 
 	* libtoolize.m4sh (TAR): Allow the user to override the tar

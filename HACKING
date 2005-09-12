@@ -241,6 +241,9 @@ yyyy-mm-dd  Name of Author  <email@address>  (tiny change)
    $ECHO ".."		for strings without leading hyphen,
    $ECHO "X.." | $Xsed	otherwise.
 
+* Do not use the number of macro arguments `$#' in public macros;
+  AU_ALIAS may change it.
+
 
 9. Abstraction layers in libltdl
 ================================

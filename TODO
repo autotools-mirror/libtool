@@ -76,6 +76,9 @@ GNU Libtool
 * Look at better -no-undefined support, maybe along the idea of
   [support #103719] for CC.
 
+* Check dangerous use of the number of macro arguments `$#' in public macros
+  (because of AU_ALIAS).
+
 
 1.2. libtldl
 ------------

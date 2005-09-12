@@ -33,7 +33,7 @@ fi
 if test "x$enable_ltdl_install" != xyes; then
   # If the user did not specify an installable libltdl, then default
   # to a convenience lib.
-  LTDL_CONVENIENCE([$1])
+  LTDL_CONVENIENCE(m4_default([$1], [libltdl]))
 fi
 
 if test "x$with_included_ltdl" = xno; then
@@ -48,7 +48,7 @@ fi
 AC_MSG_CHECKING([whether to use included libltdl])
 AC_MSG_RESULT([$with_included_ltdl])
 
-AC_CONFIG_SUBDIRS(m4_if($#, 1, [$1], [libltdl]))
+AC_CONFIG_SUBDIRS(m4_default([$1], [libltdl]))
 ])# LT_WITH_LTDL
 
 # Old name:
@@ -74,8 +74,8 @@ AC_DEFUN([LTDL_CONVENIENCE],
   "") enable_ltdl_convenience=yes
       ac_configure_args="$ac_configure_args --enable-ltdl-convenience" ;;
   esac
-LIBLTDL='${top_builddir}/'m4_if($#, 1, [$1], ['libltdl'])/libltdlc.la
-LTDLINCL='-I${top_srcdir}/'m4_if($#, 1, [$1], ['libltdl'])
+LIBLTDL='${top_builddir}/'m4_default([$1], [libltdl])/libltdlc.la
+LTDLINCL='-I${top_srcdir}/'m4_default([$1], [libltdl])
 
 AC_SUBST([LIBLTDL])
 AC_SUBST([LTDLINCL])
@@ -114,8 +114,8 @@ AC_DEFUN([LTDL_INSTALLABLE],
   ])
 if test x"$enable_ltdl_install" = x"yes"; then
   ac_configure_args="$ac_configure_args --enable-ltdl-install"
-  LIBLTDL='${top_builddir}/'m4_if($#, 1, [$1], ['libltdl'])/libltdl.la
-  LTDLINCL='-I${top_srcdir}/'m4_if($#, 1, [$1], ['libltdl'])
+  LIBLTDL='${top_builddir}/'m4_default([$1], [libltdl])/libltdl.la
+  LTDLINCL='-I${top_srcdir}/'m4_default([$1], [libltdl])
 else
   ac_configure_args="$ac_configure_args --enable-ltdl-install=no"
   LIBLTDL="-lltdl"
@@ -141,7 +141,7 @@ dnl AC_DEFUN([AC_LIBLTDL_INSTALLABLE], [])
 # Perform all the checks necessary for compilation of the ltdl objects
 #  -- including compiler checks and header checks.
 AC_DEFUN([LTDL_INIT],
-[m4_if([$#], 1, [m4_divert_push([DEFAULTS])dnl
+[m4_ifval([$1], [m4_divert_push([DEFAULTS])dnl
 # libltdl will be built in the named DIRECTORY, relative to $top_builddir.
 lt_ltdl_dir='$1'
 m4_divert_pop([DEFAULTS])])dnl
