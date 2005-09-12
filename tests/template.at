@@ -62,18 +62,12 @@ int f(int i)
 ]])
 
 AT_DATA(prog.cpp,
-[[#include <iostream>
-#include "alib.h"
+[[#include "alib.h"
 #include "aclib.h"
-
-using namespace std;
 
 int main()
 {
-  cout << "a sample prog" << endl;
-  cout << "f(3) = " << f(3) << endl;
-  cout << "cf(3) = " << cf(3) << endl;
-  return (f(3) + 3 - cf(3) != 0);
+  return f(3) + 3 - cf(3) != 0;
 }
 ]])
 

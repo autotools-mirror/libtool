@@ -23,7 +23,14 @@
 #include "foo.h"
 #include "baz.h"
 #include "conv.h"
-#include <iostream.h>
+#ifdef HAVE_IOSTREAM
+# include <iostream>
+#else
+# include <iostream.h>
+#endif
+#ifdef HAVE_NAMESPACES
+using namespace std;
+#endif
 
 
 int

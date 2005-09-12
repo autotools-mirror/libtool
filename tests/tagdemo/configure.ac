@@ -45,6 +45,30 @@ AC_PROG_CC_C_O
 AC_PROG_CXX
 AC_PROG_CXXCPP
 
+# Check for namespace support and new-style headers
+AC_LANG_PUSH([C++])
+AC_MSG_CHECKING([whether the compiler implements namespaces])
+AC_COMPILE_IFELSE(
+    [AC_LANG_PROGRAM([[namespace A { namespace B { int i = 0; }}]],
+		     [[using namespace A::B; return i;]])],
+    [AC_MSG_RESULT([yes])
+     AC_DEFINE([HAVE_NAMESPACES],[1],
+	       [define if the compiler implements namespaces])],
+    [AC_MSG_RESULT([no])])
+
+AC_MSG_CHECKING([whether the compiler has ISO C++ iostream])
+AC_COMPILE_IFELSE(
+    [AC_LANG_PROGRAM([[#include <iostream>
+#ifdef HAVE_NAMESPACES
+using namespace std;
+#endif ]], [[cout << "bingo\n"; return 0;]])],
+    [AC_MSG_RESULT([yes])
+     AC_DEFINE([HAVE_IOSTREAM],[1],
+	       [define if the compiler has ISO C++ iostream])],
+    [AC_MSG_RESULT([no])])
+AC_LANG_POP([C++])
+
+
 # As of the writing of this demo, GNU Autoconf's AC_OBJEXT and
 # AC_EXEEXT macros only works for C compilers!
 # Libtool's setup macro calls AC_OBJEXT and AC_EXEEXT without setting

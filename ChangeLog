@@ -1,3 +1,14 @@
+2005-09-12  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
+	Make tagdemo work smoothly with both pre- and ISO C++ compilers,
+	and remove all use of libstdc from other tests.
+
+	* tests/tagdemo/configure.ac (HAVE_NAMESPACES, HAVE_IOSTREAM):
+	New tests for ISO C++ features.  Reimplementation of similar
+	macros from the autoconf archive.
+	* tests/tagdemo/foo.cpp, tests/tagdemo/main.cpp: Adjusted.
+	* tests/am-subdir.at, tests/template.at: Do not use iostream.
+
 2005-09-12  Peter Ekberg  <peda@axentia.se>,
 	    Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 

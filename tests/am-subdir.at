@@ -129,37 +129,27 @@ subdir_subdemo_LDADD	= subdir/libsub.la
 test -d subdir || { rm -f subdir && mkdir subdir; }
 
 AT_DATA([[subdir/sub.hxx]],
-[[class libsub { public: void sub (void); };
+[[class libsub { public: int sub (void); };
 ]])
 
 AT_DATA([[subdir/main.cxx]],
-[[#include <iostream.h>
-#include "sub.hxx"
+[[#include "sub.hxx"
 
 int main (int, char *[])
 {
   libsub SUB;
-
-  cout << "Welcome to GNU Libtool subdir-objects C++ test!" << endl;
-  SUB.sub();
-  return 0;
+  return SUB.sub() != 27;
 }
 ]])
 
 AT_DATA([[subdir/sub.cxx]],
-[[#include <iostream.h>
-#include "sub.hxx"
+[[#include "sub.hxx"
 
-void libsub::sub (void) { cout << "** This is libsub::sub **" << endl; }
-]])
-
-AT_DATA(expout,
-[[Welcome to GNU Libtool subdir-objects C++ test!
-** This is libsub::sub **
+int libsub::sub (void) { return 27; }
 ]])
 
 LT_AT_BOOTSTRAP
 "${MAKE-make}"
-LT_AT_EXEC_CHECK([subdir/subdemo], 0, expout)
+LT_AT_EXEC_CHECK([subdir/subdemo], 0)
 
 AT_CLEANUP
