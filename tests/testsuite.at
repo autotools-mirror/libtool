@@ -25,7 +25,7 @@ m4_divert_push([PREPARE_TESTS])dnl
 : ${AUTOCONF=autoconf}
 export LIBTOOLIZE LIBTOOL ACLOCAL AUTOCONF
 eval `$LIBTOOL --config | grep ^EGREP=`
-eval `$LIBTOOL --config | $EGREP '(host|build)='`
+eval `$LIBTOOL --config | $EGREP '^(host|host_os|build)='`
 m4_divert_pop([PREPARE_TESTS])dnl
 
 # LT_AT_LIBTOOLIZE([ARGS])

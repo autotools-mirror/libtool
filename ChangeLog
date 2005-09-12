@@ -1,3 +1,10 @@
+2005-09-12  Peter Ekberg  <peda@axentia.se>,
+	    Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
+	* tests/testsuite.at (host_os): Pull from `libtool --config'.
+	* tests/stresstest.at [ cygwin, mingw, pw32 ]: Use it to fix
+	setting of `-no-undefined'.
+
 2005-09-12  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
 	* libltdl/m4/ltdl.m4 (LT_WITH_LTDL, LTDL_CONVENIENCE)

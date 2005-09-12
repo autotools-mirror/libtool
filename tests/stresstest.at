@@ -170,7 +170,7 @@ AT_CHECK([$LIBTOOL --mode=compile $CC $CFLAGS -c b.c -o sub/b.lo],[0],[ignore],[
 AT_CHECK([$LIBTOOL --mode=compile $CC $CFLAGS -c main.c],[0],[ignore],[ignore])
 AT_CHECK([$LIBTOOL --mode=compile $CC $CFLAGS -c dlself.c -o sub3/dlself.lo],[0],[ignore],[ignore])
 
-case $host in
+case $host_os in
   cygwin* | mingw* | pw32*) undef_opts=-no-undefined ;;
   *)                        undef_opts='"" -no-undefined' ;;
 esac
