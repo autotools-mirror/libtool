@@ -1,3 +1,13 @@
+2005-09-13  Peter Ekberg  <peda@lysator.liu.se>,
+	    Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
+	* libltdl/config/ltmain.m4sh (func_generate_dlsyms):
+	Fix escape expression to actually escape relevant
+	characters from the following grep. Fix Cygwin and
+	MinGW to use the filtered symbol list when exporting
+	from self, and not the symbol filter.
+	* tests/stresstest.at: Export w8, not w8$
+
 2005-09-12  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
 	Make tagdemo work smoothly with both pre- and ISO C++ compilers,
@@ -250,7 +260,7 @@
 	(_LT_LINKER_SHLIBS): Double-quote unsafe tag variable
 	descriptions: they are literals.
 
-2005-08-25  Peter Ekberg  <peda@lysator.liu.se>
+2005-08-25  Peter Ekberg  <peda@lysator.liu.se>,
 	    Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* tests/standalone.at: (without autotools): Add

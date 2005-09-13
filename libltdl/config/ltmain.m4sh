@@ -848,15 +848,15 @@ extern \"C\" {
 	    }
 	  else
 	    $opt_dry_run || {
-	      eval "${SED} -e 's/\([[ ]][[.*^$]]\)/\\\1/g' -e 's/^/ /' -e 's/$/$/'"' < "$export_symbols" > "$output_objdir/$outputname.exp"'
+	      eval "${SED} -e 's/\([[].[*^$]]\)/\\\\\1/g' -e 's/^/ /' -e 's/$/$/'"' < "$export_symbols" > "$output_objdir/$outputname.exp"'
+	      eval '$GREP -f "$output_objdir/$outputname.exp" < "$nlist" > "$nlist"T'
+	      eval '$MV "$nlist"T "$nlist"'
 	      case $host in
 	        *cygwin | *mingw* )
 	          eval "echo EXPORTS "'> "$output_objdir/$outputname.def"'
-	          eval 'cat "$output_objdir/$outputname.exp" >> "$output_objdir/$outputname.def"'
+	          eval 'cat "$nlist" >> "$output_objdir/$outputname.def"'
 	          ;;
 	      esac
-	      eval '$GREP -f "$output_objdir/$outputname.exp" < "$nlist" > "$nlist"T'
-	      eval '$MV "$nlist"T "$nlist"'
 	    }
 	  fi
 	fi
