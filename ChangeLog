@@ -1,5 +1,7 @@
 2005-09-14  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
+	* libltdl/argz.c <HAVE_CONFIG_H>: Avoid redefinition warning.
+
 	* libltdl/ltdl.c (lt_argz_insert): Work around newlib
 	argz_insert bug.
 	* Makefile.am (VERSION_INFO): Bumped revision.

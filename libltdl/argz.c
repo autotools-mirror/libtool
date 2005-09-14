@@ -29,6 +29,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 
 /* Provide our wierdo HAVE_CONFIG_H rvalue for other clients.  */
 #if !defined(LTDL) && defined(HAVE_CONFIG_H)
+#  undef HAVE_CONFIG_H
 #  define HAVE_CONFIG_H <config.h>
 #endif
 
