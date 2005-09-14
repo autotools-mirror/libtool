@@ -1,5 +1,5 @@
 /* ltdl.c -- system independent dlopen wrapper
-   Copyright (C) 1998, 1999, 2000, 2004 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2000, 2004, 2005 Free Software Foundation, Inc.
    Originally by Thomas Tanner <tanner@ffii.org>
 
    NOTE: The canonical source of this file is maintained with the
@@ -1445,7 +1445,14 @@ lt_argz_insert (char **pargz, size_t *pargz_len, char *before,
 {
   error_t error;
 
-  if ((error = argz_insert (pargz, pargz_len, before, entry)))
+  /* Prior to Sep 8, 2005, newlib had a bug where argz_insert(pargz,
+     pargz_len, NULL, entry) failed with EINVAL.  */
+  if (before) 
+    error = argz_insert (pargz, pargz_len, before, entry);
+  else
+    error = argz_append (pargz, pargz_len, entry, 1 + strlen (entry));
+
+  if (error)
     {
       switch (error)
 	{
