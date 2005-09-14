@@ -1,3 +1,10 @@
+2005-09-14  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
+	* libltdl/ltdl.c (lt_argz_insert): Work around newlib
+	argz_insert bug.
+	* libltdl/Makefile.am (libltdl_la_LDFLAGS): Bumped revision.
+	Reported by Eric Blake <ebb9@byu.net>.
+
 2005-09-09  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
 	* libtool.m4 (_LT_COMPILER_BOILERPLATE, _LT_LINKER_BOILERPLATE)
