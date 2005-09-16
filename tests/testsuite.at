@@ -57,10 +57,10 @@ test -f ./configure || exit 1
 # LT_AT_EXEC_CHECK(EXECUTABLE, [STATUS = 0], [STDOUT], [STDERR])
 # --------------------------------------------------------------
 m4_define([LT_AT_EXEC_CHECK],
-[AT_CHECK([if $1; then :;
+[AT_CHECK([$1; lt_status=$?; if test $lt_status -eq 0; then :;
 	   elif test "X$host" != "X$build" && \
 	        { test -x "$1" || test -x "$1"$EXEEXT; }
-	   then (exit 77); fi],[$2],[$3],[$4])
+	   then (exit 77); else (exit $lt_status); fi],[$2],[$3],[$4])
 ])
 
 

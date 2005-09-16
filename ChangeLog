@@ -1,3 +1,10 @@
+2005-09-16  Peter Ekberg  <peda@lysator.liu.se>,
+
+	* tests/testsuite.at (LT_AT_EXEC_CHECK): Make sure
+	that the exit status of the tested program is
+	propagated as the exit status of the expression
+	fed to AT_CHECK.
+
 2005-09-14  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
 	* libltdl/argz.c <HAVE_CONFIG_H>: Avoid redefinition warning.
