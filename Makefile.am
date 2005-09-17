@@ -216,6 +216,9 @@ $(srcdir)/libltdl/Makefile.am: Makefile.am
 $(srcdir)/libltdl/Makefile.in: libltdl/Makefile.am
 	cd $(srcdir)/libltdl && $(AUTOMAKE) Makefile
 
+# We want the libltdl files to be up to date as much as possible.
+all-local: $(srcdir)/libltdl/Makefile.in
+
 
 ## -------- ##
 ## Libltdl. ##

@@ -1,5 +1,7 @@
 2005-09-17  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
+	* Makefile.am (all-local): Rebuild libltdl/Makefile.in.
+
 	* libltdl/m4/ltdl.m4 (LTDL_INIT) <CONFIG_H>: Rename to..
 	<LT_CONFIG_H>: this, to contain the name of the config
 	header.
