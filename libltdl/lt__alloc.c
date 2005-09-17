@@ -28,7 +28,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 */
 
 #if defined(HAVE_CONFIG_H)
-#  include HAVE_CONFIG_H
+#  if defined(LT_CONFIG_H)
+#    include LT_CONFIG_H
+#  else
+#    include <config.h>
+#  endif
 #endif
 
 #include <stdio.h>

@@ -267,7 +267,11 @@ yyyy-mm-dd  Name of Author  <email@address>  (tiny change)
   by libtool.  Typically, the files that implement this layer begin:
 
   #if defined(HAVE_CONFIG_H)
-  #  include HAVE_CONFIG_H
+  #  if defined(LT_CONFIG_H)
+  #    include LT_CONFIG_H
+  #  else
+  #    include <config.h>
+  #  endif
   #endif
   #include "lt_system.h"
 

@@ -223,7 +223,7 @@ $(srcdir)/libltdl/Makefile.in: libltdl/Makefile.am
 
 # %%% BEGIN libltdl/Makefile.am
 
-DEFS			= -DHAVE_CONFIG_H="<$(CONFIG_H)>" -DLTDL
+DEFS			= -DLTDL -DHAVE_CONFIG_H -DLT_CONFIG_H='<$(LT_CONFIG_H)>'
 
 # -I$(srcdir) is needed for user that built libltdl with a sub-Automake
 # (not as a sub-package!) using 'nostdinc':

@@ -1,3 +1,14 @@
+2005-09-17  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
+	* libltdl/m4/ltdl.m4 (LTDL_INIT) <CONFIG_H>: Rename to..
+	<LT_CONFIG_H>: this, to contain the name of the config
+	header.
+	* Makefile.am <DEFS>: Use it to define LT_CONFIG_H.
+	* HACKING, libltdl/argz.c, libltdl/lt__alloc.c,
+	libltdl/libltdl/lt__dirent.h, libltdl/libltdl/lt__glibc.h,
+	libltdl/libltdl/lt__private.h, libltdl/libltdl/lt__strl.h:
+	Adjusted.
+
 2005-09-16  Peter Ekberg  <peda@lysator.liu.se>,
 
 	* tests/testsuite.at (LT_AT_EXEC_CHECK): Make sure

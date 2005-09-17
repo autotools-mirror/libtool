@@ -170,12 +170,13 @@ m4_require([_LT_CHECK_DLPREOPEN])dnl
 # must contain the definitions required by ltdl.c.
 # FIXME: Remove use of undocumented AC_LIST_HEADERS (2.59 compatibility).
 AC_CONFIG_COMMANDS_PRE([dnl
+m4_pattern_allow([^LT_CONFIG_H$])dnl
 m4_ifset([AH_HEADER],
-	 [CONFIG_H=AH_HEADER],
+	 [LT_CONFIG_H=AH_HEADER],
 	 [m4_ifset([AC_LIST_HEADERS],
-		   [CONFIG_H=`echo "AC_LIST_HEADERS" | $SED 's,^[[      ]]*,,;s,[[ :]].*$,,'`],
-		   [CONFIG_H=config.h;AC_CONFIG_HEADERS([config.h])])])])
-AC_SUBST([CONFIG_H])
+		   [LT_CONFIG_H=`echo "AC_LIST_HEADERS" | $SED 's,^[[      ]]*,,;s,[[ :]].*$,,'`],
+		   [LT_CONFIG_H=config.h;AC_CONFIG_HEADERS([config.h])])])])
+AC_SUBST([LT_CONFIG_H])
 
 AC_CHECK_HEADERS([memory.h unistd.h dl.h sys/dl.h dld.h mach-o/dyld.h],
 	[], [], [AC_INCLUDES_DEFAULT])

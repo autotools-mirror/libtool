@@ -27,14 +27,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 
 */
 
-/* Provide our wierdo HAVE_CONFIG_H rvalue for other clients.  */
-#if !defined(LTDL) && defined(HAVE_CONFIG_H)
-#  undef HAVE_CONFIG_H
-#  define HAVE_CONFIG_H <config.h>
-#endif
-
 #if defined(HAVE_CONFIG_H)
-#  include HAVE_CONFIG_H
+#  if defined(LTDL) && defined LT_CONFIG_H
+#    include LT_CONFIG_H
+#  else
+#    include <config.h>
+#  endif
 #endif
 
 #include <argz.h>
