@@ -1,3 +1,8 @@
+2005-09-17  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
+	* ltmain.in (link mode): Allow some ARM gcc ABI flags through.
+	Reported by Andrés Moré <more.andres@gmail.com>.
+
 2005-09-14  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
 	* libltdl/ltdl.c (lt_argz_insert): Work around newlib
