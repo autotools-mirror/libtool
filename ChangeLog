@@ -1,5 +1,9 @@
 2005-09-17  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
+	* libltdl/config/ltmain.m4sh (func_mode_link): Allow some
+	ARM gcc ABI flags through.
+	Reported by Andrés Moré <more.andres@gmail.com>.
+
 	* Makefile.am (all-local): Rebuild libltdl/Makefile.in.
 
 	* libltdl/m4/ltdl.m4 (LTDL_INIT) <CONFIG_H>: Rename to..
