@@ -1,3 +1,9 @@
+2005-09-19  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
+	* Makefile.am (ltdldatafiles): Fix installation order to match
+	dependency order.
+	(libltdl/Makefile.in): Use $(srcdir) for non-GNU make.
+
 2005-09-17  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
 	* libltdl/config/ltmain.m4sh (func_mode_link): Allow some

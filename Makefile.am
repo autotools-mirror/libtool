@@ -213,7 +213,7 @@ $(srcdir)/libltdl/Makefile.am: Makefile.am
 	      s,\$$(libltdl_,$$(,; p; }' $$in >> $$out;
 	chmod a-w $(srcdir)/libltdl/Makefile.am
 
-$(srcdir)/libltdl/Makefile.in: libltdl/Makefile.am
+$(srcdir)/libltdl/Makefile.in: $(srcdir)/libltdl/Makefile.am
 	cd $(srcdir)/libltdl && $(AUTOMAKE) Makefile
 
 # We want the libltdl files to be up to date as much as possible.
@@ -384,9 +384,9 @@ aclocalfiles	= m4/argz.m4 m4/libtool.m4 m4/ltdl.m4 m4/ltoptions.m4 \
 ltdldatafiles	= libltdl/COPYING.LIB \
 		  libltdl/README \
 		  libltdl/Makefile.am \
-		  libltdl/Makefile.in \
 		  libltdl/configure.ac \
 		  libltdl/aclocal.m4 \
+		  libltdl/Makefile.in \
 		  libltdl/config-h.in \
 		  libltdl/configure \
 		  libltdl/argz_.h \
