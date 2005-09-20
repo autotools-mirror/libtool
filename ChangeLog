@@ -1,3 +1,10 @@
+2005-09-20  Peter Ekberg  <peda@lysator.liu.se>,
+
+	* libltdl/m4/libtool.m4 (_LT_LINKER_SHLIBS, _LT_LANG_CXX_CONFIG):
+	Split up --out-implib option for linker in separate args so that
+	the MSYS path translation can do its magic on the provided path
+	to the import library. Fixes problem in stresstest.at on MinGW.
+
 2005-09-19  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
 	* Makefile.am (ltdldatafiles): Fix installation order to match

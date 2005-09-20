@@ -3923,7 +3923,7 @@ _LT_EOF
       _LT_TAGVAR(export_symbols_cmds, $1)='$NM $libobjs $convenience | $global_symbol_pipe | $SED -e '\''/^[[BCDGRS]] /s/.* \([[^ ]]*\)/\1 DATA/'\'' | $SED -e '\''/^[[AITW]] /s/.* //'\'' | sort | uniq > $export_symbols'
 
       if $LD --help 2>&1 | $GREP 'auto-import' > /dev/null; then
-        _LT_TAGVAR(archive_cmds, $1)='$CC -shared $libobjs $deplibs $compiler_flags -o $output_objdir/$soname ${wl}--enable-auto-image-base ${wl}--out-implib,$lib'
+        _LT_TAGVAR(archive_cmds, $1)='$CC -shared $libobjs $deplibs $compiler_flags -o $output_objdir/$soname ${wl}--enable-auto-image-base -Xlinker --out-implib -Xlinker $lib'
 	# If the export-symbols file already is a .def file (1st line
 	# is EXPORTS), use it as is; otherwise, prepend...
 	_LT_TAGVAR(archive_expsym_cmds, $1)='if test "x`$SED 1q $export_symbols`" = xEXPORTS; then
@@ -3932,7 +3932,7 @@ _LT_EOF
 	  echo EXPORTS > $output_objdir/$soname.def;
 	  cat $export_symbols >> $output_objdir/$soname.def;
 	fi~
-	$CC -shared $output_objdir/$soname.def $libobjs $deplibs $compiler_flags -o $output_objdir/$soname ${wl}--enable-auto-image-base  ${wl}--out-implib,$lib'
+	$CC -shared $output_objdir/$soname.def $libobjs $deplibs $compiler_flags -o $output_objdir/$soname ${wl}--enable-auto-image-base -Xlinker --out-implib -Xlinker $lib'
       else
 	_LT_TAGVAR(ld_shlibs, $1)=no
       fi
@@ -5181,7 +5181,7 @@ if test "$_lt_caught_CXX_error" != yes; then
         _LT_TAGVAR(enable_shared_with_static_runtimes, $1)=yes
 
         if $LD --help 2>&1 | $GREP 'auto-import' > /dev/null; then
-          _LT_TAGVAR(archive_cmds, $1)='$CC -shared -nostdlib $predep_objects $libobjs $deplibs $postdep_objects $compiler_flags -o $output_objdir/$soname ${wl}--enable-auto-image-base ${wl}--out-implib,$lib'
+          _LT_TAGVAR(archive_cmds, $1)='$CC -shared -nostdlib $predep_objects $libobjs $deplibs $postdep_objects $compiler_flags -o $output_objdir/$soname ${wl}--enable-auto-image-base -Xlinker --out-implib -Xlinker $lib'
           # If the export-symbols file already is a .def file (1st line
           # is EXPORTS), use it as is; otherwise, prepend...
           _LT_TAGVAR(archive_expsym_cmds, $1)='if test "x`$SED 1q $export_symbols`" = xEXPORTS; then
@@ -5190,7 +5190,7 @@ if test "$_lt_caught_CXX_error" != yes; then
   	    echo EXPORTS > $output_objdir/$soname.def;
   	    cat $export_symbols >> $output_objdir/$soname.def;
           fi~
-          $CC -shared -nostdlib $output_objdir/$soname.def $predep_objects $libobjs $deplibs $postdep_objects $compiler_flags -o $output_objdir/$soname ${wl}--enable-auto-image-base ${wl}--out-implib,$lib'
+          $CC -shared -nostdlib $output_objdir/$soname.def $predep_objects $libobjs $deplibs $postdep_objects $compiler_flags -o $output_objdir/$soname ${wl}--enable-auto-image-base -Xlinker --out-implib -Xlinker $lib'
         else
           _LT_TAGVAR(ld_shlibs, $1)=no
         fi
