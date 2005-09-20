@@ -1,3 +1,10 @@
+2005-09-20  Peter Ekberg  <peda@lysator.liu.se>,
+
+	* libtool.m4 (AC_LIBTOOL_PROG_LD_SHLIBS, AC_LIBTOOL_LANG_CXX_CONFIG):
+	Split up --out-implib option for linker in separate args so that
+	the MSYS path translation can do its magic on the provided path
+	to the import library.
+
 2005-09-17  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
 	* ltmain.in (link mode): Allow some ARM gcc ABI flags through.
