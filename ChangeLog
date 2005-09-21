@@ -1,5 +1,9 @@
 2005-09-21  Peter Ekberg  <peda@lysator.liu.se>,
 
+	* libltdl/m4/libtool.m4 (LT_PATH_NM): Fix autodetection of
+	dumpbin and also check for "link -dump -symbols" as a synonym
+	for "dumpbin -symbols".
+
 	* libltdl/config/ltmain.m4sh (func_mode_uninstall): Clean
 	up $dlname as well when cleaning a uninstalled libtool
 	library. Fixes -mode=clean on Cygwin and MinGW to actually

@@ -2906,13 +2906,13 @@ else
     fi
   done
   IFS="$lt_save_ifs"
-  test -z "$lt_cv_path_NM" && lt_cv_path_NM=nm
+  : ${lt_cv_path_NM=no}
 fi])
 if test "$lt_cv_path_NM" != "no"; then
   NM="$lt_cv_path_NM"
 else
   # Didn't find any BSD compatible name lister, look for dumpbin.
-  AC_CHECK_TOOL(DUMPBIN, [dumpbin -symbols], :)
+  AC_CHECK_TOOLS(DUMPBIN, ["dumpbin -symbols" "link -dump -symbols"], :)
   AC_SUBST([DUMPBIN])
   if test "$DUMPBIN" != ":"; then
     NM="$DUMPBIN"
