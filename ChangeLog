@@ -1,3 +1,10 @@
+2005-09-21  Peter Ekberg  <peda@lysator.liu.se>,
+
+	* libltdl/config/ltmain.m4sh (func_mode_uninstall): Clean
+	up $dlname as well when cleaning a uninstalled libtool
+	library. Fixes -mode=clean on Cygwin and MinGW to actually
+	remove the dll when cleaning up an uninstalled library.
+
 2005-09-20  Peter Ekberg  <peda@lysator.liu.se>,
 
 	* libltdl/m4/libtool.m4 (_LT_LINKER_SHLIBS, _LT_LANG_CXX_CONFIG):

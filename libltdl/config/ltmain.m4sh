@@ -6564,9 +6564,17 @@ func_mode_uninstall ()
 	    rmfiles="$rmfiles $objdir/$n"
 	  done
 	  test -n "$old_library" && rmfiles="$rmfiles $objdir/$old_library"
-	  test "$mode" = clean && rmfiles="$rmfiles $objdir/$name $objdir/${name}i"
 
-	  if test "$mode" = uninstall; then
+	  case "$mode" in
+	  clean)
+	    case "  $library_names " in
+	    # "  " in the beginning catches empty $dlname
+	    *" $dlname "*) ;;
+	    *) rmfiles="$rmfiles $objdir/$dlname" ;;
+	    esac
+	    rmfiles="$rmfiles $objdir/$name $objdir/${name}i"
+	    ;;
+	  uninstall)
 	    if test -n "$library_names"; then
 	      # Do each command in the postuninstall commands.
 	      func_execute_cmds "$postuninstall_cmds" 'test "$rmforce" = yes || exit_status=1'
@@ -6577,7 +6585,8 @@ func_mode_uninstall ()
 	      func_execute_cmds "$old_postuninstall_cmds" 'test "$rmforce" = yes || exit_status=1'
 	    fi
 	    # FIXME: should reinstall the best remaining shared library.
-	  fi
+	    ;;
+	  esac
 	fi
 	;;
 
