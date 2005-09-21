@@ -1,3 +1,10 @@
+2005-09-21  Peter Ekberg  <peda@lysator.liu.se>,
+
+	* ltmain.in (clean mode): Clean up $dlname as well when cleaning
+	an uninstalled libtool library. Fixes -mode=clean on Cygwin and
+	MinGW to actually remove the dll when cleaning up an uninstalled
+	library.
+
 2005-09-20  Peter Ekberg  <peda@lysator.liu.se>,
 
 	* libtool.m4 (AC_LIBTOOL_PROG_LD_SHLIBS, AC_LIBTOOL_LANG_CXX_CONFIG):

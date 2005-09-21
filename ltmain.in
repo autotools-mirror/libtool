@@ -6185,9 +6185,17 @@ relink_command=\"$relink_command\""
 	    rmfiles="$rmfiles $objdir/$n"
 	  done
 	  test -n "$old_library" && rmfiles="$rmfiles $objdir/$old_library"
-	  test "$mode" = clean && rmfiles="$rmfiles $objdir/$name $objdir/${name}i"
 
-	  if test "$mode" = uninstall; then
+	  case "$mode" in
+	  clean)
+	    case "  $library_names " in
+	    # "  " in the beginning catches empty $dlname
+	    *" $dlname "*) ;;
+	    *) rmfiles="$rmfiles $objdir/$dlname" ;;
+	    esac
+	    rmfiles="$rmfiles $objdir/$name $objdir/${name}i"
+	    ;;
+	  uninstall)
 	    if test -n "$library_names"; then
 	      # Do each command in the postuninstall commands.
 	      cmds=$postuninstall_cmds
@@ -6220,7 +6228,8 @@ relink_command=\"$relink_command\""
 	      IFS="$save_ifs"
 	    fi
 	    # FIXME: should reinstall the best remaining shared library.
-	  fi
+	    ;;
+	  esac
 	fi
 	;;
 
