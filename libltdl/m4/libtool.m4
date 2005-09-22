@@ -2902,6 +2902,7 @@ else
 	  continue # so that we can try to find one that supports BSD flags
 	  ;;
 	esac
+        ;;
       esac
     fi
   done
@@ -4076,6 +4077,7 @@ _LT_EOF
   	    break
   	  fi
 	  done
+	  ;;
 	esac
 
 	exp_sym_flag='-bexport'
@@ -4114,6 +4116,7 @@ _LT_EOF
   	  _LT_TAGVAR(hardcode_libdir_flag_spec, $1)='-L$libdir'
   	  _LT_TAGVAR(hardcode_libdir_separator, $1)=
 	  fi
+	  ;;
 	esac
 	shared_flag='-shared'
 	if test "$aix_use_runtimelinking" = yes; then
@@ -4126,11 +4129,11 @@ _LT_EOF
   	# chokes on -Wl,-G. The following line is correct:
 	  shared_flag='-G'
 	else
-  	if test "$aix_use_runtimelinking" = yes; then
+	  if test "$aix_use_runtimelinking" = yes; then
 	    shared_flag='${wl}-G'
 	  else
 	    shared_flag='${wl}-bM:SRE'
-  	fi
+	  fi
 	fi
       fi
 
@@ -5069,6 +5072,7 @@ if test "$_lt_caught_CXX_error" != yes; then
   	        ;;
   	      esac
   	    done
+	    ;;
           esac
 
           exp_sym_flag='-bexport'
@@ -6036,6 +6040,7 @@ solaris*)
     _LT_TAGVAR(postdeps,$1)='-lCstd -lCrun'
     ;;
   esac
+  ;;
 esac
 ])
 
