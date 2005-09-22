@@ -1,3 +1,9 @@
+2005-09-22  Peter Ekberg  <peda@lysator.liu.se>,
+
+	* tests/link-order.test: Clean up the uninstalled libraries
+	before linking the test executables so that they don't pick
+	up the dlls from the current dir on Cygwin and MinGW.
+
 2005-09-22  Tim Rice  <tim@multitalents.net>
 
 	* libltdl/m4/libtool.m4 (LT_PATH_NM, _LT_LINKER_SHLIBS)
