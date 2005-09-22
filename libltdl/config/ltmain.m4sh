@@ -4933,6 +4933,26 @@ EOF
 	# Use standard objects if they are pic
 	test -z "$pic_flag" && libobjs=`$ECHO "X$libobjs" | $SP2NL | $Xsed -e "$lo2o" | $NL2SP`
 
+	orig_export_symbols=
+	case $host_os in
+	cygwin* | mingw*)
+	  if test -n "$export_symbols" && test -z "$export_symbols_regex"; then
+	    # exporting using user supplied symfile
+	    if test "x`$SED 1q $export_symbols`" != xEXPORTS; then
+	      # and it's NOT already a .def file. Must figure out
+	      # which of the given symbols are data symbols and tag
+	      # them as such. So, trigger use of export_symbols_cmds.
+	      # export_symbols gets reassigned inside the "prepare
+	      # the list of exported symbols" if statement, so the
+	      # include_expsyms logic still works.
+	      orig_export_symbols="$export_symbols"
+	      export_symbols=
+	      always_export_symbols=yes
+	    fi
+	  fi
+	  ;;
+	esac
+
 	# Prepare the list of exported symbols
 	if test -z "$export_symbols"; then
 	  if test "$always_export_symbols" = yes || test -n "$export_symbols_regex"; then
@@ -4966,7 +4986,22 @@ EOF
 	fi
 
 	if test -n "$export_symbols" && test -n "$include_expsyms"; then
-	  $opt_dry_run || eval '$ECHO "X$include_expsyms" | $Xsed | $SP2NL >> "$export_symbols"'
+	  tmp_export_symbols="$export_symbols"
+	  test -n "$orig_export_symbols" && tmp_export_symbols="$orig_export_symbols"
+	  $opt_dry_run || eval '$ECHO "X$include_expsyms" | $Xsed | $SP2NL >> "$tmp_export_symbols"'
+	fi
+
+	if test "X$skipped_export" != "X:" && test -n "$orig_export_symbols"; then
+	  # The given exports_symbols file has to be filtered, so filter it.
+	  func_echo "filter symbol list for \`$libname.la' to tag DATA exports"
+	  # FIXME: $output_objdir/$libname.filter potentially contains lots of
+	  # 's' commands which not all seds can handle. GNU sed should be fine
+	  # though. Also, the filter scales superlinearly with the number of
+	  # global variables. join(1) would be nice here, but unfortunately
+	  # isn't a blessed tool.
+	  $opt_dry_run || $SED -e '/[[ ,]]DATA/!d;s,\(.*\)\([[ \,]].*\),s|^\1$|\1\2|,' < $export_symbols > $output_objdir/$libname.filter
+	  export_symbols=$output_objdir/$libname.def
+	  $opt_dry_run || $SED -f $output_objdir/$libname.filter < $orig_export_symbols > $export_symbols
 	fi
 
 	tmp_deplibs=

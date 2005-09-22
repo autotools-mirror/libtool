@@ -1,4 +1,12 @@
 2005-09-22  Peter Ekberg  <peda@lysator.liu.se>,
+	    Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
+	* libltdl/config/ltmain.m4sh (func_mode_link): Filter
+	user supplied symfile to tag relevant symbols as data
+	symbols. Fixes segfault in stresstest.at on Cygwin and
+	makes the test pass.
+
+2005-09-22  Peter Ekberg  <peda@lysator.liu.se>,
 
 	* tests/link-order.test: Clean up the uninstalled libraries
 	before linking the test executables so that they don't pick
