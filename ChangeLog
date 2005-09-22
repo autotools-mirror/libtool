@@ -1,3 +1,10 @@
+2005-09-22  Peter Ekberg  <peda@lysator.liu.se>,
+	    Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
+	* libltdl/m4/libtool.m4 (_LT_CMD_GLOBAL_SYMBOLS, _LT_COMPILER_PIC)
+	(_LT_LINKER_SHLIBS): Require _LT_TAG_COMPILER to make sure that
+	$compiler is assigned. Fixes crippled configure output.
+
 2005-09-21  Peter Ekberg  <peda@lysator.liu.se>,
 
 	* libltdl/m4/libtool.m4 (LT_PATH_NM): Fix autodetection of

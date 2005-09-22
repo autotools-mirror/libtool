@@ -3003,6 +3003,7 @@ AC_REQUIRE([AC_OBJEXT])dnl
 AC_REQUIRE([LT_PATH_NM])dnl
 AC_REQUIRE([LT_PATH_LD])dnl
 m4_require([_LT_DECL_EGREP])dnl
+m4_require([_LT_TAG_COMPILER])dnl
 
 # Check for command to grab the raw symbol name followed by C symbol from nm.
 AC_MSG_CHECKING([command to parse $NM output from $compiler object])
@@ -3215,7 +3216,8 @@ _LT_DECL([global_symbol_to_c_name_address],
 # _LT_COMPILER_PIC([TAGNAME])
 # ---------------------------
 m4_defun([_LT_COMPILER_PIC],
-[_LT_TAGVAR(lt_prog_compiler_wl, $1)=
+[m4_require([_LT_TAG_COMPILER])dnl
+_LT_TAGVAR(lt_prog_compiler_wl, $1)=
 _LT_TAGVAR(lt_prog_compiler_pic, $1)=
 _LT_TAGVAR(lt_prog_compiler_static, $1)=
 
@@ -3766,6 +3768,7 @@ AC_REQUIRE([LT_PATH_NM])dnl
 m4_require([_LT_FILEUTILS_DEFAULTS])dnl
 m4_require([_LT_DECL_EGREP])dnl
 m4_require([_LT_CMD_GLOBAL_SYMBOLS])dnl
+m4_require([_LT_TAG_COMPILER])dnl
 AC_MSG_CHECKING([whether the $compiler linker ($LD) supports shared libraries])
 m4_if([$1], [CXX], [
   _LT_TAGVAR(export_symbols_cmds, $1)='$NM $libobjs $convenience | $global_symbol_pipe | $SED '\''s/.* //'\'' | sort | uniq > $export_symbols'
