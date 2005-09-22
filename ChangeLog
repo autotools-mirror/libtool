@@ -1,3 +1,8 @@
+2005-09-22  Gary V. Vaughan  <gary@gnu.org>
+
+	* bootstrap: Don't clobber the working copy metadata in
+	./{arch}/libtool during bootstrap.
+
 2005-09-22  Peter Ekberg  <peda@lysator.liu.se>,
 	    Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 

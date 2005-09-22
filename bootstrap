@@ -65,8 +65,9 @@ WARNING: them with all m4 file as shipped with this distribution (except
 WARNING: `lt~obsolete.m4').  After that, retry this bootstrap.
 EOF
 
-find . -name '{arch}' -prune -o \( -name autom4te.cache -o -name libtool \) \
-       -depth -exec rm -rf \{\} \;
+find . \( -name autom4te.cache -o -name libtool \) -depth -print \
+  | grep -v '{arch}' \
+  | xargs rm -rf
 
 # Delete stale files from previous libtool versions.
 rm -f acinclude.m4 libltdl/config.h
