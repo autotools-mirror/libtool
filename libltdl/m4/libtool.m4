@@ -3080,17 +3080,17 @@ for ac_symprfx in "" "_"; do
     # and D for any global variable.
     # Also find C++ and __fastcall symbols from MSVC++,
     # which start with @ or ?.
-    lt_cv_sys_global_symbol_pipe="$AWK ['
-      {last_section=section; section=\$ 3}
-      /Section length .*#relocs.*(pick any)/{hide[last_section]=1}
-      \$ 0!~/External *\|/{next}
-      / 0+ UNDEF /{next}; / UNDEF \([^|]\)*()/{next}
-      {if(hide[section]) next}
-      {f=0}; \$ 0~/\(\).*\|/{f=1}; {printf f ? \"T \" : \"D \"}
-      {split(\$ 0, a, /\||\r/); split(a[2], s)}
-      s[1]~/^[@?]/{print s[1], s[1]; next}
-      s[1]~prfx {split(s[1],t,\"@\"); print t[1], substr(t[1],length(prfx))}
-      ' prfx=^$ac_symprfx]"
+    lt_cv_sys_global_symbol_pipe="$AWK ['"\
+"     {last_section=section; section=\$ 3};"\
+"     /Section length .*#relocs.*(pick any)/{hide[last_section]=1};"\
+"     \$ 0!~/External *\|/{next};"\
+"     / 0+ UNDEF /{next}; / UNDEF \([^|]\)*()/{next};"\
+"     {if(hide[section]) next};"\
+"     {f=0}; \$ 0~/\(\).*\|/{f=1}; {printf f ? \"T \" : \"D \"};"\
+"     {split(\$ 0, a, /\||\r/); split(a[2], s)};"\
+"     s[1]~/^[@?]/{print s[1], s[1]; next};"\
+"     s[1]~prfx {split(s[1],t,\"@\"); print t[1], substr(t[1],length(prfx))}"\
+"     ' prfx=^$ac_symprfx]"
   else
     lt_cv_sys_global_symbol_pipe="sed -n -e 's/^.*[[ 	]]\($symcode$symcode*\)[[ 	]][[ 	]]*$ac_symprfx$sympat$opt_cr$/$symxfrm/p'"
   fi
