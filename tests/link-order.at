@@ -64,10 +64,15 @@ done
 $LIBTOOL --mode=clean rm -f src/libb.la
 $LIBTOOL --mode=clean rm -f src/liba.la
 
-# Do not error if we do not relink (e.g. static-only systems)
-AT_CHECK([if $EGREP relinking stderr; then
-	    $EGREP ' -L.*\/new\/lib -lb -L.*\/old\/lib -lcee' stdout
-	  else :; fi], [0], [ignore], [], [echo "wrong link order"])
+case $host_os in
+aix*) ;;  # AIX has different path syntax
+*)
+  # Do not error if we do not relink (e.g. static-only systems)
+  AT_CHECK([if $EGREP relinking stderr; then
+	      $EGREP ' -L.*\/new\/lib -lb -L.*\/old\/lib -lcee' stdout
+	    else :; fi], [0], [ignore], [], [echo "wrong link order"])
+  ;;
+esac
 
 for i in old new; do
   cat >src/main_$i.c <<EOF
