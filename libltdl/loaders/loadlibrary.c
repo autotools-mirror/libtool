@@ -1,5 +1,5 @@
 /* loader-loadlibrary.c --  dynamic linking for Win32
-   Copyright (C) 1998, 1999, 2000, 2004 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2000, 2004, 2005 Free Software Foundation, Inc.
    Originally by Thomas Tanner <tanner@ffii.org>
 
    NOTE: The canonical source of this file is maintained with the
@@ -29,6 +29,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 
 #include "lt__private.h"
 #include "lt_dlloader.h"
+
+#if defined(__CYGWIN__)
+# include <sys/cygwin.h>
+#endif
 
 /* Use the preprocessor to rename non-static symbols to avoid namespace
    collisions when the loader code is statically linked into libltdl.
@@ -92,7 +96,6 @@ static lt_module
 vm_open (lt_user_data loader_data, const char *filename)
 {
   lt_module	module	   = 0;
-  const char   *errormsg   = 0;
   char	       *searchname = 0;
   char	       *ext;
   char		self_name_buf[MAX_PATH];
@@ -158,7 +161,7 @@ vm_open (lt_user_data loader_data, const char *filename)
   {
     lt__handle *        cur        = 0;
 
-    while (cur = (lt__handle *) lt_dlhandle_next ((lt_dlhandle) cur))
+    while ((cur = (lt__handle *) lt_dlhandle_next ((lt_dlhandle) cur)))
       {
         if (!cur->module)
           {
