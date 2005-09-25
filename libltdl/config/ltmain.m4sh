@@ -681,12 +681,11 @@ func_win32_libid ()
     if eval $OBJDUMP -f $1 | $SED -e '10q' 2>/dev/null |
        $EGREP 'file format pe-i386(.*architecture: i386)?' >/dev/null ; then
       win32_nmres=`eval $NM -f posix -A $1 |
-	sed -n -e '1,100{/ I /{x;/import/!{s/^/import/;h;p;};x;};}'`
-      if test "X$win32_nmres" = "Ximport" ; then
-	win32_libid_type="x86 archive import"
-      else
-	win32_libid_type="x86 archive static"
-      fi
+	sed -n -e '1,100{/ I /{s,.*,import,;p;q;};}'`
+      case $win32_nmres in
+      import*)  win32_libid_type="x86 archive import";;
+      *)        win32_libid_type="x86 archive static";;
+      esac
     fi
     ;;
   *DLL*)
@@ -2597,11 +2596,11 @@ func_mode_link ()
       -l*)
 	if test "X$arg" = "X-lc" || test "X$arg" = "X-lm"; then
 	  case $host in
-	  *-*-cygwin* | *-*-pw32* | *-*-beos*)
+	  *-*-cygwin* | *-*-mingw* | *-*-pw32* | *-*-beos*)
 	    # These systems don't actually have a C or math library (as such)
 	    continue
 	    ;;
-	  *-*-mingw* | *-*-os2*)
+	  *-*-os2*)
 	    # These systems don't actually have a C library (as such)
 	    test "X$arg" = "X-lc" && continue
 	    ;;
