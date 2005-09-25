@@ -122,15 +122,15 @@ struct lt__handle {
 /* Extract the diagnostic strings from the error table macro in the same
    order as the enumerated indices in lt_error.h. */
 
-LT_SCOPE const char		*lt__error_strings[];
+#define LT__STRERROR(name)	lt__error_string(LT_CONC(LT_ERROR_,name))
 
-#define LT__STRERROR(name)	lt__error_strings[LT_CONC(LT_ERROR_,name)]
-
-#define LT__GETERROR(lvalue)	      (lvalue) = lt__last_error;
-#define LT__SETERRORSTR(errormsg)     lt__last_error = (errormsg)
+#define LT__GETERROR(lvalue)	      (lvalue) = lt__get_last_error()
+#define LT__SETERRORSTR(errormsg)     lt__set_last_error(errormsg)
 #define LT__SETERROR(errorcode)	      LT__SETERRORSTR(LT__STRERROR(errorcode))
 
-LT_SCOPE const char		*lt__last_error;
+LT_SCOPE const char *lt__error_string	(int errorcode);
+LT_SCOPE const char *lt__get_last_error	(void);
+LT_SCOPE const char *lt__set_last_error	(const char *errormsg);
 
 LT_END_C_DECLS
 

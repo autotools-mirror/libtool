@@ -37,27 +37,28 @@ LT_BEGIN_C_DECLS
 /* Defining error strings alongside their symbolic names in a macro in
    this way allows us to expand the macro in different contexts with
    confidence that the enumeration of symbolic names will map correctly
-   onto the table of error strings.  */
+   onto the table of error strings.  \0 is appended to the strings to
+   expilicitely initialize the string terminator. */
 #define lt_dlerror_table						\
-    LT_ERROR(UNKNOWN,		    "unknown error")			\
-    LT_ERROR(DLOPEN_NOT_SUPPORTED,  "dlopen support not available")	\
-    LT_ERROR(INVALID_LOADER,	    "invalid loader")			\
-    LT_ERROR(INIT_LOADER,	    "loader initialization failed")	\
-    LT_ERROR(REMOVE_LOADER,	    "loader removal failed")		\
-    LT_ERROR(FILE_NOT_FOUND,	    "file not found")			\
-    LT_ERROR(DEPLIB_NOT_FOUND,      "dependency library not found")	\
-    LT_ERROR(NO_SYMBOLS,	    "no symbols defined")		\
-    LT_ERROR(CANNOT_OPEN,	    "can't open the module")		\
-    LT_ERROR(CANNOT_CLOSE,	    "can't close the module")		\
-    LT_ERROR(SYMBOL_NOT_FOUND,      "symbol not found")			\
-    LT_ERROR(NO_MEMORY,		    "not enough memory")		\
-    LT_ERROR(INVALID_HANDLE,	    "invalid module handle")		\
-    LT_ERROR(BUFFER_OVERFLOW,	    "internal buffer overflow")		\
-    LT_ERROR(INVALID_ERRORCODE,     "invalid errorcode")		\
-    LT_ERROR(SHUTDOWN,		    "library already shutdown")		\
-    LT_ERROR(CLOSE_RESIDENT_MODULE, "can't close resident module")	\
-    LT_ERROR(INVALID_MUTEX_ARGS,    "internal error (code withdrawn)")  \
-    LT_ERROR(INVALID_POSITION,	    "invalid search path insert position")
+    LT_ERROR(UNKNOWN,		    "unknown error\0")			\
+    LT_ERROR(DLOPEN_NOT_SUPPORTED,  "dlopen support not available\0")	\
+    LT_ERROR(INVALID_LOADER,	    "invalid loader\0")			\
+    LT_ERROR(INIT_LOADER,	    "loader initialization failed\0")	\
+    LT_ERROR(REMOVE_LOADER,	    "loader removal failed\0")		\
+    LT_ERROR(FILE_NOT_FOUND,	    "file not found\0")			\
+    LT_ERROR(DEPLIB_NOT_FOUND,	    "dependency library not found\0")	\
+    LT_ERROR(NO_SYMBOLS,	    "no symbols defined\0")		\
+    LT_ERROR(CANNOT_OPEN,	    "can't open the module\0")		\
+    LT_ERROR(CANNOT_CLOSE,	    "can't close the module\0")		\
+    LT_ERROR(SYMBOL_NOT_FOUND,	    "symbol not found\0")		\
+    LT_ERROR(NO_MEMORY,		    "not enough memory\0")		\
+    LT_ERROR(INVALID_HANDLE,	    "invalid module handle\0")		\
+    LT_ERROR(BUFFER_OVERFLOW,	    "internal buffer overflow\0")	\
+    LT_ERROR(INVALID_ERRORCODE,	    "invalid errorcode\0")		\
+    LT_ERROR(SHUTDOWN,		    "library already shutdown\0")	\
+    LT_ERROR(CLOSE_RESIDENT_MODULE, "can't close resident module\0")	\
+    LT_ERROR(INVALID_MUTEX_ARGS,    "internal error (code withdrawn)\0")\
+    LT_ERROR(INVALID_POSITION,	    "invalid search path insert position\0")
 
 /* Enumerate the symbolic error names. */
 enum {
@@ -67,6 +68,9 @@ enum {
 
 	LT_ERROR_MAX
 };
+
+/* Should be max of the error string lengths above */
+#define LT_ERROR_LEN_MAX (35)
 
 /* These functions are only useful from inside custom module loaders. */
 LT_SCOPE int	lt_dladderror	(const char *diagnostic);

@@ -1,8 +1,25 @@
+2005-09-25  Peter Ekberg  <peda@lysator.liu.se>
+
+	* libltdl/libltdl/lt__private.h, libltdl/lt_error.c:
+	Don't export the lt__last_error and lt__error_strings
+	variables. Define lt__error_strings so that no relocations
+	are needed.
+	* libltdl/libltdl/lt__private.h (LT__STRERROR, LT__GETERROR)
+	(LT__SETERRORSTR): Adjust to not use the above variables,
+	instead use the following functions...
+	* libltdl/lt_error.c: (lt__error_string, lt__get_last_error)
+	(lt__set_last_error): Reimplement the functionality in
+	these functions instead.
+	* libltdl/libltdl/lt_error.h: Add LT_ERROR_LEN_MAX define for
+	max error string length.
+	(lt_dlerror_table): Append explicit nul terminators so that
+	compilers warn more reliably if the above define is too small.
+
 2005-09-23  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
 	* tests/link-order.at [ aix* ]: skip path syntax grep.
 
-2005-09-23  Peter Ekberg  <peda@lysator.liu.se>,
+2005-09-23  Peter Ekberg  <peda@lysator.liu.se>
 
 	* libltdl/m4/libtool.m4 (_LT_CMD_GLOBAL_SYMBOLS): Fix awk
 	script to be a single line so that the cache variable isn't
@@ -26,7 +43,7 @@
 	symbols. Fixes segfault in stresstest.at on Cygwin and
 	makes the test pass.
 
-2005-09-22  Peter Ekberg  <peda@lysator.liu.se>,
+2005-09-22  Peter Ekberg  <peda@lysator.liu.se>
 
 	* tests/link-order.test: Clean up the uninstalled libraries
 	before linking the test executables so that they don't pick
@@ -45,7 +62,7 @@
 	(_LT_LINKER_SHLIBS): Require _LT_TAG_COMPILER to make sure that
 	$compiler is assigned. Fixes crippled configure output.
 
-2005-09-21  Peter Ekberg  <peda@lysator.liu.se>,
+2005-09-21  Peter Ekberg  <peda@lysator.liu.se>
 
 	* libltdl/m4/libtool.m4 (LT_PATH_NM): Fix autodetection of
 	dumpbin and also check for "link -dump -symbols" as a synonym
@@ -56,7 +73,7 @@
 	library. Fixes -mode=clean on Cygwin and MinGW to actually
 	remove the dll when cleaning up an uninstalled library.
 
-2005-09-20  Peter Ekberg  <peda@lysator.liu.se>,
+2005-09-20  Peter Ekberg  <peda@lysator.liu.se>
 
 	* libltdl/m4/libtool.m4 (_LT_LINKER_SHLIBS, _LT_LANG_CXX_CONFIG):
 	Split up --out-implib option for linker in separate args so that
@@ -86,7 +103,7 @@
 	libltdl/libltdl/lt__private.h, libltdl/libltdl/lt__strl.h:
 	Adjusted.
 
-2005-09-16  Peter Ekberg  <peda@lysator.liu.se>,
+2005-09-16  Peter Ekberg  <peda@lysator.liu.se>
 
 	* tests/testsuite.at (LT_AT_EXEC_CHECK): Make sure
 	that the exit status of the tested program is

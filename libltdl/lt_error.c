@@ -29,14 +29,12 @@ Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 #include "lt_error.h"
 #include "lt__private.h"
 
-LT_GLOBAL_DATA const char	*lt__last_error	= 0;
-LT_GLOBAL_DATA const char	*lt__error_strings[] =
+static const char	*lt__last_error	= 0;
+static const char	lt__error_strings[LT_ERROR_MAX][LT_ERROR_LEN_MAX + 1] =
   {
 #define LT_ERROR(name, diagnostic)	(diagnostic),
     lt_dlerror_table
 #undef LT_ERROR
-
-    0
   };
 
 static	const char    **user_error_strings	= 0;
@@ -86,4 +84,25 @@ lt_dlseterror (int errindex)
     }
 
   return errors;
+}
+
+const char *
+lt__error_string (int errorcode)
+{
+  assert (errorcode >= 0);
+  assert (errorcode < LT_ERROR_MAX);
+
+  return lt__error_strings[errorcode];
+}
+
+const char *
+lt__get_last_error (void)
+{
+  return lt__last_error;
+}
+
+const char *
+lt__set_last_error (const char *errormsg)
+{
+  return lt__last_error = errormsg;
 }
