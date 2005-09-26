@@ -37,7 +37,7 @@ AC_CONFIG_LIBOBJ_DIR([libltdl])
 ## ------------------------ ##
 
 AC_CONFIG_TESTDIR([tests])
-AC_SUBST([AUTOM4TE], [autom4te])
+AC_SUBST([AUTOM4TE], [${AUTOM4TE=autom4te}])
 AC_SUBST([AUTOTEST], ['$(AUTOM4TE) --language=autotest'])
 
 
