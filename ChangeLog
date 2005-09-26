@@ -1,3 +1,7 @@
+2005-09-26  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
+	* HACKING: Only update libltdl version info before release.
+
 2005-09-26  Tim Rice  <tim@multitalents.net>
 
 	* configure.ac <AUTOM4TE>: Allow variable override.
