@@ -31,6 +31,7 @@ $as_unset CDPATH
 m4_include([general.m4sh])
 
 : ${AUTOCONF="autoconf"}
+: ${AUTORECONF="autoreconf"}
 : ${LIBTOOL="./libtool"}
 
 # Sed that helps us avoid accidentally triggering echo(1) options like -n.
@@ -187,7 +188,7 @@ func_configure_nofail ()
 
     func_msg "Configuring in $my_dir"
 
-    test -f "$my_testdir/configure" || autoreconf --force --install $my_testdir
+    test -f "$my_testdir/configure" || ${AUTORECONF} --force --install $my_testdir
     if test -f "$my_testdir/configure"; then
 
       eval func_msg $SHELL "$my_testdir/configure" $my_args

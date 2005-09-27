@@ -1,3 +1,8 @@
+2005-09-27  Tim Rice  <tim@multitalents.net>
+
+	* tests/defs.m4sh, tests/testsuite.at (PREPARE_TESTS)
+	<AUTORECONF>: Allow variable override.
+
 2005-09-26  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
 	* HACKING: Only update libltdl version info before release.
