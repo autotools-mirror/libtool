@@ -1,5 +1,11 @@
 2005-09-27  Gary V. Vaughan  <gary@gnu.org>
 
+	* libltdl/lt_error.c (lt__last_error, lt__error_strings): The lt__
+	prefix is used to indicate internal symbols that are only exported
+	for use by other parts of libltdl.  These are now static, so...
+	(last_error, error_strings): ...renamed to this.  Changed all
+	callers.
+
 	* libltdl/ltdl.h (lt_dlmutex_register, lt_dlmutex_lock)
 	(lt_dlmutex_unlock, lt_dlmutex_seterror, lt_dlmutex_geterror)
 	(lt_dlmalloc, lt_dlrealloc, lt_dlfree): Remove deprecated APIs.

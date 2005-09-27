@@ -1,5 +1,5 @@
 /* lt_error.c -- error propogation interface
-   Copyright (C) 1999, 2000, 2001, 2004 Free Software Foundation, Inc.
+   Copyright (C) 1999, 2000, 2001, 2004, 2005 Free Software Foundation, Inc.
    Originally by Thomas Tanner <tanner@ffii.org>
 
    NOTE: The canonical source of this file is maintained with the
@@ -29,8 +29,8 @@ Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 #include "lt_error.h"
 #include "lt__private.h"
 
-static const char	*lt__last_error	= 0;
-static const char	lt__error_strings[LT_ERROR_MAX][LT_ERROR_LEN_MAX + 1] =
+static const char	*last_error	= 0;
+static const char	error_strings[LT_ERROR_MAX][LT_ERROR_LEN_MAX + 1] =
   {
 #define LT_ERROR(name, diagnostic)	(diagnostic),
     lt_dlerror_table
@@ -75,7 +75,7 @@ lt_dlseterror (int errindex)
   else if (errindex < LT_ERROR_MAX)
     {
       /* No error setting the error message! */
-      LT__SETERRORSTR (lt__error_strings[errindex]);
+      LT__SETERRORSTR (error_strings[errindex]);
     }
   else
     {
@@ -92,17 +92,17 @@ lt__error_string (int errorcode)
   assert (errorcode >= 0);
   assert (errorcode < LT_ERROR_MAX);
 
-  return lt__error_strings[errorcode];
+  return error_strings[errorcode];
 }
 
 const char *
 lt__get_last_error (void)
 {
-  return lt__last_error;
+  return last_error;
 }
 
 const char *
 lt__set_last_error (const char *errormsg)
 {
-  return lt__last_error = errormsg;
+  return last_error = errormsg;
 }
