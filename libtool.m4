@@ -1655,7 +1655,7 @@ sunos4*)
   need_version=yes
   ;;
 
-sysv4 | sysv4.2uw2* | sysv4.3* | sysv5*)
+sysv4 | sysv4.2uw2* | sysv4.3*)
   version_type=linux
   library_names_spec='${libname}${release}${shared_ext}$versuffix ${libname}${release}${shared_ext}$major $libname${shared_ext}'
   soname_spec='${libname}${release}${shared_ext}$major'
@@ -1686,6 +1686,19 @@ sysv4*MP*)
     soname_spec='$libname${shared_ext}.$major'
     shlibpath_var=LD_LIBRARY_PATH
   fi
+  ;;
+
+sysv5*)
+  version_type=linux
+  need_lib_prefix=no
+  need_version=no
+  library_names_spec='${libname}${release}${shared_ext}$versuffix ${libname}${release}${shared_ext}$major $libname${shared_ext}'
+  soname_spec='${libname}${release}${shared_ext}$major'
+  shlibpath_var=LD_LIBRARY_PATH
+  shlibpath_overrides_runpath=yes
+  hardcode_into_libs=yes
+  sys_lib_search_path_spec='/usr/ccs/lib /usr/lib'
+  sys_lib_dlsearch_path_spec="$sys_lib_search_path_spec"
   ;;
 
 uts4*)
@@ -2314,11 +2327,7 @@ solaris*)
   lt_cv_deplibs_check_method=pass_all
   ;;
 
-sysv5OpenUNIX8* | sysv5UnixWare7* | sysv5uw[[78]]*)
-  lt_cv_deplibs_check_method=pass_all
-  ;;
-
-sysv4 | sysv4.2uw2* | sysv4.3* | sysv5*)
+sysv4 | sysv4.2uw2* | sysv4.3*)
   case $host_vendor in
   motorola)
     lt_cv_deplibs_check_method='file_magic ELF [[0-9]][[0-9]]*-bit [[ML]]SB (shared object|dynamic lib) M[[0-9]][[0-9]]* Version [[0-9]]'
@@ -2339,10 +2348,13 @@ sysv4 | sysv4.2uw2* | sysv4.3* | sysv5*)
   siemens)
     lt_cv_deplibs_check_method=pass_all
     ;;
+  pc)
+    lt_cv_deplibs_check_method=pass_all
+    ;;
   esac
   ;;
 
-sysv4*uw2* | unixware7*)
+unixware7* | sysv5*)
   lt_cv_deplibs_check_method=pass_all
   ;;
 esac
@@ -3559,8 +3571,29 @@ case $host_os in
 	;;
     esac
     ;;
-  sysv5OpenUNIX8* | sysv5UnixWare7* | sysv5uw[[78]]* | unixware7*)
-    _LT_AC_TAGVAR(archive_cmds_need_lc, $1)=no
+  sysv5OpenUNIX8* | sysv5UnixWare7.[[01]].[[01]]* | sysv5uw[[78]]* | unixware7*)
+    case $cc_basename in
+      CC*)
+	_LT_AC_TAGVAR(no_undefined_flag, $1)='${wl}-z ${wl}text'
+	_LT_AC_TAGVAR(archive_cmds, $1)='$CC -G ${wl}-h ${wl}$soname -o $lib $libobjs $deplibs $compiler_flags'
+	_LT_AC_TAGVAR(archive_cmds_need_lc, $1)=no
+	runpath_var='LD_RUN_PATH'
+	_LT_AC_TAGVAR(hardcode_shlibpath_var, $1)=no
+	;;
+    esac
+    ;;
+  sysv5*)
+    case $cc_basename in
+      CC*)
+	_LT_AC_TAGVAR(no_undefined_flag, $1)='${wl}-z ${wl}text'
+	_LT_AC_TAGVAR(archive_cmds, $1)='$CC -G ${wl}-h ${wl}$soname -o $lib $libobjs $deplibs $compiler_flags'
+	_LT_AC_TAGVAR(archive_cmds_need_lc, $1)=no
+	_LT_AC_TAGVAR(hardcode_libdir_flag_spec, $1)='-R$libdir'
+	_LT_AC_TAGVAR(hardcode_libdir_separator, $1)=':'
+	runpath_var='LD_RUN_PATH'
+	_LT_AC_TAGVAR(hardcode_shlibpath_var, $1)=no
+	;;
+    esac
     ;;
   tandem*)
     case $cc_basename in
@@ -4949,7 +4982,14 @@ AC_MSG_CHECKING([for $compiler option to produce PIC])
 	    ;;
 	esac
 	;;
-      unixware*)
+      unixware* | sysv5*)
+	case $cc_basename in
+	  CC*)
+	    _LT_AC_TAGVAR(lt_prog_compiler_wl, $1)='-Wl,'
+	    _LT_AC_TAGVAR(lt_prog_compiler_pic, $1)='-KPIC'
+	    _LT_AC_TAGVAR(lt_prog_compiler_static, $1)='-Bstatic'
+	    ;;
+	esac
 	;;
       vxworks*)
 	;;
@@ -5966,27 +6006,30 @@ EOF
       runpath_var=LD_RUN_PATH
       ;;
 
-   sysv5OpenUNIX8* | sysv5UnixWare7* |  sysv5uw[[78]]* | unixware7*)
+    sysv5OpenUNIX8* | sysv5UnixWare7.[[01]].[[10]]* |  sysv5uw[[78]]* | unixware7*)
       _LT_AC_TAGVAR(no_undefined_flag, $1)='${wl}-z ${wl}text'
       if test "$GCC" = yes; then
 	_LT_AC_TAGVAR(archive_cmds, $1)='$CC -shared ${wl}-h ${wl}$soname -o $lib $libobjs $deplibs $compiler_flags'
       else
 	_LT_AC_TAGVAR(archive_cmds, $1)='$CC -G ${wl}-h ${wl}$soname -o $lib $libobjs $deplibs $compiler_flags'
       fi
+      _LT_AC_TAGVAR(archive_cmds_need_lc, $1)=no
       runpath_var='LD_RUN_PATH'
       _LT_AC_TAGVAR(hardcode_shlibpath_var, $1)=no
       ;;
 
     sysv5*)
-      _LT_AC_TAGVAR(no_undefined_flag, $1)=' -z text'
-      # $CC -shared without GNU ld will not create a library from C++
-      # object files and a static libstdc++, better avoid it by now
-      _LT_AC_TAGVAR(archive_cmds, $1)='$LD -G${allow_undefined_flag} -h $soname -o $lib $libobjs $deplibs $linker_flags'
-      _LT_AC_TAGVAR(archive_expsym_cmds, $1)='$echo "{ global:" > $lib.exp~cat $export_symbols | $SED -e "s/\(.*\)/\1;/" >> $lib.exp~$echo "local: *; };" >> $lib.exp~
-  		$LD -G${allow_undefined_flag} -M $lib.exp -h $soname -o $lib $libobjs $deplibs $linker_flags~$rm $lib.exp'
-      _LT_AC_TAGVAR(hardcode_libdir_flag_spec, $1)=
-      _LT_AC_TAGVAR(hardcode_shlibpath_var, $1)=no
+      _LT_AC_TAGVAR(no_undefined_flag, $1)='${wl}-z ${wl}text'
+      if test "$GCC" = yes; then
+	_LT_AC_TAGVAR(archive_cmds, $1)='$CC -shared ${wl}-h ${wl}$soname -o $lib $libobjs $deplibs $compiler_flags'
+      else
+	_LT_AC_TAGVAR(archive_cmds, $1)='$CC -G ${wl}-h ${wl}$soname -o $lib $libobjs $deplibs $compiler_flags'
+      fi
+      _LT_AC_TAGVAR(archive_cmds_need_lc, $1)=no
+      _LT_AC_TAGVAR(hardcode_libdir_flag_spec, $1)='-R$libdir'
+      _LT_AC_TAGVAR(hardcode_libdir_separator, $1)=':'
       runpath_var='LD_RUN_PATH'
+      _LT_AC_TAGVAR(hardcode_shlibpath_var, $1)=no
       ;;
 
     uts4*)

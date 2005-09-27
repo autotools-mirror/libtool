@@ -1,3 +1,12 @@
+2005-09-27  Tim Rice  <tim@multitalents.net>
+
+	* libtool.m4 (AC_DEPLIBS_CHECK_METHOD)
+	(AC_LIBTOOL_SYS_DYNAMIC_LINKER, AC_LIBTOOL_LANG_CXX_CONFIG)
+	(AC_LIBTOOL_PROG_COMPILER_PIC, AC_LIBTOOL_PROG_LD_SHLIBS)
+	* ltdl.m4 (AC_LTDL_SYS_DLOPEN_DEPLIBS) [ unixware7* | sysv5* ]:
+	Get UnixWare 7.1.[34] and OpenServer 6 fully working.
+	Improve other UnixWare versions a little.
+
 2005-09-25  Alan W. Irwin  <irwin@beluga.phys.uvic.ca>,
 	    Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
