@@ -3441,10 +3441,6 @@ separator in addition to @samp{/}.  On Windows, this contains
 @noindent
 The following types are defined in @file{ltdl.h}:
 
-@deftp {Type} lt_ptr
-@code{lt_ptr} is a generic pointer.
-@end deftp
-
 @deftp {Type} lt_dlhandle
 @code{lt_dlhandle} is a module ``handle''.
 Every lt_dlopened module has a handle associated with it.
@@ -3546,7 +3542,7 @@ then the module is unloaded.
 Return 0 on success.
 @end deftypefun
 
-@deftypefun lt_ptr lt_dlsym (lt_dlhandle @var{handle}, const char *@var{name})
+@deftypefun {void *} lt_dlsym (lt_dlhandle @var{handle}, const char *@var{name})
 Return the address in the module @var{handle}, where the symbol given
 by the null-terminated string @var{name} is loaded.
 If the symbol cannot be found, @code{NULL} is returned.
@@ -3581,7 +3577,7 @@ by @code{LT_PATHSEP_CHAR}.  Return 0 on success.
 Return the current user-defined library search path.
 @end deftypefun
 
-@deftypefun int lt_dlforeachfile (@w{const char *@var{search_path}}, @w{int (*@var{func}) (const char *@var{filename}, lt_ptr @var{data})}, @w{lt_ptr @var{data}})
+@deftypefun int lt_dlforeachfile (@w{const char *@var{search_path}}, @w{int (*@var{func}) (const char *@var{filename}, void * @var{data})}, @w{void * @var{data}})
 In some applications you may not want to load individual modules with
 known names, but rather find all of the modules in a set of
 directories and load them all during initialisation.  With this function
@@ -3698,13 +3694,13 @@ If you wish to use libltdl in a multithreaded environment, then you
 must mutex lock around libltdl calls, since they may in turn be calling
 non-thread-safe system calls on some target hosts.
 
-Some old releases of libtool provided a mutex locking API that was
-unusable with POSIX threads, so callers were forced to lock around all
-libltdl API calls anyway.  That mutex locking API was next to useless,
-and is not present in current releases.
+Some old releases of libtool provided a mutex locking @sc{api} that
+was unusable with POSIX threads, so callers were forced to lock around
+all libltdl @sc{api} calls anyway.  That mutex locking @sc{api} was
+next to useless, and is not present in current releases.
 
 Some future release of libtool may provide a new POSIX thread
-compliant mutex locking API.
+compliant mutex locking @sc{api}.
 
 @node User defined module data
 @section Data associated with loaded modules
@@ -3739,7 +3735,7 @@ Furthermore, in order to save you from having to keep a list of the
 handles of all the modules you have loaded, these functions allow you to
 iterate over libltdl's list of loaded modules:
 
-@deftypefun int lt_dlforeach (@w{int (*@var{func}) (lt_dlhandle @var{handle}, lt_ptr @var{data})}, @w{lt_ptr @var{data}})
+@deftypefun int lt_dlforeach (@w{int (*@var{func}) (lt_dlhandle @var{handle}, void * @var{data})}, @w{void * @var{data}})
 For each loaded module call the function @var{func}.  The argument
 @var{handle} is the handle of one of the loaded modules, @var{data} is
 the @var{data} argument passed to @code{lt_dlforeach}.
@@ -3796,7 +3792,7 @@ if you supply an @var{id_string} and @var{iface}, then the resulting
 returned by @samp{lt_dlhandle_next}.
 @end deftypefun
 
-@deftypefun lt_ptr lt_dlcaller_set_data (@w{lt_dlinterface_id @var{key}}, @w{lt_dlhandle @var{handle}}, @w{lt_ptr @var{data}})
+@deftypefun {void *} lt_dlcaller_set_data (@w{lt_dlinterface_id @var{key}}, @w{lt_dlhandle @var{handle}}, @w{void * @var{data}})
 Set @var{data} as the set of data uniquely associated with @var{key} and
 @var{handle} for later retrieval.  This function returns the @var{data}
 previously associated with @var{key} and @var{handle} if any.  A result of
@@ -3806,7 +3802,7 @@ from @code{lt_dlerror()}.
 For example, to correctly remove some associated data:
 
 @example
-lt_ptr stale = lt_dlcaller_set_data (key, handle, 0);
+void *stale = lt_dlcaller_set_data (key, handle, 0);
 if (stale != NULL)
   @{
     free (stale);
@@ -3824,7 +3820,7 @@ else
 @end example
 @end deftypefun
 
-@deftypefun lt_ptr lt_dlcaller_get_data (@w{lt_dlinterface_id @var{key}}, @w{lt_dlhandle @var{handle}})
+@deftypefun {void *} lt_dlcaller_get_data (@w{lt_dlinterface_id @var{key}}, @w{lt_dlhandle @var{handle}})
 Return the address of the data associated with @var{key} and
 @var{handle}, or else @code{NULL} if there is none.
 @end deftypefun
@@ -3988,7 +3984,7 @@ from memory.  If the function fails for some reason, set the error
 message with @code{lt_dlseterror} and return non-zero.
 @end deftypefn
 
-@deftypefn {Type} lt_ptr lt_find_sym (@w{lt_module @var{module},} @w{const char *@var{symbol}})
+@deftypefn {Type} {void *} lt_find_sym (@w{lt_module @var{module},} @w{const char *@var{symbol}})
 The type of the symbol lookup function for a user defined module loader.
 Implementation of such a function should return the address of the named
 @var{symbol} in the module @var{module}, or else set the error message

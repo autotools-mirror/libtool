@@ -1,9 +1,16 @@
 NEWS - list of user-visible changes between releases of GNU Libtool
 
-New in 2.1b: 2005-??-??; CVS version 2.1a, Libtool team:
+New in 1.9h: 2005-??-??; CVS version 2.1a, Libtool team:
 * New tests for support of Automake subdir-objects.
-* Support for Portland Group compiler on GNU/Linux.
 * Fix libltdl on static platforms.
+* New lt_dlinterface_register, lt_dlinterface_set_data and
+  lt_dlinterface_get_data libltdl API calls to maintain separation of
+  concerns between modules loaded by different libraries.
+* Removed deprecated APIs from libltdl: lt_dlcaller_register,
+  lt_dlcaller_get_data, lt_dlcaller_set_data, lt_dlmutex_register,
+  lt_dlmutex_lock, lt_dlmutex_unlock, lt_dlmutex_seterror,
+  lt_dlmutex_geterror, lt_dlmalloc, lt_dlrealloc, lt_dlfree.
+* Support for Portland Group compiler on GNU/Linux.
 * Support for linux-dietlibc (`diet' as well as `diet-dyn', separately).
 * Shell optimizations which break use of the stdin file descriptor in libtool.
 * `libtoolize --install' now also installs `install-sh'.
@@ -13,8 +20,6 @@ New in 2.1b: 2005-??-??; CVS version 2.1a, Libtool team:
 * Detection of compiler wrappers like distcc/ccache and $host_alias prefix.
 * Initial Support for FC (modern Fortran).
 * Fixed a regression that prevented use of libltdl without autotools.
-
-New in 1.9h: 2004-??-??; CVS version 1.9g, Libtool team:
 * Bug fixes.
 
 New in 1.9f: 2004-10-23; CVS version 1.9e, Libtool team:

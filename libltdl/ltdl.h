@@ -133,42 +133,7 @@ LT_SCOPE int		lt_dlforeach	    (
 				int (*func) (lt_dlhandle handle, void *data),
 				void *data);
 
-
-
-/* --- BINARY COMPATIBILITY WITH OLD LIBLTDL --- */
-
-typedef void	 lt_dlmutex_lock	(void);
-typedef void	 lt_dlmutex_unlock	(void);
-typedef void	 lt_dlmutex_seterror	(const char *errmsg);
-typedef const char *lt_dlmutex_geterror	(void);
-
-LT_SCOPE void * (*lt_dlmalloc)	(size_t size);
-LT_SCOPE void * (*lt_dlrealloc)	(void *ptr, size_t size);
-LT_SCOPE void	(*lt_dlfree)	(void *ptr);
-
-
-LT_SCOPE int	lt_dlmutex_register	(lt_dlmutex_lock *lock,
-					 lt_dlmutex_unlock *unlock,
-					 lt_dlmutex_seterror *seterror,
-					 lt_dlmutex_geterror *geterror);
-
-# define lt_ptr			void *
-
-
-
-/* --- SOURCE COMPATIBILITY WITH ANCIENT LIBLTDL --- */
-
-
-#if defined(LT_NON_POSIX_NAMESPACE)
-#  define lt_ptr_t		void *
-#  define lt_module_t		lt_module
-#  define lt_module_open_t	lt_module_open
-#  define lt_module_close_t	lt_module_close
-#  define lt_find_sym_t		lt_find_sym
-#  define lt_dlloader_exit_t	lt_dlloader_exit
-#  define lt_dlloader_t		lt_dlloader
-#  define lt_dlloader_data_t	lt_user_data
-#endif
+#define lt_ptr void *
 
 LT_END_C_DECLS
 

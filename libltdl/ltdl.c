@@ -2202,29 +2202,3 @@ lt_dlforeach (int (*func) (lt_dlhandle handle, void *data), void *data)
 
   return errors;
 }
-
-
-
-/* These symbols are part of the published interface to libltdl,
-   although they are no longer used.  */
-LT_GLOBAL_DATA void *(*lt_dlmalloc)	(size_t size) = 0;
-LT_GLOBAL_DATA void *(*lt_dlrealloc)	(void *ptr, size_t size) = 0;
-LT_GLOBAL_DATA void  (*lt_dlfree)	(void *ptr) = 0;
-
-/*ARGSUSED*/
-int
-lt_dlmutex_register (lt_dlmutex_lock *lock, lt_dlmutex_unlock *unlock,
-		     lt_dlmutex_seterror *seterror,
-		     lt_dlmutex_geterror *geterror)
-{
-  static int warned = 0;
-
-  if (warned++ == 0)
-    {
-      fputs ("libltdl: WARNING: lt_dlmutex_register() is deprecated,\n"
-	     "libltdl: WARNING: this version of libltdl is not thread safe.\n",
-	     stderr);
-    }
-
-  return 0;
-}

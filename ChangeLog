@@ -1,5 +1,11 @@
 2005-09-27  Gary V. Vaughan  <gary@gnu.org>
 
+	* libltdl/ltdl.h (lt_dlmutex_register, lt_dlmutex_lock)
+	(lt_dlmutex_unlock, lt_dlmutex_seterror, lt_dlmutex_geterror)
+	(lt_dlmalloc, lt_dlrealloc, lt_dlfree): Remove deprecated APIs.
+	* doc/libtool.tex: Updated.
+	* NEWS: Updated.
+
 	* libltdl/ltdl.c (lt_dlcaller_register): Renamed to avoid problems
 	with module visibilty when linked with programs written for the
 	old API.
