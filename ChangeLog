@@ -1,5 +1,11 @@
 2005-09-27  Gary V. Vaughan  <gary@gnu.org>
 
+	* libtoolize.m4sh (func_scan_files): Support projects that have
+	upgraded libtool, but still use an old autoconf.  When the libtool
+	macros are not copied (because of missing ACLOCAL_AMFLAGS and
+	AC_CONFIG_MACRO_DIR ), point them at the libtoolize master tree
+	for files to manually copy into acinclude.m4 or aclocal.m4.
+
 	* libltdl/lt_error.c (lt__last_error, lt__error_strings): The lt__
 	prefix is used to indicate internal symbols that are only exported
 	for use by other parts of libltdl.  These are now static, so...

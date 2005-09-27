@@ -368,7 +368,7 @@ func_scan_files ()
 	    s,^.*AC_CONFIG_AUX_DIR([[[ 	]*\([^])]]*\).*$,auxdir=\1,; p;
         };
     	/AC_CONFIG_MACRO_DIR(/ {
-	    s,^.*AC_CONFIG_MACRO_DIR([[[ 	]*\([^])]]*\).*$,m4dir=\1,; p;
+	    s,^.*AC_CONFIG_MACRO_DIR([[[ 	]*\([^])]]*\).*$,macrodir=\1,; p;
         };
 	/A[[CM]]_PROG_LIBTOOL/ { s,^.*$,seen_libtool=:,; p; };
 	/LT_INIT/	     { s,^.*$,seen_libtool=:,; p; };
@@ -421,6 +421,7 @@ func_scan_files ()
     my_sed_aclocal_flags='/^[[ 	]]*ACLOCAL_[[A-Z_]]*FLAGS[[ 	]]*=/ {
 	s,^[[^=]]*=[[ 	]]*\(.*\), \1,; q; };
 	d'
+    m4dir="$macrodir"
     if test ! -n "$m4dir" && test -f Makefile.am; then
       my_m4dir_is_next=false
       for arg in `$SED "$my_sed_aclocal_flags" Makefile.am`; do
@@ -629,11 +630,11 @@ func_serial_update ()
     # Do this after the copy for hand maintained `aclocal.m4', incase
     # it has `m4_include([DESTFILE])', so the copy effectively already
     # updated `aclocal.m4'.
-    $use_aclocal || if test -f aclocal.m4; then
+    if test -f aclocal.m4; then
       func_serial_max \
           "$my_src_serial" `func_serial aclocal.m4 "$my_macro_regex"`
       test "X$my_src_serial" = "X$func_serial_max_result" \
-	  && func_echo "You should add the contents of \'$my_destfile' to \`aclocal.m4'."
+	  && func_echo "You should add the contents of \`$my_destfile' to \`aclocal.m4'."
     fi
 
     return $my_return_status
@@ -948,8 +949,18 @@ func_nonemptydir_p ()
     func_copy_some_files "$pkgmacro_files" "$aclocaldir" \
       "$m4dir" func_serial_update
   else
-    func_verbose "AC_CONFIG_MACRO_DIR not defined, not copying libtool macro files."
+      $opt_quiet || func_echo "You should add the contents of \`$aclocaldir/libtool.m4' to \`aclocal.m4'."
   fi
+
+  # Suggest modern idioms for storing autoconf macros:
+  $opt_quiet || \
+    if test -z "$macrodir$ltdldir" && $seen_autoconf; then
+      if test x"$m4dir" = x.; then
+        func_echo "add \`AC_CONFIG_MACRO_DIR([m4])' to $configure_ac to store autoconf macros"
+      else
+        func_echo "consider adding \`AC_CONFIG_MACRO_DIR([$m4dir])'to $configure.ac"
+      fi
+    fi
 
   # Offer some suggestions for avoiding duplicate files in a project
   # that uses libltdl:
