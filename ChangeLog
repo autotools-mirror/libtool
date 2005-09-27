@@ -1,3 +1,12 @@
+2005-09-27  Gary V. Vaughan  <gary@gnu.org>
+
+	* libltdl/ltdl.c (lt_dlcaller_register): Renamed to avoid problems
+	with module visibilty when linked with programs written for the
+	old API.
+	(lt_dlinterface_register): New name.
+	* Makefile.am (VERSION_INFO): Bumped.
+	* doc/libtool.texi (User defined module data): Updated.
+
 2005-09-27  Tim Rice  <tim@multitalents.net>
 
 	* tests/defs.m4sh, tests/testsuite.at (PREPARE_TESTS)

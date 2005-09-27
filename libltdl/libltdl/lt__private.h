@@ -1,5 +1,5 @@
 /* lt__private.h -- internal apis for libltdl
-   Copyright (C) 2004 Free Software Foundation, Inc.
+   Copyright (C) 2004, 2005 Free Software Foundation, Inc.
    Originally by Gary V. Vaughan  <gary@gnu.org>
 
    NOTE: The canonical source of this file is maintained with the
@@ -95,11 +95,11 @@ LT_SCOPE void	lt__alloc_die_callback (void);
 
 /* --- OPAQUE STRUCTURES DECLARED IN LTDL.H --- */
 
-/* This type is used for the array of caller data sets in each handler. */
+/* This type is used for the array of interface data sets in each handler. */
 typedef struct {
-  lt_dlcaller_id	key;
+  lt_dlinterface_id	key;
   void *		data;
-} lt_caller_data;
+} lt_interface_data;
 
 typedef struct lt__handle lt__handle;
 
@@ -111,7 +111,7 @@ struct lt__handle {
   lt_dlhandle *		deplibs;	/* dependencies */
   lt_module		module;		/* system module handle */
   void *		system;		/* system specific data */
-  lt_caller_data *	caller_data;	/* per caller associated data */
+  lt_interface_data *	interface_data;	/* per caller associated data */
   int			flags;		/* various boolean stats */
 };
 

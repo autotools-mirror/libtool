@@ -1447,7 +1447,7 @@ lt_argz_insert (char **pargz, size_t *pargz_len, char *before,
 
   /* Prior to Sep 8, 2005, newlib had a bug where argz_insert(pargz,
      pargz_len, NULL, entry) failed with EINVAL.  */
-  if (before) 
+  if (before)
     error = argz_insert (pargz, pargz_len, before, entry);
   else
     error = argz_append (pargz, pargz_len, entry, 1 + strlen (entry));
@@ -1712,7 +1712,7 @@ lt_dlclose (lt_dlhandle handle)
       errors += unload_deplibs (handle);
 
       /* It is up to the callers to free the data itself.  */
-      FREE (cur->caller_data);
+      FREE (cur->interface_data);
 
       FREE (cur->info.filename);
       FREE (cur->info.name);
@@ -2013,51 +2013,51 @@ lt_dlisresident	(lt_dlhandle handle)
 typedef struct {
   const char *id_string;
   lt_dlhandle_interface *iface;
-} lt__caller_id;
+} lt__interface_id;
 
-lt_dlcaller_id
-lt_dlcaller_register (const char *id_string, lt_dlhandle_interface *iface)
+lt_dlinterface_id
+lt_dlinterface_register (const char *id_string, lt_dlhandle_interface *iface)
 {
-  lt__caller_id *caller_id = lt__malloc (sizeof *caller_id);
+  lt__interface_id *interface_id = lt__malloc (sizeof *interface_id);
 
   /* If lt__malloc fails, it will LT__SETERROR (NO_MEMORY), which
      can then be detected with lt_dlerror() if we return 0.  */
-  if (caller_id)
+  if (interface_id)
     {
-      caller_id->id_string = lt__strdup (id_string);
-      caller_id->iface = iface;
+      interface_id->id_string = lt__strdup (id_string);
+      interface_id->iface = iface;
     }
 
-  return (lt_dlcaller_id) caller_id;
+  return (lt_dlinterface_id) interface_id;
 }
 
 void *
-lt_dlcaller_set_data (lt_dlcaller_id key, lt_dlhandle handle, void *data)
+lt_dlcaller_set_data (lt_dlinterface_id key, lt_dlhandle handle, void *data)
 {
   int n_elements = 0;
   void *stale = (void *) 0;
   lt__handle *cur = (lt__handle *) handle;
   int i;
 
-  if (cur->caller_data)
-    while (cur->caller_data[n_elements].key)
+  if (cur->interface_data)
+    while (cur->interface_data[n_elements].key)
       ++n_elements;
 
   for (i = 0; i < n_elements; ++i)
     {
-      if (cur->caller_data[i].key == key)
+      if (cur->interface_data[i].key == key)
 	{
-	  stale = cur->caller_data[i].data;
+	  stale = cur->interface_data[i].data;
 	  break;
 	}
     }
 
-  /* Ensure that there is enough room in this handle's caller_data
+  /* Ensure that there is enough room in this handle's interface_data
      array to accept a new element (and an empty end marker).  */
   if (i == n_elements)
     {
-      lt_caller_data *temp
-	= REALLOC (lt_caller_data, cur->caller_data, 2+ n_elements);
+      lt_interface_data *temp
+	= REALLOC (lt_interface_data, cur->interface_data, 2+ n_elements);
 
       if (!temp)
 	{
@@ -2065,21 +2065,21 @@ lt_dlcaller_set_data (lt_dlcaller_id key, lt_dlhandle handle, void *data)
 	  goto done;
 	}
 
-      cur->caller_data = temp;
+      cur->interface_data = temp;
 
-      /* We only need this if we needed to allocate a new caller_data.  */
-      cur->caller_data[i].key  = key;
-      cur->caller_data[1+ i].key = 0;
+      /* We only need this if we needed to allocate a new interface_data.  */
+      cur->interface_data[i].key	= key;
+      cur->interface_data[1+ i].key	= 0;
     }
 
-  cur->caller_data[i].data = data;
+  cur->interface_data[i].data = data;
 
  done:
   return stale;
 }
 
 void *
-lt_dlcaller_get_data  (lt_dlcaller_id key, lt_dlhandle handle)
+lt_dlcaller_get_data  (lt_dlinterface_id key, lt_dlhandle handle)
 {
   void *result = (void *) 0;
   lt__handle *cur = (lt__handle *) handle;
@@ -2087,11 +2087,11 @@ lt_dlcaller_get_data  (lt_dlcaller_id key, lt_dlhandle handle)
   /* Locate the index of the element with a matching KEY.  */
   {
     int i;
-    for (i = 0; cur->caller_data[i].key; ++i)
+    for (i = 0; cur->interface_data[i].key; ++i)
       {
-	if (cur->caller_data[i].key == key)
+	if (cur->interface_data[i].key == key)
 	  {
-	    result = cur->caller_data[i].data;
+	    result = cur->interface_data[i].data;
 	    break;
 	  }
       }
@@ -2118,12 +2118,12 @@ lt_dlgetinfo (lt_dlhandle handle)
    or else iterate over just the handles of modules that satisfy a given
    interface by getting the first element using lt_dlhandle_first(iface).  */
 
-static lt__caller_id *iterator = 0;
+static lt__interface_id *iterator = 0;
 
 lt_dlhandle
-lt_dlhandle_first (lt_dlcaller_id caller)
+lt_dlhandle_first (lt_dlinterface_id iface)
 {
-  iterator = caller;
+  iterator = iface;
 
   return handles;
 }

@@ -1,5 +1,5 @@
 /* ltdl.h -- generic dlopen functions
-   Copyright (C) 1998-2000, 2004 Free Software Foundation, Inc.
+   Copyright (C) 1998-2000, 2004, 2005 Free Software Foundation, Inc.
    Originally by Thomas Tanner <tanner@ffii.org>
 
    NOTE: The canonical source of this file is maintained with the
@@ -106,15 +106,16 @@ LT_SCOPE int	lt_dlpreload_open    (const char *originator,
 
 
 /* Associating user data with loaded modules. */
-typedef void * lt_dlcaller_id;
+typedef void * lt_dlinterface_id;
 typedef int lt_dlhandle_interface (lt_dlhandle handle, const char *id_string);
 
-LT_SCOPE lt_dlcaller_id	lt_dlcaller_register  (const char *id_string,
-					       lt_dlhandle_interface *iface);
-LT_SCOPE void *		lt_dlcaller_set_data  (lt_dlcaller_id key,
-					       lt_dlhandle handle, void *data);
-LT_SCOPE void *		lt_dlcaller_get_data  (lt_dlcaller_id key,
-					       lt_dlhandle handle);
+LT_SCOPE lt_dlinterface_id lt_dlinterface_register (const char *id_string,
+					  lt_dlhandle_interface *iface);
+LT_SCOPE void *	lt_dlcaller_set_data  (lt_dlinterface_id key,
+					  lt_dlhandle handle, void *data);
+LT_SCOPE void *	lt_dlcaller_get_data  (lt_dlinterface_id key,
+					  lt_dlhandle handle);
+
 
 /* Read only information pertaining to a loaded module. */
 typedef	struct {
@@ -125,7 +126,7 @@ typedef	struct {
 } lt_dlinfo;
 
 LT_SCOPE const lt_dlinfo *lt_dlgetinfo	    (lt_dlhandle handle);
-LT_SCOPE lt_dlhandle	lt_dlhandle_first   (lt_dlcaller_id key);
+LT_SCOPE lt_dlhandle	lt_dlhandle_first   (lt_dlinterface_id key);
 LT_SCOPE lt_dlhandle	lt_dlhandle_next    (lt_dlhandle place);
 LT_SCOPE lt_dlhandle	lt_dlhandle_find    (const char *module_name);
 LT_SCOPE int		lt_dlforeach	    (
@@ -136,9 +137,9 @@ LT_SCOPE int		lt_dlforeach	    (
 
 /* --- BINARY COMPATIBILITY WITH OLD LIBLTDL --- */
 
-typedef void	lt_dlmutex_lock		(void);
-typedef void	lt_dlmutex_unlock	(void);
-typedef void	lt_dlmutex_seterror	(const char *errmsg);
+typedef void	 lt_dlmutex_lock	(void);
+typedef void	 lt_dlmutex_unlock	(void);
+typedef void	 lt_dlmutex_seterror	(const char *errmsg);
 typedef const char *lt_dlmutex_geterror	(void);
 
 LT_SCOPE void * (*lt_dlmalloc)	(size_t size);

@@ -233,7 +233,7 @@ DEFS			= -DLTDL -DHAVE_CONFIG_H -DLT_CONFIG_H='<$(LT_CONFIG_H)>'
 AM_CPPFLAGS		= -I. -I$(srcdir) -Ilibltdl -I$(srcdir)/libltdl \
 			  -I$(srcdir)/libltdl/libltdl
 AM_LDFLAGS		= -no-undefined
-VERSION_INFO		= -version-info 6:1:0
+VERSION_INFO		= -version-info 7:0:0
 
 noinst_LTLIBRARIES	= $(LT_DLLOADERS)
 
