@@ -39,6 +39,7 @@ AT_DATA([Makefile.in],
 [[prefix = @prefix@
 libdir = @libdir@
 top_builddir = .
+SHELL = @SHELL@
 DEFAULT_INCLUDES = -I. -I@srcdir@
 EXEEXT = @EXEEXT@
 LIBTOOL = @LIBTOOL@
@@ -149,6 +150,7 @@ AT_DATA([Makefile.in],
 [[prefix = @prefix@
 libdir = @libdir@
 top_builddir = .
+SHELL = @SHELL@
 DEFAULT_INCLUDES = -I. -I@srcdir@
 EXEEXT = @EXEEXT@
 LIBTOOL = @LIBTOOL@

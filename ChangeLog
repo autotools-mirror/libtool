@@ -1,3 +1,7 @@
+2005-09-29  Tim Rice  <tim@multitalents.net>  (tiny change)
+
+	* tests/early-libtool.at (Makefile.in): Set $(SHELL).
+
 2005-09-29  Peter Ekberg  <peda@lysator.liu.se>
 
 	* libltdl/config/ltmain.m4sh (func_mode_link): Don't modify
