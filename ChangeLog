@@ -1,3 +1,8 @@
+2005-09-29  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
+	* libtoolize.m4sh (func_included_files): Do not recurse
+	non-existent files.
+
 2005-09-27  Gary V. Vaughan  <gary@gnu.org>
 
 	* libtoolize.m4sh (func_scan_files): Support projects that have

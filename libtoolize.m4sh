@@ -453,13 +453,13 @@ func_included_files ()
 
     if test -f "$my_searchfile"; then
       $ECHO "X$my_searchfile" | $Xsed
-    fi
 
-    # Only recurse when we don't care if all the variables we use get
-    # trashed, since they are in global scope.
-    for my_filename in `$SED "$my_sed_include" "$my_searchfile"`; do
-      func_included_files $my_filename
-    done
+      # Only recurse when we don't care if all the variables we use get
+      # trashed, since they are in global scope.
+      for my_filename in `$SED "$my_sed_include" "$my_searchfile"`; do
+	func_included_files $my_filename
+      done
+    fi
 }
 
 
