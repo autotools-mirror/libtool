@@ -1,3 +1,10 @@
+2005-09-29  Peter Ekberg  <peda@lysator.liu.se>
+
+	* libltdl/config/ltmain.m4sh (func_mode_link): Don't modify
+	user provided symbols file. Adjust removal of temporary files
+	and also remove temporary files used during symbols file
+	filtering.
+
 2005-09-29  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
 	* libtoolize.m4sh (func_included_files): Do not recurse
