@@ -470,6 +470,7 @@ TESTSUITE_AT	= tests/testsuite.at \
 		  tests/duplicate_members.at \
 		  tests/inherited_flags.at \
 		  tests/libtoolize.at \
+		  tests/old-m4-iface.at \
 		  tests/standalone.at \
 		  tests/stresstest.at \
 		  tests/link-order.at \

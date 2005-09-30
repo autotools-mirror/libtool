@@ -1,3 +1,11 @@
+2005-09-30  Gary V. Vaughan  <gary@gnu.org>
+
+	* tests/old-m4-iface.at: Start of a new test series for m4
+	interface backwards compatibility.
+	* tests/testsuite.at: Use it.
+	(macrodir): Declare the location of uninstalled libtool m4 macros.
+	* Makefile.am (TESTSUITE_AT): Depend on it.
+
 2005-09-29  Tim Rice  <tim@multitalents.net>  (tiny change)
 
 	* tests/early-libtool.at (Makefile.in): Set $(SHELL).
