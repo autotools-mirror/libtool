@@ -1,5 +1,11 @@
 2005-09-30  Gary V. Vaughan  <gary@gnu.org>
 
+	* tests/libtoolize.at: Add a new test to catch a regression I
+	almost introduced with respect to copying macro files when
+	AC_CONFIG_MACRO_DIR is shared with libltdl subproject.
+
+2005-09-30  Gary V. Vaughan  <gary@gnu.org>
+
 	* tests/old-m4-iface.at: Start of a new test series for m4
 	interface backwards compatibility.
 	* tests/testsuite.at: Use it.
