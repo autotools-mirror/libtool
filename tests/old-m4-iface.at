@@ -100,7 +100,8 @@ AC_OUTPUT(Makefile)
 ]])
 
 AT_DATA([Makefile.in],
-[[top_builddir	= .
+[[top_srcdir	= .
+top_builddir	= .
 COMPILE		= @CC@ @CPPFLAGS@ @INCLTDL@  @CFLAGS@
 LTCOMPILE	= @LIBTOOL@ --mode=compile $(COMPILE)
 LTLINK		= @LIBTOOL@ --mode=link @CC@ -no-undefined @CFLAGS@ @LDFLAGS@ -o $@
@@ -181,6 +182,7 @@ foo (const char *str)
 }
 ]])
 
+touch config.h.in  # bug in current ltdl.m4
 test -f ltmain.sh  || LT_AT_LIBTOOLIZE([--ltdl --install])
 test -f aclocal.m4 || $ACLOCAL -I libltdl/m4 || exit 1
 test -f configure  || $AUTOCONF --force      || exit 1

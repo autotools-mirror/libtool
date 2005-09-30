@@ -1,5 +1,8 @@
 2005-09-30  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* tests/old-m4-iface.at: Define top_srcdir, work around current
+	ltdl.m4 bug.
+
 	* libltdl/config/ltmain.m4sh (func_mode_link):
 	Fix wrong logic introduced in last commit.
 
