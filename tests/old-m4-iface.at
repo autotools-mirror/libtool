@@ -1,0 +1,192 @@
+# Hand crafted tests for GNU Libtool.                         -*- Autotest -*-
+# Copyright 2005 Free Software Foundation, Inc.
+
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2, or (at your option)
+# any later version.
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+# 02110-1301, USA.
+
+
+AT_BANNER([Support for older m4 interface.])
+
+########################################################################
+##
+## TODO:
+##   test all the interfaces currently supported by AU_DEFUN/AU_ALIAS
+##   test autoupdate on all of those tests' configure.in
+##
+########################################################################
+
+## -------------------------------------------------------- ##
+## An overtly simple old-school AM_PROG_LIBTOOL invocation. ##
+## -------------------------------------------------------- ##
+
+AT_SETUP([AM_PROG_LIBTOOL])
+
+AT_DATA([configure.in],
+[[AC_INIT(old.c)
+AM_PROG_LIBTOOL
+AC_OUTPUT(Makefile)
+]])
+
+AT_DATA([Makefile.in],
+[[COMPILE = @CC@ @CPPFLAGS@ @CFLAGS@
+LINK      = @CC@ @CFLAGS@ @LDFLAGS@ -o $@
+SHELL     = @SHELL@
+
+all: old@EXEEXT@
+
+old@EXEEXT@: old.@OBJEXT@
+	$(LINK) old.@OBJEXT@
+
+.SUFFIXES:
+.SUFFIXES: .c .@OBJEXT@
+
+.c.@OBJEXT@:
+	$(COMPILE) -c $<
+]])
+
+
+AT_DATA([old.c],
+[[#include <stdio.h>
+
+int main (int argc, char **argv)
+{
+  printf ("Hello, World!");
+  return 0;
+}
+]])
+
+test -f ltmain.sh  || LT_AT_LIBTOOLIZE([--install])
+
+# This is slightly bogus, since only libtool.m4 was required in aclocal.m4
+# with libtool-1.5x...
+test -f aclocal.m4 \
+    || cat "$macrodir/libtool.m4" "$macrodir/ltoptions.m4" \
+	"$macrodir/ltsugar.m4" "$macrodir/ltversion.m4" > aclocal.m4 \
+    || exit 1
+
+test -f configure  || $AUTOCONF --force || exit 1
+test -f Makefile   || ./configure       || exit 1
+${MAKE-make}
+
+LT_AT_EXEC_CHECK([./old], 0, [Hello, World!])
+
+AT_CLEANUP
+
+
+## --------------------------- ##
+## An old style libltdl build. ##
+## --------------------------- ##
+
+AT_SETUP([AC_WITH_LTDL])
+
+AT_DATA([configure.in],
+[[AC_INIT(old.c)
+AC_PROG_MAKE_SET
+AM_PROG_LIBTOOL
+AC_WITH_LTDL
+AC_OUTPUT(Makefile)
+]])
+
+AT_DATA([Makefile.in],
+[[top_builddir	= .
+COMPILE		= @CC@ @CPPFLAGS@ @INCLTDL@  @CFLAGS@
+LTCOMPILE	= @LIBTOOL@ --mode=compile $(COMPILE)
+LTLINK		= @LIBTOOL@ --mode=link @CC@ -no-undefined @CFLAGS@ @LDFLAGS@ -o $@
+SHELL		= @SHELL@
+@SET_MAKE@
+
+TARGETS    = libltdl/libltdlc.la module.la old@EXEEXT@
+
+all: $(TARGETS)
+
+libltdl/libltdlc.la:
+	cd libltdl && ./configure && $(MAKE)
+
+module.la: module.lo
+	$(LTLINK) module.lo -module -avoid-version -rpath /dev/null
+
+old@EXEEXT@: old.@OBJEXT@
+	$(LTLINK) old.@OBJEXT@ -dlopen module.la @LIBLTDL@
+
+.SUFFIXES:
+.SUFFIXES: .c .@OBJEXT@ .lo
+
+.c.@OBJEXT@:
+	$(COMPILE) -c $<
+
+.c.lo:
+	$(LTCOMPILE) -c -o $@ $<
+]])
+
+AT_DATA([old.c],
+[[#include <stdio.h>
+#include "ltdl.h"
+
+int main (int argc, char **argv)
+{
+  lt_dlhandle module;
+  const char *(*foo) (const char *) = 0;
+  int status = 1;
+
+  LTDL_SET_PRELOADED_SYMBOLS();
+  if (lt_dlinit() != 0) {
+    fprintf (stderr, "error during initialisation: %s\n", lt_dlerror());
+    return 1;
+  }
+
+  module = lt_dlopen("module.la");
+  if (!module) {
+    fprintf (stderr, "error dlopening module.la: %s\n", lt_dlerror());
+    goto finish;
+  }
+
+  foo = (const char *(*)(const char *)) lt_dlsym (module, "foo");
+  if (!foo) {
+    fprintf (stderr, "error fetching func: %s\n", lt_dlerror());
+    goto finish;
+  }
+
+  printf ("%s", (*foo) ("foo bar"));
+  status = 0;
+
+finish:
+  if (lt_dlexit() != 0) {
+    fprintf (stderr, "error during finalisation: %s\n", lt_dlerror());
+    status = 1;
+  }
+
+  return status;
+}
+]])
+
+AT_DATA([module.c],
+[[const char *
+foo (const char *str)
+{
+  while (*str++ != ' ')
+    ;
+  return str;
+}
+]])
+
+test -f ltmain.sh  || LT_AT_LIBTOOLIZE([--ltdl --install])
+test -f aclocal.m4 || $ACLOCAL -I libltdl/m4 || exit 1
+test -f configure  || $AUTOCONF --force      || exit 1
+test -f Makefile   || ./configure            || exit 1
+${MAKE-make}
+
+LT_AT_EXEC_CHECK([./old], 0, [bar])
+
+AT_CLEANUP
