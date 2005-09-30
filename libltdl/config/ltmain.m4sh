@@ -4933,7 +4933,7 @@ EOF
 	test -z "$pic_flag" && libobjs=`$ECHO "X$libobjs" | $SP2NL | $Xsed -e "$lo2o" | $NL2SP`
 
 	delfiles=
-	if test -n "$export_symbols$include_expsyms"; then
+	if test -n "$export_symbols" && test -n "$include_expsyms"; then
 	  $opt_dry_run || cp "$export_symbols" "$output_objdir/$libname.uexp"
 	  export_symbols="$output_objdir/$libname.uexp"
 	  delfiles="$delfiles $export_symbols"
@@ -4991,7 +4991,7 @@ EOF
 	  fi
 	fi
 
-	if test -n "$export_symbols$include_expsyms"; then
+	if test -n "$export_symbols" && test -n "$include_expsyms"; then
 	  tmp_export_symbols="$export_symbols"
 	  test -n "$orig_export_symbols" && tmp_export_symbols="$orig_export_symbols"
 	  $opt_dry_run || eval '$ECHO "X$include_expsyms" | $Xsed | $SP2NL >> "$tmp_export_symbols"'

@@ -1,3 +1,8 @@
+2005-09-30  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* libltdl/config/ltmain.m4sh (func_mode_link):
+	Fix wrong logic introduced in last commit.
+
 2005-09-30  Gary V. Vaughan  <gary@gnu.org>
 
 	* tests/libtoolize.at: Add a new test to catch a regression I
@@ -23,7 +28,7 @@
 	and also remove temporary files used during symbols file
 	filtering.
 
-2005-09-29  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+2005-09-29  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* libtoolize.m4sh (func_included_files): Do not recurse
 	non-existent files.
