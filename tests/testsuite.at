@@ -108,5 +108,7 @@ m4_include([standalone.at])
 m4_include([template.at])
 # Behaviour of LT_OUTPUT
 m4_include([early-libtool.at])
+# identical deplibs
+m4_include([deplibs-ident.at])
 # stress test
 m4_include([stresstest.at])

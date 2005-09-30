@@ -472,6 +472,7 @@ TESTSUITE_AT	= tests/testsuite.at \
 		  tests/libtoolize.at \
 		  tests/old-m4-iface.at \
 		  tests/standalone.at \
+		  tests/deplibs-ident.at \
 		  tests/stresstest.at \
 		  tests/link-order.at \
 		  tests/convenience.at \

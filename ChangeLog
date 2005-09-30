@@ -1,5 +1,10 @@
 2005-09-30  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* tests/deplibs-ident.at: New file with XFAIL test to expose
+	wrong multiple listing of a deplib on the command line.
+	* Makefile.am, tests/testsuite.at: Updated.
+	Reported by Brian Barrett <brbarret@open-mpi.org>.
+
 	* tests/old-m4-iface.at: Define top_srcdir, work around current
 	ltdl.m4 bug.
 
