@@ -1,3 +1,8 @@
+2005-10-02  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* tests/old-m4-iface.at (Makefile.in): Do not reconfigure
+	libltdl directory.
+
 2005-09-30  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* tests/deplibs-ident.at: New file with XFAIL test to expose

@@ -113,7 +113,7 @@ TARGETS    = libltdl/libltdlc.la module.la old@EXEEXT@
 all: $(TARGETS)
 
 libltdl/libltdlc.la:
-	cd libltdl && ./configure && $(MAKE)
+	cd libltdl && $(MAKE)
 
 module.la: module.lo
 	$(LTLINK) module.lo -module -avoid-version -rpath /dev/null
