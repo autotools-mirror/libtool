@@ -3,6 +3,7 @@ NEWS - list of user-visible changes between releases of GNU Libtool
 New in 1.9h: 2005-??-??; CVS version 2.1a, Libtool team:
 * New tests for support of Automake subdir-objects.
 * Fix libltdl on static platforms.
+* New LT_CONFIG_LTDL_DIR macro.
 * New lt_dlinterface_register, lt_dlinterface_set_data and
   lt_dlinterface_get_data libltdl API calls to maintain separation of
   concerns between modules loaded by different libraries.

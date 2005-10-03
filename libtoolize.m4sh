@@ -39,7 +39,7 @@ m4_divert_push([SCRIPT])#! /bin/sh
 # -n, --dry-run         print commands rather than running them
 # -f, --force           replace existing files
 # -i, --install         copy missing auxiliary files
-#     --ltdl[=DIR]      install libltdl in a subdirectory [default: libltdl]
+#     --ltdl[=DIR]      install libltdl sources [default: libltdl]
 # -q, --quiet           work silently
 # -v, --verbose         verbosely report processing
 #     --version         print version information and exit
@@ -68,10 +68,11 @@ $as_unset CDPATH
 m4_include([getopt.m4sh])
 
 # Command line options:
+opt_debug=:
 opt_force=false
 opt_install=false
 opt_link=:
-opt_debug=:
+opt_ltdl=false
 
 seen_autoconf=false
 seen_libtool=false
@@ -123,11 +124,13 @@ configure_ac=configure.in
 
       --install|-i)	opt_install=: ;;
 
-      --ltdl)		ltdldir=libltdl
+      --ltdl)		opt_ltdl=:
       			if test "$#" -gt 0; then
 			  case $1 in
-			    -*)				;;
-			    *)  ltdldir="$1"; shift	;;
+			    -*)	;;
+			    *)	ltdldir=`$ECHO "X$1" | $Xsed -e 's,/*$,,'`
+				shift
+				;;
 			  esac
 			fi
 			;;
@@ -146,8 +149,16 @@ configure_ac=configure.in
 			shift
 			;;
 
+      # Separate optargs to short options:
+      #-X*)
+      #			arg=`$ECHO "X$opt" | $Xsed -e "$my_sed_single_rest"`
+      #			opt=`$ECHO "X$opt" | $Xsed -e "$my_sed_single_opt"`
+      #			set dummy "$opt" "$arg" ${1+"$@"}
+      #			shift
+      #			;;
+
       # Separate non-argument short options:
-      -c*|-i*|-f*|-n*|-q*|-v*)
+      -c*|-f*|-i*|-n*|-q*|-v*)
 			rest=`$ECHO "X$opt" | $Xsed -e "$my_sed_single_rest"`
 			opt=`$ECHO "X$opt" | $Xsed -e "$my_sed_single_opt"`
 			set dummy "$opt" "-$rest" ${1+"$@"}
@@ -354,6 +365,9 @@ func_scan_files ()
 	my_configure_ac=
 	test -n "$configure_ac" && my_configure_ac="$configure_ac: "
         func_verbose "${my_configure_ac}not using Autoconf"
+
+	# Make sure ltdldir is set, even though we return early here:
+	test -n "$ltdldir" || ltdldir=libltdl
 	return
     }
 
@@ -370,6 +384,10 @@ func_scan_files ()
     	/AC_CONFIG_MACRO_DIR(/ {
 	    s,^.*AC_CONFIG_MACRO_DIR([[[ 	]*\([^])]]*\).*$,macrodir=\1,; p;
         };
+	/_LT_CONFIG_LTDL_DIR(/d;
+	/LT_CONFIG_LTDL_DIR(/ {
+	    s,^.*LT_CONFIG_LTDL_DIR([[[	 ]*\([^])]]*\).*$,ac_ltdldir=\1,; p;
+	};
 	/A[[CM]]_PROG_LIBTOOL/ { s,^.*$,seen_libtool=:,; p; };
 	/LT_INIT/	     { s,^.*$,seen_libtool=:,; p; };
 	/LTDL_INIT/          { s,^.*$,seen_ltdl=:,; p; };
@@ -378,6 +396,35 @@ func_scan_files ()
 	/AC_WITH_LTDL/       { s,^.*$,seen_ltdl=:,; p; };
 	d'
     eval `cat aclocal.m4 "$configure_ac" 2>/dev/null | $SED "$my_sed_traces"`
+
+
+    # ----------------- #
+    # Validate ltdldir. #
+    # ----------------- #
+
+    ac_ltdldir=`$ECHO "X$ac_ltdldir" | $Xsed -e 's,/*$,,'`
+
+    # If $configure_ac contains AC_CONFIG_AUX_DIR, check that it was
+    # not given in terms of a shell variable!
+    case "$ac_ltdldir" in
+      *\$*)
+        func_fatal_error "can not handle variables in LT_CONFIG_LTDL_DIR"
+        ;;
+    esac
+
+    # If neither --ltdl nor LT_CONFIG_LTDL_DIR are specified, default to
+    # `libltdl'.  If both are specified, they must be the same.  Otherwise,
+    # take the one that is given! (If LT_CONFIG_LTDL_DIR is not specified
+    # we suggest adding it later in this code.)
+    case x$ac_ltdldir,x$ltdldir in
+      x,x)	ltdldir=libltdl		;;
+      x*,x)	ltdldir=$ac_ltdldir	;;
+      x,x*)	ltdldir=$ltdldir	;;
+      *)
+        test x"$ac_ltdldir" = x"$ltdldir" || \
+	    func_fatal_error "--ltdl='$ltdldir' does not match LT_CONFIG_LTDL_DIR($ac_ltdldir)"
+	;;
+    esac
 
 
     # ---------------- #
@@ -899,7 +946,7 @@ func_nonemptydir_p ()
 
   # Copy all the files from installed libltdl to this project, if the
   # user specified `--ltdl'.
-  if test -n "$ltdldir"; then
+  if $opt_ltdl; then
     func_copy_some_files "$pkgltdl_files" "$pkgltdldir/libltdl" "$ltdldir"
 
     # Unless we share CONFIG_MACRO_DIR with our parent project,
@@ -962,14 +1009,20 @@ func_nonemptydir_p ()
       fi
     fi
 
-  # Offer some suggestions for avoiding duplicate files in a project
-  # that uses libltdl:
-  if test -n "$ltdldir" && $seen_autoconf; then
-    $opt_quiet || test "$ltdldir/config" = "$auxdir" || \
-      func_echo "consider using \`AC_CONFIG_AUX_DIR([[$ltdldir/config]])' in $configure_ac"
-    $opt_quiet || test "$ltdldir/m4" = "$m4dir" || \
-      func_echo "consider using \`AC_CONFIG_MACRO_DIR([[$ltdldir/m4]])' in $configure_ac"
-  fi
+  $opt_quiet || \
+    if $opt_ltdl && $seen_autoconf; then
+
+      # Remind the user to call LT_CONFIG_LTDL_DIR:
+      test -n "$ac_ltdldir" || \
+        func_echo "Remember to add \`LT_CONFIG_LTDL_DIR([[$ltdldir]])' to \`$configure_ac'"
+
+      # Offer some suggestions for avoiding duplicate files in a project
+      # that uses libltdl:
+      test "$ltdldir/config" = "$auxdir" || \
+        func_echo "consider using \`AC_CONFIG_AUX_DIR([[$ltdldir/config]])' in $configure_ac"
+      test "$ltdldir/m4" = "$m4dir" || \
+        func_echo "consider using \`AC_CONFIG_MACRO_DIR([[$ltdldir/m4]])' in $configure_ac"
+    fi
 }
 
 exit $exit_status

@@ -2243,12 +2243,11 @@ Display a help message and exit.
 
 @item --ltdl [@var{TARGET-DIRECTORY-NAME}]
 Install libltdl in a the @var{TARGET-DIRECTORY-NAME} subdirectory of
-your package.  If you specify a subdirectory name, then you will need
-to be careful to pass the same directory name to the autoconf macros:
-@code{LT_WITH_LTDL}; @code{LTDL_CONVENIENCE};
-@code{LTDL_INSTALLABLE} (@pxref{Distributing libltdl}).  Without
-an argument, @samp{libltdl} is used as the default target directory
-name.
+your package.  Normally, the directory is extracted from the argument
+to @code{LT_CONFIG_LTDL_DIR} in @file{configure.ac}, though you can
+also specify a subdirectory name here if you are not using Autoconf
+for example.  If @command{libtoolize} can't determine the target
+directory, @samp{libltdl} is used as the default.
 
 @item --quiet
 @itemx -q
@@ -4169,34 +4168,41 @@ release of libltdl.
 }.  Having made the macros available, you must add a call to the
 @samp{LT_WITH_LTDL} macro to your package's @file{configure.ac} to
 perform the configure time checks required to build the library
-correctly.  This method has problems if you then try to link the
-package binaries with an installed libltdl, or a library that depends
-on libltdl: you will have problems with duplicate symbol definitions.
+correctly.  Unfortunately, this method has problems if you then try to
+link the package binaries with an installed libltdl, or a library that
+depends on libltdl, because of the duplicate symbol definitions.  For
+example, ultimately linking against two different versions of libltdl,
+or against both a local convenience library and an installed libltdl
+is bad.  Ensuring that only one copy of the libltdl sources are linked
+into any program is left as an exercise for the reader.
 
-@defmac LT_WITH_LTDL (@var{DIRECTORY})
-Add the @option{--with-included-ltdl} option to the @file{configure}
-script.  By default, this macro will try to build @code{libltdl} in
-a subdirectory named @file{libltdl}, which is where
-@command{libtoolize --ltdl} will place the files unless directed
-differently. @xref{Invoking libtoolize}, for how to do that.
-Otherwise, use @var{DIRECTORY} to pass the location of the
-@code{libltdl} source files.
+@defmac LT_CONFIG_LTDL_DIR (@var{DIRECTORY})
+Declare @var{DIRECTORY} to be the location of the @code{libltdl}
+source files, for @command{libtoolize --ltdl} to place
+them. @xref{Invoking libtoolize}, for more details.
 @end defmac
 
-@defmac LTDL_INSTALLABLE (@var{DIRECTORY})
+@defmac LT_WITH_LTDL
+Add the @option{--with-included-ltdl} option to the @file{configure}
+script.  This option will then allow the person who builds your
+package to choose between linking against an already installed
+@code{libltdl} (@option{--without-included-ltdl}), or the sources
+shipped with the package in the subdirectory named by
+@code{LT_CONFIG_LTDL_DIR} (@option{--with-included-ltdl}).
+@end defmac
+
+@defmac LTDL_INSTALLABLE
 If there is an installed @code{libltdl}, then set @code{LIBLTDL} to the
 link flags needed to use it, and @code{LTDLINCL} to the preprocessor
 flags needed to find the installed headers.  Otherwise, set them to
 point into an included version of @code{libltdl}, and install that.
 
-By default, this macro will pass options to the @file{libltdl}
-subdirectory @file{configure} to cause it to be built as an
-installable library.  If you named the @code{libltdl} source directory
-differently, then pass the directory name relative to
-@code{top_srcdir} as @var{DIRECTORY}.  If you're not using automake,
-you will need to define @code{top_builddir} and @code{top_srcdir} in
-your makefile so that @code{LIBLTDL} and @code{LTDLINCL} are expanded
-properly.
+By default, this macro will pass options to the @file{configure}
+script in the subdirectory named by @code{LT_CONFIG_LTDL_DIR} in order
+to cause it to be built as an installable library.  If you're not
+using automake, you will need to define @code{top_builddir} and
+@code{top_srcdir} in your makefile so that @code{LIBLTDL} and
+@code{LTDLINCL} are expanded properly.
 
 If used in conjunction with @code{LT_WITH_LTDL}, this macro must
 appear @strong{before} the call to @code{LT_WITH_LTDL}.  If you are
@@ -4204,17 +4210,18 @@ not using @code{LT_WITH_LTDL}, then you must add a call to
 @code{AC_CONFIG_SUBDIRS(@var{DIRECTORY})} to your @file{configure.ac}.
 @end defmac
 
-@defmac LTDL_CONVENIENCE (@var{DIRECTORY})
+@defmac LTDL_CONVENIENCE
 Unless you call @code{LTDL_INSTALLABLE} before hand,
 @code{LT_WITH_LTDL} calls this macro automatically, so you should only
 ever need to use it yourself if @code{LT_WITH_LTDL} doesn't do what
 you want.
 
-By default, this macro will pass options to the @file{libltdl}
-subdirectory @file{configure} to cause it to be built as a convenience
-library.  If you put the @code{libltdl} sources in a different
-subdirectory, then you should tell @code{LTDL_CONVENIENCE} where
-with the @var{DIRECTORY} parameter.
+By default, this macro will pass options to the @file{configure}
+script in the subdirectory named by @code{LT_CONFIG_LTDL_DIR} in order
+to cause it to be built as a convenience library.  If you're not
+using automake, you will need to define @code{top_builddir} and
+@code{top_srcdir} in your makefile so that @code{LIBLTDL} and
+@code{LTDLINCL} are expanded properly.
 @end defmac
 
 One advantage of the convenience library is that it is not installed,
@@ -4247,8 +4254,8 @@ switch @option{--enable-ltdl-install}.
 Whatever macro you use, it is up to you to ensure that your
 @file{configure.ac} will configure libltdl by using
 @samp{LT_WITH_LTDL}.  Both macros define the shell variables
-@var{LIBLTDL}, to the link flag that you should use to link with
-libltdl, and @var{LTDLINCL}, to the preprocessor flag that you should
+@var{LIBLTDL} to the link flag that you should use to link with
+libltdl, and @var{LTDLINCL} to the preprocessor flag that you should
 use to compile with programs that include @file{ltdl.h}.
 
 If you're using the convenience libltdl, @var{LIBLTDL} will be the
@@ -4291,6 +4298,9 @@ assume that libltdl was embedded using @samp{libtoolize --ltdl}.
 configure.ac:
 @example
 ...
+# Name the subdirectory that contains libltdl sources
+LT_CONFIG_LTDL_DIR([libltdl])
+
 ## ------------------------------------------ ##
 ## Enable building of the installable library ##
 ## ------------------------------------------ ##
