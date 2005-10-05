@@ -474,6 +474,7 @@ TESTSUITE_AT	= tests/testsuite.at \
 		  tests/standalone.at \
 		  tests/deplibs-ident.at \
 		  tests/stresstest.at \
+		  tests/subproject.at \
 		  tests/link-order.at \
 		  tests/convenience.at \
 		  tests/early-libtool.at \

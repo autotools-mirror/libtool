@@ -1,3 +1,10 @@
+2005-10-05  Gary V. Vaughan  <gary@gnu.org>
+
+	* tests/subproject.at: New tests for libltdl as a subproject with
+	its own configuration.
+	* tests/testsuite.at: Use it.
+	* Makefile.am (TESTSUITE_AT): Depend on it.
+
 2005-10-05  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* Makefile.am: Simplify.  Do not use abs_top_srcdir.

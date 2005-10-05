@@ -143,6 +143,8 @@ m4_include([old-m4-iface.at])
 m4_include([am-subdir.at])
 # standalone libltdl compilation
 m4_include([standalone.at])
+# subproject libltdl compilation
+m4_include([subproject.at])
 # C++ templates tests
 m4_include([template.at])
 # Behaviour of LT_OUTPUT
