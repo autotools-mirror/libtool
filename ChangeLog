@@ -1,3 +1,9 @@
+2005-10-05  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
+	* libtool.m4 (AC_LIBTOOL_LANG_CXX_CONFIG): Fix m4 quoting for
+	lt_simple_link_test_code.
+	Reported by Nicolas Joly <njoly@pasteur.fr>.
+
 2005-09-27  Tim Rice  <tim@multitalents.net>
 
 	* libtool.m4 (AC_DEPLIBS_CHECK_METHOD)
