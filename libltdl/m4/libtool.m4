@@ -1830,8 +1830,10 @@ _LT_DECL([], [striplib], [1])
 # -----------------------------
 # PORTME Fill in your ld.so characteristics
 m4_defun([_LT_SYS_DYNAMIC_LINKER],
-[m4_require([_LT_DECL_EGREP])dnl
+[AC_REQUIRE([AC_CANONICAL_HOST])dnl
+m4_require([_LT_DECL_EGREP])dnl
 m4_require([_LT_FILEUTILS_DEFAULTS])dnl
+m4_require([_LT_DECL_SED])dnl
 AC_MSG_CHECKING([dynamic linker characteristics])
 m4_case([$1],
 	[C], [withGCC=$GCC],
