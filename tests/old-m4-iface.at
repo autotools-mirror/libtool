@@ -67,7 +67,7 @@ int main (int argc, char **argv)
 }
 ]])
 
-test -f ltmain.sh  || LT_AT_LIBTOOLIZE([--install])
+LT_AT_LIBTOOLIZE([--install])
 
 # This is slightly bogus, since only libtool.m4 was required in aclocal.m4
 # with libtool-1.5x...
@@ -76,9 +76,9 @@ test -f aclocal.m4 \
 	"$macrodir/ltsugar.m4" "$macrodir/ltversion.m4" > aclocal.m4 \
     || exit 1
 
-test -f configure  || $AUTOCONF --force || exit 1
-test -f Makefile   || ./configure       || exit 1
-${MAKE-make}
+LT_AT_AUTOCONF([--force])
+LT_AT_CONFIGURE
+LT_AT_MAKE
 
 LT_AT_EXEC_CHECK([./old], 0, [Hello, World!])
 
@@ -183,11 +183,11 @@ foo (const char *str)
 ]])
 
 touch config.h.in  # bug in current ltdl.m4
-test -f ltmain.sh  || LT_AT_LIBTOOLIZE([--ltdl --install])
-test -f aclocal.m4 || $ACLOCAL -I libltdl/m4 || exit 1
-test -f configure  || $AUTOCONF --force      || exit 1
-test -f Makefile   || ./configure            || exit 1
-${MAKE-make}
+LT_AT_LIBTOOLIZE([--ltdl --install])
+LT_AT_ACLOCAL([-I libltdl/m4])
+LT_AT_AUTOCONF([--force])
+LT_AT_CONFIGURE
+LT_AT_MAKE
 
 LT_AT_EXEC_CHECK([./old], 0, [bar])
 

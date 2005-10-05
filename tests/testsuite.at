@@ -24,17 +24,23 @@ m4_divert_push([PREPARE_TESTS])dnl
 : ${ACLOCAL=aclocal}
 : ${AUTOHEADER=autoheader}
 : ${AUTOCONF=autoconf}
+: ${AUTOMAKE=automake}
 : ${AUTORECONF=autoreconf}
-export LIBTOOLIZE LIBTOOL ACLOCAL AUTOHEADER AUTOCONF AUTORECONF
+export LIBTOOLIZE LIBTOOL ACLOCAL AUTOHEADER AUTOCONF AUTOMAKE AUTORECONF
 macrodir="$abs_top_srcdir/libltdl/m4"
 eval `$LIBTOOL --config | grep ^EGREP=`
-eval `$LIBTOOL --config | $EGREP '^(host|host_os|build)='`
+eval `$LIBTOOL --config | $EGREP '^(host|host_os|host_alias|build|ECHO)='`
+configure_options=
+if test -n "$host_alias"; then
+  configure_options="--host $host_alias"
+fi
 m4_divert_pop([PREPARE_TESTS])dnl
+
 
 # LT_AT_LIBTOOLIZE([ARGS])
 # ------------------------
 m4_define([LT_AT_LIBTOOLIZE],
-[_lt_pkgdatadir="$abs_top_srcdir" "$LIBTOOLIZE" $1
+[$LIBTOOLIZE $1
 ])
 
 
@@ -46,14 +52,47 @@ m4_define([LT_AT_CHECK_LIBTOOLIZE],
 ])
 
 
+# LT_AT_ACLOCAL([OPTIONS])
+# --------------------------
+m4_define([LT_AT_ACLOCAL],
+[AT_CHECK([$ACLOCAL $1], [0], [ignore], [ignore])
+])
+
+
+# LT_AT_AUTOCONF([OPTIONS])
+# --------------------------
+m4_define([LT_AT_AUTOCONF],
+[AT_CHECK([$AUTOCONF $1], [0], [ignore], [ignore])
+])
+
+
+# LT_AT_AUTORECONF([OPTIONS])
+# --------------------------
+m4_define([LT_AT_AUTORECONF],
+[AT_CHECK([$AUTORECONF $1], [0], [ignore], [ignore])
+])
+
+
+# LT_AT_CONFIGURE([OPTIONS])
+# --------------------------
+m4_define([LT_AT_CONFIGURE],
+[AT_CHECK([./configure $configure_options $1], [0], [ignore], [ignore])
+])
+
+
+# LT_AT_MAKE([TGTS], [VARS])
+# --------------------------
+m4_define([LT_AT_MAKE],
+[AT_CHECK([$2 $MAKE -e $1], [0], [ignore], [ignore])
+])
+
+
 # LT_AT_BOOTSTRAP
 # ---------------
 m4_define([LT_AT_BOOTSTRAP],
-[
-test -f ./ltmain.sh || LT_AT_LIBTOOLIZE([--copy])
-test -f ./configure || _lt_pkgdatadir="$abs_top_srcdir" ${AUTORECONF} --force --verbose --install || exit 1
-test -f ./configure || exit 1
-./configure
+[LT_AT_LIBTOOLIZE([--copy])
+LT_AT_AUTORECONF([--force --verbose --install])
+LT_AT_CONFIGURE
 ])
 
 

@@ -74,7 +74,7 @@ AT_DATA(expout,
 ]])
 
 LT_AT_BOOTSTRAP
-"${MAKE-make}"
+LT_AT_MAKE
 LT_AT_EXEC_CHECK([subdir/subdemo], 0, expout)
 
 AT_CLEANUP
@@ -149,7 +149,7 @@ int libsub::sub (void) { return 27; }
 ]])
 
 LT_AT_BOOTSTRAP
-"${MAKE-make}"
+LT_AT_MAKE
 LT_AT_EXEC_CHECK([subdir/subdemo], 0)
 
 AT_CLEANUP

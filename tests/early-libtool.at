@@ -102,11 +102,11 @@ exit 0
 _EOF
 chmod a+x missing
 
-test -f ltmain.sh  || LT_AT_LIBTOOLIZE([--copy --verbose --install])
-test -f aclocal.m4 || $ACLOCAL -I m4              || exit 1
-test -f configure  || $AUTOCONF --force           || exit 1
-test -f Makefile   || ./configure                 || exit 1
-${MAKE-make}
+LT_AT_LIBTOOLIZE([--copy --verbose --install])
+LT_AT_ACLOCAL([-I m4])
+LT_AT_AUTOCONF([--force])
+LT_AT_CONFIGURE
+LT_AT_MAKE
 
 LT_AT_EXEC_CHECK([./hell], [0], [expout])
 
@@ -206,11 +206,11 @@ exit 0
 _EOF
 chmod a+x missing
 
-test -f ltmain.sh  || LT_AT_LIBTOOLIZE([--copy --verbose --install])
-test -f aclocal.m4 || $ACLOCAL -I m4              || exit 1
-test -f configure  || $AUTOCONF --force           || exit 1
-test -f Makefile   || ./configure                 || exit 1
-${MAKE-make}
+LT_AT_LIBTOOLIZE([--copy --verbose --install])
+LT_AT_ACLOCAL([-I m4])
+LT_AT_AUTOCONF([--force])
+LT_AT_CONFIGURE
+LT_AT_MAKE
 
 LT_AT_EXEC_CHECK([./hell], [0], [expout])
 

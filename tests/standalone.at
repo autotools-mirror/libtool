@@ -26,8 +26,8 @@ AT_BANNER([Standalone Libltdl.])
 AT_SETUP([compiling softlinked libltdl])
 
 LT_AT_LIBTOOLIZE([--ltdl=.])
-./configure
-${MAKE-make}
+LT_AT_CONFIGURE
+LT_AT_MAKE
 
 AT_CHECK([test -f libltdlc.la])
 
@@ -41,8 +41,8 @@ AT_CLEANUP
 AT_SETUP([compiling copied libltdl])
 
 LT_AT_LIBTOOLIZE([--copy --ltdl=.])
-./configure
-${MAKE-make}
+LT_AT_CONFIGURE
+LT_AT_MAKE
 
 AT_CHECK([test -f libltdlc.la])
 
@@ -58,8 +58,8 @@ AT_SETUP([installable libltdl])
 prefix=`pwd`/_inst
 
 LT_AT_LIBTOOLIZE([--copy --ltdl=.])
-./configure --enable-ltdl-install --prefix=$prefix
-${MAKE-make} all install
+LT_AT_CONFIGURE([--enable-ltdl-install --prefix=$prefix])
+LT_AT_MAKE([all install])
 
 AT_CHECK([test -f $prefix/lib/libltdl.la])
 AT_CHECK([test -f $prefix/include/ltdl.h])
@@ -135,7 +135,7 @@ TARGETS		= libltdl/libltdlc.la module.la ltdldemo$(EXEEXT)
 all: $(TARGETS)
 
 $(LIBTOOL) libltdl/libltdlc.la:
-	cd libltdl && ./configure && $(MAKE)
+	cd libltdl && ./configure $(CONFIGURE_OPTIONS) && $(MAKE)
 
 ltdldemo$(EXEEXT): $(LIBTOOL) module.la libltdl/libltdlc.la main.lo
 	$(LTLINK) -o ltdldemo main.lo -dlopen module.la ./libltdl/libltdlc.la
@@ -151,8 +151,9 @@ module.lo: $(LIBTOOL) module.c
 ]])
 
 LT_AT_LIBTOOLIZE([--copy --ltdl])
-${MAKE-make} CC="$CC" LIBTOOLFLAGS="$LIBTOOLFLAGS" CPPFLAGS="$CPPFLAGS" \
-        CFLAGS="$CFLAGS" LDFLAGS="$LDFLAGS"
+LT_AT_MAKE([], [CC="$CC" LIBTOOLFLAGS="$LIBTOOLFLAGS" CPPFLAGS="$CPPFLAGS" \
+        CFLAGS="$CFLAGS" LDFLAGS="$LDFLAGS" \
+	CONFIGURE_OPTIONS="$configure_options"])
 
 LT_AT_EXEC_CHECK([./ltdldemo], 0, [ignore])
 

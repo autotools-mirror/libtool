@@ -1,5 +1,16 @@
 2005-10-05  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* Makefile.am (BUILDCHECK_ENVIRONMENT)
+	(INSTALLCHECK_ENVIRONMENT): New macros.
+	(check-local, installcheck-local): Use them.
+	* tests/testsuite.at (PREPARE_TESTS): Extract host_alias, ECHO.
+	Set configure_options appropriately.
+	(LT_AT_CONFIGURE, LT_AT_AUTORECONF, LT_AT_MAKE): New macros.
+	(LT_AT_BOOTSTRAP): Use them.
+	* tests/am-subdir.at, tests/early-libtool.at,
+	tests/old-m4-iface.at, tests/standalone.at: Likewise.
+	* tests/link-order.test: Do not extract ECHO any more.
+
 	* libltdl/m4/libtool.m4 (_LT_SYS_DYNAMIC_LINKER): Require
 	AC_CANONICAL_HOST and _LT_DECL_SED.
 
