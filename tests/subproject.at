@@ -19,8 +19,8 @@
 
 AT_BANNER([Subproject Libltdl.])
 
-# _LTDL_SETUP([CONFIGURE-OPTIONS], [LIBTOOLIZE-OPTIONS])
-# ------------------------------------------------------
+# _LTDL_SETUP
+# -----------
 m4_define([_LTDL_SETUP],
 [AT_DATA([configure.ac],
 [[AC_INIT([subproject-demo], ]AT_PACKAGE_VERSION[, ]AT_PACKAGE_BUGREPORT[)
@@ -51,7 +51,9 @@ touch foo.c
 AT_SETUP([compiling softlinked libltdl])
 
 _LTDL_SETUP
-LT_AT_BOOTSTRAP
+LT_AT_LIBTOOLIZE([--ltdl])
+LT_AT_AUTORECONF([--force --verbose --install])
+LT_AT_CONFIGURE
 LT_AT_MAKE
 
 AT_CHECK([test -f sub/ltdl/libltdlc.la])
@@ -66,7 +68,9 @@ AT_CLEANUP
 AT_SETUP([compiling copied libltdl])
 
 _LTDL_SETUP
-LT_AT_BOOTSTRAP
+LT_AT_LIBTOOLIZE([--copy --ltdl])
+LT_AT_AUTORECONF([--force --verbose --install])
+LT_AT_CONFIGURE
 LT_AT_MAKE
 
 AT_CHECK([test -f sub/ltdl/libltdlc.la])
@@ -83,7 +87,7 @@ AT_SETUP([installable libltdl])
 prefix=`pwd`/_inst
 
 _LTDL_SETUP
-LT_AT_LIBTOOLIZE([--copy])
+LT_AT_LIBTOOLIZE([--copy --ltdl])
 LT_AT_AUTORECONF([--force --verbose --install])
 LT_AT_CONFIGURE([--enable-ltdl-install --prefix=$prefix])
 LT_AT_MAKE([all install])
@@ -184,7 +188,7 @@ module.lo: $(LIBTOOL) module.c
 	$(LTCOMPILE) -c module.c
 ]])
 
-LT_AT_LIBTOOLIZE([--copy])
+LT_AT_LIBTOOLIZE([--copy --ltdl=sub/ltdl])
 LT_AT_MAKE([], [CC="$CC" LIBTOOLFLAGS="$LIBTOOLFLAGS" CPPFLAGS="$CPPFLAGS"  \
      CFLAGS="$CFLAGS" LDFLAGS="$LDFLAGS" SHELL="$SHELL" MAKE="${MAKE-make}" \
      CONFIGURE_OPTIONS="$configure_options"])

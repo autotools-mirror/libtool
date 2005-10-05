@@ -1,3 +1,7 @@
+2005-10-05  Gary V. Vaughan  <gary@gnu.org>
+
+	* tests/subproject.at: Commit the right file this time.
+
 2005-10-05  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* libltdl/m4/libtool.m4 (_LT_LANG_CXX_CONFIG): Fix m4 quoting
