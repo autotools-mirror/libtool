@@ -1,3 +1,8 @@
+2005-10-05  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* Makefile.am: Simplify.  Do not use abs_top_srcdir.
+	Reported by Gary V. Vaughan <gary@gnu.org>.
+
 2005-10-05  Gary V. Vaughan  <gary@gnu.org>
 
 	* libltdl/m4/ltdl.m4 (_LT_CONFIG_LTDL_DIR): Spurious './' prefixes
