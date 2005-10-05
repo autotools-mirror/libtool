@@ -19,10 +19,14 @@ _$0($*)
 # We break this out into a separate macro, so that we can call it safely
 # internally without being caught accidentally by the sed scan in libtoolize.
 m4_defun([_LT_CONFIG_LTDL_DIR],
-[m4_pushdef([_ARG_DIR], m4_bpatsubst([$1], [/*$]))
+[dnl remove trailing slashes
+m4_pushdef([_ARG_DIR], m4_bpatsubst([$1], [/*$]))
 m4_case(_LTDL_DIR,
-	[], [m4_define([_LTDL_DIR], _ARG_DIR)
-	    _LT_SHELL_INIT([lt_ltdl_dir=']_ARG_DIR['])],
+	[], [dnl only set lt_ltdl_dir if _ARG_DIR is not simply `.'
+	     m4_if(_ARG_DIR, [.],
+	             [],
+		 [m4_define([_LTDL_DIR], _ARG_DIR)
+	          _LT_SHELL_INIT([lt_ltdl_dir=']_ARG_DIR['])])],
     [m4_if(_ARG_DIR, _LTDL_DIR,
 	    [],
 	[m4_fatal([multiple libltdl directories: `]_LTDL_DIR[', `]_ARG_DIR['])])])
@@ -57,8 +61,8 @@ case $enable_ltdl_convenience in
   "") enable_ltdl_convenience=yes
       ac_configure_args="$ac_configure_args --enable-ltdl-convenience" ;;
   esac
-LIBLTDL='${top_builddir}/'"$lt_ltdl_dir/libltdlc.la"
-LTDLINCL='-I${top_srcdir}/'"$lt_ltdl_dir"
+LIBLTDL='${top_builddir}'"${lt_ltdl_dir+/$lt_ltdl_dir}/libltdlc.la"
+LTDLINCL='-I${top_srcdir}'"${lt_ltdl_dir+/$lt_ltdl_dir}"
 
 AC_SUBST([LIBLTDL])
 AC_SUBST([LTDLINCL])
@@ -108,8 +112,8 @@ AC_CHECK_LIB(ltdl, lt_dlinit,
   ])
 if test x"$enable_ltdl_install" = x"yes"; then
   ac_configure_args="$ac_configure_args --enable-ltdl-install"
-  LIBLTDL='${top_builddir}/'"$lt_ltdl_dir/libltdl.la"
-  LTDLINCL='-I${top_srcdir}/'"$lt_ltdl_dir"
+  LIBLTDL='${top_builddir}'"${lt_ltdl_dir+/$lt_ltdl_dir}/libltdl.la"
+  LTDLINCL='-I${top_srcdir}'"${lt_ltdl_dir+/$lt_ltdl_dir}"
 else
   ac_configure_args="$ac_configure_args --enable-ltdl-install=no"
   LIBLTDL="-lltdl"

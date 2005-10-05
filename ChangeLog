@@ -1,3 +1,9 @@
+2005-10-05  Gary V. Vaughan  <gary@gnu.org>
+
+	* libltdl/m4/ltdl.m4 (_LT_CONFIG_LTDL_DIR): Spurious './' prefixes
+	upset BSD pmake, don't set lt_ltdl_dir in this case.
+	(LTDL_CONVENIENCE, LTDL_INSTALLABLE): Adjust.
+
 2005-10-05  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* Makefile.am (BUILDCHECK_ENVIRONMENT)
