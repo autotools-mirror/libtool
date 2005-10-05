@@ -4954,7 +4954,7 @@ if test "$_lt_caught_CXX_error" != yes; then
   lt_simple_compile_test_code="int some_variable = 0;\n"
 
   # Code to be used in simple link tests
-  lt_simple_link_test_code='int main(int, char *[]) { return(0); }\n'
+  lt_simple_link_test_code='int main(int, char *[[]]) { return(0); }\n'
 
   # ltmain only uses $CC for tagged configurations so make sure $CC is set.
   _LT_TAG_COMPILER
