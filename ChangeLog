@@ -1,3 +1,15 @@
+2005-10-07  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* configure.ac (abs_top_builddir, abs_top_srcdir): always
+	substitute.
+	* Makefile.am (BUILDCHECK_ENVIRONMENT)
+	(INSTALLCHECK_ENVIRONMENT): New macros.  Set _lt_pkgdatadir,
+	LIBTOOL, LIBTOOLIZE accordingly, by using above, and
+	program_transform_name.
+	* tests/testsuite.at (TESTS_PREPARE): Do not set them anymore.
+	Set $unset.
+	(LT_AT_MAKE): Use to unset LIBTOOL and LIBTOOLIZE.
+
 2005-10-05  Gary V. Vaughan  <gary@gnu.org>
 
 	* tests/subproject.at: Commit the right file this time.

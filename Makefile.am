@@ -493,6 +493,14 @@ TESTS_ENVIRONMENT = MAKE="$(MAKE)" CC="$(CC)" CFLAGS="$(CFLAGS)" \
 	FC="$(FC)" FCFLAGS="$(FCFLAGS)" \
 	GCJ="$(GCJ)" GCJFLAGS="$(GCJFLAGS)"
 
+BUILDCHECK_ENVIRONMENT = _lt_pkgdatadir="$(abs_top_srcdir)" \
+	LIBTOOLIZE="$(abs_top_builddir)/libtoolize" \
+	LIBTOOL="$(abs_top_builddir)/libtool"
+
+INSTALLCHECK_ENVIRONMENT = \
+	LIBTOOLIZE="$(bindir)/`echo libtoolize | sed '$(program_transform_name)'`" \
+	LIBTOOL="$(bindir)/`echo libtool | sed '$(program_transform_name)'`"
+
 check-recursive: $(srcdir)/$(TESTSUITE)
 
 # Use `$(srcdir)' for the benefit of non-GNU makes: this is
@@ -521,12 +529,12 @@ CD_TESTDIR	= abs_srcdir=`$(lt__cd) $(srcdir) && pwd`; cd tests
 # Hook the test suite into the check rule
 check-local: tests/atconfig $(srcdir)/$(TESTSUITE)
 	$(CD_TESTDIR); \
-	$(TESTS_ENVIRONMENT) _lt_pkgdatadir="$$abs_srcdir" $(SHELL) $$abs_srcdir/$(TESTSUITE) $(TESTSUITE_FLAGS)
+	$(TESTS_ENVIRONMENT) $(BUILDCHECK_ENVIRONMENT) $(SHELL) $$abs_srcdir/$(TESTSUITE) $(TESTSUITE_FLAGS)
 
 # Run the test suite on the *installed* tree.
 installcheck-local:
 	$(CD_TESTDIR); \
-	$(TESTS_ENVIRONMENT) $(SHELL) $$abs_srcdir/$(TESTSUITE) $(TESTSUITE_FLAGS) AUTOTEST_PATH=$(exec_prefix)/bin
+	$(TESTS_ENVIRONMENT) $(INSTALLCHECK_ENVIRONMENT) $(SHELL) $$abs_srcdir/$(TESTSUITE) $(TESTSUITE_FLAGS) AUTOTEST_PATH=$(exec_prefix)/bin
 
 # We need to remove any file droppings left behind by testsuite
 clean-local: clean-local-legacy

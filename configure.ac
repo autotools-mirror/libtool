@@ -134,6 +134,9 @@ AC_MSG_RESULT([${sublibobjs_supported-no}])
 ## Libtool specific configuration. ##
 ## ------------------------------- ##
 
+dnl automake-1.9 does not substitute these two by default
+AC_SUBST([abs_top_srcdir])
+AC_SUBST([abs_top_builddir])
 AC_SUBST([aclocaldir], ["\${datadir}/aclocal"])
 AC_SUBST([pkgdatadir], ["\${datadir}/$PACKAGE"])
 
