@@ -2940,6 +2940,18 @@ case $host_os in
       fi
     fi
     ;;
+
+  beos*)
+    if $LD --help 2>&1 | grep ': supported targets:.* elf' > /dev/null; then
+      _LT_AC_TAGVAR(allow_undefined_flag, $1)=unsupported
+      # Joseph Beckenbach <jrb3@best.com> says some releases of gcc
+      # support --undefined.  This deserves some investigation.  FIXME
+      _LT_AC_TAGVAR(archive_cmds, $1)='$CC -nostart $libobjs $deplibs $compiler_flags ${wl}-soname $wl$soname -o $lib'
+    else
+      _LT_AC_TAGVAR(ld_shlibs, $1)=no
+    fi
+    ;;
+
   chorus*)
     case $cc_basename in
       *)
@@ -2948,7 +2960,6 @@ case $host_os in
 	;;
     esac
     ;;
-
 
   cygwin* | mingw* | pw32*)
     # _LT_AC_TAGVAR(hardcode_libdir_flag_spec, $1) is actually meaningless,

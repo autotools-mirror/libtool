@@ -1,3 +1,8 @@
+2005-10-09  Christian Biesinger  <cbiesinger@web.de>
+
+	* libtool.m4 (AC_LIBTOOL_LANG_CXX_CONFIG) [ beos ]:
+	Initial shared library support for C++.
+
 2005-10-05  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
 	* libtool.m4 (AC_LIBTOOL_LANG_CXX_CONFIG): Fix m4 quoting for
