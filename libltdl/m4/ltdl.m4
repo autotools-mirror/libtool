@@ -272,7 +272,7 @@ m4_defun([_LT_ENABLE_INSTALL],
 
 AM_CONDITIONAL(INSTALL_LTDL, test x"${enable_ltdl_install-no}" != xno)
 AM_CONDITIONAL(CONVENIENCE_LTDL, test x"${enable_ltdl_convenience-no}" != xno)
-])])# _LT_ENABLE_INSTALL
+])# _LT_ENABLE_INSTALL
 
 
 # LT_SYS_DLOPEN_DEPLIBS

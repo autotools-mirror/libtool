@@ -1,5 +1,10 @@
 2005-10-10  Gary V. Vaughan  <gary@gnu.org>
 
+	* libltdl/m4/ltdl.m4 (_LT_ENABLE_INSTALL): Remove bogus extra
+	closing brackets.
+
+2005-10-10  Gary V. Vaughan  <gary@gnu.org>
+
 	* libltdl/m4/ltdl.m4 (LTDL_CONVENIENCE, LTDL_INSTALLABLE): Remove
 	AC_SUBST of LIBLTDL, LTDLINCL, and all mention of INCLTDL.
 	(LT_WITH_LTDL): Due to order constraints between LTDL_CONVENIENCE,
