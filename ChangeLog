@@ -1,3 +1,8 @@
+2005-10-10  Gary V. Vaughan  <gary@gnu.org>
+
+	* ltdl.m4 (AC_LTDL_ENABLE_INSTALL): Remove bogus extra
+	closing brackets.
+
 2005-10-09  Christian Biesinger  <cbiesinger@web.de>
 
 	* libtool.m4 (AC_LIBTOOL_LANG_CXX_CONFIG) [ beos ]:

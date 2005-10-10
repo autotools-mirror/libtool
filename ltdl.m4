@@ -99,7 +99,7 @@ AC_DEFUN([AC_LTDL_ENABLE_INSTALL],
 
 AM_CONDITIONAL(INSTALL_LTDL, test x"${enable_ltdl_install-no}" != xno)
 AM_CONDITIONAL(CONVENIENCE_LTDL, test x"${enable_ltdl_convenience-no}" != xno)
-])])# AC_LTDL_ENABLE_INSTALL
+])# AC_LTDL_ENABLE_INSTALL
 
 
 # AC_LTDL_SYS_DLOPEN_DEPLIBS
