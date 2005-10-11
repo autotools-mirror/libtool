@@ -23,7 +23,7 @@
 
 AT_BANNER([Libtool stress test.])
 AT_SETUP([Link option thorough search test])
-eval `$LIBTOOL --config | $EGREP '^(CC|objdir)='`
+eval `$LIBTOOL --config | $EGREP '^(CC|objdir|allow_undefined_flag)='`
 
 mkdir sub sub2 sub3 2>/dev/null
 
@@ -170,11 +170,9 @@ AT_CHECK([$LIBTOOL --mode=compile $CC $CFLAGS -c b.c -o sub/b.lo],[0],[ignore],[
 AT_CHECK([$LIBTOOL --mode=compile $CC $CFLAGS -c main.c],[0],[ignore],[ignore])
 AT_CHECK([$LIBTOOL --mode=compile $CC $CFLAGS -c dlself.c -o sub3/dlself.lo],[0],[ignore],[ignore])
 
-case $host_os in
-  aix3* | beos* | cygwin* | mingw* | os2* | pw32*)
-    undef_opts=-no-undefined ;;
-  *)
-    undef_opts='"" -no-undefined' ;;
+case $allow_undefined_flag in
+  unsupported) undef_opts=-no-undefined ;;
+  *)           undef_opts='"" -no-undefined' ;;
 esac
 
 for l1 in $undef_opts

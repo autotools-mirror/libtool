@@ -1,3 +1,8 @@
+2005-10-11  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* tests/stresstest.at: Use `allow_undefined_flag' instead of
+	host_os setting.
+
 2005-10-10  Gary V. Vaughan  <gary@gnu.org>
 
 	* libltdl/m4/ltdl.m4 (_LT_ENABLE_INSTALL): Remove bogus extra
