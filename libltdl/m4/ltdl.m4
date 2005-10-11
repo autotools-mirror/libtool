@@ -185,6 +185,7 @@ if test "x$with_included_ltdl" = xno; then
     [Define this if a modern libltdl is already installed])
   LIBLTDL=-lltdl
   LTDLINCL=
+  INCLTDL=
 fi
 
 # Report our decision...

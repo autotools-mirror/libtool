@@ -1,5 +1,7 @@
 2005-10-11  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* libltdl/m4/ltdl.m4 (LT_WITH_LTDL): Also set INCLTDL.
+
 	* libltdl/m4/ltdl.m4 (LTDL_CONVENIENCE, LTDL_INSTALLABLE)
 	(LT_WITH_LTDL): Revert Gary's 2005-10-10 patch.
 
