@@ -69,6 +69,13 @@ m4_define([LT_AT_AUTOCONF],
 ])
 
 
+# LT_AT_AUTOMAKE([OPTIONS])
+# --------------------------
+m4_define([LT_AT_AUTOMAKE],
+[AT_CHECK([$AUTOMAKE $1], [0], [ignore], [ignore])
+])
+
+
 # LT_AT_AUTORECONF([OPTIONS])
 # --------------------------
 m4_define([LT_AT_AUTORECONF],
