@@ -63,6 +63,13 @@ case $enable_ltdl_convenience in
   esac
 LIBLTDL='${top_builddir}'"${lt_ltdl_dir+/$lt_ltdl_dir}/libltdlc.la"
 LTDLINCL='-I${top_srcdir}'"${lt_ltdl_dir+/$lt_ltdl_dir}"
+
+AC_SUBST([LIBLTDL])
+AC_SUBST([LTDLINCL])
+
+# For backwards non-gettext consistent compatibility...
+INCLTDL="$LTDLINCL"
+AC_SUBST([INCLTDL])
 ])# LTDL_CONVENIENCE
 
 # AC_LIBLTDL_CONVENIENCE accepted a directory argument in older libtools,
@@ -112,6 +119,13 @@ else
   LIBLTDL="-lltdl"
   LTDLINCL=
 fi
+
+AC_SUBST([LIBLTDL])
+AC_SUBST([LTDLINCL])
+
+# For backwards non-gettext consistent compatibility...
+INCLTDL="$LTDLINCL"
+AC_SUBST([INCLTDL])
 ])# LTDL_INSTALLABLE
 
 # AC_LIBLTDL_INSTALLABLE accepted a directory argument in older libtools,
@@ -184,11 +198,6 @@ AC_PROVIDE_IFELSE([LTDL_INIT],
 	[],
     [LTDL_INIT
     AC_DEFUN([LTDL_INIT], [])])
-
-AC_SUBST([LIBLTDL])
-AC_SUBST([LTDLINCL])
-dnl For backwards non-gettext consistent compatibility...
-AC_SUBST([INCLTDL], ["$LTDLINCL"])
 ])# LT_WITH_LTDL
 
 # Old name:
