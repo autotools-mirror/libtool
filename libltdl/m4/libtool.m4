@@ -2927,7 +2927,7 @@ _LT_DECL([], [NM], [1], [A BSD- or MS-compatible name lister])dnl
 
 AC_CACHE_CHECK([the name lister ($NM) interface], [lt_cv_nm_interface],
   [lt_cv_nm_interface="BSD nm"
-  printf "int some_variable = 0;" > conftest.$ac_ext
+  echo "int some_variable = 0;" > conftest.$ac_ext
   (eval echo "\"\$as_me:__oline__: $ac_compile\"" >&AS_MESSAGE_LOG_FD)
   (eval "$ac_compile" 2>conftest.err)
   cat conftest.err >&AS_MESSAGE_LOG_FD
