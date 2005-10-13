@@ -473,8 +473,8 @@ find_module (lt_dlhandle *handle, const char *dir, const char *libdir,
 
       /* maybe it was moved to another directory */
       {
-	  if (tryall_dlopen_module (handle,
-				    (const char *) 0, dir, dlname) == 0)
+	  if (dir && (tryall_dlopen_module (handle,
+				    (const char *) 0, dir, dlname) == 0))
 	    return 0;
       }
     }
@@ -774,8 +774,6 @@ load_deplibs (lt_dlhandle handle, char *deplibs)
 	}
     }
 
-  /* restore the old search path */
-  MEMREASSIGN (user_search_path, save_search_path);
 
   if (!depcount)
     {
@@ -864,6 +862,10 @@ load_deplibs (lt_dlhandle handle, char *deplibs)
 
  cleanup:
   FREE (names);
+  /* restore the old search path */
+  if (save_search_path) {
+    MEMREASSIGN (user_search_path, save_search_path);
+  }
 #endif
 
   return errors;

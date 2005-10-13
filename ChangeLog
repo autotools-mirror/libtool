@@ -1,3 +1,8 @@
+2005-10-13  Peter O'Gorman  <peter@pogma.com>
+
+	* libltdl/ltdl.c (find_module): Check that dir is set.
+	(load_deplibs): Don't free the user search paths too early.
+
 2005-10-11  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* tests/testsuite.at (LT_AT_AUTOMAKE): New macro.
