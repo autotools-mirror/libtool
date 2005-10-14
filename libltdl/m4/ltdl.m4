@@ -158,7 +158,6 @@ AC_ARG_WITH([included_ltdl],
 if test "x$with_included_ltdl" != xyes; then
   # We are not being forced to use the included libltdl sources, so
   # decide whether there is a useful installed version we can use.
-  AC_MSG_CHECKING([for lt_dlinterface_register in ltdl.h])
   lt_dlinterface_register_found=no
   AC_CHECK_HEADER([ltdl.h],
       [AC_CHECK_LIB([ltdl], [lt_dlinterface_register],
@@ -168,6 +167,7 @@ if test "x$with_included_ltdl" != xyes; then
       [],
       [AC_INCLUDES_DEFAULT]
   )
+  AC_MSG_CHECKING([for lt_dlinterface_register in ltdl.h])
   test "x$with_included_ltdl" = xno && lt_dlinterface_register_found=yes
   AC_MSG_RESULT([$lt_dlinterface_register_found])
 fi

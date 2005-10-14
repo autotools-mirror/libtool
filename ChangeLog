@@ -1,5 +1,10 @@
 2005-10-14  Gary V. Vaughan  <gary@gnu.org>
 
+	* libltdl/m4/ltdl.m4 (LT_WITH_LTDL): Don't nest AC_MSG_CHECKING/
+	AC_MSG_RESULT pairs.
+
+2005-10-14  Gary V. Vaughan  <gary@gnu.org>
+
 	* tests/subproject.at: Move 'touch config.h.in' invocation.
 
 	* tests/subproject.at (_LTDL_SETUP): Use pushdef/popdef to
