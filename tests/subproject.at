@@ -51,11 +51,12 @@ echo 'static int dummy = 0;' > foo.c
 AT_SETUP([compiling softlinked libltdl])
 
 _LTDL_SETUP
-touch config.h.in
+
 LT_AT_LIBTOOLIZE([--ltdl])
 LT_AT_ACLOCAL([-I sub/ltdl/m4])
 LT_AT_AUTOMAKE([--add-missing --copy])
 LT_AT_AUTOCONF
+
 LT_AT_CONFIGURE
 LT_AT_MAKE
 
@@ -71,11 +72,12 @@ AT_CLEANUP
 AT_SETUP([compiling copied libltdl])
 
 _LTDL_SETUP
-touch config.h.in
+
 LT_AT_LIBTOOLIZE([--copy --ltdl])
 LT_AT_ACLOCAL([-I sub/ltdl/m4])
 LT_AT_AUTOMAKE([--add-missing --copy])
 LT_AT_AUTOCONF
+
 LT_AT_CONFIGURE
 LT_AT_MAKE
 
