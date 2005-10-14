@@ -21,7 +21,7 @@ AT_BANNER([Subproject Libltdl.])
 
 # _LTDL_SETUP
 # -----------
-m4_define([_LTDL_SETUP],
+m4_pushdef([_LTDL_SETUP],
 [AT_DATA([configure.ac],
 [[AC_INIT([subproject-demo], ]AT_PACKAGE_VERSION[, ]AT_PACKAGE_BUGREPORT[)
 LT_CONFIG_LTDL_DIR([sub/ltdl])
@@ -41,7 +41,7 @@ lib_LTLIBRARIES = foo.la
 foo_la_LDFLAGS = -module -avoid-version
 ]])
 
-touch foo.c
+echo 'static int dummy = 0;' > foo.c
 ])# _LTDL_SETUP
 
 ## ------------------------ ##
@@ -205,3 +205,6 @@ LT_AT_MAKE([], [CC="$CC" LIBTOOLFLAGS="$LIBTOOLFLAGS" CPPFLAGS="$CPPFLAGS"  \
 LT_AT_EXEC_CHECK([./ltdldemo], 0, [ignore])
 
 AT_CLEANUP
+
+dnl Be careful not to let the definition leak into other tests
+m4_popdef([_LTDL_SETUP])
