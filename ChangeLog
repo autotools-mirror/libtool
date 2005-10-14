@@ -1,7 +1,6 @@
 2005-10-14  Gary V. Vaughan  <gary@gnu.org>
 
-	* tests/subproject.at: Removed 'touch config.h.in' workaround for
-	bug now fixed.
+	* tests/subproject.at: Move 'touch config.h.in' invocation.
 
 	* tests/subproject.at (_LTDL_SETUP): Use pushdef/popdef to
 	simulate file-local scope.  Empty source file compilation is not
