@@ -1,3 +1,9 @@
+2005-10-17  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
+	* libltdl/config/ltmain.m4sh [darwin]: Don't check for "bundle"
+	in file path.
+	Reported by Christoph Egger <Christoph_Egger@gmx.de>.
+
 2005-10-14  Gary V. Vaughan  <gary@gnu.org>
 
 	* libltdl/m4/ltdl.m4 (LT_WITH_LTDL): Don't nest AC_MSG_CHECKING/
