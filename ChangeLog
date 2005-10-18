@@ -1,3 +1,10 @@
+2005-10-17  Albert Chin-A-Young  <china@thewrittenword.com>
+
+	* ltmain.in (link mode): When accepting -64, -mips[0-9], et. al.
+	compiler flags, don't set compiler_flags only for GCC as the
+	vendor compiler also requires this flag. Sync with HEAD.
+	Reported by Donald Anderson <dda@ddanderson.com>.
+
 2005-10-17  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
 	* ltmain.in [darwin]: Don't check for "bundle" in file path. 
