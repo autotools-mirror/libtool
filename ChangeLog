@@ -1,5 +1,11 @@
 2005-10-26  Gary V. Vaughan  <gary@gnu.org>
 
+	* libtoolize.m4sh: Move the consistency checks...
+	(func_check_macros): ...into here.  Also suggest LT_WITH_LTDL if
+	appropriate.
+
+2005-10-26  Gary V. Vaughan  <gary@gnu.org>
+
 	* libtoolize.m4sh: Copying just libtool.m4 for hand maintained
 	aclocal.m4 doesn't work.  List all required files in that case,
 	using the files from installed libltdl if available.  Also, list
