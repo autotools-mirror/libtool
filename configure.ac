@@ -126,7 +126,7 @@ AC_SUBST([CONFIG_STATUS_DEPENDENCIES], ['$(top_srcdir)/stamp-vcl'])
 dnl automake-1.9.x or autoconf-2.59 don't support subdir libobjs
 AC_MSG_CHECKING([whether subdir libobjs are useable])
 test -f $srcdir/argz.c || sublibobjs_supported=yes
-AM_CONDITIONAL([SUBDIR_LIBOBJS], test x"${sublibobjs_supported-no}" != xno)
+AM_CONDITIONAL([LTDL_SUBDIR_LIBOBJS], test x"${sublibobjs_supported-no}" != xno)
 AC_MSG_RESULT([${sublibobjs_supported-no}])
 
 

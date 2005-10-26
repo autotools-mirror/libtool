@@ -40,7 +40,10 @@ m4_divert_push([SCRIPT])#! /bin/sh
 # -f, --force           replace existing files
 # -i, --install         copy missing auxiliary files
 #     --ltdl[=DIR]      install libltdl sources [default: libltdl]
+#     --nonrecursive	prepare ltdl for non-recursive make
 # -q, --quiet           work silently
+#     --recursive	prepare ltdl for recursive make
+#     --subproject      prepare ltdl to configure and build independently
 # -v, --verbose         verbosely report processing
 #     --version         print version information and exit
 # -h, --help            print short or long help message
@@ -77,6 +80,11 @@ opt_ltdl=false
 seen_autoconf=false
 seen_libtool=false
 seen_ltdl=false
+
+# ltdl can be installed to be self-contained (subproject, the default);
+# or to be configured by a parent project, either with a recursive or
+# nonrecursive automake driven make:
+ltdl_mode=
 
 # Locations for important files:
 prefix=@prefix@
@@ -135,9 +143,17 @@ configure_ac=configure.in
 			fi
 			;;
 
+      --nonrecursive|--non-recursive)
+      			ltdl_mode=nonrecursive
+			;;
+
       --quiet|--automake|-q) # --automake is for 1.5 compatibility
 			opt_quiet=:
 			;;
+
+      --recursive)	ltdl_mode=recursive ;;
+
+      --subproject)	ltdl_mode=subproject ;;
 
       --verbose|-v)	opt_verbose=: ;;
 
@@ -386,7 +402,9 @@ func_scan_files ()
         };
 	/_LT_CONFIG_LTDL_DIR(/d;
 	/LT_CONFIG_LTDL_DIR(/ {
-	    s,^.*LT_CONFIG_LTDL_DIR([[[	 ]*\([^])]]*\).*$,ac_ltdldir=\1,; p;
+	    s/^.*LT_CONFIG_LTDL_DIR([[[	 ]*\([^]),]*\)[^,]]*/ac_ltdldir=\1%%/;
+	    s/%%[[[, 	]*\([^])]]*\).*$/ ac_ltdl_mode=\1%%/;
+	    s/%%.*$//; p;
 	};
 	/A[[CM]]_PROG_LIBTOOL/ { s,^.*$,seen_libtool=:,; p; };
 	/LT_INIT/	     { s,^.*$,seen_libtool=:,; p; };
@@ -404,9 +422,9 @@ func_scan_files ()
 
     ac_ltdldir=`$ECHO "X$ac_ltdldir" | $Xsed -e 's,/*$,,'`
 
-    # If $configure_ac contains AC_CONFIG_AUX_DIR, check that it was
-    # not given in terms of a shell variable!
-    case "$ac_ltdldir" in
+    # If $configure_ac contains AC_CONFIG_LTDL_DIR, check that its
+    # arguments were not given in terms of a shell variable!
+    case "$ac_ltdldir$ac_ltdl_mode" in
       *\$*)
         func_fatal_error "can not handle variables in LT_CONFIG_LTDL_DIR"
         ;;
@@ -423,6 +441,26 @@ func_scan_files ()
       *)
         test x"$ac_ltdldir" = x"$ltdldir" || \
 	    func_fatal_error "--ltdl='$ltdldir' does not match LT_CONFIG_LTDL_DIR($ac_ltdldir)"
+	;;
+    esac
+
+
+    # ------------------- #
+    # Validate ltdl_mode. #
+    # ------------------- #
+
+    test -n "$ac_ltdl_mode" && seen_ltdl=:
+
+    # If neither --ltdl nor LT_CONFIG_LTDL_DIR are specified, default to
+    # `subproject'.  If both are specified, they must be the same.  Otherwise,
+    # take the one that is given!
+    case x$ac_ltdl_mode,x$ltdl_mode in
+      x,x)	ltdl_mode=subproject	;;
+      x*,x)	ltdl_mode=$ac_ltdl_mode	;;
+      x,x*)	ltdl_mode=$ltdl_mode	;;
+      *)
+        test x"$ac_ltdl_mode" = x"$ltdl_mode" || \
+	    func_fatal_error "--$ltdl_mode does not match LT_CONFIG_LTDL_DIR($ac_ltdldir, $ac_ltdl_mode)"
 	;;
     esac
 
@@ -987,7 +1025,19 @@ func_nonemptydir_p ()
   func_nonemptydir_p pkgdatadir
   func_nonemptydir_p aclocaldir
 
-  func_massage_pkgltdl_files
+  func_scan_files
+
+  # These files are handled specially, depending on ltdl_mode:
+  case $ltdl_mode in
+    *recursive)
+      glob_exclude_pkgltdl_files='Makefile.am|Makefile.in*|aclocal.m4|config*'
+      ;;
+    *)
+      glob_exclude_pkgltdl_files='Makefile.inc'
+      ;;
+  esac
+
+  func_massage_pkgltdl_files "$glob_exclude_pkgltdl_files"
   func_massage_pkgconfig_files
 
   # libtool.m4 and ltdl.m4 are handled specially below
@@ -995,11 +1045,16 @@ func_nonemptydir_p ()
 
   glob_exclude_pkgaux_files='config.guess|config.sub|install-sh|ltmain.sh'
 
-  func_scan_files
-
   # Copy all the files from installed libltdl to this project, if the
   # user specified `--ltdl'.
   if $opt_ltdl; then
+
+    # For recursive ltdl modes, copy a suitable Makefile.{am,inc}:
+    case $ltdl_mode in
+      recursive)    pkgltdl_files="Makefile.am:$pkgltdl_files"  ;;
+      nonrecursive) pkgltdl_files="Makefile.inc:$pkgltdl_files" ;;
+    esac
+
     func_copy_some_files "$pkgltdl_files" "$pkgltdldir/libltdl" "$ltdldir"
 
     # Unless we share CONFIG_MACRO_DIR with our parent project,

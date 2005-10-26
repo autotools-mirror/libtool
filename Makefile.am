@@ -24,7 +24,11 @@
 
 ACLOCAL_AMFLAGS  	= -I libltdl/m4
 
+AM_CPPFLAGS		=
+AM_LDFLAGS		=
+
 DIST_SUBDIRS		= .
+EXTRA_DIST		=
 
 BUILT_SOURCES		= libtool
 
@@ -32,15 +36,9 @@ CLEANFILES		=
 MOSTLYCLEANFILES	=
 DISTCLEANFILES		=
 
-EXTRA_DIST		= libltdl/COPYING.LIB \
-			  libltdl/Makefile.am \
-			  libltdl/Makefile.in \
-			  libltdl/README \
-			  libltdl/config-h.in \
-			  libltdl/configure \
-			  libltdl/configure.ac \
-			  libltdl/aclocal.m4 \
-			  libltdl/m4/lt~obsolete.m4
+noinst_LTLIBRARIES	=
+lib_LTLIBRARIES		=
+EXTRA_LTLIBRARIES	=
 
 auxdir			= libltdl/config
 m4dir			= libltdl/m4
@@ -196,19 +194,24 @@ $(srcdir)/$(auxdir)/ltmain.sh: $(sh_files) $(auxdir)/ltmain.m4sh configure.ac \
 	chmod a-w $(auxdir)/ltmain.tmp; \
 	mv -f $(auxdir)/ltmain.tmp $(auxdir)/ltmain.sh
 
-$(srcdir)/libltdl/Makefile.am: Makefile.am
+$(srcdir)/libltdl/Makefile.am: $(srcdir)/libltdl/Makefile.inc
 	cd $(srcdir); \
-	in=Makefile.am; out=libltdl/Makefile.am; \
+	in=libltdl/Makefile.inc; out=libltdl/Makefile.am; \
 	rm -f $$out; \
 	$(SED) -n '/^.. Makefile.am -- /,/^.. Boston, MA/p' $$in > $$out; \
 	{ echo 'ACLOCAL_AMFLAGS = -I m4'; \
 	  echo 'AUTOMAKE_OPTIONS = foreign'; \
+	  echo 'AM_CPPFLAGS ='; \
+	  echo 'AM_LDFLAGS ='; \
 	  echo 'BUILT_SOURCES ='; \
+	  echo 'noinst_LTLIBRARIES ='; \
+	  echo 'lib_LTLIBRARIES ='; \
+	  echo 'EXTRA_LTLIBRARIES ='; \
 	  echo 'EXTRA_DIST ='; \
 	  echo 'CLEANFILES ='; \
 	  echo 'MOSTLYCLEANFILES ='; \
 	} >> $$out; \
-	$(SED) -n '/^. %%% BEGIN /,/^. %%% END / \
+	$(SED) -n '/^.. DO NOT REMOVE THIS LINE -- /,$$ \
 	    { s,libltdl_,,; s,libltdl/,,; s,: libltdl/,: ,; \
 	      s,\$$(libltdl_,$$(,; p; }' $$in >> $$out;
 	chmod a-w $(srcdir)/libltdl/Makefile.am
@@ -224,121 +227,9 @@ all-local: $(srcdir)/libltdl/Makefile.in
 ## Libltdl. ##
 ## -------- ##
 
-# %%% BEGIN libltdl/Makefile.am
+include libltdl/Makefile.inc
 
-DEFS			= -DLTDL -DHAVE_CONFIG_H -DLT_CONFIG_H='<$(LT_CONFIG_H)>'
-
-# -I$(srcdir) is needed for user that built libltdl with a sub-Automake
-# (not as a sub-package!) using 'nostdinc':
-AM_CPPFLAGS		= -I. -I$(srcdir) -Ilibltdl -I$(srcdir)/libltdl \
-			  -I$(srcdir)/libltdl/libltdl
-AM_LDFLAGS		= -no-undefined
-VERSION_INFO		= -version-info 7:0:0
-
-noinst_LTLIBRARIES	= $(LT_DLLOADERS)
-
-if INSTALL_LTDL
-ltdlincludedir		= $(includedir)/libltdl
-ltdlinclude_HEADERS	= libltdl/libltdl/lt_system.h \
-			  libltdl/libltdl/lt_error.h \
-			  libltdl/libltdl/lt_dlloader.h
-include_HEADERS		= libltdl/ltdl.h
-lib_LTLIBRARIES		= libltdl/libltdl.la
-endif
-
-if CONVENIENCE_LTDL
-noinst_LTLIBRARIES     += libltdl/libltdlc.la
-endif
-
-libltdl_libltdl_la_SOURCES = libltdl/libltdl/lt__alloc.h \
-			  libltdl/libltdl/lt__dirent.h \
-			  libltdl/libltdl/lt__glibc.h \
-			  libltdl/libltdl/lt__private.h \
-			  libltdl/libltdl/lt__strl.h \
-			  libltdl/libltdl/lt_dlloader.h \
-			  libltdl/libltdl/lt_error.h \
-	                  libltdl/libltdl/lt_system.h \
-			  libltdl/libltdl/slist.h \
-			  libltdl/loaders/preopen.c \
-			  libltdl/lt__alloc.c \
-			  libltdl/lt_dlloader.c \
-			  libltdl/lt_error.c \
-			  libltdl/ltdl.c \
-			  libltdl/ltdl.h \
-			  libltdl/slist.c
-
-libltdl_libltdl_la_CPPFLAGS	= -DLTDLOPEN=$(LTDLOPEN) $(AM_CPPFLAGS)
-libltdl_libltdl_la_LDFLAGS	= $(AM_LDFLAGS) $(VERSION_INFO) $(LT_DLPREOPEN)
-libltdl_libltdl_la_LIBADD	= $(LTLIBOBJS)
-libltdl_libltdl_la_DEPENDENCIES	= $(LT_DLLOADERS) $(LTLIBOBJS)
-
-libltdl_libltdlc_la_SOURCES	= $(libltdl_libltdl_la_SOURCES)
-libltdl_libltdlc_la_CPPFLAGS	= -DLTDLOPEN=$(LTDLOPEN)c $(AM_CPPFLAGS)
-libltdl_libltdlc_la_LDFLAGS	= $(AM_LDFLAGS) $(LT_DLPREOPEN)
-libltdl_libltdlc_la_LIBADD	= $(libltdl_libltdl_la_LIBADD)
-libltdl_libltdlc_la_DEPENDENCIES= $(libltdl_libltdl_la_DEPENDENCIES)
-
-## The loaders are preopened by libltdl, itself always built from
-## pic-objects (either as a shared library, or a convenience library),
-## so the loaders themselves must be made from pic-objects too.  We
-## use convenience libraries for that purpose:
-EXTRA_LTLIBRARIES		= libltdl/dlopen.la \
-				  libltdl/dld_link.la \
-				  libltdl/dyld.la \
-				  libltdl/load_add_on.la \
-				  libltdl/loadlibrary.la \
-				  libltdl/shl_load.la
-
-libltdl_dlopen_la_SOURCES	= libltdl/loaders/dlopen.c
-libltdl_dlopen_la_LDFLAGS	= -module -avoid-version
-libltdl_dlopen_la_LIBADD 	= $(LIBADD_DLOPEN)
-
-libltdl_dld_link_la_SOURCES	= libltdl/loaders/dld_link.c
-libltdl_dld_link_la_LDFLAGS	= -module -avoid-version
-libltdl_dld_link_la_LIBADD	= -ldld
-
-libltdl_dyld_la_SOURCES		= libltdl/loaders/dyld.c
-libltdl_dyld_la_LDFLAGS		= -module -avoid-version
-
-libltdl_load_add_on_la_SOURCES	= libltdl/loaders/load_add_on.c
-libltdl_load_add_on_la_LDFLAGS	= -module -avoid-version
-
-libltdl_loadlibrary_la_SOURCES	= libltdl/loaders/loadlibrary.c
-libltdl_loadlibrary_la_LDFLAGS	= -module -avoid-version
-
-libltdl_shl_load_la_SOURCES	= libltdl/loaders/shl_load.c
-libltdl_shl_load_la_LDFLAGS	= -module -avoid-version
-libltdl_shl_load_la_LIBADD	= $(LIBADD_SHL_LOAD)
-
-## Make sure these will be cleaned even when they're not built by default:
-CLEANFILES		       += libltdl/libltdl.la \
-				  libltdl/libltdlc.la \
-				  libltdl/libdlloader.la
-
-## Automake-1.9.6 doesn't clean subdir AC_LIBOBJ compiled objects
-## automatically:
-CLEANFILES		       += $(LIBOBJS) $(LTLIBOBJS)
-
-
-## --------------------------- ##
-## Gnulib Makefile.am snippets ##
-## --------------------------- ##
-
-BUILT_SOURCES	+= libltdl/$(ARGZ_H)
-EXTRA_DIST	+= libltdl/argz_.h
-
-# We need the following in order to create an <argz.h> when the system
-# doesn't have one that works with the given compiler.
-all-local $(lib_OBJECTS): libltdl/$(ARGZ_H)
-libltdl/argz.h: libltdl/argz_.h
-	cp $(srcdir)/libltdl/argz_.h $@-t
-	mv $@-t $@
-MOSTLYCLEANFILES += libltdl/argz.h \
-		    libltdl/argz.h-t
-
-# %%% END libltdl/Makefile.am
-
-if ! SUBDIR_LIBOBJS
+if ! LTDL_SUBDIR_LIBOBJS
 ## workaround for Autoconf 2.59, Automake 1.9.6:
 ## we include these files twice, because of missing LIBOBJDIR support.
 EXTRA_DIST += \
@@ -383,6 +274,7 @@ aclocalfiles	= m4/argz.m4 m4/libtool.m4 m4/ltdl.m4 m4/ltoptions.m4 \
 ## libtoolize --ltdl can find them later:
 ltdldatafiles	= libltdl/COPYING.LIB \
 		  libltdl/README \
+		  libltdl/Makefile.inc \
 		  libltdl/Makefile.am \
 		  libltdl/configure.ac \
 		  libltdl/aclocal.m4 \

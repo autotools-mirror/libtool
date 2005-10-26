@@ -4,6 +4,10 @@ New in 1.9h: 2005-??-??; CVS version 2.1a, Libtool team:
 * New tests for support of Automake subdir-objects.
 * Fix libltdl on static platforms.
 * New LT_CONFIG_LTDL_DIR macro.
+* New libtoolize options: --non-recursive, --recursive, --subproject.  These
+  options control the way libltdl is installed by libtoolize.
+* New recursive and non-recursive build modes for libltdl that don't require
+  a subconfigure.
 * New multi-module-loader safe libltdl handle iteration APIs:
   lt_dlhandle_iterate, lt_dlhandle_fetch, lt_dlhandle_map.
 * New lt_dlinterface_register to maintain separation of concerns between

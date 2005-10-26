@@ -89,8 +89,9 @@ set dummy `$SED -n '/AC_INIT/{s/[][,()]/ /g; p;}' configure.ac`
 shift
 
 # Whip up a dirty Makefile:
-test -f Makefile \
-  || $SED '/^if /,/^endif$/d;/^else$/,/^endif$/d' Makefile.am > Makefile
+makes='Makefile.am libltdl/Makefile.inc'
+test -f Makefile ||
+    $SED '/^if /,/^endif$/d;/^else$/,/^endif$/d;/^include /d' $makes > Makefile
 
 # Building distributed files from configure is bad for automake, so we
 # generate them here, and have Makefile rules to keep them up to date.

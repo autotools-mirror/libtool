@@ -1,5 +1,27 @@
 2005-10-26  Gary V. Vaughan  <gary@gnu.org>
 
+	* libltdl/Makefile.inc: New file, factored out of Makefile.am for
+	use in non-recursive libltdl installations.
+	* bootstrap: Adjust.
+	* Makefile.am: include it.
+	(libltdl/Makefile.am): Adjust to build from the new
+	libltdl/Makefile.inc.
+	(SUBDIR_LIBOBJS): Renamed from this...
+	(LTDL_SUBDIR_LIBOBJS): ...to this.
+	* configure.ac: Adjust.
+	* doc/libtool.texi (Invoking libtoolize): Document the new modes
+	and libtoolize option to select them.
+	* libtoolize.m4sh: Parse new options, --nonrecursive, --recursive
+	and --subproject.  Install the appropriate files with --ltdl
+	according to the selected mode.
+	(func_scan_files): If --subproject, --recursive or --nonrecursive
+	options were not given, use the value from LT_CONFIG_LTDL_DIR; if
+	a mode was given, and there is also an argument to
+	LT_CONFIG_LTDL_DIR, ensure they are the same.
+	* NEWS: Updated.
+
+2005-10-26  Gary V. Vaughan  <gary@gnu.org>
+
 	* libtoolize.m4sh: Don't use func_serial_update as a copy
 	function for libtool m4 files with no macro_regex.  If the
 	files are copied directly into aclocal.m4, because
