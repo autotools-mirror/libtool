@@ -956,26 +956,26 @@ func_nonemptydir_p ()
         "$aclocaldir" "$ltdldir/m4"
     fi
 
-    # Unless we share CONFIG_AUX_DIR with our parent project,
-    # copy config aux files into libltdl.
-    if test "$ltdldir/config" != "$auxdir"; then
-      func_copy_some_files "$pkgconfig_files" "$pkgdatadir" "$ltdldir"
-    fi
+    # Copy config aux files into libltdl.
+    func_copy_some_files "$pkgconfig_files" "$pkgdatadir" "$ltdldir"
   fi
 
-  # If they are newer, copy all the installed utility files to the
+  # Unless we share CONFIG_AUX_DIR with the libltdl subproject, then
+  # if they are newer, copy all the installed utility files to the
   # auxiliary directory if `--install' was passed, or else copy just
   # ltmain.sh.
   if test -n "$auxdir"; then
-    $opt_quiet || if test "$auxdir" != .; then
-      func_echo "putting files in AC_CONFIG_AUX_DIR, \`$auxdir'."
+    if test "$ltdldir/config" != "$auxdir"; then
+      $opt_quiet || if test "$auxdir" != .; then
+        func_echo "putting files in AC_CONFIG_AUX_DIR, \`$auxdir'."
+      fi
+      if $opt_install; then
+        func_config_update config.guess "$pkgdatadir/config" "$auxdir"
+        func_config_update config.sub   "$pkgdatadir/config" "$auxdir"
+        func_install_update install-sh  "$pkgdatadir/config" "$auxdir"
+      fi
+      func_ltmain_update ltmain.sh "$pkgdatadir/config" "$auxdir"
     fi
-    if $opt_install; then
-      func_config_update config.guess "$pkgdatadir/config" "$auxdir"
-      func_config_update config.sub   "$pkgdatadir/config" "$auxdir"
-      func_install_update install-sh  "$pkgdatadir/config" "$auxdir"
-    fi
-    func_ltmain_update ltmain.sh "$pkgdatadir/config" "$auxdir"
   else
     func_verbose "AC_CONFIG_AUX_DIR not defined, not copying libtool auxilliary files."
   fi

@@ -331,7 +331,12 @@ libtoolize: linking file `ltdl/lt_error.c'
 libtoolize: linking file `ltdl/ltdl.c'
 libtoolize: linking file `ltdl/ltdl.h'
 libtoolize: linking file `ltdl/slist.c'
-libtoolize: putting files in AC_CONFIG_AUX_DIR, `ltdl/config'.
+libtoolize: linking file `ltdl/config/compile'
+libtoolize: linking file `ltdl/config/config.guess'
+libtoolize: linking file `ltdl/config/config.sub'
+libtoolize: linking file `ltdl/config/depcomp'
+libtoolize: linking file `ltdl/config/install-sh'
+libtoolize: linking file `ltdl/config/missing'
 libtoolize: linking file `ltdl/config/ltmain.sh'
 libtoolize: putting macros in AC_CONFIG_MACRO_DIR, `ltdl/m4'.
 libtoolize: linking file `ltdl/m4/libtool.m4'
