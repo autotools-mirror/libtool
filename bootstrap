@@ -44,13 +44,14 @@ test -f ./configure.ac || {
 
 
 # Extract auxdir and m4dir from configure.ac:
+lt_tab='	'
 my_sed_traces='s,#.*$,,; s,^dnl .*$,,; s, dnl .*$,,;
-    	/AC_CONFIG_AUX_DIR[^_]/  {
-	    s,^.*AC_CONFIG_AUX_DIR([[ 	]*\([^])]*\).*$,auxdir=\1,; p;
-        };
-    	/AC_CONFIG_MACRO_DIR/   {
-	    s,^.*AC_CONFIG_MACRO_DIR([[ 	]*\([^])]*\).*$,m4dir=\1,; p;
-        };
+	/AC_CONFIG_AUX_DIR[^_]/  {
+	    s,^.*AC_CONFIG_AUX_DIR([[ '"$lt_tab"']*\([^])]*\).*$,auxdir=\1,; p;
+	};
+	/AC_CONFIG_MACRO_DIR/   {
+	    s,^.*AC_CONFIG_MACRO_DIR([[ '"$lt_tab"']*\([^])]*\).*$,m4dir=\1,; p;
+	};
 	d;'
 eval `cat configure.ac 2>/dev/null | $SED "$my_sed_traces"`
 
@@ -65,7 +66,7 @@ WARNING: them with all m4 file as shipped with this distribution (except
 WARNING: `lt~obsolete.m4').  After that, retry this bootstrap.
 EOF
 
-find . \( -name autom4te.cache -o -name libtool \) -depth -print \
+find . -depth \( -name autom4te.cache -o -name libtool \) -print \
   | grep -v '{arch}' \
   | xargs rm -rf
 

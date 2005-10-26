@@ -1,3 +1,10 @@
+2005-10-26  Eric Blake  <ebb9@byu.net>,
+	    Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* Makefile.am (vcl-tmp): Avoid warnings from diff.
+	* bootstrap: Avoid warnings from find.
+	(lt_tab): Use to prevent editor whitespace "cleanup".
+
 2005-10-26  Gary V. Vaughan  <gary@gnu.org>
 
 	* libtoolize.m4sh: Put back the func_serial_update callback for
