@@ -1,5 +1,17 @@
 2005-10-26  Gary V. Vaughan  <gary@gnu.org>
 
+	* libtoolize.m4sh: Don't use func_serial_update as a copy
+	function for libtool m4 files with no macro_regex.  If the
+	files are copied directly into aclocal.m4, because
+	AC_CONFIG_MACRO_DIR isn't set for example, there is no way
+	to tell what serial number goes with what source file.
+	(func_serial_update): For future-proofing, only make the second
+	serial number check if the destination file wasn't m4_included
+	into aclocal.m4 (and hence updated automatically by the cat of
+	copying a new version to the dest directory).
+
+2005-10-26  Gary V. Vaughan  <gary@gnu.org>
+
 	* libtoolize.m4sh: Move the consistency checks...
 	(func_check_macros): ...into here.  Also suggest LT_WITH_LTDL if
 	appropriate.

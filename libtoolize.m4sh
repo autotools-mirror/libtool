@@ -677,13 +677,18 @@ func_serial_update ()
     # Do this after the copy for hand maintained `aclocal.m4', incase
     # it has `m4_include([DESTFILE])', so the copy effectively already
     # updated `aclocal.m4'.
-    if test -f aclocal.m4; then
-      func_serial_max \
-          "$my_src_serial" `func_serial aclocal.m4 "$my_macro_regex"`
-      test "X$my_src_serial" = "X$func_serial_max_result" \
-	  && func_echo "You should add the contents of \`$my_destfile' to \`aclocal.m4'."
-    fi
-
+    my_included_files=`func_included_files aclocal.m4`
+    case `echo " "$my_included_files" "` in
+      *" $my_destfile "*) ;;
+      *)
+        if test -f aclocal.m4; then
+          func_serial_max \
+              "$my_src_serial" `func_serial aclocal.m4 "$my_macro_regex"`
+          test "X$my_src_serial" = "X$func_serial_max_result" \
+	      && func_echo "You should add the contents of \`$my_destfile' to \`aclocal.m4'."
+        fi
+        ;;
+    esac
     return $my_return_status
 }
 
@@ -1041,8 +1046,7 @@ func_nonemptydir_p ()
       func_verbose "Not copying \`$m4dir/ltdl.m4', libltdl not used."
     fi
 
-    func_copy_some_files "$pkgmacro_files" "$aclocaldir" \
-      "$m4dir" func_serial_update
+    func_copy_some_files "$pkgmacro_files" "$aclocaldir" "$m4dir"
   fi
 
   $opt_quiet || func_check_macros
