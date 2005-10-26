@@ -1,5 +1,13 @@
 2005-10-26  Gary V. Vaughan  <gary@gnu.org>
 
+	* libtoolize.m4sh: Copying just libtool.m4 for hand maintained
+	aclocal.m4 doesn't work.  List all required files in that case,
+	using the files from installed libltdl if available.  Also, list
+	the additional files required when using libltdl.
+	Reported by Patrick Welche <prlw1@newn.cam.ac.uk>.
+
+2005-10-26  Gary V. Vaughan  <gary@gnu.org>
+
 	* libltdl/ltdl.h, libltdl/ltdl.c (lt_dlhandle_first): Removed.
 	* libltdl/ltdl.h, libltdl/ltdl.c (lt_dlhandle_next)
 	(lt_dlhandle_find, lt_dlforeach): Removed...
