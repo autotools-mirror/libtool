@@ -4,11 +4,12 @@ New in 1.9h: 2005-??-??; CVS version 2.1a, Libtool team:
 * New tests for support of Automake subdir-objects.
 * Fix libltdl on static platforms.
 * New LT_CONFIG_LTDL_DIR macro.
-* New lt_dlinterface_register, lt_dlinterface_set_data and
-  lt_dlinterface_get_data libltdl API calls to maintain separation of
-  concerns between modules loaded by different libraries.
+* New multi-module-loader safe libltdl handle iteration APIs:
+  lt_dlhandle_iterate, lt_dlhandle_fetch, lt_dlhandle_map.
+* New lt_dlinterface_register to maintain separation of concerns between
+  modules loaded by different libraries.
 * Removed deprecated APIs from libltdl: lt_dlcaller_register,
-  lt_dlcaller_get_data, lt_dlcaller_set_data, lt_dlmutex_register,
+  lt_dlhandle_next, lt_dlhandle_find, lt_dlforeach, lt_dlmutex_register,
   lt_dlmutex_lock, lt_dlmutex_unlock, lt_dlmutex_seterror,
   lt_dlmutex_geterror, lt_dlmalloc, lt_dlrealloc, lt_dlfree.
 * Support for Portland Group compiler on GNU/Linux.

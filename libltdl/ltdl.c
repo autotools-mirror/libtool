@@ -2115,50 +2115,22 @@ lt_dlgetinfo (lt_dlhandle handle)
 }
 
 
-/* Nasty semantics, necessary for reasonable backwards compatibility:
-   Either iterate over the whole handle list starting with lt_dlhandle_next(0),
-   or else iterate over just the handles of modules that satisfy a given
-   interface by getting the first element using lt_dlhandle_first(iface).  */
-
-static lt__interface_id *iterator = 0;
-
 lt_dlhandle
-lt_dlhandle_first (lt_dlinterface_id iface)
-{
-  iterator = iface;
-
-  return handles;
-}
-
-
-lt_dlhandle
-lt_dlhandle_next (lt_dlhandle place)
+lt_dlhandle_iterate (lt_dlinterface_id iface, lt_dlhandle place)
 {
   lt__handle *handle = (lt__handle *) place;
+  lt__interface_id *iterator = (lt__interface_id *) iface;
+
+  assert (iface); /* iface is a required argument */
 
   if (!handle)
-    {
-      /* old style iteration across all handles */
-      iterator = 0;
-      handle = (lt__handle *) handles;
-    }
-  else
-    {
-      /* otherwise start at the next handle after the passed one */
-      handle = handle->next;
-    }
+    handle = (lt__handle *) handles;
 
-  /* advance until the interface check (if we have one) succeeds */
-  while (handle && iterator && iterator->iface
+  /* advance while the interface check fails */
+  while (handle && iterator->iface
 	 && ((*iterator->iface) (handle, iterator->id_string) != 0))
     {
       handle = handle->next;
-    }
-
-  if (!handle)
-    {
-      /* clear the iterator after the last handle */
-      iterator = 0;
     }
 
   return (lt_dlhandle) handle;
@@ -2166,41 +2138,46 @@ lt_dlhandle_next (lt_dlhandle place)
 
 
 lt_dlhandle
-lt_dlhandle_find (const char *module_name)
+lt_dlhandle_fetch (lt_dlinterface_id iface, const char *module_name)
 {
-  lt__handle *cur = (lt__handle *) handles;
+  lt_dlhandle handle = 0;
 
-  if (cur)
+  assert (iface); /* iface is a required argument */
+
+  while ((handle = lt_dlhandle_iterate (handle, iface)))
     {
-      do
-	{
-	  if (cur->info.name && streq (cur->info.name, module_name))
-	    break;
-	}
-      while ((cur = cur->next));
+      lt__handle *cur = (lt__handle *) handle;
+      if (cur && cur->info.name && streq (cur->info.name, module_name))
+	break;
     }
 
-  return cur;
+  return handle;
 }
 
-int
-lt_dlforeach (int (*func) (lt_dlhandle handle, void *data), void *data)
-{
-  int errors = 0;
-  lt__handle *cur;
 
-  cur = (lt__handle *) handles;
+int
+lt_dlhandle_map (lt_dlinterface_id iface,
+		 int (*func) (lt_dlhandle handle, void *data), void *data)
+{
+  lt__interface_id *iterator = (lt__interface_id *) iface;
+  lt__handle *cur = (lt__handle *) handles;
+
+  assert (iface); /* iface is a required argument */
+
   while (cur)
     {
-      lt__handle *tmp = cur;
+      int errorcode = 0;
 
-      cur = cur->next;
-      if ((*func) (tmp, data))
+      /* advance while the interface check fails */
+      while (cur && iterator->iface
+	     && ((*iterator->iface) (cur, iterator->id_string) != 0))
 	{
-	  ++errors;
-	  break;
+	  cur = cur->next;
 	}
+
+      if ((errorcode = (*func) (cur, data)) != 0)
+	return errorcode;
     }
 
-  return errors;
+  return 0;
 }

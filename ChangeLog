@@ -1,5 +1,16 @@
 2005-10-26  Gary V. Vaughan  <gary@gnu.org>
 
+	* libltdl/ltdl.h, libltdl/ltdl.c (lt_dlhandle_first): Removed.
+	* libltdl/ltdl.h, libltdl/ltdl.c (lt_dlhandle_next)
+	(lt_dlhandle_find, lt_dlforeach): Removed...
+	(lt_dlhandle_iterate, lt_dlhandle_fetch, lt_dlhandle_map): Similar
+	functions that are multi-loader safe, and require a registered
+	interface validator argument.
+	* doc/libtool.texi: Updated.
+	* NEWS: Updated.
+
+2005-10-26  Gary V. Vaughan  <gary@gnu.org>
+
 	* libtoolize.m4sh: Always copy pkgconfig_files for --ltdl, incase
 	ltdl needs additional things not found by automake when looking at
 	the parent project configury.

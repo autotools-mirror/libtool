@@ -3734,35 +3734,86 @@ Furthermore, in order to save you from having to keep a list of the
 handles of all the modules you have loaded, these functions allow you to
 iterate over libltdl's list of loaded modules:
 
-@deftypefun int lt_dlforeach (@w{int (*@var{func}) (lt_dlhandle @var{handle}, void * @var{data})}, @w{void * @var{data}})
-For each loaded module call the function @var{func}.  The argument
-@var{handle} is the handle of one of the loaded modules, @var{data} is
-the @var{data} argument passed to @code{lt_dlforeach}.
-As soon as @var{func} returns a non-zero value for one of the handles,
-@code{lt_dlforeach} will stop calling @var{func} and immediately return 1.
-Otherwise 0 is returned.
+@deftp {Type} lt_dlinterface_id
+The opaque type used to hold the module interface details for each
+registered libltdl client.
+@end deftp
+
+@deftp {Type} int lt_dlhandle_interface (@w{lt_dlhandle @var{handle},} @w{const char *@var{id_string}})
+Functions of this type are called to check that a handle conforms to a
+library's expected module interface when iterating over the global
+handle list.  You should be careful to write a callback function of
+this type that can correctly identify modules that belong to this
+client, both to prevent other clients from accidentally finding your
+loaded modules with the iterator functions below, and vice versa.  The
+best way to do this is to check that module @var{handle} conforms
+to the interface specification of your loader using @code{lt_dlsym}.
+
+The callback may be given @strong{every} module loaded by all the
+libltdl module clients in the current address space, including any
+modules loaded by other libraries such as libltdl itself, and should
+return non-zero if that module does not fulfill the interface
+requirements of your loader.
+
+@example
+int
+my_interface_cb (lt_dlhandle handle, const char *id_string)
+@{
+  char *(*module_id) (void) = NULL;
+
+  /* @r{A valid my_module must provide all of these symbols.}  */
+  if (!((module_id = (char*(*)(void)) lt_dlsym ("module_version"))
+        && lt_dlsym ("my_module_entrypoint")))
+      return 1;
+
+  if (strcmp (id_string, module_id()) != 0)
+      return 1;
+
+  return 0;
+@}
+@end example
+@end deftp
+
+@deftypefun lt_dlinterface_id lt_dlinterface_register (@w{const char *@var{id_string}}, @w{lt_dlhandle_interface *@var{iface}})
+Use this function to register your interface validator with libltdl,
+and in return obtain a unique key to store and retrieve per-module data.
+You supply an @var{id_string} and @var{iface} so that the resulting
+@code{lt_dlinterface_id} can be used to filter the module handles
+returned by the iteration functions below.
 @end deftypefun
 
-@deftypefun lt_dlhandle lt_dlhandle_next (@w{lt_dlhandle place})
-Iterate over the loaded module handles, returning the first handle in the
-list if @var{place} is @code{NULL}, and the next one on subsequent calls.
-If @var{place} is the last element in the list of loaded modules, this
-function returns @code{NULL}.
+@deftypefun int lt_dlhandle_map (@w{lt_dlinterface_id @var{iface}}, @w{int (*@var{func}) (lt_dlhandle @var{handle}, void * @var{data})}, @w{void * @var{data}})
+For each module that matches @var{iface}, call the function
+@var{func}.  When writing the @var{func} callback function, the
+argument @var{handle} is the handle of a loaded module, and
+@var{data} is the last argument passed to @code{lt_dlhandle_map}. As
+soon as @var{func} returns a non-zero value for one of the handles,
+@code{lt_dlhandle_map} will stop calling @var{func} and immediately
+return that non-zero value.  Otherwise 0 is eventually returned when
+@var{func} has been successfully called for all matching modules.
+@end deftypefun
+
+@deftypefun lt_dlhandle lt_dlhandle_iterate (@w{lt_dlinterface_id @var{iface}}, @w{lt_dlhandle @var{place}})
+Iterate over the module handles loaded by @var{iface}, returning the
+first matching handle in the list if @var{place} is @code{NULL}, and
+the next one on subsequent calls.  If @var{place} is the last element
+in the list of eligible modules, this function returns @code{NULL}.
 
 @example
 lt_dlhandle handle = 0;
+lt_dlinterface_id iface = my_interface_id;
 
-while ((handle = lt_dlhandle_next (handle)))
+while ((handle = lt_dlhandle_iterate (iface, handle)))
   @{
     @dots{}
   @}
 @end example
 @end deftypefun
 
-@deftypefun lt_dlhandle lt_dlhandle_find (@w{const char *@var{module_name}})
-Search through the loaded module handles for a module named
+@deftypefun lt_dlhandle lt_dlhandle_fetch (@w{lt_dlinterface_id @var{iface}}, @w{const char *@var{module_name}})
+Search through the module handles loaded by @var{iface} for a module named
 @var{module_name}, returning its handle if found or else @code{NULL}
-if no such named module has been loaded.
+if no such named module has been loaded by @var{iface}.
 @end deftypefun
 
 However, you might still need to maintain your own list of loaded
@@ -3770,26 +3821,10 @@ module handles (in parallel with the list maintained inside libltdl)
 if there were any other data that your application wanted to associate
 with each open module.  Instead, you can use the following @sc{api}
 calls to do that for you.  You must first obtain a unique interface id
-from libltdl, and subsequently always use it to retrieve the data you
-stored earlier.  This allows different libraries to each store their
-own data against loaded modules, without interfering with one another.
-
-@deftp {Type} lt_dlinterface_id
-The opaque type used to hold individual data set keys.
-@end deftp
-
-@deftp {Type} int lt_dlhandle_interface (@w{lt_dlhandle @var{handle},} @w{const char *@var{id_string}})
-Functions of this type are called to check that a handle conforms to a
-library's expected module interface when iterating over the global
-handle list.
-@end deftp
-
-@deftypefun lt_dlinterface_id lt_dlinterface_register (@w{const char *@var{id_string},} @w{lt_dlhandle_interface *@var{iface}})
-Use this to obtain a unique key to store and retrieve per module data,
-if you supply an @var{id_string} and @var{iface}, then the resulting
-@code{lt_dlinterface_id} can be used to filter the module handles
-returned by @samp{lt_dlhandle_next}.
-@end deftypefun
+from libltdl as described above, and subsequently always use it to
+retrieve the data you stored earlier.  This allows different libraries
+to each store their own data against loaded modules, without
+interfering with one another.
 
 @deftypefun {void *} lt_dlcaller_set_data (@w{lt_dlinterface_id @var{key}}, @w{lt_dlhandle @var{handle}}, @w{void * @var{data}})
 Set @var{data} as the set of data uniquely associated with @var{key} and
@@ -3822,76 +3857,6 @@ else
 @deftypefun {void *} lt_dlcaller_get_data (@w{lt_dlinterface_id @var{key}}, @w{lt_dlhandle @var{handle}})
 Return the address of the data associated with @var{key} and
 @var{handle}, or else @code{NULL} if there is none.
-@end deftypefun
-
-The preceding functions can be combined with @code{lt_dlforeach} to
-implement search and apply operations without the need for your
-application to track the modules that have been loaded and unloaded:
-
-@example
-int
-my_dlinterface_callback (lt_dlhandle handle, void *key)
-@{
-  struct my_module_data *my_data;
-
-  my_data = lt_dlcaller_get_data (handle, (lt_dlinterface_id) key);
-
-  return process (my_data);
-@}
-
-int
-my_dlinterface_foreach (lt_dlinterface_id key)
-@{
-  lt_dlforeach (my_dlinterface_callback, (void *) key);
-@}
-@end example
-
-@deftypefun lt_dlhandle lt_dlhandle_first (@w{lt_dlinterface_id @var{key}})
-Normally, you can fetch each of the loaded module handles in turn with
-successive calls to @samp{lt_dlhandle_next} as shown in the example
-above.  In that example, the loop iterates over every libltdl loaded
-module in your application, including the modules used by libltdl
-itself!  This is useful from within a module loader for example.
-
-@noindent
-Often, your application doesn't want to concern itself with modules
-loaded by the libraries it uses, or for libltdl's internal use.  In
-order to do that, you need to specify an interface validator callback:
-
-@example
-/* @r{Return non-zero if} @var{handle} @r{doesn't conform to my iface.}  */
-int
-iface_validator_callback (lt_dlhandle handle, const char *id_string)
-@{
-    return (lt_sym (handle, "module_entry_point") != 0)
-@}
-@end example
-
-@noindent
-When you register for an interface identification key with
-@samp{lt_dlinterface_register}, you log the interface validator.  But
-this time, when you start the iterator loop over the loaded module
-handles, if you fetch the first handle with @samp{lt_dlhandle_first},
-then that and all subsequent calls to @samp{lt_dlhandle_next} will
-skip any loaded module handles that fail the registered interface
-validator callback function:
-
-@example
-/* @r{Register for an} interface_id @r{to identify ourselves to} libltdl.  */
-interface_id = lt_dlinterface_register ("example", iface_validator_callback);
-
-@dots{}
-/* @r{Iterate over the modules related to my} interface_id.  */
-@{
-  lt_dlhandle handle;
-  for (handle = lt_dlhandle_first (interface_id);
-       handle;
-       handle = lt_dlhandle_next (handle))
-    @{
-      @dots{}
-    @}
-@}
-@end example
 @end deftypefun
 
 Old versions of libltdl also provided a simpler, but similar, @sc{api}

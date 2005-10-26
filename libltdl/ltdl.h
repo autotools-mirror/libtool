@@ -126,10 +126,12 @@ typedef	struct {
 } lt_dlinfo;
 
 LT_SCOPE const lt_dlinfo *lt_dlgetinfo	    (lt_dlhandle handle);
-LT_SCOPE lt_dlhandle	lt_dlhandle_first   (lt_dlinterface_id key);
-LT_SCOPE lt_dlhandle	lt_dlhandle_next    (lt_dlhandle place);
-LT_SCOPE lt_dlhandle	lt_dlhandle_find    (const char *module_name);
-LT_SCOPE int		lt_dlforeach	    (
+
+LT_SCOPE lt_dlhandle	lt_dlhandle_iterate (lt_dlinterface_id iface,
+					     lt_dlhandle place);
+LT_SCOPE lt_dlhandle	lt_dlhandle_fetch   (lt_dlinterface_id iface,
+					     const char *module_name);
+LT_SCOPE int		lt_dlhandle_map	    (lt_dlinterface_id iface,
 				int (*func) (lt_dlhandle handle, void *data),
 				void *data);
 
