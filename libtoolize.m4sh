@@ -1101,7 +1101,8 @@ func_nonemptydir_p ()
       func_verbose "Not copying \`$m4dir/ltdl.m4', libltdl not used."
     fi
 
-    func_copy_some_files "$pkgmacro_files" "$aclocaldir" "$m4dir"
+    func_copy_some_files "$pkgmacro_files" "$aclocaldir" \
+      "$m4dir" func_serial_update
   fi
 
   $opt_quiet || func_check_macros

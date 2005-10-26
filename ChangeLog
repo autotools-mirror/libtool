@@ -1,5 +1,10 @@
 2005-10-26  Gary V. Vaughan  <gary@gnu.org>
 
+	* libtoolize.m4sh: Put back the func_serial_update callback for
+	func_copy_some_files so that the testsuite passes again.  We'll
+	have to find a better way of handling serial numbers in libtool
+	macro files.
+
 	* libltdl/Makefile.inc: New file, factored out of Makefile.am for
 	use in non-recursive libltdl installations.
 	* bootstrap: Adjust.
@@ -20,8 +25,6 @@
 	LT_CONFIG_LTDL_DIR, ensure they are the same.
 	* NEWS: Updated.
 
-2005-10-26  Gary V. Vaughan  <gary@gnu.org>
-
 	* libtoolize.m4sh: Don't use func_serial_update as a copy
 	function for libtool m4 files with no macro_regex.  If the
 	files are copied directly into aclocal.m4, because
@@ -32,21 +35,15 @@
 	into aclocal.m4 (and hence updated automatically by the cat of
 	copying a new version to the dest directory).
 
-2005-10-26  Gary V. Vaughan  <gary@gnu.org>
-
 	* libtoolize.m4sh: Move the consistency checks...
 	(func_check_macros): ...into here.  Also suggest LT_WITH_LTDL if
 	appropriate.
-
-2005-10-26  Gary V. Vaughan  <gary@gnu.org>
 
 	* libtoolize.m4sh: Copying just libtool.m4 for hand maintained
 	aclocal.m4 doesn't work.  List all required files in that case,
 	using the files from installed libltdl if available.  Also, list
 	the additional files required when using libltdl.
 	Reported by Patrick Welche <prlw1@newn.cam.ac.uk>.
-
-2005-10-26  Gary V. Vaughan  <gary@gnu.org>
 
 	* libltdl/ltdl.h, libltdl/ltdl.c (lt_dlhandle_first): Removed.
 	* libltdl/ltdl.h, libltdl/ltdl.c (lt_dlhandle_next)
@@ -56,8 +53,6 @@
 	interface validator argument.
 	* doc/libtool.texi: Updated.
 	* NEWS: Updated.
-
-2005-10-26  Gary V. Vaughan  <gary@gnu.org>
 
 	* libtoolize.m4sh: Always copy pkgconfig_files for --ltdl, incase
 	ltdl needs additional things not found by automake when looking at
