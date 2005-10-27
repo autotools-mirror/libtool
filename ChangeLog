@@ -1,3 +1,7 @@
+2005-10-27  Stepan Kasal  <kasal@ucw.cz>
+
+	* HACKING: Update note about use of `$#' in m4 macros.
+
 2005-10-27  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* tests/tagtrace.test: Allow `$AUTOCONF' to contain arguments.

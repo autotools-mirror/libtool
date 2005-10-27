@@ -241,8 +241,11 @@ yyyy-mm-dd  Name of Author  <email@address>  (tiny change)
    $ECHO ".."		for strings without leading hyphen,
    $ECHO "X.." | $Xsed	otherwise.
 
-* Do not use the number of macro arguments `$#' in public macros;
-  AU_ALIAS may change it.
+* The Autoconf manual says that giving an empty parameter is equivalent
+  to not giving it at all.  (In particular, the Autoconf manual doesn't
+  explain that "FOO()" is calling macro FOO with one empty parameter.)
+  To prevent misunderstanding, we should use m4_ifval to check whether
+  a parameter is empty, and not $# to check for the number of parameters.
 
 
 9. Abstraction layers in libltdl
