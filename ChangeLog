@@ -1,3 +1,10 @@
+2005-10-29  Howard Chu <hyc@highlandsun.com>
+
+	* ltmain.in (link mode): With `-static', only link statically
+	against uninstalled libtool libraries.  Fixes 1.5.x regression
+	to match documented (and actual 1.4.x) behavior.
+	* NEWS: Updated.
+
 2005-10-29  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
 	* libtoolize.in: Fail if libltdl files not present but
