@@ -1,3 +1,11 @@
+2005-10-29  Howard Chu  <hyc@highlandsun.com>
+
+	* libltdl/config/ltmain.m4sh (func_mode_link):
+	With `-static', only link statically against uninstalled
+	libtool libraries.  Fixes 1.5.x regression to match documented
+	behavior.
+	* NEWS: Updated.
+
 2005-10-27  Stepan Kasal  <kasal@ucw.cz>
 
 	* HACKING: Update note about use of `$#' in m4 macros.

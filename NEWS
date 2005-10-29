@@ -26,6 +26,8 @@ New in 1.9h: 2005-??-??; CVS version 2.1a, Libtool team:
 * Detection of compiler wrappers like distcc/ccache and $host_alias prefix.
 * Initial Support for FC (modern Fortran).
 * Fixed a regression that prevented use of libltdl without autotools.
+* Fixed a branch-1-5/HEAD regression to only link uninstalled libraries
+  statically with `-static'.
 * Bug fixes.
 
 New in 1.9f: 2004-10-23; CVS version 1.9e, Libtool team:
