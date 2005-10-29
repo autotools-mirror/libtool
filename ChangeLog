@@ -1,3 +1,9 @@
+2005-10-29  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
+	* libtoolize.in: Fail if libltdl files not present but
+	`--ltdl' given.
+	Reported by Troy Benjegerdes <hozer@hozed.org>.
+
 2005-10-17  Albert Chin-A-Young  <china@thewrittenword.com>
 
 	* ltmain.in (link mode): When accepting -64, -mips[0-9], et. al.

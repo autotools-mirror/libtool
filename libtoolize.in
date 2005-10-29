@@ -281,6 +281,10 @@ fi
 if test "x$ltdl" = xyes; then
   test -d libltdl || $mkdir libltdl
   ltdlfiles=`cd $pkgdatadir && ls libltdl/*`
+  if test -z "$ltdlfiles"; then
+    echo "$progname: cannot list files in \`$pkgdatadir/libltdl'" 1>&2
+    exit 1
+  fi
 else
   ltdlfiles=
 fi
