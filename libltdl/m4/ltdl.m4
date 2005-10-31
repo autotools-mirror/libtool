@@ -361,6 +361,9 @@ AC_CACHE_CHECK([whether deplibs are loaded by dlopen],
   solaris*)
     lt_cv_sys_dlopen_deplibs=yes
     ;;
+  sysv5* | sco3.2v5* | sco5v6* | unixware* | OpenUNIX* | sysv4*uw2*)
+    libltdl_cv_sys_dlopen_deplibs=yes
+    ;;
   esac
   ])
 if test "$lt_cv_sys_dlopen_deplibs" != yes; then
