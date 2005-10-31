@@ -1,3 +1,8 @@
+2005-10-31  Kean Johnston  <jkj@sco.com>
+
+	* ltdl.m4 (LT_SYS_DLOPEN_DEPLIBS): All SCO platforms open
+	dependency libraries when you dlopen a module.
+
 2005-10-31  Albert Chin-A-Young  <china@thewrittenword.com>
 
 	* libtool.m4 (AC_LIBTOOL_LANG_CXX_CONFIG)
