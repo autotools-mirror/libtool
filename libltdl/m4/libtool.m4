@@ -1378,6 +1378,17 @@ AC_CACHE_VAL([lt_cv_sys_max_cmd_len], [dnl
       esac
     fi
     ;;
+  sco3.2v5*)
+    lt_cv_sys_max_cmd_len=102400
+    ;;
+  sysv5* | sco5v6* | sysv4.2uw2*)
+    kargmax=`grep ARG_MAX /etc/conf/cf.d/stune 2>/dev/null`
+    if test -n "$kargmax"; then
+      lt_cv_sys_max_cmd_len=`echo $kargmax | sed 's/.*[[ 	]]//'`
+    else
+      lt_cv_sys_max_cmd_len=32768
+    fi
+    ;;
   *)
     # Make teststring a little bigger before we do anything with it.
     # a 1K string should be a reasonable start.

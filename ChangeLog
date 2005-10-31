@@ -1,5 +1,7 @@
 2005-10-31  Kean Johnston  <jkj@sco.com>
 
+	* libltdl/m4/libtool.m4 (LT_CMD_MAX_LEN): Set correctly for SCO.
+
 	* libltdl/m4/libtool.m4 (_LT_CMD_GLOBAL_SYMBOLS): Set correct
 	symcode values for the native nm on SCO platforms.
 
