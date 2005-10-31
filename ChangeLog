@@ -1,3 +1,9 @@
+2005-10-31  Albert Chin-A-Young  <china@thewrittenword.com>
+
+	* libtool.m4 (AC_LIBTOOL_LANG_CXX_CONFIG)
+	(AC_LIBTOOL_PROG_LD_SHLIBS) [ aix ]: Remove duplicate
+	always_export_symbols=yes for AIX.
+
 2005-10-29  Howard Chu <hyc@highlandsun.com>
 
 	* ltmain.in (link mode): With `-static', only link statically
