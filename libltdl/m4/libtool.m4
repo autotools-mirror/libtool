@@ -4165,8 +4165,6 @@ _LT_EOF
 	  # -berok will link without error, but may produce a broken library.
 	  _LT_TAGVAR(no_undefined_flag, $1)=' ${wl}-bernotok'
 	  _LT_TAGVAR(allow_undefined_flag, $1)=' ${wl}-berok'
-	  # -bexpall does not export symbols beginning with underscore (_)
-	  _LT_TAGVAR(always_export_symbols, $1)=yes
 	  # Exported symbols can be pulled into shared objects from archives
 	  _LT_TAGVAR(whole_archive_flag_spec, $1)='$convenience'
 	  _LT_TAGVAR(archive_cmds_need_lc, $1)=yes
@@ -5161,8 +5159,6 @@ if test "$_lt_caught_CXX_error" != yes; then
   	    # -berok will link without error, but may produce a broken library.
   	    _LT_TAGVAR(no_undefined_flag, $1)=' ${wl}-bernotok'
   	    _LT_TAGVAR(allow_undefined_flag, $1)=' ${wl}-berok'
-  	    # -bexpall does not export symbols beginning with underscore (_)
-  	    _LT_TAGVAR(always_export_symbols, $1)=yes
   	    # Exported symbols can be pulled into shared objects from archives
   	    _LT_TAGVAR(whole_archive_flag_spec, $1)='$convenience'
   	    _LT_TAGVAR(archive_cmds_need_lc, $1)=yes
