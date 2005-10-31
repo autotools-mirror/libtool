@@ -1,5 +1,8 @@
 2005-10-31  Kean Johnston  <jkj@sco.com>
 
+	* libtool.m4 (AC_LIBTOOL_SYS_MAX_CMD_LEN): Set correctly for
+	SCO.
+
 	* libtool.m4 (AC_LIBTOOL_SYS_GLOBAL_SYMBOL_PIPE): Set correct
 	symcode values for the native nm on SCO platforms.
 

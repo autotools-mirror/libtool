@@ -738,6 +738,17 @@ AC_CACHE_VAL([lt_cv_sys_max_cmd_len], [dnl
       esac
     fi
     ;;
+  sco3.2v5*)
+    lt_cv_sys_max_cmd_len=102400
+    ;;
+  sysv5* | sco5v6* | sysv4.2uw2*)
+    kargmax=`grep ARG_MAX /etc/conf/cf.d/stune 2>/dev/null`
+    if test -n "$kargmax"; then
+      lt_cv_sys_max_cmd_len=`echo $kargmax | sed 's/.*[[ 	]]//'`
+    else
+      lt_cv_sys_max_cmd_len=32768
+    fi
+    ;;
   *)
     # If test is not a shell built-in, we'll probably end up computing a
     # maximum length that is only half of the actual maximum length, but
