@@ -9,7 +9,7 @@
 
 # @configure_input@
 
-# serial @MACRO_SERIAL@
+# serial @MACRO_SERIAL@ ltversion.m4
 # This file is part of GNU Libtool
 
 m4_define([LT_PACKAGE_VERSION], [@MACRO_VERSION@])
