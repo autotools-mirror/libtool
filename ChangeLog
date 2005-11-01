@@ -1,5 +1,9 @@
 2005-11-01  Gary V. Vaughan  <gary@gnu.org>
 
+	* libltdl/m4/ltdl.m4 (LTDL_INIT): Call _LT_ENABLE_INSTALL directly
+	instead of m4_requiring it, as it relies on enable_ltdl_install
+	and enable_ltdl_convenience to have been initialised first.
+
 	* libtoolize.m4sh: Use serial tags to locate the correct serial
 	numbers when deciding whether to update.
 	(func_serial): Allow for macro_regex argument to be originating

@@ -229,8 +229,11 @@ AC_REQUIRE([gl_FUNC_ARGZ])dnl
 
 m4_require([_LT_CHECK_OBJDIR])dnl
 m4_require([_LT_HEADER_DLFCN])dnl
-m4_require([_LT_ENABLE_INSTALL])dnl
 m4_require([_LT_CHECK_DLPREOPEN])dnl
+
+dnl Don't require this, or it will be expanded earlier that the code
+dnl that sets the variables it relies on:
+_LT_ENABLE_INSTALL
 
 dnl Although deprecated and no longer documented, alpha releases of
 dnl libtool used to define an LTDL_INIT to take a DIRECTORY orgument.
@@ -276,7 +279,7 @@ dnl AC_DEFUN([AC_LIB_LTDL], [])
 
 # _LT_ENABLE_INSTALL
 # ------------------
-m4_defun([_LT_ENABLE_INSTALL],
+m4_define([_LT_ENABLE_INSTALL],
 [AC_ARG_ENABLE([ltdl-install],
     [AS_HELP_STRING([--enable-ltdl-install], [install libltdl])])
 
