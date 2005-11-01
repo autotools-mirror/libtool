@@ -1,3 +1,13 @@
+2005-11-01  Kean Johnston  <jkj@sco.com>,
+	    Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* libtool.m4 (AC_LIBTOOL_DLOPEN_SELF): Use
+	`lt_prog_compile_static', not `link_static_flag'.  Expand `$wl'
+	so expansion of `export_dynamic_flag_spec' works.
+	(_LT_AC_TRY_DLOPEN_SELF): Show dlerror() in case of failure.
+	(AC_LIBTOOL_PROG_LD_SHLIBS) [ aix3 ]: Likewise.
+	(AC_LIBTOOL_PROG_COMPILER_PIC) [ hpux* ]: Use `${wl}'.
+
 2005-11-01  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
 	* THANKS: Updated.
