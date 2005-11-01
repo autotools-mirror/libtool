@@ -566,6 +566,8 @@ func_serial ()
     my_serial=
     for my_file in `func_included_files "$my_filename"`; do
       if test -z "$my_macro_regex" ||
+         test "$my_filename" = aclocal.m4 ||
+         test "$my_macro_regex" = `echo "$my_filename" | $SED "$basename"` ||
          func_grep '^AC_DEFUN(\@<:@'"$my_macro_regex" "$my_file"
       then
         my_serial=`$SED -e "$my_sed_serial" "$my_file"`
@@ -716,8 +718,15 @@ func_serial_update ()
     # it has `m4_include([DESTFILE])', so the copy effectively already
     # updated `aclocal.m4'.
     my_included_files=`func_included_files aclocal.m4`
-    case `echo " "$my_included_files" "` in
+    case `echo " $my_included_files " | $NL2SP` in
+
+      # Skip included files:
       *" $my_destfile "*) ;;
+
+      # Otherwise compare to aclocal.m4 serial number (func_serial
+      # returns 0 for older macro serial numbers before we provided
+      # serial tags, so the update message will be correctly given
+      # if aclocal.m4 contains an untagged --i.e older-- macro file):
       *)
         if test -f aclocal.m4; then
           func_serial_max \
@@ -851,7 +860,7 @@ func_check_macros ()
 	func_echo "and rerunning libtoolize."
       fi
     elif test -z "$m4dir"; then
-      if test "$ltdldir/m4" != "$m4dir"; then
+      if $opt_ltdl && test "$ltdldir/m4" != "$m4dir"; then
 	acmacrodir="$ltdldir/m4"
       else
 	acmacrodir="$aclocaldir"
@@ -1101,8 +1110,13 @@ func_nonemptydir_p ()
       func_verbose "Not copying \`$m4dir/ltdl.m4', libltdl not used."
     fi
 
-    func_copy_some_files "$pkgmacro_files" "$aclocaldir" \
-      "$m4dir" func_serial_update
+    my_save_IFS="$IFS"
+    IFS=:
+    for file in $pkgmacro_files; do
+      IFS="$my_save_IFS"
+      func_serial_update $file "$aclocaldir" "$m4dir" "$file"
+    done
+    IFS="$my_save_IFS"
   fi
 
   $opt_quiet || func_check_macros

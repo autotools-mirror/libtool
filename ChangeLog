@@ -1,5 +1,14 @@
 2005-11-01  Gary V. Vaughan  <gary@gnu.org>
 
+	* libtoolize.m4sh: Use serial tags to locate the correct serial
+	numbers when deciding whether to update.
+	(func_serial): Allow for macro_regex argument to be originating
+	file name.
+	(func_serial_update): Use NL2SP to flatten list of extracted
+	m4_include files.
+	* tests/libtoolize.at: More tests for old-style verbatim copying
+	of macros into aclocal.m4.
+
 	* libltdl/m4/argz.m4, libltdl/m4/ltoptions.m4, libltdl/ltsugar.m4,
 	libltdl/m4/ltversion.in: Add serial number tags, and bump serial
 	number.
