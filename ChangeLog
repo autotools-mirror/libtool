@@ -1,4 +1,12 @@
+2005-11-01  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
+	* THANKS: Updated.
+
 2005-10-31  Kean Johnston  <jkj@sco.com>
+
+	[ sysv5*, sco3.2v5*, sco5v6*, unixware*, OpenUNIX*, sysv4*uw2* ]
+	Patches for various bug fixes, small improvements and updating
+	the SCO platform support.
 
 	* libtool.m4 (AC_LIBTOOL_SYS_MAX_CMD_LEN): Set correctly for
 	SCO.
