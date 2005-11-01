@@ -1,3 +1,7 @@
+2005-11-01  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
+	* THANKS: Updated.
+
 2005-11-01  Gary V. Vaughan  <gary@gnu.org>
 
 	* libltdl/m4/ltdl.m4 (LTDL_INIT): Call _LT_ENABLE_INSTALL directly
@@ -18,6 +22,10 @@
 	number.
 
 2005-10-31  Kean Johnston  <jkj@sco.com>
+
+	[ sysv5*, sco3.2v5*, sco5v6*, unixware*, OpenUNIX*, sysv4*uw2* ]
+	Patches for various bug fixes, small improvements and updating
+	the SCO platform support.
 
 	* libltdl/m4/libtool.m4 (LT_CMD_MAX_LEN): Set correctly for SCO.
 
