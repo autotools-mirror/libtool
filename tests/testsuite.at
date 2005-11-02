@@ -76,6 +76,13 @@ m4_define([LT_AT_AUTOMAKE],
 ])
 
 
+# LT_AT_AUTOHEADER([OPTIONS])
+# ---------------------------
+m4_define([LT_AT_AUTOHEADER],
+[AT_CHECK([$AUTOHEADER $1], [0], [ignore], [ignore])
+])
+
+
 # LT_AT_AUTORECONF([OPTIONS])
 # --------------------------
 m4_define([LT_AT_AUTORECONF],
@@ -156,6 +163,8 @@ m4_include([am-subdir.at])
 m4_include([standalone.at])
 # subproject libltdl compilation
 m4_include([subproject.at])
+# nonrecursive libltdl compilation
+m4_include([nonrecursive.at])
 # C++ templates tests
 m4_include([template.at])
 # Behaviour of LT_OUTPUT

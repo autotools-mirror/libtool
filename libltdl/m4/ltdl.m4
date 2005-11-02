@@ -231,7 +231,7 @@ m4_require([_LT_CHECK_OBJDIR])dnl
 m4_require([_LT_HEADER_DLFCN])dnl
 m4_require([_LT_CHECK_DLPREOPEN])dnl
 
-dnl Don't require this, or it will be expanded earlier that the code
+dnl Don't require this, or it will be expanded earlier than the code
 dnl that sets the variables it relies on:
 _LT_ENABLE_INSTALL
 

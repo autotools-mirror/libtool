@@ -1,3 +1,11 @@
+2005-11-02  Gary V. Vaughan  <gary@gnu.org>
+
+	* tests/nonrecursive.at: New tests for libltdl as a subdirectory,
+	configured and compiled from the toplevel project.
+	* tests/testsuite.at: Use it.
+	(LT_AT_AUTOHEADER): New macro.
+	* Makefile.am (TESTSUITE_AT): Depend on nonrecursive.at.
+
 2005-11-01  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
 	* libltdl/m4/libtool.m4 (_LT_ENABLE_LOCK) [ solaris ]: Add `-64'
