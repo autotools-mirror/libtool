@@ -1,0 +1,153 @@
+# Hand crafted tests for GNU Libtool.                         -*- Autotest -*-
+# Copyright 2005 Free Software Foundation, Inc.
+
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2, or (at your option)
+# any later version.
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
+# 02111-1307, USA.
+
+AT_BANNER([Nonrecursive Automake Libltdl.])
+
+# _LTDL_SETUP
+# -----------
+m4_pushdef([_LTDL_SETUP],
+[AT_DATA([configure.ac],
+[[AC_INIT([subdirectory-demo], ]AT_PACKAGE_VERSION[, ]AT_PACKAGE_BUGREPORT[)
+LT_CONFIG_LTDL_DIR([libltdl], [nonrecursive])
+AC_CONFIG_AUX_DIR([libltdl/config])
+AC_CONFIG_MACRO_DIR([libltdl/m4])
+AC_CONFIG_LIBOBJ_DIR([libltdl])
+AM_INIT_AUTOMAKE([foreign subdir-objects])
+AC_PROG_CC
+AM_PROG_CC_C_O
+LT_INIT
+LT_WITH_LTDL
+AC_CONFIG_FILES([Makefile])
+AC_OUTPUT
+]])
+
+AT_DATA([Makefile.am],
+[[ACLOCAL_AMFLAGS = -I libltdl/m4
+BUILT_SOURCES		=
+
+AM_CPPFLAGS		=
+AM_LDFLAGS		=
+
+noinst_LTLIBRARIES	=
+lib_LTLIBRARIES		= foo.la
+EXTRA_LTLIBRARIES	=
+
+EXTRA_DIST		=
+
+CLEANFILES		=
+MOSTLYCLEANFILES	=
+
+include libltdl/Makefile.inc
+
+foo_la_LDFLAGS		= -module -avoid-version
+]])
+
+echo 'static int dummy = 0;' > foo.c
+])# _LTDL_SETUP
+
+## ------------------------ ##
+## Softlinked libltdl tree. ##
+## ------------------------ ##
+
+AT_SETUP([compiling softlinked libltdl])
+
+_LTDL_SETUP
+
+LT_AT_LIBTOOLIZE([--ltdl])
+AT_CHECK([if test -f libltdl/configure.ac; then false; fi])
+
+# Support vanilla autoconf-2.59 & automake-1.9.6
+for file in argz.c lt__dirent.c lt__strl.c; do
+  cp libltdl/$file $file
+done
+
+LT_AT_ACLOCAL([-I libltdl/m4])
+LT_AT_AUTOHEADER
+LT_AT_AUTOMAKE([--add-missing --copy])
+LT_AT_AUTOCONF
+
+LT_AT_CONFIGURE
+LT_AT_MAKE
+
+AT_CHECK([test -f libltdl/libltdlc.la])
+
+AT_CLEANUP
+
+
+## -------------------- ##
+## Copied libltdl tree. ##
+## -------------------- ##
+
+AT_SETUP([compiling copied libltdl])
+
+_LTDL_SETUP
+
+LT_AT_LIBTOOLIZE([--copy --ltdl])
+AT_CHECK([if test -f libltdl/configure.ac; then false; fi])
+
+# Support vanilla autoconf-2.59 & automake-1.9.6
+for file in argz.c lt__dirent.c lt__strl.c; do
+  cp libltdl/$file $file
+done
+
+LT_AT_ACLOCAL([-I libltdl/m4])
+LT_AT_AUTOHEADER
+LT_AT_AUTOMAKE([--add-missing --copy])
+LT_AT_AUTOCONF
+
+LT_AT_CONFIGURE
+LT_AT_MAKE
+
+AT_CHECK([test -f libltdl/libltdlc.la])
+
+AT_CLEANUP
+
+
+## ------------------------- ##
+## Installable libltdl tree. ##
+## ------------------------- ##
+
+AT_SETUP([installable libltdl])
+
+_LTDL_SETUP
+
+prefix=`pwd`/_inst
+
+LT_AT_LIBTOOLIZE([--copy --ltdl])
+AT_CHECK([if test -f libltdl/configure.ac; then false; fi])
+
+# Support vanilla autoconf-2.59 & automake-1.9.6
+for file in argz.c lt__dirent.c lt__strl.c; do
+  cp libltdl/$file $file
+done
+
+LT_AT_ACLOCAL([-I libltdl/m4])
+LT_AT_AUTOHEADER
+LT_AT_AUTOMAKE([--add-missing --copy])
+LT_AT_AUTOCONF
+
+LT_AT_CONFIGURE([--enable-ltdl-install --prefix=$prefix])
+LT_AT_MAKE([all install])
+
+AT_CHECK([test -f $prefix/lib/libltdl.la])
+AT_CHECK([test -f $prefix/include/ltdl.h])
+
+AT_CLEANUP
+
+dnl Be careful not to let the definition leak into other tests
+m4_popdef([_LTDL_SETUP])
