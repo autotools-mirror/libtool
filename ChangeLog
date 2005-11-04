@@ -1,3 +1,7 @@
+2005-11-04  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
+	* THANKS: Updated.
+
 2005-11-01  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
 	* libtool.m4 (_LT_AC_LOCK) [ solaris ]: Add `-64' to $LD if
