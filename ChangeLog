@@ -1,3 +1,12 @@
+2005-11-05  Kean Johnston  <jkj@sco.com>,
+	    Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* ltmain.in (link mode) [*-*-sco3.2v5*]: Don't pass through -lc,
+	nor add it to deplibs.
+	[*-*-sysv5*]: Ditto.
+	[*-*-openbsd*, *-*-freebsd*, *-*-dragonfly*]: Remove bogus
+	`$arg'.
+
 2005-11-04  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
 	* THANKS: Updated.

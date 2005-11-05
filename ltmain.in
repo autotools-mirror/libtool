@@ -1495,6 +1495,15 @@ EOF
 	    # Rhapsody C and math libraries are in the System framework
 	    deplibs="$deplibs -framework System"
 	    continue
+	    ;;
+	  *-*-sco3.2v5* | *-*-sco5v6*)
+	    # Causes problems with __ctype
+	    test "X$arg" = "X-lc" && continue
+	    ;;
+	  *-*-sysv4.2uw2* | *-*-sysv5* | *-*-unixware* | *-*-OpenUNIX*)
+	    # Compiler inserts libc in the correct place for threads to work
+	    test "X$arg" = "X-lc" && continue
+	    ;;
 	  esac
 	elif test "X$arg" = "X-lc_r"; then
 	 case $host in
@@ -3375,7 +3384,12 @@ EOF
 	    ;;
 	  *-*-openbsd* | *-*-freebsd* | *-*-dragonfly*)
 	    # Do not include libc due to us having libc/libc_r.
-	    test "X$arg" = "X-lc" && continue
+	    ;;
+	  *-*-sco3.2v5* | *-*-sco5v6*)
+	    # Causes problems with __ctype
+	    ;;
+	  *-*-sysv4.2uw2* | *-*-sysv5* | *-*-unixware* | *-*-OpenUNIX*)
+	    # Compiler inserts libc in the correct place for threads to work
 	    ;;
  	  *)
 	    # Add libc to deplibs on all other systems if necessary.
