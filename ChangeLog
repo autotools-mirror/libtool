@@ -1,5 +1,11 @@
 2005-11-06  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
+	* libtool.m4 (AC_LIBTOOL_LANG_C_CONFIG)
+	(AC_LIBTOOL_LANG_CXX_CONFIG, AC_LIBTOOL_LANG_F77_CONFIG)
+	(AC_LIBTOOL_LANG_GCJ_CONFIG):  Only call
+	AC_LIBTOOL_SYS_LIB_STRIP and AC_LIBTOOL_DLOPEN_SELF in the C
+	case, and without the tag argument.
+
 	* libtool.m4: Fix comments.
 
 2005-11-05  Kean Johnston  <jkj@sco.com>,
