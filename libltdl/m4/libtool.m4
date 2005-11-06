@@ -1640,7 +1640,7 @@ else
     ])
 
     if test "x$lt_cv_dlopen_self" = xyes; then
-      wl=$lt_prog_compiler_wl eval LDFLAGS=\"\$LDFLAGS $lt_prog_compiler_static\"
+      eval LDFLAGS=\"\$LDFLAGS $lt_prog_compiler_static\"
       AC_CACHE_CHECK([whether a statically linked program can dlopen itself],
     	  lt_cv_dlopen_self_static, [dnl
 	  _LT_TRY_DLOPEN_SELF(
@@ -4831,8 +4831,7 @@ dnl    [Compiler flag to generate thread safe objects])
 # defined.  These variables are subsequently used by _LT_CONFIG to write
 # the compiler configuration to `libtool'.
 m4_defun([_LT_LANG_C_CONFIG],
-[AC_REQUIRE([LT_SYS_DLOPEN_SELF])dnl
-m4_require([_LT_DECL_EGREP])dnl
+[m4_require([_LT_DECL_EGREP])dnl
 lt_save_CC="$CC"
 AC_LANG_PUSH(C)
 
@@ -4891,6 +4890,7 @@ if test -n "$compiler"; then
   _LT_LINKER_SHLIBS($1)
   _LT_SYS_DYNAMIC_LINKER($1)
   _LT_LINKER_HARDCODE_LIBPATH($1)
+  LT_SYS_DLOPEN_SELF
   _LT_CMD_STRIPLIB
 
   # Report which library types will actually be built
@@ -4960,7 +4960,6 @@ dnl AC_DEFUN([_LT_PROG_CXX], [])
 # the compiler configuration to `libtool'.
 m4_defun([_LT_LANG_CXX_CONFIG],
 [AC_REQUIRE([_LT_PROG_CXX])dnl
-AC_REQUIRE([LT_SYS_DLOPEN_SELF])dnl
 m4_require([_LT_FILEUTILS_DEFAULTS])dnl
 m4_require([_LT_DECL_EGREP])dnl
 
@@ -5920,7 +5919,6 @@ if test "$_lt_caught_CXX_error" != yes; then
     _LT_LINKER_SHLIBS($1)
     _LT_SYS_DYNAMIC_LINKER($1)
     _LT_LINKER_HARDCODE_LIBPATH($1)
-    _LT_CMD_STRIPLIB
 
     _LT_CONFIG($1)
   fi # test -n "$compiler"
@@ -6242,7 +6240,6 @@ if test "$_lt_disable_F77" != yes; then
     _LT_LINKER_SHLIBS($1)
     _LT_SYS_DYNAMIC_LINKER($1)
     _LT_LINKER_HARDCODE_LIBPATH($1)
-    _LT_CMD_STRIPLIB
 
     _LT_CONFIG($1)
   fi # test -n "$compiler"
@@ -6379,7 +6376,6 @@ if test "$_lt_disable_FC" != yes; then
     _LT_LINKER_SHLIBS($1)
     _LT_SYS_DYNAMIC_LINKER($1)
     _LT_LINKER_HARDCODE_LIBPATH($1)
-    _LT_CMD_STRIPLIB
 
     _LT_CONFIG($1)
   fi # test -n "$compiler"
@@ -6398,7 +6394,6 @@ AC_LANG_POP
 # to write the compiler configuration to `libtool'.
 m4_defun([_LT_LANG_GCJ_CONFIG],
 [AC_REQUIRE([LT_PROG_GCJ])dnl
-AC_REQUIRE([LT_SYS_DLOPEN_SELF])dnl
 AC_LANG_SAVE
 
 # Source file extension for Java test sources.
@@ -6445,7 +6440,6 @@ if test -n "$compiler"; then
   _LT_LINKER_SHLIBS($1)
   _LT_SYS_DYNAMIC_LINKER($1)
   _LT_LINKER_HARDCODE_LIBPATH($1)
-  _LT_CMD_STRIPLIB
 
   _LT_CONFIG($1)
 fi

@@ -1,5 +1,13 @@
 2005-11-06  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
+	* libltdl/m4/libtool.m4 (LT_SYS_DLOPEN_SELF): Revert
+	expansion of `$wl'.
+	(_LT_LANG_C_CONFIG, _LT_LANG_CXX_CONFIG, _LT_LANG_GCJ_CONFIG):
+	Do not require LT_SYS_DLOPEN_SELF.
+	(_LT_LANG_C_CONFIG): Instead call it at the right time.
+	(_LT_LANG_CXX_CONFIG, _LT_LANG_F77_CONFIG, _LT_LANG_FC_CONFIG)
+	(_LT_LANG_GCJ_CONFIG): Do not call _LT_CMD_STRIPLIB.
+
 	* Makefile.am: `2>&1' as suggested by Albert Chin.
 	* libltdl/m4/libtool.m4, libltdl/m4/ltdl.m4:
 	Two newlines before each macro, fix underlines.
