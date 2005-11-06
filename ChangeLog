@@ -1,3 +1,7 @@
+2005-11-06  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
+	* libtool.m4: Fix comments.
+
 2005-11-05  Kean Johnston  <jkj@sco.com>,
 	    Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
