@@ -424,7 +424,7 @@ dnl AC_DEFUN([AC_LTDL_SHLIBPATH], [])
 
 
 # LT_SYS_DLSEARCH_PATH
-# ---------------------
+# --------------------
 AC_DEFUN([LT_SYS_DLSEARCH_PATH],
 [m4_require([_LT_SYS_DYNAMIC_LINKER])dnl
 AC_CACHE_CHECK([for the default library search path],
@@ -452,7 +452,7 @@ dnl AC_DEFUN([AC_LTDL_SYSSEARCHPATH], [])
 
 
 # _LT_CHECK_DLPREOPEN
-# -----------------
+# -------------------
 m4_defun([_LT_CHECK_DLPREOPEN],
 [m4_require([_LT_CMD_GLOBAL_SYMBOLS])dnl
 AC_CACHE_CHECK([whether libtool supports -dlopen/-dlpreopen],
@@ -567,7 +567,7 @@ dnl AC_DEFUN([AC_LTDL_DLLIB], [])
 
 
 # LT_SYS_SYMBOL_USCORE
-# ---------------------
+# --------------------
 # does the compiler prefix global symbols with an underscore?
 AC_DEFUN([LT_SYS_SYMBOL_USCORE],
 [m4_require([_LT_CMD_GLOBAL_SYMBOLS])dnl

@@ -1,3 +1,9 @@
+2005-11-06  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
+	* Makefile.am: `2>&1' as suggested by Albert Chin.
+	* libltdl/m4/libtool.m4, libltdl/m4/ltdl.m4:
+	Two newlines before each macro, fix underlines.
+
 2005-11-05  Kean Johnston  <jkj@sco.com>,
 	    Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 

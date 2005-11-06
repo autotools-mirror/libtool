@@ -259,6 +259,7 @@ ltmain="$ac_aux_dir/ltmain.sh"
 # in macros and then make a single call at the end using the `libtool'
 # label.
 
+
 # _LT_CONFIG_LIBTOOL_INIT([INIT-COMMANDS])
 # ----------------------------------------
 # Register INIT-COMMANDS to be passed to AC_CONFIG_COMMANDS later.
@@ -270,6 +271,7 @@ m4_define([_LT_CONFIG_LIBTOOL_INIT],
 
 # Initialize.
 m4_define([_LT_OUTPUT_LIBTOOL_INIT])
+
 
 # _LT_CONFIG_LIBTOOL([COMMANDS])
 # ------------------------------
@@ -285,7 +287,7 @@ m4_define([_LT_OUTPUT_LIBTOOL_COMMANDS])
 
 
 # _LT_CONFIG_SAVE_COMMANDS([COMMANDS], [INIT_COMMANDS])
-# ---------------------------------------------------
+# -----------------------------------------------------
 m4_defun([_LT_CONFIG_SAVE_COMMANDS],
 [_LT_CONFIG_LIBTOOL([$1])
 _LT_CONFIG_LIBTOOL_INIT([$2])
@@ -307,6 +309,7 @@ m4_bpatsubst([m4_bpatsubst([$1], [^ *], [# ])],
 ## ------------------------ ##
 ## FIXME: Eliminate VARNAME ##
 ## ------------------------ ##
+
 
 # _LT_DECL([CONFIGNAME], VARNAME, VALUE, [DESCRIPTION], [IS-TAGGED?])
 # -------------------------------------------------------------------
@@ -332,7 +335,7 @@ m4_define([_LT_TAGDECL], [_LT_DECL([$1], [$2], [$3], [$4], [yes])])
 
 
 # lt_decl_tag_varnames([SEPARATOR], [VARNAME1...])
-# -------------------------------------------------
+# ------------------------------------------------
 m4_define([lt_decl_tag_varnames],
 [_lt_decl_filter([tagged?], [yes], $@)])
 m4_define([_lt_decl_filter],
@@ -346,18 +349,19 @@ m4_define([_lt_decl_filter],
 
 
 # lt_decl_quote_varnames([SEPARATOR], [VARNAME1...])
-# ---------------------------------------------------
+# --------------------------------------------------
 m4_define([lt_decl_quote_varnames],
 [_lt_decl_filter([value], [1], $@)])
 
+
 # lt_decl_dquote_varnames([SEPARATOR], [VARNAME1...])
-# ----------------------------------------------------
+# ---------------------------------------------------
 m4_define([lt_decl_dquote_varnames],
 [_lt_decl_filter([value], [2], $@)])
 
 
 # lt_decl_varnames_tagged([SEPARATOR], [VARNAME1...])
-# ----------------------------------------------------
+# ---------------------------------------------------
 m4_define([lt_decl_varnames_tagged],
 [_$0(m4_quote(m4_default([$1], [[, ]])),
      m4_quote(m4_if([$2], [],
@@ -411,6 +415,7 @@ m4_defun([_LT_LIBTOOL_TAGS],
 available_tags="_LT_TAGS"dnl
 ])
 
+
 # _LT_LIBTOOL_DECLARE(VARNAME, [TAG])
 # -----------------------------------
 # Extract the dictionary values for VARNAME (optionally with TAG) and
@@ -431,6 +436,7 @@ m4_case(m4_quote(lt_dict_fetch([lt_decl_dict], [$1], [value])),
 m4_ifval([$2], [_$2])[]m4_popdef([_libtool_name])[]dnl
 ])
 
+
 # _LT_LIBTOOL_CONFIG_VARS
 # -----------------------
 # Produce commented declarations of non-tagged libtool config variables
@@ -441,6 +447,7 @@ m4_defun([_LT_LIBTOOL_CONFIG_VARS],
 [m4_foreach([_lt_var],
     m4_quote(_lt_decl_filter([tagged?], [no], [], lt_decl_varnames)),
     [m4_n([_LT_LIBTOOL_DECLARE(_lt_var)])])])
+
 
 # _LT_LIBTOOL_TAG_VARS(TAG)
 # -------------------------
@@ -742,6 +749,7 @@ AC_DEFUN([LT_SUPPORTED_TAG], [])
 m4_define([_LT_LANG_C_enabled], [])
 m4_define([_LT_TAGS], [])
 
+
 # LT_LANG(LANG)
 # -------------
 # Enable libtool support for the given language if not already enabled.
@@ -759,6 +767,7 @@ m4_case([$1],
     [m4_fatal([$0: unsupported language: "$1"])])])dnl
 ])# LT_LANG
 
+
 # _LT_LANG(LANGNAME)
 # ------------------
 m4_defun([_LT_LANG],
@@ -768,6 +777,7 @@ m4_defun([_LT_LANG],
   m4_define([_LT_LANG_]$1[_enabled], [])dnl
   _LT_LANG_$1_CONFIG($1)])dnl
 ])# _LT_LANG
+
 
 # _LT_LANG_DEFAULT_CONFIG
 # -----------------------
@@ -817,7 +827,7 @@ dnl AC_DEFUN([AC_LIBTOOL_GCJ], [])
 
 
 # _LT_TAG_COMPILER
-# -------------------
+# ----------------
 m4_defun([_LT_TAG_COMPILER],
 [AC_REQUIRE([AC_PROG_CC])dnl
 
@@ -883,7 +893,7 @@ if test -z "$aix_libpath"; then aix_libpath="/usr/lib:/lib"; fi
 
 
 # _LT_SHELL_INIT(ARG)
-# ----------------------
+# -------------------
 m4_define([_LT_SHELL_INIT],
 [ifdef([AC_DIVERSION_NOTICE],
 	     [AC_DIVERT_PUSH(AC_DIVERSION_NOTICE)],
@@ -2979,7 +2989,7 @@ dnl AC_DEFUN([AC_PROG_NM], [])
 
 
 # LT_LIB_M
-# -------------
+# --------
 # check for math library
 AC_DEFUN([LT_LIB_M],
 [AC_REQUIRE([AC_CANONICAL_HOST])dnl
@@ -4920,6 +4930,7 @@ AC_LANG_POP
 CC="$lt_save_CC"
 ])# _LT_LANG_C_CONFIG
 
+
 # _LT_PROG_CXX
 # ------------
 # Since AC_PROG_CXX is broken, in that it returns g++ if there is no c++
@@ -4940,6 +4951,7 @@ popdef([AC_MSG_ERROR])
 
 dnl aclocal-1.4 backwards compatibility:
 dnl AC_DEFUN([_LT_PROG_CXX], [])
+
 
 # _LT_LANG_CXX_CONFIG([TAG])
 # --------------------------
@@ -6105,6 +6117,7 @@ _LT_TAGDECL([], [compiler_lib_search_path], [1],
     a shared library])
 ])# _LT_SYS_HIDDEN_LIBDEPS
 
+
 # _LT_PROG_F77
 # ------------
 # Since AC_PROG_F77 is broken, in that it returns the empty string
@@ -6121,6 +6134,7 @@ popdef([AC_MSG_ERROR])
 
 dnl aclocal-1.4 backwards compatibility:
 dnl AC_DEFUN([_LT_PROG_F77], [])
+
 
 # _LT_LANG_F77_CONFIG([TAG])
 # --------------------------
@@ -6257,8 +6271,9 @@ popdef([AC_MSG_ERROR])
 dnl aclocal-1.4 backwards compatibility:
 dnl AC_DEFUN([_LT_PROG_FC], [])
 
+
 # _LT_LANG_FC_CONFIG([TAG])
-# --------------------------
+# -------------------------
 # Ensure that the configuration variables for a Fortran compiler are
 # suitably defined.  These variables are subsequently used by _LT_CONFIG
 # to write the compiler configuration to `libtool'.
@@ -6441,7 +6456,7 @@ CC="$lt_save_CC"
 
 
 # _LT_LANG_RC_CONFIG([TAG])
-# --------------------------
+# -------------------------
 # Ensure that the configuration variables for the Windows resource compiler
 # are suitably defined.  These variables are subsequently used by _LT_CONFIG
 # to write the compiler configuration to `libtool'.
@@ -6606,6 +6621,7 @@ AC_MSG_RESULT([$SED])
 ])#AC_PROG_SED
 ])#m4_ifndef
 
+
 # _LT_CHECK_XSI_SHELL
 # -------------------
 # define func_basename as either Bourne or XSI compatible
@@ -6620,6 +6636,7 @@ xsi_shell=no
 AC_MSG_RESULT([$xsi_shell])
 _LT_CONFIG_LIBTOOL_INIT([xsi_shell='$xsi_shell'])
 ])# _LT_CHECK_XSI_SHELL
+
 
 # _LT_PROG_XSI_SHELLFNS
 # ---------------------
