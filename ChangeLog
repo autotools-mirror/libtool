@@ -1,5 +1,8 @@
 2005-11-06  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
+	* libtool.m4 (_LT_AC_TRY_DLOPEN_SELF): lt_unknown is
+	lt_dlunknown.
+
 	* libtool.m4 (AC_LIBTOOL_LANG_C_CONFIG)
 	(AC_LIBTOOL_LANG_CXX_CONFIG, AC_LIBTOOL_LANG_F77_CONFIG)
 	(AC_LIBTOOL_LANG_GCJ_CONFIG):  Only call
