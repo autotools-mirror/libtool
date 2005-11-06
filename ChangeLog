@@ -1,5 +1,8 @@
 2005-11-06  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
+	* libltdl/m4/libtool.m4 (_LT_TRY_DLOPEN_SELF): lt_unknown is
+	lt_dlunknown.
+
 	* libltdl/m4/libtool.m4 (LT_SYS_DLOPEN_SELF): Revert
 	expansion of `$wl'.
 	(_LT_LANG_C_CONFIG, _LT_LANG_CXX_CONFIG, _LT_LANG_GCJ_CONFIG):
