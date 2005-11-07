@@ -1,3 +1,12 @@
+2005-11-07  Albert Chin-A-Young  <china@thewrittenword.com>
+
+	* libltdl/m4/libtool.m4 (_LT_LINKER_SHLIBS)
+	(_LT_LANG_CXX_CONFIG) [ hpux10, hpux11 ]:
+	hardcode_libdir_flag_spec and hardcode_minus_L are the same for
+	hppa*64 and ia64*. Don't set
+	hardcode_libdir_flag_spec='-L$libdir' on ia64* because if you
+	specify +b and -L, +b overrides what is set into DT_RPATH.
+
 2005-11-07  Gary V. Vaughan  <gary@gnu.org>
 
 	* tests/testsuite.at (_LTDL_PROJECT_FILES): Factored out from

@@ -4393,25 +4393,15 @@ _LT_EOF
 	esac
       fi
       if test "$with_gnu_ld" = no; then
-	case $host_cpu in
-	hppa*64*)
-	  _LT_TAGVAR(hardcode_libdir_flag_spec, $1)='${wl}+b ${wl}$libdir'
-	  _LT_TAGVAR(hardcode_libdir_separator, $1)=:
-	  _LT_TAGVAR(hardcode_direct, $1)=no
-	  _LT_TAGVAR(hardcode_shlibpath_var, $1)=no
-	  ;;
-	ia64*)
-	  _LT_TAGVAR(hardcode_libdir_flag_spec, $1)='-L$libdir'
-	  _LT_TAGVAR(hardcode_direct, $1)=no
-	  _LT_TAGVAR(hardcode_shlibpath_var, $1)=no
+	_LT_TAGVAR(hardcode_libdir_flag_spec, $1)='${wl}+b ${wl}$libdir'
+	_LT_TAGVAR(hardcode_libdir_separator, $1)=:
 
-	  # hardcode_minus_L: Not really in the search PATH,
-	  # but as the default location of the library.
-	  _LT_TAGVAR(hardcode_minus_L, $1)=yes
+	case $host_cpu in
+	hppa*64*|ia64*)
+	  _LT_TAGVAR(hardcode_direct, $1)=no
+	  _LT_TAGVAR(hardcode_shlibpath_var, $1)=no
 	  ;;
 	*)
-	  _LT_TAGVAR(hardcode_libdir_flag_spec, $1)='${wl}+b ${wl}$libdir'
-	  _LT_TAGVAR(hardcode_libdir_separator, $1)=:
 	  _LT_TAGVAR(hardcode_direct, $1)=yes
 	  _LT_TAGVAR(export_dynamic_flag_spec, $1)='${wl}-E'
 
@@ -5407,32 +5397,21 @@ if test "$_lt_caught_CXX_error" != yes; then
 
       hpux10*|hpux11*)
         if test $with_gnu_ld = no; then
+  	  _LT_TAGVAR(hardcode_libdir_flag_spec, $1)='${wl}+b ${wl}$libdir'
+  	  _LT_TAGVAR(hardcode_libdir_separator, $1)=:
+
           case $host_cpu in
-            hppa*64*)
-  	      _LT_TAGVAR(hardcode_libdir_flag_spec, $1)='${wl}+b ${wl}$libdir'
-  	      _LT_TAGVAR(hardcode_libdir_separator, $1)=:
-              ;;
-            ia64*)
-  	      _LT_TAGVAR(hardcode_libdir_flag_spec, $1)='-L$libdir'
+            hppa*64*|ia64*)
               ;;
             *)
-  	      _LT_TAGVAR(hardcode_libdir_flag_spec, $1)='${wl}+b ${wl}$libdir'
-  	      _LT_TAGVAR(hardcode_libdir_separator, $1)=:
   	      _LT_TAGVAR(export_dynamic_flag_spec, $1)='${wl}-E'
               ;;
           esac
         fi
         case $host_cpu in
-          hppa*64*)
+          hppa*64*|ia64*)
             _LT_TAGVAR(hardcode_direct, $1)=no
             _LT_TAGVAR(hardcode_shlibpath_var, $1)=no
-            ;;
-          ia64*)
-            _LT_TAGVAR(hardcode_direct, $1)=no
-            _LT_TAGVAR(hardcode_shlibpath_var, $1)=no
-            _LT_TAGVAR(hardcode_minus_L, $1)=yes # Not in the search PATH,
-  					         # but as the default
-  					         # location of the library.
             ;;
           *)
             _LT_TAGVAR(hardcode_direct, $1)=yes
