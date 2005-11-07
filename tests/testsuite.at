@@ -165,6 +165,8 @@ m4_include([standalone.at])
 m4_include([subproject.at])
 # nonrecursive libltdl compilation
 m4_include([nonrecursive.at])
+# recursive libltdl compilation
+m4_include([recursive.at])
 # C++ templates tests
 m4_include([template.at])
 # Behaviour of LT_OUTPUT

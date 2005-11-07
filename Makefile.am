@@ -364,6 +364,7 @@ TESTSUITE_AT	= tests/testsuite.at \
 		  tests/libtoolize.at \
 		  tests/nonrecursive.at \
 		  tests/old-m4-iface.at \
+		  tests/recursive.at \
 		  tests/standalone.at \
 		  tests/deplibs-ident.at \
 		  tests/stresstest.at \
