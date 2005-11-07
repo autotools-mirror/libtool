@@ -133,6 +133,104 @@ AT_CHECK([test -n "[$]$1" || (exit 77)])
 ])
 
 
+## ------------------------------- ##
+## Files for a small ltdl project. ##
+## ------------------------------- ##
+
+# _LTDL_PROJECT_FILES([LTDL-DIR])
+# -------------------------------
+# LTDL-DIR is needed to generate a correct Makefile.  If the argument
+# is omitted, then no Makefile is created.
+m4_define([_LTDL_PROJECT_FILES],
+[AT_DATA([module.c],
+[[const char *
+hello (void)
+{
+  return "Hello!";
+}
+]])
+
+AT_DATA([main.c],
+[[#include <stdio.h>
+#include "ltdl.h"
+
+int
+main (int argc, char **argv)
+{
+  lt_dlhandle module;
+  const char *(*func) (void) = 0;
+  int status = 1;
+
+  LTDL_SET_PRELOADED_SYMBOLS();
+  if (lt_dlinit() != 0) {
+    fprintf (stderr, "error during initialisation: %s\n", lt_dlerror());
+    return 1;
+  }
+
+  module = lt_dlopen("module.la");
+  if (!module) {
+    fprintf (stderr, "error dlopening module.la: %s\n", lt_dlerror());
+    goto finish;
+  }
+
+  func = (const char *(*)(void)) lt_dlsym (module, "hello");
+  if (!func) {
+    fprintf (stderr, "error fetching func: %s\n", lt_dlerror());
+    goto finish;
+  }
+
+  printf ("%s\n", (*func) ());
+  status = 0;
+
+finish:
+  if (lt_dlexit() != 0) {
+    fprintf (stderr, "error during finalisation: %s\n", lt_dlerror());
+    status = 1;
+  }
+
+  return status;
+}
+]])
+
+m4_pushdef([_ARG_DIR], m4_bpatsubst([$1], [/*$]))
+m4_ifval([$1],
+[AT_DATA([Makefile],
+[[top_builddir	= .
+LIBTOOL		= ./]_ARG_DIR[/libtool
+INCLUDES	= -I./]_ARG_DIR[
+MODFLAGS	= -module -avoid-version -no-undefined
+
+LTCOMPILE = $(LIBTOOL) --tag=CC $(LIBTOOLFLAGS) --mode=compile \
+        $(CC) $(INCLUDES) $(CPPFLAGS) $(CFLAGS)
+LTLINK    = $(LIBTOOL) --tag=CC $(LIBTOOLFLAGS) --mode=link \
+        $(CC) $(CFLAGS) $(LDFLAGS)
+
+TARGETS		= ]_ARG_DIR[/libltdlc.la module.la ltdldemo$(EXEEXT)
+
+all: $(TARGETS)
+
+$(LIBTOOL) ]_ARG_DIR[/libltdlc.la: ]_ARG_DIR[/Makefile
+	cd ]_ARG_DIR[ && $(MAKE)
+
+]_ARG_DIR[/Makefile:
+	cd ]_ARG_DIR[ && ./configure $(CONFIGURE_OPTIONS)
+
+ltdldemo$(EXEEXT): $(LIBTOOL) module.la ]_ARG_DIR[/libltdlc.la main.lo
+	$(LTLINK) -o ltdldemo main.lo -dlopen module.la ./]_ARG_DIR[/libltdlc.la
+
+main.lo: $(LIBTOOL) main.c
+	$(LTCOMPILE) -c main.c
+
+module.la: $(LIBTOOL) module.lo
+	$(LTLINK) -o module.la module.lo $(MODFLAGS) -rpath /dev/null
+
+module.lo: $(LIBTOOL) module.c
+	$(LTCOMPILE) -c module.c
+]])])
+m4_popdef([_ARG_DIR])
+])# _LTDL_PROJECT_FILES
+
+
 # We use `dnl' in zillions of places...
 m4_pattern_allow([^dnl$])
 

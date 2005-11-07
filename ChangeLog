@@ -1,5 +1,10 @@
 2005-11-07  Gary V. Vaughan  <gary@gnu.org>
 
+	* tests/testsuite.at (_LTDL_PROJECT_FILES): Factored out from
+	common code to build a basic libltdl using project.
+	* tests/old-m4-iface.at, tests/standalone.at, tests/subproject.at:
+	Use it.
+
 	* doc/libtool.texi (Distributing libltdl): Document correct use of
 	LT_CONFIG_LTDL_DIR mode argument with Autoconf and Automake.
 

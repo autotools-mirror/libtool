@@ -91,8 +91,10 @@ AT_CLEANUP
 
 AT_SETUP([AC_WITH_LTDL])
 
+_LTDL_PROJECT_FILES
+
 AT_DATA([configure.in],
-[[AC_INIT(old.c)
+[[AC_INIT([main.c])
 AC_PROG_MAKE_SET
 AM_PROG_LIBTOOL
 AC_WITH_LTDL
@@ -108,7 +110,7 @@ LTLINK		= @LIBTOOL@ --mode=link @CC@ -no-undefined @CFLAGS@ @LDFLAGS@ -o $@
 SHELL		= @SHELL@
 @SET_MAKE@
 
-TARGETS    = libltdl/libltdlc.la module.la old@EXEEXT@
+TARGETS    = libltdl/libltdlc.la module.la ltdldemo@EXEEXT@
 
 all: $(TARGETS)
 
@@ -118,8 +120,8 @@ libltdl/libltdlc.la:
 module.la: module.lo
 	$(LTLINK) module.lo -module -avoid-version -rpath /dev/null
 
-old@EXEEXT@: old.@OBJEXT@
-	$(LTLINK) old.@OBJEXT@ -dlopen module.la @LIBLTDL@
+ltdldemo@EXEEXT@: main.@OBJEXT@
+	$(LTLINK) main.@OBJEXT@ -dlopen module.la @LIBLTDL@
 
 .SUFFIXES:
 .SUFFIXES: .c .@OBJEXT@ .lo
@@ -131,63 +133,12 @@ old@EXEEXT@: old.@OBJEXT@
 	$(LTCOMPILE) -c -o $@ $<
 ]])
 
-AT_DATA([old.c],
-[[#include <stdio.h>
-#include "ltdl.h"
-
-int main (int argc, char **argv)
-{
-  lt_dlhandle module;
-  const char *(*foo) (const char *) = 0;
-  int status = 1;
-
-  LTDL_SET_PRELOADED_SYMBOLS();
-  if (lt_dlinit() != 0) {
-    fprintf (stderr, "error during initialisation: %s\n", lt_dlerror());
-    return 1;
-  }
-
-  module = lt_dlopen("module.la");
-  if (!module) {
-    fprintf (stderr, "error dlopening module.la: %s\n", lt_dlerror());
-    goto finish;
-  }
-
-  foo = (const char *(*)(const char *)) lt_dlsym (module, "foo");
-  if (!foo) {
-    fprintf (stderr, "error fetching func: %s\n", lt_dlerror());
-    goto finish;
-  }
-
-  printf ("%s", (*foo) ("foo bar"));
-  status = 0;
-
-finish:
-  if (lt_dlexit() != 0) {
-    fprintf (stderr, "error during finalisation: %s\n", lt_dlerror());
-    status = 1;
-  }
-
-  return status;
-}
-]])
-
-AT_DATA([module.c],
-[[const char *
-foo (const char *str)
-{
-  while (*str++ != ' ')
-    ;
-  return str;
-}
-]])
-
 LT_AT_LIBTOOLIZE([--ltdl --install])
 LT_AT_ACLOCAL([-I libltdl/m4])
 LT_AT_AUTOCONF([--force])
 LT_AT_CONFIGURE
 LT_AT_MAKE
 
-LT_AT_EXEC_CHECK([./old], 0, [bar])
+LT_AT_EXEC_CHECK([./ltdldemo], 0, [ignore])
 
 AT_CLEANUP
