@@ -7,8 +7,8 @@
 
 # serial 9 LTDL_INIT
 
-# LT_CONFIG_LTDL_DIR(DIRECTORY)
-# -----------------------------
+# LT_CONFIG_LTDL_DIR(DIRECTORY, [LTDL-MODE])
+# ------------------------------------------
 # DIRECTORY contains the libltdl sources.  It is okay to call this
 # function multiple times, as long as the same DIRECTORY is always given.
 AC_DEFUN([LT_CONFIG_LTDL_DIR],
@@ -31,10 +31,16 @@ m4_case(_LTDL_DIR,
 	    [],
 	[m4_fatal([multiple libltdl directories: `]_LTDL_DIR[', `]_ARG_DIR['])])])
 m4_popdef([_ARG_DIR])
-])
+dnl If not otherwise defined, default to the 1.5.x compatible subproject mode:
+m4_if(_LTDL_MODE, [],
+	[m4_define([_LTDL_MODE], m4_default([$2], [subproject]))
+	m4_if([-1], [m4_bregexp(_LTDL_MODE, [\(subproject\|nonrecursive\)])],
+		[m4_fatal([unknown libltdl mode: ]_LTDL_MODE)])])
+])# LT_CONFIG_LTDL_DIR
 
 # Initialise:
 m4_define([_LTDL_DIR], [])
+m4_define([_LTDL_MODE], [])
 
 
 # LTDL_CONVENIENCE
@@ -138,6 +144,23 @@ dnl aclocal-1.4 backwards compatibility:
 dnl AC_DEFUN([AC_LIBLTDL_INSTALLABLE], [])
 
 
+# _LTDL_MODE_DISPATCH
+# -------------------
+m4_define([_LTDL_MODE_DISPATCH],
+[dnl If _LTDL_DIR is `.', then we are configuring libltdl itself:
+m4_if(_LTDL_DIR, [],
+	[],
+    dnl if _LTDL_MODE was not set already, the default value is `subproject':
+    [m4_case(m4_default(_LTDL_MODE, [subproject]),
+	  [subproject], [AC_CONFIG_SUBDIRS(_LTDL_DIR)
+			  _LT_SHELL_INIT([lt_dlopen_dir="$lt_ltdl_dir"])],
+	  [nonrecursive], [_LT_SHELL_INIT([lt_dlopen_dir="$lt_ltdl_dir"])],
+	[m4_fatal([unknown libltdl mode: ]_LTDL_MODE)])])dnl
+dnl Be careful not to expand twice:
+m4_define([$0], [])
+])# _LTDL_MODE_DISPATCH
+
+
 # LT_WITH_LTDL
 # ------------
 # Clients of libltdl can use this macro to allow the installer to
@@ -192,13 +215,14 @@ fi
 AC_MSG_CHECKING([whether to use included libltdl])
 AC_MSG_RESULT([$with_included_ltdl])
 
-AC_CONFIG_SUBDIRS(_LTDL_DIR)
-
-dnl Be certain that LTDL_INIT is invoked:
-AC_PROVIDE_IFELSE([LTDL_INIT],
-	[],
-    [LTDL_INIT
-    AC_DEFUN([LTDL_INIT], [])])
+dnl Be certain that LTDL_INIT is invoked if we are configuring libltdl
+dnl from here:
+m4_if(_LTDL_MODE, [subproject],
+	[_LTDL_MODE_DISPATCH],
+    [AC_PROVIDE_IFELSE([LTDL_INIT],
+	    [],
+	[LTDL_INIT
+	AC_DEFUN([LTDL_INIT], [])])])
 ])# LT_WITH_LTDL
 
 # Old name:
@@ -244,6 +268,9 @@ dnl if no DIRECTORY argument was passed.
 m4_provide_if([_LT_CONFIG_LTDL_DIR],
 	[m4_ifval([$1], [_LT_CONFIG_LTDL_DIR([$1])])],
     [_LT_CONFIG_LTDL_DIR(m4_default([$1], [libltdl]))])dnl
+
+dnl _LTDL_MODE specific code must be evaluated at least once:
+_LTDL_MODE_DISPATCH
 
 # In order that ltdl.c can compile, run AC_CONFIG_HEADERS for the user
 # if they did not call it themself.  This is so that ltdl.h can pick up
@@ -484,7 +511,7 @@ AC_CHECK_LIB([dl], [dlopen],
 	[AC_DEFINE([HAVE_LIBDL], [1],
 		   [Define if you have the libdl library or equivalent.])
 	LIBADD_DLOPEN="-ldl" libltdl_cv_lib_dl_dlopen="yes"
-	LT_DLLOADERS="$LT_DLLOADERS ${lt_ltdl_dir+$lt_ltdl_dir/}dlopen.la"],
+	LT_DLLOADERS="$LT_DLLOADERS ${lt_dlopen_dir+$lt_dlopen_dir/}dlopen.la"],
     [AC_LINK_IFELSE([AC_LANG_PROGRAM([[#if HAVE_DLFCN_H
 #  include <dlfcn.h>
 #endif
@@ -492,12 +519,12 @@ AC_CHECK_LIB([dl], [dlopen],
 	    [AC_DEFINE([HAVE_LIBDL], [1],
 		       [Define if you have the libdl library or equivalent.])
 	    libltdl_cv_func_dlopen="yes"
-	    LT_DLLOADERS="$LT_DLLOADERS ${lt_ltdl_dir+$lt_ltdl_dir/}dlopen.la"],
+	    LT_DLLOADERS="$LT_DLLOADERS ${lt_dlopen_dir+$lt_dlopen_dir/}dlopen.la"],
 	[AC_CHECK_LIB([svld], [dlopen],
 		[AC_DEFINE([HAVE_LIBDL], [1],
 			 [Define if you have the libdl library or equivalent.])
 	        LIBADD_DLOPEN="-lsvld" libltdl_cv_func_dlopen="yes"
-		LT_DLLOADERS="$LT_DLLOADERS ${lt_ltdl_dir+$lt_ltdl_dir/}dlopen.la"])])])
+		LT_DLLOADERS="$LT_DLLOADERS ${lt_dlopen_dir+$lt_dlopen_dir/}dlopen.la"])])])
 if test x"$libltdl_cv_func_dlopen" = xyes || test x"$libltdl_cv_lib_dl_dlopen" = xyes
 then
   lt_save_LIBS="$LIBS"
@@ -511,11 +538,11 @@ LIBADD_SHL_LOAD=
 AC_CHECK_FUNC([shl_load],
 	[AC_DEFINE([HAVE_SHL_LOAD], [1],
 		   [Define if you have the shl_load function.])
-	LT_DLLOADERS="$LT_DLLOADERS ${lt_ltdl_dir+$lt_ltdl_dir/}shl_load.la"],
+	LT_DLLOADERS="$LT_DLLOADERS ${lt_dlopen_dir+$lt_dlopen_dir/}shl_load.la"],
     [AC_CHECK_LIB([dld], [shl_load],
 	    [AC_DEFINE([HAVE_SHL_LOAD], [1],
 		       [Define if you have the shl_load function.])
-	    LT_DLLOADERS="$LT_DLLOADERS ${lt_ltdl_dir+$lt_ltdl_dir/}shl_load.la"
+	    LT_DLLOADERS="$LT_DLLOADERS ${lt_dlopen_dir+$lt_dlopen_dir/}shl_load.la"
 	    LIBADD_SHL_LOAD="-ldld"])])
 AC_SUBST([LIBADD_SHL_LOAD])
 
@@ -525,20 +552,20 @@ darwin[[1567]].*)
   AC_CHECK_FUNC([_dyld_func_lookup],
 	[AC_DEFINE([HAVE_DYLD], [1],
 		   [Define if you have the _dyld_func_lookup function.])
-	LT_DLLOADERS="$LT_DLLOADERS ${lt_ltdl_dir+$lt_ltdl_dir/}dyld.la"])
+	LT_DLLOADERS="$LT_DLLOADERS ${lt_dlopen_dir+$lt_dlopen_dir/}dyld.la"])
   ;;
 beos*)
-  LT_DLLOADERS="$LT_DLLOADERS ${lt_ltdl_dir+$lt_ltdl_dir/}load_add_on.la"
+  LT_DLLOADERS="$LT_DLLOADERS ${lt_dlopen_dir+$lt_dlopen_dir/}load_add_on.la"
   ;;
 cygwin* | mingw* | os2* | pw32*)
-  LT_DLLOADERS="$LT_DLLOADERS ${lt_ltdl_dir+$lt_ltdl_dir/}loadlibrary.la"
+  LT_DLLOADERS="$LT_DLLOADERS ${lt_dlopen_dir+$lt_dlopen_dir/}loadlibrary.la"
   ;;
 esac
 
 AC_CHECK_LIB([dld], [dld_link],
 	[AC_DEFINE([HAVE_DLD], [1],
 		   [Define if you have the GNU dld library.])
-		LT_DLLOADERS="$LT_DLLOADERS ${lt_ltdl_dir+$lt_ltdl_dir/}dld_link.la"])
+		LT_DLLOADERS="$LT_DLLOADERS ${lt_dlopen_dir+$lt_dlopen_dir/}dld_link.la"])
 AC_SUBST([LIBADD_DLD_LINK])
 
 m4_pattern_allow([^LT_DLPREOPEN$])

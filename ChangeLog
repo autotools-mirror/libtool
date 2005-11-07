@@ -1,3 +1,9 @@
+2005-11-07  Gary V. Vaughan  <gary@gnu.org>
+
+	* libltdl/m4/ltdl.m4 (LT_CONFIG_LTDL_DIR): Add LTDL-MODE
+	argument.
+	* configure.ac: Use it.
+
 2005-11-06  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
 	* libltdl/m4/libtool.m4 (_LT_TRY_DLOPEN_SELF): lt_unknown is
