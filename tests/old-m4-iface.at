@@ -182,7 +182,6 @@ foo (const char *str)
 }
 ]])
 
-touch config.h.in  # bug in current ltdl.m4
 LT_AT_LIBTOOLIZE([--ltdl --install])
 LT_AT_ACLOCAL([-I libltdl/m4])
 LT_AT_AUTOCONF([--force])

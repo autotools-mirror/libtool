@@ -280,10 +280,14 @@ _LTDL_MODE_DISPATCH
 AC_CONFIG_COMMANDS_PRE([dnl
 m4_pattern_allow([^LT_CONFIG_H$])dnl
 m4_ifset([AH_HEADER],
-	 [LT_CONFIG_H=AH_HEADER],
-	 [m4_ifset([AC_LIST_HEADERS],
-		   [LT_CONFIG_H=`echo "AC_LIST_HEADERS" | $SED 's,^[[      ]]*,,;s,[[ :]].*$,,'`],
-		   [LT_CONFIG_H=config.h;AC_CONFIG_HEADERS([config.h])])])])
+    [LT_CONFIG_H=AH_HEADER],
+    [m4_ifset([AC_LIST_HEADERS],
+	    [LT_CONFIG_H=`echo "AC_LIST_HEADERS" | $SED 's,^[[      ]]*,,;s,[[ :]].*$,,'`],
+	[LT_CONFIG_H=config.h
+	dnl subproject mode libltdl has its own config.h...
+	m4_if(_LTDL_MODE, [subproject],
+		[],
+	    [AC_CONFIG_HEADERS([config.h:config-h.in])])])])])
 AC_SUBST([LT_CONFIG_H])
 
 AC_CHECK_HEADERS([memory.h unistd.h dl.h sys/dl.h dld.h mach-o/dyld.h],

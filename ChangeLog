@@ -1,5 +1,11 @@
 2005-11-07  Gary V. Vaughan  <gary@gnu.org>
 
+	* libltdl/m4/ltdl.m4 (LTDL_INIT): Don't force running
+	AC_CONFIG_HEADERS for subproject ltdl.
+	* tests/old-m4-iface.at, tests/subproject.at: Remove workaround.
+
+2005-11-07  Gary V. Vaughan  <gary@gnu.org>
+
 	* libltdl/m4/ltdl.m4 (LT_CONFIG_LTDL_DIR): Add LTDL-MODE
 	argument.
 	* configure.ac: Use it.

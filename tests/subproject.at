@@ -42,8 +42,6 @@ foo_la_LDFLAGS = -module -avoid-version
 ]])
 
 echo 'static int dummy = 0;' > foo.c
-
-touch config.h.in
 ])# _LTDL_SETUP
 
 ## ------------------------ ##
@@ -97,11 +95,12 @@ AT_SETUP([installable libltdl])
 prefix=`pwd`/_inst
 
 _LTDL_SETUP
-touch config.h.in
+
 LT_AT_LIBTOOLIZE([--copy --ltdl])
 LT_AT_ACLOCAL([-I sub/ltdl/m4])
 LT_AT_AUTOMAKE([--add-missing --copy])
 LT_AT_AUTOCONF
+
 LT_AT_CONFIGURE([--enable-ltdl-install --prefix=$prefix])
 LT_AT_MAKE([all install])
 
