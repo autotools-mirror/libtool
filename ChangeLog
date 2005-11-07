@@ -1,3 +1,8 @@
+2005-11-07  Kean Johnston  <jkj@sco.com>
+
+	* ltmain.in (link mode) [ sysv4*uw2*, unixware7* ]: Work around linker
+	bug on older SCO systems.
+
 2005-11-07  Albert Chin-A-Young  <china@thewrittenword.com>
 
 	* libtool.m4 (AC_LIBTOOL_LANG_CXX_CONFIG)
