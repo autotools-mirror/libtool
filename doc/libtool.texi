@@ -4207,10 +4207,110 @@ or against both a local convenience library and an installed libltdl
 is bad.  Ensuring that only one copy of the libltdl sources are linked
 into any program is left as an exercise for the reader.
 
-@defmac LT_CONFIG_LTDL_DIR (@var{DIRECTORY})
+@defmac LT_CONFIG_LTDL_DIR (@var{DIRECTORY}. @var{LTDL-MODE})
 Declare @var{DIRECTORY} to be the location of the @code{libltdl}
 source files, for @command{libtoolize --ltdl} to place
-them. @xref{Invoking libtoolize}, for more details.
+them. @xref{Invoking libtoolize}, for more details.  Provided that you
+add an appropriate @code{LT_CONFIG_LTDL} call in your
+@file{configure.ac} before calling @command{libtoolize}, the
+appropriate @code{libltdl} files will be installed automatically without
+manually specifying the mode to @command{libtoolize} explicitly.
+
+@var{LTDL-MODE} can be either @samp{nonrecursive}, @samp{recursive}, or
+@samp{subproject} depending on how you wish for your project to build
+@code{libltdl}.  In order for @command{libtoolize} to detect
+@var{LTDL-MODE} correctly, if you supply one of these arguments, they
+must be given literally (i.e. macros or shell variables that expand to
+the correct @var{LTDL-MODE} will not work):
+
+@table @samp
+@item nonrecursive
+This is how the Libtool project distribution builds the @code{libltdl}
+we ship and install.  If you wish to use Automake to build
+@code{libltdl} without invoking a recursive make to descend into the
+@code{libltdl} subdirectory, then use this option.  You will need to set
+your configuration up carefully to make this work properly, and you will
+need releases of Autoconf and Automake that support
+@code{subdir-objects} and @code{LIBOBJDIR} properly.  In your
+@file{configure.ac}, add:
+
+@example
+AM_INIT_AUTOMAKE([subdir-objects])
+AC_PROG_CC
+AM_PROG_CC_C_O
+LT_CONFIG_LTDL_DIR([libltdl], [nonrecursive])
+LT_WITH_LTDL
+@end example
+
+@noindent
+And add the following near the top of your @file{Makefile.am}:
+
+@example
+AM_CPPFLAGS =
+AM_LDFLAGS =
+
+BUILT_SOURCES =
+EXTRA_DIST =
+CLEANFILES =
+MOSTLYCLEANFILES =
+
+noinst_LTLIBRARIES =
+lib_LTLIBRARIES =
+EXTRA_LTLIBRARIES =
+
+include libltdl/Makefile.inc
+@end example
+
+@noindent
+Unless you don't build any other libraries from this @file{Makefile.am},
+you will also need to change @code{lib_LTLIBRARIES} to assign with
+@samp{+=} so that the @code{libltdl} targets declared in
+@file{Makefile.inc} are not overwritten.
+
+@item recursive
+This build mode still requires that you use Automake, but (in contrast
+with @samp{nonrecursive}) uses the more usual device of starting another
+@code{make} process in the @file{libltdl} subdirectory.  To use this
+mode, you should add to your @file{configure.ac}:
+
+@example
+AM_INIT_AUTOMAKE
+LT_CONFIG_LTDL_DIR([libltdl], [recursive])
+LT_WITH_LTDL
+AC_CONFIG_FILES([libltdl/Makefile])
+@end example
+
+@noindent
+and to your @file{Makefile.am}:
+
+@example
+SUBDIRS = libltdl
+@end example
+
+@item subproject
+This mode is the default unless you declare otherwise with
+@code{LT_CONFIG_LTDL_DIR}, and is the only mode supported by previous
+releases of libltdl.  If you do not use Autoconf in the parent project,
+then @samp{subproject} mode @code{libltdl} contains all the necessary
+files to configure and build itself -- you just need to arrange for your
+build system to call @file{libltdl/configure} with appropriate options,
+and then run @code{make} in the @code{libltdl} subdirectory.
+
+If you @emph{are} using Autoconf and Automake, then you will need to add
+the following to your @file{configure.ac}:
+
+@example
+LT_CONFIG_LTDL_DIR([libltdl], [subproject])
+LT_WITH_LTDL
+@end example
+
+@noindent
+and to @file{Makefile.am}:
+
+@example
+SUBDIRS = libltdl
+@end example
+@end table
 @end defmac
 
 @defmac LT_WITH_LTDL

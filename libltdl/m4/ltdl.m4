@@ -155,7 +155,7 @@ m4_if(_LTDL_DIR, [],
 	  [subproject], [AC_CONFIG_SUBDIRS(_LTDL_DIR)
 			  _LT_SHELL_INIT([lt_dlopen_dir="$lt_ltdl_dir"])],
 	  [nonrecursive], [_LT_SHELL_INIT([lt_dlopen_dir="$lt_ltdl_dir"])],
-	  [recursive]' [],
+	  [recursive], [],
 	[m4_fatal([unknown libltdl mode: ]_LTDL_MODE)])])dnl
 dnl Be careful not to expand twice:
 m4_define([$0], [])

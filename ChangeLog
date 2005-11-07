@@ -1,11 +1,19 @@
 2005-11-07  Gary V. Vaughan  <gary@gnu.org>
 
+	* doc/libtool.texi (Distributing libltdl): Document correct use of
+	LT_CONFIG_LTDL_DIR mode argument with Autoconf and Automake.
+
+2005-11-07  Gary V. Vaughan  <gary@gnu.org>
+
 	Support 'recursive' mode for building libltdl: Automake will
 	recursively descend into the libltdl directory, and use libltdl's
 	Makefile.am code to build libltdl:
+
 	* ltdl.m4 (LT_CONFIG_LTDL_DIR): Don't barf on 'recursive' mode
 	for 2nd argument.
 	(_LTDL_MODE_DISPATCH): Handle recursive mode.
+
+2005-11-07  Gary V. Vaughan  <gary@gnu.org>
 
 	* tests/recursive.at: New tests for libltdl as a subdirectory,
 	configured and compiled from the toplevel project using a
