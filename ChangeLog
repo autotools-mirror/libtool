@@ -1,18 +1,21 @@
 2005-11-07  Gary V. Vaughan  <gary@gnu.org>
 
+	Support 'recursive' mode for building libltdl: Automake will
+	recursively descend into the libltdl directory, and use libltdl's
+	Makefile.am code to build libltdl:
+	* ltdl.m4 (LT_CONFIG_LTDL_DIR): Don't barf on 'recursive' mode
+	for 2nd argument.
+	(_LTDL_MODE_DISPATCH): Handle recursive mode.
+
 	* tests/recursive.at: New tests for libltdl as a subdirectory,
 	configured and compiled from the toplevel project using a
 	recursive make..
 	* tests/testsuite.at: Use it.
 	* Makefile.am (TESTSUITE_AT): Depend on it.
 
-2005-11-07  Gary V. Vaughan  <gary@gnu.org>
-
 	* libltdl/m4/ltdl.m4 (LTDL_INIT): Don't force running
 	AC_CONFIG_HEADERS for subproject ltdl.
 	* tests/old-m4-iface.at, tests/subproject.at: Remove workaround.
-
-2005-11-07  Gary V. Vaughan  <gary@gnu.org>
 
 	* libltdl/m4/ltdl.m4 (LT_CONFIG_LTDL_DIR): Add LTDL-MODE
 	argument.

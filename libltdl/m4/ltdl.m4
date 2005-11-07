@@ -34,7 +34,7 @@ m4_popdef([_ARG_DIR])
 dnl If not otherwise defined, default to the 1.5.x compatible subproject mode:
 m4_if(_LTDL_MODE, [],
 	[m4_define([_LTDL_MODE], m4_default([$2], [subproject]))
-	m4_if([-1], [m4_bregexp(_LTDL_MODE, [\(subproject\|nonrecursive\)])],
+	m4_if([-1], [m4_bregexp(_LTDL_MODE, [\(subproject\|\(non\)?recursive\)])],
 		[m4_fatal([unknown libltdl mode: ]_LTDL_MODE)])])
 ])# LT_CONFIG_LTDL_DIR
 
@@ -155,6 +155,7 @@ m4_if(_LTDL_DIR, [],
 	  [subproject], [AC_CONFIG_SUBDIRS(_LTDL_DIR)
 			  _LT_SHELL_INIT([lt_dlopen_dir="$lt_ltdl_dir"])],
 	  [nonrecursive], [_LT_SHELL_INIT([lt_dlopen_dir="$lt_ltdl_dir"])],
+	  [recursive]' [],
 	[m4_fatal([unknown libltdl mode: ]_LTDL_MODE)])])dnl
 dnl Be careful not to expand twice:
 m4_define([$0], [])
