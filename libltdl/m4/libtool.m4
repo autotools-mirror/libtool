@@ -2452,6 +2452,15 @@ uts4*)
 esac
 AC_MSG_RESULT([$dynamic_linker])
 test "$dynamic_linker" = no && can_build_shared=no
+
+variables_saved_for_relink="PATH $shlibpath_var $runpath_var"
+if test "$GCC" = yes; then
+  variables_saved_for_relink="$variables_saved_for_relink GCC_EXEC_PREFIX COMPILER_PATH LIBRARY_PATH"
+fi
+
+_LT_DECL([], [variables_saved_for_relink], [1],
+    [Variables whose values should be saved in libtool wrapper scripts and
+    restored at link time])
 _LT_DECL([], [need_lib_prefix], [0],
     [Do we need the "lib" prefix for modules?])
 _LT_DECL([], [need_version], [0], [Do we need a version for libraries?])
@@ -4683,14 +4692,6 @@ _LT_DECL([], [libext], [0], [Old archive suffix (normally "a")])dnl
 _LT_DECL([], [shrext_cmds], [1], [Shared library suffix (normally ".so")])dnl
 _LT_DECL([], [extract_expsyms_cmds], [2],
     [The commands to extract the exported symbol list from a shared archive])
-
-variables_saved_for_relink="PATH $shlibpath_var $runpath_var"
-if test "$GCC" = yes; then
-  variables_saved_for_relink="$variables_saved_for_relink GCC_EXEC_PREFIX COMPILER_PATH LIBRARY_PATH"
-fi
-_LT_DECL([], [variables_saved_for_relink], [1],
-    [Variables whose values should be saved in libtool wrapper scripts and
-    restored at link time])
 
 #
 # Do we need to explicitly link libc?
