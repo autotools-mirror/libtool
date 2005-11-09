@@ -2646,16 +2646,6 @@ if test -n "$_LT_AC_TAGVAR(lt_prog_cc_shlib, $1)"; then
 fi
 
 
-#
-# Check to make sure the static flag actually works.
-#
-AC_LIBTOOL_LINKER_OPTION([if $compiler static flag $_LT_AC_TAGVAR(lt_prog_compiler_static, $1) works],
-  _LT_AC_TAGVAR(lt_prog_compiler_static_works, $1),
-  $_LT_AC_TAGVAR(lt_prog_compiler_static, $1),
-  [],
-  [_LT_AC_TAGVAR(lt_prog_compiler_static, $1)=])
-
-
 ## CAVEAT EMPTOR:
 ## There is no encapsulation within the following macros, do not change
 ## the running order or otherwise move them around unless you know exactly
@@ -5256,6 +5246,15 @@ case $host_os in
     _LT_AC_TAGVAR(lt_prog_compiler_pic, $1)="$_LT_AC_TAGVAR(lt_prog_compiler_pic, $1)ifelse([$1],[],[ -DPIC],[ifelse([$1],[CXX],[ -DPIC],[])])"
     ;;
 esac
+
+#
+# Check to make sure the static flag actually works.
+#
+AC_LIBTOOL_LINKER_OPTION([if $compiler static flag $_LT_AC_TAGVAR(lt_prog_compiler_static, $1) works],
+  _LT_AC_TAGVAR(lt_prog_compiler_static_works, $1),
+  $_LT_AC_TAGVAR(lt_prog_compiler_static, $1),
+  [],
+  [_LT_AC_TAGVAR(lt_prog_compiler_static, $1)=])
 ])
 
 

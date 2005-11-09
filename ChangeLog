@@ -1,3 +1,11 @@
+2005-11-09  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
+	* libtool.m4 (AC_LIBTOOL_LANG_C_CONFIG): Move static_flag
+	check..
+	(AC_LIBTOOL_PROG_COMPILER_PIC): ..here, so that both
+	`lt_prog_compiler_static' have actually been set, and the check
+	is applied to each tag.
+
 2005-11-07  Kean Johnston  <jkj@sco.com>
 
 	* ltmain.in (link mode) [ sysv4*uw2*, unixware7* ]: Work around linker
