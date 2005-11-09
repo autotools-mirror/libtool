@@ -1,5 +1,11 @@
 2005-11-09  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
+	* libtool.m4 (AC_LIBTOOL_PROG_LD_SHLIBS): Move setting of
+	`variables_saved_for_relink'..
+	(AC_LIBTOOL_SYS_DYNAMIC_LINKER): here, when both `shlibpath_var'
+	and `runpath_var' have been set.
+	Reported by Mike Frysinger <vapier@gentoo.org>.
+
 	* libtool.m4 (AC_LIBTOOL_LANG_C_CONFIG): Move static_flag
 	check..
 	(AC_LIBTOOL_PROG_COMPILER_PIC): ..here, so that both
