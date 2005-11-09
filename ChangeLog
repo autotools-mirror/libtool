@@ -1,3 +1,10 @@
+2005-11-09  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
+	* libltdl/Makefile.inc (AM_CPPFLAGS): Do not define
+	HAVE_CONFIG_H.
+	* libltdl/m4/ltdl.m4 (LTDL_INIT): Do not invoke
+	AC_CONFIG_HEADERS ourselves, we can build with or without now.
+
 2005-11-07  Kean Johnston  <jkj@sco.com>
 
 	* libltdl/config/ltmain.m4sh (func_mode_link) [ sysv4*uw2*,
