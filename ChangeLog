@@ -1,5 +1,10 @@
 2005-11-09  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
+	* libltdl/m4/libtool.m4 (_LT_LINKER_SHLIBS): Also set pic_flag.
+	(_LT_LANG_CXX_CONFIG): Use $as_unset, not unset.
+	(_LT_LANG_F77_CONFIG, _LT_LANG_FC_CONFIG): Remove bogus
+	ld_shlibs tests.
+
 	* libltdl/m4/libtool.m4 (_LT_LINKER_SHLIBS): Move setting of
 	`variables_saved_for_relink'..
 	(_LT_SYS_DYNAMIC_LINKER): here, when both `shlibpath_var'
