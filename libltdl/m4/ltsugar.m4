@@ -23,12 +23,12 @@ m4_define([lt_join],
 	 [1], [],
 	 [2], [[$2]],
 	 [m4_ifval([$2],
-		   [m4_ifval([$3],
-			     [[$2][$1][]$0([$1], m4_shiftn(2, $@))],
-		       [m4_if([$#], [3],
-			      [$2],
-			   [$0([$1], [$2], m4_shiftn(3, $@))])])],
-	      [$0([$1], m4_shiftn(2, $@))])])[]dnl
+	 	   [[$2][]m4_foreach(_lt_Arg, lt_car([m4_shiftn(2, $@)]),
+	                   [_$0([$1], _lt_Arg)])],
+		   [$0([$1], m4_shiftn(2, $@))])])[]dnl
+])
+m4_define([_lt_join],
+[m4_ifval([$2],[$1][$2])[]dnl
 ])
 
 
@@ -43,6 +43,7 @@ m4_define([lt_cdr],
 [m4_if([$#], 0, [m4_fatal([$0: cannot be called without arguments])],
        [$#], 1, [],
        [m4_dquote(m4_shift($@))])])
+m4_define([lt_unquote], $1)
 
 
 # lt_combine(SEP, PREFIX-LIST, INFIX, SUFFIX1, [SUFFIX2...])
@@ -52,14 +53,11 @@ m4_define([lt_cdr],
 # has the form PREFIXmINFIXSUFFIXn.
 m4_define([lt_combine],
 [m4_if([$2], [], [],
-       [lt_join(m4_quote(m4_default([$1], [[, ]])),
-		_$0([$1], lt_car($2)[$3], m4_shiftn(3, $@)),
-		$0([$1], lt_cdr($2), m4_shiftn(2, $@)))])])
-m4_define([_lt_combine],
-[m4_if([$3], [], [],
-       [lt_join(m4_quote(m4_default([$1], [[, ]])),
-		[$2$3],
-		$0([$1], [$2], m4_shiftn(3, $@)))])[]dnl
+  [m4_if([$4], [], [],
+    [lt_join(m4_quote(m4_default([$1], [[, ]])),
+      lt_unquote(m4_split(m4_normalize(m4_foreach(_Lt_prefix, [$2],
+       		   [m4_foreach(_Lt_suffix, lt_car([m4_shiftn(3, $@)]),
+		   	       [_Lt_prefix[]$3[]_Lt_suffix ])])))))])])dnl
 ])
 
 
@@ -104,10 +102,10 @@ m4_define([lt_if_dict_fetch],
 
 
 # lt_dict_filter(DICT, [SUBKEY], VALUE, [SEPARATOR], KEY, [...])
-# ------------------------------------------------------------
+# --------------------------------------------------------------
 m4_define([lt_dict_filter],
 [m4_if([$5], [], [],
   [lt_join(m4_quote(m4_default([$4], [[, ]])),
-	   m4_quote(lt_if_dict_fetch([$1], [$5], [$2], [$3], [$5])),
-	   m4_quote($0([$1], [$2], [$3], [$4], m4_shiftn(5, $@))))])dnl
+           lt_unquote(m4_split(m4_normalize(m4_foreach(_Lt_key, lt_car([m4_shiftn(4, $@)]),
+		      [lt_if_dict_fetch([$1], _Lt_key, [$2], [$3], [_Lt_key ])])))))])[]dnl
 ])

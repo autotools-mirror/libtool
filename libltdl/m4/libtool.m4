@@ -338,6 +338,10 @@ m4_define([_LT_TAGDECL], [_LT_DECL([$1], [$2], [$3], [$4], [yes])])
 # ------------------------------------------------
 m4_define([lt_decl_tag_varnames],
 [_lt_decl_filter([tagged?], [yes], $@)])
+
+
+# _lt_decl_filter(SUBKEY, VALUE, [SEPARATOR], [VARNAME1..])
+# ---------------------------------------------------------
 m4_define([_lt_decl_filter],
 [m4_case([$#],
   [0], [m4_fatal([$0: too few arguments: $#])],

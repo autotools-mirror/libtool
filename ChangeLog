@@ -1,3 +1,10 @@
+2005-11-10  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
+	* libltdl/m4/ltsugar.m4 (lt_join, lt_combine, lt_dict_filter):
+	Rewrite to eliminate tail recursion; use ..
+	(lt_unquote): New trivial helper macro.
+	* libltdl/m4/libtool.m4 (_lt_decl_filter): Document.
+
 2005-11-10  Gary V. Vaughan  <gary@gnu.org>
 
 	* tests/testsuite.ac (macrodir): Don't set it here...
