@@ -1,3 +1,9 @@
+2005-11-10  Albert Chin-A-Young  <china@thewrittenword.com>
+
+	* libltdl/m4/libtool.m4 (_LT_LANG_CXX_CONFIG)
+	<hppa*64,ia64, aCC,g++>:
+	Use C++ compiler for linking rather than ld.
+
 2005-11-10  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
 	* libltdl/m4/ltsugar.m4 (lt_join, lt_combine, lt_dict_filter):
