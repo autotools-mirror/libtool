@@ -1,5 +1,8 @@
 2005-11-10  Gary V. Vaughan  <gary@gnu.org>
 
+	* tests/am-subdir.at: Now that we don't run autoreconf, we have to
+	explicitly tell aclocal what flags to use.
+
 	* tests/testsuite.at (LT_AT_BOOTSTRAP): Allow passing arguments to
 	configure.
 	* tests/old-m4-iface.at, tests/subproject.at: Use LT_AT_BOOTSTRAP.

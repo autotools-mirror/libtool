@@ -74,7 +74,7 @@ AT_DATA(expout,
 ** This is libsub **
 ]])
 
-LT_AT_BOOTSTRAP([--copy], [], [ignore], [--add-missing])
+LT_AT_BOOTSTRAP([--copy], [-I m4], [ignore], [--add-missing])
 
 LT_AT_EXEC_CHECK([subdir/subdemo], 0, expout)
 
@@ -150,7 +150,7 @@ AT_DATA([[subdir/sub.cxx]],
 int libsub::sub (void) { return 27; }
 ]])
 
-LT_AT_BOOTSTRAP([--copy], [], [ignore], [--add-missing])
+LT_AT_BOOTSTRAP([--copy], [-I m4], [ignore], [--add-missing])
 
 LT_AT_EXEC_CHECK([subdir/subdemo], 0)
 
