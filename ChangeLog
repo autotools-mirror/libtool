@@ -1,5 +1,14 @@
 2005-11-10  Gary V. Vaughan  <gary@gnu.org>
 
+	* tests/testsuite.ac (macrodir): Don't set it here...
+	* Makefile.am (BUILDCHECK_ENVIRONMENT, INSTALLCHECK_ENVIRONMENT):
+	...set it here to pick up files from the right place in context.
+	* tests/libtoolize.at, tests/old-m4-iface.at: Adjust.
+	* libtoolize.m4sh: Take tst_aclocaldir into account when running
+	inside the test harness.
+
+2005-11-10  Gary V. Vaughan  <gary@gnu.org>
+
 	* tests/am-subdir.at: Now that we don't run autoreconf, we have to
 	explicitly tell aclocal what flags to use.
 

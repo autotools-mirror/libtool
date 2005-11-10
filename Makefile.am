@@ -389,11 +389,13 @@ TESTS_ENVIRONMENT = MAKE="$(MAKE)" CC="$(CC)" CFLAGS="$(CFLAGS)" \
 
 BUILDCHECK_ENVIRONMENT = _lt_pkgdatadir="$(abs_top_srcdir)" \
 	LIBTOOLIZE="$(abs_top_builddir)/libtoolize" \
-	LIBTOOL="$(abs_top_builddir)/libtool"
+	LIBTOOL="$(abs_top_builddir)/libtool" \
+	tst_aclocaldir="$(abs_top_srcdir)/libltdl/m4"
 
 INSTALLCHECK_ENVIRONMENT = \
 	LIBTOOLIZE="$(bindir)/`echo libtoolize | sed '$(program_transform_name)'`" \
-	LIBTOOL="$(bindir)/`echo libtool | sed '$(program_transform_name)'`"
+	LIBTOOL="$(bindir)/`echo libtool | sed '$(program_transform_name)'`" \
+	tst_aclocaldir="$(aclocaldir)"
 
 check-recursive: $(srcdir)/$(TESTSUITE)
 

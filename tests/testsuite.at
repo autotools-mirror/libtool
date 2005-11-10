@@ -25,7 +25,6 @@ m4_divert_push([PREPARE_TESTS])dnl
 : ${AUTOMAKE=automake}
 : ${AUTORECONF=autoreconf}
 export ACLOCAL AUTOHEADER AUTOCONF AUTOMAKE AUTORECONF
-macrodir="$abs_top_srcdir/libltdl/m4"
 eval `$LIBTOOL --config | grep ^EGREP=`
 eval `$LIBTOOL --config | $EGREP '^(host|host_os|host_alias|build|ECHO)='`
 configure_options=
