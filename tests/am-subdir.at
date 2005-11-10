@@ -31,6 +31,7 @@ AT_DATA([[configure.ac]],
 [[AC_INIT([subdir-demo], ]]AT_PACKAGE_VERSION[[, ]]AT_PACKAGE_BUGREPORT[[)
 AM_INIT_AUTOMAKE([subdir-objects foreign])
 LT_INIT([win32-dll])
+AC_PROG_CC
 AM_PROG_CC_C_O
 AC_CONFIG_FILES([Makefile])
 AC_OUTPUT
@@ -73,8 +74,8 @@ AT_DATA(expout,
 ** This is libsub **
 ]])
 
-LT_AT_BOOTSTRAP
-LT_AT_MAKE
+LT_AT_BOOTSTRAP([--copy], [], [ignore], [--add-missing])
+
 LT_AT_EXEC_CHECK([subdir/subdemo], 0, expout)
 
 AT_CLEANUP
@@ -91,6 +92,7 @@ LT_AT_TAG([CXX])
 AT_DATA([[configure.ac]],
 [[AC_INIT([subdir-demo], ]]AT_PACKAGE_VERSION[[, ]]AT_PACKAGE_BUGREPORT[[)
 AM_INIT_AUTOMAKE([subdir-objects foreign])
+AC_PROG_CC
 AM_PROG_CC_C_O
 AC_PROG_CXX
 AC_PROG_CXXCPP
@@ -148,8 +150,8 @@ AT_DATA([[subdir/sub.cxx]],
 int libsub::sub (void) { return 27; }
 ]])
 
-LT_AT_BOOTSTRAP
-LT_AT_MAKE
+LT_AT_BOOTSTRAP([--copy], [], [ignore], [--add-missing])
+
 LT_AT_EXEC_CHECK([subdir/subdemo], 0)
 
 AT_CLEANUP

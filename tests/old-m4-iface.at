@@ -71,14 +71,11 @@ LT_AT_LIBTOOLIZE([--install])
 
 # This is slightly bogus, since only libtool.m4 was required in aclocal.m4
 # with libtool-1.5x...
-test -f aclocal.m4 \
-    || cat "$macrodir/libtool.m4" "$macrodir/ltoptions.m4" \
-	"$macrodir/ltsugar.m4" "$macrodir/ltversion.m4" > aclocal.m4 \
-    || exit 1
+AT_CHECK([test -f aclocal.m4 ||
+  cat "$macrodir/libtool.m4" "$macrodir/ltoptions.m4" \
+      "$macrodir/ltsugar.m4" "$macrodir/ltversion.m4" > aclocal.m4])
 
-LT_AT_AUTOCONF([--force])
-LT_AT_CONFIGURE
-LT_AT_MAKE
+LT_AT_BOOTSTRAP([ignore], [ignore], [ignore], [ignore], [--force])
 
 LT_AT_EXEC_CHECK([./old], 0, [Hello, World!])
 
@@ -133,11 +130,8 @@ ltdldemo@EXEEXT@: main.@OBJEXT@
 	$(LTCOMPILE) -c -o $@ $<
 ]])
 
-LT_AT_LIBTOOLIZE([--ltdl --install])
-LT_AT_ACLOCAL([-I libltdl/m4])
-LT_AT_AUTOCONF([--force])
-LT_AT_CONFIGURE
-LT_AT_MAKE
+LT_AT_BOOTSTRAP([--ltdl --install], [-I libltdl/m4], [ignore], [ignore],
+	[--force])
 
 LT_AT_EXEC_CHECK([./ltdldemo], 0, [ignore])
 

@@ -52,13 +52,7 @@ AT_SETUP([compiling softlinked libltdl])
 
 _LTDL_SETUP
 
-LT_AT_LIBTOOLIZE([--ltdl])
-LT_AT_ACLOCAL([-I sub/ltdl/m4])
-LT_AT_AUTOMAKE([--add-missing --copy])
-LT_AT_AUTOCONF
-
-LT_AT_CONFIGURE
-LT_AT_MAKE
+LT_AT_BOOTSTRAP([--ltdl], [-I sub/ltdl/m4], [ignore], [--add-missing --copy])
 
 AT_CHECK([test -f sub/ltdl/libltdlc.la])
 
@@ -73,13 +67,8 @@ AT_SETUP([compiling copied libltdl])
 
 _LTDL_SETUP
 
-LT_AT_LIBTOOLIZE([--copy --ltdl])
-LT_AT_ACLOCAL([-I sub/ltdl/m4])
-LT_AT_AUTOMAKE([--add-missing --copy])
-LT_AT_AUTOCONF
-
-LT_AT_CONFIGURE
-LT_AT_MAKE
+LT_AT_BOOTSTRAP([--copy --ltdl], [-I sub/ltdl/m4], [ignore],
+	[--add-missing --copy])
 
 AT_CHECK([test -f sub/ltdl/libltdlc.la])
 
@@ -96,13 +85,9 @@ prefix=`pwd`/_inst
 
 _LTDL_SETUP
 
-LT_AT_LIBTOOLIZE([--copy --ltdl])
-LT_AT_ACLOCAL([-I sub/ltdl/m4])
-LT_AT_AUTOMAKE([--add-missing --copy])
-LT_AT_AUTOCONF
-
-LT_AT_CONFIGURE([--enable-ltdl-install --prefix=$prefix])
-LT_AT_MAKE([all install])
+LT_AT_BOOTSTRAP([--copy --ltdl], [-I sub/ltdl/m4], [ignore],
+	[--add-missing --copy], [], [--enable-ltdl-install --prefix=$prefix],
+	[all install])
 
 AT_CHECK([test -f $prefix/lib/libltdl.la])
 AT_CHECK([test -f $prefix/include/ltdl.h])

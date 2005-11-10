@@ -76,13 +76,7 @@ for file in argz.c lt__dirent.c lt__strl.c; do
   cp libltdl/$file $file
 done
 
-LT_AT_ACLOCAL([-I libltdl/m4])
-LT_AT_AUTOHEADER
-LT_AT_AUTOMAKE([--add-missing --copy])
-LT_AT_AUTOCONF
-
-LT_AT_CONFIGURE
-LT_AT_MAKE
+LT_AT_BOOTSTRAP([ignore], [-I libltdl/m4], [ignore], [--add-missing --copy])
 
 AT_CHECK([test -f libltdl/libltdlc.la])
 
@@ -105,13 +99,7 @@ for file in argz.c lt__dirent.c lt__strl.c; do
   cp libltdl/$file $file
 done
 
-LT_AT_ACLOCAL([-I libltdl/m4])
-LT_AT_AUTOHEADER
-LT_AT_AUTOMAKE([--add-missing --copy])
-LT_AT_AUTOCONF
-
-LT_AT_CONFIGURE
-LT_AT_MAKE
+LT_AT_BOOTSTRAP([ignore], [-I libltdl/m4], [ignore], [--add-missing --copy])
 
 AT_CHECK([test -f libltdl/libltdlc.la])
 
@@ -136,13 +124,8 @@ for file in argz.c lt__dirent.c lt__strl.c; do
   cp libltdl/$file $file
 done
 
-LT_AT_ACLOCAL([-I libltdl/m4])
-LT_AT_AUTOHEADER
-LT_AT_AUTOMAKE([--add-missing --copy])
-LT_AT_AUTOCONF
-
-LT_AT_CONFIGURE([--enable-ltdl-install --prefix=$prefix])
-LT_AT_MAKE([all install])
+LT_AT_BOOTSTRAP([ignore], [-I libltdl/m4], [ignore], [--add-missing --copy],
+	[], [--enable-ltdl-install --prefix=$prefix], [all install])
 
 AT_CHECK([test -f $prefix/lib/libltdl.la])
 AT_CHECK([test -f $prefix/include/ltdl.h])

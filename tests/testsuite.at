@@ -105,12 +105,17 @@ m4_define([LT_AT_MAKE],
 ])
 
 
-# LT_AT_BOOTSTRAP
-# ---------------
+# LT_AT_BOOTSTRAP([LIBTOOLIZE-ARGS], [ACLOCAL-ARGS], [AUTOHEADER-ARGS],
+#	[AUTOMAKE-ARGS], [AUTOCONF-ARGS], [CONFIGURE-ARGS], [MAKE-ARGS])
+# ----------------------------------------------------------------------
 m4_define([LT_AT_BOOTSTRAP],
-[LT_AT_LIBTOOLIZE([--copy])
-LT_AT_AUTORECONF([--force --verbose --install])
-LT_AT_CONFIGURE
+[m4_if([$1], [ignore], [], [LT_AT_LIBTOOLIZE([$1])])
+m4_if([$2], [ignore], [], [LT_AT_ACLOCAL([$2])])
+m4_if([$3], [ignore], [], [LT_AT_AUTOHEADER([$3])])
+m4_if([$4], [ignore], [], [LT_AT_AUTOMAKE([$4])])
+m4_if([$5], [ignore], [], [LT_AT_AUTOCONF([$5])])
+m4_if([$6], [ignore], [], [LT_AT_CONFIGURE([$6])])
+m4_if([$7], [ignore], [], [LT_AT_MAKE([$7])])
 ])
 
 

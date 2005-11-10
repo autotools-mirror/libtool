@@ -1,3 +1,9 @@
+2005-11-10  Gary V. Vaughan  <gary@gnu.org>
+
+	* tests/testsuite.at (LT_AT_BOOTSTRAP): Allow passing arguments to
+	configure.
+	* tests/old-m4-iface.at, tests/subproject.at: Use LT_AT_BOOTSTRAP.
+
 2005-11-09  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
 	* libltdl/m4/libtool.m4 (_LT_LINKER_SHLIBS): Also set pic_flag.
