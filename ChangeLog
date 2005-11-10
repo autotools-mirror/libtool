@@ -5,7 +5,8 @@
 
 	* tests/testsuite.at (LT_AT_BOOTSTRAP): Allow passing arguments to
 	configure.
-	* tests/old-m4-iface.at, tests/subproject.at: Use LT_AT_BOOTSTRAP.
+	* tests/am-subdir.at, tests/nonrecursive.at, tests/old-m4-iface.at,
+	tests/subproject.at: Use LT_AT_BOOTSTRAP.
 
 2005-11-09  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
