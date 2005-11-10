@@ -1,3 +1,7 @@
+2005-11-10  Charles Wilson  <cygwin@cwilson.fastmail.fm>
+
+	* ltmain.in (func_win32_libid): use $SED not sed.
+
 2005-11-10  Albert Chin-A-Young  <china@thewrittenword.com>
 
 	* libtool.m4 (AC_LIBTOOL_LANG_CXX_CONFIG) [ hpux10, hpux11 ]

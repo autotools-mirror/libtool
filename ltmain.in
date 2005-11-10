@@ -157,7 +157,7 @@ func_win32_libid ()
     if eval $OBJDUMP -f $1 | $SED -e '10q' 2>/dev/null | \
       $EGREP -e 'file format pe-i386(.*architecture: i386)?' >/dev/null ; then
       win32_nmres=`eval $NM -f posix -A $1 | \
-	sed -n -e '1,100{/ I /{s,.*,import,;p;q;};}'`
+	$SED -n -e '1,100{/ I /{s,.*,import,;p;q;};}'`
       case $win32_nmres in
       import*)  win32_libid_type="x86 archive import";;
       *)        win32_libid_type="x86 archive static";;
