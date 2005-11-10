@@ -1,6 +1,11 @@
+2005-09-10  Charles Wilson  <cygwin@cwilson.fastmail.fm>
+
+	* libltdl/config/ltmain.m4sh (func_win32_libid): use $SED not
+	sed.
+	
 2005-11-10  Albert Chin-A-Young  <china@thewrittenword.com>
 
-	* libltdl/m4/libtool.m4 (_LT_LANG_CXX_CONFIG)
+	* libltdl/m4/libtool.m4 (_LT_LANG_CXX_CONFIG) [ hpux10, hpux11 ]
 	<hppa*64,ia64, aCC,g++>:
 	Use C++ compiler for linking rather than ld.
 
