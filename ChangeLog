@@ -1,3 +1,9 @@
+2005-11-11  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
+	* libltdl/m4/libtool.m4 (_LT_SYS_DYNAMIC_LINKER) [ freebsd ]:
+	Fix shlibpath_overrides_runpath settings.
+	Reported by Dave Benson <daveb@idealab.com>.
+
 2005-09-10  Charles Wilson  <cygwin@cwilson.fastmail.fm>
 
 	* libltdl/config/ltmain.m4sh (func_win32_libid): use $SED not
