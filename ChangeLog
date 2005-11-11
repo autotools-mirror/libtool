@@ -1,3 +1,9 @@
+2005-11-11  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
+	* libtool.m4 (AC_LIBTOOL_SYS_DYNAMIC_LINKER) [ freebsd ]:
+	Fix shlibpath_overrides_runpath settings.
+	Reported by Dave Benson <daveb@idealab.com>.
+
 2005-11-10  Charles Wilson  <cygwin@cwilson.fastmail.fm>
 
 	* ltmain.in (func_win32_libid): use $SED not sed.
