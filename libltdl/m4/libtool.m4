@@ -1631,7 +1631,7 @@ else
     test "x$ac_cv_header_dlfcn_h" = xyes && CPPFLAGS="$CPPFLAGS -DHAVE_DLFCN_H"
 
     save_LDFLAGS="$LDFLAGS"
-    eval LDFLAGS=\"\$LDFLAGS $export_dynamic_flag_spec\"
+    wl=$lt_prog_compiler_wl eval LDFLAGS=\"\$LDFLAGS $export_dynamic_flag_spec\"
 
     save_LIBS="$LIBS"
     LIBS="$lt_cv_dlopen_libs $LIBS"
@@ -1644,7 +1644,7 @@ else
     ])
 
     if test "x$lt_cv_dlopen_self" = xyes; then
-      eval LDFLAGS=\"\$LDFLAGS $lt_prog_compiler_static\"
+      wl=$lt_prog_compiler_wl eval LDFLAGS=\"\$LDFLAGS $lt_prog_compiler_static\"
       AC_CACHE_CHECK([whether a statically linked program can dlopen itself],
     	  lt_cv_dlopen_self_static, [dnl
 	  _LT_TRY_DLOPEN_SELF(
@@ -3817,9 +3817,10 @@ _LT_TAGDECL([pic_flag], [lt_prog_compiler_pic], [1],
 #
 # Check to make sure the static flag actually works.
 #
-_LT_LINKER_OPTION([if $compiler static flag $_LT_TAGVAR(lt_prog_compiler_static, $1) works],
+wl=$lt_prog_compiler_wl eval lt_tmp_static_flag=\"$_LT_TAGVAR(lt_prog_compiler_static, $1)\"
+_LT_LINKER_OPTION([if $compiler static flag $lt_tmp_static_flag works],
   _LT_TAGVAR(lt_prog_compiler_static_works, $1),
-  $_LT_TAGVAR(lt_prog_compiler_static, $1),
+  $lt_tmp_static_flag,
   [],
   [_LT_TAGVAR(lt_prog_compiler_static, $1)=])
 _LT_TAGDECL([link_static_flag], [lt_prog_compiler_static], [1],

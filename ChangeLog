@@ -1,7 +1,11 @@
 2005-11-12  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
-	* tests/defs.m4sh (func_configure_nofail): Actually pass
-	options (like --disable-shared) to func_configure.
+	* libltdl/m4/libtool.m4 (LT_SYS_DLOPEN_SELF, _LT_COMPILER_PIC):
+	Make sure `$wl' is properly expanded for tests involving
+	`export_dynamic_flag_spec', `lt_prog_compiler_static'.
+
+	* tests/defs.m4sh (func_configure): Actually pass
+	options (like --disable-shared) to func_configure_nofail.
 
 2005-11-11  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
