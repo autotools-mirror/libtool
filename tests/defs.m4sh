@@ -205,7 +205,7 @@ func_configure_nofail ()
 # Configure the demonstration, fail on error.
 func_configure ()
 {
-    func_configure_nofail
+    func_configure_nofail ${1+"$@"}
     if test "$conf_status" -eq "$EXIT_FAILURE"; then
       exit $EXIT_FAILURE
     fi
