@@ -1,3 +1,10 @@
+2005-11-12  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
+	* libtool.m4 (AC_LIBTOOL_DLOPEN_SELF)
+	(AC_LIBTOOL_PROG_COMPILER_PIC): Make sure `$wl' is properly
+	expanded for tests involving `export_dynamic_flag_spec',
+	`lt_prog_compiler_static'.
+
 2005-11-11  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
 	* libtool.m4 (AC_LIBTOOL_SYS_DYNAMIC_LINKER) [ freebsd ]:
