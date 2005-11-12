@@ -1,5 +1,8 @@
 2005-11-12  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
+	* libltdl.m4 (AC_LIBTOOL_PROG_COMPILER_PIC): `wl' is tagged
+	here.
+
 	* libtool.m4 (AC_LIBTOOL_DLOPEN_SELF)
 	(AC_LIBTOOL_PROG_COMPILER_PIC): Make sure `$wl' is properly
 	expanded for tests involving `export_dynamic_flag_spec',

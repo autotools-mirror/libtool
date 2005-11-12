@@ -5258,7 +5258,7 @@ esac
 #
 # Check to make sure the static flag actually works.
 #
-wl=$lt_prog_compiler_wl eval lt_tmp_static_flag=\"$_LT_AC_TAGVAR(lt_prog_compiler_static, $1)\"
+wl=$_LT_AC_TAGVAR(lt_prog_compiler_wl, $1) eval lt_tmp_static_flag=\"$_LT_AC_TAGVAR(lt_prog_compiler_static, $1)\"
 AC_LIBTOOL_LINKER_OPTION([if $compiler static flag $lt_tmp_static_flag works],
   _LT_AC_TAGVAR(lt_prog_compiler_static_works, $1),
   $lt_tmp_static_flag,
