@@ -1,5 +1,8 @@
 2005-11-12  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
+	* libltdl/m4/ltoptions.m4 (_LT_SET_OPTION): Use m4_warning
+	instead of m4_warn.
+
 	* libltdl/m4/libtool.m4 (_LT_COMPILER_PIC): `wl' is tagged here.
 
 	* libltdl/m4/libtool.m4 (LT_SYS_DLOPEN_SELF, _LT_COMPILER_PIC):

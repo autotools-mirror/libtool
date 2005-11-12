@@ -27,7 +27,7 @@ m4_define([_LT_SET_OPTION],
 [m4_define(_LT_MANGLE_OPTION([$1]))dnl
 m4_ifdef(_LT_MANGLE_DEFUN([$1]),
         _LT_MANGLE_DEFUN([$1]),
-    [m4_warn([Unknown Libtool option `$1'])])[]dnl
+    [m4_warning([Unknown Libtool option `$1'])])[]dnl
 ])
 
 
