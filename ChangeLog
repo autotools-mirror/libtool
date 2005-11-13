@@ -1,3 +1,8 @@
+2005-11-13  Albert Chin-A-Young  <china@thewrittenword.com>
+
+	* libtool.m4 (AC_LIBTOOL_PROG_LD_SHLIBS) [ hpux10 ]:
+	Link with cc rather than ld (backport from HEAD).
+
 2005-11-12  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
 	* libltdl.m4 (AC_LIBTOOL_PROG_COMPILER_PIC): `wl' is tagged
