@@ -4900,20 +4900,6 @@ compiler_DEFAULT=$CC
 _LT_COMPILER_BOILERPLATE
 _LT_LINKER_BOILERPLATE
 
-#
-# Check for any special shared library compilation flags.
-#
-_LT_TAGVAR(lt_prog_cc_shlib, $1)=
-if test -n "$_LT_TAGVAR(lt_prog_cc_shlib, $1)"; then
-  AC_MSG_WARN([`$CC' requires `$_LT_TAGVAR(lt_prog_cc_shlib, $1)' to build shared libraries])
-  if $ECHO "$old_CC $old_CFLAGS " | $GREP "[[ 	]]$_LT_TAGVAR(lt_prog_cc_shlib, $1)[[ 	]]" >/dev/null; then :
-  else
-    AC_MSG_WARN([add `$_LT_TAGVAR(lt_prog_cc_shlib, $1)' to the CC or CFLAGS env variable and reconfigure])
-    _LT_TAGVAR(lt_cv_prog_cc_can_build_shared, $1)=no
-  fi
-fi
-
-
 ## CAVEAT EMPTOR:
 ## There is no encapsulation within the following macros, do not change
 ## the running order or otherwise move them around unless you know exactly

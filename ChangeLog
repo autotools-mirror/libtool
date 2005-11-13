@@ -1,3 +1,8 @@
+2005-11-13  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
+	* libltdl/m4/libtool.m4 (_LT_LANG_C_CONFIG):
+	Removed `lt_prog_cc_shlib' cruft, not needed any more.
+
 2005-11-13  Kean Johnston  <jkj@sco.com>,
 	    Tim Rice  <tim@multitalents.net>
 
