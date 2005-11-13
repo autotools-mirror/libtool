@@ -1,3 +1,14 @@
+2005-11-13  Kean Johnston  <jkj@sco.com>,
+	    Tim Rice <tim@multitalents.net>
+
+	* libtool.m4 (AC_LIBTOOL_SYS_DYNAMIC_LINKER)
+	(AC_DEPLIBS_CHECK_METHOD, AC_LIBTOOL_LANG_C_CONFIG)
+	(AC_LIBTOOL_LANG_CXX_CONFIG, AC_LIBTOOL_PROG_COMPILER_PIC)
+	(AC_LIBTOOL_PROG_LD_SHLIBS)
+	[ sco3.2v5, sysv4, sysv4.3, sysv5, sco3.2v5, sco5v6, unixware,
+	OpenUNIX, sysv4*uw2 ]: Complete overhaul of SCO support.
+	* THANKS: Updated.
+
 2005-11-13  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
 	* tests/quote.test: Do not fail on harmless shell bug present
