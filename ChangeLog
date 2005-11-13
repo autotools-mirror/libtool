@@ -1,3 +1,9 @@
+2005-11-13  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
+	* tests/quote.test: Do not fail on harmless shell bug present
+	in some ksh88 versions.
+	Reported by Tim Rice <tim@multitalents.net> and others.
+
 2005-11-13  Albert Chin-A-Young  <china@thewrittenword.com>
 
 	* libtool.m4 (AC_LIBTOOL_PROG_LD_SHLIBS) [ hpux10 ]:

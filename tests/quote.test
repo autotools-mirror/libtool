@@ -114,9 +114,13 @@ for mode in compile link install; do
     $echo "= trying: \\$mchar quoting"
     result=`$libtool -n --mode=$mode $preargs ${preflag}"${flag}${mchar}test${mchar}" $postargs` || status=1
     match="${match_preflag}${flag}\\${mchar}test\\${mchar} "
+    alt_match="${match_preflag}\"${flag}\\${mchar}test\\${mchar}\" "
     case "$result" in
     *"$match"*)
       $echo "= passed: $result"
+      ;;
+    *"$alt_match"*)
+      $echo "= passed (harmless ksh bug): $result"
       ;;
     *)
       $echo "= failed: $result"
