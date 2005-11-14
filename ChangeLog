@@ -1,3 +1,7 @@
+2005-11-14  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
+	* libtoolize.m4sh: Revert use of `$tst_aclocaldir'.
+
 2005-11-13  Eric Blake  <ebb9@byu.net>
 
 	* libltdl/ltdl.c (lt_dlhandle_iterate): Fix endless loop.
@@ -21,7 +25,7 @@
 2005-11-13  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
 	* tests/quote.test: Do not fail on harmless shell bug present
-	in some ksh88 versions.
+	in some ksh versions.
 	Reported by Tim Rice <tim@multitalents.net> and others.
 
 2005-11-12  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>

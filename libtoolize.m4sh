@@ -1030,7 +1030,6 @@ func_nonemptydir_p ()
     pkgdatadir="$_lt_pkgdatadir/libltdl"
     aclocaldir="$_lt_pkgdatadir/libltdl/m4"
   fi
-  test -n "$tst_aclocaldir" && aclocaldir="$tst_aclocaldir"
   func_nonemptydir_p pkgltdldir
   func_nonemptydir_p pkgdatadir
   func_nonemptydir_p aclocaldir
