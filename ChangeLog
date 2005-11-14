@@ -1,5 +1,10 @@
 2005-11-14  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
+	* Makefile.am, libltdl/Makefile.inc (INSTALL_LTDL):
+	For nonrecursive mode, add to include_HEADERS as well.
+	* doc/libtool.texi (Invoking libtoolize, Distributing libltdl),
+	tests/nonrecursive.at: Adjusted, and removed TABS from .texi.
+
 	* libtoolize.m4sh: Revert use of `$tst_aclocaldir'.
 
 2005-11-13  Eric Blake  <ebb9@byu.net>

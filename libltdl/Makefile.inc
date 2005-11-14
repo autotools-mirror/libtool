@@ -39,7 +39,7 @@ ltdlincludedir		= $(includedir)/libltdl
 ltdlinclude_HEADERS	= libltdl/libltdl/lt_system.h \
 			  libltdl/libltdl/lt_error.h \
 			  libltdl/libltdl/lt_dlloader.h
-include_HEADERS		= libltdl/ltdl.h
+include_HEADERS	       += libltdl/ltdl.h
 lib_LTLIBRARIES	       += libltdl/libltdl.la
 endif
 

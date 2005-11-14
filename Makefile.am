@@ -36,6 +36,7 @@ CLEANFILES		=
 MOSTLYCLEANFILES	=
 DISTCLEANFILES		=
 
+include_HEADERS		=
 noinst_LTLIBRARIES	=
 lib_LTLIBRARIES		=
 EXTRA_LTLIBRARIES	=
@@ -204,6 +205,7 @@ $(srcdir)/libltdl/Makefile.am: $(srcdir)/libltdl/Makefile.inc
 	  echo 'AM_CPPFLAGS ='; \
 	  echo 'AM_LDFLAGS ='; \
 	  echo 'BUILT_SOURCES ='; \
+	  echo 'include_HEADERS ='; \
 	  echo 'noinst_LTLIBRARIES ='; \
 	  echo 'lib_LTLIBRARIES ='; \
 	  echo 'EXTRA_LTLIBRARIES ='; \

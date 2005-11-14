@@ -2259,18 +2259,19 @@ parent project:
 @example
 ## libltdl/Makefile.inc @r{appends to the following variables}
 ## @r{so we set them here before including it:}
-BUILT_SOURCES	   =
+BUILT_SOURCES   =
 
 AM_CPPFLAGS        =
 AM_LDFLAGS         =
 
+include_HEADERS    =
 noinst_LTLIBRARIES =
-lib_LTLIBRARIES	   =
+lib_LTLIBRARIES   =
 EXTRA_LTLIBRARIES  =
 
-EXTRA_DIST	   =
+EXTRA_DIST   =
 
-CLEANFILES	   =
+CLEANFILES   =
 MOSTLYCLEANFILES   =
 
 include libltdl/Makefile.inc
@@ -2707,7 +2708,7 @@ programs are linked against.  This convention is used especially on
 
 @example
 trick$ @kbd{ls /usr/lib/libbfd*}
-/usr/lib/libbfd.a	    /usr/lib/libbfd.so.2.7.0.2
+/usr/lib/libbfd.a           /usr/lib/libbfd.so.2.7.0.2
 /usr/lib/libbfd.so
 trick$
 @end example
@@ -4254,6 +4255,7 @@ EXTRA_DIST =
 CLEANFILES =
 MOSTLYCLEANFILES =
 
+include_HEADERS =
 noinst_LTLIBRARIES =
 lib_LTLIBRARIES =
 EXTRA_LTLIBRARIES =
