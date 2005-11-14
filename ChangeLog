@@ -1,5 +1,29 @@
 2005-11-14  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
+	Testsuite portability update round.
+
+	* tests/inherited_flags: skip when shared libs are disabled.
+	* tests/deplibs-ident.at [ aix ]: No unexpected failure here.
+	* tests/libtoolize.at: Fix for distcheck (readonly sources).
+	* tests/nonrecursive.at, tests/recursive.at, tests/subproject.at
+	(foo.c): Actually export a symbol, for AIX.
+	* tests/old-m4-iface.at: Use AC_LIBTOOL_DLOPEN, for AIX.
+	* tests/nonrecursive.at: Set foo_la_SOURCES, for automake-1.7.
+	* tests/subproject.at: Require automake-1.9, we use indirect
+	subdirs.
+	* tests/am-subdir.at: Move AT_KEYWORDS settings..
+	* tests/testsuite.at: ..here, in respective macros.
+	(LT_AT_AUTOMAKE): Skip if we detect failure due to old version.
+	(PREPARE_TESTS): Set autotool variables to `no' if not present.
+	(LT_AT_ACLOCAL, LT_AT_AUTOCONF, LT_AT_AUTOMAKE)
+	(LT_AT_AUTOHEADER, LT_AT_AUTORECONF): Use to XFAIL tests.
+	Reported by Tim Rice <tim@multitalents.net>.
+	(LT_AT_MAKE): Do not use `make -e'.
+	(_LTDL_PROJECT_FILES): Adjust sub-make call.  Work around `make'
+	which does not set `MAKE' or `SHELL'.  Fix for user-set
+	`CONFIG_SHELL'.
+	Reported by Charles Wilson <cygwin@cwilson.fastmail.fm>.
+
 	* libltdl/m4/lt~obsolete.m4 (_LT_CC_BASENAME)
 	(_LT_COMPILER_BOILERPLATE, _LT_LINKER_BOILERPLATE):
 	Added because they were added to branch-1-5 AC_DEFUNed.

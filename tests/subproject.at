@@ -36,12 +36,13 @@ AC_OUTPUT
 
 AT_DATA([Makefile.am],
 [[ACLOCAL_AMFLAGS = -I sub/ltdl/m4
+AUTOMAKE_OPTIONS = 1.9
 SUBDIRS = sub/ltdl
 lib_LTLIBRARIES = foo.la
 foo_la_LDFLAGS = -module -avoid-version
 ]])
 
-echo 'static int dummy = 0;' > foo.c
+echo 'int dummy = 0;' > foo.c
 ])# _LTDL_SETUP
 
 ## ------------------------ ##

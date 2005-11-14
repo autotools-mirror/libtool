@@ -25,11 +25,10 @@ AT_BANNER([Libtool's subdir-objects support.])
 ## ----------- ##
 
 AT_SETUP([C subdir-objects])
-AT_KEYWORDS([autoconf automake])
 
 AT_DATA([[configure.ac]],
 [[AC_INIT([subdir-demo], ]]AT_PACKAGE_VERSION[[, ]]AT_PACKAGE_BUGREPORT[[)
-AM_INIT_AUTOMAKE([subdir-objects foreign])
+AM_INIT_AUTOMAKE([subdir-objects foreign 1.5])
 LT_INIT([win32-dll])
 AC_PROG_CC
 AM_PROG_CC_C_O
@@ -86,12 +85,11 @@ AT_CLEANUP
 ## ------------- ##
 
 AT_SETUP([C++ subdir-objects])
-AT_KEYWORDS([autoconf automake])
 LT_AT_TAG([CXX])
 
 AT_DATA([[configure.ac]],
 [[AC_INIT([subdir-demo], ]]AT_PACKAGE_VERSION[[, ]]AT_PACKAGE_BUGREPORT[[)
-AM_INIT_AUTOMAKE([subdir-objects foreign])
+AM_INIT_AUTOMAKE([subdir-objects foreign 1.5])
 AC_PROG_CC
 AM_PROG_CC_C_O
 AC_PROG_CXX

@@ -24,6 +24,9 @@ m4_divert_push([PREPARE_TESTS])dnl
 : ${AUTOCONF=autoconf}
 : ${AUTOMAKE=automake}
 : ${AUTORECONF=autoreconf}
+for tool in ACLOCAL AUTOHEADER AUTOCONF AUTOMAKE AUTORECONF; do
+  if eval \$$tool --version >/dev/null 2>&1; then :; else eval $tool=no; fi
+done
 export ACLOCAL AUTOHEADER AUTOCONF AUTOMAKE AUTORECONF
 eval `$LIBTOOL --config | grep ^EGREP=`
 eval `$LIBTOOL --config | $EGREP '^(host|host_os|host_alias|build|ECHO)='`
@@ -58,6 +61,8 @@ m4_define([LT_AT_CHECK_LIBTOOLIZE],
 # --------------------------
 m4_define([LT_AT_ACLOCAL],
 [AT_CHECK([$ACLOCAL $1], [0], [ignore], [ignore])
+AT_XFAIL_IF([test "$ACLOCAL" = no])
+AT_KEYWORDS([automake])
 ])
 
 
@@ -65,13 +70,18 @@ m4_define([LT_AT_ACLOCAL],
 # --------------------------
 m4_define([LT_AT_AUTOCONF],
 [AT_CHECK([$AUTOCONF $1], [0], [ignore], [ignore])
+AT_XFAIL_IF([test "$AUTOCONF" = no])
+AT_KEYWORDS([autoconf])
 ])
 
 
 # LT_AT_AUTOMAKE([OPTIONS])
 # --------------------------
 m4_define([LT_AT_AUTOMAKE],
-[AT_CHECK([$AUTOMAKE $1], [0], [ignore], [ignore])
+[AT_CHECK([$AUTOMAKE $1], [0], [ignore], [stderr],
+[AT_CHECK([grep 'require .*but have' stderr && (exit 77)], [1])])
+AT_XFAIL_IF([test "$AUTOMAKE" = no])
+AT_KEYWORDS([automake])
 ])
 
 
@@ -79,6 +89,8 @@ m4_define([LT_AT_AUTOMAKE],
 # ---------------------------
 m4_define([LT_AT_AUTOHEADER],
 [AT_CHECK([$AUTOHEADER $1], [0], [ignore], [ignore])
+AT_XFAIL_IF([test "$AUTOHEADER" = no])
+AT_KEYWORDS([autoconf])
 ])
 
 
@@ -86,13 +98,19 @@ m4_define([LT_AT_AUTOHEADER],
 # --------------------------
 m4_define([LT_AT_AUTORECONF],
 [AT_CHECK([$AUTORECONF $1], [0], [ignore], [ignore])
+AT_XFAIL_IF(
+  [case ,$AUTORECONF,$AUTOCONF,$AUTOHEADER,$ACLOCAL,$AUTOMAKE, in *,no,*) :;; *) false;; esac])
+AT_KEYWORDS([autoconf automake])
 ])
 
 
 # LT_AT_CONFIGURE([OPTIONS])
 # --------------------------
 m4_define([LT_AT_CONFIGURE],
-[AT_CHECK([./configure $configure_options $1], [0], [ignore], [ignore])
+[( SHELL=${CONFIG_SHELL-/bin/sh}
+   AT_CHECK([CONFIG_SHELL=$SHELL $SHELL ./configure $configure_options $1],
+	 [0], [ignore], [ignore])
+ )
 ])
 
 
@@ -100,7 +118,7 @@ m4_define([LT_AT_CONFIGURE],
 # --------------------------
 m4_define([LT_AT_MAKE],
 [( $unset LIBTOOL LIBTOOLIZE
-   AT_CHECK([$2 $MAKE -e $1], [0], [ignore], [ignore]) )
+   AT_CHECK([$MAKE $1 $2], [0], [ignore], [ignore]) )
 ])
 
 
@@ -214,10 +232,13 @@ TARGETS		= ]_ARG_DIR[/libltdlc.la module.la ltdldemo$(EXEEXT)
 all: $(TARGETS)
 
 $(LIBTOOL) ]_ARG_DIR[/libltdlc.la: ]_ARG_DIR[/Makefile
-	cd ]_ARG_DIR[ && $(MAKE)
+	MAKE='$(MAKE)'; test -n "$$MAKE" || MAKE=make; \
+	cd ]_ARG_DIR[ && $$MAKE CC="$(CC)" LIBTOOLFLAGS="$(LIBTOOLFLAGS)" \
+	  CPPFLAGS="$(CPPFLAGS)" CFLAGS="$(CFLAGS)" LDFLAGS="$(LDFLAGS)" \
+          CONFIGURE_OPTIONS="$(CONFIGURE_OPTIONS)"
 
 ]_ARG_DIR[/Makefile:
-	cd ]_ARG_DIR[ && ./configure $(CONFIGURE_OPTIONS)
+	cd ]_ARG_DIR[ && CONFIG_SHELL="$(SHELL)" $(SHELL) ./configure $(CONFIGURE_OPTIONS)
 
 ltdldemo$(EXEEXT): $(LIBTOOL) module.la ]_ARG_DIR[/libltdlc.la main.lo
 	$(LTLINK) -o ltdldemo main.lo -dlopen module.la ./]_ARG_DIR[/libltdlc.la
@@ -230,7 +251,11 @@ module.la: $(LIBTOOL) module.lo
 
 module.lo: $(LIBTOOL) module.c
 	$(LTCOMPILE) -c module.c
-]])])
+]])
+cat >> Makefile <<EOF
+SHELL = $SHELL 
+EOF
+])
 m4_popdef([_ARG_DIR])
 ])# _LTDL_PROJECT_FILES
 

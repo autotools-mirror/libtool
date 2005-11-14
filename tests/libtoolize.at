@@ -38,6 +38,8 @@ m4_define([_LT_LIBTOOLIZE_SETUP],
 
 test -d m4 || { rm -f m4 && mkdir m4; }
 
+rm -f m4/libtool.m4 m4/ltoptions.m4 config/ltmain.sh
+
 # This file should be upgraded.
 AT_DATA([m4/libtool.m4], [[
 # serial 25 LT_INIT
@@ -425,6 +427,8 @@ LT_AT_CHECK_LIBTOOLIZE([--copy], 0, expout)
 ## ------------------------------------------- ##
 
 LT_AT_ACLOCAL([-I m4])
+
+rm -f m4/libtool.m4 m4/ltoptions.m4
 
 # This file should be upgraded.
 AT_DATA([m4/libtool.m4], [[

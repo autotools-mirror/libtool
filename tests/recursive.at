@@ -39,9 +39,10 @@ AT_DATA([Makefile.am],
 SUBDIRS = ltdl
 lib_LTLIBRARIES = foo.la
 foo_la_LDFLAGS = -module -avoid-version
+foo_la_SOURCES = foo.c
 ]])
 
-echo 'static int dummy = 0;' > foo.c
+echo 'int dummy = 0;' > foo.c
 ])# _LTDL_SETUP
 
 ## ------------------------ ##
