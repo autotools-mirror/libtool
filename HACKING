@@ -247,6 +247,9 @@ yyyy-mm-dd  Name of Author  <email@address>  (tiny change)
   To prevent misunderstanding, we should use m4_ifval to check whether
   a parameter is empty, and not $# to check for the number of parameters.
 
+* Any time we add a macro to an older version, lt~obsolete.m4 needs to
+  be updated in all newer versions.
+
 
 9. Abstraction layers in libltdl
 ================================

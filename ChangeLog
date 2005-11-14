@@ -1,5 +1,10 @@
 2005-11-14  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
+	* libltdl/m4/lt~obsolete.m4 (_LT_CC_BASENAME)
+	(_LT_COMPILER_BOILERPLATE, _LT_LINKER_BOILERPLATE):
+	Added because they were added to branch-1-5 AC_DEFUNed.
+	* HACKING: Add note about lt~obsolete.m4.
+
 	* Makefile.am, libltdl/Makefile.inc (INSTALL_LTDL):
 	For nonrecursive mode, add to include_HEADERS as well.
 	* doc/libtool.texi (Invoking libtoolize, Distributing libltdl),
