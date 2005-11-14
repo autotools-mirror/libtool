@@ -1,3 +1,8 @@
+2005-11-14  Albert Chin  <china@thewrittenword.com>
+
+	* libtool.m4 (_LT_AC_LANG_CXX_CONFIG, AC_LIBTOOL_PROG_LD_SHLIBS)
+	[ hpux11 ]: Pass +nodefaultrpath when linking on ia64*.
+
 2005-11-13  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
 	* libtool.m4 (AC_LIBTOOL_LANG_C_CONFIG):
@@ -17,7 +22,7 @@
 2005-11-13  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
 	* tests/quote.test: Do not fail on harmless shell bug present
-	in some ksh88 versions.
+	in some ksh versions.
 	Reported by Tim Rice <tim@multitalents.net> and others.
 
 2005-11-13  Albert Chin-A-Young  <china@thewrittenword.com>
