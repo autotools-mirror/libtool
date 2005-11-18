@@ -1,3 +1,10 @@
+2005-11-18  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
+	* libtoolize.m4sh (func_copy_all_files)
+	(func_massage_aclocal_DATA, func_massage_pkgltdl_files)
+	(func_massage_pkgconfig_files): Work around ksh limitation.
+	Reported by Thorsten Glaser <tg@66h.42h.de>.
+
 2005-11-14  Albert Chin  <china@thewrittenword.com>
 
 	* libltdl/m4/libtool.m4 (_LT_LINKER_SHLIBS, _LT_LANG_CXX_CONFIG)

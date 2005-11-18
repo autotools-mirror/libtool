@@ -302,7 +302,9 @@ func_copy_all_files ()
 
         # ignore excluded filenames
         if test -n "$my_glob_exclude"; then
-          eval 'case $my_filename in '$my_glob_exclude') continue ;; esac'
+	  my_cont=false
+	  eval 'case $my_filename in '$my_glob_exclude') my_cont=: ;; esac'
+	  $my_cont && continue
         fi
 
 	# Add to the appropriate list
@@ -926,7 +928,9 @@ func_massage_aclocal_DATA ()
 
       # ignore excluded filenames
       if test -n "$my_glob_exclude"; then
-        eval 'case $my_filename in '$my_glob_exclude') continue ;; esac'
+	my_cont=false
+	eval 'case $my_filename in '$my_glob_exclude') my_cont=: ;; esac'
+	$my_cont && continue
       fi
 
       pkgmacro_files="$pkgmacro_files:$my_filename"
@@ -954,7 +958,9 @@ func_massage_pkgltdl_files ()
 
       # ignore excluded filenames
       if test -n "$my_glob_exclude"; then
-        eval 'case $my_filename in '$my_glob_exclude') continue ;; esac'
+	my_cont=false
+	eval 'case $my_filename in '$my_glob_exclude') my_cont=: ;; esac'
+	$my_cont && continue
       fi
 
       # ignore duplicates
@@ -983,7 +989,9 @@ func_massage_pkgconfig_files ()
 
       # ignore excluded filenames
       if test -n "$my_glob_exclude"; then
-        eval 'case $my_filename in '$my_glob_exclude') continue ;; esac'
+	my_cont=false
+	eval 'case $my_filename in '$my_glob_exclude') my_cont=: ;; esac'
+	$my_cont && continue
       fi
 
       # ignore duplicates
