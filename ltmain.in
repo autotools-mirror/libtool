@@ -5955,7 +5955,7 @@ relink_command=\"$relink_command\""
     # Exit here if they wanted silent mode.
     test "$show" = : && exit $EXIT_SUCCESS
 
-    $echo "----------------------------------------------------------------------"
+    $echo "X----------------------------------------------------------------------" | $Xsed
     $echo "Libraries have been installed in:"
     for libdir in $libdirs; do
       $echo "   $libdir"
@@ -5988,7 +5988,7 @@ relink_command=\"$relink_command\""
     $echo
     $echo "See any operating system documentation about shared libraries for"
     $echo "more information, such as the ld(1) and ld.so(8) manual pages."
-    $echo "----------------------------------------------------------------------"
+    $echo "X----------------------------------------------------------------------" | $Xsed
     exit $EXIT_SUCCESS
     ;;
 

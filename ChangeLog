@@ -1,3 +1,8 @@
+2005-11-18  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
+	* ltmain.in (finish mode): Fix a couple of $echo uses.
+	Reported by Thorsten Glaser <tg@66h.42h.de>.
+
 2005-11-14  Albert Chin  <china@thewrittenword.com>
 
 	* libtool.m4 (_LT_AC_LANG_CXX_CONFIG, AC_LIBTOOL_PROG_LD_SHLIBS)
