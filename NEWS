@@ -4,6 +4,7 @@ New in 1.5.21a: 2005-??-??; CVS version 1.5.21a, Libtool team:
 * Fix 1.5 regression that caused linking a program `-static' to also
   link statically against installed libtool libraries, contrary to
   documented (and actual 1.4.x) behavior.
+* Support for Interix 3 (Windows SFU).
 * Bug Fixes.
 
 New in 1.5.20: 2005-08-31; CVS version 1.5.19a, Libtool team:
