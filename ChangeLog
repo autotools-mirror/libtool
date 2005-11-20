@@ -1,3 +1,8 @@
+2005-11-20  Eric Blake  <ebb9@byu.net>,
+	    Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
+	* bootstrap (--help): Provide some help.
+
 2005-11-20  Todd Vierling <tv@netbsd.org>,
 	    Thorsten Glaser <tg@mirbsd.org>
 

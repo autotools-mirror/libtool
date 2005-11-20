@@ -37,6 +37,19 @@ export SHELL
 : ${MAKEINFO=makeinfo}
 : ${WORKING_LIBOBJ_SUPPORT=false}
 
+case $1 in
+--help|-h*)
+  cat <<EOF
+`echo $0 | sed 's,^.*/,,g'`: This script is designed to bootstrap a fresh CVS checkout
+of Libtool.  Useful environment variable settings:
+  reconfdirs='. libltdl'     Do not bootstrap the old test suite.
+  WORKING_LIBOBJ_SUPPORT=:   Declare that you have fixed LIBOBJDIR support
+                             in autoconf (> 2.59) and automake (> 1.9.6).
+EOF
+  exit
+  ;;
+esac
+
 test -f ./configure.ac || {
   echo "bootstrap: can't find ./configure.ac, please rerun from top_srcdir"
   exit 1
