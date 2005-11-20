@@ -270,7 +270,7 @@ auxfiles	= $(auxexefiles) config/ltmain.sh
 # Everything that gets picked up by aclocal is automatically distributed,
 # this is the list of macro files we install on the user's system.
 aclocalfiles	= m4/argz.m4 m4/libtool.m4 m4/ltdl.m4 m4/ltoptions.m4 \
-		  m4/ltsugar.m4 m4/ltversion.m4
+		  m4/ltsugar.m4 m4/ltversion.m4 m4/lt~obsolete.m4
 
 ## These are installed as a subdirectory of pkgdatadir so that
 ## libtoolize --ltdl can find them later:

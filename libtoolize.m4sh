@@ -869,7 +869,7 @@ func_check_macros ()
       fi
 
       func_echo "You should add the contents of the following files to \`aclocal.m4':"
-      for need in libtool.m4 ltoptions.m4 ltversion.m4 ltsugar.m4; do
+      for need in libtool.m4 ltoptions.m4 ltversion.m4 ltsugar.m4 lt~obsolete.m4; do
 	func_echo "  \`$acmacrodir/$need'"
       done
       if $seen_ltdl || $opt_ltdl; then

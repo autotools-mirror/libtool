@@ -1,3 +1,9 @@
+2005-11-20  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
+	* Makefile.am (aclocalfiles): Also install lt~obsolete.m4.
+	* libtoolize.m4sh (func_check_macros): Updated.
+	* tests/libtoolize.at: Adjusted.
+
 2005-11-20  Eric Blake  <ebb9@byu.net>,
 	    Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 

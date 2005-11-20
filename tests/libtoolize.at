@@ -83,6 +83,7 @@ libtoolize: copying file `m4/argz.m4'
 libtoolize: copying file `m4/ltoptions.m4'
 libtoolize: copying file `m4/ltsugar.m4'
 libtoolize: copying file `m4/ltversion.m4'
+libtoolize: copying file `m4/lt~obsolete.m4'
 ]])
 
 LT_AT_CHECK_LIBTOOLIZE([--copy], 0, expout)
@@ -111,6 +112,7 @@ libtoolize: copying file `m4/libtool.m4'
 libtoolize: copying file `m4/argz.m4'
 libtoolize: copying file `m4/ltsugar.m4'
 libtoolize: copying file `m4/ltversion.m4'
+libtoolize: copying file `m4/lt~obsolete.m4'
 ]])
 
 AT_DATA(experr,
@@ -132,6 +134,7 @@ libtoolize: `m4/libtool.m4' is already up to date.
 libtoolize: `m4/argz.m4' is already up to date.
 libtoolize: `m4/ltsugar.m4' is already up to date.
 libtoolize: `m4/ltversion.m4' is already up to date.
+libtoolize: `m4/lt~obsolete.m4' is already up to date.
 ]])
 
 AT_DATA(experr,
@@ -155,6 +158,7 @@ libtoolize: copying file `m4/argz.m4'
 libtoolize: copying file `m4/ltoptions.m4'
 libtoolize: copying file `m4/ltsugar.m4'
 libtoolize: copying file `m4/ltversion.m4'
+libtoolize: copying file `m4/lt~obsolete.m4'
 ]])
 
 LT_AT_CHECK_LIBTOOLIZE([--copy --force], 0, expout)
@@ -173,6 +177,7 @@ libtoolize: `m4/argz.m4' is already up to date.
 libtoolize: `m4/ltoptions.m4' is already up to date.
 libtoolize: `m4/ltsugar.m4' is already up to date.
 libtoolize: `m4/ltversion.m4' is already up to date.
+libtoolize: `m4/lt~obsolete.m4' is already up to date.
 ]])
 
 LT_AT_CHECK_LIBTOOLIZE([--copy], 0, expout)
@@ -205,6 +210,7 @@ libtoolize: copying file `m4/libtool.m4'
 libtoolize: copying file `m4/argz.m4'
 libtoolize: copying file `m4/ltsugar.m4'
 libtoolize: copying file `m4/ltversion.m4'
+libtoolize: copying file `m4/lt~obsolete.m4'
 ]])
 
 AT_DATA(experr,
@@ -229,6 +235,7 @@ libtoolize: `m4/libtool.m4' is already up to date.
 libtoolize: `m4/argz.m4' is already up to date.
 libtoolize: `m4/ltsugar.m4' is already up to date.
 libtoolize: `m4/ltversion.m4' is already up to date.
+libtoolize: `m4/lt~obsolete.m4' is already up to date.
 ]])
 
 AT_DATA(experr,
@@ -255,6 +262,7 @@ libtoolize: copying file `m4/argz.m4'
 libtoolize: copying file `m4/ltoptions.m4'
 libtoolize: copying file `m4/ltsugar.m4'
 libtoolize: copying file `m4/ltversion.m4'
+libtoolize: copying file `m4/lt~obsolete.m4'
 ]])
 
 LT_AT_CHECK_LIBTOOLIZE([--copy --force --install], 0, expout)
@@ -276,6 +284,7 @@ libtoolize: `m4/argz.m4' is already up to date.
 libtoolize: `m4/ltoptions.m4' is already up to date.
 libtoolize: `m4/ltsugar.m4' is already up to date.
 libtoolize: `m4/ltversion.m4' is already up to date.
+libtoolize: `m4/lt~obsolete.m4' is already up to date.
 ]])
 
 LT_AT_CHECK_LIBTOOLIZE([--copy --install], 0, expout)
@@ -347,6 +356,7 @@ libtoolize: linking file `ltdl/m4/argz.m4'
 libtoolize: linking file `ltdl/m4/ltoptions.m4'
 libtoolize: linking file `ltdl/m4/ltsugar.m4'
 libtoolize: linking file `ltdl/m4/ltversion.m4'
+libtoolize: linking file `ltdl/m4/lt~obsolete.m4'
 ]])
 
 LT_AT_CHECK_LIBTOOLIZE([--ltdl], 0, expout)
@@ -375,6 +385,7 @@ libtoolize:   \`$tst_aclocaldir/libtool.m4'
 libtoolize:   \`$tst_aclocaldir/ltoptions.m4'
 libtoolize:   \`$tst_aclocaldir/ltversion.m4'
 libtoolize:   \`$tst_aclocaldir/ltsugar.m4'
+libtoolize:   \`$tst_aclocaldir/lt~obsolete.m4'
 EOF]
 
 LT_AT_CHECK_LIBTOOLIZE([--copy], 0, expout)
@@ -417,6 +428,8 @@ libtoolize: copying file `m4/ltsugar.m4'
 libtoolize: You should add the contents of `m4/ltsugar.m4' to `aclocal.m4'.
 libtoolize: copying file `m4/ltversion.m4'
 libtoolize: You should add the contents of `m4/ltversion.m4' to `aclocal.m4'.
+libtoolize: copying file `m4/lt~obsolete.m4'
+libtoolize: You should add the contents of `m4/lt~obsolete.m4' to `aclocal.m4'.
 ]])
 
 LT_AT_CHECK_LIBTOOLIZE([--copy], 0, expout)
@@ -450,6 +463,8 @@ libtoolize: `m4/argz.m4' is already up to date.
 libtoolize: You should add the contents of `m4/argz.m4' to `aclocal.m4'.
 libtoolize: `m4/ltsugar.m4' is already up to date.
 libtoolize: `m4/ltversion.m4' is already up to date.
+libtoolize: `m4/lt~obsolete.m4' is already up to date.
+libtoolize: You should add the contents of `m4/lt~obsolete.m4' to `aclocal.m4'.
 ]])
 
 AT_DATA([experr],
@@ -472,6 +487,8 @@ libtoolize: You should add the contents of `m4/argz.m4' to `aclocal.m4'.
 libtoolize: copying file `m4/ltoptions.m4'
 libtoolize: copying file `m4/ltsugar.m4'
 libtoolize: copying file `m4/ltversion.m4'
+libtoolize: copying file `m4/lt~obsolete.m4'
+libtoolize: You should add the contents of `m4/lt~obsolete.m4' to `aclocal.m4'.
 ]])
 
 LT_AT_CHECK_LIBTOOLIZE([--copy --force], 0, expout)
