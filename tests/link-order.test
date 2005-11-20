@@ -58,13 +58,18 @@ EOF
   cat $srcdir/stderr >&2
 done
 
-# Do not error if we do not relink (e.g. static-only systems)
-if $EGREP relinking $srcdir/stderr; then
-  if $EGREP ' -L.*\/new\/lib -lb -L.*\/old\/lib -lcee' $srcdir/stdout; then :; else
-    echo "$0: wrong link order" 1>&2
-    retcode=1
+case $host in
+*-*-aix* | *-*-interix*) ;; # These systems have different path syntax
+*)
+  # Do not error if we do not relink (e.g. static-only systems)
+  if $EGREP relinking $srcdir/stderr; then
+    if $EGREP ' -L.*\/new\/lib -lb -L.*\/old\/lib -lcee' $srcdir/stdout; then :; else
+      echo "$0: wrong link order" 1>&2
+      retcode=1
+    fi
   fi
-fi
+  ;;
+esac
 
 for i in old new; do
   cat >$srcdir/main_$i.c <<EOF

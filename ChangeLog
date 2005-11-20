@@ -1,3 +1,9 @@
+2005-11-20  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
+	* tests/link-order.test [ aix, interix ]: Skip command line
+	grep.
+	Reported by Thorsten Glaser <tg@66h.42h.de>.
+
 2005-11-18  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
 	* ltmain.in (finish mode): Fix a couple of $echo uses.
