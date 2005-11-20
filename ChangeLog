@@ -1,3 +1,12 @@
+2005-11-20  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
+	* libtool.m4 (AC_LIBTOOL_PROG_LD_SHLIBS)
+	(AC_LIBTOOL_LANG_CXX_CONFIG) [aix4/aix5 !ia64]: Set
+	whole_archive_flag_spec to $convenience so the convenience libs
+	are really added to the link cmdline.
+	Missing backport from CVS HEAD 2004-11-17 noted by Jørgen Moth
+	<jorgen.moth@uni-c.dk>.
+
 2005-11-20  Todd Vierling <tv@netbsd.org>,
 	    Thorsten Glaser <tg@mirbsd.org>
 
