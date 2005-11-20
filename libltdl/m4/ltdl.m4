@@ -348,6 +348,9 @@ AC_CACHE_CHECK([whether deplibs are loaded by dlopen],
   hpux10*|hpux11*)
     lt_cv_sys_dlopen_deplibs=yes
     ;;
+  interix*)
+    lt_cv_sys_dlopen_deplibs=yes
+    ;;
   irix[[12345]]*|irix6.[[01]]*)
     # Catch all versions of IRIX before 6.2, and indicate that we don't
     # know how it worked for any of those versions.

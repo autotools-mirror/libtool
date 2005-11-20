@@ -1,3 +1,13 @@
+2005-11-20  Todd Vierling <tv@netbsd.org>,
+	    Thorsten Glaser <tg@mirbsd.org>
+
+	* libltdl/m4/libtool.m4 (LT_CMD_MAX_LEN, _LT_SYS_DYNAMIC_LINKER)
+	(_LT_CHECK_MAGIC_METHOD, _LT_COMPILER_PIC, _LT_LINKER_SHLIBS)
+	(_LT_LANG_CXX_CONFIG) [ interix3 ]: Support for Interix/Microsoft
+	Services for Unix.
+	* libltdl/m4/ltdl.m4 (LT_SYS_DLOPEN_DEPLIBS): Likewise.
+	* NEWS: Updated.
+
 2005-11-20  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
 	* tests/link-order.at [ interix ]: Skip command line grep.

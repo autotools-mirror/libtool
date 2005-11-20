@@ -28,6 +28,7 @@ New in 1.9h: 2005-??-??; CVS version 2.1a, Libtool team:
 * Fixed a regression that prevented use of libltdl without autotools.
 * Fixed a branch-1-5/HEAD regression to only link uninstalled libraries
   statically with `-static'.
+* Support for Interix 3 (Windows SFU).
 * Bug fixes.
 
 New in 1.9f: 2004-10-23; CVS version 1.9e, Libtool team:
