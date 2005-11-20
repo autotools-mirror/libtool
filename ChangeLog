@@ -1,5 +1,8 @@
 2005-11-20  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
+	* ltmain.in (link mode): Pass through `-pg', for GCC.
+	Reported by Tor Lillqvist <tml@iki.fi>.
+
 	* libtool.m4 (AC_LIBTOOL_PROG_LD_SHLIBS)
 	(AC_LIBTOOL_LANG_CXX_CONFIG) [aix4/aix5 !ia64]: Set
 	whole_archive_flag_spec to $convenience so the convenience libs
