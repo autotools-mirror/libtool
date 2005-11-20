@@ -58,7 +58,7 @@ int main() { return a1() + a2() + a3() + c(); }
   AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o b b.$OBJEXT ../liba1.la ../liba2.la ../liba3.la ../../c/libcee.la -rpath /nowhere],
 	   [0],[stdout],[ignore])
   AT_CHECK([$EGREP 'cee.*cee' stdout], 1, [ignore], [ignore])
-  AT_XFAIL_IF([case $host_os in aix*) false;; *):;; esac])
+  AT_XFAIL_IF([case $host_os in aix*|interix*) false;; *):;; esac])
   dnl This is currently broken in libtool
 )
 

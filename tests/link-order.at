@@ -64,7 +64,7 @@ $LIBTOOL --mode=clean rm -f src/libb.la
 $LIBTOOL --mode=clean rm -f src/liba.la
 
 case $host_os in
-aix*) ;;  # AIX has different path syntax
+aix* | interix*) ;;  # These systems have different path syntax
 *)
   # Do not error if we do not relink (e.g. static-only systems)
   AT_CHECK([if $EGREP relinking stderr; then

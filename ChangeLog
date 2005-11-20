@@ -1,3 +1,9 @@
+2005-11-20  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
+	* tests/link-order.at [ interix ]: Skip command line grep.
+	* tests/deplibs-ident.at [ interix ]: Not broken here.
+	Reported by Thorsten Glaser <tg@66h.42h.de>.
+
 2005-11-18  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
 	* libtoolize.m4sh (func_copy_all_files)
