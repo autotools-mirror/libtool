@@ -3447,7 +3447,7 @@ EOF
 	  int main() { return 0; }
 EOF
 	  $rm conftest
-	  $LTCC -o conftest conftest.c $deplibs
+	  $LTCC $LTCFLAGS -o conftest conftest.c $deplibs
 	  if test "$?" -eq 0 ; then
 	    ldd_output=`ldd conftest`
 	    for i in $deplibs; do
@@ -3492,7 +3492,7 @@ EOF
 	      # If $name is empty we are operating on a -L argument.
               if test "$name" != "" && test "$name" != "0"; then
 		$rm conftest
-		$LTCC -o conftest conftest.c $i
+		$LTCC $LTCFLAGS -o conftest conftest.c $i
 		# Did it work?
 		if test "$?" -eq 0 ; then
 		  ldd_output=`ldd conftest`
@@ -4923,16 +4923,16 @@ lt_fatal (const char *message, ...)
   va_end (ap);
 }
 EOF
-	  # we should really use a build-platform specific compiler
-	  # here, but OTOH, the wrappers (shell script and this C one)
-	  # are only useful if you want to execute the "real" binary.
-	  # Since the "real" binary is built for $host, then this
-	  # wrapper might as well be built for $host, too.
-	  $run $LTCC -s -o $cwrapper $cwrappersource
-	  ;;
-	esac
-	$rm $output
-	trap "$rm $output; exit $EXIT_FAILURE" 1 2 15
+          # we should really use a build-platform specific compiler
+          # here, but OTOH, the wrappers (shell script and this C one)
+          # are only useful if you want to execute the "real" binary.
+          # Since the "real" binary is built for $host, then this
+          # wrapper might as well be built for $host, too.
+          $run $LTCC $LTCFLAGS -s -o $cwrapper $cwrappersource
+          ;;
+        esac
+        $rm $output
+        trap "$rm $output; exit $EXIT_FAILURE" 1 2 15
 
 	$echo > $output "\
 #! $SHELL

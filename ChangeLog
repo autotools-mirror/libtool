@@ -1,3 +1,9 @@
+2005-11-24  Albert Chin-A-Young  <china@thewrittenword.com>
+
+	* libtool.m4, ltmain.in: When calling $LTCC, pass default $CFLAGS
+	through with $LTCFLAGS.
+	Backport from HEAD 2004-09-05.
+
 2005-11-24  David Edelsohn  <dje@watson.ibm.com>
 
 	* ltmain.in (link mode): Use $pic_object as $non_pic_object if
