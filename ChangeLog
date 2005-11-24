@@ -1,3 +1,11 @@
+2005-11-24  David Edelsohn  <dje@watson.ibm.com>
+
+	* ltmain.in (link mode): Use $pic_object as $non_pic_object if
+	$non_pic_object=none.
+	* NEWS: Updated.
+	Missing backport from HEAD 2004-09-03 noted
+	by Max Bowsher <maxb1@ukf.net>.
+
 2005-11-20  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
 	* ltmain.in (link mode): Pass through `-pg', for GCC.

@@ -5,6 +5,9 @@ New in 1.5.21a: 2005-??-??; CVS version 1.5.21a, Libtool team:
   link statically against installed libtool libraries, contrary to
   documented (and actual 1.4.x) behavior.
 * Support for Interix 3 (Windows SFU).
+* If non-pic objects were not compiled, and libtool is called in link mode,
+  libtool no longer silently creates an empty archive, but rather falls
+  back to pic objects.
 * Bug Fixes.
 
 New in 1.5.20: 2005-08-31; CVS version 1.5.19a, Libtool team:
