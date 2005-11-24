@@ -1,3 +1,8 @@
+2005-11-24  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
+	* libltdl/config/ltmain.m4sh (func_mode_uninstall): In clean
+	mode, don't remove non-existent libfoo.lai.
+
 2005-11-20  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
 	* Makefile.am (aclocalfiles): Also install lt~obsolete.m4.
