@@ -6224,7 +6224,7 @@ relink_command=\"$relink_command\""
 	    *" $dlname "*) ;;
 	    *) rmfiles="$rmfiles $objdir/$dlname" ;;
 	    esac
-	    rmfiles="$rmfiles $objdir/$name $objdir/${name}i"
+	     test -n "$libdir" && rmfiles="$rmfiles $objdir/$name $objdir/${name}i"
 	    ;;
 	  uninstall)
 	    if test -n "$library_names"; then

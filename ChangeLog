@@ -1,3 +1,7 @@
+2005-11-24  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
+	* ltmain.in (clean mode): Don't remove non-existent libfoo.lai.
+
 2005-11-24  Albert Chin-A-Young  <china@thewrittenword.com>
 
 	* libtool.m4, ltmain.in: When calling $LTCC, pass default $CFLAGS
