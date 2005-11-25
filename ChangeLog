@@ -1,5 +1,9 @@
 2005-11-25  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
+	* libtool.m4 [aix] <archive_expsym_cmds>
+	(AC_LIBTOOL_PROG_LD_SHLIBS, AC_LIBTOOL_LANG_CXX_CONFIG): Always
+	move -bnoentry before $compiler_flags, so it can be overridden.
+
 	* ltmain.in (link mode): Allow GCC response files through.
 
 2005-11-25  Peter O'Gorman  <peter@pogma.com>
