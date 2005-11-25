@@ -1,3 +1,10 @@
+2005-11-25  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
+	* libltdl/Makefile.inc (libltdl/argz.h): Create libltdl
+	directory if it does not exist yet.  Take care that munging
+	of the file will not mess up the build rule.
+	Reported by Peter O'Gorman <peter@pogma.com>.
+
 2005-11-25  Eric Blake  <ebb9@byu.net>,
 	    Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
