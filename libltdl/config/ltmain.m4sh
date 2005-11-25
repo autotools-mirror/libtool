@@ -2825,8 +2825,9 @@ func_mode_link ()
       # -q* pass through compiler args for the IBM compiler
       # -m*, -t[45]*, -txscale* pass through architecture-specific
       # compiler args for GCC
+      # @file GCC response files
       -64|-mips[[0-9]]|-r[[0-9]][[0-9]]*|-xarch=*|-xtarget=*|+DA*|+DD*|-q*|-m*| \
-      -t[[45]]*|-txscale*)
+      -t[[45]]*|-txscale*|@*)
         func_quote_for_eval "$arg"
 	arg="$func_quote_for_eval_result"
         compile_command="$compile_command $arg"

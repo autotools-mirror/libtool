@@ -1,7 +1,12 @@
+2005-11-25  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
+	* libltdl/config/ltmain.m4sh (func_mode_link): Allow GCC
+	response files through.
+
 2005-11-25  Peter O'Gorman  <peter@pogma.com>
 
-	* libltdl/config/ltmain.m4sh (link mode): Pass through -isysroot
-	for cross architecture builds on darwin.
+	* libltdl/config/ltmain.m4sh (func_mode_link): Pass through
+	-isysroot for cross architecture builds on darwin.
 
 2005-11-24  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
