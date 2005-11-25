@@ -1,6 +1,12 @@
 2005-11-25  Eric Blake  <ebb9@byu.net>,
 	    Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* libltdl/loaders/loadlibrary.c (iface_id): New variable.
+	(get_vtable): Get an `iface_id' from `lt_dlinterface_register'.
+	(get_vtable): Rewrite to catch up with lt_dlhandle_iterate
+	interface change.  Append dot only after w32 path conversion
+	so it works on cygwin managed mounts.
+
 	* libltdl/ltdl.h, libltdl/ltdl.c (lt_dlinterface_free): New
 	function.
 	* doc/libtool.texi (User defined module data): Document it.

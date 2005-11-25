@@ -50,6 +50,8 @@ static int	 vm_close (lt_user_data loader_data, lt_module module);
 static void *	 vm_sym   (lt_user_data loader_data, lt_module module,
 			  const char *symbolname);
 
+static lt_dlinterface_id iface_id = 0;
+
 /* Return the vtable for this loader, only the name and sym_prefix
    attributes (plus the virtual function implementations, obviously)
    change between loaders.  */
@@ -61,6 +63,7 @@ get_vtable (lt_user_data loader_data)
   if (!vtable)
     {
       vtable = lt__zalloc (sizeof *vtable);
+      iface_id = lt_dlinterface_register ("ltdl loadlibrary", NULL);
     }
 
   if (vtable && !vtable->name)
@@ -96,37 +99,52 @@ static lt_module
 vm_open (lt_user_data loader_data, const char *filename)
 {
   lt_module	module	   = 0;
-  char	       *searchname = 0;
-  char	       *ext;
-  char		self_name_buf[MAX_PATH];
+  char		*ext;
+  char		wpath[MAX_PATH];
+  size_t	len;
 
   if (!filename)
     {
       /* Get the name of main module */
-      *self_name_buf = 0;
-      GetModuleFileName (NULL, self_name_buf, sizeof (self_name_buf));
-      filename = ext = self_name_buf;
+      *wpath = 0;
+      GetModuleFileName (NULL, wpath, sizeof (wpath));
+      filename = wpath;
     }
   else
     {
-      ext = strrchr (filename, '.');
-    }
+      len = LT_STRLEN (filename);
 
-  if (ext)
-    {
-      /* FILENAME already has an extension. */
-      searchname = lt__strdup (filename);
+      if (len >= MAX_PATH)
+        {
+	  LT__SETERROR (CANNOT_OPEN);
+	  return 0;
+	}
+
+#if defined(__CYGWIN__)
+      cygwin_conv_to_full_win32_path (filename, wpath);
+      len = 0;
+#else
+      strcpy(wpath, filename);
+#endif
+
+      ext = strrchr (wpath, '.');
+      if (!ext)
+	{
+	  /* Append a `.' to stop Windows from adding an
+	     implicit `.dll' extension. */
+	  if (!len)
+	    len = LT_STRLEN (wpath);
+
+	  if (len + 1 >= MAX_PATH)
+	    {
+	      LT__SETERROR (CANNOT_OPEN);
+	      return 0;
+	    }
+
+	  wpath[len] = '.';
+	  wpath[len+1] = '\0';
+	}
     }
-  else
-    {
-      /* Append a `.' to stop Windows from adding an
-	 implicit `.dll' extension. */
-      searchname = MALLOC (char, 2+ LT_STRLEN (filename));
-      if (searchname)
-	sprintf (searchname, "%s.", filename);
-    }
-  if (!searchname)
-    return 0;
 
   {
     /* Silence dialog from LoadLibrary on some failures.
@@ -135,20 +153,11 @@ vm_open (lt_user_data loader_data, const char *filename)
     UINT errormode = SetErrorMode(SEM_FAILCRITICALERRORS);
     SetErrorMode(errormode | SEM_FAILCRITICALERRORS);
 
-#if defined(__CYGWIN__)
-    {
-      char wpath[MAX_PATH];
-      cygwin_conv_to_full_win32_path (searchname, wpath);
-      module = LoadLibrary (wpath);
-    }
-#else
-    module = LoadLibrary (searchname);
-#endif
+    module = LoadLibrary (wpath);
 
     /* Restore the error mode. */
     SetErrorMode(errormode);
   }
-  FREE (searchname);
 
   /* libltdl expects this function to fail if it is unable
      to physically load the library.  Sadly, LoadLibrary
@@ -161,20 +170,20 @@ vm_open (lt_user_data loader_data, const char *filename)
   {
     lt__handle *        cur        = 0;
 
-    while ((cur = (lt__handle *) lt_dlhandle_next ((lt_dlhandle) cur)))
+    while ((cur = (lt__handle *) lt_dlhandle_iterate (iface_id, (lt_dlhandle) cur)))
       {
         if (!cur->module)
           {
             cur = 0;
             break;
           }
-        
+
         if (cur->module == module)
           {
             break;
           }
       }
-    
+
     if (cur || !module)
       {
         LT__SETERROR (CANNOT_OPEN);
