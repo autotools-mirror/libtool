@@ -1,3 +1,8 @@
+2005-11-25  Peter O'Gorman  <peter@pogma.com>
+
+	* ltmain.in (link mode): Pass through -isysroot for cross
+	architecture builds on darwin.
+
 2005-11-24  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
 	* ltmain.in (clean mode): Don't remove non-existent libfoo.lai.
