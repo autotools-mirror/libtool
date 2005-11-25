@@ -1,3 +1,7 @@
+2005-11-25  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
+	* ltmain.in (link mode): Allow GCC response files through.
+
 2005-11-25  Peter O'Gorman  <peter@pogma.com>
 
 	* ltmain.in (link mode): Pass through -isysroot for cross

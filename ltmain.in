@@ -1553,8 +1553,9 @@ EOF
       # -m*, -t[45]*, -txscale* pass through architecture-specific
       # compiler args for GCC
       # -pg pass through profiling flag for GCC
+      # @file GCC response files
       -64|-mips[0-9]|-r[0-9][0-9]*|-xarch=*|-xtarget=*|+DA*|+DD*|-q*|-m*|-pg| \
-      -t[45]*|-txscale*)
+      -t[45]*|-txscale*|@*)
 
 	# Unknown arguments in both finalize_command and compile_command need
 	# to be aesthetically quoted because they are evaled later.
