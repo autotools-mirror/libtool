@@ -4428,10 +4428,22 @@ extern \"C\" {
 	      export_symbols="$output_objdir/$outputname.exp"
 	      $run $rm $export_symbols
 	      $run eval "${SED} -n -e '/^: @PROGRAM@ $/d' -e 's/^.* \(.*\)$/\1/p' "'< "$nlist" > "$export_symbols"'
+              case $host in
+              *cygwin* | *mingw* )
+	        $run eval "echo EXPORTS "'> "$output_objdir/$outputname.def"'
+		$run eval 'cat "$export_symbols" >> "$output_objdir/$outputname.def"'
+                ;;
+              esac
 	    else
-	      $run eval "${SED} -e 's/\([ ][.*^$]\)/\\\1/g' -e 's/^/ /' -e 's/$/$/'"' < "$export_symbols" > "$output_objdir/$outputname.exp"'
+	      $run eval "${SED} -e 's/\([].[*^$]\)/\\\\\1/g' -e 's/^/ /' -e 's/$/$/'"' < "$export_symbols" > "$output_objdir/$outputname.exp"'
 	      $run eval 'grep -f "$output_objdir/$outputname.exp" < "$nlist" > "$nlist"T'
 	      $run eval 'mv "$nlist"T "$nlist"'
+              case $host in
+              *cygwin* | *mingw* )
+	        $run eval "echo EXPORTS "'> "$output_objdir/$outputname.def"'
+		$run eval 'cat "$nlist" >> "$output_objdir/$outputname.def"'
+                ;;
+              esac
 	    fi
 	  fi
 
@@ -4556,8 +4568,21 @@ static const void *lt_preloaded_setup() {
 	  $run $rm "$output_objdir/$dlsyms" "$nlist" "${nlist}S" "${nlist}T"
 
 	  # Transform the symbol file into the correct name.
-	  compile_command=`$echo "X$compile_command" | $Xsed -e "s%@SYMFILE@%$output_objdir/${outputname}S.${objext}%"`
-	  finalize_command=`$echo "X$finalize_command" | $Xsed -e "s%@SYMFILE@%$output_objdir/${outputname}S.${objext}%"`
+          case $host in
+          *cygwin* | *mingw* )
+            if test -f "$output_objdir/${outputname}.def" ; then
+              compile_command=`$echo "X$compile_command" | $Xsed -e "s%@SYMFILE@%$output_objdir/${outputname}.def $output_objdir/${outputname}S.${objext}%"`
+              finalize_command=`$echo "X$finalize_command" | $Xsed -e "s%@SYMFILE@%$output_objdir/${outputname}.def $output_objdir/${outputname}S.${objext}%"`
+            else
+              compile_command=`$echo "X$compile_command" | $Xsed -e "s%@SYMFILE@%$output_objdir/${outputname}S.${objext}%"`
+              finalize_command=`$echo "X$finalize_command" | $Xsed -e "s%@SYMFILE@%$output_objdir/${outputname}S.${objext}%"`
+             fi
+            ;;
+          * )
+            compile_command=`$echo "X$compile_command" | $Xsed -e "s%@SYMFILE@%$output_objdir/${outputname}S.${objext}%"`
+            finalize_command=`$echo "X$finalize_command" | $Xsed -e "s%@SYMFILE@%$output_objdir/${outputname}S.${objext}%"`
+            ;;
+          esac
 	  ;;
 	*)
 	  $echo "$modename: unknown suffix for \`$dlsyms'" 1>&2
