@@ -1,3 +1,10 @@
+2005-11-25  Eric Blake  <ebb9@byu.net>,
+	    Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* libltdl/ltdl.h, libltdl/ltdl.c (lt_dlinterface_free): New
+	function.
+	* doc/libtool.texi (User defined module data): Document it.
+
 2005-11-25  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
 	* libltdl/m4/libtool.m4 [aix] <archive_expsym_cmds>

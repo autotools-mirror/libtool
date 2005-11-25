@@ -3849,6 +3849,10 @@ You supply an @var{id_string} and @var{iface} so that the resulting
 returned by the iteration functions below.
 @end deftypefun
 
+@deftypefun void lt_dlinterface_free (@w{lt_dlinterface_id @var{iface}})
+Release the data associated with @var{iface}.
+@end deftypefun
+
 @deftypefun int lt_dlhandle_map (@w{lt_dlinterface_id @var{iface}}, @w{int (*@var{func}) (lt_dlhandle @var{handle}, void * @var{data})}, @w{void * @var{data}})
 For each module that matches @var{iface}, call the function
 @var{func}.  When writing the @var{func} callback function, the

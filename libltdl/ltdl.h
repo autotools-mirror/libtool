@@ -111,6 +111,7 @@ typedef int lt_dlhandle_interface (lt_dlhandle handle, const char *id_string);
 
 LT_SCOPE lt_dlinterface_id lt_dlinterface_register (const char *id_string,
 					  lt_dlhandle_interface *iface);
+LT_SCOPE void	lt_dlinterface_free (lt_dlinterface_id key);
 LT_SCOPE void *	lt_dlcaller_set_data  (lt_dlinterface_id key,
 					  lt_dlhandle handle, void *data);
 LT_SCOPE void *	lt_dlcaller_get_data  (lt_dlinterface_id key,
