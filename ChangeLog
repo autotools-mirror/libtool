@@ -1,3 +1,10 @@
+2005-11-25  Charles Wilson  <cygwin@cwilson.fastmail.fm>
+
+	* ltmain.in (link mode): add foo/bin for every foo/lib in
+	dllsearchpath when creating wrapper script.  Fixes
+	build-relink2 test failure.
+	Backport of CVS HEAD 2004-10-13.
+
 2005-11-25  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
 	* libtool.m4 [aix] <archive_expsym_cmds>
