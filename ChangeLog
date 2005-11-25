@@ -1,5 +1,9 @@
 2005-11-25  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
+	* libltdl/m4/libtool.m4 [aix] <archive_expsym_cmds>
+	(_LT_LINKER_SHLIBS, _LT_LANG_CXX_CONFIG): Always move -bnoentry
+	before $compiler_flags, so it can be overridden.
+
 	* libltdl/config/ltmain.m4sh (func_mode_link): Allow GCC
 	response files through.
 
