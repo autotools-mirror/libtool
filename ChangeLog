@@ -2,6 +2,9 @@
 	    Peter Ekberg  <peda@lysator.liu.se>,
 	    Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
+	* ltmain.in (link mode, cwrappersource): Backport fixes from
+	CVS HEAD.
+
 	* ltmain.in (generate dlsyms): Backport of func_generate_dlsyms
 	fixes from HEAD.
 
