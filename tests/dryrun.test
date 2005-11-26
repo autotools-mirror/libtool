@@ -75,8 +75,8 @@ $make mdemo$EXEEXT mdemo_static$EXEEXT || exit 1
 
 echo "= Running $make install in ../mdemo (dry run)"
 # Libtool does not create these directories
-mkdir $prefix/bin
-mkdir $prefix/lib
+test -d $prefix/bin || mkdir $prefix/bin
+test -d $prefix/lib || mkdir $prefix/lib
 ls -l . $objdir | grep -v total > $before
 ls -lR $prefix | grep -v total >> $before
 force_dry_run=yes $make install 1>&2 || exit 1

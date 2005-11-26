@@ -1,3 +1,8 @@
+2005-11-26  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
+	* libtool.m4: Fix comment typo.
+	* tests/dryrun.test: Avoid `directory exists' warning.
+
 2005-11-25  Charles Wilson  <cygwin@cwilson.fastmail.fm>,
 	    Peter Ekberg  <peda@lysator.liu.se>,
 	    Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
