@@ -1,3 +1,9 @@
+2005-11-26  Peter O'Gorman  <peter@pogma.com>
+
+	* ltmain.in (link mode): Add missing $LTCFLAGS for a $LTCC. 
+	* libtool.m4 [darwin]: Use $LTCC $LTCFLAGS to create reloadable
+	objects.
+
 2005-11-26  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
 	* libtool.m4: Fix comment typo.
