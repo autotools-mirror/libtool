@@ -1,3 +1,9 @@
+2005-11-28  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
+	* ltmain.in: Fix typo introduced in dllsearchpath backport.
+	<cwrappersource>: Undo line breaks in macro arguments.
+	Reported by Charles Wilson <cygwin@cwilson.fastmail.fm>.
+
 2005-11-26  Peter O'Gorman  <peter@pogma.com>
 
 	* ltmain.in (link mode): Add missing $LTCFLAGS for a $LTCC. 
