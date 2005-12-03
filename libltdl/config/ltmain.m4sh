@@ -968,9 +968,16 @@ static const void *lt_preloaded_setup() {
 	  esac
 	  ;;
 	esac
+	symtab_cflags=
+	for arg in $LTCFLAGS; do
+	  case $arg in
+	  -pie | -fpie | -fPIE) ;;
+	  *) symtab_cflags="$symtab_cflags $arg" ;;
+	  esac
+	done
 
 	# Now compile the dynamic symbol file.
-	func_show_eval '(cd $output_objdir && $LTCC $LTCFLAGS -c$no_builtin_flag$pic_flag_for_symtable "$my_dlsyms")' 'exit $?'
+	func_show_eval '(cd $output_objdir && $LTCC$symtab_cflags -c$no_builtin_flag$pic_flag_for_symtable "$my_dlsyms")' 'exit $?'
 
 	# Clean up the generated files.
 	func_show_eval '$RM "$output_objdir/$my_dlsyms" "$nlist" "${nlist}S" "${nlist}T"'
@@ -1108,6 +1115,7 @@ func_mode_compile ()
     arg_mode=normal
     libobj=
     later=
+    pie_flag=
 
     for arg
     do
@@ -1131,6 +1139,11 @@ func_mode_compile ()
 	  test -n "$libobj" && \
 	    func_fatal_error "you cannot specify \`-o' more than once"
 	  arg_mode=target
+	  continue
+	  ;;
+
+	-pie | -fpie | -fPIE)
+          pie_flag="$pie_flag $arg"
 	  continue
 	  ;;
 
@@ -1423,7 +1436,7 @@ EOF
     if test "$build_old_libs" = yes; then
       if test "$pic_mode" != yes; then
 	# Don't build PIC code
-	command="$base_compile $qsrcfile"
+	command="$base_compile $qsrcfile$pie_flag"
       else
 	command="$base_compile $qsrcfile $pic_flag"
       fi
