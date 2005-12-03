@@ -1,5 +1,7 @@
 2005-12-03  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
+	* tests/convenience.at: Updated to expose more corner cases.
+
 	* doc/libtool.texi (Invoking libtoolize): Remove mention of
 	the nonrecursive restriction to name the directory `libltdl'.
 

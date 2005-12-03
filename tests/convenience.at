@@ -17,184 +17,253 @@
 # 02111-1307, USA.
 
 # Test that convenience archives work.
+# for each TAG, test:
+# - adding one or multiple convenience archives
+# - with or without additional objects on the cmdline
 
 AT_SETUP([C convenience archives])
 
-echo 'int a(void) { return 1; }' > a.c
-echo 'int b(void) { return 2; }' > b.c
-echo 'int c(void) { return 3; }' > c.c
-AT_DATA(main.c,
-[[extern int a(void), b(void), c(void);
-int main(void) { return a() + b() + c() != 6; }
-]])
+cat >main1.c <<EOF
+extern int a1(void);
+int main(void) { return a1() != 1; }
+EOF
+cat >main2.c <<EOF
+extern int a1(void), a2(void);
+int main(void) { return a1() + a2() != 3; }
+EOF
+cat >main3.c <<EOF
+extern int a1(void), a2(void), a3(void);
+int main(void) { return a1() + a2() + a3() != 6; }
+EOF
+for i in 1 2 3; do 
+  echo "int a$i(void) { return $i; }" > a$i.c
+  $LIBTOOL --mode=compile $CC $CFLAGS -c main$i.c
+  $LIBTOOL --mode=compile $CC $CFLAGS -c a$i.c
+  $LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o liba$i.la a$i.lo
+done
+AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o liba12.la liba1.la liba2.la -rpath /notexist],
+	 [0],[ignore],[ignore])
+AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o liba123.la a3.lo liba1.la liba2.la -rpath /notexist],
+	 [0],[ignore],[ignore])
 
-$LIBTOOL --mode=compile $CC $CFLAGS -c a.c
-$LIBTOOL --mode=compile $CC $CFLAGS -c b.c
-$LIBTOOL --mode=compile $CC $CFLAGS -c c.c
-$LIBTOOL --mode=compile $CC $CFLAGS -c main.c
-$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o liba.la a.lo
-$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o libb.la b.lo
-$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o libcee.la c.lo liba.la libb.la -rpath /notexist
-AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -static -o main_static main.lo libcee.la],
-	 [0],[ignore],[ignore])
-AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o main main.lo libcee.la],
-	 [0],[ignore],[ignore])
-LT_AT_EXEC_CHECK([./main_static])
-LT_AT_EXEC_CHECK([./main])
+conv=
+for i in 1 2 3; do
+  conv=$conv$i
+  AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -static -o main_static main$i.lo liba$conv.la],
+	   [0],[ignore],[ignore])
+  AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o main main$i.lo liba$conv.la],
+	   [0],[ignore],[ignore])
+  LT_AT_EXEC_CHECK([./main_static])
+  LT_AT_EXEC_CHECK([./main])
+done
 AT_CLEANUP
 
 
 AT_SETUP([C++ convenience archives])
 LT_AT_TAG([CXX])
 
-echo 'int a(void) { return 1; }' > a.cpp
-echo 'int b(void) { return 2; }' > b.cpp
-echo 'int c(void) { return 3; }' > c.cpp
-AT_DATA(main.cpp,
-[[extern int a(void), b(void), c(void);
-int main(void) { return a() + b() + c() != 6; }
-]])
+cat >main1.cpp <<EOF
+extern int a1(void);
+int main(void) { return a1() != 1; }
+EOF
+cat >main2.cpp <<EOF
+extern int a1(void), a2(void);
+int main(void) { return a1() + a2() != 3; }
+EOF
+cat >main3.cpp <<EOF
+extern int a1(void), a2(void), a3(void);
+int main(void) { return a1() + a2() + a3() != 6; }
+EOF
+for i in 1 2 3; do 
+  echo "int a$i(void) { return $i; }" > a$i.cpp
+  $LIBTOOL --tag=CXX --mode=compile $CXX $CXXFLAGS -c main$i.cpp
+  $LIBTOOL --tag=CXX --mode=compile $CXX $CXXFLAGS -c a$i.cpp
+  $LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS $LDFLAGS -o liba$i.la a$i.lo
+done
+AT_CHECK([$LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS $LDFLAGS -o liba12.la liba1.la liba2.la -rpath /notexist],
+	 [0],[ignore],[ignore])
+AT_CHECK([$LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS $LDFLAGS -o liba123.la a3.lo liba1.la liba2.la -rpath /notexist],
+	 [0],[ignore],[ignore])
 
-$LIBTOOL --tag=CXX --mode=compile $CXX $CXXFLAGS -c a.cpp
-$LIBTOOL --tag=CXX --mode=compile $CXX $CXXFLAGS -c b.cpp
-$LIBTOOL --tag=CXX --mode=compile $CXX $CXXFLAGS -c c.cpp
-$LIBTOOL --tag=CXX --mode=compile $CXX $CXXFLAGS -c main.cpp
-$LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS $LDFLAGS -o liba.la a.lo
-$LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS $LDFLAGS -o libb.la b.lo
-$LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS $LDFLAGS -o libcee.la c.lo liba.la libb.la -rpath /notexist
-AT_CHECK([$LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS $LDFLAGS -static -o main_static main.lo libcee.la],
-	 [0],[ignore],[ignore])
-AT_CHECK([$LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS $LDFLAGS -o main main.lo libcee.la],
-	 [0],[ignore],[ignore])
-LT_AT_EXEC_CHECK([./main_static])
-LT_AT_EXEC_CHECK([./main])
+conv=
+for i in 1 2 3; do
+  conv=$conv$i
+  AT_CHECK([$LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS $LDFLAGS -static -o main_static main$i.lo liba$conv.la],
+	   [0],[ignore],[ignore])
+  AT_CHECK([$LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS $LDFLAGS -o main main$i.lo liba$conv.la],
+	   [0],[ignore],[ignore])
+  LT_AT_EXEC_CHECK([./main_static])
+  LT_AT_EXEC_CHECK([./main])
+done
 AT_CLEANUP
 
 
 AT_SETUP([F77 convenience archives])
 LT_AT_TAG([F77])
 
-AT_DATA([a.f],
-[[      subroutine a
-      return
+cat >main1.f <<EOF
+      program main
+      implicit none
+      integer*4 res
+      call a1(res)
       end
-]])
-AT_DATA([b.f],
-[[      subroutine b
-      return
+EOF
+cat >main2.f <<EOF
+      program main
+      implicit none
+      integer*4 res
+      call a1(res)
+      call a2(res)
       end
-]])
-AT_DATA([c.f],
-[[      subroutine c
-      return
+EOF
+cat >main3.f <<EOF
+      program main
+      implicit none
+      integer*4 res
+      call a1(res)
+      call a2(res)
+      call a3(res)
       end
-]])
-AT_DATA(main.f,
-[[      program main
-      call a
-      call b
-      call c
-      end
-]])
+EOF
 
-$LIBTOOL --tag=F77 --mode=compile $F77 $FFLAGS -c a.f
-$LIBTOOL --tag=F77 --mode=compile $F77 $FFLAGS -c b.f
-$LIBTOOL --tag=F77 --mode=compile $F77 $FFLAGS -c c.f
-$LIBTOOL --tag=F77 --mode=compile $F77 $FFLAGS -c main.f
-$LIBTOOL --tag=F77 --mode=link $F77 $FFLAGS $LDFLAGS -o liba.la a.lo
-$LIBTOOL --tag=F77 --mode=link $F77 $FFLAGS $LDFLAGS -o libb.la b.lo
-$LIBTOOL --tag=F77 --mode=link $F77 $FFLAGS $LDFLAGS -o libcee.la c.lo liba.la libb.la -rpath /notexist
-AT_CHECK([$LIBTOOL --tag=F77 --mode=link $F77 $FFLAGS $LDFLAGS -static -o main_static main.lo libcee.la],
+for i in 1 2 3; do 
+  cat >a$i.f <<EOF
+      subroutine a$i(res)
+      implicit none
+      integer*4 res
+      res=$i
+      return
+      end
+EOF
+  $LIBTOOL --tag=F77 --mode=compile $F77 $FFLAGS -c main$i.f
+  $LIBTOOL --tag=F77 --mode=compile $F77 $FFLAGS -c a$i.f
+  $LIBTOOL --tag=F77 --mode=link $F77 $FFLAGS $LDFLAGS -o liba$i.la a$i.lo
+done
+AT_CHECK([$LIBTOOL --tag=F77 --mode=link $F77 $FFLAGS $LDFLAGS -o liba12.la liba1.la liba2.la -rpath /notexist],
 	 [0],[ignore],[ignore])
-AT_CHECK([$LIBTOOL --tag=F77 --mode=link $F77 $FFLAGS $LDFLAGS -o main main.lo libcee.la],
+AT_CHECK([$LIBTOOL --tag=F77 --mode=link $F77 $FFLAGS $LDFLAGS -o liba123.la a3.lo liba1.la liba2.la -rpath /notexist],
 	 [0],[ignore],[ignore])
-LT_AT_EXEC_CHECK([./main_static])
-LT_AT_EXEC_CHECK([./main])
+
+conv=
+for i in 1 2 3; do
+  conv=$conv$i
+  AT_CHECK([$LIBTOOL --tag=F77 --mode=link $F77 $FFLAGS $LDFLAGS -static -o main_static main$i.lo liba$conv.la],
+	   [0],[ignore],[ignore])
+  AT_CHECK([$LIBTOOL --tag=F77 --mode=link $F77 $FFLAGS $LDFLAGS -o main main$i.lo liba$conv.la],
+	   [0],[ignore],[ignore])
+  LT_AT_EXEC_CHECK([./main_static])
+  LT_AT_EXEC_CHECK([./main])
+done
 AT_CLEANUP
 
 
 AT_SETUP([FC convenience archives])
 LT_AT_TAG([FC])
 
-AT_DATA([a.f],
-[[      subroutine a
-      return
+cat >main1.f <<EOF
+      program main
+      implicit none
+      integer*4 res
+      call a1(res)
       end
-]])
-AT_DATA([b.f],
-[[      subroutine b
-      return
+EOF
+cat >main2.f <<EOF
+      program main
+      implicit none
+      integer*4 res
+      call a1(res)
+      call a2(res)
       end
-]])
-AT_DATA([c.f],
-[[      subroutine c
-      return
+EOF
+cat >main3.f <<EOF
+      program main
+      implicit none
+      integer*4 res
+      call a1(res)
+      call a2(res)
+      call a3(res)
       end
-]])
-AT_DATA(main.f,
-[[      program main
-      call a
-      call b
-      call c
-      end
-]])
+EOF
 
-$LIBTOOL --tag=FC --mode=compile $FC -c $FCFLAGS $FCFLAGS_f a.f
-$LIBTOOL --tag=FC --mode=compile $FC -c $FCFLAGS $FCFLAGS_f b.f
-$LIBTOOL --tag=FC --mode=compile $FC -c $FCFLAGS $FCFLAGS_f c.f
-$LIBTOOL --tag=FC --mode=compile $FC -c $FCFLAGS $FCFLAGS_f main.f
-$LIBTOOL --tag=FC --mode=link $FC $FCFLAGS $LDFLAGS -o liba.la a.lo
-$LIBTOOL --tag=FC --mode=link $FC $FCFLAGS $LDFLAGS -o libb.la b.lo
-$LIBTOOL --tag=FC --mode=link $FC $FCFLAGS $LDFLAGS -o libcee.la c.lo liba.la libb.la -rpath /notexist
-AT_CHECK([$LIBTOOL --tag=FC --mode=link $FC $FCFLAGS $LDFLAGS -static -o main_static main.lo libcee.la],
+for i in 1 2 3; do 
+  cat >a$i.f <<EOF
+      subroutine a$i(res)
+      implicit none
+      integer*4 res
+      res=$i
+      return
+      end
+EOF
+  $LIBTOOL --tag=FC --mode=compile $FC $FCFLAGS -c main$i.f
+  $LIBTOOL --tag=FC --mode=compile $FC $FCFLAGS -c a$i.f
+  $LIBTOOL --tag=FC --mode=link $FC $FCFLAGS $LDFLAGS -o liba$i.la a$i.lo
+done
+AT_CHECK([$LIBTOOL --tag=FC --mode=link $FC $FCFLAGS $LDFLAGS -o liba12.la liba1.la liba2.la -rpath /notexist],
 	 [0],[ignore],[ignore])
-AT_CHECK([$LIBTOOL --tag=FC --mode=link $FC $FCFLAGS $LDFLAGS -o main main.lo libcee.la],
+AT_CHECK([$LIBTOOL --tag=FC --mode=link $FC $FCFLAGS $LDFLAGS -o liba123.la a3.lo liba1.la liba2.la -rpath /notexist],
 	 [0],[ignore],[ignore])
-LT_AT_EXEC_CHECK([./main_static])
-LT_AT_EXEC_CHECK([./main])
+
+conv=
+for i in 1 2 3; do
+  conv=$conv$i
+  AT_CHECK([$LIBTOOL --tag=FC --mode=link $FC $FCFLAGS $LDFLAGS -static -o main_static main$i.lo liba$conv.la],
+	   [0],[ignore],[ignore])
+  AT_CHECK([$LIBTOOL --tag=FC --mode=link $FC $FCFLAGS $LDFLAGS -o main main$i.lo liba$conv.la],
+	   [0],[ignore],[ignore])
+  LT_AT_EXEC_CHECK([./main_static])
+  LT_AT_EXEC_CHECK([./main])
+done
 AT_CLEANUP
 
 
 AT_SETUP([Java convenience archives])
 LT_AT_TAG([GCJ])
 
-AT_DATA([A.java],
-[[public class A {
-  private int a;
-  public A () { a = 0; }
-};
-]])
-AT_DATA([B.java],
-[[public class B {
-  private int b;
-  public B () { b = 0; }
-};
-]])
-AT_DATA([C.java],
-[[public class C {
-  private int c;
-  public C () { c = 0; }
-};
-]])
-AT_DATA(foo.java,
-[[public class foo {
-  public static void main(String[] argv) {
-    A a = new A(); B b = new B(); C c = new C();
+cat >foo1.java <<EOF
+public class foo1 {
+  public static void main(String[[]] argv) {
+    A1 a1 = new A1();
   }
 }
-]])
+EOF
+cat >foo2.java <<EOF
+public class foo2 {
+  public static void main(String[[]] argv) {
+    A1 a1 = new A1(); A2 a2 = new A2();
+  }
+}
+EOF
+cat >foo3.java <<EOF
+public class foo3 {
+  public static void main(String[[]] argv) {
+    A1 a1 = new A1(); A2 a2 = new A2(); A3 a3 = new A3();
+  }
+}
+EOF
+for i in 1 2 3; do
+  cat >A$i.java <<EOF
+public class A$i {
+  private int a;
+  public A$i () { a = 0; }
+};
+EOF
+  $LIBTOOL --tag=GCJ --mode=compile $GCJ $GCJFLAGS -c foo$i.java
+  $LIBTOOL --tag=GCJ --mode=compile $GCJ $GCJFLAGS -c A$i.java
+  $LIBTOOL --tag=GCJ --mode=link $GCJ $GCJFLAGS $LDFLAGS -o liba$i.la A$i.lo
+done
+AT_CHECK([$LIBTOOL --tag=GCJ --mode=link $GCJ $GCJFLAGS $LDFLAGS -o liba12.la liba1.la liba2.la -rpath /notexist],
+	 [0],[ignore],[ignore])
+AT_CHECK([$LIBTOOL --tag=GCJ --mode=link $GCJ $GCJFLAGS $LDFLAGS -o liba123.la A3.lo liba1.la liba2.la -rpath /notexist],
+	 [0],[ignore],[ignore])
 
-$LIBTOOL --tag=GCJ --mode=compile $GCJ $GCJFLAGS -c A.java
-$LIBTOOL --tag=GCJ --mode=compile $GCJ $GCJFLAGS -c B.java
-$LIBTOOL --tag=GCJ --mode=compile $GCJ $GCJFLAGS -c C.java
-$LIBTOOL --tag=GCJ --mode=compile $GCJ $GCJFLAGS -c foo.java
-$LIBTOOL --tag=GCJ --mode=link $GCJ $GCJFLAGS $LDFLAGS -o liba.la A.lo
-$LIBTOOL --tag=GCJ --mode=link $GCJ $GCJFLAGS $LDFLAGS -o libb.la B.lo
-$LIBTOOL --tag=GCJ --mode=link $GCJ $GCJFLAGS $LDFLAGS -o libcee.la C.lo liba.la libb.la -rpath /notexist
-AT_CHECK([$LIBTOOL --tag=GCJ --mode=link $GCJ $GCJFLAGS $LDFLAGS -static --main=foo -o main_static foo.lo libcee.la],
-	 [0],[ignore],[ignore])
-AT_CHECK([$LIBTOOL --tag=GCJ --mode=link $GCJ $GCJFLAGS $LDFLAGS --main=foo -o main foo.lo libcee.la],
-	 [0],[ignore],[ignore])
-LT_AT_EXEC_CHECK([./main_static])
-LT_AT_EXEC_CHECK([./main])
+conv=
+for i in 1 2 3; do
+  conv=$conv$i
+  AT_CHECK([$LIBTOOL --tag=GCJ --mode=link $GCJ $GCJFLAGS $LDFLAGS -static --main=foo$i -o main_static foo$i.lo liba$conv.la],
+	   [0],[ignore],[ignore])
+  AT_CHECK([$LIBTOOL --tag=GCJ --mode=link $GCJ $GCJFLAGS $LDFLAGS --main=foo$i -o main foo$i.lo liba$conv.la],
+	   [0],[ignore],[ignore])
+  LT_AT_EXEC_CHECK([./main_static])
+  LT_AT_EXEC_CHECK([./main])
+done
 AT_CLEANUP
