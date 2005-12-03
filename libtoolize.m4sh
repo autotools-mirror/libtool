@@ -359,6 +359,32 @@ func_copy_some_files ()
     IFS="$my_save_IFS"
 }
 
+# func_fixup_Makefile_inc srcfile srcdir destdir
+func_fixup_Makefile_inc ()
+{
+    my_filename="$1"
+    my_srcdir="$2"
+    my_destdir="$3"
+
+    repl=$ltdldir
+    repl_uscore=`$ECHO "X$repl" | $Xsed -e 's,[[/.+-]],_,g'`
+    $RM "$my_destdir/$my_filename" 2>/dev/null
+    $opt_quiet || func_echo "creating file \`$my_destdir/$my_filename'"
+    if $opt_dry_run; then :;
+    else
+      $SED "\
+	s,libltdl_,@repl_uscore@_,
+	s,libltdl/,@repl@/,
+	s,: libltdl/,: @repl@/,
+	s,\\\$(libltdl_,\$(@repl_uscore@_,
+	s,)/libltdl ,)/@repl@ ,
+	s,@repl_uscore@,${repl_uscore},g
+	s,@repl@,${repl},g
+	"  < "$my_srcdir/$my_filename" > "$my_destdir/$my_filename" ||
+	func_fatal_error "cannot create $my_destdir/$my_filename"
+    fi
+}
+
 # func_scan_files
 # Scan configure.(ac|in) and aclocal.m4 (if present) for use of libltdl
 # and libtool.  Possibly running some of these tools if necessary.
@@ -1069,10 +1095,13 @@ func_nonemptydir_p ()
     # For recursive ltdl modes, copy a suitable Makefile.{am,inc}:
     case $ltdl_mode in
       recursive)    pkgltdl_files="Makefile.am:$pkgltdl_files"  ;;
-      nonrecursive) pkgltdl_files="Makefile.inc:$pkgltdl_files" ;;
     esac
 
     func_copy_some_files "$pkgltdl_files" "$pkgltdldir/libltdl" "$ltdldir"
+
+    case $ltdl_mode in
+      nonrecursive) func_fixup_Makefile_inc "Makefile.inc" "$pkgltdldir/libltdl" "$ltdldir" ;;
+    esac
 
     # Unless we share CONFIG_MACRO_DIR with our parent project,
     # copy macros here.

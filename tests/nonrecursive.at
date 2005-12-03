@@ -23,10 +23,10 @@ AT_BANNER([Nonrecursive Automake Libltdl.])
 m4_pushdef([_LTDL_SETUP],
 [AT_DATA([configure.ac],
 [[AC_INIT([subdirectory-demo], ]AT_PACKAGE_VERSION[, ]AT_PACKAGE_BUGREPORT[)
-LT_CONFIG_LTDL_DIR([libltdl], [nonrecursive])
-AC_CONFIG_AUX_DIR([libltdl/config])
-AC_CONFIG_MACRO_DIR([libltdl/m4])
-AC_CONFIG_LIBOBJ_DIR([libltdl])
+LT_CONFIG_LTDL_DIR([ltdl], [nonrecursive])
+AC_CONFIG_AUX_DIR([ltdl/config])
+AC_CONFIG_MACRO_DIR([ltdl/m4])
+AC_CONFIG_LIBOBJ_DIR([ltdl])
 AM_INIT_AUTOMAKE([foreign subdir-objects])
 AC_PROG_CC
 AM_PROG_CC_C_O
@@ -37,7 +37,7 @@ AC_OUTPUT
 ]])
 
 AT_DATA([Makefile.am],
-[[ACLOCAL_AMFLAGS = -I libltdl/m4
+[[ACLOCAL_AMFLAGS = -I ltdl/m4
 BUILT_SOURCES		=
 
 AM_CPPFLAGS		=
@@ -53,7 +53,7 @@ EXTRA_DIST		=
 CLEANFILES		=
 MOSTLYCLEANFILES	=
 
-include libltdl/Makefile.inc
+include ltdl/Makefile.inc
 
 foo_la_LDFLAGS		= -module -avoid-version
 foo_la_SOURCES		= foo.c
@@ -71,16 +71,16 @@ AT_SETUP([compiling softlinked libltdl])
 _LTDL_SETUP
 
 LT_AT_LIBTOOLIZE([--ltdl])
-AT_CHECK([if test -f libltdl/configure.ac; then false; fi])
+AT_CHECK([if test -f ltdl/configure.ac; then false; fi])
 
 # Support vanilla autoconf-2.59 & automake-1.9.6
 for file in argz.c lt__dirent.c lt__strl.c; do
-  cp libltdl/$file $file
+  cp ltdl/$file $file
 done
 
-LT_AT_BOOTSTRAP([ignore], [-I libltdl/m4], [ignore], [--add-missing --copy])
+LT_AT_BOOTSTRAP([ignore], [-I ltdl/m4], [ignore], [--add-missing --copy])
 
-AT_CHECK([test -f libltdl/libltdlc.la])
+AT_CHECK([test -f ltdl/libltdlc.la])
 
 AT_CLEANUP
 
@@ -94,16 +94,16 @@ AT_SETUP([compiling copied libltdl])
 _LTDL_SETUP
 
 LT_AT_LIBTOOLIZE([--copy --ltdl])
-AT_CHECK([if test -f libltdl/configure.ac; then false; fi])
+AT_CHECK([if test -f ltdl/configure.ac; then false; fi])
 
 # Support vanilla autoconf-2.59 & automake-1.9.6
 for file in argz.c lt__dirent.c lt__strl.c; do
-  cp libltdl/$file $file
+  cp ltdl/$file $file
 done
 
-LT_AT_BOOTSTRAP([ignore], [-I libltdl/m4], [ignore], [--add-missing --copy])
+LT_AT_BOOTSTRAP([ignore], [-I ltdl/m4], [ignore], [--add-missing --copy])
 
-AT_CHECK([test -f libltdl/libltdlc.la])
+AT_CHECK([test -f ltdl/libltdlc.la])
 
 AT_CLEANUP
 
@@ -119,14 +119,14 @@ _LTDL_SETUP
 prefix=`pwd`/_inst
 
 LT_AT_LIBTOOLIZE([--copy --ltdl])
-AT_CHECK([if test -f libltdl/configure.ac; then false; fi])
+AT_CHECK([if test -f ltdl/configure.ac; then false; fi])
 
 # Support vanilla autoconf-2.59 & automake-1.9.6
 for file in argz.c lt__dirent.c lt__strl.c; do
-  cp libltdl/$file $file
+  cp ltdl/$file $file
 done
 
-LT_AT_BOOTSTRAP([ignore], [-I libltdl/m4], [ignore], [--add-missing --copy],
+LT_AT_BOOTSTRAP([ignore], [-I ltdl/m4], [ignore], [--add-missing --copy],
 	[], [--enable-ltdl-install --prefix=$prefix], [all install])
 
 AT_CHECK([test -f $prefix/lib/libltdl.la])

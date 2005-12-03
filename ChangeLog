@@ -1,5 +1,11 @@
 2005-12-03  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
+	* libtoolize.m4sh (func_fixup_Makefile_inc): New function.
+	(main): Call it in nonrecursive mode to mangle Makefile.inc.
+	* tests/nonrecursive.at: adjusted to test this.
+
+2005-12-03  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
 	Basic support for PIE (position-independent executables).
 
 	* libltdl/config/ltmain.m4sh (func_generate_dlsyms):
