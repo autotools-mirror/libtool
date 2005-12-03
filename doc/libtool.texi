@@ -2278,9 +2278,6 @@ include libltdl/Makefile.inc
 @end example
 
 @noindent
-The @file{Makefile.inc} included here requires that the libltdl
-sources are in a subdirectory named @file{libltdl}, and you cannot use
-a different directory name for a @samp{nonrecursive} build.
 
 @item --quiet
 @itemx -q

@@ -1,5 +1,8 @@
 2005-12-03  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
+	* doc/libtool.texi (Invoking libtoolize): Remove mention of
+	the nonrecursive restriction to name the directory `libltdl'.
+
 	* libtoolize.m4sh (func_fixup_Makefile_inc): New function.
 	(main): Call it in nonrecursive mode to mangle Makefile.inc.
 	* tests/nonrecursive.at: adjusted to test this.
