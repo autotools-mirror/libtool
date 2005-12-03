@@ -294,9 +294,9 @@ func_extract_archives ()
       $run ${rm}r "$my_xdir"
       $show "$mkdir $my_xdir"
       $run $mkdir "$my_xdir"
-      status=$?
-      if test "$status" -ne 0 && test ! -d "$my_xdir"; then
-	exit $status
+      exit_status=$?
+      if test "$exit_status" -ne 0 && test ! -d "$my_xdir"; then
+	exit $exit_status
       fi
       case $host in
       *-darwin*)
@@ -855,9 +855,9 @@ EOF
       if test ! -d "${xdir}$objdir"; then
 	$show "$mkdir ${xdir}$objdir"
 	$run $mkdir ${xdir}$objdir
-	status=$?
-	if test "$status" -ne 0 && test ! -d "${xdir}$objdir"; then
-	  exit $status
+	exit_status=$?
+	if test "$exit_status" -ne 0 && test ! -d "${xdir}$objdir"; then
+	  exit $exit_status
 	fi
       fi
 
@@ -1920,9 +1920,9 @@ EOF
     if test ! -d "$output_objdir"; then
       $show "$mkdir $output_objdir"
       $run $mkdir $output_objdir
-      status=$?
-      if test "$status" -ne 0 && test ! -d "$output_objdir"; then
-	exit $status
+      exit_status=$?
+      if test "$exit_status" -ne 0 && test ! -d "$output_objdir"; then
+	exit $exit_status
       fi
     fi
 
@@ -4607,7 +4607,7 @@ static const void *lt_preloaded_setup() {
 	# We have no uninstalled library dependencies, so finalize right now.
 	$show "$link_command"
 	$run eval "$link_command"
-	status=$?
+	exit_status=$?
 
 	# Delete the generated files.
 	if test -n "$dlsyms"; then
@@ -4615,7 +4615,7 @@ static const void *lt_preloaded_setup() {
 	  $run $rm "$output_objdir/${outputname}S.${objext}"
 	fi
 
-	exit $status
+	exit $exit_status
       fi
 
       if test -n "$shlibpath_var"; then
@@ -5343,9 +5343,9 @@ fi\
 	    $run ${rm}r "$gentop"
 	    $show "$mkdir $gentop"
 	    $run $mkdir "$gentop"
-	    status=$?
-	    if test "$status" -ne 0 && test ! -d "$gentop"; then
-	      exit $status
+	    exit_status=$?
+	    if test "$exit_status" -ne 0 && test ! -d "$gentop"; then
+	      exit $exit_status
 	    fi
 	  fi
 
