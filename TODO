@@ -62,22 +62,12 @@ GNU Libtool
 
 * Fix -dlopen "self" on AIX.  Reported by Gary Kumfert <kumfert@llnl.gov>.
 
-* Audit AU_DEFUNs whether they need to be AU_ALIASes.
-  Reported by Akim Demaille <akim.demaille@free.fr>
-
-* Fix wrong $ECHO after `config.status --recheck'.
-  Reported by Ralf Menzel <menzel@ls6.cs.uni-dortmund.de> and
-  Jeff Squyres <jsquyres@lam-mpi.org>.
-
 * Fix denial of service if using installed `libtool' on a different mount point
   together with a compiler which does not understand `-c -o'.
   Reported by Marcin Siennicki.
 
 * Look at better -no-undefined support, maybe along the idea of
   [support #103719] for CC.
-
-* Check dangerous use of the number of macro arguments `$#' in public macros
-  (because of AU_ALIAS).
 
 
 1.2. libtldl
@@ -136,8 +126,7 @@ GNU Libtool
   all the tests/*demo noise, and duplication; and thus speed up bootstrap
   and make writing new tests a whole lot more pleasant.
 
-* We should include tests with convenience libraries and reloadable
-  objects in the testsuite.
+* We should include tests with reloadable objects in the testsuite.
 
 * Write a test case for linkage with gnu ld scripts (per 2004-08-25 patch
   from Paolo Bonzini).
@@ -194,10 +183,6 @@ GNU Libtool
   wrapper script on non-windows platforms, this will make the generated
   libtool script smaller and easier to follow, maybe a little faster
   too?
-
-* Look at position-independent executables.
-
-* Add support for a FC tag.
 
 * Audit the GCJ tag section in libtool.m4.
 
@@ -278,7 +263,7 @@ GNU Libtool
   (libhello_g, libhello_p, 64 vs 32-bit ABI's, etc).  Make these types
   configurable.
 
-* Perhaps the iuse of libltdl could be made cleaner by allowing
+* Perhaps the use of libltdl could be made cleaner by allowing
   registration of hook functions to call at various points.  This would
   hopefully free the user from having to maintain a parallel module
   list with user data.  This would likely involve being able to carry
