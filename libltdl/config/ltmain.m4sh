@@ -1014,7 +1014,7 @@ func_extract_an_archive ()
     $opt_debug
     f_ex_an_ar_dir="$1"; shift
     f_ex_an_ar_oldlib="$1"
-    func_show_eval "(cd \$f_ex_an_ar_dir && $AR x \$f_ex_an_ar_oldlib)" || exit $?
+    func_show_eval "(cd \$f_ex_an_ar_dir && $AR x \$f_ex_an_ar_oldlib)" 'exit $?'
     if ($AR t "$f_ex_an_ar_oldlib" | sort | sort -uc >/dev/null 2>&1); then
      :
     else
@@ -5583,15 +5583,15 @@ EOF
 	link_command="$compile_command$compile_rpath"
 
 	# We have no uninstalled library dependencies, so finalize right now.
-	func_show_eval "$link_command"
-	status=$?
+	exit_status=0
+	func_show_eval "$link_command" 'exit_status=$?'
 
 	# Delete the generated files.
 	if test -f "$output_objdir/${outputname}S.${objext}"; then
 	  func_show_eval '$RM "$output_objdir/${outputname}S.${objext}"'
 	fi
 
-	exit $status
+	exit $exit_status
       fi
 
       if test -n "$compile_shlibpath$finalize_shlibpath"; then

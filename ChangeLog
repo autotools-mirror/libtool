@@ -1,3 +1,15 @@
+2005-12-03  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
+	* libltdl/config/general.m4sh (func_show_eval):
+	Rewrite use the failure expression, because the exit status of
+	the previous command may not be preserved in the next `eval' by
+	some shells, such as pdksh.
+	* libltdl/config/ltmain.m4sh (func_extract_an_archive):
+	Use func_show_eval correctly.
+	(func_mode_link): Likewise.  Also, do not use `$status'.
+	* tests/fail.at: New set of tests to ensure libtool fails.
+	* Makefile.am, tests/testsuite.at: Adjusted.
+
 2005-11-26  Peter O'Gorman  <peter@pogma.com>
 
 	* libltdl/m4/libtool.m4 [darwin]: Use $LTCC $LTCFLAGS to create

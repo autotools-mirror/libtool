@@ -282,6 +282,8 @@ m4_include([inherited_flags.at])
 m4_include([convenience.at])
 # link order test
 m4_include([link-order.at])
+# ensure failure
+m4_include([fail.at])
 # Ensure our continued support for old interfaces.
 m4_include([old-m4-iface.at])
 # Torturing subdir-objects builds

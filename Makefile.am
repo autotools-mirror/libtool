@@ -372,6 +372,7 @@ TESTSUITE_AT	= tests/testsuite.at \
 		  tests/stresstest.at \
 		  tests/subproject.at \
 		  tests/link-order.at \
+		  tests/fail.at \
 		  tests/convenience.at \
 		  tests/early-libtool.at \
 		  tests/template.at

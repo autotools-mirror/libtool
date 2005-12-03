@@ -1,0 +1,70 @@
+# Hand crafted tests for GNU Libtool.                         -*- Autotest -*-
+# Copyright 2005 Free Software Foundation, Inc.
+
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2, or (at your option)
+# any later version.
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+# 02110-1301, USA.
+
+# Test that libtool really fails when it should.
+# TODO: many possible failure cases missing.  (But how to simulate a full disk?)
+
+AT_SETUP([Failure tests])
+eval `$LIBTOOL --config | $EGREP '^(pic_mode|pic_flag|build_old_libs|build_libtool_libs)='`
+LDFLAGS="$LDFLAGS -no-undefined"
+
+m4_pushdef([FAIL_CHECK],
+[AT_CHECK([if $1; then (exit 1); else :; fi], [0], [ignore], [ignore])
+])
+
+# compile failure
+echo 'choke me' > a.c
+FAIL_CHECK([$LIBTOOL --mode=compile $CC $CPPFLAGS $CFLAGS -c a.c])
+AT_CHECK([test -f a.lo], [1])
+
+# non-PIC compile failure
+case $pic_mode in default | yes)
+  case $build_old_libs,$pic_flag in yes,*-DPIC*)
+    AT_DATA([a.c], [[
+#ifndef PIC
+  choke me
+#endif
+]])
+    FAIL_CHECK([$LIBTOOL --mode=compile $CC $CPPFLAGS $CFLAGS -no-suppress -c a.c])
+    AT_CHECK([test -f a.lo], [1])
+    ;;
+  esac
+  ;;
+esac
+
+# program creation failure
+echo 'int not_main(void) { return 0; }' > a.c
+$CC $CPPFLAGS $CFLAGS -c a.c
+FAIL_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o a a.$OBJEXT])
+AT_CHECK([test -f a || test -f a$EXEEXT], [1])
+FAIL_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o a a.$OBJEXT -static])
+AT_CHECK([test -f a || test -f a$EXEEXT], [1])
+
+# shared library creation failure
+case $build_libtool_libs in yes)
+  echo 'int duplicate_name(void) { return 0; }' > a.c
+  echo 'double duplicate_name(double x) { return 2.*x; }' > b.c
+  $LIBTOOL --mode=compile $CC $CPPFLAGS $CFLAGS -c a.c
+  $LIBTOOL --mode=compile $CC $CPPFLAGS $CFLAGS -c b.c
+  FAIL_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o liba.la a.lo b.lo -rpath /foo])
+  AT_CHECK([test -f liba.la], [1])
+  ;;
+esac
+
+m4_popdef([FAIL_CHECK])
+AT_CLEANUP

@@ -336,5 +336,11 @@ func_show_eval ()
       eval "func_echo $func_quote_for_expand_result"
     }
 
-    ${opt_dry_run-false} || eval "$my_cmd" || eval "$my_fail_exp"
+    if ${opt_dry_run-false}; then :; else
+      eval "$my_cmd"
+      my_status=$?
+      if test "$my_status" -eq 0; then :; else
+	eval "(exit $my_status); $my_fail_exp"
+      fi
+    fi
 }
