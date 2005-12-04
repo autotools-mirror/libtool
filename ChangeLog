@@ -1,5 +1,10 @@
 2005-12-04  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
+	* Makefile.am (install-data-local): No continuation here.
+	(dist-hook): Fix copying of README.alpha to README.
+	* tests/early-libtool.at (configure.ac): Remove
+	`AM_INIT_AUTOMAKE', we do not use automake in these tests.
+
 	* README, README.alpha, libtoolize.m4sh: Typos.
 	* tests/am-subdir.at, tests/duplicate_members.at: Make all
 	banners end with a dot, for symmetry.

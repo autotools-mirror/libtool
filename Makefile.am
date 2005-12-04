@@ -308,7 +308,7 @@ install-data-local: libltdl/Makefile.in
 	  f=`echo "$$p" | sed 's|^.*/||'`; \
 	  echo " $(INSTALL_DATA) '$$f' '$(DESTDIR)$(aclocaldir)/$$f'"; \
 	  $(INSTALL_DATA) "$$f" "$(DESTDIR)$(aclocaldir)/$$f"; \
-	done; \
+	done
 ## install the helper scripts
 	$(mkinstalldirs) $(DESTDIR)$(pkgdatadir)
 	$(mkinstalldirs) $(DESTDIR)$(pkgdatadir)/config
@@ -347,11 +347,10 @@ uninstall-hook:
 
 dist-hook:
 ## Ship README.alpha only in alpha release, but renamed to README
-	-@test -f $(distdir)/README.alpha && \
+	@if test -f $(srcdir)/README.alpha; then \
 	case $(VERSION) in \
-	  *[a-z]) mv $(distdir)/README.alpha $(distdir)/README ;; \
-	  *)	  rm -f $(distdir)/README.alpha ;; \
-	esac
+	  *[a-z]) cp -p $(srcdir)/README.alpha $(distdir)/README ;; \
+	esac; else :; fi
 
 
 ## ----------- ##
