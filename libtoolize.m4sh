@@ -1062,7 +1062,7 @@ func_nonemptydir_p ()
       func_ltmain_update ltmain.sh "$pkgdatadir/config" "$auxdir"
     fi
   else
-    func_verbose "AC_CONFIG_AUX_DIR not defined, not copying libtool auxilliary files."
+    func_verbose "AC_CONFIG_AUX_DIR not defined, not copying libtool auxiliary files."
   fi
 
   # Copy libtool's m4 macros to the macro directory, if they are newer.

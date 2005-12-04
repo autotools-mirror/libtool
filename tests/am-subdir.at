@@ -17,7 +17,7 @@
 # 02110-1301, USA.
 
 
-AT_BANNER([Libtool's subdir-objects support.])
+AT_BANNER([Libtool subdir-objects support.])
 
 
 ## ----------- ##

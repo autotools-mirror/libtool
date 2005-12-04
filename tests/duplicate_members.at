@@ -16,7 +16,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 # 02110-1301, USA.
 
-AT_BANNER([Testing libtool functions])
+AT_BANNER([Testing libtool functions.])
 AT_SETUP([duplicate members in archive tests])
 
 # we don't want to use whole_archive_flag_spec, even if available

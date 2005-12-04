@@ -1,5 +1,9 @@
 2005-12-04  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
+	* README, README.alpha, libtoolize.m4sh: Typos.
+	* tests/am-subdir.at, tests/duplicate_members.at: Make all
+	banners end with a dot, for symmetry.
+
 	* libtoolize.m4sh (func_copy_all_files)
 	(glob_exclude_pkgaux_files): Removed, since unused.
 

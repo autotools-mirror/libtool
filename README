@@ -62,7 +62,7 @@ can explore the state of the directory to help with debugging.
 If you wish to report a test group failure to the libtool list, you
 need to send the verbose output of the FAILing group, along with the
 information from the end of `$(top_builddir)/libtool --help' to the
-bug report mailing list, <bug-libtool@gnu.org>.  From a bourne
+bug report mailing list, <bug-libtool@gnu.org>.  From a Bourne
 compatible shell, you can generate verbose test output like this:
 
   VERBOSE=yes make check \

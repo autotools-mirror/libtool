@@ -66,7 +66,7 @@ If you wish to report a test group failure to the libtool list, you need
 to send the verbose output of the FAILing group, along with the
 information from the end of `$(top_builddir)/libtool --help' to the bug
 report mailing list, <bug-libtool@gnu.org> with a subject line that
-includes the string `[TEST FAILURE]'.  From a bourne compatible shell,
+includes the string `[TEST FAILURE]'.  From a Bourne compatible shell,
 you can generate verbose test output like this:
 
   VERBOSE=yes make check \
