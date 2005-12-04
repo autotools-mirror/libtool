@@ -1,5 +1,8 @@
 2005-12-04  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
+	* doc/libtool.texi (References): Do not use `@/' for the benefit
+	of older `makeinfo', break lines instead.
+
 	* Makefile.am (install-data-local): No continuation here.
 	(dist-hook): Fix copying of README.alpha to README.
 	* tests/early-libtool.at (configure.ac): Remove
