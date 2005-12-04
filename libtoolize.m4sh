@@ -238,8 +238,8 @@ func_copy_cb ()
     copy_return_status=1
 
     # Libtool is probably misinstalled if this happens:
-    test -f "$my_srcdir/$my_file" || \
-      { func_error "\`$my_file' not found in \`$my_srcdir'"; return; }
+    test -f "$my_srcdir/$my_file" || 
+        func_fatal_error "\`$my_file' not found in \`$my_srcdir'"
 
     case $opt_verbose in
       false) my_copy_msg="file \`$my_destdir/$my_file'"     ;;
@@ -350,8 +350,7 @@ func_copy_some_files ()
 	  fi
         fi
       else
-        # Not a regular file
-        continue
+	func_fatal_error "\`$my_filename' not found in \`$my_srcdir'"
       fi
 
       $my_copy_cb "$my_filename" "$my_srcdir" "$my_destdir"
@@ -712,10 +711,7 @@ func_serial_update ()
     my_srcfile="$my_srcdir/$my_filename"
     my_destfile="$my_destdir/$my_filename"
 
-    test -f "$my_srcfile" || {
-      func_error "\`$my_srcfile' does not exist."
-      return
-    }
+    test -f "$my_srcfile" || func_fatal_error "\`$my_srcfile' does not exist."
 
     if test -f "$my_destfile"; then
       my_src_serial=`func_serial "$my_srcfile" "$my_macro_regex"`
@@ -786,10 +782,7 @@ func_keyword_update ()
 
     my_keyword_update_p=:
 
-    test -f "$my_srcfile" || {
-      func_error "\`$my_srcfile' does not exist."
-      return
-    }
+    test -f "$my_srcfile" || func_fatal_error "\`$my_srcfile' does not exist."
 
     if test -f "$my_destfile"; then
       my_src_serial=`$SED -e "$my_sed_script" "$my_srcfile"`
