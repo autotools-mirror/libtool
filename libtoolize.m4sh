@@ -265,66 +265,6 @@ func_copy_cb ()
 }
 
 
-# func_copy_all_files [-r] srcdir destdir [glob_exclude] [copy_cb=func_copy_cb]
-# For each file in SRCDIR, then try to copy the file to DESTDIR by calling
-# COPY_CB with the src and dest files.  With the `-r' option, recurse into
-# subdirectories of srcdir too.  If GLOB_EXCLUDE is given, exclude any
-# matching filenames from the copy.  If COPY_CB is passed, then the check
-# for overwriting without opt_force is the callbacks responsibility:  This
-# allows using callbacks like func_serial_update, which perform their own
-# checks to decide whether to overwrite the dest file.
-func_copy_all_files ()
-{
-    $opt_debug
-    my_opt_recurse=false
-    if test "X$1" = X-r; then
-      my_opt_recurse=:
-      shift
-    fi
-
-    my_srcdir="$1"
-    my_destdir="$2"
-    my_glob_exclude="$3"
-    my_copy_cb="${4-func_copy_cb}"
-
-    my_srcfiles=
-    my_basedir="$my_srcdir"
-    my_srcdirs="$my_srcdir"
-    my_save_IFS="$IFS"
-    IFS=:
-    while test -n "$my_srcdirs"; do
-
-      IFS="$my_save_IFS"
-      my_srcdir=`$ECHO "X$my_srcdirs" | $Xsed -e 's,:.*,,g'`
-      my_srcdirs=`$ECHO "X$my_srcdirs" | $Xsed -e 's,:*[[^:]][[^:]]*:*,,'`
-
-      for my_filename in `cd "$my_srcdir" && ls`; do
-
-        # ignore excluded filenames
-        if test -n "$my_glob_exclude"; then
-	  my_cont=false
-	  eval 'case $my_filename in '$my_glob_exclude') my_cont=: ;; esac'
-	  $my_cont && continue
-        fi
-
-	# Add to the appropriate list
-	if test -f "$my_srcdir/$my_filename"; then
-	  my_srcfile=`$ECHO "X$my_srcdir/$my_filename" | $Xsed \
-	      -e "s,^$my_basedir/*,,"`
-	  my_srcfiles="$my_srcfiles${my_srcfiles:+:}$my_srcfile"
-	elif $my_opt_recurse && test -d "$my_srcdir/$my_filename"; then
-	  my_srcdirs="$my_srcdirs${my_srcdirs:+:}$my_srcdir/$my_filename"
-	fi
-
-      done
-    done
-    IFS="$my_save_IFS"
-
-    func_copy_some_files "$my_srcfiles" "$my_basedir" \
-      "$my_destdir" "$my_copy_cb"
-}
-
-
 # func_copy_some_files srcfile_spec srcdir destdir [copy_cb=func_copy_cb]
 # Call COPY_CB for each regular file in SRCDIR named by the ':' delimited
 # names in SRCFILE_SPEC.  The odd calling convention is needed to allow
@@ -1078,8 +1018,6 @@ func_nonemptydir_p ()
 
   # libtool.m4 and ltdl.m4 are handled specially below
   func_massage_aclocal_DATA 'libtool.m4|ltdl.m4'
-
-  glob_exclude_pkgaux_files='config.guess|config.sub|install-sh|ltmain.sh'
 
   # Copy all the files from installed libltdl to this project, if the
   # user specified `--ltdl'.

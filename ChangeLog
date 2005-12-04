@@ -1,5 +1,8 @@
 2005-12-04  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
+	* libtoolize.m4sh (func_copy_all_files)
+	(glob_exclude_pkgaux_files): Removed, since unused.
+
 	* libtoolize.m4sh (func_copy_cb, func_copy_some_files)
 	(func_serial_update, func_keyword_update): Fail immediately
 	if some file we may install does not exist.
