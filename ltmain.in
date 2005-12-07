@@ -467,7 +467,11 @@ do
     preserve_args="$preserve_args $arg"
     ;;
 
-  --tag) prevopt="--tag" prev=tag ;;
+  --tag)
+    prevopt="--tag"
+    prev=tag
+    preserve_args="$preserve_args --tag"
+    ;;
   --tag=*)
     set tag "$optarg" ${1+"$@"}
     shift

@@ -1,3 +1,8 @@
+2005-12-07  Marc Espie  <espie@nerim.net>
+
+	* ltmain.in: Preserve both parts of `--tag TAG', for
+	relink_command.
+
 2005-12-03  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
 	* ltmain.in (func_extract_archives, compile mode, link mode):
