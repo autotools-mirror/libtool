@@ -104,8 +104,8 @@ shift
 
 # Whip up a dirty Makefile:
 makes='Makefile.am libltdl/Makefile.inc'
-test -f Makefile ||
-    $SED '/^if /,/^endif$/d;/^else$/,/^endif$/d;/^include /d' $makes > Makefile
+rm -f Makefile
+$SED '/^if /,/^endif$/d;/^else$/,/^endif$/d;/^include /d' $makes > Makefile
 
 # Building distributed files from configure is bad for automake, so we
 # generate them here, and have Makefile rules to keep them up to date.

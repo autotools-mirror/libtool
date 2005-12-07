@@ -1,3 +1,9 @@
+2005-12-07  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
+	* bootstrap: always remove Makefile, to avoid triggering the
+	autotools rebuild rules before autoreconf builds these.
+	Reported by Bob Friesenhahn <bfriesen@simple.dallas.tx.us>.
+
 2005-12-07  Peter O'Gorman  <peter@pogma.com>
 
 	* libltdl/config/ltmain.m4sh, libltdl/m4/libtool.m4 [darwin]:
