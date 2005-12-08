@@ -4400,9 +4400,9 @@ _LT_EOF
 	  # by either setting the environment variable LT_MULTI_MODULE
 	  # non-empty at configure time, or by adding -multi-module to the
 	  # link flags.
-	  echo "int foo(void){return 1;}" > conftest.$ac_ext
-	  $CC $CLFAGS $LDFLAGS -o libconftest.dylib \
-	      -dynamiclib ${wl}-single_module conftest.$ac_ext
+	  echo "int foo(void){return 1;}" > conftest.c
+	  $LTCC $LTCFLAGS $LDFLAGS -o libconftest.dylib \
+	      -dynamiclib ${wl}-single_module conftest.c
 	  if test -f libconftest.dylib; then
 	      lt_cv_apple_cc_single_mod=yes
 	      rm libconftest.dylib
@@ -5395,9 +5395,9 @@ if test "$_lt_caught_CXX_error" != yes; then
 	    # by either setting the environment variable LT_MULTI_MODULE
 	    # non-empty at configure time, or by adding -multi-module to the
 	    # link flags.
-	    echo "int foo(void){return 1;}" > conftest.$ac_ext
-	    $CC $CLFAGS $LDFLAGS -o libconftest.dylib \
-		-dynamiclib ${wl}-single_module conftest.$ac_ext
+	    echo "int foo(void){return 1;}" > conftest.c
+	    $LTCC $LTCFLAGS $LDFLAGS -o libconftest.dylib \
+		-dynamiclib ${wl}-single_module conftest.c
 	    if test -f libconftest.dylib; then
 		lt_cv_apple_cc_single_mod=yes
 		rm libconftest.dylib

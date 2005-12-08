@@ -1,3 +1,9 @@
+2005-12-08  Peter O'Gorman  <peter@pogma.com>
+
+	* libltdl/m4/libtool.m4 (_LT_LANG_CXX_CONFIG, _LT_LINKER_SHLIBS)
+	[darwin]: Use $LTCC $LTCFLAGS to check for -single_module.
+	Reported by Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
 2005-12-07  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
 	* bootstrap: always remove Makefile, to avoid triggering the
