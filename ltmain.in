@@ -1363,8 +1363,8 @@ EOF
 	  prev=
 	  continue
 	  ;;
-        darwin_framework)
-	  compiler_flags="$compiler_flags $arg"
+	darwin_framework|darwin_framework_skip)
+	  test "$prev" = "darwin_framework" && compiler_flags="$compiler_flags $arg"
 	  compile_command="$compile_command $arg"
 	  finalize_command="$finalize_command $arg"
 	  prev=
@@ -1429,12 +1429,16 @@ EOF
 	;;
 
       -framework|-arch|-isysroot)
-        prev=darwin_framework
-        compiler_flags="$compiler_flags $arg"
+	case " $CC " in
+	  *" ${arg} ${1} "* | *" ${arg}	${1} "*) 
+		prev=darwin_framework_skip ;;
+	  *) compiler_flags="$compiler_flags $arg"
+	     prev=darwin_framework ;;
+	esac
 	compile_command="$compile_command $arg"
 	finalize_command="$finalize_command $arg"
-        continue
-        ;;
+	continue
+	;;
 
       -inst-prefix-dir)
 	prev=inst_prefix
