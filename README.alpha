@@ -16,21 +16,21 @@ subject line including the string `[PLATFORM]'.
 2. Reporting Bugs
 =================
 
-If this distribution doesn't work for you, before you report the problem,
-please try upgrading to the latest version from CVS first:
+If this distribution doesn't work for you, before you report the
+problem, please try upgrading to the latest version from CVS first:
 
   export CVS_RSH=ssh
   cvs -z3 -d :ext:anoncvs@savannah.gnu.org:/cvsroot/libtool co libtool
   cd libtool
   ./bootstrap
 
-The `bootstrap' script sets up the source directory for you to hack, though
-it may take quite some time to run.  To use it, you need a recent (maybe yet
-to be released) version of both Autoconf and Automake.  If you don't
-intend to run the test suite, you can speed up the `bootstrap' step by
-an order of magnitude if you call it like this instead:
+The `bootstrap' script sets up the source directory for you to hack,
+though it may take quite some time to run.  To use it, you need a recent
+(maybe yet to be released) version of both Autoconf and Automake.  If
+you don't intend to run the test suite, you can speed up the `bootstrap'
+step by an order of magnitude if you call it like this instead:
 
-  reconfdirs=. ./bootstrap
+  reconfdirs='. libltdl' ./bootstrap
 
 If your bug is not fixed in the latest version, please send a full
 report to <bug-libtool@gnu.org>, including the information from the end
@@ -38,25 +38,28 @@ of the help message given by `./libtool --help', and the verbose output
 of any failed test groups (as described below).
 
 
-3. The Test Suite
-=================
+3. The Test Suites
+==================
 
-Libtool comes with an integrated set of tests to check that your build
-is sane.  You can run the entire suite like this:
+Libtool comes with two integrated sets of tests to check that your build
+is sane.  You can run both test suites like this:
 
-  make check
+  make check TESTSUITE_FLAGS=-V
+  make check-local
 
-The tests run in groups in the various demo subdirectories, so if one
-of the tests early in a group FAILs, the rest of the tests in that
-group will be SKIPPED.  If you see a FAIL further into a group, even
-if a test with the same name PASSes in another test group, you need to
-take note of the name of the first test in the group if you want to
-rerun the group with FAILures to get verbose output.
+The tests of the old test suite run in groups in the various demo
+subdirectories, so if one of the tests early in a group FAILs, the rest
+of the tests in that group will be SKIPped.  If you see a FAIL further
+into a group, even if a test with the same name PASSes in another test
+group, you need to take note of the name of the first test in the group
+if you want to rerun the group with FAILures to get verbose output.
 
-To run a test group in isolation (say, you think you have fixed a bug,
-but don't want to rerun the entire suite), you can do it like this:
+To run a test group of the old test suite in isolation (say, you think
+you have fixed a bug, but don't want to rerun the entire suite), you can
+do it like this:
 
-  make check TESTS='cdemo-static.test cdemo-make.test cdemo-exec.test'
+  make check TESTS='cdemo-static.test cdemo-make.test cdemo-exec.test' \
+	     TESTSUITE_FLAGS=-V
 
 Providing that you have a FAIL from the most recent group from a
 particular demo directory (like the cdemo-static.test group above), you
@@ -71,10 +74,28 @@ you can generate verbose test output like this:
 
   VERBOSE=yes make check \
   TESTS='cdemo-static.test cdemo-make.test cdemo-exec.test' \
-  | tee cdemo-static-group.log
+  TESTSUITE_FLAGS=-V | tee cdemo-static-group.log
 
-In order to enable debug shell tracing, use VERBOSE=debug
-instead of VERBOSE=yes.
+In order to enable debug shell tracing, use VERBOSE=debug instead of
+VERBOSE=yes.
+
+
+In the long run, Libtool will move to using only the new,
+Autotest-driven testsuite.  Its usage is documented in
+
+  info Autoconf 'testsuite Invocation'
+
+but simple help may also be obtained through
+
+  make check-local TESTSUITE_FLAGS='--help'
+
+For verbose output, add the flag `-v', for running only a subset of the
+independent tests, merely specify them by number or by keyword, both of
+which are displayed with the `--list' flag.
+
+If you wish to report test failures to the libtool list, you need to
+send the file `tests/testsuite.log' to the bug report mailing list,
+<bug-libtool@gnu.org>.
 
 -- 
 Copyright (C) 2004 Free Software Foundation, Inc.

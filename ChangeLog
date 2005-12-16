@@ -1,5 +1,14 @@
 2005-12-16  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
+	* README.alpha (Reporting bugs): Suggest to also bootstrap the
+	libltdl subdirectory -- the Makefile will enforce it anyway.
+	(The Test Suite): Renamed to..
+	(The Test Suites): ..this.  Introduce the new Autotest test
+	suite, how to run each one individually, and what to report.
+	* README (The Test Suite): Likewise.
+
+2005-12-16  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
 	In the subpackage case, we do not install Makefile.inc.  Since
 	we have to be correct for this case, remove `Makefile.inc' from
 	EXTRA_DIST.  Recursive mode does not use it either.  Since
