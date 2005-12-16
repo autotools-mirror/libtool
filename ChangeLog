@@ -1,9 +1,22 @@
 2005-12-16  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
+	In the subpackage case, we do not install Makefile.inc.  Since
+	we have to be correct for this case, remove `Makefile.inc' from
+	EXTRA_DIST.  Recursive mode does not use it either.  Since
+	nonrecursive mode requires an Automake >= 1.7 anyway, and those
+	versions automatically distribute included makefile fragments,
+	we don't need to cater for that one either.
+
+	* libltdl/Makefile.inc (EXTRA_DIST): Remove Makefile.inc.
+	Reorder other entries.
+
+2005-12-16  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
 	* Makefile.am (libltdl/Makefile.in): also depend on
 	libltdl/aclocal.m4, so that we guarantee timestamp consistency.
 	(libltdl/stamp-mk): New target, to fix `libltdl/Makefile.in'.
-	(EXTRA_DIST): Distribute `libltdl/stamp-mk'.
+	(EXTRA_DIST): Distribute `libltdl/stamp-mk' and
+	`libltdl/m4/lt~obsolete.m4'.
 	(all-local): Ensure the stamp files is up to date.
 	(libltdl/aclocal.m4): New target, to ensure timestamp
 	consistency.  Depend on all m4 files.

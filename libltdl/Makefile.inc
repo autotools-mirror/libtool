@@ -117,15 +117,13 @@ CLEANFILES		       += libltdl/libltdl.la \
 CLEANFILES	       += $(LIBOBJS) $(LTLIBOBJS)
 
 EXTRA_DIST	       += libltdl/COPYING.LIB \
-			  libltdl/Makefile.am \
-			  libltdl/Makefile.in \
-			  libltdl/Makefile.inc \
-			  libltdl/README \
-			  libltdl/config-h.in \
-			  libltdl/configure \
 			  libltdl/configure.ac \
+			  libltdl/Makefile.am \
 			  libltdl/aclocal.m4 \
-			  libltdl/m4/lt~obsolete.m4
+			  libltdl/Makefile.in \
+			  libltdl/configure \
+			  libltdl/config-h.in \
+			  libltdl/README
 
 ## --------------------------- ##
 ## Gnulib Makefile.am snippets ##
