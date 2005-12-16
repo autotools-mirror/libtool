@@ -1,3 +1,13 @@
+2005-12-16  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
+	* tests/am-subdir.at (Makefile.am): Put automake options here,
+	in AUTOMAKE_OPTIONS.  Require 1.6 because of the newer
+	`AC_INIT(pkgname,version) AM_INIT_AUTOMAKE' scheme.
+	* tests/nonrecursive.at, tests/recursive.at: Require 1.7,
+	because libltdl rules use `+=' in conditionals.
+	* tests/testsuite.at (LT_AT_AUTOMAKE): Fix indenting.
+	(LT_AT_AUTORECONF): also detect too old Automake.
+
 2005-12-08  Eric Blake  <ebb9@byu.net>
 
 	* libltdl/libltdl/lt__alloc.h (FREE): Cast away constness of

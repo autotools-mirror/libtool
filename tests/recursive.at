@@ -36,6 +36,7 @@ AC_OUTPUT
 
 AT_DATA([Makefile.am],
 [[ACLOCAL_AMFLAGS = -I ltdl/m4
+AUTOMAKE_OPTIONS = 1.7
 SUBDIRS = ltdl
 lib_LTLIBRARIES = foo.la
 foo_la_LDFLAGS = -module -avoid-version

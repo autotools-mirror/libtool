@@ -79,7 +79,7 @@ AT_KEYWORDS([autoconf])
 # --------------------------
 m4_define([LT_AT_AUTOMAKE],
 [AT_CHECK([$AUTOMAKE $1], [0], [ignore], [stderr],
-[AT_CHECK([grep 'require .*but have' stderr && (exit 77)], [1])])
+  [AT_CHECK([grep 'require .*but have' stderr && (exit 77)], [1])])
 AT_XFAIL_IF([test "$AUTOMAKE" = no])
 AT_KEYWORDS([automake])
 ])
@@ -97,7 +97,8 @@ AT_KEYWORDS([autoconf])
 # LT_AT_AUTORECONF([OPTIONS])
 # --------------------------
 m4_define([LT_AT_AUTORECONF],
-[AT_CHECK([$AUTORECONF $1], [0], [ignore], [ignore])
+[AT_CHECK([$AUTORECONF $1], [0], [ignore], [stderr],
+  [AT_CHECK([grep 'require .*but have' stderr && (exit 77)], [1])])
 AT_XFAIL_IF(
   [case ,$AUTORECONF,$AUTOCONF,$AUTOHEADER,$ACLOCAL,$AUTOMAKE, in *,no,*) :;; *) false;; esac])
 AT_KEYWORDS([autoconf automake])
