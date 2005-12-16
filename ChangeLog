@@ -1,5 +1,10 @@
 2005-12-16  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
+	* tests/old-m4-iface.at: Require Autoconf-2.50, so that
+	Debian's autoconf wrapper will not cause 2.13 to barf over
+	`--force'.
+	Reported by Kurt Roeckx <kurt@roeckx.be>.
+
 	* README.alpha (Reporting bugs): Suggest to also bootstrap the
 	libltdl subdirectory -- the Makefile will enforce it anyway.
 	(The Test Suite): Renamed to..
