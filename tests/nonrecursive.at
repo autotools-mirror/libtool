@@ -79,7 +79,8 @@ for file in argz.c lt__dirent.c lt__strl.c; do
   cp ltdl/$file $file
 done
 
-LT_AT_BOOTSTRAP([ignore], [-I ltdl/m4], [ignore], [--add-missing --copy])
+LT_AT_BOOTSTRAP([ignore], [-I ltdl/m4], [ignore], [--add-missing --copy],
+	[], [], [all $tst_dist])
 
 AT_CHECK([test -f ltdl/libltdlc.la])
 
@@ -102,7 +103,8 @@ for file in argz.c lt__dirent.c lt__strl.c; do
   cp ltdl/$file $file
 done
 
-LT_AT_BOOTSTRAP([ignore], [-I ltdl/m4], [ignore], [--add-missing --copy])
+LT_AT_BOOTSTRAP([ignore], [-I ltdl/m4], [ignore], [--add-missing --copy],
+	[], [], [all $tst_dist])
 
 AT_CHECK([test -f ltdl/libltdlc.la])
 
@@ -128,7 +130,7 @@ for file in argz.c lt__dirent.c lt__strl.c; do
 done
 
 LT_AT_BOOTSTRAP([ignore], [-I ltdl/m4], [ignore], [--add-missing --copy],
-	[], [--enable-ltdl-install --prefix=$prefix], [all install])
+	[], [--enable-ltdl-install --prefix=$prefix], [all install $tst_dist])
 
 AT_CHECK([test -f $prefix/lib/libltdl.la])
 AT_CHECK([test -f $prefix/include/ltdl.h])

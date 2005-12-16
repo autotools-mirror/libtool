@@ -59,7 +59,7 @@ AT_CHECK([if test -f ltdl/configure.ac; then false; fi])
 
 LT_AT_AUTORECONF([--force --verbose --install])
 LT_AT_CONFIGURE
-LT_AT_MAKE
+LT_AT_MAKE([all $tst_dist])
 
 AT_CHECK([test -f ltdl/libltdlc.la])
 
@@ -79,7 +79,7 @@ AT_CHECK([if test -f ltdl/configure.ac; then false; fi])
 
 LT_AT_AUTORECONF([--force --verbose --install])
 LT_AT_CONFIGURE
-LT_AT_MAKE
+LT_AT_MAKE([all $tst_dist])
 
 AT_CHECK([test -f ltdl/libltdlc.la])
 
@@ -101,7 +101,7 @@ AT_CHECK([if test -f ltdl/configure.ac; then false; fi])
 
 LT_AT_AUTORECONF([--force --verbose --install])
 LT_AT_CONFIGURE([--enable-ltdl-install --prefix=$prefix])
-LT_AT_MAKE([all install])
+LT_AT_MAKE([all install $tst_dist])
 
 AT_CHECK([test -f $prefix/lib/libltdl.la])
 AT_CHECK([test -f $prefix/include/ltdl.h])

@@ -53,7 +53,8 @@ AT_SETUP([compiling softlinked libltdl])
 
 _LTDL_SETUP
 
-LT_AT_BOOTSTRAP([--ltdl], [-I sub/ltdl/m4], [ignore], [--add-missing --copy])
+LT_AT_BOOTSTRAP([--ltdl], [-I sub/ltdl/m4], [ignore], [--add-missing --copy],
+	[], [], [all $tst_dist])
 
 AT_CHECK([test -f sub/ltdl/libltdlc.la])
 
@@ -69,7 +70,7 @@ AT_SETUP([compiling copied libltdl])
 _LTDL_SETUP
 
 LT_AT_BOOTSTRAP([--copy --ltdl], [-I sub/ltdl/m4], [ignore],
-	[--add-missing --copy])
+	[--add-missing --copy], [], [], [all $tst_dist])
 
 AT_CHECK([test -f sub/ltdl/libltdlc.la])
 
@@ -88,7 +89,7 @@ _LTDL_SETUP
 
 LT_AT_BOOTSTRAP([--copy --ltdl], [-I sub/ltdl/m4], [ignore],
 	[--add-missing --copy], [], [--enable-ltdl-install --prefix=$prefix],
-	[all install])
+	[all install $tst_dist])
 
 AT_CHECK([test -f $prefix/lib/libltdl.la])
 AT_CHECK([test -f $prefix/include/ltdl.h])

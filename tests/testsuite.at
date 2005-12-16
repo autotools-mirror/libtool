@@ -19,6 +19,7 @@
 # 02110-1301, USA.
 
 m4_divert_push([PREPARE_TESTS])dnl
+: ${tst_dist=""}
 : ${ACLOCAL=aclocal}
 : ${AUTOHEADER=autoheader}
 : ${AUTOCONF=autoconf}

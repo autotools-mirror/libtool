@@ -1,5 +1,12 @@
 2005-12-16  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
+	* tests/testsuite.at (PREPARE_TESTS): New variable `tst_dist',
+	default to empty.
+	* tests/nonrecursive.at, tests/recursive.at,
+	tests/standalone.at, tests/subproject.at: Use it in
+	LT_AT_BOOTSTRAP or LT_AT_MAKE, so that you can optionally test
+	redistribution within the tests.
+
 	* libltdl/m4/lt~obsolete.m4: Update documentation for aclocal
 	versions before 1.7.  Change all macros to use AC_DEFUN instead
 	of AU_DEFUN.
