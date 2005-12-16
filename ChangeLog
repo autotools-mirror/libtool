@@ -1,5 +1,20 @@
 2005-12-16  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
+	* libltdl/m4/lt~obsolete.m4: Update documentation for aclocal
+	versions before 1.7.  Change all macros to use AC_DEFUN instead
+	of AU_DEFUN.
+	* (_AC_PROG_LIBTOOL, AC_LIBTOOL_SETUP, _LT_AC_CHECK_DLFCN)
+	(AC_LIBTOOL_SYS_DYNAMIC_LINKER, _LT_AC_TAGCONFIG)
+	(AC_DISABLE_FAST_INSTALL, _LT_AC_LANG_CXX, _LT_AC_LANG_F77)
+	(_LT_AC_LANG_GCJ, AC_LIBTOOL_RC, AC_LIBTOOL_LANG_C_CONFIG)
+	(_LT_AC_LANG_C_CONFIG, AC_LIBTOOL_LANG_CXX_CONFIG)
+	(_LT_AC_LANG_CXX_CONFIG, AC_LIBTOOL_LANG_F77_CONFIG)
+	(_LT_AC_LANG_F77_CONFIG, AC_LIBTOOL_LANG_GCJ_CONFIG)
+	(_LT_AC_LANG_GCJ_CONFIG, AC_LIBTOOL_LANG_RC_CONFIG)
+	(_LT_AC_LANG_RC_CONFIG, AC_LIBTOOL_CONFIG)
+	(_LT_AC_FILE_LTDLL_C): Add new fake macros for these, they
+	were used at one time in libtool.m4.
+
 	* tests/am-subdir.at (Makefile.am): Put automake options here,
 	in AUTOMAKE_OPTIONS.  Require 1.6 because of the newer
 	`AC_INIT(pkgname,version) AM_INIT_AUTOMAKE' scheme.
