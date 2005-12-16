@@ -1,3 +1,7 @@
+2005-12-16  Nicolas Kaiser  <nikai@nikai.net>
+
+	* doc/libtool.texi: Fix some documentation typos.
+
 2005-12-13  Peter O'Gorman  <peter@pogma.com>
 
 	* ltmain.in [darwin]: Don't add -framework. -arch, -isysroot

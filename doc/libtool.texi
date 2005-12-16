@@ -1085,10 +1085,10 @@ displayed.
 
 @item --mode=@var{mode}
 Use @var{mode} as the operation mode.  If not specified, an attempt is
-made to inferr the operation mode from the @var{mode-args}.  Not specifying
+made to infer the operation mode from the @var{mode-args}.  Not specifying
 the @var{mode} is currently deprecated, as there are too many situations
 where it is not possible to guess.  Future versions of Libtool will require
-that @var{mode} be explicity set.
+that @var{mode} be explicitly set.
 
 @var{mode} must be set to one of the following:
 
@@ -1157,7 +1157,7 @@ You can also pass compile specific flags using @samp{-Wc,@var{flag}}
 and @samp{-Xcompiler @var{flag}}.
 
 If both PIC and non-PIC objects are being built, libtool will normally
-supress the compiler output for the PIC object compilation to save
+suppress the compiler output for the PIC object compilation to save
 showing very similar, if not identical duplicate output for each
 object.  If the @samp{-no-suppress} option is given in compile mode,
 libtool will show the compiler output for both objects.
@@ -3086,7 +3086,7 @@ This is the type of a function pointer holding the address of a function
 which will be called at the start of parts of the libltdl implementation
 code which require a mutex lock.
 
-Because libltdl is inherantly recursive, it is important that the
+Because libltdl is inherently recursive, it is important that the
 locking mechanism employed by these callback functions are reentrant, or
 else strange problems will occur.
 @end deftypefn
@@ -3110,13 +3110,13 @@ error message passed in thread local storage.
 The type of a matching callback function to retrieve the last stored
 error message from thread local storage.
 
-When regeistered correctly this function will be used by
+When registered correctly this function will be used by
 @code{lt_dlerror())} from all threads to retrieve error messages for the
 client.
 @end deftypefn
 
 @deftypefn {Function} int lt_dlmutex_register (@w{lt_dlmutex_lock *@var{lock}}, @w{lt_dlmutex_unlock *@var{unlock}}, @w{lt_dlmutex_set_error *@var{seterror}}, @w{lt_dlmutex_geterror *@var{geterror})}
-Use this function to register one of each of function ttypes described
+Use this function to register one of each of function types described
 above in preparation for multi-threaded use of libltdl.  All arguments
 must be valid non-@code{NULL} function addresses, or else all
 @code{NULL} to return to single threaded operation.
@@ -3319,7 +3319,7 @@ return @code{NULL}, and set the error message with @code{lt_dlseterror}.
 
 @deftypefn {Type} int lt_module_close (@w{lt_user_data @var{loader_data},} @w{lt_module @var{module}})
 The type of the unloader function for a user defined module loader.
-Implementatation of such a function should attempt to release
+Implementation of such a function should attempt to release
 any resources tied up by the @var{module} module, and then unload it
 from memory.  If the function fails for some reason, set the error
 message with @code{lt_dlseterror} and return non-zero.
@@ -3481,7 +3481,7 @@ if (myerror < 0)
 
 @deftypefun int lt_dlseterror (@w{int @var{errorcode}})
 When writing your own module loaders, you should use this function to
-raise errors so that they are propogated through the @code{lt_dlerror}
+raise errors so that they are propagated through the @code{lt_dlerror}
 interface. All of the standard errors used by libltdl are declared in
 @file{ltdl.h}, or you can add more of your own with
 @code{lt_dladderror}.  This function returns 0 on success.
