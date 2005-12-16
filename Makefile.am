@@ -77,7 +77,7 @@ $(srcdir)/libtoolize.in: $(sh_files) libtoolize.m4sh Makefile.am
 	$(M4SH) -B $(auxdir) libtoolize.m4sh > libtoolize.in
 
 libtool: $(top_builddir)/config.status $(srcdir)/$(auxdir)/ltmain.sh \
-	 $(srcdir)/stamp-vcl
+	    $(srcdir)/stamp-vcl
 	cd $(top_builddir) && $(SHELL) ./config.status $@
 
 .PHONY: configure-subdirs
@@ -218,11 +218,32 @@ $(srcdir)/libltdl/Makefile.am: $(srcdir)/libltdl/Makefile.inc
 	      s,\$$(libltdl_,$$(,; p; }' $$in >> $$out;
 	chmod a-w $(srcdir)/libltdl/Makefile.am
 
-$(srcdir)/libltdl/Makefile.in: $(srcdir)/libltdl/Makefile.am
+$(srcdir)/libltdl/Makefile.in: $(srcdir)/libltdl/Makefile.am \
+	    $(srcdir)/libltdl/aclocal.m4 
 	cd $(srcdir)/libltdl && $(AUTOMAKE) Makefile
 
+$(srcdir)/libltdl/stamp-mk: $(srcdir)/libltdl/Makefile.in
+	cd $(srcdir)/libltdl && \
+	sed -e 's,config/mdate-sh,,' -e 's,config/texinfo.tex,,' \
+	    -e 's,config/mkinstalldirs,,' \
+	    < Makefile.in > Makefile.inT && \
+	mv -f Makefile.inT Makefile.in
+	echo stamp > $@
+
+EXTRA_DIST += libltdl/stamp-mk $(m4dir)/lt~obsolete.m4
+
+$(srcdir)/libltdl/aclocal.m4: \
+	    $(m4dir)/libtool.m4 \
+	    $(m4dir)/ltoptions.m4 \
+	    $(m4dir)/ltdl.m4 \
+	    $(m4dir)/ltversion.m4 \
+	    $(m4dir)/ltsugar.m4 \
+	    $(m4dir)/argz.m4 \
+	    $(m4dir)/lt~obsolete.m4
+	cd $(srcdir)/libltdl && $(ACLOCAL) -I m4
+
 # We want the libltdl files to be up to date as much as possible.
-all-local: $(srcdir)/libltdl/Makefile.in
+all-local: $(srcdir)/libltdl/stamp-mk
 
 
 ## -------- ##

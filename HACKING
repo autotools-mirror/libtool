@@ -192,6 +192,14 @@ yyyy-mm-dd  Name of Author  <email@address>  (tiny change)
 * In general, if a loop is required, it should be silent.  Then the body
   of the loop itself should print each "important" command it runs.
 
+* Use 4 extra spaces to indent continued dependencies.
+
+* One needs to remember that for our whole logic for the different
+  libltdl modes to function correctly, the thing we need to ensure
+  *before the client runs libtoolize*, is that the subpackage case is
+  correct (because all files may be symlinked there).  All others can
+  and will be fixed in the `libtoolize --ltdl --(non)recursive' stage.
+
 
 7. Editing `.m4sh' Files
 ========================
