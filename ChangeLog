@@ -1,3 +1,8 @@
+2005-12-18  Marc Espie  <espie@nerim.net>
+
+	* libtool.m4 (AC_LIBTOOL_SYS_DYNAMIC_LINKER) [ openbsd ]
+	<sys_lib_dlsearch_path_spec>: Set to `/usr/lib' only.
+
 2005-12-16  Nicolas Kaiser  <nikai@nikai.net>
 
 	* doc/libtool.texi: Fix some documentation typos.
