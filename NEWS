@@ -1,5 +1,8 @@
 NEWS - list of user-visible changes between releases of GNU Libtool
 
+New in 1.5.23a: 2006-??-??; CVS version 1.5.23a, Libtool team:
+* Bug Fixes.
+
 New in 1.5.22: 2005-12-18; CVS version 1.5.21a, Libtool team:
 * Fix 1.5 regression that caused linking a program `-static' to also
   link statically against installed libtool libraries, contrary to
