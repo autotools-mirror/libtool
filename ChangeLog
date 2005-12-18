@@ -1,3 +1,10 @@
+2005-12-18  Kean Johnston  <jkj@sco.com>,
+	    Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
+	* libltdl/m4/libtool.m4 (LT_PATH_NM): Also look in
+	/usr/ccs/bin/elf, for SCO.  If we are not cross-compiling, but
+	$ac_tool_prefix is set, also try an un-prefixed `nm'.
+
 2005-12-18  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
 	* libltdl/m4/libtool.m4 (_LT_LANG_CXX_CONFIG)
