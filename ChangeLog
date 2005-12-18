@@ -1,3 +1,8 @@
+2005-12-18  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
+	* libtool.m4 (AC_LIBTOOL_LANG_CXX_CONFIG)
+	<hardcode_shlibpath_var>: Initialize, to `unsupported'.
+
 2005-12-18  Marc Espie  <espie@nerim.net>
 
 	* ltmain.in: Change semantics of `--tag=disable-static' and
