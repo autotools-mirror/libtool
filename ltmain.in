@@ -141,6 +141,43 @@ o2lo="s/\\.${objext}\$/.lo/"
 # Shell function definitions:
 # This seems to be the best place for them
 
+# func_mktempdir [string]
+# Make a temporary directory that won't clash with other running
+# libtool processes, and avoids race conditions if possible.  If
+# given, STRING is the basename for that directory.
+func_mktempdir ()
+{
+    my_template="${TMPDIR-/tmp}/${1-$progname}"
+
+    if test "$run" = ":"; then
+      # Return a directory name, but don't create it in dry-run mode
+      my_tmpdir="${my_template}-$$"
+    else
+
+      # If mktemp works, use that first and foremost
+      my_tmpdir=`mktemp -d "${my_template}-XXXXXXXX" 2>/dev/null`
+
+      if test ! -d "$my_tmpdir"; then
+	# Failing that, at least try and use $RANDOM to avoid a race
+	my_tmpdir="${my_template}-${RANDOM-0}$$"
+
+	save_mktempdir_umask=`umask`
+	umask 0077
+	$mkdir "$my_tmpdir"
+	umask $save_mktempdir_umask
+      fi
+
+      # If we're not in dry-run mode, bomb out on failure
+      test -d "$my_tmpdir" || {
+        $echo "cannot create temporary directory \`$my_tmpdir'" 1>&2
+	exit $EXIT_FAILURE
+      }
+    fi
+
+    $echo "X$my_tmpdir" | $Xsed
+}
+
+
 # func_win32_libid arg
 # return the library type of file 'arg'
 #
@@ -6096,18 +6133,7 @@ relink_command=\"$relink_command\""
 	  outputname=
 	  if test "$fast_install" = no && test -n "$relink_command"; then
 	    if test "$finalize" = yes && test -z "$run"; then
-	      tmpdir="/tmp"
-	      test -n "$TMPDIR" && tmpdir="$TMPDIR"
-	      tmpdir="$tmpdir/libtool-$$"
-	      save_umask=`umask`
-	      umask 0077
-	      if $mkdir "$tmpdir"; then
-	        umask $save_umask
-	      else
-	        umask $save_umask
-		$echo "$modename: error: cannot create temporary directory \`$tmpdir'" 1>&2
-		continue
-	      fi
+	      tmpdir=`func_mktempdir`
 	      file=`$echo "X$file$stripped_ext" | $Xsed -e 's%^.*/%%'`
 	      outputname="$tmpdir/$file"
 	      # Replace the output file specification.
