@@ -4882,6 +4882,33 @@ EOF
 	  ;;
       esac
 
+      # move library search paths that coincide with paths to not yet
+      # installed libraries to the beginning of the library search list
+      new_libs=
+      for path in $notinst_path; do
+	case " $new_libs " in
+	*" -L$path/$objdir "*) ;;
+	*)
+	  case " $deplibs " in
+	  *" -L$path/$objdir "*)
+	    new_libs="$new_libs -L$path/$objdir" ;;
+	  esac
+	  ;;
+	esac
+      done
+      for deplib in $deplibs; do
+	case $deplib in
+	-L*)
+	  case " $new_libs " in
+	  *" $deplib "*) ;;
+	  *) new_libs="$new_libs $deplib" ;;
+	  esac
+	  ;;
+	*) new_libs="$new_libs $deplib" ;;
+	esac
+      done
+      deplibs="$new_libs"
+
       # All the library-specific variables (install_libdir is set above).
       library_names=
       old_library=
@@ -5470,6 +5497,35 @@ EOF
 	finalize_deplibs=`$ECHO "X $finalize_deplibs" | $Xsed -e 's% \([[^ $]]*\).ltframework% -framework \1%g'`
 	;;
       esac
+
+
+      # move library search paths that coincide with paths to not yet
+      # installed libraries to the beginning of the library search list
+      new_libs=
+      for path in $notinst_path; do
+	case " $new_libs " in
+	*" -L$path/$objdir "*) ;;
+	*)
+	  case " $compile_deplibs " in
+	  *" -L$path/$objdir "*)
+	    new_libs="$new_libs -L$path/$objdir" ;;
+	  esac
+	  ;;
+	esac
+      done
+      for deplib in $compile_deplibs; do
+	case $deplib in
+	-L*)
+	  case " $new_libs " in
+	  *" $deplib "*) ;;
+	  *) new_libs="$new_libs $deplib" ;;
+	  esac
+	  ;;
+	*) new_libs="$new_libs $deplib" ;;
+	esac
+      done
+      compile_deplibs="$new_libs"
+
 
       compile_command="$compile_command $compile_deplibs"
       finalize_command="$finalize_command $finalize_deplibs"

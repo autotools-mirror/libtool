@@ -1,3 +1,10 @@
+2005-12-18  Jacob Meuser <jakemsr@jakemsr.com>,
+	    Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
+	* libltdl/config/ltmain.m4sh (func_mode_link): Move library
+	search paths that coincide with paths to not yet installed
+	libraries to the beginning of the library search list.
+
 2005-12-18  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
 	* THANKS: Updated.
