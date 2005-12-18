@@ -1080,6 +1080,7 @@ EOF
     no_install=no
     objs=
     non_pic_objects=
+    notinst_path= # paths that contain not-installed libtool libraries
     precious_files_regex=
     prefer_static_libs=no
     preload=no
@@ -1482,7 +1483,8 @@ EOF
 	  absdir=`cd "$dir" && pwd`
 	  if test -z "$absdir"; then
 	    $echo "$modename: cannot determine absolute directory name of \`$dir'" 1>&2
-	    exit $EXIT_FAILURE
+	    absdir="$dir"
+	    notinst_path="$notinst_path $dir"
 	  fi
 	  dir="$absdir"
 	  ;;
@@ -2009,7 +2011,6 @@ EOF
     newlib_search_path=
     need_relink=no # whether we're linking any uninstalled libtool libraries
     notinst_deplibs= # not-installed libtool libraries
-    notinst_path= # paths that contain not-installed libtool libraries
     case $linkmode in
     lib)
 	passes="conv link"
@@ -3373,9 +3374,9 @@ EOF
 
       # Eliminate all temporary directories.
       for path in $notinst_path; do
-	lib_search_path=`$echo "$lib_search_path " | ${SED} -e 's% $path % %g'`
-	deplibs=`$echo "$deplibs " | ${SED} -e 's% -L$path % %g'`
-	dependency_libs=`$echo "$dependency_libs " | ${SED} -e 's% -L$path % %g'`
+	lib_search_path=`$echo "$lib_search_path " | ${SED} -e "s% $path % %g"`
+	deplibs=`$echo "$deplibs " | ${SED} -e "s% -L$path % %g"`
+	dependency_libs=`$echo "$dependency_libs " | ${SED} -e "s% -L$path % %g"`
       done
 
       if test -n "$xrpath"; then

@@ -1,3 +1,11 @@
+2005-12-18  Peter O'Gorman  <peter@pogma.com>,
+	    Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* ltmain.in (link mode): Don't die if -L<relative/path> does not
+	exist.  Put in notinst_path though, so it won't end up in the
+	installed .la file.
+	(link mode): Really eliminate all temporary directories.
+
 2005-12-18  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
 	* ltmain.in <duplicate_deps, preserve_args, linknames>:
