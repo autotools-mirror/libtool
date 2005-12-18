@@ -1,5 +1,14 @@
 2005-12-18  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
+	GNU libtool 1.5.22 is released.
+
+	* configure.ac: Bump version.
+	* NEWS, THANKS: Updated.
+	* config.guess, config.sub, install-sh, texinfo.tex: Updated
+	from external sources.
+	* libtool.m4, ltdl.m4: Bump serial.
+	* libltdl/Makefile.am: Bump library revision.
+
 	* ltmain.in (func_mktempdir): New, backported from HEAD.
 	(relink mode): Use it.  Fixes potential denial of service
 	through malicious other local user.

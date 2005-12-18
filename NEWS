@@ -1,14 +1,25 @@
 NEWS - list of user-visible changes between releases of GNU Libtool
 
-New in 1.5.21a: 2005-??-??; CVS version 1.5.21a, Libtool team:
+New in 1.5.22: 2005-12-18; CVS version 1.5.21a, Libtool team:
 * Fix 1.5 regression that caused linking a program `-static' to also
   link statically against installed libtool libraries, contrary to
   documented (and actual 1.4.x) behavior.
+* Fix file ownership for BSD `ranlib'.
+* Initial support for Beos/C++.
+* Fixed detection of link_static_flag, and self-dlopening.
+* Fixed setting of shlibpath variables (LD_LIBRARY_PATH and similar)
+  and order of link search paths for creating and testing of uninstalled
+  libraries.
+* Fix silent failure of `libtoolize --ltdl' if libltdl files not present.
+* Fixed command line settings for non-GCC compilers, Solaris/64bit.
 * Support for Interix 3 (Windows SFU).
-* If non-pic objects were not compiled, and libtool is called in link mode,
-  libtool no longer silently creates an empty archive, but rather falls
-  back to pic objects.
-* Bug Fixes.
+* If non-pic objects were not compiled, and libtool is called in link
+  mode, libtool no longer silently creates an empty archive, but rather
+  falls back to pic objects.
+* Fix potential denial of service by malicious other users for tmpdir
+  directory creation at relink time.
+* Bug Fixes, among others for AIX, Cygwin, Darwin, FreeBSD, HPUX, MinGW,
+  OpenBSD, UnixWare.
 
 New in 1.5.20: 2005-08-31; CVS version 1.5.19a, Libtool team:
 * Fix long-standing Solaris CC limitation failing with -no-undefined.
