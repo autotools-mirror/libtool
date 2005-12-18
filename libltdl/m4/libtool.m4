@@ -5079,6 +5079,7 @@ _LT_TAGVAR(hardcode_libdir_flag_spec, $1)=
 _LT_TAGVAR(hardcode_libdir_flag_spec_ld, $1)=
 _LT_TAGVAR(hardcode_libdir_separator, $1)=
 _LT_TAGVAR(hardcode_minus_L, $1)=no
+_LT_TAGVAR(hardcode_shlibpath_var, $1)=unsupported
 _LT_TAGVAR(hardcode_automatic, $1)=no
 _LT_TAGVAR(inherit_rpath, $1)=no
 _LT_TAGVAR(module_cmds, $1)=
