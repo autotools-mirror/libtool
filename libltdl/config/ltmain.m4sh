@@ -112,6 +112,7 @@ magic="%%%MAGIC variable%%%"
 # $mode is unset
 nonopt=
 execute_dlfiles=
+preserve_args=
 lo2o="s/\\.lo\$/.${objext}/"
 o2lo="s/\\.${objext}\$/.lo/"
 
@@ -4965,6 +4966,7 @@ EOF
 	fi
 
 	lib="$output_objdir/$realname"
+	linknames=
 	for link
 	do
 	  linknames="$linknames $link"
