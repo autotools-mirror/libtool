@@ -351,6 +351,8 @@ func_extract_archives ()
 # Darwin sucks
 eval std_shrext=\"$shrext_cmds\"
 
+disable_libs=no
+
 # Parse our command line options once, thoroughly.
 while test "$#" -gt 0
 do
@@ -502,6 +504,18 @@ if test -n "$prevopt"; then
   $echo "$help" 1>&2
   exit $EXIT_FAILURE
 fi
+
+case $disable_libs in
+no) 
+  ;;
+shared)
+  build_libtool_libs=no
+  build_old_libs=yes
+  ;;
+static)
+  build_old_libs=`case $build_libtool_libs in yes) echo no;; *) echo yes;; esac`
+  ;;
+esac
 
 # If this variable is set in any of the actions, the command in it
 # will be execed at the end.  This prevents here-documents from being
@@ -6748,12 +6762,11 @@ exit $?
 # configuration.  But we'll never go from static-only to shared-only.
 
 # ### BEGIN LIBTOOL TAG CONFIG: disable-shared
-build_libtool_libs=no
-build_old_libs=yes
+disable_libs=shared
 # ### END LIBTOOL TAG CONFIG: disable-shared
 
 # ### BEGIN LIBTOOL TAG CONFIG: disable-static
-build_old_libs=`case $build_libtool_libs in yes) $echo no;; *) $echo yes;; esac`
+disable_libs=static
 # ### END LIBTOOL TAG CONFIG: disable-static
 
 # Local Variables:

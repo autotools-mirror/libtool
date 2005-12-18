@@ -1,5 +1,12 @@
 2005-12-18  Marc Espie  <espie@nerim.net>
 
+	* ltmain.in: Change semantics of `--tag=disable-static' and
+	`--tag=disable-shared': The last one given wins now, both
+	override the default setting inherited by other `--tag'
+	arguments, even if passed later on the command line.
+	Still make sure we do not disable both kinds by falling back
+	to static libraries.
+
 	* libtool.m4 (AC_LIBTOOL_SYS_DYNAMIC_LINKER) [ openbsd ]
 	<sys_lib_dlsearch_path_spec>: Set to `/usr/lib' only.
 
