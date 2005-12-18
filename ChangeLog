@@ -1,3 +1,9 @@
+2005-12-18  Marc Espie  <espie@nerim.net>
+
+	* libltdl/m4/libtool.m4 (AC_LIBTOOL_SYS_DYNAMIC_LINKER)
+	[ openbsd ] <sys_lib_dlsearch_path_spec>: Set to `/usr/lib'
+	only.
+
 2005-12-16  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
 	* tests/old-m4-iface.at: Require Autoconf-2.50, so that
