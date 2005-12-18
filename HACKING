@@ -518,7 +518,7 @@ New in @VERSION@: @RELEASE_DATE@
   @EXCERPT_FROM_NEWS_FILE@
 
 Please report bugs to <bug-libtool@gnu.org>, along with the verbose
-output of any failed test groups, and the output from `./libtool --help.'
+output of any failed test groups, and the output from `./libtool --config.'
 
 
 
@@ -600,7 +600,7 @@ You will then need to have the latest release versions of Automake
 bootstrap the checked out sources yourself.
 
 Please report bugs to <bug-libtool@gnu.org>, along with the verbose
-output of any failed test groups, and the output from `./libtool --help.'
+output of any failed test groups, and the output from `./libtool --config.'
 
 
 -- 

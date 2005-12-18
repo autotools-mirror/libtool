@@ -1,5 +1,7 @@
 2005-12-18  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
+	* HACKING: `./libtool --config' is more helpful than `--help'.
+
 	* libltdl/config/ltmain.m4sh <preserve_args, linknames>:
 	Initialize properly.
 
