@@ -1,3 +1,8 @@
+2005-12-18  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
+	* ltmain.in <duplicate_deps, preserve_args, linknames>:
+	Initialize properly.
+
 2005-12-18  Jacob Meuser <jakemsr@jakemsr.com>,
 	    Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 

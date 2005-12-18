@@ -132,6 +132,8 @@ run=
 show="$echo"
 show_help=
 execute_dlfiles=
+duplicate_deps=no
+preserve_args=
 lo2o="s/\\.lo\$/.${objext}/"
 o2lo="s/\\.${objext}\$/.lo/"
 
@@ -3879,6 +3881,7 @@ EOF
 	fi
 
 	lib="$output_objdir/$realname"
+	linknames=
 	for link
 	do
 	  linknames="$linknames $link"
