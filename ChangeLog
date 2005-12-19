@@ -1,3 +1,7 @@
+2005-12-19  Eric Blake  <ebb9@byu.net>
+
+	* README-alpha: Update anon cvs location.
+
 2005-12-18  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
 	* configure.ac: Bump version.
