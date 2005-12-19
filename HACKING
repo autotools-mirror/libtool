@@ -506,7 +506,7 @@ Alternatively, you can fetch the unbootstrapped sourcecode from
 anonymous cvs by using the following commands:
 
   $ export CVS_RSH=ssh
-  $ cvs -z3 -d :ext:anoncvs@savannah.gnu.org:/cvsroot/libtool \
+  $ cvs -z3 -d :pserver:anonymous@cvs.sv.gnu.org:/sources/libtool \
   co -r @CVS_RELEASE_TAG@ libtool
 
 You will then need to have recent (possibly as yet unreleased) versions
@@ -592,7 +592,7 @@ anonymous cvs by using the following commands (just hit return when
 you are prompted for the password):
 
   $ export CVS_RSH=ssh
-  $ cvs -z3 -d :ext:anoncvs@savannah.gnu.org:/cvsroot/libtool \
+  $ cvs -z3 -d :pserver:anonymous@cvs.sv.gnu.org:/sources/libtool \
   co -r @CVS_RELEASE_TAG@ libtool
 
 You will then need to have the latest release versions of Automake

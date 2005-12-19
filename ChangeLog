@@ -1,3 +1,8 @@
+2005-12-19  Eric Blake  <ebb9@byu.net>
+
+	* HACKING (release note templates): Update anon cvs location.
+	* README.alpha (Reporting Bugs): Likewise.
+
 2005-12-18  Jacob Meuser <jakemsr@jakemsr.com>,
 	    Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
