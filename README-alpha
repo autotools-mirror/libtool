@@ -2,7 +2,7 @@ This is an alpha testing release of GNU Libtool.  To get the latest
 CVS version of this package, do:
 
   export CVS_RSH=ssh
-  cvs -z3 -d :ext:anoncvs@savannah.gnu.org:/cvsroot/libtool co libtool
+  cvs -z3 -d :pserver:anonymous@cvs.sv.gnu.org:/sources/libtool co libtool
   cd libtool
   ./bootstrap
 
@@ -181,7 +181,7 @@ Alternatively, you can fetch the unbootstrapped sourcecode from
 anonymous cvs by using the following commands:
 
   $ export CVS_RSH=ssh
-  $ cvs -z3 -d :pserver:anonymous@cvs.sv.gnu.org:/cvsroot/libtool \
+  $ cvs -z3 -d :pserver:anonymous@cvs.sv.gnu.org:/sources/libtool \
   co -r @CVS_RELEASE_TAG@ libtool
 
 You will then need to have recent (possibly as yet unreleased) versions
@@ -255,7 +255,7 @@ anonymous cvs by using the following commands (just hit return when
 you are prompted for the password):
 
   $ export CVS_RSH=ssh
-  $ cvs -z3 -d :pserver:anonymous@cvs.sv.gnu.org:/cvsroot/libtool \
+  $ cvs -z3 -d :pserver:anonymous@cvs.sv.gnu.org:/sources/libtool \
   co -r @CVS_RELEASE_TAG@ libtool
 
 You will then need to have the latest release versions of Automake
