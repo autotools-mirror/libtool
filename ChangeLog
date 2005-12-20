@@ -1,3 +1,7 @@
+2005-12-20  Eric Blake  <ebb9@byu.net>
+
+	* README.alpha: Really commit.
+
 2005-12-19  Eric Blake  <ebb9@byu.net>
 
 	* HACKING (release note templates): Update anon cvs location.

@@ -20,7 +20,7 @@ If this distribution doesn't work for you, before you report the
 problem, please try upgrading to the latest version from CVS first:
 
   export CVS_RSH=ssh
-  cvs -z3 -d :ext:anoncvs@savannah.gnu.org:/cvsroot/libtool co libtool
+  cvs -z3 -d :pserver:anonymous@cvs.sv.gnu.org:/sources/libtool co libtool
   cd libtool
   ./bootstrap
 
