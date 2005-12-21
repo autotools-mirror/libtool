@@ -1,5 +1,11 @@
 .*.prcs_aux
 .clcommitrc
+.cvslog-tlasync
+.gdb_history
+.pc
++build
++dest
++inst
 COPYING
 INSTALL
 Makefile

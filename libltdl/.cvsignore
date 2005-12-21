@@ -1,5 +1,6 @@
 .deps
 .libs
+INSTALL
 Makefile
 Makefile.in
 Makefile.am
@@ -17,4 +18,4 @@ missing
 mkinstalldirs
 *.lo
 *.la
-stamp-h*
+stamp-*

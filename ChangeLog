@@ -1,3 +1,9 @@
+2005-12-21  Gary V. Vaughan  <gary@gnu.org>
+
+	* .cvsignore, libltdl/.cvsignore, tests/.cvsignore: Ignore
+	+build, +dest, +inst, .cvslog-tlasync, .gdb_history, .pc,
+	libltdl/INSTALL, libltdl/stamp-mk and tests/testsuite.log.
+
 2005-12-20  Eric Blake  <ebb9@byu.net>
 
 	* README.alpha: Really commit.
