@@ -1,5 +1,9 @@
 2005-12-29  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
+	* libltdl/config/ltmain.m4sh (func_mode_link) <temp_rpath>:
+	Fix position of separator for shlibpath_var setting in shell
+	wrapper.
+
 	* libltdl/lt_error.c (error_strings): Remove parentheses around
 	string literal initializers, uncovered by `tcc'.
 	Reported by Edward Chernenko <edwardspec@yahoo.com>.

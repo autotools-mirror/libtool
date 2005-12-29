@@ -3591,7 +3591,7 @@ func_mode_link ()
 	      # Make sure the rpath contains only unique directories.
 	      case "$temp_rpath " in
 	      *"$absdir:"*) ;;
-	      *) temp_rpath="$temp_rpath:$absdir" ;;
+	      *) temp_rpath="$temp_rpath$absdir:" ;;
 	      esac
 	    fi
 
