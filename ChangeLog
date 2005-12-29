@@ -1,5 +1,9 @@
 2005-12-29  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
+	* Makefile.am (libtoolize): Also depend on `config.status'.
+	(tests/atconfig): Normalize path, for non-GNU make.
+	Reported by Bob Friesenhahn <bfriesen@simple.dallas.tx.us>.
+
 	* libltdl/config/ltmain.m4sh (func_mode_link) <temp_rpath>:
 	Fix position of separator for shlibpath_var setting in shell
 	wrapper.

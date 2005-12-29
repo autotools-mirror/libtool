@@ -55,7 +55,7 @@ lt__cd		= CDPATH="$${ZSH_VERSION+.}$(PATH_SEPARATOR)" && cd
 # The libtool distributor and the standalone libtool script.
 bin_SCRIPTS = libtoolize libtool
 
-libtoolize: $(srcdir)/libtoolize.in
+libtoolize: $(srcdir)/libtoolize.in $(top_builddir)/config.status
 	rm -f libtoolize.tmp libtoolize
 	$(timestamp); \
 	input="libtoolize.m4sh"; \
@@ -438,7 +438,7 @@ $(srcdir)/tests/package.m4: $(srcdir)/configure.ac
 	  echo 'm4_define([AT_PACKAGE_BUGREPORT], [@PACKAGE_BUGREPORT@])'; \
 	} | $(edit) > $(srcdir)/tests/package.m4
 
-tests/atconfig: config.status
+tests/atconfig: $(top_builddir)/config.status
 	$(SHELL) ./config.status tests/atconfig
 
 DISTCLEANFILES += tests/atconfig
