@@ -32,7 +32,7 @@ Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 static const char	*last_error	= 0;
 static const char	error_strings[LT_ERROR_MAX][LT_ERROR_LEN_MAX + 1] =
   {
-#define LT_ERROR(name, diagnostic)	(diagnostic),
+#define LT_ERROR(name, diagnostic)	diagnostic,
     lt_dlerror_table
 #undef LT_ERROR
   };

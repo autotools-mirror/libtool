@@ -1,3 +1,9 @@
+2005-12-29  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
+	* libltdl/lt_error.c (error_strings): Remove parentheses around
+	string literal initializers, uncovered by `tcc'.
+	Reported by Edward Chernenko <edwardspec@yahoo.com>.
+
 2005-12-21  Gary V. Vaughan  <gary@gnu.org>
 
 	* .cvsignore, libltdl/.cvsignore, tests/.cvsignore: Ignore
