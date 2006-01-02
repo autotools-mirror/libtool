@@ -1,3 +1,9 @@
+2006-01-02  Alexis Wilke  <alexis_wilke@yahoo.com>
+
+	* libltdl/ltdl.c (LT_DLMUTEX_GETERROR): check if
+	`lt_dlmutex_geterror_func' is set instead of
+	`lt_dlmutex_seterror_func'.
+
 2005-12-20  Eric Blake  <ebb9@byu.net>
 
 	* README-alpha: Another instance of anon cvs location.

@@ -894,7 +894,7 @@ static	const char	sys_search_path[]	= LTDL_SYSSEARCHPATH;
 		(*lt_dlmutex_seterror_func) (errormsg);		\
 	else 	lt_dllast_error = (errormsg);	} LT_STMT_END
 #define LT_DLMUTEX_GETERROR(errormsg)		LT_STMT_START {	\
-	if (lt_dlmutex_seterror_func)				\
+	if (lt_dlmutex_geterror_func)				\
 		(errormsg) = (*lt_dlmutex_geterror_func) ();	\
 	else	(errormsg) = lt_dllast_error;	} LT_STMT_END
 
