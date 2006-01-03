@@ -98,7 +98,7 @@ send the file `tests/testsuite.log' to the bug report mailing list,
 <bug-libtool@gnu.org>.
 
 -- 
-Copyright (C) 2004 Free Software Foundation, Inc.
+Copyright (C) 2004, 2005 Free Software Foundation, Inc.
 
 The canonical source of this file is maintained with the
 GNU Libtool package.  Report bugs to bug-libtool@gnu.org.
