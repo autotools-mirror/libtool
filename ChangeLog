@@ -1,5 +1,7 @@
 2006-01-03  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* Makefile.am (EXTRA_DIST): Add ChangeLog.2005.
+
 	* README, README.alpha: Adjust copyright years.
 	* ChangeLog.2005: New, rotated, from..
 	* ChangeLog: ..here.

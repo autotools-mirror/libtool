@@ -125,7 +125,8 @@ EXTRA_DIST     += bootstrap libtoolize.in $(auxdir)/ltmain.m4sh \
 		  $(auxdir)/mkstamp $(sh_files) stamp-vcl \
 		  ChangeLog.1996 ChangeLog.1997 ChangeLog.1998 \
 		  ChangeLog.1999 ChangeLog.2000 ChangeLog.2001 \
-		  ChangeLog.2002 ChangeLog.2003 ChangeLog.2004
+		  ChangeLog.2002 ChangeLog.2003 ChangeLog.2004 \
+		  ChangeLog.2005
 CLEANFILES     += libtool libtoolize libtoolize.tmp \
 		  $(auxdir)/ltmain.tmp $(m4dir)/ltversion.tmp
 
