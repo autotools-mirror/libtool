@@ -1,3 +1,7 @@
+2006-01-11  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* libtool.m4, ltmain.in, libltdl/ltdl.c: Bump copyright years.
+
 2006-01-02  Alexis Wilke  <alexis_wilke@yahoo.com>
 
 	* libltdl/ltdl.c (LT_DLMUTEX_GETERROR): check if
