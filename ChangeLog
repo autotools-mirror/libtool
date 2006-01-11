@@ -1,3 +1,9 @@
+2006-01-11  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* libtoolize.m4sh, libltdl/config/general.m4sh,
+	libltdl/config/getopt.m4sh, libltdl/config/ltmain.m4sh,
+	libltdl/m4/libtool.m4: Bump copyright years.
+
 2006-01-03  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* Makefile.am (EXTRA_DIST): Add ChangeLog.2005.
