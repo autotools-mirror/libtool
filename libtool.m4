@@ -1680,6 +1680,10 @@ osf3* | osf4* | osf5*)
   sys_lib_dlsearch_path_spec="$sys_lib_search_path_spec"
   ;;
 
+rdos*)
+  dynamic_linker=no
+  ;;
+
 solaris*)
   version_type=linux
   need_lib_prefix=no
@@ -2389,6 +2393,10 @@ openbsd*)
   ;;
 
 osf3* | osf4* | osf5*)
+  lt_cv_deplibs_check_method=pass_all
+  ;;
+
+rdos*)
   lt_cv_deplibs_check_method=pass_all
   ;;
 
@@ -5243,6 +5251,10 @@ AC_MSG_CHECKING([for $compiler option to produce PIC])
     osf3* | osf4* | osf5*)
       _LT_AC_TAGVAR(lt_prog_compiler_wl, $1)='-Wl,'
       # All OSF/1 code is PIC.
+      _LT_AC_TAGVAR(lt_prog_compiler_static, $1)='-non_shared'
+      ;;
+
+    rdos*)
       _LT_AC_TAGVAR(lt_prog_compiler_static, $1)='-non_shared'
       ;;
 

@@ -1,3 +1,10 @@
+2006-01-12  Leif Ekblad  <leif@rdos.net>
+
+	* libtool.m4 (AC_LIBTOOL_SYS_DYNAMIC_LINKER)
+	(AC_DEPLIBS_CHECK_METHOD, AC_LIBTOOL_PROG_COMPILER_PIC): Added
+	support for RDOS.
+	* NEWS: Updated.
+
 2006-01-11  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* libtool.m4, ltmain.in, libltdl/ltdl.c: Bump copyright years.
