@@ -3793,7 +3793,7 @@ m4_if([$1], [CXX], [
       ;;
 
     rdos*)
-      _LT_AC_TAGVAR(lt_prog_compiler_static, $1)='-non_shared'
+      _LT_TAGVAR(lt_prog_compiler_static, $1)='-non_shared'
       ;;
 
     solaris*)
