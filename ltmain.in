@@ -758,6 +758,7 @@ if test -z "$show_help"; then
     *.f90) xform=f90 ;;
     *.for) xform=for ;;
     *.java) xform=java ;;
+    *.obj) xform=obj ;;
     esac
 
     libobj=`$echo "X$libobj" | $Xsed -e "s/\.$xform$/.lo/"`
