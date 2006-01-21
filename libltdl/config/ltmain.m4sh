@@ -1232,6 +1232,7 @@ func_mode_compile ()
     *.f90) xform=f90 ;;
     *.for) xform=for ;;
     *.java) xform=java ;;
+    *.obj) xform=obj ;;
     esac
 
     libobj=`$ECHO "X$libobj" | $Xsed -e "s/\.$xform$/.lo/"`
