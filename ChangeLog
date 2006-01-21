@@ -1,3 +1,7 @@
+2006-01-21  Eric Blake  <ebb9@byu.net>
+
+	* THANKS: Move myself to contributor.
+
 2006-01-21  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* bootstrap: Don't use semicolons inside { } in sed scripts, as
