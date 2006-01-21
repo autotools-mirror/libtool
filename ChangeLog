@@ -1,3 +1,7 @@
+2006-01-21  Eric Blake  <ebb9@byu.net>
+
+	* THANKS: Move myself to contributor.
+
 2006-01-21  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* libtool.m4 (_LT_AC_SYS_LIBPATH_AIX): Don't use semicolons

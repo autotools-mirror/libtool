@@ -57,9 +57,10 @@
   Nick Hudson			skrll@netbsd.org		  2004-03-29
   Paolo Bonzini			bonzini@gnu.org			  2003-03-01
   Noah Jeffrey Misch		noah@cs.caltech.edu		  2004-07-05
-  Thorsten Glaser		tg@66h.42h.de			  2004-10-11 
+  Thorsten Glaser		tg@66h.42h.de			  2004-10-11
   Peter Ekberg			peda@lysator.liu.se		  2005-04-12
   Tim Rice			tim@multitalents.net		  2005-11-10
+  Eric Blake			ebb9@byu.net			  2006-01-18
 
 
 * The following additional people made especially gracious contributions of
@@ -78,7 +79,6 @@
   DJ Delorie			dj@delorie.com
   Edouard G. Parmelan		Edouard.Parmelan@France.NCR.COM
   Erez Zadok			ezk@shekel.mcl.cs.columbia.edu
-  Eric Blake			ebb9@byu.net
   Eric Estievenart		eric@via.ecp.fr
   Frank Ch. Eigler		fche@cygnus.com
   Fred Cox			sailorfred@yahoo.com
