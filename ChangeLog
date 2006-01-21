@@ -1,5 +1,11 @@
 2006-01-21  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* libtool.m4 (_LT_AC_SYS_LIBPATH_AIX): Don't use semicolons
+	inside { } in sed scripts, as Posix says it's not portable.
+	* ltmain.in (func_win32_libid): Likewise.
+	* mailnotify, commit: Likewise.
+	Noted by Paul Eggert <eggert@cs.ucla.edu>.
+
 	* ltmain.in (compile mode): Also transform `.obj' correctly.
 	Reported by George Bosilca <bosilca@cs.utk.edu>.
 

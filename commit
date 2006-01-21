@@ -166,9 +166,10 @@ func_missing_arg ()
 func_usage ()
 {
     $SED '/^# Usage:/,/# -h/ {
-        s/^# //; s/^# *$//;
-	s/\$progname/'$progname'/;
-	p;
+        s/^# //
+	s/^# *$//
+	s/\$progname/'$progname'/
+	p
     }; d' < "$progpath"
     echo
     echo "run \`$progname --help | more' for full usage"
@@ -180,9 +181,10 @@ func_usage ()
 func_help ()
 {
     $SED '/^# Usage:/,/# Report bugs to/ {
-        s/^# //; s/^# *$//;
-	s/\$progname/'$progname'/;
-	p;
+        s/^# //
+	s/^# *$//
+	s/\$progname/'$progname'/
+	p
      }; d' < "$progpath"
     exit $EXIT_SUCCESS
 }
@@ -192,9 +194,10 @@ func_help ()
 func_version ()
 {
     $SED '/^# '$PROGRAM' (GNU /,/# warranty; / {
-        s/^# //; s/^# *$//;
-        s/\((C)\)[ 0-9,-]*\( [1-9][0-9]*\)/\1\2/;
-        p;
+        s/^# //
+	s/^# *$//
+        s/\((C)\)[ 0-9,-]*\( [1-9][0-9]*\)/\1\2/
+        p
      }; d' < "$progpath"
      exit $EXIT_SUCCESS
 }

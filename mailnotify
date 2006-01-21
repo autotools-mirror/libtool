@@ -137,9 +137,10 @@ func_missing_arg ()
 func_usage ()
 {
     $SED '/^# Usage:/,/# -h/ {
-        s/^# //; s/^# *$//;
-	s/\$progname/'$progname'/;
-	p;
+        s/^# //
+	s/^# *$//
+	s/\$progname/'$progname'/
+	p
     }; d' < "$progpath"
     echo
     echo "run \`$progname --help | more' for full usage"
@@ -151,9 +152,10 @@ func_usage ()
 func_help ()
 {
     $SED '/^# Usage:/,/# Report bugs to/ {
-        s/^# //; s/^# *$//;
-	s/\$progname/'$progname'/;
-	p;
+        s/^# //
+	s/^# *$//
+	s/\$progname/'$progname'/
+	p
      }; d' < "$progpath"
     exit $EXIT_SUCCESS
 }
@@ -163,9 +165,10 @@ func_help ()
 func_version ()
 {
     $SED '/^# '$PROGRAM' (GNU /,/# warranty; / {
-        s/^# //; s/^# *$//;
-        s/\((C)\)[ 0-9,-]*\( [1-9][0-9]*\)/\1\2/;
-        p;
+        s/^# //
+	s/^# *$//
+        s/\((C)\)[ 0-9,-]*\( [1-9][0-9]*\)/\1\2/
+        p
      }; d' < "$progpath"
      exit $EXIT_SUCCESS
 }
@@ -292,7 +295,10 @@ func_headers ()
 {
     my_outfile="$1"
     my_destination="$2"
-    my_sed_version_no='/^# '$PROGRAM' (GNU / { s/^# .*version //; p; }; d'
+    my_sed_version_no='/^# '$PROGRAM' (GNU / {
+    			   s/^# .*version //
+			   p
+		       }; d'
 
     {
 	echo "User-Agent: $PROGRAM/`$SED \"$my_sed_version_no\" < $progpath`"
