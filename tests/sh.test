@@ -84,8 +84,13 @@ fi
 # Check for using shift after set dummy (same or following line).
 for s in $scripts
 do
-  if $SED -n '/set[ 	][ 	]*dummy/{/set.*dummy.*;.*shift/d;N;/\n.*shift/D;p;}' "$s" |
-     $EGREP .; then
+  if $SED -n '
+      /set[ 	][ 	]*dummy/{
+	  /set.*dummy.*;.*shift/d
+	  N
+	  /\n.*shift/D
+	  p
+      }' "$s" | $EGREP .; then
     echo "use \`shift' after \`set dummy' in $s"
     status=$EXIT_FAILURE
   fi
@@ -95,8 +100,12 @@ done
 # redirect stderr so we also barf when sed issues diagnostics.
 for s in $scripts
 do
-  if $SED -n '/^func_/{N;/^func_[^ 	]* ()\n{$/d;p;}' "$s" 2>&1 |
-     $EGREP .; then
+  if $SED -n '
+      /^func_/{
+	  N
+	  /^func_[^ 	]* ()\n{$/d
+	  p
+      }' "$s" 2>&1 | $EGREP .; then
     echo "Function definitions should look like this in $s:
 func_foo ()
 {
@@ -112,7 +121,7 @@ for s in "$m4dir/libtool.m4"
 do
   if $SED -n '/case \$cc_basename in/,/esac/ {
 	      /^[ 	]*[a-zA-Z][a-zA-Z0-9+]*[^*][ 	]*)/p
-  	      };'  $s 2>&1 | $EGREP .; then
+  	      }'  $s 2>&1 | $EGREP .; then
     echo "\$cc_basename matches should include a trailing \`*' in $s."
     status=$EXIT_FAILURE
   fi

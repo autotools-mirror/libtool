@@ -392,7 +392,11 @@ func_commit ()
 {
     if $opt_tla; then
       tla_log=`$TLA make-log`
-      test -n "$summary" || summary=`$SED -e '1{s/^Summary: *//;q;}'`
+      test -n "$summary" || summary=`$SED -e '
+          1{
+	      s/^Summary: *//
+	      q
+	  }'`
       echo "Summary: $summary" > "$tla_log$$T" &&
         $SED 1d "$tla_log" >> "$tla_log$$T" &&
         cat < "$log_file" >> "$tla_log$$T" &&
@@ -458,7 +462,11 @@ func_mailnotify ()
     ${PAGER-more} "$notify_file" || break
 
     # Break out the subject line again
-    my_mail_subject=`$SED -e '1{s/^Subject: *//;q;}' "$notify_file"`
+    my_mail_subject=`$SED -e '
+        1{
+	    s/^Subject: *//
+	    q
+	}' "$notify_file"`
     my_mail_body=`$SED -e '2,$p;d' "$notify_file"`
     echo "$my_mail_body" > "$notify_file"
 

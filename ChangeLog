@@ -1,5 +1,17 @@
 2006-01-21  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* bootstrap: Don't use semicolons inside { } in sed scripts, as
+	Posix says it's not portable.
+	* Makefile.am (libltdl/Makefile.am): Likewise.
+	* libtoolize.m4sh (all over the map): Likewise.
+	* libltdl/config/getopt.m4sh (func_version, func_usage)
+	(func_help): Likewise.
+	* libltdl/config/ltmain.m4sh (func_win32_libid): Likewise.
+	* libltdl/m4/libtool.m4 (_LT_SYS_MODULE_PATH_AIX): Likewise.
+	* clcommit.m4sh, libltdl/config/mailnotify.m4sh: Likewise.
+	* tests/sh.test, tests/testsuite.at (LT_AT_TAG): Likewise.
+	Noted by Paul Eggert <eggert@cs.ucla.edu>.
+
 	* libltdl/config/ltmain.m4sh (func_mode_compile): Also transform
 	`.obj' correctly.
 	Reported by George Bosilca <bosilca@cs.utk.edu>.

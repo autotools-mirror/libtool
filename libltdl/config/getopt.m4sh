@@ -32,9 +32,10 @@ m4_include([general.m4sh])
 func_version ()
 {
     $SED -n '/^# '$PROGRAM' (GNU /,/# warranty; / {
-        s/^# //; s/^# *$//;
-        s/\((C)\)[[ 0-9,-]]*\( [[1-9]][[0-9]]*\)/\1\2/;
-        p;
+        s/^# //
+	s/^# *$//
+        s/\((C)\)[[ 0-9,-]]*\( [[1-9]][[0-9]]*\)/\1\2/
+        p
      }' < "$progpath"
      exit $?
 }
@@ -44,9 +45,10 @@ func_version ()
 func_usage ()
 {
     $SED -n '/^# Usage:/,/# -h/ {
-        s/^# //; s/^# *$//;
-	s/\$progname/'$progname'/;
-	p;
+        s/^# //
+	s/^# *$//
+	s/\$progname/'$progname'/
+	p
     }' < "$progpath"
     $ECHO
     $ECHO "run \`$progname --help | more' for full usage"
@@ -58,16 +60,17 @@ func_usage ()
 func_help ()
 {
     $SED -n '/^# Usage:/,/# Report bugs to/ {
-        s/^# //; s/^# *$//;
-	s*\$progname*'$progname'*;
-	s*\$SHELL*'"$SHELL"'*;
-	s*\$LTCC*'"$LTCC"'*;
-	s*\$LTCFLAGS*'"$LTCFLAGS"'*;
-	s*\$LD*'"$LD"'*;
-	s/\$with_gnu_ld/'"$with_gnu_ld"'/;
-	s/\$automake_version/'"`(automake --version) 2>/dev/null |$SED 1q`"'/;
-	s/\$autoconf_version/'"`(autoconf --version) 2>/dev/null |$SED 1q`"'/;
-	p;
+        s/^# //
+	s/^# *$//
+	s*\$progname*'$progname'*
+	s*\$SHELL*'"$SHELL"'*
+	s*\$LTCC*'"$LTCC"'*
+	s*\$LTCFLAGS*'"$LTCFLAGS"'*
+	s*\$LD*'"$LD"'*
+	s/\$with_gnu_ld/'"$with_gnu_ld"'/
+	s/\$automake_version/'"`(automake --version) 2>/dev/null |$SED 1q`"'/
+	s/\$autoconf_version/'"`(autoconf --version) 2>/dev/null |$SED 1q`"'/
+	p
      }' < "$progpath"
     exit $?
 }

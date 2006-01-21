@@ -99,7 +99,11 @@ if test -z "$reconfdirs"; then
 fi
 
 # Extract the package name and version number from configure.ac:
-set dummy `$SED -n '/AC_INIT/{s/[][,()]/ /g; p;}' configure.ac`
+set dummy `$SED -n '
+    /AC_INIT/{
+	s/[][,()]/ /g
+	p
+    }' configure.ac`
 shift
 
 # Whip up a dirty Makefile:

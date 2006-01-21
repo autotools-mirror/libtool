@@ -204,7 +204,12 @@ func_headers ()
 {
     my_outfile="$1"
     my_destination="$2"
-    my_sed_version_no='/^# '$PROGRAM' (GNU / { s/^# .*version //; p; }; d'
+    my_sed_version_no='
+	/^# '$PROGRAM' (GNU / {
+	    s/^# .*version //
+	    p
+	}
+	d'
 
     {
 	echo "User-Agent: $PROGRAM/`$SED \"$my_sed_version_no\" < $progpath`"

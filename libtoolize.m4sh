@@ -339,7 +339,10 @@ func_scan_files ()
 
     # Set local variables to reflect contents of configure.ac
     my_sed_scan_configure_ac='s,#.*$,,; s,^dnl .*$,,; s, dnl .*$,,;
-	/AC_INIT/ { s,^.*$,seen_autoconf=:,; p; };
+	/AC_INIT/ {
+	    s,^.*$,seen_autoconf=:,
+	    p
+	}
 	d'
     test -z "$configure_ac" \
         || eval `$SED "$my_sed_scan_configure_ac" "$configure_ac"`
@@ -358,27 +361,48 @@ func_scan_files ()
     # Probe macro usage in configure.ac and/or aclocal.m4. #
     # ---------------------------------------------------- #
 
-    my_sed_traces='s,#.*$,,; s,^dnl .*$,,; s, dnl .*$,,;
-        s,^.*AC_REQUIRE(.*$,,; s,^.*m4[]_require(.*$,,; s,^.*m4[]_define(.*$,,;
-	s,^.*A[[CU]]_DEFUN(.*$,,; s,^.*m4[]_defun(.*$,,;
+    my_sed_traces='s,#.*$,,; s,^dnl .*$,,; s, dnl .*$,,
+        s,^.*AC_REQUIRE(.*$,,; s,^.*m4[]_require(.*$,,; s,^.*m4[]_define(.*$,,
+	s,^.*A[[CU]]_DEFUN(.*$,,; s,^.*m4[]_defun(.*$,,
     	/AC_CONFIG_AUX_DIR(/ {
-	    s,^.*AC_CONFIG_AUX_DIR([[[ 	]*\([^])]]*\).*$,auxdir=\1,; p;
-        };
+	    s,^.*AC_CONFIG_AUX_DIR([[[ 	]*\([^])]]*\).*$,auxdir=\1,
+	    p
+        }
     	/AC_CONFIG_MACRO_DIR(/ {
-	    s,^.*AC_CONFIG_MACRO_DIR([[[ 	]*\([^])]]*\).*$,macrodir=\1,; p;
-        };
-	/_LT_CONFIG_LTDL_DIR(/d;
+	    s,^.*AC_CONFIG_MACRO_DIR([[[ 	]*\([^])]]*\).*$,macrodir=\1,
+	    p
+        }
+	/_LT_CONFIG_LTDL_DIR(/d
 	/LT_CONFIG_LTDL_DIR(/ {
-	    s/^.*LT_CONFIG_LTDL_DIR([[[	 ]*\([^]),]*\)[^,]]*/ac_ltdldir=\1%%/;
-	    s/%%[[[, 	]*\([^])]]*\).*$/ ac_ltdl_mode=\1%%/;
-	    s/%%.*$//; p;
-	};
-	/A[[CM]]_PROG_LIBTOOL/ { s,^.*$,seen_libtool=:,; p; };
-	/LT_INIT/	     { s,^.*$,seen_libtool=:,; p; };
-	/LTDL_INIT/          { s,^.*$,seen_ltdl=:,; p; };
-	/LT_WITH_LTDL/       { s,^.*$,seen_ltdl=:,; p; };
-	/AC_LIB_LTDL/        { s,^.*$,seen_ltdl=:,; p; };
-	/AC_WITH_LTDL/       { s,^.*$,seen_ltdl=:,; p; };
+	    s/^.*LT_CONFIG_LTDL_DIR([[[	 ]*\([^]),]*\)[^,]]*/ac_ltdldir=\1%%/
+	    s/%%[[[, 	]*\([^])]]*\).*$/ ac_ltdl_mode=\1%%/
+	    s/%%.*$//
+	    p
+	}
+	/A[[CM]]_PROG_LIBTOOL/ {
+	    s,^.*$,seen_libtool=:,
+	    p
+	}
+	/LT_INIT/	     {
+	    s,^.*$,seen_libtool=:,
+	    p
+	}
+	/LTDL_INIT/          {
+	    s,^.*$,seen_ltdl=:,
+	    p
+	}
+	/LT_WITH_LTDL/       {
+	    s,^.*$,seen_ltdl=:,
+	    p
+	}
+	/AC_LIB_LTDL/        {
+	    s,^.*$,seen_ltdl=:,
+	    p
+	}
+	/AC_WITH_LTDL/       {
+	    s,^.*$,seen_ltdl=:,
+	    p
+	}
 	d'
     eval `cat aclocal.m4 "$configure_ac" 2>/dev/null | $SED "$my_sed_traces"`
 
@@ -470,8 +494,11 @@ func_scan_files ()
     # If AC_CONFIG_MACRO_DIR turned nothing up, we hunt for ACLOCAL_AMFLAGS
     # in `Makefile.am' for a `-I' argument.
 
-    my_sed_aclocal_flags='/^[[ 	]]*ACLOCAL_[[A-Z_]]*FLAGS[[ 	]]*=/ {
-	s,^[[^=]]*=[[ 	]]*\(.*\), \1,; q; };
+    my_sed_aclocal_flags='
+        /^[[ 	]]*ACLOCAL_[[A-Z_]]*FLAGS[[ 	]]*=/ {
+	    s,^[[^=]]*=[[ 	]]*\(.*\), \1,
+	    q
+	}
 	d'
     m4dir="$macrodir"
     if test ! -n "$m4dir" && test -f Makefile.am; then
@@ -500,7 +527,10 @@ func_included_files ()
 
     my_include_regex=
     my_sed_include='
-        /^[m4]_include(\[[.*\]])$/ { s,^[m4]_include(\[[\(.*\)\]])$,\1,; p; };
+        /^[m4]_include(\[[.*\]])$/ {
+	    s,^[m4]_include(\[[\(.*\)\]])$,\1,
+	    p
+	}
         d'
 
     if test -f "$my_searchfile"; then
@@ -523,9 +553,11 @@ func_serial ()
     $opt_debug
     my_filename="$1"
     my_macro_regex="$2"
-    my_sed_serial=['/^# serial [1-9][0-9.]*[ 	]*'"$my_macro_regex"'[ 	]*$/ {
-	  s,^# serial \([1-9][0-9.]*\).*$,\1,; q;
-	};
+    my_sed_serial=['
+	/^# serial [1-9][0-9.]*[ 	]*'"$my_macro_regex"'[ 	]*$/ {
+	    s,^# serial \([1-9][0-9.]*\).*$,\1,
+	    q
+	}
 	d']
 
     # Search FILENAME and all the files it m4_includes for a serial number
@@ -755,10 +787,12 @@ func_keyword_update ()
 func_ltmain_update ()
 {
     $opt_debug
-    my_sed_ltmain=['/^package_revision='\''*[0-9][1-9.]*'\''*/ {
-      s,^package_revision='\''*\([0-9.]*\)'\''*[ 	]*$,\1,; p;
-    };
-    d']
+    my_sed_ltmain=['
+	/^package_revision='\''*[0-9][1-9.]*'\''*/ {
+	    s,^package_revision='\''*\([0-9.]*\)'\''*[ 	]*$,\1,
+	    p
+	}
+	d']
 
     func_keyword_update "$1" "$2" "$3" "$my_sed_ltmain"
 
@@ -773,10 +807,13 @@ func_ltmain_update ()
 func_config_update ()
 {
     $opt_debug
-    my_sed_config=['/^timestamp='\''*[0-9][1-9-]*'\''*/ {
-      s,^timestamp='\''*\([0-9-]*\)'\''*,\1,; s/-/./g; p;
-    };
-    d']
+    my_sed_config=['
+	/^timestamp='\''*[0-9][1-9-]*'\''*/ {
+	    s,^timestamp='\''*\([0-9-]*\)'\''*,\1,
+	    s/-/./g
+	    p
+	}
+	d']
 
     func_keyword_update "$1" "$2" "$3" "$my_sed_config"
 
@@ -791,10 +828,13 @@ func_config_update ()
 func_install_update ()
 {
     $opt_debug
-    my_sed_install=['/^scriptversion='\''*[0-9][1-9.-]*'\''*/ {
-      s,^scriptversion='\''*\([0-9.-]*\)'\''*,\1,; s/-/./g; p;
-    };
-    d']
+    my_sed_install=['
+	/^scriptversion='\''*[0-9][1-9.-]*'\''*/ {
+	    s,^scriptversion='\''*\([0-9.-]*\)'\''*,\1,
+	    s/-/./g
+	    p
+	}
+	d']
 
     func_keyword_update "$1" "$2" "$3" "$my_sed_install"
 
