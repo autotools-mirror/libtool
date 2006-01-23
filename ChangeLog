@@ -1,3 +1,9 @@
+2006-01-23  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* Makefile.am, bootstrap, clcommit.m4sh,
+	libltdl/config/getopt.m4sh, libltdl/config/mailnotify.m4sh,
+	tests/sh.test, tests/testsuite.at: Bump copyright years.
+
 2006-01-21  Eric Blake  <ebb9@byu.net>
 
 	* THANKS: Move myself to contributor.
