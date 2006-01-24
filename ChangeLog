@@ -1,3 +1,8 @@
+2006-01-24  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* Makefile.am (libltdl/Makefile.am): Fixup sed script.
+	Reported by Bob Friesenhahn <bfriesen@simple.dallas.tx.us>.
+
 2006-01-23  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* Makefile.am, bootstrap, clcommit.m4sh,

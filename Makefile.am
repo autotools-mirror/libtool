@@ -214,9 +214,9 @@ $(srcdir)/libltdl/Makefile.am: $(srcdir)/libltdl/Makefile.inc
 	  echo 'CLEANFILES ='; \
 	  echo 'MOSTLYCLEANFILES ='; \
 	} >> $$out; \
-	$(SED) -n '/^.. DO NOT REMOVE THIS LINE -- /,$$p' | \
+	$(SED) -n '/^.. DO NOT REMOVE THIS LINE -- /,$$p' $$in | \
 	$(SED) -e 's,libltdl_,,; s,libltdl/,,; s,: libltdl/,: ,' \
-	       -e 's,\$$(libltdl_,$$(,' $$in >> $$out;
+	       -e 's,\$$(libltdl_,$$(,' >> $$out;
 	chmod a-w $(srcdir)/libltdl/Makefile.am
 
 $(srcdir)/libltdl/Makefile.in: $(srcdir)/libltdl/Makefile.am \
