@@ -1,5 +1,7 @@
 2006-01-30  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* doc/libtool.texi (titlepage): Remove superfluous word.
+
 	* libltdl/config/ltmain.m4sh (func_mode_link): Fix matching
 	duplicate run path entries with the correct separator.
 
