@@ -1,3 +1,9 @@
+2006-01-30  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* ChangeLog, HACKING, README, README.alpha,
+	libltdl/config/ltmain.m4sh:  Add vi(m) modelines, to match emacs
+	formatting variables.
+
 2006-01-24  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* Makefile.am (libltdl/Makefile.am): Fixup sed script.
@@ -60,3 +66,5 @@
 Continued in ChangeLog.2005
 
 	$Revision$ $Date$
+
+vim:tw=72

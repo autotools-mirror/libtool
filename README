@@ -181,3 +181,4 @@ Local Variables:
 mode: text
 fill-column: 72
 End:
+vim:tw=72
