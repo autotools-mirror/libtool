@@ -1,5 +1,8 @@
 2006-01-30  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* tests/testsuite.at (PREPARE_TESTS): Escape `^' for some older
+	shells.
+
 	* ChangeLog, HACKING, README, README.alpha,
 	libltdl/config/ltmain.m4sh:  Add vi(m) modelines, to match emacs
 	formatting variables.
