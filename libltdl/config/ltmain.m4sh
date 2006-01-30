@@ -3598,7 +3598,7 @@ func_mode_link ()
 	    # We need to hardcode the library path
 	    if test -n "$shlibpath_var" && test -z "$avoidtemprpath" ; then
 	      # Make sure the rpath contains only unique directories.
-	      case "$temp_rpath " in
+	      case "$temp_rpath:" in
 	      *"$absdir:"*) ;;
 	      *) temp_rpath="$temp_rpath$absdir:" ;;
 	      esac
