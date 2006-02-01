@@ -277,36 +277,4 @@ dnl AT_TESTED([grep autoreconf autom4te automake])
 ## ----------- ##
 
 AT_INIT
-
-# libtoolize tests
-m4_include([libtoolize.at])
-# Testing func_extract_archives
-m4_include([duplicate_members.at])
-# Test that inherited_linker_flags in the .la actually gets used.
-m4_include([inherited_flags.at])
-# convenience archives test
-m4_include([convenience.at])
-# link order test
-m4_include([link-order.at])
-# ensure failure
-m4_include([fail.at])
-# Ensure our continued support for old interfaces.
-m4_include([old-m4-iface.at])
-# Torturing subdir-objects builds
-m4_include([am-subdir.at])
-# standalone libltdl compilation
-m4_include([standalone.at])
-# subproject libltdl compilation
-m4_include([subproject.at])
-# nonrecursive libltdl compilation
-m4_include([nonrecursive.at])
-# recursive libltdl compilation
-m4_include([recursive.at])
-# C++ templates tests
-m4_include([template.at])
-# Behaviour of LT_OUTPUT
-m4_include([early-libtool.at])
-# identical deplibs
-m4_include([deplibs-ident.at])
-# stress test
-m4_include([stresstest.at])
+# The other tests will be appended here by the Makefile rule.

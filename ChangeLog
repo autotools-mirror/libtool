@@ -1,3 +1,11 @@
+2006-02-01  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* Makefile.am (TESTSUITE_AT): List testsuite files in the order
+	in which they are to be expanded in the suite.
+	(tests/TESTSUITE): Rebuild by passing all $(TESTSUITE_AT) files,
+	with their path suitably adjusted.  This enables us to..
+	* tests/testsuite.at: ..get rid of their redundant mention here.
+
 2006-01-30  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* doc/libtool.texi (titlepage): Remove superfluous word.

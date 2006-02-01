@@ -379,24 +379,25 @@ dist-hook:
 ## Test suite. ##
 ## ----------- ##
 
+# The testsuite files are evaluated in the order given here.
 TESTSUITE	= tests/testsuite
 TESTSUITE_AT	= tests/testsuite.at \
-		  tests/am-subdir.at \
+		  tests/libtoolize.at \
 		  tests/duplicate_members.at \
 		  tests/inherited_flags.at \
-		  tests/libtoolize.at \
-		  tests/nonrecursive.at \
-		  tests/old-m4-iface.at \
-		  tests/recursive.at \
-		  tests/standalone.at \
-		  tests/deplibs-ident.at \
-		  tests/stresstest.at \
-		  tests/subproject.at \
+		  tests/convenience.at \
 		  tests/link-order.at \
 		  tests/fail.at \
-		  tests/convenience.at \
+		  tests/old-m4-iface.at \
+		  tests/am-subdir.at \
+		  tests/standalone.at \
+		  tests/subproject.at \
+		  tests/nonrecursive.at \
+		  tests/recursive.at \
+		  tests/template.at \
 		  tests/early-libtool.at \
-		  tests/template.at
+		  tests/deplibs-ident.at \
+		  tests/stresstest.at
 
 EXTRA_DIST     += $(TESTSUITE) $(TESTSUITE_AT) tests/package.m4
 
@@ -426,8 +427,8 @@ check-recursive: $(srcdir)/$(TESTSUITE)
 # Use `$(srcdir)' for the benefit of non-GNU makes: this is
 # how `testsuite' appears in our dependencies.
 $(srcdir)/$(TESTSUITE): tests/package.m4 $(TESTSUITE_AT)
-	cd $(srcdir)/tests; \
-	$(AUTOTEST) testsuite.at -o testsuite
+	cd $(srcdir)/tests && \
+	$(AUTOTEST) `echo $(TESTSUITE_AT) | sed 's,tests/,,g'` -o testsuite
 
 $(srcdir)/tests/package.m4: $(srcdir)/configure.ac
 	{ \
