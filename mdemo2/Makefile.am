@@ -19,6 +19,5 @@ mdemo2_static_LDFLAGS = $(STATIC) $(mdemo2_LDFLAGS)
 mdemo2_static_LDADD = $(mdemo2_LDADD)
 mdemo2_static_DEPENDENCIES = $(mdemo2_DEPENDENCIES)
 
-$(OBJECTS): libtool
 libtool: $(LIBTOOL_DEPS)
 	$(SHELL) ./config.status --recheck

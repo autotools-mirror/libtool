@@ -25,6 +25,5 @@ bin_PROGRAMS = tagdemo
 tagdemo_SOURCES = main.cpp
 tagdemo_LDADD = libbaz.la
 
-$(OBJECTS): libtool
 libtool: $(LIBTOOL_DEPS)
 	$(SHELL) ./config.status --recheck

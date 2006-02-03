@@ -48,7 +48,6 @@ helldl helldl$(EXEEXT):
 	chmod +x $@
 endif
 
-$(OBJECTS): libtool
 libtool: $(LIBTOOL_DEPS)
 	$(SHELL) ./config.status --recheck
 

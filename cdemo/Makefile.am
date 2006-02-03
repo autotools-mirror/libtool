@@ -17,6 +17,5 @@ bin_PROGRAMS = cdemo
 cdemo_SOURCES = main.c
 cdemo_LDADD = libfoo.la
 
-$(OBJECTS): libtool
 libtool: $(LIBTOOL_DEPS)
 	$(SHELL) ./config.status --recheck

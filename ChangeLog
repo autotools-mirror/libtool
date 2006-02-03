@@ -1,5 +1,12 @@
 2006-02-03  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* cdemo/Makefile.am: Remove broken use of undocumented
+	Automake variable `$(OBJECTS)'.
+	* demo/Makefile.am, depdemo/Makefile.am: Likewise.
+	* f77demo/Makefile.am, mdemo/Makefile.am: Likewise.
+	* mdemo2/Makefile.am, pdemo/Makefile.am: Likewise.
+	* tagdemo/Makefile.am: Likewise.
+
 	* ltmain.in (link mode): Fix logic for adding run paths to
 	also add paths for installed libtool libraries in case
 	`-static' is used.
