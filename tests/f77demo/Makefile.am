@@ -46,6 +46,5 @@ fprogram_LDADD = libfoo.la libfoo3.la
 cprogram_SOURCES = cprogram.c
 cprogram_LDADD = libmix.la $(FLIBS)
 
-$(OBJECTS): libtool
 libtool: $(LIBTOOL_DEPS)
 	$(SHELL) ./config.status --recheck
