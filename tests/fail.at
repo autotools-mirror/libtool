@@ -61,7 +61,16 @@ case $build_libtool_libs in yes)
   echo 'double duplicate_name(double x) { return 2.*x; }' > b.c
   $LIBTOOL --mode=compile $CC $CPPFLAGS $CFLAGS -c a.c
   $LIBTOOL --mode=compile $CC $CPPFLAGS $CFLAGS -c b.c
-  FAIL_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o liba.la a.lo b.lo -rpath /foo])
+  # Unfortunately, this may actually succeed on AIX and IRIX  :(
+  # So, also add a bogus object file to provoke more failure.
+  echo 'int whatever(void) { return 0;}' > c.c
+  $LIBTOOL --mode=compile $CC $CPPFLAGS $CFLAGS -c c.c
+  (
+    . ./c.lo
+    test "$pic_object" != none && echo choke me >"$pic_object"
+    test "$non_pic_object" != none && echo choke me >"$non_pic_object"
+  )
+  FAIL_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o liba.la a.lo b.lo c.lo -rpath /foo])
   AT_CHECK([test -f liba.la], [1])
   ;;
 esac

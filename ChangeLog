@@ -1,5 +1,9 @@
 2006-02-03  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* tests/fail.at: Also pass a bogus object file to the linker so
+	it fails more reliably; AIX and IRIX linkers ignore duplicate
+	symbol definitions.
+
 	* libltdl/m4/libtool.m4 [ solaris ] (_LT_LINKER_SHLIBS)
 	(_LT_LANG_CXX_CONFIG) < whole_archive_flag_spec >:
 	Fix this once and for all, for both the SUN compiler suite
