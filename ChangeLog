@@ -1,3 +1,9 @@
+2006-02-03  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* ltmain.in (link mode): Fix logic for adding run paths to
+	also add paths for installed libtool libraries in case
+	`-static' is used.
+
 2006-01-30  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* doc/libtool.texi (titlepage): Remove superfluous word.
