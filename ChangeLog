@@ -1,3 +1,9 @@
+2006-02-03  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* libltdl/config/ltmain.m4sh (func_mode_link): Fix logic for
+	adding run paths to also add paths for installed libtool
+	libraries in case `-static' is used.
+
 2006-02-01  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* Makefile.am (TESTSUITE_AT): List testsuite files in the order
