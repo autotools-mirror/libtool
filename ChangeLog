@@ -1,5 +1,11 @@
 2006-02-03  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* libltdl/m4/libtool.m4 [ solaris ] (_LT_LINKER_SHLIBS)
+	(_LT_LANG_CXX_CONFIG) < whole_archive_flag_spec >:
+	Fix this once and for all, for both the SUN compiler suite
+	(cc/CC/f77/f90/f95) and GCC.
+	Reported by Yuri Pukhalsky <pooh@cryptopro.ru>.
+
 	* tests/cdemo/Makefile.am: Remove broken use of undocumented
 	Automake variable `$(OBJECTS)'.
 	* tests/demo/Makefile.am, tests/depdemo/Makefile.am: Likewise.
