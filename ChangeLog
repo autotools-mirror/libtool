@@ -1,5 +1,11 @@
 2006-02-03  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* libtool.m4 [ solaris ] (AC_LIBTOOL_LANG_CXX_CONFIG)
+	(AC_LIBTOOL_PROG_LD_SHLIBS) < whole_archive_flag_spec >:
+	Fix this once and for all, for both the SUN compiler suite
+	(cc/CC/f77/f90/f95) and GCC.
+	Reported by Yuri Pukhalsky <pooh@cryptopro.ru>.
+
 	* cdemo/Makefile.am: Remove broken use of undocumented
 	Automake variable `$(OBJECTS)'.
 	* demo/Makefile.am, depdemo/Makefile.am: Likewise.
