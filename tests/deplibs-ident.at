@@ -25,6 +25,7 @@ AT_BANNER([Detecting identical deplibs.])
 ## ----------------------------------------------- ##
 
 AT_SETUP([build tree relpaths])
+AT_KEYWORDS([libtool])
 
 mkdir a a/b c
 echo 'int c() { return 0; }' > c/libcee.c

@@ -20,6 +20,7 @@
 # TODO: many possible failure cases missing.  (But how to simulate a full disk?)
 
 AT_SETUP([Failure tests])
+AT_KEYWORDS([libtool])
 eval `$LIBTOOL --config | $EGREP '^(pic_mode|pic_flag|build_old_libs|build_libtool_libs)='`
 LDFLAGS="$LDFLAGS -no-undefined"
 

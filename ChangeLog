@@ -1,3 +1,12 @@
+2006-02-05  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* tests/convenience.at, tests/deplibs-ident.at: Add new keyword
+	`libtool' for tests that exercise the unmodified `libtool'
+	script that is generated at build time.
+	* tests/duplicate_members.at, tests/fail.at: Likewise.
+	* tests/inherited_flags.at, tests/link-order.at: Likewise.
+	* tests/stresstest.at, tests/template.at: Likewise.
+
 2006-02-03  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* tests/fail.at: Also pass a bogus object file to the linker so

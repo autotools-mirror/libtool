@@ -22,6 +22,7 @@
 # Note: This test is experimental, and might be too strict for some systems.
 
 AT_BANNER([Libtool stress test.])
+AT_KEYWORDS([libtool])
 AT_SETUP([Link option thorough search test])
 eval `$LIBTOOL --config | $EGREP '^(CC|objdir|allow_undefined_flag)='`
 

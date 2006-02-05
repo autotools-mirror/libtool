@@ -22,6 +22,7 @@ AT_BANNER([C++ template tests.])
 
 AT_SETUP([simple template test])
 LT_AT_TAG([CXX])
+AT_KEYWORDS([libtool])
 
 AT_DATA(aclib.h,
 [[int cf(int);
@@ -114,6 +115,7 @@ AT_CLEANUP
 
 AT_SETUP([template test with subdirs])
 LT_AT_TAG([CXX])
+AT_KEYWORDS([libtool])
 CPPFLAGS="$CPPFLAGS -I../src/lib -I../src/lib2"
 
 mkdir src obj

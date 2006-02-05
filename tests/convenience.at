@@ -22,6 +22,7 @@
 # - with or without additional objects on the cmdline
 
 AT_SETUP([C convenience archives])
+AT_KEYWORDS([libtool])
 
 cat >main1.c <<EOF
 extern int a1(void);
@@ -61,6 +62,7 @@ AT_CLEANUP
 
 AT_SETUP([C++ convenience archives])
 LT_AT_TAG([CXX])
+AT_KEYWORDS([libtool])
 
 cat >main1.cpp <<EOF
 extern int a1(void);
@@ -100,6 +102,7 @@ AT_CLEANUP
 
 AT_SETUP([F77 convenience archives])
 LT_AT_TAG([F77])
+AT_KEYWORDS([libtool])
 
 cat >main1.f <<EOF
       program main
@@ -159,6 +162,7 @@ AT_CLEANUP
 
 AT_SETUP([FC convenience archives])
 LT_AT_TAG([FC])
+AT_KEYWORDS([libtool])
 
 cat >main1.f <<EOF
       program main
@@ -218,6 +222,7 @@ AT_CLEANUP
 
 AT_SETUP([Java convenience archives])
 LT_AT_TAG([GCJ])
+AT_KEYWORDS([libtool])
 
 cat >foo1.java <<EOF
 public class foo1 {

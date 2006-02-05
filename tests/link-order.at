@@ -19,6 +19,7 @@
 # link-order.test - make sure that library linking order matches
 
 AT_SETUP([Link order test.])
+AT_KEYWORDS([libtool])
 LDFLAGS="$LDFLAGS -no-undefined"
 
 prefix_old=`pwd`/old

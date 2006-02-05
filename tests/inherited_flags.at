@@ -18,6 +18,7 @@
 
 
 AT_SETUP([inherited_linker_flags])
+AT_KEYWORDS([libtool])
 
 AT_DATA([foo.c],
 [

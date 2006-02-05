@@ -18,6 +18,7 @@
 
 AT_BANNER([Testing libtool functions.])
 AT_SETUP([duplicate members in archive tests])
+AT_KEYWORDS([libtool])
 
 # we don't want to use whole_archive_flag_spec, even if available
 sed -e 's|^whole_archive_flag_spec=.*|whole_archive_flag_spec=|g' < $LIBTOOL > libtool
