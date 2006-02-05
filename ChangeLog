@@ -1,5 +1,14 @@
 2006-02-05  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* libltdl/config/ltmain.m4sh (extracted_archives)
+	(extracted_serial): New globals.
+	(func_extract_archives): Use them to rename extraction archives
+	for linking against multiple convenience libraries with the same
+	name.
+	* tests/duplicate_conv.at: New tests.
+	* Makefile.am: Adjusted.
+	Reported by Carlo Contavalli <ccontavalli@commedia.it>.
+
 	* libltdl/config/ltmain.m4sh (func_mode_link) < test_compile >:
 	Fix a couple of instances where `test .. -ne ..' would possibly
 	compare non-numbers.  Clean up a bit.

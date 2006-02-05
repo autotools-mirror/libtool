@@ -116,6 +116,8 @@ execute_dlfiles=
 preserve_args=
 lo2o="s/\\.lo\$/.${objext}/"
 o2lo="s/\\.${objext}\$/.lo/"
+extracted_archives=
+extracted_serial=0
 
 opt_dry_run=false
 opt_duplicate_deps=false
@@ -1058,7 +1060,17 @@ func_extract_archives ()
       esac
       func_basename "$my_xlib"
       my_xlib="$func_basename_result"
-      my_xdir="$my_gentop/$my_xlib"
+      my_xlib_u=$my_xlib
+      while :; do
+        case " $extracted_archives " in
+	*" $my_xlib_u "*)
+	  extracted_serial=`expr $extracted_serial + 1`
+	  my_xlib_u=lt$extracted_serial-$my_xlib ;;
+	*) break ;;
+	esac
+      done
+      extracted_archives="$extracted_archives $my_xlib_u"
+      my_xdir="$my_gentop/$my_xlib_u"
 
       func_mkdir_p "$my_xdir"
 
