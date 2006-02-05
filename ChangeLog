@@ -1,5 +1,9 @@
 2006-02-05  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* Makefile.am (EXTRA_DIST): Add `$(srcdir)/' to all generated
+	files so that non-GNU make programs will use the rebuilding
+	rules.
+
 	* tests/testsuite.at: Add new keyword `libtoolize' for tests
 	that exercise the `libtoolize' script that is generated at build
 	time.

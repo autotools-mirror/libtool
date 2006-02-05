@@ -121,7 +121,7 @@ timestamp = set dummy `$(MKSTAMP) < $(srcdir)/ChangeLog`; shift; \
 	esac
 
 sh_files	= $(auxdir)/general.m4sh $(auxdir)/getopt.m4sh
-EXTRA_DIST     += bootstrap libtoolize.in $(auxdir)/ltmain.m4sh \
+EXTRA_DIST     += bootstrap $(srcdir)/libtoolize.in $(auxdir)/ltmain.m4sh \
 		  $(auxdir)/mkstamp $(sh_files) stamp-vcl \
 		  ChangeLog.1996 ChangeLog.1997 ChangeLog.1998 \
 		  ChangeLog.1999 ChangeLog.2000 ChangeLog.2001 \
@@ -159,7 +159,7 @@ clean-ltmain-sh:
 # a loop otherwise.
 # Use `$(srcdir)/m4' for the benefit of non-GNU makes: this is
 # how ltversion.m4 appears in our dependencies.
-EXTRA_DIST += $(m4dir)/ltversion.in $(m4dir)/ltversion.m4
+EXTRA_DIST += $(m4dir)/ltversion.in $(srcdir)/$(m4dir)/ltversion.m4
 $(srcdir)/$(m4dir)/ltversion.m4: $(m4dir)/ltversion.in configure.ac $(srcdir)/stamp-vcl
 	set dummy `$(MKSTAMP) < $(srcdir)/ChangeLog`; shift; \
 	cd $(srcdir); \
@@ -179,7 +179,7 @@ $(srcdir)/$(m4dir)/ltversion.m4: $(m4dir)/ltversion.in configure.ac $(srcdir)/st
 ##           should make this rule depend on Makefile but that will break
 ##           distcheck (at least) by rebuilding ltmain.sh in the source
 ##           tree whenever config.status regenerates the Makefile.
-EXTRA_DIST += $(auxdir)/ltmain.sh
+EXTRA_DIST += $(srcdir)/$(auxdir)/ltmain.sh
 $(srcdir)/$(auxdir)/ltmain.sh: $(sh_files) $(auxdir)/ltmain.m4sh configure.ac \
 				$(srcdir)/stamp-vcl
 	$(timestamp); \
@@ -231,13 +231,13 @@ $(srcdir)/libltdl/stamp-mk: $(srcdir)/libltdl/Makefile.in
 	mv -f Makefile.inT Makefile.in
 	echo stamp > $@
 
-EXTRA_DIST += libltdl/stamp-mk $(m4dir)/lt~obsolete.m4
+EXTRA_DIST += $(srcdir)/libltdl/stamp-mk $(m4dir)/lt~obsolete.m4
 
 $(srcdir)/libltdl/aclocal.m4: \
 	    $(m4dir)/libtool.m4 \
 	    $(m4dir)/ltoptions.m4 \
 	    $(m4dir)/ltdl.m4 \
-	    $(m4dir)/ltversion.m4 \
+	    $(srcdir)/$(m4dir)/ltversion.m4 \
 	    $(m4dir)/ltsugar.m4 \
 	    $(m4dir)/argz.m4 \
 	    $(m4dir)/lt~obsolete.m4
@@ -269,7 +269,7 @@ endif
 
 info_TEXINFOS		= doc/libtool.texi
 libtool_TEXINFOS	= doc/PLATFORMS doc/fdl.texi doc/notes.texi
-EXTRA_DIST	       += doc/notes.txt $(libtool_TEXINFOS)
+EXTRA_DIST	       += $(srcdir)/doc/notes.txt $(libtool_TEXINFOS)
 
 all-local: $(srcdir)/doc/notes.txt
 
@@ -400,7 +400,7 @@ TESTSUITE_AT	= tests/testsuite.at \
 		  tests/deplibs-ident.at \
 		  tests/stresstest.at
 
-EXTRA_DIST     += $(TESTSUITE) $(TESTSUITE_AT) tests/package.m4
+EXTRA_DIST     += $(srcdir)/$(TESTSUITE) $(TESTSUITE_AT) $(srcdir)/tests/package.m4
 
 # Be sure to reexport important environment variables:
 TESTS_ENVIRONMENT = MAKE="$(MAKE)" CC="$(CC)" CFLAGS="$(CFLAGS)" \
@@ -427,7 +427,7 @@ check-recursive: $(srcdir)/$(TESTSUITE)
 
 # Use `$(srcdir)' for the benefit of non-GNU makes: this is
 # how `testsuite' appears in our dependencies.
-$(srcdir)/$(TESTSUITE): tests/package.m4 $(TESTSUITE_AT)
+$(srcdir)/$(TESTSUITE): $(srcdir)/tests/package.m4 $(TESTSUITE_AT)
 	cd $(srcdir)/tests && \
 	$(AUTOTEST) `echo $(TESTSUITE_AT) | sed 's,tests/,,g'` -o testsuite
 
@@ -550,7 +550,7 @@ endif
 
 tests/demo-conf.test: libtool
 
-EXTRA_DIST     += tests/defs.in tests/defs.m4sh \
+EXTRA_DIST     += $(srcdir)/tests/defs.in tests/defs.m4sh \
 		  $(COMMON_TESTS) $(CXX_TESTS) $(F77_TESTS) $(FC_TESTS)
 DIST_SUBDIRS   += $(CONF_SUBDIRS)
 
