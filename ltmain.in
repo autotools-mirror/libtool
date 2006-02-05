@@ -3524,13 +3524,12 @@ EOF
 	  int main() { return 0; }
 EOF
 	  $rm conftest
-	  $LTCC $LTCFLAGS -o conftest conftest.c $deplibs
-	  if test "$?" -eq 0 ; then
+	  if $LTCC $LTCFLAGS -o conftest conftest.c $deplibs; then
 	    ldd_output=`ldd conftest`
 	    for i in $deplibs; do
 	      name=`expr $i : '-l\(.*\)'`
 	      # If $name is empty we are operating on a -L argument.
-              if test "$name" != "" && test "$name" -ne "0"; then
+              if test "$name" != "" && test "$name" != "0"; then
 		if test "X$allow_libtool_libs_with_static_runtimes" = "Xyes" ; then
 		  case " $predeps $postdeps " in
 		  *" $i "*)
@@ -3569,9 +3568,7 @@ EOF
 	      # If $name is empty we are operating on a -L argument.
               if test "$name" != "" && test "$name" != "0"; then
 		$rm conftest
-		$LTCC $LTCFLAGS -o conftest conftest.c $i
-		# Did it work?
-		if test "$?" -eq 0 ; then
+		if $LTCC $LTCFLAGS -o conftest conftest.c $i; then
 		  ldd_output=`ldd conftest`
 		  if test "X$allow_libtool_libs_with_static_runtimes" = "Xyes" ; then
 		    case " $predeps $postdeps " in
@@ -3603,7 +3600,7 @@ EOF
 		  droppeddeps=yes
 		  $echo
 		  $echo "*** Warning!  Library $i is needed by this library but I was not able to"
-		  $echo "***  make it link in!  You will probably need to install it or some"
+		  $echo "*** make it link in!  You will probably need to install it or some"
 		  $echo "*** library that it depends on before this library will be fully"
 		  $echo "*** functional.  Installing it before continuing would be even better."
 		fi

@@ -1,3 +1,9 @@
+2006-02-05  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* ltmain.in (link mode) < test_compile >: Fix a couple of instances
+	where `test .. -ne ..' would possibly compare non-numbers.  Clean up a
+	bit.
+
 2006-02-03  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* libtool.m4 [ solaris ] (AC_LIBTOOL_LANG_CXX_CONFIG)
