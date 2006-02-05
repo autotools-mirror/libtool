@@ -1,5 +1,9 @@
 2006-02-05  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* libltdl/config/ltmain.m4sh (func_mode_link) < test_compile >:
+	Fix a couple of instances where `test .. -ne ..' would possibly
+	compare non-numbers.  Clean up a bit.
+
 	* tests/convenience.at, tests/deplibs-ident.at: Add new keyword
 	`libtool' for tests that exercise the unmodified `libtool'
 	script that is generated at build time.
