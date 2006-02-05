@@ -1,5 +1,10 @@
 2006-02-05  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* tests/testsuite.at: Add new keyword `libtoolize' for tests
+	that exercise the `libtoolize' script that is generated at build
+	time.
+	* HACKING: Update testsuite mention, explain keywords.
+
 	* libltdl/config/ltmain.m4sh (extracted_archives)
 	(extracted_serial): New globals.
 	(func_extract_archives): Use them to rename extraction archives

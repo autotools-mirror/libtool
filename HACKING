@@ -51,8 +51,19 @@ and is not part of a release distribution.
 3. Test Suite
 =============
 
-* Use "make check" liberally, on as many platforms as you can.  Use as
-  many compilers and linkers you can.
+* Use
+    make check TESTSUITE_FLAGS=-V
+    make check-local
+  liberally, on as many platforms as you can.  Use as many compilers and
+  linkers you can.
+
+* The new Autotest testsuite uses several keywords, to denote that the
+  test
+    - needs Autoconf			autoconf
+    - needs Automake			automake
+    - exercises the `libtool' script	libtool
+    - exercises the `libtoolize' script	libtoolize
+    - exercises a language other than C	CXX F77 FC GCJ
 
 
 4. Naming

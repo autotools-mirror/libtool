@@ -47,6 +47,7 @@ m4_divert_pop([PREPARE_TESTS])dnl
 # ------------------------
 m4_define([LT_AT_LIBTOOLIZE],
 [$LIBTOOLIZE $1
+AT_KEYWORDS([libtoolize])
 ])
 
 
