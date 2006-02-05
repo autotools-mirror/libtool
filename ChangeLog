@@ -1,5 +1,11 @@
 2006-02-05  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* ltmain.in (extracted_archives, extracted_serial): New globals.
+	(func_extract_archives): Use them to rename extraction archives
+	for linking against multiple convenience libraries with the same
+	name.
+	Reported by Carlo Contavalli <ccontavalli@commedia.it>.
+
 	* ltmain.in (link mode) < test_compile >: Fix a couple of instances
 	where `test .. -ne ..' would possibly compare non-numbers.  Clean up a
 	bit.

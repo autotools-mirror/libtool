@@ -136,6 +136,8 @@ duplicate_deps=no
 preserve_args=
 lo2o="s/\\.lo\$/.${objext}/"
 o2lo="s/\\.${objext}\$/.lo/"
+extracted_archives=
+extracted_serial=0
 
 #####################################
 # Shell function definitions:
@@ -333,7 +335,17 @@ func_extract_archives ()
 	*) my_xabs=`pwd`"/$my_xlib" ;;
       esac
       my_xlib=`$echo "X$my_xlib" | $Xsed -e 's%^.*/%%'`
-      my_xdir="$my_gentop/$my_xlib"
+      my_xlib_u=$my_xlib
+      while :; do
+        case " $extracted_archives " in
+	*" $my_xlib_u "*)
+	  extracted_serial=`expr $extracted_serial + 1`
+	  my_xlib_u=lt$extracted_serial-$my_xlib ;;
+	*) break ;;
+	esac
+      done
+      extracted_archives="$extracted_archives $my_xlib_u"
+      my_xdir="$my_gentop/$my_xlib_u"
 
       $show "${rm}r $my_xdir"
       $run ${rm}r "$my_xdir"
