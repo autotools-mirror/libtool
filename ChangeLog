@@ -1,5 +1,8 @@
 2006-02-09  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* libltdl/m4/libtool.m4 (AC_PROG_SED): m4_defun this rather
+	than AC_DEFUN, so that old aclocal does not pick this up.
+
 	* Makefile.am ($(TESTSUITE)): Also depend on `Makefile.am'.
 	Write to temporary file and rename.
 

@@ -6730,7 +6730,7 @@ m4_ifndef([AC_PROG_SED], [
 #  macro and use it instead.                               #
 ############################################################
 
-AC_DEFUN([AC_PROG_SED],
+m4_defun([AC_PROG_SED],
 [AC_MSG_CHECKING([for a sed that does not truncate output])
 AC_CACHE_VAL(lt_cv_path_SED,
 [# Loop through the user's path and test for sed and gsed.
