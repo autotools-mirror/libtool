@@ -427,9 +427,10 @@ check-recursive: $(srcdir)/$(TESTSUITE)
 
 # Use `$(srcdir)' for the benefit of non-GNU makes: this is
 # how `testsuite' appears in our dependencies.
-$(srcdir)/$(TESTSUITE): $(srcdir)/tests/package.m4 $(TESTSUITE_AT)
+$(srcdir)/$(TESTSUITE): $(srcdir)/tests/package.m4 $(TESTSUITE_AT) Makefile.am
 	cd $(srcdir)/tests && \
-	$(AUTOTEST) `echo $(TESTSUITE_AT) | sed 's,tests/,,g'` -o testsuite
+	$(AUTOTEST) `echo $(TESTSUITE_AT) | sed 's,tests/,,g'` -o testsuite.tmp && \
+	mv -f testsuite.tmp testsuite
 
 $(srcdir)/tests/package.m4: $(srcdir)/configure.ac
 	{ \
