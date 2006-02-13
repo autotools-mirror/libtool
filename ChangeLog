@@ -1,5 +1,9 @@
 2006-02-13  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* ltmain.in (link mode) [ linux ]: PGI: for `reload_cmds', we
+	not only need to get rid of `$wl', but also turn comma into
+	space so $LD understands whole_archive_flag_spec correctly.
+
 	* ltmain.in <startup, shell wrapper>: Add _AS_BOURNE_COMPATIBLE
 	code from Autoconf, to fix issues with zsh and other shells.
 	Reported by David Gómez Espinosa <david@pleyades.net>.

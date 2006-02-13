@@ -4265,12 +4265,14 @@ EOF
       reload_conv_objs=
       gentop=
       # reload_cmds runs $LD directly, so let us get rid of
-      # -Wl from whole_archive_flag_spec
+      # -Wl from whole_archive_flag_spec and hope we can get by with
+      # turning comma into space..
       wl=
 
       if test -n "$convenience"; then
 	if test -n "$whole_archive_flag_spec"; then
-	  eval reload_conv_objs=\"\$reload_objs $whole_archive_flag_spec\"
+	  eval tmp_whole_archive_flags=\"$whole_archive_flag_spec\"
+	  reload_conv_objs=$reload_objs\ `$echo "X$tmp_whole_archive_flags" | $Xsed -e 's|,| |g'`
 	else
 	  gentop="$output_objdir/${obj}x"
 	  generated="$generated $gentop"
