@@ -1,3 +1,9 @@
+2006-02-13  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* ltmain.in <startup, shell wrapper>: Add _AS_BOURNE_COMPATIBLE
+	code from Autoconf, to fix issues with zsh and other shells.
+	Reported by David Gómez Espinosa <david@pleyades.net>.
+
 2006-02-05  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* ltmain.in (extracted_archives, extracted_serial): New globals.

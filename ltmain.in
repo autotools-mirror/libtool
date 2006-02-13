@@ -46,11 +46,19 @@ PACKAGE=@PACKAGE@
 VERSION=@VERSION@
 TIMESTAMP="@TIMESTAMP@"
 
-# See if we are running on zsh, and set the options which allow our
-# commands through without removal of \ escapes.
-if test -n "${ZSH_VERSION+set}" ; then
+# Be Bourne compatible (taken from Autoconf:_AS_BOURNE_COMPATIBLE).
+if test -n "${ZSH_VERSION+set}" && (emulate sh) >/dev/null 2>&1; then
+  emulate sh
+  NULLCMD=:
+  # Zsh 3.x and 4.x performs word splitting on ${1+"$@"}, which
+  # is contrary to our usage.  Disable this feature.
+  alias -g '${1+"$@"}'='"$@"'
   setopt NO_GLOB_SUBST
+else
+  case `(set -o) 2>/dev/null` in *posix*) set -o posix;; esac
 fi
+BIN_SH=xpg4; export BIN_SH # for Tru64
+DUALCASE=1; export DUALCASE # for MKS sh
 
 # Check that we have a working $echo.
 if test "X$1" = X--no-reexec; then
@@ -5270,6 +5278,20 @@ EOF
 # metacharacters that are still active within double-quoted strings.
 Xsed='${SED} -e 1s/^X//'
 sed_quote_subst='$sed_quote_subst'
+
+# Be Bourne compatible (taken from Autoconf:_AS_BOURNE_COMPATIBLE).
+if test -n \"\${ZSH_VERSION+set}\" && (emulate sh) >/dev/null 2>&1; then
+  emulate sh
+  NULLCMD=:
+  # Zsh 3.x and 4.x performs word splitting on \${1+\"\$@\"}, which
+  # is contrary to our usage.  Disable this feature.
+  alias -g '\${1+\"\$@\"}'='\"\$@\"'
+  setopt NO_GLOB_SUBST
+else
+  case \`(set -o) 2>/dev/null\` in *posix*) set -o posix;; esac
+fi
+BIN_SH=xpg4; export BIN_SH # for Tru64
+DUALCASE=1; export DUALCASE # for MKS sh
 
 # The HP-UX ksh and POSIX shell print the target directory to stdout
 # if CDPATH is set.
