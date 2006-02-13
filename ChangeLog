@@ -1,3 +1,10 @@
+2006-02-13  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* libltdl/config/ltmain.m4sh (func_mode_link) <shell wrapper>: 
+	Add _AS_BOURNE_COMPATIBLE code from Autoconf, to fix issues
+	with zsh and other shells.
+	Reported by David Gómez Espinosa <david@pleyades.net>.
+
 2006-02-09  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* libltdl/m4/libtool.m4 (AC_PROG_SED): m4_defun this rather
