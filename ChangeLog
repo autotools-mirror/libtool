@@ -1,5 +1,10 @@
 2006-02-13  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* libltdl/config/ltmain.m4sh (func_mode_link) [ linux ]:
+	PGI: for `reload_cmds', we not only need to get rid of `$wl',
+	but also turn comma into space so $LD understands
+	whole_archive_flag_spec correctly.
+
 	* libltdl/config/ltmain.m4sh (func_mode_link) <shell wrapper>: 
 	Add _AS_BOURNE_COMPATIBLE code from Autoconf, to fix issues
 	with zsh and other shells.
