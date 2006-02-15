@@ -63,6 +63,7 @@ func_help ()
         s/^# //
 	s/^# *$//
 	s*\$progname*'$progname'*
+	s*\$host*'"$host"'*
 	s*\$SHELL*'"$SHELL"'*
 	s*\$LTCC*'"$LTCC"'*
 	s*\$LTCFLAGS*'"$LTCFLAGS"'*

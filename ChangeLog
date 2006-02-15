@@ -1,5 +1,11 @@
 2006-02-15  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* libltdl/config/getopt.m4sh (func_help): Substitute `$host'.
+	* libltdl/config/ltmain.m4sh (help message): Use $host not
+	@host_triplet@, as the `@..@' substitution is done at bootstrap
+	time already.
+	Reported by Julien Lecomte <julien@famille-lecomte.net>.
+
 	* doc/libtool.texi (Implementation issues):  Note that both
 	prefix and suffix of a library may differ.
 	(Using libtool, Creating object files, Linking libraries):
