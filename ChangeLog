@@ -1,3 +1,13 @@
+2006-02-15  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* doc/libtool.texi (Implementation issues):  Note that both
+	prefix and suffix of a library may differ.
+	(Using libtool, Creating object files, Linking libraries):
+	Remove last documentation traces of the age when `foo.lo' was
+	the PIC object file and not the `libtool object' text file.
+	(libtool script contents) <compiler_o_lo>: Remove description
+	of this variable.  It was removed from libtool in 1.5 times.
+
 2006-02-13  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* libltdl/config/ltmain.m4sh (func_mode_link) [ linux ]:

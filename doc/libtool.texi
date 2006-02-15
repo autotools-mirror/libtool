@@ -322,9 +322,10 @@ host to host.  These need to be determined at configure time in
 a consistent way.
 
 @item
-It is not always obvious with what suffix a shared library should be
-installed.  This makes it difficult for @file{Makefile} rules, since they
-generally assume that file names are the same from host to host.
+It is not always obvious with what prefix or suffix a shared library
+should be installed.  This makes it difficult for @file{Makefile} rules,
+since they generally assume that file names are the same from host to
+host.
 
 @item
 The system needs a simple library version number abstraction, so that
@@ -439,8 +440,8 @@ Note that the @file{foo.c} source file uses the @code{cos} math library
 function, which is usually found in the standalone math library, and not
 the C library (@pxref{Trig Functions, , Trigonometric Functions, libc,
 The GNU C Library Reference Manual}).  So, we need to add @option{-lm} to
-the end of the link line whenever we link @file{foo.o} or @file{foo.lo}
-into an executable or a library (@pxref{Inter-library dependencies}).
+the end of the link line whenever we link @file{foo.lo} into an
+executable or a library (@pxref{Inter-library dependencies}).
 
 The same rule applies whenever you use functions that don't appear in
 the standard C library@dots{} you need to add the appropriate
@@ -473,8 +474,8 @@ burger$ @kbd{gcc -g -O -c main.c}
 burger$
 @end example
 
-The above compiler command produces an object file, @file{main.o}, from
-the source file @file{main.c}.
+The above compiler command produces an object file, usually named
+@file{main.o}, from the source file @file{main.c}.
 
 For most library systems, creating object files that become part of a
 static library is as simple as creating object files that are linked to
@@ -665,7 +666,7 @@ Now, let's try the same trick on the shared library platform:
 burger$ @kbd{libtool --mode=link gcc -g -O -o libhello.la foo.lo hello.lo \
                 -rpath /usr/local/lib -lm}
 rm -fr  @value{objdir}/libhello.a @value{objdir}/libhello.la
-ld -Bshareable -o @value{objdir}/libhello.so.0.0 foo.lo hello.lo -lm
+ld -Bshareable -o @value{objdir}/libhello.so.0.0 @value{objdir}/foo.o @value{objdir}/hello.o -lm
 ar cru @value{objdir}/libhello.a foo.o hello.o
 ranlib @value{objdir}/libhello.a
 creating libhello.la
@@ -5226,12 +5227,6 @@ Whether libtool should build static libraries on this system.  Set to
 @defvar compiler_c_o
 Whether the compiler supports the @option{-c} and @option{-o} options
 simultaneously.  Set to @samp{yes} or @samp{no}.
-@end defvar
-
-@defvar compiler_o_lo
-Whether the compiler supports compiling directly to a @samp{.lo} file,
-i.e.@: whether object files do not have to have the suffix @samp{.o}.
-Set to @samp{yes} or @samp{no}.
 @end defvar
 
 @defvar dlopen_support
