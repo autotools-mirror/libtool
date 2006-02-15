@@ -1,5 +1,7 @@
 2006-02-15  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* doc/libtool.texi: Update copyright years.
+
 	* libltdl/config/getopt.m4sh (func_help): Substitute `$host'.
 	* libltdl/config/ltmain.m4sh (help message): Use $host not
 	@host_triplet@, as the `@..@' substitution is done at bootstrap
