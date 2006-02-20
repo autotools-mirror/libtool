@@ -2511,6 +2511,7 @@ correspondence between language names and tags names.
 @item C++              @tab CXX
 @item Java             @tab GCJ
 @item Fortran 77       @tab F77
+@item Fortran          @tab FC
 @item Windows Resource @tab RC
 @end multitable
 
@@ -5132,7 +5133,8 @@ The name of the system library archiver.
 @end defvar
 
 @defvar CC
-The name of the C compiler used to configure libtool.
+The name of the compiler used to configure libtool.  This will always
+contain the compiler for the current language (@pxref{Tags}).
 @end defvar
 
 @defvar ECHO
@@ -5144,6 +5146,12 @@ is necessary.
 @defvar LD
 The name of the linker that libtool should use internally for reloadable
 linking and possibly shared libraries.
+@end defvar
+
+@defvar LTCC
+@defvarx LTCFLAGS
+The name of the C compiler and C compiler flags used to configure
+libtool.
 @end defvar
 
 @defvar NM
@@ -5212,6 +5220,13 @@ shared library in question, and the @var{$objdir/$newlib} contains the
 path of the static library these commands should build.  After executing
 these commands, libtool will proceed to link against @var{$objdir/$newlib}
 instead of @var{soname}.
+@end defvar
+
+@defvar build
+@defvarx build_alias
+@defvarx build_os
+Set to the specified and canonical names of the system that libtool was
+built on.
 @end defvar
 
 @defvar build_libtool_libs
@@ -5367,8 +5382,9 @@ specified.  Set to @samp{unsupported} if directories specified by
 
 @defvar host
 @defvarx host_alias
-For information purposes, set to the specified and canonical names of
-the system that libtool was configured for.
+@defvarx host_os
+Set to the specified and canonical names of the system that libtool was
+configured for.
 @end defvar
 
 @defvar include_expsyms
@@ -5406,6 +5422,18 @@ a synonym for @samp{yes}.
 @defvar link_static_flag
 Linker flag (passed through the C compiler) used to prevent dynamic
 linking.
+@end defvar
+
+@defvar macro_version
+@defvarx macro_revision
+The release and CVS revision from which the libtool.m4 macros were
+taken.  This is used to ensure that macros and @code{ltmain.sh}
+correspond to the same Libtool version.
+@end defvar
+
+@defvar max_cmd_len
+The approximate longest command line that can be passed to @samp{$SHELL}
+without being truncated, as computed by @samp{LT_CMD_MAX_LEN}.
 @end defvar
 
 @defvar need_lib_prefix

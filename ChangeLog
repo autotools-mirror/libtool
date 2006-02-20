@@ -1,5 +1,14 @@
 2006-02-15  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* doc/libtool.texi (Tags): Mention `FC'.
+	(libtool script contents) <CC>: Specify more precisely as the
+	compiler of the current tag.
+	<LTCC, LTCFLAGS, build, build_alias, build_os, host_alias,
+	host_os, macro_version, macro_revision, max_cmd_len>:
+	Document these variables.
+
+2006-02-15  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
 	* doc/libtool.texi: Update copyright years.
 
 	* libltdl/config/getopt.m4sh (func_help): Substitute `$host'.
