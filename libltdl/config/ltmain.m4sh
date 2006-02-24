@@ -77,6 +77,16 @@ VERSION=@VERSION@
 TIMESTAMP="@TIMESTAMP@"
 package_revision=@package_revision@
 
+# NLS nuisances: We save the old values to restore during execute mode.
+# AS_SHELL_SANITIZE will take care of unsetting.
+for lt_var in \
+  LANG LANGUAGE LC_ADDRESS LC_ALL LC_COLLATE LC_CTYPE LC_IDENTIFICATION \
+  LC_MEASUREMENT LC_MESSAGES LC_MONETARY LC_NAME LC_NUMERIC LC_PAPER \
+  LC_TELEPHONE LC_TIME
+do
+  eval "test \"\${$lt_var+set}\" = set && save_$lt_var=\$$lt_var"
+done
+
 AS_SHELL_SANITIZE
 $as_unset CDPATH
 
@@ -1628,12 +1638,17 @@ func_mode_execute ()
       fi
 
       # Restore saved environment variables
-      if test "${save_LC_ALL+set}" = set; then
-	LC_ALL="$save_LC_ALL"; export LC_ALL
-      fi
-      if test "${save_LANG+set}" = set; then
-	LANG="$save_LANG"; export LANG
-      fi
+      for lt_var in \
+	LANG LANGUAGE LC_ADDRESS LC_ALL LC_COLLATE LC_CTYPE LC_IDENTIFICATION \
+	LC_MEASUREMENT LC_MESSAGES LC_MONETARY LC_NAME LC_NUMERIC LC_PAPER \
+	LC_TELEPHONE LC_TIME
+      do
+	eval "if test \"\${save_$lt_var+set}\" = set; then
+                $lt_var=\$save_$lt_var; export $lt_var
+	      else
+		$as_unset $lt_var
+	      fi"
+      done
 
       # Now prepare to actually exec the command.
       exec_cmd="\$cmd$args"

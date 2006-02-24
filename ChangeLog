@@ -1,3 +1,12 @@
+2006-02-24  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* libltdl/config/ltmain.m4sh (startup): save all locale specific
+	environment, variables:, LANG, LANGUAGE, LC_ADDRESS, LC_ALL
+	LC_COLLATE, LC_CTYPE, LC_IDENTIFICATION, LC_MEASUREMENT,
+	LC_MESSAGES LC_MONETARY, LC_NAME, LC_NUMERIC, LC_PAPER,
+	LC_TELEPHONE, LC_TIME.
+	(func_mode_execute): Restore them.
+
 2006-02-15  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* doc/libtool.texi (Tags): Mention `FC'.
