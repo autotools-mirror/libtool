@@ -1,5 +1,15 @@
 2006-03-16  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* ltmain.in (link mode) [ openbsd, netbsd, dragonfly, .. ]:
+	Fix 1.5.22 regression by commenting out the code to remove the
+	uninstalled paths.  It was never working, and it is not at the
+	right place.  A proper removal code is to follow.  This
+	regression was visible on OpenBSD, NetBSD, DragonFly, and other
+	systems with hardcode_direct=yes.
+	* NEWS, THANKS: Updated.
+	Reported by Joerg Sonnenberger <joerg@netbsd.org> and
+	Marc Espie <espie@nerim.net> and others.
+
 	* libtool.m4 (AC_LIBTOOL_SYS_DYNAMIC_LINKER) [ freebsd,
 	dragonfly ]: Fix 1.5.22 regression caused by too strict $host_os
 	match that stopped DragonFly from working.

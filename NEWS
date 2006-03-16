@@ -3,6 +3,9 @@ NEWS - list of user-visible changes between releases of GNU Libtool
 New in 1.5.23a: 2006-??-??; CVS version 1.5.23a, Libtool team:
 * Initial support for RDOS.
 * Fix regression on DragonFly that disabled library hardcoding.
+* Fix regression on OpenBSD, NetBSD, DragonFly, and other systems
+  with hardcode_direct=yes that wrongly removed paths to uninstalled
+  libraries during link mode.
 * Bug Fixes.
 
 New in 1.5.22: 2005-12-18; CVS version 1.5.21a, Libtool team:
