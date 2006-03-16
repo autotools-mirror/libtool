@@ -1,3 +1,12 @@
+2006-03-16  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* libtool.m4 (AC_LIBTOOL_SYS_DYNAMIC_LINKER) [ freebsd,
+	dragonfly ]: Fix 1.5.22 regression caused by too strict $host_os
+	match that stopped DragonFly from working.
+	* NEWS, THANKS: Updated.
+	Reported by Jeremy C. Reed <reed@reedmedia.net>, patch by
+	Todd Vierling <tv@duh.org>.
+
 2006-02-13  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* ltmain.in (link mode) [ linux ]: PGI: for `reload_cmds', we
