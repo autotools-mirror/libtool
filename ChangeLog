@@ -1,3 +1,12 @@
+2006-03-16  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* libltdl/m4/libtool.m4 (AC_LIBTOOL_SYS_DYNAMIC_LINKER)
+	[ freebsd, dragonfly ]: Fix 1.5.22 regression caused by too
+	strict $host_os match that stopped DragonFly from working.
+	* THANKS: Updated.
+	Reported by Jeremy C. Reed <reed@reedmedia.net>,
+	patch by Todd Vierling <tv@duh.org>.
+
 2006-02-24  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* libltdl/config/ltmain.m4sh (startup): save all locale specific
