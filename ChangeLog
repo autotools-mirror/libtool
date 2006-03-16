@@ -1,5 +1,10 @@
 2006-03-16  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* libltdl/config/ltmain.m4sh (func_mode_link): Comment out the
+	code to remove uninstalled paths, as it is wrong here.  Change
+	the wrong shell quoting that kept it from "working" before.
+	* THANKS: Updated.
+
 	* libltdl/m4/libtool.m4 (AC_LIBTOOL_SYS_DYNAMIC_LINKER)
 	[ freebsd, dragonfly ]: Fix 1.5.22 regression caused by too
 	strict $host_os match that stopped DragonFly from working.

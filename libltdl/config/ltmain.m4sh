@@ -4516,11 +4516,11 @@ func_mode_link ()
       fi
 
       # Eliminate all temporary directories.
-      for path in $notinst_path; do
-	lib_search_path=`$ECHO "X$lib_search_path " | $Xsed -e 's% $path % %g'`
-	deplibs=`$ECHO "X$deplibs " | $Xsed -e 's% -L$path % %g'`
-	dependency_libs=`$ECHO "X$dependency_libs " | $Xsed -e 's% -L$path % %g'`
-      done
+      #for path in $notinst_path; do
+      #	lib_search_path=`$ECHO "X$lib_search_path " | $Xsed -e "s% $path % %g"`
+      #	deplibs=`$ECHO "X$deplibs " | $Xsed -e "s% -L$path % %g"`
+      #	dependency_libs=`$ECHO "X$dependency_libs " | $Xsed -e "s% -L$path % %g"`
+      #done
 
       if test -n "$xrpath"; then
 	# If the user specified any rpath flags, then add them.
