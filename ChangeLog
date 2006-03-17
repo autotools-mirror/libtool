@@ -1,3 +1,8 @@
+2006-03-17  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* libtool.m4 (LT_AC_PROG_SED): Do not forget to reset IFS even
+	in case of empty `$PATH'.
+
 2006-03-16  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* ltmain.in (link mode) [ openbsd, netbsd, dragonfly, .. ]:
