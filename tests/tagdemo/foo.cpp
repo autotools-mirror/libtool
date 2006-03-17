@@ -26,6 +26,7 @@
 # include <iostream.h>
 #endif
 #ifdef HAVE_NAMESPACES
+namespace std { }
 using namespace std;
 #endif
 

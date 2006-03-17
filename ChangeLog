@@ -1,5 +1,9 @@
 2006-03-17  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* tests/tagdemo/foo.cpp, tests/tagdemo/main.cpp [ hpux ] <aCC>:
+	The HPPA C++ compiler has namespace support but provides no
+	`std' namespace; just provide it with a dummy.
+
 	* libltdl/m4/libtool.m4 (AC_PROG_SED): Do not forget to reset
 	IFS even in case of empty `$PATH'.
 
