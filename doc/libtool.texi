@@ -1217,10 +1217,11 @@ If the platform requires versioning, this option has no effect.
 @item -dlopen @var{file}
 Same as @samp{-dlpreopen @var{file}}, if native dlopening is not
 supported on the host platform (@pxref{Dlopened modules}) or if
-the program is linked with @samp{-static} or @samp{-all-static}.
-Otherwise, no effect.  If @var{file} is @code{self} libtool will make
-sure that the program can @code{dlopen} itself, either by enabling
-@code{-export-dynamic} or by falling back to @samp{-dlpreopen self}.
+the program is linked with @samp{-static}, @samp{-static-libtool-libs},
+or @samp{-all-static}.  Otherwise, no effect.  If @var{file} is
+@code{self} libtool will make sure that the program can @code{dlopen}
+itself, either by enabling @code{-export-dynamic} or by falling back to
+@samp{-dlpreopen self}.
 
 @item -dlpreopen @var{file}
 Link @var{file} into the output program, and add its symbols to
@@ -1316,6 +1317,11 @@ program, @var{libdir} will be added to its run-time path.
 @item -static
 If @var{output-file} is a program, then do not link it against any
 uninstalled shared libtool libraries.  If @var{output-file} is a
+library, then only create a static library.
+
+@item -static-libtool-libs
+If @var{output-file} is a program, then do not link it against any
+shared libtool libraries (@samp{.la} files).  If @var{output-file} is a
 library, then only create a static library.
 
 @item -version-info @var{current}[:@var{revision}[:@var{age}]]
@@ -3592,9 +3598,10 @@ You should probably also add @samp{AC_LIBTOOL_DLOPEN} to your
 libtool will assume no dlopening mechanism is supported, and revert to
 dlpreopening, which is probably not what you want.
 
-Avoid using the @code{-static} or @code{-all-static} switches when
-linking programs with libltdl.  This will not work on all platforms,
-because the dlopening functions may not be available for static linking.
+Avoid using the @code{-static}, @code{-static-libtool-libs} or
+@code{-all-static} switches when linking programs with libltdl.  This
+will not work on all platforms, because the dlopening functions may not
+be available for static linking.
 
 The following example shows you how to embed the convenience libltdl in
 your package.  In order to use the installable variant just replace

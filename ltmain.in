@@ -1165,8 +1165,9 @@ EOF
     for arg
     do
       case $arg in
-      -all-static | -static)
-	if test "X$arg" = "X-all-static"; then
+      -all-static | -static | -static-libtool-libs)
+	case $arg in
+	-all-static)
 	  if test "$build_libtool_libs" = yes && test -z "$link_static_flag"; then
 	    $echo "$modename: warning: complete static linking is impossible in this configuration" 1>&2
 	  fi
@@ -1174,12 +1175,20 @@ EOF
 	    dlopen_self=$dlopen_self_static
 	  fi
 	  prefer_static_libs=yes
-	else
+	  ;;
+	-static)
 	  if test -z "$pic_flag" && test -n "$link_static_flag"; then
 	    dlopen_self=$dlopen_self_static
 	  fi
 	  prefer_static_libs=built
-	fi
+	  ;;
+	-static-libtool-libs)
+	  if test -z "$pic_flag" && test -n "$link_static_flag"; then
+	    dlopen_self=$dlopen_self_static
+	  fi
+	  prefer_static_libs=yes
+	  ;;
+	esac
 	build_libtool_libs=no
 	build_old_libs=yes
 	break
@@ -1739,7 +1748,7 @@ EOF
 	continue
 	;;
 
-      -static)
+      -static | -static-libtool-libs)
 	# The effects of -static are defined in a previous loop.
 	# We used to do the same as -all-static on platforms that
 	# didn't have a PIC flag, but the assumption that the effects
@@ -6817,9 +6826,9 @@ The following components of LINK-COMMAND are treated specially:
   -dlpreopen FILE   link in FILE and add its symbols to lt_preloaded_symbols
   -export-dynamic   allow symbols from OUTPUT-FILE to be resolved with dlsym(3)
   -export-symbols SYMFILE
-		    try to export only the symbols listed in SYMFILE
+                    try to export only the symbols listed in SYMFILE
   -export-symbols-regex REGEX
-		    try to export only the symbols matching REGEX
+                    try to export only the symbols matching REGEX
   -LLIBDIR          search LIBDIR for required installed libraries
   -lNAME            OUTPUT-FILE requires the installed library libNAME
   -module           build a library that can dlopened
@@ -6833,9 +6842,11 @@ The following components of LINK-COMMAND are treated specially:
   -release RELEASE  specify package release information
   -rpath LIBDIR     the created library will eventually be installed in LIBDIR
   -R[ ]LIBDIR       add LIBDIR to the runtime path of programs and libraries
-  -static           do not do any dynamic linking of libtool libraries
+  -static           do not do any dynamic linking of uninstalled libtool libraries
+  -static-libtool-libs
+                    do not do any dynamic linking of libtool libraries
   -version-info CURRENT[:REVISION[:AGE]]
-		    specify library version info [each variable defaults to 0]
+                    specify library version info [each variable defaults to 0]
 
 All other options (arguments beginning with \`-') are ignored.
 

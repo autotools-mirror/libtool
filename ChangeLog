@@ -1,3 +1,10 @@
+2006-03-20  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* ltmain.in (link mode) < -static-libtool-libs >: New option.
+	* doc/libtool.texi (Link mode, Distributing libltdl):
+	Document it.
+	Suggested by Gary Kumfert <kumfert@llnl.gov>.
+
 2006-03-17  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* libtool.m4 (LT_AC_PROG_SED): Do not forget to reset IFS even
