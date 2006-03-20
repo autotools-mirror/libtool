@@ -343,9 +343,9 @@ The following components of LINK-COMMAND are treated specially:
   -dlpreopen FILE   link in FILE and add its symbols to lt_preloaded_symbols
   -export-dynamic   allow symbols from OUTPUT-FILE to be resolved with dlsym(3)
   -export-symbols SYMFILE
-		    try to export only the symbols listed in SYMFILE
+                    try to export only the symbols listed in SYMFILE
   -export-symbols-regex REGEX
-		    try to export only the symbols matching REGEX
+                    try to export only the symbols matching REGEX
   -LLIBDIR          search LIBDIR for required installed libraries
   -lNAME            OUTPUT-FILE requires the installed library libNAME
   -module           build a library that can dlopened
@@ -361,9 +361,11 @@ The following components of LINK-COMMAND are treated specially:
   -R[[ ]]LIBDIR       add LIBDIR to the runtime path of programs and libraries
   -shared           only do dynamic linking of libtool libraries
   -shrext SUFFIX    override the standard shared library file extension
-  -static           do not do any dynamic linking of libtool libraries
+  -static           do not do any dynamic linking of uninstalled libtool libraries
+  -static-libtool-libs
+                    do not do any dynamic linking of libtool libraries
   -version-info CURRENT[[:REVISION[:AGE]]]
-		    specify library version info [[each variable defaults to 0]]
+                    specify library version info [[each variable defaults to 0]]
   -weak LIBNAME     declare that the target provides the LIBNAME interface
 
 All other options (arguments beginning with \`-') are ignored.
@@ -2257,8 +2259,9 @@ func_mode_link ()
 	build_old_libs=no
 	break
 	;;
-      -all-static | -static)
-	if test "X$arg" = "X-all-static"; then
+      -all-static | -static | -static-libtool-libs)
+	case $arg in
+	-all-static)
 	  if test "$build_libtool_libs" = yes && test -z "$link_static_flag"; then
 	    func_warning "complete static linking is impossible in this configuration"
 	  fi
@@ -2269,12 +2272,20 @@ func_mode_link ()
 	    finalize_command="$finalize_command $link_static_flag"
 	  fi
 	  prefer_static_libs=yes
-	else
+	  ;;
+	-static)
 	  if test -z "$pic_flag" && test -n "$link_static_flag"; then
 	    dlopen_self=$dlopen_self_static
 	  fi
 	  prefer_static_libs=built
-	fi
+	  ;;
+	-static-libtool-libs)
+	  if test -z "$pic_flag" && test -n "$link_static_flag"; then
+	    dlopen_self=$dlopen_self_static
+	  fi
+	  prefer_static_libs=yes
+	  ;;
+	esac
 	build_libtool_libs=no
 	build_old_libs=yes
 	break
@@ -2795,7 +2806,7 @@ func_mode_link ()
 	continue
 	;;
 
-      -static)
+      -static | -static-libtool-libs)
 	# The effects of -static are defined in a previous loop.
 	# We used to do the same as -all-static on platforms that
 	# didn't have a PIC flag, but the assumption that the effects

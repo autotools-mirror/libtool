@@ -1333,9 +1333,10 @@ If the platform requires versioning, this option has no effect.
 @item -dlopen @var{file}
 Same as @option{-dlpreopen @var{file}}, if native dlopening is not
 supported on the host platform (@pxref{Dlopened modules}) or if
-the program is linked with @option{-static} or @option{-all-static}.
-Otherwise, no effect.  If @var{file} is @code{self} Libtool will make
-sure that the program can @code{dlopen} itself, either by enabling
+the program is linked with @option{-static},
+@option{-static-libtool-libs}, or @option{-all-static}.  Otherwise, no
+effect.  If @var{file} is @code{self} Libtool will make sure that the
+program can @code{dlopen} itself, either by enabling
 @option{-export-dynamic} or by falling back to @option{-dlpreopen self}.
 
 @item -dlpreopen @var{file}
@@ -1440,6 +1441,11 @@ full file name extension including any leading dot.
 If @var{output-file} is a program, then do not link it against any
 uninstalled shared libtool libraries.  If @var{output-file} is a
 library, then only create a static library.
+
+@item -static-libtool-libs
+If @var{output-file} is a program, then do not link it against any
+shared libtool libraries.  If @var{output-file} is a library, then only
+create a static library.
 
 @item -version-info @var{current}[:@var{revision}[:@var{age}]]
 If @var{output-file} is a libtool library, use interface version
@@ -4421,7 +4427,8 @@ using libtool.
 You should probably also use the @samp{dlopen} option to @code{LT_INIT}
 in your @file{configure.ac}, otherwise libtool will assume no dlopening
 mechanism is supported, and revert to dlpreopening, which is probably not
-what you want.  Avoid using the @option{-static} or @option{-all-static}
+what you want.  Avoid using the @option{-static},
+@option{-static-libtool-libs}, or @option{-all-static}
 switches when linking programs with libltdl.  This will not work on
 all platforms, because the dlopening functions may not be available
 for static linking.

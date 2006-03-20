@@ -1,3 +1,11 @@
+2006-03-20  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* libltdl/config/ltmain.m4sh (func_mode_link)
+	< -static-libtool-libs >: New option.
+	* doc/libtool.texi (Link mode, Distributing libltdl):
+	Document it.
+	Suggested by Gary Kumfert <kumfert@llnl.gov>.
+
 2006-03-17  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* tests/tagdemo/foo.cpp, tests/tagdemo/main.cpp [ hpux ] <aCC>:
