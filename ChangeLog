@@ -1,5 +1,9 @@
 2006-03-20  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* tests/static.at: New tests for comprehensive test exposure of
+	all current and proposed static linking flags for programs.
+	* Makefile.am: Updated.
+
 	* libltdl/config/ltmain.m4sh (func_mode_link)
 	< -static-libtool-libs >: New option.
 	* doc/libtool.texi (Link mode, Distributing libltdl):
