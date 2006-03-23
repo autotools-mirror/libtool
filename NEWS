@@ -20,7 +20,7 @@ New in 1.9h: 2005-??-??; CVS version 2.1a, Libtool team:
 * Support for linux-dietlibc (`diet' as well as `diet-dyn', separately).
 * Shell optimizations which break use of the stdin file descriptor in libtool.
 * `libtoolize --install' now also installs `install-sh'.
-* Support (mostly) for DragonFly BSD.
+* Support for DragonFly BSD, improved support for FreeBSD.
 * Allow shell special characters like `$' in source file names, but not
   in object names, to enhance GCJ support.
 * Detection of compiler wrappers like distcc/ccache and $host_alias prefix.
