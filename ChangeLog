@@ -1,3 +1,12 @@
+2006-03-23  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* ltdl.m4 (AC_LTDL_SYS_DLOPEN_DEPLIBS) [ freebsd, dragonfly ]:
+	Set libltdl_cv_sys_dlopen_deplibs to yes.  Fixes excessive
+	lt_dlopen times on these systems.
+	* NEWS, THANKS: Update.
+	Bug reported by Peter Jeremy <peterjeremy@optushome.com.au>,
+	patch by Joerg Sonnenberger <joerg@netbsd.org>.
+
 2006-03-20  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* ltmain.in (link mode) < -static-libtool-libs >: New option.

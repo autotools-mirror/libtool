@@ -6,6 +6,9 @@ New in 1.5.23a: 2006-??-??; CVS version 1.5.23a, Libtool team:
 * Fix regression on OpenBSD, NetBSD, DragonFly, and other systems
   with hardcode_direct=yes that wrongly removed paths to uninstalled
   libraries during link mode.
+* Let libltdl know that FreeBSD and DragonFly dlopen causes dependent
+  modules to be loaded.  This fixes excessive load times for modules
+  with large library dependency graphs.
 * Bug Fixes.
 
 New in 1.5.22: 2005-12-18; CVS version 1.5.21a, Libtool team:
