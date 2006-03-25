@@ -27,6 +27,8 @@
 SHELL=${CONFIG_SHELL-/bin/sh}
 export SHELL
 : ${AUTORECONF=autoreconf}
+: ${AUTOCONF=autoconf}
+: ${AUTOMAKE=automake}
 : ${AUTOM4TE=autom4te}
 : ${MAKE=make}
 : ${GREP=grep}
@@ -89,6 +91,13 @@ rm -f acinclude.m4 libltdl/config.h
 # Workaround for missing LIBOBJDIR support in Autoconf 2.59, Automake 1.9.6:
 # Have symlinks of the libobj files in top source dir.
 # Set WORKING_LIBOBJ_SUPPORT=: when calling bootstrap if you have fixed tools.
+case `($AUTOCONF --version) 2>/dev/null` in
+  *\ 2.[5-9][0-9]* | *\ [3-9].[0-9]*)
+  case `($AUTOMAKE --version) 2>/dev/null` in
+    *\ 1.1[0-9]* | *\ [2-9].[0-9]*)
+      WORKING_LIBOBJ_SUPPORT=: ;;
+  esac ;;
+esac
 for file in argz.c lt__dirent.c lt__strl.c; do
   rm -f $file
   $WORKING_LIBOBJ_SUPPORT || $LN_S libltdl/$file $file

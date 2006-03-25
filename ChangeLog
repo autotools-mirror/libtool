@@ -1,5 +1,8 @@
 2006-03-25  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* bootstrap: Enable `WORKING_LIBOBJ_SUPPORT' if we detect
+	Autoconf-2.60+ and Automake-1.10+, or CVS versions.
+
 	* libltdl/m4/argz.m4 (gl_FUNC_ARGZ): Sync with gnulib:  If we
 	define `error_t', also define `__error_t_defined', so argp.h
 	will not typedef the former.
