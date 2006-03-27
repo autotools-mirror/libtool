@@ -1,3 +1,7 @@
+2006-03-27  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* bootstrap: Actually use the correct version of the last patch.
+
 2006-03-25  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* bootstrap: Enable `WORKING_LIBOBJ_SUPPORT' if we detect
