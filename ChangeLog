@@ -1,3 +1,10 @@
+2006-03-28  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* libtool.m4 (AC_LIBTOOL_SYS_DYNAMIC_LINKER) [ linux ]:
+	Avoid warning when "parsing" `/etc/ld.so.conf' and empty
+	`/etc/ld.so.conf.d'.
+	Reported by Orion Poplawski <orion@cora.nwra.com>.
+
 2006-03-23  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* ltdl.m4 (AC_LTDL_SYS_DLOPEN_DEPLIBS) [ freebsd, dragonfly ]:
