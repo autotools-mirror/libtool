@@ -1,3 +1,8 @@
+2006-04-03  Peter O'Gorman  <peter@pogma.com>
+
+	* libltdl/loaders/preopen.c: Don't allow lt_dlopen if the
+	module has no symbols.
+
 2006-03-28  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* libltdl/m4/libtool.m4 (_LT_SYS_DYNAMIC_LINKER) [ linux ]:
