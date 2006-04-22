@@ -1,3 +1,10 @@
+2006-04-22  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* libltdl/config/ltmain.m4sh (func_write_libtool_object):
+	New function, factored out from..
+	(func_mode_compile): .. here.  Call it to generate the libtool
+	object file (the `.lo' file) in one step.
+
 2006-04-03  Peter O'Gorman  <peter@pogma.com>
 
 	* libltdl/loaders/preopen.c: Don't allow lt_dlopen if the
