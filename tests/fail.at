@@ -28,6 +28,17 @@ m4_pushdef([FAIL_CHECK],
 [AT_CHECK([if $1; then (exit 1); else :; fi], [0], [ignore], [ignore])
 ])
 
+AT_DATA([script],
+[[#! /bin/sh
+exit 0
+]])
+chmod +x script
+if test -x script >/dev/null 2>&1; then
+  test_x="test -x"
+else
+  test_x=:
+fi
+
 # compile failure
 echo 'choke me' > a.c
 FAIL_CHECK([$LIBTOOL --mode=compile $CC $CPPFLAGS $CFLAGS -c a.c])
@@ -52,9 +63,9 @@ esac
 echo 'int not_main(void) { return 0; }' > a.c
 $CC $CPPFLAGS $CFLAGS -c a.c
 FAIL_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o a a.$OBJEXT])
-AT_CHECK([test -f a || test -f a$EXEEXT], [1])
+AT_CHECK([{ test -f a && $test_x a; } || { test -f a$EXEEXT && $test_x a$EXEEXT; }], [1])
 FAIL_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o a a.$OBJEXT -static])
-AT_CHECK([test -f a || test -f a$EXEEXT], [1])
+AT_CHECK([{ test -f a && $test_x a; } || { test -f a$EXEEXT && $test_x a$EXEEXT; }], [1])
 
 # shared library creation failure
 case $build_libtool_libs in yes)
