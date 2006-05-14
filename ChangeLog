@@ -1,3 +1,11 @@
+2005-05-14  John Bowler  <jbowler@acm.org>
+
+	* libltdl/config/ltmain.m4sh (func_mode_link): For version_type
+	`none', we still need to set `current', `age', and `revision',
+	so that our checks don't barf.  The values won't be used later.
+	Apparently reported by several people, several times, for BeOS.
+	* NEWS, THANKS: Update.
+
 2006-05-13  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* tests/fail.at: Use "test -x" if available, for testing of

@@ -31,6 +31,8 @@ New in 1.9h: 2005-??-??; CVS version 2.1a, Libtool team:
 * Support for Interix 3 (Windows SFU).
 * Basic support for PIE (position-independent executables).
 * Initial support for RDOS.
+* Fix error with -version-info on systems with version_type=none, such
+  as BeOS.
 * Bug fixes.
 
 New in 1.9f: 2004-10-23; CVS version 1.9e, Libtool team:
