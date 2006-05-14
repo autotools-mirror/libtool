@@ -1,3 +1,8 @@
+2006-05-14  Albert Chin-A-Young  <china@thewrittenword.com>
+
+	* libtool.m4 [ aix ] (AC_LIBTOOL_PROG_LD_SHLIBS)
+	(AC_LIBTOOL_LANG_CXX_CONFIG): $hardcode_direct is set twice.
+
 2005-05-14  John Bowler  <jbowler@acm.org>
 
 	* ltmain.in (link mode): For version_type `none', we still need
