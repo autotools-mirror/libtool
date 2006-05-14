@@ -4294,7 +4294,7 @@ _LT_EOF
   	   strings "$collect2name" | $GREP resolve_lib_name >/dev/null
 	  then
   	  # We have reworked collect2
-  	  _LT_TAGVAR(hardcode_direct, $1)=yes
+  	  :
 	  else
   	  # We have old collect2
   	  _LT_TAGVAR(hardcode_direct, $1)=unsupported
@@ -5278,7 +5278,7 @@ if test "$_lt_caught_CXX_error" != yes; then
   	     strings "$collect2name" | $GREP resolve_lib_name >/dev/null
   	  then
   	    # We have reworked collect2
-  	    _LT_TAGVAR(hardcode_direct, $1)=yes
+  	    :
   	  else
   	    # We have old collect2
   	    _LT_TAGVAR(hardcode_direct, $1)=unsupported
