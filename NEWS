@@ -11,6 +11,7 @@ New in 1.5.23a: 2006-??-??; CVS version 1.5.23a, Libtool team:
   with large library dependency graphs.
 * Fix error with -version-info on systems with version_type=none, such
   as BeOS.
+* Initial support for the Sun compiler suite on GNU/Linux.
 * Bug Fixes.
 
 New in 1.5.22: 2005-12-18; CVS version 1.5.21a, Libtool team:
