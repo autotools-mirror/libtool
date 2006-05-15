@@ -1,3 +1,12 @@
+2006-05-15  Bruno Haible  <bruno@clisp.org>,
+	    Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* libltdl/m4/libtool.m4 (_LT_COMPILER_PIC, _LT_LINKER_SHLIBS)
+	(_LT_LANG_CXX_CONFIG, _LT_SYS_HIDDEN_LIBDEPS) [ linux ]:
+	Add support for Sun C 5.9, Sun C++ 5.9, and Sun Fortran 8.3 on
+	GNU/Linux.
+	* NEWS: Update.
+
 2006-05-15  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* Makefile.am (check-local): Move `$(TESTS_ENVIRONMENT)' and
