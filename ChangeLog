@@ -1,3 +1,7 @@
+2006-05-15  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* config.guess, config.sub: Update from external sources.
+
 2006-05-14  Albert Chin-A-Young  <china@thewrittenword.com>
 
 	* libtool.m4 [ aix ] (AC_LIBTOOL_PROG_LD_SHLIBS)
