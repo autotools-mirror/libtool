@@ -453,12 +453,15 @@ CD_TESTDIR	= abs_srcdir=`$(lt__cd) $(srcdir) && pwd`; cd tests
 # Hook the test suite into the check rule
 check-local: tests/atconfig $(srcdir)/$(TESTSUITE)
 	$(CD_TESTDIR); \
-	$(TESTS_ENVIRONMENT) $(BUILDCHECK_ENVIRONMENT) $(SHELL) $$abs_srcdir/$(TESTSUITE) $(TESTSUITE_FLAGS)
+	CONFIG_SHELL="$(SHELL)" $(SHELL) $$abs_srcdir/$(TESTSUITE) \
+	  $(TESTS_ENVIRONMENT) $(BUILDCHECK_ENVIRONMENT) $(TESTSUITE_FLAGS)
 
 # Run the test suite on the *installed* tree.
 installcheck-local:
 	$(CD_TESTDIR); \
-	$(TESTS_ENVIRONMENT) $(INSTALLCHECK_ENVIRONMENT) $(SHELL) $$abs_srcdir/$(TESTSUITE) $(TESTSUITE_FLAGS) AUTOTEST_PATH=$(exec_prefix)/bin
+	CONFIG_SHELL="$(SHELL)" $(SHELL) $$abs_srcdir/$(TESTSUITE) \
+	  $(TESTS_ENVIRONMENT) $(INSTALLCHECK_ENVIRONMENT) $(TESTSUITE_FLAGS) \
+	  AUTOTEST_PATH="$(exec_prefix)/bin"
 
 # We need to remove any file droppings left behind by testsuite
 clean-local: clean-local-legacy

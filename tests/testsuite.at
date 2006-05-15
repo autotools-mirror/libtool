@@ -153,11 +153,6 @@ m4_define([LT_AT_EXEC_CHECK],
 # --------------
 m4_define([LT_AT_TAG],
 [AT_KEYWORDS([$1])
-eval `$LIBTOOL --tag=$1 --config | sed -n '
-    /^CC=/{
-	s/CC/$1/
-	p
-    }'`
 AT_CHECK([test -n "[$]$1" || (exit 77)])
 ])
 

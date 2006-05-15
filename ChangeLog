@@ -1,3 +1,15 @@
+2006-05-15  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* Makefile.am (check-local): Move `$(TESTS_ENVIRONMENT)' and
+	`$(BUILDCHECK_ENVIRONMENT)' to be arguments of `testsuite', so
+	that reruns will remember it; set enviroment variable
+	`CONFIG_SHELL' so the suite will know which shell it was started
+	with.
+	(installcheck-local): Likewise, for `$(TESTS_ENVIRONMENT)' and
+	`$(INSTALLCHECK_ENVIRONMENT)'.
+	* tests/testsuite.at (LT_AT_TAG): Do not set the compiler
+	variable here.
+
 2006-05-14  Albert Chin-A-Young  <china@thewrittenword.com>
 
 	* libltdl/m4/libtool.m4 (_LT_LINKER_SHLIBS, _LT_LANG_CXX_CONFIG)
