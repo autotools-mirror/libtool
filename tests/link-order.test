@@ -12,6 +12,10 @@ fi
 
 retcode=0
 
+eval `$libtool --config | $EGREP '^(hardcode_direct|shrext_cmds)='`
+module=no
+eval shared_ext=\"$shrext_cmds\"
+
 rm -rf linkorder.dir
 mkdir linkorder.dir
 top_dir=`pwd`/linkorder.dir
@@ -62,12 +66,24 @@ case $host in
 *-*-aix* | *-*-interix*) ;; # These systems have different path syntax
 *)
   # Do not error if we do not relink (e.g. static-only systems)
-  if $EGREP relinking $srcdir/stderr; then
-    if $EGREP ' -L.*\/new\/lib -lb -L.*\/old\/lib -lcee' $srcdir/stdout; then :; else
-      echo "$0: wrong link order" 1>&2
-      retcode=1
+  case $hardcode_direct in
+  yes)
+    if $EGREP relinking $srcdir/stderr; then
+      if $EGREP " .*\/new\/lib/libb$shared_ext .*\/old\/lib/libcee$shared_ext" $srcdir/stdout; then :; else
+        echo "$0: wrong link order" 1>&2
+        retcode=1
+      fi
     fi
-  fi
+    ;;
+  *)
+    if $EGREP relinking $srcdir/stderr; then
+      if $EGREP ' -L.*\/new\/lib -lb -L.*\/old\/lib -lcee' $srcdir/stdout; then :; else
+        echo "$0: wrong link order" 1>&2
+        retcode=1
+      fi
+    fi
+    ;;
+  esac
   ;;
 esac
 

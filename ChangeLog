@@ -1,3 +1,8 @@
+2006-05-17  Albert Chin-A-Young  <china@thewrittenword.com>
+
+	* tests/link-order.test: Take hardcode_direct into consideration
+	when testing link order.
+
 2006-05-15  Bruno Haible  <bruno@clisp.org>,
 	    Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
