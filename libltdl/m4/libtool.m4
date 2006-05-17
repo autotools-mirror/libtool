@@ -6856,7 +6856,8 @@ AC_MSG_RESULT([$SED])
 
 # _LT_CHECK_XSI_SHELL
 # -------------------
-# define func_basename as either Bourne or XSI compatible
+# Find out whether the shell is Bourne or XSI compatible,
+# or has some other useful features.
 m4_defun([_LT_CHECK_XSI_SHELL],
 [AC_MSG_CHECKING([whether the shell understands some XSI constructs])
 # Try some XSI features
@@ -6867,6 +6868,14 @@ xsi_shell=no
   && xsi_shell=yes
 AC_MSG_RESULT([$xsi_shell])
 _LT_CONFIG_LIBTOOL_INIT([xsi_shell='$xsi_shell'])
+
+AC_MSG_CHECKING([whether the shell understands "+="])
+lt_shell_append=no
+( foo=bar; set foo baz; eval "$[1]+=\$[2]" && test "$foo" = barbaz ) \
+    >/dev/null 2>&1 \
+  && lt_shell_append=yes
+AC_MSG_RESULT([$lt_shell_append])
+_LT_CONFIG_LIBTOOL_INIT([lt_shell_append='$lt_shell_append'])
 ])# _LT_CHECK_XSI_SHELL
 
 
@@ -6948,4 +6957,29 @@ func_stripname ()
 }
 _LT_EOF
 esac
+
+case $lt_shell_append in
+  yes)
+    cat << \_LT_EOF >> "$cfgfile"
+
+# func_append var value
+# Append VALUE to the end of shell variable VAR.
+func_append ()
+{
+  eval "$[1]+=\$[2]"
+}
+_LT_EOF
+    ;;
+  *)
+    cat << \_LT_EOF >> "$cfgfile"
+
+# func_append var value
+# Append VALUE to the end of shell variable VAR.
+func_append ()
+{
+  eval "$[1]=\$$[1]\$[2]"
+}
+_LT_EOF
+    ;;
+  esac
 ])

@@ -1,3 +1,15 @@
+2006-05-17  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Eliminate quadratic scaling in argument parsing loop, for
+	shells that understand `var+=value', such as Bash-3.1, or Zsh.
+
+	* libltdl/m4/libtool.m4 (_LT_CHECK_XSI_SHELL): Test whether
+	the shell understands `var+=value'.
+	(_LT_PROG_XSI_SHELLFNS): Define `func_append' based on this.
+	* config/ltmain.m4sh (func_mode_link): Use `func_append' for
+	compile_command, finalize_command, libtool_args, libobjs,
+	non_pic_objects.
+
 2006-05-15  Bruno Haible  <bruno@clisp.org>,
 	    Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 

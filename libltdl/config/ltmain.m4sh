@@ -2195,10 +2195,10 @@ func_mode_link ()
       allow_undefined=yes
       ;;
     esac
-    libtool_args="$nonopt"
+    libtool_args=$nonopt
     base_compile="$nonopt $@"
-    compile_command="$nonopt"
-    finalize_command="$nonopt"
+    compile_command=$nonopt
+    finalize_command=$nonopt
 
     compile_rpath=
     finalize_rpath=
@@ -2265,8 +2265,8 @@ func_mode_link ()
 	  if test -n "$link_static_flag"; then
 	    dlopen_self=$dlopen_self_static
 	    # See comment for -static flag below, for more details.
-	    compile_command="$compile_command $link_static_flag"
-	    finalize_command="$finalize_command $link_static_flag"
+	    func_append compile_command " $link_static_flag"
+	    func_append finalize_command " $link_static_flag"
 	  fi
 	  prefer_static_libs=yes
 	  ;;
@@ -2298,15 +2298,15 @@ func_mode_link ()
       arg="$1"
       shift
       func_quote_for_eval "$arg"
-      qarg="$func_quote_for_eval_unquoted_result"
-      libtool_args="$libtool_args $func_quote_for_eval_result"
+      qarg=$func_quote_for_eval_unquoted_result
+      func_append libtool_args " $func_quote_for_eval_result"
 
       # If the previous option needs an argument, assign it.
       if test -n "$prev"; then
 	case $prev in
 	output)
-	  compile_command="$compile_command @OUTPUT@"
-	  finalize_command="$finalize_command @OUTPUT@"
+	  func_append compile_command " @OUTPUT@"
+	  func_append finalize_command " @OUTPUT@"
 	  ;;
 	esac
 
@@ -2314,8 +2314,8 @@ func_mode_link ()
 	dlfiles|dlprefiles)
 	  if test "$preload" = no; then
 	    # Add the symbol object into the linking commands.
-	    compile_command="$compile_command @SYMFILE@"
-	    finalize_command="$finalize_command @SYMFILE@"
+	    func_append compile_command " @SYMFILE@"
+	    func_append finalize_command " @SYMFILE@"
 	    preload=yes
 	  fi
 	  case $arg in
@@ -2433,7 +2433,7 @@ func_mode_link ()
 		  fi
 
 		  # A PIC object.
-		  libobjs="$libobjs $pic_object"
+		  func_append libobjs " $pic_object"
 		  arg="$pic_object"
 		fi
 
@@ -2443,7 +2443,7 @@ func_mode_link ()
 		  non_pic_object="$xdir$non_pic_object"
 
 		  # A standard non-PIC object
-		  non_pic_objects="$non_pic_objects $non_pic_object"
+		  func_append non_pic_objects " $non_pic_object"
 		  if test -z "$pic_object" || test "$pic_object" = none ; then
 		    arg="$non_pic_object"
 		  fi
@@ -2451,7 +2451,7 @@ func_mode_link ()
 		  # If the PIC object exists, use it instead.
 		  # $xdir was prepended to $pic_object above.
 		  non_pic_object="$pic_object"
-		  non_pic_objects="$non_pic_objects $non_pic_object"
+		  func_append non_pic_objects " $non_pic_object"
 		fi
 	      else
 		# Only an error if not doing a dry-run.
@@ -2462,8 +2462,8 @@ func_mode_link ()
 
 		  pic_object=`$ECHO "X${xdir}${objdir}/${arg}" | $Xsed -e "$lo2o"`
 		  non_pic_object=`$ECHO "X${xdir}${arg}" | $Xsed -e "$lo2o"`
-		  libobjs="$libobjs $pic_object"
-		  non_pic_objects="$non_pic_objects $non_pic_object"
+		  func_append libobjs " $pic_object"
+		  func_append non_pic_objects " $non_pic_object"
 	        else
 		  func_fatal_error "\`$arg' is not a valid libtool object"
 		fi
@@ -2522,23 +2522,23 @@ func_mode_link ()
 	  linker_flags="$linker_flags $qarg"
 	  compiler_flags="$compiler_flags $qarg"
 	  prev=
-	  compile_command="$compile_command $qarg"
-	  finalize_command="$finalize_command $qarg"
+	  func_append compile_command " $qarg"
+	  func_append finalize_command " $qarg"
 	  continue
 	  ;;
 	xcompiler)
 	  compiler_flags="$compiler_flags $qarg"
 	  prev=
-	  compile_command="$compile_command $qarg"
-	  finalize_command="$finalize_command $qarg"
+	  func_append compile_command " $qarg"
+	  func_append finalize_command " $qarg"
 	  continue
 	  ;;
 	xlinker)
 	  linker_flags="$linker_flags $qarg"
 	  compiler_flags="$compiler_flags $wl$qarg"
 	  prev=
-	  compile_command="$compile_command $wl$qarg"
-	  finalize_command="$finalize_command $wl$qarg"
+	  func_append compile_command " $wl$qarg"
+	  func_append finalize_command " $wl$qarg"
 	  continue
 	  ;;
 	*)
@@ -2609,8 +2609,8 @@ func_mode_link ()
       -L[[A-Z]][[A-Z]]*:*)
 	case $with_gcc/$host in
 	no/*-*-irix* | /*-*-irix*)
-	  compile_command="$compile_command $arg"
-	  finalize_command="$finalize_command $arg"
+	  func_append compile_command " $arg"
+	  func_append finalize_command " $arg"
 	  ;;
 	esac
 	continue
@@ -2702,17 +2702,17 @@ func_mode_link ()
       # classes, name mangling, and exception handling.
       # Darwin uses the -arch flag to determine output architecture.
       -model|-arch|-isysroot)
-	compile_command="$compile_command $arg"
 	compiler_flags="$compiler_flags $arg"
-	finalize_command="$finalize_command $arg"
+	func_append compile_command " $arg"
+	func_append finalize_command " $arg"
 	prev=xcompiler
 	continue
 	;;
 
       -mt|-mthreads|-kthread|-Kthread|-pthread|-pthreads|--thread-safe)
 	compiler_flags="$compiler_flags $arg"
-	compile_command="$compile_command $arg"
-	finalize_command="$finalize_command $arg"
+	func_append compile_command " $arg"
+	func_append finalize_command " $arg"
 	case "$new_inherited_linker_flags " in
 	    *" $arg "*) ;;
 	    * ) new_inherited_linker_flags="$new_inherited_linker_flags $arg" ;;
@@ -2893,8 +2893,8 @@ func_mode_link ()
       -t[[45]]*|-txscale*|@*)
         func_quote_for_eval "$arg"
 	arg="$func_quote_for_eval_result"
-        compile_command="$compile_command $arg"
-        finalize_command="$finalize_command $arg"
+        func_append compile_command " $arg"
+        func_append finalize_command " $arg"
         compiler_flags="$compiler_flags $arg"
         continue
         ;;
@@ -2955,7 +2955,7 @@ func_mode_link ()
 	    fi
 
 	    # A PIC object.
-	    libobjs="$libobjs $pic_object"
+	    func_append libobjs " $pic_object"
 	    arg="$pic_object"
 	  fi
 
@@ -2965,7 +2965,7 @@ func_mode_link ()
 	    non_pic_object="$xdir$non_pic_object"
 
 	    # A standard non-PIC object
-	    non_pic_objects="$non_pic_objects $non_pic_object"
+	    func_append non_pic_objects " $non_pic_object"
 	    if test -z "$pic_object" || test "$pic_object" = none ; then
 	      arg="$non_pic_object"
 	    fi
@@ -2973,7 +2973,7 @@ func_mode_link ()
 	    # If the PIC object exists, use it instead.
 	    # $xdir was prepended to $pic_object above.
 	    non_pic_object="$pic_object"
-	    non_pic_objects="$non_pic_objects $non_pic_object"
+	    func_append non_pic_objects " $non_pic_object"
 	  fi
 	else
 	  # Only an error if not doing a dry-run.
@@ -2984,8 +2984,8 @@ func_mode_link ()
 
 	    pic_object=`$ECHO "X${xdir}${objdir}/${arg}" | $Xsed -e "$lo2o"`
 	    non_pic_object=`$ECHO "X${xdir}${arg}" | $Xsed -e "$lo2o"`
-	    libobjs="$libobjs $pic_object"
-	    non_pic_objects="$non_pic_objects $non_pic_object"
+	    func_append libobjs " $pic_object"
+	    func_append non_pic_objects " $non_pic_object"
 	  else
 	    func_fatal_error "\`$arg' is not a valid libtool object"
 	  fi
@@ -3027,8 +3027,8 @@ func_mode_link ()
 
       # Now actually substitute the argument into the commands.
       if test -n "$arg"; then
-	compile_command="$compile_command $arg"
-	finalize_command="$finalize_command $arg"
+	func_append compile_command " $arg"
+	func_append finalize_command " $arg"
       fi
     done # argument parsing loop
 
@@ -3037,8 +3037,8 @@ func_mode_link ()
 
     if test "$export_dynamic" = yes && test -n "$export_dynamic_flag_spec"; then
       eval arg=\"$export_dynamic_flag_spec\"
-      compile_command="$compile_command $arg"
-      finalize_command="$finalize_command $arg"
+      func_append compile_command " $arg"
+      func_append finalize_command " $arg"
     fi
 
     oldlibs=
