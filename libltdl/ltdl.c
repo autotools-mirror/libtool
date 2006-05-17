@@ -1,5 +1,5 @@
 /* ltdl.c -- system independent dlopen wrapper
-   Copyright (C) 1998, 1999, 2000, 2004, 2005 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2000, 2004, 2005, 2006 Free Software Foundation, Inc.
    Originally by Thomas Tanner <tanner@ffii.org>
 
    NOTE: The canonical source of this file is maintained with the
@@ -2156,7 +2156,7 @@ lt_dlhandle_fetch (lt_dlinterface_id iface, const char *module_name)
 
   assert (iface); /* iface is a required argument */
 
-  while ((handle = lt_dlhandle_iterate (handle, iface)))
+  while ((handle = lt_dlhandle_iterate (iface, handle)))
     {
       lt__handle *cur = (lt__handle *) handle;
       if (cur && cur->info.name && streq (cur->info.name, module_name))
