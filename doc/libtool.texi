@@ -5355,6 +5355,12 @@ line (such as @samp{@var{dir}/lib@var{name}.a}) when
 @var{hardcode_libdir_flag_spec} is specified.
 @end defvar
 
+@defvar hardcode_direct_static
+Static library dependencies do not use @var{shlibpath_var}.  Default
+to @samp{no}.  However, if  @var{hardcode_direct} is @samp{yes} but
+would create such a static library dependency, set to @samp{yes}.
+@end defvar
+
 @defvar hardcode_into_libs
 Whether the platform supports hardcoding of run-paths into libraries.
 If enabled, linking of programs will be much simpler but libraries will

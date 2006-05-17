@@ -1,5 +1,8 @@
 2006-05-17  Gary V. Vaughan  <gary@gnu.org>
 
+	* doc/libtool.texi (libtool script contents): Document new
+	hardcode_direct_static variable.
+
 	* tests/link-order.at: Be careful about usage of shrext_cmds.
 
 	* libltdl/m4/libtool.m4 (LT_AC_PROG_SED):  Declarations for
