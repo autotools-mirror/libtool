@@ -1,3 +1,13 @@
+2006-05-17  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* libltdl/m4/libtool.m4 (_LT_LINKER_OPTION): Require
+	_LT_DECL_SED.
+	(_LT_CMD_GLOBAL_SYMBOLS, _LT_LINKER_SHLIBS): Likewise.
+	* libltdl/m4/ltdl.m4 (LTDL_INIT): Likewise.
+	(_LT_DECL_SED): Set $Xsed here, using $SED.  Moved from...
+	(_LT_SETUP): ...here.
+	Report by Eric Blake.
+
 2006-05-17  Gary V. Vaughan  <gary@gnu.org>
 
 	* doc/libtool.texi (libtool script contents): Document new
