@@ -23,6 +23,9 @@ AT_KEYWORDS([libtool])
 eval `$LIBTOOL --config | $EGREP '^(hardcode_direct|hardcode_direct_static|shrext_cmds)='`
 LDFLAGS="$LDFLAGS -no-undefined"
 
+module=no
+eval shared_ext=\"$shrext_cmds\"
+
 prefix_old=`pwd`/old
 prefix_new=`pwd`/new
 mkdir src $prefix_old $prefix_new $prefix_old/lib $prefix_new/lib
@@ -72,7 +75,7 @@ aix* | interix*) ;;  # These systems have different path syntax
   case $hardcode_direct$hardcode_direct_static in
   yesno)
     AT_CHECK([if $EGREP relinking stderr; then
-         $EGREP " .*\/new\/lib/libb$shrext_cmds .*\/old\/lib/libcee$shrext_cmds" stdout
+         $EGREP " .*\/new\/lib/libb$shared_ext .*\/old\/lib/libcee$shared_ext" stdout
        else :; fi], [0], [ignore], [], [echo "wrong link order"])
     ;;
   *)

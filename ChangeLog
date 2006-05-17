@@ -1,5 +1,7 @@
 2006-05-17  Gary V. Vaughan  <gary@gnu.org>
 
+	* tests/link-order.at: Be careful about usage of shrext_cmds.
+
 	* libltdl/m4/libtool.m4 (LT_AC_PROG_SED):  Declarations for
 	compatibility with old versions of libtool, and old versions
 	of aclocal.
