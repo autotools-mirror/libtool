@@ -20,6 +20,7 @@
 
 AT_SETUP([Link order test.])
 AT_KEYWORDS([libtool])
+eval `$LIBTOOL --config | $EGREP '^(hardcode_direct|hardcode_direct_static|shrext_cmds)='`
 LDFLAGS="$LDFLAGS -no-undefined"
 
 prefix_old=`pwd`/old
@@ -68,9 +69,18 @@ case $host_os in
 aix* | interix*) ;;  # These systems have different path syntax
 *)
   # Do not error if we do not relink (e.g. static-only systems)
-  AT_CHECK([if $EGREP relinking stderr; then
-	      $EGREP ' -L.*\/new\/lib -lb -L.*\/old\/lib -lcee' stdout
-	    else :; fi], [0], [ignore], [], [echo "wrong link order"])
+  case $hardcode_direct$hardcode_direct_static in
+  yesno)
+    AT_CHECK([if $EGREP relinking stderr; then
+         $EGREP " .*\/new\/lib/libb$shrext_cmds .*\/old\/lib/libcee$shrext_cmds" stdout
+       else :; fi], [0], [ignore], [], [echo "wrong link order"])
+    ;;
+  *)
+    AT_CHECK([if $EGREP relinking stderr; then
+         $EGREP " -L.*\/new\/lib -lb -L.*\/old\/lib -lcee" stdout
+       else :; fi], [0], [ignore], [], [echo "wrong link order"])
+    ;;
+  esac
   ;;
 esac
 

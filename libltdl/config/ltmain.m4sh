@@ -3832,7 +3832,8 @@ func_mode_link ()
 	      fi
 	      ;;
 	    relink)
-	      if test "$hardcode_direct" = yes; then
+	      if test "$hardcode_direct" = yes &&
+	         test "$hardcode_direct_static" = no; then
 		add="$dir/$linklib"
 	      elif test "$hardcode_minus_L" = yes; then
 		add_dir="-L$dir"
@@ -3887,7 +3888,8 @@ func_mode_link ()
 	    add_dir=
 	    add=
 	    # Finalize command for both is simple: just hardcode it.
-	    if test "$hardcode_direct" = yes; then
+	    if test "$hardcode_direct" = yes &&
+	       test "$hardcode_direct_static" = no; then
 	      add="$libdir/$linklib"
 	    elif test "$hardcode_minus_L" = yes; then
 	      add_dir="-L$libdir"

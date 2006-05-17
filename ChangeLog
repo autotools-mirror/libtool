@@ -1,3 +1,16 @@
+2006-05-17  Albert Chin-A-Young  <china@thewrittenword.com>
+
+	* libltdl/config/ltmain.m4sh, libltdl/m4/libtool.m4
+	(_LT_LINKER_SHLIBS, _LT_LANG_CXX_CONFIG, _LT_LANG_F77_CONFIG,
+	_LT_LANG_FC_CONFIG) [ aix4*, aix5*, hpux10*, hpux11* ]:
+	Introduce a new variable, hardcode_direct_static, which
+	would ignore hardcode_direct=yes if the result would create a
+	static library dependency. Static library dependencies are
+	immune to $shlibpath_var.
+	* tests/link-order.at: Take hardcode_direct and
+	hardcode_direct_static into consideration when testing
+	link order.
+
 2006-05-17  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	Eliminate quadratic scaling in argument parsing loop, for
@@ -169,7 +182,7 @@
 	but also turn comma into space so $LD understands
 	whole_archive_flag_spec correctly.
 
-	* libltdl/config/ltmain.m4sh (func_mode_link) <shell wrapper>: 
+	* libltdl/config/ltmain.m4sh (func_mode_link) <shell wrapper>:
 	Add _AS_BOURNE_COMPATIBLE code from Autoconf, to fix issues
 	with zsh and other shells.
 	Reported by David Gómez Espinosa <david@pleyades.net>.

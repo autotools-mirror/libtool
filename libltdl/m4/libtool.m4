@@ -3967,6 +3967,7 @@ m4_if([$1], [CXX], [
   _LT_TAGVAR(export_symbols_cmds, $1)='$NM $libobjs $convenience | $global_symbol_pipe | $SED '\''s/.* //'\'' | sort | uniq > $export_symbols'
   _LT_TAGVAR(hardcode_automatic, $1)=no
   _LT_TAGVAR(hardcode_direct, $1)=no
+  _LT_TAGVAR(hardcode_direct_static, $1)=no
   _LT_TAGVAR(hardcode_libdir_flag_spec, $1)=
   _LT_TAGVAR(hardcode_libdir_flag_spec_ld, $1)=
   _LT_TAGVAR(hardcode_libdir_separator, $1)=
@@ -4205,7 +4206,7 @@ _LT_EOF
 
     sysv5* | sco3.2v5* | sco5v6* | unixware* | OpenUNIX*)
       case `$LD -v 2>&1` in
-        *\ [[01]].* | *\ 2.[[0-9]].* | *\ 2.1[[0-5]].*) 
+        *\ [[01]].* | *\ 2.[[0-9]].* | *\ 2.1[[0-5]].*)
 	_LT_TAGVAR(ld_shlibs, $1)=no
 	cat <<_LT_EOF 1>&2
 
@@ -4316,6 +4317,7 @@ _LT_EOF
 
       _LT_TAGVAR(archive_cmds, $1)=''
       _LT_TAGVAR(hardcode_direct, $1)=yes
+      _LT_TAGVAR(hardcode_direct_static, $1)=yes
       _LT_TAGVAR(hardcode_libdir_separator, $1)=':'
       _LT_TAGVAR(link_all_deplibs, $1)=yes
       _LT_TAGVAR(file_list_spec, $1)='${wl}-f,'
@@ -4561,6 +4563,7 @@ _LT_EOF
 	_LT_TAGVAR(hardcode_libdir_flag_spec_ld, $1)='+b $libdir'
 	_LT_TAGVAR(hardcode_libdir_separator, $1)=:
 	_LT_TAGVAR(hardcode_direct, $1)=yes
+	_LT_TAGVAR(hardcode_direct_static, $1)=yes
 	_LT_TAGVAR(export_dynamic_flag_spec, $1)='${wl}-E'
 	# hardcode_minus_L: Not really in the search PATH,
 	# but as the default location of the library.
@@ -4605,6 +4608,7 @@ _LT_EOF
 	  ;;
 	*)
 	  _LT_TAGVAR(hardcode_direct, $1)=yes
+	  _LT_TAGVAR(hardcode_direct_static, $1)=yes
 	  _LT_TAGVAR(export_dynamic_flag_spec, $1)='${wl}-E'
 
 	  # hardcode_minus_L: Not really in the search PATH,
@@ -4975,6 +4979,11 @@ _LT_TAGDECL([], [hardcode_libdir_separator], [1],
 _LT_TAGDECL([], [hardcode_direct], [0],
     [Set to "yes" if using DIR/libNAME${shared_ext} during linking hardcodes
     DIR into the resulting binary])
+_LT_TAGDECL([], [hardcode_direct_static], [0],
+    [Set to "yes" if using DIR/libNAME${shared_ext} during linking hardcodes
+    DIR into the resulting binary and the resulting library dependency is
+    static, impossible to change by setting ${shlibpath_var} if the
+    library is relocated])
 _LT_TAGDECL([], [hardcode_minus_L], [0],
     [Set to "yes" if using the -LDIR flag during linking hardcodes DIR
     into the resulting binary])
@@ -5134,6 +5143,7 @@ _LT_TAGVAR(always_export_symbols, $1)=no
 _LT_TAGVAR(archive_expsym_cmds, $1)=
 _LT_TAGVAR(export_dynamic_flag_spec, $1)=
 _LT_TAGVAR(hardcode_direct, $1)=no
+_LT_TAGVAR(hardcode_direct_static, $1)=no
 _LT_TAGVAR(hardcode_libdir_flag_spec, $1)=
 _LT_TAGVAR(hardcode_libdir_flag_spec_ld, $1)=
 _LT_TAGVAR(hardcode_libdir_separator, $1)=
@@ -6390,6 +6400,7 @@ _LT_TAGVAR(always_export_symbols, $1)=no
 _LT_TAGVAR(archive_expsym_cmds, $1)=
 _LT_TAGVAR(export_dynamic_flag_spec, $1)=
 _LT_TAGVAR(hardcode_direct, $1)=no
+_LT_TAGVAR(hardcode_direct_static, $1)=no
 _LT_TAGVAR(hardcode_libdir_flag_spec, $1)=
 _LT_TAGVAR(hardcode_libdir_flag_spec_ld, $1)=
 _LT_TAGVAR(hardcode_libdir_separator, $1)=
@@ -6523,6 +6534,7 @@ _LT_TAGVAR(always_export_symbols, $1)=no
 _LT_TAGVAR(archive_expsym_cmds, $1)=
 _LT_TAGVAR(export_dynamic_flag_spec, $1)=
 _LT_TAGVAR(hardcode_direct, $1)=no
+_LT_TAGVAR(hardcode_direct_static, $1)=no
 _LT_TAGVAR(hardcode_libdir_flag_spec, $1)=
 _LT_TAGVAR(hardcode_libdir_flag_spec_ld, $1)=
 _LT_TAGVAR(hardcode_libdir_separator, $1)=
