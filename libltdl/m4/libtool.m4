@@ -6865,6 +6865,11 @@ AC_MSG_RESULT([$SED])
 ])#AC_PROG_SED
 ])#m4_ifndef
 
+# Old name:
+AU_ALIAS([LT_AC_PROG_SED], [AC_PROG_SED])
+dnl aclocal-1.4 backwards compatibility:
+dnl AC_DEFUN([LT_AC_PROG_SED], [])
+
 
 # _LT_CHECK_XSI_SHELL
 # -------------------

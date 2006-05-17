@@ -1,3 +1,9 @@
+2006-05-17  Gary V. Vaughan  <gary@gnu.org>
+
+	* libltdl/m4/libtool.m4 (LT_AC_PROG_SED):  Declarations for
+	compatibility with old versions of libtool, and old versions
+	of aclocal.
+
 2006-05-17  Albert Chin-A-Young  <china@thewrittenword.com>
 
 	* libltdl/config/ltmain.m4sh, libltdl/m4/libtool.m4
