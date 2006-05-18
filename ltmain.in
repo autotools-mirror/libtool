@@ -482,11 +482,13 @@ do
     ;;
 
   --version)
-    $echo "$PROGRAM (GNU $PACKAGE) $VERSION$TIMESTAMP"
-    $echo
-    $echo "Copyright (C) 2006  Free Software Foundation, Inc."
-    $echo "This is free software; see the source for copying conditions.  There is NO"
-    $echo "warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE."
+    echo "\
+
+$PROGRAM (GNU $PACKAGE) $VERSION$TIMESTAMP
+
+Copyright (C) 2006  Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE."
     exit $?
     ;;
 

@@ -1,5 +1,9 @@
 2006-05-18  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* libtoolize.in: Use just one `echo' for `--version' output
+	instead of several `echo', to avoid `Broken pipe' errors.
+	Reported by Behdad Esfahbod <behdad@cs.toronto.edu>.
+
 	* ltmain.in: Reset/unset not only LANG and LC_ALL, but also
 	LC_CTYPE, LC_COLLATE, LC_MESSAGES.
 	(execute mode): Restore them.
