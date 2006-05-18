@@ -1,4 +1,11 @@
-2006-05-11  Gary V. Vaughan  <gary@gnu.org>
+2006-05-17  Gary V. Vaughan  <gary@gnu.org>
+
+	* libltdl/config/ltmain.m4sh, libltdl/m4/libtool.m4
+	(_LT_LINKER_SHLIBS, _LT_LANG_CXX_CONFIG, _LT_LANG_F77_CONFIG,
+	_LT_LANG_FC_CONFIG), tests/link-order.at
+	[ aix4*, aix5*, hpux10*, hpux11* ]: rename
+	hardcode_direct_static to hardcode_direct_absolute.
+	* doc/libtool.texi (libtool script contents): Adjust.
 
 	* libltdl/ltdl.c (lt_dlhandle_fetch): Arguments to
 	lt_dlhandle_iterate were in the wrong order.

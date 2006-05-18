@@ -5355,10 +5355,11 @@ line (such as @samp{@var{dir}/lib@var{name}.a}) when
 @var{hardcode_libdir_flag_spec} is specified.
 @end defvar
 
-@defvar hardcode_direct_static
-Static library dependencies do not use @var{shlibpath_var}.  Default
-to @samp{no}.  However, if  @var{hardcode_direct} is @samp{yes} but
-would create such a static library dependency, set to @samp{yes}.
+@defvar hardcode_direct_absolute
+Some architectures hardcode "absolute" library directories that can not
+be overridden by @var{shlibpath_var} when @var{hardcode_direct} is
+@samp{yes}.  In that case set @var{hardcode_direct_absolute} to
+@samp{yes}, or otherwise @samp{no}.
 @end defvar
 
 @defvar hardcode_into_libs

@@ -20,7 +20,7 @@
 
 AT_SETUP([Link order test.])
 AT_KEYWORDS([libtool])
-eval `$LIBTOOL --config | $EGREP '^(hardcode_direct|hardcode_direct_static|shrext_cmds)='`
+eval `$LIBTOOL --config | $EGREP '^(hardcode_direct|hardcode_direct_absolute|shrext_cmds)='`
 LDFLAGS="$LDFLAGS -no-undefined"
 
 module=no
@@ -72,7 +72,7 @@ case $host_os in
 aix* | interix*) ;;  # These systems have different path syntax
 *)
   # Do not error if we do not relink (e.g. static-only systems)
-  case $hardcode_direct$hardcode_direct_static in
+  case $hardcode_direct$hardcode_direct_absolute in
   yesno)
     AT_CHECK([if $EGREP relinking stderr; then
          $EGREP " .*\/new\/lib/libb$shared_ext .*\/old\/lib/libcee$shared_ext" stdout
