@@ -1,3 +1,24 @@
+2006-05-18  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Fix mode=compile time regression of CVS HEAD over branch-1-5.
+
+	* libltdl/m4/libtool.m4 (_LT_CHECK_XSI_SHELL): Rename to...
+	(_LT_CHECK_SHELL_FEATURES): ...this.
+	(_LT_SETUP): Adjust caller.
+	(_LT_CHECK_XSI_SHELL): New libtool variables `lt_unset',
+	`SP2NL', `NL2SP', to contain results from tests for unset,
+	taken from AS_BOURNE_COMPATIBLE, and ASCII vs EBCDIC, taken...
+	* libltdl/config/general.m4sh: ...from here, and used...
+	* libltdl/config/ltmain.m4sh: ...here everywhere now.
+	* (AS_SHELL_SANITIZE): Replace by faster, actually necessary
+	part of its expansion, taken from current Autoconf CVS.  Do not
+	save and set all locale variables any more, but only LANG,
+	LC_ALL, LC_CTYPE, LC_COLLATE, LC_MESSAGES.
+	(func_mode_execute): Adjust.
+	* libltdl/m4/libtool.m4 (_LT_CONFIG): No need to unset CDPATH
+	here any more.
+	* libtoolize.m4sh: Compute `SP2NL' and `NL2SP' here, too.
+
 2006-05-17  Gary V. Vaughan  <gary@gnu.org>
 
 	* libltdl/config/ltmain.m4sh, libltdl/m4/libtool.m4

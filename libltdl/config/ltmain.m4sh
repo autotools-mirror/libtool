@@ -77,18 +77,34 @@ VERSION=@VERSION@
 TIMESTAMP="@TIMESTAMP@"
 package_revision=@package_revision@
 
+# Be Bourne compatible
+if test -n "${ZSH_VERSION+set}" && (emulate sh) >/dev/null 2>&1; then
+  emulate sh
+  NULLCMD=:
+  # Zsh 3.x and 4.x performs word splitting on ${1+"$@"}, which
+  # is contrary to our usage.  Disable this feature.
+  alias -g '${1+"$@"}'='"$@"'
+  setopt NO_GLOB_SUBST
+else
+  case `(set -o) 2>/dev/null` in *posix*) set -o posix;; esac
+fi
+BIN_SH=xpg4; export BIN_SH # for Tru64
+DUALCASE=1; export DUALCASE # for MKS sh
+
 # NLS nuisances: We save the old values to restore during execute mode.
-# AS_SHELL_SANITIZE will take care of unsetting.
-for lt_var in \
-  LANG LANGUAGE LC_ADDRESS LC_ALL LC_COLLATE LC_CTYPE LC_IDENTIFICATION \
-  LC_MEASUREMENT LC_MESSAGES LC_MONETARY LC_NAME LC_NUMERIC LC_PAPER \
-  LC_TELEPHONE LC_TIME
+# Only set LANG and LC_ALL to C if already set.
+# These must not be set unconditionally because not all systems understand
+# e.g. LANG=C (notably SCO).
+for lt_var in LANG LC_ALL LC_CTYPE LC_COLLATE LC_MESSAGES
 do
-  eval "test \"\${$lt_var+set}\" = set && save_$lt_var=\$$lt_var"
+  eval "if test \"\${$lt_var+set}\" = set; then
+          save_$lt_var=\$$lt_var
+          $lt_var=C
+	  export $lt_var
+	fi"
 done
 
-AS_SHELL_SANITIZE
-$as_unset CDPATH
+$lt_unset CDPATH
 
 m4_include([getopt.m4sh])
 
@@ -1637,15 +1653,12 @@ func_mode_execute ()
       fi
 
       # Restore saved environment variables
-      for lt_var in \
-	LANG LANGUAGE LC_ADDRESS LC_ALL LC_COLLATE LC_CTYPE LC_IDENTIFICATION \
-	LC_MEASUREMENT LC_MESSAGES LC_MONETARY LC_NAME LC_NUMERIC LC_PAPER \
-	LC_TELEPHONE LC_TIME
+      for lt_var in LANG LC_ALL LC_CTYPE LC_COLLATE LC_MESSAGES
       do
 	eval "if test \"\${save_$lt_var+set}\" = set; then
                 $lt_var=\$save_$lt_var; export $lt_var
 	      else
-		$as_unset $lt_var
+		$lt_unset $lt_var
 	      fi"
       done
 
@@ -5795,7 +5808,7 @@ EOF
 	# Preserve any variables that may affect compiler behavior
 	for var in $variables_saved_for_relink; do
 	  if eval test -z \"\${$var+set}\"; then
-	    relink_command="{ test -z \"\${$var+set}\" || unset $var || { $var=; export $var; }; }; $relink_command"
+	    relink_command="{ test -z \"\${$var+set}\" || $lt_unset $var || { $var=; export $var; }; }; $relink_command"
 	  elif eval var_value=\$$var; test -z "$var_value"; then
 	    relink_command="$var=; export $var; $relink_command"
 	  else
@@ -6536,7 +6549,7 @@ fi\
       # Preserve any variables that may affect compiler behavior
       for var in $variables_saved_for_relink; do
 	if eval test -z \"\${$var+set}\"; then
-	  relink_command="{ test -z \"\${$var+set}\" || unset $var || { $var=; export $var; }; }; $relink_command"
+	  relink_command="{ test -z \"\${$var+set}\" || $lt_unset $var || { $var=; export $var; }; }; $relink_command"
 	elif eval var_value=\$$var; test -z "$var_value"; then
 	  relink_command="$var=; export $var; $relink_command"
 	else

@@ -105,19 +105,6 @@ double_quote_subst='s/\([["`\\]]\)/\\\1/g'
 sed_double_backslash='s/^\(\(''\\\\''\\\\''\)*''\\\\''\)\$/\1\\$/;
                 s/\([[^\\]]\(''\\\\''\\\\''\)*''\\\\''\)\$/\1\\$/g'
 
-# test EBCDIC or ASCII
-case `echo X|tr X '\101'` in
- A) # ASCII based system
-    # \n is not interpreted correctly by Solaris 8 /usr/ucb/tr
-  SP2NL='tr \040 \012'
-  NL2SP='tr \015\012 \040\040'
-  ;;
- *) # EBCDIC based system
-  SP2NL='tr \100 \n'
-  NL2SP='tr \r\n \100\100'
-  ;;
-esac
-
 # Standard options:
 opt_dry_run=false
 opt_help=false

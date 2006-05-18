@@ -145,7 +145,7 @@ AC_REQUIRE([AC_EXEEXT])dnl
 _LT_DECL([], [exeext], [0], [Executable file suffix (normally "")])dnl
 dnl
 m4_require([_LT_FILEUTILS_DEFAULTS])dnl
-m4_require([_LT_CHECK_XSI_SHELL])dnl
+m4_require([_LT_CHECK_SHELL_FEATURES])dnl
 m4_require([_LT_CMD_RELOAD])dnl
 m4_require([_LT_CHECK_MAGIC_METHOD])dnl
 m4_require([_LT_CMD_OLD_ARCHIVE])dnl
@@ -681,10 +681,6 @@ _LT_LIBTOOL_TAGS
 _LT_LIBTOOL_CONFIG_VARS
 _LT_LIBTOOL_TAG_VARS
 # ### END LIBTOOL CONFIG
-
-# The HP-UX ksh and POSIX shell print the target directory to stdout
-# if CDPATH is set.
-(unset CDPATH) >/dev/null 2>&1 && unset CDPATH
 
 _LT_EOF
 
@@ -6874,11 +6870,11 @@ dnl aclocal-1.4 backwards compatibility:
 dnl AC_DEFUN([LT_AC_PROG_SED], [])
 
 
-# _LT_CHECK_XSI_SHELL
-# -------------------
+# _LT_CHECK_SHELL_FEATURES
+# ------------------------
 # Find out whether the shell is Bourne or XSI compatible,
 # or has some other useful features.
-m4_defun([_LT_CHECK_XSI_SHELL],
+m4_defun([_LT_CHECK_SHELL_FEATURES],
 [AC_MSG_CHECKING([whether the shell understands some XSI constructs])
 # Try some XSI features
 xsi_shell=no
@@ -6896,7 +6892,29 @@ lt_shell_append=no
   && lt_shell_append=yes
 AC_MSG_RESULT([$lt_shell_append])
 _LT_CONFIG_LIBTOOL_INIT([lt_shell_append='$lt_shell_append'])
-])# _LT_CHECK_XSI_SHELL
+
+if ( (MAIL=60; unset MAIL) || exit) >/dev/null 2>&1; then
+  lt_unset=unset
+else
+  lt_unset=false
+fi
+_LT_DECL([], [lt_unset], [0], [whether the shell understands "unset"])dnl
+
+# test EBCDIC or ASCII
+case `echo X|tr X '\101'` in
+ A) # ASCII based system
+    # \n is not interpreted correctly by Solaris 8 /usr/ucb/tr
+  lt_SP2NL='tr \040 \012'
+  lt_NL2SP='tr \015\012 \040\040'
+  ;;
+ *) # EBCDIC based system
+  lt_SP2NL='tr \100 \n'
+  lt_NL2SP='tr \r\n \100\100'
+  ;;
+esac
+_LT_DECL([SP2NL], [lt_SP2NL], [1], [turn spaces into newlines])dnl
+_LT_DECL([NL2SP], [lt_NL2SP], [1], [turn newlines into spaces])dnl
+])# _LT_CHECK_SHELL_FEATURES
 
 
 # _LT_PROG_XSI_SHELLFNS
