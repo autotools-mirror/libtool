@@ -1,3 +1,11 @@
+2005-06-18  Albert Chin-A-Young <china@thewrittenword.com>
+
+	* tests/early-libtool.at: Pass $CPPFLAGS and $CFLAGS to
+	compiler when compiling for extra flags that might be
+	needed for ANSI-compliance, 64-bit, etc. The environment
+	we compile with should match the environment libtool was
+	compiled with.
+
 2006-05-18  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	Fix mode=compile time regression of CVS HEAD over branch-1-5.

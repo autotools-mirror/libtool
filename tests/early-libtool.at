@@ -44,9 +44,13 @@ EXEEXT = @EXEEXT@
 LIBTOOL = @LIBTOOL@
 OBJEXT = @OBJEXT@
 
-COMPILE = $(CC) $(DEFAULT_INCLUDES)
-LTCOMPILE = $(LIBTOOL) --mode=compile --tag=CC $(CC) $(DEFAULT_INCLUDES)
-LINK = $(LIBTOOL) --mode=link --tag=CC $(CC) -o $@
+CPPFLAGS = @CPPFLAGS@
+CFLAGS = @CFLAGS@
+LDFLAGS = @LDFLAGS@
+
+COMPILE = $(CC) $(CPPFLAGS) $(CFLAGS) $(DEFAULT_INCLUDES)
+LTCOMPILE = $(LIBTOOL) --mode=compile --tag=CC $(CC) $(CPPFLAGS) $(CFLAGS) $(DEFAULT_INCLUDES)
+LINK = $(LIBTOOL) --mode=link --tag=CC $(CC) $(CFLAGS) $(LDFLAGS) -o $@
 
 all: hell$(EXEEXT)
 
@@ -135,10 +139,10 @@ hello (void)
 _EOF
 
 # Prove that we can run libtool from inside configure:
-$SHELL ./libtool --mode=compile --tag=CC "$CC" -I. -I$srcdir \
-    -c -o hello.lo hello.c  || exit 1
-$SHELL ./libtool --mode=link --tag=CC "$CC" -o libhello.la \
-    -rpath /notexist hello.lo || exit 1
+$SHELL ./libtool --mode=compile --tag=CC "$CC" $CPPFLAGS $CFLAGS \
+    -I. -I$srcdir -c -o hello.lo hello.c  || exit 1
+$SHELL ./libtool --mode=link --tag=CC "$CC" $CFLAGS $LDFLAGS \
+    -o libhello.la -rpath /notexist hello.lo || exit 1
 
 AC_CONFIG_FILES([Makefile])
 AC_OUTPUT
@@ -154,8 +158,12 @@ EXEEXT = @EXEEXT@
 LIBTOOL = @LIBTOOL@
 OBJEXT = @OBJEXT@
 
-COMPILE = $(CC) $(DEFAULT_INCLUDES)
-LINK = $(LIBTOOL) --mode=link --tag=CC $(CC) -o $@
+CPPFLAGS = @CPPFLAGS@
+CFLAGS = @CFLAGS@
+LDFLAGS = @LDFLAGS@
+
+COMPILE = $(CC) $(CPPFLAGS) $(CFLAGS) $(DEFAULT_INCLUDES)
+LINK = $(LIBTOOL) --mode=link --tag=CC $(CC) $(CFLAGS) $(LDFLAGS) -o $@
 
 hell$(EXEEXT): main.$(OBJEXT) libhello.la
 	$(LINK) main.$(OBJEXT) libhello.la
