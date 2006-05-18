@@ -1,3 +1,10 @@
+2006-05-18  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* ltmain.in: Reset/unset not only LANG and LC_ALL, but also
+	LC_CTYPE, LC_COLLATE, LC_MESSAGES.
+	(execute mode): Restore them.
+	Noted by Peter O'Gorman.
+
 2006-05-17  Albert Chin-A-Young  <china@thewrittenword.com>
 
 	* tests/link-order.test: Take hardcode_direct into consideration

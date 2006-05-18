@@ -113,12 +113,14 @@ esac
 # These must not be set unconditionally because not all systems understand
 # e.g. LANG=C (notably SCO).
 # We save the old values to restore during execute mode.
-if test "${LC_ALL+set}" = set; then
-  save_LC_ALL="$LC_ALL"; LC_ALL=C; export LC_ALL
-fi
-if test "${LANG+set}" = set; then
-  save_LANG="$LANG"; LANG=C; export LANG
-fi
+for lt_var in LANG LC_ALL LC_CTYPE LC_COLLATE LC_MESSAGES
+do
+  eval "if test \"\${$lt_var+set}\" = set; then
+	  save_$lt_var=\$$lt_var
+	  $lt_var=C
+	  export $lt_var
+	fi"
+done
 
 # Make sure IFS has a sensible default
 lt_nl='
@@ -6464,12 +6466,14 @@ relink_command=\"$relink_command\""
       fi
 
       # Restore saved environment variables
-      if test "${save_LC_ALL+set}" = set; then
-	LC_ALL="$save_LC_ALL"; export LC_ALL
-      fi
-      if test "${save_LANG+set}" = set; then
-	LANG="$save_LANG"; export LANG
-      fi
+      for lt_var in LANG LC_ALL LC_CTYPE LC_COLLATE LC_MESSAGES
+      do
+	eval "if test \"\${save_$lt_var+set}\" = set; then
+		$lt_var=\$save_$lt_var; export $lt_var
+	      else
+		$lt_unset $lt_var
+	      fi"
+      done
 
       # Now prepare to actually exec the command.
       exec_cmd="\$cmd$args"
