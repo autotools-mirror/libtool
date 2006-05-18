@@ -1,3 +1,8 @@
+2006-05-18  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* libltdl/m4/libtool.m4: Bump serial, necessary because of
+	_LT_CHECK_SHELL_FEATURES changes.
+
 2005-06-18  Albert Chin-A-Young <china@thewrittenword.com>
 
 	* tests/early-libtool.at: Pass $CPPFLAGS and $CFLAGS to

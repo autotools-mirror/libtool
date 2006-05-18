@@ -37,7 +37,7 @@ m4_define([_LT_COPYING], [dnl
 # the same distribution terms that you use for the rest of that program.
 ])
 
-# serial 51 LT_INIT
+# serial 52 LT_INIT
 
 
 # LT_PREREQ(VERSION)
