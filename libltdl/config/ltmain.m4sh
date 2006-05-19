@@ -6383,7 +6383,7 @@ else
 	  ;;
 	esac
 	$ECHO >> $output "\
-      \$ECHO \"\$0: cannot exec \$program \${1+\"\$@\"}\"
+      \$ECHO \"\$0: cannot exec \$program \$*\"
       exit 1
     fi
   else
