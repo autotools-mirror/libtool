@@ -1,3 +1,8 @@
+2006-05-19  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* ltmain.in (shell wrapper): Do not put `"$@"' in argument to
+	$echo.
+
 2006-05-18  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* libtoolize.in: Use just one `echo' for `--version' output

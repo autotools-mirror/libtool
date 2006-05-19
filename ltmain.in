@@ -5450,7 +5450,7 @@ else
 	  ;;
 	esac
 	$echo >> $output "\
-      \$echo \"\$0: cannot exec \$program \${1+\"\$@\"}\"
+      \$echo \"\$0: cannot exec \$program \$*\"
       exit $EXIT_FAILURE
     fi
   else
