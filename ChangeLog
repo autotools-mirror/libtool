@@ -1,3 +1,8 @@
+2006-05-19  Gary V. Vaughan  <gary@gnu.org>
+
+	* libtool.m4 (LT_AC_PROG_SED): AC_SUBST([SED]) for
+	compatibility with future autoconf release of AC_PROG_SED.
+
 2006-05-19  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* ltmain.in (shell wrapper): Do not put `"$@"' in argument to
