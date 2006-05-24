@@ -5308,6 +5308,7 @@ if test "$_lt_caught_CXX_error" != yes; then
 
         _LT_TAGVAR(archive_cmds, $1)=''
         _LT_TAGVAR(hardcode_direct, $1)=yes
+        _LT_TAGVAR(hardcode_direct_absolute, $1)=yes
         _LT_TAGVAR(hardcode_libdir_separator, $1)=':'
         _LT_TAGVAR(link_all_deplibs, $1)=yes
         _LT_TAGVAR(file_list_spec, $1)='${wl}-f,'
@@ -5595,6 +5596,7 @@ if test "$_lt_caught_CXX_error" != yes; then
             ;;
           *)
             _LT_TAGVAR(hardcode_direct, $1)=yes
+            _LT_TAGVAR(hardcode_direct_absolute, $1)=yes
             _LT_TAGVAR(hardcode_minus_L, $1)=yes # Not in the search PATH,
   					         # but as the default
   					         # location of the library.
