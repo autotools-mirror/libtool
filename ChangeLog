@@ -1,3 +1,8 @@
+2006-06-01  Charles Wilson  <libtool@cwilson.fastmail.fm>
+
+	* libltdl/m4/libtool.m4 (_LT_COMPILER_PIC) [ cygwin ]:
+	define DLL_EXPORT for PIC objects on cygwin.
+
 2006-05-24  Albert Chin  <china@thewrittenword.com>
 
 	* libltdl/m4/libtool.m4 (_LT_LANG_CXX_CONFIG)
