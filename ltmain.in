@@ -4733,16 +4733,16 @@ static const void *lt_preloaded_setup() {
           case $host in
           *cygwin* | *mingw* )
             if test -f "$output_objdir/${outputname}.def" ; then
-              compile_command=`$echo "X$compile_command" | $Xsed -e "s%@SYMFILE@%$output_objdir/${outputname}.def $output_objdir/${outputname}S.${objext}%"`
-              finalize_command=`$echo "X$finalize_command" | $Xsed -e "s%@SYMFILE@%$output_objdir/${outputname}.def $output_objdir/${outputname}S.${objext}%"`
+              compile_command=`$echo "X$compile_command" | $SP2NL | $Xsed -e "s%@SYMFILE@%$output_objdir/${outputname}.def $output_objdir/${outputname}S.${objext}%" | $NL2SP`
+              finalize_command=`$echo "X$finalize_command" | $SP2NL | $Xsed -e "s%@SYMFILE@%$output_objdir/${outputname}.def $output_objdir/${outputname}S.${objext}%" | $NL2SP`
             else
-              compile_command=`$echo "X$compile_command" | $Xsed -e "s%@SYMFILE@%$output_objdir/${outputname}S.${objext}%"`
-              finalize_command=`$echo "X$finalize_command" | $Xsed -e "s%@SYMFILE@%$output_objdir/${outputname}S.${objext}%"`
+              compile_command=`$echo "X$compile_command" | $SP2NL | $Xsed -e "s%@SYMFILE@%$output_objdir/${outputname}S.${objext}%" | $NL2SP`
+              finalize_command=`$echo "X$finalize_command" | $SP2NL | $Xsed -e "s%@SYMFILE@%$output_objdir/${outputname}S.${objext}%" | $NL2SP`
              fi
             ;;
           * )
-            compile_command=`$echo "X$compile_command" | $Xsed -e "s%@SYMFILE@%$output_objdir/${outputname}S.${objext}%"`
-            finalize_command=`$echo "X$finalize_command" | $Xsed -e "s%@SYMFILE@%$output_objdir/${outputname}S.${objext}%"`
+            compile_command=`$echo "X$compile_command" | $SP2NL | $Xsed -e "s%@SYMFILE@%$output_objdir/${outputname}S.${objext}%" | $NL2SP`
+            finalize_command=`$echo "X$finalize_command" | $SP2NL | $Xsed -e "s%@SYMFILE@%$output_objdir/${outputname}S.${objext}%" | $NL2SP`
             ;;
           esac
 	  ;;
@@ -4757,13 +4757,13 @@ static const void *lt_preloaded_setup() {
 	# really was required.
 
 	# Nullify the symbol file.
-	compile_command=`$echo "X$compile_command" | $Xsed -e "s% @SYMFILE@%%"`
-	finalize_command=`$echo "X$finalize_command" | $Xsed -e "s% @SYMFILE@%%"`
+	compile_command=`$echo "X$compile_command" | $SP2NL | $Xsed -e "s% @SYMFILE@%%" | $NL2SP`
+	finalize_command=`$echo "X$finalize_command" | $SP2NL | $Xsed -e "s% @SYMFILE@%%" | $NL2SP`
       fi
 
       if test "$need_relink" = no || test "$build_libtool_libs" != yes; then
 	# Replace the output file specification.
-	compile_command=`$echo "X$compile_command" | $Xsed -e 's%@OUTPUT@%'"$output"'%g'`
+	compile_command=`$echo "X$compile_command" | $SP2NL | $Xsed -e 's%@OUTPUT@%'"$output"'%g' | $NL2SP`
 	link_command="$compile_command$compile_rpath"
 
 	# We have no uninstalled library dependencies, so finalize right now.
@@ -4850,7 +4850,7 @@ static const void *lt_preloaded_setup() {
 	if test "$fast_install" != no; then
 	  link_command="$finalize_var$compile_command$finalize_rpath"
 	  if test "$fast_install" = yes; then
-	    relink_command=`$echo "X$compile_var$compile_command$compile_rpath" | $Xsed -e 's%@OUTPUT@%\$progdir/\$file%g'`
+	    relink_command=`$echo "X$compile_var$compile_command$compile_rpath" | $SP2NL | $Xsed -e 's%@OUTPUT@%\$progdir/\$file%g' | $NL2SP`
 	  else
 	    # fast_install is set to needless
 	    relink_command=
@@ -4887,7 +4887,7 @@ static const void *lt_preloaded_setup() {
 	  fi
 	done
 	relink_command="(cd `pwd`; $relink_command)"
-	relink_command=`$echo "X$relink_command" | $Xsed -e "$sed_quote_subst"`
+	relink_command=`$echo "X$relink_command" | $SP2NL | $Xsed -e "$sed_quote_subst" | $NL2SP`
       fi
 
       # Quote $echo for shipping.
@@ -5636,7 +5636,7 @@ fi\
       done
       # Quote the link command for shipping.
       relink_command="(cd `pwd`; $SHELL $progpath $preserve_args --mode=relink $libtool_args @inst_prefix_dir@)"
-      relink_command=`$echo "X$relink_command" | $Xsed -e "$sed_quote_subst"`
+      relink_command=`$echo "X$relink_command" | $SP2NL | $Xsed -e "$sed_quote_subst" | $NL2SP`
       if test "$hardcode_automatic" = yes ; then
 	relink_command=
       fi
@@ -5981,9 +5981,9 @@ relink_command=\"$relink_command\""
 
 	  if test -n "$inst_prefix_dir"; then
 	    # Stick the inst_prefix_dir data into the link command.
-	    relink_command=`$echo "$relink_command" | $SED "s%@inst_prefix_dir@%-inst-prefix-dir $inst_prefix_dir%"`
+	    relink_command=`$echo "$relink_command" | $SP2NL | $SED "s%@inst_prefix_dir@%-inst-prefix-dir $inst_prefix_dir%" | $NL2SP`
 	  else
-	    relink_command=`$echo "$relink_command" | $SED "s%@inst_prefix_dir@%%"`
+	    relink_command=`$echo "$relink_command" | $SP2NL | $SED "s%@inst_prefix_dir@%%" | $NL2SP`
 	  fi
 
 	  $echo "$modename: warning: relinking \`$file'" 1>&2
@@ -6192,7 +6192,7 @@ relink_command=\"$relink_command\""
 	      file=`$echo "X$file$stripped_ext" | $Xsed -e 's%^.*/%%'`
 	      outputname="$tmpdir/$file"
 	      # Replace the output file specification.
-	      relink_command=`$echo "X$relink_command" | $Xsed -e 's%@OUTPUT@%'"$outputname"'%g'`
+	      relink_command=`$echo "X$relink_command" | $SP2NL | $Xsed -e 's%@OUTPUT@%'"$outputname"'%g' | $NL2SP`
 
 	      $show "$relink_command"
 	      if $run eval "$relink_command"; then :
