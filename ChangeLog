@@ -1,3 +1,8 @@
+2006-06-08  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* ltmain.in (link mode): Honor `-threads', similar to `-mt'.
+	Report by Eric Paire <eric.paire@st.com>.
+
 2006-06-01  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* ltmain.in: Convert *each* occurrence of `compile_command',
