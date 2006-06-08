@@ -1,3 +1,9 @@
+2006-06-08  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* libltdl/config/ltmain.m4sh (func_mode_link): Honor `-threads',
+	similar to `-mt'.
+	Report by Eric Paire <eric.paire@st.com>.
+
 2006-06-01  Charles Wilson  <libtool@cwilson.fastmail.fm>
 
 	* libltdl/m4/libtool.m4 (_LT_COMPILER_PIC) [ cygwin ]:
