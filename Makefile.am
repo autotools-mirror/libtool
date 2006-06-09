@@ -325,28 +325,25 @@ install-data-local: libltdl/Makefile.in
 ## with libtoolize, we have to install them in the correct order:
 ## First, put a copy of the libtool m4 macros in the aclocal dir
 	$(mkinstalldirs) $(DESTDIR)$(aclocaldir)
-	@cd $(srcdir)/$(m4dir) && \
-	list='$(aclocalfiles)'; for p in $$list; do \
+	@list='$(aclocalfiles)'; for p in $$list; do \
 	  f=`echo "$$p" | sed 's|^.*/||'`; \
-	  echo " $(INSTALL_DATA) '$$f' '$(DESTDIR)$(aclocaldir)/$$f'"; \
-	  $(INSTALL_DATA) "$$f" "$(DESTDIR)$(aclocaldir)/$$f"; \
+	  echo " $(INSTALL_DATA) '$(srcdir)/$(m4dir)/$$f' '$(DESTDIR)$(aclocaldir)/$$f'"; \
+	  $(INSTALL_DATA) "$(srcdir)/$(m4dir)/$$f" "$(DESTDIR)$(aclocaldir)/$$f"; \
 	done
 ## install the helper scripts
 	$(mkinstalldirs) $(DESTDIR)$(pkgdatadir)
 	$(mkinstalldirs) $(DESTDIR)$(pkgdatadir)/config
-	@cd $(srcdir)/libltdl && \
-	list='$(auxfiles)' && for p in $$list; do \
-	  echo " $(INSTALL_SCRIPT) '$$p' '$(DESTDIR)$(pkgdatadir)/$$p'"; \
-	  $(INSTALL_SCRIPT) "$$p" "$(DESTDIR)$(pkgdatadir)/$$p"; \
+	@list='$(auxfiles)' && for p in $$list; do \
+	  echo " $(INSTALL_SCRIPT) '$(srcdir)/libltdl/$$p' '$(DESTDIR)$(pkgdatadir)/$$p'"; \
+	  $(INSTALL_SCRIPT) "$(srcdir)/libltdl/$$p" "$(DESTDIR)$(pkgdatadir)/$$p"; \
 	done
 ## install the libltdl files
 	$(mkinstalldirs) $(DESTDIR)$(pkgdatadir)/libltdl
 	$(mkinstalldirs) $(DESTDIR)$(pkgdatadir)/libltdl/libltdl
 	$(mkinstalldirs) $(DESTDIR)$(pkgdatadir)/libltdl/loaders
-	@cd $(srcdir) && \
-	list='$(ltdldatafiles)' && for p in $$list; do \
-	  echo " $(INSTALL_DATA) '$$p' '$(DESTDIR)$(pkgdatadir)/$$p'"; \
-	  $(INSTALL_DATA) "$$p" "$(DESTDIR)$(pkgdatadir)/$$p"; \
+	@list='$(ltdldatafiles)' && for p in $$list; do \
+	  echo " $(INSTALL_DATA) '$(srcdir)/$$p' '$(DESTDIR)$(pkgdatadir)/$$p'"; \
+	  $(INSTALL_DATA) "$(srcdir)/$$p" "$(DESTDIR)$(pkgdatadir)/$$p"; \
 	done
 	-chmod a+x $(DESTDIR)$(pkgdatadir)/libltdl/configure
 

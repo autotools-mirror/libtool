@@ -1,3 +1,10 @@
+2006-06-09  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* Makefile.am (install-data-local): Do not use $(INSTALL_DATA)
+	from another directory: it may use a relative path to
+	`install-sh'.
+	Bug report by Dan Lacher <Daniel.Lacher@Sun.COM>.
+
 2006-06-08  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* libltdl/config/ltmain.m4sh (func_mode_link): Honor `-threads',
