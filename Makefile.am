@@ -219,6 +219,16 @@ $(srcdir)/libltdl/Makefile.am: $(srcdir)/libltdl/Makefile.inc
 	       -e 's,\$$(libltdl_,$$(,' >> $$out;
 	chmod a-w $(srcdir)/libltdl/Makefile.am
 
+
+## Unfortunately, all this bogeyness means that we have to manually
+## keep the generated files in libltdl up to date.
+all-local: $(srcdir)/libltdl/aclocal.m4 \
+	$(srcdir)/libltdl/stamp-mk \
+	$(srcdir)/libltdl/configure \
+	$(srcdir)/libltdl/config-h.in
+
+EXTRA_DIST += $(srcdir)/libltdl/stamp-mk $(m4dir)/lt~obsolete.m4
+
 $(srcdir)/libltdl/Makefile.in: $(srcdir)/libltdl/Makefile.am \
 	    $(srcdir)/libltdl/aclocal.m4 
 	cd $(srcdir)/libltdl && $(AUTOMAKE) Makefile
@@ -231,20 +241,27 @@ $(srcdir)/libltdl/stamp-mk: $(srcdir)/libltdl/Makefile.in
 	mv -f Makefile.inT Makefile.in
 	echo stamp > $@
 
-EXTRA_DIST += $(srcdir)/libltdl/stamp-mk $(m4dir)/lt~obsolete.m4
+sub_aclocal_m4_deps = \
+	$(srcdir)/libltdl/configure.ac \
+	$(m4dir)/libtool.m4 \
+	$(m4dir)/ltoptions.m4 \
+	$(m4dir)/ltdl.m4 \
+	$(srcdir)/$(m4dir)/ltversion.m4 \
+	$(m4dir)/ltsugar.m4 \
+	$(m4dir)/argz.m4 \
+	$(m4dir)/lt~obsolete.m4
 
-$(srcdir)/libltdl/aclocal.m4: \
-	    $(m4dir)/libtool.m4 \
-	    $(m4dir)/ltoptions.m4 \
-	    $(m4dir)/ltdl.m4 \
-	    $(srcdir)/$(m4dir)/ltversion.m4 \
-	    $(m4dir)/ltsugar.m4 \
-	    $(m4dir)/argz.m4 \
-	    $(m4dir)/lt~obsolete.m4
+sub_configure_deps = $(sub_aclocal_m4_deps) $(srcdir)/libltdl/aclocal.m4
+
+$(srcdir)/libltdl/aclocal.m4: $(sub_aclocal_m4_deps)
 	cd $(srcdir)/libltdl && $(ACLOCAL) -I m4
 
-# We want the libltdl files to be up to date as much as possible.
-all-local: $(srcdir)/libltdl/stamp-mk
+$(srcdir)/libltdl/configure: $(sub_configure_deps)
+	cd $(srcdir)/libltdl && $(AUTOCONF)
+
+$(srcdir)/libltdl/config-h.in: $(sub_configure_deps)
+	cd $(srcdir)/libltdl && $(AUTOHEADER)
+	touch $@
 
 
 ## -------- ##

@@ -1,3 +1,16 @@
+2006-06-10  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Fix libltdl to always have all generated files up to date.
+
+	* Makefile.am (all-local): Depend on all generated files in
+	libltdl, namely...
+	(libltdl/aclocal.m4, libltdl/configure, libltdl/config-h.in):
+	...these.  List explicitly, including dependencies and
+	rebuilding rules, using...
+	(sub_aclocal_m4_deps, sub_configure_deps): ...these new
+	variables.
+	Report by Dan Lacher <Dan.Lacher@Sun.Com>.
+
 2006-06-09  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* Makefile.am (install-data-local): Do not use $(INSTALL_DATA)
