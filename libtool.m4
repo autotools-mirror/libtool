@@ -3178,9 +3178,7 @@ case $host_os in
       _LT_AC_TAGVAR(hardcode_libdir_separator, $1)=:
 
       case $host_cpu in
-      hppa*64*|ia64*)
-	_LT_AC_TAGVAR(hardcode_libdir_flag_spec_ld, $1)='+b $libdir'
-        ;;
+      hppa*64*|ia64*) ;;
       *)
 	_LT_AC_TAGVAR(export_dynamic_flag_spec, $1)='${wl}-E'
         ;;

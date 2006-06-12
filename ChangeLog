@@ -1,3 +1,11 @@
+2006-06-12  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* ltmain.in (link mode): Disregard
+	`hardcode_libdir_flag_spec_ld' if we're using `$CC' to link.
+	* libtool.m4 () [ hpux10, hpux11; hppa*64*, ia64* ]
+	<hardcode_libdir_flag_spec_ld>: Removed.
+	Reported by Roger While <simrw@sim-basis.de>.
+
 2006-06-08  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* ltmain.in (link mode): Honor `-threads', similar to `-mt'.

@@ -3919,7 +3919,10 @@ EOF
 	     test -n "$hardcode_libdirs"; then
 	    libdir="$hardcode_libdirs"
 	    if test -n "$hardcode_libdir_flag_spec_ld"; then
-	      eval dep_rpath=\"$hardcode_libdir_flag_spec_ld\"
+	      case $archive_cmds in
+	      *\$LD*) eval dep_rpath=\"$hardcode_libdir_flag_spec_ld\" ;;
+	      *)      eval dep_rpath=\"$hardcode_libdir_flag_spec\" ;;
+	      esac
 	    else
 	      eval dep_rpath=\"$hardcode_libdir_flag_spec\"
 	    fi
