@@ -262,17 +262,29 @@ func_copy_cb ()
     func_mkdir_p `$ECHO "X$my_destdir/$my_file" | $Xsed -e "$dirname"`
 
     $RM "$my_destdir/$my_file"
-    if $opt_link && $LN_S "$my_srcdir/$my_file" "$my_destdir/$my_file"; then
-      $opt_quiet || func_echo "linking $my_copy_msg"
-      copy_return_status=0
-    elif { ( cd "$my_srcdir" 2>/dev/null && $TAR chf - "$my_file" 2>/dev/null; ) \
-        | ( umask 0 && cd "$my_destdir" 2>/dev/null && "$TAR" xf - >/dev/null 2>&1; ); } ; then
-      $opt_quiet || func_echo "copying $my_copy_msg"
-      copy_return_status=0
-    elif $CP -p "$my_srcdir/$my_file" "$my_destdir/$my_file"; then
-      $opt_quiet || func_echo "copying $my_copy_msg"
-      copy_return_status=0
+    if $opt_link; then
+      if test "$my_file" = "aclocal.m4"; then
+	if { ( cd "$my_srcdir" && $TAR chf - "$my_file" ) 2>/dev/null \
+	     | ( umask 0 && cd "$my_destdir" && $TAR xf - ) >/dev/null 2>&1 ; }
+	then
+	  $opt_quiet || func_echo "copying $my_copy_msg"
+	  copy_return_status=0
+	fi
+      else
+	if $LN_S "$my_srcdir/$my_file" "$my_destdir/$my_file"; then
+	  $opt_quiet || func_echo "linking $my_copy_msg"
+	  copy_return_status=0
+	fi
+      fi
     else
+      if { ( cd "$my_srcdir" && $TAR chf - "$my_file" ) 2>/dev/null \
+           | ( umask 0 && cd "$my_destdir" && $TAR xf - ) >/dev/null 2>&1; } \
+	 && touch "$my_destdir/$my_file"; then
+	$opt_quiet || func_echo "copying $my_copy_msg"
+	copy_return_status=0
+      fi
+    fi
+    if test "$copy_return_status" != 0; then
       func_error "can not copy \`$my_srcdir/$my_file' to \`$my_destdir/'"
       exit_status=$EXIT_FAILURE
     fi
@@ -312,28 +324,45 @@ func_copy_some_files ()
     IFS="$my_save_IFS"
 }
 
-# func_fixup_Makefile_inc srcfile srcdir destdir
-func_fixup_Makefile_inc ()
+# func_fixup_Makefile srcfile srcdir destdir
+func_fixup_Makefile ()
 {
     my_filename="$1"
     my_srcdir="$2"
     my_destdir="$3"
+    my_fixup_non_subpackage_script="\
+      s,libltdl/configure.ac,,
+      s,libltdl/configure,,
+      s,libltdl/aclocal.m4,,
+      s,libltdl/config-h.in,,
+      s,libltdl/Makefile.am,,
+      s,libltdl/Makefile.in,,"
+    case $my_filename in
+      Makefile.am)
+	my_fixup_non_subpackage_script=`echo "$my_fixup_non_subpackage_script" | \
+		sed 's,libltdl/,,'`
+	my_fixup_inc_paths_script= ;;
+      Makefile.inc)
+	repl=$ltdldir
+	repl_uscore=`$ECHO "X$repl" | $Xsed -e 's,[[/.+-]],_,g'`
+	my_fixup_inc_paths_script="\
+	  s,libltdl_,@repl_uscore@_,
+	  s,libltdl/,@repl@/,
+	  s,: libltdl/,: @repl@/,
+	  s,\\\$(libltdl_,\$(@repl_uscore@_,
+	  s,)/libltdl ,)/@repl@ ,
+	  s,@repl_uscore@,${repl_uscore},g
+	  s,@repl@,${repl},g"
+	;;
+    esac
 
-    repl=$ltdldir
-    repl_uscore=`$ECHO "X$repl" | $Xsed -e 's,[[/.+-]],_,g'`
     $RM "$my_destdir/$my_filename" 2>/dev/null
     $opt_quiet || func_echo "creating file \`$my_destdir/$my_filename'"
     if $opt_dry_run; then :;
     else
-      $SED "\
-	s,libltdl_,@repl_uscore@_,
-	s,libltdl/,@repl@/,
-	s,: libltdl/,: @repl@/,
-	s,\\\$(libltdl_,\$(@repl_uscore@_,
-	s,)/libltdl ,)/@repl@ ,
-	s,@repl_uscore@,${repl_uscore},g
-	s,@repl@,${repl},g
-	"  < "$my_srcdir/$my_filename" > "$my_destdir/$my_filename" ||
+      $SED "$my_fixup_non_subpackage_script
+	    $my_fixup_inc_paths_script" \
+	< "$my_srcdir/$my_filename" > "$my_destdir/$my_filename" ||
 	func_fatal_error "cannot create $my_destdir/$my_filename"
     fi
 }
@@ -1057,48 +1086,6 @@ func_nonemptydir_p ()
 
   func_scan_files
 
-  # These files are handled specially, depending on ltdl_mode:
-  case $ltdl_mode in
-    *recursive)
-      glob_exclude_pkgltdl_files='Makefile.am|Makefile.in*|aclocal.m4|config*'
-      ;;
-    *)
-      glob_exclude_pkgltdl_files='Makefile.inc'
-      ;;
-  esac
-
-  func_massage_pkgltdl_files "$glob_exclude_pkgltdl_files"
-  func_massage_pkgconfig_files
-
-  # libtool.m4 and ltdl.m4 are handled specially below
-  func_massage_aclocal_DATA 'libtool.m4|ltdl.m4'
-
-  # Copy all the files from installed libltdl to this project, if the
-  # user specified `--ltdl'.
-  if $opt_ltdl; then
-
-    # For recursive ltdl modes, copy a suitable Makefile.{am,inc}:
-    case $ltdl_mode in
-      recursive)    pkgltdl_files="Makefile.am:$pkgltdl_files"  ;;
-    esac
-
-    func_copy_some_files "$pkgltdl_files" "$pkgltdldir/libltdl" "$ltdldir"
-
-    case $ltdl_mode in
-      nonrecursive) func_fixup_Makefile_inc "Makefile.inc" "$pkgltdldir/libltdl" "$ltdldir" ;;
-    esac
-
-    # Unless we share CONFIG_MACRO_DIR with our parent project,
-    # copy macros here.
-    if test "$ltdldir/m4" != "$m4dir"; then
-      func_copy_some_files "$pkgmacro_files:libtool.m4:ltdl.m4" \
-        "$aclocaldir" "$ltdldir/m4"
-    fi
-
-    # Copy config aux files into libltdl.
-    func_copy_some_files "$pkgconfig_files" "$pkgdatadir" "$ltdldir"
-  fi
-
   # Unless we share CONFIG_AUX_DIR with the libltdl subproject, then
   # if they are newer, copy all the installed utility files to the
   # auxiliary directory if `--install' was passed, or else copy just
@@ -1118,6 +1105,9 @@ func_nonemptydir_p ()
   else
     func_verbose "AC_CONFIG_AUX_DIR not defined, not copying libtool auxiliary files."
   fi
+
+  # libtool.m4 and ltdl.m4 were handled specially above
+  func_massage_aclocal_DATA 'libtool.m4|ltdl.m4'
 
   # Copy libtool's m4 macros to the macro directory, if they are newer.
   if test -n "$m4dir"; then
@@ -1139,6 +1129,42 @@ func_nonemptydir_p ()
       func_serial_update $file "$aclocaldir" "$m4dir" "$file"
     done
     IFS="$my_save_IFS"
+  fi
+
+  # These files are handled specially, depending on ltdl_mode:
+  case $ltdl_mode in
+    *recursive)
+      glob_exclude_pkgltdl_files='Makefile.am|Makefile.in*|aclocal.m4|config*'
+      ;;
+    *)
+      glob_exclude_pkgltdl_files='Makefile.inc'
+      ;;
+  esac
+
+  func_massage_pkgltdl_files "$glob_exclude_pkgltdl_files"
+  func_massage_pkgconfig_files
+
+  # Copy all the files from installed libltdl to this project, if the
+  # user specified `--ltdl'.
+  if $opt_ltdl; then
+
+    # Unless we share CONFIG_MACRO_DIR with our parent project,
+    # copy macros here.
+    if test "$ltdldir/m4" != "$m4dir"; then
+      func_copy_some_files "$pkgmacro_files:libtool.m4:ltdl.m4" \
+        "$aclocaldir" "$ltdldir/m4"
+    fi
+
+    func_copy_some_files "$pkgltdl_files" "$pkgltdldir/libltdl" "$ltdldir"
+
+    # For recursive ltdl modes, copy a suitable Makefile.{am,inc}:
+    case $ltdl_mode in
+      recursive)    func_fixup_Makefile "Makefile.am" "$pkgltdldir/libltdl" "$ltdldir" ;;
+      nonrecursive) func_fixup_Makefile "Makefile.inc" "$pkgltdldir/libltdl" "$ltdldir" ;;
+    esac
+
+    # Copy config aux files into libltdl.
+    func_copy_some_files "$pkgconfig_files" "$pkgdatadir" "$ltdldir"
   fi
 
   $opt_quiet || func_check_macros

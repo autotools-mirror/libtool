@@ -1,3 +1,28 @@
+2006-06-12  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Fix several libtoolize-related bugs:
+	- Do not symlink aclocal.m4, to work around a bug in aclocal
+	overwriting the linked-to file instead of removing the symlink.
+	- Have `libtoolize --copy' cause current time stamps, so that
+	dependents will be rebuilt; for this, install files in order.
+	- Fix list of distribution files for (non)recursive libltdl.
+	- Fix some failure cases.
+
+	* libtoolize.m4sh (func_copy_cb):
+	If `$opt_link', still copy `aclocal.m4', so a subsequent
+	`aclocal' will not overwrite the symlink target.
+	In `--copy' mode, do `cp -p' and `touch' for each file, so
+	timestamps are updated but permissions preserved.
+	(main): Reorder installing of files to match logical order
+	and timestamp requirements.
+	(func_fixup_Makefile_inc): Renamed to
+	(func_fixup_Makefile): this.  Add sed scriptlet to remove
+	non-existent files from EXTRA_DIST, for either nonrecursive
+	or recursive mode.
+	(main): call it to mangle also in recursive mode.
+	* tests/libtoolize.at (expout): Adjusted.
+	* tests/testsuite.at (tst_dist): Default to `dist'.
+
 2006-06-10  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	Fix libltdl to always have all generated files up to date.
