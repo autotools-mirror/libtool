@@ -1,3 +1,4 @@
+.dirstamp
 Makefile
 Makefile.in
 stamp-vti
@@ -15,4 +16,6 @@ notes.txt
 *.pg
 *.cps
 *.info*
+*.html
 *.ps
+*.pdf

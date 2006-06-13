@@ -1,1 +1,5 @@
-Makefile.in
+.deps
+.dirstamp
+.libs
+_libs
+*.lo

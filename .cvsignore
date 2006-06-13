@@ -3,6 +3,9 @@
 .cvslog-tlasync
 .gdb_history
 .pc
+.deps
+.libs
+_libs
 +build
 +dest
 +inst
@@ -20,7 +23,10 @@ libtool
 libtoolize
 libtoolize.in
 patches
+stamp-h1
 stamp-vcl
 config-h.in
 commit
 manual.html
+libtool-*.tar.gz
+libtool-*.tar.bz2
