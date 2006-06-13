@@ -904,8 +904,8 @@ func_check_macros ()
 	func_echo "and rerunning libtoolize."
       fi
     elif test -z "$m4dir"; then
-      if $opt_ltdl && test "$ltdldir/m4" != "$m4dir"; then
-	acmacrodir="$ltdldir/m4"
+      if $opt_ltdl && test "${ltdlprefix}m4" != "$m4dir"; then
+	acmacrodir="${ltdlprefix}m4"
       else
 	acmacrodir="$aclocaldir"
       fi
@@ -940,10 +940,10 @@ func_check_macros ()
 
       # Offer some suggestions for avoiding duplicate files in a project
       # that uses libltdl:
-      test "$ltdldir/config" = "$auxdir" ||
-        func_echo "Consider using \`AC_CONFIG_AUX_DIR([[$ltdldir/config]])' in $configure_ac."
-      $ac_config_macro_dir_advised || test "$ltdldir/m4" = "$m4dir" ||
-        func_echo "Consider using \`AC_CONFIG_MACRO_DIR([[$ltdldir/m4]])' in $configure_ac."
+      test "${ltdlprefix}config" = "$auxdir" ||
+        func_echo "Consider using \`AC_CONFIG_AUX_DIR([[${ltdlprefix}config]])' in $configure_ac."
+      $ac_config_macro_dir_advised || test "${ltdlprefix}m4" = "$m4dir" ||
+        func_echo "Consider using \`AC_CONFIG_MACRO_DIR([[${ltdlprefix}m4]])' in $configure_ac."
     else
       # Don't trace for this, we're just checking the user didn't invoke it
       # directly from configure.ac.
@@ -1086,12 +1086,17 @@ func_nonemptydir_p ()
 
   func_scan_files
 
+  case $ltdldir in
+  .) ltdlprefix= ;;
+  *) ltdlprefix=$ltdldir/ ;;
+  esac
+
   # Unless we share CONFIG_AUX_DIR with the libltdl subproject, then
   # if they are newer, copy all the installed utility files to the
   # auxiliary directory if `--install' was passed, or else copy just
   # ltmain.sh.
   if test -n "$auxdir"; then
-    if test "$ltdldir/config" != "$auxdir"; then
+    if test "${ltdlprefix}config" != "$auxdir"; then
       $opt_quiet || if test "$auxdir" != .; then
         func_echo "putting files in AC_CONFIG_AUX_DIR, \`$auxdir'."
       fi
@@ -1150,9 +1155,9 @@ func_nonemptydir_p ()
 
     # Unless we share CONFIG_MACRO_DIR with our parent project,
     # copy macros here.
-    if test "$ltdldir/m4" != "$m4dir"; then
+    if test "${ltdlprefix}m4" != "$m4dir"; then
       func_copy_some_files "$pkgmacro_files:libtool.m4:ltdl.m4" \
-        "$aclocaldir" "$ltdldir/m4"
+        "$aclocaldir" "${ltdlprefix}m4"
     fi
 
     func_copy_some_files "$pkgltdl_files" "$pkgltdldir/libltdl" "$ltdldir"

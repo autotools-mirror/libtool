@@ -1,3 +1,16 @@
+2006-06-13  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Fix the bugs where libtoolize needs to use `dir/file' instead of
+	`./dir/file', where ltdldir is `.', so that libtoolize correctly
+	checks for (and suggests) `config' and `m4' instead of
+	`./config' and `./m4' as auxiliary resp. macro directories.
+	The change is necessary for unambiguous naming, the chosen way
+	plays better with non-GNU make in VPATH builds.
+
+	* libtoolize.m4sh (ltdlprefix): New variable, to use as prefix
+	instead of `$ltdldir/'.
+	(func_check_macros): Use it.  Bug report by Eric Blake.
+
 2006-06-12  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	Fix several libtoolize-related bugs:
