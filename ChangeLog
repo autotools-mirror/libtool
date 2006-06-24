@@ -1,3 +1,16 @@
+2006-06-24  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* libltdl/m4/libtool.m4 (_LT_COMPILER_BOILERPLATE)
+	( _LT_LINKER_BOILERPLATE): Rewrite to not use unchecked
+	`printf', for old systems like SunOS 4.1.
+	(_LT_COMPILER_OPTION, _LT_LINKER_OPTION)
+	(_LT_COMPILER_C_O, _LT_LINKER_SHLIBS): Likewise.
+	(_LT_LANG_C_CONFIG): Adjust: use literal newlines in
+	`lt_simple_compile_test_code' and `lt_simple_link_test_code'.
+	(_LT_LANG_CXX_CONFIG, _LT_LANG_F77_CONFIG, _LT_LANG_FC_CONFIG)
+	(_LT_LANG_GCJ_CONFIG, _LT_LANG_RC_CONFIG): Likewise.
+	Bug report by Bruce Becker and Mark Andrews.
+
 2006-06-13  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	Fix the bugs where libtoolize needs to use `dir/file' instead of
@@ -83,7 +96,7 @@
 	* libltdl/m4/libtool.m4: Bump serial, necessary because of
 	_LT_CHECK_SHELL_FEATURES changes.
 
-2005-06-18  Albert Chin-A-Young <china@thewrittenword.com>
+2006-05-18  Albert Chin-A-Young <china@thewrittenword.com>
 
 	* tests/early-libtool.at: Pass $CPPFLAGS and $CFLAGS to
 	compiler when compiling for extra flags that might be
