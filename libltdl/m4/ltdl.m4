@@ -1,11 +1,11 @@
 # ltdl.m4 - Configure ltdl for the target system. -*-Autoconf-*-
-# Copyright (C) 1999-2005 Free Software Foundation, Inc.
+# Copyright (C) 1999-2006 Free Software Foundation, Inc.
 #
 # This file is free software; the Free Software Foundation gives
 # unlimited permission to copy and/or distribute it, with or without
 # modifications, as long as this notice is preserved.
 
-# serial 9 LTDL_INIT
+# serial 10 LTDL_INIT
 
 # LT_CONFIG_LTDL_DIR(DIRECTORY, [LTDL-MODE])
 # ------------------------------------------
@@ -108,7 +108,7 @@ dnl location!  This also ensures lt_ltdl_dir is set when configure.ac is
 dnl not yet using an explicit LT_CONFIG_LTDL_DIR.
 m4_ifval([$1], [_LT_CONFIG_LTDL_DIR([$1])])dnl
 
-AC_CHECK_LIB(ltdl, lt_dlinit,
+AC_CHECK_LIB([ltdl], [lt_dlinit],
   [test x"$enable_ltdl_install" != xyes && enable_ltdl_install=no],
   [if test x"$enable_ltdl_install" = xno; then
      AC_MSG_WARN([libltdl not installed, but installation disabled])
@@ -515,10 +515,13 @@ AC_SUBST([LT_DLLOADERS])
 AC_LANG_PUSH([C])
 
 LIBADD_DLOPEN=
-AC_CHECK_LIB([dl], [dlopen],
+AC_SEARCH_LIBS([dlopen], [dl],
 	[AC_DEFINE([HAVE_LIBDL], [1],
 		   [Define if you have the libdl library or equivalent.])
-	LIBADD_DLOPEN="-ldl" libltdl_cv_lib_dl_dlopen="yes"
+	if test "$ac_cv_search_dlopen" != "none required" ; then
+	  LIBADD_DLOPEN="-ldl"
+	fi
+	libltdl_cv_lib_dl_dlopen="yes"
 	LT_DLLOADERS="$LT_DLLOADERS ${lt_dlopen_dir+$lt_dlopen_dir/}dlopen.la"],
     [AC_LINK_IFELSE([AC_LANG_PROGRAM([[#if HAVE_DLFCN_H
 #  include <dlfcn.h>

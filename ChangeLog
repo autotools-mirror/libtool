@@ -1,3 +1,8 @@
+2006-07-21  Eric Blake  <ebb9@byu.net>
+
+	* libltdl/m4/ltdl.m4 (LT_LIB_DLLOAD): Search for dlopen without
+	depending on -ldl, required by cygwin 1.5.20.
+
 2006-06-24  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* libltdl/m4/libtool.m4 (_LT_COMPILER_BOILERPLATE)
