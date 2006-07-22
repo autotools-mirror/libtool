@@ -1,3 +1,9 @@
+2006-07-22  Eric Blake  <ebb9@byu.net>
+
+	* libltdl/ltdl.c (loader_init_callback) [HAVE_LIBDLLOADER]:
+	Protect definition to avoid compiler warnings about unused
+	function.
+
 2006-07-21  Eric Blake  <ebb9@byu.net>
 
 	* libltdl/m4/ltdl.m4 (LT_LIB_DLLOAD): Search for dlopen without

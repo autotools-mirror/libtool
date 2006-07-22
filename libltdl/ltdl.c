@@ -130,12 +130,15 @@ static	int	list_files_by_dir     (const char *dirnam,
 				       char **pargz, size_t *pargz_len);
 static	int	file_not_found	      (void);
 
+#ifdef HAVE_LIBDLLOADER
 static	int	loader_init_callback  (lt_dlhandle handle);
+#endif /* HAVE_LIBDLLOADER */
+
 static	int	loader_init	      (lt_get_vtable *vtable_func,
 				       lt_user_data data);
 
 static	char	       *user_search_path= 0;
-static	lt_dlhandle	handles 	= 0;
+static	lt_dlhandle	handles	= 0;
 static	int		initialized	= 0;
 
 /* Our memory failure callback sets the error message to be passed back
@@ -147,6 +150,7 @@ lt__alloc_die_callback (void)
   LT__SETERROR (NO_MEMORY);
 }
 
+#ifdef HAVE_LIBDLLOADER
 /* This function is called to initialise each preloaded module loader,
    and hook it into the list of loaders to be used when attempting to
    dlopen an application module.  */
@@ -155,6 +159,7 @@ loader_init_callback (lt_dlhandle handle)
 {
   return loader_init (lt_dlsym (handle, "get_vtable"), 0);
 }
+#endif /* HAVE_LIBDLLOADER */
 
 static int
 loader_init (lt_get_vtable *vtable_func, lt_user_data data)
