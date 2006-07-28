@@ -37,7 +37,7 @@ m4_define([_LT_COPYING], [dnl
 # the same distribution terms that you use for the rest of that program.
 ])
 
-# serial 52 LT_INIT
+# serial 53 LT_INIT
 
 
 # LT_PREREQ(VERSION)
@@ -606,7 +606,7 @@ do
     -*) AC_MSG_ERROR([unrecognized option: $[1]
 Try `$[0] --help' for more information.]) ;;
 
-    *) AC_MSG_ERROR([unrecognised argument: $[1]
+    *) AC_MSG_ERROR([unrecognized argument: $[1]
 Try `$[0] --help for more information.]) ;;
   esac
   shift
@@ -2545,7 +2545,7 @@ _LT_DECL([], [sys_lib_dlsearch_path_spec], [2],
 
 # _LT_PATH_TOOL_PREFIX(TOOL)
 # --------------------------
-# find a file program which can recognise shared library
+# find a file program which can recognize shared library
 AC_DEFUN([_LT_PATH_TOOL_PREFIX],
 [m4_require([_LT_DECL_EGREP])dnl
 AC_MSG_CHECKING([for $1])
@@ -2615,7 +2615,7 @@ dnl AC_DEFUN([AC_PATH_TOOL_PREFIX], [])
 
 # _LT_PATH_MAGIC
 # --------------
-# find a file program which can recognise a shared library
+# find a file program which can recognize a shared library
 m4_defun([_LT_PATH_MAGIC],
 [_LT_PATH_TOOL_PREFIX(${ac_tool_prefix}file, /usr/bin$PATH_SEPARATOR$PATH)
 if test -z "$lt_cv_path_MAGIC_CMD"; then
@@ -2777,7 +2777,7 @@ _LT_DECL([], [reload_cmds], [2])dnl
 #  -- PORTME fill in with the dynamic library characteristics
 m4_defun([_LT_CHECK_MAGIC_METHOD],
 [m4_require([_LT_DECL_EGREP])
-AC_CACHE_CHECK([how to recognise dependent libraries],
+AC_CACHE_CHECK([how to recognize dependent libraries],
 lt_cv_deplibs_check_method,
 [lt_cv_file_magic_cmd='$MAGIC_CMD'
 lt_cv_file_magic_test_file=

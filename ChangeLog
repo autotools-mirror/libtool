@@ -1,3 +1,8 @@
+2006-07-28  Eric Blake  <ebb9@byu.net>
+
+	* libltdl/m4/libtool.m4 (_LT_CHECK_MAGIC_METHOD, LT_OUTPUT):
+	s/recognise/recognize/.
+
 2006-07-22  Eric Blake  <ebb9@byu.net>
 
 	* libltdl/ltdl.c (loader_init_callback) [HAVE_LIBDLLOADER]:
