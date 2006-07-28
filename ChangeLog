@@ -1,3 +1,7 @@
+2006-07-28  Eric Blake  <ebb9@byu.net>
+
+	* libtool.m4 (AC_DEPLIBS_CHECK_METHOD): s/recognise/recognize/.
+
 2006-06-24  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* libtool.m4 (_LT_COMPILER_BOILERPLATE, _LT_LINKER_BOILERPLATE):
@@ -328,7 +332,7 @@
 
 2005-11-26  Peter O'Gorman  <peter@pogma.com>
 
-	* ltmain.in (link mode): Add missing $LTCFLAGS for a $LTCC. 
+	* ltmain.in (link mode): Add missing $LTCFLAGS for a $LTCC.
 	* libtool.m4 [darwin]: Use $LTCC $LTCFLAGS to create reloadable
 	objects.
 
@@ -595,7 +599,7 @@
 
 2005-10-17  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
-	* ltmain.in [darwin]: Don't check for "bundle" in file path. 
+	* ltmain.in [darwin]: Don't check for "bundle" in file path.
 	Reported by Christoph Egger <Christoph_Egger@gmx.de>.
 
 2005-10-13  Peter O'Gorman  <peter@pogma.com>
