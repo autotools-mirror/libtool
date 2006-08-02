@@ -6338,7 +6338,21 @@ linux*)
   case `$CC -V 2>&1 | sed 5q` in
   *Sun\ C*)
     # Sun C++ 5.9
-    _LT_TAGVAR(postdeps,$1)='-lCstd -lCrun'
+
+    # The more standards-conforming stlport4 library is
+    # incompatible with the Cstd library. Avoid specifying
+    # it if it's in CXXFLAGS. Ignore libCrun as
+    # -library=stlport4 depends on it.
+    for cc_flag in $CXXFLAGS; do
+    case " $CXX $CXXFLAGS " in
+    *" -library=stlport4 "*)
+      solaris_use_stlport4=yes
+      ;;
+    esac
+
+    if test "$solaris_use_stlport4" != yes; then
+      _LT_AC_TAGVAR(postdeps,$1)='-library=Cstd -library=Crun'
+    fi
     ;;
   esac
   ;;
