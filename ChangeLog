@@ -1,3 +1,11 @@
+2006-08-01  Albert Chin <china@thewrittenword.com>
+
+	* libtool.m4 (AC_LIBTOOL_POSTDEP_PREDEP) [ solaris ]:
+	Don't set $postdeps to "-lCstd -lCrun" if
+	"-library=stlport4" set in CXXFLAGS as stlport4 C++
+	library incompatible with Cstd C++ library. Use
+	'-library=Cstd -library=Crun' instead of '-lCstd -lCrun'.
+
 2006-07-28  Eric Blake  <ebb9@byu.net>
 
 	* libtool.m4 (AC_DEPLIBS_CHECK_METHOD): s/recognise/recognize/.
