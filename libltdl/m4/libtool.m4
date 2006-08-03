@@ -6343,7 +6343,6 @@ linux*)
     # incompatible with the Cstd library. Avoid specifying
     # it if it's in CXXFLAGS. Ignore libCrun as
     # -library=stlport4 depends on it.
-    for cc_flag in $CXXFLAGS; do
     case " $CXX $CXXFLAGS " in
     *" -library=stlport4 "*)
       solaris_use_stlport4=yes
@@ -6351,7 +6350,7 @@ linux*)
     esac
 
     if test "$solaris_use_stlport4" != yes; then
-      _LT_AC_TAGVAR(postdeps,$1)='-library=Cstd -library=Crun'
+      _LT_TAGVAR(postdeps,$1)='-library=Cstd -library=Crun'
     fi
     ;;
   esac
@@ -6360,10 +6359,22 @@ linux*)
 solaris*)
   case $cc_basename in
   CC*)
+    # The more standards-conforming stlport4 library is
+    # incompatible with the Cstd library. Avoid specifying
+    # it if it's in CXXFLAGS. Ignore libCrun as
+    # -library=stlport4 depends on it.
+    case " $CXX $CXXFLAGS " in
+    *" -library=stlport4 "*)
+      solaris_use_stlport4=yes
+      ;;
+    esac
+
     # Adding this requires a known-good setup of shared libraries for
     # Sun compiler versions before 5.6, else PIC objects from an old
     # archive will be linked into the output, leading to subtle bugs.
-    _LT_TAGVAR(postdeps,$1)='-lCstd -lCrun'
+    if test "$solaris_use_stlport4" != yes; then
+      _LT_TAGVAR(postdeps,$1)='-library=Cstd -library=Crun'
+    fi
     ;;
   esac
   ;;
