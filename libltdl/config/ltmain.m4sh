@@ -1593,7 +1593,9 @@ func_mode_execute ()
 	if test -f "$dir/$objdir/$dlname"; then
 	  dir="$dir/$objdir"
 	else
-	  func_fatal_error "cannot find \`$dlname' in \`$dir' or \`$dir/$objdir'"
+	  if test ! -f "$dir/$dlname"; then
+	    func_fatal_error "cannot find \`$dlname' in \`$dir' or \`$dir/$objdir'"
+	  fi
 	fi
 	;;
 
