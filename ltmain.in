@@ -6406,8 +6406,10 @@ relink_command=\"$relink_command\""
 	if test -f "$dir/$objdir/$dlname"; then
 	  dir="$dir/$objdir"
 	else
-	  $echo "$modename: cannot find \`$dlname' in \`$dir' or \`$dir/$objdir'" 1>&2
-	  exit $EXIT_FAILURE
+	  if test ! -f "$dir/$dlname"; then
+	    $echo "$modename: cannot find \`$dlname' in \`$dir' or \`$dir/$objdir'" 1>&2
+	    exit $EXIT_FAILURE
+	  fi
 	fi
 	;;
 
