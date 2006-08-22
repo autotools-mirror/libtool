@@ -1,5 +1,5 @@
 /* lt__dirent.h -- internal directory entry scanning interface
-   Copyright (C) 2001, 2004 Free Software Foundation, Inc.
+   Copyright (C) 2001, 2004, 2006 Free Software Foundation, Inc.
    Originally by Bob Friesenhahn <bfriesen@simple.dallas.tx.us>
 
    NOTE: The canonical source of this file is maintained with the
@@ -40,27 +40,12 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 
 #include "lt_system.h"
 
-#if defined(HAVE_CLOSEDIR) && defined(HAVE_OPENDIR) && defined(HAVE_READDIR) && defined(HAVE_DIRENT_H)
+#ifdef HAVE_DIRENT_H
 /* We have a fully operational dirent subsystem.  */
 #  include <dirent.h>
 #  define D_NAMLEN(dirent) (strlen((dirent)->d_name))
 
-#elif !defined(__WINDOWS__)
-/* We are not on windows, so we can get the same functionality from the
-   `direct' API.  */
-#  define dirent direct
-#  define D_NAMLEN(dirent) ((dirent)->d_namlen)
-#  if defined(HAVE_SYS_NDIR_H)
-#    include <sys/ndir.h>
-#  endif
-#  if defined(HAVE_SYS_DIR_H)
-#    include <sys/dir.h>
-#  endif
-#  if defined(HAVE_NDIR_H)
-#    include <ndir.h>
-#  endif
-
-#else  /* __WINDOWS__ */
+#elif defined __WINDOWS__
 /* Use some wrapper code to emulate dirent on windows..  */
 #  define WINDOWS_DIRENT_EMULATION 1
 
@@ -96,6 +81,8 @@ LT_SCOPE void		closedir	(DIR *entry);
 
 LT_END_C_DECLS
 
+#else /* !defined(__WINDOWS__)*/
+ERROR - cannot find dirent
 #endif /*!defined(__WINDOWS__)*/
 
 #endif /*!defined(LT__DIRENT_H)*/

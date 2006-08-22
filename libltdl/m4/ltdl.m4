@@ -240,9 +240,6 @@ dnl AC_DEFUN([AC_WITH_LTDL], [])
 # other users should call LT_WITH_LTDL instead.
 AC_DEFUN([LTDL_INIT],
 [AC_REQUIRE([AC_PROG_CC])dnl
-AC_REQUIRE([AC_C_CONST])dnl
-AC_REQUIRE([AC_HEADER_STDC])dnl
-AC_REQUIRE([AC_HEADER_DIRENT])dnl
 AC_REQUIRE([LT_SYS_MODULE_EXT])dnl
 AC_REQUIRE([LT_SYS_MODULE_PATH])dnl
 AC_REQUIRE([LT_SYS_DLSEARCH_PATH])dnl
@@ -288,7 +285,7 @@ m4_ifset([AH_HEADER],
 	[])])])
 AC_SUBST([LT_CONFIG_H])
 
-AC_CHECK_HEADERS([memory.h unistd.h dl.h sys/dl.h dld.h mach-o/dyld.h],
+AC_CHECK_HEADERS([memory.h unistd.h dl.h sys/dl.h dld.h mach-o/dyld.h dirent.h],
 	[], [], [AC_INCLUDES_DEFAULT])
 AC_CHECK_HEADERS([string.h strings.h], [break], [], [AC_INCLUDES_DEFAULT])
 

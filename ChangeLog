@@ -1,5 +1,12 @@
 2006-08-22  Eric Blake  <ebb9@byu.net>
 
+	* libltdl/m4/ltdl.m4 (LTDL_INIT): Avoid macros marked obsolete in
+	latest autoconf.
+	* libltdl/m4/libtool.m4 (_lt_cv_sys_global_symbol_pipe): Work in
+	spite of -Wmissing-prototypes.
+	* libltdl/libltdl/lt__dirent.h: Rewrite to accomodate loss of
+	AC_HEADER_DIRENT.
+
 	* libltdl/m4/libtool.m4: Avoid space-tab.
 
 2006-08-07  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
