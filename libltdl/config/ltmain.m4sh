@@ -5231,7 +5231,7 @@ EOF
 	    $ECHO 'INPUT (' > $output
 	    for obj in $save_libobjs
 	    do
-	      $ECHO \""$obj"\" >> $output
+	      $ECHO "$obj" >> $output
 	    done
 	    $ECHO ')' >> $output
 	    delfiles="$delfiles $output"
