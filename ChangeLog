@@ -1,3 +1,15 @@
+2006-08-25  Kurt Roeckx <kurt@roeckx.be>,
+	    Aurelien Jarno <aurel32@debian.org>
+
+	* libltdl/m4/libtool.m4 (_LT_SYS_DYNAMIC_LINKER)
+	(_LT_CHECK_MAGIC_METHOD, _LT_COMPILER_PIC, _LT_LINKER_SHLIBS)
+	(_LT_LANG_CXX_CONFIG) [k*bsd*-gnu]: kfreebsd*-gnu and
+	knetbsd*-gnu behave like linux-gnu.
+	* libltdl/m4/ltdl.m4 (LT_SYS_DLOPEN_DEPLIBS): Likewise.
+	* libltdl/m4/libtool.m4 (_LT_ENABLE_LOCK)
+	[x86_64-*kfreebsd*-gnu]: Add 32/64 bit bi-arch support.
+	* NEWS: Update.
+
 2006-08-25  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* libltdl/m4/libtool.m4 (_LT_CHECK_MAGIC_METHOD) [ mingw,pw32 ]:
