@@ -1,3 +1,8 @@
+2006-08-25  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* ltmain.in (link mode): Pass through `--coverage', for GCC.
+	Report by Rainer Keller <keller@hlrs.de>.
+
 2006-08-25  Kurt Roeckx <kurt@roeckx.be>,
 	    Aurelien Jarno <aurel32@debian.org>
 
