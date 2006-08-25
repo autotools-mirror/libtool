@@ -130,7 +130,7 @@ AC_CACHE_CHECK([whether deplibs are loaded by dlopen],
   freebsd* | dragonfly*)
     libltdl_cv_sys_dlopen_deplibs=yes
     ;;
-  gnu* | linux* | kfreebsd*-gnu | knetbsd*-gnu)
+  gnu* | linux* | k*bsd*-gnu)
     # GNU and its variants, using gnu ld.so (Glibc)
     libltdl_cv_sys_dlopen_deplibs=yes
     ;;

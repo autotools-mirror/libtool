@@ -1,3 +1,17 @@
+2006-08-25  Kurt Roeckx <kurt@roeckx.be>,
+	    Aurelien Jarno <aurel32@debian.org>
+
+	* libtool.m4 (AC_LIBTOOL_SYS_DYNAMIC_LINKER)
+	(AC_DEPLIBS_CHECK_METHOD, AC_LIBTOOL_LANG_CXX_CONFIG)
+	(AC_LIBTOOL_SYS_GLOBAL_SYMBOL_PIPE)
+	(AC_LIBTOOL_PROG_COMPILER_PIC, AC_LIBTOOL_PROG_LD_SHLIBS)
+	[k*bsd*-gnu]: kfreebsd*-gnu and knetbsd*-gnu behave like
+	linux-gnu.
+	* ltdl.m4 (AC_LTDL_SYS_DLOPEN_DEPLIBS): Likewise.
+	* libtool.m4 (_LT_AC_LOCK)
+	[x86_64-*kfreebsd*-gnu]: Add 32/64 bit bi-arch support.
+	* NEWS: Update.
+
 2006-08-25  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* libtool.m4 (AC_DEPLIBS_CHECK_METHOD) [ mingw, pw32 ]:
