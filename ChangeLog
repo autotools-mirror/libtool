@@ -1,3 +1,9 @@
+2006-08-25  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* libltdl/config/ltmain.m4sh (func_mode_link): Pass through
+	`--coverage' and `-pg', for GCC.  Report by Rainer Keller
+	<keller@hlrs.de> and Tor Lillqvist <tml@iki.fi>.
+
 2006-08-25  Kurt Roeckx <kurt@roeckx.be>,
 	    Aurelien Jarno <aurel32@debian.org>
 
