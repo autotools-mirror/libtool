@@ -1,3 +1,10 @@
+2006-08-25  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* libltdl/m4/libtool.m4 (_LT_CHECK_MAGIC_METHOD) [ mingw,pw32 ]:
+	If `file' is present, use `func_win32_libid' rather than
+	`objdump -f', to facilitate cross-compilation.
+	Reported by Pierre Ossman <ossman@cendio.se>.
+
 2006-08-23  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* libltdl/config/ltmain.m4sh (func_mode_link): In GNU ld script,
