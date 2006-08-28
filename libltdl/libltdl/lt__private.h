@@ -1,5 +1,5 @@
 /* lt__private.h -- internal apis for libltdl
-   Copyright (C) 2004, 2005 Free Software Foundation, Inc.
+   Copyright (C) 2004, 2005, 2006 Free Software Foundation, Inc.
    Originally by Gary V. Vaughan  <gary@gnu.org>
 
    NOTE: The canonical source of this file is maintained with the
@@ -30,7 +30,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 #if !defined(LT__PRIVATE_H)
 #define LT__PRIVATE_H 1
 
-#if defined(HAVE_CONFIG_H)
+#ifdef HAVE_CONFIG_H
 #  if defined(LT_CONFIG_H)
 #    include LT_CONFIG_H
 #  else

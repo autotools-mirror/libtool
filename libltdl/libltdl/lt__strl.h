@@ -1,5 +1,5 @@
 /* lt__strl.h -- size-bounded string copying and concatenation
-   Copyright (C) 2004 Free Software Foundation, Inc.
+   Copyright (C) 2004, 2006 Free Software Foundation, Inc.
    Written by Bob Friesenhahn <bfriesen@simple.dallas.tx.us>
 
    NOTE: The canonical source of this file is maintained with the
@@ -30,7 +30,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 #if !defined(LT__STRL_H)
 #define LT__STRL_H 1
 
-#if defined(HAVE_CONFIG_H)
+#ifdef HAVE_CONFIG_H
 #  if defined(LT_CONFIG_H)
 #    include LT_CONFIG_H
 #  else

@@ -291,7 +291,7 @@ yyyy-mm-dd  Name of Author  <email@address>  (tiny change)
   to various system libc interfaces that differ between hosts supported
   by libtool.  Typically, the files that implement this layer begin:
 
-  #if defined(HAVE_CONFIG_H)
+  #ifdef HAVE_CONFIG_H
   #  if defined(LT_CONFIG_H)
   #    include LT_CONFIG_H
   #  else
@@ -299,6 +299,8 @@ yyyy-mm-dd  Name of Author  <email@address>  (tiny change)
   #  endif
   #endif
   #include "lt_system.h"
+
+  The `ifdef HAVE_CONFIG_H' helps facilitate code sharing with gnulib.
 
   Or if they are installed headers that must work outside the libtool
   source tree, simply:
@@ -615,7 +617,7 @@ output of any failed test groups, and the output from `./libtool --config.'
 
 
 -- 
-Copyright (C) 2004, 2005 Free Software Foundation, Inc.
+Copyright (C) 2004, 2005, 2006 Free Software Foundation, Inc.
 
 The canonical source of this file is maintained with the
 GNU Libtool package.  Report bugs to bug-libtool@gnu.org.

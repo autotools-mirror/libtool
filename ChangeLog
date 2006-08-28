@@ -1,3 +1,12 @@
+2006-08-28  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* libltdl/argz.c: Use `#ifdef HAVE_CONFIG_H', to facilitate code
+	sharing with gnulib.  Report by Eric Blake.
+	* libltdl/lt__alloc.c, libltdl/libltdl/lt__dirent.h,
+	libltdl/libltdl/lt__glibc.h, libltdl/libltdl/lt__private.h,
+	libltdl/libltdl/lt__strl.h: Likewise.
+	* HACKING: Update.
+
 2006-08-25  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* libltdl/config/ltmain.m4sh (func_mode_link): Pass through
