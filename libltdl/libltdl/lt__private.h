@@ -77,6 +77,16 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 #  define LT_GLOBAL_DATA
 #endif
 
+#ifndef __attribute__
+# if __GNUC__ < 2 || (__GNUC__ == 2 && __GNUC_MINOR__ < 8) || __STRICT_ANSI__
+#  define __attribute__(x)
+# endif
+#endif
+
+#ifndef LT__UNUSED
+# define LT__UNUSED __attribute__ ((__unused__))
+#endif
+
 
 LT_BEGIN_C_DECLS
 

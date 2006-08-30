@@ -92,8 +92,8 @@ static	int	foreach_dirinpath     (const char *search_path,
 				       foreach_callback_func *func,
 				       void *data1, void *data2);
 
-static	int	find_file_callback    (char *filename, void *data,
-				       void *ignored);
+static	int	find_file_callback    (char *filename, void *data1,
+				       void *data2);
 static	int	find_handle_callback  (char *filename, void *data,
 				       void *ignored);
 static	int	foreachfile_callback  (char *filename, void *data1,
@@ -684,7 +684,7 @@ find_file (const char *search_path, const char *base_name, char **pdir)
 }
 
 static int
-find_handle_callback (char *filename, void *data, void *ignored)
+find_handle_callback (char *filename, void *data, void *ignored LT__UNUSED)
 {
   lt_dlhandle  *handle		= (lt_dlhandle *) data;
   int		notfound	= access (filename, R_OK);
@@ -717,20 +717,26 @@ find_handle (const char *search_path, const char *base_name,
   return handle;
 }
 
+#if !defined(LTDL_DLOPEN_DEPLIBS)
+static int
+load_deplibs (lt_dlhandle handle, char *deplibs LT__UNUSED)
+{
+  ((lt__handle *) handle)->depcount = 0;
+  return 0;
+}
+
+#else /* defined(LTDL_DLOPEN_DEPLIBS) */
 static int
 load_deplibs (lt_dlhandle handle, char *deplibs)
 {
-#if defined(LTDL_DLOPEN_DEPLIBS)
   char	*p, *save_search_path = 0;
   int   depcount = 0;
   int	i;
   char	**names = 0;
-#endif
   int	errors = 0;
 
   ((lt__handle *) handle)->depcount = 0;
 
-#if defined(LTDL_DLOPEN_DEPLIBS)
   if (!deplibs)
     {
       return errors;
@@ -871,10 +877,10 @@ load_deplibs (lt_dlhandle handle, char *deplibs)
   if (save_search_path) {
     MEMREASSIGN (user_search_path, save_search_path);
   }
-#endif
 
   return errors;
 }
+#endif /* defined(LTDL_DLOPEN_DEPLIBS) */
 
 static int
 unload_deplibs (lt_dlhandle handle)

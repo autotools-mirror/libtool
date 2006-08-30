@@ -1,5 +1,17 @@
 2006-08-30  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* libltdl/libltdl/lt__private.h (__attribute__, LT__UNUSED):
+	New macros.
+	* libltdl/loaders/dld_link.c: Use LT__UNUSED where
+	appropriate.
+	* libltdl/loaders/dlopen.c, libltdl/loaders/load_add_on.c,
+	libltdl/loaders/loadlibrary.c, libltdl/loaders/preopen.c,
+	libltdl/loaders/shl_load.c: Likewise.
+	* libltdl/ltdl.c: Likewise.
+	(find_file_callback): Fix declaration names to match definition.
+	(load_deplibs) [!LTDL_DLOPEN_DEPLIBS]: Use separate definition
+	for less preprocessor clutter.
+
 	* Makefile.am (check-local, installcheck-local): Use
 	`TESTSUITEFLAGS' rather than `TESTSUITE_FLAGS', like Autoconf.
 	* HACKING, README, README.alpha: All uses changed.
