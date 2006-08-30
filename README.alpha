@@ -44,7 +44,7 @@ of any failed test groups (as described below).
 Libtool comes with two integrated sets of tests to check that your build
 is sane.  You can run both test suites like this:
 
-  make check TESTSUITE_FLAGS=-V
+  make check TESTSUITEFLAGS=-V
   make check-local
 
 The tests of the old test suite run in groups in the various demo
@@ -59,7 +59,7 @@ you have fixed a bug, but don't want to rerun the entire suite), you can
 do it like this:
 
   make check TESTS='cdemo-static.test cdemo-make.test cdemo-exec.test' \
-	     TESTSUITE_FLAGS=-V
+	     TESTSUITEFLAGS=-V
 
 Providing that you have a FAIL from the most recent group from a
 particular demo directory (like the cdemo-static.test group above), you
@@ -74,7 +74,7 @@ you can generate verbose test output like this:
 
   VERBOSE=yes make check \
   TESTS='cdemo-static.test cdemo-make.test cdemo-exec.test' \
-  TESTSUITE_FLAGS=-V | tee cdemo-static-group.log
+  TESTSUITEFLAGS=-V | tee cdemo-static-group.log
 
 In order to enable debug shell tracing, use VERBOSE=debug instead of
 VERBOSE=yes.
@@ -87,7 +87,7 @@ Autotest-driven testsuite.  Its usage is documented in
 
 but simple help may also be obtained through
 
-  make check-local TESTSUITE_FLAGS='--help'
+  make check-local TESTSUITEFLAGS='--help'
 
 For verbose output, add the flag `-v', for running only a subset of the
 independent tests, merely specify them by number or by keyword, both of

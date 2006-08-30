@@ -1,3 +1,9 @@
+2006-08-30  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* Makefile.am (check-local, installcheck-local): Use
+	`TESTSUITEFLAGS' rather than `TESTSUITE_FLAGS', like Autoconf.
+	* HACKING, README, README.alpha: All uses changed.
+
 2006-08-28  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* libltdl/argz.c: Use `#ifdef HAVE_CONFIG_H', to facilitate code

@@ -52,7 +52,7 @@ and is not part of a release distribution.
 =============
 
 * Use
-    make check TESTSUITE_FLAGS=-V
+    make check TESTSUITEFLAGS=-V
     make check-local
   liberally, on as many platforms as you can.  Use as many compilers and
   linkers you can.
