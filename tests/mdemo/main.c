@@ -1,5 +1,5 @@
 /* main.c -- mdemo test program
-   Copyright (C) 1998-2000 Free Software Foundation, Inc.
+   Copyright (C) 1998-2000, 2006 Free Software Foundation, Inc.
    Originally by Thomas Tanner <tanner@ffii.org>
    This file is part of GNU Libtool.
 
@@ -21,10 +21,11 @@ USA. */
 #include "foo.h"
 #include "ltdl.h"
 #include <stdio.h>
+#include <string.h>
 
 int
 test_dl (filename)
-  char *filename;
+test_dl (char *filename)
 {
   lt_dlhandle handle;	
   const lt_dlinfo *info;
@@ -132,7 +133,7 @@ test_dlself ()
     return 1;
   }
 
-  pmyfunc = (int(*)())lt_dlsym(handle, "myfunc");  
+  pmyfunc = (int(*)())lt_dlsym(handle, "myfunc");
   if (pmyfunc)
     {
       int value = (*pmyfunc) ();
@@ -163,10 +164,38 @@ test_dlself ()
   return ret;
 }
 
+static int
+callback (const char *filename, void *data)
+{
+  printf ("%s: %s\n", (char *)data, filename);
+  return 0;
+}
+
+static int
+try_iterate (const char *search_path)
+{
+  char *s = "try_iterate";
+  return lt_dlforeachfile (search_path, callback, s);
+}
+
+/* cheap dirname clone.  We require a '/' separator, nonempty and large
+   enough input, not ending with '/', and we will overwrite the input. */
+static char *
+my_dirname (char *path)
+{
+  char *p = strrchr (path, '/');
+  if (p)
+    *p = '\0';
+  else
+    {
+      path[0] = '.';
+      path[1] = '\0';
+    }
+  return path;
+}
+
 int
-main (argc, argv)
-  int argc;
-  char **argv;
+main (int argc, char **argv)
 {
   int i;
   int ret = 0;
@@ -189,6 +218,14 @@ main (argc, argv)
 
   if (test_dlself())
     ret = 1;
+
+  for (i = 1; i < argc; i++)
+    if (argv[i][0] != '\0')
+      {
+	my_dirname (argv[i]);
+	if (try_iterate (argv[i]))
+	  ret = 1;
+      }
 
   lt_dlexit();
   return ret;

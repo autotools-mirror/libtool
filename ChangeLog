@@ -1,3 +1,15 @@
+2006-08-31  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Avoid mixing functions and data pointers in callback functions.
+
+	* libltdl/ltdl.c (file_worker_func): New type.
+	(lt_dlforeachfile): Instead of passing a function pointer as a
+	data pointer, pass a pointer to a file_worker_func pointer.
+	(foreach_callback_func): Adjust.
+	* tests/mdemo/main.c: Assume C89. Exercise lt_dlforeachfile.
+	(callback, try_iterate, my_dirname): New functions.
+	* tests/mdemo-exec.test: Check for its output.
+
 2006-08-30  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* libltdl/libltdl/lt__private.h (__attribute__, LT__UNUSED):

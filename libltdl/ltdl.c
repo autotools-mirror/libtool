@@ -86,6 +86,8 @@ static	const char	sys_dlsearch_path[]	= LT_DLSEARCH_PATH;
 /* The type of a function used at each iteration of  foreach_dirinpath().  */
 typedef int	foreach_callback_func (char *filename, void *data1,
 				       void *data2);
+/* foreachfile_callback itself calls a function of this type: */
+typedef int	file_worker_func      (const char *filename, void *data);
 
 static	int	foreach_dirinpath     (const char *search_path,
 				       const char *base_name,
@@ -1604,8 +1606,7 @@ list_files_by_dir (const char *dirnam, char **pargz, size_t *pargz_len)
 static int
 foreachfile_callback (char *dirname, void *data1, void *data2)
 {
-  int (*func) (const char *filename, void *data)
-	= (int (*) (const char *filename, void *data)) data1;
+  file_worker_func *func = *(file_worker_func **) data1;
 
   int	  is_done  = 0;
   char   *argz     = 0;
@@ -1642,37 +1643,38 @@ lt_dlforeachfile (const char *search_path,
 		  void *data)
 {
   int is_done = 0;
+  file_worker_func **fpptr = &func;
 
   if (search_path)
     {
       /* If a specific path was passed, search only the directories
 	 listed in it.  */
       is_done = foreach_dirinpath (search_path, 0,
-				   foreachfile_callback, func, data);
+				   foreachfile_callback, fpptr, data);
     }
   else
     {
       /* Otherwise search the default paths.  */
       is_done = foreach_dirinpath (user_search_path, 0,
-				   foreachfile_callback, func, data);
+				   foreachfile_callback, fpptr, data);
       if (!is_done)
 	{
 	  is_done = foreach_dirinpath (getenv(LTDL_SEARCHPATH_VAR), 0,
-				       foreachfile_callback, func, data);
+				       foreachfile_callback, fpptr, data);
 	}
 
 #if defined(LT_MODULE_PATH_VAR)
       if (!is_done)
 	{
 	  is_done = foreach_dirinpath (getenv(LT_MODULE_PATH_VAR), 0,
-				       foreachfile_callback, func, data);
+				       foreachfile_callback, fpptr, data);
 	}
 #endif
 #if defined(LT_DLSEARCH_PATH)
       if (!is_done && sys_dlsearch_path)
 	{
 	  is_done = foreach_dirinpath (sys_dlsearch_path, 0,
-				       foreachfile_callback, func, data);
+				       foreachfile_callback, fpptr, data);
 	}
 #endif
     }
