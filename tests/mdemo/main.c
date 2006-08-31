@@ -24,7 +24,6 @@ USA. */
 #include <string.h>
 
 int
-test_dl (filename)
 test_dl (char *filename)
 {
   lt_dlhandle handle;	

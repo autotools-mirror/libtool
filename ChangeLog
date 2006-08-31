@@ -1,5 +1,9 @@
 2006-08-31  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* tests/mdemo/main.c: Fix bogus line in last patch.
+
+2006-08-31  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
 	Avoid mixing functions and data pointers in callback functions.
 
 	* libltdl/ltdl.c (file_worker_func): New type.
