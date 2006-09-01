@@ -1,5 +1,5 @@
 /* dlmain.c -- hello test program that uses simulated dynamic linking
-   Copyright (C) 1996-1999, 2004 Free Software Foundation, Inc.
+   Copyright (C) 1996-1999, 2004, 2006 Free Software Foundation, Inc.
    This file is part of GNU Libtool.
 
 This program is free software; you can redistribute it and/or modify
@@ -35,9 +35,7 @@ struct lt_symlist
 extern const struct lt_symlist lt_preloaded_symbols[];
 
 int
-main (argc, argv)
-     int argc;
-     char **argv;
+main (int argc, char **argv)
 {
   const struct lt_symlist *s;
   int (*pfoo)() = 0;

@@ -1,5 +1,5 @@
 /* main.c -- mdemo2 test program
-   Copyright (C) 2003 Free Software Foundation, Inc.
+   Copyright (C) 2003, 2006 Free Software Foundation, Inc.
    Originally by Greg Eisenhauer < eisen at cc.gatech.edu >
    This file is part of GNU Libtool.
 
@@ -21,12 +21,10 @@ USA. */
 #include <stdio.h>
 #include "ltdl.h"
 
-extern int mlib_func();
+extern int mlib_func (int, char **);
 
 int
-main (argc, argv)
-  int argc;
-  char **argv;
+main (int argc, char **argv)
 {
   int ret = 0;
 

@@ -1,5 +1,5 @@
 /* main.c -- cdemo test program
-   Copyright (C) 1998-1999 Free Software Foundation, Inc.
+   Copyright (C) 1998-1999, 2006 Free Software Foundation, Inc.
    Originally by Thomas Tanner <tanner@ffii.org>
    This file is part of GNU Libtool.
 
@@ -23,9 +23,7 @@ USA. */
 
 
 int
-main (argc,argv)
-  int argc;
-  char **argv;
+main ()
 {
   int value;
 

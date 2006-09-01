@@ -1,5 +1,5 @@
 /* main.c -- trivial hello test program
-   Copyright (C) 1996-1999 Free Software Foundation, Inc.
+   Copyright (C) 1996-1999, 2006 Free Software Foundation, Inc.
    This file is part of GNU Libtool.
 
 This program is free software; you can redistribute it and/or modify
@@ -22,9 +22,7 @@ USA. */
 #include <stdio.h>
 
 int
-main (argc, argv)
-     int argc;
-     char **argv;
+main ()
 {
   printf ("Welcome to GNU Hell!\n");
 

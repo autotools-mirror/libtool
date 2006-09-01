@@ -1,5 +1,5 @@
 /* main.c -- inter-library dependency test program
-   Copyright (C) 1998, 1999, 2000 Free Software Foundation
+   Copyright (C) 1998, 1999, 2000, 2006 Free Software Foundation
    by Thomas Tanner <tanner@ffii.org>
    This file is part of GNU Libtool.
 
@@ -25,9 +25,7 @@ USA. */
 #include <string.h>
 
 int
-main (argc,argv)
-    int argc;
-    char **argv;
+main (int argc, char **argv)
 {
   printf("dependencies:\n");
   func_l1(0);

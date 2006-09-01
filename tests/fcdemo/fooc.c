@@ -1,13 +1,13 @@
 #include "foo.h"
 #include <stdio.h>
 
-int csub(int arg)
+int csub (int arg)
 {
-  return (2*arg);
+  return 2*arg;
 }
 
 
-int fwrapper(int arg)
+int fwrapper (int arg)
 {
   int res;
   printf("Calling the Fortran subroutine from the C wrapper...\n");

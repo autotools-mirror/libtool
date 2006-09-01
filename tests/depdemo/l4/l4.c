@@ -1,5 +1,6 @@
 /* l4.c -- trivial test library
    Copyright (C) 1998-1999 Thomas Tanner <tanner@ffii.org>
+   Copyright (C) 2006 Free Software Foundation, Inc.
    This file is part of GNU Libtool.
 
 This program is free software; you can redistribute it and/or modify
@@ -29,8 +30,7 @@ USA. */
 int	var_l4 = 0;
 
 int
-func_l4(indent)
-    int indent;
+func_l4 (int indent)
 {
   int i;
 

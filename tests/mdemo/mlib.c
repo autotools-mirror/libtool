@@ -1,5 +1,5 @@
-/* main.c -- mlib library
-   Copyright (C) 2002 Free Software Foundation, Inc.
+/* mlib.c -- mlib library
+   Copyright (C) 2002, 2006 Free Software Foundation, Inc.
    Originally by greg Eisenhauer <eisen at cc.gatech.edu>
    Extracted from mdemo.c
    This file is part of GNU Libtool.
@@ -24,8 +24,7 @@ USA. */
 #include <stdio.h>
 
 int
-test_dl (filename)
-  char *filename;
+test_dl (char *filename)
 {
   lt_dlhandle handle;	
   const lt_dlinfo *info;
@@ -109,10 +108,9 @@ test_dl (filename)
   lt_dlclose(handle);
   return ret;
 }
+
 int 
-mlib_func(argc, argv)
-int argc;
-char **argv;
+mlib_func (int argc, char **argv)
 {
   int ret = 0;
   int i;

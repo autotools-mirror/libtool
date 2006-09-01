@@ -1,3 +1,27 @@
+2006-09-01  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Drop K&R support from testsuite in favor of C89.
+
+	* tests/duplicate_members.at: provide declarations of used
+	functions.
+	* tests/testsuite.at: Drop unneeded arguments.
+	* tests/cdemo/main.c: Assume C89.
+	* tests/demo/dlmain.c: Likewise.
+	* tests/demo/main.c: Likewise.
+	* tests/depdemo/main.c: Likewise.
+	* tests/depdemo/l1/l1.c: Likewise.
+	* tests/depdemo/l2/l2.c: Likewise.
+	* tests/depdemo/l3/l3.c: Likewise.
+	* tests/depdemo/l4/l4.c: Likewise.
+	* tests/f77demo/cprogram.c: Likewise.
+	* tests/fcdemo/cprogram.c: Likewise.
+	* tests/mdemo/mlib.c: Likewise.
+	* tests/mdemo2/main.c: Likewise.
+	* tests/pdemo/longer_file_name_dlmain.c: Likewise.
+	* tests/pdemo/longer_file_name_main.c: Likewise.
+	* tests/fcdemo/fooc.c: Reformat.
+	* tests/mdemo/sub.c: Likewise.
+
 2006-08-31  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* tests/mdemo/main.c: Fix bogus line in last patch.

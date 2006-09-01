@@ -27,8 +27,9 @@ chmod +x ./libtool
 LIBTOOL=./libtool
 
 AT_DATA(bar.c,
-[[int bar() {
-    int result=foo1() +foo2() +foo3() +foo4() +foo5() +foo6();
+[[extern int foo1 (), foo2 (), foo3 (), foo4 (), foo5 (), foo6 ();
+int bar() {
+    int result = foo1 () + foo2 () + foo3 () + foo4 () + foo5 () + foo6 ();
     return result;
 }
 ]])

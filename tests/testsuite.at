@@ -179,7 +179,7 @@ AT_DATA([main.c],
 #include "ltdl.h"
 
 int
-main (int argc, char **argv)
+main ()
 {
   lt_dlhandle module;
   const char *(*func) (void) = 0;
