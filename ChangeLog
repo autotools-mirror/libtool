@@ -1,5 +1,8 @@
 2006-09-03  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* tests/testsuite.at: Test `unset' on a set variable; older
+	bash versions return 1 if the variable was not set.
+
 	* tests/am-subdir.at, tests/early-libtool.at: Fix the LF vs.
 	CRLF related failures on MinGW by grepping for good output
 	instead of using AT_CHECK's `expout'.

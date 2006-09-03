@@ -35,7 +35,7 @@ configure_options=
 if test -n "$host_alias"; then
   configure_options="--host $host_alias"
 fi
-if (unset FOO) >/dev/null 2>&1; then
+if (FOO=bar; unset FOO) >/dev/null 2>&1; then
   unset=unset
 else
   unset=false
