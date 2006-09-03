@@ -1,3 +1,9 @@
+2006-09-03  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* tests/am-subdir.at, tests/early-libtool.at: Fix the LF vs.
+	CRLF related failures on MinGW by grepping for good output
+	instead of using AT_CHECK's `expout'.
+
 2006-09-01  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	Drop K&R support from testsuite in favor of C89.

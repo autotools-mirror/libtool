@@ -94,11 +94,6 @@ main (int argc, char *argv[])
 }
 ]])
 
-AT_DATA(expout,
-[[Welcome to GNU Hell!
-** This is not GNU Hello.  There is no built-in mail reader. **
-]])
-
 cat > missing <<_EOF
 #! /bin/sh
 exit 0
@@ -111,7 +106,10 @@ LT_AT_AUTOCONF([--force])
 LT_AT_CONFIGURE
 LT_AT_MAKE
 
-LT_AT_EXEC_CHECK([./hell], [0], [expout])
+LT_AT_EXEC_CHECK([./hell], [0], [stdout])
+AT_CHECK([grep 'Welcome to GNU Hell' stdout], [], [ignore])
+AT_CHECK([grep 'This is not GNU Hello.' stdout],
+	 [], [ignore])
 
 AT_CLEANUP
 
@@ -201,11 +199,6 @@ main (int argc, char *argv[])
 }
 ]])
 
-AT_DATA(expout,
-[[Welcome to GNU Hell!
-** This is not GNU Hello.  There is no built-in mail reader. **
-]])
-
 cat > missing <<_EOF
 #! /bin/sh
 exit 0
@@ -218,6 +211,8 @@ LT_AT_AUTOCONF([--force])
 LT_AT_CONFIGURE
 LT_AT_MAKE
 
-LT_AT_EXEC_CHECK([./hell], [0], [expout])
+LT_AT_EXEC_CHECK([./hell], [0], [stdout])
+AT_CHECK([grep 'Welcome to GNU Hell' stdout], [], [ignore])
+AT_CHECK([grep 'This is not GNU Hello.' stdout], [], [ignore])
 
 AT_CLEANUP
