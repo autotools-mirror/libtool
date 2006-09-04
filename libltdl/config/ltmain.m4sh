@@ -940,31 +940,29 @@ extern \"C\" {
 	  $ECHO >> "$output_objdir/$my_dlsyms" "\
 
 /* The mapping between symbol names and symbols.  */
+typedef struct {
+  const char *name;
+  void *address;
+} lt_dlsymlist;
 "
 	  case $host in
 	  *cygwin* | *mingw* )
 	    $ECHO >> "$output_objdir/$my_dlsyms" "\
 /* DATA imports from DLLs on WIN32 con't be const, because
    runtime relocations are performed -- see ld's documentation
-   on pseudo-relocs.  */
-   struct {
-"
-	    ;;
+   on pseudo-relocs.  */"
+	    lt_dlsym_const= ;;
 	  *)
-	    $ECHO >> "$output_objdir/$my_dlsyms" "\
-const struct {
-"
-	    ;;
+	    lt_dlsym_const=const ;;
 	  esac
 
 	  $ECHO >> "$output_objdir/$my_dlsyms" "\
-   const char *name;
-   void *address;
-}
+extern $lt_dlsym_const lt_dlsymlist
+lt_${my_prefix}_LTX_preloaded_symbols[[]];
+$lt_dlsym_const lt_dlsymlist
 lt_${my_prefix}_LTX_preloaded_symbols[[]] =
 {\
-  { \"$my_originator\", (void *) 0 },
-"
+  { \"$my_originator\", (void *) 0 },"
 
 	  eval "$global_symbol_to_c_name_address" < "$nlist" >> "$output_objdir/$my_dlsyms"
 

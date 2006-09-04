@@ -1,6 +1,14 @@
 2006-09-04  George Bosilca <bosilca@cs.utk.edu>
 	and Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
+	* libltdl/config/ltmain.m4sh (func_mode_link): In the dlsym
+	file, define a type for the symbol list, and declare the list
+	`extern', so that it is extern even if compiled by a C++
+	compiler.  The type definition helps avoid a compiler warning
+	against anonymous extern struct.
+	* libltdl/libltdl/lt_system.h: Add `extern' to `LT_SCOPE' for
+	the same reason.
+
 	* libltdl/argz_.h: It's __cplusplus, not _cplusplus.
 	* libltdl/libltdl/slist.h: Likewise.
 

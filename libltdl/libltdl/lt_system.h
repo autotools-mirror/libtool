@@ -99,7 +99,7 @@ Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 #if !defined(LT_SCOPE)
 #  if defined(__WINDOWS__)
 #    if defined(DLL_EXPORT)		/* defined by libtool (if required) */
-#      define LT_SCOPE	__declspec(dllexport)
+#      define LT_SCOPE	extern __declspec(dllexport)
 #    endif
 #    if defined(LIBLTDL_DLL_IMPORT)	/* define if linking with this dll */
 #      define LT_SCOPE	extern __declspec(dllimport)
