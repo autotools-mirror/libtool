@@ -1,3 +1,11 @@
+2006-09-04  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
+	* libltdl/ltdl.c: Move LT__UNUSED before parameter name, for g++
+	3.2.3 (on MinGW).
+	* libltdl/loaders/dld_link.c, libltdl/loaders/dlopen.c,
+	libltdl/loaders/load_add_on.c, libltdl/loaders/loadlibrary.c,
+	libltdl/loaders/preopen.c, libltdl/loaders/shl_load.c: Likewise.
+
 2006-09-04  George Bosilca <bosilca@cs.utk.edu>
 	and Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 

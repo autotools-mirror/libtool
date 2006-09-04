@@ -134,7 +134,7 @@ get_vtable (lt_user_data loader_data)
    loader.  Returns an opaque representation of the newly opened
    module for processing with this loader's other vtable functions.  */
 static lt_module
-vm_open (lt_user_data loader_data LT__UNUSED, const char *filename)
+vm_open (lt_user_data LT__UNUSED loader_data, const char *filename)
 {
   lt_module module = dlopen (filename, LT_LAZY_OR_NOW);
 
@@ -150,7 +150,7 @@ vm_open (lt_user_data loader_data LT__UNUSED, const char *filename)
 /* A function called through the vtable when a particular module
    should be unloaded.  */
 static int
-vm_close (lt_user_data loader_data LT__UNUSED, lt_module module)
+vm_close (lt_user_data LT__UNUSED loader_data, lt_module module)
 {
   int errors = 0;
 
@@ -167,7 +167,7 @@ vm_close (lt_user_data loader_data LT__UNUSED, lt_module module)
 /* A function called through the vtable to get the address of
    a symbol loaded from a particular module.  */
 static void *
-vm_sym (lt_user_data loader_data LT__UNUSED, lt_module module, const char *name)
+vm_sym (lt_user_data LT__UNUSED loader_data, lt_module module, const char *name)
 {
   void *address = dlsym (module, name);
 

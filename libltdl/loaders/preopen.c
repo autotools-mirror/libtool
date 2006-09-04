@@ -110,7 +110,7 @@ static const	lt_dlsymlist   *default_preloaded_symbols	= 0;
 
 /* A function called through the vtable to initialise this loader.  */
 static int
-vl_init (lt_user_data loader_data LT__UNUSED)
+vl_init (lt_user_data LT__UNUSED loader_data)
 {
   int errors = 0;
 
@@ -127,7 +127,7 @@ vl_init (lt_user_data loader_data LT__UNUSED)
 /* A function called through the vtable when this loader is no
    longer needed by the application.  */
 static int
-vl_exit (lt_user_data loader_data LT__UNUSED)
+vl_exit (lt_user_data LT__UNUSED loader_data)
 {
   free_symlists ();
   return 0;
@@ -138,7 +138,7 @@ vl_exit (lt_user_data loader_data LT__UNUSED)
    loader.  Returns an opaque representation of the newly opened
    module for processing with this loader's other vtable functions.  */
 static lt_module
-vm_open (lt_user_data loader_data LT__UNUSED, const char *filename)
+vm_open (lt_user_data LT__UNUSED loader_data, const char *filename)
 {
   symlist_chain *lists;
   lt_module	 module = 0;
@@ -190,7 +190,7 @@ vm_open (lt_user_data loader_data LT__UNUSED, const char *filename)
 /* A function called through the vtable when a particular module
    should be unloaded.  */
 static int
-vm_close (lt_user_data loader_data LT__UNUSED, lt_module module)
+vm_close (lt_user_data LT__UNUSED loader_data, lt_module module)
 {
   /* Just to silence gcc -Wall */
   module = 0;
@@ -201,7 +201,7 @@ vm_close (lt_user_data loader_data LT__UNUSED, lt_module module)
 /* A function called through the vtable to get the address of
    a symbol loaded from a particular module.  */
 static void *
-vm_sym (lt_user_data loader_data LT__UNUSED, lt_module module, const char *name)
+vm_sym (lt_user_data LT__UNUSED loader_data, lt_module module, const char *name)
 {
   lt_dlsymlist	       *symbol = (lt_dlsymlist*) module;
 

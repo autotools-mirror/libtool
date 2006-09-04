@@ -689,7 +689,7 @@ find_file (const char *search_path, const char *base_name, char **pdir)
 }
 
 static int
-find_handle_callback (char *filename, void *data, void *ignored LT__UNUSED)
+find_handle_callback (char *filename, void *data, void * LT__UNUSED ignored)
 {
   lt_dlhandle  *handle		= (lt_dlhandle *) data;
   int		notfound	= access (filename, R_OK);
@@ -724,7 +724,7 @@ find_handle (const char *search_path, const char *base_name,
 
 #if !defined(LTDL_DLOPEN_DEPLIBS)
 static int
-load_deplibs (lt_dlhandle handle, char *deplibs LT__UNUSED)
+load_deplibs (lt_dlhandle handle, char * LT__UNUSED deplibs)
 {
   ((lt__handle *) handle)->depcount = 0;
   return 0;
