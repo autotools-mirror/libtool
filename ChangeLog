@@ -1,6 +1,9 @@
 2006-09-04  George Bosilca <bosilca@cs.utk.edu>
 	and Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
+	* libltdl/argz_.h: It's __cplusplus, not _cplusplus.
+	* libltdl/libltdl/slist.h: Likewise.
+
 	* libltdl/libltdl/lt__glibc.h: Wrap included argz.h in
 	`extern "C"', for broken headers on Cygwin.
 

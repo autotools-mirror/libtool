@@ -40,7 +40,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 #  define LT_SCOPE
 #endif
 
-#if defined(_cplusplus)
+#if defined(__cplusplus)
 extern "C" {
 #endif
 
@@ -54,7 +54,7 @@ LT_SCOPE char *	 argz_next	(char *argz, size_t argz_len,
 				 const char *entry);
 LT_SCOPE void	 argz_stringify	(char *argz, size_t argz_len, int sep);
 
-#if defined(_cplusplus)
+#if defined(__cplusplus)
 }
 #endif
 

@@ -47,7 +47,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 #  define LT_SCOPE
 #endif
 
-#if defined(_cplusplus)
+#if defined(__cplusplus)
 extern "C" {
 #endif
 
@@ -82,7 +82,7 @@ LT_SCOPE void *	slist_foreach   (SList *slist, SListCallback *foreach,
 LT_SCOPE SList *slist_box	(const void *userdata);
 LT_SCOPE void *	slist_unbox	(SList *item);
 
-#if defined(_cplusplus)
+#if defined(__cplusplus)
 }
 #endif
 
