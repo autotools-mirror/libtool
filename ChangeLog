@@ -1,3 +1,9 @@
+2006-09-04  George Bosilca <bosilca@cs.utk.edu>
+	and Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
+	* libltdl/libltdl/lt__glibc.h: Wrap included argz.h in
+	`extern "C"', for broken headers on Cygwin.
+
 2006-09-03  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* tests/testsuite.at: Test `unset' on a set variable; older

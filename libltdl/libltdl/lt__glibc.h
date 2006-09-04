@@ -55,7 +55,15 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 #  define argz_stringify	lt__argz_stringify
 #endif
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <argz.h>
+
+#ifdef __cplusplus
+}
+#endif
 
 # define slist_concat	lt__slist_concat
 # define slist_cons	lt__slist_cons
