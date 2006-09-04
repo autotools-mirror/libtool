@@ -167,7 +167,10 @@ AT_CHECK([test -n "[$]$1" || (exit 77)])
 # is omitted, then no Makefile is created.
 m4_define([_LTDL_PROJECT_FILES],
 [AT_DATA([module.c],
-[[const char *
+[[#ifdef __cplusplus
+extern "C"
+#endif
+const char *
 hello (void)
 {
   return "Hello!";

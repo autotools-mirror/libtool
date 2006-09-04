@@ -41,7 +41,11 @@ extern int fwrapper(int);
  * Note that fortran passes args by reference, so
  * you need to provide pointers to your ints.
  */
-extern void FC_FUNC(fsub,FSUB)(int *arg, int *res);
+extern
+#ifdef __cplusplus
+"C"
+#endif
+void FC_FUNC(fsub,FSUB)(int *arg, int *res);
 
 
 #endif

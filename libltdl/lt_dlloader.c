@@ -46,8 +46,8 @@ static	SList    *loaders		= 0;
 static void *
 loader_callback (SList *item, void *userdata)
 {
-  const lt_dlvtable *vtable = item->userdata;
-  const char *	    name    = userdata;
+  const lt_dlvtable *vtable = (const lt_dlvtable *) item->userdata;
+  const char *	    name    = (const char *) userdata;
 
   assert (vtable);
 
@@ -111,7 +111,7 @@ lt_dlloader_next (lt_dlloader loader)
 const lt_dlvtable *
 lt_dlloader_get	(lt_dlloader loader)
 {
-  return loader ? ((SList *) loader)->userdata : 0;
+  return (const lt_dlvtable *) (loader ? ((SList *) loader)->userdata : 0);
 }
 
 
@@ -155,7 +155,8 @@ lt_dlloader_remove (char *name)
     }
 
   /* If we got this far, remove the loader from our global list.  */
-  return slist_unbox (slist_remove (&loaders, loader_callback, name));
+  return (lt_dlvtable *)
+      slist_unbox ((SList *) slist_remove (&loaders, loader_callback, name));
 }
 
 

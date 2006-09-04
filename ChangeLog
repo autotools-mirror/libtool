@@ -1,6 +1,21 @@
 2006-09-04  George Bosilca <bosilca@cs.utk.edu>
 	and Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
+	Make libltdl work when compiled with a C++ compiler.
+
+	* libltdl/lt__alloc.c, libltdl/lt_dlloader.c, libltdl/ltdl.c,
+	libltdl/slist.c, libltdl/libltdl/lt__alloc.h,
+	libltdl/libltdl/lt_error.h, libltdl/libltdl/slist.h,
+	libltdl/loaders/dld_link.c, libltdl/loaders/dlopen.c,
+	libltdl/loaders/dyld.c, libltdl/loaders/load_add_on.c,
+	libltdl/loaders/loadlibrary.c, libltdl/loaders/preopen.c,
+	libltdl/loaders/shl_load.c, tests/stresstest.at,
+	tests/testsuite.at, tests/f77demo/foo.h, tests/fcdemo/foo.h,
+	tests/mdemo/foo.h, tests/mdemo/foo1.c, tests/mdemo/foo2.c,
+	tests/mdemo/main.c: Allow sources to be compiled by a C++
+	compiler: Cast appropriately, add C linkage for `get_vtable'
+	functions, do not use C++ keyword `delete'.
+
 	* libltdl/config/ltmain.m4sh (func_mode_link): In the dlsym
 	file, define a type for the symbol list, and declare the list
 	`extern', so that it is extern even if compiled by a C++

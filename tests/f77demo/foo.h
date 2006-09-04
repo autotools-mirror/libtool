@@ -1,5 +1,5 @@
 /* foo.h -- interface to fortran and C libraries
-   Copyright (C) 1998-1999 Free Software Foundation, Inc.
+   Copyright (C) 1998-1999, 2006 Free Software Foundation, Inc.
    This file is part of GNU Libtool.
 
 This program is free software; you can redistribute it and/or modify
@@ -41,7 +41,10 @@ extern int fwrapper(int);
  * Note that fortran passes args by reference, so
  * you need to provide pointers to your ints.
  */
-extern void F77_FUNC(fsub,FSUB)(int *arg, int *res);
-
+extern
+#ifdef __cplusplus
+"C"
+#endif
+void F77_FUNC(fsub,FSUB)(int *arg, int *res);
 
 #endif

@@ -69,8 +69,8 @@ enum {
 	LT_ERROR_MAX
 };
 
-/* Should be max of the error string lengths above */
-#define LT_ERROR_LEN_MAX (35)
+/* Should be max of the error string lengths above (plus one for C++) */
+#define LT_ERROR_LEN_MAX (36)
 
 /* These functions are only useful from inside custom module loaders. */
 LT_SCOPE int	lt_dladderror	(const char *diagnostic);

@@ -36,7 +36,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
    be fetched from the preloaded symbol list by lt_dlsym():  */
 #define get_vtable	shl_load_LTX_get_vtable
 
+LT_BEGIN_C_DECLS
 LT_SCOPE lt_dlvtable *get_vtable (lt_user_data loader_data);
+LT_END_C_DECLS
 
 
 /* Boilerplate code to set up the vtable for hooking this loader into

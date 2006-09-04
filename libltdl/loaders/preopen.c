@@ -36,7 +36,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
    be fetched from the preloaded symbol list by lt_dlsym():  */
 #define get_vtable	preopen_LTX_get_vtable
 
+LT_BEGIN_C_DECLS
 LT_SCOPE lt_dlvtable *get_vtable (lt_user_data loader_data);
+LT_END_C_DECLS
 
 
 /* Boilerplate code to set up the vtable for hooking this loader into
@@ -58,7 +60,7 @@ get_vtable (lt_user_data loader_data)
 
   if (!vtable)
     {
-      vtable = lt__zalloc (sizeof *vtable);
+      vtable = (lt_dlvtable *) lt__zalloc (sizeof *vtable);
     }
 
   if (vtable && !vtable->name)
@@ -259,7 +261,7 @@ add_symlist (const lt_dlsymlist *symlist)
   /* Don't add the same list twice:  */
   if (!lists)
     {
-      symlist_chain *tmp = lt__zalloc (sizeof *tmp);
+      symlist_chain *tmp = (symlist_chain *) lt__zalloc (sizeof *tmp);
 
       if (tmp)
 	{

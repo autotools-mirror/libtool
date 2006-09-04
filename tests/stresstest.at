@@ -30,10 +30,17 @@ mkdir sub sub2 sub3 2>/dev/null
 
 AT_DATA(a.c,
 [[/* all kinds of data items */
+#ifdef __cplusplus
+extern "C" {
+#endif
 int v1;
 static int v2;
 int v3 = 0;
 int v4 = 1;
+extern const int v5, v6;
+extern const char *v7;
+extern const char v8[];
+extern int (*const v12) (void);
 const int v5 = 0;
 const int v6 = 1;
 const char* v7 = "\01foo";
@@ -47,6 +54,9 @@ typedef struct { int arr[1000]; } large;
 large v13;
 large v14 = { { 0 } };
 large v15 = { { 1 } };
+#ifdef __cplusplus
+}
+#endif
 ]])
 
 AT_DATA(asyms,
@@ -73,7 +83,11 @@ int ab = 1;
 ]])
 
 AT_DATA(main.c,
-[[extern int v1;
+[[
+#ifdef __cplusplus
+extern "C" {
+#endif
+extern int v1;
 extern int v3, v4;
 extern const int v5, v6;
 extern const char* v7;
@@ -82,6 +96,9 @@ extern int v9(void);
 extern int (*v10) (void);
 extern int (*v11) (void);
 extern int (*const v12) (void);
+#ifdef __cplusplus
+}
+#endif
 
 typedef struct { int arr[1000]; } large;
 extern large v13, v14, v15;
@@ -96,7 +113,10 @@ int main(void)
 ]])
 
 AT_DATA(dlself.c,
-[[extern int v1;
+[[#ifdef __cplusplus
+extern "C" {
+#endif
+extern int v1;
 extern int v3, v4;
 extern const int v5, v6;
 extern const char* v7;
@@ -119,6 +139,9 @@ extern int (*w10) (void);
 extern int (*w11) (void);
 extern int (*const w12) (void);
 extern large w13, w14, w15;
+#ifdef __cplusplus
+}
+#endif
 
 int main(void)
 {
@@ -131,6 +154,9 @@ int main(void)
 }
 
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 int w1;
 static int w2;
 int w3 = 0;
@@ -146,6 +172,9 @@ int (*const w12) (void) = w9;
 large w13;
 large w14 = { { 0 } };
 large w15 = { { 1 } };
+#ifdef __cplusplus
+}
+#endif
 ]])
 
 AT_DATA(dlselfsyms,

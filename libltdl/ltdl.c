@@ -159,7 +159,8 @@ lt__alloc_die_callback (void)
 static int
 loader_init_callback (lt_dlhandle handle)
 {
-  return loader_init (lt_dlsym (handle, "get_vtable"), 0);
+  lt_get_vtable *vtable_func = (lt_get_vtable *) lt_dlsym (handle, "get_vtable");
+  return loader_init (vtable_func, 0);
 }
 #endif /* HAVE_LIBDLLOADER */
 
@@ -195,7 +196,9 @@ loader_init (lt_get_vtable *vtable_func, lt_user_data data)
 #define get_vtable		preopen_LTX_get_vtable
 #define preloaded_symbols	LT_CONC3(lt_, LTDLOPEN, _LTX_preloaded_symbols)
 
+LT_BEGIN_C_DECLS
 LT_SCOPE const lt_dlvtable *	get_vtable (lt_user_data data);
+LT_END_C_DECLS
 #ifdef HAVE_LIBDLLOADER
 extern lt_dlsymlist		preloaded_symbols;
 #endif
@@ -289,9 +292,9 @@ lt_dlexit (void)
 	}
 
       /* close all loaders */
-      for (loader = lt_dlloader_next (NULL); loader;)
+      for (loader = (lt_dlloader *) lt_dlloader_next (NULL); loader;)
 	{
-	  lt_dlloader *next   = lt_dlloader_next (loader);
+	  lt_dlloader *next   = (lt_dlloader *) lt_dlloader_next (loader);
 	  lt_dlvtable *vtable = (lt_dlvtable *) lt_dlloader_get (loader);
 
 	  if ((vtable = lt_dlloader_remove ((char *) vtable->name)))
@@ -340,7 +343,7 @@ tryall_dlopen (lt_dlhandle *phandle, const char *filename)
       goto done;
     }
 
-  handle = *phandle;
+  handle = (lt__handle *) *phandle;
   if (filename)
     {
       /* Comment out the check of file permissions using access.
@@ -371,7 +374,7 @@ tryall_dlopen (lt_dlhandle *phandle, const char *filename)
     const lt_dlvtable *vtable = 0;
     lt_dlloader *loader = 0;
 
-    while ((loader = lt_dlloader_next (loader)))
+    while ((loader = (lt_dlloader *) lt_dlloader_next (loader)))
       {
 	vtable = lt_dlloader_get (loader);
 	handle->module = (*vtable->module_open) (vtable->dlloader_data,
@@ -1321,7 +1324,7 @@ try_dlopen (lt_dlhandle *phandle, const char *filename)
       ((lt__handle *) *phandle)->info.ref_count	= 1;
       MEMREASSIGN (((lt__handle *) *phandle)->info.name, name);
 
-      ((lt__handle *) *phandle)->next	= handles;
+      ((lt__handle *) *phandle)->next	= (lt__handle *) handles;
       handles				= *phandle;
     }
 
@@ -2033,7 +2036,7 @@ typedef struct {
 lt_dlinterface_id
 lt_dlinterface_register (const char *id_string, lt_dlhandle_interface *iface)
 {
-  lt__interface_id *interface_id = lt__malloc (sizeof *interface_id);
+  lt__interface_id *interface_id = (lt__interface_id *) lt__malloc (sizeof *interface_id);
 
   /* If lt__malloc fails, it will LT__SETERROR (NO_MEMORY), which
      can then be detected with lt_dlerror() if we return 0.  */

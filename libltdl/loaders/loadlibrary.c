@@ -1,5 +1,5 @@
 /* loader-loadlibrary.c --  dynamic linking for Win32
-   Copyright (C) 1998, 1999, 2000, 2004, 2005 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2000, 2004, 2005, 2006 Free Software Foundation, Inc.
    Originally by Thomas Tanner <tanner@ffii.org>
 
    NOTE: The canonical source of this file is maintained with the
@@ -40,7 +40,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
    be fetched from the preloaded symbol list by lt_dlsym():  */
 #define get_vtable	loadlibrary_LTX_get_vtable
 
+LT_BEGIN_C_DECLS
 LT_SCOPE lt_dlvtable *get_vtable (lt_user_data loader_data);
+LT_END_C_DECLS
 
 
 /* Boilerplate code to set up the vtable for hooking this loader into
@@ -62,7 +64,7 @@ get_vtable (lt_user_data loader_data)
 
   if (!vtable)
     {
-      vtable = lt__zalloc (sizeof *vtable);
+      vtable = (lt_dlvtable *) lt__zalloc (sizeof *vtable);
       iface_id = lt_dlinterface_register ("ltdl loadlibrary", NULL);
     }
 
@@ -202,7 +204,7 @@ vm_close (lt_user_data loader_data LT__UNUSED, lt_module module)
 {
   int errors = 0;
 
-  if (FreeLibrary(module) == 0)
+  if (FreeLibrary((HMODULE) module) == 0)
     {
       LT__SETERROR (CANNOT_CLOSE);
       ++errors;
@@ -217,7 +219,7 @@ vm_close (lt_user_data loader_data LT__UNUSED, lt_module module)
 static void *
 vm_sym (lt_user_data loader_data LT__UNUSED, lt_module module, const char *name)
 {
-  void *address = GetProcAddress (module, name);
+  void *address = (void *) GetProcAddress ((HMODULE) module, name);
 
   if (!address)
     {

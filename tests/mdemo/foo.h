@@ -1,5 +1,5 @@
 /* foo.h -- interface to the libfoo* libraries
-   Copyright (C) 1998-1999 Free Software Foundation, Inc.
+   Copyright (C) 1998-1999, 2006 Free Software Foundation, Inc.
    Originally by Thomas Tanner <tanner@ffii.org>
    This file is part of GNU Libtool.
 
@@ -21,6 +21,19 @@ USA. */
 /* Only include this header file once. */
 #ifndef _FOO_H_
 #define _FOO_H_ 1
+
+/* __BEGIN_DECLS should be used at the beginning of your declarations,
+   so that C++ compilers don't mangle their names.  Use __END_DECLS at
+   the end of C declarations. */
+#undef __BEGIN_DECLS
+#undef __END_DECLS
+#ifdef __cplusplus
+# define __BEGIN_DECLS extern "C" {
+# define __END_DECLS }
+#else
+# define __BEGIN_DECLS /* empty */
+# define __END_DECLS /* empty */
+#endif
 
 /* Silly constants that the functions return. */
 #define HELLO_RET 0xe110

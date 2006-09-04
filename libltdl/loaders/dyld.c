@@ -1,5 +1,5 @@
 /* loader-dyld.c -- dynamic linking on darwin and OS X
-   Copyright (C) 1998, 1999, 2000, 2004 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2000, 2004, 2006 Free Software Foundation, Inc.
    Originally by Peter O'Gorman <peter@pogma.com>
 
    NOTE: The canonical source of this file is maintained with the
@@ -36,7 +36,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
    be fetched from the preloaded symbol list by lt_dlsym():  */
 #define get_vtable	dyld_LTX_get_vtable
 
+LT_BEGIN_C_DECLS
 LT_SCOPE lt_dlvtable *get_vtable (lt_user_data loader_data);
+LT_END_C_DECLS
 
 
 /* Boilerplate code to set up the vtable for hooking this loader into

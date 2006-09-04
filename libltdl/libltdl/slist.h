@@ -63,7 +63,7 @@ typedef int	SListCompare	(const SList *item1, const SList *item2,
 LT_SCOPE SList *slist_concat	(SList *head, SList *tail);
 LT_SCOPE SList *slist_cons	(SList *item, SList *slist);
 
-LT_SCOPE SList *slist_delete	(SList *slist, void (*delete) (void *item));
+LT_SCOPE SList *slist_delete	(SList *slist, void (*delete_fct) (void *item));
 LT_SCOPE void *	slist_remove	(SList **phead, SListCallback *find,
 				 void *matchdata);
 LT_SCOPE SList *slist_reverse	(SList *slist);

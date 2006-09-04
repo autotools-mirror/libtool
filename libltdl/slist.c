@@ -48,14 +48,14 @@ static SList *	slist_sort_merge    (SList *left, SList *right,
 	...
 */
 SList *
-slist_delete (SList *head, void (*delete) (void *item))
+slist_delete (SList *head, void (*delete_fct) (void *item))
 {
-  assert (delete);
+  assert (delete_fct);
 
   while (head)
     {
       SList *next = head->next;
-      (*delete) (head);
+      (*delete_fct) (head);
       head = next;
     }
 
@@ -340,7 +340,7 @@ slist_sort (SList *slist, SListCompare *compare, void *userdata)
 SList *
 slist_box (const void *userdata)
 {
-  SList *item = malloc (sizeof *item);
+  SList *item = (SList *) malloc (sizeof *item);
 
   if (item)
     {

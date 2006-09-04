@@ -23,6 +23,10 @@ USA. */
 #include <stdio.h>
 #include <string.h>
 
+LT_BEGIN_C_DECLS
+extern int myfunc (void);
+LT_END_C_DECLS
+
 int
 test_dl (char *filename)
 {

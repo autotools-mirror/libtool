@@ -41,6 +41,7 @@ _foo1_helper()
 }
 
 /* exported functions */
+__BEGIN_DECLS
 
 int
 foo1()
@@ -55,3 +56,5 @@ hello()
   printf ("** This is foolib 1 **\n");
   return HELLO_RET;
 }
+
+__END_DECLS

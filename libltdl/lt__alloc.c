@@ -97,5 +97,5 @@ lt__memdup (void const *mem, size_t n)
 char *
 lt__strdup (const char *string)
 {
-  return lt__memdup (string, strlen (string) +1);
+  return (char *) lt__memdup (string, strlen (string) +1);
 }
