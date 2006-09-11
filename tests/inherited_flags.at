@@ -1,5 +1,5 @@
 # Hand crafted tests for GNU Libtool.                         -*- Autotest -*-
-# Copyright 2004 Free Software Foundation, Inc.
+# Copyright 2004, 2006 Free Software Foundation, Inc.
 
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -40,12 +40,12 @@ AT_DATA([main.c],
 int main() { return 0;}
 ])
 
-${LIBTOOL} --mode=compile --tag=CC $CC $CFLAGS -c -o foo.lo foo.c
-${LIBTOOL} --mode=compile --tag=CC $CC $CFLAGS -c -o bar.lo bar.c
-${LIBTOOL} --mode=compile --tag=CC $CC $CFLAGS -c -o baz.lo baz.c
-${LIBTOOL} --mode=compile --tag=CC $CC $CFLAGS -c -o main.lo main.c
-${LIBTOOL} --mode=link --tag=CC $CC $CFLAGS $LDFLAGS -o libfoo.la foo.lo -rpath /usr/local/lib -no-undefined
-${LIBTOOL} --mode=link --tag=CC $CC $CFLAGS $LDFLAGS -o libbar.la bar.lo -rpath /usr/local/lib -no-undefined
+$LIBTOOL --mode=compile --tag=CC $CC $CFLAGS -c -o foo.lo foo.c
+$LIBTOOL --mode=compile --tag=CC $CC $CFLAGS -c -o bar.lo bar.c
+$LIBTOOL --mode=compile --tag=CC $CC $CFLAGS -c -o baz.lo baz.c
+$LIBTOOL --mode=compile --tag=CC $CC $CFLAGS -c -o main.lo main.c
+$LIBTOOL --mode=link --tag=CC $CC $CFLAGS $LDFLAGS -o libfoo.la foo.lo -rpath /usr/local/lib -no-undefined
+$LIBTOOL --mode=link --tag=CC $CC $CFLAGS $LDFLAGS -o libbar.la bar.lo -rpath /usr/local/lib -no-undefined
 
 
 mv libfoo.la libfoo.la.bak
@@ -56,16 +56,16 @@ mv libbar.la libbar.la.bak
 sed -e 's/^inherited_linker_flags.*/inherited_linker_flags=-llt_unlikely_existing_lib/g' < libbar.la.bak > libbar.la
 rm libbar.la.bak
 
-AT_CHECK([${LIBTOOL} --mode=link --tag=CC $CC $CFLAGS $LDFLAGS -o libbaz.la baz.lo -no-undefined -rpath /usr/local/lib ./libfoo.la ./libbar.la],
+AT_CHECK([$LIBTOOL --mode=link --tag=CC $CC $CFLAGS $LDFLAGS -o libbaz.la baz.lo -no-undefined -rpath /usr/local/lib ./libfoo.la ./libbar.la],
 	 [ignore],[stdout],[ignore])
 # We used to grep for
 # 'llt_[[ui]]nlikely_existing_lib.*llt_[[ui]]nlikely_existing_lib'
 # here.  This fails on win32/MSVC because the generated command lines have a
 # different syntax.  So drop the first `l'.
-AT_CHECK([${LIBTOOL} --features | grep 'disable shared libraries' && (exit 77)], [1], [ignore])
+AT_CHECK([$LIBTOOL --features | grep 'disable shared libraries' && (exit 77)], [1], [ignore])
 AT_CHECK([grep 'lt_[[ui]]nlikely_existing_lib.*lt_[[ui]]nlikely_existing_lib' stdout],
 	 [0],[ignore],[ignore])
-AT_CHECK([${LIBTOOL} --mode=link --tag=CC $CC $CFLAGS $LDFLAGS -o main main.lo -no-undefined -rpath /usr/local/lib  ./libfoo.la ./libbar.la],
+AT_CHECK([$LIBTOOL --mode=link --tag=CC $CC $CFLAGS $LDFLAGS -o main main.lo -no-undefined -rpath /usr/local/lib  ./libfoo.la ./libbar.la],
 	[ignore],[stdout],[ignore])
 AT_CHECK([grep 'lt_[[ui]]nlikely_existing_lib.*lt_[[ui]]nlikely_existing_lib' stdout],
 	 [0],[ignore],[ignore])

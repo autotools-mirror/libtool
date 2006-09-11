@@ -1,3 +1,8 @@
+2006-09-11  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
+	* tests/inherited_flags.at: Drop `${parameter}' for `$parameter'
+	where appropriate, for improved `testsuite -x' output.
+
 2006-09-04  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
 	* libltdl/ltdl.c: Move LT__UNUSED before parameter name, for g++
