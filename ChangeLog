@@ -1,3 +1,8 @@
+2006-09-12  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
+	* tests/destdir.at: New file.
+	* Makefile.am: Adjust.
+
 2006-09-11  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
 	* tests/inherited_flags.at: Drop `${parameter}' for `$parameter'
