@@ -399,6 +399,7 @@ TESTSUITE_AT	= tests/testsuite.at \
 		  tests/libtoolize.at \
 		  tests/duplicate_members.at \
 		  tests/duplicate_conv.at \
+		  tests/duplicate_deps.at \
 		  tests/inherited_flags.at \
 		  tests/convenience.at \
 		  tests/link-order.at \

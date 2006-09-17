@@ -1,5 +1,10 @@
 2006-09-17  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
+	* tests/duplicate_deps.at: New file.  Test circular depending
+	convenience archives (currently failing).
+	* Makefile.am: Update.
+	Report by Stefan Traby <stefan@hello-penguin.com>.
+
 	* libltdl/m4/libtool.m4 (_LT_LINKER_SHLIBS, _LT_LANG_CXX_CONFIG)
 	[ openbsd ]: Set `hardcode_direct_absolute', to prefer rpath
 	over putting absolute file names in NEEDED entries.

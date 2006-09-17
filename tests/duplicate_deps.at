@@ -1,0 +1,64 @@
+# Hand crafted tests for GNU Libtool.                         -*- Autotest -*-
+# Copyright 2006 Free Software Foundation, Inc.
+
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2, or (at your option)
+# any later version.
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+# 02110-1301, USA.
+
+AT_SETUP([preserve duplicate convenience deps])
+AT_KEYWORDS([libtool])
+
+# --preserve-dup-deps should work for convenience archives.
+
+# Create a circular dependency of liba and libb:
+# a1 pulls in b1, that pulls in a2.
+cat >a1.c <<\EOF
+extern int b1 ();
+int a1 () { return b1 (); }
+EOF
+cat >a2.c <<\EOF
+int a2 () { return 0; }
+EOF
+cat >b1.c <<\EOF
+extern int a2 ();
+int b1 () { return a2 (); }
+EOF
+cat >main.c <<\EOF
+extern int a1 ();
+int main () { return a1 (); }
+EOF
+
+for file in a1.c a2.c b1.c; do
+  $LIBTOOL --mode=compile $CC $CPPFLAGS $CFLAGS -c $file
+done
+$CC $CPPFLAGS $CFLAGS -c main.c
+$LIBTOOL --mode=link --tag=CC $CC $CFLAGS $LDFLAGS -o liba.la a1.lo a2.lo
+
+# This could be worked around by adding liba.la to libb.la
+# (in that case all objects from liba would be merged into
+# libb.a as well, possibly renamed.)
+$LIBTOOL --mode=link --tag=CC $CC $CFLAGS $LDFLAGS -o libb.la b1.lo liba.la
+AT_CHECK([$LIBTOOL --mode=link --tag=CC \
+	  $CC $CFLAGS $LDFLAGS -o main main.$OBJEXT liba.la libb.la],
+	  [0], [ignore], [ignore])
+LT_AT_EXEC_CHECK([./main])
+
+# This currently fails:
+AT_XFAIL_IF([:])
+$LIBTOOL --mode=link --tag=CC $CC $CFLAGS $LDFLAGS -o libb.la b1.lo
+AT_CHECK([$LIBTOOL --mode=link --preserve-dup-deps --tag=CC \
+	  $CC $CFLAGS $LDFLAGS -o main main.$OBJEXT liba.la libb.la liba.la],
+	  [0], [ignore], [ignore])
+
+AT_CLEANUP
