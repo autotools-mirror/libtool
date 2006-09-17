@@ -67,6 +67,8 @@ New in 1.9d: 2004-10-03; CVS version 1.9c, Libtool team:
 * Improved support for linux-gnu/ia64.
 * Initial support for s390x-ibm-tpf.
 * Fixed some memory leaks in libltdl.
+* Improved support for OpenBSD (use rpath instead of hardcoding absolute
+  file names).
 
 New in 1.9b: 2004-08-29; CVS version 1.5a, Libtool team:
 * The /^_?LT_[A-Z_]+$/ namespace is now reserved for Libtool's own macros.
