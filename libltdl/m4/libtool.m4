@@ -2275,6 +2275,15 @@ linux* | k*bsd*-gnu)
   finish_cmds='PATH="\$PATH:/sbin" ldconfig -n $libdir'
   shlibpath_var=LD_LIBRARY_PATH
   shlibpath_overrides_runpath=no
+  # Some binutils ld are patched to set DT_RUNPATH 
+  save_LDFLAGS=$LDFLAGS
+  libdir=/foo wl=$_LT_TAGVAR(lt_prog_compiler_wl, $1) \
+  eval LDFLAGS=\"\$LDFLAGS $_LT_TAGVAR(hardcode_libdir_flag_spec, $1)\"
+  AC_LINK_IFELSE([AC_LANG_PROGRAM([],[])],
+    [AS_IF([ ($OBJDUMP -p conftest$ac_exeext) 2>/dev/null | grep "RUNPATH.*$libdir"],
+       [shlibpath_overrides_runpath=yes])])
+  LDFLAGS=$save_LDFLAGS
+
   # This implies no fast_install, which is unacceptable.
   # Some rework will be needed to allow for fast_install
   # before this can be enabled.
