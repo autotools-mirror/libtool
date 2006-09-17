@@ -1,3 +1,9 @@
+2006-09-17  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
+	* tests/shlibpath.at: New file, with...
+	(shlibpath_overrides_runpath): ...new test.
+	* Makefile.am: Update.
+
 2006-09-12  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
 	* tests/destdir.at: New file.

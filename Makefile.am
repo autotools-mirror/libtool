@@ -403,6 +403,7 @@ TESTSUITE_AT	= tests/testsuite.at \
 		  tests/convenience.at \
 		  tests/link-order.at \
 		  tests/fail.at \
+		  tests/shlibpath.at \
 		  tests/static.at \
 		  tests/destdir.at \
 		  tests/old-m4-iface.at \
