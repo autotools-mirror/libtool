@@ -1,5 +1,9 @@
 2006-09-20  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
+	* libltdl/m4/libtool.m4 (func_mode_compile): Accept files with
+	extension `.f9?'.
+	* tests/suffix.test: Test `f95'.
+
 	* libltdl/config/ltmain.m4sh (func_mode_uninstall): Use
 	`func_source' consistently.
 
