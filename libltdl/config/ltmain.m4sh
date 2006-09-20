@@ -6773,7 +6773,7 @@ func_mode_uninstall ()
       *.la)
 	# Possibly a libtool archive, so verify it.
 	if func_lalib_p "$file"; then
-	  . $dir/$name
+	  func_source $dir/$name
 
 	  # Delete the libtool libraries and symlinks.
 	  for n in $library_names; do
@@ -6811,7 +6811,7 @@ func_mode_uninstall ()
 	if func_lalib_p "$file"; then
 
 	  # Read the .lo file
-	  . $dir/$name
+	  func_source $dir/$name
 
 	  # Add PIC object to the list of files to remove.
 	  if test -n "$pic_object" &&
@@ -6844,7 +6844,7 @@ func_mode_uninstall ()
 	  # Do a test to see if this is a libtool program.
 	  if func_ltwrapper_p "$file"; then
 	    relink_command=
-	    . $dir/$noexename
+	    func_source $dir/$noexename
 
 	    # note $name still contains .exe if it was in $file originally
 	    # as does the version of $file that was added into $rmfiles
