@@ -1,3 +1,8 @@
+2006-10-13  Eric Blake  <ebb9@byu.net>
+
+	* libltdl/ltdl.c (load_deplibs): Avoid memory leak on failure.
+	(unload_deplibs): Avoid memory leak on cleanup.
+
 2006-09-20  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
 	* libltdl/m4/libtool.m4 (func_mode_compile): Accept files with

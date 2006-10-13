@@ -855,7 +855,7 @@ load_deplibs (lt_dlhandle handle, char *deplibs)
 
       cur->deplibs = (lt_dlhandle *) MALLOC (lt__handle, depcount);
       if (!cur->deplibs)
-	goto cleanup;
+	goto cleanup_names;
 
       for (i = 0; i < depcount; ++i)
 	{
@@ -903,6 +903,7 @@ unload_deplibs (lt_dlhandle handle)
 	      errors += lt_dlclose (cur->deplibs[i]);
 	    }
 	}
+      FREE (cur->deplibs);
     }
 
   return errors;
