@@ -2944,7 +2944,7 @@ load_deplibs (handle, deplibs)
 
       handle->deplibs = (lt_dlhandle*) LT_EMALLOC (lt_dlhandle *, depcount);
       if (!handle->deplibs)
-	goto cleanup;
+	goto cleanup_names;
 
       for (i = 0; i < depcount; ++i)
 	{
@@ -2995,6 +2995,7 @@ unload_deplibs (handle)
 	      errors += lt_dlclose (handle->deplibs[i]);
 	    }
 	}
+      LT_DLFREE (handle->deplibs);
     }
 
   return errors;
