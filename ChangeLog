@@ -1,3 +1,8 @@
+2006-10-17  Peter O'Gorman  <peter@pogma.com>
+
+	* libtool.m4 (AC_LIBTOOL_SYS_LIB_STRIP) [darwin]: Also set
+	old_striplib.
+
 2006-10-13  Eric Blake  <ebb9@byu.net>
 
 	* libltdl/ltdl.c (unload_deplibs, load_deplibs): Avoid memory
