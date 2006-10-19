@@ -1214,20 +1214,58 @@ shlibpath_overrides_runpath=unknown
 version_type=none
 dynamic_linker="$host_os ld.so"
 sys_lib_dlsearch_path_spec="/lib /usr/lib"
+m4_if($1,[],[
 if test "$GCC" = yes; then
-  sys_lib_search_path_spec=`$CC -print-search-dirs | grep "^libraries:" | $SED -e "s/^libraries://" -e "s,=/,/,g"`
-  if echo "$sys_lib_search_path_spec" | grep ';' >/dev/null ; then
+  case $host_os in
+    darwin*) lt_awk_arg="/^libraries:/,/LR/" ;;
+    *) lt_awk_arg="/^libraries:/" ;;
+  esac
+  lt_search_path_spec=`$CC -print-search-dirs | awk $lt_awk_arg | $SED -e "s/^libraries://" -e "s,=/,/,g"`
+  if echo "$lt_search_path_spec" | grep ';' >/dev/null ; then
     # if the path contains ";" then we assume it to be the separator
     # otherwise default to the standard path separator (i.e. ":") - it is
     # assumed that no part of a normal pathname contains ";" but that should
     # okay in the real world where ";" in dirpaths is itself problematic.
-    sys_lib_search_path_spec=`echo "$sys_lib_search_path_spec" | $SED -e 's/;/ /g'`
+    lt_search_path_spec=`echo "$lt_search_path_spec" | $SED -e 's/;/ /g'`
   else
-    sys_lib_search_path_spec=`echo "$sys_lib_search_path_spec" | $SED  -e "s/$PATH_SEPARATOR/ /g"`
+    lt_search_path_spec=`echo "$lt_search_path_spec" | $SED  -e "s/$PATH_SEPARATOR/ /g"`
   fi
+  # Ok, now we have the path, separated by spaces, we can step through it
+  # and add multilib dir if necessary.
+  lt_tmp_lt_search_path_spec=
+  lt_multi_os_dir=`$CC $CPPFLAGS $CFLAGS $LDFLAGS -print-multi-os-directory 2>/dev/null`
+  for lt_sys_path in $lt_search_path_spec; do
+    if test -d "$lt_sys_path/$lt_multi_os_dir"; then
+      lt_tmp_lt_search_path_spec="$lt_tmp_lt_search_path_spec $lt_sys_path/$lt_multi_os_dir"
+    else
+      test -d "$lt_sys_path" && \
+	lt_tmp_lt_search_path_spec="$lt_tmp_lt_search_path_spec $lt_sys_path"
+    fi
+  done
+  lt_search_path_spec=`echo $lt_tmp_lt_search_path_spec | awk '
+BEGIN {RS=" "; FS="/|\n";} {
+  lt_foo="";
+  lt_count=0;
+  for (lt_i = NF; lt_i > 0; lt_i--) {
+    if ($lt_i != "" && $lt_i != ".") {
+      if ($lt_i == "..") {
+        lt_count++;
+      } else {
+        if (lt_count == 0) {
+          lt_foo="/" $lt_i lt_foo;
+        } else {
+          lt_count--;
+        }
+      }
+    }
+  }
+  if (lt_foo != "") { lt_freq[[lt_foo]]++; }
+  if (lt_freq[[lt_foo]] == 1) { print lt_foo; }
+}'`
+  sys_lib_search_path_spec=`echo $lt_search_path_spec`
 else
   sys_lib_search_path_spec="/lib /usr/lib /usr/local/lib"
-fi
+fi])
 need_lib_prefix=unknown
 hardcode_into_libs=no
 
@@ -1384,12 +1422,8 @@ darwin* | rhapsody*)
   shlibpath_overrides_runpath=yes
   shlibpath_var=DYLD_LIBRARY_PATH
   shrext_cmds='`test .$module = .yes && echo .so || echo .dylib`'
-  # Apple's gcc prints 'gcc -print-search-dirs' doesn't operate the same.
-  if test "$GCC" = yes; then
-    sys_lib_search_path_spec=`$CC -print-search-dirs | tr "\n" "$PATH_SEPARATOR" | sed -e 's/libraries:/@libraries:/' | tr "@" "\n" | grep "^libraries:" | sed -e "s/^libraries://" -e "s,=/,/,g" -e "s,$PATH_SEPARATOR, ,g" -e "s,.*,& /lib /usr/lib /usr/local/lib,g"`
-  else
-    sys_lib_search_path_spec='/lib /usr/lib /usr/local/lib'
-  fi
+  m4_if([$1], [],[
+  sys_lib_search_path_spec="$sys_lib_search_path_spec /usr/local/lib"]) 
   sys_lib_dlsearch_path_spec='/usr/local/lib /lib /usr/lib'
   ;;
 

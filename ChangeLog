@@ -1,3 +1,9 @@
+2006-10-19  Peter O'Gorman  <peter@pogma.com>
+
+	* libtool.m4 (AC_LIBTOOL_SYS_DYNAMIC_LINKER): Improve multilib
+	support.
+	Reported by Kate Minola <kate01123@gmail.com> and others.
+
 2006-10-17  Peter O'Gorman  <peter@pogma.com>
 
 	* libtool.m4 (AC_LIBTOOL_SYS_LIB_STRIP) [darwin]: Also set
