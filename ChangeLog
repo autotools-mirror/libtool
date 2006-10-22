@@ -1,3 +1,9 @@
+2006-10-22  Peter O'Gorman  <peter@pogma.com>
+
+	* libltdl/config/ltmain.m4sh: Add -F* to flags that are passed
+	to the linker.
+	Reported by SIGOURE Benoit <sigoure.benoit@lrde.epita.fr>
+
 2006-10-19  Peter O'Gorman  <peter@pogma.com>
 
 	* libltdl/m4/libtool.m4 (_LT_SYS_DYNAMIC_LINKER): Improve
