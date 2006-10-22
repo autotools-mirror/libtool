@@ -1661,9 +1661,10 @@ EOF
       # -m*, -t[45]*, -txscale* pass through architecture-specific
       # compiler args for GCC
       # -pg, --coverage pass through profiling flag for GCC
+      # -F/path gives path to uninstalled frameworks, gcc on darwin
       # @file GCC response files
       -64|-mips[0-9]|-r[0-9][0-9]*|-xarch=*|-xtarget=*|+DA*|+DD*|-q*|-m*| \
-      -t[45]*|-txscale*|-pg|--coverage|@*)
+      -t[45]*|-txscale*|-pg|--coverage|-F*|@*)
 
 	# Unknown arguments in both finalize_command and compile_command need
 	# to be aesthetically quoted because they are evaled later.
