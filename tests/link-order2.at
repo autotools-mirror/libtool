@@ -1,0 +1,69 @@
+# Hand crafted tests for GNU Libtool.                         -*- Autotest -*-
+# Copyright 2006 Free Software Foundation, Inc.
+
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2, or (at your option)
+# any later version.
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+# 02110-1301, USA.
+
+# link-order2.test: make sure that depdepls are added right after
+# the libs that pull them in: necessary at least for static linking
+# and on systems where libraries do not link against other libraries,
+# in order to do this: override a commonly used symbol in a commonly
+# used library.
+
+AT_SETUP([Link order of deplibs.])
+AT_KEYWORDS([libtool])
+LDFLAGS="$LDFLAGS -no-undefined"
+libdir=`pwd`/inst/lib
+mkdir inst inst/bin inst/lib
+
+cat >a.c <<\EOF
+/* pretend we have a better sine function */
+double sin (double x) { return 0.0; }
+EOF
+
+cat >b.c <<\EOF
+extern double sin (double);
+double b (double x) { return sin (x); }
+EOF
+
+cat >main.c <<\EOF
+#include <math.h>
+extern double b (double);
+int main (void)
+{
+  return fabs (b (3.1415 / 2.)) < 0.01 && fabs (sqrt (4.) - 2.) < 0.01;
+}
+EOF
+
+$LIBTOOL --mode=compile $CC $CPPFLAGS $CFLAGS -c a.c
+$LIBTOOL --mode=compile $CC $CPPFLAGS $CFLAGS -c b.c
+$CC $CPPFLAGS $CFLAGS -c main.c
+for static in '' -static; do
+  $LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS $static -o liba.la a.lo -rpath $libdir
+  $LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS $static -o libb.la b.lo liba.la -rpath $libdir
+  $LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o main main.$OBJEXT libb.la -lm
+  LT_AT_EXEC_CHECK([./main])
+  $LIBTOOL --mode=install cp liba.la $libdir/liba.la
+  $LIBTOOL --mode=install cp libb.la $libdir/libb.la
+  $LIBTOOL --mode=install cp main $bindir/main
+  $LIBTOOL --mode=clean rm -f liba.la libb.la
+  LT_AT_EXEC_CHECK([$bindir/main])
+done
+
+
+# Now the converse: if both the program and the library need libm, then
+# it needs to be sorted last.  (TODO)
+
+AT_CLEANUP

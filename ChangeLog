@@ -1,5 +1,9 @@
 2006-10-24  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* tests/link-order2.at: New test to show one case where ordering
+	of depdepls on the command line matters.
+	* Makefile.am: Adjust.
+
 	* tests/tagtrace.test: SKIP if `autoconf --trace' exits 63 or 1,
 	for various possible (valid) error cases.  Also output stderr,
 	to help with analysis.

@@ -403,6 +403,7 @@ TESTSUITE_AT	= tests/testsuite.at \
 		  tests/inherited_flags.at \
 		  tests/convenience.at \
 		  tests/link-order.at \
+		  tests/link-order2.at \
 		  tests/fail.at \
 		  tests/shlibpath.at \
 		  tests/static.at \
