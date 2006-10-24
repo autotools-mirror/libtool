@@ -1,5 +1,10 @@
 2006-10-24  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* NEWS: Account for recent multilib fix.
+	* tests/search-path.at: New test, to provide at least a weak
+	test.
+	* Makefile.am: Update.
+
 	* libtoolize.m4sh (func_fixup_Makefile): Fix missing
 	substitution for nonrecursive mode.  Remove otherwise-empty
 	continuation lines in the output file.
