@@ -13,6 +13,7 @@ New in 1.5.23a: 2006-??-??; CVS version 1.5.23a, Libtool team:
   as BeOS.
 * Initial support for the Sun compiler suite on GNU/Linux.
 * Improved support for GNU/kFreeBSD and GNU/NetBSD.
+* Search paths with GCC on multilib systems like x86_64 have been fixed.
 * Bug Fixes.
 
 New in 1.5.22: 2005-12-18; CVS version 1.5.21a, Libtool team:
