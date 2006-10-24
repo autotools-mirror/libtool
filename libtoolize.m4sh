@@ -336,7 +336,8 @@ func_fixup_Makefile ()
       s,libltdl/aclocal.m4,,
       s,libltdl/config-h.in,,
       s,libltdl/Makefile.am,,
-      s,libltdl/Makefile.in,,"
+      s,libltdl/Makefile.in,,
+      /^[[	 ]]*\\\\\$/d"
     case $my_filename in
       Makefile.am)
 	my_fixup_non_subpackage_script=`echo "$my_fixup_non_subpackage_script" | \
@@ -349,6 +350,7 @@ func_fixup_Makefile ()
 	  s,libltdl_,@repl_uscore@_,
 	  s,libltdl/,@repl@/,
 	  s,: libltdl/,: @repl@/,
+	  s, -Ilibltdl , -I@repl@ ,
 	  s,\\\$(libltdl_,\$(@repl_uscore@_,
 	  s,)/libltdl ,)/@repl@ ,
 	  s,@repl_uscore@,${repl_uscore},g
