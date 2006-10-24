@@ -4246,6 +4246,7 @@ need releases of Autoconf and Automake that support
 
 @example
 AM_INIT_AUTOMAKE([subdir-objects])
+AC_CONFIG_HEADERS([config.h])
 AC_PROG_CC
 AM_PROG_CC_C_O
 LT_CONFIG_LTDL_DIR([libltdl], [nonrecursive])
@@ -4253,7 +4254,10 @@ LT_WITH_LTDL
 @end example
 
 @noindent
-And add the following near the top of your @file{Makefile.am}:
+You have to use a config header, but it may have a name different than
+@file{config.h}.
+
+Also, add the following near the top of your @file{Makefile.am}:
 
 @example
 AM_CPPFLAGS =
@@ -4286,13 +4290,17 @@ mode, you should add to your @file{configure.ac}:
 
 @example
 AM_INIT_AUTOMAKE
+AC_CONFIG_HEADERS([config.h])
 LT_CONFIG_LTDL_DIR([libltdl], [recursive])
 LT_WITH_LTDL
 AC_CONFIG_FILES([libltdl/Makefile])
 @end example
 
 @noindent
-and to your @file{Makefile.am}:
+You have to use a config header, but it may have a name different than
+@file{config.h}.
+
+Also, add this to your @file{Makefile.am}:
 
 @example
 SUBDIRS = libltdl
