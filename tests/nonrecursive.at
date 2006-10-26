@@ -27,6 +27,7 @@ LT_CONFIG_LTDL_DIR([ltdl], [nonrecursive])
 AC_CONFIG_AUX_DIR([ltdl/config])
 AC_CONFIG_MACRO_DIR([ltdl/m4])
 AC_CONFIG_LIBOBJ_DIR([ltdl])
+AC_CONFIG_HEADERS([config.h:config.hin])
 AM_INIT_AUTOMAKE([foreign subdir-objects])
 AC_PROG_CC
 AM_PROG_CC_C_O
@@ -79,7 +80,7 @@ for file in argz.c lt__dirent.c lt__strl.c; do
   cp ltdl/$file $file
 done
 
-LT_AT_BOOTSTRAP([ignore], [-I ltdl/m4], [ignore], [--add-missing --copy],
+LT_AT_BOOTSTRAP([ignore], [-I ltdl/m4], [], [--add-missing --copy],
 	[], [], [all $tst_dist])
 
 AT_CHECK([test -f ltdl/libltdlc.la])
@@ -103,7 +104,7 @@ for file in argz.c lt__dirent.c lt__strl.c; do
   cp ltdl/$file $file
 done
 
-LT_AT_BOOTSTRAP([ignore], [-I ltdl/m4], [ignore], [--add-missing --copy],
+LT_AT_BOOTSTRAP([ignore], [-I ltdl/m4], [], [--add-missing --copy],
 	[], [], [all $tst_dist])
 
 AT_CHECK([test -f ltdl/libltdlc.la])
@@ -129,7 +130,7 @@ for file in argz.c lt__dirent.c lt__strl.c; do
   cp ltdl/$file $file
 done
 
-LT_AT_BOOTSTRAP([ignore], [-I ltdl/m4], [ignore], [--add-missing --copy],
+LT_AT_BOOTSTRAP([ignore], [-I ltdl/m4], [], [--add-missing --copy],
 	[], [--enable-ltdl-install --prefix=$prefix], [all install $tst_dist])
 
 AT_CHECK([test -f $prefix/lib/libltdl.la])

@@ -1,3 +1,17 @@
+2006-10-26  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Assume presence of a config header in all files, to provoke
+	test failures on all systems.
+	* libltdl/lt__alloc.c: Likewise.
+	* libltdl/libltdl/lt__dirent.h: Likewise.
+	* libltdl/libltdl/lt__glibc.h: Likewise.
+	* libltdl/libltdl/lt__private.h: Likewise.
+	* libltdl/libltdl/lt__strl.h: Likewise.
+	* tests/recursive.at: Use AC_CONFIG_HEADERS.
+	* tests/nonrecursive.at: Likewise.  Invoke autoheader.
+	* HACKING: Adjust.
+	Report by Patrick Welche.
+
 2006-10-24  Paul Eggert  <eggert@cs.ucla.edu>,
 	    Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 

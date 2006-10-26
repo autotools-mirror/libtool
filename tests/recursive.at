@@ -27,6 +27,7 @@ LT_CONFIG_LTDL_DIR([ltdl], [recursive])
 AC_CONFIG_AUX_DIR([ltdl/config])
 AC_CONFIG_MACRO_DIR([ltdl/m4])
 AC_CONFIG_LIBOBJ_DIR([ltdl])
+AC_CONFIG_HEADERS([config.h:config.hin])
 AM_INIT_AUTOMAKE([foreign])
 LT_INIT
 LT_WITH_LTDL
