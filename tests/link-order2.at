@@ -26,6 +26,7 @@ AT_SETUP([Link order of deplibs.])
 AT_KEYWORDS([libtool])
 LDFLAGS="$LDFLAGS -no-undefined"
 libdir=`pwd`/inst/lib
+bindir=`pwd`/inst/bin
 mkdir inst inst/bin inst/lib
 
 cat >a.c <<\EOF
@@ -41,9 +42,17 @@ EOF
 cat >main.c <<\EOF
 #include <math.h>
 extern double b (double);
+extern double four;
+double four = 4.0;
 int main (void)
 {
-  return fabs (b (3.1415 / 2.)) < 0.01 && fabs (sqrt (4.) - 2.) < 0.01;
+  /* The ! is to invert C true to shell true
+   * The function b should call our sin (that returns 0) and not libm's
+   * (in the latter case, b returns approximately 1)
+   * the sqrt is to force linking against libm
+   * the variable four is to prevent most compiler optimizations
+   */
+  return !( fabs (b (3.1415 / 2.)) < 0.01 && fabs (sqrt (four) - 2.) < 0.01 );
 }
 EOF
 
@@ -55,6 +64,14 @@ for static in '' -static; do
   $LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS $static -o libb.la b.lo liba.la -rpath $libdir
   $LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o main main.$OBJEXT libb.la -lm
   LT_AT_EXEC_CHECK([./main])
+  # Now test that if we reverse the link order, the program fails.
+  # The execution failure can only work on systems that actually have a libm.
+  $LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o wrong main.$OBJEXT -lm libb.la
+  case $host_os in
+  cygwin* | mingw* | pw32* | beos* ) ;;
+  *) LT_AT_EXEC_CHECK([./wrong], [1]) ;;
+  esac
+
   $LIBTOOL --mode=install cp liba.la $libdir/liba.la
   $LIBTOOL --mode=install cp libb.la $libdir/libb.la
   $LIBTOOL --mode=install cp main $bindir/main

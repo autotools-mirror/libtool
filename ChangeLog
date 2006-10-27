@@ -1,3 +1,11 @@
+2006-10-28  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* tests/link-order2.at: Add missing $bindir setting.  Prevent
+	compiler optimization of sqrt call.  Fix logic inversion and
+	add some comments about this stunt.  Add a test with reversed
+	library link order that should fail if the system has a libm.
+	Report by Patrick Welche.
+
 2006-10-26  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	Assume presence of a config header in all files, to provoke
