@@ -483,7 +483,6 @@ do
 
   --version)
     echo "\
-
 $PROGRAM (GNU $PACKAGE) $VERSION$TIMESTAMP
 
 Copyright (C) 2006  Free Software Foundation, Inc.
