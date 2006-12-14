@@ -45,7 +45,7 @@ const int v5 = 0;
 const int v6 = 1;
 const char* v7 = "\01foo";
 const char v8[] = "\01bar";
-int v9(void) { return 1; }
+int v9(void) { return v2 + 1; }
 int (*v10) (void);
 int (*v11) (void) = v9;
 int (*const v12) (void) = v9;
@@ -165,7 +165,7 @@ const int w5 = 0;
 const int w6 = 1;
 const char* w7 = "\01foo";
 const char w8[] = "\01bar";
-int w9(void) { return 1; }
+int w9(void) { return w2 + 1; }
 int (*w10) (void);
 int (*w11) (void) = w9;
 int (*const w12) (void) = w9;

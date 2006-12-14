@@ -21,7 +21,11 @@ AT_KEYWORDS([libtool])
 LDFLAGS="$LDFLAGS -no-undefined"
 
 AT_DATA([main.c],
-[[extern int inflate ();
+[[extern
+#ifdef __cplusplus
+"C"
+#endif
+int inflate ();
 int main()
 {
   return inflate ();

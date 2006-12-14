@@ -1,3 +1,11 @@
+2006-12-14  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* tests/link-order2.at: Define our override `sin' function with
+	C binding even if $CC is a C++ compiler.  Skip the test with g++
+	as its command line driver reorders `-lm'.
+	* tests/search-path.at: Declare `inflate' with C binding.
+	* tests/stresstest.at: Avoid unused variable warnings.
+
 2006-11-07  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* tests/link-order2.at: Simplify logic to be a bit more self

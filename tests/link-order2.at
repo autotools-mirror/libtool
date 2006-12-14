@@ -24,6 +24,16 @@
 
 AT_SETUP([Link order of deplibs.])
 AT_KEYWORDS([libtool])
+
+# g++ reorders `-lm' on the command line.  :-(
+AT_DATA([t.c], [[
+#if defined(__cplusplus) && defined(__GNUC__)
+choke me
+#endif
+int t = 42;
+]])
+AT_CHECK([$CC $CPPFLAGS $CFLAGS -c t.c || exit 77], [], [ignore], [ignore])
+
 LDFLAGS="$LDFLAGS -no-undefined"
 libdir=`pwd`/inst/lib
 bindir=`pwd`/inst/bin
@@ -31,11 +41,17 @@ mkdir inst inst/bin inst/lib
 
 cat >a.c <<\EOF
 /* pretend we have a better sine function */
+#ifdef __cplusplus
+extern "C"
+#endif
 double sin (double x) { return 0.0; }
 EOF
 
 cat >b.c <<\EOF
-extern double sin (double);
+#ifdef __cplusplus
+extern "C"
+#endif
+double sin (double);
 double b (double x) { return sin (x); }
 EOF
 
