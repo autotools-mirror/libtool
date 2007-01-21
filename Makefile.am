@@ -1,6 +1,6 @@
 ## Makefile.am -- Process this file with automake to produce Makefile.in
 ##
-## Copyright (C) 2003, 2004, 2005, 2006 Free Software Foundation, Inc.
+## Copyright (C) 2003, 2004, 2005, 2006, 2007 Free Software Foundation, Inc.
 ##
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -126,7 +126,7 @@ EXTRA_DIST     += bootstrap $(srcdir)/libtoolize.in $(auxdir)/ltmain.m4sh \
 		  ChangeLog.1996 ChangeLog.1997 ChangeLog.1998 \
 		  ChangeLog.1999 ChangeLog.2000 ChangeLog.2001 \
 		  ChangeLog.2002 ChangeLog.2003 ChangeLog.2004 \
-		  ChangeLog.2005
+		  ChangeLog.2005 ChangeLog.2006
 CLEANFILES     += libtool libtoolize libtoolize.tmp \
 		  $(auxdir)/ltmain.tmp $(m4dir)/ltversion.tmp
 
