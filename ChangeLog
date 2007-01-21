@@ -1,5 +1,9 @@
 2007-01-21  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* ltmain.in (compile mode): Accept suffixes matching
+	`[fF][09].', for Fortran.
+	* tests/suffix.test: Also test f90, F90, f95, F95, f03, F03.
+
 	* doc/libtool.texi: Typo fixes.
 	* NEWS: Likewise.
 
