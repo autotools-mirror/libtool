@@ -1,5 +1,10 @@
 2007-01-21  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* libltdl/m4/libtool.m4 (_LT_LINKER_SHLIBS) [cygwin, mingw]:
+	Use `lib -OUT' rather than `lib /OUT' to avoid MSYS path
+	translation mangling.  Report by Christopher Hulbert.
+	* THANKS: Update.
+
 	* libltdl/config/ltmain.m4sh (func_mode_compile): Accept
 	suffixes matching `[fF][09].', for Fortran.
 	* tests/suffix.test: Also test F90, F95, f03, F03.
