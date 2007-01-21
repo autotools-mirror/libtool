@@ -1211,7 +1211,7 @@ create a static library.
 
 @item -avoid-version
 Tries to avoid versioning (@pxref{Versioning}) for libraries and modules,
-i.e. no version information is stored and no symbolic links are created.
+i.e., no version information is stored and no symbolic links are created.
 If the platform requires versioning, this option has no effect.
 
 @item -dlopen @var{file}
@@ -2623,7 +2623,7 @@ generic pointer to the appropriate object, such as @code{&fprintf}.
 
 @deftypevar {const lt_dlsymlist *} lt_preloaded_symbols
 An array of @var{lt_symbol} structures, representing all the preloaded
-symbols linked into the program. For each @samp{-dlpreloaded} file
+symbols linked into the program. For each @samp{-dlpreopen}ed file
 there is an element with the @var{name} of the file and a @var{address}
 of @code{0}, followed by all symbols exported from this file.
 For the executable itself the special name @@PROGRAM@@ is used.
@@ -2967,7 +2967,7 @@ known names, but rather find all of the modules in a set of
 directories and load them all during initialisation.  With this function
 you can have libltdl scan the colon delimited directory list in
 @var{search_path} for candidates, and pass them, along with @var{data}
-to your own callback function, @var{func}.  If @var{seach_path} is
+to your own callback function, @var{func}.  If @var{search_path} is
 @samp{NULL}, then search all of the standard locations that
 @code{lt_dlopen} would examine.  This function will continue to make
 calls to @var{func} for each file that it discovers in @var{search_path}
@@ -3081,7 +3081,7 @@ foo1_la_LDFLAGS = -module
 
 
 @node Thread Safety in libltdl
-@section Using libtldl in a multi threaded environment
+@section Using libltdl in a multi threaded environment
 
 Using the @code{lt_dlmutex_register()} function, and by providing some
 appropriate callback function definitions, libltdl can be used in a
@@ -4136,9 +4136,9 @@ initialization and postprocessing (to setup/release variables for use
 with eval echo libname_spec etc.) and a case statement that decides
 which method is being used.  This is the real code... I wish I could
 condense it a little more, but I don't think I can without function
-calls.  I've mostly optimized it (moved things out of loops, etc) but
+calls.  I've mostly optimized it (moved things out of loops, etc.) but
 there is probably some fat left.  I thought I should stop while I was
-ahead, work on whatever bugs you discover, etc before thinking about
+ahead, work on whatever bugs you discover, etc.@: before thinking about
 more than obvious optimizations.
 
 @node Tested platforms
@@ -4319,7 +4319,7 @@ simply set shell variables, then sourced the libtool backend,
 inlined the contents of @code{ltmain.sh} into the generated
 @code{libtool}, which improved performance on many systems.  The tests
 that @file{ltconfig} used to perform are now kept in @file{libtool.m4}
-where thay can be written using Autoconf.  This has the runtime
+where they can be written using Autoconf.  This has the runtime
 performance benefits of inlined @code{ltmain.sh}, @emph{and} improves
 the build time a little while considerably easing the amount of raw
 shell code that used to need maintaining.
@@ -4608,7 +4608,7 @@ means the same as @samp{yes}, but documents that we are not really sure
 about it.
 @samp{yes} means that it is possible both to @code{dlopen} and to
 link against a library without 'lib' prefix,
-i.e. it requires @var{hardcode_direct} to be @samp{yes}.
+i.e., it requires @var{hardcode_direct} to be @samp{yes}.
 @end defvar
 
 @defvar need_version

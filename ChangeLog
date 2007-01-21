@@ -1,3 +1,8 @@
+2007-01-21  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* doc/libtool.texi: Typo fixes.
+	* NEWS: Likewise.
+
 2006-12-10  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* ltmain.in (--version): Do not output leading blank line,
@@ -4344,7 +4349,7 @@
 	* cdemo/configure.ac: Ditto.
 	* demo/configure.ac: Ditto.
 	* depdemo/configure.ac: Ditto.
-	* libtldl/configure.ac: Ditto.
+	* libltdl/configure.ac: Ditto.
 	* mdemo/configure.ac: Ditto.
 	* pdemo/configure.ac: Ditto.
 	* tagdemo/configure.ac: Ditto.

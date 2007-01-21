@@ -2066,7 +2066,7 @@
 	tests/mdemo-exec.test: updated accordingly
 
 	* NEWS: Added Thomas Tanner and Gary V. Vaughan to the list of new 
-	maintainers.  Detailed expected failures of libtldl+mdemo.  Listed 
+	maintainers.  Detailed expected failures of libltdl+mdemo.  Listed 
 	recent ports.  Added full URL for the home page.  Note that
 	libtool C program is unusable.
 
@@ -2352,7 +2352,7 @@
 
 1998-11-18  Alexandre Oliva  <oliva@dcc.unicamp.br>
 
-	* NEWS: -module and libtldl
+	* NEWS: -module and libltdl
 	* mdemo/Makefile.am: ../libltdl is within $(srcdir)
 
 1998-11-18  Thomas Tanner  <tanner@gmx.de>
