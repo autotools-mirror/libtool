@@ -1,5 +1,10 @@
 2007-01-21  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* libtool.m4 (AC_LIBTOOL_PROG_LD_SHLIBS) [cygwin, mingw]:
+	Use `lib -OUT' rather than `lib /OUT' to avoid MSYS path
+	translation mangling.  Report by Christopher Hulbert.
+	* THANKS: Update.
+
 	* ltmain.in (compile mode): Accept suffixes matching
 	`[fF][09].', for Fortran.
 	* tests/suffix.test: Also test f90, F90, f95, F95, f03, F03.
