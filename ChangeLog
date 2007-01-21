@@ -1,8 +1,12 @@
 2007-01-21  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* libltdl/config/ltmain.m4sh (func_mode_compile): Accept
+	suffixes matching `[fF][09].', for Fortran.
+	* tests/suffix.test: Also test F90, F95, f03, F03.
+
 	* Makefile.am (EXTRA_DIST): Add ChangeLog.2006.
-	* ChangeLog.2006: New, rotated, from..
-	* ChangeLog: ..here.
+	* ChangeLog.2006: New, rotated, from...
+	* ChangeLog: ...here.
 
 2007-01-21  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 

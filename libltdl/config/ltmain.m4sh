@@ -4,8 +4,7 @@ m4_divert_push([SCRIPT])# @configure_input@
 # ltmain.sh (GNU @PACKAGE@@TIMESTAMP@) @VERSION@
 # Written by Gordon Matzigkeit <gord@gnu.ai.mit.edu>, 1996
 
-# Copyright (C) 1996, 1997, 1998, 1999, 2000, 2001, 2003, 2004, 2005, 2006
-# Free Software Foundation, Inc.
+# Copyright (C) 1996, 1997, 1998, 1999, 2000, 2001, 2003, 2004, 2005, 2006, 2007 Free Software Foundation, Inc.
 # This is free software; see the source for copying conditions.  There is NO
 # warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
@@ -1312,7 +1311,7 @@ func_mode_compile ()
     *.class) xform=class ;;
     *.cpp) xform=cpp ;;
     *.cxx) xform=cxx ;;
-    *.f9?) xform=f9. ;;
+    *.[[fF]][[09]]?) xform='[[fF]][[09]].' ;;
     *.for) xform=for ;;
     *.java) xform=java ;;
     *.obj) xform=obj ;;
