@@ -2249,7 +2249,7 @@ overwrite existing files.
 Display a help message and exit.
 
 @item --ltdl [@var{TARGET-DIRECTORY-NAME}]
-Install libltdl in a the @var{TARGET-DIRECTORY-NAME} subdirectory of
+Install libltdl in the @var{TARGET-DIRECTORY-NAME} subdirectory of
 your package.  Normally, the directory is extracted from the argument
 to @code{LT_CONFIG_LTDL_DIR} in @file{configure.ac}, though you can
 also specify a subdirectory name here if you are not using Autoconf
@@ -2310,7 +2310,7 @@ SUBDIRS += libltdl
 
 @item --subproject
 If passed in conjunction with @option{--ltdl}, this option will cause
-the @command{libtoolize} installed @samp{libltd} to be set up for
+the @command{libtoolize} installed @samp{libltdl} to be set up for
 independent configuration and compilation as a self-contained
 subproject.  To make use of it, you should arrange for your build to
 call @command{libltdl/configure}, and then run @command{make} in the
@@ -3142,7 +3142,7 @@ though Libtool takes care of that detail if you use
 @deftypevar {const lt_dlsymlist *} lt_preloaded_symbols
 An array of @var{lt_symbol} structures, representing all the preloaded
 symbols linked into the program proper.  For each module
-@option{-dlpreloaded} by the Libtool linked program
+@option{-dlpreopen}ed by the Libtool linked program
 there is an element with the @var{name} of the module and a @var{address}
 of @code{0}, followed by all symbols exported from this file.
 For the executable itself the special name @samp{@@PROGRAM@@} is used.
@@ -3328,7 +3328,7 @@ noinst_LTLIBRARIES      = intrinsics.la
 intrinsics_la_LIBADD    = ../libloader/libinterface.la
 
 ../libloader/libinterface.la:
-        cd ../libloader; $(MAKE) $(AM_MAKEFLAGS) libinterface.la
+        cd ../libloader && $(MAKE) $(AM_MAKEFLAGS) libinterface.la
 @end example
 
 @cindex -weak option
@@ -3478,14 +3478,14 @@ The early releases of libltdl used some symbols that violated the
 and have been replaced by those described here.  If you have code that
 relies on the old deprecated symbol names, defining
 @samp{LT_NON_POSIX_NAMESPACE} before you include @file{ltdl.h} provides
-conversion macros.  Whichever set of symbols you use, the new api is
+conversion macros.  Whichever set of symbols you use, the new API is
 not binary compatible with the last, so you will need to recompile
 your application in order to use this version of libltdl.
 
 @noindent
 Note that libltdl is not well tested in a multithreaded environment,
 though the intention is that it should work (@pxref{Thread Safety
-in libltdl, , Using libtldl in a multi threaded environment}).  It was
+in libltdl, , Using libltdl in a multi threaded environment}).  It was
 reported that @sc{gnu}/Linux's glibc 2.0's @code{dlopen} with
 @samp{RTLD_LAZY} (which libltdl uses by default) is not thread-safe,
 but this problem is supposed to be fixed in glibc 2.1.  On the other
@@ -3654,7 +3654,7 @@ known names, but rather find all of the modules in a set of
 directories and load them all during initialisation.  With this function
 you can have libltdl scan the @code{LT_PATHSEP_CHAR}-delimited directory list
 in @var{search_path} for candidates, and pass them, along with
-@var{data} to your own callback function, @var{func}.  If @var{seach_path} is
+@var{data} to your own callback function, @var{func}.  If @var{search_path} is
 @samp{NULL}, then search all of the standard locations that
 @code{lt_dlopen} would examine.  This function will continue to make
 calls to @var{func} for each file that it discovers in @var{search_path}
@@ -3754,7 +3754,7 @@ foo1_la_LDFLAGS = -module
 
 
 @node Thread Safety in libltdl
-@section Using libtldl in a multi threaded environment
+@section Using libltdl in a multi threaded environment
 
 Libltdl provides a wrapper around whatever dynamic run-time object
 loading mechanisms are provided by the host system, many of which are
@@ -4230,7 +4230,7 @@ manually specifying the mode to @command{libtoolize} explicitly.
 @samp{subproject} depending on how you wish for your project to build
 @code{libltdl}.  In order for @command{libtoolize} to detect
 @var{LTDL-MODE} correctly, if you supply one of these arguments, they
-must be given literally (i.e. macros or shell variables that expand to
+must be given literally (i.e., macros or shell variables that expand to
 the correct @var{LTDL-MODE} will not work):
 
 @table @samp
@@ -4945,9 +4945,9 @@ initialization and postprocessing (to setup/release variables for use
 with eval echo libname_spec etc.) and a case statement that decides
 the method that is being used.  This is the real code@dots{} I wish I could
 condense it a little more, but I don't think I can without function
-calls.  I've mostly optimized it (moved things out of loops, etc) but
+calls.  I've mostly optimized it (moved things out of loops, etc.) but
 there is probably some fat left.  I thought I should stop while I was
-ahead, work on whatever bugs you discover, etc before thinking about
+ahead, work on whatever bugs you discover, etc.@: before thinking about
 more than obvious optimizations.
 
 @node Tested platforms

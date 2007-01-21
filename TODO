@@ -70,7 +70,7 @@ GNU Libtool
   [support #103719] for CC.
 
 
-1.2. libtldl
+1.2. libltdl
 ------------
 
 * Change libltdl interface: add separate functions for function

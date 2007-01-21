@@ -1,3 +1,8 @@
+2007-01-21  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* doc/libtool.texi: Typo fixes.
+	* TODO: Likewise.
+
 2006-12-14  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* tests/link-order2.at: Define our override `sin' function with

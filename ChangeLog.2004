@@ -309,7 +309,7 @@
 2004-11-23  Peter O'Gorman  <peter@pogma.com>
 
 	Do not require that libtoolize --ltdl=/some/path end in libltdl.
-	Move most libltdl headers to libtldl/libltdl to allow
+	Move most libltdl headers to libltdl/libltdl to allow
 	`#include <libltdl/ltdl.h>' to always work:
 
 	* libltdl/Makefile.am, libltdl/loaders/Makefile.am: Look for includes
@@ -476,7 +476,7 @@
 
 2004-11-03  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
-	* libtldl/ltdl.c (parse_dotla_file): Fix memleak.
+	* libltdl/ltdl.c (parse_dotla_file): Fix memleak.
 
 	* ltmain.m4sh (cwrappersource): Cast isalpha arguments correctly.
 
@@ -2692,7 +2692,7 @@
 	* libltdl/ltdl.h (LT_PARAMS): Removed.  Changed all users to
 	ANSI prototypes.
 	(lt_ptr): Keep backwards compatibility stub.
-	* libtldl/ltdl.c, libltdl/ltdl.h: Use ANSI function declarations
+	* libltdl/ltdl.c, libltdl/ltdl.h: Use ANSI function declarations
 	throughout.  s/lt_ptr/void */g.
 
 2004-04-08  Fredrik Estreen  <estreen@algonet.se>

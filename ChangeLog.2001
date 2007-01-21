@@ -829,7 +829,7 @@
 	* cdemo/configure.ac: Ditto.
 	* demo/configure.ac: Ditto.
 	* depdemo/configure.ac: Ditto.
-	* libtldl/configure.ac: Ditto.
+	* libltdl/configure.ac: Ditto.
 	* mdemo/configure.ac: Ditto.
 	* pdemo/configure.ac: Ditto.
 	* tagdemo/configure.ac: Ditto.
