@@ -1,3 +1,7 @@
+2007-01-24  Reuben Thomas <rrt@sc3d.org>  (tiny change)
+
+	* doc/libtool.texi (Inter-library dependencies): Fix typo.
+
 2007-01-21  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* libtool.m4 (AC_LIBTOOL_PROG_LD_SHLIBS) [cygwin, mingw]:
