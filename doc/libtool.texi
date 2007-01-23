@@ -2984,7 +2984,7 @@ Some platforms, such as AIX, do not even allow you this
 flexibility.  In order to build a shared library, it must be entirely
 self-contained (that is, have references only to symbols that are found
 in the @samp{.lo} files or the specified @samp{-l} libraries), and you
-need to specify the @var{-no-undefined} flag.  By default, libtool
+need to specify the @option{-no-undefined} flag.  By default, libtool
 builds only static libraries on these kinds of platforms.
 
 The simple-minded inter-library dependency tracking code of libtool
