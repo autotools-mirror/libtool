@@ -172,7 +172,8 @@ Using libltdl
 
 Using libtool with other languages
 
-* C++ libraries::
+* C++ libraries::               Writing libraries for C++
+* Tags::                        Tags
 
 Troubleshooting
 
@@ -1065,6 +1066,9 @@ be executed by libtool.
 @item --features
 Display basic configuration options.  This provides a way for packages
 to determine whether shared or static libraries will be built.
+
+@item --tag=@var{tag}
+Use configuration variables from tag @var{tag} (@pxref{Tags}).
 
 @item --preserve-dup-deps
 Do not remove duplicate dependencies in libraries.  When building packages
@@ -3652,7 +3656,8 @@ This chapter describes how libtool interacts with other languages,
 and what special considerations you need to make if you do not use C.
 
 @menu
-* C++ libraries::
+* C++ libraries::               Writing libraries for C++
+* Tags::                        Tags
 @end menu
 
 @node C++ libraries
@@ -3691,6 +3696,42 @@ the C++ compiler to compile and link C++ programs and libraries.  In
 some instances the @code{main()} function of a program must also be
 compiled with the C++ compiler for static C++ objects to be properly
 initialized.
+
+
+@node Tags
+@section Tags
+@cindex tag names
+@cindex language names
+@cindex inferring tags
+
+Libtool supports multiple languages through the use of tags.  Technically
+a tag corresponds to a set of configuration variables associated with a
+language.  These variables tell @command{libtool} how it should create
+objects and libraries for each language.
+
+Tags are defined at @command{configure}-time for each language activated
+in the package.  Here is the correspondence between language names and tags
+names.
+
+@multitable {Windows Resource} {Tag name}
+@item Language name    @tab Tag name
+@item C                @tab CC
+@item C++              @tab CXX
+@item Java             @tab GCJ
+@item Fortran 77       @tab F77
+@item Windows Resource @tab RC
+@end multitable
+
+@command{libtool} tries to automatically infer which tag to use from
+the compiler command being used to compile or link.  If it can't infer
+a tag, then it defaults to the configuration for the @code{C} language.
+
+The tag can also be specified using @command{libtool}'s
+@option{--tag=@var{tag}} option (@pxref{Invoking libtool}).  It is a good
+idea to do so in @file{Makefile} rules, because that will allow users to
+substitute the compiler without relying on @command{libtool} inference
+heuristics.  When no tag is specified, @command{libtool} will default
+to @code{CC}; this tag always exists.
 
 
 @node Troubleshooting
