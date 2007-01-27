@@ -1,5 +1,5 @@
 /* foo.c -- trivial test function for libfoo
-   Copyright (C) 1996-1999 Free Software Foundation, Inc.
+   Copyright (C) 1996-1999, 2007 Free Software Foundation, Inc.
    Gordon Matzigkeit <gord@gnu.ai.mit.edu>, 1996
    This file is part of GNU Libtool.
 
@@ -23,10 +23,7 @@ USA. */
 #undef _LIBFOO_COMPILATION_
 
 #include <stdio.h>
-
-#ifdef HAVE_MATH_H
 #include <math.h>
-#endif
 
 /* Give a global variable definition. */
 int nothing = FOO_RET;

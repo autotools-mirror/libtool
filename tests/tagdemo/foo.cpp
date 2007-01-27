@@ -1,6 +1,6 @@
 // -*- C++ -*-
 //    foo.cpp -- trivial test library
-//    Copyright (C) 1998-2000 Free Software Foundation, Inc.
+//    Copyright (C) 1998-2000, 2007 Free Software Foundation, Inc.
 //    Originally by Thomas Tanner <tanner@ffii.org>
 //    This file is part of GNU Libtool.
 
@@ -30,9 +30,7 @@ namespace std { }
 using namespace std;
 #endif
 
-#ifdef HAVE_MATH_H
 #include <math.h>
-#endif
 
 // Our C functions.
 int

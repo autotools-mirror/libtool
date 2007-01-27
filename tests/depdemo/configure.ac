@@ -1,5 +1,5 @@
 ## Process this file with autoconf to create configure. -*- autoconf -*-
-# Copyright (C) 2001, 2003, 2004, 2005 Free Software Foundation, Inc.
+# Copyright (C) 2001, 2003, 2004, 2005, 2007 Free Software Foundation, Inc.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -37,7 +37,6 @@ AM_INIT_AUTOMAKE
 ## compiler checks. ##
 ## ---------------- ##
 AC_PROG_CC
-AC_EXEEXT
 
 ## ----------------------- ##
 ## Libtool initialisation. ##
@@ -50,12 +49,6 @@ AC_SUBST([LIBTOOL_DEPS])
 ## ------------------------------- ##
 STATIC="\`${CONFIG_SHELL} ./libtool --features | ${SED} -n -e '/enable static/s/^.*\$\$/-static/p'\`"
 AC_SUBST([STATIC])
-
-## ------------------------------ ##
-## C headers required by depdemo. ##
-## ------------------------------ ##
-AC_CHECK_HEADERS([math.h])
-
 
 ## ------------------------------ ##
 ## Libraries required by depdemo. ##

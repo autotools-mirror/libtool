@@ -1,5 +1,5 @@
 ## Process this file with autoconf to create configure. -*- autoconf -*-
-# Copyright (C) 2001, 2003, 2005 Free Software Foundation, Inc.
+# Copyright (C) 2001, 2003, 2005, 2007 Free Software Foundation, Inc.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -51,19 +51,6 @@ dnl Some Intel ifc/ifort do not understand .f95.  :-/
 AC_FC_SRCEXT([f90])
 dnl Yes, we want free form Fortran!
 AC_FC_FREEFORM
-AC_LANG_POP
-
-
-# As of the writing of this demo, GNU Autoconf's AC_OBJEXT and
-# AC_EXEEXT macros only works for C compilers!
-# Libtool's setup macro calls AC_OBJEXT and AC_EXEEXT without setting
-# the test language to C.  We do it before any libtool setup macros are
-# called so that the proper values are cached beforehand.  We also do
-# it before any linker flags (LDFLAGS) are set so that fortran specific
-# ones don't break the tests.
-AC_LANG_PUSH([C])
-AC_OBJEXT
-AC_EXEEXT
 AC_LANG_POP
 
 ## ----------------------- ##

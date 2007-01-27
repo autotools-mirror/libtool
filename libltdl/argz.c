@@ -1,5 +1,5 @@
 /* argz.c -- argz implementation for non-glibc systems
-   Copyright (C) 2004, 2006 Free Software Foundation, Inc.
+   Copyright (C) 2004, 2006, 2007 Free Software Foundation, Inc.
    Originally by Gary V. Vaughan  <gary@gnu.org>
 
    NOTE: The canonical source of this file is maintained with the
@@ -40,15 +40,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 #include <stdlib.h>
 #include <sys/types.h>
 #include <errno.h>
-
-#if defined(HAVE_STRING_H)
-#  include <string.h>
-#elif defined(HAVE_STRINGS_H)
-#  include <strings.h>
-#endif
-#if defined(HAVE_MEMORY_H)
-#  include <memory.h>
-#endif
+#include <string.h>
 
 #define EOS_CHAR '\0'
 

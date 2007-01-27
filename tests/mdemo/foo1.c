@@ -1,5 +1,5 @@
 /* foo1.c -- trivial test library
-   Copyright (C) 1998-1999 Free Software Foundation, Inc.
+   Copyright (C) 1998-1999, 2007 Free Software Foundation, Inc.
    Originally by Thomas Tanner <tanner@ffii.org>
    This file is part of GNU Libtool.
 
@@ -20,10 +20,7 @@ USA. */
 
 #include "foo.h"
 #include <stdio.h>
-
-#ifdef HAVE_MATH_H
 #include <math.h>
-#endif
 
 #define nothing foo1_LTX_nothing
 #define foo1	foo1_LTX_foo1

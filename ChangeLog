@@ -1,3 +1,36 @@
+2007-01-27  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Assume C89 for included headers, and throughout the testsuite.
+
+	* NEWS: Update.
+	* libltdl/argz.c: Do not include strings.h nor memory.h, include
+	string.h unconditionally.
+	Patch by Simon Josefsson <jas@extundo.com>.
+	* libltdl/libltdl/lt__private.h: Likewise.
+	* libltdl/m4/ltdl.m4 (LTDL_INIT): Do not check for string.h,
+	strings.h, memory.h.
+	* tests/cdemo/configure.ac: Assume presence of math.h.
+	* tests/cdemo/foo.c: Likewise.
+	* tests/demo/configure.ac: Likewise for math.h, string.h.
+	Assume 'const'.  Drop obsolete AC_EXEEXT.
+	* tests/demo/dlmain.c: Likewise.
+	* tests/demo/foo.c: Likewise.
+	* tests/depdemo/configure.ac: Likewise.
+	* tests/depdemo/l4/l4.c: Likewise.
+	* tests/f77demo/configure.ac: Likewise.  Also drop obsolete
+	AC_OBJEXT.
+	* tests/fcdemo/configure.ac: Likewise.
+	* tests/mdemo/configure.ac: Likewise.
+	* tests/mdemo/foo1.c: Likewise.
+	* tests/mdemo/foo2.c: Likewise.
+	* tests/mdemo2/configure.ac: Likewise.
+	* tests/pdemo/configure.ac: Likewise.
+	* tests/pdemo/longer_file_name_dlmain.c:
+	* tests/pdemo/longer_file_name_foo.c: Likewise.
+	* tests/pdemo/longer_file_name_foo2.c: Likewise.
+	* tests/tagdemo/configure.ac: Likewise.
+	* tests/tagdemo/foo.cpp: Likewise.
+
 2007-01-24  Reuben Thomas <rrt@sc3d.org>  (tiny change)
 
 	* doc/libtool.texi (Inter-library dependencies): Fix typo.

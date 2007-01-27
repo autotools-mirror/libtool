@@ -1,5 +1,5 @@
 /* dlmain.c -- hello test program that uses simulated dynamic linking
-   Copyright (C) 1996-1999, 2004, 2006 Free Software Foundation, Inc.
+   Copyright (C) 1996-1999, 2004, 2006, 2007 Free Software Foundation, Inc.
    This file is part of GNU Libtool.
 
 This program is free software; you can redistribute it and/or modify
@@ -19,10 +19,7 @@ USA. */
 
 #include "foo.h"
 #include <stdio.h>
-
-#ifdef HAVE_STRING_H
 #include <string.h>
-#endif
 
 #define lt_preloaded_symbols lt__PROGRAM__LTX_preloaded_symbols
 

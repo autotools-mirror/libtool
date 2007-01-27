@@ -1,6 +1,6 @@
 /* l4.c -- trivial test library
    Copyright (C) 1998-1999 Thomas Tanner <tanner@ffii.org>
-   Copyright (C) 2006 Free Software Foundation, Inc.
+   Copyright (C) 2006, 2007 Free Software Foundation, Inc.
    This file is part of GNU Libtool.
 
 This program is free software; you can redistribute it and/or modify
@@ -22,10 +22,7 @@ USA. */
 
 #include "l3/l3.h"
 #include <stdio.h>
-
-#ifdef HAVE_MATH_H
 #include <math.h>
-#endif
 
 int	var_l4 = 0;
 

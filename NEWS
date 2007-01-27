@@ -36,6 +36,9 @@ New in 1.9h: 2005-??-??; CVS version 2.1a, Libtool team:
 * Initial support for the Sun compiler suite on GNU/Linux.
 * Improved support for GNU/kFreeBSD and GNU/NetBSD.
 * Search paths with GCC on multilib systems like x86_64 have been fixed.
+* The Libtool and libltdl macros and the testsuite now assume a C89
+  environment, consequently do not test for headers such as string.h,
+  strings.h, memory.h any more.
 * Bug fixes.
 
 New in 1.9f: 2004-10-23; CVS version 1.9e, Libtool team:

@@ -1,11 +1,11 @@
 # ltdl.m4 - Configure ltdl for the target system. -*-Autoconf-*-
-# Copyright (C) 1999-2006 Free Software Foundation, Inc.
+# Copyright (C) 1999-2007 Free Software Foundation, Inc.
 #
 # This file is free software; the Free Software Foundation gives
 # unlimited permission to copy and/or distribute it, with or without
 # modifications, as long as this notice is preserved.
 
-# serial 10 LTDL_INIT
+# serial 11 LTDL_INIT
 
 # LT_CONFIG_LTDL_DIR(DIRECTORY, [LTDL-MODE])
 # ------------------------------------------
@@ -285,9 +285,8 @@ m4_ifset([AH_HEADER],
 	[])])])
 AC_SUBST([LT_CONFIG_H])
 
-AC_CHECK_HEADERS([memory.h unistd.h dl.h sys/dl.h dld.h mach-o/dyld.h dirent.h],
+AC_CHECK_HEADERS([unistd.h dl.h sys/dl.h dld.h mach-o/dyld.h dirent.h],
 	[], [], [AC_INCLUDES_DEFAULT])
-AC_CHECK_HEADERS([string.h strings.h], [break], [], [AC_INCLUDES_DEFAULT])
 
 AC_CHECK_FUNCS([closedir opendir readdir], [], [AC_LIBOBJ([lt__dirent])])
 AC_CHECK_FUNCS([strlcat strlcpy], [], [AC_LIBOBJ([lt__strl])])

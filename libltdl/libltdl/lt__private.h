@@ -1,5 +1,5 @@
 /* lt__private.h -- internal apis for libltdl
-   Copyright (C) 2004, 2005, 2006 Free Software Foundation, Inc.
+   Copyright (C) 2004, 2005, 2006, 2007 Free Software Foundation, Inc.
    Originally by Gary V. Vaughan  <gary@gnu.org>
 
    NOTE: The canonical source of this file is maintained with the
@@ -40,20 +40,10 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 #include <ctype.h>
 #include <assert.h>
 #include <errno.h>
+#include <string.h>
 
 #if defined(HAVE_UNISTD_H)
 #  include <unistd.h>
-#endif
-
-#if defined(HAVE_STRING_H)
-#  include <string.h>
-#else
-#  if defined(HAVE_STRINGS_H)
-#    include <strings.h>
-#  endif
-#endif
-#if defined(HAVE_MEMORY_H)
-#  include <memory.h>
 #endif
 
 /* Import internal interfaces...  */

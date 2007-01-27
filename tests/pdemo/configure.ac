@@ -1,5 +1,5 @@
 ## Process this file with autoconf to create configure. -*- autoconf -*-
-# Copyright (C) 2001, 2003, 2004, 2005 Free Software Foundation, Inc.
+# Copyright (C) 2001, 2003, 2004, 2005, 2007 Free Software Foundation, Inc.
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -37,7 +37,6 @@ AM_INIT_AUTOMAKE
 ## C compiler checks. ##
 ## ------------------ ##
 AC_PROG_CC
-AC_C_CONST
 
 
 ## ----------------------- ##
@@ -54,12 +53,6 @@ case $lt_cv_sys_global_symbol_pipe in
   ?*) binary_helldl=yes ;;
 esac
 AM_CONDITIONAL([BINARY_HELLDL], [test "X$binary_helldl" = Xyes])
-
-
-## ---------------------------- ##
-## C headers required by pdemo. ##
-## ---------------------------- ##
-AC_CHECK_HEADERS([string.h math.h])
 
 
 ## ---------------------------- ##
