@@ -918,7 +918,7 @@ lt_dlmutex_register (lock, unlock, seterror, geterror)
      lt_dlmutex_seterror *seterror;
      lt_dlmutex_geterror *geterror;
 {
-  lt_dlmutex_unlock *old_unlock = unlock;
+  lt_dlmutex_unlock *old_unlock = lt_dlmutex_unlock_func;
   int		     errors	= 0;
 
   /* Lock using the old lock() callback, if any.  */
@@ -929,6 +929,7 @@ lt_dlmutex_register (lock, unlock, seterror, geterror)
     {
       lt_dlmutex_lock_func     = lock;
       lt_dlmutex_unlock_func   = unlock;
+      lt_dlmutex_seterror_func = seterror;
       lt_dlmutex_geterror_func = geterror;
     }
   else

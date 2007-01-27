@@ -1,3 +1,9 @@
+2007-01-27  James Su <james.su@gmail.com>
+
+	* libltdl/ltdl.c (lt_dlmutex_register): Fix usage of old unlock
+	function.  Also replace the seterror function.
+	* THANKS: Update.
+
 2007-01-24  Reuben Thomas <rrt@sc3d.org>  (tiny change)
 
 	* doc/libtool.texi (Inter-library dependencies): Fix typo.
