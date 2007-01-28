@@ -1,3 +1,9 @@
+2007-01-28  Charles Wilson  <libtool@cwilson.fastmail.fm>
+
+	* libltdl/libltdl/lt__private.h (LT_GLOBAL_DATA) [__CYGWIN__]:
+	Also define on Cygwin.
+	* libltdl/libltdl/lt_system.h (LT_SCOPE) [__CYGWIN__]: Likewise.
+
 2007-01-28  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* libltdl/m4/libtool.m4 (_LT_LINKER_SHLIBS) [ cygwin, mingw ]

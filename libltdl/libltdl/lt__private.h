@@ -59,10 +59,17 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 #  include <dmalloc.h>
 #endif
 
-#if defined(DLL_EXPORT)
-#  define LT_GLOBAL_DATA	__declspec(dllexport)
-#else
-#  define LT_GLOBAL_DATA
+/* DLL building support on win32 hosts;  mostly to workaround their
+   ridiculous implementation of data symbol exporting. */
+#ifndef LT_GLOBAL_DATA
+# if defined(__WINDOWS__) || defined(__CYGWIN__)
+#  if defined(DLL_EXPORT)	/* defined by libtool (if required) */
+#   define LT_GLOBAL_DATA	__declspec(dllexport)
+#  endif
+# endif
+# ifndef LT_GLOBAL_DATA
+#  define LT_GLOBAL_DATA	/* static linking or !__WINDOWS__ */
+# endif
 #endif
 
 #ifndef __attribute__

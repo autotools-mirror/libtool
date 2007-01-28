@@ -97,11 +97,12 @@ Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 /* DLL building support on win32 hosts;  mostly to workaround their
    ridiculous implementation of data symbol exporting. */
 #if !defined(LT_SCOPE)
-#  if defined(__WINDOWS__)
+#  if defined(__WINDOWS__) || defined(__CYGWIN__)
 #    if defined(DLL_EXPORT)		/* defined by libtool (if required) */
 #      define LT_SCOPE	extern __declspec(dllexport)
 #    endif
 #    if defined(LIBLTDL_DLL_IMPORT)	/* define if linking with this dll */
+       /* note: cygwin/mingw compilers can rely instead on auto-import */
 #      define LT_SCOPE	extern __declspec(dllimport)
 #    endif
 #  endif
