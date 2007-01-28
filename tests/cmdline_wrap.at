@@ -1,0 +1,37 @@
+# Hand crafted tests for GNU Libtool.                         -*- Autotest -*-
+# Copyright 2007 Free Software Foundation, Inc.
+
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2, or (at your option)
+# any later version.
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+# 02110-1301, USA.
+
+# cmdline_wrap.test - make sure libtool works when it needs to wrap
+# command lines.  We simulate this by setting max_cmd_len very low.
+
+AT_SETUP([Run tests with low max_cmd_len])
+AT_KEYWORDS([recursive])
+AT_CAPTURE_FILE([testsuite.log])
+
+sed 's,max_cmd_len=.*,max_cmd_len="24",' < $LIBTOOL > libtool
+chmod +x libtool
+LIBTOOL=`pwd`/libtool
+export LIBTOOL
+# run the suite in a subdirectory, otherwise the two suites will compete
+# for the output file `testsuite.log'.
+mkdir tests
+cd tests
+AT_CHECK([$CONFIG_SHELL $abs_srcdir/testsuite -k libtool $INNER_TESTSUITEFLAGS],
+	 [], [ignore], [ignore])
+
+AT_CLEANUP

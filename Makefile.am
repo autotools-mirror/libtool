@@ -418,7 +418,8 @@ TESTSUITE_AT	= tests/testsuite.at \
 		  tests/template.at \
 		  tests/early-libtool.at \
 		  tests/deplibs-ident.at \
-		  tests/stresstest.at
+		  tests/stresstest.at \
+		  tests/cmdline_wrap.at
 
 EXTRA_DIST     += $(srcdir)/$(TESTSUITE) $(TESTSUITE_AT) $(srcdir)/tests/package.m4
 

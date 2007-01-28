@@ -1,3 +1,23 @@
+2007-01-28  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Introduce a new test keyword `recursive' for tests that create a
+	modified `libtool' script and run the suite on this script.  All
+	tests with the keyword `libtool' are (by definition) suitable to
+	be used here.
+
+	* tests/cmdline_wrap.at: New test.
+	* Makefile.am: Adjust.
+	* tests/testsuite.at (LT_ESCAPE): New macro: clone of Autoconf
+	AS_ESCAPE that does not escape `$'.
+	(LT_AT_CHECK): New macro: print a command-to-be-run while
+	expanding parameters but nothing else.
+	* tests/stresstest.at: Use LT_AT_CHECK.  Create some files to
+	expose erroneous globbing errors with `-export-symbols-regex',
+	similar to those reported by Charles Wilson.  Use `eval' and
+	adjusted quoting so the expansion doesn't already happen in the
+	testsuite commands.
+	* HACKING: Update.
+
 2007-01-27  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	Assume C89 for included headers, and throughout the testsuite.

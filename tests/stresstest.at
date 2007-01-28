@@ -1,5 +1,5 @@
 # Hand crafted tests for GNU Libtool.                         -*- Autotest -*-
-# Copyright 2005 Free Software Foundation, Inc.
+# Copyright 2005, 2006, 2007 Free Software Foundation, Inc.
 
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -22,8 +22,8 @@
 # Note: This test is experimental, and might be too strict for some systems.
 
 AT_BANNER([Libtool stress test.])
-AT_KEYWORDS([libtool])
 AT_SETUP([Link option thorough search test])
+AT_KEYWORDS([libtool])
 eval `$LIBTOOL --config | $EGREP '^(CC|objdir|allow_undefined_flag)='`
 
 mkdir sub sub2 sub3 2>/dev/null
@@ -205,25 +205,28 @@ case $allow_undefined_flag in
   *)           undef_opts='"" -no-undefined' ;;
 esac
 
+# expose problems with the regex:
+touch vfoo v.bar
+
 for l1 in $undef_opts
 do
-  for l2 in '' '-export-symbols-regex v.*' '-export-symbols asyms'
+  for l2 in '' '-export-symbols-regex "v.*"' '-export-symbols asyms'
   do
     for l3 in '' '-rpath /nonexistent'
     do
       linkargs="$l1 $l2 $l3"
       for rel in '' ./ `pwd`/
       do
-	AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o "$rel"sub2/liba.la "$rel"sub/a.lo $linkargs],
+	LT_AT_CHECK([eval '$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o "$rel"sub2/liba.la "$rel"sub/a.lo' $linkargs],
 	         [0],[ignore],[ignore])
 	for st in '' '-static'
 	do
-	  AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS $st -o "$rel"main "$rel"main.lo "$rel"sub2/liba.la],
+	  LT_AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS $st -o "$rel"main "$rel"main.lo "$rel"sub2/liba.la],
 	  	   [0],[ignore],[ignore])
 	  LT_AT_EXEC_CHECK([./main],[0])
 	  for l10 in '' '-export-symbols dlselfsyms'
 	  do
-	    AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS $st -o "$rel"sub3/dlself "$rel"sub3/dlself.lo "$rel"sub2/liba.la sub/b.lo -dlopen self $l10],
+	    LT_AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS $st -o "$rel"sub3/dlself "$rel"sub3/dlself.lo "$rel"sub2/liba.la sub/b.lo -dlopen self $l10],
 	    	     [0],[ignore],[ignore])
 	    LT_AT_EXEC_CHECK([./sub3/dlself],[0])
 	  done

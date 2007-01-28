@@ -57,13 +57,14 @@ and is not part of a release distribution.
   liberally, on as many platforms as you can.  Use as many compilers and
   linkers you can.
 
-* The new Autotest testsuite uses several keywords, to denote that the
-  test
-    - needs Autoconf			autoconf
-    - needs Automake			automake
-    - exercises the `libtool' script	libtool
-    - exercises the `libtoolize' script	libtoolize
-    - exercises a language other than C	CXX F77 FC GCJ
+* The new Autotest testsuite uses keywords to denote test features:
+    autoconf		needs Autoconf
+    automake		needs Automake
+    libtool		exercises the `libtool' script
+    libtoolize		exercises the `libtoolize' script
+    recursive		runs the suite recursively, with a modified
+			`libtool' script and with `-k libtool'
+    CXX F77 FC GCJ	exercises a language other than C
 
 
 4. Naming
@@ -613,7 +614,7 @@ output of any failed test groups, and the output from `./libtool --config.'
 
 
 -- 
-Copyright (C) 2004, 2005, 2006 Free Software Foundation, Inc.
+Copyright (C) 2004, 2005, 2006, 2007 Free Software Foundation, Inc.
 
 The canonical source of this file is maintained with the
 GNU Libtool package.  Report bugs to bug-libtool@gnu.org.

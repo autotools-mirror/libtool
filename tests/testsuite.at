@@ -1,7 +1,7 @@
 # Process with autom4te to create an -*- Autotest -*- test suite.
 
 # Test suite for GNU Libtool.
-# Copyright 2004, 2005, 2006 Free Software Foundation, Inc.
+# Copyright 2004, 2005, 2006, 2007 Free Software Foundation, Inc.
 
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -138,6 +138,22 @@ m4_if([$6], [ignore], [], [LT_AT_CONFIGURE([$6])])
 m4_if([$7], [ignore], [], [LT_AT_MAKE([$7])])
 ])
 
+
+# LT_ESCAPE(ARG)
+# --------------
+# Escape command for output (expand only parameters).
+m4_define([LT_ESCAPE],
+[m4_bpatsubst([$1],
+	     m4_dquote(m4_default([$2], [\"`])),
+	     [\\\&])])
+
+
+# LT_AT_CHECK
+# -----------
+# Wrapper around AT_CHECK that outputs the command first, with
+# parameters expanded.
+m4_define([LT_AT_CHECK],
+[echo "LT_ESCAPE([$1])"; AT_CHECK($@)])
 
 # LT_AT_EXEC_CHECK(EXECUTABLE, [STATUS = 0], [STDOUT], [STDERR])
 # --------------------------------------------------------------
