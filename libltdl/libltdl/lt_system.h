@@ -1,5 +1,5 @@
 /* lt_system.h -- system portability abstraction layer
-   Copyright (C) 2004 Free Software Foundation, Inc.
+   Copyright (C) 2004, 2007 Free Software Foundation, Inc.
    Originally by Gary V. Vaughan <gary@gnu.org>
 
    NOTE: The canonical source of this file is maintained with the
