@@ -1,5 +1,12 @@
 2007-01-28  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* libltdl/m4/libtool.m4 (_LT_LINKER_SHLIBS) [ cygwin, mingw ]
+	<export_symbols_cmds>: Avoid shell expansion of '/s/.*' through
+	double expansion, in case there is a 'S:' drive.
+	Report by Charles Wilson.
+
+2007-01-28  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
 	Introduce a new test keyword `recursive' for tests that create a
 	modified `libtool' script and run the suite on this script.  All
 	tests with the keyword `libtool' are (by definition) suitable to
