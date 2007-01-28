@@ -2341,6 +2341,19 @@ lt_dlexit ()
 	      lt_dlhandle tmp = cur;
 	      cur = cur->next;
 	      if (!LT_DLIS_RESIDENT (tmp))
+		  /* Make sure that the handle pointed to by 'cur' still exists.
+		     lt_dlclose recursively closes dependent libraries which removes
+		     them from the linked list.  One of these might be the one
+		     pointed to by 'cur'.  */
+		  if (cur)
+		    {
+		      for (tmp = handles; tmp; tmp = tmp->next)
+			if (tmp == cur)
+			  break;
+		      if (! tmp)
+			cur = handles;
+		    }
+
 		saw_nonresident = 1;
 	      if (!LT_DLIS_RESIDENT (tmp) && tmp->info.ref_count <= level)
 		{
