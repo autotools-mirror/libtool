@@ -1,9 +1,13 @@
-2007-01-29  Brian W. Barrett <bbarrett@lanl.gov>
+2007-01-28  Charles Wilson  <libtool@cwilson.fastmail.fm>
+
+	* NEWS: Update for Cygwin changes.
+
+2007-01-28  Brian W. Barrett <bbarrett@lanl.gov>
 
 	* libltdl/config/ltmain.m4sh [darwin]: Use otool64 if otool fails.
 
 2007-01-28  Dave Brolley  <brolley@redhat.com>,
-            Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+	    Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* libltdl/ltdl.c (lt_dlexit): Make sure that 'cur' is not NULL
 	before checking that it is still in the list.

@@ -39,6 +39,10 @@ New in 1.9h: 2005-??-??; CVS version 2.1a, Libtool team:
 * The Libtool and libltdl macros and the testsuite now assume a C89
   environment, consequently do not test for headers such as string.h,
   strings.h, memory.h any more.
+* Fix regression in libltdl symbol exports on Cygwin. Side effect:
+  LT_GLOBAL_DATA and LT_SCOPE are now explicitly defined as
+  declspec(dllexport), bypassing auto-export logic on Cygwin.
+  This tracks existing behavior on MinGW.
 * Bug fixes.
 
 New in 1.9f: 2004-10-23; CVS version 1.9e, Libtool team:
