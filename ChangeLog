@@ -1,3 +1,10 @@
+2007-01-28  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* libtool.m4 (AC_LIBTOOL_PROG_LD_SHLIBS) [ cygwin, mingw ]
+	<export_symbols_cmds>: Avoid shell expansion of '/s/.*' through
+	double expansion, in case there is a 'S:' drive.
+	Report by Charles Wilson.
+
 2007-01-27  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* doc/libtool.texi (Invoking libtool): Document `--tag'.
