@@ -1,3 +1,7 @@
+2007-01-28  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* libltdl/ltdl.c, libltdl/ltdl.h: Adjust copyright years.
+
 2007-01-28  Charles Wilson  <libtool@cwilson.fastmail.fm>
 
 	* libltdl/ltdl.c (LT_GLOBAL_DATA) [__CYGWIN__]: Also define on
