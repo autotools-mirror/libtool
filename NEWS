@@ -16,6 +16,10 @@ New in 1.5.23a: 2006-??-??; CVS version 1.5.23a, Libtool team:
 * Search paths with GCC on multilib systems like x86_64 have been fixed.
 * The libtool --tag argument which has been supported since version 1.5
   is documented now.
+* Fix regression in libltdl symbol exports on Cygwin. Side effect:
+  LT_GLOBAL_DATA and LT_SCOPE are now explicitly defined as
+  declspec(dllexport), bypassing auto-export logic on Cygwin.
+  This tracks existing behavior on MinGW.
 * Bug Fixes.
 
 New in 1.5.22: 2005-12-18; CVS version 1.5.21a, Libtool team:
