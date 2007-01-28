@@ -1,3 +1,7 @@
+2007-01-29  Brian W. Barrett <bbarrett@lanl.gov>
+
+	* libltdl/config/ltmain.m4sh [darwin]: Use otool64 if otool fails.
+
 2007-01-28  Dave Brolley  <brolley@redhat.com>,
             Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
