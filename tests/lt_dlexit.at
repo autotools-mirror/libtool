@@ -1,0 +1,137 @@
+# Hand crafted tests for GNU Libtool.                         -*- Autotest -*-
+# Copyright 2007 Free Software Foundation, Inc.
+
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2, or (at your option)
+# any later version.
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+# 02110-1301, USA.
+
+# Test libltdl functionality.
+# Try to keep the new interfaces of HEAD separate from those of
+# branch-1-5 to facilitate testing of older releases.
+
+AT_BANNER([Libltdl functionality.])
+
+AT_SETUP([lt_dlexit unloading libs])
+AT_KEYWORDS([libltdl])
+
+# Test for
+# http://lists.gnu.org/archive/html/bug-libtool/2007-01/msg00014.html
+
+AT_DATA([main.c],
+[[#include <ltdl.h>
+#include <stdio.h>
+#include <string.h>
+
+typedef int (*pfun_T) (int);
+typedef int *pvar_T;
+
+/* lt_dlopen wrapper */
+static lt_dlhandle
+xdlopen (const char *filename)
+{
+  lt_dlhandle handle = lt_dlopen (filename);
+  if (!handle) {
+    fprintf (stderr, "can't open the module %s!\n", filename);
+    fprintf (stderr, "error was: %s\n", lt_dlerror());
+  }
+  return handle;
+}
+
+/* lt_dlsym wrapper: try one function and one variable */
+static int
+xdlsymtest (lt_dlhandle handle, const char *func, const char *var)
+{
+  pfun_T pf = lt_dlsym (handle, func);
+  pvar_T pv = lt_dlsym (handle, var);
+  if (pf == NULL) {
+    fprintf (stderr, "function `%s' not found\n", func);
+    return 1;
+  }
+  if (pv == NULL) {
+    fprintf (stderr, "variable `%s' not found\n", var);
+    return 1;
+  }
+  return (*pf) (*pv);
+}
+
+static int
+callback (const char *filename, void *data)
+{
+  printf ("%s: %s\n", (char *)data, filename);
+  return 0;
+}
+
+static int
+try_iterate (const char *search_path)
+{
+  char *s = "try_iterate";
+  return lt_dlforeachfile (search_path, callback, s);
+}
+
+int
+main (int argc, char **argv)
+{
+  int i;
+  lt_dlhandle b1;
+
+  /* LTDL_SET_PRELOADED_SYMBOLS(); */
+  if (lt_dlinit() != 0) {
+    fprintf (stderr, "error during initialization: %s\n", lt_dlerror());
+    return 1;
+  }
+  if (!(b1 = xdlopen ("modb1.la"))) return 1;
+  if (xdlsymtest (b1, "fb1", "vb1")) return 1;
+  /* do not lt_dlclose here on purpose.  */
+
+  if (lt_dlexit() != 0) {
+    fprintf (stderr, "error during exit: %s\n", lt_dlerror());
+    return 1;
+  }
+  return 0;
+}
+]])
+
+
+AT_DATA([a1.c],
+[[int f1 (int x) { return x - 1; }
+int v1 = 1;
+]])
+
+AT_DATA([b1.c],
+[[extern int f1 (int), v1;
+int fb1 (int x) { return f1 (v1) + x - 3; }
+int vb1 = 3;
+]])
+
+: ${LTDLINCL="-I$top_srcdir/libltdl"}
+: ${LIBLTDL="$abs_builddir/../libltdl/libltdlc.la"}
+
+CPPFLAGS="$CPPFLAGS $LTDLINCL"
+LDFLAGS="$LDFLAGS -no-undefined"
+
+for file in a1 b1 main; do
+  $LIBTOOL --mode=compile $CC $CPPFLAGS $CFLAGS -c $file.c
+done
+AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o liba1.la a1.lo \
+          -rpath /foo -avoid-version], [], [ignore], [ignore])
+AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o modb1.la b1.lo \
+          -rpath /foo -module -avoid-version liba1.la], [], [ignore], [ignore])
+
+for dlopen in -dlopen -dlpreopen; do
+  AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o main main.$OBJEXT \
+           $dlopen modb1.la $LIBLTDL], [], [ignore], [ignore])
+  LT_AT_EXEC_CHECK([./main])
+done
+
+AT_CLEANUP

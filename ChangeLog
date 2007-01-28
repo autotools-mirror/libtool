@@ -1,3 +1,14 @@
+2007-01-28  Dave Brolley  <brolley@redhat.com>,
+            Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* libltdl/ltdl.c (lt_dlexit): Make sure that 'cur' is not NULL
+	before checking that it is still in the list.
+	* tests/lt_dlexit.at: New test.
+	* Makefile.am (TESTSUITE_AT): Adjust.
+	(check-local): Also depend on libltdl/libltdlc.la.
+	(check-recursive): Removed, unnecessary use of Automake
+	internals.
+
 2007-01-28  Mike Frysinger  <vapier@gentoo.org>
 
 	* libltdl/config/ltmain.m4sh (func_mode_link): Pass through

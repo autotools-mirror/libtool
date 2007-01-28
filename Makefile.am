@@ -411,6 +411,7 @@ TESTSUITE_AT	= tests/testsuite.at \
 		  tests/search-path.at \
 		  tests/old-m4-iface.at \
 		  tests/am-subdir.at \
+		  tests/lt_dlexit.at \
 		  tests/standalone.at \
 		  tests/subproject.at \
 		  tests/nonrecursive.at \
@@ -444,8 +445,6 @@ INSTALLCHECK_ENVIRONMENT = \
 	LIBTOOL="$(bindir)/`echo libtool | sed '$(program_transform_name)'`" \
 	tst_aclocaldir="$(aclocaldir)"
 
-check-recursive: $(srcdir)/$(TESTSUITE)
-
 # Use `$(srcdir)' for the benefit of non-GNU makes: this is
 # how `testsuite' appears in our dependencies.
 $(srcdir)/$(TESTSUITE): $(srcdir)/tests/package.m4 $(TESTSUITE_AT) Makefile.am
@@ -471,7 +470,7 @@ DISTCLEANFILES += tests/atconfig
 CD_TESTDIR	= abs_srcdir=`$(lt__cd) $(srcdir) && pwd`; cd tests
 
 # Hook the test suite into the check rule
-check-local: tests/atconfig $(srcdir)/$(TESTSUITE)
+check-local: tests/atconfig $(srcdir)/$(TESTSUITE) libltdl/libltdlc.la
 	$(CD_TESTDIR); \
 	CONFIG_SHELL="$(SHELL)" $(SHELL) $$abs_srcdir/$(TESTSUITE) \
 	  $(TESTS_ENVIRONMENT) $(BUILDCHECK_ENVIRONMENT) $(TESTSUITEFLAGS)
