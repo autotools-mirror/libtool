@@ -1,3 +1,8 @@
+2007-01-28  Mike Frysinger  <vapier@gentoo.org>
+
+	* ltmain.in (link mode): Pass through `-p' and `-fprofile-*' for
+	GCC.
+
 2007-01-28  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* libltdl/ltdl.c, libltdl/ltdl.h: Adjust copyright years.
