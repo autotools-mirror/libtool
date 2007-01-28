@@ -2901,10 +2901,10 @@ func_mode_link ()
       # -m*, -t[45]*, -txscale* pass through architecture-specific
       # compiler args for GCC
       # -F/path gives path to uninstalled frameworks, gcc on darwin
-      # -pg, --coverage pass through profiling flag for GCC
+      # -p, -pg, --coverage, -fprofile-* pass through profiling flag for GCC
       # @file GCC response files
       -64|-mips[[0-9]]|-r[[0-9]][[0-9]]*|-xarch=*|-xtarget=*|+DA*|+DD*|-q*|-m*| \
-      -t[[45]]*|-txscale*|-pg|--coverage|-F*|@*)
+      -t[[45]]*|-txscale*|-p|-pg|--coverage|-fprofile-*|-F*|@*)
         func_quote_for_eval "$arg"
 	arg="$func_quote_for_eval_result"
         func_append compile_command " $arg"

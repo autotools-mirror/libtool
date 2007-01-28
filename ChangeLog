@@ -1,3 +1,8 @@
+2007-01-28  Mike Frysinger  <vapier@gentoo.org>
+
+	* libltdl/config/ltmain.m4sh (func_mode_link): Pass through
+	`-p' and `-fprofile-*' for GCC.
+
 2007-01-28  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* libltdl/libltdl/lt_system.h: Adjust copyright years.
