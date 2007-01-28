@@ -127,11 +127,12 @@ LT_BEGIN_C_DECLS
 /* DLL building support on win32 hosts;  mostly to workaround their
    ridiculous implementation of data symbol exporting. */
 #ifndef LT_SCOPE
-#  ifdef __WINDOWS__
+#  if defined(__WINDOWS__) || defined(__CYGWIN__)
 #    ifdef DLL_EXPORT		/* defined by libtool (if required) */
 #      define LT_SCOPE	__declspec(dllexport)
 #    endif
 #    ifdef LIBLTDL_DLL_IMPORT	/* define if linking with this dll */
+       /* note: cygwin/mingw compilers can rely instead on auto-import */
 #      define LT_SCOPE	extern __declspec(dllimport)
 #    endif
 #  endif

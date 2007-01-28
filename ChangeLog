@@ -1,3 +1,11 @@
+2007-01-28  Charles Wilson  <libtool@cwilson.fastmail.fm>
+
+	* libltdl/ltdl.c (LT_GLOBAL_DATA) [__CYGWIN__]: Also define on
+	Cygwin.
+	(LT_READTEXT_MODE): Ensure proper textmode fopen is used on
+	Cygwin.
+	* libltdl/ltdl.h (LT_SCOPE) [__CYGWIN__]: Also define on Cygwin.
+
 2007-01-28  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* libtool.m4 (AC_LIBTOOL_PROG_LD_SHLIBS) [ cygwin, mingw ]

@@ -137,16 +137,22 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 
 /* --- WINDOWS SUPPORT --- */
 
-
-#ifdef DLL_EXPORT
-#  define LT_GLOBAL_DATA	__declspec(dllexport)
-#else
-#  define LT_GLOBAL_DATA
+/* DLL building support on win32 hosts;  mostly to workaround their
+   ridiculous implementation of data symbol exporting. */
+#ifndef LT_GLOBAL_DATA
+#  if defined(__WINDOWS__) || defined(__CYGWIN__)
+#    ifdef DLL_EXPORT           /* defined by libtool (if required) */
+#      define LT_GLOBAL_DATA __declspec(dllexport)
+#    endif
+#  endif
+#  ifndef LT_GLOBAL_DATA        /* static linking or !__WINDOWS__ */
+#    define LT_GLOBAL_DATA
+#  endif
 #endif
 
 /* fopen() mode flags for reading a text file */
 #undef	LT_READTEXT_MODE
-#ifdef __WINDOWS__
+#if defined(__WINDOWS__) || defined(__CYGWIN__)
 #  define LT_READTEXT_MODE "rt"
 #else
 #  define LT_READTEXT_MODE "r"
