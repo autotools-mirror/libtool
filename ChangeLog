@@ -1,3 +1,8 @@
+2007-01-29  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* libltdl/ltdl.c (lt_dlexit): Fix my bogus backport of Dave
+	Brolley's patch from CVS HEAD.
+
 2007-01-29  Samuel Thibault <samuel.thibault@ens-lyon.org>
 
 	* libtool.m4 (AC_LIBTOOL_PROG_LD_SHLIBS) [ gnu ]

@@ -2341,6 +2341,13 @@ lt_dlexit ()
 	      lt_dlhandle tmp = cur;
 	      cur = cur->next;
 	      if (!LT_DLIS_RESIDENT (tmp))
+		saw_nonresident = 1;
+	      if (!LT_DLIS_RESIDENT (tmp) && tmp->info.ref_count <= level)
+		{
+		  if (lt_dlclose (tmp))
+		    {
+		      ++errors;
+		    }
 		  /* Make sure that the handle pointed to by 'cur' still exists.
 		     lt_dlclose recursively closes dependent libraries which removes
 		     them from the linked list.  One of these might be the one
@@ -2352,14 +2359,6 @@ lt_dlexit ()
 			  break;
 		      if (! tmp)
 			cur = handles;
-		    }
-
-		saw_nonresident = 1;
-	      if (!LT_DLIS_RESIDENT (tmp) && tmp->info.ref_count <= level)
-		{
-		  if (lt_dlclose (tmp))
-		    {
-		      ++errors;
 		    }
 		}
 	    }
