@@ -114,7 +114,7 @@ int fb1 (int x) { return f1 (v1) + x - 3; }
 int vb1 = 3;
 ]])
 
-: ${LTDLINCL="-I$top_srcdir/libltdl"}
+: ${LTDLINCL="-I$abs_top_srcdir/libltdl"}
 : ${LIBLTDL="$abs_builddir/../libltdl/libltdlc.la"}
 
 CPPFLAGS="$CPPFLAGS $LTDLINCL"
