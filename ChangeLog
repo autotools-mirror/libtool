@@ -1,3 +1,9 @@
+2007-01-29  Samuel Thibault <samuel.thibault@ens-lyon.org>
+
+	* libltdl/m4/libtool.m4 (_LT_LINKER_SHLIBS) [ gnu ]
+	<archive_expsym_cmds>: Behave like Linux, so that
+	--version-script is used for Hurd as well.
+
 2007-01-28  Charles Wilson  <libtool@cwilson.fastmail.fm>
 
 	* NEWS: Update for Cygwin changes.
