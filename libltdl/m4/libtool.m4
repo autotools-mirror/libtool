@@ -851,7 +851,8 @@ compiler=$CC
 # Check for compiler boilerplate output or warnings with
 # the simple compiler test code.
 m4_defun([_LT_COMPILER_BOILERPLATE],
-[ac_outfile=conftest.$ac_objext
+[m4_require([_LT_DECL_SED])dnl
+ac_outfile=conftest.$ac_objext
 echo "$lt_simple_compile_test_code" >conftest.$ac_ext
 eval "$ac_compile" 2>&1 >/dev/null | $SED '/^$/d; /^ *+/d' >conftest.err
 _lt_compiler_boilerplate=`cat conftest.err`
@@ -864,7 +865,8 @@ $RM conftest*
 # Check for linker boilerplate output or warnings with
 # the simple link test code.
 m4_defun([_LT_LINKER_BOILERPLATE],
-[ac_outfile=conftest.$ac_objext
+[m4_require([_LT_DECL_SED])dnl
+ac_outfile=conftest.$ac_objext
 echo "$lt_simple_link_test_code" >conftest.$ac_ext
 eval "$ac_link" 2>&1 >/dev/null | $SED '/^$/d; /^ *+/d' >conftest.err
 _lt_linker_boilerplate=`cat conftest.err`
@@ -881,7 +883,8 @@ $RM conftest*
 # If we don't find anything, use the default library path according
 # to the aix ld manual.
 m4_defun([_LT_SYS_MODULE_PATH_AIX],
-[AC_LINK_IFELSE(AC_LANG_PROGRAM,[
+[m4_require([_LT_DECL_SED])dnl
+AC_LINK_IFELSE(AC_LANG_PROGRAM,[
 lt_aix_libpath_sed='
     /Import File Strings/,/^$/ {
 	/^0/ {
@@ -1705,6 +1708,7 @@ dnl AC_DEFUN([AC_LIBTOOL_DLOPEN_SELF], [])
 # This macro does not hard code the compiler like AC_PROG_CC_C_O.
 m4_defun([_LT_COMPILER_C_O],
 [AC_REQUIRE([AC_OBJEXT])dnl
+m4_require([_LT_DECL_SED])dnl
 m4_require([_LT_FILEUTILS_DEFAULTS])dnl
 m4_require([_LT_TAG_COMPILER])dnl
 AC_CACHE_CHECK([if $compiler supports -c -o file.$ac_objext],

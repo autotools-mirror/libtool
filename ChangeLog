@@ -1,3 +1,11 @@
+2007-02-05  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* libltdl/m4/libtool.m4 (_LT_COMPILER_BOILERPLATE)
+	(_LT_LINKER_BOILERPLATE, _LT_SYS_MODULE_PATH_AIX)
+	(_LT_COMPILER_C_O): Require _LT_DECL_SED.
+	* THANKS: Update.
+	Report by Maciej W. Rozycki.
+
 2007-01-29  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* tests/lt_dlexit.at: Use $abs_top_srcdir, not $top_srcdir,
