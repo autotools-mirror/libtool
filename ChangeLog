@@ -1,3 +1,13 @@
+2007-02-05  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* libtool.m4 (_LT_COMPILER_BOILERPLATE, _LT_LINKER_BOILERPLATE)
+	(_LT_AC_SYS_LIBPATH_AIX, AC_LIBTOOL_LINKER_OPTION)
+	(AC_LIBTOOL_PROG_CC_C_O, AC_LIBTOOL_SYS_DYNAMIC_LINKER)
+	(_LT_AC_TAGCONFIG, AC_LIBTOOL_SYS_GLOBAL_SYMBOL_PIPE)
+	(AC_LIBTOOL_PROG_LD_SHLIBS): Require LT_AC_PROG_SED.
+	* THANKS: Update.
+	Report and initial patch by Maciej W. Rozycki.
+
 2007-01-29  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* libltdl/ltdl.c (lt_dlexit): Fix my bogus backport of Dave

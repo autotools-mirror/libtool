@@ -257,7 +257,8 @@ cc_basename=`$echo "X$cc_temp" | $Xsed -e 's%.*/%%' -e "s%^$host_alias-%%"`
 # Check for compiler boilerplate output or warnings with
 # the simple compiler test code.
 AC_DEFUN([_LT_COMPILER_BOILERPLATE],
-[ac_outfile=conftest.$ac_objext
+[AC_REQUIRE([LT_AC_PROG_SED])dnl
+ac_outfile=conftest.$ac_objext
 echo "$lt_simple_compile_test_code" >conftest.$ac_ext
 eval "$ac_compile" 2>&1 >/dev/null | $SED '/^$/d; /^ *+/d' >conftest.err
 _lt_compiler_boilerplate=`cat conftest.err`
@@ -270,7 +271,8 @@ $rm conftest*
 # Check for linker boilerplate output or warnings with
 # the simple link test code.
 AC_DEFUN([_LT_LINKER_BOILERPLATE],
-[ac_outfile=conftest.$ac_objext
+[AC_REQUIRE([LT_AC_PROG_SED])dnl
+ac_outfile=conftest.$ac_objext
 echo "$lt_simple_link_test_code" >conftest.$ac_ext
 eval "$ac_link" 2>&1 >/dev/null | $SED '/^$/d; /^ *+/d' >conftest.err
 _lt_linker_boilerplate=`cat conftest.err`
@@ -287,7 +289,8 @@ $rm conftest*
 # If we don't find anything, use the default library path according
 # to the aix ld manual.
 AC_DEFUN([_LT_AC_SYS_LIBPATH_AIX],
-[AC_LINK_IFELSE(AC_LANG_PROGRAM,[
+[AC_REQUIRE([LT_AC_PROG_SED])dnl
+AC_LINK_IFELSE(AC_LANG_PROGRAM,[
 lt_aix_libpath_sed='
     /Import File Strings/,/^$/ {
 	/^0/ {
@@ -672,7 +675,8 @@ fi
 # ------------------------------------------------------------
 # Check whether the given compiler option works
 AC_DEFUN([AC_LIBTOOL_LINKER_OPTION],
-[AC_CACHE_CHECK([$1], [$2],
+[AC_REQUIRE([LT_AC_PROG_SED])dnl
+AC_CACHE_CHECK([$1], [$2],
   [$2=no
    save_LDFLAGS="$LDFLAGS"
    LDFLAGS="$LDFLAGS $3"
@@ -1034,7 +1038,8 @@ fi
 # ---------------------------------
 # Check to see if options -c and -o are simultaneously supported by compiler
 AC_DEFUN([AC_LIBTOOL_PROG_CC_C_O],
-[AC_REQUIRE([_LT_AC_SYS_COMPILER])dnl
+[AC_REQUIRE([LT_AC_PROG_SED])dnl
+AC_REQUIRE([_LT_AC_SYS_COMPILER])dnl
 AC_CACHE_CHECK([if $compiler supports -c -o file.$ac_objext],
   [_LT_AC_TAGVAR(lt_cv_prog_compiler_c_o, $1)],
   [_LT_AC_TAGVAR(lt_cv_prog_compiler_c_o, $1)=no
@@ -1200,7 +1205,8 @@ fi
 # -----------------------------
 # PORTME Fill in your ld.so characteristics
 AC_DEFUN([AC_LIBTOOL_SYS_DYNAMIC_LINKER],
-[AC_MSG_CHECKING([dynamic linker characteristics])
+[AC_REQUIRE([LT_AC_PROG_SED])dnl
+AC_MSG_CHECKING([dynamic linker characteristics])
 library_names_spec=
 libname_spec='lib$name'
 soname_spec=
@@ -1814,7 +1820,8 @@ fi
 # _LT_AC_TAGCONFIG
 # ----------------
 AC_DEFUN([_LT_AC_TAGCONFIG],
-[AC_ARG_WITH([tags],
+[AC_REQUIRE([LT_AC_PROG_SED])dnl
+AC_ARG_WITH([tags],
     [AC_HELP_STRING([--with-tags@<:@=TAGS@:>@],
         [include additional configurations @<:@automatic@:>@])],
     [tagnames="$withval"])
@@ -4713,6 +4720,7 @@ fi
 # ---------------------------------
 AC_DEFUN([AC_LIBTOOL_SYS_GLOBAL_SYMBOL_PIPE],
 [AC_REQUIRE([AC_CANONICAL_HOST])
+AC_REQUIRE([LT_AC_PROG_SED])
 AC_REQUIRE([AC_PROG_NM])
 AC_REQUIRE([AC_OBJEXT])
 # Check for command to grab the raw symbol name followed by C symbol from nm.
@@ -5473,7 +5481,8 @@ AC_LIBTOOL_LINKER_OPTION([if $compiler static flag $lt_tmp_static_flag works],
 # ------------------------------------
 # See if the linker supports building shared libraries.
 AC_DEFUN([AC_LIBTOOL_PROG_LD_SHLIBS],
-[AC_MSG_CHECKING([whether the $compiler linker ($LD) supports shared libraries])
+[AC_REQUIRE([LT_AC_PROG_SED])dnl
+AC_MSG_CHECKING([whether the $compiler linker ($LD) supports shared libraries])
 ifelse([$1],[CXX],[
   _LT_AC_TAGVAR(export_symbols_cmds, $1)='$NM $libobjs $convenience | $global_symbol_pipe | $SED '\''s/.* //'\'' | sort | uniq > $export_symbols'
   case $host_os in
