@@ -120,9 +120,10 @@ int vb1 = 3;
 CPPFLAGS="$CPPFLAGS $LTDLINCL"
 LDFLAGS="$LDFLAGS -no-undefined"
 
-for file in a1 b1 main; do
+for file in a1 b1; do
   $LIBTOOL --mode=compile $CC $CPPFLAGS $CFLAGS -c $file.c
 done
+$CC $CPPFLAGS $CFLAGS -c main.c
 AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o liba1.la a1.lo \
           -rpath /foo -avoid-version], [], [ignore], [ignore])
 AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o modb1.la b1.lo \
