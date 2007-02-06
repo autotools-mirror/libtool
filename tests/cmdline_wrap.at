@@ -31,6 +31,8 @@ export LIBTOOL
 # for the output file `testsuite.log'.
 mkdir tests
 cd tests
+INNER_TESTSUITEFLAGS="$INNER_TESTSUITEFLAGS abs_top_srcdir=$abs_top_srcdir \
+  abs_builddir=$abs_builddir"
 AT_CHECK([$CONFIG_SHELL $abs_srcdir/testsuite -k libtool $INNER_TESTSUITEFLAGS],
 	 [], [ignore], [ignore])
 

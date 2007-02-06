@@ -1,5 +1,8 @@
 2007-02-06  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* tests/cmdline_wrap.at: Pass $abs_top_srcdir and $abs_builddir
+	to inner testsuite.
+
 	* Makefile.am (TESTSUITE_AT): Move destdir.at after
 	search-path.at so the banners fit better.
 
