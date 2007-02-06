@@ -1,5 +1,8 @@
 2007-02-06  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* Makefile.am (TESTSUITE_AT): Move destdir.at after
+	search-path.at so the banners fit better.
+
 	* tests/convenience.at: Use $CPPFLAGS for compilation.
 	* tests/deplibs-ident.at: Likewise.
 	* tests/duplicate_members.at: Likewise.
