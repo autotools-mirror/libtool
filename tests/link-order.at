@@ -1,5 +1,5 @@
 # Hand crafted tests for GNU Libtool.                         -*- Autotest -*-
-# Copyright 2005 Free Software Foundation, Inc.
+# Copyright 2005, 2007 Free Software Foundation, Inc.
 
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -34,7 +34,7 @@ AT_DATA(src/c.c,
 [[int c = 1;
 ]])
 
-$LIBTOOL --mode=compile $CC $CFLAGS -c src/c.c -o src/c.lo
+$LIBTOOL --mode=compile $CC $CPPFLAGS $CFLAGS -c src/c.c -o src/c.lo
 $LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o src/libcee.la src/c.lo -rpath $prefix_old/lib
 $LIBTOOL --mode=install cp src/libcee.la $prefix_old/lib/libcee.la
 
@@ -54,8 +54,8 @@ int b_$i() { return 1 + c; }
 EOF
 
   prefix=`eval echo \\$prefix_$i`
-  $LIBTOOL --mode=compile $CC $CFLAGS -c src/a_$i.c -o src/a.lo
-  $LIBTOOL --mode=compile $CC $CFLAGS -c src/b_$i.c -o src/b.lo
+  $LIBTOOL --mode=compile $CC $CPPFLAGS $CFLAGS -c src/a_$i.c -o src/a.lo
+  $LIBTOOL --mode=compile $CC $CPPFLAGS $CFLAGS -c src/b_$i.c -o src/b.lo
   $LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o src/libb.la src/b.lo \
       -L$prefix_old/lib -lcee -rpath $prefix/lib
   $LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o src/liba.la src/a.lo \
@@ -94,7 +94,7 @@ int main(void) { return a_$i() != 3; }
 EOF
 
   prefix=`eval echo \\$prefix_$i`
-  $LIBTOOL --mode=compile $CC $CFLAGS -c src/main_$i.c -o src/main_$i.lo
+  $LIBTOOL --mode=compile $CC $CPPFLAGS $CFLAGS -c src/main_$i.c -o src/main_$i.lo
   AT_CHECK($LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o src/main_$i src/main_$i.lo -L$prefix/lib -la,
 	   [0], [ignore], [ignore])
   LT_AT_EXEC_CHECK([src/main_$i])

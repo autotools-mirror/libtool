@@ -1,5 +1,5 @@
 # Hand crafted tests for GNU Libtool.                         -*- Autotest -*-
-# Copyright 2004, 2006 Free Software Foundation, Inc.
+# Copyright 2004, 2006, 2007 Free Software Foundation, Inc.
 
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -40,10 +40,10 @@ AT_DATA([main.c],
 int main() { return 0;}
 ])
 
-$LIBTOOL --mode=compile --tag=CC $CC $CFLAGS -c -o foo.lo foo.c
-$LIBTOOL --mode=compile --tag=CC $CC $CFLAGS -c -o bar.lo bar.c
-$LIBTOOL --mode=compile --tag=CC $CC $CFLAGS -c -o baz.lo baz.c
-$LIBTOOL --mode=compile --tag=CC $CC $CFLAGS -c -o main.lo main.c
+$LIBTOOL --mode=compile --tag=CC $CC $CPPFLAGS $CFLAGS -c -o foo.lo foo.c
+$LIBTOOL --mode=compile --tag=CC $CC $CPPFLAGS $CFLAGS -c -o bar.lo bar.c
+$LIBTOOL --mode=compile --tag=CC $CC $CPPFLAGS $CFLAGS -c -o baz.lo baz.c
+$LIBTOOL --mode=compile --tag=CC $CC $CPPFLAGS $CFLAGS -c -o main.lo main.c
 $LIBTOOL --mode=link --tag=CC $CC $CFLAGS $LDFLAGS -o libfoo.la foo.lo -rpath /usr/local/lib -no-undefined
 $LIBTOOL --mode=link --tag=CC $CC $CFLAGS $LDFLAGS -o libbar.la bar.lo -rpath /usr/local/lib -no-undefined
 

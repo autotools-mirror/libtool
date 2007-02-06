@@ -1,5 +1,5 @@
 # Hand crafted tests for GNU Libtool.                         -*- Autotest -*-
-# Copyright 2005, 2006 Free Software Foundation, Inc.
+# Copyright 2005, 2006, 2007 Free Software Foundation, Inc.
 
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -137,9 +137,9 @@ hello (void)
 _EOF
 
 # Prove that we can run libtool from inside configure:
-$SHELL ./libtool --mode=compile --tag=CC "$CC" $CPPFLAGS $CFLAGS \
+$SHELL ./libtool --mode=compile --tag=CC $CC $CPPFLAGS $CFLAGS \
     -I. -I$srcdir -c -o hello.lo hello.c  || exit 1
-$SHELL ./libtool --mode=link --tag=CC "$CC" $CFLAGS $LDFLAGS \
+$SHELL ./libtool --mode=link --tag=CC $CC $CFLAGS $LDFLAGS \
     -o libhello.la -rpath /notexist hello.lo || exit 1
 
 AC_CONFIG_FILES([Makefile])

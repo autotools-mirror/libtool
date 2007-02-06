@@ -195,10 +195,10 @@ w15
 ]])
 
 
-AT_CHECK([$LIBTOOL --mode=compile $CC $CFLAGS -c a.c -o sub/a.lo],[0],[ignore],[ignore])
-AT_CHECK([$LIBTOOL --mode=compile $CC $CFLAGS -c b.c -o sub/b.lo],[0],[ignore],[ignore])
-AT_CHECK([$LIBTOOL --mode=compile $CC $CFLAGS -c main.c],[0],[ignore],[ignore])
-AT_CHECK([$LIBTOOL --mode=compile $CC $CFLAGS -c dlself.c -o sub3/dlself.lo],[0],[ignore],[ignore])
+AT_CHECK([$LIBTOOL --mode=compile $CC $CPPFLAGS $CFLAGS -c a.c -o sub/a.lo],[0],[ignore],[ignore])
+AT_CHECK([$LIBTOOL --mode=compile $CC $CPPFLAGS $CFLAGS -c b.c -o sub/b.lo],[0],[ignore],[ignore])
+AT_CHECK([$LIBTOOL --mode=compile $CC $CPPFLAGS $CFLAGS -c main.c],[0],[ignore],[ignore])
+AT_CHECK([$LIBTOOL --mode=compile $CC $CPPFLAGS $CFLAGS -c dlself.c -o sub3/dlself.lo],[0],[ignore],[ignore])
 
 case $allow_undefined_flag in
   unsupported) undef_opts=-no-undefined ;;

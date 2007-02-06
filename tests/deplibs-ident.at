@@ -1,5 +1,5 @@
 # Hand crafted tests for GNU Libtool.                         -*- Autotest -*-
-# Copyright 2005 Free Software Foundation, Inc.
+# Copyright 2005, 2007 Free Software Foundation, Inc.
 
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -29,7 +29,8 @@ AT_KEYWORDS([libtool])
 
 mkdir a a/b c
 echo 'int c() { return 0; }' > c/libcee.c
-AT_CHECK([$LIBTOOL --mode=compile $CC $CFLAGS -c c/libcee.c -o c/libcee.lo],[0],[ignore],[ignore])
+AT_CHECK([$LIBTOOL --mode=compile $CC $CPPFLAGS $CFLAGS -c c/libcee.c -o c/libcee.lo],
+	 [0],[ignore],[ignore])
 AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o c/libcee.la c/libcee.lo -rpath /nowhere],
 	 [0],[ignore],[ignore])
 
@@ -42,7 +43,8 @@ depl_3="-L../c -lcee"
   for i in 1 2 3; do
     eval depend_on_c=\"\$depl_$i\"
     echo "extern int c(void); int a$i() { return c(); }" > liba$i.c
-    AT_CHECK([$LIBTOOL --mode=compile $CC $CFLAGS -c liba$i.c],[0],[ignore],[ignore])
+    AT_CHECK([$LIBTOOL --mode=compile $CC $CPPFLAGS $CFLAGS -c liba$i.c],
+	     [0],[ignore],[ignore])
     AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o liba$i.la liba$i.lo $depend_on_c -rpath /nowhere],
 	   [0],[ignore],[ignore])
   done
