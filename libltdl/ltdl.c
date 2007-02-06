@@ -289,11 +289,11 @@ lt_dlexit (void)
 			 pointed to by 'cur'.  */
 		      if (cur)
 			{
-			  for (tmp = handles; tmp; tmp = tmp->next)
+			  for (tmp = (lt__handle *) handles; tmp; tmp = tmp->next)
 			    if (tmp == cur)
 			      break;
 			  if (! tmp)
-			    cur = handles;
+			    cur = (lt__handle *) handles;
 			}
 		    }
 		}
