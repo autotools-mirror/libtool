@@ -1,3 +1,7 @@
+2007-02-06  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* tests/destdir.at: Add `libtool' keyword to tests.
+
 2007-02-05  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* libltdl/m4/libtool.m4 (_LT_COMPILER_BOILERPLATE)
