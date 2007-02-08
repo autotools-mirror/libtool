@@ -1,3 +1,8 @@
+2007-02-08  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* tests/testsuite.at (LT_AT_TAG): Skip also if the compiler
+	variable is set to `no', not only if it is empty.
+
 2007-02-06  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* tests/lt_dlexit.at: Do not compile main object with libtool.

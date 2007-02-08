@@ -169,7 +169,7 @@ m4_define([LT_AT_EXEC_CHECK],
 # --------------
 m4_define([LT_AT_TAG],
 [AT_KEYWORDS([$1])
-AT_CHECK([test -n "[$]$1" || (exit 77)])
+AT_CHECK([{ test -n "[$]$1" && test "X[$]$1" != Xno; } || (exit 77)])
 ])
 
 
