@@ -1,5 +1,11 @@
 2007-02-08  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* libltdl/config/general.m4sh (sed_double_backslash): Replace
+	POSIX sed script with a hack that treats up to 10 backslashes
+	in the input correctly and is portable to Solaris /bin/sed.
+
+2007-02-08  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
 	* tests/testsuite.at (LT_AT_TAG): Skip also if the compiler
 	variable is set to `no', not only if it is empty.
 

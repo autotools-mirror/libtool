@@ -1,7 +1,7 @@
 m4_if([# general.m4sh -- general shell script boiler plate -*- Autoconf -*-
 # Written by Gary V. Vaughan <gary@gnu.org>, 2004
 
-# Copyright (C) 2004, 2005 Free Software Foundation, Inc.
+# Copyright (C) 2004, 2005, 2007 Free Software Foundation, Inc.
 # This is free software; see the source for copying conditions.  There is NO
 # warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
@@ -100,10 +100,29 @@ double_quote_subst='s/\([["`\\]]\)/\\\1/g'
 # `\'-ed in input to the same.  If an odd number of `\' preceded a '$'
 # in input to double_quote_subst, that '$' was protected from expansion.
 # Since each input `\' is now two `\'s, look for any number of runs of
-# four `\'s followed by two `\'s and then a '$'.  `\' that '$'.  Note
-# that the embedded single quotes serve only to enhance readability.
-sed_double_backslash='s/^\(\(''\\\\''\\\\''\)*''\\\\''\)\$/\1\\$/;
-                s/\([[^\\]]\(''\\\\''\\\\''\)*''\\\\''\)\$/\1\\$/g'
+# four `\'s followed by two `\'s and then a '$'.  `\' that '$'. 
+#
+# Note in the first, non-portable but general version, the embedded single
+# quotes serve only to enhance readability.
+#sed_double_backslash='s/^\(\(''\\\\''\\\\''\)*''\\\\''\)\$/\1\\$/;
+#                s/\([[^\\]]\(''\\\\''\\\\''\)*''\\\\''\)\$/\1\\$/g'
+bs='\\'
+bs2='\\\\'
+bs4='\\\\\\\\'
+dollar='\$'
+sed_double_backslash="\
+  s/^$bs2$dollar/$bs&/
+  s/^$bs4$bs2$dollar/$bs&/
+  s/^$bs4$bs4$bs2$dollar/$bs&/
+  s/^$bs4$bs4$bs4$bs2$dollar/$bs&/
+  s/^$bs4$bs4$bs4$bs4$bs2$dollar/$bs&/
+  s/^$bs4$bs4$bs4$bs4$bs4$bs2$dollar/$bs&/
+  s/\\([[^$bs]]\\)\\($bs2$dollar\\)/\\1$bs\\2/g
+  s/\\([[^$bs]]\\)\\($bs4$bs2$dollar\\)/\\1$bs\\2/g
+  s/\\([[^$bs]]\\)\\($bs4$bs4$bs2$dollar\\)/\\1$bs\\2/g
+  s/\\([[^$bs]]\\)\\($bs4$bs4$bs4$bs2$dollar\\)/\\1$bs\\2/g
+  s/\\([[^$bs]]\\)\\($bs4$bs4$bs4$bs4$bs2$dollar\\)/\\1$bs\\2/g
+  s/\\([[^$bs]]\\)\\($bs4$bs4$bs4$bs4$bs4$bs2$dollar\\)/\\1$bs\\2/g"
 
 # Standard options:
 opt_dry_run=false
