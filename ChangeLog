@@ -1,5 +1,11 @@
 2007-02-11  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* tests/export.at: New test: expose -export-symbols failure
+	when the input consists solely of convenience archives, and
+	failure to not export all symbols when the command line length
+	is exceeded.
+	* Makefile.am: Adjust.
+
 	* libltdl/m4/libtool.m4 (_LT_PROG_XSI_SHELLFNS): New substituted
 	function `func_lo2o', saving two fork&exec with XSI shells.
 	* libltdl/config/ltmain.m4sh (func_mode_compile)

@@ -407,6 +407,7 @@ TESTSUITE_AT	= tests/testsuite.at \
 		  tests/fail.at \
 		  tests/shlibpath.at \
 		  tests/static.at \
+		  tests/export.at \
 		  tests/search-path.at \
 		  tests/destdir.at \
 		  tests/old-m4-iface.at \
