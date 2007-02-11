@@ -1,5 +1,11 @@
 2007-02-11  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* libtool.m4 (_AS_TEST_PREPARE, AS_EXECUTABLE_P): m4_defun
+	these macros, if undefined, with modified copies from Autoconf
+	2.59.
+	(LT_AC_PROG_SED): Use AS_EXECUTABLE_P, not $as_executable_p,
+	this is an internal Autoconf detail.
+
 	* doc/libtool.texi: Update copyright years.
 
 2007-02-06  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
