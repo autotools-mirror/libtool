@@ -425,7 +425,6 @@ Otherwise, only FILE itself is deleted using RM."
     exit $?
 }
 
-# TEST SUITE MARKER ## NON-FUNCTION
 # Parse options once, thoroughly.  This comes as soon as possible in
 # the script to make things like `libtool --version' happen quickly.
 {
@@ -576,7 +575,6 @@ Otherwise, only FILE itself is deleted using RM."
   # anything was wrong.
   $exit_cmd $EXIT_FAILURE
 }
-# TEST SUITE MARKER ## BEGIN SOURCABLE
 
 # func_check_version_match
 # Ensure that we are using m4 macros, and libtool script from the same
@@ -611,6 +609,38 @@ _LT_EOF
 
     exit $EXIT_MISMATCH
   fi
+}
+
+
+## ----------- ##
+##    Main.    ##
+## ----------- ##
+
+{
+  # Sanity checks first:
+  func_check_version_match
+
+  if test "$build_libtool_libs" != yes && test "$build_old_libs" != yes; then
+    func_fatal_configuration "not configured to build any kind of library"
+  fi
+
+  test -z "$mode" && func_fatal_error "error: you must specify a MODE."
+
+
+  # Darwin sucks
+  eval std_shrext=\"$shrext_cmds\"
+
+
+  # Only execute mode is allowed to have -dlopen flags.
+  if test -n "$execute_dlfiles" && test "$mode" != execute; then
+    func_error "unrecognized option \`-dlopen'"
+    $ECHO "$help" 1>&2
+    exit $EXIT_FAILURE
+  fi
+
+  # Change the help message to a mode-specific one.
+  generic_help="$help"
+  help="Try \`$progname --help --mode=$mode' for more information."
 }
 
 
@@ -1549,6 +1579,8 @@ compiler."
     exit $EXIT_SUCCESS
 }
 
+test "$mode" = compile && func_mode_compile ${1+"$@"}
+
 
 # func_mode_execute arg...
 func_mode_execute ()
@@ -1674,6 +1706,8 @@ func_mode_execute ()
     fi
 }
 
+test "$mode" = execute && func_mode_execute ${1+"$@"}
+
 
 # func_mode_finish arg...
 func_mode_finish ()
@@ -1751,6 +1785,8 @@ func_mode_finish ()
     $ECHO "X----------------------------------------------------------------------" | $Xsed
     exit $EXIT_SUCCESS
 }
+
+test "$mode" = finish && func_mode_finish ${1+"$@"}
 
 
 # func_mode_install arg...
@@ -2182,6 +2218,8 @@ func_mode_install ()
       exit $EXIT_SUCCESS
     fi
 }
+
+test "$mode" = install && func_mode_install ${1+"$@"}
 
 
 # func_mode_link arg...
@@ -6710,6 +6748,9 @@ relink_command=\"$relink_command\""
     exit $EXIT_SUCCESS
 }
 
+{ test "$mode" = link || test "$mode" = relink; } &&
+    func_mode_link ${1+"$@"}
+
 
 # func_mode_uninstall arg...
 func_mode_uninstall ()
@@ -6877,59 +6918,21 @@ func_mode_uninstall ()
     exit $exit_status
 }
 
+{ test "$mode" = uninstall || test "$mode" = clean; } &&
+    func_mode_uninstall ${1+"$@"}
 
-# TEST SUITE MARKER ## NON-FUNCTION
-## ----------- ##
-##    Main.    ##
-## ----------- ##
-
-{
-  # Sanity checks first:
-  func_check_version_match
-
-  if test "$build_libtool_libs" != yes && test "$build_old_libs" != yes; then
-    func_fatal_configuration "not configured to build any kind of library"
-  fi
-
-  test -z "$mode" && func_fatal_error "error: you must specify a MODE."
-
-
-  # Darwin sucks
-  eval std_shrext=\"$shrext_cmds\"
-
-
-  # Only execute mode is allowed to have -dlopen flags.
-  if test -n "$execute_dlfiles" && test "$mode" != execute; then
-    func_error "unrecognized option \`-dlopen'"
-    $ECHO "$help" 1>&2
-    exit $EXIT_FAILURE
-  fi
-
-  # Change the help message to a mode-specific one.
-  generic_help="$help"
-  help="Try \`$progname --help --mode=$mode' for more information."
-
-  case $mode in
-    compile)		func_mode_compile ${1+"$@"}		;;
-    execute)		func_mode_execute ${1+"$@"}		;;
-    finish)		func_mode_finish ${1+"$@"}		;;
-    install)		func_mode_install ${1+"$@"}		;;
-    link|relink)	func_mode_link ${1+"$@"}		;;
-    uninstall|clean)	func_mode_uninstall ${1+"$@"}		;;
-
-    "")			help="$generic_help"
-    			func_fatal_help "you must specify a MODE"
-			;;
-  esac
-
-  test -z "$exec_cmd" && \
-    func_fatal_help "invalid operation mode \`$mode'"
-
-  if test -n "$exec_cmd"; then
-    eval exec "$exec_cmd"
-    exit $EXIT_FAILURE
-  fi
+test -z "$mode" && {
+  help="$generic_help"
+  func_fatal_help "you must specify a MODE"
 }
+
+test -z "$exec_cmd" && \
+  func_fatal_help "invalid operation mode \`$mode'"
+
+if test -n "$exec_cmd"; then
+  eval exec "$exec_cmd"
+  exit $EXIT_FAILURE
+fi
 
 exit $exit_status
 

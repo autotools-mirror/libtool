@@ -1,5 +1,16 @@
 2007-02-11  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	Eliminate roughly a third of the script execution time overhead
+	for all modes except for link/relink and uninstall/clean.
+
+	* libltdl/m4/libtool.m4 (_LT_CONFIG): Remove unused `TEST SUITE
+	MARKER', obsolete since 2005-04-17.
+	* libltdl/config/ltmain.m4sh: Likewise, several instances.
+	(Main): Tear apart, moving individual bits up as early in the
+	script as possible, to help the shell to avoid parsing the rest.
+
+2007-02-11  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
 	* doc/libtool.texi: Update copyright years.
 
 2007-02-11  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
