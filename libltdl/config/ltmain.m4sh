@@ -425,14 +425,12 @@ Otherwise, only FILE itself is deleted using RM."
     exit $?
 }
 
+# Generated shell functions inserted here.
+
+
 # Parse options once, thoroughly.  This comes as soon as possible in
 # the script to make things like `libtool --version' happen quickly.
 {
-  # sed scripts:
-  my_sed_single_opt='1s/^\(..\).*$/\1/;q'
-  my_sed_single_rest='1s/^..\(.*\)$/\1/;q'
-  my_sed_long_opt='1s/^\(-[[^=]]*\)=.*/\1/;q'
-  my_sed_long_arg='1s/^-[[^=]]*=//'
 
   # Shorthand for --mode=foo, only valid as the first argument
   case $1 in
@@ -524,27 +522,10 @@ Otherwise, only FILE itself is deleted using RM."
 
       # Separate optargs to long options:
       -dlopen=*|--mode=*|--tag=*)
-			arg=`$ECHO "X$opt" | $Xsed -e "$my_sed_long_arg"`
-			opt=`$ECHO "X$opt" | $Xsed -e "$my_sed_long_opt"`
-			set dummy "$opt" "$arg" ${1+"$@"}
+			func_opt_split "$opt"
+			set dummy "$func_opt_split_opt" "$func_opt_split_arg" ${1+"$@"}
 			shift
 			;;
-
-      # Separate optargs to short options:
-#      -x*|-y*)
-#			arg=`$ECHO "X$opt" |$Xsed -e "$my_sed_single_rest"`
-#			opt=`$ECHO "X$opt" |$Xsed -e "$my_sed_single_opt"`
-#			set dummy "$opt" "$arg" ${1+"$@"}
-#			shift
-#			;;
-
-      # Separate non-argument short options:
-#      -z*|-z*|-y*)
-#			rest=`$ECHO "X$opt" |$Xsed -e "$my_sed_single_rest"`
-#			opt=`$ECHO "X$opt" |$Xsed -e "$my_sed_single_opt"`
-#			set dummy "$opt" "-$rest" ${1+"$@"}
-#			shift
-#			;;
 
       -\?|-h)		func_usage					;;
       --help)		opt_help=:					;;

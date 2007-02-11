@@ -7040,6 +7040,13 @@ func_stripname ()
   func_stripname_result=${func_stripname_result#"${1}"}
   func_stripname_result=${func_stripname_result%"${2}"}
 }
+
+# func_opt_split
+func_opt_split ()
+{
+  func_opt_split_opt=${1%%=*}
+  func_opt_split_arg=${1#*=}
+}
 _LT_EOF
     ;;
   *) # Bourne compatible functions.
@@ -7078,6 +7085,17 @@ func_stripname ()
     *)  func_stripname_result=`$ECHO "X${3}" \
            | $Xsed -e "s%^${1}%%" -e "s%${2}\$%%"`;;
   esac
+}
+
+# sed scripts:
+my_sed_long_opt='1s/^\(-[[^=]]*\)=.*/\1/;q'
+my_sed_long_arg='1s/^-[[^=]]*=//'
+
+# func_opt_split
+func_opt_split ()
+{
+  func_opt_split_opt=`$ECHO "X${1}" | $Xsed -e "$my_sed_long_opt"`
+  func_opt_split_arg=`$ECHO "X${1}" | $Xsed -e "$my_sed_long_arg"`
 }
 _LT_EOF
 esac
