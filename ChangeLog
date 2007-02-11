@@ -1,5 +1,11 @@
 2007-02-11  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* libltdl/m4/libtool.m4 (_LT_PROG_XSI_SHELLFNS): New substituted
+	function `func_lo2o', saving two fork&exec with XSI shells.
+	* libltdl/config/ltmain.m4sh (func_mode_compile)
+	(func_mode_install, func_mode_link): Use it for rewrites of
+	single files.
+
 	* libltdl/m4/libtool.m4 (_LT_PROG_XSI_SHELLFNS): New function
 	func_opt_split, for XSI and portable shell.
 	* libltdl/config/ltmain.m4sh: Move the insertion point for the

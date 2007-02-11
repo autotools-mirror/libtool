@@ -7047,6 +7047,15 @@ func_opt_split ()
   func_opt_split_opt=${1%%=*}
   func_opt_split_arg=${1#*=}
 }
+
+# func_lo2o object
+func_lo2o ()
+{
+  case ${1} in
+    *.lo) func_lo2o_result=${1%.lo}.${objext} ;;
+    *)    func_lo2o_result=${1} ;;
+  esac
+}
 _LT_EOF
     ;;
   *) # Bourne compatible functions.
@@ -7096,6 +7105,12 @@ func_opt_split ()
 {
   func_opt_split_opt=`$ECHO "X${1}" | $Xsed -e "$my_sed_long_opt"`
   func_opt_split_arg=`$ECHO "X${1}" | $Xsed -e "$my_sed_long_arg"`
+}
+
+# func_lo2o object
+func_lo2o ()
+{
+  func_lo2o_result=`$ECHO "X${1}" | $Xsed -e "$lo2o"`
 }
 _LT_EOF
 esac

@@ -1331,7 +1331,7 @@ func_mode_compile ()
     libobj=`$ECHO "X$libobj" | $Xsed -e "s/\.$xform$/.lo/"`
 
     case $libobj in
-    *.lo) obj=`$ECHO "X$libobj" | $Xsed -e "$lo2o"` ;;
+    *.lo) func_lo2o "$libobj"; obj=$func_lo2o_result ;;
     *)
       func_fatal_error "cannot determine name of library object from \`$libobj'"
       ;;
@@ -2028,7 +2028,8 @@ func_mode_install ()
 	# Deduce the name of the destination old-style object file.
 	case $destfile in
 	*.lo)
-	  staticdest=`$ECHO "X$destfile" | $Xsed -e "$lo2o"`
+	  func_lo2o "$destfile"
+	  staticdest=$func_lo2o_result
 	  ;;
 	*.$objext)
 	  staticdest="$destfile"
@@ -2046,7 +2047,8 @@ func_mode_install ()
 	# Install the old object if enabled.
 	if test "$build_old_libs" = yes; then
 	  # Deduce the name of the old-style object file.
-	  staticobj=`$ECHO "X$file" | $Xsed -e "$lo2o"`
+	  func_lo2o "$file"
+	  staticobj=$func_lo2o_result
 	  func_show_eval "$install_prog \$staticobj \$staticdest" 'exit $?'
 	fi
 	exit $EXIT_SUCCESS
@@ -2491,8 +2493,9 @@ func_mode_link ()
 		  func_dirname "$arg" "/" ""
 		  xdir="$func_dirname_result"
 
-		  pic_object=`$ECHO "X${xdir}${objdir}/${arg}" | $Xsed -e "$lo2o"`
-		  non_pic_object=`$ECHO "X${xdir}${arg}" | $Xsed -e "$lo2o"`
+		  func_lo2o "$arg"
+		  pic_object=$xdir$objdir/$func_lo2o_result
+		  non_pic_object=$xdir$func_lo2o_result
 		  func_append libobjs " $pic_object"
 		  func_append non_pic_objects " $non_pic_object"
 	        else
@@ -3015,8 +3018,9 @@ func_mode_link ()
 	    func_dirname "$arg" "/" ""
 	    xdir="$func_dirname_result"
 
-	    pic_object=`$ECHO "X${xdir}${objdir}/${arg}" | $Xsed -e "$lo2o"`
-	    non_pic_object=`$ECHO "X${xdir}${arg}" | $Xsed -e "$lo2o"`
+	    func_lo2o "$arg"
+	    pic_object=$xdir$objdir/$func_lo2o_result
+	    non_pic_object=$xdir$func_lo2o_result
 	    func_append libobjs " $pic_object"
 	    func_append non_pic_objects " $non_pic_object"
 	  else
@@ -5462,8 +5466,9 @@ EOF
 	test -n "$objs$old_deplibs" && \
 	  func_fatal_error "cannot build library object \`$output' from non-libtool objects"
 
-	libobj="$output"
-	obj=`$ECHO "X$output" | $Xsed -e "$lo2o"`
+	libobj=$output
+	func_lo2o "$libobj"
+	obj=$func_lo2o_result
 	;;
       *)
 	libobj=
