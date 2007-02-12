@@ -1,5 +1,10 @@
 2007-02-12  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* tests/export.at: Exporting is not fully functional with
+	-retain-symbols-file.  Do not test for failure to link `broken'
+	in this case.  At the end of the test, SKIP if we are not fully
+	functional.
+
 	* tests/lt_dlexit.at: Add casts and `extern "C"' to let the test
 	pass with a C++ compiler.
 

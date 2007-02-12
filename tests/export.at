@@ -24,7 +24,10 @@ AT_KEYWORDS([libtool])
 AT_CHECK([$LIBTOOL --features | grep 'disable shared libraries' && (exit 77)],
 	 [1], [ignore])
 AT_CHECK([eval `$LIBTOOL --config | sed -n '/^archive_expsym_cmds=/,/^$/p'`
-          test -n "$archive_expsym_cmds" || echo false >can-hide])
+	  test -n "$archive_expsym_cmds" || echo false >can-hide
+	  case $archive_expsym_cmds in
+	  *-retain-symbols-file*) echo false >can-hide ;;
+	  esac])
 can_hide=:
 test -s can-hide && can_hide=false
 
@@ -160,5 +163,7 @@ do
 	      then (exit 1); else :; fi], [], [ignore], [ignore])
   fi
 done
+
+AT_CHECK([$can_hide || (exit 77)])
 
 AT_CLEANUP
