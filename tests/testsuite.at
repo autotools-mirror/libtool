@@ -165,6 +165,18 @@ m4_define([LT_AT_EXEC_CHECK],
 ])
 
 
+# LT_AT_NOINST_EXEC_CHECK(EXECUTABLE, [NOINST-MODULES],
+# 			  [STATUS = 0], [STDOUT], [STDERR])
+# ---------------------------------------------------------
+m4_define([LT_AT_NOINST_EXEC_CHECK],
+[AT_CHECK([$LIBTOOL --mode=execute $2 $1; lt_status=$?;
+	   if test $lt_status -eq 0; then :;
+	   elif test "X$host" != "X$build" && \
+	        { test -x "$1" || test -x "$1"$EXEEXT; }
+	   then (exit 77); else (exit $lt_status); fi],[$3],[$4],[$5])
+])
+
+
 # LT_AT_TAG(TAG)
 # --------------
 m4_define([LT_AT_TAG],

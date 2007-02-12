@@ -129,10 +129,11 @@ AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o liba1.la a1.lo \
 AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o modb1.la b1.lo \
           -rpath /foo -module -avoid-version liba1.la], [], [ignore], [ignore])
 
-for dlopen in -dlopen -dlpreopen; do
+# TODO: test -dlpreopen
+for dlopen in -dlopen; do
   AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o main main.$OBJEXT \
            $dlopen modb1.la $LIBLTDL], [], [ignore], [ignore])
-  LT_AT_EXEC_CHECK([./main])
+  LT_AT_NOINST_EXEC_CHECK([./main], [-dlopen modb1.la])
 done
 
 AT_CLEANUP

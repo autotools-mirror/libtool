@@ -1,3 +1,11 @@
+2007-02-12  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* tests/testsuite.at (LT_AT_NOINST_EXEC_CHECK): New macro, like
+	LT_AT_EXEC_CHECK but uses `$LIBTOOL --mode=execute' and allows
+	to pass `-dlopen MODULE' arguments.
+	* tests/lt_dlexit.at: Use it.  Also, do not test `-dlpreopen',
+	that currently needs library names to begin with `lib'.
+
 2007-02-11  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* tests/export.at: New test: expose -export-symbols failure
