@@ -1,5 +1,8 @@
 2007-02-12  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* tests/lt_dlexit.at: Add casts and `extern "C"' to let the test
+	pass with a C++ compiler.
+
 	* libltdl/config/ltmain.m4sh: Remove duplicate marker for
 	generated shell functions.
 

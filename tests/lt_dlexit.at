@@ -52,8 +52,8 @@ xdlopen (const char *filename)
 static int
 xdlsymtest (lt_dlhandle handle, const char *func, const char *var)
 {
-  pfun_T pf = lt_dlsym (handle, func);
-  pvar_T pv = lt_dlsym (handle, var);
+  pfun_T pf = (pfun_T) lt_dlsym (handle, func);
+  pvar_T pv = (pvar_T) lt_dlsym (handle, var);
   if (pf == NULL) {
     fprintf (stderr, "function `%s' not found\n", func);
     return 1;
@@ -104,14 +104,26 @@ main (int argc, char **argv)
 
 
 AT_DATA([a1.c],
-[[int f1 (int x) { return x - 1; }
+[[#ifdef __cplusplus
+extern "C" {
+#endif
+int f1 (int x) { return x - 1; }
 int v1 = 1;
+#ifdef __cplusplus
+}
+#endif
 ]])
 
 AT_DATA([b1.c],
-[[extern int f1 (int), v1;
+[[#ifdef __cplusplus
+extern "C" {
+#endif
+extern int f1 (int), v1;
 int fb1 (int x) { return f1 (v1) + x - 3; }
 int vb1 = 3;
+#ifdef __cplusplus
+}
+#endif
 ]])
 
 : ${LTDLINCL="-I$abs_top_srcdir/libltdl"}
