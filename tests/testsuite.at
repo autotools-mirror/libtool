@@ -40,6 +40,7 @@ if (FOO=bar; unset FOO) >/dev/null 2>&1; then
 else
   unset=false
 fi
+: ${mkdir_p="$abs_top_srcdir/libltdl/config/install-sh -d"}
 m4_divert_pop([PREPARE_TESTS])dnl
 
 
@@ -184,6 +185,21 @@ m4_define([LT_AT_TAG],
 AT_CHECK([{ test -n "[$]$1" && test "X[$]$1" != Xno; } || (exit 77)])
 ])
 
+
+# LT_AT_MVDIR(SRC, DEST)
+# ----------------------
+# Move contents of a directory recursively.
+# Avoid `mv DIR ...' due to issues with non-deletable shared libraries
+# on AIX on NFS mounts.  We cannot use slibclean as non-superuser.
+m4_define([LT_AT_MVDIR],
+[$mkdir_p $2
+(cd $1 && find . -type d) | (cd $2 && xargs $mkdir_p)
+for file in `cd $1 && find . -type f -print -o -type l -print`
+do
+  mv $1/$file $2/$file
+done
+rm -rf $1
+])
 
 ## ------------------------------- ##
 ## Files for a small ltdl project. ##

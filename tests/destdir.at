@@ -33,7 +33,6 @@ else
 fi
 libdir=$prefix/lib
 bindir=$prefix/bin
-: ${mkdir_p="$abs_top_srcdir/libltdl/config/install-sh -d"}
 $mkdir_p src $prefix $DESTDIR $DESTDIR$prefix
 eval `$LIBTOOL --config | $EGREP '^(FGREP|OBJDUMP)='`
 ])
@@ -57,8 +56,8 @@ AT_CHECK([$LIBTOOL --mode=install cp liba.la $DESTDIR$libdir/liba.la],
 AT_CHECK([$LIBTOOL --mode=install cp m $DESTDIR$bindir/m],
 	 [], [ignore], [ignore])
 $LIBTOOL --mode=clean rm -f liba.la m
-mv $DESTDIR$libdir $libdir
-mv $DESTDIR$bindir $bindir
+LT_AT_MVDIR(["$DESTDIR$libdir"], ["$libdir"])
+LT_AT_MVDIR(["$DESTDIR$bindir"], ["$bindir"])
 # We ignore failure on purpose here: we may not be root.
 AT_CHECK([$LIBTOOL --mode=finish $libdir], [ignore], [ignore], [ignore])
 LT_AT_EXEC_CHECK([$bindir/m])
@@ -96,9 +95,9 @@ AT_CHECK([$LIBTOOL --mode=install cp liba.la $DESTDIR$libdir/liba.la],
 AT_CHECK([$LIBTOOL --mode=install cp m $DESTDIR$bindir/m],
 	 [], [ignore], [ignore])
 $LIBTOOL --mode=clean rm -f liba1dep.la liba2dep.la liba.la m
-mv $DESTDIR$libdir $libdir
-mv $DESTDIR${libdir}2 ${libdir}2
-mv $DESTDIR$bindir $bindir
+LT_AT_MVDIR(["$DESTDIR$libdir"], ["$libdir"])
+LT_AT_MVDIR(["$DESTDIR${libdir}2"], ["${libdir}2"])
+LT_AT_MVDIR(["$DESTDIR$bindir"], ["$bindir"])
 # We ignore failure on purpose here: we may not be root.
 AT_CHECK([$LIBTOOL --mode=finish $libdir ${libdir}2], [ignore], [ignore], [ignore])
 

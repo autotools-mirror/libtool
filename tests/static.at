@@ -100,18 +100,18 @@ mkdir $srcdir_broken $libdir_broken
 
 func_move_libs ()
 {
-  mv ${1} ${1}-moved
-  mv ${2} ${2}-moved
-  mv $srcdir_broken ${1}
-  mv $libdir_broken ${2}
+  LT_AT_MVDIR(["${1}"], ["${1}-moved"])
+  LT_AT_MVDIR(["${2}"], ["${2}-moved"])
+  LT_AT_MVDIR(["$srcdir_broken"], ["${1}"])
+  LT_AT_MVDIR(["$libdir_broken"], ["${2}"])
 }
 
 func_restore_libs ()
 {
-  mv ${2} $libdir_broken
-  mv ${1} $srcdir_broken
-  mv ${2}-moved ${2}
-  mv ${1}-moved ${1}
+  LT_AT_MVDIR(["${2}"], ["$libdir_broken"])
+  LT_AT_MVDIR(["${1}"], ["$srcdir_broken"])
+  LT_AT_MVDIR(["${2}-moved"], ["${2}"])
+  LT_AT_MVDIR(["${1}-moved"], ["${1}"])
 }
 
 # make sure the program can be run.

@@ -1,5 +1,17 @@
 2007-02-12  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	Fix spurious testsuite failures on AIX due on NFS mounts due to
+	shared library images that cannot be removed without `slibclean'
+	which needs superuser privileges.
+
+	* tests/testsuite.at (PREPARE_TESTS): Define $mkdir_p globally.
+	(LT_AT_MVDIR): New macro to emulate `mv dir dest'.
+	* tests/destdir.at: Use LT_AT_MVDIR.
+	* tests/shlibpath.at: Likewise.
+	* tests/static.at: Likewise.
+
+2007-02-12  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
 	* tests/export.at: Exporting is not fully functional with
 	-retain-symbols-file.  Do not test for failure to link `broken'
 	in this case.  At the end of the test, SKIP if we are not fully

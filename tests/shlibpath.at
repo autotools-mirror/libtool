@@ -35,7 +35,7 @@ AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o m m.$OBJEXT -Lsub/lib -la
 AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o m2 m.$OBJEXT -Lsub/lib -la],
          [], [ignore], [ignore])
 
-mv sub moved
+LT_AT_MVDIR([sub], [moved])
 mkdir sub sub/lib sub/bin
 echo 'int wrong_lib () { return 0; }' > a.c
 $LIBTOOL --mode=compile $CC $CPPFLAGS $CFLAGS -c a.c
