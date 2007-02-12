@@ -701,9 +701,6 @@ func_source ()
 }
 
 
-# Generated shell functions inserted here.
-
-
 # func_win32_libid arg
 # return the library type of file 'arg'
 #
