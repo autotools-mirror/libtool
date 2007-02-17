@@ -1,5 +1,17 @@
 2007-02-17  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	GNU libtool 1.5.23b is released.
+
+	* configure.ac: Bump version.  Adjust copyright years.
+	* NEWS: Updated.
+	* config.guess, config.sub, install-sh, texinfo.tex, INSTALL:
+	Updated from external sources.
+	* libtool.m4: Bump serial.
+	* ltdl.m4: Likewise.  Adjust copyright years.
+	* libltdl/Makefile.am: Bump library revision.
+
+2007-02-17  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
 	* libtool.m4 (AC_LIBTOOL_PROG_LD_SHLIBS) [ linux ]
 	<whole_archive_flag_spec>: For Sun C/C++ 5.9, do not add
 	/dev/null as dummy object, it fails with GNU ld version
@@ -640,7 +652,7 @@
 
 2005-11-12  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
-	* libltdl.m4 (AC_LIBTOOL_PROG_COMPILER_PIC): `wl' is tagged
+	* libtool.m4 (AC_LIBTOOL_PROG_COMPILER_PIC): `wl' is tagged
 	here.
 
 	* libtool.m4 (AC_LIBTOOL_DLOPEN_SELF)
