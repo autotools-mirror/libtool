@@ -493,7 +493,7 @@ Here are the gpg detached signatures:
 You should download the signature named after any tarball you download,
 and then verify its integrity with, for example:
 
-  gpg --verify libtool-@VERSION.tar.gz.sig
+  gpg --verify libtool-@VERSION@.tar.gz.sig
 
 Here are the MD5 and SHA1 checksums:
 
@@ -512,12 +512,11 @@ This release was bootstrapped with @BOOTSTRAP_TOOLS_WITH_VERSIONS@,
 but is useable with @COMPATIBLE_AUTOTOOL_VERSIONS@ in your own
 projects.
 
-Alternatively, you can fetch the unbootstrapped sourcecode from
-anonymous cvs by using the following commands:
+Alternatively, you can fetch the unbootstrapped source code from
+anonymous cvs by using the following command:
 
-  $ export CVS_RSH=ssh
   $ cvs -z3 -d :pserver:anonymous@cvs.sv.gnu.org:/sources/libtool \
-  co -r @CVS_RELEASE_TAG@ libtool
+    co -r @CVS_RELEASE_TAG@ libtool
 
 You will then need to have recent (possibly as yet unreleased) versions
 of Automake and Autoconf installed to bootstrap the checked out
@@ -529,6 +528,7 @@ New in @VERSION@: @RELEASE_DATE@
 
 Please report bugs to <bug-libtool@gnu.org>, along with the verbose
 output of any failed test groups, and the output from `./libtool --config.'
+The README file explains how to capture the verbose test output.
 
 
 
@@ -580,7 +580,7 @@ Here are the gpg detached signatures:
 You should download the signature named after any tarball you download,
 and then verify its integrity with, for example:
 
-  gpg --verify libtool-@VERSION.tar.gz.sig
+  gpg --verify libtool-@VERSION@.tar.gz.sig
 
 Here are the MD5 and SHA1 checksums:
 
@@ -597,13 +597,12 @@ This release was bootstrapped with @BOOTSTRAP_TOOLS_WITH_VERSIONS@,
 but is useable with @COMPATIBLE_AUTOTOOL_VERSIONS@ in your own
 projects.
 
-Alternatively, you can fetch the unbootstrapped sourcecode from
-anonymous cvs by using the following commands (just hit return when
+Alternatively, you can fetch the unbootstrapped source code from
+anonymous cvs by using the following command (just hit return when
 you are prompted for the password):
 
-  $ export CVS_RSH=ssh
   $ cvs -z3 -d :pserver:anonymous@cvs.sv.gnu.org:/sources/libtool \
-  co -r @CVS_RELEASE_TAG@ libtool
+    co -r @CVS_RELEASE_TAG@ libtool
 
 You will then need to have the latest release versions of Automake
 (@AUTOMAKE_VERSION@) and Autoconf (@AUTOCONF_VERSION@) installed to
@@ -611,6 +610,7 @@ bootstrap the checked out sources yourself.
 
 Please report bugs to <bug-libtool@gnu.org>, along with the verbose
 output of any failed test groups, and the output from `./libtool --config.'
+The README file explains how to capture the verbose test output.
 
 
 -- 
