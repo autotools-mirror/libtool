@@ -2316,8 +2316,8 @@ linux* | k*bsd*-gnu)
   # Some binutils ld are patched to set DT_RUNPATH 
   save_LDFLAGS=$LDFLAGS
   save_libdir=$libdir
-  eval libdir=/foo wl=$_LT_TAGVAR(lt_prog_compiler_wl, $1) \
-       LDFLAGS=\"\$LDFLAGS $_LT_TAGVAR(hardcode_libdir_flag_spec, $1)\"
+  eval "libdir=/foo; wl=\"$_LT_TAGVAR(lt_prog_compiler_wl, $1)\"; \
+       LDFLAGS=\"\$LDFLAGS $_LT_TAGVAR(hardcode_libdir_flag_spec, $1)\""
   AC_LINK_IFELSE([AC_LANG_PROGRAM([],[])],
     [AS_IF([ ($OBJDUMP -p conftest$ac_exeext) 2>/dev/null | grep "RUNPATH.*$libdir"],
        [shlibpath_overrides_runpath=yes])])
