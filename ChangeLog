@@ -1,3 +1,11 @@
+2007-02-17  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* libltdl/m4/libtool.m4 (_LT_LINKER_SHLIBS) [ linux ]
+	<whole_archive_flag_spec>: For Sun C/C++ 5.9, do not add
+	/dev/null as dummy object, it fails with GNU ld version
+	2.16.91.0.7-amd-sles9.  Report by Terry D. Dontje.
+	* THANKS: Update.
+
 2007-02-14  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* libltdl/m4/libtool.m4 (_LT_LINKER_SHLIBS) [ osf4, osf5 ]
