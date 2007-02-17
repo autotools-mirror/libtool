@@ -55,7 +55,7 @@ AT_CHECK([$LIBTOOL --mode=link --tag=CC \
 LT_AT_EXEC_CHECK([./main])
 
 # This currently fails:
-AT_XFAIL_IF([:])
+AT_XFAIL_IF([case $host_os in aix*) false;; *) :;; esac])
 $LIBTOOL --mode=link --tag=CC $CC $CFLAGS $LDFLAGS -o libb.la b1.lo
 AT_CHECK([$LIBTOOL --mode=link --preserve-dup-deps --tag=CC \
 	  $CC $CFLAGS $LDFLAGS -o main main.$OBJEXT liba.la libb.la liba.la],

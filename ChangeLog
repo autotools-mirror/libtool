@@ -1,5 +1,9 @@
 2007-02-17  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* tests/deplibs-ident.at [aix, hppa*-*-hpux*, interix, openbsd]:
+	Do not XFAIL, on these systems we happen to pass.
+	* tests/duplicate_deps.at [aix]: Likewise.
+
 	* libltdl/m4/libtool.m4 (_LT_SYS_DYNAMIC_LINKER) [ linux |
 	k*bsd*-gnu ]: Fix eval quoting in the DT_RUNPATH test.
 
