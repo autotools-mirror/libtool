@@ -1,5 +1,5 @@
 # Hand crafted tests for GNU Libtool.                         -*- Autotest -*-
-# Copyright 2006 Free Software Foundation, Inc.
+# Copyright 2006, 2007 Free Software Foundation, Inc.
 
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -93,8 +93,8 @@ mkdir $srcdir_broken $libdir_broken
   echo 'int this_should_not_be_linked_against() { return 0; }' > a.c
   $LIBTOOL --mode=compile $CC $CPPFLAGS $CFLAGS -c a.c
   for i in 1 1dep 2 2dep 3 3dep; do
-    $LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o lib$i.la a.lo -rpath $libdir_broken
-    $LIBTOOL --mode=install cp lib$i.la $libdir_broken/lib$i.la
+    $LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o liba$i.la a.lo -rpath $libdir_broken
+    $LIBTOOL --mode=install cp liba$i.la $libdir_broken/liba$i.la
   done
 )
 
