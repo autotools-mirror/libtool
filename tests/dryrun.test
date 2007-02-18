@@ -47,6 +47,8 @@ mv $objdir/libtool.new libtool
 $make main.$OBJEXT || exit 1
 
 echo "= Making object files in ../mdemo (dry run)"
+# ls -l in MSYS sometimes shows year, not time, for really fresh files.
+sleep 1
 ls -l . $objdir | grep -v total > $before
 force_dry_run=yes $make foo1.lo foo2.lo sub.lo || exit $?
 ls -l . $objdir | grep -v total > $after
@@ -56,6 +58,8 @@ echo "= Making object files in ../mdemo"
 $make foo1.lo foo2.lo libsub.la || exit 1
 
 echo "= Making libraries in ../mdemo (dry run)"
+# ls -l in MSYS sometimes shows year, not time, for really fresh files.
+sleep 1
 ls -l . $objdir | grep -v total > $before
 force_dry_run=yes $make foo1.la libfoo2.la || exit $?
 ls -l . $objdir | grep -v total > $after
@@ -65,6 +69,8 @@ echo "= Making libraries in ../mdemo"
 $make foo1.la libfoo2.la || exit 1
 
 echo "= Making programs in ../mdemo (dry run)"
+# ls -l in MSYS sometimes shows year, not time, for really fresh files.
+sleep 1
 ls -l . $objdir | grep -v total > $before
 force_dry_run=yes $make mdemo$EXEEXT mdemo_static$EXEEXT 1>&2 || exit $?
 ls -l . $objdir | grep -v total > $after
@@ -77,6 +83,8 @@ echo "= Running $make install in ../mdemo (dry run)"
 # Libtool does not create these directories
 test -d $prefix/bin || mkdir $prefix/bin
 test -d $prefix/lib || mkdir $prefix/lib
+# ls -l in MSYS sometimes shows year, not time, for really fresh files.
+sleep 1
 ls -l . $objdir | grep -v total > $before
 ls -lR $prefix | grep -v total >> $before
 force_dry_run=yes $make install 1>&2 || exit 1

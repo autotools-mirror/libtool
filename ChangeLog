@@ -1,3 +1,9 @@
+2007-02-18  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* tests/dryrun.test: ls -l in MSYS sometimes shows year,
+	not time, for really fresh files.  Add sleep 1 calls at
+	strategic places.  Fixes test failure on MinGW.
+
 2007-02-17  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* configure.ac: Bump version.
