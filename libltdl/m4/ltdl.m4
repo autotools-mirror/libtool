@@ -5,7 +5,7 @@
 # unlimited permission to copy and/or distribute it, with or without
 # modifications, as long as this notice is preserved.
 
-# serial 11 LTDL_INIT
+# serial 12 LTDL_INIT
 
 # LT_CONFIG_LTDL_DIR(DIRECTORY, [LTDL-MODE])
 # ------------------------------------------
@@ -182,18 +182,17 @@ AC_ARG_WITH([included_ltdl],
 if test "x$with_included_ltdl" != xyes; then
   # We are not being forced to use the included libltdl sources, so
   # decide whether there is a useful installed version we can use.
-  lt_dlinterface_register_found=no
   AC_CHECK_HEADER([ltdl.h],
-      [AC_CHECK_LIB([ltdl], [lt_dlinterface_register],
-          [with_included_ltdl=no],
-          [with_included_ltdl=yes])],
-
-      [],
+      [AC_CHECK_DECL([lt_dlinterface_register],
+	   [AC_CHECK_LIB([ltdl], [lt_dlinterface_register],
+	       [with_included_ltdl=no],
+	       [with_included_ltdl=yes])],
+	   [with_included_ltdl=yes],
+	   [AC_INCLUDES_DEFAULT
+	    #include <ltdl.h>])],
+      [with_included_ltdl=yes],
       [AC_INCLUDES_DEFAULT]
   )
-  AC_MSG_CHECKING([for lt_dlinterface_register in ltdl.h])
-  test "x$with_included_ltdl" = xno && lt_dlinterface_register_found=yes
-  AC_MSG_RESULT([$lt_dlinterface_register_found])
 fi
 
 if test "x$enable_ltdl_install" != xyes; then
