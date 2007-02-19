@@ -1,5 +1,5 @@
 # Hand crafted tests for GNU Libtool.                         -*- Autotest -*-
-# Copyright 2005 Free Software Foundation, Inc.
+# Copyright 2005, 2007 Free Software Foundation, Inc.
 
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -72,12 +72,18 @@ int main()
 }
 ]])
 
-AT_CHECK($LIBTOOL --tag=CXX --mode=compile $CXX -I. $CPPFLAGS $CXXFLAGS -c -o alib.lo alib.cpp, [0], [ignore], [ignore])
-AT_CHECK($LIBTOOL --tag=CXX --mode=compile $CXX -I. $CPPFLAGS $CXXFLAGS -c -o aclib.lo aclib.cpp, [0], [ignore], [ignore])
-AT_CHECK($LIBTOOL --tag=CXX --mode=link $CXX $CPPFLAGS $CXXFLAGS -o libaclib.la aclib.lo, [0], [ignore], [ignore])
-AT_CHECK($LIBTOOL --tag=CXX --mode=link $CXX $CPPFLAGS $CXXFLAGS -o libalib.la -rpath /usr/local/lib alib.lo libaclib.la, [0], [ignore], [ignore])
-AT_CHECK($CXX -I. $CPPFLAGS $CXXFLAGS -c prog.cpp, [0], [ignore], [ignore])
-AT_CHECK($LIBTOOL --tag=CXX --mode=link $CXX $CPPFLAGS $CXXFLAGS -o prog prog.$OBJEXT libalib.la, [0], [ignore], [ignore])
+AT_CHECK([$LIBTOOL --tag=CXX --mode=compile $CXX -I. $CPPFLAGS $CXXFLAGS -c -o alib.lo alib.cpp],
+	 [0], [ignore], [ignore])
+AT_CHECK([$LIBTOOL --tag=CXX --mode=compile $CXX -I. $CPPFLAGS $CXXFLAGS -c -o aclib.lo aclib.cpp],
+	 [0], [ignore], [ignore])
+AT_CHECK([$LIBTOOL --tag=CXX --mode=link $CXX $CPPFLAGS $CXXFLAGS $LDFLAGS -o libaclib.la aclib.lo],
+	 [0], [ignore], [ignore])
+AT_CHECK([$LIBTOOL --tag=CXX --mode=link $CXX $CPPFLAGS $CXXFLAGS $LDFLAGS -o libalib.la -rpath /usr/local/lib alib.lo libaclib.la],
+	 [0], [ignore], [ignore])
+AT_CHECK([$CXX -I. $CPPFLAGS $CXXFLAGS -c prog.cpp],
+	 [0], [ignore], [ignore])
+AT_CHECK([$LIBTOOL --tag=CXX --mode=link $CXX $CPPFLAGS $CXXFLAGS $LDFLAGS -o prog prog.$OBJEXT libalib.la],
+	 [0], [ignore], [ignore])
 
 LT_AT_EXEC_CHECK([./prog], [0], [ignore], [ignore])
 
@@ -198,53 +204,73 @@ eval `$LIBTOOL --tag=CXX --config | grep ^compiler_c_o=`
 case $compiler_c_o in
 yes)
   main_o=sub/main.$OBJEXT
-  AT_CHECK($CXX $CPPFLAGS $CXXFLAGS -c -o $main_o ../src/sub/main.cpp, [0], [ignore], [ignore])
+  AT_CHECK([$CXX $CPPFLAGS $CXXFLAGS -c -o $main_o ../src/sub/main.cpp],
+  	   [0], [ignore], [ignore])
   ;;
 *)
   main_o=main.$OBJEXT
-  AT_CHECK($CXX $CPPFLAGS $CXXFLAGS -c ../src/sub/main.cpp, [0], [ignore], [ignore])
+  AT_CHECK([$CXX $CPPFLAGS $CXXFLAGS -c ../src/sub/main.cpp],
+  	   [0], [ignore], [ignore])
   ;;
 esac
 
-AT_CHECK($LIBTOOL --tag=CXX --mode=compile $CXX $CPPFLAGS $CXXFLAGS -c -o lib/a.lo ../src/lib/a.cpp, [0], [ignore], [ignore])
-AT_CHECK($LIBTOOL --tag=CXX --mode=compile $CXX $CPPFLAGS $CXXFLAGS -c -o lib2/b.lo ../src/lib2/b.cpp, [0], [ignore], [ignore])
-AT_CHECK($CXX $CPPFLAGS $CXXFLAGS -c ../src/sub/main.cpp, [0], [ignore], [ignore])
+AT_CHECK([$LIBTOOL --tag=CXX --mode=compile $CXX $CPPFLAGS $CXXFLAGS -c -o lib/a.lo ../src/lib/a.cpp],
+	 [0], [ignore], [ignore])
+AT_CHECK([$LIBTOOL --tag=CXX --mode=compile $CXX $CPPFLAGS $CXXFLAGS -c -o lib2/b.lo ../src/lib2/b.cpp],
+	 [0], [ignore], [ignore])
+AT_CHECK([$CXX $CPPFLAGS $CXXFLAGS -c ../src/sub/main.cpp],
+	 [0], [ignore], [ignore])
 # both convenience
-AT_CHECK($LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS -o lib/liba.la lib/a.lo, [0], [ignore], [ignore])
-AT_CHECK($LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS -o lib2/libb.la lib2/b.lo, [0], [ignore], [ignore])
-AT_CHECK($LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS -o sub/main $main_o lib2/libb.la lib/liba.la, [0], [ignore], [ignore])
+AT_CHECK([$LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS $LDFLAGS -o lib/liba.la lib/a.lo],
+	 [0], [ignore], [ignore])
+AT_CHECK([$LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS $LDFLAGS -o lib2/libb.la lib2/b.lo],
+	 [0], [ignore], [ignore])
+AT_CHECK([$LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS $LDFLAGS -o sub/main $main_o lib2/libb.la lib/liba.la],
+	 [0], [ignore], [ignore])
 LT_AT_EXEC_CHECK([./sub/main], [ignore])
 # lib convenience
 case $host in
   *-*-darwin*) ;;
-  *)	AT_CHECK($LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS -o lib2/libb.la lib2/b.lo -rpath /foo, [0], [ignore], [ignore])
-	AT_CHECK($LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS -o sub/main $main_o lib2/libb.la lib/liba.la, [0], [ignore], [ignore])
+  *)	AT_CHECK([$LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS $LDFLAGS -o lib2/libb.la lib2/b.lo -rpath /foo],
+  		 [0], [ignore], [ignore])
+	AT_CHECK([$LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS $LDFLAGS -o sub/main $main_o lib2/libb.la lib/liba.la],
+		 [0], [ignore], [ignore])
 	LT_AT_EXEC_CHECK([./sub/main])
 	;;
 esac
 # both installed
-AT_CHECK($LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS -o lib/liba.la lib/a.lo -rpath /foo, [0], [ignore], [ignore])
-AT_CHECK($LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS -o lib2/libb.la lib2/b.lo -rpath /bar, [0], [ignore], [ignore])
-AT_CHECK($LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS -o sub/main $main_o lib2/libb.la lib/liba.la, [0], [ignore], [ignore])
+AT_CHECK([$LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS $LDFLAGS -o lib/liba.la lib/a.lo -rpath /foo],
+	 [0], [ignore], [ignore])
+AT_CHECK([$LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS $LDFLAGS -o lib2/libb.la lib2/b.lo -rpath /bar],
+	 [0], [ignore], [ignore])
+AT_CHECK([$LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS $LDFLAGS -o sub/main $main_o lib2/libb.la lib/liba.la],
+	 [0], [ignore], [ignore])
 LT_AT_EXEC_CHECK([./sub/main])
 # both convenience, libb depending on liba
-AT_CHECK($LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS -o lib/liba.la lib/a.lo, [0], [ignore], [ignore])
-AT_CHECK($LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS -o lib2/libb.la lib2/b.lo lib/liba.la, [0], [ignore], [ignore])
-AT_CHECK($LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS -o sub/main $main_o lib2/libb.la, [0], [ignore], [ignore])
+AT_CHECK([$LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS $LDFLAGS -o lib/liba.la lib/a.lo],
+	 [0], [ignore], [ignore])
+AT_CHECK([$LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS $LDFLAGS -o lib2/libb.la lib2/b.lo lib/liba.la],
+	 [0], [ignore], [ignore])
+AT_CHECK([$LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS $LDFLAGS -o sub/main $main_o lib2/libb.la],
+	 [0], [ignore], [ignore])
 LT_AT_EXEC_CHECK([./sub/main])
 # lib convenience
 case $host in
   *-*-darwin*) ;;
-  *)	AT_CHECK($LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS -o lib2/libb.la lib2/b.lo lib/liba.la -rpath /foo, [0], [ignore], [ignore])
-	AT_CHECK($LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS -o sub/main $main_o lib2/libb.la, [0], [ignore], [ignore])
+  *)	AT_CHECK([$LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS $LDFLAGS -o lib2/libb.la lib2/b.lo lib/liba.la -rpath /foo],
+		 [0], [ignore], [ignore])
+	AT_CHECK([$LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS $LDFLAGS -o sub/main $main_o lib2/libb.la],
+		 [0], [ignore], [ignore])
 	LT_AT_EXEC_CHECK([./sub/main])
 	;;
 esac
 # both installed
 case $host in
   *-*-darwin*) ;;
-  *)	AT_CHECK($LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS -o lib2/libb.la lib2/b.lo lib/liba.la -rpath /bar, [0], [ignore], [ignore])
-	AT_CHECK($LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS -o sub/main $main_o lib2/libb.la, [0], [ignore], [ignore])
+  *)	AT_CHECK([$LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS $LDFLAGS -o lib2/libb.la lib2/b.lo lib/liba.la -rpath /bar],
+  		 [0], [ignore], [ignore])
+	AT_CHECK([$LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS $LDFLAGS -o sub/main $main_o lib2/libb.la],
+		 [0], [ignore], [ignore])
 	LT_AT_EXEC_CHECK([./sub/main])
 	;;
 esac
