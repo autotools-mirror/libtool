@@ -1,3 +1,9 @@
+2007-02-22  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* libltdl/config/ltmain.m4sh (func_mode_link): Fix the check for
+	convenience archives when warning about linking against static
+	libraries: test against $deplib rather than empty $lib.
+
 2007-02-19  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* libltdl/m4/ltdl.m4 (LT_WITH_LTDL): Fix detection of new enough

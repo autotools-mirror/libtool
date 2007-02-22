@@ -3373,7 +3373,7 @@ func_mode_link ()
 	    # Linking convenience modules into shared libraries is allowed,
 	    # but linking other static libraries is non-portable.
 	    case " $dlpreconveniencelibs " in
-	    *" $lib "*) ;;
+	    *" $deplib "*) ;;
 	    *)
 	      valid_a_lib=no
 	      case $deplibs_check_method in
