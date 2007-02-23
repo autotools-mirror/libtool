@@ -1,3 +1,9 @@
+2007-02-23  Ralf Menzel  <menzel@ls6.cs.uni-dortmund.de>  (tiny change)
+
+	* libltdl/config/general.m4sh (sed_double_backslash): Fix
+	hacky sed script to avoid limitations but retain portability to
+	Solaris /bin/sed.  Remove old obsolete cruft.
+
 2007-02-22  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* libltdl/config/ltmain.m4sh (func_mode_link): Fix the check for

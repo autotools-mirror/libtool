@@ -101,28 +101,16 @@ double_quote_subst='s/\([["`\\]]\)/\\\1/g'
 # in input to double_quote_subst, that '$' was protected from expansion.
 # Since each input `\' is now two `\'s, look for any number of runs of
 # four `\'s followed by two `\'s and then a '$'.  `\' that '$'. 
-#
-# Note in the first, non-portable but general version, the embedded single
-# quotes serve only to enhance readability.
-#sed_double_backslash='s/^\(\(''\\\\''\\\\''\)*''\\\\''\)\$/\1\\$/;
-#                s/\([[^\\]]\(''\\\\''\\\\''\)*''\\\\''\)\$/\1\\$/g'
 bs='\\'
 bs2='\\\\'
 bs4='\\\\\\\\'
 dollar='\$'
 sed_double_backslash="\
+  s/$bs4/&\\
+/g
   s/^$bs2$dollar/$bs&/
-  s/^$bs4$bs2$dollar/$bs&/
-  s/^$bs4$bs4$bs2$dollar/$bs&/
-  s/^$bs4$bs4$bs4$bs2$dollar/$bs&/
-  s/^$bs4$bs4$bs4$bs4$bs2$dollar/$bs&/
-  s/^$bs4$bs4$bs4$bs4$bs4$bs2$dollar/$bs&/
-  s/\\([[^$bs]]\\)\\($bs2$dollar\\)/\\1$bs\\2/g
-  s/\\([[^$bs]]\\)\\($bs4$bs2$dollar\\)/\\1$bs\\2/g
-  s/\\([[^$bs]]\\)\\($bs4$bs4$bs2$dollar\\)/\\1$bs\\2/g
-  s/\\([[^$bs]]\\)\\($bs4$bs4$bs4$bs2$dollar\\)/\\1$bs\\2/g
-  s/\\([[^$bs]]\\)\\($bs4$bs4$bs4$bs4$bs2$dollar\\)/\\1$bs\\2/g
-  s/\\([[^$bs]]\\)\\($bs4$bs4$bs4$bs4$bs4$bs2$dollar\\)/\\1$bs\\2/g"
+  s/\\([[^$bs]]\\)$bs2$dollar/\\1$bs2$bs$dollar/g
+  s/\n//g"
 
 # Standard options:
 opt_dry_run=false
