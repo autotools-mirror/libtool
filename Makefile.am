@@ -285,8 +285,8 @@ endif
 ## -------------- ##
 
 info_TEXINFOS		= doc/libtool.texi
-libtool_TEXINFOS	= doc/PLATFORMS doc/fdl.texi doc/notes.texi
-EXTRA_DIST	       += $(srcdir)/doc/notes.txt $(libtool_TEXINFOS)
+doc_libtool_TEXINFOS	= doc/PLATFORMS doc/fdl.texi doc/notes.texi
+EXTRA_DIST	       += $(srcdir)/doc/notes.txt
 
 all-local: $(srcdir)/doc/notes.txt
 
@@ -471,7 +471,7 @@ DISTCLEANFILES += tests/atconfig
 CD_TESTDIR	= abs_srcdir=`$(lt__cd) $(srcdir) && pwd`; cd tests
 
 # Hook the test suite into the check rule
-check-local: tests/atconfig $(srcdir)/$(TESTSUITE) libltdl/libltdlc.la
+check-local: tests/atconfig $(srcdir)/$(TESTSUITE) libltdl/libltdlc.la $(bin_SCRIPTS)
 	$(CD_TESTDIR); \
 	CONFIG_SHELL="$(SHELL)" $(SHELL) $$abs_srcdir/$(TESTSUITE) \
 	  $(TESTS_ENVIRONMENT) $(BUILDCHECK_ENVIRONMENT) $(TESTSUITEFLAGS)

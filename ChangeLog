@@ -1,3 +1,10 @@
+2007-02-23  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* Makefile.am (doc_libtool_TEXINFOS): Renamed from...
+	(libtool_TEXINFOS): ...this, to fix dependencies.  Omit from
+	EXTRA_DIST.
+	(check-local): Also depend upon $(bin_SCRIPTS).
+
 2007-02-23  Ralf Menzel  <menzel@ls6.cs.uni-dortmund.de>  (tiny change)
 
 	* libltdl/config/general.m4sh (sed_double_backslash): Fix
