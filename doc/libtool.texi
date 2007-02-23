@@ -5259,6 +5259,13 @@ Whether the compiler supports the @option{-c} and @option{-o} options
 simultaneously.  Set to @samp{yes} or @samp{no}.
 @end defvar
 
+@defvar compiler_needs_object
+Whether the compiler has to see an object listed on the command line in
+order to successfully invoke the linker.  If @samp{no}, then a set of
+convenience archives or a set of object file names can be passed via
+linker-specific options or linker scripts.
+@end defvar
+
 @defvar dlopen_support
 Whether @code{dlopen} is supported on the platform.
 Set to @samp{yes} or @samp{no}.

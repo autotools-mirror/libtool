@@ -1,5 +1,19 @@
 2007-02-23  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* libltdl/m4/libtool.m4 (_LT_LINKER_SHLIBS)
+	<compiler_needs_object>: New tag variable.  Default to `no'.
+	(_LT_LINKER_SHLIBS) [ linux ]: Set it to yes for Sun C 5.9.
+	(_LT_LANG_CXX_CONFIG): Also default it to `no'.
+	[ linux ]: Set it to `yes' for Sun C++ 5.9.
+	* libltdl/config/ltmain.m4sh (func_mode_link): If we link
+	no objects but only convenience archives into a library,
+	force expansion if `compiler_needs_object' is yes.
+	For creating a linker input filelist due to long cmdline,
+	extract the first object if `compiler_needs_object' is yes.
+	* doc/libtool.texi (libtool script contents): Document it.
+	Fixes test failures of Sun compilers on GNU/Linux.
+	Report by Terry D. Dontje.
+
 	* libltdl/config/ltmain.m4sh (func_mode_link): Avoid setting
 	`$libobjs' to a single space; set it to empty in that case.
 

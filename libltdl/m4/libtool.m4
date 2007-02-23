@@ -4003,6 +4003,7 @@ m4_if([$1], [CXX], [
   _LT_TAGVAR(always_export_symbols, $1)=no
   _LT_TAGVAR(archive_cmds, $1)=
   _LT_TAGVAR(archive_expsym_cmds, $1)=
+  _LT_TAGVAR(compiler_needs_object, $1)=no
   _LT_TAGVAR(enable_shared_with_static_runtimes, $1)=no
   _LT_TAGVAR(export_dynamic_flag_spec, $1)=
   _LT_TAGVAR(export_symbols_cmds, $1)='$NM $libobjs $convenience | $global_symbol_pipe | $SED '\''s/.* //'\'' | sort | uniq > $export_symbols'
@@ -4195,6 +4196,7 @@ _LT_EOF
 	case `$CC -V 2>&1 | sed 5q` in
 	*Sun\ C*)			# Sun C 5.9
 	  _LT_TAGVAR(whole_archive_flag_spec, $1)='${wl}--whole-archive`new_convenience=; for conv in $convenience\"\"; do test -z \"$conv\" || new_convenience=\"$new_convenience,$conv\"; done; $ECHO \"$new_convenience\"` ${wl}--no-whole-archive'
+	  _LT_TAGVAR(compiler_needs_object, $1)=yes
 	  tmp_sharedflag='-G' ;;
 	*Sun\ F*)			# Sun Fortran 8.3
 	  tmp_sharedflag='-G' ;;
@@ -4994,6 +4996,8 @@ _LT_TAGDECL([], [export_dynamic_flag_spec], [1],
     [Compiler flag to allow reflexive dlopens])
 _LT_TAGDECL([], [whole_archive_flag_spec], [1],
     [Compiler flag to generate shared objects directly from archives])
+_LT_TAGDECL([], [compiler_needs_object], [1],
+    [Whether the compiler copes with passing no objects directly])
 _LT_TAGDECL([], [old_archive_from_new_cmds], [2],
     [Create an old-style archive from a shared archive])
 _LT_TAGDECL([], [old_archive_from_expsyms_cmds], [2],
@@ -5183,6 +5187,7 @@ _LT_TAGVAR(archive_cmds_need_lc, $1)=no
 _LT_TAGVAR(allow_undefined_flag, $1)=
 _LT_TAGVAR(always_export_symbols, $1)=no
 _LT_TAGVAR(archive_expsym_cmds, $1)=
+_LT_TAGVAR(compiler_needs_object, $1)=no
 _LT_TAGVAR(export_dynamic_flag_spec, $1)=
 _LT_TAGVAR(hardcode_direct, $1)=no
 _LT_TAGVAR(hardcode_direct_absolute, $1)=no
@@ -5851,6 +5856,7 @@ if test "$_lt_caught_CXX_error" != yes; then
 	      _LT_TAGVAR(archive_expsym_cmds, $1)='$CC -G${allow_undefined_flag} -h$soname -o $lib $predep_objects $libobjs $deplibs $postdep_objects $compiler_flags ${wl}-retain-symbols-file ${wl}$export_symbols'
 	      _LT_TAGVAR(hardcode_libdir_flag_spec, $1)='-R$libdir'
 	      _LT_TAGVAR(whole_archive_flag_spec, $1)='${wl}--whole-archive`new_convenience=; for conv in $convenience\"\"; do test -z \"$conv\" || new_convenience=\"$new_convenience,$conv\"; done; $ECHO \"$new_convenience\"` ${wl}--no-whole-archive'
+	      _LT_TAGVAR(compiler_needs_object, $1)=yes
 
 	      # Not sure whether something based on
 	      # $CC $CFLAGS -v conftest.$objext -o libconftest$shared_ext 2>&1

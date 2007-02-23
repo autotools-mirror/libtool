@@ -5182,6 +5182,13 @@ EOF
 	deplibs="$tmp_deplibs"
 
 	if test -n "$convenience"; then
+	  if test -n "$whole_archive_flag_spec" &&
+	    test "$compiler_needs_object" = yes &&
+	    test -z "$libobjs"; then
+	    # extract the archives, so we have objects to list.
+	    # TODO: could optimize this to just extract one archive.
+	    whole_archive_flag_spec=
+	  fi
 	  if test -n "$whole_archive_flag_spec"; then
 	    save_libobjs=$libobjs
 	    eval libobjs=\"\$libobjs $whole_archive_flag_spec\"
@@ -5270,12 +5277,19 @@ EOF
 	    output=${output_objdir}/${output_la}.lnk
 	    func_echo "creating linker input file list: $output"
 	    : > $output
-	    for obj in $save_libobjs
+	    set x $save_libobjs
+	    shift
+	    firstobj=
+	    if test "$compiler_needs_object" = yes; then
+	      firstobj="$1 "
+	      shift
+	    fi
+	    for obj
 	    do
 	      $ECHO "$obj" >> $output
 	    done
 	    delfiles="$delfiles $output"
-	    output=\"$file_list_spec$output\"
+	    output=$firstobj\"$file_list_spec$output\"
 	  else
 	    func_echo "creating reloadable object files..."
 	    output=$output_objdir/$output_la-${k}.$objext
