@@ -5143,7 +5143,7 @@ EOF
 	      fi
 	    done
 	    IFS="$save_ifs"
-	    if test -n "$export_symbols_regex"; then
+	    if test -n "$export_symbols_regex" && test "X$skipped_export" != "X:"; then
 	      func_show_eval '$EGREP -e "$export_symbols_regex" "$export_symbols" > "${export_symbols}T"'
 	      func_show_eval '$MV "${export_symbols}T" "$export_symbols"'
 	    fi
@@ -5263,7 +5263,7 @@ EOF
 	  last_robj=
 	  k=1
 
-	  if test "X$skipped_export" != "X:" && test "$with_gnu_ld" = yes; then
+	  if test -n "$save_libobjs" && test "X$skipped_export" != "X:" && test "$with_gnu_ld" = yes; then
 	    output=${output_objdir}/${output_la}.lnkscript
 	    func_echo "creating GNU ld script: $output"
 	    $ECHO 'INPUT (' > $output
@@ -5273,7 +5273,7 @@ EOF
 	    done
 	    $ECHO ')' >> $output
 	    delfiles="$delfiles $output"
-	  elif test "X$skipped_export" != "X:" && test "X$file_list_spec" != X; then
+	  elif test -n "$save_libobjs" && test "X$skipped_export" != "X:" && test "X$file_list_spec" != X; then
 	    output=${output_objdir}/${output_la}.lnk
 	    func_echo "creating linker input file list: $output"
 	    : > $output
@@ -5291,39 +5291,52 @@ EOF
 	    delfiles="$delfiles $output"
 	    output=$firstobj\"$file_list_spec$output\"
 	  else
-	    func_echo "creating reloadable object files..."
-	    output=$output_objdir/$output_la-${k}.$objext
-	    # Loop over the list of objects to be linked.
-	    for obj in $save_libobjs
-	    do
-	      eval test_cmds=\"$reload_cmds $objlist $last_robj\"
-	      if test "X$objlist" = X ||
-		 { len=`expr "X$test_cmds" : ".*" 2>/dev/null` &&
-		   test "$len" -le "$max_cmd_len"; }; then
-		objlist="$objlist $obj"
-	      else
-		# The command $test_cmds is almost too long, add a
-		# command to the queue.
-		if test "$k" -eq 1 ; then
-		  # The first file doesn't have a previous command to add.
-		  eval concat_cmds=\"$reload_cmds $objlist $last_robj\"
+	    if test -n "$save_libobjs"; then
+	      func_echo "creating reloadable object files..."
+	      output=$output_objdir/$output_la-${k}.$objext
+	      # Loop over the list of objects to be linked.
+	      for obj in $save_libobjs
+	      do
+		eval test_cmds=\"$reload_cmds $objlist $last_robj\"
+		if test "X$objlist" = X ||
+		   { len=`expr "X$test_cmds" : ".*" 2>/dev/null` &&
+		     test "$len" -le "$max_cmd_len"; }; then
+		  objlist="$objlist $obj"
 		else
-		  # All subsequent reloadable object files will link in
-		  # the last one created.
-		  eval concat_cmds=\"\$concat_cmds~$reload_cmds $objlist $last_robj\"
+		  # The command $test_cmds is almost too long, add a
+		  # command to the queue.
+		  if test "$k" -eq 1 ; then
+		    # The first file doesn't have a previous command to add.
+		    eval concat_cmds=\"$reload_cmds $objlist $last_robj\"
+		  else
+		    # All subsequent reloadable object files will link in
+		    # the last one created.
+		    eval concat_cmds=\"\$concat_cmds~$reload_cmds $objlist $last_robj\"
+		  fi
+		  last_robj=$output_objdir/$output_la-${k}.$objext
+		  k=`expr $k + 1`
+		  output=$output_objdir/$output_la-${k}.$objext
+		  objlist=$obj
+		  len=1
 		fi
-		last_robj=$output_objdir/$output_la-${k}.$objext
-		k=`expr $k + 1`
-		output=$output_objdir/$output_la-${k}.$objext
-		objlist=$obj
-		len=1
-	      fi
-	    done
-	    # Handle the remaining objects by creating one last
-	    # reloadable object file.  All subsequent reloadable object
-	    # files will link in the last one created.
-	    test -z "$concat_cmds" || concat_cmds=$concat_cmds~
-	    eval concat_cmds=\"\${concat_cmds}$reload_cmds $objlist $last_robj\"
+	      done
+	      # Handle the remaining objects by creating one last
+	      # reloadable object file.  All subsequent reloadable object
+	      # files will link in the last one created.
+	      test -z "$concat_cmds" || concat_cmds=$concat_cmds~
+	      eval concat_cmds=\"\${concat_cmds}$reload_cmds $objlist $last_robj\"
+
+	      # Set up a command to remove the reloadable object files
+	      # after they are used.
+	      i=0
+	      while test "$i" -lt "$k"
+	      do
+		i=`expr $i + 1`
+		delfiles="$delfiles $output_objdir/$output_la-${i}.$objext"
+	      done
+	    else
+	      output=
+	    fi
 
 	    if ${skipped_export-false}; then
 	      func_echo "generating symbol list for \`$libname.la'"
@@ -5331,26 +5344,19 @@ EOF
 	      $opt_dry_run || $RM $export_symbols
 	      libobjs=$output
 	      # Append the command to create the export file.
-	      eval concat_cmds=\"\$concat_cmds~$export_symbols_cmds\"
+	      test -z "$concat_cmds" || concat_cmds=$concat_cmds~
+	      eval concat_cmds=\"\$concat_cmds$export_symbols_cmds\"
 	    fi
 
-	    # Set up a command to remove the reloadable object files
-	    # after they are used.
-	    i=0
-	    while test "$i" -lt "$k"
-	    do
-	      i=`expr $i + 1`
-	      delfiles="$delfiles $output_objdir/$output_la-${i}.$objext"
-	    done
-
-	    func_echo "creating a temporary reloadable object file: $output"
+	    test -n "$save_libobjs" &&
+	      func_echo "creating a temporary reloadable object file: $output"
 
 	    # Loop through the commands generated above and execute them.
 	    save_ifs="$IFS"; IFS='~'
 	    for cmd in $concat_cmds; do
 	      IFS="$save_ifs"
 	      $opt_silent || {
-	          func_quote_for_expand "$cmd"
+		  func_quote_for_expand "$cmd"
 		  eval "func_echo $func_quote_for_expand_result"
 	      }
 	      $opt_dry_run || eval "$cmd" || {
@@ -5367,6 +5373,11 @@ EOF
 	      }
 	    done
 	    IFS="$save_ifs"
+
+	    if test -n "$export_symbols_regex" && ${skipped_export-false}; then
+	      func_show_eval '$EGREP -e "$export_symbols_regex" "$export_symbols" > "${export_symbols}T"'
+	      func_show_eval '$MV "${export_symbols}T" "$export_symbols"'
+	    fi
 	  fi
 
 	  libobjs=$output

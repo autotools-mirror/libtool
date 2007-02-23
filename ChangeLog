@@ -1,5 +1,14 @@
 2007-02-23  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	Fix -export-symbols and -export-symbols-regex for links that
+	exceed the command line length and use convenience archives.
+
+	* libltdl/config/ltmain.m4sh (func_mode_link): Avoid grepping a
+	nonexistent file if using reloadable objects.  Do not create a
+	linker script nor a linker input file if no objects are passed.
+	Apply export_symbols_regex in case the command line length is
+	exceeded.
+
 	* libltdl/m4/libtool.m4 (_LT_LINKER_SHLIBS)
 	<compiler_needs_object>: New tag variable.  Default to `no'.
 	(_LT_LINKER_SHLIBS) [ linux ]: Set it to yes for Sun C 5.9.
