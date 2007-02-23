@@ -1,5 +1,10 @@
 2007-02-23  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* libltdl/config/ltmain.m4sh (func_generate_dlsyms) [ osf5 ]:
+	On Tru64 5.1, const relocations do not work well.  Omit the
+	const here.  Fixes failure of demo-make after demo-shared with
+	link editor error `seg_info_ptr: Couldnt find a seg type 2'.
+
 	* Makefile.am (doc_libtool_TEXINFOS): Renamed from...
 	(libtool_TEXINFOS): ...this, to fix dependencies.  Omit from
 	EXTRA_DIST.

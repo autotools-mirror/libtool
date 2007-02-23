@@ -959,6 +959,10 @@ typedef struct {
    runtime relocations are performed -- see ld's documentation
    on pseudo-relocs.  */"
 	    lt_dlsym_const= ;;
+	  *osf5*)
+	    echo >> "$output_objdir/$my_dlsyms" "\
+/* This system does not cope well with relocations in const data */"
+	    lt_dlsym_const= ;;
 	  *)
 	    lt_dlsym_const=const ;;
 	  esac
