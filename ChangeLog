@@ -1,5 +1,10 @@
 2007-02-23  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* libltdl/config/ltmain.m4sh (func_mode_link): Avoid setting
+	`$libobjs' to a single space; set it to empty in that case.
+
+2007-02-23  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
 	* libltdl/config/ltmain.m4sh (func_generate_dlsyms) [ osf5 ]:
 	On Tru64 5.1, const relocations do not work well.  Omit the
 	const here.  Fixes failure of demo-make after demo-shared with

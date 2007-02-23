@@ -4533,6 +4533,7 @@ func_mode_link ()
 
       func_generate_dlsyms "$libname" "$libname" "yes"
       libobjs="$libobjs $symfileobj"
+      test "X$libobjs" = "X " && libobjs=
 
       if test "$mode" != relink; then
 	# Remove our outputs, but don't remove object files since they
@@ -5088,6 +5089,7 @@ EOF
 
 	# Use standard objects if they are pic
 	test -z "$pic_flag" && libobjs=`$ECHO "X$libobjs" | $SP2NL | $Xsed -e "$lo2o" | $NL2SP`
+	test "X$libobjs" = "X " && libobjs=
 
 	delfiles=
 	if test -n "$export_symbols" && test -n "$include_expsyms"; then
@@ -5183,12 +5185,14 @@ EOF
 	  if test -n "$whole_archive_flag_spec"; then
 	    save_libobjs=$libobjs
 	    eval libobjs=\"\$libobjs $whole_archive_flag_spec\"
+	    test "X$libobjs" = "X " && libobjs=
 	  else
 	    gentop="$output_objdir/${outputname}x"
 	    generated="$generated $gentop"
 
 	    func_extract_archives $gentop $convenience
 	    libobjs="$libobjs $func_extract_archives_result"
+	    test "X$libobjs" = "X " && libobjs=
 	  fi
 	fi
 
@@ -5357,6 +5361,7 @@ EOF
 
 	  if test -n "$convenience" && test -n "$whole_archive_flag_spec"; then
 	    eval libobjs=\"\$libobjs $whole_archive_flag_spec\"
+	    test "X$libobjs" = "X " && libobjs=
 	  fi
 	  # Expand the library linking commands again to reset the
 	  # value of $libobjs for piecewise linking.
@@ -5389,6 +5394,7 @@ EOF
 
 	  func_extract_archives $gentop $dlprefiles
 	  libobjs="$libobjs $func_extract_archives_result"
+	  test "X$libobjs" = "X " && libobjs=
 	fi
 
 	save_ifs="$IFS"; IFS='~'
