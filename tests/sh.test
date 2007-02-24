@@ -1,7 +1,8 @@
 #! /bin/sh
-# sh.test - check that we haven't forgotten a `test' command
+# sh.test - check for some nonportable or dubious or undesired shell
+#           constructs in shell scripts.
 
-# Copyright (C) 2003, 2004, 2005, 2006 Free Software Foundation, Inc.
+# Copyright (C) 2003, 2004, 2005, 2006, 2007 Free Software Foundation, Inc.
 # This is free software; see the source for copying conditions.  There is NO
 # warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 

@@ -1,5 +1,10 @@
 2007-02-24  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* doc/libtool.texi (Test descriptions): Track the grand test
+	suite renaming from 2003-10-14 in the tests documentation.
+	assign.test is merged into sh.test.  Fix description of sh.test.
+	* tests/sh.test: Likewise.
+
 	* doc/libtool.texi (LT_INIT): Fix wording of intro a bit.
 	<shared, static>: Also describe these default LT_INIT options.
 	<AC_LIBTOOL_DLOPEN, AC_LIBTOOL_WIN32_DLL>

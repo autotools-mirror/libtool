@@ -4687,29 +4687,31 @@ disable the fast-install mode (@option{--enable-fast-install=no}).
 prefer building @sc{pic} code (@option{--with-pic}), @file{demo-nopic.test}
 to prefer non-@sc{pic} code (@option{--without-pic}).
 
-@item deplibs.test
-@pindex deplibs.test
+@item demo-deplibs.test
+@pindex demo-deplibs.test
 Many systems cannot link static libraries into shared libraries.
 libtool uses a @code{deplibs_check_method} to prevent such cases.
 This tests checks whether libtool's @code{deplibs_check_method}
 works properly.
 
-@item hardcode.test
-@pindex hardcode.test
+@item demo-hardcode.test
+@pindex demo-hardcode.test
 On all systems with shared libraries, the location of the library can be
 encoded in executables that are linked against it @pxref{Linking
 executables}.  This test checks the conditions under which your system
 linker hardcodes the library location, and guarantees that they
 correspond to libtool's own notion of how your linker behaves.
 
-@item build-relink.test
-@pindex build-relink.test
-Checks whether variable @var{shlibpath_overrides_runpath} is properly
-set.  If the test fails and @var{VERBOSE} is set, it will indicate what
-the variable should have been set to.
+@item demo-relink.test
+@itemx depdemo-relink.test
+@pindex demo-relink.test
+@pindex depdemo-relink.test
+These tests check whether variable @var{shlibpath_overrides_runpath} is
+properly set.  If the test fails and @var{VERBOSE} is set, it will
+indicate what the variable should have been set to.
 
-@item noinst-link.test
-@pindex noinst-link.test
+@item demo-noinst-link.test
+@pindex demo-noinst-link.test
 Checks whether libtool will not try to link with a previously installed
 version of a library when it should be linking with a just-built one.
 
@@ -4779,14 +4781,9 @@ static and shared libraries, @file{mdemo-static.test} builds only static
 libraries (@option{--disable-shared}), and @file{mdemo-shared.test} builds
 only shared libraries (@option{--disable-static}).
 
-@item dryrun.test
-@pindex dryrun.test
+@item mdemo-dryrun.test
+@pindex mdemo-dryrun.test
 This test checks whether libtool's @option{--dry-run} mode works properly.
-
-@item assign.test
-@pindex assign.test
-Checks whether we don't put break or continue on the same
-line as an assignment in the libtool script.
 
 @item link.test
 @pindex link.test
@@ -4808,7 +4805,8 @@ This program checks libtool's metacharacter quoting.
 
 @item sh.test
 @pindex sh.test
-Checks whether a @code{test} command was forgotten in libtool.
+Checks for some nonportable or dubious or undesired shell constructs in
+shell scripts.
 
 @item suffix.test
 @pindex suffix.test
