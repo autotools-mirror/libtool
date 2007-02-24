@@ -2069,7 +2069,7 @@ The option @samp{disable-shared} to @code{LT_INIT} is a shorthand for this.
 Change the default behaviour for @code{LT_INIT} to enable shared libraries.
 This is the default on all systems where Libtool knows how to create
 shared libraries.  The user may still override this default by specifying
-@samp{--disble-shared}.  The option @samp{shared} to @code{LT_INIT} is a
+@samp{--disable-shared}.  The option @samp{shared} to @code{LT_INIT} is a
 shorthand for this.
 @code{AM_ENABLE_SHARED} is a deprecated alias for @code{AC_ENABLE_SHARED}.
 @end defmac

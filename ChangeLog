@@ -1,5 +1,7 @@
 2007-02-24  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* doc/libtool.texi (LT_INIT): Fix typo.
+
 	* doc/libtool.texi (Libtool test suite): Mention the new
 	testsuite.  Point to README rather than INSTALL for testing
 	instructions.
