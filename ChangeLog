@@ -1,5 +1,9 @@
 2007-02-24  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* doc/libtool.texi (Install mode, libtool script contents):
+	Describe current and system-specific DESTDIR limitations.
+	* tests/destdir.at: XFAIL if `fast_install' is no.
+
 	* doc/libtool.texi (LT_INIT): Fix typo.
 
 	* doc/libtool.texi (Libtool test suite): Mention the new

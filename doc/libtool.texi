@@ -1565,7 +1565,13 @@ analyzing the destination path given in the original
 expected installation path established during @code{libtool --mode=link}.
 
 Thus, end-users need change nothing, and @command{automake}-style
-@code{make install DESTDIR=/tmp} will Just Work(tm).
+@code{make install DESTDIR=/tmp} will Just Work(tm) most of the time.
+For systems where fast installation can not be turned on, relinking
+may be needed.  In this case, a @samp{DESTDIR} install will fail.
+
+Currently it is not generally possible to install into a temporary
+staging area that contains needed third-party libraries which are
+not yet visible at their final location.
 @end table
 
 The rest of the @var{mode-args} are interpreted as arguments to the
@@ -5500,6 +5506,11 @@ a new copy of the program at install time.  The default value is
 @samp{yes} or @samp{needless}, depending on platform and configuration
 flags, and it can be turned from @samp{yes} to @samp{no} with the
 configure flag @option{--disable-fast-install}.
+
+On some systems, the linker always hardcodes paths to dependent libraries
+into the output.  In this case, @var{fast_install} is never set to @samp{yes},
+and relinking at install time is triggered.  This also means that @var{DESTDIR}
+installation does not work as expected.
 @end defvar
 
 @defvar finish_cmds
