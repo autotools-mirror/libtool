@@ -1,5 +1,15 @@
 2007-02-24  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* tests/link-order2.at: Rewrite completely.  Do not use `sin'
+	from the math library, there are too many problems with this.
+	Instead, use a self-written library, install it without the
+	Libtool library file, to emulate a native library in a system
+	directory, and adjust $shlibpat_var.  Try overriding its symbol.
+	Further, also try an installed `wrong' binary.
+	Avoid failing test bits on AIX without runtimelinking and on
+	Darwin in some cases, SKIP at the end in this case.
+	Analysis by Peter O'Gorman.
+
 	* doc/notes.texi: Mention MACOSX_DEPLOYMENT_TARGET issue.
 	* tests/template.at: Only skip those tests failing on Darwin
 	if `-flat_namespace' is used by libtool.  In that case, SKIP

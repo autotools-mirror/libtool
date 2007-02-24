@@ -1,5 +1,5 @@
 # Hand crafted tests for GNU Libtool.                         -*- Autotest -*-
-# Copyright 2006 Free Software Foundation, Inc.
+# Copyright 2006, 2007 Free Software Foundation, Inc.
 
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -18,86 +18,124 @@
 
 # link-order2.test: make sure that depdepls are added right after
 # the libs that pull them in: necessary at least for static linking
-# and on systems where libraries do not link against other libraries,
-# in order to do this: override a commonly used symbol in a commonly
-# used library.
+# and on systems where libraries do not link against other libraries.
+#
+# We test by overriding one symbol from a depdepl library.
+# Test both a libtool library and a non-libtool library (simulated
+# by removing the .la file, and setting $shlibpath_var so it is
+# found at runtime).  In order to ensure that the depdepl is
+# actually loaded in each case, we also use an unrelated symbol
+# from it directly in the main program.  We test for failure by
+# reversing the link order.
+# We test both static and shared: it should work in both cases.  
+# But for the static case to work, the two symbols in the depdepl
+# need to be in separate object files, otherwise duplicate symbol
+# definitions can happen.
+
+# The shared case fails on AIX without runtimelinking and on Darwin.
+# On Darwin, using shared libs this only works without -no-undefined
+# and only with MACOS_DEPLOYMENT_TARGET 10.2 and earlier
+# (in that case $allow_undefined_flag contains -flat_namespace).
 
 AT_SETUP([Link order of deplibs.])
 AT_KEYWORDS([libtool])
 
-# g++ reorders `-lm' on the command line.  :-(
-AT_DATA([t.c], [[
-#if defined(__cplusplus) && defined(__GNUC__)
-choke me
-#endif
-int t = 42;
-]])
-AT_CHECK([$CC $CPPFLAGS $CFLAGS -c t.c || exit 77], [], [ignore], [ignore])
+eval `$LIBTOOL --config | $EGREP '^(shlibpath_var|allow_undefined_flag)='`
 
-LDFLAGS="$LDFLAGS -no-undefined"
+undefined_setting=-no-undefined
+shared_fails=no
+case $host_os,$LDFLAGS,$allow_undefined_flag in
+aix*,*-brtl*,*) ;;
+aix*) shared_fails=yes ;;
+darwin*,*,*-flat_namespace*) undefined_setting= ;;
+darwin*,*,*) shared_fails=yes ;;
+esac
+
+deflibdir=`pwd`/lib
+defbindir=`pwd`/lib
 libdir=`pwd`/inst/lib
 bindir=`pwd`/inst/bin
-mkdir inst inst/bin inst/lib
+mkdir bin lib inst inst/bin inst/lib
+LDFLAGS="$LDFLAGS $undefined_setting -L$deflibdir"
 
-cat >a.c <<\EOF
-/* pretend we have a better sine function */
-#ifdef __cplusplus
-extern "C"
-#endif
-double sin (double x) { return 0.0; }
+cat >a0.c <<\EOF
+int a (void) { return 1; }
+EOF
+
+cat >a1.c <<\EOF
+int a (void) { return 0; }
 EOF
 
 cat >b.c <<\EOF
-#ifdef __cplusplus
-extern "C"
-#endif
-double sin (double);
-double b (double x) { return sin (x); }
+int a (void);
+int b (void) { return a (); }
 EOF
 
 cat >main.c <<\EOF
-#include <math.h>
 #include <stdlib.h>
-extern double b (double);
-extern double four;
-double four = 4.0;
+extern int a (void);
+extern int b (void);
 int main (void)
 {
-  /* The function b should call our sin (that returns 0) and not libm's
-   * (in the latter case, b returns approximately 1)
-   * the sqrt is to force linking against libm
-   * the variable four is to prevent most compiler optimizations
-   */
-  int status = EXIT_FAILURE;
-  if (fabs (b (3.1415 / 2.)) < 0.01 && fabs (sqrt (four) - 2.) < 0.01)
-    status = EXIT_SUCCESS;
-  return status;
+  return a () + b ();
 }
 EOF
 
-$LIBTOOL --mode=compile $CC $CPPFLAGS $CFLAGS -c a.c
-$LIBTOOL --mode=compile $CC $CPPFLAGS $CFLAGS -c b.c
+for file in a0 a1 b; do
+  $LIBTOOL --mode=compile $CC $CPPFLAGS $CFLAGS -c $file.c
+done
 $CC $CPPFLAGS $CFLAGS -c main.c
-for static in '' -static; do
-  $LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS $static -o liba.la a.lo -rpath $libdir
-  $LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS $static -o libb.la b.lo liba.la -rpath $libdir
-  $LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o main main.$OBJEXT libb.la -lm
-  LT_AT_EXEC_CHECK([./main])
-  # Now test that if we reverse the link order, the program fails.
-  # The execution failure can only work on systems that actually have a libm.
-  $LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o wrong main.$OBJEXT -lm libb.la
-  case $host_os in
-  cygwin* | mingw* | pw32* | beos* ) ;;
-  *) LT_AT_EXEC_CHECK([./wrong], [1]) ;;
-  esac
 
-  $LIBTOOL --mode=install cp liba.la $libdir/liba.la
-  $LIBTOOL --mode=install cp libb.la $libdir/libb.la
-  $LIBTOOL --mode=install cp main $bindir/main
-  $LIBTOOL --mode=clean rm -f liba.la libb.la
-  LT_AT_EXEC_CHECK([$bindir/main])
+# Build an old, installed library.
+$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS $static -o liba0.la a0.lo -rpath $deflibdir
+$LIBTOOL --mode=install cp liba0.la $deflibdir/liba0.la
+$LIBTOOL --mode=clean rm -f liba0.la
+
+for type_of_depdepl in libtool non-libtool; do
+  echo "type of depdepl: $type_of_depdepl"
+  if test $type_of_depdepl = non-libtool; then
+    # Simulate a non-Libtool system library.
+    rm $deflibdir/liba1.la
+    addpath=$deflibdir
+    if test "$shlibpath_var" = PATH; then
+      addpath=$defbindir
+    fi
+    sep=
+    eval test -n \"\$$shlibpath_var\" && sep=:
+    eval $shlibpath_var='$addpath$sep$'$shlibpath_var
+    export $shlibpath_var
+  fi
+  for static in '' -static-libtool-libs; do
+    case `$LIBTOOL --features` in
+    *disable\ static\ libraries*) test "$static" = '' || continue;;
+    esac
+    test "$type_of_depdepl,$static" = "non-libtool,-static-libtool-libs" &&
+       static=-all-static
+    $LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS $static -o liba1.la a1.lo -rpath $libdir
+    $LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS $static -o libb.la b.lo liba1.la -rpath $libdir
+    AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS $static -o main main.$OBJEXT libb.la -la0],
+	     [], [ignore], [ignore])
+    LT_AT_EXEC_CHECK([./main])
+    # Now test that if we reverse the link order, the program fails.
+    AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS $static -o wrong main.$OBJEXT -la0 libb.la],
+	     [], [ignore], [ignore])
+    if test $shared_fails,$static != yes,; then
+      LT_AT_EXEC_CHECK([./wrong], [2])
+    fi
+
+    $LIBTOOL --mode=install cp liba1.la $libdir/liba1.la
+    $LIBTOOL --mode=install cp libb.la $libdir/libb.la
+    $LIBTOOL --mode=install cp main $bindir/main
+    $LIBTOOL --mode=install cp wrong $bindir/wrong
+    $LIBTOOL --mode=clean rm -f liba1.la libb.la
+    LT_AT_EXEC_CHECK([$bindir/main])
+    if test $shared_fails,$static != yes,; then
+      LT_AT_EXEC_CHECK([$bindir/wrong], [2])
+    fi
+  done
 done
 
+AT_CHECK([test $shared_fails = no || (exit 77)])
 
 # Now the converse: if both the program and the library need libm, then
 # it needs to be sorted last.  (TODO)
