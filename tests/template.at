@@ -122,6 +122,16 @@ AT_CLEANUP
 AT_SETUP([template test with subdirs])
 LT_AT_TAG([CXX])
 AT_KEYWORDS([libtool])
+
+# This does not work with flat namespace shared libraries on Darwin.
+# Set MACOSX_DEPLOYMENT_TARGET to 10.3 or later at configure time to 
+# get two-level namespace shared libraries.
+noskip=:
+eval `$LIBTOOL --tag=CXX --config | grep '^allow_undefined_flag='`
+case $allow_undefined_flag in
+*-flat_namespace*) noskip=false ;;
+esac
+
 CPPFLAGS="$CPPFLAGS -I../src/lib -I../src/lib2"
 
 mkdir src obj
@@ -229,15 +239,14 @@ AT_CHECK([$LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS $LDFLAGS -o sub/main $ma
 	 [0], [ignore], [ignore])
 LT_AT_EXEC_CHECK([./sub/main], [ignore])
 # lib convenience
-case $host in
-  *-*-darwin*) ;;
-  *)	AT_CHECK([$LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS $LDFLAGS -o lib2/libb.la lib2/b.lo -rpath /foo],
-  		 [0], [ignore], [ignore])
-	AT_CHECK([$LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS $LDFLAGS -o sub/main $main_o lib2/libb.la lib/liba.la],
-		 [0], [ignore], [ignore])
-	LT_AT_EXEC_CHECK([./sub/main])
-	;;
-esac
+if $noskip; then
+  AT_CHECK([$LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS $LDFLAGS -o lib2/libb.la lib2/b.lo -rpath /foo],
+	   [0], [ignore], [ignore])
+  AT_CHECK([$LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS $LDFLAGS -o sub/main $main_o lib2/libb.la lib/liba.la],
+	   [0], [ignore], [ignore])
+  LT_AT_EXEC_CHECK([./sub/main])
+fi
+
 # both installed
 AT_CHECK([$LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS $LDFLAGS -o lib/liba.la lib/a.lo -rpath /foo],
 	 [0], [ignore], [ignore])
@@ -255,27 +264,26 @@ AT_CHECK([$LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS $LDFLAGS -o sub/main $ma
 	 [0], [ignore], [ignore])
 LT_AT_EXEC_CHECK([./sub/main])
 # lib convenience
-case $host in
-  *-*-darwin*) ;;
-  *)	AT_CHECK([$LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS $LDFLAGS -o lib2/libb.la lib2/b.lo lib/liba.la -rpath /foo],
-		 [0], [ignore], [ignore])
-	AT_CHECK([$LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS $LDFLAGS -o sub/main $main_o lib2/libb.la],
-		 [0], [ignore], [ignore])
-	LT_AT_EXEC_CHECK([./sub/main])
-	;;
-esac
+if $noskip; then
+
+  AT_CHECK([$LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS $LDFLAGS -o lib2/libb.la lib2/b.lo lib/liba.la -rpath /foo],
+  	 [0], [ignore], [ignore])
+  AT_CHECK([$LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS $LDFLAGS -o sub/main $main_o lib2/libb.la],
+  	 [0], [ignore], [ignore])
+  LT_AT_EXEC_CHECK([./sub/main])
+fi
 # both installed
-case $host in
-  *-*-darwin*) ;;
-  *)	AT_CHECK([$LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS $LDFLAGS -o lib2/libb.la lib2/b.lo lib/liba.la -rpath /bar],
-  		 [0], [ignore], [ignore])
-	AT_CHECK([$LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS $LDFLAGS -o sub/main $main_o lib2/libb.la],
-		 [0], [ignore], [ignore])
-	LT_AT_EXEC_CHECK([./sub/main])
-	;;
-esac
+if $noskip; then
+  AT_CHECK([$LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS $LDFLAGS -o lib2/libb.la lib2/b.lo lib/liba.la -rpath /bar],
+  	 [0], [ignore], [ignore])
+  AT_CHECK([$LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS $LDFLAGS -o sub/main $main_o lib2/libb.la],
+  	 [0], [ignore], [ignore])
+  LT_AT_EXEC_CHECK([./sub/main])
+fi
 
 cd ..
+
+AT_CHECK([$noskip || (exit 77)])
 
 dnl with autoreconf use:
 dnl

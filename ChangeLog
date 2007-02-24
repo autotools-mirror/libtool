@@ -1,3 +1,10 @@
+2007-02-24  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* doc/notes.texi: Mention MACOSX_DEPLOYMENT_TARGET issue.
+	* tests/template.at: Only skip those tests failing on Darwin
+	if `-flat_namespace' is used by libtool.  In that case, SKIP
+	at the end.  Analysis by Peter O'Gorman.
+
 2007-02-23  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	Fix -export-symbols and -export-symbols-regex for links that
@@ -8,6 +15,7 @@
 	linker script nor a linker input file if no objects are passed.
 	Apply export_symbols_regex in case the command line length is
 	exceeded.
+	Report by Bob Friesenhahn.
 
 	* libltdl/m4/libtool.m4 (_LT_LINKER_SHLIBS)
 	<compiler_needs_object>: New tag variable.  Default to `no'.

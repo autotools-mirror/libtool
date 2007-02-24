@@ -11,6 +11,12 @@ will generate the instantiations.  For Portland pgCC version5, use
 @code{CXX='pgCC --one_instantiation_per_object'} and avoid parallel @command{make}.
 
 @item
+On Darwin, for C++ code with templates you need two level shared libraries.
+Libtool builds these by default if @env{MACOSX_DEPLOYMENT_TARGET} is set to
+10.3 or later at @command{configure} time.  See @url{rdar://problem/4135857}
+for more information on this issue.
+
+@item
 FreeBSD @command{make} does not conform to @sc{posix} in its handling
 of file modification times, which causes it to loop while building libtool.
 Consider using a different @command{such} as GNU make instead.
