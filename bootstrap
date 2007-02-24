@@ -132,7 +132,8 @@ $MAKE ./$auxdir/ltmain.sh ./$m4dir/ltversion.m4 ./doc/notes.txt \
     ./tests/testsuite ./libltdl/Makefile.am \
     srcdir=. top_srcdir=. PACKAGE="$2" VERSION="$3" \
     PACKAGE_BUGREPORT="bug-$2@gnu.org" M4SH="$AUTOM4TE --language=m4sh" \
-    AUTOTEST="$AUTOM4TE --language=autotest" SED="$SED" MAKEINFO="$MAKEINFO"
+    AUTOTEST="$AUTOM4TE --language=autotest" SED="$SED" MAKEINFO="$MAKEINFO" \
+    GREP="$GREP" FGREP="$FGREP" EGREP="$EGREP" LN_S="$LN_S"
 
 test -f clcommit.m4sh && $MAKE -f Makefile.maint ./commit \
     srcdir=. top_srcdir=. PACKAGE="$2" VERSION="$3" M4SH="$AUTOM4TE -l m4sh" \

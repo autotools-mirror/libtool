@@ -1,5 +1,8 @@
 2007-02-24  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* bootstrap: Also set GREP, FGREP, EGREP, LN_S, when creating a
+	preliminary ltmain.sh script.
+
 	* doc/libtool.texi (Test descriptions): Track the grand test
 	suite renaming from 2003-10-14 in the tests documentation.
 	assign.test is merged into sh.test.  Fix description of sh.test.
