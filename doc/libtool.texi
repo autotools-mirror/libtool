@@ -1862,7 +1862,8 @@ generate a libtool script for the installer's host machine.
 If you are using @sc{gnu} Autoconf (or Automake), you should add a call to
 @code{LT_INIT} to your @file{configure.ac} file.  This macro
 adds many new tests to the @code{configure} script so that the generated
-libtool script will understand the characteristics of the host:
+libtool script will understand the characteristics of the host.  It's the
+most important of a number of macros defined by Libtool:
 
 @defmac LT_PREREQ (@var{VERSION})
 Ensure that a recent enough version of Libtool is being used.  If the
@@ -1891,10 +1892,7 @@ By default, this macro turns on shared libraries if they are available,
 and also enables static libraries if they don't conflict with the shared
 libraries.  You can modify these defaults by passing either
 @code{disable-shared} or @code{disable-static} in the option list to
-@code{LT_INIT}:@footnote{This used to be done with additional macro
-calls, @code{AC_DISABLE_SHARED} and @code{AC_DISABLE_STATIC}.  If you
-are upgrading from such an old version, again @code{autoupdate} is your
-friend.}
+@code{LT_INIT}, or using @code{AC_DISABLE_SHARED} or @code{AC_DISABLE_STATIC}.
 
 @example
 # Turn off shared libraries during beta-testing, since they
@@ -1976,10 +1974,26 @@ optimization for fast installation.  The user may still override this
 default, depending on platform support, by specifying
 @option{--enable-fast-install} to @command{configure}.
 
+@item shared
+Change the default behaviour for @code{LT_INIT} to enable
+shared libraries.  This is the default on all systems where
+Libtool knows how to create shared libraries.
+The user may still override this default by specifying
+@option{--disable-shared} to @command{configure}.
+
 @item disable-shared
 Change the default behaviour for @code{LT_INIT} to disable
 shared libraries.  The user may still override this default by
 specifying @option{--enable-shared} to @command{configure}.
+
+@item static
+Change the default behaviour for @code{LT_INIT} to enable
+static libraries.  This is the default on all systems where
+shared libraries have been disabled for some reason, and on
+most systems where shared libraries have been enabled.
+If shared libraries are enabled, the user may still override
+this default by specifying @option{--disable-static} to
+@command{configure}.
 
 @item disable-static
 Change the default behaviour for @code{LT_INIT} to disable
@@ -2025,6 +2039,58 @@ LT_INIT
 AC_PROG_CXX
 @end example
 
+@end defmac
+
+@defmac AC_LIBTOOL_DLOPEN
+This macro is deprecated, the @samp{dlopen} option to @code{LT_INIT} should be
+used instead.
+@end defmac
+
+@defmac AC_LIBTOOL_WIN32_DLL
+This macro is deprecated, the @samp{win32-dll} option to @code{LT_INIT} should
+be used instead.
+@end defmac
+
+@defmac AC_DISABLE_FAST_INSTALL
+This macro is deprecated, the @samp{disable-fast-install} option to @code{LT_INIT}
+should be used instead.
+@end defmac
+
+@defmac AC_DISABLE_SHARED
+@defmacx AM_DISABLE_SHARED
+Change the default behaviour for @code{LT_INIT} to disable shared libraries.
+The user may still override this default by specifying @samp{--enable-shared}.
+The option @samp{disable-shared} to @code{LT_INIT} is a shorthand for this.
+@code{AM_DISABLE_SHARED} is a deprecated alias for @code{AC_DISABLE_SHARED}.
+@end defmac
+
+@defmac AC_ENABLE_SHARED
+@defmacx AM_ENABLE_SHARED
+Change the default behaviour for @code{LT_INIT} to enable shared libraries.
+This is the default on all systems where Libtool knows how to create
+shared libraries.  The user may still override this default by specifying
+@samp{--disble-shared}.  The option @samp{shared} to @code{LT_INIT} is a
+shorthand for this.
+@code{AM_ENABLE_SHARED} is a deprecated alias for @code{AC_ENABLE_SHARED}.
+@end defmac
+
+@defmac AC_DISABLE_STATIC
+@defmacx AM_DISABLE_STATIC
+Change the default behaviour for @code{LT_INIT} to disable static libraries.
+The user may still override this default by specifying @samp{--enable-static}.
+The option @samp{disable-static} to @code{LT_INIT} is a shorthand for this.
+@code{AM_DISABLE_STATIC} is a deprecated alias for @code{AC_DISABLE_STATIC}.
+@end defmac
+
+@defmac AC_ENABLE_STATIC
+@defmacx AM_ENABLE_STATIC
+Change the default behaviour for @code{LT_INIT} to enable static libraries.
+This is the default on all systems where shared libraries have been disabled
+for some reason, and on most systems where shared libraries have been enabled.
+If shared libraries are enabled, the user may still override this default by
+specifying @samp{--disable-static}.  The option @samp{static} to @code{LT_INIT}
+is a shorthand for this.
+@code{AM_ENABLE_STATIC} is a deprecated alias for @code{AC_ENABLE_STATIC}.
 @end defmac
 
 The tests in @code{LT_INIT} also recognize the following
@@ -4333,15 +4399,19 @@ SUBDIRS = libltdl
 @end defmac
 
 @defmac LT_WITH_LTDL
+@defmacx AC_WITH_LTDL
 Add the @option{--with-included-ltdl} option to the @file{configure}
 script.  This option will then allow the person who builds your
 package to choose between linking against an already installed
 @code{libltdl} (@option{--without-included-ltdl}), or the sources
 shipped with the package in the subdirectory named by
 @code{LT_CONFIG_LTDL_DIR} (@option{--with-included-ltdl}).
+
+@code{AC_WITH_LTDL} is a deprecated alias for @code{LT_WITH_LTDL}.
 @end defmac
 
 @defmac LTDL_INSTALLABLE
+@defmacx AC_LIBLTDL_INSTALLABLE
 If there is an installed @code{libltdl}, then set @code{LIBLTDL} to the
 link flags needed to use it, and @code{LTDLINCL} to the preprocessor
 flags needed to find the installed headers.  Otherwise, set them to
@@ -4358,9 +4428,13 @@ If used in conjunction with @code{LT_WITH_LTDL}, this macro must
 appear @strong{before} the call to @code{LT_WITH_LTDL}.  If you are
 not using @code{LT_WITH_LTDL}, then you must add a call to
 @code{AC_CONFIG_SUBDIRS(@var{DIRECTORY})} to your @file{configure.ac}.
+
+@code{AC_LIBLTDL_INSTALLABLE} is a deprecated alias for
+@code{LTDL_INSTALLABLE}.
 @end defmac
 
 @defmac LTDL_CONVENIENCE
+@defmacx AC_LIBLTDL_CONVENIENCE
 Unless you call @code{LTDL_INSTALLABLE} before hand,
 @code{LT_WITH_LTDL} calls this macro automatically, so you should only
 ever need to use it yourself if @code{LT_WITH_LTDL} doesn't do what
@@ -4372,6 +4446,9 @@ to cause it to be built as a convenience library.  If you're not
 using automake, you will need to define @code{top_builddir} and
 @code{top_srcdir} in your makefile so that @code{LIBLTDL} and
 @code{LTDLINCL} are expanded properly.
+
+@code{AC_LIBLTDL_CONVENIENCE} is a deprecated alias for
+@code{LTDL_CONVENIENCE}.
 @end defmac
 
 One advantage of the convenience library is that it is not installed,

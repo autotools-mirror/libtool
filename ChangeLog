@@ -1,5 +1,25 @@
 2007-02-24  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* doc/libtool.texi (LT_INIT): Fix wording of intro a bit.
+	<shared, static>: Also describe these default LT_INIT options.
+	<AC_LIBTOOL_DLOPEN, AC_LIBTOOL_WIN32_DLL>
+	<AC_DISABLE_FAST_INSTALL>: Mention deprecated macro names,
+	including the respective LT_INIT replacement.
+	<AC_DISABLE_SHARED, AC_DISABLE_STATIC, AC_ENABLE_SHARED>
+	<AC_ENABLE_STATIC>: Document, un-deprecate.  Suggest the
+	respective LT_INIT replacement.
+	<AM_DISABLE_SHARED, AM_DISABLE_STATIC, AM_ENABLE_SHARED>
+	<AM_ENABLE_STATIC>: Document deprecated aliases.
+	(Distributing libltdl) <AC_WITH_LTDL, AC_LIBLTDL_INSTALLABLE>
+	<AC_LIBLTDL_CONVENIENCE>: Document deprecated aliases.
+	* libltdl/m4/ltoptions.m4 (AM_ENABLE_SHARED, AM_DISABLE_SHARED)
+	(AM_ENABLE_STATIC, AM_DISABLE_STATIC): Make these AU_ALIASes of
+	the respective AC_* macros, so we do not recommend LT_INIT(*) in
+	this case.
+	(AC_ENABLE_SHARED, AC_DISABLE_SHARED, AC_ENABLE_STATIC)
+	(AC_DISABLE_STATIC): Un-deprecate these.  Remove now-superfluous
+	aclocal-1.4 backwards compatibility comments.
+
 	* tests/link-order2.at: Rewrite completely.  Do not use `sin'
 	from the math library, there are too many problems with this.
 	Instead, use a self-written library, install it without the
