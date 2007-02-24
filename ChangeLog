@@ -1,5 +1,22 @@
 2007-02-24  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* doc/libtool.texi (Libtool test suite): Mention the new
+	testsuite.  Point to README rather than INSTALL for testing
+	instructions.
+	(Test descriptions): Fix more file names.  Also mention
+	cdemo-undef.test, mdemo2-conf.test, mdemo2-exec.test,
+	mdemo2-make.test, objectlist.test, pdemo-conf.test,
+	pdemo-exec.test, pdemo-inst.test, pdemo-make.test,
+	tagdemo-conf.test, tagdemo-exec.test, tagdemo-make.test,
+	tagdemo-static.test, tagdemo-shared.test, tagdemo-undef.test,
+	f77demo-conf.test, f77demo-exec.test, f77demo-make.test,
+	f77demo-static.test, f77demo-shared.test, fcdemo-conf.test,
+	fcdemo-exec.test, fcdemo-make.test, fcdemo-static.test,
+	fcdemo-shared.test.  Describe what they do.
+	(When tests fail, Troubleshooting): Mention how to pass options
+	to the new test suite.
+	* tests/tagdemo/README: Fix description.
+
 	* bootstrap: Also set GREP, FGREP, EGREP, LN_S, when creating a
 	preliminary ltmain.sh script.
 

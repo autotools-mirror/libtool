@@ -4600,25 +4600,26 @@ determine what the problem is, and how to resolve it.
 @section The libtool test suite
 @cindex test suite
 
-Libtool comes with its own set of programs that test its capabilities,
-and report obvious bugs in the libtool program.  These tests, too, are
-constantly evolving, based on past problems with libtool, and known
-deficiencies in other operating systems.
+Libtool comes with two integrated sets of tests to check that your build
+is sane, that test its capabilities, and report obvious bugs in the
+libtool program.  These tests, too, are constantly evolving, based on
+past problems with libtool, and known deficiencies in other operating
+systems.
 
-As described in the @file{INSTALL} file, you may run @kbd{make check}
+As described in the @file{README} file, you may run @kbd{make -k check}
 after you have built libtool (possibly before you install it) in order
 to make sure that it meets basic functional requirements.
 
 @menu
-* Test descriptions::           The contents of the test suite.
+* Test descriptions::           The contents of the old test suite.
 * When tests fail::             What to do when a test fails.
 @end menu
 
 @node Test descriptions
 @subsection Description of test suite
 
-Here is a list of the current programs in the test suite, and what they
-test for:
+Here is a list of the current programs in the old test suite, and what
+they test for:
 
 @table @file
 
@@ -4627,15 +4628,17 @@ test for:
 @itemx cdemo-make.test
 @itemx cdemo-static.test
 @itemx cdemo-shared.test
+@itemx cdemo-undef.test
 @pindex cdemo-conf.test
 @pindex cdemo-exec.test
 @pindex cdemo-make.test
 @pindex cdemo-static.test
 @pindex cdemo-shared.test
-These programs check to see that the @file{cdemo} subdirectory of the
-libtool distribution can be configured and built correctly.
+@pindex cdemo-undef.test
+These programs check to see that the @file{tests/cdemo} subdirectory of
+the libtool distribution can be configured and built correctly.
 
-The @file{cdemo} subdirectory contains a demonstration of libtool
+The @file{tests/cdemo} subdirectory contains a demonstration of libtool
 convenience libraries, a mechanism that allows build-time static
 libraries to be created, in a way that their components can be later
 linked into programs or other libraries, even shared ones.
@@ -4647,6 +4650,9 @@ static and shared libraries (the default for platforms that support
 both), @file{cdemo-static.test} builds only static libraries
 (@samp{--disable-shared}), and @file{cdemo-shared.test} builds only
 shared libraries (@samp{--disable-static}).
+
+The test @file{cdemo-undef.test} tests the generation of shared
+libraries with undefined symbols on systems that allow this.
 
 @item demo-conf.test
 @itemx demo-exec.test
@@ -4668,11 +4674,11 @@ shared libraries (@samp{--disable-static}).
 @pindex demo-nofast.test
 @pindex demo-pic.test
 @pindex demo-nopic.test
-These programs check to see that the @file{demo} subdirectory of the
-libtool distribution can be configured, built, installed, and
+These programs check to see that the @file{tests/demo} subdirectory of
+the libtool distribution can be configured, built, installed, and
 uninstalled correctly.
 
-The @file{demo} subdirectory contains a demonstration of a trivial
+The @file{tests/demo} subdirectory contains a demonstration of a trivial
 package that uses libtool.  The tests @file{demo-make.test},
 @file{demo-exec.test}, @file{demo-inst.test} and
 @file{demo-unst.test} are executed four times, under four different
@@ -4731,13 +4737,13 @@ version of a library when it should be linking with a just-built one.
 @pindex depdemo-static.test
 @pindex depdemo-shared.test
 @pindex depdemo-nofast.test
-These programs check to see that the @file{depdemo} subdirectory of the
-libtool distribution can be configured, built, installed, and
+These programs check to see that the @file{tests/depdemo} subdirectory
+of the libtool distribution can be configured, built, installed, and
 uninstalled correctly.
 
-The @file{depdemo} subdirectory contains a demonstration of inter-library
-dependencies with libtool.  The test programs link some interdependent
-libraries.
+The @file{tests/depdemo} subdirectory contains a demonstration of
+inter-library dependencies with libtool.  The test programs link some
+interdependent libraries.
 
 The tests @file{depdemo-make.test}, @file{depdemo-exec.test},
 @file{depdemo-inst.test} and @file{depdemo-unst.test} are executed
@@ -4763,15 +4769,15 @@ disable the fast-install mode (@option{--enable-fast-install=no}.
 @pindex mdemo-unst.test
 @pindex mdemo-static.test
 @pindex mdemo-shared.test
-These programs check to see that the @file{mdemo} subdirectory of the
-libtool distribution can be configured, built, installed, and
+These programs check to see that the @file{tests/mdemo} subdirectory of
+the libtool distribution can be configured, built, installed, and
 uninstalled correctly.
 
-The @file{mdemo} subdirectory contains a demonstration of a package that
-uses libtool and the system independent dlopen wrapper @file{libltdl} to
-load modules.  The library @file{libltdl} provides a dlopen wrapper for
-various platforms (Linux, Solaris, HP/UX etc.) including support for
-dlpreopened modules (@pxref{Dlpreopening}).
+The @file{tests/mdemo} subdirectory contains a demonstration of a
+package that uses libtool and the system independent dlopen wrapper
+@file{libltdl} to load modules.  The library @file{libltdl} provides a
+dlopen wrapper for various platforms (Linux, Solaris, HP/UX etc.)
+including support for dlpreopened modules (@pxref{Dlpreopening}).
 
 The tests @file{mdemo-make.test}, @file{mdemo-exec.test},
 @file{mdemo-inst.test} and @file{mdemo-unst.test} are executed
@@ -4784,6 +4790,20 @@ only shared libraries (@option{--disable-static}).
 @item mdemo-dryrun.test
 @pindex mdemo-dryrun.test
 This test checks whether libtool's @option{--dry-run} mode works properly.
+
+@item mdemo2-conf.test
+@itemx mdemo2-exec.test
+@itemx mdemo2-make.test
+@pindex mdemo2-conf.test
+@pindex mdemo2-exec.test
+@pindex mdemo2-make.test
+These programs check to see that the @file{tests/mdemo2} subdirectory of
+the libtool distribution can be configured, built, and executed
+correctly.
+
+The @file{tests/mdemo2} directory contains a demonstration of a package
+that attempts to link with a library (from the @file{tests/mdemo}
+directory) that itself does dlopening of libtool modules.
 
 @item link.test
 @pindex link.test
@@ -4798,6 +4818,26 @@ directly into a program file.
 @item nomode.test
 @pindex nomode.test
 Check whether we can actually get help for libtool.
+
+@item objectlist.test
+@pindex objectlist.test
+Check that a nonexistent objectlist file is properly 
+
+@item pdemo-conf.test
+@itemx pdemo-exec.test
+@itemx pdemo-inst.test
+@itemx pdemo-make.test
+@pindex pdemo-conf.test
+@pindex pdemo-exec.test
+@pindex pdemo-inst.test
+@pindex pdemo-make.test
+These programs check to see that the @file{tests/pdemo} subdirectory of
+the libtool distribution can be configured, built, and executed
+correctly.
+
+The @file{pdemo-conf.test} lowers the @var{max_cmd_len} variable in the
+generated libtool script to test the measures to evade command line
+length limitations.
 
 @item quote.test
 @pindex quote.test
@@ -4815,6 +4855,64 @@ languages}), the source files may end in suffixes other than @samp{.c}.
 This test validates that libtool can handle suffixes for all the file
 types that it supports, and that it fails when the suffix is invalid.
 
+@item tagdemo-conf.test
+@itemx tagdemo-exec.test
+@itemx tagdemo-make.test
+@itemx tagdemo-static.test
+@itemx tagdemo-shared.test
+@itemx tagdemo-undef.test
+@pindex tagdemo-conf.test
+@pindex tagdemo-exec.test
+@pindex tagdemo-make.test
+@pindex tagdemo-static.test
+@pindex tagdemo-shared.test
+@pindex tagdemo-undef.test
+These programs check to see that the @file{tests/tagdemo} subdirectory
+of the libtool distribution can be configured, built, and executed
+correctly.
+
+The @file{tests/tagdemo} directory contains a demonstration of a package
+that uses libtool's multi-language support through configuration tags.
+It generates a library from C++ sources, which is then linked to a C++
+program.
+
+@item f77demo-conf.test
+@itemx f77demo-exec.test
+@itemx f77demo-make.test
+@itemx f77demo-static.test
+@itemx f77demo-shared.test
+@pindex f77demo-conf.test
+@pindex f77demo-exec.test
+@pindex f77demo-make.test
+@pindex f77demo-static.test
+@pindex f77demo-shared.test
+These programs check to see that the @file{tests/f77demo} subdirectory
+of the libtool distribution can be configured, built, and executed
+correctly.
+
+The @file{tests/f77demo} tests test Fortran 77 support in libtool by
+creating libraries from Fortran 77 sources, and mixed Fortran and C
+sources, and a Fortran 77 program to use the former library, and a C
+program to use the latter library.
+
+@item fcdemo-conf.test
+@itemx fcdemo-exec.test
+@itemx fcdemo-make.test
+@itemx fcdemo-static.test
+@itemx fcdemo-shared.test
+@pindex fcdemo-conf.test
+@pindex fcdemo-exec.test
+@pindex fcdemo-make.test
+@pindex fcdemo-static.test
+@pindex fcdemo-shared.test
+These programs check to see that the @file{tests/fcdemo} subdirectory
+of the libtool distribution can be configured, built, and executed
+correctly.
+
+The @file{tests/fcdemo} is similar to the @file{tests/f77demo}
+directory, except that Fortran 90 is used in combination with the
+@samp{FC} interface provided by Autoconf and Automake.
+
 @end table
 
 @node When tests fail
@@ -4822,9 +4920,9 @@ types that it supports, and that it fails when the suffix is invalid.
 @cindex failed tests
 @cindex tests, failed
 
-Each of the above tests are designed to produce no output when they are
-run via @kbd{make check}.  The exit status of each program tells the
-@file{Makefile} whether or not the test succeeded.
+Each of the tests in the old test suite are designed to produce no
+output when they are run via @kbd{make check}.  The exit status of each
+program tells the @file{Makefile} whether or not the test succeeded.
 
 If a test fails, it means that there is either a programming error in
 libtool, or in the test program itself.
@@ -4837,6 +4935,15 @@ Another way to have the test programs produce output is to set the
 @var{VERBOSE} environment variable to @samp{yes} before running them.
 For example, @kbd{env VERBOSE=yes make check} runs all the tests, and
 has each of them display debugging information.
+
+The new, Autotest-based test suite produces as output a file
+@file{tests/testsuite.log} which contains information about failed
+tests.
+
+You can pass options to the test suite through the @command{make}
+variable @var{TESTSUITEFLAGS} (@pxref{testsuite Invocation, ,
+The Autoconf Manual, autoconf, The Autoconf Manual}).
+
 
 @node Reporting bugs
 @section Reporting bugs
