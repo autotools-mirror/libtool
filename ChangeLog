@@ -1,5 +1,9 @@
 2007-02-25  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* tests/static.at: Forgot to fix PATH for the first
+	func_test_exec invocation.  So factor out into new functions
+	func_fix_path and func_restore_path and use those.
+
 	* README: Document the need for GNU make to build Libtool.
 	Point the user to the doc/notes.txt file.  In the examples, use
 	`gmake' throughout to make it more obvious.  Explain simpler way
