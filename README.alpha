@@ -8,7 +8,11 @@ This is an alpha testing release of GNU Libtool, please try it on all
 the platforms you have access to.  Using it more or less implicitly
 signs you up to help us find whatever problems you report.
 
-If it builds and passes the test suite (`make check'), please send
+See the file INSTALL for generic instructions on how to build and install
+Libtool.  Please see the file doc/notes.txt for some platform-specific
+information.  Please note that you need GNU make to build Libtool.
+
+If it builds and passes the test suite (`gmake check'), please send
 notification to the libtool mailing list <libtool@gnu.org> with a
 subject line including the string `[PLATFORM]'.
 
@@ -42,10 +46,18 @@ of any failed test groups (as described below).
 ==================
 
 Libtool comes with two integrated sets of tests to check that your build
-is sane.  You can run both test suites like this:
+is sane.  You can run both test suites like this, assuming that `gmake'
+refers to GNU make:
 
-  make check TESTSUITEFLAGS=-V
-  make check-local
+  gmake -k check
+
+If you want to run the old testsuite only, do it like this:
+
+  gmake check TESTSUITEFLAGS=-V
+
+If you want to run the new testsuite only, do it like this:
+
+  gmake check-local
 
 The tests of the old test suite run in groups in the various demo
 subdirectories, so if one of the tests early in a group FAILs, the rest
@@ -58,8 +70,9 @@ To run a test group of the old test suite in isolation (say, you think
 you have fixed a bug, but don't want to rerun the entire suite), you can
 do it like this:
 
-  make check TESTS='cdemo-static.test cdemo-make.test cdemo-exec.test' \
-	     TESTSUITEFLAGS=-V
+  gmake check TESTS="tests/cdemo-static.test tests/cdemo-make.test \
+                     tests/cdemo-exec.test" \
+	      TESTSUITEFLAGS=-V
 
 Providing that you have a FAIL from the most recent group from a
 particular demo directory (like the cdemo-static.test group above), you
@@ -72,8 +85,8 @@ report mailing list, <bug-libtool@gnu.org> with a subject line that
 includes the string `[TEST FAILURE]'.  From a Bourne compatible shell,
 you can generate verbose test output like this:
 
-  VERBOSE=yes make check \
-  TESTS='cdemo-static.test cdemo-make.test cdemo-exec.test' \
+  VERBOSE=yes gmake check \
+  TESTS="tests/cdemo-static.test tests/cdemo-make.test tests/cdemo-exec.test" \
   TESTSUITEFLAGS=-V | tee cdemo-static-group.log
 
 In order to enable debug shell tracing, use VERBOSE=debug instead of
@@ -87,7 +100,7 @@ Autotest-driven testsuite.  Its usage is documented in
 
 but simple help may also be obtained through
 
-  make check-local TESTSUITEFLAGS='--help'
+  gmake check-local TESTSUITEFLAGS='--help'
 
 For verbose output, add the flag `-v', for running only a subset of the
 independent tests, merely specify them by number or by keyword, both of

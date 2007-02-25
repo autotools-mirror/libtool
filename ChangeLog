@@ -1,5 +1,14 @@
 2007-02-25  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* README: Document the need for GNU make to build Libtool.
+	Point the user to the doc/notes.txt file.  In the examples, use
+	`gmake' throughout to make it more obvious.  Explain simpler way
+	to run both testsuites and either one.  Referring to individual
+	tests needs the `tests/' prefix.
+	* README.alpha: Likewise.
+	* doc/notes.texi: Likewise, document need for GNU make.
+	Comment out the FreeBSD make issue for now.
+
 	* tests/static.at: Larger rewrite to make work on w32: Use three
 	different prefixes instead of three libdirs, so the moving of
 	the DLLs works as expected.  Adjust all code.  Since now

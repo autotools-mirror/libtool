@@ -1,6 +1,9 @@
 @itemize
 
 @item
+You currently need GNU make to build the Libtool package itself.
+
+@item
 On AIX there are two different styles of shared linking, one in which symbols
 are bound at link-time and one in which symbols are bound at runtime only,
 similar to ELF@.  In case of doubt use @code{LDFLAGS=-Wl,-brtl} for the latter style.
@@ -16,10 +19,10 @@ Libtool builds these by default if @env{MACOSX_DEPLOYMENT_TARGET} is set to
 10.3 or later at @command{configure} time.  See @url{rdar://problem/4135857}
 for more information on this issue.
 
-@item
-FreeBSD @command{make} does not conform to @sc{posix} in its handling
-of file modification times, which causes it to loop while building libtool.
-Consider using a different @command{such} as GNU make instead.
+@c @item
+@c FreeBSD @command{make} does not conform to @sc{posix} in its handling
+@c of file modification times, which causes it to loop while building libtool.
+@c Consider using a different @command{such} as GNU make instead.
 
 @item
 The default shell on UNICOS 9, a ksh 88e variant, is too buggy to
