@@ -444,6 +444,8 @@ BUILDCHECK_ENVIRONMENT = _lt_pkgdatadir="$(abs_top_srcdir)" \
 INSTALLCHECK_ENVIRONMENT = \
 	LIBTOOLIZE="$(bindir)/`echo libtoolize | sed '$(program_transform_name)'`" \
 	LIBTOOL="$(bindir)/`echo libtool | sed '$(program_transform_name)'`" \
+	LTDLINCL="-I$(includedir)" \
+	LIBLTDL="$(libdir)/libltdl.la" \
 	tst_aclocaldir="$(aclocaldir)"
 
 # Use `$(srcdir)' for the benefit of non-GNU makes: this is
