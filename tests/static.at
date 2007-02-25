@@ -67,27 +67,34 @@ AT_KEYWORDS([libtool])
 
 LDFLAGS="$LDFLAGS -no-undefined"
 prefix=`pwd`/inst
-libdir=$prefix/lib
 bindir=$prefix/bin
-srcdir_broken=`pwd`/b
-libdir_broken=`pwd`/b-lib
+prefix1=`pwd`/inst1
+prefix2=`pwd`/inst2
+prefix3=`pwd`/inst3
+libdir1=$prefix1/lib
+libdir2=$prefix2/lib
+libdir3=$prefix3/lib
+srcdir_broken=`pwd`/broken-src
+prefix_broken=`pwd`/broken
+libdir_broken=$prefix_broken/lib
+bindir_broken=$prefix_broken/bin
 
 have_static=false
 have_shared=false
 per_deplib=false
 $LIBTOOL --features | grep 'enable static libraries' >/dev/null && have_static=:
 $LIBTOOL --features | grep 'enable shared libraries' >/dev/null && have_shared=:
-eval `$LIBTOOL --config | $EGREP '^per_deplib_(static|dynamic)_flag='`
+eval `$LIBTOOL --config |
+        $EGREP '^(per_deplib_(static|dynamic)_flag|shlibpath_var|link_static_flag)='`
 if test -n "$per_deplib_static_flag" && test -n "$per_deplib_dynamic_flag"; then
   per_deplib=:
 fi
-
 
 # Create broken libraries.  They will later be moved to those
 # directories where the respective libraries should be linked
 # statically from.  This detects both failure to link statically
 # and failure to omit extraneous run paths.
-mkdir $srcdir_broken $libdir_broken
+mkdir $srcdir_broken $prefix_broken $libdir_broken
 (
   cd $srcdir_broken
   echo 'int this_should_not_be_linked_against() { return 0; }' > a.c
@@ -98,17 +105,38 @@ mkdir $srcdir_broken $libdir_broken
   done
 )
 
+# func_move_libs srcdir_to_move prefix_to_move other_prefix other_prefix
 func_move_libs ()
 {
   LT_AT_MVDIR(["${1}"], ["${1}-moved"])
   LT_AT_MVDIR(["${2}"], ["${2}-moved"])
   LT_AT_MVDIR(["$srcdir_broken"], ["${1}"])
-  LT_AT_MVDIR(["$libdir_broken"], ["${2}"])
+  LT_AT_MVDIR(["$prefix_broken"], ["${2}"])
+  # For w32, hardcoding cannot work, but $libdir/../bin is where binaries
+  # usually are installed.  Since we use several prefixes for testing
+  # convenience -- it allows us to replace the good libraries easily with
+  # broken ones and vice versa -- we have to set PATH to find them.
+  # Since OTOH we put broken libs of all names in the "moved" prefixes,
+  # we have to ensure that this prefix comes last: otherwise we may link
+  # against a broken library but the good one would come later in the PATH.
+  # So we let the caller of this function set the order: the "other" two
+  # come first.
+  if test "$shlibpath_var" = PATH; then
+    save_PATH=$PATH
+    sep=
+    test -z "$PATH" || sep=:
+    PATH=${3}/bin:${4}/bin:${2}/bin$sep$PATH
+  fi
+
 }
 
+# func_restore_libs srcdir_to_restore prefix_to_restore
 func_restore_libs ()
 {
-  LT_AT_MVDIR(["${2}"], ["$libdir_broken"])
+  if test "$shlibpath_var" = PATH; then
+    PATH=$save_PATH
+  fi
+  LT_AT_MVDIR(["${2}"], ["$prefix_broken"])
   LT_AT_MVDIR(["${1}"], ["$srcdir_broken"])
   LT_AT_MVDIR(["${2}-moved"], ["${2}"])
   LT_AT_MVDIR(["${1}-moved"], ["${1}"])
@@ -164,40 +192,41 @@ func_test_exec_fail ()
 for withdep in no yes; do
   echo
   echo "### libraries with dependencies: $withdep"
-  rm -rf src $prefix $bindir
-  mkdir src $prefix $bindir
+  rm -rf src $prefix $prefix1 $prefix2 $prefix3
+  mkdir src $prefix $bindir $prefix1 $prefix2 $prefix3
   cd src
 
   ### build the libraries.
   for i in 1 2 3; do
-    mkdir a$i $libdir$i
+    eval ldir=\$libdir$i
+    mkdir a$i $ldir
     cd a$i
     case $withdep,$i in
     no,* | yes,3)
       echo "int a$i() { return 0; }" > a$i.c
       $LIBTOOL --mode=compile $CC $CPPFLAGS $CFLAGS -c a$i.c
-      $LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o liba$i.la a$i.lo -rpath $libdir$i
+      $LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o liba$i.la a$i.lo -rpath $ldir
       ;;
     *)
       echo "int a${i}dep() { return 0; }" > a${i}dep.c
       $LIBTOOL --mode=compile $CC $CPPFLAGS $CFLAGS -c a${i}dep.c
-      $LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o liba${i}dep.la a${i}dep.lo -rpath $libdir$i
+      $LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o liba${i}dep.la a${i}dep.lo -rpath $ldir
       echo "extern int a${i}dep(); int a$i() { return a${i}dep(); }" > a$i.c
       $LIBTOOL --mode=compile $CC $CPPFLAGS $CFLAGS -c a$i.c
-      $LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o liba$i.la a$i.lo -rpath $libdir$i ./liba${i}dep.la
+      $LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o liba$i.la a$i.lo -rpath $ldir ./liba${i}dep.la
       ;;
     esac
     cd ..
   done
 
   ### install the libraries.
-  test "$withdep" = yes && $LIBTOOL --mode=install cp a1/liba1dep.la ${libdir}1/liba1dep.la
-  $LIBTOOL --mode=install cp a1/liba1.la ${libdir}1/liba1.la
-  $LIBTOOL --mode=install cp a3/liba3.la ${libdir}3/liba3.la
+  test "$withdep" = yes && $LIBTOOL --mode=install cp a1/liba1dep.la $libdir1/liba1dep.la
+  $LIBTOOL --mode=install cp a1/liba1.la $libdir1/liba1.la
+  $LIBTOOL --mode=install cp a3/liba3.la $libdir3/liba3.la
   $LIBTOOL --mode=clean rm -f a1/liba1.la a3/liba3.la
   test "$withdep" = yes && $LIBTOOL --mode=clean rm -f a1/liba1dep.la 
   # simulate a non-libtool lib:
-  rm -f ${libdir}3/liba3.la
+  rm -f $libdir3/liba3.la
 
 
   ### build the programs.
@@ -208,7 +237,7 @@ for withdep in no yes; do
   # global static flags.
   for st in -static -static-libtool-libs -all-static; do
     AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS $st -o m$st m.$OBJEXT \
-	      -L${libdir}1 -la1 a2/liba2.la -L${libdir}3 -R${libdir}3 -la3],
+	      -L$libdir1 -la1 a2/liba2.la -L$libdir3 -R$libdir3 -la3],
 	     [0], [ignore], [ignore])
   done
 
@@ -216,39 +245,39 @@ for withdep in no yes; do
   # also try a bit redundant flags, and shuffled order (for run paths check).
   if $per_deplib; then
     AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o m1 m.$OBJEXT \
-	      -L${libdir}1 -Bstatic -la1 -Bdynamic a2/liba2.la -L${libdir}3 -R${libdir}3 -la3],
+	      -L$libdir1 -Bstatic -la1 -Bdynamic a2/liba2.la -L$libdir3 -R$libdir3 -la3],
 	     [0], [ignore], [ignore])
     AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o m2 m.$OBJEXT \
-	      -L${libdir}1 -la1 -Bstatic a2/liba2.la -Bdynamic -L${libdir}3 -R${libdir}3 -la3],
+	      -L$libdir1 -la1 -Bstatic a2/liba2.la -Bdynamic -L$libdir3 -R$libdir3 -la3],
 	     [0], [ignore], [ignore])
     AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o m3 m.$OBJEXT \
-	      -L${libdir}1 -la1 a2/liba2.la -L${libdir}3 -Bstatic -la3 -Bdynamic],
+	      -L$libdir1 -la1 a2/liba2.la -L$libdir3 -Bstatic -la3 -Bdynamic],
 	     [0], [ignore], [ignore])
     AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o m12 m.$OBJEXT \
-	      -L${libdir}1 -Bstatic -la1 a2/liba2.la -Bdynamic -L${libdir}3 -R${libdir}3 -la3],
+	      -L$libdir1 -Bstatic -la1 a2/liba2.la -Bdynamic -L$libdir3 -R$libdir3 -la3],
 	      [0], [ignore], [ignore])
     AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o m13 m.$OBJEXT \
-	      -L${libdir}1 -Bstatic -la1 -Bdynamic a2/liba2.la \
-	      -L${libdir}3 -Bstatic -la3 -Bdynamic],
+	      -L$libdir1 -Bstatic -la1 -Bdynamic a2/liba2.la \
+	      -L$libdir3 -Bstatic -la3 -Bdynamic],
 	      [0], [ignore], [ignore])
     AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o m31 m.$OBJEXT \
-	      -L${libdir}3 -Bstatic -la3 -Bdynamic a2/liba2.la \
-	      -L${libdir}1 -Bstatic -la1 -Bdynamic],
+	      -L$libdir3 -Bstatic -la3 -Bdynamic a2/liba2.la \
+	      -L$libdir1 -Bstatic -la1 -Bdynamic],
 	      [0], [ignore], [ignore])
     AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o m23 m.$OBJEXT \
-	      -L${libdir}1 -la1 -Bstatic a2/liba2.la -Bdynamic \
-	      -L${libdir}3 -Bstatic -la3 -Bdynamic],
+	      -L$libdir1 -la1 -Bstatic a2/liba2.la -Bdynamic \
+	      -L$libdir3 -Bstatic -la3 -Bdynamic],
 	      [0], [ignore], [ignore])
     AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o m123 m.$OBJEXT \
-	      -L${libdir}1 -Bstatic -la1 a2/liba2.la -L${libdir}3 -la3 -Bdynamic],
+	      -L$libdir1 -Bstatic -la1 a2/liba2.la -L$libdir3 -la3 -Bdynamic],
 	      [0], [ignore], [ignore])
     AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o m123a m.$OBJEXT \
-	      -L${libdir}1 -Bstatic -la1 -Bdynamic -Bstatic a2/liba2.la -Bdynamic \
-	      -Bstatic -L${libdir}3 -la3 -Bdynamic],
+	      -L$libdir1 -Bstatic -la1 -Bdynamic -Bstatic a2/liba2.la -Bdynamic \
+	      -Bstatic -L$libdir3 -la3 -Bdynamic],
 	      [0], [ignore], [ignore])
     dnl # This usually fails.  So don't do it.
     dnl AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o m123b m.$OBJEXT \
-    dnl 	 -L${libdir}1 -Bstatic -la1 a2/liba2.la -L${libdir}3 -la3],
+    dnl 	 -L$libdir1 -Bstatic -la1 a2/liba2.la -L$libdir3 -la3],
     dnl 	 [0], [ignore], [ignore])
   fi
 
@@ -273,26 +302,25 @@ for withdep in no yes; do
 
   # if -all-static does not work, do not exercise it any more.
   all_static=-all-static
-  eval `$LIBTOOL --config | grep '^link_static_flag='`
   test -z "$link_static_flag" && all_static=
 
   echo "### test whether installed libtool library liba2 was linked statically"
-  func_move_libs a2 ${libdir}2
+  func_move_libs a2 $prefix2 $prefix3 $prefix1
   func_test_exec -static -static-libtool-libs $all_static `$per_deplib && echo 2 12 23 123 123a`
   $per_deplib && func_test_exec_fail 1 3 13 31
-  func_restore_libs a2 ${libdir}2
+  func_restore_libs a2 $prefix2
 
   echo "### test whether uninstalled libtool library liba1 was linked statically"
-  func_move_libs a1 ${libdir}1
+  func_move_libs a1 $prefix1 $prefix2 $prefix3
   func_test_exec -static-libtool-libs $all_static `$per_deplib && echo 1 12 13 31 123 123a`
   $per_deplib && func_test_exec_fail -static 2 3 23
-  func_restore_libs a1 ${libdir}1
+  func_restore_libs a1 $prefix1
 
   echo "### test whether non-libtool library liba3 was linked statically"
-  func_move_libs a3 ${libdir}3
+  func_move_libs a3 $prefix3 $prefix1 $prefix2
   func_test_exec $all_static `$per_deplib && echo 3 13 23 31 123 123a`
   func_test_exec_fail -static -static-libtool-libs `$per_deplib && echo 1 2 12`
-  func_restore_libs a3 ${libdir}3
+  func_restore_libs a3 $prefix3
 
   cd ..
 done
