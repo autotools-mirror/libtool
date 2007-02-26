@@ -1,5 +1,8 @@
 2007-02-25  Gary V. Vaughan  <gary@gnu.org>
 
+	* Makefile.am ($(srcdir)/libltdl/Makefile.am): Fixup regex to
+	match Copyright notice change below.
+
 	* HACKING, Makefile.am, Makefile.maint, bootstrap,
 	libltdl/Makefile.am, libltdl/Makefile.inc, libltdl/m4/libtool.m4,
 	ltmain.c, tests/cdemo/Makefile.am, tests/demo/Makefile.am,
