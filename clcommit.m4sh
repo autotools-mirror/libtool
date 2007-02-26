@@ -77,8 +77,8 @@ m4_divert_push([SCRIPT])#!/bin/sh
 : ${MAILNOTIFY="mailnotify"}
 : ${MKSTAMP="mkstamp"}
 
-test -f "config/$MAILNOTIFY" && MAILNOTIFY="config/$MAILNOTIFY"
-test -f "config/$MKSTAMP" && MKSTAMP="config/$MKSTAMP"
+test -f "libltdl/config/$MAILNOTIFY" && MAILNOTIFY="libltdl/config/$MAILNOTIFY"
+test -f "libltdl/config/$MKSTAMP" && MKSTAMP="libltdl/config/$MKSTAMP"
 
 PROGRAM=clcommit
 
