@@ -1,7 +1,8 @@
 2007-02-26  Gary V. Vaughan  <gary@gnu.org>
 
-	* clcommit.m4sh: Look in the right directory for helper scripts.
+	* Makefile.am ($(srcdir)/libltdl/Makefile.am): Fix regexp typo.
 
+	* clcommit.m4sh: Look in the right directory for helper scripts.
 
 2007-02-25  Gary V. Vaughan  <gary@gnu.org>
 

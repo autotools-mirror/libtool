@@ -201,7 +201,7 @@ $(srcdir)/libltdl/Makefile.am: $(srcdir)/libltdl/Makefile.inc
 	cd $(srcdir); \
 	in=libltdl/Makefile.inc; out=libltdl/Makefile.am; \
 	rm -f $$out; \
-	$(SED) -n '/^.. Makefile.am -- /,/^.. MA 02110-1301, USA,/p' $$in > $$out; \
+	$(SED) -n '/^.. Makefile.am -- /,/^.. MA 02110-1301, USA./p' $$in > $$out; \
 	{ echo 'ACLOCAL_AMFLAGS = -I m4'; \
 	  echo 'AUTOMAKE_OPTIONS = foreign'; \
 	  echo 'AM_CPPFLAGS ='; \
