@@ -1,4 +1,17 @@
-2007-02-25  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+2007-02-25  Gary V. Vaughan  <gary@gnu.org>
+
+	* HACKING, Makefile.am, Makefile.maint, bootstrap,
+	libltdl/Makefile.am, libltdl/Makefile.inc, libltdl/m4/libtool.m4,
+	ltmain.c, tests/cdemo/Makefile.am, tests/demo/Makefile.am,
+	tests/depdemo/Makefile.am, tests/depdemo/l1/Makefile.am,
+	tests/depdemo/l2/Makefile.am, tests/depdemo/l3/Makefile.am,
+	tests/depdemo/l4/Makefile.am, tests/f77demo/Makefile.am,
+	tests/fcdemo/Makefile.am, tests/libtoolize.at,
+	tests/mdemo/Makefile.am, tests/mdemo2/Makefile.am,
+	tests/pdemo/Makefile.am, tests/tagdemo/Makefile.am: Update
+	Copyright notice text to include URL for canonical GPL document.
+
+ 2007-02-25  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* tests/static.at: Forgot to fix PATH for the first
 	func_test_exec invocation.  So factor out into new functions
