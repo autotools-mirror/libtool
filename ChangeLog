@@ -1,5 +1,8 @@
 2007-02-27  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* tests/lt_dlexit.at: Allow test to pass on static-only systems
+	and with disable-shared.
+
 	* NEWS: Rewrite all news since 1.9f and put in categories,
 	update.
 

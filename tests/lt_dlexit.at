@@ -85,7 +85,7 @@ main (int argc, char **argv)
   int i;
   lt_dlhandle b1;
 
-  /* LTDL_SET_PRELOADED_SYMBOLS(); */
+  LTDL_SET_PRELOADED_SYMBOLS();
   if (lt_dlinit() != 0) {
     fprintf (stderr, "error during initialization: %s\n", lt_dlerror());
     return 1;
