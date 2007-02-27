@@ -1,3 +1,12 @@
+2007-02-26  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* libltdl/Makefile.inc: Fix the file description, so that it
+	matches recursive and nonrecursive libltdl setup.
+	* Makefile.am ($(srcdir)/libltdl/Makefile.am): Do not depend
+	upon the exact text of the copyright header, just copy until
+	the marker line.  Remove the marker lines in the output, and
+	adjust the description for subpackage setup.
+
 2007-02-26  Gary V. Vaughan  <gary@gnu.org>
 
 	* Makefile.am ($(srcdir)/libltdl/Makefile.am): Fix regexp typo.

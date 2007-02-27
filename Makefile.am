@@ -201,7 +201,7 @@ $(srcdir)/libltdl/Makefile.am: $(srcdir)/libltdl/Makefile.inc
 	cd $(srcdir); \
 	in=libltdl/Makefile.inc; out=libltdl/Makefile.am; \
 	rm -f $$out; \
-	$(SED) -n '/^.. Makefile.am -- /,/^.. MA 02110-1301, USA./p' $$in > $$out; \
+	( $(SED) -n '1,/^.. DO NOT REMOVE THIS LINE -- /p' $$in; \
 	{ echo 'ACLOCAL_AMFLAGS = -I m4'; \
 	  echo 'AUTOMAKE_OPTIONS = foreign'; \
 	  echo 'AM_CPPFLAGS ='; \
@@ -214,10 +214,13 @@ $(srcdir)/libltdl/Makefile.am: $(srcdir)/libltdl/Makefile.inc
 	  echo 'EXTRA_DIST ='; \
 	  echo 'CLEANFILES ='; \
 	  echo 'MOSTLYCLEANFILES ='; \
-	} >> $$out; \
+	}; \
 	$(SED) -n '/^.. DO NOT REMOVE THIS LINE -- /,$$p' $$in | \
 	$(SED) -e 's,libltdl_,,; s,libltdl/,,; s,: libltdl/,: ,' \
-	       -e 's,\$$(libltdl_,$$(,' >> $$out;
+	       -e 's,\$$(libltdl_,$$(,' \
+	) | \
+	$(SED) -e '/^.. DO NOT REMOVE THIS LINE -- /d' \
+	       -e '1s,^\(.. Makefile.\)inc.*,\1am -- Process this file with automake to produce Makefile.in,' > $$out;
 	chmod a-w $(srcdir)/libltdl/Makefile.am
 
 
