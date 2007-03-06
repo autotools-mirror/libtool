@@ -84,18 +84,26 @@ int ab = 1;
 
 AT_DATA(main.c,
 [[
+#if defined(LIBA_DLL_IMPORT)
+#  if defined(_WIN32) || defined(WIN32) || defined(__CYGWIN__)
+#    define LIBA_SCOPE extern __declspec(dllimport)
+#  endif
+#endif
+#if !defined(LIBA_SCOPE)
+#  define LIBA_SCOPE extern
+#endif
 #ifdef __cplusplus
 extern "C" {
 #endif
 extern int v1;
 extern int v3, v4;
-extern const int v5, v6;
+LIBA_SCOPE const int v5, v6;
 extern const char* v7;
 extern const char v8[];
 extern int v9(void);
 extern int (*v10) (void);
 extern int (*v11) (void);
-extern int (*const v12) (void);
+LIBA_SCOPE int (*const v12) (void);
 #ifdef __cplusplus
 }
 #endif
@@ -113,18 +121,27 @@ int main(void)
 ]])
 
 AT_DATA(dlself.c,
-[[#ifdef __cplusplus
+[[
+#if defined(LIBA_DLL_IMPORT)
+#  if defined(_WIN32) || defined(WIN32) || defined(__CYGWIN__)
+#    define LIBA_SCOPE extern __declspec(dllimport)
+#  endif
+#endif
+#if !defined(LIBA_SCOPE)
+#  define LIBA_SCOPE extern
+#endif
+#ifdef __cplusplus
 extern "C" {
 #endif
 extern int v1;
 extern int v3, v4;
-extern const int v5, v6;
+LIBA_SCOPE const int v5, v6;
 extern const char* v7;
 extern const char v8[];
 extern int v9(void);
 extern int (*v10) (void);
 extern int (*v11) (void);
-extern int (*const v12) (void);
+LIBA_SCOPE int (*const v12) (void);
 
 typedef struct { int arr[1000]; } large;
 extern large v13, v14, v15;
@@ -195,10 +212,18 @@ w15
 ]])
 
 
-AT_CHECK([$LIBTOOL --mode=compile $CC $CPPFLAGS $CFLAGS -c a.c -o sub/a.lo],[0],[ignore],[ignore])
-AT_CHECK([$LIBTOOL --mode=compile $CC $CPPFLAGS $CFLAGS -c b.c -o sub/b.lo],[0],[ignore],[ignore])
-AT_CHECK([$LIBTOOL --mode=compile $CC $CPPFLAGS $CFLAGS -c main.c],[0],[ignore],[ignore])
-AT_CHECK([$LIBTOOL --mode=compile $CC $CPPFLAGS $CFLAGS -c dlself.c -o sub3/dlself.lo],[0],[ignore],[ignore])
+AT_CHECK([$LIBTOOL --mode=compile $CC $CPPFLAGS $CFLAGS -c a.c -o sub/a.lo],
+	 [0],[ignore],[ignore])
+AT_CHECK([$LIBTOOL --mode=compile $CC $CPPFLAGS $CFLAGS -c b.c -o sub/b.lo],
+	 [0],[ignore],[ignore])
+AT_CHECK([$LIBTOOL --mode=compile $CC $CPPFLAGS -DLIBA_DLL_IMPORT $CFLAGS -c main.c],
+	 [0],[ignore],[ignore])
+AT_CHECK([$LIBTOOL --mode=compile $CC $CPPFLAGS $CFLAGS -c main.c -o main-static.lo],
+	 [0],[ignore],[ignore])
+AT_CHECK([$LIBTOOL --mode=compile $CC $CPPFLAGS -DLIBA_DLL_IMPORT $CFLAGS -c dlself.c -o sub3/dlself.lo],
+	 [0],[ignore],[ignore])
+AT_CHECK([$LIBTOOL --mode=compile $CC $CPPFLAGS $CFLAGS -c dlself.c -o sub3/dlself-static.lo],
+	 [0],[ignore],[ignore])
 
 case $allow_undefined_flag in
   unsupported) undef_opts=-no-undefined ;;
@@ -221,12 +246,17 @@ do
 	         [0],[ignore],[ignore])
 	for st in '' '-static'
 	do
-	  LT_AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS $st -o "$rel"main "$rel"main.lo "$rel"sub2/liba.la],
+          case $st,$l3 in
+          ,-rpath*) mst= ;;
+          *) mst=-static ;;
+	  esac
+
+	  LT_AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS $st -o "$rel"main "$rel"main$mst.lo "$rel"sub2/liba.la],
 	  	   [0],[ignore],[ignore])
 	  LT_AT_EXEC_CHECK([./main],[0])
 	  for l10 in '' '-export-symbols dlselfsyms'
 	  do
-	    LT_AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS $st -o "$rel"sub3/dlself "$rel"sub3/dlself.lo "$rel"sub2/liba.la sub/b.lo -dlopen self $l10],
+	    LT_AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS $st -o "$rel"sub3/dlself "$rel"sub3/dlself$mst.lo "$rel"sub2/liba.la sub/b.lo -dlopen self $l10],
 	    	     [0],[ignore],[ignore])
 	    LT_AT_EXEC_CHECK([./sub3/dlself],[0])
 	  done
