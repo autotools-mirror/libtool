@@ -89,18 +89,26 @@ v15
 
 AT_DATA(main.c,
 [[
+#if defined(LIBA_DLL_IMPORT)
+#  if defined(_WIN32) || defined(WIN32) || defined(__CYGWIN__)
+#    define LIBA_SCOPE extern __declspec(dllimport)
+#  endif
+#endif
+#if !defined(LIBA_SCOPE)
+#  define LIBA_SCOPE extern
+#endif
 #ifdef __cplusplus
 extern "C" {
 #endif
 extern int v1;
 extern int v3, v4;
-extern const int v5, v6;
+LIBA_SCOPE const int v5, v6;
 extern const char* v7;
 extern const char v8[];
 extern int v9(void);
 extern int (*v10) (void);
 extern int (*v11) (void);
-extern int (*const v12) (void);
+LIBA_SCOPE int (*const v12) (void);
 #ifdef __cplusplus
 }
 #endif
@@ -134,7 +142,7 @@ int main (void)
 ]])
 
 AT_CHECK([$LIBTOOL --mode=compile $CC $CPPFLAGS $CFLAGS -c a.c],[0],[ignore],[ignore])
-AT_CHECK([$CC $CPPFLAGS $CFLAGS -c main.c],[0],[ignore],[ignore])
+AT_CHECK([$CC $CPPFLAGS -DLIBA_DLL_IMPORT $CFLAGS -c main.c],[0],[ignore],[ignore])
 AT_CHECK([$CC $CPPFLAGS $CFLAGS -c broken.c],[0],[ignore],[ignore])
 
 for exportsyms in '' '-export-symbols-regex "v.*"' '-export-symbols asyms'
