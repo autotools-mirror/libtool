@@ -5381,6 +5381,28 @@ EOF
 	    fi
 	  fi
 
+          if ${skipped_export-false}; then
+	    if test -n "$export_symbols" && test -n "$include_expsyms"; then
+	      tmp_export_symbols="$export_symbols"
+	      test -n "$orig_export_symbols" && tmp_export_symbols="$orig_export_symbols"
+	      $opt_dry_run || eval '$ECHO "X$include_expsyms" | $Xsed | $SP2NL >> "$tmp_export_symbols"'
+	    fi
+
+	    if test -n "$orig_export_symbols"; then
+	      # The given exports_symbols file has to be filtered, so filter it.
+	      func_echo "filter symbol list for \`$libname.la' to tag DATA exports"
+	      # FIXME: $output_objdir/$libname.filter potentially contains lots of
+	      # 's' commands which not all seds can handle. GNU sed should be fine
+	      # though. Also, the filter scales superlinearly with the number of
+	      # global variables. join(1) would be nice here, but unfortunately
+	      # isn't a blessed tool.
+	      $opt_dry_run || $SED -e '/[ ,]DATA/!d;s,\(.*\)\([ \,].*\),s|^\1$|\1\2|,' < $export_symbols > $output_objdir/$libname.filter
+	      delfiles="$delfiles $export_symbols $output_objdir/$libname.filter"
+	      export_symbols=$output_objdir/$libname.def
+	      $opt_dry_run || $SED -f $output_objdir/$libname.filter < $orig_export_symbols > $export_symbols
+	    fi
+	  fi
+
 	  libobjs=$output
 	  # Restore the value of output.
 	  output=$save_output
