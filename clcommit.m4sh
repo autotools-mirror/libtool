@@ -87,6 +87,7 @@ $as_unset CDPATH
 
 m4_include([getopt.m4sh])
 
+M4SH_VERBATIM([[
 # Global variables:
 cvs_flags=
 update_flags=
@@ -124,8 +125,8 @@ set -e
   # sed scripts:
   my_sed_single_opt='1s/^\(..\).*$/\1/;q'
   my_sed_single_rest='1s/^..\(.*\)$/\1/;q'
-  my_sed_long_opt='1s/^\(--[[^=]]*\)=.*/\1/;q'
-  my_sed_long_arg='1s/^--[[^=]]*=//'
+  my_sed_long_opt='1s/^\(--[^=]*\)=.*/\1/;q'
+  my_sed_long_arg='1s/^--[^=]*=//'
 
   # this just eases exit handling
   while test $# -gt 0; do
@@ -180,7 +181,7 @@ set -e
 			opt_first=:
 			;;
 
-      -C|--[[cC]]hange[[lL]]og)
+      -C|--[cC]hange[lL]og)
 			test $# = 0 && func_missing_arg $opt && break
 			if test -f "$1"; then :; else
 			  func_error "ChangeLog file \`$1' does not exist"
@@ -242,7 +243,7 @@ set -e
       -z|--compress)
 			test $# = 0 && func_missing_arg $opt && break
 			case "$1" in
-			  [[0-9]]) :;;
+			  [0-9]) :;;
 			  *)  func_error "invalid argument for $opt"
 			      break
 			      ;;
@@ -406,14 +407,14 @@ func_commit ()
       sleep 1 # give the user some time for a ^C
 
       # Propagate any user edits back to the cvs log message
-      $SED -e '/^[[A-Z]][[-a-zA-Z]]*:/d' -e '1d' < $tla_log > $log_file
+      $SED -e '/^[A-Z][-a-zA-Z]*:/d' -e '1d' < $tla_log > $log_file
 
     else
       ${PAGER-more} "$log_file" || exit $EXIT_FAILURE
 
       sleep 1 # give the user some time for a ^C
 
-      subject=`cvs -nq up 2>/dev/null | $SED -n 's/^[[MAD]] //p'`
+      subject=`cvs -nq up 2>/dev/null | $SED -n 's/^[MAD] //p'`
       test $# -gt 0 && subject="$@"
     fi
 
@@ -449,7 +450,7 @@ func_mailnotify ()
       test -f CVS/Tag &&
           echo "Branch:		`$SED -e 's,^T,,;1q' CVS/Tag`"
       test -f CVS/Root &&
-          echo "Changes by:	`$SED -e 's,^:[[a-z]]*:,,;s,:.*$,,g' CVS/Root`"
+          echo "Changes by:	`$SED -e 's,^:[a-z]*:,,;s,:.*$,,g' CVS/Root`"
       echo ""
       echo "Log Message:"
       $SED -e 's,^,	,' "$log_file"
@@ -488,7 +489,7 @@ func_mailnotify ()
 
   test -f "$log_file" || func_check_commit_msg
 
-  grep '[[^ 	]]' < "$log_file" > /dev/null ||
+  grep '[^ 	]' < "$log_file" > /dev/null ||
     func_fatal_error "empty commit message, aborting"
 
   if grep '^$' < "$log_file" > /dev/null; then
@@ -506,7 +507,7 @@ func_mailnotify ()
   # patch revision changes underneath us!
   subject="$summary"
   $opt_tla && \
-    subject="$subject [["`$TLA tree-version|$SED $basename`--`$TLA revisions|$SED -e '$p;d'`"]]"
+    subject="$subject ["`$TLA tree-version|$SED $basename`--`$TLA revisions|$SED -e '$p;d'`"]"
 
   # Send a copy of the log_file if sendmail_to was set:
   if test -n "$sendmail_to"; then
@@ -522,3 +523,5 @@ exit $EXIT_SUCCESS
 # mode:shell-script
 # sh-indentation:2
 # End:
+]])
+

@@ -70,6 +70,7 @@ $as_unset CDPATH
 
 m4_include([getopt.m4sh])
 
+M4SH_VERBATIM([[
 # test EBCDIC or ASCII
 case `echo X|tr X '\101'` in
  A) # ASCII based system
@@ -118,8 +119,8 @@ configure_ac=configure.in
   # sed scripts:
   my_sed_single_opt='1s/^\(..\).*$/\1/;q'
   my_sed_single_rest='1s/^..\(.*\)$/\1/;q'
-  my_sed_long_opt='1s/^\(--[[^=]]*\)=.*/\1/;q'
-  my_sed_long_arg='1s/^--[[^=]]*=//'
+  my_sed_long_opt='1s/^\(--[^=]*\)=.*/\1/;q'
+  my_sed_long_arg='1s/^--[^=]*=//'
 
   while test "$#" -gt 0; do
     opt="$1"
@@ -337,7 +338,7 @@ func_fixup_Makefile ()
       s,libltdl/config-h.in,,
       s,libltdl/Makefile.am,,
       s,libltdl/Makefile.in,,
-      /^[[	 ]]*\\\\\$/d"
+      /^[	 ]*\\\\\$/d"
     case $my_filename in
       Makefile.am)
 	my_fixup_non_subpackage_script=`echo "$my_fixup_non_subpackage_script" | \
@@ -345,7 +346,7 @@ func_fixup_Makefile ()
 	my_fixup_inc_paths_script= ;;
       Makefile.inc)
 	repl=$ltdldir
-	repl_uscore=`$ECHO "X$repl" | $Xsed -e 's,[[/.+-]],_,g'`
+	repl_uscore=`$ECHO "X$repl" | $Xsed -e 's,[/.+-],_,g'`
 	my_fixup_inc_paths_script="\
 	  s,libltdl_,@repl_uscore@_,
 	  s,libltdl/,@repl@/,
@@ -407,24 +408,24 @@ func_scan_files ()
     # ---------------------------------------------------- #
 
     my_sed_traces='s,#.*$,,; s,^dnl .*$,,; s, dnl .*$,,
-        s,^.*AC_REQUIRE(.*$,,; s,^.*m4[]_require(.*$,,; s,^.*m4[]_define(.*$,,
-	s,^.*A[[CU]]_DEFUN(.*$,,; s,^.*m4[]_defun(.*$,,
+        s,^.*AC_REQUIRE(.*$,,; s,^.*m4_require(.*$,,; s,^.*m4_define(.*$,,
+	s,^.*A[CU]_DEFUN(.*$,,; s,^.*m4_defun(.*$,,
     	/AC_CONFIG_AUX_DIR(/ {
-	    s,^.*AC_CONFIG_AUX_DIR([[[ 	]*\([^])]]*\).*$,auxdir=\1,
+	    s,^.*AC_CONFIG_AUX_DIR([[ 	]*\([^])]*\).*$,auxdir=\1,
 	    p
         }
     	/AC_CONFIG_MACRO_DIR(/ {
-	    s,^.*AC_CONFIG_MACRO_DIR([[[ 	]*\([^])]]*\).*$,macrodir=\1,
+	    s,^.*AC_CONFIG_MACRO_DIR([[ 	]*\([^])]*\).*$,macrodir=\1,
 	    p
         }
 	/_LT_CONFIG_LTDL_DIR(/d
 	/LT_CONFIG_LTDL_DIR(/ {
-	    s/^.*LT_CONFIG_LTDL_DIR([[[	 ]*\([^]),]*\)[^,]]*/ac_ltdldir=\1%%/
-	    s/%%[[[, 	]*\([^])]]*\).*$/ ac_ltdl_mode=\1%%/
+	    s/^.*LT_CONFIG_LTDL_DIR([[	 ]*\([^]),]*\)[^,]*/ac_ltdldir=\1%%/
+	    s/%%[[, 	]*\([^])]*\).*$/ ac_ltdl_mode=\1%%/
 	    s/%%.*$//
 	    p
 	}
-	/A[[CM]]_PROG_LIBTOOL/ {
+	/A[CM]_PROG_LIBTOOL/ {
 	    s,^.*$,seen_libtool=:,
 	    p
 	}
@@ -540,8 +541,8 @@ func_scan_files ()
     # in `Makefile.am' for a `-I' argument.
 
     my_sed_aclocal_flags='
-        /^[[ 	]]*ACLOCAL_[[A-Z_]]*FLAGS[[ 	]]*=/ {
-	    s,^[[^=]]*=[[ 	]]*\(.*\), \1,
+        /^[ 	]*ACLOCAL_[A-Z_]*FLAGS[ 	]*=/ {
+	    s,^[^=]*=[ 	]*\(.*\), \1,
 	    q
 	}
 	d'
@@ -572,8 +573,8 @@ func_included_files ()
 
     my_include_regex=
     my_sed_include='
-        /^[m4]_include(\[[.*\]])$/ {
-	    s,^[m4]_include(\[[\(.*\)\]])$,\1,
+        /^m4_include(\[.*\])$/ {
+	    s,^m4_include(\[\(.*\)\])$,\1,
 	    p
 	}
         d'
@@ -598,12 +599,12 @@ func_serial ()
     $opt_debug
     my_filename="$1"
     my_macro_regex="$2"
-    my_sed_serial=['
+    my_sed_serial='
 	/^# serial [1-9][0-9.]*[ 	]*'"$my_macro_regex"'[ 	]*$/ {
 	    s,^# serial \([1-9][0-9.]*\).*$,\1,
 	    q
 	}
-	d']
+	d'
 
     # Search FILENAME and all the files it m4_includes for a serial number
     # in the file that AC_DEFUNs MACRO_REGEX.
@@ -637,8 +638,8 @@ func_serial_max ()
     my_serial2="$2"
 
     my_sed_dot='s/\..*$//g'
-    my_sed_rest='s/^[[0-9]][[1-9]]*\.*//'
-    my_sed_digits='s/[[^0-9.]]//g'
+    my_sed_rest='s/^[0-9][1-9]*\.*//'
+    my_sed_digits='s/[^0-9.]//g'
 
     # Incase they turn out to be the same, we'll set it to empty
     func_serial_max_result=
@@ -832,12 +833,12 @@ func_keyword_update ()
 func_ltmain_update ()
 {
     $opt_debug
-    my_sed_ltmain=['
+    my_sed_ltmain='
 	/^package_revision='\''*[0-9][1-9.]*'\''*/ {
 	    s,^package_revision='\''*\([0-9.]*\)'\''*[ 	]*$,\1,
 	    p
 	}
-	d']
+	d'
 
     func_keyword_update "$1" "$2" "$3" "$my_sed_ltmain"
 
@@ -852,13 +853,13 @@ func_ltmain_update ()
 func_config_update ()
 {
     $opt_debug
-    my_sed_config=['
+    my_sed_config='
 	/^timestamp='\''*[0-9][1-9-]*'\''*/ {
 	    s,^timestamp='\''*\([0-9-]*\)'\''*,\1,
 	    s/-/./g
 	    p
 	}
-	d']
+	d'
 
     func_keyword_update "$1" "$2" "$3" "$my_sed_config"
 
@@ -873,13 +874,13 @@ func_config_update ()
 func_install_update ()
 {
     $opt_debug
-    my_sed_install=['
+    my_sed_install='
 	/^scriptversion='\''*[0-9][1-9.-]*'\''*/ {
 	    s,^scriptversion='\''*\([0-9.-]*\)'\''*,\1,
 	    s/-/./g
 	    p
 	}
-	d']
+	d'
 
     func_keyword_update "$1" "$2" "$3" "$my_sed_install"
 
@@ -899,10 +900,10 @@ func_check_macros ()
     # Suggest modern idioms for storing autoconf macros:
     if test -z "$macrodir$ltdldir"; then
       if test x"$m4dir" = x.; then
-	func_echo "Consider adding \`AC_CONFIG_MACRO_DIR([m4])' to $configure_ac and rerunning"
+	func_echo "Consider adding \`AC_CONFIG_MACRO_DIR(m4)' to $configure_ac and rerunning"
 	func_echo " libtoolize, to keep the correct libtool macros in-tree."
       else
-	func_echo "Consider adding \`AC_CONFIG_MACRO_DIR([$m4dir])'to $configure.ac,"
+	func_echo "Consider adding \`AC_CONFIG_MACRO_DIR($m4dir)'to $configure.ac,"
 	func_echo "and rerunning libtoolize."
       fi
     elif test -z "$m4dir"; then
@@ -922,7 +923,7 @@ func_check_macros ()
 	done
       fi
       if test "$acmacrodir" != "$aclocaldir"; then
-        func_echo "or else add \`AC_CONFIG_MACRO_DIR([[$acmacrodir]])' to $configure_ac."
+        func_echo "or else add \`AC_CONFIG_MACRO_DIR([$acmacrodir])' to $configure_ac."
 	ac_config_macro_dir_advised=:
       fi
     fi
@@ -938,18 +939,18 @@ func_check_macros ()
 
       # Remind the user to call LT_CONFIG_LTDL_DIR:
       test -n "$ac_ltdldir" ||
-        func_echo "Remember to add \`LT_CONFIG_LTDL_DIR([[$ltdldir]])' to \`$configure_ac'."
+        func_echo "Remember to add \`LT_CONFIG_LTDL_DIR([$ltdldir])' to \`$configure_ac'."
 
       # Offer some suggestions for avoiding duplicate files in a project
       # that uses libltdl:
       test "${ltdlprefix}config" = "$auxdir" ||
-        func_echo "Consider using \`AC_CONFIG_AUX_DIR([[${ltdlprefix}config]])' in $configure_ac."
+        func_echo "Consider using \`AC_CONFIG_AUX_DIR([${ltdlprefix}config])' in $configure_ac."
       $ac_config_macro_dir_advised || test "${ltdlprefix}m4" = "$m4dir" ||
-        func_echo "Consider using \`AC_CONFIG_MACRO_DIR([[${ltdlprefix}m4]])' in $configure_ac."
+        func_echo "Consider using \`AC_CONFIG_MACRO_DIR([${ltdlprefix}m4])' in $configure_ac."
     else
       # Don't trace for this, we're just checking the user didn't invoke it
       # directly from configure.ac.
-      $SED 's,[d]nl .*$,,; s,# .*$,,' "$configure_ac" | grep AC_PROG_RANLIB &&
+      $SED 's,dnl .*$,,; s,# .*$,,' "$configure_ac" | grep AC_PROG_RANLIB &&
         func_echo "\`AC_PROG_RANLIB' is rendered obsolete by \`LT_INIT'"
     fi
 
@@ -1121,7 +1122,7 @@ func_nonemptydir_p ()
     $opt_quiet || func_echo "putting macros in AC_CONFIG_MACRO_DIR, \`$m4dir'."
 
     func_serial_update  libtool.m4 "$aclocaldir" "$m4dir" \
-      LT_INIT 'A[[CM]]_PROG_LIBTOOL'
+      LT_INIT 'A[CM]_PROG_LIBTOOL'
 
     if $seen_ltdl; then
       func_serial_update ltdl.m4 "$aclocaldir" "$m4dir" 'LTDL_INIT'
@@ -1183,3 +1184,4 @@ exit $exit_status
 # mode:shell-script
 # sh-indentation:2
 # End:
+]])

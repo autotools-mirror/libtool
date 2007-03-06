@@ -245,6 +245,16 @@ yyyy-mm-dd  Name of Author  <email@address>  (tiny change)
   at the end of .m4sh files), the left margin of the body of shell
   functions should begin indented by 4 spaces.
 
+* Where there are large blocks of shell code with no m4 or m4sh
+  expansions, put the entire block in an M4SH_VERBATIM call.  This
+  saves both on copy-and-paste errors, and needing to remember to
+  internally double the m4 quoting characters:
+
+  M4SH_VERBATIM([[
+  my_sed_long_opt='1s/^\(--[^=]*\)=.*/\1/;q'
+  ...
+  ]])
+
 
 8. Editing `.m4' Files
 ======================

@@ -1,3 +1,12 @@
+2007-03-05  Gary V. Vaughan  <gary@gnu.org>
+
+	* libltdl/config/general.m4sh (M4SH_VERBATIM): New macro to
+	simplify m4sh quote quoting in blocks of raw shell code.
+	* clcommit.m4sh, libtoolize.m4sh, libltdl/config/getopt.m4sh,
+	libltdl/config/ltmain.m4sh, libltdl/config/mailnotify.m4sh,
+	tests/defs.m4sh: Use it.
+	* HACKING (Editing `.m4sh' Files): Mention M4SH_VERBATIM Macro.
+
 2007-02-27  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* tests/lt_dlexit.at: Allow test to pass on static-only systems

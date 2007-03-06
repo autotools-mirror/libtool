@@ -30,6 +30,7 @@ $as_unset CDPATH
 
 m4_include([general.m4sh])
 
+M4SH_VERBATIM([[
 : ${AUTOCONF="autoconf"}
 : ${AUTORECONF="autoreconf"}
 : ${LIBTOOL="./libtool"}
@@ -345,3 +346,5 @@ func_msg "Running $progname"
 # mode:shell-script
 # sh-indentation:2
 # End:
+]])
+

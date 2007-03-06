@@ -68,6 +68,7 @@ $as_unset CDPATH
 
 m4_include([getopt.m4sh])
 
+M4SH_VERBATIM([[
 # Global variables:
 multipart=1
 outputfile=""
@@ -80,8 +81,8 @@ sed_mail_address='s,^.*<\(.*\)>.*$,\1,'
   # sed scripts:
   my_sed_single_opt='1s/^\(..\).*$/\1/;q'
   my_sed_single_rest='1s/^..\(.*\)$/\1/;q'
-  my_sed_long_opt='1s/^\(--[[^=]]*\)=.*/\1/;q'
-  my_sed_long_arg='1s/^--[[^=]]*=//'
+  my_sed_long_opt='1s/^\(--[^=]*\)=.*/\1/;q'
+  my_sed_long_arg='1s/^--[^=]*=//'
 
   while test $# -gt 0; do
     opt="$1"
@@ -387,3 +388,5 @@ exit $EXIT_SUCCESS
 # mode:shell-script
 # sh-indentation:2
 # End:
+]])
+

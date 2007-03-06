@@ -27,6 +27,7 @@ m4_if([# getopt.m4sh -- getopt helper functions		 -*- Autoconf -*-
 
 m4_include([general.m4sh])
 
+M4SH_VERBATIM([[
 # func_version
 # Echo version message to standard output and exit.
 func_version ()
@@ -34,7 +35,7 @@ func_version ()
     $SED -n '/^# '$PROGRAM' (GNU /,/# warranty; / {
         s/^# //
 	s/^# *$//
-        s/\((C)\)[[ 0-9,-]]*\( [[1-9]][[0-9]]*\)/\1\2/
+        s/\((C)\)[ 0-9,-]*\( [1-9][0-9]*\)/\1\2/
         p
      }' < "$progpath"
      exit $?
@@ -86,3 +87,5 @@ func_missing_arg ()
 }
 
 exit_cmd=:
+]])
+
