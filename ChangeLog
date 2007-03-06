@@ -1,5 +1,8 @@
 2007-03-05  Gary V. Vaughan  <gary@gnu.org>
 
+	* libtoolize.m4sh (func_check_macros): Display m4 quotes correctly
+	in AC_CONFIG_MACRO_DIR diagnostics.
+
 	* libltdl/config/general.m4sh (M4SH_VERBATIM): New macro to
 	simplify m4sh quote quoting in blocks of raw shell code.
 	* clcommit.m4sh, libtoolize.m4sh, libltdl/config/getopt.m4sh,
