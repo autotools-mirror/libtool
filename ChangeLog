@@ -1,3 +1,8 @@
+2007-03-09  Gary V. Vaughan  <gary@gnu.org>
+
+	* libtoolize.m4sh: Replace literal tab chars in help comment
+	with spaces to align columns in --help output.
+
 2007-03-06  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* libltdl/config/ltmain.m4sh (func_mode_link): Also apply the

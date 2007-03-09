@@ -40,9 +40,9 @@ m4_divert_push([SCRIPT])#! /bin/sh
 # -f, --force           replace existing files
 # -i, --install         copy missing auxiliary files
 #     --ltdl[=DIR]      install libltdl sources [default: libltdl]
-#     --nonrecursive	prepare ltdl for non-recursive make
+#     --nonrecursive    prepare ltdl for non-recursive make
 # -q, --quiet           work silently
-#     --recursive	prepare ltdl for recursive make
+#     --recursive       prepare ltdl for recursive make
 #     --subproject      prepare ltdl to configure and build independently
 # -v, --verbose         verbosely report processing
 #     --version         print version information and exit
