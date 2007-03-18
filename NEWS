@@ -76,7 +76,7 @@ New in 2.1a: 2007-??-??; CVS version 2.1a, Libtool team:
   - Basic support for PIE (position-independent executables).
   - Support for DragonFly BSD, improved support for FreeBSD.
   - Improved support for GNU/kFreeBSD and GNU/NetBSD.
-  - Support for Interix 3 (Windows SFU).
+  - Support for Interix 3 (Windows SFU) and newer versions.
   - Improved support for UnixWare.
   - Initial support for RDOS.
   - Initial Support for FC (modern Fortran).
