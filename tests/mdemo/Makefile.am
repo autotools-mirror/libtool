@@ -1,6 +1,6 @@
 ## Makefile.am -- Process this file with automake to produce Makefile.in
 ##
-## Copyright (C) 2003, 2004, 2005 Free Software Foundation
+## Copyright (C) 2003, 2004, 2005, 2007 Free Software Foundation
 ##
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -35,9 +35,12 @@ libfoo2_la_LDFLAGS = -no-undefined -module -export-symbols-regex "libfoo2.*"
 libsub_la_SOURCES = sub.c
 libsub_la_LDFLAGS = -no-undefined
 
+## Use -export-symbols-regex here explicitly because libltdl marks
+## its exported symbols, and we use libltdl as a convenience archive.
+## Thus, on w32, auto-exporting is turned off.
 libmlib_la_SOURCES = mlib.c
 libmlib_la_LIBADD = @LIBLTDL@ "-dlopen" foo1.la "-dlopen" libfoo2.la
-libmlib_la_LDFLAGS = -no-undefined
+libmlib_la_LDFLAGS = -no-undefined -export-symbols-regex ".*"
 libmlib_la_DEPENDENCIES = @LIBLTDL@ libsub.la foo1.la libfoo2.la
 
 noinst_HEADERS = foo.h
