@@ -1,3 +1,13 @@
+2007-03-18  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* libtool.m4 (AC_LIBTOOL_SYS_DYNAMIC_LINKER)
+	(AC_DEPLIBS_CHECK_METHOD, _LT_AC_LANG_CXX_CONFIG)
+	(AC_LIBTOOL_POSTDEP_PREDEP, AC_LIBTOOL_PROG_COMPILER_PIC)
+	(AC_LIBTOOL_PROG_LD_SHLIBS) [ interix ]: When matching for
+	interix, accept version range [3-9] instead of 3.
+	* NEWS: Update.
+	Report by Martin Koeppe <mkoeppe@gmx.de>.
+
 2007-02-18  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* tests/dryrun.test: ls -l in MSYS sometimes shows year,
