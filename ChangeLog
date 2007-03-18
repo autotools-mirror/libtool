@@ -1,3 +1,10 @@
+2007-03-18  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* libltdl/m4/libtool.m4 (LT_PROG_GCJ): Avoid M4 expansion error
+	that caused `dnl' to be merged to the previous word.
+	* THANKS: Update.
+	Report by Steve Ellcey.
+
 2007-03-09  Gary V. Vaughan  <gary@gnu.org>
 
 	* libtoolize.m4sh: Replace literal tab chars in help comment
