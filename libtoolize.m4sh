@@ -1114,12 +1114,19 @@ func_nonemptydir_p ()
     func_verbose "AC_CONFIG_AUX_DIR not defined, not copying libtool auxiliary files."
   fi
 
-  # libtool.m4 and ltdl.m4 were handled specially above
-  func_massage_aclocal_DATA 'libtool.m4|ltdl.m4'
+  # argz.m4, libtool.m4 and ltdl.m4 were handled specially above
+  func_massage_aclocal_DATA 'argz.m4|libtool.m4|ltdl.m4'
 
-  # Copy libtool's m4 macros to the macro directory, if they are newer.
+  # Copy libtool's m4 macros to the macro directory, if they are newer
+  # (keep these in alphabetical order to maintain sanity in testsuite):
   if test -n "$m4dir"; then
     $opt_quiet || func_echo "putting macros in AC_CONFIG_MACRO_DIR, \`$m4dir'."
+
+    if $seen_ltdl; then
+      func_serial_update argz.m4 "$aclocaldir" "$m4dir" argz.m4
+    else
+      func_verbose "Not copying \`$m4dir/argz.m4', libltdl not used."
+    fi
 
     func_serial_update  libtool.m4 "$aclocaldir" "$m4dir" \
       LT_INIT 'A[CM]_PROG_LIBTOOL'
@@ -1159,7 +1166,7 @@ func_nonemptydir_p ()
     # Unless we share CONFIG_MACRO_DIR with our parent project,
     # copy macros here.
     if test "${ltdlprefix}m4" != "$m4dir"; then
-      func_copy_some_files "$pkgmacro_files:libtool.m4:ltdl.m4" \
+      func_copy_some_files "argz.m4:libtool.m4:ltdl.m4:$pkgmacro_files" \
         "$aclocaldir" "${ltdlprefix}m4"
     fi
 

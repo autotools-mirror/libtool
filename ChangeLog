@@ -1,3 +1,10 @@
+2007-03-19  Gary V. Vaughan  <gary@gnu.org>
+
+	* libtoolize.m4sh: Handle argz.m4 specially like ltdl.m4, so
+	that it isn't copied unless libltdl is being used.  Copy other
+	macro files according to their tagged serial numbers.
+	* tests/libtoolize.at: Adjust.
+
 2007-03-18  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* tests/mdemo/Makefile.am (libmlib_la_LDFLAGS): Add
