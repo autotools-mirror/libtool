@@ -564,7 +564,7 @@ or obtained by writing to the Free Software Foundation, Inc.,
 10.7. LGPL with Libtool exception clause
 
 Finally, not only is Libltdl is LGPLed, but it is routinely
-redistributed inside projects that use it, so it's sources need to use
+redistributed inside projects that use it, so its sources need to use
 the following license text citing the LGPL along with Libtool's special
 exception clause:
 

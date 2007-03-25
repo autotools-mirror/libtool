@@ -1,5 +1,8 @@
 2007-03-25  Gary V. Vaughan  <gary@gnu.org>
 
+	* HACKING (LGPL with Libtool exception clause): Typo.
+	Reported by Tim Van Holder  <tim.van.holder@telenet.be>
+
 	* HACKING (Licensing Rules): Explain the various license texts
 	used for files distributed with Libtool, and update license text
 	to match.
