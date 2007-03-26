@@ -128,7 +128,7 @@ dnl We use m4sh to generate libtool's portable shell scripts
 AC_SUBST([M4SH], ['$(AUTOM4TE) --language=m4sh'])
 
 dnl Make sure config.status is regenerated when the version timestamp changes
-AC_SUBST([CONFIG_STATUS_DEPENDENCIES], ['$(top_srcdir)/stamp-vcl'])
+AC_SUBST([CONFIG_STATUS_DEPENDENCIES], ['$(top_srcdir)/ChangeLog'])
 
 dnl automake-1.9.x or autoconf-2.59 don't support subdir libobjs
 AC_MSG_CHECKING([whether subdir libobjs are useable])

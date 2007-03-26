@@ -18,9 +18,6 @@ New in 2.1a: 2007-??-??; CVS version 2.1a, Libtool team:
     `dependency_libs' for both clarity and backward-compatibility.
     Currently, these flags are not uniquified and thus accumulate.
 
-  - GNU make is currently needed to build the Libtool package itself.
-    This restriction does not extend to packages that use Libtool.
-
 * Important incompatible changes and obsoleted features:
 
   - Removed deprecated APIs from libltdl: lt_dlcaller_register,

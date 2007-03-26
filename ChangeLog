@@ -1,3 +1,21 @@
+2007-03-26  Gary V. Vaughan  <gary@gnu.org>
+
+	The stamp-vcl file rules caused non-gnu make programs to rerun
+	parts of the configuration process on each invocation.  Instead
+	of relying on a stamp file, we now compare version numbers of
+	generated files with the ChangeLog timestamp manually in the
+	affected make rules to decide whether regenerating is necessary:
+
+	* Makefile.am (EXTRA_DIST): Remove stamp-vcl.
+	(clean-ltmain-sh): Also remove users' obsolescent stamp-vcl.
+	(rebuild): Keep some common code here for...
+	(libtool, libltdl/m4/ltversion.m4, libltdl/config/ltmain.sh):
+	Rewritten to work without reference to intermediate stamp-vcl
+	file.
+	* configure.ac (CONFIG_STATUS_DEPENDENCIES): Change from
+	stamp-vcl to ChangeLog.
+	* NEWS: Removed entry saying this fix is needed.
+
 2007-03-25  Gary V. Vaughan  <gary@gnu.org>
 
 	* HACKING (LGPL with Libtool exception clause): Typo.

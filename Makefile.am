@@ -47,6 +47,16 @@ m4dir			= libltdl/m4
 # Using `cd' in backquotes may print the directory name, use this instead:
 lt__cd		= CDPATH="$${ZSH_VERSION+.}$(PATH_SEPARATOR)" && cd
 
+MKSTAMP = $(SHELL) $(srcdir)/$(auxdir)/mkstamp
+
+timestamp = set dummy `$(MKSTAMP) < $(srcdir)/ChangeLog`; shift; \
+	case $(VERSION) in \
+	  *[acegikmoqsuwy]) TIMESTAMP=" $$1 $$2 $$3" ;; \
+	  *) TIMESTAMP="" ;; \
+	esac
+
+rebuild = rebuild=:; $(timestamp); correctver=$$1
+
 
 ## ---------------- ##
 ## Libtool scripts. ##
@@ -76,9 +86,19 @@ $(srcdir)/libtoolize.in: $(sh_files) libtoolize.m4sh Makefile.am
 	rm -f libtoolize.in; \
 	$(M4SH) -B $(auxdir) libtoolize.m4sh > libtoolize.in
 
-libtool: $(top_builddir)/config.status $(srcdir)/$(auxdir)/ltmain.sh \
-	    $(srcdir)/stamp-vcl
-	cd $(top_builddir) && $(SHELL) ./config.status $@
+# We used to do this with a 'stamp-vcl' file, but non-gmake builds
+# would rerun configure on every invocation, so now we manually
+# check the version numbers from the build rule when necessary.
+libtool: clean-ltmain-sh $(top_builddir)/config.status $(srcdir)/$(auxdir)/ltmain.sh ChangeLog
+	@target=libtool; $(rebuild); \
+	if test -f "$$target"; then \
+	  set dummy `./$$target --version | sed 1q`; actualver="$$5"; \
+	  test "$$actualver" = "$$correctver" && rebuild=false; \
+	fi; \
+	if $$rebuild; then \
+	  echo $(SHELL) ./config.status $$target; \
+	  cd $(top_builddir) && $(SHELL) ./config.status $$target; \
+	fi
 
 .PHONY: configure-subdirs
 configure-subdirs distdir: $(DIST_MAKEFILE_LIST)
@@ -114,15 +134,9 @@ edit = sed \
 	-e 's,@prefix\@,$(prefix),g' \
 	-e "s,@configure_input\@,Generated from $$input; do not edit by hand,g"
 
-timestamp = set dummy `$(MKSTAMP) < $(srcdir)/ChangeLog`; shift; \
-	case $(VERSION) in \
-	  *[acegikmoqsuwy]) TIMESTAMP=" $$1 $$2 $$3" ;; \
-	  *) TIMESTAMP="" ;; \
-	esac
-
 sh_files	= $(auxdir)/general.m4sh $(auxdir)/getopt.m4sh
 EXTRA_DIST     += bootstrap $(srcdir)/libtoolize.in $(auxdir)/ltmain.m4sh \
-		  $(auxdir)/mkstamp $(sh_files) stamp-vcl \
+		  $(auxdir)/mkstamp $(sh_files) \
 		  ChangeLog.1996 ChangeLog.1997 ChangeLog.1998 \
 		  ChangeLog.1999 ChangeLog.2000 ChangeLog.2001 \
 		  ChangeLog.2002 ChangeLog.2003 ChangeLog.2004 \
@@ -130,19 +144,6 @@ EXTRA_DIST     += bootstrap $(srcdir)/libtoolize.in $(auxdir)/ltmain.m4sh \
 CLEANFILES     += libtool libtoolize libtoolize.tmp \
 		  $(auxdir)/ltmain.tmp $(m4dir)/ltversion.tmp
 
-## We know that $(srcdir)/ChangeLog has been edited if stamp-vcl
-## needs updating, so we assume we have write access to $(srcdir).
-## If we try to maintain ./stamp-vcl to avoid writing to a possibly
-## read-only $(srcdir), then when the two stamp-vcls differ, distcheck
-## will try to update the one in the read-only source tree it makes.
-MKSTAMP = $(SHELL) $(srcdir)/$(auxdir)/mkstamp
-$(srcdir)/stamp-vcl: vcl-tmp clean-ltmain-sh ChangeLog
-vcl-tmp:
-	@set dummy `$(MKSTAMP) < $(srcdir)/ChangeLog`; shift; \
-	echo "$$1" > vcl.tmp; \
-	diff vcl.tmp $(srcdir)/stamp-vcl >/dev/null 2>&1 \
-	  || (echo "Updating stamp-vcl"; cp vcl.tmp $(srcdir)/stamp-vcl)
-	-@rm -f vcl.tmp
 
 ## We used to build ltmain.sh in the build tree, but now it is created
 ## in the source tree by bootstrap.  This rule removes stale copies from
@@ -150,29 +151,45 @@ vcl-tmp:
 ## source tree version in current builds.
 clean-ltmain-sh:
 	@-test "$(srcdir)" = "$(top_builddir)" || \
-	  rm -f "$(top_builddir)/$(auxdir)/ltmain.sh"
+	  rm -f "$(top_builddir)/$(auxdir)/ltmain.sh" stamp-vcl
 
-# We build ltversion.m4 here, instead of from config.status,
-# because config.status is rerun each time one of configure's
-# dependencies change and ltversion.m4 happens to be a configure
-# dependency.  configure and ltversion.m4 would be rebuilt in
-# a loop otherwise.
-# Use `$(srcdir)/m4' for the benefit of non-GNU makes: this is
-# how ltversion.m4 appears in our dependencies.
+## We build ltversion.m4 here, instead of from config.status,
+## because config.status is rerun each time one of configure's
+## dependencies change and ltversion.m4 happens to be a configure
+## dependency.  configure and ltversion.m4 would be rebuilt in
+## a loop otherwise.
+## We used to do this with a 'stamp-vcl' file, but non-gmake builds
+## would rerun configure on every invocation, so now we manually
+## check the version numbers from the build rule when necessary.
+## Use `$(srcdir)/m4' for the benefit of non-GNU makes: this is
+## how ltversion.m4 appears in our dependencies.
 EXTRA_DIST += $(m4dir)/ltversion.in $(srcdir)/$(m4dir)/ltversion.m4
-$(srcdir)/$(m4dir)/ltversion.m4: $(m4dir)/ltversion.in configure.ac $(srcdir)/stamp-vcl
-	set dummy `$(MKSTAMP) < $(srcdir)/ChangeLog`; shift; \
-	cd $(srcdir); \
-	rm -f $(m4dir)/ltversion.tmp; \
-	serial=`echo $$1 | sed 's,^1[.],,g'`; \
-	input="ltversion.in"; \
-	$(edit) -e "s,@MACRO_REVISION\@,$$1,g" \
-		-e "s,@MACRO_SERIAL\@,$$serial,g" \
-		$(m4dir)/ltversion.in > $(m4dir)/ltversion.tmp; \
-	chmod a-w $(m4dir)/ltversion.tmp; \
-	mv -f $(m4dir)/ltversion.tmp $(m4dir)/ltversion.m4
+$(srcdir)/$(m4dir)/ltversion.m4: clean-ltmain-sh $(m4dir)/ltversion.in configure.ac ChangeLog
+	@target='$(srcdir)/$(m4dir)/ltversion.m4'; $(rebuild); \
+	if test -f "$$target"; then \
+	  set dummy `sed -n '/^# serial /p' "$$target"`; shift; \
+	  actualver=1.$$3; \
+	  test "$$actualver" = "$$correctver" && rebuild=false; \
+	fi; \
+	if $$rebuild; then \
+	  cd $(srcdir); \
+	  rm -f $(m4dir)/ltversion.tmp; \
+	  serial=`echo "$$correctver" | sed 's,^1[.],,g'`; \
+	  input="ltversion.in"; \
+	  echo $(edit) -e "s,@MACRO_REVISION\@,$$correctver,g" \
+	    -e "s,@MACRO_SERIAL\@,$$serial,g" \
+	    $(srcdir)/$(m4dir)/ltversion.in > $(srcdir)/$(m4dir)/ltversion.m4; \
+	  $(edit) -e "s,@MACRO_REVISION\@,$$correctver,g" \
+		  -e "s,@MACRO_SERIAL\@,$$serial,g" \
+		  $(m4dir)/ltversion.in > $(m4dir)/ltversion.tmp; \
+	  chmod a-w $(m4dir)/ltversion.tmp; \
+	  mv -f $(m4dir)/ltversion.tmp $(m4dir)/ltversion.m4; \
+	fi
 
 ## And for similar reasons, ltmain.sh can't be built from config.status.
+## We used to do this with a 'stamp-vcl' file, but non-gmake builds
+## would rerun configure on every invocation, so now we manually
+## check the version numbers from the build rule when necessary.
 ## !WARNING! If you edit this rule to change the contents of ltmain.sh,
 ##           you must `touch $(srcdir)/$(auxdir)/ltmain.in' from the
 ##           shell if you need ltmain.sh to be regenerated.  Ideally, we
@@ -180,21 +197,30 @@ $(srcdir)/$(m4dir)/ltversion.m4: $(m4dir)/ltversion.in configure.ac $(srcdir)/st
 ##           distcheck (at least) by rebuilding ltmain.sh in the source
 ##           tree whenever config.status regenerates the Makefile.
 EXTRA_DIST += $(srcdir)/$(auxdir)/ltmain.sh
-$(srcdir)/$(auxdir)/ltmain.sh: $(sh_files) $(auxdir)/ltmain.m4sh configure.ac \
-				$(srcdir)/stamp-vcl
-	$(timestamp); \
-	cd $(srcdir); \
-	rm -f $(auxdir)/ltmain.in $(auxdir)/ltmain.tmp \
+$(srcdir)/$(auxdir)/ltmain.sh: clean-ltmain-sh $(sh_files) $(auxdir)/ltmain.m4sh configure.ac ChangeLog
+	@target='$(srcdir)/$(auxdir)/ltmain.sh'; $(rebuild); \
+	if test -f "$$target"; then \
+	  eval `sed -n '/^package_revision=/p' "$$target"`; \
+	  actualver=$$package_revision; \
+	  test "$$actualver" = "$$correctver" && rebuild=false; \
+	fi; \
+	if $$rebuild; then \
+	  cd $(srcdir); \
+	  rm -f $(auxdir)/ltmain.in $(auxdir)/ltmain.tmp \
 	    $(auxdir)/ltmain.sh; \
-	$(M4SH) -B $(auxdir) $(auxdir)/ltmain.m4sh \
+	  $(M4SH) -B $(auxdir) $(auxdir)/ltmain.m4sh \
 	    > $(auxdir)/ltmain.in; \
-	input="ltmain.m4sh"; \
-	$(edit) -e "s,@TIMESTAMP\@,$$TIMESTAMP,g" \
+	  input="ltmain.m4sh"; \
+	  echo $(edit) -e "s,@TIMESTAMP\@,$$TIMESTAMP,g" \
+	    -e "s,@package_revision\@,$$correctver," \
+	    $(srcdir)/$(auxdir)/ltmain.in "> $$target"; \
+	  $(edit) -e "s,@TIMESTAMP\@,$$TIMESTAMP,g" \
 		-e "s,@package_revision\@,$$1,g" \
 		$(auxdir)/ltmain.in > $(auxdir)/ltmain.tmp; \
-	rm -f $(auxdir)/ltmain.in; \
-	chmod a-w $(auxdir)/ltmain.tmp; \
-	mv -f $(auxdir)/ltmain.tmp $(auxdir)/ltmain.sh
+	  rm -f $(auxdir)/ltmain.in; \
+	  chmod a-w $(auxdir)/ltmain.tmp; \
+	  mv -f $(auxdir)/ltmain.tmp $(auxdir)/ltmain.sh; \
+	fi
 
 $(srcdir)/libltdl/Makefile.am: $(srcdir)/libltdl/Makefile.inc
 	cd $(srcdir); \
