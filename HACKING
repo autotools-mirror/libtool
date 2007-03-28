@@ -287,71 +287,23 @@ yyyy-mm-dd  Name of Author  <email@address>  (tiny change)
 * The libltdl API uses a layered approach to differentiate internal and
   external interfaces, among other things.  To keep the abstraction
   consistent, files in a given layer may only use APIs from files in the
-  lower layers.  The exception to this is lt__glibc.h which serves a
-  dual purpose, as explained later.
+  lower layers.  The ASCII art boxes below represent this stack, from
+  top to bottom...
 
-* At the bottom of the stack we have the system abstraction layer,
-  which tries to smooth over the cracks where there are differences
-  between host systems and compilers.  config.h is generated at
-  configure time and is not installed; lt_system.h is an installed
-  file and cannot use macros from config.h:
+* But first, outside of the stack, there is a convenience header that
+  defines the internal interfaces (as evidenced by the `lt__' prefix to
+  the filename!) shared between implementation files in the stack, that
+  are however not exported to libltdl clients:
 
-	lt_system.h	../config.h
-
-* Next up is the libc abstraction layer, which provides a uniform api
-  to various system libc interfaces that differ between hosts supported
-  by libtool.  Typically, the files that implement this layer begin:
-
-  #if defined(LT_CONFIG_H)
-  #  include LT_CONFIG_H
-  #else
-  #  include <config.h>
-  #endif
-  #include "lt_system.h"
-
-  Or if they are installed headers that must work outside the libtool
-  source tree, simply:
-
-  #include <libltdl/lt_system.h>
-
-  This layer's interface is defined by files that are usually named with
-  a leading `lt__':
-
-	,------------.	,-----------.	,------.	,-------.
-	|lt__dirent.h|	|lt__alloc.h|	|argz.h|	|slist.h|
-	+------------+	+-----------+	+------+	+-------+
-	|lt__dirent.c|	|lt__alloc.c|	|argz.c|	|slist.c|
-	`------------'	`-----------'	`------'	`-------'
-
-  The exceptions here are argz.h and slist.h which are used
-  independently of libltdl in other projects.
-
-* There is also a sub-layer that can be used either by the headers that
-  implement it, in which case its function is to avoid namespace clashes
-  when linked with the GNU C library; Or it can be included by code that
-  wants to program against a glibc like interface, where it also serves
-  the function of pulling in all the glibc-like functionality used by
-  libltdl from a single:
-
-  #include <libltdl/lt__glibc.h>
-
-  It consists of the single file:
-
-	lt__glibc.h
-
-* The next layer are the subsystems of the exported libltdl API, which
-  are defined by files that are named with a leading `lt_' (no double
-  underscore!):
-
-	,----------.	,-------------.
-	|lt_error.h|	|lt_dlloader.h|
-	+----------+	+-------------+
-	|lt_error.c|	|lt_dlloader.c|
-	`----------'	`-------------'
-
+	,-------------.
+	|lt__private.h|
+	`-------------'
 
 * The top layer of the stack is the libltdl API proper, which includes
-  the subsystems automatically:
+  the relevant subsystems automatically.  Clients of libltdl need only
+  invoke:
+
+  #include <ltdl.h>
 
 	,------.
 	|ltdl.h|
@@ -359,12 +311,75 @@ yyyy-mm-dd  Name of Author  <email@address>  (tiny change)
 	|ltdl.c|
 	`------'
 
-* And finally, there is an additional internal only layer (as evidenced
-  by the `lt__' prefix to the filename!) that defines additional
-  internal interfaces that are not exported to libltdl clients, but are
-  shared between internal files:
+* The next layer is comprised of the subsystems of the exported libltdl
+  API, which are implemented by files that are named with a leading `lt_'
+  (single underscore!):
 
-	lt__private.h
+	,------------v---------------.
+	| lt_error.h | lt_dlloader.h |
+	+------------+---------------+
+	| lt_error.c | lt_dlloader.c |
+	`------------^---------------'
+
+* The next file is used both by the headers that implement it (in which
+  case its function is to avoid namespace clashes when linking with the
+  GNU C library proper) and is included by code that wants to program
+  against a glibc-like interface, in which case it serves to pull in all
+  the glibc-like functionality used by libltdl with a simple:
+
+    #include <libltdl/lt__glibc.h>
+
+  It consists of a single file:
+
+	,-----------.
+	|lt__glibc.h|
+	`-----------'
+
+* Next to last is the libc abstraction layer, which provides a uniform
+  API to various system libc interfaces that differ between hosts
+  supported by libtool.  Typically, the files that implement this layer
+  begin:
+
+    #if defined(LT_CONFIG_H)
+    #  include LT_CONFIG_H
+    #else
+    #  include <config.h>
+    #endif
+    #include "lt_system.h"
+
+  Or if they are installed headers that must work outside the libtool
+  source tree, simply:
+
+    #include <libltdl/lt_system.h>
+
+  This layer's interface is defined by files that are usually named with
+  a leading `lt__':
+
+	,--------------v-------------v------------v--------v---------.
+	| lt__dirent.h | lt__alloc.h | lt__strl.h | argz.h | slist.h |
+	+--------------+-------------+------------+--------+---------+
+	| lt__dirent.c | lt__alloc.c | lt__strl.c | argz.c | slist.c |
+	`--------------^-------------^------------^--------^---------'
+
+  (argz.h and slist.h are used independently of libltdl in other projects)
+
+* At the bottom of the stack we have the system abstraction layer,
+  which tries to smooth over the cracks where there are differences
+  between host systems and compilers.  config.h is generated at
+  configure time and is not installed; lt_system.h is an installed
+  file and cannot use macros from config.h:
+
+	,-----------.
+	|../config.h|
+	`-----------'
+
+	,-----------.
+	|lt_system.h|
+	`-----------'
+
+* Tacked on the side of this stack, attached via the lt_dlloader.h
+  definitions are the various implementation modules for run-time module
+  loading: preopen.c, dlopen.c etc.
 
 
 10. Licensing Rules

@@ -1,3 +1,8 @@
+2007-03-28  Gary V. Vaughan  <gary@gnu.org>
+
+	* HACKING (Abstraction layers in libltdl): Rewritten somewhat
+	for (hopefully) better clarity.
+
 2007-03-26  Gary V. Vaughan  <gary@gnu.org>
 
 	The stamp-vcl file rules caused non-gnu make programs to rerun
