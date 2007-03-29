@@ -1,3 +1,8 @@
+2007-03-30   Matthieu Herrb  <matthieu.herrb@laas.fr>
+
+	* libtool.m4 (_LT_AC_LANG_CXX_CONFIG, AC_LIBTOOL_PROG_LD_SHLIBS)
+	[ openbsd ]: Add an explicit check for shared libraries support.
+
 2007-03-29  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* libtool.m4 (AC_LIBTOOL_CONFIG) <fix_srcfile_path>: This
