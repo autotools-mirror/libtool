@@ -1,3 +1,9 @@
+2007-03-29  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* libtool.m4 (AC_LIBTOOL_CONFIG) <fix_srcfile_path>: This
+	variable needs escaping, too.
+	Report by Akim Demaille.
+
 2007-03-18  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* mdemo/Makefile.am (libmlib_la_LDFLAGS): Add

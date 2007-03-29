@@ -4266,6 +4266,7 @@ if test -f "$ltmain"; then
     _LT_AC_TAGVAR(module_cmds, $1) \
     _LT_AC_TAGVAR(module_expsym_cmds, $1) \
     _LT_AC_TAGVAR(lt_cv_prog_compiler_c_o, $1) \
+    _LT_AC_TAGVAR(fix_srcfile_path, $1) \
     _LT_AC_TAGVAR(exclude_expsyms, $1) \
     _LT_AC_TAGVAR(include_expsyms, $1); do
 
@@ -4637,7 +4638,7 @@ sys_lib_search_path_spec=$lt_sys_lib_search_path_spec
 sys_lib_dlsearch_path_spec=$lt_sys_lib_dlsearch_path_spec
 
 # Fix the shell variable \$srcfile for the compiler.
-fix_srcfile_path="$_LT_AC_TAGVAR(fix_srcfile_path, $1)"
+fix_srcfile_path=$lt_fix_srcfile_path
 
 # Set to yes if exported symbols are required.
 always_export_symbols=$_LT_AC_TAGVAR(always_export_symbols, $1)
