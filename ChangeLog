@@ -1,3 +1,8 @@
+2007-03-29  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* Makefile.am ($(srcdir)/$(m4dir)/ltversion.m4): Fix quoting
+	error.
+
 2007-03-28  Gary V. Vaughan  <gary@gnu.org>
 
 	* HACKING (Abstraction layers in libltdl): Rewritten somewhat

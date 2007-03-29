@@ -178,7 +178,7 @@ $(srcdir)/$(m4dir)/ltversion.m4: clean-ltmain-sh $(m4dir)/ltversion.in configure
 	  input="ltversion.in"; \
 	  echo $(edit) -e "s,@MACRO_REVISION\@,$$correctver,g" \
 	    -e "s,@MACRO_SERIAL\@,$$serial,g" \
-	    $(srcdir)/$(m4dir)/ltversion.in > $(srcdir)/$(m4dir)/ltversion.m4; \
+	    $(srcdir)/$(m4dir)/ltversion.in \> $(srcdir)/$(m4dir)/ltversion.m4; \
 	  $(edit) -e "s,@MACRO_REVISION\@,$$correctver,g" \
 		  -e "s,@MACRO_SERIAL\@,$$serial,g" \
 		  $(m4dir)/ltversion.in > $(m4dir)/ltversion.tmp; \
