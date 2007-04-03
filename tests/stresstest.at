@@ -250,7 +250,7 @@ do
       do
 	LT_AT_CHECK([eval '$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o "$rel"sub2/liba.la "$rel"sub/a.lo' $linkargs],
 	         [0],[ignore],[ignore])
-	for st in '' '-static'
+	for st in '' '-static' '-no-install'
 	do
           case $st,$l3 in
           ,-rpath*) mst= ;;

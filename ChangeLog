@@ -1,3 +1,11 @@
+2007-04-03  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* doc/libtool.texi (Link mode) <-no-install>: Mention that this
+	still generates a wrapper script on systems without hardcoding.
+	* tests/stresstest.at: Test `-no-install'.
+	* THANKS: Update.
+	Report by Simon Josefsson.
+
 2007-03-30   Matthieu Herrb  <matthieu.herrb@laas.fr>
 
 	* libltdl/m4/libtool.m4 (_LT_LINKER_SHLIBS, _LT_LANG_CXX_CONFIG)
