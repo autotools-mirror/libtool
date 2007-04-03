@@ -1273,8 +1273,9 @@ if the program won't be necessarily installed.
 
 @item -no-install
 Link an executable @var{output-file} that can't be installed and
-therefore doesn't need a wrapper script.  Useful if the program is only
-used in the build tree, e.g., for testing or generating other files.
+therefore doesn't need a wrapper script on systems that allow hardcoding
+of library paths.  Useful if the program is only used in the build tree,
+e.g., for testing or generating other files.
 
 @item -no-undefined
 Declare that @var{output-file} does not depend on any other libraries.
