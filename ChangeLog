@@ -1,5 +1,9 @@
 2007-04-10  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* ltmain.in (link mode) <-no-install> [ darwin ]: Treat like
+	`-no-fast-install', as we cannot hardcode.
+	Report by Simon Josefsson.
+
 	* ltmain.in (execute mode): Do not unset locale variables that
 	have not been set previously.  Do not use uninitialized
 	$lt_unset.  Report by <deckrider@gmail.com>.
