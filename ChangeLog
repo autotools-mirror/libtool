@@ -1,3 +1,7 @@
+2007-04-11  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* NEWS: Mention `-static-libtool-libs'.
+
 2007-04-10  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* ltmain.in (link mode) <-no-install> [ darwin ]: Treat like
