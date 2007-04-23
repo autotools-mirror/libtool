@@ -1,3 +1,16 @@
+2007-04-23  Charles Wilson  <libtool@cwilson.fastmail.fm>
+
+	* libltdl/config/ltmain.m4sh (func_mode_link): move wrapper
+	script generation from here...
+	(func_emit_libtool_wrapper_script): to this new function, and
+	write to stdout
+	(func_mode_link): move cwrapper source code generation from
+	here...
+	(func_emit_libtool_cwrapperexe_source): to this new function,
+	and write to stdout
+	(func_mode_link): call the two new functions and redirect
+	output to appropriate file.
+
 2007-04-10  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* libltdl/config/ltmain.m4sh (func_mode_link) <-no-install>
