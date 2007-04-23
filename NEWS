@@ -12,12 +12,6 @@ New in 2.1a: 2007-??-??; CVS version 2.1a, Libtool team:
     any more, some setups may fail.  A mechanism to allow the user to
     choose the mode has not been implemented yet.
 
-  - In 1.9b, a new variable inherited_linker_flags has been added to the
-    libtool library files.  This variable takes flags that should be
-    used by dependent libraries and programs, but that do not fit into
-    `dependency_libs' for both clarity and backward-compatibility.
-    Currently, these flags are not uniquified and thus accumulate.
-
 * Important incompatible changes and obsoleted features:
 
   - Removed deprecated APIs from libltdl: lt_dlcaller_register,
@@ -66,6 +60,10 @@ New in 2.1a: 2007-??-??; CVS version 2.1a, Libtool team:
     Both testsuites have been made more useful for testing
     cross-compilers.  The new testsuite exposes many more issues, but
     may also be a little rocky on exotic systems.
+  - In 1.9b, a new variable inherited_linker_flags has been added to the
+    libtool library files.  This variable takes flags that should be
+    used by dependent libraries and programs, but that do not fit into
+    `dependency_libs' for both clarity and backward-compatibility.
 
 * Changes in supported systems or compilers:
 

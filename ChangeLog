@@ -1,3 +1,13 @@
+2007-04-23  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* libltdl/config/ltmain.m4sh (func_mode_link): Fix accumulation
+	of `inherited_linker_flags' entries from multiple deplibs, by
+	adding $new_inherited_linker_flags only once, only in link pass.
+	* tests/inherited_flags: Amend test to expose this.
+	* NEWS: Adjust: kill one regression, but add note about the
+	feature new in 1.9b.
+	Report by Jeff Squyres and others.
+
 2007-04-23  Charles Wilson  <libtool@cwilson.fastmail.fm>
 
 	* libltdl/config/ltmain.m4sh (func_mode_link): move wrapper

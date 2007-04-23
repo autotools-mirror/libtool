@@ -41,6 +41,11 @@ AT_DATA([baz.c],
 int baz() { return 1;}
 ])
 
+AT_DATA([both.c],
+[
+int both() { return 1;}
+])
+
 AT_DATA([main.c],
 [
 int main() { return 0;}
@@ -49,9 +54,11 @@ int main() { return 0;}
 $LIBTOOL --mode=compile --tag=CC $CC $CPPFLAGS $CFLAGS -c -o foo.lo foo.c
 $LIBTOOL --mode=compile --tag=CC $CC $CPPFLAGS $CFLAGS -c -o bar.lo bar.c
 $LIBTOOL --mode=compile --tag=CC $CC $CPPFLAGS $CFLAGS -c -o baz.lo baz.c
+$LIBTOOL --mode=compile --tag=CC $CC $CPPFLAGS $CFLAGS -c -o both.lo both.c
 $LIBTOOL --mode=compile --tag=CC $CC $CPPFLAGS $CFLAGS -c -o main.lo main.c
 $LIBTOOL --mode=link --tag=CC $CC $CFLAGS $LDFLAGS -o libfoo.la foo.lo -rpath /usr/local/lib -no-undefined
 $LIBTOOL --mode=link --tag=CC $CC $CFLAGS $LDFLAGS -o libbar.la bar.lo -rpath /usr/local/lib -no-undefined
+$LIBTOOL --mode=link --tag=CC $CC $CFLAGS $LDFLAGS -o libboth.la both.lo -rpath /usr/local/lib -no-undefined
 
 
 mv libfoo.la libfoo.la.bak
@@ -61,6 +68,10 @@ rm libfoo.la.bak
 mv libbar.la libbar.la.bak
 sed -e 's/^inherited_linker_flags.*/inherited_linker_flags=-llt_unlikely_existing_lib/g' < libbar.la.bak > libbar.la
 rm libbar.la.bak
+
+mv libboth.la libboth.la.bak
+sed -e "s/^inherited_linker_flags.*/inherited_linker_flags='-llt_inlikely_existing_lib -llt_unlikely_existing_lib'/g" < libboth.la.bak > libboth.la
+rm libboth.la.bak
 
 AT_CHECK([$LIBTOOL --mode=link --tag=CC $CC $CFLAGS $LDFLAGS -o libbaz.la baz.lo -no-undefined -rpath /usr/local/lib ./libfoo.la ./libbar.la],
 	 [ignore],[stdout],[ignore])
@@ -75,5 +86,19 @@ AT_CHECK([$LIBTOOL --mode=link --tag=CC $CC $CFLAGS $LDFLAGS -o main main.lo -no
 	[ignore],[stdout],[ignore])
 AT_CHECK([grep 'lt_[[ui]]nlikely_existing_lib.*lt_[[ui]]nlikely_existing_lib' stdout],
 	 [0],[ignore],[ignore])
+
+# now check for duplicates
+AT_CHECK([$LIBTOOL --mode=link --tag=CC $CC $CFLAGS $LDFLAGS -o libbaz.la baz.lo -no-undefined -rpath /usr/local/lib ./libfoo.la ./libbar.la ./libboth.la],
+	 [ignore],[stdout],[ignore])
+AT_CHECK([grep 'lt_inlikely_existing_lib.*lt_inlikely_existing_lib' stdout],
+	 [1],[ignore],[ignore])
+AT_CHECK([grep 'lt_unlikely_existing_lib.*lt_unlikely_existing_lib' stdout],
+	 [1],[ignore],[ignore])
+AT_CHECK([$LIBTOOL --mode=link --tag=CC $CC $CFLAGS $LDFLAGS -o main main.lo -no-undefined -rpath /usr/local/lib  ./libfoo.la ./libbar.la ./libboth.la],
+	[ignore],[stdout],[ignore])
+AT_CHECK([grep 'lt_inlikely_existing_lib.*lt_inlikely_existing_lib' stdout],
+	 [1],[ignore],[ignore])
+AT_CHECK([grep 'lt_unlikely_existing_lib.*lt_unlikely_existing_lib' stdout],
+	 [1],[ignore],[ignore])
 
 AT_CLEANUP

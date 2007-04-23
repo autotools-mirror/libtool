@@ -4036,12 +4036,6 @@ func_mode_link ()
 	  done
 	fi
 	dependency_libs=`$ECHO "X $dependency_libs" | $Xsed -e 's% \([^ $]*\).ltframework% -framework \1%g'`
-	if test "$linkmode,$pass" = "prog,link"; then
-	  compile_deplibs="$new_inherited_linker_flags $compile_deplibs"
-	  finalize_deplibs="$new_inherited_linker_flags $finalize_deplibs"
-	else
-	  compiler_flags="$compiler_flags $inherited_linker_flags"
-	fi
 	if test "$linkmode,$pass" = "lib,link" ||
 	   test "$linkmode,$pass" = "prog,scan" ||
 	   { test "$linkmode" != prog && test "$linkmode" != lib; }; then
@@ -4669,6 +4663,14 @@ func_mode_link ()
 	  fi # link_all_deplibs != no
 	fi # linkmode = lib
       done # for deplib in $libs
+      if test "$pass" = link; then
+	if test "$linkmode" = "prog"; then
+	  compile_deplibs="$new_inherited_linker_flags $compile_deplibs"
+	  finalize_deplibs="$new_inherited_linker_flags $finalize_deplibs"
+	else
+	  compiler_flags="$compiler_flags $new_inherited_linker_flags"
+	fi
+      fi
       dependency_libs="$newdependency_libs"
       if test "$pass" = dlpreopen; then
 	# Link the dlpreopened libraries before other libraries
