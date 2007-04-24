@@ -1,5 +1,9 @@
 2007-04-24  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* tests/cmdline_wrap.at: Avoid `AT_CAPTURE_FILE' if it not
+	defined (Autoconf < 2.60).
+	* tests/shlibpath.at: Add `libtool' keyword.
+
 	* tests/indirect_deps.at: New file, with tests to ensure
 	`link_all_deplibs=no' does not break functionality.
 	* Makefile.am: Adjust.
@@ -101,7 +105,7 @@
 	libltdl/ltdl.h, libltdl/m4/argz.m4, libltdl/m4/libtool.m4,
 	libltdl/m4/ltdl.m4, libltdl/m4/ltoptions.m4,
 	libltdl/m4/ltsugar.m4, libltdl/m4/ltversion.in,
-	Jlibltdl/m4/ltversion.m4, libltdl/m4/lt~obsolete.m4,
+	libltdl/m4/ltversion.m4, libltdl/m4/lt~obsolete.m4,
 	libltdl/slist.c, libtoolize.m4sh, tests/am-subdir.at,
 	tests/cdemo-conf.test, tests/cdemo-exec.test,
 	tests/cdemo-make.test, tests/cdemo-shared.test,

@@ -27,7 +27,8 @@
 
 AT_SETUP([Run tests with low max_cmd_len])
 AT_KEYWORDS([recursive])
-AT_CAPTURE_FILE([testsuite.log])
+m4_ifdef([AT_CAPTURE_FILE],
+[AT_CAPTURE_FILE([testsuite.log])])
 
 sed 's,max_cmd_len=.*,max_cmd_len="24",' < $LIBTOOL > libtool
 chmod +x libtool

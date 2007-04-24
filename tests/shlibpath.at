@@ -23,6 +23,7 @@
 ####
 
 AT_SETUP([shlibpath_overrides_runpath])
+AT_KEYWORDS([libtool])
 
 mkdir sub sub/lib sub/bin
 echo 'int a () { return 0; }' > a.c
