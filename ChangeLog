@@ -1,3 +1,9 @@
+2007-04-24  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* tests/indirect_deps.at: New file, with tests to ensure
+	`link_all_deplibs=no' does not break functionality.
+	* Makefile.am: Adjust.
+
 2007-04-23  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* libltdl/config/ltmain.m4sh (func_mode_link): Fix accumulation
