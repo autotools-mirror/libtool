@@ -1,6 +1,6 @@
 /* lt__glibc.h -- support for non glibc environments
 
-   Copyright (C) 2004, 2006 Free Software Foundation, Inc.
+   Copyright (C) 2004, 2006, 2007 Free Software Foundation, Inc.
    Written by Gary V. Vaughan, 2004
 
    NOTE: The canonical source of this file is maintained with the
@@ -37,7 +37,7 @@ or obtained by writing to the Free Software Foundation, Inc.,
 #  include <config.h>
 #endif
 
-#if !defined(HAVE_ARGZ_H)
+#if !defined(HAVE_ARGZ_H) || defined(SYSTEM_ARGZ_IS_BROKEN)
 /* Redefine any glibc symbols we reimplement to import the
    implementations into our lt__ namespace so we don't ever
    clash with the system library if our clients use argz_*
