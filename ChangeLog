@@ -1,3 +1,8 @@
+2007-04-25  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* README, README.alpha: Document how to test an arbitrary
+	installed libtool script.
+
 2007-04-24  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* tests/cmdline_wrap.at: Avoid `AT_CAPTURE_FILE' if it not

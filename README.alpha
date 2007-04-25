@@ -104,7 +104,11 @@ but simple help may also be obtained through
 
 For verbose output, add the flag `-v', for running only a subset of the
 independent tests, merely specify them by number or by keyword, both of
-which are displayed with the `--list' flag.
+which are displayed with the `--list' flag.  For example, the `libtool'
+keyword is used for the tests that exercise only this script.  So it is
+possible to test an installed script, possibly from a different Libtool
+release, with
+  gmake check-local TESTSUITEFLAGS="-k libtool LIBTOOL=/path/to/libtool"
 
 If you wish to report test failures to the libtool list, you need to
 send the file `tests/testsuite.log' to the bug report mailing list,
