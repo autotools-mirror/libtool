@@ -1,3 +1,8 @@
+2007-04-27  Noah Misch  <noah@cs.caltech.edu>
+
+	* tests/ctor.at: New file.
+	* Makefile.am (TESTSUITE_AT): Add tests/ctor.at.
+
 2007-04-27  Charles Wilson  <libtool@cwilson.fastmail.fm>
 
 	* libltdl/libltdl/lt__glibc.h: Use !HAVE_WORKING_ARGZ

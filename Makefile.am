@@ -448,6 +448,7 @@ TESTSUITE_AT	= tests/testsuite.at \
 		  tests/nonrecursive.at \
 		  tests/recursive.at \
 		  tests/template.at \
+		  tests/ctor.at \
 		  tests/early-libtool.at \
 		  tests/deplibs-ident.at \
 		  tests/stresstest.at \
