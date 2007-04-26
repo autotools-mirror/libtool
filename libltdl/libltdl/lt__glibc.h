@@ -37,7 +37,7 @@ or obtained by writing to the Free Software Foundation, Inc.,
 #  include <config.h>
 #endif
 
-#if !defined(HAVE_ARGZ_H) || defined(SYSTEM_ARGZ_IS_BROKEN)
+#if !defined(HAVE_ARGZ_H) || !defined(HAVE_WORKING_ARGZ)
 /* Redefine any glibc symbols we reimplement to import the
    implementations into our lt__ namespace so we don't ever
    clash with the system library if our clients use argz_*
