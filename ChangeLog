@@ -1,3 +1,12 @@
+2007-05-01  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* Makefile.am (clean-ltmain-sh): Removed.
+	(libtool, $(srcdir)/$(m4dir)/ltversion.m4)
+	($(srcdir)/$(auxdir)/ltmain.sh): Updated to not depend on any
+	phony rules.  Test `$?' for prerequisites that should always
+	cause us to update the target.  Fixes rebuilding rules, at the
+	cost of sometimes updating too much with non-GNU make.
+
 2007-04-27  Noah Misch  <noah@cs.caltech.edu>
 
 	* tests/ctor.at: New file.

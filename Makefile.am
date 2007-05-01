@@ -89,12 +89,15 @@ $(srcdir)/libtoolize.in: $(sh_files) libtoolize.m4sh Makefile.am
 # We used to do this with a 'stamp-vcl' file, but non-gmake builds
 # would rerun configure on every invocation, so now we manually
 # check the version numbers from the build rule when necessary.
-libtool: clean-ltmain-sh $(top_builddir)/config.status $(srcdir)/$(auxdir)/ltmain.sh ChangeLog
+libtool: $(top_builddir)/config.status $(srcdir)/$(auxdir)/ltmain.sh ChangeLog
 	@target=libtool; $(rebuild); \
 	if test -f "$$target"; then \
 	  set dummy `./$$target --version | sed 1q`; actualver="$$5"; \
 	  test "$$actualver" = "$$correctver" && rebuild=false; \
 	fi; \
+	for prereq in $?; do \
+	  case $$prereq in *ChangeLog);; *) rebuild=:;; esac; \
+	done; \
 	if $$rebuild; then \
 	  echo $(SHELL) ./config.status $$target; \
 	  cd $(top_builddir) && $(SHELL) ./config.status $$target; \
@@ -144,15 +147,6 @@ EXTRA_DIST     += bootstrap $(srcdir)/libtoolize.in $(auxdir)/ltmain.m4sh \
 CLEANFILES     += libtool libtoolize libtoolize.tmp \
 		  $(auxdir)/ltmain.tmp $(m4dir)/ltversion.tmp
 
-
-## We used to build ltmain.sh in the build tree, but now it is created
-## in the source tree by bootstrap.  This rule removes stale copies from
-## previous builds left behind in the build tree, that would override the
-## source tree version in current builds.
-clean-ltmain-sh:
-	@-test "$(srcdir)" = "$(top_builddir)" || \
-	  rm -f "$(top_builddir)/$(auxdir)/ltmain.sh" stamp-vcl
-
 ## We build ltversion.m4 here, instead of from config.status,
 ## because config.status is rerun each time one of configure's
 ## dependencies change and ltversion.m4 happens to be a configure
@@ -164,13 +158,16 @@ clean-ltmain-sh:
 ## Use `$(srcdir)/m4' for the benefit of non-GNU makes: this is
 ## how ltversion.m4 appears in our dependencies.
 EXTRA_DIST += $(m4dir)/ltversion.in $(srcdir)/$(m4dir)/ltversion.m4
-$(srcdir)/$(m4dir)/ltversion.m4: clean-ltmain-sh $(m4dir)/ltversion.in configure.ac ChangeLog
+$(srcdir)/$(m4dir)/ltversion.m4: $(m4dir)/ltversion.in configure.ac ChangeLog
 	@target='$(srcdir)/$(m4dir)/ltversion.m4'; $(rebuild); \
 	if test -f "$$target"; then \
 	  set dummy `sed -n '/^# serial /p' "$$target"`; shift; \
 	  actualver=1.$$3; \
 	  test "$$actualver" = "$$correctver" && rebuild=false; \
 	fi; \
+	for prereq in $?; do \
+	  case $$prereq in *ChangeLog | *configure.ac);; *) rebuild=:;; esac; \
+	done; \
 	if $$rebuild; then \
 	  cd $(srcdir); \
 	  rm -f $(m4dir)/ltversion.tmp; \
@@ -197,17 +194,22 @@ $(srcdir)/$(m4dir)/ltversion.m4: clean-ltmain-sh $(m4dir)/ltversion.in configure
 ##           distcheck (at least) by rebuilding ltmain.sh in the source
 ##           tree whenever config.status regenerates the Makefile.
 EXTRA_DIST += $(srcdir)/$(auxdir)/ltmain.sh
-$(srcdir)/$(auxdir)/ltmain.sh: clean-ltmain-sh $(sh_files) $(auxdir)/ltmain.m4sh configure.ac ChangeLog
+$(srcdir)/$(auxdir)/ltmain.sh: $(sh_files) $(auxdir)/ltmain.m4sh configure.ac ChangeLog
 	@target='$(srcdir)/$(auxdir)/ltmain.sh'; $(rebuild); \
 	if test -f "$$target"; then \
 	  eval `sed -n '/^package_revision=/p' "$$target"`; \
 	  actualver=$$package_revision; \
 	  test "$$actualver" = "$$correctver" && rebuild=false; \
 	fi; \
+	for prereq in $?; do \
+	  case $$prereq in *ChangeLog);; *) rebuild=:;; esac; \
+	done; \
 	if $$rebuild; then \
 	  cd $(srcdir); \
 	  rm -f $(auxdir)/ltmain.in $(auxdir)/ltmain.tmp \
 	    $(auxdir)/ltmain.sh; \
+	  echo $(M4SH) -B $(auxdir) $(auxdir)/ltmain.m4sh \
+	    \> $(auxdir)/ltmain.in; \
 	  $(M4SH) -B $(auxdir) $(auxdir)/ltmain.m4sh \
 	    > $(auxdir)/ltmain.in; \
 	  input="ltmain.m4sh"; \
