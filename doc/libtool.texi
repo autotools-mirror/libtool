@@ -2977,7 +2977,7 @@ to your own callback function, @var{func}.  If @var{search_path} is
 @code{lt_dlopen} would examine.  This function will continue to make
 calls to @var{func} for each file that it discovers in @var{search_path}
 until one of these calls returns non-zero, or until the files are
-exhausted.  @samp{lt_dlforeachfile} returns value returned by the last
+exhausted.  @samp{lt_dlforeachfile} returns the value returned by the last
 call made to @var{func}.
 
 For example you could define @var{func} to build an ordered

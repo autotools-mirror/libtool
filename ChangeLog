@@ -1,3 +1,7 @@
+2007-05-03  Reuben Thomas  <rrt@sc3d.org>  (tiny change)
+
+	* doc/libtool.texi (Libltdl interface): Fix typo.
+
 2007-04-11  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* NEWS: Mention `-static-libtool-libs'.
