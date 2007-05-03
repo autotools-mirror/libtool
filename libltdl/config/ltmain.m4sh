@@ -4668,7 +4668,7 @@ func_mode_link ()
 	  compile_deplibs="$new_inherited_linker_flags $compile_deplibs"
 	  finalize_deplibs="$new_inherited_linker_flags $finalize_deplibs"
 	else
-	  compiler_flags="$compiler_flags $new_inherited_linker_flags"
+	  compiler_flags="$compiler_flags "`$ECHO "X $new_inherited_linker_flags" | $Xsed -e 's% \([^ $]*\).ltframework% -framework \1%g'`
 	fi
       fi
       dependency_libs="$newdependency_libs"

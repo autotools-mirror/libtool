@@ -1,3 +1,12 @@
+2007-05-03  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* libltdl/config/ltmain.m4sh (func_mode_link): When adding
+	new_inherited_linker_flags to compiler_flags, remember to
+	translate .ltframework back.  Fixes bug introduced 2007-04-23.
+	* THANKS: Update.
+	* tests/inherited_flags.at: Amend test.
+	Report by Christoph Egger.
+
 2007-05-03  Reuben Thomas  <rrt@sc3d.org>  (tiny change)
 
 	* doc/libtool.texi (Libltdl interface): Fix typo.

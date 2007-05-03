@@ -101,4 +101,13 @@ AT_CHECK([grep 'lt_inlikely_existing_lib.*lt_inlikely_existing_lib' stdout],
 AT_CHECK([grep 'lt_unlikely_existing_lib.*lt_unlikely_existing_lib' stdout],
 	 [1],[ignore],[ignore])
 
+mv libboth.la libboth.la.bak
+sed "s/^inherited_linker_flags.*/inherited_linker_flags='-framework Cocoa -framework ApplicationServices'/" < libboth.la.bak > libboth.la
+rm libboth.la.bak
+
+AT_CHECK([$LIBTOOL -n --mode=link --tag=CC $CC $CFLAGS $LDFLAGS -framework Cocoa -framework ApplicationServices -o libbaz.la baz.lo libboth.la -no-undefined -rpath /usr/local/lib],
+	 [], [stdout], [ignore])
+AT_CHECK([grep Cocoa.ltframework stdout], [1], [], [])
+AT_CHECK([grep ' -framework Cocoa' stdout], [0], [ignore], [])
+
 AT_CLEANUP
