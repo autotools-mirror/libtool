@@ -1,6 +1,7 @@
 /* loader-dlopen.c --  dynamic linking with dlopen/dlsym
 
-   Copyright (C) 1998, 1999, 2000, 2004, 2006 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2000, 2004, 2006,
+                 2007 Free Software Foundation, Inc.
    Written by Thomas Tanner, 1998
 
    NOTE: The canonical source of this file is maintained with the
@@ -44,7 +45,8 @@ LT_END_C_DECLS
 
 /* Boilerplate code to set up the vtable for hooking this loader into
    libltdl's loader list:  */
-static lt_module vm_open  (lt_user_data loader_data, const char *filename);
+static lt_module vm_open  (lt_user_data loader_data, const char *filename,
+                           lt_dladvise advise);
 static int	 vm_close (lt_user_data loader_data, lt_module module);
 static void *	 vm_sym   (lt_user_data loader_data, lt_module module,
 			  const char *symbolname);
@@ -122,6 +124,19 @@ get_vtable (lt_user_data loader_data)
 #  define LT_LAZY_OR_NOW	0
 #endif /* !LT_LAZY_OR_NOW */
 
+/* We only support local and global symbols from modules for loaders
+   that provide such a thing, otherwise the system default is used.  */
+#if !defined(RTLD_GLOBAL)
+#  if defined(DL_GLOBAL)
+#    define RTLD_GLOBAL		DL_GLOBAL
+#  endif
+#endif /* !RTLD_GLOBAL */
+#if !defined(RTLD_LOCAL)
+#  if defined(DL_LOCAL)
+#    define RTLD_LOCAL		DL_LOCAL
+#  endif
+#endif /* !RTLD_LOCAL */
+
 #if defined(HAVE_DLERROR)
 #  define DLERROR(arg)	dlerror ()
 #else
@@ -135,9 +150,35 @@ get_vtable (lt_user_data loader_data)
    loader.  Returns an opaque representation of the newly opened
    module for processing with this loader's other vtable functions.  */
 static lt_module
-vm_open (lt_user_data LT__UNUSED loader_data, const char *filename)
+vm_open (lt_user_data LT__UNUSED loader_data, const char *filename,
+         lt_dladvise advise)
 {
-  lt_module module = dlopen (filename, LT_LAZY_OR_NOW);
+  int		module_flags = LT_LAZY_OR_NOW;
+  lt_module	module;
+
+  if (advise)
+    {
+#ifdef RTLD_GLOBAL
+      /* If there is some means of asking for global symbol resolution,
+         do so.  */
+      if (((lt__advise *) advise)->is_symglobal)
+        module_flags |= RTLD_GLOBAL;
+#else
+      /* Otherwise, reset that bit so the caller can tell it wasn't
+         acted on.  */
+      ((lt__advise *) advise)->is_symglobal = 0;
+#endif
+
+/* And similarly for local only symbol resolution.  */
+#ifdef RTLD_LOCAL
+      if (((lt__advise *) advise)->is_symlocal)
+        module_flags |= RTLD_LOCAL;
+#else
+      ((lt__advise *) advise)->is_symlocal = 0;
+#endif
+    }
+
+  module = dlopen (filename, module_flags);
 
   if (!module)
     {

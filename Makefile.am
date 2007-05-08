@@ -445,6 +445,7 @@ TESTSUITE_AT	= tests/testsuite.at \
 		  tests/old-m4-iface.at \
 		  tests/am-subdir.at \
 		  tests/lt_dlexit.at \
+		  tests/lt_dladvise.at \
 		  tests/standalone.at \
 		  tests/subproject.at \
 		  tests/nonrecursive.at \

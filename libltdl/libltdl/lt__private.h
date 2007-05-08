@@ -121,7 +121,16 @@ struct lt__handle {
   int			flags;		/* various boolean stats */
 };
 
+typedef struct lt__advise lt__advise;
 
+struct lt__advise {
+  unsigned int	try_ext:1;	/* try system library extensions.  */
+  unsigned int	is_resident:1;	/* module can't be unloaded. */
+  unsigned int	is_symglobal:1;	/* module symbols can satisfy
+				   subsequently loaded modules.  */
+  unsigned int	is_symlocal:1;	/* module symbols are only available
+				   locally. */
+};
 
 /* --- ERROR HANDLING --- */
 

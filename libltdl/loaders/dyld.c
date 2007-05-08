@@ -1,6 +1,7 @@
 /* loader-dyld.c -- dynamic linking on darwin and OS X
 
-   Copyright (C) 1998, 1999, 2000, 2004, 2006 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2000, 2004, 2006,
+                 2007 Free Software Foundation, Inc.
    Written by Peter O'Gorman, 1998
 
    NOTE: The canonical source of this file is maintained with the
@@ -46,7 +47,8 @@ LT_END_C_DECLS
    libltdl's loader list:  */
 static int	 vl_init  (lt_user_data loader_data);
 static int	 vl_exit  (lt_user_data loader_data);
-static lt_module vm_open  (lt_user_data loader_data, const char *filename);
+static lt_module vm_open  (lt_user_data loader_data, const char *filename,
+                           lt_dladvise advise);
 static int	 vm_close (lt_user_data loader_data, lt_module module);
 static void *	 vm_sym   (lt_user_data loader_data, lt_module module,
 			  const char *symbolname);
@@ -213,7 +215,8 @@ vl_init (lt_user_data loader_data)
    loader.  Returns an opaque representation of the newly opened
    module for processing with this loader's other vtable functions.  */
 static lt_module
-vm_open (lt_user_data loader_data, const char *filename)
+vm_open (lt_user_data loader_data, const char *filename,
+         lt_dladvise LT__UNUSED advise)
 {
   lt_module module = 0;
   NSObjectFileImage ofi = 0;

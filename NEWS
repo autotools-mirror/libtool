@@ -8,10 +8,6 @@ New in 2.1a: 2007-??-??; CVS version 2.1a, Libtool team:
     libltdl currently does not build.  The new structure of libltdl with
     preopened modules exposes some long-lived bugs here.
 
-  - Since libltdl does not use the RTLD_GLOBAL global flag with dlopen
-    any more, some setups may fail.  A mechanism to allow the user to
-    choose the mode has not been implemented yet.
-
 * Important incompatible changes and obsoleted features:
 
   - Removed deprecated APIs from libltdl: lt_dlcaller_register,
@@ -54,6 +50,14 @@ New in 2.1a: 2007-??-??; CVS version 2.1a, Libtool team:
     lt_dlhandle_iterate, lt_dlhandle_fetch, lt_dlhandle_map.
   - New lt_dlinterface_register to maintain separation of concerns
     between modules loaded by different libraries.
+  - New lt_dlopenadvise takes a new lt_dladvise type argument, which
+    lets the caller request local or global symbol visibility from the
+    module loader with lt_dladvise_local and lt_dladvise_global
+    respectively.  If neither is given, or if lt_dlopen (or lt_dlopenext)
+    are called, then the system default module symbol visibility is used.
+  - The new lt_dladvise_init/lt_dladvise_destroy based APIs also allow
+    caller requests for a filename extension search with lt_dladvise_ext,
+    and for marking a module unloadable with lt_dladvise_resident.
   - Allow shell special characters like `$' in source file names, but
     not in object names, to enhance GCJ support.
   - An entire new Autotest-based testsuite in addition to the old one.

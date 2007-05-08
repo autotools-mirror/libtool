@@ -1,6 +1,7 @@
 /* loader-dld_link.c -- dynamic linking with dld
 
-   Copyright (C) 1998, 1999, 2000, 2004, 2006 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2000, 2004, 2006,
+                 2007 Free Software Foundation, Inc.
    Written by Thomas Tanner, 1998
 
    NOTE: The canonical source of this file is maintained with the
@@ -44,7 +45,8 @@ LT_END_C_DECLS
 
 /* Boilerplate code to set up the vtable for hooking this loader into
    libltdl's loader list:  */
-static lt_module vm_open  (lt_user_data loader_data, const char *filename);
+static lt_module vm_open  (lt_user_data loader_data, const char *filename,
+                           lt_dladvise advise);
 static int	 vm_close (lt_user_data loader_data, lt_module module);
 static void *	 vm_sym   (lt_user_data loader_data, lt_module module,
 			  const char *symbolname);
@@ -94,7 +96,8 @@ get_vtable (lt_user_data loader_data)
    loader.  Returns an opaque representation of the newly opened
    module for processing with this loader's other vtable functions.  */
 static lt_module
-vm_open (lt_user_data LT__UNUSED loader_data, const char *filename)
+vm_open (lt_user_data LT__UNUSED loader_data, const char *filename,
+         lt_dladvise LT__UNUSED advise)
 {
   lt_module module = lt__strdup (filename);
 

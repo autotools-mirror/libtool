@@ -60,7 +60,8 @@ LT_BEGIN_C_DECLS
     LT_ERROR(SHUTDOWN,		    "library already shutdown\0")	\
     LT_ERROR(CLOSE_RESIDENT_MODULE, "can't close resident module\0")	\
     LT_ERROR(INVALID_MUTEX_ARGS,    "internal error (code withdrawn)\0")\
-    LT_ERROR(INVALID_POSITION,	    "invalid search path insert position\0")
+    LT_ERROR(INVALID_POSITION,	    "invalid search path insert position\0")\
+    LT_ERROR(CONFLICTING_FLAGS,	    "symbol visibility can be global or local\0")
 
 /* Enumerate the symbolic error names. */
 enum {

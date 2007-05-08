@@ -1,3 +1,50 @@
+2007-05-08  Gary V. Vaughan  <gary@gnu.org>
+
+	Without this patch, lt_dlopen always opens modules with symbol
+	visibility set according to the underlying implementation.
+	Here, we add lt_dlopenadvise() to allow callers to request,
+	among other things, local or global symbol visibility from the
+	underlying dlloader:
+
+	* libltdl/ltdl.c (LT_DLRESIDENT_FLAG): Removed.
+	(LT_DLIS_RESIDENT): Use public is_resident info field.
+	(LT_DLIS_SYMLOCAL, LT_DLIS_SYMGLOBAL): New macros to test for
+	module symbol visibility status.
+	(tryall_dlopen): If vtable->module_open() was able to act on
+	either is_symlocal or is_symglobal hints, store that in
+	the handle flags.
+	(lt_dlopenadvise): New function that works like lt_dlopen(),
+	but accepts an advise type to determine whether to ask
+	dlloaders to change default symbol visibility.
+	(lt_dlopen, lt_dlopenext): Just call lt_dlopenadvise() with
+	the correct parameters.
+	(lt_dladvise_init, lt_dladvise_destroy): New functions to
+	initialize and destroy an advise type hint.
+	(lt_dladvise_ext, lt_dladvise_resident, lt_dladvise_local)
+	(lt_dladvise_global): Set hints on an advise type.
+	(openadvise): Factored out of lt_dlopenadvise.
+	(has_library_ext): Factored out of lt_dlopenadvise.
+	* libltdl/ltdl.h: Declare all of the above.
+	(lt_dlinfo): New fields for advise hints.
+	* libltdl/libltdl/lt_dlloader.h (lt_module_open): Add a new
+	advise parameter.  Adjust all callers.
+	(lt_dladvise): New opaque type for advise hints.
+	* libltdl/libltdl/lt__private.h (lt__advise): Declare
+	contents of opaque lt_dladvise type.
+	* libltdl/libltdl/lt_error.h (CONFLICTING_FLAGS): New error
+	for attempts to have local and global symbol visibility at the
+	same time.
+	* libltdl/loaders/dld_link.c, libltdl/loaders/dyld.c,
+	libltdl/loaders/load_add_on.c, libltdl/loaders/loadlibrary.c,
+	libltdl/loaders/preopen.c, libltdl/loaders/shl_load.c: Adjust.
+	* libltdl/loaders/dlopen.c (RTLD_LOCAL, RTLD_GLOBAL): Try to
+	define these symbols if the system has equivalents.
+	(vmopen): If unable to act on a caller request to set symbol
+	visibility, then unset the relevant hints in the advise type.
+	* tests/lt_dladvise.at: New tests for the above.
+	* doc/libtool.texi (Libltdl Interface): Updated.
+	* NEWS: Updated.
+
 2007-05-03  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* libltdl/config/ltmain.m4sh (func_mode_link): When adding

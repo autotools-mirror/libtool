@@ -222,8 +222,8 @@ Platform quirks
 In the past, if a source code package developer wanted to take advantage
 of the power of shared libraries, he needed to write custom support code
 for each platform on which his package ran.  He also had to design a
-configuration interface so that the package installer could choose what sort of
-libraries were built.
+configuration interface so that the package installer could choose what
+sort of libraries were built.
 
 @sc{gnu} Libtool simplifies the developer's job by encapsulating both the
 platform-specific dependencies, and the user interface, in a single
@@ -3590,6 +3590,12 @@ The following types are defined in @file{ltdl.h}:
 Every lt_dlopened module has a handle associated with it.
 @end deftp
 
+@deftp {Type} lt_dladvise
+@code{lt_dladvise} is used to control optional module loading modes.
+If it is not used, the default mode of the underlying system module
+loader is used.
+@end deftp
+
 @deftp {Type} lt_dlsymlist
 @code{lt_dlsymlist} is a symbol list for dlpreopened modules.
 This structure is described in @pxref{Dlpreopening}.
@@ -3677,6 +3683,99 @@ This lookup strategy was designed to allow programs that don't
 have knowledge about native dynamic libraries naming conventions
 to be able to @code{dlopen} such libraries as well as libtool modules
 transparently.
+@end deftypefun
+
+@deftypefun int lt_dladvise_init (lt_dladvise *@var{advise})
+The @var{advise} parameter can be used to pass hints to the module
+loader when using @code{lt_dlopenadvise} to perform the loading.
+The @var{advise} parameter needs to be initialised by this function
+before it can be used.  Any memory used by @var{advise} needs to be
+recycled with @code{lt_dladvise_destroy} when it is no longer needed.
+
+On failure, @code{lt_dladvise_init} returns non-zero and sets an error
+message that can be retrieved with @code{lt_dlerror}.
+@end deftypefun
+
+@deftypefun int lt_dladvise_destroy (lt_dladvise *@var{advise})
+Recycle the memory used by @var{advise}.  For an example, see the
+documentation for @code{lt_dladvise_ext}.
+
+On failure, @code{lt_dladvise_destroy} returns non-zero and sets an error
+message that can be retrieved with @code{lt_dlerror}.
+@end deftypefun
+
+@deftypefun int lt_dladvise_ext (lt_dladvise *@var{advise})
+Set the @code{ext} hint on @var{advise}.  Passing an @var{advise}
+parameter to @code{lt_dlopenadvise} with this hint set causes it to
+try to append different file name extensions like @code{lt_dlopenext}.
+
+The following example is equivalent to calling
+@code{lt_dlopenext (filename)}:
+
+@example
+lt_dlhandle
+my_dlopenext (const char *filename)
+@{
+  lt_dlhandle handle = 0;
+  lt_dladvise advise;
+
+  if (!lt_dladvise_init (&advise) && !lt_dladvise_ext (&advise))
+    handle = lt_dlopenadvise (filename, &advise);
+
+  lt_dladvise_destroy (&advise);
+
+  return handle;
+@}
+@end example
+
+On failure, @code{lt_dladvise_ext} returns non-zero and sets an error
+message that can be retrieved with @code{lt_dlerror}.
+@end deftypefun
+
+@deftypefun int lt_dladvise_global (lt_dladvise *@var{advise})
+Set the @code{symglobal} hint on @var{advise}.  Passing an @var{advise}
+parameter to @code{lt_dlopenadvise} with this hint set causes it to try
+to make the loaded module's symbols globally available for resolving
+unresolved symbols in subsequently loaded modules.
+
+If neither the @code{symglobal} nor the @code{symlocal} hints are set,
+or if a module is loaded without using the @code{lt_dlopenadvise} call
+in any case, then the visibility of the module's symbols will be as per
+the default for the underlying module loader and @sc{os}.  Even if a
+suitable hint is passed, not all loaders are able to act upon it in
+which case @code{lt_dlgetinfo} will reveal whether the hint was actually
+followed.
+
+On failure, @code{lt_dladvise_global} returns non-zero and sets an error
+message that can be retrieved with @code{lt_dlerror}.
+@end deftypefun
+
+@deftypefun int lt_dladvise_local (lt_dladvise *@var{advise})
+Set the @code{symlocal} hint on @var{advise}.  Passing an @var{advise}
+parameter to @code{lt_dlopenadvise} with this hint set causes it to try
+to keep the loaded module's symbols hidden so that they are not
+visible to subsequently loaded modules.
+
+If neither the @code{symglobal} nor the @code{symlocal} hints are set,
+or if a module is loaded without using the @code{lt_dlopenadvise} call
+in any case, then the visibility of the module's symbols will be as per
+the default for the underlying module loader and @sc{os}.  Even if a
+suitable hint is passed, not all loaders are able to act upon it in
+which case @code{lt_dlgetinfo} will reveal whether the hint was actually
+followed.
+
+On failure, @code{lt_dladvise_local} returns non-zero and sets an error
+message that can be retrieved with @code{lt_dlerror}.
+@end deftypefun
+
+@deftypefun int lt_dladvise_resident (lt_dladvise *@var{advise})
+Set the @code{resident} hint on @var{advise}.  Passing an @var{advise}
+parameter to @code{lt_dlopenadvise} with this hint set causes it to try
+to make the loaded module resident in memory, so that it cannot be
+unloaded with a later call to @code{lt_dlclose}.
+
+On failure, @code{lt_dladvise_resident} returns non-zero and sets an error
+message that can be retrieved with @code{lt_dlerror}.
 @end deftypefun
 
 @deftypefun int lt_dlclose (lt_dlhandle @var{handle})
@@ -3853,17 +3952,16 @@ Some of the internal information about each loaded module that is
 maintained by libltdl is available to the user, in the form of this
 structure:
 
-@deftypefn {Type} {struct} lt_dlinfo @{ @w{char *@var{filename};} @w{char *@var{name};} @w{int @var{ref_count};} @w{lt_module @var{module};}@}
+@deftypefn {Type} {struct} lt_dlinfo @{ @w{char *@var{filename};} @w{char *@var{name};} @w{int @var{ref_count};} @w{int @var{is_resident};} @w{int @var{is_symglobal};} @w{int @var{is_symlocal};}@}
 @code{lt_dlinfo} is used to store information about a module.
 The @var{filename} attribute is a null-terminated character string of
 the real module file name.  If the module is a libtool module then
 @var{name} is its module name (e.g.@: @code{"libfoo"} for
 @code{"dir/libfoo.la"}), otherwise it is set to @code{NULL}.  The
 @var{ref_count} attribute is a reference counter that describes how
-often the same module is currently loaded. @var{module} is the
-dlloader's internal handle for the native module, and can be used, for
-example, by a loader to check whether @var{module} has already been
-loaded to save loading it again.
+often the same module is currently loaded. The remaining fields can
+be compared to any hints that were passed to @code{lt_dlopenadvise}
+to determine whether the underlying loader was able to follow them.
 @end deftypefn
 
 The following function will return a pointer to libltdl's internal copy
