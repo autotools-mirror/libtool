@@ -1,3 +1,8 @@
+2007-05-09  Eric Blake  <ebb9@byu.net>
+
+	* libltdl/libltdl/lt_error.h (LT_ERROR_LEN_MAX): Adjust, to fix
+	buffer overflow in previous patch.
+
 2007-05-09  Gary V. Vaughan  <gary@gnu.org>
 
 	* tests/lt_dladvise.at: Commit missing file from below.

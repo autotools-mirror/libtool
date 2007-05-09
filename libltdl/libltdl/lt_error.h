@@ -1,6 +1,6 @@
 /* lt_error.h -- error propogation interface
 
-   Copyright (C) 1999, 2000, 2001, 2004 Free Software Foundation, Inc.
+   Copyright (C) 1999, 2000, 2001, 2004, 2007 Free Software Foundation, Inc.
    Written by Thomas Tanner, 1999
 
    NOTE: The canonical source of this file is maintained with the
@@ -73,7 +73,7 @@ enum {
 };
 
 /* Should be max of the error string lengths above (plus one for C++) */
-#define LT_ERROR_LEN_MAX (36)
+#define LT_ERROR_LEN_MAX (41)
 
 /* These functions are only useful from inside custom module loaders. */
 LT_SCOPE int	lt_dladderror	(const char *diagnostic);
