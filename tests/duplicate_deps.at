@@ -1,6 +1,6 @@
 # duplicate_deps.at -- preserve duplicate convenience deps    -*- Autotest -*-
 
-#   Copyright (C) 2006 Free Software Foundation, Inc.
+#   Copyright (C) 2006, 2007 Free Software Foundation, Inc.
 #   Written by Ralf Wildenhues, 2006
 $
 #   This file is part of GNU Libtool.
@@ -60,9 +60,15 @@ AT_CHECK([$LIBTOOL --mode=link --tag=CC \
 	  [0], [ignore], [ignore])
 LT_AT_EXEC_CHECK([./main])
 
-# This currently fails:
-AT_XFAIL_IF([case $host_os in aix*) false;; *) :;; esac])
+# Forgo the workaround and create a true circular dependency.
 $LIBTOOL --mode=link --tag=CC $CC $CFLAGS $LDFLAGS -o libb.la b1.lo
+# Some systems find all symbols anyway; skip this test on such systems.
+AT_CHECK([$LIBTOOL --mode=link --tag=CC \
+	  $CC $CFLAGS $LDFLAGS -o main main.$OBJEXT liba.la libb.la liba.la \
+	  && exit 77],
+	  [1], [ignore], [ignore])
+# Other systems need special treatment, which currently fails.
+AT_XFAIL_IF([:])
 AT_CHECK([$LIBTOOL --mode=link --preserve-dup-deps --tag=CC \
 	  $CC $CFLAGS $LDFLAGS -o main main.$OBJEXT liba.la libb.la liba.la],
 	  [0], [ignore], [ignore])

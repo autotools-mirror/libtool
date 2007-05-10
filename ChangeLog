@@ -1,5 +1,9 @@
 2007-05-10  Noah Misch  <noah@cs.caltech.edu>
 
+	* tests/duplicate_deps.at: Make the XFAIL unconditional, but
+	skip the test if the test link would succeed even without
+	--preserve-dup-deps.
+
 	* libltdl/config/general.m4sh (func_echo): Use $* instead of
 	${1+"$@"}.
 
