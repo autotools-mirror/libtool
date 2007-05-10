@@ -1,3 +1,8 @@
+2007-05-10  Noah Misch  <noah@cs.caltech.edu>
+
+	* libltdl/config/general.m4sh (func_echo): Use $* instead of
+	${1+"$@"}.
+
 2007-05-09  Eric Blake  <ebb9@byu.net>
 
 	* libltdl/libltdl/lt_error.h (LT_ERROR_LEN_MAX): Adjust, to fix

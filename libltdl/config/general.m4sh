@@ -129,7 +129,7 @@ opt_verbose=false
 # name if it has been set yet.
 func_echo ()
 {
-    $ECHO "$progname${mode+: }$mode: "${1+"$@"}
+    $ECHO "$progname${mode+: }$mode: $*"
 }
 
 # func_verbose arg...
