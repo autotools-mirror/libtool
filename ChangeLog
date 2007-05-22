@@ -1,3 +1,12 @@
+2007-05-22  Gary V. Vaughan  <gary@gnu.org>
+
+	* tests/lt_dladvise.at:  Use the lib prefix throughout for
+	better portability - testing whether modules build and load
+	without that prefix is not the domain of this test.
+	Also, only run the test of the global hint with the depend
+	module on hosts that can compile a module without passing
+	-no-undefined in link mode.
+
 2007-05-10  Noah Misch  <noah@cs.caltech.edu>
 
 	* tests/duplicate_deps.at: Make the XFAIL unconditional, but

@@ -93,7 +93,7 @@ hint_ext (void)
   if (lt_dladvise_init (&advise) || lt_dladvise_ext (&advise))
     complain ("error setting advise ext");
 
-  handle = moduleopen ("moddepend", advise);
+  handle = moduleopen ("libdepend", advise);
 
   if (handle)
     printf ("depend: %d\n", moduletest (handle, "g", "j"));
@@ -111,7 +111,7 @@ hint_resident (void)
   if (lt_dladvise_init (&advise) || lt_dladvise_resident (&advise))
     complain ("error setting advise resident");
 
-  handle = moduleopen ("modresident.la", advise);
+  handle = moduleopen ("libresident.la", advise);
 
   if (handle)
     {
@@ -139,7 +139,7 @@ hint_local (void)
   if (lt_dladvise_init (&advise) || lt_dladvise_local (&advise))
     complain ("error setting advise local");
 
-  handle = moduleopen ("modlocal.la", advise);
+  handle = moduleopen ("liblocal.la", advise);
 
   if (handle)
     {
@@ -165,7 +165,7 @@ hint_global (void)
   if (lt_dladvise_init (&advise) || lt_dladvise_global (&advise))
     complain ("error setting advise global");
 
-  handle = moduleopen ("modglobal.la", advise);
+  handle = moduleopen ("libglobal.la", advise);
 
   if (handle)
     {
@@ -268,25 +268,52 @@ depend: 5
 : ${LIBLTDL="$abs_builddir/../libltdl/libltdlc.la"}
 
 CPPFLAGS="$CPPFLAGS $LTDLINCL"
-LDFLAGS="$LDFLAGS"
+
+dlopenable='resident local global'
+
+# ------------------------------------------------------------------------- #
+# The depend test makes no sense unless compiled without -no-undefined. By  #
+# not building the depend module in that case, when this test passes we can #
+# be sure that hint_global() above, is being correctly informed those hosts #
+# are reporting not able to accept the global hint to lt_dlopenadvise().    #
+# ------------------------------------------------------------------------- #
+
+case $host_os in
+cygwin*)
+  # These hosts do not support linking without -no-undefined
+  ;;
+*)
+  dlopenable="$dlopen depend"
+  $LIBTOOL --mode=compile $CC $CPPFLAGS $CFLAGS -c moddepend.c
+  AT_CHECK([$LIBTOOL --mode=link $CC -module $CFLAGS $LDFLAGS -o libdepend.la \
+            moddepend.lo -rpath /foo -avoid-version], [], [ignore], [ignore])
+  ;;
+esac
+
+# ------------------------------------------------------------------------- #
+# Other modules can be tested correctly even when built with -no-undefined. #
+# ------------------------------------------------------------------------- #
+
+LDFLAGS="$LDFLAGS -no-undefined"
 
 $CC $CPPFLAGS $CFLAGS -c main.c
-for file in modresident modlocal modglobal moddepend; do
-  $LIBTOOL --mode=compile $CC $CPPFLAGS $CFLAGS -c $file.c
-  AT_CHECK([$LIBTOOL --mode=link $CC -module $CFLAGS $LDFLAGS -o $file.la \
-            $file.lo -rpath /foo -avoid-version], [], [ignore], [ignore])
+for name in resident local global; do
+  $LIBTOOL --mode=compile $CC $CPPFLAGS $CFLAGS -c mod$name.c
+  AT_CHECK([$LIBTOOL --mode=link $CC -module $CFLAGS $LDFLAGS -o lib$name.la \
+            mod$name.lo -rpath /foo -avoid-version], [], [ignore], [ignore])
 done
 
 # TODO: test -dlpreopen
 for dlopen in -dlopen; do
+
+  modules=
+  for module in $dlopenable; do
+    modules="${modules+$modules }$dlopen lib$module.la"
+  done
+
   AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o main main.$OBJEXT \
-           $dlopen modresident.la $dlopen modlocal.la $dlopen modglobal.la \
-           $dlopen moddepend.la $LIBLTDL],
-           [], [ignore], [ignore])
-  LT_AT_NOINST_EXEC_CHECK([./main],
- 	   [$dlopen modresident.la $dlopen modlocal.la $dlopen modglobal.la \
-            $dlopen moddepend.la],
-	   [], [expout], [])
+           $modules $LIBLTDL], [], [ignore], [ignore])
+  LT_AT_NOINST_EXEC_CHECK([./main], [$modules], [], [expout], [])
 done
 
 AT_CLEANUP
