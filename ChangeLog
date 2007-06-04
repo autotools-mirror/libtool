@@ -1,3 +1,8 @@
+2007-06-03  Peter O'Gorman  <peter@pogma.com>
+
+	* libtool.m4 (old_archive_cmds): Remove old_deplibs.
+	Reported by Daniel Macks <dmacks@netspace.org>
+
 2007-06-01  Steve Ellcey  <sje@cup.hp.com>
 
 	* libtool.m4 (LT_CMD_MAX_LEN): Try using getconf to set
