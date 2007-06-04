@@ -441,6 +441,7 @@ TESTSUITE_AT	= tests/testsuite.at \
 		  tests/export.at \
 		  tests/search-path.at \
 		  tests/indirect_deps.at \
+		  tests/archive-in-archive.at \
 		  tests/destdir.at \
 		  tests/old-m4-iface.at \
 		  tests/am-subdir.at \
