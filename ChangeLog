@@ -1,4 +1,10 @@
-2007-04-27  Charles Wilson  <libtool@cwilson.fastmail.fm>
+2007-06-07  Charles Wilson  <libtool@cwilson.fastmail.fm>
+
+	* ltmain.m4sh (func_emit_libtool_cwrapperexe_source):
+	ensure that generated source follows GCS as nearly as
+	possible.
+
+2007-06-07  Charles Wilson  <libtool@cwilson.fastmail.fm>
 
 	* ltmain.m4sh (func_emit_libtool_wrapper_script): add
 	code block to handle cases when wrapper script is in $objdir.

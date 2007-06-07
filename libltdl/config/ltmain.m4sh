@@ -2506,26 +2506,27 @@ EOF
 
 const char *program_name = NULL;
 
-void * xmalloc (size_t num);
-char * xstrdup (const char *string);
-const char * base_name (const char *name);
-char * find_executable(const char *wrapper);
-char * chase_symlinks(const char *pathspec);
-int    make_executable(const char *path);
-int    check_executable(const char *path);
-char * strendzap(char *str, const char *pat);
+void *xmalloc (size_t num);
+char *xstrdup (const char *string);
+const char *base_name (const char *name);
+char *find_executable (const char *wrapper);
+char *chase_symlinks (const char *pathspec);
+int make_executable (const char *path);
+int check_executable (const char *path);
+char *strendzap (char *str, const char *pat);
 void lt_fatal (const char *message, ...);
 
-static const char* script_text = 
+static const char *script_text = 
 EOF
 
 	    func_emit_libtool_wrapper_script |
 	        $SED -e 's/\([\\"]\)/\\\1/g' \
 	             -e 's/\(WRAPPER_SCRIPT_BELONGS_IN_OBJDIR\)=.*/\1=yes/' \
-	             -e 's/^/"/' -e 's/$/\\n"/' 
+	             -e 's/^/  "/' -e 's/$/\\n"/' 
 	    echo ";"
 
 	    cat <<EOF
+
 int
 main (int argc, char *argv[])
 {
@@ -2535,24 +2536,24 @@ main (int argc, char *argv[])
   char *shwrapper_name;
   FILE *shwrapper;
 
-  const char* dumpscript_opt = "--lt-dump-script";
+  const char *dumpscript_opt = "--lt-dump-script";
   int i;
 
   program_name = (char *) xstrdup (base_name (argv[0]));
-  LTWRAPPER_DEBUGPRINTF("(main) argv[0]      : %s\n",argv[0]);
-  LTWRAPPER_DEBUGPRINTF("(main) program_name : %s\n",program_name);
+  LTWRAPPER_DEBUGPRINTF ("(main) argv[0]      : %s\n", argv[0]);
+  LTWRAPPER_DEBUGPRINTF ("(main) program_name : %s\n", program_name);
 
   /* very simple arg parsing; don't want to rely on getopt */
-  for (i=1; i<argc; i++)
-  {
-    if (strcmp(argv[i], dumpscript_opt) == 0)
+  for (i = 1; i < argc; i++)
     {
-      printf("%s", script_text);
-      return 0;
+      if (strcmp (argv[i], dumpscript_opt) == 0)
+	{
+	  printf ("%s", script_text);
+	  return 0;
+	}
     }
-  }
 
-  newargz = XMALLOC(char *, argc+2);
+  newargz = XMALLOC (char *, argc + 2);
 EOF
 
 	    if test -n "$TARGETSHELL" ; then
@@ -2560,56 +2561,59 @@ EOF
 	      lt_newargv0=$TARGETSHELL
 	    else
 	      case "$host" in
-	        *mingw* )
+		*mingw* )
 		  # awkward: cmd appends spaces to result
 		  lt_sed_strip_trailing_spaces="s/[ ]*\$//"
 		  lt_newargv0=`( cmd //c echo $SHELL | $SED -e "$lt_sed_strip_trailing_spaces" ) 2>/dev/null || echo $SHELL`
-	          case $lt_newargv0 in
-	            *.exe | *.EXE) ;;
-	            *) lt_newargv0=$lt_newargv0.exe ;;
-	          esac
-	          ;;
-	        * ) lt_newargv0=$SHELL ;;
+		  case $lt_newargv0 in
+		    *.exe | *.EXE) ;;
+		    *) lt_newargv0=$lt_newargv0.exe ;;
+		  esac
+		  ;;
+		* ) lt_newargv0=$SHELL ;;
 	      esac
 	    fi 
 
 		cat <<EOF
-  newargz[0] = (char *) xstrdup("$lt_newargv0");
+  newargz[0] = (char *) xstrdup ("$lt_newargv0");
 EOF
 
 	    cat <<"EOF"
   tmp_pathspec = find_executable (argv[0]);
   if (tmp_pathspec == NULL)
-    lt_fatal("Couldn't find %s", argv[0]);
-  LTWRAPPER_DEBUGPRINTF("(main) found exe (before symlink chase) at : %s\n",tmp_pathspec);
+    lt_fatal ("Couldn't find %s", argv[0]);
+  LTWRAPPER_DEBUGPRINTF ("(main) found exe (before symlink chase) at : %s\n",
+			 tmp_pathspec);
 
   actual_cwrapper_path = chase_symlinks (tmp_pathspec);
-  LTWRAPPER_DEBUGPRINTF("(main) found exe (after symlink chase) at : %s\n",actual_cwrapper_path);
-  XFREE(tmp_pathspec);
+  LTWRAPPER_DEBUGPRINTF ("(main) found exe (after symlink chase) at : %s\n",
+			 actual_cwrapper_path);
+  XFREE (tmp_pathspec);
 
   shwrapper_name = (char *) xstrdup (base_name (actual_cwrapper_path));
-  strendzap( actual_cwrapper_path, shwrapper_name );
+  strendzap (actual_cwrapper_path, shwrapper_name);
 
   /* shwrapper_name transforms */
-  strendzap(shwrapper_name,".exe");
-  tmp_pathspec = XMALLOC( char, strlen ( shwrapper_name ) +
-                                    strlen ( "_ltshwrapper" ) + 1 );
-  strcpy ( tmp_pathspec, shwrapper_name );
-  strcat ( tmp_pathspec, "_ltshwrapper" );
-  XFREE( shwrapper_name );
+  strendzap (shwrapper_name, ".exe");
+  tmp_pathspec = XMALLOC (char, (strlen (shwrapper_name) +
+				 strlen ("_ltshwrapper") + 1));
+  strcpy (tmp_pathspec, shwrapper_name);
+  strcat (tmp_pathspec, "_ltshwrapper");
+  XFREE (shwrapper_name);
   shwrapper_name = tmp_pathspec;
   tmp_pathspec = 0;
-  LTWRAPPER_DEBUGPRINTF("(main) libtool shell wrapper name: %s\n",shwrapper_name);
+  LTWRAPPER_DEBUGPRINTF ("(main) libtool shell wrapper name: %s\n",
+			 shwrapper_name);
 EOF
 
 	    cat <<EOF
-  newargz[1] = XMALLOC( char, strlen ( actual_cwrapper_path ) +
-                              strlen ( "$objdir" ) + 1 +
-                              strlen ( shwrapper_name ) + 1 );
-  strcpy ( newargz[1], actual_cwrapper_path );
-  strcat ( newargz[1], "$objdir" );
-  strcat ( newargz[1], "/" );
-  strcat ( newargz[1], shwrapper_name );
+  newargz[1] =
+    XMALLOC (char, (strlen (actual_cwrapper_path) +
+		    strlen ("$objdir") + 1 + strlen (shwrapper_name) + 1));
+  strcpy (newargz[1], actual_cwrapper_path);
+  strcat (newargz[1], "$objdir");
+  strcat (newargz[1], "/");
+  strcat (newargz[1], shwrapper_name);
 EOF
 
 
@@ -2617,39 +2621,40 @@ EOF
 	      mingw*)
 	    cat <<"EOF"
   {
-     char* p;
-     while( (p = strchr(newargz[1], '\\')) != NULL) {
-        *p = '/';
-     }
+    char* p;
+    while ((p = strchr (newargz[1], '\\')) != NULL)
+      {
+	*p = '/';
+      }
   }
 EOF
 	    ;;
 	    esac
 
 	    cat <<"EOF"
-  XFREE( shwrapper_name );
-  XFREE( actual_cwrapper_path );
+  XFREE (shwrapper_name);
+  XFREE (actual_cwrapper_path);
 
   /* note: do NOT use "wt" here! -- defer to underlying
    * mount type on cygwin
    */
-  if ( (shwrapper = fopen (newargz[1], "w")) == 0 )
-  {
-    lt_fatal("Could not open %s for writing", newargz[1]);
-  }
+  if ((shwrapper = fopen (newargz[1], "w")) == 0)
+    {
+      lt_fatal ("Could not open %s for writing", newargz[1]);
+    }
   fprintf (shwrapper, "%s", script_text);
   fclose (shwrapper);
 
-  make_executable( newargz[1] );
+  make_executable (newargz[1]);
   
   for (i = 1; i < argc; i++)
-    newargz[i+1] = xstrdup(argv[i]);
-  newargz[argc+1] = NULL;
+    newargz[i + 1] = xstrdup (argv[i]);
+  newargz[argc + 1] = NULL;
 
-  for (i=0; i<argc+1; i++)
-  {
-    LTWRAPPER_DEBUGPRINTF("(main) newargz[%d]   : %s\n",i,newargz[i]);
-  }
+  for (i = 0; i < argc + 1; i++)
+    {
+      LTWRAPPER_DEBUGPRINTF ("(main) newargz[%d]   : %s\n", i, newargz[i]);
+    }
 
 EOF
 
@@ -2673,7 +2678,7 @@ EOF
 void *
 xmalloc (size_t num)
 {
-  void * p = (void *) malloc (num);
+  void *p = (void *) malloc (num);
   if (!p)
     lt_fatal ("Memory exhausted");
 
@@ -2683,8 +2688,8 @@ xmalloc (size_t num)
 char *
 xstrdup (const char *string)
 {
-  return string ? strcpy ((char *) xmalloc (strlen (string) + 1), string) : NULL
-;
+  return string ? strcpy ((char *) xmalloc (strlen (string) + 1),
+			  string) : NULL;
 }
 
 const char *
@@ -2694,7 +2699,7 @@ base_name (const char *name)
 
 #if defined (HAVE_DOS_BASED_FILE_SYSTEM)
   /* Skip over the disk name in MSDOS pathnames. */
-  if (isalpha ((unsigned char)name[0]) && name[1] == ':')
+  if (isalpha ((unsigned char) name[0]) && name[1] == ':')
     name += 2;
 #endif
 
@@ -2705,32 +2710,31 @@ base_name (const char *name)
 }
 
 int
-check_executable(const char * path)
+check_executable (const char *path)
 {
   struct stat st;
 
-  LTWRAPPER_DEBUGPRINTF("(check_executable)  : %s\n", path ? (*path ? path : "EMPTY!") : "NULL!");
+  LTWRAPPER_DEBUGPRINTF ("(check_executable)  : %s\n",
+			 path ? (*path ? path : "EMPTY!") : "NULL!");
   if ((!path) || (!*path))
     return 0;
 
-  if ((stat (path, &st) >= 0) &&
-      (
-	/* MinGW & native WIN32 do not support S_IXOTH or S_IXGRP */
+  if ((stat (path, &st) >= 0) && (
+				   /* MinGW & native WIN32 do not support S_IXOTH or S_IXGRP */
 #if defined (S_IXOTH)
-       ((st.st_mode & S_IXOTH) == S_IXOTH) ||
+				   ((st.st_mode & S_IXOTH) == S_IXOTH) ||
 #endif
 #if defined (S_IXGRP)
-       ((st.st_mode & S_IXGRP) == S_IXGRP) ||
+				   ((st.st_mode & S_IXGRP) == S_IXGRP) ||
 #endif
-       ((st.st_mode & S_IXUSR) == S_IXUSR))
-      )
+				   ((st.st_mode & S_IXUSR) == S_IXUSR)))
     return 1;
   else
     return 0;
 }
 
 int
-make_executable(const char * path)
+make_executable (const char *path)
 {
   int rval = 0;
   struct stat st;
@@ -2738,22 +2742,23 @@ make_executable(const char * path)
   /* MinGW & native WIN32 do not support S_IXOTH or S_IXGRP */
   int S_XFLAGS = 
 #if defined (S_IXOTH)
-       S_IXOTH ||
+    S_IXOTH ||
 #endif
 #if defined (S_IXGRP)
-       S_IXGRP ||
+    S_IXGRP ||
 #endif
-       S_IXUSR;
+    S_IXUSR;
 
-    LTWRAPPER_DEBUGPRINTF("(make_executable)  : %s\n", path ? (*path ? path : "EMPTY!") : "NULL!");
-    if ((!path) || (!*path))
-        return 0;
+  LTWRAPPER_DEBUGPRINTF ("(make_executable)  : %s\n",
+			 path ? (*path ? path : "EMPTY!") : "NULL!");
+  if ((!path) || (!*path))
+    return 0;
 
-    if (stat (path, &st) >= 0)
+  if (stat (path, &st) >= 0)
     {
-        rval = chmod ( path, st.st_mode | S_XFLAGS );
+      rval = chmod (path, st.st_mode | S_XFLAGS);
     }
-    return rval;
+  return rval;
 }
 
 /* Searches for the full path of the wrapper.  Returns
@@ -2761,184 +2766,188 @@ make_executable(const char * path)
    Does not chase symlinks, even on platforms that support them.
 */
 char *
-find_executable (const char* wrapper)
+find_executable (const char *wrapper)
 {
   int has_slash = 0;
-  const char* p;
-  const char* p_next;
+  const char *p;
+  const char *p_next;
   /* static buffer for getcwd */
   char tmp[LT_PATHMAX + 1];
   int tmp_len;
-  char* concat_name;
+  char *concat_name;
 
-  LTWRAPPER_DEBUGPRINTF("(find_executable)  : %s\n", wrapper ? (*wrapper ? wrapper : "EMPTY!") : "NULL!");
+  LTWRAPPER_DEBUGPRINTF ("(find_executable)  : %s\n",
+			 wrapper ? (*wrapper ? wrapper : "EMPTY!") : "NULL!");
 
   if ((wrapper == NULL) || (*wrapper == '\0'))
     return NULL;
 
   /* Absolute path? */
 #if defined (HAVE_DOS_BASED_FILE_SYSTEM)
-  if (isalpha ((unsigned char)wrapper[0]) && wrapper[1] == ':')
-  {
-    concat_name = xstrdup (wrapper);
-    if (check_executable(concat_name))
-      return concat_name;
-    XFREE(concat_name);
-  }
-  else
-  {
-#endif
-    if (IS_DIR_SEPARATOR (wrapper[0]))
+  if (isalpha ((unsigned char) wrapper[0]) && wrapper[1] == ':')
     {
       concat_name = xstrdup (wrapper);
-      if (check_executable(concat_name))
+      if (check_executable (concat_name))
 	return concat_name;
-      XFREE(concat_name);
+      XFREE (concat_name);
     }
+  else
+    {
+#endif
+      if (IS_DIR_SEPARATOR (wrapper[0]))
+	{
+	  concat_name = xstrdup (wrapper);
+	  if (check_executable (concat_name))
+	    return concat_name;
+	  XFREE (concat_name);
+	}
 #if defined (HAVE_DOS_BASED_FILE_SYSTEM)
-  }
+    }
 #endif
 
   for (p = wrapper; *p; p++)
     if (*p == '/')
-    {
-      has_slash = 1;
-      break;
-    }
-  if (!has_slash)
-  {
-    /* no slashes; search PATH */
-    const char* path = getenv ("PATH");
-    if (path != NULL)
-    {
-      for (p = path; *p; p = p_next)
       {
-	const char* q;
-	size_t p_len;
-	for (q = p; *q; q++)
-	  if (IS_PATH_SEPARATOR(*q))
-	    break;
-	p_len = q - p;
-	p_next = (*q == '\0' ? q : q + 1);
-	if (p_len == 0)
-	{
-	  /* empty path: current directory */
-	  if (getcwd (tmp, LT_PATHMAX) == NULL)
-	    lt_fatal ("getcwd failed");
-	  tmp_len = strlen(tmp);
-	  concat_name = XMALLOC(char, tmp_len + 1 + strlen(wrapper) + 1);
-	  memcpy (concat_name, tmp, tmp_len);
-	  concat_name[tmp_len] = '/';
-	  strcpy (concat_name + tmp_len + 1, wrapper);
-	}
-	else
-	{
-	  concat_name = XMALLOC(char, p_len + 1 + strlen(wrapper) + 1);
-	  memcpy (concat_name, p, p_len);
-	  concat_name[p_len] = '/';
-	  strcpy (concat_name + p_len + 1, wrapper);
-	}
-	if (check_executable(concat_name))
-	  return concat_name;
-	XFREE(concat_name);
+	has_slash = 1;
+	break;
       }
+  if (!has_slash)
+    {
+      /* no slashes; search PATH */
+      const char *path = getenv ("PATH");
+      if (path != NULL)
+	{
+	  for (p = path; *p; p = p_next)
+	    {
+	      const char *q;
+	      size_t p_len;
+	      for (q = p; *q; q++)
+		if (IS_PATH_SEPARATOR (*q))
+		  break;
+	      p_len = q - p;
+	      p_next = (*q == '\0' ? q : q + 1);
+	      if (p_len == 0)
+		{
+		  /* empty path: current directory */
+		  if (getcwd (tmp, LT_PATHMAX) == NULL)
+		    lt_fatal ("getcwd failed");
+		  tmp_len = strlen (tmp);
+		  concat_name =
+		    XMALLOC (char, tmp_len + 1 + strlen (wrapper) + 1);
+		  memcpy (concat_name, tmp, tmp_len);
+		  concat_name[tmp_len] = '/';
+		  strcpy (concat_name + tmp_len + 1, wrapper);
+		}
+	      else
+		{
+		  concat_name =
+		    XMALLOC (char, p_len + 1 + strlen (wrapper) + 1);
+		  memcpy (concat_name, p, p_len);
+		  concat_name[p_len] = '/';
+		  strcpy (concat_name + p_len + 1, wrapper);
+		}
+	      if (check_executable (concat_name))
+		return concat_name;
+	      XFREE (concat_name);
+	    }
+	}
+      /* not found in PATH; assume curdir */
     }
-    /* not found in PATH; assume curdir */
-  }
   /* Relative path | not found in path: prepend cwd */
   if (getcwd (tmp, LT_PATHMAX) == NULL)
     lt_fatal ("getcwd failed");
-  tmp_len = strlen(tmp);
-  concat_name = XMALLOC(char, tmp_len + 1 + strlen(wrapper) + 1);
+  tmp_len = strlen (tmp);
+  concat_name = XMALLOC (char, tmp_len + 1 + strlen (wrapper) + 1);
   memcpy (concat_name, tmp, tmp_len);
   concat_name[tmp_len] = '/';
   strcpy (concat_name + tmp_len + 1, wrapper);
 
-  if (check_executable(concat_name))
+  if (check_executable (concat_name))
     return concat_name;
-  XFREE(concat_name);
+  XFREE (concat_name);
   return NULL;
 }
 
 char *
-chase_symlinks(const char *pathspec)
+chase_symlinks (const char *pathspec)
 {
 #ifndef S_ISLNK
-    return xstrdup ( pathspec );
+  return xstrdup (pathspec);
 #else
-    char buf[LT_PATHMAX];
-    struct stat s;
-    int rv = 0;
-    char* tmp_pathspec = xstrdup (pathspec);
-    char* p;
-    int has_symlinks = 0;
-    while (strlen(tmp_pathspec) && !has_symlinks)
+  char buf[LT_PATHMAX];
+  struct stat s;
+  int rv = 0;
+  char *tmp_pathspec = xstrdup (pathspec);
+  char *p;
+  int has_symlinks = 0;
+  while (strlen (tmp_pathspec) && !has_symlinks)
     {
-        LTWRAPPER_DEBUGPRINTF("checking path component for symlinks: %s\n", tmp_pathspec);
-        if (lstat (tmp_pathspec, &s) == 0)
-        {
-            if (S_ISLNK(s.st_mode) != 0)
-            {
-                has_symlinks = 1;
-                break;
-            }
+      LTWRAPPER_DEBUGPRINTF ("checking path component for symlinks: %s\n",
+			     tmp_pathspec);
+      if (lstat (tmp_pathspec, &s) == 0)
+	{
+	  if (S_ISLNK (s.st_mode) != 0)
+	    {
+	      has_symlinks = 1;
+	      break;
+	    }
 
-            /* search backwards for last DIR_SEPARATOR */
-            p = tmp_pathspec + strlen(tmp_pathspec) - 1;
-            while ( (p > tmp_pathspec) && (! IS_DIR_SEPARATOR(*p)) )
-                p--;
-            if ( (p == tmp_pathspec) && (! IS_DIR_SEPARATOR(*p)) )
-            {
-                /* no more DIR_SEPARATORS left */
-                break;
-            }
-            *p = '\0';
-        }
-        else
-        {
-            char* errstr = strerror(errno);
-            lt_fatal("Error accessing file %s (%s)", tmp_pathspec, errstr);
-        }
+	  /* search backwards for last DIR_SEPARATOR */
+	  p = tmp_pathspec + strlen (tmp_pathspec) - 1;
+	  while ((p > tmp_pathspec) && (!IS_DIR_SEPARATOR (*p)))
+	    p--;
+	  if ((p == tmp_pathspec) && (!IS_DIR_SEPARATOR (*p)))
+	    {
+	      /* no more DIR_SEPARATORS left */
+	      break;
+	    }
+	  *p = '\0';
+	}
+      else
+	{
+	  char *errstr = strerror (errno);
+	  lt_fatal ("Error accessing file %s (%s)", tmp_pathspec, errstr);
+	}
     }
-    XFREE(tmp_pathspec);
+  XFREE (tmp_pathspec);
 
-    if (!has_symlinks)
+  if (!has_symlinks)
     {
-       return xstrdup ( pathspec );
+      return xstrdup (pathspec);
     } 
 
-    tmp_pathspec = realpath ( pathspec, buf );
-    if (tmp_pathspec == 0)
+  tmp_pathspec = realpath (pathspec, buf);
+  if (tmp_pathspec == 0)
     {
-        lt_fatal("Could not follow symlinks for %s", pathspec);
+      lt_fatal ("Could not follow symlinks for %s", pathspec);
     }
-    return xstrdup ( tmp_pathspec );
+  return xstrdup (tmp_pathspec);
 #endif
 }
 
 char *
-strendzap(char *str, const char *pat)
+strendzap (char *str, const char *pat)
 {
   size_t len, patlen;
 
-  assert(str != NULL);
-  assert(pat != NULL);
+  assert (str != NULL);
+  assert (pat != NULL);
 
-  len = strlen(str);
-  patlen = strlen(pat);
+  len = strlen (str);
+  patlen = strlen (pat);
 
   if (patlen <= len)
-  {
-    str += len - patlen;
-    if (strcmp(str, pat) == 0)
-      *str = '\0';
-  }
+    {
+      str += len - patlen;
+      if (strcmp (str, pat) == 0)
+	*str = '\0';
+    }
   return str;
 }
 
 static void
-lt_error_core (int exit_status, const char * mode,
-	  const char * message, va_list ap)
+lt_error_core (int exit_status, const char *mode,
+	       const char *message, va_list ap)
 {
   fprintf (stderr, "%s: %s: ", program_name, mode);
   vfprintf (stderr, message, ap);
