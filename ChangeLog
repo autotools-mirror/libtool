@@ -1,3 +1,26 @@
+2007-04-27  Charles Wilson  <libtool@cwilson.fastmail.fm>
+
+	* ltmain.m4sh (func_emit_libtool_wrapper_script): add
+	code block to handle cases when wrapper script is in $objdir.
+	(func_emit_libtool_cwrapperexe_source): replace DEBUG() macro
+	with namespace-safe LTWRAPPER_DEBUGPRINTF(). Call
+	func_emit_libtool_wrapper_script() with appropriate filters to
+	embed script text in C char* static variable.
+	(f_e_l_c_s: main): add new option --lt-dump-script, parse argv[]
+	for it, and take appropriate action.  Call chase_symlinks()
+	on argv[0], in case this.exe was launched via one.  Use chased
+	value to determine full absolute pathname of wrapper script, in
+	$objdir. Unconditionally write script out to this pathname and
+	set permission bits.  Remove extraneous ';' from debugging loop.
+	(f_e_l_c_s: main) [mingw]: DOS-ize $SHELL before populating     
+	newargv[0]; if $TARGETSHELL environment variable is set, use 
+	it instead of $SHELL and do not DOS-ize.  Ensure newargv[1]
+	(wrapper script absolute path) uses only '/', not '\'.  Make
+	sure to call execv() with DOS-ized $SHELL (or un-DOS-ized
+	$TARGETSHELL, if set)
+	(f_e_l_c_s: make_executable): new function
+	(f_e_l_c_s: chase_symlinks): new function (no-op if !S_ISLNK)
+
 2007-06-03  Peter O'Gorman  <peter@pogma.com>
 
 	* libltdl/m4/libtool.m4 (old_archive_cmds): Remove
