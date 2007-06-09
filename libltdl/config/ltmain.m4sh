@@ -2209,15 +2209,27 @@ func_mode_install ()
 test "$mode" = install && func_mode_install ${1+"$@"}
 
 
-# func_emit_libtool_wrapper_script
+# func_emit_libtool_wrapper_script arg
+#
 # emit a libtool wrapper script on stdout
 # don't directly open a file because we may want to
 # incorporate the script contents within a cygwin/mingw 
 # wrapper executable.  Must ONLY be called from within
 # func_mode_link because it depends on a number of variable
 # set therein.
+#
+# arg is the value that the WRAPPER_SCRIPT_BELONGS_IN_OBJDIR
+# variable will take.  If 'yes', then the emitted script
+# will assume that the directory in which it is stored is
+# the '.lib' directory.  This is a cygwin/mingw-specific
+# behavior.
 func_emit_libtool_wrapper_script ()
 {
+	func_emit_libtool_wrapper_script_arg1=no
+	if test -n "$1" ; then
+	  func_emit_libtool_wrapper_script_arg1=$1
+	fi
+	  
 	$ECHO "\
 #! $SHELL
 
@@ -2301,8 +2313,9 @@ else
     file=\`ls -ld \"\$thisdir/\$file\" | ${SED} -n 's/.*-> //p'\`
   done
 
-  # cygwin/mingw cwrapper will rewrite this line:
-  WRAPPER_SCRIPT_BELONGS_IN_OBJDIR=no
+  # Usually 'no', except on cygwin/mingw when embedded into 
+  # the cwrapper.
+  WRAPPER_SCRIPT_BELONGS_IN_OBJDIR=$func_emit_libtool_wrapper_script_arg1
   if test \"\$WRAPPER_SCRIPT_BELONGS_IN_OBJDIR\" = \"yes\"; then
     # special case for '.'
     if test \"\$thisdir\" = \".\"; then
@@ -2463,6 +2476,13 @@ EOF
 # define LT_PATHMAX 1024
 #endif
 
+#ifndef S_IXOTH
+# define S_IXOTH 0
+#endif
+#ifndef S_IXGRP
+# define S_IXGRP 0
+#endif
+
 #ifndef DIR_SEPARATOR
 # define DIR_SEPARATOR '/'
 # define PATH_SEPARATOR ':'
@@ -2499,9 +2519,17 @@ EOF
 
 #undef LTWRAPPER_DEBUGPRINTF
 #if defined DEBUGWRAPPER
-# define LTWRAPPER_DEBUGPRINTF(format, ...) fprintf(stderr, format, __VA_ARGS__)
+# define LTWRAPPER_DEBUGPRINTF(args) ltwrapper_debugprintf args
+static void
+ltwrapper_debugprintf (const char *fmt, ...)
+{
+    va_list args;
+    va_start (args, fmt);
+    (void) vfprintf (stderr, fmt, args);
+    va_end (args);
+}
 #else
-# define LTWRAPPER_DEBUGPRINTF(format, ...)
+# define LTWRAPPER_DEBUGPRINTF(args)
 #endif
 
 const char *program_name = NULL;
@@ -2519,9 +2547,8 @@ void lt_fatal (const char *message, ...);
 static const char *script_text = 
 EOF
 
-	    func_emit_libtool_wrapper_script |
+	    func_emit_libtool_wrapper_script yes |
 	        $SED -e 's/\([\\"]\)/\\\1/g' \
-	             -e 's/\(WRAPPER_SCRIPT_BELONGS_IN_OBJDIR\)=.*/\1=yes/' \
 	             -e 's/^/  "/' -e 's/$/\\n"/' 
 	    echo ";"
 
@@ -2540,8 +2567,8 @@ main (int argc, char *argv[])
   int i;
 
   program_name = (char *) xstrdup (base_name (argv[0]));
-  LTWRAPPER_DEBUGPRINTF ("(main) argv[0]      : %s\n", argv[0]);
-  LTWRAPPER_DEBUGPRINTF ("(main) program_name : %s\n", program_name);
+  LTWRAPPER_DEBUGPRINTF (("(main) argv[0]      : %s\n", argv[0]));
+  LTWRAPPER_DEBUGPRINTF (("(main) program_name : %s\n", program_name));
 
   /* very simple arg parsing; don't want to rely on getopt */
   for (i = 1; i < argc; i++)
@@ -2582,12 +2609,12 @@ EOF
   tmp_pathspec = find_executable (argv[0]);
   if (tmp_pathspec == NULL)
     lt_fatal ("Couldn't find %s", argv[0]);
-  LTWRAPPER_DEBUGPRINTF ("(main) found exe (before symlink chase) at : %s\n",
-			 tmp_pathspec);
+  LTWRAPPER_DEBUGPRINTF (("(main) found exe (before symlink chase) at : %s\n",
+			  tmp_pathspec));
 
   actual_cwrapper_path = chase_symlinks (tmp_pathspec);
-  LTWRAPPER_DEBUGPRINTF ("(main) found exe (after symlink chase) at : %s\n",
-			 actual_cwrapper_path);
+  LTWRAPPER_DEBUGPRINTF (("(main) found exe (after symlink chase) at : %s\n",
+			  actual_cwrapper_path));
   XFREE (tmp_pathspec);
 
   shwrapper_name = (char *) xstrdup (base_name (actual_cwrapper_path));
@@ -2602,8 +2629,8 @@ EOF
   XFREE (shwrapper_name);
   shwrapper_name = tmp_pathspec;
   tmp_pathspec = 0;
-  LTWRAPPER_DEBUGPRINTF ("(main) libtool shell wrapper name: %s\n",
-			 shwrapper_name);
+  LTWRAPPER_DEBUGPRINTF (("(main) libtool shell wrapper name: %s\n",
+			  shwrapper_name));
 EOF
 
 	    cat <<EOF
@@ -2653,7 +2680,7 @@ EOF
 
   for (i = 0; i < argc + 1; i++)
     {
-      LTWRAPPER_DEBUGPRINTF ("(main) newargz[%d]   : %s\n", i, newargz[i]);
+      LTWRAPPER_DEBUGPRINTF (("(main) newargz[%d]   : %s\n", i, newargz[i]));
     }
 
 EOF
@@ -2714,20 +2741,13 @@ check_executable (const char *path)
 {
   struct stat st;
 
-  LTWRAPPER_DEBUGPRINTF ("(check_executable)  : %s\n",
-			 path ? (*path ? path : "EMPTY!") : "NULL!");
+  LTWRAPPER_DEBUGPRINTF (("(check_executable)  : %s\n",
+			  path ? (*path ? path : "EMPTY!") : "NULL!"));
   if ((!path) || (!*path))
     return 0;
 
-  if ((stat (path, &st) >= 0) && (
-				   /* MinGW & native WIN32 do not support S_IXOTH or S_IXGRP */
-#if defined (S_IXOTH)
-				   ((st.st_mode & S_IXOTH) == S_IXOTH) ||
-#endif
-#if defined (S_IXGRP)
-				   ((st.st_mode & S_IXGRP) == S_IXGRP) ||
-#endif
-				   ((st.st_mode & S_IXUSR) == S_IXUSR)))
+  if ((stat (path, &st) >= 0)
+      && (st.st_mode & (S_IXUSR | S_IXGRP | S_IXOTH)))
     return 1;
   else
     return 0;
@@ -2739,24 +2759,14 @@ make_executable (const char *path)
   int rval = 0;
   struct stat st;
 
-  /* MinGW & native WIN32 do not support S_IXOTH or S_IXGRP */
-  int S_XFLAGS = 
-#if defined (S_IXOTH)
-    S_IXOTH ||
-#endif
-#if defined (S_IXGRP)
-    S_IXGRP ||
-#endif
-    S_IXUSR;
-
-  LTWRAPPER_DEBUGPRINTF ("(make_executable)  : %s\n",
-			 path ? (*path ? path : "EMPTY!") : "NULL!");
+  LTWRAPPER_DEBUGPRINTF (("(make_executable)   : %s\n",
+			  path ? (*path ? path : "EMPTY!") : "NULL!"));
   if ((!path) || (!*path))
     return 0;
 
   if (stat (path, &st) >= 0)
     {
-      rval = chmod (path, st.st_mode | S_XFLAGS);
+      rval = chmod (path, st.st_mode | S_IXOTH | S_IXGRP | S_IXUSR);
     }
   return rval;
 }
@@ -2776,8 +2786,8 @@ find_executable (const char *wrapper)
   int tmp_len;
   char *concat_name;
 
-  LTWRAPPER_DEBUGPRINTF ("(find_executable)  : %s\n",
-			 wrapper ? (*wrapper ? wrapper : "EMPTY!") : "NULL!");
+  LTWRAPPER_DEBUGPRINTF (("(find_executable)   : %s\n",
+			  wrapper ? (*wrapper ? wrapper : "EMPTY!") : "NULL!"));
 
   if ((wrapper == NULL) || (*wrapper == '\0'))
     return NULL;
@@ -2882,8 +2892,8 @@ chase_symlinks (const char *pathspec)
   int has_symlinks = 0;
   while (strlen (tmp_pathspec) && !has_symlinks)
     {
-      LTWRAPPER_DEBUGPRINTF ("checking path component for symlinks: %s\n",
-			     tmp_pathspec);
+      LTWRAPPER_DEBUGPRINTF (("checking path component for symlinks: %s\n",
+			      tmp_pathspec));
       if (lstat (tmp_pathspec, &s) == 0)
 	{
 	  if (S_ISLNK (s.st_mode) != 0)
@@ -6718,7 +6728,7 @@ EOF
 	$RM $output
 	trap "$RM $output; exit $EXIT_FAILURE" 1 2 15
 
-	func_emit_libtool_wrapper_script > $output
+	func_emit_libtool_wrapper_script no > $output
 	chmod +x $output
       }
       exit $EXIT_SUCCESS

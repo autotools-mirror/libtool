@@ -1,3 +1,26 @@
+2007-06-09  Charles Wilson  <libtool@cwilson.fastmail.fm>
+
+	* ltmain.m4sh (func_emit_libtool_wrapper_script):
+	Take an argument to specify value assigned to
+	WRAPPER_SCRIPT_BELONGS_IN_OBJDIR in the emitted
+	script.
+	(func_emit_libtool_cwrapperexe_source) [file scope]:
+	define permission flags S_IXGRP and S_IXOTH if not
+	already defined.
+	(func_emit_libtool_cwrapperexe_source) [LTWRAPPER_DEBUGPRINTF]:
+	Use C89-compatible syntax to mimic variadic macros.
+	Adjust all callers.
+	(func_emit_libtool_cwrapperexe_source) [check_executable]:
+	avoid embedded #ifdefs; use S_IXGRP and S_IXOTH 
+	unconditionally.
+	(func_emit_libtool_cwrapperexe_source) [make_executable]:
+	ditto.
+	(func_emit_libtool_cwrapperexe_source): don't rewrite
+	WRAPPER_SCRIPT_BELONGS_IN_OBJDIR posthoc; instead pass
+	correct argument when calling func_emit_libtool_wrapper_script.
+	(func_mode_link): pass correct argument when calling
+	func_emit_libtool_wrapper_script.
+
 2007-06-07  Charles Wilson  <libtool@cwilson.fastmail.fm>
 
 	* ltmain.m4sh (func_emit_libtool_cwrapperexe_source):
