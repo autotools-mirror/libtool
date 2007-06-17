@@ -1,6 +1,11 @@
+2007-06-17  Charles Wilson  <libtool@cwilson.fastmail.fm>
+
+	* libltdl/m4/libtool.m4 (LT_CMD_MAX_LEN): ensure stderr
+	is redirected even when getconf does not exist.
+
 2007-06-09  Charles Wilson  <libtool@cwilson.fastmail.fm>
 
-	* ltmain.m4sh (func_emit_libtool_wrapper_script):
+	* libltdl/config/ltmain.m4sh (func_emit_libtool_wrapper_script):
 	Take an argument to specify value assigned to
 	WRAPPER_SCRIPT_BELONGS_IN_OBJDIR in the emitted
 	script.
@@ -23,14 +28,14 @@
 
 2007-06-07  Charles Wilson  <libtool@cwilson.fastmail.fm>
 
-	* ltmain.m4sh (func_emit_libtool_cwrapperexe_source):
+	* libltdl/config/ltmain.m4sh (func_emit_libtool_cwrapperexe_source):
 	ensure that generated source follows GCS as nearly as
 	possible.
 
 2007-06-07  Charles Wilson  <libtool@cwilson.fastmail.fm>
 
-	* ltmain.m4sh (func_emit_libtool_wrapper_script): add
-	code block to handle cases when wrapper script is in $objdir.
+	* libltdl/config/ltmain.m4sh (func_emit_libtool_wrapper_script):
+	add code block to handle cases when wrapper script is in $objdir.
 	(func_emit_libtool_cwrapperexe_source): replace DEBUG() macro
 	with namespace-safe LTWRAPPER_DEBUGPRINTF(). Call
 	func_emit_libtool_wrapper_script() with appropriate filters to
