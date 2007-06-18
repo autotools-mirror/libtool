@@ -1,3 +1,8 @@
+2007-06-17  Peter O'Gorman  <peter@pogma.com>
+
+	* libtool.m4 (AC_LIBTOOL_SYS_MAX_CMD_LEN): add quotes to
+	the test -n.
+
 2007-06-17  Charles Wilson  <libtool@cwilson.fastmail.fm>
 
 	* libtool.m4 (LT_CMD_MAX_LEN): ensure stderr
