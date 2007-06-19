@@ -1,3 +1,43 @@
+2007-06-18  Charles Wilson  <libtool@cwilson.fastmail.fm>
+
+	* libltdl/config/ltmain.m4sh: Add new magic variable
+	for use with cwrapper.
+	(func_ltwrapper_script_p): New function.
+	(func_ltwrapper_executable_p): New function.
+	(func_ltwrapper_scriptname): New function.
+	(func_ltwrapper_p): Accomodate both wrapper scripts and
+	wrapper executables.
+	(func_mode_execute): Handle $file that is a wrapper
+	script and $file that is a wrapper executable differently.
+	(func_mode_install) [cygwin|mingw]: If $file is a wrapper
+	executable, use func_ltwrapper_scriptname to determine
+	wrapper script name. Afterwards, always use
+	func_ltwrapper_script_p instead of func_ltwrapper_p.
+	(func_emit_libtool_wrapper_script): Rename to...
+	(func_emit_wrapper): ...this. All callers changed.
+	(func_emit_libtool_cwrapperexe_source): Rename to...
+	(func_emit_cwrapperexe_src): ...this. All callers changed.
+	Embed new magic_exe variable into source. Private transient
+	wrapper script now called foo_ltshwrapperTMP, not
+	foo_ltshwrapper.
+	(func_emit_cwrapperexe_src) [main, mingw]: Use _spawnv
+	and return child's exit code manually rather than rely on
+	broken execv.
+	(func_mode_link) [cygwin|mingw]: Don't call dirname and
+	basename directly; use func_dirname and func_basename
+	when computing cwrapper names.  Use cwrapper to generate
+	wrapper script, and use pathname returned by 
+	func_ltwrapper_scriptname instead of $output.
+	(func_mode_link) [NOT cygwin|mingw]: move wrapper script
+	generation for non-win32 inside case statement, as default
+	case.
+	(func_mode_uninstall) [$name's extension != .lo|.la]:
+	'clean' mode must handle $file differently if it is a libtool
+	wrapper script, or if it is a libtool wrapper executable.
+	* tests/destdir.at [Simple DESTDIR install]: $EXEEXT fixups.
+	* tests/destdir.at [DESTDIR with in-package deplibs]: Ditto.
+
+
 2007-06-17  Noah Misch  <noah@cs.caltech.edu>
 
 	* AUTHORS: Add myself.

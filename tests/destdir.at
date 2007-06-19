@@ -60,7 +60,7 @@ $LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o m m.$OBJEXT liba.la
 mkdir $DESTDIR$libdir $DESTDIR$bindir
 AT_CHECK([$LIBTOOL --mode=install cp liba.la $DESTDIR$libdir/liba.la],
 	 [], [ignore], [ignore])
-AT_CHECK([$LIBTOOL --mode=install cp m $DESTDIR$bindir/m],
+AT_CHECK([$LIBTOOL --mode=install cp m$EXEEXT $DESTDIR$bindir/m$EXEEXT],
 	 [], [ignore], [ignore])
 $LIBTOOL --mode=clean rm -f liba.la m
 LT_AT_MVDIR(["$DESTDIR$libdir"], ["$libdir"])
@@ -99,7 +99,7 @@ AT_CHECK([$LIBTOOL --mode=install cp liba2dep.la $DESTDIR${libdir}2/liba2dep.la]
 	 [], [ignore], [ignore])
 AT_CHECK([$LIBTOOL --mode=install cp liba.la $DESTDIR$libdir/liba.la],
 	 [], [ignore], [ignore])
-AT_CHECK([$LIBTOOL --mode=install cp m $DESTDIR$bindir/m],
+AT_CHECK([$LIBTOOL --mode=install cp m$EXEEXT $DESTDIR$bindir/m$EXEEXT],
 	 [], [ignore], [ignore])
 $LIBTOOL --mode=clean rm -f liba1dep.la liba2dep.la liba.la m
 LT_AT_MVDIR(["$DESTDIR$libdir"], ["$libdir"])
@@ -127,8 +127,8 @@ done
 LT_AT_EXEC_CHECK([$bindir/m])
 
 # TODO: make this more portable:
-if test "$OBJDUMP" != false && ($OBJDUMP -p $bindir/m) >/dev/null 2>&1; then
-  AT_CHECK([$OBJDUMP -p $bindir/m | $EGREP -i "R(UN)?PATH.*$DESTDIR"], [1])
+if test "$OBJDUMP" != false && ($OBJDUMP -p $bindir/m$EXEEXT) >/dev/null 2>&1; then
+  AT_CHECK([$OBJDUMP -p $bindir/m$EXEEXT | $EGREP -i "R(UN)?PATH.*$DESTDIR"], [1])
   . $libdir/liba.la
   set x $library_names
   lname=$2
