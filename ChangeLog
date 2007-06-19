@@ -1,3 +1,7 @@
+2007-06-19  Charles Wilson  <libtool@cwilson.fastmail.fm>
+
+	* AUTHORS: Add myself.
+
 2007-06-18  Charles Wilson  <libtool@cwilson.fastmail.fm>
 
 	* libltdl/config/ltmain.m4sh: Add new magic variable
@@ -36,7 +40,6 @@
 	wrapper script, or if it is a libtool wrapper executable.
 	* tests/destdir.at [Simple DESTDIR install]: $EXEEXT fixups.
 	* tests/destdir.at [DESTDIR with in-package deplibs]: Ditto.
-
 
 2007-06-17  Noah Misch  <noah@cs.caltech.edu>
 
