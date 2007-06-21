@@ -109,7 +109,7 @@ configure-subdirs distdir: $(DIST_MAKEFILE_LIST)
 	dir=`echo $@ | sed 's,^[^/]*$$,.,;s,/[^/]*$$,,'`; \
 	test -d $$dir || mkdir $$dir || exit 1; \
 	abs_srcdir=`$(lt__cd) $(srcdir) && pwd`; \
-	(cd $$dir && $$abs_srcdir/$$dir/configure) || exit 1
+	(cd $$dir && $$abs_srcdir/$$dir/configure --with-dist) || exit 1
 
 
 # ---------- #

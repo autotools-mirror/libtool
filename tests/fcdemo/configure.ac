@@ -31,6 +31,9 @@ AC_CONFIG_HEADERS([config.h:config-h.in])
 AC_CONFIG_SRCDIR([foof.f90])
 AC_CONFIG_AUX_DIR([../../libltdl/config])
 
+AC_ARG_WITH([dist], AS_HELP_STRING([--with-dist],
+				   [ignore errors not affecting `make dist']))
+
 ## ------------------------ ##
 ## Automake Initialisation. ##
 ## ------------------------ ##
@@ -47,15 +50,19 @@ AC_PROG_CC
 ## ------------------------ ##
 AC_LANG_PUSH([Fortran])
 AC_PROG_FC
-dnl Check the flags needed to link fc programs with ld (i.e. cc)
-AC_FC_LIBRARY_LDFLAGS
-dnl Check for underscoring of external names
-AC_FC_WRAPPERS
-dnl We need to use .f90 and not .f to enable Automake FC support
-dnl Some Intel ifc/ifort do not understand .f95.  :-/
-AC_FC_SRCEXT([f90])
-dnl Yes, we want free form Fortran!
-AC_FC_FREEFORM
+dnl When configuring for `make dist' purposes, skip checks that may yield fatal
+dnl errors when there is no working F90 compiler.
+if test -z "$with_dist"; then
+  dnl Check the flags needed to link fc programs with ld (i.e. cc)
+  AC_FC_LIBRARY_LDFLAGS
+  dnl Check for underscoring of external names
+  AC_FC_WRAPPERS
+  dnl We need to use .f90 and not .f to enable Automake FC support
+  dnl Some Intel ifc/ifort do not understand .f95.  :-/
+  AC_FC_SRCEXT([f90])
+  dnl Yes, we want free form Fortran!
+  AC_FC_FREEFORM
+fi
 AC_LANG_POP
 
 ## ----------------------- ##

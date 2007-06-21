@@ -31,6 +31,9 @@ AC_CONFIG_HEADERS([config.h:config-h.in])
 AC_CONFIG_SRCDIR([foof.f])
 AC_CONFIG_AUX_DIR([../../libltdl/config])
 
+AC_ARG_WITH([dist], AS_HELP_STRING([--with-dist],
+				   [ignore errors not affecting `make dist']))
+
 ## ------------------------ ##
 ## Automake Initialisation. ##
 ## ------------------------ ##
@@ -46,10 +49,14 @@ AC_PROG_CC
 ## Fortran compiler checks. ##
 ## ------------------------ ##
 AC_PROG_F77
-dnl Check the flags needed to link f77 programs with ld (i.e. cc)
-AC_F77_LIBRARY_LDFLAGS
-dnl Check for underscoring of external names
-AC_F77_WRAPPERS
+dnl When configuring for `make dist' purposes, skip checks that may yield fatal
+dnl errors when there is no working F77 compiler.
+if test -z "$with_dist"; then
+  dnl Check the flags needed to link f77 programs with ld (i.e. cc)
+  AC_F77_LIBRARY_LDFLAGS
+  dnl Check for underscoring of external names
+  AC_F77_WRAPPERS
+fi
 
 ## ----------------------- ##
 ## Libtool initialisation. ##

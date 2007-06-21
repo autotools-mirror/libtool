@@ -1,3 +1,11 @@
+2007-06-21  Noah Misch  <noah@cs.caltech.edu>
+
+	* tests/f77demo/configure.ac [--with-dist]: New option.  Skip most
+	Fortran checks when given.
+	* tests/fcdemo/configure.ac [--with-dist]: Likewise.
+	* Makefile.am (@DIST_MAKEFILE_LIST@): Pass --with-dist.
+	Reported by Benoit Sigoure <tsuna@lrde.epita.fr>.
+
 2007-06-19  Charles Wilson  <libtool@cwilson.fastmail.fm>
 
 	* AUTHORS: Add myself.
