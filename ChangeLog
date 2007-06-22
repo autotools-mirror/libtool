@@ -1,3 +1,8 @@
+2007-06-22  Peter O'Gorman  <peter@pogma.com>
+
+	* libltdl/config/ltmain.m4sh (version-number) [irix]: Don't subtract
+	1 from major as it may be less than age.
+
 2007-06-21  Noah Misch  <noah@cs.caltech.edu>
 
 	* tests/f77demo/configure.ac [--with-dist]: New option.  Skip most
