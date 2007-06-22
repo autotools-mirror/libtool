@@ -1,3 +1,8 @@
+2007-06-22  Peter O'Gorman  <peter@pogma.com>
+
+	* ltmain.in (version-number) [irix]: Don't subtract 1 from
+	major as it may be less than age.
+
 2007-06-17  Peter O'Gorman  <peter@pogma.com>
 
 	* libtool.m4 (AC_LIBTOOL_SYS_MAX_CMD_LEN): add quotes to
