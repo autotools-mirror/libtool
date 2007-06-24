@@ -399,7 +399,7 @@ tryall_dlopen (lt_dlhandle *phandle, const char *filename,
 	lt__advise *advise_taken = 0;
 
 	if (advise)
-	  advise_taken = advise_dup (advise);
+	  advise_taken = advise_dup ((lt__advise *) advise);
 
 	vtable = lt_dlloader_get (loader);
 	handle->module = (*vtable->module_open) (vtable->dlloader_data,
@@ -1100,7 +1100,7 @@ try_dlopen (lt_dlhandle *phandle, const char *filename, const char *ext,
   char *	base_name	= 0;
   char *	dir		= 0;
   char *	name		= 0;
-  char *        try             = 0;
+  char *        attempt		= 0;
   int		errors		= 0;
   lt_dlhandle	newhandle;
 
@@ -1134,22 +1134,22 @@ try_dlopen (lt_dlhandle *phandle, const char *filename, const char *ext,
 
   if (ext)
     {
-      try = MALLOC (char, LT_STRLEN (filename) + LT_STRLEN (ext) + 1);
-      if (!try)
+      attempt = MALLOC (char, LT_STRLEN (filename) + LT_STRLEN (ext) + 1);
+      if (!attempt)
 	return 1;
 
-      sprintf(try, "%s%s", filename, ext);
+      sprintf(attempt, "%s%s", filename, ext);
     }
   else
     {
-      try = lt__strdup (filename);
-      if (!try)
+      attempt = lt__strdup (filename);
+      if (!attempt)
 	return 1;
     }
 
   /* Doing this immediately allows internal functions to safely
      assume only canonicalized paths are passed.  */
-  if (canonicalize_path (try, &canonical) != 0)
+  if (canonicalize_path (attempt, &canonical) != 0)
     {
       ++errors;
       goto cleanup;
@@ -1390,7 +1390,7 @@ try_dlopen (lt_dlhandle *phandle, const char *filename, const char *ext,
 
  cleanup:
   FREE (dir);
-  FREE (try);
+  FREE (attempt);
   FREE (name);
   if (!canonical)		/* was MEMREASSIGNed */
     FREE (base_name);
@@ -1495,7 +1495,7 @@ static lt__advise *
 advise_dup (lt__advise *advise)
 {
   lt__advise *dup = (lt__advise *) lt__zalloc (sizeof (lt__advise));
-  return memcpy (dup, advise, sizeof (lt__advise));
+  return (lt__advise *) memcpy (dup, advise, sizeof (lt__advise));
 }
 
 /* Libtool-1.5.x interface for loading a new module named FILENAME.  */

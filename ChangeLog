@@ -1,3 +1,11 @@
+2007-06-24  Gary V. Vaughan  <gary@gnu.org>
+
+	Reenable compilation of libltdl with C++:
+
+	* libltdl/ltdl.c (tryall_dlopen): Rename the try variable to
+	attempt, and cast explicitly.
+	(advise_dup): Add explicit cast.
+
 2007-06-22  Peter O'Gorman  <peter@pogma.com>
 
 	* libltdl/config/ltmain.m4sh (version-number) [irix]: Don't subtract
