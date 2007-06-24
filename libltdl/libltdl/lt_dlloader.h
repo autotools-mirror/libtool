@@ -81,6 +81,10 @@ LT_SCOPE const lt_dlvtable *lt_dlloader_get	(lt_dlloader loader);
 /* Type of a function to get a loader's vtable:  */
 typedef  const lt_dlvtable *lt_get_vtable	(lt_user_data data);
 
+#ifdef LT_DEBUG_LOADERS
+LT_SCOPE void		lt_dlloader_dump	(void);
+#endif
+
 LT_END_C_DECLS
 
 #endif /*!defined(LT_DLLOADER_H)*/

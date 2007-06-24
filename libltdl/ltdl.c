@@ -1,7 +1,7 @@
 /* ltdl.c -- system independent dlopen wrapper
 
    Copyright (C) 1998, 1999, 2000, 2004, 2005, 2006,
-                 2007 Free Software Foundation, Inc.
+		 2007 Free Software Foundation, Inc.
    Written by Thomas Tanner, 1998
 
    NOTE: The canonical source of this file is maintained with the
@@ -120,7 +120,8 @@ static	int	try_dlopen	      (lt_dlhandle *handle,
 				       lt_dladvise advise);
 static	int	tryall_dlopen	      (lt_dlhandle *handle,
 				       const char *filename,
-				       lt_dladvise advise);
+				       lt_dladvise advise,
+				       const lt_dlvtable *vtable);
 static	int	unload_deplibs	      (lt_dlhandle handle);
 static	lt__advise *advise_dup	      (lt__advise *advise);
 static	int	lt_argz_insert	      (char **pargz, size_t *pargz_len,
@@ -239,6 +240,10 @@ lt_dlinit (void)
 #endif /* HAVE_LIBDLLOADER */
     }
 
+#ifdef LT_DEBUG_LOADERS
+  lt_dlloader_dump();
+#endif
+
   return errors;
 }
 
@@ -332,16 +337,22 @@ lt_dlexit (void)
 }
 
 
-/* Try all dlloaders for FILENAME.  If the library is not successfully
-   loaded, return non-zero.  Otherwise, the dlhandle is stored at the
-   address given in PHANDLE.  */
+/* Try VTABLE or, if VTABLE is NULL, all available loaders for FILENAME.
+   If the library is not successfully loaded, return non-zero.  Otherwise,
+   the dlhandle is stored at the address given in PHANDLE.  */
 static int
 tryall_dlopen (lt_dlhandle *phandle, const char *filename,
- 	       lt_dladvise advise)
+ 	       lt_dladvise advise, const lt_dlvtable *vtable)
 {
   lt__handle *	handle		= (lt__handle *) handles;
   const char *	saved_error	= 0;
   int		errors		= 0;
+
+#ifdef LT_DEBUG_LOADERS
+  fprintf (stderr, "tryall_dlopen (%s, %s)\n",
+	   filename ? filename : "(null)",
+	   vtable ? vtable->name : "(ALL)");
+#endif
 
   LT__GETERROR (saved_error);
 
@@ -391,42 +402,60 @@ tryall_dlopen (lt_dlhandle *phandle, const char *filename,
     }
 
   {
-    const lt_dlvtable *vtable = 0;
-    lt_dlloader *loader = 0;
+    lt_dlloader loader = lt_dlloader_next (0);
+    const lt_dlvtable *loader_vtable;
 
-    while ((loader = (lt_dlloader *) lt_dlloader_next (loader)))
+    do
       {
 	lt__advise *advise_taken = 0;
 
 	if (advise)
 	  advise_taken = advise_dup ((lt__advise *) advise);
 
-	vtable = lt_dlloader_get (loader);
-	handle->module = (*vtable->module_open) (vtable->dlloader_data,
-				                 filename, advise_taken);
+	if (vtable)
+	  loader_vtable = vtable;
+	else
+	  loader_vtable = lt_dlloader_get (loader);
+
+#ifdef LT_DEBUG_LOADERS
+	fprintf (stderr, "Calling %s->module_open (%s)\n",
+		 (loader_vtable && loader_vtable->name) ? loader_vtable->name : "(null)",
+		 filename ? filename : "(null)");
+#endif
+	handle->module = (*loader_vtable->module_open) (loader_vtable->dlloader_data,
+							filename, advise_taken);
+#ifdef LT_DEBUG_LOADERS
+	fprintf (stderr, "  Result: %s\n",
+		 handle->module ? "Success" : "Failed");
+#endif
 
 	if (handle->module != 0)
 	  {
 	    if (advise_taken)
 	      {
-	        handle->info.is_resident  = advise_taken->is_resident;
-	        handle->info.is_symglobal = advise_taken->is_symglobal;
-	        handle->info.is_symlocal  = advise_taken->is_symlocal;
+		handle->info.is_resident  = advise_taken->is_resident;
+		handle->info.is_symglobal = advise_taken->is_symglobal;
+		handle->info.is_symlocal  = advise_taken->is_symlocal;
 	      }
 	    break;
 	  }
 
 	FREE (advise_taken);
       }
+    while (!vtable && (loader = lt_dlloader_next (loader)));
 
-    if (!loader)
+    /* If VTABLE was given but couldn't open the module, or VTABLE wasn't
+       given but we exhausted all loaders without opening the module, bail
+       out!  */
+    if ((vtable && !handle->module)
+	|| (!vtable && !loader))
       {
 	FREE (handle->info.filename);
 	++errors;
 	goto done;
       }
 
-    handle->vtable = vtable;
+    handle->vtable = loader_vtable;
   }
 
   LT__SETERRORSTR (saved_error);
@@ -474,9 +503,9 @@ tryall_dlopen_module (lt_dlhandle *handle, const char *prefix,
   if (prefix)
     {
       error += tryall_dlopen_module (handle, (const char *) 0,
-                                     prefix, filename, advise);
+				     prefix, filename, advise);
     }
-  else if (tryall_dlopen (handle, filename, advise) != 0)
+  else if (tryall_dlopen (handle, filename, advise, 0) != 0)
     {
       ++error;
     }
@@ -493,7 +522,7 @@ find_module (lt_dlhandle *handle, const char *dir, const char *libdir,
   /* Try to open the old library first; if it was dlpreopened,
      we want the preopened version of it, even if a dlopenable
      module is available.  */
-  if (old_name && tryall_dlopen (handle, old_name, advise) == 0)
+  if (old_name && tryall_dlopen (handle, old_name, advise, 0) == 0)
     {
       return 0;
     }
@@ -513,14 +542,14 @@ find_module (lt_dlhandle *handle, const char *dir, const char *libdir,
       if (!installed)
 	{
 	  if (tryall_dlopen_module (handle, dir, objdir,
-	                            dlname, advise) == 0)
+				    dlname, advise) == 0)
 	    return 0;
 	}
 
       /* maybe it was moved to another directory */
       {
 	  if (dir && (tryall_dlopen_module (handle, (const char *) 0,
-				            dir, dlname, advise) == 0))
+					    dir, dlname, advise) == 0))
 	    return 0;
       }
     }
@@ -737,7 +766,7 @@ find_handle_callback (char *filename, void *data, void *data2)
 
   /* Try to dlopen the file, but do not continue searching in any
      case.  */
-  if (tryall_dlopen (handle, filename, advise) != 0)
+  if (tryall_dlopen (handle, filename, advise, 0) != 0)
     *handle = 0;
 
   return 1;
@@ -1093,7 +1122,7 @@ cleanup:
 /* Try to open FILENAME as a module. */
 static int
 try_dlopen (lt_dlhandle *phandle, const char *filename, const char *ext,
-            lt_dladvise advise)
+	    lt_dladvise advise)
 {
   const char *	saved_error	= 0;
   char *	canonical	= 0;
@@ -1106,6 +1135,12 @@ try_dlopen (lt_dlhandle *phandle, const char *filename, const char *ext,
 
   assert (phandle);
   assert (*phandle == 0);
+
+#ifdef LT_DEBUG_LOADERS
+  fprintf (stderr, "try_dlopen (%s, %s)\n",
+	   filename ? filename : "(null)",
+	   ext ? ext : "(null)");
+#endif
 
   LT__GETERROR (saved_error);
 
@@ -1121,7 +1156,7 @@ try_dlopen (lt_dlhandle *phandle, const char *filename, const char *ext,
       /* lt_dlclose()ing yourself is very bad!  Disallow it.  */
       ((lt__handle *) newhandle)->info.is_resident = 1;
 
-      if (tryall_dlopen (&newhandle, 0, advise) != 0)
+      if (tryall_dlopen (&newhandle, 0, advise, 0) != 0)
 	{
 	  FREE (*phandle);
 	  return 1;
@@ -1210,6 +1245,35 @@ try_dlopen (lt_dlhandle *phandle, const char *filename, const char *ext,
     name[ext - base_name] = LT_EOS_CHAR;
   }
 
+  /* Before trawling through the filesystem in search of a module,
+     check whether we are opening a preloaded module.  */
+  if (!dir)
+    {
+      const lt_dlvtable *vtable	= lt_dlloader_find ("lt_preopen");
+
+      if (vtable)
+	{
+      	  *phandle = (lt_dlhandle) lt__zalloc (sizeof (lt__handle));
+
+	  if (*phandle == NULL)
+	    {
+	      ++errors;
+	      goto cleanup;
+	    }
+	  newhandle = *phandle;
+
+	  if (tryall_dlopen (&newhandle, filename, advise, vtable) == 0)
+	    {
+	      goto register_handle;
+	    }
+
+	  /* If we're still here, there was no matching preloaded module,
+	     so put things back as we found them, and continue searching.  */
+	  FREE (*phandle);
+	  newhandle = NULL;
+	}
+    }
+
   /* Check whether we are opening a libtool module (.la extension).  */
   if (ext && streq (ext, archive_ext))
     {
@@ -1225,16 +1289,14 @@ try_dlopen (lt_dlhandle *phandle, const char *filename, const char *ext,
 	 of libtool */
       int	installed = 1;
 
-
       /* Now try to open the .la file.  If there is no directory name
-         component, try to find it first in user_search_path and then other
-         prescribed paths.  Otherwise (or in any case if the module was not
-         yet found) try opening just the module name as passed.  */
+	 component, try to find it first in user_search_path and then other
+	 prescribed paths.  Otherwise (or in any case if the module was not
+	 yet found) try opening just the module name as passed.  */
       if (!dir)
 	{
-	  const char *search_path;
+	  const char *search_path = user_search_path;
 
-	  search_path = user_search_path;
 	  if (search_path)
 	    file = find_file (user_search_path, base_name, &dir);
 
@@ -1277,7 +1339,7 @@ try_dlopen (lt_dlhandle *phandle, const char *filename, const char *ext,
       /* read the .la file */
       if (parse_dotla_file(file, &dlname, &libdir, &deplibs,
 	    &old_name, &installed) != 0)
-	errors++;
+	++errors;
 
       fclose (file);
 
@@ -1303,7 +1365,7 @@ try_dlopen (lt_dlhandle *phandle, const char *filename, const char *ext,
 	  newhandle = *phandle;
 	  /* find_module may replace newhandle */
 	  if (find_module (&newhandle, dir, libdir, dlname, old_name,
-	                   installed, advise))
+			   installed, advise))
 	    {
 	      unload_deplibs (*phandle);
 	      ++errors;
@@ -1347,7 +1409,7 @@ try_dlopen (lt_dlhandle *phandle, const char *filename, const char *ext,
 	 Otherwise (or in any case if the module was not yet found) try
 	 opening just the module name as passed.  */
       if ((dir || (!find_handle (user_search_path, base_name,
- 				 &newhandle, advise)
+				 &newhandle, advise)
 		   && !find_handle (getenv (LTDL_SEARCHPATH_VAR), base_name,
 				    &newhandle, advise)
 #if defined(LT_MODULE_PATH_VAR)
@@ -1356,14 +1418,14 @@ try_dlopen (lt_dlhandle *phandle, const char *filename, const char *ext,
 #endif
 #if defined(LT_DLSEARCH_PATH)
 		   && !find_handle (sys_dlsearch_path, base_name,
-		 		    &newhandle, advise)
+				    &newhandle, advise)
 #endif
 		   )))
 	{
-          if (tryall_dlopen (&newhandle, filename, advise) != 0)
-            {
-              newhandle = NULL;
-            }
+	  if (tryall_dlopen (&newhandle, filename, advise, 0) != 0)
+	    {
+	      newhandle = NULL;
+	    }
 	}
 
       if (!newhandle)
@@ -1420,8 +1482,8 @@ file_not_found (void)
 static int
 has_library_ext (const char *filename)
 {
-  char *        ext     = 0;
-  size_t        len;
+  char *	ext     = 0;
+  size_t	len;
 
   assert (filename);
 
@@ -1430,7 +1492,7 @@ has_library_ext (const char *filename)
 
   if (ext && ((streq (ext, archive_ext))
 #if defined(LT_MODULE_EXT)
-             || (streq (ext, shlib_ext))
+	     || (streq (ext, shlib_ext))
 #endif
     ))
     {
@@ -1528,7 +1590,7 @@ lt_dlhandle
 lt_dlopenadvise (const char *filename, lt_dladvise advise)
 {
   lt_dlhandle	handle	= 0;
-  int	        errors	= 0;
+  int		errors	= 0;
 
   /* Can't have symbols hidden and visible at the same time!  */
   if (advise
@@ -1545,9 +1607,9 @@ lt_dlopenadvise (const char *filename, lt_dladvise advise)
       || has_library_ext (filename))
     {
       /* Just incase we missed a code path in try_dlopen() that reports
-         an error, but forgot to reset handle... */
+	 an error, but forgot to reset handle... */
       if (try_dlopen (&handle, filename, NULL, advise) != 0)
-        return 0;
+	return 0;
 
       return handle;
     }
@@ -1559,21 +1621,21 @@ lt_dlopenadvise (const char *filename, lt_dladvise advise)
       errors += try_dlopen (&handle, filename, archive_ext, advise);
 
       /* If we found FILENAME, stop searching -- whether we were able to
-         load the file as a module or not.  If the file exists but loading
-         failed, it is better to return an error message here than to
-         report FILE_NOT_FOUND when the alternatives (foo.so etc) are not
-         in the module search path.  */
+	 load the file as a module or not.  If the file exists but loading
+	 failed, it is better to return an error message here than to
+	 report FILE_NOT_FOUND when the alternatives (foo.so etc) are not
+	 in the module search path.  */
       if (handle || ((errors > 0) && !file_not_found ()))
-        return handle;
+	return handle;
 
 #if defined(LT_MODULE_EXT)
       /* Try appending SHLIB_EXT.   */
       errors = try_dlopen (&handle, filename, shlib_ext, advise);
 
       /* As before, if the file was found but loading failed, return now
-         with the current error message.  */
+	 with the current error message.  */
       if (handle || ((errors > 0) && !file_not_found ()))
-        return handle;
+	return handle;
 #endif
     }
 
@@ -2170,9 +2232,9 @@ lt_dlinterface_register (const char *id_string, lt_dlhandle_interface *iface)
     {
       interface_id->id_string = lt__strdup (id_string);
       if (!interface_id->id_string)
-        FREE (interface_id);
+	FREE (interface_id);
       else
-        interface_id->iface = iface;
+	interface_id->iface = iface;
     }
 
   return (lt_dlinterface_id) interface_id;

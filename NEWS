@@ -2,12 +2,6 @@ NEWS - list of user-visible changes between releases of GNU Libtool
 
 New in 2.1a: 2007-??-??; CVS version 2.1a, Libtool team:
 
-* Regressions over 1.5.x that may be fixed later:
-
-  - On systems which need a library prefix like `lib', such as BeOS,
-    libltdl currently does not build.  The new structure of libltdl with
-    preopened modules exposes some long-lived bugs here.
-
 * Important incompatible changes and obsoleted features:
 
   - Removed deprecated APIs from libltdl: lt_dlcaller_register,

@@ -51,6 +51,10 @@ and is not part of a release distribution.
 3. Test Suite
 =============
 
+* When writing tests, make sure the link invocation (first argument to
+  AT_CHECK) is on a single line so that 'testsuite -x' displays the
+  whole thing.
+
 * Use
     make check TESTSUITEFLAGS=-V
     make check-local
@@ -60,6 +64,7 @@ and is not part of a release distribution.
 * The new Autotest testsuite uses keywords to denote test features:
     autoconf		needs Autoconf
     automake		needs Automake
+    libltdl		exercises the `libltdl' library
     libtool		exercises the `libtool' script
     libtoolize		exercises the `libtoolize' script
     recursive		runs the suite recursively, with a modified

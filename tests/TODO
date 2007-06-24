@@ -1,0 +1,7 @@
+Please write the following testcases and submit to libtool-patches@gnu.org:
+
+ - ensure each libtool library 'originator' is tried.
+ - check that passing NULL as the 'originator' correctly loads all
+   preloaded modules originating from "self" (program itself).
+ - test whether a preloaded library will open without the matching
+   .la file.

@@ -322,7 +322,8 @@ lt_dlpreload (const lt_dlsymlist *preloaded)
 
 
 /* Open all the preloaded modules from the named originator, executing
-   a callback for each one.  */
+   a callback for each one.  If ORIGINATOR is NULL, then call FUNC for
+   each preloaded module from the program itself.  */
 int
 lt_dlpreload_open (const char *originator, lt_dlpreload_callback_func *func)
 {
@@ -334,7 +335,8 @@ lt_dlpreload_open (const char *originator, lt_dlpreload_callback_func *func)
   for (list = preloaded_symlists; list; list = list->next)
     {
       /* ...that was preloaded by the requesting ORIGINATOR... */
-      if (streq (list->symlist->name, originator))
+      if ((originator && streq (list->symlist->name, originator))
+          || (!originator && streq (list->symlist->name, "@PROGRAM@")))
 	{
 	  const lt_dlsymlist *symbol;
 	  unsigned int idx = 0;
@@ -360,12 +362,12 @@ lt_dlpreload_open (const char *originator, lt_dlpreload_callback_func *func)
 		}
 	    }
 	}
+    }
 
-      if (!found)
-	{
-	  LT__SETERROR(CANNOT_OPEN);
-	  ++errors;
-	}
+  if (!found)
+    {
+      LT__SETERROR(CANNOT_OPEN);
+      ++errors;
     }
 
   return errors;

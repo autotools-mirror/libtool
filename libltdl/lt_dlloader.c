@@ -97,6 +97,33 @@ lt_dlloader_add (const lt_dlvtable *vtable)
   return RETURN_SUCCESS;
 }
 
+#ifdef LT_DEBUG_LOADERS
+static void *
+loader_dump_callback (SList *item, void *userdata)
+{
+  const lt_dlvtable *vtable = (const lt_dlvtable *) item->userdata;
+  fprintf (stderr, ", %s", (vtable && vtable->name) ? vtable->name : "(null)");
+  return 0;
+}
+
+void
+lt_dlloader_dump (void)
+{
+  fprintf (stderr, "loaders: ");
+  if (!loaders)
+    {
+      fprintf (stderr, "(empty)");
+    }
+  else
+    {
+      const lt_dlvtable *head = (const lt_dlvtable *) loaders->userdata;
+      fprintf (stderr, "%s", (head && head->name) ? head->name : "(null)");
+      if (slist_tail (loaders))
+	slist_foreach (slist_tail (loaders), loader_dump_callback, NULL);
+    }
+  fprintf (stderr, "\n");
+}
+#endif
 
 /* An iterator for the global loader list: if LOADER is NULL, then
    return the first element, otherwise the following element.  */

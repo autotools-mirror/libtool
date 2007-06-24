@@ -1,5 +1,47 @@
 2007-06-24  Gary V. Vaughan  <gary@gnu.org>
 
+	Add a test to simulate a failure visible on systems which
+	need a library prefix like 'lib', such as BeOS.  Fix a number
+	of bugs exposed by this test in order for it to pass.
+	Currently the prefix is hardcoded as 'lib', as I am not aware
+	of systems that require a different prefix:
+
+	* libltdl/loaders/preopen.c (lt_dlpreload_open):  Move error
+	condition out of test loop to be sure that each originator is
+	tried, instead of erroring out if the first doesn't match.
+	Support passing NULL as the originator to load all preloaded
+	modules originating in the program itself.
+	* libltdl/lt_dlloader.c (lt_dlloader_dump): New debug function.
+	* libltdl/libltdl/lt_dlloader.h (lt_dlloader_dump): Declare it
+	when LT_DEBUG_LOADERS is defined at compile time.
+	* libltdl/ltdl.c (lt_dlinit): Dump loader list after successful
+	initialisation.
+	(tryall_dlopen): Add a new VTABLE parameter to force use of a
+	specific loader in preference to trying every loader in turn.
+	Adjust all callers.
+	(try_dlopen): Always see whether a module was preloaded for
+	module names with no directory component before searching the
+	filesystem for a match.
+	* libltdl/m4/libtool.m4 (_LT_CMD_GLOBAL_SYMBOLS): Declare
+	a new global_symbol_to_c_name_address_lib_prefix variable.
+	(global_symbol_to_c_name_address_lib_prefix): The sed
+	expressions to use when a lib prefix is enforced need to be
+	slightly different to work with preloaded modules.
+	* libltdl/config/ltmain.m4sh (func_generate_dlsyms): In order
+	to name preloaded symbols correctly for the lookup algorithm
+	to work when the loaded module file must be prefixed with lib.
+	Use global_symbol_to_c_name_address_lib_prefix when
+	need_lib_prefix is other than no.
+	* tests/need_lib_prefix.at: New test to check for breakage on
+	hosts where need_lib_prefix is unknown.
+	* Makefile.am (TESTSUITE_AT): Add new test.
+	* tests/TODO: Note missing tests that would have caught some
+	of the latent bugs fixed by this patch.
+	* HACKING: Document libltdl keyword.
+	* NEWS: Updated.
+
+2007-06-24  Gary V. Vaughan  <gary@gnu.org>
+
 	Reenable compilation of libltdl with C++:
 
 	* libltdl/ltdl.c (tryall_dlopen): Rename the try variable to
