@@ -1,7 +1,8 @@
 NEWS - list of user-visible changes between releases of GNU Libtool
 
-New in 1.5.23c: 2007-??-??; CVS version 1.5.23c, Libtool team:
+New in 1.5.24: 2007-06-17; CVS version 1.5.23c, Libtool team:
 * Initial support for Interix newer than version 3.
+* Use getconf ARG_MAX to find the max command line length.
 * Bug Fixes.
 
 New in 1.5.23b: 2007-02-17; CVS version 1.5.23a, Libtool team:

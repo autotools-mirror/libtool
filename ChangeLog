@@ -1,3 +1,13 @@
+2007-06-23  Peter O'Gorman  <peter@pogma.com>
+
+	GNU libtool 1.5.24 is released.
+
+	* configure.ac: Bump version.
+	* NEWS: Updated.
+	* config.guess, config.sub, install-sh, texinfo.tex, INSTALL:
+	Updated from external sources.
+	* libtool.m4: Bump serial.
+
 2007-06-22  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* libtool.m4 (AC_LIBTOOL_SYS_DYNAMIC_LINKER) [linux]:
