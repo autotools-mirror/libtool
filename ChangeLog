@@ -1,3 +1,8 @@
+2007-06-30  Peter Breitenlohner  <peb@mppmu.mpg.de>
+
+	* libltdl/m4/libtool.m4 (LT_SYS_DLOPEN_SELF): Correct a typo
+	("-dld" instead of "-ldld").
+
 2007-06-24  Gary V. Vaughan  <gary@gnu.org>
 
 	Add a test to simulate a failure visible on systems which
