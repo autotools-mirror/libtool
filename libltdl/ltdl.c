@@ -120,7 +120,7 @@ static	int	try_dlopen	      (lt_dlhandle *handle,
 				       lt_dladvise advise);
 static	int	tryall_dlopen	      (lt_dlhandle *handle,
 				       const char *filename,
-				       lt_dladvise advise,
+				       lt_dladvise padvise,
 				       const lt_dlvtable *vtable);
 static	int	unload_deplibs	      (lt_dlhandle handle);
 static	lt__advise *advise_dup	      (lt__advise *advise);
@@ -342,11 +342,12 @@ lt_dlexit (void)
    the dlhandle is stored at the address given in PHANDLE.  */
 static int
 tryall_dlopen (lt_dlhandle *phandle, const char *filename,
- 	       lt_dladvise advise, const lt_dlvtable *vtable)
+ 	       lt_dladvise padvise, const lt_dlvtable *vtable)
 {
   lt__handle *	handle		= (lt__handle *) handles;
   const char *	saved_error	= 0;
   int		errors		= 0;
+  lt__advise *  advise		= (lt__advise *) padvise;
 
 #ifdef LT_DEBUG_LOADERS
   fprintf (stderr, "tryall_dlopen (%s, %s)\n",
@@ -407,11 +408,6 @@ tryall_dlopen (lt_dlhandle *phandle, const char *filename,
 
     do
       {
-	lt__advise *advise_taken = 0;
-
-	if (advise)
-	  advise_taken = advise_dup ((lt__advise *) advise);
-
 	if (vtable)
 	  loader_vtable = vtable;
 	else
@@ -423,7 +419,7 @@ tryall_dlopen (lt_dlhandle *phandle, const char *filename,
 		 filename ? filename : "(null)");
 #endif
 	handle->module = (*loader_vtable->module_open) (loader_vtable->dlloader_data,
-							filename, advise_taken);
+							filename, advise);
 #ifdef LT_DEBUG_LOADERS
 	fprintf (stderr, "  Result: %s\n",
 		 handle->module ? "Success" : "Failed");
@@ -431,16 +427,14 @@ tryall_dlopen (lt_dlhandle *phandle, const char *filename,
 
 	if (handle->module != 0)
 	  {
-	    if (advise_taken)
+	    if (advise)
 	      {
-		handle->info.is_resident  = advise_taken->is_resident;
-		handle->info.is_symglobal = advise_taken->is_symglobal;
-		handle->info.is_symlocal  = advise_taken->is_symlocal;
+		handle->info.is_resident  = advise->is_resident;
+		handle->info.is_symglobal = advise->is_symglobal;
+		handle->info.is_symlocal  = advise->is_symlocal;
 	      }
 	    break;
 	  }
-
-	FREE (advise_taken);
       }
     while (!vtable && (loader = lt_dlloader_next (loader)));
 

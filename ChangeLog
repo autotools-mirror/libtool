@@ -1,3 +1,8 @@
+2007-07-01  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* libltdl/ltdl.c (tryall_dlopen): Rename argument to have typed
+	alias of `advise' instead of allocating a copy.  Fixes memleak.
+
 2007-06-30  Peter Breitenlohner  <peb@mppmu.mpg.de>
 
 	* libltdl/m4/libtool.m4 (LT_SYS_DLOPEN_SELF): Correct a typo
