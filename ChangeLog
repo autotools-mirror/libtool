@@ -1,5 +1,12 @@
 2007-07-01  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* libltdl/m4/lt~obsolete.m4 (LTOBSOLETE_VERSION): New macro, to
+	force-pull in this file by aclocal.
+	* libltdl/m4/libtool.m4 (LT_INIT): Require LTOBSOLETE_VERSION.
+	* tests/libtoolize.at (upgrading verbatim style aclocal.m4):
+	Adjust.
+	Report by H. J. Lu <hjl@lucon.org>.
+
 	* libltdl/ltdl.c (tryall_dlopen): Rename argument to have typed
 	alias of `advise' instead of allocating a copy.  Fixes memleak.
 

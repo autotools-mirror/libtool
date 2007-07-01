@@ -37,7 +37,7 @@ m4_define([_LT_COPYING], [dnl
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 ])
 
-# serial 53 LT_INIT
+# serial 54 LT_INIT
 
 
 # LT_PREREQ(VERSION)
@@ -66,6 +66,7 @@ dnl unless we require an AC_DEFUNed macro:
 AC_REQUIRE([LTOPTIONS_VERSION])dnl
 AC_REQUIRE([LTSUGAR_VERSION])dnl
 AC_REQUIRE([LTVERSION_VERSION])dnl
+AC_REQUIRE([LTOBSOLETE_VERSION])dnl
 m4_require([_LT_PROG_LTMAIN])dnl
 m4_require([_LT_SET_OPTIONS], [_LT_SET_OPTIONS([$1])])dnl
 
