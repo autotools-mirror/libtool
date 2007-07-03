@@ -1,3 +1,9 @@
+2007-07-03  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* libtool.m4 (_LT_AC_LOCK) [ solaris ]: Cater to old Sparc
+	Solaris 7 ld that does not understand `-64'.
+	Report by Vincent Lefevre <vincent@vinc17.org>.
+
 2007-06-30  Peter Breitenlohner  <peb@mppmu.mpg.de>
 
 	* libtool.m4 (AC_LIBTOOL_DLOPEN_SELF): Correct a typo ("-dld"
