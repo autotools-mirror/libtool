@@ -1,3 +1,9 @@
+2007-07-03  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* libltdl/m4/libtool.m4 (_LT_ENABLE_LOCK) [ solaris ]: Cater to
+	old Sparc Solaris 7 ld that does not understand `-64'.
+	Report by Vincent Lefevre <vincent@vinc17.org>.
+
 2007-07-01  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* libltdl/m4/lt~obsolete.m4 (LTOBSOLETE_VERSION): New macro, to
