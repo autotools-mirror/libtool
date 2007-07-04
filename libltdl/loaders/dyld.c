@@ -29,8 +29,8 @@ or obtained by writing to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 */
 
-#include "lt_dlloader.h"
 #include "lt__private.h"
+#include "lt_dlloader.h"
 
 /* Use the preprocessor to rename non-static symbols to avoid namespace
    collisions when the loader code is statically linked into libltdl.

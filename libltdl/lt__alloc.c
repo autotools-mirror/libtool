@@ -1,6 +1,6 @@
 /* lt__alloc.c -- internal memory management interface
 
-   Copyright (C) 2004, 2006 Free Software Foundation, Inc.
+   Copyright (C) 2004, 2006, 2007 Free Software Foundation, Inc.
    Written by Gary V. Vaughan, 2004
 
    NOTE: The canonical source of this file is maintained with the
@@ -28,16 +28,11 @@ or obtained by writing to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 */
 
-#if defined(LT_CONFIG_H)
-#  include LT_CONFIG_H
-#else
-#  include <config.h>
-#endif
+#include "lt__private.h"
 
 #include <stdio.h>
 
 #include "lt__alloc.h"
-#include "lt__private.h"
 
 static void alloc_die_default (void);
 

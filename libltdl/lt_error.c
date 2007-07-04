@@ -1,6 +1,6 @@
 /* lt_error.c -- error propogation interface
 
-   Copyright (C) 1999, 2000, 2001, 2004, 2005 Free Software Foundation, Inc.
+   Copyright (C) 1999, 2000, 2001, 2004, 2005, 2007 Free Software Foundation, Inc.
    Written by Thomas Tanner, 1999
 
    NOTE: The canonical source of this file is maintained with the
@@ -28,8 +28,8 @@ or obtained by writing to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 */
 
-#include "lt_error.h"
 #include "lt__private.h"
+#include "lt_error.h"
 
 static const char	*last_error	= 0;
 static const char	error_strings[LT_ERROR_MAX][LT_ERROR_LEN_MAX + 1] =

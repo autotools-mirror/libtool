@@ -1,3 +1,12 @@
+2007-07-04  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	* libltdl/lt__alloc.c, libltdl/loaders/preopen.c,
+	libltdl/loaders/dyld.c, libltdl/loaders/dlopen.c, libltdl/ltdl.c,
+	libltdl/lt_error.c, libltdl/lt_dlloader.c, libltdl/lt__dirent.c:
+	Include lt__private.h prior to any system headers.
+	* libltdl/lt__alloc.c: Remove redundant inclusion of configuration
+	header.
+
 2007-07-04  Eric Blake  <ebb9@byu.net>
 
 	* libltdl/ltdl.c (advise_dup): Delete function no longer used

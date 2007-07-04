@@ -29,9 +29,9 @@ or obtained by writing to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 */
 
+#include "lt__private.h"
 #include "lt_system.h"
 #include "lt_dlloader.h"
-#include "lt__private.h"
 
 
 /* --- MANIFEST CONSTANTS --- */

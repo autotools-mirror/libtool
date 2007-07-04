@@ -28,10 +28,11 @@ or obtained by writing to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 */
 
+#include "lt__private.h"
+
 #include <assert.h>
 #include <stddef.h>
 
-#include "lt__private.h"
 #include "lt__dirent.h"
 
 #if defined(__WINDOWS__)
