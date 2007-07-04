@@ -1,3 +1,8 @@
+2007-07-04  Eric Blake  <ebb9@byu.net>
+
+	* libltdl/ltdl.c (advise_dup): Delete function no longer used
+	after memleak fix three days ago.
+
 2007-07-03  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* libltdl/m4/libtool.m4 (_LT_ENABLE_LOCK) [ solaris ]: Cater to
@@ -116,7 +121,7 @@
 	(func_mode_link) [cygwin|mingw]: Don't call dirname and
 	basename directly; use func_dirname and func_basename
 	when computing cwrapper names.  Use cwrapper to generate
-	wrapper script, and use pathname returned by 
+	wrapper script, and use pathname returned by
 	func_ltwrapper_scriptname instead of $output.
 	(func_mode_link) [NOT cygwin|mingw]: move wrapper script
 	generation for non-win32 inside case statement, as default
@@ -154,7 +159,7 @@
 	Use C89-compatible syntax to mimic variadic macros.
 	Adjust all callers.
 	(func_emit_libtool_cwrapperexe_source) [check_executable]:
-	avoid embedded #ifdefs; use S_IXGRP and S_IXOTH 
+	avoid embedded #ifdefs; use S_IXGRP and S_IXOTH
 	unconditionally.
 	(func_emit_libtool_cwrapperexe_source) [make_executable]:
 	ditto.
@@ -184,8 +189,8 @@
 	value to determine full absolute pathname of wrapper script, in
 	$objdir. Unconditionally write script out to this pathname and
 	set permission bits.  Remove extraneous ';' from debugging loop.
-	(f_e_l_c_s: main) [mingw]: DOS-ize $SHELL before populating     
-	newargv[0]; if $TARGETSHELL environment variable is set, use 
+	(f_e_l_c_s: main) [mingw]: DOS-ize $SHELL before populating
+	newargv[0]; if $TARGETSHELL environment variable is set, use
 	it instead of $SHELL and do not DOS-ize.  Ensure newargv[1]
 	(wrapper script absolute path) uses only '/', not '\'.  Make
 	sure to call execv() with DOS-ized $SHELL (or un-DOS-ized

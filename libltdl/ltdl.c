@@ -123,7 +123,6 @@ static	int	tryall_dlopen	      (lt_dlhandle *handle,
 				       lt_dladvise padvise,
 				       const lt_dlvtable *vtable);
 static	int	unload_deplibs	      (lt_dlhandle handle);
-static	lt__advise *advise_dup	      (lt__advise *advise);
 static	int	lt_argz_insert	      (char **pargz, size_t *pargz_len,
 				       char *before, const char *entry);
 static	int	lt_argz_insertinorder (char **pargz, size_t *pargz_len,
@@ -342,7 +341,7 @@ lt_dlexit (void)
    the dlhandle is stored at the address given in PHANDLE.  */
 static int
 tryall_dlopen (lt_dlhandle *phandle, const char *filename,
- 	       lt_dladvise padvise, const lt_dlvtable *vtable)
+	       lt_dladvise padvise, const lt_dlvtable *vtable)
 {
   lt__handle *	handle		= (lt__handle *) handles;
   const char *	saved_error	= 0;
@@ -1247,7 +1246,7 @@ try_dlopen (lt_dlhandle *phandle, const char *filename, const char *ext,
 
       if (vtable)
 	{
-      	  *phandle = (lt_dlhandle) lt__zalloc (sizeof (lt__handle));
+	  *phandle = (lt_dlhandle) lt__zalloc (sizeof (lt__handle));
 
 	  if (*phandle == NULL)
 	    {
@@ -1545,13 +1544,6 @@ lt_dladvise_global (lt_dladvise *padvise)
   assert (padvise && *padvise);
   ((lt__advise *) *padvise)->is_symglobal = 1;
   return 0;
-}
-
-static lt__advise *
-advise_dup (lt__advise *advise)
-{
-  lt__advise *dup = (lt__advise *) lt__zalloc (sizeof (lt__advise));
-  return (lt__advise *) memcpy (dup, advise, sizeof (lt__advise));
 }
 
 /* Libtool-1.5.x interface for loading a new module named FILENAME.  */
