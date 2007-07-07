@@ -1,3 +1,9 @@
+2007-07-06  Peter O'Gorman  <peter@pogma.com
+
+	* libltdl/config/libtool.m4sh: Don't pass -msg_* through to the
+	linker.
+	Reported by Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
 2007-07-04  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
 
 	* libltdl/lt__alloc.c, libltdl/loaders/preopen.c,
