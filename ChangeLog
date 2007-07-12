@@ -1,3 +1,9 @@
+2007-07-12  Peter Rosin  <peda@lysator.liu.se>
+
+	* libltdl/config/ltmain.m4sh (func_mode_link): Strip the cwrapper
+	using $STRIP instead of relying on the tools to support -s, which
+	MSVC doesn't.
+
 2007-07-06  Peter O'Gorman  <peter@pogma.com
 
 	* libltdl/config/libtool.m4sh: Don't pass -msg_* through to the

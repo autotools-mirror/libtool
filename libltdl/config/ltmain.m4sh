@@ -6804,7 +6804,10 @@ EOF
 	    # are only useful if you want to execute the "real" binary.
 	    # Since the "real" binary is built for $host, then this
 	    # wrapper might as well be built for $host, too.
-	    $opt_dry_run || $LTCC $LTCFLAGS -s -o $cwrapper $cwrappersource
+	    $opt_dry_run || {
+	      $LTCC $LTCFLAGS -o $cwrapper $cwrappersource
+	      $STRIP $cwrapper
+	    }
 
 	    # Now, create the wrapper script for func_source use:
 	    func_ltwrapper_scriptname $cwrapper
