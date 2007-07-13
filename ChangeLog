@@ -1,10 +1,22 @@
+2007-07-13  Charles Wilson  <libtool@cwilson.fastmail.fm>
+
+	* libltdl/m4/libtool.m4 (func_dirname_and_basename) <XSI>:
+	New function.
+	(func_dirname_and_basename) <!XSI>: New function.
+	* libltdl/config/ltmain.m4sh (func_ltwrapper_scriptname):
+	Call it.  Also, take advantage of missed optimization using
+	func_dirname's additional arguments.
+	(func_mode_compile): Call it.
+	(func_mode_install): Call it.
+	(func_mode_link): Call it. 
+
 2007-07-12  Peter Rosin  <peda@lysator.liu.se>
 
 	* libltdl/config/ltmain.m4sh (func_mode_link): Strip the cwrapper
 	using $STRIP instead of relying on the tools to support -s, which
 	MSVC doesn't.
 
-2007-07-06  Peter O'Gorman  <peter@pogma.com
+2007-07-06  Peter O'Gorman  <peter@pogma.com>
 
 	* libltdl/config/libtool.m4sh: Don't pass -msg_* through to the
 	linker.
