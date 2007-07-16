@@ -29,7 +29,7 @@ func_require "depdemo-make" "tests/depdemo/depdemo$EXEEXT"
 
 func_rmprefixdir
 func_exec_init "uninstalled"
-func_exec "tests/depdemo/depdemo_static"
-func_exec "tests/depdemo/depdemo"
+func_exec "tests/depdemo/depdemo_static$EXEEXT"
+func_exec "tests/depdemo/depdemo$EXEEXT"
 
 exit $exec_status

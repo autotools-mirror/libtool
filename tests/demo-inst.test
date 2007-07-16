@@ -31,8 +31,8 @@ func_mkprefixdir
 func_cd "tests/demo"
 func_make "install"
 func_exec_init "installed"
-func_exec "$prefix/bin/hell_static" 'Welcome to GNU Hell'
-func_exec "$prefix/bin/hell" 'Welcome to GNU Hell'
-func_exec "$prefix/bin/helldl" '(Welcome to .*GNU Hell|unsupported)'
+func_exec "$prefix/bin/hell_static$EXEEXT" 'Welcome to GNU Hell'
+func_exec "$prefix/bin/hell$EXEEXT" 'Welcome to GNU Hell'
+func_exec "$prefix/bin/helldl$EXEEXT" '(Welcome to .*GNU Hell|unsupported)'
 
 exit $status

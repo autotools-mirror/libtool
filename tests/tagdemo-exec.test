@@ -29,6 +29,6 @@ func_require "tagdemo-make" "tests/tagdemo/tagdemo$EXEEXT"
 
 func_rmprefixdir
 func_exec_init "uninstalled"
-func_exec "tests/tagdemo/tagdemo"
+func_exec "tests/tagdemo/tagdemo$EXEEXT"
 
 exit $exec_status

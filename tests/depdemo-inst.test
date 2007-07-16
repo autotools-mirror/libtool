@@ -31,7 +31,7 @@ func_mkprefixdir
 func_cd "tests/depdemo"
 func_make "install"
 func_exec_init "installed"
-func_exec "$prefix/bin/depdemo_static"
-func_exec "$prefix/bin/depdemo"
+func_exec "$prefix/bin/depdemo_static$EXEEXT"
+func_exec "$prefix/bin/depdemo$EXEEXT"
 
 exit $status

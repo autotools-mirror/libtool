@@ -29,9 +29,9 @@ func_require "mdemo-make" "tests/mdemo/mdemo$EXEEXT"
 
 func_rmprefixdir
 func_exec_init "uninstalled"
-func_exec "tests/mdemo/mdemo_static tests/mdemo/foo1.la tests/mdemo/libfoo2.la" \
+func_exec "tests/mdemo/mdemo_static$EXEEXT tests/mdemo/foo1.la tests/mdemo/libfoo2.la" \
 	  "try_iterate: .*libfoo2"
-func_exec "tests/mdemo/mdemo tests/mdemo/foo1.la tests/mdemo/libfoo2.la" \
+func_exec "tests/mdemo/mdemo$EXEEXT tests/mdemo/foo1.la tests/mdemo/libfoo2.la" \
 	  "try_iterate: .*libfoo2"
 
 exit $exec_status

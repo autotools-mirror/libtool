@@ -29,6 +29,6 @@ func_require "cdemo-make" "tests/cdemo/cdemo$EXEEXT"
 
 func_rmprefixdir
 func_exec_init "uninstalled"
-func_exec "tests/cdemo/cdemo"
+func_exec "tests/cdemo/cdemo$EXEEXT"
 
 exit $exec_status

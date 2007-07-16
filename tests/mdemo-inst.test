@@ -31,7 +31,7 @@ func_mkprefixdir
 func_cd "tests/mdemo"
 func_make "install"
 func_exec_init "installed"
-func_exec "$prefix/bin/mdemo_static $prefix/lib/foo1.la $prefix/lib/libfoo2.la"
-func_exec "$prefix/bin/mdemo $prefix/lib/foo1.la $prefix/lib/libfoo2.la"
+func_exec "$prefix/bin/mdemo_static$EXEEXT $prefix/lib/foo1.la $prefix/lib/libfoo2.la"
+func_exec "$prefix/bin/mdemo$EXEEXT $prefix/lib/foo1.la $prefix/lib/libfoo2.la"
 
 exit $status

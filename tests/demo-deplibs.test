@@ -33,6 +33,6 @@ echo "linking a shared library against a static library"
 func_make "deplibs-check"
 func_exec_init "uninstalled"
 func_exec_check "hell0$EXEEXT" "check your deplibs_check_method"
-func_exec "./hell0" "" "check your deplibs_check_method"
+func_exec "./hell0$EXEEXT" "" "check your deplibs_check_method"
 
 exit $exec_status

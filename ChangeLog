@@ -1,3 +1,23 @@
+2007-07-16  Charles Wilson  <libtool@cwilson.fastmail.fm>
+
+	* tests/cdemo-exec.test: use $EXEEXT where appropriate
+	to correct mingw cross-compile issues.
+	* demo-deplibs.test: Ditto.
+	* demo-exec.test: Ditto.
+	* demo-inst.test: Ditto.
+	* demo-relink.test: Ditto.
+	* depdemo-exec.test: Ditto.
+	* depdemo-inst.test: Ditto.
+	* depdemo-relink.test: Ditto.
+	* f77demo-exec.test: Ditto.
+	* fcdemo-exec.test: Ditto.
+	* mdemo-exec.test: Ditto.
+	* mdemo-inst.test: Ditto.
+	* mdemo2-exec.test: Ditto.
+	* pdemo-exec.test: Ditto.
+	* pdemo-inst.test: Ditto.
+	* tagdemo-exec.test: Ditto.
+
 2007-07-14  Peter Rosin  <peda@lysator.liu.se>
 
 	* AUTHORS, THANKS: Peter Ekberg got married, now Peter Rosin.

@@ -29,7 +29,7 @@ func_require "fcdemo-make" "tests/fcdemo/fprogram$EXEEXT" "tests/fcdemo/cprogram
 
 func_rmprefixdir
 func_exec_init "uninstalled"
-func_exec "tests/fcdemo/fprogram"
-func_exec "tests/fcdemo/cprogram"
+func_exec "tests/fcdemo/fprogram$EXEEXT"
+func_exec "tests/fcdemo/cprogram$EXEEXT"
 
 exit $exec_status
