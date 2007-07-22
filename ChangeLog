@@ -1,3 +1,9 @@
+2007-07-22  Peter Rosin  <peda@lysator.liu.se>
+
+	* libltdl/config/ltmain.m4sh (func_emit_cwrapperexe_src): Add
+	support for Microsoft Visual C. Also, older MinGW versions
+	seem to need stdint.h to find intptr_t.
+
 2007-07-22  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* libltdl/m4/libtool.m4 (_LT_SYS_DYNAMIC_LINKER) [linux]:

@@ -2507,7 +2507,13 @@ EOF
 	    cat <<"EOF"
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
+#ifdef _MSC_VER
+# include <direct.h>
+# include <process.h>
+#else
+# include <unistd.h>
+# include <stdint.h>
+#endif
 #include <malloc.h>
 #include <stdarg.h>
 #include <assert.h>
@@ -2529,6 +2535,14 @@ EOF
 #endif
 #ifndef S_IXGRP
 # define S_IXGRP 0
+#endif
+
+#ifdef _MSC_VER
+# define S_IXUSR _S_IEXEC
+# define stat _stat
+# ifndef _INTPTR_T_DEFINED
+#  define intptr_t int
+# endif
 #endif
 
 #ifndef DIR_SEPARATOR
