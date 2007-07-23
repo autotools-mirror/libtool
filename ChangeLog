@@ -1,5 +1,8 @@
 2007-07-23  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* doc/fdl.texi: Update to GFDL 1.2.
+	* doc/libtool.texi: Adjust.  Put License in Appendix.
+
 	* libltdl/config/ltmain.m4sh (func_mode_link): Remove each
 	intermediate relinked object after use, to avoid quadratic space
 	complexity when linking partially.
