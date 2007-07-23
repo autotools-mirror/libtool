@@ -1,3 +1,10 @@
+2007-07-23  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* libltdl/config/ltmain.m4sh (func_mode_link): Remove each
+	intermediate relinked object after use, to avoid quadratic space
+	complexity when linking partially.
+	Report by Isidor Zeuner <eezyy@gmx.net>.
+
 2007-07-23  Eric Blake  <ebb9@byu.net>
 
 	* libltdl/config/ltmain.m4sh: Whitespace cleanup.

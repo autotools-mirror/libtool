@@ -6170,7 +6170,7 @@ EOF
 		  else
 		    # All subsequent reloadable object files will link in
 		    # the last one created.
-		    eval concat_cmds=\"\$concat_cmds~$reload_cmds $objlist $last_robj\"
+		    eval concat_cmds=\"\$concat_cmds~$reload_cmds $objlist $last_robj~\$RM $last_robj\"
 		  fi
 		  last_robj=$output_objdir/$output_la-${k}.$objext
 		  k=`expr $k + 1`
@@ -6183,16 +6183,9 @@ EOF
 	      # reloadable object file.  All subsequent reloadable object
 	      # files will link in the last one created.
 	      test -z "$concat_cmds" || concat_cmds=$concat_cmds~
-	      eval concat_cmds=\"\${concat_cmds}$reload_cmds $objlist $last_robj\"
+	      eval concat_cmds=\"\${concat_cmds}$reload_cmds $objlist $last_robj~\$RM $last_robj\"
+	      delfiles="$delfiles $output"
 
-	      # Set up a command to remove the reloadable object files
-	      # after they are used.
-	      i=0
-	      while test "$i" -lt "$k"
-	      do
-		i=`expr $i + 1`
-		delfiles="$delfiles $output_objdir/$output_la-${i}.$objext"
-	      done
 	    else
 	      output=
 	    fi
@@ -6205,6 +6198,9 @@ EOF
 	      # Append the command to create the export file.
 	      test -z "$concat_cmds" || concat_cmds=$concat_cmds~
 	      eval concat_cmds=\"\$concat_cmds$export_symbols_cmds\"
+	      if test -n "$output"; then
+		eval concat_cmds=\"\$concat_cmds~\$RM $last_robj\"
+	      fi
 	    fi
 
 	    test -n "$save_libobjs" &&
