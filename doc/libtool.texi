@@ -27,7 +27,7 @@ This file documents GNU Libtool @value{VERSION}
 Copyright (C) 1996-2003, 2005-2007 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
-under the terms of the GNU Free Documentation License, Version 1.1
+under the terms of the GNU Free Documentation License, Version 1.2
 or any later version published by the Free Software Foundation;
 with no Invariant Sections, with no Front-Cover Texts,
 and with no Back-Cover Texts.  A copy of the license is included in
@@ -54,7 +54,7 @@ identical to this one except for the removal of this paragraph
 Copyright @copyright{} 1996-2003, 2005-2007 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
-under the terms of the GNU Free Documentation License, Version 1.1
+under the terms of the GNU Free Documentation License, Version 1.2
 or any later version published by the Free Software Foundation;
 with no Invariant Sections, with no Front-Cover Texts,
 and with no Back-Cover Texts.  A copy of the license is included in
@@ -4818,6 +4818,11 @@ The output of the final @samp{libtool --version} command shows that the
 @code{ltmain.in} script is being used directly.  Now, modify
 @code{~/bin/libtool} or @code{/home/src/libtool/ltmain.in} directly in
 order to test new changes without having to rerun @code{configure}.
+
+@node GNU Free Documentation License
+@appendix GNU Free Documentation License
+
+@cindex FDL, GNU Free Documentation License
 
 @include fdl.texi
 

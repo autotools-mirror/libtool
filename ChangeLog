@@ -1,3 +1,8 @@
+2007-07-23  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* doc/fdl.texi: Update to GFDL 1.2.
+	* doc/libtool.texi: Adjust.  Put License in Appendix.
+
 2007-07-03  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* libtool.m4 (_LT_AC_LOCK) [ solaris ]: Cater to old Sparc
