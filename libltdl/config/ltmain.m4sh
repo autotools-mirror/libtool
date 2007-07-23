@@ -466,11 +466,11 @@ Otherwise, only FILE itself is deleted using RM."
     shift
 
     case $opt in
-      --config)		func_config 					;;
+      --config)		func_config					;;
 
       --debug)		preserve_args="$preserve_args $opt"
-	    		func_echo "enabling shell trace mode"
-	    		opt_debug='set -x'
+			func_echo "enabling shell trace mode"
+			opt_debug='set -x'
 			$opt_debug
 			;;
 
@@ -484,7 +484,7 @@ Otherwise, only FILE itself is deleted using RM."
       --finish)		mode="finish"					;;
 
       --mode)		test "$#" -eq 0 && func_missing_arg "$opt" && break
-	    		case $1 in
+			case $1 in
 			  # Valid mode arguments:
 			  clean)	;;
 			  compile)	;;
@@ -502,19 +502,19 @@ Otherwise, only FILE itself is deleted using RM."
 			     ;;
 		        esac
 
-	    		mode="$1"
+			mode="$1"
 			shift
 			;;
 
       --preserve-dup-deps)
-      			opt_duplicate_deps=:				;;
+			opt_duplicate_deps=:				;;
 
       --quiet|--silent)	preserve_args="$preserve_args $opt"
-	    		opt_silent=:
+			opt_silent=:
 			;;
 
       --verbose| -v)	preserve_args="$preserve_args $opt"
-	    		opt_silent=false
+			opt_silent=false
 			;;
 
       --tag)		test "$#" -eq 0 && func_missing_arg "$opt" && break
@@ -537,7 +537,7 @@ Otherwise, only FILE itself is deleted using RM."
       -*)		func_fatal_help "unrecognized option \`$opt'"	;;
 
       *)		nonopt="$opt"
-      			break
+			break
 			;;
     esac
   done
@@ -1040,7 +1040,7 @@ static const void *lt_preloaded_setup() {
 "
 	} # !$opt_dry_run
 
-  	pic_flag_for_symtable=
+	pic_flag_for_symtable=
 	case "$compile_command " in
 	*" -static "*) ;;
 	*)
@@ -1415,7 +1415,7 @@ func_mode_compile ()
 
     func_quote_for_eval "$libobj"
     test "X$libobj" != "X$func_quote_for_eval_result" \
-      && $ECHO "X$libobj" | $GREP '[@:>@~#^*{};<>?"'"'"' 	&()|`$@<:@]' \
+      && $ECHO "X$libobj" | $GREP '[@:>@~#^*{};<>?"'"'"'	 &()|`$@<:@]' \
       && func_warning "libobj name \`$libobj' may not contain shell special characters."
     func_dirname_and_basename "$obj" "/" ""
     objname="$func_basename_result"
@@ -1861,7 +1861,7 @@ func_mode_install ()
       case $arg in
       -d) isdir=yes ;;
       -f)
-      	case " $install_prog " in
+	case " $install_prog " in
 	*[\\\ /]cp\ *) ;;
 	*) prev=$arg ;;
 	esac
@@ -2261,7 +2261,7 @@ test "$mode" = install && func_mode_install ${1+"$@"}
 #
 # emit a libtool wrapper script on stdout
 # don't directly open a file because we may want to
-# incorporate the script contents within a cygwin/mingw 
+# incorporate the script contents within a cygwin/mingw
 # wrapper executable.  Must ONLY be called from within
 # func_mode_link because it depends on a number of variable
 # set therein.
@@ -2277,7 +2277,7 @@ func_emit_wrapper ()
 	if test -n "$1" ; then
 	  func_emit_wrapper_arg1=$1
 	fi
-	  
+
 	$ECHO "\
 #! $SHELL
 
@@ -2361,7 +2361,7 @@ else
     file=\`ls -ld \"\$thisdir/\$file\" | ${SED} -n 's/.*-> //p'\`
   done
 
-  # Usually 'no', except on cygwin/mingw when embedded into 
+  # Usually 'no', except on cygwin/mingw when embedded into
   # the cwrapper.
   WRAPPER_SCRIPT_BELONGS_IN_OBJDIR=$func_emit_wrapper_arg1
   if test \"\$WRAPPER_SCRIPT_BELONGS_IN_OBJDIR\" = \"yes\"; then
@@ -2606,12 +2606,12 @@ int check_executable (const char *path);
 char *strendzap (char *str, const char *pat);
 void lt_fatal (const char *message, ...);
 
-static const char *script_text = 
+static const char *script_text =
 EOF
 
 	    func_emit_wrapper yes |
 	        $SED -e 's/\([\\"]\)/\\\1/g' \
-	             -e 's/^/  "/' -e 's/$/\\n"/' 
+	             -e 's/^/  "/' -e 's/$/\\n"/'
 	    echo ";"
 
 	    cat <<EOF
@@ -2629,7 +2629,7 @@ main (int argc, char *argv[])
 
   const char *dumpscript_opt = "--lt-dump-script";
   int i;
- 
+
   program_name = (char *) xstrdup (base_name (argv[0]));
   LTWRAPPER_DEBUGPRINTF (("(main) argv[0]      : %s\n", argv[0]));
   LTWRAPPER_DEBUGPRINTF (("(main) program_name : %s\n", program_name));
@@ -2663,7 +2663,7 @@ EOF
 		  ;;
 		* ) lt_newargv0=$SHELL ;;
 	      esac
-	    fi 
+	    fi
 
 		cat <<EOF
   newargz[0] = (char *) xstrdup ("$lt_newargv0");
@@ -2737,7 +2737,7 @@ EOF
   fclose (shwrapper);
 
   make_executable (newargz[1]);
-  
+
   for (i = 1; i < argc; i++)
     newargz[i + 1] = xstrdup (argv[i]);
   newargz[argc + 1] = NULL;
@@ -2757,7 +2757,7 @@ EOF
   if (rval == -1)
     {
       /* failed to start process */
-      LTWRAPPER_DEBUGPRINTF (("(main) failed to launch target \"$lt_newargv0\": errno = %d\n", errno)); 
+      LTWRAPPER_DEBUGPRINTF (("(main) failed to launch target \"$lt_newargv0\": errno = %d\n", errno));
       return 127;
     }
   return rval;
@@ -2996,7 +2996,7 @@ chase_symlinks (const char *pathspec)
   if (!has_symlinks)
     {
       return xstrdup (pathspec);
-    } 
+    }
 
   tmp_pathspec = realpath (pathspec, buf);
   if (tmp_pathspec == 0)
@@ -3251,7 +3251,7 @@ func_mode_link ()
 		   ;;
 	      esac
 	      ;;
-   	  esac
+	  esac
 	  prev=
 	  continue
 	  ;;
@@ -3389,7 +3389,7 @@ func_mode_link ()
 	  continue
 	  ;;
 	shrext)
-  	  shrext_cmds="$arg"
+	  shrext_cmds="$arg"
 	  prev=
 	  continue
 	  ;;
@@ -3761,7 +3761,7 @@ func_mode_link ()
 	continue
 	;;
 
-      # -msg_* for osf cc 
+      # -msg_* for osf cc
       -msg_*)
 	func_quote_for_eval "$arg"
 	arg="$func_quote_for_eval_result"
@@ -5490,8 +5490,8 @@ func_mode_link ()
 	    ;;
 	  *-*-sysv4.2uw2* | *-*-sysv5* | *-*-unixware* | *-*-OpenUNIX*)
 	    # Compiler inserts libc in the correct place for threads to work
- 	    ;;
- 	  *)
+	    ;;
+	  *)
 	    # Add libc to deplibs on all other systems if necessary.
 	    if test "$build_libtool_need_lc" = "yes"; then
 	      deplibs="$deplibs -lc"
@@ -5749,7 +5749,7 @@ EOF
 	      tmp_deplibs=`$ECHO "X $tmp_deplibs" | $Xsed -e "s,$i,,"`
 	    done
 	  fi
-	  if $ECHO "X $tmp_deplibs" | $Xsed -e 's/[ 	]//g' |
+	  if $ECHO "X $tmp_deplibs" | $Xsed -e 's/[	 ]//g' |
 	     $GREP . >/dev/null; then
 	    $ECHO
 	    if test "X$deplibs_check_method" = "Xnone"; then

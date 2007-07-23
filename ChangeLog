@@ -1,5 +1,7 @@
 2007-07-23  Eric Blake  <ebb9@byu.net>
 
+	* libltdl/config/ltmain.m4sh: Whitespace cleanup.
+
 	* libltdl/config/ltmain.m4sh (func_emit_cwrapperexe_src:
 	chase_symlinks): Avoid compiler warning.
 
