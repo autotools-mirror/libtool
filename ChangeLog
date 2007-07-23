@@ -1,3 +1,8 @@
+2007-07-23  Eric Blake  <ebb9@byu.net>
+
+	* libltdl/config/ltmain.m4sh (func_emit_cwrapperexe_src:
+	chase_symlinks): Avoid compiler warning.
+
 2007-07-22  Peter Rosin  <peda@lysator.liu.se>
 
 	* libltdl/config/ltmain.m4sh (func_emit_cwrapperexe_src): Add
@@ -43,7 +48,7 @@
 	func_dirname's additional arguments.
 	(func_mode_compile): Call it.
 	(func_mode_install): Call it.
-	(func_mode_link): Call it. 
+	(func_mode_link): Call it.
 
 2007-07-12  Peter Rosin  <peda@lysator.liu.se>
 

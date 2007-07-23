@@ -2959,7 +2959,6 @@ chase_symlinks (const char *pathspec)
 #else
   char buf[LT_PATHMAX];
   struct stat s;
-  int rv = 0;
   char *tmp_pathspec = xstrdup (pathspec);
   char *p;
   int has_symlinks = 0;
@@ -7359,4 +7358,3 @@ build_old_libs=`case $build_libtool_libs in yes) echo no;; *) echo yes;; esac`
 # End:
 # vi:sw=2
 ]])
-
