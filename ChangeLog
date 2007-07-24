@@ -1,3 +1,10 @@
+2007-07-24  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* mdemo/main.c (test_dl, main): Try lt_dlopenext as well.
+	* tests/mdemo-exec.test: Also try absolute library names.
+	* THANKS: Update.
+	Report by Brian Barrett.
+
 2007-07-23  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* doc/fdl.texi: Update to GFDL 1.2.

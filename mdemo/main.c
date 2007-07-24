@@ -1,5 +1,5 @@
 /* main.c -- mdemo test program
-   Copyright (C) 1998-2000 Free Software Foundation, Inc.
+   Copyright (C) 1998-2000, 2007 Free Software Foundation, Inc.
    Originally by Thomas Tanner <tanner@ffii.org>
    This file is part of GNU Libtool.
 
@@ -23,7 +23,7 @@ USA. */
 #include <stdio.h>
 
 int
-test_dl (filename)
+test_dl (filename, test_ext)
   char *filename;
 {
   lt_dlhandle handle;	
@@ -34,7 +34,11 @@ test_dl (filename)
   int *pnothing = 0;
   int ret = 0;
 
-  handle = lt_dlopen(filename);
+  if (test_ext)
+    handle = lt_dlopenext (filename);
+  else
+    handle = lt_dlopen (filename);
+
   if (!handle) {
     fprintf (stderr, "can't open the module %s!\n", filename);
     fprintf (stderr, "error was: %s\n", lt_dlerror());
@@ -170,6 +174,7 @@ main (argc, argv)
 {
   int i;
   int ret = 0;
+  char *p;
 
   printf ("Welcome to GNU libtool mdemo!\n");
 
@@ -184,8 +189,18 @@ main (argc, argv)
   }
 
   for (i = 1; i < argc; i++)
-    if (test_dl(argv[i]))
+  {
+    if (test_dl(argv[i], 0))
        ret = 1;
+    p = strrchr(argv[i], '.');
+    if (p)
+      {
+	*p = '\0';
+	if (test_dl(argv[i], 1))
+	  ret = 1;
+	*p = '.';
+      }
+  }
 
   if (test_dlself())
     ret = 1;
