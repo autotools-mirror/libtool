@@ -1,6 +1,6 @@
 /* main.c -- mdemo test program
 
-   Copyright (C) 1998-2000, 2006 Free Software Foundation, Inc.
+   Copyright (C) 1998-2000, 2006, 2007 Free Software Foundation, Inc.
    Written by Thomas Tanner, 1998
 
    This file is part of GNU Libtool.
@@ -32,7 +32,7 @@ extern int myfunc (void);
 LT_END_C_DECLS
 
 int
-test_dl (char *filename)
+test_dl (char *filename, int test_ext)
 {
   lt_dlhandle handle;	
   const lt_dlinfo *info;
@@ -42,7 +42,11 @@ test_dl (char *filename)
   int *pnothing = 0;
   int ret = 0;
 
-  handle = lt_dlopen(filename);
+  if (test_ext)
+    handle = lt_dlopenext (filename);
+  else
+    handle = lt_dlopen (filename);
+
   if (!handle) {
     fprintf (stderr, "can't open the module %s!\n", filename);
     fprintf (stderr, "error was: %s\n", lt_dlerror());
@@ -206,6 +210,7 @@ main (int argc, char **argv)
 {
   int i;
   int ret = 0;
+  char *p;
 
   printf ("Welcome to GNU libtool mdemo!\n");
 
@@ -220,8 +225,18 @@ main (int argc, char **argv)
   }
 
   for (i = 1; i < argc; i++)
-    if (test_dl(argv[i]))
+  {
+    if (test_dl(argv[i], 0))
        ret = 1;
+    p = strrchr(argv[i], '.');
+    if (p)
+      {
+	*p = '\0';
+	if (test_dl(argv[i], 1))
+	  ret = 1;
+	*p = '.';
+      }
+  }
 
   if (test_dlself())
     ret = 1;

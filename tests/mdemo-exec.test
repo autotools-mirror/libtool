@@ -1,7 +1,7 @@
 #! /bin/sh
 # mdemo-exec.test - check that programs in the mdemo subdirectory are viable
 #
-#   Copyright (C) 2003, 2004, 2005 Free Software Foundation, Inc.
+#   Copyright (C) 2003, 2004, 2005, 2007 Free Software Foundation, Inc.
 #   Written by Gary V. Vaughan, 2003
 #
 #   This file is part of GNU Libtool.
@@ -33,5 +33,7 @@ func_exec "tests/mdemo/mdemo_static$EXEEXT tests/mdemo/foo1.la tests/mdemo/libfo
 	  "try_iterate: .*libfoo2"
 func_exec "tests/mdemo/mdemo$EXEEXT tests/mdemo/foo1.la tests/mdemo/libfoo2.la" \
 	  "try_iterate: .*libfoo2"
+func_exec "tests/mdemo/mdemo_static$EXEEXT `pwd`/tests/mdemo/foo1.la `pwd`/tests/mdemo/libfoo2.la"
+func_exec "tests/mdemo/mdemo$EXEEXT `pwd`/tests/mdemo/foo1.la `pwd`/tests/mdemo/libfoo2.la"
 
 exit $exec_status
