@@ -1,3 +1,8 @@
+2007-07-27  Peter Rosin  <peda@lysator.liu.se>
+
+	* Makefile.am: Pass STRIP through to the testsuite, so that
+	tests that run configure will use the same strip program.
+
 2007-07-24  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* tests/mdemo-exec.test: Also try absolute library names.
