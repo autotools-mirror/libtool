@@ -1,3 +1,10 @@
+2007-08-05  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* libltdl/ltdl.c (try_dlopen): Use `attempt' rather than
+	`filename', as the former has the needed extension when called
+	by lt_dlopenext.
+	Report by Brian Barrett.
+
 2007-07-27  Peter Rosin  <peda@lysator.liu.se>
 
 	* Makefile.am: Pass STRIP through to the testsuite, so that

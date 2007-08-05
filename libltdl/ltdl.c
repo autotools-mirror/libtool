@@ -1255,7 +1255,7 @@ try_dlopen (lt_dlhandle *phandle, const char *filename, const char *ext,
 	    }
 	  newhandle = *phandle;
 
-	  if (tryall_dlopen (&newhandle, filename, advise, vtable) == 0)
+	  if (tryall_dlopen (&newhandle, attempt, advise, vtable) == 0)
 	    {
 	      goto register_handle;
 	    }
@@ -1317,7 +1317,7 @@ try_dlopen (lt_dlhandle *phandle, const char *filename, const char *ext,
 	}
       if (!file)
 	{
-	  file = fopen (filename, LT_READTEXT_MODE);
+	  file = fopen (attempt, LT_READTEXT_MODE);
 	}
 
       /* If we didn't find the file by now, it really isn't there.  Set
@@ -1415,7 +1415,7 @@ try_dlopen (lt_dlhandle *phandle, const char *filename, const char *ext,
 #endif
 		   )))
 	{
-	  if (tryall_dlopen (&newhandle, filename, advise, 0) != 0)
+	  if (tryall_dlopen (&newhandle, attempt, advise, 0) != 0)
 	    {
 	      newhandle = NULL;
 	    }
