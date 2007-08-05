@@ -1,3 +1,9 @@
+2007-08-05  Tilman Koschnick  <til@subnetz.org>  (tiny change)
+
+	* libtool.m4 (_LT_AC_LANG_CXX_CONFIG)
+	(AC_LIBTOOL_PROG_COMPILER_PIC): [ linux ]: Treat pgcpp as
+	Portland Group C++ compiler as well.
+
 2007-07-24  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* mdemo/main.c (test_dl, main): Try lt_dlopenext as well.
