@@ -1,3 +1,9 @@
+2007-08-15  Dirk Mueller  <dmueller@suse.de>  (tiny change)
+	    Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* libltdl/ltdl.c (try_dlopen): Avoid a strlen.  When reading .la
+	files, cope with files that are not newline-terminated.
+
 2007-08-05  Tilman Koschnick  <til@subnetz.org>  (tiny change)
 
 	* libtool.m4 (_LT_AC_LANG_CXX_CONFIG)
