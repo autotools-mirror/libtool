@@ -1017,14 +1017,16 @@ parse_dotla_file(FILE *file, char **dlname, char **libdir, char **deplibs,
 
   while (!feof (file))
     {
+      line[line_len-2] = '\0';
       if (!fgets (line, (int) line_len, file))
 	{
 	  break;
 	}
 
       /* Handle the case where we occasionally need to read a line
-	 that is longer than the initial buffer size.  */
-      while ((line[LT_STRLEN(line) -1] != '\n') && (!feof (file)))
+	 that is longer than the initial buffer size.
+         Behave even if the file contains NUL bytes due to corruption. */
+      while (line[line_len-2] != '\0' && line[line_len-2] != '\n' && !feof (file))
 	{
 	  line = REALLOC (char, line, line_len *2);
 	  if (!line)
@@ -1033,6 +1035,7 @@ parse_dotla_file(FILE *file, char **dlname, char **libdir, char **deplibs,
 	      ++errors;
 	      goto cleanup;
 	    }
+	  line[line_len * 2 - 2] = '\0';
 	  if (!fgets (&line[line_len -1], (int) line_len +1, file))
 	    {
 	      break;
