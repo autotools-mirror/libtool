@@ -1,3 +1,9 @@
+2007-08-16  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* libtool.m4 (AC_LIBTOOL_PROG_COMPILER_PIC): [ mingw, cygwin ]
+	<GCJ>: Do not use -DDLL_EXPORT.
+	Report by Ross Ridge <rridge@csclub.uwaterloo.ca>.
+
 2007-08-15  Dirk Mueller  <dmueller@suse.de>  (tiny change)
 	    Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
