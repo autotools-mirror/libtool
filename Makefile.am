@@ -135,7 +135,7 @@ edit = sed \
 	-e 's,@pkgdatadir\@,$(pkgdatadir),g' \
 	-e 's,@host_triplet\@,$(host_triplet),g' \
 	-e 's,@prefix\@,$(prefix),g' \
-	-e "s,@configure_input\@,Generated from $$input; do not edit by hand,g"
+	-e "s,@configure_input\@,Generated from $$input.,g"
 
 sh_files	= $(auxdir)/general.m4sh $(auxdir)/getopt.m4sh
 EXTRA_DIST     += bootstrap $(srcdir)/libtoolize.in $(auxdir)/ltmain.m4sh \

@@ -1,3 +1,11 @@
+2007-08-16  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* Makefile.am (edit): Do not warn against manual editing for the
+	generated files libtool, libtoolize, libltdl/m4/ltversion.m4,
+	tests/defs, as they are still in a preferred source code form as
+	required by GPL.
+	Report by DJ Delorie.
+
 2007-08-15  Dirk Mueller  <dmueller@suse.de>  (tiny change)
 	    Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
