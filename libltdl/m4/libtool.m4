@@ -2330,7 +2330,7 @@ linux* | k*bsd*-gnu)
   eval "libdir=/foo; wl=\"$_LT_TAGVAR(lt_prog_compiler_wl, $1)\"; \
        LDFLAGS=\"\$LDFLAGS $_LT_TAGVAR(hardcode_libdir_flag_spec, $1)\""
   AC_LINK_IFELSE([AC_LANG_PROGRAM([],[])],
-    [AS_IF([ ($OBJDUMP -p conftest$ac_exeext) 2>/dev/null | grep "RUNPATH.*$libdir"],
+    [AS_IF([ ($OBJDUMP -p conftest$ac_exeext) 2>/dev/null | grep "RUNPATH.*$libdir" >/dev/null],
        [shlibpath_overrides_runpath=yes])])
   LDFLAGS=$save_LDFLAGS
   libdir=$save_libdir
