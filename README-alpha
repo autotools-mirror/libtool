@@ -90,7 +90,8 @@ using (by typing `libtool --version').
 
 * Run ./bootstrap.
 
-* Run ./configure and then make.
+* Run ./configure and then make.  Do not reuse an existing build tree,
+  remove an old config.status file if present.
 
 * Run `make fetch', which will fetch new versions of the files that are
   maintained outside of libtool.

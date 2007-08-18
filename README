@@ -65,7 +65,8 @@ rerun the group with FAILures to get verbose output.
 To run a test group in isolation (say, you think you have fixed a bug,
 but don't want to rerun the entire suite), you can do it like this:
 
-  env TESTS='cdemo-static.test cdemo-make.test cdemo-exec.test' make check
+  env TESTS='cdemo-static.test cdemo-make.test cdemo-exec.test' \
+  make -e check
 
 Providing that you have a FAIL from the most recent group from a
 particular demo directory (like the cdemo-static.test group above), you
@@ -78,7 +79,7 @@ bug report mailing list, <bug-libtool@gnu.org>.  You can generate verbose
 test output like this:
 
   env VERBOSE=1 TESTS='cdemo-static.test cdemo-make.test cdemo-exec.test' \
-  make check
+  make -e check
 
 Alternatively, because each test is a shell script, in a non VPATH build,
 you can simply execute the tests, they will be verbose.
