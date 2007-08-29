@@ -1,6 +1,6 @@
 /* slist.c -- generalised singly linked lists
 
-   Copyright (C) 2000, 2004 Free Software Foundation, Inc.
+   Copyright (C) 2000, 2004, 2007 Free Software Foundation, Inc.
    Written by Gary V. Vaughan, 2000
 
    NOTE: The canonical source of this file is maintained with the
@@ -101,6 +101,7 @@ slist_remove (SList **phead, SListCallback *find, void *matchdata)
 	    {
 	      stale		= head->next;
 	      head->next	= stale->next;
+	      break;
 	    }
 	}
     }

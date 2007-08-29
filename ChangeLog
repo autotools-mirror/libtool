@@ -1,5 +1,9 @@
 2007-08-29  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* libltdl/slist.c (slist_remove): When a matching item is found,
+	break out of the loop to return the first match; also fixes
+	possible NULL dereference.
+
 	* libltdl/m4/libtool.m4 (_LT_COMPILER_PIC, _LT_LINKER_SHLIBS)
 	(_LT_LANG_CXX_CONFIG) [ linux ]: Add support for IBM XL 8.0
 	C/C++ (xlc*, xlC*) and IBM XL Fortran 10.1 (xlf*) on GNU/Linux,
