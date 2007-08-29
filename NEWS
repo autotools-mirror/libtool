@@ -73,8 +73,8 @@ New in 2.1a: 2007-??-??; CVS version 2.1a, Libtool team:
   - Improved support for UnixWare.
   - Initial support for RDOS.
   - Initial Support for FC (modern Fortran).
-  - Support for Portland Group compiler and the Sun compiler suite on
-    GNU/Linux.
+  - Support for Portland Group compiler, the Sun compiler suite on GNU/Linux,
+    and initial support for the IBM compiler suite on GNU/Linux/ppc.
   - Support for linux-dietlibc (`diet' as well as `diet-dyn', separately).
   - Building libltdl with a C++ compiler has been undusted.
   - On (AIX?,) HP-UX, and OpenBSD, hardcoding has been changed to prefer

@@ -1,3 +1,13 @@
+2007-08-29  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* libltdl/m4/libtool.m4 (_LT_COMPILER_PIC, _LT_LINKER_SHLIBS)
+	(_LT_LANG_CXX_CONFIG) [ linux ]: Add support for IBM XL 8.0
+	C/C++ (xlc*, xlC*) and IBM XL Fortran 10.1 (xlf*) on GNU/Linux,
+	tested on ppc, pending a $shlibpath_var related fix.
+	(_LT_SYS_HIDDEN_LIBDEPS): Double-quote $output_verbose_link_cmd
+	properly during evaluation, obsoleting $no_glob_subst mangling.
+	* NEWS: Update.
+
 2007-08-18  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* libltdl/m4/libtool.m4 (_LT_SYS_DYNAMIC_LINKER) [ linux ]
