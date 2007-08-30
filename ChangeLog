@@ -1,3 +1,8 @@
+2007-08-30  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* libltdl/ltdl.c (has_library_ext): Remove dead code.
+	Coverity report CID 561 against Open MPI via Jeff Squyres.
+
 2007-08-29  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* libltdl/slist.c (slist_remove): When a matching item is found,

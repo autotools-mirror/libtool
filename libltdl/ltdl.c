@@ -1479,11 +1479,9 @@ static int
 has_library_ext (const char *filename)
 {
   char *	ext     = 0;
-  size_t	len;
 
   assert (filename);
 
-  len = LT_STRLEN (filename);
   ext = strrchr (filename, '.');
 
   if (ext && ((streq (ext, archive_ext))
