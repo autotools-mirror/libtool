@@ -194,7 +194,7 @@ vm_open (lt_user_data LT__UNUSED loader_data, const char *filename,
 /* A function called through the vtable when a particular module
    should be unloaded.  */
 static int
-vm_close (lt_user_data LT__UNUSED loader_data, lt_module module)
+vm_close (lt_user_data LT__UNUSED loader_data, lt_module LT__UNUSED module)
 {
   /* Just to silence gcc -Wall */
   module = 0;

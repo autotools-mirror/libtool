@@ -1,5 +1,8 @@
 2007-08-30  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* libltdl/loaders/preopen.c (vm_close): `module' is unused.
+	Coverity report CID 158 via Jeff Squyres.
+
 	* libltdl/ltdl.c (parse_dotla_file): If we run out of memory,
 	do not close the .la file twice.
 	Coverity report CID 440 via Jeff Squyres.
