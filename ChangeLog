@@ -1,5 +1,9 @@
 2007-08-30  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* libltdl/ltdl.c (parse_dotla_file): If we run out of memory,
+	do not close the .la file twice.
+	Coverity report CID 440 via Jeff Squyres.
+
 	* libltdl/ltdl.c (has_library_ext): Remove dead code.
 	Coverity report CID 561 against Open MPI via Jeff Squyres.
 

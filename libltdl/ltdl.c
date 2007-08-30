@@ -1031,7 +1031,6 @@ parse_dotla_file(FILE *file, char **dlname, char **libdir, char **deplibs,
 	  line = REALLOC (char, line, line_len *2);
 	  if (!line)
 	    {
-	      fclose (file);
 	      ++errors;
 	      goto cleanup;
 	    }
