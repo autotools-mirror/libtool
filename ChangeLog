@@ -1,5 +1,7 @@
 2007-09-01  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* NEWS: Update.
+
 	* libltdl/ltdl.c (trim): Fix possible write beyond array bound.
 
 	* libltdl/ltdl.c (try_dlopen): Do not test array address of
