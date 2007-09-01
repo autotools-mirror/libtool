@@ -1,3 +1,8 @@
+2007-09-01  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* libltdl/ltdl.c (tryall_dlopen_module): Fix string length
+	computation: do not allocate more than needed.
+
 2007-08-30  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* libltdl/loaders/preopen.c (vm_close): `module' is unused.

@@ -484,7 +484,7 @@ tryall_dlopen_module (lt_dlhandle *handle, const char *prefix,
 
   /* Allocate memory, and combine DIRNAME and MODULENAME into it.
      The PREFIX (if any) is handled below.  */
-  filename  = MALLOC (char, dirname_len + 1 + filename_len + 1);
+  filename  = MALLOC (char, filename_len + 1);
   if (!filename)
     return 1;
 
