@@ -96,6 +96,9 @@ New in 2.1a: 2007-??-??; CVS version 2.1a, Libtool team:
   - Improve linking with C++ libraries on Solaris with Sun compiler.
   - Fix installation of libraries that are required by installation
     commands such as `ln' or `rm'.
+  - More robust parsing of mangled `.la' files inside libltdl, fixing a
+    possible overrun and a crash due to memory exhaustion.
+  - Fix compile command line for gcj on MinGW.
   - Loads of smaller bug fixes.
 
 
