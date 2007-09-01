@@ -3217,7 +3217,7 @@ try_dlopen (phandle, filename)
 	    }
 #endif
 #ifdef LTDL_SYSSEARCHPATH
-	  if (!file && sys_search_path)
+	  if (!file && *sys_search_path)
 	    {
 	      file = find_file (sys_search_path, base_name, &dir);
 	    }
