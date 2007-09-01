@@ -1,5 +1,8 @@
 2007-09-01  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* libltdl/ltdl.c (try_dlopen): Fix computation of extension,
+	avoids subtracting pointer from NULL pointer.
+
 	* libltdl/ltdl.c (try_dlopen, lt_dlforeachfile): Do not test
 	array address of sys_dlsearch_path against NULL, rather test for
 	nonempty contents.
