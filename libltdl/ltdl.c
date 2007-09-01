@@ -3043,7 +3043,7 @@ trim (dest, str)
 	return 1;
 
       strncpy(tmp, &str[1], (end - str) - 1);
-      tmp[len-3] = LT_EOS_CHAR;
+      tmp[(end - str) - 1] = LT_EOS_CHAR;
       *dest = tmp;
     }
   else
