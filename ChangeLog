@@ -1,5 +1,7 @@
 2007-09-01  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* libltdl/ltdl.c (trim): Fix possible write beyond array bound.
+
 	* libltdl/ltdl.c (lt_dlopenadvise): Instead of asserting, return
 	FILE_NOT_FOUND if the filename is "".
 
