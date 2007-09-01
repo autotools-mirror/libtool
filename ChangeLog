@@ -1,5 +1,8 @@
 2007-09-01  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* libltdl/ltdl.c (lt_dlopenadvise): Instead of asserting, return
+	FILE_NOT_FOUND if the filename is "".
+
 	* libltdl/ltdl.c (try_dlopen): Fix computation of extension,
 	avoids subtracting pointer from NULL pointer.
 

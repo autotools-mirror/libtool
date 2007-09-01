@@ -1599,9 +1599,8 @@ lt_dlopenadvise (const char *filename, lt_dladvise advise)
 
       return handle;
     }
-  else
+  else if (filename && *filename)
     {
-      assert (filename);
 
       /* First try appending ARCHIVE_EXT.  */
       errors += try_dlopen (&handle, filename, archive_ext, advise);
