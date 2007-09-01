@@ -1,5 +1,10 @@
 2007-09-01  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* libltdl/ltdl.c (try_dlopen, lt_dlforeachfile): Do not test
+	array address of sys_dlsearch_path against NULL, rather test for
+	nonempty contents.
+	Coverity reports CID 148 and CID 149 via Jeff Squyres.
+
 	* libltdl/ltdl.c (tryall_dlopen_module): Fix string length
 	computation: do not allocate more than needed.
 

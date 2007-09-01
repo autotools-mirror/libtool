@@ -1311,7 +1311,7 @@ try_dlopen (lt_dlhandle *phandle, const char *filename, const char *ext,
 	    }
 #endif
 #if defined(LT_DLSEARCH_PATH)
-	  if (!file && sys_dlsearch_path)
+	  if (!file && *sys_dlsearch_path)
 	    {
 	      file = find_file (sys_dlsearch_path, base_name, &dir);
 	    }
@@ -1849,7 +1849,7 @@ lt_dlforeachfile (const char *search_path,
 	}
 #endif
 #if defined(LT_DLSEARCH_PATH)
-      if (!is_done && sys_dlsearch_path)
+      if (!is_done && *sys_dlsearch_path)
 	{
 	  is_done = foreach_dirinpath (sys_dlsearch_path, 0,
 				       foreachfile_callback, fpptr, data);
