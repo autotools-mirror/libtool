@@ -146,13 +146,18 @@ lt_dlloader_get	(lt_dlloader loader)
 /* Return the contents of the first item in the global loader list
    with a matching NAME after removing it from that list.  If there
    was no match, return NULL; if there is an error, return NULL and
-   set an error for lt_dlerror; in either case, the loader list is
-   not changed if NULL is returned.  */
+   set an error for lt_dlerror; do not set an error if only resident
+   modules need this loader; in either case, the loader list is not
+   changed if NULL is returned.  */
 lt_dlvtable *
 lt_dlloader_remove (char *name)
 {
   const lt_dlvtable *	vtable	= lt_dlloader_find (name);
-  lt__handle *		handle	= 0;
+  static const char	id_string[] = "lt_dlloader_remove";
+  lt_dlinterface_id	iface;
+  lt_dlhandle		handle = 0;
+  int			in_use = 0;
+  int			in_use_by_resident = 0;
 
   if (!vtable)
     {
@@ -161,13 +166,23 @@ lt_dlloader_remove (char *name)
     }
 
   /* Fail if there are any open modules which use this loader.  */
-  for  (handle = 0; handle; handle = handle->next)
+  iface = lt_dlinterface_register (id_string, NULL);
+  while ((handle = lt_dlhandle_iterate (iface, handle)))
     {
-      if (handle->vtable == vtable)
+      lt__handle *cur = (lt__handle *) handle;
+      if (cur->vtable == vtable)
 	{
-	  LT__SETERROR (REMOVE_LOADER);
-	  return 0;
+	  in_use = 1;
+	  if (lt_dlisresident (handle))
+	    in_use_by_resident = 1;
 	}
+    }
+  lt_dlinterface_free (iface);
+  if (in_use)
+    {
+      if (!in_use_by_resident)
+	LT__SETERROR (REMOVE_LOADER);
+      return 0;
     }
 
   /* Call the loader finalisation function.  */

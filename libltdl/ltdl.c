@@ -310,6 +310,12 @@ lt_dlexit (void)
 	    break;
 	}
 
+      /* When removing loaders, we can only find out failure by testing
+	 the error string, so avoid a spurious one from an earlier
+	 failed command. */
+      if (!errors)
+	LT__SETERRORSTR (0);
+
       /* close all loaders */
       for (loader = (lt_dlloader *) lt_dlloader_next (NULL); loader;)
 	{
@@ -322,7 +328,11 @@ lt_dlexit (void)
 	    }
 	  else
 	    {
-	      ++errors;
+	      /* ignore errors due to resident modules */
+	      const char *err;
+	      LT__GETERROR (err);
+	      if (err)
+		++errors;
 	    }
 
 	  loader = next;

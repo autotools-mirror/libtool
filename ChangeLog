@@ -1,3 +1,18 @@
+2007-09-04  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* doc/libtool.texi (User defined module data)
+	<lt_dlinterface_register>: Document that a NULL place matches
+	all modules.
+	* libltdl/lt_dlloader.c (lt_dlloader_remove): Actually iterate
+	over all open modules when looking for modules that use it.
+	If a resident module is found, return but do not set the error
+	string.
+	* libltdl/ltdl.c (lt_dlexit): When removing dlloaders, ignore
+	errors that stem from earlier failed commands.  Exposed by the
+	lt_dladvise test.
+	Fixes regression over branch-1-5.
+	Memleak report as Coverity CID 19 via Jeff Squyres.
+
 2007-09-01  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* NEWS: Update.
