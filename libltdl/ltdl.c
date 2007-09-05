@@ -4307,17 +4307,18 @@ lt_dlcaller_get_data  (key, handle)
   LT_DLMUTEX_LOCK ();
 
   /* Locate the index of the element with a matching KEY.  */
-  {
-    int i;
-    for (i = 0; handle->caller_data[i].key; ++i)
-      {
-	if (handle->caller_data[i].key == key)
-	  {
-	    result = handle->caller_data[i].data;
-	    break;
-	  }
-      }
-  }
+  if (handle->caller_data)
+    {
+      int i;
+      for (i = 0; handle->caller_data[i].key; ++i)
+        {
+          if (handle->caller_data[i].key == key)
+            {
+              result = handle->caller_data[i].data;
+              break;
+            }
+        }
+    }
 
   LT_DLMUTEX_UNLOCK ();
 
