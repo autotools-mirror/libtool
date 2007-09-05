@@ -1035,7 +1035,7 @@ parse_dotla_file(FILE *file, char **dlname, char **libdir, char **deplibs,
 
       /* Handle the case where we occasionally need to read a line
 	 that is longer than the initial buffer size.
-         Behave even if the file contains NUL bytes due to corruption. */
+	 Behave even if the file contains NUL bytes due to corruption. */
       while (line[line_len-2] != '\0' && line[line_len-2] != '\n' && !feof (file))
 	{
 	  line = REALLOC (char, line, line_len *2);
@@ -2290,23 +2290,24 @@ lt_dlcaller_set_data (lt_dlinterface_id key, lt_dlhandle handle, void *data)
 }
 
 void *
-lt_dlcaller_get_data  (lt_dlinterface_id key, lt_dlhandle handle)
+lt_dlcaller_get_data (lt_dlinterface_id key, lt_dlhandle handle)
 {
   void *result = (void *) 0;
   lt__handle *cur = (lt__handle *) handle;
 
   /* Locate the index of the element with a matching KEY.  */
-  {
-    int i;
-    for (i = 0; cur->interface_data[i].key; ++i)
-      {
-	if (cur->interface_data[i].key == key)
-	  {
-	    result = cur->interface_data[i].data;
-	    break;
-	  }
-      }
-  }
+  if (cur->interface_data)
+    {
+      int i;
+      for (i = 0; cur->interface_data[i].key; ++i)
+	{
+	  if (cur->interface_data[i].key == key)
+	    {
+	      result = cur->interface_data[i].data;
+	      break;
+	    }
+	}
+    }
 
   return result;
 }

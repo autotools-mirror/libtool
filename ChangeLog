@@ -1,3 +1,8 @@
+2007-09-05  Eric Blake  <ebb9@byu.net>
+
+	* libltdl/ltdl.c (lt_dlcaller_get_data): Work even when no caller
+	has set data.
+
 2007-09-04  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* doc/libtool.texi (User defined module data)
