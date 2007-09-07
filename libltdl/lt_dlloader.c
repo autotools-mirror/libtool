@@ -52,7 +52,7 @@ loader_callback (SList *item, void *userdata)
 
   assert (vtable);
 
-  return streq (vtable->name, name) ? (void *) item : 0;
+  return streq (vtable->name, name) ? (void *) item : NULL;
 }
 
 
@@ -139,7 +139,7 @@ lt_dlloader_next (lt_dlloader loader)
 const lt_dlvtable *
 lt_dlloader_get	(lt_dlloader loader)
 {
-  return (const lt_dlvtable *) (loader ? ((SList *) loader)->userdata : 0);
+  return (const lt_dlvtable *) (loader ? ((SList *) loader)->userdata : NULL);
 }
 
 

@@ -1,3 +1,10 @@
+2007-09-07  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* libltdl/lt_dlloader.c (loader_callback, lt_dlloader_get): Use
+	NULL, not 0, for the benefit of too picky compilers like PGI.
+	* slist.c (slist_tail): Likewise.  Include stddef.h, for NULL.
+	Report by Jeff Squyres.
+
 2007-09-05  Eric Blake  <ebb9@byu.net>
 
 	* libltdl/ltdl.c (lt_dlcaller_get_data): Work even when no caller

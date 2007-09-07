@@ -31,6 +31,7 @@ or obtained by writing to the Free Software Foundation, Inc.,
 #include <assert.h>
 
 #include "slist.h"
+#include <stddef.h>
 
 static SList *	slist_sort_merge    (SList *left, SList *right,
 				     SListCompare *compare, void *userdata);
@@ -177,7 +178,7 @@ slist_cons (SList *item, SList *slist)
 SList *
 slist_tail (SList *slist)
 {
-  return slist ? slist->next : 0;
+  return slist ? slist->next : NULL;
 }
 
 /* Return a list starting at the Nth item of SLIST.  If SLIST is less
