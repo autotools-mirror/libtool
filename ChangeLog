@@ -1,3 +1,9 @@
+2007-10-09  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* libltdl/config/ltmain.m4sh (func_mode_compile): Accept
+	extension `.sx'.
+	* tests/suffix.test: Test it.
+
 2007-09-07  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* libltdl/lt_dlloader.c (loader_callback, lt_dlloader_get): Use
