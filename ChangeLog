@@ -1,3 +1,8 @@
+2007-10-09  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* ltmain.in: Accept extension `.sx'.
+	* tests/suffix.test: Test it.
+
 2007-09-05  Eric Blake  <ebb9@byu.net>
 
 	* libltdl/ltdl.c (lt_dlcaller_get_data): Work even when no caller
