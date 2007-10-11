@@ -1,3 +1,12 @@
+2007-10-11  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* libtool.m4 (AC_LIBTOOL_PROG_COMPILER_PIC)
+	<lt_cv_prog_compiler_pic_works>: Renamed from
+	lt_prog_compiler_pic_works.
+	<lt_cv_prog_compiler_static_works>: Renamed from
+	lt_prog_compiler_static_works.
+	* NEWS: Update.
+
 2007-10-09  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* ltmain.in: Accept extension `.sx'.
