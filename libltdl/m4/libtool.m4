@@ -3967,7 +3967,7 @@ _LT_TAGDECL([wl], [lt_prog_compiler_wl], [1],
 #
 if test -n "$_LT_TAGVAR(lt_prog_compiler_pic, $1)"; then
   _LT_COMPILER_OPTION([if $compiler PIC flag $_LT_TAGVAR(lt_prog_compiler_pic, $1) works],
-    [_LT_TAGVAR(lt_prog_compiler_pic_works, $1)],
+    [_LT_TAGVAR(lt_cv_prog_compiler_pic_works, $1)],
     [$_LT_TAGVAR(lt_prog_compiler_pic, $1)@&t@m4_if([$1],[],[ -DPIC],[m4_if([$1],[CXX],[ -DPIC],[])])], [],
     [case $_LT_TAGVAR(lt_prog_compiler_pic, $1) in
      "" | " "*) ;;
@@ -3984,7 +3984,7 @@ _LT_TAGDECL([pic_flag], [lt_prog_compiler_pic], [1],
 #
 wl=$_LT_TAGVAR(lt_prog_compiler_wl, $1) eval lt_tmp_static_flag=\"$_LT_TAGVAR(lt_prog_compiler_static, $1)\"
 _LT_LINKER_OPTION([if $compiler static flag $lt_tmp_static_flag works],
-  _LT_TAGVAR(lt_prog_compiler_static_works, $1),
+  _LT_TAGVAR(lt_cv_prog_compiler_static_works, $1),
   $lt_tmp_static_flag,
   [],
   [_LT_TAGVAR(lt_prog_compiler_static, $1)=])

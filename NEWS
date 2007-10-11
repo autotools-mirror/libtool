@@ -99,6 +99,9 @@ New in 2.1a: 2007-??-??; CVS version 2.1a, Libtool team:
   - More robust parsing of mangled `.la' files inside libltdl, fixing a
     possible overrun and a crash due to memory exhaustion.
   - Fix compile command line for gcj on MinGW.
+  - Some configure variables have been renamed to fix caching:
+    lt_prog_compiler_pic_works to lt_cv_prog_compiler_pic_works
+    lt_prog_compiler_static_works to lt_cv_prog_compiler_static_works.
   - Loads of smaller bug fixes.
 
 
