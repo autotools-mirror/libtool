@@ -1,5 +1,9 @@
 2007-10-12  Eric Blake  <ebb9@byu.net>
 
+	Whitespace cleanup.
+	* libltdl/m4/ltsugar.m4: Avoid space-tab in indents.
+	* libltdl/m4/libtool.m4: Avoid trailing space.
+
 	Deal with Autoconf 2.62's semantic change in m4_append.
 	* libltdl/m4/ltsugar.m4 (lt_append): Replace broken versions of
 	m4_append.

@@ -23,7 +23,7 @@ m4_define([lt_join],
 	 [1], [],
 	 [2], [[$2]],
 	 [m4_ifval([$2],
-	 	   [[$2][]m4_foreach(_lt_Arg, lt_car([m4_shiftn(2, $@)]),
+		   [[$2][]m4_foreach(_lt_Arg, lt_car([m4_shiftn(2, $@)]),
 	                   [_$0([$1], _lt_Arg)])],
 		   [$0([$1], m4_shiftn(2, $@))])])[]dnl
 ])
@@ -72,8 +72,8 @@ m4_define([lt_combine],
   [m4_if([$4], [], [],
     [lt_join(m4_quote(m4_default([$1], [[, ]])),
       lt_unquote(m4_split(m4_normalize(m4_foreach(_Lt_prefix, [$2],
-       		   [m4_foreach(_Lt_suffix, lt_car([m4_shiftn(3, $@)]),
-		   	       [_Lt_prefix[]$3[]_Lt_suffix ])])))))])])dnl
+		   [m4_foreach(_Lt_suffix, lt_car([m4_shiftn(3, $@)]),
+			       [_Lt_prefix[]$3[]_Lt_suffix ])])))))])])dnl
 ])
 
 

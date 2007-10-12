@@ -2143,7 +2143,7 @@ darwin* | rhapsody*)
   shlibpath_var=DYLD_LIBRARY_PATH
   shrext_cmds='`test .$module = .yes && echo .so || echo .dylib`'
 m4_if([$1], [],[
-  sys_lib_search_path_spec="$sys_lib_search_path_spec /usr/local/lib"]) 
+  sys_lib_search_path_spec="$sys_lib_search_path_spec /usr/local/lib"])
   sys_lib_dlsearch_path_spec='/usr/local/lib /lib /usr/lib'
   ;;
 
@@ -2324,7 +2324,7 @@ linux* | k*bsd*-gnu)
   finish_cmds='PATH="\$PATH:/sbin" ldconfig -n $libdir'
   shlibpath_var=LD_LIBRARY_PATH
   shlibpath_overrides_runpath=no
-  # Some binutils ld are patched to set DT_RUNPATH 
+  # Some binutils ld are patched to set DT_RUNPATH
   save_LDFLAGS=$LDFLAGS
   save_libdir=$libdir
   eval "libdir=/foo; wl=\"$_LT_TAGVAR(lt_prog_compiler_wl, $1)\"; \
@@ -7100,7 +7100,7 @@ func_basename ()
 # perform func_basename and func_dirname in a single function
 # call:
 #   dirname:  Compute the dirname of FILE.  If nonempty,
-#             add APPEND to the result, otherwise set result 
+#             add APPEND to the result, otherwise set result
 #             to NONDIR_REPLACEMENT.
 #             value returned in "$func_dirname_result"
 #   basename: Compute filename of FILE.
@@ -7174,7 +7174,7 @@ func_basename ()
 # perform func_basename and func_dirname in a single function
 # call:
 #   dirname:  Compute the dirname of FILE.  If nonempty,
-#             add APPEND to the result, otherwise set result 
+#             add APPEND to the result, otherwise set result
 #             to NONDIR_REPLACEMENT.
 #             value returned in "$func_dirname_result"
 #   basename: Compute filename of FILE.
