@@ -1,3 +1,9 @@
+2007-10-12  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* libltdl/config/ltmain.m4sh: Also sanitize `LANGUAGE'.
+	(func_mode_execute): Also restore `LANGUAGE', for old glibc.
+	Report by Paul Eggert against Autoconf.
+
 2007-10-11  Eric Blake  <ebb9@byu.net>
 
 	* libltdl/.cvsignore: Ignore argz.h.
