@@ -1,3 +1,13 @@
+2007-10-12  Eric Blake  <ebb9@byu.net>
+
+	Deal with Autoconf 2.62's semantic change in m4_append.
+	* libltdl/m4/ltsugar.m4 (lt_append): Replace broken versions of
+	m4_append.
+	(lt_if_append_uniq): Don't require separator to be overquoted, and
+	avoid broken m4_append.
+	(lt_dict_add): Fix typo.
+	* libltdl/m4/libtool.m4 (_LT_DECL): Don't overquote separator.
+
 2007-10-12  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* libltdl/config/ltmain.m4sh: Also sanitize `LANGUAGE'.
