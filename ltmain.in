@@ -113,7 +113,7 @@ esac
 # These must not be set unconditionally because not all systems understand
 # e.g. LANG=C (notably SCO).
 # We save the old values to restore during execute mode.
-for lt_var in LANG LC_ALL LC_CTYPE LC_COLLATE LC_MESSAGES
+for lt_var in LANG LANGUAGE LC_ALL LC_CTYPE LC_COLLATE LC_MESSAGES
 do
   eval "if test \"\${$lt_var+set}\" = set; then
 	  save_$lt_var=\$$lt_var
@@ -6479,7 +6479,7 @@ relink_command=\"$relink_command\""
       fi
 
       # Restore saved environment variables
-      for lt_var in LANG LC_ALL LC_CTYPE LC_COLLATE LC_MESSAGES
+      for lt_var in LANG LANGUAGE LC_ALL LC_CTYPE LC_COLLATE LC_MESSAGES
       do
 	eval "if test \"\${save_$lt_var+set}\" = set; then
 		$lt_var=\$save_$lt_var; export $lt_var
