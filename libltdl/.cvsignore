@@ -6,6 +6,7 @@ INSTALL
 Makefile.in
 Makefile.am
 aclocal.m4
+argz.h
 autom4te.cache
 configure
 config-h.in
