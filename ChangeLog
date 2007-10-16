@@ -1,3 +1,9 @@
+2007-10-16  Eric Blake  <ebb9@byu.net>
+
+	Speed up bootstrap by improving lt_join.
+	* libltdl/m4/ltsugar.m4 (lt_join, _lt_join): Rewrite to mirror
+	Autoconf 2.62's faster implementation.
+
 2007-10-12  Eric Blake  <ebb9@byu.net>
 
 	Whitespace cleanup.

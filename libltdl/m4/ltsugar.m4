@@ -7,7 +7,7 @@
 # unlimited permission to copy and/or distribute it, with or without
 # modifications, as long as this notice is preserved.
 
-# serial 4 ltsugar.m4
+# serial 5 ltsugar.m4
 
 # This is to help aclocal find these macros, as it can't see m4_define.
 AC_DEFUN([LTSUGAR_VERSION], [m4_if([0.1])])
@@ -17,19 +17,15 @@ AC_DEFUN([LTSUGAR_VERSION], [m4_if([0.1])])
 # -----------------------------
 # Produce ARG1SEPARG2...SEPARGn, omitting [] arguments and their
 # associated separator.
+# Needed until we can rely on m4_join from Autoconf 2.62, since all earlier
+# versions in m4sugar had bugs.
 m4_define([lt_join],
-[m4_case([$#],
-	 [0], [m4_fatal([$0: too few arguments: $#])],
-	 [1], [],
-	 [2], [[$2]],
-	 [m4_ifval([$2],
-		   [[$2][]m4_foreach(_lt_Arg, lt_car([m4_shiftn(2, $@)]),
-	                   [_$0([$1], _lt_Arg)])],
-		   [$0([$1], m4_shiftn(2, $@))])])[]dnl
-])
+[m4_if([$#], [1], [],
+       [$#], [2], [[$2]],
+       [m4_if([$2], [], [], [[$2]_])$0([$1], m4_shift(m4_shift($@)))])])
 m4_define([_lt_join],
-[m4_ifval([$2],[$1][$2])[]dnl
-])
+[m4_if([$#$2], [2], [],
+       [m4_if([$2], [], [], [[$1$2]])$0([$1], m4_shift(m4_shift($@)))])])
 
 
 # lt_car(LIST)
