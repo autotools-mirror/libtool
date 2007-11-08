@@ -437,6 +437,7 @@ TESTSUITE_AT	= tests/testsuite.at \
 		  tests/link-order2.at \
 		  tests/fail.at \
 		  tests/shlibpath.at \
+		  tests/runpath-in-lalib.at \
 		  tests/static.at \
 		  tests/export.at \
 		  tests/search-path.at \

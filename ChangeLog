@@ -1,3 +1,9 @@
+2007-11-08  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* tests/runpath-in-lalib.at: New test.
+	* Makefile.am: Update.
+	Report by Benoit SIGOURE <tsuna@lrde.epita.fr>.
+
 2007-10-16  Eric Blake  <ebb9@byu.net>
 
 	Speed up bootstrap by improving lt_join.
