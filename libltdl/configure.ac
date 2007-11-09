@@ -1,6 +1,6 @@
 # Process this file with autoconf to create configure. -*- autoconf -*-
 #
-#    Copyright (C) 2004, 2005 Free Software Foundation, Inc.
+#    Copyright (C) 2004, 2005, 2007 Free Software Foundation, Inc.
 #    Written by Gary V. Vaughan, 2004
 #
 #    NOTE: The canonical source of this file is maintained with the
@@ -48,29 +48,12 @@ AC_CONFIG_MACRO_DIR([m4])
 LT_CONFIG_LTDL_DIR([.]) # I am me!
 
 
-## ---------------------------------------- ##
-## Display a configure time version banner. ##
-## ---------------------------------------- ##
-
-# This is a sanity check so we can see which version is used in bug reports.
-# It is assumed that we only want to see the date extension for cvs libtool
-# versions (i.e. "odd" letters) and not actual alpha releases.
-TIMESTAMP=
-case $lt_alpha in
-  [[acegikmoqsuwy]])
-    TIMESTAMP=`${CONFIG_SHELL} ${ac_aux_dir}/mkstamp < ${srcdir}/ChangeLog`
-    AS_BOX([Configuring AC_PACKAGE_TARNAME (Build:$TIMESTAMP) AC_PACKAGE_VERSION])
-    echo
-    ;;
-esac
-AC_SUBST([TIMESTAMP])
-
-
 ## ------------------------ ##
 ## Automake Initialisation. ##
 ## ------------------------ ##
 
 AM_INIT_AUTOMAKE([gnits])
+
 
 ## ------------------------------- ##
 ## Libtool specific configuration. ##

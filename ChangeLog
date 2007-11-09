@@ -1,3 +1,9 @@
+2007-11-09  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* libltdl/configure.ac: Drop the broken and long-disabled code
+	to output a banner for the libltdl configure.  Avoids the need
+	to ship mkstamp with libltdl.
+
 2007-11-08  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* tests/runpath-in-lalib.at: New test.
