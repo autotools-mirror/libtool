@@ -1,3 +1,11 @@
+2007-11-12  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Avoid warnings about conftest.dSYM directories on Mac OS X Leopard.
+	* libtool.m4 (_LT_LINKER_BOILERPLATE, AC_LIBTOOL_LINKER_OPTION)
+	(AC_LIBTOOL_SYS_GLOBAL_SYMBOL_PIPE): Remove conftest.dSYM
+	directory.
+	Report and analysis by Jeff Squyres and Peter O'Gorman.
+
 2007-10-12  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* ltmain.in: Also sanitize `LANGUAGE'.
