@@ -1,3 +1,11 @@
+2007-11-12  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Avoid warnings about conftest.dSYM directories on Mac OS X Leopard.
+	* libltdl/m4/libtool.m4 (_LT_LINKER_BOILERPLATE)
+	(_LT_LINKER_OPTION, _LT_CMD_GLOBAL_SYMBOLS): Remove
+	conftest.dSYM directory.
+	Report and analysis by Jeff Squyres and Peter O'Gorman.
+
 2007-11-09  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* libltdl/configure.ac: Drop the broken and long-disabled code
