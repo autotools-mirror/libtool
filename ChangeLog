@@ -1,3 +1,13 @@
+2007-11-15  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Avoid mixing functions and data pointers in callback functions.
+	* libltdl/ltdl.c (file_worker_func): New type.
+	(lt_dlforeachfile): Instead of passing a function pointer as a
+	data pointer, pass a pointer to a file_worker_func pointer.
+	(foreach_callback_func): Adjust.
+	Backport from 2006-08-31 fix in HEAD.
+	Report by Maciej Bliziński <maciej.blizinski@gmail.com>.
+
 2007-11-12  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	Avoid warnings about conftest.dSYM directories on Mac OS X Leopard.
