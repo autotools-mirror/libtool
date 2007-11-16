@@ -4526,9 +4526,9 @@ point into an included version of @code{libltdl}, and install that.
 By default, this macro will pass options to the @file{configure}
 script in the subdirectory named by @code{LT_CONFIG_LTDL_DIR} in order
 to cause it to be built as an installable library.  If you're not
-using automake, you will need to define @code{top_builddir} and
-@code{top_srcdir} in your makefile so that @code{LIBLTDL} and
-@code{LTDLINCL} are expanded properly.
+using automake, you will need to define @code{top_build_prefix},
+@code{top_builddir}, and @code{top_srcdir} in your makefile so that
+@code{LIBLTDL} and @code{LTDLINCL} are expanded properly.
 
 If used in conjunction with @code{LT_WITH_LTDL}, this macro must
 appear @strong{before} the call to @code{LT_WITH_LTDL}.  If you are
@@ -4549,9 +4549,9 @@ you want.
 By default, this macro will pass options to the @file{configure}
 script in the subdirectory named by @code{LT_CONFIG_LTDL_DIR} in order
 to cause it to be built as a convenience library.  If you're not
-using automake, you will need to define @code{top_builddir} and
-@code{top_srcdir} in your makefile so that @code{LIBLTDL} and
-@code{LTDLINCL} are expanded properly.
+using automake, you will need to define @code{top_build_prefix},
+@code{top_builddir} and @code{top_srcdir} in your makefile so that
+@code{LIBLTDL} and @code{LTDLINCL} are expanded properly.
 
 @code{AC_LIBLTDL_CONVENIENCE} is a deprecated alias for
 @code{LTDL_CONVENIENCE}.
@@ -4594,7 +4594,8 @@ use to compile with programs that include @file{ltdl.h}.
 If you're using the convenience libltdl, @var{LIBLTDL} will be the
 pathname for the convenience version of libltdl and @var{LTDLINCL} will be
 @option{-I} followed by the directory that contains libltdl, starting
-with @samp{$@{top_builddir@}/} and @samp{$@{top_srcdir@}/} respectively.
+with @samp{$@{top_build_prefix@}} if available, otherwise with
+@samp{$@{top_builddir@}/}, and @samp{$@{top_srcdir@}/} respectively.
 
 If you request an installed version of libltdl and one is
 found@footnote{@c
@@ -4608,7 +4609,8 @@ install libltdl.
 be empty (this is just a blind assumption that @file{ltdl.h} is
 somewhere in the include path if libltdl is in the library path).  If
 an installable version of libltdl must be built, its pathname,
-starting with @samp{$@{top_builddir@}/}, will be stored in
+starting with @samp{$@{top_build_prefix@}} if available, otherwise
+@samp{$@{top_builddir@}/}, will be stored in
 @var{LIBLTDL}, and @var{LTDLINCL} will be set just like in the case of
 convenience library.  So, when you want to link a program with
 libltdl, be it a convenience, installed or installable library, just
