@@ -1,3 +1,8 @@
+2007-11-24  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* libltdl/config/ltmain.m4sh (func_extract_an_archive)
+	(func_extract_archives): Add some quoting.
+
 2007-11-16  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	Use `${top_build_prefix}' for better compatibility with non-GNU make.
