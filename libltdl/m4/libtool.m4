@@ -51,12 +51,24 @@ m4_defun([LT_PREREQ],
        [$2])])
 
 
+# _LT_CHECK_BUILDDIR
+# ------------------
+# Complain if the absolute build directory name contains unusual characters
+m4_defun([_LT_CHECK_BUILDDIR],
+[case `pwd` in
+  *\ * | *\	*)
+    AC_MSG_WARN([Libtool does not cope well with whitespace in \`pwd\`]) ;;
+esac
+])
+
+
 # LT_INIT([OPTIONS])
 # ------------------
 AC_DEFUN([LT_INIT],
 [AC_PREREQ([2.58])dnl We use AC_INCLUDES_DEFAULT
 AC_BEFORE([$0], [LT_LANG])dnl
 AC_BEFORE([$0], [LT_OUTPUT])dnl
+AC_REQUIRE([_LT_CHECK_BUILDDIR])dnl
 
 dnl Autoconf doesn't catch unexpanded LT_ macros by default:
 m4_pattern_forbid([^_?LT_[A-Z_]+$])dnl
@@ -81,7 +93,7 @@ _LT_SETUP
 
 # Only expand once:
 m4_define([LT_INIT])
-])# _LT_INIT
+])# LT_INIT
 
 # Old names:
 AU_ALIAS([AC_PROG_LIBTOOL], [LT_INIT])

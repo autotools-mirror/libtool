@@ -1,5 +1,11 @@
 2007-11-24  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* libltdl/m4/libtool.m4 (_LT_CHECK_BUILDDIR): New macro.
+	Warn about whitespace in the absolute build tree name.
+	(LT_INIT): Use it.
+	* THANKS: Update.
+	Report by Jim Meyering.
+
 	* libltdl/config/ltmain.m4sh (func_extract_an_archive)
 	(func_extract_archives): Add some quoting.
 
