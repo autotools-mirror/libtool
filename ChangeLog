@@ -1,3 +1,9 @@
+2007-11-26  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* libltdl/m4/libtool.m4 (_LT_COMPILER_PIC) [ linux ]: The IBM
+	XL 8.0 C++ compiler may also be called xlc++*, not only xlC*.
+	Report by Nysal K Jan <jnysal@in.ibm.com>.
+
 2007-11-24  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* libltdl/m4/libtool.m4 (_LT_CHECK_BUILDDIR): New macro.
