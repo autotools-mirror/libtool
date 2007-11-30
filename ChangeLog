@@ -1,3 +1,7 @@
+2007-11-30  Stefan Sperling  <stsp@elego.de>  (tiny change)
+
+	* doc/libtool.texi (Linking executables): Reorder paragraphs.
+
 2007-11-26  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* libltdl/m4/libtool.m4 (_LT_COMPILER_PIC) [ linux ]: The IBM
