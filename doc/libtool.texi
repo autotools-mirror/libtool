@@ -714,19 +714,18 @@ burger$
 Note that libtool added the necessary run-time path flag, as well as
 @samp{-lm}, the library libhello.la depended upon.  Nice, huh?
 
+@cindex wrapper scripts for programs
+@cindex program wrapper scripts
+Notice that the executable, @code{hell}, was actually created in the
+@file{@value{objdir}} subdirectory.  Then, a wrapper script was created
+in the current directory.
+
 Since libtool created a wrapper script, you should use libtool to
 install it and debug it too.  However, since the program does not depend
 on any uninstalled libtool library, it is probably usable even without
 the wrapper script.  Libtool could probably be made smarter to avoid the
 creation of the wrapper script in this case, but this is left as an
 exercise for the reader.
-
-
-@cindex wrapper scripts for programs
-@cindex program wrapper scripts
-Notice that the executable, @code{hell}, was actually created in the
-@file{@value{objdir}} subdirectory.  Then, a wrapper script was created
-in the current directory.
 
 On NetBSD 1.2, libtool encodes the installation directory of
 @file{libhello}, by using the @samp{-R/usr/local/lib} compiler flag.

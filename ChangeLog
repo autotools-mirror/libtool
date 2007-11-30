@@ -1,3 +1,7 @@
+2007-11-30  Stefan Sperling  <stsp@elego.de>  (tiny change)
+
+	* doc/libtool.texi (Linking executables): Reorder paragraphs.
+
 2007-11-15  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	Avoid mixing functions and data pointers in callback functions.
