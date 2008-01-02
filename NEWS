@@ -1,6 +1,6 @@
 NEWS - list of user-visible changes between releases of GNU Libtool
 
-New in 1.5.25a: 2007-??-??; CVS version 1.5.25a, Libtool team:
+New in 1.5.25a: 2008-??-??; CVS version 1.5.25a, Libtool team:
 * More robust parsing of mangled `.la' files inside libltdl, fixing a
   possible overrun and a crash due to memory exhaustion.
 * Fix compile command line for gcj on MinGW.
