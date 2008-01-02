@@ -6184,7 +6184,10 @@ EOF
 	      # reloadable object file.  All subsequent reloadable object
 	      # files will link in the last one created.
 	      test -z "$concat_cmds" || concat_cmds=$concat_cmds~
-	      eval concat_cmds=\"\${concat_cmds}$reload_cmds $objlist $last_robj~\$RM $last_robj\"
+	      eval concat_cmds=\"\${concat_cmds}$reload_cmds $objlist $last_robj\"
+	      if test -n "$last_robj"; then
+	        eval concat_cmds=\"\${concat_cmds}~\$RM $last_robj\"
+	      fi
 	      delfiles="$delfiles $output"
 
 	    else
@@ -6199,7 +6202,7 @@ EOF
 	      # Append the command to create the export file.
 	      test -z "$concat_cmds" || concat_cmds=$concat_cmds~
 	      eval concat_cmds=\"\$concat_cmds$export_symbols_cmds\"
-	      if test -n "$output"; then
+	      if test -n "$last_robj"; then
 		eval concat_cmds=\"\$concat_cmds~\$RM $last_robj\"
 	      fi
 	    fi

@@ -1,5 +1,12 @@
 2008-01-02  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* libltdl/config/ltmain.m4sh (func_mode_link): When creating
+	reloadable object files, avoid issuing plain `rm -f' without
+	further arguments, even if the line length limit is ridiculously
+	low as in the `Run tests with low max_cmd_len' test.  This
+	failure is exposed on NetBSD.
+	Report by Patrick Welche.
+
 	* Makefile.am (EXTRA_DIST): Add ChangeLog.2007.
 	* ChangeLog.2007: New, rotated, from...
 	* ChangeLog: ...here.
