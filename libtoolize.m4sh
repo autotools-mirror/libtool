@@ -415,21 +415,20 @@ func_scan_files ()
         }
 	/_LT_CONFIG_LTDL_DIR(/d
 	/LT_CONFIG_LTDL_DIR(/ {
-	    s/^.*LT_CONFIG_LTDL_DIR([[	 ]*\([^]),]*\)[^,]*/ac_ltdldir=\1%%/
-	    s/%%[[, 	]*\([^])]*\).*$/ ac_ltdl_mode=\1%%/
-	    s/%%.*$//
+	    s,^.*LT_CONFIG_LTDL_DIR([[	 ]*\([^])]*\).*$,ac_ltdldir=\1,
 	    p
 	}
 	/A[CM]_PROG_LIBTOOL/ {
 	    s,^.*$,seen_libtool=:,
 	    p
 	}
-	/LT_INIT/	     {
+	/LT_INIT/	     	 {
 	    s,^.*$,seen_libtool=:,
 	    p
 	}
 	/LTDL_INIT/          {
-	    s,^.*$,seen_ltdl=:,
+	    s,^.*LTDL_INIT([[ 	]*\([^])]*\).*$,ltdl_options="\1",
+	    s,^.*LTDL_INIT[ 	]*$,seen_ltdl=:,
 	    p
 	}
 	/LT_WITH_LTDL/       {
@@ -456,7 +455,7 @@ func_scan_files ()
 
     # If $configure_ac contains AC_CONFIG_LTDL_DIR, check that its
     # arguments were not given in terms of a shell variable!
-    case "$ac_ltdldir$ac_ltdl_mode" in
+    case "$ac_ltdldir" in
       *\$*)
         func_fatal_error "can not handle variables in LT_CONFIG_LTDL_DIR"
         ;;
@@ -481,9 +480,26 @@ func_scan_files ()
     # Validate ltdl_mode. #
     # ------------------- #
 
-    test -n "$ac_ltdl_mode" && seen_ltdl=:
+    test -n "$ltdl_options" && seen_ltdl=:
 
-    # If neither --ltdl nor LT_CONFIG_LTDL_DIR are specified, default to
+    # If $configure_ac contains LTDL_INIT, check that its
+    # arguments were not given in terms of a shell variable!
+    case "$ltdl_options" in
+      *\$*)
+        func_fatal_error "can not handle variables in LTDL_INIT"
+        ;;
+    esac
+
+    # Extract mode name from ltdl_options
+    # FIXME: Diagnose multiple conflicting modes in ltdl_options
+    ac_ltdl_mode=
+    case " $ltdl_options " in
+      *" nonrecursive "*)  ac_ltdl_mode=nonrecursive	;;
+      *" recursive "*)     ac_ltdl_mode=recursive	;;
+      *" subproject "*)    ac_ltdl_mode=subproject	;;
+    esac
+
+    # If neither --ltdl nor an LTDL_INIT mode are specified, default to
     # `subproject'.  If both are specified, they must be the same.  Otherwise,
     # take the one that is given!
     case x$ac_ltdl_mode,x$ltdl_mode in
@@ -492,10 +508,9 @@ func_scan_files ()
       x,x*)	ltdl_mode=$ltdl_mode	;;
       *)
         test x"$ac_ltdl_mode" = x"$ltdl_mode" || \
-	    func_fatal_error "--$ltdl_mode does not match LT_CONFIG_LTDL_DIR($ac_ltdldir, $ac_ltdl_mode)"
+	    func_fatal_error "--$ltdl_mode does not match LTDL_INIT($ac_ltdl_mode)"
 	;;
     esac
-
 
     # ---------------- #
     # Validate auxdir. #

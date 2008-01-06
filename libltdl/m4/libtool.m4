@@ -68,6 +68,7 @@ AC_DEFUN([LT_INIT],
 [AC_PREREQ([2.58])dnl We use AC_INCLUDES_DEFAULT
 AC_BEFORE([$0], [LT_LANG])dnl
 AC_BEFORE([$0], [LT_OUTPUT])dnl
+AC_BEFORE([$0], [LTDL_INIT])dnl
 AC_REQUIRE([_LT_CHECK_BUILDDIR])dnl
 
 dnl Autoconf doesn't catch unexpanded LT_ macros by default:
@@ -80,7 +81,9 @@ AC_REQUIRE([LTSUGAR_VERSION])dnl
 AC_REQUIRE([LTVERSION_VERSION])dnl
 AC_REQUIRE([LTOBSOLETE_VERSION])dnl
 m4_require([_LT_PROG_LTMAIN])dnl
-m4_require([_LT_SET_OPTIONS], [_LT_SET_OPTIONS([$1])])dnl
+
+dnl Parse OPTIONS
+_LT_SET_OPTIONS([$0], [$1])
 
 # This can be used to rebuild libtool when needed
 LIBTOOL_DEPS="$ltmain"
@@ -617,10 +620,10 @@ do
       lt_cl_silent=: ;;
 
     -*) AC_MSG_ERROR([unrecognized option: $[1]
-Try `$[0] --help' for more information.]) ;;
+Try \`$[0] --help' for more information.]) ;;
 
     *) AC_MSG_ERROR([unrecognized argument: $[1]
-Try `$[0] --help for more information.]) ;;
+Try \`$[0] --help' for more information.]) ;;
   esac
   shift
 done

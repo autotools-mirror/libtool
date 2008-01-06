@@ -20,7 +20,9 @@ New in 2.1a: 2008-??-??; CVS version 2.1a, Libtool team:
     break if a different shell is used to execute the libtool script
     than the one it was configured for.
   - The macros AC_ENABLE_SHARED, AC_DISABLE_SHARED, AC_ENABLE_STATIC, and
-    AC_DISABLE_STATIC have been un-deprecated after deprecation in 1.9b.
+    AC_DISABLE_STATIC have been un-deprecated after deprecation in
+    1.9b.
+  - The macro LT_WITH_LTDL has been renamed to LTDL_INIT.
   - Fixed a branch-1-5/HEAD regression to only link uninstalled libraries
     statically with `-static'.  In order to compensate for this, there
     is a new link flag `-static-libtool-libs' to provide the previous
@@ -31,6 +33,14 @@ New in 2.1a: 2008-??-??; CVS version 2.1a, Libtool team:
   - Fix installation of libltdl so that it does not need Autoconf and
     Automake installed, in order to be usable in another package.  This
     lifts the restrictions introduced in 1.9b.
+  - Default convenience or installable libltdl builds can optionally
+    be declared using new `convenience' or `installable' options to
+    LTDL_INIT macro (as an alternative to individual LTDL_CONVENIENCE
+    or LTDL_INSTALLABLE invocations).
+  - New configure-time options to allow libltdl parent project builder
+    to choose between installed and shipped libltdl, when invoking
+    LTDL_INIT: --with-included-ltdl, --with-ltdl-include,
+    --with-ltdl-lib.
   - New LT_CONFIG_LTDL_DIR macro to specify a different directory name
     for a convenience libltdl.
   - libtoolize has been completely overhauled.
@@ -40,6 +50,8 @@ New in 2.1a: 2008-??-??; CVS version 2.1a, Libtool team:
     libtoolize.  The new recursive and non-recursive build modes for
     libltdl don't require a subconfigure any more.
     The Libtool package itself builds libltdl nonrecursively.
+  - The 'nonrecursive', 'recursive' and 'subproject' libltdl build
+    modes are given as LTDL_INIT options.
   - New multi-module-loader safe libltdl handle iteration APIs:
     lt_dlhandle_iterate, lt_dlhandle_fetch, lt_dlhandle_map.
   - New lt_dlinterface_register to maintain separation of concerns

@@ -1,20 +1,20 @@
 # ltdl.m4 - Configure ltdl for the target system. -*-Autoconf-*-
 #
-#   Copyright (C) 1999-2006, 2007 Free Software Foundation, Inc.
+#   Copyright (C) 1999-2006, 2007, 2008 Free Software Foundation, Inc.
 #   Written by Thomas Tanner, 1999
 #
 # This file is free software; the Free Software Foundation gives
 # unlimited permission to copy and/or distribute it, with or without
 # modifications, as long as this notice is preserved.
 
-# serial 12 LTDL_INIT
+# serial 13 LTDL_INIT
 
 # LT_CONFIG_LTDL_DIR(DIRECTORY, [LTDL-MODE])
 # ------------------------------------------
 # DIRECTORY contains the libltdl sources.  It is okay to call this
 # function multiple times, as long as the same DIRECTORY is always given.
 AC_DEFUN([LT_CONFIG_LTDL_DIR],
-[AC_BEFORE([$0], [LT_WITH_LTDL])
+[AC_BEFORE([$0], [LTDL_INIT])
 _$0($*)
 ])# LT_CONFIG_LTDL_DIR
 
@@ -33,16 +33,10 @@ m4_case(_LTDL_DIR,
 	    [],
 	[m4_fatal([multiple libltdl directories: `]_LTDL_DIR[', `]_ARG_DIR['])])])
 m4_popdef([_ARG_DIR])
-dnl If not otherwise defined, default to the 1.5.x compatible subproject mode:
-m4_if(_LTDL_MODE, [],
-	[m4_define([_LTDL_MODE], m4_default([$2], [subproject]))
-	m4_if([-1], [m4_bregexp(_LTDL_MODE, [\(subproject\|\(non\)?recursive\)])],
-		[m4_fatal([unknown libltdl mode: ]_LTDL_MODE)])])
 ])# LT_CONFIG_LTDL_DIR
 
 # Initialise:
 m4_define([_LTDL_DIR], [])
-m4_define([_LTDL_MODE], [])
 
 
 # _LT_BUILD_PREFIX
@@ -72,20 +66,35 @@ m4_define([_LT_BUILD_PREFIX],
 # define top_build_prefix, top_builddir, and top_srcdir appropriately
 # in your Makefiles.
 AC_DEFUN([LTDL_CONVENIENCE],
-[AC_BEFORE([$0], [LT_WITH_LTDL])dnl
+[AC_BEFORE([$0], [LTDL_INIT])dnl
 dnl Although the argument is deprecated and no longer documented,
 dnl LTDL_CONVENIENCE used to take a DIRECTORY orgument, if we have one
 dnl here make sure it is the same as any other declaration of libltdl's
 dnl location!  This also ensures lt_ltdl_dir is set when configure.ac is
 dnl not yet using an explicit LT_CONFIG_LTDL_DIR.
 m4_ifval([$1], [_LT_CONFIG_LTDL_DIR([$1])])dnl
+_$0()
+])# LTDL_CONVENIENCE
 
-case $enable_ltdl_convenience in
+# AC_LIBLTDL_CONVENIENCE accepted a directory argument in older libtools,
+# now we have LT_CONFIG_LTDL_DIR:
+AU_DEFUN([AC_LIBLTDL_CONVENIENCE],
+[_LT_CONFIG_LTDL_DIR([$1])
+_LTDL_CONVENIENCE])
+
+dnl aclocal-1.4 backwards compatibility:
+dnl AC_DEFUN([AC_LIBLTDL_CONVENIENCE], [])
+
+
+# _LTDL_CONVENIENCE
+# -----------------
+# Code shared by LTDL_CONVENIENCE and LTDL_INIT([convenience]).
+m4_defun([_LTDL_CONVENIENCE],
+[case $enable_ltdl_convenience in
   no) AC_MSG_ERROR([this package needs a convenience libltdl]) ;;
   "") enable_ltdl_convenience=yes
       ac_configure_args="$ac_configure_args --enable-ltdl-convenience" ;;
-  esac
-
+esac
 LIBLTDL='_LT_BUILD_PREFIX'"${lt_ltdl_dir+$lt_ltdl_dir/}libltdlc.la"
 LTDLINCL='-I${top_srcdir}'"${lt_ltdl_dir+/$lt_ltdl_dir}"
 
@@ -95,16 +104,7 @@ AC_SUBST([LTDLINCL])
 # For backwards non-gettext consistent compatibility...
 INCLTDL="$LTDLINCL"
 AC_SUBST([INCLTDL])
-])# LTDL_CONVENIENCE
-
-# AC_LIBLTDL_CONVENIENCE accepted a directory argument in older libtools,
-# now we have LT_CONFIG_LTDL_DIR:
-AU_DEFUN([AC_LIBLTDL_CONVENIENCE],
-[_LT_CONFIG_LTDL_DIR([$1])
-LTDL_CONVENIENCE])
-
-dnl aclocal-1.4 backwards compatibility:
-dnl AC_DEFUN([AC_LIBLTDL_CONVENIENCE], [])
+])# _LTDL_CONVENIENCE
 
 
 # LTDL_INSTALLABLE
@@ -120,31 +120,59 @@ dnl AC_DEFUN([AC_LIBLTDL_CONVENIENCE], [])
 # top_builddir, and top_srcdir appropriately in your Makefiles.
 # In the future, this macro may have to be called after LT_INIT.
 AC_DEFUN([LTDL_INSTALLABLE],
-[AC_BEFORE([$0], [LT_WITH_LTDL])dnl
+[AC_BEFORE([$0], [LTDL_INIT])dnl
 dnl Although the argument is deprecated and no longer documented,
 dnl LTDL_INSTALLABLE used to take a DIRECTORY orgument, if we have one
 dnl here make sure it is the same as any other declaration of libltdl's
 dnl location!  This also ensures lt_ltdl_dir is set when configure.ac is
 dnl not yet using an explicit LT_CONFIG_LTDL_DIR.
 m4_ifval([$1], [_LT_CONFIG_LTDL_DIR([$1])])dnl
+_$0()
+])# LTDL_INSTALLABLE
 
-AC_CHECK_LIB([ltdl], [lt_dlinit],
-  [test x"$enable_ltdl_install" != xyes && enable_ltdl_install=no],
-  [if test x"$enable_ltdl_install" = xno; then
-     AC_MSG_WARN([libltdl not installed, but installation disabled])
-   else
-     enable_ltdl_install=yes
-   fi
-  ])
-if test x"$enable_ltdl_install" = x"yes"; then
-  ac_configure_args="$ac_configure_args --enable-ltdl-install"
-  LIBLTDL='_LT_BUILD_PREFIX'"${lt_ltdl_dir+$lt_ltdl_dir/}libltdl.la"
-  LTDLINCL='-I${top_srcdir}'"${lt_ltdl_dir+/$lt_ltdl_dir}"
-else
-  ac_configure_args="$ac_configure_args --enable-ltdl-install=no"
-  LIBLTDL="-lltdl"
-  LTDLINCL=
+# AC_LIBLTDL_INSTALLABLE accepted a directory argument in older libtools,
+# now we have LT_CONFIG_LTDL_DIR:
+AU_DEFUN([AC_LIBLTDL_INSTALLABLE],
+[_LT_CONFIG_LTDL_DIR([$1])
+_LTDL_INSTALLABLE])
+
+dnl aclocal-1.4 backwards compatibility:
+dnl AC_DEFUN([AC_LIBLTDL_INSTALLABLE], [])
+
+
+# _LTDL_INSTALLABLE
+# -----------------
+# Code shared by LTDL_INSTALLABLE and LTDL_INIT([installable]).
+m4_defun([_LTDL_INSTALLABLE],
+[if test -f $prefix/lib/libltdl.la; then
+  lt_save_LDFLAGS="$LDFLAGS"
+  LDFLAGS="-L$prefix/lib $LDFLAGS"
+  AC_CHECK_LIB([ltdl], [lt_dlinit], [lt_lib_ltdl=yes])
+  LDFLAGS="$lt_save_LDFLAGS"
+  if test x"${lt_lib_ltdl-no}" = xyes; then
+    if test x"$enable_ltdl_install" != xyes; then
+      # Don't overwrite $prefix/lib/libltdl.la without --enable-ltdl-install
+      AC_MSG_WARN([not overwriting libltdl at $prefix, force with \`--enable-ltdl-install'])
+      enable_ltdl_install=no
+    fi
+  elif test x"$enable_ltdl_install" = xno; then
+    AC_MSG_WARN([libltdl not installed, but installation disabled])
+  fi
 fi
+
+# If configure.ac declared an installable ltdl, and the user didn't override
+# with --disable-ltdl-install, we will install the shipped libltdl.
+case $enable_ltdl_install in
+  no) ac_configure_args="$ac_configure_args --enable-ltdl-install=no"
+      LIBLTDL="-lltdl"
+      LTDLINCL=
+      ;;
+  *)  enable_ltdl_install=yes
+      ac_configure_args="$ac_configure_args --enable-ltdl-install"
+      LIBLTDL='${top_builddir}'"${lt_ltdl_dir+/$lt_ltdl_dir}/libltdl.la"
+      LTDLINCL='-I${top_srcdir}'"${lt_ltdl_dir+/$lt_ltdl_dir}"
+      ;;
+esac
 
 AC_SUBST([LIBLTDL])
 AC_SUBST([LTDLINCL])
@@ -153,15 +181,6 @@ AC_SUBST([LTDLINCL])
 INCLTDL="$LTDLINCL"
 AC_SUBST([INCLTDL])
 ])# LTDL_INSTALLABLE
-
-# AC_LIBLTDL_INSTALLABLE accepted a directory argument in older libtools,
-# now we have LT_CONFIG_LTDL_DIR:
-AU_DEFUN([AC_LIBLTDL_INSTALLABLE],
-[_LT_CONFIG_LTDL_DIR([$1])
-LTDL_INSTALLABLE])
-
-dnl aclocal-1.4 backwards compatibility:
-dnl AC_DEFUN([AC_LIBLTDL_INSTALLABLE], [])
 
 
 # _LTDL_MODE_DISPATCH
@@ -182,18 +201,22 @@ m4_define([$0], [])
 ])# _LTDL_MODE_DISPATCH
 
 
-# LT_WITH_LTDL
-# ------------
+# LTDL_INIT([OPTIONS])
+# --------------------
 # Clients of libltdl can use this macro to allow the installer to
 # choose between a shipped copy of the ltdl sources or a preinstalled
 # version of the library.  If the shipped ltdl sources are not in a
 # subdirectory named libltdl, the directory name must be given by
 # LT_CONFIG_LTDL_DIR.
-AC_DEFUN([LT_WITH_LTDL],
-[dnl If neither LT_CONFIG_LTDL_DIR, LTDL_CONVENIENCE nor LTDL_INSTALLABLE
-dnl was called yet, then for old times' sake, we assume libltdl is in an
-dnl eponymous directory:
-AC_PROVIDE_IFELSE([LT_CONFIG_LTDL_DIR], [], [_LT_CONFIG_LTDL_DIR([libltdl])])
+AC_DEFUN([LTDL_INIT],
+[dnl Parse OPTIONS
+_LT_SET_OPTIONS([$0], [$1])
+
+dnl If not otherwise defined, default to the 1.5.x compatible subproject mode:
+m4_if(_LTDL_MODE, [],
+        [m4_define([_LTDL_MODE], m4_default([$2], [subproject]))
+        m4_if([-1], [m4_bregexp(_LTDL_MODE, [\(subproject\|\(non\)?recursive\)])],
+                [m4_fatal([unknown libltdl mode: ]_LTDL_MODE)])])
 
 AC_ARG_WITH([included_ltdl],
     [AS_HELP_STRING([--with-included-ltdl],
@@ -215,49 +238,91 @@ if test "x$with_included_ltdl" != xyes; then
   )
 fi
 
-if test "x$enable_ltdl_install" != xyes; then
-  # If the user did not specify an installable libltdl, then default
-  # to a convenience lib.
-  LTDL_CONVENIENCE
+dnl If neither LT_CONFIG_LTDL_DIR, LTDL_CONVENIENCE nor LTDL_INSTALLABLE
+dnl was called yet, then for old times' sake, we assume libltdl is in an
+dnl eponymous directory:
+AC_PROVIDE_IFELSE([LT_CONFIG_LTDL_DIR], [], [_LT_CONFIG_LTDL_DIR([libltdl])])
+
+AC_ARG_WITH([ltdl_include],
+    [AS_HELP_STRING([--with-ltdl-include=DIR],
+                    [use the ltdl headers installed in DIR])])
+
+if test -n "$with_ltdl_include"; then
+  if test -f "$with_ltdl_include/ltdl.h"; then :
+  else
+    AC_MSG_ERROR([invalid ltdl include directory: \`$with_ltdl_include'])
+  fi
+else
+  with_ltdl_include=no
 fi
 
-if test "x$with_included_ltdl" = xno; then
-  # If the included ltdl is not to be used, then use the
-  # preinstalled libltdl we found.
-  AC_DEFINE([HAVE_LTDL], [1],
-    [Define this if a modern libltdl is already installed])
-  LIBLTDL=-lltdl
-  LTDLINCL=
-  INCLTDL=
+AC_ARG_WITH([ltdl_lib],
+    [AS_HELP_STRING([--with-ltdl-lib=DIR],
+                    [use the libltdl.la installed in DIR])])
+
+if test -n "$with_ltdl_lib"; then
+  if test -f "$with_ltdl_lib/libltdl.la"; then :
+  else
+    AC_MSG_ERROR([invalid ltdl library directory: \`$with_ltdl_lib'])
+  fi
+else
+  with_ltdl_lib=no
 fi
+
+case ,$with_included_ltdl,$with_ltdl_include,$with_ltdl_lib, in
+  ,yes,no,no,)
+	m4_case(m4_default(_LTDL_TYPE, [convenience]),
+	    [convenience], [_LTDL_CONVENIENCE],
+	    [installable], [_LTDL_INSTALLABLE],
+	  [m4_fatal([unknown libltdl build type: ]_LTDL_TYPE)])
+	;;
+  ,no,no,no,)
+	# If the included ltdl is not to be used, then use the
+	# preinstalled libltdl we found.
+	AC_DEFINE([HAVE_LTDL], [1],
+	  [Define this if a modern libltdl is already installed])
+	LIBLTDL=-lltdl
+	LTDLINCL=
+	;;
+  ,no*,no,*)
+	AC_MSG_ERROR([\`--with-ltdl-include' and \`--with-ltdl-lib' options must be used together])
+	;;
+  *)	with_included_ltdl=no
+	LIBLTDL="-L$with_ltdl_lib -lltdl"
+	LTDLINCL="-I$with_ltdl_include"
+	;;
+esac
+INCLTDL="$LTDLINCL"
 
 # Report our decision...
-AC_MSG_CHECKING([whether to use included libltdl])
-AC_MSG_RESULT([$with_included_ltdl])
+AC_MSG_CHECKING([where to find libltdl headers])
+AC_MSG_RESULT([$LTDLINCL])
+AC_MSG_CHECKING([where to find libltdl library])
+AC_MSG_RESULT([$LIBLTDL])
 
-dnl Be certain that LTDL_INIT is invoked if we are configuring libltdl
-dnl from here:
-m4_if(_LTDL_MODE, [subproject],
-	[_LTDL_MODE_DISPATCH],
-    [AC_PROVIDE_IFELSE([LTDL_INIT],
-	    [],
-	[LTDL_INIT
-	AC_DEFUN([LTDL_INIT], [])])])
-])# LT_WITH_LTDL
+_LTDL_SETUP
 
-# Old name:
-AU_ALIAS([AC_WITH_LTDL], [LT_WITH_LTDL])
+# Only expand once:
+m4_define([LTDL_INIT])
+])# LTDL_INIT
+
+# Old names:
+AU_DEFUN([AC_LIB_LTDL], [LTDL_INIT($@)])
+AU_DEFUN([AC_WITH_LTDL], [LTDL_INIT($@)])
+AU_DEFUN([LT_WITH_LTDL], [LTDL_INIT($@)])
 dnl aclocal-1.4 backwards compatibility:
+dnl AC_DEFUN([AC_LIB_LTDL], [])
 dnl AC_DEFUN([AC_WITH_LTDL], [])
+dnl AC_DEFUN([LT_WITH_LTDL], [])
 
 
-# LTDL_INIT
-# ---------
+# _LTDL_SETUP
+# -----------
 # Perform all the checks necessary for compilation of the ltdl objects
 #  -- including compiler checks and header checks.  This is a public
 # interface  mainly for the benefit of libltdl's own configure.ac, most
-# other users should call LT_WITH_LTDL instead.
-AC_DEFUN([LTDL_INIT],
+# other users should call LTDL_INIT instead.
+AC_DEFUN([_LTDL_SETUP],
 [AC_REQUIRE([AC_PROG_CC])dnl
 AC_REQUIRE([LT_SYS_MODULE_EXT])dnl
 AC_REQUIRE([LT_SYS_MODULE_PATH])dnl
@@ -277,17 +342,7 @@ dnl Don't require this, or it will be expanded earlier than the code
 dnl that sets the variables it relies on:
 _LT_ENABLE_INSTALL
 
-dnl Although deprecated and no longer documented, alpha releases of
-dnl libtool used to define an LTDL_INIT to take a DIRECTORY orgument.
-dnl If LT_CONFIG_LTDL_DIR was called already, but LTDL_INIT was given a
-dnl DIRECTORY argument, check it is the same as previous invocations.  If
-dnl it still hasn't been called, then do it now, defaulting to `libltdl'
-dnl if no DIRECTORY argument was passed.
-m4_provide_if([_LT_CONFIG_LTDL_DIR],
-	[m4_ifval([$1], [_LT_CONFIG_LTDL_DIR([$1])])],
-    [_LT_CONFIG_LTDL_DIR(m4_default([$1], [libltdl]))])dnl
-
-dnl _LTDL_MODE specific code must be evaluated at least once:
+dnl _LTDL_MODE specific code must be called at least once:
 _LTDL_MODE_DISPATCH
 
 # In order that ltdl.c can compile, find out the first AC_CONFIG_HEADERS
@@ -313,12 +368,7 @@ AC_CHECK_FUNCS([strlcat strlcpy], [], [AC_LIBOBJ([lt__strl])])
 name=ltdl
 LTDLOPEN=`eval "\\$ECHO \"$libname_spec\""`
 AC_SUBST([LTDLOPEN])
-])# LTDL_INIT
-
-# Old name:
-AU_ALIAS([AC_LIB_LTDL], [LTDL_INIT])
-dnl aclocal-1.4 backwards compatibility:
-dnl AC_DEFUN([AC_LIB_LTDL], [])
+])# _LTDL_SETUP
 
 
 # _LT_ENABLE_INSTALL
@@ -326,6 +376,11 @@ dnl AC_DEFUN([AC_LIB_LTDL], [])
 m4_define([_LT_ENABLE_INSTALL],
 [AC_ARG_ENABLE([ltdl-install],
     [AS_HELP_STRING([--enable-ltdl-install], [install libltdl])])
+
+case ,${enable_ltdl_install},${enable_ltdl_convenience} in
+  *yes*) ;;
+  *) enable_ltdl_convenience=yes ;;
+esac
 
 AM_CONDITIONAL(INSTALL_LTDL, test x"${enable_ltdl_install-no}" != xno)
 AM_CONDITIONAL(CONVENIENCE_LTDL, test x"${enable_ltdl_convenience-no}" != xno)

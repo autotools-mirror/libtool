@@ -1,3 +1,41 @@
+2008-01-07  Gary V. Vaughan  <gary@gnu.org>
+
+	Move libltdl build mode options from LT_CONFIG_LTDL_DIR to
+	LTDL_INIT.  Accept (optional) new 'convenience' and 'installable'
+	options in lieu of LTDL_CONVENIENCE and LTDL_INSTALL macros. And
+	also, implement --with-included-ltdl, --with-ltdl-lib and
+	--with-ltdl-include configure-time options:
+
+	* libltdl/m4/ltoptions.m4: Associate existing option settings with
+	LT_INIT.
+	(LT_OPTION_DEFINE): Associate options 'nonrecursive', 'recursive',
+	'subproject', 'installable' and 'convenience' with LTDL_INIT.
+	(_LT_MANGLE_OPTION, _LT_SET_OPTION, _LT_IF_OPTION)
+	(_LT_UNLESS_OPTIONS, _LT_SET_OPTIONS): Add MACRO-NAME argument to
+	support options to named macros instead of hardcoding only LT_INIT
+	options.
+	* libltdl/m4/ltdl.m4 (_LTDL_CONVENIENCE): Factor common code from
+	LTDL_CONVENIENCE and LTDL_INIT([convenience]).
+	(_LTDL_INSTALLABLE): Factor out common code from LTDL_INSTALLABLE
+	and LTDL_INIT([installable]).
+	(_LTDL_SETUP): Renamed from LTDL_INIT.  Support new configure-time
+	options: --with-included-ltdl, --with-ltdl-lib,
+	--with-ltdl-include.
+	(LTDL_CONVENIENCE, LTDL_INSTALLABLE): Adjust.
+	(LT_WITH_LTDL): Removed.
+	(LTDL_INIT): Parse caller options.
+	* libltdl/m4/libtool.m4 (LT_INIT): Declare that this macro must be
+	expanded before LTDL_INIT, and be sure to parse caller options.
+	* configure.ac: Call directly into internal _LTDL_SETUP macro.
+	* libtoolize.m4sh (func_scan_files): Ltdl mode argument moved from
+	LT_CONFIG_LTDL_DIR to LT_INIT.
+	* tests/nonrecursive.at, tests/recursive.at: Use new interfaces.
+	* tests/configure-iface.at: Test it.
+	* Makefile.am (TESTSUITE_AT): Add configure-iface.at.
+	* doc/libtool.texi (Distributing libltdl): Document improved.
+	LTDL_INIT interfaces.
+	* NEWS: Updated.
+
 2008-01-02  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* libltdl/config/ltmain.m4sh (func_mode_link): When creating

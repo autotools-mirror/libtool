@@ -1,6 +1,6 @@
 # Process this file with autoconf to create configure. -*- autoconf -*-
 #
-#    Copyright (C) 2004, 2005, 2007 Free Software Foundation, Inc.
+#    Copyright (C) 2004, 2005, 2007, 2008 Free Software Foundation, Inc.
 #    Written by Gary V. Vaughan, 2004
 #
 #    NOTE: The canonical source of this file is maintained with the
@@ -65,8 +65,7 @@ pkgdatadir='${datadir}'"/${PACKAGE}"
 ## Libtool initialisation. ##
 ## ----------------------- ##
 LT_INIT([dlopen win32-dll])
-LTDL_CONVENIENCE
-LTDL_INIT
+_LTDL_SETUP
 
 
 ## -------- ##

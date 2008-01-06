@@ -1,6 +1,6 @@
 # recursive.at -- test recursive Automake libltdl build       -*- Autotest -*-
 #
-#   Copyright (C) 2005 Free Software Foundation, Inc.
+#   Copyright (C) 2005, 2008 Free Software Foundation, Inc.
 #   Written by Gary V. Vaughan, 2005
 #
 #   This file is part of GNU Libtool.
@@ -29,14 +29,14 @@ AT_BANNER([Recursive Automake Libltdl.])
 m4_pushdef([_LTDL_SETUP],
 [AT_DATA([configure.ac],
 [[AC_INIT([subdirectory-demo], ]AT_PACKAGE_VERSION[, ]AT_PACKAGE_BUGREPORT[)
-LT_CONFIG_LTDL_DIR([ltdl], [recursive])
+LT_CONFIG_LTDL_DIR([ltdl])
 AC_CONFIG_AUX_DIR([ltdl/config])
 AC_CONFIG_MACRO_DIR([ltdl/m4])
 AC_CONFIG_LIBOBJ_DIR([ltdl])
 AC_CONFIG_HEADERS([config.h:config.hin])
 AM_INIT_AUTOMAKE([foreign])
 LT_INIT
-LT_WITH_LTDL
+LTDL_INIT([recursive])
 AC_CONFIG_FILES([Makefile ltdl/Makefile])
 AC_OUTPUT
 ]])
@@ -81,7 +81,7 @@ AT_SETUP([compiling copied libltdl])
 
 _LTDL_SETUP
 
-LT_AT_LIBTOOLIZE([--copy --ltdl])
+LT_AT_LIBTOOLIZE([--debug --copy --ltdl])
 AT_CHECK([if test -f ltdl/configure.ac; then false; fi])
 
 LT_AT_AUTORECONF([--force --verbose --install])

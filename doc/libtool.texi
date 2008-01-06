@@ -24,7 +24,7 @@
 @ifnottex
 This file documents GNU Libtool @value{VERSION}
 
-Copyright (C) 1996-2007 Free Software Foundation, Inc.
+Copyright (C) 1996-2008 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.2
@@ -51,7 +51,7 @@ identical to this one except for the removal of this paragraph
 
 @page
 @vskip 0pt plus 1filll
-Copyright @copyright{} 2007 Free Software Foundation, Inc.
+Copyright @copyright{} 2008 Free Software Foundation, Inc.
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the @sc{gnu} Free Documentation License, Version 1.2
@@ -1882,7 +1882,7 @@ LT_PREREQ(@value{VERSION})
 @end example
 @end defmac
 
-@defmac LT_INIT
+@defmac LT_INIT (@var{OPTIONS})
 @defmacx AC_PROG_LIBTOOL
 @defmacx AM_PROG_LIBTOOL
 Add support for the @option{--enable-shared} and @option{--disable-shared}
@@ -1891,7 +1891,7 @@ you define the @file{Makefile} variable @code{top_builddir} in your
 @file{Makefile.in}.  Automake does this automatically, but Autoconf
 users should set it to the relative path to the top of your build
 directory (@file{../..}, for example).}  @code{AC_PROG_LIBTOOL} and
-@code{AM_PROG_LIBTOOL} were names for older versions of this macro;
+@code{AM_PROG_LIBTOOL} are deprecated names for older versions of this macro;
 @code{autoupdate} will upgrade your @file{configure.ac} files.
 
 By default, this macro turns on shared libraries if they are available,
@@ -3867,7 +3867,7 @@ and you should link any program that is intended to dlopen the module with
 dlpreopen the module on platforms that do not support dlopening.  If
 the module depends on any other libraries, make sure you specify them
 either when you link the module or when you link programs that dlopen it.
-If you want to disable @pxref{Versioning} for a specific module
+If you want to disable versioning (@pxref{Versioning}) for a specific module
 you should link it with the @option{-avoid-version} switch.
 Note that libtool modules don't need to have a "lib" prefix.
 However, Automake 1.4 or higher is required to build such modules.
@@ -4359,26 +4359,26 @@ if (lt_dlseterror (LTDL_ERROR_NO_MEMORY) != 0)
 Even though libltdl is installed together with libtool, you may wish
 to include libltdl in the distribution of your package, for the
 convenience of users of your package that don't have libtool or
-libltdl installed.  In this case, you must decide whether to manually
-add the @code{ltdl} objects to your package, or else which flavor of
-libltdl you want to use: a convenience library or an installable
-libtool library.
+libltdl installed, or if you are using features of a very new version
+of libltdl that you don't expect your users to have yet.  In such
+cases, you must decide which flavor of libltdl you want to use: a
+convenience library or an installable libtool library.
 
 The most simplistic way to add @code{libltdl} to your package is to
-copy all the @file{libltdl} source files, to a subdirectory within
+copy all the @file{libltdl} source files to a subdirectory within
 your package and to build and link them along with the rest of your
 sources.  To help you do this, the m4 macros for Autoconf are
 available in @file{ltdl.m4}.  You must ensure that they are available
 in @file{aclocal.m4} before you run Autoconf@footnote{@c
 @c
 We used to recommend adding the contents of @file{ltdl.m4} to
-@file{acinclude.m4}, but with modern Automake (1.8 or newer) and this
-release of libltdl that is not only unnecessary but makes it easy to
-forget to upgrade @file{acinclude.m4} if you move to a different
-release of libltdl.
+@file{acinclude.m4}, but with @command{aclocal} from a modern
+Automake (1.8 or newer) and this release of libltdl that is not only
+unnecessary but makes it easy to forget to upgrade @file{acinclude.m4}
+if you move to a different release of libltdl.
 @c
 }.  Having made the macros available, you must add a call to the
-@samp{LT_WITH_LTDL} macro to your package's @file{configure.ac} to
+@samp{LTDL_INIT} macro to your package's @file{configure.ac} to
 perform the configure time checks required to build the library
 correctly.  Unfortunately, this method has problems if you then try to
 link the package binaries with an installed libltdl, or a library that
@@ -4388,21 +4388,91 @@ or against both a local convenience library and an installed libltdl
 is bad.  Ensuring that only one copy of the libltdl sources are linked
 into any program is left as an exercise for the reader.
 
-@defmac LT_CONFIG_LTDL_DIR (@var{DIRECTORY}. @var{LTDL-MODE})
+@defmac LT_CONFIG_LTDL_DIR (@var{DIRECTORY})
 Declare @var{DIRECTORY} to be the location of the @code{libltdl}
 source files, for @command{libtoolize --ltdl} to place
 them. @xref{Invoking libtoolize}, for more details.  Provided that you
-add an appropriate @code{LT_CONFIG_LTDL} call in your
+add an appropriate @code{LT_CONFIG_LTDL_DIR} call in your
 @file{configure.ac} before calling @command{libtoolize}, the
-appropriate @code{libltdl} files will be installed automatically without
-manually specifying the mode to @command{libtoolize} explicitly.
+appropriate @code{libltdl} files will be installed automatically.
+@end defmac
 
-@var{LTDL-MODE} can be either @samp{nonrecursive}, @samp{recursive}, or
-@samp{subproject} depending on how you wish for your project to build
-@code{libltdl}.  In order for @command{libtoolize} to detect
-@var{LTDL-MODE} correctly, if you supply one of these arguments, they
-must be given literally (i.e., macros or shell variables that expand to
-the correct @var{LTDL-MODE} will not work):
+@defmac LTDL_INIT (@var{OPTIONS})
+@defmacx LT_WITH_LTDL
+@defmacx AC_WITH_LTDL
+@code{AC_WITH_LTDL} and @code{LT_WITH_LTDL} are deprecated names for
+older versions of this macro; @command{autoupdate} will update your
+@file{configure.ac} file.
+
+This macro adds the following options to the @command{configure}
+script:
+
+@table @option
+@item --with-ltdl-include @var{INSTALLED-LTDL-HEADER-DIR}
+The @code{LTDL_INIT} macro will look in the standard header file
+locations to find the installed @code{libltdl} headers.  If
+@code{LTDL_INIT} can't find them by itself, the person who builds
+your package can use this option to tell @command{configure} where
+the installed @code{libltdl} headers are.
+
+@item --with-ltdl-lib @var{INSTALLED-LTDL-LIBRARY-DIR}
+Similarly, the person building your package can use this option to
+help @command{configure} find the installed @file{libltdl.la}.
+
+@item --with-included-ltdl
+If there is no installed @code{libltdl}, or in any case if the
+person building your package would rather use the @code{libltdl}
+sources shipped with the package in the subdirectory named by
+@code{LT_CONFIG_LTDL_DIR}, they should pass this option to
+@command{configure}.
+@end table
+
+If the @option{--with-included-ltdl} is not passed at
+configure time, and an installed @code{libltdl} is not
+found@footnote{@c
+@c
+Even if libltdl is installed, @samp{LTDL_INIT} may fail
+to detect it if libltdl depends on symbols provided by libraries
+other than the C library.
+@c
+}, then @command{configure} will exit immediately with an error that
+asks the user to either specify the location of an installed
+@code{libltdl} using the @option{--with-ltdl-include} and
+@option{--with-ltdl-lib} options, or to build with the
+@code{libltdl} sources shipped with the package by passing
+@option{--with-included-ltdl}.
+
+If an installed @code{libltdl} is found, then @code{LIBLTDL} is set to
+the link flags needed to use it, and @code{LTDLINCL} to the
+preprocessor flags needed to find the installed headers.  Note,
+however, that no version checking is performed.  You should manually
+check for the @code{libltdl} features you need in @file{configure.ac}:
+
+@example
+LT_INIT([dlopen])
+LTDL_INIT
+
+# The lt_dladvise_init symbol was added with libtool-2.2
+if test "x$with_included_ltdl" != "xyes"; then
+  save_CFLAGS="$CFLAGS"
+  save_LDFLAGS="$LDFLAGS"
+  CFLAGS="$CFLAGS $LTDLINCL"
+  LDFLAGS="$LDFLAGS $LIBLTDL"
+  AC_CHECK_LIB([ltdl], [lt_dladvise_init],
+		[],
+	[AC_MSG_ERROR(installed libltdl is too old)])
+  LDFLAGS="$save_LDFLAGS"
+  CFLAGS="$save_CFLAGS"
+fi
+@end example
+
+@var{OPTIONS} may include no more than one of the following build
+modes depending on how you want your project to build @code{libltdl}:
+@samp{nonrecursive}, @samp{recursive}, or @samp{subproject}.  In order
+for @command{libtoolize} to detect this option correctly, if you
+supply one of these arguments, they must be given literally (i.e.,
+macros or shell variables that expand to the correct ltdl mode will not
+work).
 
 @table @samp
 @item nonrecursive
@@ -4418,15 +4488,13 @@ need releases of Autoconf and Automake that support
 @example
 AM_INIT_AUTOMAKE([subdir-objects])
 AC_CONFIG_HEADERS([config.h])
-AC_PROG_CC
-AM_PROG_CC_C_O
-LT_CONFIG_LTDL_DIR([libltdl], [nonrecursive])
-LT_WITH_LTDL
+LT_CONFIG_LTDL_DIR([libltdl])
+LTDL_INIT([nonrecursive])
 @end example
 
 @noindent
-You have to use a config header, but it may have a name different than
-@file{config.h}.
+You @emph{have to} use a config header, but it may have a name different
+than @file{config.h}.
 
 Also, add the following near the top of your @file{Makefile.am}:
 
@@ -4448,7 +4516,7 @@ include libltdl/Makefile.inc
 @end example
 
 @noindent
-Unless you don't build any other libraries from this @file{Makefile.am},
+Unless you build no other libraries from this @file{Makefile.am},
 you will also need to change @code{lib_LTLIBRARIES} to assign with
 @samp{+=} so that the @code{libltdl} targets declared in
 @file{Makefile.inc} are not overwritten.
@@ -4462,14 +4530,14 @@ mode, you should add to your @file{configure.ac}:
 @example
 AM_INIT_AUTOMAKE
 AC_CONFIG_HEADERS([config.h])
-LT_CONFIG_LTDL_DIR([libltdl], [recursive])
-LT_WITH_LTDL
+LT_CONFIG_LTDL_DIR([libltdl])
+LTDL_INIT([recursive])
 AC_CONFIG_FILES([libltdl/Makefile])
 @end example
 
 @noindent
-You have to use a config header, but it may have a name different than
-@file{config.h}.
+Again, you @emph{have to} use a config header, but it may have a name
+different than @file{config.h} if you like.
 
 Also, add this to your @file{Makefile.am}:
 
@@ -4478,20 +4546,21 @@ SUBDIRS = libltdl
 @end example
 
 @item subproject
-This mode is the default unless you declare otherwise with
-@code{LT_CONFIG_LTDL_DIR}, and is the only mode supported by previous
-releases of libltdl.  If you do not use Autoconf in the parent project,
-then @samp{subproject} mode @code{libltdl} contains all the necessary
-files to configure and build itself -- you just need to arrange for your
-build system to call @file{libltdl/configure} with appropriate options,
-and then run @code{make} in the @code{libltdl} subdirectory.
+This mode is the default unless you explicitly add @code{recursive} or
+@code{nonrecursive} to your @code{LTDL_INIT} options;  @code{subproject}
+is the only mode supported by previous releases of libltdl.  Even if you
+do not use Autoconf in the parent project, then, in @samp{subproject}
+mode, still @code{libltdl} contains all the necessary files to configure
+and build itself -- you just need to arrange for your build system to
+call @file{libltdl/configure} with appropriate options, and then run
+@code{make} in the @code{libltdl} subdirectory.
 
 If you @emph{are} using Autoconf and Automake, then you will need to add
 the following to your @file{configure.ac}:
 
 @example
-LT_CONFIG_LTDL_DIR([libltdl], [subproject])
-LT_WITH_LTDL
+LT_CONFIG_LTDL_DIR([libltdl])
+LTDL_INIT
 @end example
 
 @noindent
@@ -4501,120 +4570,82 @@ and to @file{Makefile.am}:
 SUBDIRS = libltdl
 @end example
 @end table
-@end defmac
 
-@defmac LT_WITH_LTDL
-@defmacx AC_WITH_LTDL
-Add the @option{--with-included-ltdl} option to the @file{configure}
-script.  This option will then allow the person who builds your
-package to choose between linking against an already installed
-@code{libltdl} (@option{--without-included-ltdl}), or the sources
-shipped with the package in the subdirectory named by
-@code{LT_CONFIG_LTDL_DIR} (@option{--with-included-ltdl}).
+Aside from setting the libltdl build mode, there are other keywords
+that you can pass to @code{LTDL_INIT} to modify its behavior when
+@option{--with-included-ltdl} has been given:
 
-@code{AC_WITH_LTDL} is a deprecated alias for @code{LT_WITH_LTDL}.
-@end defmac
+@table @samp
+@item convenience
+This is the default unless you explicitly add @code{installable} to
+your @code{LTDL_INIT} options.
 
-@defmac LTDL_INSTALLABLE
-@defmacx AC_LIBLTDL_INSTALLABLE
-If there is an installed @code{libltdl}, then set @code{LIBLTDL} to the
-link flags needed to use it, and @code{LTDLINCL} to the preprocessor
-flags needed to find the installed headers.  Otherwise, set them to
-point into an included version of @code{libltdl}, and install that.
-
-By default, this macro will pass options to the @file{configure}
-script in the subdirectory named by @code{LT_CONFIG_LTDL_DIR} in order
-to cause it to be built as an installable library.  If you're not
-using automake, you will need to define @code{top_build_prefix},
-@code{top_builddir}, and @code{top_srcdir} in your makefile so that
-@code{LIBLTDL} and @code{LTDLINCL} are expanded properly.
-
-If used in conjunction with @code{LT_WITH_LTDL}, this macro must
-appear @strong{before} the call to @code{LT_WITH_LTDL}.  If you are
-not using @code{LT_WITH_LTDL}, then you must add a call to
-@code{AC_CONFIG_SUBDIRS(@var{DIRECTORY})} to your @file{configure.ac}.
-
-@code{AC_LIBLTDL_INSTALLABLE} is a deprecated alias for
-@code{LTDL_INSTALLABLE}.
-@end defmac
-
-@defmac LTDL_CONVENIENCE
-@defmacx AC_LIBLTDL_CONVENIENCE
-Unless you call @code{LTDL_INSTALLABLE} before hand,
-@code{LT_WITH_LTDL} calls this macro automatically, so you should only
-ever need to use it yourself if @code{LT_WITH_LTDL} doesn't do what
-you want.
-
-By default, this macro will pass options to the @file{configure}
+This keyword will cause options to be passed to the @command{configure}
 script in the subdirectory named by @code{LT_CONFIG_LTDL_DIR} in order
 to cause it to be built as a convenience library.  If you're not
+using automake, you will need to define @code{top_build_prefix},
+@code{top_builddir}, and @code{top_srcdir} in your makefile so that
+@code{LIBLTDL} and @code{LTDLINCL} expand correctly.
+
+One advantage of the convenience library is that it is not installed,
+so the fact that you use @code{libltdl} will not be apparent to the
+user, and it won't overwrite a pre-installed version of
+@code{libltdl} the system might already have in the installation
+directory.  On the other hand, if you want to upgrade @code{libltdl}
+for any reason (e.g.@: a bugfix) you'll have to recompile your package
+instead of just replacing the shared installed version of
+@code{libltdl}.  However, if your programs or libraries are linked
+with other libraries that use such a pre-installed version of
+@code{libltdl}, you may get linker errors or run-time crashes.
+Another problem is that you cannot link the convenience library into
+more than one libtool library, then link a single program with those
+libraries, because you may get duplicate symbols.  In general you can
+safely use the convenience library in programs that don't depend on
+other libraries that might use @code{libltdl} too.
+
+@item installable
+This keyword will pass options to the @command{configure}
+script in the subdirectory named by @code{LT_CONFIG_LTDL_DIR} in order
+to cause it to be built as an installable library.  If you're not
 using automake, you will need to define @code{top_build_prefix},
 @code{top_builddir} and @code{top_srcdir} in your makefile so that
 @code{LIBLTDL} and @code{LTDLINCL} are expanded properly.
 
-@code{AC_LIBLTDL_CONVENIENCE} is a deprecated alias for
-@code{LTDL_CONVENIENCE}.
+Be aware that you could overwrite another @code{libltdl} already
+installed to the same directory if you use this option.
+@end table
 @end defmac
 
-One advantage of the convenience library is that it is not installed,
-so the fact that you use libltdl will not be apparent to the user, and
-it will not overwrite a pre-installed version of libltdl a user might
-have.  On the other hand, if you want to upgrade libltdl for any
-reason (e.g.@: a bugfix) you'll have to recompile your package instead
-of just replacing an installed version of libltdl.  However, if your
-programs or libraries are linked with other libraries that use such a
-pre-installed version of libltdl, you may get linker errors or
-run-time crashes.  Another problem is that you cannot link the
-convenience library into more than one libtool library, then link a
-single program with these libraries, because you may get duplicate
-symbols.  In general you can safely use the convenience library in
-programs that don't depend on other libraries that might use libltdl
-too.  In order to enable this flavor of libltdl, add a call to
-@samp{LTDL_CONVENIENCE} to your @file{configure.ac},
-@emph{before} @samp{LT_INIT}, or use @samp{LT_WITH_LTDL}.
-
-In order to select the installable version of libltdl, you should add a
-call of the macro @samp{LTDL_INSTALLABLE} to your
-@file{configure.ac} @emph{before} @samp{LT_INIT}.  This macro
-will check whether libltdl is already installed and, if not, request the
-libltdl embedded in your package to be built and installed.  Note,
-however, that no version checking is performed.  The user may override
-the test and determine that the libltdl embedded must be installed,
-regardless of the existence of another version, using the configure
-switch @option{--enable-ltdl-install}.
-
-Whatever macro you use, it is up to you to ensure that your
-@file{configure.ac} will configure libltdl by using
-@samp{LT_WITH_LTDL}.  Both macros define the shell variables
-@var{LIBLTDL} to the link flag that you should use to link with
-libltdl, and @var{LTDLINCL} to the preprocessor flag that you should
-use to compile with programs that include @file{ltdl.h}.
-
-If you're using the convenience libltdl, @var{LIBLTDL} will be the
-pathname for the convenience version of libltdl and @var{LTDLINCL} will be
-@option{-I} followed by the directory that contains libltdl, starting
-with @samp{$@{top_build_prefix@}} if available, otherwise with
-@samp{$@{top_builddir@}/}, and @samp{$@{top_srcdir@}/} respectively.
-
-If you request an installed version of libltdl and one is
-found@footnote{@c
-@c
-Even if libltdl is installed, @samp{LTDL_INSTALLABLE} may fail
-to detect it, if libltdl depends on symbols provided by libraries
-other than the C library.  In this case, it will needlessly build and
-install libltdl.
-@c
-}, @var{LIBLTDL} will be set to @option{-lltdl} and @var{LTDLINCL} will
-be empty (this is just a blind assumption that @file{ltdl.h} is
-somewhere in the include path if libltdl is in the library path).  If
-an installable version of libltdl must be built, its pathname,
-starting with @samp{$@{top_build_prefix@}} if available, otherwise
-@samp{$@{top_builddir@}/}, will be stored in
-@var{LIBLTDL}, and @var{LTDLINCL} will be set just like in the case of
-convenience library.  So, when you want to link a program with
+Whatever method you use, @samp{LTDL_INIT} will define both the shell
+variable @var{LIBLTDL} to the link flag that you should use to link
+with @code{libltdl}, and the shell variable @var{LTDLINCL} to the
+preprocessor flag that you should use to compile programs that
+include @file{ltdl.h}. So, when you want to link a program with
 libltdl, be it a convenience, installed or installable library, just
-compile with @samp{$(LTDLINCL)} and link it with @samp{$(LIBLTDL)},
-using libtool.
+use @samp{$(LTDLINCL)} for preprocessing and compilation, and
+@samp{$(LIBLTDL)} for linking.
+
+@itemize @bullet
+@item
+If your package is built using an installed version of
+@code{libltdl}, @var{LIBLTDL} will be set to the compiler flags
+needed to link against the installed library, and
+@var{LTDLINCL} will be set to the compiler flags needed to find
+the @code{libltdl} header files.
+
+@item
+If your package is built using the convenience libltdl, @var{LIBLTDL}
+will be the pathname for the convenience version of libltdl
+(starting with @samp{$@{top_builddir@}/}) and @var{LTDLINCL} will be
+@option{-I} followed by the directory that contains @file{ltdl.h}
+(starting with @samp{$@{top_srcdir@}/}).
+
+@item
+If an installable version of the included @code{libltdl} is being
+built, its pathname starting with @samp{$@{top_builddir@}/}, will be
+stored in @var{LIBLTDL}, and @var{LTDLINCL} will be set just like in
+the case of convenience library.
+@end itemize
 
 You should probably also use the @samp{dlopen} option to @code{LT_INIT}
 in your @file{configure.ac}, otherwise libtool will assume no dlopening
@@ -4626,8 +4657,8 @@ all platforms, because the dlopening functions may not be available
 for static linking.
 
 The following example shows you how to embed an installable libltdl in
-your package.  In order to use the convenience variant just replace
-@samp{LTDL_INSTALLABLE} with @samp{LTDL_CONVENIENCE}.  We
+your package.  In order to use the convenience variant, just replace the
+@code{LTDL_INIT} option @samp{installable} with @samp{convenience}.  We
 assume that libltdl was embedded using @samp{libtoolize --ltdl}.
 
 configure.ac:
@@ -4636,14 +4667,11 @@ configure.ac:
 # Name the subdirectory that contains libltdl sources
 LT_CONFIG_LTDL_DIR([libltdl])
 
-## ------------------------------------------ ##
-## Enable building of the installable library ##
-## ------------------------------------------ ##
-LTDL_INSTALLABLE
-
 # Configure libtool with dlopen support if possible
 LT_INIT([dlopen])
-LT_WITH_LTDL
+
+# Enable building of the installable libltdl library
+LTDL_INIT([installable])
 ...
 @end example
 
@@ -4659,6 +4687,18 @@ myprog_LDADD = $(LIBLTDL) -dlopen self -dlopen foo1.la
 myprog_DEPENDENCIES = $(LIBLTDL) foo1.la
 ...
 @end example
+
+@defmac LTDL_INSTALLABLE
+@defmacx AC_LIBLTDL_INSTALLABLE
+These macros are deprecated, the @samp{installable} option to
+@code{LTDL_INIT} should be used instead.
+@end defmac
+
+@defmac LTDL_CONVENIENCE
+@defmacx AC_LIBLTDL_CONVENIENCE
+These macros are deprecated, the @samp{convenience} option to
+@code{LTDL_INIT} should be used instead.
+@end defmac
 
 
 @node Trace interface
@@ -5927,7 +5967,7 @@ trick$ chmod +x libtool
 trick$ libtool --version
 ltmain.sh (GNU @@PACKAGE@@@@TIMESTAMP@@) @@VERSION@@
 
-Copyright (C) 2007 Free Software Foundation, Inc.
+Copyright (C) 2008 Free Software Foundation, Inc.
 This is free software; see the source for copying conditions.  There is NO
 warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 trick$
