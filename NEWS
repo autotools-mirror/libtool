@@ -7,6 +7,7 @@ New in 1.5.25a: 2008-??-??; CVS version 1.5.25a, Libtool team:
 * Some configure variables have been renamed to fix caching:
   lt_prog_compiler_pic_works to lt_cv_prog_compiler_pic_works
   lt_prog_compiler_static_works to lt_cv_prog_compiler_static_works.
+* Support for AIX 6.1.
 * Bug Fixes.
 
 New in 1.5.24: 2007-06-17; CVS version 1.5.23c, Libtool team:

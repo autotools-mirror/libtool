@@ -1,3 +1,16 @@
+2008-01-07  Rainer Tammer <tammer@tammer.net>  (tiny change)
+	    Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Support AIX 6.1.
+	* libtool.m4 (AC_LIBTOOL_SYS_DYNAMIC_LINKER)
+	(AC_DEPLIBS_CHECK_METHOD, _LT_AC_LANG_C_CONFIG)
+	(_LT_AC_LANG_CXX_CONFIG, _LT_AC_LANG_F77_CONFIG)
+	(AC_LIBTOOL_PROG_COMPILER_PIC, AC_LIBTOOL_PROG_LD_SHLIBS):
+	Adjust case patterns to match AIX 6 through 9 as well.
+	* ltdl.m4 (AC_LTDL_SYS_DLOPEN_DEPLIBS): Likewise.
+	* NEWS: Update.
+	* THANKS: Update.
+
 2008-01-02  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* NEWS, libtool.m4, ltmain.in: Bump copyright years.
