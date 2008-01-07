@@ -1,3 +1,9 @@
+2008-01-07  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* tests/runpath-in-lalib.at (Runpath in libtool library files):
+	Compile program file without libtool.
+	Report by Rainer Tammer.
+
 2008-01-07  Rainer Tammer <tammer@tammer.net>  (tiny change)
 	    Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 

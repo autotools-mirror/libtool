@@ -1,6 +1,6 @@
 # runpath-in-lalib.at --                         -*- Autotest -*-
 
-#   Copyright (C) 2007 Free Software Foundation, Inc.
+#   Copyright (C) 2007, 2008 Free Software Foundation, Inc.
 #   Written by Ralf Wildenhues, 2007
 #
 #   This file is part of GNU Libtool.
@@ -44,9 +44,10 @@ addrunpath=`pwd`/foobar
 
 mkdir $instdir $libdir $bindir
 
-for file in a.c b.c m.c; do
+for file in a.c b.c; do
   $LIBTOOL --mode=compile $CC $CPPFLAGS $CFLAGS -c $file
 done
+$CC $CPPFLAGS $CFLAGS -c m.c
 AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o liba.la a.lo -rpath $libdir -R$addrunpath],
 	 [], [ignore], [ignore])
 AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o libb.la b.lo -rpath $libdir liba.la],
