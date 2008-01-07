@@ -1,3 +1,16 @@
+2008-01-07  Rainer Tammer <tammer@tammer.net>  (tiny change)
+	    Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Support AIX 6.1.
+	* libltdl/m4/libtool.m4 (_LT_SYS_DYNAMIC_LINKER)
+	(_LT_CHECK_MAGIC_METHOD, _LT_COMPILER_PIC, _LT_LINKER_SHLIBS)
+	(_LT_LANG_C_CONFIG, _LT_LANG_CXX_CONFIG, _LT_LANG_F77_CONFIG)
+	(_LT_LANG_FC_CONFIG): Adjust case patterns to match AIX 6
+	through 9 as well.
+	* libltdl/m4/ltdl.m4 (LT_SYS_DLOPEN_DEPLIBS): Likewise.
+	* NEWS: Update.
+	* THANKS: Update.
+
 2008-01-07  Gary V. Vaughan  <gary@gnu.org>
 
 	Move libltdl build mode options from LT_CONFIG_LTDL_DIR to
