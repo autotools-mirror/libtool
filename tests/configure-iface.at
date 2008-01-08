@@ -157,14 +157,15 @@ AT_KEYWORDS([libltdl])
 # Install libltdl
 prefix=`pwd`/_inst
 
-LT_AT_LIBTOOLIZE([--copy --ltdl=.])
+LT_AT_LIBTOOLIZE([--copy --ltdl=ltdl])
+
+(cd ltdl
 LT_AT_CONFIGURE([--enable-ltdl-install --prefix=$prefix])
 LT_AT_MAKE([all install])
+)
 
 # Remove build files
-for x in .* *; do
-  test $x == _inst || rm -rf $x
-done
+rm -rf ltdl/
 
 AT_CHECK([test -f $prefix/lib/libltdl.la])
 AT_CHECK([test -f $prefix/include/ltdl.h])
