@@ -33,7 +33,7 @@ m4_case(_LTDL_DIR,
 	    [],
 	[m4_fatal([multiple libltdl directories: `]_LTDL_DIR[', `]_ARG_DIR['])])])
 m4_popdef([_ARG_DIR])
-])# LT_CONFIG_LTDL_DIR
+])# _LT_CONFIG_LTDL_DIR
 
 # Initialise:
 m4_define([_LTDL_DIR], [])
