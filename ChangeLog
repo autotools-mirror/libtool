@@ -1,5 +1,7 @@
 2008-01-08  Gary V. Vaughan  <gary@gnu.org>
 
+	* NEWS: Grammar nit.
+
 	* tests/configure-iface.at, tests/nonrecursive.at,
 	tests/recursive.at, tests/subproject.at (_LTDL_SETUP):
 	Renamed to _LT_AT_LTDL_SETUP to avoid a nameclash with

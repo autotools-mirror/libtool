@@ -34,7 +34,7 @@ New in 2.1a: 2008-??-??; CVS version 2.1a, Libtool team:
     Automake installed, in order to be usable in another package.  This
     lifts the restrictions introduced in 1.9b.
   - Default convenience or installable libltdl builds can optionally
-    be declared using new `convenience' or `installable' options to
+    be declared using new `convenience' or `installable' options to the
     LTDL_INIT macro (as an alternative to individual LTDL_CONVENIENCE
     or LTDL_INSTALLABLE invocations).
   - New configure-time options to allow libltdl parent project builder
