@@ -81,7 +81,7 @@ AT_SETUP([compiling copied libltdl])
 
 _LT_AT_LTDL_SETUP
 
-LT_AT_LIBTOOLIZE([--debug --copy --ltdl])
+LT_AT_LIBTOOLIZE([--copy --ltdl])
 AT_CHECK([if test -f ltdl/configure.ac; then false; fi])
 
 LT_AT_AUTORECONF([--force --verbose --install])

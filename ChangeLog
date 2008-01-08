@@ -1,8 +1,12 @@
 2008-01-08  Gary V. Vaughan  <gary@gnu.org>
 
+	* tests/recursive.at: Remove bogus --debug option.
+	Reported by Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
 	* tests/configure-iface.at: Build libltdl in a subdir so that
 	it can be easily removed without trying to remove config.log
 	on windows (which can't delete a file until it is closed).
+	Reported by Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
 	* libltdl/m4/ltdl.m4 (LTDL_INSTALLABLE): Use _LT_BUILD_PREFIX
 	instead of ${top_builddir} for Autoconf-2.62.
