@@ -25,9 +25,9 @@
 
 AT_BANNER([Nonrecursive Automake Libltdl.])
 
-# _LTDL_SETUP
-# -----------
-m4_pushdef([_LTDL_SETUP],
+# _LT_AT_LTDL_SETUP
+# -----------------
+m4_pushdef([_LT_AT_LTDL_SETUP],
 [AT_DATA([configure.ac],
 [[AC_INIT([subdirectory-demo], ]AT_PACKAGE_VERSION[, ]AT_PACKAGE_BUGREPORT[)
 LT_CONFIG_LTDL_DIR([ltdl])
@@ -69,7 +69,7 @@ foo_la_SOURCES		= foo.c
 ]])
 
 echo 'int dummy = 0;' > foo.c
-])# _LTDL_SETUP
+])# _LT_AT_LTDL_SETUP
 
 ## ------------------------ ##
 ## Softlinked libltdl tree. ##
@@ -77,7 +77,7 @@ echo 'int dummy = 0;' > foo.c
 
 AT_SETUP([compiling softlinked libltdl])
 
-_LTDL_SETUP
+_LT_AT_LTDL_SETUP
 
 LT_AT_LIBTOOLIZE([--ltdl])
 AT_CHECK([if test -f ltdl/configure.ac; then false; fi])
@@ -101,7 +101,7 @@ AT_CLEANUP
 
 AT_SETUP([compiling copied libltdl])
 
-_LTDL_SETUP
+_LT_AT_LTDL_SETUP
 
 LT_AT_LIBTOOLIZE([--copy --ltdl])
 AT_CHECK([if test -f ltdl/configure.ac; then false; fi])
@@ -125,7 +125,7 @@ AT_CLEANUP
 
 AT_SETUP([installable libltdl])
 
-_LTDL_SETUP
+_LT_AT_LTDL_SETUP
 
 prefix=`pwd`/_inst
 
@@ -146,4 +146,4 @@ AT_CHECK([test -f $prefix/include/ltdl.h])
 AT_CLEANUP
 
 dnl Be careful not to let the definition leak into other tests
-m4_popdef([_LTDL_SETUP])
+m4_popdef([_LT_AT_LTDL_SETUP])

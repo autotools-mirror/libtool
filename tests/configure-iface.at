@@ -24,9 +24,9 @@
 
 AT_BANNER([configure interface to libltdl.])
 
-# _LTDL_SETUP
-# -----------
-m4_pushdef([_LTDL_SETUP],
+# _LT_AT_LTDL_SETUP
+# -----------------
+m4_pushdef([_LT_AT_LTDL_SETUP],
 [AT_DATA([main.c],
 [[#include <ltdl.h>
 #include <stdio.h>
@@ -92,7 +92,7 @@ int f (void) { return 5150; }
 AT_DATA([expout],
 [[5150
 ]])
-])# _LTDL_SETUP
+])# _LT_AT_LTDL_SETUP
 
 
 ## -------------------- ##
@@ -102,7 +102,7 @@ AT_DATA([expout],
 AT_SETUP([installable libltdl])
 AT_KEYWORDS([libltdl])
 
-_LTDL_SETUP
+_LT_AT_LTDL_SETUP
 
 AT_DATA([configure.ac],
 [[AC_INIT([installable-ltdl-demo], ]AT_PACKAGE_VERSION[, ]AT_PACKAGE_BUGREPORT[)
@@ -169,7 +169,7 @@ done
 AT_CHECK([test -f $prefix/lib/libltdl.la])
 AT_CHECK([test -f $prefix/include/ltdl.h])
 
-_LTDL_SETUP
+_LT_AT_LTDL_SETUP
 
 AT_DATA([configure.ac],
 [[AC_INIT([configure-iface-demo], ]AT_PACKAGE_VERSION[, ]AT_PACKAGE_BUGREPORT[)
@@ -218,7 +218,7 @@ AT_CLEANUP
 AT_SETUP([--with-included-ltdl])
 AT_KEYWORDS([libltdl])
 
-_LTDL_SETUP
+_LT_AT_LTDL_SETUP
 
 AT_DATA([configure.ac],
 [[AC_INIT([configure-iface-demo], ]AT_PACKAGE_VERSION[, ]AT_PACKAGE_BUGREPORT[)
@@ -264,4 +264,4 @@ LT_AT_NOINST_EXEC_CHECK([./main], [-dlopen libmodule.la], [], [expout], [])
 AT_CLEANUP
 
 dnl Be careful not to let the definition leak into other tests
-m4_popdef([_LTDL_SETUP])
+m4_popdef([_LT_AT_LTDL_SETUP])

@@ -24,9 +24,9 @@
 
 AT_BANNER([Subproject Libltdl.])
 
-# _LTDL_SETUP
-# -----------
-m4_pushdef([_LTDL_SETUP],
+# _LT_AT_LTDL_SETUP
+# -----------------
+m4_pushdef([_LT_AT_LTDL_SETUP],
 [AT_DATA([configure.ac],
 [[AC_INIT([subproject-demo], ]AT_PACKAGE_VERSION[, ]AT_PACKAGE_BUGREPORT[)
 LT_CONFIG_LTDL_DIR([sub/ltdl])
@@ -48,7 +48,7 @@ foo_la_LDFLAGS = -module -avoid-version
 ]])
 
 echo 'int dummy = 0;' > foo.c
-])# _LTDL_SETUP
+])# _LT_AT_LTDL_SETUP
 
 ## ------------------------ ##
 ## Softlinked libltdl tree. ##
@@ -56,7 +56,7 @@ echo 'int dummy = 0;' > foo.c
 
 AT_SETUP([compiling softlinked libltdl])
 
-_LTDL_SETUP
+_LT_AT_LTDL_SETUP
 
 LT_AT_BOOTSTRAP([--ltdl], [-I sub/ltdl/m4], [ignore], [--add-missing --copy],
 	[], [], [all $tst_dist])
@@ -72,7 +72,7 @@ AT_CLEANUP
 
 AT_SETUP([compiling copied libltdl])
 
-_LTDL_SETUP
+_LT_AT_LTDL_SETUP
 
 LT_AT_BOOTSTRAP([--copy --ltdl], [-I sub/ltdl/m4], [ignore],
 	[--add-missing --copy], [], [], [all $tst_dist])
@@ -90,7 +90,7 @@ AT_SETUP([installable libltdl])
 
 prefix=`pwd`/_inst
 
-_LTDL_SETUP
+_LT_AT_LTDL_SETUP
 
 LT_AT_BOOTSTRAP([--copy --ltdl], [-I sub/ltdl/m4], [ignore],
 	[--add-missing --copy], [], [--enable-ltdl-install --prefix=$prefix],
@@ -119,4 +119,4 @@ LT_AT_EXEC_CHECK([./ltdldemo], 0, [ignore])
 AT_CLEANUP
 
 dnl Be careful not to let the definition leak into other tests
-m4_popdef([_LTDL_SETUP])
+m4_popdef([_LT_AT_LTDL_SETUP])
