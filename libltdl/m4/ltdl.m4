@@ -169,7 +169,7 @@ case $enable_ltdl_install in
       ;;
   *)  enable_ltdl_install=yes
       ac_configure_args="$ac_configure_args --enable-ltdl-install"
-      LIBLTDL='_LT_BUILD_PREFIX'"${lt_ltdl_dir+/$lt_ltdl_dir}/libltdl.la"
+      LIBLTDL='_LT_BUILD_PREFIX'"${lt_ltdl_dir+$lt_ltdl_dir/}libltdl.la"
       LTDLINCL='-I${top_srcdir}'"${lt_ltdl_dir+/$lt_ltdl_dir}"
       ;;
 esac
