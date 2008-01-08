@@ -69,7 +69,7 @@ AC_DEFUN([LT_INIT],
 AC_BEFORE([$0], [LT_LANG])dnl
 AC_BEFORE([$0], [LT_OUTPUT])dnl
 AC_BEFORE([$0], [LTDL_INIT])dnl
-AC_REQUIRE([_LT_CHECK_BUILDDIR])dnl
+m4_require([_LT_CHECK_BUILDDIR])dnl
 
 dnl Autoconf doesn't catch unexpanded LT_ macros by default:
 m4_pattern_forbid([^_?LT_[A-Z_]+$])dnl

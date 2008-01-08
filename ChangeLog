@@ -1,5 +1,9 @@
 2008-01-08  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* libltdl/m4/libtool.m4 (LT_INIT): m4_require, not AC_REQUIRE
+	_LT_CHECK_BUILDDIR, as it's m4_defun'ed, not AC_DEFUN'ed.
+	Report by Peter O'Gorman.
+
 	* libltdl/m4/ltdl.m4 (_LTDL_INSTALLABLE): Restore correct
 	_LT_BUILD_PREFIX-using code.
 
