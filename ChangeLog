@@ -1,5 +1,9 @@
 2008-01-08  Gary V. Vaughan  <gary@gnu.org>
 
+	* libltdl/m4/ltdl.m4 (LTDL_INSTALLABLE): Use _LT_BUILD_PREFIX
+	instead of ${top_builddir} for Autoconf-2.62.
+	Reported by Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
 	* libltdl/m4/ltdl.m4 (_LT_CONFIG_LTDL_DIR): Correct closing
 	comment.
 	Reported by Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
