@@ -1,3 +1,10 @@
+2008-01-09  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* mdemo/main.c: Include string.h, for strrchr.
+	Report by Rainer Tammer.
+	* f77demo/cprogram.c: Include stdio.h, for printf.
+	* f77demo/fooc.c: Likewise.
+
 2008-01-07  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* config.guess, config.sub: Updated from external sources.

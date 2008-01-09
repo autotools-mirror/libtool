@@ -1,5 +1,5 @@
 /* main.c -- mdemo test program
-   Copyright (C) 1998-2000, 2007 Free Software Foundation, Inc.
+   Copyright (C) 1998-2000, 2007, 2008 Free Software Foundation, Inc.
    Originally by Thomas Tanner <tanner@ffii.org>
    This file is part of GNU Libtool.
 
@@ -21,10 +21,12 @@ USA. */
 #include "foo.h"
 #include "ltdl.h"
 #include <stdio.h>
+#include <string.h>
 
 int
 test_dl (filename, test_ext)
   char *filename;
+  int test_ext;
 {
   lt_dlhandle handle;	
   const lt_dlinfo *info;
