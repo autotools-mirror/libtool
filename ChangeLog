@@ -1,3 +1,14 @@
+2008-01-11  Peter O'Gorman  <peter@pogma.com>
+
+	* libltdl/m4/libtool.m4 [darwin]: Reorganize darwin support, use
+	dsymutil if it is available so that debugging is possible, check
+	for nmedit and dsymutil with AC_CHECK_TOOL, use the linker flag
+	-exported_symbols_list in preference to nmedit if it is available.
+	Drop support for xlc, it is probably broken.
+	* tests/template.at [darwin]: Skip this test, I can not find a way
+	to make it work on darwin9 with Xcode-3.0.
+	* NEWS: Note the dropping of xlc support.
+
 2008-01-08  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* libltdl/m4/libtool.m4 (LT_INIT): m4_require, not AC_REQUIRE

@@ -888,6 +888,118 @@ _lt_linker_boilerplate=`cat conftest.err`
 $RM -r conftest*
 ])# _LT_LINKER_BOILERPLATE
 
+# _LT_REQUIRED_DARWIN_CHECKS
+# -------------------------
+m4_defun_once([_LT_REQUIRED_DARWIN_CHECKS],[
+  case $host_os in
+    rhapsody* | darwin*)
+    AC_CHECK_TOOL([DSYMUTIL], [dsymutil], [:])
+    AC_CHECK_TOOL([NMEDIT], [nmedit], [:])
+    _LT_DECL([], [DSYMUTIL], [1],
+      [Tool to manipulate archived DWARF debug symbol files on Mac OS X])
+    _LT_DECL([], [NMEDIT], [1],
+      [Tool to change global to local symbols on Mac OS X])
+
+    AC_CACHE_CHECK([for -single_module linker flag],[lt_cv_apple_cc_single_mod],
+      [lt_cv_apple_cc_single_mod=no
+      if test -z "${LT_MULTI_MODULE}"; then
+	# By default we will add the -single_module flag. You can override
+	# by either setting the environment variable LT_MULTI_MODULE
+	# non-empty at configure time, or by adding -multi_module to the
+	# link flags.
+	echo "int foo(void){return 1;}" > conftest.c
+	$LTCC $LTCFLAGS $LDFLAGS -o libconftest.dylib \
+	  -dynamiclib ${wl}-single_module conftest.c
+	if test -f libconftest.dylib; then
+	  lt_cv_apple_cc_single_mod=yes
+	  rm -rf libconftest.dylib*
+	fi
+	rm conftest.c
+      fi])
+    AC_CACHE_CHECK([for -exported_symbols_list linker flag],
+      [lt_cv_ld_exported_symbols_list],
+      [lt_cv_ld_exported_symbols_list=no
+      save_LDFLAGS=$LDFLAGS
+      echo "_main" > conftest.sym
+      LDFLAGS="$LDFLAGS -Wl,-exported_symbols_list,conftest.sym"
+      AC_LINK_IFELSE([AC_LANG_PROGRAM([],[])],
+	[lt_cv_ld_exported_symbols_list=yes],
+	[lt_cv_ld_exported_symbols_list=no])
+	LDFLAGS="$save_LDFLAGS"
+    ])
+    case $host_os in
+      rhapsody* | darwin1.[[012]])
+        _lt_dar_allow_undefined='${wl}-undefined ${wl}suppress'
+        ;;
+    darwin*) # Darwin 1.3 on
+      # if running on 10.5 or later, the deployment target defaults
+      # to the OS version, if on x86, and 10.4, the deployment
+      # target defaults to 10.4. Don't you love it? 
+      case ${MACOSX_DEPLOYMENT_TARGET-10.0},$host in
+	10.0,i?86*-darwin8*|10.0,*-darwin[[91]]*)
+	  _lt_dar_allow_undefined='${wl}-undefined ${wl}dynamic_lookup' ;;
+	10.[[012]]*)
+	  _lt_dar_allow_undefined='${wl}-flat_namespace ${wl}-undefined ${wl}suppress' ;;
+	10.*)
+	  _lt_dar_allow_undefined='${wl}-undefined ${wl}dynamic_lookup' ;;
+      esac
+    ;;
+  esac
+    if test "$lt_cv_apple_cc_single_mod" = "yes"; then
+      _lt_dar_single_mod='$single_module'
+    fi
+    if test "$lt_cv_ld_exported_symbols_list" = "yes"; then
+      _lt_dar_export_syms=' ${wl}-exported_symbols_list,$output_objdir/${libname}-symbols.expsym'
+    else
+      _lt_dar_export_syms='~$NMEDIT -s $output_objdir/${libname}-symbols.expsym ${lib}'
+    fi
+    if test "$DSYMUTIL" != ":"; then
+      _lt_dsymutil='~$DSYMUTIL $lib || :'
+    else
+      _lt_dsymutil=
+    fi
+    ;;
+  esac
+])
+
+
+# _LT_DARWIN_LINKER_FEATURES
+# --------------------------
+# Checks for linker and compiler features on darwin
+m4_defun([_LT_DARWIN_LINKER_FEATURES],
+[
+  m4_require([_LT_REQUIRED_DARWIN_CHECKS])
+  m4_case([$1],
+	[C], [withGCC=$GCC],
+	[CXX], [withGCC=$GXX],
+	[F77], [withGCC=$G77],
+	[FC], [withGCC=$ac_cv_fc_compiler_gnu],
+	[GCJ], [withGCC=$GCC],
+	[], [withGCC=$GCC],
+   [withGCC=$GCC])
+  _LT_TAGVAR(archive_cmds_need_lc, $1)=no
+  _LT_TAGVAR(hardcode_direct, $1)=no
+  _LT_TAGVAR(hardcode_automatic, $1)=yes
+  _LT_TAGVAR(hardcode_shlibpath_var, $1)=unsupported
+  _LT_TAGVAR(whole_archive_flag_spec, $1)=''
+  _LT_TAGVAR(link_all_deplibs, $1)=yes
+  _LT_TAGVAR(allow_undefined_flag, $1)="$_lt_dar_allow_undefined"
+  if test "$withGCC" = "yes"; then
+    output_verbose_link_cmd=echo
+    _LT_TAGVAR(archive_cmds, $1)="\$CC -dynamiclib \$allow_undefined_flag -o \$lib \$libobjs \$deplibs \$compiler_flags -install_name \$rpath/\$soname \$verstring $_lt_dar_single_mod${_lt_dsymutil}"
+    _LT_TAGVAR(module_cmds, $1)="\$CC \$allow_undefined_flag -o \$lib -bundle \$libobjs \$deplibs \$compiler_flags${_lt_dsymutil}"
+    _LT_TAGVAR(archive_expsym_cmds, $1)="sed 's,^,_,' < \$export_symbols > \$output_objdir/\${libname}-symbols.expsym~\$CC -dynamiclib \$allow_undefined_flag -o \$lib \$libobjs \$deplibs \$compiler_flags -install_name \$rpath/\$soname \$verstring ${_lt_dar_single_mod}${_lt_dar_export_syms}${_lt_dsymutil}"
+    _LT_TAGVAR(module_expsym_cmds, $1)="sed -e 's,^,_,' < \$export_symbols > \$output_objdir/\${libname}-symbols.expsym~\$CC \$allow_undefined_flag -o \$lib -bundle \$libobjs \$deplibs \$compiler_flags${_lt_dar_export_syms}${_lt_dsymutil}"
+    m4_if([$1], [CXX],
+[   if test "$lt_cv_apple_cc_single_mod" != "yes"; then
+      _LT_TAGVAR(archive_cmds, $1)="\$CC -r -keep_private_externs -nostdlib -o \${lib}-master.o \$libobjs~\$CC -dynamiclib \$allow_undefined_flag -o \$lib \${lib}-master.o \$deplibs \$compiler_flags -install_name \$rpath/\$soname \$verstring${_lt_dsymutil}"
+      _LT_TAGVAR(archive_expsym_cmds, $1)="sed 's,^,_,' < \$export_symbols > \$output_objdir/\${libname}-symbols.expsym~\$CC -r -keep_private_externs -nostdlib -o \${lib}-master.o \$libobjs~\$CC -dynamiclib \$allow_undefined_flag -o \$lib \${lib}-master.o \$deplibs \$compiler_flags -install_name \$rpath/\$soname \$verstring${_lt_dar_export_syms}${_lt_dsymutil}"
+    fi
+],[])
+  else
+  _LT_TAGVAR(ld_shlibs, $1)=no
+  fi
+])
 
 # _LT_SYS_MODULE_PATH_AIX
 # -----------------------
@@ -3501,16 +3613,6 @@ m4_if([$1], [CXX], [
 	  ;;
 	esac
 	;;
-      darwin*)
-        # PIC is the default on this platform
-        # Common symbols not allowed in MH_DYLIB files
-        case $cc_basename in
-          xlc*)
-          _LT_TAGVAR(lt_prog_compiler_pic, $1)='-qnocommon'
-          _LT_TAGVAR(lt_prog_compiler_wl, $1)='-Wl,'
-          ;;
-        esac
-        ;;
       dgux*)
 	case $cc_basename in
 	  ec++*)
@@ -3806,16 +3908,6 @@ m4_if([$1], [CXX], [
       else
 	_LT_TAGVAR(lt_prog_compiler_static, $1)='-bnso -bI:/lib/syscalls.exp'
       fi
-      ;;
-    darwin*)
-      # PIC is the default on this platform
-      # Common symbols not allowed in MH_DYLIB files
-      case $cc_basename in
-      xlc*)
-        _LT_TAGVAR(lt_prog_compiler_pic, $1)='-qnocommon'
-        _LT_TAGVAR(lt_prog_compiler_wl, $1)='-Wl,'
-        ;;
-      esac
       ;;
 
     mingw* | cygwin* | pw32* | os2*)
@@ -4540,69 +4632,7 @@ _LT_EOF
       ;;
 
     darwin* | rhapsody*)
-      case $host_os in
-      rhapsody* | darwin1.[[012]])
-	_LT_TAGVAR(allow_undefined_flag, $1)='${wl}-undefined ${wl}suppress'
-	;;
-      *) # Darwin 1.3 on
-	case ${MACOSX_DEPLOYMENT_TARGET-10.0} in
-	10.[[012]])
-	  _LT_TAGVAR(allow_undefined_flag, $1)='${wl}-flat_namespace ${wl}-undefined ${wl}suppress'
-	  ;;
-	10.*)
-	  _LT_TAGVAR(allow_undefined_flag, $1)='${wl}-undefined ${wl}dynamic_lookup'
-	  ;;
-	esac
-	;;
-      esac
-      _LT_TAGVAR(archive_cmds_need_lc, $1)=no
-      _LT_TAGVAR(hardcode_direct, $1)=no
-      _LT_TAGVAR(hardcode_automatic, $1)=yes
-      _LT_TAGVAR(hardcode_shlibpath_var, $1)=unsupported
-      _LT_TAGVAR(whole_archive_flag_spec, $1)=''
-      _LT_TAGVAR(link_all_deplibs, $1)=yes
-      if test "$GCC" = yes ; then
-	AC_CACHE_VAL([lt_cv_apple_cc_single_mod],
-	[lt_cv_apple_cc_single_mod=no
-	if test -z "${LT_MULTI_MODULE}"; then
-	  # By default we will add the -single_module flag. You can override
-	  # by either setting the environment variable LT_MULTI_MODULE
-	  # non-empty at configure time, or by adding -multi-module to the
-	  # link flags.
-	  echo "int foo(void){return 1;}" > conftest.c
-	  $LTCC $LTCFLAGS $LDFLAGS -o libconftest.dylib \
-	      -dynamiclib ${wl}-single_module conftest.c
-	  if test -f libconftest.dylib; then
-	      lt_cv_apple_cc_single_mod=yes
-	      rm libconftest.dylib
-	  fi
-	  rm conftest.$ac_ext
-	fi])
-	output_verbose_link_cmd=echo
-	if test "X$lt_cv_apple_cc_single_mod" = Xyes ; then
-	  _LT_TAGVAR(archive_cmds, $1)='$CC -dynamiclib $single_module $allow_undefined_flag -o $lib $libobjs $deplibs $compiler_flags -install_name $rpath/$soname $verstring'
-	  _LT_TAGVAR(archive_expsym_cmds, $1)='sed "s,^,_," < $export_symbols > $output_objdir/${libname}-symbols.expsym~$CC $single_module -dynamiclib $allow_undefined_flag -o $lib $libobjs $deplibs $compiler_flags -install_name $rpath/$soname $verstring~nmedit -s $output_objdir/${libname}-symbols.expsym ${lib}'
-	else
-	  _LT_TAGVAR(archive_cmds, $1)='$CC -dynamiclib $allow_undefined_flag -o $lib $libobjs $deplibs $compiler_flags -install_name $rpath/$soname $verstring'
-	  _LT_TAGVAR(archive_expsym_cmds, $1)='sed "s,^,_," < $export_symbols > $output_objdir/${libname}-symbols.expsym~$CC -dynamiclib $allow_undefined_flag -o $lib $libobjs $deplibs $compiler_flags -install_name $rpath/$soname $verstring~nmedit -s $output_objdir/${libname}-symbols.expsym ${lib}'
-	fi
-	_LT_TAGVAR(module_cmds, $1)='$CC $allow_undefined_flag -o $lib -bundle $libobjs $deplibs$compiler_flags'
-	_LT_TAGVAR(module_expsym_cmds, $1)='sed -e "s,^,_," < $export_symbols > $output_objdir/${libname}-symbols.expsym~$CC $allow_undefined_flag  -o $lib -bundle $libobjs $deplibs$compiler_flags~nmedit -s $output_objdir/${libname}-symbols.expsym ${lib}'
-      else
-	case $cc_basename in
-	xlc*)
-	  output_verbose_link_cmd=echo
-	  _LT_TAGVAR(archive_cmds, $1)='$CC -qmkshrobj $allow_undefined_flag -o $lib $libobjs $deplibs $compiler_flags ${wl}-install_name ${wl}`$ECHO $rpath/$soname` $xlcverstring'
-	  _LT_TAGVAR(module_cmds, $1)='$CC $allow_undefined_flag -o $lib -bundle $libobjs $deplibs$compiler_flags'
-	  # Don't fix this by using the ld -exported_symbols_list flag, it doesn't exist in older darwin lds
-	  _LT_TAGVAR(archive_expsym_cmds, $1)='sed "s,^,_," < $export_symbols > $output_objdir/${libname}-symbols.expsym~$CC -qmkshrobj $allow_undefined_flag -o $lib $libobjs $deplibs $compiler_flags ${wl}-install_name ${wl}$rpath/$soname $xlcverstring~nmedit -s $output_objdir/${libname}-symbols.expsym ${lib}'
-	  _LT_TAGVAR(module_expsym_cmds, $1)='sed "s,^,_," < $export_symbols > $output_objdir/${libname}-symbols.expsym~$CC $allow_undefined_flag  -o $lib -bundle $libobjs $deplibs$compiler_flags~nmedit -s $output_objdir/${libname}-symbols.expsym ${lib}'
-	  ;;
-	*)
-	  _LT_TAGVAR(ld_shlibs, $1)=no
-	  ;;
-	esac
-      fi
+      _LT_DARWIN_LINKER_FEATURES($1)
       ;;
 
     dgux*)
@@ -5551,71 +5581,7 @@ if test "$_lt_caught_CXX_error" != yes; then
         fi
         ;;
       darwin* | rhapsody*)
-	case $host_os in
-	  rhapsody* | darwin1.[[012]])
-	    _LT_TAGVAR(allow_undefined_flag, $1)='${wl}-undefined ${wl}suppress'
-	    ;;
-	  *) # Darwin 1.3 on
-	    case ${MACOSX_DEPLOYMENT_TARGET-10.0} in
-	      10.[[012]])
-		_LT_TAGVAR(allow_undefined_flag, $1)='${wl}-flat_namespace ${wl}-undefined ${wl}suppress'
-		;;
-	      10.*)
-		_LT_TAGVAR(allow_undefined_flag, $1)='${wl}-undefined ${wl}dynamic_lookup'
-		;;
-	    esac
-	    ;;
-	esac
-	_LT_TAGVAR(archive_cmds_need_lc, $1)=no
-	_LT_TAGVAR(hardcode_direct, $1)=no
-	_LT_TAGVAR(hardcode_automatic, $1)=yes
-	_LT_TAGVAR(hardcode_shlibpath_var, $1)=unsupported
-	_LT_TAGVAR(whole_archive_flag_spec, $1)=''
-	_LT_TAGVAR(link_all_deplibs, $1)=yes
-
-	if test "$GXX" = yes ; then
-	  AC_CACHE_VAL([lt_cv_apple_cc_single_mod],
-	  [lt_cv_apple_cc_single_mod=no
-	  if test -z "${LT_MULTI_MODULE}"; then
-	    # By default we will add the -single_module flag. You can override
-	    # by either setting the environment variable LT_MULTI_MODULE
-	    # non-empty at configure time, or by adding -multi-module to the
-	    # link flags.
-	    echo "int foo(void){return 1;}" > conftest.c
-	    $LTCC $LTCFLAGS $LDFLAGS -o libconftest.dylib \
-		-dynamiclib ${wl}-single_module conftest.c
-	    if test -f libconftest.dylib; then
-		lt_cv_apple_cc_single_mod=yes
-		rm libconftest.dylib
-	    fi
-	    rm conftest.$ac_ext
-	  fi])
-	  output_verbose_link_cmd=echo
-	  if test "X$lt_cv_apple_cc_single_mod" = Xyes ; then
-	   _LT_TAGVAR(archive_cmds, $1)='$CC -dynamiclib $single_module $allow_undefined_flag -o $lib $libobjs $deplibs $compiler_flags -install_name $rpath/$soname $verstring'
-	    _LT_TAGVAR(archive_expsym_cmds, $1)='sed "s,^,_," < $export_symbols > $output_objdir/${libname}-symbols.expsym~$CC -dynamiclib $single_module $allow_undefined_flag -o $lib $libobjs $deplibs $compiler_flags -install_name $rpath/$soname $verstring~nmedit -s $output_objdir/${libname}-symbols.expsym ${lib}'
-	  else
-	    _LT_TAGVAR(archive_cmds, $1)='$CC -r -keep_private_externs -nostdlib -o ${lib}-master.o $libobjs~$CC -dynamiclib $allow_undefined_flag -o $lib ${lib}-master.o $deplibs $compiler_flags -install_name $rpath/$soname $verstring'
-	    _LT_TAGVAR(archive_expsym_cmds, $1)='sed "s,^,_," < $export_symbols > $output_objdir/${libname}-symbols.expsym~$CC -r -keep_private_externs -nostdlib -o ${lib}-master.o $libobjs~$CC -dynamiclib $allow_undefined_flag -o $lib ${lib}-master.o $deplibs $compiler_flags -install_name $rpath/$soname $verstring~nmedit -s $output_objdir/${libname}-symbols.expsym ${lib}'
-	  fi
-	  _LT_TAGVAR(module_cmds, $1)='$CC $allow_undefined_flag -o $lib -bundle $libobjs $deplibs$compiler_flags'
-	  _LT_TAGVAR(module_expsym_cmds, $1)='sed "s,^,_," < $export_symbols > $output_objdir/${libname}-symbols.expsym~$CC $allow_undefined_flag  -o $lib -bundle $libobjs $deplibs$compiler_flags~nmedit -s $output_objdir/${libname}-symbols.expsym ${lib}'
-	else
-	  case $cc_basename in
-	    xlc*)
-	      output_verbose_link_cmd=echo
-	      _LT_TAGVAR(archive_cmds, $1)='$CC -qmkshrobj ${wl}-single_module $allow_undefined_flag -o $lib $libobjs $deplibs $compiler_flags ${wl}-install_name ${wl}`$ECHO "$rpath/$soname"` $xlcverstring'
-	      _LT_TAGVAR(module_cmds, $1)='$CC $allow_undefined_flag -o $lib -bundle $libobjs $deplibs$compiler_flags'
-	      # Don't fix this by using the ld -exported_symbols_list flag,
-	      # it doesn't exist in older darwin lds
-	      _LT_TAGVAR(archive_expsym_cmds, $1)='sed "s,^,_," < $export_symbols > $output_objdir/${libname}-symbols.expsym~$CC -qmkshrobj ${wl}-single_module $allow_undefined_flag -o $lib $libobjs $deplibs $compiler_flags ${wl}-install_name ${wl}$rpath/$soname $xlcverstring~nmedit -s $output_objdir/${libname}-symbols.expsym ${lib}'
-	      _LT_TAGVAR(module_expsym_cmds, $1)='sed "s,^,_," < $export_symbols > $output_objdir/${libname}-symbols.expsym~$CC $allow_undefined_flag  -o $lib -bundle $libobjs $deplibs$compiler_flags~nmedit -s $output_objdir/${libname}-symbols.expsym ${lib}'
-	      ;;
-	    *)
-	      _LT_TAGVAR(ld_shlibs, $1)=no
-	      ;;
-	  esac
-	fi
+        _LT_DARWIN_LINKER_FEATURES($1)
 	;;
 
       dgux*)

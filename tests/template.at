@@ -127,14 +127,13 @@ AT_SETUP([template test with subdirs])
 LT_AT_TAG([CXX])
 AT_KEYWORDS([libtool])
 
-# This does not work with flat namespace shared libraries on Darwin.
-# Set MACOSX_DEPLOYMENT_TARGET to 10.3 or later at configure time to 
-# get two-level namespace shared libraries.
 noskip=:
-eval `$LIBTOOL --tag=CXX --config | grep '^allow_undefined_flag='`
-case $allow_undefined_flag in
-*-flat_namespace*) noskip=false ;;
+# Mac OS X.
+# The linker has issues with this test. 
+case $host in
+*-darwin*) noskip=false ;;
 esac
+
 
 CPPFLAGS="$CPPFLAGS -I../src/lib -I../src/lib2"
 
