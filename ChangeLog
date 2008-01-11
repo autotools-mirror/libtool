@@ -1,3 +1,10 @@
+2008-01-11  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* libltdl/m4/libtool.m4 (_LT_LINKER_SHLIBS) <exclude_expsyms>:
+	Also exclude `_GLOBAL__F[ID]_.*'.  Also set for the C++ tag.
+	Fixes esp. demo/helldl build failure with GCC on AIX.
+	Report by Rainer Tammer.
+
 2008-01-11  Peter O'Gorman  <peter@pogma.com>
 
 	* libltdl/m4/libtool.m4 [darwin]: Reorganize darwin support, use
