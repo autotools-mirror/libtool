@@ -1,5 +1,14 @@
 2008-01-12  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* libltdl/m4/ltdl.m4 (_LTDL_SETUP): Define
+	LTDL_DLOPEN_SELF_WORKS, depending upon lt_cv_dlopen_self.
+	* libltdl/loaders/dlopen.c (vm_open) [!LTDL_DLOPEN_SELF_WORKS]:
+	Fail for dlopen(NULL), so that the preopen loader is used.  This
+	fixes mdemo-exec.test failures on AIX where dlopen(NULL)
+	succeeds but dlsym resolves no symbol.
+	* NEWS: Update.
+	Report by Rainer Tammer.
+
 	* tests/am-subdir.at: Drop unused variables.
 	* tests/configure-iface.at: Likewise.
 	* tests/ctor.at: Likewise.

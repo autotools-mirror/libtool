@@ -116,6 +116,7 @@ New in 2.1a: 2008-??-??; CVS version 2.1a, Libtool team:
   - Some configure variables have been renamed to fix caching:
     lt_prog_compiler_pic_works to lt_cv_prog_compiler_pic_works
     lt_prog_compiler_static_works to lt_cv_prog_compiler_static_works.
+  - Fix 1.9b regression: lt_dlopen(NULL) works on AIX again.
   - Loads of smaller bug fixes.
 
 

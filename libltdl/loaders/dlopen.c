@@ -1,7 +1,7 @@
 /* loader-dlopen.c --  dynamic linking with dlopen/dlsym
 
    Copyright (C) 1998, 1999, 2000, 2004, 2006,
-                 2007 Free Software Foundation, Inc.
+                 2007, 2008 Free Software Foundation, Inc.
    Written by Thomas Tanner, 1998
 
    NOTE: The canonical source of this file is maintained with the
@@ -178,7 +178,14 @@ vm_open (lt_user_data LT__UNUSED loader_data, const char *filename,
 #endif
     }
 
-  module = dlopen (filename, module_flags);
+  /* On AIX, dlopen(NULL) succeeds but dlsym of symbols fails.
+     In this case, fail here to let the preopen loader do the job. */
+#ifndef LTDL_DLOPEN_SELF_WORKS
+  if (!filename)
+    module = NULL;
+  else
+#endif
+    module = dlopen (filename, module_flags);
 
   if (!module)
     {
