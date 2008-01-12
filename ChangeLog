@@ -1,3 +1,9 @@
+2008-01-12  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* ltmain.in (link mode): Fix warning about -l and -L for
+	archives and objects as output, to not trigger for *.la files.
+	Non-convenience archives are diagnosed later on.
+
 2008-01-11  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* libtool.m4 (AC_LIBTOOL_PROG_LD_SHLIBS) <exclude_expsyms>:

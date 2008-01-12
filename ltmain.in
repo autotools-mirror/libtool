@@ -3099,9 +3099,10 @@ EOF
 
     case $linkmode in
     oldlib)
-      if test -n "$deplibs"; then
-	$echo "$modename: warning: \`-l' and \`-L' are ignored for archives" 1>&2
-      fi
+      case " $deplibs" in
+      *\ -l* | *\ -L*)
+	$echo "$modename: warning: \`-l' and \`-L' are ignored for archives" 1>&2 ;;
+      esac
 
       if test -n "$dlfiles$dlprefiles" || test "$dlself" != no; then
 	$echo "$modename: warning: \`-dlopen' is ignored for archives" 1>&2
@@ -4238,9 +4239,10 @@ EOF
       ;;
 
     obj)
-      if test -n "$deplibs"; then
-	$echo "$modename: warning: \`-l' and \`-L' are ignored for objects" 1>&2
-      fi
+      case " $deplibs" in
+      *\ -l* | *\ -L*)
+	$echo "$modename: warning: \`-l' and \`-L' are ignored for objects" 1>&2 ;;
+      esac
 
       if test -n "$dlfiles$dlprefiles" || test "$dlself" != no; then
 	$echo "$modename: warning: \`-dlopen' is ignored for objects" 1>&2
