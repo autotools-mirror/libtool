@@ -4,6 +4,8 @@
 	before CPPFLAGS, so that even CPPFLAGS=-I/usr/local/include
 	won't make the tests prefer an installed ltdl.h over the
 	in-package one.
+	* tests/lt_dladvise.at, tests/lt_dlexit.at: Likewise.
+	* tests/need_lib_prefix.at, tests/old-m4-iface.at: Likewise.
 	Report by Bob Friesenhahn.
 
 2008-01-11  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
