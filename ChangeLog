@@ -1,5 +1,8 @@
 2008-01-12  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* tests/old-m4-iface.at (AM_PROG_LIBTOOL): Also copy needed
+	lt~obsolete.m4.
+
 	* libltdl/config/ltmain.m4sh (func_mode_link): Fix warning
 	about -l and -L for archives and objects as output, to not
 	trigger for *.la files.  Non-convenience archives are diagnosed

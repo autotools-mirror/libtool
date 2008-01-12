@@ -79,7 +79,8 @@ LT_AT_LIBTOOLIZE([--install])
 # with libtool-1.5x...
 AT_CHECK([test -f aclocal.m4 ||
   cat "$tst_aclocaldir/libtool.m4" "$tst_aclocaldir/ltoptions.m4" \
-    "$tst_aclocaldir/ltsugar.m4" "$tst_aclocaldir/ltversion.m4" > aclocal.m4])
+    "$tst_aclocaldir/ltsugar.m4" "$tst_aclocaldir/ltversion.m4" \
+    "$tst_aclocaldir/lt~obsolete.m4" > aclocal.m4])
 
 LT_AT_BOOTSTRAP([ignore], [ignore], [ignore], [ignore], [--force])
 
