@@ -70,24 +70,9 @@ xdlsymtest (lt_dlhandle handle, const char *func, const char *var)
   return (*pf) (*pv);
 }
 
-static int
-callback (const char *filename, void *data)
-{
-  printf ("%s: %s\n", (char *)data, filename);
-  return 0;
-}
-
-static int
-try_iterate (const char *search_path)
-{
-  char *s = "try_iterate";
-  return lt_dlforeachfile (search_path, callback, s);
-}
-
 int
-main (int argc, char **argv)
+main (void)
 {
-  int i;
   lt_dlhandle b1;
 
   LTDL_SET_PRELOADED_SYMBOLS();

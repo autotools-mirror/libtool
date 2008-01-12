@@ -1,5 +1,13 @@
 2008-01-12  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* tests/am-subdir.at: Drop unused variables.
+	* tests/configure-iface.at: Likewise.
+	* tests/ctor.at: Likewise.
+	* tests/early-libtool.at: Likewise.
+	* tests/lt_dladvise.at: Likewise.
+	* tests/old-m4-iface.at: Likewise.
+	* tests/lt_dlexit.at: Likewise.  Also drop unused functions.
+
 	* tests/old-m4-iface.at (AM_PROG_LIBTOOL): Also copy needed
 	lt~obsolete.m4.
 

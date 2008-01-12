@@ -190,7 +190,7 @@ hint_global (void)
 }
 
 int
-main (int argc, char **argv)
+main (void)
 {
 
   LTDL_SET_PRELOADED_SYMBOLS();

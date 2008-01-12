@@ -1,6 +1,6 @@
 # am-subdir.at -- libtool subdir-objects support              -*- Autotest -*-
 
-#   Copyright (C) 2004 Free Software Foundation, Inc.
+#   Copyright (C) 2004, 2008 Free Software Foundation, Inc.
 #   Written by Gary V. Vaughan, 2004
 #
 #   This file is part of GNU Libtool.
@@ -62,7 +62,7 @@ AT_DATA([[subdir/main.c]],
 
 extern void sub (void);
 
-int main (int argc, char **argv)
+int main (void)
 {
   printf ("Welcome to GNU Libtool subdir-objects test!\n");
   sub();
@@ -142,7 +142,7 @@ AT_DATA([[subdir/sub.hxx]],
 AT_DATA([[subdir/main.cxx]],
 [[#include "sub.hxx"
 
-int main (int, char *[])
+int main (void)
 {
   libsub SUB;
   return SUB.sub() != 27;
