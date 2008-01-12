@@ -1,5 +1,9 @@
 2008-01-12  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* libltdl/config/ltmain.m4sh (func_mode_link): Fix warning
+	about -l and -L for archives and objects as output, to not
+	trigger for *.la files.  Non-convenience archives are diagnosed
+
 	* tests/configure-iface.at: Ensure LTDLINCL is expanded
 	before CPPFLAGS, so that even CPPFLAGS=-I/usr/local/include
 	won't make the tests prefer an installed ltdl.h over the

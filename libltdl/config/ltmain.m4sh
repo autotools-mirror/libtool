@@ -5080,9 +5080,10 @@ func_mode_link ()
 	func_warning "\`-dlopen' is ignored for archives"
       fi
 
-      test -n "$deplibs" && \
-	func_warning "\`-l' and \`-L' are ignored for archives"
-
+      case " $deplibs" in
+      *\ -l* | *\ -L*)
+	func_warning "\`-l' and \`-L' are ignored for archives" ;;
+      esac
 
       test -n "$rpath" && \
 	func_warning "\`-rpath' is ignored for archives"
@@ -6359,8 +6360,10 @@ EOF
 	func_warning "\`-dlopen' is ignored for objects"
       fi
 
-      test -n "$deplibs" && \
-	func_warning "\`-l' and \`-L' are ignored for objects"
+      case " $deplibs" in
+      *\ -l* | *\ -L*)
+	func_warning "\`-l' and \`-L' are ignored for objects" ;;
+      esac
 
       test -n "$rpath" && \
 	func_warning "\`-rpath' is ignored for objects"
