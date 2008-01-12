@@ -1,6 +1,6 @@
 # configure-iface.at -- test ltdl configure interface         -*- Autotest -*-
 #
-#   Copyright (C) 2007 Free Software Foundation, Inc.
+#   Copyright (C) 2007, 2008 Free Software Foundation, Inc.
 #   Written by Gary V. Vaughan, 2007
 #
 #   This file is part of GNU Libtool.
@@ -124,7 +124,7 @@ AT_DATA([Makefile.am],
 
 SUBDIRS			= libltdl
 
-AM_CFLAGS		= $(LTDLINCL)
+AM_CPPFLAGS		= $(LTDLINCL)
 
 lib_LTLIBRARIES		= libmodule.la
 libmodule_la_LDFLAGS	= -module
@@ -188,7 +188,7 @@ AC_OUTPUT
 AT_DATA([Makefile.am],
 [[AUTOMAKE_OPTIONS	= 1.7
 
-AM_CFLAGS		= $(LTDLINCL)
+AM_CPPFLAGS		= $(LTDLINCL)
 
 lib_LTLIBRARIES		= libmodule.la
 libmodule_la_LDFLAGS	= -module
@@ -241,7 +241,7 @@ AT_DATA([Makefile.am],
 
 SUBDIRS			= libltdl
 
-AM_CFLAGS		= $(LTDLINCL)
+AM_CPPFLAGS		= $(LTDLINCL)
 
 lib_LTLIBRARIES		= libmodule.la
 libmodule_la_LDFLAGS	= -module

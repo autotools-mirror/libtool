@@ -1,6 +1,6 @@
 # old-m4-iface.at -- exercise old m4 interface to libtool     -*- Autotest -*-
 #
-#   Copyright (C) 2005 Free Software Foundation, Inc.
+#   Copyright (C) 2005, 2008 Free Software Foundation, Inc.
 #   Written by Gary V. Vaughan, 2005
 #
 #   This file is part of GNU Libtool.
@@ -109,7 +109,7 @@ AC_OUTPUT(Makefile)
 AT_DATA([Makefile.in],
 [[top_srcdir	= .
 top_builddir	= .
-COMPILE		= @CC@ @CPPFLAGS@ @INCLTDL@  @CFLAGS@
+COMPILE		= @CC@ @INCLTDL@  @CPPFLAGS@ @CFLAGS@
 LTCOMPILE	= @LIBTOOL@ --mode=compile $(COMPILE)
 LTLINK		= @LIBTOOL@ --mode=link @CC@ -no-undefined @CFLAGS@ @LDFLAGS@ -o $@
 SHELL		= @SHELL@

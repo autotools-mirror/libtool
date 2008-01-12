@@ -1,6 +1,6 @@
 # lt_dlexit.at -- test libltdl functionality                  -*- Autotest -*-
 #
-#   Copyright (C) 2007 Free Software Foundation, Inc.
+#   Copyright (C) 2007, 2008 Free Software Foundation, Inc.
 #   Written by Dave Brolley & Ralf Wildenhues, 2007
 #
 #   This file is part of GNU Libtool.
@@ -134,7 +134,7 @@ int vb1 = 3;
 : ${LTDLINCL="-I$abs_top_srcdir/libltdl"}
 : ${LIBLTDL="$abs_builddir/../libltdl/libltdlc.la"}
 
-CPPFLAGS="$CPPFLAGS $LTDLINCL"
+CPPFLAGS="$LTDLINCL $CPPFLAGS"
 LDFLAGS="$LDFLAGS -no-undefined"
 
 for file in a1 b1; do

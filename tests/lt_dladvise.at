@@ -1,6 +1,6 @@
 # lt_dladvise.at -- test libltdl functionality                -*- Autotest -*-
 #
-#   Copyright (C) 2007 Free Software Foundation, Inc.
+#   Copyright (C) 2007, 2008 Free Software Foundation, Inc.
 #   Written by Gary V. Vaughan, 2007
 #
 #   This file is part of GNU Libtool.
@@ -267,7 +267,7 @@ depend: 5
 : ${LTDLINCL="-I$abs_top_srcdir/libltdl"}
 : ${LIBLTDL="$abs_builddir/../libltdl/libltdlc.la"}
 
-CPPFLAGS="$CPPFLAGS $LTDLINCL"
+CPPFLAGS="$LTDLINCL $CPPFLAGS"
 
 dlopenable='resident local global'
 
