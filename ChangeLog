@@ -1,5 +1,10 @@
 2008-01-14  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	Silence all non-warning output from `libtool --silent'.
+	* libltdl/config/ltmain.m4sh (func_generate_dlsyms)
+	(func_extract_archives, func_mode_link): Use func_verbose
+	instead of func_echo for all non-warning output.
+
 	* Makefile.maint (fetch): Update to match upstream git sources.
 	Pull `INSTALL' from gnulib instead of from Autoconf.
 
