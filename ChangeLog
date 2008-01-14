@@ -1,3 +1,9 @@
+2008-01-14  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* doc/notes.texi: Mention AIX binutils deficiency for C++ code.
+	Report by Rainer Tammer.
+	Suggest using bash for configure.  Hint to runtimelinking.
+
 2008-01-12  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* ltmain.in (link mode): Fix warning about -l and -L for
