@@ -188,7 +188,7 @@ LT_OPTION_DEFINE([LT_INIT], [disable-shared], [_LT_ENABLE_SHARED([no])])
 
 # Old names:
 AC_DEFUN([AC_ENABLE_SHARED],
-[_LT_SET_OPTION([shared])
+[_LT_SET_OPTION([LT_INIT], [shared])
 ])
 
 AC_DEFUN([AC_DISABLE_SHARED],

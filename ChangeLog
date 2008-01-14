@@ -1,3 +1,8 @@
+2008-01-14  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* libltdl/m4/ltoptions.m4 (AC_ENABLE_SHARED): Fix to use
+	new _LT_SET_OPTION semantics.
+
 2008-01-12  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* libltdl/m4/ltdl.m4 (_LTDL_SETUP): Define
@@ -23,6 +28,7 @@
 	* libltdl/config/ltmain.m4sh (func_mode_link): Fix warning
 	about -l and -L for archives and objects as output, to not
 	trigger for *.la files.  Non-convenience archives are diagnosed
+	later on.
 
 	* tests/configure-iface.at: Ensure LTDLINCL is expanded
 	before CPPFLAGS, so that even CPPFLAGS=-I/usr/local/include
