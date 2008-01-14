@@ -1,5 +1,9 @@
 2008-01-14  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* doc/notes.texi: Mention AIX binutils deficiency for C++ code.
+	Report by Rainer Tammer.
+	Suggest using bash for configure.
+
 	* libltdl/m4/ltoptions.m4 (AC_ENABLE_SHARED): Fix to use
 	new _LT_SET_OPTION semantics.
 
