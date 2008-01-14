@@ -1,5 +1,8 @@
 2008-01-14  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* Makefile.am (fetch): Update to match upstream git sources.
+	Pull `INSTALL' from gnulib instead of from Autoconf.
+
 	* doc/notes.texi: Mention AIX binutils deficiency for C++ code.
 	Report by Rainer Tammer.
 	Suggest using bash for configure.  Hint to runtimelinking.

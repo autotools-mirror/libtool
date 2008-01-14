@@ -173,7 +173,8 @@ cvs-news:
 
 ## Program to use to fetch files.
 WGET = wget
-WGETSGO = $(WGET) http://savannah.gnu.org/cgi-bin/viewcvs/~checkout~
+WGETSGO = $(WGET) 'http://savannah.gnu.org/cgi-bin/viewcvs/~checkout~'
+WGET_GIT = $(WGET) 'http://git.savannah.gnu.org/gitweb/?a=blob_plain;hb=HEAD;p='
 
 ## Files that we fetch and which we compare against.
 ## FIXME should be a lot more here
@@ -194,11 +195,11 @@ fetch:
 	mkdir Fetchdir
 ## If a get fails then that is a problem.
 	(cd Fetchdir && \
-	$(WGETSGO)/autoconf/autoconf/INSTALL; \
-	$(WGETSGO)/automake/automake/lib/install-sh; \
-	$(WGETSGO)/config/config/config.guess; \
-	$(WGETSGO)/config/config/config.sub; \
-	$(WGETSGO)/texinfo/texinfo/doc/texinfo.tex )
+	$(WGET_GIT)'gnulib.git;f=doc/INSTALL' -O INSTALL && \
+	$(WGET_GIT)'automake.git;f=lib/install-sh' -O install-sh && \
+	$(WGETSGO)/config/config/config.guess -O config.guess && \
+	$(WGETSGO)/config/config/config.sub -O config.sub && \
+	$(WGETSGO)/texinfo/texinfo/doc/texinfo.tex -O texinfo.tex )
 ## Don't exit after test because we want to give as many errors as
 ## possible.
 	@stat=0; for file in $(FETCHFILES); do \
