@@ -181,6 +181,7 @@ AC_PROG_CPP
 ## Libtool initialisation. ##
 ## ----------------------- ##
 LT_INIT([dlopen win32-dll])
+_LT_SET_OPTION([LTDL_INIT], [nonrecursive])
 _LTDL_SETUP
 
 # Enable all the language support we can

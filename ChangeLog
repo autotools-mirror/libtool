@@ -1,3 +1,8 @@
+2008-01-15  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* configure.ac: Set libltdl nonrecursive option, to avoid
+	configuring libltdl inside the Libtool package.
+
 2008-01-14  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	Silence all non-warning output from `libtool --silent'.
