@@ -388,8 +388,9 @@ case ,${enable_ltdl_install},${enable_ltdl_convenience} in
   *) enable_ltdl_convenience=yes ;;
 esac
 
-AM_CONDITIONAL(INSTALL_LTDL, test x"${enable_ltdl_install-no}" != xno)
-AM_CONDITIONAL(CONVENIENCE_LTDL, test x"${enable_ltdl_convenience-no}" != xno)
+m4_ifdef([AM_CONDITIONAL],
+[AM_CONDITIONAL(INSTALL_LTDL, test x"${enable_ltdl_install-no}" != xno)
+ AM_CONDITIONAL(CONVENIENCE_LTDL, test x"${enable_ltdl_convenience-no}" != xno)])
 ])# _LT_ENABLE_INSTALL
 
 

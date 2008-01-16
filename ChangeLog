@@ -1,3 +1,8 @@
+2008-01-16  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* libltdl/m4/ltdl.m4 (_LT_ENABLE_INSTALL): Use AM_CONDITIONAL
+	only if defined.  Allows to use libltdl without aclocal.
+
 2008-01-16  Peter O'Gorman  <peter@pogma.com>
 
 	* libltdl/m4/libtool.m4: Set GCC var for every tag, avoids need
