@@ -1,3 +1,8 @@
+2008-01-16  Peter O'Gorman  <peter@pogma.com>
+
+	* libltdl/m4/libtool.m4: Set GCC var for every tag, avoids need
+	to set withGCC var.
+
 2008-01-15  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* configure.ac: Set libltdl nonrecursive option, to avoid

@@ -969,14 +969,6 @@ m4_defun_once([_LT_REQUIRED_DARWIN_CHECKS],[
 m4_defun([_LT_DARWIN_LINKER_FEATURES],
 [
   m4_require([_LT_REQUIRED_DARWIN_CHECKS])
-  m4_case([$1],
-	[C], [withGCC=$GCC],
-	[CXX], [withGCC=$GXX],
-	[F77], [withGCC=$G77],
-	[FC], [withGCC=$ac_cv_fc_compiler_gnu],
-	[GCJ], [withGCC=$GCC],
-	[], [withGCC=$GCC],
-   [withGCC=$GCC])
   _LT_TAGVAR(archive_cmds_need_lc, $1)=no
   _LT_TAGVAR(hardcode_direct, $1)=no
   _LT_TAGVAR(hardcode_automatic, $1)=yes
@@ -984,7 +976,7 @@ m4_defun([_LT_DARWIN_LINKER_FEATURES],
   _LT_TAGVAR(whole_archive_flag_spec, $1)=''
   _LT_TAGVAR(link_all_deplibs, $1)=yes
   _LT_TAGVAR(allow_undefined_flag, $1)="$_lt_dar_allow_undefined"
-  if test "$withGCC" = "yes"; then
+  if test "$GCC" = "yes"; then
     output_verbose_link_cmd=echo
     _LT_TAGVAR(archive_cmds, $1)="\$CC -dynamiclib \$allow_undefined_flag -o \$lib \$libobjs \$deplibs \$compiler_flags -install_name \$rpath/\$soname \$verstring $_lt_dar_single_mod${_lt_dsymutil}"
     _LT_TAGVAR(module_cmds, $1)="\$CC \$allow_undefined_flag -o \$lib -bundle \$libobjs \$deplibs \$compiler_flags${_lt_dsymutil}"
@@ -2034,14 +2026,9 @@ m4_require([_LT_DECL_EGREP])dnl
 m4_require([_LT_FILEUTILS_DEFAULTS])dnl
 m4_require([_LT_DECL_SED])dnl
 AC_MSG_CHECKING([dynamic linker characteristics])
-m4_case([$1],
-	[C], [withGCC=$GCC],
-	[CXX], [withGCC=$GXX],
-	[F77], [withGCC=$G77],
-	[FC], [withGCC=$ac_cv_fc_compiler_gnu],
-	[GCJ], [withGCC=$GCC],
-	[], [withGCC=$GCC
-if test "$withGCC" = yes; then
+m4_if([$1],
+	[], [
+if test "$GCC" = yes; then
   case $host_os in
     darwin*) lt_awk_arg="/^libraries:/,/LR/" ;;
     *) lt_awk_arg="/^libraries:/" ;;
@@ -2091,8 +2078,7 @@ BEGIN {RS=" "; FS="/|\n";} {
   sys_lib_search_path_spec=`$ECHO $lt_search_path_spec`
 else
   sys_lib_search_path_spec="/lib /usr/lib /usr/local/lib"
-fi],
-[withGCC=$GCC])
+fi])
 library_names_spec=
 libname_spec='lib$name'
 soname_spec=
@@ -2203,7 +2189,7 @@ cygwin* | mingw* | pw32*)
   need_version=no
   need_lib_prefix=no
 
-  case $withGCC,$host_os in
+  case $GCC,$host_os in
   yes,cygwin* | yes,mingw* | yes,pw32*)
     library_names_spec='$libname.dll.a'
     # DLL is installed to $(libdir)/../bin by postinstall_cmds
@@ -6572,11 +6558,12 @@ if test "$_lt_disable_F77" != yes; then
 
   # Allow CC to be a program name with arguments.
   lt_save_CC="$CC"
+  lt_save_GCC=$GCC
   CC=${F77-"f77"}
   compiler=$CC
   _LT_TAGVAR(compiler, $1)=$CC
   _LT_CC_BASENAME([$compiler])
-
+  GCC=$G77
   if test -n "$compiler"; then
     AC_MSG_CHECKING([if libtool supports shared libraries])
     AC_MSG_RESULT([$can_build_shared])
@@ -6624,6 +6611,7 @@ if test "$_lt_disable_F77" != yes; then
     _LT_CONFIG($1)
   fi # test -n "$compiler"
 
+  GCC=$lt_save_GCC
   CC="$lt_save_CC"
 fi # test "$_lt_disable_F77" != yes
 
@@ -6713,8 +6701,11 @@ if test "$_lt_disable_FC" != yes; then
 
   # Allow CC to be a program name with arguments.
   lt_save_CC="$CC"
+  lt_save_GCC=$GCC
   CC=${FC-"f95"}
   compiler=$CC
+  GCC=$ac_cv_fc_compiler_gnu
+
   _LT_TAGVAR(compiler, $1)=$CC
   _LT_CC_BASENAME([$compiler])
 
@@ -6766,6 +6757,7 @@ if test "$_lt_disable_FC" != yes; then
     _LT_CONFIG($1)
   fi # test -n "$compiler"
 
+  GCC=$lt_save_GCC
   CC="$lt_save_CC"
 fi # test "$_lt_disable_FC" != yes
 
@@ -6804,6 +6796,8 @@ _LT_LINKER_BOILERPLATE
 
 # Allow CC to be a program name with arguments.
 lt_save_CC="$CC"
+lt_save_GCC=$GCC
+GCC=yes
 CC=${GCJ-"gcj"}
 compiler=$CC
 _LT_TAGVAR(compiler, $1)=$CC
@@ -6831,6 +6825,8 @@ if test -n "$compiler"; then
 fi
 
 AC_LANG_RESTORE
+
+GCC=$lt_save_GCC
 CC="$lt_save_CC"
 ])# _LT_LANG_GCJ_CONFIG
 
@@ -6866,6 +6862,8 @@ _LT_LINKER_BOILERPLATE
 
 # Allow CC to be a program name with arguments.
 lt_save_CC="$CC"
+lt_save_GCC=$GCC
+GCC=
 CC=${RC-"windres"}
 compiler=$CC
 _LT_TAGVAR(compiler, $1)=$CC
@@ -6877,6 +6875,7 @@ if test -n "$compiler"; then
   _LT_CONFIG($1)
 fi
 
+GCC=$lt_save_GCC
 AC_LANG_RESTORE
 CC="$lt_save_CC"
 ])# _LT_LANG_RC_CONFIG
