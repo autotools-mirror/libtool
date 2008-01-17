@@ -4639,15 +4639,15 @@ the @code{libltdl} header files.
 @item
 If your package is built using the convenience libltdl, @var{LIBLTDL}
 will be the pathname for the convenience version of libltdl
-(starting with @samp{$@{top_builddir@}/}) and @var{LTDLINCL} will be
-@option{-I} followed by the directory that contains @file{ltdl.h}
-(starting with @samp{$@{top_srcdir@}/}).
+(starting with @samp{$@{top_builddir@}/} or @samp{$@{top_build_prefix@}})
+and @var{LTDLINCL} will be @option{-I} followed by the directory that
+contains @file{ltdl.h} (starting with @samp{$@{top_srcdir@}/}).
 
 @item
 If an installable version of the included @code{libltdl} is being
-built, its pathname starting with @samp{$@{top_builddir@}/}, will be
-stored in @var{LIBLTDL}, and @var{LTDLINCL} will be set just like in
-the case of convenience library.
+built, its pathname starting with @samp{$@{top_builddir@}/} or
+@samp{$@{top_build_prefix@}}, will be stored in @var{LIBLTDL}, and
+@var{LTDLINCL} will be set just like in the case of convenience library.
 @end itemize
 
 You should probably also use the @samp{dlopen} option to @code{LT_INIT}
