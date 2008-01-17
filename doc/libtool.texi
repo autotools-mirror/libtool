@@ -4378,7 +4378,8 @@ unnecessary but makes it easy to forget to upgrade @file{acinclude.m4}
 if you move to a different release of libltdl.
 @c
 }.  Having made the macros available, you must add a call to the
-@samp{LTDL_INIT} macro to your package's @file{configure.ac} to
+@samp{LTDL_INIT} macro (after the call to @samp{LT_INIT}
+to your package's @file{configure.ac} to
 perform the configure time checks required to build the library
 correctly.  Unfortunately, this method has problems if you then try to
 link the package binaries with an installed libltdl, or a library that
@@ -4489,6 +4490,7 @@ need releases of Autoconf and Automake that support
 AM_INIT_AUTOMAKE([subdir-objects])
 AC_CONFIG_HEADERS([config.h])
 LT_CONFIG_LTDL_DIR([libltdl])
+LT_INIT([dlopen])
 LTDL_INIT([nonrecursive])
 @end example
 
@@ -4531,6 +4533,7 @@ mode, you should add to your @file{configure.ac}:
 AM_INIT_AUTOMAKE
 AC_CONFIG_HEADERS([config.h])
 LT_CONFIG_LTDL_DIR([libltdl])
+LT_INIT([dlopen])
 LTDL_INIT([recursive])
 AC_CONFIG_FILES([libltdl/Makefile])
 @end example
