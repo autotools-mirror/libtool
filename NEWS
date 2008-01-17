@@ -52,6 +52,7 @@ New in 2.1a: 2008-??-??; CVS version 2.1a, Libtool team:
     The Libtool package itself builds libltdl nonrecursively.
   - The 'nonrecursive', 'recursive' and 'subproject' libltdl build
     modes are given as LTDL_INIT options.
+  - New make variable LTDLDEPS for use in output_DEPENDENCIES.
   - New multi-module-loader safe libltdl handle iteration APIs:
     lt_dlhandle_iterate, lt_dlhandle_fetch, lt_dlhandle_map.
   - New lt_dlinterface_register to maintain separation of concerns

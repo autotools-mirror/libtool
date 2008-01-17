@@ -96,9 +96,11 @@ m4_defun([_LTDL_CONVENIENCE],
       ac_configure_args="$ac_configure_args --enable-ltdl-convenience" ;;
 esac
 LIBLTDL='_LT_BUILD_PREFIX'"${lt_ltdl_dir+$lt_ltdl_dir/}libltdlc.la"
+LTDLDEPS=$LIBLTDL
 LTDLINCL='-I${top_srcdir}'"${lt_ltdl_dir+/$lt_ltdl_dir}"
 
 AC_SUBST([LIBLTDL])
+AC_SUBST([LTDLDEPS])
 AC_SUBST([LTDLINCL])
 
 # For backwards non-gettext consistent compatibility...
@@ -165,16 +167,19 @@ fi
 case $enable_ltdl_install in
   no) ac_configure_args="$ac_configure_args --enable-ltdl-install=no"
       LIBLTDL="-lltdl"
+      LTDLDEPS=
       LTDLINCL=
       ;;
   *)  enable_ltdl_install=yes
       ac_configure_args="$ac_configure_args --enable-ltdl-install"
       LIBLTDL='_LT_BUILD_PREFIX'"${lt_ltdl_dir+$lt_ltdl_dir/}libltdl.la"
+      LTDLDEPS=$LIBLTDL
       LTDLINCL='-I${top_srcdir}'"${lt_ltdl_dir+/$lt_ltdl_dir}"
       ;;
 esac
 
 AC_SUBST([LIBLTDL])
+AC_SUBST([LTDLDEPS])
 AC_SUBST([LTDLINCL])
 
 # For backwards non-gettext consistent compatibility...
@@ -282,6 +287,7 @@ case ,$with_included_ltdl,$with_ltdl_include,$with_ltdl_lib, in
 	AC_DEFINE([HAVE_LTDL], [1],
 	  [Define this if a modern libltdl is already installed])
 	LIBLTDL=-lltdl
+	LTDLDEPS=
 	LTDLINCL=
 	;;
   ,no*,no,*)
@@ -289,6 +295,7 @@ case ,$with_included_ltdl,$with_ltdl_include,$with_ltdl_lib, in
 	;;
   *)	with_included_ltdl=no
 	LIBLTDL="-L$with_ltdl_lib -lltdl"
+	LTDLDEPS=
 	LTDLINCL="-I$with_ltdl_include"
 	;;
 esac

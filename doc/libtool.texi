@@ -4444,10 +4444,11 @@ asks the user to either specify the location of an installed
 @option{--with-included-ltdl}.
 
 If an installed @code{libltdl} is found, then @code{LIBLTDL} is set to
-the link flags needed to use it, and @code{LTDLINCL} to the
-preprocessor flags needed to find the installed headers.  Note,
-however, that no version checking is performed.  You should manually
-check for the @code{libltdl} features you need in @file{configure.ac}:
+the link flags needed to use it, and @code{LTDLINCL} to the preprocessor
+flags needed to find the installed headers, and @code{LTDLDEPS} will
+be empty.  Note, however, that no version checking is performed.  You
+should manually check for the @code{libltdl} features you need in
+@file{configure.ac}:
 
 @example
 LT_INIT([dlopen])
@@ -4588,7 +4589,7 @@ script in the subdirectory named by @code{LT_CONFIG_LTDL_DIR} in order
 to cause it to be built as a convenience library.  If you're not
 using automake, you will need to define @code{top_build_prefix},
 @code{top_builddir}, and @code{top_srcdir} in your makefile so that
-@code{LIBLTDL} and @code{LTDLINCL} expand correctly.
+@code{LIBLTDL}, @code{LTDLDEPS}, and @code{LTDLINCL} expand correctly.
 
 One advantage of the convenience library is that it is not installed,
 so the fact that you use @code{libltdl} will not be apparent to the
@@ -4612,42 +4613,46 @@ script in the subdirectory named by @code{LT_CONFIG_LTDL_DIR} in order
 to cause it to be built as an installable library.  If you're not
 using automake, you will need to define @code{top_build_prefix},
 @code{top_builddir} and @code{top_srcdir} in your makefile so that
-@code{LIBLTDL} and @code{LTDLINCL} are expanded properly.
+@code{LIBLTDL}, @code{LTDLDEPS}, and @code{LTDLINCL} are expanded
+properly.
 
 Be aware that you could overwrite another @code{libltdl} already
 installed to the same directory if you use this option.
 @end table
 @end defmac
 
-Whatever method you use, @samp{LTDL_INIT} will define both the shell
-variable @var{LIBLTDL} to the link flag that you should use to link
-with @code{libltdl}, and the shell variable @var{LTDLINCL} to the
-preprocessor flag that you should use to compile programs that
-include @file{ltdl.h}. So, when you want to link a program with
-libltdl, be it a convenience, installed or installable library, just
-use @samp{$(LTDLINCL)} for preprocessing and compilation, and
-@samp{$(LIBLTDL)} for linking.
+Whatever method you use, @samp{LTDL_INIT} will define the shell variable
+@var{LIBLTDL} to the link flag that you should use to link with
+@code{libltdl}, the shell variable @var{LTDLDEPS} to the files that
+can be used as a dependency in @file{Makefile} rules, and the shell
+variable @var{LTDLINCL} to the preprocessor flag that you should use to
+compile programs that include @file{ltdl.h}. So, when you want to link a
+program with libltdl, be it a convenience, installed or installable
+library, just use @samp{$(LTDLINCL)} for preprocessing and compilation,
+and @samp{$(LIBLTDL)} for linking.
 
 @itemize @bullet
 @item
-If your package is built using an installed version of
-@code{libltdl}, @var{LIBLTDL} will be set to the compiler flags
-needed to link against the installed library, and
-@var{LTDLINCL} will be set to the compiler flags needed to find
-the @code{libltdl} header files.
+If your package is built using an installed version of @code{libltdl},
+@var{LIBLTDL} will be set to the compiler flags needed to link against
+the installed library, @var{LTDLDEPS} will be empty, and @var{LTDLINCL}
+will be set to the compiler flags needed to find the @code{libltdl}
+header files.
 
 @item
 If your package is built using the convenience libltdl, @var{LIBLTDL}
-will be the pathname for the convenience version of libltdl
-(starting with @samp{$@{top_builddir@}/} or @samp{$@{top_build_prefix@}})
-and @var{LTDLINCL} will be @option{-I} followed by the directory that
-contains @file{ltdl.h} (starting with @samp{$@{top_srcdir@}/}).
+and @var{LTDLDEPS} will be the pathname for the convenience version of
+libltdl (starting with @samp{$@{top_builddir@}/} or
+@samp{$@{top_build_prefix@}}) and @var{LTDLINCL} will be @option{-I}
+followed by the directory that contains @file{ltdl.h} (starting with
+@samp{$@{top_srcdir@}/}).
 
 @item
 If an installable version of the included @code{libltdl} is being
 built, its pathname starting with @samp{$@{top_builddir@}/} or
-@samp{$@{top_build_prefix@}}, will be stored in @var{LIBLTDL}, and
-@var{LTDLINCL} will be set just like in the case of convenience library.
+@samp{$@{top_build_prefix@}}, will be stored in @var{LIBLTDL} and
+@var{LTDLDEPS}, and @var{LTDLINCL} will be set just like in the case of
+convenience library.
 @end itemize
 
 You should probably also use the @samp{dlopen} option to @code{LT_INIT}
@@ -4687,7 +4692,7 @@ AM_CPPFLAGS = $(LTDLINCL)
 
 myprog_LDFLAGS = -export-dynamic
 myprog_LDADD = $(LIBLTDL) -dlopen self -dlopen foo1.la
-myprog_DEPENDENCIES = $(LIBLTDL) foo1.la
+myprog_DEPENDENCIES = $(LTDLDEPS) foo1.la
 ...
 @end example
 

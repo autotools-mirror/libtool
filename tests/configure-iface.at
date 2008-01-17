@@ -132,6 +132,7 @@ libmodule_la_LDFLAGS	= -module
 bin_PROGRAMS		= main
 main_LDFLAGS		= -dlopen libmodule.la
 main_LDADD		= $(LIBLTDL)
+main_DEPENDENCIES	= $(LTDLDEPS)
 ]])
 
 # Install everything!
@@ -143,6 +144,10 @@ LT_AT_BOOTSTRAP([--ltdl], [-I libltdl/m4], [], [--add-missing], [],
 # TODO: Check that the installed program `main' is linked against our libltdl
 AT_CHECK([test -f $prefix/lib/libltdl.la])
 AT_CHECK([test -f $prefix/include/ltdl.h])
+
+# Check that main is rebuilt if libltdl.la is newer
+rm -f libltdl/libltdl.la
+AT_CHECK([$MAKE -q main$EXEEXT || exit 1], [1], [ignore], [ignore])
 
 AT_CLEANUP
 
@@ -196,6 +201,7 @@ libmodule_la_LDFLAGS	= -module
 bin_PROGRAMS		= main
 main_LDFLAGS		= -dlopen libmodule.la
 main_LDADD		= $(LIBLTDL)
+main_DEPENDENCIES	= $(LTDLDEPS)
 ]])
 
 # We don't use 'libtoolize --ltdl', so that we get an error if the test
@@ -249,6 +255,7 @@ libmodule_la_LDFLAGS	= -module
 bin_PROGRAMS		= main
 main_LDFLAGS		= -dlopen libmodule.la
 main_LDADD		= $(LIBLTDL)
+main_DEPENDENCIES	= $(LTDLDEPS)
 ]])
 
 LT_AT_BOOTSTRAP([--ltdl], [-I libltdl/m4], [], [--add-missing], [],
@@ -261,6 +268,10 @@ AT_CHECK([test -f libltdl/libltdlc.la])
 ## Currently, this test doesn't fail if `main' ends up linking against a
 ## previously installed system libltdl.
 LT_AT_NOINST_EXEC_CHECK([./main], [-dlopen libmodule.la], [], [expout], [])
+
+# Check that main is rebuilt if libltdlc.la is newer
+rm -f libltdl/libltdlc.la
+AT_CHECK([$MAKE -q main$EXEEXT || exit 1], [1], [ignore], [ignore])
 
 AT_CLEANUP
 
