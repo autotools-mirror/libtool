@@ -103,6 +103,8 @@ GNU Libtool
   processes per copied file, a list of files to copy is built and all
   files copied with a single pair of tar processes.
 
+* Write test case that adds libtool macros to aclocal.m4.
+
 
 2. In the future
 ================
@@ -278,7 +280,7 @@ GNU Libtool
   it easier to add new platforms.
 
 -- 
-  Copyright (C) 2004, 2005 Free Software Foundation, Inc.
+  Copyright (C) 2004, 2005, 2007, 2008 Free Software Foundation, Inc.
   Written by Gary V. Vaughan, 2004
 
   This file is part of GNU Libtool.

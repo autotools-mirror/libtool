@@ -418,14 +418,18 @@ func_scan_files ()
 	    s,^.*LT_CONFIG_LTDL_DIR([[	 ]*\([^])]*\).*$,ac_ltdldir=\1,
 	    p
 	}
+	/\@<:@A[CM]_PROG_LIBTOOL/d
 	/A[CM]_PROG_LIBTOOL/ {
 	    s,^.*$,seen_libtool=:,
 	    p
 	}
+	/the.*option into.*LT_INIT.*parameter/d
+	/\@<:@LT_INIT/d
 	/LT_INIT/	     	 {
 	    s,^.*$,seen_libtool=:,
 	    p
 	}
+	/\@<:@LTDL_INIT/d
 	/LTDL_INIT/          {
 	    s,^.*LTDL_INIT([[ 	]*\([^])]*\).*$,ltdl_options="\1",
 	    s,^.*LTDL_INIT[ 	]*$,seen_ltdl=:,
@@ -960,7 +964,7 @@ func_check_macros ()
     else
       # Don't trace for this, we're just checking the user didn't invoke it
       # directly from configure.ac.
-      $SED 's,dnl .*$,,; s,# .*$,,' "$configure_ac" | grep AC_PROG_RANLIB &&
+      $SED 's,dnl .*$,,; s,# .*$,,' "$configure_ac" | grep AC_PROG_RANLIB >/dev/null &&
         func_echo "\`AC_PROG_RANLIB' is rendered obsolete by \`LT_INIT'"
     fi
 

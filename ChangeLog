@@ -1,5 +1,15 @@
 2008-01-17  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* libtoolize.m4sh (func_scan_files): Avoid matching our own
+	macro code when scanning configure.ac and aclocal.m4.
+	Don't produce spurious output if AC_PROG_RANLIB is found.
+	* tests/old-m4-iface.at (AM_PROG_LIBTOOL): Add a (weak) check
+	that we don't match our own macro code when searching for user
+	code calling us.
+	* TODO: Updated.
+
+2008-01-17  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
 	New variable LTDLDEPS for use in output_DEPENDENCIES.
 
 	* libltdl/m4/ltdl.m4 (_LTDL_CONVENIENCE, _LTDL_INSTALLABLE)
