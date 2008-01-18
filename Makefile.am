@@ -319,6 +319,9 @@ endif
 info_TEXINFOS		= doc/libtool.texi
 doc_libtool_TEXINFOS	= doc/PLATFORMS doc/fdl.texi doc/notes.texi
 EXTRA_DIST	       += $(srcdir)/doc/notes.txt
+## Workaround for a texinfo bug described here:
+## http://thread.gmane.org/gmane.comp.tex.texinfo.bugs/3930
+DISTCLEANFILES	       += libtool.dvi
 
 all-local: $(srcdir)/doc/notes.txt
 

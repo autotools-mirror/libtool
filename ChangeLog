@@ -1,3 +1,8 @@
+2008-01-18  Gary V. Vaughan  <gary@gnu.org>
+
+	* Makefile.am (DISTCLEANFILES): Remove libtool.dvi generated
+	by 'make dvi'.
+
 2008-01-17  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* libtoolize.m4sh (func_scan_files): Avoid matching our own
