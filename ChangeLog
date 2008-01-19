@@ -1,3 +1,13 @@
+2008-01-19  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Backport ISO C++ support from HEAD, 2006-03-17 and 2005-09-12 patches.
+
+	* tagdemo/configure.ac (HAVE_NAMESPACES, HAVE_IOSTREAM):
+	New tests for ISO C++ features.  Reimplementation of similar
+	macros from the autoconf archive.
+	* tagdemo/foo.cpp, tagdemo/main.cpp: Adjusted.  Provide dummy
+	`std' namespace for the HPPA C++ compiler.
+
 2008-01-14  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* Makefile.am (fetch): Update to match upstream git sources.
