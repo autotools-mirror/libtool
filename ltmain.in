@@ -113,14 +113,20 @@ esac
 # These must not be set unconditionally because not all systems understand
 # e.g. LANG=C (notably SCO).
 # We save the old values to restore during execute mode.
+lt_env=
 for lt_var in LANG LANGUAGE LC_ALL LC_CTYPE LC_COLLATE LC_MESSAGES
 do
   eval "if test \"\${$lt_var+set}\" = set; then
 	  save_$lt_var=\$$lt_var
+	  lt_env=\"$lt_var=\$$lt_var \$lt_env\"
 	  $lt_var=C
 	  export $lt_var
 	fi"
 done
+
+if test -n "$lt_env"; then
+  lt_env="env $lt_env"
+fi
 
 # Make sure IFS has a sensible default
 lt_nl='
@@ -957,7 +963,7 @@ EOF
       $run $rm "$lobj" "$output_obj"
 
       $show "$command"
-      if $run eval "$command"; then :
+      if $run eval $lt_env "$command"; then :
       else
 	test -n "$output_obj" && $run $rm $removelist
 	exit $EXIT_FAILURE
@@ -1029,7 +1035,7 @@ EOF
       command="$command$suppress_output"
       $run $rm "$obj" "$output_obj"
       $show "$command"
-      if $run eval "$command"; then :
+      if $run eval $lt_env "$command"; then :
       else
 	$run $rm $removelist
 	exit $EXIT_FAILURE
