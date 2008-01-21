@@ -1,3 +1,9 @@
+2008-01-21  Peter O'Gorman  <peter@pogma.com>
+
+	* ltmain.in [darwin]: look in libdir for dependent libraries, the .la
+	file may have been moved.
+	Reported by Benjamin Reed <ranger@befunk.com>
+
 2008-01-21  Bruno Haible  <bruno@clisp.org>
 
 	* ltmain.in (lt_env): New variable. Use it when running commands.
