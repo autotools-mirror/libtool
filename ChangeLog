@@ -1,5 +1,7 @@
 2008-01-24  Peter O'Gorman  <peter@pogma.com>
 
+	* doc/notes.texi: Fix errors in previous commit.
+
 	* libltdl/m4/libtool.m4 (sys_lib_search_path_spec, 
 	sys_lib_dlsearch_path_spec): Allow for a cache variable 
 	lt_cv_sys_lib_... to set these at configure time.

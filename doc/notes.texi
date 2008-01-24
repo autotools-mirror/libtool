@@ -74,7 +74,7 @@ and dynamic linker search by default. If this occurs, you may override
 libtool's guesses at @command{configure} time by setting the
 @command{autoconf} cache variables
 @code{lt_cv_sys_lib_search_path_spec} and
-@code{lt_sys_lib_dlsearch_path_spec} respectively to the correct search
+@code{lt_cv_sys_lib_dlsearch_path_spec} respectively to the correct search
 paths.
 
 @end itemize
