@@ -1817,6 +1817,13 @@ esac
 AC_MSG_RESULT([$dynamic_linker])
 test "$dynamic_linker" = no && can_build_shared=no
 
+AC_CACHE_VAL([lt_cv_sys_lib_search_path_spec],
+[lt_cv_sys_lib_search_path_spec="$sys_lib_search_path_spec"])
+sys_lib_search_path_spec="$lt_cv_sys_lib_search_path_spec"
+AC_CACHE_VAL([lt_cv_sys_lib_dlsearch_path_spec],
+[lt_cv_sys_lib_dlsearch_path_spec="$sys_lib_dlsearch_path_spec"])
+sys_lib_dlsearch_path_spec="$lt_cv_sys_lib_dlsearch_path_spec"
+
 variables_saved_for_relink="PATH $shlibpath_var $runpath_var"
 if test "$GCC" = yes; then
   variables_saved_for_relink="$variables_saved_for_relink GCC_EXEC_PREFIX COMPILER_PATH LIBRARY_PATH"

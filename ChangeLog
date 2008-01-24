@@ -1,3 +1,9 @@
+2008-01-24  Peter O'Gorman  <peter@pogma.com>
+
+	* libtool.m4 (sys_lib_search_path_spec, sys_lib_dlsearch_path_spec):
+	Allow for a cache variable lt_cv_sys_lib... to set these at configure
+	time.
+
 2008-01-21  Peter O'Gorman  <peter@pogma.com>
 
 	* ltmain.in [darwin]: look in libdir for dependent libraries, the .la
