@@ -1878,7 +1878,7 @@ version of Libtool used for @code{LT_INIT} is earlier than
 error output and exit with failure (exit status is 63).  For example:
 
 @example
-LT_PREREQ(@value{VERSION})
+LT_PREREQ([@value{VERSION}])
 @end example
 @end defmac
 
@@ -1935,7 +1935,7 @@ out-of-date.  In order to do that, add to your @file{configure.ac}:
 
 @example
 LT_INIT
-AC_SUBST(LIBTOOL_DEPS)
+AC_SUBST([LIBTOOL_DEPS])
 @end example
 
 and, to @file{Makefile.in} or @file{Makefile.am}:
@@ -2037,7 +2037,7 @@ language support to Libtool.
 
 @example
 LT_INIT
-LT_LANG(C++)
+LT_LANG([C++])
 @end example
 
 @example
@@ -2453,7 +2453,7 @@ People used to add code like the following to their
 @cindex LTLIBOBJS
 @example
 LTLIBOBJS=`echo "$LIBOBJS" | sed 's/\.[^.]* /.lo /g;s/\.[^.]*$/.lo/'`
-AC_SUBST(LTLIBOBJS)
+AC_SUBST([LTLIBOBJS])
 @end example
 
 @noindent
@@ -4462,7 +4462,7 @@ if test "x$with_included_ltdl" != "xyes"; then
   LDFLAGS="$LDFLAGS $LIBLTDL"
   AC_CHECK_LIB([ltdl], [lt_dladvise_init],
 		[],
-	[AC_MSG_ERROR(installed libltdl is too old)])
+	[AC_MSG_ERROR([installed libltdl is too old])])
   LDFLAGS="$save_LDFLAGS"
   CFLAGS="$save_CFLAGS"
 fi
@@ -4976,7 +4976,7 @@ Check whether we can actually get help for libtool.
 
 @item objectlist.test
 @pindex objectlist.test
-Check that a nonexistent objectlist file is properly 
+Check that a nonexistent objectlist file is properly detected.
 
 @item pdemo-conf.test
 @itemx pdemo-exec.test

@@ -1,3 +1,9 @@
+2008-01-24  Eric Blake  <ebb9@byu.net>
+
+	Add proper quoting to doc examples.
+	* doc/libtool.texi: Use m4 quotes where appropriate.
+	(Test descriptions): Fix truncated sentence.
+
 2008-01-18  Gary V. Vaughan  <gary@gnu.org>
 
 	* Makefile.am (DISTCLEANFILES): Remove libtool.dvi generated
