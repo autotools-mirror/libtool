@@ -1,3 +1,10 @@
+2008-01-24  Peter O'Gorman  <peter@pogma.com>
+
+	* libltdl/m4/libtool.m4 (sys_lib_search_path_spec, 
+	sys_lib_dlsearch_path_spec): Allow for a cache variable 
+	lt_cv_sys_lib_... to set these at configure time.
+	* doc/notes.texi: Short note about the above change.
+
 2008-01-24  Eric Blake  <ebb9@byu.net>
 
 	Add proper quoting to doc examples.
