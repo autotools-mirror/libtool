@@ -1853,6 +1853,12 @@ or a libtoolized package.
 @itemize
 
 @item
+Note that Sun C++ compiler versions before 5.6 may need some special
+setup to link properly against shared versions of the C++ standard libraries.
+See @url{http://lists.gnu.org/archive/html/libtool/2005-08/msg00088.html} for
+more information.
+
+@item
 On AIX there are two different styles of shared linking, one in which symbols
 are bound at link-time and one in which symbols are bound at runtime only,
 similar to ELF@.  In case of doubt use @code{LDFLAGS=-Wl,-brtl} for the latter style.
@@ -1870,21 +1876,22 @@ CONFIG_SHELL=/bin/bash; export $CONFIG_SHELL
 $CONFIG_SHELL ./configure [...]
 @end example
 
-@item
-For C++ code with templates, it may be necessary to specify the way the compiler
-will generate the instantiations.  For Portland pgCC version5, use
-@code{CXX='pgCC --one_instantiation_per_object'} and avoid parallel @command{make}.
-
-@item
-On Darwin, for C++ code with templates you need two level shared libraries.
-Libtool builds these by default if @env{MACOSX_DEPLOYMENT_TARGET} is set to
-10.3 or later at @command{configure} time.  See @url{rdar://problem/4135857}
-for more information on this issue.
-
 @c @item
 @c FreeBSD @command{make} does not conform to @sc{posix} in its handling
 @c of file modification times, which causes it to loop while building libtool.
 @c Consider using a different @command{such} as GNU make instead.
+
+@item
+Note in some cases you might need to put ABI-changing compiler flags
+into the compiler name.  For example, use of
+@example
+  configure CC='gcc -m32'
+@end example
+rather than
+@example
+  configure CC=gcc CFLAGS=-m32 LDFLAGS=-m32
+@end example
+might help with this Libtool release.
 
 @item
 The default shell on UNICOS 9, a ksh 88e variant, is too buggy to
@@ -1923,7 +1930,7 @@ and dynamic linker search by default. If this occurs, you may override
 libtool's guesses at @command{configure} time by setting the
 @command{autoconf} cache variables
 @code{lt_cv_sys_lib_search_path_spec} and
-@code{lt_sys_lib_dlsearch_path_spec} respectively to the correct search
+@code{lt_cv_sys_lib_dlsearch_path_spec} respectively to the correct search
 paths.
 
 @end itemize
