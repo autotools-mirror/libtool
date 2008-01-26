@@ -292,19 +292,11 @@ AT_CLEANUP
 ## Make sure ltdl.m4 is copied. ##
 ## ---------------------------- ##
 
-AT_SETUP([copy ltdl.m4 with shared macro directory])
-
-AT_DATA([configure.ac],
-[[AC_INIT([libtoolize-demo], ]AT_PACKAGE_VERSION[, ]AT_PACKAGE_BUGREPORT[)
-LT_CONFIG_LTDL_DIR([ltdl])
-AC_CONFIG_AUX_DIR([ltdl/config])
-AC_CONFIG_MACRO_DIR([ltdl/m4])
-LT_INIT
-LT_WITH_LTDL
-AC_OUTPUT
-]])
-
-AT_DATA(expout,
+# _LT_AT_LTDL_SETUP
+# -----------------
+# Macro to generate data files common to several tests.
+m4_pushdef([_LT_AT_LTDL_SETUP],
+[AT_DATA(expout,
 [[libtoolize: putting macros in AC_CONFIG_MACRO_DIR, `ltdl/m4'.
 libtoolize: linking file `ltdl/m4/argz.m4'
 libtoolize: linking file `ltdl/m4/libtool.m4'
@@ -356,10 +348,114 @@ libtoolize: linking file `ltdl/config/missing'
 libtoolize: linking file `ltdl/config/ltmain.sh'
 ]])
 
+AT_DATA([configure.ac],
+[[AC_INIT([libtoolize-demo], ]AT_PACKAGE_VERSION[, ]AT_PACKAGE_BUGREPORT[)
+LT_CONFIG_LTDL_DIR([ltdl])
+AC_CONFIG_AUX_DIR([ltdl/config])
+AC_CONFIG_MACRO_DIR([ltdl/m4])
+LT_INIT
+LTDL_INIT
+AC_OUTPUT
+]])
+])# _LT_AT_LTDL_SETUP
+
+## ------------------------------------------------ ##
+## First we make sure libtoolize --ltdl is working. ##
+## ------------------------------------------------ ##
+
+AT_SETUP([copy ltdl.m4 with shared macro directory])
+
+_LT_AT_LTDL_SETUP
+
 LT_AT_CHECK_LIBTOOLIZE([--ltdl], 0, expout)
 
 AT_CLEANUP
 
+## ----------------------------------------------------- ##
+## And also that libtoolize is taking note of LTDL_INIT. ##
+## ----------------------------------------------------- ##
+
+AT_SETUP([correctly parse LTDL_INIT from configure.ac])
+
+_LT_AT_LTDL_SETUP
+
+LT_AT_CHECK_LIBTOOLIZE([], 0, expout)
+
+AT_CLEANUP
+
+## ----------------------------------------------------------- ##
+## And finally, that libtoolize diagnoses a missing LTDL_INIT. ##
+## ----------------------------------------------------------- ##
+
+AT_SETUP([diagnose missing LTDL_INIT invocation])
+
+AT_DATA(expout,
+[[libtoolize: putting macros in AC_CONFIG_MACRO_DIR, `ltdl/m4'.
+libtoolize: copying file `ltdl/m4/argz.m4'
+libtoolize: copying file `ltdl/m4/libtool.m4'
+libtoolize: copying file `ltdl/m4/ltdl.m4'
+libtoolize: copying file `ltdl/m4/ltoptions.m4'
+libtoolize: copying file `ltdl/m4/ltsugar.m4'
+libtoolize: copying file `ltdl/m4/ltversion.m4'
+libtoolize: copying file `ltdl/m4/lt~obsolete.m4'
+libtoolize: copying file `ltdl/COPYING.LIB'
+libtoolize: copying file `ltdl/README'
+libtoolize: copying file `ltdl/Makefile.am'
+libtoolize: copying file `ltdl/configure.ac'
+libtoolize: copying file `ltdl/aclocal.m4'
+libtoolize: copying file `ltdl/Makefile.in'
+libtoolize: copying file `ltdl/config-h.in'
+libtoolize: copying file `ltdl/configure'
+libtoolize: copying file `ltdl/argz_.h'
+libtoolize: copying file `ltdl/argz.c'
+libtoolize: copying file `ltdl/loaders/dld_link.c'
+libtoolize: copying file `ltdl/loaders/dlopen.c'
+libtoolize: copying file `ltdl/loaders/dyld.c'
+libtoolize: copying file `ltdl/loaders/load_add_on.c'
+libtoolize: copying file `ltdl/loaders/loadlibrary.c'
+libtoolize: copying file `ltdl/loaders/shl_load.c'
+libtoolize: copying file `ltdl/lt__dirent.c'
+libtoolize: copying file `ltdl/lt__strl.c'
+libtoolize: copying file `ltdl/libltdl/lt__alloc.h'
+libtoolize: copying file `ltdl/libltdl/lt__dirent.h'
+libtoolize: copying file `ltdl/libltdl/lt__glibc.h'
+libtoolize: copying file `ltdl/libltdl/lt__private.h'
+libtoolize: copying file `ltdl/libltdl/lt__strl.h'
+libtoolize: copying file `ltdl/libltdl/lt_dlloader.h'
+libtoolize: copying file `ltdl/libltdl/lt_error.h'
+libtoolize: copying file `ltdl/libltdl/lt_system.h'
+libtoolize: copying file `ltdl/libltdl/slist.h'
+libtoolize: copying file `ltdl/loaders/preopen.c'
+libtoolize: copying file `ltdl/lt__alloc.c'
+libtoolize: copying file `ltdl/lt_dlloader.c'
+libtoolize: copying file `ltdl/lt_error.c'
+libtoolize: copying file `ltdl/ltdl.c'
+libtoolize: copying file `ltdl/ltdl.h'
+libtoolize: copying file `ltdl/slist.c'
+libtoolize: copying file `ltdl/config/compile'
+libtoolize: copying file `ltdl/config/config.guess'
+libtoolize: copying file `ltdl/config/config.sub'
+libtoolize: copying file `ltdl/config/depcomp'
+libtoolize: copying file `ltdl/config/install-sh'
+libtoolize: copying file `ltdl/config/missing'
+libtoolize: copying file `ltdl/config/ltmain.sh'
+libtoolize: Remember to add `LTDL_INIT' to configure.ac.
+]])
+
+AT_DATA([configure.ac],
+[[AC_INIT([libtoolize-demo], ]AT_PACKAGE_VERSION[, ]AT_PACKAGE_BUGREPORT[)
+LT_CONFIG_LTDL_DIR([ltdl])
+AC_CONFIG_AUX_DIR([ltdl/config])
+AC_CONFIG_MACRO_DIR([ltdl/m4])
+LT_INIT
+AC_OUTPUT
+]])
+
+LT_AT_CHECK_LIBTOOLIZE([--ltdl --copy], 0, expout)
+
+AT_CLEANUP
+
+m4_popdef([_LT_AT_LTDL_SETUP])
 
 ## ------------------------------------------------------ ##
 ## Creating an aclocal.m4 without in-tree libtool macros. ##

@@ -921,7 +921,7 @@ func_check_macros ()
 	func_echo "and rerunning libtoolize."
       fi
     elif test -z "$m4dir"; then
-      if $opt_ltdl && test "${ltdlprefix}m4" != "$m4dir"; then
+      if test "${ltdlprefix}m4" != "$m4dir" && $seen_ltdl || $opt_ltdl; then
 	acmacrodir="${ltdlprefix}m4"
       else
 	acmacrodir="$aclocaldir"
@@ -945,12 +945,16 @@ func_check_macros ()
     $seen_libtool ||
       func_echo "Remember to add \`LT_INIT' to $configure_ac."
 
-    if $opt_ltdl; then
+    # Suggest using LTDL_INIT if appropriate:
+    $opt_ltdl && if test x$seen_ltdl != x:; then
+      case $ltdl_mode in
+	subproject) ltdl_init_args=""               ;;
+	*)          ltdl_init_args="([$ltdl_mode])" ;;
+      esac
+      func_echo "Remember to add \`LTDL_INIT$ltdl_init_args' to $configure_ac."
+    fi
 
-      # Suggest using LT_WITH_LTDL if appropriate:
-      $seen_ltdl ||
-        func_echo "Consider adding \`LT_WITH_LTDL' to $configure_ac"
-
+    if $seen_ltdl || $opt_ltdl; then
       # Remind the user to call LT_CONFIG_LTDL_DIR:
       test -n "$ac_ltdldir" ||
         func_echo "Remember to add \`LT_CONFIG_LTDL_DIR([$ltdldir])' to \`$configure_ac'."
@@ -961,12 +965,12 @@ func_check_macros ()
         func_echo "Consider using \`AC_CONFIG_AUX_DIR([${ltdlprefix}config])' in $configure_ac."
       $ac_config_macro_dir_advised || test "${ltdlprefix}m4" = "$m4dir" ||
         func_echo "Consider using \`AC_CONFIG_MACRO_DIR([${ltdlprefix}m4])' in $configure_ac."
-    else
-      # Don't trace for this, we're just checking the user didn't invoke it
-      # directly from configure.ac.
-      $SED 's,dnl .*$,,; s,# .*$,,' "$configure_ac" | grep AC_PROG_RANLIB >/dev/null &&
-        func_echo "\`AC_PROG_RANLIB' is rendered obsolete by \`LT_INIT'"
     fi
+
+    # Don't trace for this, we're just checking the user didn't invoke it
+    # directly from configure.ac.
+    $SED 's,dnl .*$,,; s,# .*$,,' "$configure_ac" | grep AC_PROG_RANLIB >/dev/null &&
+      func_echo "\`AC_PROG_RANLIB' is rendered obsolete by \`LT_INIT'"
 
     # FIXME: Ensure ltmain.sh, libtool.m4 and ltdl.m4 are from the same release
 }
@@ -1136,7 +1140,7 @@ func_nonemptydir_p ()
   if test -n "$m4dir"; then
     $opt_quiet || func_echo "putting macros in AC_CONFIG_MACRO_DIR, \`$m4dir'."
 
-    if $seen_ltdl; then
+    if $opt_ltdl || $seen_ltdl; then
       func_serial_update argz.m4 "$aclocaldir" "$m4dir" argz.m4
     else
       func_verbose "Not copying \`$m4dir/argz.m4', libltdl not used."
@@ -1145,7 +1149,7 @@ func_nonemptydir_p ()
     func_serial_update  libtool.m4 "$aclocaldir" "$m4dir" \
       LT_INIT 'A[CM]_PROG_LIBTOOL'
 
-    if $seen_ltdl; then
+    if $opt_ltdl || $seen_ltdl; then
       func_serial_update ltdl.m4 "$aclocaldir" "$m4dir" 'LTDL_INIT'
     else
       func_verbose "Not copying \`$m4dir/ltdl.m4', libltdl not used."
@@ -1175,7 +1179,7 @@ func_nonemptydir_p ()
 
   # Copy all the files from installed libltdl to this project, if the
   # user specified `--ltdl'.
-  if $opt_ltdl; then
+  if $seen_ltdl || $opt_ltdl; then
 
     # Unless we share CONFIG_MACRO_DIR with our parent project,
     # copy macros here.

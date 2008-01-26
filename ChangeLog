@@ -1,3 +1,15 @@
+2008-01-26  Gary V. Vaughan  <gary@gnu.org>
+
+	* libtoolize.m4sh (Main): Copy (or link) libltdl sources
+	into project tree when LTDL_INIT was seen, whether or not
+	`--ltdl' is passed.
+	(func_check_macros): Recommend LTDL_INIT instead of
+	LT_WITH_LTDL when `--ltdl' is used before configure.ac is
+	upgraded.
+	* tests/libtoolize.at: Test that it works.
+	(_LT_AT_LTDL_SETUP): Factor out some common test setup.
+	Reported by Eric Blake <ebb9@byu.net>
+
 2008-01-24  Peter O'Gorman  <peter@pogma.com>
 
 	* doc/notes.texi: Fix errors in previous commit.
