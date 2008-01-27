@@ -1,5 +1,19 @@
 2008-01-27  Gary V. Vaughan  <gary@gnu.org>
 
+	* libtoolize.m4sh (subproject_auxdir, subproject_macrodir):
+	New variables to hold the default locations for auxfiles
+	and macrofiles in a subproject libltdl.
+	(ac_auxdir, ac_macrodir): New variables to hold the values
+	passed by AC_CONFIG_AUX_DIR and AC_CONFIG_MACRO_DIR resp.
+	(auxdir, macrodir): Adjust to contain the values to be
+	used by libtoolize at runtime.
+
+	* libtoolize.m4sh (func_fixup_Makefile)
+	(func_massage_aclocal_DATA, func_massage_pkgltdl_files)
+	(func_massage_pkgconfig_files): Add missing $opt_debug.
+
+2008-01-27  Gary V. Vaughan  <gary@gnu.org>
+
 	* libtoolize (func_fixup_Makefile, func_massage_aclocal_DATA)
 	(func_massage_pkgltdl_files, func_massage_pkgconfig_files):
 	Add missing $opt_debug.
