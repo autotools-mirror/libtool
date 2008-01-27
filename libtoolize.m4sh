@@ -323,6 +323,7 @@ func_copy_some_files ()
 # func_fixup_Makefile srcfile srcdir destdir
 func_fixup_Makefile ()
 {
+    $opt_debug
     my_filename="$1"
     my_srcdir="$2"
     my_destdir="$3"
@@ -981,6 +982,7 @@ func_check_macros ()
 # this function massages it into a suitable format for func_copy_some_files.
 func_massage_aclocal_DATA ()
 {
+    $opt_debug
     pkgmacro_files=     # GLOBAL VAR
 
     my_glob_exclude="$1"
@@ -1009,6 +1011,7 @@ func_massage_aclocal_DATA ()
 # function massages it into a suitable format for func_copy_some_files.
 func_massage_pkgltdl_files ()
 {
+    $opt_debug
     pkgltdl_files=	# GLOBAL VAR
 
     my_glob_exclude="$1"
@@ -1043,6 +1046,7 @@ func_massage_pkgltdl_files ()
 # function massages it into a suitable format for func_copy_some_files.
 func_massage_pkgconfig_files ()
 {
+    $opt_debug
     pkgconfig_files=	# GLOBAL VAR
 
     my_glob_exclude="$1"

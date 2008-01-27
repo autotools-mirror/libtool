@@ -1,3 +1,9 @@
+2008-01-27  Gary V. Vaughan  <gary@gnu.org>
+
+	* libtoolize (func_fixup_Makefile, func_massage_aclocal_DATA)
+	(func_massage_pkgltdl_files, func_massage_pkgconfig_files):
+	Add missing $opt_debug.
+
 2008-01-26  Gary V. Vaughan  <gary@gnu.org>
 
 	* libtoolize.m4sh (Main): Copy (or link) libltdl sources
