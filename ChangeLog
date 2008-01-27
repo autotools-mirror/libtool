@@ -1,5 +1,9 @@
 2008-01-27  Gary V. Vaughan  <gary@gnu.org>
 
+	* libtoolize.m4sh (func_install_pkgconfig_files)
+	(func_install_pkgmacro_files, func_install_pkgltdl_files):
+	Factored out from the 'Main' section of the file.
+
 	* libtoolize.m4sh (subproject_auxdir, subproject_macrodir):
 	New variables to hold the default locations for auxfiles
 	and macrofiles in a subproject libltdl.
