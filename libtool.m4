@@ -2820,6 +2820,7 @@ _LT_AC_TAGVAR(postdep_objects, $1)=
 _LT_AC_TAGVAR(predeps, $1)=
 _LT_AC_TAGVAR(postdeps, $1)=
 _LT_AC_TAGVAR(compiler_lib_search_path, $1)=
+_LT_AC_TAGVAR(compiler_lib_search_dirs, $1)=
 
 # Source file extension for C++ test sources.
 ac_ext=cpp
@@ -3822,7 +3823,8 @@ lt_cv_prog_gnu_ld=$lt_save_with_gnu_ld
 # compiler output when linking a shared library.
 # Parse the compiler output and extract the necessary
 # objects, libraries and library flags.
-AC_DEFUN([AC_LIBTOOL_POSTDEP_PREDEP],[
+AC_DEFUN([AC_LIBTOOL_POSTDEP_PREDEP],
+[AC_REQUIRE([LT_AC_PROG_SED])dnl
 dnl we can't use the lt_simple_compile_test_code here,
 dnl because it contains code intended for an executable,
 dnl not a library.  It's possible we should let each
@@ -3947,6 +3949,11 @@ fi
 
 $rm -f confest.$objext
 
+_LT_AC_TAGVAR(compiler_lib_search_dirs, $1)=
+if test -n "$_LT_AC_TAGVAR(compiler_lib_search_path, $1)"; then
+  _LT_AC_TAGVAR(compiler_lib_search_dirs, $1)=`echo " ${_LT_AC_TAGVAR(compiler_lib_search_path, $1)}" | ${SED} -e 's! -L! !g' -e 's!^ !!'`
+fi
+
 # PORTME: override above test on systems where it is broken
 ifelse([$1],[CXX],
 [case $host_os in
@@ -4003,7 +4010,6 @@ solaris*)
   ;;
 esac
 ])
-
 case " $_LT_AC_TAGVAR(postdeps, $1) " in
 *" -lc "*) _LT_AC_TAGVAR(archive_cmds_need_lc, $1)=no ;;
 esac
@@ -4269,6 +4275,7 @@ if test -f "$ltmain"; then
     _LT_AC_TAGVAR(predeps, $1) \
     _LT_AC_TAGVAR(postdeps, $1) \
     _LT_AC_TAGVAR(compiler_lib_search_path, $1) \
+    _LT_AC_TAGVAR(compiler_lib_search_dirs, $1) \
     _LT_AC_TAGVAR(archive_cmds, $1) \
     _LT_AC_TAGVAR(archive_expsym_cmds, $1) \
     _LT_AC_TAGVAR(postinstall_cmds, $1) \
@@ -4567,6 +4574,10 @@ predeps=$lt_[]_LT_AC_TAGVAR(predeps, $1)
 # Dependencies to place after the objects being linked to create a
 # shared library.
 postdeps=$lt_[]_LT_AC_TAGVAR(postdeps, $1)
+
+# The directories searched by this compiler when creating a shared
+# library
+compiler_lib_search_dirs=$lt_[]_LT_AC_TAGVAR(compiler_lib_search_dirs, $1)
 
 # The library search path used internally by the compiler when linking
 # a shared library.
