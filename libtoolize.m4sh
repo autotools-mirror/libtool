@@ -1139,10 +1139,11 @@ func_nonemptydir_p ()
 func_check_macros ()
 {
     $opt_debug
-    $opt_quiet || return
+    $opt_quiet && return
+    $seen_autoconf || return
+
     ac_config_macro_dir_advised=false
 
-    $seen_autoconf || return
 
     # Suggest modern idioms for storing autoconf macros:
     if test -z "$ac_macrodir$ltdldir"; then

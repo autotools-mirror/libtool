@@ -1,5 +1,9 @@
 2008-01-28  Gary V. Vaughan  <gary@gnu.org>
 
+	* libtoolize.m4sh (func_check_macros): Correct typo with
+	'$opt_quiet ||' where '$opt_quiet &&' that was preventing
+	func_check_macros from running!
+
 	* libtoolize.m4sh: Set opt_ltdl whenever seen_ltdl is set
 	so that libtoolize behaves as though --ltdl was passed even
 	if it wasn't as long as LTDL_INIT (or equivalent) was seen
