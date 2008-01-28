@@ -4103,7 +4103,12 @@ func_mode_link ()
 	  fi
 	  func_stripname '-l' '' "$deplib"
 	  name=$func_stripname_result
-	  for searchdir in $newlib_search_path $lib_search_path $sys_lib_search_path $shlib_search_path; do
+	  if test "$linkmode" = lib; then
+	    searchdirs="$newlib_search_path $lib_search_path $compiler_lib_search_dirs $sys_lib_search_path $shlib_search_path"
+	  else
+	    searchdirs="$newlib_search_path $lib_search_path $sys_lib_search_path $shlib_search_path"
+	  fi
+	  for searchdir in $searchdirs; do
 	    for search_ext in .la $std_shrext .so .a; do
 	      # Search the libtool library
 	      lib="$searchdir/lib${name}${search_ext}"

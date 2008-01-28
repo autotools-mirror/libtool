@@ -1,3 +1,10 @@
+2008-01-29  Peter O'Gorman  <peter@pogma.com>
+
+	Search the compiler path too.
+	* libltdl/m4/libtool.m4 (compiler_lib_search_dirs): New variable.
+	* libltdl/config/ltmain.m4sh: Use it.
+	Reported by Maynard Johnson
+
 2008-01-28  Gary V. Vaughan  <gary@gnu.org>
 
 	* libtoolize.m4sh (func_check_macros): Correct typo with
