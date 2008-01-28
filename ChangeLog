@@ -1,3 +1,9 @@
+2008-01-28  Gary V. Vaughan  <gary@gnu.org>
+
+	* libtoolize.m4sh (func_scan_files): Be sure to set the
+	default libltdl mode to 'subproject' when libtoolize is
+	executed before configure.ac has been updated.
+
 2008-01-27  Gary V. Vaughan  <gary@gnu.org>
 
 	* libtoolize.m4sh (func_install_pkgconfig_files)

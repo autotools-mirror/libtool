@@ -394,8 +394,11 @@ func_scan_files ()
 	test -n "$configure_ac" && my_configure_ac="$configure_ac: "
         func_verbose "${my_configure_ac}not using Autoconf"
 
-	# Make sure ltdldir is set, even though we return early here:
+	# Make sure ltdldir and ltdl_mode have sensible defaults
+        # since we return early here:
 	test -n "$ltdldir" || ltdldir=libltdl
+	test -n "$ltdl_mode" || ltdl_mode=subproject
+
 	return
     }
 
