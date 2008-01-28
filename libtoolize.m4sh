@@ -1047,7 +1047,7 @@ func_install_pkgmacro_files ()
     if test -n "$macrodir"; then
       $opt_quiet || func_echo "putting macros in AC_CONFIG_MACRO_DIR, \`$macrodir'."
 
-      if $opt_ltdl || $seen_ltdl; then
+      if $opt_ltdl; then
         func_serial_update argz.m4 "$aclocaldir" "$macrodir" argz.m4
       else
         func_verbose "Not copying \`$macrodir/argz.m4', libltdl not used."
@@ -1056,7 +1056,7 @@ func_install_pkgmacro_files ()
       func_serial_update  libtool.m4 "$aclocaldir" "$macrodir" \
         LT_INIT 'A[CM]_PROG_LIBTOOL'
 
-      if $opt_ltdl || $seen_ltdl; then
+      if $opt_ltdl; then
         func_serial_update ltdl.m4 "$aclocaldir" "$macrodir" 'LTDL_INIT'
       else
         func_verbose "Not copying \`$macrodir/ltdl.m4', libltdl not used."
@@ -1093,7 +1093,7 @@ func_install_pkgltdl_files ()
 
     # Copy all the files from installed libltdl to this project, if the
     # user specified `--ltdl'.
-    if $seen_ltdl || $opt_ltdl; then
+    if $opt_ltdl; then
 
       # Unless we share CONFIG_MACRO_DIR with our parent project,
       # copy macros here.
@@ -1156,7 +1156,7 @@ func_check_macros ()
 
     elif test -z "$macrodir"; then
       my_ac_config_macro_srcdir="$aclocaldir"
-      if test "${ltdlprefix}m4" != "$macrodir" && $seen_ltdl || $opt_ltdl; then
+      if $opt_ltdl && test "$macrodir" != "$subproject_macrodir"; then
 	my_ac_config_macro_srcdir="$subproject_macrodir"
       fi
 
@@ -1164,7 +1164,7 @@ func_check_macros ()
       for need in libtool.m4 ltoptions.m4 ltversion.m4 ltsugar.m4 lt~obsolete.m4; do
 	func_echo "  \`$my_ac_config_macro_srcdir/$need'"
       done
-      if $seen_ltdl || $opt_ltdl; then
+      if $opt_ltdl; then
 	for need in argz.m4 ltdl.m4; do
 	  func_echo "  \`$my_ac_config_macro_srcdir/$need'"
 	done
@@ -1187,7 +1187,7 @@ func_check_macros ()
       func_echo "Remember to add \`LTDL_INIT$ltdl_init_args' to $configure_ac."
     fi
 
-    if $seen_ltdl || $opt_ltdl; then
+    if $opt_ltdl; then
       # Remind the user to call LT_CONFIG_LTDL_DIR:
       test -n "$ac_ltdldir" ||
         func_echo "Remember to add \`LT_CONFIG_LTDL_DIR([$ltdldir])' to \`$configure_ac'."
@@ -1234,6 +1234,14 @@ func_check_macros ()
   esac
   subproject_auxdir=${ltdlprefix}config
   subproject_macrodir=${ltdlprefix}m4
+
+  # :::BE CAREFUL HERE:::
+  # func_check_macros needs to check whether --ltdl was specified when
+  # LTDL_INIT was not seen, so we can't just use one variable for both
+  # conditions, or that check will be impossible.   No need to clutter the
+  # rest of the code with '$opt_ltdl || $seen_ltdl' though, because we CAN
+  # safely set opt_ltdl to true if LTDL_INIT was seen:
+  $seen_ltdl && opt_ltdl=:
 
   func_install_pkgconfig_files
   func_install_pkgmacro_files
