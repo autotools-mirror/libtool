@@ -908,80 +908,6 @@ func_install_update ()
 }
 
 
-# func_check_macros
-# Sanity check macros from aclocal.m4 against installed versions.
-func_check_macros ()
-{
-    $opt_debug
-    ac_config_macro_dir_advised=false
-
-    $seen_autoconf || return
-
-    # Suggest modern idioms for storing autoconf macros:
-    if test -z "$ac_macrodir$ltdldir"; then
-      if test x"$macrodir" = x.; then
-	func_echo "Consider adding \`AC_CONFIG_MACRO_DIR([m4])' to $configure_ac and rerunning"
-	func_echo " libtoolize, to keep the correct libtool macros in-tree."
-      else
-	func_echo "Consider adding \`AC_CONFIG_MACRO_DIR([$macrodir])'to $configure.ac,"
-	func_echo "and rerunning libtoolize."
-      fi
-
-    elif test -z "$macrodir"; then
-      my_ac_config_macro_srcdir="$aclocaldir"
-      if test "${ltdlprefix}m4" != "$macrodir" && $seen_ltdl || $opt_ltdl; then
-	my_ac_config_macro_srcdir="$subproject_macrodir"
-      fi
-
-      func_echo "You should add the contents of the following files to \`aclocal.m4':"
-      for need in libtool.m4 ltoptions.m4 ltversion.m4 ltsugar.m4 lt~obsolete.m4; do
-	func_echo "  \`$my_ac_config_macro_srcdir/$need'"
-      done
-      if $seen_ltdl || $opt_ltdl; then
-	for need in argz.m4 ltdl.m4; do
-	  func_echo "  \`$my_ac_config_macro_srcdir/$need'"
-	done
-      fi
-      if test "$my_ac_config_macro_srcdir" != "$aclocaldir"; then
-        func_echo "or else add \`AC_CONFIG_MACRO_DIR([$subproject_macrodir])' to $configure_ac."
-	ac_config_macro_dir_advised=:
-      fi
-    fi
-
-    $seen_libtool ||
-      func_echo "Remember to add \`LT_INIT' to $configure_ac."
-
-    # Suggest using LTDL_INIT if appropriate:
-    $opt_ltdl && if test x$seen_ltdl != x:; then
-      case $ltdl_mode in
-	subproject) ltdl_init_args=""               ;;
-	*)          ltdl_init_args="([$ltdl_mode])" ;;
-      esac
-      func_echo "Remember to add \`LTDL_INIT$ltdl_init_args' to $configure_ac."
-    fi
-
-    if $seen_ltdl || $opt_ltdl; then
-      # Remind the user to call LT_CONFIG_LTDL_DIR:
-      test -n "$ac_ltdldir" ||
-        func_echo "Remember to add \`LT_CONFIG_LTDL_DIR([$ltdldir])' to \`$configure_ac'."
-
-      # Offer some suggestions for avoiding duplicate files in a project
-      # that uses libltdl:
-      test "$subproject_auxdir" = "$auxdir" ||
-        func_echo "Consider using \`AC_CONFIG_AUX_DIR([$subproject_auxdir])' in $configure_ac."
-      $ac_config_macro_dir_advised || test "$subproject_macrodir" = "$macrodir" ||
-        func_echo "Consider using \`AC_CONFIG_MACRO_DIR([$subproject_macrodir])' in $configure_ac."
-    fi
-
-    # Don't trace for this, we're just checking the user didn't invoke it
-    # directly from configure.ac.
-    $SED 's,dnl .*$,,; s,# .*$,,' "$configure_ac" | grep AC_PROG_RANLIB >/dev/null &&
-      func_echo "\`AC_PROG_RANLIB' is rendered obsolete by \`LT_INIT'"
-
-    # FIXME: Ensure ltmain.sh, libtool.m4 and ltdl.m4 are from the same release
-}
-
-
 # func_massage_aclocal_DATA [glob_exclude]
 # @aclocal_DATA\@ is substituted as per its value in Makefile.am;
 # this function massages it into a suitable format for func_copy_some_files.
@@ -1208,6 +1134,81 @@ func_nonemptydir_p ()
 }
 
 
+# func_check_macros
+# Sanity check macros from aclocal.m4 against installed versions.
+func_check_macros ()
+{
+    $opt_debug
+    $opt_quiet || return
+    ac_config_macro_dir_advised=false
+
+    $seen_autoconf || return
+
+    # Suggest modern idioms for storing autoconf macros:
+    if test -z "$ac_macrodir$ltdldir"; then
+      if test x"$macrodir" = x.; then
+	func_echo "Consider adding \`AC_CONFIG_MACRO_DIR([m4])' to $configure_ac and rerunning"
+	func_echo " libtoolize, to keep the correct libtool macros in-tree."
+      else
+	func_echo "Consider adding \`AC_CONFIG_MACRO_DIR([$macrodir])'to $configure.ac,"
+	func_echo "and rerunning libtoolize."
+      fi
+
+    elif test -z "$macrodir"; then
+      my_ac_config_macro_srcdir="$aclocaldir"
+      if test "${ltdlprefix}m4" != "$macrodir" && $seen_ltdl || $opt_ltdl; then
+	my_ac_config_macro_srcdir="$subproject_macrodir"
+      fi
+
+      func_echo "You should add the contents of the following files to \`aclocal.m4':"
+      for need in libtool.m4 ltoptions.m4 ltversion.m4 ltsugar.m4 lt~obsolete.m4; do
+	func_echo "  \`$my_ac_config_macro_srcdir/$need'"
+      done
+      if $seen_ltdl || $opt_ltdl; then
+	for need in argz.m4 ltdl.m4; do
+	  func_echo "  \`$my_ac_config_macro_srcdir/$need'"
+	done
+      fi
+      if test "$my_ac_config_macro_srcdir" != "$aclocaldir"; then
+        func_echo "or else add \`AC_CONFIG_MACRO_DIR([$subproject_macrodir])' to $configure_ac."
+	ac_config_macro_dir_advised=:
+      fi
+    fi
+
+    $seen_libtool ||
+      func_echo "Remember to add \`LT_INIT' to $configure_ac."
+
+    # Suggest using LTDL_INIT if appropriate:
+    $opt_ltdl && if test x$seen_ltdl != x:; then
+      case $ltdl_mode in
+	subproject) ltdl_init_args=""               ;;
+	*)          ltdl_init_args="([$ltdl_mode])" ;;
+      esac
+      func_echo "Remember to add \`LTDL_INIT$ltdl_init_args' to $configure_ac."
+    fi
+
+    if $seen_ltdl || $opt_ltdl; then
+      # Remind the user to call LT_CONFIG_LTDL_DIR:
+      test -n "$ac_ltdldir" ||
+        func_echo "Remember to add \`LT_CONFIG_LTDL_DIR([$ltdldir])' to \`$configure_ac'."
+
+      # Offer some suggestions for avoiding duplicate files in a project
+      # that uses libltdl:
+      test "$subproject_auxdir" = "$auxdir" ||
+        func_echo "Consider using \`AC_CONFIG_AUX_DIR([$subproject_auxdir])' in $configure_ac."
+      $ac_config_macro_dir_advised || test "$subproject_macrodir" = "$macrodir" ||
+        func_echo "Consider using \`AC_CONFIG_MACRO_DIR([$subproject_macrodir])' in $configure_ac."
+    fi
+
+    # Don't trace for this, we're just checking the user didn't invoke it
+    # directly from configure.ac.
+    $SED 's,dnl .*$,,; s,# .*$,,' "$configure_ac" | grep AC_PROG_RANLIB >/dev/null &&
+      func_echo "\`AC_PROG_RANLIB' is rendered obsolete by \`LT_INIT'"
+
+    # FIXME: Ensure ltmain.sh, libtool.m4 and ltdl.m4 are from the same release
+}
+
+
 ## ----------- ##
 ##    Main.    ##
 ## ----------- ##
@@ -1238,7 +1239,7 @@ func_nonemptydir_p ()
   func_install_pkgmacro_files
   func_install_pkgltdl_files
 
-  $opt_quiet || func_check_macros
+  func_check_macros
 }
 
 exit $exit_status

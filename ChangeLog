@@ -1,5 +1,9 @@
 2008-01-28  Gary V. Vaughan  <gary@gnu.org>
 
+	* libtoolize.m4sh (func_check_macros): Check opt_quiet
+	in the function itself to simplify calling it.  Also move
+	the definition of the function.
+
 	* libtoolize.m4sh (func_scan_files): Be sure to set the
 	default libltdl mode to 'subproject' when libtoolize is
 	executed before configure.ac has been updated.
