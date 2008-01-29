@@ -1,5 +1,9 @@
 2008-01-29  Peter O'Gorman  <peter@pogma.com>
 
+	* doc/Makefile.am, doc/notes.texi, doc/libtool.texi: Move the
+	platform specific notes to notes.texi and generate notes.txt.
+	Reported by Tim Rice
+
 	Search the compiler path too.
 	* libtool.m4 (compiler_lib_search_dirs): New variable.
 	* ltmain.in: Use it.
