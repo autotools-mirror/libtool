@@ -928,15 +928,16 @@ m4_defun_once([_LT_REQUIRED_DARWIN_CHECKS],[
 	LDFLAGS="$save_LDFLAGS"
     ])
     case $host_os in
-      rhapsody* | darwin1.[[012]])
-        _lt_dar_allow_undefined='${wl}-undefined ${wl}suppress'
-        ;;
-    darwin*) # Darwin 1.3 on
+    rhapsody* | darwin1.[[012]])
+      _lt_dar_allow_undefined='${wl}-undefined ${wl}suppress' ;;
+    darwin1.*)
+      _lt_dar_allow_undefined='${wl}-flat_namespace ${wl}-undefined ${wl}suppress' ;;
+    darwin*) # darwin 5.x on 
       # if running on 10.5 or later, the deployment target defaults
       # to the OS version, if on x86, and 10.4, the deployment
       # target defaults to 10.4. Don't you love it? 
       case ${MACOSX_DEPLOYMENT_TARGET-10.0},$host in
-	10.0,i?86*-darwin8*|10.0,*-darwin[[91]]*)
+	10.0,*86*-darwin8*|10.0,*-darwin[[91]]*)
 	  _lt_dar_allow_undefined='${wl}-undefined ${wl}dynamic_lookup' ;;
 	10.[[012]]*)
 	  _lt_dar_allow_undefined='${wl}-flat_namespace ${wl}-undefined ${wl}suppress' ;;

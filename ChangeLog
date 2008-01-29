@@ -1,5 +1,8 @@
 2008-01-29  Peter O'Gorman  <peter@pogma.com>
 
+	* libltdl/m4/libtool.m4 [darwin]: Changes to glob pattern matching
+	to be safer.
+
 	Search the compiler path too.
 	* libltdl/m4/libtool.m4 (compiler_lib_search_dirs): New variable.
 	* libltdl/config/ltmain.m4sh: Use it.
