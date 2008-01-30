@@ -1168,6 +1168,7 @@ EOF
     thread_safe=no
     vinfo=
     vinfo_number=no
+    single_module="${wl}-single_module"
 
     func_infer_tag $base_compile
 
@@ -1650,6 +1651,11 @@ EOF
 	compiler_flags="$compiler_flags $arg"
 	compile_command="$compile_command $arg"
 	finalize_command="$finalize_command $arg"
+	continue
+	;;
+
+      -multi_module)
+	single_module="${wl}-multi_module"
 	continue
 	;;
 

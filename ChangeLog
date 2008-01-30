@@ -1,3 +1,13 @@
+2008-01-30  Peter O'Gorman  <peter@pogma.com>
+
+	Backport darwin support reorganization from HEAD.
+	* libtool.m4 [darwin]: Check for nmedit and dsymutil with
+	AC_CHECK_TOOL, use -single_module by default (can be turned off
+	with the -multi-module linker flag or by setting the
+	LT_MULTI_MODULE environment variable. If it is available use
+	-exported_symbols_list instead of nmedit to remove symbols. 
+	* ltmain.in [darwin]: Use -single_module by default.
+
 2008-01-29  Peter O'Gorman  <peter@pogma.com>
 
 	* doc/Makefile.am, doc/notes.texi, doc/libtool.texi: Move the
