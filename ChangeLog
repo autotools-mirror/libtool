@@ -1,3 +1,38 @@
+2008-01-30  Gary V. Vaughan  <gary@gnu.org>
+
+	There are 5 distinct batches of files that libtoolize might
+	install into a project, depending on whether libltdl is
+	being installed in subproject mode, and in that case whether
+	the parent project shares the config and macro directories
+	with the subproject ltdl.  Make a separate function for each
+	of those 5 batches (4 new functions below, plus the recently
+	factored func_install_pkgltdl_files), and make a clearer
+	distinction between when each of them is needed:
+
+	* libtoolize.m4sh (func_install_pkgmacro_subproject):
+	New function for installing and reporting on m4 files copied
+	to a subproject ltdl directory.
+	(func_install_pkgmacro_parent): Similar new function for m4
+	files copied solely for the use of the parent project,
+	including serial checking.
+	(func_install_pkgconfig_subproject): New function for
+	installing and reporting on config helper files copied to a
+	subproject ltdl directory.
+	(func_install_pkgconfig_parent): Similar new function for
+	config helper files copied solely for the use of the parent
+	project, including serial checking.
+	(func_install_pkgmacro_files, func_install_pkgconfig_files):
+	Rewritten in terms of the above functions.
+	* tests/libtoolize.at: Adjust test expout's to match newly
+	regularized libtoolize output.
+	Move parent project pkgconfig files to build-aux directory
+	so that progress messages show an obvious difference to
+	pkgconfig files installed to subproject `config' directory.
+	(nonrecursive ltdl with AC_CONFIG_MACRO_DIR): New test.
+	(diagnose missing LT_CONFIG_LTDL_DIR): New test.
+	(subproject ltdl with non-shared directories): New test.
+	Reported by Eric Blake <ebb9@byu.net>
+
 2008-01-29  Peter O'Gorman  <peter@pogma.com>
 
 	* libltdl/m4/libtool.m4 [darwin]: Changes to glob pattern matching

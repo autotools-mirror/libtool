@@ -937,6 +937,100 @@ func_massage_aclocal_DATA ()
 }
 
 
+# func_install_pkgmacro_subproject
+# Unless --quiet was passed, display a message. Then copy pkgmacro_files
+# from libtool installation tree to subproject libltdl tree.
+func_install_pkgmacro_subproject ()
+{
+    $opt_debug
+
+    # Copy all the files from installed libltdl to this project, if the
+    # user specified a macrodir.
+    $opt_quiet || if test "x$macrodir" != "x$subproject_macrodir"; then
+      func_echo "putting macros in \`$subproject_macrodir'."
+    elif test -n "$subproject_macrodir"; then
+      func_echo "putting macros in AC_CONFIG_MACRO_DIR, \`$subproject_macrodir'."
+    fi
+
+    func_copy_some_files "argz.m4:libtool.m4:ltdl.m4:$pkgmacro_files" \
+      "$aclocaldir" "$subproject_macrodir"
+}
+
+
+# func_install_pkgmacro_parent
+# Unless --quiet was passed, or AC_CONFIG_MACRO_DIR was not seen, display
+# a message.  Then update appropriate macros if newer ones are available
+# from the libtool installation tree.
+func_install_pkgmacro_parent ()
+{
+    $opt_debug
+
+    # Copy all the files from installed libltdl to this project, if the
+    # user specified a macrodir.
+    $opt_quiet || if test -n "$ac_macrodir"; then
+      func_echo "putting macros in AC_CONFIG_MACRO_DIR, \`$ac_macrodir'."
+    elif test -n "$macrodir"; then
+      func_echo "putting macros in \`$macrodir'."
+    fi
+
+    if $opt_ltdl; then
+      func_serial_update argz.m4 "$aclocaldir" "$macrodir" argz.m4
+    else
+      func_verbose "Not copying \`$macrodir/argz.m4', libltdl not used."
+    fi
+
+    func_serial_update  libtool.m4 "$aclocaldir" "$macrodir" \
+      LT_INIT 'A[CM]_PROG_LIBTOOL'
+
+    if $opt_ltdl; then
+      func_serial_update ltdl.m4 "$aclocaldir" "$macrodir" 'LTDL_INIT'
+    else
+      func_verbose "Not copying \`$macrodir/ltdl.m4', libltdl not used."
+    fi
+
+    my_save_IFS="$IFS"
+    IFS=:
+    for file in $pkgmacro_files; do
+      IFS="$my_save_IFS"
+      func_serial_update $file "$aclocaldir" "$macrodir" "$file"
+    done
+    IFS="$my_save_IFS"
+}
+
+
+# func_install_pkgmacro_files
+# Install copies of the libtool and libltdl m4 macros into this package.
+func_install_pkgmacro_files ()
+{
+    $opt_debug
+
+    # argz.m4, libtool.m4 and ltdl.m4 are handled specially below:
+    func_massage_aclocal_DATA 'argz.m4|libtool.m4|ltdl.m4'
+
+  # 1. Parent has separate macrodir to subproject ltdl:
+    if $opt_ltdl && test "x$ltdl_mode" = "xsubproject" &&
+       test -n "$macrodir" && test "x$macrodir" != "x$subproject_macrodir"
+    then
+      func_install_pkgmacro_parent
+      func_install_pkgmacro_subproject
+
+  # 2. Parent shares macrodir with subproject ltdl:
+    elif $opt_ltdl && test "x$ltdl_mode" = "xsubproject"
+       # && test "x$macrodir" = "x$subproject_macrodir"
+    then
+      func_install_pkgmacro_subproject
+
+  # 3. Not a subproject, but macrodir was specified in parent:
+    elif test -n "$macrodir"; then
+      func_install_pkgmacro_parent
+
+  # 4. AC_CONFIG_MACRO_DIR was not specified:
+    else
+      func_verbose "AC_CONFIG_MACRO_DIR not defined, not copying libtool macros."
+    fi
+}
+
+
 # func_massage_pkgltdl_files [glob_exclude]
 # @pkgltdl_files\@ is substituted as per its value in Makefile.am; this
 # function massages it into a suitable format for func_copy_some_files.
@@ -972,6 +1066,44 @@ func_massage_pkgltdl_files ()
 }
 
 
+# func_install_pkgltdl_files
+# Install copies of the libltdl files into this package.  Any auxiliary
+# or m4 macro files needed in the libltdl tree will also be copied by
+# func_install_pkgconfig_files and func_install_pkgmacro_files resp.
+func_install_pkgltdl_files ()
+{
+    $opt_debug
+    $opt_ltdl || return
+
+    # Copy all the files from installed libltdl to this project, if the
+    # user specified `--ltdl'.
+    $opt_quiet || if test -n "$ac_ltdldir"; then
+      func_echo "putting libltdl files in LT_CONFIG_LTDL_DIR, \`$ac_ltdldir'."
+    elif test -n "$ltdldir"; then
+      func_echo "putting libltdl files in \`$ltdldir'."
+    fi
+
+    # These files are handled specially, depending on ltdl_mode:
+    if test "x$ltdl_mode" = "xsubproject"; then
+      func_massage_pkgltdl_files 'Makefile.inc'
+    else
+      func_massage_pkgltdl_files 'Makefile.am|Makefile.in*|aclocal.m4|config*'
+    fi
+
+    func_copy_some_files "$pkgltdl_files" "$pkgltdldir/libltdl" "$ltdldir"
+
+    # For recursive ltdl modes, copy a suitable Makefile.{am,inc}:
+    case $ltdl_mode in
+      recursive)
+        func_fixup_Makefile "Makefile.am" "$pkgltdldir/libltdl" "$ltdldir"
+        ;;
+      nonrecursive)
+        func_fixup_Makefile "Makefile.inc" "$pkgltdldir/libltdl" "$ltdldir"
+        ;;
+    esac
+}
+
+
 # func_massage_pkgconfig_files [glob_exclude]
 # @pkgconfig_files\@ is substituted as per its value in Makefile.am; this
 # function massages it into a suitable format for func_copy_some_files.
@@ -1004,116 +1136,82 @@ func_massage_pkgconfig_files ()
 }
 
 
+# func_install_pkgconfig_subproject
+# Unless --quiet was passed, display a message. Then copy pkgconfig_files
+# from libtool installation tree to subproject libltdl tree.
+func_install_pkgconfig_subproject ()
+{
+    $opt_debug
+
+    # Copy all the files from installed libltdl to this project, if the
+    # user specified an auxdir.
+    $opt_quiet || if test "x$ac_auxdir" = "x$subproject_auxdir"; then
+      func_echo "putting auxiliary files in AC_CONFIG_AUX_DIR, \`$subproject_auxdir'."
+    elif test -n "$auxdir"; then
+      func_echo "putting auxiliary files in \`$auxdir'."
+    fi
+
+    func_copy_some_files "$pkgconfig_files" "$pkgdatadir" "$ltdldir"
+}
+
+
+# func_install_pkgconfig_parent
+# Unless --quiet was passed, or AC_CONFIG_AUX_DIR was not seen, display a
+# message.  Then update appropriate auxiliary files if newer ones are
+# available from the libtool installation tree.
+func_install_pkgconfig_parent ()
+{
+    $opt_debug
+
+    # Copy all the files from installed libltdl to this project, if the
+    # user specified an auxdir.
+    $opt_quiet || if test -n "$ac_auxdir"; then
+      func_echo "putting auxiliary files in AC_CONFIG_AUX_DIR, \`$ac_auxdir'."
+    elif test -n "$auxdir" || test "x$ltdldir" = "x."; then
+      func_echo "putting auxiliary files in \`$auxdir'."
+    fi
+
+    if $opt_install; then
+      func_config_update config.guess "$pkgdatadir/config" "$auxdir"
+      func_config_update config.sub   "$pkgdatadir/config" "$auxdir"
+      func_install_update install-sh  "$pkgdatadir/config" "$auxdir"
+    fi
+    func_ltmain_update ltmain.sh "$pkgdatadir/config" "$auxdir"
+}
+
+
 # func_install_pkgconfig_files
-# Install copies of the auxiliary files into this package.
+# Install copies of the auxiliary files into this package according to
+# the whether libltdl is included as a subproject, and whether the parent
+# shares the AC_CONFIG_AUX_DIR setting.
 func_install_pkgconfig_files ()
 {
     $opt_debug
     func_massage_pkgconfig_files
 
-    # Unless we share CONFIG_AUX_DIR with the libltdl subproject, then
-    # if they are newer, copy all the installed utility files to the
-    # auxiliary directory if `--install' was passed, or else copy just
-    # ltmain.sh.
-    if test -n "$auxdir"; then
-      if test "$subproject_auxdir" != "$auxdir"; then
-        $opt_quiet || if test "$auxdir" != .; then
-          func_echo "putting files in AC_CONFIG_AUX_DIR, \`$auxdir'."
-        fi
-        if $opt_install; then
-          func_config_update config.guess "$pkgdatadir/config" "$auxdir"
-          func_config_update config.sub   "$pkgdatadir/config" "$auxdir"
-          func_install_update install-sh  "$pkgdatadir/config" "$auxdir"
-        fi
-        func_ltmain_update ltmain.sh "$pkgdatadir/config" "$auxdir"
-      fi
+  # 1. Parent shares auxdir with subproject ltdl:
+    if $opt_ltdl && test "x$ltdl_mode" = "xsubproject" &&
+       test "x$ac_auxdir" = "x$subproject_auxdir"
+    then
+      func_install_pkgconfig_subproject
+
+  # 2. Parent has separate auxdir to subproject ltdl:
+    elif $opt_ltdl && test "x$ltdl_mode" = "xsubproject"
+       # && test "x$auxdir" != "x$subproject_auxdir" is implied
+    then
+      func_install_pkgconfig_parent
+      func_install_pkgconfig_subproject
+
+  # 3. Not subproject, but AC_CONFIG_AUX_DIR was used in parent:
+    elif test -n "$ac_auxdir" || test "x$auxdir" = "x."; then
+      func_install_pkgconfig_parent
+
+  # 4. AC_CONFIG_AUX_DIR was not specified:
     else
       func_verbose "AC_CONFIG_AUX_DIR not defined, not copying libtool auxiliary files."
     fi
 }
 
-
-# func_install_pkgmacro_files
-# Install copies of the libtool and libltdl m4 macros into this package.
-func_install_pkgmacro_files ()
-{
-    $opt_debug
-
-    # argz.m4, libtool.m4 and ltdl.m4 were handled specially below:
-    func_massage_aclocal_DATA 'argz.m4|libtool.m4|ltdl.m4'
-
-    # Copy libtool's m4 macros to the macro directory, if they are newer
-    # (keep these in alphabetical order to maintain sanity in testsuite):
-    if test -n "$macrodir"; then
-      $opt_quiet || func_echo "putting macros in AC_CONFIG_MACRO_DIR, \`$macrodir'."
-
-      if $opt_ltdl; then
-        func_serial_update argz.m4 "$aclocaldir" "$macrodir" argz.m4
-      else
-        func_verbose "Not copying \`$macrodir/argz.m4', libltdl not used."
-      fi
-
-      func_serial_update  libtool.m4 "$aclocaldir" "$macrodir" \
-        LT_INIT 'A[CM]_PROG_LIBTOOL'
-
-      if $opt_ltdl; then
-        func_serial_update ltdl.m4 "$aclocaldir" "$macrodir" 'LTDL_INIT'
-      else
-        func_verbose "Not copying \`$macrodir/ltdl.m4', libltdl not used."
-      fi
-
-      my_save_IFS="$IFS"
-      IFS=:
-      for file in $pkgmacro_files; do
-        IFS="$my_save_IFS"
-        func_serial_update $file "$aclocaldir" "$macrodir" "$file"
-      done
-      IFS="$my_save_IFS"
-    fi
-}
-
-
-# func_install_pkgltdl_files
-# Install copies of the libltdl files into this package.
-func_install_pkgltdl_files ()
-{
-    $opt_debug
-
-    # These files are handled specially, depending on ltdl_mode:
-    case $ltdl_mode in
-      *recursive)
-        glob_exclude_pkgltdl_files='Makefile.am|Makefile.in*|aclocal.m4|config*'
-        ;;
-      *)
-        glob_exclude_pkgltdl_files='Makefile.inc'
-        ;;
-    esac
-
-    func_massage_pkgltdl_files "$glob_exclude_pkgltdl_files"
-
-    # Copy all the files from installed libltdl to this project, if the
-    # user specified `--ltdl'.
-    if $opt_ltdl; then
-
-      # Unless we share CONFIG_MACRO_DIR with our parent project,
-      # copy macros here.
-      if test "$subproject_macrodir" != "$macrodir"; then
-        func_copy_some_files "argz.m4:libtool.m4:ltdl.m4:$pkgmacro_files" \
-          "$aclocaldir" "$subproject_macrodir"
-      fi
-
-      func_copy_some_files "$pkgltdl_files" "$pkgltdldir/libltdl" "$ltdldir"
-
-      # For recursive ltdl modes, copy a suitable Makefile.{am,inc}:
-      case $ltdl_mode in
-        recursive)    func_fixup_Makefile "Makefile.am" "$pkgltdldir/libltdl" "$ltdldir" ;;
-        nonrecursive) func_fixup_Makefile "Makefile.inc" "$pkgltdldir/libltdl" "$ltdldir" ;;
-      esac
-
-      # Copy config aux files into libltdl.
-      func_copy_some_files "$pkgconfig_files" "$pkgdatadir" "$ltdldir"
-    fi
-}
 
 # func_nonemptydir_p dirvar
 # DIRVAR is the name of a variable to evaluate.  Unless DIRVAR names
@@ -1161,15 +1259,14 @@ func_check_macros ()
 	my_ac_config_macro_srcdir="$subproject_macrodir"
       fi
 
+      my_needed="libtool.m4 ltoptions.m4 ltversion.m4 ltsugar.m4 lt~obsolete.m4"
+      $opt_ltdl && my_needed="$my_needed argz.m4 ltdl.m4"
+
       func_echo "You should add the contents of the following files to \`aclocal.m4':"
-      for need in libtool.m4 ltoptions.m4 ltversion.m4 ltsugar.m4 lt~obsolete.m4; do
+      for need in $my_needed; do
 	func_echo "  \`$my_ac_config_macro_srcdir/$need'"
       done
-      if $opt_ltdl; then
-	for need in argz.m4 ltdl.m4; do
-	  func_echo "  \`$my_ac_config_macro_srcdir/$need'"
-	done
-      fi
+
       if test "$my_ac_config_macro_srcdir" != "$aclocaldir"; then
         func_echo "or else add \`AC_CONFIG_MACRO_DIR([$subproject_macrodir])' to $configure_ac."
 	ac_config_macro_dir_advised=:
@@ -1193,12 +1290,14 @@ func_check_macros ()
       test -n "$ac_ltdldir" ||
         func_echo "Remember to add \`LT_CONFIG_LTDL_DIR([$ltdldir])' to \`$configure_ac'."
 
-      # Offer some suggestions for avoiding duplicate files in a project
-      # that uses libltdl:
-      test "$subproject_auxdir" = "$auxdir" ||
-        func_echo "Consider using \`AC_CONFIG_AUX_DIR([$subproject_auxdir])' in $configure_ac."
-      $ac_config_macro_dir_advised || test "$subproject_macrodir" = "$macrodir" ||
-        func_echo "Consider using \`AC_CONFIG_MACRO_DIR([$subproject_macrodir])' in $configure_ac."
+      # For subproject mode, offer some suggestions for avoiding duplicate
+      # files in a project that uses libltdl:
+      if test "x$ltdl_mode" = "xsubproject"; then
+        test "$subproject_auxdir" = "$auxdir" ||
+          func_echo "Consider using \`AC_CONFIG_AUX_DIR([$subproject_auxdir])' in $configure_ac."
+        $ac_config_macro_dir_advised || test "$subproject_macrodir" = "$macrodir" ||
+          func_echo "Consider using \`AC_CONFIG_MACRO_DIR([$subproject_macrodir])' in $configure_ac."
+      fi
     fi
 
     # Don't trace for this, we're just checking the user didn't invoke it

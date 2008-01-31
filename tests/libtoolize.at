@@ -30,7 +30,7 @@ AT_BANNER([Libtoolize operation.])
 m4_define([_LT_CONFIGURE_AC],
 [AT_DATA([configure.ac],
 [[AC_INIT([libtoolize-demo], ]AT_PACKAGE_VERSION[, ]AT_PACKAGE_BUGREPORT[)
-AC_CONFIG_AUX_DIR([config])
+AC_CONFIG_AUX_DIR([build-aux])
 AC_CONFIG_MACRO_DIR([m4])
 LT_INIT
 AC_OUTPUT
@@ -44,7 +44,7 @@ m4_define([_LT_LIBTOOLIZE_SETUP],
 
 test -d m4 || { rm -f m4 && mkdir m4; }
 
-rm -f m4/libtool.m4 m4/ltoptions.m4 config/ltmain.sh
+rm -f m4/libtool.m4 m4/ltoptions.m4 build-aux/ltmain.sh
 
 # This file should be upgraded.
 AT_DATA([m4/libtool.m4], [[
@@ -57,16 +57,16 @@ AT_DATA([m4/ltoptions.m4], [[
 # serial 99999 ltoptions.m4
 ]])
 
-test -d config || { rm -f config && mkdir config; }
+test -d build-aux || { rm -f build-aux && mkdir build-aux; }
 
 # This file has a very high serial number, and needs --force to be updated.
-AT_DATA([config/ltmain.sh], [[
+AT_DATA([build-aux/ltmain.sh], [[
 package_revision=9999.9999
 ]])
 
 # This file has a very old serial number, but should be left unchanged
 # unless the --install flag is invoked.
-AT_DATA([config/config.guess], [[
+AT_DATA([build-aux/config.guess], [[
 timestamp='1970-01-01'
 ]])
 ])# LT_LIBTOOLIZE_SETUP
@@ -81,8 +81,8 @@ AT_SETUP([libtoolize macro installation])
 _LT_CONFIGURE_AC
 
 AT_DATA(expout,
-[[libtoolize: putting files in AC_CONFIG_AUX_DIR, `config'.
-libtoolize: copying file `config/ltmain.sh'
+[[libtoolize: putting auxiliary files in AC_CONFIG_AUX_DIR, `build-aux'.
+libtoolize: copying file `build-aux/ltmain.sh'
 libtoolize: putting macros in AC_CONFIG_MACRO_DIR, `m4'.
 libtoolize: copying file `m4/libtool.m4'
 libtoolize: copying file `m4/ltoptions.m4'
@@ -111,7 +111,7 @@ _LT_LIBTOOLIZE_SETUP
 ## -------------------------------------------------------------------- ##
 
 AT_DATA(expout,
-[[libtoolize: putting files in AC_CONFIG_AUX_DIR, `config'.
+[[libtoolize: putting auxiliary files in AC_CONFIG_AUX_DIR, `build-aux'.
 libtoolize: putting macros in AC_CONFIG_MACRO_DIR, `m4'.
 libtoolize: copying file `m4/libtool.m4'
 libtoolize: copying file `m4/ltsugar.m4'
@@ -120,7 +120,7 @@ libtoolize: copying file `m4/lt~obsolete.m4'
 ]])
 
 AT_DATA(experr,
-[[libtoolize: `config/ltmain.sh' is newer: use `--force' to overwrite
+[[libtoolize: `build-aux/ltmain.sh' is newer: use `--force' to overwrite
 libtoolize: `m4/ltoptions.m4' is newer: use `--force' to overwrite
 ]])
 
@@ -132,7 +132,7 @@ LT_AT_CHECK_LIBTOOLIZE([--copy], 0, expout, experr)
 ## ---------------------------------------------------------- ##
 
 AT_DATA(expout,
-[[libtoolize: putting files in AC_CONFIG_AUX_DIR, `config'.
+[[libtoolize: putting auxiliary files in AC_CONFIG_AUX_DIR, `build-aux'.
 libtoolize: putting macros in AC_CONFIG_MACRO_DIR, `m4'.
 libtoolize: `m4/libtool.m4' is already up to date.
 libtoolize: `m4/ltsugar.m4' is already up to date.
@@ -141,7 +141,7 @@ libtoolize: `m4/lt~obsolete.m4' is already up to date.
 ]])
 
 AT_DATA(experr,
-[[libtoolize: `config/ltmain.sh' is newer: use `--force' to overwrite
+[[libtoolize: `build-aux/ltmain.sh' is newer: use `--force' to overwrite
 libtoolize: `m4/ltoptions.m4' is newer: use `--force' to overwrite
 ]])
 
@@ -153,8 +153,8 @@ LT_AT_CHECK_LIBTOOLIZE([--copy], 0, expout, experr)
 ## ----------------------------------------------------------- ##
 
 AT_DATA(expout,
-[[libtoolize: putting files in AC_CONFIG_AUX_DIR, `config'.
-libtoolize: copying file `config/ltmain.sh'
+[[libtoolize: putting auxiliary files in AC_CONFIG_AUX_DIR, `build-aux'.
+libtoolize: copying file `build-aux/ltmain.sh'
 libtoolize: putting macros in AC_CONFIG_MACRO_DIR, `m4'.
 libtoolize: copying file `m4/libtool.m4'
 libtoolize: copying file `m4/ltoptions.m4'
@@ -171,8 +171,8 @@ LT_AT_CHECK_LIBTOOLIZE([--copy --force], 0, expout)
 ## --------------------------------------------------------- ##
 
 AT_DATA(expout,
-[[libtoolize: putting files in AC_CONFIG_AUX_DIR, `config'.
-libtoolize: `config/ltmain.sh' is already up to date.
+[[libtoolize: putting auxiliary files in AC_CONFIG_AUX_DIR, `build-aux'.
+libtoolize: `build-aux/ltmain.sh' is already up to date.
 libtoolize: putting macros in AC_CONFIG_MACRO_DIR, `m4'.
 libtoolize: `m4/libtool.m4' is already up to date.
 libtoolize: `m4/ltoptions.m4' is already up to date.
@@ -202,10 +202,10 @@ _LT_LIBTOOLIZE_SETUP
 ## -------------------------------------------------------------------- ##
 
 AT_DATA(expout,
-[[libtoolize: putting files in AC_CONFIG_AUX_DIR, `config'.
-libtoolize: copying file `config/config.guess'
-libtoolize: copying file `config/config.sub'
-libtoolize: copying file `config/install-sh'
+[[libtoolize: putting auxiliary files in AC_CONFIG_AUX_DIR, `build-aux'.
+libtoolize: copying file `build-aux/config.guess'
+libtoolize: copying file `build-aux/config.sub'
+libtoolize: copying file `build-aux/install-sh'
 libtoolize: putting macros in AC_CONFIG_MACRO_DIR, `m4'.
 libtoolize: copying file `m4/libtool.m4'
 libtoolize: copying file `m4/ltsugar.m4'
@@ -214,7 +214,7 @@ libtoolize: copying file `m4/lt~obsolete.m4'
 ]])
 
 AT_DATA(experr,
-[[libtoolize: `config/ltmain.sh' is newer: use `--force' to overwrite
+[[libtoolize: `build-aux/ltmain.sh' is newer: use `--force' to overwrite
 libtoolize: `m4/ltoptions.m4' is newer: use `--force' to overwrite
 ]])
 
@@ -226,10 +226,10 @@ LT_AT_CHECK_LIBTOOLIZE([--copy --install], 0, expout, experr)
 ## ---------------------------------------------------------- ##
 
 AT_DATA(expout,
-[[libtoolize: putting files in AC_CONFIG_AUX_DIR, `config'.
-libtoolize: `config/config.guess' is already up to date.
-libtoolize: `config/config.sub' is already up to date.
-libtoolize: `config/install-sh' is already up to date.
+[[libtoolize: putting auxiliary files in AC_CONFIG_AUX_DIR, `build-aux'.
+libtoolize: `build-aux/config.guess' is already up to date.
+libtoolize: `build-aux/config.sub' is already up to date.
+libtoolize: `build-aux/install-sh' is already up to date.
 libtoolize: putting macros in AC_CONFIG_MACRO_DIR, `m4'.
 libtoolize: `m4/libtool.m4' is already up to date.
 libtoolize: `m4/ltsugar.m4' is already up to date.
@@ -238,7 +238,7 @@ libtoolize: `m4/lt~obsolete.m4' is already up to date.
 ]])
 
 AT_DATA(experr,
-[[libtoolize: `config/ltmain.sh' is newer: use `--force' to overwrite
+[[libtoolize: `build-aux/ltmain.sh' is newer: use `--force' to overwrite
 libtoolize: `m4/ltoptions.m4' is newer: use `--force' to overwrite
 ]])
 
@@ -250,11 +250,11 @@ LT_AT_CHECK_LIBTOOLIZE([--copy --install], 0, expout, experr)
 ## ----------------------------------------------------------- ##
 
 AT_DATA(expout,
-[[libtoolize: putting files in AC_CONFIG_AUX_DIR, `config'.
-libtoolize: copying file `config/config.guess'
-libtoolize: copying file `config/config.sub'
-libtoolize: copying file `config/install-sh'
-libtoolize: copying file `config/ltmain.sh'
+[[libtoolize: putting auxiliary files in AC_CONFIG_AUX_DIR, `build-aux'.
+libtoolize: copying file `build-aux/config.guess'
+libtoolize: copying file `build-aux/config.sub'
+libtoolize: copying file `build-aux/install-sh'
+libtoolize: copying file `build-aux/ltmain.sh'
 libtoolize: putting macros in AC_CONFIG_MACRO_DIR, `m4'.
 libtoolize: copying file `m4/libtool.m4'
 libtoolize: copying file `m4/ltoptions.m4'
@@ -271,11 +271,11 @@ LT_AT_CHECK_LIBTOOLIZE([--copy --force --install], 0, expout)
 ## --------------------------------------------------------- ##
 
 AT_DATA(expout,
-[[libtoolize: putting files in AC_CONFIG_AUX_DIR, `config'.
-libtoolize: `config/config.guess' is already up to date.
-libtoolize: `config/config.sub' is already up to date.
-libtoolize: `config/install-sh' is already up to date.
-libtoolize: `config/ltmain.sh' is already up to date.
+[[libtoolize: putting auxiliary files in AC_CONFIG_AUX_DIR, `build-aux'.
+libtoolize: `build-aux/config.guess' is already up to date.
+libtoolize: `build-aux/config.sub' is already up to date.
+libtoolize: `build-aux/install-sh' is already up to date.
+libtoolize: `build-aux/ltmain.sh' is already up to date.
 libtoolize: putting macros in AC_CONFIG_MACRO_DIR, `m4'.
 libtoolize: `m4/libtool.m4' is already up to date.
 libtoolize: `m4/ltoptions.m4' is already up to date.
@@ -288,6 +288,74 @@ LT_AT_CHECK_LIBTOOLIZE([--copy --install], 0, expout)
 
 AT_CLEANUP
 
+
+## ----------------------------------------------------------------- ##
+## Ensure libtoolize works when LT_CONFIG_LTDL_DIR is not specified. ##
+## ----------------------------------------------------------------- ##
+
+AT_SETUP([diagnose missing LT_CONFIG_LTDL_DIR])
+
+AT_DATA(expout,
+[[libtoolize: putting auxiliary files in AC_CONFIG_AUX_DIR, `build-aux'.
+libtoolize: copying file `build-aux/config.guess'
+libtoolize: copying file `build-aux/config.sub'
+libtoolize: copying file `build-aux/install-sh'
+libtoolize: copying file `build-aux/ltmain.sh'
+libtoolize: putting macros in AC_CONFIG_MACRO_DIR, `m4'.
+libtoolize: copying file `m4/argz.m4'
+libtoolize: copying file `m4/libtool.m4'
+libtoolize: copying file `m4/ltdl.m4'
+libtoolize: copying file `m4/ltoptions.m4'
+libtoolize: copying file `m4/ltsugar.m4'
+libtoolize: copying file `m4/ltversion.m4'
+libtoolize: copying file `m4/lt~obsolete.m4'
+libtoolize: putting libltdl files in `ltdl'.
+libtoolize: copying file `ltdl/COPYING.LIB'
+libtoolize: copying file `ltdl/README'
+libtoolize: copying file `ltdl/argz_.h'
+libtoolize: copying file `ltdl/argz.c'
+libtoolize: copying file `ltdl/loaders/dld_link.c'
+libtoolize: copying file `ltdl/loaders/dlopen.c'
+libtoolize: copying file `ltdl/loaders/dyld.c'
+libtoolize: copying file `ltdl/loaders/load_add_on.c'
+libtoolize: copying file `ltdl/loaders/loadlibrary.c'
+libtoolize: copying file `ltdl/loaders/shl_load.c'
+libtoolize: copying file `ltdl/lt__dirent.c'
+libtoolize: copying file `ltdl/lt__strl.c'
+libtoolize: copying file `ltdl/libltdl/lt__alloc.h'
+libtoolize: copying file `ltdl/libltdl/lt__dirent.h'
+libtoolize: copying file `ltdl/libltdl/lt__glibc.h'
+libtoolize: copying file `ltdl/libltdl/lt__private.h'
+libtoolize: copying file `ltdl/libltdl/lt__strl.h'
+libtoolize: copying file `ltdl/libltdl/lt_dlloader.h'
+libtoolize: copying file `ltdl/libltdl/lt_error.h'
+libtoolize: copying file `ltdl/libltdl/lt_system.h'
+libtoolize: copying file `ltdl/libltdl/slist.h'
+libtoolize: copying file `ltdl/loaders/preopen.c'
+libtoolize: copying file `ltdl/lt__alloc.c'
+libtoolize: copying file `ltdl/lt_dlloader.c'
+libtoolize: copying file `ltdl/lt_error.c'
+libtoolize: copying file `ltdl/ltdl.c'
+libtoolize: copying file `ltdl/ltdl.h'
+libtoolize: copying file `ltdl/slist.c'
+libtoolize: creating file `ltdl/Makefile.inc'
+libtoolize: Remember to add `LT_CONFIG_LTDL_DIR([ltdl])' to `configure.ac'.
+]])
+
+AT_DATA([configure.ac],
+[[AC_INIT([libtoolize-demo], ]AT_PACKAGE_VERSION[, ]AT_PACKAGE_BUGREPORT[)
+AC_CONFIG_AUX_DIR([build-aux])
+AC_CONFIG_MACRO_DIR([m4])
+LT_INIT
+LTDL_INIT([nonrecursive])
+AC_OUTPUT
+]])
+
+LT_AT_CHECK_LIBTOOLIZE([--copy --install --ltdl=ltdl], 0, expout)
+
+AT_CLEANUP
+
+
 ## ---------------------------- ##
 ## Make sure ltdl.m4 is copied. ##
 ## ---------------------------- ##
@@ -297,7 +365,15 @@ AT_CLEANUP
 # Macro to generate data files common to several tests.
 m4_pushdef([_LT_AT_LTDL_SETUP],
 [AT_DATA(expout,
-[[libtoolize: putting macros in AC_CONFIG_MACRO_DIR, `ltdl/m4'.
+[[libtoolize: putting auxiliary files in AC_CONFIG_AUX_DIR, `ltdl/config'.
+libtoolize: linking file `ltdl/config/compile'
+libtoolize: linking file `ltdl/config/config.guess'
+libtoolize: linking file `ltdl/config/config.sub'
+libtoolize: linking file `ltdl/config/depcomp'
+libtoolize: linking file `ltdl/config/install-sh'
+libtoolize: linking file `ltdl/config/missing'
+libtoolize: linking file `ltdl/config/ltmain.sh'
+libtoolize: putting macros in AC_CONFIG_MACRO_DIR, `ltdl/m4'.
 libtoolize: linking file `ltdl/m4/argz.m4'
 libtoolize: linking file `ltdl/m4/libtool.m4'
 libtoolize: linking file `ltdl/m4/ltdl.m4'
@@ -305,6 +381,7 @@ libtoolize: linking file `ltdl/m4/ltoptions.m4'
 libtoolize: linking file `ltdl/m4/ltsugar.m4'
 libtoolize: linking file `ltdl/m4/ltversion.m4'
 libtoolize: linking file `ltdl/m4/lt~obsolete.m4'
+libtoolize: putting libltdl files in LT_CONFIG_LTDL_DIR, `ltdl'.
 libtoolize: linking file `ltdl/COPYING.LIB'
 libtoolize: linking file `ltdl/README'
 libtoolize: linking file `ltdl/Makefile.am'
@@ -339,13 +416,6 @@ libtoolize: linking file `ltdl/lt_error.c'
 libtoolize: linking file `ltdl/ltdl.c'
 libtoolize: linking file `ltdl/ltdl.h'
 libtoolize: linking file `ltdl/slist.c'
-libtoolize: linking file `ltdl/config/compile'
-libtoolize: linking file `ltdl/config/config.guess'
-libtoolize: linking file `ltdl/config/config.sub'
-libtoolize: linking file `ltdl/config/depcomp'
-libtoolize: linking file `ltdl/config/install-sh'
-libtoolize: linking file `ltdl/config/missing'
-libtoolize: linking file `ltdl/config/ltmain.sh'
 ]])
 
 AT_DATA([configure.ac],
@@ -390,7 +460,15 @@ AT_CLEANUP
 AT_SETUP([diagnose missing LTDL_INIT invocation])
 
 AT_DATA(expout,
-[[libtoolize: putting macros in AC_CONFIG_MACRO_DIR, `ltdl/m4'.
+[[libtoolize: putting auxiliary files in AC_CONFIG_AUX_DIR, `ltdl/config'.
+libtoolize: copying file `ltdl/config/compile'
+libtoolize: copying file `ltdl/config/config.guess'
+libtoolize: copying file `ltdl/config/config.sub'
+libtoolize: copying file `ltdl/config/depcomp'
+libtoolize: copying file `ltdl/config/install-sh'
+libtoolize: copying file `ltdl/config/missing'
+libtoolize: copying file `ltdl/config/ltmain.sh'
+libtoolize: putting macros in AC_CONFIG_MACRO_DIR, `ltdl/m4'.
 libtoolize: copying file `ltdl/m4/argz.m4'
 libtoolize: copying file `ltdl/m4/libtool.m4'
 libtoolize: copying file `ltdl/m4/ltdl.m4'
@@ -398,6 +476,7 @@ libtoolize: copying file `ltdl/m4/ltoptions.m4'
 libtoolize: copying file `ltdl/m4/ltsugar.m4'
 libtoolize: copying file `ltdl/m4/ltversion.m4'
 libtoolize: copying file `ltdl/m4/lt~obsolete.m4'
+libtoolize: putting libltdl files in LT_CONFIG_LTDL_DIR, `ltdl'.
 libtoolize: copying file `ltdl/COPYING.LIB'
 libtoolize: copying file `ltdl/README'
 libtoolize: copying file `ltdl/Makefile.am'
@@ -432,13 +511,6 @@ libtoolize: copying file `ltdl/lt_error.c'
 libtoolize: copying file `ltdl/ltdl.c'
 libtoolize: copying file `ltdl/ltdl.h'
 libtoolize: copying file `ltdl/slist.c'
-libtoolize: copying file `ltdl/config/compile'
-libtoolize: copying file `ltdl/config/config.guess'
-libtoolize: copying file `ltdl/config/config.sub'
-libtoolize: copying file `ltdl/config/depcomp'
-libtoolize: copying file `ltdl/config/install-sh'
-libtoolize: copying file `ltdl/config/missing'
-libtoolize: copying file `ltdl/config/ltmain.sh'
 libtoolize: Remember to add `LTDL_INIT' to configure.ac.
 ]])
 
@@ -465,14 +537,14 @@ AT_SETUP([upgrading verbatim style aclocal.m4])
 
 AT_DATA([configure.ac],
 [[AC_INIT([libtoolize-demo], ]AT_PACKAGE_VERSION[, ]AT_PACKAGE_BUGREPORT[)
-AC_CONFIG_AUX_DIR([config])
+AC_CONFIG_AUX_DIR([build-aux])
 LT_INIT
 AC_OUTPUT
 ]])
 
 [cat >expout <<EOF
-libtoolize: putting files in AC_CONFIG_AUX_DIR, \`config'.
-libtoolize: copying file \`config/ltmain.sh'
+libtoolize: putting auxiliary files in AC_CONFIG_AUX_DIR, \`build-aux'.
+libtoolize: copying file \`build-aux/ltmain.sh'
 libtoolize: You should add the contents of the following files to \`aclocal.m4':
 libtoolize:   \`$tst_aclocaldir/libtool.m4'
 libtoolize:   \`$tst_aclocaldir/ltoptions.m4'
@@ -490,7 +562,7 @@ LT_AT_CHECK_LIBTOOLIZE([--copy], 0, expout)
 
 AT_DATA([configure.ac],
 [[AC_INIT([libtoolize-demo], ]AT_PACKAGE_VERSION[, ]AT_PACKAGE_BUGREPORT[)
-AC_CONFIG_AUX_DIR([config])
+AC_CONFIG_AUX_DIR([build-aux])
 AC_CONFIG_MACRO_DIR([m4])
 LT_INIT
 AC_OUTPUT
@@ -510,8 +582,8 @@ AC_DEFUN([LT_INIT],
 ]])
 
 AT_DATA([expout],
-[[libtoolize: putting files in AC_CONFIG_AUX_DIR, `config'.
-libtoolize: `config/ltmain.sh' is already up to date.
+[[libtoolize: putting auxiliary files in AC_CONFIG_AUX_DIR, `build-aux'.
+libtoolize: `build-aux/ltmain.sh' is already up to date.
 libtoolize: putting macros in AC_CONFIG_MACRO_DIR, `m4'.
 libtoolize: copying file `m4/libtool.m4'
 libtoolize: copying file `m4/ltoptions.m4'
@@ -546,8 +618,8 @@ AT_DATA([m4/ltoptions.m4], [[
 ]])
 
 AT_DATA([expout],
-[[libtoolize: putting files in AC_CONFIG_AUX_DIR, `config'.
-libtoolize: `config/ltmain.sh' is already up to date.
+[[libtoolize: putting auxiliary files in AC_CONFIG_AUX_DIR, `build-aux'.
+libtoolize: `build-aux/ltmain.sh' is already up to date.
 libtoolize: putting macros in AC_CONFIG_MACRO_DIR, `m4'.
 libtoolize: copying file `m4/libtool.m4'
 libtoolize: `m4/ltsugar.m4' is already up to date.
@@ -566,8 +638,8 @@ LT_AT_CHECK_LIBTOOLIZE([--copy], 0, expout, experr)
 ## ----------------------------------------------------------- ##
 
 AT_DATA(expout,
-[[libtoolize: putting files in AC_CONFIG_AUX_DIR, `config'.
-libtoolize: copying file `config/ltmain.sh'
+[[libtoolize: putting auxiliary files in AC_CONFIG_AUX_DIR, `build-aux'.
+libtoolize: copying file `build-aux/ltmain.sh'
 libtoolize: putting macros in AC_CONFIG_MACRO_DIR, `m4'.
 libtoolize: copying file `m4/libtool.m4'
 libtoolize: copying file `m4/ltoptions.m4'
@@ -579,3 +651,161 @@ libtoolize: copying file `m4/lt~obsolete.m4'
 LT_AT_CHECK_LIBTOOLIZE([--copy --force], 0, expout)
 
 AT_CLEANUP
+
+
+## ------------------------------------------------------------- ##
+## Check nonrecursive ltdl puts m4 files in AC_CONFIG_MACRO_DIR. ##
+## ------------------------------------------------------------- ##
+
+AT_SETUP([nonrecursive ltdl with AC_CONFIG_MACRO_DIR])
+
+AT_DATA(expout,
+[[libtoolize: putting auxiliary files in AC_CONFIG_AUX_DIR, `build-aux'.
+libtoolize: copying file `build-aux/config.guess'
+libtoolize: copying file `build-aux/config.sub'
+libtoolize: copying file `build-aux/install-sh'
+libtoolize: copying file `build-aux/ltmain.sh'
+libtoolize: putting macros in AC_CONFIG_MACRO_DIR, `m4'.
+libtoolize: copying file `m4/argz.m4'
+libtoolize: copying file `m4/libtool.m4'
+libtoolize: copying file `m4/ltdl.m4'
+libtoolize: copying file `m4/ltoptions.m4'
+libtoolize: copying file `m4/ltsugar.m4'
+libtoolize: copying file `m4/ltversion.m4'
+libtoolize: copying file `m4/lt~obsolete.m4'
+libtoolize: putting libltdl files in LT_CONFIG_LTDL_DIR, `ltdl'.
+libtoolize: copying file `ltdl/COPYING.LIB'
+libtoolize: copying file `ltdl/README'
+libtoolize: copying file `ltdl/argz_.h'
+libtoolize: copying file `ltdl/argz.c'
+libtoolize: copying file `ltdl/loaders/dld_link.c'
+libtoolize: copying file `ltdl/loaders/dlopen.c'
+libtoolize: copying file `ltdl/loaders/dyld.c'
+libtoolize: copying file `ltdl/loaders/load_add_on.c'
+libtoolize: copying file `ltdl/loaders/loadlibrary.c'
+libtoolize: copying file `ltdl/loaders/shl_load.c'
+libtoolize: copying file `ltdl/lt__dirent.c'
+libtoolize: copying file `ltdl/lt__strl.c'
+libtoolize: copying file `ltdl/libltdl/lt__alloc.h'
+libtoolize: copying file `ltdl/libltdl/lt__dirent.h'
+libtoolize: copying file `ltdl/libltdl/lt__glibc.h'
+libtoolize: copying file `ltdl/libltdl/lt__private.h'
+libtoolize: copying file `ltdl/libltdl/lt__strl.h'
+libtoolize: copying file `ltdl/libltdl/lt_dlloader.h'
+libtoolize: copying file `ltdl/libltdl/lt_error.h'
+libtoolize: copying file `ltdl/libltdl/lt_system.h'
+libtoolize: copying file `ltdl/libltdl/slist.h'
+libtoolize: copying file `ltdl/loaders/preopen.c'
+libtoolize: copying file `ltdl/lt__alloc.c'
+libtoolize: copying file `ltdl/lt_dlloader.c'
+libtoolize: copying file `ltdl/lt_error.c'
+libtoolize: copying file `ltdl/ltdl.c'
+libtoolize: copying file `ltdl/ltdl.h'
+libtoolize: copying file `ltdl/slist.c'
+libtoolize: creating file `ltdl/Makefile.inc'
+]])
+
+AT_DATA([configure.ac],
+[[AC_INIT([libtoolize-demo], ]AT_PACKAGE_VERSION[, ]AT_PACKAGE_BUGREPORT[)
+LT_CONFIG_LTDL_DIR([ltdl])
+AC_CONFIG_AUX_DIR([build-aux])
+AC_CONFIG_MACRO_DIR([m4])
+LT_INIT
+LTDL_INIT([nonrecursive])
+AC_OUTPUT
+]])
+
+LT_AT_CHECK_LIBTOOLIZE([--copy --install --ltdl=ltdl], 0, expout)
+
+AT_CLEANUP
+
+
+## -------------------------------------------------------- ##
+## Check subproject ltdl with non-shared AC_CONFIG_.*_DIRs. ##
+## -------------------------------------------------------- ##
+
+AT_SETUP([subproject ltdl with non-shared directories])
+
+AT_DATA(expout,
+[[libtoolize: putting auxiliary files in AC_CONFIG_AUX_DIR, `build-aux'.
+libtoolize: copying file `build-aux/config.guess'
+libtoolize: copying file `build-aux/config.sub'
+libtoolize: copying file `build-aux/install-sh'
+libtoolize: copying file `build-aux/ltmain.sh'
+libtoolize: putting auxiliary files in `build-aux'.
+libtoolize: copying file `ltdl/config/compile'
+libtoolize: copying file `ltdl/config/config.guess'
+libtoolize: copying file `ltdl/config/config.sub'
+libtoolize: copying file `ltdl/config/depcomp'
+libtoolize: copying file `ltdl/config/install-sh'
+libtoolize: copying file `ltdl/config/missing'
+libtoolize: copying file `ltdl/config/ltmain.sh'
+libtoolize: putting macros in AC_CONFIG_MACRO_DIR, `acm4'.
+libtoolize: copying file `acm4/argz.m4'
+libtoolize: copying file `acm4/libtool.m4'
+libtoolize: copying file `acm4/ltdl.m4'
+libtoolize: copying file `acm4/ltoptions.m4'
+libtoolize: copying file `acm4/ltsugar.m4'
+libtoolize: copying file `acm4/ltversion.m4'
+libtoolize: copying file `acm4/lt~obsolete.m4'
+libtoolize: putting macros in `ltdl/m4'.
+libtoolize: copying file `ltdl/m4/argz.m4'
+libtoolize: copying file `ltdl/m4/libtool.m4'
+libtoolize: copying file `ltdl/m4/ltdl.m4'
+libtoolize: copying file `ltdl/m4/ltoptions.m4'
+libtoolize: copying file `ltdl/m4/ltsugar.m4'
+libtoolize: copying file `ltdl/m4/ltversion.m4'
+libtoolize: copying file `ltdl/m4/lt~obsolete.m4'
+libtoolize: putting libltdl files in LT_CONFIG_LTDL_DIR, `ltdl'.
+libtoolize: copying file `ltdl/COPYING.LIB'
+libtoolize: copying file `ltdl/README'
+libtoolize: copying file `ltdl/Makefile.am'
+libtoolize: copying file `ltdl/configure.ac'
+libtoolize: copying file `ltdl/aclocal.m4'
+libtoolize: copying file `ltdl/Makefile.in'
+libtoolize: copying file `ltdl/config-h.in'
+libtoolize: copying file `ltdl/configure'
+libtoolize: copying file `ltdl/argz_.h'
+libtoolize: copying file `ltdl/argz.c'
+libtoolize: copying file `ltdl/loaders/dld_link.c'
+libtoolize: copying file `ltdl/loaders/dlopen.c'
+libtoolize: copying file `ltdl/loaders/dyld.c'
+libtoolize: copying file `ltdl/loaders/load_add_on.c'
+libtoolize: copying file `ltdl/loaders/loadlibrary.c'
+libtoolize: copying file `ltdl/loaders/shl_load.c'
+libtoolize: copying file `ltdl/lt__dirent.c'
+libtoolize: copying file `ltdl/lt__strl.c'
+libtoolize: copying file `ltdl/libltdl/lt__alloc.h'
+libtoolize: copying file `ltdl/libltdl/lt__dirent.h'
+libtoolize: copying file `ltdl/libltdl/lt__glibc.h'
+libtoolize: copying file `ltdl/libltdl/lt__private.h'
+libtoolize: copying file `ltdl/libltdl/lt__strl.h'
+libtoolize: copying file `ltdl/libltdl/lt_dlloader.h'
+libtoolize: copying file `ltdl/libltdl/lt_error.h'
+libtoolize: copying file `ltdl/libltdl/lt_system.h'
+libtoolize: copying file `ltdl/libltdl/slist.h'
+libtoolize: copying file `ltdl/loaders/preopen.c'
+libtoolize: copying file `ltdl/lt__alloc.c'
+libtoolize: copying file `ltdl/lt_dlloader.c'
+libtoolize: copying file `ltdl/lt_error.c'
+libtoolize: copying file `ltdl/ltdl.c'
+libtoolize: copying file `ltdl/ltdl.h'
+libtoolize: copying file `ltdl/slist.c'
+libtoolize: Consider using `AC_CONFIG_AUX_DIR([ltdl/config])' in configure.ac.
+libtoolize: Consider using `AC_CONFIG_MACRO_DIR([ltdl/m4])' in configure.ac.
+]])
+
+AT_DATA([configure.ac],
+[[AC_INIT([libtoolize-demo], ]AT_PACKAGE_VERSION[, ]AT_PACKAGE_BUGREPORT[)
+LT_CONFIG_LTDL_DIR([ltdl])
+AC_CONFIG_AUX_DIR([build-aux])
+AC_CONFIG_MACRO_DIR([acm4])
+LT_INIT
+LTDL_INIT([subproject])
+AC_OUTPUT
+]])
+
+LT_AT_CHECK_LIBTOOLIZE([--copy --install], 0, expout)
+
+AT_CLEANUP
+
