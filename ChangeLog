@@ -1,3 +1,27 @@
+2008-02-01  Gary V. Vaughan  <gary@gnu.org>
+
+	Unfortunately, the autoconf implementation of AC_LIBOBJ and
+	friends requires all libobjs to be in the same directory, as
+	declared by AC_CONFIG_LIBOBJ_DIR.  That might prevent using
+	either recursive or nonrecursive libltdl if the parent project
+	has libobjs of its own, except that this patch tracks libltdl's
+	libobjs in another namespace:
+
+	* libltdl/m4/ltdl.m4 (_LT_LIBOBJ, _LT_LIBSOURCES): Versions of
+	AC_LIBOBJ and AC_LIBSOURCES that save missing sources in a
+	ltdl_LIBOBJS automake macro, instead of the global LIBOBJS
+	automake macro.  Content of the macros inspired by code from
+	gnulib-tool.
+	(_LTDL_MODE_DISPATCH): Initialise lt_libobj_prefix in
+	nonrecursive mode.
+	(LTDL_INIT): Push and pop the new definitions around potential
+	sites that call AC_LIBOBJ.  Also, using lt_libobj_prefix,
+	initialise ltdl_LIBOBJS and ltdl_LTLIBOBJS.
+	* libtoolize.m4sh (func_fixup_Makefile): Substitute ltdl_LIBOBJS
+	and ltdl_LTLIBOBJS for LIBOBJS and LTLIBOBJS during copying
+	either Makefile.am or Makefile.inc, depending on ltdl_mode.
+	Reported by Eric Blake <ebb9@byu.net>
+
 2008-01-30  Gary V. Vaughan  <gary@gnu.org>
 
 	There are 5 distinct batches of files that libtoolize might

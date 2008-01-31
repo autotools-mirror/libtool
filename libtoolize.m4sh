@@ -320,6 +320,7 @@ func_copy_some_files ()
     IFS="$my_save_IFS"
 }
 
+
 # func_fixup_Makefile srcfile srcdir destdir
 func_fixup_Makefile ()
 {
@@ -328,6 +329,8 @@ func_fixup_Makefile ()
     my_srcdir="$2"
     my_destdir="$3"
     my_fixup_non_subpackage_script="\
+      s,(LIBOBJS),(ltdl_LIBOBJS),g
+      s,(LTLIBOBJS),(ltdl_LTLIBOBJS),g
       s,libltdl/configure.ac,,
       s,libltdl/configure,,
       s,libltdl/aclocal.m4,,
@@ -1004,7 +1007,7 @@ func_install_pkgmacro_files ()
 {
     $opt_debug
 
-    # argz.m4, libtool.m4 and ltdl.m4 are handled specially below:
+    # argz.m4, libtool.m4 and ltdl.m4 are handled specially:
     func_massage_aclocal_DATA 'argz.m4|libtool.m4|ltdl.m4'
 
   # 1. Parent has separate macrodir to subproject ltdl:

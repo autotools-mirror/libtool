@@ -198,12 +198,38 @@ m4_if(_LTDL_DIR, [],
     [m4_case(m4_default(_LTDL_MODE, [subproject]),
 	  [subproject], [AC_CONFIG_SUBDIRS(_LTDL_DIR)
 			  _LT_SHELL_INIT([lt_dlopen_dir="$lt_ltdl_dir"])],
-	  [nonrecursive], [_LT_SHELL_INIT([lt_dlopen_dir="$lt_ltdl_dir"])],
+	  [nonrecursive], [_LT_SHELL_INIT([lt_dlopen_dir="$lt_ltdl_dir"; lt_libobj_prefix="$lt_ltdl_dir/"])],
 	  [recursive], [],
 	[m4_fatal([unknown libltdl mode: ]_LTDL_MODE)])])dnl
 dnl Be careful not to expand twice:
 m4_define([$0], [])
 ])# _LTDL_MODE_DISPATCH
+
+
+# _LT_LIBOBJ(MODULE_NAME)
+# -----------------------
+# Like AC_LIBOBJ, except that MODULE_NAME goes into _LT_LIBOBJS instead
+# of into LIBOBJS.
+AC_DEFUN([_LT_LIBOBJ], [
+  m4_pattern_allow([^_LT_LIBOBJS$])
+  AS_LITERAL_IF([$1], [_LT_LIBSOURCES([$1.c])])dnl
+  _LT_LIBOBJS="$_LT_LIBOBJS $1.$ac_objext"
+])# _LT_LIBOBJS
+
+
+# _LT_LIBSOURCES(MODULE_NAMES)
+# ----------------------------
+# Like AC_LIBSOURCES, except the directory where the libltdl source files
+# are expected is distinct from the user LIBOBJ directory.
+AC_DEFUN([_LT_LIBSOURCES], [
+  m4_foreach([_LTNAME], [$1], [
+    m4_syscmd([test -r "$lt_libobj_prefix]_LTNAME[" ||
+		test -z "$lt_libobj_prefix" ||
+		test ! -d "$lt_libobj_prefix"])dnl
+    m4_if(m4_sysval, [0], [],
+      [AC_FATAL([missing $lt_libobj_prefix/]_LTNAME)])
+  ])
+])# _LT_LIBSOURCES
 
 
 # LTDL_INIT([OPTIONS])
@@ -216,6 +242,12 @@ m4_define([$0], [])
 AC_DEFUN([LTDL_INIT],
 [dnl Parse OPTIONS
 _LT_SET_OPTIONS([$0], [$1])
+
+dnl We need to keep our own list of libobjs separate from our parent project,
+dnl and the easiest way to do that is redefine the AC_LIBOBJs macro while
+dnl we look for our own LIBOBJs. Definitions in ltdl-libobj.m4.
+m4_pushdef([AC_LIBOBJ], m4_defn([_LT_LIBOBJ]))
+m4_pushdef([AC_LIBSOURCES], m4_defn([_LT_LIBSOURCES]))
 
 dnl If not otherwise defined, default to the 1.5.x compatible subproject mode:
 m4_if(_LTDL_MODE, [],
@@ -308,6 +340,25 @@ AC_MSG_CHECKING([where to find libltdl library])
 AC_MSG_RESULT([$LIBLTDL])
 
 _LTDL_SETUP
+
+dnl restore autoconf definition.
+m4_popdef([AC_LIBOBJ])
+m4_popdef([AC_LIBSOURCES])
+
+AC_CONFIG_COMMANDS_PRE([
+    _ltdl_libobjs=
+    _ltdl_ltlibobjs=
+    if test -n "$_LT_LIBOBJS"; then
+      # Remove the extension.
+      _lt_sed_drop_objext='s/\.o$//;s/\.obj$//'
+      for i in `for i in $_LT_LIBOBJS; do echo "$i"; done | sed "$_lt_sed_drop_objext" | sort -u`; do
+        _ltdl_libobjs="$_ltdl_libobjs $lt_libobj_prefix$i.$ac_objext"
+        _ltdl_ltlibobjs="$_ltdl_ltlibobjs $lt_libobj_prefix$i.lo"
+      done
+    fi
+    AC_SUBST([ltdl_LIBOBJS], [$_ltdl_libobjs])
+    AC_SUBST([ltdl_LTLIBOBJS], [$_ltdl_ltlibobjs])
+])
 
 # Only expand once:
 m4_define([LTDL_INIT])
