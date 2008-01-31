@@ -1,5 +1,7 @@
 2008-02-01  Gary V. Vaughan  <gary@gnu.org>
 
+	* configure.ac (AC_INIT): Bump version number to 2.1c.
+
 	GNU Libtool 2.1b was released.
 
 	* configure.ac (AC_INIT): Bump version number to 2.1b.
