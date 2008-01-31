@@ -1,5 +1,13 @@
 2008-02-01  Gary V. Vaughan  <gary@gnu.org>
 
+	* tests/cdemo, tests/depdemo, tests/fcdemo, tests/pdemo,
+	tests/demo, tests/f77demo, tests/mdemo, tests/tagdemo
+	(distclean-local): Remove compiler file droppings left by
+	Autoconf tests that prevent make dist from finishing on
+	several machines including Mac OS 10.5.
+
+2008-02-01  Gary V. Vaughan  <gary@gnu.org>
+
 	Unfortunately, the autoconf implementation of AC_LIBOBJ and
 	friends requires all libobjs to be in the same directory, as
 	declared by AC_CONFIG_LIBOBJ_DIR.  That might prevent using

@@ -78,3 +78,13 @@ mdemo_static_DEPENDENCIES = $(mdemo_DEPENDENCIES)
 
 libtool: $(LIBTOOL_DEPS)
 	$(SHELL) ./config.status --recheck
+
+# Workaround a bug in Autoconf-2.61 and earlier that don't clean up
+# file droppings left by many compilers:
+distclean-local:
+	ac_files="a.out.* a.exe.* a_out.exe.* b.out.* conftest.*"; \
+	for ac_file in $$ac_files; do \
+	  case $$ac_file in \
+	    *.xcoff | *.tds | *.d | *.pdb | *.xSYM | *.bb | *.bbg | *.map | *.inf | *.dSYM ) rm -rf $$ac_file ;; \
+	  esac; \
+	done

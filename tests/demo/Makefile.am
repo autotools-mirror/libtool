@@ -165,3 +165,13 @@ hell0_LDADD = libhell1.la libhell2.la $(LIBM)
 CLEANFILES += $(EXTRA_LIBRARIES) $(EXTRA_LTLIBRARIES) $(EXTRA_PROGRAMS) hell0
 
 deplibs-check: hell0$(EXEEXT)
+
+# Workaround a bug in Autoconf-2.61 and earlier that don't clean up
+# file droppings left by many compilers:
+distclean-local:
+	ac_files="a.out.* a.exe.* a_out.exe.* b.out.* conftest.*"; \
+	for ac_file in $$ac_files; do \
+	  case $$ac_file in \
+	    *.xcoff | *.tds | *.d | *.pdb | *.xSYM | *.bb | *.bbg | *.map | *.inf | *.dSYM ) rm -rf $$ac_file ;; \
+	  esac; \
+	done
