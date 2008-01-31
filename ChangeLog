@@ -1,5 +1,15 @@
 2008-02-01  Gary V. Vaughan  <gary@gnu.org>
 
+	GNU Libtool 2.1b was released.
+
+	* configure.ac (AC_INIT): Bump version number to 2.1b.
+	* libltdl/Makefile.inc (LTDL_VERSION_INFO): Increment to account
+	for new interfaces since the last libltdl update.
+	* HACKING (Release Procedure): Note that LTDL_VERSION_INFO is now
+	kept in libltdl/Makefile.inc.
+
+2008-02-01  Gary V. Vaughan  <gary@gnu.org>
+
 	* tests/cdemo, tests/depdemo, tests/fcdemo, tests/pdemo,
 	tests/demo, tests/f77demo, tests/mdemo, tests/tagdemo
 	(distclean-local): Remove compiler file droppings left by

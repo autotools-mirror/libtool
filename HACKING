@@ -651,8 +651,8 @@ or obtained by writing to the Free Software Foundation, Inc.,
   since last release (they should be updated in CVS along with commits that
   require it so that users can work with CVS snapshots).
 
-* Update the libltdl VERSION_INFO in Makefile.am for changes since the last
-  release.
+* Update the LTDL_VERSION_INFO in libltdl/Makefile.inc for changes since
+  the last release.
 
 * Update the version number in configure.ac.
   See http://www.gnu.org/software/libtool/contribute.html for details of
