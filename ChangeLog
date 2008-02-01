@@ -1,5 +1,8 @@
 2008-02-01  Peter O'Gorman  <peter@pogma.com>
 
+	* NEWS: Update.
+	* configure.ac: Bump version to 1.5.27a.
+
 	Release GNU libtool 1.5.26.
 	* NEWS: Update.
 	* libtool.m4, ltdl.m4: Bump serial.

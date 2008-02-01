@@ -1,5 +1,8 @@
 NEWS - list of user-visible changes between releases of GNU Libtool
 
+New in 1.5.27a: 2008-??-??; CVS version 1.5.27a, Libtool team:
+* Bug Fixes.
+
 New in 1.5.26: 2008-02-01; CVS version 1.5.25a, Libtool team:
 * Improved support for Mac OS X Leopard.
 * More robust parsing of mangled `.la' files inside libltdl, fixing a
