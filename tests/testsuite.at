@@ -1,6 +1,7 @@
 # Process with autom4te to create an -*- Autotest -*- test suite.
 #
-#   Copyright (C) 2004, 2005, 2006, 2007 Free Software Foundation, Inc.
+#   Copyright (C) 2004, 2005, 2006, 2007, 2008 Free Software
+#   Foundation, Inc.
 #   Written by Gary V. Vaughan, 2004
 #
 #   This file is part of GNU Libtool.
@@ -187,6 +188,8 @@ m4_define([LT_AT_NOINST_EXEC_CHECK],
 m4_define([LT_AT_TAG],
 [AT_KEYWORDS([$1])
 AT_CHECK([{ test -n "[$]$1" && test "X[$]$1" != Xno; } || (exit 77)])
+m4_if([$1], [CXX],
+  [AT_CHECK([test "X$CXX" != Xg++ || (g++ -v >/dev/null 2>&1) || (exit 77)])])
 ])
 
 

@@ -1,3 +1,10 @@
+2008-02-01  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* tests/testsuite.at (LT_AT_TAG): For the CXX tag, if $CXX is
+	g++, check that `g++ -v' works; AC_PROG_CXX may have set that
+	as default value even if it found no C++ compiler.
+	Report by Andreas Schwab.
+
 2008-02-02  Gary V. Vaughan  <gary@gnu.org>
 
 	* libltdl/Makefile.inc (EXTRA_DIST): Now that we're not using
