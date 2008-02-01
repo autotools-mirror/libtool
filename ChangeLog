@@ -1,3 +1,13 @@
+2008-02-01  Peter O'Gorman  <peter@pogma.com>
+
+	Release GNU libtool 1.5.26.
+	* NEWS: Update.
+	* libtool.m4, ltdl.m4: Bump serial.
+	* config.guess, config.sub, install-sh, texinfo.tex, INSTALL:
+	Updated from external sources.
+	* configure.ac: Bump version.
+	* README-alpha: Add note about bumping serials and ltdl version.
+
 2008-01-30  Peter O'Gorman  <peter@pogma.com>
 
 	Backport darwin support reorganization from HEAD.

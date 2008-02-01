@@ -132,7 +132,8 @@ using (by typing `libtool --version').
   release announcement.
 
 * If not an alpha, replace manual.html with the new one
-  (generate with `make -f Makefile.maint web-manual').
+  (generate with gendocs.sh (see
+  http://www.gnu.org/prep/maintain/maintain.html).
 
 ================================================================
 = Alpha release note template
