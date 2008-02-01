@@ -1,3 +1,12 @@
+2008-02-02  Gary V. Vaughan  <gary@gnu.org>
+
+	* libltdl/Makefile.inc (EXTRA_DIST): Now that we're not using
+	Autoconf's AC_SOURCES macro, Automake can't trace our extra
+	source files argz, lt__dirent.c and lt__strl.c.  List them
+	manually here to make sure they are distributed.
+	* NEWS: Updated.
+	Reported by Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
 2008-02-01  Gary V. Vaughan  <gary@gnu.org>
 
 	* configure.ac (AC_INIT): Bump version number to 2.1c.

@@ -70,6 +70,9 @@ libltdl_libltdl_la_SOURCES = libltdl/libltdl/lt__alloc.h \
 			  libltdl/ltdl.h \
 			  libltdl/slist.c
 
+EXTRA_DIST	       += libltdl/lt__dirent.c \
+			  libltdl/lt__strl.c
+
 libltdl_libltdl_la_CPPFLAGS	= -DLTDLOPEN=$(LTDLOPEN) $(AM_CPPFLAGS)
 libltdl_libltdl_la_LDFLAGS	= $(AM_LDFLAGS) $(LTDL_VERSION_INFO) $(LT_DLPREOPEN)
 libltdl_libltdl_la_LIBADD	= $(LTLIBOBJS)
@@ -136,7 +139,8 @@ EXTRA_DIST	       += libltdl/COPYING.LIB \
 ## --------------------------- ##
 
 BUILT_SOURCES	+= libltdl/$(ARGZ_H)
-EXTRA_DIST	+= libltdl/argz_.h
+EXTRA_DIST	+= libltdl/argz_.h \
+		   libltdl/argz.c
 
 # We need the following in order to create an <argz.h> when the system
 # doesn't have one that works with the given compiler.

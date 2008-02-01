@@ -1,5 +1,12 @@
 NEWS - list of user-visible changes between releases of GNU Libtool
 
+New in 2.1c: 2012-??-??; CVS version 2.1c, Libtool team:
+
+* Bug fixes:
+
+  - argz.c, lt__dirent.c and lt__strl.c are correctly distributed with
+    parent projects using nonrecursive libltdl.
+
 New in 2.1b: 2008-02-01; CVS version 2.1a, Libtool team:
 
 * Important incompatible changes and obsoleted features:
