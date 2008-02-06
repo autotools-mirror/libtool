@@ -62,23 +62,26 @@ m4_defun([_LT_SET_OPTIONS],
 [# Set options
 m4_foreach([_LT_Option], m4_split(m4_normalize([$2])),
     [_LT_SET_OPTION([$1], _LT_Option)])
-dnl
-dnl Simply set some default values (i.e off) if boolean options were not
-dnl specified:
-_LT_UNLESS_OPTIONS([LT_INIT], [dlopen], [enable_dlopen=no
-])
-_LT_UNLESS_OPTIONS([LT_INIT], [win32-dll], [enable_win32_dll=no
-])
-dnl
-dnl If no reference was made to various pairs of opposing options, then
-dnl we run the default mode handler for the pair.  For example, if neither
-dnl `shared' nor `disable-shared' was passed, we enable building of shared
-dnl archives by default:
-_LT_UNLESS_OPTIONS([LT_INIT], [shared disable-shared], [_LT_ENABLE_SHARED])
-_LT_UNLESS_OPTIONS([LT_INIT], [static disable-static], [_LT_ENABLE_STATIC])
-_LT_UNLESS_OPTIONS([LT_INIT], [pic-only no-pic], [_LT_WITH_PIC])
-_LT_UNLESS_OPTIONS([LT_INIT], [fast-install disable-fast-install],
-		   [_LT_ENABLE_FAST_INSTALL])
+
+m4_if([$1],[LT_INIT],[
+  dnl
+  dnl Simply set some default values (i.e off) if boolean options were not
+  dnl specified:
+  _LT_UNLESS_OPTIONS([LT_INIT], [dlopen], [enable_dlopen=no
+  ])
+  _LT_UNLESS_OPTIONS([LT_INIT], [win32-dll], [enable_win32_dll=no
+  ])
+  dnl
+  dnl If no reference was made to various pairs of opposing options, then
+  dnl we run the default mode handler for the pair.  For example, if neither
+  dnl `shared' nor `disable-shared' was passed, we enable building of shared
+  dnl archives by default:
+  _LT_UNLESS_OPTIONS([LT_INIT], [shared disable-shared], [_LT_ENABLE_SHARED])
+  _LT_UNLESS_OPTIONS([LT_INIT], [static disable-static], [_LT_ENABLE_STATIC])
+  _LT_UNLESS_OPTIONS([LT_INIT], [pic-only no-pic], [_LT_WITH_PIC])
+  _LT_UNLESS_OPTIONS([LT_INIT], [fast-install disable-fast-install],
+  		   [_LT_ENABLE_FAST_INSTALL])
+  ])
 ])# _LT_SET_OPTIONS
 
 

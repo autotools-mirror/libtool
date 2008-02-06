@@ -1,3 +1,9 @@
+2008-02-06  Peter O'Gorman  <peter@pogma.com>
+
+	* libltdl/m4/ltoptions.m4 (_LT_SET_OPTIONS): Only set default
+	LT_INIT values for LT_INIT, not LTDL_INIT.
+	Reported by Jochem Huhmann <joh@revier.com> 
+
 2008-02-01  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* tests/testsuite.at (LT_AT_TAG): For the CXX tag, if $CXX is
