@@ -1,3 +1,11 @@
+2008-02-08  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* tests/archive-in-archive.at
+	(static library contains static library): Test also the actual
+	broken link command, and the following install command, as
+	UnixWare ar rightly refuses to put an archive into an archive.
+	Report by Tim Rice.
+
 2008-02-06  Peter O'Gorman  <peter@pogma.com>
 
 	* libltdl/m4/ltoptions.m4 (_LT_SET_OPTIONS): Only set default
