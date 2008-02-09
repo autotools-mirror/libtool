@@ -5418,7 +5418,7 @@ AC_MSG_CHECKING([for $compiler option to produce PIC])
 
     linux* | k*bsd*-gnu)
       case $cc_basename in
-      icc* | ecc*)
+      icc* | ecc* | ifort*)
 	_LT_AC_TAGVAR(lt_prog_compiler_wl, $1)='-Wl,'
 	_LT_AC_TAGVAR(lt_prog_compiler_pic, $1)='-KPIC'
 	_LT_AC_TAGVAR(lt_prog_compiler_static, $1)='-static'
