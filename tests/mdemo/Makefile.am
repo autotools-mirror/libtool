@@ -1,6 +1,6 @@
 ## Makefile.am -- Process this file with automake to produce Makefile.in
 ##
-##   Copyright (C) 2003, 2004, 2005, 2007 Free Software Foundation
+##   Copyright (C) 2003, 2004, 2005, 2007, 2008 Free Software Foundation
 ##   Written by Gary V. Vaughan, 2003
 ##
 ##   This file is part of GNU Libtool.
@@ -54,13 +54,12 @@ bin_PROGRAMS = mdemo mdemo_static
 ## use @LIBLTDL@ because some broken makes do not accept macros in targets
 ## we can only do this because our LIBLTDL does not contain ${top_builddir}
 top_distdir = ../..
-@LIBLTDL@: $(top_distdir)/libtool $(top_distdir)/libltdl/libtool \
-    $(top_distdir)/libltdl/config.h $(srcdir)/$(top_distdir)/libltdl/ltdl.c \
+@LIBLTDL@: $(top_distdir)/libtool \
+    $(top_distdir)/config.h $(srcdir)/$(top_distdir)/libltdl/ltdl.c \
     $(srcdir)/$(top_distdir)/libltdl/ltdl.h
 	(cd $(top_distdir); $(MAKE) `echo $(LIBLTDL) | sed 's,.*\.\./libltdl/,libltdl/,g'`)
-# Without the following line, the check may fail if libltdl/libtool is
-# removed after libltdl is configured
-$(top_distdir)/libltdl/libtool $(top_distdir)/libltdl/config.h:
+# Do not error out if toplevel config.h does not exist:
+$(top_distdir)/config.h:
 
 # Create a version of mdemo that does dlopen.
 mdemo_SOURCES = main.c
