@@ -654,7 +654,7 @@ or obtained by writing to the Free Software Foundation, Inc.,
 * Update the LTDL_VERSION_INFO in libltdl/Makefile.inc for changes since
   the last release.
 
-* Update the version number in configure.ac.
+* Update the version number in configure.ac and libltdl/configure.ac.
   See http://www.gnu.org/software/libtool/contribute.html for details of
   the numbering scheme.
 
@@ -701,9 +701,9 @@ or obtained by writing to the Free Software Foundation, Inc.,
 * Send announcement to libtool@gnu.org and autotools-announce@gnu.org,
   if not an alpha send to info-gnu@gnu.org as well.
 
-* Update version number in configure.ac to next alpha number.
-  See http://www.gnu.org/software/libtool/contribute.html for details of
-  the numbering scheme.
+* Update version number in configure.ac and libltdl/configure.ac to next
+  alpha number.  See http://www.gnu.org/software/libtool/contribute.html
+  for details of the numbering scheme.
 
 * Update NEWS, ChangeLog.
 
