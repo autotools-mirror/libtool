@@ -82,7 +82,7 @@ using (by typing `libtool --version').
   keys will be registered on ftp-upload.gnu.org and only then will you be
   authorized to upload files to the FSF ftp machines.
 
-* Update the version number in configure.ac.
+* Update the version number in configure.ac and libltdl/configure.ac.
   See http://www.gnu.org/software/libtool/contribute.html for details of
   the numbering scheme.
 
@@ -119,9 +119,9 @@ using (by typing `libtool --version').
 * Send announcement to libtool@gnu.org and autotools-announce@gnu.org,
   if not an alpha send to info-gnu@gnu.org as well.
 
-* Update version number in configure.ac to next alpha number.
-  See http://www.gnu.org/software/libtool/contribute.html for details of
-  the numbering scheme.
+* Update version number in configure.ac and libltdl/configure.ac to next alpha
+  number.  See http://www.gnu.org/software/libtool/contribute.html for details
+  of the numbering scheme.
 
 * Update NEWS, ChangeLog.
 
