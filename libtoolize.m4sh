@@ -1202,7 +1202,9 @@ func_install_pkgconfig_files ()
     elif $opt_ltdl && test "x$ltdl_mode" = "xsubproject"
        # && test "x$auxdir" != "x$subproject_auxdir" is implied
     then
-      func_install_pkgconfig_parent
+      if $seen_autoconf; then
+	func_install_pkgconfig_parent
+      fi
       func_install_pkgconfig_subproject
 
   # 3. Not subproject, but AC_CONFIG_AUX_DIR was used in parent:

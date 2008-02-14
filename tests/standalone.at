@@ -1,6 +1,6 @@
 # standalone.at -- test standalone libltdl builds             -*- Autotest -*-
 #
-#   Copyright (C) 2005 Free Software Foundation, Inc.
+#   Copyright (C) 2005, 2008 Free Software Foundation, Inc.
 #   Written by Gary V. Vaughan, 2006
 #
 #   This file is part of GNU Libtool.
@@ -30,7 +30,7 @@ AT_BANNER([Standalone Libltdl.])
 
 AT_SETUP([compiling softlinked libltdl])
 
-LT_AT_LIBTOOLIZE([--ltdl=.])
+LT_AT_CHECK_LIBTOOLIZE([--ltdl=.], [], [ignore])
 LT_AT_CONFIGURE
 LT_AT_MAKE([all $tst_dist])
 
@@ -45,7 +45,7 @@ AT_CLEANUP
 
 AT_SETUP([compiling copied libltdl])
 
-LT_AT_LIBTOOLIZE([--copy --ltdl=.])
+LT_AT_CHECK_LIBTOOLIZE([--copy --ltdl=.], [], [ignore])
 LT_AT_CONFIGURE
 LT_AT_MAKE([all $tst_dist])
 
@@ -62,7 +62,7 @@ AT_SETUP([installable libltdl])
 
 prefix=`pwd`/_inst
 
-LT_AT_LIBTOOLIZE([--copy --ltdl=.])
+LT_AT_CHECK_LIBTOOLIZE([--copy --ltdl=.], [], [ignore])
 LT_AT_CONFIGURE([--enable-ltdl-install --prefix=$prefix])
 LT_AT_MAKE([all install $tst_dist])
 
@@ -79,7 +79,7 @@ AT_CLEANUP
 AT_SETUP([linking libltdl without autotools])
 
 _LTDL_PROJECT_FILES([libltdl])
-LT_AT_LIBTOOLIZE([--copy --ltdl])
+LT_AT_CHECK_LIBTOOLIZE([--copy --ltdl], [], [ignore])
 LT_AT_MAKE([], [CC="$CC" LIBTOOLFLAGS="$LIBTOOLFLAGS" CPPFLAGS="$CPPFLAGS" \
         CFLAGS="$CFLAGS" LDFLAGS="$LDFLAGS" \
 	CONFIGURE_OPTIONS="$configure_options"])
