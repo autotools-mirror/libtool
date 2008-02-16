@@ -1,7 +1,11 @@
+2008-02-15  Peter O'Gorman  <peter@pogma.com>
+
+	* libltdl/m4/libtool.m4 (_LT_SYS_HIDDEN_LIBDEPS): Fix typo.
+
 2008-02-14  Peter Breitenlohner  <peb@mppmu.mpg.de>
 
-	* libtool.m4 (_LT_SYS_DYNAMIC_LINKER): better handling of
-	predefined values for lt_cv_sys_lib_search_path_spec and
+	* libltdl/m4/libtool.m4 (_LT_SYS_DYNAMIC_LINKER): better handling
+	of predefined values for lt_cv_sys_lib_search_path_spec and
 	lt_cv_sys_lib_dlsearch_path_spec.
 
 2008-02-14  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>

@@ -6473,7 +6473,7 @@ case " $_LT_TAGVAR(postdeps, $1) " in
 *" -lc "*) _LT_TAGVAR(archive_cmds_need_lc, $1)=no ;;
 esac
  _LT_TAGVAR(compiler_lib_search_dirs, $1)=
-if test -n "$${_LT_TAGVAR(compiler_lib_search_path, $1)}"; then
+if test -n "${_LT_TAGVAR(compiler_lib_search_path, $1)}"; then
  _LT_TAGVAR(compiler_lib_search_dirs, $1)=`echo " ${_LT_TAGVAR(compiler_lib_search_path, $1)}" | ${SED} -e 's! -L! !g' -e 's!^ !!'`
 fi
 _LT_TAGDECL([], [compiler_lib_search_dirs], [1],
