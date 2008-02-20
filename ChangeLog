@@ -1,3 +1,9 @@
+2008-02-20  Peter O'Gorman  <peter@pogma.com>
+
+	* libltdl/m4/libtool.m4 (_LT_LANG_GCJ_CONFIG): Do not call the
+	_LT_SYS_DYNAMIC_LINKER macro here.
+	Reported by Mike Frysinger <vapier@gentoo.org>
+
 2008-02-15  Peter O'Gorman  <peter@pogma.com>
 
 	* libltdl/m4/libtool.m4 (_LT_SYS_HIDDEN_LIBDEPS): Fix typo.
