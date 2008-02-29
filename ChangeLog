@@ -1,3 +1,9 @@
+2008-02-29  Gary V. Vaughan  <gary@gnu.org>
+
+	* libltdl/m4/argz.m4 (AC_CHECK_FUNCS): Also use our replacement
+	argz if the system argz_add or argz_count are missing.
+	Report by Juan Manuel Guerrero <juan.guerrero@gmx.de>.
+
 2008-02-26  Karl Berry  <karl@freefriends.org>
 
 	* libltdl/argz.c (argz_add, argz_count): New functions.
