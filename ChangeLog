@@ -1,3 +1,12 @@
+2008-03-01  Gary V. Vaughan <gary@gnu.org>
+
+	* tests/lt_dladvise.at, tests/lt_dlexit.at,
+	tests/need_lib_prefix.at: Skip these tests when called from
+	`make distcheck DISTCHECK_CONFIGURE_FLAGS=--disable-ltdl-install'.
+	The tests try to link against the dummy installed libltdl.la
+	from .../_inst/lib/libltdl.la, which does not exist when
+	configured with --disable-ltdl-install.
+
 2008-02-29  Gary V. Vaughan  <gary@gnu.org>
 
 	* libltdl/m4/argz.m4 (AC_CHECK_FUNCS): Also use our replacement
