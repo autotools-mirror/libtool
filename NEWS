@@ -1,11 +1,18 @@
 NEWS - list of user-visible changes between releases of GNU Libtool
 
-New in 2.1c: 2012-??-??; CVS version 2.1c, Libtool team:
+New in 2.2: 2008-03-01; CVS version 2.1c, Libtool team:
 
 * Bug fixes:
 
   - argz.c, lt__dirent.c and lt__strl.c are correctly distributed with
     parent projects using nonrecursive libltdl.
+  - libtoolize no longer tries to install libtool files when libltdl is
+    used in a non-autoconf parent package.
+  - Don't add the CXX tag to libtool when there is no C++ compiler, even
+    if AC_PROG_CXX sets a default g++ compiler where no such compiler
+    actually exists.
+  - make distcheck DISTCHECK_CONFIGURE_FLAGS=--disable-ltdl-install
+    works again.
 
 New in 2.1b: 2008-02-01; CVS version 2.1a, Libtool team:
 

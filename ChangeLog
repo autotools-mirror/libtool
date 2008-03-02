@@ -1,5 +1,11 @@
 2008-03-01  Gary V. Vaughan <gary@gnu.org>
 
+	GNU Libtool 2.2 was released.
+
+	* configure.ac, libltdl/configure.ac (AC_INIT): Bump version
+	number to 2.2.
+	* NEWS: Updated.
+
 	* tests/lt_dladvise.at, tests/lt_dlexit.at,
 	tests/need_lib_prefix.at: Skip these tests when called from
 	`make distcheck DISTCHECK_CONFIGURE_FLAGS=--disable-ltdl-install'.
