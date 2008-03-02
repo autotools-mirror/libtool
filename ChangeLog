@@ -1,5 +1,8 @@
 2008-03-01  Gary V. Vaughan <gary@gnu.org>
 
+	* configure.ac, libltdl/configure.ac (AC_INIT): Bump version
+	number to 2.3a.
+
 	GNU Libtool 2.2 was released.
 
 	* configure.ac, libltdl/configure.ac (AC_INIT): Bump version
