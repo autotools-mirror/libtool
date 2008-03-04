@@ -1,7 +1,7 @@
 /* loader-loadlibrary.c --  dynamic linking for Win32
 
    Copyright (C) 1998, 1999, 2000, 2004, 2005, 2006,
-                 2007 Free Software Foundation, Inc.
+                 2007, 2008 Free Software Foundation, Inc.
    Written by Thomas Tanner, 1998
 
    NOTE: The canonical source of this file is maintained with the
@@ -49,6 +49,7 @@ LT_END_C_DECLS
 
 /* Boilerplate code to set up the vtable for hooking this loader into
    libltdl's loader list:  */
+static int	 vl_exit  (lt_user_data loader_data);
 static lt_module vm_open  (lt_user_data loader_data, const char *filename,
                            lt_dladvise advise);
 static int	 vm_close (lt_user_data loader_data, lt_module module);
@@ -56,6 +57,7 @@ static void *	 vm_sym   (lt_user_data loader_data, lt_module module,
 			  const char *symbolname);
 
 static lt_dlinterface_id iface_id = 0;
+static lt_dlvtable *vtable = 0;
 
 /* Return the vtable for this loader, only the name and sym_prefix
    attributes (plus the virtual function implementations, obviously)
@@ -63,8 +65,6 @@ static lt_dlinterface_id iface_id = 0;
 lt_dlvtable *
 get_vtable (lt_user_data loader_data)
 {
-  static lt_dlvtable *vtable = 0;
-
   if (!vtable)
     {
       vtable = (lt_dlvtable *) lt__zalloc (sizeof *vtable);
@@ -77,6 +77,7 @@ get_vtable (lt_user_data loader_data)
       vtable->module_open	= vm_open;
       vtable->module_close	= vm_close;
       vtable->find_sym		= vm_sym;
+      vtable->dlloader_exit	= vl_exit;
       vtable->dlloader_data	= loader_data;
       vtable->priority		= LT_DLLOADER_APPEND;
     }
@@ -96,6 +97,15 @@ get_vtable (lt_user_data loader_data)
 
 
 #include <windows.h>
+
+/* A function called through the vtable when this loader is no
+   longer needed by the application.  */
+static int
+vl_exit (lt_user_data LT__UNUSED loader_data)
+{
+  vtable = NULL;
+  return 0;
+}
 
 /* A function called through the vtable to open a module with this
    loader.  Returns an opaque representation of the newly opened

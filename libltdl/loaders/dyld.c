@@ -1,7 +1,7 @@
 /* loader-dyld.c -- dynamic linking on darwin and OS X
 
    Copyright (C) 1998, 1999, 2000, 2004, 2006,
-                 2007 Free Software Foundation, Inc.
+                 2007, 2008 Free Software Foundation, Inc.
    Written by Peter O'Gorman, 1998
 
    NOTE: The canonical source of this file is maintained with the
@@ -53,14 +53,14 @@ static int	 vm_close (lt_user_data loader_data, lt_module module);
 static void *	 vm_sym   (lt_user_data loader_data, lt_module module,
 			  const char *symbolname);
 
+static lt_dlvtable *vtable = 0;
+
 /* Return the vtable for this loader, only the name and sym_prefix
    attributes (plus the virtual function implementations, obviously)
    change between loaders.  */
 lt_dlvtable *
 get_vtable (lt_user_data loader_data)
 {
-  static lt_dlvtable *vtable = 0;
-
   if (!vtable)
     {
       vtable = lt__zalloc (sizeof *vtable);
@@ -74,6 +74,7 @@ get_vtable (lt_user_data loader_data)
       vtable->module_open	= vm_open;
       vtable->module_close	= vm_close;
       vtable->find_sym		= vm_sym;
+      vtable->dlloader_exit	= vl_exit;
       vtable->dlloader_data	= loader_data;
       vtable->priority		= LT_DLLOADER_APPEND;
     }
@@ -180,6 +181,15 @@ static enum DYLD_BOOL (*lt__module_export)	(NSModule module) = 0;
 
 static int dyld_cannot_close				  = 0;
 
+
+/* A function called through the vtable when this loader is no
+   longer needed by the application.  */
+static int
+vl_exit (lt_user_data LT__UNUSED loader_data)
+{
+  vtable = NULL;
+  return 0;
+}
 
 /* A function called through the vtable to initialise this loader.  */
 static int

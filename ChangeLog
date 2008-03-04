@@ -1,3 +1,20 @@
+2008-03-04  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* libltdl/loaders/dld_link.c (vl_exit): New function, zero out ...
+	(vtable): ... this new file static variable split out from ...
+	(get_vtable): ... here.  Initialize vtable, register vl_exit as
+	dlloader_exit function.
+	* libltdl/loaders/dlopen.c: Likewise.
+	* libltdl/loaders/dyld.c: Likewise.
+	* libltdl/loaders/load_add_on.c: Likewise.
+	* libltdl/loaders/loadlibrary.c: Likewise.
+	* libltdl/loaders/shl_load.c: Likewise.
+	* libltdl/loaders/preopen.c: Likewise; vl_exit existed here
+	already.
+	* tests/lt_dlexit.at (lt_dlexit unloading libs): Update test.
+	* NEWS: Update.
+	Report by Andreas Schwab.
+
 2008-03-01  Gary V. Vaughan <gary@gnu.org>
 
 	* configure.ac, libltdl/configure.ac (AC_INIT): Bump version

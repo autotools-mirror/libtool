@@ -2,7 +2,10 @@ NEWS - list of user-visible changes between releases of GNU Libtool
 
 New in 2.3b: 2008-??-??: CVS version 2.3a, Libtool team:
 
-* Nothing yet!
+* Bug fixes:
+
+  - Fix 2.2 regression in libltdl that causes memory corruption upon
+    repeated `lt_dlinit(); lt_dlexit()'.
 
 New in 2.2: 2008-03-01; CVS version 2.1c, Libtool team:
 

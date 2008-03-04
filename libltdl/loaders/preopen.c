@@ -1,7 +1,7 @@
 /* loader-preopen.c -- emulate dynamic linking using preloaded_symbols
 
    Copyright (C) 1998, 1999, 2000, 2004, 2006,
-                 2007 Free Software Foundation, Inc.
+                 2007, 2008 Free Software Foundation, Inc.
    Written by Thomas Tanner, 1998
 
    NOTE: The canonical source of this file is maintained with the
@@ -53,14 +53,14 @@ static int	 vm_close (lt_user_data loader_data, lt_module module);
 static void *	 vm_sym   (lt_user_data loader_data, lt_module module,
 			  const char *symbolname);
 
+static lt_dlvtable *vtable = 0;
+
 /* Return the vtable for this loader, only the name and sym_prefix
    attributes (plus the virtual function implementations, obviously)
    change between loaders.  */
 lt_dlvtable *
 get_vtable (lt_user_data loader_data)
 {
-  static lt_dlvtable *vtable = 0;
-
   if (!vtable)
     {
       vtable = (lt_dlvtable *) lt__zalloc (sizeof *vtable);
@@ -132,6 +132,7 @@ vl_init (lt_user_data LT__UNUSED loader_data)
 static int
 vl_exit (lt_user_data LT__UNUSED loader_data)
 {
+  vtable = NULL;
   free_symlists ();
   return 0;
 }
