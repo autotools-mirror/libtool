@@ -1694,12 +1694,14 @@ func_mode_execute ()
 	# Do a test to see if this is really a libtool program.
 	if func_ltwrapper_script_p "$file"; then
 	  func_source "$file"
+	  # Transform arg to wrapped name.
+	  file="$progdir/$program"
 	elif func_ltwrapper_executable_p "$file"; then
 	  func_ltwrapper_scriptname "$file"
 	  func_source "$func_ltwrapper_scriptname_result"
+	  # Transform arg to wrapped name.
+	  file="$progdir/$program"
 	fi
-	# Transform arg to wrapped name.
-	file="$progdir/$program"
 	;;
       esac
       # Quote arguments (to preserve shell metacharacters).
@@ -2468,7 +2470,7 @@ else
 	  ;;
 	esac
 	$ECHO "\
-      \$ECHO \"\$0: cannot exec \$program \$*\"
+      \$ECHO \"\$0: cannot exec \$program \$*\" 1>&2
       exit 1
     fi
   else
