@@ -1,5 +1,7 @@
 2008-03-04  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* doc/libtool.texi (Module loaders for libltdl): Fix typo.
+
 	* libltdl/loaders/dld_link.c (vl_exit): New function, zero out ...
 	(vtable): ... this new file static variable split out from ...
 	(get_vtable): ... here.  Initialize vtable, register vl_exit as

@@ -4226,7 +4226,7 @@ register_myloader (void)
   dlloader.sym_prefix    = NULL;
   dlloader.module_open   = myloader_open;
   dlloader.module_close  = myloader_close;
-  dlloader.find_sym      = myloader_find_sym.
+  dlloader.find_sym      = myloader_find_sym;
   dlloader.dlloader_exit = myloader_exit;
   dlloader.dlloader_data = (lt_user_data)myloader_function;
 
