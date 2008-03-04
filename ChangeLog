@@ -1,5 +1,11 @@
 2008-03-04  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	Fix libltdl to not skip dlopen on systems with several loaders,
+	such as HP-UX, Cygwin.
+	* libltdl/slist.c (slist_concat): When appending to the tail
+	of a list, do not drop items off the beginning of the list.
+	* NEWS: Update.
+
 	* libltdl/config/ltmain.m4sh (func_mode_execute): Replace only
 	arguments we have identified as shell or C wrappers.
 	(func_emit_wrapper): Output error message on stderr.

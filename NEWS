@@ -6,6 +6,8 @@ New in 2.3b: 2008-??-??: CVS version 2.3a, Libtool team:
 
   - Fix 2.2 regression in libltdl that causes memory corruption upon
     repeated `lt_dlinit(); lt_dlexit()'.
+  - Fix 2.2 regression in libltdl that skipped the dlopen loader if
+    the system also supports other loaders (e.g., Cygwin, HP-UX).
   - Fix 2.2 regression in that `libtool --mode=execute CMD ARGS' does not
     transform ARGS that do not look like shell or C wrappers of libtool
     programs.

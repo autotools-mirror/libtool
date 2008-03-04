@@ -1,6 +1,6 @@
 /* slist.c -- generalised singly linked lists
 
-   Copyright (C) 2000, 2004, 2007 Free Software Foundation, Inc.
+   Copyright (C) 2000, 2004, 2007, 2008 Free Software Foundation, Inc.
    Written by Gary V. Vaughan, 2000
 
    NOTE: The canonical source of this file is maintained with the
@@ -140,15 +140,18 @@ slist_find (SList *slist, SListCallback *find, void *matchdata)
 SList *
 slist_concat (SList *head, SList *tail)
 {
+  SList *last;
+
   if (!head)
     {
       return tail;
     }
 
-  while (head->next)
-    head = head->next;
+  last = head;
+  while (last->next)
+    last = last->next;
 
-  head->next = tail;
+  last->next = tail;
 
   return head;
 }
