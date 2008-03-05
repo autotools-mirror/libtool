@@ -1,3 +1,11 @@
+2008-03-05  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* libltdl/config/ltmain.m4sh (func_lalib_unsafe_p): redirect
+	and restore from stdin, not stdout.
+	* tests/execute-mode.at (execute mode): Adjust test to catch
+	this.
+	Report by Roberto Bagnara.
+
 2008-03-04  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	Fix libltdl to not skip dlopen on systems with several loaders,
