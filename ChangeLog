@@ -1,3 +1,9 @@
+2008-03-06  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* tests/convenience.at (Java convenience archives): Skip test if
+	gcj cannot compile a .java file.
+	Report by Nelson H. F. Beebe.
+
 2008-03-05  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* libltdl/config/ltmain.m4sh (func_lalib_unsafe_p): redirect

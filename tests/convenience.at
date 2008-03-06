@@ -1,6 +1,6 @@
 # convenience.at -- testing C convenience archives            -*- Autotest -*-
 
-#   Copyright (C) 2005, 2007 Free Software Foundation, Inc.
+#   Copyright (C) 2005, 2007, 2008 Free Software Foundation, Inc.
 #   Written by Ralf Wildenhues, 2005
 #
 #   This file is part of GNU Libtool.
@@ -258,6 +258,14 @@ public class A$i {
   public A$i () { a = 0; }
 };
 EOF
+
+  # There are just too many broken gcj installations out there, either missing
+  # libgcj.spec or unable to find it.  Skip this test for them.
+  if test $i -eq 1; then
+    AT_CHECK[($GCJ $GCJFLAGS -c foo1.java || exit 77], [], [ignore], [ignore])
+    rm -f foo1.o foo1.obj
+  fi
+
   $LIBTOOL --tag=GCJ --mode=compile $GCJ $GCJFLAGS -c foo$i.java
   $LIBTOOL --tag=GCJ --mode=compile $GCJ $GCJFLAGS -c A$i.java
   $LIBTOOL --tag=GCJ --mode=link $GCJ $GCJFLAGS $LDFLAGS -o liba$i.la A$i.lo
