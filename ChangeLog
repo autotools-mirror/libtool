@@ -1,5 +1,7 @@
 2008-03-06  Peter O'Gorman  <peter@pogma.com>
 
+	* libltdl/m4/libtool.m4 (_LT_PROG_FC): Undo commit - bad idea. 
+
 	* libltdl/m4/libtool.m4 (_LT_PROG_FC): Report FC=no if the FC
 	compiler is not a GNU compiler and the CXX compiler is a GNU
 	compiler.

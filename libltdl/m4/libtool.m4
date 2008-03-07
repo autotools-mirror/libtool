@@ -6644,15 +6644,6 @@ AC_PROG_FC
 if test -z "$FC" || test "X$FC" = "Xno"; then
   _lt_disable_FC=yes
 fi
-
-# If g++ is being used, but the fortran compiler is not a gnu
-# compiler, we should simply ignore it. It will not grok -shared, for
-# example.
-if test "x$ac_cv_fc_compiler_gnu" != "x$GXX"; then
-  FC=no 
-  _lt_disable_FC=yes
-fi
-
 popdef([AC_MSG_ERROR])
 ])# _LT_PROG_FC
 
