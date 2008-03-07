@@ -1,5 +1,9 @@
 2008-03-07  Peter O'Gorman  <peter@pogma.com>
 
+	* tests/convenience.at (Java convenience archives): Skip test if
+	gcj cannot compile a working executable from .java files.
+	Report by Nelson H. F. Beebe.
+
 	* libltdl/m4/libtool.m4 (_LT_LANG_GCJ_CONFIG): Need to set LD.
 	Reported by Nelson H. F. Beebe.
 
