@@ -93,16 +93,14 @@ prev-tarball:
 	if test -f $$ofile; then :; \
 	else echo "Cannot make deltas without $$ofile"; exit 1; fi
 
-# TSDEPS will be defined to TSDEPS_DIST at `make dist' time
-TSDEPS =
-TSDEPS_DIST = ChangeLog m4/libtool.m4
+TSDEPS = ChangeLog libltdl/m4/libtool.m4
 CVS = cvs # set it to `:' to avoid CVS operations
 
 .PHONY: timestamps update-timestamps
 timestamps: update-timestamps
 update-timestamps:
 	@if (cd $(srcdir) && test -d CVS && \
-	    $(CVS) -n update $(TSDEPS_DIST) | grep '^M'); then \
+	    $(CVS) -n update $(TSDEPS) | grep '^M'); then \
 		echo "Cannot make cvs-dist before commit"; exit 1; else :; fi
 
 
@@ -173,7 +171,7 @@ cvs-dist: cvs-news timestamps
 	cd $(srcdir) \
 	  && $(CVS) -q tag `echo "release-$(VERSION)" | sed 's/\./-/g'`
 ## Generate signatures and directives for FSF ftp-upload:
-	for suffix in .gz .bz2; do \
+	for suffix in gz bz2; do \
 	  ofile="$(PACKAGE)-$(VERSION).tar.$$suffix"; \
 	  $(GPG) --detach-sign $$ofile \
 	  && echo "directory: libtool" > $$ofile.directive \
