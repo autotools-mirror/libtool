@@ -1,3 +1,8 @@
+2008-03-07  Peter O'Gorman  <peter@pogma.com>
+
+	* libltdl/m4/libtool.m4 (_LT_LANG_GCJ_CONFIG): Need to set LD.
+	Reported by Nelson H. F. Beebe.
+
 2008-03-06  Peter O'Gorman  <peter@pogma.com>
 
 	* libltdl/m4/libtool.m4 (_LT_PROG_FC): Undo commit - bad idea. 

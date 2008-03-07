@@ -6815,6 +6815,7 @@ GCC=yes
 CC=${GCJ-"gcj"}
 compiler=$CC
 _LT_TAGVAR(compiler, $1)=$CC
+_LT_TAGVAR(LD, $1)="$LD"
 _LT_CC_BASENAME([$compiler])
 
 # GCJ did not exist at the time GCC didn't implicitly link libc in.
