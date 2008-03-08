@@ -1,5 +1,18 @@
 2008-03-08  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	Fix several test failures on Cygwin and MinGW.
+	* tests/nonrecursive.at: Use -no-undefined for foo.la.
+	* tests/recursive.at: Likewise.
+	* tests/subproject.at: Likewise.
+	* tests/lt_dladvise.at: For systems where undefined symbols are
+	not allowed, to not try to load the module libdepend.
+	[ mingw ]: Add to list of such systems.
+	* tests/testsuite.at (_LT_AT_TRANSLATE_TEXT_OUTPUT): New macro,
+	to translate line ending of expout and experr files suitable for
+	host executables.
+	(LT_AT_CHECK, LT_AT_NOINST_EXEC_CHECK): Use it.
+	Report by Bob Friesenhahn.
+
 	Fix installcheck dependencies, fix for --program-transform-name.
 	* Makefile.am (installcheck-local): Depend upon tests/atconfig
 	and $(srcdir)/$(TESTSUITE).

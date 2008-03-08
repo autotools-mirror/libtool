@@ -1,6 +1,6 @@
 # subproject.at -- test subproject Libltdl builds             -*- Autotest -*-
 #
-#   Copyright (C) 2005 Free Software Foundation, Inc.
+#   Copyright (C) 2005, 2008 Free Software Foundation, Inc.
 #   Written by Gary V. Vaughan, 2005
 #
 #   This file is part of GNU Libtool.
@@ -44,7 +44,7 @@ AT_DATA([Makefile.am],
 AUTOMAKE_OPTIONS = 1.9
 SUBDIRS = sub/ltdl
 lib_LTLIBRARIES = foo.la
-foo_la_LDFLAGS = -module -avoid-version
+foo_la_LDFLAGS = -module -avoid-version -no-undefined
 ]])
 
 echo 'int dummy = 0;' > foo.c

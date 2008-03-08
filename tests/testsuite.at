@@ -173,10 +173,23 @@ m4_define([LT_ESCAPE],
 m4_define([LT_AT_CHECK],
 [echo "LT_ESCAPE([$1])"; AT_CHECK($@)])
 
+
+# _LT_AT_TRANSLATE_TEXT_OUTPUT(FILE)
+# ----------------------------------
+# Ensure correct line ending for expected output of host executables.
+m4_define([_LT_AT_TRANSLATE_TEXT_OUTPUT],
+[case $host_os in mingw*)
+  while read -r l; do printf "%s\r\n" "$l"; done < $1 > $1.t
+  mv -f $1.t $1 ;;
+esac])
+
+
 # LT_AT_EXEC_CHECK(EXECUTABLE, [STATUS = 0], [STDOUT], [STDERR])
 # --------------------------------------------------------------
 m4_define([LT_AT_EXEC_CHECK],
-[AT_CHECK([$1; lt_status=$?; if test $lt_status -eq 0; then :;
+[m4_if([$3], [expout], [_LT_AT_TRANSLATE_TEXT_OUTPUT([$3])])
+m4_if([$4], [experr], [_LT_AT_TRANSLATE_TEXT_OUTPUT([$4])])
+AT_CHECK([$1; lt_status=$?; if test $lt_status -eq 0; then :;
 	   elif test "X$host" != "X$build" && \
 	        { test -x "$1" || test -x "$1"$EXEEXT; }
 	   then (exit 77); else (exit $lt_status); fi],[$2],[$3],[$4])
@@ -187,7 +200,9 @@ m4_define([LT_AT_EXEC_CHECK],
 # 			  [STATUS = 0], [STDOUT], [STDERR])
 # ---------------------------------------------------------
 m4_define([LT_AT_NOINST_EXEC_CHECK],
-[AT_CHECK([$LIBTOOL --mode=execute $2 $1; lt_status=$?;
+[m4_if([$4], [expout], [_LT_AT_TRANSLATE_TEXT_OUTPUT([$4])])
+m4_if([$5], [experr], [_LT_AT_TRANSLATE_TEXT_OUTPUT([$5])])
+AT_CHECK([$LIBTOOL --mode=execute $2 $1; lt_status=$?;
 	   if test $lt_status -eq 0; then :;
 	   elif test "X$host" != "X$build" && \
 	        { test -x "$1" || test -x "$1"$EXEEXT; }

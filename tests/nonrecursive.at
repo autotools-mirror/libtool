@@ -64,7 +64,7 @@ MOSTLYCLEANFILES	=
 
 include ltdl/Makefile.inc
 
-foo_la_LDFLAGS		= -module -avoid-version
+foo_la_LDFLAGS		= -module -avoid-version -no-undefined
 foo_la_SOURCES		= foo.c
 ]])
 
