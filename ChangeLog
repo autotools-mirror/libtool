@@ -1,3 +1,11 @@
+2008-03-08  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Drop usage of obsolete macros AC_EXEEXT and AC_OBJEXT.
+	* libltdl/m4/libtool.m4 (_LT_ENABLE_LOCK, _LT_COMPILER_OPTION)
+	(_LT_COMPILER_C_O, LT_PATH_NM, _LT_CMD_GLOBAL_SYMBOLS, _LT_SETUP):
+	Drop usage of obsolete AC_OBJEXT and AC_EXEEXT.
+	* tests/am-subdir.at (C++ subdir-objects): Likewise.
+
 2008-03-07  Peter O'Gorman  <peter@pogma.com>
 
 	* tests/convenience.at (Java convenience archives): Skip test if

@@ -155,9 +155,7 @@ test -z "$LN_S" && LN_S="ln -s"
 _LT_DECL([], [LN_S], [1], [Whether we need soft or hard links])dnl
 dnl
 AC_REQUIRE([LT_CMD_MAX_LEN])dnl
-AC_REQUIRE([AC_OBJEXT])dnl
 _LT_DECL([objext], [ac_objext], [0], [Object file suffix (normally "o")])dnl
-AC_REQUIRE([AC_EXEEXT])dnl
 _LT_DECL([], [exeext], [0], [Executable file suffix (normally "")])dnl
 dnl
 m4_require([_LT_FILEUTILS_DEFAULTS])dnl
@@ -1194,8 +1192,7 @@ _LT_DECL([], [ECHO], [1],
 # _LT_ENABLE_LOCK
 # ---------------
 m4_defun([_LT_ENABLE_LOCK],
-[AC_REQUIRE([AC_OBJEXT])dnl
-AC_ARG_ENABLE([libtool-lock],
+[AC_ARG_ENABLE([libtool-lock],
   [AS_HELP_STRING([--disable-libtool-lock],
     [avoid locking (might break parallel builds)])])
 test "x$enable_libtool_lock" != xno && enable_libtool_lock=yes
@@ -1384,8 +1381,7 @@ _LT_TAGDECL([], [old_archive_cmds], [2],
 # ----------------------------------------------------------------
 # Check whether the given compiler option works
 AC_DEFUN([_LT_COMPILER_OPTION],
-[AC_REQUIRE([AC_OBJEXT])dnl
-m4_require([_LT_FILEUTILS_DEFAULTS])dnl
+[m4_require([_LT_FILEUTILS_DEFAULTS])dnl
 m4_require([_LT_DECL_SED])dnl
 AC_CACHE_CHECK([$1], [$2],
   [$2=no
@@ -1837,8 +1833,7 @@ dnl AC_DEFUN([AC_LIBTOOL_DLOPEN_SELF], [])
 # Check to see if options -c and -o are simultaneously supported by compiler.
 # This macro does not hard code the compiler like AC_PROG_CC_C_O.
 m4_defun([_LT_COMPILER_C_O],
-[AC_REQUIRE([AC_OBJEXT])dnl
-m4_require([_LT_DECL_SED])dnl
+[m4_require([_LT_DECL_SED])dnl
 m4_require([_LT_FILEUTILS_DEFAULTS])dnl
 m4_require([_LT_TAG_COMPILER])dnl
 AC_CACHE_CHECK([if $compiler supports -c -o file.$ac_objext],
@@ -3143,7 +3138,6 @@ _LT_DECL([], [file_magic_cmd], [1],
 # find the pathname to a BSD- or MS-compatible name lister
 AC_DEFUN([LT_PATH_NM],
 [AC_REQUIRE([AC_PROG_CC])dnl
-AC_REQUIRE([AC_OBJEXT])dnl
 AC_CACHE_CHECK([for BSD- or MS-compatible name lister (nm)], lt_cv_path_NM,
 [if test -n "$NM"; then
   # Let the user override the test.
@@ -3279,7 +3273,6 @@ _LT_TAGDECL([no_builtin_flag], [lt_prog_compiler_no_builtin_flag], [1],
 m4_defun([_LT_CMD_GLOBAL_SYMBOLS],
 [AC_REQUIRE([AC_CANONICAL_HOST])dnl
 AC_REQUIRE([AC_PROG_CC])dnl
-AC_REQUIRE([AC_OBJEXT])dnl
 AC_REQUIRE([LT_PATH_NM])dnl
 AC_REQUIRE([LT_PATH_LD])dnl
 m4_require([_LT_DECL_SED])dnl
