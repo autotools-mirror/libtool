@@ -1,5 +1,13 @@
 2008-03-08  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	Fix installcheck dependencies, fix for --program-transform-name.
+	* Makefile.am (installcheck-local): Depend upon tests/atconfig
+	and $(srcdir)/$(TESTSUITE).
+	* tests/testsuite.at (_LIBTOOLIZE_TRANSFORM): New macro.
+	(LT_AT_CHECK_LIBTOOLIZE): Use it to transform expout and experr
+	files suitably.
+	* HACKING: Update.
+
 	Drop usage of obsolete macros AC_EXEEXT and AC_OBJEXT.
 	* libltdl/m4/libtool.m4 (_LT_ENABLE_LOCK, _LT_COMPILER_OPTION)
 	(_LT_COMPILER_C_O, LT_PATH_NM, _LT_CMD_GLOBAL_SYMBOLS, _LT_SETUP):

@@ -57,10 +57,22 @@ AT_KEYWORDS([libtoolize])
 ])
 
 
+# _LIBTOOLIZE_TRANSFORM(FILE)
+# ---------------------------
+# Fix the expected output of installed libtoolize in presence of --program-*.
+m4_define([_LIBTOOLIZE_TRANSFORM],
+[lt_name=`$ECHO "$LIBTOOLIZE" | sed 's,^.*/,,'` # restore font-lock: ''
+sed "s/^libtoolize/$lt_name/" < $1 > $1.t
+mv -f $1.t $1
+])dnl
+
+
 # LT_AT_CHECK_LIBTOOLIZE(ARGS, [EXIT-STATUS = 0], [STDOUT = `'], [STDERR = `'])
 # -----------------------------------------------------------------------------
 m4_define([LT_AT_CHECK_LIBTOOLIZE],
-[AT_CHECK([LT_AT_LIBTOOLIZE([$1])],
+[m4_if([$3], [expout], [_LIBTOOLIZE_TRANSFORM([$3])])dnl
+m4_if([$4], [experr], [_LIBTOOLIZE_TRANSFORM([$4])])dnl
+AT_CHECK([LT_AT_LIBTOOLIZE([$1])],
   [$2], [$3], [$4])
 ])
 

@@ -523,7 +523,7 @@ check-local: tests/atconfig $(srcdir)/$(TESTSUITE) libltdl/libltdlc.la $(bin_SCR
 	  $(TESTS_ENVIRONMENT) $(BUILDCHECK_ENVIRONMENT) $(TESTSUITEFLAGS)
 
 # Run the test suite on the *installed* tree.
-installcheck-local:
+installcheck-local: tests/atconfig $(srcdir)/$(TESTSUITE)
 	$(CD_TESTDIR); \
 	CONFIG_SHELL="$(SHELL)" $(SHELL) $$abs_srcdir/$(TESTSUITE) \
 	  $(TESTS_ENVIRONMENT) $(INSTALLCHECK_ENVIRONMENT) $(TESTSUITEFLAGS) \

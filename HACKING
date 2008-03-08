@@ -675,8 +675,9 @@ or obtained by writing to the Free Software Foundation, Inc.,
   libtool.
 
 * Run `make distcheck' and `make distcheck
-  DISTCHECK_CONFIGURE_FLAGS=--disable-ltdl-install'.  If there are any
-  problems, fix them and start again.
+  DISTCHECK_CONFIGURE_FLAGS=--disable-ltdl-install'.  Try a distcheck
+  with --program-prefix=g.  If there are any problems, fix them and
+  start again.
 
 * Run ./commit from the source tree.
 
