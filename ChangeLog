@@ -1,3 +1,15 @@
+2008-03-09  Bruno Haible  <bruno@clisp.org>
+	and Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Fix compiler output to be in the user locale.
+	* libltdl/config/general.m4sh (func_show_eval_locale): New
+	function, for running commands in the user locale.
+	* libltdl/config/ltmain.m4sh (func_mode_compile): Use it for
+	compiling.
+	* tests/localization.at (localized compiler messages): New test.
+	* Makefile.am: Adjust.
+	Report by Bruno Haible.
+
 2008-03-08  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	Fix several test failures on Cygwin and MinGW.

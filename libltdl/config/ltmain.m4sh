@@ -96,12 +96,16 @@ DUALCASE=1; export DUALCASE # for MKS sh
 # Only set LANG and LC_ALL to C if already set.
 # These must not be set unconditionally because not all systems understand
 # e.g. LANG=C (notably SCO).
+lt_user_locale=
+lt_safe_locale=
 for lt_var in LANG LANGUAGE LC_ALL LC_CTYPE LC_COLLATE LC_MESSAGES
 do
   eval "if test \"\${$lt_var+set}\" = set; then
           save_$lt_var=\$$lt_var
           $lt_var=C
 	  export $lt_var
+	  lt_user_locale=\"$lt_var=\$save_$lt_var; \$lt_user_locale\"
+	  lt_safe_locale=\"$lt_var=C; \$lt_safe_locale\"
 	fi"
 done
 
@@ -1515,7 +1519,7 @@ compiler."
 
       $opt_dry_run || $RM "$lobj" "$output_obj"
 
-      func_show_eval "$command"	\
+      func_show_eval_locale "$command"	\
           'test -n "$output_obj" && $RM $removelist; exit $EXIT_FAILURE'
 
       if test "$need_locks" = warn &&
@@ -1565,7 +1569,7 @@ compiler."
       # Suppress compiler output if we already did a PIC compilation.
       command="$command$suppress_output"
       $opt_dry_run || $RM "$obj" "$output_obj"
-      func_show_eval "$command" \
+      func_show_eval_locale "$command" \
         '$opt_dry_run || $RM $removelist; exit $EXIT_FAILURE'
 
       if test "$need_locks" = warn &&
