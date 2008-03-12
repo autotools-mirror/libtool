@@ -472,6 +472,13 @@ AC_CACHE_CHECK([whether deplibs are loaded by dlopen],
   aix[[4-9]]*)
     lt_cv_sys_dlopen_deplibs=yes
     ;;
+  amigaos*)
+    case $host_cpu in
+    powerpc)
+      lt_cv_sys_dlopen_deplibs=no
+      ;;
+    esac
+    ;;
   darwin*)
     # Assuming the user has installed a libdl from somewhere, this is true
     # If you are looking for one http://www.opendarwin.org/projects/dlcompat

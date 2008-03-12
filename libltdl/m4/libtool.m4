@@ -2150,13 +2150,18 @@ aix[[4-9]]*)
   ;;
 
 amigaos*)
-  if test "$host_cpu" = m68k; then
+  case $host_cpu in
+  powerpc)
+    # Since July 2007 AmigaOS4 officially supports .so libraries.
+    # When compiling the executable, add -use-dynld -Lsobjs: to the compileline.
+    library_names_spec='${libname}${release}${shared_ext}$versuffix ${libname}${release}${shared_ext}$major $libname${shared_ext}'
+    ;;
+  m68k)
     library_names_spec='$libname.ixlibrary $libname.a'
     # Create ${libname}_ixlibrary.a entries in /sys/libs.
     finish_eval='for lib in `ls $libdir/*.ixlibrary 2>/dev/null`; do libname=`$ECHO "X$lib" | $Xsed -e '\''s%^.*/\([[^/]]*\)\.ixlibrary$%\1%'\''`; test $RM /sys/libs/${libname}_ixlibrary.a; $show "cd /sys/libs && $LN_S $lib ${libname}_ixlibrary.a"; cd /sys/libs && $LN_S $lib ${libname}_ixlibrary.a || exit 1; done'
-  else
-    dynamic_linker=no
-  fi
+    ;;
+  esac
   ;;
 
 beos*)
@@ -3524,14 +3529,22 @@ m4_if([$1], [CXX], [
 	_LT_TAGVAR(lt_prog_compiler_static, $1)='-Bstatic'
       fi
       ;;
+
     amigaos*)
-      if test "$host_cpu" = m68k; then
-        # FIXME: we need at least 68020 code to build shared libraries, but
-        # adding the `-m68020' flag to GCC prevents building anything better,
-        # like `-m68040'.
-        _LT_TAGVAR(lt_prog_compiler_pic, $1)='-m68020 -resident32 -malways-restore-a4'
-      fi
+      case $host_cpu in
+      powerpc)
+            # see comment about AmigaOS4 .so support
+            _LT_TAGVAR(lt_prog_compiler_pic, $1)='-fPIC'
+        ;;
+      m68k)
+            # FIXME: we need at least 68020 code to build shared libraries, but
+            # adding the `-m68020' flag to GCC prevents building anything better,
+            # like `-m68040'.
+            _LT_TAGVAR(lt_prog_compiler_pic, $1)='-m68020 -resident32 -malways-restore-a4'
+        ;;
+      esac
       ;;
+
     beos* | irix5* | irix6* | nonstopux* | osf3* | osf4* | osf5*)
       # PIC is the default for these OSes.
       ;;
@@ -3816,12 +3829,18 @@ m4_if([$1], [CXX], [
       ;;
 
     amigaos*)
-      if test "$host_cpu" = m68k; then
-        # FIXME: we need at least 68020 code to build shared libraries, but
-        # adding the `-m68020' flag to GCC prevents building anything better,
-        # like `-m68040'.
-        _LT_TAGVAR(lt_prog_compiler_pic, $1)='-m68020 -resident32 -malways-restore-a4'
-      fi
+      case $host_cpu in
+      powerpc)
+            # see comment about AmigaOS4 .so support
+            _LT_TAGVAR(lt_prog_compiler_pic, $1)='-fPIC'
+        ;;
+      m68k)
+            # FIXME: we need at least 68020 code to build shared libraries, but
+            # adding the `-m68020' flag to GCC prevents building anything better,
+            # like `-m68040'.
+            _LT_TAGVAR(lt_prog_compiler_pic, $1)='-m68020 -resident32 -malways-restore-a4'
+        ;;
+      esac
       ;;
 
     beos* | irix5* | irix6* | nonstopux* | osf3* | osf4* | osf5*)
@@ -4228,19 +4247,18 @@ _LT_EOF
       ;;
 
     amigaos*)
-      if test "$host_cpu" = m68k; then
-        _LT_TAGVAR(archive_cmds, $1)='$RM $output_objdir/a2ixlibrary.data~$ECHO "#define NAME $libname" > $output_objdir/a2ixlibrary.data~$ECHO "#define LIBRARY_ID 1" >> $output_objdir/a2ixlibrary.data~$ECHO "#define VERSION $major" >> $output_objdir/a2ixlibrary.data~$ECHO "#define REVISION $revision" >> $output_objdir/a2ixlibrary.data~$AR $AR_FLAGS $lib $libobjs~$RANLIB $lib~(cd $output_objdir && a2ixlibrary -32)'
-        _LT_TAGVAR(hardcode_libdir_flag_spec, $1)='-L$libdir'
-        _LT_TAGVAR(hardcode_minus_L, $1)=yes
-      fi
-
-      # Samuel A. Falvo II <kc5tja@dolphin.openprojects.net> reports
-      # that the semantics of dynamic libraries on AmigaOS, at least up
-      # to version 4, is to share data among multiple programs linked
-      # with the same dynamic library.  Since this doesn't match the
-      # behavior of shared libraries on other platforms, we can't use
-      # them.
-      _LT_TAGVAR(ld_shlibs, $1)=no
+      case $host_cpu in
+      powerpc)
+            # see comment about AmigaOS4 .so support
+            _LT_TAGVAR(archive_cmds, $1)='$CC -shared $libobjs $deplibs $compiler_flags ${wl}-soname $wl$soname -o $lib'
+            _LT_TAGVAR(archive_expsym_cmds, $1)=''
+        ;;
+      m68k)
+            _LT_TAGVAR(archive_cmds, $1)='$RM $output_objdir/a2ixlibrary.data~$ECHO "#define NAME $libname" > $output_objdir/a2ixlibrary.data~$ECHO "#define LIBRARY_ID 1" >> $output_objdir/a2ixlibrary.data~$ECHO "#define VERSION $major" >> $output_objdir/a2ixlibrary.data~$ECHO "#define REVISION $revision" >> $output_objdir/a2ixlibrary.data~$AR $AR_FLAGS $lib $libobjs~$RANLIB $lib~(cd $output_objdir && a2ixlibrary -32)'
+            _LT_TAGVAR(hardcode_libdir_flag_spec, $1)='-L$libdir'
+            _LT_TAGVAR(hardcode_minus_L, $1)=yes
+        ;;
+      esac
       ;;
 
     beos*)
@@ -4587,13 +4605,18 @@ _LT_EOF
       ;;
 
     amigaos*)
-      if test "$host_cpu" = m68k; then
-        _LT_TAGVAR(archive_cmds, $1)='$RM $output_objdir/a2ixlibrary.data~$ECHO "#define NAME $libname" > $output_objdir/a2ixlibrary.data~$ECHO "#define LIBRARY_ID 1" >> $output_objdir/a2ixlibrary.data~$ECHO "#define VERSION $major" >> $output_objdir/a2ixlibrary.data~$ECHO "#define REVISION $revision" >> $output_objdir/a2ixlibrary.data~$AR $AR_FLAGS $lib $libobjs~$RANLIB $lib~(cd $output_objdir && a2ixlibrary -32)'
-        _LT_TAGVAR(hardcode_libdir_flag_spec, $1)='-L$libdir'
-        _LT_TAGVAR(hardcode_minus_L, $1)=yes
-      fi
-      # see comment about different semantics on the GNU ld section
-      _LT_TAGVAR(ld_shlibs, $1)=no
+      case $host_cpu in
+      powerpc)
+            # see comment about AmigaOS4 .so support
+            _LT_TAGVAR(archive_cmds, $1)='$CC -shared $libobjs $deplibs $compiler_flags ${wl}-soname $wl$soname -o $lib'
+            _LT_TAGVAR(archive_expsym_cmds, $1)=''
+        ;;
+      m68k)
+            _LT_TAGVAR(archive_cmds, $1)='$RM $output_objdir/a2ixlibrary.data~$ECHO "#define NAME $libname" > $output_objdir/a2ixlibrary.data~$ECHO "#define LIBRARY_ID 1" >> $output_objdir/a2ixlibrary.data~$ECHO "#define VERSION $major" >> $output_objdir/a2ixlibrary.data~$ECHO "#define REVISION $revision" >> $output_objdir/a2ixlibrary.data~$AR $AR_FLAGS $lib $libobjs~$RANLIB $lib~(cd $output_objdir && a2ixlibrary -32)'
+            _LT_TAGVAR(hardcode_libdir_flag_spec, $1)='-L$libdir'
+            _LT_TAGVAR(hardcode_minus_L, $1)=yes
+        ;;
+      esac
       ;;
 
     bsdi[[45]]*)

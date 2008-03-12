@@ -1,3 +1,12 @@
+2008-03-12  Henning Nielsen Lund  <hnl_dk@amigaos.dk>
+
+	* libltdl/m4/libtool.m4 (_LT_SYS_DYNAMIC_LINKER)
+	(_LT_COMPILER_PIC, _LT_LINKER_SHLIBS) [amigaos]: Port to
+	AmigaOS4 shared libraries on powerpc.
+	* libltdl/m4/ltdl.m4 (LT_SYS_DLOPEN_DEPLIBS) [amigaos]:
+	Likewise.
+	* THANKS, NEWS: Update.
+
 2008-03-09  Bruno Haible  <bruno@clisp.org>
 	and Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
