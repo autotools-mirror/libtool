@@ -2517,6 +2517,7 @@ EOF
 #ifdef _MSC_VER
 # include <direct.h>
 # include <process.h>
+# include <io.h>
 #else
 # include <unistd.h>
 # include <stdint.h>
@@ -2527,6 +2528,7 @@ EOF
 #include <string.h>
 #include <ctype.h>
 #include <errno.h>
+#include <fcntl.h>
 #include <sys/stat.h>
 
 #if defined(PATH_MAX)
@@ -2560,6 +2562,7 @@ EOF
 #if defined (_WIN32) || defined (__MSDOS__) || defined (__DJGPP__) || \
   defined (__OS2__)
 # define HAVE_DOS_BASED_FILE_SYSTEM
+# define FOPEN_WB "wb"
 # ifndef DIR_SEPARATOR_2
 #  define DIR_SEPARATOR_2 '\\'
 # endif
@@ -2580,6 +2583,17 @@ EOF
 #else /* PATH_SEPARATOR_2 */
 # define IS_PATH_SEPARATOR(ch) ((ch) == PATH_SEPARATOR_2)
 #endif /* PATH_SEPARATOR_2 */
+
+#ifdef __CYGWIN__
+# define FOPEN_WB "wb"
+#endif
+
+#ifndef FOPEN_WB
+# define FOPEN_WB "w"
+#endif
+#ifndef _O_BINARY
+# define _O_BINARY 0
+#endif
 
 #define XMALLOC(type, num)      ((type *) xmalloc ((num) * sizeof(type)))
 #define XFREE(stale) do { \
@@ -2646,6 +2660,15 @@ main (int argc, char *argv[])
     {
       if (strcmp (argv[i], dumpscript_opt) == 0)
 	{
+EOF
+	    case "$host" in
+	      *mingw* | *cygwin* )
+		# make stdout use "unix" line endings
+		echo "          _setmode(1,_O_BINARY);"
+		;;
+	      esac
+
+	    cat <<EOF
 	  printf ("%s", script_text);
 	  return 0;
 	}
@@ -2733,10 +2756,8 @@ EOF
   XFREE (shwrapper_name);
   XFREE (actual_cwrapper_path);
 
-  /* note: do NOT use "wt" here! -- defer to underlying
-   * mount type on cygwin
-   */
-  if ((shwrapper = fopen (newargz[1], "w")) == 0)
+  /* always write in binary mode */
+  if ((shwrapper = fopen (newargz[1], FOPEN_WB)) == 0)
     {
       lt_fatal ("Could not open %s for writing", newargz[1]);
     }
@@ -6830,7 +6851,12 @@ EOF
 	    $RM $func_ltwrapper_scriptname_result
 	    trap "$RM $func_ltwrapper_scriptname_result; exit $EXIT_FAILURE" 1 2 15
 	    $opt_dry_run || {
-	      $cwrapper --lt-dump-script > $func_ltwrapper_scriptname_result
+	      # note: this script will not be executed, so do not chmod.
+	      if test "x$build" = "x$host" ; then
+		$cwrapper --lt-dump-script > $func_ltwrapper_scriptname_result
+	      else
+		func_emit_wrapper no > $func_ltwrapper_scriptname_result
+	      fi
 	    }
 	  ;;
 	  * )

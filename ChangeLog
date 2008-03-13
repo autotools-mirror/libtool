@@ -1,3 +1,14 @@
+2008-03-12  Charles Wilson  <libtool@cwilson.fastmail.fm>
+
+	* libltdl/config/ltmain.m4sh (func_emit_cwrapperexe_src) [file
+	scope]: additional #includes and #defines to support...
+	(func_emit_cwrapperexe_src) [main]: ensure stdout is set to
+	binary mode for cygwin|mingw builds. Ensure temporary script
+	file is written in binary mode for cygwin|mingw builds.
+	(func_mode_link) [cygwin|mingw]: cross-build support - only
+	use cwrapper to generate shell wrapper if building native;
+	otherwise use func_emit_wrapper()
+
 2008-03-12  Henning Nielsen Lund  <hnl_dk@amigaos.dk>
 
 	* libltdl/m4/libtool.m4 (_LT_SYS_DYNAMIC_LINKER)
