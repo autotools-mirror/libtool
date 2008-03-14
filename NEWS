@@ -2,6 +2,11 @@ NEWS - list of user-visible changes between releases of GNU Libtool
 
 New in 2.3b: 2008-??-??: CVS version 2.3a, Libtool team:
 
+* New features:
+
+  - In compile mode, compiler output occurs in the user locale.  This
+    feature has been present in 1.5.26 but not in 2.2.
+
 * Changes in supported systems or compilers:
 
   - Initial shared library support for AmigaOS4 on powerpc.
@@ -15,6 +20,8 @@ New in 2.3b: 2008-??-??: CVS version 2.3a, Libtool team:
   - Fix 2.2 regression in that `libtool --mode=execute CMD ARGS' does not
     transform ARGS that do not look like shell or C wrappers of libtool
     programs.
+  - Fix 2.2 regression that kept cross-compiling to w32 from working.
+  - Several testsuite issues have been fixed, thanks to user feedback.
 
 New in 2.2: 2008-03-01; CVS version 2.1c, Libtool team:
 
