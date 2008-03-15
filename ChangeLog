@@ -1,5 +1,14 @@
 2008-03-15  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* tests/defs.m4sh (func_get_config): Build egrep regex to speed
+	up extracting several variables at once.  Use it to extract all
+	default variables at once.  Also extract build_alias and
+	host_alias from the libtool script.
+	(func_configure_nofail): Use build_alias and host_alias for
+	--build and --host, respectively.  Pass each if nonempty.
+	* tests/testsuite.at: Pass --build if build_alias is nonemtpy.
+	* tests/quote.test: Extract ECHO and wl at once.
+
 	* libltdl/m4/ltoptions.m4 (AC_LIBTOOL_WIN32_DLL): Require
 	AC_CANONICAL_HOST.
 	* THANKS: Update.

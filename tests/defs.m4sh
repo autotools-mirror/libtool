@@ -2,7 +2,8 @@ m4_define([_m4_divert(SCRIPT)], 100)
 m4_divert_push([SCRIPT])# @configure_input@
 # defs -- Defines for Libtool testing environment.
 #
-#   Copyright (C) 2003, 2004, 2005 Free Software Foundation, Inc.
+#   Copyright (C) 2003, 2004, 2005, 2007, 2008 Free Software
+#   Foundation, Inc.
 #   Written by Gord Matzigkeit, 1996
 #   Rewritten by Gary V. Vaughan, 2003
 #
@@ -96,12 +97,26 @@ func_get_config ()
   my_regex="$4"
 
   my_exitp=false
+  if test -z "$my_regex"; then
+    my_regex="^("
+    my_build_regex=:
+  else
+    my_build_regex=false
+  fi
+  my_first=:
+  
   for my_varname in $my_varname_list; do
-    test -z "$4" && my_regex="^${my_varname}="
-
+    if $my_build_regex; then
+      $my_first || my_regex="$my_regex|"
+      my_first=false
+      my_regex="$my_regex$my_varname"
+    fi
     eval $my_varname=NONE
-    eval `eval $my_src | eval $GREP \"$my_regex\"`
+  done
+  $my_build_regex && my_regex="$my_regex)="
+  eval `eval "$my_src" | eval "$EGREP \"$my_regex\""`
 
+  for my_varname in $my_varname_list; do
     if eval test x\"\$$my_varname\" = xNONE; then
       func_error "$my_varname not set in \`$my_src'"
       $my_failp && my_exitp=:
@@ -112,20 +127,15 @@ func_get_config ()
 }
 
 
-# Extract objext from the libtool configuration
-func_get_config "objext" "$LIBTOOL --config" ": fatal"
+# Extract some variables from the libtool configuration.
+func_get_config "objext
+objdir
+CC
+host
+host_alias
+build
+build_alias" "$LIBTOOL --config" ": fatal"
 
-# Extract objdir from the libtool configuration
-func_get_config "objdir" "$LIBTOOL --config" ": fatal"
-
-# Extract CC from the libtool configuration
-func_get_config "CC" "$LIBTOOL --config" ": fatal"
-
-# Extract host from the libtool configuration
-func_get_config "host" "$LIBTOOL --config" ": fatal"
-
-# Extract build from the libtool configuration
-func_get_config "build" "$LIBTOOL --config" ": fatal"
 
 # func_mkprefixdir
 func_mkprefixdir ()
@@ -185,7 +195,8 @@ func_configure_nofail ()
 
     test -n "$my_args" && my_args=" $my_args"
     my_args="--srcdir="\""$my_testdir"\"" --prefix="\""$prefix"\""$my_args"
-    test "$build" != "$host" && my_args="$my_args --host=\"$host\""
+    test -n "$host_alias" && my_args="$my_args --host=\"$host_alias\""
+    test -n "$build_alias" && my_args="$my_args --build=\"$build_alias\""
 
     func_msg "Configuring in $my_dir"
 
