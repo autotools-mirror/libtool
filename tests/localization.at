@@ -34,6 +34,9 @@ export LANG LANGUAGE LC_ALL
 AT_DATA([a.c],
 [[int x[-1];
 ]])
+AT_DATA([b.c],
+[[int y;
+]])
 
 AT_CHECK([$CC $CPPFLAGS $CFLAGS -c a.c || exit 1], [1], [stdout], [stderr])
 mv -f stdout expected-stdout
@@ -43,5 +46,12 @@ AT_CHECK([$LIBTOOL --mode=compile --tag=CC $CC $CPPFLAGS $CFLAGS -c a.c || exit 
 AT_CHECK([diff expected-stderr stderr])
 LTBASE=`$ECHO "$LIBTOOL" | sed 's,^.*/,,'`
 AT_CHECK([grep -v "^$LTBASE: compile" stdout | diff expected-stdout -])
+
+# check that we get our quoting right.
+LANGUAGE='a; nosuchprogram " '\''  & $x /#+*(){}|,:`\ !%'
+export LANGUAGE
+AT_CHECK([$LIBTOOL --mode=compile --tag=CC $CC $CPPFLAGS $CFLAGS -c b.c],
+	 [0], [stdout], [stderr])
+AT_CHECK([grep nosuchprogram stdout stderr], [1])
 
 AT_CLEANUP

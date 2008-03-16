@@ -104,7 +104,7 @@ do
           save_$lt_var=\$$lt_var
           $lt_var=C
 	  export $lt_var
-	  lt_user_locale=\"$lt_var=\$save_$lt_var; \$lt_user_locale\"
+	  lt_user_locale=\"$lt_var=\\\$save_\$lt_var; \$lt_user_locale\"
 	  lt_safe_locale=\"$lt_var=C; \$lt_safe_locale\"
 	fi"
 done

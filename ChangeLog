@@ -1,3 +1,12 @@
+2008-03-16  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* libltdl/config/ltmain.m4sh (NLS nuisances): Fix quoting of
+	localization variables for shell-active characters.
+	* tests/localization.at (localized compiler messages): Extend
+	test.
+	* THANKS: Update.
+	Report by Mike Frysinger.
+
 2008-03-15  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* tests/defs.m4sh (func_get_config): Build egrep regex to speed
