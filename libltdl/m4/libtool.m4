@@ -57,7 +57,7 @@ m4_defun([LT_PREREQ],
 m4_defun([_LT_CHECK_BUILDDIR],
 [case `pwd` in
   *\ * | *\	*)
-    AC_MSG_WARN([Libtool does not cope well with whitespace in \`pwd\`]) ;;
+    AC_MSG_WARN([Libtool does not cope well with whitespace in `pwd`]) ;;
 esac
 ])
 
