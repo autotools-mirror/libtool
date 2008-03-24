@@ -1322,7 +1322,8 @@ The following components of @var{mode-args} are treated specially:
 @item -all-static
 If @var{output-file} is a program, then do not link it against any
 shared libraries at all.  If @var{output-file} is a library, then only
-create a static library.
+create a static library.  In general, this flag cannot be used together
+with @samp{disable-static} (@pxref{LT_INIT}).
 
 @item -avoid-version
 Tries to avoid versioning (@pxref{Versioning}) for libraries and modules,

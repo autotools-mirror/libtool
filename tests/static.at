@@ -1,6 +1,6 @@
 # static.at -- test flags for static/dynamic linking          -*- Autotest -*-
 #
-#   Copyright (C) 2006, 2007 Free Software Foundation, Inc.
+#   Copyright (C) 2006, 2007, 2008 Free Software Foundation, Inc.
 #   Written by Ralf Wildenhues, 2006
 #
 #   This file is part of GNU Libtool.
@@ -92,6 +92,16 @@ eval `$LIBTOOL --config |
 if test -n "$per_deplib_static_flag" && test -n "$per_deplib_dynamic_flag"; then
   per_deplib=:
 fi
+# On GNU/Linux with --disable-static, m-all-static fails to link.
+# What we'd like to state here is: if the user actively passed
+# --disable-static (as opposed to: the libtool.m4 macros set
+# enable_static=no), then they cannot expect -all-static to work.
+# So we punt, knowing that we mangle enable_static on AIX only.
+can_link_all_static=-all-static
+case $host_os,$have_static,$link_static_flag in
+  aix*) ;;
+  *,false,?*) can_link_all_static= ;;
+esac
 
 # Create broken libraries.  They will later be moved to those
 # directories where the respective libraries should be linked
@@ -248,10 +258,10 @@ for withdep in no yes; do
   $CC $CPPFLAGS $CFLAGS -c m.c
 
   # global static flags.
-  for st in -static -static-libtool-libs -all-static; do
+  for st in -static -static-libtool-libs $can_link_all_static; do
     AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS $st -o m$st m.$OBJEXT \
-	      -L$libdir1 -la1 a2/liba2.la -L$libdir3 -R$libdir3 -la3],
-	     [0], [ignore], [ignore])
+	-L$libdir1 -la1 a2/liba2.la -L$libdir3 -R$libdir3 -la3],
+       [0], [ignore], [ignore])
   done
 
   # per-deplib static/shared flags.
@@ -296,7 +306,7 @@ for withdep in no yes; do
 
   ### install the programs.
   # We can't install any program that links dynamically against liba2.
-  for st in -static -static-libtool-libs -all-static `$per_deplib && echo 2 12 23 123 123a`; do 
+  for st in -static -static-libtool-libs $can_link_all_static `$per_deplib && echo 2 12 23 123 123a`; do 
     echo "# m$st"
     AT_CHECK([$LIBTOOL --mode=install cp m$st $bindir/m$st], [0], [ignore], [stderr])
     if $have_static; then

@@ -1,3 +1,15 @@
+2008-03-24  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Document that disable-static plus -all-static is not portable.
+	* doc/libtool.texi (Link mode): -all-static does not go well
+	with disable-static on most systems.
+	* tests/static.at (static linking flags for programs) [!aix]:
+	With --disable-static but nonempty link_static_flag, skip the
+	m-all-static link.  Do not skip it on AIX, as there the
+	enable_static is self-inflicted, and thus expected to work.
+	* THANKS: Update.
+	Report by Nix.
+
 2008-03-17  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* libltdl/m4/libtool.m4 (_LT_CHECK_BUILDDIR): No need to escape
