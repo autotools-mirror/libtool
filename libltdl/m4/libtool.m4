@@ -905,14 +905,20 @@ m4_defun_once([_LT_REQUIRED_DARWIN_CHECKS],[
 	# by either setting the environment variable LT_MULTI_MODULE
 	# non-empty at configure time, or by adding -multi_module to the
 	# link flags.
+	rm -rf libconftest.dylib*
 	echo "int foo(void){return 1;}" > conftest.c
+	echo "$LTCC $LTCFLAGS $LDFLAGS -o libconftest.dylib \
+-dynamiclib -Wl,-single_module conftest.c" >&AS_MESSAGE_LOG_FD
 	$LTCC $LTCFLAGS $LDFLAGS -o libconftest.dylib \
-	  -dynamiclib ${wl}-single_module conftest.c
-	if test -f libconftest.dylib; then
+	  -dynamiclib -Wl,-single_module conftest.c 2>conftest.err
+        _lt_result=$?
+	if test -f libconftest.dylib && test ! -s conftest.err && test $_lt_result = 0; then
 	  lt_cv_apple_cc_single_mod=yes
-	  rm -rf libconftest.dylib*
+	else
+	  cat conftest.err >&AS_MESSAGE_LOG_FD
 	fi
-	rm conftest.c
+	rm -rf libconftest.dylib*
+	rm -f conftest.*
       fi])
     AC_CACHE_CHECK([for -exported_symbols_list linker flag],
       [lt_cv_ld_exported_symbols_list],
