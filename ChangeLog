@@ -1,5 +1,14 @@
 2008-04-01  Gary V. Vaughan  <gary@gnu.arg>
 
+	GNU Libtool 2.2.2 was released.
+
+	* configure.ac, libltdl/configure.ac (AC_INIT): Bump version
+	number to 2.2.2.
+	* libltdl/Makefile.in (LTDL_VERSION_INFO): C:R+1:A because the
+	interfaces are unchanged, even though we improved the code some
+	more.
+	* NEWS: Updated.
+
 	* libltdl/m4/libtool.m4, libltdl/m4/ltdl.m4,
 	libltdl/m4/ltoptions.m4: Bump serial numbers to account for
 	changes since 2.2 release.
