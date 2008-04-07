@@ -122,7 +122,7 @@ AC_SUBST([package_revision])
 
 dnl These are bootstrap requirements, once built, libtool may work with
 dnl much older releases of autoconf and automake.  See release notes.
-AM_INIT_AUTOMAKE([1.9 gnits subdir-objects dist-bzip2])
+AM_INIT_AUTOMAKE([1.9 gnu subdir-objects dist-bzip2])
 
 dnl We use m4sh to generate libtool's portable shell scripts
 AC_SUBST([M4SH], ['$(AUTOM4TE) --language=m4sh'])

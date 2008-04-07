@@ -1,3 +1,10 @@
+2008-04-07  Gary V. Vaughan  <gary@gnu.arg>
+
+	* configure.ac, libltdl/configure.ac (AM_INIT_AUTOMAKE): Use
+	gnu rather than gnits standards so that version number 2.2.3a
+	is not rejected!
+	Repoted by Olly Betts  <olly@survex.com>
+
 2008-04-01  Gary V. Vaughan  <gary@gnu.arg>
 
 	* configure.ac, libltdl/configure.ac (AC_INIT): Bump version
