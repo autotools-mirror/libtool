@@ -250,9 +250,6 @@ func_enable_tag ()
   esac
 }
 
-# Generated shell functions inserted here.
-
-
 # Parse options once, thoroughly.  This comes as soon as possible in
 # the script to make things like `libtool --version' happen quickly.
 {

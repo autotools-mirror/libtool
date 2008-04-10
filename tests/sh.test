@@ -2,7 +2,8 @@
 # sh.test - check for some nonportable or dubious or undesired shell
 #           constructs in shell scripts.
 #
-#   Copyright (C) 2003, 2004, 2005, 2006, 2007 Free Software Foundation, Inc.
+#   Copyright (C) 2003, 2004, 2005, 2006, 2007, 2008 Free Software
+#   Foundation, Inc.
 #   Written by Gary V. Vaughan, 2003
 #
 #   This file is part of GNU Libtool.
@@ -104,7 +105,7 @@ done
 for s in $scripts
 do
   if $SED -n '
-      /^func_/{
+      /^func_.*(/{
 	  N
 	  /^func_[^ 	]* ()\n{$/d
 	  p

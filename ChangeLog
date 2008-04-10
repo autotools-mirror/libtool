@@ -1,5 +1,18 @@
 2008-04-10  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* libltdl/m4/libtool.m4 (_LT_PROG_XSI_SHELLFNS): Move non-XSI
+	definition of func_dirname_and_basename ...
+	* libltdl/config/general.m4sh (func_dirname_and_basename):
+	... here, to use it for the other scripts that use general.m4sh
+	(and as portable fallback for libtool).  Add marker for early
+	insertion of generated shell functions (into libtool, not the
+	other scripts) here.
+	Use func_dirname_and_basename to compute progname, progpath.
+	* libltdl/config/ltmain.m4sh (func_mode_help): Remove marker
+	for insertion of generated shell functions.
+	* tests/sh.test: Adjust function definition test to not match
+	function call.
+
 	* libltdl/m4/libtool.m4 (_LT_PROG_XSI_SHELLFNS) <func_xform>:
 	New function.
 	* libltdl/config/ltmain.m4sh (func_mode_compile): Use it to
