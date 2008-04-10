@@ -769,26 +769,15 @@ func_mode_compile ()
 
     # Recognize several different file suffixes.
     # If the user specifies -o file.o, it is replaced with file.lo
-    xform='[cCFSifmso]'
     case $libobj in
-    *.ada) xform=ada ;;
-    *.adb) xform=adb ;;
-    *.ads) xform=ads ;;
-    *.asm) xform=asm ;;
-    *.c++) xform=c++ ;;
-    *.cc) xform=cc ;;
-    *.ii) xform=ii ;;
-    *.class) xform=class ;;
-    *.cpp) xform=cpp ;;
-    *.cxx) xform=cxx ;;
-    *.[fF][09]?) xform='[fF][09].' ;;
-    *.for) xform=for ;;
-    *.java) xform=java ;;
-    *.obj) xform=obj ;;
-    *.sx) xform=sx ;;
+    *.[cCFSifmso] | \
+    *.ada | *.adb | *.ads | *.asm | \
+    *.c++ | *.cc | *.ii | *.class | *.cpp | *.cxx | \
+    *.[fF][09]? | *.for | *.java | *.obj | *.sx)
+      func_xform "$libobj"
+      libobj=$func_xform_result
+      ;;
     esac
-
-    libobj=`$ECHO "X$libobj" | $Xsed -e "s/\.$xform$/.lo/"`
 
     case $libobj in
     *.lo) func_lo2o "$libobj"; obj=$func_lo2o_result ;;

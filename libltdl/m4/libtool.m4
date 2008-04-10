@@ -7098,6 +7098,7 @@ m4_defun([_LT_PROG_XSI_SHELLFNS],
 [case $xsi_shell in
   yes)
     cat << \_LT_EOF >> "$cfgfile"
+
 # func_dirname file append nondir_replacement
 # Compute the dirname of FILE.  If nonempty, add APPEND to the result,
 # otherwise set result to NONDIR_REPLACEMENT.
@@ -7165,10 +7166,18 @@ func_lo2o ()
     *)    func_lo2o_result=${1} ;;
   esac
 }
+
+# func_xform libobj-or-source
+func_xform ()
+{
+  func_xform_result=${1%.*}.lo
+}
+
 _LT_EOF
     ;;
   *) # Bourne compatible functions.
     cat << \_LT_EOF >> "$cfgfile"
+
 # func_dirname file append nondir_replacement
 # Compute the dirname of FILE.  If nonempty, add APPEND to the result,
 # otherwise set result to NONDIR_REPLACEMENT.
@@ -7245,6 +7254,12 @@ func_lo2o ()
 {
   func_lo2o_result=`$ECHO "X${1}" | $Xsed -e "$lo2o"`
 }
+
+# func_xform libobj-or-source
+func_xform ()
+{
+  func_xform_result=`$ECHO "X${1}" | $Xsed -e 's/\.[[^.]]*$/.lo/'`
+}
 _LT_EOF
 esac
 
@@ -7269,6 +7284,7 @@ func_append ()
 {
   eval "$[1]=\$$[1]\$[2]"
 }
+
 _LT_EOF
     ;;
   esac
