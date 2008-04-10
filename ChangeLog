@@ -1,3 +1,12 @@
+2008-04-10  Peter O'Gorman  <peter@pogma.com>
+
+	* libltdl/config/ltmain.m4sh (func_win32_libid,
+	func_generate_dlsyms, func_extract_an_archive,
+	func_extract_archives, func_mode_help): move these so they
+	appear after func_mode_compile.
+	* tests/nomode.test: Check that --mode=link --help works.
+	Reported by Josh Triplett <josh@freedesktop.org>
+
 2008-04-07  Gary V. Vaughan  <gary@gnu.arg>
 
 	* doc/libtool.texi (Libltdl interface): Add missing
