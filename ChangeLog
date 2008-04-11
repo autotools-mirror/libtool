@@ -1,3 +1,9 @@
+2008-04-11  Eric Blake  <ebb9@byu.net>
+
+	Fix usage of setmode without declaration on cygwin.
+	* libltdl/config/ltmain.m4sh (func_emit_cwrapperexe_src): Ensure
+	setmode has prototype for both mingw and cygwin.
+
 2008-04-10  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* libltdl/m4/libtool.m4 (_LT_PROG_XSI_SHELLFNS): Move non-XSI
@@ -182,7 +188,7 @@
 
 2008-03-06  Peter O'Gorman  <peter@pogma.com>
 
-	* libltdl/m4/libtool.m4 (_LT_PROG_FC): Undo commit - bad idea. 
+	* libltdl/m4/libtool.m4 (_LT_PROG_FC): Undo commit - bad idea.
 
 	* libltdl/m4/libtool.m4 (_LT_PROG_FC): Report FC=no if the FC
 	compiler is not a GNU compiler and the CXX compiler is a GNU
@@ -332,7 +338,7 @@
 
 	* libltdl/m4/ltoptions.m4 (_LT_SET_OPTIONS): Only set default
 	LT_INIT values for LT_INIT, not LTDL_INIT.
-	Reported by Jochem Huhmann <joh@revier.com> 
+	Reported by Jochem Huhmann <joh@revier.com>
 
 2008-02-01  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
@@ -500,8 +506,8 @@
 
 	* doc/notes.texi: Fix errors in previous commit.
 
-	* libltdl/m4/libtool.m4 (sys_lib_search_path_spec, 
-	sys_lib_dlsearch_path_spec): Allow for a cache variable 
+	* libltdl/m4/libtool.m4 (sys_lib_search_path_spec,
+	sys_lib_dlsearch_path_spec): Allow for a cache variable
 	lt_cv_sys_lib_... to set these at configure time.
 	* doc/notes.texi: Short note about the above change.
 
