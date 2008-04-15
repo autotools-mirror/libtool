@@ -1,3 +1,14 @@
+2008-04-15  Peter O'Gorman  <peter@pogma.com>
+
+	Allow bootstrap from git repository.
+	* Makefile.am: Pass srcdir as an argument to mkstamp and expect
+	only 2 fields in mkstamps output.
+	* clcommit.m4sh: Ditto.
+	* configure.ac: Ditto.
+	* libltdl/config/mkstamp: return a revision and date based on
+	the number of lines which look like dates in all the ChangeLog*
+	files in the directory we got as arg 1.
+
 2008-04-11  Eric Blake  <ebb9@byu.net>
 
 	Fix usage of setmode without declaration on cygwin.

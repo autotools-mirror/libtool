@@ -444,7 +444,7 @@ func_mailnotify ()
       test -f CVS/Root &&
           echo "CVSROOT:	`$SED -e 's,.*:,,g' CVS/Root`"
       test -f $MKSTAMP &&
-          echo "TIMESTAMP:	`$SHELL $MKSTAMP < ./ChangeLog`"
+          echo "TIMESTAMP:	`$SHELL $MKSTAMP .`"
       test -f CVS/Repository &&
           echo "Module name:	`cat CVS/Repository`"
       test -f CVS/Tag &&

@@ -103,7 +103,7 @@ AC_SUBST([LASTRELEASE])
 # This is a sanity check so we can see which version is used in bug reports.
 # It is assumed that we only want to see the date extension for cvs libtool
 # versions (i.e. "odd" letters) and not actual alpha releases.
-TIMESTAMP=`${CONFIG_SHELL} ${ac_aux_dir}/mkstamp < ${srcdir}/ChangeLog`
+TIMESTAMP=`${CONFIG_SHELL} ${ac_aux_dir}/mkstamp ${srcdir}`
 package_revision=`( set $TIMESTAMP; echo $1; )`
 case $lt_alpha in
   [[bdfhjlnprtvxz]])

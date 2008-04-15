@@ -23,15 +23,26 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 ####
 
-# This script expects to find a line containing both Revision and Date
-# tags, and it edits this line so that it looks like ` $rev $date'
+# This script takes a directory as an argument and generates a
+# revision and date based upon the ChangeLog files in that directory.
 
-# Command-line arguments are passed down to sed; additional -e cmd
-# arguments are acceptable.  Input is from from stdin.  The original
-# version of this script accepted input from a named file or stdin.
+# Generate a revision that looks similar to CVS revision by using 1.
+# then the number of lines in the ChangeLogs starting with dates (an
+# approximation of the number of commits) + 1000. 
+# For those pulling from the savannah git repository it should be
+# possible to go from this revision number to the git revision fairly
+# easily. The number will also always increase.
 
-tr -d "\015" | sed -e '
-	s%.*\$''Revision: \([^$]*\) \$.*\$''Date: \([^$]*\) \$.*% \1 \2%
-	t end
-	d
-	: end' ${1+"$@"}
+awk 'BEGIN {
+	cocount=0;
+}
+/[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]  / {
+        if (cocount== 0) {
+                datestr=$1
+        }
+	cocount++;
+}
+END {
+	cocount = cocount + 1000;
+        print "1." cocount " " datestr;
+}' $1/ChangeLog $1/ChangeLog.[12][0-9][0-9][0-9]
