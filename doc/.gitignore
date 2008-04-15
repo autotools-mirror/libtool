@@ -1,0 +1,8 @@
+stamp-vti
+version.texi
+notes.txt
+*.dvi
+*.info*
+*.html
+*.ps
+*.pdf
