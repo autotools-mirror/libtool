@@ -1,3 +1,9 @@
+2008-04-16  Eric Blake  <ebb9@byu.net>
+
+	Make ChangeLog merges easier.
+	* .gitattributes: New file.
+	* HACKING: Mention how it helps.
+
 2008-04-15  Peter O'Gorman  <peter@pogma.com>
 
 	Allow bootstrap from git repository.

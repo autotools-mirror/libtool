@@ -191,6 +191,8 @@ yyyy-mm-dd  Name of Author  <email@address>  (tiny change)
 	* NEWS: Updated.
 	Reported by Bob Friesenhahn <bfriesen@simple.dallas.tx.us>.
 
+* You may find it useful to install the git-merge-changelog merge driver:
+  http://git.sv.gnu.org/gitweb/?p=gnulib.git;a=blob;f=lib/git-merge-changelog.c
 
 6. Editing `.am' Files
 ======================
