@@ -192,7 +192,7 @@ LT_OPTION_DEFINE([LT_INIT], [disable-shared], [_LT_ENABLE_SHARED([no])])
 
 # Old names:
 AC_DEFUN([AC_ENABLE_SHARED],
-[_LT_SET_OPTION([LT_INIT], [shared])
+[_LT_SET_OPTION([LT_INIT], m4_if([$1], [no], [disable-])[shared])
 ])
 
 AC_DEFUN([AC_DISABLE_SHARED],
@@ -246,7 +246,7 @@ LT_OPTION_DEFINE([LT_INIT], [disable-static], [_LT_ENABLE_STATIC([no])])
 
 # Old names:
 AC_DEFUN([AC_ENABLE_STATIC],
-[_LT_SET_OPTION([LT_INIT], [static])
+[_LT_SET_OPTION([LT_INIT], m4_if([$1], [no], [disable-])[static])
 ])
 
 AC_DEFUN([AC_DISABLE_STATIC],
@@ -300,7 +300,7 @@ LT_OPTION_DEFINE([LT_INIT], [disable-fast-install], [_LT_ENABLE_FAST_INSTALL([no
 
 # Old names:
 AU_DEFUN([AC_ENABLE_FAST_INSTALL],
-[_LT_SET_OPTION([LT_INIT], [fast-install])
+[_LT_SET_OPTION([LT_INIT], m4_if([$1], [no], [disable-])[fast-install])
 AC_DIAGNOSE([obsolete],
 [$0: Remove this warning and the call to _LT_SET_OPTION when you put
 the `fast-install' option into LT_INIT's first parameter.])
