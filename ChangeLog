@@ -1,3 +1,16 @@
+2008-04-19  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* libltdl/config/ltmain.m4sh (func_mode_compile): Avoid
+	redundant removal of old output files before compilation.
+	Do not remove $obj until we have successfully grabbed the
+	lockfile (in case the compiler doesn't grok `-c -o'), because
+	it might be identical to $output_obj.
+	At the end of the function, before we remove the lockfile,
+	update $removelist so that if the trap hits after the lockfile
+	has been removed, we do not accidentally remove $output_obj that
+	does not belong to us.
+	(func_write_libtool_object): Use $MV instead of mv.
+
 2008-04-18  Andreas Schwab  <schwab@suse.de>
 
 	* libltdl/m4/ltoptions.m4 (AC_ENABLE_SHARED): Check optional

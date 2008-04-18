@@ -650,7 +650,7 @@ pic_object=$write_lobj
 non_pic_object=$write_oldobj
 
 EOF
-      mv -f "${write_libobj}T" "${write_libobj}"
+      $MV "${write_libobj}T" "${write_libobj}"
     }
 }
 
@@ -831,9 +831,6 @@ func_mode_compile ()
       removelist="$lobj $libobj ${libobj}T"
     fi
 
-    $opt_dry_run || $RM $removelist
-    trap "$opt_dry_run || $RM $removelist; exit $EXIT_FAILURE" 1 2 15
-
     # On Cygwin there's no "real" PIC flag so we must build both object types
     case $host_os in
     cygwin* | mingw* | pw32* | os2*)
@@ -850,8 +847,6 @@ func_mode_compile ()
     if test "$compiler_c_o" = no; then
       output_obj=`$ECHO "X$srcfile" | $Xsed -e 's%^.*/%%' -e 's%\.[^.]*$%%'`.${objext}
       lockfile="$output_obj.lock"
-      removelist="$removelist $output_obj $lockfile"
-      trap "$opt_dry_run || $RM $removelist; exit $EXIT_FAILURE" 1 2 15
     else
       output_obj=
       need_locks=no
@@ -881,16 +876,19 @@ compiler."
 	$opt_dry_run || $RM $removelist
 	exit $EXIT_FAILURE
       fi
+      removelist="$removelist $output_obj"
       $ECHO "$srcfile" > "$lockfile"
     fi
+
+    $opt_dry_run || $RM $removelist
+    removelist="$removelist $lockfile"
+    trap '$opt_dry_run || $RM $removelist; exit $EXIT_FAILURE' 1 2 15
 
     if test -n "$fix_srcfile_path"; then
       eval srcfile=\"$fix_srcfile_path\"
     fi
     func_quote_for_eval "$srcfile"
     qsrcfile=$func_quote_for_eval_result
-
-    $opt_dry_run || $RM "$libobj" "${libobj}T"
 
     # Only build a PIC object if we are building libtool libraries.
     if test "$build_libtool_libs" = yes; then
@@ -910,8 +908,6 @@ compiler."
 	# Place PIC objects in $objdir
 	command="$command -o $lobj"
       fi
-
-      $opt_dry_run || $RM "$lobj" "$output_obj"
 
       func_show_eval_locale "$command"	\
           'test -n "$output_obj" && $RM $removelist; exit $EXIT_FAILURE'
@@ -962,7 +958,6 @@ compiler."
 
       # Suppress compiler output if we already did a PIC compilation.
       command="$command$suppress_output"
-      $opt_dry_run || $RM "$obj" "$output_obj"
       func_show_eval_locale "$command" \
         '$opt_dry_run || $RM $removelist; exit $EXIT_FAILURE'
 
@@ -998,6 +993,7 @@ compiler."
 
       # Unlock the critical section if it was locked
       if test "$need_locks" != no; then
+	removelist=$lockfile
         $RM "$lockfile"
       fi
     }
