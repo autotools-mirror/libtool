@@ -5572,9 +5572,10 @@ EOF
 	  if $LTCC $LTCFLAGS -o conftest conftest.c $deplibs; then
 	    ldd_output=`ldd conftest`
 	    for i in $deplibs; do
-	      name=`expr $i : '-l\(.*\)'`
-	      # If $name is empty we are operating on a -L argument.
-	      if test "$name" != "" && test "$name" != "0"; then
+	      case $i in
+	      -l*)
+		func_stripname -l '' "$i"
+		name=$func_stripname_result
 		if test "X$allow_libtool_libs_with_static_runtimes" = "Xyes" ; then
 		  case " $predeps $postdeps " in
 		  *" $i "*)
@@ -5601,17 +5602,20 @@ EOF
 		    $ECHO "*** its dynamic dependency list that programs get resolved with at runtime."
 		  fi
 		fi
-	      else
+		;;
+	      *)
 		newdeplibs="$newdeplibs $i"
-	      fi
+		;;
+	      esac
 	    done
 	  else
 	    # Error occurred in the first compile.  Let's try to salvage
 	    # the situation: Compile a separate program for each library.
 	    for i in $deplibs; do
-	      name=`expr $i : '-l\(.*\)'`
-	      # If $name is empty we are operating on a -L argument.
-	      if test "$name" != "" && test "$name" != "0"; then
+	      case $i in
+	      -l*)
+		func_stripname -l '' "$i"
+		name=$func_stripname_result
 		$opt_dry_run || $RM conftest
 		if $LTCC $LTCFLAGS -o conftest conftest.c $i; then
 		  ldd_output=`ldd conftest`
@@ -5649,9 +5653,11 @@ EOF
 		  $ECHO "*** library that it depends on before this library will be fully"
 		  $ECHO "*** functional.  Installing it before continuing would be even better."
 		fi
-	      else
+		;;
+	      *)
 		newdeplibs="$newdeplibs $i"
-	      fi
+		;;
+	      esac
 	    done
 	  fi
 	  ;;
@@ -5659,9 +5665,10 @@ EOF
 	  set dummy $deplibs_check_method; shift
 	  file_magic_regex=`expr "$deplibs_check_method" : "$1 \(.*\)"`
 	  for a_deplib in $deplibs; do
-	    name=`expr $a_deplib : '-l\(.*\)'`
-	    # If $name is empty we are operating on a -L argument.
-	    if test "$name" != "" && test  "$name" != "0"; then
+	    case $a_deplib in
+	    -l*)
+	      func_stripname -l '' "$a_deplib"
+	      name=$func_stripname_result
 	      if test "X$allow_libtool_libs_with_static_runtimes" = "Xyes" ; then
 		case " $predeps $postdeps " in
 		*" $a_deplib "*)
@@ -5718,19 +5725,22 @@ EOF
 		  $ECHO "*** using a file magic. Last file checked: $potlib"
 		fi
 	      fi
-	    else
+	      ;;
+	    *)
 	      # Add a -L argument.
 	      newdeplibs="$newdeplibs $a_deplib"
-	    fi
+	      ;;
+	    esac
 	  done # Gone through all deplibs.
 	  ;;
 	match_pattern*)
 	  set dummy $deplibs_check_method; shift
 	  match_pattern_regex=`expr "$deplibs_check_method" : "$1 \(.*\)"`
 	  for a_deplib in $deplibs; do
-	    name=`expr $a_deplib : '-l\(.*\)'`
-	    # If $name is empty we are operating on a -L argument.
-	    if test -n "$name" && test "$name" != "0"; then
+	    case $a_deplib in
+	    -l*)
+	      func_stripname -l '' "$a_deplib"
+	      name=$func_stripname_result
 	      if test "X$allow_libtool_libs_with_static_runtimes" = "Xyes" ; then
 		case " $predeps $postdeps " in
 		*" $a_deplib "*)
@@ -5769,10 +5779,12 @@ EOF
 		  $ECHO "*** using a regex pattern. Last file checked: $potlib"
 		fi
 	      fi
-	    else
+	      ;;
+	    *)
 	      # Add a -L argument.
 	      newdeplibs="$newdeplibs $a_deplib"
-	    fi
+	      ;;
+	    esac
 	  done # Gone through all deplibs.
 	  ;;
 	none | unknown | *)

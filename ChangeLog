@@ -1,5 +1,11 @@
 2008-04-19  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	Fix nonportable use of expr.
+	* libltdl/config/ltmain.m4sh (func_mode_link) <Transforming
+	deplibs into only shared deplibs>: Fix expr portability issues,
+	noted on FreeBSD.  While at it, simplify and avoid forking.
+	Report by Bob Friesenhahn.
+
 	Exploit shell arithmetic expansion and ${#var}.
 	* libltdl/m4/libtool.m4 (_LT_CHECK_SHELL_FEATURES): Also check
 	for arithmetic expansion, and ${#var}.
