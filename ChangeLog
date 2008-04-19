@@ -1,5 +1,13 @@
 2008-04-19  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	Fix testsuite cleanup warnings on AIX with NFS.
+	* tests/testsuite.at [ aix ]: Set file mode creation so that
+	'others' have no permissions.  Shared libraries are kept in
+	memory on AIX after use if they are world-readable, which means
+	on NFS mounts cleanup of test group directories will fail later.
+	* THANKS: Update.
+	Report and analysis by Michael Haubenwallner.
+
 	Fix nonportable use of expr.
 	* libltdl/config/ltmain.m4sh (func_mode_link) <Transforming
 	deplibs into only shared deplibs>: Fix expr portability issues,

@@ -49,6 +49,15 @@ else
   unset=false
 fi
 : ${mkdir_p="$abs_top_srcdir/libltdl/config/install-sh -d"}
+
+# On AIX, shared libraries remain loaded in memory after use if they
+# are world-readable, until root issues slibclean.  On NFS, this causes
+# a testsuite rerun to fail to clean up test group directories.  Avoid
+# this with a suitable umask.  Do not do this on other systems, for
+# example HP-UX suffers unless shared libraries are mode 555.
+case $host_os in
+aix*) umask o-rwx ;;
+esac
 m4_divert_pop([PREPARE_TESTS])dnl
 
 
