@@ -1,5 +1,22 @@
 2008-04-19  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	Exploit shell arithmetic expansion and ${#var}.
+	* libltdl/m4/libtool.m4 (_LT_CHECK_SHELL_FEATURES): Also check
+	for arithmetic expansion, and ${#var}.
+	(_LT_PROG_XSI_SHELLFNS): Define func_arith and func_len
+	accordingly, falling back on 'expr'.  Note that the argument to
+	func_len may not start with a hyphen.  In the pre-Posix
+	fallback, take care not to rely on the exit status of the
+	variable assignment (not portable), but set the length to
+	$max_cmd_len instead.
+	* libltdl/config/ltmain.m4sh (func_mode_link): Use func_arith
+	and func_len throughout for integer arithmetic, fixing
+	quadratical amount of counting for reloadable object and
+	piecewise archive linking.  Change all comparisons with
+	max_cmd_len to test for smaller, non-equal length.
+	* THANKS: Update.
+	Suggested by Roland Mainz.
+
 	* libltdl/config/ltmain.m4sh (func_mode_compile): Avoid
 	redundant removal of old output files before compilation.
 	Do not remove $obj until we have successfully grabbed the

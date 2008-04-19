@@ -2187,7 +2187,8 @@ func_extract_archives ()
       while :; do
         case " $extracted_archives " in
 	*" $my_xlib_u "*)
-	  extracted_serial=`expr $extracted_serial + 1`
+	  func_arith $extracted_serial + 1
+	  extracted_serial=$func_arith_result
 	  my_xlib_u=lt$extracted_serial-$my_xlib ;;
 	*) break ;;
 	esac
@@ -4656,7 +4657,8 @@ func_mode_link ()
 	      # bleh windows
 	      case $host in
 	      *cygwin* | mingw*)
-		major=`expr $current - $age`
+	        func_arith $current - $age
+		major=$func_arith_result
 		versuffix="-$major"
 		;;
 	      esac
@@ -5219,7 +5221,8 @@ func_mode_link ()
 	  #
 	  case $version_type in
 	  darwin|linux|osf|windows|none)
-	    current=`expr $number_major + $number_minor`
+	    func_arith $number_major + $number_minor
+	    current=$func_arith_result
 	    age="$number_minor"
 	    revision="$number_revision"
 	    ;;
@@ -5229,7 +5232,8 @@ func_mode_link ()
 	    age="0"
 	    ;;
 	  irix|nonstopux)
-	    current=`expr $number_major + $number_minor`
+	    func_arith $number_major + $number_minor
+	    current=$func_arith_result
 	    age="$number_minor"
 	    revision="$number_minor"
 	    lt_irix_increment=no
@@ -5283,10 +5287,12 @@ func_mode_link ()
 	darwin)
 	  # Like Linux, but with the current version available in
 	  # verstring for coding it into the library header
-	  major=.`expr $current - $age`
+	  func_arith $current - $age
+	  major=.$func_arith_result
 	  versuffix="$major.$age.$revision"
 	  # Darwin ld doesn't like 0 for these options...
-	  minor_current=`expr $current + 1`
+	  func_arith $current + 1
+	  minor_current=$func_arith_result
 	  xlcverstring="${wl}-compatibility_version ${wl}$minor_current ${wl}-current_version ${wl}$minor_current.$revision"
 	  verstring="-compatibility_version $minor_current -current_version $minor_current.$revision"
 	  ;;
@@ -5303,10 +5309,11 @@ func_mode_link ()
 
 	irix | nonstopux)
 	  if test "X$lt_irix_increment" = "Xno"; then
-	    major=`expr $current - $age`
+	    func_arith $current - $age
 	  else
-	    major=`expr $current - $age + 1`
+	    func_arith $current - $age + 1
 	  fi
+	  major=$func_arith_result
 
 	  case $version_type in
 	    nonstopux) verstring_prefix=nonstopux ;;
@@ -5317,8 +5324,10 @@ func_mode_link ()
 	  # Add in all the interfaces that we are compatible with.
 	  loop=$revision
 	  while test "$loop" -ne 0; do
-	    iface=`expr $revision - $loop`
-	    loop=`expr $loop - 1`
+	    func_arith $revision - $loop
+	    iface=$func_arith_result
+	    func_arith $loop - 1
+	    loop=$func_arith_result
 	    verstring="$verstring_prefix$major.$iface:$verstring"
 	  done
 
@@ -5328,20 +5337,24 @@ func_mode_link ()
 	  ;;
 
 	linux)
-	  major=.`expr $current - $age`
+	  func_arith $current - $age
+	  major=.$func_arith_result
 	  versuffix="$major.$age.$revision"
 	  ;;
 
 	osf)
-	  major=.`expr $current - $age`
+	  func_arith $current - $age
+	  major=.$func_arith_result
 	  versuffix=".$current.$age.$revision"
 	  verstring="$current.$age.$revision"
 
 	  # Add in all the interfaces that we are compatible with.
 	  loop=$age
 	  while test "$loop" -ne 0; do
-	    iface=`expr $current - $loop`
-	    loop=`expr $loop - 1`
+	    func_arith $current - $loop
+	    iface=$func_arith_result
+	    func_arith $loop - 1
+	    loop=$func_arith_result
 	    verstring="$verstring:${iface}.0"
 	  done
 
@@ -5362,7 +5375,8 @@ func_mode_link ()
 	windows)
 	  # Use '-' rather than '.', since we only want one
 	  # extension on DOS 8.3 filesystems.
-	  major=`expr $current - $age`
+	  func_arith $current - $age
+	  major=$func_arith_result
 	  versuffix="-$major"
 	  ;;
 
@@ -6010,8 +6024,9 @@ EOF
 	    for cmd in $cmds; do
 	      IFS="$save_ifs"
 	      eval cmd=\"$cmd\"
-	      if len=`expr "X$cmd" : ".*"` &&
-	       test "$len" -le "$max_cmd_len" || test "$max_cmd_len" -le -1; then
+	      func_len " $cmd"
+	      len=$func_len_result
+	      if test "$len" -lt "$max_cmd_len" || test "$max_cmd_len" -le -1; then
 		func_show_eval "$cmd" 'exit $?'
 		skipped_export=false
 	      else
@@ -6114,8 +6129,9 @@ EOF
 	fi
 
 	if test "X$skipped_export" != "X:" &&
-	   len=`expr "X$test_cmds" : ".*" 2>/dev/null` &&
-	   test "$len" -le "$max_cmd_len" || test "$max_cmd_len" -le -1; then
+	   func_len " $test_cmds" &&
+	   len=$func_len_result &&
+	   test "$len" -lt "$max_cmd_len" || test "$max_cmd_len" -le -1; then
 	  :
 	else
 	  # The command line is too long to link in one step, link piecewise
@@ -6175,14 +6191,20 @@ EOF
 	    if test -n "$save_libobjs"; then
 	      func_verbose "creating reloadable object files..."
 	      output=$output_objdir/$output_la-${k}.$objext
+	      eval test_cmds=\"$reload_cmds\"
+	      func_len " $test_cmds"
+	      len0=$func_len_result
+	      len=$len0
+
 	      # Loop over the list of objects to be linked.
 	      for obj in $save_libobjs
 	      do
-		eval test_cmds=\"$reload_cmds $objlist $last_robj\"
+		func_len " $obj"
+		func_arith $len + $func_len_result
+		len=$func_arith_result
 		if test "X$objlist" = X ||
-		   { len=`expr "X$test_cmds" : ".*" 2>/dev/null` &&
-		     test "$len" -le "$max_cmd_len"; }; then
-		  objlist="$objlist $obj"
+		   test "$len" -lt "$max_cmd_len"; then
+		  func_append objlist " $obj"
 		else
 		  # The command $test_cmds is almost too long, add a
 		  # command to the queue.
@@ -6195,10 +6217,13 @@ EOF
 		    eval concat_cmds=\"\$concat_cmds~$reload_cmds $objlist $last_robj~\$RM $last_robj\"
 		  fi
 		  last_robj=$output_objdir/$output_la-${k}.$objext
-		  k=`expr $k + 1`
+		  func_arith $k + 1
+		  k=$func_arith_result
 		  output=$output_objdir/$output_la-${k}.$objext
 		  objlist=$obj
-		  len=1
+		  func_len " $last_robj"
+		  func_arith $len0 + $func_len_result
+		  len=$func_arith_result
 		fi
 	      done
 	      # Handle the remaining objects by creating one last
@@ -6933,7 +6958,8 @@ EOF
 		# Make sure we don't pick an alternate name that also
 		# overlaps.
 		newobj=lt$counter-$objbase
-		counter=`expr $counter + 1`
+		func_arith $counter + 1
+		counter=$func_arith_result
 		case " $oldobjs " in
 		*[\ /]"$newobj "*) ;;
 		*) if test ! -f "$gentop/$newobj"; then break; fi ;;
@@ -6948,8 +6974,9 @@ EOF
 	fi
 	eval cmds=\"$old_archive_cmds\"
 
-	if len=`expr "X$cmds" : ".*" 2>/dev/null` &&
-	   test "$len" -le "$max_cmd_len" || test "$max_cmd_len" -le -1; then
+	func_len " $cmds"
+	len=$func_len_result
+	if test "$len" -lt "$max_cmd_len" || test "$max_cmd_len" -le -1; then
 	  cmds=$old_archive_cmds
 	else
 	  # the command line is too long to link in one step, link in parts
@@ -6959,18 +6986,23 @@ EOF
 	  objlist=
 	  concat_cmds=
 	  save_oldobjs=$oldobjs
+	  oldobjs=
 	  # Is there a better way of finding the last object in the list?
 	  for obj in $save_oldobjs
 	  do
 	    last_oldobj=$obj
 	  done
+	  eval test_cmds=\"$old_archive_cmds\"
+	  func_len " $test_cmds"
+	  len0=$func_len_result
+	  len=$len0
 	  for obj in $save_oldobjs
 	  do
-	    oldobjs="$objlist $obj"
-	    objlist="$objlist $obj"
-	    eval test_cmds=\"$old_archive_cmds\"
-	    if len=`expr "X$test_cmds" : ".*" 2>/dev/null` &&
-	       test "$len" -le "$max_cmd_len"; then
+	    func_len " $obj"
+	    func_arith $len + $func_len_result
+	    len=$func_arith_result
+	    func_append objlist " $obj"
+	    if test "$len" -lt "$max_cmd_len"; then
 	      :
 	    else
 	      # the above command should be used before it gets too long
@@ -6981,6 +7013,7 @@ EOF
 	      test -z "$concat_cmds" || concat_cmds=$concat_cmds~
 	      eval concat_cmds=\"\${concat_cmds}$old_archive_cmds\"
 	      objlist=
+	      len=$len0
 	    fi
 	  done
 	  RANLIB=$save_RANLIB

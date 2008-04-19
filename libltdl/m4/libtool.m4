@@ -7054,7 +7054,9 @@ m4_defun([_LT_CHECK_SHELL_FEATURES],
 xsi_shell=no
 ( _lt_dummy="a/b/c"
   test "${_lt_dummy##*/},${_lt_dummy%/*},"${_lt_dummy%"$_lt_dummy"}, \
-      = c,a/b,, ) >/dev/null 2>&1 \
+      = c,a/b,, \
+    && eval 'test $(( 1 + 1 )) -eq 2 \
+    && test "${#_lt_dummy}" -eq 5' ) >/dev/null 2>&1 \
   && xsi_shell=yes
 AC_MSG_RESULT([$xsi_shell])
 _LT_CONFIG_LIBTOOL_INIT([xsi_shell='$xsi_shell'])
@@ -7173,6 +7175,19 @@ func_xform ()
   func_xform_result=${1%.*}.lo
 }
 
+# func_arith arithmetic-term...
+func_arith ()
+{
+  func_arith_result=$(( $[*] ))
+}
+
+# func_len string
+# STRING may not start with a hyphen.
+func_len ()
+{
+  func_len_result=${#1}
+}
+
 _LT_EOF
     ;;
   *) # Bourne compatible functions.
@@ -7240,6 +7255,20 @@ func_xform ()
 {
   func_xform_result=`$ECHO "X${1}" | $Xsed -e 's/\.[[^.]]*$/.lo/'`
 }
+
+# func_arith arithmetic-term...
+func_arith ()
+{
+  func_arith_result=`expr "$[@]"`
+}
+
+# func_len string
+# STRING may not start with a hyphen.
+func_len ()
+{
+  func_len_result=`expr "$[1]" : ".*" 2>/dev/null || echo $max_cmd_len`
+}
+
 _LT_EOF
 esac
 
