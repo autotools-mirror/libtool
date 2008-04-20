@@ -1,3 +1,12 @@
+2008-04-20  Gary V. Vaughan  <gary@gnu.org>
+
+	Fix misleading lt_dlopenadvise documentation.
+	* doc/libtool.texi (lt_dlopenadvise): The last parameter is of
+	type lt_dladvise, not lt_dladvise*.
+	(my_dlopenext): Correct the example too.
+	* NEWS: Updated.
+	Reported by Gary Kumfert <kumfert@llnl.gov>
+
 2008-04-19  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	Fix testsuite cleanup warnings on AIX with NFS.

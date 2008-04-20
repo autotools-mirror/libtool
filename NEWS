@@ -1,5 +1,12 @@
 NEWS - list of user-visible changes between releases of GNU Libtool
 
+New in 2.2.4: 2008-??-??: CVS version 2.2.3a, Libtool team:
+
+* Bug fixes:
+
+  - The documentation for lt_dlopenadvise showed the wrong type for
+    the lt_dladvise parameter.
+
 New in 2.2.2: 2008-04-01: CVS version 2.2.1a, Libtool team:
 
 * New features:

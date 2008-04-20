@@ -3685,11 +3685,15 @@ to be able to @code{dlopen} such libraries as well as libtool modules
 transparently.
 @end deftypefun
 
-@deftypefun lt_dlhandle lt_dlopenadvise (const char *@var{filename}, @w{lt_dladvise *@var{advise}})
+@deftypefun lt_dlhandle lt_dlopenadvise (const char *@var{filename}, @w{lt_dladvise @var{advise}})
 The same as @code{lt_dlopen}, except that it also requires an additional
 argument which may contain additional hints to the underlying system
 module loader.  The @var{advise} parameter is opaque and can only be
 accessed with the functions documented below.
+
+Note that this function does not change the content of @var{advise}, so
+unlike the other calls in this @sc{api} takes a direct @code{lt_dladvise}
+type, and not a pointer to the same.
 @end deftypefun
 
 @deftypefun int lt_dladvise_init (lt_dladvise *@var{advise})
@@ -3727,7 +3731,7 @@ my_dlopenext (const char *filename)
   lt_dladvise advise;
 
   if (!lt_dladvise_init (&advise) && !lt_dladvise_ext (&advise))
-    handle = lt_dlopenadvise (filename, &advise);
+    handle = lt_dlopenadvise (filename, advise);
 
   lt_dladvise_destroy (&advise);
 
