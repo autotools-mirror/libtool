@@ -893,10 +893,13 @@ m4_defun_once([_LT_REQUIRED_DARWIN_CHECKS],[
     rhapsody* | darwin*)
     AC_CHECK_TOOL([DSYMUTIL], [dsymutil], [:])
     AC_CHECK_TOOL([NMEDIT], [nmedit], [:])
+    AC_CHECK_TOOL([LIPO], [lipo], [:])
     _LT_DECL([], [DSYMUTIL], [1],
       [Tool to manipulate archived DWARF debug symbol files on Mac OS X])
     _LT_DECL([], [NMEDIT], [1],
       [Tool to change global to local symbols on Mac OS X])
+    _LT_DECL([], [LIPO], [1],
+      [Tool to manipulate fat objects and archives on Mac OS X])
 
     AC_CACHE_CHECK([for -single_module linker flag],[lt_cv_apple_cc_single_mod],
       [lt_cv_apple_cc_single_mod=no

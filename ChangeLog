@@ -1,3 +1,9 @@
+2008-04-21  Peter O'Gorman  <peter@pogma.com>
+
+	Use AC_CHECK_TOOL for lipo too.
+	* libltdl/m4/libtool.m4 (_LT_REQUIRED_DARWIN_CHECKS): Check.
+	* libltdl/config/ltmain.m4sh (func_extract_archives): Use.
+
 2008-04-20  Gary V. Vaughan  <gary@gnu.org>
 
 	Fix misleading lt_dlopenadvise documentation.
