@@ -1,5 +1,13 @@
 2008-04-21  Peter O'Gorman  <peter@pogma.com>
 
+	basename does not take a list of strings.
+	* libltdl/config/ltmain.m4sh(func_extract_archives): Use sed
+	$basename.
+	* tests/darwin.at: New. Check that we can built fat program,
+	shared library and convenience library.
+	* Makefile.am: Add test.
+	Reported by LiKai Liu <liulk@cs.bu.edu>
+
 	Use AC_CHECK_TOOL for lipo too.
 	* libltdl/m4/libtool.m4 (_LT_REQUIRED_DARWIN_CHECKS): Check.
 	* libltdl/config/ltmain.m4sh (func_extract_archives): Use.
