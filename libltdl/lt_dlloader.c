@@ -1,6 +1,6 @@
 /* lt_dlloader.c -- dynamic library loader interface
 
-   Copyright (C) 2004, 2007 Free Software Foundation, Inc.
+   Copyright (C) 2004, 2007, 2008 Free Software Foundation, Inc.
    Written by Gary V. Vaughan, 2004
 
    NOTE: The canonical source of this file is maintained with the
@@ -169,7 +169,7 @@ lt_dlloader_remove (char *name)
   iface = lt_dlinterface_register (id_string, NULL);
   while ((handle = lt_dlhandle_iterate (iface, handle)))
     {
-      lt__handle *cur = (lt__handle *) handle;
+      lt_dlhandle cur = handle;
       if (cur->vtable == vtable)
 	{
 	  in_use = 1;

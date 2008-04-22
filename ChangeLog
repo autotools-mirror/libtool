@@ -1,3 +1,17 @@
+2008-04-21  Gary V. Vaughan  <gary@gnu.org>
+
+	Allow better compile time type checking for lt_dladvise.
+	* libltdl/lt__private.h (lt__handle, lt__advise): Typedefs
+	removed in favour of...
+	* libltdl/ltdl.h (lt_dlhandle),
+	libltdl/libltdl/lt_dlloader.h (lt_dladvise): ...changing from
+	void* to forward declarations.
+	* libltdl/loaders/dlopen.c, libltdl/loaders/loadlibrary.c,
+	libltdl/lt_dlloader.c, libltdl/ltdl.c: Remove many redundant
+	type casts.
+	* NEWS: Updated.
+	Suggested by Bob Friesenhahn <bfriesen@simple.dallas.tx.us>
+
 2008-04-21  Peter O'Gorman  <peter@pogma.com>
 
 	basename does not take a list of strings.

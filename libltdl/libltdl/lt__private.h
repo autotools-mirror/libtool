@@ -1,6 +1,6 @@
 /* lt__private.h -- internal apis for libltdl
 
-   Copyright (C) 2004, 2005, 2006, 2007 Free Software Foundation, Inc.
+   Copyright (C) 2004, 2005, 2006, 2007, 2008 Free Software Foundation, Inc.
    Written by Gary V. Vaughan, 2004
 
    NOTE: The canonical source of this file is maintained with the
@@ -107,10 +107,8 @@ typedef struct {
   void *		data;
 } lt_interface_data;
 
-typedef struct lt__handle lt__handle;
-
 struct lt__handle {
-  lt__handle *		next;
+  lt_dlhandle		next;
   const lt_dlvtable *	vtable;		/* dlopening interface */
   lt_dlinfo		info;		/* user visible fields */
   int			depcount;	/* number of dependencies */
@@ -120,8 +118,6 @@ struct lt__handle {
   lt_interface_data *	interface_data;	/* per caller associated data */
   int			flags;		/* various boolean stats */
 };
-
-typedef struct lt__advise lt__advise;
 
 struct lt__advise {
   unsigned int	try_ext:1;	/* try system library extensions.  */

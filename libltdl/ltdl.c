@@ -1,7 +1,7 @@
 /* ltdl.c -- system independent dlopen wrapper
 
    Copyright (C) 1998, 1999, 2000, 2004, 2005, 2006,
-		 2007 Free Software Foundation, Inc.
+		 2007, 2008 Free Software Foundation, Inc.
    Written by Thomas Tanner, 1998
 
    NOTE: The canonical source of this file is maintained with the
@@ -60,9 +60,9 @@ or obtained by writing to the Free Software Foundation, Inc.,
 
 /* Various boolean flags can be stored in the flags field of an
    lt_dlhandle... */
-#define LT_DLIS_RESIDENT(handle)  (((lt__handle*)handle)->info.is_resident)
-#define LT_DLIS_SYMGLOBAL(handle) (((lt__handle*)handle)->info.is_symglobal)
-#define LT_DLIS_SYMLOCAL(handle)  (((lt__handle*)handle)->info.is_symlocal)
+#define LT_DLIS_RESIDENT(handle)  ((handle)->info.is_resident)
+#define LT_DLIS_SYMGLOBAL(handle) ((handle)->info.is_symglobal)
+#define LT_DLIS_SYMLOCAL(handle)  ((handle)->info.is_symlocal)
 
 
 static	const char	objdir[]		= LT_OBJDIR;
@@ -251,7 +251,7 @@ lt_dlexit (void)
 {
   /* shut down libltdl */
   lt_dlloader *loader   = 0;
-  lt__handle  *handle   = (lt__handle *) handles;
+  lt_dlhandle  handle   = handles;
   int	       errors   = 0;
 
   if (!initialized)
@@ -268,18 +268,18 @@ lt_dlexit (void)
 
       while (handles && LT_DLIS_RESIDENT (handles))
 	{
-	  handles = ((lt__handle *) handles)->next;
+	  handles = handles->next;
 	}
 
       /* close all modules */
       for (level = 1; handle; ++level)
 	{
-	  lt__handle *cur = (lt__handle *) handles;
+	  lt_dlhandle cur = handles;
 	  int saw_nonresident = 0;
 
 	  while (cur)
 	    {
-	      lt__handle *tmp = cur;
+	      lt_dlhandle tmp = cur;
 	      cur = cur->next;
 	      if (!LT_DLIS_RESIDENT (tmp))
 		{
@@ -296,11 +296,11 @@ lt_dlexit (void)
 			 pointed to by 'cur'.  */
 		      if (cur)
 			{
-			  for (tmp = (lt__handle *) handles; tmp; tmp = tmp->next)
+			  for (tmp = handles; tmp; tmp = tmp->next)
 			    if (tmp == cur)
 			      break;
 			  if (! tmp)
-			    cur = (lt__handle *) handles;
+			    cur = handles;
 			}
 		    }
 		}
@@ -351,12 +351,11 @@ lt_dlexit (void)
    the dlhandle is stored at the address given in PHANDLE.  */
 static int
 tryall_dlopen (lt_dlhandle *phandle, const char *filename,
-	       lt_dladvise padvise, const lt_dlvtable *vtable)
+	       lt_dladvise advise, const lt_dlvtable *vtable)
 {
-  lt__handle *	handle		= (lt__handle *) handles;
+  lt_dlhandle 	handle		= handles;
   const char *	saved_error	= 0;
   int		errors		= 0;
-  lt__advise *  advise		= (lt__advise *) padvise;
 
 #ifdef LT_DEBUG_LOADERS
   fprintf (stderr, "tryall_dlopen (%s, %s)\n",
@@ -384,7 +383,7 @@ tryall_dlopen (lt_dlhandle *phandle, const char *filename,
       goto done;
     }
 
-  handle = (lt__handle *) *phandle;
+  handle = *phandle;
   if (filename)
     {
       /* Comment out the check of file permissions using access.
@@ -759,7 +758,7 @@ find_file (const char *search_path, const char *base_name, char **pdir)
 static int
 find_handle_callback (char *filename, void *data, void *data2)
 {
-  lt_dlhandle  *handle		= (lt_dlhandle *) data;
+  lt_dlhandle  *phandle		= (lt_dlhandle *) data;
   int		notfound	= access (filename, R_OK);
   lt_dladvise   advise		= (lt_dladvise) data2;
 
@@ -769,8 +768,8 @@ find_handle_callback (char *filename, void *data, void *data2)
 
   /* Try to dlopen the file, but do not continue searching in any
      case.  */
-  if (tryall_dlopen (handle, filename, advise, 0) != 0)
-    *handle = 0;
+  if (tryall_dlopen (phandle, filename, advise, 0) != 0)
+    *phandle = 0;
 
   return 1;
 }
@@ -779,23 +778,23 @@ find_handle_callback (char *filename, void *data, void *data2)
    found but could not be opened, *HANDLE will be set to 0.  */
 static lt_dlhandle *
 find_handle (const char *search_path, const char *base_name,
-	     lt_dlhandle *handle, lt_dladvise advise)
+	     lt_dlhandle *phandle, lt_dladvise advise)
 {
   if (!search_path)
     return 0;
 
   if (!foreach_dirinpath (search_path, base_name, find_handle_callback,
-			  handle, advise))
+			  phandle, advise))
     return 0;
 
-  return handle;
+  return phandle;
 }
 
 #if !defined(LTDL_DLOPEN_DEPLIBS)
 static int
 load_deplibs (lt_dlhandle handle, char * LT__UNUSED deplibs)
 {
-  ((lt__handle *) handle)->depcount = 0;
+  handle->depcount = 0;
   return 0;
 }
 
@@ -809,7 +808,7 @@ load_deplibs (lt_dlhandle handle, char *deplibs)
   char	**names = 0;
   int	errors = 0;
 
-  ((lt__handle *) handle)->depcount = 0;
+  handle->depcount = 0;
 
   if (!deplibs)
     {
@@ -919,10 +918,10 @@ load_deplibs (lt_dlhandle handle, char *deplibs)
      later on if the loaded module cannot resolve all of its symbols.  */
   if (depcount)
     {
-      lt__handle *cur = (lt__handle *) handle;
+      lt_dlhandle cur = handle;
       int	j = 0;
 
-      cur->deplibs = (lt_dlhandle *) MALLOC (lt__handle, depcount);
+      cur->deplibs = (lt_dlhandle) MALLOC (struct lt__handle, depcount);
       if (!cur->deplibs)
 	goto cleanup_names;
 
@@ -961,7 +960,7 @@ unload_deplibs (lt_dlhandle handle)
 {
   int i;
   int errors = 0;
-  lt__handle *cur = (lt__handle *) handle;
+  lt_dlhandle cur = handle;
 
   if (cur->depcount)
     {
@@ -1152,14 +1151,14 @@ try_dlopen (lt_dlhandle *phandle, const char *filename, const char *ext,
   /* dlopen self? */
   if (!filename)
     {
-      *phandle = (lt_dlhandle) lt__zalloc (sizeof (lt__handle));
+      *phandle = (lt_dlhandle) lt__zalloc (sizeof (struct lt__handle));
       if (*phandle == 0)
 	return 1;
 
       newhandle	= *phandle;
 
       /* lt_dlclose()ing yourself is very bad!  Disallow it.  */
-      ((lt__handle *) newhandle)->info.is_resident = 1;
+      newhandle->info.is_resident = 1;
 
       if (tryall_dlopen (&newhandle, 0, advise, 0) != 0)
 	{
@@ -1258,7 +1257,7 @@ try_dlopen (lt_dlhandle *phandle, const char *filename, const char *ext,
 
       if (vtable)
 	{
-	  *phandle = (lt_dlhandle) lt__zalloc (sizeof (lt__handle));
+	  *phandle = (lt_dlhandle) lt__zalloc (sizeof (struct lt__handle));
 
 	  if (*phandle == NULL)
 	    {
@@ -1349,7 +1348,7 @@ try_dlopen (lt_dlhandle *phandle, const char *filename, const char *ext,
       fclose (file);
 
       /* allocate the handle */
-      *phandle = (lt_dlhandle) lt__zalloc (sizeof (lt__handle));
+      *phandle = (lt_dlhandle) lt__zalloc (sizeof (struct lt__handle));
       if (*phandle == 0)
 	++errors;
 
@@ -1400,7 +1399,7 @@ try_dlopen (lt_dlhandle *phandle, const char *filename, const char *ext,
   else
     {
       /* not a libtool module */
-      *phandle = (lt_dlhandle) lt__zalloc (sizeof (lt__handle));
+      *phandle = (lt_dlhandle) lt__zalloc (sizeof (struct lt__handle));
       if (*phandle == 0)
 	{
 	  ++errors;
@@ -1444,13 +1443,13 @@ try_dlopen (lt_dlhandle *phandle, const char *filename, const char *ext,
  register_handle:
   MEMREASSIGN (*phandle, newhandle);
 
-  if (((lt__handle *) *phandle)->info.ref_count == 0)
+  if ((*phandle)->info.ref_count == 0)
     {
-      ((lt__handle *) *phandle)->info.ref_count	= 1;
-      MEMREASSIGN (((lt__handle *) *phandle)->info.name, name);
+      (*phandle)->info.ref_count	= 1;
+      MEMREASSIGN ((*phandle)->info.name, name);
 
-      ((lt__handle *) *phandle)->next	= (lt__handle *) handles;
-      handles				= *phandle;
+      (*phandle)->next	= handles;
+      handles		= *phandle;
     }
 
   LT__SETERRORSTR (saved_error);
@@ -1511,7 +1510,7 @@ has_library_ext (const char *filename)
 int
 lt_dladvise_init (lt_dladvise *padvise)
 {
-  lt__advise *advise = (lt__advise *) lt__zalloc (sizeof (lt__advise));
+  lt_dladvise advise = (lt_dladvise) lt__zalloc (sizeof (struct lt__advise));
   *padvise = advise;
   return (advise ? 0 : 1);
 }
@@ -1528,7 +1527,7 @@ int
 lt_dladvise_ext (lt_dladvise *padvise)
 {
   assert (padvise && *padvise);
-  ((lt__advise *) *padvise)->try_ext = 1;
+  (*padvise)->try_ext = 1;
   return 0;
 }
 
@@ -1536,7 +1535,7 @@ int
 lt_dladvise_resident (lt_dladvise *padvise)
 {
   assert (padvise && *padvise);
-  ((lt__advise *) *padvise)->is_resident = 1;
+  (*padvise)->is_resident = 1;
   return 0;
 }
 
@@ -1544,7 +1543,7 @@ int
 lt_dladvise_local (lt_dladvise *padvise)
 {
   assert (padvise && *padvise);
-  ((lt__advise *) *padvise)->is_symlocal = 1;
+  (*padvise)->is_symlocal = 1;
   return 0;
 }
 
@@ -1552,7 +1551,7 @@ int
 lt_dladvise_global (lt_dladvise *padvise)
 {
   assert (padvise && *padvise);
-  ((lt__advise *) *padvise)->is_symglobal = 1;
+  (*padvise)->is_symglobal = 1;
   return 0;
 }
 
@@ -1589,9 +1588,7 @@ lt_dlopenadvise (const char *filename, lt_dladvise advise)
   int		errors	= 0;
 
   /* Can't have symbols hidden and visible at the same time!  */
-  if (advise
-      && ((lt__advise *) advise)->is_symlocal
-      && ((lt__advise *) advise)->is_symglobal)
+  if (advise && advise->is_symlocal && advise->is_symglobal)
     {
       LT__SETERROR (CONFLICTING_FLAGS);
       return 0;
@@ -1599,7 +1596,7 @@ lt_dlopenadvise (const char *filename, lt_dladvise advise)
 
   if (!filename
       || !advise
-      || !((lt__advise *) advise)->try_ext
+      || !advise->try_ext
       || has_library_ext (filename))
     {
       /* Just incase we missed a code path in try_dlopen() that reports
@@ -1872,11 +1869,11 @@ lt_dlforeachfile (const char *search_path,
 int
 lt_dlclose (lt_dlhandle handle)
 {
-  lt__handle *cur, *last;
+  lt_dlhandle cur, last;
   int errors = 0;
 
   /* check whether the handle is valid */
-  last = cur = (lt__handle *) handles;
+  last = cur = handles;
   while (cur && handle != cur)
     {
       last = cur;
@@ -1890,7 +1887,7 @@ lt_dlclose (lt_dlhandle handle)
       goto done;
     }
 
-  cur = (lt__handle *) handle;
+  cur = handle;
   cur->info.ref_count--;
 
   /* Note that even with resident modules, we must track the ref_count
@@ -1941,7 +1938,7 @@ lt_dlsym (lt_dlhandle place, const char *symbol)
   char	*sym;
   void *address;
   lt_user_data data;
-  lt__handle *handle;
+  lt_dlhandle handle;
 
   if (!place)
     {
@@ -1949,7 +1946,7 @@ lt_dlsym (lt_dlhandle place, const char *symbol)
       return 0;
     }
 
-  handle = (lt__handle *) place;
+  handle = place;
 
   if (!symbol)
     {
@@ -2189,7 +2186,7 @@ lt_dlmakeresident (lt_dlhandle handle)
     }
   else
     {
-      ((lt__handle *) handle)->info.is_resident = 1;
+      handle->info.is_resident = 1;
     }
 
   return errors;
@@ -2247,7 +2244,7 @@ lt_dlcaller_set_data (lt_dlinterface_id key, lt_dlhandle handle, void *data)
 {
   int n_elements = 0;
   void *stale = (void *) 0;
-  lt__handle *cur = (lt__handle *) handle;
+  lt_dlhandle cur = handle;
   int i;
 
   if (cur->interface_data)
@@ -2293,7 +2290,7 @@ void *
 lt_dlcaller_get_data (lt_dlinterface_id key, lt_dlhandle handle)
 {
   void *result = (void *) 0;
-  lt__handle *cur = (lt__handle *) handle;
+  lt_dlhandle cur = handle;
 
   /* Locate the index of the element with a matching KEY.  */
   if (cur->interface_data)
@@ -2321,20 +2318,20 @@ lt_dlgetinfo (lt_dlhandle handle)
       return 0;
     }
 
-  return &(((lt__handle *) handle)->info);
+  return &(handle->info);
 }
 
 
 lt_dlhandle
 lt_dlhandle_iterate (lt_dlinterface_id iface, lt_dlhandle place)
 {
-  lt__handle *handle = (lt__handle *) place;
+  lt_dlhandle handle = place;
   lt__interface_id *iterator = (lt__interface_id *) iface;
 
   assert (iface); /* iface is a required argument */
 
   if (!handle)
-    handle = (lt__handle *) handles;
+    handle = handles;
   else
     handle = handle->next;
 
@@ -2345,7 +2342,7 @@ lt_dlhandle_iterate (lt_dlinterface_id iface, lt_dlhandle place)
       handle = handle->next;
     }
 
-  return (lt_dlhandle) handle;
+  return handle;
 }
 
 
@@ -2358,7 +2355,7 @@ lt_dlhandle_fetch (lt_dlinterface_id iface, const char *module_name)
 
   while ((handle = lt_dlhandle_iterate (iface, handle)))
     {
-      lt__handle *cur = (lt__handle *) handle;
+      lt_dlhandle cur = handle;
       if (cur && cur->info.name && streq (cur->info.name, module_name))
 	break;
     }
@@ -2372,7 +2369,7 @@ lt_dlhandle_map (lt_dlinterface_id iface,
 		 int (*func) (lt_dlhandle handle, void *data), void *data)
 {
   lt__interface_id *iterator = (lt__interface_id *) iface;
-  lt__handle *cur = (lt__handle *) handles;
+  lt_dlhandle cur = handles;
 
   assert (iface); /* iface is a required argument */
 

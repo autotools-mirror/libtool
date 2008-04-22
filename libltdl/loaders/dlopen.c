@@ -174,20 +174,20 @@ vm_open (lt_user_data LT__UNUSED loader_data, const char *filename,
 #ifdef RTLD_GLOBAL
       /* If there is some means of asking for global symbol resolution,
          do so.  */
-      if (((lt__advise *) advise)->is_symglobal)
+      if (advise->is_symglobal)
         module_flags |= RTLD_GLOBAL;
 #else
       /* Otherwise, reset that bit so the caller can tell it wasn't
          acted on.  */
-      ((lt__advise *) advise)->is_symglobal = 0;
+      advise->is_symglobal = 0;
 #endif
 
 /* And similarly for local only symbol resolution.  */
 #ifdef RTLD_LOCAL
-      if (((lt__advise *) advise)->is_symlocal)
+      if (advise->is_symlocal)
         module_flags |= RTLD_LOCAL;
 #else
-      ((lt__advise *) advise)->is_symlocal = 0;
+      advise->is_symlocal = 0;
 #endif
     }
 

@@ -1,6 +1,6 @@
 /* lt_dlloader.h -- dynamic library loader interface
 
-   Copyright (C) 2004, 2007 Free Software Foundation, Inc.
+   Copyright (C) 2004, 2007, 2008 Free Software Foundation, Inc.
    Written by Gary V. Vaughan, 2004
 
    NOTE: The canonical source of this file is maintained with the
@@ -38,7 +38,7 @@ LT_BEGIN_C_DECLS
 typedef	void *	lt_dlloader;
 typedef void *	lt_module;
 typedef void *	lt_user_data;
-typedef void *	lt_dladvise;
+typedef struct lt__advise *	lt_dladvise;
 
 /* Function pointer types for module loader vtable entries:  */
 typedef lt_module   lt_module_open	(lt_user_data data,

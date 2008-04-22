@@ -6,6 +6,10 @@ New in 2.2.4: 2008-??-??: CVS version 2.2.3a, Libtool team:
 
   - The documentation for lt_dlopenadvise showed the wrong type for
     the lt_dladvise parameter.
+  - The public declarations for lt_dlhandle and lt_dladvise are now
+    incomplete struct types rather than void*, which means that nearly
+    all casting is eliminated allowing the compiler to provide more
+    type checking.
 
 New in 2.2.2: 2008-04-01: CVS version 2.2.1a, Libtool team:
 

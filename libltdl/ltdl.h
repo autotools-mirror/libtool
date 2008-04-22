@@ -1,7 +1,7 @@
 /* ltdl.h -- generic dlopen functions
 
    Copyright (C) 1998-2000, 2004, 2005,
-                 2007 Free Software Foundation, Inc.
+                 2007, 2008 Free Software Foundation, Inc.
    Written by Thomas Tanner, 1998
 
    NOTE: The canonical source of this file is maintained with the
@@ -47,7 +47,7 @@ LT_BEGIN_C_DECLS
 /* --- DYNAMIC MODULE LOADING API --- */
 
 
-typedef	void * lt_dlhandle;	/* A loaded module.  */
+typedef	struct lt__handle *lt_dlhandle;	/* A loaded module.  */
 
 /* Initialisation and finalisation functions for libltdl. */
 LT_SCOPE int	    lt_dlinit		(void);
