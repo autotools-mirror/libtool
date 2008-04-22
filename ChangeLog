@@ -1,5 +1,12 @@
 2008-04-21  Gary V. Vaughan  <gary@gnu.org>
 
+	Capture lt~obsolete.m4 serial number correctly in libtoolize.
+	* libltdl/m4/lt~obsolete.m4: Add the filename to the #serial
+	marker so that libtoolize's serial number checks can find it
+	in a non-include using aclocal.m4.
+	* NEWS: Updated.
+	Reported by Olly Betts <olly@survex.com>
+
 	Allow better compile time type checking for lt_dladvise.
 	* libltdl/lt__private.h (lt__handle, lt__advise): Typedefs
 	removed in favour of...

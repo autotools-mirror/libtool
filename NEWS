@@ -10,6 +10,8 @@ New in 2.2.4: 2008-??-??: CVS version 2.2.3a, Libtool team:
     incomplete struct types rather than void*, which means that nearly
     all casting is eliminated allowing the compiler to provide more
     type checking.
+  - No longer reports that lt~obsolete.m4 needs to be added to aclocal.m4
+    when it is already there.
 
 New in 2.2.2: 2008-04-01: CVS version 2.2.1a, Libtool team:
 
