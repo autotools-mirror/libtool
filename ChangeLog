@@ -1,3 +1,12 @@
+2008-04-22  Andreas Schwab <schwab@suse.de>
+	    Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Fix default argument for AC_LIBLTDL_CONVENIENCE.
+	* libltdl/m4/ltdl.m4 (AC_LIBLTDL_CONVENIENCE): Default argument
+	to libltdl.
+	(AC_LIBLTDL_INSTALLABLE): Likewise.
+	* tests/configure-iface.at (convenience libltdl): New test.
+
 2008-04-21  Gary V. Vaughan  <gary@gnu.org>
 
 	Capture lt~obsolete.m4 serial number correctly in libtoolize.

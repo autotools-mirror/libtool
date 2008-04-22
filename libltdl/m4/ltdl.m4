@@ -79,7 +79,7 @@ _$0()
 # AC_LIBLTDL_CONVENIENCE accepted a directory argument in older libtools,
 # now we have LT_CONFIG_LTDL_DIR:
 AU_DEFUN([AC_LIBLTDL_CONVENIENCE],
-[_LT_CONFIG_LTDL_DIR([$1])
+[_LT_CONFIG_LTDL_DIR([m4_default([$1], [libltdl])])
 _LTDL_CONVENIENCE])
 
 dnl aclocal-1.4 backwards compatibility:
@@ -135,7 +135,7 @@ _$0()
 # AC_LIBLTDL_INSTALLABLE accepted a directory argument in older libtools,
 # now we have LT_CONFIG_LTDL_DIR:
 AU_DEFUN([AC_LIBLTDL_INSTALLABLE],
-[_LT_CONFIG_LTDL_DIR([$1])
+[_LT_CONFIG_LTDL_DIR([m4_default([$1], [libltdl])])
 _LTDL_INSTALLABLE])
 
 dnl aclocal-1.4 backwards compatibility:

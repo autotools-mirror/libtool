@@ -275,5 +275,33 @@ AT_CHECK([$MAKE -q main$EXEEXT || exit 1], [1], [ignore], [ignore])
 
 AT_CLEANUP
 
+
+## -------------------- ##
+## Convenience libltdl. ##
+## -------------------- ##
+
+AT_SETUP([convenience libltdl])
+
+AT_DATA([configure.ac],
+[[AC_INIT
+AC_CONFIG_AUX_DIR([libltdl/config])
+AC_LIBLTDL_CONVENIENCE
+AC_LIBTOOL_DLOPEN
+AC_PROG_LIBTOOL
+AC_CONFIG_FILES(Makefile)
+AC_OUTPUT
+]])
+AT_DATA([Makefile.in],
+[[LIBLTDL = @LIBLTDL@
+print-ltdl:
+	echo $(LIBLTDL)
+]])
+
+LT_AT_BOOTSTRAP([--ltdl], [-I libltdl/m4], [ignore], [ignore], [], [], [ignore])
+AT_CHECK([$MAKE print-ltdl], [], [stdout])
+AT_CHECK([grep libltdl/libltdlc.la stdout], [], [ignore])
+
+AT_CLEANUP
+
 dnl Be careful not to let the definition leak into other tests
 m4_popdef([_LT_AT_LTDL_SETUP])
