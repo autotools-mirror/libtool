@@ -1,6 +1,6 @@
 # libtoolize.at -- test libtoolize operation                  -*- Autotest -*-
 #
-#   Copyright (C) 2005, 2007 Free Software Foundation, Inc.
+#   Copyright (C) 2005, 2007, 2008 Free Software Foundation, Inc.
 #   Written by Gary V. Vaughan, 2005
 #
 #   This file is part of GNU Libtool.
@@ -111,8 +111,7 @@ _LT_LIBTOOLIZE_SETUP
 ## -------------------------------------------------------------------- ##
 
 AT_DATA(expout,
-[[libtoolize: putting auxiliary files in AC_CONFIG_AUX_DIR, `build-aux'.
-libtoolize: putting macros in AC_CONFIG_MACRO_DIR, `m4'.
+[[libtoolize: putting macros in AC_CONFIG_MACRO_DIR, `m4'.
 libtoolize: copying file `m4/libtool.m4'
 libtoolize: copying file `m4/ltsugar.m4'
 libtoolize: copying file `m4/ltversion.m4'
@@ -131,14 +130,7 @@ LT_AT_CHECK_LIBTOOLIZE([--copy], 0, expout, experr)
 ## Next, a second update attempt with everything now updated. ##
 ## ---------------------------------------------------------- ##
 
-AT_DATA(expout,
-[[libtoolize: putting auxiliary files in AC_CONFIG_AUX_DIR, `build-aux'.
-libtoolize: putting macros in AC_CONFIG_MACRO_DIR, `m4'.
-libtoolize: `m4/libtool.m4' is already up to date.
-libtoolize: `m4/ltsugar.m4' is already up to date.
-libtoolize: `m4/ltversion.m4' is already up to date.
-libtoolize: `m4/lt~obsolete.m4' is already up to date.
-]])
+AT_DATA(expout, [[]])
 
 AT_DATA(experr,
 [[libtoolize: `build-aux/ltmain.sh' is newer: use `--force' to overwrite
@@ -166,23 +158,13 @@ libtoolize: copying file `m4/lt~obsolete.m4'
 LT_AT_CHECK_LIBTOOLIZE([--copy --force], 0, expout)
 
 
-## --------------------------------------------------------- ##
-## A final update attempt with everything now force updated. ##
-## --------------------------------------------------------- ##
+## ---------------------------------------------------------------- ##
+## A final update attempt with everything previously force updated. ##
+## ---------------------------------------------------------------- ##
 
-AT_DATA(expout,
-[[libtoolize: putting auxiliary files in AC_CONFIG_AUX_DIR, `build-aux'.
-libtoolize: `build-aux/ltmain.sh' is already up to date.
-libtoolize: putting macros in AC_CONFIG_MACRO_DIR, `m4'.
-libtoolize: `m4/libtool.m4' is already up to date.
-libtoolize: `m4/ltoptions.m4' is already up to date.
-libtoolize: `m4/ltsugar.m4' is already up to date.
-libtoolize: `m4/ltversion.m4' is already up to date.
-libtoolize: `m4/lt~obsolete.m4' is already up to date.
-]])
+AT_DATA(expout, [[]])
 
 LT_AT_CHECK_LIBTOOLIZE([--copy], 0, expout)
-
 
 AT_CLEANUP
 
@@ -225,17 +207,7 @@ LT_AT_CHECK_LIBTOOLIZE([--copy --install], 0, expout, experr)
 ## Next, a second update attempt with everything now updated. ##
 ## ---------------------------------------------------------- ##
 
-AT_DATA(expout,
-[[libtoolize: putting auxiliary files in AC_CONFIG_AUX_DIR, `build-aux'.
-libtoolize: `build-aux/config.guess' is already up to date.
-libtoolize: `build-aux/config.sub' is already up to date.
-libtoolize: `build-aux/install-sh' is already up to date.
-libtoolize: putting macros in AC_CONFIG_MACRO_DIR, `m4'.
-libtoolize: `m4/libtool.m4' is already up to date.
-libtoolize: `m4/ltsugar.m4' is already up to date.
-libtoolize: `m4/ltversion.m4' is already up to date.
-libtoolize: `m4/lt~obsolete.m4' is already up to date.
-]])
+AT_DATA(expout, [[]])
 
 AT_DATA(experr,
 [[libtoolize: `build-aux/ltmain.sh' is newer: use `--force' to overwrite
@@ -266,23 +238,11 @@ libtoolize: copying file `m4/lt~obsolete.m4'
 LT_AT_CHECK_LIBTOOLIZE([--copy --force --install], 0, expout)
 
 
-## --------------------------------------------------------- ##
-## A final update attempt with everything now force updated. ##
-## --------------------------------------------------------- ##
+## ---------------------------------------------------------------- ##
+## A final update attempt with everything previously force updated. ##
+## ---------------------------------------------------------------- ##
 
-AT_DATA(expout,
-[[libtoolize: putting auxiliary files in AC_CONFIG_AUX_DIR, `build-aux'.
-libtoolize: `build-aux/config.guess' is already up to date.
-libtoolize: `build-aux/config.sub' is already up to date.
-libtoolize: `build-aux/install-sh' is already up to date.
-libtoolize: `build-aux/ltmain.sh' is already up to date.
-libtoolize: putting macros in AC_CONFIG_MACRO_DIR, `m4'.
-libtoolize: `m4/libtool.m4' is already up to date.
-libtoolize: `m4/ltoptions.m4' is already up to date.
-libtoolize: `m4/ltsugar.m4' is already up to date.
-libtoolize: `m4/ltversion.m4' is already up to date.
-libtoolize: `m4/lt~obsolete.m4' is already up to date.
-]])
+AT_DATA(expout, [[]])
 
 LT_AT_CHECK_LIBTOOLIZE([--copy --install], 0, expout)
 
@@ -542,16 +502,16 @@ LT_INIT
 AC_OUTPUT
 ]])
 
-[cat >expout <<EOF
-libtoolize: putting auxiliary files in AC_CONFIG_AUX_DIR, \`build-aux'.
-libtoolize: copying file \`build-aux/ltmain.sh'
-libtoolize: You should add the contents of the following files to \`aclocal.m4':
-libtoolize:   \`$tst_aclocaldir/libtool.m4'
-libtoolize:   \`$tst_aclocaldir/ltoptions.m4'
-libtoolize:   \`$tst_aclocaldir/ltversion.m4'
-libtoolize:   \`$tst_aclocaldir/ltsugar.m4'
-libtoolize:   \`$tst_aclocaldir/lt~obsolete.m4'
-EOF]
+AT_DATA([expout],
+[[libtoolize: putting auxiliary files in AC_CONFIG_AUX_DIR, `build-aux'.
+libtoolize: copying file `build-aux/ltmain.sh'
+libtoolize: You should add the contents of the following files to `aclocal.m4':
+libtoolize:   `/usr/local/share/aclocal/libtool.m4'
+libtoolize:   `/usr/local/share/aclocal/ltoptions.m4'
+libtoolize:   `/usr/local/share/aclocal/ltversion.m4'
+libtoolize:   `/usr/local/share/aclocal/ltsugar.m4'
+libtoolize:   `/usr/local/share/aclocal/lt~obsolete.m4'
+]])
 
 LT_AT_CHECK_LIBTOOLIZE([--copy], 0, expout)
 
@@ -582,9 +542,7 @@ AC_DEFUN([LT_INIT],
 ]])
 
 AT_DATA([expout],
-[[libtoolize: putting auxiliary files in AC_CONFIG_AUX_DIR, `build-aux'.
-libtoolize: `build-aux/ltmain.sh' is already up to date.
-libtoolize: putting macros in AC_CONFIG_MACRO_DIR, `m4'.
+[[libtoolize: putting macros in AC_CONFIG_MACRO_DIR, `m4'.
 libtoolize: copying file `m4/libtool.m4'
 libtoolize: copying file `m4/ltoptions.m4'
 libtoolize: copying file `m4/ltsugar.m4'
@@ -618,13 +576,8 @@ AT_DATA([m4/ltoptions.m4], [[
 ]])
 
 AT_DATA([expout],
-[[libtoolize: putting auxiliary files in AC_CONFIG_AUX_DIR, `build-aux'.
-libtoolize: `build-aux/ltmain.sh' is already up to date.
-libtoolize: putting macros in AC_CONFIG_MACRO_DIR, `m4'.
+[[libtoolize: putting macros in AC_CONFIG_MACRO_DIR, `m4'.
 libtoolize: copying file `m4/libtool.m4'
-libtoolize: `m4/ltsugar.m4' is already up to date.
-libtoolize: `m4/ltversion.m4' is already up to date.
-libtoolize: `m4/lt~obsolete.m4' is already up to date.
 ]])
 
 AT_DATA([experr],
@@ -646,6 +599,128 @@ libtoolize: copying file `m4/ltoptions.m4'
 libtoolize: copying file `m4/ltsugar.m4'
 libtoolize: copying file `m4/ltversion.m4'
 libtoolize: copying file `m4/lt~obsolete.m4'
+]])
+
+LT_AT_CHECK_LIBTOOLIZE([--copy --force], 0, expout)
+
+AT_CLEANUP
+
+
+## ------------------------------------------------------------------ ##
+## Ensure libtoolize works when AC_CONFIG_MACRO_DIR is not specified. ##
+## ------------------------------------------------------------------ ##
+
+AT_SETUP([verbatim aclocal.m4 w/o AC_CONFIG_MACRO_DIR])
+
+AT_DATA([configure.ac],
+[[AC_INIT([libtoolize-demo], ]AT_PACKAGE_VERSION[, ]AT_PACKAGE_BUGREPORT[)
+LT_INIT
+AC_OUTPUT
+]])
+
+AT_DATA([aclocal.m4],
+[[# This should need upgrading:
+# serial 25 LT_INIT
+AC_DEFUN([LT_INIT],
+[blah])
+
+# This is newer than the upgrade version:
+# serial 99999 ltoptions.m4
+
+# This is older than the upgrade version:
+# serial 1 ltversion.m4
+]])
+
+AT_DATA([expout],
+[[libtoolize: putting auxiliary files in `.'.
+libtoolize: copying file `./ltmain.sh'
+libtoolize: You should add the contents of the following files to `aclocal.m4':
+libtoolize:   `/usr/local/share/aclocal/libtool.m4'
+libtoolize:   `/usr/local/share/aclocal/ltversion.m4'
+libtoolize:   `/usr/local/share/aclocal/ltsugar.m4'
+libtoolize:   `/usr/local/share/aclocal/lt~obsolete.m4'
+]])
+
+LT_AT_CHECK_LIBTOOLIZE([--copy], 0, expout)
+
+
+## ----------------------------------------------------------------------- ##
+## Upgrading an aclocal maintained aclocal.m4 without AC_CONFIG_MACRO_DIR. ##
+## ----------------------------------------------------------------------- ##
+
+rm -f aclocal.m4
+
+LT_AT_ACLOCAL()
+
+## The following code is adapted (and simplified) from libtoolize.m4sh
+####
+: ${GREP="grep"}
+: ${SED="sed"}
+
+basename="s,^.*/,,"
+
+# func_grep expression filename
+# Check whether EXPRESSION matches any line of FILENAME, without output.
+func_grep ()
+{
+    $GREP "$1" "$2" >/dev/null 2>&1
+}
+
+# func_serial filename [macro_regex]
+# Output the value of the serial number comment in FILENAME, where the
+# comment line must also match MACRO_REGEX, if given.
+func_serial ()
+{
+    my_filename="$1"
+    my_macro_regex="$2"
+    my_sed_serial='
+	/^# serial [1-9][0-9.]*[ 	]*'"$my_macro_regex"'[ 	]*$/ {
+	    s,^# serial \([1-9][0-9.]*\).*$,\1,
+	    q
+	}
+	d'
+
+    # Search FILENAME and all the files it m4_includes for a serial number
+    # in the file that AC_DEFUNs MACRO_REGEX.
+    my_serial=
+    if test -z "$my_macro_regex" ||
+       test "$my_filename" = aclocal.m4 ||
+       test "$my_macro_regex" = `echo "$my_filename" | $SED "$basename"` ||
+       func_grep '^AC_DEFUN(\@<:@'"$my_macro_regex" "$my_filename"
+    then
+      my_serial=`$SED -e "$my_sed_serial" "$my_filename"`
+    fi
+
+    # If the file has no serial number, something is badly wrong!
+    test -n "$my_serial" || exit 1
+
+    echo $my_serial
+}
+
+# Make the serial number in aclocal.m4 higher than installed ltoptions.m4,
+# and the others match the macro files that libtoolize will compare against.
+libtool_serial=`func_serial "$tst_aclocaldir/libtool.m4" LT_INIT`
+ltversion_serial=`func_serial "$tst_aclocaldir/ltversion.m4" ltversion.m4`
+ltsugar_serial=`func_serial "$tst_aclocaldir/ltsugar.m4" ltsugar.m4`
+lt_obsolete_serial=`func_serial "$tst_aclocaldir/lt~obsolete.m4" lt~obsolete.m4`
+$SED -e 's,^#.*serial.*ltoptions.m4$,# serial 99999 ltoptions.m4,' \
+  -e "s,^#.*serial.*libtool.m4\$,# serial $libtool_serial libtool.m4," \
+  -e "s,^#.*serial.*ltversion.m4\$,# serial $ltversion_serial ltversion.m4," \
+  -e "s,^#.*serial.*ltsugar.m4\$,# serial $ltsugar_serial ltsugar.m4," \
+  -e "s,^#.*serial.*lt~obsolete.m4\$,# serial $lt_obsolete_serial lt~obsolete.m4," \
+ < aclocal.m4 > aclocal.m4t
+mv -f aclocal.m4t aclocal.m4
+
+LT_AT_CHECK_LIBTOOLIZE([--copy], 0)
+
+
+## --------------------- ##
+## Now, a forced update. ##
+## --------------------- ##
+
+AT_DATA(expout,
+[[libtoolize: putting auxiliary files in `.'.
+libtoolize: copying file `./ltmain.sh'
 ]])
 
 LT_AT_CHECK_LIBTOOLIZE([--copy --force], 0, expout)

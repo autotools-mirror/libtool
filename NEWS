@@ -10,8 +10,14 @@ New in 2.2.4: 2008-??-??: CVS version 2.2.3a, Libtool team:
     incomplete struct types rather than void*, which means that nearly
     all casting is eliminated allowing the compiler to provide more
     type checking.
+  - libtoolize no longer reports up-to-date files that it would have
+    copied, unless --force is passed.
   - No longer reports that lt~obsolete.m4 needs to be added to aclocal.m4
     when it is already there.
+  - When `aclocal' copied the libtool macros directly into `aclocal.m4'
+    (i.e. AC_CONFIG_MACRO_DIR is not being used), libtoolize no longer
+    reports that all macros need to be added to `aclocal.m4', and
+    diagnoses only the macro files that are missing or not up-to-date.
 
 New in 2.2.2: 2008-04-01: CVS version 2.2.1a, Libtool team:
 

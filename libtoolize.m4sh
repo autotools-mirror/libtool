@@ -202,7 +202,24 @@ configure_ac=configure.in
 }
 
 
-# func_copy srcfile destfile
+# func_echo_once msg_var
+# Calls func_echo with the value of MSG_VAR, and then sets MSG_VAR="" so
+# that subsequent calls have no effect.
+func_echo_once ()
+{
+    $opt_debug
+    if test -n "$1"; then
+      eval my_msg=\$$1
+
+      if test -n "$my_msg"; then
+        func_echo "$my_msg"
+        eval $1=""
+      fi
+    fi
+}
+
+
+# func_copy srcfile destfile [msg_var]
 # A wrapper for func_copy_cb that accepts arguments in the same order
 # as the cp(1) shell command.
 func_copy ()
@@ -217,7 +234,7 @@ func_copy ()
     if test -d "$2"; then
 
       func_copy_cb "$my_f1" \
-	`$ECHO "X$1" | $Xsed -e "$dirname"` "$2"
+	`$ECHO "X$1" | $Xsed -e "$dirname"` "$2" "$3"
 
     else
 
@@ -227,7 +244,8 @@ func_copy ()
 
       func_copy_cb "$my_f1" \
         `$ECHO "X$1" | $Xsed -e "$dirname"` \
-        `$ECHO "X$2" | $Xsed -e "$dirname"`
+        `$ECHO "X$2" | $Xsed -e "$dirname"` \
+	"$3"
 
     fi
 
@@ -235,7 +253,7 @@ func_copy ()
 }
 
 
-# func_copy_cb filename srcdir destdir
+# func_copy_cb filename srcdir destdir [msg_var]
 # If option `--copy' was specified, or soft-linking SRCFILE to DESTFILE fails,
 # then try to copy SRCFILE to DESTFILE (without changing the timestamp if
 # possible).
@@ -245,6 +263,7 @@ func_copy_cb ()
     my_file="$1"
     my_srcdir="$2"
     my_destdir="$3"
+    my_msg_var="$4"
     copy_return_status=1
 
     # Libtool is probably misinstalled if this happens:
@@ -263,11 +282,13 @@ func_copy_cb ()
 	if { ( cd "$my_srcdir" && $TAR chf - "$my_file" ) 2>/dev/null \
 	     | ( umask 0 && cd "$my_destdir" && $TAR xf - ) >/dev/null 2>&1 ; }
 	then
+	  $opt_quiet || func_echo_once "$my_msg_var"
 	  $opt_quiet || func_echo "copying $my_copy_msg"
 	  copy_return_status=0
 	fi
       else
 	if $LN_S "$my_srcdir/$my_file" "$my_destdir/$my_file"; then
+	  $opt_quiet || func_echo_once "$my_msg_var"
 	  $opt_quiet || func_echo "linking $my_copy_msg"
 	  copy_return_status=0
 	fi
@@ -276,18 +297,20 @@ func_copy_cb ()
       if { ( cd "$my_srcdir" && $TAR chf - "$my_file" ) 2>/dev/null \
            | ( umask 0 && cd "$my_destdir" && $TAR xf - ) >/dev/null 2>&1; } \
 	 && touch "$my_destdir/$my_file"; then
+	$opt_quiet || func_echo_once "$my_msg_var"
 	$opt_quiet || func_echo "copying $my_copy_msg"
 	copy_return_status=0
       fi
     fi
     if test "$copy_return_status" != 0; then
+      $opt_quiet || func_echo_once "$my_msg_var"
       func_error "can not copy \`$my_srcdir/$my_file' to \`$my_destdir/'"
       exit_status=$EXIT_FAILURE
     fi
 }
 
 
-# func_copy_some_files srcfile_spec srcdir destdir [copy_cb=func_copy_cb]
+# func_copy_some_files srcfile_spec srcdir destdir [msg_var] [cb=func_copy_cb]
 # Call COPY_CB for each regular file in SRCDIR named by the ':' delimited
 # names in SRCFILE_SPEC.  The odd calling convention is needed to allow
 # spaces in file and directory names.
@@ -297,7 +320,8 @@ func_copy_some_files ()
     my_srcfile_spec="$1"
     my_srcdir="$2"
     my_destdir="$3"
-    my_copy_cb="${4-func_copy_cb}"
+    my_msg_var="$4"
+    my_copy_cb="${5-func_copy_cb}"
 
     my_save_IFS="$IFS"
     IFS=:
@@ -306,16 +330,18 @@ func_copy_some_files ()
       if test -f "$my_srcdir/$my_filename"; then
         if test "X$my_copy_cb" = Xfunc_copy_cb; then
 	  $opt_force || if test -f "$my_destdir/$my_filename"; then
+	    $opt_quiet || func_echo_once "$my_msg_var"
   	    $opt_quiet \
 	      || func_error "\`$my_destdir/$my_filename' exists: use \`--force' to overwrite"
 	    continue
 	  fi
         fi
       else
+	func_echo_once "$my_msg_var"
 	func_fatal_error "\`$my_filename' not found in \`$my_srcdir'"
       fi
 
-      $my_copy_cb "$my_filename" "$my_srcdir" "$my_destdir"
+      $my_copy_cb "$my_filename" "$my_srcdir" "$my_destdir" "$my_msg_var"
     done
     IFS="$my_save_IFS"
 }
@@ -724,8 +750,9 @@ func_serial_update_check ()
 
       if test "X$my_dest_serial" = "X$func_serial_max_result"; then
         func_verbose "\`$my_srcfile' is serial $my_src_serial, less than $my_dest_serial in \`$my_destfile'"
-	$opt_force \
-	  || func_error "\`$my_destfile' is newer: use \`--force' to overwrite"
+	$opt_force || if test -n "$ac_macrodir$ac_ltdldir"; then
+           func_error "\`$my_destfile' is newer: use \`--force' to overwrite"
+        fi
       fi
     fi
 
@@ -733,7 +760,45 @@ func_serial_update_check ()
 }
 
 
-# func_serial_update filename srcdir destdir [macro_regex] [old_macro_regex]
+# func_aclocal_update_check filename
+# Unless serial number of FILENAME is newer than the matching serial number
+# in aclocal.m4, set $func_aclocal_update_check to 'false'.
+func_aclocal_update_check ()
+{
+    $opt_debug
+    my_srcfile="$aclocaldir/$1"
+    my_destfile="aclocal.m4"
+
+    case $need in
+      libtool.m4)
+	my_src_serial=`func_serial "$my_srcfile" LT_INIT`
+	my_dest_serial=`func_serial "$my_destfile" LT_INIT`
+
+	# Strictly, this libtoolize ought not to have to deal with ancient
+	# serial formats, but we accept them here to be complete:
+	test "X$my_src_serial" = "X0" &&
+	  my_src_serial=`func_serial "$my_srcfile" 'A[CM]_PROG_LIBTOOL'`
+	test "X$my_dest_serial" = "X0" &&
+	  my_dest_serial=`func_serial "$my_destfile" 'A[CM]_PROG_LIBTOOL'`
+	;;
+      ltdl.m4)
+	my_src_serial=`func_serial "$my_srcfile" LTDL_INIT`
+	my_dest_serial=`func_serial "$my_destfile" LTDL_INIT`
+	;;
+      *)
+	my_src_serial=`func_serial "$my_srcfile" "$need"`
+	my_dest_serial=`func_serial "$my_destfile" "$need"`
+	;;
+    esac
+
+    func_serial_update_check \
+      "$my_srcfile" "$my_src_serial" "$my_destfile" "$my_dest_serial"
+
+    func_aclocal_update_check_result="$func_serial_update_check_result"
+}
+
+
+# func_serial_update filename srcdir destdir [msg_var] [macro_re] [old_macro_re]
 # Copy the FILENAME from a SRCDIR to DESTDIR provided that either FILENAME
 # has a newer serial number, or DESTFILE does not yet exist, or the user
 # specified `--force' at the command line.  If given, MACRO_REGEX or
@@ -744,8 +809,9 @@ func_serial_update ()
     my_filename="$1"
     my_srcdir="$2"
     my_destdir="$3"
-    my_macro_regex="$4"
-    my_old_macro_regex="$5"
+    my_msg_var="$4"
+    my_macro_regex="$5"
+    my_old_macro_regex="$6"
 
     my_serial_update_p=:
     my_return_status=1
@@ -772,9 +838,10 @@ func_serial_update ()
     fi
 
     if $my_serial_update_p || $opt_force; then
-      func_copy "$my_srcfile" "$my_destfile"
+      func_copy "$my_srcfile" "$my_destfile" "$my_msg_var"
       my_return_status=$?
-    elif test "X$my_dest_serial" = "X$my_src_serial"; then
+    elif $opt_force && test "X$my_dest_serial" = "X$my_src_serial"; then
+      $opt_quiet || func_echo_once "$my_msg_var"
       $opt_quiet \
         || func_echo "\`$my_destfile' is already up to date."
     fi
@@ -796,8 +863,10 @@ func_serial_update ()
         if test -f aclocal.m4; then
           func_serial_max \
               "$my_src_serial" `func_serial aclocal.m4 "$my_macro_regex"`
-          test "X$my_src_serial" = "X$func_serial_max_result" \
-	      && func_echo "You should add the contents of \`$my_destfile' to \`aclocal.m4'."
+          if test "X$my_src_serial" = "X$func_serial_max_result"; then
+              func_echo_once "$my_msg_var"
+	      func_echo "You should add the contents of \`$my_destfile' to \`aclocal.m4'."
+          fi
         fi
         ;;
     esac
@@ -805,7 +874,7 @@ func_serial_update ()
 }
 
 
-# func_keyword_update filename srcdir destdir sed_script
+# func_keyword_update filename srcdir destdir sed_script [msg_var]
 # Copy the FILENAME from a SRCDIR to DESTDIR provided that either FILENAME
 # has a newer revision according to the serial number extracted by
 # SED_SCRIPT, or DESTFILE does not yet exist, or the user specified
@@ -817,6 +886,7 @@ func_keyword_update ()
     my_srcdir="$2"
     my_destdir="$3"
     my_sed_script="$4"
+    my_msg_var="$5"
 
     my_srcfile="$my_srcdir/$my_filename"
     my_destfile="$my_destdir/$my_filename"
@@ -841,15 +911,15 @@ func_keyword_update ()
     fi
 
     if $my_keyword_update_p || $opt_force; then
-      func_copy "$my_srcfile" "$my_destfile"
-    elif test "X$my_dest_serial" = "X$my_src_serial"; then
-      $opt_quiet \
-        || func_echo "\`$my_destfile' is already up to date."
+      func_copy "$my_srcfile" "$my_destfile" "$my_msg_var"
+    elif $opt_verbose || $opt_force && test "X$my_dest_serial" = "X$my_src_serial"; then
+      func_echo_once "$my_msg_var"
+      func_echo "\`$my_destfile' is already up to date."
     fi
 }
 
 
-# func_ltmain_update filename srcdir destdir
+# func_ltmain_update filename srcdir destdir [msg_var]
 # Copy the FILENAME from a SRCDIR to DESTDIR provided that either FILENAME
 # has a newer revision, or DESTFILE does not yet exist, or the user
 # specified `--force' at the command line.
@@ -863,13 +933,13 @@ func_ltmain_update ()
 	}
 	d'
 
-    func_keyword_update "$1" "$2" "$3" "$my_sed_ltmain"
+    func_keyword_update "$1" "$2" "$3" "$my_sed_ltmain" "$4"
 
     return $my_return_status
 }
 
 
-# func_config_update filename srcdir destdir
+# func_config_update filename srcdir destdir [msg_var]
 # Copy the FILENAME from a SRCDIR to DESTDIR provided that either FILENAME
 # has a newer timestamp, or DESTFILE does not yet exist, or the user
 # specified `--force' at the command line.
@@ -884,13 +954,13 @@ func_config_update ()
 	}
 	d'
 
-    func_keyword_update "$1" "$2" "$3" "$my_sed_config"
+    func_keyword_update "$1" "$2" "$3" "$my_sed_config" "$4"
 
     return $my_return_status
 }
 
 
-# func_install_update filename srcdir destdir
+# func_install_update filename srcdir destdir [msg_var]
 # Copy the FILENAME from a SRCDIR to DESTDIR provided that either FILENAME
 # has a newer timestamp, or DESTFILE does not yet exist, or the user
 # specified `--force' at the command line.
@@ -905,7 +975,7 @@ func_install_update ()
 	}
 	d'
 
-    func_keyword_update "$1" "$2" "$3" "$my_sed_install"
+    func_keyword_update "$1" "$2" "$3" "$my_sed_install" "$4"
 
     return $my_return_status
 }
@@ -950,13 +1020,13 @@ func_install_pkgmacro_subproject ()
     # Copy all the files from installed libltdl to this project, if the
     # user specified a macrodir.
     $opt_quiet || if test "x$macrodir" != "x$subproject_macrodir"; then
-      func_echo "putting macros in \`$subproject_macrodir'."
+      pkgmacro_header="putting macros in \`$subproject_macrodir'."
     elif test -n "$subproject_macrodir"; then
-      func_echo "putting macros in AC_CONFIG_MACRO_DIR, \`$subproject_macrodir'."
+      pkgmacro_header="putting macros in AC_CONFIG_MACRO_DIR, \`$subproject_macrodir'."
     fi
 
     func_copy_some_files "argz.m4:libtool.m4:ltdl.m4:$pkgmacro_files" \
-      "$aclocaldir" "$subproject_macrodir"
+      "$aclocaldir" "$subproject_macrodir" pkgmacro_header
 }
 
 
@@ -971,22 +1041,24 @@ func_install_pkgmacro_parent ()
     # Copy all the files from installed libltdl to this project, if the
     # user specified a macrodir.
     $opt_quiet || if test -n "$ac_macrodir"; then
-      func_echo "putting macros in AC_CONFIG_MACRO_DIR, \`$ac_macrodir'."
+      my_pkgmacro_header="putting macros in AC_CONFIG_MACRO_DIR, \`$ac_macrodir'."
     elif test -n "$macrodir"; then
-      func_echo "putting macros in \`$macrodir'."
+      my_pkgmacro_header="putting macros in \`$macrodir'."
     fi
 
     if $opt_ltdl; then
-      func_serial_update argz.m4 "$aclocaldir" "$macrodir" argz.m4
+      func_serial_update argz.m4 "$aclocaldir" "$macrodir" \
+        my_pkgmacro_header argz.m4
     else
       func_verbose "Not copying \`$macrodir/argz.m4', libltdl not used."
     fi
 
     func_serial_update  libtool.m4 "$aclocaldir" "$macrodir" \
-      LT_INIT 'A[CM]_PROG_LIBTOOL'
+      my_pkgmacro_header LT_INIT 'A[CM]_PROG_LIBTOOL'
 
     if $opt_ltdl; then
-      func_serial_update ltdl.m4 "$aclocaldir" "$macrodir" 'LTDL_INIT'
+      func_serial_update ltdl.m4 "$aclocaldir" "$macrodir" \
+        my_pkgmacro_header 'LTDL_INIT'
     else
       func_verbose "Not copying \`$macrodir/ltdl.m4', libltdl not used."
     fi
@@ -995,7 +1067,8 @@ func_install_pkgmacro_parent ()
     IFS=:
     for file in $pkgmacro_files; do
       IFS="$my_save_IFS"
-      func_serial_update $file "$aclocaldir" "$macrodir" "$file"
+      func_serial_update "$file" "$aclocaldir" "$macrodir" \
+        my_pkgmacro_header "$file"
     done
     IFS="$my_save_IFS"
 }
@@ -1081,9 +1154,9 @@ func_install_pkgltdl_files ()
     # Copy all the files from installed libltdl to this project, if the
     # user specified `--ltdl'.
     $opt_quiet || if test -n "$ac_ltdldir"; then
-      func_echo "putting libltdl files in LT_CONFIG_LTDL_DIR, \`$ac_ltdldir'."
+      pkgltdl_header="putting libltdl files in LT_CONFIG_LTDL_DIR, \`$ac_ltdldir'."
     elif test -n "$ltdldir"; then
-      func_echo "putting libltdl files in \`$ltdldir'."
+      pkgltdl_header="putting libltdl files in \`$ltdldir'."
     fi
 
     # These files are handled specially, depending on ltdl_mode:
@@ -1093,7 +1166,8 @@ func_install_pkgltdl_files ()
       func_massage_pkgltdl_files 'Makefile.am|Makefile.in*|aclocal.m4|config*'
     fi
 
-    func_copy_some_files "$pkgltdl_files" "$pkgltdldir/libltdl" "$ltdldir"
+    func_copy_some_files "$pkgltdl_files" \
+      "$pkgltdldir/libltdl" "$ltdldir" pkgltdl_header
 
     # For recursive ltdl modes, copy a suitable Makefile.{am,inc}:
     case $ltdl_mode in
@@ -1149,12 +1223,13 @@ func_install_pkgconfig_subproject ()
     # Copy all the files from installed libltdl to this project, if the
     # user specified an auxdir.
     $opt_quiet || if test "x$ac_auxdir" = "x$subproject_auxdir"; then
-      func_echo "putting auxiliary files in AC_CONFIG_AUX_DIR, \`$subproject_auxdir'."
+      pkgconfig_header="putting auxiliary files in AC_CONFIG_AUX_DIR, \`$subproject_auxdir'."
     elif test -n "$auxdir"; then
-      func_echo "putting auxiliary files in \`$auxdir'."
+      pkgconfig_header="putting auxiliary files in \`$auxdir'."
     fi
 
-    func_copy_some_files "$pkgconfig_files" "$pkgdatadir" "$ltdldir"
+    func_copy_some_files "$pkgconfig_files" \
+      "$pkgdatadir" "$ltdldir" pkgconfig_header
 }
 
 
@@ -1166,20 +1241,22 @@ func_install_pkgconfig_parent ()
 {
     $opt_debug
 
-    # Copy all the files from installed libltdl to this project, if the
-    # user specified an auxdir.
-    $opt_quiet || if test -n "$ac_auxdir"; then
-      func_echo "putting auxiliary files in AC_CONFIG_AUX_DIR, \`$ac_auxdir'."
+    if test -n "$ac_auxdir"; then
+      pkgconfig_header="putting auxiliary files in AC_CONFIG_AUX_DIR, \`$ac_auxdir'."
     elif test -n "$auxdir" || test "x$ltdldir" = "x."; then
-      func_echo "putting auxiliary files in \`$auxdir'."
+      pkgconfig_header="putting auxiliary files in \`$auxdir'."
     fi
 
     if $opt_install; then
-      func_config_update config.guess "$pkgdatadir/config" "$auxdir"
-      func_config_update config.sub   "$pkgdatadir/config" "$auxdir"
-      func_install_update install-sh  "$pkgdatadir/config" "$auxdir"
+      func_config_update config.guess \
+        "$pkgdatadir/config" "$auxdir" pkgconfig_header
+      func_config_update config.sub \
+        "$pkgdatadir/config" "$auxdir" pkgconfig_header
+      func_install_update install-sh \
+        "$pkgdatadir/config" "$auxdir" pkgconfig_header
     fi
-    func_ltmain_update ltmain.sh "$pkgdatadir/config" "$auxdir"
+    func_ltmain_update ltmain.sh \
+      "$pkgdatadir/config" "$auxdir" pkgconfig_header
 }
 
 
@@ -1247,15 +1324,14 @@ func_check_macros ()
 
     ac_config_macro_dir_advised=false
 
-
     # Suggest modern idioms for storing autoconf macros:
     if test -z "$ac_macrodir$ltdldir"; then
-      if test x"$macrodir" = x.; then
-	func_echo "Consider adding \`AC_CONFIG_MACRO_DIR([m4])' to $configure_ac and rerunning"
-	func_echo " libtoolize, to keep the correct libtool macros in-tree."
-      else
-	func_echo "Consider adding \`AC_CONFIG_MACRO_DIR([$macrodir])'to $configure.ac,"
-	func_echo "and rerunning libtoolize."
+      if test -z "$macrodir" || test x"$macrodir" = x.; then
+        func_echo "Consider adding \`AC_CONFIG_MACRO_DIR([m4])' to $configure_ac and"
+        func_echo "rerunning libtoolize, to keep the correct libtool macros in-tree."
+      elif test -z "$ac_macrodir$ltdldir"; then
+        func_echo "Consider adding \`AC_CONFIG_MACRO_DIR([$macrodir])' to $configure_ac,"
+        func_echo "and rerunning libtoolize and aclocal."
       fi
 
     elif test -z "$macrodir"; then
@@ -1267,14 +1343,25 @@ func_check_macros ()
       my_needed="libtool.m4 ltoptions.m4 ltversion.m4 ltsugar.m4 lt~obsolete.m4"
       $opt_ltdl && my_needed="$my_needed argz.m4 ltdl.m4"
 
-      func_echo "You should add the contents of the following files to \`aclocal.m4':"
-      for need in $my_needed; do
-	func_echo "  \`$my_ac_config_macro_srcdir/$need'"
-      done
+      if test -f "aclocal.m4"; then
+	for need in $my_needed; do
+	  func_aclocal_update_check $need
+	  $func_aclocal_update_check_result && my_missing="$my_missing $need"
+	done
+      else
+        my_missing="$my_needed"
+      fi
 
-      if test "$my_ac_config_macro_srcdir" != "$aclocaldir"; then
-        func_echo "or else add \`AC_CONFIG_MACRO_DIR([$subproject_macrodir])' to $configure_ac."
-	ac_config_macro_dir_advised=:
+      if test -n "$my_missing"; then
+        func_echo "You should add the contents of the following files to \`aclocal.m4':"
+        for need in $my_missing; do
+	  func_echo "  \`$my_ac_config_macro_srcdir/$need'"
+        done
+
+        if test "$my_ac_config_macro_srcdir" != "$aclocaldir"; then
+          func_echo "or else add \`AC_CONFIG_MACRO_DIR([$subproject_macrodir])' to $configure_ac."
+	  ac_config_macro_dir_advised=:
+        fi
       fi
     fi
 

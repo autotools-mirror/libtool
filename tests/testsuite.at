@@ -73,8 +73,9 @@ AT_KEYWORDS([libtoolize])
 # ---------------------------
 # Fix the expected output of installed libtoolize in presence of --program-*.
 m4_define([_LIBTOOLIZE_TRANSFORM],
-[lt_name=`$ECHO "$LIBTOOLIZE" | sed 's,^.*/,,'` # restore font-lock: ''
-sed "s/^libtoolize/$lt_name/" < $1 > $1.t
+[lt_name=`$ECHO "$LIBTOOLIZE" | sed "s,^.*/,,"`
+sed "s/^libtoolize/$lt_name/
+s|/usr/local/share/aclocal/|$abs_top_srcdir/libltdl/m4/|" < $1 > $1.t
 mv -f $1.t $1
 ])dnl
 

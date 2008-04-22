@@ -19,6 +19,38 @@
 
 2008-04-21  Gary V. Vaughan  <gary@gnu.org>
 
+	Only complain that files are up-to-date with --force.
+	As a side effect, this also means that when `aclocal' copies the
+	libtool macros into `aclocal.m4' libtoolize complains only about
+	the macro files that are missing or not up-to-date.
+	* libtoolize.m4sh (func_echo_once): New function that prints
+	the contents of a named variable only on the first call.
+	(func_aclocal_update_check): New function that compares serial
+	numbers of libtool macros in aclocal.m4 and only diagnoses the
+	missing files.
+	(func_copy, func_copy_cb, func_copy_some_files, func_serial_update)
+	(func_keyword_update, func_ltmain_update, func_config_update)
+	(func_install_update): Accept a new argument naming a variable
+	containing a header string to print with func_echo_once iff any
+	body text is output by this function.
+	(func_install_pkgmacro_subproject, func_install_pkgmacro_parent)
+	(func_install_pkgltdl_files, func_install_pkgconfig_subproject)
+	(func_install_pkgconfig_parent: Set and pass a suitable
+	header string variable for the above functions.
+	(func_serial_update_check): Don't advise rerunning `libtoolize
+	--force' when aclocal.m4 is not m4_including libtoolize installed
+	macro files.
+	* tests/testsuite.at (_LIBTOOLIZE_TRANSFORM): Transform generic
+	/usr/local/share/aclocal paths to point into the uninstalled
+	libtool macro directory.
+	* tests/libtoolize.at: Update tests that were checking for old
+	behaviour of outputing `file is already up to date' even when
+	--force was not passed.
+	* tests/libtoolize.at: New tests to prevent regressions of these
+	smarter messages.
+	* NEWS: Updated.
+	Reported by Olly Betts <olly@survex.com>
+
 	Capture lt~obsolete.m4 serial number correctly in libtoolize.
 	* libltdl/m4/lt~obsolete.m4: Add the filename to the #serial
 	marker so that libtoolize's serial number checks can find it
