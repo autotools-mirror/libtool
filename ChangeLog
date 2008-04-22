@@ -1,3 +1,13 @@
+2008-04-22  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Fix regression over 1.5.26 with ccache $CC -all-static.
+	* libltdl/config/ltmain.m4sh (func_mode_link): Add
+	$link_static_flag to compile_command and link_command only
+	later, instead of right after a possible compiler wrapper.
+	* tests/static.at (ccache -all-static): New test.
+	* THANKS: Update.
+	Report by Richard Purdie.
+
 2008-04-22  Andreas Schwab <schwab@suse.de>
 	    Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 

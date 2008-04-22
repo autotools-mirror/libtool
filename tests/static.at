@@ -352,3 +352,26 @@ for withdep in no yes; do
 done
 
 AT_CLEANUP
+
+
+AT_SETUP([ccache -all-static])
+
+AT_DATA([ccache],
+[[#! /bin/sh
+# poor man's ccache clone
+case $1 in
+-*) echo "bogus argument: $1" >&2; exit 1 ;;
+esac
+exec "$@"
+]])
+chmod +x ./ccache
+
+AT_DATA([a.c],
+[[int main(void) { return 0; }
+]])
+
+AT_CHECK([$CC $CPPFLAGS $CFLAGS -c a.c], [], [ignore])
+AT_CHECK([$LIBTOOL --mode=link --tag=CC ./ccache $CC $CFLAGS $LDFLAGS -all-static a.$OBJEXT -o a],
+	 [], [ignore])
+
+AT_CLEANUP

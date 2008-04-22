@@ -3160,9 +3160,6 @@ func_mode_link ()
 	  fi
 	  if test -n "$link_static_flag"; then
 	    dlopen_self=$dlopen_self_static
-	    # See comment for -static flag below, for more details.
-	    func_append compile_command " $link_static_flag"
-	    func_append finalize_command " $link_static_flag"
 	  fi
 	  prefer_static_libs=yes
 	  ;;
@@ -3450,7 +3447,11 @@ func_mode_link ()
 
       case $arg in
       -all-static)
-	# The effects of -all-static are defined in a previous loop.
+	if test -n "$link_static_flag"; then
+	  # See comment for -static flag below, for more details.
+	  func_append compile_command " $link_static_flag"
+	  func_append finalize_command " $link_static_flag"
+	fi
 	continue
 	;;
 
