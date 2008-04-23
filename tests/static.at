@@ -372,6 +372,6 @@ AT_DATA([a.c],
 
 AT_CHECK([$CC $CPPFLAGS $CFLAGS -c a.c], [], [ignore])
 AT_CHECK([$LIBTOOL --mode=link --tag=CC ./ccache $CC $CFLAGS $LDFLAGS -all-static a.$OBJEXT -o a],
-	 [], [ignore])
+	 [], [ignore], [ignore])
 
 AT_CLEANUP
