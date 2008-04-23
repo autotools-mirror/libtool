@@ -1,6 +1,6 @@
 # template.at -- test C++ templates with libtool              -*- Autotest -*-
 #
-#   Copyright (C) 2005, 2007 Free Software Foundation, Inc.
+#   Copyright (C) 2005, 2007, 2008 Free Software Foundation, Inc.
 #   Written by Markus Christen, 2005
 #
 #   This file is part of GNU Libtool.
@@ -82,7 +82,7 @@ AT_CHECK([$LIBTOOL --tag=CXX --mode=compile $CXX -I. $CPPFLAGS $CXXFLAGS -c -o a
 	 [0], [ignore], [ignore])
 AT_CHECK([$LIBTOOL --tag=CXX --mode=link $CXX $CPPFLAGS $CXXFLAGS $LDFLAGS -o libaclib.la aclib.lo],
 	 [0], [ignore], [ignore])
-AT_CHECK([$LIBTOOL --tag=CXX --mode=link $CXX $CPPFLAGS $CXXFLAGS $LDFLAGS -o libalib.la -rpath /usr/local/lib alib.lo libaclib.la],
+AT_CHECK([$LIBTOOL --tag=CXX --mode=link $CXX $CPPFLAGS $CXXFLAGS $LDFLAGS -o libalib.la -rpath /nonexistent alib.lo libaclib.la],
 	 [0], [ignore], [ignore])
 AT_CHECK([$CXX -I. $CPPFLAGS $CXXFLAGS -c prog.cpp],
 	 [0], [ignore], [ignore])
