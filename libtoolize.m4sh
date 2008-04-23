@@ -1426,8 +1426,6 @@ func_check_macros ()
 ## ----------- ##
 
 {
-  rerun_aclocal=false
-
   # Allow the user to override the master libtoolize repository:
   if test -n "$_lt_pkgdatadir"; then
     pkgltdldir="$_lt_pkgdatadir"
