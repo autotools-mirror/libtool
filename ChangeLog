@@ -1,3 +1,14 @@
+2008-04-22  Gary V. Vaughan  <gary@gnu.org>
+
+	Libtoolize now advises AC_CONFIG_MACRO_DIR use where appropriate.
+	* libtoolize.m4sh (func_check_macros): Always advise use of
+	AC_CONFIG_MACRO_DIR when not able to copy libtool macros into
+	the project tree.
+	* tests/libtoolize.at: New test for correct diagnosis of mismatch
+	between AC_CONFIG_MACRO_DIR and ACLOCAL_AMFLAGS.
+	Update expected output of other tests.
+	* NEWS: Updated.
+
 2008-04-22  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	Fix regression over 1.5.26 with ccache $CC -all-static.

@@ -18,6 +18,11 @@ New in 2.2.4: 2008-??-??: CVS version 2.2.3a, Libtool team:
     (i.e. AC_CONFIG_MACRO_DIR is not being used), libtoolize no longer
     reports that all macros need to be added to `aclocal.m4', and
     diagnoses only the macro files that are missing or not up-to-date.
+  - libtoolize now advises use of AC_CONFIG_MACRO_DIR to keep matching
+    libtool macros in-tree where appropriate.
+  - libtoolize now advises use of `ACLOCAL_AMFLAGS = -I m4' (or
+    equivalent) where appropriate, and errors out when ACLOCAL_AMFLAGS
+    names a different directory to AC_CONFIG_MACRO_DIR.
 
 New in 2.2.2: 2008-04-01: CVS version 2.2.1a, Libtool team:
 

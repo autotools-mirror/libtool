@@ -586,8 +586,7 @@ func_scan_files ()
     # Find local m4 macro directory. #
     # ------------------------------ #
 
-    # If AC_CONFIG_MACRO_DIR turned nothing up, we hunt for ACLOCAL_AMFLAGS
-    # in `Makefile.am' for a `-I' argument.
+    # Hunt for ACLOCAL_AMFLAGS in `Makefile.am' for a `-I' argument.
 
     my_sed_aclocal_flags='
         /^[ 	]*ACLOCAL_[A-Z_]*FLAGS[ 	]*=/ {
@@ -595,12 +594,11 @@ func_scan_files ()
 	    q
 	}
 	d'
-    macrodir="$ac_macrodir"
-    if test ! -n "$macrodir" && test -f Makefile.am; then
+    if test -f Makefile.am; then
       my_macrodir_is_next=false
       for arg in `$SED "$my_sed_aclocal_flags" Makefile.am`; do
         if $my_macrodir_is_next; then
-          macrodir="$arg"
+          am_macrodir="$arg"
           break
         else
           if test "X$arg" = "X-I"; then
@@ -610,6 +608,14 @@ func_scan_files ()
           fi
         fi
       done
+    fi
+
+    macrodir="$ac_macrodir"
+    test -z "$macrodir" && macrodir="$am_macrodir"
+
+    if test -n "$am_macrodir" && test -n "$ac_macrodir"; then
+      test "$am_macrodir" = "$ac_macrodir" \
+        || func_fatal_error "AC_CONFIG_MACRO_DIR([$ac_macrodir]) conflicts with ACLOCAL_AMFLAGS=-I $am_macrodir."
     fi
 }
 
@@ -1324,17 +1330,7 @@ func_check_macros ()
 
     ac_config_macro_dir_advised=false
 
-    # Suggest modern idioms for storing autoconf macros:
-    if test -z "$ac_macrodir$ltdldir"; then
-      if test -z "$macrodir" || test x"$macrodir" = x.; then
-        func_echo "Consider adding \`AC_CONFIG_MACRO_DIR([m4])' to $configure_ac and"
-        func_echo "rerunning libtoolize, to keep the correct libtool macros in-tree."
-      elif test -z "$ac_macrodir$ltdldir"; then
-        func_echo "Consider adding \`AC_CONFIG_MACRO_DIR([$macrodir])' to $configure_ac,"
-        func_echo "and rerunning libtoolize and aclocal."
-      fi
-
-    elif test -z "$macrodir"; then
+    if test -n "$ac_macrodir$ltdldir" && test -z "$macrodir"; then
       my_ac_config_macro_srcdir="$aclocaldir"
       if $opt_ltdl && test "$macrodir" != "$subproject_macrodir"; then
 	my_ac_config_macro_srcdir="$subproject_macrodir"
@@ -1389,8 +1385,32 @@ func_check_macros ()
           func_echo "Consider using \`AC_CONFIG_AUX_DIR([$subproject_auxdir])' in $configure_ac."
         $ac_config_macro_dir_advised || test "$subproject_macrodir" = "$macrodir" ||
           func_echo "Consider using \`AC_CONFIG_MACRO_DIR([$subproject_macrodir])' in $configure_ac."
+	ac_config_macro_dir_advised=:
       fi
     fi
+
+    # Suggest modern idioms for storing autoconf macros:
+    $ac_config_macro_dir_advised || if test -z "$ac_macrodir" || test x"$macrodir" = x.; then
+      func_echo "Consider adding \`AC_CONFIG_MACRO_DIR([m4])' to $configure_ac and"
+      func_echo "rerunning libtoolize, to keep the correct libtool macros in-tree."
+      ac_config_macro_dir_advised=:
+
+    elif test -z "$ac_macrodir$ltdldir"; then
+      func_echo "Consider adding \`AC_CONFIG_MACRO_DIR([$macrodir])' to $configure_ac,"
+      func_echo "and rerunning libtoolize and aclocal."
+      ac_config_macro_dir_advised=:
+    fi
+
+    if test -z "$am_macrodir$macrodir"; then
+      func_echo "Consider adding \`-I m4' to ACLOCAL_AMFLAGS in Makefile.am."
+
+    elif test -z "$am_macrodir"; then
+      if $opt_ltdl && test "x$ltdl_mode" = "xsubproject" && test "$subproject_macrodir" != "$macrodir"; then
+	func_echo "Consider adding \`-I $subproject_macrodir' to ACLOCAL_AMFLAGS in Makefile.am."
+      else
+        func_echo "Consider adding \`-I $macrodir' to ACLOCAL_AMFLAGS in Makefile.am."
+      fi
+    fi 
 
     # Don't trace for this, we're just checking the user didn't invoke it
     # directly from configure.ac.
