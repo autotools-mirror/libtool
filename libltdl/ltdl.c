@@ -353,7 +353,7 @@ static int
 tryall_dlopen (lt_dlhandle *phandle, const char *filename,
 	       lt_dladvise advise, const lt_dlvtable *vtable)
 {
-  lt_dlhandle 	handle		= handles;
+  lt_dlhandle	handle		= handles;
   const char *	saved_error	= 0;
   int		errors		= 0;
 
@@ -921,7 +921,7 @@ load_deplibs (lt_dlhandle handle, char *deplibs)
       lt_dlhandle cur = handle;
       int	j = 0;
 
-      cur->deplibs = (lt_dlhandle) MALLOC (struct lt__handle, depcount);
+      cur->deplibs = MALLOC (lt_dlhandle, depcount);
       if (!cur->deplibs)
 	goto cleanup_names;
 
