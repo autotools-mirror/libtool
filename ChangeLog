@@ -1,3 +1,19 @@
+2008-05-11  Charles Wilson  <libtool@cwilson.fastmail.fm>
+
+	Ensure cwrapper compiles without warnings under -std=c99.
+	* libltdl/config/ltmain.m4sh (func_emit_wrapper_part1):
+	new function.
+	(func_emit_wrapper_part2): new function.
+	(func_emit_wrapper): delegate to new functions.
+	(func_emit_cwrapperexe_src) [__CYGWIN__ && __STRICT_ANSI__]:
+	ensure realpath is declared.
+	(func_emit_cwrapperexe_src): declare two different strings
+	to each hold part of the wrapper script content. Initialize
+	using new func_emit_wrapper_partX functions.
+	(func_emit_cwrapperexe_src) [main]: when emitting wrapper
+	script content, use both strings.
+	Reported by Yaakov Selkowitz.
+
 2008-05-06  Charles Wilson  <libtool@cwilson.fastmail.fm>
 
 	Ensure $OBJDUMP is defined

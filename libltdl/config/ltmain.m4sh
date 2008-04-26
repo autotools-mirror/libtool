@@ -2249,25 +2249,16 @@ func_extract_archives ()
 
 
 
-# func_emit_wrapper arg
+# func_emit_wrapper_part1 [arg=no]
 #
-# emit a libtool wrapper script on stdout
-# don't directly open a file because we may want to
-# incorporate the script contents within a cygwin/mingw
-# wrapper executable.  Must ONLY be called from within
-# func_mode_link because it depends on a number of variable
-# set therein.
-#
-# arg is the value that the WRAPPER_SCRIPT_BELONGS_IN_OBJDIR
-# variable will take.  If 'yes', then the emitted script
-# will assume that the directory in which it is stored is
-# the '.lib' directory.  This is a cygwin/mingw-specific
-# behavior.
-func_emit_wrapper ()
+# Emit the first part of a libtool wrapper script on stdout.
+# For more information, see the description associated with
+# func_emit_wrapper(), below.
+func_emit_wrapper_part1 ()
 {
-	func_emit_wrapper_arg1=no
+	func_emit_wrapper_part1_arg1=no
 	if test -n "$1" ; then
-	  func_emit_wrapper_arg1=$1
+	  func_emit_wrapper_part1_arg1=$1
 	fi
 
 	$ECHO "\
@@ -2352,10 +2343,27 @@ else
     file=\`\$ECHO \"X\$file\" | \$Xsed -e 's%^.*/%%'\`
     file=\`ls -ld \"\$thisdir/\$file\" | ${SED} -n 's/.*-> //p'\`
   done
+"
+}
+# end: func_emit_wrapper_part1
+
+# func_emit_wrapper_part2 [arg=no]
+#
+# Emit the second part of a libtool wrapper script on stdout.
+# For more information, see the description associated with
+# func_emit_wrapper(), below.
+func_emit_wrapper_part2 ()
+{
+	func_emit_wrapper_part2_arg1=no
+	if test -n "$1" ; then
+	  func_emit_wrapper_part2_arg1=$1
+	fi
+
+	$ECHO "\
 
   # Usually 'no', except on cygwin/mingw when embedded into
   # the cwrapper.
-  WRAPPER_SCRIPT_BELONGS_IN_OBJDIR=$func_emit_wrapper_arg1
+  WRAPPER_SCRIPT_BELONGS_IN_OBJDIR=$func_emit_wrapper_part2_arg1
   if test \"\$WRAPPER_SCRIPT_BELONGS_IN_OBJDIR\" = \"yes\"; then
     # special case for '.'
     if test \"\$thisdir\" = \".\"; then
@@ -2472,7 +2480,36 @@ else
 fi\
 "
 }
-# end: func_emit_wrapper
+# end: func_emit_wrapper_part2
+
+
+# func_emit_wrapper [arg=no]
+#
+# Emit a libtool wrapper script on stdout.
+# Don't directly open a file because we may want to
+# incorporate the script contents within a cygwin/mingw
+# wrapper executable.  Must ONLY be called from within
+# func_mode_link because it depends on a number of variables
+# set therein.
+#
+# ARG is the value that the WRAPPER_SCRIPT_BELONGS_IN_OBJDIR
+# variable will take.  If 'yes', then the emitted script
+# will assume that the directory in which it is stored is
+# the $objdir directory.  This is a cygwin/mingw-specific
+# behavior.
+func_emit_wrapper ()
+{
+	func_emit_wrapper_arg1=no
+	if test -n "$1" ; then
+	  func_emit_wrapper_arg1=$1
+	fi
+
+	# split this up so that func_emit_cwrapperexe_src
+	# can call each part independently.
+	func_emit_wrapper_part1 "${func_emit_wrapper_arg1}"
+	func_emit_wrapper_part2 "${func_emit_wrapper_arg1}"
+}
+
 
 # func_emit_cwrapperexe_src
 # emit the source code for a wrapper executable on stdout
@@ -2509,6 +2546,9 @@ EOF
 # include <stdint.h>
 # ifdef __CYGWIN__
 #  include <io.h>
+#  ifdef __STRICT_ANSI__
+char *realpath (const char *, char *);
+#  endif
 # endif
 #endif
 #include <malloc.h>
@@ -2616,10 +2656,18 @@ int check_executable (const char *path);
 char *strendzap (char *str, const char *pat);
 void lt_fatal (const char *message, ...);
 
-static const char *script_text =
+static const char *script_text_part1 =
 EOF
 
-	    func_emit_wrapper yes |
+	    func_emit_wrapper_part1 yes |
+	        $SED -e 's/\([\\"]\)/\\\1/g' \
+	             -e 's/^/  "/' -e 's/$/\\n"/'
+	    echo ";"
+	    cat <<EOF
+
+static const char *script_text_part2 =
+EOF
+	    func_emit_wrapper_part2 yes |
 	        $SED -e 's/\([\\"]\)/\\\1/g' \
 	             -e 's/^/  "/' -e 's/$/\\n"/'
 	    echo ";"
@@ -2658,7 +2706,8 @@ EOF
 	      esac
 
 	    cat <<EOF
-	  printf ("%s", script_text);
+	  printf ("%s", script_text_part1);
+	  printf ("%s", script_text_part2);
 	  return 0;
 	}
     }
@@ -2750,7 +2799,8 @@ EOF
     {
       lt_fatal ("Could not open %s for writing", newargz[1]);
     }
-  fprintf (shwrapper, "%s", script_text);
+  fprintf (shwrapper, "%s", script_text_part1);
+  fprintf (shwrapper, "%s", script_text_part2);
   fclose (shwrapper);
 
   make_executable (newargz[1]);
