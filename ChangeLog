@@ -1,3 +1,25 @@
+2008-05-13  Charles Wilson  <libtool@cwilson.fastmail.fm>
+
+	[mingw|cygwin] Modify cwrapper to invoke target directly.
+	* libltdl/config/ltmain.m4sh (func_to_native_path):
+	New function. If $host is mingw, and $build is mingw
+	or cygwin, convert path to mingw native format.
+	(func_to_native_pathlist): New function. Ditto, for
+	:-separated pathlists.
+	(func_emit_cwrapperexe_src) [__CYGWIN__ && __STRICT_ANSI__]:
+	Ensure putenv and setenv are declared. Define HAVE_SETENV.
+	(func_emit_cwrapperexe_src) [main]: Add new constants to
+	hold desired PATH settings; initialize and use functions
+	above to convert to $host format if necessary. Add new
+	command-line options --lt-env-set, --lt-env-prepend, and
+	--lt-env-append. No longer emit wrapper script as integral
+	part of launching child. Remove support for (now) unnecessary
+	$TARGETSHELL. Exec actual target executable directly.
+	(func_emit_cwrapperexe_src) [lt_setenv, lt_extend_str]
+	[lt_split_name_value, lt_opt_process_env_set]
+	[lt_opt_process_env_prepend, lt_opt_process_env_append]
+	[lt_update_exe_path, lt_update_lib_path]: New functions.
+
 2008-05-11  Charles Wilson  <libtool@cwilson.fastmail.fm>
 
 	Ensure cwrapper compiles without warnings under -std=c99.

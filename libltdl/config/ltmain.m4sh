@@ -2511,6 +2511,122 @@ func_emit_wrapper ()
 }
 
 
+# func_to_host_path arg
+#
+# Convert paths to build format when used with build tools.
+# Intended for use with "native" mingw (where libtool itself
+# is running under the msys shell). Ordinarily, the (msys) shell
+# automatically converts such things for non-msys applications
+# it launches, but that isn't available from inside the cwrapper.
+# Similar accommodations are necessary for $host mingw and $build
+# cygwin.  Calling this function does no harm on other $build or
+# for other $host.
+#
+# ARG is the path (on $build) that should be converted to
+# the proper representation for $host. The result is stored
+# in $func_to_host_path_result.
+func_to_host_path ()
+{
+  func_to_host_path_result="$1"
+  if test -n "$1" ; then
+    case $host in
+      *mingw* )
+        lt_sed_naive_backslashify='s|\\\\*|\\|g;s|/|\\|g;s|\\|\\\\|g'
+        case $build in
+          *mingw* ) # actually, msys
+            # awkward: cmd appends spaces to result
+            lt_sed_strip_trailing_spaces="s/[ ]*\$//"
+            func_to_host_path_tmp1=`( cmd //c echo "$1" |\
+              $SED -e "$lt_sed_strip_trailing_spaces" ) 2>/dev/null || echo ""`
+            func_to_host_path_result=`echo "$func_to_host_path_tmp1" |\
+              $SED -e "$lt_sed_naive_backslashify"`
+            ;;
+          *cygwin* )
+            func_to_host_path_tmp1=`cygpath -w "$1"`
+            func_to_host_path_result=`echo "$func_to_host_path_tmp1" |\
+              $SED -e "$lt_sed_naive_backslashify"`
+            ;;
+        esac
+        if test -z "$func_to_host_path_result" ; then
+          func_error "Could not determine host path corresponding to"
+          func_error "  '$1'"
+          func_error "Continuing, but uninstalled executables may not work."
+        fi
+        ;;
+    esac
+  fi
+}
+# end: func_to_host_path
+
+# func_to_host_pathlist arg
+#
+# Convert pathlists to build format when used with build tools.
+# See func_to_host_path(), above.
+#
+# Path separators are also converted from ':' to ';', and if
+# $1 begins or ends with a ':' it is preserved (as ';') on
+# output. This description applies only when $build is mingw
+# (msys) or cygwin, and $host is mingw.
+#
+# ARG is a pathlist (on $build) that should be converted to
+# the proper representation on $host. The result is stored
+# in $func_to_host_pathlist_result.
+func_to_host_pathlist ()
+{
+  func_to_host_pathlist_result="$1"
+  if test -n "$1" ; then
+    case $host in
+      *mingw* )
+        lt_sed_naive_backslashify='s|\\\\*|\\|g;s|/|\\|g;s|\\|\\\\|g'
+        case $build in
+          *mingw* | *cygwin* )
+            # Remove leading and trailing ':' from $1. The behavior of
+            # msys is inconsistent here, and cygpath turns them into
+            # into '.;' and ';.'
+            func_to_host_pathlist_tmp2="$1"
+            func_to_host_pathlist_tmp1=`echo "$func_to_host_pathlist_tmp2" |\
+              $SED -e 's|^:*||' -e 's|:*$||'`
+            ;;
+        esac
+        case $build in
+          *mingw* ) # Actually, msys.
+            # Awkward: cmd appends spaces to result.
+            lt_sed_strip_trailing_spaces="s/[ ]*\$//"
+            func_to_host_pathlist_tmp2=`( cmd //c echo "$func_to_host_pathlist_tmp1" |\
+              $SED -e "$lt_sed_strip_trailing_spaces" ) 2>/dev/null || echo ""`
+            func_to_host_pathlist_result=`echo "$func_to_host_pathlist_tmp2" |\
+              $SED -e "$lt_sed_naive_backslashify"`
+            ;;
+          *cygwin* )
+            func_to_host_pathlist_tmp2=`cygpath -w -p "$func_to_host_pathlist_tmp1"`
+            func_to_host_pathlist_result=`echo "$func_to_host_pathlist_tmp2" |\
+              $SED -e "$lt_sed_naive_backslashify"`
+            ;;
+        esac
+        if test -z "$func_to_host_pathlist_result" ; then
+          func_error "Could not determine the host path(s) corresponding to"
+          func_error "  '$1'"
+          func_error "Continuing, but uninstalled executables may not work."
+        fi
+        case $build in
+          *mingw* | *cygwin* )
+            # Now, add the leading and trailing ':' back
+            case "$1" in
+              :* ) func_to_host_pathlist_result=";$func_to_host_pathlist_result"
+                ;;
+            esac
+            case "$1" in
+              *: ) func_to_host_pathlist_result="$func_to_host_pathlist_result;"
+                ;;
+            esac
+            ;;
+        esac
+        ;;
+    esac
+  fi
+}
+# end: func_to_host_pathlist
+
 # func_emit_cwrapperexe_src
 # emit the source code for a wrapper executable on stdout
 # Must ONLY be called from within func_mode_link because
@@ -2546,8 +2662,11 @@ EOF
 # include <stdint.h>
 # ifdef __CYGWIN__
 #  include <io.h>
+#  define HAVE_SETENV
 #  ifdef __STRICT_ANSI__
 char *realpath (const char *, char *);
+int putenv (char *);
+int setenv (const char *, const char *, int);
 #  endif
 # endif
 #endif
@@ -2655,6 +2774,14 @@ int make_executable (const char *path);
 int check_executable (const char *path);
 char *strendzap (char *str, const char *pat);
 void lt_fatal (const char *message, ...);
+void lt_setenv (const char *name, const char *value);
+char *lt_extend_str (const char *orig_value, const char *add, int to_end);
+void lt_opt_process_env_set (const char *arg);
+void lt_opt_process_env_prepend (const char *arg);
+void lt_opt_process_env_append (const char *arg);
+int lt_split_name_value (const char *arg, char** name, char** value);
+void lt_update_exe_path (const char *name, const char *value);
+void lt_update_lib_path (const char *name, const char *value);
 
 static const char *script_text_part1 =
 EOF
@@ -2674,18 +2801,72 @@ EOF
 
 	    cat <<EOF
 const char * MAGIC_EXE = "$magic_exe";
+const char * LIB_PATH_VARNAME = "$shlibpath_var";
+EOF
+
+	    if test "$shlibpath_overrides_runpath" = yes && test -n "$shlibpath_var" && test -n "$temp_rpath"; then
+              func_to_host_pathlist "$temp_rpath"
+	      cat <<EOF
+const char * LIB_PATH_VALUE   = "$func_to_host_pathlist_result";
+EOF
+	    else
+	      cat <<"EOF"
+const char * LIB_PATH_VALUE   = "";
+EOF
+	    fi
+
+	    if test -n "$dllsearchpath"; then
+              func_to_host_pathlist "$dllsearchpath:"
+	      cat <<EOF
+const char * EXE_PATH_VARNAME = "PATH";
+const char * EXE_PATH_VALUE   = "$func_to_host_pathlist_result";
+EOF
+	    else
+	      cat <<"EOF"
+const char * EXE_PATH_VARNAME = "";
+const char * EXE_PATH_VALUE   = "";
+EOF
+	    fi
+
+	    if test "$fast_install" = yes; then
+	      cat <<EOF
+const char * TARGET_PROGRAM_NAME = "lt-$outputname"; /* hopefully, no .exe */
+EOF
+	    else
+	      cat <<EOF
+const char * TARGET_PROGRAM_NAME = "$outputname"; /* hopefully, no .exe */
+EOF
+	    fi
+
+
+	    cat <<"EOF"
+
+static const char *dumpscript_opt  = "--lt-dump-script";
+
+static const size_t env_set_opt_len = 12;
+static const char *env_set_opt     = "--lt-env-set";
+  /* argument is putenv-style "foo=bar", value of foo is set to bar */
+
+static const size_t env_prepend_opt_len = 16;
+static const char *env_prepend_opt = "--lt-env-prepend";
+  /* argument is putenv-style "foo=bar", new value of foo is bar${foo} */
+
+static const size_t env_append_opt_len = 15;
+static const char *env_append_opt  = "--lt-env-append";
+  /* argument is putenv-style "foo=bar", new value of foo is ${foo}bar */
 
 int
 main (int argc, char *argv[])
 {
   char **newargz;
+  int  newargc;
   char *tmp_pathspec;
   char *actual_cwrapper_path;
-  char *shwrapper_name;
+  char *actual_cwrapper_name;
+  char *target_name;
+  char *lt_argv_zero;
   intptr_t rval = 127;
-  FILE *shwrapper;
 
-  const char *dumpscript_opt = "--lt-dump-script";
   int i;
 
   program_name = (char *) xstrdup (base_name (argv[0]));
@@ -2705,39 +2886,14 @@ EOF
 		;;
 	      esac
 
-	    cat <<EOF
+	    cat <<"EOF"
 	  printf ("%s", script_text_part1);
 	  printf ("%s", script_text_part2);
 	  return 0;
 	}
     }
 
-  newargz = XMALLOC (char *, argc + 2);
-EOF
-
-	    if test -n "$TARGETSHELL" ; then
-	      # no path translation at all
-	      lt_newargv0=$TARGETSHELL
-	    else
-	      case "$host" in
-		*mingw* )
-		  # awkward: cmd appends spaces to result
-		  lt_sed_strip_trailing_spaces="s/[ ]*\$//"
-		  lt_newargv0=`( cmd //c echo $SHELL | $SED -e "$lt_sed_strip_trailing_spaces" ) 2>/dev/null || echo $SHELL`
-		  case $lt_newargv0 in
-		    *.exe | *.EXE) ;;
-		    *) lt_newargv0=$lt_newargv0.exe ;;
-		  esac
-		  ;;
-		* ) lt_newargv0=$SHELL ;;
-	      esac
-	    fi
-
-		cat <<EOF
-  newargz[0] = (char *) xstrdup ("$lt_newargv0");
-EOF
-
-	    cat <<"EOF"
+  newargz = XMALLOC (char *, argc + 1);
   tmp_pathspec = find_executable (argv[0]);
   if (tmp_pathspec == NULL)
     lt_fatal ("Couldn't find %s", argv[0]);
@@ -2749,39 +2905,60 @@ EOF
 			  actual_cwrapper_path));
   XFREE (tmp_pathspec);
 
-  shwrapper_name = (char *) xstrdup (base_name (actual_cwrapper_path));
-  strendzap (actual_cwrapper_path, shwrapper_name);
+  actual_cwrapper_name = xstrdup( base_name (actual_cwrapper_path));
+  strendzap (actual_cwrapper_path, actual_cwrapper_name);
 
-  /* shwrapper_name transforms */
-  strendzap (shwrapper_name, ".exe");
-  tmp_pathspec = XMALLOC (char, (strlen (shwrapper_name) +
-				 strlen ("_ltshwrapperTMP") + 1));
-  strcpy (tmp_pathspec, shwrapper_name);
-  strcat (tmp_pathspec, "_ltshwrapperTMP");
-  XFREE (shwrapper_name);
-  shwrapper_name = tmp_pathspec;
+  /* wrapper name transforms */
+  strendzap (actual_cwrapper_name, ".exe");
+  tmp_pathspec = lt_extend_str (actual_cwrapper_name, ".exe", 1);
+  XFREE (actual_cwrapper_name);
+  actual_cwrapper_name = tmp_pathspec;
   tmp_pathspec = 0;
-  LTWRAPPER_DEBUGPRINTF (("(main) libtool shell wrapper name: %s\n",
-			  shwrapper_name));
+
+  /* target_name transforms -- use actual target program name; might have lt- prefix */
+  target_name = xstrdup (base_name (TARGET_PROGRAM_NAME));
+  strendzap (target_name, ".exe");
+  tmp_pathspec = lt_extend_str (target_name, ".exe", 1);
+  XFREE (target_name);
+  target_name = tmp_pathspec;
+  tmp_pathspec = 0;
+
+  LTWRAPPER_DEBUGPRINTF (("(main) libtool target name: %s\n",
+			  target_name));
 EOF
 
 	    cat <<EOF
-  newargz[1] =
+  newargz[0] =
     XMALLOC (char, (strlen (actual_cwrapper_path) +
-		    strlen ("$objdir") + 1 + strlen (shwrapper_name) + 1));
-  strcpy (newargz[1], actual_cwrapper_path);
-  strcat (newargz[1], "$objdir");
-  strcat (newargz[1], "/");
-  strcat (newargz[1], shwrapper_name);
+		    strlen ("$objdir") + 1 + strlen (actual_cwrapper_name) + 1));
+  strcpy (newargz[0], actual_cwrapper_path);
+  strcat (newargz[0], "$objdir");
+  strcat (newargz[0], "/");
 EOF
 
+	    cat <<"EOF"
+  /* stop here, and copy so we don't have to do this twice */
+  tmp_pathspec = xstrdup (newargz[0]);
+
+  /* do NOT want the lt- prefix here, so use actual_cwrapper_name */
+  strcat (newargz[0], actual_cwrapper_name);
+
+  /* DO want the lt- prefix here if it exists, so use target_name */
+  lt_argv_zero = lt_extend_str (tmp_pathspec, target_name, 1);
+  XFREE (tmp_pathspec);
+  tmp_pathspec = 0;
+EOF
 
 	    case $host_os in
 	      mingw*)
 	    cat <<"EOF"
   {
     char* p;
-    while ((p = strchr (newargz[1], '\\')) != NULL)
+    while ((p = strchr (newargz[0], '\\')) != NULL)
+      {
+	*p = '/';
+      }
+    while ((p = strchr (lt_argv_zero, '\\')) != NULL)
       {
 	*p = '/';
       }
@@ -2791,40 +2968,107 @@ EOF
 	    esac
 
 	    cat <<"EOF"
-  XFREE (shwrapper_name);
+  XFREE (target_name);
   XFREE (actual_cwrapper_path);
+  XFREE (actual_cwrapper_name);
 
-  /* always write in binary mode */
-  if ((shwrapper = fopen (newargz[1], FOPEN_WB)) == 0)
-    {
-      lt_fatal ("Could not open %s for writing", newargz[1]);
-    }
-  fprintf (shwrapper, "%s", script_text_part1);
-  fprintf (shwrapper, "%s", script_text_part2);
-  fclose (shwrapper);
+  lt_setenv ("BIN_SH", "xpg4"); /* for Tru64 */
+  lt_setenv ("DUALCASE", "1");  /* for MSK sh */
+  lt_update_lib_path (LIB_PATH_VARNAME, LIB_PATH_VALUE);
+  lt_update_exe_path (EXE_PATH_VARNAME, EXE_PATH_VALUE);
 
-  make_executable (newargz[1]);
-
+  newargc=0;
   for (i = 1; i < argc; i++)
-    newargz[i + 1] = xstrdup (argv[i]);
-  newargz[argc + 1] = NULL;
-
-  for (i = 0; i < argc + 1; i++)
     {
-      LTWRAPPER_DEBUGPRINTF (("(main) newargz[%d]   : %s\n", i, newargz[i]));
+      size_t arglen = strlen (argv[i]);
+      if (strncmp (argv[i], env_set_opt, env_set_opt_len) == 0)
+        {
+          if ((arglen > env_set_opt_len) && (argv[i][env_set_opt_len] == '='))
+            {
+              const char *p = argv[i] + env_set_opt_len + 1;
+              lt_opt_process_env_set (p);
+            }
+          else if ((arglen == env_set_opt_len) &&
+                   (i + 1 < argc) &&
+                   (strcmp (argv[i + 1], "--") != 0))
+            {
+              lt_opt_process_env_set (argv[i + 1]);
+              i++; /* don't copy */
+            }
+          else
+            lt_fatal ("%s missing required argument", env_set_opt);
+          continue;
+        }
+      if (strncmp (argv[i], env_prepend_opt, env_prepend_opt_len) == 0)
+        {
+          if ((arglen > env_prepend_opt_len) &&
+              (argv[i][env_prepend_opt_len] == '='))
+            {
+              const char *p = argv[i] + env_prepend_opt_len + 1;
+              lt_opt_process_env_prepend (p);
+            }
+          else if ((arglen == env_prepend_opt_len) &&
+                   (i + 1 < argc) &&
+                   (strcmp (argv[i + 1], "--") != 0))
+            {
+              lt_opt_process_env_prepend (argv[i + 1]);
+              i++; /* don't copy */
+            }
+          else
+            lt_fatal ("%s missing required argument", env_prepend_opt);
+          continue;
+        }
+      if (strncmp (argv[i], env_append_opt, env_append_opt_len) == 0)
+        {
+          if ((arglen > env_append_opt_len) &&
+              (argv[i][env_append_opt_len] == '='))
+            {
+              const char *p = argv[i] + env_append_opt_len + 1;
+              lt_opt_process_env_append (p);
+            }
+          else if ((arglen == env_append_opt_len) &&
+                   (i + 1 < argc) &&
+                   (strcmp (argv[i + 1], "--") != 0))
+            {
+              lt_opt_process_env_append (argv[i + 1]);
+              i++; /* don't copy */
+            }
+          else
+            lt_fatal ("%s missing required argument", env_append_opt);
+          continue;
+        }
+      if (strcmp (argv[i], "--") == 0)
+        {
+          /* immediately copy all the rest of the arguments */
+          ++i;
+          for (; i < argc; i++)
+            newargz[++newargc] = xstrdup (argv[i]);
+
+          /* same as break, because i = argc */
+          continue;
+        }
+      /* otherwise ... */
+      newargz[++newargc] = xstrdup (argv[i]);
+    }
+  newargz[++newargc] = NULL;
+
+  LTWRAPPER_DEBUGPRINTF     (("(main) lt_argv_zero : %s\n", (lt_argv_zero ? lt_argv_zero : "<NULL>")));
+  for (i = 0; i < newargc; i++)
+    {
+      LTWRAPPER_DEBUGPRINTF (("(main) newargz[%d]   : %s\n", i, (newargz[i] ? newargz[i] : "<NULL>")));
     }
 
 EOF
 
 	    case $host_os in
 	      mingw*)
-		cat <<EOF
+		cat <<"EOF"
   /* execv doesn't actually work on mingw as expected on unix */
-  rval = _spawnv (_P_WAIT, "$lt_newargv0", (const char * const *) newargz);
+  rval = _spawnv (_P_WAIT, lt_argv_zero, (const char * const *) newargz);
   if (rval == -1)
     {
       /* failed to start process */
-      LTWRAPPER_DEBUGPRINTF (("(main) failed to launch target \"$lt_newargv0\": errno = %d\n", errno));
+      LTWRAPPER_DEBUGPRINTF (("(main) failed to launch target \"%s\": errno = %d\n", lt_argv_zero, errno));
       return 127;
     }
   return rval;
@@ -2832,8 +3076,8 @@ EOF
 EOF
 		;;
 	      *)
-		cat <<EOF
-  execv ("$lt_newargv0", newargz);
+		cat <<"EOF"
+  execv (lt_argv_zero, newargz);
   return rval; /* =127, but avoids unused variable warning */
 }
 EOF
@@ -3114,6 +3358,177 @@ lt_fatal (const char *message, ...)
   lt_error_core (EXIT_FAILURE, "FATAL", message, ap);
   va_end (ap);
 }
+
+void
+lt_setenv (const char *name, const char *value)
+{
+  LTWRAPPER_DEBUGPRINTF (("(lt_setenv) setting '%s' to '%s'\n",
+                          (name ? name : "<NULL>"),
+                          (value ? value : "<NULL>")));
+  {
+#ifdef HAVE_SETENV
+    /* always make a copy, for consistency with !HAVE_SETENV */
+    char *str = xstrdup (value);
+    setenv (name, str, 1);
+#else
+    int len = strlen (name) + 1 + strlen (value) + 1;
+    char *str = XMALLOC (char, len);
+    sprintf (str, "%s=%s", name, value);
+    if (putenv (str) != EXIT_SUCCESS)
+      {
+        XFREE (str);
+      }
+#endif
+  }
+}
+
+char *
+lt_extend_str (const char *orig_value, const char *add, int to_end)
+{
+  char *new_value;
+  if (orig_value && *orig_value)
+    {
+      int orig_value_len = strlen (orig_value);
+      int add_len = strlen (add);
+      new_value = XMALLOC (char, add_len + orig_value_len + 1);
+      if (to_end)
+        {
+          strcpy (new_value, orig_value);
+          strcpy (new_value + orig_value_len, add);
+        }
+      else
+        {
+          strcpy (new_value, add);
+          strcpy (new_value + add_len, orig_value);
+        }
+    }
+  else
+    {
+      new_value = xstrdup (add);
+    }
+  return new_value;
+}
+
+int
+lt_split_name_value (const char *arg, char** name, char** value)
+{
+  const char *p;
+  int len;
+  if (!arg || !*arg)
+    return 1;
+
+  p = strchr (arg, (int)'=');
+
+  if (!p)
+    return 1;
+
+  *value = xstrdup (++p);
+
+  len = strlen (arg) - strlen (*value);
+  *name = XMALLOC (char, len);
+  strncpy (*name, arg, len-1);
+  (*name)[len - 1] = '\0';
+
+  return 0;
+}
+
+void
+lt_opt_process_env_set (const char *arg)
+{
+  char *name = NULL;
+  char *value = NULL;
+
+  if (lt_split_name_value (arg, &name, &value) != 0)
+    {
+      XFREE (name);
+      XFREE (value);
+      lt_fatal ("bad argument for %s: '%s'", env_set_opt, arg);
+    }
+
+  lt_setenv (name, value);
+  XFREE (name);
+  XFREE (value);
+}
+
+void
+lt_opt_process_env_prepend (const char *arg)
+{
+  char *name = NULL;
+  char *value = NULL;
+  char *new_value = NULL;
+
+  if (lt_split_name_value (arg, &name, &value) != 0)
+    {
+      XFREE (name);
+      XFREE (value);
+      lt_fatal ("bad argument for %s: '%s'", env_prepend_opt, arg);
+    }
+
+  new_value = lt_extend_str (getenv (name), value, 0);
+  lt_setenv (name, new_value);
+  XFREE (new_value);
+  XFREE (name);
+  XFREE (value);
+}
+
+void
+lt_opt_process_env_append (const char *arg)
+{
+  char *name = NULL;
+  char *value = NULL;
+  char *new_value = NULL;
+
+  if (lt_split_name_value (arg, &name, &value) != 0)
+    {
+      XFREE (name);
+      XFREE (value);
+      lt_fatal ("bad argument for %s: '%s'", env_append_opt, arg);
+    }
+
+  new_value = lt_extend_str (getenv (name), value, 1);
+  lt_setenv (name, new_value);
+  XFREE (new_value);
+  XFREE (name);
+  XFREE (value);
+}
+
+void
+lt_update_exe_path (const char *name, const char *value)
+{
+  LTWRAPPER_DEBUGPRINTF (("(lt_update_exe_path) modifying '%s' by prepending '%s'\n",
+                          (name ? name : "<NULL>"),
+                          (value ? value : "<NULL>")));
+
+  if (name && *name && value && *value)
+    {
+      char *new_value = lt_extend_str (getenv (name), value, 0);
+      /* some systems can't cope with a ':'-terminated path #' */
+      int len = strlen (new_value);
+      while (((len = strlen (new_value)) > 0) && IS_PATH_SEPARATOR (new_value[len-1]))
+        {
+          new_value[len-1] = '\0';
+        }
+      lt_setenv (name, new_value);
+      XFREE (new_value);
+    }
+}
+
+void
+lt_update_lib_path (const char *name, const char *value)
+{
+  LTWRAPPER_DEBUGPRINTF (("(lt_update_lib_path) modifying '%s' by prepending '%s'\n",
+                          (name ? name : "<NULL>"),
+                          (value ? value : "<NULL>")));
+
+  if (name && *name && value && *value)
+    {
+      char *new_value = lt_extend_str (getenv (name), value, 0);
+      lt_setenv (name, new_value);
+      XFREE (new_value);
+    }
+}
+
+
 EOF
 }
 # end: func_emit_cwrapperexe_src
@@ -6910,11 +7325,10 @@ EOF
 
 	    func_emit_cwrapperexe_src > $cwrappersource
 
-	    # we should really use a build-platform specific compiler
-	    # here, but OTOH, the wrappers (shell script and this C one)
-	    # are only useful if you want to execute the "real" binary.
-	    # Since the "real" binary is built for $host, then this
-	    # wrapper might as well be built for $host, too.
+	    # The wrapper executable is built using the $host compiler,
+	    # because it contains $host paths and files. If cross-
+	    # compiling, it, like the target executable, must be
+	    # executed on the $host or under an emulation environment.
 	    $opt_dry_run || {
 	      $LTCC $LTCFLAGS -o $cwrapper $cwrappersource
 	      $STRIP $cwrapper
