@@ -1,3 +1,10 @@
+2008-04-29  Gary V. Vaughan  <gary@gnu.org>
+
+	Fix libtoolize test failure with aclocal-1.10.1.
+	* tests/libtoolize.at
+	(verbatim aclocal.m4 w/o AC_CONFIG_MACRO_DIR): Force aclocal to
+	search the source tree for latest libtool macros.
+
 2008-04-24  Eric Blake  <ebb9@byu.net>
 
 	Fix bug in 2008-04-21 type improvements.
