@@ -35,6 +35,7 @@ m4_divert_push([SCRIPT])#! /bin/sh
 # -f, --force           replace existing files
 # -i, --install         copy missing auxiliary files
 #     --ltdl[=DIR]      install libltdl sources [default: libltdl]
+#     --no-warn         don't display warning messages
 #     --nonrecursive    prepare ltdl for non-recursive make
 # -q, --quiet           work silently
 #     --recursive       prepare ltdl for recursive make
@@ -42,6 +43,15 @@ m4_divert_push([SCRIPT])#! /bin/sh
 # -v, --verbose         verbosely report processing
 #     --version         print version information and exit
 # -h, --help            print short or long help message
+#
+# The following space or comma delimited options can be passed to $progname
+# via the environment variable LIBTOOLIZE_OPTIONS, unknown environment
+# options are ignored:
+#
+#     --debug           enable verbose shell tracing
+#     --no-warn         don't display warning messages
+#     --quiet           work silently
+#     --verbose         verbosely report processing
 #
 # You must `cd' to the top directory of your package before you run
 # `$progname'.
@@ -108,6 +118,28 @@ ltdldir=
 configure_ac=configure.in
 
 
+# Parse environment options
+{
+  my_sed_env_opt='1s/^\([^,:; ]*\).*$/\1/;q'
+  my_sed_env_rest='1s/^[^,:; ]*[,:; ]*\(.*\)$/\1/;q'
+
+  while test -n "$LIBTOOLIZE_OPTIONS"; do
+    opt=`echo "$LIBTOOLIZE_OPTIONS" | sed "$my_sed_env_opt"`
+    LIBTOOLIZE_OPTIONS=`echo "$LIBTOOLIZE_OPTIONS" | sed "$my_sed_env_rest"`
+
+    case $opt in
+      --debug)		opt_debug=:		;;
+      --no-warn)	opt_warning=false	;;
+      --quiet)		opt_quiet=:		;;
+      --verbose)	opt_verbose=:		;;
+
+      --*)	func_warning "unrecognized environment option \`$opt'"    ;;
+      *)	func_fatal_help "garbled LIBTOOLIZE_OPTIONS near \`$opt'" ;;
+    esac
+  done
+}
+
+
 # Parse options once, thoroughly.  This comes as soon as possible in
 # the script to make things like `libtoolize --version' happen quickly.
 {
@@ -152,6 +184,8 @@ configure_ac=configure.in
 			  esac
 			fi
 			;;
+
+      --no-warn)	opt_warning=false ;;
 
       --nonrecursive|--non-recursive)
       			ltdl_mode=nonrecursive
@@ -743,7 +777,7 @@ func_serial_update_check ()
 
     if test -f "$my_destfile"; then
       test "X$my_src_serial" = "X0" && {
-        func_error "warning: no serial number on \`$my_srcfile', not copying."
+        func_warning "no serial number on \`$my_srcfile', not copying."
 	return
       }
 
@@ -904,7 +938,7 @@ func_keyword_update ()
     if test -f "$my_destfile"; then
       my_src_serial=`$SED -e "$my_sed_script" "$my_srcfile"`
       test -z "$my_src_serial" && {
-        func_error "warning: no serial number in \`$my_srcfile', not copying."
+        func_warning "no serial number in \`$my_srcfile', not copying."
 	return
       }
 
@@ -1360,6 +1394,13 @@ func_check_macros ()
         fi
       fi
     fi
+
+    ## ---------------------------------------------------------- ##
+    ## Since we return early here when --no-warn was given:       ##
+    ## DO NOT PUT ANYTHING BUT UPGRADE ADVICE MESSAGES BELOW HERE ##
+    ## ---------------------------------------------------------- ##
+
+    $opt_warning || return
 
     $seen_libtool ||
       func_echo "Remember to add \`LT_INIT' to $configure_ac."

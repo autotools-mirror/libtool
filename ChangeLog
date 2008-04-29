@@ -1,5 +1,19 @@
 2008-04-29  Gary V. Vaughan  <gary@gnu.org>
 
+	New libtoolize --no-warn option and LIBTOOLIZE_OPTIONS parsing.
+	* libltdl/config/general.m4sh (opt_warning): New option.
+	(func_warning): Only display a warning message if $opt_warning
+	is true.
+	* libtoolize.m4sh: Accept options in LIBTOOLIZE_OPTIONS
+	environment variable.
+	(--no-warn): Parse new option.
+	(func_serial_update_check, func_keyword_update): Use func_warning.
+	(func_check_macros): Bail out before style issues nags when
+	$opt_warning is false.
+	* doc/libtool.texi (Invoking Libtoolize): Document it.
+	* tests/libtoolize.at: Test it.
+	* NEWS: Updated.
+
 	Fix libtoolize test failure with aclocal-1.10.1.
 	* tests/libtoolize.at
 	(verbatim aclocal.m4 w/o AC_CONFIG_MACRO_DIR): Force aclocal to

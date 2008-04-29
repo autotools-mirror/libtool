@@ -2329,6 +2329,12 @@ also specify a subdirectory name here if you are not using Autoconf
 for example.  If @command{libtoolize} can't determine the target
 directory, @samp{libltdl} is used as the default.
 
+@item --no-warn
+Normally, Libtoolize tries to diagnose use of deprecated libtool macros
+and other stylistic issues.  If you are deliberately using outdated
+calling conventions, this option prevents Libtoolize from explaining
+how to update your project's Libtool conventions.
+
 @item --nonrecursive
 If passed in conjunction with @option{--ltdl}, this option will cause
 the @command{libltdl} installed by @samp{libtoolize} to be set up for
@@ -2407,6 +2413,27 @@ Work noisily!  Give a blow by blow account of what
 Print @command{libtoolize} version information and exit.
 @end table
 
+@cindex LIBTOOLIZE_OPTIONS
+Sometimes it can be useful to pass options to @command{libtoolize} even
+though it is called by another program, such as @command{autoreconf}.  A
+limited number of options are parsed from the environment variable
+@code{LIBTOOLIZE_OPTIONS}: currently @option{--debug}, @option{--no-warn},
+@option{--quiet} and @option{--verbose}.  Multiple options passed in
+@code{LIBTOOLIZE_OPTIONS} must be separated with a space, comma or a
+colon.
+
+By default, a warning is issued for unknown options found in
+@code{LIBTOOLIZE_OPTIONS} unless the first such option is
+@option{--no-warn}.  Where @command{libtoolize} has always quit
+on receipt of an unknown option at the command line, this and all
+previous releases of @command{libtoolize} will continue unabated whatever
+the content of @code{LIBTOOLIZE_OPTIONS} (modulo some possible warning
+messages).
+
+@example
+trick$ @kbd{LIBTOOLIZE_OPTIONS=--no-warn,--quiet autoreconf --install}
+@end example
+
 @findex AC_CONFIG_MACRO_DIR
 If @command{libtoolize} detects an explicit call to
 @code{AC_CONFIG_MACRO_DIR} (@pxref{Input, , The Autoconf Manual,
@@ -2442,8 +2469,8 @@ autoconf, The Autoconf Manual}) in your @file{configure.ac}, it
 will put the other support files in the specified directory.
 Otherwise they too end up in the project root directory.
 
-@command{libtoolize} displays hints for adding libtool support to your
-package, as well.
+Unless @option{--no-warn} is passed, @command{libtoolize} displays
+hints for adding libtool support to your package, as well.
 
 @node Autoconf and LTLIBOBJS
 @subsection Autoconf and @code{LTLIBOBJS}

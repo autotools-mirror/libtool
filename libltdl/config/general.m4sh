@@ -153,6 +153,7 @@ opt_dry_run=false
 opt_help=false
 opt_quiet=false
 opt_verbose=false
+opt_warning=:
 
 # func_echo arg...
 # Echo program name prefixed message, along with the current mode
@@ -185,7 +186,10 @@ func_error ()
 # Echo program name prefixed warning message to standard error.
 func_warning ()
 {
-    $ECHO "$progname${mode+: }$mode: warning: "${1+"$@"} 1>&2
+    $opt_warning && $ECHO "$progname${mode+: }$mode: warning: "${1+"$@"} 1>&2
+
+    # bash bug again:
+    :
 }
 
 # func_fatal_error arg...

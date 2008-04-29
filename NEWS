@@ -2,6 +2,15 @@ NEWS - list of user-visible changes between releases of GNU Libtool
 
 New in 2.2.4: 2008-??-??: CVS version 2.2.3a, Libtool team:
 
+* New features:
+
+  - New libtoolize option --no-warn, for users that want to continue to
+    use old libtool style without being nagged.
+  - Options --debug, --no-warn, --quiet and --verbose can be passed to
+    libtoolize through the environment variable LIBTOOLIZE_OPTIONS, for
+    cleaner interaction between the user and libtoolize when called by
+    autoreconf.
+
 * Bug fixes:
 
   - The documentation for lt_dlopenadvise showed the wrong type for

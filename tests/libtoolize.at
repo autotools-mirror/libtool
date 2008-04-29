@@ -937,3 +937,49 @@ LT_AT_CHECK_LIBTOOLIZE([--copy --install], 0, expout)
 
 AT_CLEANUP
 
+
+## --------------------------- ##
+## Garbled LIBTOOLIZE_OPTIONS. ##
+## --------------------------- ##
+
+AT_SETUP([LIBTOOLIZE_OPTIONS])
+
+_LT_CONFIGURE_AC
+
+LIBTOOLIZE_OPTIONS="narf"
+export LIBTOOLIZE_OPTIONS
+
+AT_DATA(experr,
+[[libtoolize: garbled LIBTOOLIZE_OPTIONS near `narf'
+libtoolize: Try `libtoolize --help' for more information.
+]])
+
+LT_AT_CHECK_LIBTOOLIZE([--copy], 1, [ignore], experr)
+
+
+## --------------------------- ##
+## Unknown LIBTOOLIZE_OPTIONS. ##
+## --------------------------- ##
+
+LIBTOOLIZE_OPTIONS=--no-such-option
+export LIBTOOLIZE_OPTIONS
+
+AT_DATA(experr,
+[[libtoolize: warning: unrecognized environment option `--no-such-option'
+]])
+
+LT_AT_CHECK_LIBTOOLIZE([--copy], 0, [ignore], experr)
+
+
+## ----------------------------- ##
+## --no-warn environment option. ##
+## ----------------------------- ##
+
+LIBTOOLIZE_OPTIONS=--no-warn,--no-such-option
+export LIBTOOLIZE_OPTIONS
+
+AT_DATA(experr, [[]])
+
+LT_AT_CHECK_LIBTOOLIZE([--copy], 0, [ignore], experr)
+
+AT_CLEANUP
