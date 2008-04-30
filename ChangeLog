@@ -1,3 +1,11 @@
+2008-04-30  Eric Blake  <ebb9@byu.net>
+
+	Support cygwin 1.7.0 in loadlibrary loader.
+	* libltdl/m4/ltdl.m4 (LT_LIB_DLLOAD) <cygwin>: Check for modern
+	function.
+	* libltdl/loaders/loadlibrary.c (vm_open): Avoid deprecated
+	cygwin_conv_to_full_win32_path.
+
 2008-04-29  Gary V. Vaughan  <gary@gnu.org>
 
 	New libtoolize --no-warn option and LIBTOOLIZE_OPTIONS parsing.

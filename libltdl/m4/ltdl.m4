@@ -47,7 +47,7 @@ m4_define([_LT_BUILD_PREFIX],
 [m4_ifdef([AC_AUTOCONF_VERSION],
    [m4_if(m4_version_compare(m4_defn([AC_AUTOCONF_VERSION]), [2.62]),
 	  [-1], [m4_ifdef([_AC_HAVE_TOP_BUILD_PREFIX],
-	  		  [${top_build_prefix}],
+			  [${top_build_prefix}],
 			  [${top_builddir}/])],
 	  [${top_build_prefix}])],
    [${top_builddir}/])[]dnl
@@ -711,6 +711,7 @@ beos*)
   LT_DLLOADERS="$LT_DLLOADERS ${lt_dlopen_dir+$lt_dlopen_dir/}load_add_on.la"
   ;;
 cygwin* | mingw* | os2* | pw32*)
+  AC_CHECK_DECLS([cygwin_conv_path], [], [], [[#include <sys/cygwin.h>]])
   LT_DLLOADERS="$LT_DLLOADERS ${lt_dlopen_dir+$lt_dlopen_dir/}loadlibrary.la"
   ;;
 esac
