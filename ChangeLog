@@ -1,3 +1,16 @@
+2008-05-03  Gary V. Vaughan  <gary@gnu.org>
+
+	Don't trip over outdated acinclude.m4.
+	* libtoolize.m4sh (all_pkgconfig_files, all_pkgmacro_files)
+	(all_pkgltdl_files): New variables listing all files ever
+	maintained by any release of libtoolize.
+	(func_install_pkgconfig_parent, func_install_pkgltdl_files)
+	(func_install_pkgconfig_subproject, func_install_pkgmacro_parent)
+	(func_install_pkgmacro_subproject): Carefully clean up any files
+	that may have been installed by previous libtoolize releases.
+	* tests/libtoolize.at: New test for libltdl/acinclude.m4 removal.
+	Reported by Andreas Schwab <schwab@suse.de>.
+
 2008-05-02  Peter O'Gorman  <peter@pogma.com>
 
 	It helps to close quotes.

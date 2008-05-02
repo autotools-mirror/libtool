@@ -983,3 +983,35 @@ AT_DATA(experr, [[]])
 LT_AT_CHECK_LIBTOOLIZE([--copy], 0, [ignore], experr)
 
 AT_CLEANUP
+
+
+## ------------------------------------------------------ ##
+## Remove file droppings from old libtoolize invocations. ##
+## ------------------------------------------------------ ##
+
+AT_SETUP([cleanup old installation])
+
+_LT_CONFIGURE_AC
+
+AT_DATA([Makefile.am],
+[[ACLOCAL_AMFLAGS = -I m4
+]])
+
+AT_DATA([acinclude.m4],
+[[AC_DEFUN([LT_INIT],
+[: keep me, I might be hand maintained!]) # LT_INIT
+]])
+
+AT_DATA([libltdl/acinclude.m4],
+[[AC_DEFUN([LT_INIT],
+[: delete me, I was left here by on old libltdl build]) # LT_INIT
+]])
+
+LT_AT_CHECK_LIBTOOLIZE([--copy --force --ltdl], 0, [ignore])
+
+# check files are left as expected
+AT_CHECK([grep 'keep me' acinclude.m4], 0, [ignore])
+AT_CHECK([test -f libltdl/acinclude.m4], 1, [ignore], [ignore])
+
+AT_CLEANUP
+
