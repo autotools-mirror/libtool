@@ -1,3 +1,8 @@
+2008-05-02  Peter O'Gorman  <peter@pogma.com>
+
+	It helps to close quotes.
+	* libltdl/config/ltmain.m4sh (func_mode_link): Add closing '.
+
 2008-05-01  Peter O'Gorman  <peter@pogma.com>
 
 	Use AC_CHECK_TOOL for otool and otool64.

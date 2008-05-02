@@ -4951,9 +4951,9 @@ func_mode_link ()
 		    done
 		    if test -f "$absdir/$objdir/$depdepl" ; then
 		      depdepl="$absdir/$objdir/$depdepl"
-		      darwin_install_name=`${OTOOL} -L $depdepl | awk '{if (NR == 2) {print $1;exit}}`
+		      darwin_install_name=`${OTOOL} -L $depdepl | awk '{if (NR == 2) {print $1;exit}}'`
                       if test -z "$darwin_install_name"; then
-                          darwin_install_name=`${OTOOL64} -L $depdepl  | awk '{if (NR == 2) {print $1;exit}}`
+                          darwin_install_name=`${OTOOL64} -L $depdepl  | awk '{if (NR == 2) {print $1;exit}}'`
                       fi
 		      compiler_flags="$compiler_flags ${wl}-dylib_file ${wl}${darwin_install_name}:${depdepl}"
 		      linker_flags="$linker_flags -dylib_file ${darwin_install_name}:${depdepl}"
