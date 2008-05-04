@@ -37,7 +37,7 @@ m4_define([_LT_COPYING], [dnl
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 ])
 
-# serial 55 LT_INIT
+# serial 56 LT_INIT
 
 
 # LT_PREREQ(VERSION)

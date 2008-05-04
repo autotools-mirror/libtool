@@ -1,5 +1,10 @@
 2008-05-04  Gary V. Vaughan  <gary@gnu.org>
 
+	Macro file serial updates for next stable release.
+	* libltdl/m4/libtool.m4, libltdl/m4/ltdl.m4,
+	libltdl/m4/ltoptions.m4, libltdl/m4/lt~obsolete.m4: Bump serial
+	numbers to account for changes since 2.2.2 release.
+
 	Make libtoolize tests work with distcheck.
 	* tests/testsuite.at (_LIBTOOLIZE_TRANSFORM): When $tst_aclocal
 	is set, transform paths that use it to generic
