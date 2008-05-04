@@ -1,3 +1,10 @@
+2008-05-04  Gary V. Vaughan  <gary@gnu.org>
+
+	Make libtoolize tests work with distcheck.
+	* tests/testsuite.at (_LIBTOOLIZE_TRANSFORM): When $tst_aclocal
+	is set, transform paths that use it to generic
+	/usr/local/share/aclocal in time for AT_CHECK comparisons.
+
 2008-05-03  Gary V. Vaughan  <gary@gnu.org>
 
 	Don't trip over outdated acinclude.m4.
