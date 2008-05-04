@@ -1,6 +1,12 @@
 NEWS - list of user-visible changes between releases of GNU Libtool
 
-New in 2.2.4: 2008-05-04: CVS version 2.2.3a, Libtool team:
+New in 2.2.??: 2008-06-??: git version 2.2.5a, Libtool team:
+
+* Bug fixes:
+
+  - None yet
+
+New in 2.2.4: 2008-05-04: git version 2.2.3a, Libtool team:
 
 * New features:
 
