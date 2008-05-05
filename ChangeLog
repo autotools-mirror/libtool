@@ -1,3 +1,11 @@
+2008-05-05  Gary V. Vaughan  <gary@gnu.org>
+
+	Fix libtoolize test failure with aclocal < 1.10.1
+	* tests/libtoolize.at
+	(verbatim aclocal.m4 w/o AC_CONFIG_MACRO_DIR): Older aclocal
+	requires a space between -I and the directory argument.
+	Reported by Daniel Macks <dmacks@netspace.org>
+
 2008-05-04  Gary V. Vaughan  <gary@gnu.org>
 
 	Set SCM version number to 2.2.5a.

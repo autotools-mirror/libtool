@@ -689,7 +689,7 @@ LT_AT_CHECK_LIBTOOLIZE([--copy], 0, expout)
 ## Upgrading an aclocal maintained aclocal.m4 without AC_CONFIG_MACRO_DIR. ##
 ## ----------------------------------------------------------------------- ##
 
-LT_AT_ACLOCAL([-I$abs_top_srcdir/libltdl/m4])
+LT_AT_ACLOCAL([-I $abs_top_srcdir/libltdl/m4])
 
 ## The following code is adapted (and simplified) from libtoolize.m4sh
 ####
