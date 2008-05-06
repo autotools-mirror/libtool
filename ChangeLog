@@ -1,3 +1,11 @@
+2008-05-06  Charles Wilson  <libtool@cwilson.fastmail.fm>
+
+	Ensure $OBJDUMP is defined
+	* libltdl/m4/libtool.m4 (_LT_DECL_OBJDUMP): new macro ensures
+	that $OBJDUMP is always defined sanely.
+	(_LT_SYS_DYNAMIC_LINKER): call it.
+	(_LT_CHECK_MAGIC_METHOD): call it.
+
 2008-05-05  Gary V. Vaughan  <gary@gnu.org>
 
 	Fix libtoolize test failure with aclocal < 1.10.1
