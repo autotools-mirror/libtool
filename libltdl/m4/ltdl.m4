@@ -7,7 +7,7 @@
 # unlimited permission to copy and/or distribute it, with or without
 # modifications, as long as this notice is preserved.
 
-# serial 15 LTDL_INIT
+# serial 16 LTDL_INIT
 
 # LT_CONFIG_LTDL_DIR(DIRECTORY, [LTDL-MODE])
 # ------------------------------------------
@@ -217,21 +217,6 @@ AC_DEFUN([_LT_LIBOBJ], [
 ])# _LT_LIBOBJS
 
 
-# _LT_LIBSOURCES(MODULE_NAMES)
-# ----------------------------
-# Like AC_LIBSOURCES, except the directory where the libltdl source files
-# are expected is distinct from the user LIBOBJ directory.
-AC_DEFUN([_LT_LIBSOURCES], [
-  m4_foreach([_LTNAME], [$1], [
-    m4_syscmd([test -r "$lt_libobj_prefix]_LTNAME[" ||
-		test -z "$lt_libobj_prefix" ||
-		test ! -d "$lt_libobj_prefix"])dnl
-    m4_if(m4_sysval, [0], [],
-      [AC_FATAL([missing $lt_libobj_prefix/]_LTNAME)])
-  ])
-])# _LT_LIBSOURCES
-
-
 # LTDL_INIT([OPTIONS])
 # --------------------
 # Clients of libltdl can use this macro to allow the installer to
@@ -245,9 +230,9 @@ _LT_SET_OPTIONS([$0], [$1])
 
 dnl We need to keep our own list of libobjs separate from our parent project,
 dnl and the easiest way to do that is redefine the AC_LIBOBJs macro while
-dnl we look for our own LIBOBJs. Definitions in ltdl-libobj.m4.
+dnl we look for our own LIBOBJs.
 m4_pushdef([AC_LIBOBJ], m4_defn([_LT_LIBOBJ]))
-m4_pushdef([AC_LIBSOURCES], m4_defn([_LT_LIBSOURCES]))
+m4_pushdef([AC_LIBSOURCES])
 
 dnl If not otherwise defined, default to the 1.5.x compatible subproject mode:
 m4_if(_LTDL_MODE, [],

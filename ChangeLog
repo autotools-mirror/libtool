@@ -1,3 +1,10 @@
+2008-05-17  Eric Blake  <ebb9@byu.net>
+
+	Kill _LT_LIBSOURCES; it wasn't checking anything useful.
+	* libltdl/m4/ltdl.m4 (_LT_LIBSOURCES): Delete.
+	(LTDL_INIT): Ignore arguments to AC_LIBSOURCES during _LTDL_SETUP,
+	on the assumption that libtoolize correctly installed them.
+
 2008-05-13  Charles Wilson  <libtool@cwilson.fastmail.fm>
 
 	[mingw|cygwin] Modify cwrapper to invoke target directly.
