@@ -380,12 +380,12 @@ m4_define([lt_decl_dquote_varnames],
 # lt_decl_varnames_tagged([SEPARATOR], [VARNAME1...])
 # ---------------------------------------------------
 m4_define([lt_decl_varnames_tagged],
-[_$0(m4_quote(m4_default([$1], [[, ]])),
-     m4_quote(m4_if([$2], [],
-		     m4_quote(lt_decl_tag_varnames),
-		  m4_quote(m4_shift($@)))),
-     m4_split(m4_normalize(m4_quote(_LT_TAGS))))])
-m4_define([_lt_decl_varnames_tagged], [lt_combine([$1], [$2], [_], $3)])
+[m4_assert([$# <= 2])dnl
+_$0(m4_quote(m4_default([$1], [[, ]])),
+    m4_ifval([$2], [[$2]], [m4_dquote(lt_decl_tag_varnames)]),
+    m4_split(m4_normalize(m4_quote(_LT_TAGS)), [ ]))])
+m4_define([_lt_decl_varnames_tagged],
+[m4_ifval([$3], [lt_combine([$1], [$2], [_], $3)])])
 
 
 # lt_decl_all_varnames([SEPARATOR], [VARNAME1...])
@@ -945,10 +945,10 @@ m4_defun_once([_LT_REQUIRED_DARWIN_CHECKS],[
       _lt_dar_allow_undefined='${wl}-undefined ${wl}suppress' ;;
     darwin1.*)
       _lt_dar_allow_undefined='${wl}-flat_namespace ${wl}-undefined ${wl}suppress' ;;
-    darwin*) # darwin 5.x on 
+    darwin*) # darwin 5.x on
       # if running on 10.5 or later, the deployment target defaults
       # to the OS version, if on x86, and 10.4, the deployment
-      # target defaults to 10.4. Don't you love it? 
+      # target defaults to 10.4. Don't you love it?
       case ${MACOSX_DEPLOYMENT_TARGET-10.0},$host in
 	10.0,*86*-darwin8*|10.0,*-darwin[[91]]*)
 	  _lt_dar_allow_undefined='${wl}-undefined ${wl}dynamic_lookup' ;;
@@ -2680,7 +2680,7 @@ variables_saved_for_relink="PATH $shlibpath_var $runpath_var"
 if test "$GCC" = yes; then
   variables_saved_for_relink="$variables_saved_for_relink GCC_EXEC_PREFIX COMPILER_PATH LIBRARY_PATH"
 fi
- 
+
 if test "${lt_cv_sys_lib_search_path_spec+set}" = set; then
   sys_lib_search_path_spec="$lt_cv_sys_lib_search_path_spec"
 fi

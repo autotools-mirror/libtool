@@ -1,5 +1,14 @@
 2008-05-17  Eric Blake  <ebb9@byu.net>
 
+	Speed up bootstrap by improving lt_combine.
+	* libltdl/m4/ltsugar.m4 (lt_combine): Mirror Autoconf 2.62
+	improvements.  Includes a semantic change where the separator can
+	now be empty, and where an empty fourth argument is now treated as
+	a valid suffix.
+	* libltdl/m4/libtool.m4 (_lt_decl_varnames_tagged): Adjust to new
+	semantics of lt_combine.
+	(lt_decl_varnames_tagged): Fix quoting and optimize.
+
 	Kill _LT_LIBSOURCES; it wasn't checking anything useful.
 	* libltdl/m4/ltdl.m4 (_LT_LIBSOURCES): Delete.
 	(LTDL_INIT): Ignore arguments to AC_LIBSOURCES during _LTDL_SETUP,
