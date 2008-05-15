@@ -1,5 +1,15 @@
 2008-05-25  Charles Wilson  <libtool@cwilson.fastmail.fm>
 
+	[mingw] Add cross-compile support to cwrapper
+	* libltdl/config/ltmain.m4sh (func_to_host_path) [$host=mingw]:
+	If present, use winepath to convert from $build to $host
+	if $build is neither mingw (msys) nor cygwin.  Use unconverted
+	path as fallback when conversion fails. Also update comments.
+	(func_to_host_pathlist) [$host=mingw]: Ditto. For fallback case,
+	use simplistic ':' to ';' path separator translation.
+
+2008-05-25  Charles Wilson  <libtool@cwilson.fastmail.fm>
+
 	Cwrapper should not eat -- arguments
 	* libltdl/config/ltmain.m4sh (func_emit_cwrapperexe_src)
 	[file scope]: Defined all option strings in terms of macro

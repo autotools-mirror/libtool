@@ -2513,14 +2513,21 @@ func_emit_wrapper ()
 
 # func_to_host_path arg
 #
-# Convert paths to build format when used with build tools.
+# Convert paths to host format when used with build tools.
 # Intended for use with "native" mingw (where libtool itself
-# is running under the msys shell). Ordinarily, the (msys) shell
-# automatically converts such things for non-msys applications
-# it launches, but that isn't available from inside the cwrapper.
-# Similar accommodations are necessary for $host mingw and $build
-# cygwin.  Calling this function does no harm on other $build or
-# for other $host.
+# is running under the msys shell), or in the following cross-
+# build environments:
+#    $build          $host
+#    mingw (msys)    mingw  [e.g. native]
+#    cygwin          mingw
+#    *nix + wine     mingw
+# where wine is equipped with the `winepath' executable.
+# In the native mingw case, the (msys) shell automatically
+# converts paths for any non-msys applications it launches,
+# but that facility isn't available from inside the cwrapper.
+# Similar accommodations are necessary for $host mingw and
+# $build cygwin.  Calling this function does no harm for other
+# $host/$build combinations not listed above.
 #
 # ARG is the path (on $build) that should be converted to
 # the proper representation for $host. The result is stored
@@ -2546,11 +2553,28 @@ func_to_host_path ()
             func_to_host_path_result=`echo "$func_to_host_path_tmp1" |\
               $SED -e "$lt_sed_naive_backslashify"`
             ;;
+          * )
+            # Unfortunately, winepath does not exit with a non-zero
+            # error code, so we are forced to check stderr for an
+            # error message. On the other hand, if the command is not
+            # found, the shell will set an exit code of 127. So we
+            # must check for both, which explains the odd construction:
+            func_to_host_path_winepath_stderr=`winepath -w "$1" >/dev/null 2>&1`
+            func_to_host_path_winepath_exitcode=$?
+            if test "$func_to_host_path_winepath_exitcode" -eq 0 &&\
+               test -z "${func_to_host_path_winepath_stderr}" ; then
+              func_to_host_path_tmp1=`winepath -w "$1"`
+              func_to_host_path_result=`echo "$func_to_host_path_tmp1" |\
+                $SED -e "$lt_sed_naive_backslashify"`
+            fi
+            ;;
         esac
         if test -z "$func_to_host_path_result" ; then
           func_error "Could not determine host path corresponding to"
           func_error "  '$1'"
           func_error "Continuing, but uninstalled executables may not work."
+          # Fallback:
+          func_to_host_path_result="$1"
         fi
         ;;
     esac
@@ -2560,13 +2584,19 @@ func_to_host_path ()
 
 # func_to_host_pathlist arg
 #
-# Convert pathlists to build format when used with build tools.
-# See func_to_host_path(), above.
+# Convert pathlists to host format when used with build tools.
+# See func_to_host_path(), above. This function supports the
+# following $build/$host combinations (but does no harm for
+# combinations not listed here):
+#    $build          $host
+#    mingw (msys)    mingw  [e.g. native]
+#    cygwin          mingw
+#    *nix + wine     mingw
 #
-# Path separators are also converted from ':' to ';', and if
-# $1 begins or ends with a ':' it is preserved (as ';') on
-# output. This description applies only when $build is mingw
-# (msys) or cygwin, and $host is mingw.
+# Path separators are also converted from $build format to
+# $host format. If ARG begins or ends with a path separator
+# character, it is preserved (but converted to $host format)
+# on output.
 #
 # ARG is a pathlist (on $build) that should be converted to
 # the proper representation on $host. The result is stored
@@ -2578,16 +2608,14 @@ func_to_host_pathlist ()
     case $host in
       *mingw* )
         lt_sed_naive_backslashify='s|\\\\*|\\|g;s|/|\\|g;s|\\|\\\\|g'
-        case $build in
-          *mingw* | *cygwin* )
-            # Remove leading and trailing ':' from $1. The behavior of
-            # msys is inconsistent here, and cygpath turns them into
-            # into '.;' and ';.'
-            func_to_host_pathlist_tmp2="$1"
-            func_to_host_pathlist_tmp1=`echo "$func_to_host_pathlist_tmp2" |\
-              $SED -e 's|^:*||' -e 's|:*$||'`
-            ;;
-        esac
+        # Remove leading and trailing path separator characters from
+        # ARG. msys behavior is inconsistent here, cygpath turns them
+        # into '.;' and ';.', and winepath ignores them completely.
+        func_to_host_pathlist_tmp2="$1"
+        # Once set for this call, this variable should not be
+        # reassigned. It is used in tha fallback case.
+        func_to_host_pathlist_tmp1=`echo "$func_to_host_pathlist_tmp2" |\
+          $SED -e 's|^:*||' -e 's|:*$||'`
         case $build in
           *mingw* ) # Actually, msys.
             # Awkward: cmd appends spaces to result.
@@ -2602,23 +2630,48 @@ func_to_host_pathlist ()
             func_to_host_pathlist_result=`echo "$func_to_host_pathlist_tmp2" |\
               $SED -e "$lt_sed_naive_backslashify"`
             ;;
+          * )
+            # unfortunately, winepath doesn't convert pathlists
+            func_to_host_pathlist_result=""
+            func_to_host_pathlist_oldIFS=$IFS
+            IFS=:
+            for func_to_host_pathlist_f in $func_to_host_pathlist_tmp1 ; do
+              IFS=$func_to_host_pathlist_oldIFS
+              if test -n "$func_to_host_pathlist_f" ; then
+                func_to_host_path "$func_to_host_pathlist_f"
+                if test -n "$func_to_host_path_result" ; then
+                  if test -z "$func_to_host_pathlist_result" ; then
+                    func_to_host_pathlist_result="$func_to_host_path_result"
+                  else
+                    func_to_host_pathlist_result="$func_to_host_pathlist_result;$func_to_host_path_result"
+                  fi
+                fi
+              fi
+              IFS=:
+            done
+            IFS=$func_to_host_pathlist_oldIFS
+            ;;
         esac
         if test -z "$func_to_host_pathlist_result" ; then
           func_error "Could not determine the host path(s) corresponding to"
           func_error "  '$1'"
           func_error "Continuing, but uninstalled executables may not work."
+          # Fallback. This may break if $1 contains DOS-style drive
+          # specifications. The fix is not to complicate the expression
+          # below, but for the user to provide a working wine installation
+          # with winepath so that path translation in the cross-to-mingw
+          # case works properly.
+          lt_replace_pathsep_nix_to_dos="s|:|;|g"
+          func_to_host_pathlist_result=`echo "$func_to_host_pathlist_tmp1" |\
+            $SED -e "$lt_replace_pathsep_nix_to_dos"`
         fi
-        case $build in
-          *mingw* | *cygwin* )
-            # Now, add the leading and trailing ':' back
-            case "$1" in
-              :* ) func_to_host_pathlist_result=";$func_to_host_pathlist_result"
-                ;;
-            esac
-            case "$1" in
-              *: ) func_to_host_pathlist_result="$func_to_host_pathlist_result;"
-                ;;
-            esac
+        # Now, add the leading and trailing path separators back
+        case "$1" in
+          :* ) func_to_host_pathlist_result=";$func_to_host_pathlist_result"
+            ;;
+        esac
+        case "$1" in
+          *: ) func_to_host_pathlist_result="$func_to_host_pathlist_result;"
             ;;
         esac
         ;;
