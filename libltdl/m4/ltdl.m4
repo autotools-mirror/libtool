@@ -212,7 +212,6 @@ m4_define([$0], [])
 # of into LIBOBJS.
 AC_DEFUN([_LT_LIBOBJ], [
   m4_pattern_allow([^_LT_LIBOBJS$])
-  AS_LITERAL_IF([$1], [_LT_LIBSOURCES([$1.c])])dnl
   _LT_LIBOBJS="$_LT_LIBOBJS $1.$ac_objext"
 ])# _LT_LIBOBJS
 

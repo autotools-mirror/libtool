@@ -1,3 +1,8 @@
+2008-05-19  Eric Blake  <ebb9@byu.net>
+
+	Fix regression from two days ago.
+	* libltdl/m4/ltdl.m4 (_LT_LIBOBJ): Don't refer to deleted macro.
+
 2008-05-17  Eric Blake  <ebb9@byu.net>
 
 	Speed up bootstrap by improving lt_combine.
