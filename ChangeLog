@@ -1,3 +1,9 @@
+2008-05-20  Eric Blake  <ebb9@byu.net>
+
+	Resynchronize argz whitespace changes from gnulib.
+	* libltdl/m4/argz.m4: Kill trailing whitespace.
+	* libltdl/argz.c: Likewise.
+
 2008-05-19  Eric Blake  <ebb9@byu.net>
 
 	Fix regression from two days ago.
