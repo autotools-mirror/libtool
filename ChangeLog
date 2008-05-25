@@ -1,3 +1,15 @@
+2008-05-25  Charles Wilson  <libtool@cwilson.fastmail.fm>
+
+	Cwrapper should not eat -- arguments
+	* libltdl/config/ltmain.m4sh (func_emit_cwrapperexe_src)
+	[file scope]: Defined all option strings in terms of macro
+	LTWRAPPER_OPTION_PREFIX. Similarly defined all option string
+	lengths in terms of macro LTWRAPPER_OPTION_PREFIX_LENGTH.
+	[main]: Modified option parsing algorithm to pass -- on to
+	target, and to not stop processing arguments when -- is seen.
+	Added check for unrecognized options in reserved namespace
+	defined by LTWRAPPER_OPTION_PREFIX.
+
 2008-05-25  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	Fix ifort settings again.

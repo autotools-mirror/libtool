@@ -2841,18 +2841,24 @@ EOF
 
 	    cat <<"EOF"
 
-static const char *dumpscript_opt  = "--lt-dump-script";
+#define LTWRAPPER_OPTION_PREFIX         "--lt-"
+#define LTWRAPPER_OPTION_PREFIX_LENGTH  5
 
-static const size_t env_set_opt_len = 12;
-static const char *env_set_opt     = "--lt-env-set";
+static const size_t opt_prefix_len         = LTWRAPPER_OPTION_PREFIX_LENGTH;
+static const char *ltwrapper_option_prefix = LTWRAPPER_OPTION_PREFIX;
+
+static const char *dumpscript_opt       = LTWRAPPER_OPTION_PREFIX "dump-script";
+
+static const size_t env_set_opt_len     = LTWRAPPER_OPTION_PREFIX_LENGTH + 7;
+static const char *env_set_opt          = LTWRAPPER_OPTION_PREFIX "env-set";
   /* argument is putenv-style "foo=bar", value of foo is set to bar */
 
-static const size_t env_prepend_opt_len = 16;
-static const char *env_prepend_opt = "--lt-env-prepend";
+static const size_t env_prepend_opt_len = LTWRAPPER_OPTION_PREFIX_LENGTH + 11;
+static const char *env_prepend_opt      = LTWRAPPER_OPTION_PREFIX "env-prepend";
   /* argument is putenv-style "foo=bar", new value of foo is bar${foo} */
 
-static const size_t env_append_opt_len = 15;
-static const char *env_append_opt  = "--lt-env-append";
+static const size_t env_append_opt_len  = LTWRAPPER_OPTION_PREFIX_LENGTH + 10;
+static const char *env_append_opt       = LTWRAPPER_OPTION_PREFIX "env-append";
   /* argument is putenv-style "foo=bar", new value of foo is ${foo}bar */
 
 int
@@ -2989,8 +2995,7 @@ EOF
               lt_opt_process_env_set (p);
             }
           else if ((arglen == env_set_opt_len) &&
-                   (i + 1 < argc) &&
-                   (strcmp (argv[i + 1], "--") != 0))
+                   (i + 1 < argc))
             {
               lt_opt_process_env_set (argv[i + 1]);
               i++; /* don't copy */
@@ -3008,8 +3013,7 @@ EOF
               lt_opt_process_env_prepend (p);
             }
           else if ((arglen == env_prepend_opt_len) &&
-                   (i + 1 < argc) &&
-                   (strcmp (argv[i + 1], "--") != 0))
+                   (i + 1 < argc))
             {
               lt_opt_process_env_prepend (argv[i + 1]);
               i++; /* don't copy */
@@ -3027,8 +3031,7 @@ EOF
               lt_opt_process_env_append (p);
             }
           else if ((arglen == env_append_opt_len) &&
-                   (i + 1 < argc) &&
-                   (strcmp (argv[i + 1], "--") != 0))
+                   (i + 1 < argc))
             {
               lt_opt_process_env_append (argv[i + 1]);
               i++; /* don't copy */
@@ -3037,15 +3040,19 @@ EOF
             lt_fatal ("%s missing required argument", env_append_opt);
           continue;
         }
-      if (strcmp (argv[i], "--") == 0)
+      if (strncmp (argv[i], ltwrapper_option_prefix, opt_prefix_len) == 0)
         {
-          /* immediately copy all the rest of the arguments */
-          ++i;
-          for (; i < argc; i++)
-            newargz[++newargc] = xstrdup (argv[i]);
-
-          /* same as break, because i = argc */
-          continue;
+          /* however, if there is an option in the LTWRAPPER_OPTION_PREFIX
+             namespace, but it is not one of the ones we know about and
+             have already dealt with, above (inluding dump-script), then
+             report an error. Otherwise, targets might begin to believe
+             they are allowed to use options in the LTWRAPPER_OPTION_PREFIX
+             namespace. The first time any user complains about this, we'll
+             need to make LTWRAPPER_OPTION_PREFIX a configure-time option
+             or a configure.ac-settable value.
+           */
+          lt_fatal ("Unrecognized option in %s namespace: '%s'",
+                    ltwrapper_option_prefix, argv[i]);
         }
       /* otherwise ... */
       newargz[++newargc] = xstrdup (argv[i]);
