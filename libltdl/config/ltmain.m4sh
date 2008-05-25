@@ -3005,7 +3005,7 @@ EOF
   /* DO want the lt- prefix here if it exists, so use target_name */
   lt_argv_zero = lt_extend_str (tmp_pathspec, target_name, 1);
   XFREE (tmp_pathspec);
-  tmp_pathspec = 0;
+  tmp_pathspec = NULL;
 EOF
 
 	    case $host_os in
@@ -3039,19 +3039,16 @@ EOF
   newargc=0;
   for (i = 1; i < argc; i++)
     {
-      size_t arglen = strlen (argv[i]);
       if (strncmp (argv[i], env_set_opt, env_set_opt_len) == 0)
         {
-          if ((arglen > env_set_opt_len) && (argv[i][env_set_opt_len] == '='))
+          if (argv[i][env_set_opt_len] == '=')
             {
               const char *p = argv[i] + env_set_opt_len + 1;
               lt_opt_process_env_set (p);
             }
-          else if ((arglen == env_set_opt_len) &&
-                   (i + 1 < argc))
+          else if (argv[i][env_set_opt_len] == '\0' && i + 1 < argc)
             {
-              lt_opt_process_env_set (argv[i + 1]);
-              i++; /* don't copy */
+              lt_opt_process_env_set (argv[++i]); /* don't copy */
             }
           else
             lt_fatal ("%s missing required argument", env_set_opt);
@@ -3059,17 +3056,14 @@ EOF
         }
       if (strncmp (argv[i], env_prepend_opt, env_prepend_opt_len) == 0)
         {
-          if ((arglen > env_prepend_opt_len) &&
-              (argv[i][env_prepend_opt_len] == '='))
+          if (argv[i][env_prepend_opt_len] == '=')
             {
               const char *p = argv[i] + env_prepend_opt_len + 1;
               lt_opt_process_env_prepend (p);
             }
-          else if ((arglen == env_prepend_opt_len) &&
-                   (i + 1 < argc))
+          else if (argv[i][env_prepend_opt_len] == '\0' && i + 1 < argc)
             {
-              lt_opt_process_env_prepend (argv[i + 1]);
-              i++; /* don't copy */
+              lt_opt_process_env_prepend (argv[++i]); /* don't copy */
             }
           else
             lt_fatal ("%s missing required argument", env_prepend_opt);
@@ -3077,17 +3071,14 @@ EOF
         }
       if (strncmp (argv[i], env_append_opt, env_append_opt_len) == 0)
         {
-          if ((arglen > env_append_opt_len) &&
-              (argv[i][env_append_opt_len] == '='))
+          if (argv[i][env_append_opt_len] == '=')
             {
               const char *p = argv[i] + env_append_opt_len + 1;
               lt_opt_process_env_append (p);
             }
-          else if ((arglen == env_append_opt_len) &&
-                   (i + 1 < argc))
+          else if (argv[i][env_append_opt_len] == '\0' && i + 1 < argc)
             {
-              lt_opt_process_env_append (argv[i + 1]);
-              i++; /* don't copy */
+              lt_opt_process_env_append (argv[++i]); /* don't copy */
             }
           else
             lt_fatal ("%s missing required argument", env_append_opt);

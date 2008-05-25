@@ -1,3 +1,10 @@
+2008-05-26  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Simplify argument parsing in cwrapper.
+	* libltdl/config/ltmain.m4sh (func_emit_cwrapperexe_src):
+	Use NULL where appropriate.  Do not compute length of arguments
+	needlessly.
+
 2008-05-25  Charles Wilson  <libtool@cwilson.fastmail.fm>
 
 	[mingw] Add cross-compile support to cwrapper
