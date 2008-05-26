@@ -1,5 +1,11 @@
 2008-05-26  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	libtoolize should not remove config.guess, config.sub.
+	* libtoolize.m4sh (all_pkgconfig_files): Do not list
+	config.guess nor config.sub.  We don't install them without
+	--install, and the project may not be using Automake.
+	Report by Andreas Schwab.
+
 	Simplify argument parsing in cwrapper.
 	* libltdl/config/ltmain.m4sh (func_emit_cwrapperexe_src):
 	Use NULL where appropriate.  Do not compute length of arguments
