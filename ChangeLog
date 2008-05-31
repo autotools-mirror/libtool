@@ -1,3 +1,9 @@
+2008-05-31  Peter O'Gorman  <peter@pogma.com>
+
+	Skip darwin test if fat link fails.
+	* tests/darwin.at: Skip if we can not link a fat program.
+	Reported by Daniel Macks <dmacks@netspace.org>
+
 2008-05-26  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	libtoolize should not remove config.guess, config.sub.
