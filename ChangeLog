@@ -1,4 +1,13 @@
-2006-05-01  Stas Maximov  <smaximov@ieee.org>  (tiny change)
+2008-06-01  Charles Wilson  <libtool@cwilson.fastmail.fm>
+
+	[mingw] fix cross-compile-with-wine case
+	* libltdl/config/ltmain.m4sh (func_to_host_path)
+	[host=mingw, build!=mingw|cygwin]: check that winepath
+	stdout is non-empty and exit code is 0, instead of checking
+	stderr.
+	Reported by: Roumen Petrov
+
+2006-06-01  Stas Maximov  <smaximov@ieee.org>  (tiny change)
 
 	Check only regular files, not devices, for lalibs.
 	* libltdl/config/ltmain.m4sh (functions func_lalib_p)

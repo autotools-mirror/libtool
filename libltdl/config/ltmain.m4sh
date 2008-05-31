@@ -2556,17 +2556,19 @@ func_to_host_path ()
             ;;
           * )
             # Unfortunately, winepath does not exit with a non-zero
-            # error code, so we are forced to check stderr for an
-            # error message. On the other hand, if the command is not
-            # found, the shell will set an exit code of 127. So we
-            # must check for both, which explains the odd construction:
-            func_to_host_path_winepath_stderr=`winepath -w "$1" >/dev/null 2>&1`
-            func_to_host_path_winepath_exitcode=$?
-            if test "$func_to_host_path_winepath_exitcode" -eq 0 &&\
-               test -z "${func_to_host_path_winepath_stderr}" ; then
-              func_to_host_path_tmp1=`winepath -w "$1"`
+            # error code, so we are forced to check the contents of
+            # stdout. On the other hand, if the command is not
+            # found, the shell will set an exit code of 127 and print
+            # *an error message* to stdout. So we must check for both
+            # error code of zero AND non-empty stdout, which explains
+            # the odd construction:
+            func_to_host_path_tmp1=`winepath -w "$1" 2>/dev/null`
+            if test $? -eq 0 && test -n "${func_to_host_path_tmp1}"; then
               func_to_host_path_result=`echo "$func_to_host_path_tmp1" |\
                 $SED -e "$lt_sed_naive_backslashify"`
+            else
+              # Allow warning below.
+              func_to_host_path_result=""
             fi
             ;;
         esac
