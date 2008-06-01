@@ -1,3 +1,13 @@
+2006-05-01  Stas Maximov  <smaximov@ieee.org>  (tiny change)
+
+	Check only regular files, not devices, for lalibs.
+	* libltdl/config/ltmain.m4sh (functions func_lalib_p)
+	(func_lalib_unsafe_p): Only read regular files and not device
+	files.  Avoids blocking libtool executing gdb, when a
+	pseudo-terminal device /dev/pts/NN is given as one of the
+	arguments to gdb, as in:
+	libtool --mode=execute gdb -q -nw -i mi -tty /dev/pts/4 prog
+
 2008-05-31  Peter O'Gorman  <peter@pogma.com>
 
 	Skip darwin test if fat link fails.
