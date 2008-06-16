@@ -775,7 +775,7 @@ Thing (TM) for you:
 
 @example
 burger$ @kbd{libtool --mode=link gcc -g -O -o test test.o \
-		/usr/local/lib/libhello.la}
+                /usr/local/lib/libhello.la}
 gcc -g -O -o @value{objdir}/test test.o -Wl,--rpath \
         -Wl,/usr/local/lib /usr/local/lib/libhello.a -lm
 creating test
@@ -1059,7 +1059,7 @@ Automake doesn't allow you to do so.
 
 @example
 burger$ @kbd{libtool --mode=install ./install-sh -c libhello.a \
-		/local/lib/libhello.a}
+                /local/lib/libhello.a}
 ./install-sh -c libhello.a /local/lib/libhello.a
 ranlib /local/lib/libhello.a
 burger$
@@ -3932,8 +3932,8 @@ is more readable.
 
 @example
 /* aliases for the exported symbols */
-#define foo	foo1_LTX_foo
-#define bar	foo1_LTX_bar
+#define foo  foo1_LTX_foo
+#define bar  foo1_LTX_bar
 
 /* a global variable definition */
 int bar = 1;
@@ -4500,8 +4500,8 @@ if test "x$with_included_ltdl" != "xyes"; then
   CFLAGS="$CFLAGS $LTDLINCL"
   LDFLAGS="$LDFLAGS $LIBLTDL"
   AC_CHECK_LIB([ltdl], [lt_dladvise_init],
-		[],
-	[AC_MSG_ERROR([installed libltdl is too old])])
+                [],
+        [AC_MSG_ERROR([installed libltdl is too old])])
   LDFLAGS="$save_LDFLAGS"
   CFLAGS="$save_CFLAGS"
 fi

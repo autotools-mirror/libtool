@@ -1,3 +1,9 @@
+2008-06-17  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* doc/libtool.texi (Linking executables, Static libraries)
+	(Modules for libltdl, Distributing libltdl): Remove TABs from
+	the manual.
+
 2008-06-13  Peter O'Gorman  <peter@pogma.com>
 
 	Support ifort on darwin.
