@@ -1,3 +1,12 @@
+2008-06-19  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* libltdl/m4/libtool.m4 (_LT_COMPILER_PIC) [linux] <icc, icpc>:
+	Use -fPIC, newer Intel compilers (icc 10, ifort 9) reject -KPIC.
+	* tests/localization.at: Skip test if the compiler fails merely
+	due to the locale setting.
+	* THANKS: Update.
+	Report by Vincent Lefevre.
+
 2008-06-17  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* doc/libtool.texi (Linking executables, Static libraries)

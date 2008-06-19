@@ -38,6 +38,10 @@ AT_DATA([b.c],
 [[int y;
 ]])
 
+# First see if setting a locale is accepted at all.
+AT_CHECK([$CC $CPPFLAGS $CFLAGS -c b.c || exit 77], [], [stdout], [stderr])
+
+# Find out about expected output.
 AT_CHECK([$CC $CPPFLAGS $CFLAGS -c a.c || exit 1], [1], [stdout], [stderr])
 mv -f stdout expected-stdout
 mv -f stderr expected-stderr
