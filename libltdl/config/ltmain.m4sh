@@ -2563,7 +2563,7 @@ func_to_host_path ()
             # error code of zero AND non-empty stdout, which explains
             # the odd construction:
             func_to_host_path_tmp1=`winepath -w "$1" 2>/dev/null`
-            if test $? -eq 0 && test -n "${func_to_host_path_tmp1}"; then
+            if test "$?" -eq 0 && test -n "${func_to_host_path_tmp1}"; then
               func_to_host_path_result=`echo "$func_to_host_path_tmp1" |\
                 $SED -e "$lt_sed_naive_backslashify"`
             else

@@ -1,3 +1,9 @@
+2008-07-31  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* libltdl/config/ltmain.m4sh (func_to_host_path): Fix sh.test
+	failure.
+	Report by Paolo Bonzini.
+
 2008-07-31  Paolo Bonzini  <bonzini@gnu.org>
 
 	* ltmain.m4sh (func_emit_cwrapperexe_src): Factor
