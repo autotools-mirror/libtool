@@ -1,3 +1,15 @@
+2008-08-01  Vincent Torri  <doursse@users.sf.net>
+
+	Add cegcc (Windows CE/PocketPC) support.
+	* libltdl/config/ltmain.m4sh: Add 'cegcc' case where needed.
+	* libltdl/m4/libtool.m4 (LT_CMD_MAX_LEN, LT_SYS_DLOPEN_SELF)
+	(_LT_SYS_DYNAMIC_LINKER, _LT_CHECK_MAGIC_METHOD)
+	(_LT_CMD_GLOBAL_SYMBOLS, _LT_COMPILER_PIC, _LT_LINKER_SHLIBS)
+	(_LT_LANG_CXX_CONFIG): Likewise.
+	* libltdl/m4/ltoptions.m4 (AC_LIBTOOL_DLOPEN): Likewise.
+	* NEWS: Update.
+	* THANKS: Update.
+
 2008-07-31  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* libltdl/config/ltmain.m4sh (func_to_host_path): Fix sh.test

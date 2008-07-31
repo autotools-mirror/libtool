@@ -6,6 +6,10 @@ New in 2.2.??: 2008-06-??: git version 2.2.5a, Libtool team:
 
   - None yet
 
+* Changes in supported systems or compilers:
+
+  - Initial support for cegcc (Windows CE/PocketPC) cross compilation.
+
 New in 2.2.4: 2008-05-04: git version 2.2.3a, Libtool team:
 
 * New features:
