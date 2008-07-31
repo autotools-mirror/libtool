@@ -3126,19 +3126,18 @@ EOF
       return 127;
     }
   return rval;
-}
 EOF
 		;;
 	      *)
 		cat <<"EOF"
   execv (lt_argv_zero, newargz);
   return rval; /* =127, but avoids unused variable warning */
-}
 EOF
 		;;
 	    esac
 
 	    cat <<"EOF"
+}
 
 void *
 xmalloc (size_t num)
