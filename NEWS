@@ -11,9 +11,9 @@ New in 2.2.??: 2008-08-??: git version 2.2.5a, Libtool team:
 
 * Changes in supported systems or compilers:
 
-  - Support for ifort on darwin.
-  - Support for newer Intel compilers (icc 10, ifort 9) on linux.
-  - Support cross compile from mingw with wine.
+  - Fixes for ifort on Darwin, and newer Intel compilers (icc 10, ifort 9)
+    on GNU/Linux.
+  - Support cross compile of MinGW with Wine.
   - Initial support for cegcc (Windows CE/PocketPC) cross compilation.
 
 * Bug fixes:
