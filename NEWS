@@ -1,10 +1,11 @@
 NEWS - list of user-visible changes between releases of GNU Libtool
 
-New in 2.2.??: 2008-06-??: git version 2.2.5a, Libtool team:
+New in 2.2.??: 2008-08-??: git version 2.2.5a, Libtool team:
 
-* Bug fixes:
+* New features:
 
-  - None yet
+  - New lt_dloadvise_preload() call to set a hint that only preloadeded
+    modules can be opened.
 
 * Changes in supported systems or compilers:
 

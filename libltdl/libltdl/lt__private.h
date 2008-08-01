@@ -126,6 +126,7 @@ struct lt__advise {
 				   subsequently loaded modules.  */
   unsigned int	is_symlocal:1;	/* module symbols are only available
 				   locally. */
+  unsigned int	try_preload_only:1;/* only preloaded modules will be tried. */
 };
 
 /* --- ERROR HANDLING --- */

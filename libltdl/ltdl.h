@@ -71,6 +71,7 @@ LT_SCOPE int	    lt_dladvise_ext	 (lt_dladvise *advise);
 LT_SCOPE int	    lt_dladvise_resident (lt_dladvise *advise);
 LT_SCOPE int	    lt_dladvise_local	 (lt_dladvise *advise);
 LT_SCOPE int	    lt_dladvise_global   (lt_dladvise *advise);
+LT_SCOPE int	    lt_dladvise_preload	 (lt_dladvise *advise);
 
 /* Portable libltdl versions of the system dlopen() API. */
 LT_SCOPE lt_dlhandle lt_dlopen		(const char *filename);

@@ -1129,6 +1129,7 @@ try_dlopen (lt_dlhandle *phandle, const char *filename, const char *ext,
 	    lt_dladvise advise)
 {
   const char *	saved_error	= 0;
+  char *	archive_name	= 0;
   char *	canonical	= 0;
   char *	base_name	= 0;
   char *	dir		= 0;
@@ -1257,16 +1258,21 @@ try_dlopen (lt_dlhandle *phandle, const char *filename, const char *ext,
 
       if (vtable)
 	{
+	  archive_name = MALLOC (char, LT_STRLEN (name) + 3);
 	  *phandle = (lt_dlhandle) lt__zalloc (sizeof (struct lt__handle));
 
-	  if (*phandle == NULL)
+	  if ((*phandle == NULL) || (archive_name == NULL))
 	    {
 	      ++errors;
 	      goto cleanup;
 	    }
 	  newhandle = *phandle;
 
-	  if (tryall_dlopen (&newhandle, attempt, advise, vtable) == 0)
+	  /* Preloaded modules are always named according to their old
+	     archive name.  */
+	  sprintf (archive_name, "%s.a", name);
+
+	  if (tryall_dlopen (&newhandle, archive_name, advise, vtable) == 0)
 	    {
 	      goto register_handle;
 	    }
@@ -1276,6 +1282,13 @@ try_dlopen (lt_dlhandle *phandle, const char *filename, const char *ext,
 	  FREE (*phandle);
 	  newhandle = NULL;
 	}
+    }
+
+  /* If we are allowing only preloaded modules, and we didn't find
+     anything yet, give up on the search here.  */
+  if (advise && advise->try_preload_only)
+    {
+      goto cleanup;
     }
 
   /* Check whether we are opening a libtool module (.la extension).  */
@@ -1461,6 +1474,7 @@ try_dlopen (lt_dlhandle *phandle, const char *filename, const char *ext,
   if (!canonical)		/* was MEMREASSIGNed */
     FREE (base_name);
   FREE (canonical);
+  FREE (archive_name);
 
   return errors;
 }
@@ -1552,6 +1566,14 @@ lt_dladvise_global (lt_dladvise *padvise)
 {
   assert (padvise && *padvise);
   (*padvise)->is_symglobal = 1;
+  return 0;
+}
+
+int
+lt_dladvise_preload (lt_dladvise *padvise)
+{
+  assert (padvise && *padvise);
+  (*padvise)->try_preload_only = 1;
   return 0;
 }
 

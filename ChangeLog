@@ -1,3 +1,20 @@
+2008-08-01  Gary V. Vaughan  <gary@gnu.org>
+
+	Implement lt_dlopening of only preloaded modules.
+	* libltdl/m4/ltdl.m4 (LTDL_INIT): Check for a libltdl that
+	provides lt_dladvise_preopen when deciding if installed libltdl
+	is 'new enough'.
+	* libltdl/libltdl/lt__private.h (lt__advise): Add a new
+	is_preload flag.
+	* libltdl/ltdl.c (lt_dladvise_preload): New api call to set it.
+	(try_dlopen): If it is set, and the search of preloaded modules
+	didn't return a match, don't bother searching the filesystem.
+	* libltdl/ltdl.h (lt_dladvise_preload): Declare it.
+	* doc/libtool.texi (Libltdl Interface): Document it.
+	* tests/lt_dladvise.at: Test it (and incidentally add some test
+	coverage for `libtool -dlpreopen').
+	* NEWS: Announce it.
+
 2008-08-01  Vincent Torri  <doursse@users.sf.net>
 
 	Add cegcc (Windows CE/PocketPC) support.

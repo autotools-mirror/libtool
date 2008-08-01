@@ -3816,6 +3816,13 @@ On failure, @code{lt_dladvise_resident} returns non-zero and sets an error
 message that can be retrieved with @code{lt_dlerror}.
 @end deftypefun
 
+@deftypefun int lt_dladvise_preload (lt_dladvise *@var{advise})
+Set the @code{preload} hint on @var{advise}.  Passing an @var{advise}
+parameter to @code{lt_dlopenadvise} with this hint set causes it to
+load only preloaded modules, so that if a suitable preloaded module is
+not found, @code{lt_dlopenadvise} will return @code{NULL}.
+@end deftypefun
+
 @deftypefun int lt_dlclose (lt_dlhandle @var{handle})
 Decrement the reference count on the module @var{handle}.
 If it drops to zero and no other module depends on this module,

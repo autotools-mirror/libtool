@@ -248,7 +248,7 @@ if test "x$with_included_ltdl" != xyes; then
   # decide whether there is a useful installed version we can use.
   AC_CHECK_HEADER([ltdl.h],
       [AC_CHECK_DECL([lt_dlinterface_register],
-	   [AC_CHECK_LIB([ltdl], [lt_dlinterface_register],
+	   [AC_CHECK_LIB([ltdl], [lt_dladvise_preload],
 	       [with_included_ltdl=no],
 	       [with_included_ltdl=yes])],
 	   [with_included_ltdl=yes],
