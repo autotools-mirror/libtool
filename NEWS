@@ -6,10 +6,19 @@ New in 2.2.??: 2008-08-??: git version 2.2.5a, Libtool team:
 
   - New lt_dloadvise_preload() call to set a hint that only preloadeded
     modules can be opened.
+  - libtoolize no longer removes config.guess and config.sub, even when
+    --install is passed.
 
 * Changes in supported systems or compilers:
 
+  - Support for ifort on darwin.
+  - Support for newer Intel compilers (icc 10, ifort 9) on linux.
+  - Support cross compile from mingw with wine.
   - Initial support for cegcc (Windows CE/PocketPC) cross compilation.
+
+* Bug fixes:
+
+  - Several testsuite issues have been fixed, thanks to user feedback.
 
 New in 2.2.4: 2008-05-04: git version 2.2.3a, Libtool team:
 

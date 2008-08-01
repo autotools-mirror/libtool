@@ -1,5 +1,8 @@
 2008-08-01  Gary V. Vaughan  <gary@gnu.org>
 
+	Bring NEWS up to date.
+	* NEWS: Add missing summaries since 2.2.4 release.
+
 	Implement lt_dlopening of only preloaded modules.
 	* libltdl/m4/ltdl.m4 (LTDL_INIT): Check for a libltdl that
 	provides lt_dladvise_preopen when deciding if installed libltdl
