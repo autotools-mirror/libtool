@@ -5812,6 +5812,13 @@ func_mode_link ()
 	      *) tmp_libs="$tmp_libs $deplib" ;;
 	      esac
 	      ;;
+	    -l*)
+	      if test -n "$dashl_xform" -a "$linkmode" = prog; then
+		func_stripname '-l' '' "$deplib"
+		deplib=`func_echo_all "$func_stripname_result" | $SED -e $dashl_xform`
+	      fi
+	      tmp_libs="$tmp_libs $deplib"
+	      ;;
 	    *) tmp_libs="$tmp_libs $deplib" ;;
 	    esac
 	  done
@@ -6459,6 +6466,9 @@ EOF
 		      if eval $file_magic_cmd \"\$potlib\" 2>/dev/null |
 			 $SED -e 10q |
 			 $EGREP "$file_magic_regex" > /dev/null; then
+			if test -n "$dashl_xform"; then
+			  a_deplib=`func_echo_all "$name" | $SED -e $dashl_xform`
+			fi
 			newdeplibs="$newdeplibs $a_deplib"
 			a_deplib=""
 			break 2

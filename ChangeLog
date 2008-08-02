@@ -1,5 +1,18 @@
 2008-08-02  Peter Rosin  <peda@lysator.liu.se>
 
+	MSVC doesn't support the -l option, instead it expects the exact
+	library file name. Retain the -l option as long as possible as
+	libtool recognizes -l internally. Then, as late as possible
+	transform the -l option to an exact file name (-lfoo ->
+	foo.lib).
+	* libltdl/m4/libtool.m4: Add tag variable dashl_xform which
+	specifies how to transform -l options for the linker.
+	* libltdl/config/ltmain.m4sh (func_mode_link): Transform -l
+	options using dashl_xform right before creating the
+	program or library.
+
+2008-08-02  Peter Rosin  <peda@lysator.liu.se>
+
 	MSVC needs a hint to force it to compile either as C or C++.
 	* libltdl/m4/libtool.m4: Add tag variable compile_tag to
 	enable tag specific compiler options that are bad in the
