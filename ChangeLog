@@ -1,3 +1,23 @@
+2008-08-02  Peter Rosin  <peda@lysator.liu.se>
+
+	Allow Microsoft lib to be used as the archiver.
+	* libltdl/m4/libtool.m4 (_LT_PROG_AR): New macro, detect the
+	interface used by the archiver. In particular, add the AR_SEP
+	variable to allow archivers that does not allow a space between
+	the options to create an archive and the archive name and the
+	ar_extract_one_by_one variable which indicates if the archiver
+	can extract all members in one go.
+	* libltdl/m4/libtool.m4: Add $AR_SEP between $AR_FLAGS and the
+	archive file name in all $AR commands.
+	* libltdl/config/ltmain.m4sh (func_extract_an_archive): Add support
+	for archivers that only supports extracting one member at a time
+	and otherwise adjust to the above libtool.m4 changes. Also, add
+	$AR_SEP to the $AR invocations.
+	* Makefile.am: Pass AR, AR_FLAGS and AR_SEP through to the
+	testsuite.
+	* tests/archive-in-archive.at: Extract archive name from the .la
+	file instead of hardcoding the name, and allow different archivers.
+
 2008-12-19  Akim Demaille  <demaille@gostai.com>
 
 	Fix copyright notice.

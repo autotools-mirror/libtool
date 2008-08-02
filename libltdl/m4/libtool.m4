@@ -1280,14 +1280,62 @@ need_locks="$enable_libtool_lock"
 ])# _LT_ENABLE_LOCK
 
 
+# _LT_PROG_AR
+# -----------
+m4_defun([_LT_PROG_AR],
+[AC_CHECK_TOOLS(AR, [ar lib "link -lib"], false)
+: ${AR=ar}
+_LT_DECL([], [AR], [1], [The archiver])
+
+AC_CACHE_CHECK([the archiver ($AR) interface],[lt_cv_ar_interface],
+  [lt_cv_ar_interface="ar"
+  printf "$lt_simple_compile_test_code" > conftest.$ac_ext
+  (eval echo "\"\$as_me:__oline__: $ac_compile\"" >&AS_MESSAGE_LOG_FD)
+  (eval "$ac_compile" 2>conftest.err)
+  cat conftest.err >&AS_MESSAGE_LOG_FD
+  (eval "$AR -NOLOGO -OUT:conftest.lib conftest.$ac_objext" &>conftest.err)
+  ac_status=$?
+  cat conftest.err >&AS_MESSAGE_LOG_FD
+  test $ac_status = 0 && test -f conftest.lib && lt_cv_ar_interface="lib"
+  rm -f conftest*])
+
+case $lt_cv_ar_interface in
+ar)
+  : ${AR_FLAGS=cru}
+  : ${AR_TFLAGS=t}
+  : ${AR_XFLAGS=x}
+  test -z "$AR_SEP" && AR_SEP=' '
+  _LT_TAGVAR(ar_extract_one_by_one, $1)=no
+  ;;
+lib)
+  : ${AR_FLAGS="-NOLOGO -OUT:"}
+  : ${AR_TFLAGS="-NOLOGO -LIST "}
+  : ${AR_XFLAGS="-NOLOGO -EXTRACT:"}
+  test -z "$AR_SEP" && AR_SEP=''
+  _LT_TAGVAR(ar_extract_one_by_one, $1)=yes
+  # Don't use ranlib
+  : ${RANLIB=:}
+  ;;
+esac
+
+_LT_DECL([], [ar_extract_one_by_one], [1],
+  [Extract archive members one by one])
+
+_LT_DECL([], [AR_FLAGS], [1], [Flags to create an archive])
+_LT_DECL([], [AR_TFLAGS], [1], [Flags to list archive content])
+_LT_DECL([], [AR_XFLAGS], [1], [Flags to extract an archive])
+_LT_DECL([], [AR_SEP], [1], [Separator between AR flags and AR files])
+AC_SUBST([AR])
+AC_SUBST([AR_FLAGS])
+AC_SUBST([AR_TFLAGS])
+AC_SUBST([AR_SEP])
+])# LT_PROG_AR
+
+
 # _LT_CMD_OLD_ARCHIVE
 # -------------------
 m4_defun([_LT_CMD_OLD_ARCHIVE],
-[AC_CHECK_TOOL(AR, ar, false)
-test -z "$AR" && AR=ar
-test -z "$AR_FLAGS" && AR_FLAGS=cru
-_LT_DECL([], [AR], [1], [The archiver])
-_LT_DECL([], [AR_FLAGS], [1])
+[_LT_PROG_AR
 
 AC_CHECK_TOOL(STRIP, strip, :)
 test -z "$STRIP" && STRIP=:
@@ -1299,7 +1347,7 @@ _LT_DECL([], [RANLIB], [1],
     [Commands used to install an old-style archive])
 
 # Determine commands to create old-style static archives.
-old_archive_cmds='$AR $AR_FLAGS $oldlib$oldobjs'
+old_archive_cmds='$AR $AR_FLAGS$AR_SEP$oldlib$oldobjs'
 old_postinstall_cmds='chmod 644 $oldlib'
 old_postuninstall_cmds=
 
@@ -4242,7 +4290,7 @@ _LT_EOF
             _LT_TAGVAR(archive_expsym_cmds, $1)=''
         ;;
       m68k)
-            _LT_TAGVAR(archive_cmds, $1)='$RM $output_objdir/a2ixlibrary.data~$ECHO "#define NAME $libname" > $output_objdir/a2ixlibrary.data~$ECHO "#define LIBRARY_ID 1" >> $output_objdir/a2ixlibrary.data~$ECHO "#define VERSION $major" >> $output_objdir/a2ixlibrary.data~$ECHO "#define REVISION $revision" >> $output_objdir/a2ixlibrary.data~$AR $AR_FLAGS $lib $libobjs~$RANLIB $lib~(cd $output_objdir && a2ixlibrary -32)'
+            _LT_TAGVAR(archive_cmds, $1)='$RM $output_objdir/a2ixlibrary.data~$ECHO "#define NAME $libname" > $output_objdir/a2ixlibrary.data~$ECHO "#define LIBRARY_ID 1" >> $output_objdir/a2ixlibrary.data~$ECHO "#define VERSION $major" >> $output_objdir/a2ixlibrary.data~$ECHO "#define REVISION $revision" >> $output_objdir/a2ixlibrary.data~$AR $AR_FLAGS$AR_SEP$lib $libobjs~$RANLIB $lib~(cd $output_objdir && a2ixlibrary -32)'
             _LT_TAGVAR(hardcode_libdir_flag_spec, $1)='-L$libdir'
             _LT_TAGVAR(hardcode_minus_L, $1)=yes
         ;;
@@ -4461,7 +4509,7 @@ _LT_EOF
     aix3*)
       _LT_TAGVAR(allow_undefined_flag, $1)=unsupported
       _LT_TAGVAR(always_export_symbols, $1)=yes
-      _LT_TAGVAR(archive_expsym_cmds, $1)='$LD -o $output_objdir/$soname $libobjs $deplibs $linker_flags -bE:$export_symbols -T512 -H512 -bM:SRE~$AR $AR_FLAGS $lib $output_objdir/$soname'
+      _LT_TAGVAR(archive_expsym_cmds, $1)='$LD -o $output_objdir/$soname $libobjs $deplibs $linker_flags -bE:$export_symbols -T512 -H512 -bM:SRE~$AR $AR_FLAGS$AR_SEP$lib $output_objdir/$soname'
       # Note: this linker hardcodes the directories in LIBPATH if there
       # are no directories specified by -L.
       _LT_TAGVAR(hardcode_minus_L, $1)=yes
@@ -4591,7 +4639,7 @@ _LT_EOF
 	  _LT_TAGVAR(whole_archive_flag_spec, $1)='$convenience'
 	  _LT_TAGVAR(archive_cmds_need_lc, $1)=yes
 	  # This is similar to how AIX traditionally builds its shared libraries.
-	  _LT_TAGVAR(archive_expsym_cmds, $1)="\$CC $shared_flag"' -o $output_objdir/$soname $libobjs $deplibs ${wl}-bnoentry $compiler_flags ${wl}-bE:$export_symbols${allow_undefined_flag}~$AR $AR_FLAGS $output_objdir/$libname$release.a $output_objdir/$soname'
+	  _LT_TAGVAR(archive_expsym_cmds, $1)="\$CC $shared_flag"' -o $output_objdir/$soname $libobjs $deplibs ${wl}-bnoentry $compiler_flags ${wl}-bE:$export_symbols${allow_undefined_flag}~$AR $AR_FLAGS$AR_SEP$output_objdir/$libname$release.a $output_objdir/$soname'
 	fi
       fi
       ;;
@@ -4604,7 +4652,7 @@ _LT_EOF
             _LT_TAGVAR(archive_expsym_cmds, $1)=''
         ;;
       m68k)
-            _LT_TAGVAR(archive_cmds, $1)='$RM $output_objdir/a2ixlibrary.data~$ECHO "#define NAME $libname" > $output_objdir/a2ixlibrary.data~$ECHO "#define LIBRARY_ID 1" >> $output_objdir/a2ixlibrary.data~$ECHO "#define VERSION $major" >> $output_objdir/a2ixlibrary.data~$ECHO "#define REVISION $revision" >> $output_objdir/a2ixlibrary.data~$AR $AR_FLAGS $lib $libobjs~$RANLIB $lib~(cd $output_objdir && a2ixlibrary -32)'
+            _LT_TAGVAR(archive_cmds, $1)='$RM $output_objdir/a2ixlibrary.data~$ECHO "#define NAME $libname" > $output_objdir/a2ixlibrary.data~$ECHO "#define LIBRARY_ID 1" >> $output_objdir/a2ixlibrary.data~$ECHO "#define VERSION $major" >> $output_objdir/a2ixlibrary.data~$ECHO "#define REVISION $revision" >> $output_objdir/a2ixlibrary.data~$AR $AR_FLAGS$AR_SEP$lib $libobjs~$RANLIB $lib~(cd $output_objdir && a2ixlibrary -32)'
             _LT_TAGVAR(hardcode_libdir_flag_spec, $1)='-L$libdir'
             _LT_TAGVAR(hardcode_minus_L, $1)=yes
         ;;
@@ -5547,7 +5595,7 @@ if test "$_lt_caught_CXX_error" != yes; then
 	    _LT_TAGVAR(archive_cmds_need_lc, $1)=yes
 	    # This is similar to how AIX traditionally builds its shared
 	    # libraries.
-	    _LT_TAGVAR(archive_expsym_cmds, $1)="\$CC $shared_flag"' -o $output_objdir/$soname $libobjs $deplibs ${wl}-bnoentry $compiler_flags ${wl}-bE:$export_symbols${allow_undefined_flag}~$AR $AR_FLAGS $output_objdir/$libname$release.a $output_objdir/$soname'
+	    _LT_TAGVAR(archive_expsym_cmds, $1)="\$CC $shared_flag"' -o $output_objdir/$soname $libobjs $deplibs ${wl}-bnoentry $compiler_flags ${wl}-bE:$export_symbols${allow_undefined_flag}~$AR $AR_FLAGS$AR_SEP$output_objdir/$libname$release.a $output_objdir/$soname'
           fi
         fi
         ;;
@@ -5855,7 +5903,7 @@ if test "$_lt_caught_CXX_error" != yes; then
 	      _LT_TAGVAR(old_archive_cmds, $1)='tpldir=Template.dir~
 		rm -rf $tpldir~
 		$CC --prelink_objects --instantiation_dir $tpldir $oldobjs$old_deplibs~
-		$AR $AR_FLAGS $oldlib$oldobjs$old_deplibs `find $tpldir -name \*.o | $NL2SP`~
+		$AR $AR_FLAGS$AR_SEP$oldlib$oldobjs$old_deplibs `find $tpldir -name \*.o | $NL2SP`~
 		$RANLIB $oldlib'
 	      _LT_TAGVAR(archive_cmds, $1)='tpldir=Template.dir~
 		rm -rf $tpldir~
