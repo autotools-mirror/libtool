@@ -1,5 +1,14 @@
 2008-08-02  Peter Rosin  <peda@lysator.liu.se>
 
+	MSVC needs a hint to force it to compile either as C or C++.
+	* libltdl/m4/libtool.m4: Add tag variable compile_tag to
+	enable tag specific compiler options that are bad in the
+	linking phase.
+	* libltdl/config/ltmain.m4sh: Add the tag specific options
+	to the compile command line.
+
+2008-08-02  Peter Rosin  <peda@lysator.liu.se>
+
 	The MSVC linker doesn't have a -L option, and doesn't understand
 	posix paths.  Move paths to an envvar with a prefix (-LIBPATH:).
 	* libltdl/m4/libtool.m4: Add new tag variables to specify

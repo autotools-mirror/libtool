@@ -884,6 +884,10 @@ func_mode_compile ()
       pic_mode=default
     fi
 
+    if test -n "$compile_tag"; then
+      base_compile="$base_compile $compile_tag"
+    fi
+
     # Calculate the filename of the output object if compiler does
     # not support -o with -c
     if test "$compiler_c_o" = no; then
