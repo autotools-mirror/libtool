@@ -1,5 +1,11 @@
 2008-08-02  Peter Rosin  <peda@lysator.liu.se>
 
+	Add MSVC support.
+	* libltdl/m4/libtool.m4: Add support for Microsoft Visual C.
+	* NEWS: Add note of the above.
+
+2008-08-02  Peter Rosin  <peda@lysator.liu.se>
+
 	Allow the use of a file listing file if the archiver supports
 	it.  Add hint so that the Microsoft lib archiver uses the file
 	listing feature.
