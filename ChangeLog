@@ -1,5 +1,16 @@
 2008-08-02  Peter Rosin  <peda@lysator.liu.se>
 
+	Allow the use of a file listing file if the archiver supports
+	it.  Add hint so that the Microsoft lib archiver uses the file
+	listing feature.
+	* libltdl/m4/libtool.m4 (_LT_PROG_AR): Indicate if the
+	archiver supports a listing file with the new variable
+	archiver_list_spec.
+	* libltdl/config/ltmain.m4sh: If the archiver supports
+	a listing file, use it when max_cmd_len is exceeded.
+
+2008-08-02  Peter Rosin  <peda@lysator.liu.se>
+
 	MSVC doesn't support the -l option, instead it expects the exact
 	library file name. Retain the -l option as long as possible as
 	libtool recognizes -l internally. Then, as late as possible

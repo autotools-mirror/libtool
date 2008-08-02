@@ -1306,6 +1306,7 @@ ar)
   : ${AR_XFLAGS=x}
   test -z "$AR_SEP" && AR_SEP=' '
   _LT_TAGVAR(ar_extract_one_by_one, $1)=no
+  _LT_TAGVAR(archiver_list_spec, $1)=
   ;;
 lib)
   : ${AR_FLAGS="-NOLOGO -OUT:"}
@@ -1313,6 +1314,7 @@ lib)
   : ${AR_XFLAGS="-NOLOGO -EXTRACT:"}
   test -z "$AR_SEP" && AR_SEP=''
   _LT_TAGVAR(ar_extract_one_by_one, $1)=yes
+  _LT_TAGVAR(archiver_list_spec, $1)='@'
   # Don't use ranlib
   : ${RANLIB=:}
   ;;
@@ -1320,6 +1322,8 @@ esac
 
 _LT_DECL([], [ar_extract_one_by_one], [1],
   [Extract archive members one by one])
+_LT_DECL([], [archiver_list_spec], [1],
+  [How to feed a file listing to the archiver])
 
 _LT_DECL([], [AR_FLAGS], [1], [Flags to create an archive])
 _LT_DECL([], [AR_TFLAGS], [1], [Flags to list archive content])
