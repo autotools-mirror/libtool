@@ -628,6 +628,36 @@ func_infer_tag ()
 }
 
 
+# func_dashL_to_envvar deplibs_variable deplibs...
+func_dashL_to_envvar ()
+{
+  deplibs_variable=$1
+  shift
+  tmp_libs=
+  for deplib; do
+    case $deplib in
+    -L*)
+      func_stripname '-L' '' "$deplib"
+      env_path=$func_stripname_result
+      case $host_os in
+      mingw*)
+	env_path=`cmd \\\\/C echo "$env_path " | $SED -e 's/"\(.*\) " *$/\1/'`
+	;;
+      cygwin*)
+	env_path=`cygpath -w "$env_path"`
+	;;
+      esac
+      eval $dashL_envvar="\"\$$dashL_envvar $dashL_envvar_spec$env_path\""
+      ;;
+    *)
+      tmp_libs="$tmp_libs $deplib"
+      ;;
+    esac
+  done
+  eval $deplibs_variable="\"$tmp_libs\""
+}
+
+
 
 # func_write_libtool_object output_name pic_name nonpic_name
 # Create a libtool object file (analogous to a ".la" file),
@@ -7084,6 +7114,19 @@ EOF
 	  test "X$libobjs" = "X " && libobjs=
 	fi
 
+	case $pass/$dashL_envvar in
+	link/) ;;
+	link/*)
+	  # Move all -L options to the environment variable
+	  # specified by $dashL_envvar.
+	  eval save_dashL_envvar="\"\$$dashL_envvar\""
+	  eval cmds=\"\$cmds~$dashL_envvar="$save_dashL_envvar"\"
+
+	  func_dashL_to_envvar deplibs $deplibs
+	  export $dashL_envvar
+	  ;;
+	esac
+
 	save_ifs="$IFS"; IFS='~'
 	for cmd in $cmds; do
 	  IFS="$save_ifs"
@@ -7311,6 +7354,25 @@ EOF
       done
       compile_deplibs="$new_libs"
 
+
+      case $pass/$dashL_envvar in
+      link/) ;;
+      link/*)
+	# Move all -L options to the environment variable
+	# specified by $dashL_envvar.
+	eval save_dashL_envvar="\"\$$dashL_envvar\""
+
+	func_dashL_to_envvar compile_deplibs $compile_deplibs
+	eval prepend_dashL_envvar="$dashL_envvar=\\\"\$$dashL_envvar\\\""
+	compile_command="$prepend_dashL_envvar $compile_command"
+	eval $dashL_envvar="\"$save_dashL_envvar\""
+
+	func_dashL_to_envvar finalize_deplibs $finalize_deplibs
+	eval prepend_dashL_envvar="$dashL_envvar=\\\"\$$dashL_envvar\\\""
+	finalize_command="$prepend_dashL_envvar $finalize_command"
+	eval $dashL_envvar="\"$save_dashL_envvar\""
+	;;
+      esac
 
       compile_command="$compile_command $compile_deplibs"
       finalize_command="$finalize_command $finalize_deplibs"

@@ -1,5 +1,17 @@
 2008-08-02  Peter Rosin  <peda@lysator.liu.se>
 
+	The MSVC linker doesn't have a -L option, and doesn't understand
+	posix paths.  Move paths to an envvar with a prefix (-LIBPATH:).
+	* libltdl/m4/libtool.m4: Add new tag variables to specify
+	to what variable (dashL_envvar) -L options should be moved,
+	and what to prepend to the -L path (dashL_envvar_spec).
+	* libltdl/config/ltmain.m4sh (func_dashL_to_envvar): New
+	function that moves -L options to a variable.
+	* libltdl/config/ltmain.m4sh (func_mode_link): Prior to
+	linking, call above function if dashL_envvar is set.
+
+2008-08-02  Peter Rosin  <peda@lysator.liu.se>
+
 	On Windows, find potential libs regardless of file name case.
 	* libltdl/m4/libtool.m4 (_LT_CHECK_MAGIC_METHOD),
 	libltdl/config/ltmain.m4sh (func_mode_link): On Windows,

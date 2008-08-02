@@ -5239,6 +5239,10 @@ _LT_TAGDECL([], [prelink_cmds], [2],
     [Commands necessary for linking programs (against libraries) with templates])
 _LT_TAGDECL([], [file_list_spec], [1],
     [Specify filename containing input files])
+_LT_TAGDECL([], [dashL_envvar], [1],
+    [When linking, move all paths specified with -L options to this variable])
+_LT_TAGDECL([], [dashL_envvar_spec], [1],
+    [When moving paths with dashL_envvar, prepend this to each path])
 dnl FIXME: Not yet implemented
 dnl _LT_TAGDECL([], [thread_safe_flag_spec], [1],
 dnl    [Compiler flag to generate thread safe objects])
