@@ -3140,6 +3140,23 @@ tpf*)
   ;;
 esac
 ])
+
+case $host_os in
+cygwin* | mingw* | pw32*)
+  if ( shopt | grep nocaseglob ) >/dev/null 2>&1; then
+    file_magic_glob=
+    want_nocaseglob=yes
+  else
+    file_magic_glob=`echo aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxXyYzZ | $SED -e "s/\(..\)/s\/[[\1]]\/[[\1]]\/g;/g"`
+    want_nocaseglob=no
+  fi
+  ;;
+*)
+  file_magic_glob=
+  want_nocaseglob=no
+  ;;
+esac
+
 file_magic_cmd=$lt_cv_file_magic_cmd
 deplibs_check_method=$lt_cv_deplibs_check_method
 test -z "$deplibs_check_method" && deplibs_check_method=unknown
@@ -3148,6 +3165,10 @@ _LT_DECL([], [deplibs_check_method], [1],
     [Method to check whether dependent libraries are shared objects])
 _LT_DECL([], [file_magic_cmd], [1],
     [Command to use when deplibs_check_method == "file_magic"])
+_LT_DECL([], [file_magic_glob], [1],
+    [How to find potential files when deplibs_check_method == "file_magic"])
+_LT_DECL([], [want_nocaseglob], [1],
+    [Find potential files using nocaseglob when deplibs_check_method == "file_magic"])
 ])# _LT_CHECK_MAGIC_METHOD
 
 

@@ -468,6 +468,7 @@ TESTSUITE_AT	= tests/testsuite.at \
 		  tests/execute-mode.at \
 		  tests/infer-tag.at \
 		  tests/localization.at \
+		  tests/nocase.at \
 		  tests/install.at \
 		  tests/destdir.at \
 		  tests/old-m4-iface.at \
