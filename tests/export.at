@@ -93,32 +93,48 @@ v15
 
 AT_DATA(main.c,
 [[
+/* w32 fun.  With GCC, you can have auto-import, which will work for
+ * functions and non-const variables.  With MSVC, you have to explicitly
+ * import all variables.  Depending on the amount of portability, you
+ * need these annotations: LIBA_SCOPE for GCC, and also LIBA_SCOPE_VAR
+ * for MSVC.  Of course you can merge both to one, this test only avoids
+ * that in order to expose the auto-import feature on Cygwin.
+ *
+ * For users, it's best to realize that they should not provide any
+ * non-function API at all.
+ */
 #if defined(LIBA_DLL_IMPORT)
 #  if defined(_WIN32) || defined(WIN32) || defined(__CYGWIN__)
 #    define LIBA_SCOPE extern __declspec(dllimport)
+#    if defined(_MSC_VER)
+#      define LIBA_SCOPE_VAR LIBA_SCOPE
+#    endif
 #  endif
 #endif
 #if !defined(LIBA_SCOPE)
 #  define LIBA_SCOPE extern
 #endif
+#if !defined(LIBA_SCOPE_VAR)
+#  define LIBA_SCOPE_VAR extern
+#endif
 #ifdef __cplusplus
 extern "C" {
 #endif
-extern int v1;
-extern int v3, v4;
+LIBA_SCOPE_VAR int v1;
+LIBA_SCOPE_VAR int v3, v4;
 LIBA_SCOPE const int v5, v6;
-extern const char* v7;
-extern const char v8[];
+LIBA_SCOPE_VAR const char* v7;
+LIBA_SCOPE_VAR const char v8[];
 extern int v9(void);
-extern int (*v10) (void);
-extern int (*v11) (void);
+LIBA_SCOPE_VAR int (*v10) (void);
+LIBA_SCOPE_VAR int (*v11) (void);
 LIBA_SCOPE int (*const v12) (void);
 #ifdef __cplusplus
 }
 #endif
 
 typedef struct { int arr[1000]; } large;
-extern large v13, v14, v15;
+LIBA_SCOPE_VAR large v13, v14, v15;
 
 int main (void)
 {

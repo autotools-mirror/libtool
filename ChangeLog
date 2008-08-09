@@ -1,3 +1,7 @@
+2008-08-09  Peter Rosin  <peda@lysator.liu.se>
+
+	* tests/export.at [MSVC]: dllimport all imported variables.
+
 2008-08-02  Peter Rosin  <peda@lysator.liu.se>
 
 	Add MSVC support.
