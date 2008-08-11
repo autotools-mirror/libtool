@@ -1,5 +1,10 @@
 2008-08-11  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	Remove use of exit in configure test sources.
+	* libltdl/m4/libtool.m4 (_LT_TRY_DLOPEN_SELF): Return from main,
+	to avoid using undeclared exit.
+	Report against OpenMPI from Coverity via Jeff Squyres.
+
 	* tests/configure-iface.at (convenience libltdl): Ignore warning
 	from parallel make.
 
