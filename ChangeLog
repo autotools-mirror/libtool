@@ -1,3 +1,8 @@
+2008-08-11  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* tests/configure-iface.at (convenience libltdl): Ignore warning
+	from parallel make.
+
 2008-08-07  DJ Delorie  <dj@redhat.com>
 
 	* libltdl/m4/libtool.m4 (_LT_SYS_DYNAMIC_LINKER) [tpf]
