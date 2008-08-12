@@ -3175,21 +3175,19 @@ tpf*)
 esac
 ])
 
-case $host_os in
-cygwin* | mingw* | pw32*)
-  if ( shopt | grep nocaseglob ) >/dev/null 2>&1; then
-    file_magic_glob=
-    want_nocaseglob=yes
-  else
-    file_magic_glob=`echo aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxXyYzZ | $SED -e "s/\(..\)/s\/[[\1]]\/[[\1]]\/g;/g"`
-    want_nocaseglob=no
-  fi
-  ;;
-*)
-  file_magic_glob=
-  want_nocaseglob=no
-  ;;
-esac
+file_magic_glob=
+want_nocaseglob=no
+if test "$build" = "$host"; then
+  case $host_os in
+  cygwin* | mingw* | pw32*)
+    if ( shopt | grep nocaseglob ) >/dev/null 2>&1; then
+      want_nocaseglob=yes
+    else
+      file_magic_glob=`echo aAbBcCdDeEfFgGhHiIjJkKlLmMnNoOpPqQrRsStTuUvVwWxXyYzZ | $SED -e "s/\(..\)/s\/[[\1]]\/[[\1]]\/g;/g"`
+    fi
+    ;;
+  esac
+fi
 
 file_magic_cmd=$lt_cv_file_magic_cmd
 deplibs_check_method=$lt_cv_deplibs_check_method

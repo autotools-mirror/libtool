@@ -1,3 +1,8 @@
+2008-08-12  Peter Rosin  <peda@lysator.liu.se>
+
+	* libltdl/m4/libtool.m4 (_LT_CHECK_MAGIC_METHOD): Disable nocase
+	handling for cross compiles.
+
 2008-08-09  Peter Rosin  <peda@lysator.liu.se>
 
 	* tests/export.at [MSVC]: dllimport all imported variables.
