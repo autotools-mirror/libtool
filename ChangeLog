@@ -1,3 +1,7 @@
+2008-08-12  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* HACKING: Update for git, fix some minor nits.
+
 2008-08-11  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	Remove use of exit in configure test sources.

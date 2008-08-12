@@ -52,14 +52,15 @@ and is not part of a release distribution.
 =============
 
 * When writing tests, make sure the link invocation (first argument to
-  AT_CHECK) is on a single line so that 'testsuite -x' displays the
-  whole thing.
+  AT_CHECK) is on a single line so that `testsuite -x' displays the
+  whole thing.  You can use m4_do or `[... ]dnl' to wrap long lines.
 
 * Use
+    make -k check
+  liberally, on as many platforms as you can.  Use as many compilers and
+  linkers you can.  To run old and new testsuites separately, use
     make check TESTSUITEFLAGS=-V
     make check-local
-  liberally, on as many platforms as you can.  Use as many compilers and
-  linkers you can.
 
 * The new Autotest testsuite uses keywords to denote test features:
     autoconf		needs Autoconf
@@ -130,7 +131,8 @@ yyyy-mm-dd  Name of Author  <email@address>  (tiny change)
 * Preferably the next part should be a description of the overall
   purpose of the change, separated from the header by a blank line,
   indented by 1 tab, and filled at column 72.  The last character of the
-  description should be a colon, :.
+  description should be a period.  Ideally, this description fits on one
+  line, or begins with a one-line summary.
 
 * Changes to each file come next.  Each new file starts on a new line,
   indented by 1 tab and starting with an asterisk and a space.  Multiple
@@ -176,7 +178,7 @@ yyyy-mm-dd  Name of Author  <email@address>  (tiny change)
             Peter O'Gorman  <peter@pogma.com>
 
 	This is the overall description of the purpose of this change
-	and any useful background for a model ChangeLog entry:
+	and any useful background for a model ChangeLog entry.
 
 	* HACKING: Updated copyright.  This isn't attached to a
 	particular section of the file, so it comes first.
@@ -191,10 +193,31 @@ yyyy-mm-dd  Name of Author  <email@address>  (tiny change)
 	* NEWS: Updated.
 	Reported by Bob Friesenhahn <bfriesen@simple.dallas.tx.us>.
 
-* You may find it useful to install the git-merge-changelog merge driver:
-  http://git.sv.gnu.org/gitweb/?p=gnulib.git;a=blob;f=lib/git-merge-changelog.c
 
-6. Editing `.am' Files
+6. Using git
+============
+
+* Preferably, let the git commit message mirror the ChangeLog entry,
+  without the leading TABs.  Use --author for the (first, main) author
+  of patches from others, sign patches you have reviewed.  If the
+  ChangeLog entry is longer than a line, use a one line summary, then an
+  empty line, then the rest of the log entry; this makes for nice output
+  of `git log'.
+
+* You may find it useful to install the git-merge-changelog merge driver:
+  <http://git.sv.gnu.org/gitweb/?p=gnulib.git;a=blob;f=lib/git-merge-changelog.c>
+
+* Do not ever rewind the public master branch nor any public release
+  branch on savannah, neither any release tags once they have been
+  published.  Other branches and tags may have different rules.
+
+* Avoid merge commits on the master branch of the public git repository.
+  For unpublished changes in your development tree, it's easiest to
+  rebase against the current master before applying them, this preserves
+  a linear history.
+
+
+7. Editing `.am' Files
 ======================
 
 * Always use $(...) and not ${...}
@@ -220,7 +243,7 @@ yyyy-mm-dd  Name of Author  <email@address>  (tiny change)
   and will be fixed in the `libtoolize --ltdl --(non)recursive' stage.
 
 
-7. Editing `.m4sh' Files
+8. Editing `.m4sh' Files
 ========================
 
 * Use shell functions, but be careful not to assume local scope for
@@ -263,7 +286,7 @@ yyyy-mm-dd  Name of Author  <email@address>  (tiny change)
   ]])
 
 
-8. Editing `.m4' Files
+9. Editing `.m4' Files
 ======================
 
 * Be careful with both `echo' and `$ECHO'.  As the latter may be one of
@@ -288,8 +311,8 @@ yyyy-mm-dd  Name of Author  <email@address>  (tiny change)
   be updated in all newer versions.
 
 
-9. Abstraction layers in libltdl
-================================
+10. Abstraction layers in libltdl
+=================================
 
 * The libltdl API uses a layered approach to differentiate internal and
   external interfaces, among other things.  To keep the abstraction
@@ -389,7 +412,7 @@ yyyy-mm-dd  Name of Author  <email@address>  (tiny change)
   loading: preopen.c, dlopen.c etc.
 
 
-10. Licensing Rules
+11. Licensing Rules
 ===================
 
 GNU Libtool uses 3 different licenses for various of the files distributed
@@ -398,7 +421,7 @@ the correct license text in each new file added.  Here are the texts
 along with some notes on when each is appropriate.  Appropriate commenting
 (shell, C etc) and decoration (m4sh etc) assumed throughout.
 
-10.1. Notice preservation
+11.1. Notice preservation
 
 Autoconf macros and files used to generate them need this license:
 
@@ -411,7 +434,7 @@ modifications, as long as this notice is preserved.
 
 
 
-10.2. GPL
+11.2. GPL
 
 Everything else in the distribution has the following license text
 unless there is good reason to use one of the other license texts
@@ -440,7 +463,7 @@ or obtained by writing to the Free Software Foundation, Inc.,
 
 
 
-10.3. GPL with Libtool exception clause
+11.3. GPL with Libtool exception clause
 
 At the moment only `libltdl/README' needs the exception clause to
 allow projects that distribute a copy of the libltdl sources to also
@@ -475,7 +498,7 @@ or obtained by writing to the Free Software Foundation, Inc.,
 
 
 
-10.4. GPL with Cvs-utils exception clause
+11.4. GPL with Cvs-utils exception clause
 
 GNU Libtool imports some m4sh infrastructure from the GNU Cvs-utils
 project, namely `getopt.m4sh' and `general.m4sh'.  Those files use
@@ -510,7 +533,7 @@ or obtained by writing to the Free Software Foundation, Inc.,
 
 
 
-10.5. GPL with self extracting version
+11.5. GPL with self extracting version
 
 Some of the sources built atop Cvs-utils' m4sh framework use
 getopt.m4sh:func_version() to extract their --version output from
@@ -544,7 +567,7 @@ or obtained by writing to the Free Software Foundation, Inc.,
 
 
 
-10.6. GPL with self extracting version and Libtool exception clause
+11.6. GPL with self extracting version and Libtool exception clause
 
 Although the libtool script is generated from `ltmain.m4sh' according
 to the rules in the preceding subsection, it also needs the Libtool
@@ -583,7 +606,7 @@ or obtained by writing to the Free Software Foundation, Inc.,
 
 
 
-10.7. LGPL with Libtool exception clause
+11.7. LGPL with Libtool exception clause
 
 Finally, not only is Libltdl is LGPLed, but it is routinely
 redistributed inside projects that use it, so its sources need to use
@@ -618,7 +641,7 @@ or obtained by writing to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-11. Release Procedure
+12. Release Procedure
 =====================
 
 * If you are a libtool maintainer, but have not yet registered your
@@ -650,8 +673,8 @@ or obtained by writing to the Free Software Foundation, Inc.,
 * Make sure your locale is sane, e.g. by exporting LC_ALL=C.
 
 * Double check that serial number updates in public m4 files weren't forgotten
-  since last release (they should be updated in CVS along with commits that
-  require it so that users can work with CVS snapshots).
+  since last release (they should be updated in git along with commits that
+  require it so that users can work with git snapshots).
 
 * Update the LTDL_VERSION_INFO in libltdl/Makefile.inc for changes since
   the last release.
@@ -721,7 +744,7 @@ or obtained by writing to the Free Software Foundation, Inc.,
 
 
 
-12. Alpha release note template
+13. Alpha release note template
 ===============================
 
 To: libtool@gnu.org, autotools-announce@gnu.org
@@ -774,11 +797,12 @@ This release was bootstrapped with @BOOTSTRAP_TOOLS_WITH_VERSIONS@,
 but is useable with @COMPATIBLE_AUTOTOOL_VERSIONS@ in your own
 projects.
 
-Alternatively, you can fetch the unbootstrapped source code from
-anonymous cvs by using the following command:
+Alternatively, you can fetch the unbootstrapped source code with
+git by using the following command:
 
-  $ cvs -z3 -d :pserver:anonymous@cvs.sv.gnu.org:/sources/libtool \
-    co -r @CVS_RELEASE_TAG@ libtool
+  $ git clone git://git.savannah.gnu.org/libtool.git
+  $ cd libtool
+  $ git checkout @GIT_RELEASE_TAG@
 
 You will then need to have recent (possibly as yet unreleased) versions
 of Automake and Autoconf installed to bootstrap the checked out
@@ -794,7 +818,7 @@ The README file explains how to capture the verbose test output.
 
 
 
-13. Full release note template
+14. Full release note template
 ==============================
 
 To: info-gnu@gnu.org
@@ -859,12 +883,12 @@ This release was bootstrapped with @BOOTSTRAP_TOOLS_WITH_VERSIONS@,
 but is useable with @COMPATIBLE_AUTOTOOL_VERSIONS@ in your own
 projects.
 
-Alternatively, you can fetch the unbootstrapped source code from
-anonymous cvs by using the following command (just hit return when
-you are prompted for the password):
+Alternatively, you can fetch the unbootstrapped source code with
+git by using the following command:
 
-  $ cvs -z3 -d :pserver:anonymous@cvs.sv.gnu.org:/sources/libtool \
-    co -r @CVS_RELEASE_TAG@ libtool
+  $ git clone git://git.savannah.gnu.org/libtool.git
+  $ cd libtool
+  $ git checkout @GIT_RELEASE_TAG@
 
 You will then need to have the latest release versions of Automake
 (@AUTOMAKE_VERSION@) and Autoconf (@AUTOCONF_VERSION@) installed to
@@ -876,7 +900,8 @@ The README file explains how to capture the verbose test output.
 
 
 -- 
-  Copyright (C) 2004, 2005, 2006, 2007 Free Software Foundation, Inc.
+  Copyright (C) 2004, 2005, 2006, 2007, 2008 Free Software Foundation,
+  Inc.
   Written by Gary V. Vaughan, 2004
 
   This file is part of GNU Libtool.  Report bugs to bug-libtool@gnu.org.
