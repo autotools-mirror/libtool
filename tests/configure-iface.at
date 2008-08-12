@@ -132,7 +132,7 @@ libmodule_la_LDFLAGS	= -module
 bin_PROGRAMS		= main
 main_LDFLAGS		= -dlopen libmodule.la
 main_LDADD		= $(LIBLTDL)
-main_DEPENDENCIES	= $(LTDLDEPS)
+main_DEPENDENCIES	= $(LTDLDEPS) libmodule.la
 ]])
 
 # Install everything!
@@ -201,7 +201,7 @@ libmodule_la_LDFLAGS	= -module
 bin_PROGRAMS		= main
 main_LDFLAGS		= -dlopen libmodule.la
 main_LDADD		= $(LIBLTDL)
-main_DEPENDENCIES	= $(LTDLDEPS)
+main_DEPENDENCIES	= $(LTDLDEPS) libmodule.la
 ]])
 
 # We don't use 'libtoolize --ltdl', so that we get an error if the test
@@ -255,7 +255,7 @@ libmodule_la_LDFLAGS	= -module
 bin_PROGRAMS		= main
 main_LDFLAGS		= -dlopen libmodule.la
 main_LDADD		= $(LIBLTDL)
-main_DEPENDENCIES	= $(LTDLDEPS)
+main_DEPENDENCIES	= $(LTDLDEPS) libmodule.la
 ]])
 
 LT_AT_BOOTSTRAP([--ltdl], [-I libltdl/m4], [], [--add-missing], [],

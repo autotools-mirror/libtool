@@ -1,5 +1,15 @@
 2008-08-12  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	Parallel make testsuite fixes.
+	* tests/configure-iface.at (installable libltdl)
+	(--with-ltdl-include/lib, --with-included-ltdl): Add dlopened
+	libmodule.la to main_DEPENDENCIES.
+	* tests/old-m4-iface.at (AC_WITH_LTDL): Likewise, let ltdldemo
+	depend upon module.la and libltdl/libltdlc.la.
+	* tests/testsuite.at (LT_AT_MAKE): Invoke each target in turn,
+	default to 'all'.
+	* tests/early-libtool.at (config.lt): Define 'all' target.
+
 	* HACKING: Update for git, fix some minor nits.
 
 2008-08-11  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>

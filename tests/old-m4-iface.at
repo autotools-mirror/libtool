@@ -137,7 +137,7 @@ libltdl/libltdlc.la:
 module.la: module.lo
 	$(LTLINK) module.lo -module -avoid-version -rpath /dev/null
 
-ltdldemo@EXEEXT@: main.@OBJEXT@
+ltdldemo@EXEEXT@: main.@OBJEXT@ module.la libltdl/libltdlc.la
 	$(LTLINK) main.@OBJEXT@ -dlopen module.la @LIBLTDL@
 
 .SUFFIXES:

@@ -168,6 +168,8 @@ LDFLAGS = @LDFLAGS@
 COMPILE = $(CC) $(CPPFLAGS) $(CFLAGS) $(DEFAULT_INCLUDES)
 LINK = $(LIBTOOL) --mode=link --tag=CC $(CC) $(CFLAGS) $(LDFLAGS) -o $@
 
+all: hell$(EXEEXT)
+
 hell$(EXEEXT): main.$(OBJEXT) libhello.la
 	$(LINK) main.$(OBJEXT) libhello.la
 

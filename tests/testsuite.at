@@ -152,7 +152,10 @@ m4_define([LT_AT_CONFIGURE],
 # --------------------------
 m4_define([LT_AT_MAKE],
 [( $unset LIBTOOL LIBTOOLIZE
-   AT_CHECK([$MAKE $1 $2], [0], [ignore], [ignore]) )
+  for target in m4_default([$1], [all])
+  do
+    AT_CHECK([$MAKE $target $2], [0], [ignore], [ignore])
+  done )
 ])
 
 
