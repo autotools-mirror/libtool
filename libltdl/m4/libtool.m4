@@ -4760,6 +4760,10 @@ _LT_EOF
 	_LT_TAGVAR(old_postinstall_cmds, $1)='chmod 644 $oldlib'
 	_LT_TAGVAR(compile_tag, $1)=-TC
 	_LT_TAGVAR(dashl_xform, $1)='s/\(.*\)/\1.lib/'
+	_LT_TAGVAR(postlink_cmds, $1)='if test -e "@OUTPUT@.exe.manifest"; then
+	    mt -manifest "@OUTPUT@.exe.manifest" -outputresource:"@OUTPUT@.exe";
+	    $RM "@OUTPUT@.exe.manifest";
+	  fi'
 	;;
       *)
 	# Assume MSVC wrapper
@@ -5313,6 +5317,8 @@ _LT_TAGDECL([], [include_expsyms], [1],
     [Symbols that must always be exported])
 _LT_TAGDECL([], [prelink_cmds], [2],
     [Commands necessary for linking programs (against libraries) with templates])
+_LT_TAGDECL([], [postlink_cmds], [2],
+    [Commands necessary for finishing linking programs])
 _LT_TAGDECL([], [file_list_spec], [1],
     [Specify filename containing input files])
 _LT_TAGDECL([], [dashL_envvar], [1],
@@ -5761,6 +5767,10 @@ if test "$_lt_caught_CXX_error" != yes; then
 	  _LT_TAGVAR(old_postinstall_cmds, $1)='chmod 644 $oldlib'
 	  _LT_TAGVAR(compile_tag, $1)=-TP
 	  _LT_TAGVAR(dashl_xform, $1)='s/\(.*\)/\1.lib/'
+	  _LT_TAGVAR(postlink_cmds, $1)='if test -e "@OUTPUT@.exe.manifest"; then
+	      mt -manifest "@OUTPUT@.exe.manifest" -outputresource:"@OUTPUT@.exe";
+	      $RM "@OUTPUT@.exe.manifest";
+	    fi'
 	  ;;
 	*)
 	  # g++

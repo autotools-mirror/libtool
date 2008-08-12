@@ -1,5 +1,16 @@
 2008-08-12  Peter Rosin  <peda@lysator.liu.se>
 
+	* libltdl/m4/libtool.m4 (_LT_LINKER_SHLIBS) <postlink_cmds>:
+	New tag variable.
+	[ cygwin, mingw, cegcc ] <cl*>: Embed the manifest file as a
+	resource.
+	(_LT_LANG_CXX_CONFIG): Likewise.
+	* libltdl/config/ltmain.m4sh (func_mode_link): After linking
+	a program, replace @OUTPUT@ in $postlink_cmds and then execute
+	the commands.
+
+2008-08-12  Peter Rosin  <peda@lysator.liu.se>
+
 	* libltdl/m4/libtool.m4 (_LT_CHECK_MAGIC_METHOD): Disable nocase
 	handling for cross compiles.
 
