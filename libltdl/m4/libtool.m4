@@ -3282,6 +3282,13 @@ AC_CACHE_CHECK([the name lister ($NM) interface], [lt_cv_nm_interface],
     lt_cv_nm_interface="MS dumpbin"
   fi
   rm -f conftest*])
+
+if test "$lt_cv_nm_interface" = "MS dumpbin"; then
+  _LT_TAGVAR(nm_file_list_spec, $1)='@'
+fi
+
+_LT_DECL([], [nm_file_list_spec], [1],
+    [Specify filename containing input files for $NM])
 ])# LT_PATH_NM
 
 # Old names:

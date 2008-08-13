@@ -1,3 +1,14 @@
+2008-08-13  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+	    Peter Rosin  <peda@lysator.liu.se>
+
+	Support for response files with $NM.
+	* libltdl/m4/libtool.m4 (_LT_LINKER_SHLIBS) <nm_file_list_spec>:
+	New tag variable.
+	[ cygwin, mingw, cegcc ] <cl*>: Set to '@'.
+	(_LT_LANG_CXX_CONFIG): Likewise.
+	* libltdl/config/ltmain.m4sh (func_mode_link): When
+	nm_file_list_spec is nonempty, use it to avoid skipped_export.
+
 2008-08-12  Peter Rosin  <peda@lysator.liu.se>
 
 	* libltdl/m4/libtool.m4 (_LT_LINKER_SHLIBS) <postlink_cmds>:
