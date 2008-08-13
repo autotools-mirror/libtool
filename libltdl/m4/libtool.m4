@@ -1293,7 +1293,7 @@ AC_CACHE_CHECK([the archiver ($AR) interface],[lt_cv_ar_interface],
   (eval echo "\"\$as_me:__oline__: $ac_compile\"" >&AS_MESSAGE_LOG_FD)
   (eval "$ac_compile" 2>conftest.err)
   cat conftest.err >&AS_MESSAGE_LOG_FD
-  (eval "$AR -NOLOGO -OUT:conftest.lib conftest.$ac_objext" &>conftest.err)
+  (eval "$AR -NOLOGO -OUT:conftest.lib conftest.$ac_objext" >conftest.err 2>&1)
   ac_status=$?
   cat conftest.err >&AS_MESSAGE_LOG_FD
   test $ac_status = 0 && test -f conftest.lib && lt_cv_ar_interface="lib"
@@ -1305,16 +1305,16 @@ ar)
   : ${AR_TFLAGS=t}
   : ${AR_XFLAGS=x}
   test -z "$AR_SEP" && AR_SEP=' '
-  _LT_TAGVAR(ar_extract_one_by_one, $1)=no
-  _LT_TAGVAR(archiver_list_spec, $1)=
+  ar_extract_one_by_one=no
+  archiver_list_spec=
   ;;
 lib)
   : ${AR_FLAGS="-NOLOGO -OUT:"}
   : ${AR_TFLAGS="-NOLOGO -LIST "}
   : ${AR_XFLAGS="-NOLOGO -EXTRACT:"}
   test -z "$AR_SEP" && AR_SEP=''
-  _LT_TAGVAR(ar_extract_one_by_one, $1)=yes
-  _LT_TAGVAR(archiver_list_spec, $1)='@'
+  ar_extract_one_by_one=yes
+  archiver_list_spec='@'
   # Don't use ranlib
   : ${RANLIB=:}
   ;;
@@ -3284,7 +3284,7 @@ AC_CACHE_CHECK([the name lister ($NM) interface], [lt_cv_nm_interface],
   rm -f conftest*])
 
 if test "$lt_cv_nm_interface" = "MS dumpbin"; then
-  _LT_TAGVAR(nm_file_list_spec, $1)='@'
+  nm_file_list_spec='@'
 fi
 
 _LT_DECL([], [nm_file_list_spec], [1],

@@ -1,4 +1,10 @@
 2008-08-13  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* libltdl/m4/libtool.m4 (_LT_PROG_AR, LT_PATH_NM): Fix bogus
+	uses of _LT_TAGVAR.  Hide `ar' error message escape from command
+	line.
+
+2008-08-13  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 	    Peter Rosin  <peda@lysator.liu.se>
 
 	Support for response files with $NM.
