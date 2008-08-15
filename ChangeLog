@@ -1,3 +1,8 @@
+2008-08-15  Peter Rosin  <peda@lysator.liu.se>
+
+	* tests/link-order.at [MSVC]: Always dllimport exported
+	variables.
+
 2008-08-13  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* libltdl/m4/libtool.m4 (_LT_PROG_AR, LT_PATH_NM): Fix bogus

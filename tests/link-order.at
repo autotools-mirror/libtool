@@ -48,13 +48,29 @@ for i in old new; do
   mkdir src
 
   cat >src/a_$i.c <<EOF
-extern int c;
+/* w32 fun, MSVC supports dllimport even if importing is not needed (static
+ * case). gnu has auto import.
+ */
+#ifdef _MSC_VER
+#  define LIBCEE_SCOPE __declspec(dllimport)
+#else
+#  define LIBCEE_SCOPE extern
+#endif
+LIBCEE_SCOPE int c;
 extern int b_$i();
 int a_$i() { return c + b_$i(); }
 EOF
 
   cat >src/b_$i.c <<EOF
-extern int c;
+/* w32 fun, MSVC supports dllimport even if importing is not needed (static
+ * case). gnu has auto import.
+ */
+#ifdef _MSC_VER
+#  define LIBCEE_SCOPE __declspec(dllimport)
+#else
+#  define LIBCEE_SCOPE extern
+#endif
+LIBCEE_SCOPE int c;
 int b_$i() { return 1 + c; }
 EOF
 
