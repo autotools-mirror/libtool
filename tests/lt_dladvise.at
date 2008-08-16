@@ -327,8 +327,8 @@ cygwin* | mingw*)
   CPPFLAGS="$CPPFLAGS -DHAVE_UNDEFINED_SYMBOLS=1"
   dlopenable="$dlopen depend"
   $LIBTOOL --mode=compile $CC $CPPFLAGS $CFLAGS -c moddepend.c
-  AT_CHECK([$LIBTOOL --mode=link $CC -module $CFLAGS $LDFLAGS -o libdepend.la \
-            moddepend.lo -rpath /foo -avoid-version], [], [ignore], [ignore])
+  AT_CHECK([$LIBTOOL --mode=link $CC -module $CFLAGS $LDFLAGS -o libdepend.la ]dnl
+           [moddepend.lo -rpath /foo -avoid-version], [], [ignore], [ignore])
   ;;
 esac
 
@@ -340,9 +340,16 @@ LDFLAGS="$LDFLAGS -no-undefined"
 
 $CC $CPPFLAGS $CFLAGS -c main.c
 for name in resident local global preload; do
+  # FIXME: adding -static to libpreload shouldn't be necessary.
+  #        Fix this properly in ltmain, then remove this workaround.
+  if test $name = preload; then
+    st=-static
+  else
+    st=
+  fi
   $LIBTOOL --mode=compile $CC $CPPFLAGS $CFLAGS -c mod$name.c
-  AT_CHECK([$LIBTOOL --mode=link $CC -module $CFLAGS $LDFLAGS -o lib$name.la \
-            mod$name.lo -rpath /foo -avoid-version], [], [ignore], [ignore])
+  AT_CHECK([$LIBTOOL --mode=link $CC -module $CFLAGS $LDFLAGS -o lib$name.la ]dnl
+           [mod$name.lo $st -rpath /foo -avoid-version], [], [ignore], [ignore])
 done
 
 preloaded=
@@ -360,7 +367,7 @@ AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o main main.$OBJEXT $preloa
 
 # Remove loadable libpreload module, so we know it is the preloaded module
 # that is being executed by a successful test invocation:
-$LIBTOOL --mode=clean rm libpreload.la
+AT_CHECK([$LIBTOOL --mode=clean rm -f libpreload.la], [], [ignore], [ignore])
 
 LT_AT_NOINST_EXEC_CHECK([./main], [$modules], [], [expout], [])
 

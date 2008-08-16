@@ -1,3 +1,12 @@
+2008-08-16  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Avoid test failure due to broken dlpreloading of shared library.
+	* tests/lt_dladvise.at (lt_dlopenadvise library loading): Drop
+	some newlines in AT_CHECK commands, for better 'testsuite -x'
+	output.  Only create a static installable libpreload.la, to
+	avoid exposing the bug libtool currently has with preloading of
+	shared libraries.  Add a note to revisit this later.
+
 2008-08-12  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	Parallel make testsuite fixes.
