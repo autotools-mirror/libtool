@@ -1,5 +1,10 @@
 2008-08-16  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* libltdl/m4/libtool.m4 (LT_PATH_NM): Move setting of
+	nm_file_list_spec ...
+	(_LT_CMD_GLOBAL_SYMBOLS): ... here.  Also enable for GNU nm if
+	supported.
+
 	* tests/static.at (ccache -all-static): Ignore compiler stderr.
 	Reported by Peter Rosin.
 
