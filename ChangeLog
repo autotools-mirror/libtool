@@ -1,3 +1,9 @@
+2010-07-04  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Fix ccache test for MSVC.
+	* tests/static.at (ccache -all-static): Ignore compiler stderr.
+	Reported by Peter Rosin.
+
 2010-07-03  Charles Wilson  <libtool@cwilson.fastmail.fm>
 
 	Avoid false failures caused by filesystem interaction

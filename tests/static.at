@@ -371,7 +371,7 @@ AT_DATA([a.c],
 [[int main(void) { return 0; }
 ]])
 
-AT_CHECK([$CC $CPPFLAGS $CFLAGS -c a.c], [], [ignore])
+AT_CHECK([$CC $CPPFLAGS $CFLAGS -c a.c], [], [ignore], [ignore])
 AT_CHECK([$LIBTOOL --mode=link --tag=CC ./ccache $CC $CFLAGS $LDFLAGS -all-static a.$OBJEXT -o a$EXEEXT],
 	 [], [ignore], [ignore])
 
