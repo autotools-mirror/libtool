@@ -10,6 +10,7 @@
 *.lo
 *.log
 *.o
+*.obj
 *.pg
 *.toc
 *.tp
