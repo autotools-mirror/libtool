@@ -1,3 +1,11 @@
+2008-08-22  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Initial support for Lahey Fortran on GNU/Linux.
+	* libltdl/m4/libtool.m4 (_LT_COMPILER_PIC, _LT_LINKER_SHLIBS)
+	[linux] <lf95>: Add support for Lahey Fortran 8.1.
+	* NEWS, THANKS: Update.
+	Suggested by Craig Tierney.
+
 2008-08-21  Sam Thursfield  <ssssam@gmail.com>  (tiny change)
 
 	Avoid leading separator in PATH for DLL search.
