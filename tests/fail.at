@@ -1,6 +1,6 @@
 # fail.at -- test that libtool really fail when it should     -*- Autotest -*-
 #
-#   Copyright (C) 2005 Free Software Foundation, Inc.
+#   Copyright (C) 2005, 2008 Free Software Foundation, Inc.
 #   Written by Ralf Wildenhues, 2005
 #
 #   This file is part of GNU Libtool.
@@ -91,6 +91,14 @@ case $build_libtool_libs in yes)
   AT_CHECK([test -f liba.la], [1])
   ;;
 esac
+
+# Ensure we diagnose '-L path'.
+echo 'int main () { return 0; }' > d.c
+echo 'int foo () { return 0; }' > space-after-L.c
+$CC $CPPFLAGS $CFLAGS -c d.c
+$CC $CPPFLAGS $CFLAGS -c space-after-L.c
+FAIL_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -L space-after-L.$OBJEXT -o d d.$OBJEXT])
+FAIL_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o d d.$OBJEXT -L])
 
 m4_popdef([FAIL_CHECK])
 AT_CLEANUP

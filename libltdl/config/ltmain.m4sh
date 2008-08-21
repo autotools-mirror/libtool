@@ -4035,6 +4035,13 @@ func_mode_link ()
       -L*)
 	func_stripname '-L' '' "$arg"
 	dir=$func_stripname_result
+	if test -z "$dir"; then
+	  if test $# -gt 0; then
+	    func_fatal_error "require no space between \`-L' and \`$1'"
+	  else
+	    func_fatal_error "need path for \`-L' option"
+	  fi
+	fi
 	# We need an absolute path.
 	case $dir in
 	[\\/]* | [A-Za-z]:[\\/]*) ;;
