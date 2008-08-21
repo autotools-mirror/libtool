@@ -1,3 +1,11 @@
+2008-08-21  Sam Thursfield  <ssssam@gmail.com>  (tiny change)
+
+	Avoid leading separator in PATH for DLL search.
+	* libltdl/config/ltmain.m4sh (func_mode_link) [cygwin, mingw]
+	[ pw32, os2, cegcc]: Fix dllsearchpath not to contain leading
+	separator.
+	* THANKS: Update.
+
 2008-08-21  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* libltdl/config/ltmain.m4sh (func_mode_link): Quote $#.

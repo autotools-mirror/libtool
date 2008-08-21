@@ -4064,10 +4064,12 @@ func_mode_link ()
 	  testbindir=`$ECHO "X$dir" | $Xsed -e 's*/lib$*/bin*'`
 	  case :$dllsearchpath: in
 	  *":$dir:"*) ;;
+	  ::) dllsearchpath=$dir;;
 	  *) dllsearchpath="$dllsearchpath:$dir";;
 	  esac
 	  case :$dllsearchpath: in
 	  *":$testbindir:"*) ;;
+	  ::) dllsearchpath=$testbindir;;
 	  *) dllsearchpath="$dllsearchpath:$testbindir";;
 	  esac
 	  ;;
@@ -7160,10 +7162,12 @@ EOF
 	  testbindir=`${ECHO} "$libdir" | ${SED} -e 's*/lib$*/bin*'`
 	  case :$dllsearchpath: in
 	  *":$libdir:"*) ;;
+	  ::) dllsearchpath=$libdir;;
 	  *) dllsearchpath="$dllsearchpath:$libdir";;
 	  esac
 	  case :$dllsearchpath: in
 	  *":$testbindir:"*) ;;
+	  ::) dllsearchpath=$testbindir;;
 	  *) dllsearchpath="$dllsearchpath:$testbindir";;
 	  esac
 	  ;;
