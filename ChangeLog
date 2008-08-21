@@ -1,5 +1,7 @@
 2008-08-21  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	* libltdl/config/ltmain.m4sh (func_mode_link): Quote $#.
+
 	Disallow `-L path', do not misparse it silently.
 	* libltdl/config/ltmain.m4sh (func_mode_link): Diagnose `-L'
 	without argument, and `-L path', i.e., with a space.
