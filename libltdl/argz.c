@@ -76,14 +76,6 @@ argz_append (char **pargz, size_t *pargz_len, const char *buf, size_t buf_len)
 }
 
 
-/* Add a string to the argz vector.  */
-error_t
-argz_add (char **pargz, size_t *pargz_len, const char *str)
-{
-  return argz_append (pargz, pargz_len, str, strlen (str) + 1);
-}
-
-
 error_t
 argz_create_sep (const char *str, int delim, char **pargz, size_t *pargz_len)
 {
@@ -232,23 +224,3 @@ argz_stringify (char *argz, size_t argz_len, int sep)
     }
 }
 
-
-/* Count number of elements (null bytes) in argz vector.  */
-
-size_t
-argz_count (const char *argz, size_t argz_len)
-{
-  size_t count = 0;
-
-  assert ((argz && argz_len) || (!argz && !argz_len));
-
-  while (argz_len > 0)
-    {
-      size_t part_len = strlen (argz);
-      argz += part_len + 1;
-      argz_len -= part_len + 1;
-      count++;
-    }
-
-  return count;
-}

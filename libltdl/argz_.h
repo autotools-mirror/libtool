@@ -49,8 +49,6 @@ extern "C" {
 
 LT_SCOPE error_t argz_append	(char **pargz, size_t *pargz_len,
 				 const char *buf, size_t buf_len);
-LT_SCOPE error_t argz_add       (char **pargz, size_t *pargz_len,
-                                 const char *str);
 LT_SCOPE error_t argz_create_sep(const char *str, int delim,
 				 char **pargz, size_t *pargz_len);
 LT_SCOPE error_t argz_insert	(char **pargz, size_t *pargz_len,
@@ -58,7 +56,6 @@ LT_SCOPE error_t argz_insert	(char **pargz, size_t *pargz_len,
 LT_SCOPE char *	 argz_next	(char *argz, size_t argz_len,
 				 const char *entry);
 LT_SCOPE void	 argz_stringify	(char *argz, size_t argz_len, int sep);
-LT_SCOPE size_t  argz_count     (const char *argz, size_t argz_len);
 
 #if defined(__cplusplus)
 }

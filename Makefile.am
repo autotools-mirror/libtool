@@ -454,6 +454,7 @@ TESTSUITE_AT	= tests/testsuite.at \
 		  tests/am-subdir.at \
 		  tests/lt_dlexit.at \
 		  tests/lt_dladvise.at \
+		  tests/ltdl-api.at \
 		  tests/need_lib_prefix.at \
 		  tests/standalone.at \
 		  tests/subproject.at \

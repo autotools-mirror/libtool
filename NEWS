@@ -21,6 +21,9 @@ New in 2.2.??: 2008-08-??: git version 2.2.5a, Libtool team:
 
   - Several testsuite issues have been fixed, thanks to user feedback.
 
+  - Fix 2.2 regression that caused argz symbols to be exported from
+    libltdl unrenamed on systems that do not have working argz.
+
 New in 2.2.4: 2008-05-04: git version 2.2.3a, Libtool team:
 
 * New features:

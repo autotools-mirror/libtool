@@ -1,3 +1,13 @@
+2008-08-26  Peter O'Gorman  <peter@pogma.com>,
+	    Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Remove unnecessary global argz functions.
+	* libltdl/argz.c (argz_add,argz_count): Remove.
+	* libltdl/argz_.h (argz_add,argz_count): Remove.
+	* NEWS: Announce it.
+	* tests/ltdl-api.at: Test so we don't repeat it.
+	* Makefile.am: Add new test.
+
 2008-08-22  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	Initial support for Lahey Fortran on GNU/Linux.
