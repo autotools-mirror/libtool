@@ -1,3 +1,10 @@
+2008-08-26  Peter O'Gorman  <peter@pogma.com>
+
+	Allow for extensions other than .a for preloaded modules.
+	* libltdl/m4/ltdl.m4 (_LTDL_SETUP): Define LT_LIBEXT.
+	* libltdl/ltdl.c (lt_dladvise_preload): Use it.
+	Reported by Ralf Wildenhues.
+
 2008-08-26  Peter O'Gorman  <peter@pogma.com>,
 	    Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
