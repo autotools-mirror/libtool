@@ -24,6 +24,9 @@ New in 2.2.??: 2008-08-??: git version 2.2.5a, Libtool team:
   - Fix 2.2 regression that caused argz symbols to be exported from
     libltdl unrenamed on systems that do not have working argz.
 
+  - Revert "lt_dlopen(NULL) works on AIX again.". It was not the
+    correct fix.
+
 New in 2.2.4: 2008-05-04: git version 2.2.3a, Libtool team:
 
 * New features:

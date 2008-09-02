@@ -1,3 +1,15 @@
+2008-09-01  Peter O'Gorman  <peter@pogma.com>
+
+	Revert 75142db4f8afc65ba7aae0ed80ea0b35bd9cc382 (AIX libltdl
+	dlopen(NULL)
+
+	libltdl/m4/ltdl.m4: Remove LTDL_DLOPEN_SELF_WORKS define.
+	libltdl/loaders/dlopen.c: Remove LTDL_DLOPEN_SELF_WORKS check.
+	libltdl/m4/libtool.m4 [aix]: Set export_dynamic_flag_spec to
+	-Wl,-bexpall. This is a temporary workaround until a real fix
+	is implemented.
+	NEWS: document it.
+
 2008-08-26  Peter O'Gorman  <peter@pogma.com>
 
 	Allow for extensions other than .a for preloaded modules.

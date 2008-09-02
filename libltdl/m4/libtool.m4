@@ -4618,6 +4618,7 @@ _LT_EOF
 	fi
       fi
 
+      _LT_TAGVAR(export_dynamic_flag_spec, $1)='${wl}-bexpall'
       # It seems that -bexpall does not export symbols beginning with
       # underscore (_), so it is better to generate a list of symbols to export.
       _LT_TAGVAR(always_export_symbols, $1)=yes
@@ -5561,6 +5562,7 @@ if test "$_lt_caught_CXX_error" != yes; then
           fi
         fi
 
+        _LT_TAGVAR(export_dynamic_flag_spec, $1)='${wl}-bexpall'
         # It seems that -bexpall does not export symbols beginning with
         # underscore (_), so it is better to generate a list of symbols to
 	# export.

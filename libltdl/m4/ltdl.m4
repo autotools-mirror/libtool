@@ -380,12 +380,6 @@ m4_require([_LT_HEADER_DLFCN])dnl
 m4_require([_LT_CHECK_DLPREOPEN])dnl
 m4_require([_LT_DECL_SED])dnl
 
-# lt_cv_dlopen_self gets defined by LT_SYS_DLOPEN_SELF, called by LT_INIT
-if test "$lt_cv_dlopen_self" = yes; then
-  AC_DEFINE([LTDL_DLOPEN_SELF_WORKS], [1],
-    [Define if dlopen(NULL) is able to resolve symbols from the main program.])
-fi
-
 dnl Don't require this, or it will be expanded earlier than the code
 dnl that sets the variables it relies on:
 _LT_ENABLE_INSTALL

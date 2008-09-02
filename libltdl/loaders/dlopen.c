@@ -191,14 +191,7 @@ vm_open (lt_user_data LT__UNUSED loader_data, const char *filename,
 #endif
     }
 
-  /* On AIX, dlopen(NULL) succeeds but dlsym of symbols fails.
-     In this case, fail here to let the preopen loader do the job. */
-#ifndef LTDL_DLOPEN_SELF_WORKS
-  if (!filename)
-    module = NULL;
-  else
-#endif
-    module = dlopen (filename, module_flags);
+  module = dlopen (filename, module_flags);
 
   if (!module)
     {
