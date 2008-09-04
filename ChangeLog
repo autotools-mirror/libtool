@@ -1,3 +1,11 @@
+2008-09-04  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Do not remove .gcno files when linking.
+	* libltdl/config/ltmain.m4sh (func_mode_link): When removing
+	potential output files before linking, do not remove *.gcno
+	profile information GCC outputs next to object files in `.libs'.
+	Report by Vincent Torri.
+
 2008-09-01  Peter O'Gorman  <peter@pogma.com>
 
 	Revert 75142db4f8afc65ba7aae0ed80ea0b35bd9cc382 (AIX libltdl
