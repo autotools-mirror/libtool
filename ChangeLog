@@ -1,3 +1,8 @@
+2008-09-07  Gary V. Vaughan  <gary@gnu.org>
+
+	Make ./commit useful again.
+	* clcommit.m4sh: Major overhaul and simplification for git.
+
 2008-09-06  Gary V. Vaughan  <gary@gnu.org>
 
 	Fix 'DISTCHECK_CONFIGURE_FLAGS=--program-prefix=g' bug.

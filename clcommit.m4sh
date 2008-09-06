@@ -2,11 +2,11 @@ m4_define([_m4_divert(SCRIPT)], 100)
 m4_divert_push([SCRIPT])#!/bin/sh
 # @configure_input@
 
-# clcommit (GNU @PACKAGE@) version 0.16
+# clcommit (GNU @PACKAGE@) version 2.0
 # Written by Gary V. Vaughan <gary@gnu.org>
 # and Alexandre Oliva <aoliva@redhat.com>
 
-# Copyright (C) 1999, 2000, 2004, 2006 Free Software Foundation, Inc.
+# Copyright (C) 1999, 2000, 2004, 2006, 2008 Free Software Foundation, Inc.
 # This is free software; see the source for copying conditions.  There is NO
 # warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
@@ -26,38 +26,36 @@ m4_divert_push([SCRIPT])#!/bin/sh
 # or obtained by writing to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-# Usage: $progname [OPTION]... [--] [file|dir ...]
+# Usage: $progname [OPTION]... [--] [filepattern ...]
 
-# -C FILE   --changelog=file   extract commit message from specified ChangeLog
-# -zN       --compress=N       set compression level (0-9, 0=none, 9=max)
+# -a AUTHOR --author=AUTHOR    override changeset author name with AUTHOR
+# -C FILE   --changelog=FILE   extract commit message from specified FILE
 #           --debug            enable verbose shell tracing
 # -n        --dry-run          don't commit anything
 #           --fast             same as --force --first
-# -F file   --file=file        read commit message from file
-# -1        --first            extract first entry from ChangeLog, no cvs diff
+# -F file   --file=FILE        read commit message from FILE
+# -1        --first            extract first entry from ChangeLog, no git diff
 # -f        --force            don't check (unless *followed* by -n), and just
 #                              display commit message instead of running $PAGER
-#           --from=addr        override default from address in commit email
-# -l        --local            don't descend into subdirectories
-# -m msg    --message=msg      set commit message
-#           --msg=msg          same as -m
+#           --from=ADDRESS     override default from ADDRESS in commit email
+# -m msg    --message=STRING   set commit message to STRING
+#           --msg=STRING          same as -m
+# -p        --push             push the changes back to origin
 # -r [FILE] --rcfile[=FILE]    read default option from FILE [./.clcommitrc]
-# -q        --quiet            run cvs in quiet mode
-# -s addr   --sendmail=addr    send a commit email of the differences to ADDR
+# -s addr   --sendmail=ADDRESS send commit email of the differences to ADDRESS
 #           --signature[=FILE] add FILE to the end of the email [~/.signature]
+#           --signoff          add a Signed-off-by attribution at the end
 # -S TEXT   --summary=TEXT     specify a TEXT subject line for the commit email
-# -t        --tla              use tla as the scm (and cvs in a dual tree)
 # -v        --verbose          run in verbose mode
 #           --version          print version information
 # -h,-?     --help             print short or long help message
 
-# This script eases checking in changes to CVS-maintained projects
+# This script eases checking in changes to git-maintained projects
 # with ChangeLog files.  It will check that there have been no
 # conflicting commits in the CVS repository and print which files it
 # is going to commit to stderr.  A list of files to compare and to
 # check in can be given in the command line.  If it is not given, all
-# files in the current directory (and below, unless `-l' is given) are
-# considered for check in.
+# files in the current working directory are considered for check in.
 
 # The commit message will be extracted from the differences between a
 # file named ChangeLog* in the commit list, or named after -C, and the
@@ -72,8 +70,7 @@ m4_divert_push([SCRIPT])#!/bin/sh
 
 # Report bugs to <gary@gnu.org>
 
-: ${CVS="cvs"}
-: ${TLA="tla"}
+: ${GIT="git"}
 : ${MAILNOTIFY="mailnotify"}
 : ${MKSTAMP="mkstamp"}
 
@@ -89,17 +86,16 @@ m4_include([getopt.m4sh])
 
 M4SH_VERBATIM([[
 # Global variables:
-cvs_flags=
-update_flags=
-commit_flags=
 opt_commit=:
+opt_first=false
+opt_push=false
 opt_update=:
 opt_verbose=false
-opt_first=false
-opt_tla=false
 
+git_flags=
 mailnotify_flags=
 sendmail_to=
+
 exit_cmd=:
 
 # try to find out whether read supports -r
@@ -134,36 +130,32 @@ set -e
     shift
     case $opt in
 
+      --author|-a)	test $# = 0 && func_missing_arg $opt && break
+      			func_quote_for_eval "$1"
+			git_flags="$git_flags --author=$func_quote_for_eval_result"
+			shift
+			;;
+
+      --[cC]hange[lL]og|-C)
+			test $# = 0 && func_missing_arg $opt && break
+			if test -f "$1"; then :; else
+			  func_error "ChangeLog file \`$1' does not exist"
+			  break
+			fi
+			ChangeLog="$1"
+			shift
+			;;
+
       --debug)		func_echo "enabling shell trace mode"
 	    		mailnotify_flags="$mailnotify_flags --debug"
 			set -x
 			;;
 
+      --dry-run|-n)	opt_commit=false; opt_update=:		;;
+
       --fast)		set dummy --force --first ${1+"$@"}; shift	;;
 
-      -f|--force)	opt_update=false; PAGER=cat		;;
-
-      --from)		test $# = 0 && func_missing_arg $opt && break
-      			func_quote_for_eval "$1"
-			mailnotify_flags="$mailnotify_flags --from=$func_quote_for_eval_result"
-			shift
-			;;
-
-      -l|--local)	update_flags="$update_flags -l"
-			commit_flags="$commit_flags -l"
-			;;
-
-      -m|--message|--msg)
-			test $# = 0 && func_missing_arg $opt && break
-			if $opt_first || test -f "$log_file"; then
-			  func_error "you can have at most one of -m, -F and -1"
-			  break
-			fi
-			echo "$1" > "$log_file"
-			shift
-			;;
-
-      -F|--file)	test $# = 0 && func_missing_arg $opt && break
+      --file|-F)	test $# = 0 && func_missing_arg $opt && break
 			if $opt_first || test -f "$log_file"; then
 			  func_error "you can have at most one of -m, -F and -1"
 			  break
@@ -174,28 +166,34 @@ set -e
 			shift
 			;;
 
-      -1|--first)       if test -f "$log_File"; then
+      --first|-1)	if test -f "$log_File"; then
 	    		  func_error "you can have at most one of -m, -F and -1"
 			  break
 			fi
 			opt_first=:
 			;;
 
-      -C|--[cC]hange[lL]og)
-			test $# = 0 && func_missing_arg $opt && break
-			if test -f "$1"; then :; else
-			  func_error "ChangeLog file \`$1' does not exist"
-			  break
-			fi
-			ChangeLog="$1"
+      --force|-f)	opt_update=false; PAGER=cat		;;
+
+      --from)		test $# = 0 && func_missing_arg $opt && break
+      			func_quote_for_eval "$1"
+			mailnotify_flags="$mailnotify_flags --from=$func_quote_for_eval_result"
 			shift
 			;;
 
-      -n|--dry-run)	opt_commit=false; opt_update=:		;;
+      --message|--msg|-m)
+			test $# = 0 && func_missing_arg $opt && break
+			if $opt_first || test -f "$log_file"; then
+			  func_error "you can have at most one of -m, -F and -1"
+			  break
+			fi
+			echo "$1" > "$log_file"
+			shift
+			;;
 
-      -q|--quiet)	cvs_flags="$cvs_flags -q"		;;
+      --push|-p)	opt_push=:				;;
 
-      -r|--rcfile)	rc_file="./.clcommitrc"
+      --rcfile|-r)	rc_file="./.clcommitrc"
 			if test $# -gt 0; then
 			  case $1 in
 			    -*)				;;
@@ -209,11 +207,11 @@ set -e
 			fi
 			# The funny quoting allows keeping one option per
 			# line in $rc_file:
-			eval set dummy `echo \`cat $rc_file\` \\\${1+\"\\\$@\"}`
+			eval set dummy $(echo $(cat $rc_file) \\\${1+\"\\\$@\"})
 			shift
 			;;
 
-      -s|--sendmail)	test $# = 0 && func_missing_arg $opt && break
+      --sendmail|-s)	test $# = 0 && func_missing_arg $opt && break
       			func_quote_for_eval "$1"
       			sendmail_to="$func_quote_for_eval_result"
 			shift
@@ -231,26 +229,14 @@ set -e
 			fi
 			;;
 
-      -S|--summary)	test $# = 0 && func_missing_arg $opt && break
+      --signoff)	git_flags="$git_flags --signoff"	;;
+
+      --summary|-S)	test $# = 0 && func_missing_arg $opt && break
 			summary="$1"
 			shift
 			;;
 
-      -t|--tla)		opt_tla=:				;;
-
-      -v|--verbose)	opt_verbose=:				;;
-
-      -z|--compress)
-			test $# = 0 && func_missing_arg $opt && break
-			case "$1" in
-			  [0-9]) :;;
-			  *)  func_error "invalid argument for $opt"
-			      break
-			      ;;
-			esac
-			cvs_flags="$cvs_flags -z$1"
-			shift
-			;;
+      --verbose|-v)	opt_verbose=:				;;
 
       # Separate optargs to long options:
       --*=*)
@@ -261,7 +247,7 @@ set -e
 			;;
 
       # Separate optargs to short options:
-      -m*|-F*|-C*|-S*|-s*|-z*)
+      -a*|-m*|-F*|-C*|-S*|-s*)
 			arg=`echo "$opt" |$SED "$my_sed_single_rest"`
 			opt=`echo "$opt" |$SED "$my_sed_single_opt"`
 			set dummy "$opt" "$arg" ${1+"$@"}
@@ -269,7 +255,7 @@ set -e
 			;;
 
       # Separate non-argument short options:
-      -f*|-1*|-n*|-q*)
+      -1*|-f*|-p*|-n*|-q*)
 			rest=`echo "$opt" |$SED "$my_sed_single_rest"`
 			opt=`echo "$opt" |$SED "$my_sed_single_opt"`
 			set dummy "$opt" "-$rest" ${1+"$@"}
@@ -303,27 +289,9 @@ set -e
 # func_check_conflicts
 func_check_conflicts ()
 {
-    func_verbose "$progname: checking for conflicts..."
-    if $opt_tla; then
-      if ( $TLA changes |
-	    while $read_r line; do
-	      echo "$line"
-	      echo "$line" >&3
-	    done | grep '^C'
-	  ) 3>&1 >/dev/null; then
-        func_fatal_error "some conflicts were found with arch archive, aborting..."
-      fi
-    fi
-
-    if test -f CVS/Entries; then
-      if ( $CVS $cvs_flags -q -n update $update_flags ${1+"$@"} |
-            while $read_r line; do
-	      echo "$line"
-	      echo "$line" >&3
-            done | grep '^C'
-          ) 3>&1 >/dev/null; then
-        func_fatal_error "some conflicts were found with CVS repository, aborting..."
-      fi
+    # HELP?!?  How to check for git push conflicts?
+    if false; then
+      func_fatal_error "some conflicts were found with CVS repository, aborting..."
     fi
 }
 
@@ -361,12 +329,7 @@ func_check_commit_msg ()
         done |
           $SED 's,^\+	,,' > "$log_file" || exit $EXIT_FAILURE
     else
-      if $opt_tla; then
-        cmd="$TLA file-diffs"
-      else
-        cmd="$CVS $cvs_flags diff -u"
-      fi
-      $cmd ${ChangeLog-ChangeLog} |
+      $GIT diff ${ChangeLog-ChangeLog} |
         while $read_r line; do
           case $line in
             "--- "*) :;;
@@ -391,41 +354,17 @@ func_check_commit_msg ()
 # func_commit
 func_commit ()
 {
-    if $opt_tla; then
-      tla_log=`$TLA make-log`
-      test -n "$summary" || summary=`$SED -e '
-          1{
-	      s/^Summary: *//
-	      q
-	  }'`
-      echo "Summary: $summary" > "$tla_log$$T" &&
-        $SED 1d "$tla_log" >> "$tla_log$$T" &&
-        cat < "$log_file" >> "$tla_log$$T" &&
-        mv "$tla_log$$T" "$tla_log"
-      ${PAGER-more} "$tla_log" || exit $EXIT_FAILURE
+    ${PAGER-more} "$log_file" || exit $EXIT_FAILURE
 
-      sleep 1 # give the user some time for a ^C
+    sleep 1 # give the user some time for a ^C
 
-      # Propagate any user edits back to the cvs log message
-      $SED -e '/^[A-Z][-a-zA-Z]*:/d' -e '1d' < $tla_log > $log_file
+    subject=`git status 2>/dev/null | $SED -n 's/^#.*[mad][ode][dl].*ed: *//p'`
+    test $# -gt 0 && subject="$@"
 
-    else
-      ${PAGER-more} "$log_file" || exit $EXIT_FAILURE
+    func_verbose "$GIT commit$git_flags -F $log_file ${1+$@}"
+    $GIT commit$git_flags -F $log_file ${1+"$@"} || exit $EXIT_FAILURE
 
-      sleep 1 # give the user some time for a ^C
-
-      subject=`cvs -nq up 2>/dev/null | $SED -n 's/^[MAD] //p'`
-      test $# -gt 0 && subject="$@"
-    fi
-
-    if test -f CVS/Entries; then
-      func_verbose "$CVS $cvs_flags commit $commit_flags -F $log_file ${1+$@}"
-      $CVS $cvs_flags commit $commit_flags -F $log_file ${1+"$@"} || exit $EXIT_FAILURE
-    fi
-
-    # Need to do the tla commit *after* cvs commit to make sure the
-    # ChangeLog timestamps stay in synch.
-    $opt_tla && $TLA commit
+    $opt_push && $GIT push
 
     :
 }
@@ -503,15 +442,15 @@ func_mailnotify ()
     func_commit ${1+"$@"}
   fi
 
-  # Need to set the subject line *after* tla commit, or the
-  # patch revision changes underneath us!
-  subject="$summary"
-  $opt_tla && \
-    subject="$subject ["`$TLA tree-version|$SED $basename`--`$TLA revisions|$SED -e '$p;d'`"]"
+  subject="$summary ["`$GIT branch | sed -n 's/\* //p'`"]"
 
   # Send a copy of the log_file if sendmail_to was set:
   if test -n "$sendmail_to"; then
-    func_mailnotify
+    if ! $opt_push; then
+      func_warning "Mail notification NOT sent for commit to local repository."
+    else
+      func_mailnotify
+    fi
   fi
 
   $RM -r "$log_dir"
