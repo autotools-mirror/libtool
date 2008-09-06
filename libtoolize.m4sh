@@ -1476,12 +1476,12 @@ func_check_macros ()
     # Suggest modern idioms for storing autoconf macros:
     $ac_config_macro_dir_advised || if test -z "$ac_macrodir" || test x"$macrodir" = x.; then
       func_echo "Consider adding \`AC_CONFIG_MACRO_DIR([m4])' to $configure_ac and"
-      func_echo "rerunning libtoolize, to keep the correct libtool macros in-tree."
+      func_echo "rerunning $progname, to keep the correct libtool macros in-tree."
       ac_config_macro_dir_advised=:
 
     elif test -z "$ac_macrodir$ltdldir"; then
       func_echo "Consider adding \`AC_CONFIG_MACRO_DIR([$macrodir])' to $configure_ac,"
-      func_echo "and rerunning libtoolize and aclocal."
+      func_echo "and rerunning $progname and aclocal."
       ac_config_macro_dir_advised=:
     fi
 
