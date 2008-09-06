@@ -1,5 +1,8 @@
 2008-09-07  Gary V. Vaughan  <gary@gnu.org>
 
+	Run `git commit -a' when no files are passed.
+	* clcommit.m4sh (func_commit): Add -a argument if necessary.
+
 	Prepare for next stable release.
 	* libltdl/Makefile.inc (LTDL_VERSION_INFO): Update.
 	* libltdl/m4/libtool.m4: Bump serial number to account for

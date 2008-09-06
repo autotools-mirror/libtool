@@ -361,6 +361,7 @@ func_commit ()
     subject=`git status 2>/dev/null | $SED -n 's/^#.*[mad][ode][dl].*ed: *//p'`
     test $# -gt 0 && subject="$@"
 
+    test $# -gt 0 || { set dummy -a; shift; }
     func_verbose "$GIT commit$git_flags -F $log_file ${1+$@}"
     $GIT commit$git_flags -F $log_file ${1+"$@"} || exit $EXIT_FAILURE
 
