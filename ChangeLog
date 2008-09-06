@@ -1,5 +1,9 @@
 2008-09-07  Gary V. Vaughan  <gary@gnu.org>
 
+	Fix typo in Makefile.maint.
+	* Makefile.maint (git-news): Renamed to check-news, since it
+	doesn't actually run git.  Adjust all dependees.
+
 	Run `git commit -a' when no files are passed.
 	* clcommit.m4sh (func_commit): Add -a argument if necessary.
 

@@ -149,11 +149,11 @@ fetch:
 GPG = gpg # set it to `:' to avoid gpg operations
 
 .PHONY: git-commit
-git-commit: git-news
+git-commit: check-news
 	cd $(srcdir) && $(SHELL) ./commit
 
 .PHONY: git-dist
-git-dist: git-news check-commit
+git-dist: check-news check-commit
 ## Build the distribution:
 	$(MAKE) distcheck
 ## Finally, if everything was successful, tag the release
