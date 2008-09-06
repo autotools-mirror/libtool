@@ -207,7 +207,7 @@ set -e
 			fi
 			# The funny quoting allows keeping one option per
 			# line in $rc_file:
-			eval set dummy $(echo $(cat $rc_file) \\\${1+\"\\\$@\"})
+			eval set dummy $(echo $(cat $rc_file) \${1+\"\$@\"})
 			shift
 			;;
 
@@ -378,18 +378,13 @@ func_mailnotify ()
 
     {
       echo Subject: $subject
-      test -f '{arch}/=tagging-method' &&
-          echo "Tree version:	`$TLA tree-version`"
-      test -f CVS/Root &&
-          echo "CVSROOT:	`$SED -e 's,.*:,,g' CVS/Root`"
+      test -f .git/config &&
+          echo "Root:		`$SED -n 's,^	url = .*:\(.*\)$,\1,p' .git/config`"
       test -f $MKSTAMP &&
-          echo "TIMESTAMP:	`$SHELL $MKSTAMP .`"
-      test -f CVS/Repository &&
-          echo "Module name:	`cat CVS/Repository`"
-      test -f CVS/Tag &&
-          echo "Branch:		`$SED -e 's,^T,,;1q' CVS/Tag`"
-      test -f CVS/Root &&
-          echo "Changes by:	`$SED -e 's,^:[a-z]*:,,;s,:.*$,,g' CVS/Root`"
+          echo "Timestamp:	`$SHELL $MKSTAMP .`"
+      echo "Branch:		`$GIT branch | sed -n 's/\* //p'`"
+      test -f .git/config &&
+          echo "Changes by:	`$SED -n 's,^	url = \([^:]*\):.*$,\1,p' .git/config`"
       echo ""
       echo "Log Message:"
       $SED -e 's,^,	,' "$log_file"
@@ -442,7 +437,7 @@ func_mailnotify ()
     func_commit ${1+"$@"}
   fi
 
-  subject="$summary ["`$GIT branch | sed -n 's/\* //p'`"]"
+  subject=`sed -n '1p' "$log_file"`
 
   # Send a copy of the log_file if sendmail_to was set:
   if test -n "$sendmail_to"; then

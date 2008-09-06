@@ -1,5 +1,8 @@
 2008-09-07  Gary V. Vaughan  <gary@gnu.org>
 
+	Convert mailnotify headers to git.
+	* clcommit.m4sh: Improve mailnotify contents.
+
 	Make ./commit useful again.
 	* clcommit.m4sh: Major overhaul and simplification for git.
 
