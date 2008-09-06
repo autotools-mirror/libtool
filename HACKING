@@ -665,10 +665,7 @@ or obtained by writing to the Free Software Foundation, Inc.,
   (esp. bug-libtool) for outstanding bug reports also in the list of
   pending moderation requests.
 
-* Make sure you have wget installed.
-
-* Make sure you have a copy of xdelta installed, and a copy of the previous
-  release tarball in the build directory.
+* Make sure you have wget and lzma installed.
 
 * Make sure your locale is sane, e.g. by exporting LC_ALL=C.
 
@@ -687,9 +684,6 @@ or obtained by writing to the Free Software Foundation, Inc.,
 
 * Run ./bootstrap.
 
-* Have some tea.  If you are running on less than 3.6GHz CPU, order
-  a pizza too ;-)
-
 * Run ./configure (or create a build directory first and run configure
   from there, if you want to keep the build tree separate).
 
@@ -699,25 +693,26 @@ or obtained by writing to the Free Software Foundation, Inc.,
   fetch new versions of the files that are maintained outside of
   libtool.
 
-* Run `make distcheck' and `make distcheck
-  DISTCHECK_CONFIGURE_FLAGS=--disable-ltdl-install'.  Try a distcheck
-  with --program-prefix=g.  If there are any problems, fix them and
-  start again.
+* Run `make distcheck'
+  and `make distcheck DISTCHECK_CONFIGURE_FLAGS=--disable-ltdl-install'
+  and `make distcheck DISTCHECK_CONFIGURE_FLAGS=--program-prefix=g'
+  and `make distcheck CC=g++'
+  If there are any problems, fix them and start again.
 
 * Run ./commit from the source tree.
 
-* Run `make -fMakefile.maint cvs-dist' (or `make -f../Makefile.maint
-  cvs-dist' if you are running from a VPATH build directory, where `../'
+* Run `make -fMakefile.maint git-dist' (or `make -f../Makefile.maint
+  git-dist' if you are running from a VPATH build directory, where `../'
   is the relative path to the directory with `configure' in it), which
   will build a release tarball (with `make distcheck'), tag the tree
   with release-$(VERSION) and generate the gpg signature files.
 
-* Run 'make -f[../]Makefile.maint deltas' (pass
-  LASTRELEASE=maj.min[.mic[alpha]] if needed) to create both diff and
-  xdelta files between the previous release tarball and the new with
-  detached gpg signature files and clear signed directive files.
+* Run 'make -f[../]Makefile.maint diffs' (pass
+  LASTRELEASE=maj.min[.mic[alpha]] if needed) to create diff files
+  between the previous release tarball and the new with detached gpg
+  signature files and clear signed directive files.
 
-* Upload release tarball, diff file and xdelta file, plus their associated
+* Upload release tarballs and diff files, plus their associated
   detached gpg signature files and clear signed directive files to
   ftp-upload.gnu.org.  If the upload is destined for ftp.gnu.org, then the
   files should be placed in the /incoming/ftp directory.  If the upload is
@@ -739,7 +734,8 @@ or obtained by writing to the Free Software Foundation, Inc.,
   release number and the news page should get a HTMLified copy of your
   release announcement.
 
-* If not an alpha, replace manual.html with the new one
+* If not an alpha, upload new manual pages with cvs to:
+  <yourusername>@cvs.savannah.gnu.org:/webcvs/libtool
   (generate with `make -f[../]Makefile.maint web-manual').
 
 

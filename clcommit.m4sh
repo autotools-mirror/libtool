@@ -207,7 +207,7 @@ set -e
 			fi
 			# The funny quoting allows keeping one option per
 			# line in $rc_file:
-			eval set dummy $(echo $(cat $rc_file) \${1+\"\$@\"})
+			eval set dummy `echo \`cat $rc_file\` \${1+"\$@"}`
 			shift
 			;;
 

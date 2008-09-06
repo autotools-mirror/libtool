@@ -30,7 +30,7 @@ dnl Oldest automake required for bootstrap is below in AM_INIT_AUTOMAKE.
 ## ------------------------ ##
 ## Autoconf initialisation. ##
 ## ------------------------ ##
-AC_INIT([libtool], [2.2.5a], [bug-libtool@gnu.org])
+AC_INIT([libtool], [2.2.6], [bug-libtool@gnu.org])
 AC_CONFIG_HEADERS([config.h:config-h.in])
 AC_CONFIG_SRCDIR([libtoolize.in])
 LT_CONFIG_LTDL_DIR([libltdl], [nonrecursive])
@@ -106,7 +106,7 @@ AC_SUBST([LASTRELEASE])
 TIMESTAMP=`${CONFIG_SHELL} ${ac_aux_dir}/mkstamp ${srcdir}`
 package_revision=`( set $TIMESTAMP; echo $1; )`
 case $lt_alpha in
-  [[bdfhjlnprtvxz]])
+  ""|[[bdfhjlnprtvxz]])
     TIMESTAMP=
     ;;
 esac
@@ -120,9 +120,9 @@ AC_SUBST([package_revision])
 ## Automake Initialisation. ##
 ## ------------------------ ##
 
-dnl These are bootstrap requirements, once built, libtool may work with
+dnl These are bootstrap requirements! Once built, libtool may work with
 dnl much older releases of autoconf and automake.  See release notes.
-AM_INIT_AUTOMAKE([1.9 gnu subdir-objects dist-bzip2])
+AM_INIT_AUTOMAKE([1.10.1 gnu subdir-objects dist-lzma])
 
 dnl We use m4sh to generate libtool's portable shell scripts
 AC_SUBST([M4SH], ['$(AUTOM4TE) --language=m4sh'])
@@ -130,7 +130,8 @@ AC_SUBST([M4SH], ['$(AUTOM4TE) --language=m4sh'])
 dnl Make sure config.status is regenerated when the version timestamp changes
 AC_SUBST([CONFIG_STATUS_DEPENDENCIES], ['$(top_srcdir)/ChangeLog'])
 
-dnl automake-1.9.x or autoconf-2.59 don't support subdir libobjs
+dnl when installed libtool is used with automake-1.9.x or autoconf-2.59,
+dnl subdir libobjs don't work without a little extra help
 AC_MSG_CHECKING([whether subdir libobjs are useable])
 test -f $srcdir/argz.c || sublibobjs_supported=yes
 AM_CONDITIONAL([LTDL_SUBDIR_LIBOBJS], test x"${sublibobjs_supported-no}" != xno)
@@ -141,9 +142,6 @@ AC_MSG_RESULT([${sublibobjs_supported-no}])
 ## Libtool specific configuration. ##
 ## ------------------------------- ##
 
-dnl automake-1.9 does not substitute these two by default
-AC_SUBST([abs_top_srcdir])
-AC_SUBST([abs_top_builddir])
 AC_SUBST([aclocaldir], ["\${datadir}/aclocal"])
 AC_SUBST([pkgdatadir], ["\${datadir}/$PACKAGE"])
 

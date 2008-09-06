@@ -61,16 +61,16 @@ $(srcdir)/$(auxdir)/mailnotify: $(auxdir)/mailnotify.m4sh
 	mv -f mailnotify.tmp mailnotify; \
 	rm -f mailnotify.in
 
-.PHONY: cvs-release
-cvs-release: version-check prev-tarball cvs-news fetch cvs-commit cvs-dist deltas web-manual
+.PHONY: git-release
+git-release: version-check prev-tarball check-news fetch git-commit git-dist diffs web-manual
 	@tarname="$(PACKAGE)-$(VERSION).tar.gz"; \
+	lzmaname="$(PACKAGE)-$(VERSION).tar.lzma"; \
 	diffname="$(PACKAGE)-$(LASTRELEASE)-$(VERSION).diff.gz"; \
-	xdeltaname="$(PACKAGE)-$(LASTRELEASE)-$(VERSION).xdelta"; \
 	echo " *** Upload $$tarname, $$tarname.sig,";\
-	echo " *** $$tarname.directive.asc, $$diffname,"; \
-	echo " *** $$diffname.sig, $$diffname.directive.asc,"; \
-	echo " *** $$xdeltaname, $$xdeltaname.sig and";\
-	echo " *** $$xdeltaname.directive.asc to either"
+	echo " *** $$tarname.directive.asc, $$lzmaname,";\
+	echo " *** $$lzmaname.sig, $$lzmaname.directive.asc,";\
+	echo " *** $$diffname, $$diffname.sig";\
+	echo " ***  and $$diffname.directive.asc to either"; \
 	echo " *** /incoming/alpha or /incoming/ftp on ftp-upload.gnu.org."
 	echo " *** You might need to upload manual.html to webcvs/libtool."
 
@@ -84,28 +84,17 @@ version-check:
 	  ;; \
 	esac
 
-.PHONY: prev-tarball
-prev-tarball:
-## Make sure we have the previous release tarball in the tree.
-	@if test -z "$(LASTRELEASE)"; \
-		then echo "LASTRELEASE is not set"; exit 1; fi
-	@ofile="$(PACKAGE)-$(LASTRELEASE).tar.gz"; \
-	if test -f $$ofile; then :; \
-	else echo "Cannot make deltas without $$ofile"; exit 1; fi
+GIT = git # set it to `:' to avoid git write operations
 
-TSDEPS = ChangeLog libltdl/m4/libtool.m4
-CVS = cvs # set it to `:' to avoid CVS operations
-
-.PHONY: timestamps update-timestamps
-timestamps: update-timestamps
-update-timestamps:
-	@if (cd $(srcdir) && test -d CVS && \
-	    $(CVS) -n update $(TSDEPS) | grep '^M'); then \
-		echo "Cannot make cvs-dist before commit"; exit 1; else :; fi
+.PHONY: check-commit
+check-commit:
+	@if (cd $(srcdir) && test -d .git && \
+	    $(GIT) status | grep 'modified:'); then \
+		echo "Cannot make git-dist before commit"; exit 1; else :; fi
 
 
-.PHONY: cvs-news
-cvs-news:
+.PHONY: check-news
+check-news:
 ## Make sure the NEWS file is up-to-date:
 	@if sed '1,2d;3q' $(srcdir)/NEWS | grep -e "$(VERSION)" >/dev/null; \
 	then :; \
@@ -159,19 +148,19 @@ fetch:
 
 GPG = gpg # set it to `:' to avoid gpg operations
 
-.PHONY: cvs-commit
-cvs-commit: cvs-news
+.PHONY: git-commit
+git-commit: git-news
 	cd $(srcdir) && $(SHELL) ./commit
 
-.PHONY: cvs-dist
-cvs-dist: cvs-news timestamps
+.PHONY: git-dist
+git-dist: git-news check-commit
 ## Build the distribution:
 	$(MAKE) distcheck
 ## Finally, if everything was successful, tag the release
 	cd $(srcdir) \
-	  && $(CVS) -q tag `echo "release-$(VERSION)" | sed 's/\./-/g'`
+	  && $(GIT) tag -s "v$(VERSION)"
 ## Generate signatures and directives for FSF ftp-upload:
-	for suffix in gz bz2; do \
+	for suffix in gz lzma; do \
 	  ofile="$(PACKAGE)-$(VERSION).tar.$$suffix"; \
 	  $(GPG) --detach-sign $$ofile \
 	  && echo "directory: libtool" > $$ofile.directive \
@@ -179,31 +168,27 @@ cvs-dist: cvs-news timestamps
 	  && rm -f $$ofile.directive; \
 	done
 
+.PHONY: prev-tarball
+prev-tarball:
+## Make sure we have the previous release tarball in the tree.
+	@if test -z "$(LASTRELEASE)"; \
+		then echo "LASTRELEASE is not set"; exit 1; fi
+	@ofile="$(PACKAGE)-$(LASTRELEASE).tar.gz"; \
+	if test -f $$ofile; then :; \
+	else echo "Cannot make diffs without $$ofile"; exit 1; fi
+
 .PHONY: new-tarball
 new-tarball:
 ## Make sure we have the new release tarball in the tree.
 	@ofile="$(PACKAGE)-$(VERSION).tar.gz"; \
 	if test -f $$ofile; then :; \
-	else echo "Cannot make deltas without $$ofile"; exit 1; fi
-
-.PHONY: got-xdelta
-got-xdelta:
-## Make sure xdelta exists;
-	@if ($(XDELTA) --version 2>&1 | grep version)>/dev/null 2>/dev/null; \
-	then :;\
-	else \
-	  echo "Get xdelta from http://sourceforge.net/projects/xdelta."; \
-	  exit 1; \
-	fi
-
-.PHONY: deltas
-deltas: delta-diff delta-xdelta
+	else echo "Cannot make diffs without $$ofile"; exit 1; fi
 
 DIFF = diff
 DIFF_OPTIONS = -ruNp
 
-.PHONY: delta-diff
-delta-diff: prev-tarball new-tarball
+.PHONY: diff
+diffs: prev-tarball new-tarball
 ## Unpack the tarballs somewhere to diff them
 	rm -rf delta-diff
 	mkdir delta-diff
@@ -222,28 +207,12 @@ delta-diff: prev-tarball new-tarball
 
 	rm -rf delta-diff
 
-XDELTA = xdelta
-XDELTA_OPTIONS = -9
-
-.PHONY: delta-xdelta
-delta-xdelta: prev-tarball new-tarball got-xdelta
-## Generate the delta file (xdelta has wierd exit statuses, so we need to
-## add some shell code to keep make happy), and then generate the signatures
-## for FSF ftp-upload:
-	ofile="$(PACKAGE)-$(LASTRELEASE)-$(VERSION).xdelta"; \
-	( test -z `$(XDELTA) delta $(XDELTA_OPTIONS) \
-	    $(PACKAGE)-$(LASTRELEASE).tar.gz $(PACKAGE)-$(VERSION).tar.gz \
-	    $$ofile 2>&1` \
-	  && : ) \
-	&& $(GPG) --detach-sign $$ofile \
-	&& echo "directory: libtool" > $$ofile.directive \
-	&& $(GPG) --clearsign $$ofile.directive \
-	&& rm -f $$ofile.directive
-
 .PHONY: web-manual
 web-manual:
-	@rm -f doc/manual.texi manual.html
-	@$(LN_S) $(abs_srcdir)/doc/libtool.texi doc/manual.texi
-	$(TEXI2HTML) -I doc -I $(srcdir)/doc -monolithic -number -verbose doc/manual.texi
-	@test -f manual.html || mv doc/manual.html manual.html
-	@rm -f doc/manual.texi
+	cd $(srcdir)/doc; \
+	rm -f gendocs.sh* gendocs_template*; \
+	test -d manual && rm -rf manual; \
+	$(WGETSGO)'/texinfo/texinfo/util/gendocs.sh' && \
+	$(WGETSGO)'/texinfo/texinfo/util/gendocs_template' && \
+	chmod 755 gendocs.sh && \
+	./gendocs.sh libtool "GNU Libtool Manual"

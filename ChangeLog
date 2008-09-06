@@ -1,5 +1,25 @@
 2008-09-07  Gary V. Vaughan  <gary@gnu.org>
 
+	Prepare for next stable release.
+	* libltdl/Makefile.inc (LTDL_VERSION_INFO): Update.
+	* libltdl/m4/libtool.m4: Bump serial number to account for
+	changes since 2.2.4 release.
+	* INSTALL, config/config.guess, config/texinfo.tex: Updated
+	from canonical source.
+	* configure.ac (AM_INIT_AUTOMAKE): Specify dist-lzma, which
+	was introduced after automake-1.10 was released.
+	(abs_top_srcdir, abs_top_builddir): No need to substitute these
+	from configure anymore, since we require automake 1.10.1, which
+	does perform the substitutions properly.
+	(TIMESTAMP): Normal releases were displaying the long-form
+	timestamp.  Fix to show the short release timestamp as per
+	alpha release numbers.
+	* NEWS: Update with missing entries from ChangeLog.
+	* HACKING (Release Procedure): We release lzma tarballs now
+	but no xdeltas.
+	* Makefile.maint: Updated to match Release Procedure
+	instructions in HACKING.
+
 	Convert mailnotify headers to git.
 	* clcommit.m4sh: Improve mailnotify contents.
 
