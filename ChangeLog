@@ -1,5 +1,11 @@
 2008-09-07  Gary V. Vaughan  <gary@gnu.org>
 
+	Enable release procedure to work with lzma OLDRELEASE file.
+	* Makefile.maint (diffs, prev-tarball, new-tarball): If lzma
+	tarballs are present use them to generate the diffs, otherwise
+	use gz tarballs if they are present, or else complain if both
+	are missing.
+
 	Set SCM version number to 2.2.7a.
 	* configure.ac, libltdl/configure.ac (AC_INIT): Bump version
 	number to 2.2.7a.

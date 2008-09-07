@@ -175,28 +175,38 @@ prev-tarball:
 		then echo "LASTRELEASE is not set"; exit 1; fi
 	@ofile="$(PACKAGE)-$(LASTRELEASE).tar.gz"; \
 	if test -f $$ofile; then :; \
-	else echo "Cannot make diffs without $$ofile"; exit 1; fi
+	else ofile="$(PACKAGE)-$(LASTRELEASE).tar.lzma"; \
+          if test -f $$ofile; then :; \
+          else echo "Cannot make diffs without $$ofile"; exit 1; fi; fi
 
 .PHONY: new-tarball
 new-tarball:
 ## Make sure we have the new release tarball in the tree.
 	@ofile="$(PACKAGE)-$(VERSION).tar.gz"; \
 	if test -f $$ofile; then :; \
-	else echo "Cannot make diffs without $$ofile"; exit 1; fi
+	else ofile="$(PACKAGE)-$(VERSION).tar.lzma"; \
+          if test -f $$ofile; then :; \
+          else echo "Cannot make diffs without $$ofile"; exit 1; fi; fi
 
 DIFF = diff
 DIFF_OPTIONS = -ruNp
 
-.PHONY: diff
+.PHONY: diffs
 diffs: prev-tarball new-tarball
 ## Unpack the tarballs somewhere to diff them
 	rm -rf delta-diff
 	mkdir delta-diff
 
+	cd delta-diff; \
 	ofile="../$(PACKAGE)-$(LASTRELEASE)-$(VERSION).diff.gz"; \
-	cd delta-diff \
-	&& tar xzf "../$(PACKAGE)-$(LASTRELEASE).tar.gz" \
-	&& tar xzf "../$(PACKAGE)-$(VERSION).tar.gz" \
+	otar="../$(PACKAGE)-$(LASTRELEASE).tar"; \
+	ntar="../$(PACKAGE)-$(VERSION).tar"; \
+	test -f "$$otar.gz" && otar="$$otar.gz" && ounpack="gzip"; \
+	test -f "$$ntar.gz" && ntar="$$ntar.gz" && nunpack="gzip"; \
+	test -f "$$otar.lzma" && otar="$$otar.lzma" && ounpack="lzma"; \
+	test -f "$$ntar.lzma" && ntar="$$ntar.lzma" && nunpack="zlma"; \
+	$$ounpack -c -d "$$otar" | tar xf - \
+	&& $$nunpack -c -d "$$ntar" | tar xf - \
 	&& $(DIFF) $(DIFF_OPTIONS) \
 		$(PACKAGE)-$(LASTRELEASE) $(PACKAGE)-$(VERSION) \
 		| GZIP=$(GZIP_ENV) gzip -c > $$ofile \
