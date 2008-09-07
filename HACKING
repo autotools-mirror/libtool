@@ -719,9 +719,6 @@ or obtained by writing to the Free Software Foundation, Inc.,
   an alpha release destined for alpha.gnu.org, then the files should be
   placed in the /incoming/alpha directory.
 
-* Send announcement to libtool@gnu.org and autotools-announce@gnu.org,
-  if not an alpha send to info-gnu@gnu.org as well.
-
 * Update version number in configure.ac and libltdl/configure.ac to next
   alpha number.  See http://www.gnu.org/software/libtool/contribute.html
   for details of the numbering scheme.
@@ -731,13 +728,18 @@ or obtained by writing to the Free Software Foundation, Inc.,
 * Run ./commit.
 
 * Update the webpages, libtool.html will need to indicate the latest
-  release number and the news page should get a HTMLified copy of your
-  release announcement.
+  release number.
 
 * If not an alpha, upload new manual pages with cvs to:
   <yourusername>@cvs.savannah.gnu.org:/webcvs/libtool
   (generate with `make -f[../]Makefile.maint web-manual').
 
+* Send announcement to libtool@gnu.org and autotools-announce@gnu.org,
+  if not an alpha send to info-gnu@gnu.org as well.
+
+* Post a copy of the release announcement to savannah news:
+  https://savannah.gnu.org/news/submit.php?group=libtool
+  which will automatically propogate to http://planet.gnu.org.
 
 
 13. Alpha release note template

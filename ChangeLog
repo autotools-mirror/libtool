@@ -1,5 +1,10 @@
 2008-09-07  Gary V. Vaughan  <gary@gnu.org>
 
+	Retire gnu.org news.html in favour of savannah news.
+	* HACKING (Release Procedure): Add instructions for sending
+	a web release announcement to http://planet.gnu.org via
+	the savannah news manager.
+
 	Add untested git push conflict testing to commit script.
 	* clcommit.m4sh (func_check_conflicts): Test return status
 	of 'git push --dry-run', and display an error on non-zero.
