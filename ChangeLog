@@ -1,5 +1,12 @@
 2008-09-07  Gary V. Vaughan  <gary@gnu.org>
 
+	Set SCM version number to 2.2.7a.
+	* configure.ac, libltdl/configure.ac (AC_INIT): Bump version
+	number to 2.2.7a.
+	* NEWS: Updated.
+
+	GNU Libtool 2.2.6 was released.
+
 	Fix typo in Makefile.maint.
 	* Makefile.maint (git-news): Renamed to check-news, since it
 	doesn't actually run git.  Adjust all dependees.
