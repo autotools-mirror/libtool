@@ -1,5 +1,9 @@
 2008-09-07  Gary V. Vaughan  <gary@gnu.org>
 
+	Add untested git push conflict testing to commit script.
+	* clcommit.m4sh (func_check_conflicts): Test return status
+	of 'git push --dry-run', and display an error on non-zero.
+
 	Enable release procedure to work with lzma OLDRELEASE file.
 	* Makefile.maint (diffs, prev-tarball, new-tarball): If lzma
 	tarballs are present use them to generate the diffs, otherwise

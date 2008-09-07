@@ -110,6 +110,7 @@ fi
 signature_file=
 log_dir="`func_mktempdir`"
 log_file="$log_dir/log"
+push_conflicts="$log_dir/git_push.log"
 
 trap '$RM -r "$log_dir"; exit $EXIT_FAILURE' 1 2 15
 
@@ -289,9 +290,9 @@ set -e
 # func_check_conflicts
 func_check_conflicts ()
 {
-    # HELP?!?  How to check for git push conflicts?
-    if false; then
-      func_fatal_error "some conflicts were found with CVS repository, aborting..."
+    if $GIT push --dry-run > "$push_conflicts" 2>&1; then :; else
+      cat "$push_conflicts" >&2
+      func_fatal_error "some conflicts were found with upstream repository, aborting..."
     fi
 }
 
@@ -420,8 +421,6 @@ func_mailnotify ()
 ## ----- ##
 
 {
-  $opt_update && func_check_conflicts
-
   test -f "$log_file" || func_check_commit_msg
 
   grep '[^ 	]' < "$log_file" > /dev/null ||
@@ -432,15 +431,16 @@ func_mailnotify ()
     func_error "*** They should be used to separate distinct commits."
   fi
 
+  $opt_update && $opt_push && func_check_conflicts
+
   # Do not check for empty $log_file again, even though the user might have
   # zeroed it out.  If s/he did, it was probably intentional.
   if $opt_commit; then
     func_commit ${1+"$@"}
   fi
 
-  subject=`sed -n '1p' "$log_file"`
-
   # Send a copy of the log_file if sendmail_to was set:
+  subject=`sed -n '1p' "$log_file"`
   if test -n "$sendmail_to"; then
     if ! $opt_push; then
       func_warning "Mail notification NOT sent for commit to local repository."
