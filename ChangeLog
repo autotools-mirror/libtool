@@ -1,5 +1,14 @@
 2008-09-07  Gary V. Vaughan  <gary@gnu.org>
 
+	Add ./commit option for pushing tags back to origin.
+	* clcommit.m4sh (opt_tags): New --tags push option.
+	(func_commit): Run `$GIT push --tags' if --tags was passed.
+	* HACKING (Release Procedure): Note the requirement to pass
+	--tags to ./commit for new release tag to be push back to
+	origin.
+
+2008-09-07  Gary V. Vaughan  <gary@gnu.org>
+
 	Retire gnu.org news.html in favour of savannah news.
 	* HACKING (Release Procedure): Add instructions for sending
 	a web release announcement to http://planet.gnu.org via

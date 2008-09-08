@@ -46,6 +46,7 @@ m4_divert_push([SCRIPT])#!/bin/sh
 #           --signature[=FILE] add FILE to the end of the email [~/.signature]
 #           --signoff          add a Signed-off-by attribution at the end
 # -S TEXT   --summary=TEXT     specify a TEXT subject line for the commit email
+#           --tags             in conjunction with -p, also push tags
 # -v        --verbose          run in verbose mode
 #           --version          print version information
 # -h,-?     --help             print short or long help message
@@ -89,6 +90,7 @@ M4SH_VERBATIM([[
 opt_commit=:
 opt_first=false
 opt_push=false
+opt_tags=false
 opt_update=:
 opt_verbose=false
 
@@ -237,6 +239,8 @@ set -e
 			shift
 			;;
 
+      --tags)		opt_tags=:				;;
+
       --verbose|-v)	opt_verbose=:				;;
 
       # Separate optargs to long options:
@@ -282,6 +286,9 @@ set -e
     test -n "$signature_file" &&
       func_error "can't use --signature without --sendmail." && exit_cmd=exit
   fi
+
+  $opt_tags && test x"$opt_push" = xfalse &&
+    func_error "can't use --tags without --push." && exit_cmd=exit
 
   # Bail if the options were screwed
   $exit_cmd $EXIT_FAILURE
@@ -366,7 +373,10 @@ func_commit ()
     func_verbose "$GIT commit$git_flags -F $log_file ${1+$@}"
     $GIT commit$git_flags -F $log_file ${1+"$@"} || exit $EXIT_FAILURE
 
-    $opt_push && $GIT push
+    if $opt_push; then
+      $GIT push
+      $opt_tags && $GIT push --tags
+    fi
 
     :
 }
