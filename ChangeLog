@@ -1,4 +1,8 @@
-2008-09-07  Gary V. Vaughan  <gary@gnu.org>
+2008-09-08  Gary V. Vaughan  <gary@gnu.org>
+
+	Use `-version-info 9:0:2' for one added iface since 2.2.4.
+	* libltdl/Makefile.inc (LTDL_VERSION_INFO): Make the libltdl
+	version number match 2.2.6a rerelease.
 
 	Add ./commit option for pushing tags back to origin.
 	* clcommit.m4sh (opt_tags): New --tags push option.
