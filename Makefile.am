@@ -31,11 +31,12 @@ AM_LDFLAGS		=
 DIST_SUBDIRS		= .
 EXTRA_DIST		=
 
-BUILT_SOURCES		= libtool
+BUILT_SOURCES		= libtool libtoolize
 
 CLEANFILES		=
 MOSTLYCLEANFILES	=
 DISTCLEANFILES		=
+MAINTAINERCLEANFILES	=
 
 include_HEADERS		=
 noinst_LTLIBRARIES	=
@@ -328,6 +329,16 @@ all-local: $(srcdir)/doc/notes.txt
 $(srcdir)/doc/notes.txt: $(srcdir)/doc/notes.texi
 	cd $(srcdir)/doc && \
 	  $(MAKEINFO) --no-headers $(MAKEINFOFLAGS) -o notes.txt notes.texi
+
+dist_man1_MANS		= $(srcdir)/doc/libtool.1 $(srcdir)/doc/libtoolize.1
+MAINTAINERCLEANFILES	+= $(dist_man1_MANS)
+update_mans = \
+  PATH=.$(PATH_SEPARATOR)$$PATH; export PATH; \
+  $(HELP2MAN) --output=$@
+$(srcdir)/doc/libtool.1: $(srcdir)/$(auxdir)/ltmain.sh
+	$(update_mans) --help-option=--help-all libtool
+$(srcdir)/doc/libtoolize.1: $(srcdir)/libtoolize.in
+	$(update_mans) libtoolize
 
 
 ## ------------- ##

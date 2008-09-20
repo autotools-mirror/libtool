@@ -1,7 +1,7 @@
 m4_define([_m4_divert(SCRIPT)], 100)
 m4_divert_push([SCRIPT])# @configure_input@
 
-# ltmain.sh (GNU @PACKAGE@@TIMESTAMP@) @VERSION@
+# libtool (GNU @PACKAGE@@TIMESTAMP@) @VERSION@
 # Written by Gordon Matzigkeit <gord@gnu.ai.mit.edu>, 1996
 
 # Copyright (C) 1996, 1997, 1998, 1999, 2000, 2001, 2003, 2004, 2005, 2006, 2007 2008 Free Software Foundation, Inc.
@@ -33,27 +33,27 @@ m4_divert_push([SCRIPT])# @configure_input@
 #
 # Provide generalized library-building support services.
 #
-#     --config             show all configuration variables
-#     --debug              enable verbose shell tracing
-# -n, --dry-run            display commands without modifying any files
-#     --features           display basic configuration information and exit
-#     --mode=MODE          use operation mode MODE
-#     --preserve-dup-deps  don't remove duplicate dependency libraries
-#     --quiet, --silent    don't print informational messages
-#     --tag=TAG            use configuration variables from tag TAG
-# -v, --verbose            print informational messages (default)
-#     --version            print version information
-# -h, --help               print short or long help message
+#       --config             show all configuration variables
+#       --debug              enable verbose shell tracing
+#   -n, --dry-run            display commands without modifying any files
+#       --features           display basic configuration information and exit
+#       --mode=MODE          use operation mode MODE
+#       --preserve-dup-deps  don't remove duplicate dependency libraries
+#       --quiet, --silent    don't print informational messages
+#       --tag=TAG            use configuration variables from tag TAG
+#   -v, --verbose            print informational messages (default)
+#       --version            print version information
+#   -h, --help, --help-all   print short, long, or detailed help message
 #
 # MODE must be one of the following:
 #
-#       clean              remove files from the build directory
-#       compile            compile a source file into a libtool object
-#       execute            automatically set library path, then run a program
-#       finish             complete the installation of libtool libraries
-#       install            install libraries or executables
-#       link               create a library or an executable
-#       uninstall          remove libraries from an installed directory
+#         clean              remove files from the build directory
+#         compile            compile a source file into a libtool object
+#         execute            automatically set library path, then run a program
+#         finish             complete the installation of libtool libraries
+#         install            install libraries or executables
+#         link               create a library or an executable
+#         uninstall          remove libraries from an installed directory
 #
 # MODE-ARGS vary depending on the MODE.
 # Try `$progname --help --mode=MODE' for a more detailed description of MODE.
@@ -61,18 +61,18 @@ m4_divert_push([SCRIPT])# @configure_input@
 # When reporting a bug, please describe a test case to reproduce it and
 # include the following information:
 #
-#       host-triplet:	$host
-#       shell:		$SHELL
-#       compiler:		$LTCC
-#       compiler flags:		$LTCFLAGS
-#       linker:		$LD (gnu? $with_gnu_ld)
-#       $progname:		(GNU @PACKAGE@@TIMESTAMP@) @VERSION@
-#       automake:		$automake_version
-#       autoconf:		$autoconf_version
+#         host-triplet:	$host
+#         shell:		$SHELL
+#         compiler:		$LTCC
+#         compiler flags:		$LTCFLAGS
+#         linker:		$LD (gnu? $with_gnu_ld)
+#         $progname:	(GNU @PACKAGE@@TIMESTAMP@) @VERSION@
+#         automake:	$automake_version
+#         autoconf:	$autoconf_version
 #
 # Report bugs to <bug-libtool@gnu.org>.
 
-PROGRAM=ltmain.sh
+PROGRAM=libtool
 PACKAGE=@PACKAGE@
 VERSION=@VERSION@
 TIMESTAMP="@TIMESTAMP@"
@@ -351,6 +351,7 @@ func_enable_tag ()
 
       -\?|-h)		func_usage					;;
       --help)		opt_help=:					;;
+      --help-all)	opt_help=': help-all'				;;
       --version)	func_version					;;
 
       -*)		func_fatal_help "unrecognized option \`$opt'"	;;
@@ -1003,7 +1004,7 @@ compiler."
 }
 
 $opt_help || {
-test "$mode" = compile && func_mode_compile ${1+"$@"}
+  test "$mode" = compile && func_mode_compile ${1+"$@"}
 }
 
 func_mode_help ()
@@ -1044,6 +1045,7 @@ This mode accepts the following additional options:
   -prefer-non-pic   try to building non-PIC objects only
   -shared           do not build a \`.o' file suitable for static linking
   -static           only build a \`.o' file suitable for static linking
+  -Wc,FLAG          pass FLAG directly to the compiler
 
 COMPILE-COMMAND is a command to be used in creating a \`standard' object file
 from the given SOURCEFILE.
@@ -1144,6 +1146,11 @@ The following components of LINK-COMMAND are treated specially:
   -version-info CURRENT[:REVISION[:AGE]]
                     specify library version info [each variable defaults to 0]
   -weak LIBNAME     declare that the target provides the LIBNAME interface
+  -Wc,FLAG
+  -Xcompiler FLAG   pass linker-specific FLAG directly to the compiler
+  -Wl,FLAG
+  -Xlinker FLAG     pass linker-specific FLAG directly to the linker
+  -XCClinker FLAG   pass link-specific FLAG to the compiler driver (CC)
 
 All other options (arguments beginning with \`-') are ignored.
 
@@ -1183,12 +1190,38 @@ Otherwise, only FILE itself is deleted using RM."
 
     $ECHO
     $ECHO "Try \`$progname --help' for more information about other modes."
-
-    exit $?
 }
 
-  # Now that we've collected a possible --mode arg, show help if necessary
-  $opt_help && func_mode_help
+# Now that we've collected a possible --mode arg, show help if necessary
+if $opt_help; then
+  if test "$opt_help" = :; then
+    func_mode_help
+  else
+    {
+      func_help noexit
+      for mode in compile link execute install finish uninstall clean; do
+	func_mode_help
+      done
+    } | sed -n '1p; 2,$s/^Usage:/  or: /p'
+    {
+      func_help noexit
+      for mode in compile link execute install finish uninstall clean; do
+	echo
+	func_mode_help
+      done
+    } |
+    sed '1d
+      /^When reporting/,/^Report/{
+	H
+	d
+      }
+      $x
+      /information about other modes/d
+      /more detailed .*MODE/d
+      s/^Usage:.*--mode=\([^ ]*\) .*/Description of \1 mode:/'
+  fi
+  exit $?
+fi
 
 
 # func_mode_execute arg...

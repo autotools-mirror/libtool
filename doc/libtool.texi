@@ -18,6 +18,8 @@
 
 @dircategory Individual utilities
 @direntry
+* libtool-invocation: (libtool)Invoking libtool.
+                                                Running the @code{libtool} script.
 * libtoolize: (libtool)Invoking libtoolize.     Adding libtool support.
 @end direntry
 
@@ -1144,10 +1146,16 @@ to determine whether shared or static libraries will be built.
 @item --finish
 Same as @option{--mode=finish}.
 
+@item -h
+Display short help message.
+
 @item --help
 Display a help message and exit.  If @option{--mode=@var{mode}} is
-specified, then detailed help for @var{mode} is
-displayed.
+specified, then detailed help for @var{mode} is displayed.
+
+@item --help-all
+Display help for the general options as well as detailed help for each
+operation mode, and exit.
 
 @item --mode=@var{mode}
 Use @var{mode} as the operation mode.  When using libtool from the
@@ -1165,14 +1173,14 @@ Compile a source file into a libtool object.
 Automatically set the library path so that another program can use
 uninstalled libtool-generated programs or libraries.
 
-@item finish
-Complete the installation of libtool libraries on the system.
+@item link
+Create a library or an executable.
 
 @item install
 Install libraries or executables.
 
-@item link
-Create a library or an executable.
+@item finish
+Complete the installation of libtool libraries on the system.
 
 @item uninstall
 Delete installed libraries or executables.
@@ -1293,14 +1301,7 @@ linking.
 
 @item -Wc,@var{flag}
 @itemx -Xcompiler @var{flag}
-Pass a linker specific flag directly to the compiler.
-
-@item -Wl,@var{flag}
-@itemx -Xlinker @var{flag}
-Pass a linker specific flag directly to the linker.
-
-@item -XCClinker @var{flag}
-Pass a link specific flag to the compiler driver (@var{CC}) during linking.
+Pass a flag directly to the compiler.
 @end table
 
 @node Link mode
@@ -1469,12 +1470,16 @@ no need to append @var{libname} to the list of dependency libraries of
 @var{output-file}, because linking against @var{output-file} already
 supplies the same interface (@pxref{Linking with dlopened modules}).
 
+@item -Wc,@var{flag}
+@itemx -Xcompiler @var{flag}
+Pass a linker-specific flag directly to the compiler.
+
 @item -Wl,@var{flag}
 @itemx -Xlinker @var{flag}
-Pass a linker specific flag directly to the linker.
+Pass a linker-specific flag directly to the linker.
 
 @item -XCClinker @var{flag}
-Pass a link specific flag to the compiler driver (@var{CC}) during linking.
+Pass a link-specific flag to the compiler driver (@var{CC}) during linking.
 @end table
 
 If the @var{output-file} ends in @samp{.la}, then a libtool library is

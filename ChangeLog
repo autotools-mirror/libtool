@@ -1,3 +1,33 @@
+2008-09-20  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Man pages for libtoolize and libtool, new command line option
+	--help-all.
+	* Makefile.am (dist_man1_MANS, update_mans): New macros.
+	($(srcdir)/doc/libtool.1, $(srcdir)/doc/libtoolize.1): New
+	rules.  Use --help-all for libtool.
+	(MAINTAINERCLEANFILES): New macro.  Add dist_man1_MANS.
+	(BUILT_SOURCES): Add libtoolize.
+	* configure.ac: Check for help2man, set HELP2MAN.
+	* doc/libtool.texi: Add @direntry for libtool-invocation.
+	(Invoking libtool): Document -h, --help-all.  Reorder mode
+	description for consistency.
+	(Compile mode): Do not document -Wl,FLAG and -XCClinker here.
+	(Link mode): Document -Wc,FLAG here, reformat a bit.
+	* libtoolize.m4sh: Reformat --help output a bit, to help
+	help2man.
+	* libltdl/config/ltmain.m4sh: Likewise.  Also, set PROGRAM to
+	`libtool', not `ltmain.sh', so the former is used in the man
+	page.
+	New argument `--help-all'.  If given, call func_help and
+	func_mode_help several times, beating output in shape with sed.
+	(func_mode_help): Do not exit here.
+	* libltdl/config/getopt.m4sh (func_usage): Work with different
+	indentations, but require comment hash in first column, when
+	grepping for '-h' in usage to end short help.
+	(func_help): Accept optional argument to not exit.
+	* NEWS, THANKS: Update.
+	Suggestion by Karl Berry.
+
 2008-09-08  Gary V. Vaughan  <gary@gnu.org>
 
 	Use `-version-info 9:0:2' for one added iface since 2.2.4.

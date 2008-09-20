@@ -199,6 +199,10 @@ AM_CONDITIONAL(HAVE_FC,[test -n "[$]_LT_TAGVAR(compiler, FC)"])
 AM_CONDITIONAL(HAVE_GCJ, [test -n "[$]_LT_TAGVAR(compiler, GCJ)"])
 AM_CONDITIONAL(HAVE_RC, [test -n "[$]_LT_TAGVAR(compiler, RC)"])
 
+## ------------- ##
+## Documentation ##
+## ------------- ##
+AM_MISSING_PROG([HELP2MAN], [help2man])
 
 ## -------- ##
 ## Outputs. ##

@@ -48,7 +48,7 @@ func_version ()
 # Echo short help message to standard output and exit.
 func_usage ()
 {
-    $SED -n '/^# Usage:/,/# -h/ {
+    $SED -n '/^# Usage:/,/^#  *-h/ {
         s/^# //
 	s/^# *$//
 	s/\$progname/'$progname'/
@@ -59,8 +59,9 @@ func_usage ()
     exit $?
 }
 
-# func_help
-# Echo long help message to standard output and exit.
+# func_help [NOEXIT]
+# Echo long help message to standard output and exit,
+# unless 'noexit' is passed as argument.
 func_help ()
 {
     $SED -n '/^# Usage:/,/# Report bugs to/ {
@@ -77,7 +78,10 @@ func_help ()
 	s/\$autoconf_version/'"`(autoconf --version) 2>/dev/null |$SED 1q`"'/
 	p
      }' < "$progpath"
-    exit $?
+    ret=$?
+    if test -z "$1"; then
+      exit $ret
+    fi
 }
 
 # func_missing_arg argname
