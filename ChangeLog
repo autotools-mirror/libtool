@@ -1,3 +1,9 @@
+2008-09-26  Eric Blake  <ebb9@byu.net>
+
+	Avoid gcc warning.
+	* libltdl/loaders/loadlibrary.c (vm_open): Don't check for array
+	being a NULL pointer.
+
 2008-09-20  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	Man pages for libtoolize and libtool, new command line option
