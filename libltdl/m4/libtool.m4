@@ -2386,8 +2386,10 @@ hpux9* | hpux10* | hpux11*)
     soname_spec='${libname}${release}${shared_ext}$major'
     ;;
   esac
-  # HP-UX runs *really* slowly unless shared libraries are mode 555.
+  # HP-UX runs *really* slowly unless shared libraries are mode 555, ...
   postinstall_cmds='chmod 555 $lib'
+  # or fails outright, so override atomically:
+  install_override_mode=555
   ;;
 
 interix[[3-9]]*)
@@ -2705,6 +2707,8 @@ _LT_DECL([], [library_names_spec], [1],
     The last name is the one that the linker finds with -lNAME]])
 _LT_DECL([], [soname_spec], [1],
     [[The coded name of the library, if different from the real name]])
+_LT_DECL([], [install_override_mode], [1],
+    [Permission mode override for installation of shared libraries])
 _LT_DECL([], [postinstall_cmds], [2],
     [Command to use after installation of a shared archive])
 _LT_DECL([], [postuninstall_cmds], [2],

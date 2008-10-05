@@ -460,6 +460,7 @@ TESTSUITE_AT	= tests/testsuite.at \
 		  tests/archive-in-archive.at \
 		  tests/execute-mode.at \
 		  tests/localization.at \
+		  tests/install.at \
 		  tests/destdir.at \
 		  tests/old-m4-iface.at \
 		  tests/am-subdir.at \
@@ -486,7 +487,7 @@ EXTRA_DIST     += $(srcdir)/$(TESTSUITE) $(TESTSUITE_AT) $(srcdir)/tests/package
 TESTS_ENVIRONMENT = MAKE="$(MAKE)" CC="$(CC)" CFLAGS="$(CFLAGS)" \
 	CPP="$(CPP)" CPPFLAGS="$(CPPFLAGS)" LD="$(LD)" LDFLAGS="$(LDFLAGS)" \
 	LIBS="$(LIBS)" LN_S="$(LN_S)" NM="$(NM)" RANLIB="$(RANLIB)" \
-	STRIP="$(STRIP)" \
+	STRIP="$(STRIP)" INSTALL="$(INSTALL)" \
 	OBJEXT="$(OBJEXT)" EXEEXT="$(EXEEXT)" \
 	SHELL="$(SHELL)" CONFIG_SHELL="$(SHELL)" \
 	CXX="$(CXX)" CXXFLAGS="$(CXXFLAGS)" CXXCPP="$(CXXCPP)" \

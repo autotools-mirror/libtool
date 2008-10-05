@@ -1,3 +1,23 @@
+2008-10-05  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Atomic shared library install permissions on HP-UX.
+	The HP-UX 11 runtime linker fails to mmap shared libraries
+	without execute permissions.  Fixing them with postinstall_cmds
+	may be too late, as ln, sed, and chmod may link against the
+	library being installed.
+
+	* libltdl/m4/libtool.m4 (install_override_mode): New LT_DECL.
+	(_LT_SYS_DYNAMIC_LINKER) [hpux9*, hpux10*, hpux11*]: Set it.
+	* libltdl/config/ltmain.m4sh (func_mode_install): Build a second
+	command line, $install_shared_prog, for the installation of the
+	shared library.  Override resp. set the permission mode if
+	install_override_mode is nonempty.
+	* doc/libtool.texi (libtool script contents): Document it.
+	* tests/install.at (Install tests): New test.
+	* Makefile.am (TESTSUITE_AT): Adjust.
+	(TESTS_ENVIRONMENT): Pass INSTALL.
+	Report by Bruno Haible.
+
 2008-09-26  Eric Blake  <ebb9@byu.net>
 
 	Avoid gcc warning.

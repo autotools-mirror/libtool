@@ -5819,6 +5819,15 @@ runtime path list, requiring libtool to relink the output when installing.
 Set to @samp{yes} or @samp{no}.  Default is @samp{no}.
 @end defvar
 
+@defvar install_override_mode
+Permission mode override for installation of shared libraries.  If the
+runtime linker fails to load libraries with wrong permissions, then it
+may fail to execute programs that are needed during installation,
+because these need the library that has just been installed.  In this
+case, it is necessary to pass the mode to @command{install} with
+@option{-m @var{install_override_mode}}.
+@end defvar
+
 @defvar libext
 The standard old archive suffix (normally @samp{a}).
 @end defvar

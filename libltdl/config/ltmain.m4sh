@@ -1458,6 +1458,7 @@ func_mode_install ()
     # Aesthetically quote it.
     func_quote_for_eval "$arg"
     install_prog="$install_prog$func_quote_for_eval_result"
+    install_shared_prog=$install_prog
 
     # We need to accept at least all the BSD install flags.
     dest=
@@ -1467,8 +1468,10 @@ func_mode_install ()
     install_type=
     isdir=no
     stripme=
+    no_mode=:
     for arg
     do
+      arg2=
       if test -n "$dest"; then
 	files="$files $dest"
 	dest=$arg
@@ -1495,6 +1498,10 @@ func_mode_install ()
       *)
 	# If the previous option needed an argument, then skip it.
 	if test -n "$prev"; then
+	  if test "x$prev" = x-m && test -n "$install_override_mode"; then
+	    arg2=$install_override_mode
+	    no_mode=false
+	  fi
 	  prev=
 	else
 	  dest=$arg
@@ -1506,6 +1513,10 @@ func_mode_install ()
       # Aesthetically quote the argument.
       func_quote_for_eval "$arg"
       install_prog="$install_prog $func_quote_for_eval_result"
+      if test -n "$arg2"; then
+	func_quote_for_eval "$arg2"
+      fi
+      install_shared_prog="$install_shared_prog $func_quote_for_eval_result"
     done
 
     test -z "$install_prog" && \
@@ -1513,6 +1524,11 @@ func_mode_install ()
 
     test -n "$prev" && \
       func_fatal_help "the \`$prev' option requires an argument"
+
+    if test -n "$install_override_mode" && $no_mode; then
+      func_quote_for_eval "$install_override_mode"
+      install_shared_prog="$install_shared_prog -m $func_quote_for_eval_result"
+    fi
 
     if test -z "$files"; then
       if test -z "$dest"; then
@@ -1634,7 +1650,7 @@ func_mode_install ()
 	  test -n "$relink_command" && srcname="$realname"T
 
 	  # Install the shared library and build the symlinks.
-	  func_show_eval "$install_prog $dir/$srcname $destdir/$realname" \
+	  func_show_eval "$install_shared_prog $dir/$srcname $destdir/$realname" \
 	      'exit $?'
 	  tstripme="$stripme"
 	  case $host_os in
