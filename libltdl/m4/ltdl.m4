@@ -407,6 +407,7 @@ AC_CHECK_HEADERS([unistd.h dl.h sys/dl.h dld.h mach-o/dyld.h dirent.h],
 AC_CHECK_FUNCS([closedir opendir readdir], [], [AC_LIBOBJ([lt__dirent])])
 AC_CHECK_FUNCS([strlcat strlcpy], [], [AC_LIBOBJ([lt__strl])])
 
+m4_pattern_allow([LT_LIBEXT])dnl
 AC_DEFINE_UNQUOTED([LT_LIBEXT],["$libext"],[The archive extension])
 
 name=ltdl
