@@ -1,3 +1,8 @@
+2008-10-26  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* libtoolize.m4sh (func_nonemptydir_p): Fix typo in error
+	message.
+
 2008-10-15  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	Fix Autoconf 2.59 incompatibilty.

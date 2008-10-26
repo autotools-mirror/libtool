@@ -1389,7 +1389,7 @@ func_nonemptydir_p ()
 
     # Is it a directory at all?
     test -d "$my_dir" \
-      || func_fatal_error "\$$my_dirvar not a directory: \`$my_dir'"
+      || func_fatal_error "\$$my_dirvar is not a directory: \`$my_dir'"
 
     # check that the directories contents can be ls'ed
     test -n "`{ cd $my_dir && ls; } 2>/dev/null`" \
