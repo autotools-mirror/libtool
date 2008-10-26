@@ -330,11 +330,13 @@ TARGETS		= ]_ARG_DIR[/libltdlc.la module.la ltdldemo$(EXEEXT)
 
 all: $(TARGETS)
 
-$(LIBTOOL) ]_ARG_DIR[/libltdlc.la: ]_ARG_DIR[/Makefile
+]_ARG_DIR[/libltdlc.la: $(LIBTOOL) ]_ARG_DIR[/Makefile
 	MAKE='$(MAKE)'; test -n "$$MAKE" || MAKE=make; \
 	cd ]_ARG_DIR[ && $$MAKE CC="$(CC)" LIBTOOLFLAGS="$(LIBTOOLFLAGS)" \
 	  CPPFLAGS="$(CPPFLAGS)" CFLAGS="$(CFLAGS)" LDFLAGS="$(LDFLAGS)" \
           CONFIGURE_OPTIONS="$(CONFIGURE_OPTIONS)"
+
+$(LIBTOOL): ]_ARG_DIR[/Makefile
 
 ]_ARG_DIR[/Makefile:
 	cd ]_ARG_DIR[ && CONFIG_SHELL="$(SHELL)" $(SHELL) ./configure $(CONFIGURE_OPTIONS)
