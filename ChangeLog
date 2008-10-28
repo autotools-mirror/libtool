@@ -1,3 +1,10 @@
+2008-10-28  Michael Haubenwallner  <michael.haubenwallner@salomon.at> (tiny change)
+
+	Fix checks for unsupported allow_undefined_flag.
+	* tests/tagdemo-undef.test: Match allow_undefined_flag
+	correctly, for SKIPping.
+	* tests/cdemo-undef.test: Likewise.
+
 2008-10-26  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* tests/testsuite.at (_LTDL_PROJECT_FILES): Fix dependencies for

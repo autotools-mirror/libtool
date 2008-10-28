@@ -1,7 +1,7 @@
 #! /bin/sh
 # cdemo-undef - test generating shared libraries with undefined symbols
 #
-#   Copyright (C) 2003, 2004 Free Software Foundation, Inc.
+#   Copyright (C) 2003, 2004, 2008 Free Software Foundation, Inc.
 #   Written by Gary V. Vaughan, 2003
 #
 #   This file is part of GNU Libtool.
@@ -30,7 +30,7 @@ func_cd "tests/cdemo"
 func_make_distclean
 func_configure "--disable-static"
 
-grep '^allow_undefined=.?unsupported.?$' ./libtool >/dev/null 2>&1 \
+grep '^allow_undefined_flag=.\{0,1\}unsupported.\{0,1\}$' ./libtool >/dev/null 2>&1 \
     && func_skip "$host doesn't support undefined symbols in shared libs"
 
 if test -f ./libtool; then
