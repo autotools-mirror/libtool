@@ -1,5 +1,7 @@
+m4_pattern_allow([dnl])
 m4_define([_m4_divert(SCRIPT)], 100)
-m4_divert_push([SCRIPT])#! /bin/sh
+m4_divert_push([SCRIPT])dnl
+#! /bin/sh
 # @configure_input@
 
 # libtoolize (GNU @PACKAGE@@TIMESTAMP@) @VERSION@
@@ -478,8 +480,9 @@ func_scan_files ()
     # ---------------------------------------------------- #
 
     my_sed_traces='s,#.*$,,; s,^dnl .*$,,; s, dnl .*$,,
-        s,^.*AC_REQUIRE(.*$,,; s,^.*m4_require(.*$,,; s,^.*m4_define(.*$,,
-	s,^.*A[CU]_DEFUN(.*$,,; s,^.*m4_defun(.*$,,
+        s,^.*AC_REQUIRE(.*$,,; s,^.*m4@&t@_require(.*$,,;
+	s,^.*m4@&t@_define(.*$,,
+	s,^.*A[CU]_DEFUN(.*$,,; s,^.*m4@&t@_defun(.*$,,
     	/AC_CONFIG_AUX_DIR(/ {
 	    s,^.*AC_CONFIG_AUX_DIR([[ 	]*\([^])]*\).*$,ac_auxdir=\1,
 	    p
@@ -670,8 +673,8 @@ func_included_files ()
 
     my_include_regex=
     my_sed_include='
-        /^m4_include(\[.*\])$/ {
-	    s,^m4_include(\[\(.*\)\])$,\1,
+        /^m4@&t@_include(\[.*\])$/ {
+	    s,^m4@&t@_include(\[\(.*\)\])$,\1,
 	    p
 	}
         d'

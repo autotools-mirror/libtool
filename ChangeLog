@@ -1,3 +1,9 @@
+2008-11-10  Paolo Bonzini  <bonzini@gnu.org>
+
+	Avoid that autom4te complains about unexpanded macros.
+	* libtoolize.m4sh: Allow occurrences of "dnl" and use quadrigraphs
+	to protect other m4 macros.
+
 2008-11-11  Bruno Haible  <bruno@clisp.org>
 	    Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
