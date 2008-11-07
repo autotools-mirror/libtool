@@ -82,6 +82,8 @@ AC_REQUIRE([LTVERSION_VERSION])dnl
 AC_REQUIRE([LTOBSOLETE_VERSION])dnl
 m4_require([_LT_PROG_LTMAIN])dnl
 
+_LT_SHELL_INIT([SHELL=${CONFIG_SHELL-/bin/sh}])
+
 dnl Parse OPTIONS
 _LT_SET_OPTIONS([$0], [$1])
 
@@ -524,6 +526,14 @@ LTCC='$LTCC'
 LTCFLAGS='$LTCFLAGS'
 compiler='$compiler_DEFAULT'
 
+# A function that is used when there is no print builtin or printf.
+func_fallback_echo ()
+{
+  eval 'cat <<_LTECHO_EOF
+\$[]1
+_LTECHO_EOF'
+}
+
 # Quote evaled strings.
 for var in lt_decl_all_varnames([[ \
 ]], lt_decl_quote_varnames); do
@@ -549,13 +559,6 @@ for var in lt_decl_all_varnames([[ \
       ;;
     esac
 done
-
-# Fix-up fallback echo if it was mangled by the above quoting rules.
-case \$lt_ECHO in
-*'\\\[$]0 --fallback-echo"')dnl "
-  lt_ECHO=\`\$ECHO "X\$lt_ECHO" | \$Xsed -e 's/\\\\\\\\\\\\\\\[$]0 --fallback-echo"\[$]/\[$]0 --fallback-echo"/'\`
-  ;;
-esac
 
 _LT_OUTPUT_LIBTOOL_INIT
 ])
@@ -1068,170 +1071,57 @@ if test -z "$aix_libpath"; then aix_libpath="/usr/lib:/lib"; fi
 # _LT_SHELL_INIT(ARG)
 # -------------------
 m4_define([_LT_SHELL_INIT],
-[ifdef([AC_DIVERSION_NOTICE],
-	     [AC_DIVERT_PUSH(AC_DIVERSION_NOTICE)],
-	 [AC_DIVERT_PUSH(NOTICE)])
-$1
-AC_DIVERT_POP
-])# _LT_SHELL_INIT
+[m4_divert_text([M4SH-INIT], [$1
+])])# _LT_SHELL_INIT
+
 
 
 # _LT_PROG_ECHO_BACKSLASH
 # -----------------------
-# Add some code to the start of the generated configure script which
-# will find an echo command which doesn't interpret backslashes.
+# Find how we can fake an echo command that does not interpret backslash.
+# In particular, with Autoconf 2.60 or later we add some code to the start
+# of the generated configure script which will find a shell with a builtin
+# printf (which we can use as an echo command).
 m4_defun([_LT_PROG_ECHO_BACKSLASH],
-[_LT_SHELL_INIT([
-# Check that we are running under the correct shell.
-SHELL=${CONFIG_SHELL-/bin/sh}
+[ECHO='\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\'
+ECHO=$ECHO$ECHO$ECHO$ECHO$ECHO
+ECHO=$ECHO$ECHO$ECHO$ECHO$ECHO$ECHO
 
-case X$lt_ECHO in
-X*--fallback-echo)
-  # Remove one level of quotation (which was required for Make).
-  ECHO=`echo "$lt_ECHO" | sed 's,\\\\\[$]\\[$]0,'[$]0','`
-  ;;
+AC_MSG_CHECKING([how to print strings])
+# Test print first, because it will be a builtin if present.
+if test "X`print -r -- -n 2>/dev/null`" = X-n && \
+   test "X`print -r -- $ECHO 2>/dev/null`" = "X$ECHO"; then
+  ECHO='print -r --'
+elif test "X`printf %s $ECHO 2>/dev/null`" = "X$ECHO"; then
+  ECHO='printf %s\n'
+else
+  # Use this function as a fallback that always works.
+  func_fallback_echo ()
+  {
+    eval 'cat <<_LTECHO_EOF
+$[]1
+_LTECHO_EOF'
+  }
+  ECHO='func_fallback_echo'
+fi
+
+case "$ECHO" in
+  printf*) AC_MSG_RESULT([printf]) ;;
+  print*) AC_MSG_RESULT([print -r]) ;;
+  *) AC_MSG_RESULT([cat]) ;;
 esac
 
-ECHO=${lt_ECHO-echo}
-if test "X[$]1" = X--no-reexec; then
-  # Discard the --no-reexec flag, and continue.
-  shift
-elif test "X[$]1" = X--fallback-echo; then
-  # Avoid inline document here, it may be left over
-  :
-elif test "X`{ $ECHO '\t'; } 2>/dev/null`" = 'X\t' ; then
-  # Yippee, $ECHO works!
-  :
-else
-  # Restart under the correct shell.
-  exec $SHELL "[$]0" --no-reexec ${1+"[$]@"}
-fi
+m4_ifdef([_AS_DETECT_SUGGESTED],
+[_AS_DETECT_SUGGESTED([
+  ECHO='\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\'
+  ECHO=$ECHO$ECHO$ECHO$ECHO$ECHO
+  ECHO=$ECHO$ECHO$ECHO$ECHO$ECHO$ECHO
+  PATH=/tmp/nonexistent; export PATH;
+  FPATH=$PATH; export FPATH;
+  test "X`printf %s $ECHO`" = "X$ECHO"])])
 
-if test "X[$]1" = X--fallback-echo; then
-  # used as fallback echo
-  shift
-  cat <<_LT_EOF
-[$]*
-_LT_EOF
-  exit 0
-fi
-
-# The HP-UX ksh and POSIX shell print the target directory to stdout
-# if CDPATH is set.
-(unset CDPATH) >/dev/null 2>&1 && unset CDPATH
-
-if test -z "$lt_ECHO"; then
-  if test "X${echo_test_string+set}" != Xset; then
-    # find a string as large as possible, as long as the shell can cope with it
-    for cmd in 'sed 50q "[$]0"' 'sed 20q "[$]0"' 'sed 10q "[$]0"' 'sed 2q "[$]0"' 'echo test'; do
-      # expected sizes: less than 2Kb, 1Kb, 512 bytes, 16 bytes, ...
-      if { echo_test_string=`eval $cmd`; } 2>/dev/null &&
-	 { test "X$echo_test_string" = "X$echo_test_string"; } 2>/dev/null
-      then
-        break
-      fi
-    done
-  fi
-
-  if test "X`{ $ECHO '\t'; } 2>/dev/null`" = 'X\t' &&
-     echo_testing_string=`{ $ECHO "$echo_test_string"; } 2>/dev/null` &&
-     test "X$echo_testing_string" = "X$echo_test_string"; then
-    :
-  else
-    # The Solaris, AIX, and Digital Unix default echo programs unquote
-    # backslashes.  This makes it impossible to quote backslashes using
-    #   echo "$something" | sed 's/\\/\\\\/g'
-    #
-    # So, first we look for a working echo in the user's PATH.
-
-    lt_save_ifs="$IFS"; IFS=$PATH_SEPARATOR
-    for dir in $PATH /usr/ucb; do
-      IFS="$lt_save_ifs"
-      if (test -f $dir/echo || test -f $dir/echo$ac_exeext) &&
-         test "X`($dir/echo '\t') 2>/dev/null`" = 'X\t' &&
-         echo_testing_string=`($dir/echo "$echo_test_string") 2>/dev/null` &&
-         test "X$echo_testing_string" = "X$echo_test_string"; then
-        ECHO="$dir/echo"
-        break
-      fi
-    done
-    IFS="$lt_save_ifs"
-
-    if test "X$ECHO" = Xecho; then
-      # We didn't find a better echo, so look for alternatives.
-      if test "X`{ print -r '\t'; } 2>/dev/null`" = 'X\t' &&
-         echo_testing_string=`{ print -r "$echo_test_string"; } 2>/dev/null` &&
-         test "X$echo_testing_string" = "X$echo_test_string"; then
-        # This shell has a builtin print -r that does the trick.
-        ECHO='print -r'
-      elif { test -f /bin/ksh || test -f /bin/ksh$ac_exeext; } &&
-	   test "X$CONFIG_SHELL" != X/bin/ksh; then
-        # If we have ksh, try running configure again with it.
-        ORIGINAL_CONFIG_SHELL=${CONFIG_SHELL-/bin/sh}
-        export ORIGINAL_CONFIG_SHELL
-        CONFIG_SHELL=/bin/ksh
-        export CONFIG_SHELL
-        exec $CONFIG_SHELL "[$]0" --no-reexec ${1+"[$]@"}
-      else
-        # Try using printf.
-        ECHO='printf %s\n'
-        if test "X`{ $ECHO '\t'; } 2>/dev/null`" = 'X\t' &&
-	   echo_testing_string=`{ $ECHO "$echo_test_string"; } 2>/dev/null` &&
-	   test "X$echo_testing_string" = "X$echo_test_string"; then
-	  # Cool, printf works
-	  :
-        elif echo_testing_string=`($ORIGINAL_CONFIG_SHELL "[$]0" --fallback-echo '\t') 2>/dev/null` &&
-	     test "X$echo_testing_string" = 'X\t' &&
-	     echo_testing_string=`($ORIGINAL_CONFIG_SHELL "[$]0" --fallback-echo "$echo_test_string") 2>/dev/null` &&
-	     test "X$echo_testing_string" = "X$echo_test_string"; then
-	  CONFIG_SHELL=$ORIGINAL_CONFIG_SHELL
-	  export CONFIG_SHELL
-	  SHELL="$CONFIG_SHELL"
-	  export SHELL
-	  ECHO="$CONFIG_SHELL [$]0 --fallback-echo"
-        elif echo_testing_string=`($CONFIG_SHELL "[$]0" --fallback-echo '\t') 2>/dev/null` &&
-	     test "X$echo_testing_string" = 'X\t' &&
-	     echo_testing_string=`($CONFIG_SHELL "[$]0" --fallback-echo "$echo_test_string") 2>/dev/null` &&
-	     test "X$echo_testing_string" = "X$echo_test_string"; then
-	  ECHO="$CONFIG_SHELL [$]0 --fallback-echo"
-        else
-	  # maybe with a smaller string...
-	  prev=:
-
-	  for cmd in 'echo test' 'sed 2q "[$]0"' 'sed 10q "[$]0"' 'sed 20q "[$]0"' 'sed 50q "[$]0"'; do
-	    if { test "X$echo_test_string" = "X`eval $cmd`"; } 2>/dev/null
-	    then
-	      break
-	    fi
-	    prev="$cmd"
-	  done
-
-	  if test "$prev" != 'sed 50q "[$]0"'; then
-	    echo_test_string=`eval $prev`
-	    export echo_test_string
-	    exec ${ORIGINAL_CONFIG_SHELL-${CONFIG_SHELL-/bin/sh}} "[$]0" ${1+"[$]@"}
-	  else
-	    # Oops.  We lost completely, so just stick with echo.
-	    ECHO=echo
-	  fi
-        fi
-      fi
-    fi
-  fi
-fi
-
-# Copy echo and quote the copy suitably for passing to libtool from
-# the Makefile, instead of quoting the original, which is used later.
-lt_ECHO=$ECHO
-if test "X$lt_ECHO" = "X$CONFIG_SHELL [$]0 --fallback-echo"; then
-   lt_ECHO="$CONFIG_SHELL \\\$\[$]0 --fallback-echo"
-fi
-
-AC_SUBST(lt_ECHO)
-])
 _LT_DECL([], [SHELL], [1], [Shell to use when invoking shell scripts])
-_LT_DECL([], [ECHO], [1],
-    [An echo program that does not interpret backslashes])
+_LT_DECL([], [ECHO], [1], [An echo program that protects backslashes])
 ])# _LT_PROG_ECHO_BACKSLASH
 
 
@@ -1618,7 +1508,7 @@ AC_CACHE_VAL([lt_cv_sys_max_cmd_len], [dnl
       # If test is not a shell built-in, we'll probably end up computing a
       # maximum length that is only half of the actual maximum length, but
       # we can't tell.
-      while { test "X"`$SHELL [$]0 --fallback-echo "X$teststring$teststring" 2>/dev/null` \
+      while { test "X"`$ECHO "X$teststring$teststring" 2>/dev/null` \
 	         = "XX$teststring$teststring"; } >/dev/null 2>&1 &&
 	      test $i != 17 # 1/2 MB should be enough
       do

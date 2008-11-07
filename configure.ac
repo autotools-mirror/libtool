@@ -23,7 +23,7 @@
 ####
 
 
-AC_PREREQ(2.59)dnl We use AS_HELP_STRING
+AC_PREREQ(2.62)dnl Some m4sh scripts use $as_echo
 dnl Oldest automake required for bootstrap is below in AM_INIT_AUTOMAKE.
 
 

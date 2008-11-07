@@ -290,16 +290,15 @@ yyyy-mm-dd  Name of Author  <email@address>  (tiny change)
 ======================
 
 * Be careful with both `echo' and `$ECHO'.  As the latter may be one of
-   echo
-   print -r
+   print -r --
    printf %s\n
-   $CONFIG_SHELL $0 --fallback-echo
-  it may not have more than one argument, its value may not be eval'ed
-  and the argument may not start with a `-'.  As a rule of thumb, use
+   func_fallback_echo
+  it may not have more than one argument and its value may not be
+  eval'ed.  However, the argument may start with a `-'.  As a rule of
+  thumb, use
    echo ..		for literal (constant) strings without leading
 			hyphen and no backslashes within,
-   $ECHO ".."		for strings without leading hyphen,
-   $ECHO "X.." | $Xsed	otherwise.
+   $ECHO ".."		otherwise.
 
 * The Autoconf manual says that giving an empty parameter is equivalent
   to not giving it at all.  (In particular, the Autoconf manual doesn't

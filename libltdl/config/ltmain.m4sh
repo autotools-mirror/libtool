@@ -92,6 +92,14 @@ fi
 BIN_SH=xpg4; export BIN_SH # for Tru64
 DUALCASE=1; export DUALCASE # for MKS sh
 
+# A function that is used when there is no print builtin or printf.
+func_fallback_echo ()
+{
+  eval 'cat <<_LTECHO_EOF
+$1
+_LTECHO_EOF'
+}
+
 # NLS nuisances: We save the old values to restore during execute mode.
 # Only set LANG and LC_ALL to C if already set.
 # These must not be set unconditionally because not all systems understand
@@ -118,29 +126,6 @@ m4_define([M4SH_IN_HEADER], [$1])dnl
 m4_include([getopt.m4sh])
 
 M4SH_VERBATIM([[
-# Check that we have a working $ECHO.
-if test "X$1" = X--no-reexec; then
-  # Discard the --no-reexec flag, and continue.
-  shift
-elif test "X$1" = X--fallback-echo; then
-  # Avoid inline document here, it may be left over
-  :
-elif test "X`{ $ECHO '\t'; } 2>/dev/null`" = 'X\t'; then
-  # Yippee, $ECHO works!
-  :
-else
-  # Restart under the correct shell, and then maybe $ECHO will work.
-  exec $SHELL "$progpath" --no-reexec ${1+"$@"}
-fi
-
-if test "X$1" = X--fallback-echo; then
-  # used as fallback echo
-  shift
-  cat <<EOF
-$*
-EOF
-  exit $EXIT_SUCCESS
-fi
 
 magic="%%%MAGIC variable%%%"
 magic_exe="%%%MAGIC EXE variable%%%"
@@ -2357,22 +2342,20 @@ if test \"\$libtool_install_magic\" = \"$magic\"; then
 else
   # When we are sourced in execute mode, \$file and \$ECHO are already set.
   if test \"\$libtool_execute_magic\" != \"$magic\"; then
-    ECHO=\"$qecho\"
-    file=\"\$0\"
-    # Make sure echo works.
-    if test \"X\$1\" = X--no-reexec; then
-      # Discard the --no-reexec flag, and continue.
-      shift
-    elif test \"X\`{ \$ECHO '\t'; } 2>/dev/null\`\" = 'X\t'; then
-      # Yippee, \$ECHO works!
-      :
-    else
-      # Restart under the correct shell, and then maybe \$ECHO will work.
-      exec $SHELL \"\$0\" --no-reexec \${1+\"\$@\"}
-    fi
+    file=\"\$0\""
+
+    qECHO=`$ECHO "X$ECHO" | $Xsed -e "$sed_quote_subst"`
+    $ECHO "\
+
+# A function that is used when there is no print builtin or printf.
+func_fallback_echo ()
+{
+  eval 'cat <<_LTECHO_EOF
+\$1
+_LTECHO_EOF'
+}
+    ECHO=\"$qECHO\"
   fi\
-"
-	$ECHO "\
 
   # Find the directory that this script lives in.
   thisdir=\`\$ECHO \"X\$file\" | \$Xsed -e 's%/[^/]*$%%'\`
@@ -7503,17 +7486,6 @@ EOF
 	done
 	relink_command="(cd `pwd`; $relink_command)"
 	relink_command=`$ECHO "X$relink_command" | $Xsed -e "$sed_quote_subst"`
-      fi
-
-      # Quote $ECHO for shipping.
-      if test "X$ECHO" = "X$SHELL $progpath --fallback-echo"; then
-	case $progpath in
-	[\\/]* | [A-Za-z]:[\\/]*) qecho="$SHELL $progpath --fallback-echo";;
-	*) qecho="$SHELL `pwd`/$progpath --fallback-echo";;
-	esac
-	qecho=`$ECHO "X$qecho" | $Xsed -e "$sed_quote_subst"`
-      else
-	qecho=`$ECHO "X$ECHO" | $Xsed -e "$sed_quote_subst"`
       fi
 
       # Only actually do things if not in dry run mode.
