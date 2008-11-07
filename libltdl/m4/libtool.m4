@@ -138,6 +138,9 @@ m4_defun([_LT_FILEUTILS_DEFAULTS],
 m4_defun([_LT_SETUP],
 [AC_REQUIRE([AC_CANONICAL_HOST])dnl
 AC_REQUIRE([AC_CANONICAL_BUILD])dnl
+AC_REQUIRE([_LT_PREPARE_SED_QUOTE_VARS])dnl
+AC_REQUIRE([_LT_PROG_ECHO_BACKSLASH])dnl
+
 _LT_DECL([], [host_alias], [0], [The host system])dnl
 _LT_DECL([], [host], [0])dnl
 _LT_DECL([], [host_os], [0])dnl
@@ -179,7 +182,6 @@ fi
 _LT_CHECK_OBJDIR
 
 m4_require([_LT_TAG_COMPILER])dnl
-_LT_PROG_ECHO_BACKSLASH
 
 case $host_os in
 aix3*)
@@ -192,23 +194,6 @@ aix3*)
   fi
   ;;
 esac
-
-# Sed substitution that helps us do robust quoting.  It backslashifies
-# metacharacters that are still active within double-quoted strings.
-sed_quote_subst='s/\([["`$\\]]\)/\\\1/g'
-
-# Same as above, but do not quote variable references.
-double_quote_subst='s/\([["`\\]]\)/\\\1/g'
-
-# Sed substitution to delay expansion of an escaped shell variable in a
-# double_quote_subst'ed string.
-delay_variable_subst='s/\\\\\\\\\\\$/\\\\\\$/g'
-
-# Sed substitution to delay expansion of an escaped single quote.
-delay_single_quote_subst='s/'\''/'\'\\\\\\\'\''/g'
-
-# Sed substitution to avoid accidental globbing in evaled expressions
-no_glob_subst='s/\*/\\\*/g'
 
 # Global variables:
 ofile=libtool
@@ -249,6 +234,28 @@ _LT_LANG_DEFAULT_CONFIG
 _LT_CONFIG_COMMANDS
 ])# _LT_SETUP
 
+
+# _LT_PREPARE_SED_QUOTE_VARS
+# --------------------------
+# Define a few sed substitution that help us do robust quoting.
+m4_defun([_LT_PREPARE_SED_QUOTE_VARS],
+[# Backslashify metacharacters that are still active within
+# double-quoted strings.
+sed_quote_subst='s/\([["`$\\]]\)/\\\1/g'
+
+# Same as above, but do not quote variable references.
+double_quote_subst='s/\([["`\\]]\)/\\\1/g'
+
+# Sed substitution to delay expansion of an escaped shell variable in a
+# double_quote_subst'ed string.
+delay_variable_subst='s/\\\\\\\\\\\$/\\\\\\$/g'
+
+# Sed substitution to delay expansion of an escaped single quote.
+delay_single_quote_subst='s/'\''/'\'\\\\\\\'\''/g'
+
+# Sed substitution to avoid accidental globbing in evaled expressions
+no_glob_subst='s/\*/\\\*/g'
+])
 
 # _LT_PROG_LTMAIN
 # ---------------

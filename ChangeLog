@@ -1,5 +1,12 @@
 2008-11-10  Paolo Bonzini  <bonzini@gnu.org>
 
+	Separate part of _LT_SETUP into other macros, detect ECHO sooner.
+	* libltdl/m4/libtool.m4 (_LT_PREPARE_SED_QUOTE_VARS): New macro,
+	extracted from...
+	(_LT_SETUP): ... here.  Require _LT_PROG_ECHO_BACKSLASH sooner.
+
+2008-11-10  Paolo Bonzini  <bonzini@gnu.org>
+
 	Fix quoting when config.status generates libtool config.
 	* libltdl/m4libtool.m4 (_LT_OUTPUT_LIBTOOL_COMMANDS_INIT):
 	Double quote ECHO-ed variables.
