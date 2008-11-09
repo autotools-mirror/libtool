@@ -1,3 +1,10 @@
+2008-11-09  Alexei Sheplyakov  <varg@theor.jinr.ru>  (tiny change)
+
+	Fix cross compilation with wine for the case SHELL != bash.
+	* libltdl/config/ltmain.m4sh (func_to_host_path): Avoid escape
+	sequence interpretation by 'echo', for w32-style paths.
+	* THANKS: Update.
+
 2008-10-28  Michael Haubenwallner  <michael.haubenwallner@salomon.at> (tiny change)
 
 	Fix checks for unsupported allow_undefined_flag.
