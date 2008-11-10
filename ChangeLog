@@ -1,5 +1,11 @@
 2008-11-10  Paolo Bonzini  <bonzini@gnu.org>
 
+	Fix quoting when config.status generates libtool config.
+	* libltdl/m4libtool.m4 (_LT_OUTPUT_LIBTOOL_COMMANDS_INIT):
+	Double quote ECHO-ed variables.
+
+2008-11-10  Paolo Bonzini  <bonzini@gnu.org>
+
 	Use documented M4sh interfaces.
 	* clcommit.m4sh: Do not unset CDPATH, use AS_INIT and M4sh diversions.
 	* libltdl/config/mailnotify.m4sh: Likewise.
