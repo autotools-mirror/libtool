@@ -1,5 +1,10 @@
 2008-11-10  Paolo Bonzini  <bonzini@gnu.org>
 
+	Run sh.test on the M4sh source.
+	* tests/defs.m4sh (scripts): Point to pre-m4 sources.
+
+2008-11-10  Paolo Bonzini  <bonzini@gnu.org>
+
 	Avoid that autom4te complains about unexpanded macros.
 	* libtoolize.m4sh: Allow occurrences of "dnl" and use quadrigraphs
 	to protect other m4 macros.

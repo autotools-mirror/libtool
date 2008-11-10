@@ -349,7 +349,7 @@ prefix="./_inst"
 srcdir=`cd $srcdir && pwd`
 m4dir=$srcdir/libltdl/m4
 auxdir=$srcdir/libltdl/config
-scripts="$auxdir/ltmain.sh ./libtoolize"
+scripts="$auxdir/ltmain.m4sh $srcdir/libtoolize.m4sh"
 
 func_msg "Running $progname"
 
