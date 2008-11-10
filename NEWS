@@ -12,6 +12,10 @@ New in 2.2.8 2008-??-??: git version 2.2.7a, Libtool team:
   - Fix 2.2.6 regression that prevented using the libltdl macros together
     with Autoconf 2.59 (`possibly undefined macro: LT_LIBEXT').
 
+* Miscellaneous changes:
+
+  - The manual is distributed under the terms of the GNU FDL 1.3 now.
+
 New in 2.2.6 2008-09-05: git version 2.2.5a, Libtool team:
 
 * New features:
