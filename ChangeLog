@@ -1,5 +1,21 @@
 2008-11-10  Paolo Bonzini  <bonzini@gnu.org>
 
+	Use documented M4sh interfaces.
+	* clcommit.m4sh: Do not unset CDPATH, use AS_INIT and M4sh diversions.
+	* libltdl/config/mailnotify.m4sh: Likewise.
+	* libtoolize.m4sh: Likewise.
+	* tests/defs.m4sh: Likewise.
+	* tests/testsuite.at: Move AT_INIT invocation at the top.
+
+	* libltdl/m4/libtool.m4 (_LT_INIT_GENERATED): New.
+	(LT_OUTPUT): Use it.
+
+	* libltdl/config/general.m4sh (M4SH_IN_HEADER): New.
+	(progpath): Move setting before $0 could be clobbered.
+	* libltdl/config/ltmain.m4sh (M4SH_IN_HEADER): New.
+
+2008-11-10  Paolo Bonzini  <bonzini@gnu.org>
+
 	Run sh.test on the M4sh source.
 	* tests/defs.m4sh (scripts): Point to pre-m4 sources.
 

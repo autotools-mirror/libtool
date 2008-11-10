@@ -23,6 +23,8 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 ####
 
+AT_INIT
+
 m4_divert_push([PREPARE_TESTS])dnl
 : ${tst_dist=dist}
 : ${ACLOCAL=aclocal}
@@ -371,5 +373,4 @@ dnl AT_TESTED([grep autoreconf autom4te automake])
 ## The suite.  ##
 ## ----------- ##
 
-AT_INIT
-# The other tests will be appended here by the Makefile rule.
+# Tests will be appended here by the Makefile rule.

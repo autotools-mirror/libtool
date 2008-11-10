@@ -1,7 +1,5 @@
 m4_pattern_allow([dnl])
-m4_define([_m4_divert(SCRIPT)], 100)
-m4_divert_push([SCRIPT])dnl
-#! /bin/sh
+AS_INIT[]m4_divert_push([HEADER-COPYRIGHT])dnl
 # @configure_input@
 
 # libtoolize (GNU @PACKAGE@@TIMESTAMP@) @VERSION@
@@ -72,9 +70,7 @@ m4_divert_push([SCRIPT])dnl
 
 PROGRAM=libtoolize
 
-AS_SHELL_SANITIZE
-$as_unset CDPATH
-
+m4_divert_pop
 m4_include([getopt.m4sh])
 
 M4SH_VERBATIM([[

@@ -1,5 +1,4 @@
-m4_define([_m4_divert(SCRIPT)], 100)
-m4_divert_push([SCRIPT])#!/bin/sh
+AS_INIT[]m4_divert_push([HEADER-COPYRIGHT])dnl
 # @configure_input@
 
 # mailnotify (GNU @PACKAGE@) version 0.6
@@ -63,9 +62,7 @@ m4_divert_push([SCRIPT])#!/bin/sh
 
 PROGRAM=mailnotify
 
-AS_SHELL_SANITIZE
-$as_unset CDPATH
-
+m4_divert_pop
 m4_include([getopt.m4sh])
 
 M4SH_VERBATIM([[

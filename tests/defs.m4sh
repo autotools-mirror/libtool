@@ -1,5 +1,5 @@
-m4_define([_m4_divert(SCRIPT)], 100)
-m4_divert_push([SCRIPT])# @configure_input@
+AS_INIT[]m4_divert_push([HEADER-COPYRIGHT])dnl
+# @configure_input@
 # defs -- Defines for Libtool testing environment.
 #
 #   Copyright (C) 2003, 2004, 2005, 2007, 2008 Free Software
@@ -26,9 +26,7 @@ m4_divert_push([SCRIPT])# @configure_input@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 ####
 
-AS_SHELL_SANITIZE
-$as_unset CDPATH
-
+m4_divert_pop
 m4_include([general.m4sh])
 
 M4SH_VERBATIM([[

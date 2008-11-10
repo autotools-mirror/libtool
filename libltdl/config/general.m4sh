@@ -30,6 +30,19 @@ or obtained by writing to the Free Software Foundation, Inc.,
 
 m4_define([M4SH_VERBATIM], [$1])dnl
 
+m4_ifndef([M4SH_IN_HEADER],
+[m4_define([M4SH_IN_HEADER],
+[m4_divert_text([HEADER-COPYRIGHT], [$1])])])
+
+M4SH_IN_HEADER([dnl
+# Work around backward compatibility issue on IRIX 6.5. On IRIX 6.4+, sh
+# is ksh but when the shell is invoked as "sh" and the current value of
+# the _XPG environment variable is not equal to 1 (one), the special
+# positional parameter $0, within a function call, is the name of the
+# function.
+progpath="$0"
+])
+
 M4SH_VERBATIM([[
 : ${CP="cp -f"}
 : ${ECHO="echo"}
@@ -86,13 +99,6 @@ func_dirname_and_basename ()
 }
 
 # Generated shell functions inserted here.
-
-# Work around backward compatibility issue on IRIX 6.5. On IRIX 6.4+, sh
-# is ksh but when the shell is invoked as "sh" and the current value of
-# the _XPG environment variable is not equal to 1 (one), the special
-# positional parameter $0, within a function call, is the name of the
-# function.
-progpath="$0"
 
 # The name of this program:
 # In the unlikely event $progname began with a '-', it would play havoc with
