@@ -4783,7 +4783,7 @@ _LT_EOF
       ;;
 
     hpux10*)
-      if test "$GCC" = yes -a "$with_gnu_ld" = no; then
+      if test "$GCC" = yes && test "$with_gnu_ld" = no; then
 	_LT_TAGVAR(archive_cmds, $1)='$CC -shared -fPIC ${wl}+h ${wl}$soname ${wl}+b ${wl}$install_libdir -o $lib $libobjs $deplibs $compiler_flags'
       else
 	_LT_TAGVAR(archive_cmds, $1)='$LD -b +h $soname +b $install_libdir -o $lib $libobjs $deplibs $linker_flags'
@@ -4802,7 +4802,7 @@ _LT_EOF
       ;;
 
     hpux11*)
-      if test "$GCC" = yes -a "$with_gnu_ld" = no; then
+      if test "$GCC" = yes && test "$with_gnu_ld" = no; then
 	case $host_cpu in
 	hppa*64*)
 	  _LT_TAGVAR(archive_cmds, $1)='$CC -shared ${wl}+h ${wl}$soname -o $lib $libobjs $deplibs $compiler_flags'
