@@ -1,3 +1,16 @@
+2008-11-11  Bruno Haible  <bruno@clisp.org>
+	    Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Fix cwrapper argument mangling on w32.
+	* libltdl/config/ltmain.m4sh (func_emit_cwrapperexe_src): On
+	mingw, preprocess the argument vector through prepare_spawn.
+	* tests/execute-mode.at (execute mode): Output args
+	newline-separated.  Extend tests by more argument pairs that
+	contain special characters, where the w32 cwrapper fails.
+	Also test a real compiled program, linked against an uninstalled
+	library, to expose cwrapper issues.
+	* NEWS: Update.
+
 2008-11-10  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	Update to GFDL 1.3.

@@ -25,10 +25,15 @@
 AT_SETUP([execute mode])
 AT_KEYWORDS([libtool])
 
+eval `$LIBTOOL --config | $EGREP '^(FGREP)='`
+
 AT_DATA([foo],
 [[#! /bin/sh
 if test $# -gt 0; then
-  echo "$@"
+  for arg
+  do
+    printf %s\\n "$arg"
+  done
 else
   :
 fi
@@ -50,7 +55,10 @@ fi
 
 AT_DATA([lt-real],
 [[#! /bin/sh
-echo "$@"
+for arg
+do
+  printf %s\\n "$arg"
+done
 cat
 ]])
 
@@ -81,6 +89,45 @@ mkdir sub
 cp foo sub/foo
 chmod +x foo sub/foo lt-wrapper lt-real
 
+AT_DATA([liba.c],
+[[int a () { return 0; }
+]])
+
+AT_DATA([main.c],
+[[#include <stdio.h>
+extern int a ();
+int main (int argc, char **argv)
+{
+  int i;
+  for (i=1; i<argc; ++i)
+    {
+      if (i != 1)
+	fputc ('\n', stdout);
+      fputs (argv[i], stdout);
+    }
+  fputc ('\n', stdout);
+  return a ();
+}
+]])
+
+instdir=`pwd`/inst
+libdir=$instdir/lib
+
+AT_CHECK([$LIBTOOL --mode=compile $CC $CPPFLAGS $CFLAGS -c liba.c],
+	 [], [ignore], [ignore])
+AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o liba.la -rpath $libdir liba.lo],
+	 [], [ignore], [ignore])
+AT_CHECK([$CC $CPPFLAGS $CFLAGS -c main.c],
+	 [], [ignore], [ignore])
+AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o main main.$OBJEXT liba.la],
+	 [], [ignore], [ignore])
+
+# end of preparatory blurb.
+# Now, when doing the tests, we both try the fake wrappers plus the real one
+# (only the latter exposes the C wrappers used for w32 systems).
+# With the latter, however, we need to ignore additional output; esp. wine
+# may be rather noisy.
+
 AT_CHECK([$LIBTOOL --mode=execute ./foo])
 AT_CHECK([$LIBTOOL --mode=execute sub/foo])
 AT_CHECK([$LIBTOOL --mode=execute ./foo foo], [], [foo
@@ -91,7 +138,9 @@ AT_CHECK([cd sub && $LIBTOOL --mode=execute ./foo ../foo], [], [../foo
 ])
 # suppose that ./foo is gdb, and lt-wrapper is the wrapper script.
 AT_CHECK([$LIBTOOL --mode=execute ./foo lt-wrapper bar baz </dev/null], [],
-	 [./lt-real bar baz
+	 [./lt-real
+bar
+baz
 ])
 
 # check that stdin works even with -dlopen.
@@ -116,7 +165,41 @@ AT_CHECK([$LIBTOOL --mode=execute ./lt-wrapper "arg  with special chars: \$!&*\`
 	 [], [arg  with special chars: $!&*`'()
 ])
 AT_CHECK([$LIBTOOL --mode=execute ./foo lt-wrapper "arg  with special chars: \$!&*\`'()"],
-	 [], [./lt-real arg  with special chars: $!&*`'()
+	 [], [./lt-real
+arg  with special chars: $!&*`'()
 ])
+
+# We always pair two args.  The first one is never the empty string.
+arg1=
+for arg2 in \
+   'def ghi' '' \
+   'd"e' 'f"g' \
+   'd\"e' 'f\"g' \
+   'd\\"e' 'f\\"g' \
+   'd\\\"e' 'f\\\"g' \
+   'd\' '' \
+   'd\\' '' \
+   'd\\\' '' \
+   'd\\\\' '' \
+   '<' '>' \
+   '<def>' ''
+do
+  if test -z "$arg1"; then
+    arg1=$arg2; continue
+  fi
+  AT_CHECK([$LIBTOOL --mode=execute ./foo abc "$arg1" "$arg2" xyz], [], [stdout])
+  AT_CHECK([$FGREP "$arg1" stdout], [], [ignore])
+  AT_CHECK([$FGREP "$arg2" stdout], [], [ignore])
+  AT_CHECK([test `sed -n '/^abc$/,/^xyz$/p' stdout | wc -l` -eq 4])
+  AT_CHECK([$LIBTOOL --mode=execute ./lt-wrapper abc "$arg1" "$arg2" xyz </dev/null], [], [stdout])
+  AT_CHECK([$FGREP "$arg1" stdout], [], [ignore])
+  AT_CHECK([$FGREP "$arg2" stdout], [], [ignore])
+  AT_CHECK([test `sed -n '/^abc$/,/^xyz$/p' stdout | wc -l` -eq 4])
+  AT_CHECK([$LIBTOOL --mode=execute ./foo lt-wrapper abc "$arg1" "$arg2" xyz], [], [stdout])
+  AT_CHECK([$FGREP "$arg1" stdout], [], [ignore])
+  AT_CHECK([$FGREP "$arg2" stdout], [], [ignore])
+  AT_CHECK([test `sed -n '/^abc$/,/^xyz$/p' stdout | wc -l` -eq 4])
+  arg1=
+done
 
 AT_CLEANUP

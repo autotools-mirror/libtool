@@ -11,6 +11,8 @@ New in 2.2.8 2008-??-??: git version 2.2.7a, Libtool team:
 
   - Fix 2.2.6 regression that prevented using the libltdl macros together
     with Autoconf 2.59 (`possibly undefined macro: LT_LIBEXT').
+  - Fix 2.2.4 regression that caused arguments with special characters
+    to be mangled by the compile wrapper for uninstalled programs on MinGW.
 
 * Miscellaneous changes:
 
