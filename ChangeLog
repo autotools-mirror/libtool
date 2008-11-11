@@ -1,3 +1,10 @@
+2008-11-11  Roumen Petrov  <bugtrack@roumenpetrov.info>  (tiny change)
+
+	Fix destdir tests in cross compile mode.
+	* tests/destdir.at (Simple DESTDIR install)
+	(DESTDIR with in-package deplibs): Use $EXEEXT throughout.
+	* THANKS: Update.
+
 2008-11-11  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	Simplify cwrapper handling a bit.

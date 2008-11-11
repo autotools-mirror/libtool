@@ -56,7 +56,7 @@ $LIBTOOL --mode=compile $CC $CPPFLAGS $CFLAGS -c a.c
 $LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o liba.la a.lo -rpath $libdir
 echo 'extern int a(); int main() { return a(); }' > m.c
 $CC $CPPFLAGS $CFLAGS -c m.c
-$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o m m.$OBJEXT liba.la
+$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o m$EXEEXT m.$OBJEXT liba.la
 mkdir $DESTDIR$libdir $DESTDIR$bindir
 AT_CHECK([$LIBTOOL --mode=install cp liba.la $DESTDIR$libdir/liba.la],
 	 [], [ignore], [ignore])
@@ -67,7 +67,7 @@ LT_AT_MVDIR(["$DESTDIR$libdir"], ["$libdir"])
 LT_AT_MVDIR(["$DESTDIR$bindir"], ["$bindir"])
 # We ignore failure on purpose here: we may not be root.
 AT_CHECK([$LIBTOOL --mode=finish $libdir], [ignore], [ignore], [ignore])
-LT_AT_EXEC_CHECK([$bindir/m])
+LT_AT_EXEC_CHECK([$bindir/m$EXEEXT])
 
 AT_CLEANUP
 
@@ -91,7 +91,7 @@ $LIBTOOL --mode=compile $CC $CPPFLAGS $CFLAGS -c a.c
 $LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o liba.la a.lo -rpath $libdir liba1dep.la liba2dep.la
 echo 'extern int a(); int main() { return a(); }' > m.c
 $CC $CPPFLAGS $CFLAGS -c m.c
-$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o m m.$OBJEXT liba.la
+$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o m$EXEEXT m.$OBJEXT liba.la
 mkdir $DESTDIR$libdir $DESTDIR${libdir}2 $DESTDIR$bindir
 AT_CHECK([$LIBTOOL --mode=install cp liba1dep.la $DESTDIR$libdir/liba1dep.la],
 	 [], [ignore], [ignore])
@@ -124,7 +124,7 @@ for lib in a1dep a2dep a; do
   $LIBTOOL --mode=install cp lib$lib.la $DESTDIR$ldir/lib$lib.la
 done
 
-LT_AT_EXEC_CHECK([$bindir/m])
+LT_AT_EXEC_CHECK([$bindir/m$EXEEXT])
 
 # TODO: make this more portable:
 if test "$OBJDUMP" != false && ($OBJDUMP -p $bindir/m$EXEEXT) >/dev/null 2>&1; then
