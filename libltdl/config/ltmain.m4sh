@@ -2310,10 +2310,7 @@ func_extract_archives ()
 # func_emit_wrapper(), below.
 func_emit_wrapper_part1 ()
 {
-	func_emit_wrapper_part1_arg1=no
-	if test -n "$1" ; then
-	  func_emit_wrapper_part1_arg1=$1
-	fi
+	func_emit_wrapper_part1_arg1=${1-no}
 
 	$ECHO "\
 #! $SHELL
@@ -2408,10 +2405,7 @@ else
 # func_emit_wrapper(), below.
 func_emit_wrapper_part2 ()
 {
-	func_emit_wrapper_part2_arg1=no
-	if test -n "$1" ; then
-	  func_emit_wrapper_part2_arg1=$1
-	fi
+    func_emit_wrapper_part2_arg1=${1-no}
 
 	$ECHO "\
 
@@ -2553,15 +2547,10 @@ fi\
 # behavior.
 func_emit_wrapper ()
 {
-	func_emit_wrapper_arg1=no
-	if test -n "$1" ; then
-	  func_emit_wrapper_arg1=$1
-	fi
-
 	# split this up so that func_emit_cwrapperexe_src
 	# can call each part independently.
-	func_emit_wrapper_part1 "${func_emit_wrapper_arg1}"
-	func_emit_wrapper_part2 "${func_emit_wrapper_arg1}"
+	func_emit_wrapper_part1 ${1-no}
+	func_emit_wrapper_part2 ${1-no}
 }
 
 
@@ -2589,23 +2578,19 @@ func_emit_wrapper ()
 func_to_host_path ()
 {
   func_to_host_path_result="$1"
-  if test -n "$1" ; then
+  if test -n "$1"; then
     case $host in
       *mingw* )
         lt_sed_naive_backslashify='s|\\\\*|\\|g;s|/|\\|g;s|\\|\\\\|g'
         case $build in
           *mingw* ) # actually, msys
             # awkward: cmd appends spaces to result
-            lt_sed_strip_trailing_spaces="s/[ ]*\$//"
-            func_to_host_path_tmp1=`( cmd //c echo "$1" |\
-              $SED -e "$lt_sed_strip_trailing_spaces" ) 2>/dev/null || echo ""`
-            func_to_host_path_result=`echo "$func_to_host_path_tmp1" |\
-              $SED -e "$lt_sed_naive_backslashify"`
+            func_to_host_path_result=`( cmd //c echo "$1" ) 2>/dev/null |
+              $SED -e 's/[ ]*$//' -e "$lt_sed_naive_backslashify"`
             ;;
           *cygwin* )
-            func_to_host_path_tmp1=`cygpath -w "$1"`
-            func_to_host_path_result=`$ECHO "$func_to_host_path_tmp1" |\
-              $SED -e "$lt_sed_naive_backslashify"`
+            func_to_host_path_result=`cygpath -w "$1" |
+	      $SED -e "$lt_sed_naive_backslashify"`
             ;;
           * )
             # Unfortunately, winepath does not exit with a non-zero
@@ -2617,17 +2602,17 @@ func_to_host_path ()
             # the odd construction:
             func_to_host_path_tmp1=`winepath -w "$1" 2>/dev/null`
             if test "$?" -eq 0 && test -n "${func_to_host_path_tmp1}"; then
-              func_to_host_path_result=`$ECHO "$func_to_host_path_tmp1" |\
+              func_to_host_path_result=`$ECHO "$func_to_host_path_tmp1" |
                 $SED -e "$lt_sed_naive_backslashify"`
             else
               # Allow warning below.
-              func_to_host_path_result=""
+              func_to_host_path_result=
             fi
             ;;
         esac
         if test -z "$func_to_host_path_result" ; then
           func_error "Could not determine host path corresponding to"
-          func_error "  '$1'"
+          func_error "  \`$1'"
           func_error "Continuing, but uninstalled executables may not work."
           # Fallback:
           func_to_host_path_result="$1"
@@ -2660,30 +2645,24 @@ func_to_host_path ()
 func_to_host_pathlist ()
 {
   func_to_host_pathlist_result="$1"
-  if test -n "$1" ; then
+  if test -n "$1"; then
     case $host in
       *mingw* )
         lt_sed_naive_backslashify='s|\\\\*|\\|g;s|/|\\|g;s|\\|\\\\|g'
         # Remove leading and trailing path separator characters from
         # ARG. msys behavior is inconsistent here, cygpath turns them
         # into '.;' and ';.', and winepath ignores them completely.
-        func_to_host_pathlist_tmp2="$1"
-        # Once set for this call, this variable should not be
-        # reassigned. It is used in tha fallback case.
-        func_to_host_pathlist_tmp1=`echo "$func_to_host_pathlist_tmp2" |\
-          $SED -e 's|^:*||' -e 's|:*$||'`
+	func_stripname : : "$1"
+        func_to_host_pathlist_tmp1=$func_stripname_result
         case $build in
           *mingw* ) # Actually, msys.
             # Awkward: cmd appends spaces to result.
-            lt_sed_strip_trailing_spaces="s/[ ]*\$//"
-            func_to_host_pathlist_tmp2=`( cmd //c echo "$func_to_host_pathlist_tmp1" |\
-              $SED -e "$lt_sed_strip_trailing_spaces" ) 2>/dev/null || echo ""`
-            func_to_host_pathlist_result=`echo "$func_to_host_pathlist_tmp2" |\
-              $SED -e "$lt_sed_naive_backslashify"`
+            func_to_host_pathlist_result=`
+	      ( cmd //c echo "$func_to_host_pathlist_tmp1" ) 2>/dev/null |
+	      $SED -e 's/[ ]*$//' -e "$lt_sed_naive_backslashify"`
             ;;
           *cygwin* )
-            func_to_host_pathlist_tmp2=`cygpath -w -p "$func_to_host_pathlist_tmp1"`
-            func_to_host_pathlist_result=`echo "$func_to_host_pathlist_tmp2" |\
+            func_to_host_pathlist_result=`cygpath -w -p "$func_to_host_pathlist_tmp1" |
               $SED -e "$lt_sed_naive_backslashify"`
             ;;
           * )
@@ -2699,18 +2678,17 @@ func_to_host_pathlist ()
                   if test -z "$func_to_host_pathlist_result" ; then
                     func_to_host_pathlist_result="$func_to_host_path_result"
                   else
-                    func_to_host_pathlist_result="$func_to_host_pathlist_result;$func_to_host_path_result"
+                    func_append func_to_host_pathlist_result ";$func_to_host_path_result"
                   fi
                 fi
               fi
-              IFS=:
             done
             IFS=$func_to_host_pathlist_oldIFS
             ;;
         esac
-        if test -z "$func_to_host_pathlist_result" ; then
+        if test -z "$func_to_host_pathlist_result"; then
           func_error "Could not determine the host path(s) corresponding to"
-          func_error "  '$1'"
+          func_error "  \`$1'"
           func_error "Continuing, but uninstalled executables may not work."
           # Fallback. This may break if $1 contains DOS-style drive
           # specifications. The fix is not to complicate the expression
@@ -2727,7 +2705,7 @@ func_to_host_pathlist ()
             ;;
         esac
         case "$1" in
-          *: ) func_to_host_pathlist_result="$func_to_host_pathlist_result;"
+          *: ) func_append func_to_host_pathlist_result ";"
             ;;
         esac
         ;;

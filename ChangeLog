@@ -1,3 +1,11 @@
+2008-11-11  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Simplify cwrapper handling a bit.
+	* libltdl/config/ltmain.m4sh (func_emit_wrapper_part1)
+	(func_emit_wrapper_part2, func_to_host_path)
+	(func_to_host_pathlist, func_emit_wrapper): Simplify using
+	default argument, func_append.
+
 2008-11-10  Paolo Bonzini  <bonzini@gnu.org>
 
 	Separate part of _LT_SETUP into other macros, detect ECHO sooner.
