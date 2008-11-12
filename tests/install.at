@@ -39,7 +39,8 @@ mkdir inst
 
 echo 'int a () { return 0; }' > a.c
 $LIBTOOL --mode=compile $CC $CPPFLAGS $CFLAGS -c a.c
-$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o liba.la a.lo -rpath $inst
+AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o liba.la a.lo ]dnl
+	 [-rpath $inst -no-undefined], [], [ignore], [ignore])
 AT_CHECK([$LIBTOOL --mode=install $INSTALL liba.la $inst],
 	 [], [stdout], [ignore])
 AT_CHECK([grep ' -m 755' stdout], [], [ignore])

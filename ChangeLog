@@ -1,3 +1,8 @@
+2008-11-12  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Use -no-undefined in install tests.
+	* tests/install.at (Install tests): Use `-no-undefined'.
+
 2008-11-11  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	Do not use `test ... -a ...'.
