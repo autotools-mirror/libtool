@@ -1,3 +1,13 @@
+2008-11-12  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Fix archive_cmds for older cc on HP-UX 11.
+	* libltdl/m4/libtool.m4 (_LT_LINKER_SHLIBS) [hp-ux11*, !GCC]
+	[!hppa*64*, !ia64*] <archive_cmds>: Older releases of the HP-UX
+	11.00 C compiler do not support -b yet; use a link test to
+	decide whether $LD should be used for library creation.
+	* THANKS: Update.
+	Report by Daniel Richard G.
+
 2008-11-12  Paolo Bonzini  <bonzini@gnu.org>
 
 	* configure.ac: Bump Autoconf requirement.
