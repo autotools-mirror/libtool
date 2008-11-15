@@ -3720,6 +3720,17 @@ EOF
 }
 # end: func_emit_cwrapperexe_src
 
+# func_win32_import_lib_p ARG
+# True if ARG is an import lib, as indicated by $file_magic_cmd
+func_win32_import_lib_p ()
+{
+    $opt_debug
+    case `eval $file_magic_cmd \"\$1\" 2>/dev/null | $SED -e 10q` in
+    *import*) : ;;
+    *) false ;;
+    esac
+}
+
 # func_mode_link arg...
 func_mode_link ()
 {
