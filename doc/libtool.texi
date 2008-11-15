@@ -1207,7 +1207,44 @@ Do not print out any progress or informational messages.
 
 @item -v
 @itemx --verbose
-Print out progress and informational messages (enabled by default).
+Print out progress and informational messages (enabled by default),
+as well as additional messages not ordinary seen by default.
+
+@item --no-quiet
+@itemx --no-silent
+Print out the progress and informational messages that are seen
+by default. This option has no effect on whether the additional
+messages seen in @option{--verbose} mode are shown.
+
+@item --no-verbose
+Do not print out any additional informational messages beyond
+those ordinarily seen by default. This option has no effect
+on whether the ordinary progress and informational messages
+enabled by @option{--no-quiet} are shown.
+
+Thus, there are now three different message levels (not counting
+@option{--debug}), depending on whether the normal messages and/or
+the additional verbose messages are displayed.  Note that there is
+no mechanism to diplay verbose messages, without also displaying
+normal messages.
+
+@table @strong
+@item default
+Normal messages are displayed, verbose messages are not displayed.
+In addition to being the default mode, it can be forcibly achieved
+by using both option @option{--no-verbose} and either option
+@option{--no-silent} or option @option{--no-quiet}.
+
+@item silent
+Neither normal messages nor verbose messages are displayed. This
+mode can be achieved using either option @option{--silent} or
+option @option{--quiet}.
+
+@item verbose
+Both normal messages and verbose messages are displayed. This mode
+can be achieved using either option @option{-v} or option
+@option{--verbose}.
+@end table
 
 @item --version
 Print libtool version information and exit.

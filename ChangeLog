@@ -1,3 +1,22 @@
+2008-11-21  Charles Wilson <libtool@cwilson.fastmail.fm>
+
+	Fix --verbose option; add new --no-{silent|quiet|verbose} options.
+
+	* libltdl/config/ltmain.m4sh (usage): Document
+	new options --no-silent/--no-quiet and --no-verbose.
+	(func_enable_tag): Handle new options.
+	Modified --verbose to actually activate opt_verbose.
+	New behavior: --silent disables both "normal" output and
+	func_verbose output.  --verbose enables both "normal"
+	output and func_verbose output. --no-silent enables
+	"normal" output, but does not affect func_verbose output.
+	--no-verbose disables func_verbose output, but does not
+	affect "normal" output.
+	* NEWS: announce new options --no-silent/--no-quiet, and
+	--no-verbose.
+	* doc/libtool.texi: document new options --no-silent/--no-quiet
+	and --no-verbose.
+
 2008-11-20  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	Fix match patterns for cegcc*.

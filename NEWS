@@ -6,6 +6,12 @@ New in 2.2.8 2008-??-??: git version 2.2.7a, Libtool team:
 
   - Libtool ships and installs man pages for libtool and libtoolize now.
   - New libtool command line flag --help-all.
+  - New libtool command line flag --no-silent (with alternate spelling
+    --no-quiet). This flag (re)enables the default informational messages,
+    but has no effect on so-called "verbose" output messages.
+  - New libtool command line flag --no-verbose, which disables only
+    the extra "verbose" output messages and has no effect on the
+    default informational messages.
 
 * Bug fixes:
 
@@ -13,6 +19,9 @@ New in 2.2.8 2008-??-??: git version 2.2.7a, Libtool team:
     with Autoconf 2.59 (`possibly undefined macro: LT_LIBEXT').
   - Fix 2.2.4 regression that caused arguments with special characters
     to be mangled by the compile wrapper for uninstalled programs on MinGW.
+  - libtool command line flag --verbose now also enables explicit
+    verbose output, in addition to its previous behavior of (re)enabling
+    only the default informational output. See New Features, --no-silent.
 
 * Miscellaneous changes:
 

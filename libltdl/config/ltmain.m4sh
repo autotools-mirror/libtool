@@ -40,8 +40,11 @@ m4_divert_push([SCRIPT])# @configure_input@
 #       --mode=MODE          use operation mode MODE
 #       --preserve-dup-deps  don't remove duplicate dependency libraries
 #       --quiet, --silent    don't print informational messages
+#       --no-quiet, --no-silent
+#                            print informational messages (default)
 #       --tag=TAG            use configuration variables from tag TAG
-#   -v, --verbose            print informational messages (default)
+#   -v, --verbose            print more informational messages than default
+#       --no-verbose         don't print the extra informational messages
 #       --version            print version information
 #   -h, --help, --help-all   print short, long, or detailed help message
 #
@@ -319,10 +322,21 @@ func_enable_tag ()
 
       --quiet|--silent)	preserve_args="$preserve_args $opt"
 			opt_silent=:
+			opt_verbose=false
+			;;
+
+      --no-quiet|--no-silent)
+			preserve_args="$preserve_args $opt"
+			opt_silent=false
 			;;
 
       --verbose| -v)	preserve_args="$preserve_args $opt"
 			opt_silent=false
+			opt_verbose=:
+			;;
+
+      --no-verbose)	preserve_args="$preserve_args $opt"
+			opt_verbose=false
 			;;
 
       --tag)		test "$#" -eq 0 && func_missing_arg "$opt" && break
