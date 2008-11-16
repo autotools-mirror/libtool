@@ -3,6 +3,7 @@
 *.cp
 *.cps
 *.dvi
+*.exe
 *.fn
 *.ky
 *.la
