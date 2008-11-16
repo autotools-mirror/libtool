@@ -1,6 +1,6 @@
 # search-path.at -- test sys_lib_search_path_spec             -*- Autotest -*-
 #
-#   Copyright (C) 2006 Free Software Foundation, Inc.
+#   Copyright (C) 2006, 2008 Free Software Foundation, Inc.
 #   Written by Ralf Wildenhues, 2006
 #
 #   This file is part of GNU Libtool.
@@ -41,13 +41,20 @@ int main()
 $CC $CPPFLAGS $CFLAGS -c main.c
 eval `$LIBTOOL --config | $EGREP '^(sys_lib_search_path_spec)='`
 eval sys_lib_search_path=\"$sys_lib_search_path_spec\"
+no_libz=:
 for path in $sys_lib_search_path; do
   if $LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o main main.$OBJEXT -L$path -lz
   then
     AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o main main.$OBJEXT -lz],
              [], [ignore], [ignore])
+    no_libz=false
     break
   fi
 done
+
+# If -lz doesn't exist (hello, cross compiler!), we need a dummy test.
+if $no_libz; then
+  AT_CHECK([exit 77])
+fi
 
 AT_CLEANUP

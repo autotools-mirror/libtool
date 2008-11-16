@@ -1,5 +1,13 @@
 2008-11-16  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	Skip sys_lib_search_path on systems without libz.
+	* tests/search-path.at (sys_lib_search_path): Autotest needs at
+	least one AT_CHECK executed in a test group.  So if we haven't
+	found -lz anywhere, as may happen with cross-compilers, skip the
+	test.
+	* THANKS: Update.
+	Report by Alon Bar-Lev.
+
 	Fix execute mode test to actually expose cwrapper failures.
 	* tests/execute-mode.at (execute mode): Actually also test the
 	cwrapper on the arguments.
