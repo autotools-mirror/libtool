@@ -1,5 +1,10 @@
 2008-11-16  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	Fix $ECHO abuse exposed by recent patch.
+	* libltdl/m4/libtool.m4 (_LT_SYS_DYNAMIC_LINKER): Require
+	_LT_CHECK_SHELL_FEATURES, for $lt_NL2SP.  Always quote argument
+	to $ECHO.
+
 	Skip sys_lib_search_path on systems without libz.
 	* tests/search-path.at (sys_lib_search_path): Autotest needs at
 	least one AT_CHECK executed in a test group.  So if we haven't
