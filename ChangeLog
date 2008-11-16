@@ -1,3 +1,10 @@
+2008-11-16  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Fix execute mode test to actually expose cwrapper failures.
+	* tests/execute-mode.at (execute mode): Actually also test the
+	cwrapper on the arguments.
+	Report by Bruno Haible.
+
 2008-11-15  Charles Wilson  <libtool@cwilson.fastmail.fm>
 
 	Add func_win32_import_lib_p.

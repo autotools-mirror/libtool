@@ -119,7 +119,7 @@ AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o liba.la -rpath $libdir li
 	 [], [ignore], [ignore])
 AT_CHECK([$CC $CPPFLAGS $CFLAGS -c main.c],
 	 [], [ignore], [ignore])
-AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o main main.$OBJEXT liba.la],
+AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o main$EXEEXT main.$OBJEXT liba.la],
 	 [], [ignore], [ignore])
 
 # end of preparatory blurb.
@@ -168,6 +168,9 @@ AT_CHECK([$LIBTOOL --mode=execute ./foo lt-wrapper "arg  with special chars: \$!
 	 [], [./lt-real
 arg  with special chars: $!&*`'()
 ])
+AT_CHECK([$LIBTOOL --mode=execute ./main$EXEEXT "arg  with special chars: \$!&*\`'()"],
+	 [], [stdout])
+AT_CHECK([$FGREP 'arg  with special chars: $!&*`'\''()' stdout], [], [ignore])
 
 # We always pair two args.  The first one is never the empty string.
 arg1=
@@ -199,6 +202,11 @@ do
   AT_CHECK([$FGREP "$arg1" stdout], [], [ignore])
   AT_CHECK([$FGREP "$arg2" stdout], [], [ignore])
   AT_CHECK([test `sed -n '/^abc$/,/^xyz$/p' stdout | wc -l` -eq 4])
+  AT_CHECK([$LIBTOOL --mode=execute ./main$EXEEXT abc "$arg1" "$arg2" xyz], [], [stdout])
+  AT_CHECK([$FGREP "$arg1" stdout], [], [ignore])
+  AT_CHECK([$FGREP "$arg2" stdout], [], [ignore])
+  # Do not match EOL here, cross setups may have an extra \r here.
+  AT_CHECK([test `sed -n '/^abc/,/^xyz/p' stdout | wc -l` -eq 4])
   arg1=
 done
 
