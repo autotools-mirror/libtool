@@ -319,7 +319,7 @@ dlpreloadable='preload'
 # ------------------------------------------------------------------------- #
 
 case $host_os in
-cygwin* | mingw*)
+cygwin* | mingw* | cegcc*)
   # These hosts do not support linking without -no-undefined
   CPPFLAGS="$CPPFLAGS -DHAVE_UNDEFINED_SYMBOLS=0"
   ;;

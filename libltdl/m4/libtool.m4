@@ -2931,7 +2931,7 @@ mingw* | pw32*)
   fi
   ;;
 
-cegcc)
+cegcc*)
   # use the weaker test based on 'objdump'. See mingw*.
   lt_cv_deplibs_check_method='file_magic file format pe-arm-.*little(.*architecture: arm)?'
   lt_cv_file_magic_cmd='$OBJDUMP -f'

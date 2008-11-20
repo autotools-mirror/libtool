@@ -1,5 +1,14 @@
 2008-11-20  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	Fix match patterns for cegcc*.
+	* libltdl/config/ltmain.m4sh (func_mode_link): Match '*cegcc*'
+	instead of '*cegcc' for $host_os.
+	* libltdl/m4/libtool.m4 (_LT_CHECK_MAGIC_METHOD): Likewise.
+	* tests/lt_dladvise.at (lt_dlopenadvise library loading):
+	Likewise.
+	* libltdl/m4/ltoptions.m4 (AC_LIBTOOL_DLOPEN): Match
+	'*-*-cegcc*' for $host.
+
 	Ensure $ac_aux_dir is initialized for LIBTOOL_DEPS.
 	* libltdl/m4/libtool.m4 (LT_INIT): Require
 	AC_CONFIG_AUX_DIR_DEFAULT.

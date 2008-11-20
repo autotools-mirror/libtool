@@ -7382,7 +7382,7 @@ EOF
           wrappers_required=no
         fi
         ;;
-      *cegcc)
+      *cegcc*)
         # Disable wrappers for cegcc, we are cross compiling anyway.
         wrappers_required=no
         ;;
