@@ -42,6 +42,7 @@ AT_SETUP([AM_PROG_LIBTOOL])
 AT_DATA([configure.in],
 [[AC_INIT(old.c)
 AM_PROG_LIBTOOL
+AC_SUBST([LIBTOOL_DEPS])
 AC_OUTPUT(Makefile)
 ]])
 
@@ -49,8 +50,9 @@ AT_DATA([Makefile.in],
 [[COMPILE = @CC@ @CPPFLAGS@ @CFLAGS@
 LINK      = @CC@ @CFLAGS@ @LDFLAGS@ -o $@
 SHELL     = @SHELL@
+LIBTOOL_DEPS = @LIBTOOL_DEPS@
 
-all: old@EXEEXT@
+all: libtool old@EXEEXT@
 
 old@EXEEXT@: old.@OBJEXT@
 	$(LINK) old.@OBJEXT@
@@ -60,6 +62,9 @@ old@EXEEXT@: old.@OBJEXT@
 
 .c.@OBJEXT@:
 	$(COMPILE) -c $<
+
+libtool: $(LIBTOOL_DEPS)
+	$(SHELL) ./config.status --recheck
 ]])
 
 

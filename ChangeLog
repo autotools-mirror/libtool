@@ -1,5 +1,12 @@
 2008-11-20  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	Ensure $ac_aux_dir is initialized for LIBTOOL_DEPS.
+	* libltdl/m4/libtool.m4 (LT_INIT): Require
+	AC_CONFIG_AUX_DIR_DEFAULT.
+	* tests/old-m4-iface.at (AM_PROG_LIBTOOL): Amend test to
+	expose this.
+	Report, analysis, and test example by Jakub Bogusz.
+
 	Check for bogus aclocal.m4 contents in bootstrap and dist-hook.
 	* Makefile.am (dist-hook): Bail out if shipped aclocal.m4 files
 	contain LT_INIT, AC_PROG_LIBTOOL, or AM_PROG_LIBTOOL macro
