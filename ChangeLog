@@ -1,3 +1,13 @@
+2008-11-20  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Check for bogus aclocal.m4 contents in bootstrap and dist-hook.
+	* Makefile.am (dist-hook): Bail out if shipped aclocal.m4 files
+	contain LT_INIT, AC_PROG_LIBTOOL, or AM_PROG_LIBTOOL macro
+	definitions.  These can only come from bogus pull-ins from older
+	installed Libtool macro files.
+	* bootstrap: Likewise.
+	Report by Akim Demaille.
+
 2008-11-16  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	Fix $ECHO abuse exposed by recent patch.

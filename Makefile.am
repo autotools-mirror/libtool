@@ -433,6 +433,13 @@ dist-hook:
 	case $(VERSION) in \
 	  *[a-z]) cp -p $(srcdir)/README.alpha $(distdir)/README ;; \
 	esac; else :; fi
+## Ensure aclocal has not wrongly picked up old macro definitions.
+	for macro in LT_INIT AC_PROG_LIBTOOL AM_PROG_LIBTOOL; do \
+	  if grep $$macro $(srcdir)/aclocal.m4 $(srcdir)/libltdl/aclocal.m4; then \
+	    echo "Bogus $$macro macro contents in an aclocal.m4 file." >&2; \
+	    exit 1; \
+	  else :; fi; \
+	done
 
 
 ## ----------- ##

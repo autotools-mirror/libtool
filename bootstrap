@@ -183,6 +183,13 @@ rm -f Makefile libltdl/Makefile libtool vcl.tmp
 # to be regenerated at make-time with proper substitutions in place:
 touch $auxdir/ltmain.m4sh
 
+for macro in LT_INIT AC_PROG_LIBTOOL AM_PROG_LIBTOOL; do
+  if grep $macro aclocal.m4 libltdl/aclocal.m4; then
+    echo "Bogus $macro macro contents in an aclocal.m4 file." >&2
+    exit 1
+  else :; fi
+done
+
 # Commit script caveat:
 cat <<EOF
 WARNING: You might want to regenerate \`commit' and \`$auxdir/mailnotify'
