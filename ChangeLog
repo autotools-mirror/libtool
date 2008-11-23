@@ -1,3 +1,12 @@
+2008-11-23  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Fix matching of Sun Fortran compiler on Linux.
+	* libltdl/m4/libtool.m4 (_LT_COMPILER_PIC) [ linux ]: Also
+	match `Sun Ceres Fortran' compiler; reorder with C compiler
+	matching.
+	* THANKS: Update.
+	Report by Ethan Mallove.
+
 2008-11-21  Charles Wilson <libtool@cwilson.fastmail.fm>
 
 	Fix --verbose option; add new --no-{silent|quiet|verbose} options.
