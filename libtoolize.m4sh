@@ -269,7 +269,8 @@ func_copy ()
     test -f "$1" || \
       { func_error "\`$1' not copied:  not a regular file"; return 1; }
 
-    my_f1=`$ECHO "$1" | $SED "$basename"`
+    func_dirname_and_basename "$1"
+    my_f1=$func_basename_result
 
     if test -d "$2"; then
 
@@ -279,7 +280,9 @@ func_copy ()
     else
 
       # Supporting this would mean changing the timestamp:
-      test "X$my_f1" = X`$ECHO "$2" | $SED "$basename"` \
+      func_dirname_and_basename "$2"
+      my_tname=$func_basename_result
+      test "X$my_f1" = "X$my_tname" \
         || func_fatal_error "func_copy() cannot change filename on copy"
 
       func_copy_cb "$my_f1" \
@@ -705,10 +708,12 @@ func_serial ()
     # Search FILENAME and all the files it m4_includes for a serial number
     # in the file that AC_DEFUNs MACRO_REGEX.
     my_serial=
+    func_dirname_and_basename "$my_filename"
+    my_filebase=$func_basename_result
     for my_file in `func_included_files "$my_filename"`; do
       if test -z "$my_macro_regex" ||
          test "$my_filename" = aclocal.m4 ||
-         test "$my_macro_regex" = `echo "$my_filename" | $SED "$basename"` ||
+         test "X$my_macro_regex" = "X$my_filebase" ||
          func_grep '^AC_DEFUN(\@<:@'"$my_macro_regex" "$my_file"
       then
         my_serial=`$SED -e "$my_sed_serial" "$my_file"`
@@ -1040,7 +1045,8 @@ func_massage_aclocal_DATA ()
 
     # Massage a value for pkgmacro_files from the value used in Makefile.am.
     for my_filename in @aclocal_DATA@; do
-      my_filename=`$ECHO "$my_filename" | $SED "$basename"`
+      func_dirname_and_basename "$my_filename"
+      my_filename=$func_basename_result
 
       # ignore excluded filenames
       if test -n "$my_glob_exclude"; then

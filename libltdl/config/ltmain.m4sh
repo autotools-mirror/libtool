@@ -4764,7 +4764,8 @@ func_mode_link ()
 	  # Collect preopened libtool deplibs, except any this library
 	  # has declared as weak libs
 	  for deplib in $dependency_libs; do
-            deplib_base=`$ECHO "$deplib" | $SED "$basename"`
+	    func_basename "$deplib"
+            deplib_base=$func_basename_result
 	    case " $weak_libs " in
 	    *" $deplib_base "*) ;;
 	    *) deplibs="$deplibs $deplib" ;;
@@ -6846,7 +6847,8 @@ EOF
 	    save_libobjs=$libobjs
 	  fi
 	  save_output=$output
-	  output_la=`$ECHO "$output" | $SED "$basename"`
+	  func_basename "$output"
+	  output_la=$func_basename_result
 
 	  # Clear the reloadable object creation command queue and
 	  # initialize k to one.

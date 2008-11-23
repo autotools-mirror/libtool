@@ -187,7 +187,8 @@ func_configure_nofail ()
 {
     $opt_debug
     my_args=${1+"$@"}
-    my_dir=`pwd | $SED "$basename"`
+    func_dirname_and_basename "`pwd`"
+    my_dir=$func_basename_result
     my_testdir="$srcdir/tests/$my_dir"
     conf_status=$EXIT_FAILURE
 
@@ -245,7 +246,8 @@ func_make ()
 {
     $opt_debug
     my_args=${1+"$@"}
-    my_dir=`pwd | $SED "$basename"`
+    func_dirname_and_basename "`pwd`"
+    my_dir=$func_basename_result
 
     func_msg "Running \`$MAKE $my_args' in $my_dir"
 
@@ -317,7 +319,8 @@ func_exec ()
     $opt_debug
     my_program="$1"
     my_exp_output="$2"
-    my_dir=`pwd | $SED "$basename"`
+    func_dirname_and_basename "`pwd`"
+    my_dir=$func_basename_result
 
     test -n "$my_exp_output" \
       && my_exp_output="| $EGREP -e "\""$my_exp_output"\"

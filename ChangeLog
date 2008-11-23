@@ -1,5 +1,14 @@
 2008-11-23  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	Replace uses of $SED $basename.
+	* libltdl/config/ltmain.m4sh (func_mode_link): Replace instances
+	of `$ECHO ... | $SED' with calls to func_basename.
+	* libtoolize.m4sh (func_copy, func_serial)
+	(func_massage_aclocal_DATA): Likewise, replace with
+	func_dirname_and_basename.
+	* tests/defs.m4sh (func_configure_nofail, func_make, func_exec):
+	Likewise.
+
 	No need to prepend $progname with './'.
 	* libltdl/config/general.m4sh (func_dirname_and_basename): $ECHO
 	copes with leading hyphens now, so do not mangle $progname any
