@@ -1,4 +1,12 @@
 2008-11-23  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Fix import library detection for WinCE.
+	* libltdl/config/ltmain.m4sh (func_win32_libid): Work for
+	pe-arm-wince import libraries.
+	* NEWS: Update.
+	Report by Vincent Torri.
+
+2008-11-23  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 	    Eric Blake  <ebb9@byu.net>
 
 	Fix $ECHO test to not influence other _AS_DETECT_SUGGESTED code.

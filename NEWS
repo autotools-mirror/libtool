@@ -13,6 +13,7 @@ New in 2.2.8 2008-??-??: git version 2.2.7a, Libtool team:
     the extra "verbose" output messages and has no effect on the
     default informational messages.
   - Improved support for 64bit Windows (mingw64).
+  - Improved support for cegcc (Windows CE/PocketPC).
 
 * Bug fixes:
 
