@@ -1,3 +1,13 @@
+2008-11-23  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Relax link-order2 test for systems with partial wrong order.
+	* tests/link-order2.at (Link order of deplibs.): On w32 (and
+	others, e.g., AIX), the wrongly linked executable picks up only
+	one instance of the bad function instead of two; relax the test
+	to accept this; we still require the right link order with the
+	correctly linked executable.
+	Reported by Roumen Petrov and others.
+
 2008-11-23  Roumen Petrov  <bugtrack@roumenpetrov.info>
 	    Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 

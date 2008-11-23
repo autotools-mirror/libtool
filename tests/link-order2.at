@@ -83,7 +83,7 @@ extern int a (void);
 extern int b (void);
 int main (void)
 {
-  return a () + b ();
+  return !(a () + b () == 0);
 }
 EOF
 
@@ -126,7 +126,7 @@ for type_of_depdepl in libtool non-libtool; do
     AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS $static -o wrong$EXEEXT main.$OBJEXT -la0 libb.la],
 	     [], [ignore], [ignore])
     if test $shared_fails,$static != yes,; then
-      LT_AT_EXEC_CHECK([./wrong], [2])
+      LT_AT_EXEC_CHECK([./wrong], [1], [], [ignore], [|| (exit 1)])
     fi
 
     $LIBTOOL --mode=install cp liba1.la $libdir/liba1.la
@@ -136,7 +136,7 @@ for type_of_depdepl in libtool non-libtool; do
     $LIBTOOL --mode=clean rm -f liba1.la libb.la
     LT_AT_EXEC_CHECK([$bindir/main])
     if test $shared_fails,$static != yes,; then
-      LT_AT_EXEC_CHECK([$bindir/wrong], [2])
+      LT_AT_EXEC_CHECK([$bindir/wrong], [1], [], [ignore], [|| (exit 1)])
     fi
   done
 done
