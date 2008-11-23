@@ -89,7 +89,7 @@ int f (void) { return 5150; }
 #endif
 ]])
 
-AT_DATA([expout],
+LT_AT_HOST_DATA([expout],
 [[5150
 ]])
 ])# _LT_AT_LTDL_SETUP

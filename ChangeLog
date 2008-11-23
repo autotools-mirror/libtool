@@ -1,5 +1,17 @@
 2008-11-23  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	Fix expout and experr line ending issues.
+	* tests/testsuite.at (LT_AT_HOST_DATA): Renamed from..
+	(_LT_AT_TRANSLATE_TEXT_OUTPUT): ..this.
+	(LT_AT_EXEC_CHECK, LT_AT_NOINST_EXEC_CHECK): Do not use
+	_LT_AT_TRANSLATE_TEXT_OUTPUT any more.
+	* tests/configure-iface.at: Use LT_AT_HOST_DATA instead of
+	AT_DATA for `expout' files.
+	* tests/lt_dladvise.at (lt_dlopenadvise library loading):
+	Likewise.
+	* tests/need_lib_prefix.at (enforced lib prefix): Likewise.
+	Report by Roumen Petrov.
+
 	Relax link-order2 test for systems with partial wrong order.
 	* tests/link-order2.at (Link order of deplibs.): On w32 (and
 	others, e.g., AIX), the wrongly linked executable picks up only

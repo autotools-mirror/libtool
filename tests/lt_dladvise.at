@@ -289,7 +289,7 @@ int k = 3;
 #endif
 ]])
 
-AT_DATA([expout],
+LT_AT_HOST_DATA([expout],
 [[resident: 2
 local: 3
 global: 4

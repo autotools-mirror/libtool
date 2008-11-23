@@ -131,7 +131,7 @@ int i = 6;
 #endif
 ]])
 
-AT_DATA([expout],
+LT_AT_HOST_DATA([expout],
 [[libfoo1: 2
 libfoo2: 3
 ]])
