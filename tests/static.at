@@ -194,11 +194,11 @@ func_test_exec_fail ()
     for st
     do
       echo "# m$st"
-      LT_AT_EXEC_CHECK([./m$st || (exit 1)], [1], [], [ignore])
+      LT_AT_EXEC_CHECK([./m$st], [1], [], [ignore], [|| (exit 1)])
       # For some per-deplib flag combinations there may be no installed program,
       # because liba2 is not yet installed.
       if test -f "$bindir/m$st"; then
-	LT_AT_EXEC_CHECK([$bindir/m$st || (exit 1)], [1], [], [ignore])
+	LT_AT_EXEC_CHECK([$bindir/m$st], [1], [], [ignore], [|| (exit 1)])
       fi
     done
   fi

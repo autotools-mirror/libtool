@@ -203,29 +203,45 @@ m4_define([_LT_AT_TRANSLATE_TEXT_OUTPUT],
 esac])
 
 
-# LT_AT_EXEC_CHECK(EXECUTABLE, [STATUS = 0], [STDOUT], [STDERR])
+# LT_AT_EXEC_CHECK(EXECUTABLE, [STATUS = 0], [STDOUT], [STDERR],
+#		   [ARGS-OR-STATUS-ADJUST])
 # --------------------------------------------------------------
+# Run EXECUTABLE ARGS-OR-STATUS-ADJUST.  STATUS, STDOUT, and STDERR are
+# handled as in AT_CHECK, but expout and experr get line endings
+# translated.
+# However, if we are cross-compiling, then SKIP instead of FAIL.
+# ARGS-OR-STATUS-ADJUST can also contain code like `|| (exit 1)'
+# to unify different possible exit status values.
 m4_define([LT_AT_EXEC_CHECK],
 [m4_if([$3], [expout], [_LT_AT_TRANSLATE_TEXT_OUTPUT([$3])])
 m4_if([$4], [experr], [_LT_AT_TRANSLATE_TEXT_OUTPUT([$4])])
-AT_CHECK([$1; lt_status=$?; if test $lt_status -eq 0; then :;
-	   elif test "X$host" != "X$build" && \
-	        { test -x "$1" || test -x "$1"$EXEEXT; }
-	   then (exit 77); else (exit $lt_status); fi],[$2],[$3],[$4])
+lt_exe=$1; if test -f "$1$EXEEXT"; then lt_exe=$lt_exe$EXEEXT; fi
+AT_CHECK([if "$lt_exe" $5; then :; else lt_status=$?; ]dnl
+	 [  m4_ifval([$2], [test $lt_status != $2 && ])]dnl
+	 [  test "X$host" != "X$build" && test -x "$lt_exe" && exit 77; ]dnl
+	 [  exit $lt_status; fi],[$2],[$3],[$4])
 ])
 
 
 # LT_AT_NOINST_EXEC_CHECK(EXECUTABLE, [NOINST-MODULES],
-# 			  [STATUS = 0], [STDOUT], [STDERR])
+#			  [STATUS = 0], [STDOUT], [STDERR],
+#			  [ARGS-OR-STATUS-ADJUST])
 # ---------------------------------------------------------
+# Run EXECUTABLE ARGS-OR-STATUS-ADJUST using `libtool --mode=execute'
+# with `-dlopen' arguments in NOINST_MODULES.  STATUS, STDOUT, and
+# STDERR are handled as in AT_CHECK, but expout and experr get line
+# endings translated.
+# However, if we are cross-compiling, then SKIP instead of FAIL.
+# ARGS-OR-STATUS-ADJUST can also contain code like `|| (exit 1)'
+# to unify different possible exit status values.
 m4_define([LT_AT_NOINST_EXEC_CHECK],
 [m4_if([$4], [expout], [_LT_AT_TRANSLATE_TEXT_OUTPUT([$4])])
 m4_if([$5], [experr], [_LT_AT_TRANSLATE_TEXT_OUTPUT([$5])])
-AT_CHECK([$LIBTOOL --mode=execute $2 $1; lt_status=$?;
-	   if test $lt_status -eq 0; then :;
-	   elif test "X$host" != "X$build" && \
-	        { test -x "$1" || test -x "$1"$EXEEXT; }
-	   then (exit 77); else (exit $lt_status); fi],[$3],[$4],[$5])
+lt_exe=$1; if test -f "$1$EXEEXT"; then lt_exe=$lt_exe$EXEEXT; fi
+AT_CHECK([if $LIBTOOL --mode=execute $2 "$lt_exe" $6; then :; else lt_status=$?; ]dnl
+	 [  m4_ifval([$2], [test $lt_status != $2 && ])]dnl
+	 [  test "X$host" != "X$build" && test -x "$lt_exe" && exit 77; ]dnl
+	 [  exit $lt_status; fi],[$3],[$4],[$5])
 ])
 
 

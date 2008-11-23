@@ -1,5 +1,17 @@
 2008-11-23  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	Adjust executable run tests to cwrapper changes.
+	* tests/testsuite.at (LT_AT_EXEC_CHECK): Accept fifth argument
+	ARGS-OR-STATUS-ADJUST, for command-line arguments and/or exit
+	status flattening.  Rewrite to prefer the executable with the
+	`.exe' prefix over one without.  Test exit status against
+	expected exit status, not against zero, when determining whether
+	this may be a cross-compilation-induced result.
+	(LT_AT_NOINST_EXEC_CHECK): Likewise.
+	* tests/static.at (static linking flags for programs): Adjust
+	calls.
+	Report by Roumen Petrov.
+
 	No trailing period in Autotest test group names.
 	* tests/link-order.at (Link order test): Drop trailing period
 	from test name.
