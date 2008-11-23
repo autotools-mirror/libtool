@@ -56,9 +56,9 @@ AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o liba123.la a3.lo liba1.la
 conv=
 for i in 1 2 3; do
   conv=$conv$i
-  AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -static -o main_static main$i.lo liba$conv.la],
+  AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -static -o main_static$EXEEXT main$i.lo liba$conv.la],
 	   [0],[ignore],[ignore])
-  AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o main main$i.lo liba$conv.la],
+  AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o main$EXEEXT main$i.lo liba$conv.la],
 	   [0],[ignore],[ignore])
   LT_AT_EXEC_CHECK([./main_static])
   LT_AT_EXEC_CHECK([./main])
@@ -96,9 +96,9 @@ AT_CHECK([$LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS $LDFLAGS -o liba123.la a
 conv=
 for i in 1 2 3; do
   conv=$conv$i
-  AT_CHECK([$LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS $LDFLAGS -static -o main_static main$i.lo liba$conv.la],
+  AT_CHECK([$LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS $LDFLAGS -static -o main_static$EXEEXT main$i.lo liba$conv.la],
 	   [0],[ignore],[ignore])
-  AT_CHECK([$LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS $LDFLAGS -o main main$i.lo liba$conv.la],
+  AT_CHECK([$LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS $LDFLAGS -o main$EXEEXT main$i.lo liba$conv.la],
 	   [0],[ignore],[ignore])
   LT_AT_EXEC_CHECK([./main_static])
   LT_AT_EXEC_CHECK([./main])
@@ -156,9 +156,9 @@ AT_CHECK([$LIBTOOL --tag=F77 --mode=link $F77 $FFLAGS $LDFLAGS -o liba123.la a3.
 conv=
 for i in 1 2 3; do
   conv=$conv$i
-  AT_CHECK([$LIBTOOL --tag=F77 --mode=link $F77 $FFLAGS $LDFLAGS -static -o main_static main$i.lo liba$conv.la],
+  AT_CHECK([$LIBTOOL --tag=F77 --mode=link $F77 $FFLAGS $LDFLAGS -static -o main_static$EXEEXT main$i.lo liba$conv.la],
 	   [0],[ignore],[ignore])
-  AT_CHECK([$LIBTOOL --tag=F77 --mode=link $F77 $FFLAGS $LDFLAGS -o main main$i.lo liba$conv.la],
+  AT_CHECK([$LIBTOOL --tag=F77 --mode=link $F77 $FFLAGS $LDFLAGS -o main$EXEEXT main$i.lo liba$conv.la],
 	   [0],[ignore],[ignore])
   LT_AT_EXEC_CHECK([./main_static])
   LT_AT_EXEC_CHECK([./main])
@@ -216,9 +216,9 @@ AT_CHECK([$LIBTOOL --tag=FC --mode=link $FC $FCFLAGS $LDFLAGS -o liba123.la a3.l
 conv=
 for i in 1 2 3; do
   conv=$conv$i
-  AT_CHECK([$LIBTOOL --tag=FC --mode=link $FC $FCFLAGS $LDFLAGS -static -o main_static main$i.lo liba$conv.la],
+  AT_CHECK([$LIBTOOL --tag=FC --mode=link $FC $FCFLAGS $LDFLAGS -static -o main_static$EXEEXT main$i.lo liba$conv.la],
 	   [0],[ignore],[ignore])
-  AT_CHECK([$LIBTOOL --tag=FC --mode=link $FC $FCFLAGS $LDFLAGS -o main main$i.lo liba$conv.la],
+  AT_CHECK([$LIBTOOL --tag=FC --mode=link $FC $FCFLAGS $LDFLAGS -o main$EXEEXT main$i.lo liba$conv.la],
 	   [0],[ignore],[ignore])
   LT_AT_EXEC_CHECK([./main_static])
   LT_AT_EXEC_CHECK([./main])
@@ -280,9 +280,9 @@ AT_CHECK([$LIBTOOL --tag=GCJ --mode=link $GCJ $GCJFLAGS $LDFLAGS -o liba123.la A
 conv=
 for i in 1 2 3; do
   conv=$conv$i
-  AT_CHECK([$LIBTOOL --tag=GCJ --mode=link $GCJ $GCJFLAGS $LDFLAGS -static --main=foo$i -o main_static foo$i.lo liba$conv.la],
+  AT_CHECK([$LIBTOOL --tag=GCJ --mode=link $GCJ $GCJFLAGS $LDFLAGS -static --main=foo$i -o main_static$EXEEXT foo$i.lo liba$conv.la],
 	   [0],[ignore],[ignore])
-  AT_CHECK([$LIBTOOL --tag=GCJ --mode=link $GCJ $GCJFLAGS $LDFLAGS --main=foo$i -o main foo$i.lo liba$conv.la],
+  AT_CHECK([$LIBTOOL --tag=GCJ --mode=link $GCJ $GCJFLAGS $LDFLAGS --main=foo$i -o main$EXEEXT foo$i.lo liba$conv.la],
 	   [0],[ignore],[ignore])
   LT_AT_EXEC_CHECK([./main_static])
   LT_AT_EXEC_CHECK([./main])

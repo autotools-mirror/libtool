@@ -1,6 +1,6 @@
 # export.at -- test symbol exports                           -*- Autotest -*-
 
-#   Copyright (C) 2007 Free Software Foundation, Inc.
+#   Copyright (C) 2007, 2008 Free Software Foundation, Inc.
 #   Written by Ralf Wildenhues, 2007
 #
 #   This file is part of GNU Libtool.
@@ -154,11 +154,11 @@ do
   # case 1: shared library built from object.
   LT_AT_CHECK([eval '$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o liba.la a.lo \
 	       -rpath $libdir' $exportsyms], [], [ignore], [ignore])
-  AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o main main.$OBJEXT liba.la],
+  AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o main$EXEEXT main.$OBJEXT liba.la],
 	   [], [ignore], [ignore])
   LT_AT_EXEC_CHECK([./main])
   if test -n "$exportsyms" && $can_hide; then
-    AT_CHECK([if $LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o broken broken.$OBJEXT liba.la
+    AT_CHECK([if $LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o broken$EXEEXT broken.$OBJEXT liba.la
 	      then (exit 1); else :; fi], [], [ignore], [ignore])
   fi
 
@@ -167,11 +167,11 @@ do
 	   [], [ignore], [ignore])
   LT_AT_CHECK([eval '$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o liba.la libconv.la \
 	       -rpath $libdir' $exportsyms], [], [ignore], [ignore])
-  AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o main main.$OBJEXT liba.la],
+  AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o main$EXEEXT main.$OBJEXT liba.la],
 	   [], [ignore], [ignore])
   LT_AT_EXEC_CHECK([./main])
   if test -n "$exportsyms" && $can_hide; then
-    AT_CHECK([if $LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o broken broken.$OBJEXT liba.la
+    AT_CHECK([if $LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o broken$EXEEXT broken.$OBJEXT liba.la
 	      then (exit 1); else :; fi], [], [ignore], [ignore])
   fi
 done

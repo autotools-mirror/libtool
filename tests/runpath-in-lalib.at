@@ -52,7 +52,7 @@ AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o liba.la a.lo -rpath $libd
 	 [], [ignore], [ignore])
 AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o libb.la b.lo -rpath $libdir liba.la],
 	 [], [ignore], [ignore])
-AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o m m.$OBJEXT libb.la],
+AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o m$EXEEXT m.$OBJEXT libb.la],
 	 [], [ignore], [ignore])
 AT_CHECK([$LIBTOOL --mode=install cp liba.la $libdir/liba.la], [], [ignore], [ignore])
 AT_CHECK([$LIBTOOL --mode=install cp libb.la $libdir/libb.la], [], [ignore], [ignore])

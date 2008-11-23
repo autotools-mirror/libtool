@@ -100,7 +100,7 @@ EOF
 
   prefix=`eval echo \\$prefix_$i`
   $LIBTOOL --mode=compile $CC $CPPFLAGS $CFLAGS -c src/main_$i.c -o src/main_$i.lo
-  AT_CHECK($LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o src/main_$i src/main_$i.lo -L$prefix/lib -la,
+  AT_CHECK($LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o src/main_$i$EXEEXT src/main_$i.lo -L$prefix/lib -la,
 	   [0], [ignore], [ignore])
   LT_AT_EXEC_CHECK([src/main_$i])
 done

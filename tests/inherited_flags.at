@@ -82,7 +82,7 @@ AT_CHECK([$LIBTOOL --mode=link --tag=CC $CC $CFLAGS $LDFLAGS -o libbaz.la baz.lo
 AT_CHECK([$LIBTOOL --features | grep 'disable shared libraries' && (exit 77)], [1], [ignore])
 AT_CHECK([grep 'lt_[[ui]]nlikely_existing_lib.*lt_[[ui]]nlikely_existing_lib' stdout],
 	 [0],[ignore],[ignore])
-AT_CHECK([$LIBTOOL --mode=link --tag=CC $CC $CFLAGS $LDFLAGS -o main main.lo -no-undefined -rpath /nonexistent  ./libfoo.la ./libbar.la],
+AT_CHECK([$LIBTOOL --mode=link --tag=CC $CC $CFLAGS $LDFLAGS -o main$EXEEXT main.lo -no-undefined -rpath /nonexistent  ./libfoo.la ./libbar.la],
 	[ignore],[stdout],[ignore])
 AT_CHECK([grep 'lt_[[ui]]nlikely_existing_lib.*lt_[[ui]]nlikely_existing_lib' stdout],
 	 [0],[ignore],[ignore])
@@ -94,7 +94,7 @@ AT_CHECK([grep 'lt_inlikely_existing_lib.*lt_inlikely_existing_lib' stdout],
 	 [1],[ignore],[ignore])
 AT_CHECK([grep 'lt_unlikely_existing_lib.*lt_unlikely_existing_lib' stdout],
 	 [1],[ignore],[ignore])
-AT_CHECK([$LIBTOOL --mode=link --tag=CC $CC $CFLAGS $LDFLAGS -o main main.lo -no-undefined -rpath /nonexistent  ./libfoo.la ./libbar.la ./libboth.la],
+AT_CHECK([$LIBTOOL --mode=link --tag=CC $CC $CFLAGS $LDFLAGS -o main$EXEEXT main.lo -no-undefined -rpath /nonexistent  ./libfoo.la ./libbar.la ./libboth.la],
 	[ignore],[stdout],[ignore])
 AT_CHECK([grep 'lt_inlikely_existing_lib.*lt_inlikely_existing_lib' stdout],
 	 [1],[ignore],[ignore])

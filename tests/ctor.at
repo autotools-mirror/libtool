@@ -60,7 +60,7 @@ AT_CHECK([$LIBTOOL --tag=CXX --mode=compile $CXX $CPPFLAGS $CXXFLAGS \
 AT_CHECK([$LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS $LDFLAGS \
 	  libctor.lo -o libctor.la -rpath /none], [0], [ignore], [ignore])
 AT_CHECK([$LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS $LDFLAGS \
-	  main.lo libctor.la -o main], [0], [ignore], [ignore])
+	  main.lo libctor.la -o main$EXEEXT], [0], [ignore], [ignore])
 
 LT_AT_EXEC_CHECK([./main], [0])
 

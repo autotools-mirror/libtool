@@ -1,6 +1,6 @@
 # deplibs-ident.at -- detecting identical deplibs              -*- Autotest -*-
 
-#   Copyright (C) 2005, 2007 Free Software Foundation, Inc.
+#   Copyright (C) 2005, 2007, 2008 Free Software Foundation, Inc.
 #   Written by Ralf Wildenhues, 2005
 #
 #   This file is part of GNU Libtool.
@@ -63,7 +63,7 @@ int main() { return a1() + a2() + a3() + c(); }
 (
   cd a/b
   AT_CHECK([$CC $CFLAGS -c b.c],[0],[ignore],[ignore])
-  AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o b b.$OBJEXT ../liba1.la ../liba2.la ../liba3.la ../../c/libcee.la -rpath /nowhere],
+  AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o b$EXEEXT b.$OBJEXT ../liba1.la ../liba2.la ../liba3.la ../../c/libcee.la -rpath /nowhere],
 	   [0],[stdout],[ignore])
   AT_CHECK([$EGREP 'cee.*cee' stdout], 1, [ignore], [ignore])
   AT_XFAIL_IF([case $host in

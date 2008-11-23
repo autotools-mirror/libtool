@@ -86,7 +86,7 @@ AT_CHECK([$LIBTOOL --tag=CXX --mode=link $CXX $CPPFLAGS $CXXFLAGS $LDFLAGS -o li
 	 [0], [ignore], [ignore])
 AT_CHECK([$CXX -I. $CPPFLAGS $CXXFLAGS -c prog.cpp],
 	 [0], [ignore], [ignore])
-AT_CHECK([$LIBTOOL --tag=CXX --mode=link $CXX $CPPFLAGS $CXXFLAGS $LDFLAGS -o prog prog.$OBJEXT libalib.la],
+AT_CHECK([$LIBTOOL --tag=CXX --mode=link $CXX $CPPFLAGS $CXXFLAGS $LDFLAGS -o prog$EXEEXT prog.$OBJEXT libalib.la],
 	 [0], [ignore], [ignore])
 
 LT_AT_EXEC_CHECK([./prog], [0], [ignore], [ignore])
@@ -238,14 +238,14 @@ AT_CHECK([$LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS $LDFLAGS -o lib/liba.la 
 	 [0], [ignore], [ignore])
 AT_CHECK([$LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS $LDFLAGS -o lib2/libb.la lib2/b.lo],
 	 [0], [ignore], [ignore])
-AT_CHECK([$LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS $LDFLAGS -o sub/main $main_o lib2/libb.la lib/liba.la],
+AT_CHECK([$LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS $LDFLAGS -o sub/main$EXEEXT $main_o lib2/libb.la lib/liba.la],
 	 [0], [ignore], [ignore])
 LT_AT_EXEC_CHECK([./sub/main], [ignore])
 # lib convenience
 if $noskip; then
   AT_CHECK([$LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS $LDFLAGS -o lib2/libb.la lib2/b.lo -rpath /foo],
 	   [0], [ignore], [ignore])
-  AT_CHECK([$LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS $LDFLAGS -o sub/main $main_o lib2/libb.la lib/liba.la],
+  AT_CHECK([$LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS $LDFLAGS -o sub/main$EXEEXT $main_o lib2/libb.la lib/liba.la],
 	   [0], [ignore], [ignore])
   LT_AT_EXEC_CHECK([./sub/main])
 fi
@@ -255,7 +255,7 @@ AT_CHECK([$LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS $LDFLAGS -o lib/liba.la 
 	 [0], [ignore], [ignore])
 AT_CHECK([$LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS $LDFLAGS -o lib2/libb.la lib2/b.lo -rpath /bar],
 	 [0], [ignore], [ignore])
-AT_CHECK([$LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS $LDFLAGS -o sub/main $main_o lib2/libb.la lib/liba.la],
+AT_CHECK([$LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS $LDFLAGS -o sub/main$EXEEXT $main_o lib2/libb.la lib/liba.la],
 	 [0], [ignore], [ignore])
 LT_AT_EXEC_CHECK([./sub/main])
 # both convenience, libb depending on liba
@@ -263,7 +263,7 @@ AT_CHECK([$LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS $LDFLAGS -o lib/liba.la 
 	 [0], [ignore], [ignore])
 AT_CHECK([$LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS $LDFLAGS -o lib2/libb.la lib2/b.lo lib/liba.la],
 	 [0], [ignore], [ignore])
-AT_CHECK([$LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS $LDFLAGS -o sub/main $main_o lib2/libb.la],
+AT_CHECK([$LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS $LDFLAGS -o sub/main$EXEEXT $main_o lib2/libb.la],
 	 [0], [ignore], [ignore])
 LT_AT_EXEC_CHECK([./sub/main])
 # lib convenience
@@ -271,7 +271,7 @@ if $noskip; then
 
   AT_CHECK([$LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS $LDFLAGS -o lib2/libb.la lib2/b.lo lib/liba.la -rpath /foo],
   	 [0], [ignore], [ignore])
-  AT_CHECK([$LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS $LDFLAGS -o sub/main $main_o lib2/libb.la],
+  AT_CHECK([$LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS $LDFLAGS -o sub/main$EXEEXT $main_o lib2/libb.la],
   	 [0], [ignore], [ignore])
   LT_AT_EXEC_CHECK([./sub/main])
 fi
@@ -279,7 +279,7 @@ fi
 if $noskip; then
   AT_CHECK([$LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS $LDFLAGS -o lib2/libb.la lib2/b.lo lib/liba.la -rpath /bar],
   	 [0], [ignore], [ignore])
-  AT_CHECK([$LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS $LDFLAGS -o sub/main $main_o lib2/libb.la],
+  AT_CHECK([$LIBTOOL --tag=CXX --mode=link $CXX $CXXFLAGS $LDFLAGS -o sub/main$EXEEXT $main_o lib2/libb.la],
   	 [0], [ignore], [ignore])
   LT_AT_EXEC_CHECK([./sub/main])
 fi

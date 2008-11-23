@@ -67,9 +67,9 @@ esac
 # program creation failure
 echo 'int not_main(void) { return 0; }' > a.c
 $CC $CPPFLAGS $CFLAGS -c a.c
-FAIL_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o a a.$OBJEXT])
+FAIL_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o a$EXEEXT a.$OBJEXT])
 AT_CHECK([{ test -f a && $test_x a; } || { test -f a$EXEEXT && $test_x a$EXEEXT; }], [1])
-FAIL_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o a a.$OBJEXT -static])
+FAIL_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o a$EXEEXT a.$OBJEXT -static])
 AT_CHECK([{ test -f a && $test_x a; } || { test -f a$EXEEXT && $test_x a$EXEEXT; }], [1])
 
 # shared library creation failure
@@ -97,8 +97,8 @@ echo 'int main () { return 0; }' > d.c
 echo 'int foo () { return 0; }' > space-after-L.c
 $CC $CPPFLAGS $CFLAGS -c d.c
 $CC $CPPFLAGS $CFLAGS -c space-after-L.c
-FAIL_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -L space-after-L.$OBJEXT -o d d.$OBJEXT])
-FAIL_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o d d.$OBJEXT -L])
+FAIL_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -L space-after-L.$OBJEXT -o d$EXEEXT d.$OBJEXT])
+FAIL_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o d$EXEEXT d.$OBJEXT -L])
 
 m4_popdef([FAIL_CHECK])
 AT_CLEANUP

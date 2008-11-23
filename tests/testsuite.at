@@ -361,7 +361,7 @@ $(LIBTOOL): ]_ARG_DIR[/Makefile
 	cd ]_ARG_DIR[ && CONFIG_SHELL="$(SHELL)" $(SHELL) ./configure $(CONFIGURE_OPTIONS)
 
 ltdldemo$(EXEEXT): $(LIBTOOL) module.la ]_ARG_DIR[/libltdlc.la main.lo
-	$(LTLINK) -o ltdldemo main.lo -dlopen module.la ./]_ARG_DIR[/libltdlc.la
+	$(LTLINK) -o ltdldemo$(EXEEXT) main.lo -dlopen module.la ./]_ARG_DIR[/libltdlc.la
 
 main.lo: $(LIBTOOL) main.c
 	$(LTCOMPILE) -c main.c

@@ -177,7 +177,7 @@ func_test_exec ()
       LT_AT_EXEC_CHECK([./m$st])
       # For some per-deplib flag combinations there may be no installed program,
       # because liba2 is not yet installed.
-      if test -f "$bindir/m$st"; then
+      if test -f "$bindir/m${st}$EXEEXT"; then
 	LT_AT_EXEC_CHECK([$bindir/m$st])
       fi
     done
@@ -197,7 +197,7 @@ func_test_exec_fail ()
       LT_AT_EXEC_CHECK([./m$st], [1], [], [ignore], [|| (exit 1)])
       # For some per-deplib flag combinations there may be no installed program,
       # because liba2 is not yet installed.
-      if test -f "$bindir/m$st"; then
+      if test -f "$bindir/m${st}$EXEEXT"; then
 	LT_AT_EXEC_CHECK([$bindir/m$st], [1], [], [ignore], [|| (exit 1)])
       fi
     done
@@ -259,7 +259,7 @@ for withdep in no yes; do
 
   # global static flags.
   for st in -static -static-libtool-libs $can_link_all_static; do
-    AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS $st -o m$st m.$OBJEXT \
+    AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS $st -o m${st}$EXEEXT m.$OBJEXT \
 	-L$libdir1 -la1 a2/liba2.la -L$libdir3 -R$libdir3 -la3],
        [0], [ignore], [ignore])
   done
@@ -267,39 +267,39 @@ for withdep in no yes; do
   # per-deplib static/shared flags.
   # also try a bit redundant flags, and shuffled order (for run paths check).
   if $per_deplib; then
-    AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o m1 m.$OBJEXT \
+    AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o m1$EXEEXT m.$OBJEXT \
 	      -L$libdir1 -Bstatic -la1 -Bdynamic a2/liba2.la -L$libdir3 -R$libdir3 -la3],
 	     [0], [ignore], [ignore])
-    AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o m2 m.$OBJEXT \
+    AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o m2$EXEEXT m.$OBJEXT \
 	      -L$libdir1 -la1 -Bstatic a2/liba2.la -Bdynamic -L$libdir3 -R$libdir3 -la3],
 	     [0], [ignore], [ignore])
-    AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o m3 m.$OBJEXT \
+    AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o m3$EXEEXT m.$OBJEXT \
 	      -L$libdir1 -la1 a2/liba2.la -L$libdir3 -Bstatic -la3 -Bdynamic],
 	     [0], [ignore], [ignore])
-    AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o m12 m.$OBJEXT \
+    AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o m12$EXEEXT m.$OBJEXT \
 	      -L$libdir1 -Bstatic -la1 a2/liba2.la -Bdynamic -L$libdir3 -R$libdir3 -la3],
 	      [0], [ignore], [ignore])
-    AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o m13 m.$OBJEXT \
+    AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o m13$EXEEXT m.$OBJEXT \
 	      -L$libdir1 -Bstatic -la1 -Bdynamic a2/liba2.la \
 	      -L$libdir3 -Bstatic -la3 -Bdynamic],
 	      [0], [ignore], [ignore])
-    AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o m31 m.$OBJEXT \
+    AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o m31$EXEEXT m.$OBJEXT \
 	      -L$libdir3 -Bstatic -la3 -Bdynamic a2/liba2.la \
 	      -L$libdir1 -Bstatic -la1 -Bdynamic],
 	      [0], [ignore], [ignore])
-    AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o m23 m.$OBJEXT \
+    AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o m23$EXEEXT m.$OBJEXT \
 	      -L$libdir1 -la1 -Bstatic a2/liba2.la -Bdynamic \
 	      -L$libdir3 -Bstatic -la3 -Bdynamic],
 	      [0], [ignore], [ignore])
-    AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o m123 m.$OBJEXT \
+    AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o m123$EXEEXT m.$OBJEXT \
 	      -L$libdir1 -Bstatic -la1 a2/liba2.la -L$libdir3 -la3 -Bdynamic],
 	      [0], [ignore], [ignore])
-    AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o m123a m.$OBJEXT \
+    AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o m123a$EXEEXT m.$OBJEXT \
 	      -L$libdir1 -Bstatic -la1 -Bdynamic -Bstatic a2/liba2.la -Bdynamic \
 	      -Bstatic -L$libdir3 -la3 -Bdynamic],
 	      [0], [ignore], [ignore])
     dnl # This usually fails.  So don't do it.
-    dnl AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o m123b m.$OBJEXT \
+    dnl AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o m123b$EXEEXT m.$OBJEXT \
     dnl 	 -L$libdir1 -Bstatic -la1 a2/liba2.la -L$libdir3 -la3],
     dnl 	 [0], [ignore], [ignore])
   fi
@@ -308,12 +308,12 @@ for withdep in no yes; do
   # We can't install any program that links dynamically against liba2.
   for st in -static -static-libtool-libs $can_link_all_static `$per_deplib && echo 2 12 23 123 123a`; do 
     echo "# m$st"
-    AT_CHECK([$LIBTOOL --mode=install cp m$st $bindir/m$st], [0], [ignore], [stderr])
+    AT_CHECK([$LIBTOOL --mode=install cp m${st}$EXEEXT $bindir/m${st}$EXEEXT], [0], [ignore], [stderr])
     if $have_static; then
       AT_CHECK([$EGREP 'relinking|has not been installed' stderr], [1], [], [])
     fi
   done
-  dnl AT_CHECK([$LIBTOOL --mode=install cp m123b $bindir/m123b], [0], [ignore], [ignore])
+  dnl AT_CHECK([$LIBTOOL --mode=install cp m123b$EXEEXT $bindir/m123b$EXEEXT], [0], [ignore], [ignore])
 
 
   ### Run each program once so that relinking has happened.
@@ -371,7 +371,7 @@ AT_DATA([a.c],
 ]])
 
 AT_CHECK([$CC $CPPFLAGS $CFLAGS -c a.c], [], [ignore])
-AT_CHECK([$LIBTOOL --mode=link --tag=CC ./ccache $CC $CFLAGS $LDFLAGS -all-static a.$OBJEXT -o a],
+AT_CHECK([$LIBTOOL --mode=link --tag=CC ./ccache $CC $CFLAGS $LDFLAGS -all-static a.$OBJEXT -o a$EXEEXT],
 	 [], [ignore], [ignore])
 
 AT_CLEANUP

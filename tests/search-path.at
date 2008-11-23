@@ -43,9 +43,9 @@ eval `$LIBTOOL --config | $EGREP '^(sys_lib_search_path_spec)='`
 eval sys_lib_search_path=\"$sys_lib_search_path_spec\"
 no_libz=:
 for path in $sys_lib_search_path; do
-  if $LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o main main.$OBJEXT -L$path -lz
+  if $LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o main$EXEEXT main.$OBJEXT -L$path -lz
   then
-    AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o main main.$OBJEXT -lz],
+    AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o main$EXEEXT main.$OBJEXT -lz],
              [], [ignore], [ignore])
     no_libz=false
     break

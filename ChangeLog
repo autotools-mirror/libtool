@@ -1,3 +1,21 @@
+2008-11-23  Roumen Petrov  <bugtrack@roumenpetrov.info>
+	    Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Add $EXEEXT to all linked programs in the new testsuite.
+	* tests/convenience.at, tests/ctor.at, tests/darwin.at,
+	tests/deplibs-ident.at, tests/duplicate_conv.at,
+	tests/duplicate_deps.at, tests/duplicate_members.at,
+	tests/export.at, tests/fail.at, tests/indirect_deps.at,
+	tests/inherited_flags.at, tests/link-order.at,
+	tests/link-order2.at, tests/lt_dladvise.at, tests/lt_dlexit.at,
+	tests/need_lib_prefix.at, tests/runpath-in-lalib.at,
+	tests/search-path.at, tests/shlibpath.at, tests/static.at,
+	tests/stresstest.at, tests/template.at, tests/testsuite.at:
+	Use $EXEEXT throughout, except in Makefile.am snippets where
+	automake takes care of it, and in testsuite macros that take
+	care of the extension.
+	Reports by Roumen Petrov and Alon Bar-Lev.
+
 2008-11-23  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	Adjust executable run tests to cwrapper changes.

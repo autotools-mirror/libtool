@@ -362,7 +362,7 @@ for module in $dlopenable; do
   modules="${modules+$modules }-dlopen lib$module.la"
 done
 
-AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o main main.$OBJEXT $preloaded $modules $LIBLTDL],
+AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o main$EXEEXT main.$OBJEXT $preloaded $modules $LIBLTDL],
 	 [], [ignore], [ignore])
 
 # Remove loadable libpreload module, so we know it is the preloaded module

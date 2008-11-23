@@ -1,6 +1,6 @@
 # duplicate_conv.at -- duplicate convenience archive names   -*- Autotest -*-
 
-#   Copyright (C) 2006 Free Software Foundation, Inc.
+#   Copyright (C) 2006, 2008 Free Software Foundation, Inc.
 #   Written by Ralf Wildenhues, 2006
 #
 #   This file is part of GNU Libtool.
@@ -50,7 +50,7 @@ $LIBTOOL --mode=link --tag=CC $CC $CFLAGS $LDFLAGS -o b/liba.la b/a.lo b/b.lo
 # Fold into convenience archive.
 AT_CHECK([$LIBTOOL --mode=link --tag=CC $CC $CFLAGS $LDFLAGS -o libcee.la c.lo a/liba.la b/liba.la],
 	 [0], [ignore], [ignore])
-AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o main main.$OBJEXT ./libcee.la],
+AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o main$EXEEXT main.$OBJEXT ./libcee.la],
 	 [0], [ignore], [ignore])
 LT_AT_EXEC_CHECK([./main],[0],[ignore],[ignore])
 $LIBTOOL --mode=clean rm -f libcee.la
@@ -62,7 +62,7 @@ $LIBTOOL --mode=clean rm -f libcee.la
 # Fold into static library.
 AT_CHECK([$LIBTOOL --mode=link --tag=CC $CC $CFLAGS $LDFLAGS -rpath /foo -static -o libcee.la c.lo a/liba.la b/liba.la],
 	 [0], [ignore], [ignore])
-AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o main main.$OBJEXT ./libcee.la],
+AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o main$EXEEXT main.$OBJEXT ./libcee.la],
 	 [0], [ignore], [ignore])
 LT_AT_EXEC_CHECK([./main],[0],[ignore],[ignore])
 $LIBTOOL --mode=clean rm -f libcee.la
@@ -70,7 +70,7 @@ $LIBTOOL --mode=clean rm -f libcee.la
 # Fold into library.
 AT_CHECK([$LIBTOOL --mode=link --tag=CC $CC $CFLAGS $LDFLAGS -rpath /foo -o libcee.la c.lo a/liba.la b/liba.la],
 	 [0], [ignore], [ignore])
-AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o main main.$OBJEXT ./libcee.la],
+AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o main$EXEEXT main.$OBJEXT ./libcee.la],
 	 [0], [ignore], [ignore])
 LT_AT_EXEC_CHECK([./main],[0],[ignore],[ignore])
 $LIBTOOL --mode=clean rm -f libcee.la
@@ -78,7 +78,7 @@ $LIBTOOL --mode=clean rm -f libcee.la
 # Test whether this works with reloadable objects as well.
 AT_CHECK([$LIBTOOL --mode=link --tag=CC $CC $CFLAGS $LDFLAGS -o cee.$OBJEXT c.lo a/liba.la b/liba.la],
 	 [0], [ignore], [ignore])
-AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o main main.$OBJEXT cee.$OBJEXT],
+AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o main$EXEEXT main.$OBJEXT cee.$OBJEXT],
 	 [0], [ignore], [ignore])
 LT_AT_EXEC_CHECK([./main],[0],[ignore],[ignore])
 

@@ -149,7 +149,7 @@ AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o modb1.la b1.lo \
 
 # TODO: test -dlpreopen
 for dlopen in -dlopen; do
-  AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o main main.$OBJEXT \
+  AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o main$EXEEXT main.$OBJEXT \
            $dlopen modb1.la $LIBLTDL], [], [ignore], [ignore])
   LT_AT_NOINST_EXEC_CHECK([./main], [-dlopen modb1.la])
 done

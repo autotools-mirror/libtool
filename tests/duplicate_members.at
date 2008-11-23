@@ -1,6 +1,6 @@
 # duplicate_members.at -- duplicate members in archive tests  -*- Autotest -*-
 
-#   Copyright (C) 2005, 2007 Free Software Foundation, Inc.
+#   Copyright (C) 2005, 2007, 2008 Free Software Foundation, Inc.
 #   Written by Alexandre Oliva & Peter O'Gorman, 2005
 #
 #   This file is part of GNU Libtool.
@@ -68,7 +68,7 @@ $LIBTOOL --mode=compile --tag=CC $CC $CPPFLAGS $CFLAGS -c -o bar.lo bar.c
 $LIBTOOL --mode=link --tag=CC $CC $CFLAGS $LDFLAGS -o libbar.la bar.lo libconv.la -rpath /notexist
 
 $LIBTOOL --mode=compile --tag=CC $CC $CPPFLAGS $CFLAGS -c -o main.lo main.c
-$LIBTOOL --mode=link --tag=CC $CC $CFLAGS $LDFLAGS -o main main.lo ./libbar.la
+$LIBTOOL --mode=link --tag=CC $CC $CFLAGS $LDFLAGS -o main$EXEEXT main.lo ./libbar.la
 
 LT_AT_EXEC_CHECK([./main],[0],[ignore],[ignore])
 

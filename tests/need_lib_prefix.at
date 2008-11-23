@@ -164,7 +164,7 @@ AT_CHECK([$LIBTOOL --mode=link $CC -module -avoid-version $CFLAGS $LDFLAGS -o fo
 	 [], [ignore], [ignore])
 AT_CHECK([$LIBTOOL --mode=link $CC -module -avoid-version $CFLAGS $LDFLAGS -o libfoo2.la foo2.lo -rpath $instdir/lib],
 	 [], [ignore], [ignore])
-AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o main main.$OBJEXT -dlpreopen foo1.la -dlpreopen libfoo2.la $LIBLTDL],
+AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o main$EXEEXT main.$OBJEXT -dlpreopen foo1.la -dlpreopen libfoo2.la $LIBLTDL],
           [], [ignore], [ignore])
 
 LT_AT_NOINST_EXEC_CHECK([./main], [-dlopen foo1.la -dlopen libfoo2.la],
@@ -178,7 +178,7 @@ $LIBTOOL --mode=install cp libfoo2.la $instdir/lib/libfoo2.la
 
 # Install the binary
 mkdir $instdir/bin
-$LIBTOOL --mode=install cp main $instdir/bin/main
+$LIBTOOL --mode=install cp main$EXEEXT $instdir/bin/main$EXEEXT
 
 LT_AT_EXEC_CHECK([$instdir/bin/main], [], [expout], [])
 
