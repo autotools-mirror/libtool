@@ -101,13 +101,8 @@ func_dirname_and_basename ()
 # Generated shell functions inserted here.
 
 # The name of this program:
-# In the unlikely event $progname began with a '-', it would play havoc with
-# func_echo (imagine progname=-n), so we prepend ./ in that case:
 func_dirname_and_basename "$progpath"
 progname=$func_basename_result
-case $progname in
-  -*) progname=./$progname ;;
-esac
 
 # Make sure we have an absolute path for reexecution:
 case $progpath in

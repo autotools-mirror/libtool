@@ -1,5 +1,10 @@
 2008-11-23  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	No need to prepend $progname with './'.
+	* libltdl/config/general.m4sh (func_dirname_and_basename): $ECHO
+	copes with leading hyphens now, so do not mangle $progname any
+	more.
+
 	Revenge of the $ECHO. Kill most uses of Xsed.
 	* libltdl/config/general.m4sh: Replace all uses of `$ECHO "X..."
 	| $Xsed' with `$ECHO "..." | $SED', and employ further trivial
