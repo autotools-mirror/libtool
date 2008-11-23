@@ -1,5 +1,11 @@
 2008-11-23  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	Avoid newlines in some AT_CHECK commands.
+	* tests/standalone.at (linking libltdl without autotools): Wrap
+	lines with dnl, to avoid turning off tracing of AT_CHECK.
+	* tests/subproject.at (linking libltdl without autotools):
+	Likewise.
+
 	Replace uses of $SED $basename.
 	* libltdl/config/ltmain.m4sh (func_mode_link): Replace instances
 	of `$ECHO ... | $SED' with calls to func_basename.

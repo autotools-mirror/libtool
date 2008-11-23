@@ -110,9 +110,9 @@ AT_SETUP([linking libltdl without autotools])
 
 _LTDL_PROJECT_FILES([sub/ltdl])
 LT_AT_LIBTOOLIZE([--copy --ltdl=sub/ltdl])
-LT_AT_MAKE([], [CC="$CC" LIBTOOLFLAGS="$LIBTOOLFLAGS" CPPFLAGS="$CPPFLAGS"  \
-     CFLAGS="$CFLAGS" LDFLAGS="$LDFLAGS" SHELL="$SHELL" MAKE="${MAKE-make}" \
-     CONFIGURE_OPTIONS="$configure_options"])
+LT_AT_MAKE([], [CC="$CC" LIBTOOLFLAGS="$LIBTOOLFLAGS" CPPFLAGS="$CPPFLAGS" ]dnl
+     [CFLAGS="$CFLAGS" LDFLAGS="$LDFLAGS" SHELL="$SHELL" MAKE="${MAKE-make}" ]dnl
+     [CONFIGURE_OPTIONS="$configure_options"])
 
 LT_AT_EXEC_CHECK([./ltdldemo], 0, [ignore])
 
