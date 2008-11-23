@@ -168,11 +168,11 @@ all_pkgltdl_files="COPYING.LIB Makefile Makefile.in Makefile.inc Makefile.am REA
 
       --dry-run|-n)	if $opt_dry_run; then :; else
 			  opt_dry_run=:
-			  RM="$ECHO $RM"
-			  test -n "$LN_S" && LN_S="$ECHO $LN_S"
-			  CP="$ECHO $CP"
-			  MKDIR="$ECHO $MKDIR"
-			  TAR="$ECHO $TAR"
+			  RM="func_echo_all $RM"
+			  test -n "$LN_S" && LN_S="func_echo_all $LN_S"
+			  CP="func_echo_all $CP"
+			  MKDIR="func_echo_all $MKDIR"
+			  TAR="func_echo_all $TAR"
 			fi
 			;;
 
@@ -184,7 +184,7 @@ all_pkgltdl_files="COPYING.LIB Makefile Makefile.in Makefile.inc Makefile.am REA
       			if test "$#" -gt 0; then
 			  case $1 in
 			    -*)	;;
-			    *)	ltdldir=`$ECHO "X$1" | $Xsed -e 's,/*$,,'`
+			    *)	ltdldir=`$ECHO "$1" | $SED 's,/*$,,'`
 				shift
 				;;
 			  esac
@@ -209,24 +209,24 @@ all_pkgltdl_files="COPYING.LIB Makefile Makefile.in Makefile.inc Makefile.am REA
 
       # Separate optargs to long options:
       --*=*)
-      			arg=`$ECHO "X$opt" | $Xsed -e "$my_sed_long_arg"`
-			opt=`$ECHO "X$opt" | $Xsed -e "$my_sed_long_opt"`
+			arg=`$ECHO "$opt" | $SED "$my_sed_long_arg"`
+			opt=`$ECHO "$opt" | $SED "$my_sed_long_opt"`
 			set dummy "$opt" "$arg" ${1+"$@"}
 			shift
 			;;
 
       # Separate optargs to short options:
       #-X*)
-      #			arg=`$ECHO "X$opt" | $Xsed -e "$my_sed_single_rest"`
-      #			opt=`$ECHO "X$opt" | $Xsed -e "$my_sed_single_opt"`
+      #			arg=`$ECHO "$opt" | $SED "$my_sed_single_rest"`
+      #			opt=`$ECHO "$opt" | $SED "$my_sed_single_opt"`
       #			set dummy "$opt" "$arg" ${1+"$@"}
       #			shift
       #			;;
 
       # Separate non-argument short options:
       -c*|-f*|-i*|-n*|-q*|-v*)
-			rest=`$ECHO "X$opt" | $Xsed -e "$my_sed_single_rest"`
-			opt=`$ECHO "X$opt" | $Xsed -e "$my_sed_single_opt"`
+			rest=`$ECHO "$opt" | $SED "$my_sed_single_rest"`
+			opt=`$ECHO "$opt" | $SED "$my_sed_single_opt"`
 			set dummy "$opt" "-$rest" ${1+"$@"}
 			shift
 			;;
@@ -269,22 +269,22 @@ func_copy ()
     test -f "$1" || \
       { func_error "\`$1' not copied:  not a regular file"; return 1; }
 
-    my_f1=`$ECHO "X$1" | $Xsed -e "$basename"`
+    my_f1=`$ECHO "$1" | $SED "$basename"`
 
     if test -d "$2"; then
 
       func_copy_cb "$my_f1" \
-	`$ECHO "X$1" | $Xsed -e "$dirname"` "$2" "$3"
+	`$ECHO "$1" | $SED "$dirname"` "$2" "$3"
 
     else
 
       # Supporting this would mean changing the timestamp:
-      test "X$my_f1" = X`$ECHO "X$2" | $Xsed -e "$basename"` \
+      test "X$my_f1" = X`$ECHO "$2" | $SED "$basename"` \
         || func_fatal_error "func_copy() cannot change filename on copy"
 
       func_copy_cb "$my_f1" \
-        `$ECHO "X$1" | $Xsed -e "$dirname"` \
-        `$ECHO "X$2" | $Xsed -e "$dirname"` \
+        `$ECHO "$1" | $SED "$dirname"` \
+        `$ECHO "$2" | $SED "$dirname"` \
 	"$3"
 
     fi
@@ -314,7 +314,7 @@ func_copy_cb ()
       false) my_copy_msg="file \`$my_destdir/$my_file'"     ;;
       *)     my_copy_msg="file from \`$my_srcdir/$my_file'" ;;
     esac
-    func_mkdir_p `$ECHO "X$my_destdir/$my_file" | $Xsed -e "$dirname"`
+    func_mkdir_p `$ECHO "$my_destdir/$my_file" | $SED "$dirname"`
 
     $RM "$my_destdir/$my_file"
     if $opt_link; then
@@ -411,7 +411,7 @@ func_fixup_Makefile ()
 	my_fixup_inc_paths_script= ;;
       Makefile.inc)
 	repl=$ltdldir
-	repl_uscore=`$ECHO "X$repl" | $Xsed -e 's,[/.+-],_,g'`
+	repl_uscore=`$ECHO "$repl" | $SED 's,[/.+-],_,g'`
 	my_fixup_inc_paths_script="\
 	  s,libltdl_,@repl_uscore@_,
 	  s,libltdl/,@repl@/,
@@ -529,7 +529,7 @@ func_scan_files ()
     # Validate ltdldir. #
     # ----------------- #
 
-    ac_ltdldir=`$ECHO "X$ac_ltdldir" | $Xsed -e 's,/*$,,'`
+    ac_ltdldir=`$ECHO "$ac_ltdldir" | $SED 's,/*$,,'`
 
     # If $configure_ac contains AC_CONFIG_LTDL_DIR, check that its
     # arguments were not given in terms of a shell variable!
@@ -676,7 +676,7 @@ func_included_files ()
         d'
 
     if test -f "$my_searchfile"; then
-      $ECHO "X$my_searchfile" | $Xsed
+      $ECHO "$my_searchfile"
 
       # Only recurse when we don't care if all the variables we use get
       # trashed, since they are in global scope.
@@ -719,7 +719,7 @@ func_serial ()
     # If the file has no serial number, we assume it's ancient.
     test -n "$my_serial" || my_serial=0
 
-    $ECHO $my_serial
+    $ECHO "$my_serial"
 }
 
 
@@ -740,14 +740,14 @@ func_serial_max ()
     # Incase they turn out to be the same, we'll set it to empty
     func_serial_max_result=
 
-    test "X$1$2" = X`$ECHO "X$1$2" | $Xsed -e "$my_sed_digits"` || {
+    test "X$1$2" = X`$ECHO "$1$2" | $SED "$my_sed_digits"` || {
       func_error "serial numbers \`$1' or \`$2' contain non-digit chars"
       return
     }
 
     while test -n "$my_serial1$my_serial2"; do
-      my_serial1_part=`$ECHO "X$my_serial1" | $Xsed -e "$my_sed_dot"`
-      my_serial2_part=`$ECHO "X$my_serial2" | $Xsed -e "$my_sed_dot"`
+      my_serial1_part=`$ECHO "$my_serial1" | $SED "$my_sed_dot"`
+      my_serial2_part=`$ECHO "$my_serial2" | $SED "$my_sed_dot"`
 
       test -z "$my_serial1_part$my_serial2_part" \
         && break
@@ -764,8 +764,8 @@ func_serial_max ()
       test "$my_serial2_part" -gt "$my_serial1_part" \
         && { func_serial_max_result="$2"; break; }
 
-      my_serial1=`$ECHO "X$my_serial1" | $Xsed -e "$my_sed_rest"`
-      my_serial2=`$ECHO "X$my_serial2" | $Xsed -e "$my_sed_rest"`
+      my_serial1=`$ECHO "$my_serial1" | $SED "$my_sed_rest"`
+      my_serial2=`$ECHO "$my_serial2" | $SED "$my_sed_rest"`
     done
 }
 
@@ -1040,7 +1040,7 @@ func_massage_aclocal_DATA ()
 
     # Massage a value for pkgmacro_files from the value used in Makefile.am.
     for my_filename in @aclocal_DATA@; do
-      my_filename=`$ECHO "X$my_filename" | $Xsed -e "$basename"`
+      my_filename=`$ECHO "$my_filename" | $SED "$basename"`
 
       # ignore excluded filenames
       if test -n "$my_glob_exclude"; then
@@ -1053,7 +1053,7 @@ func_massage_aclocal_DATA ()
     done
 
     # strip spurious leading `:'
-    pkgmacro_files=`$ECHO "X$pkgmacro_files" | $Xsed -e 's,^:*,,'`
+    pkgmacro_files=`$ECHO "$pkgmacro_files" | $SED 's,^:*,,'`
 }
 
 
@@ -1199,7 +1199,7 @@ func_massage_pkgltdl_files ()
     done
 
     # strip spurious leading `:'
-    pkgltdl_files=`$ECHO "X$pkgltdl_files" | $Xsed -e 's,^:*,,'`
+    pkgltdl_files=`$ECHO "$pkgltdl_files" | $SED 's,^:*,,'`
 }
 
 
@@ -1277,7 +1277,7 @@ func_massage_pkgconfig_files ()
     done
 
     # strip spurious leading `:'
-    pkgconfig_files=`$ECHO "X$pkgconfig_files" | $Xsed -e 's,^:*,,'`
+    pkgconfig_files=`$ECHO "$pkgconfig_files" | $SED 's,^:*,,'`
 }
 
 

@@ -54,7 +54,7 @@ func_usage ()
 	s/\$progname/'$progname'/
 	p
     }' < "$progpath"
-    $ECHO
+    echo
     $ECHO "run \`$progname --help | more' for full usage"
     exit $?
 }

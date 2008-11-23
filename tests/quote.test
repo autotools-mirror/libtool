@@ -40,7 +40,7 @@ esac
 func_get_config "ECHO wl" "$LIBTOOL --config"
 
 for mode in compile link install; do
-  $ECHO "== $mode mode"
+  echo "== $mode mode"
 
   # Unfortunately, without an array data type, it is nearly impossible
   # to protect libtool from metacharacters in filenames.  So, we just
@@ -74,7 +74,7 @@ for mode in compile link install; do
   esac
 
   # Trivial.
-  $ECHO "= trying: no quoting"
+  echo "= trying: no quoting"
   result=`$LIBTOOL -n --mode=$mode $preargs ${preflag}"${flag}test" $postargs` || status=$EXIT_FAILURE
   # We used to have the contents of $match in the case statement,
   # without an intermediate variable, but it would fail on at least

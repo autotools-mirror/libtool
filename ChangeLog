@@ -1,5 +1,20 @@
 2008-11-23  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	Revenge of the $ECHO. Kill most uses of Xsed.
+	* libltdl/config/general.m4sh: Replace all uses of `$ECHO "X..."
+	| $Xsed' with `$ECHO "..." | $SED', and employ further trivial
+	simplifications.  Replace $ECHO with echo where appropriate.
+	(func_echo_all): New function.
+	* libltdl/config/getopt.m4sh: Likewise simplifications.
+	* libltdl/config/ltmain.m4sh: Likewise.
+	* libltdl/m4/libtool.m4: Likewise.
+	(LT_CMD_MAX_LEN): Use func_fallback_echo, to ensure that the
+	command line is passed through an exec* function.
+	* libtoolize.m4sh: Likewise simplifications.  Use func_echo_all
+	to implement --dry-run.
+	* tests/defs.m4sh: Likewise simplifications.
+	* tests/quote.test: Likewise simplifications.
+
 	Fix matching of Sun Fortran compiler on Linux.
 	* libltdl/m4/libtool.m4 (_LT_COMPILER_PIC) [ linux ]: Also
 	match `Sun Ceres Fortran' compiler; reorder with C compiler

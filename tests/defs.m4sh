@@ -59,7 +59,7 @@ DEBUG | debug )
 esac
 
 if test -z "$srcdir"; then
-  srcdir=`$ECHO "X$0" | $Xsed -e "$dirname"`
+  srcdir=`$ECHO "$0" | $SED "$dirname"`
   test "$srcdir" = "$0" && srcdir=.
 fi
 

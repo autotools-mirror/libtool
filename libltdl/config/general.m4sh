@@ -89,13 +89,13 @@ basename="s,^.*/,,"
 func_dirname_and_basename ()
 {
   # Extract subdirectory from the argument.
-  func_dirname_result=`$ECHO "X${1}" | $Xsed -e "$dirname"`
+  func_dirname_result=`$ECHO "${1}" | $SED -e "$dirname"`
   if test "X$func_dirname_result" = "X${1}"; then
     func_dirname_result="${3}"
   else
     func_dirname_result="$func_dirname_result${2}"
   fi
-  func_basename_result=`$ECHO "X${1}" | $Xsed -e "$basename"`
+  func_basename_result=`$ECHO "${1}" | $SED -e "$basename"`
 }
 
 # Generated shell functions inserted here.
@@ -181,6 +181,13 @@ func_verbose ()
     :
 }
 
+# func_echo_all arg...
+# Invoke $ECHO with all args, space-separated.
+func_echo_all ()
+{
+    $ECHO "$*"
+}
+
 # func_error arg...
 # Echo program name prefixed message to standard error.
 func_error ()
@@ -249,9 +256,9 @@ func_mkdir_p ()
         case $my_directory_path in */*) ;; *) break ;; esac
 
         # ...otherwise throw away the child directory and loop
-        my_directory_path=`$ECHO "X$my_directory_path" | $Xsed -e "$dirname"`
+        my_directory_path=`$ECHO "$my_directory_path" | $SED -e "$dirname"`
       done
-      my_dir_list=`$ECHO "X$my_dir_list" | $Xsed -e 's,:*$,,'`
+      my_dir_list=`$ECHO "$my_dir_list" | $SED 's,:*$,,'`
 
       save_mkdir_p_IFS="$IFS"; IFS=':'
       for my_dir in $my_dir_list; do
@@ -301,7 +308,7 @@ func_mktempdir ()
         func_fatal_error "cannot create temporary directory \`$my_tmpdir'"
     fi
 
-    $ECHO "X$my_tmpdir" | $Xsed
+    $ECHO "$my_tmpdir"
 }
 
 
@@ -315,7 +322,7 @@ func_quote_for_eval ()
 {
     case $1 in
       *[\\\`\"\$]*)
-	func_quote_for_eval_unquoted_result=`$ECHO "X$1" | $Xsed -e "$sed_quote_subst"` ;;
+	func_quote_for_eval_unquoted_result=`$ECHO "$1" | $SED "$sed_quote_subst"` ;;
       *)
         func_quote_for_eval_unquoted_result="$1" ;;
     esac
@@ -342,7 +349,7 @@ func_quote_for_expand ()
 {
     case $1 in
       *[\\\`\"]*)
-	my_arg=`$ECHO "X$1" | $Xsed \
+	my_arg=`$ECHO "$1" | $SED \
 	    -e "$double_quote_subst" -e "$sed_double_backslash"` ;;
       *)
         my_arg="$1" ;;
