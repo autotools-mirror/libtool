@@ -42,7 +42,7 @@
 	* THANKS: Update.
 	Report by Ethan Mallove.
 
-2008-11-21  Charles Wilson <libtool@cwilson.fastmail.fm>
+2008-11-21  Charles Wilson  <libtool@cwilson.fastmail.fm>
 
 	Fix --verbose option; add new --no-{silent|quiet|verbose} options.
 
@@ -1260,7 +1260,7 @@
 	* NEWS: Update.
 	Report by Andreas Schwab.
 
-2008-03-01  Gary V. Vaughan <gary@gnu.org>
+2008-03-01  Gary V. Vaughan  <gary@gnu.org>
 
 	* configure.ac, libltdl/configure.ac (AC_INIT): Bump version
 	number to 2.3a.
@@ -1688,7 +1688,7 @@
 	Compile program file without libtool.
 	Report by Rainer Tammer.
 
-2008-01-07  Rainer Tammer <tammer@tammer.net>  (tiny change)
+2008-01-07  Rainer Tammer  <tammer@tammer.net>  (tiny change)
 	    Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	Support AIX 6.1.
