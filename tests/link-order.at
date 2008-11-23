@@ -1,6 +1,6 @@
 # link-order.at -- ensure that library linking order matches  -*- Autotest -*-
 #
-#   Copyright (C) 2005, 2007 Free Software Foundation, Inc.
+#   Copyright (C) 2005, 2007, 2008 Free Software Foundation, Inc.
 #   Written by Alexandre Oliva & Ralf Wildenhues, 2005
 #
 #   This file is part of GNU Libtool.
@@ -23,7 +23,7 @@
 ####
 
 
-AT_SETUP([Link order test.])
+AT_SETUP([Link order test])
 AT_KEYWORDS([libtool])
 eval `$LIBTOOL --config | $EGREP '^(hardcode_direct|hardcode_direct_absolute|shrext_cmds)='`
 LDFLAGS="$LDFLAGS -no-undefined"

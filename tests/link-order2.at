@@ -1,6 +1,6 @@
 # link-order2.at -- test link order of deplibs                -*- Autotest -*-
 #
-#   Copyright (C) 2006, 2007 Free Software Foundation, Inc.
+#   Copyright (C) 2006, 2007, 2008 Free Software Foundation, Inc.
 #   Written by Ralf Wildenhues, 2006
 #
 #   This file is part of GNU Libtool.
@@ -33,7 +33,7 @@
 # actually loaded in each case, we also use an unrelated symbol
 # from it directly in the main program.  We test for failure by
 # reversing the link order.
-# We test both static and shared: it should work in both cases.  
+# We test both static and shared: it should work in both cases.
 # But for the static case to work, the two symbols in the depdepl
 # need to be in separate object files, otherwise duplicate symbol
 # definitions can happen.
@@ -43,7 +43,7 @@
 # and only with MACOS_DEPLOYMENT_TARGET 10.2 and earlier
 # (in that case $allow_undefined_flag contains -flat_namespace).
 
-AT_SETUP([Link order of deplibs.])
+AT_SETUP([Link order of deplibs])
 AT_KEYWORDS([libtool])
 
 eval `$LIBTOOL --config | $EGREP '^(shlibpath_var|allow_undefined_flag)='`

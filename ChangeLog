@@ -1,3 +1,10 @@
+2008-11-23  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	No trailing period in Autotest test group names.
+	* tests/link-order.at (Link order test): Drop trailing period
+	from test name.
+	* tests/link-order2.at (Link order of deplibs): Likewise.
+
 2008-11-23  Vincent Torri  <vtorri@univ-evry.fr>  (tiny change)
 
 	Fix func_emit_cwrapperexe_src for WinCE: no errno support.
