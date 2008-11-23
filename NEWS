@@ -12,6 +12,7 @@ New in 2.2.8 2008-??-??: git version 2.2.7a, Libtool team:
   - New libtool command line flag --no-verbose, which disables only
     the extra "verbose" output messages and has no effect on the
     default informational messages.
+  - Improved support for 64bit Windows (mingw64).
 
 * Bug fixes:
 

@@ -2159,6 +2159,7 @@ static const void *lt_preloaded_setup() {
 # Need a lot of goo to handle *both* DLLs and import libs
 # Has to be a shell function in order to 'eat' the argument
 # that is supplied when $file_magic_command is called.
+# Despite the name, also deal with 64 bit binaries.
 func_win32_libid ()
 {
   $opt_debug
@@ -2170,7 +2171,7 @@ func_win32_libid ()
     ;;
   *ar\ archive*) # could be an import, or static
     if eval $OBJDUMP -f $1 | $SED -e '10q' 2>/dev/null |
-       $EGREP 'file format pe-i386(.*architecture: i386)?' >/dev/null ; then
+       $EGREP 'file format (pe-i386(.*architecture: i386)?|pe-x86-64)' >/dev/null; then
       win32_nmres=`eval $NM -f posix -A $1 |
 	$SED -n -e '
 	    1,100{

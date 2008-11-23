@@ -1,3 +1,10 @@
+2008-11-23  Alon Bar-Lev  <alon.barlev@gmail.com>  (tiny change)
+
+	Fix func_win32_libid for 64-bit Windows.
+	* libltdl/config/ltmain.m4sh (func_win32_libid): Accept file
+	format 'pe-x86-64'.
+	* NEWS: Update.
+
 2008-11-23  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	Avoid newlines in some AT_CHECK commands.
