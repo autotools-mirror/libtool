@@ -2759,7 +2759,9 @@ int setenv (const char *, const char *, int);
 #include <assert.h>
 #include <string.h>
 #include <ctype.h>
-#include <errno.h>
+#ifndef __MINGW32CE__
+# include <errno.h>
+#endif
 #include <fcntl.h>
 #include <sys/stat.h>
 
@@ -3152,7 +3154,11 @@ EOF
   if (rval == -1)
     {
       /* failed to start process */
+#ifndef __MINGW32CE__
       LTWRAPPER_DEBUGPRINTF (("(main) failed to launch target \"%s\": errno = %d\n", lt_argv_zero, errno));
+#else
+      LTWRAPPER_DEBUGPRINTF (("(main) failed to launch target \"%s\"\n", lt_argv_zero));
+#endif
       return 127;
     }
   return rval;
@@ -3381,8 +3387,12 @@ chase_symlinks (const char *pathspec)
 	}
       else
 	{
+#ifndef __MINGW32CE__
 	  char *errstr = strerror (errno);
 	  lt_fatal ("Error accessing file %s (%s)", tmp_pathspec, errstr);
+#else
+	  lt_fatal ("Error accessing file %s", tmp_pathspec);
+#endif
 	}
     }
   XFREE (tmp_pathspec);

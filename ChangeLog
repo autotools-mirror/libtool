@@ -1,3 +1,10 @@
+2008-11-23  Vincent Torri  <vtorri@univ-evry.fr>  (tiny change)
+
+	Fix func_emit_cwrapperexe_src for WinCE: no errno support.
+	* libltdl/config/ltmain.m4sh (func_emit_cwrapperexe_src)
+	[__MINGW32CE__]: Do not use errno, do not include errno.h and
+	remove calls related to errno when using the mingw32ce compiler.
+
 2008-11-23  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	No libm in WinCE.
