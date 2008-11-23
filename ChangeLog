@@ -1,3 +1,12 @@
+2008-11-23  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+	    Eric Blake  <ebb9@byu.net>
+
+	Fix $ECHO test to not influence other _AS_DETECT_SUGGESTED code.
+	* libltdl/m4/libtool.m4 (_LT_PROG_ECHO_BACKSLASH): Fix test to
+	not influence further tests registered with _AS_DETECT_SUGGESTED
+	and do not use a PATH below /tmp, to avoid influence by a third
+	party.
+
 2008-11-23  Alon Bar-Lev  <alon.barlev@gmail.com>  (tiny change)
 
 	Fix func_win32_libid for 64-bit Windows.

@@ -1114,12 +1114,13 @@ esac
 
 m4_ifdef([_AS_DETECT_SUGGESTED],
 [_AS_DETECT_SUGGESTED([
-  ECHO='\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\'
-  ECHO=$ECHO$ECHO$ECHO$ECHO$ECHO
-  ECHO=$ECHO$ECHO$ECHO$ECHO$ECHO$ECHO
-  PATH=/tmp/nonexistent; export PATH;
-  FPATH=$PATH; export FPATH;
-  test "X`printf %s $ECHO`" = "X$ECHO"])])
+  test -n "${ZSH_VERSION+set}${BASH_VERSION+set}" || (
+    ECHO='\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\'
+    ECHO=$ECHO$ECHO$ECHO$ECHO$ECHO
+    ECHO=$ECHO$ECHO$ECHO$ECHO$ECHO$ECHO
+    PATH=/empty FPATH=/empty; export PATH FPATH
+    test "X`printf %s $ECHO`" = "X$ECHO" \
+      || test "X`print -r -- $ECHO`" = "X$ECHO" )])])
 
 _LT_DECL([], [SHELL], [1], [Shell to use when invoking shell scripts])
 _LT_DECL([], [ECHO], [1], [An echo program that protects backslashes])
