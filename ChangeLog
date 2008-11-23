@@ -1,5 +1,10 @@
 2008-11-23  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	No libm in WinCE.
+	* libltdl/m4/libtool.m4 (LT_LIB_M) [cegcc*]: This system has
+	only a dummy libm, ignore.
+	Report by Vincent Torri.
+
 	Fix import library detection for WinCE.
 	* libltdl/config/ltmain.m4sh (func_win32_libid): Work for
 	pe-arm-wince import libraries.
