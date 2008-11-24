@@ -1,3 +1,8 @@
+2008-11-24  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* tests/runpath-in-lalib.at (Runpath in libtool library files):
+	Add $EXEEXT overlooked in patch yesterday.
+
 2008-11-23  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	Fix expout and experr line ending issues.

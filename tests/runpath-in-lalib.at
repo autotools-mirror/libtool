@@ -56,7 +56,7 @@ AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o m$EXEEXT m.$OBJEXT libb.l
 	 [], [ignore], [ignore])
 AT_CHECK([$LIBTOOL --mode=install cp liba.la $libdir/liba.la], [], [ignore], [ignore])
 AT_CHECK([$LIBTOOL --mode=install cp libb.la $libdir/libb.la], [], [ignore], [ignore])
-AT_CHECK([$LIBTOOL --mode=install cp m $bindir/m], [], [ignore], [ignore])
+AT_CHECK([$LIBTOOL --mode=install cp m$EXEEXT $bindir/m$EXEEXT], [], [ignore], [ignore])
 
 AT_CHECK([grep /foobar $libdir/liba.la], [], [ignore])
 AT_CHECK([grep /foobar $libdir/libb.la], [], [ignore])
