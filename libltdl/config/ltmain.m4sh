@@ -578,10 +578,13 @@ func_infer_tag ()
         func_quote_for_eval "$arg"
 	CC_quoted="$CC_quoted $func_quote_for_eval_result"
       done
+      CC_expanded=`func_echo_all $CC`
+      CC_quoted_expanded=`func_echo_all $CC_quoted`
       case $@ in
       # Blanks in the command may have been stripped by the calling shell,
       # but not from the CC environment variable when configure was run.
-      " $CC "* | "$CC "* | " `$ECHO $CC` "* | "`$ECHO $CC` "* | " $CC_quoted"* | "$CC_quoted "* | " `$ECHO $CC_quoted` "* | "`$ECHO $CC_quoted` "*) ;;
+      " $CC "* | "$CC "* | " $CC_expanded "* | "$CC_expanded "* | \
+      " $CC_quoted"* | "$CC_quoted "* | " $CC_quoted_expanded "* | "$CC_quoted_expanded "*) ;;
       # Blanks at the start of $base_compile will cause this to fail
       # if we don't check for them as well.
       *)
@@ -595,8 +598,11 @@ func_infer_tag ()
 	      func_quote_for_eval "$arg"
 	      CC_quoted="$CC_quoted $func_quote_for_eval_result"
 	    done
+	    CC_expanded=`func_echo_all $CC`
+	    CC_quoted_expanded=`func_echo_all $CC_quoted`
 	    case "$@ " in
-	      " $CC "* | "$CC "* | " `$ECHO $CC` "* | "`$ECHO $CC` "* | " $CC_quoted"* | "$CC_quoted "* | " `$ECHO $CC_quoted` "* | "`$ECHO $CC_quoted` "*)
+	    " $CC "* | "$CC "* | " $CC_expanded "* | "$CC_expanded "* | \
+	    " $CC_quoted"* | "$CC_quoted "* | " $CC_quoted_expanded "* | "$CC_quoted_expanded "*)
 	      # The compiler in the base compile command matches
 	      # the one in the tagged configuration.
 	      # Assume this is the tagged configuration we want.

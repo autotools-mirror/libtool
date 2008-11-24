@@ -1,5 +1,13 @@
 2008-11-24  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	Fix func_infer_tag $ECHO usage; some testsuite exposure.
+	* libltdl/config/ltmain.m4sh (func_infer_tag): Use func_echo_all
+	rather than $ECHO for possibly multiple arguments.
+	* tests/infer-tag.at (inferred tag, CXX inferred tag)
+	(F77 inferred tag, FC inferred tag, GCJ inferred tag): New file,
+	new tests.
+	* Makefile.am: Adjust.
+
 	* tests/runpath-in-lalib.at (Runpath in libtool library files):
 	Add $EXEEXT overlooked in patch yesterday.
 
