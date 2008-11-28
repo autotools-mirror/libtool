@@ -1,5 +1,11 @@
 2008-11-28  Paolo Bonzini  <bonzini@gnu.org>
 
+	Fix manual typo.
+	* doc/libtool.texi (LT_INIT): Use correct config.status
+	invocation.  Reported by Akim Demaille.
+
+2008-11-28  Paolo Bonzini  <bonzini@gnu.org>
+
 	Do not use $ECHO within eval-ed `...`, as %s\\n becomes %s\n.
 	* HACKING: Document func_echo_all.
 	* libltdl/m4/libtool.m4: Use it within backticks that appear in

@@ -1986,7 +1986,7 @@ and, to @file{Makefile.in} or @file{Makefile.am}:
 @example
 LIBTOOL_DEPS = @@LIBTOOL_DEPS@@
 libtool: $(LIBTOOL_DEPS)
-        $(SHELL) ./config.status --recheck
+        $(SHELL) ./config.status libtool
 @end example
 
 If you are using @sc{gnu} Automake, you can omit the assignment, as Automake
