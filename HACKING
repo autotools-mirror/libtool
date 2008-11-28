@@ -294,11 +294,13 @@ yyyy-mm-dd  Name of Author  <email@address>  (tiny change)
    printf %s\n
    func_fallback_echo
   it may not have more than one argument and its value may not be
-  eval'ed.  However, the argument may start with a `-'.  As a rule of
-  thumb, use
+  eval'ed.  However, the argument may start with a `-' and contain
+  backslashes.  As a rule of thumb, use
    echo ..		for literal (constant) strings without leading
 			hyphen and no backslashes within,
    $ECHO ".."		otherwise.
+   func_echo_all	when multiple arguments are present, or when
+			placed in an eval'ed variable.
 
 * The Autoconf manual says that giving an empty parameter is equivalent
   to not giving it at all.  (In particular, the Autoconf manual doesn't
