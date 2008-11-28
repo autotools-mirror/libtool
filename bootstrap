@@ -31,10 +31,10 @@
 
 SHELL=${CONFIG_SHELL-/bin/sh}
 export SHELL
-: ${AUTORECONF=~/devel/autoconf/+build/tests/autoreconf}
-: ${AUTOCONF=~/devel/autoconf/+build/tests/autoconf}
+: ${AUTORECONF=autoreconf}
+: ${AUTOCONF=autoconf}
 : ${AUTOMAKE=automake}
-: ${AUTOM4TE=~/devel/autoconf/+build/tests/autom4te}
+: ${AUTOM4TE=autom4te}
 : ${MAKE=make}
 : ${GREP=grep}
 : ${EGREP=egrep}

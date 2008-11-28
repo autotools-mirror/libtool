@@ -1,5 +1,10 @@
 2008-11-28  Paolo Bonzini  <bonzini@gnu.org>
 
+	Fix inadvertent commit.
+	* bootstrap: Revert.
+
+2008-11-28  Paolo Bonzini  <bonzini@gnu.org>
+
 	Fix manual typo.
 	* doc/libtool.texi (LT_INIT): Use correct config.status
 	invocation.  Reported by Akim Demaille.
