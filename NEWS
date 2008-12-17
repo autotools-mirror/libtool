@@ -24,6 +24,8 @@ New in 2.2.8 2008-??-??: git version 2.2.7a, Libtool team:
   - libtool command line flag --verbose now also enables explicit
     verbose output, in addition to its previous behavior of (re)enabling
     only the default informational output. See New Features, --no-silent.
+  - Link tests are guarded by cache variables so they can be avoided for
+    bootstrapping purposes (e.g., when link tests are not possible).
 
 * Miscellaneous changes:
 

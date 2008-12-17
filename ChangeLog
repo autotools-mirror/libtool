@@ -1,3 +1,17 @@
+2008-12-17  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Add cache variables to link tests.
+	* libltdl/m4/libtool.m4 (_LT_SYS_DYNAMIC_LINKER)
+	(_LT_LINKER_SHLIBS): Add cache variables to tests that
+	require the linker to work.  For shlibpath_overrides_runpath,
+	this also changes the semantics to let the result from the C
+	compiler take precedence.
+	* tests/no-executables.at (AC_NO_EXECUTABLES): New file.
+	* Makefile.am: Update.
+	* NEWS: Update.
+	Report of shlibpath_overrides_runpath issue by Mike Frysinger,
+	report of GCC issue by Andreas Schwab.
+
 2008-11-28  Paolo Bonzini  <bonzini@gnu.org>
 
 	Fix inadvertent commit.

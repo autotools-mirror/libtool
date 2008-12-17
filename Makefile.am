@@ -483,6 +483,7 @@ TESTSUITE_AT	= tests/testsuite.at \
 		  tests/template.at \
 		  tests/ctor.at \
 		  tests/early-libtool.at \
+		  tests/no-executables.at \
 		  tests/deplibs-ident.at \
 		  tests/configure-iface.at \
 		  tests/stresstest.at \
