@@ -1,7 +1,7 @@
 2008-12-19  Akim Demaille  <demaille@gostai.com>
 
 	Fix copyright notice.
-        * libltdl/config/ltmain.m4sh: Add missing comma.
+	* libltdl/config/ltmain.m4sh: Add missing comma.
 
 2008-12-17  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
