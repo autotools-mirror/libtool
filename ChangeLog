@@ -1,5 +1,17 @@
 2009-01-21  Charles Wilson  <libtool@cwilson.fastmail.fm>
 
+	[cygwin|mingw] Fix compile warnings when -std=c89.
+	* libltdl/config/ltmain.m4sh (func_emit_wrapper_part1):
+	move contents to...
+	(func_emit_wrapper_part2): move contents to...
+	(func_emit_wrapper): here.
+	(func_emit_cwrapperexe_src) [file scope]: Remove
+	variables script_text_part1 and script_text_part2.
+	(func_emit_cwrapperexe_src) [lt_dump_script]: New function.
+	(func_emit_cwrapperexe_src) [main]: Call it.
+
+2009-01-21  Charles Wilson  <libtool@cwilson.fastmail.fm>
+
 	Minor cygwin cleanup
 	* libltdl/config/ltmain.m4sh (func_generate_dlsyms): Correct
 	case pattern for cygwin.

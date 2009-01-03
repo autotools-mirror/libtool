@@ -2308,15 +2308,23 @@ func_extract_archives ()
 }
 
 
-
-# func_emit_wrapper_part1 [arg=no]
+# func_emit_wrapper [arg=no]
 #
-# Emit the first part of a libtool wrapper script on stdout.
-# For more information, see the description associated with
-# func_emit_wrapper(), below.
-func_emit_wrapper_part1 ()
+# Emit a libtool wrapper script on stdout.
+# Don't directly open a file because we may want to
+# incorporate the script contents within a cygwin/mingw
+# wrapper executable.  Must ONLY be called from within
+# func_mode_link because it depends on a number of variables
+# set therein.
+#
+# ARG is the value that the WRAPPER_SCRIPT_BELONGS_IN_OBJDIR
+# variable will take.  If 'yes', then the emitted script
+# will assume that the directory in which it is stored is
+# the $objdir directory.  This is a cygwin/mingw-specific
+# behavior.
+func_emit_wrapper ()
 {
-	func_emit_wrapper_part1_arg1=${1-no}
+	func_emit_wrapper_arg1=${1-no}
 
 	$ECHO "\
 #! $SHELL
@@ -2397,24 +2405,10 @@ _LTECHO_EOF'
     file=\`\$ECHO \"\$file\" | $SED 's%^.*/%%'\`
     file=\`ls -ld \"\$thisdir/\$file\" | $SED -n 's/.*-> //p'\`
   done
-"
-}
-# end: func_emit_wrapper_part1
-
-# func_emit_wrapper_part2 [arg=no]
-#
-# Emit the second part of a libtool wrapper script on stdout.
-# For more information, see the description associated with
-# func_emit_wrapper(), below.
-func_emit_wrapper_part2 ()
-{
-    func_emit_wrapper_part2_arg1=${1-no}
-
-	$ECHO "\
 
   # Usually 'no', except on cygwin/mingw when embedded into
   # the cwrapper.
-  WRAPPER_SCRIPT_BELONGS_IN_OBJDIR=$func_emit_wrapper_part2_arg1
+  WRAPPER_SCRIPT_BELONGS_IN_OBJDIR=$func_emit_wrapper_arg1
   if test \"\$WRAPPER_SCRIPT_BELONGS_IN_OBJDIR\" = \"yes\"; then
     # special case for '.'
     if test \"\$thisdir\" = \".\"; then
@@ -2530,30 +2524,6 @@ func_emit_wrapper_part2 ()
   fi
 fi\
 "
-}
-# end: func_emit_wrapper_part2
-
-
-# func_emit_wrapper [arg=no]
-#
-# Emit a libtool wrapper script on stdout.
-# Don't directly open a file because we may want to
-# incorporate the script contents within a cygwin/mingw
-# wrapper executable.  Must ONLY be called from within
-# func_mode_link because it depends on a number of variables
-# set therein.
-#
-# ARG is the value that the WRAPPER_SCRIPT_BELONGS_IN_OBJDIR
-# variable will take.  If 'yes', then the emitted script
-# will assume that the directory in which it is stored is
-# the $objdir directory.  This is a cygwin/mingw-specific
-# behavior.
-func_emit_wrapper ()
-{
-	# split this up so that func_emit_cwrapperexe_src
-	# can call each part independently.
-	func_emit_wrapper_part1 ${1-no}
-	func_emit_wrapper_part2 ${1-no}
 }
 
 
@@ -2875,22 +2845,8 @@ int lt_split_name_value (const char *arg, char** name, char** value);
 void lt_update_exe_path (const char *name, const char *value);
 void lt_update_lib_path (const char *name, const char *value);
 char **prepare_spawn (char **argv);
-
-static const char *script_text_part1 =
+void lt_dump_script (FILE *f);
 EOF
-
-	    func_emit_wrapper_part1 yes |
-	        $SED -e 's/\([\\"]\)/\\\1/g' \
-	             -e 's/^/  "/' -e 's/$/\\n"/'
-	    echo ";"
-	    cat <<EOF
-
-static const char *script_text_part2 =
-EOF
-	    func_emit_wrapper_part2 yes |
-	        $SED -e 's/\([\\"]\)/\\\1/g' \
-	             -e 's/^/  "/' -e 's/$/\\n"/'
-	    echo ";"
 
 	    cat <<EOF
 const char * MAGIC_EXE = "$magic_exe";
@@ -2986,8 +2942,7 @@ EOF
 	      esac
 
 	    cat <<"EOF"
-	  printf ("%s", script_text_part1);
-	  printf ("%s", script_text_part2);
+	  lt_dump_script (stdout);
 	  return 0;
 	}
     }
@@ -3747,6 +3702,18 @@ prepare_spawn (char **argv)
 EOF
 		;;
 	    esac
+
+            cat <<"EOF"
+void lt_dump_script (FILE* f)
+{
+EOF
+	    func_emit_wrapper yes |
+              $SED -e 's/\([\\"]\)/\\\1/g' \
+	           -e 's/^/  fputs ("/' -e 's/$/\\n", f);/'
+
+            cat <<"EOF"
+}
+EOF
 }
 # end: func_emit_cwrapperexe_src
 
