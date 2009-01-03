@@ -1987,10 +1987,49 @@ extern \"C\" {
 	  func_verbose "extracting global C symbols from \`$dlprefile'"
 	  func_basename "$dlprefile"
 	  name="$func_basename_result"
-	  $opt_dry_run || {
-	    eval '$ECHO ": $name " >> "$nlist"'
-	    eval "$NM $dlprefile 2>/dev/null | $global_symbol_pipe >> '$nlist'"
-	  }
+          case $host in
+	    *cygwin* | *mingw* | *cegcc* )
+	      # if an import library, we need to obtain dlname
+	      if func_win32_import_lib_p "$dlprefile"; then
+	        func_tr_sh "$dlprefile"
+	        eval "curr_lafile=\$libfile_$func_tr_sh_result"
+	        dlprefile_dlbasename=""
+	        if test -n "$curr_lafile" && func_lalib_p "$curr_lafile"; then
+	          # Use subshell, to avoid clobbering current variable values
+	          dlprefile_dlname=`source "$curr_lafile" && echo "$dlname"`
+	          if test -n "$dlprefile_dlname" ; then
+	            func_basename "$dlprefile_dlname"
+	            dlprefile_dlbasename="$func_basename_result"
+	          else
+	            # no lafile. user explicitly requested -dlpreopen <import library>.
+	            $sharedlib_from_linklib "$dlprefile"
+	            dlprefile_dlbasename=$sharedlib_from_linklib_result
+	          fi
+	        fi
+	        $opt_dry_run || {
+	          if test -n "$dlprefile_dlbasename" ; then
+	            eval '$ECHO ": $dlprefile_dlbasename" >> "$nlist"'
+	          else
+	            func_warning "Could not compute DLL name from $name"
+	            eval '$ECHO ": $name " >> "$nlist"'
+	          fi
+	          eval "$NM $dlprefile 2>/dev/null | $global_symbol_pipe |
+	            $SED -e '/I __imp/d' -e 's/I __nm_/D /;s/_nm__//' >> '$nlist'"
+	        }
+	      else # not an import lib
+	        $opt_dry_run || {
+	          eval '$ECHO ": $name " >> "$nlist"'
+	          eval "$NM $dlprefile 2>/dev/null | $global_symbol_pipe >> '$nlist'"
+	        }
+	      fi
+	    ;;
+	    *)
+	      $opt_dry_run || {
+	        eval '$ECHO ": $name " >> "$nlist"'
+	        eval "$NM $dlprefile 2>/dev/null | $global_symbol_pipe >> '$nlist'"
+	      }
+	    ;;
+          esac
 	done
 
 	$opt_dry_run || {
@@ -2195,6 +2234,129 @@ func_win32_libid ()
   $ECHO "$win32_libid_type"
 }
 
+# func_cygming_dll_for_implib ARG
+#
+# Platform-specific function to extract the
+# name of the DLL associated with the specified
+# import library ARG.
+# Invoked by eval'ing the libtool variable
+#    $sharedlib_from_linklib_cmd
+# Result is available in the variable
+#    $sharedlib_from_linklib_result
+func_cygming_dll_for_implib ()
+{
+  $opt_debug
+  sharedlib_from_linklib_result=`$DLLTOOL --identify-strict --identify "$1"`
+}
+
+# func_cygming_dll_for_implib_fallback_core SECTION_NAME LIBNAMEs
+#
+# The is the core of a fallback implementation of a
+# platform-specific function to extract the name of the
+# DLL associated with the specified import library LIBNAME.
+#
+# SECTION_NAME is either .idata$6 or .idata$7, depending
+# on the platform and compiler that created the implib.
+#
+# Echos the name of the DLL associated with the
+# specified import library.
+func_cygming_dll_for_implib_fallback_core ()
+{
+  $opt_debug
+  match_literal=`$ECHO "$1" | $SED 's/[].[^$\\*|]/\\\\&/g'`
+  $OBJDUMP -s --section "$1" "$2" 2>/dev/null |
+    $SED '/^Contents of section '"$match_literal"':/{
+      # Place marker at beginning of archive member dllname section
+      s/.*/====MARK====/
+      p
+      d
+    }
+    # These lines can sometimes be longer than 43 characters, but
+    # are always uninteresting
+    /:[	 ]*file format pe[i]\{,1\}-/d
+    /^In archive [^:]*:/d
+    # Ensure marker is printed
+    /^====MARK====/p
+    # Remove all lines with less than 43 characters
+    /^.\{43\}/!d
+    # From remaining lines, remove first 43 characters
+    s/^.\{43\}//' |
+    $SED -n '
+      # Join marker and all lines until next marker into a single line
+      /^====MARK====/ b para
+      H
+      $ b para
+      b
+      :para
+      x
+      s/\n//g
+      # Remove the marker
+      s/^====MARK====//
+      # Remove trailing dots and whitespace
+      s/[\. \t]*$//
+      # Print
+      /./p' |
+    # we now have a list, one entry per line, of the stringified
+    # contents of the appropriate section of all members of the
+    # archive which possess that section. Heuristic: eliminate
+    # all those which have a first or second character that is
+    # a '.' (that is, objdump's representation of an unprintable
+    # character.) This should work for all archives with less than
+    # 0x302f exports -- but will fail for DLLs whose name actually
+    # begins with a literal '.' or a single character followed by
+    # a '.'.
+    #
+    # Of those that remain, print the first one.
+    $SED -e '/^\./d;/^.\./d;q'
+}
+
+# func_cygming_gnu_implib_p ARG
+# This predicate returns with zero status (TRUE) if
+# ARG is a GNU/binutils-style import library. Returns
+# with nonzero status (FALSE) otherwise.
+func_cygming_gnu_implib_p ()
+{
+  $opt_debug
+  func_cygming_gnu_implib_tmp=`$NM $1 | eval "$global_symbol_pipe" | $EGREP ' (_head_[A-Za-z0-9_]+_[ad]l*|[A-Za-z0-9_]+_[ad]l*_iname)$'`
+  test -n "$func_cygming_gnu_implib_tmp"
+}
+
+# func_cygming_ms_implib_p ARG
+# This predicate returns with zero status (TRUE) if
+# ARG is an MS-style import library. Returns
+# with nonzero status (FALSE) otherwise.
+func_cygming_ms_implib_p ()
+{
+  $opt_debug
+  func_cygming_ms_implib_tmp=`$NM $1 | eval "$global_symbol_pipe" | $GREP '_NULL_IMPORT_DESCRIPTOR'`
+  test -n "$func_cygming_ms_implib_tmp"
+}
+
+# func_cygming_dll_for_implib_fallback ARG
+# Platform-specific function to extract the
+# name of the DLL associated with the specified
+# import library ARG.
+#
+# This fallback implementation is for use when $DLLTOOL
+# does not support the --identify-strict option.
+# Invoked by eval'ing the libtool variable
+#    $sharedlib_from_linklib_cmd
+# Result is available in the variable
+#    $sharedlib_from_linklib_result
+func_cygming_dll_for_implib_fallback ()
+{
+  $opt_debug
+  if func_cygming_gnu_implib_p "$1" ; then
+    # binutils import library
+    sharedlib_from_linklib_result=`func_cygming_dll_for_implib_fallback_core '.idata$7' "$1"`
+  elif func_cygming_ms_implib_p "$1" ; then
+    # ms-generated import library
+    sharedlib_from_linklib_result=`func_cygming_dll_for_implib_fallback_core '.idata$6' "$1"`
+  else
+    # unknown
+    sharedlib_from_linklib_result=""
+  fi
+}
 
 
 # func_extract_an_archive dir oldlib
@@ -5142,20 +5304,46 @@ func_mode_link ()
 	  if test -z "$libdir" && test "$linkmode" = prog; then
 	    func_fatal_error "only libraries may -dlpreopen a convenience library: \`$lib'"
 	  fi
-	  # Prefer using a static library (so that no silly _DYNAMIC symbols
-	  # are required to link).
-	  if test -n "$old_library"; then
-	    func_append newdlprefiles " $dir/$old_library"
-	    # Keep a list of preopened convenience libraries to check
-	    # that they are being used correctly in the link pass.
-	    test -z "$libdir" && \
-		func_append dlpreconveniencelibs " $dir/$old_library"
-	  # Otherwise, use the dlname, so that lt_dlopen finds it.
-	  elif test -n "$dlname"; then
-	    func_append newdlprefiles " $dir/$dlname"
-	  else
-	    func_append newdlprefiles " $dir/$linklib"
-	  fi
+	  case "$host" in
+	    # special handling for platforms with PE-DLLs.
+	    *cygwin* | *mingw* | *cegcc* )
+	      # Linker will automatically link against shared library if both
+	      # static and shared are present.  Therefore, ensure we extract
+	      # symbols from the import library if a shared library is present
+	      # (otherwise, the dlopen module name will be incorrect).  We do
+	      # this by putting the import library name into $newdlprefiles.
+	      # We recover the dlopen module name by 'saving' the la file
+	      # name in a special purpose variable, and (later) extracting the
+	      # dlname from the la file.
+	      if test -n "$dlname"; then
+	        func_tr_sh "$dir/$linklib"
+	        eval "libfile_$func_tr_sh_result=\$abs_ladir/\$laname"
+	        func_append newdlprefiles " $dir/$linklib"
+	      else
+	        func_append newdlprefiles " $dir/$old_library"
+	        # Keep a list of preopened convenience libraries to check
+	        # that they are being used correctly in the link pass.
+	        test -z "$libdir" && \
+	          func_append dlpreconveniencelibs " $dir/$old_library"
+	      fi
+	    ;;
+	    * )
+	      # Prefer using a static library (so that no silly _DYNAMIC symbols
+	      # are required to link).
+	      if test -n "$old_library"; then
+	        func_append $newdlprefiles " $dir/$old_library"
+	        # Keep a list of preopened convenience libraries to check
+	        # that they are being used correctly in the link pass.
+	        test -z "$libdir" && \
+	          func_append dlpreconveniencelibs " $dir/$old_library"
+	      # Otherwise, use the dlname, so that lt_dlopen finds it.
+	      elif test -n "$dlname"; then
+	        func_append newdlprefiles " $dir/$dlname"
+	      else
+	        func_append newdlprefiles " $dir/$linklib"
+	      fi
+	    ;;
+	  esac
 	fi # $pass = dlpreopen
 
 	if test -z "$libdir"; then

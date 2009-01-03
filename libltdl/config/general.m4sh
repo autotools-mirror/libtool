@@ -594,4 +594,21 @@ func_show_eval_locale ()
       fi
     fi
 }
+
+# func_tr_sh
+# Turn $1 into a string suitable for a shell variable name.
+# Result is stored in $func_tr_sh_result.  All characters
+# not in the set a-zA-Z0-9_ are replaced with '_'. Further,
+# if $1 begins with a digit, a '_' is prepended as well.
+func_tr_sh ()
+{
+  case $1 in
+  [0-9]* | *[!a-zA-Z0-9_]*)
+    func_tr_sh_result=`$ECHO "$1" | $SED 's/^\([0-9]\)/_\1/; s/[^a-zA-Z0-9_]/_/g'`
+    ;;
+  * )
+    func_tr_sh_result=$1
+    ;;
+  esac
+}
 ]])

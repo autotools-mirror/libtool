@@ -170,6 +170,7 @@ m4_require([_LT_FILEUTILS_DEFAULTS])dnl
 m4_require([_LT_CHECK_SHELL_FEATURES])dnl
 m4_require([_LT_CMD_RELOAD])dnl
 m4_require([_LT_CHECK_MAGIC_METHOD])dnl
+m4_require([_LT_CHECK_SHAREDLIB_FROM_LINKLIB])dnl
 m4_require([_LT_CMD_OLD_ARCHIVE])dnl
 m4_require([_LT_CMD_GLOBAL_SYMBOLS])dnl
 
@@ -3319,6 +3320,45 @@ dnl aclocal-1.4 backwards compatibility:
 dnl AC_DEFUN([AM_PROG_NM], [])
 dnl AC_DEFUN([AC_PROG_NM], [])
 
+# _LT_CHECK_SHAREDLIB_FROM_LINKLIB
+# ----------------------
+# how to determine the name of the shared library
+# associated with a specific link library.
+#  -- PORTME fill in with the dynamic library characteristics
+m4_defun([_LT_CHECK_SHAREDLIB_FROM_LINKLIB],
+[m4_require([_LT_DECL_EGREP])
+m4_require([_LT_DECL_OBJDUMP])
+m4_require([_LT_DECL_DLLTOOL])
+AC_CACHE_CHECK([how to associate runtime and link libraries],
+lt_cv_sharedlib_from_linklib_cmd,
+[lt_cv_sharedlib_from_linklib_cmd='unknown'
+
+case $host_os in
+cygwin* | mingw* | pw32* | cegcc*)
+  # two different shell functions defined in ltmain.sh
+  # decide which to use based on capabilities of $DLLTOOL
+  case `$DLLTOOL --help 2>&1` in
+  *--identify-strict*)
+    lt_cv_sharedlib_from_linklib_cmd=func_cygming_dll_for_implib
+    ;;
+  *)
+    lt_cv_sharedlib_from_linklib_cmd=func_cygming_dll_for_implib_fallback
+    ;;
+  esac
+  ;;
+*)
+  # fallback: assume linklib IS sharedlib
+  lt_cv_sharedlib_from_linklib_cmd="$ECHO"
+  ;;
+esac
+])
+sharedlib_from_linklib_cmd=$lt_cv_sharedlib_from_linklib_cmd
+test -z "$sharedlib_from_linklib_cmd" && sharedlib_from_linklib_cmd=$ECHO
+
+_LT_DECL([], [sharedlib_from_linklib_cmd], [1],
+    [Command to associate shared and link libraries])
+])# _LT_CHECK_SHAREDLIB_FROM_LINKLIB
+
 
 # _LT_PATH_MANIFEST_TOOL
 # ----------------------
@@ -3467,8 +3507,8 @@ esac
 lt_cv_sys_global_symbol_to_cdecl="sed -n -e 's/^T .* \(.*\)$/extern int \1();/p' -e 's/^$symcode* .* \(.*\)$/extern char \1;/p'"
 
 # Transform an extracted symbol line into symbol name and symbol address
-lt_cv_sys_global_symbol_to_c_name_address="sed -n -e 's/^: \([[^ ]]*\) $/  {\\\"\1\\\", (void *) 0},/p' -e 's/^$symcode* \([[^ ]]*\) \([[^ ]]*\)$/  {\"\2\", (void *) \&\2},/p'"
-lt_cv_sys_global_symbol_to_c_name_address_lib_prefix="sed -n -e 's/^: \([[^ ]]*\) $/  {\\\"\1\\\", (void *) 0},/p' -e 's/^$symcode* \([[^ ]]*\) \(lib[[^ ]]*\)$/  {\"\2\", (void *) \&\2},/p' -e 's/^$symcode* \([[^ ]]*\) \([[^ ]]*\)$/  {\"lib\2\", (void *) \&\2},/p'"
+lt_cv_sys_global_symbol_to_c_name_address="sed -n -e 's/^: \([[^ ]]*\)[[ ]]*$/  {\\\"\1\\\", (void *) 0},/p' -e 's/^$symcode* \([[^ ]]*\) \([[^ ]]*\)$/  {\"\2\", (void *) \&\2},/p'"
+lt_cv_sys_global_symbol_to_c_name_address_lib_prefix="sed -n -e 's/^: \([[^ ]]*\)[[ ]]*$/  {\\\"\1\\\", (void *) 0},/p' -e 's/^$symcode* \([[^ ]]*\) \(lib[[^ ]]*\)$/  {\"\2\", (void *) \&\2},/p' -e 's/^$symcode* \([[^ ]]*\) \([[^ ]]*\)$/  {\"lib\2\", (void *) \&\2},/p'"
 
 # Handle CRLF in mingw tool chain
 opt_cr=
@@ -4296,6 +4336,7 @@ m4_require([_LT_TAG_COMPILER])dnl
 AC_MSG_CHECKING([whether the $compiler linker ($LD) supports shared libraries])
 m4_if([$1], [CXX], [
   _LT_TAGVAR(export_symbols_cmds, $1)='$NM $libobjs $convenience | $global_symbol_pipe | $SED '\''s/.* //'\'' | sort | uniq > $export_symbols'
+  _LT_TAGVAR(exclude_expsyms, $1)=['_GLOBAL_OFFSET_TABLE_|_GLOBAL__F[ID]_.*']
   case $host_os in
   aix[[4-9]]*)
     # If we're using GNU nm, then we don't want the "-C" option.
@@ -4315,7 +4356,8 @@ m4_if([$1], [CXX], [
     case $cc_basename in
     cl*) ;;
     *)
-      _LT_TAGVAR(export_symbols_cmds, $1)='$NM $libobjs $convenience | $global_symbol_pipe | $SED -e '\''/^[[BCDGRS]][[ ]]/s/.*[[ ]]\([[^ ]]*\)/\1 DATA/;/^.*[[ ]]__nm__/s/^.*[[ ]]__nm__\([[^ ]]*\)[[ ]][[^ ]]*/\1 DATA/;/^I[[ ]]/d;/^[[AITW]][[ ]]/s/.* //'\'' | sort | uniq > $export_symbols'
+      _LT_TAGVAR(export_symbols_cmds, $1)='$NM $libobjs $convenience | $global_symbol_pipe | $SED -e '\''/^[[BCDGRS]][[ ]]/s/.*[[ ]]\([[^ ]]*\)/\1 DATA/;s/^.*[[ ]]__nm__\([[^ ]]*\)[[ ]][[^ ]]*/\1 DATA/;/^I[[ ]]/d;/^[[AITW]][[ ]]/s/.* //'\'' | sort | uniq > $export_symbols'
+      _LT_TAGVAR(exclude_expsyms, $1)=['[_]+GLOBAL_OFFSET_TABLE_|[_]+GLOBAL__[FID]_.*|[_]+head_[A-Za-z0-9_]+_dll|[A-Za-z0-9_]+_dll_iname']
       ;;
     esac
     ;;
@@ -4323,7 +4365,6 @@ m4_if([$1], [CXX], [
     _LT_TAGVAR(export_symbols_cmds, $1)='$NM $libobjs $convenience | $global_symbol_pipe | $SED '\''s/.* //'\'' | sort | uniq > $export_symbols'
     ;;
   esac
-  _LT_TAGVAR(exclude_expsyms, $1)=['_GLOBAL_OFFSET_TABLE_|_GLOBAL__F[ID]_.*']
 ], [
   runpath_var=
   _LT_TAGVAR(allow_undefined_flag, $1)=
@@ -4491,7 +4532,8 @@ _LT_EOF
       _LT_TAGVAR(allow_undefined_flag, $1)=unsupported
       _LT_TAGVAR(always_export_symbols, $1)=no
       _LT_TAGVAR(enable_shared_with_static_runtimes, $1)=yes
-      _LT_TAGVAR(export_symbols_cmds, $1)='$NM $libobjs $convenience | $global_symbol_pipe | $SED -e '\''/^[[BCDGRS]][[ ]]/s/.*[[ ]]\([[^ ]]*\)/\1 DATA/'\'' | $SED -e '\''/^[[AITW]][[ ]]/s/.*[[ ]]//'\'' | sort | uniq > $export_symbols'
+      _LT_TAGVAR(export_symbols_cmds, $1)='$NM $libobjs $convenience | $global_symbol_pipe | $SED -e '\''/^[[BCDGRS]][[ ]]/s/.*[[ ]]\([[^ ]]*\)/\1 DATA/;s/^.*[[ ]]__nm__\([[^ ]]*\)[[ ]][[^ ]]*/\1 DATA/;/^I[[ ]]/d;/^[[AITW]][[ ]]/s/.* //'\'' | sort | uniq > $export_symbols'
+      _LT_TAGVAR(exclude_expsyms, $1)=['[_]+GLOBAL_OFFSET_TABLE_|[_]+GLOBAL__[FID]_.*|[_]+head_[A-Za-z0-9_]+_dll|[A-Za-z0-9_]+_dll_iname']
 
       if $LD --help 2>&1 | $GREP 'auto-import' > /dev/null; then
         _LT_TAGVAR(archive_cmds, $1)='$CC -shared $libobjs $deplibs $compiler_flags -o $output_objdir/$soname ${wl}--enable-auto-image-base -Xlinker --out-implib -Xlinker $lib'
@@ -7269,6 +7311,15 @@ _LT_DECL([], [OBJDUMP], [1], [An object symbol dumper])
 AC_SUBST([OBJDUMP])
 ])
 
+# _LT_DECL_DLLTOOL
+# ----------------
+# Ensure DLLTOOL variable is set.
+m4_defun([_LT_DECL_DLLTOOL],
+[AC_CHECK_TOOL(DLLTOOL, dlltool, false)
+test -z "$DLLTOOL" && DLLTOOL=dlltool
+_LT_DECL([], [DLLTOOL], [1], [DLL creation program])
+AC_SUBST([DLLTOOL])
+])
 
 # _LT_DECL_SED
 # ------------
