@@ -1,3 +1,11 @@
+2009-01-29  Akim Demaille  <demaille@gostai.com>
+
+	Fix func_exec_init.
+	* tests/defs.m4sh (func_exec_init): Instead of using the undefined
+	my_dir, call func_dirname_and_basename and use its result.
+	(func_make): For consistency, don't use the useless local variable
+	my_dir.
+
 2009-01-29  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	Document --mode short-hands better, and test them.
