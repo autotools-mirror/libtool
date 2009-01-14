@@ -1,3 +1,10 @@
+2009-01-14  Peter Rosin  <peda@lysator.liu.se>
+
+	Fix flakey mdemo-dryrun test on MSYS (again!)
+	* tests/mdemo-dryrun.test: ls -l in MSYS sometimes shows year,
+	not time, for really fresh files. Add sleep 1 call at yet another
+	strategic position. Makes the test pass reliably for MSYS/MinGW.
+
 2008-12-19  Akim Demaille  <demaille@gostai.com>
 
 	Fix copyright notice.
