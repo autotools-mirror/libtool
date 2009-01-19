@@ -1,3 +1,10 @@
+2009-01-28  Akim Demaille  <demaille@gostai.com>
+
+	Clean space uses.
+	* libtoolize.m4sh: Remove trailing spaces.
+	Use <tab><sp>, as some editors remove "useless" spaces in
+	<sp><tab>.
+
 2009-01-26  Peter Rosin  <peda@lysator.liu.se>
 
 	AWK is required, make sure it is set.

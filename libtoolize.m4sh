@@ -181,7 +181,7 @@ all_pkgltdl_files="COPYING.LIB Makefile Makefile.in Makefile.inc Makefile.am REA
       --install|-i)	opt_install=: ;;
 
       --ltdl)		opt_ltdl=:
-      			if test "$#" -gt 0; then
+			if test "$#" -gt 0; then
 			  case $1 in
 			    -*)	;;
 			    *)	ltdldir=`$ECHO "$1" | $SED 's,/*$,,'`
@@ -194,7 +194,7 @@ all_pkgltdl_files="COPYING.LIB Makefile Makefile.in Makefile.inc Makefile.am REA
       --no-warn)	opt_warning=false ;;
 
       --nonrecursive|--non-recursive)
-      			ltdl_mode=nonrecursive
+			ltdl_mode=nonrecursive
 			;;
 
       --quiet|--automake|-q) # --automake is for 1.5 compatibility
@@ -310,7 +310,7 @@ func_copy_cb ()
     copy_return_status=1
 
     # Libtool is probably misinstalled if this happens:
-    test -f "$my_srcdir/$my_file" || 
+    test -f "$my_srcdir/$my_file" ||
         func_fatal_error "\`$my_file' not found in \`$my_srcdir'"
 
     case $opt_verbose in
@@ -374,7 +374,7 @@ func_copy_some_files ()
         if test "X$my_copy_cb" = Xfunc_copy_cb; then
 	  $opt_force || if test -f "$my_destdir/$my_filename"; then
 	    $opt_quiet || func_echo_once "$my_msg_var"
-  	    $opt_quiet \
+	    $opt_quiet \
 	      || func_error "\`$my_destdir/$my_filename' exists: use \`--force' to overwrite"
 	    continue
 	  fi
@@ -482,12 +482,12 @@ func_scan_files ()
         s,^.*AC_REQUIRE(.*$,,; s,^.*m4@&t@_require(.*$,,;
 	s,^.*m4@&t@_define(.*$,,
 	s,^.*A[CU]_DEFUN(.*$,,; s,^.*m4@&t@_defun(.*$,,
-    	/AC_CONFIG_AUX_DIR(/ {
-	    s,^.*AC_CONFIG_AUX_DIR([[ 	]*\([^])]*\).*$,ac_auxdir=\1,
+	/AC_CONFIG_AUX_DIR(/ {
+	    s,^.*AC_CONFIG_AUX_DIR([[	 ]*\([^])]*\).*$,ac_auxdir=\1,
 	    p
         }
-    	/AC_CONFIG_MACRO_DIR(/ {
-	    s,^.*AC_CONFIG_MACRO_DIR([[ 	]*\([^])]*\).*$,ac_macrodir=\1,
+	/AC_CONFIG_MACRO_DIR(/ {
+	    s,^.*AC_CONFIG_MACRO_DIR([[	 ]*\([^])]*\).*$,ac_macrodir=\1,
 	    p
         }
 	/_LT_CONFIG_LTDL_DIR(/d
@@ -502,14 +502,14 @@ func_scan_files ()
 	}
 	/the.*option into.*LT_INIT.*parameter/d
 	/\@<:@LT_INIT/d
-	/LT_INIT/	     	 {
+	/LT_INIT/		 {
 	    s,^.*$,seen_libtool=:,
 	    p
 	}
 	/\@<:@LTDL_INIT/d
 	/LTDL_INIT/          {
-	    s,^.*LTDL_INIT([[ 	]*\([^])]*\).*$,ltdl_options="\1",
-	    s,^.*LTDL_INIT[ 	]*$,seen_ltdl=:,
+	    s,^.*LTDL_INIT([[	 ]*\([^])]*\).*$,ltdl_options="\1",
+	    s,^.*LTDL_INIT[	 ]*$,seen_ltdl=:,
 	    p
 	}
 	/LT_WITH_LTDL/       {
@@ -633,8 +633,8 @@ func_scan_files ()
     # Hunt for ACLOCAL_AMFLAGS in `Makefile.am' for a `-I' argument.
 
     my_sed_aclocal_flags='
-        /^[ 	]*ACLOCAL_[A-Z_]*FLAGS[ 	]*=/ {
-	    s,^[^=]*=[ 	]*\(.*\), \1,
+        /^[	 ]*ACLOCAL_[A-Z_]*FLAGS[	 ]*=/ {
+	    s,^[^=]*=[	 ]*\(.*\), \1,
 	    q
 	}
 	d'
@@ -699,7 +699,7 @@ func_serial ()
     my_filename="$1"
     my_macro_regex="$2"
     my_sed_serial='
-	/^# serial [1-9][0-9.]*[ 	]*'"$my_macro_regex"'[ 	]*$/ {
+	/^# serial [1-9][0-9.]*[	 ]*'"$my_macro_regex"'[	 ]*$/ {
 	    s,^# serial \([1-9][0-9.]*\).*$,\1,
 	    q
 	}
@@ -980,7 +980,7 @@ func_ltmain_update ()
     $opt_debug
     my_sed_ltmain='
 	/^package_revision='\''*[0-9][1-9.]*'\''*/ {
-	    s,^package_revision='\''*\([0-9.]*\)'\''*[ 	]*$,\1,
+	    s,^package_revision='\''*\([0-9.]*\)'\''*[	 ]*$,\1,
 	    p
 	}
 	d'
@@ -1499,7 +1499,7 @@ func_check_macros ()
       else
         func_echo "Consider adding \`-I $macrodir' to ACLOCAL_AMFLAGS in Makefile.am."
       fi
-    fi 
+    fi
 
     # Don't trace for this, we're just checking the user didn't invoke it
     # directly from configure.ac.
