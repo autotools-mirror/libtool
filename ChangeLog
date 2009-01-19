@@ -1,3 +1,10 @@
+2009-01-19  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Avoid failure due to Cygwin path detection bug.
+	* tests/execute-mode.at (execute mode): Ignore noise on stderr;
+	Cygwin might consider `d\"e' to be a DOS-style path and warn.
+	Report by Charles Wilson.
+
 2009-01-19  Robert Millan  <rmh@aybabtu.com>
 
 	Support GNU/kOpenSolaris.
