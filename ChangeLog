@@ -1,3 +1,9 @@
+2009-01-19  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Another LT_AT_EXEC_CHECK fixup.
+	* tests/shlibpath.at (shlibpath_overrides_runpath): Use
+	LT_AT_EXEC_CHECK instead of AT_CHECK.
+
 2009-01-19  Roumen Petrov  <bugtrack@roumenpetrov.info>  (tiny change)
 
 	Add missing $EXEEXT to java test.
