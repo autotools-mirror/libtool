@@ -1,6 +1,6 @@
 # localization.at -- libtool and locales                -*- Autotest -*-
 #
-#   Copyright (C) 2008 Free Software Foundation, Inc.
+#   Copyright (C) 2008, 2009 Free Software Foundation, Inc.
 #   Written by Ralf Wildenhues, 2008
 #
 #   This file is part of GNU Libtool.
@@ -43,13 +43,16 @@ AT_CHECK([$CC $CPPFLAGS $CFLAGS -c b.c || exit 77], [], [stdout], [stderr])
 
 # Find out about expected output.
 AT_CHECK([$CC $CPPFLAGS $CFLAGS -c a.c || exit 1], [1], [stdout], [stderr])
-mv -f stdout expected-stdout
-mv -f stderr expected-stderr
+LT_AT_UNIFY_NL([stdout], [expected-stdout])
+LT_AT_UNIFY_NL([stderr], [expected-stderr])
 AT_CHECK([$LIBTOOL --mode=compile --tag=CC $CC $CPPFLAGS $CFLAGS -c a.c || exit 1],
 	 [1], [stdout], [stderr])
+LT_AT_UNIFY_NL([stderr])
 AT_CHECK([diff expected-stderr stderr])
 LTBASE=`$ECHO "$LIBTOOL" | sed 's,^.*/,,'`
-AT_CHECK([grep -v "^$LTBASE: compile" stdout | diff expected-stdout -])
+grep -v "^$LTBASE: compile" stdout > libtool-stdout
+LT_AT_UNIFY_NL([libtool-stdout])
+AT_CHECK([diff expected-stdout libtool-stdout])
 
 # check that we get our quoting right.
 LANGUAGE='a; nosuchprogram " '\''  & $x /#+*(){}|,:`\ !%'
