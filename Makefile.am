@@ -467,6 +467,7 @@ TESTSUITE_AT	= tests/testsuite.at \
 		  tests/indirect_deps.at \
 		  tests/archive-in-archive.at \
 		  tests/execute-mode.at \
+		  tests/cwrapper.at \
 		  tests/infer-tag.at \
 		  tests/localization.at \
 		  tests/install.at \
