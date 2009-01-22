@@ -1,3 +1,12 @@
+2009-01-22  Peter Rosin  <peda@lysator.liu.se>
+
+	Unify line endings in localization test.
+	* tests/testsuite.at: Update copyright year.
+	(LT_AT_UNIFY_NL): Add macro that unifies line endings on
+	platforms that suffer from such confusion.
+	* tests/localization.at: Use it. Update copyright year. Fixes
+	the test on MSYS/MSVC.
+
 2009-01-21  Charles Wilson  <libtool@cwilson.fastmail.fm>
 
 	[cygwin|mingw] Fix compile warnings when -std=c89.
