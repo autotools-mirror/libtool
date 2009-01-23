@@ -7,6 +7,16 @@
 	* tests/localization.at: Use it. Update copyright year. Fixes
 	the test on MSYS/MSVC.
 
+2009-01-13  Peter Rosin  <peda@lysator.liu.se>
+
+	* libltdl/m4/libtool.m4 (_LT_LINKER_SHLIBS)
+	[cygwin, mingw, pw32, cegcc] <cl*>: Indicate that reloadable
+	objects does not work.
+	* tests/duplicate_conv.at: Skip last test if reloadable
+	objects does not work.
+	* doc/libtool.texi (libtool script contents): Document how to
+	indicate that reloadable objects do not work.
+
 2008-08-18  Peter Rosin  <peda@lysator.liu.se>
 
 	* .gitignore: Ignore *.obj files for MSVC (and w32).
