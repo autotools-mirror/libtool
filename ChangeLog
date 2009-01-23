@@ -1,3 +1,12 @@
+2009-01-24  Charles Wilson  <libtool@cwilson.fastmail.fm>
+
+	[cygwin|mingw] cwrapper cleanups.
+	* libltdl/config/ltmain.m4sh (func_emit_cwrapperexe_src)
+	[file scope]: re-organized includes and portability
+	macros. Avoid oldnames on MINGW32 and MSVC for
+	setmode/stat/chmod/getcwd/putenv. Declare _putenv on
+	MINGW32 when -ansi. Use namespaced macro LT_DEBUGWRAPPER.
+
 2009-01-24  Peter Rosin  <peda@lysator.liu.se>
 
 	Expand exit status test in LT_AT_NOINST_EXEC_CHECK correctly
