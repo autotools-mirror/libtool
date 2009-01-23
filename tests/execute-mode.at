@@ -1,6 +1,6 @@
 # execute-mode.at -- libtool --mode=execute             -*- Autotest -*-
 #
-#   Copyright (C) 2008 Free Software Foundation, Inc.
+#   Copyright (C) 2008, 2009 Free Software Foundation, Inc.
 #   Written by Ralf Wildenhues, 2008
 #
 #   This file is part of GNU Libtool.
@@ -190,7 +190,7 @@ do
   if test -z "$arg1"; then
     arg1=$arg2; continue
   fi
-  AT_CHECK([$LIBTOOL --mode=execute ./foo abc "$arg1" "$arg2" xyz], [], [stdout])
+  AT_CHECK([$LIBTOOL --mode=execute ./foo abc "$arg1" "$arg2" xyz], [], [stdout], [ignore])
   AT_CHECK([$FGREP "$arg1" stdout], [], [ignore])
   AT_CHECK([$FGREP "$arg2" stdout], [], [ignore])
   AT_CHECK([test `sed -n '/^abc$/,/^xyz$/p' stdout | wc -l` -eq 4])

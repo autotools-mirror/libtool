@@ -1,6 +1,6 @@
 NEWS - list of user-visible changes between releases of GNU Libtool
 
-New in 2.2.8 2008-??-??: git version 2.2.7a, Libtool team:
+New in 2.2.8 2009-??-??: git version 2.2.7a, Libtool team:
 
 * New features:
 
@@ -12,8 +12,12 @@ New in 2.2.8 2008-??-??: git version 2.2.7a, Libtool team:
   - New libtool command line flag --no-verbose, which disables only
     the extra "verbose" output messages and has no effect on the
     default informational messages.
+
+* Changes in supported systems or compilers:
+
   - Improved support for 64bit Windows (mingw64).
   - Improved support for cegcc (Windows CE/PocketPC).
+  - Support for GNU/kOpenSolaris (kopensolaris*-gnu).
   - Initial support for Microsoft Visual C w/o wrapper scripts.
 
 * Bug fixes:

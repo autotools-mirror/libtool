@@ -99,6 +99,8 @@ func_make install
 func_msg "Running $MAKE uninstall in ../mdemo (dry run)"
 # Libtool does not uninstall the programs, remove them first
 rm -f "$prefix/bin/mdemo$EXEEXT" "$prefix/bin/mdemo_static$EXEEXT"
+# ls -l in MSYS sometimes shows year, not time, for really fresh files.
+sleep 1
 ls -l . $objdir | grep -v total > $before
 ls -lR $prefix | grep -v total >> $before
 force_dry_run=: $MAKE uninstall 1>&2 || exit $?

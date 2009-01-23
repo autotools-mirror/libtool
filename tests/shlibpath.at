@@ -51,7 +51,7 @@ $LIBTOOL --mode=clean rm -f liba.la
 eval `$LIBTOOL --config | $EGREP '^(shlibpath_var|shlibpath_overrides_runpath)='`
 
 # No point checking a system with static libraries:
-AT_CHECK([{ ./m || exit 1; } && exit 77], [1], [ignore], [ignore])
+LT_AT_EXEC_CHECK([./m], [1], [ignore], [ignore], [|| exit 1 && exit 77])
 
 if test "$shlibpath_var" = PATH; then
   addpath=`pwd`/moved/bin
@@ -65,7 +65,7 @@ export $shlibpath_var
 if test "$shlibpath_overrides_runpath" != no; then
   LT_AT_EXEC_CHECK([./m], [0], [ignore], [ignore])
 else
-  AT_CHECK([./m || exit 1], [1], [ignore], [ignore])
+  LT_AT_EXEC_CHECK([./m], [1], [ignore], [ignore], [|| exit 1])
 fi
 # Test that shlibpath_var is effective in adding paths at all:
 LT_AT_EXEC_CHECK([./m2], [0], [ignore], [ignore])
