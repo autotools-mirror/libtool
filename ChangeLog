@@ -1,3 +1,14 @@
+2009-01-13  Peter Rosin  <peda@lysator.liu.se>
+
+	* libltdl/m4/libtool.m4 (_LT_LINKER_SHLIBS)
+	[ cygwin, mingw, cegcc ] <cl*>: @OUTPUT@ may or may not
+	include a trailing $EXEEXT. If mt fails, make sure libtool
+	exits with an error.
+	(_LT_LANG_CXX_CONFIG): Likewise.
+	* tests/exeext.at: New. Make sure linking with both -o prog
+	and -o prog$EXEEXT works.
+	* Makefile.am: Add previous test to testsuite.
+
 2008-08-18  Peter Rosin  <peda@lysator.liu.se>
 
 	* .gitignore: Ignore *.obj files for MSVC (and w32).
