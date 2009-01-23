@@ -1,3 +1,8 @@
+2009-01-13  Peter Rosin  <peda@lysator.liu.se>
+
+	* doc/libtool.texi (libtool script contents): Document
+	new variables introduced by the MSVC port.
+
 2008-08-18  Peter Rosin  <peda@lysator.liu.se>
 
 	* .gitignore: Ignore *.obj files for MSVC (and w32).
