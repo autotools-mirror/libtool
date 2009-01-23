@@ -1,3 +1,19 @@
+2009-01-13  Peter Rosin  <peda@lysator.liu.se>
+
+	* libltdl/config/ltmain.m4sh (func_mode_ar): New function
+	implementing new libtool --mode=ar.
+	(func_mode_help): Describe new ar mode.
+	* libltdl/m4/libtool.m4 (_LT_PROG_AR): Don't AC_SUBST AR_SEP
+	and AR_TFLAGS since they are no longer needed outside the
+	libtool script. Instead AC_SUBST LT_AR and LT_ARFLAGS and set
+	them so that libtool --mode=ar is invoked if the archiver is
+	"strange".
+	* Makefile.am: Don't export AR_SEP to the testsuite, instead
+	export LT_AR and LT_ARFLAGS.
+	* tests/archive-in-archive.at: Use "$LT_AR t " instead of
+	"$AR $AR_TFLAGS$AR_SEP".
+	* doc/libtool.texi: Document new mode.
+
 2008-08-18  Peter Rosin  <peda@lysator.liu.se>
 
 	* .gitignore: Ignore *.obj files for MSVC (and w32).
