@@ -1,3 +1,9 @@
+2009-01-24  Peter Rosin  <peda@lysator.liu.se>
+
+	Expand exit status test in LT_AT_NOINST_EXEC_CHECK correctly
+	* tests/testsuite.at (LT_AT_NOINST_EXEC_CHECK): STATUS is
+	argument $3, not $2.
+
 2009-01-23  Charles Wilson  <libtool@cwilson.fastmail.fm>
 
 	Add tests for cwrapper with -std=c89 and -std=c99
