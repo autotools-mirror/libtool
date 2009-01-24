@@ -1,5 +1,11 @@
 2009-01-24  Charles Wilson  <libtool@cwilson.fastmail.fm>
 
+	Add -Wall to cwrapper tests.
+	* tests/cwrapper.at: Add -Wall existing tests. Add additional
+	round of tests with -Wall alone.
+
+2009-01-24  Charles Wilson  <libtool@cwilson.fastmail.fm>
+
 	[cygwin|mingw] cwrapper cleanups.
 	* libltdl/config/ltmain.m4sh (func_emit_cwrapperexe_src)
 	[file scope]: re-organized includes and portability
