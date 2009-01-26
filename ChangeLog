@@ -1,3 +1,10 @@
+2009-01-25  Mike Frysinger  <vapier@gentoo.org>
+
+	Fix typo in libtool install mode documentation.
+	* libltdl/config/ltmain.m4sh (func_mode_help): Change -inst-prefix
+	to -inst-prefix-dir.
+	* doc/libtool.texi (Install mode): Likewise.
+
 2009-01-24  Charles Wilson  <libtool@cwilson.fastmail.fm>
 
 	Add -Wall to cwrapper tests.

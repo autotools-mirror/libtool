@@ -1573,7 +1573,7 @@ In @dfn{install} mode, libtool interprets most of the elements of
 The following components of @var{mode-args} are treated specially:
 
 @table @option
-@item -inst-prefix @var{inst-prefix-dir}
+@item -inst-prefix-dir @var{inst-prefix-dir}
 When installing into a temporary staging area, rather than the
 final @var{prefix}, this argument is used to reflect the
 temporary path, in much the same way @command{automake} uses
