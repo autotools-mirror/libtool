@@ -1,3 +1,38 @@
+2009-01-26  Peter Rosin  <peda@lysator.liu.se>
+
+	AWK is required, make sure it is set.
+	* libltdl/m4/libtool.m4 (_LT_CMD_GLOBAL_SYMBOLS: Make sure
+	AWK is set (automake brings it in, but is not always used).
+	Fixes old-m4-iface.at on MSYS/MSVC.
+
+2009-01-25  Mike Frysinger  <vapier@gentoo.org>
+
+	Fix typo in libtool install mode documentation.
+	* libltdl/config/ltmain.m4sh (func_mode_help): Change -inst-prefix
+	to -inst-prefix-dir.
+	* doc/libtool.texi (Install mode): Likewise.
+
+2009-01-24  Charles Wilson  <libtool@cwilson.fastmail.fm>
+
+	Add -Wall to cwrapper tests.
+	* tests/cwrapper.at: Add -Wall existing tests. Add additional
+	round of tests with -Wall alone.
+
+2009-01-24  Charles Wilson  <libtool@cwilson.fastmail.fm>
+
+	[cygwin|mingw] cwrapper cleanups.
+	* libltdl/config/ltmain.m4sh (func_emit_cwrapperexe_src)
+	[file scope]: re-organized includes and portability
+	macros. Avoid oldnames on MINGW32 and MSVC for
+	setmode/stat/chmod/getcwd/putenv. Declare _putenv on
+	MINGW32 when -ansi. Use namespaced macro LT_DEBUGWRAPPER.
+
+2009-01-24  Peter Rosin  <peda@lysator.liu.se>
+
+	Expand exit status test in LT_AT_NOINST_EXEC_CHECK correctly
+	* tests/testsuite.at (LT_AT_NOINST_EXEC_CHECK): STATUS is
+	argument $3, not $2.
+
 2009-01-23  Charles Wilson  <libtool@cwilson.fastmail.fm>
 
 	Add tests for cwrapper with -std=c89 and -std=c99

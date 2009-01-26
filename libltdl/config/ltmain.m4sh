@@ -1162,7 +1162,7 @@ either the \`install' or \`cp' program.
 
 The following components of INSTALL-COMMAND are treated specially:
 
-  -inst-prefix PREFIX-DIR  Use PREFIX-DIR as a staging area for installation
+  -inst-prefix-dir PREFIX-DIR  Use PREFIX-DIR as a staging area for installation
 
 The rest of the components are interpreted as arguments to that command (only
 BSD-compatible install options are recognized)."
@@ -2778,18 +2778,11 @@ EOF
 # include <direct.h>
 # include <process.h>
 # include <io.h>
-# define setmode _setmode
 #else
 # include <unistd.h>
 # include <stdint.h>
 # ifdef __CYGWIN__
 #  include <io.h>
-#  define HAVE_SETENV
-#  ifdef __STRICT_ANSI__
-char *realpath (const char *, char *);
-int putenv (char *);
-int setenv (const char *, const char *, int);
-#  endif
 # endif
 #endif
 #include <malloc.h>
@@ -2802,6 +2795,44 @@ int setenv (const char *, const char *, int);
 #endif
 #include <fcntl.h>
 #include <sys/stat.h>
+
+/* declarations of non-ANSI functions */
+#if defined(__MINGW32__)
+# ifdef __STRICT_ANSI__
+int _putenv (const char *);
+# endif
+#elif defined(__CYGWIN__)
+# ifdef __STRICT_ANSI__
+char *realpath (const char *, char *);
+int putenv (char *);
+int setenv (const char *, const char *, int);
+# endif
+/* #elif defined (other platforms) ... */
+#endif
+
+/* portability defines, excluding path handling macros */
+#if defined(_MSC_VER)
+# define setmode _setmode
+# define stat    _stat
+# define chmod   _chmod
+# define getcwd  _getcwd
+# define putenv  _putenv
+# define S_IXUSR _S_IEXEC
+# ifndef _INTPTR_T_DEFINED
+#  define _INTPTR_T_DEFINED
+#  define intptr_t int
+# endif
+#elif defined(__MINGW32__) && !defined(__MINGW32CE__)
+# define setmode _setmode
+# define stat    _stat
+# define chmod   _chmod
+# define getcwd  _getcwd
+# define putenv  _putenv
+#elif defined(__CYGWIN__)
+# define HAVE_SETENV
+# define FOPEN_WB "wb"
+/* #elif defined (other platforms) ... */
+#endif
 
 #if defined(PATH_MAX)
 # define LT_PATHMAX PATH_MAX
@@ -2818,14 +2849,7 @@ int setenv (const char *, const char *, int);
 # define S_IXGRP 0
 #endif
 
-#ifdef _MSC_VER
-# define S_IXUSR _S_IEXEC
-# define stat _stat
-# ifndef _INTPTR_T_DEFINED
-#  define intptr_t int
-# endif
-#endif
-
+/* path handling portability macros */
 #ifndef DIR_SEPARATOR
 # define DIR_SEPARATOR '/'
 # define PATH_SEPARATOR ':'
@@ -2856,10 +2880,6 @@ int setenv (const char *, const char *, int);
 # define IS_PATH_SEPARATOR(ch) ((ch) == PATH_SEPARATOR_2)
 #endif /* PATH_SEPARATOR_2 */
 
-#ifdef __CYGWIN__
-# define FOPEN_WB "wb"
-#endif
-
 #ifndef FOPEN_WB
 # define FOPEN_WB "w"
 #endif
@@ -2873,7 +2893,7 @@ int setenv (const char *, const char *, int);
 } while (0)
 
 #undef LTWRAPPER_DEBUGPRINTF
-#if defined DEBUGWRAPPER
+#if defined LT_DEBUGWRAPPER
 # define LTWRAPPER_DEBUGPRINTF(args) ltwrapper_debugprintf args
 static void
 ltwrapper_debugprintf (const char *fmt, ...)
