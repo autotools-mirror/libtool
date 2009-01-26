@@ -1,3 +1,10 @@
+2009-01-26  Peter Rosin  <peda@lysator.liu.se>
+
+	AWK is required, make sure it is set.
+	* libltdl/m4/libtool.m4 (_LT_CMD_GLOBAL_SYMBOLS: Make sure
+	AWK is set (automake brings it in, but is not always used).
+	Fixes old-m4-iface.at on MSYS/MSVC.
+
 2009-01-25  Mike Frysinger  <vapier@gentoo.org>
 
 	Fix typo in libtool install mode documentation.
