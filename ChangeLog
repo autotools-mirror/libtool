@@ -1,3 +1,11 @@
+2009-01-29  Akim Demaille  <demaille@gostai.com>
+	    Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Normalize compiler output due to compiler wrappers.
+	* tests/testsuite.at (LT_AT_NORMALIZE_COMPILER_OUTPUT): New
+	macro, to normalize ccache and distcc output.
+	* tests/localization.at (localized compiler messages): Use it.
+
 2009-01-29  Peter Rosin  <peda@lysator.liu.se>
 
 	Make modified libtool script in cwrapper test executable
