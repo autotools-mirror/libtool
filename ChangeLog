@@ -1,3 +1,16 @@
+2009-01-29  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	func_version copes with multi-line copyright headers.
+	* libltdl/config/getopt.m4sh (func_version): Slurp in copyright
+	lines until a period is found.
+	* libltdl/config/ltmain.m4sh: Multi-line copyright is ok to use
+	now.
+	* tests/help.at (standard command line options): New file, new
+	tests.  Make this test group the first one for libtool tests,
+	moving the banner ...
+	* tests/duplicate_members.at: ... from here.
+	* Makefile.am (TESTSUITE_AT): Add tests/help.at.
+
 2009-01-29  Akim Demaille  <demaille@gostai.com>
 	    Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
