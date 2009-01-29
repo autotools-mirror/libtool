@@ -58,6 +58,7 @@ orig_LIBTOOL=$LIBTOOL
 for restrictive_flags in '-Wall -Werror' '-std=c89 -Wall -Werror' '-std=c99 -Wall -Werror'; do
   CFLAGS="$orig_CFLAGS $restrictive_flags"
   sed "s/LTCFLAGS=.*/&' $restrictive_flags'/" < "$orig_LIBTOOL" > ./libtool
+  chmod +x libtool
   LIBTOOL=./libtool
 
   # make sure $restrictive_flags do not cause a failure

@@ -1,3 +1,9 @@
+2009-01-29  Peter Rosin  <peda@lysator.liu.se>
+
+	Make modified libtool script in cwrapper test executable
+	* tests/cwrapper.at: Make modified libtool script executable.
+	Report by Roumen Petrov.
+
 2009-01-28  Akim Demaille  <demaille@gostai.com>
 
 	Clean space uses.
