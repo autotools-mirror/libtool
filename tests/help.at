@@ -36,3 +36,55 @@ AT_CHECK([$LIBTOOL --version], [], [stdout])
 AT_CHECK([grep 'Copyright.*Free Software Foundation' stdout], [], [ignore])
 
 AT_CLEANUP
+
+
+AT_SETUP([mode short-hands])
+
+AT_DATA([a.c],
+[[int a () { return 0; }
+]])
+
+AT_DATA([main.c],
+[[extern int a ();
+int main () { return a (); }
+]])
+
+inst=`pwd`/inst
+libdir=$inst/lib
+bindir=$inst/bin
+mkdir $inst $libdir $bindir
+
+AT_CHECK([$LIBTOOL compile $CC $CPPFLAGS $CFLAGS -c a.c],
+	 [], [ignore], [ignore])
+AT_CHECK([$LIBTOOL co $CC $CPPFLAGS $CFLAGS -c main.c],
+	 [], [ignore], [ignore])
+AT_CHECK([$LIBTOOL co $CC $CPPFLAGS $CFLAGS -c main.c],
+	 [], [ignore], [ignore])
+AT_CHECK([$LIBTOOL link $CC $CFLAGS $LDFLAGS -o liba.la a.lo ]dnl
+	 [-no-undefined -rpath $libdir], [], [ignore], [ignore])
+AT_CHECK([$LIBTOOL l $CC $CFLAGS $LDFLAGS -o main$EXEEXT main.lo ]dnl
+	 [liba.la], [], [ignore], [ignore])
+AT_CHECK([$LIBTOOL execute --dry-run ./main$EXEEXT],
+	 [], [ignore], [ignore])
+AT_CHECK([$LIBTOOL exe --dry-run ./main$EXEEXT],
+	 [], [ignore], [ignore])
+AT_CHECK([$LIBTOOL e --dry-run ./main$EXEEXT],
+	 [], [ignore], [ignore])
+AT_CHECK([$LIBTOOL install cp liba.la $libdir],
+	 [], [ignore], [ignore])
+AT_CHECK([$LIBTOOL i cp main$EXEEXT $bindir],
+	 [], [ignore], [ignore])
+AT_CHECK([$LIBTOOL finish $libdir],
+	 [], [ignore], [ignore])
+AT_CHECK([$LIBTOOL f $libdir],
+	 [], [ignore], [ignore])
+AT_CHECK([$LIBTOOL uninstall rm -f $libdir/liba.la],
+	 [], [ignore], [ignore])
+AT_CHECK([$LIBTOOL u rm -f $bindir/main$EXEEXT],
+	 [], [ignore], [ignore])
+AT_CHECK([$LIBTOOL clean rm -f main$EXEEXT],
+	 [], [ignore], [ignore])
+AT_CHECK([$LIBTOOL cl liba.la],
+	 [], [ignore], [ignore])
+
+AT_CLEANUP

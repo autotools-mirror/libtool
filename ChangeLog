@@ -1,5 +1,13 @@
 2009-01-29  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	Document --mode short-hands better, and test them.
+	* doc/libtool.texi (Invoking libtool): Give examples for using
+	the `--mode=MODE' short-hand `MODE', or abbreviations thereof.
+	* libltdl/config/ltmain.m4sh: Mention the short-hand for MODE
+	in the --help output.
+	* tests/help.at (mode short-hands): New test group.
+	Suggestion by Bruno Haible.
+
 	func_version copes with multi-line copyright headers.
 	* libltdl/config/getopt.m4sh (func_version): Slurp in copyright
 	lines until a period is found.

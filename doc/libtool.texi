@@ -1161,8 +1161,16 @@ operation mode, and exit.
 Use @var{mode} as the operation mode.  When using libtool from the
 command line, you can give just @var{mode} (or a unique abbreviation
 of it) as the first argument as a shorthand for the full
-@option{--mode=@var{mode}}.
+@option{--mode=@var{mode}}.  For example, the following are equivalent:
 
+@example
+$ @kbd{libtool --mode=execute --dry-run gdb prog.exe}
+$ @kbd{libtool        execute --dry-run gdb prog.exe}
+$ @kbd{libtool        exe     --dry-run gdb prog.exe}
+$ @kbd{libtool        e       --dry-run gdb prog.exe}
+@end example
+
+@noindent
 @var{mode} must be set to one of the following:
 
 @table @option

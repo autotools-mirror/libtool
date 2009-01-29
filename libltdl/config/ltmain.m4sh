@@ -59,7 +59,8 @@ m4_divert_push([SCRIPT])# @configure_input@
 #         link               create a library or an executable
 #         uninstall          remove libraries from an installed directory
 #
-# MODE-ARGS vary depending on the MODE.
+# MODE-ARGS vary depending on the MODE.  When passed as first option,
+# `--mode=MODE' may be abbreviated as `MODE' or a unique abbreviation of that.
 # Try `$progname --help --mode=MODE' for a more detailed description of MODE.
 #
 # When reporting a bug, please describe a test case to reproduce it and
