@@ -1,5 +1,9 @@
 2009-01-29  Akim Demaille  <demaille@gostai.com>
 
+	Fix bootstrap with older libtool.m4 in reach of aclocal.
+	* libltdl/m4/lt~obsolete.m4: Add stub definitions for
+	_LT_REQUIRED_DARWIN_CHECKS and _LT_AC_PROG_CXXCPP.
+
 	Fix func_exec_init.
 	* tests/defs.m4sh (func_exec_init): Instead of using the undefined
 	my_dir, call func_dirname_and_basename and use its result.
