@@ -1,3 +1,9 @@
+2009-01-30  Akim Demaille  <demaille@gostai.com>
+
+	Fix cwrapper warnings from MSVC 2005.
+	* libltdl/config/ltmain.m4sh (func_emit_cwrapperexe_src)
+	[file scope]: define _CRT_SECURE_NO_DEPRECATE.
+
 2009-01-29  Akim Demaille  <demaille@gostai.com>
 
 	Fix bootstrap with older libtool.m4 in reach of aclocal.
