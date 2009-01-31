@@ -1,6 +1,6 @@
 # fail.at -- test that libtool really fail when it should     -*- Autotest -*-
 #
-#   Copyright (C) 2005, 2008 Free Software Foundation, Inc.
+#   Copyright (C) 2005, 2008, 2009 Free Software Foundation, Inc.
 #   Written by Ralf Wildenhues, 2005
 #
 #   This file is part of GNU Libtool.
@@ -64,13 +64,26 @@ case $pic_mode in default | yes)
   ;;
 esac
 
-# program creation failure
-echo 'int not_main(void) { return 0; }' > a.c
+# program creation failure.
+# We can't rely on `main' not being present: the QNX linker
+# won't error out in that case, although the resulting binary won't work.
+# So we provoke a link failure due to an unresolved symbol, and require
+# libtool to fail only if the link without libtool would have failed, too.
+cat > a.c <<'EOF'
+extern int nonexistent_function (void);
+int main (void)
+{
+  return nonexistent_function ();
+}
+EOF
 $CC $CPPFLAGS $CFLAGS -c a.c
-FAIL_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o a$EXEEXT a.$OBJEXT])
-AT_CHECK([{ test -f a && $test_x a; } || { test -f a$EXEEXT && $test_x a$EXEEXT; }], [1])
-FAIL_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o a$EXEEXT a.$OBJEXT -static])
-AT_CHECK([{ test -f a && $test_x a; } || { test -f a$EXEEXT && $test_x a$EXEEXT; }], [1])
+if $CC $CFLAGS $LDFLAGS -o a$EXEEXT a.$OBJEXT; then :; else
+  rm -f a a$EXEEXT
+  FAIL_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o a$EXEEXT a.$OBJEXT])
+  AT_CHECK([{ test -f a && $test_x a; } || { test -f a$EXEEXT && $test_x a$EXEEXT; }], [1])
+  FAIL_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o a$EXEEXT a.$OBJEXT -static])
+  AT_CHECK([{ test -f a && $test_x a; } || { test -f a$EXEEXT && $test_x a$EXEEXT; }], [1])
+fi
 
 # shared library creation failure
 case $build_libtool_libs in yes)

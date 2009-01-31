@@ -1,5 +1,12 @@
 2009-01-31  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	Nonexistent `main' does not guarantee link failure.
+	* tests/fail.at (Failure tests): Use an unresolved symbol,
+	rather than non-presence of `main', to provoke a link failure
+	also on QNX.  Only check for failure of the libtool script if
+	the link without libtool would have failed, too.
+	Report by Mike Gorchak.
+
 	Use AT_CHECK more liberally in duplicate members test.
 	* tests/duplicate_members.at (duplicate members in archive
 	tests): Wrap link commands in AT_CHECK, they might fail, as seen
