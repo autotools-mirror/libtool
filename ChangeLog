@@ -1,3 +1,12 @@
+2009-01-31  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Use AT_CHECK more liberally in duplicate members test.
+	* tests/duplicate_members.at (duplicate members in archive
+	tests): Wrap link commands in AT_CHECK, they might fail, as seen
+	on QNX.
+	* THANKS: Update.
+	Report by Mike Gorchak.
+
 2009-01-30  Akim Demaille  <demaille@gostai.com>
 
 	Fix cwrapper warnings from MSVC 2005.
