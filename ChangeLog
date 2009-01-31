@@ -1,3 +1,12 @@
+2009-01-31  Jeff Squyres <jsquyres@cisco.com>
+	    Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	New test for bogus lt_dlopen error message.
+	* tests/lt_dlopen.at (lt_dlopen error messages): New file, new
+	test, marked as XFAIL for now.
+	* Makefile.am: Adjust.
+	Report and reproducible test case by Jeff Squyres.
+
 2009-01-31  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	execute mode: do not transform *.lo or *.la arguments.
