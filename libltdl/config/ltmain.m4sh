@@ -1314,7 +1314,7 @@ func_mode_execute ()
     for file
     do
       case $file in
-      -*) ;;
+      -* | *.la | *.lo ) ;;
       *)
 	# Do a test to see if this is really a libtool program.
 	if func_ltwrapper_script_p "$file"; then

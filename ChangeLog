@@ -1,5 +1,12 @@
 2009-01-31  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	execute mode: do not transform *.lo or *.la arguments.
+	* libltdl/config/ltmain.m4sh (func_mode_execute): Do not check
+	arguments matching *.lo or *.la for script wrappers.
+	* tests/execute-mode.at (execute mode): Add tests.
+	* NEWS, THANKS: Update.
+	Report by Paul Biggar.
+
 	Nonexistent `main' does not guarantee link failure.
 	* tests/fail.at (Failure tests): Use an unresolved symbol,
 	rather than non-presence of `main', to provoke a link failure
