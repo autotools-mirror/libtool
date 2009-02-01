@@ -38,7 +38,7 @@ func_version ()
 {
     $SED -n '/(C)/!b go
 	:more
-	/\./! {
+	/\./!{
 	  N
 	  s/\n# //
 	  b more
