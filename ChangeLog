@@ -1,5 +1,9 @@
 2009-02-01  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	Fix sed script in install.at.
+	* tests/install.at (Install tests): Fix typo in sed script,
+	fixes test failure on HP-UX.
+
 	Fix $INSTALL in testsuite with relative path to install-sh.
 	* tests/testsuite.at: If `$INSTALL' points to in-tree
 	install-sh, override a possibly-relative path to it with an
