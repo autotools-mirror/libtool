@@ -1470,6 +1470,10 @@ func_mode_install ()
     func_quote_for_eval "$arg"
     install_prog="$install_prog$func_quote_for_eval_result"
     install_shared_prog=$install_prog
+    case " $install_prog " in
+      *[\\\ /]cp\ *) install_cp=: ;;
+      *) install_cp=false ;;
+    esac
 
     # We need to accept at least all the BSD install flags.
     dest=
@@ -1492,10 +1496,9 @@ func_mode_install ()
       case $arg in
       -d) isdir=yes ;;
       -f)
-	case " $install_prog " in
-	*[\\\ /]cp\ *) ;;
-	*) prev=$arg ;;
-	esac
+	if $install_cp; then :; else
+	  prev=$arg
+	fi
 	;;
       -g | -m | -o)
 	prev=$arg
@@ -1537,8 +1540,10 @@ func_mode_install ()
       func_fatal_help "the \`$prev' option requires an argument"
 
     if test -n "$install_override_mode" && $no_mode; then
-      func_quote_for_eval "$install_override_mode"
-      install_shared_prog="$install_shared_prog -m $func_quote_for_eval_result"
+      if $install_cp; then :; else
+	func_quote_for_eval "$install_override_mode"
+	install_shared_prog="$install_shared_prog -m $func_quote_for_eval_result"
+      fi
     fi
 
     if test -z "$files"; then

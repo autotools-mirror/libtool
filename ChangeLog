@@ -1,5 +1,12 @@
 2009-02-01  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	install mode: do not pass `-m $install_override_mode' to cp.
+	* libltdl/config/ltmain.m4sh (func_mode_install): New variable
+	$install_cp, factor test when `cp' is used for installation.
+	Do not pass mode override to cp.  Fixes `libtool --mode=install
+	cp ...' on HP-UX; cp should not be used for libraries that might
+	be needed by programs invoked during the installation process.
+
 	Fix sed script portability issue in func_version.
 	* libltdl/config/getopt.m4sh (func_version): Remove space in
 	`/\./! {' sed command, to please HP-UX sed.
