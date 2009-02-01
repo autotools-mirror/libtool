@@ -1,5 +1,10 @@
 2009-02-01  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	Fix $INSTALL in testsuite with relative path to install-sh.
+	* tests/testsuite.at: If `$INSTALL' points to in-tree
+	install-sh, override a possibly-relative path to it with an
+	absolute one.
+
 	install mode: do not pass `-m $install_override_mode' to cp.
 	* libltdl/config/ltmain.m4sh (func_mode_install): New variable
 	$install_cp, factor test when `cp' is used for installation.

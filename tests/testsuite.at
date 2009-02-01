@@ -52,6 +52,12 @@ else
   unset=false
 fi
 : ${mkdir_p="$abs_top_srcdir/libltdl/config/install-sh -d"}
+# Fix relative paths in $INSTALL
+case $INSTALL in
+  *libltdl/config/install-sh*)
+    INSTALL=$abs_top_srcdir/libltdl/config/install-sh
+    ;;
+esac
 
 # On AIX, shared libraries remain loaded in memory after use if they
 # are world-readable, until root issues slibclean.  On NFS, this causes
