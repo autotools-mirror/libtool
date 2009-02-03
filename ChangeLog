@@ -1,3 +1,10 @@
+2009-02-03  Kurt Roeckx <kurt@roeckx.be>
+
+	lt_dlopenext sets error upon successful library load.
+	* libltdl/ltdl.c (lt_dlopenadvise): Fix bogus error on
+	successful loading of library with lt_dlopenext.
+	Report by Kaiwang Chen in <http://bugs.debian.org/510006>.
+
 2009-02-01  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	Fix sed script in install.at.
