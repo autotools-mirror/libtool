@@ -1,3 +1,11 @@
+2009-02-03  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+	    Kurt Roeckx <kurt@roeckx.be>
+
+	New test for lt_dlopenext error message.
+	* tests/lt_dlopenext.at (lt_dlopenext error messages): New file,
+	with new test, with sources taken from the Autobook example.
+	* Makefile.am: Update.
+
 2009-02-03  Kurt Roeckx <kurt@roeckx.be>
 
 	lt_dlopenext sets error upon successful library load.
