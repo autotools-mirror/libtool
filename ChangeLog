@@ -1,3 +1,13 @@
+2009-02-16  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Do not pass $INSTALL via TESTS_ENVIRONMENT.
+	* Makefile.am (TESTS_ENVIRONMENT): Set lt_INSTALL, not INSTALL,
+	so that a bogus relative path to the install-sh script in the
+	source tree is not propagated to the configure scripts of the
+	old test suite.
+	* tests/testsuite.at: Adjust.
+	* tests/install.at (Install tests): Likewise.
+
 2009-02-03  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 	    Kurt Roeckx <kurt@roeckx.be>
 

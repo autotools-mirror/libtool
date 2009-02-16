@@ -52,10 +52,10 @@ else
   unset=false
 fi
 : ${mkdir_p="$abs_top_srcdir/libltdl/config/install-sh -d"}
-# Fix relative paths in $INSTALL
-case $INSTALL in
+# Fix relative paths in $lt_INSTALL
+case $lt_INSTALL in
   *libltdl/config/install-sh*)
-    INSTALL=$abs_top_srcdir/libltdl/config/install-sh
+    lt_INSTALL=$abs_top_srcdir/libltdl/config/install-sh
     ;;
 esac
 
