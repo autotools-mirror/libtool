@@ -1,7 +1,7 @@
 #! /bin/sh
-# bootstrap -- Helps bootstrapping libtool, when checked out from CVS.
+# bootstrap -- Helps bootstrapping libtool, when checked out from repository.
 #
-#   Copyright (C) 2003, 2004, 2005, 2006 Free Software Foundation, Inc,
+#   Copyright (C) 2003, 2004, 2005, 2006, 2009 Free Software Foundation, Inc,
 #   Mritten by Gary V. Vaughan, 2003
 #
 #   This file is part of GNU Libtool.
@@ -47,7 +47,7 @@ export SHELL
 case $1 in
 --help|-h*)
   cat <<EOF
-`echo $0 | sed 's,^.*/,,g'`: This script is designed to bootstrap a fresh CVS checkout
+`echo $0 | sed 's,^.*/,,g'`: This script is designed to bootstrap a fresh repository checkout
 of Libtool.  Useful environment variable settings:
   reconfdirs='. libltdl'     Do not bootstrap the old test suite.
   WORKING_LIBOBJ_SUPPORT=:   Declare that you have fixed LIBOBJDIR support
@@ -149,7 +149,7 @@ rm -f Makefile
 # Make a dummy libtoolize script for autoreconf:
 cat > $auxdir/libtoolize <<'EOF'
 #! /bin/sh
-# This is a dummy file for bootstrapping CVS libtool.
+# This is a dummy file for bootstrapping libtool.
 echo "$0: Bootstrap detected, no files installed." | sed 's,^.*/,,g'
 exit 0
 EOF

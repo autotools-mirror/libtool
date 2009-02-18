@@ -1,3 +1,14 @@
+2009-02-28  Andreas Schwab  <schwab@suse.de>
+	    Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Remove remaining references to CVS.
+	* bootstrap: Remove references to CVS.
+	* README.alpha: Likewise.
+	* clcommit.m4sh: Likewise.
+	* doc/libtool.texi: Bump copyright years.
+	(libtool script contents): Describe macro_revision as revision
+	without reference to CVS.
+
 2009-02-16  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	Do not pass $INSTALL via TESTS_ENVIRONMENT.

@@ -21,10 +21,9 @@ subject line including the string `[PLATFORM]'.
 =================
 
 If this distribution doesn't work for you, before you report the
-problem, please try upgrading to the latest version from CVS first:
+problem, please try upgrading to the latest version from git first:
 
-  export CVS_RSH=ssh
-  cvs -z3 -d :pserver:anonymous@cvs.sv.gnu.org:/sources/libtool co libtool
+  git clone git://git.savannah.gnu.org/libtool.git
   cd libtool
   ./bootstrap
 
@@ -115,7 +114,8 @@ send the file `tests/testsuite.log' to the bug report mailing list,
 <bug-libtool@gnu.org>.
 
 -- 
-  Copyright (C) 2004, 2005, 2006, 2007, 2008  Free Software Foundation, Inc.
+  Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009  Free Software
+  Foundation, Inc.
   Written by Gary V. Vaughan, 2004
 
   This file is part of GNU Libtool.
