@@ -4474,7 +4474,7 @@ unnecessary but makes it easy to forget to upgrade @file{acinclude.m4}
 if you move to a different release of libltdl.
 @c
 }.  Having made the macros available, you must add a call to the
-@samp{LTDL_INIT} macro (after the call to @samp{LT_INIT}
+@samp{LTDL_INIT} macro (after the call to @samp{LT_INIT})
 to your package's @file{configure.ac} to
 perform the configure time checks required to build the library
 correctly.  Unfortunately, this method has problems if you then try to
@@ -5004,7 +5004,7 @@ static and shared libraries, @file{depdemo-static.test} builds only static
 libraries (@option{--disable-shared}), and @file{depdemo-shared.test} builds
 only shared libraries (@option{--disable-static}).
 @file{depdemo-nofast.test} configures @file{depdemo/libtool} to
-disable the fast-install mode (@option{--enable-fast-install=no}.
+disable the fast-install mode (@option{--enable-fast-install=no}).
 
 @item mdemo-conf.test
 @itemx mdemo-exec.test
