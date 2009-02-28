@@ -1,3 +1,12 @@
+2009-03-03  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Document INNER_TESTSUITEFLAGS, drop leading space.
+	* README: Document INNER_TESTSUITEFLAGS.
+	* tests/cmdline_wrap.at (Run tests with low max_cmd_len):
+	When using INNER_TESTSUITEFLAGS on the testsuite invocation,
+	drop leading space after "-k libtool", so that the user may
+	further limit the set of tests to be run.
+
 2009-03-02  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	Fix low max_cmd_len template test on UnixWare.

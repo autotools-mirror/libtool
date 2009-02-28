@@ -104,6 +104,15 @@ possible to test an installed script, possibly from a different Libtool
 release, with
   gmake check-local TESTSUITEFLAGS="-k libtool LIBTOOL=/path/to/libtool"
 
+Some tests, like the one exercising max_cmd_len limits, make use of this
+to invoke the testsuite recursively on a subset of tests.  For these
+tests, the variable INNER_TESTSUITEFLAGS may be used.  It will be
+expanded right after the `-k libtool', without separating whitespace,
+so that further limiting of the recursive set of tests is possible.
+For example, to run only the template tests within the max_cmd_len, use
+  gmake check-local TESTSUITEFLAGS="-v -x -k max_cmd_len \
+		      INNER_TESTSUITEFLAGS=',template -v -x'"
+
 If you wish to report test failures to the libtool list, you need to
 send the file `tests/testsuite.log' to the bug report mailing list,
 <bug-libtool@gnu.org>.
@@ -165,7 +174,8 @@ For more details about version numbers, see:
     http://www.gnu.org/software/libtool/contribute.html
 
 -- 
-  Copyright (C) 2004, 2005, 2006, 2007, 2008  Free Software Foundation, Inc.
+  Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009  Free Software
+  Foundation, Inc.
   Written by Gary V. Vaughan, 2004
 
   This file is part of GNU Libtool.

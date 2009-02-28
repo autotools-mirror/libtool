@@ -1,6 +1,6 @@
 # cmdline_wrap.at -- run tests with low max_cmd_len           -*- Autotest -*-
 
-#   Copyright (C) 2007 Free Software Foundation, Inc.
+#   Copyright (C) 2007, 2009 Free Software Foundation, Inc.
 #   Written by Ralf Wildenhues, 2007
 #
 #   This file is part of GNU Libtool.
@@ -40,7 +40,7 @@ mkdir tests
 cd tests
 INNER_TESTSUITEFLAGS="$INNER_TESTSUITEFLAGS abs_top_srcdir=$abs_top_srcdir \
   abs_builddir=$abs_builddir"
-AT_CHECK([$CONFIG_SHELL $abs_srcdir/testsuite -k libtool $INNER_TESTSUITEFLAGS],
+AT_CHECK([$CONFIG_SHELL $abs_srcdir/testsuite -k libtool$INNER_TESTSUITEFLAGS],
 	 [], [ignore], [ignore])
 
 AT_CLEANUP
