@@ -1,3 +1,10 @@
+2009-02-28  Tim Rice  <tim@multitalents.net>
+
+	Fix C++ template handling for old archives on UnixWare 7.1.4.
+	* libltdl/m4/libtool.m4 (_LT_LANG_CXX_CONFIG) [sysv5*,
+	sco3.2v5*, sco5v6*] <old_archive_cmds>: For CC, add template
+	prelink step before archiving.  Fixes template.at test failures.
+
 2009-02-28  Török Edwin  <edwintorok@gmail.com>  (tiny change)
 	    Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
