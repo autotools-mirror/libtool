@@ -1,3 +1,12 @@
+2009-02-28  Török Edwin  <edwintorok@gmail.com>  (tiny change)
+	    Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Do not add bogus directory arguments to link command lines.
+	* libltdl/config/ltmain.m4sh (func_mode_link): Ensure $path is
+	always initialized before it is used.  Reported for zsh, for
+	which $path contains $PATH entries even after "emulate sh", see
+	<http://bugs.debian.org/517501>.
+
 2009-02-28  Andreas Schwab  <schwab@suse.de>
 	    Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
