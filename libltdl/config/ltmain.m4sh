@@ -6923,17 +6923,19 @@ EOF
 		  # command to the queue.
 		  if test "$k" -eq 1 ; then
 		    # The first file doesn't have a previous command to add.
-		    eval concat_cmds=\"$reload_cmds $objlist $last_robj\"
+		    reload_objs=$objlist
+		    eval concat_cmds=\"$reload_cmds\"
 		  else
 		    # All subsequent reloadable object files will link in
 		    # the last one created.
-		    eval concat_cmds=\"\$concat_cmds~$reload_cmds $objlist $last_robj~\$RM $last_robj\"
+		    reload_objs="$objlist $last_robj"
+		    eval concat_cmds=\"\$concat_cmds~$reload_cmds~\$RM $last_robj\"
 		  fi
 		  last_robj=$output_objdir/$output_la-${k}.$objext
 		  func_arith $k + 1
 		  k=$func_arith_result
 		  output=$output_objdir/$output_la-${k}.$objext
-		  objlist=$obj
+		  objlist=" $obj"
 		  func_len " $last_robj"
 		  func_arith $len0 + $func_len_result
 		  len=$func_arith_result
@@ -6943,7 +6945,8 @@ EOF
 	      # reloadable object file.  All subsequent reloadable object
 	      # files will link in the last one created.
 	      test -z "$concat_cmds" || concat_cmds=$concat_cmds~
-	      eval concat_cmds=\"\${concat_cmds}$reload_cmds $objlist $last_robj\"
+	      reload_objs="$objlist $last_robj"
+	      eval concat_cmds=\"\${concat_cmds}$reload_cmds\"
 	      if test -n "$last_robj"; then
 	        eval concat_cmds=\"\${concat_cmds}~\$RM $last_robj\"
 	      fi

@@ -1,3 +1,22 @@
+2009-03-02  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Fix low max_cmd_len template test on UnixWare.
+	* libltdl/config/ltmain.m4sh (func_mode_link): When expanding
+	$reload_cmds, always put objects in $reload_objs rather than
+	adding them to the command line, to allow more general command
+	lines in reload_cmds.  Ensure $reload_objs contains a leading
+	space.
+	* libltdl/m4/libtool.m4 (_LT_LANG_CXX_CONFIG) [sysv5*,
+	sco3.2v5*, sco5v6*] <reload_cmds>: For CC, invoke prelinker
+	before creating reloadable object.
+	(_LT_CMD_RELOAD) <reload_cmds, reload_flag>: Declare as
+	_LT_TAGDECL, not _LC_DECL.
+	(_LT_LANG_CXX_CONFIG, _LT_LANG_F77_CONFIG, _LT_LANG_FC_CONFIG)
+	(_LT_LANG_GCJ_CONFIG) <reload_cmds, reload_flag>: Initialize
+	from default (C tag) value.
+	* THANKS: Update.
+	Report and analysis by Tim Rice and John Wolfe.
+
 2009-02-28  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* doc/libtool.texi (Distributing libltdl, Test descriptions):
