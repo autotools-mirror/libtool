@@ -1,3 +1,16 @@
+2009-01-26  Peter Rosin  <peda@lysator.liu.se>
+
+	Don't settle for any dumpbin/link program as name lister.
+	* libltdl/m4/libtool.m4 (LT_PATH_NM): When locating dumpbin or
+	link -dump, check if they appear to really be capable of name
+	listing, in order to eliminate e.g. link from coreutils. This
+	makes the name lister decision fall back on nm as the default if
+	no acceptable candidate is found, which mainly happens on
+	(arguably broken) cross compiles.
+	* NEWS: Update
+	* THANKS: Update
+	Reports by Rudolf Leitgeb and Peter Kjellerstedt.
+
 2009-03-03  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	Document INNER_TESTSUITEFLAGS, drop leading space.
