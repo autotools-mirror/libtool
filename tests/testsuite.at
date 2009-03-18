@@ -52,6 +52,12 @@ else
   unset=false
 fi
 : ${mkdir_p="$abs_top_srcdir/libltdl/config/install-sh -d"}
+# Fix relative paths in $lt_INSTALL
+case $lt_INSTALL in
+  *libltdl/config/install-sh*)
+    lt_INSTALL=$abs_top_srcdir/libltdl/config/install-sh
+    ;;
+esac
 
 # On AIX, shared libraries remain loaded in memory after use if they
 # are world-readable, until root issues slibclean.  On NFS, this causes
@@ -216,6 +222,20 @@ m4_define([LT_AT_UNIFY_NL],
   *)
     cp $1 $2 ;;])
 esac])
+
+
+# LT_AT_NORMALIZE_COMPILER_OUTPUT(FILE, [RESULT-FILE])
+# ----------------------------------------------------
+# Normalize differences in compiler output stemming from, e.g.,
+# - distcc process numbers,
+# - ccache file location,
+# - newline encoding,
+# - location of the libtool script.
+m4_define([LT_AT_NORMALIZE_COMPILER_OUTPUT],
+[_ltbase=`$ECHO "$LIBTOOL" | sed 's,^.*/,,'`
+[sed "/^distcc\[[0-9]*\]/d; /^$_ltbase: compile/d" < $1 > $1.t]
+LT_AT_UNIFY_NL([$1.t], [m4_default([$2], [$1])])[]dnl
+])
 
 
 # LT_AT_EXEC_CHECK(EXECUTABLE, [STATUS = 0], [STDOUT], [STDERR],

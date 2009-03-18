@@ -1,0 +1,90 @@
+# help.at -- standard command line options          -*- Autotest -*-
+#
+#   Copyright (C) 2009 Free Software Foundation, Inc.
+#
+#   This file is part of GNU Libtool.
+#
+# GNU Libtool is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License as
+# published by the Free Software Foundation; either version 2 of
+# the License, or (at your option) any later version.
+#
+# GNU Libtool is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with GNU Libtool; see the file COPYING.  If not, a copy
+# can be downloaded from  http://www.gnu.org/licenses/gpl.html,
+# or obtained by writing to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+####
+
+AT_BANNER([Testing libtool functions.])
+
+AT_SETUP([standard command line options])
+AT_KEYWORDS([libtool])
+AT_KEYWORDS([libtoolize])
+
+AT_CHECK([$LIBTOOLIZE --help], [], [ignore])
+AT_CHECK([$LIBTOOLIZE --version], [], [stdout])
+AT_CHECK([grep 'Copyright.*Free Software Foundation' stdout], [], [ignore])
+AT_CHECK([$LIBTOOL --help], [], [ignore])
+AT_CHECK([$LIBTOOL --help-all], [], [ignore])
+AT_CHECK([$LIBTOOL --version], [], [stdout])
+AT_CHECK([grep 'Copyright.*Free Software Foundation' stdout], [], [ignore])
+
+AT_CLEANUP
+
+
+AT_SETUP([mode short-hands])
+
+AT_DATA([a.c],
+[[int a () { return 0; }
+]])
+
+AT_DATA([main.c],
+[[extern int a ();
+int main () { return a (); }
+]])
+
+inst=`pwd`/inst
+libdir=$inst/lib
+bindir=$inst/bin
+mkdir $inst $libdir $bindir
+
+AT_CHECK([$LIBTOOL compile $CC $CPPFLAGS $CFLAGS -c a.c],
+	 [], [ignore], [ignore])
+AT_CHECK([$LIBTOOL co $CC $CPPFLAGS $CFLAGS -c main.c],
+	 [], [ignore], [ignore])
+AT_CHECK([$LIBTOOL co $CC $CPPFLAGS $CFLAGS -c main.c],
+	 [], [ignore], [ignore])
+AT_CHECK([$LIBTOOL link $CC $CFLAGS $LDFLAGS -o liba.la a.lo ]dnl
+	 [-no-undefined -rpath $libdir], [], [ignore], [ignore])
+AT_CHECK([$LIBTOOL l $CC $CFLAGS $LDFLAGS -o main$EXEEXT main.lo ]dnl
+	 [liba.la], [], [ignore], [ignore])
+AT_CHECK([$LIBTOOL execute --dry-run ./main$EXEEXT],
+	 [], [ignore], [ignore])
+AT_CHECK([$LIBTOOL exe --dry-run ./main$EXEEXT],
+	 [], [ignore], [ignore])
+AT_CHECK([$LIBTOOL e --dry-run ./main$EXEEXT],
+	 [], [ignore], [ignore])
+AT_CHECK([$LIBTOOL install cp liba.la $libdir],
+	 [], [ignore], [ignore])
+AT_CHECK([$LIBTOOL i cp main$EXEEXT $bindir],
+	 [], [ignore], [ignore])
+AT_CHECK([$LIBTOOL finish $libdir],
+	 [], [ignore], [ignore])
+AT_CHECK([$LIBTOOL f $libdir],
+	 [], [ignore], [ignore])
+AT_CHECK([$LIBTOOL uninstall rm -f $libdir/liba.la],
+	 [], [ignore], [ignore])
+AT_CHECK([$LIBTOOL u rm -f $bindir/main$EXEEXT],
+	 [], [ignore], [ignore])
+AT_CHECK([$LIBTOOL clean rm -f main$EXEEXT],
+	 [], [ignore], [ignore])
+AT_CHECK([$LIBTOOL cl liba.la],
+	 [], [ignore], [ignore])
+
+AT_CLEANUP

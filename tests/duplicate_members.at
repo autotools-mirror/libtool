@@ -1,6 +1,6 @@
 # duplicate_members.at -- duplicate members in archive tests  -*- Autotest -*-
 
-#   Copyright (C) 2005, 2007, 2008 Free Software Foundation, Inc.
+#   Copyright (C) 2005, 2007, 2008, 2009 Free Software Foundation, Inc.
 #   Written by Alexandre Oliva & Peter O'Gorman, 2005
 #
 #   This file is part of GNU Libtool.
@@ -22,7 +22,6 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 ####
 
-AT_BANNER([Testing libtool functions.])
 AT_SETUP([duplicate members in archive tests])
 AT_KEYWORDS([libtool])
 
@@ -62,13 +61,16 @@ do
   $LIBTOOL --mode=compile --tag=CC $CC $CPPFLAGS $CFLAGS -c -o $a/a.lo $a/a.c
 done
 $LIBTOOL --mode=link --tag=CC $CC $CFLAGS $LDFLAGS -o libc0.la 6/a.lo
-$LIBTOOL --mode=link --tag=CC $CC $CFLAGS $LDFLAGS -o libconv.la 1/a.lo 2/a.lo 3/a.lo 4/a.lo 5/a.lo libc0.la
+AT_CHECK([$LIBTOOL --mode=link --tag=CC $CC $CFLAGS $LDFLAGS -o libconv.la ]dnl
+	 [1/a.lo 2/a.lo 3/a.lo 4/a.lo 5/a.lo libc0.la], [], [ignore], [ignore])
 
 $LIBTOOL --mode=compile --tag=CC $CC $CPPFLAGS $CFLAGS -c -o bar.lo bar.c
-$LIBTOOL --mode=link --tag=CC $CC $CFLAGS $LDFLAGS -o libbar.la bar.lo libconv.la -rpath /notexist
+AT_CHECK([$LIBTOOL --mode=link --tag=CC $CC $CFLAGS $LDFLAGS -o libbar.la ]dnl
+	 [ bar.lo libconv.la -rpath /notexist], [], [ignore], [ignore])
 
 $LIBTOOL --mode=compile --tag=CC $CC $CPPFLAGS $CFLAGS -c -o main.lo main.c
-$LIBTOOL --mode=link --tag=CC $CC $CFLAGS $LDFLAGS -o main$EXEEXT main.lo ./libbar.la
+AT_CHECK([$LIBTOOL --mode=link --tag=CC $CC $CFLAGS $LDFLAGS -o main$EXEEXT ]dnl
+	 [main.lo ./libbar.la], [], [ignore], [ignore])
 
 LT_AT_EXEC_CHECK([./main],[0],[ignore],[ignore])
 

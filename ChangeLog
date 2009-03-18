@@ -1,5 +1,217 @@
 2009-01-26  Peter Rosin  <peda@lysator.liu.se>
 
+	Don't settle for any dumpbin/link program as name lister.
+	* libltdl/m4/libtool.m4 (LT_PATH_NM): When locating dumpbin or
+	link -dump, check if they appear to really be capable of name
+	listing, in order to eliminate e.g. link from coreutils. This
+	makes the name lister decision fall back on nm as the default if
+	no acceptable candidate is found, which mainly happens on
+	(arguably broken) cross compiles.
+	* NEWS: Update
+	* THANKS: Update
+	Reports by Rudolf Leitgeb and Peter Kjellerstedt.
+
+2009-03-03  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Document INNER_TESTSUITEFLAGS, drop leading space.
+	* README: Document INNER_TESTSUITEFLAGS.
+	* tests/cmdline_wrap.at (Run tests with low max_cmd_len):
+	When using INNER_TESTSUITEFLAGS on the testsuite invocation,
+	drop leading space after "-k libtool", so that the user may
+	further limit the set of tests to be run.
+
+2009-03-02  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Fix low max_cmd_len template test on UnixWare.
+	* libltdl/config/ltmain.m4sh (func_mode_link): When expanding
+	$reload_cmds, always put objects in $reload_objs rather than
+	adding them to the command line, to allow more general command
+	lines in reload_cmds.  Ensure $reload_objs contains a leading
+	space.
+	* libltdl/m4/libtool.m4 (_LT_LANG_CXX_CONFIG) [sysv5*,
+	sco3.2v5*, sco5v6*] <reload_cmds>: For CC, invoke prelinker
+	before creating reloadable object.
+	(_LT_CMD_RELOAD) <reload_cmds, reload_flag>: Declare as
+	_LT_TAGDECL, not _LC_DECL.
+	(_LT_LANG_CXX_CONFIG, _LT_LANG_F77_CONFIG, _LT_LANG_FC_CONFIG)
+	(_LT_LANG_GCJ_CONFIG) <reload_cmds, reload_flag>: Initialize
+	from default (C tag) value.
+	* THANKS: Update.
+	Report and analysis by Tim Rice and John Wolfe.
+
+2009-02-28  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* doc/libtool.texi (Distributing libltdl, Test descriptions):
+	Add missing parentheses.
+
+2009-02-28  Tim Rice  <tim@multitalents.net>
+
+	Fix C++ template handling for old archives on UnixWare 7.1.4.
+	* libltdl/m4/libtool.m4 (_LT_LANG_CXX_CONFIG) [sysv5*,
+	sco3.2v5*, sco5v6*] <old_archive_cmds>: For CC, add template
+	prelink step before archiving.  Fixes template.at test failures.
+
+2009-02-28  Török Edwin  <edwintorok@gmail.com>  (tiny change)
+	    Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Do not add bogus directory arguments to link command lines.
+	* libltdl/config/ltmain.m4sh (func_mode_link): Ensure $path is
+	always initialized before it is used.  Reported for zsh, for
+	which $path contains $PATH entries even after "emulate sh", see
+	<http://bugs.debian.org/517501>.
+
+2009-02-28  Andreas Schwab  <schwab@suse.de>
+	    Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Remove remaining references to CVS.
+	* bootstrap: Remove references to CVS.
+	* README.alpha: Likewise.
+	* clcommit.m4sh: Likewise.
+	* doc/libtool.texi: Bump copyright years.
+	(libtool script contents): Describe macro_revision as revision
+	without reference to CVS.
+
+2009-02-16  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Do not pass $INSTALL via TESTS_ENVIRONMENT.
+	* Makefile.am (TESTS_ENVIRONMENT): Set lt_INSTALL, not INSTALL,
+	so that a bogus relative path to the install-sh script in the
+	source tree is not propagated to the configure scripts of the
+	old test suite.
+	* tests/testsuite.at: Adjust.
+	* tests/install.at (Install tests): Likewise.
+
+2009-02-03  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+	    Kurt Roeckx <kurt@roeckx.be>
+
+	New test for lt_dlopenext error message.
+	* tests/lt_dlopenext.at (lt_dlopenext error messages): New file,
+	with new test, with sources taken from the Autobook example.
+	* Makefile.am: Update.
+
+2009-02-03  Kurt Roeckx <kurt@roeckx.be>
+
+	lt_dlopenext sets error upon successful library load.
+	* libltdl/ltdl.c (lt_dlopenadvise): Fix bogus error on
+	successful loading of library with lt_dlopenext.
+	Report by Kaiwang Chen in <http://bugs.debian.org/510006>.
+
+2009-02-01  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Fix sed script in install.at.
+	* tests/install.at (Install tests): Fix typo in sed script,
+	fixes test failure on HP-UX.
+
+	Fix $INSTALL in testsuite with relative path to install-sh.
+	* tests/testsuite.at: If `$INSTALL' points to in-tree
+	install-sh, override a possibly-relative path to it with an
+	absolute one.
+
+	install mode: do not pass `-m $install_override_mode' to cp.
+	* libltdl/config/ltmain.m4sh (func_mode_install): New variable
+	$install_cp, factor test when `cp' is used for installation.
+	Do not pass mode override to cp.  Fixes `libtool --mode=install
+	cp ...' on HP-UX; cp should not be used for libraries that might
+	be needed by programs invoked during the installation process.
+
+	Fix sed script portability issue in func_version.
+	* libltdl/config/getopt.m4sh (func_version): Remove space in
+	`/\./! {' sed command, to please HP-UX sed.
+
+2009-01-31  Jeff Squyres <jsquyres@cisco.com>
+	    Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	New test for bogus lt_dlopen error message.
+	* tests/lt_dlopen.at (lt_dlopen error messages): New file, new
+	test, marked as XFAIL for now.
+	* Makefile.am: Adjust.
+	Report and reproducible test case by Jeff Squyres.
+
+2009-01-31  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	execute mode: do not transform *.lo or *.la arguments.
+	* libltdl/config/ltmain.m4sh (func_mode_execute): Do not check
+	arguments matching *.lo or *.la for script wrappers.
+	* tests/execute-mode.at (execute mode): Add tests.
+	* NEWS, THANKS: Update.
+	Report by Paul Biggar.
+
+	Nonexistent `main' does not guarantee link failure.
+	* tests/fail.at (Failure tests): Use an unresolved symbol,
+	rather than non-presence of `main', to provoke a link failure
+	also on QNX.  Only check for failure of the libtool script if
+	the link without libtool would have failed, too.
+	Report by Mike Gorchak.
+
+	Use AT_CHECK more liberally in duplicate members test.
+	* tests/duplicate_members.at (duplicate members in archive
+	tests): Wrap link commands in AT_CHECK, they might fail, as seen
+	on QNX.
+	* THANKS: Update.
+	Report by Mike Gorchak.
+
+2009-01-30  Akim Demaille  <demaille@gostai.com>
+
+	Fix cwrapper warnings from MSVC 2005.
+	* libltdl/config/ltmain.m4sh (func_emit_cwrapperexe_src)
+	[file scope]: define _CRT_SECURE_NO_DEPRECATE.
+
+2009-01-29  Akim Demaille  <demaille@gostai.com>
+
+	Fix bootstrap with older libtool.m4 in reach of aclocal.
+	* libltdl/m4/lt~obsolete.m4: Add stub definitions for
+	_LT_REQUIRED_DARWIN_CHECKS and _LT_AC_PROG_CXXCPP.
+
+	Fix func_exec_init.
+	* tests/defs.m4sh (func_exec_init): Instead of using the undefined
+	my_dir, call func_dirname_and_basename and use its result.
+	(func_make): For consistency, don't use the useless local variable
+	my_dir.
+
+2009-01-29  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Document --mode short-hands better, and test them.
+	* doc/libtool.texi (Invoking libtool): Give examples for using
+	the `--mode=MODE' short-hand `MODE', or abbreviations thereof.
+	* libltdl/config/ltmain.m4sh: Mention the short-hand for MODE
+	in the --help output.
+	* tests/help.at (mode short-hands): New test group.
+	Suggestion by Bruno Haible.
+
+	func_version copes with multi-line copyright headers.
+	* libltdl/config/getopt.m4sh (func_version): Slurp in copyright
+	lines until a period is found.
+	* libltdl/config/ltmain.m4sh: Multi-line copyright is ok to use
+	now.
+	* tests/help.at (standard command line options): New file, new
+	tests.  Make this test group the first one for libtool tests,
+	moving the banner ...
+	* tests/duplicate_members.at: ... from here.
+	* Makefile.am (TESTSUITE_AT): Add tests/help.at.
+
+2009-01-29  Akim Demaille  <demaille@gostai.com>
+	    Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Normalize compiler output due to compiler wrappers.
+	* tests/testsuite.at (LT_AT_NORMALIZE_COMPILER_OUTPUT): New
+	macro, to normalize ccache and distcc output.
+	* tests/localization.at (localized compiler messages): Use it.
+
+2009-01-29  Peter Rosin  <peda@lysator.liu.se>
+
+	Make modified libtool script in cwrapper test executable
+	* tests/cwrapper.at: Make modified libtool script executable.
+	Report by Roumen Petrov.
+
+2009-01-28  Akim Demaille  <demaille@gostai.com>
+
+	Clean space uses.
+	* libtoolize.m4sh: Remove trailing spaces.
+	Use <tab><sp>, as some editors remove "useless" spaces in
+	<sp><tab>.
+
+2009-01-26  Peter Rosin  <peda@lysator.liu.se>
+
 	AWK is required, make sure it is set.
 	* libltdl/m4/libtool.m4 (_LT_CMD_GLOBAL_SYMBOLS: Make sure
 	AWK is set (automake brings it in, but is not always used).

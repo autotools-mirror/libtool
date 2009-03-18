@@ -4,7 +4,8 @@ m4_divert_push([SCRIPT])# @configure_input@
 # libtool (GNU @PACKAGE@@TIMESTAMP@) @VERSION@
 # Written by Gordon Matzigkeit <gord@gnu.ai.mit.edu>, 1996
 
-# Copyright (C) 1996, 1997, 1998, 1999, 2000, 2001, 2003, 2004, 2005, 2006, 2007, 2008, 2009 Free Software Foundation, Inc.
+# Copyright (C) 1996, 1997, 1998, 1999, 2000, 2001, 2003, 2004, 2005, 2006,
+# 2007, 2008, 2009 Free Software Foundation, Inc.
 # This is free software; see the source for copying conditions.  There is NO
 # warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
@@ -59,7 +60,8 @@ m4_divert_push([SCRIPT])# @configure_input@
 #         link               create a library or an executable
 #         uninstall          remove libraries from an installed directory
 #
-# MODE-ARGS vary depending on the MODE.
+# MODE-ARGS vary depending on the MODE.  When passed as first option,
+# `--mode=MODE' may be abbreviated as `MODE' or a unique abbreviation of that.
 # Try `$progname --help --mode=MODE' for a more detailed description of MODE.
 #
 # When reporting a bug, please describe a test case to reproduce it and
@@ -1367,7 +1369,7 @@ func_mode_execute ()
     for file
     do
       case $file in
-      -*) ;;
+      -* | *.la | *.lo ) ;;
       *)
 	# Do a test to see if this is really a libtool program.
 	if func_ltwrapper_script_p "$file"; then
@@ -1523,6 +1525,10 @@ func_mode_install ()
     func_quote_for_eval "$arg"
     install_prog="$install_prog$func_quote_for_eval_result"
     install_shared_prog=$install_prog
+    case " $install_prog " in
+      *[\\\ /]cp\ *) install_cp=: ;;
+      *) install_cp=false ;;
+    esac
 
     # We need to accept at least all the BSD install flags.
     dest=
@@ -1545,10 +1551,9 @@ func_mode_install ()
       case $arg in
       -d) isdir=yes ;;
       -f)
-	case " $install_prog " in
-	*[\\\ /]cp\ *) ;;
-	*) prev=$arg ;;
-	esac
+	if $install_cp; then :; else
+	  prev=$arg
+	fi
 	;;
       -g | -m | -o)
 	prev=$arg
@@ -1590,8 +1595,10 @@ func_mode_install ()
       func_fatal_help "the \`$prev' option requires an argument"
 
     if test -n "$install_override_mode" && $no_mode; then
-      func_quote_for_eval "$install_override_mode"
-      install_shared_prog="$install_shared_prog -m $func_quote_for_eval_result"
+      if $install_cp; then :; else
+	func_quote_for_eval "$install_override_mode"
+	install_shared_prog="$install_shared_prog -m $func_quote_for_eval_result"
+      fi
     fi
 
     if test -z "$files"; then
@@ -2772,6 +2779,9 @@ func_emit_cwrapperexe_src ()
 */
 EOF
 	    cat <<"EOF"
+#ifdef _MSC_VER
+# define _CRT_SECURE_NO_DEPRECATE 1
+#endif
 #include <stdio.h>
 #include <stdlib.h>
 #ifdef _MSC_VER
@@ -5676,6 +5686,7 @@ func_mode_link ()
 	  if test "$link_all_deplibs" != no; then
 	    # Add the search paths of all dependency libraries
 	    for deplib in $dependency_libs; do
+	      path=
 	      case $deplib in
 	      -L*) path="$deplib" ;;
 	      *.la)
@@ -7012,17 +7023,19 @@ EOF
 		  # command to the queue.
 		  if test "$k" -eq 1 ; then
 		    # The first file doesn't have a previous command to add.
-		    eval concat_cmds=\"$reload_cmds $objlist $last_robj\"
+		    reload_objs=$objlist
+		    eval concat_cmds=\"$reload_cmds\"
 		  else
 		    # All subsequent reloadable object files will link in
 		    # the last one created.
-		    eval concat_cmds=\"\$concat_cmds~$reload_cmds $objlist $last_robj~\$RM $last_robj\"
+		    reload_objs="$objlist $last_robj"
+		    eval concat_cmds=\"\$concat_cmds~$reload_cmds~\$RM $last_robj\"
 		  fi
 		  last_robj=$output_objdir/$output_la-${k}.$objext
 		  func_arith $k + 1
 		  k=$func_arith_result
 		  output=$output_objdir/$output_la-${k}.$objext
-		  objlist=$obj
+		  objlist=" $obj"
 		  func_len " $last_robj"
 		  func_arith $len0 + $func_len_result
 		  len=$func_arith_result
@@ -7032,7 +7045,8 @@ EOF
 	      # reloadable object file.  All subsequent reloadable object
 	      # files will link in the last one created.
 	      test -z "$concat_cmds" || concat_cmds=$concat_cmds~
-	      eval concat_cmds=\"\${concat_cmds}$reload_cmds $objlist $last_robj\"
+	      reload_objs="$objlist $last_robj"
+	      eval concat_cmds=\"\${concat_cmds}$reload_cmds\"
 	      if test -n "$last_robj"; then
 	        eval concat_cmds=\"\${concat_cmds}~\$RM $last_robj\"
 	      fi

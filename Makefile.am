@@ -451,6 +451,7 @@ dist-hook:
 TESTSUITE	= tests/testsuite
 TESTSUITE_AT	= tests/testsuite.at \
 		  tests/libtoolize.at \
+		  tests/help.at \
 		  tests/duplicate_members.at \
 		  tests/duplicate_conv.at \
 		  tests/duplicate_deps.at \
@@ -478,6 +479,8 @@ TESTSUITE_AT	= tests/testsuite.at \
 		  tests/am-subdir.at \
 		  tests/lt_dlexit.at \
 		  tests/lt_dladvise.at \
+		  tests/lt_dlopen.at \
+		  tests/lt_dlopenext.at \
 		  tests/ltdl-api.at \
 		  tests/need_lib_prefix.at \
 		  tests/standalone.at \
@@ -502,7 +505,7 @@ TESTS_ENVIRONMENT = MAKE="$(MAKE)" CC="$(CC)" CFLAGS="$(CFLAGS)" \
 	LIBS="$(LIBS)" LN_S="$(LN_S)" NM="$(NM)" RANLIB="$(RANLIB)" \
 	AR="$(AR)" AR_FLAGS="$(AR_FLAGS)" \
 	LT_AR="$(LT_AR)" LT_ARFLAGS="$(LT_ARFLAGS)" \
-	STRIP="$(STRIP)" INSTALL="$(INSTALL)" \
+	STRIP="$(STRIP)" lt_INSTALL="$(INSTALL)" \
 	OBJEXT="$(OBJEXT)" EXEEXT="$(EXEEXT)" \
 	SHELL="$(SHELL)" CONFIG_SHELL="$(SHELL)" \
 	CXX="$(CXX)" CXXFLAGS="$(CXXFLAGS)" CXXCPP="$(CXXCPP)" \

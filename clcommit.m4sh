@@ -5,7 +5,7 @@ AS_INIT[]m4_divert_push([HEADER-COPYRIGHT])dnl
 # Written by Gary V. Vaughan <gary@gnu.org>
 # and Alexandre Oliva <aoliva@redhat.com>
 
-# Copyright (C) 1999, 2000, 2004, 2006, 2008 Free Software Foundation, Inc.
+# Copyright (C) 1999, 2000, 2004, 2006, 2008, 2009 Free Software Foundation, Inc.
 # This is free software; see the source for copying conditions.  There is NO
 # warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
@@ -52,7 +52,7 @@ AS_INIT[]m4_divert_push([HEADER-COPYRIGHT])dnl
 
 # This script eases checking in changes to git-maintained projects
 # with ChangeLog files.  It will check that there have been no
-# conflicting commits in the CVS repository and print which files it
+# conflicting commits in the git repository and print which files it
 # is going to commit to stderr.  A list of files to compare and to
 # check in can be given in the command line.  If it is not given, all
 # files in the current working directory are considered for check in.
