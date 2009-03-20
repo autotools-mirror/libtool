@@ -1,3 +1,12 @@
+2009-03-20  Peter Rosin  <peda@lysator.liu.se>
+
+	LT_OUTPUT should always create the libtool script.
+	* libltdl/m4/libtool.m4 (LT_OUTPUT): Make LT_OUTPUT ignore the
+	--no-create configure option, and assume that the user wants
+	to use an up-to-date libtool script if the LT_OUTPUT macro is
+	present.
+	* tests/early-libtool.at: Make sure we do not regress.
+
 2009-01-26  Peter Rosin  <peda@lysator.liu.se>
 
 	Don't settle for any dumpbin/link program as name lister.

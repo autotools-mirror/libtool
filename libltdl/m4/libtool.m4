@@ -677,15 +677,13 @@ chmod +x "$CONFIG_LT"
 # appending to config.log, which fails on DOS, as config.log is still kept
 # open by configure.  Here we exec the FD to /dev/null, effectively closing
 # config.log, so it can be properly (re)opened and appended to by config.lt.
-if test "$no_create" != yes; then
-  lt_cl_success=:
-  test "$silent" = yes &&
-    lt_config_lt_args="$lt_config_lt_args --quiet"
-  exec AS_MESSAGE_LOG_FD>/dev/null
-  $SHELL "$CONFIG_LT" $lt_config_lt_args || lt_cl_success=false
-  exec AS_MESSAGE_LOG_FD>>config.log
-  $lt_cl_success || AS_EXIT(1)
-fi
+lt_cl_success=:
+test "$silent" = yes &&
+  lt_config_lt_args="$lt_config_lt_args --quiet"
+exec AS_MESSAGE_LOG_FD>/dev/null
+$SHELL "$CONFIG_LT" $lt_config_lt_args || lt_cl_success=false
+exec AS_MESSAGE_LOG_FD>>config.log
+$lt_cl_success || AS_EXIT(1)
 ])# LT_OUTPUT
 
 
