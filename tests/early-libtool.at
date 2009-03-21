@@ -222,4 +222,8 @@ LT_AT_EXEC_CHECK([./hell], [0], [stdout])
 AT_CHECK([grep 'Welcome to GNU Hell' stdout], [], [ignore])
 AT_CHECK([grep 'This is not GNU Hello.' stdout], [], [ignore])
 
+# Make sure config.status --recheck updates the libtool script
+rm libtool
+AT_CHECK([$SHELL ./config.status --recheck],[0],[ignore],[ignore])
+
 AT_CLEANUP
