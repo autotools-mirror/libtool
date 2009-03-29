@@ -1,3 +1,11 @@
+2009-03-29  Yaakov Selkowitz  <yselkowitz@users.sourceforge.net>  (tiny change)
+	    Charles Wilson  <libtool@cwilson.fastmail.fm>
+
+	Use correct export_dynamic_flag_spec for PE-COFF $hosts
+	* libltdl/m4/libtool.m4 (_LT_LINKER_SHLIBS) 
+	[cygwin*|mingw*|pw32*|cegcc*]: Define export_dynamic_flag_spec
+	as -Wl,--export-all-symbols, as required by GNU ld for PE-COFF.
+
 2009-03-29  Charles Wilson  <libtool@cwilson.fastmail.fm>
 
 	Improve compatibility with older automake
