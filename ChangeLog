@@ -1,3 +1,10 @@
+2009-03-29  Charles Wilson  <libtool@cwilson.fastmail.fm>
+
+	Improve compatibility with older automake
+	* libltdl/m4/lt~obsolete.m4: Add AC_DEFUNs for
+	_LT_PREPARE_SED_QUOTE_VARS and _LT_PROG_ECHO_BACKSLASH.
+	Report by Yaakov Selkowitz.
+
 2009-03-20  Peter Rosin  <peda@lysator.liu.se>
 
 	LT_OUTPUT should always create the libtool script.
