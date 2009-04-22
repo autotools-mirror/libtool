@@ -1,3 +1,11 @@
+2009-04-22  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Cope better with missing `makeinfo' in `bootstrap'.
+	* bootstrap: Update `./doc/notes.txt' last so missing `makeinfo'
+	does not cause a broken tree.
+	* THANKS: Update.
+	Report by Christian Rössel.
+
 2009-03-29  Yaakov Selkowitz  <yselkowitz@users.sourceforge.net>  (tiny change)
 	    Charles Wilson  <libtool@cwilson.fastmail.fm>
 
