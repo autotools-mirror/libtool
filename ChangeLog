@@ -1,3 +1,11 @@
+2009-05-02  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Fix quoting of eval'ed variable.
+	* libltdl/m4/libtool.m4 (_LT_CMD_GLOBAL_SYMBOLS): Double-quote
+	$lt_cv_sys_global_symbol_pipe for eval, like we do in ltmain,
+	in order to preserve TABs and multiple adjacent whitespace.
+	Report by Bruno Haible.
+
 2009-04-22  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	Cope better with missing `makeinfo' in `bootstrap'.
