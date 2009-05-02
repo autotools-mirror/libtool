@@ -1,5 +1,13 @@
 2009-05-02  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	Initial port for BlueGene BG/L.
+	* libltdl/m4/libtool.m4 (_LT_COMPILER_PIC, _LT_LINKER_SHLIBS)
+	(_LT_LANG_CXX_CONFIG) [linux]: Detect bgxl*, bgf*, mpixl*
+	compilers.
+	* NEWS, THANKS: Update.
+	Report, feedback and testing by John R. Cary and Christian
+	Rössel.
+
 	manual: fix grammaros.
 	* doc/libtool.texi (Dlpreopening): Fix grammaro.
 	(C header files): Remove duplicate word.
