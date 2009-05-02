@@ -49,6 +49,9 @@ AT_CHECK([$LIBTOOL --mode=compile --tag=CC $CC $CPPFLAGS $CFLAGS -c a.c || exit 
 	 [1], [stdout], [stderr])
 LT_AT_NORMALIZE_COMPILER_OUTPUT([stdout], [libtool-stdout])
 LT_AT_NORMALIZE_COMPILER_OUTPUT([stderr], [libtool-stderr])
+# Avoid this error:
+#   /bin/sh: warning: setlocale: LC_ALL: cannot change locale (de_DE)
+AT_CHECK([grep LC_ALL stdout stderr && exit 77], [1])
 AT_CHECK([diff expected-stderr libtool-stderr])
 AT_CHECK([diff expected-stdout libtool-stdout])
 

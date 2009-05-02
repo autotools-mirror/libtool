@@ -1,3 +1,11 @@
+2009-05-02  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Skip localization test when setlocale is not functional.
+	* tests/localization.at (localized compiler messages): Skip
+	test when there is a warning about `LC_ALL'.
+	* THANKS: Update.
+	Report by Maciej Helminiak.
+
 2009-05-02  Alan Hourihane  <alanh@fairlite.co.uk>  (tiny change)
 
 	Improved support for FreeMiNT.
