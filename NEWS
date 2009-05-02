@@ -19,6 +19,7 @@ New in 2.2.8 2009-??-??: git version 2.2.7a, Libtool team:
   - Improved support for cegcc (Windows CE/PocketPC).
   - Support for GNU/kOpenSolaris (kopensolaris*-gnu).
   - Initial support for compilers on BlueGene BG/L.
+  - Improved support for Atari FreeMiNT.
 
 * Bug fixes:
 
