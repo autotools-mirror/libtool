@@ -1,5 +1,9 @@
 2009-05-02  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	manual: fix grammaros.
+	* doc/libtool.texi (Dlpreopening): Fix grammaro.
+	(C header files): Remove duplicate word.
+
 	Allow through -tp=* at link time, for pgcc.
 	* libltdl/config/ltmain.m4sh (func_mode_link): Portlant Group
 	pgcc uses `-tp=PROCESSOR' for target processor selection; allow

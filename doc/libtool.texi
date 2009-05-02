@@ -3059,7 +3059,7 @@ Also the only thing that must go outside the
 @code{BEGIN_C_DECLS}/@code{END_C_DECLS} pair are @code{#include} lines.
 Strictly speaking it is only C symbol names that need to be protected,
 but your header files will be more maintainable if you have a single
-pair of of these macros around the majority of the header contents.
+pair of these macros around the majority of the header contents.
 
 You should use these definitions of @code{PARAMS}, @code{BEGIN_C_DECLS},
 and @code{END_C_DECLS} into your own headers.  Then, you may use them to
@@ -3293,7 +3293,7 @@ though Libtool takes care of that detail if you use
 An array of @var{lt_symbol} structures, representing all the preloaded
 symbols linked into the program proper.  For each module
 @option{-dlpreopen}ed by the Libtool linked program
-there is an element with the @var{name} of the module and a @var{address}
+there is an element with the @var{name} of the module and an @var{address}
 of @code{0}, followed by all symbols exported from this file.
 For the executable itself the special name @samp{@@PROGRAM@@} is used.
 The last element of all has a @var{name} and @var{address} of
