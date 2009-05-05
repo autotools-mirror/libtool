@@ -1017,6 +1017,7 @@ func_install_update ()
     $opt_debug
     my_sed_install='
 	/^scriptversion='\''*[0-9][1-9.-]*'\''*/ {
+	    s,[#;].*,,
 	    s,^scriptversion='\''*\([0-9.-]*\)'\''*,\1,
 	    s/-/./g
 	    p
