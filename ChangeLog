@@ -1,3 +1,13 @@
+2009-05-05  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	libtoolize: ignore trailing junk on scriptversion line.
+	* libtoolize.m4sh (func_install_update): Ignore semi-colon or
+	comment-sign and all following characters when parsing a
+	`scriptversion' line in one of the auxiliary scripts; recent
+	Automake-provided script have a stylized comment to induce
+	Emacs to use UTC.
+	Exposed by the `libtoolize config files serial update' test.
+
 2009-05-02  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	Skip localization test when setlocale is not functional.
