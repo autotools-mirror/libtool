@@ -1,3 +1,17 @@
+2009-05-05  Rainer Emrich  <r.emrich@de.tecosim.com>  (tiny change)
+	    Peter Rosin  <peda@lysator.liu.se>
+	    Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Fix cross compilation for HPPA/64 with a BSD file command.
+	* libltdl/m4/libtool.m4 (_LT_CHECK_MAGIC_METHOD)
+	[hpux10.20*, hpux11*, !ia64] <lt_cv_deplibs_check_method>:
+	Match the dot in `PA-RISC 2.0' literally.  Adjust hppa*64*
+	pattern to also match BSD `file' output, used in cross
+	compilation setups.
+	* THANKS: Update.
+	Report and initial patch by Rainer Emrich, refined by Peter
+	Rosin.
+
 2009-05-05  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	libtoolize: ignore trailing junk on scriptversion line.
