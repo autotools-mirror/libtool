@@ -35,6 +35,8 @@ New in 2.2.8 2009-??-??: git version 2.2.7a, Libtool team:
   - Argument mangling of execute mode has been improved (i.e., lessened).
   - Fix 2.1b regression that caused nm to not be the default name lister.
     The regression affected mainly (arguably broken) cross compiles.
+  - Fix long standing bug that caused compiler checks for Fortran and
+    C++ compilers to run twice.
 
 * Miscellaneous changes:
 

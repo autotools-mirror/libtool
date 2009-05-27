@@ -5279,14 +5279,14 @@ CC="$lt_save_CC"
 ])# _LT_LANG_C_CONFIG
 
 
-# _LT_PROG_CXX
-# ------------
-# Since AC_PROG_CXX is broken, in that it returns g++ if there is no c++
-# compiler, we have our own version here.
-m4_defun([_LT_PROG_CXX],
-[
-pushdef([AC_MSG_ERROR], [_lt_caught_CXX_error=yes])
-AC_PROG_CXX
+# _LT_LANG_CXX_CONFIG([TAG])
+# --------------------------
+# Ensure that the configuration variables for a C++ compiler are suitably
+# defined.  These variables are subsequently used by _LT_CONFIG to write
+# the compiler configuration to `libtool'.
+m4_defun([_LT_LANG_CXX_CONFIG],
+[m4_require([_LT_FILEUTILS_DEFAULTS])dnl
+m4_require([_LT_DECL_EGREP])dnl
 if test -n "$CXX" && ( test "X$CXX" != "Xno" &&
     ( (test "X$CXX" = "Xg++" && `g++ -v >/dev/null 2>&1` ) ||
     (test "X$CXX" != "Xg++"))) ; then
@@ -5294,22 +5294,6 @@ if test -n "$CXX" && ( test "X$CXX" != "Xno" &&
 else
   _lt_caught_CXX_error=yes
 fi
-popdef([AC_MSG_ERROR])
-])# _LT_PROG_CXX
-
-dnl aclocal-1.4 backwards compatibility:
-dnl AC_DEFUN([_LT_PROG_CXX], [])
-
-
-# _LT_LANG_CXX_CONFIG([TAG])
-# --------------------------
-# Ensure that the configuration variables for a C++ compiler are suitably
-# defined.  These variables are subsequently used by _LT_CONFIG to write
-# the compiler configuration to `libtool'.
-m4_defun([_LT_LANG_CXX_CONFIG],
-[AC_REQUIRE([_LT_PROG_CXX])dnl
-m4_require([_LT_FILEUTILS_DEFAULTS])dnl
-m4_require([_LT_DECL_EGREP])dnl
 
 AC_LANG_PUSH(C++)
 _LT_TAGVAR(archive_cmds_need_lc, $1)=no
@@ -6532,32 +6516,16 @@ _LT_TAGDECL([], [compiler_lib_search_path], [1],
 ])# _LT_SYS_HIDDEN_LIBDEPS
 
 
-# _LT_PROG_F77
-# ------------
-# Since AC_PROG_F77 is broken, in that it returns the empty string
-# if there is no fortran compiler, we have our own version here.
-m4_defun([_LT_PROG_F77],
-[
-pushdef([AC_MSG_ERROR], [_lt_disable_F77=yes])
-AC_PROG_F77
-if test -z "$F77" || test "X$F77" = "Xno"; then
-  _lt_disable_F77=yes
-fi
-popdef([AC_MSG_ERROR])
-])# _LT_PROG_F77
-
-dnl aclocal-1.4 backwards compatibility:
-dnl AC_DEFUN([_LT_PROG_F77], [])
-
-
 # _LT_LANG_F77_CONFIG([TAG])
 # --------------------------
 # Ensure that the configuration variables for a Fortran 77 compiler are
 # suitably defined.  These variables are subsequently used by _LT_CONFIG
 # to write the compiler configuration to `libtool'.
 m4_defun([_LT_LANG_F77_CONFIG],
-[AC_REQUIRE([_LT_PROG_F77])dnl
-AC_LANG_PUSH(Fortran 77)
+[AC_LANG_PUSH(Fortran 77)
+if test -z "$F77" || test "X$F77" = "Xno"; then
+  _lt_disable_F77=yes
+fi
 
 _LT_TAGVAR(archive_cmds_need_lc, $1)=no
 _LT_TAGVAR(allow_undefined_flag, $1)=
@@ -6677,32 +6645,17 @@ AC_LANG_POP
 ])# _LT_LANG_F77_CONFIG
 
 
-# _LT_PROG_FC
-# -----------
-# Since AC_PROG_FC is broken, in that it returns the empty string
-# if there is no fortran compiler, we have our own version here.
-m4_defun([_LT_PROG_FC],
-[
-pushdef([AC_MSG_ERROR], [_lt_disable_FC=yes])
-AC_PROG_FC
-if test -z "$FC" || test "X$FC" = "Xno"; then
-  _lt_disable_FC=yes
-fi
-popdef([AC_MSG_ERROR])
-])# _LT_PROG_FC
-
-dnl aclocal-1.4 backwards compatibility:
-dnl AC_DEFUN([_LT_PROG_FC], [])
-
-
 # _LT_LANG_FC_CONFIG([TAG])
 # -------------------------
 # Ensure that the configuration variables for a Fortran compiler are
 # suitably defined.  These variables are subsequently used by _LT_CONFIG
 # to write the compiler configuration to `libtool'.
 m4_defun([_LT_LANG_FC_CONFIG],
-[AC_REQUIRE([_LT_PROG_FC])dnl
-AC_LANG_PUSH(Fortran)
+[AC_LANG_PUSH(Fortran)
+
+if test -z "$FC" || test "X$FC" = "Xno"; then
+  _lt_disable_FC=yes
+fi
 
 _LT_TAGVAR(archive_cmds_need_lc, $1)=no
 _LT_TAGVAR(allow_undefined_flag, $1)=

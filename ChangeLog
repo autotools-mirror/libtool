@@ -1,3 +1,14 @@
+2009-05-27  Peter O'Gorman  <peter@pogma.com>
+
+	Don't run compiler checks twice.
+	libltdl/m4/libtool.m4 (_LT_PROG_FC, _LT_PROG_F77,
+	_LT_PROG_CXX): Remove these macros.
+	libltdl/m4/lt~obsolete.m4: Add removed macros here.
+	libltdl/m4/libtool.m4 (_LT_LANG_FC_CONFIG, _LT_LANG_F77_CONFIG,
+	_LT_LANG_CXX_CONFIG): Remove references to removed macros, and
+	move functionality here.
+	NEWS: Update.
+
 2009-05-05  Rainer Emrich  <r.emrich@de.tecosim.com>  (tiny change)
 	    Peter Rosin  <peda@lysator.liu.se>
 	    Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
