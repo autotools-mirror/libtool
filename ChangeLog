@@ -1,5 +1,10 @@
 2009-06-06  Richard Sandiford  <richards@transitive.com>
 
+	Fix GNU nm invocation for AIX.
+	* libldtl/m4/libtool.m4 (_LT_LINKER_SHLIBS)
+	<export_symbols_cmds>: Modify the GNU-nm-on-AIX version so that
+	it adds weak defined symbols to the export list.
+
 	Build AIX shared libraries with binutils 2.19.50+.
 	* libltdl/m4/libtool.m4 (_LT_LINKER_SHLIBS, _LT_LANG_CXX_CONFIG)
 	<lt_use_gnu_ld_interface>: New variable to control whether the
