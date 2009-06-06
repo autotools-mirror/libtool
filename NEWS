@@ -20,6 +20,7 @@ New in 2.2.8 2009-??-??: git version 2.2.7a, Libtool team:
   - Support for GNU/kOpenSolaris (kopensolaris*-gnu).
   - Initial support for compilers on BlueGene BG/L.
   - Improved support for Atari FreeMiNT.
+  - With binutils 2.19.50+, shared libraries can be built on AIX.
 
 * Bug fixes:
 

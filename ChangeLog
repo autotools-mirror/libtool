@@ -1,3 +1,14 @@
+2009-06-06  Richard Sandiford  <richards@transitive.com>
+
+	Build AIX shared libraries with binutils 2.19.50+.
+	* libltdl/m4/libtool.m4 (_LT_LINKER_SHLIBS, _LT_LANG_CXX_CONFIG)
+	<lt_use_gnu_ld_interface>: New variable to control whether the
+	GNU ld or native ld interface is used.  Set to "no" for GNU ld
+	2.19.50+ on AIX, otherwise mirror $with_gnu_ld.  Update the
+	warning message that is printed when using GNU ld on AIX.
+	Adjust the whole_archive_flag_spec value for GNU ld on AIX.
+	* NEWS, THANKS: Update.
+
 2009-05-27  Peter O'Gorman  <peter@pogma.com>
 
 	Don't run compiler checks twice.
