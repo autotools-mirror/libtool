@@ -1,5 +1,10 @@
 2009-06-07  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	Fix testsuite failure of lt_dlopenadvise test on FreeMiNT.
+	* tests/lt_dladvise.at (lt_dlopenadvise library loading): Do not
+	build moddepend for systems without shared libraries.
+	Report by Alan Hourihane.
+
 	testsuite: avoid failures due to old Automake.
 	* tests/configure-iface.at (installable libltdl)
 	(--with-ltdl-include/lib, --with-included-ltdl):
