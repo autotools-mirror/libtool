@@ -1,3 +1,11 @@
+2009-06-07  Vincent Torri  <vtorri@univ-evry.fr>  (tiny change)
+
+	Fix C wrapper invocation for ceGCC hosts (cegcc and mingw32ce).
+	* libltdl/config/ltmain.m4sh (func_mode_link): do not generate
+	C wrapper for cegcc and mingw32ce hosts.
+	(func_emit_cwrapperexe_src): remove useless check on
+	__MINGW32CE__.
+
 2009-06-07  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	Don't pick up double-quotes from /etc/ld.so.conf on Ubuntu.

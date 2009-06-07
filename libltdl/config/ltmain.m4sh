@@ -2738,9 +2738,7 @@ EOF
 #include <assert.h>
 #include <string.h>
 #include <ctype.h>
-#ifndef __MINGW32CE__
-# include <errno.h>
-#endif
+#include <errno.h>
 #include <fcntl.h>
 #include <sys/stat.h>
 
@@ -2770,7 +2768,7 @@ int setenv (const char *, const char *, int);
 #  define _INTPTR_T_DEFINED
 #  define intptr_t int
 # endif
-#elif defined(__MINGW32__) && !defined(__MINGW32CE__)
+#elif defined(__MINGW32__)
 # define setmode _setmode
 # define stat    _stat
 # define chmod   _chmod
@@ -3145,11 +3143,7 @@ EOF
   if (rval == -1)
     {
       /* failed to start process */
-#ifndef __MINGW32CE__
       LTWRAPPER_DEBUGPRINTF (("(main) failed to launch target \"%s\": errno = %d\n", lt_argv_zero, errno));
-#else
-      LTWRAPPER_DEBUGPRINTF (("(main) failed to launch target \"%s\"\n", lt_argv_zero));
-#endif
       return 127;
     }
   return rval;
@@ -3378,12 +3372,8 @@ chase_symlinks (const char *pathspec)
 	}
       else
 	{
-#ifndef __MINGW32CE__
 	  char *errstr = strerror (errno);
 	  lt_fatal ("Error accessing file %s (%s)", tmp_pathspec, errstr);
-#else
-	  lt_fatal ("Error accessing file %s", tmp_pathspec);
-#endif
 	}
     }
   XFREE (tmp_pathspec);
@@ -7411,14 +7401,14 @@ EOF
 
       wrappers_required=yes
       case $host in
+      *cegcc* | *mingw32ce*)
+        # Disable wrappers for cegcc and mingw32ce hosts, we are cross compiling anyway.
+        wrappers_required=no
+        ;;
       *cygwin* | *mingw* )
         if test "$build_libtool_libs" != yes; then
           wrappers_required=no
         fi
-        ;;
-      *cegcc*)
-        # Disable wrappers for cegcc, we are cross compiling anyway.
-        wrappers_required=no
         ;;
       *)
         if test "$need_relink" = no || test "$build_libtool_libs" != yes; then
