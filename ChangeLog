@@ -1,3 +1,17 @@
+2009-06-07  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	testsuite: cope when some installed libltdl.la has been removed.
+	* tests/old-m4-iface.at (AC_WITH_LTDL): Pass --with-included-ltdl
+	to configure, to ensure we do not accidentally link against a
+	previously installed libltdl.so where the corresponding .la
+	file has been removed, thus we do not add a run path, and the
+	runtime linker then fails to find libltdl.so.7.
+	* tests/configure-iface.at (--with-ltdl-include/lib): Remove -L
+	flags from LDFLAGS to avoid picking up an installed libltdl
+	outside of the default locations.
+	* THANKS: Update.
+	Prompted by report from Patrice Fromy.
+
 2009-06-07  Vincent Torri  <vtorri@univ-evry.fr>  (tiny change)
 
 	Fix C wrapper invocation for ceGCC hosts (cegcc and mingw32ce).

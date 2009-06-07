@@ -204,6 +204,18 @@ main_LDADD		= $(LIBLTDL)
 main_DEPENDENCIES	= $(LTDLDEPS) libmodule.la
 ]])
 
+## Try to avoid linking against a previously installed libltdl found
+## with an explicit -L/path.
+save_LDFLAGS=$LDFLAGS
+LDFLAGS=
+for l in $save_LDFLAGS
+do
+  case $l in
+  -L*) ;;
+  *) LDFLAGS="$LDFLAGS $l" ;;
+  esac
+done
+
 # We don't use 'libtoolize --ltdl', so that we get an error if the test
 # tries to build and link against its own ltdl sources:
 LT_AT_BOOTSTRAP([], [-I _inst/aclocal], [], [--add-missing], [],
