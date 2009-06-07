@@ -1,5 +1,15 @@
 2009-06-07  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	testsuite: avoid failures due to old Automake.
+	* tests/configure-iface.at (installable libltdl)
+	(--with-ltdl-include/lib, --with-included-ltdl):
+	Speficy libmodule_la_SOURCES in Makefile.am as the default
+	source file naming scheme changed in Automake 1.8.
+	* tests/nonrecursive.at (_LT_AT_LTDL_SETUP): Require Automake
+	1.9.6.
+	* THANKS: Update.
+	Report by Robert Garron.
+
 	testsuite: add missing @LIBS@ in a link command line.
 	* tests/old-m4-iface.at (AC_WITH_LTDL): Use @LIBS@ when linking.
 	Report by Patrice Fromy.

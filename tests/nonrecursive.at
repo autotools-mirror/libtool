@@ -1,6 +1,6 @@
 # nonrecursive.at -- test nonrecursive Automake Libltdl       -*- Autotest -*-
 #
-#   Copyright (C) 2005, 2008 Free Software Foundation, Inc.
+#   Copyright (C) 2005, 2008, 2009 Free Software Foundation, Inc.
 #   Written by Gary V. Vaughan, 2005
 #
 #   This file is part of GNU Libtool.
@@ -46,7 +46,7 @@ AC_OUTPUT
 
 AT_DATA([Makefile.am],
 [[ACLOCAL_AMFLAGS = -I ltdl/m4
-AUTOMAKE_OPTIONS	= 1.7
+AUTOMAKE_OPTIONS	= 1.9.6
 BUILT_SOURCES		=
 
 AM_CPPFLAGS		=

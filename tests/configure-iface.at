@@ -127,6 +127,9 @@ SUBDIRS			= libltdl
 AM_CPPFLAGS		= $(LTDLINCL)
 
 lib_LTLIBRARIES		= libmodule.la
+# Automake < 1.8 will use libmodule.la.c as default source,
+# while newer will choose libmodule.c; so specify it here.
+libmodule_la_SOURCES	= libmodule.c
 libmodule_la_LDFLAGS	= -module
 
 bin_PROGRAMS		= main
@@ -196,6 +199,9 @@ AT_DATA([Makefile.am],
 AM_CPPFLAGS		= $(LTDLINCL)
 
 lib_LTLIBRARIES		= libmodule.la
+# Automake < 1.8 will use libmodule.la.c as default source,
+# while newer will choose libmodule.c; so specify it here.
+libmodule_la_SOURCES	= libmodule.c
 libmodule_la_LDFLAGS	= -module
 
 bin_PROGRAMS		= main
@@ -262,6 +268,9 @@ SUBDIRS			= libltdl
 AM_CPPFLAGS		= $(LTDLINCL)
 
 lib_LTLIBRARIES		= libmodule.la
+# Automake < 1.8 will use libmodule.la.c as default source,
+# while newer will choose libmodule.c; so specify it here.
+libmodule_la_SOURCES	= libmodule.c
 libmodule_la_LDFLAGS	= -module
 
 bin_PROGRAMS		= main
