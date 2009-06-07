@@ -1,3 +1,13 @@
+2009-06-07  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Don't pick up double-quotes from /etc/ld.so.conf on Ubuntu.
+	* libltdl/m4/libtool.m4 (_LT_SYS_DYNAMIC_LINKER) [ linux ]
+	<sys_lib_dlsearch_path_spec>: Remove embedded double quotes from
+	paths picked up from /etc/ld.so.conf.  Fixes libltdl compile
+	failure on Ubuntu 7.10.
+	* THANKS: Update.
+	Report by Camilo La Rota.
+
 2009-06-06  Richard Sandiford  <richards@transitive.com>
 
 	Fix GNU nm invocation for AIX.
