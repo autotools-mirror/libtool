@@ -1,5 +1,9 @@
 2009-06-07  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	testsuite: add missing @LIBS@ in a link command line.
+	* tests/old-m4-iface.at (AC_WITH_LTDL): Use @LIBS@ when linking.
+	Report by Patrice Fromy.
+
 	testsuite: cope when some installed libltdl.la has been removed.
 	* tests/old-m4-iface.at (AC_WITH_LTDL): Pass --with-included-ltdl
 	to configure, to ensure we do not accidentally link against a
