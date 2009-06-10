@@ -5670,6 +5670,11 @@ these commands, libtool will proceed to link against @var{$objdir/$newlib}
 instead of @var{soname}.
 @end defvar
 
+@defvar lock_old_archive_extraction
+Set to @samp{yes} if the extraction of a static library requires locking
+the library file.  This is required on Darwin.
+@end defvar
+
 @defvar build
 @defvarx build_alias
 @defvarx build_os

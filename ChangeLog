@@ -1,3 +1,16 @@
+2009-06-10  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Fix concurrent extraction of convenience libraries on Darwin.
+	* libltdl/m4/libtool.m4 (_LT_CMD_OLD_ARCHIVE): New libtool
+	variable `lock_old_archive_extraction', set to `yes' on darwin.
+	* doc/libtool.texi (libtool script contents): Document it.
+	* libltdl/config/ltmain.m4sh (func_extract_an_archive): Lock
+	`ar x' invocation if `lock_old_archive_extraction' is yes.
+	* tests/darwin.at (darwin concurrent library extraction): New
+	test.
+	* NEWS: Update.
+	Report by Akim Demaille.
+
 2009-06-07  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	Fix testsuite failure of lt_dlopenadvise test on FreeMiNT.

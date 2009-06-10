@@ -2222,7 +2222,18 @@ func_extract_an_archive ()
     $opt_debug
     f_ex_an_ar_dir="$1"; shift
     f_ex_an_ar_oldlib="$1"
-    func_show_eval "(cd \$f_ex_an_ar_dir && $AR x \"\$f_ex_an_ar_oldlib\")" 'exit $?'
+    if test "$lock_old_archive_extraction" = yes; then
+      lockfile=$f_ex_an_ar_oldlib.lock
+      until $opt_dry_run || ln "$progpath" "$lockfile" 2>/dev/null; do
+	func_echo "Waiting for $lockfile to be removed"
+	sleep 2
+      done
+    fi
+    func_show_eval "(cd \$f_ex_an_ar_dir && $AR x \"\$f_ex_an_ar_oldlib\")" \
+		   'stat=$?; rm -f "$lockfile"; exit $stat'
+    if test "$lock_old_archive_extraction" = yes; then
+      $opt_dry_run || rm -f "$lockfile"
+    fi
     if ($AR t "$f_ex_an_ar_oldlib" | sort | sort -uc >/dev/null 2>&1); then
      :
     else

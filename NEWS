@@ -38,6 +38,9 @@ New in 2.2.8 2009-??-??: git version 2.2.7a, Libtool team:
     The regression affected mainly (arguably broken) cross compiles.
   - Fix long standing bug that caused compiler checks for Fortran and
     C++ compilers to run twice.
+  - Link mode works around a parallel build failure on Darwin 9.6.0 due
+    to the `ar' `flock'ing an archive upon extraction, by protecting the
+    extraction of convenience archives with a lock.
 
 * Miscellaneous changes:
 

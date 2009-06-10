@@ -1312,10 +1312,19 @@ if test -n "$RANLIB"; then
   esac
   old_archive_cmds="$old_archive_cmds~\$RANLIB \$oldlib"
 fi
+
+case $host_os in
+  darwin*)
+    lock_old_archive_extraction=yes ;;
+  *)
+    lock_old_archive_extraction=no ;;
+esac
 _LT_DECL([], [old_postinstall_cmds], [2])
 _LT_DECL([], [old_postuninstall_cmds], [2])
 _LT_TAGDECL([], [old_archive_cmds], [2],
     [Commands used to build an old-style archive])
+_LT_DECL([], [lock_old_archive_extraction], [0],
+    [Whether to use a lock for old archive extraction])
 ])# _LT_CMD_OLD_ARCHIVE
 
 
