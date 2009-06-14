@@ -1,3 +1,9 @@
+2009-06-14  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Avoid spurious localization testsuite failure on HP-UX/ia64.
+	* tests/localization.at (localized compiler messages): Skip test
+	if the compiler warning output contains `locale', for HP-UX.
+
 2009-06-10  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	Fix concurrent extraction of convenience libraries on Darwin.
