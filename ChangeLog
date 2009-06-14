@@ -1,3 +1,10 @@
+2009-06-14  Mike Gorchak  <mike@malva.ua>  (tiny change)
+	    Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Fix versioning computation for QNX.
+	* libltdl/config/ltmain.m4sh (func_mode_link): Set `$current'
+	and `$age' properly for version_type `qnx'.
+
 2009-06-14  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	Avoid spurious localization testsuite failure on HP-UX/ia64.
