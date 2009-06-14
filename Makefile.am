@@ -472,6 +472,7 @@ TESTSUITE_AT	= tests/testsuite.at \
 		  tests/infer-tag.at \
 		  tests/localization.at \
 		  tests/install.at \
+		  tests/versioning.at \
 		  tests/destdir.at \
 		  tests/old-m4-iface.at \
 		  tests/am-subdir.at \

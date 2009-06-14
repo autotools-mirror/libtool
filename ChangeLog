@@ -1,3 +1,10 @@
+2009-06-14  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Add versioning tests.
+	* tests/versioning.at (versioning): New file, new test.
+	* Makefile.am (TESTSUITE_AT): Adjust.
+	Prompted by bug report from Mike Gorchak.
+
 2009-06-14  Mike Gorchak  <mike@malva.ua>  (tiny change)
 	    Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
