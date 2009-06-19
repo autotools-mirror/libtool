@@ -1,3 +1,9 @@
+2009-06-19  Yaakov Selkowitz  <yselkowitz@users.sourceforge.net> (tiny change)
+	    Charles Wilson  <libtool@cwilson.fastmail.fm>
+
+	Ensure LT_PATH_LD works when called before LT_INIT
+	* libltdl/m4/libtool.m4 (LT_PATH_LD): AC_REQUIRE _LT_PROG_ECHO_BACKSLASH.
+
 2009-06-14  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	Add versioning tests.
