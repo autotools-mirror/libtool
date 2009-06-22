@@ -1,3 +1,17 @@
+2009-06-21  Charles Wilson  <libtool@cwilson.fastmail.fm>
+
+	Remove unneeded functions and options from cwrapper
+	* libltdl/config/ltmain.m4sh (func_emit_cwrapperexe_src)
+	[lt_opt_process_env_set]: Remove.
+	[lt_opt_process_env_prepend]: Remove.
+	[lt_opt_process_env_append]: Remove.
+	[lt_split_name_value]: Remove.
+	[file scope]: Don't declare removed functions. Remove
+	constants and defines related to eliminated commandline
+	options.
+	[main]: Remove code related to eliminated commandline
+	options --lt-env-set, --lt-env-prepend, --lt-env-append.
+
 2009-06-19  Yaakov Selkowitz  <yselkowitz@users.sourceforge.net> (tiny change)
 	    Charles Wilson  <libtool@cwilson.fastmail.fm>
 
