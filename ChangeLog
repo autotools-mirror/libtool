@@ -1,3 +1,9 @@
+2009-06-27  Charles Wilson  <libtool@cwilson.fastmail.fm>
+
+	Add alias for obsoleted AC_LIBTOOL_RC macro.
+	* libltdl/m4/libtool.m4: Add alias for obsoleted
+	macro AC_LIBTOOL_RC.
+
 2009-06-21  Charles Wilson  <libtool@cwilson.fastmail.fm>
 
 	Remove unneeded functions and options from cwrapper
