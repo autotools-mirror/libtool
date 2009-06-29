@@ -1,7 +1,12 @@
+2009-06-29  Charles Wilson  <libtool@cwilson.fastmail.fm>
+
+	[mingw] Improve sys_lib_search_path_spec detection.
+	* libltdl/m4/libtool.m4 (_LT_SYS_DYNAMIC_LINKER): Fix handling
+	of dos-style paths when parsing $CC -print-search-dirs output.
+
 2009-06-28  Charles Wilson  <libtool@cwilson.fastmail.fm>
 
 	Finish adding alias for obsoleted AC_LIBTOOL_RC macro.
-
 	* libltdl/m4/libtool.m4: Add reminder comment concerning
 	aclocal-1.4 backwards compatibility.
 	* libltdl/m4/lt~obsolete.m4: Remove unnecessary AC_DEFUN.
