@@ -5628,6 +5628,7 @@ if test "$_lt_caught_CXX_error" != yes; then
         # _LT_TAGVAR(hardcode_libdir_flag_spec, $1) is actually meaningless,
         # as there is no search path for DLLs.
         _LT_TAGVAR(hardcode_libdir_flag_spec, $1)='-L$libdir'
+        _LT_TAGVAR(export_dynamic_flag_spec, $1)='${wl}--export-all-symbols'
         _LT_TAGVAR(allow_undefined_flag, $1)=unsupported
         _LT_TAGVAR(always_export_symbols, $1)=no
         _LT_TAGVAR(enable_shared_with_static_runtimes, $1)=yes
