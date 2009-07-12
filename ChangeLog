@@ -1,5 +1,15 @@
 2010-02-21  Charles Wilson <libtool@cwilson.fastmail.fm>
 
+	Add --lt-* options to shell wrapper
+	* libltdl/config/ltmain.m4sh (func_emit_wrapper): Call
+	func_parse_lt_options early. Use func_exec_program.
+	(func_emit_wrapper:func_parse_lt_options): New function.
+	(func_emit_wrapper:func_lt_dump_args): New function.
+	(func_emit_wrapper:func_exec_program_core): New function.
+	(func_emit_wrapper:func_exec_program): New function.
+
+2010-02-21  Charles Wilson <libtool@cwilson.fastmail.fm>
+
 	Enable runtime cwrapper debugging; add tests
 	* libltdl/config/ltmain.m4sh (func_emit_cwrapperexe_src):
 	Update comments. Initialize program_name. Eliminate _LENGTH
