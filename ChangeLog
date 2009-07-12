@@ -1,3 +1,28 @@
+2010-02-21  Charles Wilson <libtool@cwilson.fastmail.fm>
+
+	Enable runtime cwrapper debugging; add tests
+	* libltdl/config/ltmain.m4sh (func_emit_cwrapperexe_src):
+	Update comments. Initialize program_name. Eliminate _LENGTH
+	variables for string constants. In debug mode, print a
+	banner with known content before any other output. Remove
+	LTWRAPPER_DEBUGPRINTF macro. Add constants and variables
+	to support new --lt-debug option.
+	(func_emit_cwrapperexe_src:ltwrapper_debugprintf): Renamed to...
+	(func_emit_cwrapperexe_src:lt_debugprintf): this. Only print
+	messages if lt_debug != 0. Ensure appearance of messages
+	conforms to GCS.
+	(func_emit_cwrapperexe_src:lt_fatal): Ditto.
+	(func_emit_cwrapperexe_src:lt_error_core): Ditto.
+	(func_emit_cwrapperexe_src): Update all callers to lt_fatal.
+	Update all users of LTWRAPPER_DEBUGPRINTF (()) to call
+	lt_debugprintf () directly.
+	(func_emit_cwrapperexe_src:main): Consolidate option parsing.
+	Ensure first use of lt_debugprintf occurs after option parsing.
+	Add stanza to parse for --lt-debug and set lt_debug variable.
+	Use strcmp rather than strncmp, where safe.
+	* tests/cwrapper.at: Add new tests for --lt-debug and
+	-DLT_DEBUGWRAPPER.
+
 2010-01-31  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	Use --email with gendocs.sh.
