@@ -16,6 +16,17 @@ New in 2.2.8 2010-??-??: git version 2.2.7a, Libtool team:
     runs on Windows with popup windows in the middle, and `check-interactive'
     for the complement set of tests.
   - New link mode flag -bindir to specify the location for installed PE DLLs.
+  - Wrapper scripts and wrapper executables for programs linked against
+    uninstalled shared libraries now support command-line options --lt-debug
+    and --lt-dump-script.
+
+* Important incompatible changes:
+
+  - The wrapper command line option support described above introduces the
+    following incompatibility: the wrapper will remove any command line
+    options that begin with '--lt-*' from the argument list before launching
+    (uninstalled) programs. Any '--lt-*' option on the command line not
+    recognized by the wrapper will result in an error.
 
 * Changes in supported systems or compilers:
 

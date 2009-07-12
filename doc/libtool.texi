@@ -212,6 +212,7 @@ Platform quirks
 * Reloadable objects::          Binding object files together.
 * Multiple dependencies::       Removing duplicate dependent libraries.
 * Archivers::                   Programs that create static archives.
+* Wrapper executables::         Wrapper executables for some platforms.
 
 @end detailmenu
 @end menu
@@ -790,8 +791,9 @@ Note that libtool added the necessary run-time path flag, as well as
 @cindex wrapper scripts for programs
 @cindex program wrapper scripts
 Notice that the executable, @code{hell}, was actually created in the
-@file{@value{objdir}} subdirectory.  Then, a wrapper script was created
-in the current directory.
+@file{@value{objdir}} subdirectory.  Then, a wrapper script (or, on
+certain platforms, a wrapper executable @pxref{Wrapper executables}) was
+created in the current directory.
 
 Since libtool created a wrapper script, you should use libtool to
 install it and debug it too.  However, since the program does not depend
@@ -844,6 +846,60 @@ overhead because of their (relative) complexity.  In this situation, the
 price of being dynamic is eight kilobytes, and the payoff is about four
 kilobytes.  So, having a shared @file{libhello} won't be an advantage
 until we link it against at least a few more programs.
+
+@menu
+* Wrapper executables::         Wrapper executables for some platforms.
+@end menu
+
+@node Wrapper executables
+@subsection Wrapper executables for uninstalled programs
+@cindex wrapper executables for uninstalled programs
+@cindex program wrapper executables
+
+Some platforms, notably those hosted on Windows such as Cygwin
+and MinGW, use a wrapper executable rather than a wrapper script
+to ensure proper operation of uninstalled programs linked by libtool
+against uninstalled shared libraries. The wrapper executable thus
+performs the same function as the wrapper script used on other
+platforms, but allows to satisfy the @command{make} rules for the
+program, whose name ends in @code{$(EXEEXT)}. The actual program
+executable is created below @value{objdir}, and its name will end
+in @code{$(EXEEXT)} and may or may not contain an @code{lt-} prefix.
+This wrapper executable sets various environment values so that the
+program executable may locate its (uninstalled) shared libraries,
+and then launches the program executable.
+
+The wrapper executable provides a debug mode, enabled by passing the
+command-line option @code{--lt-debug} (see below). When executing in
+debug mode, diagnostic information will be printed to @code{stderr}
+before the program executable is launched.
+
+Finally, the wrapper executable supports a number of command line
+options that may be useful when debugging the operation of the wrapper
+system. All of these options begin with @code{--lt-}, and if present
+they and their arguments will be removed from the argument list passed
+on to the program executable.  Therefore, the program executable may not
+employ command line options that begin with @code{--lt-}. (In fact, the
+wrapper executable will detect any command line options that begin with
+@code{--lt-} and abort with an error message if the option is not
+recognized). If this presents a problem, please contact the Libtool
+team at @email{bug-libtool@@gnu.org}.
+
+These command line options include:
+
+@table @option
+@item --lt-dump-script
+Causes the wrapper to print a copy of the wrapper @emph{script}
+to @code{stdout}, and exit.
+
+@item --lt-debug
+Causes the wrapper to print diagnostic information to @code{stdout},
+before launching the program executable.
+
+@end table
+
+For consistency, both the wrapper @emph{script} and the wrapper
+@emph{executable} support these options.
 
 @node Debugging executables
 @section Debugging executables

@@ -1,5 +1,17 @@
 2010-02-21  Charles Wilson <libtool@cwilson.fastmail.fm>
 
+	Document wrapper changes.
+	* NEWS: Indicate new feature and incompatibility.
+	* doc/libtool.texi [detailmenu]: Add reference to subsection
+	'Wrapper executables for programs', in Platform Quirks category.
+	[Linking executables]: Mention wrapper executables, in
+	addition to wrapper scripts. Add menu referencing subsection
+	'Wrapper executables for programs'.
+	[Wrapper executables for programs]: New subsection. Documents
+	cwrapper rationale and command line options.
+
+2010-02-21  Charles Wilson <libtool@cwilson.fastmail.fm>
+
 	Add --lt-* options to shell wrapper
 	* libltdl/config/ltmain.m4sh (func_emit_wrapper): Call
 	func_parse_lt_options early. Use func_exec_program.
