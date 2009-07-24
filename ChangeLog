@@ -1,3 +1,9 @@
+2009-07-24  Roumen Petrov  <bugtrack@roumenpetrov.info>  (tiny change)
+
+	Fixup 'execute mode' test for w32.
+	* tests/execute-mode.at (execute mode): Add missing $EXEEXT.
+	(LDFLAGS): Add -no-undefined.
+
 2009-07-01  Yaakov Selkowitz  <yselkowitz@users.sourceforge.net> (tiny change)
 	    Charles Wilson  <libtool@cwilson.fastmail.fm>
 
