@@ -41,6 +41,8 @@ New in 2.2.8 2009-??-??: git version 2.2.7a, Libtool team:
   - Link mode works around a parallel build failure on Darwin 9.6.0 due
     to the `ar' `flock'ing an archive upon extraction, by protecting the
     extraction of convenience archives with a lock.
+  - The Libtool macro files do not contain instances of __oline__ any more,
+    easing merges for configure scripts that are added to version control.
 
 * Miscellaneous changes:
 
