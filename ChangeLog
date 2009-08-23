@@ -1,3 +1,11 @@
+2009-08-23  Lennart Poettering  <lennart@poettering.net>  (tiny change)
+
+	Shut up prototype warnings with recent GCC and -Wstrict-prototypes.
+	* libltdl/config/ltmain.m4sh (func_generate_dlsyms): Use recent
+	GCC's diagnostic pragma to override a -Wstrict-prototypes
+	setting for the symbol list code.
+	* THANKS: Update.
+
 2009-08-23  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	Remove __oline__ from macros, for less spurious configure diffs.
