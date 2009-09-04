@@ -1,3 +1,12 @@
+2009-09-04  Peter Rosin  <peda@lysator.liu.se>
+
+	Make -Wc,FLAG behave like -Xcompiler FLAG in link mode.
+	* libltdl/config/ltmain.m4sh (func_mode_link): Remove "-Wc,"
+	instead of replacing it with "$wl" when linking programs
+	through the compiler driver, just as is the case when linking
+	libraries.
+	* NEWS: Update.
+
 2009-08-23  Lennart Poettering  <lennart@poettering.net>  (tiny change)
 
 	Shut up prototype warnings with recent GCC and -Wstrict-prototypes.

@@ -4299,7 +4299,7 @@ func_mode_link ()
 	for flag in $args; do
 	  IFS="$save_ifs"
           func_quote_for_eval "$flag"
-	  arg="$arg $wl$func_quote_for_eval_result"
+	  arg="$arg $func_quote_for_eval_result"
 	  compiler_flags="$compiler_flags $func_quote_for_eval_result"
 	done
 	IFS="$save_ifs"
