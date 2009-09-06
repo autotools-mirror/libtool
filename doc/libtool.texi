@@ -5166,6 +5166,74 @@ directory, except that Fortran 90 is used in combination with the
 
 @end table
 
+The new, Autotest-based test suite uses keywords to classify certain
+test groups:
+
+@table @samp
+@item CXX
+@itemx F77
+@itemx FC
+@itemx GCJ
+The test group exercises one of these @command{libtool} language tags.
+
+@item autoconf
+@itemx automake
+These keywords denote that the respective external program is needed
+by the test group.  The tests are typically skipped if the program is
+not installed.  The @samp{automake} keyword may also denote use of the
+@command{aclocal} program.
+
+@item interactive
+This test group may require user interaction on some systems.  Typically,
+this means closing a popup window about a DLL load error on Windows.
+
+@item libltdl
+Denote that the @file{libltdl} library is exercised by the test group.
+
+@item libtool
+@itemx libtoolize
+Denote that the @command{libtool} or @command{libtoolize} scripts are
+exercised by the test group, respectively.
+
+@item recursive
+Denote that this test group may recursively re-invoke the test suite
+itself, with changed settings and maybe a changed @command{libtool}
+script.  You may use the @env{INNER_TESTSUITEFLAGS} variable to pass
+additional settings to this recursive invocation.  Typically, recursive
+invocations delimit the set of tests with another keyword, for example
+by passing @code{-k libtool} right before the expansion of the
+@env{INNER_TESTSUITEFLAGS} variable (without an intervening space, so
+you get the chance for further delimitation).
+
+Test groups with the keyword @samp{recursive} should not be denoted with
+keywords, in order to avoid infinite recursion.  As a consequence,
+recursive test groups themselves should never require user interaction,
+while the test groups they invoke may do so.
+@end table
+
+For example, in order to avoid any interactive test groups, you could
+use this:
+
+@smallexample
+make check-local \
+  TESTSUITEFLAGS='-k !interactive INNER_TESTSUITEFLAGS=",!interactive"'
+@end smallexample
+
+@noindent
+while to run only those test groups, you would use this:
+
+@smallexample
+make check-local \
+  TESTSUITEFLAGS='-k interactive -k recursive INNER_TESTSUITEFLAGS=,interactive'
+@end smallexample
+
+@noindent
+but the convenience targets @samp{check-interactive} and
+@samp{check-noninteractive} avoid needing to remember these complex
+commands, in addition to also disabling interactive tests in the old
+test suite.
+
+
 @node When tests fail
 @subsection When tests fail
 @cindex failed tests

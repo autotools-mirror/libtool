@@ -547,18 +547,37 @@ DISTCLEANFILES += tests/atconfig
 
 CD_TESTDIR	= abs_srcdir=`$(lt__cd) $(srcdir) && pwd`; cd tests
 
+testsuite_deps = tests/atconfig $(srcdir)/$(TESTSUITE)
+testsuite_deps_uninstalled = $(testsuite_deps) libltdl/libltdlc.la $(bin_SCRIPTS)
+
 # Hook the test suite into the check rule
-check-local: tests/atconfig $(srcdir)/$(TESTSUITE) libltdl/libltdlc.la $(bin_SCRIPTS)
+check-local: $(testsuite_deps_uninstalled)
 	$(CD_TESTDIR); \
 	CONFIG_SHELL="$(SHELL)" $(SHELL) $$abs_srcdir/$(TESTSUITE) \
 	  $(TESTS_ENVIRONMENT) $(BUILDCHECK_ENVIRONMENT) $(TESTSUITEFLAGS)
 
 # Run the test suite on the *installed* tree.
-installcheck-local: tests/atconfig $(srcdir)/$(TESTSUITE)
+installcheck-local: $(testsuite_deps)
 	$(CD_TESTDIR); \
 	CONFIG_SHELL="$(SHELL)" $(SHELL) $$abs_srcdir/$(TESTSUITE) \
 	  $(TESTS_ENVIRONMENT) $(INSTALLCHECK_ENVIRONMENT) $(TESTSUITEFLAGS) \
 	  AUTOTEST_PATH="$(exec_prefix)/bin"
+
+# Run only noninteractive parts of the new testsuite.
+check-noninteractive: $(testsuite_deps_uninstalled)
+	$(CD_TESTDIR); \
+	CONFIG_SHELL="$(SHELL)" $(SHELL) $$abs_srcdir/$(TESTSUITE) \
+	  $(TESTS_ENVIRONMENT) $(BUILDCHECK_ENVIRONMENT) \
+	  -k !interactive INNER_TESTSUITEFLAGS=",!interactive" \
+	  $(TESTSUITEFLAGS)
+
+# Run only interactive parts of the new testsuite.
+check-interactive: $(testsuite_deps_uninstalled)
+	$(CD_TESTDIR); \
+	CONFIG_SHELL="$(SHELL)" $(SHELL) $$abs_srcdir/$(TESTSUITE) \
+	  $(TESTS_ENVIRONMENT) $(BUILDCHECK_ENVIRONMENT) \
+	  -k interactive -k recursive INNER_TESTSUITEFLAGS=",interactive" \
+	  $(TESTSUITEFLAGS)
 
 # We need to remove any file droppings left behind by testsuite
 clean-local: clean-local-legacy

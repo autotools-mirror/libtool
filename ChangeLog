@@ -1,5 +1,17 @@
 2009-09-06  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	Testsuite keyword 'interactive' and check-* rules.
+	* Makefile.am (testsuite_deps, testsuite_deps_uninstalled):
+	New variables.
+	(check-local, installcheck-local): Use them.
+	(check-interactive, check-noninteractive): New rules.
+	* tests/link-order2.at (Link order of deplibs),
+	tests/static.at (static linking flags for programs): Add keyword
+	`interactive'.
+	* doc/libtool.texi (Test descriptions): Document all keywords
+	used in the Libtool test suite.
+	* NEWS: Update.
+
 	Fix failure test in the presence of --with-pic or -prefer-pic.
 	* tests/fail.at (Failure tests): Run non-PIC failure test only
 	if pic_mode is 'default' or 'no', rather than 'default' or 'yes'

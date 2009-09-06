@@ -12,6 +12,9 @@ New in 2.2.8 2009-??-??: git version 2.2.7a, Libtool team:
   - New libtool command line flag --no-verbose, which disables only
     the extra "verbose" output messages and has no effect on the
     default informational messages.
+  - New convenience make targets `check-noninteractive' to avoid long testsuite
+    runs on Windows with popup windows in the middle, and `check-interactive'
+    for the complement set of tests.
 
 * Changes in supported systems or compilers:
 
