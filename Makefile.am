@@ -455,6 +455,7 @@ TESTSUITE_AT	= tests/testsuite.at \
 		  tests/duplicate_members.at \
 		  tests/duplicate_conv.at \
 		  tests/duplicate_deps.at \
+		  tests/flags.at \
 		  tests/inherited_flags.at \
 		  tests/convenience.at \
 		  tests/link-order.at \

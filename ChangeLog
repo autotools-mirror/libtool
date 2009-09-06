@@ -1,3 +1,10 @@
+2009-09-06  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Add testsuite exposure for passing of compiler and linker flags.
+	* tests/flags.at (passing flags through libtool): New file, new
+	test, for bug fixed in previous commit.
+	* Makefile.am (TESTSUITE_AT): Add tests/flags.at.
+
 2009-09-04  Peter Rosin  <peda@lysator.liu.se>
 
 	Make -Wc,FLAG behave like -Xcompiler FLAG in link mode.
