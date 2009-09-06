@@ -1,5 +1,12 @@
 2009-09-06  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	Fix failure test in the presence of --with-pic or -prefer-pic.
+	* tests/fail.at (Failure tests): Run non-PIC failure test only
+	if pic_mode is 'default' or 'no', rather than 'default' or 'yes'
+	and also -prefer-pic has not been passed in $CFLAGS.
+	* THANKS: Update.
+	Report by Donn Washburn.
+
 	Add testsuite exposure for passing of compiler and linker flags.
 	* tests/flags.at (passing flags through libtool): New file, new
 	test, for bug fixed in previous commit.
