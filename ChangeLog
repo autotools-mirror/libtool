@@ -1,3 +1,10 @@
+2009-09-07  Peter O'Gorman  <peter@pogma.com
+
+	Use darwin's -force_load flag if available for whole_archive_flag_spec
+	* libltdl/m4/libtool.m4 (_LT_REQUIRED_DARWIN_CHECKS): Check for
+	-force_load and use it if there.
+	* tests/darwin.at: Add a simple test.
+
 2009-09-06  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	Testsuite keyword 'interactive' and check-* rules.

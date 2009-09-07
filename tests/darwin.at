@@ -148,3 +148,59 @@ AT_CHECK([$LIBTOOL --dry-run --mode=link $CC $CFLAGS $LDFLAGS ]dnl
 AT_CHECK([grep stamp $lockfile], [], [ignore])
 
 AT_CLEANUP
+
+AT_SETUP([darwin gdb debug information])
+
+AT_CHECK([gdb --version || (exit 77)],[ignore],[ignore],[ignore])
+
+AT_DATA([foo.c], [[
+int foo (void) { return 0; }
+]])
+
+AT_DATA([bar.c], [[
+extern int foo (void);
+int bar (void) { return foo (); }
+]])
+
+AT_DATA([main.c], [[
+extern int bar(void);
+
+int main() { return bar();}
+]])
+
+AT_CHECK([$LIBTOOL --mode=compile $CC $CPPFLAGS $CFLAGS -c bar.c],
+	 [], [ignore], [ignore])
+AT_CHECK([$LIBTOOL --mode=compile $CC $CPPFLAGS $CFLAGS -c foo.c],
+	 [], [ignore], [ignore])
+AT_CHECK([$LIBTOOL --mode=compile $CC $CPPFLAGS $CFLAGS -c main.c],
+	 [], [ignore], [ignore])
+
+AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o libfoo.la foo.lo],
+	 [], [ignore], [ignore])
+
+AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS ]dnl
+	 [  -o libbar.la bar.lo -rpath /foo libfoo.la ],
+	 [], [ignore], [ignore])
+
+AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS ]dnl
+	 [  -o main main.lo libbar.la],[], [ignore], [ignore])
+AT_CHECK([echo quit | $LIBTOOL --mode=execute gdb main 2>err1],
+	 [ignore], [ignore], [stderr])
+
+AT_CHECK([grep 'Could not find object file' stderr],[1],[ignore],[ignore])
+
+AT_XFAIL_IF([
+eval "`$LIBTOOL --config | $EGREP '^(whole_archive_flag_spec)='`"
+case $whole_archive_flag_spec:$host_os in
+:darwin*) : ;;
+*) false ;;
+esac ])
+
+# Remove any dSYM bundle
+rm -rf .libs/*.dSYM
+
+AT_CHECK([echo quit | $LIBTOOL --mode=execute gdb main],
+	 [ignore], [ignore], [stderr])
+AT_CHECK([grep 'Could not find object file' stderr],[1],[ignore],[ignore])
+
+AT_CLEANUP
