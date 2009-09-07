@@ -1,5 +1,8 @@
 2009-09-07  Peter O'Gorman  <peter@pogma.com
 
+	Fix redirect in test case.
+	* tests/darwin.at: Fix stderr redirect.
+
 	Use darwin's -force_load flag if available for whole_archive_flag_spec
 	* libltdl/m4/libtool.m4 (_LT_REQUIRED_DARWIN_CHECKS): Check for
 	-force_load and use it if there.

@@ -184,7 +184,7 @@ AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS ]dnl
 
 AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS ]dnl
 	 [  -o main main.lo libbar.la],[], [ignore], [ignore])
-AT_CHECK([echo quit | $LIBTOOL --mode=execute gdb main 2>err1],
+AT_CHECK([echo quit | $LIBTOOL --mode=execute gdb main],
 	 [ignore], [ignore], [stderr])
 
 AT_CHECK([grep 'Could not find object file' stderr],[1],[ignore],[ignore])
