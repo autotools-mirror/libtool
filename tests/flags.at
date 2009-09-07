@@ -21,24 +21,42 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 ####
 
-AT_SETUP([passing flags through libtool])
+m4_foreach([lt_tag], [CC, CXX, F77, FC, GCJ],
+[AT_SETUP([passing lt_tag flags through libtool])
 AT_KEYWORDS([libtool])
-AT_KEYWORDS([CXX F77 FC])
+LT_AT_TAG([lt_tag])
 
 LDFLAGS="$LDFLAGS -no-undefined"
 eval "`$LIBTOOL --config | $EGREP '^(FGREP)='`"
 
-AT_DATA([a.c],
+m4_case(lt_tag,
+[CC], [AT_DATA([a.c],
 [[int main () { return 0; }
 ]])
-
-AT_DATA([a.f],
+compile="$CC $CPPFLAGS $CFLAGS" link="$CC $CFLAGS $LDFLAGS" source=a.c
+],
+[CXX], [AT_DATA([a.cpp],
+[[int main () { return 0; }
+]])
+compile="$CXX $CPPFLAGS $CXXFLAGS" link="$CXX $CXXFLAGS $LDFLAGS" source=a.cpp
+],
+[F77], [AT_DATA([a.f],
 [[      program main
       end
 ]])
-
-cp a.c a.cpp
-cp a.f a.f90
+compile="$F77 $FFLAGS" link="$F77 $FFLAGS $LDFLAGS" source=a.f
+],
+[FC], [AT_DATA([a.f90],
+[[      program main
+      end
+]])
+compile="$FC $FCFLAGS" link="$FC $FCFLAGS $LDFLAGS" source=a.f90
+],
+[GCJ], [AT_DATA([a.java],
+[[class a {}
+]])
+compile="$GCJ $GCJFLAGS" link="$GCJ $GCJFLAGS $LDFLAGS" source=a.java
+])
 
 # Linker flags are not passed to the archiver, so don't test static libraries.
 if $LIBTOOL --features | grep 'enable shared libraries'; then
@@ -47,50 +65,39 @@ else
   library_and_module=
 fi
 
-for tag in CC CXX F77 FC; do
-  if $LIBTOOL --tag=$tag 2>&1 | grep 'unknown tag'; then
-    continue
-  fi
-  case $tag in
-  CC) compile="$CC $CPPFLAGS $CFLAGS" link="$CC $CFLAGS $LDFLAGS" source=a.c ;;
-  CXX) compile="$CXX $CPPFLAGS $CXXFLAGS" link="$CXX $CXXFLAGS $LDFLAGS" source=a.cpp;;
-  F77) compile="$CC $CPPFLAGS $CFLAGS" link="$CC $CFLAGS $LDFLAGS" source=a.f ;;
-  FC) compile="$CC $CPPFLAGS $CFLAGS" link="$CC $CFLAGS $LDFLAGS" source=a.f90 ;;
+eval "`$LIBTOOL --tag=lt_tag --config | $EGREP '^(wl|archive_cmds)='`"
+
+AT_CHECK([$LIBTOOL --tag=lt_tag --mode=compile $compile -c $source],
+	 [], [ignore], [ignore])
+
+# Linker flags are prefixed with ${wl} iff they are passed to the
+# compiler driver, instead of directly to the linker.
+case $archive_cmds in
+*\$LD*\$linker_flags*) maybe_wl= ;;
+*) maybe_wl=$wl ;;
+esac
+
+for flag in -Wc, -Wl, '-Xcompiler ' '-Xlinker '; do
+  case $flag in
+  -Wc, | -Xcompiler\ )
+    AT_CHECK([$LIBTOOL -n --tag=lt_tag --mode=compile $compile ]dnl
+	     [$flag-foo -c $source], [], [stdout], [ignore])
+    AT_CHECK([$FGREP " -foo" stdout], [], [ignore])
+    flag_prefix=
+    ;;
+  -Wl, | -Xlinker\ )
+    flag_prefix=$maybe_wl
+    ;;
   esac
 
-  eval "`$LIBTOOL --tag=$tag --config | $EGREP '^(wl|archive_cmds|reload_cmds)='`"
-
-  AT_CHECK([$LIBTOOL --tag=$tag --mode=compile $compile -c $source],
-	   [], [ignore], [ignore])
-
-  # Linker flags are prefixed with ${wl} iff they are passed to the
-  # compiler driver, instead of directly to the linker.
-  case $archive_cmds in
-  *\$LD*\$linker_flags*) maybe_wl= ;;
-  *) maybe_wl=$wl ;;
-  esac
-
-  for flag in -Wc, -Wl, '-Xcompiler ' '-Xlinker '; do
-    case $flag in
-    -Wc, | -Xcompiler\ )
-      AT_CHECK([$LIBTOOL -n --tag=$tag --mode=compile $compile ]dnl
-	       [$flag-foo -c $source], [], [stdout], [ignore])
-      AT_CHECK([$FGREP " -foo" stdout], [], [ignore])
-      flag_prefix=
-      ;;
-    -Wl, | -Xlinker\ )
-      flag_prefix=$maybe_wl
-      ;;
-    esac
-
-    eval set program "$library_and_module"
-    for output
-    do
-      AT_CHECK([$LIBTOOL -n --tag=$tag --mode=link $link ]dnl
-	       [-o $output a.lo -rpath /nowhere $flag-foo], [], [stdout], [ignore])
-      AT_CHECK([$FGREP " $flag_prefix-foo" stdout], [], [ignore])
-    done
+  eval set program$EXEEXT "$library_and_module"
+  for output
+  do
+    AT_CHECK([$LIBTOOL -n --tag=lt_tag --mode=link $link ]dnl
+	     [-o $output a.lo -rpath /nowhere $flag-foo], [], [stdout], [ignore])
+    AT_CHECK([$FGREP " $flag_prefix-foo" stdout], [], [ignore])
   done
 done
 
 AT_CLEANUP
+])dnl m4_foreach(tag)

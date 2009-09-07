@@ -1,3 +1,18 @@
+2009-09-07  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Fix and split recent testsuite addition for compile/link flags.
+	* tests/flags.at (passing flags through libtool): Split into ...
+	(passing CC flags through libtool)
+	(passing CXX flags through libtool)
+	(passing F77 flags through libtool)
+	(passing FC flags through libtool)
+	(passing GCJ flags through libtool): ... these five tests,
+	factorized with m4_foreach.  Fix F77 and FC compile and link
+	commands; add GCJ tag.  Use LT_AT_TAG to correctly skip tags
+	for which no compiler exists.  Use $EXEEXT where appropriate.
+	Drop unneeded use of reload_cmds.
+	Reports by Peter Rosin and Peter O'Gorman.
+
 2009-09-07  Peter O'Gorman  <peter@pogma.com
 
 	Fix redirect in test case.
