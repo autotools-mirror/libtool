@@ -1,5 +1,15 @@
 2009-09-07  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	Allow dlopen self test to work with gcc's -fvisibility=hidden.
+	* libltdl/m4/libtool.m4 (_LT_TRY_DLOPEN_SELF): Declare default
+	visibility for the symbol we are going to test dlopen (NULL)
+	when a GCC version is used that understands the visibility
+	attribute, under the assumption that if -fvisibility=hidden
+	will be used, the user code will be sufficiently annotated
+	for visibility of needed symbols from the main executable.
+	* THANKS: Update.
+	Report by Josh Hursey against OpenMPI.
+
 	Fix and split recent testsuite addition for compile/link flags.
 	* tests/flags.at (passing flags through libtool): Split into ...
 	(passing CC flags through libtool)
