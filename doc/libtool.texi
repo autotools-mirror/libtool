@@ -3119,7 +3119,7 @@ Also the only thing that must go outside the
 @code{BEGIN_C_DECLS}/@code{END_C_DECLS} pair are @code{#include} lines.
 Strictly speaking it is only C symbol names that need to be protected,
 but your header files will be more maintainable if you have a single
-pair of of these macros around the majority of the header contents.
+pair of these macros around the majority of the header contents.
 
 You should use these definitions of @code{PARAMS}, @code{BEGIN_C_DECLS},
 and @code{END_C_DECLS} into your own headers.  Then, you may use them to
@@ -3353,7 +3353,7 @@ though Libtool takes care of that detail if you use
 An array of @var{lt_symbol} structures, representing all the preloaded
 symbols linked into the program proper.  For each module
 @option{-dlpreopen}ed by the Libtool linked program
-there is an element with the @var{name} of the module and a @var{address}
+there is an element with the @var{name} of the module and an @var{address}
 of @code{0}, followed by all symbols exported from this file.
 For the executable itself the special name @samp{@@PROGRAM@@} is used.
 The last element of all has a @var{name} and @var{address} of
@@ -5226,6 +5226,74 @@ directory, except that Fortran 90 is used in combination with the
 
 @end table
 
+The new, Autotest-based test suite uses keywords to classify certain
+test groups:
+
+@table @samp
+@item CXX
+@itemx F77
+@itemx FC
+@itemx GCJ
+The test group exercises one of these @command{libtool} language tags.
+
+@item autoconf
+@itemx automake
+These keywords denote that the respective external program is needed
+by the test group.  The tests are typically skipped if the program is
+not installed.  The @samp{automake} keyword may also denote use of the
+@command{aclocal} program.
+
+@item interactive
+This test group may require user interaction on some systems.  Typically,
+this means closing a popup window about a DLL load error on Windows.
+
+@item libltdl
+Denote that the @file{libltdl} library is exercised by the test group.
+
+@item libtool
+@itemx libtoolize
+Denote that the @command{libtool} or @command{libtoolize} scripts are
+exercised by the test group, respectively.
+
+@item recursive
+Denote that this test group may recursively re-invoke the test suite
+itself, with changed settings and maybe a changed @command{libtool}
+script.  You may use the @env{INNER_TESTSUITEFLAGS} variable to pass
+additional settings to this recursive invocation.  Typically, recursive
+invocations delimit the set of tests with another keyword, for example
+by passing @code{-k libtool} right before the expansion of the
+@env{INNER_TESTSUITEFLAGS} variable (without an intervening space, so
+you get the chance for further delimitation).
+
+Test groups with the keyword @samp{recursive} should not be denoted with
+keywords, in order to avoid infinite recursion.  As a consequence,
+recursive test groups themselves should never require user interaction,
+while the test groups they invoke may do so.
+@end table
+
+For example, in order to avoid any interactive test groups, you could
+use this:
+
+@smallexample
+make check-local \
+  TESTSUITEFLAGS='-k !interactive INNER_TESTSUITEFLAGS=",!interactive"'
+@end smallexample
+
+@noindent
+while to run only those test groups, you would use this:
+
+@smallexample
+make check-local \
+  TESTSUITEFLAGS='-k interactive -k recursive INNER_TESTSUITEFLAGS=,interactive'
+@end smallexample
+
+@noindent
+but the convenience targets @samp{check-interactive} and
+@samp{check-noninteractive} avoid needing to remember these complex
+commands, in addition to also disabling interactive tests in the old
+test suite.
+
+
 @node When tests fail
 @subsection When tests fail
 @cindex failed tests
@@ -5763,6 +5831,11 @@ shared library in question, and the @var{$objdir/$newlib} contains the
 path of the static library these commands should build.  After executing
 these commands, libtool will proceed to link against @var{$objdir/$newlib}
 instead of @var{soname}.
+@end defvar
+
+@defvar lock_old_archive_extraction
+Set to @samp{yes} if the extraction of a static library requires locking
+the library file.  This is required on Darwin.
 @end defvar
 
 @defvar archiver_list_spec

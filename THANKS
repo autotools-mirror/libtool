@@ -67,6 +67,7 @@
   their time and energy in helping to track down bugs, port to new systems,
   and generally assist in the libtool maintainership process:
 
+  Alan Hourihane		alanh@fairlite.co.uk
   Alexei Sheplyakov		varg@theor.jinr.ru
   Alon Bar-Lev			alon.barlev@gmail.com
   Andreas Schwab		schwab@suse.de
@@ -75,9 +76,11 @@
   Brad Smith			brad@comstyle.com
   Brian Barrett			brbarret@osl.iu.edu
   Bruno Haible			haible@ilog.fr
+  Camilo La Rota		camilo.larota@ens-lyon.fr
   Carl D. Roth			roth@cse.ucsc.edu
   Chris P. Ross			cross@eng.us.uu.net
   Christian Biesinger		cbiesinger@web.de
+  Christian Rössel		christian.roessel@gmx.de
   Christoph Egger		Christoph_Egger@gmx.de
   Christopher Hulbert		cchgroupmail@gmail.com
   Craig Tierney			Craig.Tierney@noaa.gov
@@ -85,6 +88,7 @@
   Daniel Reed			n@ml.org
   Daniel Richard G.		skunk@iSKUNK.ORG
   DJ Delorie			dj@delorie.com
+  Donn Washburn			n5xwb@comcast.net
   Edouard G. Parmelan		Edouard.Parmelan@France.NCR.COM
   Erez Zadok			ezk@shekel.mcl.cs.columbia.edu
   Eric Estievenart		eric@via.ecp.fr
@@ -104,12 +108,16 @@
   Joel N. Weber II		devnull@gnu.org
   Joerg Sonnenberger		joerg@netbsd.org
   John Bowler			jbowler@acm.org
+  John R. Cary			cary@txcorp.com
   John Wolfe			jlw@sco.com
+  Josh Hursey			jjhursey@open-mpi.org
   Joseph Beckenbach III		jrb3@best.com
+  Lennart Poettering		lennart@poettering.net
   Karl Berry			karl@freefriends.org
   Kenneth Albanowski		kjahds@kjahds.com
   Kevin Ryde			user42@zip.com.au
   Kurt D. Zeilenga		Kurt@OpenLDAP.Org
+  Maciej Helminiak		dion2@wp.pl
   Maciej W. Rozycki		macro@linux-mips.org
   Manfred Weichel		Manfred.Weichel@pdb.siemens.de
   Marc Espie			espie@nerim.net
@@ -122,16 +130,20 @@
   Nix				nix@esperi.org.uk
   Olaf Lenz			olenz@fias.uni-frankfurt.de
   Olly Betts			olly@muscat.co.uk
+  Patrice Fromy			patrice.fromy@u-psud.fr
   Patrick Welche		prlw1@newn.cam.ac.uk
   Paul Biggar			paul.biggar@gmail.com
   Paul Eggert			eggert@twinsun.com
   Peter Eisentraut		peter_e@gmx.net
   Peter Jeremy			peterjeremy@optushome.com.au
   Peter Kjellerstedt		peter.kjellerstedt@axis.com
+  Rainer Emrich			r.emrich@de.tecosim.com
   Rainer Orth			ro@TechFak.Uni-Bielefeld.DE
   Rainer Tammer			tammer@tammer.net
   Ralf Menzel			menzel@ls6.cs.uni-dortmund.de
   Richard Purdie		rpurdie@rpsys.net
+  Richard Sandiford		richards@transitive.com
+  Robert Garron			Robert.Garron@Access3000.net
   Robert Millan			rmh@aybabtu.com
   Robert Ögren			lists@roboros.com
   Roberto Bagnara		bagnara@cs.unipr.it

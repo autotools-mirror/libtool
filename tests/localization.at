@@ -49,6 +49,16 @@ AT_CHECK([$LIBTOOL --mode=compile --tag=CC $CC $CPPFLAGS $CFLAGS -c a.c || exit 
 	 [1], [stdout], [stderr])
 LT_AT_NORMALIZE_COMPILER_OUTPUT([stdout], [libtool-stdout])
 LT_AT_NORMALIZE_COMPILER_OUTPUT([stderr], [libtool-stderr])
+# Avoid these errors:
+# GNU/Linux:
+#   /bin/sh: warning: setlocale: LC_ALL: cannot change locale (de_DE)
+# HP-UX:
+#   Warning! One or more of your selected locales are not available.
+#   Please invoke the commands "locale" and "locale -a" to verify your
+#   selections and the available locales.
+#
+#   Continuing processing using the "C" locale.
+AT_CHECK([grep locale stdout stderr && exit 77], [1])
 AT_CHECK([diff expected-stderr libtool-stderr])
 AT_CHECK([diff expected-stdout libtool-stdout])
 

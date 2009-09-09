@@ -12,12 +12,18 @@ New in 2.2.8 2009-??-??: git version 2.2.7a, Libtool team:
   - New libtool command line flag --no-verbose, which disables only
     the extra "verbose" output messages and has no effect on the
     default informational messages.
+  - New convenience make targets `check-noninteractive' to avoid long testsuite
+    runs on Windows with popup windows in the middle, and `check-interactive'
+    for the complement set of tests.
 
 * Changes in supported systems or compilers:
 
   - Improved support for 64bit Windows (mingw64).
   - Improved support for cegcc (Windows CE/PocketPC).
   - Support for GNU/kOpenSolaris (kopensolaris*-gnu).
+  - Initial support for compilers on BlueGene BG/L.
+  - Improved support for Atari FreeMiNT.
+  - With binutils 2.19.50+, shared libraries can be built on AIX.
   - Initial support for Microsoft Visual C w/o wrapper scripts.
 
 * Bug fixes:
@@ -34,6 +40,16 @@ New in 2.2.8 2009-??-??: git version 2.2.7a, Libtool team:
   - Argument mangling of execute mode has been improved (i.e., lessened).
   - Fix 2.1b regression that caused nm to not be the default name lister.
     The regression affected mainly (arguably broken) cross compiles.
+  - Fix long standing bug that caused compiler checks for Fortran and
+    C++ compilers to run twice.
+  - Link mode works around a parallel build failure on Darwin 9.6.0 due
+    to the `ar' `flock'ing an archive upon extraction, by protecting the
+    extraction of convenience archives with a lock.
+  - The Libtool macro files do not contain instances of __oline__ any more,
+    easing merges for configure scripts that are added to version control.
+  - Fix ancient bug where "-Wc," was turned into "$wl" (typically "-Wl,")
+    when using the compiler driver to link programs. Now "-Wc," is stripped
+    just as it is when linking libraries through the compiler driver.
 
 * Miscellaneous changes:
 

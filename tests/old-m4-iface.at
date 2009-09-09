@@ -1,6 +1,6 @@
 # old-m4-iface.at -- exercise old m4 interface to libtool     -*- Autotest -*-
 #
-#   Copyright (C) 2005, 2008 Free Software Foundation, Inc.
+#   Copyright (C) 2005, 2008, 2009 Free Software Foundation, Inc.
 #   Written by Gary V. Vaughan, 2005
 #
 #   This file is part of GNU Libtool.
@@ -143,7 +143,7 @@ module.la: module.lo
 	$(LTLINK) module.lo -module -avoid-version -rpath /dev/null
 
 ltdldemo@EXEEXT@: main.@OBJEXT@ module.la libltdl/libltdlc.la
-	$(LTLINK) main.@OBJEXT@ -dlopen module.la @LIBLTDL@
+	$(LTLINK) main.@OBJEXT@ -dlopen module.la @LIBLTDL@ @LIBS@
 
 .SUFFIXES:
 .SUFFIXES: .c .@OBJEXT@ .lo
@@ -155,8 +155,10 @@ ltdldemo@EXEEXT@: main.@OBJEXT@ module.la libltdl/libltdlc.la
 	$(LTCOMPILE) -c -o $@ $<
 ]])
 
+# Be sure to use the in-tree libltdl, somebody might have removed
+# an installed libltdl.la file.
 LT_AT_BOOTSTRAP([--ltdl --install], [-I libltdl/m4], [ignore], [ignore],
-	[--force])
+	[--force], [--with-included-ltdl])
 
 LT_AT_EXEC_CHECK([./ltdldemo], 0, [ignore])
 

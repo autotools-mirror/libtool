@@ -67,6 +67,7 @@
 
 AT_SETUP([static linking flags for programs])
 AT_KEYWORDS([libtool])
+AT_KEYWORDS([interactive])dnl Some of the exec_fail test cause popups with MinGW.
 
 LDFLAGS="$LDFLAGS -no-undefined"
 prefix=`pwd`/inst

@@ -132,9 +132,9 @@ $SED '/^if /,/^endif$/d;/^else$/,/^endif$/d;/^include /d' $makes > Makefile
 # configure, and ltversion.m4 to generate configure in the first place:
 rm -f $auxdir/ltmain.sh $m4dir/ltversion.m4
 
-$MAKE ./$auxdir/ltmain.sh ./$m4dir/ltversion.m4 ./doc/notes.txt \
+$MAKE ./$auxdir/ltmain.sh ./$m4dir/ltversion.m4 \
     ./libtoolize.in ./tests/defs.in ./tests/package.m4 \
-    ./tests/testsuite ./libltdl/Makefile.am \
+    ./tests/testsuite ./libltdl/Makefile.am ./doc/notes.txt \
     srcdir=. top_srcdir=. PACKAGE="$2" VERSION="$3" \
     PACKAGE_BUGREPORT="bug-$2@gnu.org" M4SH="$AUTOM4TE --language=m4sh" \
     AUTOTEST="$AUTOM4TE --language=autotest" SED="$SED" MAKEINFO="$MAKEINFO" \

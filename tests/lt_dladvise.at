@@ -1,6 +1,6 @@
 # lt_dladvise.at -- test libltdl functionality                -*- Autotest -*-
 #
-#   Copyright (C) 2007, 2008 Free Software Foundation, Inc.
+#   Copyright (C) 2007, 2008, 2009 Free Software Foundation, Inc.
 #   Written by Gary V. Vaughan, 2007
 #
 #   This file is part of GNU Libtool.
@@ -318,8 +318,11 @@ dlpreloadable='preload'
 # are reporting not able to accept the global hint to lt_dlopenadvise().    #
 # ------------------------------------------------------------------------- #
 
-case $host_os in
-cygwin* | mingw* | cegcc*)
+have_shared=false
+$LIBTOOL --features | grep 'enable shared libraries' >/dev/null && have_shared=:
+
+case $host_os,$have_shared in
+cygwin* | mingw* | cegcc* | *,false)
   # These hosts do not support linking without -no-undefined
   CPPFLAGS="$CPPFLAGS -DHAVE_UNDEFINED_SYMBOLS=0"
   ;;

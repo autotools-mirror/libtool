@@ -50,15 +50,20 @@ FAIL_CHECK([$LIBTOOL --mode=compile $CC $CPPFLAGS $CFLAGS -c a.c])
 AT_CHECK([test -f a.lo], [1])
 
 # non-PIC compile failure
-case $pic_mode in default | yes)
-  case $build_old_libs,$pic_flag in yes,*-DPIC*)
-    AT_DATA([a.c], [[
+case $pic_mode in default | no)
+  case " $CFLAGS " in
+   *\ -prefer-pic\ *) ;;
+   *)
+    case $build_old_libs,$pic_flag in yes,*-DPIC*)
+      AT_DATA([a.c], [[
 #ifndef PIC
   choke me
 #endif
 ]])
-    FAIL_CHECK([$LIBTOOL --mode=compile $CC $CPPFLAGS $CFLAGS -no-suppress -c a.c])
-    AT_CHECK([test -f a.lo], [1])
+      FAIL_CHECK([$LIBTOOL --mode=compile $CC $CPPFLAGS $CFLAGS -no-suppress -c a.c])
+      AT_CHECK([test -f a.lo], [1])
+      ;;
+    esac
     ;;
   esac
   ;;

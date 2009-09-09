@@ -1,3 +1,349 @@
+2009-09-07  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Allow dlopen self test to work with gcc's -fvisibility=hidden.
+	* libltdl/m4/libtool.m4 (_LT_TRY_DLOPEN_SELF): Declare default
+	visibility for the symbol we are going to test dlopen (NULL)
+	when a GCC version is used that understands the visibility
+	attribute, under the assumption that if -fvisibility=hidden
+	will be used, the user code will be sufficiently annotated
+	for visibility of needed symbols from the main executable.
+	* THANKS: Update.
+	Report by Josh Hursey against OpenMPI.
+
+	Fix and split recent testsuite addition for compile/link flags.
+	* tests/flags.at (passing flags through libtool): Split into ...
+	(passing CC flags through libtool)
+	(passing CXX flags through libtool)
+	(passing F77 flags through libtool)
+	(passing FC flags through libtool)
+	(passing GCJ flags through libtool): ... these five tests,
+	factorized with m4_foreach.  Fix F77 and FC compile and link
+	commands; add GCJ tag.  Use LT_AT_TAG to correctly skip tags
+	for which no compiler exists.  Use $EXEEXT where appropriate.
+	Drop unneeded use of reload_cmds.
+	Reports by Peter Rosin and Peter O'Gorman.
+
+2009-09-07  Peter O'Gorman  <peter@pogma.com
+
+	Fix redirect in test case.
+	* tests/darwin.at: Fix stderr redirect.
+
+	Use darwin's -force_load flag if available for whole_archive_flag_spec
+	* libltdl/m4/libtool.m4 (_LT_REQUIRED_DARWIN_CHECKS): Check for
+	-force_load and use it if there.
+	* tests/darwin.at: Add a simple test.
+
+2009-09-06  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Testsuite keyword 'interactive' and check-* rules.
+	* Makefile.am (testsuite_deps, testsuite_deps_uninstalled):
+	New variables.
+	(check-local, installcheck-local): Use them.
+	(check-interactive, check-noninteractive): New rules.
+	* tests/link-order2.at (Link order of deplibs),
+	tests/static.at (static linking flags for programs): Add keyword
+	`interactive'.
+	* doc/libtool.texi (Test descriptions): Document all keywords
+	used in the Libtool test suite.
+	* NEWS: Update.
+
+	Fix failure test in the presence of --with-pic or -prefer-pic.
+	* tests/fail.at (Failure tests): Run non-PIC failure test only
+	if pic_mode is 'default' or 'no', rather than 'default' or 'yes'
+	and also -prefer-pic has not been passed in $CFLAGS.
+	* THANKS: Update.
+	Report by Donn Washburn.
+
+	Add testsuite exposure for passing of compiler and linker flags.
+	* tests/flags.at (passing flags through libtool): New file, new
+	test, for bug fixed in previous commit.
+	* Makefile.am (TESTSUITE_AT): Add tests/flags.at.
+
+2009-09-04  Peter Rosin  <peda@lysator.liu.se>
+
+	Make -Wc,FLAG behave like -Xcompiler FLAG in link mode.
+	* libltdl/config/ltmain.m4sh (func_mode_link): Remove "-Wc,"
+	instead of replacing it with "$wl" when linking programs
+	through the compiler driver, just as is the case when linking
+	libraries.
+	* NEWS: Update.
+
+2009-08-23  Lennart Poettering  <lennart@poettering.net>  (tiny change)
+
+	Shut up prototype warnings with recent GCC and -Wstrict-prototypes.
+	* libltdl/config/ltmain.m4sh (func_generate_dlsyms): Use recent
+	GCC's diagnostic pragma to override a -Wstrict-prototypes
+	setting for the symbol list code.
+	* THANKS: Update.
+
+2009-08-23  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Remove __oline__ from macros, for less spurious configure diffs.
+	* libltdl/m4/libtool.m4 (_LT_ENABLE_LOCK, _LT_COMPILER_OPTION)
+	(_LT_COMPILER_C_O, LT_PATH_NM): Replace __oline__ instances with
+	$LINENO.
+	* NEWS: Update.
+
+2009-07-24  Roumen Petrov  <bugtrack@roumenpetrov.info>  (tiny change)
+
+	Fixup 'execute mode' test for w32.
+	* tests/execute-mode.at (execute mode): Add missing $EXEEXT.
+	(LDFLAGS): Add -no-undefined.
+
+2009-07-01  Yaakov Selkowitz  <yselkowitz@users.sourceforge.net> (tiny change)
+	    Charles Wilson  <libtool@cwilson.fastmail.fm>
+
+	[CXX] Use correct export_dynamic_flag_spec for PE-COFF $hosts
+	* libltdl/m4/libtool.m4 (_LT_LANG_CXX_CONFIG) [cygwin*|mingw*|pw32*|cegcc*]:
+	Define export_dynamic_flag_spec as -Wl,--export-all-symbols here as well
+	(see commit 5f2bbb494a2753afb2878c399cfd8316b7403a5b).
+
+2009-06-29  Charles Wilson  <libtool@cwilson.fastmail.fm>
+
+	[mingw] Improve sys_lib_search_path_spec detection.
+	* libltdl/m4/libtool.m4 (_LT_SYS_DYNAMIC_LINKER): Fix handling
+	of dos-style paths when parsing $CC -print-search-dirs output.
+
+2009-06-28  Charles Wilson  <libtool@cwilson.fastmail.fm>
+
+	Finish adding alias for obsoleted AC_LIBTOOL_RC macro.
+	* libltdl/m4/libtool.m4: Add reminder comment concerning
+	aclocal-1.4 backwards compatibility.
+	* libltdl/m4/lt~obsolete.m4: Remove unnecessary AC_DEFUN.
+
+2009-06-27  Charles Wilson  <libtool@cwilson.fastmail.fm>
+
+	Add alias for obsoleted AC_LIBTOOL_RC macro.
+	* libltdl/m4/libtool.m4: Add alias for obsoleted
+	macro AC_LIBTOOL_RC.
+
+2009-06-21  Charles Wilson  <libtool@cwilson.fastmail.fm>
+
+	Remove unneeded functions and options from cwrapper
+	* libltdl/config/ltmain.m4sh (func_emit_cwrapperexe_src)
+	[lt_opt_process_env_set]: Remove.
+	[lt_opt_process_env_prepend]: Remove.
+	[lt_opt_process_env_append]: Remove.
+	[lt_split_name_value]: Remove.
+	[file scope]: Don't declare removed functions. Remove
+	constants and defines related to eliminated commandline
+	options.
+	[main]: Remove code related to eliminated commandline
+	options --lt-env-set, --lt-env-prepend, --lt-env-append.
+
+2009-06-19  Yaakov Selkowitz  <yselkowitz@users.sourceforge.net> (tiny change)
+	    Charles Wilson  <libtool@cwilson.fastmail.fm>
+
+	Ensure LT_PATH_LD works when called before LT_INIT
+	* libltdl/m4/libtool.m4 (LT_PATH_LD): AC_REQUIRE _LT_PROG_ECHO_BACKSLASH.
+
+2009-06-14  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Add versioning tests.
+	* tests/versioning.at (versioning): New file, new test.
+	* Makefile.am (TESTSUITE_AT): Adjust.
+	Prompted by bug report from Mike Gorchak.
+
+2009-06-14  Mike Gorchak  <mike@malva.ua>  (tiny change)
+	    Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Fix versioning computation for QNX.
+	* libltdl/config/ltmain.m4sh (func_mode_link): Set `$current'
+	and `$age' properly for version_type `qnx'.
+
+2009-06-14  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Avoid spurious localization testsuite failure on HP-UX/ia64.
+	* tests/localization.at (localized compiler messages): Skip test
+	if the compiler warning output contains `locale', for HP-UX.
+
+2009-06-10  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Fix concurrent extraction of convenience libraries on Darwin.
+	* libltdl/m4/libtool.m4 (_LT_CMD_OLD_ARCHIVE): New libtool
+	variable `lock_old_archive_extraction', set to `yes' on darwin.
+	* doc/libtool.texi (libtool script contents): Document it.
+	* libltdl/config/ltmain.m4sh (func_extract_an_archive): Lock
+	`ar x' invocation if `lock_old_archive_extraction' is yes.
+	* tests/darwin.at (darwin concurrent library extraction): New
+	test.
+	* NEWS: Update.
+	Report by Akim Demaille.
+
+2009-06-07  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Fix testsuite failure of lt_dlopenadvise test on FreeMiNT.
+	* tests/lt_dladvise.at (lt_dlopenadvise library loading): Do not
+	build moddepend for systems without shared libraries.
+	Report by Alan Hourihane.
+
+	testsuite: avoid failures due to old Automake.
+	* tests/configure-iface.at (installable libltdl)
+	(--with-ltdl-include/lib, --with-included-ltdl):
+	Speficy libmodule_la_SOURCES in Makefile.am as the default
+	source file naming scheme changed in Automake 1.8.
+	* tests/nonrecursive.at (_LT_AT_LTDL_SETUP): Require Automake
+	1.9.6.
+	* THANKS: Update.
+	Report by Robert Garron.
+
+	testsuite: add missing @LIBS@ in a link command line.
+	* tests/old-m4-iface.at (AC_WITH_LTDL): Use @LIBS@ when linking.
+	Report by Patrice Fromy.
+
+	testsuite: cope when some installed libltdl.la has been removed.
+	* tests/old-m4-iface.at (AC_WITH_LTDL): Pass --with-included-ltdl
+	to configure, to ensure we do not accidentally link against a
+	previously installed libltdl.so where the corresponding .la
+	file has been removed, thus we do not add a run path, and the
+	runtime linker then fails to find libltdl.so.7.
+	* tests/configure-iface.at (--with-ltdl-include/lib): Remove -L
+	flags from LDFLAGS to avoid picking up an installed libltdl
+	outside of the default locations.
+	* THANKS: Update.
+	Prompted by report from Patrice Fromy.
+
+2009-06-07  Vincent Torri  <vtorri@univ-evry.fr>  (tiny change)
+
+	Fix C wrapper invocation for ceGCC hosts (cegcc and mingw32ce).
+	* libltdl/config/ltmain.m4sh (func_mode_link): do not generate
+	C wrapper for cegcc and mingw32ce hosts.
+	(func_emit_cwrapperexe_src): remove useless check on
+	__MINGW32CE__.
+
+2009-06-07  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Don't pick up double-quotes from /etc/ld.so.conf on Ubuntu.
+	* libltdl/m4/libtool.m4 (_LT_SYS_DYNAMIC_LINKER) [ linux ]
+	<sys_lib_dlsearch_path_spec>: Remove embedded double quotes from
+	paths picked up from /etc/ld.so.conf.  Fixes libltdl compile
+	failure on Ubuntu 7.10.
+	* THANKS: Update.
+	Report by Camilo La Rota.
+
+2009-06-06  Richard Sandiford  <richards@transitive.com>
+
+	Fix GNU nm invocation for AIX.
+	* libldtl/m4/libtool.m4 (_LT_LINKER_SHLIBS)
+	<export_symbols_cmds>: Modify the GNU-nm-on-AIX version so that
+	it adds weak defined symbols to the export list.
+
+	Build AIX shared libraries with binutils 2.19.50+.
+	* libltdl/m4/libtool.m4 (_LT_LINKER_SHLIBS, _LT_LANG_CXX_CONFIG)
+	<lt_use_gnu_ld_interface>: New variable to control whether the
+	GNU ld or native ld interface is used.  Set to "no" for GNU ld
+	2.19.50+ on AIX, otherwise mirror $with_gnu_ld.  Update the
+	warning message that is printed when using GNU ld on AIX.
+	Adjust the whole_archive_flag_spec value for GNU ld on AIX.
+	* NEWS, THANKS: Update.
+
+2009-05-27  Peter O'Gorman  <peter@pogma.com>
+
+	Don't run compiler checks twice.
+	libltdl/m4/libtool.m4 (_LT_PROG_FC, _LT_PROG_F77,
+	_LT_PROG_CXX): Remove these macros.
+	libltdl/m4/lt~obsolete.m4: Add removed macros here.
+	libltdl/m4/libtool.m4 (_LT_LANG_FC_CONFIG, _LT_LANG_F77_CONFIG,
+	_LT_LANG_CXX_CONFIG): Remove references to removed macros, and
+	move functionality here.
+	NEWS: Update.
+
+2009-05-05  Rainer Emrich  <r.emrich@de.tecosim.com>  (tiny change)
+	    Peter Rosin  <peda@lysator.liu.se>
+	    Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Fix cross compilation for HPPA/64 with a BSD file command.
+	* libltdl/m4/libtool.m4 (_LT_CHECK_MAGIC_METHOD)
+	[hpux10.20*, hpux11*, !ia64] <lt_cv_deplibs_check_method>:
+	Match the dot in `PA-RISC 2.0' literally.  Adjust hppa*64*
+	pattern to also match BSD `file' output, used in cross
+	compilation setups.
+	* THANKS: Update.
+	Report and initial patch by Rainer Emrich, refined by Peter
+	Rosin.
+
+2009-05-05  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	libtoolize: ignore trailing junk on scriptversion line.
+	* libtoolize.m4sh (func_install_update): Ignore semi-colon or
+	comment-sign and all following characters when parsing a
+	`scriptversion' line in one of the auxiliary scripts; recent
+	Automake-provided script have a stylized comment to induce
+	Emacs to use UTC.
+	Exposed by the `libtoolize config files serial update' test.
+
+2009-05-02  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Skip localization test when setlocale is not functional.
+	* tests/localization.at (localized compiler messages): Skip
+	test when there is a warning about `LC_ALL'.
+	* THANKS: Update.
+	Report by Maciej Helminiak.
+
+2009-05-02  Alan Hourihane  <alanh@fairlite.co.uk>  (tiny change)
+
+	Improved support for FreeMiNT.
+	* libltdl/m4/libtool.m4 (LT_CMD_MAX_LEN) [mint]: Hard-code
+	command line length limit to 8192, to avoid long test.
+	* NEWS, THANKS: Update.
+
+2009-05-02  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Initial port for BlueGene BG/L.
+	* libltdl/m4/libtool.m4 (_LT_COMPILER_PIC, _LT_LINKER_SHLIBS)
+	(_LT_LANG_CXX_CONFIG) [linux]: Detect bgxl*, bgf*, mpixl*
+	compilers.
+	* NEWS, THANKS: Update.
+	Report, feedback and testing by John R. Cary and Christian
+	Rössel.
+
+	manual: fix grammaros.
+	* doc/libtool.texi (Dlpreopening): Fix grammaro.
+	(C header files): Remove duplicate word.
+
+	Allow through -tp=* at link time, for pgcc.
+	* libltdl/config/ltmain.m4sh (func_mode_link): Portlant Group
+	pgcc uses `-tp=PROCESSOR' for target processor selection; allow
+	the flag through at link time.
+	Report by Ethan Mallove.
+
+	Fix quoting of eval'ed variable.
+	* libltdl/m4/libtool.m4 (_LT_CMD_GLOBAL_SYMBOLS): Double-quote
+	$lt_cv_sys_global_symbol_pipe for eval, like we do in ltmain,
+	in order to preserve TABs and multiple adjacent whitespace.
+	Report by Bruno Haible.
+
+2009-04-22  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Cope better with missing `makeinfo' in `bootstrap'.
+	* bootstrap: Update `./doc/notes.txt' last so missing `makeinfo'
+	does not cause a broken tree.
+	* THANKS: Update.
+	Report by Christian Rössel.
+
+2009-03-29  Yaakov Selkowitz  <yselkowitz@users.sourceforge.net>  (tiny change)
+	    Charles Wilson  <libtool@cwilson.fastmail.fm>
+
+	[cygwin] Improve operation with gcc4
+	* libltdl/m4/libtool.m4 (_LT_SYS_DYNAMIC_LINKER) [cygwin*]:
+	Add w32api to sys_lib_search_path_spec without overriding gcc's
+	own search path.
+
+2009-03-29  Yaakov Selkowitz  <yselkowitz@users.sourceforge.net>  (tiny change)
+	    Charles Wilson  <libtool@cwilson.fastmail.fm>
+
+	Use correct export_dynamic_flag_spec for PE-COFF $hosts
+	* libltdl/m4/libtool.m4 (_LT_LINKER_SHLIBS) 
+	[cygwin*|mingw*|pw32*|cegcc*]: Define export_dynamic_flag_spec
+	as -Wl,--export-all-symbols, as required by GNU ld for PE-COFF.
+
+2009-03-29  Charles Wilson  <libtool@cwilson.fastmail.fm>
+
+	Improve compatibility with older automake
+	* libltdl/m4/lt~obsolete.m4: Add AC_DEFUNs for
+	_LT_PREPARE_SED_QUOTE_VARS and _LT_PROG_ECHO_BACKSLASH.
+	Report by Yaakov Selkowitz.
+
 2009-03-20  Peter Rosin  <peda@lysator.liu.se>
 
 	LT_OUTPUT should always create the libtool script.

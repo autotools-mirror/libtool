@@ -45,6 +45,7 @@
 
 AT_SETUP([Link order of deplibs])
 AT_KEYWORDS([libtool])
+AT_KEYWORDS([interactive])dnl running 'wrong' may cause a popup window.
 
 eval `$LIBTOOL --config | $EGREP '^(shlibpath_var|allow_undefined_flag)='`
 
