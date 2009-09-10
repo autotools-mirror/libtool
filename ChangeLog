@@ -1,3 +1,10 @@
+2009-09-10  Peter Rosin  <peda@lysator.liu.se>
+
+	func_win32_libid doesn't work with MS dumpbin
+	* libltdl/m4/libtool.m4 (_LT_CHECK_MAGIC_METHOD): The $NM
+	interface is assumed to be BSD nm in func_win32_libid, so
+	check for that before using it.
+
 2009-09-07  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	Allow dlopen self test to work with gcc's -fvisibility=hidden.
