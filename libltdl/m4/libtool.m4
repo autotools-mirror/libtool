@@ -991,7 +991,7 @@ _LT_EOF
       else
 	cat conftest.err >&AS_MESSAGE_LOG_FD
       fi
-        rm -f conftest.err conftest.a conftest conftest.c
+        rm -f conftest.err libconftest.a conftest conftest.c
         rm -rf conftest.dSYM
     ])
     case $host_os in

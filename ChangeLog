@@ -1,3 +1,8 @@
+2009-09-11  Akim Demaille  <demaille@gostai.com>
+
+	libtool: clean libconftest.a.
+	* libltdl/m4/libtool.m4 (_LT_REQUIRED_DARWIN_CHECKS): Here.
+
 2009-09-10  Peter Rosin  <peda@lysator.liu.se>
 
 	func_win32_libid doesn't work with MS dumpbin
