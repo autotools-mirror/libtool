@@ -1,3 +1,13 @@
+2009-09-18  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Initial support for the Cuda Compiler Driver on Linux.
+	* libltdl/config/ltmain.m4sh (func_mode_compile): Accept source
+	file extensions `.cu' and `.cup'.
+	* libltdl/m4/libtool.m4 (_LT_COMPILER_NO_RTTI, _LT_COMPILER_PIC)
+	(_LT_LINKER_SHLIBS): Support for `nvcc' compiler driver.
+	* NEWS, THANKS: Update.
+	Report by Mahesh Narayanamurthi.
+
 2009-09-12  Dave Korn  <dave.korn.cygwin@googlemail.com>
 
 	Control where win32 DLLs get installed.
