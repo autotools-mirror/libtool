@@ -1184,6 +1184,8 @@ The following components of LINK-COMMAND are treated specially:
 
   -all-static       do not do any dynamic linking at all
   -avoid-version    do not add a version suffix if possible
+  -bindir BINDIR    specify path to binaries directory (for systems where
+                    libraries must be found in the PATH setting at runtime)
   -dlopen FILE      \`-dlpreopen' FILE if it cannot be dlopened at runtime
   -dlpreopen FILE   link in FILE and add its symbols to lt_preloaded_symbols
   -export-dynamic   allow symbols from OUTPUT-FILE to be resolved with dlsym(3)
@@ -3719,6 +3721,7 @@ func_mode_link ()
     new_inherited_linker_flags=
 
     avoid_version=no
+    bindir=
     dlfiles=
     dlprefiles=
     dlself=no
@@ -3811,6 +3814,11 @@ func_mode_link ()
 	esac
 
 	case $prev in
+	bindir)
+	  bindir="$arg"
+	  prev=
+	  continue
+	  ;;
 	dlfiles|dlprefiles)
 	  if test "$preload" = no; then
 	    # Add the symbol object into the linking commands.
@@ -4069,6 +4077,11 @@ func_mode_link ()
 
       -avoid-version)
 	avoid_version=yes
+	continue
+	;;
+
+      -bindir)
+	prev=bindir
 	continue
 	;;
 
@@ -7859,9 +7872,27 @@ EOF
 	  fi
 	  $RM $output
 	  # place dlname in correct position for cygwin
+	  # In fact, it would be nice if we could use this code for all target
+	  # systems that can't hard-code library paths into their executables
+	  # and that have no shared library path variable independent of PATH,
+	  # but it turns out we can't easily determine that from inspecting
+	  # libtool variables, so we have to hard-code the OSs to which it
+	  # applies here; at the moment, that means platforms that use the PE
+	  # object format with DLL files.  See the long comment at the top of
+	  # tests/bindir.at for full details.
 	  tdlname=$dlname
 	  case $host,$output,$installed,$module,$dlname in
-	    *cygwin*,*lai,yes,no,*.dll | *mingw*,*lai,yes,no,*.dll | *cegcc*,*lai,yes,no,*.dll) tdlname=../bin/$dlname ;;
+	    *cygwin*,*lai,yes,no,*.dll | *mingw*,*lai,yes,no,*.dll | *cegcc*,*lai,yes,no,*.dll)
+	      # If a -bindir argument was supplied, place the dll there.
+	      if test "x$bindir" != x ;
+	      then
+		func_relative_path "$install_libdir" "$bindir"
+		tdlname=$func_relative_path_result$dlname
+	      else
+		# Otherwise fall back on heuristic.
+		tdlname=../bin/$dlname
+	      fi
+	      ;;
 	  esac
 	  $ECHO > $output "\
 # $outputname - a libtool library file

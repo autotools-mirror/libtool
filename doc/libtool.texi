@@ -1378,6 +1378,18 @@ Tries to avoid versioning (@pxref{Versioning}) for libraries and modules,
 i.e.@: no version information is stored and no symbolic links are created.
 If the platform requires versioning, this option has no effect.
 
+@item -bindir
+Pass the absolute name of the directory for installing executable
+programs (@pxref{Directory Variables, , Directory Variables, standards,
+The GNU Coding Standards}).  @command{libtool} may use this value to
+install shared libraries there on systems that do not provide for any
+library hardcoding and use the directory of a program and the @env{PATH}
+variable as library search path.  This is typically used for DLLs on
+Windows or other systems using the PE (Portable Executable) format.
+On other systems, @option{-bindir} is ignored.  The default value used
+is @file{@var{libdir}/../bin} for libraries installed to
+@file{@var{libdir}}.  You should not use @option{-bindir} for modules.
+
 @item -dlopen @var{file}
 Same as @option{-dlpreopen @var{file}}, if native dlopening is not
 supported on the host platform (@pxref{Dlopened modules}) or if
@@ -1462,7 +1474,12 @@ the @option{-version-info} flag instead (@pxref{Versioning}).
 @item -rpath @var{libdir}
 If @var{output-file} is a library, it will eventually be installed in
 @var{libdir}.  If @var{output-file} is a program, add @var{libdir} to
-the run-time path of the program.
+the run-time path of the program.  On platforms that don't support
+hardcoding library paths into executables and only search PATH for
+shared libraries, such as when @var{output-file} is a Windows (or
+other PE platform) DLL, the @samp{.la} control file will be installed in
+@var{libdir}, but see @option{-bindir} above for the eventual destination
+of the @samp{.dll} or other library file itself.
 
 @item -R @var{libdir}
 If @var{output-file} is a program, add @var{libdir} to its run-time

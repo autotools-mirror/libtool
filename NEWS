@@ -15,6 +15,7 @@ New in 2.2.8 2009-??-??: git version 2.2.7a, Libtool team:
   - New convenience make targets `check-noninteractive' to avoid long testsuite
     runs on Windows with popup windows in the middle, and `check-interactive'
     for the complement set of tests.
+  - New link mode flag -bindir to specify the location for installed PE DLLs.
 
 * Changes in supported systems or compilers:
 

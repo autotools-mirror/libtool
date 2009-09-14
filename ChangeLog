@@ -1,3 +1,21 @@
+2009-09-12  Dave Korn  <dave.korn.cygwin@googlemail.com>
+
+	Control where win32 DLLs get installed.
+	* libltdl/config/general.m4sh (func_normal_abspath): New function.
+	(func_relative_path): Likewise.
+	* libltdl/config/ltmain.m4sh (func_mode_help): Document "-bindir".
+	(func_mode_link): Accept new "-bindir" option and use it, if
+	supplied, to place Windows DLLs.
+	* tests/bindir.at: New file for install tests using "-bindir".
+	* Makefile.am (TESTSUITE_AT): Add bindir.at.
+	* doc/libtool.texi (Link Mode): Update documentation.
+	* NEWS, THANKS: Update.
+
+2009-09-11  Akim Demaille  <demaille@gostai.com>
+
+	libtool: clean libconftest.a.
+	* libltdl/m4/libtool.m4 (_LT_REQUIRED_DARWIN_CHECKS): Here.
+
 2009-09-10  Peter Rosin  <peda@lysator.liu.se>
 
 	func_win32_libid doesn't work with MS dumpbin

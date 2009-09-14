@@ -470,6 +470,7 @@ TESTSUITE_AT	= tests/testsuite.at \
 		  tests/archive-in-archive.at \
 		  tests/exeext.at \
 		  tests/execute-mode.at \
+		  tests/bindir.at \
 		  tests/cwrapper.at \
 		  tests/infer-tag.at \
 		  tests/localization.at \
