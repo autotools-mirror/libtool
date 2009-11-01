@@ -1,3 +1,11 @@
+2009-11-04  Alexandre Oliva  <aoliva@redhat.com>
+	    Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Fix verbose link extraction for multiply reconfigured GCC.
+	* libltdl/m4/libtool.m4 (_LT_LANG_CXX_CONFIG)
+	<output_verbose_link_cmd>: Drop GCC lines "Configured with" that
+	may contain unrelated flags.
+
 2009-11-02  Eric Blake  <ebb9@byu.net>
 
 	Allow gcc builds with -Wall -Werror.
