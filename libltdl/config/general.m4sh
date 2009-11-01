@@ -101,11 +101,14 @@ func_dirname_and_basename ()
 # Generated shell functions inserted here.
 
 # These SED scripts presuppose an absolute path with a trailing slash.
-pathcar="s,^/\([^/]*\).*$,\1,"
-pathcdr="s,^/[^/]*,,"
-removedotparts="s@/\(\./\)\{1,\}@/@g;s,/\.$,/,"
-collapseslashes="s@/\{1,\}@/@g"
-finalslash="s,/*$,/,"
+pathcar='s,^/\([^/]*\).*$,\1,'
+pathcdr='s,^/[^/]*,,'
+removedotparts=':dotsl
+		s@/\./@/@g
+		t dotsl
+		s,/\.$,/,'
+collapseslashes='s@/\{1,\}@/@g'
+finalslash='s,/*$,/,'
 
 # func_normal_abspath PATH
 # Remove doubled-up and trailing slashes, "." path components,

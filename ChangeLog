@@ -1,5 +1,11 @@
 2009-11-01  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	Fix func_normal_abspath sed script for Solaris.
+	* libltdl/config/general.m4sh (pathcar, pathcdr, removedotparts)
+	(collapseslashes, finalslash): Use single quotes, for clarity.
+	(removedotparts): Avoid \{N,M\} after subexpression \(...\), for
+	Solaris /bin/sed.
+
 	Improve versioning algorithm documentation.
 	* doc/libtool.texi (Updating version info): Repeat the
 	algorithms in different, hopefully simpler terms.
