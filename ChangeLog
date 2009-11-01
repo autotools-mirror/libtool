@@ -1,3 +1,14 @@
+2009-11-01  Ingo Weinhold  <ingo_weinhold@gmx.de>  (tiny change)
+
+	Support for the Haiku operating system.
+	* libltdl/config/ltmain.m4sh (func_mode_link): Add cases for
+	`*-*-haiku*' alongside `*-*-beos*'.
+	* libltdl/m4/libtool.m4 (_LT_SYS_DYNAMIC_LINKER)
+	(_LT_CHECK_MAGIC_METHOD, LT_LIB_M, _LT_COMPILER_PIC)
+	(_LT_LINKER_SHLIBS, _LT_LANG_CXX_CONFIG): Add cases for
+	`haiku*'.
+	* NEWS, THANKS: Update.
+
 2009-11-01  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	Fix quoting of AS, DLLTOOL, and OBJDUMP for the libtool script.

@@ -2324,6 +2324,19 @@ gnu*)
   hardcode_into_libs=yes
   ;;
 
+haiku*)
+  version_type=linux
+  need_lib_prefix=no
+  need_version=no
+  dynamic_linker="$host_os runtime_loader"
+  library_names_spec='${libname}${release}${shared_ext}$versuffix ${libname}${release}${shared_ext}${major} ${libname}${shared_ext}'
+  soname_spec='${libname}${release}${shared_ext}$major'
+  shlibpath_var=LIBRARY_PATH
+  shlibpath_overrides_runpath=yes
+  sys_lib_dlsearch_path_spec='/boot/home/config/lib /boot/common/lib /boot/beos/system/lib'
+  hardcode_into_libs=yes
+  ;;
+
 hpux9* | hpux10* | hpux11*)
   # Give a soname corresponding to the major version so that dld.sl refuses to
   # link against other versions.
@@ -3029,6 +3042,10 @@ gnu*)
   lt_cv_deplibs_check_method=pass_all
   ;;
 
+haiku*)
+  lt_cv_deplibs_check_method=pass_all
+  ;;
+
 hpux10.20* | hpux11*)
   lt_cv_file_magic_cmd=/usr/bin/file
   case $host_cpu in
@@ -3259,7 +3276,7 @@ AC_DEFUN([LT_LIB_M],
 [AC_REQUIRE([AC_CANONICAL_HOST])dnl
 LIBM=
 case $host in
-*-*-beos* | *-*-cegcc* | *-*-cygwin* | *-*-pw32* | *-*-darwin*)
+*-*-beos* | *-*-cegcc* | *-*-cygwin* | *-*-haiku* | *-*-pw32* | *-*-darwin*)
   # These system don't have libm, or don't need it
   ;;
 *-ncr-sysv4.3*)
@@ -3597,6 +3614,11 @@ m4_if([$1], [CXX], [
       # DJGPP does not support shared libraries at all
       _LT_TAGVAR(lt_prog_compiler_pic, $1)=
       ;;
+    haiku*)
+      # PIC is the default for Haiku.
+      # The "-static" flag exists, but is broken.
+      _LT_TAGVAR(lt_prog_compiler_static, $1)=
+      ;;
     interix[[3-9]]*)
       # Interix 3.x gcc -fpic/-fPIC options generate broken code.
       # Instead, we relocate shared libraries at runtime.
@@ -3900,6 +3922,12 @@ m4_if([$1], [CXX], [
       # PIC is the default on this platform
       # Common symbols not allowed in MH_DYLIB files
       _LT_TAGVAR(lt_prog_compiler_pic, $1)='-fno-common'
+      ;;
+
+    haiku*)
+      # PIC is the default for Haiku.
+      # The "-static" flag exists, but is broken.
+      _LT_TAGVAR(lt_prog_compiler_static, $1)=
       ;;
 
     hpux*)
@@ -4387,6 +4415,11 @@ _LT_EOF
       else
 	_LT_TAGVAR(ld_shlibs, $1)=no
       fi
+      ;;
+
+    haiku*)
+      _LT_TAGVAR(archive_cmds, $1)='$CC -shared $libobjs $deplibs $compiler_flags ${wl}-soname $wl$soname -o $lib'
+      _LT_TAGVAR(link_all_deplibs, $1)=yes
       ;;
 
     interix[[3-9]]*)
@@ -5741,6 +5774,11 @@ if test "$_lt_caught_CXX_error" != yes; then
         ;;
 
       gnu*)
+        ;;
+
+      haiku*)
+        _LT_TAGVAR(archive_cmds, $1)='$CC -shared $libobjs $deplibs $compiler_flags ${wl}-soname $wl$soname -o $lib'
+        _LT_TAGVAR(link_all_deplibs, $1)=yes
         ;;
 
       hpux9*)
