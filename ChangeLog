@@ -1,3 +1,11 @@
+2009-11-01  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Improve versioning algorithm documentation.
+	* doc/libtool.texi (Updating version info): Repeat the
+	algorithms in different, hopefully simpler terms.
+	* THANKS: Update.
+	Prompted by Richard B. Kreckel.
+
 2009-11-01  Ingo Weinhold  <ingo_weinhold@gmx.de>  (tiny change)
 
 	Support for the Haiku operating system.

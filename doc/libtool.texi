@@ -2870,6 +2870,37 @@ Instead, use the @option{-release} flag (@pxref{Release numbers}), but be
 warned that every release of your package will not be binary compatible
 with any other release.
 
+The following explanation may help to understand the above rules a bit
+better: consider that there are three possible kinds of reactions from
+users of your library to changes in a shared library:
+
+@enumerate 1
+@item
+Programs using the previous version may use the new version as
+drop-in replacement, and programs using the new version can also work
+with the previous one.  In other words, no recompiling nor relinking
+is needed.  In this case, bump @var{revision} only, don't touch
+@var{current} nor @var{age}.
+
+@item
+Programs using the previous version may use the new version as
+drop-in replacement, but programs using the new version may use APIs not
+present in the previous one.  In other words, a program linking against
+the new version may fail with ``unresolved symbols'' if linking against
+the old version at runtime: set @var{revision} to 0, bump @var{current}
+and @var{age}.
+
+@item
+Programs may need to be changed, recompiled, relinked in order to use
+the new version.  Bump @var{current}, set @var{revision} and @var{age}
+to 0.
+@end enumerate
+
+@noindent
+In the above description, @emph{programs} using the library in question
+may also be replaced by other libraries using it.
+
+
 @node Release numbers
 @section Managing release information
 
