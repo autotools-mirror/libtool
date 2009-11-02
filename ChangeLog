@@ -1,3 +1,9 @@
+2009-11-02  Eric Blake  <ebb9@byu.net>
+
+	Allow gcc builds with -Wall -Werror.
+	* libltdl/ltdl.c (try_dlopen): Use strlen rather than LT_STRLEN on
+	an array that will never be NULL.
+
 2009-11-01  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	Fix func_normal_abspath sed script for Solaris.

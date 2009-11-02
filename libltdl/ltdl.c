@@ -1264,7 +1264,7 @@ try_dlopen (lt_dlhandle *phandle, const char *filename, const char *ext,
       if (vtable)
 	{
 	  /* name + "." + libext + NULL */
-	  archive_name = MALLOC (char, LT_STRLEN (name) + LT_STRLEN (libext) + 2);
+	  archive_name = MALLOC (char, LT_STRLEN (name) + strlen (libext) + 2);
 	  *phandle = (lt_dlhandle) lt__zalloc (sizeof (struct lt__handle));
 
 	  if ((*phandle == NULL) || (archive_name == NULL))
