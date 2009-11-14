@@ -1,5 +1,16 @@
 NEWS - list of user-visible changes between releases of GNU Libtool
 
+New in 2.2.6b 2009-11-14: Libtool team:
+
+* Bug fixes:
+
+  - Fixed libltdl to no longer attempt to dlopen() the old_library
+    listed in the .la file. Now will use only the preopen loader to
+    attempt to load it. This may be a security issue, all users are
+    advised to upgrade.
+  - Similarly, don't open module.la from the current directory, this
+    changes the behavior of libltdl to match the documentation.
+
 New in 2.2.6 2008-09-05: git version 2.2.5a, Libtool team:
 
 * New features:

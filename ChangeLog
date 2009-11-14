@@ -1,3 +1,9 @@
+2009-11-14  Peter O'Gorman  <peter@pogma.com>
+
+	Prepare for 2.2.6b release.
+	* NEWS, configure.ac, libltdl/configure.ac, libltdl/Makefile.am:
+	Update.
+
 2009-11-14  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
 
 	Don't load module.la from current directory by default.
