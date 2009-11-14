@@ -1346,7 +1346,7 @@ try_dlopen (lt_dlhandle *phandle, const char *filename, const char *ext,
 	    }
 #endif
 	}
-      if (!file)
+      else
 	{
 	  file = fopen (attempt, LT_READTEXT_MODE);
 	}
