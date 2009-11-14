@@ -1,3 +1,10 @@
+2009-11-14  Peter O'Gorman  <peter@pogma.com>
+
+	Only use preopen loader to load preopened archives
+	* libltdl/ltdl.c: Limit checking of .a to preopen loader.
+	* tests/lt_dlopen_a.at: Add test.
+	* Makefile.am: Add test.
+
 2009-11-14  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	Recognize `pgfortran' as Portland compiler.
