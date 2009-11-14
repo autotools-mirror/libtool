@@ -4042,7 +4042,7 @@ m4_if([$1], [CXX], [
 	_LT_TAGVAR(lt_prog_compiler_pic, $1)='--shared'
 	_LT_TAGVAR(lt_prog_compiler_static, $1)='--static'
 	;;
-      pgcc* | pgf77* | pgf90* | pgf95*)
+      pgcc* | pgf77* | pgf90* | pgf95* | pgfortran*)
         # Portland Group compilers (*not* the Pentium gcc compiler,
 	# which looks to be a dead project)
 	_LT_TAGVAR(lt_prog_compiler_wl, $1)='-Wl,'
@@ -4454,7 +4454,8 @@ _LT_EOF
 	  _LT_TAGVAR(whole_archive_flag_spec, $1)='${wl}--whole-archive`for conv in $convenience\"\"; do test  -n \"$conv\" && new_convenience=\"$new_convenience,$conv\"; done; func_echo_all \"$new_convenience\"` ${wl}--no-whole-archive'
 	  tmp_addflag=' $pic_flag'
 	  ;;
-	pgf77* | pgf90* | pgf95*)	# Portland Group f77 and f90 compilers
+	pgf77* | pgf90* | pgf95* | pgfortran*)
+					# Portland Group f77 and f90 compilers
 	  _LT_TAGVAR(whole_archive_flag_spec, $1)='${wl}--whole-archive`for conv in $convenience\"\"; do test  -n \"$conv\" && new_convenience=\"$new_convenience,$conv\"; done; func_echo_all \"$new_convenience\"` ${wl}--no-whole-archive'
 	  tmp_addflag=' $pic_flag -Mnomain' ;;
 	ecc*,ia64* | icc*,ia64*)	# Intel C compiler on ia64
