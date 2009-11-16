@@ -1,3 +1,8 @@
+2009-11-16  Peter O'Gorman  <peter@pogma.com>
+
+	Update libltdl version to match 2.2.6b release.
+	* libltdl/Makefile.inc: Make version 9:1:2
+
 2009-11-14  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
 
 	Don't load module.la from current directory by default.
