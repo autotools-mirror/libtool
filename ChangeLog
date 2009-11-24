@@ -1,3 +1,8 @@
+2009-11-24  Peter O'Gorman  <peter@pogma.com>
+
+	Backport of libltdl changes from the 2.26b release.
+	* libltdl/,tdl.c: Backport changes.
+
 2008-02-27  Peter O'Gorman  <peter@pogma.com>
 
 	* libtool.m4 [darwin]: Really use _lt_dar_allow_undefined for

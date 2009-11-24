@@ -2192,7 +2192,8 @@ static	int	trim		      LT_PARAMS((char **dest,
 static	int	try_dlopen	      LT_PARAMS((lt_dlhandle *handle,
 						 const char *filename));
 static	int	tryall_dlopen	      LT_PARAMS((lt_dlhandle *handle,
-						 const char *filename));
+						 const char *filename,
+						 const char * useloader));
 static	int	unload_deplibs	      LT_PARAMS((lt_dlhandle handle));
 static	int	lt_argz_insert	      LT_PARAMS((char **pargz,
 						 size_t *pargz_len,
@@ -2390,9 +2391,10 @@ lt_dlexit ()
 }
 
 static int
-tryall_dlopen (handle, filename)
+tryall_dlopen (handle, filename, useloader)
      lt_dlhandle *handle;
      const char *filename;
+     const char *useloader;
 {
   lt_dlhandle	 cur;
   lt_dlloader   *loader;
@@ -2459,6 +2461,11 @@ tryall_dlopen (handle, filename)
 
   while (loader)
     {
+      if (useloader && strcmp(loader->loader_name, useloader))
+	{
+	  loader = loader->next;
+	  continue;
+	}
       lt_user_data data = loader->dlloader_data;
 
       cur->module = loader->module_open (data, filename);
@@ -2528,7 +2535,7 @@ tryall_dlopen_module (handle, prefix, dirname, dlname)
       error += tryall_dlopen_module (handle,
 				     (const char *) 0, prefix, filename);
     }
-  else if (tryall_dlopen (handle, filename) != 0)
+  else if (tryall_dlopen (handle, filename, NULL) != 0)
     {
       ++error;
     }
@@ -2549,7 +2556,7 @@ find_module (handle, dir, libdir, dlname, old_name, installed)
   /* Try to open the old library first; if it was dlpreopened,
      we want the preopened version of it, even if a dlopenable
      module is available.  */
-  if (old_name && tryall_dlopen (handle, old_name) == 0)
+  if (old_name && tryall_dlopen (handle, old_name, "dlpreload") == 0)
     {
       return 0;
     }
@@ -2813,7 +2820,7 @@ find_handle_callback (filename, data, ignored)
 
   /* Try to dlopen the file, but do not continue searching in any
      case.  */
-  if (tryall_dlopen (handle, filename) != 0)
+  if (tryall_dlopen (handle, filename,NULL) != 0)
     *handle = 0;
 
   return 1;
@@ -3103,7 +3110,7 @@ try_dlopen (phandle, filename)
       /* lt_dlclose()ing yourself is very bad!  Disallow it.  */
       LT_DLSET_FLAG (*phandle, LT_DLRESIDENT_FLAG);
 
-      if (tryall_dlopen (&newhandle, 0) != 0)
+      if (tryall_dlopen (&newhandle, 0, NULL) != 0)
 	{
 	  LT_DLFREE (*phandle);
 	  return 1;
@@ -3225,7 +3232,7 @@ try_dlopen (phandle, filename)
 	    }
 #endif
 	}
-      if (!file)
+      else
 	{
 	  file = fopen (filename, LT_READTEXT_MODE);
 	}
@@ -3412,7 +3419,7 @@ try_dlopen (phandle, filename)
 #endif
 		   )))
 	{
-          if (tryall_dlopen (&newhandle, filename) != 0)
+          if (tryall_dlopen (&newhandle, filename, NULL) != 0)
             {
               newhandle = NULL;
             }
