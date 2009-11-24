@@ -5,6 +5,12 @@
 
 2009-11-24  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	Enable symbol versioning with the GNU gold linker.
+	* libltdl/m4/libtool.m4 (_LT_LINKER_SHLIBS): Accept 'GNU gold'
+	in the version string.
+	* NEWS, THANKS: Update.
+	Report by Peter Fritzsche.
+
 	Tighten regex for Portland C++ compiler for version 10.
 	* libltdl/m4/libtool.m4 (_LT_LANG_CXX_CONFIG) [linux]:
 	Match a dot after version 1 through 5, so 10 and up don't match,
