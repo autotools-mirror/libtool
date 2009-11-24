@@ -1,3 +1,12 @@
+2009-11-24  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Tighten regex for Portland C++ compiler for version 10.
+	* libltdl/m4/libtool.m4 (_LT_LANG_CXX_CONFIG) [linux]:
+	Match a dot after version 1 through 5, so 10 and up don't match,
+	and use weak symbols.
+	* THANKS: Update.
+	Report by Jeff Squyres and Brent Leback.
+
 2009-11-16  Peter O'Gorman  <peter@pogma.com>
 
 	Update libltdl version to match 2.2.6b release.
