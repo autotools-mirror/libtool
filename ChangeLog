@@ -1,3 +1,8 @@
+2009-11-25  Peter Rosin  <peda@lysator.liu.se>
+
+	Fix cross build issue in execute mode test.
+	* tests/execute-mode.at: Skip test for cross builds.
+
 2009-11-24  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	Tighten regex for Portland C++ compiler for version 10.
