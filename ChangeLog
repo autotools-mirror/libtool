@@ -1,3 +1,103 @@
+2009-11-25  Peter Rosin  <peda@lysator.liu.se>
+
+	Fix cross build issue in execute mode test.
+	* tests/execute-mode.at: Skip test for cross builds.
+
+2009-11-24  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Tighten regex for Portland C++ compiler for version 10.
+	* libltdl/m4/libtool.m4 (_LT_LANG_CXX_CONFIG) [linux]:
+	Match a dot after version 1 through 5, so 10 and up don't match,
+	and use weak symbols.
+	* THANKS: Update.
+	Report by Jeff Squyres and Brent Leback.
+
+2009-11-16  Peter O'Gorman  <peter@pogma.com>
+
+	Update libltdl version to match 2.2.6b release.
+	* libltdl/Makefile.inc: Make version 9:1:2
+
+2009-11-14  Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	Don't load module.la from current directory by default.
+	* libltdl/ltdl.c (try_dlopen): Do not attempt to load an
+	unqualified module.la file from the current directory (by
+	default) since doing so is insecure and is not compliant with
+	the documentation.
+	* tests/testsuite.at: Qualify access to module.la file in
+	current directory so that test passes.
+
+2009-11-14  Peter O'Gorman  <peter@pogma.com>
+
+	Only use preopen loader to load preopened archives
+	* libltdl/ltdl.c: Limit checking of .a to preopen loader.
+	* tests/lt_dlopen_a.at: Add test.
+	* Makefile.am: Add test.
+
+2009-11-14  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Recognize `pgfortran' as Portland compiler.
+	* libltdl/m4/libtool.m4 (_LT_COMPILER_PIC, _LT_LINKER_SHLIBS):
+	Accept `pgfortran*' too.
+	Report by Jeff Squyres.
+
+2009-11-04  Alexandre Oliva  <aoliva@redhat.com>
+	    Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Fix verbose link extraction for multiply reconfigured GCC.
+	* libltdl/m4/libtool.m4 (_LT_LANG_CXX_CONFIG)
+	<output_verbose_link_cmd>: Drop GCC lines "Configured with" that
+	may contain unrelated flags.
+
+2009-11-02  Eric Blake  <ebb9@byu.net>
+
+	Allow gcc builds with -Wall -Werror.
+	* libltdl/ltdl.c (try_dlopen): Use strlen rather than LT_STRLEN on
+	an array that will never be NULL.
+
+2009-11-01  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Fix func_normal_abspath sed script for Solaris.
+	* libltdl/config/general.m4sh (pathcar, pathcdr, removedotparts)
+	(collapseslashes, finalslash): Use single quotes, for clarity.
+	(removedotparts): Avoid \{N,M\} after subexpression \(...\), for
+	Solaris /bin/sed.
+
+	Improve versioning algorithm documentation.
+	* doc/libtool.texi (Updating version info): Repeat the
+	algorithms in different, hopefully simpler terms.
+	* THANKS: Update.
+	Prompted by Richard B. Kreckel.
+
+2009-11-01  Ingo Weinhold  <ingo_weinhold@gmx.de>  (tiny change)
+
+	Support for the Haiku operating system.
+	* libltdl/config/ltmain.m4sh (func_mode_link): Add cases for
+	`*-*-haiku*' alongside `*-*-beos*'.
+	* libltdl/m4/libtool.m4 (_LT_SYS_DYNAMIC_LINKER)
+	(_LT_CHECK_MAGIC_METHOD, LT_LIB_M, _LT_COMPILER_PIC)
+	(_LT_LINKER_SHLIBS, _LT_LANG_CXX_CONFIG): Add cases for
+	`haiku*'.
+	* NEWS, THANKS: Update.
+
+2009-11-01  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Fix quoting of AS, DLLTOOL, and OBJDUMP for the libtool script.
+	* libltdl/m4/ltoptions.m4 (AC_LIBTOOL_DLOPEN): Quote values of
+	$AS, $DLLTOOL, and $OBJDUMP, so they can contain arguments.
+	* THANKS: Update.
+	Report by Matthijs Kooijman.
+
+2009-09-18  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Initial support for the Cuda Compiler Driver on Linux.
+	* libltdl/config/ltmain.m4sh (func_mode_compile): Accept source
+	file extensions `.cu' and `.cup'.
+	* libltdl/m4/libtool.m4 (_LT_COMPILER_NO_RTTI, _LT_COMPILER_PIC)
+	(_LT_LINKER_SHLIBS): Support for `nvcc' compiler driver.
+	* NEWS, THANKS: Update.
+	Report by Mahesh Narayanamurthi.
+
 2009-09-12  Dave Korn  <dave.korn.cygwin@googlemail.com>
 
 	Control where win32 DLLs get installed.

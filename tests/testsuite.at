@@ -336,9 +336,9 @@ main ()
     return 1;
   }
 
-  module = lt_dlopen("module.la");
+  module = lt_dlopen("./module.la");
   if (!module) {
-    fprintf (stderr, "error dlopening module.la: %s\n", lt_dlerror());
+    fprintf (stderr, "error dlopening ./module.la: %s\n", lt_dlerror());
     goto finish;
   }
 

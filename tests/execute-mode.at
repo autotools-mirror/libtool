@@ -169,8 +169,8 @@ AT_CHECK([$LIBTOOL --mode=execute ./foo lt-wrapper "arg  with special chars: \$!
 	 [], [./lt-real
 arg  with special chars: $!&*`'()
 ])
-AT_CHECK([$LIBTOOL --mode=execute ./main$EXEEXT "arg  with special chars: \$!&*\`'()"],
-	 [], [stdout])
+LT_AT_NOINST_EXEC_CHECK([./main], [], [], [stdout], [ignore],
+			["arg  with special chars: \$!&*\`'()"])
 AT_CHECK([$FGREP 'arg  with special chars: $!&*`'\''()' stdout], [], [ignore])
 
 # We always pair two args.  The first one is never the empty string.

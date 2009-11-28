@@ -529,7 +529,8 @@ find_module (lt_dlhandle *handle, const char *dir, const char *libdir,
   /* Try to open the old library first; if it was dlpreopened,
      we want the preopened version of it, even if a dlopenable
      module is available.  */
-  if (old_name && tryall_dlopen (handle, old_name, advise, 0) == 0)
+  if (old_name && tryall_dlopen (handle, old_name,
+			  advise, lt_dlloader_find ("lt_preopen") ) == 0)
     {
       return 0;
     }
@@ -1264,7 +1265,7 @@ try_dlopen (lt_dlhandle *phandle, const char *filename, const char *ext,
       if (vtable)
 	{
 	  /* name + "." + libext + NULL */
-	  archive_name = MALLOC (char, LT_STRLEN (name) + LT_STRLEN (libext) + 2);
+	  archive_name = MALLOC (char, LT_STRLEN (name) + strlen (libext) + 2);
 	  *phandle = (lt_dlhandle) lt__zalloc (sizeof (struct lt__handle));
 
 	  if ((*phandle == NULL) || (archive_name == NULL))
@@ -1345,7 +1346,7 @@ try_dlopen (lt_dlhandle *phandle, const char *filename, const char *ext,
 	    }
 #endif
 	}
-      if (!file)
+      else
 	{
 	  file = fopen (attempt, LT_READTEXT_MODE);
 	}
