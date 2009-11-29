@@ -41,6 +41,9 @@ AT_DATA([simple-module.c],
 [[
 #include <stdio.h>
 
+#ifdef __cplusplus
+extern "C"
+#endif
 int
 run (const char *argument)
 {

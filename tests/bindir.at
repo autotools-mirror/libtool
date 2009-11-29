@@ -128,9 +128,9 @@ int bar (void) { return y + baz ();}
 ]])
 
 AT_DATA([main.c],[[
+#include <stdlib.h>
 extern int baz (void);
 extern int bar (void);
-extern void abort (void);
 int main() {
 if (baz () + bar () - 25) abort ();
 return 0;
@@ -237,9 +237,9 @@ int bar (void) { return y + baz ();}
 ]])
 
 AT_DATA([main.c],[[
+#include <stdlib.h>
 extern int baz (void);
 extern int bar (void);
-extern void abort (void);
 int main() {
 if (baz () + bar () - 25) abort ();
 return 0;

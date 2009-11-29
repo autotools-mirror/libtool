@@ -1,3 +1,11 @@
+2009-11-29  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Fix bindir and dlopen tests for C++ compilers (CC=g++).
+	* tests/bindir.at (bindir basic lib test, bindir install tests):
+	Include stdlib.h rather than declaring abort.
+	* tests/lt_dlopenext.at (lt_dlopenext error messages): Use
+	`extern "C"' annotation for dlsym'ed function in C++ mode.
+
 2009-11-25  Peter Rosin  <peda@lysator.liu.se>
 
 	Fix cross build issue in execute mode test.
