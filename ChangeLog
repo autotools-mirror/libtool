@@ -1,3 +1,10 @@
+2009-11-30  Peter Rosin  <peda@lysator.liu.se>
+
+	Please C++ compilers when calling strrchr.
+	* libltdl/ltdl.c (has_library_ext): Match the return type of
+	strrchr with the first argument to please C++ compilers.
+	Report by Peter O'Gorman.
+
 2009-11-29  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	Fix bindir and dlopen tests for C++ compilers (CC=g++).

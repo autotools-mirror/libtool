@@ -1507,7 +1507,7 @@ file_not_found (void)
 static int
 has_library_ext (const char *filename)
 {
-  char *	ext     = 0;
+  const char *	ext     = 0;
 
   assert (filename);
 
