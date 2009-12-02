@@ -1,3 +1,12 @@
+2009-12-05  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Sane fallback initialization of $ECHO from $as_echo.
+	* libltdl/config/general.m4sh: Use 'printf %s\n' if $as_echo is
+	unset.
+	* tests/testsuite.at: Likewise.
+	* THANKS: Update.
+	Report by Vadim Zeitlin and Peter Rosin.
+
 2009-12-02  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	lt_dlloader_remove and lt_dlloader_find accept const arguments.
