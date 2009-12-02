@@ -1,5 +1,11 @@
 2009-12-02  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	lt_dlloader_remove and lt_dlloader_find accept const arguments.
+	* libltdl/lt_dlloader.c (lt_dlloader_remove, lt_dlloader_find):
+	Accept `const char *' arguments, as documented.  Cast them to
+	`void *' for the slist machinery.
+	* libltdl/libltdl/lt_dlloader.h: Adjust prototypes.
+
 	Test and fix slist.c.
 	* libltdl/libltdl/slist.h: Include stddef.h, for size_t.
 	(slist_remove): Return pointer to SList, not void.
