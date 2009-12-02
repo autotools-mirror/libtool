@@ -1,3 +1,14 @@
+2009-12-02  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Test and fix slist.c.
+	* libltdl/libltdl/slist.h: Include stddef.h, for size_t.
+	(slist_remove): Return pointer to SList, not void.
+	* libltdl/slist.c: Include stdlib.h, for malloc and free.
+	(slist_remove): Adjust prototype as above.
+	(slist_sort): Do not loop forever on one-item list.
+	* tests/slist.at (SList functionality): New file, new test.
+	* Makefile.am (TESTSUITE_AT): Add tests/slist.at.
+
 2009-11-30  Peter Rosin  <peda@lysator.liu.se>
 
 	Please C++ compilers when calling strrchr.
