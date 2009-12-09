@@ -994,7 +994,7 @@ trim (char **dest, const char *str)
 
   FREE (*dest);
 
-  if (!end)
+  if (!end || end == str)
     return 1;
 
   if (len > 3 && str[0] == '\'')

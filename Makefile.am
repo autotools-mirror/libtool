@@ -484,6 +484,7 @@ TESTSUITE_AT	= tests/testsuite.at \
 		  tests/lt_dlopen_a.at \
 		  tests/lt_dlopenext.at \
 		  tests/ltdl-api.at \
+		  tests/lalib-syntax.at \
 		  tests/slist.at \
 		  tests/need_lib_prefix.at \
 		  tests/standalone.at \

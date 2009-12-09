@@ -1,3 +1,13 @@
+2009-12-09  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Improve parsing of .la files in libltdl.
+	* libltdl/ltdl.c (trim): Do not dump core upon missing quote in
+	module .la file.
+	* tests/lalib-syntax.at (syntax of .la files): New file, new
+	test.
+	* Makefile.am (TESTSUITE_AT): Add tests/lalib-syntax.at.
+	Report by Bob Friesenhahn.
+
 2009-12-05  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	Sane fallback initialization of $ECHO from $as_echo.
