@@ -1,3 +1,9 @@
+2009-12-12  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Replace last __oline__ instance.
+	* libltdl/m4/libtool.m4 (_LT_TRY_DLOPEN_SELF): Replace last
+	__oline__ instance with $LINENO.
+
 2009-12-09  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	Improve parsing of .la files in libltdl.
