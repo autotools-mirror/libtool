@@ -1,3 +1,7 @@
+2009-12-29  Peter Rosin  <peda@lysator.liu.se>
+
+	* libltdl/ltdl.c (file_not_found): Fix typos in code comment.
+
 2009-12-12  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	Replace last __oline__ instance.
