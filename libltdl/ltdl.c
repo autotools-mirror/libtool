@@ -2066,7 +2066,7 @@ lt_dlerror (void)
   LT__GETERROR (error);
   LT__SETERRORSTR (0);
 
-  return error ? error : NULL;
+  return error;
 }
 
 static int

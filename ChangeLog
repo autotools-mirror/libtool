@@ -1,3 +1,7 @@
+2009-12-30  Peter Rosin  <peda@lysator.liu.se>
+
+	* libltdl/ltdl.c (lt_dlerror): Remove meaningless conditional.
+
 2009-12-29  Peter Rosin  <peda@lysator.liu.se>
 
 	* libltdl/ltdl.c (file_not_found): Fix typos in code comment.
