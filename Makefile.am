@@ -493,6 +493,7 @@ TESTSUITE_AT	= tests/testsuite.at \
 		  tests/recursive.at \
 		  tests/template.at \
 		  tests/ctor.at \
+		  tests/exceptions.at \
 		  tests/early-libtool.at \
 		  tests/no-executables.at \
 		  tests/deplibs-ident.at \

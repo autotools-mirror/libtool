@@ -1,3 +1,12 @@
+2010-01-11  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+	    Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
+
+	Testsuite exposure for C++ exception handling.
+	* tests/exceptions.at (C++ exception handling): New file, new
+	test.
+	* Makefile.am (TESTSUITE_AT): Update.
+	Report by Bob Friesenhahn.
+
 2010-01-06  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	Bump copyright years.
