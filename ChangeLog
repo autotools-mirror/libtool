@@ -1,4 +1,12 @@
 2010-01-11  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Testsuite exposure for relative output file names and deplibs.
+	* tests/deplib-in-subdir.at (deplib in subdir): New file, new
+	test.
+	* Makefile.am (TESTSUITE_AT): Update.
+	Prompted by report from Bob Friesenhahn.
+
+2010-01-11  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 	    Bob Friesenhahn  <bfriesen@simple.dallas.tx.us>
 
 	Testsuite exposure for C++ exception handling.
