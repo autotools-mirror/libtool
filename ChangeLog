@@ -1,5 +1,10 @@
 2010-01-11  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	Ensure functions from resident modules work in atexit handlers.
+	* tests/resident.at (resident modules): New file, new test.
+	* Makefile.am (TESTSUITE_AT): Adjust.
+	Report by Bob Friesenhahn.
+
 	Testsuite exposure for relative output file names and deplibs.
 	* tests/deplib-in-subdir.at (deplib in subdir): New file, new
 	test.
