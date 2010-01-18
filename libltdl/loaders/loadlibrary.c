@@ -1,7 +1,7 @@
 /* loader-loadlibrary.c --  dynamic linking for Win32
 
    Copyright (C) 1998, 1999, 2000, 2004, 2005, 2006,
-                 2007, 2008 Free Software Foundation, Inc.
+                 2007, 2008, 2010 Free Software Foundation, Inc.
    Written by Thomas Tanner, 1998
 
    NOTE: The canonical source of this file is maintained with the
@@ -98,6 +98,14 @@ get_vtable (lt_user_data loader_data)
 
 #include <windows.h>
 
+static UINT WINAPI wrap_geterrormode (void);
+static UINT WINAPI fallback_geterrormode (void);
+
+typedef UINT (WINAPI geterrormode_type) (void);
+
+static geterrormode_type *geterrormode = wrap_geterrormode;
+
+
 /* A function called through the vtable when this loader is no
    longer needed by the application.  */
 static int
@@ -170,16 +178,14 @@ vm_open (lt_user_data LT__UNUSED loader_data, const char *filename,
     }
 
   {
-    /* Silence dialog from LoadLibrary on some failures.
-       No way to get the error mode, but to set it,
-       so set it twice to preserve any previous flags. */
-    UINT errormode = SetErrorMode(SEM_FAILCRITICALERRORS);
-    SetErrorMode(errormode | SEM_FAILCRITICALERRORS);
+    /* Silence dialog from LoadLibrary on some failures. */
+    UINT errormode = geterrormode ();
+    SetErrorMode (errormode | SEM_FAILCRITICALERRORS);
 
     module = LoadLibrary (wpath);
 
     /* Restore the error mode. */
-    SetErrorMode(errormode);
+    SetErrorMode (errormode);
   }
 
   /* libltdl expects this function to fail if it is unable
@@ -248,4 +254,35 @@ vm_sym (lt_user_data LT__UNUSED loader_data, lt_module module, const char *name)
     }
 
   return address;
+}
+
+
+
+/* --- HELPER FUNCTIONS --- */
+
+
+/* A function called through the geterrormode variable which checks
+   if the system supports GetErrorMode and arranges for it or a
+   fallback implementation to be called directly in the future. The
+   selected version is then called. */
+static UINT WINAPI
+wrap_geterrormode (void)
+{
+  HMODULE kernel32 = GetModuleHandleA ("kernel32.dll");
+  geterrormode = (geterrormode_type *) GetProcAddress (kernel32,
+                                                       "GetErrorMode");
+  if (!geterrormode)
+    geterrormode = fallback_geterrormode;
+  return geterrormode ();
+}
+
+/* A function called through the geterrormode variable for cases
+   where the system does not support GetErrorMode */
+static UINT WINAPI
+fallback_geterrormode (void)
+{
+  /* Prior to Windows Vista, the only way to get the current error
+     mode was to set a new one. In our case, we are setting a new
+     error mode right after "getting" it, so that's fairly ok. */
+  return SetErrorMode (SEM_FAILCRITICALERRORS);
 }

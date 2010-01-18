@@ -1,3 +1,15 @@
+2010-01-02  Peter Rosin  <peda@lysator.liu.se>
+
+	Use GetErrorMode if it is available.
+	* libltdl/loaders/loadlibrary.c (wrap_geterrormode): New
+	function that checks if GetErrorMode is supported by the
+	system and makes use of it if it is.
+	(fallback_geterrormode): New function that is used otherwise
+	that implements the old workaround.
+	(geterrormode): New function pointer that points at either
+	of the above or directly at GetErrorMode.
+	(vm_open): Make use of the above.
+
 2010-01-11  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	Ensure functions from resident modules work in atexit handlers.
