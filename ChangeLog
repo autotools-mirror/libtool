@@ -1,3 +1,18 @@
+2010-01-20  Peter Rosin  <peda@lysator.liu.se>
+
+	Report proper errors from the loadlibrary loader.
+	* libltdl/loaders/loadlibrary.c (loadlibraryerror): New
+	helper function that returns the latest Windows error as a
+	string, or the provided default string on failure to do so.
+	(LOADLIB_SETERROR): New macro that wraps previous to make it
+	easy to use.
+	(vm_open, vm_close, vm_sym): Make use of previous.
+	(LOCALFREE): New macro to help free the Windows error string.
+	(vl_exit): Make use of previous.
+	* tests/loadlibarry.at: New file, new test that makes sure
+	the loadlibrary loader reports non-standard error messages.
+	* Makefile.am (TESTSUITE_AT): Add above test.
+
 2010-01-02  Peter Rosin  <peda@lysator.liu.se>
 
 	Use GetErrorMode if it is available.

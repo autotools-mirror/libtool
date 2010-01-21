@@ -98,12 +98,19 @@ get_vtable (lt_user_data loader_data)
 
 #include <windows.h>
 
+#define LOCALFREE(mem)					     LT_STMT_START { \
+	if (mem) { LocalFree ((void *)mem); mem = NULL; }    } LT_STMT_END
+#define LOADLIB__SETERROR(errmsg) LT__SETERRORSTR (loadlibraryerror (errmsg))
+#define LOADLIB_SETERROR(errcode) LOADLIB__SETERROR (LT__STRERROR (errcode))
+
+static const char *loadlibraryerror (const char *default_errmsg);
 static UINT WINAPI wrap_geterrormode (void);
 static UINT WINAPI fallback_geterrormode (void);
 
 typedef UINT (WINAPI geterrormode_type) (void);
 
 static geterrormode_type *geterrormode = wrap_geterrormode;
+static char *error_message = 0;
 
 
 /* A function called through the vtable when this loader is no
@@ -112,6 +119,7 @@ static int
 vl_exit (lt_user_data LT__UNUSED loader_data)
 {
   vtable = NULL;
+  LOCALFREE (error_message);
   return 0;
 }
 
@@ -213,7 +221,9 @@ vm_open (lt_user_data LT__UNUSED loader_data, const char *filename,
           }
       }
 
-    if (cur || !module)
+    if (!module)
+      LOADLIB_SETERROR (CANNOT_OPEN);
+    else if (cur)
       {
         LT__SETERROR (CANNOT_OPEN);
         module = 0;
@@ -231,9 +241,9 @@ vm_close (lt_user_data LT__UNUSED loader_data, lt_module module)
 {
   int errors = 0;
 
-  if (FreeLibrary((HMODULE) module) == 0)
+  if (FreeLibrary ((HMODULE) module) == 0)
     {
-      LT__SETERROR (CANNOT_CLOSE);
+      LOADLIB_SETERROR (CANNOT_CLOSE);
       ++errors;
     }
 
@@ -250,7 +260,7 @@ vm_sym (lt_user_data LT__UNUSED loader_data, lt_module module, const char *name)
 
   if (!address)
     {
-      LT__SETERROR (SYMBOL_NOT_FOUND);
+      LOADLIB_SETERROR (SYMBOL_NOT_FOUND);
     }
 
   return address;
@@ -260,6 +270,33 @@ vm_sym (lt_user_data LT__UNUSED loader_data, lt_module module, const char *name)
 
 /* --- HELPER FUNCTIONS --- */
 
+
+/* Return the windows error message, or the passed in error message on
+   failure. */
+static const char *
+loadlibraryerror (const char *default_errmsg)
+{
+  size_t len;
+  LOCALFREE (error_message);
+
+  FormatMessageA (FORMAT_MESSAGE_ALLOCATE_BUFFER |
+                  FORMAT_MESSAGE_FROM_SYSTEM |
+                  FORMAT_MESSAGE_IGNORE_INSERTS,
+                  NULL,
+                  GetLastError (),
+                  0,
+                  (char *) &error_message,
+                  0, NULL);
+
+  /* Remove trailing CRNL */
+  len = LT_STRLEN (error_message);
+  if (len && error_message[len - 1] == '\n')
+    error_message[--len] = LT_EOS_CHAR;
+  if (len && error_message[len - 1] == '\r')
+    error_message[--len] = LT_EOS_CHAR;
+
+  return len ? error_message : default_errmsg;
+}
 
 /* A function called through the geterrormode variable which checks
    if the system supports GetErrorMode and arranges for it or a
