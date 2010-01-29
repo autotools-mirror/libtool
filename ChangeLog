@@ -1,4 +1,11 @@
 2010-01-29  Peter Rosin  <peda@lysator.liu.se>
+	    Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Testsuite exposure for dlloader API.
+	* tests/dlloader-api.at: New file, new test.
+	* Makefile.am (TESTSUITE_AT): Update.
+
+2010-01-29  Peter Rosin  <peda@lysator.liu.se>
 
 	* tests/loadlibrary.at: Fix C++ issues.
 
