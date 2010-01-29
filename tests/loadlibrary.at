@@ -54,8 +54,8 @@ main (int argc, char* argv[])
   lt_dlhandle module = NULL;
   const lt_dlvtable *loadlibrary;
   const lt_dlvtable *preopen;
-  lt_dlloader *loader = NULL;
-  lt_dlloader *next;
+  lt_dlloader loader = NULL;
+  lt_dlloader next;
   const lt_dlvtable *vtable;
   void *symbol;
   const char *error;
@@ -168,6 +168,9 @@ cleanup:
 
 AT_DATA([foomod.c],
 [[
+#ifdef __cplusplus
+extern "C"
+#endif
 int foosym (void);
 int
 foosym (void)
@@ -178,6 +181,9 @@ foosym (void)
 
 AT_DATA([bardep.c],
 [[
+#ifdef __cplusplus
+extern "C"
+#endif
 int bardep (void);
 int
 bardep (void)
@@ -188,8 +194,14 @@ bardep (void)
 
 AT_DATA([barmod.c],
 [[
+#ifdef __cplusplus
+extern "C" {
+#endif
 int bardep (void);
 int barsym (void);
+#ifdef __cplusplus
+}
+#endif
 int
 barsym (void)
 {

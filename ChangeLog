@@ -1,3 +1,7 @@
+2010-01-29  Peter Rosin  <peda@lysator.liu.se>
+
+	* tests/loadlibrary.at: Fix C++ issues.
+
 2010-01-20  Peter Rosin  <peda@lysator.liu.se>
 
 	Report proper errors from the loadlibrary loader.
