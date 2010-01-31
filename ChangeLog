@@ -1,5 +1,9 @@
 2010-01-31  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	Use --email with gendocs.sh.
+	* Makefile.maint (web-manual): Pass bug reporting address to
+	gendocs.sh.
+
 	Make testsuite code C++ clean again.
 	* tests/resident.at (resident modules): Fix for C++.
 

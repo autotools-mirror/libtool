@@ -225,4 +225,4 @@ web-manual:
 	$(WGETSGO)'/texinfo/texinfo/util/gendocs.sh' && \
 	$(WGETSGO)'/texinfo/texinfo/util/gendocs_template' && \
 	chmod 755 gendocs.sh && \
-	./gendocs.sh libtool "GNU Libtool Manual"
+	./gendocs.sh --email bug-libtool@gnu.org libtool "GNU Libtool Manual"
