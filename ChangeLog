@@ -1,3 +1,8 @@
+2010-01-31  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Make testsuite code C++ clean again.
+	* tests/resident.at (resident modules): Fix for C++.
+
 2010-01-29  Peter Rosin  <peda@lysator.liu.se>
 	    Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 

@@ -59,7 +59,7 @@ main (int argc, char* argv[])
 	{
 	  int (*pf) (void);
 	  printf ("plugin opened successfully!\n");
-	  pf = lt_dlsym (plugin_handle, "setup_plugin");
+	  pf = (int (*) (void)) lt_dlsym (plugin_handle, "setup_plugin");
 	  if (pf)
 	    pf ();
 	  else
@@ -100,6 +100,7 @@ main (int argc, char* argv[])
 
 AT_DATA([plugin.c],
 [[#include <stdlib.h>
+#include <stdio.h>
 
 void
 bye (void)
@@ -107,6 +108,9 @@ bye (void)
   puts ("called from atexit handler");
 }
 
+#ifdef __cplusplus
+extern "C"
+#endif
 int
 setup_plugin (void)
 {
