@@ -3192,7 +3192,7 @@ EOF
       /* failed to start process */
       lt_debugprintf (__FILE__, __LINE__,
 		      "(main) failed to launch target \"%s\": %s\n",
-		      lt_argv_zero, strerror (errno));
+		      lt_argv_zero, nonnull (strerror (errno)));
       return 127;
     }
   return rval;
@@ -3348,7 +3348,7 @@ find_executable (const char *wrapper)
 		  /* empty path: current directory */
 		  if (getcwd (tmp, LT_PATHMAX) == NULL)
 		    lt_fatal (__FILE__, __LINE__, "getcwd failed: %s",
-                              strerror (errno));
+                              nonnull (strerror (errno)));
 		  tmp_len = strlen (tmp);
 		  concat_name =
 		    XMALLOC (char, tmp_len + 1 + strlen (wrapper) + 1);
@@ -3373,7 +3373,8 @@ find_executable (const char *wrapper)
     }
   /* Relative path | not found in path: prepend cwd */
   if (getcwd (tmp, LT_PATHMAX) == NULL)
-    lt_fatal (__FILE__, __LINE__, "getcwd failed: %s", strerror (errno));
+    lt_fatal (__FILE__, __LINE__, "getcwd failed: %s",
+              nonnull (strerror (errno)));
   tmp_len = strlen (tmp);
   concat_name = XMALLOC (char, tmp_len + 1 + strlen (wrapper) + 1);
   memcpy (concat_name, tmp, tmp_len);
@@ -3425,7 +3426,7 @@ chase_symlinks (const char *pathspec)
 	{
 	  lt_fatal (__FILE__, __LINE__,
 		    "error accessing file \"%s\": %s",
-		    tmp_pathspec, strerror (errno));
+		    tmp_pathspec, nonnull (strerror (errno)));
 	}
     }
   XFREE (tmp_pathspec);

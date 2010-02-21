@@ -1,5 +1,13 @@
 2010-02-21  Charles Wilson <libtool@cwilson.fastmail.fm>
 
+	Guard against strerror()==NULL
+	* libltdl/config/ltmain.m4sh (func_emit_cwrapperexe_src:main):
+	Check return value of strerror() using nonnull().
+	(func_emit_cwrapperexe_src:find_executable): Ditto.
+	(func_emit_cwrapperexe_src:chase_symlinks): Ditto.
+
+2010-02-21  Charles Wilson <libtool@cwilson.fastmail.fm>
+
 	Document wrapper changes.
 	* NEWS: Indicate new feature and incompatibility.
 	* doc/libtool.texi [detailmenu]: Add reference to subsection
