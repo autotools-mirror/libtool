@@ -64,6 +64,7 @@ New in 2.2.8 2010-??-??: git version 2.2.7a, Libtool team:
     when using the compiler driver to link programs. Now "-Wc," is stripped
     just as it is when linking libraries through the compiler driver.
   - Symbol versioning works with the GNU gold linker now.
+  - Fixes for detection of shared library dependencies on MinGW systems.
 
 * Miscellaneous changes:
 

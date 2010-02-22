@@ -1,3 +1,16 @@
+2010-02-28  Pierre Ossman  <ossman@ossman.lkpg.cendio.se>  (tiny change)
+            Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
+	Fix deplibs check fallback for 64-bit Windows and Windows CE.
+	* libltdl/m4/libtool.m4 (_LT_CHECK_MAGIC_METHOD): Accept file formats
+	'pe-arm-wince' and 'pe-x86-64'.  Add note about consistency with ...
+	* libltdl/config/ltmain.m4sh (func_win32_libid): ... the respective
+	pattern here; sync pattern from the former.
+	* tests/deplibs-mingw.at (deplibs without file command): New
+	file, new test.
+	* Makefile.am (TESTSUITE_AT): Update.
+	* NEWS: Update.
+
 2010-02-24  Scott McCreary  <scottmc2@gmail.com>  (tiny change)
 
 	Update search path on Haiku for legacy system directory.

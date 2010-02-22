@@ -504,7 +504,8 @@ TESTSUITE_AT	= tests/testsuite.at \
 		  tests/configure-iface.at \
 		  tests/stresstest.at \
 		  tests/cmdline_wrap.at \
-		  tests/darwin.at
+		  tests/darwin.at \
+		  tests/deplibs-mingw.at
 
 EXTRA_DIST     += $(srcdir)/$(TESTSUITE) $(TESTSUITE_AT) $(srcdir)/tests/package.m4
 

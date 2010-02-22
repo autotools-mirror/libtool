@@ -2189,8 +2189,9 @@ func_win32_libid ()
     win32_libid_type="x86 archive import"
     ;;
   *ar\ archive*) # could be an import, or static
+    # Keep the egrep pattern in sync with the one in _LT_CHECK_MAGIC_METHOD.
     if eval $OBJDUMP -f $1 | $SED -e '10q' 2>/dev/null |
-       $EGREP 'file format (pe-i386(.*architecture: i386)?|pe-arm-wince|pe-x86-64)' >/dev/null; then
+       $EGREP 'file format (pei*-i386(.*architecture: i386)?|pe-arm-wince|pe-x86-64)' >/dev/null; then
       win32_nmres=`eval $NM -f posix -A $1 |
 	$SED -n -e '
 	    1,100{
