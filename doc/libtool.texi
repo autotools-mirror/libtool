@@ -120,6 +120,10 @@ Using libtool
 * Installing executables::      Making programs available to users.
 * Static libraries::            When shared libraries are not wanted.
 
+Linking executables
+
+* Wrapper executables::         Wrapper executables for some platforms.
+
 Invoking @code{libtool}
 
 * Compile mode::                Creating library object files.
@@ -212,7 +216,6 @@ Platform quirks
 * Reloadable objects::          Binding object files together.
 * Multiple dependencies::       Removing duplicate dependent libraries.
 * Archivers::                   Programs that create static archives.
-* Wrapper executables::         Wrapper executables for some platforms.
 
 @end detailmenu
 @end menu

@@ -1,3 +1,9 @@
+2010-02-22  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	manual: fix detailmenu ordering.
+	* doc/libtool.texi (Top): Add section for `Linking executables'
+	in the detailmenu.
+
 2010-02-21  Charles Wilson <libtool@cwilson.fastmail.fm>
 
 	Guard against strerror()==NULL
