@@ -1,3 +1,11 @@
+2010-02-24  Scott McCreary  <scottmc2@gmail.com>  (tiny change)
+
+	Update search path on Haiku for legacy system directory.
+	* libltdl/m4/libtool.m4 (_LT_SYS_DYNAMIC_LINKER) [haiku]
+	<sys_lib_dlsearch_path_spec>: Replace legacy
+	/boot/beos/system/lib directory with /boot/system/lib.
+	* THANKS: Update.
+
 2010-02-22  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	manual: fix detailmenu ordering.
