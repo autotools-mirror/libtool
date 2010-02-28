@@ -65,6 +65,7 @@ New in 2.2.8 2010-??-??: git version 2.2.7a, Libtool team:
     just as it is when linking libraries through the compiler driver.
   - Symbol versioning works with the GNU gold linker now.
   - Fixes for detection of shared library dependencies on MinGW systems.
+  - Fixed Sun compiler detection on Solaris with sunCC, sunf77 etc. names.
 
 * Miscellaneous changes:
 

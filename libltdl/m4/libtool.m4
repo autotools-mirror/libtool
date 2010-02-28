@@ -3823,7 +3823,7 @@ m4_if([$1], [CXX], [
 	;;
       solaris*)
 	case $cc_basename in
-	  CC*)
+	  CC* | sunCC*)
 	    # Sun C++ 4.2, 5.x and Centerline C++
 	    _LT_TAGVAR(lt_prog_compiler_pic, $1)='-KPIC'
 	    _LT_TAGVAR(lt_prog_compiler_static, $1)='-Bstatic'
@@ -4107,7 +4107,7 @@ m4_if([$1], [CXX], [
       _LT_TAGVAR(lt_prog_compiler_pic, $1)='-KPIC'
       _LT_TAGVAR(lt_prog_compiler_static, $1)='-Bstatic'
       case $cc_basename in
-      f77* | f90* | f95*)
+      f77* | f90* | f95* | sunf77* | sunf90* | sunf95*)
 	_LT_TAGVAR(lt_prog_compiler_wl, $1)='-Qoption ld ';;
       *)
 	_LT_TAGVAR(lt_prog_compiler_wl, $1)='-Wl,';;
@@ -6255,7 +6255,7 @@ if test "$_lt_caught_CXX_error" != yes; then
 
       solaris*)
         case $cc_basename in
-          CC*)
+          CC* | sunCC*)
 	    # Sun C++ 4.2, 5.x and Centerline C++
             _LT_TAGVAR(archive_cmds_need_lc,$1)=yes
 	    _LT_TAGVAR(no_undefined_flag, $1)=' -zdefs'
@@ -6618,7 +6618,7 @@ linux*)
 
 solaris*)
   case $cc_basename in
-  CC*)
+  CC* | sunCC*)
     # The more standards-conforming stlport4 library is
     # incompatible with the Cstd library. Avoid specifying
     # it if it's in CXXFLAGS. Ignore libCrun as
