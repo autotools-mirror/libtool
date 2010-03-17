@@ -1,3 +1,28 @@
+2010-03-17  Peter Rosin  <peda@lysator.liu.se>
+
+	Use Get/SetThreadErrorMode if they are available.
+	* libltdl/loaders/loadlibrary.c (wrap_geterrormode): Replaced...
+	(wrap_getthreaderrormode): ...by this function that checks
+	first for GetThreadErrorMode, then GetErrorMode and makes use
+	of either of those or...
+	(fallback_getthreaderrormode): ...else falls back to this
+	replacement function that implements the old workaround, which
+	was previously implemented in...
+	(fallback_geterrormode): ...this now renamed function.
+	(geterrormode): Replaced...
+	(getthreaderrormode): ...by this function pointer that points
+	at either of wrap_getthreaderrormode, GetThreadErrorMode,
+	GetErrorMode or fallback_getthreaderrormode.
+	(wrap_setthreaderrormode): New function that checks if
+	SetThreadErrorMode is supported by the system and makes use of
+	it if it is.
+	(fallback_setthreaderrormode): New function that is used
+	otherwise that implements the old version using SetErrorMode.
+	(setthreaderrormode): New function pointer that points at
+	either of wrap_setthreaderrormode, SetThreadErrorMode or
+	fallback_setthreaderrormode.
+	(vm_open): Adjust to the above.
+
 2010-02-28  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	Detect Sun compiler suite with 'sun'-prefixed names.

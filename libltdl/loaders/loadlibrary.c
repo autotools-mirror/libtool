@@ -104,12 +104,16 @@ get_vtable (lt_user_data loader_data)
 #define LOADLIB_SETERROR(errcode) LOADLIB__SETERROR (LT__STRERROR (errcode))
 
 static const char *loadlibraryerror (const char *default_errmsg);
-static UINT WINAPI wrap_geterrormode (void);
-static UINT WINAPI fallback_geterrormode (void);
+static DWORD WINAPI wrap_getthreaderrormode (void);
+static DWORD WINAPI fallback_getthreaderrormode (void);
+static BOOL WINAPI wrap_setthreaderrormode (DWORD mode, DWORD *oldmode);
+static BOOL WINAPI fallback_setthreaderrormode (DWORD mode, DWORD *oldmode);
 
-typedef UINT (WINAPI geterrormode_type) (void);
+typedef DWORD (WINAPI getthreaderrormode_type) (void);
+typedef BOOL (WINAPI setthreaderrormode_type) (DWORD, DWORD *);
 
-static geterrormode_type *geterrormode = wrap_geterrormode;
+static getthreaderrormode_type *getthreaderrormode = wrap_getthreaderrormode;
+static setthreaderrormode_type *setthreaderrormode = wrap_setthreaderrormode;
 static char *error_message = 0;
 
 
@@ -187,13 +191,13 @@ vm_open (lt_user_data LT__UNUSED loader_data, const char *filename,
 
   {
     /* Silence dialog from LoadLibrary on some failures. */
-    UINT errormode = geterrormode ();
-    SetErrorMode (errormode | SEM_FAILCRITICALERRORS);
+    DWORD errormode = getthreaderrormode ();
+    setthreaderrormode (errormode | SEM_FAILCRITICALERRORS, NULL);
 
     module = LoadLibrary (wpath);
 
     /* Restore the error mode. */
-    SetErrorMode (errormode);
+    setthreaderrormode (errormode, NULL);
   }
 
   /* libltdl expects this function to fail if it is unable
@@ -298,28 +302,64 @@ loadlibraryerror (const char *default_errmsg)
   return len ? error_message : default_errmsg;
 }
 
-/* A function called through the geterrormode variable which checks
-   if the system supports GetErrorMode and arranges for it or a
-   fallback implementation to be called directly in the future. The
-   selected version is then called. */
-static UINT WINAPI
-wrap_geterrormode (void)
+/* A function called through the getthreaderrormode variable which checks
+   if the system supports GetThreadErrorMode (or GetErrorMode) and arranges
+   for it or a fallback implementation to be called directly in the future.
+   The selected version is then called. */
+static DWORD WINAPI
+wrap_getthreaderrormode (void)
 {
   HMODULE kernel32 = GetModuleHandleA ("kernel32.dll");
-  geterrormode = (geterrormode_type *) GetProcAddress (kernel32,
-                                                       "GetErrorMode");
-  if (!geterrormode)
-    geterrormode = fallback_geterrormode;
-  return geterrormode ();
+  getthreaderrormode
+    = (getthreaderrormode_type *) GetProcAddress (kernel32,
+						  "GetThreadErrorMode");
+  if (!getthreaderrormode)
+    getthreaderrormode
+      = (getthreaderrormode_type *) GetProcAddress (kernel32,
+						    "GetErrorMode");
+  if (!getthreaderrormode)
+    getthreaderrormode = fallback_getthreaderrormode;
+  return getthreaderrormode ();
 }
 
-/* A function called through the geterrormode variable for cases
-   where the system does not support GetErrorMode */
-static UINT WINAPI
-fallback_geterrormode (void)
+/* A function called through the getthreaderrormode variable for cases
+   where the system does not support GetThreadErrorMode or GetErrorMode */
+static DWORD WINAPI
+fallback_getthreaderrormode (void)
 {
   /* Prior to Windows Vista, the only way to get the current error
      mode was to set a new one. In our case, we are setting a new
-     error mode right after "getting" it, so that's fairly ok. */
-  return SetErrorMode (SEM_FAILCRITICALERRORS);
+     error mode right after "getting" it while ignoring the error
+     mode in effect when setting the new error mode, so that's
+     fairly ok. */
+  return (DWORD) SetErrorMode (SEM_FAILCRITICALERRORS);
+}
+
+/* A function called through the setthreaderrormode variable which checks
+   if the system supports SetThreadErrorMode and arranges for it or a
+   fallback implementation to be called directly in the future.
+   The selected version is then called. */
+static BOOL WINAPI
+wrap_setthreaderrormode (DWORD mode, DWORD *oldmode)
+{
+  HMODULE kernel32 = GetModuleHandleA ("kernel32.dll");
+  setthreaderrormode
+    = (setthreaderrormode_type *) GetProcAddress (kernel32,
+						  "SetThreadErrorMode");
+  if (!setthreaderrormode)
+    setthreaderrormode = fallback_setthreaderrormode;
+  return setthreaderrormode (mode, oldmode);
+}
+
+/* A function called through the setthreaderrormode variable for cases
+   where the system does not support SetThreadErrorMode. */
+static BOOL WINAPI
+fallback_setthreaderrormode (DWORD mode, DWORD *oldmode)
+{
+  /* Prior to Windows 7, there was no way to set the thread local error
+     mode, so set the process global error mode instead. */
+  DWORD old = (DWORD) SetErrorMode (mode);
+  if (oldmode)
+    *oldmode = old;
+  return TRUE;
 }
