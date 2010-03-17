@@ -1,3 +1,13 @@
+2010-03-19  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Unconditionally normalize LC_ALL, LANGUAGE in libtool script.
+	* libltdl/config/ltmain.m4sh: Unconditionally set LC_ALL and
+	LANGUAGE to 'C', to avoid semantic differences on MinGW under
+	Chines locale.  SCO issues with e.g. LANG=C are not known to
+	be relevant today any more.
+	Report by Pete Batard <pbatard@gmail.com> and Xiaofan Chen
+	<xiaofanc@gmail.com>.
+
 2010-03-17  Peter Rosin  <peda@lysator.liu.se>
 
 	Preserve the last error when restoring the error mode.
