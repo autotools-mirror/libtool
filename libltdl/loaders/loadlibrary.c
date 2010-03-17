@@ -192,12 +192,16 @@ vm_open (lt_user_data LT__UNUSED loader_data, const char *filename,
   {
     /* Silence dialog from LoadLibrary on some failures. */
     DWORD errormode = getthreaderrormode ();
+    DWORD last_error;
+
     setthreaderrormode (errormode | SEM_FAILCRITICALERRORS, NULL);
 
     module = LoadLibrary (wpath);
 
     /* Restore the error mode. */
+    last_error = GetLastError ();
     setthreaderrormode (errormode, NULL);
+    SetLastError (last_error);
   }
 
   /* libltdl expects this function to fail if it is unable

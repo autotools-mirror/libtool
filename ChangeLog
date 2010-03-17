@@ -1,5 +1,11 @@
 2010-03-17  Peter Rosin  <peda@lysator.liu.se>
 
+	Preserve the last error when restoring the error mode.
+	* libltdl/loaders/loadlibrary.c (wm_open): Don't rely on
+	SetThreadErrorMode (or SetErrorMode) to not clobber the last
+	error.
+	Report by Ralf Wildenhues.
+
 	Use Get/SetThreadErrorMode if they are available.
 	* libltdl/loaders/loadlibrary.c (wrap_geterrormode): Replaced...
 	(wrap_getthreaderrormode): ...by this function that checks
