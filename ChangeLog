@@ -1,3 +1,11 @@
+2010-03-19  Chris Demetriou  <cgd@google.com>
+
+	Sort output of 'find' to enable deterministic builds.
+	* libltdl/config/ltmain.m4sh (func_extract_archives): Sort
+	output of 'find'.
+	* libltdl/m4/libtool.m4 (_LT_LANG_CXX_CONFIG): Likewise.
+	* THANKS: Update.
+
 2010-03-19  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	Unconditionally normalize LC_ALL, LANGUAGE in libtool script.
