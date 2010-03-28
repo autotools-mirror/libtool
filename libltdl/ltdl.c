@@ -208,7 +208,7 @@ LT_BEGIN_C_DECLS
 LT_SCOPE const lt_dlvtable *	get_vtable (lt_user_data data);
 LT_END_C_DECLS
 #ifdef HAVE_LIBDLLOADER
-extern lt_dlsymlist		preloaded_symbols;
+extern lt_dlsymlist		preloaded_symbols[];
 #endif
 
 /* Initialize libltdl. */
@@ -234,7 +234,7 @@ lt_dlinit (void)
 #ifdef HAVE_LIBDLLOADER
       if (!errors)
 	{
-	  errors += lt_dlpreload (&preloaded_symbols);
+	  errors += lt_dlpreload (preloaded_symbols);
 	}
 
       if (!errors)

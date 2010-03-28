@@ -1,5 +1,10 @@
 2010-03-28  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	Fix preloader symbol list declaration in libltdl.
+	* libltdl/ltdl.c (preloaded_symbols): Fix declaration to include
+	array brackets.
+	(lt_dlinit): Do not take address of preloaded_symbols.
+
 	Fix typo in libtool --help output.
 	* libltdl/config/ltmain.m4sh (func_mode_help): Fix typo in help
 	output.
