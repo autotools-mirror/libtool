@@ -1,5 +1,9 @@
 2010-03-28  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	Fix typo in libtool --help output.
+	* libltdl/config/ltmain.m4sh (func_mode_help): Fix typo in help
+	output.
+
 	Fix a couple of documentation errors.
 	* doc/libtool.texi (Autoconf macros): Improve hyphenation.
 	(Using libltdl): libltdl uses the Lesser General Public License,

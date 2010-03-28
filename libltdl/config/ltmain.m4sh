@@ -1052,8 +1052,8 @@ This mode accepts the following additional options:
 
   -o OUTPUT-FILE    set the output file name to OUTPUT-FILE
   -no-suppress      do not suppress compiler output for multiple passes
-  -prefer-pic       try to building PIC objects only
-  -prefer-non-pic   try to building non-PIC objects only
+  -prefer-pic       try to build PIC objects only
+  -prefer-non-pic   try to build non-PIC objects only
   -shared           do not build a \`.o' file suitable for static linking
   -static           only build a \`.o' file suitable for static linking
   -Wc,FLAG          pass FLAG directly to the compiler
