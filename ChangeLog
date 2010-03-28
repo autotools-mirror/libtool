@@ -1,3 +1,16 @@
+2010-03-31  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Add FAQ, and FAQ entry for flags stripped at library link time.
+	* doc/libtool.texi (FAQ, Stripped link flags): New nodes.
+	(Wrapper executables): Replace bug address with macro.
+	(Compile mode, Link mode): Document `-Wc,' and `-Xcompiler '
+	semantics better.
+	* libltdl/config/ltmain.m4sh (func_mode_link): Rewrite comment
+	for the flags that are passed through.
+	Prompted by reports from Simon Richter <Simon.Richter@hogyros.de>,
+	Török Edwin <edwintorok@gmail.com> and
+	Åke Sandgren <ake.sandgren@hpc2n.umu.se>.
+
 2010-03-28  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	Fix preloader symbol list declaration in libltdl.

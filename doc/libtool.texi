@@ -95,6 +95,7 @@ GNU Libtool.
 * Dlopened modules::            @code{dlopen}ing libtool-created libraries.
 * Using libltdl::               Libtool's portable @code{dlopen} wrapper library.
 * Trace interface::             Libtool's trace interface.
+* FAQ::                         Frequently Asked Questions
 * Troubleshooting::             When libtool doesn't work as advertised.
 * Maintaining::                 Information used by the libtool maintainer.
 * GNU Free Documentation License:: License for this manual.
@@ -185,6 +186,10 @@ Using libltdl
 * User defined module data::    Associating data with loaded modules.
 * Module loaders for libltdl::  Creating user defined module loaders.
 * Distributing libltdl::        How to distribute libltdl with your package.
+
+Frequently Asked Questions
+
+* Stripped link flags::         Dropped flags when creating a library
 
 Troubleshooting
 
@@ -886,7 +891,7 @@ employ command line options that begin with @code{--lt-}. (In fact, the
 wrapper executable will detect any command line options that begin with
 @code{--lt-} and abort with an error message if the option is not
 recognized). If this presents a problem, please contact the Libtool
-team at @email{bug-libtool@@gnu.org}.
+team at @value{BUGADDR}.
 
 These command line options include:
 
@@ -1405,7 +1410,9 @@ linking.
 
 @item -Wc,@var{flag}
 @itemx -Xcompiler @var{flag}
-Pass a flag directly to the compiler.
+Pass a flag directly to the compiler.  With @code{-Wc,}, multiple flags
+may be separated by commas, whereas @code{-Xcompiler } passes through
+commas unchanged.
 @end table
 
 @node Link mode
@@ -1593,7 +1600,9 @@ supplies the same interface (@pxref{Linking with dlopened modules}).
 
 @item -Wc,@var{flag}
 @itemx -Xcompiler @var{flag}
-Pass a linker-specific flag directly to the compiler.
+Pass a linker-specific flag directly to the compiler.  With @code{-Wc,},
+multiple flags may be separated by commas, whereas @code{-Xcompiler }
+passes through commas unchanged.
 
 @item -Wl,@var{flag}
 @itemx -Xlinker @var{flag}
@@ -4936,6 +4945,46 @@ autoconf --trace 'LT_SUPPORTED_TAG:$1'
 @end example
 @end defmac
 
+
+@node FAQ
+@chapter Frequently Asked Questions about libtool
+
+This chapter covers some questions that often come up on the mailing
+lists.
+
+@menu
+* Stripped link flags::         Dropped flags when creating a library
+@end menu
+
+@node Stripped link flags
+@section Why does libtool strip link flags when creating a library?
+
+When creating a shared library, but not when compiling or creating
+a program, @command{libtool} drops some flags from the command line
+provided by the user.  This is done because flags unknown to
+@command{libtool} may interfere with library creation or require
+additional support from @command{libtool}, and because omitting
+flags is usually the conservative choice for a successful build.
+
+If you encounter flags that you think are useful to pass, as a
+work-around you can prepend flags with @code{-Wc,} or @code{-Xcompiler }
+to allow them to be passed through to the compiler driver
+(@pxref{Link mode}).  Another possibility is to add flags already
+to the compiler command at @command{configure} run time:
+
+@example
+./configure CC='gcc -m64'
+@end example
+
+If you think @command{libtool} should let some flag through by default,
+here's how you can test such an inclusion: grab the Libtool development
+tree, edit the @file{ltmain.m4sh} file in the @file{libltdl/config}
+subdirectory to pass through the flag (search for @samp{Flags to be
+passed through}), re-bootstrap and build with the flags in question
+added to @code{LDFLAGS}, @code{CFLAGS}, @code{CXXFLAGS}, etc. on the
+@command{configure} command line as appropriate.  Run the testsuite
+as described in the @file{README} file and report results to
+@value{BUGADDR}.
 
 @node Troubleshooting
 @chapter Troubleshooting
