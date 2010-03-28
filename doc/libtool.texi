@@ -1825,7 +1825,7 @@ GNU linker.  The result is stored in the shell variable
 @end defmac
 
 @defmac LT_PATH_NM
-Try to find a BSD compatible @command{nm} or a MS compatible
+Try to find a BSD-compatible @command{nm} or a MS-compatible
 @command{dumpbin} command on this machine.  The result is stored in the
 shell variable @samp{$NM}, which is @code{AC_SUBST}ed.
 @end defmac
@@ -3696,7 +3696,7 @@ libtool's dlpreopen (see @pxref{Dlpreopening})
 @end itemize
 
 @noindent
-libltdl is licensed under the terms of the GNU Library General
+libltdl is licensed under the terms of the GNU Lesser General
 Public License, with the following exception:
 
 @quotation

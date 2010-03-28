@@ -1,5 +1,10 @@
 2010-03-28  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	Fix a couple of documentation errors.
+	* doc/libtool.texi (Autoconf macros): Improve hyphenation.
+	(Using libltdl): libltdl uses the Lesser General Public License,
+	not the Library General Public License.
+
 	Do not use @sc nor @acronym in the manual.
 	* doc/libtool.texi: Remove all usage of @sc.
 
