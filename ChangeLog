@@ -57,7 +57,7 @@
 	Report by Vadim Zeitlin.
 
 2010-02-28  Pierre Ossman  <ossman@ossman.lkpg.cendio.se>  (tiny change)
-            Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+	    Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
 
 	Fix deplibs check fallback for 64-bit Windows and Windows CE.
 	* libltdl/m4/libtool.m4 (_LT_CHECK_MAGIC_METHOD): Accept file formats
