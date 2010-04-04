@@ -1,5 +1,25 @@
 2010-08-28  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	Add $pic_flag to archive_cmds and archive_expsym_cmds.
+	* libltdl/m4/libtool.m4 (_LT_LINKER_SHLIBS)
+	<archive_cmds, archive_expsym_cmds>
+	[GNU ld, netbsd]: Add $pic_flag if ELF.
+	[GNU ld, solaris]: Likewise.
+	[GNU ld, default case]: Likewise.
+	[!GNU ld, freebsd, dragonfly]: Add $pic_flag.
+	[!GNU ld, GCC, hpux9]: Add $pic_flag.
+	[!GNU ld, GCC, hpux10]: Replace -fPIC with $pic_flag
+	[!GNU ld, GCC, hpux11, !hppa*64]: Replace -fPIC with $pic_flag.
+	[!GNU ld, GCC, irix5, irix6, nonstopux]: Add $pic_flag.
+	[!GNU ld, GCC, osf4, osf5]: Likewise.
+	[!GNU ld, GCC, solaris]: Likewise.
+	(_LT_LANG_CXX_CONFIG) <archive_cmds, archive_expsym_cmds>
+	[hpux9]: Add $pic_flag if $GXX.
+	[hpux10, hpux11, !hppa*64]: Replace -fPIC with $pic_flag.
+	[irix5, irix6]: Add $pic_flag if $GXX.
+	[osf4, osf5]: Likewise.
+	[solaris]: Add $pic_flag if $GXX and not GCC 2.7.
+
 	Uniform const'ness of symlist variable lt_preloaded_symbols.
 	On some systems, lt_preloaded_symbols may not be declared
 	const due to relocation issues.  C99 requires qualification to
