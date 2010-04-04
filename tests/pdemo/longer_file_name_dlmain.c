@@ -1,6 +1,7 @@
 /* dlmain.c -- hello test program that uses simulated dynamic linking
 
-   Copyright (C) 1996-1999, 2004, 2006, 2007 Free Software Foundation, Inc.
+   Copyright (C) 1996-1999, 2004, 2006, 2007, 2010 Free Software
+   Foundation, Inc.
 
    This file is part of GNU Libtool.
 
@@ -27,18 +28,18 @@ or obtained by writing to the Free Software Foundation, Inc.,
 
 #define lt_preloaded_symbols lt__PROGRAM__LTX_preloaded_symbols
 
-struct lt_symlist
+typedef struct
 {
   const char *name;
   lt_ptr_t address;
-};
+} lt_dlsymlist;
 
-extern const struct lt_symlist lt_preloaded_symbols[];
+extern const lt_dlsymlist lt_preloaded_symbols[];
 
 int
 main (int argc, char **argv)
 {
-  const struct lt_symlist *s;
+  const lt_dlsymlist *s;
   int (*pfoo)() = 0;
   int (*phello)() = 0;
   int *pnothing = 0;

@@ -1,3 +1,14 @@
+2010-04-09  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Fix incompatible struct declarations.
+	* doc/libtool.texi (Dlpreopening): Remove broken documentation
+	of lt_dlsymbol and lt_dlsymlist.  Document typedef lt_dlsymlist
+	and symbol lt_preloaded_symbols according to the implementation.
+	* tests/demo/dlmain.c (lt_symlist): Make struct anonymous ...
+	(lt_dlsymlist): ... and typedef to this name.
+	(lt_preloaded_symbols, main): Adjust.
+	* tests/pdemo/longer_file_name_dlmain.c: Likewise.
+
 2010-04-04  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	Use linker_flags not compiler_flags with $LD.

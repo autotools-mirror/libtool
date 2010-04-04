@@ -3388,25 +3388,15 @@ you must declare the objects you want your application to dlopen by
 using the @option{-dlopen} or @option{-dlpreopen} flags when you link your
 program (@pxref{Link mode}).
 
-@deftypefn {Structure} {struct} lt_dlsymbol @{ @w{const char *@var{name};} @w{void *@var{address};} @}
+@deftp {Data Type} {lt_dlsymlist} typedef struct @
+  @{ @w{const char *@var{name};} @w{void *@var{address};} @} lt_dlsymlist
 The @var{name} attribute is a null-terminated character string of the
 symbol name, such as @code{"fprintf"}.  The @var{address} attribute is a
 generic pointer to the appropriate object, such as @code{&fprintf}.
-@end deftypefn
+@end deftp
 
-@deftypefn {Structure} {struct} lt_dlsymlist @{ @w{const char *@var{originator};} @w{const lt_dlsymbol @var{symbols}[];} @}
-The @var{originator} attribute is a null-terminated character string,
-naming the compilation unit that @var{symbols} were preloaded on
-behalf of.  This is usually the basename of a library,
-@file{libltdl.la} has a corresponding @var{originator} value of
-@samp{libltdl}; if the @var{symbols} are for the benefit of the
-application proper, then @var{originator} is @samp{@@PROGRAM@@},
-though Libtool takes care of that detail if you use
-@samp{LTDL_SET_PRELOADED_SYMBOLS}.
-@end deftypefn
-
-@deftypevar {const lt_dlsymlist *} lt_preloaded_symbols
-An array of @var{lt_symbol} structures, representing all the preloaded
+@deftypevar {const lt_dlsymlist } lt_preloaded_symbols[]
+An array of @var{lt_dlsymlist} structures, representing all the preloaded
 symbols linked into the program proper.  For each module
 @option{-dlpreopen}ed by the Libtool linked program
 there is an element with the @var{name} of the module and an @var{address}
@@ -3414,6 +3404,10 @@ of @code{0}, followed by all symbols exported from this file.
 For the executable itself the special name @samp{@@PROGRAM@@} is used.
 The last element of all has a @var{name} and @var{address} of
 @code{0}.
+
+To facilitate inclusion of symbol lists into libraries,
+@code{lt_preloaded_symbols} is @samp{#define}d to a suitably unique name
+in @file{ltdl.h}.
 @end deftypevar
 
 Some compilers may allow identifiers that are not valid in ANSI C, such
