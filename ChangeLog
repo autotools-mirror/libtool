@@ -1,3 +1,31 @@
+2010-08-28  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Uniform const'ness of symlist variable lt_preloaded_symbols.
+	On some systems, lt_preloaded_symbols may not be declared
+	const due to relocation issues.  C99 requires qualification to
+	match for compatible declarations, so ensure we declare
+	const'ness in the same way everywhere; link-time optimization
+	may otherwise rightfully complain about inconsistencies.
+	Since ltdl.h may not depend upon config.h, rely on system
+	defines for choosing const'ness.
+	* NEWS: Update.
+	* doc/libtool.texi (Dlpreopening): Document this issue.
+	* libltdl/config/ltmain.m4sh (func_generate_dlsyms):
+	[__WINDOWS__, __CYGWIN__, _WIN32_WCE]: Define LT_DLSYM_CONST
+	according to system defines.  Remove old shell cruft.  Use
+	LT_DLSYM_CONST for lt_${my_prefix}_LTX_preloaded_symbols.
+	* libltdl/libltdl/lt_system.h (LT_DLSYM_CONST): Likewise,
+	define LT_DLSYM_CONST according to system defines.
+	* tests/demo/foo.h (LT_DLSYM_CONST): Likewise.
+	* tests/pdemo/foo.h (LT_DLSYM_CONST): Likewise.
+	* tests/demo/dlmain.c (lt_dlsymlist): Use LT_DLSYM_CONST.
+	* tests/pdemo/longer_file_name_dlmain.c (lt_dlsymlist):
+	Likewise.
+	* libltdl/m4/libtool.m4 (_LT_CMD_GLOBAL_SYMBOLS): Likewise
+	for configure test code.
+	* libltdl/ltdl.c (preloaded_symbols): Use LT_DLSYM_CONST.
+	* libltdl/ltdl.h (LTDL_SET_PRELOADED_SYMBOLS): Likewise.
+
 2010-08-28  Dave Korn  <dave.korn.cygwin@googlemail.com>
 
 	Ensure cwrapper magic string is not optimized away.

@@ -2004,6 +2004,18 @@ extern \"C\" {
 #pragma GCC diagnostic ignored \"-Wstrict-prototypes\"
 #endif
 
+/* Keep this code in sync between libtool.m4, ltmain, lt_system.h, and tests.  */
+#if defined(__WINDOWS__) || defined(__CYGWIN__) || defined(_WIN32_WCE)
+/* DATA imports from DLLs on WIN32 con't be const, because runtime
+   relocations are performed -- see ld's documentation on pseudo-relocs.  */
+# define LT_DLSYM_CONST
+#elif defined(__osf__)
+/* This system does not cope well with relocations in const data.  */
+# define LT_DLSYM_CONST
+#else
+# define LT_DLSYM_CONST const
+#endif
+
 /* External symbol declarations for the compiler. */\
 "
 
@@ -2145,26 +2157,9 @@ typedef struct {
   const char *name;
   void *address;
 } lt_dlsymlist;
-"
-	  case $host in
-	  *cygwin* | *mingw* | *cegcc* )
-	    echo >> "$output_objdir/$my_dlsyms" "\
-/* DATA imports from DLLs on WIN32 con't be const, because
-   runtime relocations are performed -- see ld's documentation
-   on pseudo-relocs.  */"
-	    lt_dlsym_const= ;;
-	  *osf5*)
-	    echo >> "$output_objdir/$my_dlsyms" "\
-/* This system does not cope well with relocations in const data */"
-	    lt_dlsym_const= ;;
-	  *)
-	    lt_dlsym_const=const ;;
-	  esac
-
-	  echo >> "$output_objdir/$my_dlsyms" "\
-extern $lt_dlsym_const lt_dlsymlist
+extern LT_DLSYM_CONST lt_dlsymlist
 lt_${my_prefix}_LTX_preloaded_symbols[];
-$lt_dlsym_const lt_dlsymlist
+LT_DLSYM_CONST lt_dlsymlist
 lt_${my_prefix}_LTX_preloaded_symbols[] =
 {\
   { \"$my_originator\", (void *) 0 },"

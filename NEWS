@@ -83,6 +83,9 @@ New in 2.2.7b 2010-05-20: git version 2.2.7a, Libtool team:
     options that begin with '--lt-*' from the argument list before launching
     (uninstalled) programs. Any '--lt-*' option on the command line not
     recognized by the wrapper will result in an error.
+  - The type of the symbol lists variables (lt_*_LTX_preloaded_symbols) has
+    been fixed in the manual and in a couple of tests to match the actual
+    implementation.
 
 * Changes in supported systems or compilers:
 

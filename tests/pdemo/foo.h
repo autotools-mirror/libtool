@@ -1,6 +1,6 @@
 /* foo.h -- interface to the libfoo library
 
-   Copyright (C) 1996-1999 Free Software Foundation, Inc.
+   Copyright (C) 1996-1999, 2010 Free Software Foundation, Inc.
    Written by Gord Matzigkeit, 1996
 
    This file is part of GNU Libtool.
@@ -59,6 +59,18 @@ or obtained by writing to the Free Software Foundation, Inc.,
 #else
 # define LT_PARAMS(protos) ()
 # define lt_ptr_t     char*
+#endif
+
+/* Keep this code in sync between libtool.m4, ltmain, lt_system.h, and tests.  */
+#if defined(__WINDOWS__) || defined(__CYGWIN__) || defined(_WIN32_WCE)
+/* DATA imports from DLLs on WIN32 con't be const, because runtime
+   relocations are performed -- see ld's documentation on pseudo-relocs.  */
+# define LT_DLSYM_CONST
+#elif defined(__osf__)
+/* This system does not cope well with relocations in const data.  */
+# define LT_DLSYM_CONST
+#else
+# define LT_DLSYM_CONST const
 #endif
 
 #ifdef __CYGWIN32__
