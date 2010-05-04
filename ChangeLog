@@ -1,3 +1,10 @@
+2010-05-05  Peter Rosin  <peda@lysator.liu.se>
+
+	Clarify versioning algorithm documentation.
+	* doc/libtool.texi (Updating version info): Be explicit
+	about setting age to zero on interface change.
+	Reported by Jef Driesen <jefdriesen@hotmail.com>
+
 2010-05-04  Peter O'Gorman  <peter@pogma.com>
 
 	Ranlib is required with -force_load and fat archives.

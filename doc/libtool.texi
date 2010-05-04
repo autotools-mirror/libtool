@@ -2927,8 +2927,8 @@ If any interfaces have been added since the last public release, then
 increment @var{age}.
 
 @item
-If any interfaces have been removed since the last public release, then
-set @var{age} to 0.
+If any interfaces have been removed or changed since the last public
+release, then set @var{age} to 0.
 @end enumerate
 
 @strong{@emph{Never}} try to set the interface numbers so that they
