@@ -982,6 +982,8 @@ _LT_EOF
       $LTCC $LTCFLAGS -c -o conftest.o conftest.c 2>&AS_MESSAGE_LOG_FD
       echo "$AR cru libconftest.a conftest.o" >&AS_MESSAGE_LOG_FD
       $AR cru libconftest.a conftest.o 2>&AS_MESSAGE_LOG_FD
+      echo "$RANLIB libconftest.a" >&AS_MESSAGE_LOG_FD
+      $RANLIB libconftest.a 2>&AS_MESSAGE_LOG_FD
       cat > conftest.c << _LT_EOF
 int main() { return 0;}
 _LT_EOF

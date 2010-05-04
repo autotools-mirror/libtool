@@ -1,3 +1,10 @@
+2010-05-04  Peter O'Gorman  <peter@pogma.com>
+
+	Ranlib is required with -force_load and fat archives.
+	* libltdl/m4/libtool.m4 (_LT_REQUIRED_DARWIN_CHECKS): Run
+	ranlib.
+	Reported by Jeremy Huddleston <jeremyhu@apple.com>
+
 2010-04-09  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	Fix incompatible struct declarations.
