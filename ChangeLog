@@ -1,5 +1,12 @@
 2010-05-21  Gary V. Vaughan  <gary@gnu.org>
 
+	Set SCM version number to 2.2.7c.
+	* configure.ac, libltdl/configure.ac (AC_INIT): Bump version
+	number to 2.2.7c.
+	* NEWS: Updated.
+
+	GNU Libtool 2.2.7b  was released.
+
 	Prepare for next release candidate.
 	* configure.ac, libltdl/configure.ac (AC_INIT): Bump version
 	number to 2.2.7b.
