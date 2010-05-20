@@ -24,8 +24,16 @@
 AT_SETUP([C++ exception handling])
 AT_KEYWORDS([libtool])
 AT_KEYWORDS([libltdl])
+
 : ${LTDLINCL="-I$abs_top_srcdir/libltdl"}
 : ${LIBLTDL="$abs_builddir/../libltdl/libltdlc.la"}
+
+# Skip this test when called from:
+#    make distcheck DISTCHECK_CONFIGURE_FLAGS=--disable-ltdl-install
+AT_CHECK([case $LIBLTDL in #(
+ */_inst/lib/*) test -f $LIBLTDL || (exit 77) ;;
+esac], [], [ignore])
+
 CPPFLAGS="$LTDLINCL $CPPFLAGS"
 
 AT_DATA([module.h],

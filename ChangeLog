@@ -1,3 +1,12 @@
+2010-05-21  Gary V. Vaughan  <gary@gnu.org>
+
+	Skip some tests in --disable-ltdl-install mode.
+	* tests/dlloader-api.at, tests/exceptions.at,
+	tests/lalib-syntax.at, tests/loadlibrary.at,
+	tests/lt_dlopenext.at, tests/resident.at: Detect when these
+	tests try to link against the not installed libltdl.la, and
+	skip rather than FAIL.
+
 2010-05-05  Peter Rosin  <peda@lysator.liu.se>
 
 	Clarify versioning algorithm documentation.
