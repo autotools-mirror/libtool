@@ -756,6 +756,7 @@ or obtained by writing to the Free Software Foundation, Inc.,
 ===============================
 
 To: libtool@gnu.org, autotools-announce@gnu.org
+Reply-To: bug-libtool@gnu.org
 Subject: GNU Libtool @VERSION@ released (alpha release).
 
 The Libtool Team is pleased to announce alpha release @VERSION@ of GNU
@@ -831,6 +832,7 @@ The README file explains how to capture the verbose test output.
 
 To: info-gnu@gnu.org
 Cc: libtool@gnu.org, autotools-announce@gnu.org
+Reply-To: bug-libtool@gnu.org
 Subject: GNU Libtool @VERSION@ released.
 
 The Libtool Team is pleased to announce the release of GNU Libtool

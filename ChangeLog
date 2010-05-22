@@ -1,3 +1,7 @@
+2010-05-22  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* HACKING: Set Reply-To: in announcement emails.
+
 2010-05-21  Gary V. Vaughan  <gary@gnu.org>
 
 	Set SCM version number to 2.2.7c.
