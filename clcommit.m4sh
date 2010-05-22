@@ -1,11 +1,11 @@
 AS_INIT[]m4_divert_push([HEADER-COPYRIGHT])dnl
 # @configure_input@
 
-# clcommit (GNU @PACKAGE@) version 2.0
+# clcommit (GNU @PACKAGE@) version 2.0.1
 # Written by Gary V. Vaughan <gary@gnu.org>
 # and Alexandre Oliva <aoliva@redhat.com>
 
-# Copyright (C) 1999, 2000, 2004, 2006, 2008, 2009 Free Software Foundation, Inc.
+# Copyright (C) 1999, 2000, 2004, 2006, 2008, 2009, 2010 Free Software Foundation, Inc.
 # This is free software; see the source for copying conditions.  There is NO
 # warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
@@ -319,6 +319,7 @@ func_check_commit_msg ()
     fi
 
     func_verbose "$progname: checking commit message..."
+    separate_summary=:		# whether to separate summary lines for git
     if $opt_first; then
       skipping=:
       $SED 's,^,+,' < ${ChangeLog-ChangeLog} |
@@ -328,8 +329,18 @@ func_check_commit_msg ()
             "+ "*)
 	      func_error "*** Warning: lines should start with tabs, not spaces; ignoring line:"
 	      echo "$line" | $SED 's/^.//' >&2;;
-            "+	"*)
-              $skipping || echo "$line" ;;
+            "+	*"*)			# asterisk marks end of summary line
+              $skipping || echo "$line"
+	      separate_summary=false ;;
+            "+	"*".") 			# summary line must end with a period
+	      $skipping || {
+		echo "$line"
+		$separate_summary && echo "+	"
+		separate_summary=false
+	      };;
+	    "+	"*)			# no separator for multiline summary
+	      echo "$line"
+	      separate_summary=false ;;
           esac
         done |
           $SED 's,^\+	,,' > "$log_file" || exit $EXIT_FAILURE
@@ -345,7 +356,16 @@ func_check_commit_msg ()
 	      func_error "*** Warning: lines should start with tabs, not spaces; ignoring line:"
 	      echo "$line" | $SED 's/^.//' >&2;;
             "+") echo ;;
-            "+	"*) echo "$line";;
+            "+	*"*)			# asterisk marks end of summary line
+	      echo "$line"
+              separate_summary=false ;;
+            "+	"*".") 			# summary line must end with a period
+	      echo "$line"
+	      $separate_summary && echo "+	"
+	      separate_summary=false ;;
+	    "+	"*)			# no separator for multiline summary
+	      echo "$line"
+	      separate_summary=false ;;
           esac
         done |
           $SED -e 's,\+	,,' -e '/./p' -e '/./d' -e '1d' -e '$d' > "$log_file" \

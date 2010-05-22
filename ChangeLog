@@ -1,3 +1,12 @@
+2010-05-22  Gary V. Vaughan  <gary@gnu.org>
+
+	Support "git log --oneline" in generated commit messages.
+	* clcommit.m4sh (func_check_commit_msg): Insert an empty line
+	between the ChangeLog entry summary line and the ChangeLog entry
+	body, so that "git log --oneline" works properly.
+	Bump copyright and version number.
+	Reported by Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
 2010-05-22  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	* HACKING: Set Reply-To: in announcement emails.
