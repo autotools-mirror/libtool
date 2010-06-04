@@ -1,5 +1,10 @@
 2010-06-05  Gary V. Vaughan  <gary@gnu.org>
 
+	Shift correctly in numbered option argument collection.
+	* libltdl/config/getopt.m4sh (_m4go_option): Argument list also
+	needs to be `shift'ed in the shell option loop after processing a
+	numbered argument collection.
+
 	Fetch from new upstream host for config.guess and config.sub.
 	* Makefile.maint (WGET_CGIT): Location of newest config.guess and
 	config.sub upstream.

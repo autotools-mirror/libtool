@@ -357,7 +357,7 @@ dnl only write the file_arg fragment when we didn't already write opt_file_arg:
 m4_bmatch([$3], [@], [m4_bmatch([$3], [?], [],
                    [m4_expand([m4go_file_arg([$1])])
 ])])m4_n(m4go_unindent([$6]))[]dnl
-m4_bmatch([$3], [[!+]], [			shift
+m4_bmatch([$3], [[!+;]], [			shift
 ])			;;
 ])],
     [m4_ifnblank([$2],
