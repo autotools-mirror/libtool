@@ -722,6 +722,9 @@ or obtained by writing to the Free Software Foundation, Inc.,
   between the previous release tarball and the new with detached gpg
   signature files and clear signed directive files.
 
+* If not an alpha, generate with `make -f[../]Makefile.maint
+  web-manual'.
+
 * Upload release tarballs and diff files, plus their associated
   detached gpg signature files and clear signed directive files to
   ftp-upload.gnu.org.  If the upload is destined for ftp.gnu.org, then the
@@ -740,9 +743,9 @@ or obtained by writing to the Free Software Foundation, Inc.,
 * Update the webpages, libtool.html will need to indicate the latest
   release number.
 
-* If not an alpha, upload new manual pages with cvs to:
+* If not an alpha, upload new manual pages you created earlier in
+  doc/manual using cvs to here:
   <yourusername>@cvs.savannah.gnu.org:/webcvs/libtool
-  (generate with `make -f[../]Makefile.maint web-manual').
 
 * In the build directory, run `Make -f[../]Makeflie.maint announce-gen'.
 

@@ -1,5 +1,10 @@
 2010-06-05  Gary V. Vaughan  <gary@gnu.org>
 
+	Fix web manual generation details in release instructions.
+	* HACKING (Release Procedure): Move the instruction for generating
+	web manuals for a new release to before the instruction that bumps
+	the version numbers to the post release values.
+
 	Set SCM version number to 2.2.9a.
 	* configure.ac, libltdl/configure.ac (AC_INIT): Bump version
 	number to 2.2.9a.
