@@ -1,10 +1,10 @@
 AS_INIT[]m4_divert_push([HEADER-COPYRIGHT])dnl
 # @configure_input@
 
-# mailnotify (GNU @PACKAGE@) version 0.6
+# mailnotify (GNU @PACKAGE@) version 1.0
 # Written by Gary V. Vaughan <gary@gnu.org>
 
-# Copyright (C) 2004, 2006 Free Software Foundation, Inc.
+# Copyright (C) 2004, 2006, 2010 Free Software Foundation, Inc.
 # This is free software; see the source for copying conditions.  There is NO
 # warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
@@ -24,19 +24,17 @@ AS_INIT[]m4_divert_push([HEADER-COPYRIGHT])dnl
 # or obtained by writing to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-# Usage: $progname [OPTION]... [--] to-address...
+# Usage: $progname [OPTIONS]...
 #
-#           --debug             enable verbose shell tracing
-# -C ADDR   --carbon-copy=ADDR  send a carbon-copy to ADDR
-# -F ADDR   --from=ADDR         override default from address with ADDR
+# -x        --debug             enable verbose shell tracing
+#           --dry-run           don't actually post the mime message
 # -f FILE   --filename=FILE     content of this part
+# -h FILE   --headers=FILE      read additional headers from FILE
 # -m TYPE   --mime-type=TYPE    mime-type of this part
-# -n                            another mime part (-f, -m) to follow
 # -o FILE   --output-file=FILE  output to FILE instead of sending
-# -s TEXT   --subject=TEXT      set subject header
 # -v        --verbose           run in verbose mode
 #           --version           print version information
-# -h,-?     --help              print short or long help message
+# -?        --help              print short or long help message
 
 # Assemble a (possibly multi-part) mime message and hand it to the local
 # sendmail for onward delivery.  MUAs tend to mangle patch attachments in
@@ -48,12 +46,19 @@ AS_INIT[]m4_divert_push([HEADER-COPYRIGHT])dnl
 # For example to send a patch as an attachment, assuming the patch itself
 # is in PATCHFILE:
 #
-#    echo 'Applied to HEAD' > body
-#    $progname -f body -m text/plain -n -f PATCHFILE -m text/x-patch \
-#        -s 'FYI: PATCHFILE' patch-list@foo.org
+#    echo 'From: me@example.org' > headers
+#    echo 'To: patch-list@foo.org' >> headers
+#    echo 'Subject: FYI: PATCHFILE' >> headers
+#    echo 'Cc: someone@example.org' >> headers
+#    echo 'Applied this patch to HEAD' > body
+#    $progname -h headers -f body -m text/plain -f PATCHFILE -m text/x-patch
+#
+# There is no set order or requirement for mail headers in the headers
+# file, though you will obviously need someone's address in 'To:', and
+# it's not polite to omit the 'Subject:' header...
 
 # You will probably find using this script in conjunction with clcommit
-# or cvsapply will save you an awful lot of typing.
+# saves you a lot of typing.
 
 # Report bugs to <gary@gnu.org>
 
@@ -66,134 +71,78 @@ m4_divert_pop
 m4_include([getopt.m4sh])
 
 M4SH_VERBATIM([[
-# Global variables:
-multipart=1
-outputfile=""
-
 sed_mail_address='s,^.*<\(.*\)>.*$,\1,'
+]])
 
-# Parse options once, thoroughly.  This comes as soon as possible in
-# the script to make things like `mailnotify --version' happen quickly.
-{
-  # sed scripts:
-  my_sed_single_opt='1s/^\(..\).*$/\1/;q'
-  my_sed_single_rest='1s/^..\(.*\)$/\1/;q'
-  my_sed_long_opt='1s/^\(--[^=]*\)=.*/\1/;q'
-  my_sed_long_arg='1s/^--[^=]*=//'
+dnl SHORT	LONG			       DEFAULT		      INIT
+dnl ----------------------------------------------------------------------
+dnl There are several options supported below for backwards compatibility,
+dnl but which are not mentioned in the help.
+M4SH_GETOPTS(
+  [C^!],	[--carbon-copy],		[],			[],
+  [F^!],	[--from],			[],			[],
+  [f@+],	[--filename],			[],			[],
+  [h@!],	[--headers],			[],			[],
+  [m+!],	[--mime-type],			[],			[
+	case [$]1 in
+	  text/*) ;;
+	  */*) func_error "\`[$]1': only text/* mime-types supported"
+	       ;;
+	  *)   func_error "invalid mime-type, \`[$]1'"
+	       exit_cmd=exit
+	       ;;
+	esac],
+  [n],		[],				[],			[],
+  [o!],		[--output-file],		[],			[],
+  [s^!],	[--subject],			[],			[],
+  [v],		[--verbose],			[],			[],
+  [],		[--dry-run|--dryrun],		[],			[],
+ [
+  # ensure destination address(es) available
+  test [$]# -gt 0 ||
+    grep '^\(To\|Cc\|Bcc\): ' "${opt_headers-nosuchfile}" >/dev/null 2>&1 ||
+      func_fatal_help "no destination address"
 
-  while test $# -gt 0; do
-    opt="$1"
-    shift
-    case $opt in
-      --debug)		func_echo "enabling shell trace mode"
-			set -x
-			;;
+  # validate headers
+  test "$opt_headers" && {
+    test -n "$opt_carbon_copy" && grep "^Cc: *" "$opt_headers" >/dev/null 2>&1 && {
+      func_error "specify \`Cc:' in either \`$opt_headers' or with \`--carbon-copy'."
+      exit_cmd=exit
+    }
+    test -n "$opt_from" && grep "^From: *" "$opt_headers" >/dev/null 2>&1 && {
+      func_error "specify \`From:' in either \`$opt_headers' or with \`--from'."
+      exit_cmd=exit
+    }
+    test -n "$opt_subject" && grep "^Subject: *" "$opt_headers" >/dev/null 2>&1 && {
+      func_error "specify \`Subject:' in either \`$opt_headers' or with \`--subject'."
+      exit_cmd=exit
+    }
+  }
 
-      -C|--carbon-copy) test $# -eq 0 && func_missing_arg "$opt" && break
-	    		func_quote_for_eval "$1"
-			cc="$func_quote_for_eval_result"
-			shift
-			;;
-
-      -F|--from)	test $# -eq 0 && func_missing_arg "$opt" && break
-	    		func_quote_for_eval "$1"
-			from="$func_quote_for_eval_result"
-			shift
-			;;
-
-      -f|--filename)	test $# -eq 0 && func_missing_arg "$opt" && break
-			if test -f "$1"; then :; else
-			  func_error "\`$1' does not exist"
-			  exit_cmd=exit
-			  break
-			fi
-			eval datafile$multipart=\"$1\"
-			shift
-			;;
-
-      -m|--mime-type)	test $# -eq 0 && func_missing_arg "$opt" && break
-			case $1 in
-			  text/*) ;;
-			  */*) func_error "only text/* mime-types supported"
-			       ;;
-			  *)   func_error "invalid mime-type, \`$1'"
-			       exit_cmd=exit
-			       ;;
-			esac
-			eval ctype$multipart=\"$1\"
-			shift
-			;;
-
-      -n)		if eval test -z \"\$ctype$multipart\" ||
-			   eval test -z \"\$datafile$multipart\"; then
-			  func_fatal_error "One part is incomplete -- each part needs a filename and a mime-type"
-			fi
-			multipart=`expr 1 + $multipart`
-			;;
-
-      -o|--output-file)	test $# -eq 0 && func_missing_arg "$opt" && break
-	    		func_quote_for_eval "$1"
-			outputfile="$func_quote_for_eval_result"
-			shift
-			;;
-
-      -s|--subject)	test $# -eq 0 && func_missing_arg "$opt" && break
-	    		func_quote_for_eval "$1"
-			subject="$func_quote_for_eval_result"
-			shift
-			;;
-
-      -v|--verbose)	opt_verbose=:			;;
-
-      # Separate optargs to long options:
-      --carbon-copy=*|--from=*|--filename=*|--mime-type=*|--output-file=*|--subject=*)
-			arg=`echo "$opt" | $SED "$my_sed_long_arg"`
-			opt=`echo "$opt" | $SED "$my_sed_long_opt"`
-			set -- "$opt" "$arg" ${1+"$@"}
-			;;
-
-      # Separate optargs to short options:
-      -C*|-F*|-f*|-m*|-o*|-s*)
-			arg=`echo "$opt" |$SED "$my_sed_single_rest"`
-			opt=`echo "$opt" |$SED "$my_sed_single_opt"`
-			set -- "$opt" "$arg" ${1+"$@"}
-			;;
-
-      # Separate non-argument short options:
-      -n*|-v*)
-			rest=`echo "$opt" |$SED "$my_sed_single_rest"`
-			opt=`echo "$opt" |$SED "$my_sed_single_opt"`
-			set -- "$opt" "-$rest" ${1+"$@"}
-			;;
-
-      -\?|-h)		func_usage					;;
-      --help)		func_help					;;
-      --version)	func_version					;;
-      --)		break						;;
-      -*)		func_fatal_help "unrecognized option \`$opt'"	;;
-      *)		set -- "$opt" ${1+"$@"};      break		;;
-    esac
-  done
-
-  test $# -gt 0 ||
-    func_fatal_help "no destination address"
-
-  if test -z "$outputfile"; then
-    if test -z "$subject" ||
-       eval test -z \"\$ctype$multipart\" ||
-       eval test -z \"\$datafile$multipart\"; then
+  # validate mime parts
+  if test "${opt_mime_type_num-0}" -ne "${opt_filename_num-0}"; then
+    func_fatal_error "One part is incomplete -- each part needs a filename and a mime-type"
+  fi
+  if test -z "$opt_output_file"; then
+    test -f "$opt_headers" || if test -z "$opt_subject" ||
+       eval test -z \"\$opt_mime_type_$opt_mime_type_num\" ||
+       eval test -z \"\$opt_filename_$opt_filename_num\"; then
       func_fatal_error "if output is not directed to a file -s, -f, and -m are all required"
     fi
   else
-    eval test -n \"\$datafile$multipart\" ||
+    eval test -n \"\$opt_filename_$opt_filename_num\" ||
         func_fatal_error "-f is required."
-    eval test -n \"\$ctype$multipart\" ||
+    eval test -n \"\$opt_mime_type_$opt_mime_type_num\" ||
         func_fatal_error "with output directed to a file, -m is required"
   fi
-  eval test -f \"\$datafile$multipart\" ||
-    eval func_fatal_error \"\$datafile$multipart: file not found\"
-}
 
+  # validate $opt_dry_run
+  $opt_dry_run && SENDMAIL="echo $SENDMAIL"
+])
+
+M4SH_VERBATIM([[
+# Bail out on command errors!
+set -e
 
 # func_headers outfile destination
 # Generate common headers to OUTFILE, where DESTINATION is a comma
@@ -209,14 +158,26 @@ func_headers ()
 	}
 	d'
 
-    {
+    $opt_dry_run || {
 	echo "User-Agent: $PROGRAM/`$SED \"$my_sed_version_no\" < $progpath`"
 	echo "MIME-Version: 1.0"
-	test -n "$from" && eval echo From: $from
-	eval echo To: $my_destination
-	test -n "$cc" && eval echo CC: $cc
-	test -n "$subject" && eval echo Subject: $subject
+
+	# Deprecated command line options take precedence at the moment
+	my_elide="Bcc"
+	test -n "$opt_from" &&
+	    my_elide="${my_elide+$my_elide\|}From" && eval echo From: $opt_from
+	test -n "$my_destination" &&
+	    my_elide="${my_elide+$my_elide\|}To" && eval echo To: $my_destination
+	test -n "$opt_carbon_copy" &&
+	    my_elide="${my_elide+$my_elide\|}Cc" && eval echo CC: $opt_carbon_copy
+	test -n "$opt_subject" &&
+	    my_elide="${my_elide+$my_elide\|}Subject" && eval echo Subject: $opt_subject
+
+	# Plus any additional headers
+	test -n "$opt_headers" && $SED "/^\($my_elide\): */d" "$opt_headers"
     } > "$my_outfile"
+
+    :
 }
 
 
@@ -226,11 +187,11 @@ func_single_content ()
 {
     my_outfile="$1"
 
-    cat >> "$my_outfile" <<EOF
-Content-Type: $ctype1;
+    $opt_dry_run || cat >> "$my_outfile" <<EOF
+Content-Type: $opt_mime_type_1;
 Content-Transfer-Encoding: 7bit
 
-`cat $datafile1`
+`cat $opt_filename_1`
 EOF
 }
 
@@ -241,7 +202,8 @@ func_multipart_content ()
 {
     my_outfile="$1"
     boundary="boundary-${HOST}-$$-`date | tr ' :' -`"
-    cat <<EOF >> "$my_outfile"
+    $opt_dry_run || {
+	cat <<EOF >> "$my_outfile"
 Content-Type: multipart/mixed;
 	boundary="$boundary"
 
@@ -249,31 +211,34 @@ This is a multimedia message in MIME format.  If you are reading
 this prefix, your mail reader does not understand MIME.  You may
 wish to look into upgrading to a mime-aware mail reader.
 EOF
-    i=0
-    while test $i -lt $multipart
-    do
-      i=`expr 1 + $i`
-      eval file=\"\$datafile$i\"
-      name=`echo "$file" | $SED $basename`
-      {
-	echo ""
-	echo "--$boundary"
-	if test $i -gt 1; then
-	    eval echo \"Content-Type: \$ctype$i\;\"
-	    echo "        name=\"$name\""
-	else
-	    eval echo \"Content-Type: \$ctype$i\"
-	fi
-	echo "Content-Transfer-Encoding: 7bit"
-	echo ""
-	cat "$file"
-      } >> "$my_outfile"
-    done
-    {
-      echo ""
-      echo "--${boundary}--"
-      echo ""
-    } >> "$my_outfile"
+	i=0
+	while test $i -lt $opt_filename_num
+	do
+	    i=`expr 1 + $i`
+	    eval file=\"\$opt_filename_$i\"
+	    name=`echo "$file" | $SED $basename`
+	    {
+		echo ""
+		echo "--$boundary"
+		if test $i -gt 1; then
+		    eval echo \"Content-Type: \$opt_mime_type_$i\;\"
+		    echo "        name=\"$name\""
+		else
+		    eval echo \"Content-Type: \$opt_mime_type_$i\"
+		fi
+		echo "Content-Transfer-Encoding: 7bit"
+		echo ""
+		cat "$file"
+	    } >> "$my_outfile"
+	done
+	{
+	    echo ""
+	    echo "--${boundary}--"
+	    echo ""
+	} >> "$my_outfile"
+    }
+
+    :
 }
 
 
@@ -289,25 +254,29 @@ func_sendmail ()
     my_destination="$2"
     my_from="$3"
 
+    $opt_dry_run && my_infile=/dev/null
+
     from_name=`eval echo "X$my_from" | $Xsed -e 's, *<.*> *$,,'`
     from_addr=`eval echo "X$my_from" | $Xsed -e "$sed_mail_address"`
 
     save_PATH="$PATH"
     PATH="/usr/lib:/usr/sbin:$PATH"
 
-    save_IFS="$IFS"
-    IFS=':'
-    for try_sendmail_dir in $PATH; do
+    $opt_dry_run || {
+        save_IFS="$IFS"
+        IFS=':'
+        for try_sendmail_dir in $PATH; do
+            IFS="$save_IFS"
+	    PATH="$save_PATH"
+	    if test -x "$try_sendmail_dir/$SENDMAIL"; then
+	        SENDMAIL="$try_sendmail_dir/$SENDMAIL"
+	        break
+	    fi
+        done
         IFS="$save_IFS"
-	PATH="$save_PATH"
-	if test -x "$try_sendmail_dir/$SENDMAIL"; then
-	    SENDMAIL="$try_sendmail_dir/$SENDMAIL"
-	    break
-	fi
-    done
-    IFS="$save_IFS"
-    PATH="$save_PATH"
-    test -x "$SENDMAIL" || func_fatal_error "sendmail executable not found"
+        PATH="$save_PATH"
+        test -x "$SENDMAIL" || func_fatal_error "sendmail executable not found"
+    }
 
     func_verbose "Delivering mail, please wait..."
     if test -n "$from_name"; then
@@ -319,13 +288,40 @@ func_sendmail ()
     fi
     if test $? -eq 0; then
         func_verbose "...succeeded."
-        $RM $my_infile
+        $opt_dry_run || $RM $my_infile
     else
         func_fatal_error "Mail delivery failed, draft mail is in $my_infile"
     fi
 }
 
 
+# func_extract_email_from_header re_header headerfile
+func_extract_email ()
+{
+    my_re_header="$1"
+    my_headerfile="$2"
+    $as_unset func_extract_email_result
+
+    save_IFS="$IFS"
+    IFS='
+'
+    for to in : `grep "$my_re_header" "$my_headerfile" 2>/dev/null`; do
+	IFS="$save_IFS"
+	test "X$to" = X: && continue
+
+	line=`echo "$to" | $SED "s,$my_re_header,,"`
+
+	IFS=,
+	for addr in $line; do
+	    IFS="$save_IFS"
+	    func_quote_for_eval "$addr"
+	    to_addr=`echo "$func_quote_for_eval_result" | $SED "$sed_mail_address"`
+	    test -n "$to_addr" || to_addr="$func_quote_for_eval_result"
+	    func_extract_email_result="${func_extract_email_result+$func_extract_email_result }$to_addr"
+	done
+    done
+    IFS="$save_IFS"
+}
 
 ## ----- ##
 ## main. ##
@@ -333,47 +329,57 @@ func_sendmail ()
 
 {
   tmp_dir="`func_mktempdir`"
+  headers="$tmp_dir/headers"
   fname="$tmp_dir/mail"
+
   trap '$RM -r "$tmp_dir"; exit $EXIT_FAILURE' 1 2 15
 
   # Generate a comma separated list of destination addresses for the
   # mail headers:
-  destination=""
+  $as_unset destination
   for to in : ${1+"$@"}
   do
       test "X$to" = X: && continue
 
       func_quote_for_eval "$to"
-
-      case $destination in
-	  "") destination="$func_quote_for_eval_result" ;;
-          *)  destination="$destination, $func_quote_for_eval_result" ;;
-      esac
+      destination="${destination+$destination, }$func_quote_for_eval_result"
   done
-
   func_headers "$fname" "$destination"
-  if test $multipart -gt 1; then
+
+  if test $opt_filename_num -gt 1; then
       func_multipart_content "$fname"
   else
       func_single_content "$fname"
   fi
 
-  # Generate a space delimited list of destination addresses for sendmail:
-  if test -z "$outputfile"; then
-      destination=""
+  # Generate a list of destination addresses for sendmail:
+  if test -z "$opt_output_file"; then
+      $as_unset destination
       for to in : ${1+"$@"}
       do
           test "X$to" = X: && continue
 
 	  func_quote_for_eval "$to"
 
-          to_addr=`echo "$func_quote_for_eval_result" | sed "$sed_mail_address"`
+          to_addr=`echo "$func_quote_for_eval_result" | $SED "$sed_mail_address"`
 	  test -n "$to_addr" || to_addr="$func_quote_for_eval_result"
-	  destination="$destination $to_addr"
+	  destination="${destination+$destination }$to_addr"
       done
-      func_sendmail "$fname" "$destination" "$from"
+      func_extract_email '^To: *' "$opt_headers"
+      destination="${destination+$destination }$func_extract_email_result"
+      func_extract_email '^Cc: *' "$opt_headers"
+      destination="${destination+$destination }$func_extract_email_result"
+      func_extract_email '^Bcc: *' "$opt_headers"
+      destination="${destination+$destination }$func_extract_email_result"
+
+      test -n "$opt_from" || {
+	  func_extract_email '^From: *' "$opt_headers"
+	  opt_from="$func_extract_email_result"
+      }
+
+      func_sendmail "$fname" "$destination" "$opt_from"
   else
-      mv $fname $outputfile || exit $EXIT_FAILURE
+      mv $fname $opt_output_file || exit $EXIT_FAILURE
   fi
 
   $RM -r "$tmp_dir"

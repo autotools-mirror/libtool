@@ -1,5 +1,10 @@
 2010-06-05  Gary V. Vaughan  <gary@gnu.org>
 
+	Update and simplify all m4sh scripts to use latest getopt.m4sh.
+	* clcommit.m4sh, libltdl/config/mailnotify.m4sh: Rewrite option
+	parsing loop over M4SH_GETOPTS macro, and adjust all clients of
+	option variables to use generated option names.
+
 	Add missing quote for literal ? in a shell case statement.
 	* libltdl/config/getopt.m4sh (m4go_shortnoargs): Quote initial ?
 	correctly for use in a shell case statement.
