@@ -1,10 +1,11 @@
 NEWS - list of user-visible changes between releases of GNU Libtool
 
-New in 2.2.8 2010-05-??: git version 2.2.7c, Libtool team:
+New in 2.2.8 2010-06-05: git version 2.2.7c, Libtool team:
 
-* New features:
+* No new features:
 
-  - None.
+  - Bumped version number and romoted 2.2.7b release candidate to a full
+    stable release.
 
 New in 2.2.7b 2010-05-20: git version 2.2.7a, Libtool team:
 

@@ -1,5 +1,13 @@
 2010-06-05  Gary V. Vaughan  <gary@gnu.org>
 
+	Prepare for next release.
+	* configure.ac, libltdl/configure.ac (AC_INIT): Bump version
+	number to 2.2.8.
+	* NEWS: Update version number.
+	* INSTALL, libltdl/config/install-sh, libltdl/config/config.guess,
+	libltdl/config/config.sub, libltdl/config/texinfo.tex: Updated
+	from canonical source.
+
 	Provide an m4sh reimplementation of announce-gen.
 	* libltdl/config/getopt.m4sh (M4SH_GETOPTS): New macro that takes
 	a quoted m4 list of command line options to be parsed, and
