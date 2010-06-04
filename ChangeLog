@@ -1,5 +1,11 @@
 2010-06-05  Gary V. Vaughan  <gary@gnu.org>
 
+	Fetch from new upstream host for config.guess and config.sub.
+	* Makefile.maint (WGET_CGIT): Location of newest config.guess and
+	config.sub upstream.
+	(fetch): Fetch config.guess and config.sub from WGET_CGIT, rather
+	than no-longer-updating WGET_SGO location.
+
 	Update generated upload directive file format to v1.1.
 	* Makefile.maint (git-dist, diffs): Update to generate v1.1 format
 	directive files for ftp://ftp-upload.gnu.org/incoming/ftp.
