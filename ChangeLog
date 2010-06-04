@@ -1,3 +1,23 @@
+2010-06-05  Gary V. Vaughan  <gary@gnu.org>
+
+	Provide an m4sh reimplementation of announce-gen.
+	* libltdl/config/getopt.m4sh (M4SH_GETOPTS): New macro that takes
+	a quoted m4 list of command line options to be parsed, and
+	generates the shell code to parse those options and collect the
+	results into appropriately named 'opt_xxx' shell variables.  Also,
+	add some private supporting macros, and improve the comments
+	radically.
+	* libltdl/config/announce-gen.m4sh: New file, to generate and
+	optionally post (an enhancement over the gnulib perl script of the
+	same name) a release announcement.
+	* Makefile.maint (announce-gen): Build a new announce-gen script
+	in the build directory, from the contents of
+	libltdl/config/announce-gen.m4sh.
+	* HACKING (Release Procedure): Update the instructions to use
+	announce-gen.
+	(Alpha release note template, Full release note template):
+	Removed.
+
 2010-05-22  Gary V. Vaughan  <gary@gnu.org>
 
 	Support "git log --oneline" in generated commit messages.

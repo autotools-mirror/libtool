@@ -48,6 +48,20 @@ $(srcdir)/commit: $(srcdir)/$(auxdir)/mailnotify clcommit.m4sh
 	mv -f commit.tmp commit; \
 	rm -f commit.in
 
+announce-gen: $(auxdir)/announce-gen.m4sh $(auxdir)/getopt.m4sh
+	$(timestamp); \
+	rm -f announce-gen announce-gen.in announce-gen.tmp; \
+	$(M4SH) -B $(top_srcdir)/$(auxdir) $(top_srcdir)/$(auxdir)/announce-gen.m4sh > announce-gen.in; \
+	input="announce-gen.m4sh"; \
+	$(edit) -e "s,@TIMESTAMP\@,$$TIMESTAMP,g" \
+		-e "s,@LASTRELEASE\@,$(LASTRELEASE),g" \
+		-e "s,@top_srcdir\@,$(top_srcdir),g" \
+		announce-gen.in > announce-gen.tmp; \
+	chmod a+x announce-gen.tmp; \
+	chmod a-w announce-gen.tmp; \
+	mv -f announce-gen.tmp announce-gen; \
+	rm -f announce-gen.in
+
 $(srcdir)/$(auxdir)/mailnotify: $(auxdir)/mailnotify.m4sh
 	$(timestamp); \
 	cd $(srcdir)/$(auxdir); \
