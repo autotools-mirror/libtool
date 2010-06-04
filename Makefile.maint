@@ -177,7 +177,9 @@ git-dist: check-news check-commit
 	for suffix in gz lzma; do \
 	  ofile="$(PACKAGE)-$(VERSION).tar.$$suffix"; \
 	  $(GPG) --detach-sign $$ofile \
-	  && echo "directory: libtool" > $$ofile.directive \
+	  && echo "version: 1.1" > $$ofile.directive \
+	  && echo "directory: libtool" >> $$ofile.directive \
+	  && echo "filename: $$ofile" >> $$ofile.directive \
 	  && $(GPG) --clearsign $$ofile.directive \
 	  && rm -f $$ofile.directive; \
 	done
@@ -225,7 +227,9 @@ diffs: prev-tarball new-tarball
 		$(PACKAGE)-$(LASTRELEASE) $(PACKAGE)-$(VERSION) \
 		| GZIP=$(GZIP_ENV) gzip -c > $$ofile \
 	&& $(GPG) --detach-sign $$ofile \
-	&& echo "directory: libtool" > $$ofile.directive \
+	&& echo "version: 1.1" > $$ofile.directive \
+	&& echo "directory: libtool" >> $$ofile.directive \
+	&& echo "filename: $$ofile" |sed 's,: \.\./,: ,' >> $$ofile.directive \
 	&& $(GPG) --clearsign $$ofile.directive \
 	&& rm -f $$ofile.directive
 

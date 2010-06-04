@@ -1,5 +1,9 @@
 2010-06-05  Gary V. Vaughan  <gary@gnu.org>
 
+	Update generated upload directive file format to v1.1.
+	* Makefile.maint (git-dist, diffs): Update to generate v1.1 format
+	directive files for ftp://ftp-upload.gnu.org/incoming/ftp.
+
 	Fix web manual generation details in release instructions.
 	* HACKING (Release Procedure): Move the instruction for generating
 	web manuals for a new release to before the instruction that bumps
