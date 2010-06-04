@@ -1,5 +1,9 @@
 2010-06-05  Gary V. Vaughan  <gary@gnu.org>
 
+	Add missing quote for literal ? in a shell case statement.
+	* libltdl/config/getopt.m4sh (m4go_shortnoargs): Quote initial ?
+	correctly for use in a shell case statement.
+
 	Quote command line arguments after --rcfile properly.
 	* libltdl/config/announce-gen.m4sh (--rcfile): Quote remaining
 	arguments shell variable expression correctly for eval.

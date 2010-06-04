@@ -135,7 +135,7 @@ m4_define([m4go_branches], [])	# case branches to process options
 # OPTION, [|])' to insert the separator pipe symbols - which requires
 # that `m4go_shortargs' be undefined if the first option appended is not
 # prefixed by a leading `|'.
-m4_define([m4go_shortnoargs], [-?*|-h*|-v*])
+m4_define([m4go_shortnoargs], [-\?*|-h*|-v*])
 
 
 # M4SH_GETOPTS(SHORT-SPEC1, LONG-MATCH1, DEF1, INIT1,
