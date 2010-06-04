@@ -1,5 +1,9 @@
 2010-06-05  Gary V. Vaughan  <gary@gnu.org>
 
+	Quote command line arguments after --rcfile properly.
+	* libltdl/config/announce-gen.m4sh (--rcfile): Quote remaining
+	arguments shell variable expression correctly for eval.
+	
 	Shift correctly in numbered option argument collection.
 	* libltdl/config/getopt.m4sh (_m4go_option): Argument list also
 	needs to be `shift'ed in the shell option loop after processing a

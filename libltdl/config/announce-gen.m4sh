@@ -122,7 +122,7 @@ M4SH_GETOPTS(
   [p],	[--post],			   	[],			[],
   [r@?],[--rcfile],				[$top_srcdir/.announcerc], [
 	# The funny quoting allows keeping one option per line in $opt_rcfile:
-	eval set dummy `echo \`cat $opt_rcfile\` \${1+"\[$]@"}`
+	eval set dummy `echo \`cat $opt_rcfile\` '${1+"[$]@"}'`
 	shift],
   [v],	[--verbose],				[],			[
 	mailnotify_flags="${mailnotify_flags+$mailnotify_flags }$opt"],
