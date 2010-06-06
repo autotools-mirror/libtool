@@ -230,13 +230,13 @@ Platform quirks
 @node Introduction
 @chapter Introduction
 
-In the past, if a source code package developer wanted to take advantage
-of the power of shared libraries, he needed to write custom support code
-for each platform on which his package ran.  He also had to design a
-configuration interface so that the package installer could choose what
-sort of libraries were built.
+In the past, if you were a source code package developer and wanted to
+take advantage of the power of shared libraries, you needed to write
+custom support code for each platform on which your package ran.  You
+also had to design a configuration interface so that the package
+installer could choose what sort of libraries were built.
 
-GNU Libtool simplifies the developer's job by encapsulating both the
+GNU Libtool simplifies your job by encapsulating both the
 platform-specific dependencies, and the user interface, in a single
 script.  GNU Libtool is designed so that the complete functionality of
 each host type is available via a generic interface, but nasty quirks

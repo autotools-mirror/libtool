@@ -1,3 +1,9 @@
+2010-06-06  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Rewrite manual intro to be gender-neutral.
+	* doc/libtool.texi (Introduction): Use gender-neutral
+	formulation when addressing developers.
+
 2010-06-05  Gary V. Vaughan  <gary@gnu.org>
 
 	Update and simplify all m4sh scripts to use latest getopt.m4sh.
