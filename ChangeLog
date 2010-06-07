@@ -1,5 +1,11 @@
 2010-06-07  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	Make versioning test stricter for w32, enable shared libs.
+	* tests/versioning.at (versioning): Add -no-undefined to
+	LDFLAGS.
+	(test_uninstalled): Also move $bindir out of the way
+	temporarily.
+
 	Fix versioning test for LDFLAGS=-Wl,--as-needed.
 	* tests/versioning.at (versioning): For the library update
 	hypotheses, ensure the unchanged library libb isn't accidentally

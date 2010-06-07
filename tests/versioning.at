@@ -103,6 +103,7 @@ int main (void)
 inst=`pwd`/inst
 libdir=$inst/lib
 bindir=$inst/bin
+LDFLAGS="$LDFLAGS -no-undefined"
 mkdir $inst $libdir $bindir
 
 for file in liba1.c liba2.c liba3.c liba4.c libb.c; do
@@ -155,10 +156,12 @@ test_uninstalled ()
 {
   # temporarily move installed libraries out of the way in order to avoid
   # skewing test results:
-  mv $libdir temp
+  mv $libdir temp-lib
+  mv $bindir temp-bin
   LT_AT_EXEC_CHECK([./prog1])
   LT_AT_EXEC_CHECK([./prog2])
-  mv temp $libdir
+  mv temp-lib $libdir
+  mv temp-bin $bindir
 }
 
 test_installed ()
