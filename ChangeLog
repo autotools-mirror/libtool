@@ -1,3 +1,14 @@
+2010-06-07  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Fix versioning test for LDFLAGS=-Wl,--as-needed.
+	* tests/versioning.at (versioning): For the library update
+	hypotheses, ensure the unchanged library libb isn't accidentally
+	relinked against the new liba, by not reinstalling libb.
+	Fixes testsuite failure for the incompatible update case with
+	LDFLAGS=-Wl,--as-needed.
+	* THANKS: Update.
+	Report by Ryan Hill.
+
 2010-06-06  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	Rewrite manual intro to be gender-neutral.
