@@ -1,3 +1,8 @@
+2010-06-08  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Avoid autom4te warning about unnamed diversion.
+	* libltdl/config/getopt.m4sh: Use diversion name KILL not -1.
+
 2010-06-07  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	Make versioning test stricter for w32, enable shared libs.

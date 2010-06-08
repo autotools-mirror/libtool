@@ -1,4 +1,4 @@
-m4_include([general.m4sh])m4_divert_push(-1)
+m4_include([general.m4sh])m4_divert_push([KILL])
 # getopt.m4sh -- getopt helper functions		 -*- Autoconf -*-
 #
 #    Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009, 2010 Free Software Foundation, Inc.
@@ -496,7 +496,7 @@ m4go_validation
 # operation of the automatic `--version' and `--help' options, among
 # others.
 
-m4_divert_pop(-1)M4SH_VERBATIM([[
+m4_divert_pop([KILL])M4SH_VERBATIM([[
 # func_version
 # Echo version message to standard output and exit.
 func_version ()
