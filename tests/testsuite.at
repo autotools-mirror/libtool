@@ -151,21 +151,19 @@ AT_KEYWORDS([autoconf automake])
 # LT_AT_CONFIGURE([OPTIONS])
 # --------------------------
 m4_define([LT_AT_CONFIGURE],
-[( SHELL=${CONFIG_SHELL-/bin/sh}
-   AT_CHECK([CONFIG_SHELL=$SHELL $SHELL ./configure $configure_options $1],
-	 [0], [ignore], [ignore])
- )
+[AT_CHECK([: ${CONFIG_SHELL=/bin/sh}; export CONFIG_SHELL; ]dnl
+	  [$CONFIG_SHELL ./configure $configure_options $1],
+	  [0], [ignore], [ignore])
 ])
 
 
 # LT_AT_MAKE([TGTS], [VARS])
 # --------------------------
 m4_define([LT_AT_MAKE],
-[( $unset LIBTOOL LIBTOOLIZE
-  for target in m4_default([$1], [all])
-  do
-    AT_CHECK([$MAKE $target $2], [0], [ignore], [ignore])
-  done )
+[for target in m4_default([$1], [all])
+do
+  AT_CHECK([$unset LIBTOOL LIBTOOLIZE; $MAKE $target $2], [0], [ignore], [ignore])
+done
 ])
 
 

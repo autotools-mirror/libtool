@@ -1,5 +1,12 @@
 2010-06-08  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	Fix testsuite helper macros to not hide failure.
+	* tests/testsuite.at (LT_AT_CONFIGURE, LT_AT_MAKE):
+	Do not wrap AT_CHECK in a subshell, so that failures are
+	properly propagated; instead, move environment changes inside
+	the AT_CHECK code.
+	Report and analysis by Peter Rosin.
+
 	Avoid autom4te warning about unnamed diversion.
 	* libltdl/config/getopt.m4sh: Use diversion name KILL not -1.
 
