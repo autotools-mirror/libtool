@@ -1,6 +1,6 @@
 # flags.at -- libtool passing of flags             -*- Autotest -*-
 #
-#   Copyright (C) 2009 Free Software Foundation, Inc.
+#   Copyright (C) 2009, 2010 Free Software Foundation, Inc.
 #
 #   This file is part of GNU Libtool.
 #
@@ -24,7 +24,7 @@
 m4_foreach([lt_tag], [CC, CXX, F77, FC, GCJ],
 [AT_SETUP([passing lt_tag flags through libtool])
 AT_KEYWORDS([libtool])
-LT_AT_TAG([lt_tag])
+LT_AT_TAG(m4_defn([lt_tag]))
 
 LDFLAGS="$LDFLAGS -no-undefined"
 eval "`$LIBTOOL --config | $EGREP '^(FGREP)='`"

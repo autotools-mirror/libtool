@@ -275,11 +275,38 @@ AT_CHECK([if $LIBTOOL --mode=execute $2 "$lt_exe" $6; then :; else lt_status=$?;
 
 # LT_AT_TAG(TAG)
 # --------------
+# Declare that the language TAG will be used in this test.
+# Skips the test if the compiler is apparently not functional.
 m4_define([LT_AT_TAG],
 [AT_KEYWORDS([$1])
 AT_CHECK([{ test -n "[$]$1" && test "X[$]$1" != Xno; } || (exit 77)])
-m4_if([$1], [CXX],
-  [AT_CHECK([test "X$CXX" != Xg++ || (g++ -v >/dev/null 2>&1) || (exit 77)])])
+m4_case([$1],
+  [CXX],
+  [AT_CHECK([test "X$CXX" != Xg++ || (g++ -v >/dev/null 2>&1) || (exit 77)])],
+  [GCJ],
+  [# There are just too many broken gcj installations out there, either missing
+   # libgcj.spec or unable to find it.  Skip the test for them.
+   AT_DATA([gcj_test.java],
+[[public class gcj_test {
+    public static void main(String[] argv) { }
+  }
+]])
+   AT_CHECK([$GCJ $GCJFLAGS -c gcj_test.java || exit 77],
+	    [], [ignore], [ignore])])
+])
+
+
+# LT_AT_EXEC_TAG([TAG])
+# ---------------------
+# Declare that the language TAG will be used and compiled programs may be run.
+# Skips the test if the compiler is apparently not functional.
+m4_define([LT_AT_EXEC_TAG],
+[LT_AT_TAG([$1])
+m4_case([$1],
+  [GCJ],
+  [AT_CHECK([$GCJ $GCJFLAGS --main=gcj_test -o gcj_test$EXEEXT gcj_test.java ]dnl
+	    [|| exit 77], [], [ignore], [ignore])
+   AT_CHECK([./gcj_test$EXEEXT || exit 77], [], [ignore], [ignore])])
 ])
 
 

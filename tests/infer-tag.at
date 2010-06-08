@@ -1,6 +1,6 @@
 # infer-tag.at -- libtool without --tag             -*- Autotest -*-
 #
-#   Copyright (C) 2008 Free Software Foundation, Inc.
+#   Copyright (C) 2008, 2010 Free Software Foundation, Inc.
 #
 #   This file is part of GNU Libtool.
 #
@@ -90,10 +90,6 @@ AT_DATA([A.java],
   public A () { a = 0; }
 };
 ]])
-
-# There are just too many broken gcj installations out there, either missing
-# libgcj.spec or unable to find it.  Skip this test for them.
-AT_CHECK([$GCJ $GCJFLAGS -c A.java || exit 77], [], [ignore], [ignore])
 
 AT_CHECK([$LIBTOOL --mode=compile $GCJ $GCJCFLAGS -c A.java],
 	 [], [ignore], [ignore])

@@ -1,3 +1,17 @@
+2010-06-09  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Factorize testing gcj installation in the testsuite.
+	* tests/testsuite.at (LT_AT_TAG): For the GCJ tag, actually
+	try to compile a .java file when deciding whether to skip.
+	(LT_AT_EXEC_TAG): New macro, to also ensure runnability.
+	* tests/convenience.at (Java convenience archives): Use
+	LT_AT_EXEC_TAG, simplify accordingly.
+	* tests/flags.at (passing lt_tag flags through libtool): Use
+	m4_defn for tag so LT_AT_TAG works.
+	* tests/infer-tag.at (GCJ inferred tag): Simplify.
+	* THANKS: Update.
+	Report by Warren Dodge.
+
 2010-06-09  Peter O'Gorman  <peter@pogma.com>
 
 	Skip demo-nopic tests if SELinux policy will cause failure.
