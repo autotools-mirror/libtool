@@ -1,3 +1,12 @@
+2009-09-15  Peter Rosin  <peda@lysator.liu.se>
+
+	Don't try the MSYS libdir path on MinGW.
+	* libltdl/ltdl.c (parse_dotla_file) [mingw]: The absolute
+	libdir path in the .la file is recorded as an MSYS (POSIX
+	style) path. Make sure it isn't tried when locating the
+	shared library.
+	* NEWS: Updated.
+
 2010-06-09  Gary V. Vaughan  <gary@gnu.org>
 
 	Simplify license variations, and add missing license texts.

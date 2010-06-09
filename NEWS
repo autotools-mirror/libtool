@@ -4,7 +4,9 @@ New in 2.2.9b 2010-??-??: git version 2.2.9a, Libtool team:
 
 * New features:
 
-  - None.
+  - On non-cygwin Windows systems, we no longer try to lookup the POSIX
+    format path recorded in $libdir of a pseudo-library when looking up
+    the location of the library with the native tools.
 
 New in 2.2.8 2010-06-05: git version 2.2.7c, Libtool team:
 
