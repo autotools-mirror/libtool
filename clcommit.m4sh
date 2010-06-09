@@ -266,18 +266,11 @@ func_commit ()
     test $# -gt 0 && subject="$@"
 
     test $# -gt 0 || { set dummy -a; shift; }
-    func_verbose "$GIT commit $git_flags -F $log_file ${1+$@}"
-    $opt_dry_run ||
-        $GIT commit $git_flags -F $log_file ${1+"$@"} || exit $EXIT_FAILURE
+    func_show_eval "$GIT commit $git_flags -F $log_file ${1+$@}" "exit $EXIT_FAILURE"
 
     $opt_push && {
-      func_verbose "$GIT push"
-      $opt_dry_run || $GIT push
-
-      $opt_tags && {
-	  func_verbose "$GIT push --tags"
-	  $opt_dry_run || $GIT push --tags
-      }
+      func_show_eval "$GIT push"
+      $opt_tags && func_show_eval "$GIT push --tags"
     }
 
     :
