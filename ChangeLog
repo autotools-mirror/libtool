@@ -1,5 +1,11 @@
 2010-06-19  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	Fix execute mode test for OSF/1 5.1.
+	* tests/execute-mode.at (execute mode): Do not use grep -F
+	with an empty pattern.
+	* THANKS: Update.
+	Report by Jay K.
+
 	Use config.cache variable for PIC flag, to allow override.
 	* libltdl/m4/libtool.m4 (_LT_COMPILER_PIC) <lt_prog_compiler_pic>:
 	Save result, and allow override, through cache variable
