@@ -337,7 +337,9 @@ func_mailnotify ()
   grep '[^ 	]' < "$log_file" > /dev/null ||
     func_fatal_error "empty commit message, aborting"
 
-  if grep '^$' < "$log_file" > /dev/null; then
+  # We expect line 2 to be blank, since it separates the git summary line from
+  # the commit message body, but any others are probably an error:
+  if sed 2d "$log_file" | grep '^$' > /dev/null; then
     func_error "*** Warning: blank lines should not appear within commit messages."
     func_error "*** They should be used to separate distinct commits."
   fi

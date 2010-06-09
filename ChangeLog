@@ -1,5 +1,10 @@
 2010-06-09  Gary V. Vaughan  <gary@gnu.org>
 
+	Don't warn about the blank line inserted into git commit message.
+	* clcommit.m4sh: When searching for accidental commits of mutliple
+	changes, ignore the second line of the message, which we inserted
+	earlier to support "git log --oneline".
+
 	Enable correct extraction of multiline copyright from --version.
 	* libltdl/config/getopt.m4sh: Wrap copyright notice at 76
 	columns.
