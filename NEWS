@@ -46,7 +46,7 @@ New in 2.2.7b 2010-05-20: git version 2.2.7a, Libtool team:
   - Improved support for 64bit Windows (mingw64).
   - Improved support for cegcc (Windows CE/PocketPC).
   - Support for GNU/kOpenSolaris (kopensolaris*-gnu).
-  - Initial support for compilers on BlueGene BG/L.
+  - Initial support for compilers on BlueGene BG/P.
   - Improved support for Atari FreeMiNT.
   - With binutils 2.19.50+, shared libraries can be built on AIX.
   - Initial support for the Cuda Compiler Driver on GNU/Linux.

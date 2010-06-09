@@ -1,3 +1,9 @@
+2010-06-09  Gary V. Vaughan  <gary@gnu.org>
+
+	* NEWS (2.2.8): BlueGene compiler tests were performed on BG/P
+	systems, not BG/L.
+	Reported by Christian Rössel <christian.roessel@gmx.de>
+
 2010-06-08  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	Fix testsuite helper macros to not hide failure.
