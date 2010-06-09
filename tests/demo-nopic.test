@@ -1,7 +1,7 @@
 #! /bin/sh
 # demo-nopic.test - try configuring the ../demo subdirectory
 #
-#   Copyright (C) 2003, 2004 Free Software Foundation, Inc.
+#   Copyright (C) 2003, 2004, 2010 Free Software Foundation, Inc.
 #   Written by Gary V. Vaughan, 2003
 #
 #   This file is part of GNU Libtool.
@@ -33,6 +33,20 @@ hppa*|x86_64*|s390*)
 	func_skip "libtool does not build non-PIC shared libs on $host"
 	;;
 esac
+
+if test "$build" = "$host" && test -d "/etc/selinux"; then
+	_selinux=`getenforce 2>/dev/null || echo "Disabled"`
+	case "${_selinux}" in
+	*Enforcing)
+		_sebool_allow_execmod=`getsebool allow_execmod 2>/dev/null`
+		case "${_sebool_allow_execmod}" in
+			*off)
+				func_skip "SELinux policy disallows"
+				;;
+		esac
+		;;
+	esac
+fi
 
 func_rmprefixdir
 func_cd "tests/demo"

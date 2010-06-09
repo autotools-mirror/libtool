@@ -1,3 +1,9 @@
+2010-06-09  Peter O'Gorman  <peter@pogma.com>
+
+	Skip demo-nopic tests if SELinux policy will cause failure.
+	* tests/demo-nopic.test: Check SELinux policy and skip if
+	necessary.
+
 2010-06-09  Gary V. Vaughan  <gary@gnu.org>
 
 	Set SCM version number to 2.2.11a.
