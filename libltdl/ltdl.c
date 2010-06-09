@@ -1076,12 +1076,17 @@ parse_dotla_file(FILE *file, char **dlname, char **libdir, char **deplibs,
 	{
 	  errors += trim (old_name, &line[sizeof (STR_OLD_LIBRARY) - 1]);
 	}
+
+      /* Windows native tools do not understand the POSIX paths we store
+	 in libdir. */
+#ifndef __WINDOWS__
 #undef  STR_LIBDIR
 #define STR_LIBDIR	"libdir="
       else if (strncmp (line, STR_LIBDIR, sizeof (STR_LIBDIR) - 1) == 0)
 	{
 	  errors += trim (libdir, &line[sizeof(STR_LIBDIR) - 1]);
 	}
+#endif
 
 #undef  STR_DL_DEPLIBS
 #define STR_DL_DEPLIBS	"dependency_libs="

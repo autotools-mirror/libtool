@@ -4,7 +4,9 @@ New in 2.2.9b 2010-??-??: git version 2.2.9a, Libtool team:
 
 * New features:
 
-  - None.
+  - On non-cygwin Windows systems, we no longer try to lookup the POSIX
+    format path recorded in $libdir of a pseudo-library when looking up
+    the location of the library with the native tools.
 
 * Changes in supported systems or compilers:
 
@@ -14,7 +16,7 @@ New in 2.2.8 2010-06-05: git version 2.2.7c, Libtool team:
 
 * No new features:
 
-  - Bumped version number and romoted 2.2.7b release candidate to a full
+  - Bumped version number and promoted 2.2.7b release candidate to a full
     stable release.
 
 New in 2.2.7b 2010-05-20: git version 2.2.7a, Libtool team:
@@ -50,7 +52,7 @@ New in 2.2.7b 2010-05-20: git version 2.2.7a, Libtool team:
   - Improved support for 64bit Windows (mingw64).
   - Improved support for cegcc (Windows CE/PocketPC).
   - Support for GNU/kOpenSolaris (kopensolaris*-gnu).
-  - Initial support for compilers on BlueGene BG/L.
+  - Initial support for compilers on BlueGene BG/P.
   - Improved support for Atari FreeMiNT.
   - With binutils 2.19.50+, shared libraries can be built on AIX.
   - Initial support for the Cuda Compiler Driver on GNU/Linux.
@@ -887,3 +889,13 @@ New in 0.2:
 New in 0.1:
 * First release of libtool
 * Support for: *-*-freebsd*, *-*-netbsd*, *-*-sunos4*, *-*-ultrix4*
+-- 
+  Copyright (C) 1996, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005,
+  2006, 2007, 2008, 2009, 2010 Free Software Foundation, Inc.
+
+  This file is part of GNU Libtool.
+
+Copying and distribution of this file, with or without modification,
+are permitted in any medium without royalty provided the copyright
+notice and this notice are preserved.  This file is offered as-is,
+without warranty of any kind.

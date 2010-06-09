@@ -5,7 +5,8 @@ AS_INIT[]m4_divert_push([HEADER-COPYRIGHT])dnl
 # Written by Gary V. Vaughan <gary@gnu.org>
 # and Alexandre Oliva <aoliva@redhat.com>
 
-# Copyright (C) 1999, 2000, 2004, 2006, 2008, 2009, 2010 Free Software Foundation, Inc.
+# Copyright (C) 1999, 2000, 2004, 2006, 2008, 2009, 2010 Free Software
+# Foundation, Inc.
 # This is free software; see the source for copying conditions.  There is NO
 # warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
@@ -265,18 +266,11 @@ func_commit ()
     test $# -gt 0 && subject="$@"
 
     test $# -gt 0 || { set dummy -a; shift; }
-    func_verbose "$GIT commit $git_flags -F $log_file ${1+$@}"
-    $opt_dry_run ||
-        $GIT commit $git_flags -F $log_file ${1+"$@"} || exit $EXIT_FAILURE
+    func_show_eval "$GIT commit $git_flags -F $log_file ${1+$@}" "exit $EXIT_FAILURE"
 
     $opt_push && {
-      func_verbose "$GIT push"
-      $opt_dry_run || $GIT push
-
-      $opt_tags && {
-	  func_verbose "$GIT push --tags"
-	  $opt_dry_run || $GIT push --tags
-      }
+      func_show_eval "$GIT push"
+      $opt_tags && func_show_eval "$GIT push --tags"
     }
 
     :
@@ -336,7 +330,9 @@ func_mailnotify ()
   grep '[^ 	]' < "$log_file" > /dev/null ||
     func_fatal_error "empty commit message, aborting"
 
-  if grep '^$' < "$log_file" > /dev/null; then
+  # We expect line 2 to be blank, since it separates the git summary line from
+  # the commit message body, but any others are probably an error:
+  if sed 2d "$log_file" | grep '^$' > /dev/null; then
     func_error "*** Warning: blank lines should not appear within commit messages."
     func_error "*** They should be used to separate distinct commits."
   fi
