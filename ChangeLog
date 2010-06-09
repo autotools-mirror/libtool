@@ -1,5 +1,27 @@
 2010-06-09  Gary V. Vaughan  <gary@gnu.org>
 
+	Simplify license variations, and add missing license texts.
+	* ChangeLog, ChangeLog.1996, ChangeLog.1997, ChangeLog.1998,
+	ChangeLog.1999, ChangeLog.2000, ChangeLog.2001, ChangeLog.2002,
+	ChangeLog.2003, ChangeLog.2004, ChangeLog.2005, ChangeLog.2006,
+	ChangeLog.2007, ChangeLog.2008, ChangeLog.2009, NEWS: Add
+	all-permissive license.
+	* HACKING, README, README.alpha, TODO: Relax license to RMS
+	encouraged all-permissive terms.
+	* libltdl/README: Ditto. I added the original license text in
+	2007, and there's no need for it to be so long for such a trivial
+	file.
+	* libltdl/config/getopt.m4sh, libltdl/general.m4sh: Cvs-utils is
+	dead, and I am the author of these files, so consolidated license
+	terms to match regular Libtool licensing.
+	* HACKING (Licensing Rules): Update wording, and list of files for
+	the all permissive license.
+	(GPL with CVS-Utils exception clause): Removed.  No files have these 
+	license any more.
+	(GPL with Libtool exception clause): Ditto, only libltdl/README
+	used to be distributed with this variation.
+	* AUTHORS: Add GPL license text.
+	
 	Fix a type in the 2.2.8 release notes.
 	* NEWS: s/ romoted/ promoted/ in the 2.2.8 release notes.
 
@@ -451,5 +473,15 @@
 	* libtoolize.m4sh: Likewise.
 
 Continued in ChangeLog.2009
+-- 
+  Copyright (C) 1996, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005,
+  2006, 2007, 2008, 2009, 2010 Free Software Foundation, Inc.
+
+  This file is part of GNU Libtool.
+
+Copying and distribution of this file, with or without modification,
+are permitted in any medium without royalty provided the copyright
+notice and this notice are preserved.  This file is offered as-is,
+without warranty of any kind.
 
 vim:tw=72
