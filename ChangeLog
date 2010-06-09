@@ -1,5 +1,10 @@
 2010-06-09  Gary V. Vaughan  <gary@gnu.org>
 
+	Prepare for next release.
+	* configure.ac, libltdl/configure.ac (AC_INIT): Bump version number
+	to 2.2.10.
+	* NEWS: Update version number.
+
 	Fix a quoting bug with ./commit -a 'A U Thor'.
 	* clcommit.m4sh (func_commit): Use func_show_eval when calling
 	git, so that the previously func_quote_for_eval()ed $git_flags is
