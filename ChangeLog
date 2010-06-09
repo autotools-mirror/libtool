@@ -1,5 +1,13 @@
 2010-06-09  Gary V. Vaughan  <gary@gnu.org>
 
+	Enable correct extraction of multiline copyright from --version.
+	* libltdl/config/getopt.m4sh: Wrap copyright notice at 76
+	columns.
+	(func_version): Don't omit spaces when merging multiline copyright
+	notices.
+	* clcommit.m4sh, libtoolize.m4sh: Wrap copyright notice at 76
+	columns.
+
 	* NEWS (2.2.8): BlueGene compiler tests were performed on BG/P
 	systems, not BG/L.
 	Reported by Christian Rössel <christian.roessel@gmx.de>
