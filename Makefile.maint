@@ -48,6 +48,20 @@ $(srcdir)/commit: $(srcdir)/$(auxdir)/mailnotify clcommit.m4sh
 	mv -f commit.tmp commit; \
 	rm -f commit.in
 
+announce-gen: $(auxdir)/announce-gen.m4sh $(auxdir)/getopt.m4sh
+	$(timestamp); \
+	rm -f announce-gen announce-gen.in announce-gen.tmp; \
+	$(M4SH) -B $(top_srcdir)/$(auxdir) $(top_srcdir)/$(auxdir)/announce-gen.m4sh > announce-gen.in; \
+	input="announce-gen.m4sh"; \
+	$(edit) -e "s,@TIMESTAMP\@,$$TIMESTAMP,g" \
+		-e "s,@LASTRELEASE\@,$(LASTRELEASE),g" \
+		-e "s,@top_srcdir\@,$(top_srcdir),g" \
+		announce-gen.in > announce-gen.tmp; \
+	chmod a+x announce-gen.tmp; \
+	chmod a-w announce-gen.tmp; \
+	mv -f announce-gen.tmp announce-gen; \
+	rm -f announce-gen.in
+
 $(srcdir)/$(auxdir)/mailnotify: $(auxdir)/mailnotify.m4sh
 	$(timestamp); \
 	cd $(srcdir)/$(auxdir); \
@@ -107,6 +121,7 @@ check-news:
 WGET = wget
 WGETSGO = $(WGET) 'http://savannah.gnu.org/cgi-bin/viewcvs/~checkout~'
 WGET_GIT = $(WGET) 'http://git.savannah.gnu.org/gitweb/?a=blob_plain;hb=HEAD;p='
+WGET_CGIT = $(WGET) 'http://git.savannah.gnu.org/cgit/config.git/plain'
 
 ## Files that we fetch and which we compare against.
 ## FIXME should be a lot more here
@@ -126,8 +141,8 @@ fetch:
 	(cd Fetchdir && \
 	$(WGET_GIT)'gnulib.git;f=doc/INSTALL' -O INSTALL && \
 	$(WGET_GIT)'automake.git;f=lib/install-sh' -O install-sh && \
-	$(WGETSGO)/config/config/config.guess -O config.guess && \
-	$(WGETSGO)/config/config/config.sub -O config.sub && \
+	$(WGET_CGIT)/config.guess -O config.guess && \
+	$(WGET_CGIT)/config.sub -O config.sub && \
 	$(WGETSGO)/texinfo/texinfo/doc/texinfo.tex -O texinfo.tex )
 ## Don't exit after test because we want to give as many errors as
 ## possible.
@@ -163,7 +178,9 @@ git-dist: check-news check-commit
 	for suffix in gz lzma; do \
 	  ofile="$(PACKAGE)-$(VERSION).tar.$$suffix"; \
 	  $(GPG) --detach-sign $$ofile \
-	  && echo "directory: libtool" > $$ofile.directive \
+	  && echo "version: 1.1" > $$ofile.directive \
+	  && echo "directory: libtool" >> $$ofile.directive \
+	  && echo "filename: $$ofile" >> $$ofile.directive \
 	  && $(GPG) --clearsign $$ofile.directive \
 	  && rm -f $$ofile.directive; \
 	done
@@ -211,7 +228,9 @@ diffs: prev-tarball new-tarball
 		$(PACKAGE)-$(LASTRELEASE) $(PACKAGE)-$(VERSION) \
 		| GZIP=$(GZIP_ENV) gzip -c > $$ofile \
 	&& $(GPG) --detach-sign $$ofile \
-	&& echo "directory: libtool" > $$ofile.directive \
+	&& echo "version: 1.1" > $$ofile.directive \
+	&& echo "directory: libtool" >> $$ofile.directive \
+	&& echo "filename: $$ofile" |sed 's,: \.\./,: ,' >> $$ofile.directive \
 	&& $(GPG) --clearsign $$ofile.directive \
 	&& rm -f $$ofile.directive
 
@@ -225,4 +244,4 @@ web-manual:
 	$(WGETSGO)'/texinfo/texinfo/util/gendocs.sh' && \
 	$(WGETSGO)'/texinfo/texinfo/util/gendocs_template' && \
 	chmod 755 gendocs.sh && \
-	./gendocs.sh libtool "GNU Libtool Manual"
+	./gendocs.sh --email bug-libtool@gnu.org libtool "GNU Libtool Manual"

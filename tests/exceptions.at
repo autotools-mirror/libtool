@@ -1,0 +1,276 @@
+# exception.at -- test C++ exception handling with libtool  -*- Autotest -*-
+#
+#   Copyright (C) 2010 Free Software Foundation, Inc.
+#
+#   This file is part of GNU Libtool.
+#
+# GNU Libtool is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License as
+# published by the Free Software Foundation; either version 2 of
+# the License, or (at your option) any later version.
+#
+# GNU Libtool is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with GNU Libtool; see the file COPYING.  If not, a copy
+# can be downloaded from  http://www.gnu.org/licenses/gpl.html,
+# or obtained by writing to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+####
+
+AT_SETUP([C++ exception handling])
+AT_KEYWORDS([libtool])
+AT_KEYWORDS([libltdl])
+
+: ${LTDLINCL="-I$abs_top_srcdir/libltdl"}
+: ${LIBLTDL="$abs_builddir/../libltdl/libltdlc.la"}
+
+# Skip this test when called from:
+#    make distcheck DISTCHECK_CONFIGURE_FLAGS=--disable-ltdl-install
+AT_CHECK([case $LIBLTDL in #(
+ */_inst/lib/*) test -f $LIBLTDL || (exit 77) ;;
+esac], [], [ignore])
+
+CPPFLAGS="$LTDLINCL $CPPFLAGS"
+
+AT_DATA([module.h],
+[[#include <exception>
+#include <string>
+class modexc : public std::exception {
+public:
+  modexc (std::string str) : message (str) { }
+  ~modexc () throw () { }
+  virtual const char *what () const throw ()
+  {
+    return message.c_str ();
+  }
+private:
+  std::string message;
+};
+extern "C" int modfoo () throw (modexc);
+]])
+
+AT_DATA([module.cpp],
+[[#include <iostream>
+#include "module.h"
+
+int modbar (void) throw (modexc)
+{
+  throw modexc ("exception in module");
+}
+
+extern "C"
+int modfoo (void) throw (modexc)
+{
+  try {
+    modbar ();
+  }
+  catch (modexc e) {
+    std::cerr << "caught inside module: " << e.what () << '\n';
+    throw modexc ("exception from module");
+  }
+  return 0;
+}
+]])
+
+AT_DATA([lib.h],
+[[#include <exception>
+#include <string>
+class libexc : public std::exception {
+public:
+  libexc (std::string str) : message (str) { }
+  ~libexc () throw () { }
+  virtual const char *what () const throw ()
+  {
+    return message.c_str ();
+  }
+private:
+  std::string message;
+};
+int libfoo () throw (libexc);
+]])
+
+AT_DATA([lib.cpp],
+[[#include <iostream>
+#include "lib.h"
+
+int libbar (void) throw (libexc)
+{
+  throw libexc ("exception in library");
+}
+
+int libfoo (void) throw (libexc)
+{
+  try {
+    libbar ();
+  }
+  catch (libexc e) {
+    std::cerr << "caught inside lib: " << e.what () << '\n';
+    throw libexc ("exception from library");
+  }
+  return 0;
+}
+]])
+
+AT_DATA([main.cpp],
+[[#include <ltdl.h>
+#include <cstdlib>
+#include <iostream>
+#include <exception>
+#include <string>
+#include "lib.h"
+#include "module.h"
+
+class exc : public std::exception {
+public:
+  exc (std::string str) : message (str) { }
+  ~exc () throw () { }
+  virtual const char *what () const throw ()
+  {
+    return message.c_str ();
+  }
+private:
+  std::string message;
+};
+
+int foo (void) throw (exc)
+{
+  throw exc ("exception in program");
+  return 0;
+}
+
+int exceptions_in_prog (void)
+{
+  std::cerr << "exceptions_in_prog\n";
+  try {
+    foo ();
+  }
+  catch (exc e) {
+     std::cerr << "caught: " << e.what () << '\n';
+    return 0;
+  }
+  return 1;
+}
+
+int exceptions_in_lib (void)
+{
+  std::cerr << "exceptions_in_lib\n";
+  try {
+    libfoo ();
+  }
+  catch (libexc e) {
+     std::cerr << "caught: " << e.what () << '\n';
+    return 0;
+  }
+  return 1;
+}
+
+int exceptions_in_module (void)
+{
+  std::cerr << "exceptions_in_module\n";
+
+  if (lt_dlinit ())
+    {
+      std::cerr << "init error: " << lt_dlerror () << '\n';
+      return 1;
+    }
+
+  // Some systems need RTLD_GLOBAL for exceptions to work in modules.
+  lt_dladvise advise;
+  if (lt_dladvise_init (&advise) || lt_dladvise_global (&advise))
+    {
+      std::cerr << "error setting advise global\n";
+      return 1;
+    }
+
+  lt_dlhandle handle = lt_dlopenadvise ("module.la", advise);
+  if (handle == NULL)
+    {
+      std::cerr << "dlopen failed: " << lt_dlerror () << '\n';
+      return 1;
+    }
+  lt_dladvise_destroy (&advise);
+
+  typedef int (*pfun) (void);
+  pfun pf = (pfun) lt_dlsym (handle, "modfoo");
+  if (pf == NULL)
+    {
+      std::cerr << "dlsym failed: " << lt_dlerror () << '\n';
+      return 1;
+    }
+
+  try {
+    (*pf) ();
+  }
+  catch (modexc e) {
+    std::cerr << "caught: " << e.what () << '\n';
+    if (lt_dlclose (handle))
+      {
+        std::cerr << "dlclose failed: " << lt_dlerror () << '\n';
+	return 1;
+      }
+    if (lt_dlexit ())
+      {
+        std::cerr << "lt_dlexit failed: " << lt_dlerror () << '\n';
+	return 1;
+      }
+    return 0;
+  }
+  return 1;
+}
+
+int main (void)
+{
+  if (exceptions_in_prog ())
+    return 1;
+  if (exceptions_in_lib ())
+    return 1;
+  if (exceptions_in_module ())
+    return 1;
+  return 0;
+}
+]])
+
+inst=`pwd`/inst
+libdir=$inst/lib
+bindir=$inst/bin
+moddir=$inst/mod
+mkdir l m $inst $libdir $bindir $moddir
+
+# If the C++ compiler isn't capable, don't bother.
+AT_CHECK([$CXX $CPPFLAGS $CXXFLAGS -c main.cpp || exit 77], [], [ignore], [ignore])
+
+for file in lib.cpp module.cpp; do
+  AT_CHECK([$LIBTOOL --mode=compile --tag=CXX $CXX $CPPFLAGS $CXXFLAGS -c $file],
+	   [], [ignore], [ignore])
+done
+AT_CHECK([$LIBTOOL --mode=link --tag=CXX $CXX $CXXFLAGS $LDFLAGS -o l/liba.la ]dnl
+	 [lib.lo -no-undefined -version-info 1:0:0 -rpath $libdir],
+	 [], [ignore], [ignore])
+AT_CHECK([$LIBTOOL --mode=link --tag=CXX $CXX $CXXFLAGS $LDFLAGS -o m/module.la ]dnl
+	 [module.lo -module -avoid-version -no-undefined -rpath $moddir],
+	 [], [ignore], [ignore])
+
+# We need -export-dynamic for the exception handling in modules to work.
+AT_CHECK([$LIBTOOL --mode=link --tag=CXX $CXX $CXXFLAGS $LDFLAGS -o main$EXEEXT ]dnl
+	 [main.$OBJEXT l/liba.la -dlopen m/module.la $LIBLTDL -export-dynamic],
+	 [], [ignore], [ignore])
+
+LT_AT_NOINST_EXEC_CHECK([./main], [-dlopen m/module.la], [], [ignore], [ignore])
+
+AT_CHECK([$LIBTOOL --mode=install cp l/liba.la $libdir],
+	 [], [ignore], [ignore])
+AT_CHECK([$LIBTOOL --mode=install cp m/module.la $moddir],
+	 [], [ignore], [ignore])
+AT_CHECK([$LIBTOOL --mode=install cp main$EXEEXT $bindir],
+	 [], [ignore], [ignore])
+rm -rf l m main$EXEEXT
+
+LTDL_LIBRARY_PATH=$moddir
+export LTDL_LIBRARY_PATH
+LT_AT_EXEC_CHECK([$bindir/main], [], [ignore], [ignore])
+
+AT_CLEANUP

@@ -1,6 +1,23 @@
 NEWS - list of user-visible changes between releases of GNU Libtool
 
-New in 2.2.8 2009-??-??: git version 2.2.7a, Libtool team:
+New in 2.2.9b 2010-??-??: git version 2.2.9a, Libtool team:
+
+* New features:
+
+  - None.
+
+* Changes in supported systems or compilers:
+
+  - Initial support for Microsoft Visual C w/o wrapper scripts.
+
+New in 2.2.8 2010-06-05: git version 2.2.7c, Libtool team:
+
+* No new features:
+
+  - Bumped version number and romoted 2.2.7b release candidate to a full
+    stable release.
+
+New in 2.2.7b 2010-05-20: git version 2.2.7a, Libtool team:
 
 * New features:
 
@@ -16,6 +33,17 @@ New in 2.2.8 2009-??-??: git version 2.2.7a, Libtool team:
     runs on Windows with popup windows in the middle, and `check-interactive'
     for the complement set of tests.
   - New link mode flag -bindir to specify the location for installed PE DLLs.
+  - Wrapper scripts and wrapper executables for programs linked against
+    uninstalled shared libraries now support command-line options --lt-debug
+    and --lt-dump-script.
+
+* Important incompatible changes:
+
+  - The wrapper command line option support described above introduces the
+    following incompatibility: the wrapper will remove any command line
+    options that begin with '--lt-*' from the argument list before launching
+    (uninstalled) programs. Any '--lt-*' option on the command line not
+    recognized by the wrapper will result in an error.
 
 * Changes in supported systems or compilers:
 
@@ -27,7 +55,6 @@ New in 2.2.8 2009-??-??: git version 2.2.7a, Libtool team:
   - With binutils 2.19.50+, shared libraries can be built on AIX.
   - Initial support for the Cuda Compiler Driver on GNU/Linux.
   - Support for Haiku (i586-pc-haiku).
-  - Initial support for Microsoft Visual C w/o wrapper scripts.
 
 * Bug fixes:
 
@@ -53,6 +80,9 @@ New in 2.2.8 2009-??-??: git version 2.2.7a, Libtool team:
   - Fix ancient bug where "-Wc," was turned into "$wl" (typically "-Wl,")
     when using the compiler driver to link programs. Now "-Wc," is stripped
     just as it is when linking libraries through the compiler driver.
+  - Symbol versioning works with the GNU gold linker now.
+  - Fixes for detection of shared library dependencies on MinGW systems.
+  - Fixed Sun compiler detection on Solaris with sunCC, sunf77 etc. names.
 
 * Miscellaneous changes:
 

@@ -208,7 +208,7 @@ LT_BEGIN_C_DECLS
 LT_SCOPE const lt_dlvtable *	get_vtable (lt_user_data data);
 LT_END_C_DECLS
 #ifdef HAVE_LIBDLLOADER
-extern lt_dlsymlist		preloaded_symbols;
+extern lt_dlsymlist		preloaded_symbols[];
 #endif
 
 /* Initialize libltdl. */
@@ -234,7 +234,7 @@ lt_dlinit (void)
 #ifdef HAVE_LIBDLLOADER
       if (!errors)
 	{
-	  errors += lt_dlpreload (&preloaded_symbols);
+	  errors += lt_dlpreload (preloaded_symbols);
 	}
 
       if (!errors)
@@ -994,7 +994,7 @@ trim (char **dest, const char *str)
 
   FREE (*dest);
 
-  if (!end)
+  if (!end || end == str)
     return 1;
 
   if (len > 3 && str[0] == '\'')
@@ -1487,7 +1487,7 @@ try_dlopen (lt_dlhandle *phandle, const char *filename, const char *ext,
 }
 
 
-/* If the last error messge store was `FILE_NOT_FOUND', then return
+/* If the last error message stored was `FILE_NOT_FOUND', then return
    non-zero.  */
 static int
 file_not_found (void)
@@ -1507,7 +1507,7 @@ file_not_found (void)
 static int
 has_library_ext (const char *filename)
 {
-  char *	ext     = 0;
+  const char *	ext     = 0;
 
   assert (filename);
 
@@ -2066,7 +2066,7 @@ lt_dlerror (void)
   LT__GETERROR (error);
   LT__SETERRORSTR (0);
 
-  return error ? error : NULL;
+  return error;
 }
 
 static int

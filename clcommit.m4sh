@@ -1,11 +1,11 @@
 AS_INIT[]m4_divert_push([HEADER-COPYRIGHT])dnl
 # @configure_input@
 
-# clcommit (GNU @PACKAGE@) version 2.0
+# clcommit (GNU @PACKAGE@) version 2.1
 # Written by Gary V. Vaughan <gary@gnu.org>
 # and Alexandre Oliva <aoliva@redhat.com>
 
-# Copyright (C) 1999, 2000, 2004, 2006, 2008, 2009 Free Software Foundation, Inc.
+# Copyright (C) 1999, 2000, 2004, 2006, 2008, 2009, 2010 Free Software Foundation, Inc.
 # This is free software; see the source for copying conditions.  There is NO
 # warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
@@ -32,16 +32,16 @@ AS_INIT[]m4_divert_push([HEADER-COPYRIGHT])dnl
 #           --debug            enable verbose shell tracing
 # -n        --dry-run          don't commit anything
 #           --fast             same as --force --first
-# -F file   --file=FILE        read commit message from FILE
+# -F FILE   --file=FILE        read commit message from FILE
 # -1        --first            extract first entry from ChangeLog, no git diff
 # -f        --force            don't check (unless *followed* by -n), and just
 #                              display commit message instead of running $PAGER
 #           --from=ADDRESS     override default from ADDRESS in commit email
-# -m msg    --message=STRING   set commit message to STRING
+# -m STRING --message=STRING   set commit message to STRING
 #           --msg=STRING          same as -m
 # -p        --push             push the changes back to origin
 # -r [FILE] --rcfile[=FILE]    read default option from FILE [./.clcommitrc]
-# -s addr   --sendmail=ADDRESS send commit email of the differences to ADDRESS
+# -s ADDR   --sendmail=ADDR    send commit email of the differences to ADDRESS
 #           --signature[=FILE] add FILE to the end of the email [~/.signature]
 #           --signoff          add a Signed-off-by attribution at the end
 # -S TEXT   --summary=TEXT     specify a TEXT subject line for the commit email
@@ -83,19 +83,12 @@ m4_divert_pop
 m4_include([getopt.m4sh])
 
 M4SH_VERBATIM([[
-# Global variables:
-opt_commit=:
-opt_first=false
-opt_push=false
-opt_tags=false
-opt_update=:
-opt_verbose=false
+# Locations for important files:
+log_dir="`func_mktempdir`"
+log_file="$log_dir/log"
+push_conflicts="$log_dir/git_push.log"
 
-git_flags=
-mailnotify_flags=
-sendmail_to=
-
-exit_cmd=:
+trap '$RM -r "$log_dir"; exit $EXIT_FAILURE' 1 2 15
 
 # try to find out whether read supports -r
 if echo bt | tr b '\\' | { read -r line; test "X$line" = 'X\t'; } 2>/dev/null
@@ -104,196 +97,81 @@ then
 else
   read_r=read
 fi
+]])
 
-# Locations for important files:
-signature_file=
-log_dir="`func_mktempdir`"
-log_file="$log_dir/log"
-push_conflicts="$log_dir/git_push.log"
+dnl SHORT	LONG			       DEFAULT		      INIT
+dnl ----------------------------------------------------------------------
+M4SH_GETOPTS(
+  [1],		[--first],			[],			[],
+  [a^!],	[--author],			[],			[
+	git_flags="${git_flags+$git_flags }--author=$opt_author"],
+  [C@],		[--changelog|--Change[Ll]og],	[],			[],
+  [F!],		[--file],			[],			[
+	cat "[$]1" > "$log_file" || break],
+  [f],		[--force],			[],			[
+	PAGER=cat],
+  [m!],		[--message|--msg],		[],			[
+	echo "[$]1" > "$log_file"],
+  [n],		[--dry-run|--dryrun],		[],			[
+	mailnotify_flags="${mailnotify_flags+$mailnotify_flags }--dry-run"],
+  [p],		[--push],			[],			[],
+  [r@?],	[--rcfile],			[./.clcommitrc],	[
+	# The funny quoting allows keeping one option per line in $opt_rcfile:
+	eval set dummy `echo \`cat $opt_rcfile\` '${1+"[$]@"}'`
+	shift],
+  [S!],		[--summary],			[],			[],
+  [s^!],	[--sendmail],			[],			[],
+  [v],		[--verbose],			[],			[
+	mailnotify_flags="${mailnotify_flags+$mailnotify_flags }--verbose"],
+  [],		[--fast],			[],			[
+	set dummy --force --first ${1+"[$]@"}; shift],
+  [^!],		[--from],			[],			[
+	mailnotify_flags="${mailnotify_flags+$mailnotify_flags }--from=$opt_from"],
+  [@?],		[--signature],			[],			[
+	test -n "$opt_signature" || opt_signature="$HOME/.signature"],
+  [],		[--signoff],			[],			[
+	git_flags="${git_flags+$git_flags }$opt"],
+  [],		[--tags],			[],			[],
+ [
+  # pass debug flag along to mailnotify
+  $opt_debug &&
+      mailnotify_flags="${mailnotify_flags+$mailnotify_flags }--debug"
 
-trap '$RM -r "$log_dir"; exit $EXIT_FAILURE' 1 2 15
+  # validate $opt_first, $opt_file and $opt_message
+  if $opt_first; then
+      test -n "$opt_file$opt_message" &&
+          func_error "you can have at most one of -m, -F and -1"
+  else
+      test -n "$opt_file" && test -n "$opt_message" &&
+          func_error "you can have at most one of -m, -F and -1"
+  fi
 
-set -e
-
-# Parse options once, thoroughly.  This comes as soon as possible in
-# the script to make things like `clcommit --version' happen quickly.
-{
-  # sed scripts:
-  my_sed_single_opt='1s/^\(..\).*$/\1/;q'
-  my_sed_single_rest='1s/^..\(.*\)$/\1/;q'
-  my_sed_long_opt='1s/^\(--[^=]*\)=.*/\1/;q'
-  my_sed_long_arg='1s/^--[^=]*=//'
-
-  # this just eases exit handling
-  while test $# -gt 0; do
-    opt="$1"
-    shift
-    case $opt in
-
-      --author|-a)	test $# = 0 && func_missing_arg $opt && break
-      			func_quote_for_eval "$1"
-			git_flags="$git_flags --author=$func_quote_for_eval_result"
-			shift
-			;;
-
-      --[cC]hange[lL]og|-C)
-			test $# = 0 && func_missing_arg $opt && break
-			if test -f "$1"; then :; else
-			  func_error "ChangeLog file \`$1' does not exist"
-			  break
-			fi
-			ChangeLog="$1"
-			shift
-			;;
-
-      --debug)		func_echo "enabling shell trace mode"
-	    		mailnotify_flags="$mailnotify_flags --debug"
-			set -x
-			;;
-
-      --dry-run|-n)	opt_commit=false; opt_update=:		;;
-
-      --fast)		set dummy --force --first ${1+"$@"}; shift	;;
-
-      --file|-F)	test $# = 0 && func_missing_arg $opt && break
-			if $opt_first || test -f "$log_file"; then
-			  func_error "you can have at most one of -m, -F and -1"
-			  break
-			fi
-			if cat < "$1" > "$log_file"; then :; else
-			  break
-			fi
-			shift
-			;;
-
-      --first|-1)	if test -f "$log_File"; then
-	    		  func_error "you can have at most one of -m, -F and -1"
-			  break
-			fi
-			opt_first=:
-			;;
-
-      --force|-f)	opt_update=false; PAGER=cat		;;
-
-      --from)		test $# = 0 && func_missing_arg $opt && break
-      			func_quote_for_eval "$1"
-			mailnotify_flags="$mailnotify_flags --from=$func_quote_for_eval_result"
-			shift
-			;;
-
-      --message|--msg|-m)
-			test $# = 0 && func_missing_arg $opt && break
-			if $opt_first || test -f "$log_file"; then
-			  func_error "you can have at most one of -m, -F and -1"
-			  break
-			fi
-			echo "$1" > "$log_file"
-			shift
-			;;
-
-      --push|-p)	opt_push=:				;;
-
-      --rcfile|-r)	rc_file="./.clcommitrc"
-			if test $# -gt 0; then
-			  case $1 in
-			    -*)				;;
-			    *)  rc_file="$1"; shift	;;
-			  esac
-			fi
-			if test -f "$rc_file"; then :; else
-			  func_error "rcfile \`$rc_file' does not exist"
-			  exit_cmd=exit
-			  break
-			fi
-			# The funny quoting allows keeping one option per
-			# line in $rc_file:
-			eval set dummy `echo \`cat $rc_file\` \${1+"\$@"}`
-			shift
-			;;
-
-      --sendmail|-s)	test $# = 0 && func_missing_arg $opt && break
-      			func_quote_for_eval "$1"
-      			sendmail_to="$func_quote_for_eval_result"
-			shift
-			;;
-
-      --signature)	test $# = 0 && func_missing_arg $opt && break
-    			signature_file="$HOME/.signature"
-			case $1 in
-			  -*) ;;
-			  *)  signature_file="$1"; shift ;;
-			esac
-			if test -f "$signature_file"; then :; else
-			  func_error "\`$signature_file': file not found"
-			  break
-			fi
-			;;
-
-      --signoff)	git_flags="$git_flags --signoff"	;;
-
-      --summary|-S)	test $# = 0 && func_missing_arg $opt && break
-			summary="$1"
-			shift
-			;;
-
-      --tags)		opt_tags=:				;;
-
-      --verbose|-v)	opt_verbose=:				;;
-
-      # Separate optargs to long options:
-      --*=*)
-			arg=`echo "$opt" | $SED "$my_sed_long_arg"`
-			opt=`echo "$opt" | $SED "$my_sed_long_opt"`
-			set dummy "$opt" "$arg" ${1+"$@"}
-			shift
-			;;
-
-      # Separate optargs to short options:
-      -a*|-m*|-F*|-C*|-S*|-s*)
-			arg=`echo "$opt" |$SED "$my_sed_single_rest"`
-			opt=`echo "$opt" |$SED "$my_sed_single_opt"`
-			set dummy "$opt" "$arg" ${1+"$@"}
-			shift
-			;;
-
-      # Separate non-argument short options:
-      -1*|-f*|-p*|-n*|-q*)
-			rest=`echo "$opt" |$SED "$my_sed_single_rest"`
-			opt=`echo "$opt" |$SED "$my_sed_single_opt"`
-			set dummy "$opt" "-$rest" ${1+"$@"}
-			shift
-			;;
-
-      -\?|-h)		func_usage					;;
-      --help)		func_help					;;
-      --version)	func_version					;;
-      --)		break						;;
-      -*)		func_fatal_help "unrecognized option \`$opt'"	;;
-      *)		set dummy "$opt" ${1+"$@"};	shift; break		;;
-    esac
-  done
-
-  if test -z "$sendmail_to"; then
-
+  # validate $opt_from and $opt_signature
+  test -n "$opt_sendmail" || {
     # can't have a from address without a destination address
-    test -n "$sendmail_from" &&
+    test -n "$opt_from" &&
       func_error "can't use --from without --sendmail." && exit_cmd=exit
 
     # can't use a signature file without a destination address
-    test -n "$signature_file" &&
+    test -n "$opt_signature" &&
       func_error "can't use --signature without --sendmail." && exit_cmd=exit
-  fi
+  }
 
-  $opt_tags && test x"$opt_push" = xfalse &&
-    func_error "can't use --tags without --push." && exit_cmd=exit
+  # validate $opt_tags
+  $opt_push || {
+      $opt_tags &&
+          func_error "can't use --tags without --push." && exit_cmd=exit
+  }
+])
 
-  # Bail if the options were screwed
-  $exit_cmd $EXIT_FAILURE
-}
+M4SH_VERBATIM([[
+# Bail out on command errors!
+set -e
 
 # func_check_conflicts
 func_check_conflicts ()
 {
+    func_verbose "checking for commit conflicts..."
     if $GIT push --dry-run > "$push_conflicts" 2>&1; then :; else
       cat "$push_conflicts" >&2
       func_fatal_error "some conflicts were found with upstream repository, aborting..."
@@ -304,37 +182,48 @@ func_check_conflicts ()
 # func_check_commit_msg
 func_check_commit_msg ()
 {
-    if test -z "$ChangeLog"; then
+    if test -z "$opt_changelog"; then
       for f in ${1+"$@"}; do
         case "$f" in
           ChangeLog* | */ChangeLog*)
-            if test -z "$ChangeLog"; then
-	      ChangeLog="$f"
+            if test -z "$opt_changelog"; then
+	      opt_changelog="$f"
 	    else
-	      func_fatal_error "multiple ChangeLog files: $ChangeLog and $f"
+	      func_fatal_error "multiple ChangeLog files: $opt_changelog and $f"
 	    fi
 	  ;;
         esac
       done
     fi
 
-    func_verbose "$progname: checking commit message..."
+    func_verbose "checking commit message..."
+    separate_summary=:		# whether to separate summary lines for git
     if $opt_first; then
       skipping=:
-      $SED 's,^,+,' < ${ChangeLog-ChangeLog} |
+      $SED 's,^,+,' < ${opt_changelog-ChangeLog} |
         while $read_r line; do
           case "$line" in
             "+") if $skipping; then skipping=false; else break; fi;;
             "+ "*)
 	      func_error "*** Warning: lines should start with tabs, not spaces; ignoring line:"
 	      echo "$line" | $SED 's/^.//' >&2;;
-            "+	"*)
-              $skipping || echo "$line" ;;
+            "+	*"*)			# asterisk marks end of summary line
+              $skipping || echo "$line"
+	      separate_summary=false ;;
+            "+	"*".") 			# summary line must end with a period
+	      $skipping || {
+		echo "$line"
+		$separate_summary && echo "+	"
+		separate_summary=false
+	      };;
+	    "+	"*)			# no separator for multiline summary
+	      echo "$line"
+	      separate_summary=false ;;
           esac
         done |
           $SED 's,^\+	,,' > "$log_file" || exit $EXIT_FAILURE
     else
-      $GIT diff ${ChangeLog-ChangeLog} |
+      $GIT diff ${opt_changelog-ChangeLog} |
         while $read_r line; do
           case $line in
             "--- "*) :;;
@@ -345,7 +234,16 @@ func_check_commit_msg ()
 	      func_error "*** Warning: lines should start with tabs, not spaces; ignoring line:"
 	      echo "$line" | $SED 's/^.//' >&2;;
             "+") echo ;;
-            "+	"*) echo "$line";;
+            "+	*"*)			# asterisk marks end of summary line
+	      echo "$line"
+              separate_summary=false ;;
+            "+	"*".") 			# summary line must end with a period
+	      echo "$line"
+	      $separate_summary && echo "+	"
+	      separate_summary=false ;;
+	    "+	"*)			# no separator for multiline summary
+	      echo "$line"
+	      separate_summary=false ;;
           esac
         done |
           $SED -e 's,\+	,,' -e '/./p' -e '/./d' -e '1d' -e '$d' > "$log_file" \
@@ -367,13 +265,19 @@ func_commit ()
     test $# -gt 0 && subject="$@"
 
     test $# -gt 0 || { set dummy -a; shift; }
-    func_verbose "$GIT commit$git_flags -F $log_file ${1+$@}"
-    $GIT commit$git_flags -F $log_file ${1+"$@"} || exit $EXIT_FAILURE
+    func_verbose "$GIT commit $git_flags -F $log_file ${1+$@}"
+    $opt_dry_run ||
+        $GIT commit $git_flags -F $log_file ${1+"$@"} || exit $EXIT_FAILURE
 
-    if $opt_push; then
-      $GIT push
-      $opt_tags && $GIT push --tags
-    fi
+    $opt_push && {
+      func_verbose "$GIT push"
+      $opt_dry_run || $GIT push
+
+      $opt_tags && {
+	  func_verbose "$GIT push --tags"
+	  $opt_dry_run || $GIT push --tags
+      }
+    }
 
     :
 }
@@ -383,7 +287,7 @@ func_commit ()
 func_mailnotify ()
 {
     notify_file="${log_dir}/notify"
-    func_verbose "Mailing commit notification to $sendmail_to"
+    func_verbose "Mailing commit notification to \"$opt_sendmail\""
 
     {
       echo Subject: $subject
@@ -397,9 +301,9 @@ func_mailnotify ()
       echo ""
       echo "Log Message:"
       $SED -e 's,^,	,' "$log_file"
-      test -f "$signature_file" && {
+      test -f "$opt_signature" && {
         echo '-- '
-	cat "$signature_file"
+	cat "$opt_signature"
       }
     } > "$notify_file"
 
@@ -414,11 +318,10 @@ func_mailnotify ()
     my_mail_body=`$SED -e '2,$p;d' "$notify_file"`
     echo "$my_mail_body" > "$notify_file"
 
-    func_verbose "mailing commit notification to \"$sendmail_to\""
     func_quote_for_eval "$my_mail_subject"
     func_show_eval "$MAILNOTIFY $mailnotify_flags \
         -s $func_quote_for_eval_result -m 'text/plain' -f '$notify_file' \
-	-- $sendmail_to"
+	-- $opt_sendmail"
 }
 
 
@@ -438,17 +341,18 @@ func_mailnotify ()
     func_error "*** They should be used to separate distinct commits."
   fi
 
-  $opt_update && $opt_push && func_check_conflicts
+  # $opt_force says to force the changes through without checking for conflicts
+  $opt_push && {
+      $opt_force || func_check_conflicts
+  }
 
   # Do not check for empty $log_file again, even though the user might have
   # zeroed it out.  If s/he did, it was probably intentional.
-  if $opt_commit; then
-    func_commit ${1+"$@"}
-  fi
+  func_commit ${1+"$@"}
 
-  # Send a copy of the log_file if sendmail_to was set:
+  # Send a copy of the log_file if opt_sendmail was set:
   subject=`sed -n '1p' "$log_file"`
-  if test -n "$sendmail_to"; then
+  if test -n "$opt_sendmail"; then
     if ! $opt_push; then
       func_warning "Mail notification NOT sent for commit to local repository."
     else

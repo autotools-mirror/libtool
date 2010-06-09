@@ -79,6 +79,7 @@
   Bruno Haible			haible@ilog.fr
   Camilo La Rota		camilo.larota@ens-lyon.fr
   Carl D. Roth			roth@cse.ucsc.edu
+  Chris Demetriou		cgd@google.com
   Chris P. Ross			cross@eng.us.uu.net
   Christian Biesinger		cbiesinger@web.de
   Christian Rössel		christian.roessel@gmx.de
@@ -140,6 +141,7 @@
   Paul Biggar			paul.biggar@gmail.com
   Paul Eggert			eggert@twinsun.com
   Peter Eisentraut		peter_e@gmx.net
+  Peter Fritzsche		peter.fritzsche@gmx.de
   Peter Jeremy			peterjeremy@optushome.com.au
   Peter Kjellerstedt		peter.kjellerstedt@axis.com
   Rainer Emrich			r.emrich@de.tecosim.com
@@ -156,7 +158,9 @@
   Roland Mainz			roland.mainz@nrubsig.org
   Roumen Petrov			bugtrack@roumenpetrov.info
   Rudolf Leitgeb		r.leitgeb@x-pin.com
+  Ryan Hill			dirtyepic@gentoo.org
   Sam Thursfield		ssssam@gmail.com
+  Scott McCreary		scottmc2@gmail.com
   Sebastian Wilhelmi		wilhelmi@ira.uka.de
   Simon Josefsson		jas@extundo.com
   Stephan Kulow			coolo@kde.org
@@ -169,6 +173,7 @@
   Tom Tromey			tromey@cygnus.com
   Tor Lillqvist			tml@iki.fi
   Ulrich Drepper		drepper@ipd.info.uni-karlsruhe.de
+  Vadim Zeitlin			vz-libtool@zeitlins.org
   Vincent Lefevre		vincent@vinc17.org
   Vincent Torri			vtorri@univ-evry.fr
   Xavier Pianet			xavier@xingo.com

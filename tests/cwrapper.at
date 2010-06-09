@@ -79,5 +79,58 @@ for restrictive_flags in '-Wall -Werror' '-std=c89 -Wall -Werror' '-std=c99 -Wal
   LT_AT_EXEC_CHECK([./usea], [0], [ignore], [ignore], [])
 done
 
+
+# Test run-time activation of wrapper debugging.
+# This is not part of the loop above, because we
+# need to check, not ignore, the output.
+CFLAGS="$orig_CFLAGS"
+LIBTOOL=$orig_LIBTOOL
+
+AT_CHECK([$LIBTOOL --mode=compile $CC $CPPFLAGS $CFLAGS -c liba.c],
+         [], [ignore], [ignore])
+AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -no-undefined -o liba.la -rpath /foo liba.lo],
+         [], [ignore], [ignore])
+AT_CHECK([test -f liba.la])
+
+AT_CHECK([$CC $CPPFLAGS $CFLAGS -c usea.c],
+         [], [ignore], [ignore])
+AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o usea$EXEEXT usea.$OBJEXT liba.la],
+         [], [ignore], [ignore])
+LT_AT_EXEC_CHECK([./usea], [0], [ignore], [stderr], [--lt-debug])
+LT_AT_UNIFY_NL([stderr])
+AT_CHECK([grep 'libtool wrapper' stderr], [0], [ignore], [ignore])
+
+
+# Test compile-time activation of wrapper debugging.
+# We structure this test as a loop, so that we can 'break' out of it
+# if necessary -- even though the loop by design executes only once.
+for debugwrapper_flags in '-DLT_DEBUGWRAPPER'; do
+  CFLAGS="$orig_CFLAGS $debugwrapper_flags"
+  sed -e "s/LTCFLAGS=.*/&' $debugwrapper_flags'/" \
+      -e "s/^lt_option_debug=/lt_option_debug=1/" \
+    < "$orig_LIBTOOL" > ./libtool
+  LIBTOOL=./libtool
+
+  # make sure $debugwrapper_flags do not cause a failure
+  # themselves (e.g. because a non-gcc compiler doesn't
+  # understand them)
+  $LIBTOOL --mode=compile $CC $CPPFLAGS $CFLAGS -c trivial.c || continue
+
+  AT_CHECK([$LIBTOOL --mode=compile $CC $CPPFLAGS $CFLAGS -c liba.c],
+           [], [ignore], [ignore])
+  AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -no-undefined -o liba.la -rpath /foo liba.lo],
+           [], [ignore], [ignore])
+  AT_CHECK([test -f liba.la])
+
+  AT_CHECK([$CC $CPPFLAGS $CFLAGS -c usea.c],
+           [], [ignore], [ignore])
+  AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o usea$EXEEXT usea.$OBJEXT liba.la],
+           [], [ignore], [ignore])
+  LT_AT_EXEC_CHECK([./usea], [0], [ignore], [stderr], [])
+  LT_AT_UNIFY_NL([stderr])
+  AT_CHECK([grep 'libtool wrapper' stderr], [0], [ignore], [ignore])
+done
+
+
 AT_CLEANUP
 
