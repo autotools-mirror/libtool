@@ -682,7 +682,7 @@ or obtained by writing to the Free Software Foundation, Inc.,
   doc/manual using cvs to here:
   <yourusername>@cvs.savannah.gnu.org:/webcvs/libtool
 
-* In the build directory, run `Make -f[../]Makeflie.maint announce-gen'.
+* In the build directory, run `Make -f[../]Makefile.maint announce-gen'.
 
 * Make sure the source directory has an appropriate .announcerc, along
   the lines of:
