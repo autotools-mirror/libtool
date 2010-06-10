@@ -135,7 +135,7 @@ M4SH_GETOPTS(
   [],		[--tags],			[],			[],
  [
   # pass debug flag along to mailnotify
-  $opt_debug &&
+  test "$opt_debug" != ":" &&
       mailnotify_flags="${mailnotify_flags+$mailnotify_flags }--debug"
 
   # validate $opt_first, $opt_file and $opt_message
@@ -172,6 +172,8 @@ set -e
 # func_check_conflicts
 func_check_conflicts ()
 {
+    $opt_debug
+
     func_verbose "checking for commit conflicts..."
     if $GIT push --dry-run > "$push_conflicts" 2>&1; then :; else
       cat "$push_conflicts" >&2
@@ -183,6 +185,8 @@ func_check_conflicts ()
 # func_check_commit_msg
 func_check_commit_msg ()
 {
+    $opt_debug
+
     if test -z "$opt_changelog"; then
       for f in ${1+"$@"}; do
         case "$f" in
@@ -258,6 +262,8 @@ func_check_commit_msg ()
 # func_commit
 func_commit ()
 {
+    $opt_debug
+
     ${PAGER-more} "$log_file" || exit $EXIT_FAILURE
 
     sleep 1 # give the user some time for a ^C
@@ -280,6 +286,8 @@ func_commit ()
 # func_mailnotify
 func_mailnotify ()
 {
+    $opt_debug
+
     notify_file="${log_dir}/notify"
     func_verbose "Mailing commit notification to \"$opt_sendmail\""
 

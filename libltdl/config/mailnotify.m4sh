@@ -149,6 +149,8 @@ set -e
 # separated list of fully qualified destination addresses.
 func_headers ()
 {
+    $opt_debug
+
     my_outfile="$1"
     my_destination="$2"
     my_sed_version_no='
@@ -185,6 +187,8 @@ func_headers ()
 # Send the only message part as a single mime mail part.
 func_single_content ()
 {
+    $opt_debug
+
     my_outfile="$1"
 
     $opt_dry_run || cat >> "$my_outfile" <<EOF
@@ -200,6 +204,8 @@ EOF
 # Send the various message parts to OUTFILE as a multipart mime mail.
 func_multipart_content ()
 {
+    $opt_debug
+
     my_outfile="$1"
     boundary="boundary-${HOST}-$$-`date | tr ' :' -`"
     $opt_dry_run || {
@@ -250,6 +256,8 @@ EOF
 #         sending domain.
 func_sendmail ()
 {
+    $opt_debug
+
     my_infile="$1"
     my_destination="$2"
     my_from="$3"
@@ -298,6 +306,8 @@ func_sendmail ()
 # func_extract_email_from_header re_header headerfile
 func_extract_email ()
 {
+    $opt_debug
+
     my_re_header="$1"
     my_headerfile="$2"
     $as_unset func_extract_email_result

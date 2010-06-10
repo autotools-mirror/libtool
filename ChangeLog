@@ -1,5 +1,16 @@
 2010-06-10  Gary V. Vaughan  <gary@gnu.org>
 
+	Support shell tracing inside functions even with ksh.
+	* libltdl/config/getopt.m4sh: Set $opt_debug to be either `:'
+	or `set -x' depending on whether --debug was parsed to match
+	usage in libtoolize.m4sh and ltmain.m4sh.
+	* clcommit.m4sh, libltdl/config/announce-gen.sh: Instead of
+	`$opt_debug && ...', use `test "$opt_debug" != ":" && ...'.
+	* clcommit.m4sh, libltdl/config/announce-gen.m4sh,
+	libltdl/config/getopt.m4sh, libltdl/connfig/mailnotify.m4sh:
+	Execute at the start of functions to cater to ksh, which
+	resets `-x' inside shell functions.
+
 	Fix a typu in HACKING.
 	* HACKING (Release Procedure): s/Makeflie/Makefile/.
 

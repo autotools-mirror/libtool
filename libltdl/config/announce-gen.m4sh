@@ -187,7 +187,7 @@ M4SH_GETOPTS(
   }
 
   # pass trace argument along to mailnotify too
-  $opt_debug &&
+  test "$opt_debug" != ":" &&
       mailnotify_flags="${mailnotify_flags+$mailnotify_flags }--debug"
   
   # validate remaining command line args as destination addresses
@@ -205,6 +205,8 @@ set -e
 # func_print_changelog_deltas
 func_print_changelog_deltas ()
 {
+    $opt_debug
+
     # FIXME: Jim's announce-gen does something with ChangeLogs
     #        and cvs diff.  We don't use CVS, and perl makes
     #        my eyes bleed... maybe I'll write this function
@@ -216,6 +218,8 @@ func_print_changelog_deltas ()
 # func_print_checksums title filename...
 func_print_checksums ()
 {
+    $opt_debug
+
     my_title="$1"; shift
 
     test -n "$1" && {
@@ -240,6 +244,8 @@ func_print_checksums ()
 # func_print_locations title url files
 func_print_locations ()
 {
+    $opt_debug
+
     test -n "$3" && {
 	echo
 	echo "Here are the $1:"
@@ -258,6 +264,8 @@ func_print_locations ()
 # func_print_news_deltas
 func_print_news_deltas ()
 {
+    $opt_debug
+
     my_news_file="$top_srcdir/NEWS"
     my_skipping=:
 
@@ -289,6 +297,8 @@ func_print_news_deltas ()
 # func_tool_versions toolname...
 func_print_tool_versions ()
 {
+    $opt_debug
+
     test -n "$1" && {
 	echo
 	echo "This release was bootstrapped with the following tools:"
