@@ -1,3 +1,15 @@
+2010-06-12  Peter Rosin  <peda@lysator.liu.se>
+	    Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Improve libdir usage from within ltdl on MinGW.
+	* libltdl/ltdl.c (parse_dotla_file) [__WINDOWS__]: Read the
+	libdir entry in the .la file, but accept it only if it is not
+	a unix-style absolute name.
+	* tests/ltdl-libdir.at: New test that checks if ltdl finds an
+	installed module via the libdir variable in the .la file.  On
+	MinGW, use a Windows-style libdir name including drive spec.
+	* Makefile.am: Add above.
+
 2010-06-11  Peter O'Gorman  <peter@pogma.com>
 
 	Skip bindir install test if we're not building shared.

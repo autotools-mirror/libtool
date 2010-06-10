@@ -1079,14 +1079,17 @@ parse_dotla_file(FILE *file, char **dlname, char **libdir, char **deplibs,
 
       /* Windows native tools do not understand the POSIX paths we store
 	 in libdir. */
-#ifndef __WINDOWS__
 #undef  STR_LIBDIR
 #define STR_LIBDIR	"libdir="
       else if (strncmp (line, STR_LIBDIR, sizeof (STR_LIBDIR) - 1) == 0)
 	{
 	  errors += trim (libdir, &line[sizeof(STR_LIBDIR) - 1]);
-	}
+#ifdef __WINDOWS__
+	  /* Disallow following unix-style paths on MinGW.  */
+	  if (*libdir && (**libdir == '/' || **libdir == '\\'))
+	    **libdir = '\0';
 #endif
+	}
 
 #undef  STR_DL_DEPLIBS
 #define STR_DL_DEPLIBS	"dependency_libs="
