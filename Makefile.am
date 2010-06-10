@@ -256,10 +256,12 @@ $(srcdir)/libltdl/Makefile.am: $(srcdir)/libltdl/Makefile.inc
 
 ## Unfortunately, all this bogeyness means that we have to manually
 ## keep the generated files in libltdl up to date.
-all-local: $(srcdir)/libltdl/aclocal.m4 \
+LTDL_BOOTSTRAP_DEPS = $(srcdir)/libltdl/aclocal.m4 \
 	$(srcdir)/libltdl/stamp-mk \
 	$(srcdir)/libltdl/configure \
 	$(srcdir)/libltdl/config-h.in
+
+all-local: $(LTDL_BOOTSTRAP_DEPS)
 
 EXTRA_DIST += $(srcdir)/libltdl/stamp-mk $(m4dir)/lt~obsolete.m4
 
@@ -558,7 +560,8 @@ DISTCLEANFILES += tests/atconfig
 CD_TESTDIR	= abs_srcdir=`$(lt__cd) $(srcdir) && pwd`; cd tests
 
 testsuite_deps = tests/atconfig $(srcdir)/$(TESTSUITE)
-testsuite_deps_uninstalled = $(testsuite_deps) libltdl/libltdlc.la $(bin_SCRIPTS)
+testsuite_deps_uninstalled = $(testsuite_deps) libltdl/libltdlc.la \
+			     $(bin_SCRIPTS) $(LTDL_BOOTSTRAP_DEPS)
 
 # Hook the test suite into the check rule
 check-local: $(testsuite_deps_uninstalled)

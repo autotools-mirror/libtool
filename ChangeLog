@@ -1,3 +1,11 @@
+2010-06-10  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Ensure libltdl is up to date for check-local.
+	* Makefile.am (LTDL_BOOTSTRAP_DEPS): New variable.
+	(all-local): Use it to simplify dependencies.
+	(testsuite_deps_uninstalled): Add $(LTDL_BOOTSTRAP_DEPS).
+	Report by Peter Rosin.
+
 2010-06-10  Gary V. Vaughan  <gary@gnu.org>
 
 	Support shell tracing inside functions even with ksh.
