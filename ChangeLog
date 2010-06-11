@@ -1,3 +1,10 @@
+2010-06-10  Peter O'Gorman  <peter@pogma.com>
+
+	Create reloadable object files with non-pic objects too.
+	* libltdl/config/ltmain.m4sh: When not building a shared
+	library, use the non-pic objects to create a reloadable
+	object, because pic objects do not exist.
+
 2010-06-10  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	Ensure libltdl is up to date for check-local.
