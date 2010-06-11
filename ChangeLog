@@ -1,3 +1,15 @@
+2010-06-11  Gary V. Vaughan  <gary@gnu.org>
+
+	Use getopt.m4sh to generate libtoolize option parser.
+	* libtoolize.m4sh: Replace hand written shell code with a
+	call to M4SH_GETOPTS.  Move some premature initialization
+	from the preamble to the main part of the script.  Exit with
+	an error on spurious additional non-option arguments.
+	(envopts): Integrate LIBTOOLIZE_OPTIONS pre-parsing into the
+	main option parsing loop.
+	(opt_copy): Use in place of and in the reverse sense of the
+	old opt_link variable.
+
 2010-06-10  Peter O'Gorman  <peter@pogma.com>
 
 	Create reloadable object files with non-pic objects too.

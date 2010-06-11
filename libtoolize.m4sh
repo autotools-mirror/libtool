@@ -75,55 +75,13 @@ m4_divert_pop
 m4_include([getopt.m4sh])
 
 M4SH_VERBATIM([[
-# test EBCDIC or ASCII
-case `echo X|tr X '\101'` in
- A) # ASCII based system
-    # \n is not interpreted correctly by Solaris 8 /usr/ucb/tr
-  SP2NL='tr \040 \012'
-  NL2SP='tr \015\012 \040\040'
-  ;;
- *) # EBCDIC based system
-  SP2NL='tr \100 \n'
-  NL2SP='tr \r\n \100\100'
-  ;;
-esac
-
-
-# Command line options:
-opt_debug=:
-opt_force=false
-opt_install=false
-opt_link=:
-opt_ltdl=false
-
-seen_autoconf=false
-seen_libtool=false
-seen_ltdl=false
-
 # ltdl can be installed to be self-contained (subproject, the default);
 # or to be configured by a parent project, either with a recursive or
 # nonrecursive automake driven make:
 ltdl_mode=
 
 # Locations for important files:
-prefix=@prefix@
-datadir=@datadir@
-pkgdatadir=@pkgdatadir@
-pkgltdldir=@pkgdatadir@
-aclocaldir=@aclocaldir@
-auxdir=
-macrodir=
 ltdldir=
-configure_ac=configure.in
-
-# Lists of all files libtoolize has ever installed.  These are removed
-# before installing the latest files when --force was passed to help
-# ensure a clean upgrade.
-# Do not remove config.guess nor config.sub, we don't install them
-# without --install, and the project may not be using Automake.
-all_pkgconfig_files="ltmain.sh"
-all_pkgmacro_files="argz.m4 libtool.m4 ltdl.m4 ltoptions.m4 ltsugar.m4 ltversion.in ltversion.m4 lt~obsolete.m4"
-all_pkgltdl_files="COPYING.LIB Makefile Makefile.in Makefile.inc Makefile.am README acinclude.m4 aclocal.m4 argz_.h argz.c config.h.in config-h.in configure configure.ac configure.in libltdl/lt__alloc.h libltdl/lt__dirent.h libltdl/lt__glibc.h libltdl/lt__private.h libltdl/lt__strl.h libltdl/lt_dlloader.h libltdl/lt_error.h libltdl/lt_system.h libltdl/slist.h loaders/dld_link.c loaders/dlopen.c loaders/dyld.c loaders/load_add_on.c loaders/loadlibrary.c loaders/preopen.c loaders/shl_load.c lt__alloc.c lt__dirent.c lt__strl.c lt_dlloader.c lt_error.c ltdl.c ltdl.h slist.c"
 
 # Parse environment options
 {
@@ -135,114 +93,78 @@ all_pkgltdl_files="COPYING.LIB Makefile Makefile.in Makefile.inc Makefile.am REA
     LIBTOOLIZE_OPTIONS=`echo "$LIBTOOLIZE_OPTIONS" | sed "$my_sed_env_rest"`
 
     case $opt in
-      --debug)		opt_debug=:		;;
-      --no-warn)	opt_warning=false	;;
-      --quiet)		opt_quiet=:		;;
-      --verbose)	opt_verbose=:		;;
-
-      --*)	func_warning "unrecognized environment option \`$opt'"    ;;
+      --debug|--no-warn|--quiet|--verbose)
+		envopts="${envopts+$envopts }$opt"			  ;;
+      --*)	env_warning="${env_warning+$env_warning
+}unrecognized environment option \`$opt'" 				  ;;
       *)	func_fatal_help "garbled LIBTOOLIZE_OPTIONS near \`$opt'" ;;
     esac
   done
-}
 
-
-# Parse options once, thoroughly.  This comes as soon as possible in
-# the script to make things like `libtoolize --version' happen quickly.
-{
-  # sed scripts:
-  my_sed_single_opt='1s/^\(..\).*$/\1/;q'
-  my_sed_single_rest='1s/^..\(.*\)$/\1/;q'
-  my_sed_long_opt='1s/^\(--[^=]*\)=.*/\1/;q'
-  my_sed_long_arg='1s/^--[^=]*=//'
-
-  while test "$#" -gt 0; do
-    opt="$1"
+  test -n "$envopts" && {
+    func_quote_for_eval "$envopts"
+    eval set dummy "$func_quote_for_eval_result" ${1+"$@"}
     shift
-    case $opt in
-      --copy|-c)	opt_link=false ;;
-
-      --debug)		func_echo "enabling shell trace mode"
-			opt_debug='set -x'
-			$opt_debug
-			;;
-
-      --dry-run|-n)	if $opt_dry_run; then :; else
-			  opt_dry_run=:
-			  RM="func_echo_all $RM"
-			  test -n "$LN_S" && LN_S="func_echo_all $LN_S"
-			  CP="func_echo_all $CP"
-			  MKDIR="func_echo_all $MKDIR"
-			  TAR="func_echo_all $TAR"
-			fi
-			;;
-
-      --force|-f)	opt_force=: ;;
-
-      --install|-i)	opt_install=: ;;
-
-      --ltdl)		opt_ltdl=:
-			if test "$#" -gt 0; then
-			  case $1 in
-			    -*)	;;
-			    *)	ltdldir=`$ECHO "$1" | $SED 's,/*$,,'`
-				shift
-				;;
-			  esac
-			fi
-			;;
-
-      --no-warn)	opt_warning=false ;;
-
-      --nonrecursive|--non-recursive)
-			ltdl_mode=nonrecursive
-			;;
-
-      --quiet|--automake|-q) # --automake is for 1.5 compatibility
-			opt_quiet=:
-			;;
-
-      --recursive)	ltdl_mode=recursive ;;
-
-      --subproject)	ltdl_mode=subproject ;;
-
-      --verbose|-v)	opt_verbose=: ;;
-
-      # Separate optargs to long options:
-      --*=*)
-			arg=`$ECHO "$opt" | $SED "$my_sed_long_arg"`
-			opt=`$ECHO "$opt" | $SED "$my_sed_long_opt"`
-			set dummy "$opt" "$arg" ${1+"$@"}
-			shift
-			;;
-
-      # Separate optargs to short options:
-      #-X*)
-      #			arg=`$ECHO "$opt" | $SED "$my_sed_single_rest"`
-      #			opt=`$ECHO "$opt" | $SED "$my_sed_single_opt"`
-      #			set dummy "$opt" "$arg" ${1+"$@"}
-      #			shift
-      #			;;
-
-      # Separate non-argument short options:
-      -c*|-f*|-i*|-n*|-q*|-v*)
-			rest=`$ECHO "$opt" | $SED "$my_sed_single_rest"`
-			opt=`$ECHO "$opt" | $SED "$my_sed_single_opt"`
-			set dummy "$opt" "-$rest" ${1+"$@"}
-			shift
-			;;
-
-      -\?|-h)		func_usage					;;
-      --help)		func_help					;;
-      --version)	func_version					;;
-      --)		break						;;
-      -*)		func_fatal_help "unrecognized option \`$opt'"	;;
-      *)		func_fatal_help "too many arguments"		;;
-    esac
-  done
+  }
 }
+]])
+
+dnl SHORT	LONG			       DEFAULT		      INIT
+dnl ----------------------------------------------------------------------
+dnl   --automake, below, is for compatibility with automake 1.5
+M4SH_GETOPTS(
+  [c],		[--copy],			[],			[],
+  [f],		[--force],			[],			[],
+  [i],		[--install],			[],			[],
+  [n],		[--dry-run|--dryrun],		[],			[
+	CP="func_echo_all $CP"
+	test -n "$LN_S" && LN_S="func_echo_all $LN_S"
+	MKDIR="func_echo_all $MKDIR"
+	RM="func_echo_all $RM"
+	TAR="func_echo_all $TAR"],
+  [q],		[--quiet|--automake],		[],			[],
+  [v],		[--verbose],			[],			[],
+  [],		[--no-warning|--no-warn],	[],			[],
+  [],		[--nonrecursive|--non-recursive], [],			[],
+  [],		[--recursive],			[],			[],
+  [],		[--standalone],			[],			[],
+  [?],		[--ltdl],			[false],		[
+	# This is tricky, since we're overloading $opt_ltdl to be the
+	# optarg for --ltdl during option processing, but then stashing
+	# the (optional) optarg in $ltdldir and reusing $opt_ltdl to
+	# indicate that --ltdl was seen during option processing.  Also,
+	# be careful that --ltdl=foo --ltdl=bar results in ltdldir=bar:
+	case $opt_ltdl in
+          false|:) ;;  # a bare '--ltdl' followed by another option
+	  *)       ltdldir=`$ECHO "$optarg" | $SED 's,/*$,,'` ;;
+	esac
+	opt_ltdl=:],
+[
+  # show any warnings saved by LIBTOOLIZE_OPTIONS parsing
+  test -n "$env_warning" &&
+    echo "$env_warning" |while read line; do func_warning "$line"; done
+
+  # validate $opt_nonrecursive, $opt_recursive and $opt_standalone
+  if $opt_nonrecursive; then
+    if $opt_recursive || $opt_standalone; then
+      func_error "you can have at most one of --non-recursive, --recursive and --standalone"
+    fi
+    ltdl_mode=nonrecursive
+  elif $opt_recursive; then
+    $opt_standalone &&
+      func_error "you can have at most one of --non-recursive, --recursive and --standalone"
+    ltdl_mode=recursive
+  elif $opt_standalone; then
+    ltdl_mode=standalone
+  fi
+
+  # any remaining arguments are an error
+  test [$]# -gt 0 &&
+    func_fatal_help "unknown additional arguments: \`${1+$@}'"
+])
 
 
+M4SH_VERBATIM([[
 # func_echo_once msg_var
 # Calls func_echo with the value of MSG_VAR, and then sets MSG_VAR="" so
 # that subsequent calls have no effect.
@@ -321,7 +243,15 @@ func_copy_cb ()
     func_mkdir_p `$ECHO "$my_destdir/$my_file" | $SED "$dirname"`
 
     $RM "$my_destdir/$my_file"
-    if $opt_link; then
+    if $opt_copy; then
+      if { ( cd "$my_srcdir" && $TAR chf - "$my_file" ) 2>/dev/null \
+           | ( umask 0 && cd "$my_destdir" && $TAR xf - ) >/dev/null 2>&1; } \
+	 && touch "$my_destdir/$my_file"; then
+	$opt_quiet || func_echo_once "$my_msg_var"
+	$opt_quiet || func_echo "copying $my_copy_msg"
+	copy_return_status=0
+      fi
+    else
       if test "$my_file" = "aclocal.m4"; then
 	if { ( cd "$my_srcdir" && $TAR chf - "$my_file" ) 2>/dev/null \
 	     | ( umask 0 && cd "$my_destdir" && $TAR xf - ) >/dev/null 2>&1 ; }
@@ -336,14 +266,6 @@ func_copy_cb ()
 	  $opt_quiet || func_echo "linking $my_copy_msg"
 	  copy_return_status=0
 	fi
-      fi
-    else
-      if { ( cd "$my_srcdir" && $TAR chf - "$my_file" ) 2>/dev/null \
-           | ( umask 0 && cd "$my_destdir" && $TAR xf - ) >/dev/null 2>&1; } \
-	 && touch "$my_destdir/$my_file"; then
-	$opt_quiet || func_echo_once "$my_msg_var"
-	$opt_quiet || func_echo "copying $my_copy_msg"
-	copy_return_status=0
       fi
     fi
     if test "$copy_return_status" != 0; then
@@ -1517,6 +1439,42 @@ func_check_macros ()
 ## ----------- ##
 
 {
+  # Lists of all files libtoolize has ever installed.  These are removed
+  # before installing the latest files when --force was passed to help
+  # ensure a clean upgrade.
+  # Do not remove config.guess nor config.sub, we don't install them
+  # without --install, and the project may not be using Automake.
+  all_pkgconfig_files="ltmain.sh"
+  all_pkgmacro_files="argz.m4 libtool.m4 ltdl.m4 ltoptions.m4 ltsugar.m4 ltversion.in ltversion.m4 lt~obsolete.m4"
+  all_pkgltdl_files="COPYING.LIB Makefile Makefile.in Makefile.inc Makefile.am README acinclude.m4 aclocal.m4 argz_.h argz.c config.h.in config-h.in configure configure.ac configure.in libltdl/lt__alloc.h libltdl/lt__dirent.h libltdl/lt__glibc.h libltdl/lt__private.h libltdl/lt__strl.h libltdl/lt_dlloader.h libltdl/lt_error.h libltdl/lt_system.h libltdl/slist.h loaders/dld_link.c loaders/dlopen.c loaders/dyld.c loaders/load_add_on.c loaders/loadlibrary.c loaders/preopen.c loaders/shl_load.c lt__alloc.c lt__dirent.c lt__strl.c lt_dlloader.c lt_error.c ltdl.c ltdl.h slist.c"
+
+  # Locations for important files:
+  prefix=@prefix@
+  datadir=@datadir@
+  pkgdatadir=@pkgdatadir@
+  pkgltdldir=@pkgdatadir@
+  aclocaldir=@aclocaldir@
+  auxdir=
+  macrodir=
+  configure_ac=configure.in
+
+  seen_autoconf=false
+  seen_libtool=false
+  seen_ltdl=false
+
+  # test EBCDIC or ASCII
+  case `echo X|tr X '\101'` in
+   A) # ASCII based system
+      # \n is not interpreted correctly by Solaris 8 /usr/ucb/tr
+    SP2NL='tr \040 \012'
+    NL2SP='tr \015\012 \040\040'
+    ;;
+   *) # EBCDIC based system
+    SP2NL='tr \100 \n'
+    NL2SP='tr \r\n \100\100'
+    ;;
+  esac
+
   # Allow the user to override the master libtoolize repository:
   if test -n "$_lt_pkgdatadir"; then
     pkgltdldir="$_lt_pkgdatadir"
