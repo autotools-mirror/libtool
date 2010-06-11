@@ -1,3 +1,10 @@
+2010-06-11  Peter O'Gorman  <peter@pogma.com>
+
+	Skip bindir install test if we're not building shared.
+	* tests/bindir.at: Skip install test if necessary.
+	* THANKS: Update.
+	Report by Michael E Faenza.
+
 2010-06-11  Gary V. Vaughan  <gary@gnu.org>
 
 	Use getopt.m4sh to generate libtoolize option parser.

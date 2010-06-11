@@ -198,6 +198,9 @@ case "$host_os" in
     ;;
 esac
 
+eval "`$LIBTOOL --config | grep '^build_libtool_libs='`"
+AT_CHECK([test "$build_libtool_libs" = yes || (exit 77)])
+
 ####
 # These routines save the PATH before a test and restore it after,
 # prepending a chosen directory to the path on the platforms where
