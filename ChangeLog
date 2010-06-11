@@ -1,3 +1,30 @@
+2010-06-27  Gary V. Vaughan  <gary@gnu.org>
+
+	getopt.m4sh generated libtool option parser, and XSI improvements.
+	* libltdl/m4/libtool.m4 (_LT_PROG_XSI_SHELLFNS): Moved portable
+	shell versions of various utility functions from here...
+	* libltdl/config/getopt.m4sh (func_split_long_opt): ...to here...
+	* libltdl/config/general.m4sh (func_dirname, func_basename)
+	(func_dirname_and_basename, func_strip_name): ...here...
+	* libltdl/config/ltmain.m4sh (func_append, func_arith, func_len)
+	(func_lo2o, func_xform): ...and here.
+	* libltdl/config/libtool.m4 (_LT_PROG_XSI_REPLACE): New macro that
+	expands into a sed command for replacing the contents of a
+	suitably decorated shell function with an alternate XSI
+	implementation.
+	(_LT_PROG_XSI_SHELLFNS): Use it to replace the portable shell
+	versions of the functions above with equivalent XSI
+	implementations that avoid unnecessary forks if the host shell
+	supports that.
+	* libltdl/config/ltmain.m4sh: Replace hand written shell code
+	with a call to M4SH_GETOPTS. Rename some option variables in
+	the client code to match the generated option parser settings.
+	* libltdl/config/general.m4sh (func_echo, func_error)
+	(func_warning): Use $opt_mode instead of obsoleted $mode in
+	message leader.
+	* libltdl/config/getopt.m4sh (m4_version_prereq): This file
+	requires m4sugar.m4 from Autoconf-2.61 or newer. 
+
 2010-06-24  Charles Wilson  <libtool@cwilson.fastmail.fm>
 
 	[cygwin] Refactor C++ exception handling for Win32 correctness

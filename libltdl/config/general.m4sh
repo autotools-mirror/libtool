@@ -73,6 +73,27 @@ IFS=" 	$lt_nl"
 dirname="s,/[^/]*$,,"
 basename="s,^.*/,,"
 
+# func_dirname file append nondir_replacement
+# Compute the dirname of FILE.  If nonempty, add APPEND to the result,
+# otherwise set result to NONDIR_REPLACEMENT.
+func_dirname ()
+{
+    func_dirname_result=`$ECHO "${1}" | $SED "$dirname"`
+    if test "X$func_dirname_result" = "X${1}"; then
+      func_dirname_result="${3}"
+    else
+      func_dirname_result="$func_dirname_result${2}"
+    fi
+} # func_dirname may be replaced by XSI optimised implementation
+
+
+# func_basename file
+func_basename ()
+{
+    func_basename_result=`$ECHO "${1}" | $SED "$basename"`
+} # func_basename may be replaced by XSI optimised implementation
+
+
 # func_dirname_and_basename file append nondir_replacement
 # perform func_basename and func_dirname in a single function
 # call:
@@ -87,17 +108,31 @@ basename="s,^.*/,,"
 # those functions but instead duplicate the functionality here.
 func_dirname_and_basename ()
 {
-  # Extract subdirectory from the argument.
-  func_dirname_result=`$ECHO "${1}" | $SED -e "$dirname"`
-  if test "X$func_dirname_result" = "X${1}"; then
-    func_dirname_result="${3}"
-  else
-    func_dirname_result="$func_dirname_result${2}"
-  fi
-  func_basename_result=`$ECHO "${1}" | $SED -e "$basename"`
-}
+    # Extract subdirectory from the argument.
+    func_dirname_result=`$ECHO "${1}" | $SED -e "$dirname"`
+    if test "X$func_dirname_result" = "X${1}"; then
+      func_dirname_result="${3}"
+    else
+      func_dirname_result="$func_dirname_result${2}"
+    fi
+    func_basename_result=`$ECHO "${1}" | $SED -e "$basename"`
+} # func_dirname_and_basename may be replaced by XSI optimised implementation
 
-# Generated shell functions inserted here.
+
+# func_stripname prefix suffix name
+# strip PREFIX and SUFFIX off of NAME.
+# PREFIX and SUFFIX must not contain globbing or regex special
+# characters, hashes, percent signs, but SUFFIX may contain a leading
+# dot (in which case that matches only a dot).
+# func_strip_suffix prefix name
+func_stripname ()
+{
+    case ${2} in
+      .*) func_stripname_result=`$ECHO "${3}" | $SED "s%^${1}%%; s%\\\\${2}\$%%"`;;
+      *)  func_stripname_result=`$ECHO "${3}" | $SED "s%^${1}%%; s%${2}\$%%"`;;
+    esac
+} # func_stripname may be replaced by XSI optimised implementation
+
 
 # These SED scripts presuppose an absolute path with a trailing slash.
 pathcar='s,^/\([^/]*\).*$,\1,'
@@ -308,7 +343,7 @@ opt_warning=:
 # name if it has been set yet.
 func_echo ()
 {
-    $ECHO "$progname${mode+: }$mode: $*"
+    $ECHO "$progname: ${opt_mode+$opt_mode: }$*"
 }
 
 # func_verbose arg...
@@ -334,14 +369,14 @@ func_echo_all ()
 # Echo program name prefixed message to standard error.
 func_error ()
 {
-    $ECHO "$progname${mode+: }$mode: "${1+"$@"} 1>&2
+    $ECHO "$progname: ${opt_mode+$opt_mode: }"${1+"$@"} 1>&2
 }
 
 # func_warning arg...
 # Echo program name prefixed warning message to standard error.
 func_warning ()
 {
-    $opt_warning && $ECHO "$progname${mode+: }$mode: warning: "${1+"$@"} 1>&2
+    $opt_warning && $ECHO "$progname: ${opt_mode+$opt_mode: }warning: "${1+"$@"} 1>&2
 
     # bash bug again:
     :

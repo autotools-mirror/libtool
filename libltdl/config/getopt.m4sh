@@ -49,6 +49,13 @@ m4_pattern_forbid([^_?m4go_])
 ## 1. Backwards compatibility. ##
 ## --------------------------- ##
 
+# We prefer m4sugar.m4 from Autoconf-2.64, but have fallbacks in this
+# section that work back as far as Autoconf-2.61.  This file is used
+# at bootstrap time to generate the shell processing loop for ltmain.sh
+# and libtoolize.in, so it's okay for the requirement to be tighter
+# than the configure time Autoconf prerequisite version.
+m4_version_prereq([2.61])
+
 # m4_chomp(STRING)
 # ----------------
 # m4_chomp was not introduced until Autoconf-2.64.  Currently we
@@ -463,13 +470,7 @@ m4go_defaults
 
 # Parse options once, thoroughly.  This comes as soon as possible in the
 # script to make things like `--version' happen as quickly as we can.
-{M4SH_VERBATIM([[
-  # sed scripts
-  my_sed_single_opt='1s/^\(..\).*$/\1/;q'
-  my_sed_single_rest='1s/^..\(.*\)$/\1/;q'
-  my_sed_long_opt='1s/^\(--[^=]*\)=.*/\1/;q'
-  my_sed_long_arg='1s/^--[^=]*=//'
-]])
+{
   # this just eases exit handling
   while test [$]# -gt 0; do
     opt="[$]1"
@@ -486,27 +487,24 @@ m4go_branches
 
       # Separate optargs to long options:
       --*=*)
-			arg=`echo "$opt" | $SED "$my_sed_long_arg"`
-			opt=`echo "$opt" | $SED "$my_sed_long_opt"`
-			set dummy "$opt" "$arg" ${1+"[$]@"}
+			func_split_long_opt "$opt"
+			set dummy "$func_split_long_opt_name" "$func_split_long_opt_arg" ${1+"[$]@"}
 			shift
 			;;
 
 m4_ifset([m4go_shortargs], dnl (
 [      # Separate optargs to short options:
       ]m4go_shortargs[)
-			arg=`echo "$opt" |$SED "$my_sed_single_rest"`
-			opt=`echo "$opt" |$SED "$my_sed_single_opt"`
-			set dummy "$opt" "$arg" ${1+"[$]@"}
+			func_split_short_opt "$opt"
+			set dummy "$func_split_short_opt_name" "$func_split_short_opt_arg" ${1+"[$]@"}
 			shift
 			;;
 
 ])m4_ifset([m4go_shortnoargs], dnl (
 [      # Separate non-argument short options:
       ]m4go_shortnoargs[)
-			rest=`echo "$opt" |$SED "$my_sed_single_rest"`
-			opt=`echo "$opt" |$SED "$my_sed_single_opt"`
-			set dummy "$opt" "-$rest" ${1+"[$]@"}
+			func_split_short_opt "$opt"
+			set dummy "$func_split_short_opt_name" "$func_split_short_opt_arg" ${1+"[$]@"}
 			shift
 			;;
 
@@ -618,6 +616,32 @@ func_missing_arg ()
     func_error "missing argument for $1."
     exit_cmd=exit
 }
+
+
+# func_split_short_opt shortopt
+# Set func_split_short_opt_name and func_split_short_opt_arg shell
+# variables after splitting SHORTOPT at the `=' sign.
+func_split_short_opt ()
+{
+    my_sed_short_opt='1s/^\(..\).*$/\1/;q'
+    my_sed_short_rest='1s/^..\(.*\)$/\1/;q'
+
+    func_split_short_opt_name=`$ECHO "$1" | $SED "$my_sed_short_opt"`
+    func_split_short_opt_arg=`$ECHO "$1" | $SED "$my_sed_short_arg"`
+} # func_split_short_opt may be replaced by XSI optimised implementation
+
+
+# func_split_long_opt longopt
+# Set func_split_long_opt_name and func_split_long_opt_arg shell
+# variables after splitting LONGOPT at the `=' sign.
+func_split_long_opt ()
+{
+    my_sed_long_opt='1s/^\(--[^=]*\)=.*/\1/;q'
+    my_sed_long_arg='1s/^--[^=]*=//'
+
+    func_split_long_opt_name=`$ECHO "$1" | $SED "$my_sed_long_opt"`
+    func_split_long_opt_arg=`$ECHO "$1" | $SED "$my_sed_long_arg"`
+} # func_split_long_opt may be replaced by XSI optimised implementation
 
 exit_cmd=:
 ]])

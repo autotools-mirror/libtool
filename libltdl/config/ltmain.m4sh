@@ -133,29 +133,59 @@ m4_define([M4SH_IN_HEADER], [$1])dnl
 m4_include([getopt.m4sh])
 
 M4SH_VERBATIM([[
-
 magic="%%%MAGIC variable%%%"
 magic_exe="%%%MAGIC EXE variable%%%"
 
 # Global variables.
 # $mode is unset
 nonopt=
-execute_dlfiles=
 preserve_args=
 lo2o="s/\\.lo\$/.${objext}/"
 o2lo="s/\\.${objext}\$/.lo/"
 extracted_archives=
 extracted_serial=0
 
-opt_dry_run=false
-opt_duplicate_deps=false
-opt_silent=false
-opt_debug=:
-
 # If this variable is set in any of the actions, the command in it
 # will be execed at the end.  This prevents here-documents from being
 # left over by shells.
 exec_cmd=
+
+# func_append var value
+# Append VALUE to the end of shell variable VAR.
+func_append ()
+{
+    eval "${1}=\$${1}\${2}"
+} # func_append may be replaced by XSI optimised implementation
+
+
+# func_arith arithmetic-term...
+func_arith ()
+{
+    func_arith_result=`expr "${@}"`
+} # func_arith may be replaced by XSI optimised implementation
+
+
+# func_len string
+# STRING may not start with a hyphen.
+func_len ()
+{
+    func_len_result=`expr "${1}" : ".*" 2>/dev/null || echo $max_cmd_len`
+} # func_len may be replaced by XSI optimised implementation
+
+
+# func_lo2o object
+func_lo2o ()
+{
+    func_lo2o_result=`$ECHO "${1}" | $SED "$lo2o"`
+} # func_lo2o may be replaced by XSI optimised implementation
+
+
+# func_xform libobj-or-source
+func_xform ()
+{
+    func_xform_result=`$ECHO "${1}" | $SED 's/\.[[^.]]*$/.lo/'`
+} # func_xform may be replaced by XSI optimised implementation
+
 
 # func_fatal_configuration arg...
 # Echo program name prefixed message to standard error, followed by
@@ -246,145 +276,6 @@ func_enable_tag ()
   esac
 }
 
-# Parse options once, thoroughly.  This comes as soon as possible in
-# the script to make things like `libtool --version' happen quickly.
-{
-
-  # Shorthand for --mode=foo, only valid as the first argument
-  case $1 in
-  clean|clea|cle|cl)
-    shift; set dummy --mode clean ${1+"$@"}; shift
-    ;;
-  compile|compil|compi|comp|com|co|c)
-    shift; set dummy --mode compile ${1+"$@"}; shift
-    ;;
-  execute|execut|execu|exec|exe|ex|e)
-    shift; set dummy --mode execute ${1+"$@"}; shift
-    ;;
-  finish|finis|fini|fin|fi|f)
-    shift; set dummy --mode finish ${1+"$@"}; shift
-    ;;
-  install|instal|insta|inst|ins|in|i)
-    shift; set dummy --mode install ${1+"$@"}; shift
-    ;;
-  link|lin|li|l)
-    shift; set dummy --mode link ${1+"$@"}; shift
-    ;;
-  uninstall|uninstal|uninsta|uninst|unins|unin|uni|un|u)
-    shift; set dummy --mode uninstall ${1+"$@"}; shift
-    ;;
-  esac
-
-  # Parse non-mode specific arguments:
-  while test "$#" -gt 0; do
-    opt="$1"
-    shift
-
-    case $opt in
-      --config)		func_config					;;
-
-      --debug)		preserve_args="$preserve_args $opt"
-			func_echo "enabling shell trace mode"
-			opt_debug='set -x'
-			$opt_debug
-			;;
-
-      -dlopen)		test "$#" -eq 0 && func_missing_arg "$opt" && break
-			execute_dlfiles="$execute_dlfiles $1"
-			shift
-			;;
-
-      --dry-run | -n)	opt_dry_run=:					;;
-      --features)       func_features					;;
-      --finish)		mode="finish"					;;
-
-      --mode)		test "$#" -eq 0 && func_missing_arg "$opt" && break
-			case $1 in
-			  # Valid mode arguments:
-			  clean)	;;
-			  compile)	;;
-			  execute)	;;
-			  finish)	;;
-			  install)	;;
-			  link)		;;
-			  relink)	;;
-			  uninstall)	;;
-
-			  # Catch anything else as an error
-			  *) func_error "invalid argument for $opt"
-			     exit_cmd=exit
-			     break
-			     ;;
-		        esac
-
-			mode="$1"
-			shift
-			;;
-
-      --preserve-dup-deps)
-			opt_duplicate_deps=:				;;
-
-      --quiet|--silent)	preserve_args="$preserve_args $opt"
-			opt_silent=:
-			opt_verbose=false
-			;;
-
-      --no-quiet|--no-silent)
-			preserve_args="$preserve_args $opt"
-			opt_silent=false
-			;;
-
-      --verbose| -v)	preserve_args="$preserve_args $opt"
-			opt_silent=false
-			opt_verbose=:
-			;;
-
-      --no-verbose)	preserve_args="$preserve_args $opt"
-			opt_verbose=false
-			;;
-
-      --tag)		test "$#" -eq 0 && func_missing_arg "$opt" && break
-			preserve_args="$preserve_args $opt $1"
-			func_enable_tag "$1"	# tagname is set here
-			shift
-			;;
-
-      # Separate optargs to long options:
-      -dlopen=*|--mode=*|--tag=*)
-			func_opt_split "$opt"
-			set dummy "$func_opt_split_opt" "$func_opt_split_arg" ${1+"$@"}
-			shift
-			;;
-
-      -\?|-h)		func_usage					;;
-      --help)		opt_help=:					;;
-      --help-all)	opt_help=': help-all'				;;
-      --version)	func_version					;;
-
-      -*)		func_fatal_help "unrecognized option \`$opt'"	;;
-
-      *)		nonopt="$opt"
-			break
-			;;
-    esac
-  done
-
-
-  case $host in
-    *cygwin* | *mingw* | *pw32* | *cegcc*)
-      # don't eliminate duplications in $postdeps and $predeps
-      opt_duplicate_compiler_generated_deps=:
-      ;;
-    *)
-      opt_duplicate_compiler_generated_deps=$opt_duplicate_deps
-      ;;
-  esac
-
-  # Having warned about all mis-specified options, bail out if
-  # anything was wrong.
-  $exit_cmd $EXIT_FAILURE
-}
-
 # func_check_version_match
 # Ensure that we are using m4 macros, and libtool script from the same
 # release of libtool.
@@ -421,37 +312,119 @@ _LT_EOF
 }
 
 
+# Shorthand for --mode=foo, only valid as the first argument
+case $1 in
+clean|clea|cle|cl)
+  shift; set dummy --mode clean ${1+"$@"}; shift
+  ;;
+compile|compil|compi|comp|com|co|c)
+  shift; set dummy --mode compile ${1+"$@"}; shift
+  ;;
+execute|execut|execu|exec|exe|ex|e)
+  shift; set dummy --mode execute ${1+"$@"}; shift
+  ;;
+finish|finis|fini|fin|fi|f)
+  shift; set dummy --mode finish ${1+"$@"}; shift
+  ;;
+install|instal|insta|inst|ins|in|i)
+  shift; set dummy --mode install ${1+"$@"}; shift
+  ;;
+link|lin|li|l)
+  shift; set dummy --mode link ${1+"$@"}; shift
+  ;;
+uninstall|uninstal|uninsta|uninst|unins|unin|uni|un|u)
+  shift; set dummy --mode uninstall ${1+"$@"}; shift
+  ;;
+esac
+]])
+
+dnl SHORT	LONG			       DEFAULT		      INIT
+dnl ----------------------------------------------------------------------
+M4SH_GETOPTS(
+  [n],		[--dry-run|--dryrun],		[],			[],
+  [],		[--config],			[], 			[
+	func_config],
+  [;],		[--dlopen|-dlopen],		[],			[],
+  [],		[--preserve-dup-deps],		[],			[],
+  [],		[--features],			[],			[
+	func_features],
+  [],		[--finish],			[],			[
+	set dummy --mode finish ${1+"[$]@"}; shift],
+  [],		[--help],			[],			[],
+  [],		[--help-all],			[],			[
+	opt_help=': help-all'],
+  [!],		[--mode],			[],			[
+	case $optarg in
+	  # Valid mode arguments:
+	  clean|compile|execute|finish|install|link|relink|uninstall) ;;
+
+	  # Catch anything else as an error
+	  *) func_error "invalid argument for $opt"
+	     exit_cmd=exit
+	     break
+	     ;;
+	esac],
+  [],		[--no-silent|--no-quiet],	[false],		[
+	preserve_args="$preserve_args $opt"],
+  [],		[--no-verbose],			[false],		[
+	preserve_args="$preserve_args $opt"],
+  [],		[--silent|--quiet],		[],			[
+	preserve_args="$preserve_args $opt"
+        opt_verbose=false],
+  [],		[--verbose],			[],			[
+	preserve_args="$preserve_args $opt"
+	opt_silent=false],
+  [!],		[--tag],			[],			[
+	preserve_args="$preserve_args $opt $optarg"
+	func_enable_tag "$optarg"],
+[
+  # save first non-option argument
+  nonopt="$opt"; shift
+
+  # preserve --debug
+  $opt_debug && preserve_args="$preserve_args --debug"
+
+  case $host in
+    *cygwin* | *mingw* | *pw32* | *cegcc*)
+      # don't eliminate duplications in $postdeps and $predeps
+      opt_duplicate_compiler_generated_deps=:
+      ;;
+    *)
+      opt_duplicate_compiler_generated_deps=$opt_preserve_dup_deps
+      ;;
+  esac
+
+  $opt_help || {
+    # Sanity checks first:
+    func_check_version_match
+
+    if test "$build_libtool_libs" != yes && test "$build_old_libs" != yes; then
+      func_fatal_configuration "not configured to build any kind of library"
+    fi
+
+    test -z "$opt_mode" && func_fatal_error "error: you must specify a MODE."
+
+    # Darwin sucks
+    eval std_shrext=\"$shrext_cmds\"
+
+    # Only execute mode is allowed to have -dlopen flags.
+    if test -n "$opt_dlopen" && test "$opt_mode" != execute; then
+      func_error "unrecognized option \`-dlopen'"
+      $ECHO "$help" 1>&2
+      exit $EXIT_FAILURE
+    fi
+
+    # Change the help message to a mode-specific one.
+    generic_help="$help"
+    help="Try \`$progname --help --mode=$opt_mode' for more information."
+  }
+])
+
+
+M4SH_VERBATIM([[
 ## ----------- ##
 ##    Main.    ##
 ## ----------- ##
-
-$opt_help || {
-  # Sanity checks first:
-  func_check_version_match
-
-  if test "$build_libtool_libs" != yes && test "$build_old_libs" != yes; then
-    func_fatal_configuration "not configured to build any kind of library"
-  fi
-
-  test -z "$mode" && func_fatal_error "error: you must specify a MODE."
-
-
-  # Darwin sucks
-  eval std_shrext=\"$shrext_cmds\"
-
-
-  # Only execute mode is allowed to have -dlopen flags.
-  if test -n "$execute_dlfiles" && test "$mode" != execute; then
-    func_error "unrecognized option \`-dlopen'"
-    $ECHO "$help" 1>&2
-    exit $EXIT_FAILURE
-  fi
-
-  # Change the help message to a mode-specific one.
-  generic_help="$help"
-  help="Try \`$progname --help --mode=$mode' for more information."
-}
-
 
 # func_lalib_p file
 # True iff FILE is a libtool `.la' library or `.lo' object file.
@@ -1014,13 +987,13 @@ compiler."
 }
 
 $opt_help || {
-  test "$mode" = compile && func_mode_compile ${1+"$@"}
+  test "$opt_mode" = compile && func_mode_compile ${1+"$@"}
 }
 
 func_mode_help ()
 {
     # We need to display help for each of the modes.
-    case $mode in
+    case $opt_mode in
       "")
         # Generic help is extracted from the usage comments
         # at the start of this file.
@@ -1196,7 +1169,7 @@ Otherwise, only FILE itself is deleted using RM."
         ;;
 
       *)
-        func_fatal_help "invalid operation mode \`$mode'"
+        func_fatal_help "invalid operation mode \`$opt_mode'"
         ;;
     esac
 
@@ -1211,13 +1184,13 @@ if $opt_help; then
   else
     {
       func_help noexit
-      for mode in compile link execute install finish uninstall clean; do
+      for opt_mode in compile link execute install finish uninstall clean; do
 	func_mode_help
       done
     } | sed -n '1p; 2,$s/^Usage:/  or: /p'
     {
       func_help noexit
-      for mode in compile link execute install finish uninstall clean; do
+      for opt_mode in compile link execute install finish uninstall clean; do
 	echo
 	func_mode_help
       done
@@ -1246,7 +1219,7 @@ func_mode_execute ()
       func_fatal_help "you must specify a COMMAND"
 
     # Handle -dlopen flags immediately.
-    for file in $execute_dlfiles; do
+    for file in $opt_dlopen; do
       test -f "$file" \
 	|| func_fatal_help "\`$file' is not a file"
 
@@ -1364,7 +1337,7 @@ func_mode_execute ()
     fi
 }
 
-test "$mode" = execute && func_mode_execute ${1+"$@"}
+test "$opt_mode" = execute && func_mode_execute ${1+"$@"}
 
 
 # func_mode_finish arg...
@@ -1444,7 +1417,7 @@ func_mode_finish ()
     exit $EXIT_SUCCESS
 }
 
-test "$mode" = finish && func_mode_finish ${1+"$@"}
+test "$opt_mode" = finish && func_mode_finish ${1+"$@"}
 
 
 # func_mode_install arg...
@@ -1904,7 +1877,7 @@ func_mode_install ()
     fi
 }
 
-test "$mode" = install && func_mode_install ${1+"$@"}
+test "$opt_mode" = install && func_mode_install ${1+"$@"}
 
 
 # func_generate_dlsyms outputname originator pic_p
@@ -4683,7 +4656,7 @@ func_mode_link ()
     # Find all interdependent deplibs by searching for libraries
     # that are linked more than once (e.g. -la -lb -la)
     for deplib in $deplibs; do
-      if $opt_duplicate_deps ; then
+      if $opt_preserve_dup_deps ; then
 	case "$libs " in
 	*" $deplib "*) specialdeplibs="$specialdeplibs $deplib" ;;
 	esac
@@ -5080,7 +5053,7 @@ func_mode_link ()
 	  tmp_libs=
 	  for deplib in $dependency_libs; do
 	    deplibs="$deplib $deplibs"
-	    if $opt_duplicate_deps ; then
+	    if $opt_preserve_dup_deps ; then
 	      case "$tmp_libs " in
 	      *" $deplib "*) specialdeplibs="$specialdeplibs $deplib" ;;
 	      esac
@@ -5222,7 +5195,7 @@ func_mode_link ()
 	      # or/and link against static libraries
 	      newdependency_libs="$deplib $newdependency_libs"
 	    fi
-	    if $opt_duplicate_deps ; then
+	    if $opt_preserve_dup_deps ; then
 	      case "$tmp_libs " in
 	      *" $deplib "*) specialdeplibs="$specialdeplibs $deplib" ;;
 	      esac
@@ -5489,7 +5462,7 @@ func_mode_link ()
 	    fi
 	  fi
 
-	  if test "$linkmode" = prog || test "$mode" = relink; then
+	  if test "$linkmode" = prog || test "$opt_mode" = relink; then
 	    add_shlibpath=
 	    add_dir=
 	    add=
@@ -5612,7 +5585,7 @@ func_mode_link ()
 	  tmp_libs=
 	  for deplib in $dependency_libs; do
 	    newdependency_libs="$deplib $newdependency_libs"
-	    if $opt_duplicate_deps ; then
+	    if $opt_preserve_dup_deps ; then
 	      case "$tmp_libs " in
 	      *" $deplib "*) specialdeplibs="$specialdeplibs $deplib" ;;
 	      esac
@@ -6129,7 +6102,7 @@ func_mode_link ()
       libobjs="$libobjs $symfileobj"
       test "X$libobjs" = "X " && libobjs=
 
-      if test "$mode" != relink; then
+      if test "$opt_mode" != relink; then
 	# Remove our outputs, but don't remove object files since they
 	# may have been created when compiling PIC objects.
 	removelist=
@@ -6627,7 +6600,7 @@ EOF
 	  hardcode_libdirs=
 	  dep_rpath=
 	  rpath="$finalize_rpath"
-	  test "$mode" != relink && rpath="$compile_rpath$rpath"
+	  test "$opt_mode" != relink && rpath="$compile_rpath$rpath"
 	  for libdir in $rpath; do
 	    if test -n "$hardcode_libdir_flag_spec"; then
 	      if test -n "$hardcode_libdir_separator"; then
@@ -6676,7 +6649,7 @@ EOF
 	fi
 
 	shlibpath="$finalize_shlibpath"
-	test "$mode" != relink && shlibpath="$compile_shlibpath$shlibpath"
+	test "$opt_mode" != relink && shlibpath="$compile_shlibpath$shlibpath"
 	if test -n "$shlibpath"; then
 	  eval "$shlibpath_var='$shlibpath\$$shlibpath_var'; export $shlibpath_var"
 	fi
@@ -6828,7 +6801,7 @@ EOF
 	fi
 
 	# Make a backup of the uninstalled library when relinking
-	if test "$mode" = relink; then
+	if test "$opt_mode" = relink; then
 	  $opt_dry_run || eval '(cd $output_objdir && $RM ${realname}U && $MV $realname ${realname}U)' || exit $?
 	fi
 
@@ -6995,7 +6968,7 @@ EOF
 		lt_exit=$?
 
 		# Restore the uninstalled library and exit
-		if test "$mode" = relink; then
+		if test "$opt_mode" = relink; then
 		  ( cd "$output_objdir" && \
 		    $RM "${realname}T" && \
 		    $MV "${realname}U" "$realname" )
@@ -7088,7 +7061,7 @@ EOF
 	    lt_exit=$?
 
 	    # Restore the uninstalled library and exit
-	    if test "$mode" = relink; then
+	    if test "$opt_mode" = relink; then
 	      ( cd "$output_objdir" && \
 	        $RM "${realname}T" && \
 		$MV "${realname}U" "$realname" )
@@ -7100,7 +7073,7 @@ EOF
 	IFS="$save_ifs"
 
 	# Restore the uninstalled library and exit
-	if test "$mode" = relink; then
+	if test "$opt_mode" = relink; then
 	  $opt_dry_run || eval '(cd $output_objdir && $RM ${realname}T && $MV $realname ${realname}T && $MV ${realname}U $realname)' || exit $?
 
 	  if test -n "$convenience"; then
@@ -7939,7 +7912,7 @@ relink_command=\"$relink_command\""
     exit $EXIT_SUCCESS
 }
 
-{ test "$mode" = link || test "$mode" = relink; } &&
+{ test "$opt_mode" = link || test "$opt_mode" = relink; } &&
     func_mode_link ${1+"$@"}
 
 
@@ -7980,10 +7953,10 @@ func_mode_uninstall ()
       fi
       func_basename "$file"
       name="$func_basename_result"
-      test "$mode" = uninstall && odir="$dir"
+      test "$opt_mode" = uninstall && odir="$dir"
 
       # Remember odir for removal later, being careful to avoid duplicates
-      if test "$mode" = clean; then
+      if test "$opt_mode" = clean; then
 	case " $rmdirs " in
 	  *" $odir "*) ;;
 	  *) rmdirs="$rmdirs $odir" ;;
@@ -8016,7 +7989,7 @@ func_mode_uninstall ()
 	  done
 	  test -n "$old_library" && rmfiles="$rmfiles $odir/$old_library"
 
-	  case "$mode" in
+	  case "$opt_mode" in
 	  clean)
 	    case " $library_names " in
 	    *" $dlname "*) ;;
@@ -8062,7 +8035,7 @@ func_mode_uninstall ()
 	;;
 
       *)
-	if test "$mode" = clean ; then
+	if test "$opt_mode" = clean ; then
 	  noexename=$name
 	  case $file in
 	  *.exe)
@@ -8113,16 +8086,16 @@ func_mode_uninstall ()
     exit $exit_status
 }
 
-{ test "$mode" = uninstall || test "$mode" = clean; } &&
+{ test "$opt_mode" = uninstall || test "$opt_mode" = clean; } &&
     func_mode_uninstall ${1+"$@"}
 
-test -z "$mode" && {
+test -z "$opt_mode" && {
   help="$generic_help"
   func_fatal_help "you must specify a MODE"
 }
 
 test -z "$exec_cmd" && \
-  func_fatal_help "invalid operation mode \`$mode'"
+  func_fatal_help "invalid operation mode \`$opt_mode'"
 
 if test -n "$exec_cmd"; then
   eval exec "$exec_cmd"
