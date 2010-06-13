@@ -1,3 +1,19 @@
+2010-06-13  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Print Libtool project URL in program --help output.
+	* configure.ac (AC_INIT): Set PACKAGE argument to `GNU Libtool',
+	so Autoconf knows this is GNU software.  For Autoconf < 2.64,
+	if AC_PACKAGE_URL is not defined, substitute PACKAGE_URL.
+	* Makefile.am (edit): Substitute PACKAGE_URL.
+	($(srcdir)/tests/package.m4): Also depend on Makefile.am.
+	Define AT_PACKAGE_URL, for `tests/testsuite --help' output.
+	* libltdl/config/getopt.m4sh (func_help): Also extract comment
+	lines that mention a home page and general GNU help.
+	* libltdl/config/ltmain.m4sh: Use @PACKAGE_BUGREPORT@ instead of
+	hard-coded list address.  Also mention Libtool home page and
+	general GNU help web page.
+	* libtoolize.m4sh: Likewise.
+
 2010-06-12  Peter Rosin  <peda@lysator.liu.se>
 	    Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 

@@ -75,7 +75,9 @@ m4_divert_push([SCRIPT])# @configure_input@
 #         automake:	$automake_version
 #         autoconf:	$autoconf_version
 #
-# Report bugs to <bug-libtool@gnu.org>.
+# Report bugs to <@PACKAGE_BUGREPORT@>.
+# GNU @PACKAGE@ home page: <@PACKAGE_URL@>.
+# General help using GNU software: <http://www.gnu.org/gethelp/>.
 
 PROGRAM=libtool
 PACKAGE=@PACKAGE@

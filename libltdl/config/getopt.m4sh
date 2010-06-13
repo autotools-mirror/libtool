@@ -546,6 +546,7 @@ func_help ()
     $opt_debug
 
     $SED -n '/^# Usage:/,/# Report bugs to/ {
+	:print
         s/^# //
 	s/^# *$//
 	s*\$progname*'$progname'*
@@ -558,7 +559,11 @@ func_help ()
 	s/\$automake_version/'"`(automake --version) 2>/dev/null |$SED 1q`"'/
 	s/\$autoconf_version/'"`(autoconf --version) 2>/dev/null |$SED 1q`"'/
 	p
-     }' < "$progpath"
+	d
+     }
+     /^# .* home page:/b print
+     /^# General help using/b print
+     ' < "$progpath"
     ret=$?
     if test -z "$1"; then
       exit $ret

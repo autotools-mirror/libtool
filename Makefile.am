@@ -126,6 +126,7 @@ edit = sed \
 	-e 's,@MACRO_VERSION\@,$(VERSION),g' \
 	-e 's,@PACKAGE\@,$(PACKAGE),g' \
 	-e 's,@PACKAGE_BUGREPORT\@,$(PACKAGE_BUGREPORT),g' \
+	-e 's,@PACKAGE_URL\@,$(PACKAGE_URL),g' \
 	-e 's,@PACKAGE_NAME\@,$(PACKAGE),g' \
 	-e 's,@PACKAGE_STRING\@,$(PACKAGE) $(VERSION),g' \
 	-e 's,@PACKAGE_TARNAME\@,$(PACKAGE),g' \
@@ -543,7 +544,7 @@ $(srcdir)/$(TESTSUITE): $(srcdir)/tests/package.m4 $(TESTSUITE_AT) Makefile.am
 	$(AUTOTEST) `echo $(TESTSUITE_AT) | sed 's,tests/,,g'` -o testsuite.tmp && \
 	mv -f testsuite.tmp testsuite
 
-$(srcdir)/tests/package.m4: $(srcdir)/configure.ac
+$(srcdir)/tests/package.m4: $(srcdir)/configure.ac Makefile.am
 	{ \
 	  echo '# Signature of the current package.'; \
 	  echo 'm4_define([AT_PACKAGE_NAME],      [@PACKAGE_NAME@])'; \
@@ -551,6 +552,7 @@ $(srcdir)/tests/package.m4: $(srcdir)/configure.ac
 	  echo 'm4_define([AT_PACKAGE_VERSION],   [@PACKAGE_VERSION@])'; \
 	  echo 'm4_define([AT_PACKAGE_STRING],    [@PACKAGE_STRING@])'; \
 	  echo 'm4_define([AT_PACKAGE_BUGREPORT], [@PACKAGE_BUGREPORT@])'; \
+	  echo 'm4_define([AT_PACKAGE_URL],       [@PACKAGE_URL@])'; \
 	} | $(edit) > $(srcdir)/tests/package.m4
 
 tests/atconfig: $(top_builddir)/config.status

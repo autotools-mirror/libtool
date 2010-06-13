@@ -1,6 +1,7 @@
 # Process this file with autoconf to create configure. -*- autoconf -*-
 
-#   Copyright (C) 2001, 2004, 2005, 2008 Free Software Foundation, Inc.
+#   Copyright (C) 2001, 2004, 2005, 2008, 2010 Free Software Foundation,
+#   Inc.
 #   Written by Gary V. Vaughan, 2001
 #
 #   This file is part of GNU Libtool.
@@ -30,7 +31,9 @@ dnl Oldest automake required for bootstrap is below in AM_INIT_AUTOMAKE.
 ## ------------------------ ##
 ## Autoconf initialisation. ##
 ## ------------------------ ##
-AC_INIT([libtool], [2.2.11a], [bug-libtool@gnu.org])
+AC_INIT([GNU Libtool], [2.2.11a], [bug-libtool@gnu.org])
+m4_ifndef([AC_PACKAGE_URL],
+	  [AC_SUBST([PACKAGE_URL], [http://www.gnu.org/software/libtool/])])
 AC_CONFIG_HEADERS([config.h:config-h.in])
 AC_CONFIG_SRCDIR([libtoolize.in])
 LT_CONFIG_LTDL_DIR([libltdl], [nonrecursive])
