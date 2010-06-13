@@ -1,3 +1,10 @@
+2010-06-14  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Enable colored Autotest testsuite output if available.
+	* tests/testsuite.at: Move AT_INIT call down to late in the
+	file, all prior code can go beforehand.
+	Call AT_COLOR_TESTS if defined.
+
 2010-06-14  Peter O'Gorman  <peter@pogma.com>
 
 	Pass resident test with --disable-shared too.

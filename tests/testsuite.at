@@ -1,6 +1,6 @@
 # Process with autom4te to create an -*- Autotest -*- test suite.
 #
-#   Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009 Free Software
+#   Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009, 2010 Free Software
 #   Foundation, Inc.
 #   Written by Gary V. Vaughan, 2004
 #
@@ -22,8 +22,6 @@
 # or obtained by writing to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 ####
-
-AT_INIT
 
 m4_divert_push([PREPARE_TESTS])dnl
 : ${tst_dist=dist}
@@ -440,6 +438,11 @@ m4_pattern_allow([^dnl$])
 
 # We exercise these tools.
 dnl AT_TESTED([grep autoreconf autom4te automake])
+
+# Enable colored output if available.
+m4_ifdef([AT_COLOR_TESTS], [AT_COLOR_TESTS])
+
+AT_INIT
 
 ## ----------- ##
 ## The suite.  ##
