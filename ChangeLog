@@ -1,5 +1,8 @@
 2010-06-13  Peter O'Gorman  <peter@pogma.com>
 
+	Avoid failure for --disable-shared.
+	* tests/lt_dladvise.at: Hack.
+
 	Use LTDL_SET_PRELOADED_SYMBOLS to avoid failure.
 	* tests/exceptions.at: Use it.
 
