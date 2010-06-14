@@ -1,3 +1,8 @@
+2010-06-14  Peter O'Gorman  <peter@pogma.com>
+
+	Pass resident test with --disable-shared too.
+	* tests/resident.at: use LTDL_SET_PRELOADED_SYMBOLS.
+
 2010-06-13  Peter O'Gorman  <peter@pogma.com>
 
 	Test with --disable-shared at release time too.

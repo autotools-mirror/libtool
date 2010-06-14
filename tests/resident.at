@@ -38,6 +38,8 @@ main (int argc, char* argv[])
   lt_dlhandle plugin_handle;
   lt_dladvise advise;
 
+  LTDL_SET_PRELOADED_SYMBOLS();
+
   if (argc < 2)
     {
       fprintf (stderr, "usage: %s plugin\n", argv[0]);
