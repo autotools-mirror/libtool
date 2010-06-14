@@ -224,6 +224,9 @@ int exceptions_in_module (void)
 
 int main (void)
 {
+
+  LTDL_SET_PRELOADED_SYMBOLS();
+
   if (exceptions_in_prog ())
     return 1;
   if (exceptions_in_lib ())

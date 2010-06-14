@@ -1,3 +1,8 @@
+2010-06-13  Peter O'Gorman  <peter@pogma.com>
+
+	Use LTDL_SET_PRELOADED_SYMBOLS to avoid failure.
+	* tests/exceptions.at: Use it.
+
 2010-06-13  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	Print Libtool project URL in program --help output.
