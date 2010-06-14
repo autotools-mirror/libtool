@@ -641,6 +641,7 @@ or obtained by writing to the Free Software Foundation, Inc.,
 * Run `make distcheck'
   and `make distcheck DISTCHECK_CONFIGURE_FLAGS=--disable-ltdl-install'
   and `make distcheck DISTCHECK_CONFIGURE_FLAGS=--program-prefix=g'
+  and `make distcheck DISTCHECK_CONFIGURE_FLAGS=--disable-shared'
   and `make distcheck CC=g++'
   If there are any problems, fix them and start again.
 

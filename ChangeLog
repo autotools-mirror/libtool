@@ -1,5 +1,8 @@
 2010-06-13  Peter O'Gorman  <peter@pogma.com>
 
+	Test with --disable-shared at release time too.
+	* HACKING: Note it.
+
 	Avoid failure for --disable-shared.
 	* tests/lt_dladvise.at: Hack.
 
