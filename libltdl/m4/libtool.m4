@@ -1658,10 +1658,10 @@ else
 /* When -fvisbility=hidden is used, assume the code has been annotated
    correspondingly for the symbols needed.  */
 #if defined(__GNUC__) && (((__GNUC__ == 3) && (__GNUC_MINOR__ >= 3)) || (__GNUC__ > 3))
-void fnord () __attribute__((visibility("default")));
+int fnord () __attribute__((visibility("default")));
 #endif
 
-void fnord () { int i=42; }
+int fnord () { return 42; }
 int main ()
 {
   void *self = dlopen (0, LT_DLGLOBAL|LT_DLLAZY_OR_NOW);
