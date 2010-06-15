@@ -7961,24 +7961,23 @@ func_mode_uninstall ()
 
     rmdirs=
 
-    origobjdir="$objdir"
     for file in $files; do
       func_dirname "$file" "" "."
       dir="$func_dirname_result"
       if test "X$dir" = X.; then
-	objdir="$origobjdir"
+	odir="$objdir"
       else
-	objdir="$dir/$origobjdir"
+	odir="$dir/$objdir"
       fi
       func_basename "$file"
       name="$func_basename_result"
-      test "$mode" = uninstall && objdir="$dir"
+      test "$mode" = uninstall && odir="$dir"
 
-      # Remember objdir for removal later, being careful to avoid duplicates
+      # Remember odir for removal later, being careful to avoid duplicates
       if test "$mode" = clean; then
 	case " $rmdirs " in
-	  *" $objdir "*) ;;
-	  *) rmdirs="$rmdirs $objdir" ;;
+	  *" $odir "*) ;;
+	  *) rmdirs="$rmdirs $odir" ;;
 	esac
       fi
 
@@ -8004,18 +8003,18 @@ func_mode_uninstall ()
 
 	  # Delete the libtool libraries and symlinks.
 	  for n in $library_names; do
-	    rmfiles="$rmfiles $objdir/$n"
+	    rmfiles="$rmfiles $odir/$n"
 	  done
-	  test -n "$old_library" && rmfiles="$rmfiles $objdir/$old_library"
+	  test -n "$old_library" && rmfiles="$rmfiles $odir/$old_library"
 
 	  case "$mode" in
 	  clean)
 	    case "  $library_names " in
 	    # "  " in the beginning catches empty $dlname
 	    *" $dlname "*) ;;
-	    *) rmfiles="$rmfiles $objdir/$dlname" ;;
+	    *) rmfiles="$rmfiles $odir/$dlname" ;;
 	    esac
-	    test -n "$libdir" && rmfiles="$rmfiles $objdir/$name $objdir/${name}i"
+	    test -n "$libdir" && rmfiles="$rmfiles $odir/$name $odir/${name}i"
 	    ;;
 	  uninstall)
 	    if test -n "$library_names"; then
@@ -8082,12 +8081,12 @@ func_mode_uninstall ()
 
 	    # note $name still contains .exe if it was in $file originally
 	    # as does the version of $file that was added into $rmfiles
-	    rmfiles="$rmfiles $objdir/$name $objdir/${name}S.${objext}"
+	    rmfiles="$rmfiles $odir/$name $odir/${name}S.${objext}"
 	    if test "$fast_install" = yes && test -n "$relink_command"; then
-	      rmfiles="$rmfiles $objdir/lt-$name"
+	      rmfiles="$rmfiles $odir/lt-$name"
 	    fi
 	    if test "X$noexename" != "X$name" ; then
-	      rmfiles="$rmfiles $objdir/lt-${noexename}.c"
+	      rmfiles="$rmfiles $odir/lt-${noexename}.c"
 	    fi
 	  fi
 	fi
@@ -8095,7 +8094,6 @@ func_mode_uninstall ()
       esac
       func_show_eval "$RM $rmfiles" 'exit_status=1'
     done
-    objdir="$origobjdir"
 
     # Try to remove the ${objdir}s in the directories where we deleted files
     for dir in $rmdirs; do

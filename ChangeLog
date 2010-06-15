@@ -1,3 +1,11 @@
+2010-06-15  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Fix cleaning of uninstalled w32 shell wrapper in subdirs.
+	* libltdl/config/ltmain.m4sh (func_mode_uninstall): Do not
+	override global objdir variable, instead use odir for the
+	directory of to-be-removed files.  Drop unneeded origobjdir.
+	Report by Charles Wilson.
+
 2010-06-14  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	Enable colored Autotest testsuite output if available.
