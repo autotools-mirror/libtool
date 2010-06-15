@@ -1,3 +1,16 @@
+2010-06-16  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Fix bootstrap script to cope with changed AC_INIT arguments.
+	* bootstrap: When extracting PACKAGE and VERSION from AC_INIT
+	arguments, be sure to remove a 'GNU ' prefix and lowercase the
+	package name for PACKAGE.  Also set PACKAGE_NAME and PACKAGE_URL
+	appropriately for GNU software.  Pass these variables to the
+	make commands creating tests/package.m4 and other files.
+	* Makefile.am (edit): Fix substitution of PACKAGE_NAME and
+	PACKAGE_STRING.
+	* libltdl/config/announce-gen.m4sh: Use @PACKAGE@ not
+	@PACKAGE_STRING@.
+
 2010-06-15  Peter Rosin  <peda@lysator.liu.se>
 
 	On Windows, find potential libs regardless of file name case.

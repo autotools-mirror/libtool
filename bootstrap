@@ -1,7 +1,8 @@
 #! /bin/sh
 # bootstrap -- Helps bootstrapping libtool, when checked out from repository.
 #
-#   Copyright (C) 2003, 2004, 2005, 2006, 2009 Free Software Foundation, Inc,
+#   Copyright (C) 2003, 2004, 2005, 2006, 2009, 2010 Free Software
+#   Foundation, Inc,
 #   Mritten by Gary V. Vaughan, 2003
 #
 #   This file is part of GNU Libtool.
@@ -116,9 +117,18 @@ fi
 set dummy `$SED -n '
     /AC_INIT/{
 	s/[][,()]/ /g
+	s/ GNU / /
 	p
     }' configure.ac`
 shift
+PACKAGE=`echo "$2" | tr ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz`
+PACKAGE_NAME=$2
+PACKAGE_URL=
+if grep 'AC_INIT.*GNU' configure.ac >/dev/null; then
+  PACKAGE_NAME="GNU $PACKAGE_NAME"
+  PACKAGE_URL="http://www.gnu.org/software/$PACKAGE/"
+fi
+VERSION=$3
 
 # Whip up a dirty Makefile:
 makes='Makefile.am libltdl/Makefile.inc'
@@ -135,13 +145,15 @@ rm -f $auxdir/ltmain.sh $m4dir/ltversion.m4
 $MAKE ./$auxdir/ltmain.sh ./$m4dir/ltversion.m4 \
     ./libtoolize.in ./tests/defs.in ./tests/package.m4 \
     ./tests/testsuite ./libltdl/Makefile.am ./doc/notes.txt \
-    srcdir=. top_srcdir=. PACKAGE="$2" VERSION="$3" \
-    PACKAGE_BUGREPORT="bug-$2@gnu.org" M4SH="$AUTOM4TE --language=m4sh" \
+    srcdir=. top_srcdir=. PACKAGE="$PACKAGE" VERSION="$VERSION" \
+    PACKAGE_NAME="$PACKAGE_NAME" PACKAGE_URL="$PACKAGE_URL" \
+    PACKAGE_BUGREPORT="bug-$PACKAGE@gnu.org" M4SH="$AUTOM4TE --language=m4sh" \
     AUTOTEST="$AUTOM4TE --language=autotest" SED="$SED" MAKEINFO="$MAKEINFO" \
     GREP="$GREP" FGREP="$FGREP" EGREP="$EGREP" LN_S="$LN_S"
 
 test -f clcommit.m4sh && $MAKE -f Makefile.maint ./commit \
-    srcdir=. top_srcdir=. PACKAGE="$2" VERSION="$3" M4SH="$AUTOM4TE -l m4sh" \
+    srcdir=. top_srcdir=. PACKAGE="$PACKAGE" VERSION="$VERSION" \
+    M4SH="$AUTOM4TE -l m4sh" \
     SED="$SED" GREP="$GREP" FGREP="$FGREP" EGREP="$EGREP" LN_S="$LN_S"
 
 rm -f Makefile

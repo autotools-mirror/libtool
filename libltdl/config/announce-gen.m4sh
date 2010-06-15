@@ -99,7 +99,7 @@ test -d "$top_srcdir" || top_srcdir='@top_srcdir@'
 
 # Initialisation:
 mailnotify_flags=
-package_name="@PACKAGE_NAME@"
+package_name="@PACKAGE@"
 sendmail_to=
 valid_release_types='alpha,beta,release-candidate,stable'
 
