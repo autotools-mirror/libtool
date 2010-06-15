@@ -5981,6 +5981,16 @@ and relinking at install time is triggered.  This also means that @var{DESTDIR}
 installation does not work as expected.
 @end defvar
 
+@defvar file_magic_glob
+How to find potential files when @code{deplibs_check_method} is
+@samp{file_magic}. @code{file_magic_glob} is a @code{sed} expression,
+and the @code{sed} instance is fed potential file names that are
+transformed by the @code{file_magic_glob} expression. Useful when the
+shell does not support the shell option @code{nocaseglob}, making
+@code{want_nocaseglob} inappropriate. Normally disabled (i.e.
+@code{file_magic_glob} is empty).
+@end defvar
+
 @defvar finish_cmds
 Commands to tell the dynamic linker how to find shared libraries in a
 specific directory.
@@ -6250,6 +6260,14 @@ libraries.
 The library version numbering type.  One of @samp{libtool},
 @samp{freebsd-aout}, @samp{freebsd-elf}, @samp{irix}, @samp{linux},
 @samp{osf}, @samp{sunos}, @samp{windows}, or @samp{none}.
+@end defvar
+
+@defvar want_nocaseglob
+Find potential files using the shell option @code{nocaseglob}, when
+@code{deplibs_check_method} is @samp{file_magic}. Normally set to
+@samp{no}. Set to @samp{yes} to enable the @code{nocaseglob} shell
+option when looking for potential file names in a case-insensitive
+manner.
 @end defvar
 
 @defvar whole_archive_flag_spec

@@ -1,3 +1,16 @@
+2010-06-15  Peter Rosin  <peda@lysator.liu.se>
+
+	On Windows, find potential libs regardless of file name case.
+	* libltdl/m4/libtool.m4 (_LT_CHECK_MAGIC_METHOD),
+	libltdl/config/ltmain.m4sh (func_mode_link): On Windows,
+	find potential libs regardless of file name case.
+	* tests/nocase.at: New test, to check for regressions
+	of the above.
+	* Makefile.am: Add above new test.
+	* doc/libtool.texi (libtool script contents): Document
+	new variables.
+	* NEWS: Updated.
+
 2010-06-15  Philip Allison  <philip.allison@smoothwall.net>  (tiny change)
 
 	Avoid GCC -Wall compiler warning in dlopen self test.

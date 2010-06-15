@@ -6381,8 +6381,20 @@ EOF
 	      fi
 	      if test -n "$a_deplib" ; then
 		libname=`eval "\\$ECHO \"$libname_spec\""`
+		if test -n "$file_magic_glob"; then
+		  libnameglob=`func_echo_all "$libname" | $SED -e $file_magic_glob`
+		else
+		  libnameglob=$libname
+		fi
+		test "$want_nocaseglob" = yes && nocaseglob=`shopt -p nocaseglob`
 		for i in $lib_search_path $sys_lib_search_path $shlib_search_path; do
-		  potential_libs=`ls $i/$libname[.-]* 2>/dev/null`
+		  if test "$want_nocaseglob" = yes; then
+		    shopt -s nocaseglob
+		    potential_libs=`ls $i/$libnameglob[.-]* 2>/dev/null`
+		    $nocaseglob
+		  else
+		    potential_libs=`ls $i/$libnameglob[.-]* 2>/dev/null`
+		  fi
 		  for potent_lib in $potential_libs; do
 		      # Follow soft links.
 		      if ls -lLd "$potent_lib" 2>/dev/null |

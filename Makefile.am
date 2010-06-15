@@ -477,6 +477,7 @@ TESTSUITE_AT	= tests/testsuite.at \
 		  tests/deplib-in-subdir.at \
 		  tests/infer-tag.at \
 		  tests/localization.at \
+		  tests/nocase.at \
 		  tests/install.at \
 		  tests/versioning.at \
 		  tests/destdir.at \

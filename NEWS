@@ -4,7 +4,8 @@ New in 2.2.12 2010-08-??: git version 2.2.11a, Libtool team:
 
 * New features:
 
-  - None!
+  - On non-cygwin Windows systems, we now lookup potential library
+    file names without regard to file name case.
 
 New in 2.2.10 2010-06-10: git version 2.2.9a, Libtool team:
 
