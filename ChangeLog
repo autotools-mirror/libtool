@@ -1,5 +1,10 @@
 2010-06-16  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	Optimize func_ltwrapper_scriptname to assume a cwrapper.
+	* libltdl/config/ltmain.m4sh (func_ltwrapper_scriptname): Do not
+	call func_ltwrapper_executable_p again here, this function is
+	documented to allow being called with wrapper executables.
+
 	Fix bootstrap script to cope with changed AC_INIT arguments.
 	* bootstrap: When extracting PACKAGE and VERSION from AC_INIT
 	arguments, be sure to remove a 'GNU ' prefix and lowercase the

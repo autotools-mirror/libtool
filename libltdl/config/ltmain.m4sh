@@ -516,12 +516,9 @@ func_ltwrapper_executable_p ()
 # temporary ltwrapper_script.
 func_ltwrapper_scriptname ()
 {
-    func_ltwrapper_scriptname_result=""
-    if func_ltwrapper_executable_p "$1"; then
-	func_dirname_and_basename "$1" "" "."
-	func_stripname '' '.exe' "$func_basename_result"
-	func_ltwrapper_scriptname_result="$func_dirname_result/$objdir/${func_stripname_result}_ltshwrapper"
-    fi
+    func_dirname_and_basename "$1" "" "."
+    func_stripname '' '.exe' "$func_basename_result"
+    func_ltwrapper_scriptname_result="$func_dirname_result/$objdir/${func_stripname_result}_ltshwrapper"
 }
 
 # func_ltwrapper_p file
