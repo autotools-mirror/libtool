@@ -8018,10 +8018,9 @@ func_mode_uninstall ()
 
 	  case "$mode" in
 	  clean)
-	    case "  $library_names " in
-	    # "  " in the beginning catches empty $dlname
+	    case " $library_names " in
 	    *" $dlname "*) ;;
-	    *) rmfiles="$rmfiles $odir/$dlname" ;;
+	    *) test -n "$dlname" && rmfiles="$rmfiles $odir/$dlname" ;;
 	    esac
 	    test -n "$libdir" && rmfiles="$rmfiles $odir/$name $odir/${name}i"
 	    ;;

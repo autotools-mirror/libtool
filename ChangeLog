@@ -1,5 +1,10 @@
 2010-06-20  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	Fix clean mode for HP-UX 11.31 sh.
+	* libltdl/config/ltmain.m4sh (func_mode_uninstall): Do not try
+	to match a null string in a case pattern, even with surrounding
+	spaces.  Fixes `lt_dlopenadvise library loading' test.
+
 	Add comment for exception handling module unloading issue.
 	* tests/exceptions.at (C++ exception handling): Add comment
 	for last patch.
