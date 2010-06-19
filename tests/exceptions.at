@@ -202,11 +202,17 @@ int exceptions_in_module (void)
       return 1;
     }
 
+  bool exception_caught = false;
   try {
     (*pf) ();
   }
   catch (modexc e) {
     std::cerr << "caught: " << e.what () << '\n';
+    exception_caught = true;
+  }
+
+  if (exception_caught)
+  {
     if (lt_dlclose (handle))
       {
         std::cerr << "dlclose failed: " << lt_dlerror () << '\n';

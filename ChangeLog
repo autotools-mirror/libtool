@@ -1,3 +1,13 @@
+2010-06-19  Charles Wilson  <libtool@cwilson.fastmail.fm>
+
+	[cygwin] Fix segfault in C++ exception handling test
+	* tests/exceptions.at (main.cpp:exceptions_in_module):
+	Move dlclose outside catch block; otherwise __cxa_end_catch
+	(part of the cygwin g++ ABI) accesses pointers to data inside
+	unloaded DLL. This is a platform ABI-specific bug, but is
+	likely common to many platforms' g++ and/or other C++
+	compilers.
+
 2010-06-19  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	Fix srcdir computation for manual runs of old tests.
