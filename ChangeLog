@@ -1,3 +1,17 @@
+2010-06-19  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Use config.cache variable for PIC flag, to allow override.
+	* libltdl/m4/libtool.m4 (_LT_COMPILER_PIC) <lt_prog_compiler_pic>:
+	Save result, and allow override, through cache variable
+	lt_cv_prog_compiler_pic{,_CXX,_F77,_FC}.  The cache variable
+	needs to contain an eventual -DPIC.
+	* doc/libtool.texi (): Document it.
+	* tests/pic_flag.at (override pic_flag at configure time):
+	New file, new test.
+	* Makefile.am (TESTSUITE_AT): Update.
+	* NEWS, THANKS: Update.
+	Suggestion by Joakim Tjernlund and Paolo Bonzini.
+
 2010-06-16  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	Optimize func_ltwrapper_scriptname to assume a cwrapper.

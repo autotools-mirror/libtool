@@ -509,6 +509,7 @@ TESTSUITE_AT	= tests/testsuite.at \
 		  tests/configure-iface.at \
 		  tests/stresstest.at \
 		  tests/cmdline_wrap.at \
+		  tests/pic_flag.at \
 		  tests/darwin.at \
 		  tests/deplibs-mingw.at
 
