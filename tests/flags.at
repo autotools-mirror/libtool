@@ -73,8 +73,8 @@ AT_CHECK([$LIBTOOL --tag=lt_tag --mode=compile $compile -c $source],
 # Linker flags are prefixed with ${wl} iff they are passed to the
 # compiler driver, instead of directly to the linker.
 case $archive_cmds in
-*\$LD*\$linker_flags*) maybe_wl= ;;
-*) maybe_wl=$wl ;;
+*\$LD*\$linker_flags*) maybe_wl= compiler_flags_in_liblink=false ;;
+*) maybe_wl=$wl compiler_flags_in_liblink=: ;;
 esac
 
 for flag in -Wc, -Wl, '-Xcompiler ' '-Xlinker '; do
@@ -83,19 +83,32 @@ for flag in -Wc, -Wl, '-Xcompiler ' '-Xlinker '; do
     AT_CHECK([$LIBTOOL -n --tag=lt_tag --mode=compile $compile ]dnl
 	     [$flag-foo -c $source], [], [stdout], [ignore])
     AT_CHECK([$FGREP " -foo" stdout], [], [ignore])
-    flag_prefix=
+    flag_prefix_prog=
+    flag_prefix_lib=
+    flags_in_liblink=$compiler_flags_in_liblink
     ;;
   -Wl, | -Xlinker\ )
-    flag_prefix=$maybe_wl
+    flag_prefix_prog=$wl
+    flag_prefix_lib=$maybe_wl
+    flags_in_liblink=:
     ;;
   esac
 
-  eval set program$EXEEXT "$library_and_module"
+  AT_CHECK([$LIBTOOL -n --tag=lt_tag --mode=link $link ]dnl
+	   [-o program$EXEEXT a.lo $flag-foo], [], [stdout], [ignore])
+  AT_CHECK([$FGREP " $flag_prefix_prog-foo" stdout], [], [ignore])
+
+  eval set x "$library_and_module"
   for output
   do
+    test x = "$output" && continue
     AT_CHECK([$LIBTOOL -n --tag=lt_tag --mode=link $link ]dnl
 	     [-o $output a.lo -rpath /nowhere $flag-foo], [], [stdout], [ignore])
-    AT_CHECK([$FGREP " $flag_prefix-foo" stdout], [], [ignore])
+    if $flags_in_liblink; then
+      AT_CHECK([$FGREP " $flag_prefix_lib-foo" stdout], [], [ignore])
+    else
+      AT_CHECK([$FGREP " $flag_prefix_lib-foo" stdout], [1])
+    fi
   done
 done
 

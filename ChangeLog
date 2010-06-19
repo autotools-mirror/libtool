@@ -1,3 +1,12 @@
+2010-06-20  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Fix flags test failure when ld is used as linker.
+	* tests/flags.at (passing CC flags through libtool): When $LD
+	is used for linking libraries, ensure flags passed with `-Wc,'
+	are not passed through to $LD, but flags passed with `-Wl,' use
+	$wl when linking programs.  Fixed testsuite failure on HP-UX
+	10.20.
+
 2010-06-19  Charles Wilson  <libtool@cwilson.fastmail.fm>
 
 	[cygwin] Fix segfault in C++ exception handling test
