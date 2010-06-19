@@ -1,5 +1,9 @@
 2010-06-19  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	Fix srcdir computation for manual runs of old tests.
+	* tests/defs.m4sh: Strip trailing `/tests' from srcdir, to allow
+	`$srcdir/tests/FOO.test' to be run from the top build directory.
+
 	Clean up @var handling in the manual.
 	* doc/libtool.texi: Throughout the manual, replace @var with
 	@samp or @code as appropriate, ensure the argument of remaining
