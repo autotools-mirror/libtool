@@ -1609,7 +1609,7 @@ passes through commas unchanged.
 Pass a linker-specific flag directly to the linker.
 
 @item -XCClinker @var{flag}
-Pass a link-specific flag to the compiler driver (@var{CC}) during linking.
+Pass a link-specific flag to the compiler driver (@code{CC}) during linking.
 @end table
 
 If the @var{output-file} ends in @samp{.la}, then a libtool library is
@@ -1668,13 +1668,13 @@ The following components of @var{mode-args} are treated specially:
 @table @option
 @item -inst-prefix-dir @var{inst-prefix-dir}
 When installing into a temporary staging area, rather than the
-final @var{prefix}, this argument is used to reflect the
+final @code{prefix}, this argument is used to reflect the
 temporary path, in much the same way @command{automake} uses
-@var{DESTDIR}.  For instance, if @var{prefix} is @file{/usr/local},
+@env{DESTDIR}.  For instance, if @code{prefix} is @file{/usr/local},
 but @var{inst-prefix-dir} is @file{/tmp}, then the object will be
 installed under @file{/tmp/usr/local/}.  If the installed object
 is a libtool library, then the internal fields of that library
-will reflect only @var{prefix}, not @var{inst-prefix-dir}:
+will reflect only @code{prefix}, not @var{inst-prefix-dir}:
 
 @example
 # Directory that this library needs to be installed in:
@@ -1690,8 +1690,8 @@ libdir='/tmp/usr/local/lib'
 
 @code{inst-prefix} is also used to insure that if the installed
 object must be relinked upon installation, that it is relinked
-against the libraries in @var{inst-prefix-dir}/@var{prefix},
-not @var{prefix}.
+against the libraries in @var{inst-prefix-dir}/@code{prefix},
+not @code{prefix}.
 
 In truth, this option is not really intended for use when calling
 libtool directly; it is automatically used when @code{libtool --mode=install}
@@ -1923,10 +1923,10 @@ First, to link a program against a libtool library, just use the
 @c
 Since GNU Automake 1.5, the flags @option{-dlopen}
 or @option{-dlpreopen} (@pxref{Link mode}) can be employed with the
-@var{program_LDADD} variable.  Unfortunately, older releases didn't
+@samp{program_LDADD} variable.  Unfortunately, older releases didn't
 accept these flags, so if you are stuck with an ancient Automake, we
 recommend quoting the flag itself, and setting
-@var{program_DEPENDENCIES} too:
+@samp{program_DEPENDENCIES} too:
 
 @example
 program_LDADD = "-dlopen" libfoo.la
@@ -2007,7 +2007,7 @@ adds many new tests to the @code{configure} script so that the generated
 libtool script will understand the characteristics of the host.  It's the
 most important of a number of macros defined by Libtool:
 
-@defmac LT_PREREQ (@var{VERSION})
+@defmac LT_PREREQ (@var{version})
 Ensure that a recent enough version of Libtool is being used.  If the
 version of Libtool used for @code{LT_INIT} is earlier than
 @var{version}, print an error message to the standard
@@ -2018,7 +2018,7 @@ LT_PREREQ([@value{VERSION}])
 @end example
 @end defmac
 
-@defmac LT_INIT (@var{OPTIONS})
+@defmac LT_INIT (@var{options})
 @defmacx AC_PROG_LIBTOOL
 @defmacx AM_PROG_LIBTOOL
 Add support for the @option{--enable-shared} and @option{--disable-shared}
@@ -2065,8 +2065,8 @@ behaves similarly, but it uses @option{--enable-static} and
 The package name @samp{default} matches any packages that have not set
 their name in the @code{PACKAGE} environment variable.
 
-This macro also sets the shell variable @var{LIBTOOL_DEPS}, that you can
-use to automatically update the libtool script if it becomes
+This macro also sets the shell variable @code{LIBTOOL_DEPS}, that you
+can use to automatically update the libtool script if it becomes
 out-of-date.  In order to do that, add to your @file{configure.ac}:
 
 @example
@@ -2156,7 +2156,7 @@ specifying @option{--with-pic} to @command{configure}.
 
 @end defmac
 
-@defmac LT_LANG (@var{LANGUAGE})
+@defmac LT_LANG (@var{language})
 Enable @command{libtool} support for the language given if it
 has not yet already been enabled.  Languages accepted are ``C++'',
 ``Fortran 77'', ``Java'' and ``Windows Resource''.
@@ -2260,7 +2260,7 @@ runs tests, not the produced @code{libtool}.
 @defvar LD
 The system linker to use (if the generated @code{libtool} requires one).
 If this is not set, @code{LT_INIT} will try to find out what is
-the linker used by @var{CC}.
+the linker used by @code{CC}.
 @end defvar
 
 @defvar LDFLAGS
@@ -2456,8 +2456,8 @@ overwrite existing files.
 @item --help
 Display a help message and exit.
 
-@item --ltdl [@var{TARGET-DIRECTORY-NAME}]
-Install libltdl in the @var{TARGET-DIRECTORY-NAME} subdirectory of
+@item --ltdl [@var{target-directory-name}]
+Install libltdl in the @var{target-directory-name} subdirectory of
 your package.  Normally, the directory is extracted from the argument
 to @code{LT_CONFIG_LTDL_DIR} in @file{configure.ac}, though you can
 also specify a subdirectory name here if you are not using Autoconf
@@ -3396,7 +3396,7 @@ generic pointer to the appropriate object, such as @code{&fprintf}.
 @end deftp
 
 @deftypevar {const lt_dlsymlist } lt_preloaded_symbols[]
-An array of @var{lt_dlsymlist} structures, representing all the preloaded
+An array of @code{lt_dlsymlist} structures, representing all the preloaded
 symbols linked into the program proper.  For each module
 @option{-dlpreopen}ed by the Libtool linked program
 there is an element with the @var{name} of the module and an @var{address}
@@ -3414,7 +3414,7 @@ Some compilers may allow identifiers that are not valid in ANSI C, such
 as dollar signs.  Libtool only recognizes valid ANSI C symbols (an
 initial ASCII letter or underscore, followed by zero or more ASCII
 letters, digits, and underscores), so non-ANSI symbols will not appear
-in @var{lt_preloaded_symbols}.
+in @code{lt_preloaded_symbols}.
 
 @deftypefun int lt_dlpreload (const lt_dlsymlist *@var{preloaded})
 Register the list of preloaded modules @var{preloaded}.
@@ -3840,11 +3840,11 @@ functions @code{lt_dlsetsearchpath}, @code{lt_dladdsearchdir} and
 
 @item libltdl's search path:
 This search path is the value of the environment variable
-@var{LTDL_LIBRARY_PATH}.
+@env{LTDL_LIBRARY_PATH}.
 
 @item system library search path:
 The system dependent library search path
-(e.g.@: on Linux it is @var{LD_LIBRARY_PATH}).
+(e.g.@: on Linux it is @env{LD_LIBRARY_PATH}).
 @end enumerate
 
 Each search path must be a list of absolute directories separated by
@@ -4516,14 +4516,14 @@ if (lt_dlloader_add (lt_dlloader_find ("dlopen"), myloader) != 0)
 @end deftypefun
 
 @deftypefun {const char *}lt_dlloader_name (@w{lt_dlloader *@var{place}})
-Return the identifying name of @var{PLACE}, as obtained from
+Return the identifying name of @var{place}, as obtained from
 @code{lt_dlloader_next} or @code{lt_dlloader_find}.  If this function fails,
 it will return @code{NULL} and set an error for retrieval with
 @code{lt_dlerror}.
 @end deftypefun
 
 @deftypefun {lt_user_data *}lt_dlloader_data (@w{lt_dlloader *@var{place}})
-Return the address of the @code{dlloader_data} of @var{PLACE}, as
+Return the address of the @code{dlloader_data} of @var{place}, as
 obtained from @code{lt_dlloader_next} or @code{lt_dlloader_find}.  If
 this function fails, it will return @code{NULL} and set an error for
 retrieval with @code{lt_dlerror}.
@@ -4595,8 +4595,8 @@ or against both a local convenience library and an installed libltdl
 is bad.  Ensuring that only one copy of the libltdl sources are linked
 into any program is left as an exercise for the reader.
 
-@defmac LT_CONFIG_LTDL_DIR (@var{DIRECTORY})
-Declare @var{DIRECTORY} to be the location of the @code{libltdl}
+@defmac LT_CONFIG_LTDL_DIR (@var{directory})
+Declare @var{directory} to be the location of the @code{libltdl}
 source files, for @command{libtoolize --ltdl} to place
 them. @xref{Invoking libtoolize}, for more details.  Provided that you
 add an appropriate @code{LT_CONFIG_LTDL_DIR} call in your
@@ -4604,7 +4604,7 @@ add an appropriate @code{LT_CONFIG_LTDL_DIR} call in your
 appropriate @code{libltdl} files will be installed automatically.
 @end defmac
 
-@defmac LTDL_INIT (@var{OPTIONS})
+@defmac LTDL_INIT (@var{options})
 @defmacx LT_WITH_LTDL
 @defmacx AC_WITH_LTDL
 @code{AC_WITH_LTDL} and @code{LT_WITH_LTDL} are deprecated names for
@@ -4615,14 +4615,14 @@ This macro adds the following options to the @command{configure}
 script:
 
 @table @option
-@item --with-ltdl-include @var{INSTALLED-LTDL-HEADER-DIR}
+@item --with-ltdl-include @var{installed-ltdl-header-dir}
 The @code{LTDL_INIT} macro will look in the standard header file
 locations to find the installed @code{libltdl} headers.  If
 @code{LTDL_INIT} can't find them by itself, the person who builds
 your package can use this option to tell @command{configure} where
 the installed @code{libltdl} headers are.
 
-@item --with-ltdl-lib @var{INSTALLED-LTDL-LIBRARY-DIR}
+@item --with-ltdl-lib @var{installed-ltdl-library-dir}
 Similarly, the person building your package can use this option to
 help @command{configure} find the installed @file{libltdl.la}.
 
@@ -4674,7 +4674,7 @@ if test "x$with_included_ltdl" != "xyes"; then
 fi
 @end example
 
-@var{OPTIONS} may include no more than one of the following build
+@var{options} may include no more than one of the following build
 modes depending on how you want your project to build @code{libltdl}:
 @samp{nonrecursive}, @samp{recursive}, or @samp{subproject}.  In order
 for @command{libtoolize} to detect this option correctly, if you
@@ -4828,10 +4828,10 @@ installed to the same directory if you use this option.
 @end defmac
 
 Whatever method you use, @samp{LTDL_INIT} will define the shell variable
-@var{LIBLTDL} to the link flag that you should use to link with
-@code{libltdl}, the shell variable @var{LTDLDEPS} to the files that
+@code{LIBLTDL} to the link flag that you should use to link with
+@code{libltdl}, the shell variable @code{LTDLDEPS} to the files that
 can be used as a dependency in @file{Makefile} rules, and the shell
-variable @var{LTDLINCL} to the preprocessor flag that you should use to
+variable @code{LTDLINCL} to the preprocessor flag that you should use to
 compile programs that include @file{ltdl.h}. So, when you want to link a
 program with libltdl, be it a convenience, installed or installable
 library, just use @samp{$(LTDLINCL)} for preprocessing and compilation,
@@ -4840,24 +4840,24 @@ and @samp{$(LIBLTDL)} for linking.
 @itemize @bullet
 @item
 If your package is built using an installed version of @code{libltdl},
-@var{LIBLTDL} will be set to the compiler flags needed to link against
-the installed library, @var{LTDLDEPS} will be empty, and @var{LTDLINCL}
+@code{LIBLTDL} will be set to the compiler flags needed to link against
+the installed library, @code{LTDLDEPS} will be empty, and @code{LTDLINCL}
 will be set to the compiler flags needed to find the @code{libltdl}
 header files.
 
 @item
-If your package is built using the convenience libltdl, @var{LIBLTDL}
-and @var{LTDLDEPS} will be the pathname for the convenience version of
+If your package is built using the convenience libltdl, @code{LIBLTDL}
+and @code{LTDLDEPS} will be the pathname for the convenience version of
 libltdl (starting with @samp{$@{top_builddir@}/} or
-@samp{$@{top_build_prefix@}}) and @var{LTDLINCL} will be @option{-I}
+@samp{$@{top_build_prefix@}}) and @code{LTDLINCL} will be @option{-I}
 followed by the directory that contains @file{ltdl.h} (starting with
 @samp{$@{top_srcdir@}/}).
 
 @item
 If an installable version of the included @code{libltdl} is being
 built, its pathname starting with @samp{$@{top_builddir@}/} or
-@samp{$@{top_build_prefix@}}, will be stored in @var{LIBLTDL} and
-@var{LTDLDEPS}, and @var{LTDLINCL} will be set just like in the case of
+@samp{$@{top_build_prefix@}}, will be stored in @code{LIBLTDL} and
+@code{LTDLDEPS}, and @code{LTDLINCL} will be set just like in the case of
 convenience library.
 @end itemize
 
@@ -5113,8 +5113,8 @@ correspond to libtool's own notion of how your linker behaves.
 @itemx depdemo-relink.test
 @pindex demo-relink.test
 @pindex depdemo-relink.test
-These tests check whether variable @var{shlibpath_overrides_runpath} is
-properly set.  If the test fails and @var{VERBOSE} is set, it will
+These tests check whether variable @code{shlibpath_overrides_runpath} is
+properly set.  If the test fails and @env{VERBOSE} is set, it will
 indicate what the variable should have been set to.
 
 @item demo-noinst-link.test
@@ -5236,7 +5236,7 @@ These programs check to see that the @file{tests/pdemo} subdirectory of
 the libtool distribution can be configured, built, and executed
 correctly.
 
-The @file{pdemo-conf.test} lowers the @var{max_cmd_len} variable in the
+The @file{pdemo-conf.test} lowers the @code{max_cmd_len} variable in the
 generated libtool script to test the measures to evade command line
 length limitations.
 
@@ -5401,7 +5401,7 @@ a normal program.  When the test is invoked in this way, it produces
 output that may be useful in determining what the problem is.
 
 Another way to have the test programs produce output is to set the
-@var{VERBOSE} environment variable to @samp{yes} before running them.
+@env{VERBOSE} environment variable to @samp{yes} before running them.
 For example, @kbd{env VERBOSE=yes make check} runs all the tests, and
 has each of them display debugging information.
 
@@ -5410,7 +5410,7 @@ The new, Autotest-based test suite produces as output a file
 tests.
 
 You can pass options to the test suite through the @command{make}
-variable @var{TESTSUITEFLAGS} (@pxref{testsuite Invocation, ,
+variable @env{TESTSUITEFLAGS} (@pxref{testsuite Invocation, ,
 The Autoconf Manual, autoconf, The Autoconf Manual}).
 
 
@@ -5559,7 +5559,7 @@ writes libtool makes sure @samp{$deplibs} is included in
 looks in the library link path for libraries that have the right
 libname.  Then it runs @samp{$file_magic_cmd} on the library and checks
 for a match against the extended regular expression @var{regex}.  When
-@var{file_magic_test_file} is set by @file{libtool.m4}, it is used as an
+@code{file_magic_test_file} is set by @file{libtool.m4}, it is used as an
 argument to @samp{$file_magic_cmd} in order to verify whether the
 regular expression matches its output, and warn the user otherwise.
 
@@ -5859,7 +5859,7 @@ aren't defined in that library.
 
 @defvar always_export_symbols
 Whether libtool should automatically generate a list of exported symbols
-using @var{export_symbols_cmds} before linking an archive.
+using @code{export_symbols_cmds} before linking an archive.
 Set to @samp{yes} or @samp{no}.  Default is @samp{no}.
 @end defvar
 
@@ -5881,11 +5881,11 @@ not used.
 If a static library must be created from the export symbol list in order to
 correctly link with a shared library, @samp{old_archive_from_expsyms_cmds}
 contains the commands needed to create that static library.  When these
-commands are executed, the variable @var{soname} contains the name of the
-shared library in question, and the @var{$objdir/$newlib} contains the
+commands are executed, the variable @code{soname} contains the name of the
+shared library in question, and the @samp{$objdir/$newlib} contains the
 path of the static library these commands should build.  After executing
-these commands, libtool will proceed to link against @var{$objdir/$newlib}
-instead of @var{soname}.
+these commands, libtool will proceed to link against @samp{$objdir/$newlib}
+instead of @code{soname}.
 @end defvar
 
 @defvar lock_old_archive_extraction
@@ -5948,13 +5948,13 @@ symbols that are defined in the program.
 @end defvar
 
 @defvar export_symbols_cmds
-Commands to extract exported symbols from @var{libobjs} to the
-file @var{export_symbols}.
+Commands to extract exported symbols from @code{libobjs} to the
+file @code{export_symbols}.
 @end defvar
 
 @defvar extract_expsyms_cmds
 Commands to extract the exported symbols list from a shared library.
-These commands are executed if there is no file @var{$objdir/$soname-def},
+These commands are executed if there is no file @samp{$objdir/$soname-def},
 and should write the names of the exported symbols to that file, for
 the use of @samp{old_archive_from_expsyms_cmds}.
 @end defvar
@@ -5963,9 +5963,9 @@ the use of @samp{old_archive_from_expsyms_cmds}.
 Determines whether libtool will privilege the installer or the
 developer.  The assumption is that installers will seldom run programs
 in the build tree, and the developer will seldom install.  This is only
-meaningful on platforms where @var{shlibpath_overrides_runpath} is
-not @samp{yes}, so @var{fast_install} will be set to @samp{needless} in
-this case.  If @var{fast_install} set to @samp{yes}, libtool will create
+meaningful on platforms where @code{shlibpath_overrides_runpath} is
+not @samp{yes}, so @code{fast_install} will be set to @samp{needless} in
+this case.  If @code{fast_install} set to @samp{yes}, libtool will create
 programs that search for installed libraries, and, if a program is run
 in the build tree, a new copy will be linked on-demand to use the
 yet-to-be-installed libraries.  If set to @samp{no}, libtool will create
@@ -5976,8 +5976,8 @@ flags, and it can be turned from @samp{yes} to @samp{no} with the
 configure flag @option{--disable-fast-install}.
 
 On some systems, the linker always hardcodes paths to dependent libraries
-into the output.  In this case, @var{fast_install} is never set to @samp{yes},
-and relinking at install time is triggered.  This also means that @var{DESTDIR}
+into the output.  In this case, @code{fast_install} is never set to @samp{yes},
+and relinking at install time is triggered.  This also means that @env{DESTDIR}
 installation does not work as expected.
 @end defvar
 
@@ -5997,7 +5997,7 @@ specific directory.
 @end defvar
 
 @defvar finish_eval
-Same as @var{finish_cmds}, except the commands are not displayed.
+Same as @code{finish_cmds}, except the commands are not displayed.
 @end defvar
 
 @defvar fix_srcfile_path
@@ -6005,7 +6005,7 @@ Expression to fix the shell variable @samp{$srcfile} for the compiler.
 @end defvar
 
 @defvar global_symbol_pipe
-A pipeline that takes the output of @var{NM}, and produces a listing of
+A pipeline that takes the output of @code{NM}, and produces a listing of
 raw symbols followed by their C names.  For example:
 
 @example
@@ -6022,7 +6022,7 @@ but its meaning is system dependent.
 @end defvar
 
 @defvar global_symbol_to_cdecl
-A pipeline that translates the output of @var{global_symbol_pipe} into
+A pipeline that translates the output of @code{global_symbol_pipe} into
 proper C declarations.  Since some platforms, such as HP/UX, have
 linkers that differentiate code from data, data symbols are declared
 as data, and code symbols are declared as functions.
@@ -6038,13 +6038,13 @@ or if they need to be relinked.
 Set to @samp{yes} or @samp{no}, depending on whether the linker
 hardcodes directories if a library is directly specified on the command
 line (such as @samp{@var{dir}/lib@var{name}.a}) when
-@var{hardcode_libdir_flag_spec} is specified.
+@code{hardcode_libdir_flag_spec} is specified.
 @end defvar
 
 @defvar hardcode_direct_absolute
 Some architectures hardcode "absolute" library directories that can not
-be overridden by @var{shlibpath_var} when @var{hardcode_direct} is
-@samp{yes}.  In that case set @var{hardcode_direct_absolute} to
+be overridden by @code{shlibpath_var} when @code{hardcode_direct} is
+@samp{yes}.  In that case set @code{hardcode_direct_absolute} to
 @samp{yes}, or otherwise @samp{no}.
 @end defvar
 
@@ -6055,13 +6055,13 @@ need to be relinked during installation.  Set to @samp{yes} or @samp{no}.
 @end defvar
 
 @defvar hardcode_libdir_flag_spec
-Flag to hardcode a @var{libdir} variable into a binary, so that the
-dynamic linker searches @var{libdir} for shared libraries at runtime.
+Flag to hardcode a @code{libdir} variable into a binary, so that the
+dynamic linker searches @code{libdir} for shared libraries at runtime.
 If it is empty, libtool will try to use some other hardcoding mechanism.
 @end defvar
 
 @defvar hardcode_libdir_separator
-If the compiler only accepts a single @var{hardcode_libdir_flag}, then
+If the compiler only accepts a single @code{hardcode_libdir_flag}, then
 this variable contains the string that should separate multiple
 arguments to that flag.
 @end defvar
@@ -6069,13 +6069,13 @@ arguments to that flag.
 @defvar hardcode_minus_L
 Set to @samp{yes} or @samp{no}, depending on whether the linker
 hardcodes directories specified by @option{-L} flags into the resulting
-executable when @var{hardcode_libdir_flag_spec} is specified.
+executable when @code{hardcode_libdir_flag_spec} is specified.
 @end defvar
 
 @defvar hardcode_shlibpath_var
 Set to @samp{yes} or @samp{no}, depending on whether the linker
 hardcodes directories by writing the contents of @samp{$shlibpath_var}
-into the resulting executable when @var{hardcode_libdir_flag_spec} is
+into the resulting executable when @code{hardcode_libdir_flag_spec} is
 specified.  Set to @samp{unsupported} if directories specified by
 @samp{$shlibpath_var} are searched at run time, but not at link time.
 @end defvar
@@ -6088,7 +6088,7 @@ configured for.
 @end defvar
 
 @defvar include_expsyms
-List of symbols that must always be exported when using @var{export_symbols}.
+List of symbols that must always be exported when using @code{export_symbols}.
 @end defvar
 
 @defvar inherit_rpath
@@ -6245,7 +6245,7 @@ that appear in this list are never hard-coded into executables.
 Expression to get the compile-time system library search path.  This
 variable is used by libtool when it has to test whether a certain
 library is shared or static.  The directories listed in
-@var{shlibpath_var} are automatically appended to this list, every time
+@code{shlibpath_var} are automatically appended to this list, every time
 libtool runs (i.e., not at configuration time), because some linkers use
 this variable to extend the library search path.  Linker switches such
 as @option{-L} also augment the search path.
@@ -6303,13 +6303,13 @@ than having to trust second-hand observation.
 @item
 Rather than reconfiguring libtool every time I make a change to
 @code{ltmain.in}, I keep a permanent @code{libtool} script in my
-@var{PATH}, which sources @code{ltmain.in} directly.
+@env{PATH}, which sources @code{ltmain.in} directly.
 
 The following steps describe how to create such a script, where
 @code{/home/src/libtool} is the directory containing the libtool source
 tree, @code{/home/src/libtool/libtool} is a libtool script that has been
 configured for your platform, and @code{~/bin} is a directory in your
-@var{PATH}:
+@env{PATH}:
 
 @example
 trick$ cd ~/bin

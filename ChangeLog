@@ -1,5 +1,10 @@
 2010-06-19  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	Clean up @var handling in the manual.
+	* doc/libtool.texi: Throughout the manual, replace @var with
+	@samp or @code as appropriate, ensure the argument of remaining
+	@var uses are lower-case.
+
 	Let the bootstrap script fail upon errors.
 	* bootstrap: Enable errexit.
 
