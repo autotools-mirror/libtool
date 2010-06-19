@@ -24,6 +24,9 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 ####
 
+# Exit upon failure.
+set -e
+
 # It is okay for the bootstrap process to require unreleased autoconf
 # or automake, as long as any released libtool will work with at least
 # the newest stable versions of each.  Generally, newer versions offer

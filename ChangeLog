@@ -1,5 +1,8 @@
 2010-06-19  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	Let the bootstrap script fail upon errors.
+	* bootstrap: Enable errexit.
+
 	Fix execute mode test for OSF/1 5.1.
 	* tests/execute-mode.at (execute mode): Do not use grep -F
 	with an empty pattern.
