@@ -1,5 +1,9 @@
 2010-06-20  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	Add comment for exception handling module unloading issue.
+	* tests/exceptions.at (C++ exception handling): Add comment
+	for last patch.
+
 	Fix flags test failure when ld is used as linker.
 	* tests/flags.at (passing CC flags through libtool): When $LD
 	is used for linking libraries, ensure flags passed with `-Wc,'

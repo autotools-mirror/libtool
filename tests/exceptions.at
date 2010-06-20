@@ -211,6 +211,7 @@ int exceptions_in_module (void)
     exception_caught = true;
   }
 
+  /* Only close the module after all of its objects have gone out of scope. */
   if (exception_caught)
   {
     if (lt_dlclose (handle))
