@@ -1,3 +1,22 @@
+2010-06-24  Charles Wilson  <libtool@cwilson.fastmail.fm>
+
+	[cygwin] Refactor C++ exception handling for Win32 correctness
+	* tests/exception.at (common.h): New file, refactored from
+	(module.h): Move declaration of modexc to libcommon.
+	Include common.h. Use explicit import/export markings for
+	symbols when building on win32 or cygwin.
+	(common.cpp): New file.
+	(module.cpp): Ensure correct symbols markings when including
+	module.h.
+	(lib.h): Use explicit import/export markings for symbols
+	when building on win32 or cygwin.
+	(lib.cpp): Ensure correct symbol markings when including lib.h.
+	(main.cpp): Include common.h.
+	(commands): Ensure correct symbol markings when compiling
+	main.cpp, and lib.cpp, and module.cpp. Add command to compile
+	common.cpp, and to link libcommon.la.  Add libcommon.la when
+	linking module.la and main.  Add command to install libcommon.la.
+
 2010-06-21  Gary V. Vaughan  <gary@gnu.org>
 
 	Ensure getopts.m4sh is compatible with Autoconf-2.61 and newer.
