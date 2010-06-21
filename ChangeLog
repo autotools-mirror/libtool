@@ -1,3 +1,13 @@
+2010-06-21  Gary V. Vaughan  <gary@gnu.org>
+
+	Ensure getopts.m4sh is compatible with Autoconf-2.61 and newer.
+	* libltdl/config/getopt.m4sh (m4_chomp): Ensure this macro is
+	implemented even if Autoconf's m4sugar.m4 doesn't provide it.
+	(m4go_expand): New macro based on Autoconf-2.64 m4_expand. Use
+	it everywhere incase m4sugar.m4 doesn't have an implementation.
+	(m4_ifnblank): Replace all uses with m4_ifval, which was
+	available long before m4_ifnblank was introduced.
+
 2010-06-20  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	Fix clean mode for HP-UX 11.31 sh.

@@ -44,8 +44,46 @@ m4_include([general.m4sh])m4_divert_push([KILL])	-*- Autoconf -*-
 # All internal macros begin with `m4go_'.
 m4_pattern_forbid([^_?m4go_])
 
+
+## --------------------------- ##
+## 1. Backwards compatibility. ##
+## --------------------------- ##
+
+# m4_chomp(STRING)
+# ----------------
+# m4_chomp was not introduced until Autoconf-2.64.  Currently we
+# only use it indirectly via m4go_expand, below.  This implementation
+# is taken from Autoconf-2.65.
+m4_ifndef([m4_chomp],
+[m4_define([m4_chomp],
+[m4_format([[%.*s]], m4_index(m4_translit([[$1]], [
+/.], [/  ])[./.], [/.]), [$1])])])
+
+# m4go_expand(ARG)
+# ----------------
+# M4SH_GETOPTS wants to pass unbalanced parentheses to m4_expand to
+# build the branches of a shell `case' statement.  That is only
+# supported by the implementation of m4_expand in Autoconf-2.64 and
+# newer.  Since we want to be compatible back to at least
+# Autoconf-2.62, reimplement our own 2.64 based m4_expand in the
+# m4go_ namespace so that we can be compatible with Autoconf versions
+# supporting either semantic.
+m4_define([m4go_expand],
+[m4_chomp(_$0([$1
+]))])
+
+m4_define([_m4go_expand], [$0_([$1], [(], -=<{($1)}>=-, [}>=-])])
+
+m4_define([_m4go_ignore])
+
+m4_define([_m4go_expand_],
+[m4_if([$4], [}>=-],
+       [m4_changequote([-=<{$2], [)}>=-])$3m4_changequote([, ])],
+       [$0([$1], [($2], -=<{($2$1)}>=-, [}>=-])_m4go_ignore$2])])
+
+
 ## --------------------------------- ##
-## 1. Low level string manipulation. ##
+## 2. Low level string manipulation. ##
 ## --------------------------------- ##
 
 # m4go_slice(STRING, BEGIN, END)
@@ -96,10 +134,10 @@ m4_define([m4go_slice],
 #     to turn them off for the duration.
 #  6. Finally, we need to requote the result to account for the quotes
 #     we probably stripped.  m4_quote() doesn't handle commas well, so
-#     we use m4_expand() to requote without losing whitespace after any
-#     embedded commas.
+#     we use m4go_expand() to requote without losing whitespace after
+#     any embedded commas.
 m4_define([m4go_trimn],
-[m4_changecom()m4_expand([m4go_slice([$1], m4_bregexp(m4_translit([$1],[
+[m4_changecom()m4go_expand([m4go_slice([$1], m4_bregexp(m4_translit([$1],[
 [/,()]], [//     ]), [[^/]]), m4_bregexp(m4_translit([$1], [
 [/,()]], [/     /]), [/*$]))])[]m4_changecom([#])])
 
@@ -119,7 +157,7 @@ m4_define([m4go_unindent],
 
 
 ## ------------------------------ ##
-## 2. Option processing compiler. ##
+## 3. Option processing compiler. ##
 ## ------------------------------ ##
 
 # Shell fragments are piecemeal added to these macros for each
@@ -288,7 +326,7 @@ m4_define([m4go_option],
             [^=],       [],
             [.],        [[$1]],
                         []))],
-    [_$0(opt_[]m4_ifnblank([$2],
+    [_$0(opt_[]m4_ifval([$2],
             m4_translit(m4_bpatsubst([$2], [^--\(no-\)?\([^|]+\).*$],
                                      [\2]), -, _),
                 _short),
@@ -329,11 +367,11 @@ m4_define([_m4go_option],
 [m4_do(
     [m4_append([m4go_defaults],
         m4_bmatch([$3],
-            [[?!;+@^]], [m4_ifnblank([$5], [m4_n([$1="$5"])])],
+            [[?!;+@^]], [m4_ifval([$5], [m4_n([$1="$5"])])],
             [~],        [m4_n([$1=:])],
                         [m4_n([$1=false])]))],
     [m4_append([m4go_branches], [[]dnl (
-      m4_join([|], [$4], m4_ifnblank([$2], [-$2])))
+      m4_join([|], [$4], m4_ifval([$2], [-$2])))
 ])],
     [m4_append([m4go_branches],
         [m4_bmatch([$3], [[!+@]],
@@ -346,8 +384,8 @@ m4_n(m4_bmatch([$3],
     [+],       [			$1_num=`expr 1 + ${$1_num-0}`
 			eval $1_${$1_num}=\"$optarg\"],
     [?],       [m4_bmatch([$3],
-                    [@], [m4_expand([m4go_optional_file_arg([$1])])],
-                         [m4_expand([m4go_optional_arg([$1])])])],
+                    [@], [m4go_expand([m4go_optional_file_arg([$1])])],
+                         [m4go_expand([m4go_optional_arg([$1])])])],
     [[!@]],    [			$1="$optarg"],
     [;],       [			$1="${$1+[$]$1
 }$optarg"],
@@ -356,12 +394,12 @@ m4_n(m4_bmatch([$3],
                [			$1=:]))[]dnl
 dnl only write the file_arg fragment when we didn't already write opt_file_arg:
 m4_bmatch([$3], [@], [m4_bmatch([$3], [?], [],
-                   [m4_expand([m4go_file_arg([$1])])
+                   [m4go_expand([m4go_file_arg([$1])])
 ])])m4_n(m4go_unindent([$6]))[]dnl
 m4_bmatch([$3], [[!+;]], [			shift
 ])			;;
 ])],
-    [m4_ifnblank([$2],
+    [m4_ifval([$2],
         [m4_bmatch([$3],
             [[?!;+@^~]], [m4_append([m4go_shortargs],   [-$2*], [|])],
                        [m4_append([m4go_shortnoargs], [-$2*],
@@ -489,7 +527,7 @@ m4go_validation
 
 
 ## ------------------------- ##
-## 3. Supporting Shell Code. ##
+## 4. Supporting Shell Code. ##
 ## ------------------------- ##
 
 # The shell functions below are expanded verbatim into the shell script
