@@ -1,3 +1,12 @@
+2010-06-24  Peter Rosin  <peda@lysator.liu.se>
+
+	Add MSVC support.
+	* libltdl/m4/libtool.m4 (_LT_SYS_DYNAMIC_LINKER)
+	(_LT_LINKER_SHLIBS, _LT_LANG_CXX_CONFIG) [mingw, cygwin]: Add
+	support for the Microsoft C/C++ Compiler (cl) relying on help
+	from the compile script in Automake.
+	* NEWS: Add note of the above.
+
 2010-07-01  Gary V. Vaughan  <gary@gnu.org>
 
 	Skip `enhanced shell option appending' test when not available.

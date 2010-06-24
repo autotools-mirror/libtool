@@ -7,6 +7,10 @@ New in 2.2.12 2010-08-??: git version 2.2.11a, Libtool team:
   - On non-cygwin Windows systems, we now lookup potential library
     file names without regard to file name case.
 
+* Changes in supported systems or compilers:
+  - Initial support for the Microsoft C/C++ Compiler, with help from
+    the compile script in unreleased Automake 1.12.
+
 New in 2.2.10 2010-06-10: git version 2.2.9a, Libtool team:
 
 * New features:
