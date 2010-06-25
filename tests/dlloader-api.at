@@ -45,7 +45,11 @@ first_open (lt_user_data data, const char *filename, lt_dladvise advise)
   static const char *first_module = "first";
   const char *ctx = (const char *) data;
 
-  if (!filename || strcmp (filename, "first"))
+  /* Use a magic string to avoid possible interactions with filesystem
+   * objects.  Prepend '/' to short-circuit libltdl's search of
+   * $shlibpath_var (e.g. PATH, LD_LIBRARY_PATH, or similar).
+   */
+  if (!filename || strcmp (filename, "/libltdl_dlloader_api_test_first"))
     {
       printf ("first_open denies a request\n");
       lt_dlseterror (LT_ERROR_FILE_NOT_FOUND);
@@ -111,7 +115,11 @@ last_open (lt_user_data data, const char *filename, lt_dladvise advise)
   static const char *last_module = "last";
   const char *ctx = (const char *) data;
 
-  if (!filename || strcmp (filename, "last"))
+  /* Use a magic string to avoid possible interactions with filesystem
+   * objects.  Prepend '/' to short-circuit libltdl's search of
+   * $shlibpath_var (e.g. PATH, LD_LIBRARY_PATH, or similar).
+   */
+  if (!filename || strcmp (filename, "/libltdl_dlloader_api_test_last"))
     {
       printf ("last_open denies a request\n");
       lt_dlseterror (LT_ERROR_FILE_NOT_FOUND);
@@ -269,7 +277,11 @@ main (int argc, char* argv[])
 
   printf ("Found loader \"%s\"\n", finder->name);
 
-  module = lt_dlopen ("first");
+  /* Use a magic string to avoid possible interactions with filesystem
+   * objects.  Prepend '/' to short-circuit libltdl's search of
+   * $shlibpath_var (e.g. PATH, LD_LIBRARY_PATH, or similar).
+   */
+  module = lt_dlopen ("/libltdl_dlloader_api_test_first");
 
   if (!module)
     {
@@ -311,7 +323,12 @@ main (int argc, char* argv[])
   printf ("result: %s\n", symbol ());
 
   lt_dlclose (module);
-  module = lt_dlopen ("last");
+
+  /* Use a magic string to avoid possible interactions with filesystem
+   * objects.  Prepend '/' to short-circuit libltdl's search of
+   * $shlibpath_var (e.g. PATH, LD_LIBRARY_PATH, or similar).
+   */
+  module = lt_dlopen ("/libltdl_dlloader_api_test_last");
 
   if (!module)
     {
@@ -375,14 +392,14 @@ LT_AT_HOST_DATA(expout,
 Found loader "first"
 last_init: last_ctx
 Found loader "last"
-first_open ("first"): first_ctx
+first_open ("/libltdl_dlloader_api_test_first"): first_ctx
 first_sym (first): first_ctx
 result: first_symbol
 first_close (first): first_ctx
 first_open denies a request
 result: module_symbol
 first_open denies a request
-last_open ("last"): last_ctx
+last_open ("/libltdl_dlloader_api_test_last"): last_ctx
 last_sym (last): last_ctx
 result: last_symbol
 first_open denies a request
