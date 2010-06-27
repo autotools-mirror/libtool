@@ -181,7 +181,7 @@ m4_define([m4go_branches], [])	# case branches to process options
 # OPTION, [|])' to insert the separator pipe symbols - which requires
 # that `m4go_shortargs' be undefined if the first option appended is not
 # prefixed by a leading `|'.
-m4_define([m4go_shortnoargs], [-\?*|-h*|-v*])
+m4_define([m4go_shortnoargs], [-\?*|-h*])
 
 
 # M4SH_GETOPTS(SHORT-SPEC1, LONG-MATCH1, DEF1, INIT1,
@@ -504,7 +504,7 @@ m4_ifset([m4go_shortargs], dnl (
 [      # Separate non-argument short options:
       ]m4go_shortnoargs[)
 			func_split_short_opt "$opt"
-			set dummy "$func_split_short_opt_name" "$func_split_short_opt_arg" ${1+"[$]@"}
+			set dummy "$func_split_short_opt_name" "-$func_split_short_opt_arg" ${1+"[$]@"}
 			shift
 			;;
 
@@ -627,7 +627,7 @@ func_split_short_opt ()
     my_sed_short_rest='1s/^..\(.*\)$/\1/;q'
 
     func_split_short_opt_name=`$ECHO "$1" | $SED "$my_sed_short_opt"`
-    func_split_short_opt_arg=`$ECHO "$1" | $SED "$my_sed_short_arg"`
+    func_split_short_opt_arg=`$ECHO "$1" | $SED "$my_sed_short_rest"`
 } # func_split_short_opt may be replaced by XSI optimised implementation
 
 

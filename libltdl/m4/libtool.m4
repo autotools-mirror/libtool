@@ -7227,6 +7227,14 @@ lt_shell_append=no
 AC_MSG_RESULT([$lt_shell_append])
 _LT_CONFIG_LIBTOOL_INIT([lt_shell_append='$lt_shell_append'])
 
+AC_MSG_CHECKING([whether the shell understands variable substring :-syntax])
+lt_shell_substring=no
+( _lt_dummy="-bar"
+  test "${_lt_dummy:0:2},${_lt_dummy:2}" = -b,ar ) >/dev/null 2>&1 \
+&& lt_shell_substring=yes
+AC_MSG_RESULT([$lt_shell_substring])
+_LT_CONFIG_LIBTOOL_INIT([lt_shell_substring='$lt_shell_substring'])
+
 if ( (MAIL=60; unset MAIL) || exit) >/dev/null 2>&1; then
   lt_unset=unset
 else
@@ -7316,6 +7324,12 @@ fi
 
 if test x"$lt_shell_append" = xyes; then
   _LT_PROG_XSI_REPLACE([func_append], [    eval "${1}+=\\${2}"])
+fi
+
+if test x"$lt_shell_substring" = xyes; then
+  _LT_PROG_XSI_REPLACE([func_split_short_opt], [dnl
+    func_split_short_opt_name=${1:0:2}
+    func_split_short_opt_arg=${1:2}])
 fi
 
 if test x"$_lt_xsi_replace_fail" = x":"; then

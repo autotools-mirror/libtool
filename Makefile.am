@@ -453,6 +453,7 @@ dist-hook:
 # The testsuite files are evaluated in the order given here.
 TESTSUITE	= tests/testsuite
 TESTSUITE_AT	= tests/testsuite.at \
+		  tests/getopt-m4sh.at \
 		  tests/libtoolize.at \
 		  tests/help.at \
 		  tests/duplicate_members.at \
@@ -519,7 +520,7 @@ EXTRA_DIST     += $(srcdir)/$(TESTSUITE) $(TESTSUITE_AT) $(srcdir)/tests/package
 TESTS_ENVIRONMENT = MAKE="$(MAKE)" CC="$(CC)" CFLAGS="$(CFLAGS)" \
 	CPP="$(CPP)" CPPFLAGS="$(CPPFLAGS)" LD="$(LD)" LDFLAGS="$(LDFLAGS)" \
 	LIBS="$(LIBS)" LN_S="$(LN_S)" NM="$(NM)" RANLIB="$(RANLIB)" \
-	STRIP="$(STRIP)" lt_INSTALL="$(INSTALL)" \
+	M4SH="$(M4SH)" SED="$(SED)" STRIP="$(STRIP)" lt_INSTALL="$(INSTALL)" \
 	OBJEXT="$(OBJEXT)" EXEEXT="$(EXEEXT)" \
 	SHELL="$(SHELL)" CONFIG_SHELL="$(SHELL)" \
 	CXX="$(CXX)" CXXFLAGS="$(CXXFLAGS)" CXXCPP="$(CXXCPP)" \

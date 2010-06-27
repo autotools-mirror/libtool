@@ -370,7 +370,7 @@ M4SH_GETOPTS(
   [],		[--silent|--quiet],		[],			[
 	preserve_args="$preserve_args $opt"
         opt_verbose=false],
-  [],		[--verbose],			[],			[
+  [v],		[--verbose],			[],			[
 	preserve_args="$preserve_args $opt"
 	opt_silent=false],
   [!],		[--tag],			[],			[

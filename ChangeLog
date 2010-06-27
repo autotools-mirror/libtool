@@ -1,3 +1,24 @@
+2010-06-28  Gary V. Vaughan  <gary@gnu.org>
+
+	Add an XSI replacement for func_split_short_opt, with test cases.
+	* libltdl/config/getopt.m4sh (m4go_shortnoargs): Remove 'v' now
+	that getopt.m4sh doesn't steal that letter for the --version
+	short option.
+	* libltdl/config/ltmain.m4sh (M4SH_GETOPTS): We can now use 'v'
+	as a short option for '--verbose'.
+	* libltdl/config/getopt.m4sh (m4go_printopts): Add back in the
+	leading '-' for remaining non-argument short options.
+	(func_split_short_opt): Use the correct sed script variable.
+	* libltdl/m4/libtool.m4 (_LT_CHECK_SHELL_FEATURES): Also ensure
+	that XSI substring extraction is supported.
+	(_LT_PROG_XSI_SHELLFNS): Use XSI substring extraction to split
+	short options to avoid unnecessary forks if the host shell
+	supports that.
+	* tests/getopt-m4sh.at: New tests for getopt.m4sh coverage.
+	* Makefile.am (TESTSUITE_AT): Add getopt-m4sh.at.
+	(TESTS_ENVIRONMENT): Pass M4SH and SED for substition into the
+	m4sh expansion performed in tests/getopt-m4sh.at.
+
 2010-06-27  Gary V. Vaughan  <gary@gnu.org>
 
 	Add missing case branch terminators.

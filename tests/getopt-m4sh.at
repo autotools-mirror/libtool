@@ -1,0 +1,132 @@
+# getopts-m4sh.at -- test getopts.m4sh option parsers       -*- Autotest -*-
+#
+#   Copyright (C) 2010 Free Software Foundation, Inc.
+#   Written by Gary V. Vaughan, 2010
+#
+#   This file is part of GNU Libtool.
+#
+# GNU Libtool is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License as
+# published by the Free Software Foundation; either version 2 of
+# the License, or (at your option) any later version.
+#
+# GNU Libtool is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with GNU Libtool; see the file COPYING.  If not, a copy
+# can be downloaded from  http://www.gnu.org/licenses/gpl.html,
+# or obtained by writing to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+####
+
+AT_BANNER([Shell option parser generator.])
+
+auxdir="$abs_top_srcdir/libltdl/config"
+
+
+# _LT_AT_GETOPT_M4SH_SETUP
+# ------------------------
+m4_define([_LT_AT_GETOPT_M4SH_SETUP],
+[m4_pattern_allow([AS_INIT])
+m4_pattern_allow([m4_include])
+AT_DATA([options.m4sh],
+[[AS_INIT[]m4_include([getopt.m4sh])
+options=
+M4SH_GETOPTS(
+  [f],	[--force],	[],	[options="$options force"],
+  [i],	[--install],	[],	[options="$options install"],
+  [v],	[--verbose],	[],	[options="$options verbose"],
+  [!],	[--ltdl],	[false],[options="$options ltdl=$optarg"],
+[echo $options])
+]])
+m4_pattern_forbid([m4_include])
+m4_pattern_forbid([AS_INIT])
+
+$M4SH -B $abs_top_srcdir/libltdl/config options.m4sh \
+    | $SED \
+	-e "s,@LN_S\@,$LN_S,g" \
+	-e "s,@SED\@,$SED,g" \
+    > options
+])# _LT_AT_GETOPT_M4SH_SETUP
+
+
+# _LT_AT_XSI_FUNC_EXTRACT(FUNC-NAME)
+# ----------------------------------
+# Extract the XSI decorated function FUNC-NAME from libtool
+m4_define([_LT_AT_XSI_FUNC_EXTRACT],
+[dnl {{
+$SED '/^# $1/q' options > options.tmp
+$SED -n '/^$1/,/^} # XSI $1 /p' $abs_top_builddir/libtool >> options.tmp
+$SED '1,/^} # $1 /d' options >> options.tmp
+rm -f options && mv options.tmp options])
+
+
+## ----------------------- ##
+## Short option splitting. ##
+## ----------------------- ##
+
+AT_SETUP([short option splitting])
+
+AT_DATA(expout,
+[[force verbose install
+]])
+
+_LT_AT_GETOPT_M4SH_SETUP
+
+AT_CHECK([$SHELL ./options -fvi], 0, [expout])
+
+AT_CLEANUP
+
+
+AT_SETUP([enhanced shell short option splitting])
+
+# Don't bother with additional XSI checks unless functions were substituted
+AT_CHECK([fgrep '# XSI func_split_short_opt' $abs_top_builddir/libtool >/dev/null 2>&1 || (exit 77)])
+
+AT_DATA(expout,
+[[force verbose install
+]])
+
+_LT_AT_GETOPT_M4SH_SETUP
+_LT_AT_XSI_FUNC_EXTRACT(func_split_short_opt)
+
+AT_CHECK([$SHELL ./options -fvi], 0, [expout])
+
+AT_CLEANUP
+
+
+## ---------------------- ##
+## Long option splitting. ##
+## ---------------------- ##
+
+AT_SETUP([long option splitting])
+
+AT_DATA(expout,
+[[ltdl=long
+]])
+
+_LT_AT_GETOPT_M4SH_SETUP
+
+AT_CHECK([$SHELL ./options --ltdl=long], 0, [expout])
+
+AT_CLEANUP
+
+
+AT_SETUP([XSI long option splitting])
+
+# Don't bother with additional XSI checks unless functions were substituted
+AT_CHECK([fgrep '# XSI func_split_long_opt' $abs_top_builddir/libtool >/dev/null 2>&1 || (exit 77)])
+
+AT_DATA(expout,
+[[ltdl=long
+]])
+
+_LT_AT_GETOPT_M4SH_SETUP
+_LT_AT_XSI_FUNC_EXTRACT(func_split_long_opt)
+
+AT_CHECK([$SHELL ./options --ltdl=long], 0, [expout])
+
+AT_CLEANUP
