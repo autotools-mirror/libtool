@@ -1,5 +1,8 @@
 2010-06-27  Gary V. Vaughan  <gary@gnu.org>
 
+	Amend a missed opt_mode rename instance in ltmain.m4sh.
+	* libltdl/config/ltmain.m4sh <mode>: Rename to opt_mode.
+
 	Fix portability regressions in today's earlier changeset.
 	* libltdl/m4/libtool.m4 (_LT_PROG_XSI_REPLACE): `sed -i' is not
 	portable; use `mv -f ...|| cp -f ...' instead.

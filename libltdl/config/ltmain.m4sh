@@ -137,7 +137,6 @@ magic="%%%MAGIC variable%%%"
 magic_exe="%%%MAGIC EXE variable%%%"
 
 # Global variables.
-# $mode is unset
 nonopt=
 preserve_args=
 lo2o="s/\\.lo\$/.${objext}/"
@@ -5364,7 +5363,7 @@ func_mode_link ()
 	    linklib=$newlib
 	  fi # test -n "$old_archive_from_expsyms_cmds"
 
-	  if test "$linkmode" = prog || test "$mode" != relink; then
+	  if test "$linkmode" = prog || test "$opt_mode" != relink; then
 	    add_shlibpath=
 	    add_dir=
 	    add=
