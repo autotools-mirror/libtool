@@ -1,5 +1,14 @@
 2010-06-27  Gary V. Vaughan  <gary@gnu.org>
 
+	Fix portability regressions in today's earlier changeset.
+	* libltdl/m4/libtool.m4 (_LT_PROG_XSI_REPLACE): `sed -i' is not
+	portable; use `mv -f ...|| cp -f ...' instead.
+	Add an initial backslash to sed `c' substitutions with leading
+	whitespace, so that indentation is not removed by some non-POSIX
+	compliant sed implementations.
+	(_LT_PROG_XSI_SHELLFNS): Display a diagnostic warning message if
+	one or more XSI function replacements failed.
+
 	getopt.m4sh generated libtool option parser, and XSI improvements.
 	* libltdl/m4/libtool.m4 (_LT_PROG_XSI_SHELLFNS): Moved portable
 	shell versions of various utility functions from here...

@@ -7257,13 +7257,15 @@ _LT_DECL([NL2SP], [lt_NL2SP], [1], [turn newlines into spaces])dnl
 # '^} FUNCNAME ', and replace its body with REPLACEMENT-BODY.
 m4_defun([_LT_PROG_XSI_REPLACE],
 [dnl {
-sed -i .tmp -e '/^$1 ()$/,/^} # $1 /c\
+sed -e '/^$1 ()$/,/^} # $1 /c\
 $1 ()\
 {\
-m4_bpatsubst([$2], [$], [\\])
-} # XSI $1 implementation' "$cfgfile" \
-  || (mv -f "$cfgfile.tmp" "$cfgfile"; exit 1)
-rm -f "$cfgfile.tmp"])
+m4_bpatsubsts([$2], [$], [\\], [^\([ 	]\)], [\\\1])
+} # XSI $1 implementation' "$cfgfile" > $cfgfile.tmp \
+  && mv -f "$cfgfile.tmp" "$cfgfile" \
+    || (rm -f "$cfgfile" && cp "$cfgfile.tmp" "$cfgfile" && rm -f "$cfgfile.tmp")
+test 0 -eq $? || _lt_xsi_replace_fail=:
+])
 
 
 # _LT_PROG_XSI_SHELLFNS
@@ -7314,5 +7316,9 @@ fi
 
 if test x"$lt_shell_append" = xyes; then
   _LT_PROG_XSI_REPLACE([func_append], [    eval "${1}+=\\${2}"])
+fi
+
+if test x"$_lt_xsi_replace_fail" = x":"; then
+  AC_MSG_WARN([Unable to substitute faster XSI functions in $ofile]) 
 fi
 ])
