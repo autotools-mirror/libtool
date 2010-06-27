@@ -1,5 +1,22 @@
 2010-06-28  Gary V. Vaughan  <gary@gnu.org>
 
+	Add func_append_quoted and do inline func_append substitutions.
+	* libtool/config/ltmain.m4sh: Replace all occurrences of
+	`foo="$foo bar"' with func_append. No decorator comment was
+	added since /func_append [a-zA-Z0-9_]* "/ is already an
+	excellent match regexp, and additional comments would only
+	complicate things.
+	(func_append_quoted): New function that quotes a value with
+	func_quote_for_eval before appending it.  To avoid quoting the
+	whitespace in the passed value, a single whitespace is added
+	automatically.  Changed callers where possible.
+	* libtool/m4/libtool.m4 (_LT_PROG_XSI_SHELLFNS): Perform a
+	`+=' implementation substitution for func_append_quoted.  More
+	importantly, systematically replace matching func_append calls
+	with inline `+=' when supported (for maximum speed), and
+	longhand `foo="$foo bar"' otherwise to avoid the function
+	overhead.
+
 	Add an XSI replacement for func_split_short_opt, with test cases.
 	* libltdl/config/getopt.m4sh (m4go_shortnoargs): Remove 'v' now
 	that getopt.m4sh doesn't steal that letter for the --version
