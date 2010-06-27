@@ -1,5 +1,9 @@
 2010-06-27  Gary V. Vaughan  <gary@gnu.org>
 
+	Add missing case branch terminators.
+	* libltdl/config/ltmain.m4sh: Fixed everal case branches with
+	missing ';;' terminators.
+
 	Use TAB-SPACE in preference to SPACE-TAB.
 	* libltdl/m4/libtool.m4 (_LT_PROG_XSI_REPLACE): Some editors
 	might optimise away the SPACE in SPACE-TAB sequences, so use
