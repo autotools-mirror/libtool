@@ -1,5 +1,11 @@
 2010-06-27  Gary V. Vaughan  <gary@gnu.org>
 
+	Use TAB-SPACE in preference to SPACE-TAB.
+	* libltdl/m4/libtool.m4 (_LT_PROG_XSI_REPLACE): Some editors
+	might optimise away the SPACE in SPACE-TAB sequences, so use
+	TAB-SPACE just in case.
+	Reported by Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
 	Amend a missed opt_mode rename instance in ltmain.m4sh.
 	* libltdl/config/ltmain.m4sh <mode>: Rename to opt_mode.
 

@@ -7260,7 +7260,7 @@ m4_defun([_LT_PROG_XSI_REPLACE],
 sed -e '/^$1 ()$/,/^} # $1 /c\
 $1 ()\
 {\
-m4_bpatsubsts([$2], [$], [\\], [^\([ 	]\)], [\\\1])
+m4_bpatsubsts([$2], [$], [\\], [^\([	 ]\)], [\\\1])
 } # XSI $1 implementation' "$cfgfile" > $cfgfile.tmp \
   && mv -f "$cfgfile.tmp" "$cfgfile" \
     || (rm -f "$cfgfile" && cp "$cfgfile.tmp" "$cfgfile" && rm -f "$cfgfile.tmp")
