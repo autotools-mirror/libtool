@@ -1,3 +1,35 @@
+2010-06-28  Peter Rosin  <peda@lysator.liu.se>
+
+	For MSVC, embed the manifest as a resource in the executable.
+	Fixes a lot of testsuite failures with MSVC 2003 (v8.0) and
+	above (and perhaps also MSVC .Net) related to running programs
+	that have been moved (e.g. installed) without their manifests
+	also having been moved.
+	* libltdl/m4/libtool.m4 (_LT_PATH_MANIFEST_TOOL): New macro
+	that locates the Manifest Tool (mt) and verifies that it is
+	indeed the manifest tool. The result is stored in the new
+	variable MANIFEST_TOOL.
+	(_LT_LINKER_SHLIBS) <postlink_cmds>: New tag variable.
+	[ cygwin, mingw, cegcc ] <cl*>: Embed the manifest file as a
+	resource. Make sure the embedding work regardless of if the
+	@OUTPUT@ file name includes a trailing $EXEEXT.
+	(_LT_LANG_CXX_CONFIG): Likewise.
+	(_LT_LINKER_SHLIBS, _LT_LANG_CXX_CONFIG): Require the above
+	_LT_PATH_MANIFEST_TOOL.
+	* libltdl/config/ltmain.m4sh (func_mode_link): After linking
+	a program, replace @OUTPUT@ in $postlink_cmds and then execute
+	the commands.
+	* doc/libtool.texi (libtool script contents): Document
+	new postlink_cmds variable.
+	(LT_INIT): Add that the MANIFEST_TOOL environment variable can
+	be used to override the manifest tool to use.
+	* tests/exeext.at: New. Make sure linking with both -o prog
+	and -o prog$EXEEXT works.
+	* Makefile.am (TESTSUITE_AT): Update.
+	(TESTS_ENVIRONMENT): Propagate $(MANIFEST_TOOL) to the
+	testsuite.
+	* NEWS: Add note of the new MANIFEST_TOOL environment variable.
+
 2010-06-24  Peter Rosin  <peda@lysator.liu.se>
 
 	Add MSVC support.

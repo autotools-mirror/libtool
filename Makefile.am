@@ -472,6 +472,7 @@ TESTSUITE_AT	= tests/testsuite.at \
 		  tests/search-path.at \
 		  tests/indirect_deps.at \
 		  tests/archive-in-archive.at \
+		  tests/exeext.at \
 		  tests/execute-mode.at \
 		  tests/bindir.at \
 		  tests/cwrapper.at \
@@ -521,6 +522,7 @@ TESTS_ENVIRONMENT = MAKE="$(MAKE)" CC="$(CC)" CFLAGS="$(CFLAGS)" \
 	CPP="$(CPP)" CPPFLAGS="$(CPPFLAGS)" LD="$(LD)" LDFLAGS="$(LDFLAGS)" \
 	LIBS="$(LIBS)" LN_S="$(LN_S)" NM="$(NM)" RANLIB="$(RANLIB)" \
 	M4SH="$(M4SH)" SED="$(SED)" STRIP="$(STRIP)" lt_INSTALL="$(INSTALL)" \
+	MANIFEST_TOOL="$(MANIFEST_TOOL)" \
 	OBJEXT="$(OBJEXT)" EXEEXT="$(EXEEXT)" \
 	SHELL="$(SHELL)" CONFIG_SHELL="$(SHELL)" \
 	CXX="$(CXX)" CXXFLAGS="$(CXXFLAGS)" CXXCPP="$(CXXCPP)" \

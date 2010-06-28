@@ -9,7 +9,9 @@ New in 2.2.12 2010-08-??: git version 2.2.11a, Libtool team:
 
 * Changes in supported systems or compilers:
   - Initial support for the Microsoft C/C++ Compiler, with help from
-    the compile script in unreleased Automake 1.12.
+    the compile script in unreleased Automake 1.12. Override the manifest
+    tool used to embed the manifest resource through the environment
+    variable MANIFEST_TOOL.
 
 New in 2.2.10 2010-06-10: git version 2.2.9a, Libtool team:
 

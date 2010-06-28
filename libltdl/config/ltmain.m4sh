@@ -7423,6 +7423,11 @@ EOF
 	exit_status=0
 	func_show_eval "$link_command" 'exit_status=$?'
 
+	if test -n "$postlink_cmds"; then
+	  postlink_cmds=`func_echo_all "$postlink_cmds" | $SED -e 's%@OUTPUT@%'"$output"'%g'`
+	  func_execute_cmds "$postlink_cmds" 'exit $?'
+	fi
+
 	# Delete the generated files.
 	if test -f "$output_objdir/${outputname}S.${objext}"; then
 	  func_show_eval '$RM "$output_objdir/${outputname}S.${objext}"'
@@ -7468,6 +7473,12 @@ EOF
 	$opt_dry_run || $RM $output
 	# Link the executable and exit
 	func_show_eval "$link_command" 'exit $?'
+
+	if test -n "$postlink_cmds"; then
+	  postlink_cmds=`func_echo_all "$postlink_cmds" | $SED -e 's%@OUTPUT@%'"$output"'%g'`
+	  func_execute_cmds "$postlink_cmds" 'exit $?'
+	fi
+
 	exit $EXIT_SUCCESS
       fi
 
@@ -7500,6 +7511,11 @@ EOF
       $opt_dry_run || $RM $output $output_objdir/$outputname $output_objdir/lt-$outputname
 
       func_show_eval "$link_command" 'exit $?'
+
+      if test -n "$postlink_cmds"; then
+	postlink_cmds=`func_echo_all "$postlink_cmds" | $SED -e 's%@OUTPUT@%'"$output_objdir/$outputname"'%g'`
+	func_execute_cmds "$postlink_cmds" 'exit $?'
+      fi
 
       # Now create the wrapper script.
       func_verbose "creating $output"
