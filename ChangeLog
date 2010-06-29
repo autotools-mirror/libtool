@@ -1,5 +1,9 @@
 2010-06-29  Gary V. Vaughan  <gary@gnu.org>
 
+	Correct func_split_short_opt comment cut-n-pasto.
+	* libtool/config/getopt.m4sh (func_split_short_opt): Fix
+	the function comment.
+
 	Use a real XSI compliant func_split_short_opt substitution.
 	* libtool/m4/libtool.m4 (_LT_CHECK_SHELL_FEATURES): Remove
 	test ${foo:n:m} substrings, instead adding a ${foo%??} check

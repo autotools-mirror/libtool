@@ -620,7 +620,7 @@ func_missing_arg ()
 
 # func_split_short_opt shortopt
 # Set func_split_short_opt_name and func_split_short_opt_arg shell
-# variables after splitting SHORTOPT at the `=' sign.
+# variables after splitting SHORTOPT after the 2nd character.
 func_split_short_opt ()
 {
     my_sed_short_opt='1s/^\(..\).*$/\1/;q'
