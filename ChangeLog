@@ -1,3 +1,14 @@
+2010-06-29  Gary V. Vaughan  <gary@gnu.org>
+
+	Use a real XSI compliant func_split_short_opt substitution.
+	* libtool/m4/libtool.m4 (_LT_CHECK_SHELL_FEATURES): Remove
+	test ${foo:n:m} substrings, instead adding a ${foo%??} check
+	to the existing XSI tests.
+	(_LT_PROG_XSI_SHELLFNS): Remove the ${foo:n:m} based
+	func_split_short_opt substitution in favour of a properly
+	XSI compliant substitution.
+	Suggested by Paolo Bonzini.
+
 2010-06-28  Gary V. Vaughan  <gary@gnu.org>
 
 	Add func_append_quoted and do inline func_append substitutions.

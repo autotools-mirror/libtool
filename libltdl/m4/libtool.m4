@@ -7211,8 +7211,8 @@ m4_defun([_LT_CHECK_SHELL_FEATURES],
 # Try some XSI features
 xsi_shell=no
 ( _lt_dummy="a/b/c"
-  test "${_lt_dummy##*/},${_lt_dummy%/*},"${_lt_dummy%"$_lt_dummy"}, \
-      = c,a/b,, \
+  test "${_lt_dummy##*/},${_lt_dummy%/*},${_lt_dummy#??}"${_lt_dummy%"$_lt_dummy"}, \
+      = c,a/b,b/c, \
     && eval 'test $(( 1 + 1 )) -eq 2 \
     && test "${#_lt_dummy}" -eq 5' ) >/dev/null 2>&1 \
   && xsi_shell=yes
@@ -7226,14 +7226,6 @@ lt_shell_append=no
   && lt_shell_append=yes
 AC_MSG_RESULT([$lt_shell_append])
 _LT_CONFIG_LIBTOOL_INIT([lt_shell_append='$lt_shell_append'])
-
-AC_MSG_CHECKING([whether the shell understands variable substring :-syntax])
-lt_shell_substring=no
-( _lt_dummy="-bar"
-  test "${_lt_dummy:0:2},${_lt_dummy:2}" = -b,ar ) >/dev/null 2>&1 \
-&& lt_shell_substring=yes
-AC_MSG_RESULT([$lt_shell_substring])
-_LT_CONFIG_LIBTOOL_INIT([lt_shell_substring='$lt_shell_substring'])
 
 if ( (MAIL=60; unset MAIL) || exit) >/dev/null 2>&1; then
   lt_unset=unset
@@ -7309,6 +7301,10 @@ m4_defun([_LT_PROG_XSI_SHELLFNS],
     func_split_long_opt_name=${1%%=*}
     func_split_long_opt_arg=${1#*=}])
 
+  _LT_PROG_XSI_REPLACE([func_split_short_opt], [dnl
+    func_split_short_opt_arg=${1#??}
+    func_split_short_opt_name=${1%"$func_split_short_opt_arg"}])
+
   _LT_PROG_XSI_REPLACE([func_lo2o], [dnl
     case ${1} in
       *.lo) func_lo2o_result=${1%.lo}.${objext} ;;
@@ -7341,12 +7337,6 @@ else
     && mv -f "$cfgfile.tmp" "$cfgfile" \
       || (rm -f "$cfgfile" && cp "$cfgfile.tmp" "$cfgfile" && rm -f "$cfgfile.tmp")
   test 0 -eq $? || _lt_xsi_replace_fail=:
-fi
-
-if test x"$lt_shell_substring" = xyes; then
-  _LT_PROG_XSI_REPLACE([func_split_short_opt], [dnl
-    func_split_short_opt_name=${1:0:2}
-    func_split_short_opt_arg=${1:2}])
 fi
 
 if test x"$_lt_xsi_replace_fail" = x":"; then
