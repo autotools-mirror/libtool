@@ -1,3 +1,19 @@
+2010-06-30  Gary V. Vaughan  <gary@gnu.org>
+
+	Add func_append test cases for smart and retarded implementations.
+	* tests/getopt-m4sh.at (_LT_AT_FALLBACK_FUNC_EXTRACT): New
+	macro to extract a fallback function implementation from
+	ltmain.m4sh.
+	[option appending]: Use it for a test of the fallback
+	implementation of func_append.
+	[enhanced shell option appending]: And also test the enhanced
+	implementation.
+	* libltdl/config/ltmain.m4sh (func_append_quoted): Fix missing \\
+	to escape a quoted space for eval.
+	* libltdl/m4/libtool.m4 (_LT_PROG_XSI_SHELLFNS): Fix missing $ in
+	dereference of func_append inline replacement for retarded
+	shells.
+
 2010-06-29  Gary V. Vaughan  <gary@gnu.org>
 
 	Correct func_split_short_opt comment cut-n-pasto.

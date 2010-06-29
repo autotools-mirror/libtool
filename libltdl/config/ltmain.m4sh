@@ -161,7 +161,7 @@ func_append ()
 func_append_quoted ()
 {
     func_quote_for_eval "${2}"
-    eval "${1}=\$${1} \$func_quote_for_eval_result"
+    eval "${1}=\$${1}\\ \$func_quote_for_eval_result"
 } # func_append_quoted may be replaced by XSI optimised implementation
 
 

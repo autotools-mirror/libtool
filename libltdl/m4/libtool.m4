@@ -7333,7 +7333,7 @@ dnl m4 expansion turns \\\\ into \\, and then the shell eval turns that into \
   test 0 -eq $? || _lt_xsi_replace_fail=:
 else
   # Save a `func_append' function call even when '+=' is not available
-  sed -e 's%func_append \([[a-zA-Z_]]\{1,\}\) "%\1="\1%g' $cfgfile > $cfgfile.tmp \
+  sed -e 's%func_append \([[a-zA-Z_]]\{1,\}\) "%\1="$\1%g' $cfgfile > $cfgfile.tmp \
     && mv -f "$cfgfile.tmp" "$cfgfile" \
       || (rm -f "$cfgfile" && cp "$cfgfile.tmp" "$cfgfile" && rm -f "$cfgfile.tmp")
   test 0 -eq $? || _lt_xsi_replace_fail=:

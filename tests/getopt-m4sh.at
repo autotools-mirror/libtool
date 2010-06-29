@@ -34,13 +34,17 @@ m4_define([_LT_AT_GETOPT_M4SH_SETUP],
 m4_pattern_allow([m4_include])
 AT_DATA([options.m4sh],
 [[AS_INIT[]m4_include([getopt.m4sh])
+nl='
+'
+list=
 options=
 M4SH_GETOPTS(
+  [a!],	[--append],	[],	[func_append list "$optarg$nl"],
   [f],	[--force],	[],	[options="$options force"],
   [i],	[--install],	[],	[options="$options install"],
   [v],	[--verbose],	[],	[options="$options verbose"],
   [!],	[--ltdl],	[false],[options="$options ltdl=$optarg"],
-[echo $options])
+[echo "$list"$options])
 ]])
 m4_pattern_forbid([m4_include])
 m4_pattern_forbid([AS_INIT])
@@ -53,13 +57,25 @@ $M4SH -B $abs_top_srcdir/libltdl/config options.m4sh \
 ])# _LT_AT_GETOPT_M4SH_SETUP
 
 
+# _LT_AT_FALLBACK_FUNC_EXTRACT(FUNC-NAME)
+# ---------------------------------------
+# Extract the fallback function FUNC-NAME from ltmain.m4sh
+m4_define([_LT_AT_FALLBACK_FUNC_EXTRACT],
+[dnl {{
+$SED '/^# func_dirname /q' options > options.tmp
+echo '# func_append var value' >> options.tmp
+$SED -n '/^$1 ()/,/^} # $1 /p' $abs_top_srcdir/libltdl/config/ltmain.m4sh >> options.tmp
+$SED '1,/^# func_dirname/d' options >> options.tmp
+rm -f options && mv options.tmp options])
+
+
 # _LT_AT_XSI_FUNC_EXTRACT(FUNC-NAME)
 # ----------------------------------
 # Extract the XSI decorated function FUNC-NAME from libtool
 m4_define([_LT_AT_XSI_FUNC_EXTRACT],
 [dnl {{
 $SED '/^# $1/q' options > options.tmp
-$SED -n '/^$1/,/^} # XSI $1 /p' $abs_top_builddir/libtool >> options.tmp
+$SED -n '/^$1 ()/,/^} # XSI $1 /p' $abs_top_builddir/libtool >> options.tmp
 $SED '1,/^} # $1 /d' options >> options.tmp
 rm -f options && mv options.tmp options])
 
@@ -128,5 +144,42 @@ _LT_AT_GETOPT_M4SH_SETUP
 _LT_AT_XSI_FUNC_EXTRACT(func_split_long_opt)
 
 AT_CHECK([$SHELL ./options --ltdl=long], 0, [expout])
+
+AT_CLEANUP
+
+
+## ----------------- ##
+## Option appending. ##
+## ----------------- ##
+
+AT_SETUP([option appending])
+
+AT_DATA(expout,
+[[first   --append second
+third
+
+]])
+
+_LT_AT_GETOPT_M4SH_SETUP
+_LT_AT_FALLBACK_FUNC_EXTRACT(func_append)
+
+AT_CHECK([$SHELL ./options -a "first   --append second" -athird], 0, [expout])
+
+AT_CLEANUP
+
+
+AT_SETUP([enhanced shell option appending])
+
+AT_DATA(expout,
+[[first   --append second
+third
+
+]])
+
+_LT_AT_GETOPT_M4SH_SETUP
+_LT_AT_FALLBACK_FUNC_EXTRACT(func_append)
+_LT_AT_XSI_FUNC_EXTRACT(func_append)
+
+AT_CHECK([$SHELL ./options -a "first   --append second" -athird], 0, [expout])
 
 AT_CLEANUP
