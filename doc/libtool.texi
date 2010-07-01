@@ -6171,6 +6171,10 @@ Whether files must be locked to prevent conflicts when compiling
 simultaneously.  Set to @samp{yes} or @samp{no}.
 @end defvar
 
+@defvar nm_file_list_spec
+Specify filename containing input files for @code{NM}.
+@end defvar
+
 @defvar no_builtin_flag
 Compiler flag to disable builtin functions that conflict with declaring
 external global symbols as @code{char}.

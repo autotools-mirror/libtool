@@ -6719,13 +6719,29 @@ EOF
 	    $opt_dry_run || $RM $export_symbols
 	    cmds=$export_symbols_cmds
 	    save_ifs="$IFS"; IFS='~'
-	    for cmd in $cmds; do
+	    for cmd1 in $cmds; do
 	      IFS="$save_ifs"
-	      eval cmd=\"$cmd\"
+	      eval cmd=\"$cmd1\"
 	      func_len " $cmd"
 	      len=$func_len_result
 	      if test "$len" -lt "$max_cmd_len" || test "$max_cmd_len" -le -1; then
 		func_show_eval "$cmd" 'exit $?'
+		skipped_export=false
+	      elif test -n "$nm_file_list_spec"; then
+		output_la=`$ECHO "X$output" | $Xsed -e "$basename"`
+		save_libobjs=$libobjs
+		save_output=$output
+		output=${output_objdir}/${output_la}.nm
+		libobjs=$nm_file_list_spec$output
+		func_append delfiles " $output"
+		func_verbose "creating $NM input file list: $output"
+		for obj in $save_libobjs; do
+		  $ECHO "$obj"
+		done > "$output"
+		eval cmd=\"$cmd1\"
+		func_show_eval "$cmd" 'exit $?'
+		output=$save_output
+		libobjs=$save_libobjs
 		skipped_export=false
 	      else
 		# The command line is too long to execute in one step.

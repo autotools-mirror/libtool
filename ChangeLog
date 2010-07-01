@@ -1,3 +1,15 @@
+2010-07-01  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+	    Peter Rosin  <peda@lysator.liu.se>
+
+	Support for response files with $NM.
+	* libltdl/m4/libtool.m4 (_LT_CMD_GLOBAL_SYMBOLS)
+	<nm_file_list_spec>: New tag variable. Set it to '@' if input
+	files can be passed to $NM in a file named with the '@' option.
+	* libltdl/config/ltmain.m4sh (func_mode_link): When
+	nm_file_list_spec is nonempty, use it to avoid skipped_export.
+	* doc/libtool.texi (libtool script contents): Document
+	new variable.
+
 2010-07-04  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	Fix ccache test for MSVC.

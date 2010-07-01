@@ -3615,6 +3615,13 @@ else
   AC_MSG_RESULT(ok)
 fi
 
+# Response file support.
+if test "$lt_cv_nm_interface" = "MS dumpbin"; then
+  nm_file_list_spec='@'
+elif $NM --help 2>/dev/null | grep '[[@]]FILE' >/dev/null; then
+  nm_file_list_spec='@'
+fi
+
 _LT_DECL([global_symbol_pipe], [lt_cv_sys_global_symbol_pipe], [1],
     [Take the output of nm and produce a listing of raw symbols and C names])
 _LT_DECL([global_symbol_to_cdecl], [lt_cv_sys_global_symbol_to_cdecl], [1],
@@ -3625,6 +3632,8 @@ _LT_DECL([global_symbol_to_c_name_address],
 _LT_DECL([global_symbol_to_c_name_address_lib_prefix],
     [lt_cv_sys_global_symbol_to_c_name_address_lib_prefix], [1],
     [Transform the output of nm in a C name address pair when lib prefix is needed])
+_LT_DECL([], [nm_file_list_spec], [1],
+    [Specify filename containing input files for $NM])
 ]) # _LT_CMD_GLOBAL_SYMBOLS
 
 
