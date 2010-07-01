@@ -170,6 +170,9 @@ AT_CLEANUP
 
 AT_SETUP([enhanced shell option appending])
 
+# Don't bother with additional += check unless functions were substituted
+AT_CHECK([fgrep '# XSI func_append ' $abs_top_builddir/libtool >/dev/null 2>&1 || (exit 77)])
+
 AT_DATA(expout,
 [[first   --append second
 third

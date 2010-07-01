@@ -1,3 +1,12 @@
+2010-07-01  Gary V. Vaughan  <gary@gnu.org>
+
+	Skip `enhanced shell option appending' test when not available.
+	* tests/getopt-m4sh.at [enhanced shell option appending]:
+	_LT_AT_XSI_FUNC_EXTRACT will not be able to find the enhanced
+	libtool func_append function if the replacement wasn't substituted
+	by configure, since the decorator comments will be different - in
+	that case simply skip the test.
+
 2010-06-30  Gary V. Vaughan  <gary@gnu.org>
 
 	Add func_append test cases for smart and retarded implementations.
