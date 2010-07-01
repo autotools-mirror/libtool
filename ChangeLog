@@ -1,3 +1,9 @@
+2010-07-01  Peter Rosin  <peda@lysator.liu.se>
+
+	Fix regression caused by "Add func_append_quoted and do..."
+	* libltdl/config/ltmain.m4sh (func_mode_link): Remove leftover
+	"_libs" trash.
+
 2010-06-28  Peter Rosin  <peda@lysator.liu.se>
 
 	For MSVC, embed the manifest as a resource in the executable.

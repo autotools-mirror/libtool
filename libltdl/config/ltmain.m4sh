@@ -6572,7 +6572,7 @@ EOF
 	*)
 	  case " $deplibs " in
 	  *" -L$path/$objdir "*)
-	    func_append new_libs "_libs -L$path/$objdir" ;;
+	    func_append new_libs " -L$path/$objdir" ;;
 	  esac
 	  ;;
 	esac
