@@ -1,3 +1,12 @@
+2010-07-02  Peter Rosin  <peda@lysator.liu.se>
+
+	Don't trigger file name expansion when embedding manifests.
+	* libltdl/m4/libtool.m4 (_LT_LINKER_SHLIBS)
+	[ cygwin, mingw, cegcc ] <cl*>: Remove all spaces in the
+	case statement of postlink_cmds to make file name expansion
+	more unlikely.
+	(_LT_LANG_CXX_CONFIG): Likewise, but also add the missing |.
+
 2010-07-01  Peter Rosin  <peda@lysator.liu.se>
 
 	Fix regression caused by "Add func_append_quoted and do..."

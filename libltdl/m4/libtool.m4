@@ -4880,7 +4880,7 @@ _LT_EOF
 	_LT_TAGVAR(old_postinstall_cmds, $1)='chmod 644 $oldlib'
 	_LT_TAGVAR(postlink_cmds, $1)='lt_outputfile="@OUTPUT@"~
 	  case $lt_outputfile in
-	    *.exe | *.EXE) ;;
+	    *.exe|*.EXE) ;;
 	    *) lt_outputfile="$lt_outputfile.exe" ;;
 	  esac~
 	  if test "$MANIFEST_TOOL" != ":" && test -f "$lt_outputfile.manifest"; then
@@ -5868,7 +5868,7 @@ if test "$_lt_caught_CXX_error" != yes; then
 	  _LT_TAGVAR(old_postinstall_cmds, $1)='chmod 644 $oldlib'
 	  _LT_TAGVAR(postlink_cmds, $1)='lt_outputfile="@OUTPUT@"~
 	    case $lt_outputfile in
-	      *.exe *.EXE) ;;
+	      *.exe|*.EXE) ;;
 	      *) lt_outputfile="$lt_outputfile.exe" ;;
 	    esac~
 	    if test "$MANIFEST_TOOL" != ":" && test -f "$lt_outputfile.manifest"; then
