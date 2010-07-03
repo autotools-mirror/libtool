@@ -710,7 +710,7 @@ func_mode_compile ()
 	  save_ifs="$IFS"; IFS=','
 	  for arg in $args; do
 	    IFS="$save_ifs"
-	    func_append lastarg " $arg"
+	    func_append_quoted lastarg " $arg"
 	  done
 	  IFS="$save_ifs"
 	  func_stripname ' ' '' "$lastarg"

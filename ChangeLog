@@ -1,3 +1,9 @@
+2010-07-03  Peter Rosin  <peda@lysator.liu.se>
+
+	Fix typo in "Add func_append_quoted and do..."
+	* libltdl/config/ltmain.m4sh (func_mode_compile): Use
+	func_append_quoted instead of func_append.
+
 2010-07-02  Peter Rosin  <peda@lysator.liu.se>
 
 	Don't trigger file name expansion when embedding manifests.
