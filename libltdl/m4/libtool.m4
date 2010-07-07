@@ -3321,7 +3321,7 @@ dnl AC_DEFUN([AM_PROG_NM], [])
 dnl AC_DEFUN([AC_PROG_NM], [])
 
 # _LT_CHECK_SHAREDLIB_FROM_LINKLIB
-# ----------------------
+# --------------------------------
 # how to determine the name of the shared library
 # associated with a specific link library.
 #  -- PORTME fill in with the dynamic library characteristics

@@ -1,3 +1,9 @@
+2010-07-07  Gary V. Vaughan  <gary@gnu.org>
+
+	Tidy m4 comment header underline.
+	* libltdl/m4/libtool.m4 (_LT_CHECK_SHAREDLIB_FROM_LINKLIB): Make
+	sure hyphens in function name comment header underline line up.
+
 2010-07-07  Charles Wilson  <libtool@cwilson.fastmail.fm>
 
 	[cygwin|mingw] fix dlpreopen with --disable-static
