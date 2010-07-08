@@ -1,3 +1,15 @@
+2010-07-08  Peter Rosin  <peda@lysator.liu.se>
+	    Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Make preloading heed libname_spec.
+	Fixes testsuite failure for lt_dladvise.at on MSYS/MSVC.
+	* libltdl/ltdl.c (libprefix): New static variable describing
+	the prefix of static archives.
+	(try_dlopen): Use libprefix.
+	* libltdl/m4/ltdl.m4 (_LTDL_SETUP): Export prefix of static
+	archives to config.h. Also fix assignment of LTDLOPEN to be more
+	efficient and less error prone while at it.
+
 2010-07-08  Gary V. Vaughan  <gary@gnu.org>
 
 	Rename _LT_PROG_XSI_REPLACE macro to _LT_PROG_FUNCTION_REPLACE.

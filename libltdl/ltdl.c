@@ -54,6 +54,10 @@ or obtained by writing to the Free Software Foundation, Inc.,
 #  define LT_LIBEXT "a"
 #endif
 
+#if !defined(LT_LIBPREFIX)
+#  define LT_LIBPREFIX "lib"
+#endif
+
 /* This is the maximum symbol size that won't require malloc/free */
 #undef	LT_SYMBOL_LENGTH
 #define LT_SYMBOL_LENGTH	128
@@ -72,6 +76,7 @@ or obtained by writing to the Free Software Foundation, Inc.,
 static	const char	objdir[]		= LT_OBJDIR;
 static	const char	archive_ext[]		= LT_ARCHIVE_EXT;
 static  const char	libext[]		= LT_LIBEXT;
+static  const char	libprefix[]		= LT_LIBPREFIX;
 #if defined(LT_MODULE_EXT)
 static	const char	shlib_ext[]		= LT_MODULE_EXT;
 #endif
@@ -1272,8 +1277,8 @@ try_dlopen (lt_dlhandle *phandle, const char *filename, const char *ext,
 
       if (vtable)
 	{
-	  /* name + "." + libext + NULL */
-	  archive_name = MALLOC (char, LT_STRLEN (name) + strlen (libext) + 2);
+	  /* libprefix + name + "." + libext + NULL */
+	  archive_name = MALLOC (char, strlen (libprefix) + LT_STRLEN (name) + strlen (libext) + 2);
 	  *phandle = (lt_dlhandle) lt__zalloc (sizeof (struct lt__handle));
 
 	  if ((*phandle == NULL) || (archive_name == NULL))
@@ -1285,7 +1290,14 @@ try_dlopen (lt_dlhandle *phandle, const char *filename, const char *ext,
 
 	  /* Preloaded modules are always named according to their old
 	     archive name.  */
-	  sprintf (archive_name, "%s.%s", name, libext);
+	  if (strncmp(name, "lib", 3) == 0)
+	    {
+	      sprintf (archive_name, "%s%s.%s", libprefix, name + 3, libext);
+	    }
+	  else
+	    {
+	      sprintf (archive_name, "%s.%s", name, libext);
+	    }
 
 	  if (tryall_dlopen (&newhandle, archive_name, advise, vtable) == 0)
 	    {
