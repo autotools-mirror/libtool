@@ -1,10 +1,3 @@
-2010-07-08  Peter Rosin  <peda@lysator.liu.se>
-
-	Optimize assignment of output_la.
-	* libltdl/config/ltmain.m4sh (func_mode_link): Save two fork/exec
-	instances.
-	Report by Ralf Wildenhues.
-
 2010-07-08  Gary V. Vaughan  <gary@gnu.org>
 
 	Rename _LT_PROG_XSI_REPLACE macro to _LT_PROG_FUNCTION_REPLACE.
@@ -25,6 +18,15 @@
 	_LT_AT_EXTENDED_SHELL_FUNC_EXTRACT.
 	(_LT_AT_EXTENDED_SHELL_FUNC_EXTRACT): Change regular expression to
 	match new replacable function decorator comments.
+
+2010-07-08  Peter Rosin  <peda@lysator.liu.se>
+
+	Optimize assignment of output_la.
+	* libltdl/config/ltmain.m4sh (func_mode_link): Save two fork/exec
+	instances.
+	Report by Ralf Wildenhues.
+
+2010-07-08  Gary V. Vaughan  <gary@gnu.org>
 
 	Fix a cut-n-pasto in "2010-07-07 Charles Wilson" patch.
 	* libltdl/config/ltmain.m4sh (func_mode_link): Remove spurious

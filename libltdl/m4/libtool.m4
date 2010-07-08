@@ -7542,6 +7542,6 @@ else
 fi
 
 if test x"$_lt_function_replace_fail" = x":"; then
-  AC_MSG_WARN([Unable to substitute extended shell functions in $ofile]) 
+  AC_MSG_WARN([Unable to substitute extended shell functions in $ofile])
 fi
 ])
