@@ -1,3 +1,10 @@
+2010-07-08  Peter Rosin  <peda@lysator.liu.se>
+
+	Optimize assignment of output_la.
+	* libltdl/config/ltmain.m4sh (func_mode_link): Save two fork/exec
+	instances.
+	Report by Ralf Wildenhues.
+
 2010-07-08  Gary V. Vaughan  <gary@gnu.org>
 
 	Fix a cut-n-pasto in "2010-07-07 Charles Wilson" patch.

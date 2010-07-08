@@ -6916,7 +6916,8 @@ EOF
 		func_show_eval "$cmd" 'exit $?'
 		skipped_export=false
 	      elif test -n "$nm_file_list_spec"; then
-		output_la=`$ECHO "X$output" | $Xsed -e "$basename"`
+		func_basename "$output"
+		output_la=$func_basename_result
 		save_libobjs=$libobjs
 		save_output=$output
 		output=${output_objdir}/${output_la}.nm
