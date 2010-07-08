@@ -84,14 +84,14 @@ func_dirname ()
     else
       func_dirname_result="$func_dirname_result${2}"
     fi
-} # func_dirname may be replaced by XSI optimised implementation
+} # func_dirname may be replaced by extended shell implementation
 
 
 # func_basename file
 func_basename ()
 {
     func_basename_result=`$ECHO "${1}" | $SED "$basename"`
-} # func_basename may be replaced by XSI optimised implementation
+} # func_basename may be replaced by extended shell implementation
 
 
 # func_dirname_and_basename file append nondir_replacement
@@ -116,7 +116,7 @@ func_dirname_and_basename ()
       func_dirname_result="$func_dirname_result${2}"
     fi
     func_basename_result=`$ECHO "${1}" | $SED -e "$basename"`
-} # func_dirname_and_basename may be replaced by XSI optimised implementation
+} # func_dirname_and_basename may be replaced by extended shell implementation
 
 
 # func_stripname prefix suffix name
@@ -131,7 +131,7 @@ func_stripname ()
       .*) func_stripname_result=`$ECHO "${3}" | $SED "s%^${1}%%; s%\\\\${2}\$%%"`;;
       *)  func_stripname_result=`$ECHO "${3}" | $SED "s%^${1}%%; s%${2}\$%%"`;;
     esac
-} # func_stripname may be replaced by XSI optimised implementation
+} # func_stripname may be replaced by extended shell implementation
 
 
 # These SED scripts presuppose an absolute path with a trailing slash.

@@ -628,7 +628,7 @@ func_split_short_opt ()
 
     func_split_short_opt_name=`$ECHO "$1" | $SED "$my_sed_short_opt"`
     func_split_short_opt_arg=`$ECHO "$1" | $SED "$my_sed_short_rest"`
-} # func_split_short_opt may be replaced by XSI optimised implementation
+} # func_split_short_opt may be replaced by extended shell implementation
 
 
 # func_split_long_opt longopt
@@ -641,7 +641,7 @@ func_split_long_opt ()
 
     func_split_long_opt_name=`$ECHO "$1" | $SED "$my_sed_long_opt"`
     func_split_long_opt_arg=`$ECHO "$1" | $SED "$my_sed_long_arg"`
-} # func_split_long_opt may be replaced by XSI optimised implementation
+} # func_split_long_opt may be replaced by extended shell implementation
 
 exit_cmd=:
 ]])

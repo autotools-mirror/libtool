@@ -752,7 +752,7 @@ _LT_EOF
   sed '$q' "$ltmain" >> "$cfgfile" \
      || (rm -f "$cfgfile"; exit 1)
 
-  _LT_PROG_XSI_SHELLFNS
+  _LT_PROG_REPLACE_SHELLFNS
 
    mv -f "$cfgfile" "$ofile" ||
     (rm -f "$ofile" && cp "$cfgfile" "$ofile" && rm -f "$cfgfile")
@@ -7453,77 +7453,77 @@ _LT_DECL([NL2SP], [lt_NL2SP], [1], [turn newlines into spaces])dnl
 ])# _LT_CHECK_SHELL_FEATURES
 
 
-# _LT_PROG_XSI_REPLACE (FUNCNAME, REPLACEMENT-BODY)
-# -------------------------------------------------
+# _LT_PROG_FUNCTION_REPLACE (FUNCNAME, REPLACEMENT-BODY)
+# ------------------------------------------------------
 # In `$cfgfile', look for function FUNCNAME delimited by `^FUNCNAME ()$' and
 # '^} FUNCNAME ', and replace its body with REPLACEMENT-BODY.
-m4_defun([_LT_PROG_XSI_REPLACE],
+m4_defun([_LT_PROG_FUNCTION_REPLACE],
 [dnl {
 sed -e '/^$1 ()$/,/^} # $1 /c\
 $1 ()\
 {\
 m4_bpatsubsts([$2], [$], [\\], [^\([	 ]\)], [\\\1])
-} # XSI $1 implementation' "$cfgfile" > $cfgfile.tmp \
+} # Extended-shell $1 implementation' "$cfgfile" > $cfgfile.tmp \
   && mv -f "$cfgfile.tmp" "$cfgfile" \
     || (rm -f "$cfgfile" && cp "$cfgfile.tmp" "$cfgfile" && rm -f "$cfgfile.tmp")
-test 0 -eq $? || _lt_xsi_replace_fail=:
+test 0 -eq $? || _lt_function_replace_fail=:
 ])
 
 
-# _LT_PROG_XSI_SHELLFNS
-# ---------------------
+# _LT_PROG_REPLACE_SHELLFNS
+# -------------------------
 # Replace existing portable implementations of several shell functions with
-# equivalent XSI compatible implementations.
-m4_defun([_LT_PROG_XSI_SHELLFNS],
+# equivalent extended shell implementations where those features are available..
+m4_defun([_LT_PROG_REPLACE_SHELLFNS],
 [if test x"$xsi_shell" = xyes; then
-  _LT_PROG_XSI_REPLACE([func_dirname], [dnl
+  _LT_PROG_FUNCTION_REPLACE([func_dirname], [dnl
     case ${1} in
       */*) func_dirname_result="${1%/*}${2}" ;;
       *  ) func_dirname_result="${3}" ;;
     esac])
 
-  _LT_PROG_XSI_REPLACE([func_basename], [dnl
+  _LT_PROG_FUNCTION_REPLACE([func_basename], [dnl
     func_basename_result="${1##*/}"])
 
-  _LT_PROG_XSI_REPLACE([func_dirname_and_basename], [dnl
+  _LT_PROG_FUNCTION_REPLACE([func_dirname_and_basename], [dnl
     case ${1} in
       */*) func_dirname_result="${1%/*}${2}" ;;
       *  ) func_dirname_result="${3}" ;;
     esac
     func_basename_result="${1##*/}"])
 
-  _LT_PROG_XSI_REPLACE([func_stripname], [dnl
+  _LT_PROG_FUNCTION_REPLACE([func_stripname], [dnl
     # pdksh 5.2.14 does not do ${X%$Y} correctly if both X and Y are
     # positional parameters, so assign one to ordinary parameter first.
     func_stripname_result=${3}
     func_stripname_result=${func_stripname_result#"${1}"}
     func_stripname_result=${func_stripname_result%"${2}"}])
 
-  _LT_PROG_XSI_REPLACE([func_split_long_opt], [dnl
+  _LT_PROG_FUNCTION_REPLACE([func_split_long_opt], [dnl
     func_split_long_opt_name=${1%%=*}
     func_split_long_opt_arg=${1#*=}])
 
-  _LT_PROG_XSI_REPLACE([func_split_short_opt], [dnl
+  _LT_PROG_FUNCTION_REPLACE([func_split_short_opt], [dnl
     func_split_short_opt_arg=${1#??}
     func_split_short_opt_name=${1%"$func_split_short_opt_arg"}])
 
-  _LT_PROG_XSI_REPLACE([func_lo2o], [dnl
+  _LT_PROG_FUNCTION_REPLACE([func_lo2o], [dnl
     case ${1} in
       *.lo) func_lo2o_result=${1%.lo}.${objext} ;;
       *)    func_lo2o_result=${1} ;;
     esac])
 
-  _LT_PROG_XSI_REPLACE([func_xform], [    func_xform_result=${1%.*}.lo])
+  _LT_PROG_FUNCTION_REPLACE([func_xform], [    func_xform_result=${1%.*}.lo])
 
-  _LT_PROG_XSI_REPLACE([func_arith], [    func_arith_result=$(( $[*] ))])
+  _LT_PROG_FUNCTION_REPLACE([func_arith], [    func_arith_result=$(( $[*] ))])
 
-  _LT_PROG_XSI_REPLACE([func_len], [    func_len_result=${#1}])
+  _LT_PROG_FUNCTION_REPLACE([func_len], [    func_len_result=${#1}])
 fi
 
 if test x"$lt_shell_append" = xyes; then
-  _LT_PROG_XSI_REPLACE([func_append], [    eval "${1}+=\\${2}"])
+  _LT_PROG_FUNCTION_REPLACE([func_append], [    eval "${1}+=\\${2}"])
 
-  _LT_PROG_XSI_REPLACE([func_append_quoted], [dnl
+  _LT_PROG_FUNCTION_REPLACE([func_append_quoted], [dnl
     func_quote_for_eval "${2}"
 dnl m4 expansion turns \\\\ into \\, and then the shell eval turns that into \
     eval "${1}+=\\\\ \\$func_quote_for_eval_result"])
@@ -7532,16 +7532,16 @@ dnl m4 expansion turns \\\\ into \\, and then the shell eval turns that into \
   sed -e 's%func_append \([[a-zA-Z_]]\{1,\}\) "%\1+="%g' $cfgfile > $cfgfile.tmp \
     && mv -f "$cfgfile.tmp" "$cfgfile" \
       || (rm -f "$cfgfile" && cp "$cfgfile.tmp" "$cfgfile" && rm -f "$cfgfile.tmp")
-  test 0 -eq $? || _lt_xsi_replace_fail=:
+  test 0 -eq $? || _lt_function_replace_fail=:
 else
   # Save a `func_append' function call even when '+=' is not available
   sed -e 's%func_append \([[a-zA-Z_]]\{1,\}\) "%\1="$\1%g' $cfgfile > $cfgfile.tmp \
     && mv -f "$cfgfile.tmp" "$cfgfile" \
       || (rm -f "$cfgfile" && cp "$cfgfile.tmp" "$cfgfile" && rm -f "$cfgfile.tmp")
-  test 0 -eq $? || _lt_xsi_replace_fail=:
+  test 0 -eq $? || _lt_function_replace_fail=:
 fi
 
-if test x"$_lt_xsi_replace_fail" = x":"; then
-  AC_MSG_WARN([Unable to substitute faster XSI functions in $ofile]) 
+if test x"$_lt_function_replace_fail" = x":"; then
+  AC_MSG_WARN([Unable to substitute extended shell functions in $ofile]) 
 fi
 ])

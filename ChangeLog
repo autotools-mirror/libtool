@@ -7,6 +7,25 @@
 
 2010-07-08  Gary V. Vaughan  <gary@gnu.org>
 
+	Rename _LT_PROG_XSI_REPLACE macro to _LT_PROG_FUNCTION_REPLACE.
+	* libltdl/m4/libtool.m4 (_LT_PROG_XSI_SHELLFNS): Rename to
+	_LT_PROG_REPLACE_SHELLFNS.
+	(_LT_PROG_XSI_REPLACE): Rename to _LT_PROG_FUNCTION_REPLACE.
+	(_LT_PROG_FUNCTION_REPLACE): Change decorator comment to use
+	'Extended shell' rather than 'XSI' on successful replacement.
+	* libltdl/config/general.m4sh (func_dirname, func_basename)
+	(func_dirname_and_basename, func_stripname): Change decorator
+	comment to use 'extended shell' rather than 'XSI' on fallback
+	implementations.
+	* libltdl/config/getopt.m4sh (func_split_short_opt)
+	(func_split_long_opt): Ditto.
+	* libltdl/config/ltmain.m4sh (func_append, func_append_quoted)
+	(func_arith, func_len, func_lo2o, func_xform): Ditto.
+	* tests/getopt-m4sh.at (_LT_AT_XSI_FUNC_EXTRACT): Rename to
+	_LT_AT_EXTENDED_SHELL_FUNC_EXTRACT.
+	(_LT_AT_EXTENDED_SHELL_FUNC_EXTRACT): Change regular expression to
+	match new replacable function decorator comments.
+
 	Fix a cut-n-pasto in "2010-07-07 Charles Wilson" patch.
 	* libltdl/config/ltmain.m4sh (func_mode_link): Remove spurious
 	variable dereference.

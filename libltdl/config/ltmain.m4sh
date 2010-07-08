@@ -154,7 +154,7 @@ exec_cmd=
 func_append ()
 {
     eval "${1}=\$${1}\${2}"
-} # func_append may be replaced by XSI optimised implementation
+} # func_append may be replaced by extended shell implementation
 
 # func_append_quoted var value
 # Quote VALUE and append to the end of shell variable VAR.
@@ -162,14 +162,14 @@ func_append_quoted ()
 {
     func_quote_for_eval "${2}"
     eval "${1}=\$${1}\\ \$func_quote_for_eval_result"
-} # func_append_quoted may be replaced by XSI optimised implementation
+} # func_append_quoted may be replaced by extended shell implementation
 
 
 # func_arith arithmetic-term...
 func_arith ()
 {
     func_arith_result=`expr "${@}"`
-} # func_arith may be replaced by XSI optimised implementation
+} # func_arith may be replaced by extended shell implementation
 
 
 # func_len string
@@ -177,21 +177,21 @@ func_arith ()
 func_len ()
 {
     func_len_result=`expr "${1}" : ".*" 2>/dev/null || echo $max_cmd_len`
-} # func_len may be replaced by XSI optimised implementation
+} # func_len may be replaced by extended shell implementation
 
 
 # func_lo2o object
 func_lo2o ()
 {
     func_lo2o_result=`$ECHO "${1}" | $SED "$lo2o"`
-} # func_lo2o may be replaced by XSI optimised implementation
+} # func_lo2o may be replaced by extended shell implementation
 
 
 # func_xform libobj-or-source
 func_xform ()
 {
     func_xform_result=`$ECHO "${1}" | $SED 's/\.[[^.]]*$/.lo/'`
-} # func_xform may be replaced by XSI optimised implementation
+} # func_xform may be replaced by extended shell implementation
 
 
 # func_fatal_configuration arg...

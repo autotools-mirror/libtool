@@ -69,13 +69,13 @@ $SED '1,/^# func_dirname/d' options >> options.tmp
 rm -f options && mv options.tmp options])
 
 
-# _LT_AT_XSI_FUNC_EXTRACT(FUNC-NAME)
-# ----------------------------------
-# Extract the XSI decorated function FUNC-NAME from libtool
+# _LT_AT_EXTENDED_SHELL_FUNC_EXTRACT(FUNC-NAME)
+# ---------------------------------------------
+# Extract the 'Extended-shell'-decorated function FUNC-NAME from libtool
 m4_define([_LT_AT_XSI_FUNC_EXTRACT],
 [dnl {{
 $SED '/^# $1/q' options > options.tmp
-$SED -n '/^$1 ()/,/^} # XSI $1 /p' $abs_top_builddir/libtool >> options.tmp
+$SED -n '/^$1 ()/,/^} # Extended-shell $1 /p' $abs_top_builddir/libtool >> options.tmp
 $SED '1,/^} # $1 /d' options >> options.tmp
 rm -f options && mv options.tmp options])
 
