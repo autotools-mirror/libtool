@@ -5331,7 +5331,7 @@ func_mode_link ()
 	      # Prefer using a static library (so that no silly _DYNAMIC symbols
 	      # are required to link).
 	      if test -n "$old_library"; then
-	        func_append $newdlprefiles " $dir/$old_library"
+	        func_append newdlprefiles " $dir/$old_library"
 	        # Keep a list of preopened convenience libraries to check
 	        # that they are being used correctly in the link pass.
 	        test -z "$libdir" && \

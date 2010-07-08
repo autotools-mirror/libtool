@@ -1,3 +1,9 @@
+2010-07-08  Gary V. Vaughan  <gary@gnu.org>
+
+	Fix a cut-n-pasto in "2010-07-07 Charles Wilson" patch.
+	* libltdl/config/ltmain.m4sh (func_mode_link): Remove spurious
+	variable dereference.
+
 2010-07-07  Gary V. Vaughan  <gary@gnu.org>
 
 	Tidy m4 comment header underline.
