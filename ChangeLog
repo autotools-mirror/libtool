@@ -1,3 +1,9 @@
+2010-07-17  Peter Rosin  <peda@lysator.liu.se>
+
+	dllimport the variable for MSVC in link-order.at
+	* tests/link-order.at [MSVC]: Makes the test pass by dllimporting
+	imported variables when working with shared libraries.
+
 2010-07-08  Peter Rosin  <peda@lysator.liu.se>
 	    Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 

@@ -48,13 +48,31 @@ for i in old new; do
   mkdir src
 
   cat >src/a_$i.c <<EOF
-extern int c;
+/* w32 fun, MSVC needs to dllimport when using a shared library, so use
+ * DLL_EXPORT to discriminate as that happens to coinside in this case.
+ * gnu has auto import.
+ */
+#if defined _MSC_VER && defined DLL_EXPORT
+#  define LIBCEE_SCOPE __declspec(dllimport)
+#else
+#  define LIBCEE_SCOPE extern
+#endif
+LIBCEE_SCOPE int c;
 extern int b_$i();
 int a_$i() { return c + b_$i(); }
 EOF
 
   cat >src/b_$i.c <<EOF
-extern int c;
+/* w32 fun, MSVC needs to dllimport when using a shared library, so use
+ * DLL_EXPORT to discriminate as that happens to coinside in this case.
+ * gnu has auto import.
+ */
+#if defined _MSC_VER && defined DLL_EXPORT
+#  define LIBCEE_SCOPE __declspec(dllimport)
+#else
+#  define LIBCEE_SCOPE extern
+#endif
+LIBCEE_SCOPE int c;
 int b_$i() { return 1 + c; }
 EOF
 
