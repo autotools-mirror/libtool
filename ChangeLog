@@ -1,5 +1,10 @@
 2010-07-18  Peter Rosin  <peda@lysator.liu.se>
 
+	* tests/stresstest.at: Link with main.lo when liba is shared
+	and linking main with -no-install.
+
+2010-07-18  Peter Rosin  <peda@lysator.liu.se>
+
 	* tests/stresstest.at [MSVC]: dllimport all imported
 	variables.
 
