@@ -1,3 +1,8 @@
+2010-07-18  Peter Rosin  <peda@lysator.liu.se>
+
+	* tests/stresstest.at [MSVC]: dllimport all imported
+	variables.
+
 2010-07-17  Peter Rosin  <peda@lysator.liu.se>
 
 	dllimport the variable for MSVC in link-order.at
