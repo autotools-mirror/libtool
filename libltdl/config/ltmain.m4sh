@@ -646,6 +646,466 @@ EOF
     }
 }
 
+
+##################################################
+# FILE NAME AND PATH CONVERSION HELPER FUNCTIONS #
+##################################################
+
+# func_convert_core_file_wine_to_w32 ARG
+# Helper function used by file name conversion functions when $build is *nix,
+# and $host is mingw, cygwin, or some other w32 environment. Relies on a
+# correctly configured wine environment available, with the winepath program
+# in $build's $PATH.
+#
+# ARG is the $build file name to be converted to w32 format.
+# Result is available in $func_convert_core_file_wine_to_w32_result, and will
+# be empty on error (or when ARG is empty)
+func_convert_core_file_wine_to_w32 ()
+{
+  $opt_debug
+  func_convert_core_file_wine_to_w32_result="$1"
+  if test -n "$1"; then
+    # Unfortunately, winepath does not exit with a non-zero error code, so we
+    # are forced to check the contents of stdout. On the other hand, if the
+    # command is not found, the shell will set an exit code of 127 and print
+    # *an error message* to stdout. So we must check for both error code of
+    # zero AND non-empty stdout, which explains the odd construction:
+    func_convert_core_file_wine_to_w32_tmp=`winepath -w "$1" 2>/dev/null`
+    if test "$?" -eq 0 && test -n "${func_convert_core_file_wine_to_w32_tmp}"; then
+      func_convert_core_file_wine_to_w32_result=`$ECHO "$func_convert_core_file_wine_to_w32_tmp" |
+        $SED -e "$lt_sed_naive_backslashify"`
+    else
+      func_convert_core_file_wine_to_w32_result=
+    fi
+  fi
+}
+# end: func_convert_core_file_wine_to_w32
+
+
+# func_convert_core_path_wine_to_w32 ARG
+# Helper function used by path conversion functions when $build is *nix, and
+# $host is mingw, cygwin, or some other w32 environment. Relies on a correctly
+# configured wine environment available, with the winepath program in $build's
+# $PATH. Assumes ARG has no leading or trailing path separator characters.
+#
+# ARG is path to be converted from $build format to win32.
+# Result is available in $func_convert_core_path_wine_to_w32_result.
+# Unconvertible file (directory) names in ARG are skipped; if no directory names
+# are convertible, then the result may be empty.
+func_convert_core_path_wine_to_w32 ()
+{
+  $opt_debug
+  # unfortunately, winepath doesn't convert paths, only file names 
+  func_convert_core_path_wine_to_w32_result=""
+  if test -n "$1"; then
+    oldIFS=$IFS
+    IFS=:
+    for func_convert_core_path_wine_to_w32_f in $1; do
+      IFS=$oldIFS
+      func_convert_core_file_wine_to_w32 "$func_convert_core_path_wine_to_w32_f"
+      if test -n "$func_convert_core_file_wine_to_w32_result" ; then
+        if test -z "$func_convert_core_path_wine_to_w32_result"; then
+          func_convert_core_path_wine_to_w32_result="$func_convert_core_file_wine_to_w32_result"
+        else
+          func_append func_convert_core_path_wine_to_w32_result ";$func_convert_core_file_wine_to_w32_result"
+        fi
+      fi
+    done
+    IFS=$oldIFS
+  fi
+}
+# end: func_convert_core_path_wine_to_w32
+
+
+# func_cygpath ARGS...
+# Wrapper around calling the cygpath program via LT_CYGPATH. This is used when
+# when (1) $build is *nix and Cygwin is hosted via a wine environment; or (2)
+# $build is MSYS and $host is Cygwin, or (3) $build is Cygwin. In case (1) or
+# (2), returns the Cygwin file name or path in func_cygpath_result (input
+# file name or path is assumed to be in w32 format, as previously converted
+# from $build's *nix or MSYS format). In case (3), returns the w32 file name
+# or path in func_cygpath_result (input file name or path is assumed to be in
+# Cygwin format). Returns an empty string on error.
+#
+# ARGS are passed to cygpath, with the last one being the file name or path to
+# be converted.
+#
+# Specify the absolute *nix (or w32) name to cygpath in the LT_CYGPATH
+# environment variable; do not put it in $PATH.
+func_cygpath ()
+{
+  $opt_debug
+  if test -n "$LT_CYGPATH" && test -f "$LT_CYGPATH"; then
+    func_cygpath_result=`$LT_CYGPATH "$@" 2>/dev/null`
+    if test "$?" -ne 0; then
+      # on failure, ensure result is empty
+      func_cygpath_result=
+    fi
+  else
+    func_cygpath_result=
+    func_error "LT_CYGPATH is empty or specifies non-existent file: \`$LT_CYGPATH'"
+  fi
+}
+#end: func_cygpath
+
+
+# func_convert_core_msys_to_w32 ARG
+# Convert file name or path ARG from MSYS format to w32 format.  Return
+# result in func_convert_core_msys_to_w32_result.
+func_convert_core_msys_to_w32 ()
+{
+  $opt_debug
+  # awkward: cmd appends spaces to result
+  func_convert_core_msys_to_w32_result=`( cmd //c echo "$1" ) 2>/dev/null |
+    $SED -e 's/[ ]*$//' -e "$lt_sed_naive_backslashify"`
+}
+#end: func_convert_core_msys_to_w32
+
+
+# func_convert_file_check ARG1 ARG2
+# Verify that ARG1 (a path in $build format) was converted to $host format in
+# ARG2. Otherwise, emit an error message, but continue (resetting
+# func_to_host_file_result to ARG1).
+func_convert_file_check ()
+{
+  $opt_debug
+  if test -z "$2" && test -n "$1" ; then
+    func_error "Could not determine host path corresponding to"
+    func_error "  \`$1'"
+    func_error "Continuing, but uninstalled executables may not work."
+    # Fallback:
+    func_to_host_file_result="$1"
+  fi
+}
+# end func_convert_file_check
+
+
+# func_convert_path_check FROM_PATHSEP TO_PATHSEP FROM_PATH TO_PATH
+# Verify that FROM_PATH (a path in $build format) was converted to $host
+# format in TO_PATH. Otherwise, emit an error message, but continue, resetting
+# func_to_host_file_result to a simplistic fallback value (see below).
+func_convert_path_check ()
+{
+  $opt_debug
+  if test -z "$4" && test -n "$3"; then
+    func_error "Could not determine the host path(s) corresponding to"
+    func_error "  \`$3'"
+    func_error "Continuing, but uninstalled executables may not work."
+    # Fallback.  This is a deliberately simplistic "conversion" and
+    # should not be "improved".  See libtool.info.
+    if test "x$1" != "x$2"; then
+      lt_replace_pathsep_chars="s|$1|$2|g"
+      func_to_host_path_result=`echo "$3" |
+        $SED -e "$lt_replace_pathsep_chars"`
+    else
+      func_to_host_path_result="$3"
+    fi
+  fi
+}
+# end func_convert_path_check
+
+
+# func_convert_path_front_back_pathsep FRONTPAT BACKPAT REPL ORIG
+# Modifies func_to_host_path_result by prepending REPL if ORIG matches FRONTPAT
+# and appending REPL if ORIG matches BACKPAT.
+func_convert_path_front_back_pathsep ()
+{
+  $opt_debug
+  case $4 in
+  $1 ) func_to_host_path_result="$3$func_to_host_path_result"
+    ;;
+  esac
+  case $4 in
+  $2 ) func_append func_to_host_path_result "$3"
+    ;;
+  esac
+}
+# end func_convert_path_front_back_pathsep
+
+
+##################################################
+# $build to $host FILE NAME CONVERSION FUNCTIONS #
+##################################################
+# invoked via `$to_host_file_cmd ARG'
+#
+# In each case, ARG is the path to be converted from $build to $host format.
+# Result will be available in $func_to_host_file_result.
+
+
+# func_to_host_file ARG
+# Converts the file name ARG from $build format to $host format. Return result
+# in func_to_host_file_result.
+func_to_host_file ()
+{
+  $opt_debug
+  $to_host_file_cmd "$1"
+}
+# end func_to_host_file
+
+
+# func_convert_file_noop ARG
+# Copy ARG to func_to_host_file_result.
+func_convert_file_noop ()
+{
+  func_to_host_file_result="$1"
+}
+# end func_convert_file_noop
+
+
+# func_convert_file_msys_to_w32 ARG
+# Convert file name ARG from (mingw) MSYS to (mingw) w32 format; automatic
+# conversion to w32 is not available inside the cwrapper.  Returns result in
+# func_to_host_file_result.
+func_convert_file_msys_to_w32 ()
+{
+  $opt_debug
+  func_to_host_file_result="$1"
+  if test -n "$1"; then
+    func_convert_core_msys_to_w32 "$1"
+    func_to_host_file_result="$func_convert_core_msys_to_w32_result"
+  fi
+  func_convert_file_check "$1" "$func_to_host_file_result"
+}
+# end func_convert_file_msys_to_w32
+
+
+# func_convert_file_cygwin_to_w32 ARG
+# Convert file name ARG from Cygwin to w32 format.  Returns result in
+# func_to_host_file_result.
+func_convert_file_cygwin_to_w32 ()
+{
+  $opt_debug
+  func_to_host_file_result="$1"
+  if test -n "$1"; then
+    # because $build is cygwin, we call "the" cygpath in $PATH; no need to use
+    # LT_CYGPATH in this case.
+    func_to_host_file_result=`cygpath -m "$1"`
+  fi
+  func_convert_file_check "$1" "$func_to_host_file_result"
+}
+# end func_convert_file_cygwin_to_w32
+
+
+# func_convert_file_nix_to_w32 ARG
+# Convert file name ARG from *nix to w32 format.  Requires a wine environment
+# and a working winepath. Returns result in func_to_host_file_result.
+func_convert_file_nix_to_w32 ()
+{
+  $opt_debug
+  func_to_host_file_result="$1"
+  if test -n "$1"; then
+    func_convert_core_file_wine_to_w32 "$1"
+    func_to_host_file_result="$func_convert_core_file_wine_to_w32_result"
+  fi
+  func_convert_file_check "$1" "$func_to_host_file_result"
+}
+# end func_convert_file_nix_to_w32
+
+
+# func_convert_file_msys_to_cygwin ARG
+# Convert file name ARG from MSYS to Cygwin format.  Requires LT_CYGPATH set.
+# Returns result in func_to_host_file_result.
+func_convert_file_msys_to_cygwin ()
+{
+  $opt_debug
+  func_to_host_file_result="$1"
+  if test -n "$1"; then
+    func_convert_core_msys_to_w32 "$1"
+    func_cygpath -u "$func_convert_core_msys_to_w32_result"
+    func_to_host_file_result="$func_cygpath_result"
+  fi
+  func_convert_file_check "$1" "$func_to_host_file_result"
+}
+# end func_convert_file_msys_to_cygwin
+
+
+# func_convert_file_nix_to_cygwin ARG
+# Convert file name ARG from *nix to Cygwin format.  Requires Cygwin installed
+# in a wine environment, working winepath, and LT_CYGPATH set.  Returns result
+# in func_to_host_file_result.
+func_convert_file_nix_to_cygwin ()
+{
+  $opt_debug
+  func_to_host_file_result="$1"
+  if test -n "$1"; then
+    # convert from *nix to w32, then use cygpath to convert from w32 to cygwin.
+    func_convert_core_file_wine_to_w32 "$1"
+    func_cygpath -u "$func_convert_core_file_wine_to_w32_result"
+    func_to_host_file_result="$func_cygpath_result"
+  fi
+  func_convert_file_check "$1" "$func_to_host_file_result"
+}
+# end func_convert_file_nix_to_cygwin
+
+
+#############################################
+# $build to $host PATH CONVERSION FUNCTIONS #
+#############################################
+# invoked via `$to_host_path_cmd ARG'
+#
+# In each case, ARG is the path to be converted from $build to $host format.
+# The result will be available in $func_to_host_path_result.
+#
+# Path separators are also converted from $build format to $host format.  If
+# ARG begins or ends with a path separator character, it is preserved (but
+# converted to $host format) on output.
+#
+# All path conversion functions are named using the following convention:
+#   file name conversion function    : func_convert_file_X_to_Y ()
+#   path conversion function         : func_convert_path_X_to_Y ()
+# where, for any given $build/$host combination the 'X_to_Y' value is the
+# same.  If conversion functions are added for new $build/$host combinations,
+# the two new functions must follow this pattern, or func_init_to_host_path_cmd
+# will break.
+
+
+# func_init_to_host_path_cmd
+# Ensures that function "pointer" variable $to_host_path_cmd is set to the
+# appropriate value, based on the value of $to_host_file_cmd.
+to_host_path_cmd=
+func_init_to_host_path_cmd ()
+{
+  $opt_debug
+  if test -z "$to_host_path_cmd"; then
+    func_stripname 'func_convert_file_' '' "$to_host_file_cmd"
+    to_host_path_cmd="func_convert_path_${func_stripname_result}"
+  fi
+}
+
+
+# func_to_host_path ARG
+# Converts the path ARG from $build format to $host format. Return result
+# in func_to_host_path_result.
+func_to_host_path ()
+{
+  $opt_debug
+  func_init_to_host_path_cmd
+  $to_host_path_cmd "$1"
+}
+# end func_to_host_path
+
+
+# func_convert_path_noop ARG
+# Copy ARG to func_to_host_path_result.
+func_convert_path_noop ()
+{
+  func_to_host_path_result="$1"
+}
+# end func_convert_path_noop
+
+
+# func_convert_path_msys_to_w32 ARG
+# Convert path ARG from (mingw) MSYS to (mingw) w32 format; automatic
+# conversion to w32 is not available inside the cwrapper.  Returns result in
+# func_to_host_path_result.
+func_convert_path_msys_to_w32 ()
+{
+  $opt_debug
+  func_to_host_path_result="$1"
+  if test -n "$1"; then
+    # Remove leading and trailing path separator characters from ARG.  MSYS
+    # behavior is inconsistent here; cygpath turns them into '.;' and ';.';
+    # and winepath ignores them completely.
+    func_stripname : : "$1"
+    func_to_host_path_tmp1=$func_stripname_result
+    func_convert_core_msys_to_w32 "$func_to_host_path_tmp1"
+    func_to_host_path_result="$func_convert_core_msys_to_w32_result"
+    func_convert_path_check : ";" \
+      "$func_to_host_path_tmp1" "$func_to_host_path_result"
+    func_convert_path_front_back_pathsep ":*" "*:" ";" "$1"
+  fi
+}
+# end func_convert_path_msys_to_w32
+
+
+# func_convert_path_cygwin_to_w32 ARG
+# Convert path ARG from Cygwin to w32 format.  Returns result in
+# func_to_host_file_result.
+func_convert_path_cygwin_to_w32 ()
+{
+  $opt_debug
+  func_to_host_path_result="$1"
+  if test -n "$1"; then
+    # See func_convert_path_msys_to_w32:
+    func_stripname : : "$1"
+    func_to_host_path_tmp1=$func_stripname_result
+    func_to_host_path_result=`cygpath -m -p "$func_to_host_path_tmp1"`
+    func_convert_path_check : ";" \
+      "$func_to_host_path_tmp1" "$func_to_host_path_result"
+    func_convert_path_front_back_pathsep ":*" "*:" ";" "$1"
+  fi
+}
+# end func_convert_path_cygwin_to_w32
+
+
+# func_convert_path_nix_to_w32 ARG
+# Convert path ARG from *nix to w32 format.  Requires a wine environment and
+# a working winepath.  Returns result in func_to_host_file_result.
+func_convert_path_nix_to_w32 ()
+{
+  $opt_debug
+  func_to_host_path_result="$1"
+  if test -n "$1"; then
+    # See func_convert_path_msys_to_w32:
+    func_stripname : : "$1"
+    func_to_host_path_tmp1=$func_stripname_result
+    func_convert_core_path_wine_to_w32 "$func_to_host_path_tmp1"
+    func_to_host_path_result="$func_convert_core_path_wine_to_w32_result"
+    func_convert_path_check : ";" \
+      "$func_to_host_path_tmp1" "$func_to_host_path_result"
+    func_convert_path_front_back_pathsep ":*" "*:" ";" "$1"
+  fi
+}
+# end func_convert_path_nix_to_w32
+
+
+# func_convert_path_msys_to_cygwin ARG
+# Convert path ARG from MSYS to Cygwin format.  Requires LT_CYGPATH set.
+# Returns result in func_to_host_file_result.
+func_convert_path_msys_to_cygwin ()
+{
+  $opt_debug
+  func_to_host_path_result="$1"
+  if test -n "$1"; then
+    # See func_convert_path_msys_to_w32:
+    func_stripname : : "$1"
+    func_to_host_path_tmp1=$func_stripname_result
+    func_convert_core_msys_to_w32 "$func_to_host_path_tmp1"
+    func_cygpath -u -p "$func_convert_core_msys_to_w32_result"
+    func_to_host_path_result="$func_cygpath_result"
+    func_convert_path_check : : \
+      "$func_to_host_path_tmp1" "$func_to_host_path_result"
+    func_convert_path_front_back_pathsep ":*" "*:" : "$1"
+  fi
+}
+# end func_convert_path_msys_to_cygwin
+
+
+# func_convert_path_nix_to_cygwin ARG
+# Convert path ARG from *nix to Cygwin format.  Requires Cygwin installed in a
+# a wine environment, working winepath, and LT_CYGPATH set.  Returns result in
+# func_to_host_file_result.
+func_convert_path_nix_to_cygwin ()
+{
+  $opt_debug
+  func_to_host_path_result="$1"
+  if test -n "$1"; then
+    # Remove leading and trailing path separator characters from
+    # ARG. msys behavior is inconsistent here, cygpath turns them
+    # into '.;' and ';.', and winepath ignores them completely.
+    func_stripname : : "$1"
+    func_to_host_path_tmp1=$func_stripname_result
+    func_convert_core_path_wine_to_w32 "$func_to_host_path_tmp1"
+    func_cygpath -u -p "$func_convert_core_path_wine_to_w32_result"
+    func_to_host_path_result="$func_cygpath_result"
+    func_convert_path_check : : \
+      "$func_to_host_path_tmp1" "$func_to_host_path_result"
+    func_convert_path_front_back_pathsep ":*" "*:" : "$1"
+  fi
+}
+# end func_convert_path_nix_to_cygwin
+
+
 # func_mode_compile arg...
 func_mode_compile ()
 {
@@ -2776,166 +3236,6 @@ fi\
 }
 
 
-# func_to_host_path arg
-#
-# Convert paths to host format when used with build tools.
-# Intended for use with "native" mingw (where libtool itself
-# is running under the msys shell), or in the following cross-
-# build environments:
-#    $build          $host
-#    mingw (msys)    mingw  [e.g. native]
-#    cygwin          mingw
-#    *nix + wine     mingw
-# where wine is equipped with the `winepath' executable.
-# In the native mingw case, the (msys) shell automatically
-# converts paths for any non-msys applications it launches,
-# but that facility isn't available from inside the cwrapper.
-# Similar accommodations are necessary for $host mingw and
-# $build cygwin.  Calling this function does no harm for other
-# $host/$build combinations not listed above.
-#
-# ARG is the path (on $build) that should be converted to
-# the proper representation for $host. The result is stored
-# in $func_to_host_path_result.
-func_to_host_path ()
-{
-  func_to_host_path_result="$1"
-  if test -n "$1"; then
-    case $host in
-      *mingw* )
-        lt_sed_naive_backslashify='s|\\\\*|\\|g;s|/|\\|g;s|\\|\\\\|g'
-        case $build in
-          *mingw* ) # actually, msys
-            # awkward: cmd appends spaces to result
-            func_to_host_path_result=`( cmd //c echo "$1" ) 2>/dev/null |
-              $SED -e 's/[ ]*$//' -e "$lt_sed_naive_backslashify"`
-            ;;
-          *cygwin* )
-            func_to_host_path_result=`cygpath -w "$1" |
-	      $SED -e "$lt_sed_naive_backslashify"`
-            ;;
-          * )
-            # Unfortunately, winepath does not exit with a non-zero
-            # error code, so we are forced to check the contents of
-            # stdout. On the other hand, if the command is not
-            # found, the shell will set an exit code of 127 and print
-            # *an error message* to stdout. So we must check for both
-            # error code of zero AND non-empty stdout, which explains
-            # the odd construction:
-            func_to_host_path_tmp1=`winepath -w "$1" 2>/dev/null`
-            if test "$?" -eq 0 && test -n "${func_to_host_path_tmp1}"; then
-              func_to_host_path_result=`$ECHO "$func_to_host_path_tmp1" |
-                $SED -e "$lt_sed_naive_backslashify"`
-            else
-              # Allow warning below.
-              func_to_host_path_result=
-            fi
-            ;;
-        esac
-        if test -z "$func_to_host_path_result" ; then
-          func_error "Could not determine host path corresponding to"
-          func_error "  \`$1'"
-          func_error "Continuing, but uninstalled executables may not work."
-          # Fallback:
-          func_to_host_path_result="$1"
-        fi
-        ;;
-    esac
-  fi
-}
-# end: func_to_host_path
-
-# func_to_host_pathlist arg
-#
-# Convert pathlists to host format when used with build tools.
-# See func_to_host_path(), above. This function supports the
-# following $build/$host combinations (but does no harm for
-# combinations not listed here):
-#    $build          $host
-#    mingw (msys)    mingw  [e.g. native]
-#    cygwin          mingw
-#    *nix + wine     mingw
-#
-# Path separators are also converted from $build format to
-# $host format. If ARG begins or ends with a path separator
-# character, it is preserved (but converted to $host format)
-# on output.
-#
-# ARG is a pathlist (on $build) that should be converted to
-# the proper representation on $host. The result is stored
-# in $func_to_host_pathlist_result.
-func_to_host_pathlist ()
-{
-  func_to_host_pathlist_result="$1"
-  if test -n "$1"; then
-    case $host in
-      *mingw* )
-        lt_sed_naive_backslashify='s|\\\\*|\\|g;s|/|\\|g;s|\\|\\\\|g'
-        # Remove leading and trailing path separator characters from
-        # ARG. msys behavior is inconsistent here, cygpath turns them
-        # into '.;' and ';.', and winepath ignores them completely.
-	func_stripname : : "$1"
-        func_to_host_pathlist_tmp1=$func_stripname_result
-        case $build in
-          *mingw* ) # Actually, msys.
-            # Awkward: cmd appends spaces to result.
-            func_to_host_pathlist_result=`
-	      ( cmd //c echo "$func_to_host_pathlist_tmp1" ) 2>/dev/null |
-	      $SED -e 's/[ ]*$//' -e "$lt_sed_naive_backslashify"`
-            ;;
-          *cygwin* )
-            func_to_host_pathlist_result=`cygpath -w -p "$func_to_host_pathlist_tmp1" |
-              $SED -e "$lt_sed_naive_backslashify"`
-            ;;
-          * )
-            # unfortunately, winepath doesn't convert pathlists
-            func_to_host_pathlist_result=""
-            func_to_host_pathlist_oldIFS=$IFS
-            IFS=:
-            for func_to_host_pathlist_f in $func_to_host_pathlist_tmp1 ; do
-              IFS=$func_to_host_pathlist_oldIFS
-              if test -n "$func_to_host_pathlist_f" ; then
-                func_to_host_path "$func_to_host_pathlist_f"
-                if test -n "$func_to_host_path_result" ; then
-                  if test -z "$func_to_host_pathlist_result" ; then
-                    func_to_host_pathlist_result="$func_to_host_path_result"
-                  else
-                    func_append func_to_host_pathlist_result ";$func_to_host_path_result"
-                  fi
-                fi
-              fi
-            done
-            IFS=$func_to_host_pathlist_oldIFS
-            ;;
-        esac
-        if test -z "$func_to_host_pathlist_result"; then
-          func_error "Could not determine the host path(s) corresponding to"
-          func_error "  \`$1'"
-          func_error "Continuing, but uninstalled executables may not work."
-          # Fallback. This may break if $1 contains DOS-style drive
-          # specifications. The fix is not to complicate the expression
-          # below, but for the user to provide a working wine installation
-          # with winepath so that path translation in the cross-to-mingw
-          # case works properly.
-          lt_replace_pathsep_nix_to_dos="s|:|;|g"
-          func_to_host_pathlist_result=`echo "$func_to_host_pathlist_tmp1" |\
-            $SED -e "$lt_replace_pathsep_nix_to_dos"`
-        fi
-        # Now, add the leading and trailing path separators back
-        case "$1" in
-          :* ) func_to_host_pathlist_result=";$func_to_host_pathlist_result"
-            ;;
-        esac
-        case "$1" in
-          *: ) func_append func_to_host_pathlist_result ";"
-            ;;
-        esac
-        ;;
-    esac
-  fi
-}
-# end: func_to_host_pathlist
-
 # func_emit_cwrapperexe_src
 # emit the source code for a wrapper executable on stdout
 # Must ONLY be called from within func_mode_link because
@@ -3110,9 +3410,9 @@ const char * LIB_PATH_VARNAME = "$shlibpath_var";
 EOF
 
 	    if test "$shlibpath_overrides_runpath" = yes && test -n "$shlibpath_var" && test -n "$temp_rpath"; then
-              func_to_host_pathlist "$temp_rpath"
+              func_to_host_path "$temp_rpath"
 	      cat <<EOF
-const char * LIB_PATH_VALUE   = "$func_to_host_pathlist_result";
+const char * LIB_PATH_VALUE   = "$func_to_host_path_result";
 EOF
 	    else
 	      cat <<"EOF"
@@ -3121,10 +3421,10 @@ EOF
 	    fi
 
 	    if test -n "$dllsearchpath"; then
-              func_to_host_pathlist "$dllsearchpath:"
+              func_to_host_path "$dllsearchpath:"
 	      cat <<EOF
 const char * EXE_PATH_VARNAME = "PATH";
-const char * EXE_PATH_VALUE   = "$func_to_host_pathlist_result";
+const char * EXE_PATH_VALUE   = "$func_to_host_path_result";
 EOF
 	    else
 	      cat <<"EOF"

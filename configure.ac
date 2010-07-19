@@ -199,6 +199,9 @@ LT_LANG(Fortran)
 LT_LANG(Java)
 LT_LANG(Windows Resource)
 
+# Ensure the correct file name (and path) conversion function
+# is available to the test suite.
+AC_SUBST([to_host_file_cmd])dnl
 
 ## --------------------------- ##
 ## Work out which tests to run ##

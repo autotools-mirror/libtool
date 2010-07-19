@@ -37,13 +37,16 @@ for tool in ACLOCAL AUTOHEADER AUTOCONF AUTOMAKE AUTORECONF; do
 done
 export ACLOCAL AUTOHEADER AUTOCONF AUTOMAKE AUTORECONF
 eval `$LIBTOOL --config | grep '^EGREP='`
-eval `$LIBTOOL --config | $EGREP '^(host|host_os|host_alias|build|build_alias)='`
+eval `$LIBTOOL --config | $EGREP '^(host|host_os|host_alias|build|build_alias|to_host_path_cmd)='`
 configure_options=--prefix=/nonexistent
 if test -n "$host_alias"; then
   configure_options="$configure_options --host $host_alias"
 fi
 if test -n "$build_alias"; then
   configure_options="$configure_options --build $build_alias"
+fi
+if test -n "$to_host_file_cmd"; then
+  configure_options="$configure_options lt_cv_to_host_file_cmd=$to_host_file_cmd"
 fi
 if (FOO=bar; unset FOO) >/dev/null 2>&1; then
   unset=unset

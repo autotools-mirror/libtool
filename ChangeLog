@@ -1,3 +1,44 @@
+2010-08-28  Charles Wilson  <libtool@cwilson.fastmail.fm>
+
+	[cygwin|mingw|cross-compile]: Path conversion support.
+	* configure.ac: Ensure to_host_file_cmd is available to Makefile.
+	* TODO: Document QoI issue with file name conversion functions.
+	* libltdl/m4/libtool.m4 (_LT_PATH_CONVERSION_FUNCTIONS): New function
+	sets libtool variable $to_host_file_cmd, and employs cache.
+	(_LT_SETUP): Require it.
+	* tests/testsuite.at: Ensure to_host_file_cmd is passed as a
+	variable setting on the configure line for (new testsuite) tests.
+	* Makefile.am (TESTS_ENVIRONMENT): Ensure to_host_file_cmd is
+	included so that it is passed to (old testsuite) tests.
+	* libltdl/config/general.m4sh: Define $lt_sed_naive_backslashify here.
+	* libltdl/config/ltmain.m4sh ($to_host_file_cmd, $to_host_path_cmd):
+	New variables.
+	(func_cygpath): New function.
+	(func_init_to_host_path_cmd): New function.
+	(func_to_host_path): Renamed to...
+	(func_to_host_file): Refactored to... (now uses $to_host_file_cmd).
+	(func_convert_core_file_wine_to_w32): Here. New function.
+	(func_convert_core_msys_to_w32): Here. New function.
+	(func_convert_file_check): Here. New function.
+	(func_convert_file_noop): Here. New function.
+	(func_convert_file_msys_to_w32): Here. New function.
+	(func_convert_file_cygwin_to_w32): Here. New function.
+	(func_convert_file_nix_to_w32): Here. New function.
+	(func_convert_file_msys_to_cygwin): New function.
+	(func_convert_file_nix_to_cygwin): New function.
+	(func_to_host_pathlist): Renamed to...
+	(func_to_host_path): Refactored to... (now uses $to_host_path_cmd
+	and func_init_to_host_path_cmd).
+	(func_convert_path_check): Here. New function.
+	(func_convert_path_front_back_pathsep): Here. New function.
+	(func_convert_core_path_wine_to_w32): Here. New function.
+	(func_convert_path_noop): Here. New function.
+	(func_convert_path_msys_to_w32): Here. New function.
+	(func_convert_path_cygwin_to_w32): Here. New function.
+	(func_convert_path_nix_to_w32): Here. New function.
+	(func_convert_path_msys_to_cygwin): New function.
+	(func_convert_path_nix_to_cygwin): New function.
+
 2010-08-27  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	check-interactive and check-noninteractive for both testsuites.

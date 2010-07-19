@@ -257,6 +257,55 @@ GNU Libtool
   a .def file so it appears that we might need to detect and handle mutual
   dependencies specially on win32 =(O|
 
+* QoI for file name and path conversion functions. Currently, these are
+  implemented as MxN different functions; this has quadratic complexity. If
+  possible, it would be preferred to implement then as M+N functions.  However:
+    http://lists.gnu.org/archive/html/libtool-patches/2010-08/msg00224.html
+    The main issue is you don't know what the "native" (e.g. "central")
+    path-type is; e.g. "from-X (to what?)" and "(from what?) to-Y". Right
+    now there are only four "platforms" involved: *nix, mingw, msys, and
+    cygwin.  That's actually the break-even point, given the vagaries and
+    optimizations involved in these particular four platforms.
+
+    We have exactly five basic file name conversion functions (not counting
+    the wrappers that handle paths). For a non-quadratic M+N (from-X|to-Y)
+    solution, we'd need, I think, the same number of conversion functions: brute
+    force suggests nine (four to_*, four from_*, plus the noop), but then many
+    of the from_* and to_* would actually BE noop.
+
+    I'm assuming here that the "central" path-type is implicitly some sort of
+    unixish -- maybe cyg, maybe msys, maybe unix -- path-type.  The issue is
+    that each of the five conversion functions use a different TOOL to perform
+    the conversion, with different syntax.  So, trying to combine, e.g.
+      msys_to_mingw
+      cygwin_to_mingw
+      unix_to_mingw
+    into an all-encompassing "central_unixish_to_mingw" would require additional
+    m4 magic to basically replace the guts depending on whether $build was msys,
+    cygwin, or unix.  Worse, you can't really do a set of
+    {msys|cygwin|unix}_to_central_unixish that isn't simply a no-op -- because
+    (A) they already are all unixish, and (B) what tool would you use? How would
+    the later to_mingw function "know" how to covert this new representation to
+    mingw.  So, {msys|cygwin|unix}_to_central_unixish would simply be a no-op
+    and central_unixish_to_mingw would still do all the work (with its guts
+    customized based on $build).
+
+    For more reasonable cross environments (e.g. linux->some_embedded) I think
+    you could probably work out a general M+N scheme, since most embedded $hosts
+    aren't as strange as the win32 variants -- even VxWorks and INTEGRITY have
+    basic, unix-like file systems (although INTEGRITY does have multiple roots).
+    Aggressive use of the m4 function_replace machinery WOULD be appropriate for
+    /these/ conversion functions.  OTOH...(a) you can't run the $host apps on
+    $build anyway, in these embedded situations. At best you'd use $TARGETSHELL
+    and "run" them via a remote connection, and (b) they don't use the C
+    wrapper!
+
+    So...I don't think it makes much difference *right now* in the amount of
+    code required, or the number of functions implemented. At some point in the
+    future we might want to generalize to an M+N scheme.  For the existing win32
+    $hosts, all of the funtionality would be on "one side" of the 2-step
+    conversion; the "other side" would be noop.  But we won't worry about the
+    implicit quadratic complexity of the existing scheme for now.
 
 3. Wish List
 ============

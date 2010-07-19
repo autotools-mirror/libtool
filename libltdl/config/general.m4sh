@@ -319,6 +319,11 @@ double_quote_subst='s/\(["`\\]\)/\\\1/g'
 # string literally.
 sed_make_literal_regex='s,[].[^$\\*\/],\\&,g'
 
+# Sed substitution that converts a w32 file name or path
+# which contains forward slashes, into one that contains
+# (escaped) backslashes.  A very naive implementation.
+lt_sed_naive_backslashify='s|\\\\*|\\|g;s|/|\\|g;s|\\|\\\\|g'
+
 # Re-`\' parameter expansions in output of double_quote_subst that were
 # `\'-ed in input to the same.  If an odd number of `\' preceded a '$'
 # in input to double_quote_subst, that '$' was protected from expansion.
