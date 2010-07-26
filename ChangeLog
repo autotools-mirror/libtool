@@ -1,3 +1,10 @@
+2010-07-26  Charles Wilson  <libtool@cwilson.fastmail.fm>
+
+	Don't always skip XSI tests
+	tests/getopt-m4sh.at: Use new signature as implemented by
+	de8a0992b21b76a13c302cf48588ad5f6042595c, when determining
+	whether to test Extended-shell functions.
+
 2010-07-18  Peter Rosin  <peda@lysator.liu.se>
 
 	* tests/stresstest.at: Link with main.lo when liba is shared
