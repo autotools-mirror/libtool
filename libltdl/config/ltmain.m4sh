@@ -4435,7 +4435,7 @@ func_mode_link ()
       # Tru64 UNIX uses -model [arg] to determine the layout of C++
       # classes, name mangling, and exception handling.
       # Darwin uses the -arch flag to determine output architecture.
-      -model|-arch|-isysroot)
+      -model|-arch|-isysroot|--sysroot)
 	func_append compiler_flags " $arg"
 	func_append compile_command " $arg"
 	func_append finalize_command " $arg"
@@ -4632,8 +4632,9 @@ func_mode_link ()
       # -p, -pg, --coverage, -fprofile-*  profiling flags for GCC
       # @file                GCC response files
       # -tp=*                Portland pgcc target processor selection
+      # --sysroot=*          for sysroot support
       -64|-mips[0-9]|-r[0-9][0-9]*|-xarch=*|-xtarget=*|+DA*|+DD*|-q*|-m*| \
-      -t[45]*|-txscale*|-p|-pg|--coverage|-fprofile-*|-F*|@*|-tp=*)
+      -t[45]*|-txscale*|-p|-pg|--coverage|-fprofile-*|-F*|@*|-tp=*|--sysroot=*)
         func_quote_for_eval "$arg"
 	arg="$func_quote_for_eval_result"
         func_append compile_command " $arg"
