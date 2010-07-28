@@ -1261,6 +1261,9 @@ func_mode_execute ()
       dir=
       case $file in
       *.la)
+	func_resolve_sysroot "$file"
+	file=$func_resolve_sysroot_result
+
 	# Check to see that this really is a libtool archive.
 	func_lalib_unsafe_p "$file" \
 	  || func_fatal_help "\`$lib' is not a valid libtool archive"
@@ -1612,6 +1615,9 @@ func_mode_install ()
 	;;
 
       *.la)
+	func_resolve_sysroot "$file"
+	file=$func_resolve_sysroot_result
+
 	# Check to see that this really is a libtool archive.
 	func_lalib_unsafe_p "$file" \
 	  || func_fatal_help "\`$file' is not a valid libtool archive"
@@ -4778,16 +4784,17 @@ func_mode_link ()
       *.la)
 	# A libtool-controlled library.
 
+	func_resolve_sysroot "$arg"
 	if test "$prev" = dlfiles; then
 	  # This library was specified with -dlopen.
-	  func_append dlfiles " $arg"
+	  func_append dlfiles " $func_resolve_sysroot_result"
 	  prev=
 	elif test "$prev" = dlprefiles; then
 	  # The library was specified with -dlpreopen.
-	  func_append dlprefiles " $arg"
+	  func_append dlprefiles " $func_resolve_sysroot_result"
 	  prev=
 	else
-	  func_append deplibs " $arg"
+	  func_append deplibs " $func_resolve_sysroot_result"
 	fi
 	continue
 	;;
@@ -5113,7 +5120,10 @@ func_mode_link ()
 	  deplibs="$deplib $deplibs"
 	  continue
 	  ;;
-	*.la) lib="$deplib" ;;
+	*.la)
+	  func_resolve_sysroot "$deplib"
+	  lib=$func_resolve_sysroot_result
+	  ;;
 	*.$libext)
 	  if test "$pass" = conv; then
 	    deplibs="$deplib $deplibs"
