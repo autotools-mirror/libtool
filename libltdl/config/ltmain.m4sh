@@ -575,6 +575,22 @@ func_resolve_sysroot ()
   esac
 }
 
+# func_replace_sysroot PATH
+# If PATH begins with the sysroot, replace it with = and
+# store the result into func_replace_sysroot_result.
+func_replace_sysroot ()
+{
+  case "$lt_sysroot:$1" in
+  ?*:"$lt_sysroot"*)
+    func_stripname "$lt_sysroot" '' "$1"
+    func_replace_sysroot_result="=$func_stripname_result"
+    ;;
+  *)
+    # Including no sysroot.
+    func_replace_sysroot_result=$1
+    ;;
+  esac
+}
 
 # func_infer_tag arg
 # Infer tagged configuration to use if any are available and
@@ -5320,14 +5336,14 @@ func_mode_link ()
 
 	# Find the relevant object directory and library name.
 	if test "X$installed" = Xyes; then
-	  if test ! -f "$libdir/$linklib" && test -f "$abs_ladir/$linklib"; then
+	  if test ! -f "$lt_sysroot$libdir/$linklib" && test -f "$abs_ladir/$linklib"; then
 	    func_warning "library \`$lib' was moved."
 	    dir="$ladir"
 	    absdir="$abs_ladir"
 	    libdir="$abs_ladir"
 	  else
-	    dir="$libdir"
-	    absdir="$libdir"
+	    dir="$lt_sysroot$libdir"
+	    absdir="$lt_sysroot$libdir"
 	  fi
 	  test "X$hardcode_automatic" = Xyes && avoidtemprpath=yes
 	else
@@ -6392,7 +6408,8 @@ func_mode_link ()
 	# If the user specified any rpath flags, then add them.
 	temp_xrpath=
 	for libdir in $xrpath; do
-	  func_append temp_xrpath " -R$libdir"
+	  func_replace_sysroot "$libdir"
+	  func_append temp_xrpath " -R$func_replace_sysroot_result"
 	  case "$finalize_rpath " in
 	  *" $libdir "*) ;;
 	  *) func_append finalize_rpath " $libdir" ;;
@@ -6850,6 +6867,8 @@ EOF
 	  for libdir in $rpath; do
 	    if test -n "$hardcode_libdir_flag_spec"; then
 	      if test -n "$hardcode_libdir_separator"; then
+		func_replace_sysroot "$libdir"
+		libdir=$func_replace_sysroot_result
 		if test -z "$hardcode_libdirs"; then
 		  hardcode_libdirs="$libdir"
 		else
@@ -8050,7 +8069,17 @@ EOF
 		eval libdir=`${SED} -n -e 's/^libdir=\(.*\)$/\1/p' $deplib`
 		test -z "$libdir" && \
 		  func_fatal_error "\`$deplib' is not a valid libtool archive"
-		func_append newdependency_libs " $libdir/$name"
+		func_append newdependency_libs " ${lt_sysroot:+=}$libdir/$name"
+		;;
+	      -L*)
+		func_stripname -L '' "$deplib"
+		func_replace_sysroot "$func_stripname_result"
+		func_append newdependency_libs " -L$func_replace_sysroot_result"
+		;;
+	      -R*)
+		func_stripname -R '' "$deplib"
+		func_replace_sysroot "$func_stripname_result"
+		func_append newdependency_libs " -R$func_replace_sysroot_result"
 		;;
 	      *) func_append newdependency_libs " $deplib" ;;
 	      esac
@@ -8066,7 +8095,7 @@ EOF
 		eval libdir=`${SED} -n -e 's/^libdir=\(.*\)$/\1/p' $lib`
 		test -z "$libdir" && \
 		  func_fatal_error "\`$lib' is not a valid libtool archive"
-		func_append newdlfiles " $libdir/$name"
+		func_append newdlfiles " ${lt_sysroot:+=}$libdir/$name"
 		;;
 	      *) func_append newdlfiles " $lib" ;;
 	      esac
@@ -8085,7 +8114,7 @@ EOF
 		eval libdir=`${SED} -n -e 's/^libdir=\(.*\)$/\1/p' $lib`
 		test -z "$libdir" && \
 		  func_fatal_error "\`$lib' is not a valid libtool archive"
-		func_append newdlprefiles " $libdir/$name"
+		func_append newdlprefiles " ${lt_sysroot:+=}$libdir/$name"
 		;;
 	      esac
 	    done
