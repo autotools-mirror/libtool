@@ -546,6 +546,36 @@ func_source ()
 }
 
 
+# func_resolve_sysroot PATH
+# Change PATH to an absolute path or replace a leading = with a
+# sysroot.  Store the result into func_resolve_sysroot_result
+func_resolve_sysroot ()
+{
+  func_resolve_sysroot_result=$1
+  case $func_resolve_sysroot_result in
+  [\\/]* | [A-Za-z]:[\\/]*) ;;
+  =*)
+    func_stripname '=' '' "$func_resolve_sysroot_result"
+    func_resolve_sysroot_result=$lt_sysroot$func_stripname_result
+    ;;
+  *)
+    if test -d "$1"; then
+      absdir=`cd "$1" && pwd`
+      test -z "$absdir" && \
+        func_fatal_error "cannot determine absolute directory name of \`$dir'"
+      func_resolve_sysroot_result=`cd "$dir" && pwd`
+    else
+      func_dirname_and_basename "$1" "" "."
+      absdir=`cd "$func_dirname_result" && pwd`
+      test -z "$absdir" && \
+        func_fatal_error "cannot determine absolute directory name of \`$func_dirname_result'"
+      func_resolve_sysroot_result="$absdir/$func_basename_result"
+    fi
+    ;;
+  esac
+}
+
+
 # func_infer_tag arg
 # Infer tagged configuration to use if any are available and
 # if one wasn't chosen via the "--tag" command line option.
@@ -4342,29 +4372,26 @@ func_mode_link ()
 	;;
 
       -L*)
-	func_stripname '-L' '' "$arg"
-	dir=$func_stripname_result
-	if test -z "$dir"; then
+	func_stripname "-L" '' "$arg"
+	if test -z "$func_stripname_result"; then
 	  if test "$#" -gt 0; then
 	    func_fatal_error "require no space between \`-L' and \`$1'"
 	  else
 	    func_fatal_error "need path for \`-L' option"
 	  fi
 	fi
-	# We need an absolute path.
-	case $dir in
-	[\\/]* | [A-Za-z]:[\\/]*) ;;
-	*)
-	  absdir=`cd "$dir" && pwd`
-	  test -z "$absdir" && \
-	    func_fatal_error "cannot determine absolute directory name of \`$dir'"
-	  dir="$absdir"
-	  ;;
-	esac
+	func_resolve_sysroot "$func_stripname_result"
+	dir=$func_resolve_sysroot_result
 	case "$deplibs " in
-	*" -L$dir "*) ;;
+	*" -L$dir "* | *" $arg "*)
+	  # Will only happen for absolute or sysroot arguments
+	  ;;
 	*)
-	  func_append deplibs " -L$dir"
+	  # Preserve sysroot, but never include relative directories
+	  case $dir in
+	    [\\/]* | [A-Za-z]:[\\/]* | =*) func_append deplibs " $arg" ;;
+	    *) func_append deplibs " -L$dir" ;;
+	  esac
 	  func_append lib_search_path " $dir"
 	  ;;
 	esac
@@ -4516,6 +4543,10 @@ func_mode_link ()
 	# We need an absolute path.
 	case $dir in
 	[\\/]* | [A-Za-z]:[\\/]*) ;;
+	=*)
+	  func_stripname '=' '' "$dir"
+	  dir=$lt_sysroot$func_stripname_result
+	  ;;
 	*)
 	  func_fatal_error "only absolute run-paths are allowed"
 	  ;;
@@ -5044,7 +5075,8 @@ func_mode_link ()
 	    test "$pass" = conv && continue
 	    newdependency_libs="$deplib $newdependency_libs"
 	    func_stripname '-L' '' "$deplib"
-	    func_append newlib_search_path " $func_stripname_result"
+	    func_resolve_sysroot "$func_stripname_result"
+	    func_append newlib_search_path " $func_resolve_sysroot_result"
 	    ;;
 	  prog)
 	    if test "$pass" = conv; then
@@ -5058,7 +5090,8 @@ func_mode_link ()
 	      finalize_deplibs="$deplib $finalize_deplibs"
 	    fi
 	    func_stripname '-L' '' "$deplib"
-	    func_append newlib_search_path " $func_stripname_result"
+	    func_resolve_sysroot "$func_stripname_result"
+	    func_append newlib_search_path " $func_resolve_sysroot_result"
 	    ;;
 	  *)
 	    func_warning "\`-L' is ignored for archives/objects"
@@ -5069,7 +5102,8 @@ func_mode_link ()
 	-R*)
 	  if test "$pass" = link; then
 	    func_stripname '-R' '' "$deplib"
-	    dir=$func_stripname_result
+	    func_resolve_sysroot "$func_stripname_result"
+	    dir=$func_resolve_sysroot_result
 	    # Make sure the xrpath contains only unique directories.
 	    case "$xrpath " in
 	    *" $dir "*) ;;
@@ -5377,7 +5411,8 @@ func_mode_link ()
 	  for deplib in $dependency_libs; do
 	    case $deplib in
 	    -L*) func_stripname '-L' '' "$deplib"
-	         func_append newlib_search_path " $func_stripname_result"
+	         func_resolve_sysroot "$func_stripname_result"
+	         func_append newlib_search_path " $func_resolve_sysroot_result"
 		 ;;
 	    esac
 	    # Need to link against all dependency_libs?
@@ -5778,12 +5813,18 @@ func_mode_link ()
 	  tmp_libs=
 	  for deplib in $dependency_libs; do
 	    newdependency_libs="$deplib $newdependency_libs"
+	    case $deplib in
+              -L*) func_stripname '-L' '' "$deplib"
+                   func_resolve_sysroot "$func_stripname_result";;
+              *) func_resolve_sysroot "$deplib" ;;
+            esac
 	    if $opt_preserve_dup_deps ; then
 	      case "$tmp_libs " in
-	      *" $deplib "*) func_append specialdeplibs " $deplib" ;;
+	      *" $func_resolve_sysroot_result "*)
+                func_append specialdeplibs " $func_resolve_sysroot_result" ;;
 	      esac
 	    fi
-	    func_append tmp_libs " $deplib"
+	    func_append tmp_libs " $func_resolve_sysroot_result"
 	  done
 
 	  if test "$link_all_deplibs" != no; then
@@ -5793,8 +5834,10 @@ func_mode_link ()
 	      case $deplib in
 	      -L*) path="$deplib" ;;
 	      *.la)
+	        func_resolve_sysroot "$deplib"
+	        deplib=$func_resolve_sysroot_result
 	        func_dirname "$deplib" "" "."
-		dir="$func_dirname_result"
+		dir=$func_dirname_result
 		# We need an absolute path.
 		case $dir in
 		[\\/]* | [A-Za-z]:[\\/]*) absdir="$dir" ;;
