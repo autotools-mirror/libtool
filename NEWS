@@ -4,6 +4,16 @@ New in 2.2.12 2010-08-??: git version 2.2.11a, Libtool team:
 
 * New features:
 
+  - Sysroot support.  This allows you to build cross-compiled packages
+    with the same prefix that will be used on the destination machine,
+    and still find dependent libraries under the compiler's "sysroot".
+    Without sysroot support, paths internal to the build system may leak
+    into the product of the build.
+
+    Sysroot support is disabled unless the --with-sysroot configure
+    option is passed to configure, because .la files generated with
+    sysroot support will _not_ be usable in general with older Libtools.
+
   - On non-cygwin Windows systems, we now lookup potential library
     file names without regard to file name case.
 
