@@ -6724,7 +6724,7 @@ if AC_TRY_EVAL(ac_compile); then
   pre_test_object_deps_done=no
 
   for p in `eval "$output_verbose_link_cmd"`; do
-    case $p in
+    case ${prev}${p} in
 
     -L* | -R* | -l*)
        # Some compilers place space between "-{L,R}" and the path.
@@ -6738,7 +6738,7 @@ if AC_TRY_EVAL(ac_compile); then
        fi
 
        if test "$pre_test_object_deps_done" = no; then
-	 case $p in
+	 case ${prev}${p} in
 	 -L* | -R*)
 	   # Internal compiler library paths should come after those
 	   # provided the user.  The postdeps already come after the
