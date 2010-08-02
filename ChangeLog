@@ -1,3 +1,11 @@
+2010-08-02  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Fix pic_flag test unportabilities.
+	* tests/pic_flag.at (override pic_flag at configure time): Skip
+	test if the compiler produces a warning containing `fpic'.
+	Do not use nonportable `grep -e', for Solaris.
+	Report by Charles Wilson.
+
 2010-08-01  Paolo Bonzini  <bonzini@gnu.org>
 
 	Fix bug in postdeps computation
