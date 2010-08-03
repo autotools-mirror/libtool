@@ -157,7 +157,8 @@ func_append ()
 } # func_append may be replaced by extended shell implementation
 
 # func_append_quoted var value
-# Quote VALUE and append to the end of shell variable VAR.
+# Quote VALUE and append to the end of shell variable VAR, separated
+# by a space.
 func_append_quoted ()
 {
     func_quote_for_eval "${2}"
@@ -710,7 +711,7 @@ func_mode_compile ()
 	  save_ifs="$IFS"; IFS=','
 	  for arg in $args; do
 	    IFS="$save_ifs"
-	    func_append_quoted lastarg " $arg"
+	    func_append_quoted lastarg "$arg"
 	  done
 	  IFS="$save_ifs"
 	  func_stripname ' ' '' "$lastarg"

@@ -1,3 +1,12 @@
+2010-08-03  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Fix build failure with AIX sh due to shell quoting error.
+	* libltdl/config/ltmain.m4sh (func_append_quoted): Document
+	that this function inserts a separator space.
+	(func_mode_compile): Do not pass extra space here.
+	Fixes regression introduced in v2.2.10-49-gc13532a.
+	Report by Rainer Tammer.
+
 2010-08-02  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	Fix pic_flag test unportabilities.
