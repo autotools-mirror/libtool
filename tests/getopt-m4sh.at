@@ -44,7 +44,7 @@ M4SH_GETOPTS(
   [i],	[--install],	[],	[options="$options install"],
   [v],	[--verbose],	[],	[options="$options verbose"],
   [!],	[--ltdl],	[false],[options="$options ltdl=$optarg"],
-[echo "$list"$options])
+[echo "$list" $options])
 ]])
 m4_pattern_forbid([m4_include])
 m4_pattern_forbid([AS_INIT])
@@ -87,7 +87,7 @@ rm -f options && mv options.tmp options])
 AT_SETUP([short option splitting])
 
 AT_DATA(expout,
-[[force verbose install
+[[ force verbose install
 ]])
 
 _LT_AT_GETOPT_M4SH_SETUP
@@ -103,7 +103,7 @@ AT_SETUP([enhanced shell short option splitting])
 AT_CHECK([fgrep '# Extended-shell func_split_short_opt' $abs_top_builddir/libtool >/dev/null 2>&1 || (exit 77)])
 
 AT_DATA(expout,
-[[force verbose install
+[[ force verbose install
 ]])
 
 _LT_AT_GETOPT_M4SH_SETUP
@@ -121,7 +121,7 @@ AT_CLEANUP
 AT_SETUP([long option splitting])
 
 AT_DATA(expout,
-[[ltdl=long
+[[ ltdl=long
 ]])
 
 _LT_AT_GETOPT_M4SH_SETUP
@@ -137,7 +137,7 @@ AT_SETUP([XSI long option splitting])
 AT_CHECK([fgrep '# Extended-shell func_split_long_opt' $abs_top_builddir/libtool >/dev/null 2>&1 || (exit 77)])
 
 AT_DATA(expout,
-[[ltdl=long
+[[ ltdl=long
 ]])
 
 _LT_AT_GETOPT_M4SH_SETUP

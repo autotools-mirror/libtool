@@ -1,3 +1,16 @@
+2010-08-04  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Fix testsuite errors due to shell quoted parameter expansion issue.
+	* tests/getopt-m4sh.at (_LT_AT_GETOPT_M4SH_SETUP): Insert space
+	between double-quoted and unquoted shell parameter, as bash
+	4.0.28 doesn't add one in its output if the expansion of the
+	second one starts with a space.
+	(short option splitting, enhanced shell short option splitting)
+	(long option splitting, XSI long option splitting): Add space in
+	expected output.
+	Fixes testsuite failures on AIX, FreeBSD, etc.
+	Report by Rainer Tammer.
+
 2010-08-03  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	Fix build failure with AIX sh due to shell quoting error.
