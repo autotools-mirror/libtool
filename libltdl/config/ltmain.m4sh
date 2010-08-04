@@ -413,8 +413,6 @@ M4SH_GETOPTS(
       func_fatal_configuration "not configured to build any kind of library"
     fi
 
-    test -z "$opt_mode" && func_fatal_error "error: you must specify a MODE."
-
     # Darwin sucks
     eval std_shrext=\"$shrext_cmds\"
 

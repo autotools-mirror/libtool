@@ -1,6 +1,6 @@
 # help.at -- standard command line options          -*- Autotest -*-
 #
-#   Copyright (C) 2009 Free Software Foundation, Inc.
+#   Copyright (C) 2009, 2010 Free Software Foundation, Inc.
 #
 #   This file is part of GNU Libtool.
 #
@@ -34,6 +34,10 @@ AT_CHECK([$LIBTOOL --help], [], [ignore])
 AT_CHECK([$LIBTOOL --help-all], [], [ignore])
 AT_CHECK([$LIBTOOL --version], [], [stdout])
 AT_CHECK([grep 'Copyright.*Free Software Foundation' stdout], [], [ignore])
+
+AT_CHECK([$LIBTOOL], [1], [ignore], [stderr])
+AT_CHECK([grep 'specify a MODE' stderr], [], [ignore])
+AT_CHECK([grep ' --help' stderr], [], [ignore])
 
 AT_CLEANUP
 

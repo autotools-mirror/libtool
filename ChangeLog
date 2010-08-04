@@ -1,5 +1,11 @@
 2010-08-04  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	Let `libtool' without arguments point to `--help' again.
+	* libltdl/config/ltmain.m4sh (func_check_version_match):
+	Remove duplicate and wrong error check.
+	* tests/help.at (standard command line options): Extend test.
+	Report by Rainer Tammer.
+
 	Avoid syntax error due to shift of nonexistent parameter.
 	* libltdl/config/ltmain.m4sh <command-line handling>: Only shift
 	if there is a positional parameter to shift.  Fixes `libtool
