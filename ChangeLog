@@ -1,5 +1,11 @@
 2010-08-04  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	Avoid syntax error due to shift of nonexistent parameter.
+	* libltdl/config/ltmain.m4sh <command-line handling>: Only shift
+	if there is a positional parameter to shift.  Fixes `libtool
+	--help' when dash is used.
+	Report by Rainer Tammer.
+
 	Fix testsuite errors due to shell quoted parameter expansion issue.
 	* tests/getopt-m4sh.at (_LT_AT_GETOPT_M4SH_SETUP): Insert space
 	between double-quoted and unquoted shell parameter, as bash

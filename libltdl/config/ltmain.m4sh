@@ -387,7 +387,10 @@ M4SH_GETOPTS(
 	func_enable_tag "$optarg"],
 [
   # save first non-option argument
-  nonopt="$opt"; shift
+  if test "$[]#" -gt 0; then
+    nonopt="$opt"
+    shift
+  fi
 
   # preserve --debug
   $opt_debug && func_append preserve_args " --debug"
