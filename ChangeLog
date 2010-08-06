@@ -1,3 +1,9 @@
+2010-08-06  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Fix ltdl-libdir test for C++ compilers.
+	* tests/ltdl-libdir.at (libdir of installed modules): Declare
+	module function as extern "C".
+
 2010-08-04  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	Let `libtool' without arguments point to `--help' again.

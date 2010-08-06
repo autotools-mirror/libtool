@@ -38,7 +38,9 @@ bindir=$prefix/bin
 mkdir $prefix $libdir $bindir
 
 AT_DATA([a.c],
-[[
+[[#ifdef __cplusplus
+extern "C"
+#endif
 int f (void)
 {
   return 42;
