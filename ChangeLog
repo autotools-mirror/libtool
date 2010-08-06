@@ -1,5 +1,12 @@
 2010-08-06  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	Fix AC_NO_EXECUTABLES test failure on AIX.
+	* libltdl/m4/libtool.m4 (_LT_SYS_MODULE_PATH_AIX): Wrap link
+	test in AC_CACHE_VAL, using cache variable $lt_cv_aix_libpath.
+	* tests/no-executables.at (AC_NO_EXECUTABLES): Preset it, to
+	avoid link test.
+	Bug report by Rainer Tammer.
+
 	Fix ltdl-libdir test for C++ compilers.
 	* tests/ltdl-libdir.at (libdir of installed modules): Declare
 	module function as extern "C".

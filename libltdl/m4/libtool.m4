@@ -1081,7 +1081,8 @@ m4_defun([_LT_DARWIN_LINKER_FEATURES],
 # to the aix ld manual.
 m4_defun([_LT_SYS_MODULE_PATH_AIX],
 [m4_require([_LT_DECL_SED])dnl
-AC_LINK_IFELSE(AC_LANG_PROGRAM,[
+AC_CACHE_VAL([lt_cv_aix_libpath],
+[AC_LINK_IFELSE(AC_LANG_PROGRAM,[
 lt_aix_libpath_sed='
     /Import File Strings/,/^$/ {
 	/^0/ {
@@ -1089,12 +1090,14 @@ lt_aix_libpath_sed='
 	    p
 	}
     }'
-aix_libpath=`dump -H conftest$ac_exeext 2>/dev/null | $SED -n -e "$lt_aix_libpath_sed"`
+lt_cv_aix_libpath=`dump -H conftest$ac_exeext 2>/dev/null | $SED -n -e "$lt_aix_libpath_sed"`
 # Check for a 64-bit object if we didn't find anything.
-if test -z "$aix_libpath"; then
-  aix_libpath=`dump -HX64 conftest$ac_exeext 2>/dev/null | $SED -n -e "$lt_aix_libpath_sed"`
+if test -z "$lt_cv_aix_libpath"; then
+  lt_cv_aix_libpath=`dump -HX64 conftest$ac_exeext 2>/dev/null | $SED -n -e "$lt_aix_libpath_sed"`
 fi],[])
-if test -z "$aix_libpath"; then aix_libpath="/usr/lib:/lib"; fi
+if test -z "$lt_cv_aix_libpath"; then lt_cv_aix_libpath="/usr/lib:/lib"; fi
+])
+aix_libpath=$lt_cv_aix_libpath
 ])# _LT_SYS_MODULE_PATH_AIX
 
 

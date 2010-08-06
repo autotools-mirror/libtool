@@ -1,7 +1,6 @@
 # no-executables.at -- Libtool usage in GCC        -*- Autotest -*-
 
-#   Copyright (C) 2008 Free Software Foundation, Inc.
-#   Written by Ralf Wildenhues, 2008
+#   Copyright (C) 2008, 2010 Free Software Foundation, Inc.
 #
 #   This file is part of GNU Libtool.
 #
@@ -52,6 +51,7 @@ lt_cv_archive_cmds_need_lc=no
 lt_cv_cc_needs_belf=no
 lt_cv_ld_exported_symbols_list=no
 lt_cv_prog_compiler_static_works=no
+lt_cv_aix_libpath="/usr/lib:/lib"
 
 # Deal with AC_LIBTOOL_DLOPEN in one of two possible ways:
 # - do not execute it at all in the ac_no_link case
