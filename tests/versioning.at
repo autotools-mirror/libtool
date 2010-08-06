@@ -91,14 +91,6 @@ int main (void)
 }
 ]])
 
-AT_DATA([prog3.c], [[
-extern int a (void), internal_detail;
-int main (void)
-{
-  return a () + internal_detail - 42;
-}
-]])
-
 
 inst=`pwd`/inst
 libdir=$inst/lib
@@ -109,7 +101,7 @@ mkdir $inst $libdir $bindir
 for file in liba1.c liba2.c liba3.c liba4.c libb.c; do
   $LIBTOOL --mode=compile $CC $CPPFLAGS $CFLAGS -c $file
 done
-for file in prog1.c prog2.c prog3.c; do
+for file in prog1.c prog2.c; do
   $CC $CPPFLAGS $CFLAGS -c $file
 done
 
