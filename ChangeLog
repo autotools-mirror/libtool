@@ -1,5 +1,12 @@
 2010-08-21  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	Skip part of versioning test on AIX.
+	* tests/versioning.at (versioning): The AIX linker always
+	records the unversioned library name, even with runtimelinking,
+	so skip the execution test for the incompatibly upgraded
+	library.
+	Report by Rainer Tammer.
+
 	Remove dead code from versioning test.
 	* tests/versioning.at (versioning): No need to build unused
 	prog3.
