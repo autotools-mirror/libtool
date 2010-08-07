@@ -1,5 +1,13 @@
 2010-08-07  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	Do not call toplevel configure in non-VPATH build.
+	* tests/deplibs-mingw.at (deplibs without file command): Use
+	LT_AT_CONFIGURE for consistency, update comment about why it
+	might fail.
+	* tests/pic_flag.at (override pic_flag at configure time): Skip
+	test if we are building in-tree.
+	Report by Rainer Tammer.
+
 	Allow running pic_flag test with different shell.
 	* tests/testsuite.at (LT_AT_CONFIGURE): Accept optional second
 	argument specifying the configure script to run.

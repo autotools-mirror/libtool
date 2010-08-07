@@ -74,8 +74,9 @@ EOF
       chmod +x bin/file
       PATH=`pwd`/bin${PATH_SEPARATOR-:}$PATH
       cd new-libtool
-      AT_CHECK(["$abs_top_srcdir"/configure $configure_options || exit 77],
-	       [], [ignore], [ignore])
+      # configure might fail due to in-tree build of toplevel, or
+      # missing configure flags and other reasons.
+      LT_AT_CONFIGURE([|| exit 77], ["$abs_top_srcdir"/configure])
       cd ..
       LIBTOOL=new-libtool/libtool
       export LIBTOOL
