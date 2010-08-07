@@ -1,5 +1,12 @@
 2010-08-07  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	Fix compilation of program sources on AIX.
+	* tests/lt_dlopenext.at (lt_dlopenext error messages): Do not
+	use $LIBTOOL when compiling plain object, AIX by default does
+	not enable static archives.
+	* tests/ltdl-libdir.at (libdir of installed modules): Likewise.
+	Report by Rainer Tammer.
+
 	Do not call toplevel configure in non-VPATH build.
 	* tests/deplibs-mingw.at (deplibs without file command): Use
 	LT_AT_CONFIGURE for consistency, update comment about why it

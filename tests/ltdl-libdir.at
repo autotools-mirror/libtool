@@ -101,7 +101,7 @@ AT_CHECK([$LIBTOOL --mode=compile $CC $CPPFLAGS $CFLAGS -c a.c],
 AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o a.la ]dnl
 	 [a.lo -rpath $libdir -module -shared -avoid-version],
 	 [], [ignore], [ignore])
-AT_CHECK([$LIBTOOL --mode=compile $CC $CPPFLAGS $CFLAGS -c m.c],
+AT_CHECK([$CC $CPPFLAGS $CFLAGS -c m.c],
 	 [], [ignore], [ignore])
 AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o m$EXEEXT ]dnl
 	 [m.$OBJEXT $LIBLTDL],

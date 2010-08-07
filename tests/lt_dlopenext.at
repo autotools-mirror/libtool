@@ -1,6 +1,6 @@
 # lt_dlopenext.at -- test libltdl functionality             -*- Autotest -*-
 #
-#   Copyright (C) 2009 Free Software Foundation, Inc.
+#   Copyright (C) 2009, 2010 Free Software Foundation, Inc.
 #   This file is part of GNU Libtool.
 #
 # GNU Libtool is free software; you can redistribute it and/or
@@ -197,7 +197,7 @@ AT_CHECK([$LIBTOOL --mode=compile $CC $CPPFLAGS $CFLAGS -c simple-module.c],
 AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o simple-module.la ]dnl
 	 [simple-module.lo -rpath $libdir -module -avoid-version],
 	 [], [ignore], [ignore])
-AT_CHECK([$LIBTOOL --mode=compile $CC $CPPFLAGS $CFLAGS -c ltdl-loader.c],
+AT_CHECK([$CC $CPPFLAGS $CFLAGS -c ltdl-loader.c],
 	 [], [ignore], [ignore])
 AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o ltdl-loader$EXEEXT ]dnl
 	 [ltdl-loader.$OBJEXT -dlopen self $LIBLTDL],
