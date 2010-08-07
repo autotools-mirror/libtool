@@ -1,5 +1,9 @@
 2010-08-07  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	Avoid unwanted error message in configure output.
+	* libltdl/m4/libtool.m4 (_LT_PROG_ECHO_BACKSLASH): Try print
+	in subshell, so eventual `print: not found' is hidden reliably.
+
 	Fix compilation of program sources on AIX.
 	* tests/lt_dlopenext.at (lt_dlopenext error messages): Do not
 	use $LIBTOOL when compiling plain object, AIX by default does
