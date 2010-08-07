@@ -393,7 +393,7 @@ M4SH_GETOPTS(
   fi
 
   # preserve --debug
-  $opt_debug && func_append preserve_args " --debug"
+  test "$opt_debug" = : || func_append preserve_args " --debug"
 
   case $host in
     *cygwin* | *mingw* | *pw32* | *cegcc*)

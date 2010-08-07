@@ -1,3 +1,11 @@
+2010-08-07  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Ensure not to reverse preserving of --debug for relinking/finish.
+	* libltdl/config/ltmain.m4sh (func_check_version_match): Only
+	preserve '--debug' switch if $opt_debug is not equal to ':'.
+	* tests/help.at (debug tracing): New test group.
+	Report by Rainer Tammer.
+
 2010-08-06  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	Fix AC_NO_EXECUTABLES test failure on AIX.

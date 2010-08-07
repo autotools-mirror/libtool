@@ -92,3 +92,100 @@ AT_CHECK([$LIBTOOL cl liba.la],
 	 [], [ignore], [ignore])
 
 AT_CLEANUP
+
+
+AT_SETUP([debug tracing])
+
+AT_DATA([a.c],
+[[int a () { return 0; }
+]])
+
+AT_DATA([b.c],
+[[extern int a ();
+int b () { return a (); }
+]])
+
+AT_DATA([main.c],
+[[extern int b ();
+int main () { return b (); }
+]])
+
+inst=`pwd`/inst
+libdir=$inst/lib
+bindir=$inst/bin
+mkdir $inst $libdir $bindir
+
+# This test will not work correctly if --debug is passed.
+AT_CHECK([case "$LIBTOOL $CC $CPPFLAGS $CFLAGS $LDFLAGS " in ]dnl
+	 [  *\ --debug\ *) exit 77;; *) :;; esac])
+
+check_trace ()
+{
+  if test "X$trace" = X--debug; then
+    AT_CHECK([grep 'enabling shell trace mode' stdout stderr], [0], [ignore])
+    AT_CHECK([grep ' --mode' stderr], [0], [ignore])
+  else
+    AT_CHECK([grep 'enabling shell trace mode' stdout stderr], [1])
+    AT_CHECK([grep ' --mode' stderr], [1])
+  fi
+}
+
+orig_LIBTOOL=$LIBTOOL
+for trace in '' --debug; do
+  LIBTOOL="$orig_LIBTOOL $trace"
+
+  # Hypothesis: debug output should happen if (and only if) --debug is
+  # passed, for compile, link, install, uninstall, and clean modes.
+  AT_CHECK([$LIBTOOL --mode=compile $CC $CPPFLAGS $CFLAGS -c a.c],
+	   [], [stdout], [stderr])
+  check_trace
+  AT_CHECK([$LIBTOOL --mode=compile $CC $CPPFLAGS $CFLAGS -c b.c],
+	   [], [stdout], [stderr])
+  check_trace
+  AT_CHECK([$CC $CPPFLAGS $CFLAGS -c main.c], [], [ignore], [ignore])
+  AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o liba.la a.lo ]dnl
+	   [ -no-undefined -rpath $libdir], [], [stdout], [stderr])
+  check_trace
+  AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o libb.la b.lo ]dnl
+	   [ -no-undefined -rpath $libdir liba.la], [], [stdout], [stderr])
+  check_trace
+  AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o main$EXEEXT main.$OBJEXT ]dnl
+	   [libb.la], [], [stdout], [stderr])
+  check_trace
+  LT_AT_NOINST_EXEC_CHECK([./main], [], [], [stdout], [stderr])
+  check_trace
+
+  AT_CHECK([$LIBTOOL --mode=install cp liba.la libb.la $libdir],
+	   [], [stdout], [stderr])
+  check_trace
+
+  # Hypothesis: --debug should be passed to relink mode if (and only if)
+  # it was passed at link mode.
+  AT_CHECK([$orig_LIBTOOL --mode=install cp liba.la libb.la $libdir],
+	   [], [stdout], [stderr])
+  if grep ': relinking ' stdout stderr; then
+    if test "X$trace" = X--debug; then
+      AT_CHECK([grep ' --mode=relink' stdout stderr | grep ' --debug '],
+	       [0], [ignore])
+    else
+      AT_CHECK([grep ' --mode=relink' stdout stderr | grep ' --debug '],
+	       [1])
+    fi
+  fi
+
+  AT_CHECK([$LIBTOOL --mode=install cp main$EXEEXT $bindir],
+	   [], [stdout], [stderr])
+  check_trace
+  AT_CHECK([$LIBTOOL --mode=finish $bindir], [], [stdout], [stderr])
+  check_trace
+
+  AT_CHECK([$LIBTOOL --mode=uninstall rm -f $bindir/main$EXEEXT ]dnl
+	   [$libdir/libb.la $libdir/liba.la], [], [stdout], [stderr])
+  check_trace
+  AT_CHECK([$LIBTOOL --mode=clean rm -f $bindir/main$EXEEXT ]dnl
+	   [$libdir/libb.la $libdir/liba.la], [], [stdout], [stderr])
+  check_trace
+
+done
+
+AT_CLEANUP
