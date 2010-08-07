@@ -146,11 +146,13 @@ AT_KEYWORDS([autoconf automake])
 ])
 
 
-# LT_AT_CONFIGURE([OPTIONS])
-# --------------------------
+# LT_AT_CONFIGURE([OPTIONS], [CONFIGURE-SCRIPT])
+# ----------------------------------------------
+# Configure CONFIGURE-SCRIPT, defaulting to ./configure, with
+# additional OPTIONS.
 m4_define([LT_AT_CONFIGURE],
 [AT_CHECK([: ${CONFIG_SHELL=/bin/sh}; export CONFIG_SHELL; ]dnl
-	  [$CONFIG_SHELL ./configure $configure_options $1],
+	  [$CONFIG_SHELL m4_default([$2], [./configure]) $configure_options $1],
 	  [0], [ignore], [ignore])
 ])
 

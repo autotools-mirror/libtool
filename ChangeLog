@@ -1,5 +1,11 @@
 2010-08-07  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	Allow running pic_flag test with different shell.
+	* tests/testsuite.at (LT_AT_CONFIGURE): Accept optional second
+	argument specifying the configure script to run.
+	* tests/pic_flag.at (override pic_flag at configure time):
+	Use LT_AT_CONFIGURE.
+
 	Ensure not to reverse preserving of --debug for relinking/finish.
 	* libltdl/config/ltmain.m4sh (func_check_version_match): Only
 	preserve '--debug' switch if $opt_debug is not equal to ':'.
