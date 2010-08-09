@@ -1,5 +1,11 @@
 2010-08-09  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	Fix more problematic code from "Add func_append_quoted and do..."
+	* libltdl/config/ltmain.m4sh (func_mode_link): Revert back
+	func_append instances that as assignments relied on the shell
+	not performing word splitting on the right hand side of the
+	assignment.
+
 	Fix another typo on "Add func_append_quoted and do..."
 	* libltdl/config/ltmain.m4sh (func_mode_link): Fix regression in
 	computation of finalize_rpath introduced in v2.2.10-40-g0da7d80,

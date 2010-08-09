@@ -2464,7 +2464,7 @@ func_extract_archives ()
         func_extract_an_archive "$my_xdir" "$my_xabs"
 	;;
       esac
-      func_append my_oldobjs " "`find $my_xdir -name \*.$objext -print -o -name \*.lo -print | sort | $NL2SP`
+      my_oldobjs="$my_oldobjs "`find $my_xdir -name \*.$objext -print -o -name \*.lo -print | sort | $NL2SP`
     done
 
     func_extract_archives_result="$my_oldobjs"
@@ -5854,7 +5854,7 @@ func_mode_link ()
 	  compile_deplibs="$new_inherited_linker_flags $compile_deplibs"
 	  finalize_deplibs="$new_inherited_linker_flags $finalize_deplibs"
 	else
-	  func_append compiler_flags " "`$ECHO " $new_inherited_linker_flags" | $SED 's% \([^ $]*\).ltframework% -framework \1%g'`
+	  compiler_flags="$compiler_flags "`$ECHO " $new_inherited_linker_flags" | $SED 's% \([^ $]*\).ltframework% -framework \1%g'`
 	fi
       fi
       dependency_libs="$newdependency_libs"
