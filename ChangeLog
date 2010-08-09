@@ -1,3 +1,11 @@
+2010-08-09  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Fix another typo on "Add func_append_quoted and do..."
+	* libltdl/config/ltmain.m4sh (func_mode_link): Fix regression in
+	computation of finalize_rpath introduced in v2.2.10-40-g0da7d80,
+	fixing several testsuite failures on AIX.
+	Report by Rainer Tammer.
+
 2010-08-07  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	Avoid unwanted error message in configure output.

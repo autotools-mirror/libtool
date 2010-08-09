@@ -7568,7 +7568,7 @@ EOF
 	      *"$hardcode_libdir_separator$libdir$hardcode_libdir_separator"*)
 		;;
 	      *)
-		func_append hardcode_libdirs "_libdirs$hardcode_libdir_separator$libdir"
+		func_append hardcode_libdirs "$hardcode_libdir_separator$libdir"
 		;;
 	      esac
 	    fi
