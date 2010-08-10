@@ -100,7 +100,7 @@ AT_CLEANUP
 AT_SETUP([enhanced shell short option splitting])
 
 # Don't bother with additional XSI checks unless functions were substituted
-AT_CHECK([fgrep '# Extended-shell func_split_short_opt' $abs_top_builddir/libtool >/dev/null 2>&1 || (exit 77)])
+AT_CHECK([fgrep '@%:@ Extended-shell func_split_short_opt' $abs_top_builddir/libtool >/dev/null 2>&1 || (exit 77)])
 
 AT_DATA(expout,
 [[ force verbose install
@@ -134,7 +134,7 @@ AT_CLEANUP
 AT_SETUP([XSI long option splitting])
 
 # Don't bother with additional XSI checks unless functions were substituted
-AT_CHECK([fgrep '# Extended-shell func_split_long_opt' $abs_top_builddir/libtool >/dev/null 2>&1 || (exit 77)])
+AT_CHECK([fgrep '@%:@ Extended-shell func_split_long_opt' $abs_top_builddir/libtool >/dev/null 2>&1 || (exit 77)])
 
 AT_DATA(expout,
 [[ ltdl=long
@@ -171,7 +171,7 @@ AT_CLEANUP
 AT_SETUP([enhanced shell option appending])
 
 # Don't bother with additional += check unless functions were substituted
-AT_CHECK([fgrep '# Extended-shell func_append ' $abs_top_builddir/libtool >/dev/null 2>&1 || (exit 77)])
+AT_CHECK([fgrep '@%:@ Extended-shell func_append ' $abs_top_builddir/libtool >/dev/null 2>&1 || (exit 77)])
 
 AT_DATA(expout,
 [[first   --append second

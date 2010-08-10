@@ -1,3 +1,11 @@
+2010-08-10  Gary V. Vaughan  <gary@gnu.org>  (tiny change)
+
+	Make testsuite compatible with Autoconf 2.62 again.
+	* tests/getopt-m4sh.at (AT_CHECK): Autotest 2.62 chokes on unquoted
+	'#' in AT_CHECK, so replace all uses with '@%:@' quadrigraph.
+	Suggested by Eric Blake <eblake@redhat.com>
+	Reported by Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
 2010-08-09  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	Fix more problematic code from "Add func_append_quoted and do..."
