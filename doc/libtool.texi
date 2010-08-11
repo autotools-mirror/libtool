@@ -1721,12 +1721,18 @@ commands are also completed.
 @cindex finish mode
 @cindex mode, finish
 
-@dfn{Finish} mode helps system administrators install libtool libraries
-so that they can be located and linked into user programs.
+@dfn{Finish} mode has two functions.  One is to help system administrators
+install libtool libraries so that they can be located and linked into
+user programs.  To invoke this functionality, pass the name of a library
+directory as @var{mode-arg}.  Running this command may require superuser
+privileges, and the @option{--dry-run} option may be useful.
 
-Each @var{mode-arg} is interpreted as the name of a library directory.
-Running this command may require superuser privileges, so the
-@option{--dry-run} option may be useful.
+The second is to facilitate transferring libtool libraries to a native
+compilation environment after they were built in a cross-compilation
+environment.  Cross-compilation environments may rely on recent libtool
+features, and running libtool in finish mode will make it easier to
+work with older versions of libtool.  This task is performed whenever
+the @var{mode-arg} is a @samp{.la} file.
 
 @node Uninstall mode
 @section Uninstall mode
