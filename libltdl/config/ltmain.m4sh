@@ -1397,15 +1397,28 @@ test "$opt_mode" = execute && func_mode_execute ${1+"$@"}
 func_mode_finish ()
 {
     $opt_debug
-    libdirs="$nonopt"
+    libs=
+    libdirs=
     admincmds=
 
-    if test -n "$finish_cmds$finish_eval" && test -n "$libdirs"; then
-      for dir
-      do
-	func_append libdirs " $dir"
-      done
+    for opt in "$nonopt" ${1+"$@"}
+    do
+      if test -d "$opt"; then
+	func_append libdirs " $opt"
 
+      elif test -f "$opt"; then
+	if func_lalib_unsafe_p "$opt"; then
+	  func_append libs " $opt"
+	else
+	  func_warning "\`$opt' is not a valid libtool archive"
+	fi
+
+      else
+	func_fatal_error "invalid argument \`$opt'"
+      fi
+    done
+
+    if test -n "$finish_cmds$finish_eval" && test -n "$libdirs"; then
       for libdir in $libdirs; do
 	if test -n "$finish_cmds"; then
 	  # Do each command in the finish commands.
@@ -1424,49 +1437,51 @@ func_mode_finish ()
     # Exit here if they wanted silent mode.
     $opt_silent && exit $EXIT_SUCCESS
 
-    echo "----------------------------------------------------------------------"
-    echo "Libraries have been installed in:"
-    for libdir in $libdirs; do
-      $ECHO "   $libdir"
-    done
-    echo
-    echo "If you ever happen to want to link against installed libraries"
-    echo "in a given directory, LIBDIR, you must either use libtool, and"
-    echo "specify the full pathname of the library, or use the \`-LLIBDIR'"
-    echo "flag during linking and do at least one of the following:"
-    if test -n "$shlibpath_var"; then
-      echo "   - add LIBDIR to the \`$shlibpath_var' environment variable"
-      echo "     during execution"
-    fi
-    if test -n "$runpath_var"; then
-      echo "   - add LIBDIR to the \`$runpath_var' environment variable"
-      echo "     during linking"
-    fi
-    if test -n "$hardcode_libdir_flag_spec"; then
-      libdir=LIBDIR
-      eval flag=\"$hardcode_libdir_flag_spec\"
+    if test -n "$finish_cmds$finish_eval" && test -n "$libdirs"; then
+      echo "----------------------------------------------------------------------"
+      echo "Libraries have been installed in:"
+      for libdir in $libdirs; do
+	$ECHO "   $libdir"
+      done
+      echo
+      echo "If you ever happen to want to link against installed libraries"
+      echo "in a given directory, LIBDIR, you must either use libtool, and"
+      echo "specify the full pathname of the library, or use the \`-LLIBDIR'"
+      echo "flag during linking and do at least one of the following:"
+      if test -n "$shlibpath_var"; then
+	echo "   - add LIBDIR to the \`$shlibpath_var' environment variable"
+	echo "     during execution"
+      fi
+      if test -n "$runpath_var"; then
+	echo "   - add LIBDIR to the \`$runpath_var' environment variable"
+	echo "     during linking"
+      fi
+      if test -n "$hardcode_libdir_flag_spec"; then
+	libdir=LIBDIR
+	eval flag=\"$hardcode_libdir_flag_spec\"
 
-      $ECHO "   - use the \`$flag' linker flag"
-    fi
-    if test -n "$admincmds"; then
-      $ECHO "   - have your system administrator run these commands:$admincmds"
-    fi
-    if test -f /etc/ld.so.conf; then
-      echo "   - have your system administrator add LIBDIR to \`/etc/ld.so.conf'"
-    fi
-    echo
+	$ECHO "   - use the \`$flag' linker flag"
+      fi
+      if test -n "$admincmds"; then
+	$ECHO "   - have your system administrator run these commands:$admincmds"
+      fi
+      if test -f /etc/ld.so.conf; then
+	echo "   - have your system administrator add LIBDIR to \`/etc/ld.so.conf'"
+      fi
+      echo
 
-    echo "See any operating system documentation about shared libraries for"
-    case $host in
-      solaris2.[6789]|solaris2.1[0-9])
-        echo "more information, such as the ld(1), crle(1) and ld.so(8) manual"
-	echo "pages."
-	;;
-      *)
-        echo "more information, such as the ld(1) and ld.so(8) manual pages."
-        ;;
-    esac
-    echo "----------------------------------------------------------------------"
+      echo "See any operating system documentation about shared libraries for"
+      case $host in
+	solaris2.[6789]|solaris2.1[0-9])
+	  echo "more information, such as the ld(1), crle(1) and ld.so(8) manual"
+	  echo "pages."
+	  ;;
+	*)
+	  echo "more information, such as the ld(1) and ld.so(8) manual pages."
+	  ;;
+      esac
+      echo "----------------------------------------------------------------------"
+    fi
     exit $EXIT_SUCCESS
 }
 
