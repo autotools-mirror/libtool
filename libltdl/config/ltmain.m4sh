@@ -4964,8 +4964,9 @@ func_mode_link ()
 	for lib in $dlprefiles; do
 	  # Ignore non-libtool-libs
 	  dependency_libs=
+	  func_resolve_sysroot "$lib"
 	  case $lib in
-	  *.la)	func_source "$lib" ;;
+	  *.la)	func_source "$func_resolve_sysroot_result" ;;
 	  esac
 
 	  # Collect preopened libtool deplibs, except any this library
