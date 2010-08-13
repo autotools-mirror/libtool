@@ -54,7 +54,7 @@ local_dirname() {
 }
 
 AT_CHECK([
-(cd "$gcc_sysroot" && find ".$prefix/bin" ".$prefix/lib" \! -type d) | \
+(cd "$gcc_sysroot" && find ".$prefix/bin" ".$prefix/include" ".$prefix/lib" \! -type d) | \
 while read file; do
   dir=`local_dirname "$sysroot/$file"`
   test -d "$dir" || mkdir -p "$dir"
