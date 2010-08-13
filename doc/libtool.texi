@@ -5875,6 +5875,10 @@ Commands used to create shared libraries, shared libraries with
 @option{-export-symbols} and static libraries, respectively.
 @end defvar
 
+@defvar archiver_list_spec
+Specify filename containing input files for @code{AR}.
+@end defvar
+
 @defvar old_archive_from_new_cmds
 If the shared library depends on a static library,
 @samp{old_archive_from_new_cmds} contains the commands used to create that

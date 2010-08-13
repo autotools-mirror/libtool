@@ -7900,6 +7900,14 @@ EOF
 	len=$func_len_result
 	if test "$len" -lt "$max_cmd_len" || test "$max_cmd_len" -le -1; then
 	  cmds=$old_archive_cmds
+	elif test -n "$archiver_list_spec"; then
+	  func_verbose "using command file archive linking..."
+	  for obj in $oldobjs
+	  do
+	    $ECHO "$obj"
+	  done > $output_objdir/$libname.libcmd
+	  oldobjs=" $archiver_list_spec$output_objdir/$libname.libcmd"
+	  cmds=$old_archive_cmds
 	else
 	  # the command line is too long to link in one step, link in parts
 	  func_verbose "using piecewise archive linking..."

@@ -1,3 +1,18 @@
+2010-08-13  Peter Rosin  <peda@lysator.liu.se>
+
+	Allow the use of a listing file if the archiver supports it.
+	* libltdl/m4/libtool.m4 (_LT_CMD_OLD_ARCHIVE): Move detection
+	of a suitable archiver...
+	(_LT_PROG_AR): ...to here. New macro, also detect if the
+	archiver supports a listing file with the new variable
+	archiver_list_spec.
+	* libltdl/config/ltmain.m4sh: If the archiver supports a listing
+	file, use it when max_cmd_len is exceeded.  This is needed for
+	tool chains such as MSVC which do not support piece by piece
+	linking (-r -o).
+	* doc/libtool.texi (libtool script contents): Update with
+	archiver_list_spec description.
+
 2010-08-10  Gary V. Vaughan  <gary@gnu.org>  (tiny change)
 
 	Make testsuite compatible with Autoconf 2.62 again.
