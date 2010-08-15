@@ -1419,24 +1419,27 @@ func_mode_finish ()
     done
 
     if test -n "$libs"; then
-      tmpdir=`func_mktempdir`
       if test -n "$lt_sysroot"; then
-        sysroot_regex=`$ECHO "$lt_sysroot" | $SED 's/[].[^$\\*|]/\\\\&/g'`
-        sysroot_cmd="s|\([ ']\)$sysroot_regex|\1|g;"
+        sysroot_regex=`$ECHO "$lt_sysroot" | $SED 's/[].[^$\\*/]/\\\\&/g'`
+        sysroot_cmd="s/\([ ']\)$sysroot_regex/\1/g;"
       else
         sysroot_cmd=
       fi
 
       # Remove sysroot references
-      for lib in $libs; do
-	$opt_dry_run || {
+      if $opt_dry_run; then
+        tmpdir=`func_mktempdir`
+        for lib in $libs; do
 	  sed -e "${sysroot_cmd} s/\([ ']-[LR]\)=/\1/g; s/\([ ']\)=/\1/g" $lib \
 	    > $tmpdir/tmp-la
 	  mv -f $tmpdir/tmp-la $lib
-	}
-	file="$outputname"
-      done
-      $opt_dry_run || ${RM}r "$tmpdir"
+	done
+        ${RM}r "$tmpdir"
+      else
+        for lib in $libs; do
+          echo "removing references to $lt_sysroot and \`=' prefixes from $lib"
+        done
+      fi
     fi
 
     if test -n "$finish_cmds$finish_eval" && test -n "$libdirs"; then
