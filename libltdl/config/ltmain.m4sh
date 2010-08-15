@@ -2265,7 +2265,7 @@ func_cygming_dll_for_implib ()
 func_cygming_dll_for_implib_fallback_core ()
 {
   $opt_debug
-  match_literal=`$ECHO "$1" | $SED 's/[].[^$\\*|]/\\\\&/g'`
+  match_literal=`$ECHO "$1" | $SED "$sed_make_literal_regex"`
   $OBJDUMP -s --section "$1" "$2" 2>/dev/null |
     $SED '/^Contents of section '"$match_literal"':/{
       # Place marker at beginning of archive member dllname section

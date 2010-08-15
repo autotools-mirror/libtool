@@ -1,3 +1,11 @@
+2010-08-15  Paolo Bonzini  <bonzini@gnu.org>
+
+	Factor the sed command used to make a regex from a literal.
+	* libltdl/config/general.m4sh (sed_make_literal_regex): New.
+	* libltdl/config/ltmain.m4sh
+	(func_cygming_dll_for_implib_fallback_core): Use it.  Suggested
+	by Ralf Wildenhues.
+
 2010-08-21  Rainer Tammer <tammer@tammer.net>  (tiny change)
 
 	Avoid issues with AIX resident shared libraries in old testsuite.
