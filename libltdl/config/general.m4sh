@@ -317,7 +317,7 @@ double_quote_subst='s/\(["`\\]\)/\\\1/g'
 
 # Sed substitution that turns a string into a regex matching for the
 # string literally.
-sed_make_literal_regex='s,[].[^$\\*/],\\\\&,g'
+sed_make_literal_regex='s,[].[^$\\*\/],\\&,g'
 
 # Re-`\' parameter expansions in output of double_quote_subst that were
 # `\'-ed in input to the same.  If an odd number of `\' preceded a '$'
