@@ -1,3 +1,8 @@
+2010-08-20  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Bump copyright years in manual.
+	* doc/libtool.texi: Bump copyright years.
+
 2010-08-13  Peter Rosin  <peda@lysator.liu.se>
 
 	Allow the use of a listing file if the archiver supports it.
