@@ -1,5 +1,9 @@
 2010-08-20  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	Remove superfluous dependency in Makefile.am.
+	* Makefile.am (tests/demo-conf.test): Remove dependency on
+	libtool, this test is a primary source and not generated.
+
 	Bump copyright years in manual.
 	* doc/libtool.texi: Bump copyright years.
 

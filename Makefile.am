@@ -690,8 +690,6 @@ if HAVE_FC
 TESTS += $(FC_TESTS)
 endif
 
-tests/demo-conf.test: libtool
-
 EXTRA_DIST     += $(srcdir)/tests/defs.in tests/defs.m4sh \
 		  $(COMMON_TESTS) $(CXX_TESTS) $(F77_TESTS) $(FC_TESTS)
 DIST_SUBDIRS   += $(CONF_SUBDIRS)
