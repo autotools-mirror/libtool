@@ -1,5 +1,9 @@
 2010-08-20  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	Don't hide the table of contents in the manual.
+	* doc/libtool.texi: Move the table of contents to the beginning.
+	Prompted by patch from Bruno Haible against Automake.
+
 	Remove superfluous dependency in Makefile.am.
 	* Makefile.am (tests/demo-conf.test): Remove dependency on
 	libtool, this test is a primary source and not generated.

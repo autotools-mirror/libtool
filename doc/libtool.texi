@@ -70,6 +70,8 @@ the section entitled "GNU Free Documentation License".
 @syncodeindex tp cp
 @synindex pg cp
 
+@contents
+
 @ifnottex
 @node Top, Introduction, (dir), (dir)
 @comment  node-name,  next,  previous,  up
@@ -6368,6 +6370,4 @@ order to test new changes without having to rerun @code{configure}.
 
 @printindex cp
 
-@c summarycontents
-@contents
 @bye
