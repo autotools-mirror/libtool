@@ -1,3 +1,10 @@
+2010-08-21  Rainer Tammer <tammer@tammer.net>  (tiny change)
+
+	Avoid issues with AIX resident shared libraries in old testsuite.
+	* tests/defs.m4sh [aix]: Remove file mode permission for others,
+	so shared libraries are not kept in memory after execution.
+	Fixes failures of repeated mdemo-inst.test with on AIX 5.3.
+
 2010-08-21  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	Skip part of versioning test on AIX.
