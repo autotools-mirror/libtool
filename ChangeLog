@@ -1,5 +1,11 @@
 2010-08-22  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	Fix getopt tests to skip with Autoconf < 2.61.
+	* tests/getopt-m4sh.at (_LT_AT_GETOPT_M4SH_SETUP): Skip the test
+	if 'autom4te --language=m4sh' exits 63 because version 2.61 is
+	required.  Allows the testsuite to complete successfully with
+	Autoconf 2.59 and Automake 1.9.6.
+
 	Tidy and fix clean and distclean rules for old testsuite.
 	* Makefile.am (clean-local-legacy): Use $(CONF_SUBDIRS) instead
 	of hard-coding the list of test directories.  Use
