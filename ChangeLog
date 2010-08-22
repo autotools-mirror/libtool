@@ -1,5 +1,18 @@
 2010-08-22  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	check-interactive and check-noninteractive for both testsuites.
+	* Makefile.am (COMMON_TESTS, TESTS): Split into ...
+	(NONINTERACTIVE_TESTS, INTERACTIVE_TESTS): ... these new
+	variables.
+	(check-interactive-new): Rename from check-interactive.
+	(check-noninteractive-new): Rename from check-noninteractive.
+	(check-interactive-old, check-noninteractive-old): New targets.
+	(check-interactive, check-noninteractive): Depend on the
+	respective targets for the old and the new test suites.
+	* doc/libtool.texi (Test descriptions): Simplify description
+	about check-interactive and check-noninteractive.  Add index
+	entries.
+
 	Adjust docs for renaming and for parallel-tests.
 	* README: Update example TESTS setting.
 	* README.alpha: Likewise.

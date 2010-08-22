@@ -5480,27 +5480,13 @@ recursive test groups themselves should never require user interaction,
 while the test groups they invoke may do so.
 @end table
 
-For example, in order to avoid any interactive test groups, you could
-use this:
-
-@smallexample
-make check-local \
-  TESTSUITEFLAGS='-k !interactive INNER_TESTSUITEFLAGS=",!interactive"'
-@end smallexample
-
-@noindent
-while to run only those test groups, you would use this:
-
-@smallexample
-make check-local \
-  TESTSUITEFLAGS='-k interactive -k recursive INNER_TESTSUITEFLAGS=,interactive'
-@end smallexample
-
-@noindent
-but the convenience targets @samp{check-interactive} and
-@samp{check-noninteractive} avoid needing to remember these complex
-commands, in addition to also disabling interactive tests in the old
-test suite.
+@cindex @samp{check-interactive}
+@cindex @samp{check-noninteractive}
+There is a convenience target @samp{check-noninteractive} that runs
+all tests from both test suites that do not cause user interaction on
+Windows.  Conversely, the target @samp{check-interactive} runs the
+complement of tests and might require closing popup windows about DLL
+load errors on Windows.
 
 
 @node When tests fail

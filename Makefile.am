@@ -575,8 +575,13 @@ installcheck-local: $(testsuite_deps)
 	  $(TESTS_ENVIRONMENT) $(INSTALLCHECK_ENVIRONMENT) $(TESTSUITEFLAGS) \
 	  AUTOTEST_PATH="$(exec_prefix)/bin"
 
+check-noninteractive-old:
+	$(MAKE) $(AM_MAKEFLAGS) check-TESTS TESTS='$(NONINTERACTIVE_TESTS)'
+check-interactive-old:
+	$(MAKE) $(AM_MAKEFLAGS) check-TESTS TESTS='$(INTERACTIVE_TESTS)'
+
 # Run only noninteractive parts of the new testsuite.
-check-noninteractive: $(testsuite_deps_uninstalled)
+check-noninteractive-new: $(testsuite_deps_uninstalled)
 	$(CD_TESTDIR); \
 	CONFIG_SHELL="$(SHELL)" $(SHELL) $$abs_srcdir/$(TESTSUITE) \
 	  $(TESTS_ENVIRONMENT) $(BUILDCHECK_ENVIRONMENT) \
@@ -584,12 +589,15 @@ check-noninteractive: $(testsuite_deps_uninstalled)
 	  $(TESTSUITEFLAGS)
 
 # Run only interactive parts of the new testsuite.
-check-interactive: $(testsuite_deps_uninstalled)
+check-interactive-new: $(testsuite_deps_uninstalled)
 	$(CD_TESTDIR); \
 	CONFIG_SHELL="$(SHELL)" $(SHELL) $$abs_srcdir/$(TESTSUITE) \
 	  $(TESTS_ENVIRONMENT) $(BUILDCHECK_ENVIRONMENT) \
 	  -k interactive -k recursive INNER_TESTSUITEFLAGS=",interactive" \
 	  $(TESTSUITEFLAGS)
+
+check-interactive: check-interactive-old check-interactive-new
+check-noninteractive: check-noninteractive-old check-noninteractive-new
 
 # We need to remove any file droppings left behind by testsuite
 clean-local: clean-local-legacy
@@ -753,7 +761,11 @@ COMMON_TESTS = \
 	tests/mdemo-shared-unst.test \
 	tests/cdemo-undef.test \
 	tests/cdemo-undef-make.test \
-	tests/cdemo-undef-exec.test \
+	tests/cdemo-undef-exec.test
+
+# Actually, only demo-relink and depdemo-relink require interaction,
+# but they depend on the other tests being run beforehand.
+INTERACTIVE_TESTS = \
 	tests/demo-shared.test \
 	tests/demo-shared-make.test \
 	tests/demo-shared-exec.test \
@@ -859,19 +871,22 @@ tests/pdemo-exec.log:		tests/pdemo-make.log
 tests/pdemo-make.log:		tests/pdemo-conf.log
 
 
-TESTS = $(COMMON_TESTS)
+NONINTERACTIVE_TESTS = $(COMMON_TESTS)
 if HAVE_CXX
-TESTS += $(CXX_TESTS)
+NONINTERACTIVE_TESTS += $(CXX_TESTS)
 endif
 if HAVE_F77
-TESTS += $(F77_TESTS)
+# f77demo-static-exec.test might be interactive on MSYS.
+INTERACTIVE_TESTS += $(F77_TESTS)
 endif
 if HAVE_FC
-TESTS += $(FC_TESTS)
+NONINTERACTIVE_TESTS += $(FC_TESTS)
 endif
+TESTS = $(NONINTERACTIVE_TESTS) $(INTERACTIVE_TESTS)
 
 EXTRA_DIST     += $(srcdir)/tests/defs.in tests/defs.m4sh \
-		  $(COMMON_TESTS) $(CXX_TESTS) $(F77_TESTS) $(FC_TESTS)
+		  $(COMMON_TESTS) $(CXX_TESTS) $(F77_TESTS) $(FC_TESTS) \
+		  $(INTERACTIVE_TESTS)
 DIST_SUBDIRS   += $(CONF_SUBDIRS)
 
 # The defs script shouldn't be recreated whenever the Makefile is

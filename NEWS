@@ -23,6 +23,11 @@ New in 2.2.12 2010-08-??: git version 2.2.11a, Libtool team:
     tool used to embed the manifest resource through the environment
     variable MANIFEST_TOOL.
 
+* Bug fixes:
+
+  - The `check-interactive' and `check-noninteractive' convenience make
+    targets now also work for the old testsuite.
+
 New in 2.2.10 2010-06-10: git version 2.2.9a, Libtool team:
 
 * New features:
