@@ -127,6 +127,19 @@ dnl These are bootstrap requirements! Once built, libtool may work with
 dnl much older releases of autoconf and automake.  See release notes.
 AM_INIT_AUTOMAKE([1.10.1 gnu subdir-objects dist-lzma])
 
+
+## ------------------------- ##
+## Autobuild initialisation. ##
+## ------------------------- ##
+
+# You can set autobuild_mode at configure time to specify a "unique"
+# string for this build.
+: ${autobuild_mode=default}
+AB_VERSION="AC_PACKAGE_VERSION ($TIMESTAMP)"
+m4_ifdef([AB_INIT],
+	 [AB_INIT([$autobuild_mode])])
+
+
 dnl We use m4sh to generate libtool's portable shell scripts
 AC_SUBST([M4SH], ['$(AUTOM4TE) --language=m4sh'])
 

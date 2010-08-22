@@ -1,5 +1,11 @@
 2010-08-22  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	configure: use Autobuild AB_INIT if available.
+	* configure.ac: Call AB_INIT if it is defined, with
+	$autobuild_mode as argument, to be set at configure time.
+	Set AB_VERSION to the Libtool version string.
+	* HACKING: Update.
+
 	Fix getopt tests to skip with Autoconf < 2.61.
 	* tests/getopt-m4sh.at (_LT_AT_GETOPT_M4SH_SETUP): Skip the test
 	if 'autom4te --language=m4sh' exits 63 because version 2.61 is
