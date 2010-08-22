@@ -1,3 +1,15 @@
+2010-08-22  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Tidy and fix clean and distclean rules for old testsuite.
+	* Makefile.am (clean-local-legacy): Use $(CONF_SUBDIRS) instead
+	of hard-coding the list of test directories.  Use
+	$(AM_MAKEFLAGS).
+	(fake-distclean-legacy): New phony rule, to create fake Makefile
+	files if needed so that the automake-generated
+	distclean-recursive rule can work properly.
+	(distclean_recursive): New helper variable.
+	(distclean-recursive): Depend on fake-distclean-legacy.
+
 2010-08-22  Paolo Bonzini  <bonzini@gnu.org>
 
 	Fix sed_make_literal_regex.

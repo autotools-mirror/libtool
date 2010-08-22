@@ -712,12 +712,26 @@ $(srcdir)/tests/defs.in: $(auxdir)/general.m4sh tests/defs.m4sh Makefile.am
 
 # We need to remove any files that the above tests created.
 clean-local-legacy:
-	-cd tests; \
-	for dir in cdemo demo depdemo f77demo fcdemo mdemo mdemo2 pdemo tagdemo; \
-	do \
-	    test -f $$dir/Makefile && ( cd $$dir && $(MAKE) distclean; ); \
+	-for dir in $(CONF_SUBDIRS); do \
+	  if test -f $$dir/Makefile; then \
+	    (cd $$dir && $(MAKE) $(AM_MAKEFLAGS) distclean); \
+	  else :; fi; \
 	done
 	rm -rf _inst
+
+# For distclean, we may have to fake Makefiles in the test directories
+# so that descending in DIST_SUBDIRS works.
+# Hide the additional dependency from automake so it still outputs the rule.
+distclean_recursive = distclean-recursive
+$(distclean_recursive): fake-distclean-legacy
+.PHONY: fake-distclean-legacy
+fake-distclean-legacy:
+	-for dir in $(CONF_SUBDIRS); do \
+	  if test ! -f $$dir/Makefile; then \
+	    $(mkinstalldirs) $$dir; \
+	    echo 'distclean: ; rm -f Makefile' > $$dir/Makefile; \
+	  else :; fi; \
+	done
 
 $(TESTS): tests/defs
 DISTCLEANFILES += tests/defs
