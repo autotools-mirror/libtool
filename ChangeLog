@@ -1,5 +1,14 @@
 2010-08-22  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	Update VERBOSE handling for parallel-tests driver.
+	* tests/defs.m4sh: Default to verbose output, drop now-unneeded
+	handling of 'VERBOSE=no'.
+	* README: Update example usage.
+	* README.alpha: Likewise.
+	* doc/libtool.texi (Test descriptions, When tests fail): Remove
+	unneeded VERBOSE recommendations.  Point to per-test log files
+	and test-suite.log summary file.
+
 	Enable parallel-tests test driver for the old testsuite.
 	* configure.ac: New configure test to find out whether `make'
 	supports order-only prerequisites; set @ORDER@ accordingly.

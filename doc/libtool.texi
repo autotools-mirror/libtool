@@ -5121,8 +5121,8 @@ correspond to libtool's own notion of how your linker behaves.
 @pindex demo-relink.test
 @pindex depdemo-relink.test
 These tests check whether variable @code{shlibpath_overrides_runpath} is
-properly set.  If the test fails and @env{VERBOSE} is set, it will
-indicate what the variable should have been set to.
+properly set.  If the test fails, it will indicate what the variable should
+have been set to.
 
 @item demo-noinst-link.test
 @pindex demo-noinst-link.test
@@ -5396,8 +5396,9 @@ test suite.
 @cindex failed tests
 @cindex tests, failed
 
-Each of the tests in the old test suite are designed to produce no
-output when they are run via @kbd{make check}.  The exit status of each
+When the tests in the old test suite are run via @command{make check},
+output is caught in per-test @file{tests/@var{test-name}.log} files
+and summarized in the @file{test-suite.log} file.  The exit status of each
 program tells the @file{Makefile} whether or not the test succeeded.
 
 If a test fails, it means that there is either a programming error in
@@ -5406,11 +5407,6 @@ libtool, or in the test program itself.
 To investigate a particular test, you may run it directly, as you would
 a normal program.  When the test is invoked in this way, it produces
 output that may be useful in determining what the problem is.
-
-Another way to have the test programs produce output is to set the
-@env{VERBOSE} environment variable to @samp{yes} before running them.
-For example, @kbd{env VERBOSE=yes make check} runs all the tests, and
-has each of them display debugging information.
 
 The new, Autotest-based test suite produces as output a file
 @file{tests/testsuite.log} which contains information about failed
