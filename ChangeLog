@@ -1,3 +1,9 @@
+2010-08-22  Paolo Bonzini  <bonzini@gnu.org>
+
+	Fix sed_make_literal_regex.
+	* libltdl/config/general.m4sh (sed_make_literal_regex): Fix
+	definition.
+
 2010-08-15  Paolo Bonzini  <bonzini@gnu.org>
 
 	Factor the sed command used to make a regex from a literal.
