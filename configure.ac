@@ -126,7 +126,7 @@ AC_SUBST([package_revision])
 dnl These are bootstrap requirements! Once built, libtool may work with
 dnl much older releases of autoconf and automake.  See release notes.
 dnl 1.11 is needed for color-tests, 1.11.1 fixes a security issue.
-AM_INIT_AUTOMAKE([1.11.1 gnu subdir-objects dist-lzma color-tests])
+AM_INIT_AUTOMAKE([1.11.1 gnu subdir-objects dist-lzma color-tests parallel-tests])
 
 dnl We use m4sh to generate libtool's portable shell scripts
 AC_SUBST([M4SH], ['$(AUTOM4TE) --language=m4sh'])
@@ -195,6 +195,34 @@ AM_CONDITIONAL(HAVE_F77,[test -n "[$]_LT_TAGVAR(compiler, F77)"])
 AM_CONDITIONAL(HAVE_FC,[test -n "[$]_LT_TAGVAR(compiler, FC)"])
 AM_CONDITIONAL(HAVE_GCJ, [test -n "[$]_LT_TAGVAR(compiler, GCJ)"])
 AM_CONDITIONAL(HAVE_RC, [test -n "[$]_LT_TAGVAR(compiler, RC)"])
+
+## Whether `make' supports order-only prerequisites.
+AC_CACHE_CHECK([whether ${MAKE-make} supports order-only prerequisites],
+  [lt_cv_make_order_only],
+  [mkdir conftest.dir
+   cd conftest.dir
+   touch b
+   touch a
+cat >confmk << 'END'
+a: b | c
+a b c:
+	touch $[]@
+END
+   touch c
+   if ${MAKE-make} -s -q -f confmk 2>/dev/null; then
+     lt_cv_make_order_only=yes
+   else
+     lt_cv_make_order_only=no
+   fi
+   cd ..
+   rm -rf conftest.dir
+])
+if test $lt_cv_make_order_only = yes; then
+  ORDER='|'
+else
+  ORDER=''
+fi
+AC_SUBST([ORDER])
 
 ## ------------- ##
 ## Documentation ##

@@ -1,5 +1,19 @@
 2010-08-22  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	Enable parallel-tests test driver for the old testsuite.
+	* configure.ac: New configure test to find out whether `make'
+	supports order-only prerequisites; set @ORDER@ accordingly.
+	(AM_INIT_AUTOMAKE): Enable parallel-tests option.
+	* tests/defs.m4sh (prefix): Derive install prefix for tests
+	from the test name, to avoid clashes.
+	* Makefile.am (CXX_TESTS, F77_TESTS, FC_TESTS, COMMON_TESTS):
+	Reformat.  Adjust for renamed tests.  Add dependencies between
+	the respective log files of the tests, to ensure proper ordering.
+	Use order-only dependencies if possible, between test groups that
+	use the same directory.
+	(clean-local-legacy): Remove `_inst-*' directories as well.
+	Prompted by suggestion from Bob Friesenhahn.
+
 	New alias scripts for old tests run more than once.
 	* tests/cdemo-shared-exec.test, tests/cdemo-shared-make.test,
 	tests/cdemo-static-exec.test, tests/cdemo-static-make.test,

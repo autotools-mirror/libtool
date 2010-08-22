@@ -346,7 +346,7 @@ func_exec ()
 }
 
 # Shared global variables for test scripts
-prefix="./_inst"
+prefix=./_inst-`echo "$0" | sed 's,.*/,,; s,-.*,,'`
 srcdir=`cd $srcdir && pwd`
 m4dir=$srcdir/libltdl/m4
 auxdir=$srcdir/libltdl/config
