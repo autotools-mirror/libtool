@@ -1,3 +1,14 @@
+2010-08-22  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Require Automake 1.11.1 for Libtool, enable color-tests.
+	* configure.ac (AM_INIT_AUTOMAKE): Require 1.11.1.  Enable
+	color-tests.
+	(LTDL_SUBDIR_LIBOBJS): Remove now-obsolete conditional and
+	feature test for Autoconf 2.59 and Automake 1.9.x workaround.
+	* Makefile.am: Simplify accordingly.
+	* bootstrap: Remove obsolete WORKING_LIBOBJ_SUPPORT workarounds
+	for Autoconf 2.59 and Automake 1.9.6.
+
 2010-08-21  Rainer Tammer <tammer@tammer.net>  (tiny change)
 
 	Avoid issues with AIX resident shared libraries in old testsuite.

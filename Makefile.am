@@ -307,15 +307,6 @@ $(srcdir)/libltdl/config-h.in: $(sub_configure_deps)
 
 include libltdl/Makefile.inc
 
-if ! LTDL_SUBDIR_LIBOBJS
-## workaround for Autoconf 2.59, Automake 1.9.6:
-## we include these files twice, because of missing LIBOBJDIR support.
-EXTRA_DIST += \
-	argz.c libltdl/argz.c \
-	lt__dirent.c libltdl/lt__dirent.c \
-	lt__strl.c libltdl/lt__strl.c
-endif
-
 
 ## -------------- ##
 ## Documentation. ##
