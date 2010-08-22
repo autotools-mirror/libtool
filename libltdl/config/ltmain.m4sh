@@ -547,30 +547,15 @@ func_source ()
 
 
 # func_resolve_sysroot PATH
-# Change PATH to an absolute path or replace a leading = with a
-# sysroot.  Store the result into func_resolve_sysroot_result
+# Replace a leading = in PATH with a sysroot.  Store the result into
+# func_resolve_sysroot_result
 func_resolve_sysroot ()
 {
   func_resolve_sysroot_result=$1
   case $func_resolve_sysroot_result in
-  [\\/]* | [A-Za-z]:[\\/]*) ;;
   =*)
     func_stripname '=' '' "$func_resolve_sysroot_result"
     func_resolve_sysroot_result=$lt_sysroot$func_stripname_result
-    ;;
-  *)
-    if test -d "$1"; then
-      absdir=`cd "$1" && pwd`
-      test -z "$absdir" && \
-        func_fatal_error "cannot determine absolute directory name of \`$dir'"
-      func_resolve_sysroot_result=`cd "$dir" && pwd`
-    else
-      func_dirname_and_basename "$1" "" "."
-      absdir=`cd "$func_dirname_result" && pwd`
-      test -z "$absdir" && \
-        func_fatal_error "cannot determine absolute directory name of \`$func_dirname_result'"
-      func_resolve_sysroot_result="$absdir/$func_basename_result"
-    fi
     ;;
   esac
 }
@@ -4443,6 +4428,16 @@ func_mode_link ()
 	fi
 	func_resolve_sysroot "$func_stripname_result"
 	dir=$func_resolve_sysroot_result
+	# We need an absolute path.
+	case $dir in
+	[\\/]* | [A-Za-z]:[\\/]*) ;;
+	*)
+	  absdir=`cd "$dir" && pwd`
+	  test -z "$absdir" && \
+	    func_fatal_error "cannot determine absolute directory name of \`$dir'"
+	  dir="$absdir"
+	  ;;
+	esac
 	case "$deplibs " in
 	*" -L$dir "* | *" $arg "*)
 	  # Will only happen for absolute or sysroot arguments
