@@ -1,3 +1,59 @@
+2010-08-15  Paolo Bonzini  <bonzini@gnu.org>
+
+	Factor the sed command used to make a regex from a literal.
+	* libltdl/config/general.m4sh (sed_make_literal_regex): New.
+	* libltdl/config/ltmain.m4sh
+	(func_cygming_dll_for_implib_fallback_core): Use it.  Suggested
+	by Ralf Wildenhues.
+
+2010-08-21  Rainer Tammer <tammer@tammer.net>  (tiny change)
+
+	Avoid issues with AIX resident shared libraries in old testsuite.
+	* tests/defs.m4sh [aix]: Remove file mode permission for others,
+	so shared libraries are not kept in memory after execution.
+	Fixes failures of repeated mdemo-inst.test with on AIX 5.3.
+
+2010-08-21  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Skip part of versioning test on AIX.
+	* tests/versioning.at (versioning): The AIX linker always
+	records the unversioned library name, even with runtimelinking,
+	so skip the execution test for the incompatibly upgraded
+	library.
+	Report by Rainer Tammer.
+
+	Remove dead code from versioning test.
+	* tests/versioning.at (versioning): No need to build unused
+	prog3.
+
+2010-08-20  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Don't hide the table of contents in the manual.
+	* doc/libtool.texi: Move the table of contents to the beginning.
+	Prompted by patch from Bruno Haible against Automake.
+
+	Remove superfluous dependency in Makefile.am.
+	* Makefile.am (tests/demo-conf.test): Remove dependency on
+	libtool, this test is a primary source and not generated.
+
+	Bump copyright years in manual.
+	* doc/libtool.texi: Bump copyright years.
+
+2010-08-13  Peter Rosin  <peda@lysator.liu.se>
+
+	Allow the use of a listing file if the archiver supports it.
+	* libltdl/m4/libtool.m4 (_LT_CMD_OLD_ARCHIVE): Move detection
+	of a suitable archiver...
+	(_LT_PROG_AR): ...to here. New macro, also detect if the
+	archiver supports a listing file with the new variable
+	archiver_list_spec.
+	* libltdl/config/ltmain.m4sh: If the archiver supports a listing
+	file, use it when max_cmd_len is exceeded.  This is needed for
+	tool chains such as MSVC which do not support piece by piece
+	linking (-r -o).
+	* doc/libtool.texi (libtool script contents): Update with
+	archiver_list_spec description.
+
 2010-08-10  Gary V. Vaughan  <gary@gnu.org>  (tiny change)
 
 	Make testsuite compatible with Autoconf 2.62 again.

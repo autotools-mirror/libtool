@@ -130,6 +130,7 @@ func_get_config "objext
 objdir
 CC
 host
+host_os
 host_alias
 build
 build_alias" "$LIBTOOL --config" ": fatal"
@@ -350,6 +351,15 @@ srcdir=`cd $srcdir && pwd`
 m4dir=$srcdir/libltdl/m4
 auxdir=$srcdir/libltdl/config
 scripts="$auxdir/ltmain.m4sh $srcdir/libtoolize.m4sh"
+
+# On AIX, shared libraries remain loaded in memory after use if they
+# are world-readable, until root issues slibclean.  On NFS, this causes
+# a testsuite rerun to fail to clean up test group directories.  Avoid
+# this with a suitable umask.  Do not do this on other systems, for
+# example HP-UX suffers unless shared libraries are mode 555.
+case $host_os in
+aix*) umask o-rwx ;;
+esac
 
 func_msg "Running $progname"
 

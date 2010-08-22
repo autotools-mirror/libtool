@@ -1420,7 +1420,7 @@ func_mode_finish ()
 
     if test -n "$libs"; then
       if test -n "$lt_sysroot"; then
-        sysroot_regex=`$ECHO "$lt_sysroot" | $SED 's/[].[^$\\*/]/\\\\&/g'`
+        sysroot_regex=`$ECHO "$lt_sysroot" | $SED "$sed_make_literal_regex"`
         sysroot_cmd="s/\([ ']\)$sysroot_regex/\1/g;"
       else
         sysroot_cmd=
@@ -2356,7 +2356,7 @@ func_cygming_dll_for_implib ()
 func_cygming_dll_for_implib_fallback_core ()
 {
   $opt_debug
-  match_literal=`$ECHO "$1" | $SED 's/[].[^$\\*|]/\\\\&/g'`
+  match_literal=`$ECHO "$1" | $SED "$sed_make_literal_regex"`
   $OBJDUMP -s --section "$1" "$2" 2>/dev/null |
     $SED '/^Contents of section '"$match_literal"':/{
       # Place marker at beginning of archive member dllname section
@@ -8012,6 +8012,14 @@ EOF
 	func_len " $cmds"
 	len=$func_len_result
 	if test "$len" -lt "$max_cmd_len" || test "$max_cmd_len" -le -1; then
+	  cmds=$old_archive_cmds
+	elif test -n "$archiver_list_spec"; then
+	  func_verbose "using command file archive linking..."
+	  for obj in $oldobjs
+	  do
+	    $ECHO "$obj"
+	  done > $output_objdir/$libname.libcmd
+	  oldobjs=" $archiver_list_spec$output_objdir/$libname.libcmd"
 	  cmds=$old_archive_cmds
 	else
 	  # the command line is too long to link in one step, link in parts

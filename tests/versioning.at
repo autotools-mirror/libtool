@@ -24,7 +24,7 @@
 AT_SETUP([versioning])
 AT_KEYWORDS([libtool])
 
-eval "`$LIBTOOL --config | $EGREP '^(objdir)='`"
+eval "`$LIBTOOL --config | $EGREP '^(objdir|host_os)='`"
 
 # Setup some library and program sources:
 # a library (a1), a new revision (a2), a compatible update (a3),
@@ -91,14 +91,6 @@ int main (void)
 }
 ]])
 
-AT_DATA([prog3.c], [[
-extern int a (void), internal_detail;
-int main (void)
-{
-  return a () + internal_detail - 42;
-}
-]])
-
 
 inst=`pwd`/inst
 libdir=$inst/lib
@@ -109,7 +101,7 @@ mkdir $inst $libdir $bindir
 for file in liba1.c liba2.c liba3.c liba4.c libb.c; do
   $LIBTOOL --mode=compile $CC $CPPFLAGS $CFLAGS -c $file
 done
-for file in prog1.c prog2.c prog3.c; do
+for file in prog1.c prog2.c; do
   $CC $CPPFLAGS $CFLAGS -c $file
 done
 
@@ -235,6 +227,11 @@ AT_CHECK([$LIBTOOL --mode=link $CC $CFLAGS $LDFLAGS -o liba.la liba4.lo ]dnl
 # available, so test_uninstalled will not necessarily work here any more.
 AT_CHECK([$LIBTOOL --mode=install cp liba.la $libdir], [], [ignore], [ignore])
 AT_CHECK([$LIBTOOL --mode=clean rm -f liba.la], [], [ignore], [ignore])
+
+# This test does not work on AIX, not even with runtimelinking, because
+# the linker always records the unversioned name as dependency.
+AT_CHECK([:; case $host_os in aix*) exit 77;; esac])
+
 test_installed
 
 

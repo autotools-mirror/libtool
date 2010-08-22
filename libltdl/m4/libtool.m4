@@ -1346,14 +1346,42 @@ need_locks="$enable_libtool_lock"
 ])# _LT_ENABLE_LOCK
 
 
+# _LT_PROG_AR
+# -----------
+m4_defun([_LT_PROG_AR],
+[AC_CHECK_TOOLS(AR, [ar], false)
+: ${AR=ar}
+: ${AR_FLAGS=cru}
+_LT_DECL([], [AR], [1], [The archiver])
+_LT_DECL([], [AR_FLAGS], [1], [Flags to create an archive])
+
+AC_CACHE_CHECK([for archiver @FILE support], [lt_cv_ar_at_file],
+  [lt_cv_ar_at_file=no
+   AC_COMPILE_IFELSE([[int some_variable = 0;]],
+     [echo conftest.$ac_objext > conftest.lst
+      am_ar_try='$AR $AR_FLAGS libconftest.a @conftest.lst'
+      AC_TRY_EVAL([am_ar_try])
+      if test "$ac_status" -eq 0; then
+        lt_cv_ar_at_file=@
+      fi
+      rm -f conftest.* libconftest.a
+     ])
+  ])
+
+if test "x$lt_cv_ar_at_file" = xno; then
+  archiver_list_spec=
+else
+  archiver_list_spec=$lt_cv_ar_at_file
+fi
+_LT_DECL([], [archiver_list_spec], [1],
+  [How to feed a file listing to the archiver])
+])# _LT_PROG_AR
+
+
 # _LT_CMD_OLD_ARCHIVE
 # -------------------
 m4_defun([_LT_CMD_OLD_ARCHIVE],
-[AC_CHECK_TOOL(AR, ar, false)
-test -z "$AR" && AR=ar
-test -z "$AR_FLAGS" && AR_FLAGS=cru
-_LT_DECL([], [AR], [1], [The archiver])
-_LT_DECL([], [AR_FLAGS], [1])
+[_LT_PROG_AR
 
 AC_CHECK_TOOL(STRIP, strip, :)
 test -z "$STRIP" && STRIP=:
