@@ -64,8 +64,8 @@ To run a test group of the old test suite in isolation (say, you think
 you have fixed a bug, but don't want to rerun the entire suite), you can
 do it like this:
 
-  gmake check TESTS="tests/cdemo-static.test tests/cdemo-make.test \
-                     tests/cdemo-exec.test" \
+  gmake check TESTS="tests/cdemo-static.test tests/cdemo-static-make.test \
+                     tests/cdemo-static-exec.test" \
               TESTSUITEFLAGS=-V
 
 Providing that you have a FAIL from the most recent group from a

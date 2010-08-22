@@ -5032,17 +5032,29 @@ they test for:
 @table @file
 
 @item cdemo-conf.test
-@itemx cdemo-exec.test
 @itemx cdemo-make.test
+@itemx cdemo-exec.test
 @itemx cdemo-static.test
+@itemx cdemo-static-make.test
+@itemx cdemo-static-exec.test
 @itemx cdemo-shared.test
+@itemx cdemo-shared-make.test
+@itemx cdemo-shared-exec.test
 @itemx cdemo-undef.test
+@itemx cdemo-undef-make.test
+@itemx cdemo-undef-exec.test
 @pindex cdemo-conf.test
-@pindex cdemo-exec.test
 @pindex cdemo-make.test
+@pindex cdemo-exec.test
 @pindex cdemo-static.test
+@pindex cdemo-static-make.test
+@pindex cdemo-static-exec.test
 @pindex cdemo-shared.test
+@pindex cdemo-shared-make.test
+@pindex cdemo-shared-exec.test
 @pindex cdemo-undef.test
+@pindex cdemo-undef-make.test
+@pindex cdemo-undef-exec.test
 These programs check to see that the @file{tests/cdemo} subdirectory of
 the libtool distribution can be configured and built correctly.
 
@@ -5051,8 +5063,8 @@ convenience libraries, a mechanism that allows build-time static
 libraries to be created, in a way that their components can be later
 linked into programs or other libraries, even shared ones.
 
-The tests @file{cdemo-make.test} and @file{cdemo-exec.test} are executed
-three times, under three different libtool configurations:
+The tests matching @file{cdemo-*make.test} and @file{cdemo-*exec.test}
+are executed three times, under three different libtool configurations:
 @file{cdemo-conf.test} configures @file{cdemo/libtool} to build both
 static and shared libraries (the default for platforms that support
 both), @file{cdemo-static.test} builds only static libraries
@@ -5063,33 +5075,65 @@ The test @file{cdemo-undef.test} tests the generation of shared
 libraries with undefined symbols on systems that allow this.
 
 @item demo-conf.test
+@itemx demo-make.test
 @itemx demo-exec.test
 @itemx demo-inst.test
-@itemx demo-make.test
 @itemx demo-unst.test
 @itemx demo-static.test
+@itemx demo-static-make.test
+@itemx demo-static-exec.test
+@itemx demo-static-inst.test
+@itemx demo-static-unst.test
 @itemx demo-shared.test
+@itemx demo-shared-make.test
+@itemx demo-shared-exec.test
+@itemx demo-shared-inst.test
+@itemx demo-shared-unst.test
 @itemx demo-nofast.test
+@itemx demo-nofast-make.test
+@itemx demo-nofast-exec.test
+@itemx demo-nofast-inst.test
+@itemx demo-nofast-unst.test
 @itemx demo-pic.test
+@itemx demo-pic-make.test
+@itemx demo-pic-exec.test
 @itemx demo-nopic.test
+@itemx demo-nopic-make.test
+@itemx demo-nopic-exec.test
 @pindex demo-conf.test
+@pindex demo-make.test
 @pindex demo-exec.test
 @pindex demo-inst.test
-@pindex demo-make.test
 @pindex demo-unst.test
 @pindex demo-static.test
+@pindex demo-static-make.test
+@pindex demo-static-exec.test
+@pindex demo-static-inst.test
+@pindex demo-static-unst.test
 @pindex demo-shared.test
+@pindex demo-shared-make.test
+@pindex demo-shared-exec.test
+@pindex demo-shared-inst.test
+@pindex demo-shared-unst.test
 @pindex demo-nofast.test
+@pindex demo-nofast-make.test
+@pindex demo-nofast-exec.test
+@pindex demo-nofast-inst.test
+@pindex demo-nofast-unst.test
 @pindex demo-pic.test
+@pindex demo-pic-make.test
+@pindex demo-pic-exec.test
 @pindex demo-nopic.test
+@pindex demo-nopic-make.test
+@pindex demo-nopic-exec.test
 These programs check to see that the @file{tests/demo} subdirectory of
 the libtool distribution can be configured, built, installed, and
 uninstalled correctly.
 
 The @file{tests/demo} subdirectory contains a demonstration of a trivial
-package that uses libtool.  The tests @file{demo-make.test},
-@file{demo-exec.test}, @file{demo-inst.test} and
-@file{demo-unst.test} are executed four times, under four different
+package that uses libtool.  The tests matching @file{demo-*make.test},
+@file{demo-*exec.test}, @file{demo-*inst.test} and
+@file{demo-*unst.test} are executed four times, under four different
 libtool configurations: @file{demo-conf.test} configures
 @file{demo/libtool} to build both static and shared libraries,
 @file{demo-static.test} builds only static libraries
@@ -5130,21 +5174,45 @@ Checks whether libtool will not try to link with a previously installed
 version of a library when it should be linking with a just-built one.
 
 @item depdemo-conf.test
+@itemx depdemo-make.test
 @itemx depdemo-exec.test
 @itemx depdemo-inst.test
-@itemx depdemo-make.test
 @itemx depdemo-unst.test
 @itemx depdemo-static.test
+@itemx depdemo-static-make.test
+@itemx depdemo-static-exec.test
+@itemx depdemo-static-inst.test
+@itemx depdemo-static-unst.test
 @itemx depdemo-shared.test
+@itemx depdemo-shared-make.test
+@itemx depdemo-shared-exec.test
+@itemx depdemo-shared-inst.test
+@itemx depdemo-shared-unst.test
 @itemx depdemo-nofast.test
+@itemx depdemo-nofast-make.test
+@itemx depdemo-nofast-exec.test
+@itemx depdemo-nofast-inst.test
+@itemx depdemo-nofast-unst.test
 @pindex depdemo-conf.test
+@pindex depdemo-make.test
 @pindex depdemo-exec.test
 @pindex depdemo-inst.test
-@pindex depdemo-make.test
 @pindex depdemo-unst.test
 @pindex depdemo-static.test
+@pindex depdemo-static-make.test
+@pindex depdemo-static-exec.test
+@pindex depdemo-static-inst.test
+@pindex depdemo-static-unst.test
 @pindex depdemo-shared.test
+@pindex depdemo-shared-make.test
+@pindex depdemo-shared-exec.test
+@pindex depdemo-shared-inst.test
+@pindex depdemo-shared-unst.test
 @pindex depdemo-nofast.test
+@pindex depdemo-nofast-make.test
+@pindex depdemo-nofast-exec.test
+@pindex depdemo-nofast-inst.test
+@pindex depdemo-nofast-unst.test
 These programs check to see that the @file{tests/depdemo} subdirectory
 of the libtool distribution can be configured, built, installed, and
 uninstalled correctly.
@@ -5153,8 +5221,8 @@ The @file{tests/depdemo} subdirectory contains a demonstration of
 inter-library dependencies with libtool.  The test programs link some
 interdependent libraries.
 
-The tests @file{depdemo-make.test}, @file{depdemo-exec.test},
-@file{depdemo-inst.test} and @file{depdemo-unst.test} are executed
+The tests matching @file{depdemo-*make.test}, @file{depdemo-*exec.test},
+@file{depdemo-*inst.test} and @file{depdemo-*unst.test} are executed
 four times, under four different libtool configurations:
 @file{depdemo-conf.test} configures @file{depdemo/libtool} to build both
 static and shared libraries, @file{depdemo-static.test} builds only static
@@ -5164,19 +5232,35 @@ only shared libraries (@option{--disable-static}).
 disable the fast-install mode (@option{--enable-fast-install=no}).
 
 @item mdemo-conf.test
+@itemx mdemo-make.test
 @itemx mdemo-exec.test
 @itemx mdemo-inst.test
-@itemx mdemo-make.test
 @itemx mdemo-unst.test
 @itemx mdemo-static.test
+@itemx mdemo-static-make.test
+@itemx mdemo-static-exec.test
+@itemx mdemo-static-inst.test
+@itemx mdemo-static-unst.test
 @itemx mdemo-shared.test
+@itemx mdemo-shared-make.test
+@itemx mdemo-shared-exec.test
+@itemx mdemo-shared-inst.test
+@itemx mdemo-shared-unst.test
 @pindex mdemo-conf.test
+@pindex mdemo-make.test
 @pindex mdemo-exec.test
 @pindex mdemo-inst.test
-@pindex mdemo-make.test
 @pindex mdemo-unst.test
 @pindex mdemo-static.test
+@pindex mdemo-static-make.test
+@pindex mdemo-static-exec.test
+@pindex mdemo-static-inst.test
+@pindex mdemo-static-unst.test
 @pindex mdemo-shared.test
+@pindex mdemo-shared-make.test
+@pindex mdemo-shared-exec.test
+@pindex mdemo-shared-inst.test
+@pindex mdemo-shared-unst.test
 These programs check to see that the @file{tests/mdemo} subdirectory of
 the libtool distribution can be configured, built, installed, and
 uninstalled correctly.
@@ -5187,8 +5271,8 @@ package that uses libtool and the system independent dlopen wrapper
 dlopen wrapper for various platforms (Linux, Solaris, HP/UX etc.)
 including support for dlpreopened modules (@pxref{Dlpreopening}).
 
-The tests @file{mdemo-make.test}, @file{mdemo-exec.test},
-@file{mdemo-inst.test} and @file{mdemo-unst.test} are executed
+The tests matching @file{mdemo-*make.test}, @file{mdemo-*exec.test},
+@file{mdemo-*inst.test} and @file{mdemo-*unst.test} are executed
 three times, under three different libtool configurations:
 @file{mdemo-conf.test} configures @file{mdemo/libtool} to build both
 static and shared libraries, @file{mdemo-static.test} builds only static
@@ -5232,13 +5316,13 @@ Check whether we can actually get help for libtool.
 Check that a nonexistent objectlist file is properly detected.
 
 @item pdemo-conf.test
+@itemx pdemo-make.test
 @itemx pdemo-exec.test
 @itemx pdemo-inst.test
-@itemx pdemo-make.test
 @pindex pdemo-conf.test
+@pindex pdemo-make.test
 @pindex pdemo-exec.test
 @pindex pdemo-inst.test
-@pindex pdemo-make.test
 These programs check to see that the @file{tests/pdemo} subdirectory of
 the libtool distribution can be configured, built, and executed
 correctly.
@@ -5264,17 +5348,29 @@ This test validates that libtool can handle suffixes for all the file
 types that it supports, and that it fails when the suffix is invalid.
 
 @item tagdemo-conf.test
-@itemx tagdemo-exec.test
 @itemx tagdemo-make.test
+@itemx tagdemo-exec.test
 @itemx tagdemo-static.test
+@itemx tagdemo-static-make.test
+@itemx tagdemo-static-exec.test
 @itemx tagdemo-shared.test
+@itemx tagdemo-shared-make.test
+@itemx tagdemo-shared-exec.test
 @itemx tagdemo-undef.test
+@itemx tagdemo-undef-make.test
+@itemx tagdemo-undef-exec.test
 @pindex tagdemo-conf.test
-@pindex tagdemo-exec.test
 @pindex tagdemo-make.test
+@pindex tagdemo-exec.test
 @pindex tagdemo-static.test
+@pindex tagdemo-static-make.test
+@pindex tagdemo-static-exec.test
 @pindex tagdemo-shared.test
+@pindex tagdemo-shared-make.test
+@pindex tagdemo-shared-exec.test
 @pindex tagdemo-undef.test
+@pindex tagdemo-undef-make.test
+@pindex tagdemo-undef-exec.test
 These programs check to see that the @file{tests/tagdemo} subdirectory
 of the libtool distribution can be configured, built, and executed
 correctly.
@@ -5285,15 +5381,23 @@ It generates a library from C++ sources, which is then linked to a C++
 program.
 
 @item f77demo-conf.test
-@itemx f77demo-exec.test
 @itemx f77demo-make.test
+@itemx f77demo-exec.test
 @itemx f77demo-static.test
+@itemx f77demo-static-make.test
+@itemx f77demo-static-exec.test
 @itemx f77demo-shared.test
+@itemx f77demo-shared-make.test
+@itemx f77demo-shared-exec.test
 @pindex f77demo-conf.test
-@pindex f77demo-exec.test
 @pindex f77demo-make.test
+@pindex f77demo-exec.test
 @pindex f77demo-static.test
+@pindex f77demo-static-make.test
+@pindex f77demo-static-exec.test
 @pindex f77demo-shared.test
+@pindex f77demo-shared-make.test
+@pindex f77demo-shared-exec.test
 These programs check to see that the @file{tests/f77demo} subdirectory
 of the libtool distribution can be configured, built, and executed
 correctly.
@@ -5304,15 +5408,23 @@ sources, and a Fortran 77 program to use the former library, and a C
 program to use the latter library.
 
 @item fcdemo-conf.test
-@itemx fcdemo-exec.test
 @itemx fcdemo-make.test
+@itemx fcdemo-exec.test
 @itemx fcdemo-static.test
+@itemx fcdemo-static-make.test
+@itemx fcdemo-static-exec.test
 @itemx fcdemo-shared.test
+@itemx fcdemo-shared-make.test
+@itemx fcdemo-shared-exec.test
 @pindex fcdemo-conf.test
-@pindex fcdemo-exec.test
 @pindex fcdemo-make.test
+@pindex fcdemo-exec.test
 @pindex fcdemo-static.test
+@pindex fcdemo-static-make.test
+@pindex fcdemo-static-exec.test
 @pindex fcdemo-shared.test
+@pindex fcdemo-shared-make.test
+@pindex fcdemo-shared-exec.test
 These programs check to see that the @file{tests/fcdemo} subdirectory
 of the libtool distribution can be configured, built, and executed
 correctly.

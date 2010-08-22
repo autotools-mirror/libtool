@@ -1,5 +1,11 @@
 2010-08-22  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	Adjust docs for renaming and for parallel-tests.
+	* README: Update example TESTS setting.
+	* README.alpha: Likewise.
+	* doc/libtool.texi (Test descriptions): Update for test renaming,
+	adjust descriptions accordingly.
+
 	Update VERBOSE handling for parallel-tests driver.
 	* tests/defs.m4sh: Default to verbose output, drop now-unneeded
 	handling of 'VERBOSE=no'.
