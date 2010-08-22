@@ -1,5 +1,36 @@
 2010-08-22  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	New alias scripts for old tests run more than once.
+	* tests/cdemo-shared-exec.test, tests/cdemo-shared-make.test,
+	tests/cdemo-static-exec.test, tests/cdemo-static-make.test,
+	tests/cdemo-undef-exec.test, tests/cdemo-undef-make.test,
+	tests/demo-nofast-exec.test, tests/demo-nofast-inst.test,
+	tests/demo-nofast-make.test, tests/demo-nofast-unst.test,
+	tests/demo-nopic-exec.test, tests/demo-nopic-make.test,
+	tests/demo-pic-exec.test, tests/demo-pic-make.test,
+	tests/demo-shared-exec.test, tests/demo-shared-inst.test,
+	tests/demo-shared-make.test, tests/demo-shared-unst.test,
+	tests/demo-static-exec.test, tests/demo-static-inst.test,
+	tests/demo-static-make.test, tests/demo-static-unst.test,
+	tests/depdemo-nofast-exec.test, tests/depdemo-nofast-inst.test,
+	tests/depdemo-nofast-make.test, tests/depdemo-nofast-unst.test,
+	tests/depdemo-shared-exec.test, tests/depdemo-shared-inst.test,
+	tests/depdemo-shared-make.test, tests/depdemo-shared-unst.test,
+	tests/depdemo-static-exec.test, tests/depdemo-static-inst.test,
+	tests/depdemo-static-make.test, tests/depdemo-static-unst.test,
+	tests/f77demo-shared-exec.test, tests/f77demo-shared-make.test,
+	tests/f77demo-static-exec.test, tests/f77demo-static-make.test,
+	tests/fcdemo-shared-exec.test, tests/fcdemo-shared-make.test,
+	tests/fcdemo-static-exec.test, tests/fcdemo-static-make.test,
+	tests/mdemo-shared-exec.test, tests/mdemo-shared-inst.test,
+	tests/mdemo-shared-make.test, tests/mdemo-shared-unst.test,
+	tests/mdemo-static-exec.test, tests/mdemo-static-inst.test,
+	tests/mdemo-static-make.test, tests/mdemo-static-unst.test,
+	tests/tagdemo-shared-exec.test, tests/tagdemo-shared-make.test,
+	tests/tagdemo-static-exec.test, tests/tagdemo-static-make.test,
+	tests/tagdemo-undef-exec.test, tests/tagdemo-undef-make.test:
+	New files.
+
 	Require Automake 1.11.1 for Libtool, enable color-tests.
 	* configure.ac (AM_INIT_AUTOMAKE): Require 1.11.1.  Enable
 	color-tests.
