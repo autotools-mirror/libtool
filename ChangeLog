@@ -1,3 +1,9 @@
+2010-08-23  Charles Wilson  <libtool@cwilson.fastmail.fm>
+
+	Fix syntax for cygwin-cross
+	libltdl/m4/argz.m4: Add quotes around variable, which
+	may contain the multiword value 'guessing no'.
+
 2010-08-22  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	configure: use Autobuild AB_INIT if available.
