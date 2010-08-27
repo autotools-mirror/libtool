@@ -46,7 +46,6 @@ export SHELL
 : ${SED=sed}
 : ${LN_S='ln -s'}
 : ${MAKEINFO=makeinfo}
-: ${WORKING_LIBOBJ_SUPPORT=false}
 
 case $1 in
 --help|-h*)
@@ -54,8 +53,6 @@ case $1 in
 `echo $0 | sed 's,^.*/,,g'`: This script is designed to bootstrap a fresh repository checkout
 of Libtool.  Useful environment variable settings:
   reconfdirs='. libltdl'     Do not bootstrap the old test suite.
-  WORKING_LIBOBJ_SUPPORT=:   Declare that you have fixed LIBOBJDIR support
-                             in autoconf (> 2.59) and automake (> 1.9.6).
 EOF
   exit
   ;;
@@ -97,19 +94,8 @@ find . -depth \( -name autom4te.cache -o -name libtool \) -print \
 # Delete stale files from previous libtool versions.
 rm -f acinclude.m4 libltdl/config.h
 
-# Workaround for missing LIBOBJDIR support in Autoconf 2.59, Automake 1.9.6:
-# Have symlinks of the libobj files in top source dir.
-# Set WORKING_LIBOBJ_SUPPORT=: when calling bootstrap if you have fixed tools.
-case `($AUTOCONF --version) 2>/dev/null` in
-  *\ 2.59[c-z]* | *\ 2.[6-9][0-9]* | *\ [3-9].[0-9]*)
-  case `($AUTOMAKE --version) 2>/dev/null` in
-    *\ 1.9[a-z]* | *\ 1.1[0-9]* | *\ 1.[2-9][0-9]* | *\ [2-9].[0-9]*)
-      WORKING_LIBOBJ_SUPPORT=: ;;
-  esac ;;
-esac
 for file in argz.c lt__dirent.c lt__strl.c; do
   rm -f $file
-  $WORKING_LIBOBJ_SUPPORT || $LN_S libltdl/$file $file
 done
 
 if test -z "$reconfdirs"; then

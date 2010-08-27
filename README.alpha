@@ -69,8 +69,8 @@ To run a test group of the old test suite in isolation (say, you think
 you have fixed a bug, but don't want to rerun the entire suite), you can
 do it like this:
 
-  gmake check TESTS="tests/cdemo-static.test tests/cdemo-make.test \
-                     tests/cdemo-exec.test" \
+  gmake check TESTS="tests/cdemo-static.test tests/cdemo-static-make.test \
+                     tests/cdemo-static-exec.test" \
 	      TESTSUITEFLAGS=-V
 
 Providing that you have a FAIL from the most recent group from a
@@ -81,15 +81,11 @@ If you wish to report a test group failure to the libtool list, you need
 to send the verbose output of the FAILing group, along with the
 information from the end of `$(top_builddir)/libtool --help' to the bug
 report mailing list, <bug-libtool@gnu.org> with a subject line that
-includes the string `[TEST FAILURE]'.  From a Bourne compatible shell,
-you can generate verbose test output like this:
+includes the string `[TEST FAILURE]'.  The file test-suite.log contains
+the verbose output from all failed tests.
 
-  VERBOSE=yes gmake check \
-  TESTS="tests/cdemo-static.test tests/cdemo-make.test tests/cdemo-exec.test" \
-  TESTSUITEFLAGS=-V | tee cdemo-static-group.log
-
-In order to enable debug shell tracing, use VERBOSE=debug instead of
-VERBOSE=yes.
+In order to enable debug shell tracing, you can set VERBOSE=debug when
+running the old test suite.
 
 
 In the long run, Libtool will move to using only the new,
@@ -114,7 +110,7 @@ send the file `tests/testsuite.log' to the bug report mailing list,
 <bug-libtool@gnu.org>.
 
 -- 
-  Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009  Free Software
+  Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009, 2010 Free Software
   Foundation, Inc.
   Written by Gary V. Vaughan, 2004
 

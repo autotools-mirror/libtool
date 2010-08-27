@@ -43,15 +43,10 @@ if test -z "$DJGPP"; then
     CONFIG_SITE=/nonexistent
 fi
 
-# How verbose should we be?  Default is no test output.
-# Setting VERBOSE=yes enables test output.
-# Setting VERBOSE=debug also puts the shell in debug mode.
+# How verbose should we be?  Default is test output in log file.
+# Setting VERBOSE=debug puts the shell in debug mode.
 opt_debug=:
-test "${VERBOSE+set}" != "set" && VERBOSE=no
 case "$VERBOSE" in
-NO | no | 0 | "")
-  exec > /dev/null 2>&1
-  ;;
 DEBUG | debug )
   opt_debug='set -x'
   $opt_debug
@@ -346,7 +341,7 @@ func_exec ()
 }
 
 # Shared global variables for test scripts
-prefix="./_inst"
+prefix=./_inst-`echo "$0" | sed 's,.*/,,; s,-.*,,'`
 srcdir=`cd $srcdir && pwd`
 m4dir=$srcdir/libltdl/m4
 auxdir=$srcdir/libltdl/config

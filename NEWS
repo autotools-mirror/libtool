@@ -6,12 +6,27 @@ New in 2.2.12 2010-08-??: git version 2.2.11a, Libtool team:
 
   - On non-cygwin Windows systems, we now lookup potential library
     file names without regard to file name case.
+  - The old testsuite now uses the `parallel-tests' Automake test driver
+    now for more concurrency and better test logging.  For this, tests are
+    run in verbose mode by default now.
+
+* Important incompatible changes:
+
+  - Autoconf 2.62 and Automake 1.11.1 or newer are now required for building
+    Libtool.  For using Libtool in your own projects, Autoconf 2.59 and
+    Automake 1.9.6 should still work.
 
 * Changes in supported systems or compilers:
+
   - Initial support for the Microsoft C/C++ Compiler, with help from
     the compile script in unreleased Automake 1.12. Override the manifest
     tool used to embed the manifest resource through the environment
     variable MANIFEST_TOOL.
+
+* Bug fixes:
+
+  - The `check-interactive' and `check-noninteractive' convenience make
+    targets now also work for the old testsuite.
 
 New in 2.2.10 2010-06-10: git version 2.2.9a, Libtool team:
 

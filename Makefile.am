@@ -307,15 +307,6 @@ $(srcdir)/libltdl/config-h.in: $(sub_configure_deps)
 
 include libltdl/Makefile.inc
 
-if ! LTDL_SUBDIR_LIBOBJS
-## workaround for Autoconf 2.59, Automake 1.9.6:
-## we include these files twice, because of missing LIBOBJDIR support.
-EXTRA_DIST += \
-	argz.c libltdl/argz.c \
-	lt__dirent.c libltdl/lt__dirent.c \
-	lt__strl.c libltdl/lt__strl.c
-endif
-
 
 ## -------------- ##
 ## Documentation. ##
@@ -584,8 +575,13 @@ installcheck-local: $(testsuite_deps)
 	  $(TESTS_ENVIRONMENT) $(INSTALLCHECK_ENVIRONMENT) $(TESTSUITEFLAGS) \
 	  AUTOTEST_PATH="$(exec_prefix)/bin"
 
+check-noninteractive-old:
+	$(MAKE) $(AM_MAKEFLAGS) check-TESTS TESTS='$(NONINTERACTIVE_TESTS)'
+check-interactive-old:
+	$(MAKE) $(AM_MAKEFLAGS) check-TESTS TESTS='$(INTERACTIVE_TESTS)'
+
 # Run only noninteractive parts of the new testsuite.
-check-noninteractive: $(testsuite_deps_uninstalled)
+check-noninteractive-new: $(testsuite_deps_uninstalled)
 	$(CD_TESTDIR); \
 	CONFIG_SHELL="$(SHELL)" $(SHELL) $$abs_srcdir/$(TESTSUITE) \
 	  $(TESTS_ENVIRONMENT) $(BUILDCHECK_ENVIRONMENT) \
@@ -593,12 +589,15 @@ check-noninteractive: $(testsuite_deps_uninstalled)
 	  $(TESTSUITEFLAGS)
 
 # Run only interactive parts of the new testsuite.
-check-interactive: $(testsuite_deps_uninstalled)
+check-interactive-new: $(testsuite_deps_uninstalled)
 	$(CD_TESTDIR); \
 	CONFIG_SHELL="$(SHELL)" $(SHELL) $$abs_srcdir/$(TESTSUITE) \
 	  $(TESTS_ENVIRONMENT) $(BUILDCHECK_ENVIRONMENT) \
 	  -k interactive -k recursive INNER_TESTSUITEFLAGS=",interactive" \
 	  $(TESTSUITEFLAGS)
+
+check-interactive: check-interactive-old check-interactive-new
+check-noninteractive: check-noninteractive-old check-noninteractive-new
 
 # We need to remove any file droppings left behind by testsuite
 clean-local: clean-local-legacy
@@ -617,81 +616,277 @@ clean-local: clean-local-legacy
 #           complete this section should be removed.
 
 CXX_TESTS = \
-	tests/tagdemo-static.test tests/tagdemo-make.test \
-	tests/tagdemo-exec.test tests/tagdemo-conf.test \
-	tests/tagdemo-make.test tests/tagdemo-exec.test \
-	tests/tagdemo-shared.test tests/tagdemo-make.test \
-	tests/tagdemo-exec.test tests/tagdemo-undef.test \
-	tests/tagdemo-make.test tests/tagdemo-exec.test
+	tests/tagdemo-static.test \
+	tests/tagdemo-static-make.test \
+	tests/tagdemo-static-exec.test \
+	tests/tagdemo-conf.test \
+	tests/tagdemo-make.test \
+	tests/tagdemo-exec.test \
+	tests/tagdemo-shared.test \
+	tests/tagdemo-shared-make.test \
+	tests/tagdemo-shared-exec.test \
+	tests/tagdemo-undef.test \
+	tests/tagdemo-undef-make.test \
+	tests/tagdemo-undef-exec.test
+
+tests/tagdemo-undef-exec.log:	tests/tagdemo-undef-make.log
+tests/tagdemo-undef-make.log:	tests/tagdemo-undef.log
+tests/tagdemo-undef.log:	tests/tagdemo-shared-exec.log
+tests/tagdemo-shared-exec.log:	tests/tagdemo-shared-make.log
+tests/tagdemo-shared-make.log:	tests/tagdemo-shared.log
+tests/tagdemo-shared.log:	tests/tagdemo-exec.log
+tests/tagdemo-exec.log:		tests/tagdemo-make.log
+tests/tagdemo-make.log:		tests/tagdemo-conf.log
+tests/tagdemo-conf.log:		tests/tagdemo-static-exec.log
+tests/tagdemo-static-exec.log:	tests/tagdemo-static-make.log
+tests/tagdemo-static-make.log:	tests/tagdemo-static.log
 
 F77_TESTS = \
-	tests/f77demo-static.test tests/f77demo-make.test \
-	tests/f77demo-exec.test tests/f77demo-conf.test \
-	tests/f77demo-make.test tests/f77demo-exec.test \
-	tests/f77demo-shared.test tests/f77demo-make.test \
-	tests/f77demo-exec.test
+	tests/f77demo-static.test \
+	tests/f77demo-static-make.test \
+	tests/f77demo-static-exec.test \
+	tests/f77demo-conf.test \
+	tests/f77demo-make.test \
+	tests/f77demo-exec.test \
+	tests/f77demo-shared.test \
+	tests/f77demo-shared-make.test \
+	tests/f77demo-shared-exec.test
+
+tests/f77demo-shared-exec.log:	tests/f77demo-shared-make.log
+tests/f77demo-shared-make.log:	tests/f77demo-shared.log
+tests/f77demo-shared.log:	tests/f77demo-exec.log
+tests/f77demo-exec.log:		tests/f77demo-make.log
+tests/f77demo-make.log:		tests/f77demo-conf.log
+tests/f77demo-conf.log:		tests/f77demo-static-exec.log
+tests/f77demo-static-exec.log:	tests/f77demo-static-make.log
+tests/f77demo-static-make.log:	tests/f77demo-static.log
 
 FC_TESTS = \
-	tests/fcdemo-static.test tests/fcdemo-make.test \
-	tests/fcdemo-exec.test tests/fcdemo-conf.test \
-	tests/fcdemo-make.test tests/fcdemo-exec.test \
-	tests/fcdemo-shared.test tests/fcdemo-make.test \
-	tests/fcdemo-exec.test
+	tests/fcdemo-static.test \
+	tests/fcdemo-static-make.test \
+	tests/fcdemo-static-exec.test \
+	tests/fcdemo-conf.test \
+	tests/fcdemo-make.test \
+	tests/fcdemo-exec.test \
+	tests/fcdemo-shared.test \
+	tests/fcdemo-shared-make.test \
+	tests/fcdemo-shared-exec.test
+
+tests/fcdemo-shared-exec.log:	tests/fcdemo-shared-make.log
+tests/fcdemo-shared-make.log:	tests/fcdemo-shared.log
+tests/fcdemo-shared.log:	tests/fcdemo-exec.log
+tests/fcdemo-exec.log:		tests/fcdemo-make.log
+tests/fcdemo-make.log:		tests/fcdemo-conf.log
+tests/fcdemo-conf.log:		tests/fcdemo-static-exec.log
+tests/fcdemo-static-exec.log:	tests/fcdemo-static-make.log
+tests/fcdemo-static-make.log:	tests/fcdemo-static.log
 
 COMMON_TESTS = \
-	tests/link.test tests/link-2.test tests/nomode.test \
-	tests/objectlist.test tests/quote.test tests/sh.test \
-	tests/suffix.test tests/tagtrace.test \
-	tests/cdemo-static.test tests/cdemo-make.test tests/cdemo-exec.test \
-	tests/demo-static.test tests/demo-make.test tests/demo-exec.test \
-	tests/demo-inst.test tests/demo-unst.test \
-	tests/depdemo-static.test tests/depdemo-make.test \
-	tests/depdemo-exec.test tests/depdemo-inst.test \
+	tests/link.test \
+	tests/link-2.test \
+	tests/nomode.test \
+	tests/objectlist.test \
+	tests/quote.test \
+	tests/sh.test \
+	tests/suffix.test \
+	tests/tagtrace.test \
+	tests/cdemo-static.test \
+	tests/cdemo-static-make.test \
+	tests/cdemo-static-exec.test \
+	tests/demo-static.test \
+	tests/demo-static-make.test \
+	tests/demo-static-exec.test \
+	tests/demo-static-inst.test \
+	tests/demo-static-unst.test \
+	tests/depdemo-static.test \
+	tests/depdemo-static-make.test \
+	tests/depdemo-static-exec.test \
+	tests/depdemo-static-inst.test \
+	tests/depdemo-static-unst.test \
+	tests/mdemo-static.test \
+	tests/mdemo-static-make.test \
+	tests/mdemo-static-exec.test \
+	tests/mdemo-static-inst.test \
+	tests/mdemo-static-unst.test \
+	tests/cdemo-conf.test \
+	tests/cdemo-make.test \
+	tests/cdemo-exec.test \
+	tests/demo-conf.test \
+	tests/demo-make.test \
+	tests/demo-exec.test \
+	tests/demo-inst.test \
+	tests/demo-unst.test \
+	tests/demo-deplibs.test \
+	tests/depdemo-conf.test \
+	tests/depdemo-make.test \
+	tests/depdemo-exec.test \
+	tests/depdemo-inst.test \
 	tests/depdemo-unst.test \
-	tests/mdemo-static.test tests/mdemo-make.test tests/mdemo-exec.test \
-	tests/mdemo-inst.test tests/mdemo-unst.test \
-	tests/cdemo-conf.test tests/cdemo-make.test tests/cdemo-exec.test \
-	tests/demo-conf.test tests/demo-make.test tests/demo-exec.test \
-	tests/demo-inst.test tests/demo-unst.test tests/demo-deplibs.test \
-	tests/depdemo-conf.test tests/depdemo-make.test \
-	tests/depdemo-exec.test tests/depdemo-inst.test \
-	tests/depdemo-unst.test \
-	tests/mdemo-conf.test tests/mdemo-make.test tests/mdemo-exec.test \
-	tests/mdemo-inst.test tests/mdemo-unst.test tests/mdemo-dryrun.test \
-	tests/mdemo2-conf.test tests/mdemo2-make.test tests/mdemo2-exec.test \
-	tests/pdemo-conf.test tests/pdemo-make.test tests/pdemo-exec.test \
+	tests/mdemo-conf.test \
+	tests/mdemo-make.test \
+	tests/mdemo-exec.test \
+	tests/mdemo-inst.test \
+	tests/mdemo-unst.test \
+	tests/mdemo-dryrun.test \
+	tests/mdemo2-conf.test \
+	tests/mdemo2-make.test \
+	tests/mdemo2-exec.test \
+	tests/pdemo-conf.test \
+	tests/pdemo-make.test \
+	tests/pdemo-exec.test \
 	tests/pdemo-inst.test \
-	tests/demo-nofast.test tests/demo-make.test tests/demo-exec.test \
-	tests/demo-inst.test tests/demo-unst.test \
-	tests/depdemo-nofast.test tests/depdemo-make.test \
-	tests/depdemo-exec.test tests/depdemo-inst.test \
-	tests/depdemo-unst.test \
-	tests/demo-pic.test tests/demo-make.test tests/demo-exec.test \
-	tests/demo-nopic.test tests/demo-make.test tests/demo-exec.test \
-	tests/cdemo-shared.test tests/cdemo-make.test tests/cdemo-exec.test \
-	tests/demo-shared.test tests/demo-make.test tests/demo-exec.test \
-	tests/demo-inst.test tests/demo-hardcode.test tests/demo-relink.test \
-	tests/demo-noinst-link.test tests/demo-unst.test \
-	tests/depdemo-shared.test tests/depdemo-make.test \
-	tests/depdemo-exec.test tests/depdemo-inst.test \
-	tests/depdemo-relink.test tests/depdemo-unst.test \
-	tests/mdemo-shared.test tests/mdemo-make.test tests/mdemo-exec.test \
-	tests/mdemo-inst.test tests/mdemo-unst.test \
-	tests/cdemo-undef.test tests/cdemo-make.test tests/cdemo-exec.test
+	tests/demo-nofast.test \
+	tests/demo-nofast-make.test \
+	tests/demo-nofast-exec.test \
+	tests/demo-nofast-inst.test \
+	tests/demo-nofast-unst.test \
+	tests/depdemo-nofast.test \
+	tests/depdemo-nofast-make.test \
+	tests/depdemo-nofast-exec.test \
+	tests/depdemo-nofast-inst.test \
+	tests/depdemo-nofast-unst.test \
+	tests/demo-pic.test \
+	tests/demo-pic-make.test \
+	tests/demo-pic-exec.test \
+	tests/demo-nopic.test \
+	tests/demo-nopic-make.test \
+	tests/demo-nopic-exec.test \
+	tests/cdemo-shared.test \
+	tests/cdemo-shared-make.test \
+	tests/cdemo-shared-exec.test \
+	tests/mdemo-shared.test \
+	tests/mdemo-shared-make.test \
+	tests/mdemo-shared-exec.test \
+	tests/mdemo-shared-inst.test \
+	tests/mdemo-shared-unst.test \
+	tests/cdemo-undef.test \
+	tests/cdemo-undef-make.test \
+	tests/cdemo-undef-exec.test
 
-TESTS = $(COMMON_TESTS)
+# Actually, only demo-relink and depdemo-relink require interaction,
+# but they depend on the other tests being run beforehand.
+INTERACTIVE_TESTS = \
+	tests/demo-shared.test \
+	tests/demo-shared-make.test \
+	tests/demo-shared-exec.test \
+	tests/demo-shared-inst.test \
+	tests/demo-hardcode.test \
+	tests/demo-relink.test \
+	tests/demo-noinst-link.test \
+	tests/demo-shared-unst.test \
+	tests/depdemo-shared.test \
+	tests/depdemo-shared-make.test \
+	tests/depdemo-shared-exec.test \
+	tests/depdemo-shared-inst.test \
+	tests/depdemo-relink.test \
+	tests/depdemo-shared-unst.test
+
+tests/cdemo-undef-exec.log:	tests/cdemo-undef-make.log
+tests/cdemo-undef-make.log:	tests/cdemo-undef.log
+tests/cdemo-undef.log: @ORDER@	tests/cdemo-shared-exec.log
+tests/cdemo-shared-exec.log:	tests/cdemo-shared-make.log
+tests/cdemo-shared-make.log:	tests/cdemo-shared.log
+tests/cdemo-shared.log: @ORDER@	tests/cdemo-exec.log
+tests/cdemo-exec.log:		tests/cdemo-make.log
+tests/cdemo-make.log:		tests/cdemo-conf.log
+tests/cdemo-conf.log: @ORDER@	tests/cdemo-static-exec.log
+tests/cdemo-static-exec.log:	tests/cdemo-static-make.log
+tests/cdemo-static-make.log:	tests/cdemo-static.log
+
+tests/demo-shared-unst.log:	tests/demo-noinst-link.log
+tests/demo-noinst-link.log:	tests/demo-relink.log
+tests/demo-relink.log:		tests/demo-hardcode.log
+tests/demo-hardcode.log:	tests/demo-shared-inst.log
+tests/demo-shared-inst.log:	tests/demo-shared-exec.log
+tests/demo-shared-exec.log:	tests/demo-shared-make.log
+tests/demo-shared-make.log:	tests/demo-shared.log
+tests/demo-shared.log: @ORDER@	tests/demo-nopic-exec.log
+tests/demo-nopic-exec.log:	tests/demo-nopic-make.log
+tests/demo-nopic-make.log:	tests/demo-nopic.log
+tests/demo-nopic.log: @ORDER@	tests/demo-pic-exec.log
+tests/demo-pic-exec.log:	tests/demo-pic-make.log
+tests/demo-pic-make.log:	tests/demo-pic.log
+tests/demo-pic.log: @ORDER@	tests/demo-nofast-unst.log
+tests/demo-nofast-unst.log:	tests/demo-nofast-inst.log
+tests/demo-nofast-inst.log:	tests/demo-nofast-exec.log
+tests/demo-nofast-exec.log:	tests/demo-nofast-make.log
+tests/demo-nofast-make.log:	tests/demo-nofast.log
+tests/demo-nofast.log: @ORDER@	tests/demo-deplibs.log
+tests/demo-deplibs.log:		tests/demo-unst.log
+tests/demo-unst.log:		tests/demo-inst.log
+tests/demo-inst.log:		tests/demo-exec.log
+tests/demo-exec.log:		tests/demo-make.log
+tests/demo-make.log:		tests/demo-conf.log
+tests/demo-conf.log: @ORDER@	tests/demo-static-unst.log
+tests/demo-static-unst.log:	tests/demo-static-inst.log
+tests/demo-static-inst.log:	tests/demo-static-exec.log
+tests/demo-static-exec.log:	tests/demo-static-make.log
+tests/demo-static-make.log:	tests/demo-static.log
+
+tests/depdemo-shared-unst.log:	tests/depdemo-relink.log
+tests/depdemo-relink.log:	tests/depdemo-shared-inst.log
+tests/depdemo-shared-inst.log:	tests/depdemo-shared-exec.log
+tests/depdemo-shared-exec.log:	tests/depdemo-shared-make.log
+tests/depdemo-shared-make.log:	tests/depdemo-shared.log
+tests/depdemo-shared.log: @ORDER@ tests/depdemo-nofast-unst.log
+tests/depdemo-nofast-unst.log:	tests/depdemo-nofast-inst.log
+tests/depdemo-nofast-inst.log:	tests/depdemo-nofast-exec.log
+tests/depdemo-nofast-exec.log:	tests/depdemo-nofast-make.log
+tests/depdemo-nofast-make.log:	tests/depdemo-nofast.log
+tests/depdemo-nofast.log: @ORDER@ tests/depdemo-unst.log
+tests/depdemo-unst.log:		tests/depdemo-inst.log
+tests/depdemo-inst.log:		tests/depdemo-exec.log
+tests/depdemo-exec.log:		tests/depdemo-make.log
+tests/depdemo-make.log:		tests/depdemo-conf.log
+tests/depdemo-conf.log: @ORDER@	tests/depdemo-static-unst.log
+tests/depdemo-static-unst.log:	tests/depdemo-static-inst.log
+tests/depdemo-static-inst.log:	tests/depdemo-static-exec.log
+tests/depdemo-static-exec.log:	tests/depdemo-static-make.log
+tests/depdemo-static-make.log:	tests/depdemo-static.log
+
+tests/mdemo-shared-unst.log:	tests/mdemo-shared-inst.log
+tests/mdemo-shared-inst.log:	tests/mdemo-shared-exec.log
+tests/mdemo-shared-exec.log:	tests/mdemo-shared-make.log
+tests/mdemo-shared-make.log:	tests/mdemo-shared.log
+tests/mdemo-shared.log: @ORDER@	tests/mdemo-dryrun.log \
+				tests/mdemo2-exec.log
+
+tests/mdemo-dryrun.log:		tests/mdemo-unst.log
+tests/mdemo-unst.log:		tests/mdemo-inst.log
+tests/mdemo-inst.log:		tests/mdemo-exec.log
+tests/mdemo-exec.log:		tests/mdemo-make.log
+tests/mdemo-make.log:		tests/mdemo-conf.log
+tests/mdemo-conf.log: @ORDER@	tests/mdemo-static-unst.log
+tests/mdemo-static-unst.log:	tests/mdemo-static-inst.log
+tests/mdemo-static-inst.log:	tests/mdemo-static-exec.log
+tests/mdemo-static-exec.log:	tests/mdemo-static-make.log
+tests/mdemo-static-make.log:	tests/mdemo-static.log
+
+tests/mdemo2-exec.log:		tests/mdemo2-make.log
+tests/mdemo2-make.log:		tests/mdemo2-conf.log \
+				tests/mdemo-dryrun.log
+
+tests/pdemo-inst.log:		tests/pdemo-exec.log
+tests/pdemo-exec.log:		tests/pdemo-make.log
+tests/pdemo-make.log:		tests/pdemo-conf.log
+
+
+NONINTERACTIVE_TESTS = $(COMMON_TESTS)
 if HAVE_CXX
-TESTS += $(CXX_TESTS)
+NONINTERACTIVE_TESTS += $(CXX_TESTS)
 endif
 if HAVE_F77
-TESTS += $(F77_TESTS)
+# f77demo-static-exec.test might be interactive on MSYS.
+INTERACTIVE_TESTS += $(F77_TESTS)
 endif
 if HAVE_FC
-TESTS += $(FC_TESTS)
+NONINTERACTIVE_TESTS += $(FC_TESTS)
 endif
+TESTS = $(NONINTERACTIVE_TESTS) $(INTERACTIVE_TESTS)
 
 EXTRA_DIST     += $(srcdir)/tests/defs.in tests/defs.m4sh \
-		  $(COMMON_TESTS) $(CXX_TESTS) $(F77_TESTS) $(FC_TESTS)
+		  $(COMMON_TESTS) $(CXX_TESTS) $(F77_TESTS) $(FC_TESTS) \
+		  $(INTERACTIVE_TESTS)
 DIST_SUBDIRS   += $(CONF_SUBDIRS)
 
 # The defs script shouldn't be recreated whenever the Makefile is
@@ -717,7 +912,7 @@ clean-local-legacy:
 	    (cd $$dir && $(MAKE) $(AM_MAKEFLAGS) distclean); \
 	  else :; fi; \
 	done
-	rm -rf _inst
+	rm -rf _inst _inst-*
 
 # For distclean, we may have to fake Makefiles in the test directories
 # so that descending in DIST_SUBDIRS works.
