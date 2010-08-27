@@ -1,3 +1,7 @@
+2010-08-27  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* NEWS: Only bootstrapping needs new Automake and Autoconf.
+
 2010-08-22  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
 	check-interactive and check-noninteractive for both testsuites.
