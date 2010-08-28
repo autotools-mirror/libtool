@@ -1,5 +1,9 @@
 2010-08-28  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
 
+	Fix quoting in non-XSI func_xform, for IRIX sh.
+	* libltdl/config/ltmain.m4sh (func_xform): Remove spurious extra
+	M4 quotes.
+
 	Fix response file test for unreliable exit status of IRIX ar.
 	* libltdl/m4/libtool.m4 (_LT_PROG_AR): IRIX ar will not fail
 	over a command-line argument specifying a nonexistent file (such

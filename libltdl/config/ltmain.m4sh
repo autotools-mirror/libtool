@@ -191,7 +191,7 @@ func_lo2o ()
 # func_xform libobj-or-source
 func_xform ()
 {
-    func_xform_result=`$ECHO "${1}" | $SED 's/\.[[^.]]*$/.lo/'`
+    func_xform_result=`$ECHO "${1}" | $SED 's/\.[^.]*$/.lo/'`
 } # func_xform may be replaced by extended shell implementation
 
 
